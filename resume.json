@@ -214,11 +214,25 @@
         "website": "https://goo.gl/wLhDYo"
     },
     {
-        "name": "SIGFOX and Google Cloud Platform",
+        "name": "Sigfox and Google Cloud Platform",
         "publisher": "Google Developer Group Singapore DevFest",
         "releaseDate": "2014-10-20",
         "website": "https://goo.gl/vt6WZf"
-    }    
+    },
+    {
+        "name": "[Patent] Enlargement of video content streamed from the internet",
+        "publisher": "US Patent Office WO/2012/002906",
+        "releaseDate": "2010-06-30",
+        "website": "http://patentscope.wipo.int/search/en/detail.jsf?docId=WO2012002906",
+        "summary": "This invention relates to a system for displaying video content streamed from a network in a full screen mode. The system receives receiving a network address based on a selection from a user. The system then transmits a request for content from the network address and subsequently receives the content associated with the network address. A search is performed on the content for data that provides displaying a video content in a full screen mode. Upon detecting the data, the process generates the data and displays video content in full screen mode."
+    },
+    {
+        "name": "[Patent] A system and method for providing mobile services",
+        "publisher": "US Patent Office WO/2008/004981",
+        "releaseDate": "2007-06-27",
+        "website": "http://patentscope.wipo.int/search/en/detail.jsf?docId=WO2008004981",
+        "summary": "A system and method for providing mobile services, the system comprising: a mobile device executing a client application for generating a mobile service request; and a hub server for receiving and processing the mobile service request, wherein the mobile service request comprises location data of the mobile device, and the hub server pushes one or more mobile service offers to the mobile device based on the location data. The method comprises executing a client application for generating a mobile service request on a mobile device; receiving and processing the mobile service request at a hub server; and pushing one or more mobile service offers from the hub server to the mobile device based on location data, wherein the mobile service request comprises location data of the mobile device."
+    }
   ],
   "skills": [
     {
