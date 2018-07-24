@@ -1,6 +1,6 @@
 {
   "basics": {
-    "name": "Lee Lup Yuen",
+    "name": "LEE Lup Yuen",
     "label": "Techie and Educator in IoT, Mobile, Web, Multimedia",
     "picture": "https://lupyuen.github.io/images/lupyuen.jpg",
     "email": "luppy@appkaki.com",
@@ -128,12 +128,84 @@
   ],
   "publications": [
     {
-      "name": "Developing cost-effective, energy efficient IoT solutions for outdoor as well as indoor applications",
-      "publisher": "OpenGov",
-      "releaseDate": "2018-03-20",
-      "website": "https://www.opengovasia.com/articles/developing-cost-effective-energy-efficient-iot-solutions-for-outdoor-as-well-as-indoor-applications",
-      "summary": "Lup Yuen talks about two classes of IoT, ‘deep’ IoT and ‘wide’ IoT. Deep IoT devices require high bandwidth and power supply. UnaBiz looks at wide IoT, which refers to devices that are very light, battery-powered and operate on pervasive networks. They can work anytime, anywhere in Singapore and do not rely on WiFi or the cellular network."
-    }
+        "name": "Developing cost-effective, energy efficient IoT solutions for outdoor as well as indoor applications",
+        "publisher": "OpenGov",
+        "releaseDate": "2018-03-20",
+        "website": "https://www.opengovasia.com/articles/developing-cost-effective-energy-efficient-iot-solutions-for-outdoor-as-well-as-indoor-applications",
+        "summary": "Lup Yuen talks about two classes of IoT, ‘deep’ IoT and ‘wide’ IoT. Deep IoT devices require high bandwidth and power supply. UnaBiz looks at wide IoT, which refers to devices that are very light, battery-powered and operate on pervasive networks. They can work anytime, anywhere in Singapore and do not rely on WiFi or the cellular network."
+    },
+    {
+        "name": "Coding the STM32 Blue Pill with Rust and Visual Studio Code",
+        "publisher": "Medium",
+        "releaseDate": "2018-07-10",
+        "website": "https://medium.com/@ly.lee/coding-the-stm32-blue-pill-with-rust-and-visual-studio-code-b21615d8a20"
+    },
+    {
+        "name": "Making my first ever PCB with Seeed Fusion PCB assembly service",
+        "publisher": "Medium",
+        "releaseDate": "2018-07-05",
+        "website": "https://medium.com/@ly.lee/making-my-first-ever-pcb-with-seeed-fusion-pcb-assembly-service-9af5736016b3"
+    },
+    {
+        "name": "Running Rust and FreeRTOS on the PADI IoT Stamp",
+        "publisher": "Medium",
+        "releaseDate": "2018-06-18",
+        "website": "https://medium.com/@ly.lee/running-rust-and-freertos-on-the-padi-iot-stamp-fb36c5ef4844"
+    },
+    {
+        "name": "First Impressions of Alibaba Cloud (Aliyun)",
+        "publisher": "Medium",
+        "releaseDate": "2018-05-21",
+        "website": "https://medium.com/@ly.lee/first-impressions-of-alibaba-cloud-aliyun-688dc46fa9b8"
+    },
+    {
+        "name": "Multitasking on the Arduino with a Finite State Machine – And why you’ll need it for Sigfox Downlink",
+        "publisher": "Medium",
+        "releaseDate": "2018-05-13",
+        "website": "https://medium.com/@ly.lee/multitasking-on-the-arduino-with-a-finite-state-machine-and-why-youll-need-it-for-sigfox-d52dafc55d8e"
+    },
+    {
+        "name": "Realtime sensor data processing with thethings.io and Amazon Web Services Kinesis",
+        "publisher": "Medium",
+        "releaseDate": "2018-05-01",
+        "website": "https://medium.com/@ly.lee/realtime-sensor-data-processing-with-thethings-io-and-amazon-web-services-kinesis-e12ebb022106"
+    },
+    {
+        "name": "I Teach IoT. Here’s what you’ll learn",
+        "publisher": "Medium",
+        "releaseDate": "2018-04-24",
+        "website": "https://medium.com/@ly.lee/i-teach-iot-heres-what-you-ll-learn-3e0d1b997dd0"
+    },
+    {
+        "name": "How To Build Your Sigfox Server (Version 1.0)",
+        "publisher": "Medium",
+        "releaseDate": "2017-10-14",
+        "website": "https://medium.com/@ly.lee/how-to-build-your-sigfox-server-version-1-0-6763732692fd"
+    },
+    {
+        "name": "Story of the UnaShield",
+        "publisher": "Medium",
+        "releaseDate": "2017-07-05",
+        "website": "https://medium.com/@ly.lee/story-of-the-unashield-ff9e78fd7726"
+    },
+    {
+        "name": "IoT is a Bad Word",
+        "publisher": "Medium",
+        "releaseDate": "2017-05-26",
+        "website": "https://medium.com/@ly.lee/iot-is-a-bad-word-9003d9fab638"
+    },
+    {
+        "name": "Overcoming Productivity Challenges in the F&B Industry",
+        "publisher": "Retail World Asia 2015",
+        "releaseDate": "2015-04-23",
+        "website": "https://goo.gl/wLhDYo"
+    },
+    {
+        "name": "SIGFOX and Google Cloud Platform",
+        "publisher": "Google Developer Group Singapore DevFest",
+        "releaseDate": "2014-10-20",
+        "website": "https://goo.gl/vt6WZf"
+    }    
   ],
   "skills": [
     {
@@ -141,16 +213,61 @@
       "level": "Master",
       "keywords": [
         "AWS IoT",
+        "Google Cloud IoT",
+        "Azure IoT",
         "Sigfox",
-        "Arduino"
+        "Ubidots",
+        "thethings.io",
+        "Arduino",
+        "STM32",
+        "PADI"
       ]
+    },
+    {
+        "name": "Cloud Computing",
+        "level": "Master",
+        "keywords": [
+            "AWS",
+            "Google Cloud",
+            "Azure",
+            "S3",
+            "SageMaker",
+            "RDS",
+            "DynamoDB",
+            "Lambda",
+            "API Gateway",
+            "Cloud Functions",
+            "AppEngine",
+            "TensorFlow"
+        ]
+    },
+    {
+        "name": "Mobile Application Development",
+        "level": "Master",
+        "keywords": [
+          "iOS",
+          "Android",
+          "Swift",
+          "React Native",
+          "Xcode",
+          "Responsive Mobile Web",
+          "Bootstrap"
+        ]
     }
   ],
   "languages": [
     {
       "language": "English",
       "fluency": "Native speaker"
-    }
+    },
+    {
+        "language": "Mandarin",
+        "fluency": "Native speaker"
+    },
+    {
+        "language": "Cantonese",
+        "fluency": "Fluent"
+    }    
   ],
   "interests": [
     {
