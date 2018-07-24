@@ -41,7 +41,8 @@
         "summary": "Responsible for teaching and mentoring the next generation of professionals in IoT technologies. He taught the following courses:",
         "highlights": [
             "IoT Application Development: He prepared and presented lessons and labs for training working adults with IoT programming skills, based on AWS IoT, Sigfox, Ubidots and Arduino. He created the training platform with various AWS services: AWS IoT, Lambda, API Gateway, S3, DynamoDB, SNS, Elasticsearch, Kibana. His students included IT professionals from Agility, IBM, SAP, Ericsson, Canon and ITE.",
-            "Operating Systems: He conducted tutorials and labs for the Operating Systems core subject, which is a graduation requirement for all fulltime students. He covered a broad range of operating systems including Android, iOS, Linux, Windows, and provided guidance on the student projects."
+            "IoT Project: He supervised the students in creating innovative IoT products (based on AWS IoT and Sigfox) that solve real-world problems like dementia patient tracking, elderly home monitoring, food safety, campus security, AED management, realtime asset tracking.",
+            "Operating Systems: He conducted tutorials and labs for the Operating Systems core subject, which is a graduation requirement for all fulltime students. He covered a broad range of operating systems including Android, iOS, Linux and Windows."
         ]
     },
     {
@@ -50,9 +51,16 @@
       "website": "https://unabiz.com",
       "startDate": "2016-08-01",
       "endDate": "2018-04-01",
-      "summary": "Lup Yuen is an eager practitioner in IoT technologies. As former CTO of UnaBiz, he was responsible for creating new tools and systems to help people get onboard with SIGFOX the quickest way possible.",
+      "summary": "As former CTO of UnaBiz, he was responsible for creating new tools and systems to help people get onboard with Sigfox the quickest way possible.",
       "highlights": [
-      ]
+          "UnaLocation - Enhanced Sigfox Geolocation: Estimates your latitude/longitude geolocation from Sigfox signal strength. Computed based on past GPS coordinates and Sigfox signal strength collected by the UnaTumbler tracking device. Machine Learning based on Google TensorFlow, AWS SageMaker",
+          "UnaRadar - Sigfox Network Finder: Mobile web tool for showing the locations of nearby Sigfox basestations and their signal strengths with respect to your Sigfox device.",
+          "UnaMap - Sigfox Coverage Map: Web-based coverage map, computed based on past GPS coordinates and Sigfox signal strength collected by the UnaTumbler tracking device.",
+          "UnaShield - Sigfox Shield for Arduino: Arduino library that powers the communication between UnaShield and Sigfox - https://github.com/UnaBiz/unabiz-arduino",
+          "UnaBell - Smart Button on Sigfox: Cloud server that powers the smart button",
+          "sigfox-gcloud - Open Source Sigfox Server for Google Cloud: https://github.com/UnaBiz/sigfox-gcloud",
+          "sigfox-aws - Open Source Sigfox Server for Amazon Web Services: https://github.com/UnaBiz/sigfox-aws"
+      ]      
     },
     {
         "company": "Konica Minolta Business Innovation Centre (Singapore)",
@@ -75,7 +83,7 @@
         "endDate": "2014-11-01",
         "summary": "Reports directly to CEO Group Digital L!fe, Mr Allen Lew. Responsible for scanning of innovative ICT technologies worldwide and executing proof-of-concept (POC) projects for the SingTel Group. He was also consulted for technical due diligence in SingTel Innov8 investment projects and SingTel Group Strategy acquisitions. Projects executed include:",
         "highlights": [
-            "Internet of Things (IoT): IoT promises to revolutionise the way we work, live and play through smart devices and sensors embedded everywhere, from wearables to homes to workplaces to the entire nation. (POC projects with SIGFOX, Semtech, SeeControl, Vera, wearables, fitness trackers)",        
+            "Internet of Things (IoT): IoT promises to revolutionise the way we work, live and play through smart devices and sensors embedded everywhere, from wearables to homes to workplaces to the entire nation. (POC projects with Sigfox, Semtech LoRa, SeeControl, Vera, wearables, fitness trackers)",        
             "Indoor Positioning: Getting people’s precise location indoors for pushing highly-targeted, location-specific information (SenionLab, IndoorAtlas, Estimote)",            
             "Smart Retail: Understanding consumer preferences through the shopping offers that they browse and the actual items that they bought. Cloud-based digital receipts and loyalty systems. Co-created SGMalls as a lean startup experiment in Smart Retail, which quickly became Singapore’s #1 retail shopping app. (AppCard, Gigya, Bluetooth Beacons)",            
             "Social Recommendation based on Facebook profiling: Predicting consumer behaviour based on posts in their social feeds (Correlor)",            
@@ -238,7 +246,9 @@
             "API Gateway",
             "Cloud Functions",
             "AppEngine",
-            "TensorFlow"
+            "TensorFlow",
+            "Node.js",
+            "Go"
         ]
     },
     {
