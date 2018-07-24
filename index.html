@@ -1,1 +1,1134 @@
-"Coming Soon" 
+<!doctype html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>Lee Lup Yuen</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <style>
+  /********************************************
+* 	reset from
+* 	http://meyerweb.com/eric/tools/css/reset/
+*******************************************/
+
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+}
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+    display: block;
+}
+
+body {
+    line-height: 1;
+}
+
+ol,
+ul {
+    list-style: none;
+}
+
+blockquote,
+q {
+    quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+    content: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+
+/****************
+*	COMMONS
+****************/
+
+body,
+html {
+    font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-size: 13px;
+    color: #40484f;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1.46153846;
+    text-align: left;
+    -webkit-text-size-adjust: 100%;
+}
+
+p {
+    display: block;
+    margin-bottom: 1.3em;
+}
+
+a {
+    color: #0095ff;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #0c65a5;
+    text-decoration: underline;
+}
+
+ul {
+    margin-top: 1rem;
+}
+
+li {
+    list-style-type: square;
+    list-style-position: outside;
+    margin-left: 1.3em;
+}
+
+.highlights>li>p {
+    margin-bottom: 0.5em;
+}
+
+h1 {
+    font-size: 2rem;
+}
+
+h2 {
+    font-size: 1.67rem;
+}
+
+h3 {
+    font-size: 1.27rem;
+}
+
+em {
+    color: #757575;
+}
+
+blockquote {
+    margin-bottom: 1em;
+}
+
+strong {
+    font-weight: 700;
+}
+
+
+/* main container */
+
+#resume {
+    padding: 1rem;
+    margin-top: 2rem;
+}
+
+
+/* every section wrapper */
+
+.section {
+    margin-bottom: 1rem;
+}
+
+section .location {
+    margin-right: .5em;
+    color: #606d76;
+    font-weight: 700;
+}
+
+#contact {
+    margin-top: .5rem;
+}
+
+#profiles .item {
+    padding: 0;
+}
+
+#header>#profiles,
+#header>#contact,
+#skills,
+#languages,
+#interests {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-flow: row wrap;
+    flex-flow: row wrap;
+    -webkit-justify-content: flex-start;
+    justify-content: flex-start;
+}
+
+#header>div {
+    line-height: 1.5;
+}
+
+#header>div>div {
+    margin-right: 1.2em;
+}
+
+#header h1.name {
+    font-size: 2.8rem;
+    font-weight: 100;
+    line-height: 100%;
+}
+
+#header h2.label {
+    color: #202931;
+    font-size: 1.47rem;
+    font-weight: 300;
+}
+
+#header .picture {
+    width: 11em;
+    float: right;
+    border-radius: 4px;
+}
+
+.main-summary {
+    background: #f1f8ff;
+    padding: 1.2em 1em;
+    margin-top: 1rem;
+}
+
+.main-summary p {
+    margin: .15em 0 0;
+}
+
+h2.section-title {
+    display: inline-block;
+    background: #fff;
+    padding: 0 1em 0.3em 0;
+    color: #ff6d1f;
+    text-transform: uppercase;
+    font-weight: 600;
+    border: none;
+    font-size: .9rem;
+}
+
+.section>header {
+    position: relative;
+}
+
+.fa {
+    margin-right: 0.25em;
+}
+
+.section>header::after {
+    position: absolute;
+    left: 0;
+    top: .7em;
+    height: 1px;
+    background: #ccc;
+    content: "";
+    width: 100%;
+    z-index: -100;
+    display: block;
+}
+
+.section.main-summary>section {
+    margin: 0;
+}
+
+.section>section>header {
+    font-size: 1.38rem;
+    position: relative;
+    margin-top: .7em;
+}
+
+.section>section>header:first-of-type {
+    margin: 0;
+}
+
+.section>section>header .space-left {
+    position: absolute;
+    left: -1.56rem;
+    top: 5px;
+    color: #aaa;
+    line-height: 1;
+    opacity: 0;
+}
+
+.position,
+.company,
+.organization,
+.institution,
+.date,
+.area,
+.studyType,
+.title,
+.awarder {
+    display: inline;
+}
+
+.position,
+.studyType,
+.area,
+.title,
+.language,
+.name {
+    font-weight: 600;
+}
+
+.company::before,
+.institution::before,
+.organization::before,
+.awarder::before {
+    content: "at "
+}
+
+.company,
+.institution,
+.organization,
+.awarder {
+    color: #606d76;
+    font-weight: 400;
+}
+
+.section header .date {
+    font-size: 1rem;
+    display: inline-table;
+    padding: .1em 0;
+    font-weight: 600;
+}
+
+ul.keywords,
+ul.courses {
+    margin-top: .5em;
+}
+
+ul.keywords li,
+ul.courses li {
+    display: inline-block;
+    margin: 2px 2px 2px 0;
+    padding: 4px 5px 5px;
+    font-size: .9rem;
+    line-height: 1;
+    text-transform: lowercase;
+    color: #3e6d8e;
+    background-color: #dfeaf1;
+    border: 0 solid #dfeaf1;
+    white-space: nowrap;
+}
+
+ul.keywords li:hover,
+ul.courses li:hover {
+    background: #dfeaf0;
+}
+
+.item {
+    padding: .5em 0;
+}
+
+.gpa {
+    padding-bottom: .5em;
+}
+
+.fa.social {
+    font-size: 1.1em;
+}
+
+
+/* Social Media Brand Colors */
+
+.google-plus {
+    color: #dd4b39;
+}
+
+.tumblr {
+    color: #32506d;
+}
+
+.foursquare {
+    color: #0072b1;
+}
+
+.facebook {
+    color: #3b5998;
+}
+
+.linkedin {
+    color: #007bb6;
+}
+
+.pinterest {
+    color: #cb2027;
+}
+
+.dribbble {
+    color: #ea4c89;
+}
+
+.instagram {
+    color: #517fa4;
+}
+
+.twitter {
+    color: #00aced;
+}
+
+.soundcloud {
+    color: #ff3a00;
+}
+
+.wordpress {
+    color: #21759b;
+}
+
+.youtube {
+    color: #bb0000;
+}
+
+.github {
+    color: #171515;
+}
+
+.stack-overflow {
+    color: #828386;
+    position: relative;
+}
+
+.flickr {
+    color: #ff0084;
+}
+
+.stack-overflow::after {
+    position: absolute;
+    left: 0;
+    content: '\f16c';
+    color: #f68a1f;
+    overflow: hidden;
+    height: 100%;
+}
+
+.telegram {
+    color: #2291c3;
+}
+
+#languages .item,
+#skills .item,
+#interests .item {
+    width: 15em;
+    padding: 0 .5em .5em 0;
+    border-bottom: none;
+}
+
+#skills .item {
+    width: 16em;
+}
+
+#skills .item .keywords {
+    width: 15em;
+}
+
+
+/* Skill chart */
+
+.level {
+    margin-bottom: .5em;
+}
+
+.level .bar {
+    border: 1px solid #ddd;
+    display: block;
+    width: 10em;
+    height: 5px;
+    position: relative;
+}
+
+.level .bar::after {
+    position: absolute;
+    content: " ";
+    top: 0;
+    left: 0;
+    background: black;
+    height: 5px;
+}
+
+.level.beginner .bar::after {
+    background: #EB5F51;
+    width: 2.5em;
+}
+
+.level.intermediate .bar::after {
+    background: #ffdf1f;
+    width: 5em;
+}
+
+.level.advanced .bar::after,
+.level.fluent .bar::after {
+    background: #5CB85C;
+    width: 7.5em;
+}
+
+.level.master .bar::after,
+.level.native.speaker .bar::after {
+    background: #59C596;
+    width: 10em;
+}
+
+#references .item {
+    padding-left: .5em;
+    border-left: 5px solid #ff6d1f;
+}
+
+.toggle-item {
+  visibility: hidden;
+}
+
+/******************
+*	HELPER CLASSES
+******************/
+
+.clear::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.display {
+    display: block;
+    opacity: 1 !important;
+}
+
+.margin1 {
+    margin-bottom: .5rem;
+}
+
+
+/****************
+*		TABLET
+****************/
+
+@media screen and (min-width: 602px) {
+    #resume {
+        width: 80%;
+        margin: 0 auto;
+    }
+}
+
+
+/****************
+*		LAPTOP
+****************/
+
+@media screen and (min-width: 1025px) {
+    li {
+        margin-left: 1.5em;
+    }
+    #resume {
+        width: 820px;
+        margin: 2rem auto;      
+    }
+    .section>section>header .space-left {
+        opacity: 1;
+        cursor: pointer;
+    }
+    .section>section {
+        margin-left: 1.67rem;
+    }
+    .toggle-item {
+        transform: translate(-9999px);
+    }
+    .toggle-item+label {
+        display: block;
+        margin-top: -16px;
+    }
+    .toggle-item:checked+label:after {
+        content: '\f0d7';
+    }
+    .toggle-item+label:after {
+        float: left;
+        cursor: pointer;
+        margin-left: -20px;
+        color: #aaa;
+        font-size: 16px;
+        content: '\f0da';
+        font-family: Fontawesome;
+    }
+    .toggle-item~.item {
+        height: 0;
+        opacity: 0;
+    }
+    .toggle-item:checked~.item {
+        height: auto;
+        opacity: 1;
+        transition: all .5s linear;
+    }
+    .company::before,
+    .institution::before,
+    .organization::before,
+    .awarder::before {
+        content: "| ";
+    }
+    .header-left {
+        float: left;
+        width: 70%;
+        word-break: normal;
+    }
+    .section header .date {
+        float: right;
+        padding: .2em;
+    }
+    .display {
+        display: none;
+    }
+    .display:not(.none) {
+        display: block;
+    }
+}
+
+@media print {
+    #resume {
+        margin: 0;
+        padding: 0;
+        -ms-word-wrap: break-word;
+        word-wrap: break-word;
+        line-height: 1.3;
+        /*font-family: Arial, Georgia, "Lucida Grande", sans-serif;*/
+    }
+    @page {
+        margin: 1cm 1.4cm;
+    }
+    .item-count {
+        display: none;
+    }
+    .company::before,
+    .institution::before,
+    .organization::before,
+    .awarder::before {
+        content: "at ";
+    }
+    .main-summary {
+        padding: 2rem 0;
+    }
+    .section {
+        margin: .8rem 0;
+        padding: 0;
+    }
+    .section header {
+        padding-bottom: .15rem;
+    }
+    .section .location {
+        padding-bottom: .15rem;
+    }
+    .stack-overflow::after {
+        content: "";
+    }
+    .fa.social {
+        color: #828386;
+    }
+    ul {
+        margin-top: .4em;
+    }
+    ul,
+    li {
+        padding: 0;
+    }
+    ul.keywords li,
+    ul.courses li {
+        margin: 0;
+        padding: 0;
+        font-size: .8rem;
+        text-transform: lowercase;
+    }
+    ul.keywords li::after,
+    ul.courses li::after {
+        padding: 0 0 0 .1rem;
+        content: " |";
+    }
+    ul.keywords::before,
+    ul.courses::before {
+        font-size: .8rem;
+        font-weight: 600;
+    }
+    ul.keywords::before {
+        content: "Skills acquired: ";
+    }
+    #skills .keywords::before {
+        content: '';
+    }
+    .section p {
+        margin: 0;
+        padding: 0;
+    }
+    ul.courses::before {
+        content: "Major courses: ";
+    }
+    ul.keywords li:last-of-type::after,
+    ul.courses li:last-of-type::after {
+        content: "";
+    }
+    .level em {
+        font-style: normal;
+        padding: .1em 0;
+    }
+    .level .bar {
+        display: none;
+    }
+    #profiles .item {
+        padding: 0;
+    }
+    .item.display {
+        display: block;
+        opacity: 1 !important;
+    }
+}
+
+  </style>
+  
+  </head>
+  <body>
+  
+  <div id="resume">
+    	<header id="header" class="clear">
+    		<img class="picture" src="https://lupyuen.github.io/images/lupyuen.jpg" alt="Lee Lup Yuen" />
+    		<div class="middle">
+    			<h1 class="name">Lee Lup Yuen</h1>
+    			<h2 class="label">Techie and Educator in IoT, Mobile, Web, Multimedia</h2>
+    		</div>
+    		
+    		<span class="location">
+    			<span class="city">Singapore,</span> 
+    			<span class="countryCode">SG</span> 
+    		</span>
+    		
+    
+    		<div id="contact">
+    			<div class="website">
+    				<span class="fa fa-external-link"></span>
+    				<a target="_blank" target="_blank" href="https://lupyuen.github.io">https://lupyuen.github.io</a>
+    			</div>
+    			<div class="email">
+    				<span class="fa fa-envelope-o"></span>
+    				<a href="mailto:luppy@appkaki.com">luppy@appkaki.com</a>
+    			</div>
+    		</div>
+    
+    		<div id="profiles">
+    			<div class="item">
+    				<div class="username">
+    					<span class="fa fa-linkedin linkedin social"></span>
+    					<span class="url">
+    						<a target="_blank" href="https://www.linkedin.com/in/lupyuen">lupyuen</a>
+    					</span> 
+    				</div>
+    			</div>
+    			<div class="item">
+    				<div class="username">
+    					<span class="fa fa-facebook facebook social"></span>
+    					<span class="url">
+    						<a target="_blank" href="https://facebook.com/lupyuen">lupyuen</a>
+    					</span> 
+    				</div>
+    			</div>
+    			<div class="item">
+    				<div class="username">
+    					<span class="fa fa-twitter twitter social"></span>
+    					<span>mistertechblog</span>
+    				</div>
+    			</div>
+    		</div>
+    	</header>
+    
+    	<section class="section main-summary">
+    		<section>
+    			<div><p>Hands-on technology advisor and educator passionate about creating products that make a difference to the man and woman on the street. Experienced with bleeding-edge innovations in Internet of Things (IoT), mobile, web and multimedia</p></div>
+    		</section>
+    	</section>
+    
+    <section class="section margin1">
+    	<header>
+    		<h2 class='section-title'>Skills</h2>
+    	</header>
+    	<section id="skills">
+    		<div class="item">
+    			<h3 class="name">
+    				Internet of Things (IoT)
+    			</h3>
+    			 
+    			<div class="level master">
+    				<em>Master</em>
+    				<div class="bar"></div>
+    			</div>
+    			<ul class="keywords">
+    				<li>AWS IoT</li>
+    				<li>Sigfox</li>
+    				<li>Arduino</li>
+    			</ul>
+    		</div>
+    	</section>
+    </section>
+    <section class="section">
+      <header>
+        <h2 class='section-title'>Work Experience <span class="item-count">(5)</span></h2>
+      </header>
+    
+      <section id="work">
+        <section class="work-item">
+    
+            <input id="work-item-0" type="checkbox" class="toggle-item" checked="checked" />
+            <label for="work-item-0"></label>
+    
+    			<header>
+    				<div class="position">Adjunct Lecturer</div>
+    				<div class="company">Temasek Polytechnic (Singapore)</div>
+    				<div class="date">
+    				  <span class="startDate">April 2015</span> 
+    					<span class="endDate">- Current</span>
+    				</div>
+    			</header>
+    			
+        	<span class="website">
+        		<a target="_blank" href="https://www.tp.edu.sg">https://www.tp.edu.sg</a>
+        	</span>      	<div class="item" id="work-item">
+            <div class="summary">
+              <p><p>Responsible for teaching and mentoring the next generation of professionals in IoT technologies. He taught the following courses:</p></p>
+            </div>
+            <ul class="highlights">
+                <li><p>IoT Application Development: He prepared and presented lessons and labs for training working adults with IoT programming skills, based on AWS IoT, Sigfox, Ubidots and Arduino. He created the training platform with various AWS services: AWS IoT, Lambda, API Gateway, S3, DynamoDB, SNS, Elasticsearch, Kibana. His students included IT professionals from Agility, IBM, SAP, Ericsson, Canon and ITE.</p></li>
+                <li><p>Operating Systems: He conducted tutorials and labs for the Operating Systems core subject, which is a graduation requirement for all fulltime students. He covered a broad range of operating systems including Android, iOS, Linux, Windows, and provided guidance on the student projects.</p></li>
+            </ul>
+        	</div>
+        </section>
+        <section class="work-item">
+    
+            <input id="work-item-1" type="checkbox" class="toggle-item" />
+            <label for="work-item-1"></label>
+    
+    			<header>
+    				<div class="position">Chief Technology Officer</div>
+    				<div class="company">UnaBiz (Singapore)</div>
+    				<div class="date">
+    				  <span class="startDate">August 2016</span> 
+    					<span class="endDate">- April 2018</span> 
+    				</div>
+    			</header>
+    			
+        	<span class="website">
+        		<a target="_blank" href="https://unabiz.com">https://unabiz.com</a>
+        	</span>      	<div class="item" id="work-item">
+            <div class="summary">
+              <p><p>Lup Yuen is an eager practitioner in IoT technologies. As former CTO of UnaBiz, he was responsible for creating new tools and systems to help people get onboard with SIGFOX the quickest way possible.</p></p>
+            </div>
+        	</div>
+        </section>
+        <section class="work-item">
+    
+            <input id="work-item-2" type="checkbox" class="toggle-item" />
+            <label for="work-item-2"></label>
+    
+    			<header>
+    				<div class="position">Principal Consultant</div>
+    				<div class="company">Konica Minolta Business Innovation Centre (Singapore)</div>
+    				<div class="date">
+    				  <span class="startDate">November 2014</span> 
+    					<span class="endDate">- September 2016</span> 
+    				</div>
+    			</header>
+    			
+        	<span class="website">
+        		<a target="_blank" href="https://bic.konicaminolta.asia">https://bic.konicaminolta.asia</a>
+        	</span>      	<div class="item" id="work-item">
+            <div class="summary">
+              <p><p>He heads the software development/engineering team that architects, develops and executes proof-of-concept (POC) projects for incubating new businesses for Konica Minolta. He was also consulted for technical due diligence in investment projects and acquisitions. Projects executed include:</p></p>
+            </div>
+            <ul class="highlights">
+                <li><p>Straight-Through Food & Beverage (F&B) Ordering System: Deployed in Singapore and Australia, he created the system that allows mobile users to place food orders through a mobile app and submit directly to the Point Of Sales System and the Kitchen Display System. The Kitchen Display System automatically calls the user when the order is ready for collection. Loyalty points and digital receipts are automatically populated in the app, through direct integration with the Lavu Point Of Sales system. Tools and platforms used: AWS (Lambda, S3, SQS, API Gateway, Mobile Analytics), Google BigQuery, Firebase, Parse, Magento 2, Loggly, Sumo Logic, Jenkins, Raygun, Slack, Azure, MongoDB, Node.js, Android, iOS (Swift), C#, Windows Presentation Foundation.</p></li>
+                <li><p>Bluetooth Beacon Analytics: Profiling mobile users accurately using Bluetooth Beacon analytics and targeting them with highly-relevant promotions. Tested in large exhibitions and shopping malls. Based on Google BigQuery, Google Cloud Datalab, MongoDB, Node.js, Android, iOS.</p></li>
+                <li><p>Other projects include Health/Wellness, Android Set-Top Boxes, Hospitality</p></li>
+            </ul>
+        	</div>
+        </section>
+        <section class="work-item">
+    
+            <input id="work-item-3" type="checkbox" class="toggle-item" />
+            <label for="work-item-3"></label>
+    
+    			<header>
+    				<div class="position">Chief Technology Officer</div>
+    				<div class="company">SingTel L!feLabs (Singapore)</div>
+    				<div class="date">
+    				  <span class="startDate">June 2009</span> 
+    					<span class="endDate">- November 2014</span> 
+    				</div>
+    			</header>
+    			
+        	<span class="website">
+        		<a target="_blank" href="https://singtel.com">https://singtel.com</a>
+        	</span>      	<div class="item" id="work-item">
+            <div class="summary">
+              <p><p>Reports directly to CEO Group Digital L!fe, Mr Allen Lew. Responsible for scanning of innovative ICT technologies worldwide and executing proof-of-concept (POC) projects for the SingTel Group. He was also consulted for technical due diligence in SingTel Innov8 investment projects and SingTel Group Strategy acquisitions. Projects executed include:</p></p>
+            </div>
+            <ul class="highlights">
+                <li><p>Internet of Things (IoT): IoT promises to revolutionise the way we work, live and play through smart devices and sensors embedded everywhere, from wearables to homes to workplaces to the entire nation. (POC projects with SIGFOX, Semtech, SeeControl, Vera, wearables, fitness trackers)</p></li>
+                <li><p>Indoor Positioning: Getting people’s precise location indoors for pushing highly-targeted, location-specific information (SenionLab, IndoorAtlas, Estimote)</p></li>
+                <li><p>Smart Retail: Understanding consumer preferences through the shopping offers that they browse and the actual items that they bought. Cloud-based digital receipts and loyalty systems. Co-created SGMalls as a lean startup experiment in Smart Retail, which quickly became Singapore’s #1 retail shopping app. (AppCard, Gigya, Bluetooth Beacons)</p></li>
+                <li><p>Social Recommendation based on Facebook profiling: Predicting consumer behaviour based on posts in their social feeds (Correlor)</p></li>
+                <li><p>Speech Recognition for Singapore English: Co-created Singapore’s first speech recognition app to understand Singapore English. Hundreds of hours of speech recordings were used to tune the speech recogniser, which understands local commands like “Find the best char kway teow” (Novauris)</p></li>
+                <li><p>Image Recognition for Retail (Visenze, Graymatics)</p></li>
+                <li><p>Motion Gesture User Experience (PrimeSense, LeapMotion)</p></li>
+                <li><p>Augmented Reality (Google Glass, PropertyBuddy)</p></li>
+                <li><p>Cloud Gaming (Playcast)</p></li>
+                <li><p>Virtual Reality (Oculus Rift)</p></li>
+                <li><p>Video Streaming and Distribution: Created mio TV PLAY and mio TV GO apps (Microsoft PlayReady, Discretix)</p></li>
+                <li><p>Home Automation (Vera, Z-Wave)</p></li>
+            </ul>
+        	</div>
+        </section>
+        <section class="work-item">
+    
+            <input id="work-item-4" type="checkbox" class="toggle-item" />
+            <label for="work-item-4"></label>
+    
+    			<header>
+    				<div class="position">Principal Consultant</div>
+    				<div class="company">NCS Pte Ltd (Singapore)</div>
+    				<div class="date">
+    				  <span class="startDate">September 1994</span> 
+    					<span class="endDate">- September 2012</span> 
+    				</div>
+    			</header>
+    			
+        	<span class="website">
+        		<a target="_blank" href="https://www.ncs.com.sg">https://www.ncs.com.sg</a>
+        	</span>      	<div class="item" id="work-item">
+            <div class="summary">
+              <p><p>Lead Enterprise Architect for Microsoft .NET technologies in Singapore's largest system integrator</p></p>
+            </div>
+            <ul class="highlights">
+                <li><p>IRAS Inland Revenue Integrated System versions 1, 2 and 3: e-Filing and tax processing systems</p></li>
+                <li><p>Singapore Health Services Outpatient Administrative System: Bespoke system for outpatient registration, appointments and billing at hospitals and polyclinics</p></li>
+                <li><p>Digital library systems for National Library Board, Singapore Polytechnic, Temasek Polytechnic, Singapore Airlines Engineering, SASCO</p></li>
+                <li><p>Web portals for IDA MyeCitizen Portal, MINDEF NS Portal, MediaCorp MOBTV Portal</p></li>
+                <li><p>YW8, Singapore’s first mobile payment system by NETS, DBS, SingTel, M1, StarHub</p></li>
+            </ul>
+        	</div>
+        </section>
+      </section>
+    </section>
+    <section class="section">
+      <header>
+        <h2 class='section-title'>Education <span class="item-count">(2)</span></h2>
+      </header>
+    
+      <section id="education">
+        <section class="education-item">
+          <header>
+            <div class="header-left">
+              <div class="studyType">
+                Master of Science,
+              </div>
+              <div class="area">
+                Computer Science
+              </div>
+              <div class="institution">
+                University of Illinois at Urbana-Champaign
+              </div>
+            </div>
+            <div class="date">
+              <span class="startDate">
+              1991
+              </span>
+              <span class="endDate">
+              - 1992
+              </span>
+            </div>
+          </header>
+    
+    
+          <ul class="courses">
+            <li>CHOICES Object-Oriented Operating System (Research Assistant)</li>
+          </ul>
+    
+          <div class="item">
+          </div>
+        </section>
+        <section class="education-item">
+          <header>
+            <div class="header-left">
+              <div class="studyType">
+                Bachelor of Science,
+              </div>
+              <div class="area">
+                Computer Science
+              </div>
+              <div class="institution">
+                University of Toronto - University College
+              </div>
+            </div>
+            <div class="date">
+              <span class="startDate">
+              1988
+              </span>
+              <span class="endDate">
+              - 1990
+              </span>
+            </div>
+          </header>
+    
+    
+    
+          <div class="item">
+          </div>
+        </section>
+      </section>
+    </section>
+    <section class="section">
+      <header>
+        <h2 class='section-title'>Publications</h2>
+      </header>
+      <section id="publications">
+        <section class="publication-item">
+            <input id="publication-item-0" type="checkbox" class="toggle-item" checked="checked" />
+            <label for="publication-item-0"></label>
+    
+          <header>
+            <div class="header-left">
+              <span class="name">
+              <span class="website">
+              <a target="_blank" href="https://www.opengovasia.com/articles/developing-cost-effective-energy-efficient-iot-solutions-for-outdoor-as-well-as-indoor-applications">Developing cost-effective, energy efficient IoT solutions for outdoor as well as indoor applications</a>
+              </span>
+              </span>
+              <span class="publisher">
+              in OpenGov
+              </span>
+            </div>
+            <span class="date">
+            20 March 2018
+            </span>
+          </header>
+    
+          <div class="item">  
+            <div class="summary">
+              <p><p>Lup Yuen talks about two classes of IoT, ‘deep’ IoT and ‘wide’ IoT. Deep IoT devices require high bandwidth and power supply. UnaBiz looks at wide IoT, which refers to devices that are very light, battery-powered and operate on pervasive networks. They can work anytime, anywhere in Singapore and do not rely on WiFi or the cellular network.</p></p>
+            </div>
+          </div>
+        </section>
+      </section>
+    </section>
+    <section class="section margin1">
+      <header>
+        <h2 class='section-title'>Languages</h2>
+      </header>
+      <section id="languages">
+        <div class="display">
+          <h3 class="language">
+            English
+          </h3>
+          <div class="item">
+            <div class="level fluency native speaker">
+              <em>Native speaker</em>
+              <div class="bar"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+    <section class="section margin1">
+      <header>
+        <h2 class='section-title' class='section-title'>Interests</h2>
+      </header>
+      <section id="interests">
+        <div class="item">
+        </div>
+      </section>
+    </section>
+
+  </body>
+</html>

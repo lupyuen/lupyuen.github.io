@@ -1,0 +1,162 @@
+{
+  "basics": {
+    "name": "Lee Lup Yuen",
+    "label": "Techie and Educator in IoT, Mobile, Web, Multimedia",
+    "picture": "https://lupyuen.github.io/images/lupyuen.jpg",
+    "email": "luppy@appkaki.com",
+    "phone": "",
+    "website": "https://lupyuen.github.io",
+    "summary": "Hands-on technology advisor and educator passionate about creating products that make a difference to the man and woman on the street. Experienced with bleeding-edge innovations in Internet of Things (IoT), mobile, web and multimedia",
+    "location": {
+      "address": "",
+      "postalCode": "",
+      "city": "Singapore",
+      "countryCode": "SG",
+      "region": ""
+    },
+    "profiles": [
+      {
+        "network": "LinkedIn",
+        "username": "lupyuen",
+        "url": "https://www.linkedin.com/in/lupyuen"
+      },      
+      {
+        "network": "Facebook",
+        "username": "lupyuen",
+        "url": "https://facebook.com/lupyuen"
+      },
+      {
+        "network": "Twitter",
+        "username": "mistertechblog",
+        "url": ""
+      }
+    ]
+  },
+  "work": [
+    {
+        "company": "Temasek Polytechnic (Singapore)",
+        "position": "Adjunct Lecturer",
+        "website": "https://www.tp.edu.sg",
+        "startDate": "2015-04-01",
+        "summary": "Responsible for teaching and mentoring the next generation of professionals in IoT technologies. He taught the following courses:",
+        "highlights": [
+            "IoT Application Development: He prepared and presented lessons and labs for training working adults with IoT programming skills, based on AWS IoT, Sigfox, Ubidots and Arduino. He created the training platform with various AWS services: AWS IoT, Lambda, API Gateway, S3, DynamoDB, SNS, Elasticsearch, Kibana. His students included IT professionals from Agility, IBM, SAP, Ericsson, Canon and ITE.",
+            "Operating Systems: He conducted tutorials and labs for the Operating Systems core subject, which is a graduation requirement for all fulltime students. He covered a broad range of operating systems including Android, iOS, Linux, Windows, and provided guidance on the student projects."
+        ]
+    },
+    {
+      "company": "UnaBiz (Singapore)",
+      "position": "Chief Technology Officer",
+      "website": "https://unabiz.com",
+      "startDate": "2016-08-01",
+      "endDate": "2018-04-01",
+      "summary": "Lup Yuen is an eager practitioner in IoT technologies. As former CTO of UnaBiz, he was responsible for creating new tools and systems to help people get onboard with SIGFOX the quickest way possible.",
+      "highlights": [
+      ]
+    },
+    {
+        "company": "Konica Minolta Business Innovation Centre (Singapore)",
+        "position": "Principal Consultant",
+        "website": "https://bic.konicaminolta.asia",
+        "startDate": "2014-11-01",
+        "endDate": "2016-09-01",
+        "summary": "He heads the software development/engineering team that architects, develops and executes proof-of-concept (POC) projects for incubating new businesses for Konica Minolta. He was also consulted for technical due diligence in investment projects and acquisitions. Projects executed include:",
+        "highlights": [
+            "Straight-Through Food & Beverage (F&B) Ordering System: Deployed in Singapore and Australia, he created the system that allows mobile users to place food orders through a mobile app and submit directly to the Point Of Sales System and the Kitchen Display System. The Kitchen Display System automatically calls the user when the order is ready for collection. Loyalty points and digital receipts are automatically populated in the app, through direct integration with the Lavu Point Of Sales system. Tools and platforms used: AWS (Lambda, S3, SQS, API Gateway, Mobile Analytics), Google BigQuery, Firebase, Parse, Magento 2, Loggly, Sumo Logic, Jenkins, Raygun, Slack, Azure, MongoDB, Node.js, Android, iOS (Swift), C#, Windows Presentation Foundation.",
+            "Bluetooth Beacon Analytics: Profiling mobile users accurately using Bluetooth Beacon analytics and targeting them with highly-relevant promotions. Tested in large exhibitions and shopping malls. Based on Google BigQuery, Google Cloud Datalab, MongoDB, Node.js, Android, iOS.",            
+            "Other projects include Health/Wellness, Android Set-Top Boxes, Hospitality"
+        ]
+    },  
+    {
+        "company": "SingTel L!feLabs (Singapore)",
+        "position": "Chief Technology Officer",
+        "website": "https://singtel.com",
+        "startDate": "2009-06-01",
+        "endDate": "2014-11-01",
+        "summary": "Reports directly to CEO Group Digital L!fe, Mr Allen Lew. Responsible for scanning of innovative ICT technologies worldwide and executing proof-of-concept (POC) projects for the SingTel Group. He was also consulted for technical due diligence in SingTel Innov8 investment projects and SingTel Group Strategy acquisitions. Projects executed include:",
+        "highlights": [
+            "Internet of Things (IoT): IoT promises to revolutionise the way we work, live and play through smart devices and sensors embedded everywhere, from wearables to homes to workplaces to the entire nation. (POC projects with SIGFOX, Semtech, SeeControl, Vera, wearables, fitness trackers)",        
+            "Indoor Positioning: Getting people’s precise location indoors for pushing highly-targeted, location-specific information (SenionLab, IndoorAtlas, Estimote)",            
+            "Smart Retail: Understanding consumer preferences through the shopping offers that they browse and the actual items that they bought. Cloud-based digital receipts and loyalty systems. Co-created SGMalls as a lean startup experiment in Smart Retail, which quickly became Singapore’s #1 retail shopping app. (AppCard, Gigya, Bluetooth Beacons)",            
+            "Social Recommendation based on Facebook profiling: Predicting consumer behaviour based on posts in their social feeds (Correlor)",            
+            "Speech Recognition for Singapore English: Co-created Singapore’s first speech recognition app to understand Singapore English. Hundreds of hours of speech recordings were used to tune the speech recogniser, which understands local commands like “Find the best char kway teow” (Novauris)",            
+            "Image Recognition for Retail (Visenze, Graymatics)",            
+            "Motion Gesture User Experience (PrimeSense, LeapMotion)",            
+            "Augmented Reality (Google Glass, PropertyBuddy)",            
+            "Cloud Gaming (Playcast)",            
+            "Virtual Reality (Oculus Rift)",            
+            "Video Streaming and Distribution: Created mio TV PLAY and mio TV GO apps (Microsoft PlayReady, Discretix)",            
+            "Home Automation (Vera, Z-Wave)"
+        ]
+    },  
+    {
+        "company": "NCS Pte Ltd (Singapore)",
+        "position": "Principal Consultant",
+        "website": "https://www.ncs.com.sg",
+        "startDate": "1994-09-01",
+        "endDate": "2012-09-01",
+        "summary": "Lead Enterprise Architect for Microsoft .NET technologies in Singapore's largest system integrator",
+        "highlights": [
+            "IRAS Inland Revenue Integrated System versions 1, 2 and 3: e-Filing and tax processing systems",        
+            "Singapore Health Services Outpatient Administrative System: Bespoke system for outpatient registration, appointments and billing at hospitals and polyclinics",            
+            "Digital library systems for National Library Board, Singapore Polytechnic, Temasek Polytechnic, Singapore Airlines Engineering, SASCO",            
+            "Web portals for IDA MyeCitizen Portal, MINDEF NS Portal, MediaCorp MOBTV Portal",            
+            "YW8, Singapore’s first mobile payment system by NETS, DBS, SingTel, M1, StarHub"
+        ]
+    }
+  ],
+  "education": [
+    {
+      "institution": "University of Illinois at Urbana-Champaign",
+      "area": "Computer Science",
+      "studyType": "Master of Science,",
+      "startDate": "1991-01-01",
+      "endDate": "1992-01-01",
+      "courses": [
+          "CHOICES Object-Oriented Operating System (Research Assistant)"
+      ]
+    },
+    {
+        "institution": "University of Toronto - University College",
+        "area": "Computer Science",
+        "studyType": "Bachelor of Science,",
+        "startDate": "1988-01-01",
+        "endDate": "1990-01-01",
+        "courses": [
+        ]
+      }  
+  ],
+  "publications": [
+    {
+      "name": "Developing cost-effective, energy efficient IoT solutions for outdoor as well as indoor applications",
+      "publisher": "OpenGov",
+      "releaseDate": "2018-03-20",
+      "website": "https://www.opengovasia.com/articles/developing-cost-effective-energy-efficient-iot-solutions-for-outdoor-as-well-as-indoor-applications",
+      "summary": "Lup Yuen talks about two classes of IoT, ‘deep’ IoT and ‘wide’ IoT. Deep IoT devices require high bandwidth and power supply. UnaBiz looks at wide IoT, which refers to devices that are very light, battery-powered and operate on pervasive networks. They can work anytime, anywhere in Singapore and do not rely on WiFi or the cellular network."
+    }
+  ],
+  "skills": [
+    {
+      "name": "Internet of Things (IoT)",
+      "level": "Master",
+      "keywords": [
+        "AWS IoT",
+        "Sigfox",
+        "Arduino"
+      ]
+    }
+  ],
+  "languages": [
+    {
+      "language": "English",
+      "fluency": "Native speaker"
+    }
+  ],
+  "interests": [
+    {
+      "name": "",
+      "keywords": [
+      ]
+    }
+  ]
+}
