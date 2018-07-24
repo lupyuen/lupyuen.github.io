@@ -1,12 +1,12 @@
 {
   "basics": {
     "name": "LEE Lup Yuen",
-    "label": "Techie and Educator in IoT, Mobile, Web, Multimedia",
+    "label": "Techie and Educator in IoT, Mobile, Web and Multimedia",
     "picture": "https://lupyuen.github.io/images/lupyuen.jpg",
     "email": "luppy@appkaki.com",
     "phone": "",
     "website": "https://lupyuen.github.io",
-    "summary": "Hands-on technology advisor and educator passionate about creating products that make a difference to the man and woman on the street. Experienced with bleeding-edge innovations in Internet of Things (IoT), mobile, web and multimedia",
+    "summary": "Hands-on technology advisor and educator. Passionate about creating products that make a difference to the man and woman on the street. Experienced with bleeding-edge innovations in Internet of Things (IoT), mobile, web and multimedia",
     "location": {
       "address": "",
       "postalCode": "",
@@ -29,6 +29,11 @@
         "network": "Twitter",
         "username": "mistertechblog",
         "url": ""
+      },
+      {
+        "network": "Download PDF",
+        "username": "Download PDF",
+        "url": "https://lupyuen.github.io/lupyuen.pdf"
       }
     ]
   },
