@@ -26,6 +26,11 @@
         "url": "https://facebook.com/lupyuen"
       },
       {
+        "network": "GitHub",
+        "username": "lupyuen",
+        "url": "https://github.com/lupyuen"
+      },
+      {
         "network": "Twitter",
         "username": "mistertechblog",
         "url": ""
@@ -34,6 +39,11 @@
         "network": "Download PDF",
         "username": "Download PDF",
         "url": "https://lupyuen.github.io/lupyuen.pdf"
+      },
+      {
+        "network": "JSON",
+        "username": "JSON",
+        "url": "https://lupyuen.github.io/resume.json"
       }
     ]
   },
@@ -297,12 +307,5 @@
         "language": "Cantonese",
         "fluency": "Fluent"
     }    
-  ],
-  "interests": [
-    {
-      "name": "",
-      "keywords": [
-      ]
-    }
   ]
 }
