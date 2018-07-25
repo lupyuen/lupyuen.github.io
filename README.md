@@ -1,4 +1,6 @@
-1. Lup Yuen's resume at https://lupyuen.github.io is powered by __JSON Resume__, the interoperable standard format for resumes: https://jsonresume.org/
+1. Lup Yuen's resume at https://lupyuen.github.io is powered by __JSON Resume__, the interoperable standard format for resumes: https://jsonresume.org
+
+    The resume uses the `StackOverflow` theme: https://www.npmjs.com/package/jsonresume-theme-stackoverflow
 
 1. To create your own resume, clone this repository and install the libraries:
 

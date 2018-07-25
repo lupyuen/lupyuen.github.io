@@ -332,5 +332,11 @@
       "language": "Cantonese",
       "fluency": "Fluent"
     }
+  ],
+  "interests": [
+    {
+      "name": "How was this JSON Resume created?",
+      "summary": "https://github.com/lupyuen/lupyuen.github.io/blob/master/README.md"
+    }
   ]
 }
