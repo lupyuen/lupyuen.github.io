@@ -54,7 +54,7 @@
         "countryCode": "SG"
       }, 
       "position": "Adjunct Lecturer",
-      "website": "https://www.tp.edu.sg",
+      "website": "http://www.tp.edu.sg",
       "startDate": "2015-04-01",
       "summary": "Responsible for teaching and mentoring the next generation of professionals in IoT technologies. He taught the following courses:",
       "highlights": [
@@ -75,7 +75,7 @@
       "endDate": "2018-04-01",
       "summary": "As former CTO of UnaBiz, he was responsible for creating new tools and systems to help people get onboard with Sigfox the quickest way possible.",
       "highlights": [
-        "UnaLocation - Enhanced Sigfox Geolocation: Estimates your latitude/longitude geolocation from Sigfox signal strength. Computed based on past GPS coordinates and Sigfox signal strength collected by the UnaTumbler tracking device. Machine Learning based on Google TensorFlow, AWS SageMaker",
+        "UnaLocation - Enhanced Sigfox Geolocation: Estimates your latitude/longitude geolocation from Sigfox signal strength. Computed based on past GPS coordinates and Sigfox signal strength collected by the UnaTumbler tracking device. Machine Learning based on Google TensorFlow, Google BigQuery, AWS SageMaker",
         "UnaRadar - Sigfox Network Finder: Mobile web tool for showing the locations of nearby Sigfox basestations and their signal strengths with respect to your Sigfox device.",
         "UnaMap - Sigfox Coverage Map: Web-based coverage map, computed based on past GPS coordinates and Sigfox signal strength collected by the UnaTumbler tracking device.",
         "UnaShield - Sigfox Shield for Arduino: Arduino library that powers the communication between UnaShield and Sigfox - https://github.com/UnaBiz/unabiz-arduino",
@@ -300,6 +300,7 @@
         "Cloud Functions",
         "AppEngine",
         "TensorFlow",
+        "BigQuery",
         "Node.js",
         "Go"
       ]
