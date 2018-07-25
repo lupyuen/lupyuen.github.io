@@ -4,22 +4,21 @@
     "label": "Techie and Educator in IoT, Mobile, Web and Multimedia",
     "picture": "https://lupyuen.github.io/images/lupyuen.jpg",
     "email": "luppy@appkaki.com",
-    "phone": "",
     "website": "https://lupyuen.github.io",
     "summary": "Hands-on technology advisor and educator. Passionate about creating products that make a difference to the man and woman on the street. Experienced with bleeding-edge innovations in Internet of Things (IoT), mobile, web and multimedia",
     "location": {
-      "address": "",
-      "postalCode": "",
-      "city": "Singapore",
-      "countryCode": "SG",
-      "region": ""
+      "region": "Singapore",
+      "countryCode": "SG"
+    },
+    "birth": {
+        "date": "1969"
     },
     "profiles": [
       {
         "network": "LinkedIn",
         "username": "lupyuen",
         "url": "https://www.linkedin.com/in/lupyuen"
-      },      
+      },
       {
         "network": "Facebook",
         "username": "lupyuen",
@@ -49,199 +48,224 @@
   },
   "work": [
     {
-        "company": "Temasek Polytechnic (Singapore)",
-        "position": "Adjunct Lecturer",
-        "website": "https://www.tp.edu.sg",
-        "startDate": "2015-04-01",
-        "summary": "Responsible for teaching and mentoring the next generation of professionals in IoT technologies. He taught the following courses:",
-        "highlights": [
-            "IoT Application Development: He prepared and presented lessons and labs for training working adults with IoT programming skills, based on AWS IoT, Sigfox, Ubidots and Arduino. He created the training platform with various AWS services: AWS IoT, Lambda, API Gateway, S3, DynamoDB, SNS, Elasticsearch, Kibana. His students included IT professionals from Agility, IBM, SAP, Ericsson, Canon and ITE.",
-            "IoT Project: He supervised the students in creating innovative IoT products (based on AWS IoT and Sigfox) that solve real-world problems like dementia patient tracking, elderly home monitoring, food safety, campus security, AED management, realtime asset tracking.",
-            "Operating Systems: He conducted tutorials and labs for the Operating Systems core subject, which is a graduation requirement for all fulltime students. He covered a broad range of operating systems including Android, iOS, Linux and Windows."
-        ]
+      "company": "Temasek Polytechnic",
+      "location": {
+        "region": "Singapore",
+        "countryCode": "SG"
+      }, 
+      "position": "Adjunct Lecturer",
+      "website": "https://www.tp.edu.sg",
+      "startDate": "2015-04-01",
+      "summary": "Responsible for teaching and mentoring the next generation of professionals in IoT technologies. He taught the following courses:",
+      "highlights": [
+        "IoT Application Development: He prepared and presented lessons and labs for training working adults with IoT programming skills, based on AWS IoT, Sigfox, Ubidots and Arduino. He created the training platform with various AWS services: AWS IoT, Lambda, API Gateway, S3, DynamoDB, SNS, Elasticsearch, Kibana. His students included IT professionals from Agility, IBM, SAP, Ericsson, Canon and ITE.",
+        "IoT Project: He supervised the students in creating innovative IoT products (based on AWS IoT and Sigfox) that solve real-world problems like dementia patient tracking, elderly home monitoring, food safety, campus security, AED management, realtime asset tracking.",
+        "Operating Systems: He conducted tutorials and labs for the Operating Systems core subject, which is a graduation requirement for all fulltime students. He covered a broad range of operating systems including Android, iOS, Linux and Windows."
+      ]
     },
     {
-      "company": "UnaBiz (Singapore)",
+      "company": "UnaBiz",
+      "location": {
+        "region": "Singapore",
+        "countryCode": "SG"
+      }, 
       "position": "Chief Technology Officer",
       "website": "https://unabiz.com",
       "startDate": "2016-08-01",
       "endDate": "2018-04-01",
       "summary": "As former CTO of UnaBiz, he was responsible for creating new tools and systems to help people get onboard with Sigfox the quickest way possible.",
       "highlights": [
-          "UnaLocation - Enhanced Sigfox Geolocation: Estimates your latitude/longitude geolocation from Sigfox signal strength. Computed based on past GPS coordinates and Sigfox signal strength collected by the UnaTumbler tracking device. Machine Learning based on Google TensorFlow, AWS SageMaker",
-          "UnaRadar - Sigfox Network Finder: Mobile web tool for showing the locations of nearby Sigfox basestations and their signal strengths with respect to your Sigfox device.",
-          "UnaMap - Sigfox Coverage Map: Web-based coverage map, computed based on past GPS coordinates and Sigfox signal strength collected by the UnaTumbler tracking device.",
-          "UnaShield - Sigfox Shield for Arduino: Arduino library that powers the communication between UnaShield and Sigfox - https://github.com/UnaBiz/unabiz-arduino",
-          "UnaBell - Smart Button on Sigfox: Cloud server that powers the smart button",
-          "sigfox-gcloud - Open Source Sigfox Server for Google Cloud: https://github.com/UnaBiz/sigfox-gcloud",
-          "sigfox-aws - Open Source Sigfox Server for Amazon Web Services: https://github.com/UnaBiz/sigfox-aws"
-      ]      
+        "UnaLocation - Enhanced Sigfox Geolocation: Estimates your latitude/longitude geolocation from Sigfox signal strength. Computed based on past GPS coordinates and Sigfox signal strength collected by the UnaTumbler tracking device. Machine Learning based on Google TensorFlow, AWS SageMaker",
+        "UnaRadar - Sigfox Network Finder: Mobile web tool for showing the locations of nearby Sigfox basestations and their signal strengths with respect to your Sigfox device.",
+        "UnaMap - Sigfox Coverage Map: Web-based coverage map, computed based on past GPS coordinates and Sigfox signal strength collected by the UnaTumbler tracking device.",
+        "UnaShield - Sigfox Shield for Arduino: Arduino library that powers the communication between UnaShield and Sigfox - https://github.com/UnaBiz/unabiz-arduino",
+        "UnaBell - Smart Button on Sigfox: Cloud server that powers the smart button",
+        "sigfox-gcloud - Open Source Sigfox Server for Google Cloud: https://github.com/UnaBiz/sigfox-gcloud",
+        "sigfox-aws - Open Source Sigfox Server for Amazon Web Services: https://github.com/UnaBiz/sigfox-aws"
+      ]
     },
     {
-        "company": "Konica Minolta Business Innovation Centre (Singapore)",
-        "position": "Principal Consultant",
-        "website": "https://bic.konicaminolta.asia",
-        "startDate": "2014-11-01",
-        "endDate": "2016-09-01",
-        "summary": "He heads the software development/engineering team that architects, develops and executes proof-of-concept (POC) projects for incubating new businesses for Konica Minolta. He was also consulted for technical due diligence in investment projects and acquisitions. Projects executed include:",
-        "highlights": [
-            "Straight-Through Food & Beverage (F&B) Ordering System: Deployed in Singapore and Australia, he created the system that allows mobile users to place food orders through a mobile app and submit directly to the Point Of Sales System and the Kitchen Display System. The Kitchen Display System automatically calls the user when the order is ready for collection. Loyalty points and digital receipts are automatically populated in the app, through direct integration with the Lavu Point Of Sales system. Tools and platforms used: AWS (Lambda, S3, SQS, API Gateway, Mobile Analytics), Google BigQuery, Firebase, Parse, Magento 2, Loggly, Sumo Logic, Jenkins, Raygun, Slack, Azure, MongoDB, Node.js, Android, iOS (Swift), C#, Windows Presentation Foundation.",
-            "Bluetooth Beacon Analytics: Profiling mobile users accurately using Bluetooth Beacon analytics and targeting them with highly-relevant promotions. Tested in large exhibitions and shopping malls. Based on Google BigQuery, Google Cloud Datalab, MongoDB, Node.js, Android, iOS.",            
-            "Other projects include Health/Wellness, Android Set-Top Boxes, Hospitality"
-        ]
-    },  
+      "company": "Konica Minolta Business Innovation Centre",
+      "location": {
+        "region": "Singapore",
+        "countryCode": "SG"
+      }, 
+      "position": "Principal Consultant",
+      "website": "https://bic.konicaminolta.asia",
+      "startDate": "2014-11-01",
+      "endDate": "2016-09-01",
+      "summary": "He heads the software development/engineering team that architects, develops and executes proof-of-concept (POC) projects for incubating new businesses for Konica Minolta. He was also consulted for technical due diligence in investment projects and acquisitions. Projects executed include:",
+      "highlights": [
+        "Straight-Through Food & Beverage (F&B) Ordering System: Deployed in Singapore and Australia, he created the system that allows mobile users to place food orders through a mobile app and submit directly to the Point Of Sales System and the Kitchen Display System. The Kitchen Display System automatically calls the user when the order is ready for collection. Loyalty points and digital receipts are automatically populated in the app, through direct integration with the Lavu Point Of Sales system. Tools and platforms used: AWS (Lambda, S3, SQS, API Gateway, Mobile Analytics), Google BigQuery, Firebase, Parse, Magento 2, Loggly, Sumo Logic, Jenkins, Raygun, Slack, Azure, MongoDB, Node.js, Android, iOS (Swift), C#, Windows Presentation Foundation.",
+        "Bluetooth Beacon Analytics: Profiling mobile users accurately using Bluetooth Beacon analytics and targeting them with highly-relevant promotions. Tested in large exhibitions and shopping malls. Based on Google BigQuery, Google Cloud Datalab, MongoDB, Node.js, Android, iOS.",
+        "Other projects include Health/Wellness, Android Set-Top Boxes, Hospitality"
+      ]
+    },
     {
-        "company": "SingTel L!feLabs (Singapore)",
-        "position": "Chief Technology Officer",
-        "website": "https://singtel.com",
-        "startDate": "2009-06-01",
-        "endDate": "2014-11-01",
-        "summary": "Reports directly to CEO Group Digital L!fe, Mr Allen Lew. Responsible for scanning of innovative ICT technologies worldwide and executing proof-of-concept (POC) projects for the SingTel Group. He was also consulted for technical due diligence in SingTel Innov8 investment projects and SingTel Group Strategy acquisitions. Projects executed include:",
-        "highlights": [
-            "Internet of Things (IoT): IoT promises to revolutionise the way we work, live and play through smart devices and sensors embedded everywhere, from wearables to homes to workplaces to the entire nation. (POC projects with Sigfox, Semtech LoRa, SeeControl, Vera, wearables, fitness trackers)",        
-            "Indoor Positioning: Getting people’s precise location indoors for pushing highly-targeted, location-specific information (SenionLab, IndoorAtlas, Estimote)",            
-            "Smart Retail: Understanding consumer preferences through the shopping offers that they browse and the actual items that they bought. Cloud-based digital receipts and loyalty systems. Co-created SGMalls as a lean startup experiment in Smart Retail, which quickly became Singapore’s #1 retail shopping app. (AppCard, Gigya, Bluetooth Beacons)",            
-            "Social Recommendation based on Facebook profiling: Predicting consumer behaviour based on posts in their social feeds (Correlor)",            
-            "Speech Recognition for Singapore English: Co-created Singapore’s first speech recognition app to understand Singapore English. Hundreds of hours of speech recordings were used to tune the speech recogniser, which understands local commands like “Find the best char kway teow” (Novauris)",            
-            "Image Recognition for Retail (Visenze, Graymatics)",            
-            "Motion Gesture User Experience (PrimeSense, LeapMotion)",            
-            "Augmented Reality (Google Glass, PropertyBuddy)",            
-            "Cloud Gaming (Playcast)",            
-            "Virtual Reality (Oculus Rift)",            
-            "Video Streaming and Distribution: Created mio TV PLAY and mio TV GO apps (Microsoft PlayReady, Discretix)",            
-            "Home Automation (Vera, Z-Wave)"
-        ]
-    },  
+      "company": "SingTel L!feLabs",
+      "location": {
+        "region": "Singapore",
+        "countryCode": "SG"
+      }, 
+      "position": "Chief Technology Officer",
+      "website": "https://singtel.com",
+      "startDate": "2009-06-01",
+      "endDate": "2014-11-01",
+      "summary": "Reports directly to CEO Group Digital L!fe, Mr Allen Lew. Responsible for scanning of innovative ICT technologies worldwide and executing proof-of-concept (POC) projects for the SingTel Group. He was also consulted for technical due diligence in SingTel Innov8 investment projects and SingTel Group Strategy acquisitions. Projects executed include:",
+      "highlights": [
+        "Internet of Things (IoT): IoT promises to revolutionise the way we work, live and play through smart devices and sensors embedded everywhere, from wearables to homes to workplaces to the entire nation. (POC projects with Sigfox, Semtech LoRa, SeeControl, Vera, wearables, fitness trackers)",
+        "Indoor Positioning: Getting people’s precise location indoors for pushing highly-targeted, location-specific information (SenionLab, IndoorAtlas, Estimote)",
+        "Smart Retail: Understanding consumer preferences through the shopping offers that they browse and the actual items that they bought. Cloud-based digital receipts and loyalty systems. Co-created SGMalls as a lean startup experiment in Smart Retail, which quickly became Singapore’s #1 retail shopping app. (AppCard, Gigya, Bluetooth Beacons)",
+        "Social Recommendation based on Facebook profiling: Predicting consumer behaviour based on posts in their social feeds (Correlor)",
+        "Speech Recognition for Singapore English: Co-created Singapore’s first speech recognition app to understand Singapore English. Hundreds of hours of speech recordings were used to tune the speech recogniser, which understands local commands like “Find the best char kway teow” (Novauris)",
+        "Image Recognition for Retail (Visenze, Graymatics)",
+        "Motion Gesture User Experience (PrimeSense, LeapMotion)",
+        "Augmented Reality (Google Glass, PropertyBuddy)",
+        "Cloud Gaming (Playcast)",
+        "Virtual Reality (Oculus Rift)",
+        "Video Streaming and Distribution: Created mio TV PLAY and mio TV GO apps (Microsoft PlayReady, Discretix)",
+        "Home Automation (Vera, Z-Wave)"
+      ]
+    },
     {
-        "company": "NCS Pte Ltd (Singapore)",
-        "position": "Principal Consultant",
-        "website": "https://www.ncs.com.sg",
-        "startDate": "1994-09-01",
-        "endDate": "2012-09-01",
-        "summary": "Lead Enterprise Architect for Microsoft .NET technologies in Singapore's largest system integrator",
-        "highlights": [
-            "IRAS Inland Revenue Integrated System versions 1, 2 and 3: e-Filing and tax processing systems",        
-            "Singapore Health Services Outpatient Administrative System: Bespoke system for outpatient registration, appointments and billing at hospitals and polyclinics",            
-            "Digital library systems for National Library Board, Singapore Polytechnic, Temasek Polytechnic, Singapore Airlines Engineering, SASCO",            
-            "Web portals for IDA MyeCitizen Portal, MINDEF NS Portal, MediaCorp MOBTV Portal",            
-            "YW8, Singapore’s first mobile payment system by NETS, DBS, SingTel, M1, StarHub"
-        ]
+      "company": "NCS Pte Ltd",
+      "location": {
+        "region": "Singapore",
+        "countryCode": "SG"
+      }, 
+      "position": "Principal Consultant",
+      "website": "https://www.ncs.com.sg",
+      "startDate": "1994-09-01",
+      "endDate": "2012-09-01",
+      "summary": "Lead Enterprise Architect for Microsoft .NET technologies in Singapore's largest system integrator",
+      "highlights": [
+        "IRAS Inland Revenue Integrated System versions 1, 2 and 3: e-Filing and tax processing systems",
+        "Singapore Health Services Outpatient Administrative System: Bespoke system for outpatient registration, appointments and billing at hospitals and polyclinics",
+        "Digital library systems for National Library Board, Singapore Polytechnic, Temasek Polytechnic, Singapore Airlines Engineering, SASCO",
+        "Web portals for IDA MyeCitizen Portal, MINDEF NS Portal, MediaCorp MOBTV Portal",
+        "YW8, Singapore’s first mobile payment system by NETS, DBS, SingTel, M1, StarHub"
+      ]
     }
   ],
   "education": [
     {
       "institution": "University of Illinois at Urbana-Champaign",
+      "location": {
+        "region": "USA",
+        "countryCode": "US"
+      }, 
       "area": "Computer Science",
       "studyType": "Master of Science,",
       "startDate": "1991-01-01",
       "endDate": "1992-01-01",
-      "courses": [
-          "CHOICES Object-Oriented Operating System (Research Assistant)"
-      ]
+      "summary": "Research Assistant for CHOICES Object-Oriented Operating System"
     },
     {
-        "institution": "University of Toronto - University College",
-        "area": "Computer Science",
-        "studyType": "Bachelor of Science,",
-        "startDate": "1988-01-01",
-        "endDate": "1990-01-01",
-        "courses": [
-        ]
-      }  
+      "institution": "University of Toronto - University College",
+      "location": {
+        "region": "Canada",
+        "countryCode": "CA"
+      }, 
+      "area": "Computer Science",
+      "studyType": "Bachelor of Science,",
+      "startDate": "1988-01-01",
+      "endDate": "1990-01-01",
+      "courses": []
+    }
   ],
   "publications": [
     {
-        "name": "Developing cost-effective, energy efficient IoT solutions for outdoor as well as indoor applications",
-        "publisher": "OpenGov",
-        "releaseDate": "2018-03-20",
-        "website": "https://www.opengovasia.com/articles/developing-cost-effective-energy-efficient-iot-solutions-for-outdoor-as-well-as-indoor-applications",
-        "summary": "Lup Yuen talks about two classes of IoT, ‘deep’ IoT and ‘wide’ IoT. Deep IoT devices require high bandwidth and power supply. UnaBiz looks at wide IoT, which refers to devices that are very light, battery-powered and operate on pervasive networks. They can work anytime, anywhere in Singapore and do not rely on WiFi or the cellular network."
+      "name": "Developing cost-effective, energy efficient IoT solutions for outdoor as well as indoor applications",
+      "publisher": "OpenGov",
+      "releaseDate": "2018-03-20",
+      "website": "https://www.opengovasia.com/articles/developing-cost-effective-energy-efficient-iot-solutions-for-outdoor-as-well-as-indoor-applications",
+      "summary": "Lup Yuen talks about two classes of IoT, ‘deep’ IoT and ‘wide’ IoT. Deep IoT devices require high bandwidth and power supply. UnaBiz looks at wide IoT, which refers to devices that are very light, battery-powered and operate on pervasive networks. They can work anytime, anywhere in Singapore and do not rely on WiFi or the cellular network."
     },
     {
-        "name": "Coding the STM32 Blue Pill with Rust and Visual Studio Code",
-        "publisher": "Medium",
-        "releaseDate": "2018-07-10",
-        "website": "https://medium.com/@ly.lee/coding-the-stm32-blue-pill-with-rust-and-visual-studio-code-b21615d8a20"
+      "name": "Coding the STM32 Blue Pill with Rust and Visual Studio Code",
+      "publisher": "Medium",
+      "releaseDate": "2018-07-10",
+      "website": "https://medium.com/@ly.lee/coding-the-stm32-blue-pill-with-rust-and-visual-studio-code-b21615d8a20"
     },
     {
-        "name": "Making my first ever PCB with Seeed Fusion PCB assembly service",
-        "publisher": "Medium",
-        "releaseDate": "2018-07-05",
-        "website": "https://medium.com/@ly.lee/making-my-first-ever-pcb-with-seeed-fusion-pcb-assembly-service-9af5736016b3"
+      "name": "Making my first ever PCB with Seeed Fusion PCB assembly service",
+      "publisher": "Medium",
+      "releaseDate": "2018-07-05",
+      "website": "https://medium.com/@ly.lee/making-my-first-ever-pcb-with-seeed-fusion-pcb-assembly-service-9af5736016b3"
     },
     {
-        "name": "Running Rust and FreeRTOS on the PADI IoT Stamp",
-        "publisher": "Medium",
-        "releaseDate": "2018-06-18",
-        "website": "https://medium.com/@ly.lee/running-rust-and-freertos-on-the-padi-iot-stamp-fb36c5ef4844"
+      "name": "Running Rust and FreeRTOS on the PADI IoT Stamp",
+      "publisher": "Medium",
+      "releaseDate": "2018-06-18",
+      "website": "https://medium.com/@ly.lee/running-rust-and-freertos-on-the-padi-iot-stamp-fb36c5ef4844"
     },
     {
-        "name": "First Impressions of Alibaba Cloud (Aliyun)",
-        "publisher": "Medium",
-        "releaseDate": "2018-05-21",
-        "website": "https://medium.com/@ly.lee/first-impressions-of-alibaba-cloud-aliyun-688dc46fa9b8"
+      "name": "First Impressions of Alibaba Cloud (Aliyun)",
+      "publisher": "Medium",
+      "releaseDate": "2018-05-21",
+      "website": "https://medium.com/@ly.lee/first-impressions-of-alibaba-cloud-aliyun-688dc46fa9b8"
     },
     {
-        "name": "Multitasking on the Arduino with a Finite State Machine – And why you’ll need it for Sigfox Downlink",
-        "publisher": "Medium",
-        "releaseDate": "2018-05-13",
-        "website": "https://medium.com/@ly.lee/multitasking-on-the-arduino-with-a-finite-state-machine-and-why-youll-need-it-for-sigfox-d52dafc55d8e"
+      "name": "Multitasking on the Arduino with a Finite State Machine – And why you’ll need it for Sigfox Downlink",
+      "publisher": "Medium",
+      "releaseDate": "2018-05-13",
+      "website": "https://medium.com/@ly.lee/multitasking-on-the-arduino-with-a-finite-state-machine-and-why-youll-need-it-for-sigfox-d52dafc55d8e"
     },
     {
-        "name": "Realtime sensor data processing with thethings.io and Amazon Web Services Kinesis",
-        "publisher": "Medium",
-        "releaseDate": "2018-05-01",
-        "website": "https://medium.com/@ly.lee/realtime-sensor-data-processing-with-thethings-io-and-amazon-web-services-kinesis-e12ebb022106"
+      "name": "Realtime sensor data processing with thethings.io and Amazon Web Services Kinesis",
+      "publisher": "Medium",
+      "releaseDate": "2018-05-01",
+      "website": "https://medium.com/@ly.lee/realtime-sensor-data-processing-with-thethings-io-and-amazon-web-services-kinesis-e12ebb022106"
     },
     {
-        "name": "I Teach IoT. Here’s what you’ll learn",
-        "publisher": "Medium",
-        "releaseDate": "2018-04-24",
-        "website": "https://medium.com/@ly.lee/i-teach-iot-heres-what-you-ll-learn-3e0d1b997dd0"
+      "name": "I Teach IoT. Here’s what you’ll learn",
+      "publisher": "Medium",
+      "releaseDate": "2018-04-24",
+      "website": "https://medium.com/@ly.lee/i-teach-iot-heres-what-you-ll-learn-3e0d1b997dd0"
     },
     {
-        "name": "How To Build Your Sigfox Server (Version 1.0)",
-        "publisher": "Medium",
-        "releaseDate": "2017-10-14",
-        "website": "https://medium.com/@ly.lee/how-to-build-your-sigfox-server-version-1-0-6763732692fd"
+      "name": "How To Build Your Sigfox Server (Version 1.0)",
+      "publisher": "Medium",
+      "releaseDate": "2017-10-14",
+      "website": "https://medium.com/@ly.lee/how-to-build-your-sigfox-server-version-1-0-6763732692fd"
     },
     {
-        "name": "Story of the UnaShield",
-        "publisher": "Medium",
-        "releaseDate": "2017-07-05",
-        "website": "https://medium.com/@ly.lee/story-of-the-unashield-ff9e78fd7726"
+      "name": "Story of the UnaShield",
+      "publisher": "Medium",
+      "releaseDate": "2017-07-05",
+      "website": "https://medium.com/@ly.lee/story-of-the-unashield-ff9e78fd7726"
     },
     {
-        "name": "IoT is a Bad Word",
-        "publisher": "Medium",
-        "releaseDate": "2017-05-26",
-        "website": "https://medium.com/@ly.lee/iot-is-a-bad-word-9003d9fab638"
+      "name": "IoT is a Bad Word",
+      "publisher": "Medium",
+      "releaseDate": "2017-05-26",
+      "website": "https://medium.com/@ly.lee/iot-is-a-bad-word-9003d9fab638"
     },
     {
-        "name": "Overcoming Productivity Challenges in the F&B Industry",
-        "publisher": "Retail World Asia 2015",
-        "releaseDate": "2015-04-23",
-        "website": "https://goo.gl/wLhDYo"
+      "name": "Overcoming Productivity Challenges in the F&B Industry",
+      "publisher": "Retail World Asia 2015",
+      "releaseDate": "2015-04-23",
+      "website": "https://goo.gl/wLhDYo"
     },
     {
-        "name": "Sigfox and Google Cloud Platform",
-        "publisher": "Google Developer Group Singapore DevFest",
-        "releaseDate": "2014-10-20",
-        "website": "https://goo.gl/vt6WZf"
+      "name": "Sigfox and Google Cloud Platform",
+      "publisher": "Google Developer Group Singapore DevFest",
+      "releaseDate": "2014-10-20",
+      "website": "https://goo.gl/vt6WZf"
     },
     {
-        "name": "[Patent] Enlargement of video content streamed from the internet",
-        "publisher": "US Patent Office WO/2012/002906",
-        "releaseDate": "2010-06-30",
-        "website": "http://patentscope.wipo.int/search/en/detail.jsf?docId=WO2012002906",
-        "summary": "This invention relates to a system for displaying video content streamed from a network in a full screen mode. The system receives receiving a network address based on a selection from a user. The system then transmits a request for content from the network address and subsequently receives the content associated with the network address. A search is performed on the content for data that provides displaying a video content in a full screen mode. Upon detecting the data, the process generates the data and displays video content in full screen mode."
+      "name": "[Patent] Enlargement of video content streamed from the internet",
+      "publisher": "US Patent Office WO/2012/002906",
+      "releaseDate": "2010-06-30",
+      "website": "http://patentscope.wipo.int/search/en/detail.jsf?docId=WO2012002906",
+      "summary": "This invention relates to a system for displaying video content streamed from a network in a full screen mode. The system receives receiving a network address based on a selection from a user. The system then transmits a request for content from the network address and subsequently receives the content associated with the network address. A search is performed on the content for data that provides displaying a video content in a full screen mode. Upon detecting the data, the process generates the data and displays video content in full screen mode."
     },
     {
-        "name": "[Patent] A system and method for providing mobile services",
-        "publisher": "US Patent Office WO/2008/004981",
-        "releaseDate": "2007-06-27",
-        "website": "http://patentscope.wipo.int/search/en/detail.jsf?docId=WO2008004981",
-        "summary": "A system and method for providing mobile services, the system comprising: a mobile device executing a client application for generating a mobile service request; and a hub server for receiving and processing the mobile service request, wherein the mobile service request comprises location data of the mobile device, and the hub server pushes one or more mobile service offers to the mobile device based on the location data. The method comprises executing a client application for generating a mobile service request on a mobile device; receiving and processing the mobile service request at a hub server; and pushing one or more mobile service offers from the hub server to the mobile device based on location data, wherein the mobile service request comprises location data of the mobile device."
+      "name": "[Patent] A system and method for providing mobile services",
+      "publisher": "US Patent Office WO/2008/004981",
+      "releaseDate": "2007-06-27",
+      "website": "http://patentscope.wipo.int/search/en/detail.jsf?docId=WO2008004981",
+      "summary": "A system and method for providing mobile services, the system comprising: a mobile device executing a client application for generating a mobile service request; and a hub server for receiving and processing the mobile service request, wherein the mobile service request comprises location data of the mobile device, and the hub server pushes one or more mobile service offers to the mobile device based on the location data. The method comprises executing a client application for generating a mobile service request on a mobile device; receiving and processing the mobile service request at a hub server; and pushing one or more mobile service offers from the hub server to the mobile device based on location data, wherein the mobile service request comprises location data of the mobile device."
     }
   ],
   "skills": [
@@ -261,37 +285,37 @@
       ]
     },
     {
-        "name": "Cloud Computing",
-        "level": "Master",
-        "keywords": [
-            "AWS",
-            "Google Cloud",
-            "Azure",
-            "S3",
-            "SageMaker",
-            "RDS",
-            "DynamoDB",
-            "Lambda",
-            "API Gateway",
-            "Cloud Functions",
-            "AppEngine",
-            "TensorFlow",
-            "Node.js",
-            "Go"
-        ]
+      "name": "Cloud Computing",
+      "level": "Master",
+      "keywords": [
+        "AWS",
+        "Google Cloud",
+        "Azure",
+        "S3",
+        "SageMaker",
+        "RDS",
+        "DynamoDB",
+        "Lambda",
+        "API Gateway",
+        "Cloud Functions",
+        "AppEngine",
+        "TensorFlow",
+        "Node.js",
+        "Go"
+      ]
     },
     {
-        "name": "Mobile Application Development",
-        "level": "Master",
-        "keywords": [
-          "iOS",
-          "Android",
-          "Swift",
-          "React Native",
-          "Xcode",
-          "Responsive Mobile Web",
-          "Bootstrap"
-        ]
+      "name": "Mobile Application Development",
+      "level": "Master",
+      "keywords": [
+        "iOS",
+        "Android",
+        "Swift",
+        "React Native",
+        "Xcode",
+        "Responsive Mobile Web",
+        "Bootstrap"
+      ]
     }
   ],
   "languages": [
@@ -300,12 +324,12 @@
       "fluency": "Native speaker"
     },
     {
-        "language": "Mandarin",
-        "fluency": "Native speaker"
+      "language": "Mandarin",
+      "fluency": "Native speaker"
     },
     {
-        "language": "Cantonese",
-        "fluency": "Fluent"
-    }    
+      "language": "Cantonese",
+      "fluency": "Fluent"
+    }
   ]
 }
