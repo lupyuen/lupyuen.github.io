@@ -1,4 +1,4 @@
-1. Lup Yuen's resume is powered by __JSON Resume__, the interoperable standard format for resumes: https://jsonresume.org/
+1. Lup Yuen's resume at https://lupyuen.github.io is powered by __JSON Resume__, the interoperable standard format for resumes: https://jsonresume.org/
 
 1. To create your own resume, clone this repository and install the libraries:
 
@@ -26,4 +26,4 @@
     scripts/gen-resume-pdf.sh
     ```
 
-1.  To publish the HTML and PDF resume files to GitHub Pages, check out https://pages.github.com/
+1.  To publish the HTML and PDF resume files to GitHub Pages (like https://lupyuen.github.io), check out https://pages.github.com/
