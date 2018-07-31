@@ -182,6 +182,12 @@
       "summary": "Lup Yuen talks about two classes of IoT, ‘deep’ IoT and ‘wide’ IoT. Deep IoT devices require high bandwidth and power supply. UnaBiz looks at wide IoT, which refers to devices that are very light, battery-powered and operate on pervasive networks. They can work anytime, anywhere in Singapore and do not rely on WiFi or the cellular network."
     },
     {
+      "name": "Why use FPGA for IoT? Here’s what I think…",
+      "publisher": "Medium",
+      "releaseDate": "2018-07-31",
+      "website": "https://medium.com/@ly.lee/why-use-fpga-for-iot-heres-what-i-think-e513772514d6"
+    },
+    {
       "name": "Coding the STM32 Blue Pill with Rust and Visual Studio Code",
       "publisher": "Medium",
       "releaseDate": "2018-07-10",
