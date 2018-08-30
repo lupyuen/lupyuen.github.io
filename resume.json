@@ -182,6 +182,24 @@
       "summary": "Lup Yuen talks about two classes of IoT, ‘deep’ IoT and ‘wide’ IoT. Deep IoT devices require high bandwidth and power supply. UnaBiz looks at wide IoT, which refers to devices that are very light, battery-powered and operate on pervasive networks. They can work anytime, anywhere in Singapore and do not rely on WiFi or the cellular network."
     },
     {
+      "name": "Juggling STM32 Blue Pill For Arduino Jugglers",
+      "publisher": "Medium",
+      "releaseDate": "2018-08-27",
+      "website": "https://medium.com/coinmonks/juggling-stm32-blue-pill-for-arduino-jugglers-edf6820dc808"
+    },
+    {
+      "name": "Juggling Sigfox Downlink And Arduino Sensors With cocoOS",
+      "publisher": "Medium",
+      "releaseDate": "2018-08-20",
+      "website": "https://medium.com/coinmonks/juggling-sigfox-downlink-and-arduino-sensors-with-cocoos-4594be59bf1b"
+    },
+    {
+      "name": "Juggling Arduino Sensors With cocoOS",
+      "publisher": "Medium",
+      "releaseDate": "2018-08-11",
+      "website": "https://medium.com/coinmonks/juggling-arduino-sensors-with-cocoos-403e14ec28be"
+    },
+    {
       "name": "Why use FPGA for IoT? Here’s what I think…",
       "publisher": "Medium",
       "releaseDate": "2018-07-31",
@@ -287,6 +305,7 @@
         "thethings.io",
         "Arduino",
         "STM32",
+        "Blue Pill",
         "PADI"
       ]
     },
