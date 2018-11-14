@@ -1,11 +1,11 @@
 {
   "basics": {
     "name": "LEE Lup Yuen",
-    "label": "Techie and Educator in IoT, Mobile, Web and Multimedia",
+    "label": "Techie and Educator in IoT",
     "picture": "https://lupyuen.github.io/images/lupyuen.jpg",
     "email": "luppy@appkaki.com",
     "website": "https://lupyuen.github.io",
-    "summary": "Hands-on technology advisor and educator. Passionate about creating products that make a difference to the man and woman on the street. Experienced with bleeding-edge innovations in Internet of Things (IoT), mobile, web and multimedia",
+    "summary": "Hands-on IoT advisor and educator. Passionate about helping everyone create IoT products that make a difference to the man and woman on the street. 'Top Writer In Internet of Things' at medium.com",
     "location": {
       "region": "Singapore",
       "countryCode": "SG"
@@ -18,11 +18,6 @@
         "network": "LinkedIn",
         "username": "lupyuen",
         "url": "https://www.linkedin.com/in/lupyuen"
-      },
-      {
-        "network": "Facebook",
-        "username": "lupyuen",
-        "url": "https://facebook.com/lupyuen"
       },
       {
         "network": "GitHub",
@@ -182,88 +177,124 @@
       "summary": "Lup Yuen talks about two classes of IoT, ‘deep’ IoT and ‘wide’ IoT. Deep IoT devices require high bandwidth and power supply. UnaBiz looks at wide IoT, which refers to devices that are very light, battery-powered and operate on pervasive networks. They can work anytime, anywhere in Singapore and do not rely on WiFi or the cellular network."
     },
     {
+      "name": "連接 BBC micro:bit 與 Sigfox 物聯網",
+      "publisher": "Medium",
+      "releaseDate": "2018-11-13",
+      "website": "https://medium.com/@ly.lee/%E9%80%A3%E6%8E%A5-bbc-micro-bit-%E8%88%87-sigfox-%E7%89%A9%E8%81%AF%E7%B6%B2-36b0d453151e?source=friends_link&sk=ad9099aabefe2a09ad4956589773621f"
+    },
+    {
+      "name": "Connect BBC micro:bit to Sigfox",
+      "publisher": "Medium",
+      "releaseDate": "2018-11-05",
+      "website": "https://medium.com/coinmonks/connect-bbc-micro-bit-to-sigfox-4d1603d19350?source=friends_link&sk=05ceafa731e7c82d92e68f6fa2a1d5bd"
+    },
+    {
+      "name": "連接 STM32F103C8T6 Blue Pill 開發板與 Sigfox 物聯網",
+      "publisher": "Medium",
+      "releaseDate": "2018-10-17",
+      "website": "https://medium.com/@ly.lee/%E9%80%A3%E6%8E%A5-stm32f103c8t6-blue-pill-%E9%96%8B%E7%99%BC%E6%9D%BF%E8%88%87-sigfox-%E7%89%A9%E8%81%AF%E7%B6%B2-9fc6b01e616a?source=friends_link&sk=58e0604e547a7603411297babc9ec92f"
+    },
+    {
+      "name": "Connect STM32 Blue Pill to Sigfox",
+      "publisher": "Medium",
+      "releaseDate": "2018-09-28",
+      "website": "https://medium.com/coinmonks/connect-stm32-blue-pill-to-sigfox-28c6f91bddc1?source=friends_link&sk=d0f0d9f40e36badadfb04dc4c0846775"
+    },
+    {
+      "name": "Watch STM32 Blue Pill Juggle Two SPI Sensors With DMA",
+      "publisher": "Medium",
+      "releaseDate": "2018-09-19",
+      "website": "https://medium.com/coinmonks/watch-stm32-blue-pill-juggle-two-spi-sensors-with-dma-20cd1aa89869?source=friends_link&sk=eea71070ce6d9aea3a6108e882749a99"
+    },
+    {
+      "name": "Program Your First FPGA With GOWIN GW1N-4",
+      "publisher": "Medium",
+      "releaseDate": "2018-09-05",
+      "website": "https://medium.com/coinmonks/program-your-first-fpga-with-gowin-gw1n-4-b0d5c22b9fea?source=friends_link&sk=d52b303b432a5268b5d485aea6ca404c"
+    },
+    {
       "name": "Juggling STM32 Blue Pill For Arduino Jugglers",
       "publisher": "Medium",
       "releaseDate": "2018-08-27",
-      "website": "https://medium.com/coinmonks/juggling-stm32-blue-pill-for-arduino-jugglers-edf6820dc808"
+      "website": "https://medium.com/coinmonks/juggling-stm32-blue-pill-for-arduino-jugglers-edf6820dc808?source=friends_link&sk=7e812ce3062e69447d8ada7416f1ba9f"
     },
     {
       "name": "Juggling Sigfox Downlink And Arduino Sensors With cocoOS",
       "publisher": "Medium",
       "releaseDate": "2018-08-20",
-      "website": "https://medium.com/coinmonks/juggling-sigfox-downlink-and-arduino-sensors-with-cocoos-4594be59bf1b"
+      "website": "https://medium.com/coinmonks/juggling-sigfox-downlink-and-arduino-sensors-with-cocoos-4594be59bf1b?source=friends_link&sk=a99be9407863e4af28f697648de4c7c7"
     },
     {
       "name": "Juggling Arduino Sensors With cocoOS",
       "publisher": "Medium",
       "releaseDate": "2018-08-11",
-      "website": "https://medium.com/coinmonks/juggling-arduino-sensors-with-cocoos-403e14ec28be"
+      "website": "https://medium.com/coinmonks/juggling-arduino-sensors-with-cocoos-403e14ec28be?source=friends_link&sk=54d64c2fcbd5d7b6ddcbe605c1b3e7ea"
     },
     {
       "name": "Why use FPGA for IoT? Here’s what I think…",
       "publisher": "Medium",
       "releaseDate": "2018-07-31",
-      "website": "https://medium.com/@ly.lee/why-use-fpga-for-iot-heres-what-i-think-e513772514d6"
+      "website": "https://medium.com/coinmonks/why-use-fpga-for-iot-heres-what-i-think-e513772514d6?source=friends_link&sk=0ced124708f50b7be478f25198237f5e"
     },
     {
       "name": "Coding the STM32 Blue Pill with Rust and Visual Studio Code",
       "publisher": "Medium",
       "releaseDate": "2018-07-10",
-      "website": "https://medium.com/@ly.lee/coding-the-stm32-blue-pill-with-rust-and-visual-studio-code-b21615d8a20"
+      "website": "https://medium.com/coinmonks/coding-the-stm32-blue-pill-with-rust-and-visual-studio-code-b21615d8a20?source=friends_link&sk=9ca2ff6ad73ae7330bc122d73e94e83f"
     },
     {
       "name": "Making my first ever PCB with Seeed Fusion PCB assembly service",
       "publisher": "Medium",
       "releaseDate": "2018-07-05",
-      "website": "https://medium.com/@ly.lee/making-my-first-ever-pcb-with-seeed-fusion-pcb-assembly-service-9af5736016b3"
+      "website": "https://medium.com/coinmonks/making-my-first-ever-pcb-with-seeed-fusion-pcb-assembly-service-9af5736016b3?source=friends_link&sk=4a66b1086f3232f2022c9c6a3bff0523"
     },
     {
       "name": "Running Rust and FreeRTOS on the PADI IoT Stamp",
       "publisher": "Medium",
       "releaseDate": "2018-06-18",
-      "website": "https://medium.com/@ly.lee/running-rust-and-freertos-on-the-padi-iot-stamp-fb36c5ef4844"
+      "website": "https://medium.com/coinmonks/running-rust-and-freertos-on-the-padi-iot-stamp-fb36c5ef4844?source=friends_link&sk=e89306e593d2781bbb272c0779eb5c24"
     },
     {
       "name": "First Impressions of Alibaba Cloud (Aliyun)",
       "publisher": "Medium",
       "releaseDate": "2018-05-21",
-      "website": "https://medium.com/@ly.lee/first-impressions-of-alibaba-cloud-aliyun-688dc46fa9b8"
+      "website": "https://medium.com/@ly.lee/first-impressions-of-alibaba-cloud-aliyun-688dc46fa9b8?source=friends_link&sk=0685f5028f4ce9575dfae9cc9515143d"
     },
     {
       "name": "Multitasking on the Arduino with a Finite State Machine – And why you’ll need it for Sigfox Downlink",
       "publisher": "Medium",
       "releaseDate": "2018-05-13",
-      "website": "https://medium.com/@ly.lee/multitasking-on-the-arduino-with-a-finite-state-machine-and-why-youll-need-it-for-sigfox-d52dafc55d8e"
+      "website": "https://medium.com/coinmonks/multitasking-on-the-arduino-with-a-finite-state-machine-and-why-youll-need-it-for-sigfox-d52dafc55d8e?source=friends_link&sk=ccb0128b230b6d678831b80100df43e8"
     },
     {
       "name": "Realtime sensor data processing with thethings.io and Amazon Web Services Kinesis",
       "publisher": "Medium",
       "releaseDate": "2018-05-01",
-      "website": "https://medium.com/@ly.lee/realtime-sensor-data-processing-with-thethings-io-and-amazon-web-services-kinesis-e12ebb022106"
+      "website": "https://medium.com/coinmonks/realtime-sensor-data-processing-with-thethings-io-and-amazon-web-services-kinesis-e12ebb022106?source=friends_link&sk=a57d58d346c283c79699efe384bca299"
     },
     {
       "name": "I Teach IoT. Here’s what you’ll learn",
       "publisher": "Medium",
       "releaseDate": "2018-04-24",
-      "website": "https://medium.com/@ly.lee/i-teach-iot-heres-what-you-ll-learn-3e0d1b997dd0"
+      "website": "https://medium.com/@ly.lee/i-teach-iot-heres-what-you-ll-learn-3e0d1b997dd0?source=friends_link&sk=ec31991f7245ccde1200dd950196a5e7"
     },
     {
       "name": "How To Build Your Sigfox Server (Version 1.0)",
       "publisher": "Medium",
       "releaseDate": "2017-10-14",
-      "website": "https://medium.com/@ly.lee/how-to-build-your-sigfox-server-version-1-0-6763732692fd"
+      "website": "https://medium.com/@ly.lee/how-to-build-your-sigfox-server-version-1-0-6763732692fd?source=friends_link&sk=641f65c458ec59fa27dddbe7735b118a"
     },
     {
       "name": "Story of the UnaShield",
       "publisher": "Medium",
       "releaseDate": "2017-07-05",
-      "website": "https://medium.com/@ly.lee/story-of-the-unashield-ff9e78fd7726"
+      "website": "https://medium.com/@ly.lee/story-of-the-unashield-ff9e78fd7726?source=friends_link&sk=180635fb871e134e0ba8f157a38ba8ef"
     },
     {
       "name": "IoT is a Bad Word",
       "publisher": "Medium",
       "releaseDate": "2017-05-26",
-      "website": "https://medium.com/@ly.lee/iot-is-a-bad-word-9003d9fab638"
+      "website": "https://medium.com/@ly.lee/iot-is-a-bad-word-9003d9fab638?source=friends_link&sk=f7d58ebca338f326b6be8dcb79c7d6f5"
     },
     {
       "name": "Overcoming Productivity Challenges in the F&B Industry",
