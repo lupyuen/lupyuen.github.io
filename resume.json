@@ -177,6 +177,36 @@
       "summary": "Lup Yuen talks about two classes of IoT, ‘deep’ IoT and ‘wide’ IoT. Deep IoT devices require high bandwidth and power supply. UnaBiz looks at wide IoT, which refers to devices that are very light, battery-powered and operate on pervasive networks. They can work anytime, anywhere in Singapore and do not rely on WiFi or the cellular network."
     },
     {
+      "name": "STM32 Blue Pill – Shrink your math libraries with Qfplib",
+      "publisher": "Medium",
+      "releaseDate": "2019-01-30",
+      "website": "https://medium.com/@ly.lee/stm32-blue-pill-shrink-your-math-libraries-with-qfplib-55093aab163a?source=friends_link&sk=d7cd162dabcc45f96490e5e1f5f4c534"
+    },
+    {
+      "name": "STM32 Blue Pill — Analyse and Optimise Your RAM and ROM",
+      "publisher": "Medium",
+      "releaseDate": "2019-01-24",
+      "website": "https://medium.com/@ly.lee/stm32-blue-pill-analyse-and-optimise-your-ram-and-rom-9fc805e16ed7?source=friends_link&sk=54719084d640bb1d92ac1097d623bba2"
+    },
+    {
+      "name": "STM32 Blue Pill USB Bootloader — How I fixed the USB Storage, Serial, DFU and WebUSB interfaces",
+      "publisher": "Medium",
+      "releaseDate": "2018-12-18",
+      "website": "https://medium.com/@ly.lee/stm32-blue-pill-usb-bootloader-how-i-fixed-the-usb-storage-serial-dfu-and-webusb-interfaces-36d7fe245b5c?source=friends_link&sk=70a29cd31425ec4d03144bce14a1c922"
+    },
+    {
+      "name": "[Work In Progress] STM32 Blue Pill Visual Programming with MakeCode, CODAL and libopencm3",
+      "publisher": "Medium",
+      "releaseDate": "2018-12-09",
+      "website": "https://medium.com/@ly.lee/work-in-progress-stm32-blue-pill-visual-programming-with-makecode-codal-and-libopencm3-422d308f252e?source=friends_link&sk=b39519335652415d5f4aa17c9e4af1d2"
+    },
+    {
+      "name": "Sigfox Teacher Answers Your Questions",
+      "publisher": "Medium",
+      "releaseDate": "2018-12-07",
+      "website": "https://medium.com/@ly.lee/sigfox-teacher-answers-your-questions-7e47122716dc?source=friends_link&sk=7668c0b2ecc6333cd60ff8e536501ebd"
+    },
+    {
       "name": "以 thethings.iO 來將 BBC micro:bit 感測器圖形化",
       "publisher": "Medium",
       "releaseDate": "2018-11-29",
