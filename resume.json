@@ -51,6 +51,7 @@
       "position": "Adjunct Lecturer",
       "website": "http://www.tp.edu.sg",
       "startDate": "2015-04-01",
+      "endDate": "2019-02-28",
       "summary": "Responsible for teaching and mentoring the next generation of professionals in IoT technologies. He taught the following courses:",
       "highlights": [
         "IoT Application Development: He prepared and presented lessons and labs for training working adults with IoT programming skills, based on AWS IoT, Sigfox, Ubidots and Arduino. He created the training platform with various AWS services: AWS IoT, Lambda, API Gateway, S3, DynamoDB, SNS, Elasticsearch, Kibana. His students included IT professionals from Agility, IBM, SAP, Ericsson, Canon and ITE.",
@@ -175,6 +176,30 @@
       "releaseDate": "2018-03-20",
       "website": "https://www.opengovasia.com/articles/developing-cost-effective-energy-efficient-iot-solutions-for-outdoor-as-well-as-indoor-applications",
       "summary": "Lup Yuen talks about two classes of IoT, ‘deep’ IoT and ‘wide’ IoT. Deep IoT devices require high bandwidth and power supply. UnaBiz looks at wide IoT, which refers to devices that are very light, battery-powered and operate on pervasive networks. They can work anytime, anywhere in Singapore and do not rely on WiFi or the cellular network."
+    },
+    {
+      "name": "Transform and Import a JSON file into Amazon Redshift with AWS Glue",
+      "publisher": "Medium",
+      "releaseDate": "2019-03-08",
+      "website": "https://medium.com/@ly.lee/transform-and-import-a-json-file-into-amazon-redshift-with-aws-glue-3371006e03ca?source=friends_link&sk=a57bcec30f5b6b1c978dc4f35d8d6427"
+    },
+    {
+      "name": "Connecting AWS Lambda Node.JS to Redshift or PostgreSQL? Try AWS Lambda Layers!",
+      "publisher": "Medium",
+      "releaseDate": "2019-03-06",
+      "website": "https://medium.com/@ly.lee/connecting-aws-lambda-node-js-to-redshift-or-postgresql-try-aws-lambda-layers-78e60c27f39b?source=friends_link&sk=84d0f78bddfece6049c2395741824e58"
+    },
+    {
+      "name": "STM32 Blue Pill — Bootloading the WebUSB Bootloader",
+      "publisher": "Medium",
+      "releaseDate": "2019-02-25",
+      "website": "https://medium.com/@ly.lee/stm32-blue-pill-bootloading-the-webusb-bootloader-63398ef5eb76?source=friends_link&sk=8b43b83310910e64752a61cf630e0b78"
+    },
+    {
+      "name": "STM32 Blue Pill — Dissecting the WebUSB Bootloader for MakeCode",
+      "publisher": "Medium",
+      "releaseDate": "2019-02-16",
+      "website": "https://medium.com/@ly.lee/stm32-blue-pill-dissecting-the-webusb-bootloader-for-makecode-b7f1a1508e89?source=friends_link&sk=661984e9775f991a97e5747a67214b60"
     },
     {
       "name": "STM32 Blue Pill – Shrink your math libraries with Qfplib",
