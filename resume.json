@@ -178,6 +178,12 @@
       "summary": "Lup Yuen talks about two classes of IoT, ‘deep’ IoT and ‘wide’ IoT. Deep IoT devices require high bandwidth and power supply. UnaBiz looks at wide IoT, which refers to devices that are very light, battery-powered and operate on pervasive networks. They can work anytime, anywhere in Singapore and do not rely on WiFi or the cellular network."
     },
     {
+      "name": "Push AWS IoT sensor data to Redshift with Kinesis Firehose",
+      "publisher": "Medium",
+      "releaseDate": "2019-03-10",
+      "website": "https://medium.com/@ly.lee/push-aws-iot-sensor-data-to-redshift-with-kinesis-firehose-385506264a00?source=friends_link&sk=bd45be8b48fbb328ed1d65d10a8d7c38"
+    },
+    {
       "name": "Transform and Import a JSON file into Amazon Redshift with AWS Glue",
       "publisher": "Medium",
       "releaseDate": "2019-03-08",
