@@ -178,6 +178,12 @@
       "summary": "Lup Yuen talks about two classes of IoT, ‘deep’ IoT and ‘wide’ IoT. Deep IoT devices require high bandwidth and power supply. UnaBiz looks at wide IoT, which refers to devices that are very light, battery-powered and operate on pervasive networks. They can work anytime, anywhere in Singapore and do not rely on WiFi or the cellular network."
     },
     {
+      "name": "Safer, Simpler Embedded Rust with Apache Mynewt on STM32 Blue Pill",
+      "publisher": "Medium",
+      "releaseDate": "2019-07-07",
+      "website": "https://medium.com/@ly.lee/safer-simpler-embedded-rust-with-apache-mynewt-on-stm32-blue-pill-d8fcb41969ac?source=friends_link&sk=16a27a4b9910aadcfcb9881c02d84adc"
+    },
+    {
       "name": "Hosting Embedded Rust apps on Apache Mynewt with STM32 Blue Pill",
       "publisher": "Medium",
       "releaseDate": "2019-06-09",
