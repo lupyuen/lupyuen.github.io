@@ -178,6 +178,36 @@
       "summary": "Lup Yuen talks about two classes of IoT, ‘deep’ IoT and ‘wide’ IoT. Deep IoT devices require high bandwidth and power supply. UnaBiz looks at wide IoT, which refers to devices that are very light, battery-powered and operate on pervasive networks. They can work anytime, anywhere in Singapore and do not rely on WiFi or the cellular network."
     },
     {
+      "name": "Hosting Embedded Rust apps on Apache Mynewt with STM32 Blue Pill",
+      "publisher": "Medium",
+      "releaseDate": "2019-06-09",
+      "website": "https://medium.com/@ly.lee/hosting-embedded-rust-apps-on-apache-mynewt-with-stm32-blue-pill-c86b119fe5f?source=friends_link&sk=f58f4cf6c608fded4b354063e474a93b"
+    },
+    {
+      "name": "Build Your IoT Sensor Network — STM32 Blue Pill + nRF24L01 + ESP8266 + Apache Mynewt + thethings.io",
+      "publisher": "Medium",
+      "releaseDate": "2019-05-27",
+      "website": "https://medium.com/@ly.lee/build-your-iot-sensor-network-stm32-blue-pill-nrf24l01-esp8266-apache-mynewt-thethings-io-ca7486523f5d?source=friends_link&sk=e49514a7e616d4ff931dd24329a82ce0"
+    },
+    {
+      "name": "Super Blue Pill — Like STM32 Blue Pill, But Better!",
+      "publisher": "Medium",
+      "releaseDate": "2019-05-21",
+      "website": "https://medium.com/swlh/super-blue-pill-like-stm32-blue-pill-but-better-6d341d9347da?source=friends_link&sk=956087171b9b9efcc484ea60b9c78c16"
+    },
+    {
+      "name": "Connect STM32 Blue Pill to ESP8266 with Apache Mynewt",
+      "publisher": "Medium",
+      "releaseDate": "2019-04-20",
+      "website": "https://medium.com/@ly.lee/connect-stm32-blue-pill-to-esp8266-with-apache-mynewt-7edceb9e3b8d?source=friends_link&sk=df729a82533d817ec6b2d9b626b6f66b"
+    },
+    {
+      "name": "Create your IoT gadget with Apache Mynewt and STM32 Blue Pill",
+      "publisher": "Medium",
+      "releaseDate": "2019-03-26",
+      "website": "https://medium.com/@ly.lee/create-your-iot-gadget-with-apache-mynewt-and-stm32-blue-pill-d689b3ca725?source=friends_link&sk=d511426d5a2217ebd06789b3eef7df54"
+    },
+    {
       "name": "Push AWS IoT sensor data to Redshift with Kinesis Firehose",
       "publisher": "Medium",
       "releaseDate": "2019-03-10",
@@ -401,6 +431,8 @@
       "name": "Internet of Things (IoT)",
       "level": "Master",
       "keywords": [
+        "Embedded Rust",
+        "Embedded C",
         "AWS IoT",
         "Google Cloud IoT",
         "Azure IoT",
@@ -410,7 +442,8 @@
         "Arduino",
         "STM32",
         "Blue Pill",
-        "PADI"
+        "ESP8266",
+        "nRF24L01"
       ]
     },
     {
