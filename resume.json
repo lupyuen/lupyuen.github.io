@@ -178,6 +178,18 @@
       "summary": "Lup Yuen talks about two classes of IoT, ‘deep’ IoT and ‘wide’ IoT. Deep IoT devices require high bandwidth and power supply. UnaBiz looks at wide IoT, which refers to devices that are very light, battery-powered and operate on pervasive networks. They can work anytime, anywhere in Singapore and do not rely on WiFi or the cellular network."
     },
     {
+      "name": "Get Started with NB-IoT and Quectel modules",
+      "publisher": "Medium",
+      "releaseDate": "2019-07-15",
+      "website": "https://medium.com/@ly.lee/get-started-with-nb-iot-and-quectel-modules-6e7c581e0d61?sk=40ece196fc51f7a2903c9981f46efa46"
+    },
+    {
+      "name": "Visual Programming with Embedded Rust? Yes we can with Apache Mynewt and Google Blockly!",
+      "publisher": "Medium",
+      "releaseDate": "2019-07-11",
+      "website": "https://medium.com/@ly.lee/visual-programming-with-embedded-rust-yes-we-can-with-apache-mynewt-and-google-blockly-8b67ef7412d7?source=friends_link&sk=353fb92b6f20ebf885ff5c9be44fd6f2"
+    },
+    {
       "name": "Safer, Simpler Embedded Rust with Apache Mynewt on STM32 Blue Pill",
       "publisher": "Medium",
       "releaseDate": "2019-07-07",
@@ -437,14 +449,16 @@
       "name": "Internet of Things (IoT)",
       "level": "Master",
       "keywords": [
-        "Embedded Rust",
-        "Embedded C",
+        "NB-IoT",
+        "Sigfox",
+        "LoRa",
         "AWS IoT",
         "Google Cloud IoT",
         "Azure IoT",
-        "Sigfox",
-        "Ubidots",
         "thethings.io",
+        "Ubidots",
+        "Embedded Rust",
+        "Embedded C",
         "Arduino",
         "STM32",
         "Blue Pill",
