@@ -178,6 +178,18 @@
       "summary": "Lup Yuen talks about two classes of IoT, ‘deep’ IoT and ‘wide’ IoT. Deep IoT devices require high bandwidth and power supply. UnaBiz looks at wide IoT, which refers to devices that are very light, battery-powered and operate on pervasive networks. They can work anytime, anywhere in Singapore and do not rely on WiFi or the cellular network."
     },
     {
+      "name": "Visual Embedded Rust Programming with Visual Studio Code",
+      "publisher": "Medium",
+      "releaseDate": "2019-08-17",
+      "website": "https://medium.com/@ly.lee/visual-embedded-rust-programming-with-visual-studio-code-1bc1262e398c?sk=222de63e45993aacd0db5a2e4b1f33c7"
+    },
+    {
+      "name": "Advanced Topics for Visual Embedded Rust Programming",
+      "publisher": "Medium",
+      "releaseDate": "2019-08-17",
+      "website": "https://medium.com/@ly.lee/advanced-topics-for-visual-embedded-rust-programming-ebf1627fe397?sk=01f0ae0e1b82efa9fd6b8e5616c736af"
+    },
+    {
       "name": "Rust Rocks NB-IoT! STM32 Blue Pill with Quectel BC95-G on Apache Mynewt",
       "publisher": "Medium",
       "releaseDate": "2019-08-04",
