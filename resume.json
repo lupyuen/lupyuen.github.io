@@ -178,6 +178,12 @@
       "summary": "Lup Yuen talks about two classes of IoT, ‘deep’ IoT and ‘wide’ IoT. Deep IoT devices require high bandwidth and power supply. UnaBiz looks at wide IoT, which refers to devices that are very light, battery-powered and operate on pervasive networks. They can work anytime, anywhere in Singapore and do not rely on WiFi or the cellular network."
     },
     {
+      "name": "Coding nRF52 with Rust and Apache Mynewt on Visual Studio Code",
+      "publisher": "Medium",
+      "releaseDate": "2019-10-03",
+      "website": "https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004?source=friends_link&sk=bb4e2523b922d0870259ab3fa696c7da"
+    },
+    {
       "name": "Build an NB-IoT GPS Tracker on STM32 L476 with Apache Mynewt and Embedded Rust",
       "publisher": "Medium",
       "releaseDate": "2019-09-22",
