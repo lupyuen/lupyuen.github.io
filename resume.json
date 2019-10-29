@@ -178,6 +178,12 @@
       "summary": "Lup Yuen talks about two classes of IoT, ‘deep’ IoT and ‘wide’ IoT. Deep IoT devices require high bandwidth and power supply. UnaBiz looks at wide IoT, which refers to devices that are very light, battery-powered and operate on pervasive networks. They can work anytime, anywhere in Singapore and do not rely on WiFi or the cellular network."
     },
     {
+      "name": "Porting Apache Mynewt OS to GigaDevice GD32 VF103 on RISC-V",
+      "publisher": "Medium",
+      "releaseDate": "2019-10-30",
+      "website": "https://medium.com/@ly.lee/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v-4054a5922493?source=friends_link&sk=215cd06186d912277d0469224666d60d"
+    },
+    {
       "name": "Bluetooth Mesh with nRF52 and Apache Mynewt",
       "publisher": "Medium",
       "releaseDate": "2019-10-15",
