@@ -178,6 +178,18 @@
       "summary": "Lup Yuen talks about two classes of IoT, ‘deep’ IoT and ‘wide’ IoT. Deep IoT devices require high bandwidth and power supply. UnaBiz looks at wide IoT, which refers to devices that are very light, battery-powered and operate on pervasive networks. They can work anytime, anywhere in Singapore and do not rely on WiFi or the cellular network."
     },
     {
+      "name": "Hey GD32 VF103 on RISC-V: I surrender… For now",
+      "publisher": "Medium",
+      "releaseDate": "2019-11-23",
+      "website": "https://medium.com/@ly.lee/hey-gd32-vf103-on-risc-v-i-surrender-for-now-d39d0c7b0001?source=friends_link&sk=c0504ac574bf571219fabe174eef4de5"
+    },
+    {
+      "name": "Building a Rust Driver for PineTime’s Touch Controller",
+      "publisher": "Medium",
+      "releaseDate": "2019-11-22",
+      "website": "https://medium.com/@ly.lee/building-a-rust-driver-for-pinetimes-touch-controller-cbc1a5d5d3e9?source=friends_link&sk=d8cf73fc943d9c0e960627d768f309cb"
+    },
+    {
       "name": "Sneak Peek of PineTime Smart Watch… And why it’s perfect for teaching IoT",
       "publisher": "Medium",
       "releaseDate": "2019-11-15",
