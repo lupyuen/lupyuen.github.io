@@ -178,6 +178,12 @@
       "summary": "Lup Yuen talks about two classes of IoT, ‘deep’ IoT and ‘wide’ IoT. Deep IoT devices require high bandwidth and power supply. UnaBiz looks at wide IoT, which refers to devices that are very light, battery-powered and operate on pervasive networks. They can work anytime, anywhere in Singapore and do not rely on WiFi or the cellular network."
     },
     {
+      "name": "Build and Flash Rust+Mynewt Firmware for PineTime Smart Watch",
+      "publisher": "Medium",
+      "releaseDate": "2020-01-08",
+      "website": "https://medium.com/@ly.lee/build-and-flash-rust-mynewt-firmware-for-pinetime-smart-watch-5e14259c55?source=friends_link&sk=150b2a73b84144e5ef25b985e65aebe9"
+    },
+    {
       "name": "Optimising PineTime’s Display Driver with Rust and Mynewt",
       "publisher": "Medium",
       "releaseDate": "2019-12-29",
