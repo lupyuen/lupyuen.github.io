@@ -178,6 +178,12 @@
       "summary": "Lup Yuen talks about two classes of IoT, ‘deep’ IoT and ‘wide’ IoT. Deep IoT devices require high bandwidth and power supply. UnaBiz looks at wide IoT, which refers to devices that are very light, battery-powered and operate on pervasive networks. They can work anytime, anywhere in Singapore and do not rely on WiFi or the cellular network."
     },
     {
+      "name": "Debug Rust+Mynewt Firmware for PineTime on Raspberry Pi",
+      "publisher": "Medium",
+      "releaseDate": "2020-01-23",
+      "website": "https://medium.com/@ly.lee/debug-rust-mynewt-firmware-for-pinetime-on-raspberry-pi-4b9ac2d093a9?source=friends_link&sk=edb508c31e43d3ec40ecd8554f3405f6"
+    },
+    {
       "name": "OpenOCD on Raspberry Pi: Better with SWD on SPI",
       "publisher": "Medium",
       "releaseDate": "2020-01-18",
