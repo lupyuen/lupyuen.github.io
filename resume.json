@@ -178,6 +178,18 @@
       "summary": "Lup Yuen talks about two classes of IoT, ‘deep’ IoT and ‘wide’ IoT. Deep IoT devices require high bandwidth and power supply. UnaBiz looks at wide IoT, which refers to devices that are very light, battery-powered and operate on pervasive networks. They can work anytime, anywhere in Singapore and do not rely on WiFi or the cellular network."
     },
     {
+      "name": "CHIP-8 Game Emulator in Rust for PineTime Smart Watch",
+      "publisher": "GitHub",
+      "releaseDate": "2020-03-05",
+      "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/chip8"
+    },
+    {
+      "name": "Visual Rust for PineTime Smart Watch",
+      "publisher": "Visual Studio Marketplace",
+      "releaseDate": "2020-03-05",
+      "website": "https://marketplace.visualstudio.com/items?itemName=LeeLupYuen.visual-embedded-rust"
+    },
+    {
       "name": "My First Week As Embedded FOSS Advocate",
       "publisher": "Medium",
       "releaseDate": "2020-02-04",
