@@ -176,6 +176,12 @@
       "releaseDate": "2018-03-20",
       "website": "https://www.opengovasia.com/articles/developing-cost-effective-energy-efficient-iot-solutions-for-outdoor-as-well-as-indoor-applications",
       "summary": "Lup Yuen talks about two classes of IoT, ‘deep’ IoT and ‘wide’ IoT. Deep IoT devices require high bandwidth and power supply. UnaBiz looks at wide IoT, which refers to devices that are very light, battery-powered and operate on pervasive networks. They can work anytime, anywhere in Singapore and do not rely on WiFi or the cellular network."
+    },    
+    {
+      "name": "Firmware Upgrade over Bluetooth Low Energy on PineTime Smart Watch",
+      "publisher": "GitHub",
+      "releaseDate": "2020-05-11",
+      "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/dfu"
     },
     {
       "name": "CHIP-8 Game Emulator in Rust for PineTime Smart Watch",
