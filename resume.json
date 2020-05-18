@@ -178,6 +178,13 @@
       "summary": "Lup Yuen talks about two classes of IoT, ‘deep’ IoT and ‘wide’ IoT. Deep IoT devices require high bandwidth and power supply. UnaBiz looks at wide IoT, which refers to devices that are very light, battery-powered and operate on pervasive networks. They can work anytime, anywhere in Singapore and do not rely on WiFi or the cellular network."
     },    
     {
+      "name": "MCUBoot Bootloader for PineTime Smart Watch (nRF52)",
+      "publisher": "GitHub",
+      "releaseDate": "2020-05-18",
+      "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/mcuboot",
+      "summary": "Wireless Firmware Updates done right on PineTime Smart Watch... With the open source MCUBoot Bootloader from Apache Mynewt and Zephyr"
+    },
+    {
       "name": "Configure Mynewt for SPI Flash on PineTime Smart Watch (nRF52)",
       "publisher": "GitHub",
       "releaseDate": "2020-05-15",
