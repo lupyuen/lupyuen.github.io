@@ -178,6 +178,13 @@
       "summary": "Lup Yuen talks about two classes of IoT, ‘deep’ IoT and ‘wide’ IoT. Deep IoT devices require high bandwidth and power supply. UnaBiz looks at wide IoT, which refers to devices that are very light, battery-powered and operate on pervasive networks. They can work anytime, anywhere in Singapore and do not rely on WiFi or the cellular network."
     },    
     {
+      "name": "Your First Bluetooth Low Energy App with Flutter",
+      "publisher": "GitHub",
+      "releaseDate": "2020-06-04",
+      "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/flutter",
+      "summary": "Bluetooth Low Energy apps are ridiculously easy to code with Flutter and Dart, let me show you how!"
+    },
+    {
       "name": "Porting MicroPython and wasp-os to Mynewt on PineTime Smart Watch (nRF52)",
       "publisher": "GitHub",
       "releaseDate": "2020-06-02",
