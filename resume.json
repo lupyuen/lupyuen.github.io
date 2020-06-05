@@ -209,13 +209,15 @@
       "name": "Configure Mynewt for SPI Flash on PineTime Smart Watch (nRF52)",
       "publisher": "GitHub",
       "releaseDate": "2020-05-15",
-      "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/spiflash"
+      "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/spiflash",
+      "summary": "Configure Mynewt OS to enable access to SPI Flash Memory on PineTime Smart Watch"
     },
     {
       "name": "Firmware Update over Bluetooth Low Energy on PineTime Smart Watch",
       "publisher": "GitHub",
       "releaseDate": "2020-05-11",
-      "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/dfu"
+      "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/dfu",
+      "summary": "Flash any firmware to PineTime from our mobile phone... Without opening the watch!"
     },
     {
       "name": "CHIP-8 Game Emulator in Rust for PineTime Smart Watch",
