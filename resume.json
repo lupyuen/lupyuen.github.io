@@ -171,12 +171,12 @@
   ],
   "publications": [
     {
-      "name": "Developing cost-effective, energy efficient IoT solutions for outdoor as well as indoor applications",
-      "publisher": "OpenGov",
-      "releaseDate": "2018-03-20",
-      "website": "https://www.opengovasia.com/articles/developing-cost-effective-energy-efficient-iot-solutions-for-outdoor-as-well-as-indoor-applications",
-      "summary": "Lup Yuen talks about two classes of IoT, ‘deep’ IoT and ‘wide’ IoT. Deep IoT devices require high bandwidth and power supply. UnaBiz looks at wide IoT, which refers to devices that are very light, battery-powered and operate on pervasive networks. They can work anytime, anywhere in Singapore and do not rely on WiFi or the cellular network."
-    },    
+      "name": "PineTime doesn't run Linux... But that's OK!",
+      "publisher": "GitHub",
+      "releaseDate": "2020-06-19",
+      "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/pinetime",
+      "summary": "Getting started with PineTime Smart Watch"
+    },
     {
       "name": "Your First GTK App with Go and VSCodium",
       "publisher": "GitHub",
@@ -605,6 +605,13 @@
       "releaseDate": "2018-04-24",
       "website": "https://medium.com/@ly.lee/i-teach-iot-heres-what-you-ll-learn-3e0d1b997dd0?source=friends_link&sk=ec31991f7245ccde1200dd950196a5e7"
     },
+    {
+      "name": "Developing cost-effective, energy efficient IoT solutions for outdoor as well as indoor applications",
+      "publisher": "OpenGov",
+      "releaseDate": "2018-03-20",
+      "website": "https://www.opengovasia.com/articles/developing-cost-effective-energy-efficient-iot-solutions-for-outdoor-as-well-as-indoor-applications",
+      "summary": "Lup Yuen talks about two classes of IoT, ‘deep’ IoT and ‘wide’ IoT. Deep IoT devices require high bandwidth and power supply. UnaBiz looks at wide IoT, which refers to devices that are very light, battery-powered and operate on pervasive networks. They can work anytime, anywhere in Singapore and do not rely on WiFi or the cellular network."
+    },    
     {
       "name": "How To Build Your Sigfox Server (Version 1.0)",
       "publisher": "Medium",
