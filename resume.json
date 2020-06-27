@@ -171,6 +171,13 @@
   ],
   "publications": [
     {
+      "name": "Flutter State Management with Bloc for PineTime Companion App",
+      "publisher": "GitHub",
+      "releaseDate": "2020-06-27",
+      "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/bloc",
+      "summary": "How we manage state with the Bloc Library in the Flutter Companion App (Android and iOS) for PineTime Smart Watch"
+    },
+    {
       "name": "PineTime doesn't run Linux... But that's OK!",
       "publisher": "GitHub",
       "releaseDate": "2020-06-19",
