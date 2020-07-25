@@ -171,6 +171,13 @@
   ],
   "publications": [
     {
+      "name": "Wayland and LVGL on PinePhone with Ubuntu Touch",
+      "publisher": "GitHub",
+      "releaseDate": "2020-07-25",
+      "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/wayland",
+      "summary": "Learn about Wayland and Ubuntu Touch on PinePhone... And how we build PinePhone Apps with LVGL"
+    },
+    {
       "name": "Flutter State Management with Bloc for PineTime Companion App",
       "publisher": "GitHub",
       "releaseDate": "2020-06-27",
