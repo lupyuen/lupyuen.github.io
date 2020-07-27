@@ -171,6 +171,13 @@
   ],
   "publications": [
     {
+      "name": "Build PineTime Firmware in the Cloud with GitHub Actions",
+      "publisher": "GitHub",
+      "releaseDate": "2020-07-27",
+      "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/cloud",
+      "summary": "Learn to build PineTime Smart Watch Firmware in the Cloud... No computer needed!"
+    },
+    {
       "name": "Wayland and LVGL on PinePhone with Ubuntu Touch",
       "publisher": "GitHub",
       "releaseDate": "2020-07-25",

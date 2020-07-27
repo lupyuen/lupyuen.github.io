@@ -4,6 +4,12 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Build PineTime Firmware in the Cloud with GitHub Actions</title>
+            <link>https://lupyuen.github.io/pinetime-rust-mynewt/articles/cloud</link>
+            <description><![CDATA[Learn to build PineTime Smart Watch Firmware in the Cloud... No computer needed!]]></description>
+            <pubDate>Mon, 27 Jul 2020 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Wayland and LVGL on PinePhone with Ubuntu Touch</title>
             <link>https://lupyuen.github.io/pinetime-rust-mynewt/articles/wayland</link>
             <description><![CDATA[Learn about Wayland and Ubuntu Touch on PinePhone... And how we build PinePhone Apps with LVGL]]></description>
