@@ -4,6 +4,12 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Preview PineTime Watch Faces in your Web Browser with WebAssembly</title>
+            <link>https://lupyuen.github.io/pinetime-rust-mynewt/articles/simulator</link>
+            <description><![CDATA[How we build and preview PineTime Watch Faces with only a web browser... No computer needed!]]></description>
+            <pubDate>Wed, 19 Aug 2020 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Build PineTime Firmware in the Cloud with GitHub Actions</title>
             <link>https://lupyuen.github.io/pinetime-rust-mynewt/articles/cloud</link>
             <description><![CDATA[Learn to build PineTime Smart Watch Firmware in the Cloud... No computer needed!]]></description>

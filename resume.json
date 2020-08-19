@@ -171,6 +171,13 @@
   ],
   "publications": [
     {
+      "name": "Preview PineTime Watch Faces in your Web Browser with WebAssembly",
+      "publisher": "GitHub",
+      "releaseDate": "2020-08-19",
+      "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/simulator",
+      "summary": "How we build and preview PineTime Watch Faces with only a web browser... No computer needed!"
+    },
+    {
       "name": "Build PineTime Firmware in the Cloud with GitHub Actions",
       "publisher": "GitHub",
       "releaseDate": "2020-07-27",
