@@ -171,6 +171,13 @@
   ],
   "publications": [
     {
+      "name": "Safer, Simpler Embedded Programs with Rust on RIOT",
+      "publisher": "RIOT Summit",
+      "releaseDate": "2020-09-11",
+      "website": "https://medium.com/@ly.lee/safer-simpler-embedded-programs-with-rust-on-riot-4ae11226ef2b?source=friends_link&sk=226f003756ba7c51e10649b9bab3d860",
+      "summary": "Tired of pointer problems on Embedded C? It’s time to switch over to a safer, simpler way of coding: Embedded Rust. We’ll look at Rust hosted on RIOT and how it’s used to create LVGL watch apps for PineTime Smart Watch."
+    },
+    {
       "name": "Preview PineTime Watch Faces in your Web Browser with WebAssembly",
       "publisher": "GitHub",
       "releaseDate": "2020-08-19",

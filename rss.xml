@@ -4,6 +4,12 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Safer, Simpler Embedded Programs with Rust on RIOT</title>
+            <link>https://medium.com/@ly.lee/safer-simpler-embedded-programs-with-rust-on-riot-4ae11226ef2b?source=friends_link&amp;sk=226f003756ba7c51e10649b9bab3d860</link>
+            <description><![CDATA[Tired of pointer problems on Embedded C? It’s time to switch over to a safer, simpler way of coding: Embedded Rust. We’ll look at Rust hosted on RIOT and how it’s used to create LVGL watch apps for PineTime Smart Watch.]]></description>
+            <pubDate>Fri, 11 Sep 2020 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Preview PineTime Watch Faces in your Web Browser with WebAssembly</title>
             <link>https://lupyuen.github.io/pinetime-rust-mynewt/articles/simulator</link>
             <description><![CDATA[How we build and preview PineTime Watch Faces with only a web browser... No computer needed!]]></description>
