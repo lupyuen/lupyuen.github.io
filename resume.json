@@ -109,18 +109,7 @@
       "endDate": "2014-11-01",
       "summary": "Reports directly to CEO Group Digital L!fe, Mr Allen Lew. Responsible for scanning of innovative ICT technologies worldwide and executing proof-of-concept (POC) projects for the SingTel Group. He was also consulted for technical due diligence in SingTel Innov8 investment projects and SingTel Group Strategy acquisitions. Projects executed include:",
       "highlights": [
-        "Internet of Things (IoT): IoT promises to revolutionise the way we work, live and play through smart devices and sensors embedded everywhere, from wearables to homes to workplaces to the entire nation. (POC projects with Sigfox, Semtech LoRa, SeeControl, Vera, wearables, fitness trackers)",
-        "Indoor Positioning: Getting people’s precise location indoors for pushing highly-targeted, location-specific information (SenionLab, IndoorAtlas, Estimote)",
-        "Smart Retail: Understanding consumer preferences through the shopping offers that they browse and the actual items that they bought. Cloud-based digital receipts and loyalty systems. Co-created SGMalls as a lean startup experiment in Smart Retail, which quickly became Singapore’s #1 retail shopping app. (AppCard, Gigya, Bluetooth Beacons)",
-        "Social Recommendation based on Facebook profiling: Predicting consumer behaviour based on posts in their social feeds (Correlor)",
-        "Speech Recognition for Singapore English: Co-created Singapore’s first speech recognition app to understand Singapore English. Hundreds of hours of speech recordings were used to tune the speech recogniser, which understands local commands like “Find the best char kway teow” (Novauris)",
-        "Image Recognition for Retail (Visenze, Graymatics)",
-        "Motion Gesture User Experience (PrimeSense, LeapMotion)",
-        "Augmented Reality (Google Glass, PropertyBuddy)",
-        "Cloud Gaming (Playcast)",
-        "Virtual Reality (Oculus Rift)",
-        "Video Streaming and Distribution: Created mio TV PLAY and mio TV GO apps (Microsoft PlayReady, Discretix)",
-        "Home Automation (Vera, Z-Wave)"
+        "(1) Internet of Things (IoT); (2) Indoor Positioning; (3) Smart Retail; (4) Social Recommendation based on Facebook profiling; (5) Speech Recognition for Singapore English; (6) Image Recognition for Retail; (7) Motion Gesture User Experience; (8) Augmented Reality; (9) Cloud Gaming; (10) Virtual Reality; (11) Video Streaming and Distribution; (12) Home Automation"
       ]
     },
     {
@@ -135,11 +124,7 @@
       "endDate": "2012-09-01",
       "summary": "Lead Enterprise Architect for Microsoft .NET technologies in Singapore's largest system integrator",
       "highlights": [
-        "IRAS Inland Revenue Integrated System versions 1, 2 and 3: e-Filing and tax processing systems",
-        "Singapore Health Services Outpatient Administrative System: Bespoke system for outpatient registration, appointments and billing at hospitals and polyclinics",
-        "Digital library systems for National Library Board, Singapore Polytechnic, Temasek Polytechnic, Singapore Airlines Engineering, SASCO",
-        "Web portals for IDA MyeCitizen Portal, MINDEF NS Portal, MediaCorp MOBTV Portal",
-        "YW8, Singapore’s first mobile payment system by NETS, DBS, SingTel, M1, StarHub"
+        "(1) IRAS Inland Revenue Integrated System; (2) Singapore Health Services Outpatient Administrative System; (3) Digital library systems for National Library Board, Singapore Polytechnic, Temasek Polytechnic, Singapore Airlines Engineering, SASCO; (4) Web portals for IDA MyeCitizen Portal, MINDEF NS Portal, MediaCorp MOBTV Portal; (5) YW8, Singapore’s first mobile payment system by NETS, DBS, SingTel, M1, StarHub"
       ]
     }
   ],
@@ -515,7 +500,7 @@
       "website": "https://medium.com/@ly.lee/stm32-blue-pill-usb-bootloader-how-i-fixed-the-usb-storage-serial-dfu-and-webusb-interfaces-36d7fe245b5c?source=friends_link&sk=70a29cd31425ec4d03144bce14a1c922"
     },
     {
-      "name": "[Work In Progress] STM32 Blue Pill Visual Programming with MakeCode, CODAL and libopencm3",
+      "name": "STM32 Blue Pill Visual Programming with MakeCode, CODAL and libopencm3",
       "publisher": "Medium",
       "releaseDate": "2018-12-09",
       "website": "https://medium.com/@ly.lee/work-in-progress-stm32-blue-pill-visual-programming-with-makecode-codal-and-libopencm3-422d308f252e?source=friends_link&sk=b39519335652415d5f4aa17c9e4af1d2"
@@ -678,14 +663,14 @@
       "website": "https://goo.gl/vt6WZf"
     },
     {
-      "name": "[Patent] Enlargement of video content streamed from the internet",
+      "name": "Patent: Enlargement of video content streamed from the internet",
       "publisher": "US Patent Office WO/2012/002906",
       "releaseDate": "2010-06-30",
       "website": "http://patentscope.wipo.int/search/en/detail.jsf?docId=WO2012002906",
       "summary": "This invention relates to a system for displaying video content streamed from a network in a full screen mode. The system receives receiving a network address based on a selection from a user. The system then transmits a request for content from the network address and subsequently receives the content associated with the network address. A search is performed on the content for data that provides displaying a video content in a full screen mode. Upon detecting the data, the process generates the data and displays video content in full screen mode."
     },
     {
-      "name": "[Patent] A system and method for providing mobile services",
+      "name": "Patent: A system and method for providing mobile services",
       "publisher": "US Patent Office WO/2008/004981",
       "releaseDate": "2007-06-27",
       "website": "http://patentscope.wipo.int/search/en/detail.jsf?docId=WO2008004981",
