@@ -258,63 +258,63 @@
       "publisher": "GitHub",
       "releaseDate": "2020-03-05",
       "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/chip8",
-      "summary": " "
+      "summary": "Running Retro Games with Rust is not that hard on PineTime Smart Watch. Here's how I ported a CHIP-8 Game Emulator to PineTime"
     },
     {
       "name": "Visual Rust for PineTime Smart Watch",
       "publisher": "Visual Studio Marketplace",
       "releaseDate": "2020-03-05",
-      "website": "https://marketplace.visualstudio.com/items?itemName=LeeLupYuen.visual-embedded-rust",
-      "summary": " "
+      "website": "https://github.com/lupyuen/visual-embedded-rust",
+      "summary": "Create and edit Embedded Rust programs visually by dragging and dropping blocks"
     },
     {
       "name": "My First Week As Embedded FOSS Advocate",
       "publisher": "Medium",
       "releaseDate": "2020-02-04",
       "website": "https://medium.com/@ly.lee/my-first-week-as-embedded-foss-advocate-106d625deae?source=friends_link&sk=4128d2bb8a7098658fafc462a1531d34",
-      "summary": " "
+      "summary": "Have humans become so greedy for profit… That we have forgotten how to teach one another and advance our species?"
     },
     {
       "name": "Debug RIOT-OS on PineTime with VSCode",
       "publisher": "Medium",
       "releaseDate": "2020-02-02",
       "website": "https://medium.com/@ly.lee/debug-riot-os-on-pinetime-with-vscode-12f00c69c120?source=friends_link&sk=a836d511355876bf81855db9f1e94124",
-      "summary": " "
+      "summary": "VSCode debugging configuration for RIOT"
     },
     {
       "name": "If you’re in the East, please consider Rust!",
       "publisher": "Medium",
       "releaseDate": "2020-01-24",
       "website": "https://medium.com/@ly.lee/if-youre-in-the-east-please-consider-rust-23fa05873397?source=friends_link&sk=df52d4b5da80006ff42fc036ef01e12c",
-      "summary": " "
+      "summary": "Coding in Embedded C is like building a skyscraper without scaffolding"
     },
     {
       "name": "Debug Rust+Mynewt Firmware for PineTime on Raspberry Pi",
       "publisher": "Medium",
       "releaseDate": "2020-01-23",
       "website": "https://medium.com/@ly.lee/debug-rust-mynewt-firmware-for-pinetime-on-raspberry-pi-4b9ac2d093a9?source=friends_link&sk=edb508c31e43d3ec40ecd8554f3405f6",
-      "summary": " "
+      "summary": "Using only a Raspberry Pi, we can debug the firmware on PineTime Smart Watch: Step into the flashed program line by line, set a breakpoint to pause execution at a line, inspect variables at runtime, … Just like the Embedded Pros!"
     },
     {
       "name": "OpenOCD on Raspberry Pi: Better with SWD on SPI",
       "publisher": "Medium",
       "releaseDate": "2020-01-18",
       "website": "https://medium.com/@ly.lee/openocd-on-raspberry-pi-better-with-swd-on-spi-7dea9caeb590?source=friends_link&sk=df399bfd913d3e262447d28aa5af6b63",
-      "summary": " "
+      "summary": "Instead of sending SWD data over GPIO one bit at a time, what if we could blast out the data over Raspberry Pi’s SPI interface?"
     },
     {
       "name": "Build and Flash Rust+Mynewt Firmware for PineTime Smart Watch",
       "publisher": "Medium",
       "releaseDate": "2020-01-08",
       "website": "https://medium.com/@ly.lee/build-and-flash-rust-mynewt-firmware-for-pinetime-smart-watch-5e14259c55?source=friends_link&sk=150b2a73b84144e5ef25b985e65aebe9",
-      "summary": " "
+      "summary": "Programming a PineTime is not that hard… All you need is a Raspberry Pi, some wires and a little creativity!"
     },
     {
       "name": "Optimising PineTime’s Display Driver with Rust and Mynewt",
       "publisher": "Medium",
       "releaseDate": "2019-12-29",
       "website": "https://medium.com/@ly.lee/optimising-pinetimes-display-driver-with-rust-and-mynewt-3ba269ea2f5c?source=friends_link&sk=4d2cbd2e6cd2343eed62d214814f7b81",
-      "summary": " "
+      "summary": "Simple tweaks like Batched Updates and Non-Blocking SPI can have a huge impact on rendering performance"
     },
     {
       "name": "Porting [druid] Rust Widgets to PineTime Smart Watch",
