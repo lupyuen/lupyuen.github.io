@@ -257,373 +257,435 @@
       "name": "CHIP-8 Game Emulator in Rust for PineTime Smart Watch",
       "publisher": "GitHub",
       "releaseDate": "2020-03-05",
-      "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/chip8"
+      "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/chip8",
+      "summary": " "
     },
     {
       "name": "Visual Rust for PineTime Smart Watch",
       "publisher": "Visual Studio Marketplace",
       "releaseDate": "2020-03-05",
-      "website": "https://marketplace.visualstudio.com/items?itemName=LeeLupYuen.visual-embedded-rust"
+      "website": "https://marketplace.visualstudio.com/items?itemName=LeeLupYuen.visual-embedded-rust",
+      "summary": " "
     },
     {
       "name": "My First Week As Embedded FOSS Advocate",
       "publisher": "Medium",
       "releaseDate": "2020-02-04",
-      "website": "https://medium.com/@ly.lee/my-first-week-as-embedded-foss-advocate-106d625deae?source=friends_link&sk=4128d2bb8a7098658fafc462a1531d34"
+      "website": "https://medium.com/@ly.lee/my-first-week-as-embedded-foss-advocate-106d625deae?source=friends_link&sk=4128d2bb8a7098658fafc462a1531d34",
+      "summary": " "
     },
     {
       "name": "Debug RIOT-OS on PineTime with VSCode",
       "publisher": "Medium",
       "releaseDate": "2020-02-02",
-      "website": "https://medium.com/@ly.lee/debug-riot-os-on-pinetime-with-vscode-12f00c69c120?source=friends_link&sk=a836d511355876bf81855db9f1e94124"
+      "website": "https://medium.com/@ly.lee/debug-riot-os-on-pinetime-with-vscode-12f00c69c120?source=friends_link&sk=a836d511355876bf81855db9f1e94124",
+      "summary": " "
     },
     {
       "name": "If you’re in the East, please consider Rust!",
       "publisher": "Medium",
       "releaseDate": "2020-01-24",
-      "website": "https://medium.com/@ly.lee/if-youre-in-the-east-please-consider-rust-23fa05873397?source=friends_link&sk=df52d4b5da80006ff42fc036ef01e12c"
+      "website": "https://medium.com/@ly.lee/if-youre-in-the-east-please-consider-rust-23fa05873397?source=friends_link&sk=df52d4b5da80006ff42fc036ef01e12c",
+      "summary": " "
     },
     {
       "name": "Debug Rust+Mynewt Firmware for PineTime on Raspberry Pi",
       "publisher": "Medium",
       "releaseDate": "2020-01-23",
-      "website": "https://medium.com/@ly.lee/debug-rust-mynewt-firmware-for-pinetime-on-raspberry-pi-4b9ac2d093a9?source=friends_link&sk=edb508c31e43d3ec40ecd8554f3405f6"
+      "website": "https://medium.com/@ly.lee/debug-rust-mynewt-firmware-for-pinetime-on-raspberry-pi-4b9ac2d093a9?source=friends_link&sk=edb508c31e43d3ec40ecd8554f3405f6",
+      "summary": " "
     },
     {
       "name": "OpenOCD on Raspberry Pi: Better with SWD on SPI",
       "publisher": "Medium",
       "releaseDate": "2020-01-18",
-      "website": "https://medium.com/@ly.lee/openocd-on-raspberry-pi-better-with-swd-on-spi-7dea9caeb590?source=friends_link&sk=df399bfd913d3e262447d28aa5af6b63"
+      "website": "https://medium.com/@ly.lee/openocd-on-raspberry-pi-better-with-swd-on-spi-7dea9caeb590?source=friends_link&sk=df399bfd913d3e262447d28aa5af6b63",
+      "summary": " "
     },
     {
       "name": "Build and Flash Rust+Mynewt Firmware for PineTime Smart Watch",
       "publisher": "Medium",
       "releaseDate": "2020-01-08",
-      "website": "https://medium.com/@ly.lee/build-and-flash-rust-mynewt-firmware-for-pinetime-smart-watch-5e14259c55?source=friends_link&sk=150b2a73b84144e5ef25b985e65aebe9"
+      "website": "https://medium.com/@ly.lee/build-and-flash-rust-mynewt-firmware-for-pinetime-smart-watch-5e14259c55?source=friends_link&sk=150b2a73b84144e5ef25b985e65aebe9",
+      "summary": " "
     },
     {
       "name": "Optimising PineTime’s Display Driver with Rust and Mynewt",
       "publisher": "Medium",
       "releaseDate": "2019-12-29",
-      "website": "https://medium.com/@ly.lee/optimising-pinetimes-display-driver-with-rust-and-mynewt-3ba269ea2f5c?source=friends_link&sk=4d2cbd2e6cd2343eed62d214814f7b81"
+      "website": "https://medium.com/@ly.lee/optimising-pinetimes-display-driver-with-rust-and-mynewt-3ba269ea2f5c?source=friends_link&sk=4d2cbd2e6cd2343eed62d214814f7b81",
+      "summary": " "
     },
     {
       "name": "Porting [druid] Rust Widgets to PineTime Smart Watch",
       "publisher": "Medium",
       "releaseDate": "2019-12-14",
-      "website": "https://medium.com/@ly.lee/porting-druid-rust-widgets-to-pinetime-smart-watch-7e1d5a5d977a?source=friends_link&sk=09b153c68483f7fa9e63350efd167b07"
+      "website": "https://medium.com/@ly.lee/porting-druid-rust-widgets-to-pinetime-smart-watch-7e1d5a5d977a?source=friends_link&sk=09b153c68483f7fa9e63350efd167b07",
+      "summary": " "
     },
     {
       "name": "My 5-Year IoT Mission",
       "publisher": "Medium",
       "releaseDate": "2019-12-04",
-      "website": "https://medium.com/@ly.lee/my-5-year-iot-mission-5f2f28348780?source=friends_link&sk=8c9ab6f607d4b6af4a2b233e4096d623"
+      "website": "https://medium.com/@ly.lee/my-5-year-iot-mission-5f2f28348780?source=friends_link&sk=8c9ab6f607d4b6af4a2b233e4096d623",
+      "summary": " "
     },
     {
       "name": "Hey GD32 VF103 on RISC-V: I surrender… For now",
       "publisher": "Medium",
       "releaseDate": "2019-11-23",
-      "website": "https://medium.com/@ly.lee/hey-gd32-vf103-on-risc-v-i-surrender-for-now-d39d0c7b0001?source=friends_link&sk=c0504ac574bf571219fabe174eef4de5"
+      "website": "https://medium.com/@ly.lee/hey-gd32-vf103-on-risc-v-i-surrender-for-now-d39d0c7b0001?source=friends_link&sk=c0504ac574bf571219fabe174eef4de5",
+      "summary": " "
     },
     {
       "name": "Building a Rust Driver for PineTime’s Touch Controller",
       "publisher": "Medium",
       "releaseDate": "2019-11-22",
-      "website": "https://medium.com/@ly.lee/building-a-rust-driver-for-pinetimes-touch-controller-cbc1a5d5d3e9?source=friends_link&sk=d8cf73fc943d9c0e960627d768f309cb"
+      "website": "https://medium.com/@ly.lee/building-a-rust-driver-for-pinetimes-touch-controller-cbc1a5d5d3e9?source=friends_link&sk=d8cf73fc943d9c0e960627d768f309cb",
+      "summary": " "
     },
     {
       "name": "Sneak Peek of PineTime Smart Watch… And why it’s perfect for teaching IoT",
       "publisher": "Medium",
       "releaseDate": "2019-11-15",
-      "website": "https://medium.com/@ly.lee/sneak-peek-of-pinetime-smart-watch-and-why-its-perfect-for-teaching-iot-81b74161c159?source=friends_link&sk=d9301466f5499bece3e7b638e99ec20d"
+      "website": "https://medium.com/@ly.lee/sneak-peek-of-pinetime-smart-watch-and-why-its-perfect-for-teaching-iot-81b74161c159?source=friends_link&sk=d9301466f5499bece3e7b638e99ec20d",
+      "summary": " "
     },
     {
       "name": "Porting Apache Mynewt OS to GigaDevice GD32 VF103 on RISC-V",
       "publisher": "Medium",
       "releaseDate": "2019-10-30",
-      "website": "https://medium.com/@ly.lee/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v-4054a5922493?source=friends_link&sk=215cd06186d912277d0469224666d60d"
+      "website": "https://medium.com/@ly.lee/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v-4054a5922493?source=friends_link&sk=215cd06186d912277d0469224666d60d",
+      "summary": " "
     },
     {
       "name": "Bluetooth Mesh with nRF52 and Apache Mynewt",
       "publisher": "Medium",
       "releaseDate": "2019-10-15",
-      "website": "https://medium.com/@ly.lee/bluetooth-mesh-with-nrf52-and-apache-mynewt-44823407c471?source=friends_link&sk=ac433fa04e13f75985927c37db1e2b10"
+      "website": "https://medium.com/@ly.lee/bluetooth-mesh-with-nrf52-and-apache-mynewt-44823407c471?source=friends_link&sk=ac433fa04e13f75985927c37db1e2b10",
+      "summary": " "
     },
     {
       "name": "Coding nRF52 with Rust and Apache Mynewt on Visual Studio Code",
       "publisher": "Medium",
       "releaseDate": "2019-10-03",
-      "website": "https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004?source=friends_link&sk=bb4e2523b922d0870259ab3fa696c7da"
+      "website": "https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004?source=friends_link&sk=bb4e2523b922d0870259ab3fa696c7da",
+      "summary": " "
     },
     {
       "name": "Build an NB-IoT GPS Tracker on STM32 L476 with Apache Mynewt and Embedded Rust",
       "publisher": "Medium",
       "releaseDate": "2019-09-22",
-      "website": "https://medium.com/@ly.lee/build-an-nb-iot-gps-tracker-on-stm32-l476-with-apache-mynewt-and-embedded-rust-8c095a925546?source=friends_link&sk=f3e802795d4fd7d569f0d67679e8c9e6"
+      "website": "https://medium.com/@ly.lee/build-an-nb-iot-gps-tracker-on-stm32-l476-with-apache-mynewt-and-embedded-rust-8c095a925546?source=friends_link&sk=f3e802795d4fd7d569f0d67679e8c9e6",
+      "summary": " "
     },
     {
       "name": "Quick Peek of Huawei LiteOS with NB-IoT on Ghostyu NB-EK-L476 Developer Kit (STM32L476RCT6)",
       "publisher": "Medium",
       "releaseDate": "2019-09-04",
-      "website": "https://medium.com/@ly.lee/quick-peek-of-huawei-liteos-with-nb-iot-on-ghostyu-nb-ek-l476-developer-kit-2bbfb7f2fbcc?source=friends_link&sk=37f71270cd52f497fb6fb8139917031c"
+      "website": "https://medium.com/@ly.lee/quick-peek-of-huawei-liteos-with-nb-iot-on-ghostyu-nb-ek-l476-developer-kit-2bbfb7f2fbcc?source=friends_link&sk=37f71270cd52f497fb6fb8139917031c",
+      "summary": " "
     },
     {
       "name": "Low Power NB-IoT on STM32 Blue Pill with Apache Mynewt and Embedded Rust",
       "publisher": "Medium",
       "releaseDate": "2019-08-30",
-      "website": "https://medium.com/@ly.lee/low-power-nb-iot-on-stm32-blue-pill-with-apache-mynewt-and-embedded-rust-cef5a3ecdd90?source=friends_link&sk=e232e68dc7c91dd4397e96d7dbde543a"
+      "website": "https://medium.com/@ly.lee/low-power-nb-iot-on-stm32-blue-pill-with-apache-mynewt-and-embedded-rust-cef5a3ecdd90?source=friends_link&sk=e232e68dc7c91dd4397e96d7dbde543a",
+      "summary": " "
     },
     {
       "name": "Visual Embedded Rust Programming with Visual Studio Code",
       "publisher": "Medium",
       "releaseDate": "2019-08-17",
-      "website": "https://medium.com/@ly.lee/visual-embedded-rust-programming-with-visual-studio-code-1bc1262e398c?sk=222de63e45993aacd0db5a2e4b1f33c7"
+      "website": "https://medium.com/@ly.lee/visual-embedded-rust-programming-with-visual-studio-code-1bc1262e398c?sk=222de63e45993aacd0db5a2e4b1f33c7",
+      "summary": " "
     },
     {
       "name": "Advanced Topics for Visual Embedded Rust Programming",
       "publisher": "Medium",
       "releaseDate": "2019-08-17",
-      "website": "https://medium.com/@ly.lee/advanced-topics-for-visual-embedded-rust-programming-ebf1627fe397?sk=01f0ae0e1b82efa9fd6b8e5616c736af"
+      "website": "https://medium.com/@ly.lee/advanced-topics-for-visual-embedded-rust-programming-ebf1627fe397?sk=01f0ae0e1b82efa9fd6b8e5616c736af",
+      "summary": " "
     },
     {
       "name": "Rust Rocks NB-IoT! STM32 Blue Pill with Quectel BC95-G on Apache Mynewt",
       "publisher": "Medium",
       "releaseDate": "2019-08-04",
-      "website": "https://medium.com/@ly.lee/rust-rocks-nb-iot-stm32-blue-pill-with-quectel-bc95-g-on-apache-mynewt-ef62a7e28f7e?sk=aaa21371f68a07c543066b6b89a760f0"
+      "website": "https://medium.com/@ly.lee/rust-rocks-nb-iot-stm32-blue-pill-with-quectel-bc95-g-on-apache-mynewt-ef62a7e28f7e?sk=aaa21371f68a07c543066b6b89a760f0",
+      "summary": " "
     },
     {
       "name": "Connect STM32 Blue Pill to NB-IoT with Quectel BC95-G and Apache Mynewt",
       "publisher": "Medium",
       "releaseDate": "2019-07-25",
-      "website": "https://medium.com/@ly.lee/connect-stm32-blue-pill-to-nb-iot-with-quectel-bc95-g-and-apache-mynewt-c99a9d8417a9?source=friends_link&sk=34fb9befbea42e98cb5942d66f594027"
+      "website": "https://medium.com/@ly.lee/connect-stm32-blue-pill-to-nb-iot-with-quectel-bc95-g-and-apache-mynewt-c99a9d8417a9?source=friends_link&sk=34fb9befbea42e98cb5942d66f594027",
+      "summary": " "
     },
     {
       "name": "Get Started with NB-IoT and Quectel modules",
       "publisher": "Medium",
       "releaseDate": "2019-07-15",
-      "website": "https://medium.com/@ly.lee/get-started-with-nb-iot-and-quectel-modules-6e7c581e0d61?sk=40ece196fc51f7a2903c9981f46efa46"
+      "website": "https://medium.com/@ly.lee/get-started-with-nb-iot-and-quectel-modules-6e7c581e0d61?sk=40ece196fc51f7a2903c9981f46efa46",
+      "summary": " "
     },
     {
       "name": "Visual Programming with Embedded Rust? Yes we can with Apache Mynewt and Google Blockly!",
       "publisher": "Medium",
       "releaseDate": "2019-07-11",
-      "website": "https://medium.com/@ly.lee/visual-programming-with-embedded-rust-yes-we-can-with-apache-mynewt-and-google-blockly-8b67ef7412d7?source=friends_link&sk=353fb92b6f20ebf885ff5c9be44fd6f2"
+      "website": "https://medium.com/@ly.lee/visual-programming-with-embedded-rust-yes-we-can-with-apache-mynewt-and-google-blockly-8b67ef7412d7?source=friends_link&sk=353fb92b6f20ebf885ff5c9be44fd6f2",
+      "summary": " "
     },
     {
       "name": "Safer, Simpler Embedded Rust with Apache Mynewt on STM32 Blue Pill",
       "publisher": "Medium",
       "releaseDate": "2019-07-07",
-      "website": "https://medium.com/@ly.lee/safer-simpler-embedded-rust-with-apache-mynewt-on-stm32-blue-pill-d8fcb41969ac?source=friends_link&sk=16a27a4b9910aadcfcb9881c02d84adc"
+      "website": "https://medium.com/@ly.lee/safer-simpler-embedded-rust-with-apache-mynewt-on-stm32-blue-pill-d8fcb41969ac?source=friends_link&sk=16a27a4b9910aadcfcb9881c02d84adc",
+      "summary": " "
     },
     {
       "name": "Hosting Embedded Rust apps on Apache Mynewt with STM32 Blue Pill",
       "publisher": "Medium",
       "releaseDate": "2019-06-09",
-      "website": "https://medium.com/@ly.lee/hosting-embedded-rust-apps-on-apache-mynewt-with-stm32-blue-pill-c86b119fe5f?source=friends_link&sk=f58f4cf6c608fded4b354063e474a93b"
+      "website": "https://medium.com/@ly.lee/hosting-embedded-rust-apps-on-apache-mynewt-with-stm32-blue-pill-c86b119fe5f?source=friends_link&sk=f58f4cf6c608fded4b354063e474a93b",
+      "summary": " "
     },
     {
       "name": "Build Your IoT Sensor Network — STM32 Blue Pill + nRF24L01 + ESP8266 + Apache Mynewt + thethings.io",
       "publisher": "Medium",
       "releaseDate": "2019-05-27",
-      "website": "https://medium.com/@ly.lee/build-your-iot-sensor-network-stm32-blue-pill-nrf24l01-esp8266-apache-mynewt-thethings-io-ca7486523f5d?source=friends_link&sk=e49514a7e616d4ff931dd24329a82ce0"
+      "website": "https://medium.com/@ly.lee/build-your-iot-sensor-network-stm32-blue-pill-nrf24l01-esp8266-apache-mynewt-thethings-io-ca7486523f5d?source=friends_link&sk=e49514a7e616d4ff931dd24329a82ce0",
+      "summary": " "
     },
     {
       "name": "Super Blue Pill — Like STM32 Blue Pill, But Better!",
       "publisher": "Medium",
       "releaseDate": "2019-05-21",
-      "website": "https://medium.com/swlh/super-blue-pill-like-stm32-blue-pill-but-better-6d341d9347da?source=friends_link&sk=956087171b9b9efcc484ea60b9c78c16"
+      "website": "https://medium.com/swlh/super-blue-pill-like-stm32-blue-pill-but-better-6d341d9347da?source=friends_link&sk=956087171b9b9efcc484ea60b9c78c16",
+      "summary": " "
     },
     {
       "name": "Connect STM32 Blue Pill to ESP8266 with Apache Mynewt",
       "publisher": "Medium",
       "releaseDate": "2019-04-20",
-      "website": "https://medium.com/@ly.lee/connect-stm32-blue-pill-to-esp8266-with-apache-mynewt-7edceb9e3b8d?source=friends_link&sk=df729a82533d817ec6b2d9b626b6f66b"
+      "website": "https://medium.com/@ly.lee/connect-stm32-blue-pill-to-esp8266-with-apache-mynewt-7edceb9e3b8d?source=friends_link&sk=df729a82533d817ec6b2d9b626b6f66b",
+      "summary": " "
     },
     {
       "name": "Create your IoT gadget with Apache Mynewt and STM32 Blue Pill",
       "publisher": "Medium",
       "releaseDate": "2019-03-26",
-      "website": "https://medium.com/@ly.lee/create-your-iot-gadget-with-apache-mynewt-and-stm32-blue-pill-d689b3ca725?source=friends_link&sk=d511426d5a2217ebd06789b3eef7df54"
+      "website": "https://medium.com/@ly.lee/create-your-iot-gadget-with-apache-mynewt-and-stm32-blue-pill-d689b3ca725?source=friends_link&sk=d511426d5a2217ebd06789b3eef7df54",
+      "summary": " "
     },
     {
       "name": "Push AWS IoT sensor data to Redshift with Kinesis Firehose",
       "publisher": "Medium",
       "releaseDate": "2019-03-10",
-      "website": "https://medium.com/@ly.lee/push-aws-iot-sensor-data-to-redshift-with-kinesis-firehose-385506264a00?source=friends_link&sk=bd45be8b48fbb328ed1d65d10a8d7c38"
+      "website": "https://medium.com/@ly.lee/push-aws-iot-sensor-data-to-redshift-with-kinesis-firehose-385506264a00?source=friends_link&sk=bd45be8b48fbb328ed1d65d10a8d7c38",
+      "summary": " "
     },
     {
       "name": "Transform and Import a JSON file into Amazon Redshift with AWS Glue",
       "publisher": "Medium",
       "releaseDate": "2019-03-08",
-      "website": "https://medium.com/@ly.lee/transform-and-import-a-json-file-into-amazon-redshift-with-aws-glue-3371006e03ca?source=friends_link&sk=a57bcec30f5b6b1c978dc4f35d8d6427"
+      "website": "https://medium.com/@ly.lee/transform-and-import-a-json-file-into-amazon-redshift-with-aws-glue-3371006e03ca?source=friends_link&sk=a57bcec30f5b6b1c978dc4f35d8d6427",
+      "summary": " "
     },
     {
       "name": "Connecting AWS Lambda Node.JS to Redshift or PostgreSQL? Try AWS Lambda Layers!",
       "publisher": "Medium",
       "releaseDate": "2019-03-06",
-      "website": "https://medium.com/@ly.lee/connecting-aws-lambda-node-js-to-redshift-or-postgresql-try-aws-lambda-layers-78e60c27f39b?source=friends_link&sk=84d0f78bddfece6049c2395741824e58"
+      "website": "https://medium.com/@ly.lee/connecting-aws-lambda-node-js-to-redshift-or-postgresql-try-aws-lambda-layers-78e60c27f39b?source=friends_link&sk=84d0f78bddfece6049c2395741824e58",
+      "summary": " "
     },
     {
       "name": "STM32 Blue Pill — Bootloading the WebUSB Bootloader",
       "publisher": "Medium",
       "releaseDate": "2019-02-25",
-      "website": "https://medium.com/@ly.lee/stm32-blue-pill-bootloading-the-webusb-bootloader-63398ef5eb76?source=friends_link&sk=8b43b83310910e64752a61cf630e0b78"
+      "website": "https://medium.com/@ly.lee/stm32-blue-pill-bootloading-the-webusb-bootloader-63398ef5eb76?source=friends_link&sk=8b43b83310910e64752a61cf630e0b78",
+      "summary": " "
     },
     {
       "name": "STM32 Blue Pill — Dissecting the WebUSB Bootloader for MakeCode",
       "publisher": "Medium",
       "releaseDate": "2019-02-16",
-      "website": "https://medium.com/@ly.lee/stm32-blue-pill-dissecting-the-webusb-bootloader-for-makecode-b7f1a1508e89?source=friends_link&sk=661984e9775f991a97e5747a67214b60"
+      "website": "https://medium.com/@ly.lee/stm32-blue-pill-dissecting-the-webusb-bootloader-for-makecode-b7f1a1508e89?source=friends_link&sk=661984e9775f991a97e5747a67214b60",
+      "summary": " "
     },
     {
       "name": "STM32 Blue Pill — Unit Testing with Qemu Blue Pill Emulator",
       "publisher": "Medium",
       "releaseDate": "2019-02-07",
-      "website": "https://medium.com/@ly.lee/stm32-blue-pill-unit-testing-with-qemu-blue-pill-emulator-9d88002a68b2?source=friends_link&sk=9a9389cdea5828cb48713f963c8f7615"
+      "website": "https://medium.com/@ly.lee/stm32-blue-pill-unit-testing-with-qemu-blue-pill-emulator-9d88002a68b2?source=friends_link&sk=9a9389cdea5828cb48713f963c8f7615",
+      "summary": " "
     },
     {
       "name": "STM32 Blue Pill – Shrink your math libraries with Qfplib",
       "publisher": "Medium",
       "releaseDate": "2019-01-30",
-      "website": "https://medium.com/@ly.lee/stm32-blue-pill-shrink-your-math-libraries-with-qfplib-55093aab163a?source=friends_link&sk=d7cd162dabcc45f96490e5e1f5f4c534"
+      "website": "https://medium.com/@ly.lee/stm32-blue-pill-shrink-your-math-libraries-with-qfplib-55093aab163a?source=friends_link&sk=d7cd162dabcc45f96490e5e1f5f4c534",
+      "summary": " "
     },
     {
       "name": "STM32 Blue Pill — Analyse and Optimise Your RAM and ROM",
       "publisher": "Medium",
       "releaseDate": "2019-01-24",
-      "website": "https://medium.com/@ly.lee/stm32-blue-pill-analyse-and-optimise-your-ram-and-rom-9fc805e16ed7?source=friends_link&sk=54719084d640bb1d92ac1097d623bba2"
+      "website": "https://medium.com/@ly.lee/stm32-blue-pill-analyse-and-optimise-your-ram-and-rom-9fc805e16ed7?source=friends_link&sk=54719084d640bb1d92ac1097d623bba2",
+      "summary": " "
     },
     {
       "name": "STM32 Blue Pill USB Bootloader — How I fixed the USB Storage, Serial, DFU and WebUSB interfaces",
       "publisher": "Medium",
       "releaseDate": "2018-12-18",
-      "website": "https://medium.com/@ly.lee/stm32-blue-pill-usb-bootloader-how-i-fixed-the-usb-storage-serial-dfu-and-webusb-interfaces-36d7fe245b5c?source=friends_link&sk=70a29cd31425ec4d03144bce14a1c922"
+      "website": "https://medium.com/@ly.lee/stm32-blue-pill-usb-bootloader-how-i-fixed-the-usb-storage-serial-dfu-and-webusb-interfaces-36d7fe245b5c?source=friends_link&sk=70a29cd31425ec4d03144bce14a1c922",
+      "summary": " "
     },
     {
       "name": "STM32 Blue Pill Visual Programming with MakeCode, CODAL and libopencm3",
       "publisher": "Medium",
       "releaseDate": "2018-12-09",
-      "website": "https://medium.com/@ly.lee/work-in-progress-stm32-blue-pill-visual-programming-with-makecode-codal-and-libopencm3-422d308f252e?source=friends_link&sk=b39519335652415d5f4aa17c9e4af1d2"
+      "website": "https://medium.com/@ly.lee/work-in-progress-stm32-blue-pill-visual-programming-with-makecode-codal-and-libopencm3-422d308f252e?source=friends_link&sk=b39519335652415d5f4aa17c9e4af1d2",
+      "summary": " "
     },
     {
       "name": "Sigfox Teacher Answers Your Questions",
       "publisher": "Medium",
       "releaseDate": "2018-12-07",
-      "website": "https://medium.com/@ly.lee/sigfox-teacher-answers-your-questions-7e47122716dc?source=friends_link&sk=7668c0b2ecc6333cd60ff8e536501ebd"
+      "website": "https://medium.com/@ly.lee/sigfox-teacher-answers-your-questions-7e47122716dc?source=friends_link&sk=7668c0b2ecc6333cd60ff8e536501ebd",
+      "summary": " "
     },
     {
       "name": "以 thethings.iO 來將 BBC micro:bit 感測器圖形化",
       "publisher": "Medium",
       "releaseDate": "2018-11-29",
-      "website": "https://medium.com/@ly.lee/%E4%BB%A5-thethings-io-%E4%BE%86%E5%B0%87-bbc-micro-bit-%E6%84%9F%E6%B8%AC%E5%99%A8%E5%9C%96%E5%BD%A2%E5%8C%96-4258b04dea6c?source=friends_link&sk=4d0250276797fe60533c058d25cdbe90"
+      "website": "https://medium.com/@ly.lee/%E4%BB%A5-thethings-io-%E4%BE%86%E5%B0%87-bbc-micro-bit-%E6%84%9F%E6%B8%AC%E5%99%A8%E5%9C%96%E5%BD%A2%E5%8C%96-4258b04dea6c?source=friends_link&sk=4d0250276797fe60533c058d25cdbe90",
+      "summary": " "
     },
     {
       "name": "Visualising BBC micro:bit sensors with thethings.iO",
       "publisher": "Medium",
       "releaseDate": "2018-11-17",
-      "website": "https://medium.com/@ly.lee/visualising-bbc-micro-bit-sensors-with-thethings-io-5689fb613531?source=friends_link&sk=a8cfc404362ecbe3a26823f6a70fa5cb"
+      "website": "https://medium.com/@ly.lee/visualising-bbc-micro-bit-sensors-with-thethings-io-5689fb613531?source=friends_link&sk=a8cfc404362ecbe3a26823f6a70fa5cb",
+      "summary": " "
     },
     {
       "name": "連接 BBC micro:bit 與 Sigfox 物聯網",
       "publisher": "Medium",
       "releaseDate": "2018-11-13",
-      "website": "https://medium.com/@ly.lee/%E9%80%A3%E6%8E%A5-bbc-micro-bit-%E8%88%87-sigfox-%E7%89%A9%E8%81%AF%E7%B6%B2-36b0d453151e?source=friends_link&sk=ad9099aabefe2a09ad4956589773621f"
+      "website": "https://medium.com/@ly.lee/%E9%80%A3%E6%8E%A5-bbc-micro-bit-%E8%88%87-sigfox-%E7%89%A9%E8%81%AF%E7%B6%B2-36b0d453151e?source=friends_link&sk=ad9099aabefe2a09ad4956589773621f",
+      "summary": " "
     },
     {
       "name": "Connect BBC micro:bit to Sigfox",
       "publisher": "Medium",
       "releaseDate": "2018-11-05",
-      "website": "https://medium.com/coinmonks/connect-bbc-micro-bit-to-sigfox-4d1603d19350?source=friends_link&sk=05ceafa731e7c82d92e68f6fa2a1d5bd"
+      "website": "https://medium.com/coinmonks/connect-bbc-micro-bit-to-sigfox-4d1603d19350?source=friends_link&sk=05ceafa731e7c82d92e68f6fa2a1d5bd",
+      "summary": " "
     },
     {
       "name": "連接 STM32F103C8T6 Blue Pill 開發板與 Sigfox 物聯網",
       "publisher": "Medium",
       "releaseDate": "2018-10-17",
-      "website": "https://medium.com/@ly.lee/%E9%80%A3%E6%8E%A5-stm32f103c8t6-blue-pill-%E9%96%8B%E7%99%BC%E6%9D%BF%E8%88%87-sigfox-%E7%89%A9%E8%81%AF%E7%B6%B2-9fc6b01e616a?source=friends_link&sk=58e0604e547a7603411297babc9ec92f"
+      "website": "https://medium.com/@ly.lee/%E9%80%A3%E6%8E%A5-stm32f103c8t6-blue-pill-%E9%96%8B%E7%99%BC%E6%9D%BF%E8%88%87-sigfox-%E7%89%A9%E8%81%AF%E7%B6%B2-9fc6b01e616a?source=friends_link&sk=58e0604e547a7603411297babc9ec92f",
+      "summary": " "
     },
     {
       "name": "Connect STM32 Blue Pill to Sigfox",
       "publisher": "Medium",
       "releaseDate": "2018-09-28",
-      "website": "https://medium.com/coinmonks/connect-stm32-blue-pill-to-sigfox-28c6f91bddc1?source=friends_link&sk=d0f0d9f40e36badadfb04dc4c0846775"
+      "website": "https://medium.com/coinmonks/connect-stm32-blue-pill-to-sigfox-28c6f91bddc1?source=friends_link&sk=d0f0d9f40e36badadfb04dc4c0846775",
+      "summary": " "
     },
     {
       "name": "Watch STM32 Blue Pill Juggle Two SPI Sensors With DMA",
       "publisher": "Medium",
       "releaseDate": "2018-09-19",
-      "website": "https://medium.com/coinmonks/watch-stm32-blue-pill-juggle-two-spi-sensors-with-dma-20cd1aa89869?source=friends_link&sk=eea71070ce6d9aea3a6108e882749a99"
+      "website": "https://medium.com/coinmonks/watch-stm32-blue-pill-juggle-two-spi-sensors-with-dma-20cd1aa89869?source=friends_link&sk=eea71070ce6d9aea3a6108e882749a99",
+      "summary": " "
     },
     {
       "name": "Program Your First FPGA With GOWIN GW1N-4",
       "publisher": "Medium",
       "releaseDate": "2018-09-05",
-      "website": "https://medium.com/coinmonks/program-your-first-fpga-with-gowin-gw1n-4-b0d5c22b9fea?source=friends_link&sk=d52b303b432a5268b5d485aea6ca404c"
+      "website": "https://medium.com/coinmonks/program-your-first-fpga-with-gowin-gw1n-4-b0d5c22b9fea?source=friends_link&sk=d52b303b432a5268b5d485aea6ca404c",
+      "summary": " "
     },
     {
       "name": "Juggling STM32 Blue Pill For Arduino Jugglers",
       "publisher": "Medium",
       "releaseDate": "2018-08-27",
-      "website": "https://medium.com/coinmonks/juggling-stm32-blue-pill-for-arduino-jugglers-edf6820dc808?source=friends_link&sk=7e812ce3062e69447d8ada7416f1ba9f"
+      "website": "https://medium.com/coinmonks/juggling-stm32-blue-pill-for-arduino-jugglers-edf6820dc808?source=friends_link&sk=7e812ce3062e69447d8ada7416f1ba9f",
+      "summary": " "
     },
     {
       "name": "Juggling Sigfox Downlink And Arduino Sensors With cocoOS",
       "publisher": "Medium",
       "releaseDate": "2018-08-20",
-      "website": "https://medium.com/coinmonks/juggling-sigfox-downlink-and-arduino-sensors-with-cocoos-4594be59bf1b?source=friends_link&sk=a99be9407863e4af28f697648de4c7c7"
+      "website": "https://medium.com/coinmonks/juggling-sigfox-downlink-and-arduino-sensors-with-cocoos-4594be59bf1b?source=friends_link&sk=a99be9407863e4af28f697648de4c7c7",
+      "summary": " "
     },
     {
       "name": "Juggling Arduino Sensors With cocoOS",
       "publisher": "Medium",
       "releaseDate": "2018-08-11",
-      "website": "https://medium.com/coinmonks/juggling-arduino-sensors-with-cocoos-403e14ec28be?source=friends_link&sk=54d64c2fcbd5d7b6ddcbe605c1b3e7ea"
+      "website": "https://medium.com/coinmonks/juggling-arduino-sensors-with-cocoos-403e14ec28be?source=friends_link&sk=54d64c2fcbd5d7b6ddcbe605c1b3e7ea",
+      "summary": " "
     },
     {
       "name": "Why use FPGA for IoT? Here’s what I think…",
       "publisher": "Medium",
       "releaseDate": "2018-07-31",
-      "website": "https://medium.com/coinmonks/why-use-fpga-for-iot-heres-what-i-think-e513772514d6?source=friends_link&sk=0ced124708f50b7be478f25198237f5e"
+      "website": "https://medium.com/coinmonks/why-use-fpga-for-iot-heres-what-i-think-e513772514d6?source=friends_link&sk=0ced124708f50b7be478f25198237f5e",
+      "summary": " "
     },
     {
       "name": "Coding the STM32 Blue Pill with Rust and Visual Studio Code",
       "publisher": "Medium",
       "releaseDate": "2018-07-10",
-      "website": "https://medium.com/coinmonks/coding-the-stm32-blue-pill-with-rust-and-visual-studio-code-b21615d8a20?source=friends_link&sk=9ca2ff6ad73ae7330bc122d73e94e83f"
+      "website": "https://medium.com/coinmonks/coding-the-stm32-blue-pill-with-rust-and-visual-studio-code-b21615d8a20?source=friends_link&sk=9ca2ff6ad73ae7330bc122d73e94e83f",
+      "summary": " "
     },
     {
       "name": "Making my first ever PCB with Seeed Fusion PCB assembly service",
       "publisher": "Medium",
       "releaseDate": "2018-07-05",
-      "website": "https://medium.com/coinmonks/making-my-first-ever-pcb-with-seeed-fusion-pcb-assembly-service-9af5736016b3?source=friends_link&sk=4a66b1086f3232f2022c9c6a3bff0523"
+      "website": "https://medium.com/coinmonks/making-my-first-ever-pcb-with-seeed-fusion-pcb-assembly-service-9af5736016b3?source=friends_link&sk=4a66b1086f3232f2022c9c6a3bff0523",
+      "summary": " "
     },
     {
       "name": "Running Rust and FreeRTOS on the PADI IoT Stamp",
       "publisher": "Medium",
       "releaseDate": "2018-06-18",
-      "website": "https://medium.com/coinmonks/running-rust-and-freertos-on-the-padi-iot-stamp-fb36c5ef4844?source=friends_link&sk=e89306e593d2781bbb272c0779eb5c24"
+      "website": "https://medium.com/coinmonks/running-rust-and-freertos-on-the-padi-iot-stamp-fb36c5ef4844?source=friends_link&sk=e89306e593d2781bbb272c0779eb5c24",
+      "summary": " "
     },
     {
       "name": "First Impressions of Alibaba Cloud (Aliyun)",
       "publisher": "Medium",
       "releaseDate": "2018-05-21",
-      "website": "https://medium.com/@ly.lee/first-impressions-of-alibaba-cloud-aliyun-688dc46fa9b8?source=friends_link&sk=0685f5028f4ce9575dfae9cc9515143d"
+      "website": "https://medium.com/@ly.lee/first-impressions-of-alibaba-cloud-aliyun-688dc46fa9b8?source=friends_link&sk=0685f5028f4ce9575dfae9cc9515143d",
+      "summary": " "
     },
     {
       "name": "Multitasking on the Arduino with a Finite State Machine – And why you’ll need it for Sigfox Downlink",
       "publisher": "Medium",
       "releaseDate": "2018-05-13",
-      "website": "https://medium.com/coinmonks/multitasking-on-the-arduino-with-a-finite-state-machine-and-why-youll-need-it-for-sigfox-d52dafc55d8e?source=friends_link&sk=ccb0128b230b6d678831b80100df43e8"
+      "website": "https://medium.com/coinmonks/multitasking-on-the-arduino-with-a-finite-state-machine-and-why-youll-need-it-for-sigfox-d52dafc55d8e?source=friends_link&sk=ccb0128b230b6d678831b80100df43e8",
+      "summary": " "
     },
     {
       "name": "Realtime sensor data processing with thethings.io and Amazon Web Services Kinesis",
       "publisher": "Medium",
       "releaseDate": "2018-05-01",
-      "website": "https://medium.com/coinmonks/realtime-sensor-data-processing-with-thethings-io-and-amazon-web-services-kinesis-e12ebb022106?source=friends_link&sk=a57d58d346c283c79699efe384bca299"
+      "website": "https://medium.com/coinmonks/realtime-sensor-data-processing-with-thethings-io-and-amazon-web-services-kinesis-e12ebb022106?source=friends_link&sk=a57d58d346c283c79699efe384bca299",
+      "summary": " "
     },
     {
       "name": "I Teach IoT. Here’s what you’ll learn",
       "publisher": "Medium",
       "releaseDate": "2018-04-24",
-      "website": "https://medium.com/@ly.lee/i-teach-iot-heres-what-you-ll-learn-3e0d1b997dd0?source=friends_link&sk=ec31991f7245ccde1200dd950196a5e7"
+      "website": "https://medium.com/@ly.lee/i-teach-iot-heres-what-you-ll-learn-3e0d1b997dd0?source=friends_link&sk=ec31991f7245ccde1200dd950196a5e7",
+      "summary": " "
     },
     {
       "name": "Developing cost-effective, energy efficient IoT solutions for outdoor as well as indoor applications",
@@ -636,31 +698,36 @@
       "name": "How To Build Your Sigfox Server (Version 1.0)",
       "publisher": "Medium",
       "releaseDate": "2017-10-14",
-      "website": "https://medium.com/@ly.lee/how-to-build-your-sigfox-server-version-1-0-6763732692fd?source=friends_link&sk=641f65c458ec59fa27dddbe7735b118a"
+      "website": "https://medium.com/@ly.lee/how-to-build-your-sigfox-server-version-1-0-6763732692fd?source=friends_link&sk=641f65c458ec59fa27dddbe7735b118a",
+      "summary": " "
     },
     {
       "name": "Story of the UnaShield",
       "publisher": "Medium",
       "releaseDate": "2017-07-05",
-      "website": "https://medium.com/@ly.lee/story-of-the-unashield-ff9e78fd7726?source=friends_link&sk=180635fb871e134e0ba8f157a38ba8ef"
+      "website": "https://medium.com/@ly.lee/story-of-the-unashield-ff9e78fd7726?source=friends_link&sk=180635fb871e134e0ba8f157a38ba8ef",
+      "summary": " "
     },
     {
       "name": "IoT is a Bad Word",
       "publisher": "Medium",
       "releaseDate": "2017-05-26",
-      "website": "https://medium.com/@ly.lee/iot-is-a-bad-word-9003d9fab638?source=friends_link&sk=f7d58ebca338f326b6be8dcb79c7d6f5"
+      "website": "https://medium.com/@ly.lee/iot-is-a-bad-word-9003d9fab638?source=friends_link&sk=f7d58ebca338f326b6be8dcb79c7d6f5",
+      "summary": " "
     },
     {
       "name": "Overcoming Productivity Challenges in the F&B Industry",
       "publisher": "Retail World Asia 2015",
       "releaseDate": "2015-04-23",
-      "website": "https://goo.gl/wLhDYo"
+      "website": "https://goo.gl/wLhDYo",
+      "summary": " "
     },
     {
       "name": "Sigfox and Google Cloud Platform",
       "publisher": "Google Developer Group Singapore DevFest",
       "releaseDate": "2014-10-20",
-      "website": "https://goo.gl/vt6WZf"
+      "website": "https://goo.gl/vt6WZf",
+      "summary": " "
     },
     {
       "name": "Patent: Enlargement of video content streamed from the internet",
