@@ -447,56 +447,56 @@
       "publisher": "Medium",
       "releaseDate": "2019-06-09",
       "website": "https://medium.com/@ly.lee/hosting-embedded-rust-apps-on-apache-mynewt-with-stm32-blue-pill-c86b119fe5f?source=friends_link&sk=f58f4cf6c608fded4b354063e474a93b",
-      "summary": " "
+      "summary": "It’s time to drop our legacy programming practices and adopt smarter, safer ways to exploit these microcontrollers… starting with Apache Mynewt and Rust."
     },
     {
       "name": "Build Your IoT Sensor Network — STM32 Blue Pill + nRF24L01 + ESP8266 + Apache Mynewt + thethings.io",
       "publisher": "Medium",
       "releaseDate": "2019-05-27",
       "website": "https://medium.com/@ly.lee/build-your-iot-sensor-network-stm32-blue-pill-nrf24l01-esp8266-apache-mynewt-thethings-io-ca7486523f5d?source=friends_link&sk=e49514a7e616d4ff931dd24329a82ce0",
-      "summary": " "
+      "summary": "Let's build a Sensor Network running on two Blue Pills with nRF24L01 and ESP8266"
     },
     {
       "name": "Super Blue Pill — Like STM32 Blue Pill, But Better!",
       "publisher": "Medium",
       "releaseDate": "2019-05-21",
       "website": "https://medium.com/swlh/super-blue-pill-like-stm32-blue-pill-but-better-6d341d9347da?source=friends_link&sk=956087171b9b9efcc484ea60b9c78c16",
-      "summary": " "
+      "summary": "Friendlier for newbies, supports ESP8266 WiFi and nRF24L01"
     },
     {
       "name": "Connect STM32 Blue Pill to ESP8266 with Apache Mynewt",
       "publisher": "Medium",
       "releaseDate": "2019-04-20",
       "website": "https://medium.com/@ly.lee/connect-stm32-blue-pill-to-esp8266-with-apache-mynewt-7edceb9e3b8d?source=friends_link&sk=df729a82533d817ec6b2d9b626b6f66b",
-      "summary": " "
+      "summary": "And WiFi Geolocation with ESP8266"
     },
     {
       "name": "Create your IoT gadget with Apache Mynewt and STM32 Blue Pill",
       "publisher": "Medium",
       "releaseDate": "2019-03-26",
       "website": "https://medium.com/@ly.lee/create-your-iot-gadget-with-apache-mynewt-and-stm32-blue-pill-d689b3ca725?source=friends_link&sk=d511426d5a2217ebd06789b3eef7df54",
-      "summary": " "
+      "summary": "Apache Mynewt is a free, open-source realtime operating system for microcontrollers"
     },
     {
       "name": "Push AWS IoT sensor data to Redshift with Kinesis Firehose",
       "publisher": "Medium",
       "releaseDate": "2019-03-10",
       "website": "https://medium.com/@ly.lee/push-aws-iot-sensor-data-to-redshift-with-kinesis-firehose-385506264a00?source=friends_link&sk=bd45be8b48fbb328ed1d65d10a8d7c38",
-      "summary": " "
+      "summary": "AWS IoT Rules Engine and Kinesis Firehose were designed to stream live sensor data into Redshift for storage and analysis"
     },
     {
       "name": "Transform and Import a JSON file into Amazon Redshift with AWS Glue",
       "publisher": "Medium",
       "releaseDate": "2019-03-08",
       "website": "https://medium.com/@ly.lee/transform-and-import-a-json-file-into-amazon-redshift-with-aws-glue-3371006e03ca?source=friends_link&sk=a57bcec30f5b6b1c978dc4f35d8d6427",
-      "summary": " "
+      "summary": "With AWS Glue it’s now possible to keep our Redshift data warehouses in sync with JSON-based data stores… So we may exploit the full potential of business analytics and machine learning in AWS!"
     },
     {
       "name": "Connecting AWS Lambda Node.JS to Redshift or PostgreSQL? Try AWS Lambda Layers!",
       "publisher": "Medium",
       "releaseDate": "2019-03-06",
       "website": "https://medium.com/@ly.lee/connecting-aws-lambda-node-js-to-redshift-or-postgresql-try-aws-lambda-layers-78e60c27f39b?source=friends_link&sk=84d0f78bddfece6049c2395741824e58",
-      "summary": " "
+      "summary": "With Lambda Layers it’s really easy to connect our Node.js Lambda Function to Redshift or PostgreSQL"
     },
     {
       "name": "STM32 Blue Pill — Bootloading the WebUSB Bootloader",
@@ -671,21 +671,21 @@
       "publisher": "Medium",
       "releaseDate": "2018-05-13",
       "website": "https://medium.com/coinmonks/multitasking-on-the-arduino-with-a-finite-state-machine-and-why-youll-need-it-for-sigfox-d52dafc55d8e?source=friends_link&sk=ccb0128b230b6d678831b80100df43e8",
-      "summary": " "
+      "summary": "How to implement a Finite State Machine on the Arduino Uno"
     },
     {
       "name": "Realtime sensor data processing with thethings.io and Amazon Web Services Kinesis",
       "publisher": "Medium",
       "releaseDate": "2018-05-01",
       "website": "https://medium.com/coinmonks/realtime-sensor-data-processing-with-thethings-io-and-amazon-web-services-kinesis-e12ebb022106?source=friends_link&sk=a57d58d346c283c79699efe384bca299",
-      "summary": " "
+      "summary": "How to experiment with IoT today while minimising the security and performance risks, and keeping costs low"
     },
     {
       "name": "I Teach IoT. Here’s what you’ll learn",
       "publisher": "Medium",
       "releaseDate": "2018-04-24",
       "website": "https://medium.com/@ly.lee/i-teach-iot-heres-what-you-ll-learn-3e0d1b997dd0?source=friends_link&sk=ec31991f7245ccde1200dd950196a5e7",
-      "summary": " "
+      "summary": "Arduino, Low Power Networks, IoT Networks, IoT Analytics, ..."
     },
     {
       "name": "Developing cost-effective, energy efficient IoT solutions for outdoor as well as indoor applications",
@@ -699,21 +699,21 @@
       "publisher": "Medium",
       "releaseDate": "2017-10-14",
       "website": "https://medium.com/@ly.lee/how-to-build-your-sigfox-server-version-1-0-6763732692fd?source=friends_link&sk=641f65c458ec59fa27dddbe7735b118a",
-      "summary": " "
+      "summary": "Building highly reliable, robust and scalable systems for processing Sigfox messages"
     },
     {
       "name": "Story of the UnaShield",
       "publisher": "Medium",
       "releaseDate": "2017-07-05",
       "website": "https://medium.com/@ly.lee/story-of-the-unashield-ff9e78fd7726?source=friends_link&sk=180635fb871e134e0ba8f157a38ba8ef",
-      "summary": " "
+      "summary": "Co-created with Upton Lai, the brilliant guy who could make anything"
     },
     {
       "name": "IoT is a Bad Word",
       "publisher": "Medium",
       "releaseDate": "2017-05-26",
       "website": "https://medium.com/@ly.lee/iot-is-a-bad-word-9003d9fab638?source=friends_link&sk=f7d58ebca338f326b6be8dcb79c7d6f5",
-      "summary": " "
+      "summary": "IoT is about solving real problems (not imaginary ones) in a sustainable way"
     },
     {
       "name": "Overcoming Productivity Challenges in the F&B Industry",
