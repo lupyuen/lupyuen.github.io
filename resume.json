@@ -321,126 +321,126 @@
       "publisher": "Medium",
       "releaseDate": "2019-12-14",
       "website": "https://medium.com/@ly.lee/porting-druid-rust-widgets-to-pinetime-smart-watch-7e1d5a5d977a?source=friends_link&sk=09b153c68483f7fa9e63350efd167b07",
-      "summary": " "
+      "summary": "Code Watch Apps in Rust the Declarative Way"
     },
     {
       "name": "My 5-Year IoT Mission",
       "publisher": "Medium",
       "releaseDate": "2019-12-04",
       "website": "https://medium.com/@ly.lee/my-5-year-iot-mission-5f2f28348780?source=friends_link&sk=8c9ab6f607d4b6af4a2b233e4096d623",
-      "summary": " "
+      "summary": "5 years ago I decided to fix every link in the IoT Chain so that we can create really useful and affordable IoT gadgets, the Lean and Agile Way"
     },
     {
       "name": "Hey GD32 VF103 on RISC-V: I surrender… For now",
       "publisher": "Medium",
       "releaseDate": "2019-11-23",
       "website": "https://medium.com/@ly.lee/hey-gd32-vf103-on-risc-v-i-surrender-for-now-d39d0c7b0001?source=friends_link&sk=c0504ac574bf571219fabe174eef4de5",
-      "summary": " "
+      "summary": "Porting Mynewt OS to GD32 VF103 on RISC-V was a nightmare"
     },
     {
       "name": "Building a Rust Driver for PineTime’s Touch Controller",
       "publisher": "Medium",
       "releaseDate": "2019-11-22",
       "website": "https://medium.com/@ly.lee/building-a-rust-driver-for-pinetimes-touch-controller-cbc1a5d5d3e9?source=friends_link&sk=d8cf73fc943d9c0e960627d768f309cb",
-      "summary": " "
+      "summary": "Programming the Hynitron CST816S Capacitive Touch Controller"
     },
     {
       "name": "Sneak Peek of PineTime Smart Watch… And why it’s perfect for teaching IoT",
       "publisher": "Medium",
       "releaseDate": "2019-11-15",
       "website": "https://medium.com/@ly.lee/sneak-peek-of-pinetime-smart-watch-and-why-its-perfect-for-teaching-iot-81b74161c159?source=friends_link&sk=d9301466f5499bece3e7b638e99ec20d",
-      "summary": " "
+      "summary": "PineTime is the spiritual successor to BBC micro:bit"
     },
     {
       "name": "Porting Apache Mynewt OS to GigaDevice GD32 VF103 on RISC-V",
       "publisher": "Medium",
       "releaseDate": "2019-10-30",
       "website": "https://medium.com/@ly.lee/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v-4054a5922493?source=friends_link&sk=215cd06186d912277d0469224666d60d",
-      "summary": " "
+      "summary": "Many GD32 VF103 RISC-V developer boards are coming real soon... And Mynewt OS would be perfect for them"
     },
     {
       "name": "Bluetooth Mesh with nRF52 and Apache Mynewt",
       "publisher": "Medium",
       "releaseDate": "2019-10-15",
       "website": "https://medium.com/@ly.lee/bluetooth-mesh-with-nrf52-and-apache-mynewt-44823407c471?source=friends_link&sk=ac433fa04e13f75985927c37db1e2b10",
-      "summary": " "
+      "summary": "Set up an nRF52 mesh network, step by step, without any coding"
     },
     {
       "name": "Coding nRF52 with Rust and Apache Mynewt on Visual Studio Code",
       "publisher": "Medium",
       "releaseDate": "2019-10-03",
       "website": "https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004?source=friends_link&sk=bb4e2523b922d0870259ab3fa696c7da",
-      "summary": " "
+      "summary": "nRF52 works with popular open-source tools on Windows and macOS like VSCode, OpenOCD, Rust and ST-Link"
     },
     {
       "name": "Build an NB-IoT GPS Tracker on STM32 L476 with Apache Mynewt and Embedded Rust",
       "publisher": "Medium",
       "releaseDate": "2019-09-22",
       "website": "https://medium.com/@ly.lee/build-an-nb-iot-gps-tracker-on-stm32-l476-with-apache-mynewt-and-embedded-rust-8c095a925546?source=friends_link&sk=f3e802795d4fd7d569f0d67679e8c9e6",
-      "summary": " "
+      "summary": "Let’s build a simple gadget that determines its current location based on received GPS signals… And transmits the location to a server via NB-IoT"
     },
     {
       "name": "Quick Peek of Huawei LiteOS with NB-IoT on Ghostyu NB-EK-L476 Developer Kit (STM32L476RCT6)",
       "publisher": "Medium",
       "releaseDate": "2019-09-04",
       "website": "https://medium.com/@ly.lee/quick-peek-of-huawei-liteos-with-nb-iot-on-ghostyu-nb-ek-l476-developer-kit-2bbfb7f2fbcc?source=friends_link&sk=37f71270cd52f497fb6fb8139917031c",
-      "summary": " "
+      "summary": "Peek into the LiteOS + Application source code that was bundled with the NB-IoT Developer Kit"
     },
     {
       "name": "Low Power NB-IoT on STM32 Blue Pill with Apache Mynewt and Embedded Rust",
       "publisher": "Medium",
       "releaseDate": "2019-08-30",
       "website": "https://medium.com/@ly.lee/low-power-nb-iot-on-stm32-blue-pill-with-apache-mynewt-and-embedded-rust-cef5a3ecdd90?source=friends_link&sk=e232e68dc7c91dd4397e96d7dbde543a",
-      "summary": " "
+      "summary": "Learn to optimise the power consumption of the NB-IoT Sensor Application in the previous tutorial"
     },
     {
       "name": "Visual Embedded Rust Programming with Visual Studio Code",
       "publisher": "Medium",
       "releaseDate": "2019-08-17",
       "website": "https://medium.com/@ly.lee/visual-embedded-rust-programming-with-visual-studio-code-1bc1262e398c?sk=222de63e45993aacd0db5a2e4b1f33c7",
-      "summary": " "
+      "summary": "Create and edit Embedded Rust programs for STM32 Blue Pill and Apache Mynewt… By dragging and dropping blocks!"
     },
     {
       "name": "Advanced Topics for Visual Embedded Rust Programming",
       "publisher": "Medium",
       "releaseDate": "2019-08-17",
       "website": "https://medium.com/@ly.lee/advanced-topics-for-visual-embedded-rust-programming-ebf1627fe397?sk=01f0ae0e1b82efa9fd6b8e5616c736af",
-      "summary": " "
+      "summary": "Watch what happens behind the scenes when you create a Visual Embedded Rust program"
     },
     {
       "name": "Rust Rocks NB-IoT! STM32 Blue Pill with Quectel BC95-G on Apache Mynewt",
       "publisher": "Medium",
       "releaseDate": "2019-08-04",
       "website": "https://medium.com/@ly.lee/rust-rocks-nb-iot-stm32-blue-pill-with-quectel-bc95-g-on-apache-mynewt-ef62a7e28f7e?sk=aaa21371f68a07c543066b6b89a760f0",
-      "summary": " "
+      "summary": "Hardly anyone writes embedded programs in Rust for microcontrollers (like STM32 Blue Pill), we all use C. But we really should switch to Rust!"
     },
     {
       "name": "Connect STM32 Blue Pill to NB-IoT with Quectel BC95-G and Apache Mynewt",
       "publisher": "Medium",
       "releaseDate": "2019-07-25",
       "website": "https://medium.com/@ly.lee/connect-stm32-blue-pill-to-nb-iot-with-quectel-bc95-g-and-apache-mynewt-c99a9d8417a9?source=friends_link&sk=34fb9befbea42e98cb5942d66f594027",
-      "summary": " "
+      "summary": "Let’s build an IoT sensor with a real microcontroller — STM32 Blue Pill — and a real NB-IoT module — Quectel BC95-G!"
     },
     {
       "name": "Get Started with NB-IoT and Quectel modules",
       "publisher": "Medium",
       "releaseDate": "2019-07-15",
       "website": "https://medium.com/@ly.lee/get-started-with-nb-iot-and-quectel-modules-6e7c581e0d61?sk=40ece196fc51f7a2903c9981f46efa46",
-      "summary": " "
+      "summary": "How to use a Quectel evaluation board to send a CoAP message to the CoAP server hosted at thethings.io"
     },
     {
       "name": "Visual Programming with Embedded Rust? Yes we can with Apache Mynewt and Google Blockly!",
       "publisher": "Medium",
       "releaseDate": "2019-07-11",
       "website": "https://medium.com/@ly.lee/visual-programming-with-embedded-rust-yes-we-can-with-apache-mynewt-and-google-blockly-8b67ef7412d7?source=friends_link&sk=353fb92b6f20ebf885ff5c9be44fd6f2",
-      "summary": " "
+      "summary": "Simpler embedded coding, the visual way"
     },
     {
       "name": "Safer, Simpler Embedded Rust with Apache Mynewt on STM32 Blue Pill",
       "publisher": "Medium",
       "releaseDate": "2019-07-07",
       "website": "https://medium.com/@ly.lee/safer-simpler-embedded-rust-with-apache-mynewt-on-stm32-blue-pill-d8fcb41969ac?source=friends_link&sk=16a27a4b9910aadcfcb9881c02d84adc",
-      "summary": " "
+      "summary": "Declarative and Procedural Macros (plus bindgen and tips for Visual Studio Code) to protect Embedded Rust coders from stumbling into embedded traps"
     },
     {
       "name": "Hosting Embedded Rust apps on Apache Mynewt with STM32 Blue Pill",
