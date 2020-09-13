@@ -160,7 +160,7 @@
       "publisher": "GitHub",
       "releaseDate": "2020-09-13",
       "website": "https://lupyuen.github.io/pinetime-rust-riot/articles/watch_face",
-      "summary": "Learn step by step to convert C to Rust on RIOT"
+      "summary": "Converting Embedded C to Rust is not that hard... Here's how we convert a PineTime Watch Face with LVGL from C to Rust on RIOT"
     },
     {
       "name": "Safer, Simpler Embedded Programs with Rust on RIOT",
