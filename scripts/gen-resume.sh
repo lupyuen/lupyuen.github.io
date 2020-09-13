@@ -13,8 +13,13 @@ scripts/gen-resume-pdf.sh
 #   class="toggle-item" />
 # To
 #   class="toggle-item" checked="checked" />
+# Change
+#   <span>mistertechblog</span>
+# To
+#   <a target="_blank" href="https://twitter.com/MisterTechBlog">MisterTechBlog</a>
 cat index.html \
     | sed 's/class="toggle-item" \/>/class="toggle-item" checked="checked" \/>/' \
+    | sed 's/<span>mistertechblog<\/span>/<a target="_blank" href="https:\/\/twitter.com\/MisterTechBlog">MisterTechBlog<\/a>/' \
     >index2.html
 cp index2.html index.html
 rm index2.html
