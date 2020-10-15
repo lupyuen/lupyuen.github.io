@@ -4,6 +4,18 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Create Your Own PineTime Watch Face in Rust... And Publish on crates.io</title>
+            <link>https://lupyuen.github.io/pinetime-rust-mynewt/articles/watchface</link>
+            <description><![CDATA[How we build PineTime Watch Faces with Rust and LVGL... And publish them on crates.io]]></description>
+            <pubDate>Sat, 17 Oct 2020 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Bluetooth Time Sync and LVGL on PineTime Mynewt</title>
+            <link>https://lupyuen.github.io/pinetime-rust-mynewt/articles/timesync</link>
+            <description><![CDATA[How PineTime syncs the time over Bluetooth LE with Mynewt and NimBLE... And how we create Watch Faces with LVGL]]></description>
+            <pubDate>Fri, 16 Oct 2020 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Porting PineTime Watch Face from C to Rust On RIOT with LVGL</title>
             <link>https://lupyuen.github.io/pinetime-rust-riot/articles/watch_face</link>
             <description><![CDATA[Converting Embedded C to Rust is not that hard... Here's how we convert a PineTime Watch Face with LVGL from C to Rust on RIOT]]></description>

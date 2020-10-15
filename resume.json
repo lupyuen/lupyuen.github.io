@@ -156,6 +156,20 @@
   ],
   "publications": [
     {
+      "name": "Create Your Own PineTime Watch Face in Rust... And Publish on crates.io",
+      "publisher": "GitHub",
+      "releaseDate": "2020-10-17",
+      "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/watchface",
+      "summary": "How we build PineTime Watch Faces with Rust and LVGL... And publish them on crates.io"
+    },
+    {
+      "name": "Bluetooth Time Sync and LVGL on PineTime Mynewt",
+      "publisher": "GitHub",
+      "releaseDate": "2020-10-16",
+      "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/timesync",
+      "summary": "How PineTime syncs the time over Bluetooth LE with Mynewt and NimBLE... And how we create Watch Faces with LVGL"
+    },
+    {
       "name": "Porting PineTime Watch Face from C to Rust On RIOT with LVGL",
       "publisher": "GitHub",
       "releaseDate": "2020-09-13",
