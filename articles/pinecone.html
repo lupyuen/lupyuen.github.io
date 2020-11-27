@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <title>Draw your own PineTime Watch Face... From WebAssembly to Embedded Rust</title>
+
+    
+    <!-- Begin scripts/articles/*-header.html: Article Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<meta property="og:title" 
+    content="Draw your own PineTime Watch Face... From WebAssembly to Embedded Rust" 
+    data-rh="true">
+<meta property="og:description" 
+    content="How we build a hand-drawn Watch Face for PineTime Smart Watch... Starting from WebAssembly to Embedded Rust" 
+    data-rh="true">
+<meta property="og:image" 
+    content="https://lupyuen.github.io/images/handdrawn-title.png">
+<meta property="og:type" 
+    content="article" data-rh="true">
+<!-- End scripts/articles/*-header.html -->
+<!-- Begin scripts/rustdoc-header.html: Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<link rel="alternate" type="application/rss+xml" title="RSS Feed for lupyuen" href="/rss.xml" />
+<link rel="stylesheet" type="text/css" href="../normalize.css">
+<link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle">
+<link rel="stylesheet" type="text/css" href="../dark.css">
+<link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle">
+<link rel="stylesheet" type="text/css" href="../prism.css">
+<script src="../storage.js"></script><noscript>
+<link rel="stylesheet" href="../noscript.css"></noscript>
+<link rel="shortcut icon" href="../favicon.ico">
+<style type="text/css">
+    #crate-search {
+        background-image: url("../down-arrow.svg");
+    }
+    a {
+        color: #77d;
+    }
+</style>
+<!-- End scripts/rustdoc-header.html -->
+
+
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+        <!-- Begin scripts/rustdoc-before.html: Pre-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
+
+    <!-- Begin Theme Picker -->
+    <div class="theme-picker" style="left: 0"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg"
+        width="18" alt="Pick another theme!"></button>
+        <div id="theme-choices"></div>
+    </div>
+    <script src="../theme.js"></script>
+    <script src="../prism.js"></script>
+    <!-- Theme Picker -->
+
+    <!-- End scripts/rustdoc-before.html -->
+    
+
+    <h1 class="title">Draw your own PineTime Watch Face... From WebAssembly to Embedded Rust</h1>
+    <nav id="TOC"><ul>
+<li><a href="#hand-drawn-watch-face">1 Hand-Drawn Watch Face</a><ul></ul></li>
+<li><a href="#compute-the-hour-digit">2 Compute the hour digit</a><ul></ul></li>
+<li><a href="#fetch-the-digit-bitmap">3 Fetch the digit bitmap</a><ul></ul></li>
+<li><a href="#set-the-image-source">4 Set the image source</a><ul></ul></li>
+<li><a href="#it-was-c-all-along">5 It was C all along</a><ul></ul></li>
+<li><a href="#update-the-watch-face">6 Update the Watch Face</a><ul>
+<li><a href="#declare-the-method">6.1 Declare the method</a><ul></ul></li>
+<li><a href="#return-the-result">6.2 Return the result</a><ul></ul></li>
+<li><a href="#the-other-images">6.3 The other images</a><ul></ul></li></ul></li>
+<li><a href="#create-the-watch-face">7 Create the Watch Face</a><ul>
+<li><a href="#create-a-bitmap">7.1 Create a bitmap</a><ul></ul></li>
+<li><a href="#load-the-bitmap-data">7.2 Load the bitmap data</a><ul></ul></li>
+<li><a href="#set-the-bitmap-size">7.3 Set the bitmap size</a><ul></ul></li>
+<li><a href="#set-the-bitmap-header">7.4 Set the bitmap header</a><ul></ul></li>
+<li><a href="#load-all-10-bitmaps">7.5 Load all 10 bitmaps</a><ul></ul></li>
+<li><a href="#create-the-images">7.6 Create the images</a><ul></ul></li>
+<li><a href="#wrap-them-all-up">7.7 Wrap them all up</a><ul></ul></li></ul></li>
+<li><a href="#webassembly-rust">8 WebAssembly Rust</a><ul></ul></li>
+<li><a href="#embedded-rust">9 Embedded Rust</a><ul></ul></li>
+<li><a href="#whats-next">10 What's Next</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/handdrawn-title.png" alt="PineTime Smart Watch with Hand-Drawn Watch Face" /></p>
+<p><em>Q: We're in the middle of the pandemic... Is there something fun and useful that we can learn on our own?</em></p>
+<p>A: Try learning <strong>Embedded Programming</strong>!</p>
+<p><em>Q: I need to buy an Arduino or a Microcontroller Board? And have it shipped sloooowly to me at exorbitant prices?</em></p>
+<p>A: Nope! Today we can build and test Embedded Programs in a Web Browser... <strong>Without any Embedded Hardware</strong>! Made possible with awesome WebAssembly tools.</p>
+<p><em>Q: But a Web Browser Simulator doesn't behave like Real Hardware right?</em></p>
+<p>A: We have a real <a href="https://wiki.pine64.org/index.php/PineTime"><strong>PineTime Smart Watch</strong></a> that's connected to the web for everyone to test our Embedded Programs... Try it for yourself and compare!</p>
+<p><em>Q: People say that Embedded Programming is hard... Needs strange languages like C</em></p>
+<p>A: Not any more! Today we'll code with <strong>Rust</strong>, a friendly, modern language. (And less frustating for new coders)</p>
+<p><em>Q: Great! But my computer is kinda old, slow and weak... Do I need a powerful Linux desktop?</em></p>
+<p>A: Any <strong>Linux, macOS AND Windows</strong> computer works great for coding in Embedded Rust and WebAssembly... Even a Raspberry Pi!</p>
+<p>If you prefer zero setup, we can build our Embedded Rust and WebAssembly programs <strong>in the Cloud</strong>! (Provided free of change by GitHub Actions and GitLab CI)</p>
+<p>It feels strange... But building and testing Embedded Programs will work on a <strong>Mobile Web Browser</strong>!</p>
+<p><em>Q: Fantastic! Can't wait to build my very first Blinking LED program!</em></p>
+<p>A: Well it's 2020, and we have progressed waaaay beyond Blinking LEDs ;-)</p>
+<p>Today we'll learn to build a <strong>Smart Watch Face</strong> in Rust. We'll be coding for a Smart Watch with <strong>Colour Touchscreen, Bluetooth Networking</strong> and <strong>Real Time Clock</strong>... Just like the expensive watches by A***e and S*****g!</p>
+<p>As promised, our Watch Face will run in a Web Browser, so it will be easy to test and troubleshoot.</p>
+<p>And when you're done... Please flash your Watch Face to our <strong>Remote PineTime</strong> over the web. Show the world your embedded creation... Running on a real watch!</p>
+<p><em>Q: But what's the catch?</em></p>
+<p>None really. Now's the perfect time to <strong>Learn and Experiment with Embedded Programming</strong>... At our own pace, with whatever materials we have.</p>
+<p>Read on and join me for the learning adventure! :-)</p>
+<h1 id="hand-drawn-watch-face" class="section-header"><a href="#hand-drawn-watch-face">1 Hand-Drawn Watch Face</a></h1>
+<p>Let's make a Hand-Drawn Watch Face like the pic above. The Watch Face consists of 4 hand-drawn images that will be a-changin' with the times...</p>
+<p><img src="https://lupyuen.github.io/images/handdrawn-labels.png" alt="Watch Face Images" /></p>
+<p>We start by zooming to the top left...</p>
+<p><em>How shall we load the top left image... With the first digit of the hour?</em></p>
+<p>In 3 steps...</p>
+<ol>
+<li>
+<p>We <strong>compute the first digit of the hour</strong>. So if the hour is <code>23</code>, the first digit is <code>2</code>.</p>
+</li>
+<li>
+<p>We <strong>fetch the hand-drawn bitmap</strong> for the digit, i.e. <code>2</code></p>
+</li>
+<li>
+<p>We <strong>load the bitmap</strong> into the top left image</p>
+</li>
+</ol>
+<p>Here's how we do it in Rust: <a href="https://github.com/lupyuen/handdrawn-watchface/blob/master/src/lib.rs#L147-L154"><code>src/lib.rs</code></a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="comment">//  Update the top left image with the first digit of the hour</span>
+
+<span class="comment">//  Compute the first digit of the hour</span>
+<span class="kw">let</span> <span class="ident">digit</span> <span class="op">=</span> <span class="ident">state</span>.<span class="ident">time</span>.<span class="ident">hour</span> <span class="op">/</span> <span class="number">10</span>;  
+
+<span class="comment">//  Fetch the bitmap for the digit as a constant pointer</span>
+<span class="kw">let</span> <span class="ident">bitmap</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">img</span>::<span class="ident">lv_img_dsc_t</span> <span class="op">=</span>    
+    <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">bitmaps</span>[<span class="ident">digit</span> <span class="kw">as</span> <span class="ident">usize</span>];
+
+<span class="ident">img</span>::<span class="ident">set_src</span>(                <span class="comment">//  Set the source...</span>
+    <span class="self">self</span>.<span class="ident">top_left_image</span>,     <span class="comment">//  Of the the top left image...</span>
+    <span class="ident">bitmap</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">c_void</span>  <span class="comment">//  To the digit bitmap</span>
+) <span class="question-mark">?</span> ;                        <span class="comment">//  Quit in case of error</span></pre></div>
+<p>Yep it looks daunting... These are the 3 hardest lines of code in our Watch Face!</p>
+<p>But let's step through each line bit by bit and uncover the mystique of Rust.</p>
+<p><em>(I promise you... The rest of the code will be much simpler!)</em></p>
+<p><img src="https://lupyuen.github.io/images/handdrawn-labels2.png" alt="First digit of hour" /></p>
+<h1 id="compute-the-hour-digit" class="section-header"><a href="#compute-the-hour-digit">2 Compute the hour digit</a></h1>
+<p><em>Given an hour like <code>23</code>, compute the first digit i.e. <code>2</code>. How shall we do this in Rust?</em></p>
+<p>Here's how: <a href="https://github.com/lupyuen/handdrawn-watchface/blob/master/src/lib.rs#L148"><code>src/lib.rs</code></a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="comment">//  Compute the first digit of the hour</span>
+<span class="kw">let</span> <span class="ident">digit</span> <span class="op">=</span> <span class="ident">state</span>.<span class="ident">time</span>.<span class="ident">hour</span> <span class="op">/</span> <span class="number">10</span>;</pre></div>
+<p>We interpret <code>state.time.hour</code> like a nested fairy tale...</p>
+<blockquote>
+<p>Once upon a time, there was an object named <code>state</code>... That contained an object named <code>time</code>... That contained a field named <code>hour</code>... The current hour of the day (from 0 to 23)</p>
+</blockquote>
+<p><em>(We'll learn the backstory of <code>state</code> in a while... And objects in Rust are named Structs)</em></p>
+<p>Here we divide the <code>hour</code> by 10 (and truncate the result) to get the first digit. </p>
+<p>So if <code>hour</code> is <code>23</code>, then <code>digit</code> gets set to <code>2</code>.</p>
+<p><em>The Type of <code>digit</code> is missing. Is Rust a Typeless Language like JavaScript and Python?</em></p>
+<p>Rust is a Statically Typed Language like C... All Variables have known Types during compilation. The Rust Compiler infers the Types for us.</p>
+<p>Sounds spooky, but the Rust Compiler goes all Sherlock Holmes on our code to deduce our Variable Types...</p>
+<blockquote>
+<p>I see what you did there... <code>digit</code> doesn't have a known type! Hmmm <code>hour</code> is a <code>u8</code>... 8-bit unsigned integer... After integer division we get another <code>u8</code>... So I deduce that <code>digit</code> is also <code>u8</code>!</p>
+</blockquote>
+<p>To see this Sherlock smartness in action, mouse over <code>digit</code> in VSCode...</p>
+<p><img src="https://lupyuen.github.io/images/handdrawn-type.png" alt="Type Inference" /></p>
+<p>We see that <code>u8</code> pops up for <code>digit</code>... The Rust Compiler has inferred that <code>digit</code> is an 8-bit unsigned integer. (Like <code>uint8_t</code> in C)</p>
+<p>Now that we have the first digit of the hour, let's fetch the hand-drawn bitmap for the digit.</p>
+<h1 id="fetch-the-digit-bitmap" class="section-header"><a href="#fetch-the-digit-bitmap">3 Fetch the digit bitmap</a></h1>
+<p>We have <code>digit</code> set to the first digit of the hour (<code>0</code>, <code>1</code> or <code>2</code>). Here's how we fetch the bitmap for <code>digit</code>: <a href="https://github.com/lupyuen/handdrawn-watchface/blob/master/src/lib.rs#L149-L150"><code>src/lib.rs</code></a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="comment">//  Fetch the bitmap for the digit as a constant pointer</span>
+<span class="kw">let</span> <span class="ident">bitmap</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">img</span>::<span class="ident">lv_img_dsc_t</span> <span class="op">=</span>    
+    <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">bitmaps</span>[<span class="ident">digit</span> <span class="kw">as</span> <span class="ident">usize</span>];</pre></div>
+<p>This looks... Strange. Let's break it down...</p>
+<p><em>What's <code>self.bitmaps</code>?</em></p>
+<p><code>self.bitmaps</code> is an Array of 10 hand-drawn bitmaps, indexed from 0 to 9...</p>
+<p><img src="https://lupyuen.github.io/images/handdrawn-bitmaps.png" alt="Bitmaps in Self" /></p>
+<p><em>(We'll reveal our <code>self</code> later... Hint: We're inside an object!)</em></p>
+<p>Thus to fetch the bitmap that corresponds to a digit, we do this...</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="ident">bitmap</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">bitmaps</span>[<span class="ident">digit</span>];</pre></div>
+<p><em>What's <code>usize</code>?</em></p>
+<p>Rust is extremely uptight about Types... Including the index for our Array <code>self.bitmaps</code>.</p>
+<p>In Rust, Arrays are indexed by integers of the <code>usize</code> Type. (Somewhat like <code>size_t</code> in C)</p>
+<p>Hence we need to convert (or cast) <code>digit</code> as <code>usize</code> like so...</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="ident">bitmap</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">bitmaps</span>[<span class="ident">digit</span> <span class="kw">as</span> <span class="ident">usize</span>];</pre></div>
+<p><em>What's with the &quot;<code>&amp;</code>&quot;?</em></p>
+<p>We're not gonna pass around copies of the bitmap. (Because that would be awfully inefficient in a smart watch)</p>
+<p>Instead we're passing a <strong>Reference</strong> to the bitmap. (Somewhat like a Pointer in C)</p>
+<p>To get the Reference, we insert &quot;<code>&amp;</code>&quot; like so...</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="ident">bitmap</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">bitmaps</span>[<span class="ident">digit</span> <span class="kw">as</span> <span class="ident">usize</span>];</pre></div>
+<p><em>What about <code>*const img::lv_img_dsc_t</code>?</em></p>
+<p>Remember we set <code>bitmap</code> like so...</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="ident">bitmap</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">img</span>::<span class="ident">lv_img_dsc_t</span> <span class="op">=</span> ...</pre></div>
+<p>This means we're casting the <code>bitmap</code> Reference to a weird Type...</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw-2">*</span><span class="kw">const</span> <span class="ident">img</span>::<span class="ident">lv_img_dsc_t</span></pre></div>
+<p>This is a tough nugget to crack (unlike McNuggets)... But we'll learn its true meaning in a while.</p>
+<p><em>(Hint: It's a Pointer (yep like C). And no we're not shopping for French luxury goods.)</em></p>
+<h1 id="set-the-image-source" class="section-header"><a href="#set-the-image-source">4 Set the image source</a></h1>
+<p>Our story thus far: We have <code>bitmap</code> set to the hand-drawn digit (i.e. the first digit of the hour)...</p>
+<p><img src="https://lupyuen.github.io/images/handdrawn-bitmaps2.png" alt="Bitmap" /></p>
+<p>Here's how we set the Top Left Image on our Watch Face to the bitmap: <a href="https://github.com/lupyuen/handdrawn-watchface/blob/master/src/lib.rs#L151-L154"><code>src/lib.rs</code></a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="ident">img</span>::<span class="ident">set_src</span>(                <span class="comment">//  Set the source...</span>
+    <span class="self">self</span>.<span class="ident">top_left_image</span>,     <span class="comment">//  Of the the top left image...</span>
+    <span class="ident">bitmap</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">c_void</span>  <span class="comment">//  To the digit bitmap</span>
+) <span class="question-mark">?</span> ;                        <span class="comment">//  Quit in case of error</span></pre></div>
+<p>Let's savour this chunk by chunk (<a href="https://twitter.com/MisterTechBlog/status/1320230875791945729?s=20">the old chunky way</a>)...</p>
+<p><em>What's <code>self.top_left_image</code>?</em></p>
+<p>We have 4 images inside <code>self</code>...</p>
+<p><img src="https://lupyuen.github.io/images/handdrawn-images.png" alt="Images in Self" /></p>
+<p>So <code>self.top_left_image</code> refers to the Top Left Image on our Watch Face.</p>
+<p><em>Why the studs in <code>img::set_src</code>?</em></p>
+<p>Rust is fussy about keeping things neat, tidy and modular.</p>
+<p>&quot;<code>img::</code>&quot; refers to the Module named <code>img</code>.  When we write...</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="ident">img</span>::<span class="ident">set_src</span>( ... );</pre></div>
+<p>It means we're calling the function <code>set_src</code> defined in the Module <code>img</code>. (Similar to namespaces in C++)</p>
+<p><em>Are we done yet?</em></p>
+<p>Let's recap...</p>
+<ol>
+<li>
+<p>We have a function <code>set_src</code> (from Module <code>img</code>) that will set the bitmap for an image</p>
+</li>
+<li>
+<p>We have the Top Left image: <code>self.top_left_image</code></p>
+</li>
+<li>
+<p>We have a Reference to the digit bitmap: <code>bitmap</code></p>
+</li>
+</ol>
+<p>Thus to set the bitmap for the Top Left Image we may write...</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="ident">img</span>::<span class="ident">set_src</span>(             <span class="comment">//  Set the source...</span>
+    <span class="self">self</span>.<span class="ident">top_left_image</span>,  <span class="comment">//  Of the the top left image...</span>
+    <span class="ident">bitmap</span>                <span class="comment">//  To the digit bitmap</span>
+) <span class="question-mark">?</span> ;                     <span class="comment">//  What&#39;s this???</span></pre></div>
+<p><em>Why the questionable &quot;<code>?</code>&quot; at the end?</em></p>
+<p>&quot;<code>?</code>&quot; is the <strong>Try Operator</strong> in Rust. It checks for errors.</p>
+<p>If <code>set_src</code> returns an error, Rust stops executing the current function. And returns the error immediately to the caller.</p>
+<p>(This is similar to <code>try ... catch ... throw</code> in JavaScript and Python)</p>
+<p><em>Wait! We haven't covered these two sus chunks with <code>*const</code>...</em></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="comment">//  Cast the bitmap as a constant pointer</span>
+<span class="kw">let</span> <span class="ident">bitmap</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">img</span>::<span class="ident">lv_img_dsc_t</span> <span class="op">=</span> ... ;
+
+<span class="comment">//  Set the bitmap pointer as the image source</span>
+<span class="ident">img</span>::<span class="ident">set_src</span>( ... , <span class="ident">bitmap</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">c_void</span> ) <span class="question-mark">?</span> ;</pre></div>
+<p>Yep they look highly sus... Is this really Embedded Rust?</p>
+<p>Get ready for the shocking reveal...</p>
+<h1 id="it-was-c-all-along" class="section-header"><a href="#it-was-c-all-along">5 It was C all along</a></h1>
+<p>Earlier we saw two highly sus chunks of code: <a href="https://github.com/lupyuen/handdrawn-watchface/blob/master/src/lib.rs#L149-L154"><code>src/lib.rs</code></a></p>
+<p><img src="https://lupyuen.github.io/images/handdrawn-c.png" alt="C Pointers" /></p>
+<p><em>What's <code>*const</code>?</em></p>
+<p><code>*const</code> is a <strong>Raw Pointer</strong> in Rust.</p>
+<p>It works like a Pointer in C... It's an address that points to an object in memory.</p>
+<p><em>We already have References in Rust (via the &quot;<code>&amp;</code>&quot; operator). Why do we need Raw Pointers?</em></p>
+<p>Time to fess up...</p>
+<ol>
+<li>
+<p><code>bitmap</code> is a <strong>Raw Pointer to a C Object</strong></p>
+</li>
+<li>
+<p><code>set_src</code> is a <strong>C Function</strong></p>
+</li>
+</ol>
+<p>😮 <em>But why??? Can't we do this in Rust instead of C?</em></p>
+<p>That's the beauty... Rust and C are interoprapereraberble...</p>
+<p>Ahem... <strong>Rust and C Functions can call each other!</strong></p>
+<p>Both Rust and C are <strong>low-level languages</strong>. It's perfectly OK to call C Functions from Rust (and the other way around).</p>
+<p>That's why some folks are coding in Rust instead of C for creating Embedded Gadgets.</p>
+<p><em>What C Functions are we calling?</em></p>
+<p>We're calling C Functions from the open-source <a href="https://lvgl.io/"><strong>LVGL Graphics Library</strong></a>. It's great for creating Graphical User Interfaces on Embedded Devices with images, text labels, buttons, ...</p>
+<p>The LVGL Library is used by many firmware developers to create Watch Faces for PineTime. We're calling the LVGL Library too... But from Rust.</p>
+<p>Now our sus code...</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="comment">//  Cast the bitmap as a constant pointer</span>
+<span class="kw">let</span> <span class="ident">bitmap</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">img</span>::<span class="ident">lv_img_dsc_t</span> <span class="op">=</span> ... ;
+
+<span class="comment">//  Set the bitmap pointer as the image source</span>
+<span class="ident">img</span>::<span class="ident">set_src</span>( ... , <span class="ident">bitmap</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">c_void</span> ) <span class="question-mark">?</span> ;</pre></div>
+<p>Makes more sense when we realise...</p>
+<ol>
+<li>
+<p><code>img::lv_img_dsc_t</code> is a <strong>C Struct</strong> from the LVGL Library </p>
+<p><a href="https://docs.lvgl.io/latest/en/html/overview/image.html?highlight=lv_img_dsc_t">More details</a></p>
+</li>
+<li>
+<p><code>img::set_src</code> is a <strong>C Function</strong> from the LVGL Library </p>
+<p><a href="https://docs.lvgl.io/latest/en/html/widgets/img.html?highlight=lv_img_set_src#_CPPv414lv_img_set_srcP8lv_obj_tPKv">More details</a></p>
+</li>
+</ol>
+<p>Today we won't talk much about casting C Pointers in Rust and passing them to C Functions. More details may be found in <em>&quot;The Rust Programming Languague&quot;</em> book...</p>
+<p><a href="https://doc.rust-lang.org/book/ch19-01-unsafe-rust.html">Raw Pointers in Rust</a></p>
+<p>Below is a handy map to keep us on track... It shows the code that we have explored thus far. The rest of the code awaits!</p>
+<p><img src="https://lupyuen.github.io/images/handdrawn-map-update1.jpg" alt="Map of Update Method" /></p>
+<p><a href="https://github.com/lupyuen/handdrawn-watchface/blob/master/src/lib.rs#L147-L154"><em>Here We Are</em></a></p>
+<h1 id="update-the-watch-face" class="section-header"><a href="#update-the-watch-face">6 Update the Watch Face</a></h1>
+<p>Remember our 3 toughest lines of Rust code... For updating the top left image on our Watch Face?</p>
+<p>Let's zoom out and watch how we use them: <a href="https://github.com/lupyuen/handdrawn-watchface/blob/master/src/lib.rs#L141-L185"><code>src/lib.rs</code></a></p>
+<p><img src="https://lupyuen.github.io/images/handdrawn-method.png" alt="Update Method" /></p>
+<p>Now we zoom in to the top... Where we declare the <code>update</code> method: <a href="https://github.com/lupyuen/handdrawn-watchface/blob/master/src/lib.rs#L141-L145"><code>src/lib.rs</code></a></p>
+<h2 id="declare-the-method" class="section-header"><a href="#declare-the-method">6.1 Declare the method</a></h2>
+<p><img src="https://lupyuen.github.io/images/handdrawn-method2.png" alt="Declare the Update Method" /></p>
+<p>In Rust we declare a function (or a method) by writing...</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">fn</span> ... <span class="op">-&gt;</span> ... {</pre></div>
+<p>(Similar to <code>function</code> in JavaScript and <code>def</code> in Python... But looks more mathematical)</p>
+<p><em>What's <code>update</code>?</em></p>
+<p><code>update</code> is the method that's called to update the Watch Face every minute.</p>
+<p>It accepts 2 parameters...</p>
+<ol>
+<li>
+<p><code>&amp;mut self</code></p>
+<p>This refers to our Watch Face object and the variables inside: <code>bitmaps</code>, <code>top_left_label</code>, ...</p>
+<p>(Similar to <code>self</code> in Python or <code>this</code> in JavaScript and C++)</p>
+<p><code>&amp;mut</code> means that the <code>self</code> object is passed as a Reference (instead of a copy), and that the <code>self</code> object is <strong>Mutable</strong> (can be modified).</p>
+</li>
+<li>
+<p><code>state: &amp;WatchFaceState</code></p>
+<p>This says that <code>state</code> is a Reference to a <code>WatchFaceState</code>, an object that contains the values that will be rendered to our Watch Face.</p>
+<p>Through this <code>state</code>, our caller passes the time of the day as <code>hour</code> (0 to 23) and <code>minute</code> (0 to 59).</p>
+<p>We have seen <code>state.hour</code> earlier... We used it to render the hour of the day.</p>
+</li>
+</ol>
+<h2 id="return-the-result" class="section-header"><a href="#return-the-result">6.2 Return the result</a></h2>
+<p><em>What's <code>MynewtResult</code> in the declaration above?</em></p>
+<p>Remember the Try Operator &quot;<code>?</code>&quot; for checking errors returned by Rust Functions?</p>
+<p>This works only for functions and methods that return the <code>Result</code> Type. Thus we follow the Rust error-checking convention and return a kind of <code>Result</code> named <code>MynewtResult</code>.</p>
+<p>(Mynewt refers to the <a href="http://mynewt.apache.org/">Apache Mynewt</a> embedded operating system that we're running on PineTime)</p>
+<p>Here's how we return the result in our <code>update</code> method: <a href="https://github.com/lupyuen/handdrawn-watchface/blob/master/src/lib.rs#L183-L185"><code>src/lib.rs</code></a></p>
+<p><img src="https://lupyuen.github.io/images/handdrawn-method3.png" alt="Return the result" /></p>
+<p><code>Ok( ... )</code> tells the caller that the result is OK, no errors.</p>
+<p>We write <code>Ok(())</code> when we have no result value to return.</p>
+<p>(Think of <code>()</code> in Rust like <code>void</code> in C)</p>
+<p>Note that we omit the trailing semicolon &quot;<code>;</code>&quot; when returning the result.</p>
+<p>FYI: We return errors with <code>Err( ... )</code></p>
+<h2 id="the-other-images" class="section-header"><a href="#the-other-images">6.3 The other images</a></h2>
+<p><em>We've seen <code>top_left_image</code>... What about the other images: <code>top_right_image</code>, <code>bottom_left_image</code> and <code>bottom_right_image</code>?</em></p>
+<p><img src="https://lupyuen.github.io/images/handdrawn-images.png" alt="Images in Self" /></p>
+<p>The code to update the other 3 images looks similar. Check out the rest of the <code>update</code> method here: <a href="https://github.com/lupyuen/handdrawn-watchface/blob/master/src/lib.rs#L156-L181"><code>src/lib.rs</code></a></p>
+<p><img src="https://lupyuen.github.io/images/handdrawn-map-update2.jpg" alt="Map of Update Method" /></p>
+<p><a href="https://github.com/lupyuen/handdrawn-watchface/blob/master/src/lib.rs#L138-L185"><em>Here We Are</em></a></p>
+<p>Congratulations! We're done with the <code>update</code> method... That's half of the Watch Face code!</p>
+<p>Now we move on to the <code>new</code> method... For creating the Watch Face.</p>
+<p><img src="https://lupyuen.github.io/images/handdrawn-egg.jpg" alt="Watch Face Goodies" /></p>
+<h1 id="create-the-watch-face" class="section-header"><a href="#create-the-watch-face">7 Create the Watch Face</a></h1>
+<p>Our Watch Face has plenty of goodies inside (like a Kinder Egg)...</p>
+<ol>
+<li>
+<p><code>bitmaps</code>: The hand-drawn bitmaps of the digits 0 to 9</p>
+</li>
+<li>
+<p><code>top_left_image</code>, <code>top_right_image</code>, <code>bottom_left_image</code> and <code>bottom_right_image</code>: The 4 images on our Watch Face</p>
+</li>
+</ol>
+<p>We have used them earlier but...</p>
+<p><em>How are the bitmaps and images created?</em></p>
+<p>Let's watch and learn...</p>
+<h2 id="create-a-bitmap" class="section-header"><a href="#create-a-bitmap">7.1 Create a bitmap</a></h2>
+<p>We create the bitmap for the digit 0 as a Rust Struct like so: <a href="https://github.com/lupyuen/handdrawn-watchface/blob/master/src/lib.rs#L122"><code>src/lib.rs</code></a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="comment">//  Create the bitmap struct for the digit 0</span>
+<span class="ident">img</span>::<span class="ident">lv_img_dsc_t</span> {
+    <span class="comment">//  Bitmap data, size and header</span>
+    <span class="ident">data</span>: <span class="macro">include_bytes</span><span class="macro">!</span>(<span class="string">&quot;../bitmaps/0.bin&quot;</span>) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>,
+    <span class="ident">data_size</span>,
+    <span class="ident">header</span>
+}</pre></div>
+<p>(Rust Structs are structured objects with fields inside... Just like Structs in C and Classes in Python)</p>
+<p><em>What's <code>img::lv_img_dsc_t</code>?</em></p>
+<p>We're reusing the C Struct <code>lv_img_dsc_t</code> from Module <code>img</code> of the LVGL Library. The <code>lv_img_dsc_t</code> Struct represents a bitmap in LVGL.</p>
+<p>(Rust Structs and C Structs are generally interchangeable, with the right settings)</p>
+<p>In Rust, we create instances of Structs by writing...</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="ident">struct_type</span> {
+    <span class="ident">field_name</span>: <span class="ident">field_value</span>,
+    ...
+}</pre></div>
+<p>Let's look at the 3 fields inside our bitmap Struct...</p>
+<ol>
+<li>
+<p><code>data</code>: The bitmap data</p>
+</li>
+<li>
+<p><code>data_size</code>: The size of the bitmap</p>
+</li>
+<li>
+<p><code>header</code>: The bitmap header (like the bitmap dimensions)</p>
+</li>
+</ol>
+<p>(How do we define a Struct and its fields? We'll find out later)</p>
+<h2 id="load-the-bitmap-data" class="section-header"><a href="#load-the-bitmap-data">7.2 Load the bitmap data</a></h2>
+<p><em>What's <code>0.bin</code>? Why do we use it with <code>include_bytes</code>?</em></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="comment">//  Load the bitmap file &quot;0.bin&quot; as the bitmap data field</span>
+<span class="ident">data</span>: 
+    <span class="macro">include_bytes</span><span class="macro">!</span>(<span class="string">&quot;../bitmaps/0.bin&quot;</span>) 
+        <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span></pre></div>
+<p><code>0.bin</code> is the binary file that contains the hand-drawn bitmap for the digit 0. (Encoded in a special RGB565 format... Which we'll see later)</p>
+<p>The file is located in the <code>bitmaps</code> source folder...</p>
+<p><img src="https://lupyuen.github.io/images/handdrawn-files.png" alt="Watch Face Files" /></p>
+<p>To embed the contents of <code>0.bin</code> into our source file (at <code>src/lib.rs</code>), we call <code>include_bytes</code>.</p>
+<p>Thus the field <code>data</code> will be compiled literally as...</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="comment">//  include_bytes will be expanded like this...</span>
+<span class="ident">data</span>: 
+    <span class="kw-2">&amp;</span>[ <span class="number">0x00</span>, <span class="number">0x01</span>, <span class="number">0x02</span>, ... ]  <span class="comment">//  Reference to a byte array</span>
+        <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>            <span class="comment">//  Cast to a C Pointer</span></pre></div>
+<p>(Yep it looks like <code>#include</code> from C... But works on binary files. Nifty!)</p>
+<p><em>Why <code>*const u8</code>?</em></p>
+<p>Our bitmap Struct will be passed to a C Function... So we need to convert Rust References to C Pointers.</p>
+<p>We write <code>as *const u8</code> to convert the binary contents of <code>0.bin</code> from a Rust Reference to a C Pointer.</p>
+<p><em>Why is there a &quot;<code>!</code>&quot; after <code>include_bytes</code>?</em></p>
+<p>Because <code>include_bytes</code> is a Rust Macro (not a Rust Function). It's interpreted by the Rust Compiler while compiling our Rust code.</p>
+<p>Rust makes it so breezy easy to embed binary files (like bitmaps) into our Watch Face... Thanks to <code>include_bytes!</code></p>
+<p><a href="https://doc.rust-lang.org/std/macro.include_bytes.html">More about <code>include_bytes</code></a></p>
+<h2 id="set-the-bitmap-size" class="section-header"><a href="#set-the-bitmap-size">7.3 Set the bitmap size</a></h2>
+<p>We've seen how the <code>data</code> field is loaded from the bitmap file <code>0.bin</code>: <a href="https://github.com/lupyuen/handdrawn-watchface/blob/master/src/lib.rs#L122"><code>src/lib.rs</code></a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="comment">//  Create the bitmap struct for the digit 0</span>
+<span class="ident">img</span>::<span class="ident">lv_img_dsc_t</span> {
+    <span class="comment">//  We have seen this...</span>
+    <span class="ident">data</span>: <span class="macro">include_bytes</span><span class="macro">!</span>(<span class="string">&quot;../bitmaps/0.bin&quot;</span>) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>,
+    <span class="comment">//  Now let&#39;s do data_size and header</span>
+    <span class="ident">data_size</span>,
+    <span class="ident">header</span>
+}</pre></div>
+<p>We move on to the next field <code>data_size</code>, the number of bytes in the bitmap file.</p>
+<p><code>data_size</code> is computed like so: <a href="https://github.com/lupyuen/handdrawn-watchface/blob/master/src/lib.rs#L62-L88"><code>src/lib.rs</code></a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="doccomment">/// Width of each image and bitmap</span>
+<span class="kw">const</span> <span class="ident">IMAGE_WIDTH</span>: <span class="ident">u32</span>  <span class="op">=</span> <span class="number">80</span>;
+
+<span class="doccomment">/// Height of each image and bitmap</span>
+<span class="kw">const</span> <span class="ident">IMAGE_HEIGHT</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">100</span>;
+
+<span class="doccomment">/// 2 bytes per pixel, in RGB565 format</span>
+<span class="kw">const</span> <span class="ident">BYTES_PER_PIXEL</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">2</span>;
+
+<span class="comment">//  Compute the image size</span>
+<span class="kw">let</span> <span class="ident">data_size</span> <span class="op">=</span> <span class="ident">IMAGE_WIDTH</span> <span class="op">*</span> <span class="ident">IMAGE_HEIGHT</span> <span class="op">*</span> <span class="ident">BYTES_PER_PIXEL</span>;</pre></div>
+<p>(<code>u32</code> means unsigned 32-bit integer)</p>
+<p>Our bitmap <code>0.bin</code> is 80 pixels wide and 100 pixels wide.</p>
+<p>In RGB565 Encoding, each pixel is represented by 2 bytes of colour data.</p>
+<p>So <code>data_size</code> works out to <code>80 * 100 * 2</code> or <code>16,000</code> bytes.</p>
+<p><em>There's something odd about <code>data_size</code>... Shouldn't it be:</em></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="comment">//  Create the bitmap struct for the digit 0</span>
+<span class="ident">img</span>::<span class="ident">lv_img_dsc_t</span> {
+    <span class="comment">//  Set the value of data_size</span>
+    <span class="ident">data_size</span>: <span class="ident">data_size</span>,
+    ...</pre></div>
+<p>That's a handy short form in Rust... When creating Structs, we may omit the value if it has the same name as the field.</p>
+<p>So the above code may be simplified as...</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="comment">//  Create the bitmap struct for the digit 0</span>
+<span class="ident">img</span>::<span class="ident">lv_img_dsc_t</span> {
+    <span class="comment">//  Short form of `data_size: data_size`</span>
+    <span class="ident">data_size</span>,
+    <span class="comment">//  Short form of `header: header`</span>
+    <span class="ident">header</span>,
+    ...</pre></div>
+<p>Let's talk about <code>header</code>, the header for our bitmap...</p>
+<h2 id="set-the-bitmap-header" class="section-header"><a href="#set-the-bitmap-header">7.4 Set the bitmap header</a></h2>
+<p>According to the definition of the <code>lv_img_dsc_t</code> Struct in LVGL, we need to provide a <code>header</code> field that describes...</p>
+<ol>
+<li>
+<p>Colour format of our bitmap (i.e. True Color)</p>
+</li>
+<li>
+<p>Width of our bitmap (i.e. 80 pixels)</p>
+</li>
+<li>
+<p>Height of our bitmap (i.e. 100 pixels)</p>
+</li>
+</ol>
+<p>We create the <code>header</code> like so: <a href="https://github.com/lupyuen/handdrawn-watchface/blob/master/src/lib.rs#L81-L85"><code>src/lib.rs</code></a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="comment">//  Compose the image header</span>
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">header</span> <span class="op">=</span> <span class="ident">img</span>::<span class="ident">lv_img_header_t</span>::<span class="ident">default</span>();
+<span class="ident">header</span>.<span class="ident">set_cf</span>(<span class="ident">img</span>::<span class="ident">LV_IMG_CF_TRUE_COLOR</span>);  <span class="comment">//  Color Format</span>
+<span class="ident">header</span>.<span class="ident">set_w</span>(<span class="ident">IMAGE_WIDTH</span>);                 <span class="comment">//  Width</span>
+<span class="ident">header</span>.<span class="ident">set_h</span>(<span class="ident">IMAGE_HEIGHT</span>);                <span class="comment">//  Height</span></pre></div>
+<h2 id="load-all-10-bitmaps" class="section-header"><a href="#load-all-10-bitmaps">7.5 Load all 10 bitmaps</a></h2>
+<p>We have seen this code for loading the bitmap for the digit 0...</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="comment">//  Create the bitmap struct for the digit 0</span>
+<span class="ident">img</span>::<span class="ident">lv_img_dsc_t</span> {
+    <span class="comment">//  Load the bitmap bytes</span>
+    <span class="ident">data</span>: <span class="macro">include_bytes</span><span class="macro">!</span>(<span class="string">&quot;../bitmaps/0.bin&quot;</span>) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>,
+    <span class="comment">//  Set the bitmap size</span>
+    <span class="ident">data_size</span>,
+    <span class="comment">//  Set the bitmap header</span>
+    <span class="ident">header</span>
+}</pre></div>
+<p>Let's load all 10 bitmaps, for digits 0 to 9: <a href="https://github.com/lupyuen/handdrawn-watchface/blob/master/src/lib.rs#L120-L132"><code>src/lib.rs</code></a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="comment">//  Load the bitmaps</span>
+<span class="ident">bitmaps</span>: [
+    <span class="ident">img</span>::<span class="ident">lv_img_dsc_t</span> { <span class="ident">data</span>: <span class="macro">include_bytes</span><span class="macro">!</span>(<span class="string">&quot;../bitmaps/0.bin&quot;</span>) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>, <span class="ident">header</span>, <span class="ident">data_size</span> },
+    <span class="ident">img</span>::<span class="ident">lv_img_dsc_t</span> { <span class="ident">data</span>: <span class="macro">include_bytes</span><span class="macro">!</span>(<span class="string">&quot;../bitmaps/1.bin&quot;</span>) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>, <span class="ident">header</span>, <span class="ident">data_size</span> },
+    <span class="ident">img</span>::<span class="ident">lv_img_dsc_t</span> { <span class="ident">data</span>: <span class="macro">include_bytes</span><span class="macro">!</span>(<span class="string">&quot;../bitmaps/2.bin&quot;</span>) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>, <span class="ident">header</span>, <span class="ident">data_size</span> },
+    <span class="comment">//  Omitted: Bitmaps 3 to 8</span>
+    <span class="ident">img</span>::<span class="ident">lv_img_dsc_t</span> { <span class="ident">data</span>: <span class="macro">include_bytes</span><span class="macro">!</span>(<span class="string">&quot;../bitmaps/9.bin&quot;</span>) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>, <span class="ident">header</span>, <span class="ident">data_size</span> },
+]</pre></div>
+<p><code>bitmaps</code> is the array of bitmaps that we have used earlier.</p>
+<p>This code appears at the end of the <code>new</code> method for creating our Watch Face...</p>
+<p><img src="https://lupyuen.github.io/images/handdrawn-map-new1.jpg" alt="Map of New Method" /></p>
+<p><a href="https://github.com/lupyuen/handdrawn-watchface/blob/master/src/lib.rs#L120-L132"><em>Here We Are</em></a></p>
+<p>Let's study the rest of the code in the <code>new</code> method...</p>
+<h2 id="create-the-images" class="section-header"><a href="#create-the-images">7.6 Create the images</a></h2>
+<p>We create the top left image like so: <a href="https://github.com/lupyuen/handdrawn-watchface/blob/master/src/lib.rs#L92-L97"><code>src/lib.rs</code></a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="ident">top_left_image</span>: {
+    <span class="comment">//  Create the top left image</span>
+    <span class="comment">//  `?` will terminate the function in case of error</span>
+    <span class="kw">let</span> <span class="ident">image</span> <span class="op">=</span> <span class="ident">img</span>::<span class="ident">create</span>(<span class="ident">screen</span>, <span class="ident">ptr</span>::<span class="ident">null</span>()) <span class="question-mark">?</span> ; 
+
+    <span class="comment">//  Set image position to top left</span>
+    <span class="ident">obj</span>::<span class="ident">set_pos</span>(<span class="ident">image</span>, <span class="number">40</span>, <span class="number">20</span>) <span class="question-mark">?</span> ;  
+
+    <span class="comment">//  Return the image as top_left_image</span>
+    <span class="ident">image</span>  <span class="comment">//  Omit the semicolon                            </span>
+},</pre></div>
+<p>This form of Rust looks unusual, but think of it like this...</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="ident">top_left_image</span>: { ... ; <span class="ident">image</span> },</pre></div>
+<p>In Rust the curly brackets <code>{ ... }</code> represent a block of code.</p>
+<p>Every block of code in Rust evaluates to a value. Here the last line of code in the block, <code>image</code>, is returned as the value of the block. (Note that the semicolon <code>&quot;;&quot;</code> is omitted when we return values)</p>
+<p><em>What's <code>screen</code>?</em></p>
+<p><code>screen</code> refers to the current active screen in LVGL.</p>
+<p><code>screen</code> is defined in <a href="https://github.com/lupyuen/handdrawn-watchface/blob/master/src/lib.rs#L79"><code>src/lib.rs</code></a> as...</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="comment">//  Get the active screen</span>
+<span class="kw">let</span> <span class="ident">screen</span> <span class="op">=</span> <span class="ident">watchface</span>::<span class="ident">get_active_screen</span>();</pre></div>
+<p>We create the top right, bottom left and bottom right images the same way: <a href="https://github.com/lupyuen/handdrawn-watchface/blob/master/src/lib.rs#L99-L118"><code>src/lib.rs</code></a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="comment">//  Create the top right image</span>
+<span class="ident">top_right_image</span>: {
+    <span class="kw">let</span> <span class="ident">image</span> <span class="op">=</span> <span class="ident">img</span>::<span class="ident">create</span>(<span class="ident">screen</span>, <span class="ident">ptr</span>::<span class="ident">null</span>()) <span class="question-mark">?</span> ;
+    <span class="ident">obj</span>::<span class="ident">set_pos</span>(<span class="ident">image</span>, <span class="number">120</span>, <span class="number">20</span>) <span class="question-mark">?</span> ;  <span class="comment">//  Set image position to top right</span>
+    <span class="ident">image</span>                             <span class="comment">//  Return the image as top_right_image</span>
+},
+
+<span class="comment">//  Create the bottom left image</span>
+<span class="ident">bottom_left_image</span>: {
+    <span class="kw">let</span> <span class="ident">image</span> <span class="op">=</span> <span class="ident">img</span>::<span class="ident">create</span>(<span class="ident">screen</span>, <span class="ident">ptr</span>::<span class="ident">null</span>()) <span class="question-mark">?</span> ;
+    <span class="ident">obj</span>::<span class="ident">set_pos</span>(<span class="ident">image</span>, <span class="number">40</span>, <span class="number">120</span>) <span class="question-mark">?</span> ;  <span class="comment">//  Set image position to bottom left</span>
+    <span class="ident">image</span>                             <span class="comment">//  Return the image as bottom_left_image</span>
+},
+
+<span class="comment">//  Create the bottom right image</span>
+<span class="ident">bottom_right_image</span>: {
+    <span class="kw">let</span> <span class="ident">image</span> <span class="op">=</span> <span class="ident">img</span>::<span class="ident">create</span>(<span class="ident">screen</span>, <span class="ident">ptr</span>::<span class="ident">null</span>()) <span class="question-mark">?</span> ;
+    <span class="ident">obj</span>::<span class="ident">set_pos</span>(<span class="ident">image</span>, <span class="number">120</span>, <span class="number">120</span>) <span class="question-mark">?</span> ;  <span class="comment">//  Set image position to bottom right</span>
+    <span class="ident">image</span>                              <span class="comment">//  Return the image as bottom_right_image</span>
+},</pre></div>
+<p>And that's how we create images in the <code>new</code> Method.</p>
+<p>The code is located in the middle of the <code>new</code> Method...</p>
+<p><img src="https://lupyuen.github.io/images/handdrawn-map-new2.jpg" alt="Map of New Method" /></p>
+<p><a href="https://github.com/lupyuen/handdrawn-watchface/blob/master/src/lib.rs#L92-L118"><em>Here We Are</em></a></p>
+<h2 id="wrap-them-all-up" class="section-header"><a href="#wrap-them-all-up">7.7 Wrap them all up</a></h2>
+<p>We have seen various parts of the <code>new</code> Method... Let's wrap them all up into a proper Method Defintion: <a href="https://github.com/lupyuen/handdrawn-watchface/blob/master/src/lib.rs#L76-L136"><code>src/lib.rs</code></a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="doccomment">/// Create the Watch Face</span>
+<span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-&gt;</span> <span class="ident">MynewtResult</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="comment">//  Get the active screen</span>
+    <span class="kw">let</span> <span class="ident">screen</span> <span class="op">=</span> <span class="ident">watchface</span>::<span class="ident">get_active_screen</span>();
+
+    <span class="comment">//  Seen earlier: Compose the image header</span>
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">header</span> <span class="op">=</span> ... ;
+
+    <span class="comment">//  Seen earlier: Compute the image size</span>
+    <span class="kw">let</span> <span class="ident">data_size</span> <span class="op">=</span> ... ;
+
+    <span class="comment">//  Create the widgets</span>
+    <span class="kw">let</span> <span class="ident">watch_face</span> <span class="op">=</span> <span class="self">Self</span> {
+
+        <span class="comment">//  Seen earlier: Create the top left image</span>
+        <span class="ident">top_left_image</span>: { ... },
+
+        <span class="comment">//  Seen earlier: Create the top right image</span>
+        <span class="ident">top_right_image</span>: { ... },
+
+        <span class="comment">//  Seen earlier: Create the bottom left image</span>
+        <span class="ident">bottom_left_image</span>: { ... },
+
+        <span class="comment">//  Seen earlier: Create the bottom right image</span>
+        <span class="ident">bottom_right_image</span>: { ... },
+
+        <span class="comment">//  Seen earlier: Load the bitmaps</span>
+        <span class="ident">bitmaps</span>: [ ... ],
+    };
+    <span class="comment">//  Return the watch face</span>
+    <span class="prelude-val">Ok</span>(<span class="ident">watch_face</span>)
+}</pre></div>
+<p>TODO</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="doccomment">/// Create the Watch Face</span>
+<span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-&gt;</span> <span class="ident">MynewtResult</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> { ...</pre></div>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="doccomment">/// Create the Watch Face</span>
+<span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-&gt;</span> <span class="ident">MynewtResult</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    ...
+    <span class="comment">//  Create the widgets</span>
+    <span class="kw">let</span> <span class="ident">watch_face</span> <span class="op">=</span> <span class="self">Self</span> {
+        ...
+    };
+    <span class="comment">//  Return the watch face</span>
+    <span class="prelude-val">Ok</span>(<span class="ident">watch_face</span>)
+}</pre></div>
+<p><img src="https://lupyuen.github.io/images/handdrawn-map-new4.jpg" alt="Map of New Method" /></p>
+<p><a href="https://github.com/lupyuen/handdrawn-watchface/blob/master/src/lib.rs#L73-L136"><em>Here We Are</em></a></p>
+<h1 id="webassembly-rust" class="section-header"><a href="#webassembly-rust">8 WebAssembly Rust</a></h1>
+<p>TODO</p>
+<h1 id="embedded-rust" class="section-header"><a href="#embedded-rust">9 Embedded Rust</a></h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/handdrawn-watchfaces.jpg" alt="Your Own Watch Face" /></p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">10 What's Next</a></h1>
+<p>TODO</p>
+<p>Lemme know if you're keen to help! :-)</p>
+<p>In the meantime, please go right ahead to create your own Watch Faces and publish them on crates.io... So that all PineTime Owners can share, learn and enjoy :-)</p>
+<p><a href="https://lupyuen.github.io">Check out my PineTime articles</a></p>
+<p><a href="https://lupyuen.github.io/rss.xml">RSS Feed</a></p>
+<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
+<p><a href="https://github.com/lupyuen/pinetime-rust-mynewt/blob/master/rust/app/src/handdrawn.md"><code>github.com/lupyuen/pinetime-rust-mynewt/rust/app/src/handdrawn.md</code></a></p>
+
+    
+</body>
+</html>

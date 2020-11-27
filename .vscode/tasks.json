@@ -1,0 +1,72 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "1️⃣ Generate Resume",
+            "type": "shell",
+            "windows": {
+                "command": "cmd",
+                "args": [
+                    "/c",
+                    " scripts\\gen-resume.cmd && echo ✅ ◾ ️Done! "
+                ]
+            },
+            "osx": {
+                "command": "bash",
+                "args": [
+                    "-c",
+                    "-l",
+                    " scripts/gen-resume.sh && echo ✅ ◾ ️Done! "
+                ]
+            },
+            "linux": {
+                "command": "bash",
+                "args": [
+                    "-c",
+                    "-l",
+                    " scripts/gen-resume.sh && echo ✅ ◾ ️Done! "
+                ]
+            },
+            "presentation": {
+                "clear": true
+            }
+        },
+        {
+            "label": "📖 Generate Doc",
+            "type": "shell",
+            "windows": {
+                "command": "cmd",
+                "args": [
+                    "/c",
+                    " echo TODO && echo ✅ ◾ ️Done! "
+                ]
+            },
+            "osx": {
+                "command": "bash",
+                "args": [
+                    "-c",
+                    "-l",
+                    " article=pinecone ; set -e -x ; cat scripts/articles/$article-header.html scripts/rustdoc-header.html >article-rustdoc-header.html ; rustdoc --output articles --html-in-header article-rustdoc-header.html --html-before-content scripts/rustdoc-before.html src/$article.md ; echo ✅ ◾ ️Done! "
+                ]
+            },
+            "linux": {
+                "command": "bash",
+                "args": [
+                    "-c",
+                    "-l",
+                    " set -e -x ; echo TODO ; echo ✅ ◾ ️Done! "
+                ]
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "clear": true
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}
