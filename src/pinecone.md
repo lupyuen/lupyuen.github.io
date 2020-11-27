@@ -20,45 +20,27 @@
 
     Rust runs perfectly fine on RISC-V microcontrollers. (I have proof of that)
 
-    It's great that Pine64 is reaching out to the Open Source Community through the PineCone Nutcracker initiative... Because it takes A Humongous Village to get BL602 ready for real-world gadgets.
+It's great that Pine64 is reaching out to the Open Source Community through the PineCone Nutcracker initiative... Because it takes A Humongous Village to get BL602 ready for real-world gadgets.
 
-TODO
+_How does BL602 compare with ESP32?_
 
-Vs ESP32: ESP32 is more of a WiFi Controller that supports embedded apps. It's different from Arm and RISC-V general-purpose microcontrollers
-blobs
+- BL602 is a __General Purpose Microcontroller__ that supports Bluetooth LE and WiFi
 
-Hope this addresses the confusion over the new gadget
+- ESP32 is more of a __Bluetooth LE + WiFi Controller__ that supports Embedded Apps
 
-FreeRTOS can be daunting for newcomers
-No port for FreeRTOS yet
-SiFive dr who great for devs
+To folks who are familiar with Arm microcontrollers (STM32 Blue Pill, Nordic nRF52), BL602 looks like another microcontroller... Except that it runs on the RISC-V Instruction Set instead of Arm.
 
-With the pandemic
-Might be good to learn RISC-V 
-Understand how we might migrate arm
+Hope this addresses the confusion over BL602, as discussed [here](https://news.ycombinator.com/item?id=24916086) and [here](https://news.ycombinator.com/item?id=24877335)
 
-Won't run linux
-Education
+_(Yes there seems to be a new ESP8266 based on RISC-V, but details are scarce so we'll wait and see)_
 
-Before Arm gets too successful
-Lets consider options
+_Why not stick with Arm? Why get adventurous with RISC-V?_
 
-Switch runs on arm
-#1 gaming console
-So does iPhone and the new M1 Macs
+Nintendo Switch (the #1 gaming console) runs on Arm. iPhone and the new M1 Macs also run on Arm.  __Most of our gadgets are powered by Arm today.__
 
+Before Arm gets too successful and locks us in... Shouldn't we explore alternatives like RISC-V?
 
-Priced at ESP8266
-Low power
-Wearables / PineTime maybe?
-
-Arm vs RISC-V
-
-BL602 vs ESP32
-
-[Discussion here](https://news.ycombinator.com/item?id=24916086)
-
-[More discussion](https://news.ycombinator.com/item?id=24877335)
+# TODO
 
 Form Factor:
 Similar to [EBYTE E73-TBB](https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004?source=friends_link&sk=bb4e2523b922d0870259ab3fa696c7da) (nRF52) /
@@ -85,6 +67,17 @@ Sipeed JTAG dongle
 Porting Mynewt + Rust
 
 BL602 vs SiFive HiFive, GD32 VF103 (Pinecil)
+
+FreeRTOS can be daunting for newcomers
+No port for FreeRTOS yet
+SiFive dr who great for devs
+
+With the pandemic
+Might be good to learn RISC-V 
+Understand how we might migrate arm
+Education
+
+why reverse-engineer ble and wifi
 
 [Check out my articles](https://lupyuen.github.io)
 
