@@ -1,5 +1,7 @@
 # Quick Peek of PineCone BL602 RISC-V Evaluation Board
 
+![PineCone BL602 RISC-V Evaluation Board](https://lupyuen.github.io/images/pinecone-title.jpg)
+
 TODO
 
 Form Factor:
