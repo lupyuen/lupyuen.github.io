@@ -1,32 +1,30 @@
 # Quick Peek of PineCone BL602 RISC-V Evaluation Board
 
-Form factor
-Nrf52
+Form Factor:
+Similar to [EBYTE E73-TBB](https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004?source=friends_link&sk=bb4e2523b922d0870259ab3fa696c7da) (nRF52) /
+BLE plus WiFi
 
-Ble WiFi
+Firmware Build:
+Windows /
+Mynewt /
+macOS /
+VSCode /
+Github Actions
 
-Windows build
-Mynewt
-Github actions
-macOS
-VSCode
-
-How to test
-Buspirate
+How to Test:
+Bus Pirate /
 PineTime is easier to test
 
-Usb
-Load from uart
+USB:
+Load from uart /
 Sdio
 
-JTAG debugger
-Sipeed dongle
+JTAG Debugger:
+Sipeed JTAG dongle
 
-Mynewt
-Rust
+Porting Mynewt + Rust
 
-Vs hifive, gd32
-Pinecil
+BL602 vs SiFive HiFive, GD32 VF103 (Pinecil)
 
 [Check out my articles](https://lupyuen.github.io)
 
