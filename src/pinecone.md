@@ -4,6 +4,18 @@
 
 TODO
 
+Priced at ESP8266
+Low power
+Wearables / PineTime maybe?
+
+Arm vs RISC-V
+
+BL602 vs ESP32
+
+[Discussion here](https://news.ycombinator.com/item?id=24916086)
+
+[More discussion](https://news.ycombinator.com/item?id=24877335)
+
 Form Factor:
 Similar to [EBYTE E73-TBB](https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004?source=friends_link&sk=bb4e2523b922d0870259ab3fa696c7da) (nRF52) /
 BLE plus WiFi
