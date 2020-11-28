@@ -66,7 +66,9 @@
     <h1 class="title">Quick Peek of PineCone BL602 RISC-V Evaluation Board</h1>
     <nav id="TOC"><ul>
 <li><a href="#pinecone-bl602-why-does-it-matter">1 PineCone BL602: Why does it matter?</a><ul></ul></li>
-<li><a href="#todo">2 TODO</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/pinecone-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board" /></p>
+<li><a href="#the-thing-about-risc-v-and-pinecone-bl602">2 The Thing About RISC-V and PineCone BL602</a><ul></ul></li>
+<li><a href="#reverse-engineering-the-bluetooth-le-and-wifi-drivers">3 Reverse Engineering the Bluetooth LE and WiFi Drivers</a><ul></ul></li>
+<li><a href="#todo">4 TODO</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/pinecone-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board" /></p>
 <h1 id="pinecone-bl602-why-does-it-matter" class="section-header"><a href="#pinecone-bl602-why-does-it-matter">1 PineCone BL602: Why does it matter?</a></h1>
 <ol>
 <li>
@@ -100,7 +102,67 @@
 <p><em>Why not stick with Arm? Why get adventurous with RISC-V?</em></p>
 <p>Nintendo Switch (the #1 gaming console) runs on Arm. iPhone and the new M1 Macs also run on Arm.  <strong>Most of our gadgets are powered by Arm today.</strong></p>
 <p>Before Arm gets too successful and locks us in... Shouldn't we explore alternatives like RISC-V?</p>
-<h1 id="todo" class="section-header"><a href="#todo">2 TODO</a></h1>
+<h1 id="the-thing-about-risc-v-and-pinecone-bl602" class="section-header"><a href="#the-thing-about-risc-v-and-pinecone-bl602">2 The Thing About RISC-V and PineCone BL602</a></h1>
+<p>32-bit RISC-V microcontrollers all run on the same core instruction set.</p>
+<p><em>So the same firmware should run on different brands of RISC-V microcontrollers... Right?</em></p>
+<p>Nope! Because across different brands of RISC-V microcontrollers...</p>
+<ol>
+<li>
+<p><strong>Peripherals and Input/Output Ports</strong> are implemented differently: Timer, GPIO, UART, I2C, SPI, ...</p>
+</li>
+<li>
+<p><strong>Exceptions and Interrupts</strong> also work differently on various RISC-V microcontrollers.</p>
+<p>(FYI: Arm microcontrollers all handle Exceptions and Interrupts the same way)</p>
+</li>
+</ol>
+<p>It's not so straightforward to port existing RISC-V firmware to BL602.</p>
+<p><em>How bad is the RISC-V firmware portability problem?</em></p>
+<p>Let's compare BL602 with the two most popular models of 32-bit RISC-V microcontrollers...</p>
+<ol>
+<li>
+<p><strong>SiFive FE310</strong> (Released 2017)</p>
+<ul>
+<li>Used in HiFive1 dev board</li>
+<li>Supported by major Real Time Operating Systems (including Mynewt, RIOT and Zephyr)</li>
+</ul>
+</li>
+<li>
+<p><strong>GigaDevice GD32 VF103</strong> (Released 2019)</p>
+<ul>
+<li>Used in Pinecil soldering iron and <a href="https://www.seeedstudio.com/catalogsearch/result/?q=Gd32">various dev boards</a></li>
+<li>Supported by PlatformIO development tool</li>
+<li><strong>Not Supported by Mynewt, RIOT and Zephyr</strong></li>
+</ul>
+</li>
+<li>
+<p><strong>BL602</strong> (Released 2020)</p>
+<ul>
+<li>No commercial products yet</li>
+<li>Supports Bluetooth LE and WiFi (unlike the earlier microcontrollers)</li>
+<li>Supported by FreeRTOS</li>
+<li><strong>Not Supported by PlatformIO, Mynewt, RIOT and Zephyr</strong></li>
+</ul>
+</li>
+</ol>
+<p>As we can see, firmware support is not so great for newer RISC-V microcontrollers.</p>
+<p>Firmware created for Pinecil will NOT run on PineCone... Even the simplest firmware for blinking the LED!</p>
+<p><em>How do we create portable firmware for RISC-V?</em></p>
+<p>We'll have to isolate the differences with a layer of low-level firmware code known as the
+<strong>Hardware Abstraction Layer (HAL)</strong>.</p>
+<p>So when we port the firmware from, say, Pinecil to PineCone, we need to replace the HAL for GD32 VF103 by the HAL for BL602.</p>
+<p><em>Sounds like a lot of tedious repetitive work. Is there a sustainable way to create portable firmware for RISC-V?</em></p>
+<p>Yes, by <strong>adopting a modern Embedded Operating System</strong> like Mynewt, RIOT and Zephyr.</p>
+<p>These operating systems expose a high-level API for various Peripherals (Timers, GPIO, I2C, SPI, ...) that works across multiple microcontrollers (for both Arm and RISC-V).</p>
+<p>But first we need to port Mynewt, RIOT and Zephyr to BL602. </p>
+<p>The <a href="https://www.pine64.org/2020/10/28/nutcracker-challenge-blob-free-wifi-ble/"><strong>PineCone Nutcracker</strong></a> initiative helps to accelerate the porting process. We'll pool together the necessary skills and software from the Open Source Community, to make this work.</p>
+<p><em>Is there hope for Mynewt / RIOT / Zephyr on BL602?</em></p>
+<p>I shall be porting Mynewt + Rust to BL602, and documenting the porting process. </p>
+<p>Why? Because it's an educational exercise that helps us better understand the BL602 internals.</p>
+<p>And it will be a helpful reference for porting other Embedded Operating Systems to BL602.</p>
+<p>Let's talk about the harder PineCone Nutcracker Challenge: Reverse engineering the Bluetooth LE and WiFi drivers for BL602...</p>
+<h1 id="reverse-engineering-the-bluetooth-le-and-wifi-drivers" class="section-header"><a href="#reverse-engineering-the-bluetooth-le-and-wifi-drivers">3 Reverse Engineering the Bluetooth LE and WiFi Drivers</a></h1>
+<p>TODO</p>
+<h1 id="todo" class="section-header"><a href="#todo">4 TODO</a></h1>
 <p>Form Factor:
 Similar to <a href="https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004?source=friends_link&amp;sk=bb4e2523b922d0870259ab3fa696c7da">EBYTE E73-TBB</a> (nRF52) /
 BLE plus WiFi</p>
