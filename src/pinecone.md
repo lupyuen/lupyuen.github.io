@@ -108,7 +108,47 @@ Let's talk about the harder PineCone Nutcracker Challenge: Reverse engineering t
 
 # Reverse Engineering the Bluetooth LE and WiFi Drivers
 
-TODO
+BL602 feels exciting. The mass market RISCV microcontrollers never had onboard BluetoothLE and WiFi... Until now!
+
+Unfortunately we don't have complete documentation about the implementation of BLE and WiFi on bl602. (And i totally understand if there are commercial reasons for this omission)
+
+But we have the compiled RISC-V libraries that we may Reverse Engineer to understand the BLE and WiFi implementation.
+
+That's the crux of the PineCone Nutcracker Challenge... Decompile the BLE and WiFi code, understand how the RISCV code works. 
+
+Then reimplement the wireless functions the open source way. Perhaps by adapting the wireless drivers from Mynewt (NimBLE), RIOT and Zephyr.
+
+Let's walk through one possible approach for reverse engineering the WiFi driver. (I'm sure there are many other ways to do this)
+
+## How does the CPU talk to the WiFi controller?
+
+From the [BL602 Reference Manual](https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en) (Page 17), we see that
+
+images\pinecone-wram.png
+
+## Analyse the Linker Map
+
+1. Click here to open the Google Sheet: [PineCone BL602 AT Demo Linker Map (bl602_demo_at.map)](https://docs.google.com/spreadsheets/d/16yHquQ6E4bVj43piwQxssa1RaUr9yq9oL7hVf224Ijk/edit#gid=381366828&fvid=1359565135)
+
+1. Click the `Symbols` Sheet
+
+1. Click `Data` ➜  `Filter Views` ➜  `None`
+
+1. Click `Data` ➜  `Filter Views` ➜  `All Objects By Size`
+
+1. It takes a while to sort the objects... Be patient
+
+images\pinecone-linkermap.png
+
+## Find the WiFi buffers
+
+## Track down the WiFi functions
+
+Understand the Wireless RAM interface
+
+## Is there a Blob for the WiFi Controller?
+
+What's really inside the WiFi Controller?
 
 # TODO
 
