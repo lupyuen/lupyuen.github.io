@@ -106,7 +106,7 @@ And it will be a helpful reference for porting other Embedded Operating Systems 
 
 Let's talk about the harder PineCone Nutcracker Challenge: Reverse engineering the Bluetooth LE and WiFi drivers for BL602...
 
-# Reverse Engineering the Bluetooth LE and WiFi Drivers
+# Reverse Engineer the Bluetooth LE and WiFi Drivers
 
 BL602 feels exciting. The mass market RISC-V microcontrollers never had onboard Bluetooth LE and WiFi... Until now!
 

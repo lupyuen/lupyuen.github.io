@@ -67,7 +67,7 @@
     <nav id="TOC"><ul>
 <li><a href="#pinecone-bl602-why-does-it-matter">1 PineCone BL602: Why does it matter?</a><ul></ul></li>
 <li><a href="#the-thing-about-risc-v-and-pinecone-bl602">2 The Thing About RISC-V and PineCone BL602</a><ul></ul></li>
-<li><a href="#reverse-engineering-the-bluetooth-le-and-wifi-drivers">3 Reverse Engineering the Bluetooth LE and WiFi Drivers</a><ul>
+<li><a href="#reverse-engineer-the-bluetooth-le-and-wifi-drivers">3 Reverse Engineer the Bluetooth LE and WiFi Drivers</a><ul>
 <li><a href="#how-does-our-wifi-driver-talk-to-the-wifi-controller">3.1 How does our WiFi Driver talk to the WiFi Controller?</a><ul></ul></li>
 <li><a href="#analyse-the-linker-map">3.2 Analyse the Linker Map</a><ul></ul></li>
 <li><a href="#find-the-wifi-buffers">3.3 Find the WiFi Buffers</a><ul></ul></li>
@@ -165,7 +165,7 @@
 <p>Why? Because it's an educational exercise that helps us better understand the BL602 internals.</p>
 <p>And it will be a helpful reference for porting other Embedded Operating Systems to BL602.</p>
 <p>Let's talk about the harder PineCone Nutcracker Challenge: Reverse engineering the Bluetooth LE and WiFi drivers for BL602...</p>
-<h1 id="reverse-engineering-the-bluetooth-le-and-wifi-drivers" class="section-header"><a href="#reverse-engineering-the-bluetooth-le-and-wifi-drivers">3 Reverse Engineering the Bluetooth LE and WiFi Drivers</a></h1>
+<h1 id="reverse-engineer-the-bluetooth-le-and-wifi-drivers" class="section-header"><a href="#reverse-engineer-the-bluetooth-le-and-wifi-drivers">3 Reverse Engineer the Bluetooth LE and WiFi Drivers</a></h1>
 <p>BL602 feels exciting. The mass market RISC-V microcontrollers never had onboard Bluetooth LE and WiFi... Until now!</p>
 <p>Unfortunately we don't have complete documentation about the implementation of BLE and WiFi on BL602. (And I totally understand if there are commercial reasons for this omission)</p>
 <p>But we have the compiled RISC-V libraries that we may Reverse Engineer to understand the BLE and WiFi implementation.</p>
