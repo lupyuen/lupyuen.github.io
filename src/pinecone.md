@@ -120,15 +120,15 @@ Then reimplement the wireless functions the open source way. Perhaps by adapting
 
 Let's walk through one possible approach for reverse engineering the WiFi driver. (I'm sure there are many other ways to do this)
 
-## How does the CPU talk to the WiFi controller?
+## How does our WiFi Driver talk to the WiFi Controller?
 
 From the [BL602 Reference Manual](https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en) (Page 17), we see that our RISC-V CPU talks to the WiFi Controller via the `WRAM` Wireless RAM at address `0x4203 0000` onwards.
 
 ![PineCone BL602 Wireless RAM](https://lupyuen.github.io/images/pinecone-wram.png)
 
-Our CPU probably reads and writes WiFi packets to/from that 112 KB chunk of Shared Memory. The Control Registers may be inside too.
+Our WiFi Driver probably reads and writes WiFi packets to/from that 112 KB chunk of Shared Memory. The Control Registers may be inside too.
 
-Let's find out which functions use that chunk of RAM.
+Let's find out which WiFi Driver functions use that chunk of RAM.
 
 ## Analyse the Linker Map
 
@@ -138,7 +138,7 @@ https://github.com/pine64/bl602-re/tree/master/blobs
 
 ...In the files https://github.com/pine64/bl602-re/blob/master/blobs/libatcmd.a and https://github.com/pine64/bl602-re/blob/master/blobs/libbl602_wifi.a
 
-The PineCone Community has helpfully generated the GCC Linker Map for a sample BL602 firmware (https://github.com/pine64/bl602-re/blob/master/blobs/bl602_demo_at.elf) that calls the WiFi functions in libatcmd.a and https://github.com/pine64/bl602-re/blob/master/blobs/libbl602_wifi.a...
+The PineCone Community has helpfully generated the GCC Linker Map for a sample BL602 firmware image (https://github.com/pine64/bl602-re/blob/master/blobs/bl602_demo_at.elf) that calls the WiFi functions in libatcmd.a and https://github.com/pine64/bl602-re/blob/master/blobs/libbl602_wifi.a...
 
 https://github.com/pine64/bl602-re/blob/master/blobs/bl602_demo_at.map
 
@@ -173,11 +173,15 @@ ram_heap
 
 These are the WiFi Buffers that our WiFi Driver uses to send and receive WiFi packets, also to control the WiFi operation.
 
-## Track down the WiFi functions
+## Identify the WiFi Functions
 
 Understand the Wireless RAM interface
 
 rx_dma_hdrdesc looks interesting
+
+https://github.com/pine64/bl602-re/tree/master/libatcmd
+
+https://github.com/pine64/bl602-re/tree/master/libbl602_wifi
 
 ## Is there a Blob for the WiFi Controller?
 
