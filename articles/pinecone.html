@@ -218,6 +218,7 @@
 <span class="ident">_data_load</span>
 <span class="ident">ram_heap</span>
 ...</pre></div>
+<p>(The addresses of the variables are shown in the <code>Offset</code> column)</p>
 <p>These are likely the WiFi Buffers that our WiFi Driver uses to send and receive WiFi packets, also to control the WiFi operation.</p>
 <h2 id="identify-the-wifi-functions" class="section-header"><a href="#identify-the-wifi-functions">3.4 Identify the WiFi Functions</a></h2>
 <p><code>rx_dma_hdrdesc</code> looks interesting. It could be the DMA buffer for receiving WiFi packets.  Let's find out which WiFi Function in the WiFi Driver uses <code>rx_dma_hdrdesc</code>...</p>

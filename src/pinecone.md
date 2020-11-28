@@ -173,6 +173,8 @@ ram_heap
 ...
 ```
 
+(The addresses of the variables are shown in the `Offset` column)
+
 These are likely the WiFi Buffers that our WiFi Driver uses to send and receive WiFi packets, also to control the WiFi operation.
 
 ## Identify the WiFi Functions
