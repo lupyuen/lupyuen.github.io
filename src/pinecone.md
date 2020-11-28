@@ -134,13 +134,13 @@ Let's find out which WiFi Driver functions use that chunk of RAM.
 
 The WiFi Drivers that we wish to grok are located here...
 
-[`github.com/pine64/bl602-re/blobs`](https://github.com/pine64/bl602-re/tree/master/blobs)
+- [`github.com/pine64/bl602-re/blobs`](https://github.com/pine64/bl602-re/tree/master/blobs)
 
 ...Inside the files [`libatcmd.a`](https://github.com/pine64/bl602-re/blob/master/blobs/libatcmd.a) and [`libbl602_wifi.a`](https://github.com/pine64/bl602-re/blob/master/blobs/libbl602_wifi.a)
 
 The PineCone Community has helpfully generated the __GCC Linker Map__ for a sample BL602 firmware image [`bl602_demo_at.elf`](https://github.com/pine64/bl602-re/blob/master/blobs/bl602_demo_at.elf) that calls the WiFi Functions in `libatcmd.a` and `libbl602_wifi.a`...
 
-[`bl602_demo_at.map`](https://github.com/pine64/bl602-re/blob/master/blobs/bl602_demo_at.map)
+- [`bl602_demo_at.map`](https://github.com/pine64/bl602-re/blob/master/blobs/bl602_demo_at.map)
 
 I have loaded `bl602_demo_at.map` into a Google Sheet for analysis...
 

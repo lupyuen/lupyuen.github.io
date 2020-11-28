@@ -67,7 +67,12 @@
     <nav id="TOC"><ul>
 <li><a href="#pinecone-bl602-why-does-it-matter">1 PineCone BL602: Why does it matter?</a><ul></ul></li>
 <li><a href="#the-thing-about-risc-v-and-pinecone-bl602">2 The Thing About RISC-V and PineCone BL602</a><ul></ul></li>
-<li><a href="#reverse-engineering-the-bluetooth-le-and-wifi-drivers">3 Reverse Engineering the Bluetooth LE and WiFi Drivers</a><ul></ul></li>
+<li><a href="#reverse-engineering-the-bluetooth-le-and-wifi-drivers">3 Reverse Engineering the Bluetooth LE and WiFi Drivers</a><ul>
+<li><a href="#how-does-our-wifi-driver-talk-to-the-wifi-controller">3.1 How does our WiFi Driver talk to the WiFi Controller?</a><ul></ul></li>
+<li><a href="#analyse-the-linker-map">3.2 Analyse the Linker Map</a><ul></ul></li>
+<li><a href="#find-the-wifi-buffers">3.3 Find the WiFi Buffers</a><ul></ul></li>
+<li><a href="#identify-the-wifi-functions">3.4 Identify the WiFi Functions</a><ul></ul></li>
+<li><a href="#is-there-a-blob-for-the-wifi-controller">3.5 Is there a Blob for the WiFi Controller?</a><ul></ul></li></ul></li>
 <li><a href="#todo">4 TODO</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/pinecone-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board" /></p>
 <h1 id="pinecone-bl602-why-does-it-matter" class="section-header"><a href="#pinecone-bl602-why-does-it-matter">1 PineCone BL602: Why does it matter?</a></h1>
 <ol>
@@ -161,7 +166,75 @@
 <p>And it will be a helpful reference for porting other Embedded Operating Systems to BL602.</p>
 <p>Let's talk about the harder PineCone Nutcracker Challenge: Reverse engineering the Bluetooth LE and WiFi drivers for BL602...</p>
 <h1 id="reverse-engineering-the-bluetooth-le-and-wifi-drivers" class="section-header"><a href="#reverse-engineering-the-bluetooth-le-and-wifi-drivers">3 Reverse Engineering the Bluetooth LE and WiFi Drivers</a></h1>
-<p>TODO</p>
+<p>BL602 feels exciting. The mass market RISC-V microcontrollers never had onboard Bluetooth LE and WiFi... Until now!</p>
+<p>Unfortunately we don't have complete documentation about the implementation of BLE and WiFi on BL602. (And I totally understand if there are commercial reasons for this omission)</p>
+<p>But we have the compiled RISC-V libraries that we may Reverse Engineer to understand the BLE and WiFi implementation.</p>
+<p>That's the crux of the <a href="https://www.pine64.org/2020/10/28/nutcracker-challenge-blob-free-wifi-ble/"><strong>PineCone Nutcracker Challenge</strong></a>... Decompile the Bluetooth LE and WiFi driver code, understand how the RISC-V code operates the wireless hardware.</p>
+<p>Then reimplement the wireless functions the open source way. Perhaps by adapting the wireless drivers from Mynewt (NimBLE), RIOT and Zephyr.</p>
+<p>Let's walk through one possible approach for Reverse Engineering the WiFi Driver. (I'm sure there are many other ways to do this)</p>
+<h2 id="how-does-our-wifi-driver-talk-to-the-wifi-controller" class="section-header"><a href="#how-does-our-wifi-driver-talk-to-the-wifi-controller">3.1 How does our WiFi Driver talk to the WiFi Controller?</a></h2>
+<p>From the <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en">BL602 Reference Manual</a> (Page 17), we see that our RISC-V CPU talks to the WiFi Controller via the <strong><code>WRAM</code> Wireless RAM</strong> at address <code>0x4203 0000</code> onwards.</p>
+<p><img src="https://lupyuen.github.io/images/pinecone-wram.png" alt="PineCone BL602 Wireless RAM" /></p>
+<p>Our WiFi Driver probably reads and writes WiFi packets to/from that 112 KB chunk of Shared Memory. The WiFi Control Registers may be inside too.</p>
+<p>Let's find out which WiFi Driver functions use that chunk of RAM.</p>
+<h2 id="analyse-the-linker-map" class="section-header"><a href="#analyse-the-linker-map">3.2 Analyse the Linker Map</a></h2>
+<p>The WiFi Drivers that we wish to grok are located here...</p>
+<ul>
+<li><a href="https://github.com/pine64/bl602-re/tree/master/blobs"><code>github.com/pine64/bl602-re/blobs</code></a></li>
+</ul>
+<p>...Inside the files <a href="https://github.com/pine64/bl602-re/blob/master/blobs/libatcmd.a"><code>libatcmd.a</code></a> and <a href="https://github.com/pine64/bl602-re/blob/master/blobs/libbl602_wifi.a"><code>libbl602_wifi.a</code></a></p>
+<p>The PineCone Community has helpfully generated the <strong>GCC Linker Map</strong> for a sample BL602 firmware image <a href="https://github.com/pine64/bl602-re/blob/master/blobs/bl602_demo_at.elf"><code>bl602_demo_at.elf</code></a> that calls the WiFi Functions in <code>libatcmd.a</code> and <code>libbl602_wifi.a</code>...</p>
+<ul>
+<li><a href="https://github.com/pine64/bl602-re/blob/master/blobs/bl602_demo_at.map"><code>bl602_demo_at.map</code></a></li>
+</ul>
+<p>I have loaded <code>bl602_demo_at.map</code> into a Google Sheet for analysis...</p>
+<ol>
+<li>
+<p>Click here to open the Google Sheet: <a href="https://docs.google.com/spreadsheets/d/16yHquQ6E4bVj43piwQxssa1RaUr9yq9oL7hVf224Ijk/edit#gid=381366828&amp;fvid=1359565135">PineCone BL602 AT Demo Linker Map</a></p>
+</li>
+<li>
+<p>Click the <code>Symbols</code> Sheet</p>
+</li>
+<li>
+<p>Click <code>Data</code> ➜  <code>Filter Views</code> ➜  <code>None</code></p>
+</li>
+<li>
+<p>Click <code>Data</code> ➜  <code>Filter Views</code> ➜  <code>All Objects By Size</code></p>
+</li>
+<li>
+<p>It takes a while to sort the objects... Be patient</p>
+</li>
+</ol>
+<p><img src="https://lupyuen.github.io/images/pinecone-linkermap.png" alt="PineCone BL602 AT Demo Linker Map" /></p>
+<p>Here we see the list of functions, global variables and static variables defined in <code>bl602_demo_at.map</code>, sorted by size. </p>
+<p>Let's look at the first page of functions and variables.</p>
+<h2 id="find-the-wifi-buffers" class="section-header"><a href="#find-the-wifi-buffers">3.3 Find the WiFi Buffers</a></h2>
+<p>Remember that Wireless RAM starts at address <code>0x4203 0000</code>?  I have highlighted in yellow the 19 largest variables in Wireless RAM...</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="ident">__bss_start</span>
+<span class="ident">__wifi_bss_start</span>
+<span class="ident">rx_dma_hdrdesc</span>
+<span class="ident">_data_load</span>
+<span class="ident">ram_heap</span>
+...</pre></div>
+<p>These are likely the WiFi Buffers that our WiFi Driver uses to send and receive WiFi packets, also to control the WiFi operation.</p>
+<h2 id="identify-the-wifi-functions" class="section-header"><a href="#identify-the-wifi-functions">3.4 Identify the WiFi Functions</a></h2>
+<p><code>rx_dma_hdrdesc</code> looks interesting. It could be the DMA buffer for receiving WiFi packets.  Let's find out which WiFi Function in the WiFi Driver uses <code>rx_dma_hdrdesc</code>...</p>
+<p>We'll scan for <code>rx_dma_hdrdesc</code> (and other interesting variables) in the <strong>Decompiled RISC-V Assembly Code</strong> (<code>*.s</code>) that the PineCone Community has generated...</p>
+<ul>
+<li>
+<p><a href="https://github.com/pine64/bl602-re/tree/master/libatcmd"><code>libatcmd</code></a></p>
+</li>
+<li>
+<p><a href="https://github.com/pine64/bl602-re/tree/master/libbl602_wifi"><code>libbl602_wifi</code></a></p>
+</li>
+</ul>
+<p>Hopefully we'll be able to understand the Assembly Code and figure out how the WiFi Buffers are used to send and receive WiFi packets.</p>
+<h2 id="is-there-a-blob-for-the-wifi-controller" class="section-header"><a href="#is-there-a-blob-for-the-wifi-controller">3.5 Is there a Blob for the WiFi Controller?</a></h2>
+<p>What's really inside the WiFi Controller? </p>
+<p>Could there be some low-level chunk of executable code (non RISC-V) that runs <strong>inside</strong> the WiFi Controller to control the WiFi operations?</p>
+<p>By studying the WiFi Buffers and the associated WiFi Functions, we may uncover the Code Blob that runs inside the WiFi Controller.</p>
 <h1 id="todo" class="section-header"><a href="#todo">4 TODO</a></h1>
 <p>Form Factor:
 Similar to <a href="https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004?source=friends_link&amp;sk=bb4e2523b922d0870259ab3fa696c7da">EBYTE E73-TBB</a> (nRF52) /
