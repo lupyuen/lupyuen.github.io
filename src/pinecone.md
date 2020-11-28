@@ -108,25 +108,25 @@ Let's talk about the harder PineCone Nutcracker Challenge: Reverse engineering t
 
 # Reverse Engineering the Bluetooth LE and WiFi Drivers
 
-BL602 feels exciting. The mass market RISCV microcontrollers never had onboard BluetoothLE and WiFi... Until now!
+BL602 feels exciting. The mass market RISC-V microcontrollers never had onboard Bluetooth LE and WiFi... Until now!
 
-Unfortunately we don't have complete documentation about the implementation of BLE and WiFi on bl602. (And i totally understand if there are commercial reasons for this omission)
+Unfortunately we don't have complete documentation about the implementation of BLE and WiFi on BL602. (And I totally understand if there are commercial reasons for this omission)
 
 But we have the compiled RISC-V libraries that we may Reverse Engineer to understand the BLE and WiFi implementation.
 
-That's the crux of the PineCone Nutcracker Challenge... Decompile the BLE and WiFi code, understand how the RISCV code works. 
+That's the crux of the [__PineCone Nutcracker Challenge__](https://www.pine64.org/2020/10/28/nutcracker-challenge-blob-free-wifi-ble/)... Decompile the Bluetooth LE and WiFi driver code, understand how the RISC-V code operates the wireless hardware.
 
 Then reimplement the wireless functions the open source way. Perhaps by adapting the wireless drivers from Mynewt (NimBLE), RIOT and Zephyr.
 
-Let's walk through one possible approach for reverse engineering the WiFi driver. (I'm sure there are many other ways to do this)
+Let's walk through one possible approach for Reverse Engineering the WiFi Driver. (I'm sure there are many other ways to do this)
 
 ## How does our WiFi Driver talk to the WiFi Controller?
 
-From the [BL602 Reference Manual](https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en) (Page 17), we see that our RISC-V CPU talks to the WiFi Controller via the `WRAM` Wireless RAM at address `0x4203 0000` onwards.
+From the [BL602 Reference Manual](https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en) (Page 17), we see that our RISC-V CPU talks to the WiFi Controller via the __`WRAM` Wireless RAM__ at address `0x4203 0000` onwards.
 
 ![PineCone BL602 Wireless RAM](https://lupyuen.github.io/images/pinecone-wram.png)
 
-Our WiFi Driver probably reads and writes WiFi packets to/from that 112 KB chunk of Shared Memory. The Control Registers may be inside too.
+Our WiFi Driver probably reads and writes WiFi packets to/from that 112 KB chunk of Shared Memory. The WiFi Control Registers may be inside too.
 
 Let's find out which WiFi Driver functions use that chunk of RAM.
 
@@ -134,17 +134,17 @@ Let's find out which WiFi Driver functions use that chunk of RAM.
 
 The WiFi Drivers that we wish to grok are located here...
 
-https://github.com/pine64/bl602-re/tree/master/blobs
+[`github.com/pine64/bl602-re/blobs`](https://github.com/pine64/bl602-re/tree/master/blobs)
 
-...In the files https://github.com/pine64/bl602-re/blob/master/blobs/libatcmd.a and https://github.com/pine64/bl602-re/blob/master/blobs/libbl602_wifi.a
+...Inside the files [`libatcmd.a`](https://github.com/pine64/bl602-re/blob/master/blobs/libatcmd.a) and [`libbl602_wifi.a`](https://github.com/pine64/bl602-re/blob/master/blobs/libbl602_wifi.a)
 
-The PineCone Community has helpfully generated the GCC Linker Map for a sample BL602 firmware image (https://github.com/pine64/bl602-re/blob/master/blobs/bl602_demo_at.elf) that calls the WiFi functions in libatcmd.a and https://github.com/pine64/bl602-re/blob/master/blobs/libbl602_wifi.a...
+The PineCone Community has helpfully generated the __GCC Linker Map__ for a sample BL602 firmware image [`bl602_demo_at.elf`](https://github.com/pine64/bl602-re/blob/master/blobs/bl602_demo_at.elf) that calls the WiFi Functions in `libatcmd.a` and `libbl602_wifi.a`...
 
-https://github.com/pine64/bl602-re/blob/master/blobs/bl602_demo_at.map
+[`bl602_demo_at.map`](https://github.com/pine64/bl602-re/blob/master/blobs/bl602_demo_at.map)
 
-I have loaded bl602_demo_at.map into a Google Sheet for analysis...
+I have loaded `bl602_demo_at.map` into a Google Sheet for analysis...
 
-1. Click here to open the Google Sheet: [PineCone BL602 AT Demo Linker Map (bl602_demo_at.map)](https://docs.google.com/spreadsheets/d/16yHquQ6E4bVj43piwQxssa1RaUr9yq9oL7hVf224Ijk/edit#gid=381366828&fvid=1359565135)
+1. Click here to open the Google Sheet: [PineCone BL602 AT Demo Linker Map](https://docs.google.com/spreadsheets/d/16yHquQ6E4bVj43piwQxssa1RaUr9yq9oL7hVf224Ijk/edit#gid=381366828&fvid=1359565135)
 
 1. Click the `Symbols` Sheet
 
@@ -156,11 +156,13 @@ I have loaded bl602_demo_at.map into a Google Sheet for analysis...
 
 ![PineCone BL602 AT Demo Linker Map](https://lupyuen.github.io/images/pinecone-linkermap.png)
 
-Here we see the list of functions and data objects defined in bl602_demo_at.map, sorted by size. Let's look at the first page of functions and data objects.
+Here we see the list of functions, global variables and static variables defined in `bl602_demo_at.map`, sorted by size. 
+
+Let's look at the first page of functions and variables.
 
 ## Find the WiFi Buffers
 
-Remember that Wireless RAM starts at address `0x4203 0000`?  I have highlighted in yellow the 19 largest data objects in Wireless RAM...
+Remember that Wireless RAM starts at address `0x4203 0000`?  I have highlighted in yellow the 19 largest variables in Wireless RAM...
 
 ```
 __bss_start
@@ -171,21 +173,27 @@ ram_heap
 ...
 ```
 
-These are the WiFi Buffers that our WiFi Driver uses to send and receive WiFi packets, also to control the WiFi operation.
+These are likely the WiFi Buffers that our WiFi Driver uses to send and receive WiFi packets, also to control the WiFi operation.
 
 ## Identify the WiFi Functions
 
-Understand the Wireless RAM interface
+`rx_dma_hdrdesc` looks interesting. It could be the DMA buffer for receiving WiFi packets.  Let's find out which WiFi Function in the WiFi Driver uses `rx_dma_hdrdesc`...
 
-rx_dma_hdrdesc looks interesting
+We'll scan for `rx_dma_hdrdesc` (and other interesting variables) in the __Decompiled RISC-V Assembly Code__ (`*.s`) that the PineCone Community has generated...
 
-https://github.com/pine64/bl602-re/tree/master/libatcmd
+- [`libatcmd`](https://github.com/pine64/bl602-re/tree/master/libatcmd)
 
-https://github.com/pine64/bl602-re/tree/master/libbl602_wifi
+- [`libbl602_wifi`](https://github.com/pine64/bl602-re/tree/master/libbl602_wifi)
+
+Hopefully we'll be able to understand the Assembly Code and figure out how the WiFi Buffers are used to send and receive WiFi packets.
 
 ## Is there a Blob for the WiFi Controller?
 
-What's really inside the WiFi Controller?
+What's really inside the WiFi Controller? 
+
+Could there be some low-level chunk of executable code (non RISC-V) that runs __inside__ the WiFi Controller to control the WiFi operations?
+
+By studying the WiFi Buffers and the associated WiFi Functions, we may uncover the Code Blob that runs inside the WiFi Controller.
 
 # TODO
 
