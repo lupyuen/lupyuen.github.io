@@ -122,11 +122,27 @@ Let's walk through one possible approach for reverse engineering the WiFi driver
 
 ## How does the CPU talk to the WiFi controller?
 
-From the [BL602 Reference Manual](https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en) (Page 17), we see that
+From the [BL602 Reference Manual](https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en) (Page 17), we see that our RISC-V CPU talks to the WiFi Controller via the `WRAM` Wireless RAM at address `0x4203 0000` onwards.
 
-images\pinecone-wram.png
+![PineCone BL602 Wireless RAM](https://lupyuen.github.io/images/pinecone-wram.png)
+
+Our CPU probably reads and writes WiFi packets to/from that 112 KB chunk of Shared Memory. The Control Registers may be inside too.
+
+Let's find out which functions use that chunk of RAM.
 
 ## Analyse the Linker Map
+
+The WiFi Drivers that we wish to grok are located here...
+
+https://github.com/pine64/bl602-re/tree/master/blobs
+
+...In the files https://github.com/pine64/bl602-re/blob/master/blobs/libatcmd.a and https://github.com/pine64/bl602-re/blob/master/blobs/libbl602_wifi.a
+
+The PineCone Community has helpfully generated the GCC Linker Map for a sample BL602 firmware (https://github.com/pine64/bl602-re/blob/master/blobs/bl602_demo_at.elf) that calls the WiFi functions in libatcmd.a and https://github.com/pine64/bl602-re/blob/master/blobs/libbl602_wifi.a...
+
+https://github.com/pine64/bl602-re/blob/master/blobs/bl602_demo_at.map
+
+I have loaded bl602_demo_at.map into a Google Sheet for analysis...
 
 1. Click here to open the Google Sheet: [PineCone BL602 AT Demo Linker Map (bl602_demo_at.map)](https://docs.google.com/spreadsheets/d/16yHquQ6E4bVj43piwQxssa1RaUr9yq9oL7hVf224Ijk/edit#gid=381366828&fvid=1359565135)
 
@@ -138,13 +154,30 @@ images\pinecone-wram.png
 
 1. It takes a while to sort the objects... Be patient
 
-images\pinecone-linkermap.png
+![PineCone BL602 AT Demo Linker Map](https://lupyuen.github.io/images/pinecone-linkermap.png)
 
-## Find the WiFi buffers
+Here we see the list of functions and data objects, sorted by size. Let's look at the first page of functions and data objects.
+
+## Find the WiFi Buffers
+
+Remember that Wireless RAM starts at address `0x4203 0000`?  I have highlighted in yellow the 19 largest data objects in Wireless RAM...
+
+```
+__bss_start
+__wifi_bss_start
+rx_dma_hdrdesc
+_data_load
+ram_heap
+...
+```
+
+These are the WiFi Buffers that our WiFi Driver uses to send and receive WiFi packets, also to control the WiFi operation.
 
 ## Track down the WiFi functions
 
 Understand the Wireless RAM interface
+
+rx_dma_hdrdesc looks interesting
 
 ## Is there a Blob for the WiFi Controller?
 
