@@ -156,7 +156,7 @@ I have loaded bl602_demo_at.map into a Google Sheet for analysis...
 
 ![PineCone BL602 AT Demo Linker Map](https://lupyuen.github.io/images/pinecone-linkermap.png)
 
-Here we see the list of functions and data objects, sorted by size. Let's look at the first page of functions and data objects.
+Here we see the list of functions and data objects defined in bl602_demo_at.map, sorted by size. Let's look at the first page of functions and data objects.
 
 ## Find the WiFi Buffers
 
