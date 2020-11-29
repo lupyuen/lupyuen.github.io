@@ -233,7 +233,7 @@ This is explained in the [Linux Starter Guide](https://pine64.github.io/bl602-do
 
 The UART flashing protocol is described in the [BL602 Flash Programming](https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en) doc.
 
-_Is SWD supported for flashing firmware to the PineCone board?_
+_Are SWD and ST-Link supported for flashing firmware to the PineCone board?_
 
 Sorry no. SWD is available only on Arm Microcontrollers. (SWD was created by Arm)
 
@@ -245,6 +245,8 @@ Building the BL602 firmware is supported on Linux and Windows. Refer to the [Lin
 
 On Windows, MSYS2 is required. Alternatively, we may use Windows Subsystem for Linux.
 
+# TODO
+
 Mynewt /
 macOS /
 VSCode /
@@ -254,14 +256,8 @@ How to Test:
 Bus Pirate /
 PineTime is easier to test
 
-USB:
-Load from uart /
-Sdio
-
 JTAG Debugger:
 Sipeed JTAG dongle
-
-Porting Mynewt + Rust
 
 FreeRTOS can be daunting for newcomers
 No port for FreeRTOS yet
