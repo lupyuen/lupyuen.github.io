@@ -207,7 +207,17 @@ Join the [__PineCone Nutcracker Challenge__](https://www.pine64.org/2020/10/28/n
 
 Contribute to the community-driven Reverse Engineering of the BL602 Bluetooth LE / WiFi Drivers.
 
-Or contribute docs and code that will help others adopt BL602 quickly. (This includes porting Mynewt / RIOT / Zerphyr to BL602)
+Or contribute docs and code that will help others adopt BL602 quickly. (This includes porting Mynewt / RIOT / Zephyr to BL602)
+
+The BL602 docs are located here...
+
+-   [BL602 SDK](https://pine64.github.io/bl602-docs/)
+
+-   [BL602 Datasheet](https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_BL604_DS_en_Combo_1.2.pdf)
+
+-   [BL602 Reference Manual](https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf)
+
+-   [BL602 Flash Programming](https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en)
 
 Form Factor:
 Similar to [EBYTE E73-TBB](https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004?source=friends_link&sk=bb4e2523b922d0870259ab3fa696c7da) (nRF52) /
