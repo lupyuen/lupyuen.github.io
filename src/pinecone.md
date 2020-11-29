@@ -26,6 +26,8 @@ Let's learn about the PineCone Board... And how it helps the [__RISC-V Open Sour
 
 It's great that Pine64 is reaching out to the Open Source Community through the [PineCone Nutcracker initiative](https://www.pine64.org/2020/10/28/nutcracker-challenge-blob-free-wifi-ble/)... Because it takes A Humongous Village to get BL602 ready for real-world gadgets.
 
+## BL602 vs ESP32
+
 _How does BL602 compare with ESP32?_
 
 - BL602 is a __General Purpose Microcontroller__ that supports Bluetooth LE and WiFi
@@ -37,6 +39,8 @@ To folks who are familiar with Arm microcontrollers (STM32 Blue Pill, Nordic nRF
 Hope this addresses the confusion over BL602, as discussed [here](https://news.ycombinator.com/item?id=24916086) and [here](https://news.ycombinator.com/item?id=24877335)
 
 _(There's a new [ESP32 based on RISC-V](https://www.espressif.com/en/news/ESP32_C3), but the hardware is not available yet so we'll wait and see. [Compare BL602 with ESP32-C3](https://twitter.com/MisterTechBlog/status/1332859286142128131?s=20))_
+
+## RISC-V vs Arm
 
 _Why not stick with Arm? Why get adventurous with RISC-V?_
 
