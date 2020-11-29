@@ -197,6 +197,8 @@ Could there be some low-level chunk of executable code (non RISC-V) that runs __
 
 By studying the WiFi Buffers and the associated WiFi Functions, we may uncover the Code Blob that runs inside the WiFi Controller.
 
+![PineCone BL602 Evaluation Board](https://lupyuen.github.io/images/pinecone-day.jpg)
+
 # Hands On with PineCone BL602
 
 _How we can get a PineCone BL602 Evaluation Board?_
