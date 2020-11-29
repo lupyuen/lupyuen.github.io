@@ -73,7 +73,11 @@
 <li><a href="#find-the-wifi-buffers">3.3 Find the WiFi Buffers</a><ul></ul></li>
 <li><a href="#identify-the-wifi-functions">3.4 Identify the WiFi Functions</a><ul></ul></li>
 <li><a href="#is-there-a-blob-for-the-wifi-controller">3.5 Is there a Blob for the WiFi Controller?</a><ul></ul></li></ul></li>
-<li><a href="#todo">4 TODO</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/pinecone-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board" /></p>
+<li><a href="#hands-on-with-pinecone-bl602">4 Hands On with PineCone BL602</a><ul>
+<li><a href="#form-factor">4.1 Form Factor</a><ul></ul></li>
+<li><a href="#flashing-firmware">4.2 Flashing Firmware</a><ul></ul></li>
+<li><a href="#building-firmware">4.3 Building Firmware</a><ul></ul></li></ul></li>
+<li><a href="#todo">5 TODO</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/pinecone-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board" /></p>
 <h1 id="pinecone-bl602-why-does-it-matter" class="section-header"><a href="#pinecone-bl602-why-does-it-matter">1 PineCone BL602: Why does it matter?</a></h1>
 <ol>
 <li>
@@ -103,7 +107,7 @@
 </ul>
 <p>To folks who are familiar with Arm microcontrollers (STM32 Blue Pill, Nordic nRF52), BL602 looks like another microcontroller... Except that it runs on the RISC-V Instruction Set instead of Arm.</p>
 <p>Hope this addresses the confusion over BL602, as discussed <a href="https://news.ycombinator.com/item?id=24916086">here</a> and <a href="https://news.ycombinator.com/item?id=24877335">here</a></p>
-<p><em>(Yes there seems to be a new ESP8266 based on RISC-V, but details are scarce so we'll wait and see)</em></p>
+<p><em>(Yes there seems to be a new <a href="https://www.espressif.com/en/news/ESP32_C3">ESP32 based on RISC-V</a>, but we don't have the hardware yet so we'll wait and see)</em></p>
 <p><em>Why not stick with Arm? Why get adventurous with RISC-V?</em></p>
 <p>Nintendo Switch (the #1 gaming console) runs on Arm. iPhone and the new M1 Macs also run on Arm.  <strong>Most of our gadgets are powered by Arm today.</strong></p>
 <p>Before Arm gets too successful and locks us in... Shouldn't we explore alternatives like RISC-V?</p>
@@ -236,26 +240,50 @@
 <p>What's really inside the WiFi Controller? </p>
 <p>Could there be some low-level chunk of executable code (non RISC-V) that runs <strong>inside</strong> the WiFi Controller to control the WiFi operations?</p>
 <p>By studying the WiFi Buffers and the associated WiFi Functions, we may uncover the Code Blob that runs inside the WiFi Controller.</p>
-<h1 id="todo" class="section-header"><a href="#todo">4 TODO</a></h1>
-<p>Form Factor:
-Similar to <a href="https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004?source=friends_link&amp;sk=bb4e2523b922d0870259ab3fa696c7da">EBYTE E73-TBB</a> (nRF52) /
-BLE plus WiFi</p>
-<p>Firmware Build:
-Windows /
-Mynewt /
+<p><img src="https://lupyuen.github.io/images/pinecone-day.jpg" alt="PineCone BL602 Evaluation Board" /></p>
+<h1 id="hands-on-with-pinecone-bl602" class="section-header"><a href="#hands-on-with-pinecone-bl602">4 Hands On with PineCone BL602</a></h1>
+<p><em>How we can get a PineCone BL602 Evaluation Board?</em></p>
+<p>Join the <a href="https://www.pine64.org/2020/10/28/nutcracker-challenge-blob-free-wifi-ble/"><strong>PineCone Nutcracker Challenge</strong></a>!</p>
+<p>Contribute to the community-driven Reverse Engineering of the BL602 Bluetooth LE / WiFi Drivers.</p>
+<p>Or contribute docs and code that will help others adopt BL602 quickly. (This includes porting Mynewt / RIOT / Zephyr to BL602)</p>
+<p>The BL602 docs are located in the <a href="https://github.com/pine64/bl602-docs"><strong>BL602 Docs Repo</strong></a>...</p>
+<ul>
+<li>
+<p><a href="https://pine64.github.io/bl602-docs/"><strong>BL602 Software Development Kit</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_BL604_DS_en_Combo_1.2.pdf"><strong>BL602 Datasheet</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf"><strong>BL602 Reference Manual</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en"><strong>BL602 Flash Programming</strong></a></p>
+</li>
+</ul>
+<h2 id="form-factor" class="section-header"><a href="#form-factor">4.1 Form Factor</a></h2>
+<p>The PineCone BL602 Evaluation Board has the same form factor as other wireless dev boards, like <a href="https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004?source=friends_link&amp;sk=bb4e2523b922d0870259ab3fa696c7da">EBYTE E73-TBB</a> (which is based on nRF52832)</p>
+<p>The PineCone board comes with a <strong>USB-C Connector</strong>. When connected to our computer via USB, the BL602 board is recognised as a Serial Device, ready to be flashed.</p>
+<h2 id="flashing-firmware" class="section-header"><a href="#flashing-firmware">4.2 Flashing Firmware</a></h2>
+<p>We flash RISC-V firmware to the PineCone board through the <strong>USB Serial Connection</strong>. </p>
+<p>This is explained in the <a href="https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html">Linux Starter Guide</a> and the <a href="https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html">Windows Starter Guide</a>.</p>
+<p>The UART flashing protocol is described in the <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en">BL602 Flash Programming</a> doc.</p>
+<p><em>Are SWD and ST-Link supported for flashing firmware to the PineCone board?</em></p>
+<p>Sorry no. SWD is available only on Arm Microcontrollers. (SWD was created by Arm)</p>
+<p><em>(The flash programming doc seems to suggest that BL602 may be flashed from an SD Card via Secure Digital Input/Output)</em></p>
+<h2 id="building-firmware" class="section-header"><a href="#building-firmware">4.3 Building Firmware</a></h2>
+<p>Building the BL602 firmware is supported on Linux and Windows. Refer to the <a href="https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html">Linux Starter Guide</a> and the <a href="https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html">Windows Starter Guide</a></p>
+<p>On Windows, MSYS2 is required. Alternatively, we may use Windows Subsystem for Linux.</p>
+<h1 id="todo" class="section-header"><a href="#todo">5 TODO</a></h1>
+<p>Mynewt /
 macOS /
 VSCode /
 Github Actions</p>
 <p>How to Test:
 Bus Pirate /
 PineTime is easier to test</p>
-<p>USB:
-Load from uart /
-Sdio</p>
 <p>JTAG Debugger:
 Sipeed JTAG dongle</p>
-<p>Porting Mynewt + Rust</p>
-<p>BL602 vs SiFive HiFive, GD32 VF103 (Pinecil)</p>
 <p>FreeRTOS can be daunting for newcomers
 No port for FreeRTOS yet
 SiFive dr who great for devs</p>
@@ -263,7 +291,6 @@ SiFive dr who great for devs</p>
 Might be good to learn RISC-V 
 Understand how we might migrate arm
 Education</p>
-<p>why reverse-engineer ble and wifi</p>
 <p><a href="https://lupyuen.github.io">Check out my articles</a></p>
 <p><a href="https://lupyuen.github.io/rss.xml">RSS Feed</a></p>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
