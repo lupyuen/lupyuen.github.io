@@ -259,7 +259,7 @@ The development tools supported for BL602 are [__SiFive Freedom Studio__](https:
 
 [Sample Firmware for BL602](https://pine64.github.io/bl602-docs/Examples/helloworld/helloworld.html)
 
-_(For my BL602 port of Mynewt: I'll be using VSCode as the development tool. Firmware build will be supported on plain Windows, macOS, GitHub Actions and GitLab CI)_
+_(For my BL602 port of Mynewt: I'll be using VSCode as the development tool. Firmware build will be supported on plain Windows, macOS, GitHub Actions and GitLab CI. More about [porting Mynewt to RISC-V](https://medium.com/@ly.lee/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v-4054a5922493?source=friends_link&sk=215cd06186d912277d0469224666d60d) and [how it got stuck](https://medium.com/@ly.lee/hey-gd32-vf103-on-risc-v-i-surrender-for-now-d39d0c7b0001?source=friends_link&sk=c0504ac574bf571219fabe174eef4de5))_
 
 ## Debugging Firmware
 
