@@ -32,7 +32,7 @@ To folks who are familiar with Arm microcontrollers (STM32 Blue Pill, Nordic nRF
 
 Hope this addresses the confusion over BL602, as discussed [here](https://news.ycombinator.com/item?id=24916086) and [here](https://news.ycombinator.com/item?id=24877335)
 
-_(Yes there seems to be a new ESP8266 based on RISC-V, but details are scarce so we'll wait and see)_
+_(Yes there seems to be a new [ESP32 based on RISC-V](https://www.espressif.com/en/news/ESP32_C3), but we don't have the hardware yet so we'll wait and see)_
 
 _Why not stick with Arm? Why get adventurous with RISC-V?_
 
@@ -197,7 +197,15 @@ Could there be some low-level chunk of executable code (non RISC-V) that runs __
 
 By studying the WiFi Buffers and the associated WiFi Functions, we may uncover the Code Blob that runs inside the WiFi Controller.
 
-# TODO
+# Hands On with PineCone BL602
+
+_How we can get a PineCone BL602 Evaluation Board?_
+
+Join the [__PineCone Nutcracker Challenge__](https://www.pine64.org/2020/10/28/nutcracker-challenge-blob-free-wifi-ble/)!
+
+Contribute to the community-driven Reverse Engineering of the BL602 Bluetooth LE / WiFi Drivers.
+
+Or contribute docs and code that will help others adopt BL602 quickly. (This includes porting Mynewt / RIOT / Zerphyr to BL602)
 
 Form Factor:
 Similar to [EBYTE E73-TBB](https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004?source=friends_link&sk=bb4e2523b922d0870259ab3fa696c7da) (nRF52) /
@@ -223,8 +231,6 @@ Sipeed JTAG dongle
 
 Porting Mynewt + Rust
 
-BL602 vs SiFive HiFive, GD32 VF103 (Pinecil)
-
 FreeRTOS can be daunting for newcomers
 No port for FreeRTOS yet
 SiFive dr who great for devs
@@ -233,8 +239,6 @@ With the pandemic
 Might be good to learn RISC-V 
 Understand how we might migrate arm
 Education
-
-why reverse-engineer ble and wifi
 
 [Check out my articles](https://lupyuen.github.io)
 
