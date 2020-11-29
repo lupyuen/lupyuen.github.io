@@ -22,7 +22,7 @@ Let's learn about the PineCone Board... And how it helps the [__RISC-V Open Sour
 
     FreeRTOS has been ported to BL602, but other Real Time Operating Systems (like Zephyr and Mynewt) have been slow to adopt RISC-V. (We'll learn why in a while)
 
-    Rust runs perfectly fine on RISC-V microcontrollers. (I have proof of that)
+    Rust runs perfectly fine on RISC-V microcontrollers. ([Here's the proof](https://medium.com/@ly.lee/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v-4054a5922493?source=friends_link&sk=215cd06186d912277d0469224666d60d))
 
 It's great that Pine64 is reaching out to the Open Source Community through the PineCone Nutcracker initiative... Because it takes A Humongous Village to get BL602 ready for real-world gadgets.
 
@@ -30,13 +30,13 @@ _How does BL602 compare with ESP32?_
 
 - BL602 is a __General Purpose Microcontroller__ that supports Bluetooth LE and WiFi
 
-- ESP32 is more of a __Bluetooth LE + WiFi Controller__ that supports Embedded Apps
+- ESP32 is more of a __Bluetooth LE + WiFi Controller__ that supports Embedded Programs
 
 To folks who are familiar with Arm microcontrollers (STM32 Blue Pill, Nordic nRF52), BL602 looks like another microcontroller... Except that it runs on the RISC-V Instruction Set instead of Arm.
 
 Hope this addresses the confusion over BL602, as discussed [here](https://news.ycombinator.com/item?id=24916086) and [here](https://news.ycombinator.com/item?id=24877335)
 
-_(Yes there seems to be a new [ESP32 based on RISC-V](https://www.espressif.com/en/news/ESP32_C3), but we don't have the hardware yet so we'll wait and see)_
+_(There's a new [ESP32 based on RISC-V](https://www.espressif.com/en/news/ESP32_C3), but the hardware is not available yet so we'll wait and see)_
 
 _Why not stick with Arm? Why get adventurous with RISC-V?_
 
@@ -64,16 +64,16 @@ _How bad is the RISC-V firmware portability problem?_
 
 Let's compare BL602 with the two most popular models of 32-bit RISC-V microcontrollers...
 
-1.  __SiFive FE310__ (Released 2017)
+1.  [__SiFive FE310__](https://www.sifive.com/chip-designer) (Released 2017)
     -   Used in HiFive1 dev board
     -   Supported by major Real Time Operating Systems (including Mynewt, RIOT and Zephyr)
 
-1.  __GigaDevice GD32 VF103__ (Released 2019)
+1.  [__GigaDevice GD32 VF103__](https://medium.com/@ly.lee/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v-4054a5922493?source=friends_link&sk=215cd06186d912277d0469224666d60d) (Released 2019)
     -   Used in Pinecil soldering iron and [various dev boards](https://www.seeedstudio.com/catalogsearch/result/?q=Gd32)
     -   Supported by PlatformIO development tool
     -   __Not Supported by Mynewt, RIOT and Zephyr__
 
-1.  __BL602__ (Released 2020)
+1.  [__BL602__](https://github.com/pine64/bl602-docs) (Released 2020)
     -   No commercial products yet
     -   Supports Bluetooth LE and WiFi (unlike the earlier microcontrollers)
     -   Supported by FreeRTOS
@@ -275,7 +275,7 @@ For embedded gadgets like PineTime, the sensors and display are connected. Which
 
 PineCone is a bare board with no sensors and actuators, so we need to wire up additional components to test the firmware. (I'll probably use [Bus Pirate](http://dangerousprototypes.com/docs/Bus_Pirate) to test my BL602 port of Mynewt + Rust)
 
-_(FYI: SiFive's [Doctor Who HiFive Inventor](https://www.hifiveinventor.com/user-guide/overview) is an educational RISC-V board with onboard sensors and LED display)_
+_(FYI: SiFive's [Doctor Who HiFive Inventor](https://www.hifiveinventor.com/user-guide/overview) is an educational RISC-V board with onboard sensors and LED display. Would be great if Pine64 could add sensors and a display to BL602 for easier testing!)_
 
 # What's Next
 
