@@ -106,6 +106,10 @@ And it will be a helpful reference for porting other Embedded Operating Systems 
 
 Let's talk about the harder PineCone Nutcracker Challenge: Reverse engineering the Bluetooth LE and WiFi drivers for BL602...
 
+![BL602 Memory Map vs GD32 VF103: Totally different](https://lupyuen.github.io/images/pinecone-compare.png)
+
+_BL602 Memory Map vs GD32 VF103: Totally different_
+
 # Reverse Engineer the Bluetooth LE and WiFi Drivers
 
 BL602 feels exciting. The mass market RISC-V microcontrollers never had onboard Bluetooth LE and WiFi... Until now!
@@ -227,9 +231,9 @@ The PineCone board comes with a __USB-C Connector__. When connected to our compu
 
 ## Flashing Firmware
 
-We flash RISC-V firmware to the PineCone board through the __USB Serial Connection__. 
+We flash RISC-V firmware to the PineCone board through the __USB Serial Connection__ using the [BLFlashEnv Tool](https://pine64.github.io/bl602-docs/Developer_Environment/BLFlashEnv/BLFlashEnv.html)
 
-This is explained in the [Linux Starter Guide](https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html) and the [Windows Starter Guide](https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html).
+The flashing steps are explained in the [Linux Starter Guide](https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html) and the [Windows Starter Guide](https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html).
 
 The UART flashing protocol is described in the [BL602 Flash Programming](https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en) doc.
 
@@ -245,28 +249,31 @@ Building the BL602 firmware is supported on Linux and Windows. Refer to the [Lin
 
 On Windows, MSYS2 is required. Alternatively, we may use Windows Subsystem for Linux.
 
-# TODO
+The development tools supported for BL602 are [__SiFive Freedom Studio__](https://pine64.github.io/bl602-docs/Developer_Environment/freedom_studio/freedom_studio.html) and [__Eclipse__](https://pine64.github.io/bl602-docs/Developer_Environment/eclipse/eclipse.html).
 
-Mynewt /
-macOS /
-VSCode /
-Github Actions
+[Sample Firmware for BL602](https://pine64.github.io/bl602-docs/Examples/helloworld/helloworld.html)
+
+_(For my port of Mynewt to BL602: I'll be using VSCode as the development tool. Firmware build will be supported on plain Windows, macOS, GitHub Actions and GitLab CI)_
+
+## Debugging Firmware
+
+To debug the BL602 firmware, we need a __JTAG Debugger__ with OpenOCD and GDB.
+
+I'll be testing the [Sipeed JTAG Debugger](https://www.seeedstudio.com/Sipeed-USB-JTAG-TTL-RISC-V-Debugger-p-2910.html) with the PineCone board.
+
+## Testing the Firmware
 
 How to Test:
 Bus Pirate /
 PineTime is easier to test
 
-JTAG Debugger:
-Sipeed JTAG dongle
-
 FreeRTOS can be daunting for newcomers
 No port for FreeRTOS yet
 SiFive dr who great for devs
 
-With the pandemic
-Might be good to learn RISC-V 
-Understand how we might migrate arm
-Education
+# What's Next
+
+TODO
 
 [Check out my articles](https://lupyuen.github.io)
 
