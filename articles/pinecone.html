@@ -216,6 +216,7 @@
 <p><img src="https://lupyuen.github.io/images/pinecone-linkermap.png" alt="PineCone BL602 AT Demo Linker Map" /></p>
 <p>Here we see the list of functions, global variables and static variables defined in <code>bl602_demo_at.map</code>, sorted by size. </p>
 <p>Let's look at the first page of functions and variables.</p>
+<p><em>(FYI: Here are the Linker Maps for <a href="https://docs.google.com/spreadsheets/d/1m8-fc9_ocOwMuw_oRur4j6xqVli6x-Tm-M5ZIKwNWRk/edit#gid=381366828&amp;fvid=1359565135"><code>bl602_demo_wifi</code></a> and <a href="https://docs.google.com/spreadsheets/d/1HJev8fdmIMyIxeRFx2cpsq1C5rEYgGZf7Tank3hYK88/edit#gid=381366828&amp;fvid=1359565135"><code>sdk_app_ble_sync</code></a>)</em></p>
 <h2 id="find-the-wifi-buffers" class="section-header"><a href="#find-the-wifi-buffers">3.3 Find the WiFi Buffers</a></h2>
 <p>Remember that Wireless RAM starts at address <code>0x4203 0000</code>?  I have highlighted in yellow the 19 largest variables in Wireless RAM...</p>
 
@@ -246,7 +247,7 @@
 <p>By studying the WiFi Buffers and the associated WiFi Functions, we may uncover the Code Blob that runs inside the WiFi Controller.</p>
 <p><img src="https://lupyuen.github.io/images/pinecone-day.jpg" alt="PineCone BL602 Evaluation Board" /></p>
 <h1 id="hands-on-with-pinecone-bl602" class="section-header"><a href="#hands-on-with-pinecone-bl602">4 Hands On with PineCone BL602</a></h1>
-<p><em>How we can get a PineCone BL602 Evaluation Board?</em></p>
+<p><em>How can we get a PineCone BL602 Evaluation Board?</em></p>
 <p>Join the <a href="https://www.pine64.org/2020/10/28/nutcracker-challenge-blob-free-wifi-ble/"><strong>PineCone Nutcracker Challenge</strong></a>!</p>
 <p>Contribute to the community-driven Reverse Engineering of the BL602 Bluetooth LE / WiFi Drivers.</p>
 <p>Or contribute docs and code that will help others adopt BL602 quickly. (This includes porting Mynewt / RIOT / Zephyr to BL602)</p>

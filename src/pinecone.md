@@ -164,6 +164,8 @@ Here we see the list of functions, global variables and static variables defined
 
 Let's look at the first page of functions and variables.
 
+_(FYI: Here are the Linker Maps for [`bl602_demo_wifi`](https://docs.google.com/spreadsheets/d/1m8-fc9_ocOwMuw_oRur4j6xqVli6x-Tm-M5ZIKwNWRk/edit#gid=381366828&fvid=1359565135) and [`sdk_app_ble_sync`](https://docs.google.com/spreadsheets/d/1HJev8fdmIMyIxeRFx2cpsq1C5rEYgGZf7Tank3hYK88/edit#gid=381366828&fvid=1359565135))_
+
 ## Find the WiFi Buffers
 
 Remember that Wireless RAM starts at address `0x4203 0000`?  I have highlighted in yellow the 19 largest variables in Wireless RAM...
@@ -205,7 +207,7 @@ By studying the WiFi Buffers and the associated WiFi Functions, we may uncover t
 
 # Hands On with PineCone BL602
 
-_How we can get a PineCone BL602 Evaluation Board?_
+_How can we get a PineCone BL602 Evaluation Board?_
 
 Join the [__PineCone Nutcracker Challenge__](https://www.pine64.org/2020/10/28/nutcracker-challenge-blob-free-wifi-ble/)!
 
