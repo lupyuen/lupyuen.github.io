@@ -303,3 +303,7 @@ We're in the middle of a pandemic. Why not take the time to learn some RISC-V...
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [`github.com/lupyuen/lupyuen.github.io/src/pinecone.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/pinecone.md)
+
+# Notes
+
+1. Besides PineCone, there are [other dev boards based on BL602](https://github.com/lupyuen/lupyuen.github.io/issues/2). However it's not clear whether the firmware is 100% compatible with these boards.
