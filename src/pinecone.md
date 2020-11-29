@@ -106,9 +106,9 @@ And it will be a helpful reference for porting other Embedded Operating Systems 
 
 Let's talk about the harder PineCone Nutcracker Challenge: Reverse engineering the Bluetooth LE and WiFi drivers for BL602...
 
-![BL602 Memory Map vs GD32 VF103: Totally different](https://lupyuen.github.io/images/pinecone-compare.jpg)
+![BL602 Memory Map vs SiFive FE310: Totally different](https://lupyuen.github.io/images/pinecone-compare.jpg)
 
-_BL602 Memory Map (left) vs GD32 VF103 (right): Totally different_
+_BL602 Memory Map (left) vs SiFive FE310 (right): Totally different_
 
 # Reverse Engineer the Bluetooth LE and WiFi Drivers
 

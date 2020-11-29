@@ -76,8 +76,10 @@
 <li><a href="#hands-on-with-pinecone-bl602">4 Hands On with PineCone BL602</a><ul>
 <li><a href="#form-factor">4.1 Form Factor</a><ul></ul></li>
 <li><a href="#flashing-firmware">4.2 Flashing Firmware</a><ul></ul></li>
-<li><a href="#building-firmware">4.3 Building Firmware</a><ul></ul></li></ul></li>
-<li><a href="#todo">5 TODO</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/pinecone-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board" /></p>
+<li><a href="#building-firmware">4.3 Building Firmware</a><ul></ul></li>
+<li><a href="#debugging-firmware">4.4 Debugging Firmware</a><ul></ul></li>
+<li><a href="#testing-the-firmware">4.5 Testing the Firmware</a><ul></ul></li></ul></li>
+<li><a href="#whats-next">5 What's Next</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/pinecone-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board" /></p>
 <h1 id="pinecone-bl602-why-does-it-matter" class="section-header"><a href="#pinecone-bl602-why-does-it-matter">1 PineCone BL602: Why does it matter?</a></h1>
 <ol>
 <li>
@@ -169,6 +171,8 @@
 <p>Why? Because it's an educational exercise that helps us better understand the BL602 internals.</p>
 <p>And it will be a helpful reference for porting other Embedded Operating Systems to BL602.</p>
 <p>Let's talk about the harder PineCone Nutcracker Challenge: Reverse engineering the Bluetooth LE and WiFi drivers for BL602...</p>
+<p><img src="https://lupyuen.github.io/images/pinecone-compare.jpg" alt="BL602 Memory Map vs SiFive FE310: Totally different" /></p>
+<p><em>BL602 Memory Map (left) vs SiFive FE310 (right): Totally different</em></p>
 <h1 id="reverse-engineer-the-bluetooth-le-and-wifi-drivers" class="section-header"><a href="#reverse-engineer-the-bluetooth-le-and-wifi-drivers">3 Reverse Engineer the Bluetooth LE and WiFi Drivers</a></h1>
 <p>BL602 feels exciting. The mass market RISC-V microcontrollers never had onboard Bluetooth LE and WiFi... Until now!</p>
 <p>Unfortunately we don't have complete documentation about the implementation of BLE and WiFi on BL602. (And I totally understand if there are commercial reasons for this omission)</p>
@@ -262,35 +266,31 @@
 </li>
 </ul>
 <h2 id="form-factor" class="section-header"><a href="#form-factor">4.1 Form Factor</a></h2>
-<p>The PineCone BL602 Evaluation Board has the same form factor as other wireless dev boards, like <a href="https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004?source=friends_link&amp;sk=bb4e2523b922d0870259ab3fa696c7da">EBYTE E73-TBB</a> (which is based on nRF52832)</p>
+<p>The PineCone BL602 Evaluation Board has a similar form factor to other wireless dev boards, like <a href="https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004?source=friends_link&amp;sk=bb4e2523b922d0870259ab3fa696c7da">EBYTE E73-TBB</a> (which is based on nRF52832)</p>
 <p>The PineCone board comes with a <strong>USB-C Connector</strong>. When connected to our computer via USB, the BL602 board is recognised as a Serial Device, ready to be flashed.</p>
 <h2 id="flashing-firmware" class="section-header"><a href="#flashing-firmware">4.2 Flashing Firmware</a></h2>
-<p>We flash RISC-V firmware to the PineCone board through the <strong>USB Serial Connection</strong>. </p>
-<p>This is explained in the <a href="https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html">Linux Starter Guide</a> and the <a href="https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html">Windows Starter Guide</a>.</p>
-<p>The UART flashing protocol is described in the <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en">BL602 Flash Programming</a> doc.</p>
+<p>We flash RISC-V firmware to the PineCone board through the <strong>USB Serial Connection</strong> using the <a href="https://pine64.github.io/bl602-docs/Developer_Environment/BLFlashEnv/BLFlashEnv.html"><strong>BLFlashEnv Tool</strong></a>.</p>
+<p>The flashing steps are explained in the <a href="https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html"><strong>Linux Starter Guide</strong></a> and the <a href="https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html"><strong>Windows Starter Guide</strong></a>.</p>
+<p>The UART flashing protocol is described in the <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en"><strong>BL602 Flash Programming</strong></a> doc.</p>
 <p><em>Are SWD and ST-Link supported for flashing firmware to the PineCone board?</em></p>
 <p>Sorry no. SWD is available only on Arm Microcontrollers. (SWD was created by Arm)</p>
-<p><em>(The flash programming doc seems to suggest that BL602 may be flashed from an SD Card via Secure Digital Input/Output)</em></p>
+<p><em>(The <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en">BL602 Flash Programming</a> doc seems to suggest that BL602 may also be flashed from an SD Card via Secure Digital Input/Output)</em></p>
 <h2 id="building-firmware" class="section-header"><a href="#building-firmware">4.3 Building Firmware</a></h2>
 <p>Building the BL602 firmware is supported on Linux and Windows. Refer to the <a href="https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html">Linux Starter Guide</a> and the <a href="https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html">Windows Starter Guide</a></p>
 <p>On Windows, MSYS2 is required. Alternatively, we may use Windows Subsystem for Linux.</p>
-<h1 id="todo" class="section-header"><a href="#todo">5 TODO</a></h1>
-<p>Mynewt /
-macOS /
-VSCode /
-Github Actions</p>
-<p>How to Test:
-Bus Pirate /
-PineTime is easier to test</p>
-<p>JTAG Debugger:
-Sipeed JTAG dongle</p>
-<p>FreeRTOS can be daunting for newcomers
-No port for FreeRTOS yet
-SiFive dr who great for devs</p>
-<p>With the pandemic
-Might be good to learn RISC-V 
-Understand how we might migrate arm
-Education</p>
+<p>The development tools supported for BL602 are <a href="https://pine64.github.io/bl602-docs/Developer_Environment/freedom_studio/freedom_studio.html"><strong>SiFive Freedom Studio</strong></a> and <a href="https://pine64.github.io/bl602-docs/Developer_Environment/eclipse/eclipse.html"><strong>Eclipse</strong></a>.</p>
+<p><a href="https://pine64.github.io/bl602-docs/Examples/helloworld/helloworld.html">Sample Firmware for BL602</a></p>
+<p><em>(For my BL602 port of Mynewt: I'll be using VSCode as the development tool. Firmware build will be supported on plain Windows, macOS, GitHub Actions and GitLab CI)</em></p>
+<h2 id="debugging-firmware" class="section-header"><a href="#debugging-firmware">4.4 Debugging Firmware</a></h2>
+<p>To debug the BL602 firmware, we need a <strong>JTAG Debugger</strong> with OpenOCD and GDB.</p>
+<p>I'll be testing the <a href="https://www.seeedstudio.com/Sipeed-USB-JTAG-TTL-RISC-V-Debugger-p-2910.html">Sipeed JTAG Debugger</a> with the PineCone board.</p>
+<h2 id="testing-the-firmware" class="section-header"><a href="#testing-the-firmware">4.5 Testing the Firmware</a></h2>
+<p>When we port to BL602 a sizeable piece of firmware (or an Embedded Operating System like Mynewt), testing the firmware can get challenging.</p>
+<p>For embedded gadgets like PineTime, the sensors and display are connected. Which makes it easier to test the Input/Output Ports (like I2C and SPI).</p>
+<p>PineCone is a bare board with no sensors and actuators, so we need to wire up additional components to test the firmware. (I'll probably use <a href="http://dangerousprototypes.com/docs/Bus_Pirate">Bus Pirate</a> to test my BL602 port of Mynewt + Rust)</p>
+<p><em>(FYI: SiFive's <a href="https://www.hifiveinventor.com/user-guide/overview">Doctor Who HiFive Inventor</a> is an educational RISC-V board with onboard sensors and LED display)</em></p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">5 What's Next</a></h1>
+<p>TODO</p>
 <p><a href="https://lupyuen.github.io">Check out my articles</a></p>
 <p><a href="https://lupyuen.github.io/rss.xml">RSS Feed</a></p>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
