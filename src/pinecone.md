@@ -16,15 +16,15 @@ Let's learn about the PineCone Board... And how it helps the [__RISC-V Open Sour
 
 1. __Power Efficient__: BL602 is perfect for wearables and other power-constrained devices. (Maybe even PineTime!)
 
-    By performance, BL602 belongs to the same class of microcontrollers as Nordic nRF52832. BL602 won't run Linux, but neither does PineTime.
+    By performance, BL602 belongs to the same class of microcontrollers as Nordic nRF52832. BL602 won't run Linux, [but neither does PineTime](https://lupyuen.github.io/pinetime-rust-mynewt/articles/pinetime).
 
-1. __CPU is based on RISC-V, not Arm__: Yep this scares most people, because BL602 will NOT run code compiled for Arm processors. Instead we need to use the [RISC-V version](https://en.wikipedia.org/wiki/RISC-V) of the [GCC compiler](https://xpack.github.io/riscv-none-embed-gcc/) to rebuild our programs.
+1. __CPU is based on RISC-V, not Arm__: Yep this scares most people, because BL602 will NOT run code compiled for Arm processors. Instead we need to use the [32-bit RISC-V version of the GCC compiler](https://xpack.github.io/riscv-none-embed-gcc/) to recompile our programs.
 
     FreeRTOS has been ported to BL602. ([More details](https://github.com/pine64/bl_iot_sdk/tree/master/components/bl602)) But other Real Time Operating Systems (like Zephyr and Mynewt) have been slow to adopt RISC-V. (We'll learn why in a while)
 
     Rust runs perfectly fine on RISC-V microcontrollers. ([Here's the proof](https://medium.com/@ly.lee/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v-4054a5922493?source=friends_link&sk=215cd06186d912277d0469224666d60d))
 
-It's great that Pine64 is reaching out to the Open Source Community through the PineCone Nutcracker initiative... Because it takes A Humongous Village to get BL602 ready for real-world gadgets.
+It's great that Pine64 is reaching out to the Open Source Community through the [PineCone Nutcracker initiative](https://www.pine64.org/2020/10/28/nutcracker-challenge-blob-free-wifi-ble/)... Because it takes A Humongous Village to get BL602 ready for real-world gadgets.
 
 _How does BL602 compare with ESP32?_
 
