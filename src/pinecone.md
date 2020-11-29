@@ -32,7 +32,7 @@ _How does BL602 compare with ESP32?_
 
 - ESP32 is more of a __Bluetooth LE + WiFi Controller__ that supports Embedded Programs
 
-To folks who are familiar with Arm microcontrollers (STM32 Blue Pill, Nordic nRF52), BL602 looks like another microcontroller... Except that it runs on the RISC-V Instruction Set instead of Arm.
+To folks who are familiar with Arm microcontrollers (STM32 Blue Pill, Nordic nRF52), BL602 looks like another microcontroller... Except that it runs on the [__RISC-V Instruction Set__](https://riscv.org/technical/specifications/) instead of Arm.
 
 Hope this addresses the confusion over BL602, as discussed [here](https://news.ycombinator.com/item?id=24916086) and [here](https://news.ycombinator.com/item?id=24877335)
 
@@ -60,6 +60,8 @@ Nope! Because across different brands of RISC-V microcontrollers...
 
 It's not so straightforward to port existing RISC-V firmware to BL602.
 
+## BL602 vs Other RISC-V Microcontrollers
+
 _How bad is the RISC-V firmware portability problem?_
 
 Let's compare BL602 with the two most popular models of 32-bit RISC-V microcontrollers...
@@ -83,12 +85,17 @@ As we can see, firmware support is not so great for newer RISC-V microcontroller
 
 Firmware created for Pinecil will NOT run on PineCone... Even the simplest firmware for blinking the LED!
 
+## Hardware Abstraction Layer
+
 _How do we create portable firmware for RISC-V?_
 
-We'll have to isolate the differences with a layer of low-level firmware code known as the
-__Hardware Abstraction Layer (HAL)__.
+We'll have to isolate the differences with a layer of low-level firmware code known as the __Hardware Abstraction Layer (HAL)__.
 
 So when we port the firmware from, say, Pinecil to PineCone, we need to replace the HAL for GD32 VF103 by the HAL for BL602.
+
+[Check out the BL602 HAL](https://github.com/pine64/bl_iot_sdk/tree/master/components/hal_drv)
+
+## Embedded Operating Systems
 
 _Sounds like a lot of tedious repetitive work. Is there a sustainable way to create portable firmware for RISC-V?_
 
