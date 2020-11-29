@@ -106,9 +106,9 @@ And it will be a helpful reference for porting other Embedded Operating Systems 
 
 Let's talk about the harder PineCone Nutcracker Challenge: Reverse engineering the Bluetooth LE and WiFi drivers for BL602...
 
-![BL602 Memory Map vs GD32 VF103: Totally different](https://lupyuen.github.io/images/pinecone-compare.png)
+![BL602 Memory Map vs GD32 VF103: Totally different](https://lupyuen.github.io/images/pinecone-compare.jpg)
 
-_BL602 Memory Map vs GD32 VF103: Totally different_
+_BL602 Memory Map (left) vs GD32 VF103 (right): Totally different_
 
 # Reverse Engineer the Bluetooth LE and WiFi Drivers
 
@@ -225,23 +225,23 @@ The BL602 docs are located in the [__BL602 Docs Repo__](https://github.com/pine6
 
 ## Form Factor
 
-The PineCone BL602 Evaluation Board has the same form factor as other wireless dev boards, like [EBYTE E73-TBB](https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004?source=friends_link&sk=bb4e2523b922d0870259ab3fa696c7da) (which is based on nRF52832)
+The PineCone BL602 Evaluation Board has a similar form factor to other wireless dev boards, like [EBYTE E73-TBB](https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004?source=friends_link&sk=bb4e2523b922d0870259ab3fa696c7da) (which is based on nRF52832)
 
 The PineCone board comes with a __USB-C Connector__. When connected to our computer via USB, the BL602 board is recognised as a Serial Device, ready to be flashed.
 
 ## Flashing Firmware
 
-We flash RISC-V firmware to the PineCone board through the __USB Serial Connection__ using the [BLFlashEnv Tool](https://pine64.github.io/bl602-docs/Developer_Environment/BLFlashEnv/BLFlashEnv.html)
+We flash RISC-V firmware to the PineCone board through the __USB Serial Connection__ using the [__BLFlashEnv Tool__](https://pine64.github.io/bl602-docs/Developer_Environment/BLFlashEnv/BLFlashEnv.html).
 
-The flashing steps are explained in the [Linux Starter Guide](https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html) and the [Windows Starter Guide](https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html).
+The flashing steps are explained in the [__Linux Starter Guide__](https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html) and the [__Windows Starter Guide__](https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html).
 
-The UART flashing protocol is described in the [BL602 Flash Programming](https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en) doc.
+The UART flashing protocol is described in the [__BL602 Flash Programming__](https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en) doc.
 
 _Are SWD and ST-Link supported for flashing firmware to the PineCone board?_
 
 Sorry no. SWD is available only on Arm Microcontrollers. (SWD was created by Arm)
 
-_(The flash programming doc seems to suggest that BL602 may be flashed from an SD Card via Secure Digital Input/Output)_
+_(The [BL602 Flash Programming](https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en) doc seems to suggest that BL602 may also be flashed from an SD Card via Secure Digital Input/Output)_
 
 ## Building Firmware
 
@@ -253,7 +253,7 @@ The development tools supported for BL602 are [__SiFive Freedom Studio__](https:
 
 [Sample Firmware for BL602](https://pine64.github.io/bl602-docs/Examples/helloworld/helloworld.html)
 
-_(For my port of Mynewt to BL602: I'll be using VSCode as the development tool. Firmware build will be supported on plain Windows, macOS, GitHub Actions and GitLab CI)_
+_(For my BL602 port of Mynewt: I'll be using VSCode as the development tool. Firmware build will be supported on plain Windows, macOS, GitHub Actions and GitLab CI)_
 
 ## Debugging Firmware
 
@@ -263,13 +263,13 @@ I'll be testing the [Sipeed JTAG Debugger](https://www.seeedstudio.com/Sipeed-US
 
 ## Testing the Firmware
 
-TODO
+When we port to BL602 a sizeable piece of firmware (or an Embedded Operating System like Mynewt), testing the firmware can get challenging.
 
-How to Test:
-Bus Pirate /
-PineTime is easier to test
+For embedded gadgets like PineTime, the sensors and display are connected. Which makes it easier to test the Input/Output Ports (like I2C and SPI).
 
-[SiFive Doctor Who HiFive Inventor](https://liliputing.com/2020/11/doctor-who-coding-toy-packs-a-sifive-risc-v-processor.html)
+PineCone is a bare board with no sensors and actuators, so we need to wire up additional components to test the firmware. (I'll probably use [Bus Pirate](http://dangerousprototypes.com/docs/Bus_Pirate) to test my BL602 port of Mynewt + Rust)
+
+_(FYI: SiFive's [Doctor Who HiFive Inventor](https://www.hifiveinventor.com/user-guide/overview) is an educational RISC-V board with onboard sensors and LED display)_
 
 # What's Next
 
