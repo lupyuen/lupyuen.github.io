@@ -12,7 +12,7 @@
     content="Quick Peek of PineCone BL602 RISC-V Evaluation Board" 
     data-rh="true">
 <meta property="og:description" 
-    content="What's inside BL602... And why does it matter for the RISC-V open source ecosystem?" 
+    content="What's inside the PineCone BL602 Evaluation Board... And how we're using it to contribute to the RISC-V Open Source Ecosystem" 
     data-rh="true">
 <meta property="og:image" 
     content="https://lupyuen.github.io/images/pinecone-title.jpg">
@@ -66,7 +66,10 @@
     <h1 class="title">Quick Peek of PineCone BL602 RISC-V Evaluation Board</h1>
     <nav id="TOC"><ul>
 <li><a href="#pinecone-bl602-why-does-it-matter">1 PineCone BL602: Why does it matter?</a><ul></ul></li>
-<li><a href="#the-thing-about-risc-v-and-pinecone-bl602">2 The Thing About RISC-V and PineCone BL602</a><ul></ul></li>
+<li><a href="#the-thing-about-risc-v-and-pinecone-bl602">2 The Thing About RISC-V and PineCone BL602</a><ul>
+<li><a href="#bl602-vs-other-risc-v-microcontrollers">2.1 BL602 vs Other RISC-V Microcontrollers</a><ul></ul></li>
+<li><a href="#hardware-abstraction-layer">2.2 Hardware Abstraction Layer</a><ul></ul></li>
+<li><a href="#embedded-operating-systems">2.3 Embedded Operating Systems</a><ul></ul></li></ul></li>
 <li><a href="#reverse-engineer-the-bluetooth-le-and-wifi-drivers">3 Reverse Engineer the Bluetooth LE and WiFi Drivers</a><ul>
 <li><a href="#how-does-our-wifi-driver-talk-to-the-wifi-controller">3.1 How does our WiFi Driver talk to the WiFi Controller?</a><ul></ul></li>
 <li><a href="#analyse-the-linker-map">3.2 Analyse the Linker Map</a><ul></ul></li>
@@ -109,7 +112,7 @@
 <p>ESP32 is more of a <strong>Bluetooth LE + WiFi Controller</strong> that supports Embedded Programs</p>
 </li>
 </ul>
-<p>To folks who are familiar with Arm microcontrollers (STM32 Blue Pill, Nordic nRF52), BL602 looks like another microcontroller... Except that it runs on the RISC-V Instruction Set instead of Arm.</p>
+<p>To folks who are familiar with Arm microcontrollers (STM32 Blue Pill, Nordic nRF52), BL602 looks like another microcontroller... Except that it runs on the <a href="https://riscv.org/technical/specifications/"><strong>RISC-V Instruction Set</strong></a> instead of Arm.</p>
 <p>Hope this addresses the confusion over BL602, as discussed <a href="https://news.ycombinator.com/item?id=24916086">here</a> and <a href="https://news.ycombinator.com/item?id=24877335">here</a></p>
 <p><em>(There's a new <a href="https://www.espressif.com/en/news/ESP32_C3">ESP32 based on RISC-V</a>, but the hardware is not available yet so we'll wait and see. <a href="https://twitter.com/MisterTechBlog/status/1332859286142128131?s=20">Compare BL602 with ESP32-C3</a>)</em></p>
 <p><em>Why not stick with Arm? Why get adventurous with RISC-V?</em></p>
@@ -129,6 +132,7 @@
 </li>
 </ol>
 <p>It's not so straightforward to port existing RISC-V firmware to BL602.</p>
+<h2 id="bl602-vs-other-risc-v-microcontrollers" class="section-header"><a href="#bl602-vs-other-risc-v-microcontrollers">2.1 BL602 vs Other RISC-V Microcontrollers</a></h2>
 <p><em>How bad is the RISC-V firmware portability problem?</em></p>
 <p>Let's compare BL602 with the two most popular models of 32-bit RISC-V microcontrollers...</p>
 <ol>
@@ -159,10 +163,12 @@
 </ol>
 <p>As we can see, firmware support is not so great for newer RISC-V microcontrollers.</p>
 <p>Firmware created for Pinecil will NOT run on PineCone... Even the simplest firmware for blinking the LED!</p>
+<h2 id="hardware-abstraction-layer" class="section-header"><a href="#hardware-abstraction-layer">2.2 Hardware Abstraction Layer</a></h2>
 <p><em>How do we create portable firmware for RISC-V?</em></p>
-<p>We'll have to isolate the differences with a layer of low-level firmware code known as the
-<strong>Hardware Abstraction Layer (HAL)</strong>.</p>
+<p>We'll have to isolate the differences with a layer of low-level firmware code known as the <strong>Hardware Abstraction Layer (HAL)</strong>.</p>
 <p>So when we port the firmware from, say, Pinecil to PineCone, we need to replace the HAL for GD32 VF103 by the HAL for BL602.</p>
+<p><a href="https://github.com/pine64/bl_iot_sdk/tree/master/components/hal_drv">Check out the BL602 HAL</a></p>
+<h2 id="embedded-operating-systems" class="section-header"><a href="#embedded-operating-systems">2.3 Embedded Operating Systems</a></h2>
 <p><em>Sounds like a lot of tedious repetitive work. Is there a sustainable way to create portable firmware for RISC-V?</em></p>
 <p>Yes, by <strong>adopting a modern Embedded Operating System</strong> like Mynewt, RIOT and Zephyr.</p>
 <p>These operating systems expose a high-level API for various Peripherals (Timers, GPIO, I2C, SPI, ...) that works across multiple microcontrollers (for both Arm and RISC-V).</p>

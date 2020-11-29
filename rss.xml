@@ -4,6 +4,12 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Quick Peek of PineCone BL602 RISC-V Evaluation Board</title>
+            <link>https://lupyuen.github.io/articles/pinecone</link>
+            <description><![CDATA[What's inside the PineCone BL602 Evaluation Board... And how we're using it to contribute to the RISC-V Open Source Ecosystem]]></description>
+            <pubDate>Sun, 29 Nov 2020 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Create Your Own PineTime Watch Face in Rust... And Publish on crates.io</title>
             <link>https://lupyuen.github.io/pinetime-rust-mynewt/articles/watchface</link>
             <description><![CDATA[How we build PineTime Watch Faces with Rust and LVGL... And publish them on crates.io]]></description>
