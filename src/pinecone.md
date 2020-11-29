@@ -283,7 +283,7 @@ Getting involved with the [PineCone Nutcracker Challenge](https://www.pine64.org
 
 And you might earn a free PineCone Evaluation Board!
 
-We're in the middle of a pandemic... Why not take the time to learn some RISC-V... And contribute to the RISC-V Open Source Ecosystem!
+We're in the middle of a pandemic. Why not take the time to learn some RISC-V... And contribute to the RISC-V Open Source Ecosystem!
 
 [Check out my articles](https://lupyuen.github.io)
 
