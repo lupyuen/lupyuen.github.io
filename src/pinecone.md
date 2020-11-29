@@ -221,22 +221,30 @@ The BL602 docs are located in the [__BL602 Docs Repo__](https://github.com/pine6
 
 ## Form Factor
 
-The BL602 Evaluation Board has the same form factor as other wireless dev boards, like [EBYTE E73-TBB](https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004?source=friends_link&sk=bb4e2523b922d0870259ab3fa696c7da) (which is based on nRF52832)
+The PineCone BL602 Evaluation Board has the same form factor as other wireless dev boards, like [EBYTE E73-TBB](https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004?source=friends_link&sk=bb4e2523b922d0870259ab3fa696c7da) (which is based on nRF52832)
 
-The BL602 board comes with a __USB-C Connector__. When connected to our computer via USB, the BL602 board is recognised as a Serial Device, ready to be flashed.
+The PineCone board comes with a __USB-C Connector__. When connected to our computer via USB, the BL602 board is recognised as a Serial Device, ready to be flashed.
 
 ## Flashing Firmware
 
-We flash RISC-V firmware to the BL602 board through the __USB Serial Connection__.
+We flash RISC-V firmware to the PineCone board through the __USB Serial Connection__. 
 
 This is explained in the [Linux Starter Guide](https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html) and the [Windows Starter Guide](https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html).
 
-The flashing protocol is described in the [BL602 Flash Programming](https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en) doc.
+The UART flashing protocol is described in the [BL602 Flash Programming](https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en) doc.
+
+_Is SWD supported for flashing firmware to the PineCone board?_
+
+Sorry no. SWD is available only on Arm Microcontrollers. (SWD was created by Arm)
+
+_(The flash programming doc seems to suggest that BL602 may be flashed from an SD Card via Secure Digital Input/Output)_
 
 ## Building Firmware
 
-Firmware Build:
-Windows /
+Building the BL602 firmware is supported on Linux and Windows. Refer to the [Linux Starter Guide](https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html) and the [Windows Starter Guide](https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html)
+
+On Windows, MSYS2 is required. Alternatively, we may use Windows Subsystem for Linux.
+
 Mynewt /
 macOS /
 VSCode /
