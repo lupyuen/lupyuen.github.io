@@ -12,7 +12,7 @@
     content="Quick Peek of PineCone BL602 RISC-V Evaluation Board" 
     data-rh="true">
 <meta property="og:description" 
-    content="Quick Peek of PineCone BL602 RISC-V Evaluation Board" 
+    content="What's inside BL602... And why does it matter for the RISC-V open source ecosystem?" 
     data-rh="true">
 <meta property="og:image" 
     content="https://lupyuen.github.io/images/pinecone-title.jpg">
@@ -94,8 +94,8 @@
 <p>By performance, BL602 belongs to the same class of microcontrollers as Nordic nRF52832. BL602 won't run Linux, but neither does PineTime.</p>
 </li>
 <li>
-<p><strong>CPU is based on RISC-V, not Arm</strong>: Yep this scares most people, because BL602 will NOT run code compiled for Arm processors. Instead we need to use the RISC-V version of the GCC compiler to rebuild our programs.</p>
-<p>FreeRTOS has been ported to BL602, but other Real Time Operating Systems (like Zephyr and Mynewt) have been slow to adopt RISC-V. (We'll learn why in a while)</p>
+<p><strong>CPU is based on RISC-V, not Arm</strong>: Yep this scares most people, because BL602 will NOT run code compiled for Arm processors. Instead we need to use the <a href="https://en.wikipedia.org/wiki/RISC-V">RISC-V version</a> of the <a href="https://xpack.github.io/riscv-none-embed-gcc/">GCC compiler</a> to rebuild our programs.</p>
+<p>FreeRTOS has been ported to BL602. (<a href="https://github.com/pine64/bl_iot_sdk/tree/master/components/bl602">More details</a>) But other Real Time Operating Systems (like Zephyr and Mynewt) have been slow to adopt RISC-V. (We'll learn why in a while)</p>
 <p>Rust runs perfectly fine on RISC-V microcontrollers. (<a href="https://medium.com/@ly.lee/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v-4054a5922493?source=friends_link&amp;sk=215cd06186d912277d0469224666d60d">Here's the proof</a>)</p>
 </li>
 </ol>
@@ -111,7 +111,7 @@
 </ul>
 <p>To folks who are familiar with Arm microcontrollers (STM32 Blue Pill, Nordic nRF52), BL602 looks like another microcontroller... Except that it runs on the RISC-V Instruction Set instead of Arm.</p>
 <p>Hope this addresses the confusion over BL602, as discussed <a href="https://news.ycombinator.com/item?id=24916086">here</a> and <a href="https://news.ycombinator.com/item?id=24877335">here</a></p>
-<p><em>(There's a new <a href="https://www.espressif.com/en/news/ESP32_C3">ESP32 based on RISC-V</a>, but the hardware is not available yet so we'll wait and see)</em></p>
+<p><em>(There's a new <a href="https://www.espressif.com/en/news/ESP32_C3">ESP32 based on RISC-V</a>, but the hardware is not available yet so we'll wait and see. <a href="https://twitter.com/MisterTechBlog/status/1332859286142128131?s=20">Compare BL602 with ESP32-C3</a>)</em></p>
 <p><em>Why not stick with Arm? Why get adventurous with RISC-V?</em></p>
 <p>Nintendo Switch (the #1 gaming console) runs on Arm. iPhone and the new M1 Macs also run on Arm.  <strong>Most of our gadgets are powered by Arm today.</strong></p>
 <p>Before Arm gets too successful and locks us in... Shouldn't we explore alternatives like RISC-V?</p>
@@ -276,14 +276,14 @@
 <p>The flashing steps are explained in the <a href="https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html"><strong>Linux Starter Guide</strong></a> and the <a href="https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html"><strong>Windows Starter Guide</strong></a>.</p>
 <p>The UART flashing protocol is described in the <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en"><strong>BL602 Flash Programming</strong></a> doc.</p>
 <p><em>Are SWD and ST-Link supported for flashing firmware to the PineCone board?</em></p>
-<p>Sorry no. SWD is available only on Arm Microcontrollers. (SWD was created by Arm)</p>
+<p>Sorry no. SWD is available only on Arm Microcontrollers. <a href="https://medium.com/@ly.lee/openocd-on-raspberry-pi-better-with-swd-on-spi-7dea9caeb590?source=friends_link&amp;sk=df399bfd913d3e262447d28aa5af6b63">(SWD was created by Arm)</a></p>
 <p><em>(The <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en">BL602 Flash Programming</a> doc seems to suggest that BL602 may also be flashed from an SD Card via Secure Digital Input/Output)</em></p>
 <h2 id="building-firmware" class="section-header"><a href="#building-firmware">4.3 Building Firmware</a></h2>
 <p>Building the BL602 firmware is supported on Linux and Windows. Refer to the <a href="https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html">Linux Starter Guide</a> and the <a href="https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html">Windows Starter Guide</a></p>
-<p>On Windows, MSYS2 is required. Alternatively, we may use Windows Subsystem for Linux.</p>
+<p>On Windows, MSYS2 is required. Alternatively, we may use Windows Subsystem for Linux (WSL). (Some USB Devices don't work under WSL... Beware!)</p>
 <p>The development tools supported for BL602 are <a href="https://pine64.github.io/bl602-docs/Developer_Environment/freedom_studio/freedom_studio.html"><strong>SiFive Freedom Studio</strong></a> and <a href="https://pine64.github.io/bl602-docs/Developer_Environment/eclipse/eclipse.html"><strong>Eclipse</strong></a>.</p>
 <p><a href="https://pine64.github.io/bl602-docs/Examples/helloworld/helloworld.html">Sample Firmware for BL602</a></p>
-<p><em>(For my BL602 port of Mynewt: I'll be using VSCode as the development tool. Firmware build will be supported on plain Windows, macOS, GitHub Actions and GitLab CI)</em></p>
+<p><em>(For the BL602 port of Mynewt: I'll be using VSCode as the development tool. Firmware build will be supported on plain old Windows (without MSYS2 / WSL), macOS, Linux, GitHub Actions and GitLab CI. More about <a href="https://medium.com/@ly.lee/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v-4054a5922493?source=friends_link&amp;sk=215cd06186d912277d0469224666d60d">porting Mynewt to RISC-V</a> and <a href="https://medium.com/@ly.lee/hey-gd32-vf103-on-risc-v-i-surrender-for-now-d39d0c7b0001?source=friends_link&amp;sk=c0504ac574bf571219fabe174eef4de5">how it got stuck</a>)</em></p>
 <h2 id="debugging-firmware" class="section-header"><a href="#debugging-firmware">4.4 Debugging Firmware</a></h2>
 <p>To debug the BL602 firmware, we need a <strong>JTAG Debugger</strong> with OpenOCD and GDB.</p>
 <p>I'll be testing the <a href="https://www.seeedstudio.com/Sipeed-USB-JTAG-TTL-RISC-V-Debugger-p-2910.html">Sipeed JTAG Debugger</a> with the PineCone board.</p>
