@@ -96,15 +96,15 @@
 </li>
 <li>
 <p><strong>Power Efficient</strong>: BL602 is perfect for wearables and other power-constrained devices. (Maybe even PineTime!)</p>
-<p>By performance, BL602 belongs to the same class of microcontrollers as Nordic nRF52832. BL602 won't run Linux, but neither does PineTime.</p>
+<p>By performance, BL602 belongs to the same class of microcontrollers as Nordic nRF52832. BL602 won't run Linux, <a href="https://lupyuen.github.io/pinetime-rust-mynewt/articles/pinetime">but neither does PineTime</a>.</p>
 </li>
 <li>
-<p><strong>CPU is based on RISC-V, not Arm</strong>: Yep this scares most people, because BL602 will NOT run code compiled for Arm processors. Instead we need to use the <a href="https://en.wikipedia.org/wiki/RISC-V">RISC-V version</a> of the <a href="https://xpack.github.io/riscv-none-embed-gcc/">GCC compiler</a> to rebuild our programs.</p>
+<p><strong>CPU is based on RISC-V, not Arm</strong>: Yep this scares most people, because BL602 will NOT run code compiled for Arm processors. Instead we need to use the <a href="https://xpack.github.io/riscv-none-embed-gcc/">32-bit RISC-V version of the GCC compiler</a> to recompile our programs.</p>
 <p>FreeRTOS has been ported to BL602. (<a href="https://github.com/pine64/bl_iot_sdk/tree/master/components/bl602">More details</a>) But other Real Time Operating Systems (like Zephyr and Mynewt) have been slow to adopt RISC-V. (We'll learn why in a while)</p>
 <p>Rust runs perfectly fine on RISC-V microcontrollers. (<a href="https://medium.com/@ly.lee/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v-4054a5922493?source=friends_link&amp;sk=215cd06186d912277d0469224666d60d">Here's the proof</a>)</p>
 </li>
 </ol>
-<p>It's great that Pine64 is reaching out to the Open Source Community through the PineCone Nutcracker initiative... Because it takes A Humongous Village to get BL602 ready for real-world gadgets.</p>
+<p>It's great that Pine64 is reaching out to the Open Source Community through the <a href="https://www.pine64.org/2020/10/28/nutcracker-challenge-blob-free-wifi-ble/">PineCone Nutcracker initiative</a>... Because it takes A Humongous Village to get BL602 ready for real-world gadgets.</p>
 <h2 id="bl602-vs-esp32" class="section-header"><a href="#bl602-vs-esp32">1.1 BL602 vs ESP32</a></h2>
 <p><em>How does BL602 compare with ESP32?</em></p>
 <ul>
