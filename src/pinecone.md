@@ -209,25 +209,31 @@ Contribute to the community-driven Reverse Engineering of the BL602 Bluetooth LE
 
 Or contribute docs and code that will help others adopt BL602 quickly. (This includes porting Mynewt / RIOT / Zephyr to BL602)
 
-The BL602 docs are located here...
+The BL602 docs are located in the [__BL602 Docs Repo__](https://github.com/pine64/bl602-docs)...
 
--   [BL602 SDK](https://pine64.github.io/bl602-docs/)
+-   [__BL602 Software Development Kit__](https://pine64.github.io/bl602-docs/)
 
--   [BL602 Datasheet](https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_BL604_DS_en_Combo_1.2.pdf)
+-   [__BL602 Datasheet__](https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_BL604_DS_en_Combo_1.2.pdf)
 
--   [BL602 Reference Manual](https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf)
+-   [__BL602 Reference Manual__](https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf)
 
--   [BL602 Flash Programming](https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en)
+-   [__BL602 Flash Programming__](https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en)
 
 ## Form Factor
 
 The BL602 Evaluation Board has the same form factor as other wireless dev boards, like [EBYTE E73-TBB](https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004?source=friends_link&sk=bb4e2523b922d0870259ab3fa696c7da) (which is based on nRF52832)
 
-The BL602 board comes with a USB-C Connector. The BL602 board is recognised as a Serial Device when connected to a computer via USB.
+The BL602 board comes with a __USB-C Connector__. When connected to our computer via USB, the BL602 board is recognised as a Serial Device, ready to be flashed.
 
 ## Flashing Firmware
 
+We flash RISC-V firmware to the BL602 board through the __USB Serial Connection__.
 
+This is explained in the [Linux Starter Guide](https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html) and the [Windows Starter Guide](https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html).
+
+The flashing protocol is described in the [BL602 Flash Programming](https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en) doc.
+
+## Building Firmware
 
 Firmware Build:
 Windows /
