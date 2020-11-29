@@ -12,7 +12,7 @@ Let's learn about the PineCone Board... And how it helps the [__RISC-V Open Sour
 
     But BL602 supports Bluetooth LE AND 2.4 GHz WiFi... At the __low low price of an ESP8266__.
 
-    _That's so awesome!_
+    _That's a game changer!_
 
 1. __Power Efficient__: BL602 is perfect for wearables and other power-constrained devices. (Maybe even PineTime!)
 
