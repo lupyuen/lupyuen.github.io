@@ -36,7 +36,7 @@ To folks who are familiar with Arm microcontrollers (STM32 Blue Pill, Nordic nRF
 
 Hope this addresses the confusion over BL602, as discussed [here](https://news.ycombinator.com/item?id=24916086) and [here](https://news.ycombinator.com/item?id=24877335)
 
-_(There's a new [ESP32 based on RISC-V](https://www.espressif.com/en/news/ESP32_C3), but the hardware is not available yet so we'll wait and see)_
+_(There's a new [ESP32 based on RISC-V](https://www.espressif.com/en/news/ESP32_C3), but the hardware is not available yet so we'll wait and see. [Compare BL602 with ESP32-C3](https://twitter.com/MisterTechBlog/status/1332859286142128131?s=20))_
 
 _Why not stick with Arm? Why get adventurous with RISC-V?_
 
