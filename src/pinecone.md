@@ -263,13 +263,13 @@ I'll be testing the [Sipeed JTAG Debugger](https://www.seeedstudio.com/Sipeed-US
 
 ## Testing the Firmware
 
+TODO
+
 How to Test:
 Bus Pirate /
 PineTime is easier to test
 
-FreeRTOS can be daunting for newcomers
-No port for FreeRTOS yet
-SiFive dr who great for devs
+[SiFive Doctor Who HiFive Inventor](https://liliputing.com/2020/11/doctor-who-coding-toy-packs-a-sifive-risc-v-processor.html)
 
 # What's Next
 
