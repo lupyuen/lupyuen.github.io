@@ -8,7 +8,7 @@ Let's learn about the PineCone Board... And how it helps the [__RISC-V Open Sour
 
 # PineCone BL602: Why does it matter?
 
-1. __Low Cost__: BL602 is a General Purpose 32-bit Microcontroller. (Think STM32 Blue Pill, Nordic nRF52)
+1. __Low Cost__: BL602 is a [General Purpose 32-bit Microcontroller](https://github.com/pine64/bl602-docs). (Think STM32 Blue Pill, Nordic nRF52)
 
     But BL602 supports Bluetooth LE AND 2.4 GHz WiFi... At the __low low price of an ESP8266__.
 
