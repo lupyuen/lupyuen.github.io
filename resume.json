@@ -156,6 +156,13 @@
   ],
   "publications": [
     {
+      "name": "Quick Peek of PineCone BL602 RISC-V Evaluation Board",
+      "publisher": "GitHub",
+      "releaseDate": "2020-11-29",
+      "website": "https://lupyuen.github.io/articles/pinecone",
+      "summary": "What's inside the PineCone BL602 Evaluation Board... And how we're using it to contribute to the RISC-V Open Source Ecosystem"
+    },
+    {
       "name": "Create Your Own PineTime Watch Face in Rust... And Publish on crates.io",
       "publisher": "GitHub",
       "releaseDate": "2020-10-17",
