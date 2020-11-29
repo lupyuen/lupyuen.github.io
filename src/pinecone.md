@@ -279,7 +279,11 @@ _(FYI: SiFive's [Doctor Who HiFive Inventor](https://www.hifiveinventor.com/user
 
 # What's Next
 
-TODO
+Getting involved with the [PineCone Nutcracker Challenge](https://www.pine64.org/2020/10/28/nutcracker-challenge-blob-free-wifi-ble/) is a great way to learn about RISC-V... Especially for Embedded Engineers exploring Arm alternatives.
+
+And you might earn a free PineCone Evaluation Board!
+
+We're in the middle of a pandemic... Why not take the time to learn some RISC-V... And contribute to the RISC-V Open Source Ecosystem!
 
 [Check out my articles](https://lupyuen.github.io)
 
