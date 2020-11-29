@@ -219,9 +219,15 @@ The BL602 docs are located here...
 
 -   [BL602 Flash Programming](https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en)
 
-Form Factor:
-Similar to [EBYTE E73-TBB](https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004?source=friends_link&sk=bb4e2523b922d0870259ab3fa696c7da) (nRF52) /
-BLE plus WiFi
+## Form Factor
+
+The BL602 Evaluation Board has the same form factor as other wireless dev boards, like [EBYTE E73-TBB](https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004?source=friends_link&sk=bb4e2523b922d0870259ab3fa696c7da) (which is based on nRF52832)
+
+The BL602 board comes with a USB-C Connector. The BL602 board is recognised as a Serial Device when connected to a computer via USB.
+
+## Flashing Firmware
+
+
 
 Firmware Build:
 Windows /
