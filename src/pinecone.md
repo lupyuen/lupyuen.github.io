@@ -308,6 +308,6 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Notes
 
-1. Besides PineCone, there are [other dev boards based on BL602](https://github.com/lupyuen/lupyuen.github.io/issues/2). However it's not clear whether the firmware is 100% compatible with these boards.
+1. Besides PineCone, there are [other dev boards based on BL602](https://github.com/pine64/bl_iot_sdk#hardware). However it's not clear whether the firmware is 100% compatible with these boards.
 
 1. Can we flash firmware to PineCone via a Web Browser through the [__Web Serial API__](https://dev.to/unjavascripter/the-amazing-powers-of-the-web-web-serial-api-3ilc)? That would be really interesting.
