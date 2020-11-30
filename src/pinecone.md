@@ -268,15 +268,31 @@ _(The [BL602 Flash Programming](https://github.com/bouffalolab/bl_docs/tree/main
 
 ## Building Firmware
 
-Building the BL602 firmware is supported on Linux and Windows. Refer to the [Linux Starter Guide](https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html) and the [Windows Starter Guide](https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html)
+We may use Linux, Windows or macOS to build the BL602 firmware...
+
+1.  [Build instructions for Linux, Windows and macOS](https://github.com/pine64/bl_iot_sdk/blob/master/README.rst) ([Looks like this](https://lupyuen.github.io/images/pinecone-build.png))
+
+1.  See also the [Linux Starter Guide](https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html) and the [Windows Starter Guide](https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html)
+
+1.  [Sample Firmware for BL602](https://pine64.github.io/bl602-docs/Examples/helloworld/helloworld.html)
+
+1.  [Sample Firmware Source Code](https://github.com/pine64/bl_iot_sdk/tree/master/customer_app)
 
 On Windows, MSYS2 is required. Alternatively, we may use Windows Subsystem for Linux (WSL). (Some USB Devices don't work under WSL... Beware!)
 
-For macOS: [Refer to the build instructions here](https://github.com/pine64/bl_iot_sdk/blob/master/README.rst) ([Looks like this](https://lupyuen.github.io/images/pinecone-build.png))
+The built firmware includes FreeRTOS for handing Bluetooth LE and WiFi operations in the background. [More details](https://github.com/pine64/bl_iot_sdk/tree/master/components/bl602)
 
-The development tools supported for BL602 are [__SiFive Freedom Studio__](https://pine64.github.io/bl602-docs/Developer_Environment/freedom_studio/freedom_studio.html) and [__Eclipse__](https://pine64.github.io/bl602-docs/Developer_Environment/eclipse/eclipse.html).
+_(FYI: There is a [GitHub Actions Workflow](https://github.com/pine64/bl_iot_sdk/blob/master/.github/workflows/build.yml) that builds the firmware... But doesn't capture the built firmware as assets)_
 
-[Sample Firmware for BL602](https://pine64.github.io/bl602-docs/Examples/helloworld/helloworld.html)
+## Development Tools
+
+The development tools supported for BL602 are...
+
+1.  [__SiFive Freedom Studio__](https://pine64.github.io/bl602-docs/Developer_Environment/freedom_studio/freedom_studio.html)
+
+    (Because BL602 is based on [SiFive's E24 RISC-V Core](https://www.sifive.com/cores/e24))
+
+1.  [__Eclipse__](https://pine64.github.io/bl602-docs/Developer_Environment/eclipse/eclipse.html)
 
 _(For the BL602 port of Mynewt: I'll be using VSCode as the development tool. Firmware build will be supported on plain old Windows (without MSYS2 / WSL), macOS, Linux, GitHub Actions and GitLab CI. More about [porting Mynewt to RISC-V](https://medium.com/@ly.lee/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v-4054a5922493?source=friends_link&sk=215cd06186d912277d0469224666d60d) and [how it got stuck](https://medium.com/@ly.lee/hey-gd32-vf103-on-risc-v-i-surrender-for-now-d39d0c7b0001?source=friends_link&sk=c0504ac574bf571219fabe174eef4de5))_
 
@@ -286,7 +302,7 @@ To debug the BL602 firmware, we need a __JTAG Debugger__ with OpenOCD and GDB.
 
 (Or is the JTAG Debugger already inside the PineCone board? Need to explore)
 
-[OpenOCD configuration for PineCone board](https://github.com/pine64/bl_iot_sdk/tree/master/tools)
+-   [OpenOCD configuration for PineCone board](https://github.com/pine64/bl_iot_sdk/tree/master/tools)
 
 I might be testing the [Sipeed JTAG Debugger](https://www.seeedstudio.com/Sipeed-USB-JTAG-TTL-RISC-V-Debugger-p-2910.html) with the PineCone board...
 
