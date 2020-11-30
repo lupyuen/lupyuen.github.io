@@ -183,7 +183,7 @@ Here we see the list of functions, global variables and static variables defined
 
 Let's look at the first page of functions and variables.
 
-_(FYI: Here are the Google Sheet Linker Maps for [`bl602_demo_wifi`](https://docs.google.com/spreadsheets/d/1m8-fc9_ocOwMuw_oRur4j6xqVli6x-Tm-M5ZIKwNWRk/edit#gid=381366828&fvid=1359565135) and [`sdk_app_ble_sync`](https://docs.google.com/spreadsheets/d/1HJev8fdmIMyIxeRFx2cpsq1C5rEYgGZf7Tank3hYK88/edit#gid=381366828&fvid=1359565135))_
+_(FYI: The Linker Maps loaded into Google Sheet for [`bl602_demo_wifi`](https://github.com/pine64/bl_iot_sdk/tree/master/customer_app/bl602_demo_wifi) and [`sdk_app_ble_sync`](https://github.com/pine64/bl_iot_sdk/tree/master/customer_app/sdk_app_ble_sync) are here: [Google Sheet for `bl602_demo_wifi`](https://docs.google.com/spreadsheets/d/1m8-fc9_ocOwMuw_oRur4j6xqVli6x-Tm-M5ZIKwNWRk/edit#gid=381366828&fvid=1359565135), [Google Sheet for `sdk_app_ble_sync`](https://docs.google.com/spreadsheets/d/1HJev8fdmIMyIxeRFx2cpsq1C5rEYgGZf7Tank3hYK88/edit#gid=381366828&fvid=1359565135))_
 
 ## Find the WiFi Buffers
 
