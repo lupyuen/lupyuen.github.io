@@ -201,10 +201,14 @@
 <h2 id="analyse-the-linker-map" class="section-header"><a href="#analyse-the-linker-map">3.2 Analyse the Linker Map</a></h2>
 <p>The WiFi Drivers that we wish to grok are located here...</p>
 <ul>
-<li><a href="https://github.com/pine64/bl602-re/tree/master/blobs"><code>github.com/pine64/bl602-re/blobs</code></a></li>
+<li><a href="https://github.com/pine64/bl602-re/tree/master/blobs">WiFi Drivers <code>github.com/pine64/bl602-re/blobs</code></a></li>
 </ul>
 <p>...Inside the files <a href="https://github.com/pine64/bl602-re/blob/master/blobs/libatcmd.a"><code>libatcmd.a</code></a> and <a href="https://github.com/pine64/bl602-re/blob/master/blobs/libbl602_wifi.a"><code>libbl602_wifi.a</code></a></p>
-<p>The PineCone Community has helpfully generated the <strong>GCC Linker Map</strong> for a sample BL602 firmware image <a href="https://github.com/pine64/bl_iot_sdk/tree/master/customer_app/bl602_demo_at"><code>bl602_demo_at</code></a> that calls the WiFi Functions in <code>libatcmd.a</code> and <code>libbl602_wifi.a</code>...</p>
+<p>Here is a sample BL602 app that calls the WiFi Functions in <code>libatcmd.a</code> and <code>libbl602_wifi.a</code>...</p>
+<ul>
+<li><a href="https://github.com/pine64/bl_iot_sdk/tree/master/customer_app/bl602_demo_at">Sample WiFi App <code>bl602_demo_at</code></a></li>
+</ul>
+<p>The PineCone Community has helpfully generated the <strong>GCC Linker Map</strong> for the <code>bl602_demo_at</code> firmware (which includes <code>libatcmd.a</code> and <code>libbl602_wifi.a</code>)...</p>
 <ul>
 <li><a href="https://github.com/pine64/bl602-re/blob/master/blobs/bl602_demo_at.map">Linker Map <code>bl602_demo_at.map</code></a></li>
 </ul>
