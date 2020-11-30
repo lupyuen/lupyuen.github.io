@@ -229,7 +229,7 @@
 <p><img src="https://lupyuen.github.io/images/pinecone-linkermap.png" alt="PineCone BL602 AT Demo Linker Map" /></p>
 <p>Here we see the list of functions, global variables and static variables defined in <code>bl602_demo_at.map</code>, sorted by size. </p>
 <p>Let's look at the first page of functions and variables.</p>
-<p><em>(FYI: Here are the Linker Maps for <a href="https://docs.google.com/spreadsheets/d/1m8-fc9_ocOwMuw_oRur4j6xqVli6x-Tm-M5ZIKwNWRk/edit#gid=381366828&amp;fvid=1359565135"><code>bl602_demo_wifi</code></a> and <a href="https://docs.google.com/spreadsheets/d/1HJev8fdmIMyIxeRFx2cpsq1C5rEYgGZf7Tank3hYK88/edit#gid=381366828&amp;fvid=1359565135"><code>sdk_app_ble_sync</code></a>)</em></p>
+<p><em>(FYI: Here are the Google Sheet Linker Maps for <a href="https://docs.google.com/spreadsheets/d/1m8-fc9_ocOwMuw_oRur4j6xqVli6x-Tm-M5ZIKwNWRk/edit#gid=381366828&amp;fvid=1359565135"><code>bl602_demo_wifi</code></a> and <a href="https://docs.google.com/spreadsheets/d/1HJev8fdmIMyIxeRFx2cpsq1C5rEYgGZf7Tank3hYK88/edit#gid=381366828&amp;fvid=1359565135"><code>sdk_app_ble_sync</code></a>)</em></p>
 <h2 id="find-the-wifi-buffers" class="section-header"><a href="#find-the-wifi-buffers">3.3 Find the WiFi Buffers</a></h2>
 <p>Remember that Wireless RAM starts at address <code>0x4203 0000</code>?  I have highlighted in yellow the 19 largest variables in Wireless RAM...</p>
 
@@ -293,7 +293,7 @@
 <h2 id="building-firmware" class="section-header"><a href="#building-firmware">4.3 Building Firmware</a></h2>
 <p>Building the BL602 firmware is supported on Linux and Windows. Refer to the <a href="https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html">Linux Starter Guide</a> and the <a href="https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html">Windows Starter Guide</a></p>
 <p>On Windows, MSYS2 is required. Alternatively, we may use Windows Subsystem for Linux (WSL). (Some USB Devices don't work under WSL... Beware!)</p>
-<p>For macOS: <a href="https://github.com/pine64/bl_iot_sdk/blob/master/README.rst">Refer to the build instructions here</a></p>
+<p>For macOS: <a href="https://github.com/pine64/bl_iot_sdk/blob/master/README.rst">Refer to the build instructions here</a> (<a href="https://lupyuen.github.io/images/pinecone-build.png">Looks like this</a>)</p>
 <p>The development tools supported for BL602 are <a href="https://pine64.github.io/bl602-docs/Developer_Environment/freedom_studio/freedom_studio.html"><strong>SiFive Freedom Studio</strong></a> and <a href="https://pine64.github.io/bl602-docs/Developer_Environment/eclipse/eclipse.html"><strong>Eclipse</strong></a>.</p>
 <p><a href="https://pine64.github.io/bl602-docs/Examples/helloworld/helloworld.html">Sample Firmware for BL602</a></p>
 <p><em>(For the BL602 port of Mynewt: I'll be using VSCode as the development tool. Firmware build will be supported on plain old Windows (without MSYS2 / WSL), macOS, Linux, GitHub Actions and GitLab CI. More about <a href="https://medium.com/@ly.lee/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v-4054a5922493?source=friends_link&amp;sk=215cd06186d912277d0469224666d60d">porting Mynewt to RISC-V</a> and <a href="https://medium.com/@ly.lee/hey-gd32-vf103-on-risc-v-i-surrender-for-now-d39d0c7b0001?source=friends_link&amp;sk=c0504ac574bf571219fabe174eef4de5">how it got stuck</a>)</em></p>
