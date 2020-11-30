@@ -298,8 +298,10 @@
 <p><a href="https://pine64.github.io/bl602-docs/Examples/helloworld/helloworld.html">Sample Firmware for BL602</a></p>
 <p><em>(For the BL602 port of Mynewt: I'll be using VSCode as the development tool. Firmware build will be supported on plain old Windows (without MSYS2 / WSL), macOS, Linux, GitHub Actions and GitLab CI. More about <a href="https://medium.com/@ly.lee/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v-4054a5922493?source=friends_link&amp;sk=215cd06186d912277d0469224666d60d">porting Mynewt to RISC-V</a> and <a href="https://medium.com/@ly.lee/hey-gd32-vf103-on-risc-v-i-surrender-for-now-d39d0c7b0001?source=friends_link&amp;sk=c0504ac574bf571219fabe174eef4de5">how it got stuck</a>)</em></p>
 <h2 id="debugging-firmware" class="section-header"><a href="#debugging-firmware">4.4 Debugging Firmware</a></h2>
-<p>To debug the BL602 firmware, we need a <strong>JTAG Debugger</strong> with OpenOCD and GDB.</p>
-<p>I'll be testing the <a href="https://www.seeedstudio.com/Sipeed-USB-JTAG-TTL-RISC-V-Debugger-p-2910.html">Sipeed JTAG Debugger</a> with the PineCone board.</p>
+<p>To debug the BL602 firmware, we need a <strong>JTAG Debugger</strong> with OpenOCD and GDB. </p>
+<p>(Or is the JTAG Debugger already inside the PineCone board? Need to explore)</p>
+<p><a href="https://github.com/pine64/bl_iot_sdk/tree/master/tools">OpenOCD configuration for PineCone board</a></p>
+<p>I might be testing the <a href="https://www.seeedstudio.com/Sipeed-USB-JTAG-TTL-RISC-V-Debugger-p-2910.html">Sipeed JTAG Debugger</a> with the PineCone board...</p>
 <p><img src="https://lupyuen.github.io/images/pinecone-jtag.jpg" alt="Sipeed JTAG Debugger" /></p>
 <h2 id="testing-the-firmware" class="section-header"><a href="#testing-the-firmware">4.5 Testing the Firmware</a></h2>
 <p>When we port to BL602 a sizeable piece of firmware (or an Embedded Operating System like Mynewt), testing the firmware can get challenging.</p>

@@ -284,7 +284,7 @@ To debug the BL602 firmware, we need a __JTAG Debugger__ with OpenOCD and GDB.
 
 [OpenOCD configuration for PineCone board](https://github.com/pine64/bl_iot_sdk/tree/master/tools)
 
-I might be testing the [Sipeed JTAG Debugger](https://www.seeedstudio.com/Sipeed-USB-JTAG-TTL-RISC-V-Debugger-p-2910.html) with the PineCone board.
+I might be testing the [Sipeed JTAG Debugger](https://www.seeedstudio.com/Sipeed-USB-JTAG-TTL-RISC-V-Debugger-p-2910.html) with the PineCone board...
 
 ![Sipeed JTAG Debugger](https://lupyuen.github.io/images/pinecone-jtag.jpg)
 
