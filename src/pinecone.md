@@ -268,6 +268,8 @@ Building the BL602 firmware is supported on Linux and Windows. Refer to the [Lin
 
 On Windows, MSYS2 is required. Alternatively, we may use Windows Subsystem for Linux (WSL). (Some USB Devices don't work under WSL... Beware!)
 
+For macOS: [Refer to the build instructions here](https://github.com/pine64/bl_iot_sdk/blob/master/README.rst)
+
 The development tools supported for BL602 are [__SiFive Freedom Studio__](https://pine64.github.io/bl602-docs/Developer_Environment/freedom_studio/freedom_studio.html) and [__Eclipse__](https://pine64.github.io/bl602-docs/Developer_Environment/eclipse/eclipse.html).
 
 [Sample Firmware for BL602](https://pine64.github.io/bl602-docs/Examples/helloworld/helloworld.html)
