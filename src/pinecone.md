@@ -20,7 +20,7 @@ Let's learn about the PineCone Board... And how it helps the [__RISC-V Open Sour
 
 1. __CPU is based on RISC-V, not Arm__: Yep this scares most people, because BL602 will NOT run code compiled for Arm processors. Instead we need to use the [32-bit RISC-V version of the GCC compiler](https://xpack.github.io/riscv-none-embed-gcc/) to recompile our programs.
 
-    FreeRTOS has been ported to BL602. ([More details](https://github.com/pine64/bl_iot_sdk/tree/master/components/bl602)) But other Real Time Operating Systems (like Zephyr and Mynewt) have been slow to adopt RISC-V. (We'll learn why in a while)
+    FreeRTOS has been ported to BL602. ([More details](https://github.com/pine64/bl_iot_sdk/tree/master/components/bl602)) But other Real Time Operating Systems (like [Zephyr](https://www.zephyrproject.org/), [RIOT](https://www.riot-os.org/) and [Mynewt](https://mynewt.apache.org/)) have been slow to adopt RISC-V. (We'll learn why in a while)
 
     Rust runs perfectly fine on RISC-V microcontrollers. ([Here's the proof](https://medium.com/@ly.lee/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v-4054a5922493?source=friends_link&sk=215cd06186d912277d0469224666d60d))
 
@@ -103,7 +103,7 @@ So when we port the firmware from, say, Pinecil to PineCone, we need to replace 
 
 _Sounds like a lot of tedious repetitive work. Is there a sustainable way to create portable firmware for RISC-V?_
 
-Yes, by __adopting a modern Embedded Operating System__ like Mynewt, RIOT and Zephyr.
+Yes, by __adopting a modern Embedded Operating System__ like [Mynewt](https://mynewt.apache.org/), [RIOT](https://www.riot-os.org/) and [Zephyr](https://www.zephyrproject.org/).
 
 These operating systems expose a high-level API for various Peripherals (Timers, GPIO, I2C, SPI, ...) that works across multiple microcontrollers (for both Arm and RISC-V).
 
@@ -135,7 +135,7 @@ But we have the compiled RISC-V libraries that we may Reverse Engineer to unders
 
 That's the crux of the [__PineCone Nutcracker Challenge__](https://www.pine64.org/2020/10/28/nutcracker-challenge-blob-free-wifi-ble/)... Decompile the Bluetooth LE and WiFi driver code, understand how the RISC-V code operates the wireless hardware.
 
-Then reimplement the wireless functions the open source way. Perhaps by adapting the wireless drivers from Mynewt (NimBLE), RIOT and Zephyr.
+Then reimplement the wireless functions the open source way. Perhaps by adapting the wireless drivers from [Mynewt](https://mynewt.apache.org/) ([NimBLE](https://github.com/apache/mynewt-nimble)), [RIOT](https://www.riot-os.org/) and [Zephyr](https://www.zephyrproject.org/).
 
 Let's walk through one possible approach for Reverse Engineering the WiFi Driver. (I'm sure there are many other ways to do this)
 
@@ -228,7 +228,7 @@ Join the [__PineCone Nutcracker Challenge__](https://www.pine64.org/2020/10/28/n
 
 Contribute to the community-driven Reverse Engineering of the BL602 Bluetooth LE / WiFi Drivers.
 
-Or contribute docs and code that will help others adopt BL602 quickly. (This includes porting Mynewt / RIOT / Zephyr to BL602)
+Or contribute docs and code that will help others adopt BL602 quickly. (This includes porting [Mynewt](https://mynewt.apache.org/) / [RIOT](https://www.riot-os.org/) / [Zephyr](https://www.zephyrproject.org/) to BL602)
 
 The BL602 docs are located in the [__BL602 Docs Repo__](https://github.com/pine64/bl602-docs)...
 
@@ -245,6 +245,8 @@ The BL602 docs are located in the [__BL602 Docs Repo__](https://github.com/pine6
 The PineCone BL602 Evaluation Board has a similar form factor to other wireless dev boards, like [EBYTE E73-TBB](https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004?source=friends_link&sk=bb4e2523b922d0870259ab3fa696c7da) (which is based on nRF52832)
 
 The PineCone board comes with a __USB-C Connector__. When connected to our computer via USB, the BL602 board is recognised as a Serial Device, ready to be flashed.
+
+[Watch on YouTube](https://youtu.be/WJLp-i2YtdY)
 
 ## Flashing Firmware
 
