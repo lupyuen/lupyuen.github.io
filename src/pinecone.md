@@ -137,7 +137,7 @@ That's the crux of the [__PineCone Nutcracker Challenge__](https://www.pine64.or
 
 Then reimplement the wireless functions the open source way. Perhaps by adapting the wireless drivers from [Mynewt](https://mynewt.apache.org/) ([NimBLE](https://github.com/apache/mynewt-nimble)), [RIOT](https://www.riot-os.org/) and [Zephyr](https://www.zephyrproject.org/).
 
-Let's walk through one possible approach for Reverse Engineering the WiFi Driver. (I'm sure there are many other ways to do this)
+Let's walk through one possible approach for Reverse Engineering the WiFi Driver. (I'm sure there are many other ways to do this, [like this](https://github.com/pine64/bl602-docs/tree/main/hardware_notes))
 
 ## How does our WiFi Driver talk to the WiFi Controller?
 
