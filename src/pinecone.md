@@ -282,6 +282,8 @@ To debug the BL602 firmware, we need a __JTAG Debugger__ with OpenOCD and GDB.
 
 I'll be testing the [Sipeed JTAG Debugger](https://www.seeedstudio.com/Sipeed-USB-JTAG-TTL-RISC-V-Debugger-p-2910.html) with the PineCone board.
 
+![Sipeed JTAG Debugger](https://lupyuen.github.io/images/pinecone-jtag.jpg)
+
 ## Testing the Firmware
 
 When we port to BL602 a sizeable piece of firmware (or an Embedded Operating System like Mynewt), testing the firmware can get challenging.
