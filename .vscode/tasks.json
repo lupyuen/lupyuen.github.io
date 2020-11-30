@@ -40,7 +40,7 @@
                 "command": "cmd",
                 "args": [
                     "/c",
-                    " echo TODO && echo ✅ ◾ ️Done! "
+                    " echo TODO && git pull && echo ✅ ◾ ️Done! "
                 ]
             },
             "osx": {
