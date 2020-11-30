@@ -82,8 +82,9 @@
 <li><a href="#form-factor">4.1 Form Factor</a><ul></ul></li>
 <li><a href="#flashing-firmware">4.2 Flashing Firmware</a><ul></ul></li>
 <li><a href="#building-firmware">4.3 Building Firmware</a><ul></ul></li>
-<li><a href="#debugging-firmware">4.4 Debugging Firmware</a><ul></ul></li>
-<li><a href="#testing-the-firmware">4.5 Testing the Firmware</a><ul></ul></li></ul></li>
+<li><a href="#development-tools">4.4 Development Tools</a><ul></ul></li>
+<li><a href="#debugging-firmware">4.5 Debugging Firmware</a><ul></ul></li>
+<li><a href="#testing-the-firmware">4.6 Testing the Firmware</a><ul></ul></li></ul></li>
 <li><a href="#whats-next">5 What's Next</a><ul></ul></li>
 <li><a href="#notes">6 Notes</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/pinecone-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board" /></p>
 <p>Pine64 is graciously giving away the <strong>PineCone BL602 RISC-V Evaluation Board</strong> to folks participating in the <a href="https://www.pine64.org/2020/10/28/nutcracker-challenge-blob-free-wifi-ble/"><strong>PineCone Nutcracker Challenge</strong></a>.</p>
@@ -295,19 +296,45 @@
 <p>Sorry no. SWD is available only on Arm Microcontrollers. <a href="https://medium.com/@ly.lee/openocd-on-raspberry-pi-better-with-swd-on-spi-7dea9caeb590?source=friends_link&amp;sk=df399bfd913d3e262447d28aa5af6b63">(SWD was created by Arm)</a></p>
 <p><em>(The <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en">BL602 Flash Programming</a> doc seems to suggest that BL602 may also be flashed from an SD Card via Secure Digital Input/Output)</em></p>
 <h2 id="building-firmware" class="section-header"><a href="#building-firmware">4.3 Building Firmware</a></h2>
-<p>Building the BL602 firmware is supported on Linux and Windows. Refer to the <a href="https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html">Linux Starter Guide</a> and the <a href="https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html">Windows Starter Guide</a></p>
-<p>On Windows, MSYS2 is required. Alternatively, we may use Windows Subsystem for Linux (WSL). (Some USB Devices don't work under WSL... Beware!)</p>
-<p>For macOS: <a href="https://github.com/pine64/bl_iot_sdk/blob/master/README.rst">Refer to the build instructions here</a> (<a href="https://lupyuen.github.io/images/pinecone-build.png">Looks like this</a>)</p>
-<p>The development tools supported for BL602 are <a href="https://pine64.github.io/bl602-docs/Developer_Environment/freedom_studio/freedom_studio.html"><strong>SiFive Freedom Studio</strong></a> and <a href="https://pine64.github.io/bl602-docs/Developer_Environment/eclipse/eclipse.html"><strong>Eclipse</strong></a>.</p>
+<p>We may use Linux, Windows or macOS to build the BL602 firmware...</p>
+<ol>
+<li>
+<p><a href="https://github.com/pine64/bl_iot_sdk/blob/master/README.rst">Build instructions for Linux, Windows and macOS</a> (<a href="https://lupyuen.github.io/images/pinecone-build.png">Looks like this</a>)</p>
+</li>
+<li>
+<p>See also the <a href="https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html">Linux Starter Guide</a> and the <a href="https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html">Windows Starter Guide</a></p>
+</li>
+<li>
 <p><a href="https://pine64.github.io/bl602-docs/Examples/helloworld/helloworld.html">Sample Firmware for BL602</a></p>
+</li>
+<li>
+<p><a href="https://github.com/pine64/bl_iot_sdk/tree/master/customer_app">Sample Firmware Source Code</a></p>
+</li>
+</ol>
+<p>On Windows, MSYS2 is required. Alternatively, we may use Windows Subsystem for Linux (WSL). (Some USB Devices don't work under WSL... Beware!)</p>
+<p>The built firmware includes FreeRTOS for handing Bluetooth LE and WiFi operations in the background. <a href="https://github.com/pine64/bl_iot_sdk/tree/master/components/bl602">More details</a></p>
+<p><em>(FYI: There is a <a href="https://github.com/pine64/bl_iot_sdk/blob/master/.github/workflows/build.yml">GitHub Actions Workflow</a> that builds the firmware... But doesn't capture the built firmware as assets)</em></p>
+<h2 id="development-tools" class="section-header"><a href="#development-tools">4.4 Development Tools</a></h2>
+<p>The development tools supported for BL602 are...</p>
+<ol>
+<li>
+<p><a href="https://pine64.github.io/bl602-docs/Developer_Environment/freedom_studio/freedom_studio.html"><strong>SiFive Freedom Studio</strong></a></p>
+<p>(Because BL602 is based on <a href="https://www.sifive.com/cores/e24">SiFive's E24 RISC-V Core</a>)</p>
+</li>
+<li>
+<p><a href="https://pine64.github.io/bl602-docs/Developer_Environment/eclipse/eclipse.html"><strong>Eclipse</strong></a></p>
+</li>
+</ol>
 <p><em>(For the BL602 port of Mynewt: I'll be using VSCode as the development tool. Firmware build will be supported on plain old Windows (without MSYS2 / WSL), macOS, Linux, GitHub Actions and GitLab CI. More about <a href="https://medium.com/@ly.lee/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v-4054a5922493?source=friends_link&amp;sk=215cd06186d912277d0469224666d60d">porting Mynewt to RISC-V</a> and <a href="https://medium.com/@ly.lee/hey-gd32-vf103-on-risc-v-i-surrender-for-now-d39d0c7b0001?source=friends_link&amp;sk=c0504ac574bf571219fabe174eef4de5">how it got stuck</a>)</em></p>
-<h2 id="debugging-firmware" class="section-header"><a href="#debugging-firmware">4.4 Debugging Firmware</a></h2>
+<h2 id="debugging-firmware" class="section-header"><a href="#debugging-firmware">4.5 Debugging Firmware</a></h2>
 <p>To debug the BL602 firmware, we need a <strong>JTAG Debugger</strong> with OpenOCD and GDB. </p>
 <p>(Or is the JTAG Debugger already inside the PineCone board? Need to explore)</p>
-<p><a href="https://github.com/pine64/bl_iot_sdk/tree/master/tools">OpenOCD configuration for PineCone board</a></p>
+<ul>
+<li><a href="https://github.com/pine64/bl_iot_sdk/tree/master/tools">OpenOCD configuration for PineCone board</a></li>
+</ul>
 <p>I might be testing the <a href="https://www.seeedstudio.com/Sipeed-USB-JTAG-TTL-RISC-V-Debugger-p-2910.html">Sipeed JTAG Debugger</a> with the PineCone board...</p>
 <p><img src="https://lupyuen.github.io/images/pinecone-jtag.jpg" alt="Sipeed JTAG Debugger" /></p>
-<h2 id="testing-the-firmware" class="section-header"><a href="#testing-the-firmware">4.5 Testing the Firmware</a></h2>
+<h2 id="testing-the-firmware" class="section-header"><a href="#testing-the-firmware">4.6 Testing the Firmware</a></h2>
 <p>When we port to BL602 a sizeable piece of firmware (or an Embedded Operating System like Mynewt), testing the firmware can get challenging.</p>
 <p>For embedded gadgets like PineTime, the sensors and display are connected. Which makes it easier to test the Input/Output Ports (like I2C and SPI).</p>
 <p>PineCone is a bare board with no sensors and actuators, so we need to wire up additional components to test the firmware. (I'll probably use <a href="http://dangerousprototypes.com/docs/Bus_Pirate">Bus Pirate</a> to test my BL602 port of Mynewt + Rust)</p>
