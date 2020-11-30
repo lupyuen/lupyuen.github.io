@@ -179,7 +179,7 @@ Here we see the list of functions, global variables and static variables defined
 
 Let's look at the first page of functions and variables.
 
-_(FYI: Here are the Linker Maps for [`bl602_demo_wifi`](https://docs.google.com/spreadsheets/d/1m8-fc9_ocOwMuw_oRur4j6xqVli6x-Tm-M5ZIKwNWRk/edit#gid=381366828&fvid=1359565135) and [`sdk_app_ble_sync`](https://docs.google.com/spreadsheets/d/1HJev8fdmIMyIxeRFx2cpsq1C5rEYgGZf7Tank3hYK88/edit#gid=381366828&fvid=1359565135))_
+_(FYI: Here are the Google Sheet Linker Maps for [`bl602_demo_wifi`](https://docs.google.com/spreadsheets/d/1m8-fc9_ocOwMuw_oRur4j6xqVli6x-Tm-M5ZIKwNWRk/edit#gid=381366828&fvid=1359565135) and [`sdk_app_ble_sync`](https://docs.google.com/spreadsheets/d/1HJev8fdmIMyIxeRFx2cpsq1C5rEYgGZf7Tank3hYK88/edit#gid=381366828&fvid=1359565135))_
 
 ## Find the WiFi Buffers
 
@@ -268,7 +268,7 @@ Building the BL602 firmware is supported on Linux and Windows. Refer to the [Lin
 
 On Windows, MSYS2 is required. Alternatively, we may use Windows Subsystem for Linux (WSL). (Some USB Devices don't work under WSL... Beware!)
 
-For macOS: [Refer to the build instructions here](https://github.com/pine64/bl_iot_sdk/blob/master/README.rst)
+For macOS: [Refer to the build instructions here](https://github.com/pine64/bl_iot_sdk/blob/master/README.rst) ([Looks like this](https://lupyuen.github.io/images/pinecone-build.png))
 
 The development tools supported for BL602 are [__SiFive Freedom Studio__](https://pine64.github.io/bl602-docs/Developer_Environment/freedom_studio/freedom_studio.html) and [__Eclipse__](https://pine64.github.io/bl602-docs/Developer_Environment/eclipse/eclipse.html).
 
