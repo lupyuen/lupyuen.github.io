@@ -101,7 +101,7 @@
 </li>
 <li>
 <p><strong>CPU is based on RISC-V, not Arm</strong>: Yep this scares most people, because BL602 will NOT run code compiled for Arm processors. Instead we need to use the <a href="https://xpack.github.io/riscv-none-embed-gcc/">32-bit RISC-V version of the GCC compiler</a> to recompile our programs.</p>
-<p>FreeRTOS has been ported to BL602. (<a href="https://github.com/pine64/bl_iot_sdk/tree/master/components/bl602">More details</a>) But other Real Time Operating Systems (like Zephyr and Mynewt) have been slow to adopt RISC-V. (We'll learn why in a while)</p>
+<p>FreeRTOS has been ported to BL602. (<a href="https://github.com/pine64/bl_iot_sdk/tree/master/components/bl602">More details</a>) But other Real Time Operating Systems (like <a href="https://www.zephyrproject.org/">Zephyr</a>, <a href="https://www.riot-os.org/">RIOT</a> and <a href="https://mynewt.apache.org/">Mynewt</a>) have been slow to adopt RISC-V. (We'll learn why in a while)</p>
 <p>Rust runs perfectly fine on RISC-V microcontrollers. (<a href="https://medium.com/@ly.lee/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v-4054a5922493?source=friends_link&amp;sk=215cd06186d912277d0469224666d60d">Here's the proof</a>)</p>
 </li>
 </ol>
@@ -175,7 +175,7 @@
 <p><a href="https://github.com/pine64/bl_iot_sdk/tree/master/components/hal_drv">Check out the BL602 HAL</a></p>
 <h2 id="embedded-operating-systems" class="section-header"><a href="#embedded-operating-systems">2.3 Embedded Operating Systems</a></h2>
 <p><em>Sounds like a lot of tedious repetitive work. Is there a sustainable way to create portable firmware for RISC-V?</em></p>
-<p>Yes, by <strong>adopting a modern Embedded Operating System</strong> like Mynewt, RIOT and Zephyr.</p>
+<p>Yes, by <strong>adopting a modern Embedded Operating System</strong> like <a href="https://mynewt.apache.org/">Mynewt</a>, <a href="https://www.riot-os.org/">RIOT</a> and <a href="https://www.zephyrproject.org/">Zephyr</a>.</p>
 <p>These operating systems expose a high-level API for various Peripherals (Timers, GPIO, I2C, SPI, ...) that works across multiple microcontrollers (for both Arm and RISC-V).</p>
 <p>But first we need to port Mynewt, RIOT and Zephyr to BL602. </p>
 <p>The <a href="https://www.pine64.org/2020/10/28/nutcracker-challenge-blob-free-wifi-ble/"><strong>PineCone Nutcracker</strong></a> initiative helps to accelerate the porting process. We'll pool together the necessary skills and software from the Open Source Community, to make this work.</p>
@@ -191,7 +191,7 @@
 <p>Unfortunately we don't have complete documentation about the implementation of BLE and WiFi on BL602. (And I totally understand if there are commercial reasons for this omission)</p>
 <p>But we have the compiled RISC-V libraries that we may Reverse Engineer to understand the BLE and WiFi implementation.</p>
 <p>That's the crux of the <a href="https://www.pine64.org/2020/10/28/nutcracker-challenge-blob-free-wifi-ble/"><strong>PineCone Nutcracker Challenge</strong></a>... Decompile the Bluetooth LE and WiFi driver code, understand how the RISC-V code operates the wireless hardware.</p>
-<p>Then reimplement the wireless functions the open source way. Perhaps by adapting the wireless drivers from Mynewt (NimBLE), RIOT and Zephyr.</p>
+<p>Then reimplement the wireless functions the open source way. Perhaps by adapting the wireless drivers from <a href="https://mynewt.apache.org/">Mynewt</a> (<a href="https://github.com/apache/mynewt-nimble">NimBLE</a>), <a href="https://www.riot-os.org/">RIOT</a> and <a href="https://www.zephyrproject.org/">Zephyr</a>.</p>
 <p>Let's walk through one possible approach for Reverse Engineering the WiFi Driver. (I'm sure there are many other ways to do this)</p>
 <h2 id="how-does-our-wifi-driver-talk-to-the-wifi-controller" class="section-header"><a href="#how-does-our-wifi-driver-talk-to-the-wifi-controller">3.1 How does our WiFi Driver talk to the WiFi Controller?</a></h2>
 <p>From the <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en">BL602 Reference Manual</a> (Page 17), we see that our RISC-V CPU talks to the WiFi Controller via the <strong><code>WRAM</code> Wireless RAM</strong> at address <code>0x4203 0000</code> onwards.</p>
@@ -263,7 +263,7 @@
 <p><em>How can we get a PineCone BL602 Evaluation Board?</em></p>
 <p>Join the <a href="https://www.pine64.org/2020/10/28/nutcracker-challenge-blob-free-wifi-ble/"><strong>PineCone Nutcracker Challenge</strong></a>!</p>
 <p>Contribute to the community-driven Reverse Engineering of the BL602 Bluetooth LE / WiFi Drivers.</p>
-<p>Or contribute docs and code that will help others adopt BL602 quickly. (This includes porting Mynewt / RIOT / Zephyr to BL602)</p>
+<p>Or contribute docs and code that will help others adopt BL602 quickly. (This includes porting <a href="https://mynewt.apache.org/">Mynewt</a> / <a href="https://www.riot-os.org/">RIOT</a> / <a href="https://www.zephyrproject.org/">Zephyr</a> to BL602)</p>
 <p>The BL602 docs are located in the <a href="https://github.com/pine64/bl602-docs"><strong>BL602 Docs Repo</strong></a>...</p>
 <ul>
 <li>
@@ -282,6 +282,7 @@
 <h2 id="form-factor" class="section-header"><a href="#form-factor">4.1 Form Factor</a></h2>
 <p>The PineCone BL602 Evaluation Board has a similar form factor to other wireless dev boards, like <a href="https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004?source=friends_link&amp;sk=bb4e2523b922d0870259ab3fa696c7da">EBYTE E73-TBB</a> (which is based on nRF52832)</p>
 <p>The PineCone board comes with a <strong>USB-C Connector</strong>. When connected to our computer via USB, the BL602 board is recognised as a Serial Device, ready to be flashed.</p>
+<p><a href="https://youtu.be/WJLp-i2YtdY">Watch on YouTube</a></p>
 <h2 id="flashing-firmware" class="section-header"><a href="#flashing-firmware">4.2 Flashing Firmware</a></h2>
 <p>We flash RISC-V firmware to the PineCone board through the <strong>USB Serial Connection</strong> using the <a href="https://pine64.github.io/bl602-docs/Developer_Environment/BLFlashEnv/BLFlashEnv.html"><strong>BLFlashEnv Tool</strong></a>.</p>
 <p>The flashing steps are explained in the <a href="https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html"><strong>Linux Starter Guide</strong></a> and the <a href="https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html"><strong>Windows Starter Guide</strong></a>.</p>
