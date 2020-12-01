@@ -331,16 +331,17 @@
 <h2 id="debugging-firmware" class="section-header"><a href="#debugging-firmware">4.5 Debugging Firmware</a></h2>
 <p>To debug the BL602 firmware, we need a <strong>JTAG Debugger</strong> with OpenOCD and GDB. </p>
 <p>(Or is the JTAG Debugger already inside the PineCone board?)</p>
+<p>The PineCone BL602 SDK includes...</p>
 <ul>
 <li>
 <p><a href="https://github.com/pine64/bl_iot_sdk/tree/master/tools/flash_tool">OpenOCD for Windows</a></p>
 </li>
 <li>
-<p><a href="https://github.com/pine64/bl_iot_sdk/tree/master/tools">OpenOCD Configuration</a></p>
+<p><a href="https://github.com/pine64/bl_iot_sdk/tree/master/tools">OpenOCD Configuration for BL602</a></p>
 <p>(Based on FTDI Vendor ID <code>0x0403</code>, Product ID <code>0x6010</code>)</p>
 </li>
 </ul>
-<p>I might be testing with PineCone the <a href="https://www.seeedstudio.com/Sipeed-USB-JTAG-TTL-RISC-V-Debugger-p-2910.html">Sipeed JTAG Debugger</a> (which also has Vendor ID <code>0x0403</code> and Product ID <code>0x6010</code>)...</p>
+<p>I shall be testing with PineCone the <a href="https://www.seeedstudio.com/Sipeed-USB-JTAG-TTL-RISC-V-Debugger-p-2910.html">Sipeed JTAG Debugger</a> (which also has Vendor ID <code>0x0403</code> and Product ID <code>0x6010</code>)...</p>
 <p><img src="https://lupyuen.github.io/images/pinecone-jtag.jpg" alt="Sipeed JTAG Debugger" /></p>
 <h2 id="testing-the-firmware" class="section-header"><a href="#testing-the-firmware">4.6 Testing the Firmware</a></h2>
 <p>When we port to BL602 a sizeable piece of firmware (or an Embedded Operating System like Mynewt), testing the firmware can get challenging.</p>
