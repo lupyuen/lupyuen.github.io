@@ -8,4 +8,5 @@
 *.fzz binary
 *.jpg binary
 *.png binary
+*.mp4 binary
 *.woff binary
