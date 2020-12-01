@@ -264,11 +264,13 @@ We flash RISC-V firmware to the PineCone board through the __USB Serial Connecti
 
 The flashing steps are explained in the [__Linux Starter Guide__](https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html) and the [__Windows Starter Guide__](https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html).
 
-The UART flashing protocol is described in the [__BL602 Flash Programming__](https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en) doc.
+The firmware images for PineCone may be downloaded from GitHub Actions... See the next section "Building Firmware".
 
 _Are SWD and ST-Link supported for flashing firmware to the PineCone board?_
 
 Sorry no. SWD is available only on Arm Microcontrollers. [(SWD was created by Arm)](https://medium.com/@ly.lee/openocd-on-raspberry-pi-better-with-swd-on-spi-7dea9caeb590?source=friends_link&sk=df399bfd913d3e262447d28aa5af6b63)
+
+The UART flashing protocol for PineCone is described in the [__BL602 Flash Programming__](https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en) doc.
 
 _(The [BL602 Flash Programming](https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en) doc seems to suggest that BL602 may also be flashed from an SD Card via Secure Digital Input/Output)_
 
@@ -279,6 +281,7 @@ We may use Linux, Windows or macOS to build the BL602 firmware...
 -  Follow the [build instructions for Linux, Windows and macOS](https://github.com/pine64/bl_iot_sdk/blob/master/README.rst) like so...
 
     ```bash
+    #  Change this to the full path of bl_iot_sdk
     export BL60X_SDK_PATH=/Users/Luppy/pinecone/bl_iot_sdk
     export CONFIG_CHIP_NAME=BL602
     make
@@ -296,7 +299,21 @@ On Windows, MSYS2 is required. Alternatively, we may use Windows Subsystem for L
 
 The built firmware includes FreeRTOS for [handing Bluetooth LE and WiFi operations in the background](https://github.com/pine64/bl_iot_sdk/blob/master/customer_app/bl602_demo_at/bl602_demo_at/main.c#L629-L833). [More details](https://github.com/pine64/bl_iot_sdk/tree/master/components/bl602)
 
-_(FYI: There is a [GitHub Actions Workflow](https://github.com/pine64/bl_iot_sdk/blob/master/.github/workflows/build.yml) that builds the firmware... But doesn't capture the built firmware as assets)_
+The firmware is built automatically in the cloud by GitHub Actions...
+
+-   [Download the built firmware](https://github.com/lupyuen/bl_iot_sdk/actions) from GitHub Actions (Requires login to GitHub)
+
+    Under `All Workflows ➜ Results`, click the first row
+    
+    Under `Artifacts`, click `customer_app.zip` [(Like this)](https://lupyuen.github.io/images/pinecone-artifact.png)
+
+    The built firmware images in the downloaded ZIP have the extension `*.bin`
+    
+-   [Modified GitHub Actions Workflow](https://github.com/lupyuen/bl_iot_sdk/blob/master/.github/workflows/build.yml) that builds the firmware
+
+If we have trouble building the firmware on our own, just download the built firmware images from above.
+
+The downloaded firmware images `*.bin` may be flashed to PineCone with the [BLFlashEnv Tool](https://pine64.github.io/bl602-docs/Developer_Environment/BLFlashEnv/BLFlashEnv.html) on Linux and Windows. (No need for MSYS2)
 
 ## Development Tools
 
