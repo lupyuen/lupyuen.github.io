@@ -288,7 +288,7 @@
 <h2 id="form-factor" class="section-header"><a href="#form-factor">4.1 Form Factor</a></h2>
 <p>The PineCone BL602 Evaluation Board has a similar form factor to other wireless dev boards, like <a href="https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004?source=friends_link&amp;sk=bb4e2523b922d0870259ab3fa696c7da">EBYTE E73-TBB</a> (which is based on nRF52832)</p>
 <p>The PineCone board comes with a <strong>USB-C Connector</strong>. When connected to our computer via USB, the BL602 board is recognised as a Serial Device, ready to be flashed.</p>
-<p><em>(PineCone's USB Product ID is <code>0x7523</code>, Vendor ID is <code>0x1A86</code>)</em></p>
+<p><em>(PineCone's USB Vendor ID is <code>0x1A86</code>, Product ID is <code>0x7523</code>)</em></p>
 <p><a href="https://youtu.be/WJLp-i2YtdY">Watch on YouTube</a></p>
 <h2 id="flashing-firmware" class="section-header"><a href="#flashing-firmware">4.2 Flashing Firmware</a></h2>
 <p>We flash RISC-V firmware to the PineCone board through the <strong>USB Serial Connection</strong> using the <a href="https://pine64.github.io/bl602-docs/Developer_Environment/BLFlashEnv/BLFlashEnv.html"><strong>BLFlashEnv Tool</strong></a>.</p>
@@ -330,16 +330,17 @@
 <p><em>(For the BL602 port of Mynewt: I'll be using VSCode as the development tool. Firmware build will be supported on plain old Windows (without MSYS2 / WSL), macOS, Linux, GitHub Actions and GitLab CI. More about <a href="https://medium.com/@ly.lee/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v-4054a5922493?source=friends_link&amp;sk=215cd06186d912277d0469224666d60d">porting Mynewt to RISC-V</a> and <a href="https://medium.com/@ly.lee/hey-gd32-vf103-on-risc-v-i-surrender-for-now-d39d0c7b0001?source=friends_link&amp;sk=c0504ac574bf571219fabe174eef4de5">how it got stuck</a>)</em></p>
 <h2 id="debugging-firmware" class="section-header"><a href="#debugging-firmware">4.5 Debugging Firmware</a></h2>
 <p>To debug the BL602 firmware, we need a <strong>JTAG Debugger</strong> with OpenOCD and GDB. </p>
-<p>(Or is the JTAG Debugger already inside the PineCone board? Need to explore)</p>
+<p>(Or is the JTAG Debugger already inside the PineCone board?)</p>
 <ul>
-<li>
-<p><a href="https://github.com/pine64/bl_iot_sdk/tree/master/tools">OpenOCD configuration for PineCone board</a></p>
-</li>
 <li>
 <p><a href="https://github.com/pine64/bl_iot_sdk/tree/master/tools/flash_tool">OpenOCD for Windows</a></p>
 </li>
+<li>
+<p><a href="https://github.com/pine64/bl_iot_sdk/tree/master/tools">OpenOCD Configuration</a></p>
+<p>(Based on FTDI Vendor ID <code>0x0403</code>, Product ID <code>0x6010</code>)</p>
+</li>
 </ul>
-<p>I might be testing the <a href="https://www.seeedstudio.com/Sipeed-USB-JTAG-TTL-RISC-V-Debugger-p-2910.html">Sipeed JTAG Debugger</a> with the PineCone board...</p>
+<p>I might be testing with PineCone the <a href="https://www.seeedstudio.com/Sipeed-USB-JTAG-TTL-RISC-V-Debugger-p-2910.html">Sipeed JTAG Debugger</a> (which also has Vendor ID <code>0x0403</code> and Product ID <code>0x6010</code>)...</p>
 <p><img src="https://lupyuen.github.io/images/pinecone-jtag.jpg" alt="Sipeed JTAG Debugger" /></p>
 <h2 id="testing-the-firmware" class="section-header"><a href="#testing-the-firmware">4.6 Testing the Firmware</a></h2>
 <p>When we port to BL602 a sizeable piece of firmware (or an Embedded Operating System like Mynewt), testing the firmware can get challenging.</p>

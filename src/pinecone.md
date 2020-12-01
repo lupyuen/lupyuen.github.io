@@ -252,7 +252,7 @@ The PineCone BL602 Evaluation Board has a similar form factor to other wireless 
 
 The PineCone board comes with a __USB-C Connector__. When connected to our computer via USB, the BL602 board is recognised as a Serial Device, ready to be flashed.
 
-_(PineCone's USB Product ID is `0x7523`, Vendor ID is `0x1A86`)_
+_(PineCone's USB Vendor ID is `0x1A86`, Product ID is `0x7523`)_
 
 [Watch on YouTube](https://youtu.be/WJLp-i2YtdY)
 
@@ -304,13 +304,15 @@ _(For the BL602 port of Mynewt: I'll be using VSCode as the development tool. Fi
 
 To debug the BL602 firmware, we need a __JTAG Debugger__ with OpenOCD and GDB. 
 
-(Or is the JTAG Debugger already inside the PineCone board? Need to explore)
-
--   [OpenOCD configuration for PineCone board](https://github.com/pine64/bl_iot_sdk/tree/master/tools)
+(Or is the JTAG Debugger already inside the PineCone board?)
 
 -   [OpenOCD for Windows](https://github.com/pine64/bl_iot_sdk/tree/master/tools/flash_tool)
 
-I might be testing the [Sipeed JTAG Debugger](https://www.seeedstudio.com/Sipeed-USB-JTAG-TTL-RISC-V-Debugger-p-2910.html) with the PineCone board...
+-   [OpenOCD Configuration](https://github.com/pine64/bl_iot_sdk/tree/master/tools)
+
+    (Based on FTDI Vendor ID `0x0403`, Product ID `0x6010`)
+
+I might be testing with PineCone the [Sipeed JTAG Debugger](https://www.seeedstudio.com/Sipeed-USB-JTAG-TTL-RISC-V-Debugger-p-2910.html) (which also has Vendor ID `0x0403` and Product ID `0x6010`)...
 
 ![Sipeed JTAG Debugger](https://lupyuen.github.io/images/pinecone-jtag.jpg)
 
