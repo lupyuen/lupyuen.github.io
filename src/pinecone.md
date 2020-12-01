@@ -8,6 +8,8 @@ Let's learn about the PineCone Board... And how it helps the [__RISC-V Open Sour
 
 # PineCone BL602: Why does it matter?
 
+PineCone is based on the BL602 combo chipset made by [Nanjing-based Bouffalo Lab](https://www.bouffalolab.com/bl602)...
+
 1. __Low Cost__: BL602 is a [General Purpose 32-bit Microcontroller](https://github.com/pine64/bl602-docs). (Think [STM32 Blue Pill](https://medium.com/@ly.lee/create-your-iot-gadget-with-apache-mynewt-and-stm32-blue-pill-d689b3ca725?source=friends_link&sk=d511426d5a2217ebd06789b3eef7df54), [Nordic nRF52](https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004?source=friends_link&sk=bb4e2523b922d0870259ab3fa696c7da))
 
     But BL602 supports Bluetooth LE AND 2.4 GHz WiFi... At the __low low price of an ESP8266__.
@@ -274,7 +276,15 @@ _(The [BL602 Flash Programming](https://github.com/bouffalolab/bl_docs/tree/main
 
 We may use Linux, Windows or macOS to build the BL602 firmware...
 
--  [Build instructions for Linux, Windows and macOS](https://github.com/pine64/bl_iot_sdk/blob/master/README.rst) ([Looks like this](https://lupyuen.github.io/images/pinecone-build.png))
+-  Follow the [build instructions for Linux, Windows and macOS](https://github.com/pine64/bl_iot_sdk/blob/master/README.rst) like so...
+
+    ```bash
+    export BL60X_SDK_PATH=/Users/Luppy/pinecone/bl_iot_sdk
+    export CONFIG_CHIP_NAME=BL602
+    make
+    ```
+
+    [Here's the output](https://lupyuen.github.io/images/pinecone-build.png)
 
 -  See also the [Linux Starter Guide](https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html) and the [Windows Starter Guide](https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html)
 

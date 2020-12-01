@@ -90,6 +90,7 @@
 <p>Pine64 is graciously giving away the <strong>PineCone BL602 RISC-V Evaluation Board</strong> to folks participating in the <a href="https://www.pine64.org/2020/10/28/nutcracker-challenge-blob-free-wifi-ble/"><strong>PineCone Nutcracker Challenge</strong></a>.</p>
 <p>Let's learn about the PineCone Board... And how it helps the <a href="https://en.wikipedia.org/wiki/RISC-V"><strong>RISC-V Open Source Ecosystem</strong></a>.</p>
 <h1 id="pinecone-bl602-why-does-it-matter" class="section-header"><a href="#pinecone-bl602-why-does-it-matter">1 PineCone BL602: Why does it matter?</a></h1>
+<p>PineCone is based on the BL602 combo chipset made by <a href="https://www.bouffalolab.com/bl602">Nanjing-based Bouffalo Lab</a>...</p>
 <ol>
 <li>
 <p><strong>Low Cost</strong>: BL602 is a <a href="https://github.com/pine64/bl602-docs">General Purpose 32-bit Microcontroller</a>. (Think <a href="https://medium.com/@ly.lee/create-your-iot-gadget-with-apache-mynewt-and-stm32-blue-pill-d689b3ca725?source=friends_link&amp;sk=d511426d5a2217ebd06789b3eef7df54">STM32 Blue Pill</a>, <a href="https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004?source=friends_link&amp;sk=bb4e2523b922d0870259ab3fa696c7da">Nordic nRF52</a>)</p>
@@ -301,7 +302,12 @@
 <p>We may use Linux, Windows or macOS to build the BL602 firmware...</p>
 <ul>
 <li>
-<p><a href="https://github.com/pine64/bl_iot_sdk/blob/master/README.rst">Build instructions for Linux, Windows and macOS</a> (<a href="https://lupyuen.github.io/images/pinecone-build.png">Looks like this</a>)</p>
+<p>Follow the <a href="https://github.com/pine64/bl_iot_sdk/blob/master/README.rst">build instructions for Linux, Windows and macOS</a> like so...</p>
+<pre><code class="language-bash">export BL60X_SDK_PATH=/Users/Luppy/pinecone/bl_iot_sdk
+export CONFIG_CHIP_NAME=BL602
+make
+</code></pre>
+<p><a href="https://lupyuen.github.io/images/pinecone-build.png">Here's the output</a></p>
 </li>
 <li>
 <p>See also the <a href="https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html">Linux Starter Guide</a> and the <a href="https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html">Windows Starter Guide</a></p>
