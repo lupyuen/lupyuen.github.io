@@ -294,16 +294,18 @@
 <h2 id="flashing-firmware" class="section-header"><a href="#flashing-firmware">4.2 Flashing Firmware</a></h2>
 <p>We flash RISC-V firmware to the PineCone board through the <strong>USB Serial Connection</strong> using the <a href="https://pine64.github.io/bl602-docs/Developer_Environment/BLFlashEnv/BLFlashEnv.html"><strong>BLFlashEnv Tool</strong></a>.</p>
 <p>The flashing steps are explained in the <a href="https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html"><strong>Linux Starter Guide</strong></a> and the <a href="https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html"><strong>Windows Starter Guide</strong></a>.</p>
-<p>The UART flashing protocol is described in the <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en"><strong>BL602 Flash Programming</strong></a> doc.</p>
+<p>The firmware images for PineCone may be downloaded from GitHub Actions... See the next section &quot;Building Firmware&quot;.</p>
 <p><em>Are SWD and ST-Link supported for flashing firmware to the PineCone board?</em></p>
 <p>Sorry no. SWD is available only on Arm Microcontrollers. <a href="https://medium.com/@ly.lee/openocd-on-raspberry-pi-better-with-swd-on-spi-7dea9caeb590?source=friends_link&amp;sk=df399bfd913d3e262447d28aa5af6b63">(SWD was created by Arm)</a></p>
+<p>The UART flashing protocol for PineCone is described in the <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en"><strong>BL602 Flash Programming</strong></a> doc.</p>
 <p><em>(The <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en">BL602 Flash Programming</a> doc seems to suggest that BL602 may also be flashed from an SD Card via Secure Digital Input/Output)</em></p>
 <h2 id="building-firmware" class="section-header"><a href="#building-firmware">4.3 Building Firmware</a></h2>
 <p>We may use Linux, Windows or macOS to build the BL602 firmware...</p>
 <ul>
 <li>
 <p>Follow the <a href="https://github.com/pine64/bl_iot_sdk/blob/master/README.rst">build instructions for Linux, Windows and macOS</a> like so...</p>
-<pre><code class="language-bash">export BL60X_SDK_PATH=/Users/Luppy/pinecone/bl_iot_sdk
+<pre><code class="language-bash">#  Change this to the full path of bl_iot_sdk
+export BL60X_SDK_PATH=/Users/Luppy/pinecone/bl_iot_sdk
 export CONFIG_CHIP_NAME=BL602
 make
 </code></pre>
@@ -321,7 +323,20 @@ make
 </ul>
 <p>On Windows, MSYS2 is required. Alternatively, we may use Windows Subsystem for Linux (WSL). (Some USB Devices don't work under WSL... Beware!)</p>
 <p>The built firmware includes FreeRTOS for <a href="https://github.com/pine64/bl_iot_sdk/blob/master/customer_app/bl602_demo_at/bl602_demo_at/main.c#L629-L833">handing Bluetooth LE and WiFi operations in the background</a>. <a href="https://github.com/pine64/bl_iot_sdk/tree/master/components/bl602">More details</a></p>
-<p><em>(FYI: There is a <a href="https://github.com/pine64/bl_iot_sdk/blob/master/.github/workflows/build.yml">GitHub Actions Workflow</a> that builds the firmware... But doesn't capture the built firmware as assets)</em></p>
+<p>The firmware is built automatically in the cloud by GitHub Actions...</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/actions">Download the built firmware</a> from GitHub Actions (Requires login to GitHub)</p>
+<p>Under <code>All Workflows ➜ Results</code>, click the first row</p>
+<p>Under <code>Artifacts</code>, click <code>customer_app.zip</code> <a href="https://lupyuen.github.io/images/pinecone-artifact.png">(Like this)</a></p>
+<p>The built firmware images in the downloaded ZIP have the extension <code>*.bin</code></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/.github/workflows/build.yml">Modified GitHub Actions Workflow</a> that builds the firmware</p>
+</li>
+</ul>
+<p>If we have trouble building the firmware on our own, just download the built firmware images from above.</p>
+<p>The downloaded firmware images <code>*.bin</code> may be flashed to PineCone with the <a href="https://pine64.github.io/bl602-docs/Developer_Environment/BLFlashEnv/BLFlashEnv.html">BLFlashEnv Tool</a> on Linux and Windows. (No need for MSYS2)</p>
 <h2 id="development-tools" class="section-header"><a href="#development-tools">4.4 Development Tools</a></h2>
 <p>The development tools supported for BL602 are...</p>
 <ol>
