@@ -260,11 +260,11 @@ _(PineCone's USB Vendor ID is `0x1A86`, Product ID is `0x7523`)_
 
 ## Flashing Firmware
 
-We flash RISC-V firmware to the PineCone board through the __USB Serial Connection__ using the [__BLDevCube Tool__](https://pine64.github.io/bl602-docs/Developer_Environment/BLFlashEnv/BLFlashEnv.html)...
+We flash RISC-V firmware to the PineCone board through the __USB Serial Connection__ using the [__Dev Cube Tool__](https://pine64.github.io/bl602-docs/Developer_Environment/BLFlashEnv/BLFlashEnv.html)...
 
 -   Follow the flashing steps in the [__Linux Starter Guide__](https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html) and the [__Windows Starter Guide__](https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html)
 
--   BLDevCube for Windows is located at `bl_iot_sdk/tools/flash_tool/BLDevCube.exe`
+-   Dev Cube for Windows is located at `bl_iot_sdk/tools/flash_tool/BLDevCube.exe`
 
 -   Firmware images for PineCone may be downloaded from GitHub Actions. See the next section "Building Firmware".
 
