@@ -129,6 +129,8 @@ _BL602 Memory Map (left) vs SiFive FE310 (right): Totally different_
 
 # Reverse Engineer the Bluetooth LE and WiFi Drivers
 
+_(This section gets deeply technical about Reverse Enginnering... You may skip to the next section if you're not working on Bluetooth LE and WiFi)_
+
 BL602 feels exciting. The mass market RISC-V microcontrollers never had onboard Bluetooth LE and WiFi... Until now!
 
 Unfortunately we don't have complete documentation about the implementation of BLE and WiFi on BL602. (And I totally understand if there are commercial reasons for this omission)
@@ -365,6 +367,22 @@ For embedded gadgets like PineTime, the sensors and display are connected. Which
 PineCone is a bare board with no sensors and actuators, so we need to wire up additional components to test the firmware. (I'll probably use [Bus Pirate](http://dangerousprototypes.com/docs/Bus_Pirate) to test my BL602 port of Mynewt + Rust)
 
 _(FYI: SiFive's [Doctor Who HiFive Inventor](https://www.hifiveinventor.com/user-guide/overview) is an educational RISC-V board with onboard sensors and LED display. Would be great if Pine64 could add sensors and a display to BL602 for easier testing!)_
+
+## Learning RISC-V and BL602
+
+_How shall we learn about writing RISC-V firmware for BL602?_
+
+-   Check out the "Hello World" sample firmware...
+
+    [`bl_iot_sdk/customer_app/sdk_app_helloworld`](https://github.com/pine64/bl_iot_sdk/blob/master/customer_app/sdk_app_helloworld)
+
+    Start by reading the C source file: [`main.c`](https://github.com/pine64/bl_iot_sdk/blob/master/customer_app/sdk_app_helloworld/sdk_app_helloworld/main.c)
+
+-   Then browse the other firmware samples in the BL602 SDK...
+
+    [`bl_iot_sdk/customer_app`](https://github.com/pine64/bl_iot_sdk/tree/master/customer_app)
+
+-   Some of the firmware samples [are documented here](https://pine64.github.io/bl602-docs/Examples/helloworld/helloworld.html)
 
 # What's Next
 
