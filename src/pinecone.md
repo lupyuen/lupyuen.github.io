@@ -260,11 +260,13 @@ _(PineCone's USB Vendor ID is `0x1A86`, Product ID is `0x7523`)_
 
 ## Flashing Firmware
 
-We flash RISC-V firmware to the PineCone board through the __USB Serial Connection__ using the [__BLFlashEnv Tool__](https://pine64.github.io/bl602-docs/Developer_Environment/BLFlashEnv/BLFlashEnv.html).
+We flash RISC-V firmware to the PineCone board through the __USB Serial Connection__ using the [__BLDevCube Tool__](https://pine64.github.io/bl602-docs/Developer_Environment/BLFlashEnv/BLFlashEnv.html)...
 
-The flashing steps are explained in the [__Linux Starter Guide__](https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html) and the [__Windows Starter Guide__](https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html).
+-   Follow the flashing steps in the [__Linux Starter Guide__](https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html) and the [__Windows Starter Guide__](https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html)
 
-The firmware images for PineCone may be downloaded from GitHub Actions... See the next section "Building Firmware".
+-   BLDevCube for Windows is located at `bl_iot_sdk/tools/flash_tool/BLDevCube.exe`
+
+-   Firmware images for PineCone may be downloaded from GitHub Actions. See the next section "Building Firmware".
 
 _Are SWD and ST-Link supported for flashing firmware to the PineCone board?_
 
@@ -278,9 +280,14 @@ _(The [BL602 Flash Programming](https://github.com/bouffalolab/bl_docs/tree/main
 
 We may use Linux, Windows or macOS to build the BL602 firmware...
 
--  Download the PineCone BL602 Repo: [`github.com/pine64/bl_iot_sdk`](https://github.com/pine64/bl_iot_sdk)
+-   Download the PineCone BL602 Repo...
 
--  Follow the [build instructions for Linux, Windows and macOS](https://github.com/pine64/bl_iot_sdk/blob/master/README.rst) like so...
+    ```bash
+    git clone --recursive https://github.com/pine64/bl_iot_sdk
+    cd bl_iot_sdk
+    ```
+
+-   Follow the [build instructions for Linux, Windows and macOS](https://github.com/pine64/bl_iot_sdk/blob/master/README.rst) like so...
 
     ```bash
     #  Change this to the full path of bl_iot_sdk
@@ -291,11 +298,11 @@ We may use Linux, Windows or macOS to build the BL602 firmware...
 
     [Here's the output](https://lupyuen.github.io/images/pinecone-build.png)
 
--  See also the [Linux Starter Guide](https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html) and the [Windows Starter Guide](https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html)
+-   See also the [Linux Starter Guide](https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html) and the [Windows Starter Guide](https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html)
 
--  [Sample Firmware for BL602](https://pine64.github.io/bl602-docs/Examples/helloworld/helloworld.html)
+-   [Sample Firmware for BL602](https://pine64.github.io/bl602-docs/Examples/helloworld/helloworld.html)
 
--  [Sample Firmware Source Code](https://github.com/pine64/bl_iot_sdk/tree/master/customer_app)
+-   [Sample Firmware Source Code](https://github.com/pine64/bl_iot_sdk/tree/master/customer_app)
 
 On Windows, MSYS2 is required. Alternatively, we may use Windows Subsystem for Linux (WSL). (Some USB Devices don't work under WSL... Beware!)
 

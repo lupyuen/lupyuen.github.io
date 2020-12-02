@@ -292,9 +292,18 @@
 <p><em>(PineCone's USB Vendor ID is <code>0x1A86</code>, Product ID is <code>0x7523</code>)</em></p>
 <p><a href="https://youtu.be/WJLp-i2YtdY">Watch on YouTube</a></p>
 <h2 id="flashing-firmware" class="section-header"><a href="#flashing-firmware">4.2 Flashing Firmware</a></h2>
-<p>We flash RISC-V firmware to the PineCone board through the <strong>USB Serial Connection</strong> using the <a href="https://pine64.github.io/bl602-docs/Developer_Environment/BLFlashEnv/BLFlashEnv.html"><strong>BLFlashEnv Tool</strong></a>.</p>
-<p>The flashing steps are explained in the <a href="https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html"><strong>Linux Starter Guide</strong></a> and the <a href="https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html"><strong>Windows Starter Guide</strong></a>.</p>
-<p>The firmware images for PineCone may be downloaded from GitHub Actions... See the next section &quot;Building Firmware&quot;.</p>
+<p>We flash RISC-V firmware to the PineCone board through the <strong>USB Serial Connection</strong> using the <a href="https://pine64.github.io/bl602-docs/Developer_Environment/BLFlashEnv/BLFlashEnv.html"><strong>BLDevCube Tool</strong></a>...</p>
+<ul>
+<li>
+<p>Follow the flashing steps in the <a href="https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html"><strong>Linux Starter Guide</strong></a> and the <a href="https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html"><strong>Windows Starter Guide</strong></a></p>
+</li>
+<li>
+<p>BLDevCube for Windows is located at <code>bl_iot_sdk/tools/flash_tool/BLDevCube.exe</code></p>
+</li>
+<li>
+<p>Firmware images for PineCone may be downloaded from GitHub Actions. See the next section &quot;Building Firmware&quot;.</p>
+</li>
+</ul>
 <p><em>Are SWD and ST-Link supported for flashing firmware to the PineCone board?</em></p>
 <p>Sorry no. SWD is available only on Arm Microcontrollers. <a href="https://medium.com/@ly.lee/openocd-on-raspberry-pi-better-with-swd-on-spi-7dea9caeb590?source=friends_link&amp;sk=df399bfd913d3e262447d28aa5af6b63">(SWD was created by Arm)</a></p>
 <p>The UART flashing protocol for PineCone is described in the <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en"><strong>BL602 Flash Programming</strong></a> doc.</p>
@@ -303,7 +312,10 @@
 <p>We may use Linux, Windows or macOS to build the BL602 firmware...</p>
 <ul>
 <li>
-<p>Download the PineCone BL602 Repo: <a href="https://github.com/pine64/bl_iot_sdk"><code>github.com/pine64/bl_iot_sdk</code></a></p>
+<p>Download the PineCone BL602 Repo...</p>
+<pre><code class="language-bash">git clone --recursive https://github.com/pine64/bl_iot_sdk
+cd bl_iot_sdk
+</code></pre>
 </li>
 <li>
 <p>Follow the <a href="https://github.com/pine64/bl_iot_sdk/blob/master/README.rst">build instructions for Linux, Windows and macOS</a> like so...</p>
