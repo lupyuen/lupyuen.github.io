@@ -293,17 +293,104 @@
 <p>The PineCone board comes with a <strong>USB-C Connector</strong>. When connected to our computer via USB, the BL602 board is recognised as a Serial Device, ready to be flashed.</p>
 <p><em>(PineCone's USB Vendor ID is <code>0x1A86</code>, Product ID is <code>0x7523</code>)</em></p>
 <p><a href="https://youtu.be/WJLp-i2YtdY">Watch on YouTube</a></p>
+<p><img src="https://lupyuen.github.io/images/pinecone-flash.png" alt="Flash PineCone with Dev Cube" /></p>
 <h2 id="flashing-firmware" class="section-header"><a href="#flashing-firmware">4.2 Flashing Firmware</a></h2>
 <p>We flash RISC-V firmware to the PineCone board through the <strong>USB Serial Connection</strong> using the <a href="https://pine64.github.io/bl602-docs/Developer_Environment/BLFlashEnv/BLFlashEnv.html"><strong>Dev Cube Tool</strong></a>...</p>
+<ol>
+<li>
+<p>Set the <strong>PineCone Jumper</strong> to the <strong><code>H</code> Position</strong></p>
+<p>Connect PineCone to our computer's USB port</p>
+</li>
+<li>
+<p>Download the <strong>PineCone Sample Firmware</strong> images from GitHub Actions. See the next section &quot;Building Firmware&quot;</p>
+<p>Unzip the files in <code>customer_app.zip</code></p>
+</li>
+<li>
+<p>Download the <strong>PineCone SDK <code>bl_iot_sdk</code></strong>...</p>
+<pre><code class="language-bash">git clone --recursive https://github.com/pine64/bl_iot_sdk
+</code></pre>
+</li>
+<li>
+<p>Launch Dev Cube for Windows, located in the PineCone SDK at <code>bl_iot_sdk/tools/flash_tool/BLDevCube.exe</code></p>
+</li>
+<li>
+<p>Select Chip Type <code>BL602/604</code>, click <code>Finish</code></p>
+<p>We should see <code>Simple Flasher</code>. If not, click <code>View ➜ IoT</code></p>
+<p>Set the following...</p>
 <ul>
 <li>
-<p>Follow the flashing steps in the <a href="https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html"><strong>Linux Starter Guide</strong></a> and the <a href="https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html"><strong>Windows Starter Guide</strong></a></p>
+<p><strong>Interface</strong>: <code>UART</code></p>
 </li>
 <li>
-<p>Dev Cube for Windows is located at <code>bl_iot_sdk/tools/flash_tool/BLDevCube.exe</code></p>
+<p><strong>COM Port</strong>: Select the Serial COM port for PineCone</p>
 </li>
 <li>
-<p>Firmware images for PineCone may be downloaded from GitHub Actions. See the next section &quot;Building Firmware&quot;.</p>
+<p><strong>UART Rate</strong>: <code>2000000</code> (default)</p>
+</li>
+<li>
+<p><strong>Board</strong>: <code>IoTKitA</code> (default)</p>
+</li>
+<li>
+<p><strong>Xtal</strong>: <code>40M</code> (default)</p>
+</li>
+<li>
+<p><strong>Chip Erase</strong>: <code>False</code></p>
+</li>
+<li>
+<p>✅ <strong>Factory Params</strong></p>
+</li>
+<li>
+<p>✅ <strong>Partition Table</strong>: Click <code>Browse</code> and select from the PineCone SDK...</p>
+<p><code>bl_iot_sdk/tools/flash_tool/bl602/partition/partition_cfg_2M.toml</code></p>
+</li>
+<li>
+<p>✅ <strong>Boot2 Bin</strong>: Click <code>Browse</code> and select from the PineCone SDK...</p>
+<p><code>bl_iot_sdk/image_conf/bl602/blsp_boot2_release.bin</code></p>
+</li>
+<li>
+<p>✅ <strong>Firmware Bin</strong>: Click <code>Browse</code> and select from the PineCone Sample Firmware...</p>
+<p><code>customer_app.zip/sdk_app_helloworld/build_out/sdk_app_helloworld.bin</code></p>
+<p>This is the &quot;Hello World&quot; sample firmware that we'll be flashing</p>
+<p><a href="https://lupyuen.github.io/images/pinecone-flash.png">See the screenshot above</a></p>
+</li>
+</ul>
+</li>
+<li>
+<p>Click <code>Create &amp; Program</code></p>
+<p>This flashes the firmware to PineCone. We should see...</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="ident">Verify</span> <span class="ident">success</span>
+<span class="ident">Program</span> <span class="ident">Finished</span></pre></div>
+<p><a href="https://lupyuen.github.io/images/pinecone-flash.png">See the screenshot</a></p>
+</li>
+<li>
+<p>Disconnect PineCone from the USB port.</p>
+<p>Set the <strong>PineCone Jumper</strong> to the <strong><code>L</code> Position</strong></p>
+<p>Reconnect PineCone to the USB port.</p>
+</li>
+<li>
+<p>Click <code>Open UART</code></p>
+<p>Press the <code>RST</code> button on PineCone </p>
+<p>Our firmware starts to run. We should see...</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+[<span class="ident">helloworld</span>]   <span class="ident">start</span>
+[<span class="ident">helloworld</span>]   <span class="ident">helloworld</span>
+[<span class="ident">helloworld</span>]   <span class="ident">end</span></pre></div>
+<p><a href="https://lupyuen.github.io/images/pinecone-helloworld.png">See the screenshot</a></p>
+</li>
+</ol>
+<p>In case of problems, check the instructions in...</p>
+<ul>
+<li>
+<p><a href="https://pine64.github.io/bl602-docs/Developer_Environment/BLFlashEnv/BLFlashEnv.html">Dev Cube Guide</a></p>
+</li>
+<li>
+<p><a href="https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html">Linux Starter Guide</a></p>
+</li>
+<li>
+<p><a href="https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html">Windows Starter Guide</a></p>
 </li>
 </ul>
 <p><em>Are SWD and ST-Link supported for flashing firmware to the PineCone board?</em></p>
@@ -314,7 +401,7 @@
 <p>We may use Linux, Windows or macOS to build the BL602 firmware...</p>
 <ul>
 <li>
-<p>Download the PineCone BL602 Repo...</p>
+<p>If we haven't done so, download the PineCone BL602 SDK <code>bl_iot_sdk</code>...</p>
 <pre><code class="language-bash">git clone --recursive https://github.com/pine64/bl_iot_sdk
 cd bl_iot_sdk
 </code></pre>
@@ -340,6 +427,7 @@ make
 </ul>
 <p>On Windows, MSYS2 is required. Alternatively, we may use Windows Subsystem for Linux (WSL). (Some USB Devices don't work under WSL... Beware!)</p>
 <p>The built firmware includes FreeRTOS for <a href="https://github.com/pine64/bl_iot_sdk/blob/master/customer_app/bl602_demo_at/bl602_demo_at/main.c#L629-L833">handing Bluetooth LE and WiFi operations in the background</a>. <a href="https://github.com/pine64/bl_iot_sdk/tree/master/components/bl602">More details</a></p>
+<p><em>Can we download the firmware without building it ourselves?</em></p>
 <p>The firmware is built automatically in the cloud by GitHub Actions...</p>
 <ul>
 <li>
