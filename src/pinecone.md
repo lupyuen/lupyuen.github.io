@@ -278,6 +278,8 @@ _(The [BL602 Flash Programming](https://github.com/bouffalolab/bl_docs/tree/main
 
 We may use Linux, Windows or macOS to build the BL602 firmware...
 
+-  Download the PineCone BL602 Repo: [`github.com/pine64/bl_iot_sdk`](https://github.com/pine64/bl_iot_sdk)
+
 -  Follow the [build instructions for Linux, Windows and macOS](https://github.com/pine64/bl_iot_sdk/blob/master/README.rst) like so...
 
     ```bash
@@ -301,7 +303,9 @@ The built firmware includes FreeRTOS for [handing Bluetooth LE and WiFi operatio
 
 The firmware is built automatically in the cloud by GitHub Actions...
 
--   [Download the built firmware](https://github.com/lupyuen/bl_iot_sdk/actions) from GitHub Actions (Requires login to GitHub)
+-   Download the built firmware from GitHub Actions: 
+    [`github.com/lupyuen/bl_iot_sdk/actions`](https://github.com/lupyuen/bl_iot_sdk/actions) 
+    (Requires login to GitHub)
 
     Under `All Workflows ➜ Results`, click the first row
     
