@@ -310,6 +310,8 @@ On Windows, MSYS2 is required. Alternatively, we may use Windows Subsystem for L
 
 The built firmware includes FreeRTOS for [handing Bluetooth LE and WiFi operations in the background](https://github.com/pine64/bl_iot_sdk/blob/master/customer_app/bl602_demo_at/bl602_demo_at/main.c#L629-L833). [More details](https://github.com/pine64/bl_iot_sdk/tree/master/components/bl602)
 
+_Can we download the firmware without building it ourselves?_
+
 The firmware is built automatically in the cloud by GitHub Actions...
 
 -   Download the built firmware from GitHub Actions: 
