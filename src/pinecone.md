@@ -286,7 +286,7 @@ We flash RISC-V firmware to the PineCone board through the __USB Serial Connecti
 
     We should see `Simple Flasher`. If not, click `View ➜ IoT`
 
-    Set the following...
+1.  Set the following...
 
     -   __Interface__: `UART`
 
@@ -314,7 +314,9 @@ We flash RISC-V firmware to the PineCone board through the __USB Serial Connecti
 
         `customer_app.zip/sdk_app_helloworld/build_out/sdk_app_helloworld.bin`
 
-        This is the "Hello World" sample firmware that we'll be flashing
+        This is the ["Hello World"](https://github.com/pine64/bl_iot_sdk/blob/master/customer_app/sdk_app_helloworld) sample firmware that we'll be flashing.
+
+        The three files selected should NOT have any spaces in their pathnames.
 
         [See the screenshot above](https://lupyuen.github.io/images/pinecone-flash.png)
 
