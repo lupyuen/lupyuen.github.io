@@ -260,15 +260,103 @@ _(PineCone's USB Vendor ID is `0x1A86`, Product ID is `0x7523`)_
 
 [Watch on YouTube](https://youtu.be/WJLp-i2YtdY)
 
+![Flash PineCone with Dev Cube](https://lupyuen.github.io/images/pinecone-flash.png)
+
 ## Flashing Firmware
 
 We flash RISC-V firmware to the PineCone board through the __USB Serial Connection__ using the [__Dev Cube Tool__](https://pine64.github.io/bl602-docs/Developer_Environment/BLFlashEnv/BLFlashEnv.html)...
 
--   Follow the flashing steps in the [__Linux Starter Guide__](https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html) and the [__Windows Starter Guide__](https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html)
+1.  Set the __PineCone Jumper__ to the __`H` Position__
 
--   Dev Cube for Windows is located at `bl_iot_sdk/tools/flash_tool/BLDevCube.exe`
+    Connect PineCone to our computer's USB port
 
--   Firmware images for PineCone may be downloaded from GitHub Actions. See the next section "Building Firmware".
+1.  Download the __PineCone Sample Firmware__ images from GitHub Actions. See the next section "Building Firmware"
+
+    Unzip the files in `customer_app.zip`
+
+1.  Download the __PineCone SDK `bl_iot_sdk`__...
+
+    ```bash
+    git clone --recursive https://github.com/pine64/bl_iot_sdk
+    ```
+
+1.  Launch Dev Cube for Windows, located in the PineCone SDK at `bl_iot_sdk/tools/flash_tool/BLDevCube.exe`
+
+1.  Select Chip Type `BL602/604`, click `Finish`
+
+    We should see `Simple Flasher`. If not, click `View ➜ IoT`
+
+    Set the following...
+
+    -   __Interface__: `UART`
+
+    -   __COM Port__: Select the Serial COM port for PineCone
+
+    -   __UART Rate__: `2000000` (default)
+
+    -   __Board__: `IoTKitA` (default)
+
+    -   __Xtal__: `40M` (default)
+
+    -   __Chip Erase__: `False`
+
+    -   ✅ __Factory Params__
+
+    -   ✅ __Partition Table__: Click `Browse` and select from the PineCone SDK...
+
+        `bl_iot_sdk/tools/flash_tool/bl602/partition/partition_cfg_2M.toml`
+    
+    -   ✅ __Boot2 Bin__: Click `Browse` and select from the PineCone SDK...
+
+        `bl_iot_sdk/image_conf/bl602/blsp_boot2_release.bin`
+
+    -   ✅ __Firmware Bin__: Click `Browse` and select from the PineCone Sample Firmware...
+
+        `customer_app.zip/sdk_app_helloworld/build_out/sdk_app_helloworld.bin`
+
+        This is the "Hello World" sample firmware that we'll be flashing
+
+        [See the screenshot above](https://lupyuen.github.io/images/pinecone-flash.png)
+
+1.  Click `Create & Program`
+
+    This flashes the firmware to PineCone. We should see...
+
+    ```
+    Verify success
+    Program Finished
+    ```
+
+    [See the screenshot](https://lupyuen.github.io/images/pinecone-flash.png)
+
+1.  Disconnect PineCone from the USB port.  
+
+    Set the __PineCone Jumper__ to the __`L` Position__
+    
+    Reconnect PineCone to the USB port.
+
+1.  Click `Open UART`
+
+    Press the `RST` button on PineCone 
+
+    Our firmware starts to run. We should see...
+
+    ```
+    [helloworld]   start
+    [helloworld]   helloworld
+    [helloworld]   end
+    ```
+
+    [See the screenshot](https://lupyuen.github.io/images/pinecone-helloworld.png)
+
+In case of problems, check the instructions in...
+
+-   [Dev Cube Guide](https://pine64.github.io/bl602-docs/Developer_Environment/BLFlashEnv/BLFlashEnv.html)
+
+
+-   [Linux Starter Guide](https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html)
+
+-   [Windows Starter Guide](https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html)
 
 _Are SWD and ST-Link supported for flashing firmware to the PineCone board?_
 
@@ -282,7 +370,7 @@ _(The [BL602 Flash Programming](https://github.com/bouffalolab/bl_docs/tree/main
 
 We may use Linux, Windows or macOS to build the BL602 firmware...
 
--   Download the PineCone BL602 Repo...
+-   If we haven't done so, download the PineCone BL602 SDK `bl_iot_sdk`...
 
     ```bash
     git clone --recursive https://github.com/pine64/bl_iot_sdk
