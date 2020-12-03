@@ -262,7 +262,9 @@ _(PineCone's USB Vendor ID is `0x1A86`, Product ID is `0x7523`)_
 
 [Watch on YouTube](https://youtu.be/WJLp-i2YtdY)
 
-![Flash PineCone with Dev Cube](https://lupyuen.github.io/images/pinecone-flash.png)
+![Flashing PineCone with Dev Cube](https://lupyuen.github.io/images/pinecone-flash.png)
+
+_Flashing PineCone with Dev Cube_
 
 ## Flashing Firmware
 
@@ -434,15 +436,24 @@ The development tools supported for BL602 are...
 
 _(For the BL602 port of Mynewt: I'll be using VSCode as the development tool. Firmware build will be supported on plain old Windows (without MSYS2 / WSL), macOS, Linux, GitHub Actions and GitLab CI. More about [porting Mynewt to RISC-V](https://medium.com/@ly.lee/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v-4054a5922493?source=friends_link&sk=215cd06186d912277d0469224666d60d) and [how it got stuck](https://medium.com/@ly.lee/hey-gd32-vf103-on-risc-v-i-surrender-for-now-d39d0c7b0001?source=friends_link&sk=c0504ac574bf571219fabe174eef4de5))_
 
+![JTAG Port on PineCone Board](https://lupyuen.github.io/images/pinecone-jtag.png)
+
+_JTAG Port on PineCone Board_
+
 ## Debugging Firmware
 
 To debug the BL602 firmware, we need a __JTAG Debugger__ with OpenOCD and GDB. 
 
-(Or is the JTAG Debugger already inside the PineCone board?)
+According to the [BL602 Reference Manual](https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf) and [PineCone Schematics](https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf) (see pic above), the JTAG Pins are...
+
+-  __TDO__: GPIO 11
+-  __TMS__: GPIO 12
+-  __TCK__: GPIO 14
+-  __TDI__: GPIO 17
 
 The PineCone BL602 SDK includes...
 
--   [OpenOCD for Windows](https://github.com/pine64/bl_iot_sdk/tree/master/tools/flash_tool)
+-   [OpenOCD for Windows `OpenOCD.exe`](https://github.com/pine64/bl_iot_sdk/tree/master/tools/flash_tool)
 
 -   [OpenOCD Configuration for BL602](https://github.com/pine64/bl_iot_sdk/tree/master/tools)
 
@@ -450,7 +461,7 @@ The PineCone BL602 SDK includes...
 
 I shall be testing with PineCone the [Sipeed JTAG Debugger](https://www.seeedstudio.com/Sipeed-USB-JTAG-TTL-RISC-V-Debugger-p-2910.html) (which also has Vendor ID `0x0403` and Product ID `0x6010`)...
 
-![Sipeed JTAG Debugger](https://lupyuen.github.io/images/pinecone-jtag.jpg)
+![Sipeed JTAG Debugger](https://lupyuen.github.io/images/pinecone-sipeed.jpg)
 
 ## Testing the Firmware
 
