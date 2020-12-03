@@ -248,7 +248,9 @@ The BL602 docs are located in the [__BL602 Docs Repo__](https://github.com/pine6
 
 -   [__BL602 Reference Manual__](https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf)
 
--   [__BL602 Flash Programming__](https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en)
+-   [__BL602 ISP Flash Programming__](https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en)
+
+-   [__PineCone Schematics__](https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf)
 
 ## Form Factor
 
