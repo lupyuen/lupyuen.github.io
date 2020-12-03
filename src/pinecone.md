@@ -266,7 +266,7 @@ _(PineCone's USB Vendor ID is `0x1A86`, Product ID is `0x7523`)_
 
 We flash RISC-V firmware to the PineCone board through the __USB Serial Connection__ using the [__Dev Cube Tool__](https://pine64.github.io/bl602-docs/Developer_Environment/BLFlashEnv/BLFlashEnv.html)...
 
-1.  Set the __PineCone Jumper__ to the __`H` Position__
+1.  Set the __PineCone Jumper__ to the __`H` Position__ [(Like this)](https://lupyuen.github.io/images/pinecone-jumperh.jpg)
 
     Connect PineCone to our computer's USB port
 
@@ -333,13 +333,13 @@ We flash RISC-V firmware to the PineCone board through the __USB Serial Connecti
 
 1.  Disconnect PineCone from the USB port.  
 
-    Set the __PineCone Jumper__ to the __`L` Position__
+    Set the __PineCone Jumper__ to the __`L` Position__ [(Like this)](https://lupyuen.github.io/images/pinecone-jumperl.jpg)
     
     Reconnect PineCone to the USB port.
 
 1.  Click `Open UART`
 
-    Press the `RST` button on PineCone 
+    Press the `RST` button on PineCone [(Look here)](https://lupyuen.github.io/images/pinecone-rst.jpg)
 
     Our firmware starts to run. We should see...
 
