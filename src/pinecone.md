@@ -252,6 +252,8 @@ The BL602 docs are located in the [__BL602 Docs Repo__](https://github.com/pine6
 
 -   [__PineCone Schematics__](https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf)
 
+-   [__SiFive E24 Manual__](https://sifive.cdn.prismic.io/sifive/dffb6a15-80b3-42cb-99e1-23ce6fd1d052_sifive_E24_rtl_full_20G1.03.00_manual.pdf)
+
 ## Form Factor
 
 The PineCone BL602 Evaluation Board has a similar form factor to other wireless dev boards, like [EBYTE E73-TBB](https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004?source=friends_link&sk=bb4e2523b922d0870259ab3fa696c7da) (which is based on nRF52832)
@@ -451,7 +453,7 @@ According to the [BL602 Reference Manual](https://github.com/pine64/bl602-docs/b
 -  __TCK__: GPIO 14 (Green)
 -  __TDI__: GPIO 17 (Black)
 
-We need to solder the headers to the PineCone board and expose the above JTAG Pins...
+We need to [solder the headers](https://lupyuen.github.io/images/pinecone-solder.jpg) to the PineCone board and expose the above JTAG Pins...
 
 ![PineCone with headers soldered](https://lupyuen.github.io/images/pinecone-headers.jpg)
 
