@@ -446,10 +446,14 @@ To debug the BL602 firmware, we need a __JTAG Debugger__ with OpenOCD and GDB.
 
 According to the [BL602 Reference Manual](https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf) and [PineCone Schematics](https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf) (see pic above), the JTAG Pins are...
 
--  __TDO__: GPIO 11
--  __TMS__: GPIO 12
--  __TCK__: GPIO 14
--  __TDI__: GPIO 17
+-  __TDO__: GPIO 11 (Blue)
+-  __TMS__: GPIO 12 (Yellow)
+-  __TCK__: GPIO 14 (Green)
+-  __TDI__: GPIO 17 (Black)
+
+We need to solder the headers to the PineCone board and expose the above JTAG Pins...
+
+![PineCone with headers soldered](https://lupyuen.github.io/images/pinecone-headers.jpg)
 
 The PineCone BL602 SDK includes...
 
