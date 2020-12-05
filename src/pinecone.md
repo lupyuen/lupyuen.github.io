@@ -497,7 +497,7 @@ Perhaps because the JTAG Pins are connected to the onboard LED?  (GPIO 11, 14, 1
 
 [See the PineCone Schematics](https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf)
 
-According to the [BL602 Reference Manual](https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf) (Section 3.2.8), we may remap the JTAG Port to other GPIO Pins (and avoid the conflict).
+According to the [BL602 Reference Manual](https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf) (Section 3.2.8, Page 27), we may remap the JTAG Port to other GPIO Pins (and avoid the conflict).
 
 I'm trying that now, stay tuned! 
 
