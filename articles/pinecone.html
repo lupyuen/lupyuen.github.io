@@ -489,8 +489,18 @@ make
 <p>(Based on FTDI Vendor ID <code>0x0403</code>, Product ID <code>0x6010</code>)</p>
 </li>
 </ul>
-<p>I shall be testing with PineCone the <a href="https://www.seeedstudio.com/Sipeed-USB-JTAG-TTL-RISC-V-Debugger-p-2910.html">Sipeed JTAG Debugger</a> (which also has Vendor ID <code>0x0403</code> and Product ID <code>0x6010</code>)...</p>
+<p>I tested with PineCone the <a href="https://www.seeedstudio.com/Sipeed-USB-JTAG-TTL-RISC-V-Debugger-p-2910.html">Sipeed JTAG Debugger</a> (which also has Vendor ID <code>0x0403</code> and Product ID <code>0x6010</code>)...</p>
 <p><img src="https://lupyuen.github.io/images/pinecone-sipeed.jpg" alt="Sipeed JTAG Debugger" /></p>
+<p>GDB fails with this error (<a href="https://github.com/lupyuen/bl602-rust-guide/blob/main/README.md">see this</a>)...</p>
+
+<pre><code>    Finished dev [unoptimized + debuginfo] target(s) in 0.05s
+     Running `riscv64-unknown-elf-gdb -q -x openocd.gdb target/riscv32imac-unknown-none-elf/debug/bl602-rust-guide`
+Reading symbols from target/riscv32imac-unknown-none-elf/debug/bl602-rust-guide...
+openocd.gdb:1: Error in sourced command file:
+:3333: Operation timed out.</code></pre>
+<p>Perhaps because the JTAG Pins are connected to the onboard LED?  (GPIO 11, 14, 17)</p>
+<p><img src="https://lupyuen.github.io/images/pinecone-led.png" alt="PineCone LED uses GPIO 11, 14, 17" /></p>
+<p><a href="https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf">See the PineCone Schematics</a></p>
 <h2 id="testing-the-firmware" class="section-header"><a href="#testing-the-firmware">4.6 Testing the Firmware</a></h2>
 <p>When we port to BL602 a sizeable piece of firmware (or an Embedded Operating System like Mynewt), testing the firmware can get challenging.</p>
 <p>For embedded gadgets like PineTime, the sensors and display are connected. Which makes it easier to test the Input/Output Ports (like I2C and SPI).</p>

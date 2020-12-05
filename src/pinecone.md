@@ -465,9 +465,25 @@ The PineCone BL602 SDK includes...
 
     (Based on FTDI Vendor ID `0x0403`, Product ID `0x6010`)
 
-I shall be testing with PineCone the [Sipeed JTAG Debugger](https://www.seeedstudio.com/Sipeed-USB-JTAG-TTL-RISC-V-Debugger-p-2910.html) (which also has Vendor ID `0x0403` and Product ID `0x6010`)...
+I tested with PineCone the [Sipeed JTAG Debugger](https://www.seeedstudio.com/Sipeed-USB-JTAG-TTL-RISC-V-Debugger-p-2910.html) (which also has Vendor ID `0x0403` and Product ID `0x6010`)...
 
 ![Sipeed JTAG Debugger](https://lupyuen.github.io/images/pinecone-sipeed.jpg)
+
+GDB fails with this error ([see this](https://github.com/lupyuen/bl602-rust-guide/blob/main/README.md))...
+
+```
+    Finished dev [unoptimized + debuginfo] target(s) in 0.05s
+     Running `riscv64-unknown-elf-gdb -q -x openocd.gdb target/riscv32imac-unknown-none-elf/debug/bl602-rust-guide`
+Reading symbols from target/riscv32imac-unknown-none-elf/debug/bl602-rust-guide...
+openocd.gdb:1: Error in sourced command file:
+:3333: Operation timed out.
+```
+
+Perhaps because the JTAG Pins are connected to the onboard LED?  (GPIO 11, 14, 17)
+
+![PineCone LED uses GPIO 11, 14, 17](https://lupyuen.github.io/images/pinecone-led.png)
+
+[See the PineCone Schematics](https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf)
 
 ## Testing the Firmware
 
