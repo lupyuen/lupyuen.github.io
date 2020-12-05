@@ -310,15 +310,21 @@ We flash RISC-V firmware to the PineCone board through the __USB Serial Connecti
 
     -   ✅ __Partition Table__: Click `Browse` and select from the PineCone SDK...
 
-        `bl_iot_sdk/tools/flash_tool/bl602/partition/partition_cfg_2M.toml`
+        ```
+        bl_iot_sdk/tools/flash_tool/bl602/partition/partition_cfg_2M.toml
+        ```
     
     -   ✅ __Boot2 Bin__: Click `Browse` and select from the PineCone SDK...
 
-        `bl_iot_sdk/image_conf/bl602/blsp_boot2_release.bin`
+        ```
+        bl_iot_sdk/image_conf/bl602/blsp_boot2_release.bin
+        ```
 
     -   ✅ __Firmware Bin__: Click `Browse` and select from the PineCone Sample Firmware...
 
-        `customer_app.zip/sdk_app_helloworld/build_out/sdk_app_helloworld.bin`
+        ```
+        customer_app.zip/sdk_app_helloworld/build_out/sdk_app_helloworld.bin
+        ```
 
         This is the ["Hello World"](https://github.com/pine64/bl_iot_sdk/blob/master/customer_app/sdk_app_helloworld) sample firmware that we'll be flashing.
 
@@ -469,11 +475,13 @@ I tested with PineCone the [Sipeed JTAG Debugger](https://www.seeedstudio.com/Si
 
 ![Sipeed JTAG Debugger](https://lupyuen.github.io/images/pinecone-sipeed.jpg)
 
-GDB fails with this error ([see this](https://github.com/lupyuen/bl602-rust-guide/blob/main/README.md))...
+[Instructions for Flashing PineCone with Sipeed JTAG Debugger, OpenOCD and GDB](https://github.com/lupyuen/bl602-rust-guide/blob/main/README.md)
+
+However GDB fails with this error ([see this](https://github.com/lupyuen/bl602-rust-guide/blob/main/README.md))...
 
 ```
-    Finished dev [unoptimized + debuginfo] target(s) in 0.05s
-     Running `riscv64-unknown-elf-gdb -q -x openocd.gdb target/riscv32imac-unknown-none-elf/debug/bl602-rust-guide`
+Finished dev [unoptimized + debuginfo] target(s) in 0.05s
+Running `riscv64-unknown-elf-gdb -q -x openocd.gdb target/riscv32imac-unknown-none-elf/debug/bl602-rust-guide`
 Reading symbols from target/riscv32imac-unknown-none-elf/debug/bl602-rust-guide...
 openocd.gdb:1: Error in sourced command file:
 :3333: Operation timed out.
@@ -484,6 +492,10 @@ Perhaps because the JTAG Pins are connected to the onboard LED?  (GPIO 11, 14, 1
 ![PineCone LED uses GPIO 11, 14, 17](https://lupyuen.github.io/images/pinecone-led.png)
 
 [See the PineCone Schematics](https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf)
+
+According to the [BL602 Reference Manual](https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf) (Section 3.2.8), we may remap the JTAG Port to other GPIO Pins (and avoid the conflict).
+
+I'm trying that now, stay tuned!
 
 ## Testing the Firmware
 

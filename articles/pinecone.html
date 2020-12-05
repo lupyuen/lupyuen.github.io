@@ -350,15 +350,21 @@
 </li>
 <li>
 <p>✅ <strong>Partition Table</strong>: Click <code>Browse</code> and select from the PineCone SDK...</p>
-<p><code>bl_iot_sdk/tools/flash_tool/bl602/partition/partition_cfg_2M.toml</code></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="ident">bl_iot_sdk</span><span class="op">/</span><span class="ident">tools</span><span class="op">/</span><span class="ident">flash_tool</span><span class="op">/</span><span class="ident">bl602</span><span class="op">/</span><span class="ident">partition</span><span class="op">/</span><span class="ident">partition_cfg_2M</span>.<span class="ident">toml</span></pre></div>
 </li>
 <li>
 <p>✅ <strong>Boot2 Bin</strong>: Click <code>Browse</code> and select from the PineCone SDK...</p>
-<p><code>bl_iot_sdk/image_conf/bl602/blsp_boot2_release.bin</code></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="ident">bl_iot_sdk</span><span class="op">/</span><span class="ident">image_conf</span><span class="op">/</span><span class="ident">bl602</span><span class="op">/</span><span class="ident">blsp_boot2_release</span>.<span class="ident">bin</span></pre></div>
 </li>
 <li>
 <p>✅ <strong>Firmware Bin</strong>: Click <code>Browse</code> and select from the PineCone Sample Firmware...</p>
-<p><code>customer_app.zip/sdk_app_helloworld/build_out/sdk_app_helloworld.bin</code></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="ident">customer_app</span>.<span class="ident">zip</span><span class="op">/</span><span class="ident">sdk_app_helloworld</span><span class="op">/</span><span class="ident">build_out</span><span class="op">/</span><span class="ident">sdk_app_helloworld</span>.<span class="ident">bin</span></pre></div>
 <p>This is the <a href="https://github.com/pine64/bl_iot_sdk/blob/master/customer_app/sdk_app_helloworld">&quot;Hello World&quot;</a> sample firmware that we'll be flashing.</p>
 <p>The three files selected should NOT have any spaces in their pathnames.</p>
 <p><a href="https://lupyuen.github.io/images/pinecone-flash.png">See the screenshot above</a></p>
@@ -491,16 +497,19 @@ make
 </ul>
 <p>I tested with PineCone the <a href="https://www.seeedstudio.com/Sipeed-USB-JTAG-TTL-RISC-V-Debugger-p-2910.html">Sipeed JTAG Debugger</a> (which also has Vendor ID <code>0x0403</code> and Product ID <code>0x6010</code>)...</p>
 <p><img src="https://lupyuen.github.io/images/pinecone-sipeed.jpg" alt="Sipeed JTAG Debugger" /></p>
-<p>GDB fails with this error (<a href="https://github.com/lupyuen/bl602-rust-guide/blob/main/README.md">see this</a>)...</p>
+<p><a href="https://github.com/lupyuen/bl602-rust-guide/blob/main/README.md">Instructions for Flashing PineCone with Sipeed JTAG Debugger, OpenOCD and GDB</a></p>
+<p>However GDB fails with this error (<a href="https://github.com/lupyuen/bl602-rust-guide/blob/main/README.md">see this</a>)...</p>
 
-<pre><code>    Finished dev [unoptimized + debuginfo] target(s) in 0.05s
-     Running `riscv64-unknown-elf-gdb -q -x openocd.gdb target/riscv32imac-unknown-none-elf/debug/bl602-rust-guide`
+<pre><code>Finished dev [unoptimized + debuginfo] target(s) in 0.05s
+Running `riscv64-unknown-elf-gdb -q -x openocd.gdb target/riscv32imac-unknown-none-elf/debug/bl602-rust-guide`
 Reading symbols from target/riscv32imac-unknown-none-elf/debug/bl602-rust-guide...
 openocd.gdb:1: Error in sourced command file:
 :3333: Operation timed out.</code></pre>
 <p>Perhaps because the JTAG Pins are connected to the onboard LED?  (GPIO 11, 14, 17)</p>
 <p><img src="https://lupyuen.github.io/images/pinecone-led.png" alt="PineCone LED uses GPIO 11, 14, 17" /></p>
 <p><a href="https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf">See the PineCone Schematics</a></p>
+<p>According to the <a href="https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf">BL602 Reference Manual</a> (Section 3.2.8), we may remap the JTAG Port to other GPIO Pins (and avoid the conflict).</p>
+<p>I'm trying that now, stay tuned!</p>
 <h2 id="testing-the-firmware" class="section-header"><a href="#testing-the-firmware">4.6 Testing the Firmware</a></h2>
 <p>When we port to BL602 a sizeable piece of firmware (or an Embedded Operating System like Mynewt), testing the firmware can get challenging.</p>
 <p>For embedded gadgets like PineTime, the sensors and display are connected. Which makes it easier to test the Input/Output Ports (like I2C and SPI).</p>
