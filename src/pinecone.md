@@ -252,6 +252,10 @@ The BL602 docs are located in the [__BL602 Docs Repo__](https://github.com/pine6
 
 -   [__PineCone Schematics__](https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf)
 
+BL602's RISC-V Core seems to be based on either [__SiFive E21__](https://www.sifive.com/cores/e21) or [__SiFive E24__](https://www.sifive.com/cores/e24) (to be confirmed)...
+
+-   [__SiFive E21 Manual__](https://sifive.cdn.prismic.io/sifive/39d336f7-7dba-43f2-a453-8d55227976cc_sifive_E21_rtl_full_20G1.03.00_manual.pdf)
+
 -   [__SiFive E24 Manual__](https://sifive.cdn.prismic.io/sifive/dffb6a15-80b3-42cb-99e1-23ce6fd1d052_sifive_E24_rtl_full_20G1.03.00_manual.pdf)
 
 ## Form Factor
@@ -438,7 +442,7 @@ The development tools supported for BL602 are...
 
 1.  [__SiFive Freedom Studio__](https://pine64.github.io/bl602-docs/Developer_Environment/freedom_studio/freedom_studio.html)
 
-    (Because BL602 is based on [SiFive's E24 RISC-V Core](https://www.sifive.com/cores/e24))
+    (Because BL602 is based on [SiFive's E21 or E24 RISC-V Core](https://www.sifive.com/cores/e21))
 
 1.  [__Eclipse__](https://pine64.github.io/bl602-docs/Developer_Environment/eclipse/eclipse.html)
 
