@@ -515,7 +515,16 @@ openocd.gdb:1: Error in sourced command file:
 <p><img src="https://lupyuen.github.io/images/pinecone-led.png" alt="PineCone LED uses GPIO 11, 14, 17" /></p>
 <p><a href="https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf">See the PineCone Schematics</a></p>
 <p>According to the <a href="https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf">BL602 Reference Manual</a> (Section 3.2.8, Page 27), we may remap the JTAG Port to other GPIO Pins (and avoid the conflict).</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/releases/tag/v0.0.1">I'm trying that now, stay tuned!</a></p>
+<p>UPDATE: Yep the remapped JTAG Port works!</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/releases/tag/v0.0.4">How to remap the JTAG port</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/bl602-rust-guide/blob/main/README.md">How to configure OpenOCD for Sipeed JTAG Debugger</a></p>
+</li>
+</ul>
+<p>I shall write about this in the next article.</p>
 <p><em>(Hopefully Pine64 will revise the PineCone design and connect the LED to other GPIO Pins instead)</em></p>
 <h2 id="testing-the-firmware" class="section-header"><a href="#testing-the-firmware">4.6 Testing the Firmware</a></h2>
 <p>When we port to BL602 a sizeable piece of firmware (or an Embedded Operating System like Mynewt), testing the firmware can get challenging.</p>

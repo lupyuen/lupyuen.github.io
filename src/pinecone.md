@@ -499,7 +499,13 @@ Perhaps because the JTAG Pins are connected to the onboard LED?  (GPIO 11, 14, 1
 
 According to the [BL602 Reference Manual](https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf) (Section 3.2.8, Page 27), we may remap the JTAG Port to other GPIO Pins (and avoid the conflict).
 
-[I'm trying that now, stay tuned!](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v0.0.1)
+UPDATE: Yep the remapped JTAG Port works!
+
+-  [How to remap the JTAG port](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v0.0.4)
+
+-  [How to configure OpenOCD for Sipeed JTAG Debugger](https://github.com/lupyuen/bl602-rust-guide/blob/main/README.md)
+
+I shall write about this in the next article.
 
 _(Hopefully Pine64 will revise the PineCone design and connect the LED to other GPIO Pins instead)_
 
