@@ -498,10 +498,10 @@ make
 </li>
 <li>
 <p><a href="https://github.com/pine64/bl_iot_sdk/tree/master/tools">OpenOCD Configuration for BL602</a></p>
-<p>(Based on FTDI Vendor ID <code>0x0403</code>, Product ID <code>0x6010</code>)</p>
+<p>(Based on <a href="https://mcuoneclipse.com/2019/10/20/jtag-debugging-the-esp32-with-ft2232-and-openocd/">FTDI FT2232</a> with Vendor ID <code>0x0403</code>, Product ID <code>0x6010</code>)</p>
 </li>
 </ul>
-<p>I tested with PineCone the <a href="https://www.seeedstudio.com/Sipeed-USB-JTAG-TTL-RISC-V-Debugger-p-2910.html">Sipeed JTAG Debugger</a> (which also has Vendor ID <code>0x0403</code> and Product ID <code>0x6010</code>)...</p>
+<p>I tested with PineCone the <a href="https://tang.sipeed.com/en/hardware-overview/rv-debugger/?utm_source=platformio&amp;utm_medium=docs">Sipeed JTAG Debugger</a> based on FTDI FT2232D (which also has Vendor ID <code>0x0403</code> and Product ID <code>0x6010</code>)...</p>
 <p><img src="https://lupyuen.github.io/images/pinecone-sipeed.jpg" alt="Sipeed JTAG Debugger" /></p>
 <p><a href="https://github.com/lupyuen/bl602-rust-guide/blob/main/README.md">Instructions for Flashing PineCone with Sipeed JTAG Debugger, OpenOCD and GDB</a></p>
 <p>However GDB fails with this error (<a href="https://github.com/lupyuen/bl602-rust-guide/blob/main/README.md">see this</a>)...</p>

@@ -473,9 +473,9 @@ The PineCone BL602 SDK includes...
 
 -   [OpenOCD Configuration for BL602](https://github.com/pine64/bl_iot_sdk/tree/master/tools)
 
-    (Based on FTDI Vendor ID `0x0403`, Product ID `0x6010`)
+    (Based on [FTDI FT2232](https://mcuoneclipse.com/2019/10/20/jtag-debugging-the-esp32-with-ft2232-and-openocd/) with Vendor ID `0x0403`, Product ID `0x6010`)
 
-I tested with PineCone the [Sipeed JTAG Debugger](https://www.seeedstudio.com/Sipeed-USB-JTAG-TTL-RISC-V-Debugger-p-2910.html) (which also has Vendor ID `0x0403` and Product ID `0x6010`)...
+I tested with PineCone the [Sipeed JTAG Debugger](https://tang.sipeed.com/en/hardware-overview/rv-debugger/?utm_source=platformio&utm_medium=docs) based on FTDI FT2232D (which also has Vendor ID `0x0403` and Product ID `0x6010`)...
 
 ![Sipeed JTAG Debugger](https://lupyuen.github.io/images/pinecone-sipeed.jpg)
 
