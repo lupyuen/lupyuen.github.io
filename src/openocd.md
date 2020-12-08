@@ -1,6 +1,8 @@
 # Connect PineCone BL602 to OpenOCD
 
-![PineCone BL602 RISC-V Evaluation Board with Sipeed JTAG Debugger](https://lupyuen.github.io/images/openocd-title.jpg)
+![PineCone BL602 RISC-V Evaluation Board connected to Sipeed JTAG Debugger](https://lupyuen.github.io/images/openocd-title.jpg)
+
+_PineCone BL602 RISC-V Evaluation Board connected to Sipeed JTAG Debugger_
 
 Today we'll learn to connect the [__PineCone BL602 RISC-V Evaluation Board__](https://lupyuen.github.io/articles/pinecone) to OpenOCD for flashing and debugging PineCone firmware.
 
@@ -39,6 +41,8 @@ _OpenOCD has been around for a while. Are there newer tools for flashing and deb
 There's a newer alternative to OpenOCD that's built with Rust: [probe.rs](https://probe.rs/)
 
 It has beta support for JTAG. Hopefully we can use it with PineCone someday.
+
+But for today, we'll learn about using OpenOCD and JTAG with PineCone.
 
 # What is JTAG?
 
