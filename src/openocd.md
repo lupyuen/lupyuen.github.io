@@ -6,24 +6,39 @@ Today we'll learn to connect the [__PineCone BL602 RISC-V Evaluation Board__](ht
 
 # What is OpenOCD?
 
-OpenOCD is the open source software that runs on our computer and connects to microcontrollers (like PineCone) to...
+__OpenOCD__ is the open source software that runs on our computer and connects to microcontrollers (like PineCone) to...
 
-1. Flash firmware to the microcontroller's internal Flash Memory
+1. __Flash our firmware__ to the microcontroller's (PineCone's) internal Flash Memory
 
-1. Debug the firmware: Set breakpoints, step through code, examine the variables
+1. __Debug our firmware__: Set breakpoints, step through code, examine the variables
 
-Most dev tools (like VSCode) talk to OpenOCD for flashing and debugging firmware
+Most development tools (like VSCode) work with OpenOCD for flashing and debugging firmware.
 
-So it's important to get PineCone talking to OpenOCD, so that our dev tools will work with PineCone
+Thus it's important to get PineCone talking to OpenOCD, so that our development tools will work with PineCone.
 
-Rust also uses OpenOCD
+([Rust for PineCone](https://github.com/lupyuen/bl602-rust-guide) also uses OpenOCD for flashing and debugging)
 
-There is a newer alternative to OpenOCD based on Rust
-Probe.rs hope to use it someday
+PineCone exposes a __JTAG Port__ that works with OpenOCD for flashing and debugging firmware. 
 
-UART flashing
+This is similar to the SWD Port that's found in PineTime, STM32 Blue Pill and other Arm microcontrollers.
 
-OpenOCD talks to PineCone through the JTAG port
+We'll learn about JTAG in the next section.
+
+_Doesn't PineCone support UART flashing? Why use OpenOCD and JTAG?_
+
+Yes we may flash our firmware to PineCone via a Serial USB connection to PineCone's UART Port. [More about this](https://lupyuen.github.io/articles/pinecone)
+
+However it uses a flashing protocol that's designed specifically for BL602 devices. The flashing protocol is not supported by popular tools like VSCode.
+
+BL602 doesn't support debugging over UART. For serious firmware coding on BL602, OpenOCD is the best option.
+
+(I have a hunch that flashing firmware over UART will be faster than JTAG... We'll find out soon)
+
+_OpenOCD has been around for a while. Are there newer tools for flashing and debugging?_
+
+There's a newer alternative to OpenOCD that's built with Rust: [probe.rs](https://probe.rs/)
+
+It has beta support for JTAG. Hopefully we can use it with PineCone someday.
 
 # What is JTAG?
 
