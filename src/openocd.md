@@ -2,7 +2,9 @@
 
 ![PineCone BL602 RISC-V Evaluation Board with Sipeed JTAG Debugger](https://lupyuen.github.io/images/openocd-title.jpg)
 
-# What is OpenOCD? Why does it matter?
+Today we'll learn to connect the [__PineCone BL602 RISC-V Evaluation Board__](https://lupyuen.github.io/articles/pinecone) to OpenOCD for flashing and debugging PineCone firmware.
+
+# What is OpenOCD?
 
 OpenOCD is the open source software that runs on our computer and connects to microcontrollers (like PineCone) to...
 
@@ -23,11 +25,9 @@ UART flashing
 
 OpenOCD talks to PineCone through the JTAG port
 
-# What is JTAG? Why not SWD?
+# What is JTAG?
 
 TODO
-
-https://lupyuen.github.io/articles/pinecone
 
 SWD is only for Arm microcontrollers
 
