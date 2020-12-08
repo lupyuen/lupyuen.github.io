@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <title>Connect PineCone BL602 to OpenOCD</title>
+
+    
+    <!-- Begin scripts/articles/*-header.html: Article Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<meta property="og:title" 
+    content="Connect PineCone BL602 to OpenOCD" 
+    data-rh="true">
+<meta property="og:description" 
+    content="Connect PineCone BL602 to OpenOCD" 
+    data-rh="true">
+<meta property="og:image" 
+    content="https://lupyuen.github.io/images/openocd-title.jpg">
+<meta property="og:type" 
+    content="article" data-rh="true">
+<!-- End scripts/articles/*-header.html -->
+<!-- Begin scripts/rustdoc-header.html: Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<link rel="alternate" type="application/rss+xml" title="RSS Feed for lupyuen" href="/rss.xml" />
+<link rel="stylesheet" type="text/css" href="../normalize.css">
+<link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle">
+<link rel="stylesheet" type="text/css" href="../dark.css">
+<link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle">
+<link rel="stylesheet" type="text/css" href="../prism.css">
+<script src="../storage.js"></script><noscript>
+<link rel="stylesheet" href="../noscript.css"></noscript>
+<link rel="shortcut icon" href="../favicon.ico">
+<style type="text/css">
+    #crate-search {
+        background-image: url("../down-arrow.svg");
+    }
+    a {
+        color: #77d;
+    }
+</style>
+<!-- End scripts/rustdoc-header.html -->
+
+
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+        <!-- Begin scripts/rustdoc-before.html: Pre-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
+
+    <!-- Begin Theme Picker -->
+    <div class="theme-picker" style="left: 0"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg"
+        width="18" alt="Pick another theme!"></button>
+        <div id="theme-choices"></div>
+    </div>
+    <script src="../theme.js"></script>
+    <script src="../prism.js"></script>
+    <!-- Theme Picker -->
+
+    <!-- End scripts/rustdoc-before.html -->
+    
+
+    <h1 class="title">Connect PineCone BL602 to OpenOCD</h1>
+    <nav id="TOC"><ul>
+<li><a href="#what-is-openocd-why-does-it-matter">1 What is OpenOCD? Why does it matter?</a><ul></ul></li>
+<li><a href="#what-is-jtag-why-not-swd">2 What is JTAG? Why not SWD?</a><ul></ul></li>
+<li><a href="#connect-jtag-debugger-to-pinecone">3 Connect JTAG Debugger to PineCone</a><ul></ul></li>
+<li><a href="#openocd-script">4 OpenOCD script</a><ul></ul></li>
+<li><a href="#if-you-love-the-led-set-it-free">5 If you love the LED... Set it free!</a><ul></ul></li>
+<li><a href="#how-to-remap-the-jtag-port">6 How to remap the JTAG port</a><ul></ul></li>
+<li><a href="#whats-next">7 What's Next</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/openocd-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board with Sipeed JTAG Debugger" /></p>
+<h1 id="what-is-openocd-why-does-it-matter" class="section-header"><a href="#what-is-openocd-why-does-it-matter">1 What is OpenOCD? Why does it matter?</a></h1>
+<p>OpenOCD is the open source software that runs on our computer and connects to microcontrollers (like PineCone) to...</p>
+<ol>
+<li>
+<p>Flash firmware to the microcontroller's internal Flash Memory</p>
+</li>
+<li>
+<p>Debug the firmware: Set breakpoints, step through code, examine the variables</p>
+</li>
+</ol>
+<p>Most dev tools (like VSCode) talk to OpenOCD for flashing and debugging firmware</p>
+<p>So it's important to get PineCone talking to OpenOCD, so that our dev tools will work with PineCone</p>
+<p>Rust also uses OpenOCD</p>
+<p>There is a newer alternative to OpenOCD based on Rust
+Probe.rs hope to use it someday</p>
+<p>UART flashing</p>
+<p>OpenOCD talks to PineCone through the JTAG port</p>
+<h1 id="what-is-jtag-why-not-swd" class="section-header"><a href="#what-is-jtag-why-not-swd">2 What is JTAG? Why not SWD?</a></h1>
+<p>TODO</p>
+<p>https://lupyuen.github.io/articles/pinecone</p>
+<p>SWD is only for Arm microcontrollers</p>
+<p>Pins
+Similar to SPI
+Must GND</p>
+<h1 id="connect-jtag-debugger-to-pinecone" class="section-header"><a href="#connect-jtag-debugger-to-pinecone">3 Connect JTAG Debugger to PineCone</a></h1>
+<p>TODO</p>
+<p>Download the build from GitHub Actions</p>
+<p>TDO: GPIO 11 (Blue)
+TMS: GPIO 12 (Yellow)
+TCK: GPIO 14 (Green)
+TDI: GPIO 17 (Black)
+GND</p>
+<p>Based on Sipeed Rust guide</p>
+<p>Sipeed JTAG debugger
+Should work with any FTDI F2232</p>
+<p>https://mcuoneclipse.com/2019/10/20/jtag-debugging-the-esp32-with-ft2232-and-openocd/</p>
+<h1 id="openocd-script" class="section-header"><a href="#openocd-script">4 OpenOCD script</a></h1>
+<p>TODO</p>
+<p>Ftdi id
+Ftdi interface
+Cpu id
+Speed</p>
+<h1 id="if-you-love-the-led-set-it-free" class="section-header"><a href="#if-you-love-the-led-set-it-free">5 If you love the LED... Set it free!</a></h1>
+<p>TODO</p>
+<p>Default JTAG port is...</p>
+<ul>
+<li>TDO: GPIO 11</li>
+<li>TMS: GPIO 12 (not remapped)</li>
+<li>TCK: GPIO 14</li>
+<li>TDI: GPIO 17</li>
+</ul>
+<p>But 3 of above pins are connected to LED...</p>
+<ul>
+<li>Blue: GPIO 11</li>
+<li>Green: GPIO 14</li>
+<li>Red: GPIO 17</li>
+</ul>
+<p>So we need to remap the above 3 LED pins to PWM (to control the LED)...</p>
+<ul>
+<li>PWM Ch 1 (Blue): GPIO 11</li>
+<li>PWM Ch 4 (Green): GPIO 14</li>
+<li>PWM Ch 2 (Red): GPIO 17</li>
+</ul>
+<p>Then remap the pins below to JTAG...</p>
+<ul>
+<li>TDI: GPIO 1</li>
+<li>TCK: GPIO 2</li>
+<li>TDO: GPIO 3</li>
+</ul>
+<p>Also set the GPIO control bits...</p>
+<ul>
+<li>Pull Down Control: 0</li>
+<li>Pull Up Control: 0</li>
+<li>Driving Control: 0</li>
+<li>SMT Control: 1</li>
+<li>Input Enable: 1</li>
+</ul>
+<h1 id="how-to-remap-the-jtag-port" class="section-header"><a href="#how-to-remap-the-jtag-port">6 How to remap the JTAG port</a></h1>
+<p>TODO</p>
+<p>Firmware code for remapping the JTAG port and setting the GPIO Control...</p>
+<p>https://github.com/lupyuen/bl_iot_sdk/releases/tag/v0.0.4</p>
+<p>This release of the helloworld app remaps the JTAG Port to alternative GPIO Pins. (Because the original pins are connected to the onboard LED) See...</p>
+<p>https://lupyuen.github.io/articles/pinecone</p>
+<p>https://github.com/lupyuen/bl_iot_sdk/blob/jtag/customer_app/sdk_app_helloworld/sdk_app_helloworld/main.c#L83-L241</p>
+<p>Works OK on Windows according to the instructions here</p>
+<p>JTAG vs PWM</p>
+<p>Options
+Switch GPIO
+Keep GPIO
+Need led vs no led
+If need led, how to reboot
+Maybe bootloader</p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">7 What's Next</a></h1>
+<p>TODO</p>
+<p>Embedded Rust</p>
+<p><a href="https://lupyuen.github.io">Check out my articles</a></p>
+<p><a href="https://lupyuen.github.io/rss.xml">RSS Feed</a></p>
+<p><a href="https://github.com/sponsors/lupyuen">Sponsor me a coffee</a></p>
+<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
+<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/openocd.md"><code>github.com/lupyuen/lupyuen.github.io/src/pinecone.md</code></a></p>
+
+    
+</body>
+</html>
