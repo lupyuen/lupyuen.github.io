@@ -51,7 +51,9 @@ TODO
 SWD is only for Arm microcontrollers
 
 Pins
+
 Similar to SPI
+
 Must GND
 
 # Connect JTAG Debugger to PineCone
@@ -60,11 +62,11 @@ TODO
 
 Download the build from GitHub Actions
 
-TDO: GPIO 11 (Blue)
-TMS: GPIO 12 (Yellow)
-TCK: GPIO 14 (Green)
-TDI: GPIO 17 (Black)
-GND
+-   TDO: GPIO 11 (Blue)
+-   TMS: GPIO 12 (Yellow)
+-   TCK: GPIO 14 (Green)
+-   TDI: GPIO 17 (Red)
+-   GND: GND (Black)
 
 Based on Sipeed Rust guide
 
@@ -78,8 +80,11 @@ https://mcuoneclipse.com/2019/10/20/jtag-debugging-the-esp32-with-ft2232-and-ope
 TODO
 
 Ftdi id
+
 Ftdi interface
+
 Cpu id
+
 Speed
 
 # If you love the LED... Set it free!
@@ -89,7 +94,7 @@ TODO
 Default JTAG port is...
 
 -   TDO: GPIO 11
--   TMS: GPIO 12 (not remapped)
+-   TMS: GPIO 12 (not remapped) (Yellow)
 -   TCK: GPIO 14
 -   TDI: GPIO 17
 
@@ -107,17 +112,28 @@ So we need to remap the above 3 LED pins to PWM (to control the LED)...
 
 Then remap the pins below to JTAG...
 
--   TDI: GPIO 1
--   TCK: GPIO 2
--   TDO: GPIO 3
+-   TDI: GPIO 1 (Red)
+-   TCK: GPIO 2 (Green)
+-   TDO: GPIO 3 (Blue)
 
-Also set the GPIO control bits...
+And connect...
+
+-   TMS: GPIO 12 (not remapped) (Yellow)
+-   GND: GND (Black)
+
+Also set the GPIO control bits for the remapped pins...
 
 -   Pull Down Control: 0
 -   Pull Up Control: 0
 -   Driving Control: 0
 -   SMT Control: 1
 -   Input Enable: 1
+
+![PineCone Connection to JTAG Debugger](https://lupyuen.github.io/images/pinecone-headers2.jpg)
+
+The LED lights up in bright white to signify that the JTAG Port has been remapped.
+
+GND must be connected.
 
 # How to remap the JTAG port
 
@@ -137,12 +153,21 @@ Works OK on Windows according to the instructions here
 
 JTAG vs PWM
 
-Options
-Switch GPIO
-Keep GPIO
-Need led vs no led
-If need led, how to reboot
-Maybe bootloader
+# How shall we fix the JTAG Port?
+
+TODO
+
+Options...
+
+1.  Redesign PineCone and switch LED to other GPIO Pins (preferred)
+
+1.  Keep LED on the current GPIO Pins
+
+    Do we need to use LED and JTAG Debugging at the same time?
+
+    -   No: Just remap the LED pins
+
+    -   Yes: Need to remap LED and JTAG pins. Causes problems when PineCone reboots during flashing/debugging: The remap will be forgotten. Maybe remap the LED and JTAG pins in the PineCone Bootloader.
 
 # What's Next
 
