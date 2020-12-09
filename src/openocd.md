@@ -124,7 +124,7 @@ The instructions here will work with [Sipeed JTAG Debugger](https://www.seeedstu
 
 Now we connect the JTAG Debugger to PineCone...
 
-1.  Connect our JTAG Debugger to the PineCone Pins...
+1.  Connect our JTAG Debugger to the PineCone Pins
 
     | JTAG Debugger | PineCone Pin | Wire Colour |
     |:---:|:---|:---|
