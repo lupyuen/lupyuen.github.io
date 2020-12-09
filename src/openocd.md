@@ -66,7 +66,7 @@ JTAG uses these pins...
 
 (If you stare at it... Yep JTAG looks like SPI!)
 
-We'll connect the JTAG Port on PineCone to our computer with a JTAG Debugger, like the [Sipeed JTAG Debugger](https://tang.sipeed.com/en/hardware-overview/rv-debugger/?utm_source=platformio&utm_medium=docs) shown above.
+We'll connect the JTAG Port on PineCone to our computer with a JTAG Debugger, like the [Sipeed JTAG Debugger](https://www.seeedstudio.com/Sipeed-USB-JTAG-TTL-RISC-V-Debugger-p-2910.html) shown above.
 
 _Why are the JTAG Pins named "Test"?_
 
