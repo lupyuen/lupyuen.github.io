@@ -92,9 +92,15 @@ _Default JTAG Port on PineCone_
 
 BL602 is an interesting microcontroller... Each pin may be remapped to various functions: GPIO, SPI, I2C, UART, PWM, ADC, SDIO, even JTAG!
 
-To find the default JTAG Pins, we need to refer to...
+To find the default JTAG Pins, we refer to...
+
 -   [BL602 Reference Manual](https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf)
+
+    Section 3.2.8, "GPIO Function" (Pages 27 to 40)
+
 -   [PineCone Schematics](https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf)
+
+    "Module Interface"
 
 (See the pic above)
 

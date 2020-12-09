@@ -133,10 +133,16 @@
 <p><em>Default JTAG Port on PineCone</em></p>
 <h1 id="wheres-the-jtag-port" class="section-header"><a href="#wheres-the-jtag-port">3 Where's the JTAG Port?</a></h1>
 <p>BL602 is an interesting microcontroller... Each pin may be remapped to various functions: GPIO, SPI, I2C, UART, PWM, ADC, SDIO, even JTAG!</p>
-<p>To find the default JTAG Pins, we need to refer to...</p>
+<p>To find the default JTAG Pins, we refer to...</p>
 <ul>
-<li><a href="https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf">BL602 Reference Manual</a></li>
-<li><a href="https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf">PineCone Schematics</a></li>
+<li>
+<p><a href="https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf">BL602 Reference Manual</a></p>
+<p>Section 3.2.8, &quot;GPIO Function&quot; (Pages 27 to 40)</p>
+</li>
+<li>
+<p><a href="https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf">PineCone Schematics</a></p>
+<p>&quot;Module Interface&quot;</p>
+</li>
 </ul>
 <p>(See the pic above)</p>
 <p>Based on the above docs, the JTAG Port is located at the following pins whenever we boot or reset PineCone...</p>
