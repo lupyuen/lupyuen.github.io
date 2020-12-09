@@ -46,7 +46,7 @@ There's a newer alternative to OpenOCD that's built with Rust: [probe.rs](https:
 
 It has beta support for JTAG. Hopefully we can use it with PineCone someday.
 
-But for today, we'll learn about using OpenOCD and JTAG with PineCone.
+But for today, we'll learn to use OpenOCD and JTAG with PineCone.
 
 ![Sipeed JTAG Debugger](https://lupyuen.github.io/images/pinecone-sipeed.jpg)
 
