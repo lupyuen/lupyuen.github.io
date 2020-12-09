@@ -146,7 +146,7 @@ Now we connect the JTAG Debugger to PineCone...
 
     -   [Install FT2232 Drivers on Linux, macOS and Windows](https://docs.platformio.org/en/latest/plus/debug-tools/sipeed-rv-debugger.html#drivers)
 
-    -   For Windows: Follow the steps above. Then use the Zdiag Tool to install the WinUSB Driver for BOTH `Dual RS232 (Interface 0)` and `Dual RS232 (Interface 1)`
+    -   For Windows: Follow the steps above. Then use the Zadig Tool to install the WinUSB Driver for BOTH `Dual RS232 (Interface 0)` and `Dual RS232 (Interface 1)`
 
 We're ready to download and run OpenOCD...
 
