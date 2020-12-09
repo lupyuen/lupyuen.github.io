@@ -112,19 +112,31 @@ Before connecting PineCone to our JTAG Debugger, we need to [solder the headers]
 
 ![Default JTAG Port connected to JTAG Debugger](https://lupyuen.github.io/images/pinecone-headers.jpg)
 
-_Default JTAG Port connected to JTAG Debugger. Jumper is set to H, for Bootloader Mode. LED is lit with multiple colours._
+_Default JTAG Port connected to JTAG Debugger. Jumper is set to H, for Bootloader Mode. LED is lit with multiple colours when JTAG is active._
 
 # Connect JTAG Debugger to PineCone
 
-TODO
+Now we connect the JTAG Debugger to PineCone. The instructions here will work with Sipeed JTAG Debugger and other JTAG Debuggers based on FTDI FT2232.
 
-| JTAG Pin | PineCone Pin | Wire Colour |
+[Make your own JTAG Debugger with FT2232](https://mcuoneclipse.com/2019/10/20/jtag-debugging-the-esp32-with-ft2232-and-openocd/)
+
+Connect the JTAG Debugger to the PineCone Pins...
+
+| JTAG Debugger | PineCone Pin | Wire Colour |
 |:---:|:---|:---|
 | __`TDO`__ | `IO 11` | Blue
 | __`TMS`__ | `IO 12` | Yellow
 | __`TCK`__ | `IO 14` | Green
 | __`TDI`__ | `IO 17` | Red
 | __`GND`__ | `GND`     | Black
+
+(See pic above)
+
+Follow the instructions below to install the Linux / macOS / Windows drivers for our JTAG Debugger...
+
+[Install FT2232 Drivers](https://docs.platformio.org/en/latest/plus/debug-tools/sipeed-rv-debugger.html#drivers)
+
+Using the Zadig Tool, install the WinUSB Driver for BOTH Dual RS232 (Interface 0) and Dual RS232 (Interface 1)
 
 Based on Sipeed Rust guide
 
@@ -139,11 +151,6 @@ Connect Sipeed JTAG Debugger to PineCone: TMS, TCK, TDI, TDO, GND
 
 Connect PineCone and Sipeed JTAG Debugger to our computer (Yes we need two USB ports)
 
-Install driver for Sipeed JTAG Debugger...
-
-https://docs.platformio.org/en/latest/plus/debug-tools/sipeed-rv-debugger.html#drivers
-
-Using the Zadig Tool, install the WinUSB Driver for BOTH Dual RS232 (Interface 0) and Dual RS232 (Interface 1)
 
 Download OpenOCD from...
 
