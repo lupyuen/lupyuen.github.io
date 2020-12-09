@@ -95,6 +95,10 @@ Should work with any FTDI F2232
 
 [Check out this helpful article on connecting OpenOCD to FT2232](https://mcuoneclipse.com/2019/10/20/jtag-debugging-the-esp32-with-ft2232-and-openocd/)
 
+![Sipeed JTAG Debugger is powered by FTDI FT2232D](https://lupyuen.github.io/images/pinecone-jtag-ftdi.jpg)
+
+_Sipeed JTAG Debugger is powered by FTDI FT2232D_
+
 # OpenOCD Script
 
 TODO
