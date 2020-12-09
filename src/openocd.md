@@ -50,19 +50,39 @@ But for today, we'll learn about using OpenOCD and JTAG with PineCone.
 
 ![Sipeed JTAG Debugger](https://lupyuen.github.io/images/pinecone-sipeed.jpg)
 
-_Sipeed JTAG Debugger_
+_Sipeed JTAG Debugger with the JTAG Pins: TMS, TCK, TDI, TDO, GND_
 
 # What is JTAG?
 
-TODO
+PineCone's __JTAG Port__ is a standard port for flashing and debugging firmware, available on most RISC-V microcontrollers (like SiFive FE310 and GigaDevice GD32 VF103).
 
-SWD is only for Arm microcontrollers
+JTAG uses these pins...
 
-Pins
+1.   __TMS (Test Mode Select)__: Select the JTAG operation to be executed
+1.   __TCK (Test Clock)__: Synchronise the serial input/output bits
+1.   __TDI (Test Data Input)__: Serial data input
+1.   __TDO (Test Data Output)__: Serial data output
+1.   __GND (Ground)__: Always connect the Ground Pin, or JTAG will get wonky
 
-Similar to SPI
+(If you stare at it... Yep JTAG looks like SPI!)
 
-Must GND
+We'll connect the JTAG Port on PineCone to our computer with a JTAG Debugger, like the [Sipeed JTAG Debugger](https://tang.sipeed.com/en/hardware-overview/rv-debugger/?utm_source=platformio&utm_medium=docs) shown above.
+
+_Why are the JTAG Pins named "Test"?_
+
+Because JTAG was originally created for testing Printed Circuit Boards. JTAG stands for Joint Test Action Group, the maintainers of the JTAG standard.
+
+[More about JTAG](https://www.allaboutcircuits.com/technical-articles/introduction-to-jtag-test-access-port-tap/)
+
+## JTAG vs SWD
+
+_Is SWD supported for flashing and debugging firmware on PineCone?_
+
+Sorry no. SWD is available only on Arm Microcontrollers. [(SWD was created by Arm)](https://medium.com/@ly.lee/openocd-on-raspberry-pi-better-with-swd-on-spi-7dea9caeb590?source=friends_link&sk=df399bfd913d3e262447d28aa5af6b63)
+
+SWD is derived from JTAG... It takes the 4 pins from JTAG and smashes them into 2 pins SWDCLK (Clock) and SWDIO (Birectional Data). [More details](https://en.wikipedia.org/wiki/JTAG#Similar_interface_standards)
+
+Let's go deep into the JTAG Port on PineCone...
 
 ![Default JTAG Port on PineCone](https://lupyuen.github.io/images/pinecone-jtag.png)
 
@@ -93,6 +113,8 @@ Based on Sipeed Rust guide
 Sipeed JTAG debugger
 Should work with any FTDI F2232
 
+[Schematics of Sipeed JTAG Debugger](https://tang.sipeed.com/en/hardware-overview/rv-debugger/?utm_source=platformio&utm_medium=docs)
+
 [Check out this helpful article on connecting OpenOCD to FT2232](https://mcuoneclipse.com/2019/10/20/jtag-debugging-the-esp32-with-ft2232-and-openocd/)
 
 ![Sipeed JTAG Debugger is powered by FTDI FT2232D](https://lupyuen.github.io/images/pinecone-jtag-ftdi.jpg)
@@ -110,6 +132,8 @@ Ftdi interface
 Cpu id
 
 Speed
+
+[Other folks in the PineCone Community are using OpenOCD too](https://twitter.com/gamelaster/status/1335997851151835140?s=09)
 
 ![PineCone LED uses GPIO 11, 14, 17](https://lupyuen.github.io/images/pinecone-led.png)
 
