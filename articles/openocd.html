@@ -151,7 +151,7 @@
 <p><img src="https://lupyuen.github.io/images/pinecone-headers.jpg" alt="Default JTAG Port connected to JTAG Debugger" /></p>
 <p><em>Default JTAG Port connected to JTAG Debugger. Jumper is set to H, for Bootloader Mode. LED is lit with multiple colours when JTAG is active.</em></p>
 <h1 id="connect-jtag-debugger-to-pinecone" class="section-header"><a href="#connect-jtag-debugger-to-pinecone">4 Connect JTAG Debugger to PineCone</a></h1>
-<p>Now we connect the JTAG Debugger to PineCone. The instructions here will work with <a href="https://www.seeedstudio.com/Sipeed-USB-JTAG-TTL-RISC-V-Debugger-p-2910.html">Sipeed JTAG Debugger</a> and other JTAG Debuggers based on FTDI FT2232.</p>
+<p>The instructions here will work with <a href="https://www.seeedstudio.com/Sipeed-USB-JTAG-TTL-RISC-V-Debugger-p-2910.html">Sipeed JTAG Debugger</a> and other JTAG Debuggers based on FTDI FT2232.</p>
 <ul>
 <li>
 <p><a href="https://mcuoneclipse.com/2019/10/20/jtag-debugging-the-esp32-with-ft2232-and-openocd/">Make your own JTAG Debugger with FT2232</a></p>
@@ -160,6 +160,9 @@
 <p><a href="https://tang.sipeed.com/en/hardware-overview/rv-debugger/?utm_source=platformio&amp;utm_medium=docs">Compare with Schematics of Sipeed JTAG Debugger</a></p>
 </li>
 </ul>
+<p>Now we connect the JTAG Debugger to PineCone...</p>
+<ol>
+<li>
 <p>Connect our JTAG Debugger to the PineCone Pins...</p>
 <table><thead><tr><th align="center">JTAG Debugger</th><th align="left">PineCone Pin</th><th align="left">Wire Colour</th></tr></thead><tbody>
 <tr><td align="center"><strong><code>TDO</code></strong></td><td align="left"><code>IO 11</code></td><td align="left">Blue</td></tr>
@@ -169,15 +172,26 @@
 <tr><td align="center"><strong><code>GND</code></strong></td><td align="left"><code>GND</code></td><td align="left">Black</td></tr>
 </tbody></table>
 <p>(See pic above)</p>
+</li>
+<li>
+<p>Connect the JTAG Debugger to our computer's USB Port</p>
+</li>
+<li>
+<p>Connect PineCone to our computer's USB Port</p>
+<p>(Yes we'll need two USB ports on our computer)</p>
+</li>
+<li>
 <p>Follow these instructions to install the FT2232 drivers for Linux, macOS and Windows...</p>
 <ul>
 <li>
-<p><a href="https://docs.platformio.org/en/latest/plus/debug-tools/sipeed-rv-debugger.html#drivers">Install FT2232 Drivers</a></p>
+<p><a href="https://docs.platformio.org/en/latest/plus/debug-tools/sipeed-rv-debugger.html#drivers">Install FT2232 Drivers on Linux, macOS and Windows</a></p>
 </li>
 <li>
 <p>For Windows: Follow the steps above. Then use the Zdiag Tool to install the WinUSB Driver for BOTH <code>Dual RS232 (Interface 0)</code> and <code>Dual RS232 (Interface 1)</code></p>
 </li>
 </ul>
+</li>
+</ol>
 <h1 id="download-and-run-openocd" class="section-header"><a href="#download-and-run-openocd">5 Download and run OpenOCD</a></h1>
 <p><a href="https://github.com/lupyuen/bl602-rust-guide/blob/main/README.md">Follow the instructions here</a></p>
 <p>Connect Sipeed JTAG Debugger to PineCone: TMS, TCK, TDI, TDO, GND</p>

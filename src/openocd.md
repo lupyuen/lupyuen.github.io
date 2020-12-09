@@ -116,29 +116,37 @@ _Default JTAG Port connected to JTAG Debugger. Jumper is set to H, for Bootloade
 
 # Connect JTAG Debugger to PineCone
 
-Now we connect the JTAG Debugger to PineCone. The instructions here will work with [Sipeed JTAG Debugger](https://www.seeedstudio.com/Sipeed-USB-JTAG-TTL-RISC-V-Debugger-p-2910.html) and other JTAG Debuggers based on FTDI FT2232.
+The instructions here will work with [Sipeed JTAG Debugger](https://www.seeedstudio.com/Sipeed-USB-JTAG-TTL-RISC-V-Debugger-p-2910.html) and other JTAG Debuggers based on FTDI FT2232.
 
 -   [Make your own JTAG Debugger with FT2232](https://mcuoneclipse.com/2019/10/20/jtag-debugging-the-esp32-with-ft2232-and-openocd/)
 
 -   [Compare with Schematics of Sipeed JTAG Debugger](https://tang.sipeed.com/en/hardware-overview/rv-debugger/?utm_source=platformio&utm_medium=docs)
 
-Connect our JTAG Debugger to the PineCone Pins...
+Now we connect the JTAG Debugger to PineCone...
 
-| JTAG Debugger | PineCone Pin | Wire Colour |
-|:---:|:---|:---|
-| __`TDO`__ | `IO 11` | Blue
-| __`TMS`__ | `IO 12` | Yellow
-| __`TCK`__ | `IO 14` | Green
-| __`TDI`__ | `IO 17` | Red
-| __`GND`__ | `GND`     | Black
+1.  Connect our JTAG Debugger to the PineCone Pins...
 
-(See pic above)
+    | JTAG Debugger | PineCone Pin | Wire Colour |
+    |:---:|:---|:---|
+    | __`TDO`__ | `IO 11` | Blue
+    | __`TMS`__ | `IO 12` | Yellow
+    | __`TCK`__ | `IO 14` | Green
+    | __`TDI`__ | `IO 17` | Red
+    | __`GND`__ | `GND`     | Black
 
-Follow these instructions to install the FT2232 drivers for Linux, macOS and Windows...
+    (See pic above)
 
--   [Install FT2232 Drivers](https://docs.platformio.org/en/latest/plus/debug-tools/sipeed-rv-debugger.html#drivers)
+1.  Connect the JTAG Debugger to our computer's USB Port
 
--   For Windows: Follow the steps above. Then use the Zdiag Tool to install the WinUSB Driver for BOTH `Dual RS232 (Interface 0)` and `Dual RS232 (Interface 1)`
+1.  Connect PineCone to our computer's USB Port
+
+    (Yes we'll need two USB ports on our computer)
+
+1.  Follow these instructions to install the FT2232 drivers for Linux, macOS and Windows...
+
+    -   [Install FT2232 Drivers on Linux, macOS and Windows](https://docs.platformio.org/en/latest/plus/debug-tools/sipeed-rv-debugger.html#drivers)
+
+    -   For Windows: Follow the steps above. Then use the Zdiag Tool to install the WinUSB Driver for BOTH `Dual RS232 (Interface 0)` and `Dual RS232 (Interface 1)`
 
 # Download and run OpenOCD
 
