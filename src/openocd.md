@@ -148,6 +148,12 @@ Now we connect the JTAG Debugger to PineCone...
 
     -   For Windows: Follow the steps above. Then use the Zdiag Tool to install the WinUSB Driver for BOTH `Dual RS232 (Interface 0)` and `Dual RS232 (Interface 1)`
 
+We're ready to download and run OpenOCD...
+
+![Sipeed JTAG Debugger is powered by FTDI FT2232D](https://lupyuen.github.io/images/pinecone-jtag-ftdi.jpg)
+
+_Sipeed JTAG Debugger is powered by FTDI FT2232D_
+
 # Download and run OpenOCD
 
 TODO
@@ -201,10 +207,6 @@ Info : Listening on port 6666 for tcl connections
 ```
 
 [Check out this helpful article on connecting OpenOCD to FT2232](https://mcuoneclipse.com/2019/10/20/jtag-debugging-the-esp32-with-ft2232-and-openocd/)
-
-![Sipeed JTAG Debugger is powered by FTDI FT2232D](https://lupyuen.github.io/images/pinecone-jtag-ftdi.jpg)
-
-_Sipeed JTAG Debugger is powered by FTDI FT2232D_
 
 # OpenOCD Script
 
