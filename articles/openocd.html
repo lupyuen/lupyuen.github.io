@@ -142,10 +142,32 @@
 </ul>
 <p>We need to <a href="https://lupyuen.github.io/images/pinecone-solder.jpg">solder the headers</a> to the PineCone board and expose the above JTAG Pins...</p>
 <p><img src="https://lupyuen.github.io/images/pinecone-headers.jpg" alt="Default JTAG Port connected to JTAG Debugger" /></p>
-<p><em>Default JTAG Port connected to JTAG Debugger. GND is missing, it must be connected or JTAG will get wonky. USB port should be connected too.</em></p>
+<p><em>Default JTAG Port connected to JTAG Debugger. Jumper is set to H, for Bootloader Mode. LED is lit with multiple colours.</em></p>
 <p>Based on Sipeed Rust guide</p>
 <p>Sipeed JTAG debugger
 Should work with any FTDI F2232</p>
+<p>We should see...</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="ident">xPack</span> <span class="ident">OpenOCD</span>, <span class="ident">x86_64</span> <span class="ident">Open</span> <span class="ident">On</span><span class="op">-</span><span class="ident">Chip</span> <span class="ident">Debugger</span> <span class="number">0.10</span>.<span class="number">0</span><span class="op">+</span><span class="ident">dev</span><span class="op">-</span><span class="number">00378</span><span class="op">-</span><span class="ident">ge5be992df</span> (<span class="number">2020</span><span class="op">-</span><span class="number">06</span><span class="op">-</span><span class="number">26</span><span class="op">-</span><span class="number">12</span>:<span class="number">31</span>)
+<span class="ident">Licensed</span> <span class="ident">under</span> <span class="ident">GNU</span> <span class="ident">GPL</span> <span class="ident">v2</span>
+<span class="ident">For</span> <span class="ident">bug</span> <span class="ident">reports</span>, <span class="ident">read</span>
+        <span class="ident">http</span>:<span class="comment">//openocd.org/doc/doxygen/bugs.html</span>
+<span class="ident">Ready</span> <span class="kw">for</span> <span class="ident">Remote</span> <span class="ident">Connections</span>
+<span class="ident">Info</span> : <span class="ident">clock</span> <span class="ident">speed</span> <span class="number">100</span> <span class="ident">kHz</span>
+<span class="ident">Info</span> : <span class="ident">JTAG</span> <span class="ident">tap</span>: <span class="ident">riscv</span>.<span class="ident">cpu</span> <span class="ident">tap</span><span class="op">/</span><span class="ident">device</span> <span class="ident">found</span>: <span class="number">0x20000c05</span> (<span class="ident">mfg</span>: <span class="number">0x602</span> (<span class="op">&lt;</span><span class="ident">unknown</span><span class="op">&gt;</span>), <span class="ident">part</span>: <span class="number">0x0000</span>, <span class="ident">ver</span>: <span class="number">0x2</span>)
+<span class="ident">Info</span> : <span class="ident">datacount</span><span class="op">=</span><span class="number">1</span> <span class="ident">progbufsize</span><span class="op">=</span><span class="number">2</span>
+<span class="ident">Info</span> : <span class="ident">Disabling</span> <span class="kw">abstract</span> <span class="ident">command</span> <span class="ident">reads</span> <span class="ident">from</span> <span class="ident">CSRs</span>.
+<span class="ident">Info</span> : <span class="ident">Examined</span> <span class="ident">RISC</span><span class="op">-</span><span class="ident">V</span> <span class="ident">core</span>; <span class="ident">found</span> <span class="number">1</span> <span class="ident">harts</span>
+<span class="ident">Info</span> :  <span class="ident">hart</span> <span class="number">0</span>: <span class="ident">XLEN</span><span class="op">=</span><span class="number">32</span>, <span class="ident">misa</span><span class="op">=</span><span class="number">0x40801125</span>
+<span class="ident">Info</span> : <span class="ident">starting</span> <span class="ident">gdb</span> <span class="ident">server</span> <span class="kw">for</span> <span class="ident">riscv</span>.<span class="ident">cpu</span>.<span class="number">0</span> <span class="ident">on</span> <span class="number">3333</span>
+<span class="ident">Info</span> : <span class="ident">Listening</span> <span class="ident">on</span> <span class="ident">port</span> <span class="number">3333</span> <span class="kw">for</span> <span class="ident">gdb</span> <span class="ident">connections</span>
+<span class="ident">Info</span> : <span class="ident">JTAG</span> <span class="ident">tap</span>: <span class="ident">riscv</span>.<span class="ident">cpu</span> <span class="ident">tap</span><span class="op">/</span><span class="ident">device</span> <span class="ident">found</span>: <span class="number">0x20000c05</span> (<span class="ident">mfg</span>: <span class="number">0x602</span> (<span class="op">&lt;</span><span class="ident">unknown</span><span class="op">&gt;</span>), <span class="ident">part</span>: <span class="number">0x0000</span>, <span class="ident">ver</span>: <span class="number">0x2</span>)
+<span class="ident">reset</span><span class="op">-</span><span class="ident">assert</span><span class="op">-</span><span class="ident">pre</span>
+<span class="ident">reset</span><span class="op">-</span><span class="ident">deassert</span><span class="op">-</span><span class="ident">post</span>
+<span class="ident">Info</span> : <span class="ident">Disabling</span> <span class="kw">abstract</span> <span class="ident">command</span> <span class="ident">writes</span> <span class="ident">to</span> <span class="ident">CSRs</span>.
+<span class="ident">reset</span><span class="op">-</span><span class="ident">init</span>
+<span class="ident">Info</span> : <span class="ident">Listening</span> <span class="ident">on</span> <span class="ident">port</span> <span class="number">6666</span> <span class="kw">for</span> <span class="ident">tcl</span> <span class="ident">connections</span></pre></div>
 <p><a href="https://tang.sipeed.com/en/hardware-overview/rv-debugger/?utm_source=platformio&amp;utm_medium=docs">Schematics of Sipeed JTAG Debugger</a></p>
 <p><a href="https://mcuoneclipse.com/2019/10/20/jtag-debugging-the-esp32-with-ft2232-and-openocd/">Check out this helpful article on connecting OpenOCD to FT2232</a></p>
 <p><img src="https://lupyuen.github.io/images/pinecone-jtag-ftdi.jpg" alt="Sipeed JTAG Debugger is powered by FTDI FT2232D" /></p>
@@ -203,6 +225,7 @@ Should work with any FTDI F2232</p>
 <p><img src="https://lupyuen.github.io/images/pinecone-headers2.jpg" alt="Remapped PineCone Connection to JTAG Debugger" /></p>
 <p><em>Remapped JTAG Port connected to JTAG Debugger</em></p>
 <p>The LED lights up in bright white to signify that the JTAG Port has been remapped.</p>
+<p>Jumper is set to L, for Normal Mode.</p>
 <p>GND must be connected or JTAG will get wonky.</p>
 <h1 id="how-to-remap-the-jtag-port" class="section-header"><a href="#how-to-remap-the-jtag-port">6 How to remap the JTAG port</a></h1>
 <p>TODO</p>

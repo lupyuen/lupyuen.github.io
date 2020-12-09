@@ -106,12 +106,36 @@ We need to [solder the headers](https://lupyuen.github.io/images/pinecone-solder
 
 ![Default JTAG Port connected to JTAG Debugger](https://lupyuen.github.io/images/pinecone-headers.jpg)
 
-_Default JTAG Port connected to JTAG Debugger. GND is missing, it must be connected or JTAG will get wonky. USB port should be connected too._
+_Default JTAG Port connected to JTAG Debugger. Jumper is set to H, for Bootloader Mode. LED is lit with multiple colours._
 
 Based on Sipeed Rust guide
 
 Sipeed JTAG debugger
 Should work with any FTDI F2232
+
+We should see...
+
+```
+xPack OpenOCD, x86_64 Open On-Chip Debugger 0.10.0+dev-00378-ge5be992df (2020-06-26-12:31)
+Licensed under GNU GPL v2
+For bug reports, read
+        http://openocd.org/doc/doxygen/bugs.html
+Ready for Remote Connections
+Info : clock speed 100 kHz
+Info : JTAG tap: riscv.cpu tap/device found: 0x20000c05 (mfg: 0x602 (<unknown>), part: 0x0000, ver: 0x2)
+Info : datacount=1 progbufsize=2
+Info : Disabling abstract command reads from CSRs.
+Info : Examined RISC-V core; found 1 harts
+Info :  hart 0: XLEN=32, misa=0x40801125
+Info : starting gdb server for riscv.cpu.0 on 3333
+Info : Listening on port 3333 for gdb connections
+Info : JTAG tap: riscv.cpu tap/device found: 0x20000c05 (mfg: 0x602 (<unknown>), part: 0x0000, ver: 0x2)
+reset-assert-pre
+reset-deassert-post
+Info : Disabling abstract command writes to CSRs.
+reset-init
+Info : Listening on port 6666 for tcl connections
+```
 
 [Schematics of Sipeed JTAG Debugger](https://tang.sipeed.com/en/hardware-overview/rv-debugger/?utm_source=platformio&utm_medium=docs)
 
@@ -188,6 +212,8 @@ Also set the GPIO control bits for the remapped pins...
 _Remapped JTAG Port connected to JTAG Debugger_
 
 The LED lights up in bright white to signify that the JTAG Port has been remapped.
+
+Jumper is set to L, for Normal Mode.
 
 GND must be connected or JTAG will get wonky.
 
