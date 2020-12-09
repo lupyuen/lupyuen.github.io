@@ -149,26 +149,39 @@
 </tbody></table>
 <p>Before connecting PineCone to our JTAG Debugger, we need to <a href="https://lupyuen.github.io/images/pinecone-solder.jpg">solder the headers</a> to the PineCone board and expose the above JTAG Pins.</p>
 <p><img src="https://lupyuen.github.io/images/pinecone-headers.jpg" alt="Default JTAG Port connected to JTAG Debugger" /></p>
-<p><em>Default JTAG Port connected to JTAG Debugger. Jumper is set to H, for Bootloader Mode. LED is lit with multiple colours.</em></p>
+<p><em>Default JTAG Port connected to JTAG Debugger. Jumper is set to H, for Bootloader Mode. LED is lit with multiple colours when JTAG is active.</em></p>
 <h1 id="connect-jtag-debugger-to-pinecone" class="section-header"><a href="#connect-jtag-debugger-to-pinecone">4 Connect JTAG Debugger to PineCone</a></h1>
-<p>TODO</p>
-<table><thead><tr><th align="center">JTAG Pin</th><th align="left">PineCone Pin</th><th align="left">Wire Colour</th></tr></thead><tbody>
+<p>Now we connect the JTAG Debugger to PineCone. The instructions here will work with <a href="https://www.seeedstudio.com/Sipeed-USB-JTAG-TTL-RISC-V-Debugger-p-2910.html">Sipeed JTAG Debugger</a> and other JTAG Debuggers based on FTDI FT2232.</p>
+<ul>
+<li>
+<p><a href="https://mcuoneclipse.com/2019/10/20/jtag-debugging-the-esp32-with-ft2232-and-openocd/">Make your own JTAG Debugger with FT2232</a></p>
+</li>
+<li>
+<p><a href="https://tang.sipeed.com/en/hardware-overview/rv-debugger/?utm_source=platformio&amp;utm_medium=docs">Compare with Schematics of Sipeed JTAG Debugger</a></p>
+</li>
+</ul>
+<p>Connect our JTAG Debugger to the PineCone Pins...</p>
+<table><thead><tr><th align="center">JTAG Debugger</th><th align="left">PineCone Pin</th><th align="left">Wire Colour</th></tr></thead><tbody>
 <tr><td align="center"><strong><code>TDO</code></strong></td><td align="left"><code>IO 11</code></td><td align="left">Blue</td></tr>
 <tr><td align="center"><strong><code>TMS</code></strong></td><td align="left"><code>IO 12</code></td><td align="left">Yellow</td></tr>
 <tr><td align="center"><strong><code>TCK</code></strong></td><td align="left"><code>IO 14</code></td><td align="left">Green</td></tr>
 <tr><td align="center"><strong><code>TDI</code></strong></td><td align="left"><code>IO 17</code></td><td align="left">Red</td></tr>
 <tr><td align="center"><strong><code>GND</code></strong></td><td align="left"><code>GND</code></td><td align="left">Black</td></tr>
 </tbody></table>
-<p>Based on Sipeed Rust guide</p>
-<p>Sipeed JTAG debugger
-Should work with any FTDI F2232</p>
+<p>(See pic above)</p>
+<p>Follow these instructions to install the FT2232 drivers for Linux, macOS and Windows...</p>
+<ul>
+<li>
+<p><a href="https://docs.platformio.org/en/latest/plus/debug-tools/sipeed-rv-debugger.html#drivers">Install FT2232 Drivers</a></p>
+</li>
+<li>
+<p>For Windows: Follow the steps above. Then use the Zdiag Tool to install the WinUSB Driver for BOTH <code>Dual RS232 (Interface 0)</code> and <code>Dual RS232 (Interface 1)</code></p>
+</li>
+</ul>
 <h1 id="download-and-run-openocd" class="section-header"><a href="#download-and-run-openocd">5 Download and run OpenOCD</a></h1>
 <p><a href="https://github.com/lupyuen/bl602-rust-guide/blob/main/README.md">Follow the instructions here</a></p>
 <p>Connect Sipeed JTAG Debugger to PineCone: TMS, TCK, TDI, TDO, GND</p>
 <p>Connect PineCone and Sipeed JTAG Debugger to our computer (Yes we need two USB ports)</p>
-<p>Install driver for Sipeed JTAG Debugger...</p>
-<p>https://docs.platformio.org/en/latest/plus/debug-tools/sipeed-rv-debugger.html#drivers</p>
-<p>Using the Zadig Tool, install the WinUSB Driver for BOTH Dual RS232 (Interface 0) and Dual RS232 (Interface 1)</p>
 <p>Download OpenOCD from...</p>
 <p>https://github.com/xpack-dev-tools/openocd-xpack/releases/download/v0.10.0-15/xpack-openocd-0.10.0-15-win32-x64.zip</p>
 <p>Run OpenOCD...</p>
@@ -202,12 +215,12 @@ xpack-openocd-0.10.0-15\bin\openocd.exe
 <span class="ident">Info</span> : <span class="ident">Disabling</span> <span class="kw">abstract</span> <span class="ident">command</span> <span class="ident">writes</span> <span class="ident">to</span> <span class="ident">CSRs</span>.
 <span class="ident">reset</span><span class="op">-</span><span class="ident">init</span>
 <span class="ident">Info</span> : <span class="ident">Listening</span> <span class="ident">on</span> <span class="ident">port</span> <span class="number">6666</span> <span class="kw">for</span> <span class="ident">tcl</span> <span class="ident">connections</span></pre></div>
-<p><a href="https://tang.sipeed.com/en/hardware-overview/rv-debugger/?utm_source=platformio&amp;utm_medium=docs">Schematics of Sipeed JTAG Debugger</a></p>
 <p><a href="https://mcuoneclipse.com/2019/10/20/jtag-debugging-the-esp32-with-ft2232-and-openocd/">Check out this helpful article on connecting OpenOCD to FT2232</a></p>
 <p><img src="https://lupyuen.github.io/images/pinecone-jtag-ftdi.jpg" alt="Sipeed JTAG Debugger is powered by FTDI FT2232D" /></p>
 <p><em>Sipeed JTAG Debugger is powered by FTDI FT2232D</em></p>
 <h1 id="openocd-script" class="section-header"><a href="#openocd-script">6 OpenOCD Script</a></h1>
 <p>TODO</p>
+<p>Based on Sipeed BL602 Community's Rust guide</p>
 <p>Ftdi id</p>
 <p>Ftdi interface</p>
 <p>Cpu id</p>
@@ -217,6 +230,7 @@ xpack-openocd-0.10.0-15\bin\openocd.exe
 <p><em>PineCone LED uses GPIO 11, 14, 17</em></p>
 <h1 id="if-you-love-the-led-set-it-free" class="section-header"><a href="#if-you-love-the-led-set-it-free">7 If you love the LED... Set it free!</a></h1>
 <p>TODO</p>
+<p><em>Why did the PineCone LED light up in colour when the JTAG Port was active?</em></p>
 <p><a href="https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf">See the PineCone Schematics</a></p>
 <p>Default JTAG port is...</p>
 <ul>
@@ -231,7 +245,7 @@ xpack-openocd-0.10.0-15\bin\openocd.exe
 <li>Green: GPIO 14</li>
 <li>Red: GPIO 17</li>
 </ul>
-<p>So we need to remap the above 3 LED pins to PWM (to control the LED)...</p>
+<p>To free the LED from the JTAG Port, we need to remap the above 3 LED pins to PWM (to control the LED)...</p>
 <ul>
 <li>PWM Ch 1 (Blue): GPIO 11</li>
 <li>PWM Ch 4 (Green): GPIO 14</li>

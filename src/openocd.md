@@ -116,11 +116,13 @@ _Default JTAG Port connected to JTAG Debugger. Jumper is set to H, for Bootloade
 
 # Connect JTAG Debugger to PineCone
 
-Now we connect the JTAG Debugger to PineCone. The instructions here will work with Sipeed JTAG Debugger and other JTAG Debuggers based on FTDI FT2232.
+Now we connect the JTAG Debugger to PineCone. The instructions here will work with [Sipeed JTAG Debugger](https://www.seeedstudio.com/Sipeed-USB-JTAG-TTL-RISC-V-Debugger-p-2910.html) and other JTAG Debuggers based on FTDI FT2232.
 
-[Make your own JTAG Debugger with FT2232](https://mcuoneclipse.com/2019/10/20/jtag-debugging-the-esp32-with-ft2232-and-openocd/)
+-   [Make your own JTAG Debugger with FT2232](https://mcuoneclipse.com/2019/10/20/jtag-debugging-the-esp32-with-ft2232-and-openocd/)
 
-Connect the JTAG Debugger to the PineCone Pins...
+-   [Compare with Schematics of Sipeed JTAG Debugger](https://tang.sipeed.com/en/hardware-overview/rv-debugger/?utm_source=platformio&utm_medium=docs)
+
+Connect our JTAG Debugger to the PineCone Pins...
 
 | JTAG Debugger | PineCone Pin | Wire Colour |
 |:---:|:---|:---|
@@ -132,16 +134,11 @@ Connect the JTAG Debugger to the PineCone Pins...
 
 (See pic above)
 
-Follow the instructions below to install the Linux / macOS / Windows drivers for our JTAG Debugger...
+Follow these instructions to install the FT2232 drivers for Linux, macOS and Windows...
 
-[Install FT2232 Drivers](https://docs.platformio.org/en/latest/plus/debug-tools/sipeed-rv-debugger.html#drivers)
+-   [Install FT2232 Drivers](https://docs.platformio.org/en/latest/plus/debug-tools/sipeed-rv-debugger.html#drivers)
 
-Using the Zadig Tool, install the WinUSB Driver for BOTH Dual RS232 (Interface 0) and Dual RS232 (Interface 1)
-
-Based on Sipeed Rust guide
-
-Sipeed JTAG debugger
-Should work with any FTDI F2232
+-   For Windows: Follow the steps above. Then use the Zdiag Tool to install the WinUSB Driver for BOTH `Dual RS232 (Interface 0)` and `Dual RS232 (Interface 1)`
 
 # Download and run OpenOCD
 
@@ -192,8 +189,6 @@ reset-init
 Info : Listening on port 6666 for tcl connections
 ```
 
-[Schematics of Sipeed JTAG Debugger](https://tang.sipeed.com/en/hardware-overview/rv-debugger/?utm_source=platformio&utm_medium=docs)
-
 [Check out this helpful article on connecting OpenOCD to FT2232](https://mcuoneclipse.com/2019/10/20/jtag-debugging-the-esp32-with-ft2232-and-openocd/)
 
 ![Sipeed JTAG Debugger is powered by FTDI FT2232D](https://lupyuen.github.io/images/pinecone-jtag-ftdi.jpg)
@@ -203,6 +198,8 @@ _Sipeed JTAG Debugger is powered by FTDI FT2232D_
 # OpenOCD Script
 
 TODO
+
+Based on Sipeed BL602 Community's Rust guide
 
 Ftdi id
 
@@ -222,6 +219,8 @@ _PineCone LED uses GPIO 11, 14, 17_
 
 TODO
 
+_Why did the PineCone LED light up in colour when the JTAG Port was active?_
+
 [See the PineCone Schematics](https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf)
 
 Default JTAG port is...
@@ -237,7 +236,7 @@ But 3 of above pins are connected to LED...
 -   Green: GPIO 14
 -   Red: GPIO 17
 
-So we need to remap the above 3 LED pins to PWM (to control the LED)...
+To free the LED from the JTAG Port, we need to remap the above 3 LED pins to PWM (to control the LED)...
 
 -   PWM Ch 1 (Blue): GPIO 11
 -   PWM Ch 4 (Green): GPIO 14
