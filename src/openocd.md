@@ -162,7 +162,9 @@ _Sipeed JTAG Debugger is powered by FTDI FT2232D_
 
 # Download and run OpenOCD
 
-TODO
+Here are the steps to download and run OpenOCD with PineCone on Linux, macOS and Windows...
+
+## Download OpenOCD
 
 Download OpenOCD from the [xPack OpenOCD site](https://github.com/xpack-dev-tools/openocd-xpack/releases/tag/v0.10.0-15/)... (Other variants of OpenOCD may not work with PineCone)
 
@@ -170,25 +172,48 @@ Download OpenOCD from the [xPack OpenOCD site](https://github.com/xpack-dev-tool
 
 -   [xPack OpenOCD for Linux Arm64](https://github.com/xpack-dev-tools/openocd-xpack/releases/download/v0.10.0-15/xpack-openocd-0.10.0-15-linux-arm64.tar.gz)
 
--   [xPack OpenOCD for macOS](https://github.com/xpack-dev-tools/openocd-xpack/releases/download/v0.10.0-15/xpack-openocd-0.10.0-15-darwin-x64.tar.gz)
+-   [xPack OpenOCD for macOS x64](https://github.com/xpack-dev-tools/openocd-xpack/releases/download/v0.10.0-15/xpack-openocd-0.10.0-15-darwin-x64.tar.gz)
 
--   [xPack OpenOCD for Windows](https://github.com/xpack-dev-tools/openocd-xpack/releases/download/v0.10.0-15/xpack-openocd-0.10.0-15-win32-x64.zip)
+-   [xPack OpenOCD for Windows x64](https://github.com/xpack-dev-tools/openocd-xpack/releases/download/v0.10.0-15/xpack-openocd-0.10.0-15-win32-x64.zip)
 
-Unzip xPack OpenOCD to ???
+Extract the downloaded file. On Windows: [Use 7-Zip](https://www.7-zip.org/)
 
-Run OpenOCD...
+## Download OpenOCD Script
 
-```cmd
-git clone --recursive https://github.com/sipeed/bl602-pac
-git clone --recursive https://github.com/sipeed/bl602-hal
-git clone --recursive https://github.com/lupyuen/bl602-rust-guide
-cd bl602-rust-guide
-# TODO: Check openocd.cfg, verify that the FTDI channel is 0: "ftdi_channel 0"
-# TODO: Unzip OpenOCD into bl602-rust-guide\xpack-openocd-0.10.0-15
-xpack-openocd-0.10.0-15\bin\openocd.exe
+Open a command prompt and enter...
+
+```bash
+git clone --recursive https://github.com/lupyuen/pinecone-rust
 ```
 
-We should see...
+If we will be coding Rust Firmware for PineCone, enter these commands too...
+
+```bash
+git clone --recursive https://github.com/sipeed/bl602-pac
+git clone --recursive https://github.com/sipeed/bl602-hal
+```
+
+## Run OpenOCD
+
+At the command prompt, enter...
+
+```bash
+cd pinecone-rust
+OPENOCD_DIRECTORY/bin/openocd
+```
+
+For Windows: Enter...
+
+```cmd
+cd pinecone-rust
+OPENOCD_DIRECTORY\bin\openocd
+```
+
+Change `OPENOCD_DIRECTORY` to the directory that contains the extracted xPack OpenOCD files.
+
+## OpenOCD Output
+
+We should see this output in OpenOCD...
 
 ```
 xPack OpenOCD, x86_64 Open On-Chip Debugger 0.10.0+dev-00378-ge5be992df (2020-06-26-12:31)
@@ -198,12 +223,26 @@ For bug reports, read
 Ready for Remote Connections
 Info : clock speed 100 kHz
 Info : JTAG tap: riscv.cpu tap/device found: 0x20000c05 (mfg: 0x602 (<unknown>), part: 0x0000, ver: 0x2)
+```
+
+Notice the mysterious number `0x20000c05`?
+
+This is very important... `0x20000c05` is the number that identifies the BL602 Microcontroller. It shows that our JTAG connection is OK.
+
+If we see any number other than `0x20000c05`, it probably means that our JTAG connection is loose. Or that we have connected our JTAG Debugger to the incorrect PineCone Pins.
+
+```
 Info : datacount=1 progbufsize=2
 Info : Disabling abstract command reads from CSRs.
 Info : Examined RISC-V core; found 1 harts
 Info :  hart 0: XLEN=32, misa=0x40801125
 Info : starting gdb server for riscv.cpu.0 on 3333
 Info : Listening on port 3333 for gdb connections
+```
+
+Then we see some info about PineCone's BL602 Microcontroller. And we see that OpenOCD is ready to accept debugging commands from GDB.
+
+```
 Info : JTAG tap: riscv.cpu tap/device found: 0x20000c05 (mfg: 0x602 (<unknown>), part: 0x0000, ver: 0x2)
 reset-assert-pre
 reset-deassert-post
@@ -212,17 +251,51 @@ reset-init
 Info : Listening on port 6666 for tcl connections
 ```
 
-[Check out this helpful article on connecting OpenOCD to FT2232](https://mcuoneclipse.com/2019/10/20/jtag-debugging-the-esp32-with-ft2232-and-openocd/)
+Finally OpenOCD restarts the JTAG connection. And it listens for OpenOCD (TCL) commands.
+
+If we see `0x20000c05` and the messages above... Congratulations OpenOCD is now connected to PineCone's JTAG Port!
+
+OpenOCD is all ready to flash and debug PineCone firmware. (Which we'll cover in the next article)
+
+To stop OpenOCD and disconnect from PineCone, press `Ctrl-C`.
+
+## Troubleshoot OpenOCD
+
+If we see...
+
+```
+Error: unable to open ftdi device with vid 0403, pid 6010, description '*', serial '*' at bus location '*'
+```
+
+It means that OpenOCD couldn't detect the JTAG Debugger. Check that the FT2232 drivers are installed correctly.
+
+If we see...
+
+```
+Error: failed read at 0x11, status=1
+Error: Hart 0 is unavailable.
+Error: Hart 0 doesn't exist.
+Info : Hart 0 unexpectedly reset!
+Error: failed read at 0x11, status=1
+```
+
+Check that the `GND` Pin is connected from the JTAG Debugger to PineCone.
+
+[More tips on connecting OpenOCD to FT2232](https://mcuoneclipse.com/2019/10/20/jtag-debugging-the-esp32-with-ft2232-and-openocd/)
 
 # OpenOCD Script
 
 TODO
 
-Based on Sipeed BL602 Community's Rust guide
-
-Ftdi id
+Based on [Sipeed BL602 Community's Rust guide](https://github.com/sipeed/bl602-rust-guide)
 
 Ftdi interface
+
+For Sipeed JTAG Debugger, FTDI channel must be 0 in openocd.cfg...
+
+```
+ftdi_channel 0
+```
 
 Cpu id
 
