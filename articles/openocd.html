@@ -65,10 +65,12 @@
 
     <h1 class="title">Connect PineCone BL602 to OpenOCD</h1>
     <nav id="TOC"><ul>
-<li><a href="#what-is-openocd">1 What is OpenOCD?</a><ul></ul></li>
+<li><a href="#what-is-openocd">1 What is OpenOCD?</a><ul>
+<li><a href="#openocd-vs-uart-flashing">1.1 OpenOCD vs UART Flashing</a><ul></ul></li>
+<li><a href="#openocd-alternatives">1.2 OpenOCD Alternatives</a><ul></ul></li></ul></li>
 <li><a href="#what-is-jtag">2 What is JTAG?</a><ul></ul></li>
 <li><a href="#connect-jtag-debugger-to-pinecone">3 Connect JTAG Debugger to PineCone</a><ul></ul></li>
-<li><a href="#openocd-script">4 OpenOCD script</a><ul></ul></li>
+<li><a href="#openocd-script">4 OpenOCD Script</a><ul></ul></li>
 <li><a href="#if-you-love-the-led-set-it-free">5 If you love the LED... Set it free!</a><ul></ul></li>
 <li><a href="#how-to-remap-the-jtag-port">6 How to remap the JTAG port</a><ul></ul></li>
 <li><a href="#how-shall-we-fix-the-jtag-port">7 How shall we fix the JTAG Port?</a><ul></ul></li>
@@ -91,24 +93,31 @@
 <p>PineCone exposes a <strong>JTAG Port</strong> that works with OpenOCD for flashing and debugging firmware. </p>
 <p>This is similar to the SWD Port that's found in PineTime, STM32 Blue Pill and other Arm microcontrollers.</p>
 <p>We'll learn about JTAG in the next section.</p>
+<h2 id="openocd-vs-uart-flashing" class="section-header"><a href="#openocd-vs-uart-flashing">1.1 OpenOCD vs UART Flashing</a></h2>
 <p><em>Doesn't PineCone support UART flashing? Why use OpenOCD and JTAG?</em></p>
 <p>Yes we may flash our firmware to PineCone via a Serial USB connection to PineCone's UART Port. <a href="https://lupyuen.github.io/articles/pinecone">More about this</a></p>
 <p>However it uses a flashing protocol that's designed specifically for BL602 devices. The flashing protocol is not supported by popular tools like VSCode.</p>
 <p>BL602 doesn't support debugging over UART. For serious firmware coding on BL602, OpenOCD is the best option.</p>
 <p>(I have a hunch that flashing firmware over UART will be faster than JTAG... We'll find out soon)</p>
+<h2 id="openocd-alternatives" class="section-header"><a href="#openocd-alternatives">1.2 OpenOCD Alternatives</a></h2>
 <p><em>OpenOCD has been around for a while. Are there newer tools for flashing and debugging?</em></p>
 <p>There's a newer alternative to OpenOCD that's built with Rust: <a href="https://probe.rs/">probe.rs</a></p>
 <p>It has beta support for JTAG. Hopefully we can use it with PineCone someday.</p>
 <p>But for today, we'll learn about using OpenOCD and JTAG with PineCone.</p>
+<p><img src="https://lupyuen.github.io/images/pinecone-sipeed.jpg" alt="Sipeed JTAG Debugger" /></p>
+<p><em>Sipeed JTAG Debugger</em></p>
 <h1 id="what-is-jtag" class="section-header"><a href="#what-is-jtag">2 What is JTAG?</a></h1>
 <p>TODO</p>
 <p>SWD is only for Arm microcontrollers</p>
 <p>Pins</p>
 <p>Similar to SPI</p>
 <p>Must GND</p>
+<p><img src="https://lupyuen.github.io/images/pinecone-jtag.png" alt="Default JTAG Port on PineCone" /></p>
+<p><em>Default JTAG Port on PineCone</em></p>
 <h1 id="connect-jtag-debugger-to-pinecone" class="section-header"><a href="#connect-jtag-debugger-to-pinecone">3 Connect JTAG Debugger to PineCone</a></h1>
 <p>TODO</p>
-<p>Download the build from GitHub Actions</p>
+<p>To debug the BL602 firmware, we need a <strong>JTAG Debugger</strong> with OpenOCD and GDB. </p>
+<p>According to the <a href="https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf">BL602 Reference Manual</a> and <a href="https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf">PineCone Schematics</a> (see pic above), the JTAG Pins are...</p>
 <ul>
 <li>TDO: GPIO 11 (Blue)</li>
 <li>TMS: GPIO 12 (Yellow)</li>
@@ -116,18 +125,24 @@
 <li>TDI: GPIO 17 (Red)</li>
 <li>GND: GND (Black)</li>
 </ul>
+<p>We need to <a href="https://lupyuen.github.io/images/pinecone-solder.jpg">solder the headers</a> to the PineCone board and expose the above JTAG Pins...</p>
+<p><img src="https://lupyuen.github.io/images/pinecone-headers.jpg" alt="Default JTAG Port connected to JTAG Debugger" /></p>
+<p><em>Default JTAG Port connected to JTAG Debugger. GND is missing, it must be connected or JTAG will get wonky. USB port should be connected too.</em></p>
 <p>Based on Sipeed Rust guide</p>
 <p>Sipeed JTAG debugger
 Should work with any FTDI F2232</p>
-<p>https://mcuoneclipse.com/2019/10/20/jtag-debugging-the-esp32-with-ft2232-and-openocd/</p>
-<h1 id="openocd-script" class="section-header"><a href="#openocd-script">4 OpenOCD script</a></h1>
+<p><a href="https://mcuoneclipse.com/2019/10/20/jtag-debugging-the-esp32-with-ft2232-and-openocd/">Check out this helpful article on connecting OpenOCD to FT2232</a></p>
+<h1 id="openocd-script" class="section-header"><a href="#openocd-script">4 OpenOCD Script</a></h1>
 <p>TODO</p>
 <p>Ftdi id</p>
 <p>Ftdi interface</p>
 <p>Cpu id</p>
 <p>Speed</p>
+<p><img src="https://lupyuen.github.io/images/pinecone-led.png" alt="PineCone LED uses GPIO 11, 14, 17" /></p>
+<p><em>PineCone LED uses GPIO 11, 14, 17</em></p>
 <h1 id="if-you-love-the-led-set-it-free" class="section-header"><a href="#if-you-love-the-led-set-it-free">5 If you love the LED... Set it free!</a></h1>
 <p>TODO</p>
+<p><a href="https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf">See the PineCone Schematics</a></p>
 <p>Default JTAG port is...</p>
 <ul>
 <li>TDO: GPIO 11</li>
@@ -166,9 +181,10 @@ Should work with any FTDI F2232</p>
 <li>SMT Control: 1</li>
 <li>Input Enable: 1</li>
 </ul>
-<p><img src="https://lupyuen.github.io/images/pinecone-headers2.jpg" alt="PineCone Connection to JTAG Debugger" /></p>
+<p><img src="https://lupyuen.github.io/images/pinecone-headers2.jpg" alt="Remapped PineCone Connection to JTAG Debugger" /></p>
+<p><em>Remapped JTAG Port connected to JTAG Debugger</em></p>
 <p>The LED lights up in bright white to signify that the JTAG Port has been remapped.</p>
-<p>GND must be connected.</p>
+<p>GND must be connected or JTAG will get wonky.</p>
 <h1 id="how-to-remap-the-jtag-port" class="section-header"><a href="#how-to-remap-the-jtag-port">6 How to remap the JTAG port</a></h1>
 <p>TODO</p>
 <p>Firmware code for remapping the JTAG port and setting the GPIO Control...</p>

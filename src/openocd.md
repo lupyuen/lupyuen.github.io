@@ -26,6 +26,8 @@ This is similar to the SWD Port that's found in PineTime, STM32 Blue Pill and ot
 
 We'll learn about JTAG in the next section.
 
+## OpenOCD vs UART Flashing
+
 _Doesn't PineCone support UART flashing? Why use OpenOCD and JTAG?_
 
 Yes we may flash our firmware to PineCone via a Serial USB connection to PineCone's UART Port. [More about this](https://lupyuen.github.io/articles/pinecone)
@@ -36,6 +38,8 @@ BL602 doesn't support debugging over UART. For serious firmware coding on BL602,
 
 (I have a hunch that flashing firmware over UART will be faster than JTAG... We'll find out soon)
 
+## OpenOCD Alternatives
+
 _OpenOCD has been around for a while. Are there newer tools for flashing and debugging?_
 
 There's a newer alternative to OpenOCD that's built with Rust: [probe.rs](https://probe.rs/)
@@ -43,6 +47,10 @@ There's a newer alternative to OpenOCD that's built with Rust: [probe.rs](https:
 It has beta support for JTAG. Hopefully we can use it with PineCone someday.
 
 But for today, we'll learn about using OpenOCD and JTAG with PineCone.
+
+![Sipeed JTAG Debugger](https://lupyuen.github.io/images/pinecone-sipeed.jpg)
+
+_Sipeed JTAG Debugger_
 
 # What is JTAG?
 
@@ -56,11 +64,17 @@ Similar to SPI
 
 Must GND
 
+![Default JTAG Port on PineCone](https://lupyuen.github.io/images/pinecone-jtag.png)
+
+_Default JTAG Port on PineCone_
+
 # Connect JTAG Debugger to PineCone
 
 TODO
 
-Download the build from GitHub Actions
+To debug the BL602 firmware, we need a __JTAG Debugger__ with OpenOCD and GDB. 
+
+According to the [BL602 Reference Manual](https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf) and [PineCone Schematics](https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf) (see pic above), the JTAG Pins are...
 
 -   TDO: GPIO 11 (Blue)
 -   TMS: GPIO 12 (Yellow)
@@ -68,14 +82,20 @@ Download the build from GitHub Actions
 -   TDI: GPIO 17 (Red)
 -   GND: GND (Black)
 
+We need to [solder the headers](https://lupyuen.github.io/images/pinecone-solder.jpg) to the PineCone board and expose the above JTAG Pins...
+
+![Default JTAG Port connected to JTAG Debugger](https://lupyuen.github.io/images/pinecone-headers.jpg)
+
+_Default JTAG Port connected to JTAG Debugger. GND is missing, it must be connected or JTAG will get wonky. USB port should be connected too._
+
 Based on Sipeed Rust guide
 
 Sipeed JTAG debugger
 Should work with any FTDI F2232
 
-https://mcuoneclipse.com/2019/10/20/jtag-debugging-the-esp32-with-ft2232-and-openocd/
+[Check out this helpful article on connecting OpenOCD to FT2232](https://mcuoneclipse.com/2019/10/20/jtag-debugging-the-esp32-with-ft2232-and-openocd/)
 
-# OpenOCD script
+# OpenOCD Script
 
 TODO
 
@@ -87,9 +107,15 @@ Cpu id
 
 Speed
 
+![PineCone LED uses GPIO 11, 14, 17](https://lupyuen.github.io/images/pinecone-led.png)
+
+_PineCone LED uses GPIO 11, 14, 17_
+
 # If you love the LED... Set it free!
 
 TODO
+
+[See the PineCone Schematics](https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf)
 
 Default JTAG port is...
 
@@ -129,11 +155,13 @@ Also set the GPIO control bits for the remapped pins...
 -   SMT Control: 1
 -   Input Enable: 1
 
-![PineCone Connection to JTAG Debugger](https://lupyuen.github.io/images/pinecone-headers2.jpg)
+![Remapped PineCone Connection to JTAG Debugger](https://lupyuen.github.io/images/pinecone-headers2.jpg)
+
+_Remapped JTAG Port connected to JTAG Debugger_
 
 The LED lights up in bright white to signify that the JTAG Port has been remapped.
 
-GND must be connected.
+GND must be connected or JTAG will get wonky.
 
 # How to remap the JTAG port
 
