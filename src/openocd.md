@@ -113,6 +113,34 @@ Based on Sipeed Rust guide
 Sipeed JTAG debugger
 Should work with any FTDI F2232
 
+[Follow the instructions here](https://github.com/lupyuen/bl602-rust-guide/blob/main/README.md)
+
+Connect Sipeed JTAG Debugger to PineCone: TMS, TCK, TDI, TDO, GND
+
+Connect PineCone and Sipeed JTAG Debugger to our computer (Yes we need two USB ports)
+
+Install driver for Sipeed JTAG Debugger...
+
+https://docs.platformio.org/en/latest/plus/debug-tools/sipeed-rv-debugger.html#drivers
+
+Using the Zadig Tool, install the WinUSB Driver for BOTH Dual RS232 (Interface 0) and Dual RS232 (Interface 1)
+
+Download OpenOCD from...
+
+https://github.com/xpack-dev-tools/openocd-xpack/releases/download/v0.10.0-15/xpack-openocd-0.10.0-15-win32-x64.zip
+
+Run OpenOCD...
+
+```cmd
+git clone --recursive https://github.com/sipeed/bl602-pac
+git clone --recursive https://github.com/sipeed/bl602-hal
+git clone --recursive https://github.com/lupyuen/bl602-rust-guide
+cd bl602-rust-guide
+# TODO: Check openocd.cfg, verify that the FTDI channel is 0: "ftdi_channel 0"
+# TODO: Unzip OpenOCD into bl602-rust-guide\xpack-openocd-0.10.0-15
+xpack-openocd-0.10.0-15\bin\openocd.exe
+```
+
 We should see...
 
 ```
