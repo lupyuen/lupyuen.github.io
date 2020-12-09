@@ -70,12 +70,14 @@
 <li><a href="#openocd-alternatives">1.2 OpenOCD Alternatives</a><ul></ul></li></ul></li>
 <li><a href="#what-is-jtag">2 What is JTAG?</a><ul>
 <li><a href="#jtag-vs-swd">2.1 JTAG vs SWD</a><ul></ul></li></ul></li>
-<li><a href="#connect-jtag-debugger-to-pinecone">3 Connect JTAG Debugger to PineCone</a><ul></ul></li>
-<li><a href="#openocd-script">4 OpenOCD Script</a><ul></ul></li>
-<li><a href="#if-you-love-the-led-set-it-free">5 If you love the LED... Set it free!</a><ul></ul></li>
-<li><a href="#how-to-remap-the-jtag-port">6 How to remap the JTAG port</a><ul></ul></li>
-<li><a href="#how-shall-we-fix-the-jtag-port">7 How shall we fix the JTAG Port?</a><ul></ul></li>
-<li><a href="#whats-next">8 What's Next</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/openocd-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board connected to Sipeed JTAG Debugger" /></p>
+<li><a href="#wheres-the-jtag-port">3 Where's the JTAG Port?</a><ul></ul></li>
+<li><a href="#connect-jtag-debugger-to-pinecone">4 Connect JTAG Debugger to PineCone</a><ul></ul></li>
+<li><a href="#download-and-run-openocd">5 Download and run OpenOCD</a><ul></ul></li>
+<li><a href="#openocd-script">6 OpenOCD Script</a><ul></ul></li>
+<li><a href="#if-you-love-the-led-set-it-free">7 If you love the LED... Set it free!</a><ul></ul></li>
+<li><a href="#how-to-remap-the-jtag-port">8 How to remap the JTAG port</a><ul></ul></li>
+<li><a href="#how-shall-we-fix-the-jtag-port">9 How shall we fix the JTAG Port?</a><ul></ul></li>
+<li><a href="#whats-next">10 What's Next</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/openocd-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board connected to Sipeed JTAG Debugger" /></p>
 <p><em>PineCone BL602 RISC-V Evaluation Board connected to Sipeed JTAG Debugger</em></p>
 <p>Today we'll learn to connect the <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602 RISC-V Evaluation Board</strong></a> to OpenOCD for flashing and debugging PineCone firmware.</p>
 <h1 id="what-is-openocd" class="section-header"><a href="#what-is-openocd">1 What is OpenOCD?</a></h1>
@@ -129,23 +131,38 @@
 <p>Let's go deep into the JTAG Port on PineCone...</p>
 <p><img src="https://lupyuen.github.io/images/pinecone-jtag.png" alt="Default JTAG Port on PineCone" /></p>
 <p><em>Default JTAG Port on PineCone</em></p>
-<h1 id="connect-jtag-debugger-to-pinecone" class="section-header"><a href="#connect-jtag-debugger-to-pinecone">3 Connect JTAG Debugger to PineCone</a></h1>
-<p>TODO</p>
-<p>To debug the BL602 firmware, we need a <strong>JTAG Debugger</strong> with OpenOCD and GDB. </p>
-<p>According to the <a href="https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf">BL602 Reference Manual</a> and <a href="https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf">PineCone Schematics</a> (see pic above), the JTAG Pins are...</p>
+<h1 id="wheres-the-jtag-port" class="section-header"><a href="#wheres-the-jtag-port">3 Where's the JTAG Port?</a></h1>
+<p>BL602 is an interesting microcontroller... Each pin may be remapped to various functions: GPIO, SPI, I2C, UART, PWM, ADC, SDIO, even JTAG!</p>
+<p>To find the default JTAG Pins, we need to refer to...</p>
 <ul>
-<li>TDO: GPIO 11 (Blue)</li>
-<li>TMS: GPIO 12 (Yellow)</li>
-<li>TCK: GPIO 14 (Green)</li>
-<li>TDI: GPIO 17 (Red)</li>
-<li>GND: GND (Black)</li>
+<li><a href="https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf">BL602 Reference Manual</a></li>
+<li><a href="https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf">PineCone Schematics</a></li>
 </ul>
-<p>We need to <a href="https://lupyuen.github.io/images/pinecone-solder.jpg">solder the headers</a> to the PineCone board and expose the above JTAG Pins...</p>
+<p>(See the pic above)</p>
+<p>Based on the above docs, the JTAG Port is located at the following pins whenever we boot or reset PineCone...</p>
+<table><thead><tr><th align="center">JTAG Pin</th><th align="left">PineCone Pin</th></tr></thead><tbody>
+<tr><td align="center"><strong><code>TDO</code></strong></td><td align="left"><code>IO 11</code></td></tr>
+<tr><td align="center"><strong><code>TMS</code></strong></td><td align="left"><code>IO 12</code></td></tr>
+<tr><td align="center"><strong><code>TCK</code></strong></td><td align="left"><code>IO 14</code></td></tr>
+<tr><td align="center"><strong><code>TDI</code></strong></td><td align="left"><code>IO 17</code></td></tr>
+<tr><td align="center"><strong><code>GND</code></strong></td><td align="left"><code>GND</code></td></tr>
+</tbody></table>
+<p>Before connecting PineCone to our JTAG Debugger, we need to <a href="https://lupyuen.github.io/images/pinecone-solder.jpg">solder the headers</a> to the PineCone board and expose the above JTAG Pins.</p>
 <p><img src="https://lupyuen.github.io/images/pinecone-headers.jpg" alt="Default JTAG Port connected to JTAG Debugger" /></p>
 <p><em>Default JTAG Port connected to JTAG Debugger. Jumper is set to H, for Bootloader Mode. LED is lit with multiple colours.</em></p>
+<h1 id="connect-jtag-debugger-to-pinecone" class="section-header"><a href="#connect-jtag-debugger-to-pinecone">4 Connect JTAG Debugger to PineCone</a></h1>
+<p>TODO</p>
+<table><thead><tr><th align="center">JTAG Pin</th><th align="left">PineCone Pin</th><th align="left">Wire Colour</th></tr></thead><tbody>
+<tr><td align="center"><strong><code>TDO</code></strong></td><td align="left"><code>IO 11</code></td><td align="left">Blue</td></tr>
+<tr><td align="center"><strong><code>TMS</code></strong></td><td align="left"><code>IO 12</code></td><td align="left">Yellow</td></tr>
+<tr><td align="center"><strong><code>TCK</code></strong></td><td align="left"><code>IO 14</code></td><td align="left">Green</td></tr>
+<tr><td align="center"><strong><code>TDI</code></strong></td><td align="left"><code>IO 17</code></td><td align="left">Red</td></tr>
+<tr><td align="center"><strong><code>GND</code></strong></td><td align="left"><code>GND</code></td><td align="left">Black</td></tr>
+</tbody></table>
 <p>Based on Sipeed Rust guide</p>
 <p>Sipeed JTAG debugger
 Should work with any FTDI F2232</p>
+<h1 id="download-and-run-openocd" class="section-header"><a href="#download-and-run-openocd">5 Download and run OpenOCD</a></h1>
 <p><a href="https://github.com/lupyuen/bl602-rust-guide/blob/main/README.md">Follow the instructions here</a></p>
 <p>Connect Sipeed JTAG Debugger to PineCone: TMS, TCK, TDI, TDO, GND</p>
 <p>Connect PineCone and Sipeed JTAG Debugger to our computer (Yes we need two USB ports)</p>
@@ -189,7 +206,7 @@ xpack-openocd-0.10.0-15\bin\openocd.exe
 <p><a href="https://mcuoneclipse.com/2019/10/20/jtag-debugging-the-esp32-with-ft2232-and-openocd/">Check out this helpful article on connecting OpenOCD to FT2232</a></p>
 <p><img src="https://lupyuen.github.io/images/pinecone-jtag-ftdi.jpg" alt="Sipeed JTAG Debugger is powered by FTDI FT2232D" /></p>
 <p><em>Sipeed JTAG Debugger is powered by FTDI FT2232D</em></p>
-<h1 id="openocd-script" class="section-header"><a href="#openocd-script">4 OpenOCD Script</a></h1>
+<h1 id="openocd-script" class="section-header"><a href="#openocd-script">6 OpenOCD Script</a></h1>
 <p>TODO</p>
 <p>Ftdi id</p>
 <p>Ftdi interface</p>
@@ -198,7 +215,7 @@ xpack-openocd-0.10.0-15\bin\openocd.exe
 <p><a href="https://twitter.com/gamelaster/status/1335997851151835140?s=09">Other folks in the PineCone Community are using OpenOCD too</a></p>
 <p><img src="https://lupyuen.github.io/images/pinecone-led.png" alt="PineCone LED uses GPIO 11, 14, 17" /></p>
 <p><em>PineCone LED uses GPIO 11, 14, 17</em></p>
-<h1 id="if-you-love-the-led-set-it-free" class="section-header"><a href="#if-you-love-the-led-set-it-free">5 If you love the LED... Set it free!</a></h1>
+<h1 id="if-you-love-the-led-set-it-free" class="section-header"><a href="#if-you-love-the-led-set-it-free">7 If you love the LED... Set it free!</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf">See the PineCone Schematics</a></p>
 <p>Default JTAG port is...</p>
@@ -244,7 +261,7 @@ xpack-openocd-0.10.0-15\bin\openocd.exe
 <p>The LED lights up in bright white to signify that the JTAG Port has been remapped.</p>
 <p>Jumper is set to L, for Normal Mode.</p>
 <p>GND must be connected or JTAG will get wonky.</p>
-<h1 id="how-to-remap-the-jtag-port" class="section-header"><a href="#how-to-remap-the-jtag-port">6 How to remap the JTAG port</a></h1>
+<h1 id="how-to-remap-the-jtag-port" class="section-header"><a href="#how-to-remap-the-jtag-port">8 How to remap the JTAG port</a></h1>
 <p>TODO</p>
 <p>Firmware code for remapping the JTAG port and setting the GPIO Control...</p>
 <p>https://github.com/lupyuen/bl_iot_sdk/releases/tag/v0.0.4</p>
@@ -253,7 +270,7 @@ xpack-openocd-0.10.0-15\bin\openocd.exe
 <p>https://github.com/lupyuen/bl_iot_sdk/blob/jtag/customer_app/sdk_app_helloworld/sdk_app_helloworld/main.c#L83-L241</p>
 <p>Works OK on Windows according to the instructions here</p>
 <p>JTAG vs PWM</p>
-<h1 id="how-shall-we-fix-the-jtag-port" class="section-header"><a href="#how-shall-we-fix-the-jtag-port">7 How shall we fix the JTAG Port?</a></h1>
+<h1 id="how-shall-we-fix-the-jtag-port" class="section-header"><a href="#how-shall-we-fix-the-jtag-port">9 How shall we fix the JTAG Port?</a></h1>
 <p>TODO</p>
 <p>Options...</p>
 <ol>
@@ -273,7 +290,7 @@ xpack-openocd-0.10.0-15\bin\openocd.exe
 </ul>
 </li>
 </ol>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">8 What's Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">10 What's Next</a></h1>
 <p>TODO</p>
 <p>Embedded Rust</p>
 <p><a href="https://lupyuen.github.io">Check out my articles</a></p>

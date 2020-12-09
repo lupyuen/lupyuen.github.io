@@ -88,30 +88,50 @@ Let's go deep into the JTAG Port on PineCone...
 
 _Default JTAG Port on PineCone_
 
-# Connect JTAG Debugger to PineCone
+# Where's the JTAG Port?
 
-TODO
+BL602 is an interesting microcontroller... Each pin may be remapped to various functions: GPIO, SPI, I2C, UART, PWM, ADC, SDIO, even JTAG!
 
-To debug the BL602 firmware, we need a __JTAG Debugger__ with OpenOCD and GDB. 
+To find the default JTAG Pins, we need to refer to...
+-   [BL602 Reference Manual](https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf)
+-   [PineCone Schematics](https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf)
 
-According to the [BL602 Reference Manual](https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf) and [PineCone Schematics](https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf) (see pic above), the JTAG Pins are...
+(See the pic above)
 
--   TDO: GPIO 11 (Blue)
--   TMS: GPIO 12 (Yellow)
--   TCK: GPIO 14 (Green)
--   TDI: GPIO 17 (Red)
--   GND: GND (Black)
+Based on the above docs, the JTAG Port is located at the following pins whenever we boot or reset PineCone...
 
-We need to [solder the headers](https://lupyuen.github.io/images/pinecone-solder.jpg) to the PineCone board and expose the above JTAG Pins...
+| JTAG Pin | PineCone Pin |
+|:---:|:---|
+| __`TDO`__ | `IO 11` |
+| __`TMS`__ | `IO 12` |
+| __`TCK`__ | `IO 14` |
+| __`TDI`__ | `IO 17` |
+| __`GND`__ | `GND`     |
+
+Before connecting PineCone to our JTAG Debugger, we need to [solder the headers](https://lupyuen.github.io/images/pinecone-solder.jpg) to the PineCone board and expose the above JTAG Pins.
 
 ![Default JTAG Port connected to JTAG Debugger](https://lupyuen.github.io/images/pinecone-headers.jpg)
 
 _Default JTAG Port connected to JTAG Debugger. Jumper is set to H, for Bootloader Mode. LED is lit with multiple colours._
 
+# Connect JTAG Debugger to PineCone
+
+TODO
+
+| JTAG Pin | PineCone Pin | Wire Colour |
+|:---:|:---|:---|
+| __`TDO`__ | `IO 11` | Blue
+| __`TMS`__ | `IO 12` | Yellow
+| __`TCK`__ | `IO 14` | Green
+| __`TDI`__ | `IO 17` | Red
+| __`GND`__ | `GND`     | Black
+
 Based on Sipeed Rust guide
 
 Sipeed JTAG debugger
 Should work with any FTDI F2232
+
+# Download and run OpenOCD
 
 [Follow the instructions here](https://github.com/lupyuen/bl602-rust-guide/blob/main/README.md)
 
