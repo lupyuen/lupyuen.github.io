@@ -150,16 +150,19 @@ Now we connect the JTAG Debugger to PineCone...
 
 # Download and run OpenOCD
 
-[Follow the instructions here](https://github.com/lupyuen/bl602-rust-guide/blob/main/README.md)
+TODO
 
-Connect Sipeed JTAG Debugger to PineCone: TMS, TCK, TDI, TDO, GND
+Download OpenOCD from the [xPack OpenOCD site](https://github.com/xpack-dev-tools/openocd-xpack/releases/tag/v0.10.0-15/)... (Other variants of OpenOCD may not work with PineCone)
 
-Connect PineCone and Sipeed JTAG Debugger to our computer (Yes we need two USB ports)
+-   [xPack OpenOCD for Linux x64](https://github.com/xpack-dev-tools/openocd-xpack/releases/download/v0.10.0-15/xpack-openocd-0.10.0-15-linux-x64.tar.gz)
 
+-   [xPack OpenOCD for Linux Arm64](https://github.com/xpack-dev-tools/openocd-xpack/releases/download/v0.10.0-15/xpack-openocd-0.10.0-15-linux-arm64.tar.gz)
 
-Download OpenOCD from...
+-   [xPack OpenOCD for macOS](https://github.com/xpack-dev-tools/openocd-xpack/releases/download/v0.10.0-15/xpack-openocd-0.10.0-15-darwin-x64.tar.gz)
 
-https://github.com/xpack-dev-tools/openocd-xpack/releases/download/v0.10.0-15/xpack-openocd-0.10.0-15-win32-x64.zip
+-   [xPack OpenOCD for Windows](https://github.com/xpack-dev-tools/openocd-xpack/releases/download/v0.10.0-15/xpack-openocd-0.10.0-15-win32-x64.zip)
+
+Unzip xPack OpenOCD to ???
 
 Run OpenOCD...
 
