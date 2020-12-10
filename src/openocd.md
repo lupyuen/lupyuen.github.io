@@ -447,27 +447,160 @@ Here's our plan to free the LED from the JTAG Port...
 
 Let's study the firmware code that remaps the JTAG Port... And frees our LED!
 
-![Remapped PineCone Connection to JTAG Debugger](https://lupyuen.github.io/images/pinecone-headers2.jpg)
+![BL602 Configuration Register for GPIO 0 and GPIO 1](https://lupyuen.github.io/images/pinecone-gpio.png)
 
-_Remapped JTAG Port connected to JTAG Debugger. The LED lights up in bright white to signify that the JTAG Port has been remapped. Jumper is set to L, for Normal Mode._
+_BL602 Configuration Register for GPIO 0 and GPIO 1_
 
-# How to remap the JTAG Port
+# Remap the JTAG Port
 
 TODO
 
 Firmware code for remapping the JTAG port and setting the GPIO Control...
 
-https://github.com/lupyuen/bl_iot_sdk/releases/tag/v0.0.4
+Modified from the original `helloworld` app.
 
-This release of the helloworld app remaps the JTAG Port to alternative GPIO Pins. (Because the original pins are connected to the onboard LED) See...
+[`sdk_app_helloworld/main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/jtag/customer_app/sdk_app_helloworld/sdk_app_helloworld/main.c#L83-L241)
 
-https://lupyuen.github.io/articles/pinecone
+```c
+void bfl_main(void)
+{
+    ...
+    //  GPIO Functions. From components/bl602/bl602_std/bl602_std/StdDriver/Inc/bl602_gpio.h
+    const uint32_t GPIO_FUN_PWM  =  8;
+    const uint32_t GPIO_FUN_JTAG = 14;
 
-https://github.com/lupyuen/bl_iot_sdk/blob/jtag/customer_app/sdk_app_helloworld/sdk_app_helloworld/main.c#L83-L241
+    //  GPIO Control
+    //  Pull Down Control: 0
+    //  Pull Up Control:   0
+    //  Driving Control:   0
+    //  SMT Control:       1
+    //  Input Enable:      1
+    const uint32_t GPIO_CTRL = 3;
 
-Works OK on Windows according to the instructions here
+    //  GPIO_CFGCTL0
+    //  Address：0x40000100
+    //  21:16 GP1CTRL
+    //  27:24 GP1FUNC
+    uint32_t *GPIO_CFGCTL0 = (uint32_t *) 0x40000100;
+    uint32_t *GP1FUNC_ADDR = GPIO_CFGCTL0;
+    const uint32_t GP1CTRL_SHIFT = 16;
+    const uint32_t GP1CTRL_MASK  = 0x3f << GP1CTRL_SHIFT;
+    const uint32_t GP1FUNC_SHIFT = 24;
+    const uint32_t GP1FUNC_MASK  = 0x0f << GP1FUNC_SHIFT;
 
-JTAG vs PWM
+    //  GPIO_CFGCTL1
+    //  Address：0x40000104
+    //   5:0  GP2CTRL
+    //  11:8  GP2FUNC
+    //  21:16 GP3CTRL
+    //  27:24 GP3FUNC
+    uint32_t *GPIO_CFGCTL1 = (uint32_t *) 0x40000104;
+    uint32_t *GP2FUNC_ADDR = GPIO_CFGCTL1;
+    const uint32_t GP2CTRL_SHIFT =  0;
+    const uint32_t GP2CTRL_MASK  = 0x3f << GP2CTRL_SHIFT;
+    const uint32_t GP2FUNC_SHIFT =  8;
+    const uint32_t GP2FUNC_MASK  = 0x0f << GP2FUNC_SHIFT;
+
+    uint32_t *GP3FUNC_ADDR = GPIO_CFGCTL1;
+    const uint32_t GP3CTRL_SHIFT = 16;
+    const uint32_t GP3CTRL_MASK  = 0x3f << GP3CTRL_SHIFT;
+    const uint32_t GP3FUNC_SHIFT = 24;
+    const uint32_t GP3FUNC_MASK  = 0x0f << GP3FUNC_SHIFT;
+
+    //  GPIO_CFGCTL5
+    //  Address：0x40000114
+    //  27:24 GP11FUNC
+    uint32_t *GPIO_CFGCTL5 = (uint32_t *) 0x40000114;
+    uint32_t *GP11FUNC_ADDR = GPIO_CFGCTL5;
+    const uint32_t GP11FUNC_SHIFT = 24;
+    const uint32_t GP11FUNC_MASK  = 0x0f << GP11FUNC_SHIFT;
+
+    //  GPIO_CFGCTL7
+    //  Address：0x4000011c
+    //  11:8 GP14FUNC
+    uint32_t *GPIO_CFGCTL7 = (uint32_t *) 0x4000011c;
+    uint32_t *GP14FUNC_ADDR = GPIO_CFGCTL7;
+    const uint32_t GP14FUNC_SHIFT =  8;
+    const uint32_t GP14FUNC_MASK  = 0x0f << GP14FUNC_SHIFT;
+
+    //  GPIO_CFGCTL8
+    //  Address：0x40000120
+    //  27:24 GP17FUNC
+    uint32_t *GPIO_CFGCTL8 = (uint32_t *) 0x40000120;
+    uint32_t *GP17FUNC_ADDR = GPIO_CFGCTL8;
+    const uint32_t GP17FUNC_SHIFT = 24;
+    const uint32_t GP17FUNC_MASK  = 0x0f << GP17FUNC_SHIFT;
+
+    //  Print values before remap
+    printf("Before remap...\r\n");
+    printf("GPIO_CFGCTL0=%08x\r\n", *GPIO_CFGCTL0);
+    printf("GPIO_CFGCTL1=%08x\r\n", *GPIO_CFGCTL1);
+    printf("GPIO_CFGCTL5=%08x\r\n", *GPIO_CFGCTL5);
+    printf("GPIO_CFGCTL7=%08x\r\n", *GPIO_CFGCTL7);
+    printf("GPIO_CFGCTL8=%08x\r\n", *GPIO_CFGCTL8);
+
+    //  GPIO 11 becomes PWM Ch 1 (Blue)
+    *GP11FUNC_ADDR = (*GP11FUNC_ADDR & ~GP11FUNC_MASK) 
+        | (GPIO_FUN_PWM << GP11FUNC_SHIFT);
+
+    //  GPIO 14 becomes PWM Ch 4 (Green)
+    *GP14FUNC_ADDR = (*GP14FUNC_ADDR & ~GP14FUNC_MASK) 
+        | (GPIO_FUN_PWM << GP14FUNC_SHIFT);
+
+    //  GPIO 17 becomes PWM Ch 2 (Red)
+    *GP17FUNC_ADDR = (*GP17FUNC_ADDR & ~GP17FUNC_MASK) 
+        | (GPIO_FUN_PWM << GP17FUNC_SHIFT);        
+
+    //  GPIO 1 becomes JTAG TDI. Also set the GPIO control.
+    *GP1FUNC_ADDR = (*GP1FUNC_ADDR & ~GP1FUNC_MASK & ~GP1CTRL_MASK) 
+        | (GPIO_FUN_JTAG << GP1FUNC_SHIFT)
+        | (GPIO_CTRL     << GP1CTRL_SHIFT);
+
+    //  GPIO 2 becomes JTAG TCK. Also set the GPIO control.
+    *GP2FUNC_ADDR = (*GP2FUNC_ADDR & ~GP2FUNC_MASK & ~GP2CTRL_MASK) 
+        | (GPIO_FUN_JTAG << GP2FUNC_SHIFT)
+        | (GPIO_CTRL     << GP2CTRL_SHIFT);
+
+    //  GPIO 3 becomes JTAG TDO. Also set the GPIO control.
+    *GP3FUNC_ADDR = (*GP3FUNC_ADDR & ~GP3FUNC_MASK & ~GP3CTRL_MASK) 
+        | (GPIO_FUN_JTAG << GP3FUNC_SHIFT)
+        | (GPIO_CTRL     << GP3CTRL_SHIFT);
+
+    //  Print values after remap
+    printf("After remap...\r\n");
+    printf("GPIO_CFGCTL0=%08x\r\n", *GPIO_CFGCTL0);
+    printf("GPIO_CFGCTL1=%08x\r\n", *GPIO_CFGCTL1);
+    printf("GPIO_CFGCTL5=%08x\r\n", *GPIO_CFGCTL5);
+    printf("GPIO_CFGCTL7=%08x\r\n", *GPIO_CFGCTL7);
+    printf("GPIO_CFGCTL8=%08x\r\n", *GPIO_CFGCTL8);
+
+    //  Loop forever
+    for(;;) {}
+}
+```
+
+```text
+Before remap...
+GPIO_CFGCTL0=bb17bb17
+GPIO_CFGCTL1=1103bb17
+GPIO_CFGCTL5=0e030b03
+GPIO_CFGCTL7=0b030e03
+GPIO_CFGCTL8=0e030717
+After remap...
+GPIO_CFGCTL0=ee03bb17
+GPIO_CFGCTL1=ee03ee03
+GPIO_CFGCTL5=08030b03
+GPIO_CFGCTL7=0b030803
+GPIO_CFGCTL8=08030717
+```
+
+![Remapped PineCone Connection to JTAG Debugger](https://lupyuen.github.io/images/pinecone-headers2.jpg)
+
+_Remapped JTAG Port connected to JTAG Debugger. The LED lights up in bright white to signify that the JTAG Port has been remapped. Jumper is set to L, for Normal Mode._
+
+# Test the Remapped JTAG Port
+
+TODO
 
 # How shall we fix the JTAG Port?
 
