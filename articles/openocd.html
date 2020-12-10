@@ -87,7 +87,8 @@
 <li><a href="#restart-pinecone">6.6 Restart PineCone</a><ul></ul></li>
 <li><a href="#wait-for-gdb-and-tcl-commands">6.7 Wait for GDB and TCL Commands</a><ul></ul></li></ul></li>
 <li><a href="#if-you-love-the-led-set-it-free">7 If you love the LED... Set it free!</a><ul></ul></li>
-<li><a href="#remap-the-jtag-port">8 Remap the JTAG Port</a><ul></ul></li>
+<li><a href="#remap-the-jtag-port">8 Remap the JTAG Port</a><ul>
+<li><a href="#before-and-after">8.1 Before and After</a><ul></ul></li></ul></li>
 <li><a href="#test-the-remapped-jtag-port">9 Test the Remapped JTAG Port</a><ul></ul></li>
 <li><a href="#how-shall-we-fix-the-jtag-port">10 How shall we fix the JTAG Port?</a><ul></ul></li>
 <li><a href="#whats-next">11 What's Next</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/openocd-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board connected to Sipeed JTAG Debugger" /></p>
@@ -419,135 +420,83 @@ exit
 <p>Firmware code for remapping the JTAG port and setting the GPIO Control...</p>
 <p>Modified from the original <code>helloworld</code> app.</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/jtag/customer_app/sdk_app_helloworld/sdk_app_helloworld/main.c#L83-L241"><code>sdk_app_helloworld/main.c</code></a></p>
-<pre><code class="language-c">void bfl_main(void)
-{
-    ...
-    //  GPIO Functions. From components/bl602/bl602_std/bl602_std/StdDriver/Inc/bl602_gpio.h
-    const uint32_t GPIO_FUN_PWM  =  8;
-    const uint32_t GPIO_FUN_JTAG = 14;
-
-    //  GPIO Control
-    //  Pull Down Control: 0
-    //  Pull Up Control:   0
-    //  Driving Control:   0
-    //  SMT Control:       1
-    //  Input Enable:      1
-    const uint32_t GPIO_CTRL = 3;
-
-    //  GPIO_CFGCTL0
-    //  Address：0x40000100
-    //  21:16 GP1CTRL
-    //  27:24 GP1FUNC
-    uint32_t *GPIO_CFGCTL0 = (uint32_t *) 0x40000100;
-    uint32_t *GP1FUNC_ADDR = GPIO_CFGCTL0;
-    const uint32_t GP1CTRL_SHIFT = 16;
-    const uint32_t GP1CTRL_MASK  = 0x3f &lt;&lt; GP1CTRL_SHIFT;
-    const uint32_t GP1FUNC_SHIFT = 24;
-    const uint32_t GP1FUNC_MASK  = 0x0f &lt;&lt; GP1FUNC_SHIFT;
-
-    //  GPIO_CFGCTL1
-    //  Address：0x40000104
-    //   5:0  GP2CTRL
-    //  11:8  GP2FUNC
-    //  21:16 GP3CTRL
-    //  27:24 GP3FUNC
-    uint32_t *GPIO_CFGCTL1 = (uint32_t *) 0x40000104;
-    uint32_t *GP2FUNC_ADDR = GPIO_CFGCTL1;
-    const uint32_t GP2CTRL_SHIFT =  0;
-    const uint32_t GP2CTRL_MASK  = 0x3f &lt;&lt; GP2CTRL_SHIFT;
-    const uint32_t GP2FUNC_SHIFT =  8;
-    const uint32_t GP2FUNC_MASK  = 0x0f &lt;&lt; GP2FUNC_SHIFT;
-
-    uint32_t *GP3FUNC_ADDR = GPIO_CFGCTL1;
-    const uint32_t GP3CTRL_SHIFT = 16;
-    const uint32_t GP3CTRL_MASK  = 0x3f &lt;&lt; GP3CTRL_SHIFT;
-    const uint32_t GP3FUNC_SHIFT = 24;
-    const uint32_t GP3FUNC_MASK  = 0x0f &lt;&lt; GP3FUNC_SHIFT;
-
-    //  GPIO_CFGCTL5
-    //  Address：0x40000114
-    //  27:24 GP11FUNC
-    uint32_t *GPIO_CFGCTL5 = (uint32_t *) 0x40000114;
-    uint32_t *GP11FUNC_ADDR = GPIO_CFGCTL5;
-    const uint32_t GP11FUNC_SHIFT = 24;
-    const uint32_t GP11FUNC_MASK  = 0x0f &lt;&lt; GP11FUNC_SHIFT;
-
-    //  GPIO_CFGCTL7
-    //  Address：0x4000011c
-    //  11:8 GP14FUNC
-    uint32_t *GPIO_CFGCTL7 = (uint32_t *) 0x4000011c;
-    uint32_t *GP14FUNC_ADDR = GPIO_CFGCTL7;
-    const uint32_t GP14FUNC_SHIFT =  8;
-    const uint32_t GP14FUNC_MASK  = 0x0f &lt;&lt; GP14FUNC_SHIFT;
-
-    //  GPIO_CFGCTL8
-    //  Address：0x40000120
-    //  27:24 GP17FUNC
-    uint32_t *GPIO_CFGCTL8 = (uint32_t *) 0x40000120;
-    uint32_t *GP17FUNC_ADDR = GPIO_CFGCTL8;
-    const uint32_t GP17FUNC_SHIFT = 24;
-    const uint32_t GP17FUNC_MASK  = 0x0f &lt;&lt; GP17FUNC_SHIFT;
-
-    //  Print values before remap
-    printf(&quot;Before remap...\r\n&quot;);
-    printf(&quot;GPIO_CFGCTL0=%08x\r\n&quot;, *GPIO_CFGCTL0);
-    printf(&quot;GPIO_CFGCTL1=%08x\r\n&quot;, *GPIO_CFGCTL1);
-    printf(&quot;GPIO_CFGCTL5=%08x\r\n&quot;, *GPIO_CFGCTL5);
-    printf(&quot;GPIO_CFGCTL7=%08x\r\n&quot;, *GPIO_CFGCTL7);
-    printf(&quot;GPIO_CFGCTL8=%08x\r\n&quot;, *GPIO_CFGCTL8);
-
-    //  GPIO 11 becomes PWM Ch 1 (Blue)
-    *GP11FUNC_ADDR = (*GP11FUNC_ADDR &amp; ~GP11FUNC_MASK) 
-        | (GPIO_FUN_PWM &lt;&lt; GP11FUNC_SHIFT);
-
-    //  GPIO 14 becomes PWM Ch 4 (Green)
-    *GP14FUNC_ADDR = (*GP14FUNC_ADDR &amp; ~GP14FUNC_MASK) 
-        | (GPIO_FUN_PWM &lt;&lt; GP14FUNC_SHIFT);
-
-    //  GPIO 17 becomes PWM Ch 2 (Red)
-    *GP17FUNC_ADDR = (*GP17FUNC_ADDR &amp; ~GP17FUNC_MASK) 
-        | (GPIO_FUN_PWM &lt;&lt; GP17FUNC_SHIFT);        
-
-    //  GPIO 1 becomes JTAG TDI. Also set the GPIO control.
-    *GP1FUNC_ADDR = (*GP1FUNC_ADDR &amp; ~GP1FUNC_MASK &amp; ~GP1CTRL_MASK) 
-        | (GPIO_FUN_JTAG &lt;&lt; GP1FUNC_SHIFT)
-        | (GPIO_CTRL     &lt;&lt; GP1CTRL_SHIFT);
-
-    //  GPIO 2 becomes JTAG TCK. Also set the GPIO control.
-    *GP2FUNC_ADDR = (*GP2FUNC_ADDR &amp; ~GP2FUNC_MASK &amp; ~GP2CTRL_MASK) 
-        | (GPIO_FUN_JTAG &lt;&lt; GP2FUNC_SHIFT)
-        | (GPIO_CTRL     &lt;&lt; GP2CTRL_SHIFT);
-
-    //  GPIO 3 becomes JTAG TDO. Also set the GPIO control.
-    *GP3FUNC_ADDR = (*GP3FUNC_ADDR &amp; ~GP3FUNC_MASK &amp; ~GP3CTRL_MASK) 
-        | (GPIO_FUN_JTAG &lt;&lt; GP3FUNC_SHIFT)
-        | (GPIO_CTRL     &lt;&lt; GP3CTRL_SHIFT);
-
-    //  Print values after remap
-    printf(&quot;After remap...\r\n&quot;);
-    printf(&quot;GPIO_CFGCTL0=%08x\r\n&quot;, *GPIO_CFGCTL0);
-    printf(&quot;GPIO_CFGCTL1=%08x\r\n&quot;, *GPIO_CFGCTL1);
-    printf(&quot;GPIO_CFGCTL5=%08x\r\n&quot;, *GPIO_CFGCTL5);
-    printf(&quot;GPIO_CFGCTL7=%08x\r\n&quot;, *GPIO_CFGCTL7);
-    printf(&quot;GPIO_CFGCTL8=%08x\r\n&quot;, *GPIO_CFGCTL8);
-
-    //  Loop forever
-    for(;;) {}
-}
+<ol>
+<li>
+<p>According to the pic above, we configure BL602 Pin <code>IO 1</code> by writing to the memory address <code>0x40000100</code>. We'll call this address <code>GP1FUNC_ADDR</code></p>
+<p>(&quot;地址&quot; is Chinese for &quot;Address&quot;)</p>
+<pre><code class="language-c">//  GPIO_CFGCTL0
+//  Address：0x40000100
+uint32_t *GPIO_CFGCTL0 = (uint32_t *) 0x40000100;
+uint32_t *GP1FUNC_ADDR = GPIO_CFGCTL0;
 </code></pre>
-<pre><code class="language-text">Before remap...
-GPIO_CFGCTL0=bb17bb17
-GPIO_CFGCTL1=1103bb17
-GPIO_CFGCTL5=0e030b03
-GPIO_CFGCTL7=0b030e03
-GPIO_CFGCTL8=0e030717
-After remap...
-GPIO_CFGCTL0=ee03bb17
-GPIO_CFGCTL1=ee03ee03
-GPIO_CFGCTL5=08030b03
-GPIO_CFGCTL7=0b030803
-GPIO_CFGCTL8=08030717
+</li>
+<li>
+<p>We'll set bits 24 to 27 of <code>GP1FUNC_ADDR</code> to select the desired Pin Function (i.e. JTAG).</p>
+<p>We define the Pin Function bit shift (offset) as <code>GP1FUNC_SHIFT</code> and the bit mask as <code>GP1FUNC_MASK</code>...</p>
+<pre><code class="language-c">//  27:24 GP1FUNC
+const uint32_t GP1FUNC_SHIFT = 24;
+const uint32_t GP1FUNC_MASK  = 0x0f &lt;&lt; GP1FUNC_SHIFT;
 </code></pre>
+</li>
+<li>
+<p>Then we'll set bits 16 to 21 of <code>GP1FUNC_ADDR</code> for the GPIO Pin Control.</p>
+<p>We define the Pin Control bit shift (offset) as <code>GP1CTRL_SHIFT</code> and the bit mask as <code>GP1CTRL_MASK</code>...</p>
+<pre><code class="language-c">//  21:16 GP1CTRL
+const uint32_t GP1CTRL_SHIFT = 16;
+const uint32_t GP1CTRL_MASK  = 0x3f &lt;&lt; GP1CTRL_SHIFT;
+</code></pre>
+</li>
+<li>
+<p>To map Pin <code>IO 1</code> to JTAG, we set the Pin Function of <code>GP1FUNC_ADDR</code> to <code>GPIO_FUN_JTAG</code>, and the Pin Control to <code>GPIO_CTRL</code></p>
+<pre><code class="language-c">//  IO 1 becomes JTAG TDI. Also set the Pin Control.
+*GP1FUNC_ADDR = (*GP1FUNC_ADDR &amp; ~GP1FUNC_MASK &amp; ~GP1CTRL_MASK) 
+    | (GPIO_FUN_JTAG &lt;&lt; GP1FUNC_SHIFT)
+    | (GPIO_CTRL     &lt;&lt; GP1CTRL_SHIFT);
+</code></pre>
+</li>
+<li>
+<p>The Pin Function values (JTAG and PWM) are defined as...</p>
+<pre><code class="language-c">//  Pin Functions (4 bits). From components/bl602/bl602_std/bl602_std/StdDriver/Inc/bl602_gpio.h
+const uint32_t GPIO_FUN_PWM  =  8;  //  Pin Function for PWM  (0x8)
+const uint32_t GPIO_FUN_JTAG = 14;  //  Pin Function for JTAG (0xe)
+</code></pre>
+</li>
+<li>
+<p>The Pin Control value is defined as...</p>
+<pre><code class="language-c">//  Pin Control (6 bits)
+//  Pull Down Control: 0 (1 bit)
+//  Pull Up Control:   0 (1 bit)
+//  Driving Control:   0 (2 bits)
+//  SMT Control:       1 (1 bit)
+//  Input Enable:      1 (1 bit)
+const uint32_t GPIO_CTRL = 3;  //  Pin Control
+</code></pre>
+</li>
+<li>
+<p>We apply the above steps to remap each Pin Function and set the Pin Control bits...</p>
+<table><thead><tr><th align="left">LED/JTAG Pin</th><th align="left">BL602 Pin</th><th align="left">Remap Pin Function</th></tr></thead><tbody>
+<tr><td align="left"><strong><code>LED Blue</code></strong></td><td align="left"><code>IO 11</code></td><td align="left">JTAG → PWM</td></tr>
+<tr><td align="left"><strong><code>LED Green</code></strong></td><td align="left"><code>IO 14</code></td><td align="left">JTAG → PWM</td></tr>
+<tr><td align="left"><strong><code>LED Red</code></strong></td><td align="left"><code>IO 17</code></td><td align="left">JTAG → PWM</td></tr>
+<tr><td align="left"><strong><code>JTAG TDI</code></strong></td><td align="left"><code>IO 1</code></td><td align="left">SDIO → JTAG</td></tr>
+<tr><td align="left"><strong><code>JTAG TCK</code></strong></td><td align="left"><code>IO 2</code></td><td align="left">SDIO → JTAG</td></tr>
+<tr><td align="left"><strong><code>JTAG TDO</code></strong></td><td align="left"><code>IO 3</code></td><td align="left">SDIO → JTAG</td></tr>
+</tbody></table>
+</li>
+</ol>
+<p>The remapping code for all 6 pins may be found here: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/jtag/customer_app/sdk_app_helloworld/sdk_app_helloworld/main.c#L83-L241"><code>sdk_app_helloworld/main.c</code></a></p>
+<h2 id="before-and-after" class="section-header"><a href="#before-and-after">8.1 Before and After</a></h2>
+<p>Here are the values of the Pin Function and Pin Control registers before and after remapping...</p>
+<table><thead><tr><th align="left">Register</th><th align="left">Before</th><th align="left">After</th><th align="left">Pin</th></tr></thead><tbody>
+<tr><td align="left"><code>GPIO_CFGCTL0</code></td><td align="left"><strong><code>bb</code></strong> <strong><code>17</code></strong> <code>bb</code> <code>17</code></td><td align="left"><strong><code>ee</code></strong> <strong><code>03</code></strong> <code>bb</code> <code>17</code></td><td align="left">1</td></tr>
+<tr><td align="left"><code>GPIO_CFGCTL1</code></td><td align="left"><strong><code>11</code></strong> <code>03</code> <strong><code>bb</code></strong> <strong><code>17</code></strong></td><td align="left"><strong><code>ee</code></strong> <code>03</code> <strong><code>ee</code></strong> <strong><code>03</code></strong></td><td align="left">2, 3</td></tr>
+<tr><td align="left"><code>GPIO_CFGCTL5</code></td><td align="left"><strong><code>0e</code></strong> <code>03</code> <code>0b</code> <code>03</code></td><td align="left"><strong><code>08</code></strong> <code>03</code> <code>0b</code> <code>03</code></td><td align="left">11</td></tr>
+<tr><td align="left"><code>GPIO_CFGCTL7</code></td><td align="left"><code>0b</code> <code>03</code> <strong><code>0e</code></strong> <code>03</code></td><td align="left"><code>0b</code> <code>03</code> <strong><code>08</code></strong> <code>03</code></td><td align="left">14</td></tr>
+<tr><td align="left"><code>GPIO_CFGCTL8</code></td><td align="left"><strong><code>0e</code></strong> <code>03</code> <code>07</code> <code>17</code></td><td align="left"><strong><code>08</code></strong> <code>03</code> <code>07</code> <code>17</code></td><td align="left">17</td></tr>
+</tbody></table>
+<p>(Changed values are highlighted)</p>
+<p>Note that the Pin Function fields (4 bits each) have been changed to <code>0xe</code> for JTAG and <code>0x8</code> for PWM.</p>
+<p>The Pin Control fields (6 bits each) have also been changed to <code>0x03</code>.</p>
 <p><img src="https://lupyuen.github.io/images/pinecone-headers2.jpg" alt="Remapped PineCone Connection to JTAG Debugger" /></p>
 <p><em>Remapped JTAG Port connected to JTAG Debugger. The LED lights up in bright white to signify that the JTAG Port has been remapped. Jumper is set to L, for Normal Mode.</em></p>
 <h1 id="test-the-remapped-jtag-port" class="section-header"><a href="#test-the-remapped-jtag-port">9 Test the Remapped JTAG Port</a></h1>
