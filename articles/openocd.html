@@ -509,6 +509,20 @@ const uint32_t GPIO_CTRL = 3;  //  Pin Control
 <p><em>Remapped JTAG Port connected to JTAG Debugger. The LED lights up in bright white to signify that the JTAG Port has been remapped. Jumper is set to L, for Normal Mode.</em></p>
 <h1 id="test-the-remapped-jtag-port" class="section-header"><a href="#test-the-remapped-jtag-port">9 Test the Remapped JTAG Port</a></h1>
 <p>TODO</p>
+<table><thead><tr><th align="left">JTAG Pin</th><th align="left">PineCone Pin</th></tr></thead><tbody>
+<tr><td align="left"><strong><code>TDI</code></strong></td><td align="left"><code>IO 1</code></td></tr>
+<tr><td align="left"><strong><code>TCK</code></strong></td><td align="left"><code>IO 2</code></td></tr>
+<tr><td align="left"><strong><code>TDO</code></strong></td><td align="left"><code>IO 3</code></td></tr>
+<tr><td align="left"><strong><code>TMS</code></strong></td><td align="left"><code>IO 12</code></td></tr>
+<tr><td align="left"><strong><code>GND</code></strong></td><td align="left"><code>GND</code></td></tr>
+</tbody></table>
+<p>Download from...</p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/releases/tag/v0.0.4"><code>github.com/lupyuen/bl_iot_sdk/releases/tag/v0.0.4</code></a></p>
+<p>Scroll to the bottom. Under <code>Assets</code>, click <code>build_out.zip</code></p>
+<p>Unzip the downloaded file.</p>
+<p>Flash the firmware file inside...</p>
+<pre><code class="language-text">build_out/sdk_app_helloworld.bin
+</code></pre>
 <h1 id="how-shall-we-fix-the-jtag-port" class="section-header"><a href="#how-shall-we-fix-the-jtag-port">10 How shall we fix the JTAG Port?</a></h1>
 <p>TODO</p>
 <p>Options...</p>

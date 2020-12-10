@@ -569,6 +569,28 @@ _Remapped JTAG Port connected to JTAG Debugger. The LED lights up in bright whit
 
 TODO
 
+| JTAG Pin | PineCone Pin |
+|:---|:---|
+| __`TDI`__  | `IO 1`
+| __`TCK`__ | `IO 2`
+| __`TDO`__   | `IO 3`
+| __`TMS`__   | `IO 12`
+| __`GND`__   | `GND`
+
+Download from...
+
+[`github.com/lupyuen/bl_iot_sdk/releases/tag/v0.0.4`](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v0.0.4)
+
+Scroll to the bottom. Under `Assets`, click `build_out.zip`
+
+Unzip the downloaded file.
+
+Flash the firmware file inside...
+
+```text
+build_out/sdk_app_helloworld.bin
+```
+
 # How shall we fix the JTAG Port?
 
 TODO
