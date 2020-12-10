@@ -569,27 +569,81 @@ _Remapped JTAG Port connected to JTAG Debugger. The LED lights up in bright whit
 
 TODO
 
-| JTAG Pin | PineCone Pin |
-|:---|:---|
-| __`TDI`__  | `IO 1`
-| __`TCK`__ | `IO 2`
-| __`TDO`__   | `IO 3`
-| __`TMS`__   | `IO 12`
-| __`GND`__   | `GND`
+## Connect the Remapped JTAG Port
 
-Download from...
+1.  Disconnect PineCone and JTAG Debugger from our computer
 
-[`github.com/lupyuen/bl_iot_sdk/releases/tag/v0.0.4`](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v0.0.4)
+1.  Connect the remapped JTAG Pins from PineCone to our JTAG Deugger...
 
-Scroll to the bottom. Under `Assets`, click `build_out.zip`
+    | JTAG Pin | PineCone Pin |
+    |:---|:---|
+    | __`TDI`__  | `IO 1`
+    | __`TCK`__ | `IO 2`
+    | __`TDO`__   | `IO 3`
+    | __`TMS`__   | `IO 12`
+    | __`GND`__   | `GND`
 
-Unzip the downloaded file.
+1.  Set the PineCone Jumper to `H`, because we shall be flashing the firmware shortly
 
-Flash the firmware file inside...
+1.  Connect both PineCone and JTAG Debugger to our computer's USB ports
 
-```text
-build_out/sdk_app_helloworld.bin
-```
+## Download the Remap Firmware
+
+The firmware code from the previous section has been built and uploaded as a GitHub Release. Here's how we download the firmware the remaps the JTAG Port...
+
+1.  Browse to this GitHub Release...
+
+    [`github.com/lupyuen/bl_iot_sdk/releases/tag/v0.0.4`](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v0.0.4)
+
+1.  Scroll to the bottom. Under `Assets`, click `build_out.zip`
+
+1.  Unzip the downloaded file `build_out.zip`
+
+1.  In the extracted files, look for...
+
+    ```text
+    build_out/sdk_app_helloworld.bin
+    ```
+
+    We shall be flashing `sdk_app_helloworld.bin` in the next step.
+
+This version of the `helloworld` app has been modified to remap the JTAG Port.
+
+## Flash the Remap Firmware
+
+1.  Check that the PineCone Jumper has been set to `H`, ready for flashing
+
+1.  Follow the instructions in this article to flash the `sdk_app_helloworld.bin` firmware that we have just downloaded. (Not the one from GitHub Actions)
+
+    ???
+
+    When selecting the firmware file, remember to choose the `sdk_app_helloworld.bin` firmware that we have just downloaded.
+
+## Start the Remap Firmware
+
+1.  After flashing the remap firmware, set the PineCone Jumper to `L` and power on PineCone
+
+1.  PineCone's LED should light up bright white to signify that the JTAG Port has been remapped
+
+## Run OpenOCD
+
+1.  Run OpenOCD using the same steps that we have covered in this article
+
+1.  We should see the same OpenOCD output, including the CPU ID.
+
+    This means that the remapped JTAG Port is working OK.
+
+## Remove the Remap Firmware
+
+1.  To remove the remap firmware, follow the instructions in this article to flash the `sdk_app_helloworld.bin` firmware from GitHub Actions. (Not the one we have just downloaded)
+
+    ???
+
+1.  Set PineCone's Jumper to `L` and power on PineCone.
+
+    The LED should no longer light up after booting
+
+    This signifies that the JTAG Port is no longer remapped. And we're back to the default JTAG Port.
 
 # How shall we fix the JTAG Port?
 

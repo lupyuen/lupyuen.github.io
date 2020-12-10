@@ -89,7 +89,13 @@
 <li><a href="#if-you-love-the-led-set-it-free">7 If you love the LED... Set it free!</a><ul></ul></li>
 <li><a href="#remap-the-jtag-port">8 Remap the JTAG Port</a><ul>
 <li><a href="#before-and-after">8.1 Before and After</a><ul></ul></li></ul></li>
-<li><a href="#test-the-remapped-jtag-port">9 Test the Remapped JTAG Port</a><ul></ul></li>
+<li><a href="#test-the-remapped-jtag-port">9 Test the Remapped JTAG Port</a><ul>
+<li><a href="#connect-the-remapped-jtag-port">9.1 Connect the Remapped JTAG Port</a><ul></ul></li>
+<li><a href="#download-the-remap-firmware">9.2 Download the Remap Firmware</a><ul></ul></li>
+<li><a href="#flash-the-remap-firmware">9.3 Flash the Remap Firmware</a><ul></ul></li>
+<li><a href="#start-the-remap-firmware">9.4 Start the Remap Firmware</a><ul></ul></li>
+<li><a href="#run-openocd-1">9.5 Run OpenOCD</a><ul></ul></li>
+<li><a href="#remove-the-remap-firmware">9.6 Remove the Remap Firmware</a><ul></ul></li></ul></li>
 <li><a href="#how-shall-we-fix-the-jtag-port">10 How shall we fix the JTAG Port?</a><ul></ul></li>
 <li><a href="#whats-next">11 What's Next</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/openocd-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board connected to Sipeed JTAG Debugger" /></p>
 <p><em>PineCone BL602 RISC-V Evaluation Board connected to Sipeed JTAG Debugger</em></p>
@@ -509,6 +515,13 @@ const uint32_t GPIO_CTRL = 3;  //  Pin Control
 <p><em>Remapped JTAG Port connected to JTAG Debugger. The LED lights up in bright white to signify that the JTAG Port has been remapped. Jumper is set to L, for Normal Mode.</em></p>
 <h1 id="test-the-remapped-jtag-port" class="section-header"><a href="#test-the-remapped-jtag-port">9 Test the Remapped JTAG Port</a></h1>
 <p>TODO</p>
+<h2 id="connect-the-remapped-jtag-port" class="section-header"><a href="#connect-the-remapped-jtag-port">9.1 Connect the Remapped JTAG Port</a></h2>
+<ol>
+<li>
+<p>Disconnect PineCone and JTAG Debugger from our computer</p>
+</li>
+<li>
+<p>Connect the remapped JTAG Pins from PineCone to our JTAG Deugger...</p>
 <table><thead><tr><th align="left">JTAG Pin</th><th align="left">PineCone Pin</th></tr></thead><tbody>
 <tr><td align="left"><strong><code>TDI</code></strong></td><td align="left"><code>IO 1</code></td></tr>
 <tr><td align="left"><strong><code>TCK</code></strong></td><td align="left"><code>IO 2</code></td></tr>
@@ -516,13 +529,77 @@ const uint32_t GPIO_CTRL = 3;  //  Pin Control
 <tr><td align="left"><strong><code>TMS</code></strong></td><td align="left"><code>IO 12</code></td></tr>
 <tr><td align="left"><strong><code>GND</code></strong></td><td align="left"><code>GND</code></td></tr>
 </tbody></table>
-<p>Download from...</p>
+</li>
+<li>
+<p>Set the PineCone Jumper to <code>H</code>, because we shall be flashing the firmware shortly</p>
+</li>
+<li>
+<p>Connect both PineCone and JTAG Debugger to our computer's USB ports</p>
+</li>
+</ol>
+<h2 id="download-the-remap-firmware" class="section-header"><a href="#download-the-remap-firmware">9.2 Download the Remap Firmware</a></h2>
+<p>The firmware code from the previous section has been built and uploaded as a GitHub Release. Here's how we download the firmware the remaps the JTAG Port...</p>
+<ol>
+<li>
+<p>Browse to this GitHub Release...</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/releases/tag/v0.0.4"><code>github.com/lupyuen/bl_iot_sdk/releases/tag/v0.0.4</code></a></p>
+</li>
+<li>
 <p>Scroll to the bottom. Under <code>Assets</code>, click <code>build_out.zip</code></p>
-<p>Unzip the downloaded file.</p>
-<p>Flash the firmware file inside...</p>
+</li>
+<li>
+<p>Unzip the downloaded file <code>build_out.zip</code></p>
+</li>
+<li>
+<p>In the extracted files, look for...</p>
 <pre><code class="language-text">build_out/sdk_app_helloworld.bin
 </code></pre>
+<p>We shall be flashing <code>sdk_app_helloworld.bin</code> in the next step.</p>
+</li>
+</ol>
+<p>This version of the <code>helloworld</code> app has been modified to remap the JTAG Port.</p>
+<h2 id="flash-the-remap-firmware" class="section-header"><a href="#flash-the-remap-firmware">9.3 Flash the Remap Firmware</a></h2>
+<ol>
+<li>
+<p>Check that the PineCone Jumper has been set to <code>H</code>, ready for flashing</p>
+</li>
+<li>
+<p>Follow the instructions in this article to flash the <code>sdk_app_helloworld.bin</code> firmware that we have just downloaded. (Not the one from GitHub Actions)</p>
+<p>???</p>
+<p>When selecting the firmware file, remember to choose the <code>sdk_app_helloworld.bin</code> firmware that we have just downloaded.</p>
+</li>
+</ol>
+<h2 id="start-the-remap-firmware" class="section-header"><a href="#start-the-remap-firmware">9.4 Start the Remap Firmware</a></h2>
+<ol>
+<li>
+<p>After flashing the remap firmware, set the PineCone Jumper to <code>L</code> and power on PineCone</p>
+</li>
+<li>
+<p>PineCone's LED should light up bright white to signify that the JTAG Port has been remapped</p>
+</li>
+</ol>
+<h2 id="run-openocd-1" class="section-header"><a href="#run-openocd-1">9.5 Run OpenOCD</a></h2>
+<ol>
+<li>
+<p>Run OpenOCD using the same steps that we have covered in this article</p>
+</li>
+<li>
+<p>We should see the same OpenOCD output, including the CPU ID.</p>
+<p>This means that the remapped JTAG Port is working OK.</p>
+</li>
+</ol>
+<h2 id="remove-the-remap-firmware" class="section-header"><a href="#remove-the-remap-firmware">9.6 Remove the Remap Firmware</a></h2>
+<ol>
+<li>
+<p>To remove the remap firmware, follow the instructions in this article to flash the <code>sdk_app_helloworld.bin</code> firmware from GitHub Actions. (Not the one we have just downloaded)</p>
+<p>???</p>
+</li>
+<li>
+<p>Set PineCone's Jumper to <code>L</code> and power on PineCone.</p>
+<p>The LED should no longer light up after booting</p>
+<p>This signifies that the JTAG Port is no longer remapped. And we're back to the default JTAG Port.</p>
+</li>
+</ol>
 <h1 id="how-shall-we-fix-the-jtag-port" class="section-header"><a href="#how-shall-we-fix-the-jtag-port">10 How shall we fix the JTAG Port?</a></h1>
 <p>TODO</p>
 <p>Options...</p>
