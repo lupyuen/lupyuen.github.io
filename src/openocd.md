@@ -447,15 +447,9 @@ Let's study the firmware code that remaps the JTAG Port... And frees our LED!
 
 ![Remapped PineCone Connection to JTAG Debugger](https://lupyuen.github.io/images/pinecone-headers2.jpg)
 
-_Remapped JTAG Port connected to JTAG Debugger_
+_Remapped JTAG Port connected to JTAG Debugger. The LED lights up in bright white to signify that the JTAG Port has been remapped. Jumper is set to L, for Normal Mode._
 
-The LED lights up in bright white to signify that the JTAG Port has been remapped.
-
-Jumper is set to L, for Normal Mode.
-
-GND must be connected or JTAG will get wonky.
-
-# How to remap the JTAG port
+# How to remap the JTAG Port
 
 TODO
 
