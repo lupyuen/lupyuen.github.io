@@ -391,49 +391,59 @@ _PineCone LED uses GPIO 11, 14, 17_
 
 # If you love the LED... Set it free!
 
-TODO
+_Why does the PineCone LED light up in colour when the JTAG Port is active?_
 
-_Why did the PineCone LED light up in colour when the JTAG Port was active?_
+To solve this mystery, we dig deep into the [PineCone Schematics](https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf) and check the BL602 Pins connected to our LED... (See pic above)
 
-[See the PineCone Schematics](https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf)
+| LED Pin | BL602 Pin |
+|:---|:---|
+| __`LED Blue`__  | `IO 11` |
+| __`LED Green`__ | `IO 14` |
+| __`LED Red`__   | `IO 17` |
 
-Default JTAG port is...
+Aha! PineCone's LED is connected to the same pins as the JTAG Port. Which explains the disco lights during JTAG programming!
 
--   TDO: GPIO 11
--   TMS: GPIO 12 (not remapped) (Yellow)
--   TCK: GPIO 14
--   TDI: GPIO 17
+_Can we use PineCone's LED in our firmware... While debugging our firmware with JTAG?_
 
-But 3 of above pins are connected to LED...
+According to the [BL602 Reference Manual](https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf) (Section 3.2.8 "GPIO Function", Page 27), we may remap the JTAG Port to other GPIO Pins (and avoid the conflict).
 
--   Blue: GPIO 11
--   Green: GPIO 14
--   Red: GPIO 17
+Here's our plan to free the LED from the JTAG Port...
 
-To free the LED from the JTAG Port, we need to remap the above 3 LED pins to PWM (to control the LED)...
+1.  We remap the three LED pins from JTAG to PWM, so that we may to control the LED...
 
--   PWM Ch 1 (Blue): GPIO 11
--   PWM Ch 4 (Green): GPIO 14
--   PWM Ch 2 (Red): GPIO 17
+    | LED Pin | BL602 Pin | Remap Pin Function |
+    |:---|:---|:---|
+    | __`LED Blue`__  | `IO 11` | JTAG → PWM
+    | __`LED Green`__ | `IO 14` | JTAG → PWM
+    | __`LED Red`__   | `IO 17` | JTAG → PWM
 
-Then remap the pins below to JTAG...
+1.  Then we pick three unused BL602 Pins and remap them to JTAG...
 
--   TDI: GPIO 1 (Red)
--   TCK: GPIO 2 (Green)
--   TDO: GPIO 3 (Blue)
+    | JTAG Pin | BL602 Pin | Remap Pin Function |
+    |:---|:---|:---|
+    | __`JTAG TDI`__  | `IO 1` | SDIO → JTAG
+    | __`JTAG TCK`__ | `IO 2` | SDIO → JTAG
+    | __`JTAG TDO`__   | `IO 3` | SDIO → JTAG
 
-And connect...
+1.  We keep the JTAG TMS pin as is because it wasn't invited to the disco party...
 
--   TMS: GPIO 12 (not remapped) (Yellow)
--   GND: GND (Black)
+    | JTAG Pin | BL602 Pin | Remap Pin Function |
+    |:---|:---|:---|
+    | __`JTAG TMS`__  | `IO 12` | JTAG → JTAG
 
-Also set the GPIO control bits for the remapped pins...
+1.  Finally we set the GPIO Control bits for the pins remapped to JTAG...
 
--   Pull Down Control: 0
--   Pull Up Control: 0
--   Driving Control: 0
--   SMT Control: 1
--   Input Enable: 1
+    | GPIO Control | Value |
+    |:---|:---|
+    | Pull Down Control | 0
+    | Pull Up Control | 0 |
+    | Driving Control | 0
+    | SMT Control | 1
+    | Input Enable | 1
+
+    (These values were obtained by sniffing the GPIO Control bits for the default JTAG Port)
+
+Let's study the firmware code that remaps the JTAG Port... And frees our LED!
 
 ![Remapped PineCone Connection to JTAG Debugger](https://lupyuen.github.io/images/pinecone-headers2.jpg)
 
