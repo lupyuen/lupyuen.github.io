@@ -447,23 +447,26 @@ Here's our plan to free the LED from the JTAG Port...
 
 Let's study the firmware code that remaps the JTAG Port... And frees our LED!
 
-![BL602 Configuration Register for GPIO 0 and GPIO 1](https://lupyuen.github.io/images/pinecone-gpio.png)
+![BL602 Configuration Register for Pins IO 0 and IO 1](https://lupyuen.github.io/images/pinecone-gpio.png)
 
-_BL602 Configuration Register for GPIO 0 and GPIO 1_
+_BL602 Configuration Register for Pins IO 0 and IO 1_
 
 # Remap the JTAG Port
 
-TODO
+Remember that we need to remap JTAG and PWM functions of the following pins...
 
-Firmware code for remapping the JTAG port and setting the GPIO Control...
+| LED / JTAG Pin | BL602 Pin | Remap Pin Function |
+|:---|:---|:---|
+| __`JTAG TDI`__  | `IO 1` | SDIO → JTAG
+| __`JTAG TCK`__ | `IO 2` | SDIO → JTAG
+| __`JTAG TDO`__   | `IO 3` | SDIO → JTAG
+| __`LED Blue`__  | `IO 11` | JTAG → PWM
+| __`LED Green`__ | `IO 14` | JTAG → PWM
+| __`LED Red`__   | `IO 17` | JTAG → PWM
 
-Modified from the original `helloworld` app.
-
-[`sdk_app_helloworld/main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/jtag/customer_app/sdk_app_helloworld/sdk_app_helloworld/main.c#L83-L241)
+Here's how we write the firmware code to remap the pins: [`sdk_app_helloworld/main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/jtag/customer_app/sdk_app_helloworld/sdk_app_helloworld/main.c#L83-L241)
 
 1.  According to the pic above, we configure BL602 Pin `IO 1` by writing to the memory address `0x40000100`. We'll call this address `GP1FUNC_ADDR`
-
-    ("地址" is Chinese for "Address")
 
     ```c
     //  GPIO_CFGCTL0
@@ -471,6 +474,10 @@ Modified from the original `helloworld` app.
     uint32_t *GPIO_CFGCTL0 = (uint32_t *) 0x40000100;
     uint32_t *GP1FUNC_ADDR = GPIO_CFGCTL0;
     ```
+
+    The pic above appears in the [BL602 Reference Manual](https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf), Section 3.3.5 "GPIO_CFGCTL0", Page 33.
+
+    ("地址" is Chinese for "Address")
 
 1.  We'll set bits 24 to 27 of `GP1FUNC_ADDR` to select the desired Pin Function (i.e. JTAG).
 
@@ -501,7 +508,7 @@ Modified from the original `helloworld` app.
         | (GPIO_CTRL     << GP1CTRL_SHIFT);
     ```
 
-1.  The Pin Function values (JTAG and PWM) are defined as...
+1.  The Pin Function values (`GPIO_FUN_JTAG` and `GPIO_FUN_PWM`) are defined as...
 
     ```c
     //  Pin Functions (4 bits). From components/bl602/bl602_std/bl602_std/StdDriver/Inc/bl602_gpio.h
@@ -509,7 +516,7 @@ Modified from the original `helloworld` app.
     const uint32_t GPIO_FUN_JTAG = 14;  //  Pin Function for JTAG (0xe)
     ```
 
-1.  The Pin Control value is defined as...
+1.  The Pin Control value `GPIO_CTRL` is defined as...
 
     ```c
     //  Pin Control (6 bits)
@@ -523,14 +530,14 @@ Modified from the original `helloworld` app.
 
 1.  We apply the above steps to remap each Pin Function and set the Pin Control bits...
 
-    | LED/JTAG Pin | BL602 Pin | Remap Pin Function |
+    | LED / JTAG Pin | BL602 Pin | Remap Pin Function |
     |:---|:---|:---|
-    | __`LED Blue`__  | `IO 11` | JTAG → PWM
-    | __`LED Green`__ | `IO 14` | JTAG → PWM
-    | __`LED Red`__   | `IO 17` | JTAG → PWM
     | __`JTAG TDI`__  | `IO 1` | SDIO → JTAG
     | __`JTAG TCK`__ | `IO 2` | SDIO → JTAG
     | __`JTAG TDO`__   | `IO 3` | SDIO → JTAG
+    | __`LED Blue`__  | `IO 11` | JTAG → PWM
+    | __`LED Green`__ | `IO 14` | JTAG → PWM
+    | __`LED Red`__   | `IO 17` | JTAG → PWM
 
 The remapping code for all 6 pins may be found here: [`sdk_app_helloworld/main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/jtag/customer_app/sdk_app_helloworld/sdk_app_helloworld/main.c#L83-L241)
 
@@ -546,11 +553,13 @@ Here are the values of the Pin Function and Pin Control registers before and aft
 | `GPIO_CFGCTL7` | `0b` `03` __`0e`__ `03` | `0b` `03` __`08`__ `03` | 14
 | `GPIO_CFGCTL8` | __`0e`__ `03` `07` `17` | __`08`__ `03` `07` `17` | 17
 
-(Changed values are highlighted)
+(Changed values have been highlighted)
 
 Note that the Pin Function fields (4 bits each) have been changed to `0xe` for JTAG and `0x8` for PWM.
 
 The Pin Control fields (6 bits each) have also been changed to `0x03`.
+
+Let's test the remapped JTAG Port on our PineCone!
 
 ![Remapped PineCone Connection to JTAG Debugger](https://lupyuen.github.io/images/pinecone-headers2.jpg)
 
