@@ -295,7 +295,7 @@ Let's study the important bits of our OpenOCD Script: [`pinecone-rust/openocd.cf
 
 ## Debug Logging
 
-```
+```text
 # Uncomment to enable debug messages
 # debug_level 4
 ```
@@ -306,7 +306,7 @@ This is useful for troubleshooting the OpenOCD connection to PineCone. OpenOCD w
 
 ## OpenOCD Driver
 
-```
+```text
 adapter driver ftdi
 
 ftdi_vid_pid 0x0403 0x6010
@@ -318,7 +318,7 @@ Here we tell OpenOCD to use the FT2232 debugger that's connected to USB.
 
 ## FTDI Channel
 
-```
+```text
 # Sipeed JTAG Debugger uses FTDI Channel 0, not 1
 ftdi_channel 0
 # Previously: ftdi_channel 1
@@ -332,7 +332,7 @@ For other JTAG Debuggers: Set the FTDI Channel to 0 if PineCone is connected to 
 
 ## JTAG Speed
 
-```
+```text
 transport select jtag
 
 # TODO: Increase the adapter speed (now 100 kHz)
@@ -348,7 +348,7 @@ We should increase the Adapter Speed to speed up the data transfer. (After lots 
 
 ## CPU ID
 
-```
+```text
 set _CHIPNAME riscv
 jtag newtap $_CHIPNAME cpu -irlen 5 -expected-id 0x20000c05
 ```
@@ -359,7 +359,7 @@ This should never be changed. (Unless we're connecting to a different microcontr
 
 ## Restart PineCone
 
-```
+```text
 init
 reset init
 ```
@@ -374,7 +374,7 @@ After executing our script, OpenOCD waits to receive GDB Debugging commands and 
 
 For some OpenOCD Scripts (like for flashing firmware), we don't need OpenOCD to wait for further commands. In such scripts, we terminate OpenOCD with the `exit` command...
 
-```
+```text
 # Terminate OpenOCD
 exit
 ```

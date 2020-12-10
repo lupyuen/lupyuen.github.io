@@ -309,49 +309,54 @@ OPENOCD_DIRECTORY\bin\openocd
 <p>Our OpenOCD Script is based on the one kindly contributed by the <a href="https://github.com/sipeed/bl602-rust-guide">Sipeed BL602 Community</a>.</p>
 <p>Let's study the important bits of our OpenOCD Script: <a href="https://github.com/lupyuen/pinecone-rust/blob/main/openocd.cfg"><code>pinecone-rust/openocd.cfg</code></a></p>
 <h2 id="debug-logging" class="section-header"><a href="#debug-logging">6.1 Debug Logging</a></h2>
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-</pre></div>
+<pre><code class="language-text"># Uncomment to enable debug messages
+# debug_level 4
+</code></pre>
 <p>To show debug messages in OpenOCD, uncomment the <code>debug_level</code> line. (Remove the leading &quot;<code>#</code>&quot;)</p>
 <p>This is useful for troubleshooting the OpenOCD connection to PineCone. OpenOCD will show every single JTAG packet transmitted between our computer and PineCone.</p>
 <h2 id="openocd-driver" class="section-header"><a href="#openocd-driver">6.2 OpenOCD Driver</a></h2>
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="ident">adapter</span> <span class="ident">driver</span> <span class="ident">ftdi</span>
+<pre><code class="language-text">adapter driver ftdi
 
-<span class="ident">ftdi_vid_pid</span> <span class="number">0x0403</span> <span class="number">0x6010</span></pre></div>
+ftdi_vid_pid 0x0403 0x6010
+</code></pre>
 <p>Here we tell OpenOCD to use the FT2232 debugger that's connected to USB.</p>
 <p><code>0x0403</code> is the USB Vendor ID for FT2232. <code>0x6010</code> is the USB Product ID.</p>
 <h2 id="ftdi-channel" class="section-header"><a href="#ftdi-channel">6.3 FTDI Channel</a></h2>
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="ident">ftdi_channel</span> <span class="number">0</span></pre></div>
+<pre><code class="language-text"># Sipeed JTAG Debugger uses FTDI Channel 0, not 1
+ftdi_channel 0
+# Previously: ftdi_channel 1
+</code></pre>
 <p>According to the <a href="https://www.ftdichip.com/Support/Documents/DataSheets/ICs/DS_FT2232D.pdf">FT2232 Specs</a>, the FT2232 module supports two Serial Channels: 0 and 1.</p>
 <p>For Sipeed JTAG Debugger: The FTDI Channel must be 0. <a href="https://tang.sipeed.com/en/hardware-overview/rv-debugger/?utm_source=platformio&amp;utm_medium=docs">See the schematics</a></p>
 <p>For other JTAG Debuggers: Set the FTDI Channel to 0 if PineCone is connected to the first Serial Channel, and to 1 for the second Serial Channel.</p>
 <h2 id="jtag-speed" class="section-header"><a href="#jtag-speed">6.4 JTAG Speed</a></h2>
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="ident">transport</span> <span class="ident">select</span> <span class="ident">jtag</span>
+<pre><code class="language-text">transport select jtag
 
-<span class="ident">adapter</span> <span class="ident">speed</span> <span class="number">100</span></pre></div>
+# TODO: Increase the adapter speed (now 100 kHz)
+adapter speed 100
+# Previously: adapter speed 2000
+</code></pre>
 <p>Here we select JTAG as the communication protocol for talking to PineCone.</p>
 <p>Our OpenOCD Script talks to PineCone at 100 kbps, which is a safe (but slow) data rate that works with most JTAG Debuggers.</p>
 <p>We should increase the Adapter Speed to speed up the data transfer. (After lots of testing, of course)</p>
 <h2 id="cpu-id" class="section-header"><a href="#cpu-id">6.5 CPU ID</a></h2>
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="ident">set</span> <span class="ident">_CHIPNAME</span> <span class="ident">riscv</span>
-<span class="ident">jtag</span> <span class="ident">newtap</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">_CHIPNAME</span> <span class="ident">cpu</span> <span class="op">-</span><span class="ident">irlen</span> <span class="number">5</span> <span class="op">-</span><span class="ident">expected</span><span class="op">-</span><span class="ident">id</span> <span class="number">0x20000c05</span></pre></div>
+<pre><code class="language-text">set _CHIPNAME riscv
+jtag newtap $_CHIPNAME cpu -irlen 5 -expected-id 0x20000c05
+</code></pre>
 <p>This is the part that verifies BL602's CPU ID: <code>0x20000c05</code></p>
 <p>This should never be changed. (Unless we're connecting to a different microcontroller)</p>
 <h2 id="restart-pinecone" class="section-header"><a href="#restart-pinecone">6.6 Restart PineCone</a></h2>
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="ident">init</span>
-<span class="ident">reset</span> <span class="ident">init</span></pre></div>
+<pre><code class="language-text">init
+reset init
+</code></pre>
 <p>The <code>init</code> command initiates the JTAG connection to PineCone, and verifies the CPU ID of our BL602 Microcontroller.</p>
 <p><code>reset init</code> triggers a reboot of PineCone. (Similar to pressing the <code>RST</code> button on PineCone)</p>
 <h2 id="wait-for-gdb-and-tcl-commands" class="section-header"><a href="#wait-for-gdb-and-tcl-commands">6.7 Wait for GDB and TCL Commands</a></h2>
 <p>After executing our script, OpenOCD waits to receive GDB Debugging commands and OpenOCD TCL commands.</p>
 <p>For some OpenOCD Scripts (like for flashing firmware), we don't need OpenOCD to wait for further commands. In such scripts, we terminate OpenOCD with the <code>exit</code> command...</p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="ident">exit</span></pre></div>
+<pre><code class="language-text"># Terminate OpenOCD
+exit
+</code></pre>
 <p>See the complete OpenOCD Script: <a href="https://github.com/lupyuen/pinecone-rust/blob/main/openocd.cfg"><code>pinecone-rust/openocd.cfg</code></a></p>
 <p><a href="https://twitter.com/gamelaster/status/1335997851151835140?s=20">Check out the awesome work on PineCone OpenOCD by @gamelaster</a></p>
 <p><a href="http://openocd.org/doc/html/index.html">More about OpenOCD</a></p>
