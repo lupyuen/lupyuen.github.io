@@ -176,6 +176,8 @@ Download OpenOCD from the [xPack OpenOCD site](https://github.com/xpack-dev-tool
 
 -   [xPack OpenOCD for Windows x64](https://github.com/xpack-dev-tools/openocd-xpack/releases/download/v0.10.0-15/xpack-openocd-0.10.0-15-win32-x64.zip)
 
+-   [Other builds of xPack OpenOCD](https://github.com/xpack-dev-tools/openocd-xpack/releases/tag/v0.10.0-15/)
+
 Extract the downloaded file. On Windows: [Use 7-Zip](https://www.7-zip.org/)
 
 ## Download OpenOCD Script
@@ -227,9 +229,9 @@ Info : JTAG tap: riscv.cpu tap/device found: 0x20000c05 (mfg: 0x602 (<unknown>),
 
 Notice the mysterious number `0x20000c05`?
 
-This is very important... `0x20000c05` is the number that identifies the BL602 Microcontroller. It shows that our JTAG connection is OK.
+This is very important... `0x20000c05` is the CPU ID that identifies the BL602 Microcontroller. It shows that our JTAG connection is OK.
 
-If we see any number other than `0x20000c05`, it probably means that our JTAG connection is loose. Or that we have connected our JTAG Debugger to the incorrect PineCone Pins.
+If we see any CPU ID other than `0x20000c05`, it probably means that our JTAG connection is loose. Or that we have connected our JTAG Debugger to the incorrect PineCone Pins.
 
 ```
 Info : datacount=1 progbufsize=2
@@ -253,7 +255,7 @@ Info : Listening on port 6666 for tcl connections
 
 Finally OpenOCD restarts the JTAG connection. And it listens for OpenOCD (TCL) commands.
 
-If we see `0x20000c05` and the messages above... Congratulations OpenOCD is now connected to PineCone's JTAG Port!
+If we see CPU ID `0x20000c05` and the messages above... Congratulations OpenOCD is now connected to PineCone's JTAG Port!
 
 OpenOCD is all ready to flash and debug PineCone firmware. (Which we'll cover in the next article)
 
@@ -285,23 +287,103 @@ Check that the `GND` Pin is connected from the JTAG Debugger to PineCone.
 
 # OpenOCD Script
 
-TODO
+The OpenOCD connection to PineCone is controlled by the OpenOCD Script [`pinecone-rust/openocd.cfg`](https://github.com/lupyuen/pinecone-rust/blob/main/openocd.cfg).
 
-Based on [Sipeed BL602 Community's Rust guide](https://github.com/sipeed/bl602-rust-guide)
+Our OpenOCD Script is based on the one kindly contributed by the [Sipeed BL602 Community](https://github.com/sipeed/bl602-rust-guide).
 
-Ftdi interface
+Let's study the important bits of our OpenOCD Script: [`pinecone-rust/openocd.cfg`](https://github.com/lupyuen/pinecone-rust/blob/main/openocd.cfg)
 
-For Sipeed JTAG Debugger, FTDI channel must be 0 in openocd.cfg...
+## Debug Logging
 
 ```
+# Uncomment to enable debug messages
+# debug_level 4
+```
+
+To show debug messages in OpenOCD, uncomment the `debug_level` line. (Remove the leading "`#`")
+
+This is useful for troubleshooting the OpenOCD connection to PineCone. OpenOCD will show every single JTAG packet transmitted between our computer and PineCone.
+
+## OpenOCD Driver
+
+```
+adapter driver ftdi
+
+ftdi_vid_pid 0x0403 0x6010
+```
+
+Here we tell OpenOCD to use the FT2232 debugger that's connected to USB.
+
+`0x0403` is the USB Vendor ID for FT2232. `0x6010` is the USB Product ID.
+
+## FTDI Channel
+
+```
+# Sipeed JTAG Debugger uses FTDI Channel 0, not 1
 ftdi_channel 0
+# Previously: ftdi_channel 1
 ```
 
-Cpu id
+According to the [FT2232 Specs](https://www.ftdichip.com/Support/Documents/DataSheets/ICs/DS_FT2232D.pdf), the FT2232 module supports two Serial Channels: 0 and 1.
 
-Speed
+For Sipeed JTAG Debugger: The FTDI Channel must be 0. [See the schematics](https://tang.sipeed.com/en/hardware-overview/rv-debugger/?utm_source=platformio&utm_medium=docs)
 
-[Other folks in the PineCone Community are using OpenOCD too](https://twitter.com/gamelaster/status/1335997851151835140?s=09)
+For other JTAG Debuggers: Set the FTDI Channel to 0 if PineCone is connected to the first Serial Channel, and to 1 for the second Serial Channel.
+
+## JTAG Speed
+
+```
+transport select jtag
+
+# TODO: Increase the adapter speed (now 100 kHz)
+adapter speed 100
+# Previously: adapter speed 2000
+```
+
+Here we select JTAG as the communication protocol for talking to PineCone.
+
+Our OpenOCD Script talks to PineCone at 100 kbps, which is a safe (but slow) data rate that works with most JTAG Debuggers.
+
+We should increase the Adapter Speed to speed up the data transfer. (After lots of testing, of course)
+
+## CPU ID
+
+```
+set _CHIPNAME riscv
+jtag newtap $_CHIPNAME cpu -irlen 5 -expected-id 0x20000c05
+```
+
+This is the part that verifies BL602's CPU ID: `0x20000c05`
+
+This should never be changed. (Unless we're connecting to a different microcontroller)
+
+## Restart PineCone
+
+```
+init
+reset init
+```
+
+The `init` command initiates the JTAG connection to PineCone, and verifies the CPU ID of our BL602 Microcontroller.
+
+`reset init` triggers a reboot of PineCone. (Similar to pressing the `RST` button on PineCone)
+
+## Wait for GDB and TCL Commands
+
+After executing our script, OpenOCD waits to receive GDB Debugging commands and OpenOCD TCL commands.
+
+For some OpenOCD Scripts (like for flashing firmware), we don't need OpenOCD to wait for further commands. In such scripts, we terminate OpenOCD with the `exit` command...
+
+```
+# Terminate OpenOCD
+exit
+```
+
+See the complete OpenOCD Script: [`pinecone-rust/openocd.cfg`](https://github.com/lupyuen/pinecone-rust/blob/main/openocd.cfg)
+
+[Check out the awesome work on PineCone OpenOCD by @gamelaster](https://twitter.com/gamelaster/status/1335997851151835140?s=20)
+
+[More about OpenOCD](http://openocd.org/doc/html/index.html)
 
 ![PineCone LED uses GPIO 11, 14, 17](https://lupyuen.github.io/images/pinecone-led.png)
 
