@@ -403,6 +403,8 @@ To solve this mystery, we dig deep into the [PineCone Schematics](https://github
 
 Aha! PineCone's LED is connected to the same pins as the JTAG Port. Which explains the disco lights during JTAG programming!
 
+This is a problem... If we control the PineCone LED in our firmware, it will interfere with the JTAG Port.
+
 _Can we use PineCone's LED in our firmware... While debugging our firmware with JTAG?_
 
 According to the [BL602 Reference Manual](https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf) (Section 3.2.8 "GPIO Function", Page 27), we may remap the JTAG Port to other GPIO Pins (and avoid the conflict).
