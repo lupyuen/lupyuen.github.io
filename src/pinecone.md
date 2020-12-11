@@ -258,6 +258,10 @@ BL602's RISC-V Core seems to be based on either [__SiFive E21__](https://www.sif
 
 -   [__SiFive E24 Manual__](https://sifive.cdn.prismic.io/sifive/dffb6a15-80b3-42cb-99e1-23ce6fd1d052_sifive_E24_rtl_full_20G1.03.00_manual.pdf)
 
+More tools for PineCone BL602 may be found here...
+
+-   [__Awesome Bouffalo__](https://github.com/mkroman/awesome-bouffalo)
+
 ## Form Factor
 
 The PineCone BL602 Evaluation Board has a similar form factor to other wireless dev boards, like [EBYTE E73-TBB](https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004?source=friends_link&sk=bb4e2523b922d0870259ab3fa696c7da) (which is based on nRF52832)
