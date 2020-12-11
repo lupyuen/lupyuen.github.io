@@ -613,6 +613,8 @@ The firmware code from the previous section has been built and uploaded as a Git
 
     This version of the `helloworld` app has been modified to remap the JTAG Port.
 
+    [Browse the source code](https://github.com/lupyuen/bl_iot_sdk/blob/jtag/customer_app/sdk_app_helloworld/sdk_app_helloworld/main.c#L83-L241)
+
 ## Flash the Remap Firmware
 
 1.  Check that the PineCone Jumper has been set to `H` (Bootloader Mode), ready for flashing
