@@ -96,7 +96,10 @@
 <li><a href="#start-the-remap-firmware">9.4 Start the Remap Firmware</a><ul></ul></li>
 <li><a href="#run-openocd-1">9.5 Run OpenOCD</a><ul></ul></li>
 <li><a href="#remove-the-remap-firmware">9.6 Remove the Remap Firmware</a><ul></ul></li></ul></li>
-<li><a href="#how-to-fix-the-jtag-port">10 How to fix the JTAG Port</a><ul></ul></li>
+<li><a href="#how-to-fix-the-jtag-port">10 How to fix the JTAG Port</a><ul>
+<li><a href="#redesign-the-pinecone-hardware">10.1 Redesign the PineCone Hardware</a><ul></ul></li>
+<li><a href="#keep-pinecone-as-is">10.2 Keep PineCone as is</a><ul></ul></li>
+<li><a href="#integrate-jtag-debugger-with-pinecone">10.3 Integrate JTAG Debugger with PineCone</a><ul></ul></li></ul></li>
 <li><a href="#whats-next">11 What's Next</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/openocd-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board connected to Sipeed JTAG Debugger" /></p>
 <p><em>PineCone BL602 RISC-V Evaluation Board connected to Sipeed JTAG Debugger</em></p>
 <p>Today we'll learn to connect the <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602 RISC-V Evaluation Board</strong></a> to OpenOCD for flashing and debugging PineCone firmware.</p>
@@ -610,25 +613,44 @@ const uint32_t GPIO_CTRL = 3;  //  Pin Control
 <p><img src="https://lupyuen.github.io/images/pinecone-led2.jpg" alt="PineCone with Remapped JTAG Port" /></p>
 <p><em>PineCone with Remapped JTAG Port. The LED lights up in bright white to signify that the JTAG Port has been remapped.</em></p>
 <h1 id="how-to-fix-the-jtag-port" class="section-header"><a href="#how-to-fix-the-jtag-port">10 How to fix the JTAG Port</a></h1>
-<p>TODO</p>
-<p>Options...</p>
+<p><em>What are the options for resolving the conflict between the JTAG Pins and the LED Pins on PineCone?</em></p>
+<p>We have a couple of options...</p>
+<h2 id="redesign-the-pinecone-hardware" class="section-header"><a href="#redesign-the-pinecone-hardware">10.1 Redesign the PineCone Hardware</a></h2>
+<p><em>Connect the LED to other pins. Keep the default JTAG Port.</em></p>
+<p>We'll no longer have the multicolour lights during JTAG programming... But this option allows us to control the LED while doing debugging over JTAG, without having to remap the JTAG Port.</p>
+<p>This makes PineCone coding easier. And we'll never have to worry about connecting our JTAG Debugger to the wrong PineCone Pins.</p>
+<p>This is my preferred option, though it will cost more to redesign and manufacture the board.</p>
+<h2 id="keep-pinecone-as-is" class="section-header"><a href="#keep-pinecone-as-is">10.2 Keep PineCone as is</a></h2>
+<p><em>LED is connected on the default JTAG Pins.</em></p>
+<p>But will we need to use the LED and JTAG Debugging at the same time?</p>
 <ol>
 <li>
-<p>Redesign PineCone and switch LED to other GPIO Pins (preferred)</p>
+<p><strong>Only LED</strong>: We'll remap the LED Pins to PWM so that we may control them.</p>
 </li>
 <li>
-<p>Keep LED on the current GPIO Pins</p>
-<p>Do we need to use LED and JTAG Debugging at the same time?</p>
+<p><strong>Only JTAG</strong>: We'll use the default JTAG Port. No remapping needed. </p>
+<p>(And we get free disco lights during JTAG flashing and debugging)</p>
+</li>
+<li>
+<p><strong>Both LED and JTAG</strong>: This gets tricky.</p>
+<p>As we have learnt earlier, we need to remap the LED Pins to PWM, and remap the JTAG Port to other pins.</p>
 <ul>
 <li>
-<p>No: Just remap the LED pins</p>
+<p>This remapping can be done in the PineCone Firmware.</p>
+<p>But whenever PineCone reboots, the JTAG Port reverts to the default pins, until our firmware remaps the port.</p>
+<p>This may be a problem if we need to reboot PineCone during JTAG flashing or debugging.</p>
 </li>
 <li>
-<p>Yes: Need to remap LED and JTAG pins. Causes problems when PineCone reboots during flashing/debugging: The remap will be forgotten. Maybe remap the LED and JTAG pins in the PineCone Bootloader.</p>
+<p>Alternatively: We may remap the LED and JTAG pins in the PineCone Bootloader <code>blsp_boot2</code></p>
+<p>This ensures that the pins are remapped quickly whenever PineCone reboots.</p>
 </li>
 </ul>
 </li>
 </ol>
+<h2 id="integrate-jtag-debugger-with-pinecone" class="section-header"><a href="#integrate-jtag-debugger-with-pinecone">10.3 Integrate JTAG Debugger with PineCone</a></h2>
+<p>We hear that Sipeed's upcoming BL602 Board will have an onboard JTAG Debugger. (Probably FT2232)</p>
+<p>This increases the cost of the BL602 board... But it simplifies the USB connection between our computer and the BL602 board.</p>
+<p>For PineCone we're using 2 USB ports (PineCone USB + JTAG Debugger). With an integrated JTAG Debugger, we'll need only 1 USB port.</p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">11 What's Next</a></h1>
 <p>TODO</p>
 <p>Embedded Rust</p>
