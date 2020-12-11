@@ -715,7 +715,7 @@ For PineCone we're using 2 USB ports (PineCone USB + JTAG Debugger). With an int
 
 Today we have connected OpenOCD to PineCone... Next we shall try flashing and debugging RISC-V firmware on PineCone! (With VSCode, GDB, ...)
 
-I'll also be testing on PineCone the [Embedded Rust Firmware](https://github.com/lupyuen/pinecone-rust), kindly contributed by the Sipeed BL602 Community.
+I'll also be testing on PineCone the [Embedded Rust Firmware](https://github.com/lupyuen/pinecone-rust), kindly contributed by the Sipeed BL602 Community. [PineCone Rust Docs](https://lupyuen.github.io/pinecone-rust/)
 
 Stay tuned!
 
@@ -727,4 +727,4 @@ Stay tuned!
 
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
-[`github.com/lupyuen/lupyuen.github.io/src/pinecone.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/openocd.md)
+[`github.com/lupyuen/lupyuen.github.io/src/openocd.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/openocd.md)
