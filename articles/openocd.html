@@ -86,7 +86,8 @@
 <li><a href="#cpu-id">6.5 CPU ID</a><ul></ul></li>
 <li><a href="#restart-pinecone">6.6 Restart PineCone</a><ul></ul></li>
 <li><a href="#wait-for-gdb-and-tcl-commands">6.7 Wait for GDB and TCL Commands</a><ul></ul></li></ul></li>
-<li><a href="#if-you-love-the-led-set-it-free">7 If you love the LED... Set it free!</a><ul></ul></li>
+<li><a href="#if-you-love-the-led-set-it-free">7 If you love the LED... Set it free!</a><ul>
+<li><a href="#free-the-led-from-jtag-port">7.1 Free the LED from JTAG Port</a><ul></ul></li></ul></li>
 <li><a href="#remap-the-jtag-port">8 Remap the JTAG Port</a><ul>
 <li><a href="#before-and-after">8.1 Before and After</a><ul></ul></li></ul></li>
 <li><a href="#test-the-remapped-jtag-port">9 Test the Remapped JTAG Port</a><ul>
@@ -385,6 +386,7 @@ exit
 <p>This is a problem... If we control the PineCone LED in our firmware, it will interfere with the JTAG Port.</p>
 <p><em>Can we use PineCone's LED in our firmware... While debugging our firmware with JTAG?</em></p>
 <p>According to the <a href="https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf">BL602 Reference Manual</a> (Section 3.2.8 &quot;GPIO Function&quot;, Page 27), we may remap the JTAG Port to other GPIO Pins (and avoid the conflict).</p>
+<h2 id="free-the-led-from-jtag-port" class="section-header"><a href="#free-the-led-from-jtag-port">7.1 Free the LED from JTAG Port</a></h2>
 <p>Here's our plan to free the LED from the JTAG Port...</p>
 <ol>
 <li>

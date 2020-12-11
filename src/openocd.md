@@ -409,6 +409,8 @@ _Can we use PineCone's LED in our firmware... While debugging our firmware with 
 
 According to the [BL602 Reference Manual](https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf) (Section 3.2.8 "GPIO Function", Page 27), we may remap the JTAG Port to other GPIO Pins (and avoid the conflict).
 
+##  Free the LED from JTAG Port
+
 Here's our plan to free the LED from the JTAG Port...
 
 1.  We remap the three LED pins from JTAG to PWM, so that we may to control the LED...
