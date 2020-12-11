@@ -577,15 +577,15 @@ We test by flashing a modified `helloworld` firmware that contains the remap cod
 
 1.  Disconnect PineCone and JTAG Debugger from our computer
 
-1.  Connect the remapped JTAG Pins from PineCone to our JTAG Deugger...
+1.  Connect the remapped JTAG Pins from PineCone to our JTAG Debugger...
 
-    | JTAG Pin | PineCone Pin |
-    |:---|:---|
-    | __`TDI`__   | `IO 1`
-    | __`TCK`__   | `IO 2`
-    | __`TDO`__   | `IO 3`
-    | __`TMS`__   | `IO 12`
-    | __`GND`__   | `GND`
+    | JTAG Debugger | PineCone Pin | Wire Colour
+    |:---:|:---|:---
+    | __`TDI`__   | `IO 1` | Red
+    | __`TCK`__   | `IO 2` | Green
+    | __`TDO`__   | `IO 3` | Blue
+    | __`TMS`__   | `IO 12` | Yellow
+    | __`GND`__   | `GND` | Black
 
     (See the pic above)
 
@@ -625,7 +625,9 @@ The firmware code from the previous section has been built and uploaded as a Git
 
     ["Quick Peek of PineCone BL602 RISC-V Evaluation Board"](https://lupyuen.github.io/articles/pinecone), Section 4.2: ["Flashing Firmware"](https://lupyuen.github.io/articles/pinecone#flashing-firmware)
 
-    When selecting the firmware file, remember to choose the `sdk_app_helloworld.bin` firmware that we have just downloaded.
+3.  When selecting the firmware file, remember to choose the `sdk_app_helloworld.bin` firmware that we have just downloaded.
+
+    Make sure there are no spaces in the firmware pathname. 
 
 ## Start the Remap Firmware
 

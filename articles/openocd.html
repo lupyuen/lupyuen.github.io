@@ -527,13 +527,13 @@ const uint32_t GPIO_CTRL = 3;  //  Pin Control
 <p>Disconnect PineCone and JTAG Debugger from our computer</p>
 </li>
 <li>
-<p>Connect the remapped JTAG Pins from PineCone to our JTAG Deugger...</p>
-<table><thead><tr><th align="left">JTAG Pin</th><th align="left">PineCone Pin</th></tr></thead><tbody>
-<tr><td align="left"><strong><code>TDI</code></strong></td><td align="left"><code>IO 1</code></td></tr>
-<tr><td align="left"><strong><code>TCK</code></strong></td><td align="left"><code>IO 2</code></td></tr>
-<tr><td align="left"><strong><code>TDO</code></strong></td><td align="left"><code>IO 3</code></td></tr>
-<tr><td align="left"><strong><code>TMS</code></strong></td><td align="left"><code>IO 12</code></td></tr>
-<tr><td align="left"><strong><code>GND</code></strong></td><td align="left"><code>GND</code></td></tr>
+<p>Connect the remapped JTAG Pins from PineCone to our JTAG Debugger...</p>
+<table><thead><tr><th align="center">JTAG Debugger</th><th align="left">PineCone Pin</th><th align="left">Wire Colour</th></tr></thead><tbody>
+<tr><td align="center"><strong><code>TDI</code></strong></td><td align="left"><code>IO 1</code></td><td align="left">Red</td></tr>
+<tr><td align="center"><strong><code>TCK</code></strong></td><td align="left"><code>IO 2</code></td><td align="left">Green</td></tr>
+<tr><td align="center"><strong><code>TDO</code></strong></td><td align="left"><code>IO 3</code></td><td align="left">Blue</td></tr>
+<tr><td align="center"><strong><code>TMS</code></strong></td><td align="left"><code>IO 12</code></td><td align="left">Yellow</td></tr>
+<tr><td align="center"><strong><code>GND</code></strong></td><td align="left"><code>GND</code></td><td align="left">Black</td></tr>
 </tbody></table>
 <p>(See the pic above)</p>
 </li>
@@ -574,7 +574,10 @@ const uint32_t GPIO_CTRL = 3;  //  Pin Control
 <li>
 <p>Follow the instructions in this article to flash the <code>sdk_app_helloworld.bin</code> firmware that we have just downloaded. (Not the one from GitHub Actions)</p>
 <p><a href="https://lupyuen.github.io/articles/pinecone">&quot;Quick Peek of PineCone BL602 RISC-V Evaluation Board&quot;</a>, Section 4.2: <a href="https://lupyuen.github.io/articles/pinecone#flashing-firmware">&quot;Flashing Firmware&quot;</a></p>
+</li>
+<li>
 <p>When selecting the firmware file, remember to choose the <code>sdk_app_helloworld.bin</code> firmware that we have just downloaded.</p>
+<p>Make sure there are no spaces in the firmware pathname. </p>
 </li>
 </ol>
 <h2 id="start-the-remap-firmware" class="section-header"><a href="#start-the-remap-firmware">9.4 Start the Remap Firmware</a></h2>
