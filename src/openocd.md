@@ -639,7 +639,7 @@ The firmware code from the previous section has been built and uploaded as a Git
 
     This means that the remapped JTAG Port is working OK.
 
-1.  Remap Tip: When we reboot PineCone with Jumper set to `H` (Bootloader Mode), PineCone switches back to the Default JTAG Port. The LED turns multicolor.
+1.  Remap Tip: When we reboot PineCone with Jumper set to `H` (Bootloader Mode), PineCone switches back to the Default JTAG Port. The LED turns multicolour.
 
     Set the Jumper to `L` (Normal Mode) and reboot PineTime to restore the Remapped JTAG Port. The LED turns bright white.
 
