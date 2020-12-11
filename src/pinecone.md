@@ -454,62 +454,9 @@ _JTAG Port on PineCone Board_
 
 ## Debugging Firmware
 
-To debug the BL602 firmware, we need a __JTAG Debugger__ with OpenOCD and GDB. 
+There's an entire article about debugging PineCone Firmware with OpenOCD and JTAG...
 
-According to the [BL602 Reference Manual](https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf) and [PineCone Schematics](https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf) (see pic above), the JTAG Pins are...
-
--  __TDO__: GPIO 11 (Blue)
--  __TMS__: GPIO 12 (Yellow)
--  __TCK__: GPIO 14 (Green)
--  __TDI__: GPIO 17 (Black)
-
-We need to [solder the headers](https://lupyuen.github.io/images/pinecone-solder.jpg) to the PineCone board and expose the above JTAG Pins...
-
-![PineCone with headers soldered](https://lupyuen.github.io/images/pinecone-headers.jpg)
-
-The PineCone BL602 SDK includes...
-
--   [OpenOCD for Windows `OpenOCD.exe`](https://github.com/pine64/bl_iot_sdk/tree/master/tools/flash_tool)
-
--   [OpenOCD Configuration for BL602](https://github.com/pine64/bl_iot_sdk/tree/master/tools)
-
-    (Based on [FTDI FT2232](https://mcuoneclipse.com/2019/10/20/jtag-debugging-the-esp32-with-ft2232-and-openocd/) with Vendor ID `0x0403`, Product ID `0x6010`)
-
-I tested with PineCone the [Sipeed JTAG Debugger](https://tang.sipeed.com/en/hardware-overview/rv-debugger/?utm_source=platformio&utm_medium=docs) based on FTDI FT2232D (which also has Vendor ID `0x0403` and Product ID `0x6010`)...
-
-![Sipeed JTAG Debugger](https://lupyuen.github.io/images/pinecone-sipeed.jpg)
-
-[Instructions for Flashing PineCone with Sipeed JTAG Debugger, OpenOCD and GDB](https://github.com/lupyuen/bl602-rust-guide/blob/main/README.md)
-
-However GDB fails with this error ([see this](https://github.com/lupyuen/bl602-rust-guide/blob/main/README.md))...
-
-```
-Finished dev [unoptimized + debuginfo] target(s) in 0.05s
-Running `riscv64-unknown-elf-gdb -q -x openocd.gdb target/riscv32imac-unknown-none-elf/debug/bl602-rust-guide`
-Reading symbols from target/riscv32imac-unknown-none-elf/debug/bl602-rust-guide...
-openocd.gdb:1: Error in sourced command file:
-:3333: Operation timed out.
-```
-
-Perhaps because the JTAG Pins are connected to the onboard LED?  (GPIO 11, 14, 17)
-
-![PineCone LED uses GPIO 11, 14, 17](https://lupyuen.github.io/images/pinecone-led.png)
-
-[See the PineCone Schematics](https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf)
-
-According to the [BL602 Reference Manual](https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf) (Section 3.2.8, Page 27), we may remap the JTAG Port to other GPIO Pins (and avoid the conflict).
-
-UPDATE: Yep the remapped JTAG Port works on Windows and macOS!
-
--  GND Pin MUST be connected from Sipeed JTAG Debugger to PineCone, in addition to TMS, TCK, TDI, TDO
-
--  [How to remap the JTAG port](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v0.0.4)
-
--  [How to configure OpenOCD for Sipeed JTAG Debugger](https://github.com/lupyuen/bl602-rust-guide/blob/main/README.md)
-
-I shall write about this in the next article.
-
-_(Hopefully Pine64 will revise the PineCone design and connect the LED to other GPIO Pins instead)_
+["Connect PineCone BL602 to OpenOCD"](https://lupyuen.github.io/articles/openocd)
 
 ## Testing the Firmware
 
@@ -545,9 +492,13 @@ And you might earn a free PineCone Evaluation Board!
 
 We're in the middle of a pandemic. Why not take the time to learn some RISC-V... And contribute to the RISC-V Open Source Ecosystem!
 
+[Next Article: "Connect PineCone BL602 to OpenOCD"](https://lupyuen.github.io/articles/openocd)
+
 [Check out my articles](https://lupyuen.github.io)
 
 [RSS Feed](https://lupyuen.github.io/rss.xml)
+
+[Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
