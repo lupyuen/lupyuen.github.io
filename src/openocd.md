@@ -653,7 +653,7 @@ The firmware code from the previous section has been built and uploaded as a Git
 
     This signifies that the JTAG Port is no longer remapped. And we're back to the default JTAG Port.
 
-# How shall we fix the JTAG Port?
+# How to fix the JTAG Port
 
 TODO
 
