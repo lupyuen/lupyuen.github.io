@@ -80,7 +80,8 @@
 <li><a href="#is-there-a-blob-for-the-wifi-controller">3.5 Is there a Blob for the WiFi Controller?</a><ul></ul></li></ul></li>
 <li><a href="#hands-on-with-pinecone-bl602">4 Hands On with PineCone BL602</a><ul>
 <li><a href="#form-factor">4.1 Form Factor</a><ul></ul></li>
-<li><a href="#flashing-firmware">4.2 Flashing Firmware</a><ul></ul></li>
+<li><a href="#flashing-firmware">4.2 Flashing Firmware</a><ul>
+<li><a href="#other-flashing-tools">4.2.1 Other Flashing Tools</a><ul></ul></li></ul></li>
 <li><a href="#building-firmware">4.3 Building Firmware</a><ul></ul></li>
 <li><a href="#development-tools">4.4 Development Tools</a><ul></ul></li>
 <li><a href="#debugging-firmware">4.5 Debugging Firmware</a><ul></ul></li>
@@ -415,6 +416,20 @@
 <p><a href="https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html">Windows Starter Guide</a></p>
 </li>
 </ul>
+<h3 id="other-flashing-tools" class="section-header"><a href="#other-flashing-tools">4.2.1 Other Flashing Tools</a></h3>
+<p><em>Are there other tools for flashing firmware to PineCone over UART?</em></p>
+<p>Check out these tools, which will probably run on Linux, macOS and Windows...</p>
+<ol>
+<li>
+<p><a href="https://github.com/bouffalolab/BLOpenFlasher"><code>bouffalolab/BLOpenFlasher</code></a> (Go)</p>
+</li>
+<li>
+<p><a href="https://github.com/spacemeowx2/blflash"><code>spacemeowx2/blflash</code></a> (Rust)</p>
+</li>
+<li>
+<p><a href="https://github.com/stschake/bl60x-flash"><code>stschake/bl60x-flash</code></a> (Python)</p>
+</li>
+</ol>
 <p><em>Are SWD and ST-Link supported for flashing firmware to the PineCone board?</em></p>
 <p>Sorry no. SWD is available only on Arm Microcontrollers. <a href="https://medium.com/@ly.lee/openocd-on-raspberry-pi-better-with-swd-on-spi-7dea9caeb590?source=friends_link&amp;sk=df399bfd913d3e262447d28aa5af6b63">(SWD was created by Arm)</a></p>
 <p>The UART flashing protocol for PineCone is described in the <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en"><strong>BL602 Flash Programming</strong></a> doc.</p>

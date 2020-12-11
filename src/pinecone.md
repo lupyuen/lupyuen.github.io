@@ -376,6 +376,18 @@ In case of problems, check the instructions in...
 
 -   [Windows Starter Guide](https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html)
 
+### Other Flashing Tools
+
+_Are there other tools for flashing firmware to PineCone over UART?_
+
+Check out these tools, which will probably run on Linux, macOS and Windows...
+
+1.  [`bouffalolab/BLOpenFlasher`](https://github.com/bouffalolab/BLOpenFlasher) (Go)
+
+1.  [`spacemeowx2/blflash`](https://github.com/spacemeowx2/blflash) (Rust)
+
+1.  [`stschake/bl60x-flash`](https://github.com/stschake/bl60x-flash) (Python)
+
 _Are SWD and ST-Link supported for flashing firmware to the PineCone board?_
 
 Sorry no. SWD is available only on Arm Microcontrollers. [(SWD was created by Arm)](https://medium.com/@ly.lee/openocd-on-raspberry-pi-better-with-swd-on-spi-7dea9caeb590?source=friends_link&sk=df399bfd913d3e262447d28aa5af6b63)
