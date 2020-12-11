@@ -4,6 +4,12 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Connect PineCone BL602 to OpenOCD</title>
+            <link>https://lupyuen.github.io/articles/openocd</link>
+            <description><![CDATA[How we connect PineCone BL602 Evaluation Board to OpenOCD... For flashing and debugging RISC-V firmware]]></description>
+            <pubDate>Fri, 11 Dec 2020 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Quick Peek of PineCone BL602 RISC-V Evaluation Board</title>
             <link>https://lupyuen.github.io/articles/pinecone</link>
             <description><![CDATA[What's inside the PineCone BL602 Evaluation Board... And how we're using it to contribute to the RISC-V Open Source Ecosystem]]></description>

@@ -156,29 +156,36 @@
   ],
   "publications": [
     {
+      "name": "Connect PineCone BL602 to OpenOCD",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2020-12-11",
+      "website": "https://lupyuen.github.io/articles/openocd",
+      "summary": "How we connect PineCone BL602 Evaluation Board to OpenOCD... For flashing and debugging RISC-V firmware"
+    },
+    {
       "name": "Quick Peek of PineCone BL602 RISC-V Evaluation Board",
-      "publisher": "GitHub",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2020-11-29",
       "website": "https://lupyuen.github.io/articles/pinecone",
       "summary": "What's inside the PineCone BL602 Evaluation Board... And how we're using it to contribute to the RISC-V Open Source Ecosystem"
     },
     {
       "name": "Create Your Own PineTime Watch Face in Rust... And Publish on crates.io",
-      "publisher": "GitHub",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2020-10-17",
       "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/watchface",
       "summary": "How we build PineTime Watch Faces with Rust and LVGL... And publish them on crates.io"
     },
     {
       "name": "Bluetooth Time Sync and LVGL on PineTime Mynewt",
-      "publisher": "GitHub",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2020-10-16",
       "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/timesync",
       "summary": "How PineTime syncs the time over Bluetooth LE with Mynewt and NimBLE... And how we create Watch Faces with LVGL"
     },
     {
       "name": "Porting PineTime Watch Face from C to Rust On RIOT with LVGL",
-      "publisher": "GitHub",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2020-09-13",
       "website": "https://lupyuen.github.io/pinetime-rust-riot/articles/watch_face",
       "summary": "Converting Embedded C to Rust is not that hard... Here's how we convert a PineTime Watch Face with LVGL from C to Rust on RIOT"
@@ -192,98 +199,98 @@
     },
     {
       "name": "Preview PineTime Watch Faces in your Web Browser with WebAssembly",
-      "publisher": "GitHub",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2020-08-19",
       "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/simulator",
       "summary": "How we build and preview PineTime Watch Faces with only a web browser... No computer needed!"
     },
     {
       "name": "Build PineTime Firmware in the Cloud with GitHub Actions",
-      "publisher": "GitHub",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2020-07-27",
       "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/cloud",
       "summary": "Learn to build PineTime Smart Watch Firmware in the Cloud... No computer needed!"
     },
     {
       "name": "Wayland and LVGL on PinePhone with Ubuntu Touch",
-      "publisher": "GitHub",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2020-07-25",
       "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/wayland",
       "summary": "Learn about Wayland and Ubuntu Touch on PinePhone... And how we build PinePhone Apps with LVGL"
     },
     {
       "name": "Flutter State Management with Bloc for PineTime Companion App",
-      "publisher": "GitHub",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2020-06-27",
       "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/bloc",
       "summary": "How we manage state with the Bloc Library in the Flutter Companion App (Android and iOS) for PineTime Smart Watch"
     },
     {
       "name": "PineTime doesn't run Linux... But that's OK!",
-      "publisher": "GitHub",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2020-06-19",
       "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/pinetime",
       "summary": "Getting started with PineTime Smart Watch"
     },
     {
       "name": "Your First GTK App with Go and VSCodium",
-      "publisher": "GitHub",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2020-06-18",
       "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/gotk3",
       "summary": "Creating desktop apps on Linux doesn't have to be hard... Let's build GTK+ 3 apps in Go with the gotk3 library!"
     },
     {
       "name": "Convert Go to Flutter and Dart for PineTime Companion App",
-      "publisher": "GitHub",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2020-06-17",
       "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/companion",
       "summary": "How we build the Flutter Companion App (Android and iOS) for PineTime Smart Watch by converting Go to Dart"
     },
     {
       "name": "Your First Bluetooth Low Energy App with Flutter",
-      "publisher": "GitHub",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2020-06-04",
       "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/flutter",
       "summary": "Bluetooth Low Energy apps are ridiculously easy to code with Flutter and Dart, let me show you how!"
     },
     {
       "name": "Porting MicroPython and wasp-os to Mynewt on PineTime Smart Watch (nRF52)",
-      "publisher": "GitHub",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2020-06-02",
       "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/micropython",
       "summary": "Making wasp-os truly awesome with full multitasking, interoperable firmware updates and a common companion app"
     },
     {
       "name": "Wireless Firmware Update In Action on PineTime Smart Watch (nRF52)",
-      "publisher": "GitHub",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2020-05-20",
       "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/dfutest",
       "summary": "Observe step-by-step the Wireless Firmware Update running on PineTime Smart Watch (nRF52) with MCUBoot Bootloader, NimBLE Bluetooth LE Stack and Apache Mynewt"
     },
     {
       "name": "MCUBoot Bootloader for PineTime Smart Watch (nRF52)",
-      "publisher": "GitHub",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2020-05-18",
       "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/mcuboot",
       "summary": "Wireless Firmware Updates done right on PineTime Smart Watch... With the open source MCUBoot Bootloader from Apache Mynewt and Zephyr"
     },
     {
       "name": "Configure Mynewt for SPI Flash on PineTime Smart Watch (nRF52)",
-      "publisher": "GitHub",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2020-05-15",
       "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/spiflash",
       "summary": "Configure Mynewt OS to enable access to SPI Flash Memory on PineTime Smart Watch"
     },
     {
       "name": "Firmware Update over Bluetooth Low Energy on PineTime Smart Watch",
-      "publisher": "GitHub",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2020-05-11",
       "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/dfu",
       "summary": "Flash any firmware to PineTime from our mobile phone... Without opening the watch!"
     },
     {
       "name": "CHIP-8 Game Emulator in Rust for PineTime Smart Watch",
-      "publisher": "GitHub",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2020-03-05",
       "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/chip8",
       "summary": "Running Retro Games with Rust is not that hard on PineTime Smart Watch. Here's how I ported a CHIP-8 Game Emulator to PineTime"
