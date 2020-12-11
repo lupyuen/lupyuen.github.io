@@ -514,7 +514,8 @@ const uint32_t GPIO_CTRL = 3;  //  Pin Control
 <p><img src="https://lupyuen.github.io/images/pinecone-headers2.jpg" alt="Remapped PineCone Connection to JTAG Debugger" /></p>
 <p><em>Remapped JTAG Port connected to JTAG Debugger. The LED lights up in bright white to signify that the JTAG Port has been remapped. Jumper is set to L, for Normal Mode.</em></p>
 <h1 id="test-the-remapped-jtag-port" class="section-header"><a href="#test-the-remapped-jtag-port">9 Test the Remapped JTAG Port</a></h1>
-<p>TODO</p>
+<p><em>How shall we test the JTAG Port remap?</em></p>
+<p>We test by flashing a modified <code>helloworld</code> firmware that contains the remap code from the previous section...</p>
 <h2 id="connect-the-remapped-jtag-port" class="section-header"><a href="#connect-the-remapped-jtag-port">9.1 Connect the Remapped JTAG Port</a></h2>
 <ol>
 <li>
@@ -529,9 +530,10 @@ const uint32_t GPIO_CTRL = 3;  //  Pin Control
 <tr><td align="left"><strong><code>TMS</code></strong></td><td align="left"><code>IO 12</code></td></tr>
 <tr><td align="left"><strong><code>GND</code></strong></td><td align="left"><code>GND</code></td></tr>
 </tbody></table>
+<p>(See the pic above)</p>
 </li>
 <li>
-<p>Set the PineCone Jumper to <code>H</code>, because we shall be flashing the firmware shortly</p>
+<p>Set the PineCone Jumper to <code>H</code> (Bootloader Mode), because we shall be flashing the firmware shortly</p>
 </li>
 <li>
 <p>Connect both PineCone and JTAG Debugger to our computer's USB ports</p>
@@ -555,24 +557,24 @@ const uint32_t GPIO_CTRL = 3;  //  Pin Control
 <pre><code class="language-text">build_out/sdk_app_helloworld.bin
 </code></pre>
 <p>We shall be flashing <code>sdk_app_helloworld.bin</code> in the next step.</p>
+<p>This version of the <code>helloworld</code> app has been modified to remap the JTAG Port.</p>
 </li>
 </ol>
-<p>This version of the <code>helloworld</code> app has been modified to remap the JTAG Port.</p>
 <h2 id="flash-the-remap-firmware" class="section-header"><a href="#flash-the-remap-firmware">9.3 Flash the Remap Firmware</a></h2>
 <ol>
 <li>
-<p>Check that the PineCone Jumper has been set to <code>H</code>, ready for flashing</p>
+<p>Check that the PineCone Jumper has been set to <code>H</code> (Bootloader Mode), ready for flashing</p>
 </li>
 <li>
 <p>Follow the instructions in this article to flash the <code>sdk_app_helloworld.bin</code> firmware that we have just downloaded. (Not the one from GitHub Actions)</p>
-<p>???</p>
+<p><a href="https://lupyuen.github.io/articles/pinecone">&quot;Quick Peek of PineCone BL602 RISC-V Evaluation Board&quot;</a>, Section 4.2: <a href="https://lupyuen.github.io/articles/pinecone#flashing-firmware">&quot;Flashing Firmware&quot;</a></p>
 <p>When selecting the firmware file, remember to choose the <code>sdk_app_helloworld.bin</code> firmware that we have just downloaded.</p>
 </li>
 </ol>
 <h2 id="start-the-remap-firmware" class="section-header"><a href="#start-the-remap-firmware">9.4 Start the Remap Firmware</a></h2>
 <ol>
 <li>
-<p>After flashing the remap firmware, set the PineCone Jumper to <code>L</code> and power on PineCone</p>
+<p>After flashing the remap firmware, set the PineCone Jumper to <code>L</code> (Normal Mode) and power on PineCone</p>
 </li>
 <li>
 <p>PineCone's LED should light up bright white to signify that the JTAG Port has been remapped</p>
@@ -587,15 +589,19 @@ const uint32_t GPIO_CTRL = 3;  //  Pin Control
 <p>We should see the same OpenOCD output, including the CPU ID.</p>
 <p>This means that the remapped JTAG Port is working OK.</p>
 </li>
+<li>
+<p>Remap Tip: When we reboot PineCone with Jumper set to <code>H</code> (Bootloader Mode), PineCone switches back to the Default JTAG Port. The LED turns multicolor.</p>
+<p>Set the Jumper to <code>L</code> (Normal Mode) and reboot PineTime to restore the Remapped JTAG Port. The LED turns bright white.</p>
+</li>
 </ol>
 <h2 id="remove-the-remap-firmware" class="section-header"><a href="#remove-the-remap-firmware">9.6 Remove the Remap Firmware</a></h2>
 <ol>
 <li>
-<p>To remove the remap firmware, follow the instructions in this article to flash the <code>sdk_app_helloworld.bin</code> firmware from GitHub Actions. (Not the one we have just downloaded)</p>
-<p>???</p>
+<p>To remove the remap firmware, follow the instructions in this article to flash the original <code>sdk_app_helloworld.bin</code> firmware from GitHub Actions. (Not the modified one we have just downloaded)</p>
+<p><a href="https://lupyuen.github.io/articles/pinecone">&quot;Quick Peek of PineCone BL602 RISC-V Evaluation Board&quot;</a>, Section 4.2: <a href="https://lupyuen.github.io/articles/pinecone#flashing-firmware">&quot;Flashing Firmware&quot;</a></p>
 </li>
 <li>
-<p>Set PineCone's Jumper to <code>L</code> and power on PineCone.</p>
+<p>Set PineCone's Jumper to <code>L</code> (Normal Mode) and power on PineCone.</p>
 <p>The LED should no longer light up after booting</p>
 <p>This signifies that the JTAG Port is no longer remapped. And we're back to the default JTAG Port.</p>
 </li>
