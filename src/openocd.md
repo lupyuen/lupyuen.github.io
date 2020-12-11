@@ -653,6 +653,10 @@ The firmware code from the previous section has been built and uploaded as a Git
 
     This signifies that the JTAG Port is no longer remapped. And we're back to the default JTAG Port.
 
+![PineCone with Remapped JTAG Port](https://lupyuen.github.io/images/pinecone-led2.jpg)
+
+_PineCone with Remapped JTAG Port. The LED lights up in bright white to signify that the JTAG Port has been remapped._
+
 # How to fix the JTAG Port
 
 TODO
