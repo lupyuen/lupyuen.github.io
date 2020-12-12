@@ -10,7 +10,7 @@ Today we'll learn to debug Rust Firmware for [__PineCone BL602 RISC-V Evaluation
 
 TODO
 
-Setup OpenOCD
+[Setup OpenOCD, Rust and GDB](https://github.com/lupyuen/pinecone-rust/blob/main/README.md)
 
 ![Memory Map of PineCone Firmware: C vs Rust](https://lupyuen.github.io/images/debug-memory.png)
 
@@ -20,6 +20,16 @@ _Memory Map of PineCone Firmware: C vs Rust_
 
 TODO
 
+-   [Watch on YouTube](https://youtu.be/A54Agz35vfk)
+
+-   [`https://github.com/lupyuen/pinecone-rust/blob/main/openocd.cfg`](openocd.cfg): OpenOCD Configuration
+
+-   [`https://github.com/lupyuen/pinecone-rust/blob/main/openocd.gdb`](openocd.gdb): GDB Debugger Configuration
+
+-   [`https://github.com/lupyuen/pinecone-rust/blob/main/src/main.rs`](src/main.rs): Rust Source Code
+
+-   [Rust Documentation](https://lupyuen.github.io/pinecone-rust/)
+
 ![VSCode Debugger with Rust Firmware for PineCone BL602](https://lupyuen.github.io/images/debug-vscode.png)
 
 _VSCode Debugger with Rust Firmware for PineCone BL602_
@@ -27,6 +37,12 @@ _VSCode Debugger with Rust Firmware for PineCone BL602_
 # VSCode
 
 TODO
+
+-   [Watch on YouTube](https://youtu.be/b9f2vxYahHY)
+
+-   [`https://github.com/lupyuen/pinecone-rust/blob/main/.vscode/launch.json`](.vscode/launch.json): VSCode Debugger Configuration
+
+-   [`https://github.com/lupyuen/pinecone-rust/blob/main/.vscode/tasks.json`](.vscode/tasks.json): VSCode Tasks
 
 # What's Next
 
