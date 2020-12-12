@@ -10,9 +10,19 @@ Today we'll learn to debug Rust Firmware for [__PineCone BL602 RISC-V Evaluation
 
 TODO
 
+Setup OpenOCD
+
+![Memory Map of PineCone Firmware: C vs Rust](https://lupyuen.github.io/images/debug-memory.png)
+
+_Memory Map of PineCone Firmware: C vs Rust_
+
 # GDB
 
 TODO
+
+![VSCode Debugger with Rust Firmware for PineCone BL602](https://lupyuen.github.io/images/debug-vscode.png)
+
+_VSCode Debugger with Rust Firmware for PineCone BL602_
 
 # VSCode
 
