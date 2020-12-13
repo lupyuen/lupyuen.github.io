@@ -227,7 +227,7 @@ From the Memory Map below, we can see that...
 
 1.  C Firmware runs in the __XIP Flash Memory Region__ at `0x2300 0000`
 
-    (XIP means Execute In Place... The firmware code is executed directly from Flash Memory, without copying to RAM)
+    (XIP means Execute In Place... The firmware code is executed directly from BL602's Internal Flash Memory, without copying to RAM)
 
 1.  Rust Firmware runs in the __Instruction Cache Memory Region__ at `0x2200 8000`
 
