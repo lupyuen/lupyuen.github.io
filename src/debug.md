@@ -233,7 +233,7 @@ From the Memory Map below, we can see that...
 
     Which is similar to RAM. And probably works better for debugging.
 
-    (The [Build Settings](https://github.com/lupyuen/pinecone-rust/blob/main/memory.x) for the Rust Firmware were provided by the [Sipeed BL602 Community](https://github.com/sipeed/bl602-rust-guide))
+    (The [Build Settings](https://github.com/lupyuen/pinecone-rust/blob/main/memory.x) for the Rust Firmware were kindly provided by the [Sipeed BL602 Community](https://github.com/sipeed/bl602-rust-guide))
 
 In the next section we shall use the GDB Debugger to load our Rust Firmware into the cache memory for debugging.
 
