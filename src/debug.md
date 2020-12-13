@@ -389,27 +389,29 @@ _What's driving GDB? How does GDB know how to do the things that it did?_
 
 That's the purpose of the GDB Script. Let's look inside [`openocd.gdb`](https://github.com/lupyuen/pinecone-rust/blob/main/openocd.gdb)...
 
-1.  aaa
+1.  GDB doesn't talk to PineCone natively... But GDB can talk to PineCone through OpenOCD.
+
+    This command tells GDB to talk to OpenOCD through the TCP port `localhost:3333`...
 
     ```text
     target extended-remote :3333
     ```
 
-1.  aaa
+1.  The Rust Compiler will mangle up most function names. Here's how we display the dismangled function names in GDB...
 
     ```text
-    # print demangled symbols
+    # Print demangled symbols
     set print asm-demangle on
     ```
 
-1.  aaa
+1.  We set a Backtrace Limit that we don't get stuck in a loop while displaying the Stack Trace (the `bt` command)...
 
     ```text
-    # set backtrace limit to not have infinite backtrace loops
+    # Set backtrace limit to not have infinite backtrace loops
     set backtrace limit 32
     ```
 
-1.  aaa
+1.  We tell GDB about the Memory Regions on BL602, and whether they are Read-Write (`rw`) or Read-Only (`ro`)...
 
     ```text
     mem 0x22008000 0x22014000 rw
@@ -423,22 +425,24 @@ That's the purpose of the GDB Script. Let's look inside [`openocd.gdb`](https://
     mem 0x23000000 0x23400000 ro
     ```
 
-1.  aaa
+    Refer to [BL602 Reference Manual](https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf), Section 1.3 "Function Description", Pages 17 to 19.
+
+1.  We load the Rust Firmware into BL602's Instruction Cache Memory...
 
     ```text
     load
     ```
 
-1.  aaa
+1.  We create a Breakpoint at the function `_start`. This function is the first thing that runs when we start the firmware...
 
     ```text
     break _start
     ```
 
-1.  aaa
+1.  Finally we step into the first RISC-V instruction in our firmware... And pause the execution
 
     ```text
-    # start the process but immediately halt the processor
+    # Start the process but immediately halt the processor
     stepi
     ```
 
