@@ -56,9 +56,13 @@ Install Rust with support for nightly target `riscv32imac-unknown-none-elf`....
 
     ```bash
     source $HOME/.cargo/env
+
     rustup update
+
     rustup default nightly
+
     rustup target add riscv32imac-unknown-none-elf
+
     ```
 
     __For Windows:__ Enter the above commands in a Windows Command Prompt (not WSL Terminal). Omit the `source` line.
@@ -97,7 +101,9 @@ Now we install [__xPack GCC for RISC-V__](https://xpack.github.io/riscv-none-emb
 
     ```bash
     cd pinecone-rust
+
     ln -s "$PWD/xpack-riscv-none-embed-gcc/bin/riscv-none-embed-gdb" "$PWD/xpack-riscv-none-embed-gcc/bin/riscv64-unknown-elf-gdb"
+
     ```
 
     __For Windows:__
@@ -243,25 +249,162 @@ _Memory Map of PineCone Firmware: C vs Rust_
 
 # Debug Rust Firmware with GDB
 
-TODO
+(If you're interested only in VSCode debugging, skip to the next section)
+
+Let's run the Rust Firmware and debug it with GDB.  We'll need two command prompts: One for OpenOCD and another for GDB.
+
+## Start OpenOCD
+
+At the command prompt, enter...
+
+```bash
+cd pinecone-rust
+xpack-openocd/bin/openocd
+```
+
+For Windows: Enter...
+
+```cmd
+cd pinecone-rust
+xpack-openocd\bin\openocd
+```
+
+We should see OpenOCD connecting to PineCone...
+
+```text
+xPack OpenOCD, x86_64 Open On-Chip Debugger 0.10.0+dev-00378-ge5be992df (2020-06-26-12:31)
+Licensed under GNU GPL v2
+For bug reports, read
+        http://openocd.org/doc/doxygen/bugs.html
+Ready for Remote Connections
+Info : clock speed 100 kHz
+Info : JTAG tap: riscv.cpu tap/device found: 0x20000c05 (mfg: 0x602 (<unknown>), part: 0x0000, ver: 0x2)
+Info : datacount=1 progbufsize=2
+Info : Disabling abstract command reads from CSRs.
+Info : Examined RISC-V core; found 1 harts
+Info :  hart 0: XLEN=32, misa=0x40801125
+Info : starting gdb server for riscv.cpu.0 on 3333
+Info : Listening on port 3333 for gdb connections
+Info : JTAG tap: riscv.cpu tap/device found: 0x20000c05 (mfg: 0x602 (<unknown>), part: 0x0000, ver: 0x2)
+reset-assert-pre
+reset-deassert-post
+Info : Disabling abstract command writes to CSRs.
+reset-init
+Info : Listening on port 6666 for tcl connections
+Info : Listening on port 4444 for telnet connections
+```
+
+Keep OpenOCD running while we start GDB.
+
+## Start GDB
+
+Open another command prompt. Enter...
+
+```bash
+cd pinecone-rust
+
+export PATH="$PWD/xpack-riscv-none-embed-gcc-8.3.0-2.3/bin:$PATH"
+
+cargo run
+
+```
+
+For Windows: Omit the line `export PATH`
+
+We should see...
+
+```text
+    Finished dev [unoptimized + debuginfo] target(s) in 0.08s
+     Running `riscv64-unknown-elf-gdb -q -x openocd.gdb target/riscv32imac-unknown-none-elf/debug/bl602-rust-guide`
+Reading symbols from target/riscv32imac-unknown-none-elf/debug/bl602-rust-guide...
+0x21000000 in ?? ()
+Loading section .text, size 0x22b0 lma 0x22008000
+Loading section .rodata, size 0x5d8 lma 0x2200a2b0
+Start address 0x22008000, load size 10376
+Transfer rate: 2 KB/sec, 5188 bytes/write.
+```
+
+GDB has loaded our Rust Firmware into PineCone's cache memory. PineCone starts running our firmware...
+
+```text
+Breakpoint 1 at 0x22008000: file asm.S, line 27.
+
+Breakpoint 1, _start () at asm.S:27
+27      asm.S: No such file or directory.
+```
+
+GDB has paused the firmware execution at a Breakpoint in our code. (We'll see this Breakpoint shortly)
+
+## Debug with GDB
+
+At the GDB prompt, enter...
+
+```text
+break main
+
+continue
+
+```
+
+This tells GDB to set a Breakpoint at the `main` function in Rust. And continue execution until we hit the Breakpoint.
+
+We'll see...
+
+```text
+(gdb) break main
+Breakpoint 2 at 0x2200924e: file src/main.rs, line 10.
+(gdb) continue
+Continuing.
+
+Breakpoint 2, main () at src/main.rs:10
+10          let dp = pac::Peripherals::take().unwrap();
+```
+
+GDB has paused execution at the `main` function in Rust.
+
+-   [Rust Source File](src/main.rs)
+
+Enter `next` to resume execution until the next line...
+
+```text
+(gdb) next
+11          let mut parts = dp.GLB.split();
+(gdb) bt
+#0  main () at src/main.rs:11
+(gdb) 
+```
+
+The `bt` command shows us the Stack Trace and local variables.
 
 -   [Watch on YouTube](https://youtu.be/A54Agz35vfk)
 
--   [`https://github.com/lupyuen/pinecone-rust/blob/main/openocd.cfg`](openocd.cfg): OpenOCD Configuration
+Yep we're now debugging our Rust Firmware with GDB! Check out the GDB docs for more debugging commands...
 
--   [`https://github.com/lupyuen/pinecone-rust/blob/main/openocd.gdb`](openocd.gdb): GDB Debugger Configuration
+-   [Debugging with GDB](https://sourceware.org/gdb/current/onlinedocs/gdb/index.html)
 
--   [`https://github.com/lupyuen/pinecone-rust/blob/main/src/main.rs`](src/main.rs): Rust Source Code
+In OpenOCD we'll see this warning... Just ignore it
 
--   [Rust Documentation](https://lupyuen.github.io/pinecone-rust/)
+```text
+Info : accepting 'gdb' connection on tcp/3333
+Info : Disabling abstract command reads from FPRs.
+Warn : negative reply, retrying
+Warn : negative acknowledgment, but no packet pending
+```
 
 # GDB Script
 
 TODO
 
+-   [`https://github.com/lupyuen/pinecone-rust/blob/main/openocd.cfg`](openocd.cfg): OpenOCD Configuration
+
+-   [`https://github.com/lupyuen/pinecone-rust/blob/main/openocd.gdb`](openocd.gdb): GDB Debugger Configuration
+
+
 # Rusty Mystery
 
 TODO
+
+-   [Rust Documentation](https://lupyuen.github.io/pinecone-rust/)
 
 ![VSCode Debugger with Rust Firmware for PineCone BL602](https://lupyuen.github.io/images/debug-vscode.png)
 
