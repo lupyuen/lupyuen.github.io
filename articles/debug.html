@@ -65,18 +65,144 @@
 
     <h1 class="title">Debug Rust on PineCone BL602 with VSCode and GDB</h1>
     <nav id="TOC"><ul>
-<li><a href="#openocd">1 OpenOCD</a><ul></ul></li>
-<li><a href="#gdb">2 GDB</a><ul></ul></li>
-<li><a href="#vscode">3 VSCode</a><ul></ul></li>
-<li><a href="#whats-next">4 What's Next</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/debug-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board connected to Sipeed JTAG Debugger" /></p>
+<li><a href="#install-openocd-rust-and-gdb">1 Install OpenOCD, Rust and GDB</a><ul>
+<li><a href="#install-openocd">1.1 Install OpenOCD</a><ul></ul></li>
+<li><a href="#install-rust">1.2 Install Rust</a><ul></ul></li>
+<li><a href="#install-gdb">1.3 Install GDB</a><ul></ul></li></ul></li>
+<li><a href="#build-rust-firmware">2 Build Rust Firmware</a><ul></ul></li>
+<li><a href="#debug-rust-firmware-with-gdb">3 Debug Rust Firmware with GDB</a><ul></ul></li>
+<li><a href="#debug-rust-firmware-with-vscode">4 Debug Rust Firmware with VSCode</a><ul></ul></li>
+<li><a href="#whats-next">5 What's Next</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/debug-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board connected to Sipeed JTAG Debugger" /></p>
 <p><em>PineCone BL602 RISC-V Evaluation Board connected to Sipeed JTAG Debugger</em></p>
-<p>Today we'll learn to debug Rust Firmware for <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602 RISC-V Evaluation Board</strong></a> with VSCode and GDB.</p>
-<h1 id="openocd" class="section-header"><a href="#openocd">1 OpenOCD</a></h1>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/pinecone-rust/blob/main/README.md">Setup OpenOCD, Rust and GDB</a></p>
+<p>Today we'll learn to debug Rust Firmware for <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602 RISC-V Evaluation Board</strong></a> in two ways...</p>
+<ol>
+<li>
+<p>With the GDB Debugger (text-based)</p>
+</li>
+<li>
+<p>With the VSCode Debugger (graphical-based)</p>
+</li>
+</ol>
+<p>The instructions here should work on Linux, macOS and Windows.</p>
+<h1 id="install-openocd-rust-and-gdb" class="section-header"><a href="#install-openocd-rust-and-gdb">1 Install OpenOCD, Rust and GDB</a></h1><h2 id="install-openocd" class="section-header"><a href="#install-openocd">1.1 Install OpenOCD</a></h2>
+<ol>
+<li>
+<p>Follow the instructions in the article...</p>
+<p><a href="https://lupyuen.github.io/articles/openocd">&quot;Connect PineCone BL602 to OpenOCD&quot;</a></p>
+<ul>
+<li>
+<p>Section 4: <a href="https://lupyuen.github.io/articles/openocd#connect-jtag-debugger-to-pinecone">&quot;Connect JTAG Debugger to PineCone&quot;</a></p>
+</li>
+<li>
+<p>Section 5: <a href="https://lupyuen.github.io/articles/openocd#download-and-run-openocd">&quot;Download and run OpenOCD&quot;</a></p>
+</li>
+</ul>
+</li>
+<li>
+<p>Remember to download <code>bl602-pac</code> and <code>bl602-hal</code></p>
+<p><a href="https://lupyuen.github.io/articles/openocd#download-openocd-script">More details</a></p>
+</li>
+<li>
+<p>Use the Default JTAG Port on PineCone (Without remapping)</p>
+</li>
+<li>
+<p>Copy the extracted xPack OpenOCD folder to the <code>pinecone-rust</code> folder</p>
+<p>Rename it as...</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="ident">pinecone</span><span class="op">-</span><span class="ident">rust</span><span class="op">/</span><span class="ident">xpack</span><span class="op">-</span><span class="ident">openocd</span></pre></div>
+</li>
+</ol>
+<h2 id="install-rust" class="section-header"><a href="#install-rust">1.2 Install Rust</a></h2>
+<p>Install Rust with support for nightly target <code>riscv32imac-unknown-none-elf</code>.... </p>
+<ol>
+<li>
+<p>Browse to <a href="https://rustup.rs/"><code>rustup.rs</code></a></p>
+<p>Follow the instructions to install <code>rustup</code></p>
+</li>
+<li>
+<p>Press Enter to select...</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="number">1</span>) <span class="ident">Proceed</span> <span class="ident">with</span> <span class="ident">installation</span> (<span class="ident">default</span>)</pre></div>
+</li>
+<li>
+<p><strong>For Linux and macOS:</strong> Open a command prompt and enter...</p>
+<pre><code class="language-bash">source $HOME/.cargo/env
+rustup update
+rustup default nightly
+rustup target add riscv32imac-unknown-none-elf
+</code></pre>
+<p><strong>For Windows:</strong> Enter the above commands in a Windows Command Prompt (not WSL Terminal). Omit the <code>source</code> line.</p>
+</li>
+</ol>
+<h2 id="install-gdb" class="section-header"><a href="#install-gdb">1.3 Install GDB</a></h2>
+<p>Now we install <a href="https://xpack.github.io/riscv-none-embed-gcc/"><strong>xPack GCC for RISC-V</strong></a>, which contains the GDB Debugger...</p>
+<ol>
+<li>
+<p>Download GCC from the <a href="https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases/tag/v8.3.0-2.3">xPack GCC for RISC-V site</a>...</p>
+<ul>
+<li>
+<p><a href="https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases/download/v8.3.0-2.3/xpack-riscv-none-embed-gcc-8.3.0-2.3-linux-x64.tar.gz">xPack GCC RISC-V for Linux x64</a></p>
+</li>
+<li>
+<p><a href="https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases/download/v8.3.0-2.3/xpack-riscv-none-embed-gcc-8.3.0-2.3-linux-arm64.tar.gz">xPack GCC RISC-V for Linux Arm64</a></p>
+</li>
+<li>
+<p><a href="https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases/download/v8.3.0-2.3/xpack-riscv-none-embed-gcc-8.3.0-2.3-darwin-x64.tar.gz">xPack GCC RISC-V for macOS x64</a></p>
+</li>
+<li>
+<p><a href="https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases/download/v8.3.0-2.3/xpack-riscv-none-embed-gcc-8.3.0-2.3-win32-x64.zip">xPack GCC RISC-V for Windows x64</a></p>
+</li>
+<li>
+<p><a href="https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases/tag/v8.3.0-2.3">Other builds of xPack GCC RISC-V</a></p>
+</li>
+</ul>
+</li>
+<li>
+<p>Extract the downloaded archive.</p>
+<p>On Windows: <a href="https://www.7-zip.org/">Use 7-Zip</a></p>
+</li>
+<li>
+<p>Copy the extracted xPack GCC RISC-V folder to the <code>pinecone-rust</code> folder.</p>
+<p>Rename the folder as...</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="ident">pinecone</span><span class="op">-</span><span class="ident">rust</span><span class="op">/</span><span class="ident">xpack</span><span class="op">-</span><span class="ident">riscv</span><span class="op">-</span><span class="ident">none</span><span class="op">-</span><span class="ident">embed</span><span class="op">-</span><span class="ident">gcc</span></pre></div>
+</li>
+<li>
+<p>Create a symbolic link for the GDB executable, so that Rust can find it...</p>
+<p><strong>For Linux and macOS:</strong></p>
+<pre><code class="language-bash">cd pinecone-rust
+ln -s &quot;$PWD/xpack-riscv-none-embed-gcc/bin/riscv-none-embed-gdb&quot; &quot;$PWD/xpack-riscv-none-embed-gcc/bin/riscv64-unknown-elf-gdb&quot;
+</code></pre>
+<p><strong>For Windows:</strong></p>
+<ul>
+<li>
+<p>In File Explorer, open the folder...</p>
+
+<pre><code>pinecone-rust\xpack-riscv-none-embed-gcc\bin</code></pre></li>
+<li>
+<p>Copy and paste the file <code>riscv-none-embed-gdb.exe</code></p>
+</li>
+<li>
+<p>Rename the copied file as <code>riscv64-unknown-elf-gdb.exe</code></p>
+</li>
+<li>
+<p>Go to Windows Settings and add to <code>PATH</code> the full pathname of the above folder, which will look like this...</p>
+
+<pre><code>c:\pinecone-rust\xpack-riscv-none-embed-gcc\bin</code></pre>
+<p>Change <code>c:\pinecone-rust</code> to the location of the <code>pinecone-rust</code> folder.</p>
+</li>
+</ul>
+</li>
+</ol>
+<p><a href="https://github.com/lupyuen/pinecone-rust/blob/main/README.md">Got problems? Check this doc</a></p>
 <p><img src="https://lupyuen.github.io/images/debug-memory.png" alt="Memory Map of PineCone Firmware: C vs Rust" /></p>
 <p><em>Memory Map of PineCone Firmware: C vs Rust</em></p>
-<h1 id="gdb" class="section-header"><a href="#gdb">2 GDB</a></h1>
+<h1 id="build-rust-firmware" class="section-header"><a href="#build-rust-firmware">2 Build Rust Firmware</a></h1>
+<p>TODO</p>
+<h1 id="debug-rust-firmware-with-gdb" class="section-header"><a href="#debug-rust-firmware-with-gdb">3 Debug Rust Firmware with GDB</a></h1>
 <p>TODO</p>
 <ul>
 <li>
@@ -97,7 +223,7 @@
 </ul>
 <p><img src="https://lupyuen.github.io/images/debug-vscode.png" alt="VSCode Debugger with Rust Firmware for PineCone BL602" /></p>
 <p><em>VSCode Debugger with Rust Firmware for PineCone BL602</em></p>
-<h1 id="vscode" class="section-header"><a href="#vscode">3 VSCode</a></h1>
+<h1 id="debug-rust-firmware-with-vscode" class="section-header"><a href="#debug-rust-firmware-with-vscode">4 Debug Rust Firmware with VSCode</a></h1>
 <p>TODO</p>
 <ul>
 <li>
@@ -110,7 +236,8 @@
 <p><a href=".vscode/tasks.json"><code>https://github.com/lupyuen/pinecone-rust/blob/main/.vscode/tasks.json</code></a>: VSCode Tasks</p>
 </li>
 </ul>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">4 What's Next</a></h1>
+<p>Terminate OpenOCD</p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">5 What's Next</a></h1>
 <p>TODO</p>
 <p><a href="https://lupyuen.github.io">Check out my articles</a></p>
 <p><a href="https://lupyuen.github.io/rss.xml">RSS Feed</a></p>
