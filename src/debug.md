@@ -128,13 +128,44 @@ After installing OpenOCD, Rust and GDB, the `pinecone-rust` folder should look l
 
 [Got problems? Check this doc](https://github.com/lupyuen/pinecone-rust/blob/main/README.md)
 
+# Build Rust Firmware
+
+Let's build the Rust Firmware...
+
+```bash
+cd pinecone-rust
+cargo build
+```
+
+We should see...
+
+```text
+???
+```
+
+Ignore the warnings for now... We'll cover them in a while.
+
+##  Rust Firmware vs C Firmware
+
+_Is Rust Firmware any different from the [C Firmware](https://lupyuen.github.io/articles/pinecone) that we have seen earlier?_
+
+From the Memory Map below, we can see that...
+
+1.  C Firmware runs in the __XIP Flash Memory Region__ at `0x2300 0000`
+
+    (XIP means Execute In Place... The firmware code is executed directly from Flash Memory, without copying to RAM)
+
+1.  Rust Firmware runs in the __Instruction Cache Memory Region__ at `0x2200 8000`
+
+    Which is similar to RAM. And probably works better for debugging.
+
+    (The [Build Settings](https://github.com/lupyuen/pinecone-rust/blob/main/memory.x) for the Rust Firmware were provided by the [Sipeed BL602 Community](https://github.com/sipeed/bl602-rust-guide))
+
+In the next section we shall use the GDB Debugger to load our Rust Firmware into the cache memory for debugging.
+
 ![Memory Map of PineCone Firmware: C vs Rust](https://lupyuen.github.io/images/debug-memory.png)
 
 _Memory Map of PineCone Firmware: C vs Rust_
-
-# Build Rust Firmware
-
-TODO
 
 # Debug Rust Firmware with GDB
 
@@ -149,6 +180,10 @@ TODO
 -   [`https://github.com/lupyuen/pinecone-rust/blob/main/src/main.rs`](src/main.rs): Rust Source Code
 
 -   [Rust Documentation](https://lupyuen.github.io/pinecone-rust/)
+
+# Rusty Mystery
+
+TODO
 
 ![VSCode Debugger with Rust Firmware for PineCone BL602](https://lupyuen.github.io/images/debug-vscode.png)
 
