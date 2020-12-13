@@ -4,11 +4,31 @@
 
 _PineCone BL602 RISC-V Evaluation Board connected to Sipeed JTAG Debugger_
 
-Today we'll learn to debug Rust Firmware for [__PineCone BL602 RISC-V Evaluation Board__](https://lupyuen.github.io/articles/pinecone) with VSCode and GDB.
+Today we'll learn to debug Rust Firmware for [__PineCone BL602 RISC-V Evaluation Board__](https://lupyuen.github.io/articles/pinecone) in two ways...
 
-# OpenOCD
+1.  With the GDB Debugger (text-based)
 
-TODO
+1.  With the VSCode Debugger (graphical-based)
+
+The instructions here should work on Linux, macOS and Windows.
+
+# Install OpenOCD, Rust and GDB
+
+##  Install OpenOCD
+
+1.  Follow the instructions in the article...
+
+    ["Connect PineCone BL602 to OpenOCD"](https://lupyuen.github.io/articles/openocd)
+    
+    -   Section 4: ["Connect JTAG Debugger to PineCone"](https://lupyuen.github.io/articles/openocd#connect-jtag-debugger-to-pinecone)
+
+    -   Section 5: ["Download and run OpenOCD"](https://lupyuen.github.io/articles/openocd#download-and-run-openocd)
+
+    We'll use the Default JTAG Port (without remapping)
+
+##  Install Rust
+
+##  Install GDB
 
 [Setup OpenOCD, Rust and GDB](https://github.com/lupyuen/pinecone-rust/blob/main/README.md)
 
