@@ -443,6 +443,8 @@ That's the purpose of the GDB Script. Let's look inside [`openocd.gdb`](https://
     break _start
     ```
 
+    [Source code for `_start`](https://github.com/rust-embedded/riscv-rt/blob/master/asm.S)
+
 1.  Finally we step into the first RISC-V instruction in our firmware... And pause the execution
 
     ```text
@@ -481,9 +483,9 @@ The OpenOCD Script [`openocd.cfg`](https://github.com/lupyuen/pinecone-rust/blob
 
 [`openocd.gdb`](https://github.com/lupyuen/pinecone-rust/blob/main/openocd.gdb) and [`openocd.cfg`](https://github.com/lupyuen/pinecone-rust/blob/main/openocd.cfg) were graciously provided by the [Sipeed BL602 Community](https://github.com/sipeed/bl602-rust-guide)
 
-# Rusty Mystery
+# Rusty Mastery and Mystery
 
-TODO
+Before we talk about VSCode Debugging, let's study the Source Code for our Rust Firmware: [src/main.rs](https://github.com/lupyuen/pinecone-rust/blob/main/src/main.rs)
 
 ```
 #[riscv_rt::entry]
@@ -496,7 +498,80 @@ fn main() -> ! {
 }    
 ```
 
--   [Rust Documentation](https://lupyuen.github.io/pinecone-rust/)
+Here's how it works, line by line...
+
+## Declare the Main Function
+
+At the top we have a Rust Attribute that declares the Entry Function for our RISC-V firmware...
+
+```
+#[riscv_rt::entry]
+```
+
+Followed by the declaration of our Entry Function `main`...
+
+```
+fn main() -> ! {
+```
+
+This means that the Rust Function `main` will be called when the firmware starts, after initialising the registers and RAM. ([More details](https://github.com/rust-embedded/riscv-rt/blob/master/asm.S)) 
+
+(The return type `-> !` means that the function will loop forever, never returniung)
+
+## Fetch the Peripheral Registers
+
+Our BL602 Microcontroller supports multiple Peripheral Functions: Timer, UART, I2C, SPI, PWM, ...
+
+Here's how we fetch the Peripheral Registers that will control the Peripheral Functions...
+
+```
+let dp = pac::Peripherals::take().unwrap();
+```
+
+`pac` refers to the Peripheral Access Crate for BL602. It exposes `Peripherals`, the Peripheral Registers for BL602.
+
+-   [More about BL602 Peripheral Access Crate](https://lupyuen.github.io/pinecone-rust/bl602_pac/)
+
+_Why the `take` and `unwrap`?_
+
+Rust is known for its Code Safety in Systems Programming.
+
+`take` + `unwrap` is a common pattern in Embedded Rust to ensure that we access the Hardware Registers safely.
+
+-   [More about Embedded Rust Registers](https://rust-embedded.github.io/book/start/registers.html)
+
+## Get the Global Register
+
+BL602's Global Register (GLB) controls the global settings. It provides settings for Clock Management, Reset Management, Bus Management, Memory Management and GPIO Management.
+
+We fetch the Global Register (and its components) from the Peripheral Registers like so...
+
+```
+let mut parts = dp.GLB.split();
+```
+
+-   Refer to [BL602 Reference Manual](https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf), Section 3 "GLB", Page 24.
+
+## Loop Forever
+
+Our firmware should never terminate... It should loop forever handling events.
+
+For now we'll use an empty loop...
+
+```
+//  Loop forever
+loop {}
+```
+
+## Is something missing?
+
+_Where's the rest of the Rust code?_
+
+???
+
+[Rust Documentation](https://lupyuen.github.io/pinecone-rust/)
+
+[Rust Embedded Book](https://rust-embedded.github.io/book/)
 
 ![VSCode Debugger with Rust Firmware for PineCone BL602](https://lupyuen.github.io/images/debug-vscode.png)
 
