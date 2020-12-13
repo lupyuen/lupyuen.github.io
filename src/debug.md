@@ -332,9 +332,7 @@ At the GDB prompt, enter...
 
 ```text
 break main
-
 continue
-
 ```
 
 This tells GDB to set a Breakpoint at the `main` function in Rust. And continue execution until we hit the Breakpoint.
@@ -397,7 +395,13 @@ That's the purpose of the GDB Script. Let's look inside [`openocd.gdb`](https://
     target extended-remote :3333
     ```
 
-1.  The Rust Compiler will mangle up most function names. Here's how we display the dismangled function names in GDB...
+1.  The Rust Compiler will mangle up most function names. The function name `riscv::interrupt::enable` becomes this...
+
+    ```text
+    _ZN5riscv9interrupt6enable17ha2fdcd71882d698eE
+    ```
+
+    Here's how we display the dismangled function names...
 
     ```text
     # Print demangled symbols
