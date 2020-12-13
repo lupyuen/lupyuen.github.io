@@ -72,11 +72,15 @@
 <li><a href="#check-the-folders">1.4 Check the folders</a><ul></ul></li></ul></li>
 <li><a href="#build-rust-firmware">2 Build Rust Firmware</a><ul>
 <li><a href="#rust-firmware-vs-c-firmware">2.1 Rust Firmware vs C Firmware</a><ul></ul></li></ul></li>
-<li><a href="#debug-rust-firmware-with-gdb">3 Debug Rust Firmware with GDB</a><ul></ul></li>
+<li><a href="#debug-rust-firmware-with-gdb">3 Debug Rust Firmware with GDB</a><ul>
+<li><a href="#start-openocd">3.1 Start OpenOCD</a><ul></ul></li>
+<li><a href="#start-gdb">3.2 Start GDB</a><ul></ul></li>
+<li><a href="#debug-with-gdb">3.3 Debug with GDB</a><ul></ul></li></ul></li>
 <li><a href="#gdb-script">4 GDB Script</a><ul></ul></li>
 <li><a href="#rusty-mystery">5 Rusty Mystery</a><ul></ul></li>
 <li><a href="#debug-rust-firmware-with-vscode">6 Debug Rust Firmware with VSCode</a><ul></ul></li>
-<li><a href="#whats-next">7 What's Next</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/debug-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board connected to Sipeed JTAG Debugger" /></p>
+<li><a href="#vscode-settings">7 VSCode Settings</a><ul></ul></li>
+<li><a href="#whats-next">8 What's Next</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/debug-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board connected to Sipeed JTAG Debugger" /></p>
 <p><em>PineCone BL602 RISC-V Evaluation Board connected to Sipeed JTAG Debugger</em></p>
 <p>Today we'll learn to debug Rust Firmware for <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602 RISC-V Evaluation Board</strong></a> in two ways...</p>
 <ol>
@@ -179,6 +183,7 @@ rustup target add riscv32imac-unknown-none-elf
 <p><strong>For Linux and macOS:</strong></p>
 <pre><code class="language-bash">cd pinecone-rust
 ln -s &quot;$PWD/xpack-riscv-none-embed-gcc/bin/riscv-none-embed-gdb&quot; &quot;$PWD/xpack-riscv-none-embed-gcc/bin/riscv64-unknown-elf-gdb&quot;
+
 </code></pre>
 <p><strong>For Windows:</strong></p>
 <ul>
@@ -304,36 +309,130 @@ warning: 3 warnings emitted
 <p><img src="https://lupyuen.github.io/images/debug-memory.png" alt="Memory Map of PineCone Firmware: C vs Rust" /></p>
 <p><em>Memory Map of PineCone Firmware: C vs Rust</em></p>
 <h1 id="debug-rust-firmware-with-gdb" class="section-header"><a href="#debug-rust-firmware-with-gdb">3 Debug Rust Firmware with GDB</a></h1>
+<p>(If you're interested only in VSCode debugging, skip to the next section)</p>
+<p>Let's run the Rust Firmware and debug it with GDB.  We'll need two command prompts: One for OpenOCD and another for GDB.</p>
+<h2 id="start-openocd" class="section-header"><a href="#start-openocd">3.1 Start OpenOCD</a></h2>
+<p>At the command prompt, enter...</p>
+<pre><code class="language-bash">cd pinecone-rust
+xpack-openocd/bin/openocd
+</code></pre>
+<p>For Windows: Enter...</p>
+<pre><code class="language-cmd">cd pinecone-rust
+xpack-openocd\bin\openocd
+</code></pre>
+<p>We should see OpenOCD connecting to PineCone...</p>
+<pre><code class="language-text">xPack OpenOCD, x86_64 Open On-Chip Debugger 0.10.0+dev-00378-ge5be992df (2020-06-26-12:31)
+Licensed under GNU GPL v2
+For bug reports, read
+        http://openocd.org/doc/doxygen/bugs.html
+Ready for Remote Connections
+Info : clock speed 100 kHz
+Info : JTAG tap: riscv.cpu tap/device found: 0x20000c05 (mfg: 0x602 (&lt;unknown&gt;), part: 0x0000, ver: 0x2)
+Info : datacount=1 progbufsize=2
+Info : Disabling abstract command reads from CSRs.
+Info : Examined RISC-V core; found 1 harts
+Info :  hart 0: XLEN=32, misa=0x40801125
+Info : starting gdb server for riscv.cpu.0 on 3333
+Info : Listening on port 3333 for gdb connections
+Info : JTAG tap: riscv.cpu tap/device found: 0x20000c05 (mfg: 0x602 (&lt;unknown&gt;), part: 0x0000, ver: 0x2)
+reset-assert-pre
+reset-deassert-post
+Info : Disabling abstract command writes to CSRs.
+reset-init
+Info : Listening on port 6666 for tcl connections
+Info : Listening on port 4444 for telnet connections
+</code></pre>
+<p>Keep OpenOCD running as we start GDB...</p>
+<h2 id="start-gdb" class="section-header"><a href="#start-gdb">3.2 Start GDB</a></h2>
+<p>Open another command prompt. Enter...</p>
+<pre><code class="language-bash">cd pinecone-rust
+export PATH=&quot;$PWD/xpack-riscv-none-embed-gcc/bin:$PATH&quot;
+cargo run
+</code></pre>
+<p>For Windows: Omit the line <code>export PATH</code></p>
+<p>We should see...</p>
+<pre><code class="language-text">    Finished dev [unoptimized + debuginfo] target(s) in 0.08s
+     Running `riscv64-unknown-elf-gdb -q -x openocd.gdb target/riscv32imac-unknown-none-elf/debug/bl602-rust-guide`
+Reading symbols from target/riscv32imac-unknown-none-elf/debug/bl602-rust-guide...
+0x21000000 in ?? ()
+Loading section .text, size 0x22b0 lma 0x22008000
+Loading section .rodata, size 0x5d8 lma 0x2200a2b0
+Start address 0x22008000, load size 10376
+Transfer rate: 2 KB/sec, 5188 bytes/write.
+</code></pre>
+<p>GDB has loaded our Rust Firmware into PineCone's cache memory. PineCone starts running our firmware...</p>
+<pre><code class="language-text">Breakpoint 1 at 0x22008000: file asm.S, line 27.
+
+Breakpoint 1, _start () at asm.S:27
+27      asm.S: No such file or directory.
+</code></pre>
+<p>GDB has paused the firmware execution at a Breakpoint in our code. (We'll see this Breakpoint shortly)</p>
+<h2 id="debug-with-gdb" class="section-header"><a href="#debug-with-gdb">3.3 Debug with GDB</a></h2>
+<p>At the GDB prompt, enter...</p>
+<pre><code class="language-text">break main
+continue
+</code></pre>
+<p>This tells GDB to set a Breakpoint at the <code>main</code> function in Rust. And continue execution until we hit the Breakpoint.</p>
+<p>We'll see...</p>
+<pre><code class="language-text">(gdb) break main
+Breakpoint 2 at 0x2200924e: file src/main.rs, line 10.
+(gdb) continue
+Continuing.
+
+Breakpoint 2, main () at src/main.rs:10
+10          let dp = pac::Peripherals::take().unwrap();
+</code></pre>
+<p>GDB has paused execution at the <code>main</code> function in Rust.</p>
+<ul>
+<li><a href="src/main.rs">Rust Source File</a></li>
+</ul>
+<p>Enter <code>next</code> to resume execution until the next line...</p>
+<pre><code class="language-text">(gdb) next
+11          let mut parts = dp.GLB.split();
+(gdb) bt
+#0  main () at src/main.rs:11
+(gdb) 
+</code></pre>
+<p>The <code>bt</code> command shows us the Stack Trace and local variables.</p>
+<ul>
+<li><a href="https://youtu.be/A54Agz35vfk">Watch on YouTube</a></li>
+</ul>
+<p>Yep we're now debugging our Rust Firmware with GDB! Check out the GDB docs for more debugging commands...</p>
+<ul>
+<li><a href="https://sourceware.org/gdb/current/onlinedocs/gdb/index.html">Debugging with GDB</a></li>
+</ul>
+<p>In OpenOCD we'll see this warning... Just ignore it</p>
+<pre><code class="language-text">Info : accepting 'gdb' connection on tcp/3333
+Info : Disabling abstract command reads from FPRs.
+Warn : negative reply, retrying
+Warn : negative acknowledgment, but no packet pending
+</code></pre>
+<h1 id="gdb-script" class="section-header"><a href="#gdb-script">4 GDB Script</a></h1>
 <p>TODO</p>
 <ul>
-<li>
-<p><a href="https://youtu.be/A54Agz35vfk">Watch on YouTube</a></p>
-</li>
 <li>
 <p><a href="openocd.cfg"><code>https://github.com/lupyuen/pinecone-rust/blob/main/openocd.cfg</code></a>: OpenOCD Configuration</p>
 </li>
 <li>
 <p><a href="openocd.gdb"><code>https://github.com/lupyuen/pinecone-rust/blob/main/openocd.gdb</code></a>: GDB Debugger Configuration</p>
 </li>
-<li>
-<p><a href="src/main.rs"><code>https://github.com/lupyuen/pinecone-rust/blob/main/src/main.rs</code></a>: Rust Source Code</p>
-</li>
-<li>
-<p><a href="https://lupyuen.github.io/pinecone-rust/">Rust Documentation</a></p>
-</li>
 </ul>
-<h1 id="gdb-script" class="section-header"><a href="#gdb-script">4 GDB Script</a></h1>
-<p>TODO</p>
 <h1 id="rusty-mystery" class="section-header"><a href="#rusty-mystery">5 Rusty Mystery</a></h1>
 <p>TODO</p>
+<ul>
+<li><a href="https://lupyuen.github.io/pinecone-rust/">Rust Documentation</a></li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/debug-vscode.png" alt="VSCode Debugger with Rust Firmware for PineCone BL602" /></p>
 <p><em>VSCode Debugger with Rust Firmware for PineCone BL602</em></p>
 <h1 id="debug-rust-firmware-with-vscode" class="section-header"><a href="#debug-rust-firmware-with-vscode">6 Debug Rust Firmware with VSCode</a></h1>
 <p>TODO</p>
 <ul>
-<li>
-<p><a href="https://youtu.be/b9f2vxYahHY">Watch on YouTube</a></p>
-</li>
+<li><a href="https://youtu.be/b9f2vxYahHY">Watch on YouTube</a></li>
+</ul>
+<p>Terminate OpenOCD</p>
+<h1 id="vscode-settings" class="section-header"><a href="#vscode-settings">7 VSCode Settings</a></h1>
+<p>TODO</p>
+<ul>
 <li>
 <p><a href=".vscode/launch.json"><code>https://github.com/lupyuen/pinecone-rust/blob/main/.vscode/launch.json</code></a>: VSCode Debugger Configuration</p>
 </li>
@@ -341,8 +440,7 @@ warning: 3 warnings emitted
 <p><a href=".vscode/tasks.json"><code>https://github.com/lupyuen/pinecone-rust/blob/main/.vscode/tasks.json</code></a>: VSCode Tasks</p>
 </li>
 </ul>
-<p>Terminate OpenOCD</p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">7 What's Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">8 What's Next</a></h1>
 <p>TODO</p>
 <p><a href="https://lupyuen.github.io">Check out my articles</a></p>
 <p><a href="https://lupyuen.github.io/rss.xml">RSS Feed</a></p>

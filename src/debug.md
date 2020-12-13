@@ -56,13 +56,9 @@ Install Rust with support for nightly target `riscv32imac-unknown-none-elf`....
 
     ```bash
     source $HOME/.cargo/env
-
     rustup update
-
     rustup default nightly
-
     rustup target add riscv32imac-unknown-none-elf
-
     ```
 
     __For Windows:__ Enter the above commands in a Windows Command Prompt (not WSL Terminal). Omit the `source` line.
@@ -101,7 +97,6 @@ Now we install [__xPack GCC for RISC-V__](https://xpack.github.io/riscv-none-emb
 
     ```bash
     cd pinecone-rust
-
     ln -s "$PWD/xpack-riscv-none-embed-gcc/bin/riscv-none-embed-gdb" "$PWD/xpack-riscv-none-embed-gcc/bin/riscv64-unknown-elf-gdb"
 
     ```
@@ -294,7 +289,7 @@ Info : Listening on port 6666 for tcl connections
 Info : Listening on port 4444 for telnet connections
 ```
 
-Keep OpenOCD running while we start GDB.
+Keep OpenOCD running as we start GDB...
 
 ## Start GDB
 
@@ -302,11 +297,8 @@ Open another command prompt. Enter...
 
 ```bash
 cd pinecone-rust
-
-export PATH="$PWD/xpack-riscv-none-embed-gcc-8.3.0-2.3/bin:$PATH"
-
+export PATH="$PWD/xpack-riscv-none-embed-gcc/bin:$PATH"
 cargo run
-
 ```
 
 For Windows: Omit the line `export PATH`
@@ -341,9 +333,7 @@ At the GDB prompt, enter...
 
 ```text
 break main
-
 continue
-
 ```
 
 This tells GDB to set a Breakpoint at the `main` function in Rust. And continue execution until we hit the Breakpoint.
