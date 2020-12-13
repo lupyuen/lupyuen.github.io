@@ -385,54 +385,68 @@ Warn : negative acknowledgment, but no packet pending
 
 # GDB Script
 
-_What's driving GDB? How does it know how to do the things it did?_
+_What's driving GDB? How does GDB know how to do the things that it did?_
 
-That's the purpose of the GDB Script: [`openocd.gdb`](https://github.com/lupyuen/pinecone-rust/blob/main/openocd.gdb)
+That's the purpose of the GDB Script. Let's look inside [`openocd.gdb`](https://github.com/lupyuen/pinecone-rust/blob/main/openocd.gdb)...
 
-TODO
+1.  aaa
 
-```text
-target extended-remote :3333
-```
+    ```text
+    target extended-remote :3333
+    ```
 
-```text
-# print demangled symbols
-set print asm-demangle on
-```
+1.  aaa
 
-```text
-# set backtrace limit to not have infinite backtrace loops
-set backtrace limit 32
-```
+    ```text
+    # print demangled symbols
+    set print asm-demangle on
+    ```
 
-```text
-mem 0x22008000 0x22014000 rw
-mem 0x42008000 0x42014000 rw
-mem 0x22014000 0x22020000 rw
-mem 0x42014000 0x42020000 rw
-mem 0x22020000 0x22030000 rw
-mem 0x42020000 0x42030000 rw
-mem 0x22030000 0x2204C000 rw
-mem 0x42030000 0x4204C000 rw
-mem 0x23000000 0x23400000 ro
-```
+1.  aaa
 
-```text
-load
-```
+    ```text
+    # set backtrace limit to not have infinite backtrace loops
+    set backtrace limit 32
+    ```
 
-```text
-break _start
-```
+1.  aaa
 
-```text
-# start the process but immediately halt the processor
-stepi
-```
+    ```text
+    mem 0x22008000 0x22014000 rw
+    mem 0x42008000 0x42014000 rw
+    mem 0x22014000 0x22020000 rw
+    mem 0x42014000 0x42020000 rw
+    mem 0x22020000 0x22030000 rw
+    mem 0x42020000 0x42030000 rw
+    mem 0x22030000 0x2204C000 rw
+    mem 0x42030000 0x4204C000 rw
+    mem 0x23000000 0x23400000 ro
+    ```
 
-[`openocd.cfg`](https://github.com/lupyuen/pinecone-rust/blob/main/openocd.cfg): OpenOCD Configuration
+1.  aaa
 
-[`.cargo/config.toml`](https://github.com/lupyuen/pinecone-rust/blob/main/.cargo/config.toml)
+    ```text
+    load
+    ```
+
+1.  aaa
+
+    ```text
+    break _start
+    ```
+
+1.  aaa
+
+    ```text
+    # start the process but immediately halt the processor
+    stepi
+    ```
+
+## GDB and cargo
+
+_How is the Rust Tool `cargo` configured to launch GDB?_
+
+`cargo` is configured through [`.cargo/config.toml`](https://github.com/lupyuen/pinecone-rust/blob/main/.cargo/config.toml)...
 
 ```yaml
 [target.riscv32imac-unknown-none-elf]
@@ -447,7 +461,17 @@ runner = "riscv64-unknown-elf-gdb -q -x openocd.gdb"
 target = "riscv32imac-unknown-none-elf"
 ```
 
-[`memory.x`](https://github.com/lupyuen/pinecone-rust/blob/main/memory.x)
+We see that `cargo` has been configured to launch `riscv64-unknown-elf-gdb` with the GDB Script [`openocd.gdb`](https://github.com/lupyuen/pinecone-rust/blob/main/openocd.gdb). The GDB Script loads our Rust Firmware to PineCone and starts debugging.
+
+Also, `cargo` has been configured to produce Rust Firmware that uses the Memory Map Layout specified by [`memory.x`](https://github.com/lupyuen/pinecone-rust/blob/main/memory.x).
+
+_What about the OpenOCD Script?_
+
+The OpenOCD Script [`openocd.cfg`](https://github.com/lupyuen/pinecone-rust/blob/main/openocd.cfg) has been covered in our previous article...
+
+-   ["Connect PineCone BL602 to OpenOCD"](https://lupyuen.github.io/articles/openocd)
+
+[`openocd.gdb`](https://github.com/lupyuen/pinecone-rust/blob/main/openocd.gdb) and [`openocd.cfg`](https://github.com/lupyuen/pinecone-rust/blob/main/openocd.cfg) were graciously provided by the [Sipeed BL602 Community](https://github.com/sipeed/bl602-rust-guide)
 
 # Rusty Mystery
 
