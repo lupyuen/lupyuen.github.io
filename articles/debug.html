@@ -399,7 +399,12 @@ Breakpoint 2, main () at src/main.rs:10
 </ul>
 <p>Yep we're now debugging our Rust Firmware with GDB! Check out the GDB docs for more debugging commands...</p>
 <ul>
-<li><a href="https://sourceware.org/gdb/current/onlinedocs/gdb/index.html">Debugging with GDB</a></li>
+<li>
+<p><a href="https://sourceware.org/gdb/current/onlinedocs/gdb/index.html">Debugging with GDB</a></p>
+</li>
+<li>
+<p><a href="https://gist.github.com/rkubik/b96c23bd8ed58333de37f2b8cd052c30">GDB Cheat Sheet</a></p>
+</li>
 </ul>
 <p>In OpenOCD we'll see this warning... Just ignore it</p>
 <pre><code class="language-text">Info : accepting 'gdb' connection on tcp/3333
@@ -437,6 +442,19 @@ mem 0x23000000 0x23400000 ro
 stepi
 </code></pre>
 <p><a href="https://github.com/lupyuen/pinecone-rust/blob/main/openocd.cfg"><code>openocd.cfg</code></a>: OpenOCD Configuration</p>
+<p><a href="https://github.com/lupyuen/pinecone-rust/blob/main/.cargo/config.toml"><code>.cargo/config.toml</code></a></p>
+<pre><code class="language-yaml">[target.riscv32imac-unknown-none-elf]
+rustflags = [
+  &quot;-C&quot;, &quot;link-arg=-Tmemory.x&quot;,
+  &quot;-C&quot;, &quot;link-arg=-Tlink.x&quot;,
+]
+runner = &quot;riscv64-unknown-elf-gdb -q -x openocd.gdb&quot;
+# runner = &quot;riscv32-unknown-elf-gdb -q -x openocd.gdb&quot;
+
+[build]
+target = &quot;riscv32imac-unknown-none-elf&quot;
+</code></pre>
+<p><a href="https://github.com/lupyuen/pinecone-rust/blob/main/memory.x"><code>memory.x</code></a></p>
 <h1 id="rusty-mystery" class="section-header"><a href="#rusty-mystery">5 Rusty Mystery</a></h1>
 <p>TODO</p>
 <ul>

@@ -372,6 +372,8 @@ Yep we're now debugging our Rust Firmware with GDB! Check out the GDB docs for m
 
 -   [Debugging with GDB](https://sourceware.org/gdb/current/onlinedocs/gdb/index.html)
 
+-   [GDB Cheat Sheet](https://gist.github.com/rkubik/b96c23bd8ed58333de37f2b8cd052c30)
+
 In OpenOCD we'll see this warning... Just ignore it
 
 ```text
@@ -429,6 +431,23 @@ stepi
 ```
 
 [`openocd.cfg`](https://github.com/lupyuen/pinecone-rust/blob/main/openocd.cfg): OpenOCD Configuration
+
+[`.cargo/config.toml`](https://github.com/lupyuen/pinecone-rust/blob/main/.cargo/config.toml)
+
+```yaml
+[target.riscv32imac-unknown-none-elf]
+rustflags = [
+  "-C", "link-arg=-Tmemory.x",
+  "-C", "link-arg=-Tlink.x",
+]
+runner = "riscv64-unknown-elf-gdb -q -x openocd.gdb"
+# runner = "riscv32-unknown-elf-gdb -q -x openocd.gdb"
+
+[build]
+target = "riscv32imac-unknown-none-elf"
+```
+
+[`memory.x`](https://github.com/lupyuen/pinecone-rust/blob/main/memory.x)
 
 # Rusty Mystery
 
