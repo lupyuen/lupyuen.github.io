@@ -273,11 +273,15 @@ TODO
 
 -   [Watch on YouTube](https://youtu.be/b9f2vxYahHY)
 
+Terminate OpenOCD
+
+# VSCode Settings
+
+TODO
+
 -   [`https://github.com/lupyuen/pinecone-rust/blob/main/.vscode/launch.json`](.vscode/launch.json): VSCode Debugger Configuration
 
 -   [`https://github.com/lupyuen/pinecone-rust/blob/main/.vscode/tasks.json`](.vscode/tasks.json): VSCode Tasks
-
-Terminate OpenOCD
 
 # What's Next
 
