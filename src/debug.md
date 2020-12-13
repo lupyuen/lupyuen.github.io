@@ -140,7 +140,81 @@ cargo build
 We should see...
 
 ```text
-???
+   Compiling autocfg v1.0.1
+   Compiling memchr v2.3.4
+   Compiling lazy_static v1.4.0
+   Compiling regex-syntax v0.6.21
+   Compiling semver-parser v0.7.0
+   Compiling proc-macro2 v0.4.30
+   Compiling unicode-xid v0.1.0
+   Compiling rand_core v0.4.2
+   Compiling syn v0.15.44
+   Compiling bit_field v0.10.1
+   Compiling bl602-pac v0.1.0 (/Users/Luppy/pinecone/bl602-pac)
+   Compiling bare-metal v1.0.0
+   Compiling nb v1.0.0
+   Compiling vcell v0.1.2
+   Compiling bl602-rust-guide v0.1.0 (/Users/Luppy/pinecone/pinecone-rust)
+   Compiling paste v1.0.4
+   Compiling r0 v1.0.0
+   Compiling panic-halt v0.2.0
+   Compiling thread_local v1.0.1
+   Compiling rand_core v0.3.1
+   Compiling semver v0.9.0
+   Compiling embedded-hal v1.0.0-alpha.4 (https://github.com/rust-embedded/embedded-hal#eae6c995)
+   Compiling rand v0.5.6
+   Compiling num-traits v0.2.14
+   Compiling num-integer v0.1.44
+   Compiling num-iter v0.1.42
+   Compiling num-rational v0.3.2
+   Compiling rustc_version v0.2.3
+   Compiling aho-corasick v0.7.15
+   Compiling bare-metal v0.2.5
+   Compiling quote v0.6.13
+   Compiling num-complex v0.3.1
+   Compiling num v0.3.1
+   Compiling embedded-time v0.10.1 (https://github.com/FluenTech/embedded-time#12e78c34)
+   Compiling regex v1.4.2
+   Compiling riscv-target v0.1.2
+   Compiling riscv v0.6.0
+   Compiling riscv-rt v0.8.0
+   Compiling riscv-rt-macros v0.1.6
+   Compiling bl602-hal v0.1.0 (/Users/Luppy/pinecone/bl602-hal)
+warning: unused imports: `clock::Strict`, `serial::*`
+ --> src/main.rs:4:17
+  |
+4 | use bl602_hal::{serial::*, pac, prelude::*, clock::Strict};
+  |                 ^^^^^^^^^                   ^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+warning: unused variable: `parts`
+  --> src/main.rs:11:9
+   |
+11 |     let mut parts = dp.GLB.split();
+   |         ^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_parts`
+   |
+   = note: `#[warn(unused_variables)]` on by default
+
+warning: variable does not need to be mutable
+  --> src/main.rs:11:9
+   |
+11 |     let mut parts = dp.GLB.split();
+   |         ----^^^^^
+   |         |
+   |         help: remove this `mut`
+   |
+   = note: `#[warn(unused_mut)]` on by default
+
+warning: 3 warnings emitted
+
+    Finished dev [unoptimized + debuginfo] target(s) in 1m 17s
+```
+
+This creates the RISC-V ELF Firmware image for PineCone...
+
+```
+pinecone-rust/target/riscv32imac-unknown-none-elf/debug/bl602-rust-guide
 ```
 
 Ignore the warnings for now... We'll cover them in a while.
@@ -180,6 +254,10 @@ TODO
 -   [`https://github.com/lupyuen/pinecone-rust/blob/main/src/main.rs`](src/main.rs): Rust Source Code
 
 -   [Rust Documentation](https://lupyuen.github.io/pinecone-rust/)
+
+# GDB Script
+
+TODO
 
 # Rusty Mystery
 

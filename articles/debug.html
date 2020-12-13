@@ -70,10 +70,13 @@
 <li><a href="#install-rust">1.2 Install Rust</a><ul></ul></li>
 <li><a href="#install-gdb">1.3 Install GDB</a><ul></ul></li>
 <li><a href="#check-the-folders">1.4 Check the folders</a><ul></ul></li></ul></li>
-<li><a href="#build-rust-firmware">2 Build Rust Firmware</a><ul></ul></li>
+<li><a href="#build-rust-firmware">2 Build Rust Firmware</a><ul>
+<li><a href="#rust-firmware-vs-c-firmware">2.1 Rust Firmware vs C Firmware</a><ul></ul></li></ul></li>
 <li><a href="#debug-rust-firmware-with-gdb">3 Debug Rust Firmware with GDB</a><ul></ul></li>
-<li><a href="#debug-rust-firmware-with-vscode">4 Debug Rust Firmware with VSCode</a><ul></ul></li>
-<li><a href="#whats-next">5 What's Next</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/debug-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board connected to Sipeed JTAG Debugger" /></p>
+<li><a href="#gdb-script">4 GDB Script</a><ul></ul></li>
+<li><a href="#rusty-mystery">5 Rusty Mystery</a><ul></ul></li>
+<li><a href="#debug-rust-firmware-with-vscode">6 Debug Rust Firmware with VSCode</a><ul></ul></li>
+<li><a href="#whats-next">7 What's Next</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/debug-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board connected to Sipeed JTAG Debugger" /></p>
 <p><em>PineCone BL602 RISC-V Evaluation Board connected to Sipeed JTAG Debugger</em></p>
 <p>Today we'll learn to debug Rust Firmware for <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602 RISC-V Evaluation Board</strong></a> in two ways...</p>
 <ol>
@@ -202,10 +205,104 @@ ln -s &quot;$PWD/xpack-riscv-none-embed-gcc/bin/riscv-none-embed-gdb&quot; &quot
 <p>After installing OpenOCD, Rust and GDB, the <code>pinecone-rust</code> folder should look like this...</p>
 <p><img src="https://lupyuen.github.io/images/debug-folders.png" alt="pinecone-rust folder" /></p>
 <p><a href="https://github.com/lupyuen/pinecone-rust/blob/main/README.md">Got problems? Check this doc</a></p>
+<h1 id="build-rust-firmware" class="section-header"><a href="#build-rust-firmware">2 Build Rust Firmware</a></h1>
+<p>Let's build the Rust Firmware...</p>
+<pre><code class="language-bash">cd pinecone-rust
+cargo build
+</code></pre>
+<p>We should see...</p>
+<pre><code class="language-text">   Compiling autocfg v1.0.1
+   Compiling memchr v2.3.4
+   Compiling lazy_static v1.4.0
+   Compiling regex-syntax v0.6.21
+   Compiling semver-parser v0.7.0
+   Compiling proc-macro2 v0.4.30
+   Compiling unicode-xid v0.1.0
+   Compiling rand_core v0.4.2
+   Compiling syn v0.15.44
+   Compiling bit_field v0.10.1
+   Compiling bl602-pac v0.1.0 (/Users/Luppy/pinecone/bl602-pac)
+   Compiling bare-metal v1.0.0
+   Compiling nb v1.0.0
+   Compiling vcell v0.1.2
+   Compiling bl602-rust-guide v0.1.0 (/Users/Luppy/pinecone/pinecone-rust)
+   Compiling paste v1.0.4
+   Compiling r0 v1.0.0
+   Compiling panic-halt v0.2.0
+   Compiling thread_local v1.0.1
+   Compiling rand_core v0.3.1
+   Compiling semver v0.9.0
+   Compiling embedded-hal v1.0.0-alpha.4 (https://github.com/rust-embedded/embedded-hal#eae6c995)
+   Compiling rand v0.5.6
+   Compiling num-traits v0.2.14
+   Compiling num-integer v0.1.44
+   Compiling num-iter v0.1.42
+   Compiling num-rational v0.3.2
+   Compiling rustc_version v0.2.3
+   Compiling aho-corasick v0.7.15
+   Compiling bare-metal v0.2.5
+   Compiling quote v0.6.13
+   Compiling num-complex v0.3.1
+   Compiling num v0.3.1
+   Compiling embedded-time v0.10.1 (https://github.com/FluenTech/embedded-time#12e78c34)
+   Compiling regex v1.4.2
+   Compiling riscv-target v0.1.2
+   Compiling riscv v0.6.0
+   Compiling riscv-rt v0.8.0
+   Compiling riscv-rt-macros v0.1.6
+   Compiling bl602-hal v0.1.0 (/Users/Luppy/pinecone/bl602-hal)
+warning: unused imports: `clock::Strict`, `serial::*`
+ --&gt; src/main.rs:4:17
+  |
+4 | use bl602_hal::{serial::*, pac, prelude::*, clock::Strict};
+  |                 ^^^^^^^^^                   ^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+warning: unused variable: `parts`
+  --&gt; src/main.rs:11:9
+   |
+11 |     let mut parts = dp.GLB.split();
+   |         ^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_parts`
+   |
+   = note: `#[warn(unused_variables)]` on by default
+
+warning: variable does not need to be mutable
+  --&gt; src/main.rs:11:9
+   |
+11 |     let mut parts = dp.GLB.split();
+   |         ----^^^^^
+   |         |
+   |         help: remove this `mut`
+   |
+   = note: `#[warn(unused_mut)]` on by default
+
+warning: 3 warnings emitted
+
+    Finished dev [unoptimized + debuginfo] target(s) in 1m 17s
+</code></pre>
+<p>This creates the RISC-V ELF Firmware image for PineCone...</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="ident">pinecone</span><span class="op">-</span><span class="ident">rust</span><span class="op">/</span><span class="ident">target</span><span class="op">/</span><span class="ident">riscv32imac</span><span class="op">-</span><span class="ident">unknown</span><span class="op">-</span><span class="ident">none</span><span class="op">-</span><span class="ident">elf</span><span class="op">/</span><span class="ident">debug</span><span class="op">/</span><span class="ident">bl602</span><span class="op">-</span><span class="ident">rust</span><span class="op">-</span><span class="ident">guide</span></pre></div>
+<p>Ignore the warnings for now... We'll cover them in a while.</p>
+<h2 id="rust-firmware-vs-c-firmware" class="section-header"><a href="#rust-firmware-vs-c-firmware">2.1 Rust Firmware vs C Firmware</a></h2>
+<p><em>Is Rust Firmware any different from the <a href="https://lupyuen.github.io/articles/pinecone">C Firmware</a> that we have seen earlier?</em></p>
+<p>From the Memory Map below, we can see that...</p>
+<ol>
+<li>
+<p>C Firmware runs in the <strong>XIP Flash Memory Region</strong> at <code>0x2300 0000</code></p>
+<p>(XIP means Execute In Place... The firmware code is executed directly from Flash Memory, without copying to RAM)</p>
+</li>
+<li>
+<p>Rust Firmware runs in the <strong>Instruction Cache Memory Region</strong> at <code>0x2200 8000</code></p>
+<p>Which is similar to RAM. And probably works better for debugging.</p>
+<p>(The <a href="https://github.com/lupyuen/pinecone-rust/blob/main/memory.x">Build Settings</a> for the Rust Firmware were provided by the <a href="https://github.com/sipeed/bl602-rust-guide">Sipeed BL602 Community</a>)</p>
+</li>
+</ol>
+<p>In the next section we shall use the GDB Debugger to load our Rust Firmware into the cache memory for debugging.</p>
 <p><img src="https://lupyuen.github.io/images/debug-memory.png" alt="Memory Map of PineCone Firmware: C vs Rust" /></p>
 <p><em>Memory Map of PineCone Firmware: C vs Rust</em></p>
-<h1 id="build-rust-firmware" class="section-header"><a href="#build-rust-firmware">2 Build Rust Firmware</a></h1>
-<p>TODO</p>
 <h1 id="debug-rust-firmware-with-gdb" class="section-header"><a href="#debug-rust-firmware-with-gdb">3 Debug Rust Firmware with GDB</a></h1>
 <p>TODO</p>
 <ul>
@@ -225,9 +322,13 @@ ln -s &quot;$PWD/xpack-riscv-none-embed-gcc/bin/riscv-none-embed-gdb&quot; &quot
 <p><a href="https://lupyuen.github.io/pinecone-rust/">Rust Documentation</a></p>
 </li>
 </ul>
+<h1 id="gdb-script" class="section-header"><a href="#gdb-script">4 GDB Script</a></h1>
+<p>TODO</p>
+<h1 id="rusty-mystery" class="section-header"><a href="#rusty-mystery">5 Rusty Mystery</a></h1>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/debug-vscode.png" alt="VSCode Debugger with Rust Firmware for PineCone BL602" /></p>
 <p><em>VSCode Debugger with Rust Firmware for PineCone BL602</em></p>
-<h1 id="debug-rust-firmware-with-vscode" class="section-header"><a href="#debug-rust-firmware-with-vscode">4 Debug Rust Firmware with VSCode</a></h1>
+<h1 id="debug-rust-firmware-with-vscode" class="section-header"><a href="#debug-rust-firmware-with-vscode">6 Debug Rust Firmware with VSCode</a></h1>
 <p>TODO</p>
 <ul>
 <li>
@@ -241,7 +342,7 @@ ln -s &quot;$PWD/xpack-riscv-none-embed-gcc/bin/riscv-none-embed-gdb&quot; &quot
 </li>
 </ul>
 <p>Terminate OpenOCD</p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">5 What's Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">7 What's Next</a></h1>
 <p>TODO</p>
 <p><a href="https://lupyuen.github.io">Check out my articles</a></p>
 <p><a href="https://lupyuen.github.io/rss.xml">RSS Feed</a></p>
