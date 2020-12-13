@@ -485,6 +485,17 @@ The OpenOCD Script [`openocd.cfg`](https://github.com/lupyuen/pinecone-rust/blob
 
 TODO
 
+```
+#[riscv_rt::entry]
+fn main() -> ! {
+    let dp = pac::Peripherals::take().unwrap();
+    let mut parts = dp.GLB.split();
+    ...
+    //  Loop forever
+    loop {}
+}    
+```
+
 -   [Rust Documentation](https://lupyuen.github.io/pinecone-rust/)
 
 ![VSCode Debugger with Rust Firmware for PineCone BL602](https://lupyuen.github.io/images/debug-vscode.png)

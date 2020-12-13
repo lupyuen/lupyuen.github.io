@@ -491,6 +491,16 @@ target = &quot;riscv32imac-unknown-none-elf&quot;
 <p><a href="https://github.com/lupyuen/pinecone-rust/blob/main/openocd.gdb"><code>openocd.gdb</code></a> and <a href="https://github.com/lupyuen/pinecone-rust/blob/main/openocd.cfg"><code>openocd.cfg</code></a> were graciously provided by the <a href="https://github.com/sipeed/bl602-rust-guide">Sipeed BL602 Community</a></p>
 <h1 id="rusty-mystery" class="section-header"><a href="#rusty-mystery">5 Rusty Mystery</a></h1>
 <p>TODO</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="attribute">#[<span class="ident">riscv_rt</span>::<span class="ident">entry</span>]</span>
+<span class="kw">fn</span> <span class="ident">main</span>() <span class="op">-&gt;</span> <span class="op">!</span> {
+    <span class="kw">let</span> <span class="ident">dp</span> <span class="op">=</span> <span class="ident">pac</span>::<span class="ident">Peripherals</span>::<span class="ident">take</span>().<span class="ident">unwrap</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">parts</span> <span class="op">=</span> <span class="ident">dp</span>.<span class="ident">GLB</span>.<span class="ident">split</span>();
+    ...
+    <span class="comment">//  Loop forever</span>
+    <span class="kw">loop</span> {}
+}    </pre></div>
 <ul>
 <li><a href="https://lupyuen.github.io/pinecone-rust/">Rust Documentation</a></li>
 </ul>
