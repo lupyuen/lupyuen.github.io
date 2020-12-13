@@ -98,7 +98,6 @@ Now we install [__xPack GCC for RISC-V__](https://xpack.github.io/riscv-none-emb
     ```bash
     cd pinecone-rust
     ln -s "$PWD/xpack-riscv-none-embed-gcc/bin/riscv-none-embed-gdb" "$PWD/xpack-riscv-none-embed-gcc/bin/riscv64-unknown-elf-gdb"
-
     ```
 
     __For Windows:__
@@ -333,7 +332,9 @@ At the GDB prompt, enter...
 
 ```text
 break main
+
 continue
+
 ```
 
 This tells GDB to set a Breakpoint at the `main` function in Rust. And continue execution until we hit the Breakpoint.
@@ -352,7 +353,7 @@ Breakpoint 2, main () at src/main.rs:10
 
 GDB has paused execution at the `main` function in Rust.
 
--   [Rust Source File](src/main.rs)
+-   [Rust Source File](https://github.com/lupyuen/pinecone-rust/blob/main/src/main.rs)
 
 Enter `next` to resume execution until the next line...
 
@@ -382,11 +383,11 @@ Warn : negative acknowledgment, but no packet pending
 
 # GDB Script
 
+_What's driving GDB? How does it know how to do the things it did?_
+
+That's the purpose of the GDB Script: [`openocd.gdb`](https://github.com/lupyuen/pinecone-rust/blob/main/openocd.gdb)
+
 TODO
-
--   [`https://github.com/lupyuen/pinecone-rust/blob/main/openocd.cfg`](openocd.cfg): OpenOCD Configuration
-
--   [`https://github.com/lupyuen/pinecone-rust/blob/main/openocd.gdb`](openocd.gdb): GDB Debugger Configuration
 
 ```text
 target extended-remote :3333
@@ -427,6 +428,8 @@ break _start
 stepi
 ```
 
+[`openocd.cfg`](https://github.com/lupyuen/pinecone-rust/blob/main/openocd.cfg): OpenOCD Configuration
+
 # Rusty Mystery
 
 TODO
@@ -449,9 +452,9 @@ Terminate OpenOCD
 
 TODO
 
--   [`https://github.com/lupyuen/pinecone-rust/blob/main/.vscode/launch.json`](.vscode/launch.json): VSCode Debugger Configuration
+-   [`.vscode/launch.json`](https://github.com/lupyuen/pinecone-rust/blob/main/.vscode/launch.json): VSCode Debugger Configuration
 
--   [`https://github.com/lupyuen/pinecone-rust/blob/main/.vscode/tasks.json`](.vscode/tasks.json): VSCode Tasks
+-   [`.vscode/tasks.json`](https://github.com/lupyuen/pinecone-rust/blob/main/.vscode/tasks.json): VSCode Tasks
 
 # What's Next
 
