@@ -183,7 +183,6 @@ rustup target add riscv32imac-unknown-none-elf
 <p><strong>For Linux and macOS:</strong></p>
 <pre><code class="language-bash">cd pinecone-rust
 ln -s &quot;$PWD/xpack-riscv-none-embed-gcc/bin/riscv-none-embed-gdb&quot; &quot;$PWD/xpack-riscv-none-embed-gcc/bin/riscv64-unknown-elf-gdb&quot;
-
 </code></pre>
 <p><strong>For Windows:</strong></p>
 <ul>
@@ -370,7 +369,9 @@ Breakpoint 1, _start () at asm.S:27
 <h2 id="debug-with-gdb" class="section-header"><a href="#debug-with-gdb">3.3 Debug with GDB</a></h2>
 <p>At the GDB prompt, enter...</p>
 <pre><code class="language-text">break main
+
 continue
+
 </code></pre>
 <p>This tells GDB to set a Breakpoint at the <code>main</code> function in Rust. And continue execution until we hit the Breakpoint.</p>
 <p>We'll see...</p>
@@ -384,7 +385,7 @@ Breakpoint 2, main () at src/main.rs:10
 </code></pre>
 <p>GDB has paused execution at the <code>main</code> function in Rust.</p>
 <ul>
-<li><a href="src/main.rs">Rust Source File</a></li>
+<li><a href="https://github.com/lupyuen/pinecone-rust/blob/main/src/main.rs">Rust Source File</a></li>
 </ul>
 <p>Enter <code>next</code> to resume execution until the next line...</p>
 <pre><code class="language-text">(gdb) next
@@ -407,15 +408,9 @@ Warn : negative reply, retrying
 Warn : negative acknowledgment, but no packet pending
 </code></pre>
 <h1 id="gdb-script" class="section-header"><a href="#gdb-script">4 GDB Script</a></h1>
+<p><em>What's driving GDB? How does it know how to do the things it did?</em></p>
+<p>That's the purpose of the GDB Script: <a href="https://github.com/lupyuen/pinecone-rust/blob/main/openocd.gdb"><code>openocd.gdb</code></a></p>
 <p>TODO</p>
-<ul>
-<li>
-<p><a href="openocd.cfg"><code>https://github.com/lupyuen/pinecone-rust/blob/main/openocd.cfg</code></a>: OpenOCD Configuration</p>
-</li>
-<li>
-<p><a href="openocd.gdb"><code>https://github.com/lupyuen/pinecone-rust/blob/main/openocd.gdb</code></a>: GDB Debugger Configuration</p>
-</li>
-</ul>
 <pre><code class="language-text">target extended-remote :3333
 </code></pre>
 <pre><code class="language-text"># print demangled symbols
@@ -441,6 +436,7 @@ mem 0x23000000 0x23400000 ro
 <pre><code class="language-text"># start the process but immediately halt the processor
 stepi
 </code></pre>
+<p><a href="https://github.com/lupyuen/pinecone-rust/blob/main/openocd.cfg"><code>openocd.cfg</code></a>: OpenOCD Configuration</p>
 <h1 id="rusty-mystery" class="section-header"><a href="#rusty-mystery">5 Rusty Mystery</a></h1>
 <p>TODO</p>
 <ul>
@@ -458,10 +454,10 @@ stepi
 <p>TODO</p>
 <ul>
 <li>
-<p><a href=".vscode/launch.json"><code>https://github.com/lupyuen/pinecone-rust/blob/main/.vscode/launch.json</code></a>: VSCode Debugger Configuration</p>
+<p><a href="https://github.com/lupyuen/pinecone-rust/blob/main/.vscode/launch.json"><code>.vscode/launch.json</code></a>: VSCode Debugger Configuration</p>
 </li>
 <li>
-<p><a href=".vscode/tasks.json"><code>https://github.com/lupyuen/pinecone-rust/blob/main/.vscode/tasks.json</code></a>: VSCode Tasks</p>
+<p><a href="https://github.com/lupyuen/pinecone-rust/blob/main/.vscode/tasks.json"><code>.vscode/tasks.json</code></a>: VSCode Tasks</p>
 </li>
 </ul>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">8 What's Next</a></h1>
