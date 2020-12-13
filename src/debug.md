@@ -120,6 +120,12 @@ Now we install [__xPack GCC for RISC-V__](https://xpack.github.io/riscv-none-emb
 
         Change `c:\pinecone-rust` to the location of the `pinecone-rust` folder.
 
+## Check the folders
+
+After installing OpenOCD, Rust and GDB, the `pinecone-rust` folder should look like this...
+
+![pinecone-rust folder](https://lupyuen.github.io/images/debug-folders.png)
+
 [Got problems? Check this doc](https://github.com/lupyuen/pinecone-rust/blob/main/README.md)
 
 ![Memory Map of PineCone Firmware: C vs Rust](https://lupyuen.github.io/images/debug-memory.png)
