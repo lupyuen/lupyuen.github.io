@@ -391,7 +391,6 @@ Breakpoint 2, main () at src/main.rs:10
 11          let mut parts = dp.GLB.split();
 (gdb) bt
 #0  main () at src/main.rs:11
-(gdb) 
 </code></pre>
 <p>The <code>bt</code> command shows us the Stack Trace and local variables.</p>
 <ul>
@@ -417,6 +416,31 @@ Warn : negative acknowledgment, but no packet pending
 <p><a href="openocd.gdb"><code>https://github.com/lupyuen/pinecone-rust/blob/main/openocd.gdb</code></a>: GDB Debugger Configuration</p>
 </li>
 </ul>
+<pre><code class="language-text">target extended-remote :3333
+</code></pre>
+<pre><code class="language-text"># print demangled symbols
+set print asm-demangle on
+</code></pre>
+<pre><code class="language-text"># set backtrace limit to not have infinite backtrace loops
+set backtrace limit 32
+</code></pre>
+<pre><code class="language-text">mem 0x22008000 0x22014000 rw
+mem 0x42008000 0x42014000 rw
+mem 0x22014000 0x22020000 rw
+mem 0x42014000 0x42020000 rw
+mem 0x22020000 0x22030000 rw
+mem 0x42020000 0x42030000 rw
+mem 0x22030000 0x2204C000 rw
+mem 0x42030000 0x4204C000 rw
+mem 0x23000000 0x23400000 ro
+</code></pre>
+<pre><code class="language-text">load
+</code></pre>
+<pre><code class="language-text">break _start
+</code></pre>
+<pre><code class="language-text"># start the process but immediately halt the processor
+stepi
+</code></pre>
 <h1 id="rusty-mystery" class="section-header"><a href="#rusty-mystery">5 Rusty Mystery</a></h1>
 <p>TODO</p>
 <ul>

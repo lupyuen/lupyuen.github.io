@@ -361,7 +361,6 @@ Enter `next` to resume execution until the next line...
 11          let mut parts = dp.GLB.split();
 (gdb) bt
 #0  main () at src/main.rs:11
-(gdb) 
 ```
 
 The `bt` command shows us the Stack Trace and local variables.
@@ -389,6 +388,44 @@ TODO
 
 -   [`https://github.com/lupyuen/pinecone-rust/blob/main/openocd.gdb`](openocd.gdb): GDB Debugger Configuration
 
+```text
+target extended-remote :3333
+```
+
+```text
+# print demangled symbols
+set print asm-demangle on
+```
+
+```text
+# set backtrace limit to not have infinite backtrace loops
+set backtrace limit 32
+```
+
+```text
+mem 0x22008000 0x22014000 rw
+mem 0x42008000 0x42014000 rw
+mem 0x22014000 0x22020000 rw
+mem 0x42014000 0x42020000 rw
+mem 0x22020000 0x22030000 rw
+mem 0x42020000 0x42030000 rw
+mem 0x22030000 0x2204C000 rw
+mem 0x42030000 0x4204C000 rw
+mem 0x23000000 0x23400000 ro
+```
+
+```text
+load
+```
+
+```text
+break _start
+```
+
+```text
+# start the process but immediately halt the processor
+stepi
+```
 
 # Rusty Mystery
 
