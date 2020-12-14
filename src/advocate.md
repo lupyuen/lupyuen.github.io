@@ -66,7 +66,9 @@ I still don't feel fully productive right now. Hopefully my health will improve 
 
 # What's Next
 
-I must thank my GitHub Sponsors. It's great to know that my Open Source work is helping people in the real world... And I shall definitely do better 🙂
+2020 was full of surprises... Can't wait to see what happens in 2021 😉
+
+I must thank my [GitHub Sponsors](https://github.com/sponsors/lupyuen). It's great to know that my Open Source work is helping people in the real world... And I shall definitely do better 🙂
 
 Happy Holidays Everyone! Stay Healthy, Have A Great 2021! 😀
 
