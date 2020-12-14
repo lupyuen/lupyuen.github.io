@@ -12,7 +12,7 @@ I've made a couple of mistakes... But I shall improve! Here's how...
 
 Immersing myself into the Matrix / Discord / Telegram / IRC community was... Whoa! Overwhelming
 
-There were times when I got a little impatient and barked (like a chinchilla)... Not realising that people among us come from various places, age groups, and have different perspectives.
+There were times when I got impatient and barked (like a chinchilla)... Not realising that people among us come from various places, age groups, and have different perspectives.
 
 I'm sorry if I have offended you... I promise to be kinder the next time I connect to the online community.
 
