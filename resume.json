@@ -156,6 +156,13 @@
   ],
   "publications": [
     {
+      "name": "Debug Rust on PineCone BL602 with VSCode and GDB",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2020-12-14",
+      "website": "https://lupyuen.github.io/articles/debug",
+      "summary": "How we build and debug Embedded Rust Firmware for PineCone BL602... With VSCode and GDB"
+    },
+    {
       "name": "Connect PineCone BL602 to OpenOCD",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2020-12-11",
