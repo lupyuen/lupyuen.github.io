@@ -4,6 +4,10 @@
 
 _Debugging PineCone BL602 RISC-V Evaluation Board with Sipeed JTAG Debugger_
 
+Earlier we took a quick peek at [__PineCone BL602 RISC-V Evaluation Board__](https://lupyuen.github.io/articles/pinecone)...
+
+Then we [__connected PineCone to OpenOCD__](https://lupyuen.github.io/articles/openocd) with a JTAG Debugger...
+
 Today we'll learn to debug Rust Firmware for [__PineCone BL602 RISC-V Evaluation Board__](https://lupyuen.github.io/articles/pinecone) in two ways...
 
 1.  With the GDB Debugger (text-based)
@@ -658,7 +662,7 @@ pinecone-rust/openocd.log
 
 For details on the VSCode settings, check the section "Appendix: VSCode Settings" below.
 
-# Rust Coders Wanted!
+# Rust Coders Wanted
 
 Earlier we talked about some parts of the Rust Firmware code that don't work on PineCone. (Because the code was created for Sipeed's BL602 Board)
 
@@ -748,13 +752,19 @@ _Poolside Debugging with PineCone BL602 RISC-V Evaluation Board_
 
 # What's Next
 
-TODO
+Now that we have GDB and VSCode Debuggers working with Rust Firmware on PineCone... It's time for me to start something that I care deeply about...
 
-[Check out my articles](https://lupyuen.github.io)
+__Porting [Apache Mynewt RTOS](http://mynewt.apache.org/) to PineCone__
 
-[RSS Feed](https://lupyuen.github.io/rss.xml)
+_And yes it shall support Rust too!_
 
-[Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+Stay Tuned!
+
+-   [Check out my articles](https://lupyuen.github.io)
+
+-   [RSS Feed](https://lupyuen.github.io/rss.xml)
+
+-   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
