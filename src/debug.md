@@ -740,7 +740,7 @@ Note that PineCone's LED is connected to the same pins as the JTAG Port... So we
 
 _Can YOU create a Rust Demo that blinks PineCone's RGB LED via PWM?_
 
-_Please submit a Pull Request! Thank you 🙏_
+_[Please submit a Pull Request!](https://github.com/lupyuen/pinecone-rust) Thank you 🙏_
 
 ![Poolside Debugging with PineCone BL602 RISC-V Evaluation Board](https://lupyuen.github.io/images/debug-pool.jpg)
 
