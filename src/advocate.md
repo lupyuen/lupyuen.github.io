@@ -68,7 +68,7 @@ I still don't feel fully productive right now. Hopefully my health will improve 
 
 I must thank my GitHub Sponsors. It's great to know that my Open Source work is helping people in the real world... And I shall definitely do better 🙂
 
-Happy Holidays, Stay Healthy, Have A Great 2021! 😀
+Happy Holidays Everyone! Stay Healthy, Have A Great 2021! 😀
 
 -   [Check out my articles](https://lupyuen.github.io)
 
