@@ -48,6 +48,8 @@ Or join a community that has more people in my timezone? (Probably Asia + Austra
 
 Until I solve this problem, I'll have to stick with asynchronous, non-realtime comms with the Open Source community. Sorry! 🙏
 
+![GitHub History](https://lupyuen.github.io/images/Screenshot_20201215-015826.png)
+
 # Stay Healthy
 
 In September 2020 I started taking medication for Hypertension (Super High Blood Pressure).
