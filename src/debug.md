@@ -700,6 +700,10 @@ PWM
 
 Remap
 
+![Poolside Debugging with PineCone BL602 RISC-V Evaluation Board](https://lupyuen.github.io/images/debug-pool.jpg)
+
+_Poolside Debugging with PineCone BL602 RISC-V Evaluation Board_
+
 # What's Next
 
 TODO
