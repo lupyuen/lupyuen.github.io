@@ -78,7 +78,12 @@
 <li><a href="#debug-with-gdb">3.3 Debug with GDB</a><ul></ul></li></ul></li>
 <li><a href="#gdb-script">4 GDB Script</a><ul>
 <li><a href="#gdb-and-cargo">4.1 GDB and cargo</a><ul></ul></li></ul></li>
-<li><a href="#rusty-mystery">5 Rusty Mystery</a><ul></ul></li>
+<li><a href="#rusty-mastery-and-mystery">5 Rusty Mastery and Mystery</a><ul>
+<li><a href="#declare-the-main-function">5.1 Declare the Main Function</a><ul></ul></li>
+<li><a href="#fetch-the-peripheral-registers">5.2 Fetch the Peripheral Registers</a><ul></ul></li>
+<li><a href="#get-the-global-register">5.3 Get the Global Register</a><ul></ul></li>
+<li><a href="#loop-forever">5.4 Loop Forever</a><ul></ul></li>
+<li><a href="#is-something-missing">5.5 Is Something Missing?</a><ul></ul></li></ul></li>
 <li><a href="#debug-rust-firmware-with-vscode">6 Debug Rust Firmware with VSCode</a><ul></ul></li>
 <li><a href="#vscode-settings">7 VSCode Settings</a><ul></ul></li>
 <li><a href="#whats-next">8 What's Next</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/debug-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board connected to Sipeed JTAG Debugger" /></p>
@@ -459,6 +464,7 @@ mem 0x23000000 0x23400000 ro
 <p>We create a Breakpoint at the function <code>_start</code>. This function is the first thing that runs when we start the firmware...</p>
 <pre><code class="language-text">break _start
 </code></pre>
+<p><a href="https://github.com/rust-embedded/riscv-rt/blob/master/asm.S">Source code for <code>_start</code></a></p>
 </li>
 <li>
 <p>Finally we step into the first RISC-V instruction in our firmware... And pause the execution</p>
@@ -489,8 +495,8 @@ target = &quot;riscv32imac-unknown-none-elf&quot;
 <li><a href="https://lupyuen.github.io/articles/openocd">&quot;Connect PineCone BL602 to OpenOCD&quot;</a></li>
 </ul>
 <p><a href="https://github.com/lupyuen/pinecone-rust/blob/main/openocd.gdb"><code>openocd.gdb</code></a> and <a href="https://github.com/lupyuen/pinecone-rust/blob/main/openocd.cfg"><code>openocd.cfg</code></a> were graciously provided by the <a href="https://github.com/sipeed/bl602-rust-guide">Sipeed BL602 Community</a></p>
-<h1 id="rusty-mystery" class="section-header"><a href="#rusty-mystery">5 Rusty Mystery</a></h1>
-<p>TODO</p>
+<h1 id="rusty-mastery-and-mystery" class="section-header"><a href="#rusty-mastery-and-mystery">5 Rusty Mastery and Mystery</a></h1>
+<p>Before we talk about VSCode Debugging, let's study the Source Code for our Rust Firmware: <a href="https://github.com/lupyuen/pinecone-rust/blob/main/src/main.rs">src/main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="attribute">#[<span class="ident">riscv_rt</span>::<span class="ident">entry</span>]</span>
@@ -501,8 +507,62 @@ target = &quot;riscv32imac-unknown-none-elf&quot;
     <span class="comment">//  Loop forever</span>
     <span class="kw">loop</span> {}
 }    </pre></div>
+<p>Even folks who have mastered Rust will find Embedded Rust a little strange... Let's zoom into the code, line by line.</p>
+<h2 id="declare-the-main-function" class="section-header"><a href="#declare-the-main-function">5.1 Declare the Main Function</a></h2>
+<p>At the top we have a Rust Attribute that declares the Entry Function for our RISC-V firmware...</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="attribute">#[<span class="ident">riscv_rt</span>::<span class="ident">entry</span>]</span></pre></div>
+<p>Followed by the declaration of our Entry Function <code>main</code>...</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">fn</span> <span class="ident">main</span>() <span class="op">-&gt;</span> <span class="op">!</span> {</pre></div>
+<p>This means that our Rust Function <code>main</code> will be called when the firmware starts, after initialising the registers and RAM. (<a href="https://github.com/rust-embedded/riscv-rt/blob/master/asm.S">More details</a>) </p>
+<p>(The return type &quot;<code>-&gt; !</code>&quot; means that the function will loop forever, never returniung)</p>
+<h2 id="fetch-the-peripheral-registers" class="section-header"><a href="#fetch-the-peripheral-registers">5.2 Fetch the Peripheral Registers</a></h2>
+<p>Our BL602 Microcontroller supports multiple Peripheral Functions: Timer, UART, I2C, SPI, PWM, ...</p>
+<p>Here's how we fetch the Peripheral Registers that control the Peripheral Functions...</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="ident">dp</span> <span class="op">=</span> <span class="ident">pac</span>::<span class="ident">Peripherals</span>::<span class="ident">take</span>().<span class="ident">unwrap</span>();</pre></div>
+<p><code>pac</code> refers to the Peripheral Access Crate for BL602. It exposes <code>Peripherals</code>, the Peripheral Registers for BL602.</p>
 <ul>
-<li><a href="https://lupyuen.github.io/pinecone-rust/">Rust Documentation</a></li>
+<li><a href="https://lupyuen.github.io/pinecone-rust/bl602_pac/">More about BL602 Peripheral Access Crate</a></li>
+</ul>
+<p><em>Why the <code>take</code> and <code>unwrap</code>?</em></p>
+<p>Rust is known for its Code Safety in Systems Programming.</p>
+<p><code>take</code> + <code>unwrap</code> is a common pattern in Embedded Rust to ensure that we access the Hardware Registers safely.</p>
+<ul>
+<li><a href="https://rust-embedded.github.io/book/start/registers.html">More about Embedded Rust Registers</a></li>
+</ul>
+<h2 id="get-the-global-register" class="section-header"><a href="#get-the-global-register">5.3 Get the Global Register</a></h2>
+<p>BL602's Global Register (GLB) controls the global settings of the Bl602 Microcontroller.</p>
+<p>It provides settings for Clock Management, Reset Management, Bus Management, Memory Management and GPIO Management.</p>
+<p>We fetch the Global Register (and its components) from the Peripheral Registers like so...</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">parts</span> <span class="op">=</span> <span class="ident">dp</span>.<span class="ident">GLB</span>.<span class="ident">split</span>();</pre></div>
+<ul>
+<li>Refer to <a href="https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf">BL602 Reference Manual</a>, Section 3 &quot;GLB&quot;, Page 24.</li>
+</ul>
+<h2 id="loop-forever" class="section-header"><a href="#loop-forever">5.4 Loop Forever</a></h2>
+<p>Our firmware should never terminate... It should loop forever handling events.</p>
+<p>For now we'll use an empty loop...</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="comment">//  Loop forever</span>
+<span class="kw">loop</span> {}</pre></div>
+<h2 id="is-something-missing" class="section-header"><a href="#is-something-missing">5.5 Is Something Missing?</a></h2>
+<p><em>Where's the rest of the Rust code?</em></p>
+<p>This program was originally created for Sipeed's BL602 Board... But some parts don't work on PineCone and have been commented out. (Hence the compiler warnings)</p>
+<p>We'll discuss this mystery in a while.</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/pinecone-rust/">Rust Documentation for PineCone</a></p>
+</li>
+<li>
+<p><a href="https://rust-embedded.github.io/book/">Rust Embedded Book</a></p>
+</li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/debug-vscode.png" alt="VSCode Debugger with Rust Firmware for PineCone BL602" /></p>
 <p><em>VSCode Debugger with Rust Firmware for PineCone BL602</em></p>

@@ -498,7 +498,7 @@ fn main() -> ! {
 }    
 ```
 
-Here's how it works, line by line...
+Even folks who have mastered Rust will find Embedded Rust a little strange... Let's zoom into the code, line by line.
 
 ## Declare the Main Function
 
@@ -514,15 +514,15 @@ Followed by the declaration of our Entry Function `main`...
 fn main() -> ! {
 ```
 
-This means that the Rust Function `main` will be called when the firmware starts, after initialising the registers and RAM. ([More details](https://github.com/rust-embedded/riscv-rt/blob/master/asm.S)) 
+This means that our Rust Function `main` will be called when the firmware starts, after initialising the registers and RAM. ([More details](https://github.com/rust-embedded/riscv-rt/blob/master/asm.S)) 
 
-(The return type `-> !` means that the function will loop forever, never returniung)
+(The return type "`-> !`" means that the function will loop forever, never returniung)
 
 ## Fetch the Peripheral Registers
 
 Our BL602 Microcontroller supports multiple Peripheral Functions: Timer, UART, I2C, SPI, PWM, ...
 
-Here's how we fetch the Peripheral Registers that will control the Peripheral Functions...
+Here's how we fetch the Peripheral Registers that control the Peripheral Functions...
 
 ```
 let dp = pac::Peripherals::take().unwrap();
@@ -542,7 +542,9 @@ Rust is known for its Code Safety in Systems Programming.
 
 ## Get the Global Register
 
-BL602's Global Register (GLB) controls the global settings. It provides settings for Clock Management, Reset Management, Bus Management, Memory Management and GPIO Management.
+BL602's Global Register (GLB) controls the global settings of the Bl602 Microcontroller.
+
+It provides settings for Clock Management, Reset Management, Bus Management, Memory Management and GPIO Management.
 
 We fetch the Global Register (and its components) from the Peripheral Registers like so...
 
@@ -563,15 +565,17 @@ For now we'll use an empty loop...
 loop {}
 ```
 
-## Is something missing?
+## Is Something Missing?
 
 _Where's the rest of the Rust code?_
 
-???
+This program was originally created for Sipeed's BL602 Board... But some parts don't work on PineCone and have been commented out. (Hence the compiler warnings)
 
-[Rust Documentation](https://lupyuen.github.io/pinecone-rust/)
+We'll discuss this mystery in a while.
 
-[Rust Embedded Book](https://rust-embedded.github.io/book/)
+-   [Rust Documentation for PineCone](https://lupyuen.github.io/pinecone-rust/)
+
+-   [Rust Embedded Book](https://rust-embedded.github.io/book/)
 
 ![VSCode Debugger with Rust Firmware for PineCone BL602](https://lupyuen.github.io/images/debug-vscode.png)
 
