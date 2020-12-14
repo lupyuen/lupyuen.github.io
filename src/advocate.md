@@ -16,13 +16,15 @@ There were times when I got impatient and barked (like a chinchilla)... Not real
 
 I'm sorry if I have offended you... I promise to be kinder the next time I connect to the online community.
 
-# Get More Feedback
+# Focus on Education
 
-TODO
+2020 was an incredible year for PineTime. I ported the MCUBoot Bootloader to PineTime. And the bootloader was shipped to real customers.
 
-# Focus
+But maintaining the bootloader for a shipping gadget is a serious Operational Job. And it clashes with my original objective: Teach IoT with PineTime
 
-TODO
+Sadly I have to drop my Operational Duties on PineTime... And bring my focus back to Education.
+
+I'm happy to be starting from scratch with PineCone... RISC-V is a Really Good Thing and I'm doing all I can to bring everyone onboard!
 
 # Keep on Writing and Committing
 
