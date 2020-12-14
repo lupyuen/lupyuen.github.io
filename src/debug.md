@@ -1,8 +1,8 @@
 # Debug Rust on PineCone BL602 with VSCode and GDB
 
-![PineCone BL602 RISC-V Evaluation Board connected to Sipeed JTAG Debugger](https://lupyuen.github.io/images/debug-title.jpg)
+![Debugging PineCone BL602 RISC-V Evaluation Board with Sipeed JTAG Debugger](https://lupyuen.github.io/images/debug-title.jpg)
 
-_PineCone BL602 RISC-V Evaluation Board connected to Sipeed JTAG Debugger_
+_Debugging PineCone BL602 RISC-V Evaluation Board with Sipeed JTAG Debugger_
 
 Today we'll learn to debug Rust Firmware for [__PineCone BL602 RISC-V Evaluation Board__](https://lupyuen.github.io/articles/pinecone) in two ways...
 
@@ -594,6 +594,45 @@ Terminate OpenOCD
 TODO
 
 -   [`.vscode/launch.json`](https://github.com/lupyuen/pinecone-rust/blob/main/.vscode/launch.json): VSCode Debugger Configuration
+
+```json
+{
+    //  VSCode Debugger Config for PineCone BL602
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "BL602",
+            "type": "gdb",
+            "request": "launch",
+            //  Application Executable to be flashed before debugging
+            "target": "${workspaceRoot}/target/riscv32imac-unknown-none-elf/debug/bl602-rust-guide",
+            "cwd": "${workspaceRoot}",
+            "gdbpath": "${workspaceRoot}/xpack-riscv-none-embed-gcc/bin/riscv-none-embed-gdb",
+            "valuesFormatting": "parseText",
+            "autorun": [
+                //  Before loading the Application, run these gdb commands.
+                //  Set timeout for executing openocd commands.
+                "set remotetimeout 600",
+
+                //  This indicates that an unrecognized breakpoint location should automatically result in a pending breakpoint being created.
+                "set breakpoint pending on",
+
+                //  Set breakpoints
+                "break main",  //  Break at main()
+
+                //  Launch OpenOCD. Based on https://www.justinmklam.com/posts/2017/10/vscode-debugger-setup/
+                "target remote | xpack-openocd/bin/openocd -c \"gdb_port pipe; log_output openocd.log\" -f openocd.cfg ",
+
+                //  Load the program into cache memory
+                "load",
+
+                //  Run the program until we hit the main() breakpoint
+                "continue",
+            ]
+        }
+    ]
+}
+```
 
 -   [`.vscode/tasks.json`](https://github.com/lupyuen/pinecone-rust/blob/main/.vscode/tasks.json): VSCode Tasks
 
