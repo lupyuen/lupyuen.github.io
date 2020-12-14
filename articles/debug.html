@@ -87,7 +87,7 @@
 <li><a href="#debug-rust-firmware-with-vscode">6 Debug Rust Firmware with VSCode</a><ul>
 <li><a href="#debugging-features">6.1 Debugging Features</a><ul></ul></li>
 <li><a href="#terminating-openocd">6.2 Terminating OpenOCD</a><ul></ul></li></ul></li>
-<li><a href="#rust-coders-wanted">7 Rust Coders Wanted!</a><ul>
+<li><a href="#rust-coders-wanted">7 Rust Coders Wanted</a><ul>
 <li><a href="#remap-the-uart-port">7.1 Remap the UART Port</a><ul></ul></li>
 <li><a href="#create-a-serial-interface">7.2 Create a Serial Interface</a><ul></ul></li>
 <li><a href="#write-to-the-serial-interface">7.3 Write to the Serial Interface</a><ul></ul></li>
@@ -98,6 +98,8 @@
 <li><a href="#debugger-settings">9.1 Debugger Settings</a><ul></ul></li>
 <li><a href="#task-settings">9.2 Task Settings</a><ul></ul></li></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/debug-title.jpg" alt="Debugging PineCone BL602 RISC-V Evaluation Board with Sipeed JTAG Debugger" /></p>
 <p><em>Debugging PineCone BL602 RISC-V Evaluation Board with Sipeed JTAG Debugger</em></p>
+<p>Earlier we took a quick peek at <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602 RISC-V Evaluation Board</strong></a>...</p>
+<p>Then we <a href="https://lupyuen.github.io/articles/openocd"><strong>connected PineCone to OpenOCD</strong></a> with a JTAG Debugger...</p>
 <p>Today we'll learn to debug Rust Firmware for <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602 RISC-V Evaluation Board</strong></a> in two ways...</p>
 <ol>
 <li>
@@ -644,7 +646,7 @@ target = &quot;riscv32imac-unknown-none-elf&quot;
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="ident">pinecone</span><span class="op">-</span><span class="ident">rust</span><span class="op">/</span><span class="ident">openocd</span>.<span class="ident">log</span></pre></div>
 <p>For details on the VSCode settings, check the section &quot;Appendix: VSCode Settings&quot; below.</p>
-<h1 id="rust-coders-wanted" class="section-header"><a href="#rust-coders-wanted">7 Rust Coders Wanted!</a></h1>
+<h1 id="rust-coders-wanted" class="section-header"><a href="#rust-coders-wanted">7 Rust Coders Wanted</a></h1>
 <p>Earlier we talked about some parts of the Rust Firmware code that don't work on PineCone. (Because the code was created for Sipeed's BL602 Board)</p>
 <p>Let's look at the sus parts: <a href="https://github.com/lupyuen/pinecone-rust/blob/main/src/main.rs#L14-L36"><code>src/main.rs</code></a></p>
 <h2 id="remap-the-uart-port" class="section-header"><a href="#remap-the-uart-port">7.1 Remap the UART Port</a></h2>
@@ -709,10 +711,21 @@ target = &quot;riscv32imac-unknown-none-elf&quot;
 <p><img src="https://lupyuen.github.io/images/debug-pool.jpg" alt="Poolside Debugging with PineCone BL602 RISC-V Evaluation Board" /></p>
 <p><em>Poolside Debugging with PineCone BL602 RISC-V Evaluation Board</em></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">8 What's Next</a></h1>
-<p>TODO</p>
+<p>Now that we have GDB and VSCode Debuggers working with Rust Firmware on PineCone... It's time for me to start something that I care deeply about...</p>
+<p><strong>Porting <a href="http://mynewt.apache.org/">Apache Mynewt RTOS</a> to PineCone</strong></p>
+<p><em>And yes it shall support Rust too!</em></p>
+<p>Stay Tuned!</p>
+<ul>
+<li>
 <p><a href="https://lupyuen.github.io">Check out my articles</a></p>
+</li>
+<li>
 <p><a href="https://lupyuen.github.io/rss.xml">RSS Feed</a></p>
+</li>
+<li>
 <p><a href="https://github.com/sponsors/lupyuen">Sponsor me a coffee</a></p>
+</li>
+</ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/debug.md"><code>github.com/lupyuen/lupyuen.github.io/src/debug.md</code></a></p>
 <h1 id="appendix-vscode-settings" class="section-header"><a href="#appendix-vscode-settings">9 Appendix: VSCode Settings</a></h1><h2 id="debugger-settings" class="section-header"><a href="#debugger-settings">9.1 Debugger Settings</a></h2>
