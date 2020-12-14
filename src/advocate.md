@@ -50,7 +50,13 @@ Until I solve this problem, I'll have to stick with asynchronous, non-realtime c
 
 # Stay Healthy
 
-TODO
+In September 2020 I started taking medication for Hypertension (Super High Blood Pressure).
+
+Then life became soooo slooooooow. I couldn't write or code as quickly as before. I had to drop my projects, and do only one tiny project at a time.
+
+(You can see the huge gap around September in my GitHub History above)
+
+I still don't feel fully productive right now. Hopefully my health will improve in 2021.
 
 # What's Next
 
