@@ -10,13 +10,13 @@ Over the past year I've been an [Open Source Advocate](https://medium.com/@ly.le
 
 I've made a couple of mistakes... But I shall improve! Here's how...
 
-# Be Kind
+# Be Kinder
 
-Immersing myself into the Matrix / Discord / Telegram / IRC community was... Whoa! Overwhelming
+Immersing myself into the Matrix / Discord / Telegram / IRC community was... Whoa! Overwhelming.
 
-There were times when I got impatient and barked (like a chinchilla)... Not realising that people among us come from various places, age groups, and have different perspectives.
+There were times when I got impatient and barked (like an angry chinchilla)... Not realising that people among us come from various places, age groups, and have different perspectives.
 
-I'm sorry if I have offended you... I promise to be kinder the next time I connect to the online community.
+I'm sorry if I have hurt you or offended you online. I promise to be kinder the next time I connect to the online community.
 
 # Focus on Education
 
@@ -50,7 +50,7 @@ Or join a community that has more people in my timezone? (Probably Asia + Austra
 
 Until I solve this problem, I'll have to stick with asynchronous, non-realtime comms with the Open Source community. Sorry! 🙏
 
-![My GitHub History](https://lupyuen.github.io/images/Screenshot_20201215-015826.png)
+![My GitHub History](https://lupyuen.github.io/images/advocate-github.png)
 
 _My GitHub History_
 
@@ -58,7 +58,9 @@ _My GitHub History_
 
 In September 2020 I started taking medication for Hypertension (Super High Blood Pressure).
 
-Then life became soooo slooooooow. I couldn't write or code as quickly as before. I had to drop my projects, and do only one tiny project at a time.
+Then life became soooo slooooooow. ("Time Goes By... So Slowly...")
+
+I couldn't write or code as quickly as before. I had to drop my projects, and do only one tiny project at a time.
 
 (You can see the huge gap around September in my GitHub History above)
 
