@@ -516,7 +516,7 @@ fn main() -> ! {
 
 This means that our Rust Function `main` will be called when the firmware starts, after initialising the registers and RAM. ([More details](https://github.com/rust-embedded/riscv-rt/blob/master/asm.S)) 
 
-(The return type "`-> !`" means that the function will loop forever, never returniung)
+(The return type "`-> !`" means that the function will loop forever, never returning)
 
 ## Fetch the Peripheral Registers
 
