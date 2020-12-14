@@ -693,6 +693,8 @@ let mut serial = Serial::uart0(
 
 This code creates a Serial Interface based on UART Port 0 with the remapped pins.
 
+`Serial` is defined in the [BL602 Hardware Abstraction Layer](https://lupyuen.github.io/pinecone-rust/bl602_hal/)
+
 ## Write to the Serial Interface
 
 ```
@@ -720,13 +722,23 @@ _If there are any Brave Souls out there... Please rebuild the firmware with thes
 
 ## We need more Rust Demos on PineCone
 
-TODO
+The Sipeed BL602 Community has provided two more Rust Demos...
 
-PWM docs
+- GPIO Blinky Demo: [`examples/bl602-gpio-blinky.rs`](https://github.com/lupyuen/pinecone-rust/blob/main/examples/bl602-gpio-blinky.rs)
 
-Remap LED
+- Serial Demo: [`examples/bl602-serial.rs`](https://github.com/lupyuen/pinecone-rust/blob/main/examples/bl602-serial.rs)
 
-_Can YOU create a Rust program that blinks PineCone's RGB LED via PWM?_
+But they won't work on PineCone due to the board differences. Thus we need to create our own Rust Demos for PineCone...
+
+__Perhaps blinking the onboard RGB LED through the PWM Port?__
+
+-   [PWM docs in the BL602 Peripheral Access Crate](https://lupyuen.github.io/pinecone-rust/bl602_pac/pwm/index.html)
+
+Note that PineCone's LED is connected to the same pins as the JTAG Port... So we need to remap the JTAG Port to other pins. (Which may complicate the debugging)
+
+-   See ["Connect PineCone BL602 to OpenOCD"](https://lupyuen.github.io/articles/openocd), Section 8: ["Remap the JTAG Port"](https://lupyuen.github.io/articles/openocd#remap-the-jtag-port)
+
+_Can YOU create a Rust Demo that blinks PineCone's RGB LED via PWM?_
 
 _Please submit a Pull Request! Thank you 🙏_
 
@@ -750,11 +762,17 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: VSCode Settings
 
-TODO
-
 ## Debugger Settings
 
--   [`.vscode/launch.json`](https://github.com/lupyuen/pinecone-rust/blob/main/.vscode/launch.json): VSCode Debugger Configuration
+The VSCode Debugger Settings may be found in [`.vscode/launch.json`](https://github.com/lupyuen/pinecone-rust/blob/main/.vscode/launch.json)
+
+This file defines... 
+
+-   Firmware Path (`target`)
+
+-   GDB Path (`gdbpath`)
+
+-   OpenOCD Path (in `autorun`, after `target remote`)
 
 ```json
 {
@@ -797,4 +815,60 @@ TODO
 
 ## Task Settings
 
--   [`.vscode/tasks.json`](https://github.com/lupyuen/pinecone-rust/blob/main/.vscode/tasks.json): VSCode Tasks
+The VSCode Task Settings may be found in [`.vscode/tasks.json`](https://github.com/lupyuen/pinecone-rust/blob/main/.vscode/tasks.json)
+
+This file defines the VSCode Task for building the Rust Firmware...
+
+```json
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            //  Build firmware
+            "label": "Build Firmware",
+            "type": "shell",
+            "windows": {
+                "command": "cmd",
+                "args": [
+                    "/c",
+                    " cargo build && echo ✅ ◾ ️Done! "
+                ]
+            },
+            "osx": {
+                "command": "bash",
+                "args": [
+                    "-c", "-l",
+                    " pkill openocd ; set -e -x ; cargo build ; echo ✅ ◾ ️Done! "
+                ]
+            },
+            "linux": {
+                "command": "bash",
+                "args": [
+                    "-c", "-l",
+                    " pkill openocd ; set -e -x ; cargo build ; echo ✅ ◾ ️Done! "
+                ]
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [ 
+                {
+                    //  Problem matcher for GNU Linker, e.g. /Users/Luppy/mynewt/stm32bluepill-mynewt-sensor/apps/my_sensor_app/src/ATParser.h:82: undefined reference to `operator delete[](void*)'
+                    "fileLocation": [ "absolute" ],
+                    "pattern": {
+                        "regexp": "^(/.*):(\\d+):\\s+(.*)$",
+                        "file": 1,
+                        "line": 2,
+                        "message": 3,
+                        // "code": 3,
+                        // "severity": 4,
+                    }                    
+                }
+            ],
+            "presentation": {
+                "clear": true
+            }
+        },
+        ...
+```

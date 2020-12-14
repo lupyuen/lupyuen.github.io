@@ -667,6 +667,7 @@ target = &quot;riscv32imac-unknown-none-elf&quot;
     <span class="ident">clocks</span>
 );</pre></div>
 <p>This code creates a Serial Interface based on UART Port 0 with the remapped pins.</p>
+<p><code>Serial</code> is defined in the <a href="https://lupyuen.github.io/pinecone-rust/bl602_hal/">BL602 Hardware Abstraction Layer</a></p>
 <h2 id="write-to-the-serial-interface" class="section-header"><a href="#write-to-the-serial-interface">7.3 Write to the Serial Interface</a></h2>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="kw">loop</span> {
@@ -685,10 +686,25 @@ target = &quot;riscv32imac-unknown-none-elf&quot;
 <p>The GDB Debugger shows an error while executing the UART remapping code above. The code seems to terminate JTAG debugging connection, not sure why.</p>
 <p><em>If there are any Brave Souls out there... Please rebuild the firmware with these chunks of code uncommented, step through with the debugger, and tell us what went wrong!</em></p>
 <h2 id="we-need-more-rust-demos-on-pinecone" class="section-header"><a href="#we-need-more-rust-demos-on-pinecone">7.5 We need more Rust Demos on PineCone</a></h2>
-<p>TODO</p>
-<p>PWM docs</p>
-<p>Remap LED</p>
-<p><em>Can YOU create a Rust program that blinks PineCone's RGB LED via PWM?</em></p>
+<p>The Sipeed BL602 Community has provided two more Rust Demos...</p>
+<ul>
+<li>
+<p>GPIO Blinky Demo: <a href="https://github.com/lupyuen/pinecone-rust/blob/main/examples/bl602-gpio-blinky.rs"><code>examples/bl602-gpio-blinky.rs</code></a></p>
+</li>
+<li>
+<p>Serial Demo: <a href="https://github.com/lupyuen/pinecone-rust/blob/main/examples/bl602-serial.rs"><code>examples/bl602-serial.rs</code></a></p>
+</li>
+</ul>
+<p>But they won't work on PineCone due to the board differences. Thus we need to create our own Rust Demos for PineCone...</p>
+<p><strong>Perhaps blinking the onboard RGB LED through the PWM Port?</strong></p>
+<ul>
+<li><a href="https://lupyuen.github.io/pinecone-rust/bl602_pac/pwm/index.html">PWM docs in the BL602 Peripheral Access Crate</a></li>
+</ul>
+<p>Note that PineCone's LED is connected to the same pins as the JTAG Port... So we need to remap the JTAG Port to other pins. (Which may complicate the debugging)</p>
+<ul>
+<li>See <a href="https://lupyuen.github.io/articles/openocd">&quot;Connect PineCone BL602 to OpenOCD&quot;</a>, Section 8: <a href="https://lupyuen.github.io/articles/openocd#remap-the-jtag-port">&quot;Remap the JTAG Port&quot;</a></li>
+</ul>
+<p><em>Can YOU create a Rust Demo that blinks PineCone's RGB LED via PWM?</em></p>
 <p><em>Please submit a Pull Request! Thank you 🙏</em></p>
 <p><img src="https://lupyuen.github.io/images/debug-pool.jpg" alt="Poolside Debugging with PineCone BL602 RISC-V Evaluation Board" /></p>
 <p><em>Poolside Debugging with PineCone BL602 RISC-V Evaluation Board</em></p>
@@ -699,11 +715,19 @@ target = &quot;riscv32imac-unknown-none-elf&quot;
 <p><a href="https://github.com/sponsors/lupyuen">Sponsor me a coffee</a></p>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/debug.md"><code>github.com/lupyuen/lupyuen.github.io/src/debug.md</code></a></p>
-<h1 id="appendix-vscode-settings" class="section-header"><a href="#appendix-vscode-settings">9 Appendix: VSCode Settings</a></h1>
-<p>TODO</p>
-<h2 id="debugger-settings" class="section-header"><a href="#debugger-settings">9.1 Debugger Settings</a></h2>
+<h1 id="appendix-vscode-settings" class="section-header"><a href="#appendix-vscode-settings">9 Appendix: VSCode Settings</a></h1><h2 id="debugger-settings" class="section-header"><a href="#debugger-settings">9.1 Debugger Settings</a></h2>
+<p>The VSCode Debugger Settings may be found in <a href="https://github.com/lupyuen/pinecone-rust/blob/main/.vscode/launch.json"><code>.vscode/launch.json</code></a></p>
+<p>This file defines... </p>
 <ul>
-<li><a href="https://github.com/lupyuen/pinecone-rust/blob/main/.vscode/launch.json"><code>.vscode/launch.json</code></a>: VSCode Debugger Configuration</li>
+<li>
+<p>Firmware Path (<code>target</code>)</p>
+</li>
+<li>
+<p>GDB Path (<code>gdbpath</code>)</p>
+</li>
+<li>
+<p>OpenOCD Path (in <code>autorun</code>, after <code>target remote</code>)</p>
+</li>
 </ul>
 <pre><code class="language-json">{
     //  VSCode Debugger Config for PineCone BL602
@@ -743,9 +767,60 @@ target = &quot;riscv32imac-unknown-none-elf&quot;
 }
 </code></pre>
 <h2 id="task-settings" class="section-header"><a href="#task-settings">9.2 Task Settings</a></h2>
-<ul>
-<li><a href="https://github.com/lupyuen/pinecone-rust/blob/main/.vscode/tasks.json"><code>.vscode/tasks.json</code></a>: VSCode Tasks</li>
-</ul>
+<p>The VSCode Task Settings may be found in <a href="https://github.com/lupyuen/pinecone-rust/blob/main/.vscode/tasks.json"><code>.vscode/tasks.json</code></a></p>
+<p>This file defines the VSCode Task for building the Rust Firmware...</p>
+<pre><code class="language-json">{
+    &quot;version&quot;: &quot;2.0.0&quot;,
+    &quot;tasks&quot;: [
+        {
+            //  Build firmware
+            &quot;label&quot;: &quot;Build Firmware&quot;,
+            &quot;type&quot;: &quot;shell&quot;,
+            &quot;windows&quot;: {
+                &quot;command&quot;: &quot;cmd&quot;,
+                &quot;args&quot;: [
+                    &quot;/c&quot;,
+                    &quot; cargo build &amp;&amp; echo ✅ ◾ ️Done! &quot;
+                ]
+            },
+            &quot;osx&quot;: {
+                &quot;command&quot;: &quot;bash&quot;,
+                &quot;args&quot;: [
+                    &quot;-c&quot;, &quot;-l&quot;,
+                    &quot; pkill openocd ; set -e -x ; cargo build ; echo ✅ ◾ ️Done! &quot;
+                ]
+            },
+            &quot;linux&quot;: {
+                &quot;command&quot;: &quot;bash&quot;,
+                &quot;args&quot;: [
+                    &quot;-c&quot;, &quot;-l&quot;,
+                    &quot; pkill openocd ; set -e -x ; cargo build ; echo ✅ ◾ ️Done! &quot;
+                ]
+            },
+            &quot;group&quot;: {
+                &quot;kind&quot;: &quot;build&quot;,
+                &quot;isDefault&quot;: true
+            },
+            &quot;problemMatcher&quot;: [ 
+                {
+                    //  Problem matcher for GNU Linker, e.g. /Users/Luppy/mynewt/stm32bluepill-mynewt-sensor/apps/my_sensor_app/src/ATParser.h:82: undefined reference to `operator delete[](void*)'
+                    &quot;fileLocation&quot;: [ &quot;absolute&quot; ],
+                    &quot;pattern&quot;: {
+                        &quot;regexp&quot;: &quot;^(/.*):(\\d+):\\s+(.*)$&quot;,
+                        &quot;file&quot;: 1,
+                        &quot;line&quot;: 2,
+                        &quot;message&quot;: 3,
+                        // &quot;code&quot;: 3,
+                        // &quot;severity&quot;: 4,
+                    }                    
+                }
+            ],
+            &quot;presentation&quot;: {
+                &quot;clear&quot;: true
+            }
+        },
+        ...
+</code></pre>
 
     
 </body>
