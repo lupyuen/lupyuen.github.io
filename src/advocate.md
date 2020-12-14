@@ -28,7 +28,13 @@ I'm happy to be starting from scratch with PineCone... RISC-V is a Really Good T
 
 # Keep on Writing and Committing
 
-TODO
+2020 was a great year for writing and coding. I published 28 articles on all kinds of topics... And I'm super delighted that you read them!
+
+I'll stick with the same plan for 2021... Publish an article (with code) every 2 weeks.
+
+Expect more photos, sketches and terrible puns. Maybe a silly story too!
+
+Why? Because it's really tough to get mindshare for Open Source projects. And I'll do my best!
 
 # Timezone
 
