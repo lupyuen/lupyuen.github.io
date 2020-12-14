@@ -1,6 +1,8 @@
 # Better Open Source Advocate
 
-![TODO](https://lupyuen.github.io/images/advocate-title.jpg)
+![Typical day in the life of this Open Source Advocate... Photoshoot for PineCone BL602 RISC-V Board](https://lupyuen.github.io/images/advocate-title.jpg)
+
+_Typical day in the life of this Open Source Advocate... Photoshoot for PineCone BL602 RISC-V Board_
 
 2020 has been... A very challenging year!
 
@@ -48,7 +50,9 @@ Or join a community that has more people in my timezone? (Probably Asia + Austra
 
 Until I solve this problem, I'll have to stick with asynchronous, non-realtime comms with the Open Source community. Sorry! 🙏
 
-![GitHub History](https://lupyuen.github.io/images/Screenshot_20201215-015826.png)
+![My GitHub History](https://lupyuen.github.io/images/Screenshot_20201215-015826.png)
+
+_My GitHub History_
 
 # Stay Healthy
 
@@ -62,7 +66,9 @@ I still don't feel fully productive right now. Hopefully my health will improve 
 
 # What's Next
 
-TODO
+I must thank my GitHub Sponsors. It's great to know that my Open Source work is helping people in the real world... And I shall definitely do better 🙂
+
+Happy Holidays, Stay Healthy, Have A Great 2021! 😀
 
 -   [Check out my articles](https://lupyuen.github.io)
 
