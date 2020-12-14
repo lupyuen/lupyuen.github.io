@@ -6,7 +6,7 @@ _Typical day for this Open Source Advocate... Photoshoot for PineCone BL602 RISC
 
 2020 has been... A very challenging year!
 
-Over the past year I've been an Open Source Advocate for Embedded and IoT. Mostly on PineTime, PinePhone, Pinebook Pro and now PineCone. (Plus a tiny slice of pie... the Raspberry kind)
+Over the past year I've been an [Open Source Advocate](https://medium.com/@ly.lee/my-first-week-as-embedded-foss-advocate-106d625deae?source=friends_link&sk=4128d2bb8a7098658fafc462a1531d34) for Embedded and IoT. Mostly on PineTime, PinePhone, Pinebook Pro and now PineCone. (Plus a tiny slice of pie... the Raspberry kind)
 
 I've made a couple of mistakes... But I shall improve! Here's how...
 
