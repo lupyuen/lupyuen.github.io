@@ -1,8 +1,8 @@
 # Better Open Source Advocate
 
-![Typical day in the life of this Open Source Advocate... Photoshoot for PineCone BL602 RISC-V Board](https://lupyuen.github.io/images/advocate-title.jpg)
+![Typical day for this Open Source Advocate... Photoshoot for PineCone BL602 RISC-V Board](https://lupyuen.github.io/images/advocate-title.jpg)
 
-_Typical day in the life of this Open Source Advocate... Photoshoot for PineCone BL602 RISC-V Board_
+_Typical day for this Open Source Advocate... Photoshoot for PineCone BL602 RISC-V Board_
 
 2020 has been... A very challenging year!
 
