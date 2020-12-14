@@ -504,13 +504,15 @@ And you might earn a free PineCone Evaluation Board!
 
 We're in the middle of a pandemic. Why not take the time to learn some RISC-V... And contribute to the RISC-V Open Source Ecosystem!
 
-[Next Article: "Connect PineCone BL602 to OpenOCD"](https://lupyuen.github.io/articles/openocd)
+-   [Next Article: "Connect PineCone BL602 to OpenOCD"](https://lupyuen.github.io/articles/openocd)
 
-[Check out my articles](https://lupyuen.github.io)
+-   [Next Article: "Debug Rust on PineCone BL602 with VSCode and GDB"](https://lupyuen.github.io/articles/debug)
 
-[RSS Feed](https://lupyuen.github.io/rss.xml)
+-   [Check out my articles](https://lupyuen.github.io)
 
-[Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+-   [RSS Feed](https://lupyuen.github.io/rss.xml)
+
+-   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 

@@ -719,13 +719,15 @@ Today we have connected OpenOCD to PineCone... Next we shall try flashing and de
 
 I'll also be testing on PineCone the [Embedded Rust Firmware](https://github.com/lupyuen/pinecone-rust), kindly contributed by the Sipeed BL602 Community. [PineCone Rust Docs](https://lupyuen.github.io/pinecone-rust/)
 
-Stay tuned!
+Read about it here...
 
-[Check out my articles](https://lupyuen.github.io)
+-   [Next Article: "Debug Rust on PineCone BL602 with VSCode and GDB"](https://lupyuen.github.io/articles/debug)
 
-[RSS Feed](https://lupyuen.github.io/rss.xml)
+-   [Check out my articles](https://lupyuen.github.io)
 
-[Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+-   [RSS Feed](https://lupyuen.github.io/rss.xml)
+
+-   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
