@@ -38,7 +38,15 @@ Why? Because it's really tough to get mindshare for Open Source projects. And I'
 
 # Timezone
 
-TODO
+This one is tricky... I realise that I'm in the wrong timezone (Singapore). 
+
+Whenever I hang out in Matrix / Discord / Telegram / IRC, most of the interesting discussions happen between 10pm and 6am (Singapore time).
+
+Shall I change my sleep cycle?
+
+Or join a community that has more people in my timezone? (Probably Asia + Australia + New Zealand)
+
+Until I solve this problem, I'll have to stick with asynchronous, non-realtime comms with the Open Source community. Sorry! 🙏
 
 # Stay Healthy
 
