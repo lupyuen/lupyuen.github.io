@@ -84,10 +84,14 @@
 <li><a href="#get-the-global-register">5.3 Get the Global Register</a><ul></ul></li>
 <li><a href="#loop-forever">5.4 Loop Forever</a><ul></ul></li>
 <li><a href="#is-something-missing">5.5 Is Something Missing?</a><ul></ul></li></ul></li>
-<li><a href="#debug-rust-firmware-with-vscode">6 Debug Rust Firmware with VSCode</a><ul></ul></li>
-<li><a href="#vscode-settings">7 VSCode Settings</a><ul></ul></li>
-<li><a href="#rust-coders-wanted">8 Rust Coders Wanted!</a><ul></ul></li>
-<li><a href="#whats-next">9 What's Next</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/debug-title.jpg" alt="Debugging PineCone BL602 RISC-V Evaluation Board with Sipeed JTAG Debugger" /></p>
+<li><a href="#debug-rust-firmware-with-vscode">6 Debug Rust Firmware with VSCode</a><ul>
+<li><a href="#debugging-features">6.1 Debugging Features</a><ul></ul></li>
+<li><a href="#terminating-openocd">6.2 Terminating OpenOCD</a><ul></ul></li></ul></li>
+<li><a href="#rust-coders-wanted">7 Rust Coders Wanted!</a><ul></ul></li>
+<li><a href="#whats-next">8 What's Next</a><ul></ul></li>
+<li><a href="#appendix-vscode-settings">9 Appendix: VSCode Settings</a><ul>
+<li><a href="#debugger-settings">9.1 Debugger Settings</a><ul></ul></li>
+<li><a href="#task-settings">9.2 Task Settings</a><ul></ul></li></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/debug-title.jpg" alt="Debugging PineCone BL602 RISC-V Evaluation Board with Sipeed JTAG Debugger" /></p>
 <p><em>Debugging PineCone BL602 RISC-V Evaluation Board with Sipeed JTAG Debugger</em></p>
 <p>Today we'll learn to debug Rust Firmware for <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602 RISC-V Evaluation Board</strong></a> in two ways...</p>
 <ol>
@@ -262,7 +266,9 @@ cargo build
    Compiling riscv-rt v0.8.0
    Compiling riscv-rt-macros v0.1.6
    Compiling bl602-hal v0.1.0 (/Users/Luppy/pinecone/bl602-hal)
-warning: unused imports: `clock::Strict`, `serial::*`
+</code></pre>
+<p>Ignore these warnings... We'll cover them in a while.</p>
+<pre><code class="language-text">warning: unused imports: `clock::Strict`, `serial::*`
  --&gt; src/main.rs:4:17
   |
 4 | use bl602_hal::{serial::*, pac, prelude::*, clock::Strict};
@@ -296,7 +302,6 @@ warning: 3 warnings emitted
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="ident">pinecone</span><span class="op">-</span><span class="ident">rust</span><span class="op">/</span><span class="ident">target</span><span class="op">/</span><span class="ident">riscv32imac</span><span class="op">-</span><span class="ident">unknown</span><span class="op">-</span><span class="ident">none</span><span class="op">-</span><span class="ident">elf</span><span class="op">/</span><span class="ident">debug</span><span class="op">/</span><span class="ident">bl602</span><span class="op">-</span><span class="ident">rust</span><span class="op">-</span><span class="ident">guide</span></pre></div>
-<p>Ignore the warnings for now... We'll cover them in a while.</p>
 <h2 id="rust-firmware-vs-c-firmware" class="section-header"><a href="#rust-firmware-vs-c-firmware">2.1 Rust Firmware vs C Firmware</a></h2>
 <p><em>Is Rust Firmware any different from the <a href="https://lupyuen.github.io/articles/pinecone">C Firmware</a> that we have seen earlier?</em></p>
 <p>From the Memory Map below, we can see that...</p>
@@ -565,39 +570,130 @@ target = &quot;riscv32imac-unknown-none-elf&quot;
 <p><a href="https://rust-embedded.github.io/book/">Rust Embedded Book</a></p>
 </li>
 </ul>
-<p><img src="https://lupyuen.github.io/images/debug-vscode.png" alt="VSCode Debugger with Rust Firmware for PineCone BL602" /></p>
-<p><em>VSCode Debugger with Rust Firmware for PineCone BL602</em></p>
 <h1 id="debug-rust-firmware-with-vscode" class="section-header"><a href="#debug-rust-firmware-with-vscode">6 Debug Rust Firmware with VSCode</a></h1>
-<p>TODO</p>
-<p>GDB is One dimensional</p>
-<p>VSCode is Two dimensional</p>
-<p>Terminate OpenOCD</p>
+<p>GDB Debugging feels One Dimensional... An endless stream of text.  Fortunately we got Two Dimensional graphical debugging: <a href="https://code.visualstudio.com/"><strong>VSCode</strong></a>!</p>
 <ol>
 <li>
 <p>Launch VSCode</p>
 </li>
 <li>
-<p>Click File → Open</p>
-<p>Select the pinecone-rust folder</p>
+<p>Click <strong><code>File → Open</code></strong></p>
+<p>Select the folder <strong><code>pinecone-rust</code></strong></p>
 </li>
 <li>
-<p>Click Terminal → Run Build Task</p>
+<p>Click <strong><code>Terminal → Run Build Task</code></strong></p>
+<p>This builds the Rust Firmware. The RISC-V ELF Firmware image is generated here...</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="ident">pinecone</span><span class="op">-</span><span class="ident">rust</span><span class="op">/</span><span class="ident">target</span><span class="op">/</span><span class="ident">riscv32imac</span><span class="op">-</span><span class="ident">unknown</span><span class="op">-</span><span class="ident">none</span><span class="op">-</span><span class="ident">elf</span><span class="op">/</span><span class="ident">debug</span><span class="op">/</span><span class="ident">bl602</span><span class="op">-</span><span class="ident">rust</span><span class="op">-</span><span class="ident">guide</span></pre></div>
+<p>This step also terminates any OpenOCD processes that are running. (Linux and macOS only)</p>
 </li>
 <li>
-<p>Click Run → Start Debugging</p>
+<p>Click <strong><code>Run → Start Debugging</code></strong></p>
+<p>The debugger loads our Rust Firmware to PineCone's Cache Memory and begins execution.</p>
+<p>Click <strong><code>View → Debug Console</code></strong> to view the Debug Console. GDB messages will be shown here.</p>
+</li>
+<li>
+<p>The debugger pauses execution at the first line of the <code>main</code> function</p>
+<p>We should see the screen below...</p>
+<p><a href="https://youtu.be/b9f2vxYahHY">Watch on YouTube</a></p>
 </li>
 </ol>
-<p>Variables</p>
-<p>Watch</p>
-<p>Call Stack</p>
-<p>Debug Console</p>
-<p>Debug Toolbar</p>
-<p>Breakpoints</p>
-<ul>
-<li><a href="https://youtu.be/b9f2vxYahHY">Watch on YouTube</a></li>
-</ul>
-<h1 id="vscode-settings" class="section-header"><a href="#vscode-settings">7 VSCode Settings</a></h1>
+<p><img src="https://lupyuen.github.io/images/debug-vscode.png" alt="VSCode Debugger with Rust Firmware for PineCone BL602" /></p>
+<p><em>VSCode Debugger with Rust Firmware for PineCone BL602</em></p>
+<h2 id="debugging-features" class="section-header"><a href="#debugging-features">6.1 Debugging Features</a></h2>
+<p>We may use these features for debugging our Rust Firmware...</p>
+<ol>
+<li>
+<p><strong>Variables</strong> (Left Top Pane): Inspect global and local variables</p>
+</li>
+<li>
+<p><strong>Watch</strong> (Left Centre): Show the value of expressions</p>
+</li>
+<li>
+<p><strong>Call Stack</strong> (Left Bottom): Navigate the stack trace and its variables</p>
+</li>
+<li>
+<p><strong>Debug Console</strong> (Centre): Enter GDB commands here</p>
+</li>
+<li>
+<p><strong>Debug Toolbar</strong> (Top Right): Continue / Pause, Step Over, Step Into, Step Out, Restart, Stop</p>
+</li>
+<li>
+<p>To set a <strong>Breakpoint</strong>, click the Gutter Column at the left of the source code</p>
+</li>
+<li>
+<p>When we're done with debugging, click the Stop button in the Debug Toolbar at top right</p>
+</li>
+</ol>
+<p><a href="https://youtu.be/b9f2vxYahHY">Watch on YouTube</a></p>
+<p><a href="https://code.visualstudio.com/docs/editor/debugging">More about VSCode Debugger</a></p>
+<h2 id="terminating-openocd" class="section-header"><a href="#terminating-openocd">6.2 Terminating OpenOCD</a></h2>
+<p>Before we start a new debugging session with <strong><code>Run → Start Debugging</code></strong>...</p>
+<p><em>We must always click <strong><code>Terminal → Run Build Task</code></strong> first!</em></p>
+<p>That's because stopping the debugger will leave OpenOCD running (and locking up the connection to PineCone). </p>
+<p>Clicking <strong><code>Run Build Task</code></strong> will terminate the OpenOCD task, so that the next debugging session can restart OpenOCD successfully.</p>
+<p>For Windows: Sorry we need to terminate the OpenOCD task manually with the Task Manager.</p>
+<p>In case of OpenOCD problems, check the OpenOCD log file...</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="ident">pinecone</span><span class="op">-</span><span class="ident">rust</span><span class="op">/</span><span class="ident">openocd</span>.<span class="ident">log</span></pre></div>
+<p>For details on the VSCode settings, check the section &quot;Appendix: VSCode Settings&quot; below.</p>
+<h1 id="rust-coders-wanted" class="section-header"><a href="#rust-coders-wanted">7 Rust Coders Wanted!</a></h1>
 <p>TODO</p>
+<p>Earlier we talked about some parts of the Rust Firmware code that don't work on PineCone. (Because the code was created for Sipeed's BL602 Board)</p>
+<p>Let's look at the sus parts...</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="comment">// enable clock</span>
+<span class="kw">let</span> <span class="ident">clocks</span> <span class="op">=</span> <span class="ident">Strict</span>::<span class="ident">new</span>()
+    .<span class="ident">freeze</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">parts</span>.<span class="ident">clk_cfg</span>);
+<span class="kw">let</span> <span class="ident">pin16</span> <span class="op">=</span> <span class="ident">parts</span>.<span class="ident">pin16</span>.<span class="ident">into_uart_sig0</span>();
+<span class="kw">let</span> <span class="ident">pin7</span> <span class="op">=</span> <span class="ident">parts</span>.<span class="ident">pin7</span>.<span class="ident">into_uart_sig7</span>();
+<span class="kw">let</span> <span class="ident">mux0</span> <span class="op">=</span> <span class="ident">parts</span>.<span class="ident">uart_mux0</span>.<span class="ident">into_uart0_tx</span>();
+<span class="kw">let</span> <span class="ident">mux7</span> <span class="op">=</span> <span class="ident">parts</span>.<span class="ident">uart_mux7</span>.<span class="ident">into_uart0_rx</span>();</pre></div>
+<p>This code seems to be remapping pins IO 7 and IO 16 to UART Port 0. (Because BL602 allows us to remap any IO Pin to any Peripheral Function)</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">serial</span> <span class="op">=</span> <span class="ident">Serial</span>::<span class="ident">uart0</span>(
+    <span class="ident">dp</span>.<span class="ident">UART</span>,
+    <span class="ident">Config</span>::<span class="ident">default</span>().<span class="ident">baudrate</span>(<span class="number">20000</span>.<span class="ident">Bd</span>()),
+    ((<span class="ident">pin16</span>, <span class="ident">mux0</span>), (<span class="ident">pin7</span>, <span class="ident">mux7</span>)),
+    <span class="ident">clocks</span>
+);</pre></div>
+<p>This code creates a Serial Interface based on UART Port 0 with the remapped pins</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">loop</span> {
+    <span class="ident">serial</span>.<span class="ident">try_write</span>(<span class="string">b&#39;R&#39;</span>).<span class="ident">ok</span>();
+    <span class="ident">serial</span>.<span class="ident">try_flush</span>().<span class="ident">ok</span>();
+    <span class="ident">serial</span>.<span class="ident">try_write</span>(<span class="string">b&#39;U&#39;</span>).<span class="ident">ok</span>();
+    <span class="ident">serial</span>.<span class="ident">try_flush</span>().<span class="ident">ok</span>();
+    <span class="ident">serial</span>.<span class="ident">try_write</span>(<span class="string">b&#39;S&#39;</span>).<span class="ident">ok</span>();
+    <span class="ident">serial</span>.<span class="ident">try_flush</span>().<span class="ident">ok</span>();
+    <span class="ident">serial</span>.<span class="ident">try_write</span>(<span class="string">b&#39;T&#39;</span>).<span class="ident">ok</span>();
+    <span class="ident">serial</span>.<span class="ident">try_flush</span>().<span class="ident">ok</span>();
+}</pre></div>
+<p>???</p>
+<p><em>If there are any Brave Souls out there... Please rebuild the firmware with these chunks of code uncommented, step through with the debugger, and tell us what went wrong!</em></p>
+<p>Code commented out in <a href="https://github.com/lupyuen/pinecone-rust/blob/main/src/main.rs#L14-L36"><code>src/main.rs</code></a></p>
+<p>Debugger to stop working</p>
+<p>PWM docs</p>
+<p>Remap</p>
+<p><em>Can YOU create a Rust program that blinks PineCone's RGB LED via PWM?</em></p>
+<p><em>Please submit a Pull Request! Thank you 🙏</em></p>
+<p><img src="https://lupyuen.github.io/images/debug-pool.jpg" alt="Poolside Debugging with PineCone BL602 RISC-V Evaluation Board" /></p>
+<p><em>Poolside Debugging with PineCone BL602 RISC-V Evaluation Board</em></p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">8 What's Next</a></h1>
+<p>TODO</p>
+<p><a href="https://lupyuen.github.io">Check out my articles</a></p>
+<p><a href="https://lupyuen.github.io/rss.xml">RSS Feed</a></p>
+<p><a href="https://github.com/sponsors/lupyuen">Sponsor me a coffee</a></p>
+<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
+<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/debug.md"><code>github.com/lupyuen/lupyuen.github.io/src/debug.md</code></a></p>
+<h1 id="appendix-vscode-settings" class="section-header"><a href="#appendix-vscode-settings">9 Appendix: VSCode Settings</a></h1>
+<p>TODO</p>
+<h2 id="debugger-settings" class="section-header"><a href="#debugger-settings">9.1 Debugger Settings</a></h2>
 <ul>
 <li><a href="https://github.com/lupyuen/pinecone-rust/blob/main/.vscode/launch.json"><code>.vscode/launch.json</code></a>: VSCode Debugger Configuration</li>
 </ul>
@@ -638,49 +734,10 @@ target = &quot;riscv32imac-unknown-none-elf&quot;
     ]
 }
 </code></pre>
+<h2 id="task-settings" class="section-header"><a href="#task-settings">9.2 Task Settings</a></h2>
 <ul>
 <li><a href="https://github.com/lupyuen/pinecone-rust/blob/main/.vscode/tasks.json"><code>.vscode/tasks.json</code></a>: VSCode Tasks</li>
 </ul>
-<h1 id="rust-coders-wanted" class="section-header"><a href="#rust-coders-wanted">8 Rust Coders Wanted!</a></h1>
-<p>TODO</p>
-<p>Code commented out in <a href="https://github.com/lupyuen/pinecone-rust/blob/main/src/main.rs#L14-L36"><code>src/main.rs</code></a></p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="comment">// enable clock</span>
-<span class="kw">let</span> <span class="ident">clocks</span> <span class="op">=</span> <span class="ident">Strict</span>::<span class="ident">new</span>()
-    .<span class="ident">freeze</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">parts</span>.<span class="ident">clk_cfg</span>);
-<span class="kw">let</span> <span class="ident">pin16</span> <span class="op">=</span> <span class="ident">parts</span>.<span class="ident">pin16</span>.<span class="ident">into_uart_sig0</span>();
-<span class="kw">let</span> <span class="ident">pin7</span> <span class="op">=</span> <span class="ident">parts</span>.<span class="ident">pin7</span>.<span class="ident">into_uart_sig7</span>();
-<span class="kw">let</span> <span class="ident">mux0</span> <span class="op">=</span> <span class="ident">parts</span>.<span class="ident">uart_mux0</span>.<span class="ident">into_uart0_tx</span>();
-<span class="kw">let</span> <span class="ident">mux7</span> <span class="op">=</span> <span class="ident">parts</span>.<span class="ident">uart_mux7</span>.<span class="ident">into_uart0_rx</span>();
-<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">serial</span> <span class="op">=</span> <span class="ident">Serial</span>::<span class="ident">uart0</span>(
-    <span class="ident">dp</span>.<span class="ident">UART</span>,
-    <span class="ident">Config</span>::<span class="ident">default</span>().<span class="ident">baudrate</span>(<span class="number">20000</span>.<span class="ident">Bd</span>()),
-    ((<span class="ident">pin16</span>, <span class="ident">mux0</span>), (<span class="ident">pin7</span>, <span class="ident">mux7</span>)),
-    <span class="ident">clocks</span>
-);
-<span class="kw">loop</span> {
-    <span class="ident">serial</span>.<span class="ident">try_write</span>(<span class="string">b&#39;R&#39;</span>).<span class="ident">ok</span>();
-    <span class="ident">serial</span>.<span class="ident">try_flush</span>().<span class="ident">ok</span>();
-    <span class="ident">serial</span>.<span class="ident">try_write</span>(<span class="string">b&#39;U&#39;</span>).<span class="ident">ok</span>();
-    <span class="ident">serial</span>.<span class="ident">try_flush</span>().<span class="ident">ok</span>();
-    <span class="ident">serial</span>.<span class="ident">try_write</span>(<span class="string">b&#39;S&#39;</span>).<span class="ident">ok</span>();
-    <span class="ident">serial</span>.<span class="ident">try_flush</span>().<span class="ident">ok</span>();
-    <span class="ident">serial</span>.<span class="ident">try_write</span>(<span class="string">b&#39;T&#39;</span>).<span class="ident">ok</span>();
-    <span class="ident">serial</span>.<span class="ident">try_flush</span>().<span class="ident">ok</span>();
-}</pre></div>
-<p>Debugger to stop working</p>
-<p>PWM</p>
-<p>Remap</p>
-<p><img src="https://lupyuen.github.io/images/debug-pool.jpg" alt="Poolside Debugging with PineCone BL602 RISC-V Evaluation Board" /></p>
-<p><em>Poolside Debugging with PineCone BL602 RISC-V Evaluation Board</em></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">9 What's Next</a></h1>
-<p>TODO</p>
-<p><a href="https://lupyuen.github.io">Check out my articles</a></p>
-<p><a href="https://lupyuen.github.io/rss.xml">RSS Feed</a></p>
-<p><a href="https://github.com/sponsors/lupyuen">Sponsor me a coffee</a></p>
-<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
-<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/debug.md"><code>github.com/lupyuen/lupyuen.github.io/src/debug.md</code></a></p>
 
     
 </body>

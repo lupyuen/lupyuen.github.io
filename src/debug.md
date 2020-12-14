@@ -180,6 +180,11 @@ We should see...
    Compiling riscv-rt v0.8.0
    Compiling riscv-rt-macros v0.1.6
    Compiling bl602-hal v0.1.0 (/Users/Luppy/pinecone/bl602-hal)
+```
+
+Ignore these warnings... We'll cover them in a while.
+
+```text
 warning: unused imports: `clock::Strict`, `serial::*`
  --> src/main.rs:4:17
   |
@@ -216,8 +221,6 @@ This creates the RISC-V ELF Firmware image for PineCone...
 ```
 pinecone-rust/target/riscv32imac-unknown-none-elf/debug/bl602-rust-guide
 ```
-
-Ignore the warnings for now... We'll cover them in a while.
 
 ##  Rust Firmware vs C Firmware
 
@@ -577,47 +580,167 @@ We'll discuss this mystery in a while.
 
 -   [Rust Embedded Book](https://rust-embedded.github.io/book/)
 
+# Debug Rust Firmware with VSCode
+
+GDB Debugging feels One Dimensional... An endless stream of text.  Fortunately we got Two Dimensional graphical debugging: [__VSCode__](https://code.visualstudio.com/)!
+
+1.  Launch VSCode
+
+1.  Click __`File → Open`__
+
+    Select the folder __`pinecone-rust`__
+
+1.  Click __`Terminal → Run Build Task`__
+
+    This builds the Rust Firmware. The RISC-V ELF Firmware image is generated here...
+
+    ```
+    pinecone-rust/target/riscv32imac-unknown-none-elf/debug/bl602-rust-guide
+    ```
+
+    This step also terminates any OpenOCD processes that are running. (Linux and macOS only)
+
+1.  Click __`Run → Start Debugging`__
+
+    The debugger loads our Rust Firmware to PineCone's Cache Memory and begins execution.
+
+    Click __`View → Debug Console`__ to view the Debug Console. GDB messages will be shown here.
+
+1.  The debugger pauses execution at the first line of the `main` function
+
+    We should see the screen below...
+
+    [Watch on YouTube](https://youtu.be/b9f2vxYahHY)
+
 ![VSCode Debugger with Rust Firmware for PineCone BL602](https://lupyuen.github.io/images/debug-vscode.png)
 
 _VSCode Debugger with Rust Firmware for PineCone BL602_
 
-# Debug Rust Firmware with VSCode
+## Debugging Features
+
+We may use these features for debugging our Rust Firmware...
+
+1.  __Variables__ (Left Top Pane): Inspect global and local variables
+
+1.  __Watch__ (Left Centre): Show the value of expressions
+
+1.  __Call Stack__ (Left Bottom): Navigate the stack trace and its variables
+
+1.  __Debug Console__ (Centre): Enter GDB commands here
+
+1.  __Debug Toolbar__ (Top Right): Continue / Pause, Step Over, Step Into, Step Out, Restart, Stop
+
+1.  To set a __Breakpoint__, click the Gutter Column at the left of the source code
+
+1.  When we're done with debugging, click the Stop button in the Debug Toolbar at top right
+
+[Watch on YouTube](https://youtu.be/b9f2vxYahHY)
+
+[More about VSCode Debugger](https://code.visualstudio.com/docs/editor/debugging)
+
+## Terminating OpenOCD
+
+Before we start a new debugging session with __`Run → Start Debugging`__...
+
+_We must always click __`Terminal → Run Build Task`__ first!_
+
+That's because stopping the debugger will leave OpenOCD running (and locking up the connection to PineCone). 
+
+Clicking __`Run Build Task`__ will terminate the OpenOCD task, so that the next debugging session can restart OpenOCD successfully.
+
+For Windows: Sorry we need to terminate the OpenOCD task manually with the Task Manager.
+
+In case of OpenOCD problems, check the OpenOCD log file...
+
+```
+pinecone-rust/openocd.log
+```
+
+For details on the VSCode settings, check the section "Appendix: VSCode Settings" below.
+
+# Rust Coders Wanted!
 
 TODO
 
-GDB is One dimensional
+Earlier we talked about some parts of the Rust Firmware code that don't work on PineCone. (Because the code was created for Sipeed's BL602 Board)
 
-VSCode is Two dimensional
+Let's look at the sus parts...
 
-Terminate OpenOCD
+```
+// enable clock
+let clocks = Strict::new()
+    .freeze(&mut parts.clk_cfg);
+let pin16 = parts.pin16.into_uart_sig0();
+let pin7 = parts.pin7.into_uart_sig7();
+let mux0 = parts.uart_mux0.into_uart0_tx();
+let mux7 = parts.uart_mux7.into_uart0_rx();
+```
 
-1.  Launch VSCode
+This code seems to be remapping pins IO 7 and IO 16 to UART Port 0. (Because BL602 allows us to remap any IO Pin to any Peripheral Function)
 
-1.  Click File → Open
+```
+let mut serial = Serial::uart0(
+    dp.UART,
+    Config::default().baudrate(20000.Bd()),
+    ((pin16, mux0), (pin7, mux7)),
+    clocks
+);
+```
 
-    Select the pinecone-rust folder
+This code creates a Serial Interface based on UART Port 0 with the remapped pins
 
-1.  Click Terminal → Run Build Task
+```
+loop {
+    serial.try_write(b'R').ok();
+    serial.try_flush().ok();
+    serial.try_write(b'U').ok();
+    serial.try_flush().ok();
+    serial.try_write(b'S').ok();
+    serial.try_flush().ok();
+    serial.try_write(b'T').ok();
+    serial.try_flush().ok();
+}
+```
 
-1.  Click Run → Start Debugging
+???
 
-Variables
+_If there are any Brave Souls out there... Please rebuild the firmware with these chunks of code uncommented, step through with the debugger, and tell us what went wrong!_
 
-Watch
+Code commented out in [`src/main.rs`](https://github.com/lupyuen/pinecone-rust/blob/main/src/main.rs#L14-L36)
 
-Call Stack
+Debugger to stop working
 
-Debug Console
+PWM docs
 
-Debug Toolbar
+Remap
 
-Breakpoints
+_Can YOU create a Rust program that blinks PineCone's RGB LED via PWM?_
 
--   [Watch on YouTube](https://youtu.be/b9f2vxYahHY)
+_Please submit a Pull Request! Thank you 🙏_
 
-# VSCode Settings
+![Poolside Debugging with PineCone BL602 RISC-V Evaluation Board](https://lupyuen.github.io/images/debug-pool.jpg)
+
+_Poolside Debugging with PineCone BL602 RISC-V Evaluation Board_
+
+# What's Next
 
 TODO
+
+[Check out my articles](https://lupyuen.github.io)
+
+[RSS Feed](https://lupyuen.github.io/rss.xml)
+
+[Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+
+_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
+
+[`github.com/lupyuen/lupyuen.github.io/src/debug.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/debug.md)
+
+# Appendix: VSCode Settings
+
+TODO
+
+## Debugger Settings
 
 -   [`.vscode/launch.json`](https://github.com/lupyuen/pinecone-rust/blob/main/.vscode/launch.json): VSCode Debugger Configuration
 
@@ -660,60 +783,6 @@ TODO
 }
 ```
 
+## Task Settings
+
 -   [`.vscode/tasks.json`](https://github.com/lupyuen/pinecone-rust/blob/main/.vscode/tasks.json): VSCode Tasks
-
-# Rust Coders Wanted!
-
-TODO
-
-Code commented out in [`src/main.rs`](https://github.com/lupyuen/pinecone-rust/blob/main/src/main.rs#L14-L36)
-
-```
-// enable clock
-let clocks = Strict::new()
-    .freeze(&mut parts.clk_cfg);
-let pin16 = parts.pin16.into_uart_sig0();
-let pin7 = parts.pin7.into_uart_sig7();
-let mux0 = parts.uart_mux0.into_uart0_tx();
-let mux7 = parts.uart_mux7.into_uart0_rx();
-let mut serial = Serial::uart0(
-    dp.UART,
-    Config::default().baudrate(20000.Bd()),
-    ((pin16, mux0), (pin7, mux7)),
-    clocks
-);
-loop {
-    serial.try_write(b'R').ok();
-    serial.try_flush().ok();
-    serial.try_write(b'U').ok();
-    serial.try_flush().ok();
-    serial.try_write(b'S').ok();
-    serial.try_flush().ok();
-    serial.try_write(b'T').ok();
-    serial.try_flush().ok();
-}
-```
-
-Debugger to stop working
-
-PWM
-
-Remap
-
-![Poolside Debugging with PineCone BL602 RISC-V Evaluation Board](https://lupyuen.github.io/images/debug-pool.jpg)
-
-_Poolside Debugging with PineCone BL602 RISC-V Evaluation Board_
-
-# What's Next
-
-TODO
-
-[Check out my articles](https://lupyuen.github.io)
-
-[RSS Feed](https://lupyuen.github.io/rss.xml)
-
-[Sponsor me a coffee](https://github.com/sponsors/lupyuen)
-
-_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
-
-[`github.com/lupyuen/lupyuen.github.io/src/debug.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/debug.md)
