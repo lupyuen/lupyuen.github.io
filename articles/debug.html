@@ -86,7 +86,8 @@
 <li><a href="#is-something-missing">5.5 Is Something Missing?</a><ul></ul></li></ul></li>
 <li><a href="#debug-rust-firmware-with-vscode">6 Debug Rust Firmware with VSCode</a><ul></ul></li>
 <li><a href="#vscode-settings">7 VSCode Settings</a><ul></ul></li>
-<li><a href="#whats-next">8 What's Next</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/debug-title.jpg" alt="Debugging PineCone BL602 RISC-V Evaluation Board with Sipeed JTAG Debugger" /></p>
+<li><a href="#rust-coders-wanted">8 Rust Coders Wanted!</a><ul></ul></li>
+<li><a href="#whats-next">9 What's Next</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/debug-title.jpg" alt="Debugging PineCone BL602 RISC-V Evaluation Board with Sipeed JTAG Debugger" /></p>
 <p><em>Debugging PineCone BL602 RISC-V Evaluation Board with Sipeed JTAG Debugger</em></p>
 <p>Today we'll learn to debug Rust Firmware for <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602 RISC-V Evaluation Board</strong></a> in two ways...</p>
 <ol>
@@ -568,10 +569,33 @@ target = &quot;riscv32imac-unknown-none-elf&quot;
 <p><em>VSCode Debugger with Rust Firmware for PineCone BL602</em></p>
 <h1 id="debug-rust-firmware-with-vscode" class="section-header"><a href="#debug-rust-firmware-with-vscode">6 Debug Rust Firmware with VSCode</a></h1>
 <p>TODO</p>
+<p>GDB is One dimensional</p>
+<p>VSCode is Two dimensional</p>
+<p>Terminate OpenOCD</p>
+<ol>
+<li>
+<p>Launch VSCode</p>
+</li>
+<li>
+<p>Click File → Open</p>
+<p>Select the pinecone-rust folder</p>
+</li>
+<li>
+<p>Click Terminal → Run Build Task</p>
+</li>
+<li>
+<p>Click Run → Start Debugging</p>
+</li>
+</ol>
+<p>Variables</p>
+<p>Watch</p>
+<p>Call Stack</p>
+<p>Debug Console</p>
+<p>Debug Toolbar</p>
+<p>Breakpoints</p>
 <ul>
 <li><a href="https://youtu.be/b9f2vxYahHY">Watch on YouTube</a></li>
 </ul>
-<p>Terminate OpenOCD</p>
 <h1 id="vscode-settings" class="section-header"><a href="#vscode-settings">7 VSCode Settings</a></h1>
 <p>TODO</p>
 <ul>
@@ -617,7 +641,38 @@ target = &quot;riscv32imac-unknown-none-elf&quot;
 <ul>
 <li><a href="https://github.com/lupyuen/pinecone-rust/blob/main/.vscode/tasks.json"><code>.vscode/tasks.json</code></a>: VSCode Tasks</li>
 </ul>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">8 What's Next</a></h1>
+<h1 id="rust-coders-wanted" class="section-header"><a href="#rust-coders-wanted">8 Rust Coders Wanted!</a></h1>
+<p>TODO</p>
+<p>Code commented out in <a href="https://github.com/lupyuen/pinecone-rust/blob/main/src/main.rs#L14-L36"><code>src/main.rs</code></a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="comment">// enable clock</span>
+<span class="kw">let</span> <span class="ident">clocks</span> <span class="op">=</span> <span class="ident">Strict</span>::<span class="ident">new</span>()
+    .<span class="ident">freeze</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">parts</span>.<span class="ident">clk_cfg</span>);
+<span class="kw">let</span> <span class="ident">pin16</span> <span class="op">=</span> <span class="ident">parts</span>.<span class="ident">pin16</span>.<span class="ident">into_uart_sig0</span>();
+<span class="kw">let</span> <span class="ident">pin7</span> <span class="op">=</span> <span class="ident">parts</span>.<span class="ident">pin7</span>.<span class="ident">into_uart_sig7</span>();
+<span class="kw">let</span> <span class="ident">mux0</span> <span class="op">=</span> <span class="ident">parts</span>.<span class="ident">uart_mux0</span>.<span class="ident">into_uart0_tx</span>();
+<span class="kw">let</span> <span class="ident">mux7</span> <span class="op">=</span> <span class="ident">parts</span>.<span class="ident">uart_mux7</span>.<span class="ident">into_uart0_rx</span>();
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">serial</span> <span class="op">=</span> <span class="ident">Serial</span>::<span class="ident">uart0</span>(
+    <span class="ident">dp</span>.<span class="ident">UART</span>,
+    <span class="ident">Config</span>::<span class="ident">default</span>().<span class="ident">baudrate</span>(<span class="number">20000</span>.<span class="ident">Bd</span>()),
+    ((<span class="ident">pin16</span>, <span class="ident">mux0</span>), (<span class="ident">pin7</span>, <span class="ident">mux7</span>)),
+    <span class="ident">clocks</span>
+);
+<span class="kw">loop</span> {
+    <span class="ident">serial</span>.<span class="ident">try_write</span>(<span class="string">b&#39;R&#39;</span>).<span class="ident">ok</span>();
+    <span class="ident">serial</span>.<span class="ident">try_flush</span>().<span class="ident">ok</span>();
+    <span class="ident">serial</span>.<span class="ident">try_write</span>(<span class="string">b&#39;U&#39;</span>).<span class="ident">ok</span>();
+    <span class="ident">serial</span>.<span class="ident">try_flush</span>().<span class="ident">ok</span>();
+    <span class="ident">serial</span>.<span class="ident">try_write</span>(<span class="string">b&#39;S&#39;</span>).<span class="ident">ok</span>();
+    <span class="ident">serial</span>.<span class="ident">try_flush</span>().<span class="ident">ok</span>();
+    <span class="ident">serial</span>.<span class="ident">try_write</span>(<span class="string">b&#39;T&#39;</span>).<span class="ident">ok</span>();
+    <span class="ident">serial</span>.<span class="ident">try_flush</span>().<span class="ident">ok</span>();
+}</pre></div>
+<p>Debugger to stop working</p>
+<p>PWM</p>
+<p>Remap</p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">9 What's Next</a></h1>
 <p>TODO</p>
 <p><a href="https://lupyuen.github.io">Check out my articles</a></p>
 <p><a href="https://lupyuen.github.io/rss.xml">RSS Feed</a></p>

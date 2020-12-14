@@ -585,9 +585,35 @@ _VSCode Debugger with Rust Firmware for PineCone BL602_
 
 TODO
 
--   [Watch on YouTube](https://youtu.be/b9f2vxYahHY)
+GDB is One dimensional
+
+VSCode is Two dimensional
 
 Terminate OpenOCD
+
+1.  Launch VSCode
+
+1.  Click File → Open
+
+    Select the pinecone-rust folder
+
+1.  Click Terminal → Run Build Task
+
+1.  Click Run → Start Debugging
+
+Variables
+
+Watch
+
+Call Stack
+
+Debug Console
+
+Debug Toolbar
+
+Breakpoints
+
+-   [Watch on YouTube](https://youtu.be/b9f2vxYahHY)
 
 # VSCode Settings
 
@@ -635,6 +661,44 @@ TODO
 ```
 
 -   [`.vscode/tasks.json`](https://github.com/lupyuen/pinecone-rust/blob/main/.vscode/tasks.json): VSCode Tasks
+
+# Rust Coders Wanted!
+
+TODO
+
+Code commented out in [`src/main.rs`](https://github.com/lupyuen/pinecone-rust/blob/main/src/main.rs#L14-L36)
+
+```
+// enable clock
+let clocks = Strict::new()
+    .freeze(&mut parts.clk_cfg);
+let pin16 = parts.pin16.into_uart_sig0();
+let pin7 = parts.pin7.into_uart_sig7();
+let mux0 = parts.uart_mux0.into_uart0_tx();
+let mux7 = parts.uart_mux7.into_uart0_rx();
+let mut serial = Serial::uart0(
+    dp.UART,
+    Config::default().baudrate(20000.Bd()),
+    ((pin16, mux0), (pin7, mux7)),
+    clocks
+);
+loop {
+    serial.try_write(b'R').ok();
+    serial.try_flush().ok();
+    serial.try_write(b'U').ok();
+    serial.try_flush().ok();
+    serial.try_write(b'S').ok();
+    serial.try_flush().ok();
+    serial.try_write(b'T').ok();
+    serial.try_flush().ok();
+}
+```
+
+Debugger to stop working
+
+PWM
+
+Remap
 
 # What's Next
 
