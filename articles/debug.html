@@ -87,7 +87,12 @@
 <li><a href="#debug-rust-firmware-with-vscode">6 Debug Rust Firmware with VSCode</a><ul>
 <li><a href="#debugging-features">6.1 Debugging Features</a><ul></ul></li>
 <li><a href="#terminating-openocd">6.2 Terminating OpenOCD</a><ul></ul></li></ul></li>
-<li><a href="#rust-coders-wanted">7 Rust Coders Wanted!</a><ul></ul></li>
+<li><a href="#rust-coders-wanted">7 Rust Coders Wanted!</a><ul>
+<li><a href="#remap-the-uart-port">7.1 Remap the UART Port</a><ul></ul></li>
+<li><a href="#create-a-serial-interface">7.2 Create a Serial Interface</a><ul></ul></li>
+<li><a href="#write-to-the-serial-interface">7.3 Write to the Serial Interface</a><ul></ul></li>
+<li><a href="#boo-boo-on-pinecone">7.4 Boo-boo on PineCone</a><ul></ul></li>
+<li><a href="#we-need-more-rust-demos-on-pinecone">7.5 We need more Rust Demos on PineCone</a><ul></ul></li></ul></li>
 <li><a href="#whats-next">8 What's Next</a><ul></ul></li>
 <li><a href="#appendix-vscode-settings">9 Appendix: VSCode Settings</a><ul>
 <li><a href="#debugger-settings">9.1 Debugger Settings</a><ul></ul></li>
@@ -640,12 +645,11 @@ target = &quot;riscv32imac-unknown-none-elf&quot;
 <span class="ident">pinecone</span><span class="op">-</span><span class="ident">rust</span><span class="op">/</span><span class="ident">openocd</span>.<span class="ident">log</span></pre></div>
 <p>For details on the VSCode settings, check the section &quot;Appendix: VSCode Settings&quot; below.</p>
 <h1 id="rust-coders-wanted" class="section-header"><a href="#rust-coders-wanted">7 Rust Coders Wanted!</a></h1>
-<p>TODO</p>
 <p>Earlier we talked about some parts of the Rust Firmware code that don't work on PineCone. (Because the code was created for Sipeed's BL602 Board)</p>
-<p>Let's look at the sus parts...</p>
-
+<p>Let's look at the sus parts: <a href="https://github.com/lupyuen/pinecone-rust/blob/main/src/main.rs#L14-L36"><code>src/main.rs</code></a></p>
+<h2 id="remap-the-uart-port" class="section-header"><a href="#remap-the-uart-port">7.1 Remap the UART Port</a></h2>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="comment">// enable clock</span>
+<span class="comment">// Enable clock</span>
 <span class="kw">let</span> <span class="ident">clocks</span> <span class="op">=</span> <span class="ident">Strict</span>::<span class="ident">new</span>()
     .<span class="ident">freeze</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">parts</span>.<span class="ident">clk_cfg</span>);
 <span class="kw">let</span> <span class="ident">pin16</span> <span class="op">=</span> <span class="ident">parts</span>.<span class="ident">pin16</span>.<span class="ident">into_uart_sig0</span>();
@@ -653,7 +657,8 @@ target = &quot;riscv32imac-unknown-none-elf&quot;
 <span class="kw">let</span> <span class="ident">mux0</span> <span class="op">=</span> <span class="ident">parts</span>.<span class="ident">uart_mux0</span>.<span class="ident">into_uart0_tx</span>();
 <span class="kw">let</span> <span class="ident">mux7</span> <span class="op">=</span> <span class="ident">parts</span>.<span class="ident">uart_mux7</span>.<span class="ident">into_uart0_rx</span>();</pre></div>
 <p>This code seems to be remapping pins IO 7 and IO 16 to UART Port 0. (Because BL602 allows us to remap any IO Pin to any Peripheral Function)</p>
-
+<p>See <a href="https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf">BL602 Reference Manual</a>, Section 3.2.8 &quot;GPIO Function&quot;, Page 27</p>
+<h2 id="create-a-serial-interface" class="section-header"><a href="#create-a-serial-interface">7.2 Create a Serial Interface</a></h2>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">serial</span> <span class="op">=</span> <span class="ident">Serial</span>::<span class="ident">uart0</span>(
     <span class="ident">dp</span>.<span class="ident">UART</span>,
@@ -661,8 +666,8 @@ target = &quot;riscv32imac-unknown-none-elf&quot;
     ((<span class="ident">pin16</span>, <span class="ident">mux0</span>), (<span class="ident">pin7</span>, <span class="ident">mux7</span>)),
     <span class="ident">clocks</span>
 );</pre></div>
-<p>This code creates a Serial Interface based on UART Port 0 with the remapped pins</p>
-
+<p>This code creates a Serial Interface based on UART Port 0 with the remapped pins.</p>
+<h2 id="write-to-the-serial-interface" class="section-header"><a href="#write-to-the-serial-interface">7.3 Write to the Serial Interface</a></h2>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="kw">loop</span> {
     <span class="ident">serial</span>.<span class="ident">try_write</span>(<span class="string">b&#39;R&#39;</span>).<span class="ident">ok</span>();
@@ -674,12 +679,15 @@ target = &quot;riscv32imac-unknown-none-elf&quot;
     <span class="ident">serial</span>.<span class="ident">try_write</span>(<span class="string">b&#39;T&#39;</span>).<span class="ident">ok</span>();
     <span class="ident">serial</span>.<span class="ident">try_flush</span>().<span class="ident">ok</span>();
 }</pre></div>
-<p>???</p>
+<p>This code loops forever, writing the characters <code>RUST</code> to the Serial Interface.</p>
+<h2 id="boo-boo-on-pinecone" class="section-header"><a href="#boo-boo-on-pinecone">7.4 Boo-boo on PineCone</a></h2>
+<p><em>What happens when we run the above code on PineCone?</em></p>
+<p>The GDB Debugger shows an error while executing the UART remapping code above. The code seems to terminate JTAG debugging connection, not sure why.</p>
 <p><em>If there are any Brave Souls out there... Please rebuild the firmware with these chunks of code uncommented, step through with the debugger, and tell us what went wrong!</em></p>
-<p>Code commented out in <a href="https://github.com/lupyuen/pinecone-rust/blob/main/src/main.rs#L14-L36"><code>src/main.rs</code></a></p>
-<p>Debugger to stop working</p>
+<h2 id="we-need-more-rust-demos-on-pinecone" class="section-header"><a href="#we-need-more-rust-demos-on-pinecone">7.5 We need more Rust Demos on PineCone</a></h2>
+<p>TODO</p>
 <p>PWM docs</p>
-<p>Remap</p>
+<p>Remap LED</p>
 <p><em>Can YOU create a Rust program that blinks PineCone's RGB LED via PWM?</em></p>
 <p><em>Please submit a Pull Request! Thank you 🙏</em></p>
 <p><img src="https://lupyuen.github.io/images/debug-pool.jpg" alt="Poolside Debugging with PineCone BL602 RISC-V Evaluation Board" /></p>

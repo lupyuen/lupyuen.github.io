@@ -660,14 +660,14 @@ For details on the VSCode settings, check the section "Appendix: VSCode Settings
 
 # Rust Coders Wanted!
 
-TODO
-
 Earlier we talked about some parts of the Rust Firmware code that don't work on PineCone. (Because the code was created for Sipeed's BL602 Board)
 
-Let's look at the sus parts...
+Let's look at the sus parts: [`src/main.rs`](https://github.com/lupyuen/pinecone-rust/blob/main/src/main.rs#L14-L36)
+
+## Remap the UART Port
 
 ```
-// enable clock
+// Enable clock
 let clocks = Strict::new()
     .freeze(&mut parts.clk_cfg);
 let pin16 = parts.pin16.into_uart_sig0();
@@ -678,6 +678,10 @@ let mux7 = parts.uart_mux7.into_uart0_rx();
 
 This code seems to be remapping pins IO 7 and IO 16 to UART Port 0. (Because BL602 allows us to remap any IO Pin to any Peripheral Function)
 
+See [BL602 Reference Manual](https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf), Section 3.2.8 "GPIO Function", Page 27
+
+## Create a Serial Interface
+
 ```
 let mut serial = Serial::uart0(
     dp.UART,
@@ -687,7 +691,9 @@ let mut serial = Serial::uart0(
 );
 ```
 
-This code creates a Serial Interface based on UART Port 0 with the remapped pins
+This code creates a Serial Interface based on UART Port 0 with the remapped pins.
+
+## Write to the Serial Interface
 
 ```
 loop {
@@ -702,17 +708,23 @@ loop {
 }
 ```
 
-???
+This code loops forever, writing the characters `RUST` to the Serial Interface.
+
+## Boo-boo on PineCone
+
+_What happens when we run the above code on PineCone?_
+
+The GDB Debugger shows an error while executing the UART remapping code above. The code seems to terminate JTAG debugging connection, not sure why.
 
 _If there are any Brave Souls out there... Please rebuild the firmware with these chunks of code uncommented, step through with the debugger, and tell us what went wrong!_
 
-Code commented out in [`src/main.rs`](https://github.com/lupyuen/pinecone-rust/blob/main/src/main.rs#L14-L36)
+## We need more Rust Demos on PineCone
 
-Debugger to stop working
+TODO
 
 PWM docs
 
-Remap
+Remap LED
 
 _Can YOU create a Rust program that blinks PineCone's RGB LED via PWM?_
 
