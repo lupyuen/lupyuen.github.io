@@ -188,7 +188,7 @@
       "publisher": "lupyuen.github.io",
       "releaseDate": "2020-11-18",
       "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/handdrawn",
-      "summary": "Draw your own PineTime Watch Face... From WebAssembly to Embedded Rust"
+      "summary": "How we build a hand-drawn Watch Face for PineTime Smart Watch... Starting from WebAssembly to Embedded Rust"
     },
     {
       "name": "Create Your Own PineTime Watch Face in Rust... And Publish on crates.io",
@@ -244,7 +244,7 @@
       "publisher": "lupyuen.github.io",
       "releaseDate": "2020-07-09",
       "website": "https://lupyuen.github.io/pinetime-rust-mynewt/articles/ast",
-      "summary": "Auto Convert Go to Dart with an Abstract Syntax Tree"
+      "summary": "How we convert Go code to Dart and Flutter automatically with an Abstract Syntax Tree"
     },
     {
       "name": "Flutter State Management with Bloc for PineTime Companion App",

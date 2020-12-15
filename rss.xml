@@ -30,7 +30,7 @@
         <item>
             <title>(UNFINISHED) Draw your own PineTime Watch Face... From WebAssembly to Embedded Rust</title>
             <link>https://lupyuen.github.io/pinetime-rust-mynewt/articles/handdrawn</link>
-            <description><![CDATA[Draw your own PineTime Watch Face... From WebAssembly to Embedded Rust]]></description>
+            <description><![CDATA[How we build a hand-drawn Watch Face for PineTime Smart Watch... Starting from WebAssembly to Embedded Rust]]></description>
             <pubDate>Wed, 18 Nov 2020 00:00:00 +0000</pubDate>
         </item>
         <item>
@@ -78,7 +78,7 @@
         <item>
             <title>(UNFINISHED) Auto Convert Go to Dart with an Abstract Syntax Tree</title>
             <link>https://lupyuen.github.io/pinetime-rust-mynewt/articles/ast</link>
-            <description><![CDATA[Auto Convert Go to Dart with an Abstract Syntax Tree]]></description>
+            <description><![CDATA[How we convert Go code to Dart and Flutter automatically with an Abstract Syntax Tree]]></description>
             <pubDate>Thu, 09 Jul 2020 00:00:00 +0000</pubDate>
         </item>
         <item>
