@@ -156,6 +156,13 @@
   ],
   "publications": [
     {
+      "name": "Better Open Source Advocate",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2020-12-15",
+      "website": "https://lupyuen.github.io/articles/advocate",
+      "summary": "I made mistakes in 2020... Here's how I'll do better in 2021"
+    },
+    {
       "name": "Debug Rust on PineCone BL602 with VSCode and GDB",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2020-12-14",
