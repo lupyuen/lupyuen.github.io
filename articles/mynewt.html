@@ -65,34 +65,94 @@
 
     <h1 class="title">Porting Mynewt to PineCone BL602</h1>
     <nav id="TOC"><ul>
-<li><a href="#fix-gcc-compiler-for-mynewt">1 Fix GCC Compiler for Mynewt</a><ul></ul></li>
-<li><a href="#stub-mynewt-hal-for-bl602">2 Stub Mynewt HAL for BL602</a><ul></ul></li>
-<li><a href="#check-firmware-disassembly">3 Check Firmware Disassembly</a><ul></ul></li>
-<li><a href="#load-mynewt-firmware-to-pinecone">4 Load Mynewt Firmware to PineCone</a><ul></ul></li>
-<li><a href="#debug-mynewt-firmware-with-vscode">5 Debug Mynewt Firmware with VSCode</a><ul></ul></li>
-<li><a href="#whats-next">6 What's Next</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/mynewt-title.jpg" alt="Debugging PineCone BL602 RISC-V Evaluation Board with Sipeed JTAG Debugger" /></p>
+<li><a href="#building-the-firmware">1 Building the Firmware</a><ul></ul></li>
+<li><a href="#todo">2 TODO</a><ul></ul></li>
+<li><a href="#fix-gcc-compiler-for-mynewt">3 Fix GCC Compiler for Mynewt</a><ul></ul></li>
+<li><a href="#stub-mynewt-hal-for-bl602">4 Stub Mynewt HAL for BL602</a><ul></ul></li>
+<li><a href="#check-firmware-disassembly">5 Check Firmware Disassembly</a><ul></ul></li>
+<li><a href="#load-mynewt-firmware-to-pinecone">6 Load Mynewt Firmware to PineCone</a><ul></ul></li>
+<li><a href="#debug-mynewt-firmware-with-vscode">7 Debug Mynewt Firmware with VSCode</a><ul></ul></li>
+<li><a href="#whats-next">8 What's Next</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/mynewt-title.jpg" alt="Debugging PineCone BL602 RISC-V Evaluation Board with Sipeed JTAG Debugger" /></p>
 <p><em>Debugging PineCone BL602 RISC-V Evaluation Board with Sipeed JTAG Debugger</em></p>
 <p>Earlier we took a quick peek at <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602 RISC-V Evaluation Board</strong></a>...</p>
 <p>Then we <a href="https://lupyuen.github.io/articles/openocd"><strong>connected PineCone to OpenOCD</strong></a> with a JTAG Debugger...</p>
 <p>Today we'll learn to ???</p>
-<h1 id="fix-gcc-compiler-for-mynewt" class="section-header"><a href="#fix-gcc-compiler-for-mynewt">1 Fix GCC Compiler for Mynewt</a></h1>
+<h1 id="building-the-firmware" class="section-header"><a href="#building-the-firmware">1 Building the Firmware</a></h1>
+<p>TODO</p>
+<pre><code class="language-bash">#  Download the source files
+git clone --recursive https://github.com/lupyuen/pinecone-rust-mynewt
+cd pinecone-rust-mynewt
+newt install
+#  TODO: Download xpack-riscv-none-embed-gcc here
+
+#  Build the firmware
+export PATH=&quot;$PWD/xpack-riscv-none-embed-gcc/bin:$PATH&quot;
+newt build pinecone_app
+</code></pre>
+<h1 id="todo" class="section-header"><a href="#todo">2 TODO</a></h1>
+<p>TODO</p>
+<ol>
+<li>
+<p>BL602 MCU Definition: <a href="hw/mcu/bl/bl602/pkg.yml"><code>hw/mcu/bl/bl602/pkg.yml</code></a></p>
+</li>
+<li>
+<p>PineCone Board Support Package: <a href="hw/bsp/pinecone/bsp.yml"><code>hw/bsp/pinecone/bsp.yml</code></a></p>
+</li>
+<li>
+<p>Compile with <code>riscv-none-embed-gcc</code> instead of <code>riscv64-unknown-elf-gcc</code></p>
+<p>See <a href="compiler/riscv-none-embed/compiler.yml"><code>compiler/riscv-none-embed/compiler.yml</code></a></p>
+</li>
+<li>
+<p>Mynewt Firmware should look similar to this disassembled Hello World firmware...</p>
+<p>https://github.com/lupyuen/bl_iot_sdk/releases/download/v0.0.4/sdk_app_helloworld.S</p>
+</li>
+<li>
+<p>Mynewt Firmware should use this Start Code...</p>
+<p>https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602/evb/src/boot/gcc/start.S</p>
+</li>
+<li>
+<p>Memory map should be...</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="ident">Name</span>             <span class="ident">Origin</span>             <span class="ident">Length</span>             <span class="ident">Attributes</span>
+<span class="ident">rom</span>              <span class="number">0x0000000021015000</span> <span class="number">0x000000000000b000</span> <span class="ident">axrl</span> <span class="op">!</span><span class="ident">w</span>
+<span class="ident">flash</span>            <span class="number">0x0000000023000000</span> <span class="number">0x0000000000400000</span> <span class="ident">axrl</span> <span class="op">!</span><span class="ident">w</span>
+<span class="ident">ram_tcm</span>          <span class="number">0x000000004200c000</span> <span class="number">0x0000000000036000</span> <span class="ident">axw</span>
+<span class="ident">ram_wifi</span>         <span class="number">0x0000000042042000</span> <span class="number">0x000000000000a000</span> <span class="ident">axw</span>
+<span class="kw-2">*</span><span class="ident">default</span><span class="op">*</span>        <span class="number">0x0000000000000000</span> <span class="number">0xffffffffffffffff</span></pre></div>
+<p>Based on...</p>
+<p>https://github.com/lupyuen/bl_iot_sdk/releases/download/v0.0.4/sdk_app_helloworld.map</p>
+<p>https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602/evb/ld/flash_rom.ld#L7-L13</p>
+</li>
+<li>
+<p>Fix dependency of rv32imac on fe310...</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="ident">Error</span>: <span class="ident">In</span> <span class="ident">file</span> <span class="ident">included</span> <span class="ident">from</span> <span class="ident">repos</span><span class="op">/</span><span class="ident">apache</span><span class="op">-</span><span class="ident">mynewt</span><span class="op">-</span><span class="ident">core</span><span class="op">/</span><span class="ident">kernel</span><span class="op">/</span><span class="ident">os</span><span class="op">/</span><span class="ident">include</span><span class="op">/</span><span class="ident">os</span><span class="op">/</span><span class="ident">os_fault</span>.<span class="ident">h</span>:<span class="number">24</span>,
+             <span class="ident">from</span> <span class="ident">repos</span><span class="op">/</span><span class="ident">apache</span><span class="op">-</span><span class="ident">mynewt</span><span class="op">-</span><span class="ident">core</span><span class="op">/</span><span class="ident">libc</span><span class="op">/</span><span class="ident">baselibc</span><span class="op">/</span><span class="ident">include</span><span class="op">/</span><span class="ident">assert</span>.<span class="ident">h</span>:<span class="number">24</span>,
+             <span class="ident">from</span> <span class="ident">repos</span><span class="op">/</span><span class="ident">apache</span><span class="op">-</span><span class="ident">mynewt</span><span class="op">-</span><span class="ident">core</span><span class="op">/</span><span class="ident">hw</span><span class="op">/</span><span class="ident">hal</span><span class="op">/</span><span class="ident">src</span><span class="op">/</span><span class="ident">hal_flash</span>.<span class="ident">c</span>:<span class="number">21</span>:
+<span class="ident">repos</span><span class="op">/</span><span class="ident">apache</span><span class="op">-</span><span class="ident">mynewt</span><span class="op">-</span><span class="ident">core</span><span class="op">/</span><span class="ident">kernel</span><span class="op">/</span><span class="ident">os</span><span class="op">/</span><span class="ident">include</span><span class="op">/</span><span class="ident">os</span><span class="op">/</span><span class="ident">arch</span><span class="op">/</span><span class="ident">rv32imac</span><span class="op">/</span><span class="ident">os</span><span class="op">/</span><span class="ident">os_arch</span>.<span class="ident">h</span>:<span class="number">24</span>:<span class="number">10</span>: <span class="ident">fatal</span> <span class="ident">error</span>: <span class="ident">mcu</span><span class="op">/</span><span class="ident">fe310</span>.<span class="ident">h</span>: <span class="ident">No</span> <span class="ident">such</span> <span class="ident">file</span> <span class="ident">or</span> <span class="ident">directory</span>
+#<span class="ident">include</span> <span class="string">&quot;mcu/fe310.h&quot;</span></pre></div>
+</li>
+</ol>
+<h1 id="fix-gcc-compiler-for-mynewt" class="section-header"><a href="#fix-gcc-compiler-for-mynewt">3 Fix GCC Compiler for Mynewt</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/mynewt-gcc.png" alt="Mynewt GCC" /></p>
 <p><img src="https://lupyuen.github.io/images/mynewt-gcc2.png" alt="Mynewt GCC" /></p>
-<h1 id="stub-mynewt-hal-for-bl602" class="section-header"><a href="#stub-mynewt-hal-for-bl602">2 Stub Mynewt HAL for BL602</a></h1>
+<h1 id="stub-mynewt-hal-for-bl602" class="section-header"><a href="#stub-mynewt-hal-for-bl602">4 Stub Mynewt HAL for BL602</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/mynewt-hal.png" alt="Mynewt HAL" /></p>
-<h1 id="check-firmware-disassembly" class="section-header"><a href="#check-firmware-disassembly">3 Check Firmware Disassembly</a></h1>
+<h1 id="check-firmware-disassembly" class="section-header"><a href="#check-firmware-disassembly">5 Check Firmware Disassembly</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/mynewt-disassembly.png" alt="Mynewt Disassembly" /></p>
-<h1 id="load-mynewt-firmware-to-pinecone" class="section-header"><a href="#load-mynewt-firmware-to-pinecone">4 Load Mynewt Firmware to PineCone</a></h1>
+<h1 id="load-mynewt-firmware-to-pinecone" class="section-header"><a href="#load-mynewt-firmware-to-pinecone">6 Load Mynewt Firmware to PineCone</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/mynewt-flash.png" alt="Loading Mynewt Firmware to Flash Memory" /></p>
 <p><img src="https://lupyuen.github.io/images/mynewt-ram.png" alt="Loading Mynewt Firmware to RAM" /></p>
-<h1 id="debug-mynewt-firmware-with-vscode" class="section-header"><a href="#debug-mynewt-firmware-with-vscode">5 Debug Mynewt Firmware with VSCode</a></h1>
+<h1 id="debug-mynewt-firmware-with-vscode" class="section-header"><a href="#debug-mynewt-firmware-with-vscode">7 Debug Mynewt Firmware with VSCode</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/mynewt-debug.png" alt="Mynewt Debugging" /></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">6 What's Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">8 What's Next</a></h1>
 <p>TODO</p>
 <ul>
 <li>
