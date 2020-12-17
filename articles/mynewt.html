@@ -79,8 +79,10 @@
 <li><a href="#inspect-the-firmware">12 Inspect the Firmware</a><ul></ul></li>
 <li><a href="#debug-firmware-with-vscode">13 Debug Firmware with VSCode</a><ul></ul></li>
 <li><a href="#load-firmware-to-ram-not-flash-memory">14 Load Firmware to RAM, not Flash Memory</a><ul></ul></li>
-<li><a href="#todo">15 TODO</a><ul></ul></li>
-<li><a href="#whats-next">16 What's Next</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/mynewt-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board with Sipeed JTAG Debugger" /></p>
+<li><a href="#how-to-test">15 How To Test</a><ul></ul></li>
+<li><a href="#todo">16 TODO</a><ul></ul></li>
+<li><a href="#whats-next">17 What's Next</a><ul></ul></li>
+<li><a href="#appendix-create-the-mynewt-firmware">18 Appendix: Create the Mynewt Firmware</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/mynewt-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board with Sipeed JTAG Debugger" /></p>
 <p>Our journey so far... </p>
 <ol>
 <li>
@@ -94,6 +96,9 @@
 </li>
 </ol>
 <p>Today we'll learn about our ongoing port of Apache Mynewt embedded operating system to PineCone.</p>
+<p><em>Why port Mynewt to BL602?</em></p>
+<p>Since FreeRTOS is already supported on BL602 (for multitasking Bluetooth LE and WiFi in the background), let's port a modern embedded operating system like Mynewt.</p>
+<p>It's a great way to learn the internals of BL602.  And this article will be a valuable resource for porting to BL602 other embedded operating systems, like Zephyr and RIOT.</p>
 <h1 id="adapt-from-existing-risc-v-port" class="section-header"><a href="#adapt-from-existing-risc-v-port">1 Adapt from Existing RISC-V Port</a></h1>
 <p>The Memory Maps for BL602 and SiFive FE310 look totally different...</p>
 <p><img src="https://lupyuen.github.io/images/pinecone-compare.jpg" alt="BL602 Memory Map vs SiFive FE310: Totally different" /></p>
@@ -114,7 +119,6 @@
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/mynewt-e21.png" alt="BL602 is based on SiFive E21 RISC-V Core" /></p>
 <p><em>BL602 is based on SiFive E21 RISC-V Core</em></p>
-<p>FreeRTOS</p>
 <h1 id="set-gcc-compiler-for-risc-v" class="section-header"><a href="#set-gcc-compiler-for-risc-v">2 Set GCC Compiler for RISC-V</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/mynewt-gcc.png" alt="Default Mynewt GCC" /></p>
@@ -149,7 +153,19 @@
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/mynewt-flash.png" alt="Loading Mynewt Firmware to Flash Memory" /></p>
 <p><img src="https://lupyuen.github.io/images/mynewt-ram.png" alt="Loading Mynewt Firmware to RAM" /></p>
-<h1 id="todo" class="section-header"><a href="#todo">15 TODO</a></h1>
+<h1 id="how-to-test" class="section-header"><a href="#how-to-test">15 How To Test</a></h1>
+<p>TODO</p>
+<p>Opportunistic porting
+Led
+Remap
+We could test the onboard jumper</p>
+<p>Do you have ideas for testing an RTOS on PineCone? Let us know!</p>
+<p>Will have Rust</p>
+<p>Hope to have NimBLE</p>
+<p>WiFi stack
+https://github.com/runtimeco/mynewt_arduino_zero/tree/master/apps/winc1500_wifi</p>
+<p>https://github.com/runtimeco/mynewt_arduino_zero/tree/master/libs/winc1500</p>
+<h1 id="todo" class="section-header"><a href="#todo">16 TODO</a></h1>
 <pre><code class="language-bash">#  Download the source files
 git clone --recursive https://github.com/lupyuen/pinecone-rust-mynewt
 cd pinecone-rust-mynewt
@@ -204,8 +220,10 @@ newt build pinecone_app
 #<span class="ident">include</span> <span class="string">&quot;mcu/fe310.h&quot;</span></pre></div>
 </li>
 </ol>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">16 What's Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">17 What's Next</a></h1>
 <p>TODO</p>
+<p>Failed port to gd32
+Now easier to port</p>
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io">Check out my articles</a></p>
@@ -219,6 +237,18 @@ newt build pinecone_app
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/mynewt.md"><code>github.com/lupyuen/lupyuen.github.io/src/mynewt.md</code></a></p>
+<h1 id="appendix-create-the-mynewt-firmware" class="section-header"><a href="#appendix-create-the-mynewt-firmware">18 Appendix: Create the Mynewt Firmware</a></h1>
+<p>TODO</p>
+<p>https://mynewt.apache.org/latest/tutorials/blinky/blinky_stm32f4disc.html</p>
+<pre><code class="language-bash">newt new pinecone-rust-mynewt
+cd pinecone-rust-mynewt
+newt upgrade
+newt target create pinecone_app
+newt target set pinecone_app app=apps/blinky
+# This will be changed to pinecone later
+newt target set pinecone_app bsp=@apache-mynewt-core/hw/bsp/hifive1
+newt target set pinecone_app build_profile=debug
+</code></pre>
 
     
 </body>

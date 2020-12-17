@@ -12,6 +12,12 @@ Our journey so far...
 
 Today we'll learn about our ongoing port of Apache Mynewt embedded operating system to PineCone.
 
+_Why port Mynewt to BL602?_
+
+Since FreeRTOS is already supported on BL602 (for multitasking Bluetooth LE and WiFi in the background), let's port a modern embedded operating system like Mynewt.
+
+It's a great way to learn the internals of BL602.  And this article will be a valuable resource for porting to BL602 other embedded operating systems, like Zephyr and RIOT.
+
 # Adapt from Existing RISC-V Port
 
 The Memory Maps for BL602 and SiFive FE310 look totally different...
@@ -39,8 +45,6 @@ TODO
 ![BL602 is based on SiFive E21 RISC-V Core](https://lupyuen.github.io/images/mynewt-e21.png)
 
 _BL602 is based on SiFive E21 RISC-V Core_
-
-FreeRTOS
 
 # Set GCC Compiler for RISC-V
 
@@ -110,6 +114,27 @@ TODO
 
 ![Loading Mynewt Firmware to RAM](https://lupyuen.github.io/images/mynewt-ram.png)
 
+# How To Test
+
+TODO
+
+Opportunistic porting
+Led
+Remap
+We could test the onboard jumper
+
+Do you have ideas for testing an RTOS on PineCone? Let us know!
+
+Will have Rust
+
+Hope to have NimBLE
+
+WiFi stack
+https://github.com/runtimeco/mynewt_arduino_zero/tree/master/apps/winc1500_wifi
+
+https://github.com/runtimeco/mynewt_arduino_zero/tree/master/libs/winc1500
+
+
 # TODO
 
 ```bash
@@ -171,6 +196,9 @@ newt build pinecone_app
 
 TODO
 
+Failed port to gd32
+Now easier to port
+
 -   [Check out my articles](https://lupyuen.github.io)
 
 -   [RSS Feed](https://lupyuen.github.io/rss.xml)
@@ -180,3 +208,20 @@ TODO
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [`github.com/lupyuen/lupyuen.github.io/src/mynewt.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/mynewt.md)
+
+# Appendix: Create the Mynewt Firmware
+
+TODO
+
+https://mynewt.apache.org/latest/tutorials/blinky/blinky_stm32f4disc.html
+
+```bash
+newt new pinecone-rust-mynewt
+cd pinecone-rust-mynewt
+newt upgrade
+newt target create pinecone_app
+newt target set pinecone_app app=apps/blinky
+# This will be changed to pinecone later
+newt target set pinecone_app bsp=@apache-mynewt-core/hw/bsp/hifive1
+newt target set pinecone_app build_profile=debug
+```
