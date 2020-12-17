@@ -28,15 +28,11 @@ _BL602 Memory Map (left) vs SiFive FE310 (right): Totally different_
 
 But __BL602's RISC-V Core is highly similar to SiFive FE310__. Compare these two files...
 
-1. `platform.h` from __BL602 IoT SDK__: 
+1. [`platform.h` from __BL602 IoT SDK__](https://github.com/pine64/bl_iot_sdk/blob/master/components/bl602/freertos_riscv/config/platform.h)
 
-    [`github.com/pine64/bl_iot_sdk/components/bl602/freertos_riscv/config/platform.h`](https://github.com/pine64/bl_iot_sdk/blob/master/components/bl602/freertos_riscv/config/platform.h)
+1. [`platform.h` from __Mynewt's FE310 Port__](https://github.com/apache/mynewt-core/blob/master/hw/mcu/sifive/src/ext/freedom-e-sdk_3235929/bsp/env/freedom-e300-hifive1/platform.h)
 
-1. `platform.h` from __Mynewt's FE310 Port__: 
-
-    [`github.com/apache/mynewt-core/hw/mcu/sifive/src/ext/freedom-e-sdk_3235929/bsp/env/freedom-e300-hifive1/platform.h`](https://github.com/apache/mynewt-core/blob/master/hw/mcu/sifive/src/ext/freedom-e-sdk_3235929/bsp/env/freedom-e300-hifive1/platform.h)
-
-![platform.h: BL602 vs SiFive FE310](https://lupyuen.github.io/images/mynewt-platform.png)
+![platform.h: BL602 (left) vs SiFive FE310 (right)](https://lupyuen.github.io/images/mynewt-platform.png)
 
 _platform.h: BL602 (left) vs SiFive FE310 (right)_
 
@@ -46,6 +42,10 @@ TODO
 
 _BL602 is based on SiFive E21 RISC-V Core_
 
+[SiFive E21 Manual](https://sifive.cdn.prismic.io/sifive/39d336f7-7dba-43f2-a453-8d55227976cc_sifive_E21_rtl_full_20G1.03.00_manual.pdf)
+
+[SiFive FE310 Manual](https://sifive.cdn.prismic.io/sifive/4d063bf8-3ae6-4db6-9843-ee9076ebadf7_fe310-g000.pdf)
+
 # Set GCC Compiler for RISC-V
 
 TODO
@@ -54,29 +54,223 @@ TODO
 
 ![Fixed Mynewt GCC](https://lupyuen.github.io/images/mynewt-gcc2.png)
 
+Compile with `riscv-none-embed-gcc` instead of `riscv64-unknown-elf-gcc`
+
+[`compiler/riscv-none-embed/compiler.yml`](https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/compiler/riscv-none-embed/compiler.yml)
+
+```yaml
+compiler.path.cc:      "riscv-none-embed-gcc"
+compiler.path.as:      "riscv-none-embed-gcc"
+compiler.path.archive: "riscv-none-embed-ar"
+compiler.path.objdump: "riscv-none-embed-objdump"
+compiler.path.objsize: "riscv-none-embed-size"
+compiler.path.objcopy: "riscv-none-embed-objcopy"
+```
+
 # Add Microcontroller Definition
 
 TODO
+
+[`hw/mcu/bl/bl602`](https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/hw/mcu/bl/bl602)
+
+Based on...
+
+[`hw/mcu/sifive/fe310`](https://github.com/apache/mynewt-core/tree/master/hw/mcu/sifive/fe310)
 
 # Add Board Support Package
 
 TODO
 
+[`hw/bsp/pinecone`](https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/hw/bsp/pinecone)
+
+Based on...
+
+[`hw/bsp/hifive1`](https://github.com/apache/mynewt-core/tree/master/hw/bsp/hifive1)
+
 # Define Firmware Memory Map
 
 TODO
+
+[`hw/bsp/pinecone/bsp.yml`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/bsp/pinecone/bsp.yml)
+
+```yaml
+# BL602 Flash Memory Map
+# TODO: Sync with bsp_app.ld
+
+# Use this memory layout when firmware is loaded into RAM
+# BL602 RAM starts at 0x2200 8000, size 48 KB
+# Based on ttps://github.com/lupyuen/pinecone-rust/blob/main/memory.x
+bsp.flash_map:
+    areas:
+        # System areas.
+        # TODO: Bootloader not in use
+        FLASH_AREA_BOOTLOADER:
+            device:  0
+            offset:  0x22013c00
+            size:    1kB    # 0x400
+        # Active Firmware Image
+        FLASH_AREA_IMAGE_0:
+            device:  0 
+            offset:  0x22008000
+            size:    43kB   # 0xac00
+        # Standby Firmware Image, in case Active Firmware can't start
+        # TODO: Standby Firmware Image not in use
+        FLASH_AREA_IMAGE_1:
+            device:  0
+            offset:  0x22012c00
+            size:    1kB    # 0x400
+        # Scratch Area for swapping Active Firmware and Standby Firmware
+        # TODO: Scratch Area not in use
+        FLASH_AREA_IMAGE_SCRATCH:
+            device:  0
+            offset:  0x22013000
+            size:    1kB    # 0x400
+
+        # User areas.
+        # Reboot Log
+        # TODO: Reboot Log not in use
+        FLASH_AREA_REBOOT_LOG:
+            user_id: 0
+            device:  0
+            offset:  0x22013400
+            size:    1kB    # 0x400
+        # User File System, like LittleFS
+        # TODO: User File System not in use
+        FLASH_AREA_NFFS:
+            user_id: 1
+            device:  0
+            offset:  0x22013800
+            size:    1kB    # 0x400
+```
+
+Use this memory layout when firmware is loaded into Flash Memory
+
+```yaml
+# TODO: Use this memory layout when firmware is loaded into Flash Memory
+# BL602 Flash starts at 0x2300 0000, size 4 MB
+# Based on https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602/evb/ld/flash_rom.ld#L7-L13
+bsp.flash_map:
+    areas:
+        # System areas.
+        # TODO: Bootloader not in use. When used, move Bootloader to 0x2300 0000 and move other areas accordingly
+        FLASH_AREA_BOOTLOADER:
+            device:  0
+            offset:  0x2330d000
+            size:    32kB      # 0x8000
+        # Active Firmware Image
+        FLASH_AREA_IMAGE_0:
+            device:  0 
+            offset:  0x23000000
+            size:    1024kB    # 0x100 000
+        # Standby Firmware Image, in case Active Firmware can't start
+        FLASH_AREA_IMAGE_1:
+            device:  0
+            offset:  0x23100000
+            size:    1024kB    # 0x100 000
+        # Scratch Area for swapping Active Firmware and Standby Firmware
+        FLASH_AREA_IMAGE_SCRATCH:
+            device:  0
+            offset:  0x23300000
+            size:    4kB       # 0x1000
+
+        # User areas.
+        # Reboot Log
+        FLASH_AREA_REBOOT_LOG:
+            user_id: 0
+            device:  0
+            offset:  0x23301000
+            size:    48kB      #  0xc000
+        # User File System, like LittleFS
+        FLASH_AREA_NFFS:
+            user_id: 1
+            device:  0
+            offset:  0x23200000
+            size:    1024kB    # 0x100 000
+```
+
+Memory map should be...
+
+```text
+Name             Origin             Length             Attributes
+rom              0x0000000021015000 0x000000000000b000 axrl !w
+flash            0x0000000023000000 0x0000000000400000 axrl !w
+ram_tcm          0x000000004200c000 0x0000000000036000 axw
+ram_wifi         0x0000000042042000 0x000000000000a000 axw
+*default*        0x0000000000000000 0xffffffffffffffff
+```
+
+Based on...
+
+[`sdk_app_helloworld.map`](https://github.com/lupyuen/bl_iot_sdk/releases/download/v0.0.4/sdk_app_helloworld.map)
+
+[`flash_rom.ld`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602/evb/ld/flash_rom.ld#L7-L13)
 
 # Define Linker Script
 
 TODO
 
+[`hw/bsp/pinecone/bsp_app.ld`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/bsp/pinecone/bsp_app.ld)
+
+```text
+MEMORY
+{
+  /* Use this memory layout when firmware is loaded into RAM. Based on https://github.com/lupyuen/pinecone-rust/blob/main/memory.x */
+  flash (rxai!w) : ORIGIN = 0x22008000, LENGTH = 48K
+  ram   (wxa!ri) : ORIGIN = 0x22014000, LENGTH = 48K
+}
+```
+
+Use this memory layout when firmware is loaded into Flash Memory
+
+```text
+  /* TODO: Use this memory layout when firmware is loaded into Flash Memory */
+  flash (rxai!w) : ORIGIN = 0x23000000, LENGTH = 4M
+  ram   (wxa!ri) : ORIGIN = 0x4200c000, LENGTH = 216K
+  /* TODO: Add WiFi RAM at 0x4204 2000, length 0xa000 */
+```
+
+Bootloader not in use
+
+```text
+/* TODO: Bootloader not in use. Set Image Header Size to 0x20 when Bootloader is in use */
+_imghdr_size = 0x0;
+```
+
+When Bootloader is in use
+
+```text
+/* This linker script is used for images and thus contains an image header */
+/* TODO: Uncomment the next line when Bootloader is in use */
+_imghdr_size = 0x20;
+```
+
 # Set Firmware Target
 
 TODO
 
+[`targets/pinecone_app/target.yml`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/targets/pinecone_app/target.yml)
+
+```yaml
+target.app: apps/blinky
+target.bsp: "hw/bsp/pinecone"
+target.build_profile: debug
+```
+
 # Build the Firmware
 
 TODO
+
+```bash
+#  Download the source files
+git clone --recursive https://github.com/lupyuen/pinecone-rust-mynewt
+cd pinecone-rust-mynewt
+newt install
+#  TODO: Download xpack-riscv-none-embed-gcc here
+
+#  Build the firmware
+export PATH="$PWD/xpack-riscv-none-embed-gcc/bin:$PATH"
+newt build pinecone_app
+```
 
 # Replace HAL Functions by Stubs
 
@@ -88,9 +282,31 @@ TODO
 
 TODO
 
+We are using...
+
+[`hw/mcu/bl/bl602/src/arch/rv32imac/start.s`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/mcu/bl/bl602/src/arch/rv32imac/start.s)
+
+Based on...
+
+[`hw/mcu/sifive/fe310/src/arch/rv32imac/start.s`](https://github.com/apache/mynewt-core/blob/master/hw/mcu/sifive/fe310/src/arch/rv32imac/start.s)
+
+Though it should look like this...
+
+[`start.S`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602/evb/src/boot/gcc/start.S)
+
 # Decouple SiFive FE310 from RV32IMAC
 
 TODO
+
+Fix dependency of rv32imac on fe310...
+
+```text
+Error: In file included from repos/apache-mynewt-core/kernel/os/include/os/os_fault.h:24,
+                from repos/apache-mynewt-core/libc/baselibc/include/assert.h:24,
+                from repos/apache-mynewt-core/hw/hal/src/hal_flash.c:21:
+repos/apache-mynewt-core/kernel/os/include/os/arch/rv32imac/os/os_arch.h:24:10: fatal error: mcu/fe310.h: No such file or directory
+#include "mcu/fe310.h"
+```
 
 ![SiFive FE310 Reference in RV32IMAC](https://lupyuen.github.io/images/mynewt-fe310.png)
 
@@ -99,6 +315,39 @@ TODO
 TODO
 
 ![Mynewt Disassembly](https://lupyuen.github.io/images/mynewt-disassembly.png)
+
+```text
+Linking /Users/Luppy/pinecone/pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky/blinky.elf
+Target successfully built: targets/pinecone_app
++ newt size -v pinecone_app
+Size of Application Image: app
+Mem flash: 0x22008000-0x22014000
+Mem ram: 0x22014000-0x22020000
+  flash     ram 
+      6     525 *fill*
+    172       0 @apache-mynewt-core_hw_hal.a
+   4494    8213 @apache-mynewt-core_kernel_os.a
+     80       0 @apache-mynewt-core_libc_baselibc.a
+    702     128 @apache-mynewt-core_sys_flash_map.a
+      2       0 @apache-mynewt-core_sys_log_modlog.a
+    782      29 @apache-mynewt-core_sys_mfg.a
+     30       5 @apache-mynewt-core_sys_sysinit.a
+     72       0 @apache-mynewt-core_util_mem.a
+     60       8 apps_blinky.a
+     44      12 hw_bsp_pinecone.a
+    580     228 hw_mcu_bl_bl602.a
+     92       0 pinecone_app-sysinit-app.a
+    292    1064 libg.a
+Loading compiler /Users/Luppy/pinecone/pinecone-rust-mynewt/compiler/riscv-none-embed, buildProfile debug
+
+objsize
+   text    data     bss     dec     hex filename
+   8488      28    9104   17620    44d4 /Users/Luppy/pinecone/pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky/blinky.elf
+```
+
+Mynewt Firmware should look similar to this disassembled Hello World firmware...
+
+[`sdk_app_helloworld.S`](https://github.com/lupyuen/bl_iot_sdk/releases/download/v0.0.4/sdk_app_helloworld.S)
 
 # Debug Firmware with VSCode
 
@@ -134,64 +383,6 @@ https://github.com/runtimeco/mynewt_arduino_zero/tree/master/apps/winc1500_wifi
 
 https://github.com/runtimeco/mynewt_arduino_zero/tree/master/libs/winc1500
 
-
-# TODO
-
-```bash
-#  Download the source files
-git clone --recursive https://github.com/lupyuen/pinecone-rust-mynewt
-cd pinecone-rust-mynewt
-newt install
-#  TODO: Download xpack-riscv-none-embed-gcc here
-
-#  Build the firmware
-export PATH="$PWD/xpack-riscv-none-embed-gcc/bin:$PATH"
-newt build pinecone_app
-```
-
-1.  BL602 MCU Definition: [`hw/mcu/bl/bl602/pkg.yml`](hw/mcu/bl/bl602/pkg.yml)
-
-1.  PineCone Board Support Package: [`hw/bsp/pinecone/bsp.yml`](hw/bsp/pinecone/bsp.yml)
-
-1.  Compile with `riscv-none-embed-gcc` instead of `riscv64-unknown-elf-gcc`
-
-    See [`compiler/riscv-none-embed/compiler.yml`](compiler/riscv-none-embed/compiler.yml)
-
-1.  Mynewt Firmware should look similar to this disassembled Hello World firmware...
-
-    https://github.com/lupyuen/bl_iot_sdk/releases/download/v0.0.4/sdk_app_helloworld.S
-
-1.  Mynewt Firmware should use this Start Code...
-
-    https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602/evb/src/boot/gcc/start.S
-
-1.  Memory map should be...
-
-    ```
-    Name             Origin             Length             Attributes
-    rom              0x0000000021015000 0x000000000000b000 axrl !w
-    flash            0x0000000023000000 0x0000000000400000 axrl !w
-    ram_tcm          0x000000004200c000 0x0000000000036000 axw
-    ram_wifi         0x0000000042042000 0x000000000000a000 axw
-    *default*        0x0000000000000000 0xffffffffffffffff
-    ```
-
-    Based on...
-    
-    https://github.com/lupyuen/bl_iot_sdk/releases/download/v0.0.4/sdk_app_helloworld.map
-
-    https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602/evb/ld/flash_rom.ld#L7-L13
-
-1.  Fix dependency of rv32imac on fe310...
-
-    ```
-    Error: In file included from repos/apache-mynewt-core/kernel/os/include/os/os_fault.h:24,
-                 from repos/apache-mynewt-core/libc/baselibc/include/assert.h:24,
-                 from repos/apache-mynewt-core/hw/hal/src/hal_flash.c:21:
-    repos/apache-mynewt-core/kernel/os/include/os/arch/rv32imac/os/os_arch.h:24:10: fatal error: mcu/fe310.h: No such file or directory
-    #include "mcu/fe310.h"
-    ```
-
 # What's Next
 
 TODO
@@ -209,11 +400,33 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [`github.com/lupyuen/lupyuen.github.io/src/mynewt.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/mynewt.md)
 
+# Appendix: Install newt
+
+TODO
+
+Install the latest version of Go
+
+```bash
+cd /tmp
+export mynewt_version=mynewt_1_8_0_tag
+git clone --branch $mynewt_version https://github.com/apache/mynewt-newt/
+cd mynewt-newt
+./build.sh
+sudo mv newt/newt /usr/local/bin
+newt version
+```
+
+Should show...
+
+```
+Apache Newt 1.8.0
+```
+
 # Appendix: Create the Mynewt Firmware
 
 TODO
 
-https://mynewt.apache.org/latest/tutorials/blinky/blinky_stm32f4disc.html
+Install newt
 
 ```bash
 newt new pinecone-rust-mynewt
@@ -225,3 +438,5 @@ newt target set pinecone_app app=apps/blinky
 newt target set pinecone_app bsp=@apache-mynewt-core/hw/bsp/hifive1
 newt target set pinecone_app build_profile=debug
 ```
+
+https://mynewt.apache.org/latest/tutorials/blinky/blinky_stm32f4disc.html
