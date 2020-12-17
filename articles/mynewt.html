@@ -65,20 +65,71 @@
 
     <h1 class="title">Porting Mynewt to PineCone BL602</h1>
     <nav id="TOC"><ul>
-<li><a href="#building-the-firmware">1 Building the Firmware</a><ul></ul></li>
-<li><a href="#todo">2 TODO</a><ul></ul></li>
-<li><a href="#fix-gcc-compiler-for-mynewt">3 Fix GCC Compiler for Mynewt</a><ul></ul></li>
-<li><a href="#stub-mynewt-hal-for-bl602">4 Stub Mynewt HAL for BL602</a><ul></ul></li>
-<li><a href="#check-firmware-disassembly">5 Check Firmware Disassembly</a><ul></ul></li>
-<li><a href="#load-mynewt-firmware-to-pinecone">6 Load Mynewt Firmware to PineCone</a><ul></ul></li>
-<li><a href="#debug-mynewt-firmware-with-vscode">7 Debug Mynewt Firmware with VSCode</a><ul></ul></li>
-<li><a href="#whats-next">8 What's Next</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/mynewt-title.jpg" alt="Debugging PineCone BL602 RISC-V Evaluation Board with Sipeed JTAG Debugger" /></p>
-<p><em>Debugging PineCone BL602 RISC-V Evaluation Board with Sipeed JTAG Debugger</em></p>
-<p>Earlier we took a quick peek at <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602 RISC-V Evaluation Board</strong></a>...</p>
+<li><a href="#adapt-from-existing-risc-v-port">1 Adapt from Existing RISC-V Port</a><ul></ul></li>
+<li><a href="#set-gcc-compiler-for-risc-v">2 Set GCC Compiler for RISC-V</a><ul></ul></li>
+<li><a href="#add-microcontroller-definition">3 Add Microcontroller Definition</a><ul></ul></li>
+<li><a href="#add-board-support-package">4 Add Board Support Package</a><ul></ul></li>
+<li><a href="#define-firmware-memory-map">5 Define Firmware Memory Map</a><ul></ul></li>
+<li><a href="#define-linker-script">6 Define Linker Script</a><ul></ul></li>
+<li><a href="#set-firmware-target">7 Set Firmware Target</a><ul></ul></li>
+<li><a href="#build-the-firmware">8 Build the Firmware</a><ul></ul></li>
+<li><a href="#replace-hal-functions-by-stubs">9 Replace HAL Functions by Stubs</a><ul></ul></li>
+<li><a href="#fill-in-start-code">10 Fill in Start Code</a><ul></ul></li>
+<li><a href="#decouple-sifive-fe310-from-rv32imac">11 Decouple SiFive FE310 from RV32IMAC</a><ul></ul></li>
+<li><a href="#inspect-the-firmware">12 Inspect the Firmware</a><ul></ul></li>
+<li><a href="#debug-firmware-with-vscode">13 Debug Firmware with VSCode</a><ul></ul></li>
+<li><a href="#load-firmware-to-ram-not-flash-memory">14 Load Firmware to RAM, not Flash Memory</a><ul></ul></li>
+<li><a href="#todo">15 TODO</a><ul></ul></li>
+<li><a href="#whats-next">16 What's Next</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/mynewt-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board with Sipeed JTAG Debugger" /></p>
+<p>Our story so far... </p>
+<ol>
+<li>
+<p>We took a quick peek at <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602 RISC-V Evaluation Board</strong></a>...</p>
+</li>
+<li>
 <p>Then we <a href="https://lupyuen.github.io/articles/openocd"><strong>connected PineCone to OpenOCD</strong></a> with a JTAG Debugger...</p>
-<p>Today we'll learn to ???</p>
-<h1 id="building-the-firmware" class="section-header"><a href="#building-the-firmware">1 Building the Firmware</a></h1>
+</li>
+<li>
+<p>And we <a href="https://lupyuen.github.io/articles/debug"><strong>debugged Rust on PineCone with VSCode and GDB</strong></a></p>
+</li>
+</ol>
+<p>Today we'll learn about our ongoing port of Apache Mynewt embedded operating system to PineCone.</p>
+<h1 id="adapt-from-existing-risc-v-port" class="section-header"><a href="#adapt-from-existing-risc-v-port">1 Adapt from Existing RISC-V Port</a></h1>
 <p>TODO</p>
+<h1 id="set-gcc-compiler-for-risc-v" class="section-header"><a href="#set-gcc-compiler-for-risc-v">2 Set GCC Compiler for RISC-V</a></h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/mynewt-gcc.png" alt="Mynewt GCC" /></p>
+<p><img src="https://lupyuen.github.io/images/mynewt-gcc2.png" alt="Mynewt GCC" /></p>
+<h1 id="add-microcontroller-definition" class="section-header"><a href="#add-microcontroller-definition">3 Add Microcontroller Definition</a></h1>
+<p>TODO</p>
+<h1 id="add-board-support-package" class="section-header"><a href="#add-board-support-package">4 Add Board Support Package</a></h1>
+<p>TODO</p>
+<h1 id="define-firmware-memory-map" class="section-header"><a href="#define-firmware-memory-map">5 Define Firmware Memory Map</a></h1>
+<p>TODO</p>
+<h1 id="define-linker-script" class="section-header"><a href="#define-linker-script">6 Define Linker Script</a></h1>
+<p>TODO</p>
+<h1 id="set-firmware-target" class="section-header"><a href="#set-firmware-target">7 Set Firmware Target</a></h1>
+<p>TODO</p>
+<h1 id="build-the-firmware" class="section-header"><a href="#build-the-firmware">8 Build the Firmware</a></h1>
+<p>TODO</p>
+<h1 id="replace-hal-functions-by-stubs" class="section-header"><a href="#replace-hal-functions-by-stubs">9 Replace HAL Functions by Stubs</a></h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/mynewt-hal.png" alt="Mynewt HAL" /></p>
+<h1 id="fill-in-start-code" class="section-header"><a href="#fill-in-start-code">10 Fill in Start Code</a></h1>
+<p>TODO</p>
+<h1 id="decouple-sifive-fe310-from-rv32imac" class="section-header"><a href="#decouple-sifive-fe310-from-rv32imac">11 Decouple SiFive FE310 from RV32IMAC</a></h1>
+<p>TODO</p>
+<h1 id="inspect-the-firmware" class="section-header"><a href="#inspect-the-firmware">12 Inspect the Firmware</a></h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/mynewt-disassembly.png" alt="Mynewt Disassembly" /></p>
+<h1 id="debug-firmware-with-vscode" class="section-header"><a href="#debug-firmware-with-vscode">13 Debug Firmware with VSCode</a></h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/mynewt-debug.png" alt="Mynewt Debugging" /></p>
+<h1 id="load-firmware-to-ram-not-flash-memory" class="section-header"><a href="#load-firmware-to-ram-not-flash-memory">14 Load Firmware to RAM, not Flash Memory</a></h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/mynewt-flash.png" alt="Loading Mynewt Firmware to Flash Memory" /></p>
+<p><img src="https://lupyuen.github.io/images/mynewt-ram.png" alt="Loading Mynewt Firmware to RAM" /></p>
+<h1 id="todo" class="section-header"><a href="#todo">15 TODO</a></h1>
 <pre><code class="language-bash">#  Download the source files
 git clone --recursive https://github.com/lupyuen/pinecone-rust-mynewt
 cd pinecone-rust-mynewt
@@ -89,8 +140,6 @@ newt install
 export PATH=&quot;$PWD/xpack-riscv-none-embed-gcc/bin:$PATH&quot;
 newt build pinecone_app
 </code></pre>
-<h1 id="todo" class="section-header"><a href="#todo">2 TODO</a></h1>
-<p>TODO</p>
 <ol>
 <li>
 <p>BL602 MCU Definition: <a href="hw/mcu/bl/bl602/pkg.yml"><code>hw/mcu/bl/bl602/pkg.yml</code></a></p>
@@ -135,24 +184,7 @@ newt build pinecone_app
 #<span class="ident">include</span> <span class="string">&quot;mcu/fe310.h&quot;</span></pre></div>
 </li>
 </ol>
-<h1 id="fix-gcc-compiler-for-mynewt" class="section-header"><a href="#fix-gcc-compiler-for-mynewt">3 Fix GCC Compiler for Mynewt</a></h1>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/mynewt-gcc.png" alt="Mynewt GCC" /></p>
-<p><img src="https://lupyuen.github.io/images/mynewt-gcc2.png" alt="Mynewt GCC" /></p>
-<h1 id="stub-mynewt-hal-for-bl602" class="section-header"><a href="#stub-mynewt-hal-for-bl602">4 Stub Mynewt HAL for BL602</a></h1>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/mynewt-hal.png" alt="Mynewt HAL" /></p>
-<h1 id="check-firmware-disassembly" class="section-header"><a href="#check-firmware-disassembly">5 Check Firmware Disassembly</a></h1>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/mynewt-disassembly.png" alt="Mynewt Disassembly" /></p>
-<h1 id="load-mynewt-firmware-to-pinecone" class="section-header"><a href="#load-mynewt-firmware-to-pinecone">6 Load Mynewt Firmware to PineCone</a></h1>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/mynewt-flash.png" alt="Loading Mynewt Firmware to Flash Memory" /></p>
-<p><img src="https://lupyuen.github.io/images/mynewt-ram.png" alt="Loading Mynewt Firmware to RAM" /></p>
-<h1 id="debug-mynewt-firmware-with-vscode" class="section-header"><a href="#debug-mynewt-firmware-with-vscode">7 Debug Mynewt Firmware with VSCode</a></h1>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/mynewt-debug.png" alt="Mynewt Debugging" /></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">8 What's Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">16 What's Next</a></h1>
 <p>TODO</p>
 <ul>
 <li>

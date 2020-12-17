@@ -12,9 +12,17 @@ Our story so far...
 
 Today we'll learn about our ongoing port of Apache Mynewt embedded operating system to PineCone.
 
-# Set GCC Compiler
+# Adapt from Existing RISC-V Port
 
 TODO
+
+# Set GCC Compiler for RISC-V
+
+TODO
+
+![Mynewt GCC](https://lupyuen.github.io/images/mynewt-gcc.png)
+
+![Mynewt GCC](https://lupyuen.github.io/images/mynewt-gcc2.png)
 
 # Add Microcontroller Definition
 
@@ -40,17 +48,41 @@ TODO
 
 TODO
 
-# Fill in HAL with Stubs
+# Replace HAL Functions by Stubs
 
 TODO
 
+![Mynewt HAL](https://lupyuen.github.io/images/mynewt-hal.png)
+
 # Fill in Start Code
+
+TODO
+
+# Decouple SiFive FE310 from RV32IMAC
 
 TODO
 
 # Inspect the Firmware
 
 TODO
+
+![Mynewt Disassembly](https://lupyuen.github.io/images/mynewt-disassembly.png)
+
+# Debug Firmware with VSCode
+
+TODO
+
+![Mynewt Debugging](https://lupyuen.github.io/images/mynewt-debug.png)
+
+# Load Firmware to RAM, not Flash Memory
+
+TODO
+
+![Loading Mynewt Firmware to Flash Memory](https://lupyuen.github.io/images/mynewt-flash.png)
+
+![Loading Mynewt Firmware to RAM](https://lupyuen.github.io/images/mynewt-ram.png)
+
+# TODO
 
 ```bash
 #  Download the source files
@@ -63,10 +95,6 @@ newt install
 export PATH="$PWD/xpack-riscv-none-embed-gcc/bin:$PATH"
 newt build pinecone_app
 ```
-
-#  TODO
-
-TODO
 
 1.  BL602 MCU Definition: [`hw/mcu/bl/bl602/pkg.yml`](hw/mcu/bl/bl602/pkg.yml)
 
@@ -110,40 +138,6 @@ TODO
     repos/apache-mynewt-core/kernel/os/include/os/arch/rv32imac/os/os_arch.h:24:10: fatal error: mcu/fe310.h: No such file or directory
     #include "mcu/fe310.h"
     ```
-
-# Fix GCC Compiler for Mynewt
-
-TODO
-
-![Mynewt GCC](https://lupyuen.github.io/images/mynewt-gcc.png)
-
-![Mynewt GCC](https://lupyuen.github.io/images/mynewt-gcc2.png)
-
-# Stub Mynewt HAL for BL602
-
-TODO
-
-![Mynewt HAL](https://lupyuen.github.io/images/mynewt-hal.png)
-
-# Check Firmware Disassembly
-
-TODO
-
-![Mynewt Disassembly](https://lupyuen.github.io/images/mynewt-disassembly.png)
-
-# Load Mynewt Firmware to PineCone
-
-TODO
-
-![Loading Mynewt Firmware to Flash Memory](https://lupyuen.github.io/images/mynewt-flash.png)
-
-![Loading Mynewt Firmware to RAM](https://lupyuen.github.io/images/mynewt-ram.png)
-
-# Debug Mynewt Firmware with VSCode
-
-TODO
-
-![Mynewt Debugging](https://lupyuen.github.io/images/mynewt-debug.png)
 
 # What's Next
 
