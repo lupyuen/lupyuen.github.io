@@ -66,7 +66,7 @@ _Mynewt's default GCC Compiler is `riscv64-unknown-elf-gcc`_
 
 # Set GCC Compiler for RISC-V
 
-When building RISC-V Firmware, Mynewt uses the RISC-V GCC Compiler [`riscv64-unknown-elf-gcc`](https://github.com/apache/mynewt-core/blob/master/compiler/riscv64/compiler.yml)
+When building RISC-V Firmware, Mynewt uses the RISC-V GCC Compiler `riscv64-unknown-elf-gcc` [(See this)](https://github.com/apache/mynewt-core/blob/master/compiler/riscv64/compiler.yml)
 
 But that's not the same as our compiler from xPack RISC-V GCC: `riscv-none-embed-gcc`
 
@@ -85,13 +85,15 @@ compiler.path.objcopy: "riscv-none-embed-objcopy"
 
 Mynewt will now compile our firmware with `riscv-none-embed-gcc`
 
+## Mynewt Project and Firmware
+
 _In the screen above, how did we create the Mynewt Project `pinecone-rust-mynewt` and the Mynewt Firmware `pinecone_app`?_
 
 I created `pinecone-rust-mynewt` and `pinecone_app` using Mynewt's `newt` tool.
 
-This only needs to be done once. You don't need to do it again.
+We'll download them in a while, so you don't need to create them.
 
-_(FYI: The steps I did are explained in sections "Appendix: Install newt" and "Appendix: Create the Mynewt Firmware" below)_
+_(FYI: I created `pinecone-rust-mynewt` and `pinecone_app` using the steps explained in the sections "Appendix: Install newt" and "Appendix: Create the Mynewt Firmware" below)_
 
 # Add Microcontroller Definition
 
