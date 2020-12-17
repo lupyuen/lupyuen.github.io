@@ -60,19 +60,19 @@ While doing the porting, we shall compare the above E21 doc with the FE310 doc s
 
 -   [SiFive FE310 Manual](https://sifive.cdn.prismic.io/sifive/4d063bf8-3ae6-4db6-9843-ee9076ebadf7_fe310-g000.pdf)
 
+![Mynewt's default GCC Compiler is riscv64-unknown-elf-gcc](https://lupyuen.github.io/images/mynewt-gcc.png)
+
+_Mynewt's default GCC Compiler is `riscv64-unknown-elf-gcc`_
+
 # Set GCC Compiler for RISC-V
 
-TODO
+When building RISC-V Firmware, Mynewt uses the RISC-V GCC Compiler [`riscv64-unknown-elf-gcc`](https://github.com/apache/mynewt-core/blob/master/compiler/riscv64/compiler.yml)
 
-See "Appendix: Install newt" and "Appendix: Create the Mynewt Firmware" below
+But that's not the same as our compiler from xPack RISC-V GCC: `riscv-none-embed-gcc`
 
-![Default Mynewt GCC](https://lupyuen.github.io/images/mynewt-gcc.png)
+_(See ["Debug Rust on PineCone BL602 with VSCode and GDB"](https://lupyuen.github.io/articles/debug), Section 1.3, ["Install GDB"](https://lupyuen.github.io/articles/debug#install-gdb))_
 
-![Fixed Mynewt GCC](https://lupyuen.github.io/images/mynewt-gcc2.png)
-
-Compile with `riscv-none-embed-gcc` instead of `riscv64-unknown-elf-gcc`
-
-[`compiler/riscv-none-embed/compiler.yml`](https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/compiler/riscv-none-embed/compiler.yml)
+Hence we copy and modify the GCC settings like so: [`compiler/riscv-none-embed/compiler.yml`](https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/compiler/riscv-none-embed/compiler.yml)
 
 ```yaml
 compiler.path.cc:      "riscv-none-embed-gcc"
@@ -82,6 +82,16 @@ compiler.path.objdump: "riscv-none-embed-objdump"
 compiler.path.objsize: "riscv-none-embed-size"
 compiler.path.objcopy: "riscv-none-embed-objcopy"
 ```
+
+Mynewt will now compile our firmware with `riscv-none-embed-gcc`
+
+_In the screen above, how did we create the Mynewt Project `pinecone-rust-mynewt` and the Mynewt Firmware `pinecone_app`?_
+
+I created `pinecone-rust-mynewt` and `pinecone_app` using Mynewt's `newt` tool.
+
+This only needs to be done once. You don't need to do it again.
+
+_(FYI: The steps I did are explained in sections "Appendix: Install newt" and "Appendix: Create the Mynewt Firmware" below)_
 
 # Add Microcontroller Definition
 
