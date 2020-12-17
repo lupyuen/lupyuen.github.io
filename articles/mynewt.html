@@ -95,8 +95,10 @@
 </ol>
 <p>Today we'll learn about our ongoing port of Apache Mynewt embedded operating system to PineCone.</p>
 <h1 id="adapt-from-existing-risc-v-port" class="section-header"><a href="#adapt-from-existing-risc-v-port">1 Adapt from Existing RISC-V Port</a></h1>
-<p>BL602's RISC-V Core is highly similar to SiFive FE310... Though not fully identical.</p>
-<p>Compare these two files...</p>
+<p>The Memory Maps for BL602 and SiFive FE310 look totally different...</p>
+<p><img src="https://lupyuen.github.io/images/pinecone-compare.jpg" alt="BL602 Memory Map vs SiFive FE310: Totally different" /></p>
+<p><em>BL602 Memory Map (left) vs SiFive FE310 (right): Totally different</em></p>
+<p>But <strong>BL602's RISC-V Core is highly similar to SiFive FE310</strong>. Compare these two files...</p>
 <ol>
 <li>
 <p><code>platform.h</code> from <strong>BL602 IoT SDK</strong>: </p>
@@ -108,7 +110,7 @@
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/mynewt-platform.png" alt="platform.h: BL602 vs SiFive FE310" /></p>
-<p><em>platform.h: BL602 vs SiFive FE310</em></p>
+<p><em>platform.h: BL602 (left) vs SiFive FE310 (right)</em></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/mynewt-e21.png" alt="BL602 is based on SiFive E21 RISC-V Core" /></p>
 <p><em>BL602 is based on SiFive E21 RISC-V Core</em></p>

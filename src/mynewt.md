@@ -14,9 +14,13 @@ Today we'll learn about our ongoing port of Apache Mynewt embedded operating sys
 
 # Adapt from Existing RISC-V Port
 
-BL602's RISC-V Core is highly similar to SiFive FE310... Though not fully identical.
+The Memory Maps for BL602 and SiFive FE310 look totally different...
 
-Compare these two files...
+![BL602 Memory Map vs SiFive FE310: Totally different](https://lupyuen.github.io/images/pinecone-compare.jpg)
+
+_BL602 Memory Map (left) vs SiFive FE310 (right): Totally different_
+
+But __BL602's RISC-V Core is highly similar to SiFive FE310__. Compare these two files...
 
 1. `platform.h` from __BL602 IoT SDK__: 
 
@@ -28,7 +32,7 @@ Compare these two files...
 
 ![platform.h: BL602 vs SiFive FE310](https://lupyuen.github.io/images/mynewt-platform.png)
 
-_platform.h: BL602 vs SiFive FE310_
+_platform.h: BL602 (left) vs SiFive FE310 (right)_
 
 TODO
 
