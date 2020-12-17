@@ -66,7 +66,8 @@
     <h1 class="title">Porting Mynewt to PineCone BL602</h1>
     <nav id="TOC"><ul>
 <li><a href="#adapt-from-existing-risc-v-port">1 Adapt from Existing RISC-V Port</a><ul></ul></li>
-<li><a href="#set-gcc-compiler-for-risc-v">2 Set GCC Compiler for RISC-V</a><ul></ul></li>
+<li><a href="#set-gcc-compiler-for-risc-v">2 Set GCC Compiler for RISC-V</a><ul>
+<li><a href="#mynewt-project-and-firmware">2.1 Mynewt Project and Firmware</a><ul></ul></li></ul></li>
 <li><a href="#add-microcontroller-definition">3 Add Microcontroller Definition</a><ul></ul></li>
 <li><a href="#add-board-support-package">4 Add Board Support Package</a><ul></ul></li>
 <li><a href="#define-firmware-memory-map">5 Define Firmware Memory Map</a><ul></ul></li>
@@ -130,13 +131,13 @@
 <ul>
 <li><a href="https://sifive.cdn.prismic.io/sifive/4d063bf8-3ae6-4db6-9843-ee9076ebadf7_fe310-g000.pdf">SiFive FE310 Manual</a></li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/mynewt-gcc.png" alt="Mynewt's default GCC Compiler is riscv64-unknown-elf-gcc" /></p>
+<p><em>Mynewt's default GCC Compiler is <code>riscv64-unknown-elf-gcc</code></em></p>
 <h1 id="set-gcc-compiler-for-risc-v" class="section-header"><a href="#set-gcc-compiler-for-risc-v">2 Set GCC Compiler for RISC-V</a></h1>
-<p>TODO</p>
-<p>See &quot;Appendix: Install newt&quot; and &quot;Appendix: Create the Mynewt Firmware&quot; below</p>
-<p><img src="https://lupyuen.github.io/images/mynewt-gcc.png" alt="Default Mynewt GCC" /></p>
-<p><img src="https://lupyuen.github.io/images/mynewt-gcc2.png" alt="Fixed Mynewt GCC" /></p>
-<p>Compile with <code>riscv-none-embed-gcc</code> instead of <code>riscv64-unknown-elf-gcc</code></p>
-<p><a href="https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/compiler/riscv-none-embed/compiler.yml"><code>compiler/riscv-none-embed/compiler.yml</code></a></p>
+<p>When building RISC-V Firmware, Mynewt uses the RISC-V GCC Compiler <code>riscv64-unknown-elf-gcc</code> <a href="https://github.com/apache/mynewt-core/blob/master/compiler/riscv64/compiler.yml">(See this)</a></p>
+<p>But that's not the same as our compiler from xPack RISC-V GCC: <code>riscv-none-embed-gcc</code></p>
+<p><em>(See <a href="https://lupyuen.github.io/articles/debug">&quot;Debug Rust on PineCone BL602 with VSCode and GDB&quot;</a>, Section 1.3, <a href="https://lupyuen.github.io/articles/debug#install-gdb">&quot;Install GDB&quot;</a>)</em></p>
+<p>Hence we copy and modify the GCC settings like so: <a href="https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/compiler/riscv-none-embed/compiler.yml"><code>compiler/riscv-none-embed/compiler.yml</code></a></p>
 <pre><code class="language-yaml">compiler.path.cc:      &quot;riscv-none-embed-gcc&quot;
 compiler.path.as:      &quot;riscv-none-embed-gcc&quot;
 compiler.path.archive: &quot;riscv-none-embed-ar&quot;
@@ -144,6 +145,12 @@ compiler.path.objdump: &quot;riscv-none-embed-objdump&quot;
 compiler.path.objsize: &quot;riscv-none-embed-size&quot;
 compiler.path.objcopy: &quot;riscv-none-embed-objcopy&quot;
 </code></pre>
+<p>Mynewt will now compile our firmware with <code>riscv-none-embed-gcc</code></p>
+<h2 id="mynewt-project-and-firmware" class="section-header"><a href="#mynewt-project-and-firmware">2.1 Mynewt Project and Firmware</a></h2>
+<p><em>In the screen above, how did we create the Mynewt Project <code>pinecone-rust-mynewt</code> and the Mynewt Firmware <code>pinecone_app</code>?</em></p>
+<p>I created <code>pinecone-rust-mynewt</code> and <code>pinecone_app</code> using Mynewt's <code>newt</code> tool.</p>
+<p>We'll download them in a while, so you don't need to create them.</p>
+<p><em>(FYI: I created <code>pinecone-rust-mynewt</code> and <code>pinecone_app</code> using the steps explained in the sections &quot;Appendix: Install newt&quot; and &quot;Appendix: Create the Mynewt Firmware&quot; below)</em></p>
 <h1 id="add-microcontroller-definition" class="section-header"><a href="#add-microcontroller-definition">3 Add Microcontroller Definition</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/hw/mcu/bl/bl602"><code>hw/mcu/bl/bl602</code></a></p>
