@@ -62,6 +62,8 @@ TODO
 
 TODO
 
+![SiFive FE310 Reference in RV32IMAC](https://lupyuen.github.io/images/mynewt-fe310.png)
+
 # Inspect the Firmware
 
 TODO
