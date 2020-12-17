@@ -8,7 +8,7 @@ Our journey so far...
 
 1.  Then we [__connected PineCone to OpenOCD__](https://lupyuen.github.io/articles/openocd) with a JTAG Debugger...
 
-1.  And we [__debugged Rust on PineCone with VSCode and GDB__](https://lupyuen.github.io/articles/debug)
+1.  And we [__debugged Rust on PineCone__](https://lupyuen.github.io/articles/debug) with VSCode and GDB
 
 Today we'll learn about our ongoing port of Apache Mynewt embedded operating system to PineCone.
 
