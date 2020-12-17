@@ -95,11 +95,28 @@
 </ol>
 <p>Today we'll learn about our ongoing port of Apache Mynewt embedded operating system to PineCone.</p>
 <h1 id="adapt-from-existing-risc-v-port" class="section-header"><a href="#adapt-from-existing-risc-v-port">1 Adapt from Existing RISC-V Port</a></h1>
+<p>BL602's RISC-V Core is highly similar to SiFive FE310... Though not fully identical.</p>
+<p>Compare these two files...</p>
+<ol>
+<li>
+<p><code>platform.h</code> from <strong>BL602 IoT SDK</strong>: </p>
+<p><a href="https://github.com/pine64/bl_iot_sdk/blob/master/components/bl602/freertos_riscv/config/platform.h"><code>github.com/pine64/bl_iot_sdk/components/bl602/freertos_riscv/config/platform.h</code></a></p>
+</li>
+<li>
+<p><code>platform.h</code> from <strong>Mynewt's FE310 Port</strong>: </p>
+<p><a href="https://github.com/apache/mynewt-core/blob/master/hw/mcu/sifive/src/ext/freedom-e-sdk_3235929/bsp/env/freedom-e300-hifive1/platform.h"><code>github.com/apache/mynewt-core/hw/mcu/sifive/src/ext/freedom-e-sdk_3235929/bsp/env/freedom-e300-hifive1/platform.h</code></a></p>
+</li>
+</ol>
+<p><img src="https://lupyuen.github.io/images/mynewt-platform.png" alt="platform.h: BL602 vs SiFive FE310" /></p>
+<p><em>platform.h: BL602 vs SiFive FE310</em></p>
 <p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/mynewt-e21.png" alt="BL602 is based on SiFive E21 RISC-V Core" /></p>
+<p><em>BL602 is based on SiFive E21 RISC-V Core</em></p>
+<p>FreeRTOS</p>
 <h1 id="set-gcc-compiler-for-risc-v" class="section-header"><a href="#set-gcc-compiler-for-risc-v">2 Set GCC Compiler for RISC-V</a></h1>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/mynewt-gcc.png" alt="Mynewt GCC" /></p>
-<p><img src="https://lupyuen.github.io/images/mynewt-gcc2.png" alt="Mynewt GCC" /></p>
+<p><img src="https://lupyuen.github.io/images/mynewt-gcc.png" alt="Default Mynewt GCC" /></p>
+<p><img src="https://lupyuen.github.io/images/mynewt-gcc2.png" alt="Fixed Mynewt GCC" /></p>
 <h1 id="add-microcontroller-definition" class="section-header"><a href="#add-microcontroller-definition">3 Add Microcontroller Definition</a></h1>
 <p>TODO</p>
 <h1 id="add-board-support-package" class="section-header"><a href="#add-board-support-package">4 Add Board Support Package</a></h1>

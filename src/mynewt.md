@@ -14,15 +14,37 @@ Today we'll learn about our ongoing port of Apache Mynewt embedded operating sys
 
 # Adapt from Existing RISC-V Port
 
+BL602's RISC-V Core is highly similar to SiFive FE310... Though not fully identical.
+
+Compare these two files...
+
+1. `platform.h` from __BL602 IoT SDK__: 
+
+    [`github.com/pine64/bl_iot_sdk/components/bl602/freertos_riscv/config/platform.h`](https://github.com/pine64/bl_iot_sdk/blob/master/components/bl602/freertos_riscv/config/platform.h)
+
+1. `platform.h` from __Mynewt's FE310 Port__: 
+
+    [`github.com/apache/mynewt-core/hw/mcu/sifive/src/ext/freedom-e-sdk_3235929/bsp/env/freedom-e300-hifive1/platform.h`](https://github.com/apache/mynewt-core/blob/master/hw/mcu/sifive/src/ext/freedom-e-sdk_3235929/bsp/env/freedom-e300-hifive1/platform.h)
+
+![platform.h: BL602 vs SiFive FE310](https://lupyuen.github.io/images/mynewt-platform.png)
+
+_platform.h: BL602 vs SiFive FE310_
+
 TODO
+
+![BL602 is based on SiFive E21 RISC-V Core](https://lupyuen.github.io/images/mynewt-e21.png)
+
+_BL602 is based on SiFive E21 RISC-V Core_
+
+FreeRTOS
 
 # Set GCC Compiler for RISC-V
 
 TODO
 
-![Mynewt GCC](https://lupyuen.github.io/images/mynewt-gcc.png)
+![Default Mynewt GCC](https://lupyuen.github.io/images/mynewt-gcc.png)
 
-![Mynewt GCC](https://lupyuen.github.io/images/mynewt-gcc2.png)
+![Fixed Mynewt GCC](https://lupyuen.github.io/images/mynewt-gcc2.png)
 
 # Add Microcontroller Definition
 
