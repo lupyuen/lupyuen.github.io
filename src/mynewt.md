@@ -20,6 +20,14 @@ It's a great way to learn the internals of BL602.  And this article will be a va
 
 # Adapt from Existing RISC-V Port
 
+_What's the quickest way to port Mynewt to BL602?_
+
+There's one (and only one) RISC-V Board supported today on Mynewt: __SiFive's HiFive1 Board__, based on the __SiFive FE310 Microcontroller__.
+
+We shall copy and adapt the necessary files from the HiFive1 port to our BL602 port.
+
+_How different is BL602 from SiFive FE310?_
+
 The Memory Maps for BL602 and SiFive FE310 look totally different...
 
 ![BL602 Memory Map vs SiFive FE310: Totally different](https://lupyuen.github.io/images/pinecone-compare.jpg)
@@ -36,19 +44,27 @@ But __BL602's RISC-V Core is highly similar to SiFive FE310__. Compare these two
 
 _platform.h: BL602 (left) vs SiFive FE310 (right)_
 
-TODO
+Since BL602's RISC-V Core is so similar to FE310, it makes porting simpler.
 
 ![BL602 is based on SiFive E21 RISC-V Core](https://lupyuen.github.io/images/mynewt-e21.png)
 
-_BL602 is based on SiFive E21 RISC-V Core_
+_BL602 is based on which SiFive RISC-V Core?_
 
-[SiFive E21 Manual](https://sifive.cdn.prismic.io/sifive/39d336f7-7dba-43f2-a453-8d55227976cc_sifive_E21_rtl_full_20G1.03.00_manual.pdf)
+From the screenshot above, the name "E21" appears (over a hundred times) in the BL602 IoT SDK.
 
-[SiFive FE310 Manual](https://sifive.cdn.prismic.io/sifive/4d063bf8-3ae6-4db6-9843-ee9076ebadf7_fe310-g000.pdf)
+Thus we assume that BL602 is based on the __SiFive E21 RISC-V Core__ (and not E24)...
+
+-   [SiFive E21 Manual](https://sifive.cdn.prismic.io/sifive/39d336f7-7dba-43f2-a453-8d55227976cc_sifive_E21_rtl_full_20G1.03.00_manual.pdf)
+
+While doing the porting, we shall compare the above E21 doc with the FE310 doc so that we can identify the differences (e.g. FE310 supports PLIC, E21 doesn't)
+
+-   [SiFive FE310 Manual](https://sifive.cdn.prismic.io/sifive/4d063bf8-3ae6-4db6-9843-ee9076ebadf7_fe310-g000.pdf)
 
 # Set GCC Compiler for RISC-V
 
 TODO
+
+See "Appendix: Install newt" and "Appendix: Create the Mynewt Firmware" below
 
 ![Default Mynewt GCC](https://lupyuen.github.io/images/mynewt-gcc.png)
 

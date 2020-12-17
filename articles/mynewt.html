@@ -92,7 +92,7 @@
 <p>Then we <a href="https://lupyuen.github.io/articles/openocd"><strong>connected PineCone to OpenOCD</strong></a> with a JTAG Debugger...</p>
 </li>
 <li>
-<p>And we <a href="https://lupyuen.github.io/articles/debug"><strong>debugged Rust on PineCone with VSCode and GDB</strong></a></p>
+<p>And we <a href="https://lupyuen.github.io/articles/debug"><strong>debugged Rust on PineCone</strong></a> with VSCode and GDB</p>
 </li>
 </ol>
 <p>Today we'll learn about our ongoing port of Apache Mynewt embedded operating system to PineCone.</p>
@@ -100,6 +100,10 @@
 <p>Since FreeRTOS is already supported on BL602 (for multitasking Bluetooth LE and WiFi in the background), let's port a modern embedded operating system like Mynewt.</p>
 <p>It's a great way to learn the internals of BL602.  And this article will be a valuable resource for porting to BL602 other embedded operating systems, like Zephyr and RIOT.</p>
 <h1 id="adapt-from-existing-risc-v-port" class="section-header"><a href="#adapt-from-existing-risc-v-port">1 Adapt from Existing RISC-V Port</a></h1>
+<p><em>What's the quickest way to port Mynewt to BL602?</em></p>
+<p>There's one (and only one) RISC-V Board supported today on Mynewt: <strong>SiFive's HiFive1 Board</strong>, based on the <strong>SiFive FE310 Microcontroller</strong>.</p>
+<p>We shall copy and adapt the necessary files from the HiFive1 port to our BL602 port.</p>
+<p><em>How different is BL602 from SiFive FE310?</em></p>
 <p>The Memory Maps for BL602 and SiFive FE310 look totally different...</p>
 <p><img src="https://lupyuen.github.io/images/pinecone-compare.jpg" alt="BL602 Memory Map vs SiFive FE310: Totally different" /></p>
 <p><em>BL602 Memory Map (left) vs SiFive FE310 (right): Totally different</em></p>
@@ -114,13 +118,21 @@
 </ol>
 <p><img src="https://lupyuen.github.io/images/mynewt-platform.png" alt="platform.h: BL602 (left) vs SiFive FE310 (right)" /></p>
 <p><em>platform.h: BL602 (left) vs SiFive FE310 (right)</em></p>
-<p>TODO</p>
+<p>Since BL602's RISC-V Core is so similar to FE310, it makes porting simpler.</p>
 <p><img src="https://lupyuen.github.io/images/mynewt-e21.png" alt="BL602 is based on SiFive E21 RISC-V Core" /></p>
-<p><em>BL602 is based on SiFive E21 RISC-V Core</em></p>
-<p><a href="https://sifive.cdn.prismic.io/sifive/39d336f7-7dba-43f2-a453-8d55227976cc_sifive_E21_rtl_full_20G1.03.00_manual.pdf">SiFive E21 Manual</a></p>
-<p><a href="https://sifive.cdn.prismic.io/sifive/4d063bf8-3ae6-4db6-9843-ee9076ebadf7_fe310-g000.pdf">SiFive FE310 Manual</a></p>
+<p><em>BL602 is based on which SiFive RISC-V Core?</em></p>
+<p>From the screenshot above, the name &quot;E21&quot; appears (over a hundred times) in the BL602 IoT SDK.</p>
+<p>Thus we assume that BL602 is based on the <strong>SiFive E21 RISC-V Core</strong> (and not E24)...</p>
+<ul>
+<li><a href="https://sifive.cdn.prismic.io/sifive/39d336f7-7dba-43f2-a453-8d55227976cc_sifive_E21_rtl_full_20G1.03.00_manual.pdf">SiFive E21 Manual</a></li>
+</ul>
+<p>While doing the porting, we shall compare the above E21 doc with the FE310 doc so that we can identify the differences (e.g. FE310 supports PLIC, E21 doesn't)</p>
+<ul>
+<li><a href="https://sifive.cdn.prismic.io/sifive/4d063bf8-3ae6-4db6-9843-ee9076ebadf7_fe310-g000.pdf">SiFive FE310 Manual</a></li>
+</ul>
 <h1 id="set-gcc-compiler-for-risc-v" class="section-header"><a href="#set-gcc-compiler-for-risc-v">2 Set GCC Compiler for RISC-V</a></h1>
 <p>TODO</p>
+<p>See &quot;Appendix: Install newt&quot; and &quot;Appendix: Create the Mynewt Firmware&quot; below</p>
 <p><img src="https://lupyuen.github.io/images/mynewt-gcc.png" alt="Default Mynewt GCC" /></p>
 <p><img src="https://lupyuen.github.io/images/mynewt-gcc2.png" alt="Fixed Mynewt GCC" /></p>
 <p>Compile with <code>riscv-none-embed-gcc</code> instead of <code>riscv64-unknown-elf-gcc</code></p>
