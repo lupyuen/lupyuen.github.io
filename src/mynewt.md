@@ -20,11 +20,11 @@ It's a great way to learn the internals of BL602.  And this article will be a va
 
 # Adapt from Existing RISC-V Port
 
-_What's the quickest way to port Mynewt to BL602?_
+_What's the quickest way to port Mynewt to PineCone BL602?_
 
 There's one (and only one) RISC-V Board supported today on Mynewt: __SiFive's HiFive1 Board__, based on the __SiFive FE310 Microcontroller__.
 
-We shall copy and adapt the necessary files from the HiFive1 port to our BL602 port.
+We shall copy and adapt the necessary files from the HiFive1 FE310 port to our PineCone BL602 port.
 
 _How different is BL602 from SiFive FE310?_
 
