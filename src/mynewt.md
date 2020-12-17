@@ -1,16 +1,54 @@
 # Porting Mynewt to PineCone BL602
 
-![Debugging PineCone BL602 RISC-V Evaluation Board with Sipeed JTAG Debugger](https://lupyuen.github.io/images/mynewt-title.jpg)
+![PineCone BL602 RISC-V Evaluation Board with Sipeed JTAG Debugger](https://lupyuen.github.io/images/mynewt-title.jpg)
 
-_Debugging PineCone BL602 RISC-V Evaluation Board with Sipeed JTAG Debugger_
+Our story so far... 
 
-Earlier we took a quick peek at [__PineCone BL602 RISC-V Evaluation Board__](https://lupyuen.github.io/articles/pinecone)...
+1.  We took a quick peek at [__PineCone BL602 RISC-V Evaluation Board__](https://lupyuen.github.io/articles/pinecone)...
 
-Then we [__connected PineCone to OpenOCD__](https://lupyuen.github.io/articles/openocd) with a JTAG Debugger...
+1.  Then we [__connected PineCone to OpenOCD__](https://lupyuen.github.io/articles/openocd) with a JTAG Debugger...
 
-Today we'll learn to ???
+1.  And we [__debugged Rust on PineCone with VSCode and GDB__](https://lupyuen.github.io/articles/debug)
 
-# Building the Firmware
+Today we'll learn about our ongoing port of Apache Mynewt embedded operating system to PineCone.
+
+# Set GCC Compiler
+
+TODO
+
+# Add Microcontroller Definition
+
+TODO
+
+# Add Board Support Package
+
+TODO
+
+# Define Firmware Memory Map
+
+TODO
+
+# Define Linker Script
+
+TODO
+
+# Set Firmware Target
+
+TODO
+
+# Build the Firmware
+
+TODO
+
+# Fill in HAL with Stubs
+
+TODO
+
+# Fill in Start Code
+
+TODO
+
+# Inspect the Firmware
 
 TODO
 
