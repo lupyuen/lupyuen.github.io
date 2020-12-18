@@ -434,6 +434,8 @@ The BL602 SDK Functions will look different from the Mynewt HAL API. Thus we'll 
 
 (For reference: Here's how the [Mynewt HAL for SiFive FE310](https://github.com/apache/mynewt-core/tree/master/hw/mcu/sifive/fe310/src) is adapted from the [FE310 SDK](https://github.com/apache/mynewt-core/tree/master/hw/mcu/sifive/src/ext/freedom-e-sdk_3235929))
 
+![BL602 GPIO SDK (left) vs Mynewt GPIO HAL (right)](https://lupyuen.github.io/images/mynewt-hal2.png)
+
 # Implement Start Code
 
 TODO
