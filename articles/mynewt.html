@@ -78,7 +78,7 @@
 <li><a href="#build-the-firmware">8 Build the Firmware</a><ul></ul></li>
 <li><a href="#implement-hardware-abstraction-layer">9 Implement Hardware Abstraction Layer</a><ul></ul></li>
 <li><a href="#implement-start-code">10 Implement Start Code</a><ul></ul></li>
-<li><a href="#rv32imfc-vs-rv32imac">11 rv32imfc vs rv32imac</a><ul></ul></li>
+<li><a href="#risc-v-rv32imfc-vs-rv32imac">11 RISC-V rv32imfc vs rv32imac</a><ul></ul></li>
 <li><a href="#decouple-sifive-fe310-from-rv32imac">12 Decouple SiFive FE310 from rv32imac</a><ul></ul></li>
 <li><a href="#inspect-the-firmware">13 Inspect the Firmware</a><ul></ul></li>
 <li><a href="#debug-firmware-with-vscode">14 Debug Firmware with VSCode</a><ul></ul></li>
@@ -468,7 +468,7 @@ objsize
 <p><em>Is Mynewt's Start Code any different from the BL602 SDK?</em></p>
 <p>When we compare Mynewt's Start Code with the BL602 SDK, we see that the BL602 SDK Start Code uses the Boot Partition and Flash Configuration. <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602/evb/src/boot/gcc/start.S#L27-L54">More details</a></p>
 <p>This code will have to be inserted into Mynewt's Start Code, when our firmware is ready to be loaded into Flash Memory.</p>
-<h1 id="rv32imfc-vs-rv32imac" class="section-header"><a href="#rv32imfc-vs-rv32imac">11 rv32imfc vs rv32imac</a></h1>
+<h1 id="risc-v-rv32imfc-vs-rv32imac" class="section-header"><a href="#risc-v-rv32imfc-vs-rv32imac">11 RISC-V rv32imfc vs rv32imac</a></h1>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/make_scripts_riscv/project.mk#L223">According to the SDK</a>, BL602 uses a RISC-V Core (SiFive E21) that's designated <strong><code>rv32imfc</code></strong> based on its capabilities...</p>
 <table><thead><tr><th align="center">Designation</th><th align="left">Meaning</th></tr></thead><tbody>
 <tr><td align="center"><strong><code>rv32i</code></strong></td><td align="left">32-bit RISC-V with 32 registers</td></tr>

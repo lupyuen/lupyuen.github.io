@@ -470,7 +470,7 @@ When we compare Mynewt's Start Code with the BL602 SDK, we see that the BL602 SD
 
 This code will have to be inserted into Mynewt's Start Code, when our firmware is ready to be loaded into Flash Memory.
 
-# rv32imfc vs rv32imac
+# RISC-V rv32imfc vs rv32imac
 
 [According to the SDK](https://github.com/lupyuen/bl_iot_sdk/blob/master/make_scripts_riscv/project.mk#L223), BL602 uses a RISC-V Core (SiFive E21) that's designated __`rv32imfc`__ based on its capabilities...
 
