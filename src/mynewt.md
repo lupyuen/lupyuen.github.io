@@ -95,25 +95,41 @@ We'll download them in a while, so you don't need to create them.
 
 _(FYI: I created `pinecone-rust-mynewt` and `pinecone_app` using the steps explained in the sections "Appendix: Install newt" and "Appendix: Create the Mynewt Firmware" below)_
 
+![Mynewt Microcontroller Definition for BL602](https://lupyuen.github.io/images/mynewt-mcu.png)
+
+_Mynewt Microcontroller Definition for BL602_
+
 # Add Microcontroller Definition
 
-TODO
+We create a __Microcontroller Definition__ to tell Mynewt all about BL602...
 
-[`hw/mcu/bl/bl602`](https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/hw/mcu/bl/bl602)
+-   __BL602 Microcontroller Definition__: [`hw/mcu/bl/bl602`](https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/hw/mcu/bl/bl602)
 
-Based on...
+-   __BL602 Package__: [`pkg.yml`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/mcu/bl/bl602/pkg.yml)
 
-[`hw/mcu/sifive/fe310`](https://github.com/apache/mynewt-core/tree/master/hw/mcu/sifive/fe310)
+-   __BL602 Configuration__: [`syscfg.yml`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/mcu/bl/bl602/syscfg.yml)
+
+This contains the code for the [__Hardware Adaptaion Layer__](https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/hw/mcu/bl/bl602/src) that's specific to BL602 and its built-in Periperal Functions (like Flash Memory, GPIO, I2C, SPI, ...)
+
+The code here was derived from SiFive FE310: [`hw/mcu/sifive/fe310`](https://github.com/apache/mynewt-core/tree/master/hw/mcu/sifive/fe310)
 
 # Add Board Support Package
 
-TODO
+BL602 is present on various boards, PineCone is one of them. The BL602 boards have different features: LEDs, buttons, JTAG debugger, ...
 
-[`hw/bsp/pinecone`](https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/hw/bsp/pinecone)
+In Mynewt we handle the board differences by creating a __Board Support Package__ for PineCone...
 
-Based on...
+-   __PineCone Board Support Package__: [`hw/bsp/pinecone`](https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/hw/bsp/pinecone)
 
-[`hw/bsp/hifive1`](https://github.com/apache/mynewt-core/tree/master/hw/bsp/hifive1)
+-   __PineCone Definition__: [`bsp.yml`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/bsp/pinecone/bsp.yml)
+
+-   __PineCone Package__: [`pkg.yml`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/bsp/pinecone/pkg.yml)
+
+-   __PineCone Configuration__: [`syscfg.yml`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/bsp/pinecone/syscfg.yml)
+
+The Board Support Package for PineCone contains code that's specific to PineCone. [More details](https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/hw/bsp/pinecone/src)
+
+The code here was derived from SiFive HiFive1 Board: [`hw/bsp/hifive1`](https://github.com/apache/mynewt-core/tree/master/hw/bsp/hifive1)
 
 # Define Firmware Memory Map
 
@@ -127,7 +143,7 @@ TODO
 
 # Use this memory layout when firmware is loaded into RAM
 # BL602 RAM starts at 0x2200 8000, size 48 KB
-# Based on ttps://github.com/lupyuen/pinecone-rust/blob/main/memory.x
+# Based on https://github.com/lupyuen/pinecone-rust/blob/main/memory.x
 bsp.flash_map:
     areas:
         # System areas.
