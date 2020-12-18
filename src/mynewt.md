@@ -184,11 +184,13 @@ In future when we use the Mynewt Bootloader, we need to reserve some space for t
 _imghdr_size = 0x20;
 ```
 
-# Define Firmware Memory Map
+# Define Flash Map
 
-TODO
+Mynewt's MCUBoot Bootloader will roll back the Active Firmware to the Standby Firmware in case the Active Firmware can't be started.
 
-[`hw/bsp/pinecone/bsp.yml`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/bsp/pinecone/bsp.yml)
+We define the __Flash Map__ to tell Mynewt where in Flash Memory the Bootloader, Active Firmware Image and Standby Firmware Image will be located...
+
+-   __PineCone Flash Map__: [`hw/bsp/pinecone/bsp.yml`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/bsp/pinecone/bsp.yml)
 
 ```yaml
 # BL602 Instruction Cache Memory starts at 0x2200 8000, size 48 KB
@@ -196,7 +198,7 @@ TODO
 bsp.flash_map:
     areas:
         # System areas.
-        # TODO: Bootloader not in use
+        # (Not Used) Bootloader
         FLASH_AREA_BOOTLOADER:
             device:  0
             offset:  0x22013c00
@@ -206,33 +208,31 @@ bsp.flash_map:
             device:  0 
             offset:  0x22008000
             size:    43kB   # 0xac00
-        # Standby Firmware Image, in case Active Firmware can't start
-        # TODO: Standby Firmware Image not in use
+        # (Not Used) Standby Firmware Image, in case Active Firmware can't start
         FLASH_AREA_IMAGE_1:
             device:  0
             offset:  0x22012c00
             size:    1kB    # 0x400
-        # Scratch Area for swapping Active Firmware and Standby Firmware
-        # TODO: Scratch Area not in use
+        # (Not used) Scratch Area for swapping Active Firmware and Standby Firmware
         FLASH_AREA_IMAGE_SCRATCH:
             device:  0
             offset:  0x22013000
             size:    1kB    # 0x400
 ```
 
-User areas...
+Remember that we're loading our firmware into Cache Memory (instead of Flash Memory) and we're not using the Bootloader. 
+
+That's why we allocate most of the Cache Memory to the Active Firmware Image (located at the start of Cache Memory).
 
 ```yaml
         # User areas.
-        # Reboot Log
-        # TODO: Reboot Log not in use
+        # (Not Used) Reboot Log
         FLASH_AREA_REBOOT_LOG:
             user_id: 0
             device:  0
             offset:  0x22013400
             size:    1kB    # 0x400
-        # User File System, like LittleFS
-        # TODO: User File System not in use
+        # (Not Used) User File System, like LittleFS
         FLASH_AREA_NFFS:
             user_id: 1
             device:  0
@@ -240,9 +240,13 @@ User areas...
             size:    1kB    # 0x400
 ```
 
-## Alternative Firmware Memory Map
+Since we have very little Cache Memory, we'll cut down on the Reboot Log and User File Systems.
 
-Use this firmware memory map when firmware is loaded into Flash Memory
+## Future Flash Map
+
+The Flash Map looks more meaningful when we're ready to load our firmware into Flash Memory and turn on the Bootloader.
+
+Here is our Flash Map for the future...
 
 ```yaml
 # TODO: Use this memory layout when firmware is loaded into Flash Memory
@@ -251,7 +255,7 @@ Use this firmware memory map when firmware is loaded into Flash Memory
 bsp.flash_map:
     areas:
         # System areas.
-        # TODO: Bootloader not in use. When used, move Bootloader to 0x2300 0000 and move other areas accordingly
+        # TODO: Bootloader not in use. When used, move Bootloader to 0x2300 0000 and shift the other areas accordingly
         FLASH_AREA_BOOTLOADER:
             device:  0
             offset:  0x2330d000
@@ -273,7 +277,9 @@ bsp.flash_map:
             size:    4kB       # 0x1000
 ```
 
-User areas...
+(This is commented out in [`bsp.yml`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/bsp/pinecone/bsp.yml))
+
+In future we'll have a proper Reboot Log and a User File System for saving files and data that will be retained across reboots...
 
 ```yaml
         # User areas.
@@ -290,6 +296,7 @@ User areas...
             offset:  0x23200000
             size:    1024kB    # 0x100 000
 ```
+
 # Set Firmware Target
 
 TODO
