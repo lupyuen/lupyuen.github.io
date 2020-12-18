@@ -478,9 +478,8 @@ This code will have to be inserted into Mynewt's Start Code, when our firmware i
 |:---:|:---|
 | __`rv32i`__ | 32-bit RISC-V with 32 registers
 | __`m`__ | Multiplication + Division
-| __`f`__ | Single-Precision Hardware Floating Point
+| __`f`__ | __Single-Precision Hardware Floating Point__
 | __`c`__ | Compressed Instructions
-| __`a`__ | Atomic Instructions
 
 [(Here's the whole list)](https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions)
 
