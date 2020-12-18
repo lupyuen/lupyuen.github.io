@@ -315,19 +315,51 @@ Also check out the [__Target Package__](https://github.com/lupyuen/pinecone-rust
 
 # Build the Firmware
 
-TODO
+1.  Install Mynewt's `newt` tool according to the instructions here...
 
-```bash
-#  Download the source files
-git clone --recursive https://github.com/lupyuen/pinecone-rust-mynewt
-cd pinecone-rust-mynewt
-newt install
-#  TODO: Download xpack-riscv-none-embed-gcc here
+    -   [Installing `newt`](https://mynewt.apache.org/latest/newt/install/index.html)
 
-#  Build the firmware
-export PATH="$PWD/xpack-riscv-none-embed-gcc/bin:$PATH"
-newt build pinecone_app
-```
+    To build `newt` from the source code, check the section "Appendix: Install newt" below
+
+1.  At the command prompt, enter...
+
+    ```bash
+    #  Download the source files
+    git clone --recursive https://github.com/lupyuen/pinecone-rust-mynewt
+    cd pinecone-rust-mynewt
+    newt install
+    ```
+
+1.  Download GCC from the [xPack GCC for RISC-V site](https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases/tag/v8.3.0-2.3)...
+
+    -   [xPack GCC RISC-V for Linux x64](https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases/download/v8.3.0-2.3/xpack-riscv-none-embed-gcc-8.3.0-2.3-linux-x64.tar.gz)
+
+    -   [xPack GCC RISC-V for Linux Arm64](https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases/download/v8.3.0-2.3/xpack-riscv-none-embed-gcc-8.3.0-2.3-linux-arm64.tar.gz)
+
+    -   [xPack GCC RISC-V for macOS x64](https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases/download/v8.3.0-2.3/xpack-riscv-none-embed-gcc-8.3.0-2.3-darwin-x64.tar.gz)
+
+    -   [xPack GCC RISC-V for Windows x64](https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases/download/v8.3.0-2.3/xpack-riscv-none-embed-gcc-8.3.0-2.3-win32-x64.zip)
+
+    -   [Other builds of xPack GCC RISC-V](https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases/tag/v8.3.0-2.3)
+
+1.  Extract the downloaded archive.
+
+    On Windows: [Use 7-Zip](https://www.7-zip.org/)
+
+1.  Copy the extracted xPack GCC RISC-V folder to the `pinecone-rust-mynewt` folder.
+
+    Rename the folder as...
+
+    ```
+    pinecone-rust-mynewt/xpack-riscv-none-embed-gcc
+    ```
+
+1.  Build the firmware...
+
+    ```bash
+    export PATH="$PWD/xpack-riscv-none-embed-gcc/bin:$PATH"
+    newt build pinecone_app
+    ```
 
 # Replace HAL Functions by Stubs
 
@@ -459,25 +491,31 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Install newt
 
-TODO
+We may install Mynewt's `newt` tool according to the instructions here...
 
-Install the latest version of Go
+-   [Installing `newt`](https://mynewt.apache.org/latest/newt/install/index.html)
 
-```bash
-cd /tmp
-export mynewt_version=mynewt_1_8_0_tag
-git clone --branch $mynewt_version https://github.com/apache/mynewt-newt/
-cd mynewt-newt
-./build.sh
-sudo mv newt/newt /usr/local/bin
-newt version
-```
+Or we may build from the source code...
 
-Should show...
+1.  Install the [latest version of Go](https://golang.org/dl/)
 
-```
-Apache Newt 1.8.0
-```
+1.  At a command prompt, enter...
+
+    ```bash
+    cd /tmp
+    export mynewt_version=mynewt_1_8_0_tag
+    git clone --branch $mynewt_version https://github.com/apache/mynewt-newt/
+    cd mynewt-newt
+    ./build.sh
+    sudo mv newt/newt /usr/local/bin
+    newt version
+    ```
+
+1.  We should see...
+
+    ```text
+    Apache Newt 1.8.0
+    ```
 
 # Appendix: Create the Mynewt Firmware
 

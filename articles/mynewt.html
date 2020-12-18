@@ -336,17 +336,60 @@ target.build_profile: debug
 <p>Here we specify that our firmware code comes from the <a href="https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/apps/blinky">Blinky Sample App</a>. And our firmware will be compiled for the PineCone BL602 Board.</p>
 <p>Also check out the <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/targets/pinecone_app/pkg.yml"><strong>Target Package</strong></a> and the <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/targets/pinecone_app/syscfg.yml"><strong>Target Configuration</strong></a>.</p>
 <h1 id="build-the-firmware" class="section-header"><a href="#build-the-firmware">8 Build the Firmware</a></h1>
-<p>TODO</p>
+<ol>
+<li>
+<p>Install Mynewt's <code>newt</code> tool according to the instructions here...</p>
+<ul>
+<li><a href="https://mynewt.apache.org/latest/newt/install/index.html">Installing <code>newt</code></a></li>
+</ul>
+<p>To build <code>newt</code> from the source code, check the section &quot;Appendix: Install newt&quot; below</p>
+</li>
+<li>
+<p>At the command prompt, enter...</p>
 <pre><code class="language-bash">#  Download the source files
 git clone --recursive https://github.com/lupyuen/pinecone-rust-mynewt
 cd pinecone-rust-mynewt
 newt install
-#  TODO: Download xpack-riscv-none-embed-gcc here
+</code></pre>
+</li>
+<li>
+<p>Download GCC from the <a href="https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases/tag/v8.3.0-2.3">xPack GCC for RISC-V site</a>...</p>
+<ul>
+<li>
+<p><a href="https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases/download/v8.3.0-2.3/xpack-riscv-none-embed-gcc-8.3.0-2.3-linux-x64.tar.gz">xPack GCC RISC-V for Linux x64</a></p>
+</li>
+<li>
+<p><a href="https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases/download/v8.3.0-2.3/xpack-riscv-none-embed-gcc-8.3.0-2.3-linux-arm64.tar.gz">xPack GCC RISC-V for Linux Arm64</a></p>
+</li>
+<li>
+<p><a href="https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases/download/v8.3.0-2.3/xpack-riscv-none-embed-gcc-8.3.0-2.3-darwin-x64.tar.gz">xPack GCC RISC-V for macOS x64</a></p>
+</li>
+<li>
+<p><a href="https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases/download/v8.3.0-2.3/xpack-riscv-none-embed-gcc-8.3.0-2.3-win32-x64.zip">xPack GCC RISC-V for Windows x64</a></p>
+</li>
+<li>
+<p><a href="https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases/tag/v8.3.0-2.3">Other builds of xPack GCC RISC-V</a></p>
+</li>
+</ul>
+</li>
+<li>
+<p>Extract the downloaded archive.</p>
+<p>On Windows: <a href="https://www.7-zip.org/">Use 7-Zip</a></p>
+</li>
+<li>
+<p>Copy the extracted xPack GCC RISC-V folder to the <code>pinecone-rust-mynewt</code> folder.</p>
+<p>Rename the folder as...</p>
 
-#  Build the firmware
-export PATH=&quot;$PWD/xpack-riscv-none-embed-gcc/bin:$PATH&quot;
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="ident">pinecone</span><span class="op">-</span><span class="ident">rust</span><span class="op">-</span><span class="ident">mynewt</span><span class="op">/</span><span class="ident">xpack</span><span class="op">-</span><span class="ident">riscv</span><span class="op">-</span><span class="ident">none</span><span class="op">-</span><span class="ident">embed</span><span class="op">-</span><span class="ident">gcc</span></pre></div>
+</li>
+<li>
+<p>Build the firmware...</p>
+<pre><code class="language-bash">export PATH=&quot;$PWD/xpack-riscv-none-embed-gcc/bin:$PATH&quot;
 newt build pinecone_app
 </code></pre>
+</li>
+</ol>
 <h1 id="replace-hal-functions-by-stubs" class="section-header"><a href="#replace-hal-functions-by-stubs">9 Replace HAL Functions by Stubs</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/mynewt-hal.png" alt="Mynewt HAL" /></p>
@@ -437,8 +480,17 @@ Now easier to port</p>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/mynewt.md"><code>github.com/lupyuen/lupyuen.github.io/src/mynewt.md</code></a></p>
 <h1 id="appendix-install-newt" class="section-header"><a href="#appendix-install-newt">17 Appendix: Install newt</a></h1>
-<p>TODO</p>
-<p>Install the latest version of Go</p>
+<p>We may install Mynewt's <code>newt</code> tool according to the instructions here...</p>
+<ul>
+<li><a href="https://mynewt.apache.org/latest/newt/install/index.html">Installing <code>newt</code></a></li>
+</ul>
+<p>Or we may build from the source code...</p>
+<ol>
+<li>
+<p>Install the <a href="https://golang.org/dl/">latest version of Go</a></p>
+</li>
+<li>
+<p>At a command prompt, enter...</p>
 <pre><code class="language-bash">cd /tmp
 export mynewt_version=mynewt_1_8_0_tag
 git clone --branch $mynewt_version https://github.com/apache/mynewt-newt/
@@ -447,10 +499,13 @@ cd mynewt-newt
 sudo mv newt/newt /usr/local/bin
 newt version
 </code></pre>
-<p>Should show...</p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="ident">Apache</span> <span class="ident">Newt</span> <span class="number">1.8</span>.<span class="number">0</span></pre></div>
+</li>
+<li>
+<p>We should see...</p>
+<pre><code class="language-text">Apache Newt 1.8.0
+</code></pre>
+</li>
+</ol>
 <h1 id="appendix-create-the-mynewt-firmware" class="section-header"><a href="#appendix-create-the-mynewt-firmware">18 Appendix: Create the Mynewt Firmware</a></h1>
 <p>TODO</p>
 <p>Install newt</p>
