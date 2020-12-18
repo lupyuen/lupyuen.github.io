@@ -509,11 +509,7 @@ _SiFive FE310 Reference in Mynewt rv32imac_
 
 # Decouple SiFive FE310 from rv32imac
 
-TODO
-
-There's a peculiar problem with RISC-V on Mynewt...
-
-Fix dependency of rv32imac on fe310...
+There's a peculiar problem compiling RISC-V Firmware on Mynewt...
 
 ```text
 Error: In file included from ...
@@ -521,11 +517,23 @@ repos/apache-mynewt-core/kernel/os/include/os/arch/rv32imac/os/os_arch.h:24:10: 
 #include "mcu/fe310.h"
 ```
 
+This error shows that `rv32imac`, the RISC-V support in Mynewt, is dependent on SiFive FE310. Which looks really odd. 
+
+(Probably done that way because FE310 is the only RISC-V Microcontroller supported by Mynewt)
+
+We work around this problem by creating Stub Files like these...
+
+-   [`mcu/fe310.h`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/mcu/bl/bl602/include/mcu/fe310.h)
+
+-   [`env/freedom-e300-hifive1/platform.h`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/mcu/bl/bl602/include/env/freedom-e300-hifive1/platform.h)
+
+These Stub Files point to the correct Header Files for BL602, so that our BL602 Firmware can be compiled successfully.
+
+![Mynewt Disassembly](https://lupyuen.github.io/images/mynewt-disassembly.png)
+
 # Inspect the Firmware
 
 TODO
-
-![Mynewt Disassembly](https://lupyuen.github.io/images/mynewt-disassembly.png)
 
 ```text
 Linking /Users/Luppy/pinecone/pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky/blinky.elf
