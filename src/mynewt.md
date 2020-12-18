@@ -446,19 +446,29 @@ _BL602 GPIO SDK (left) vs Mynewt GPIO HAL (right)_
 
 # Implement Start Code
 
-TODO
+Most firmware will have some Start Code (written in Assembly Code) that will be executed when the firmware starts.
 
-We are using...
+For the BL602 IoT SDK, this is the Start Code (in RISC-V Assembly)...
 
-[`hw/mcu/bl/bl602/src/arch/rv32imac/start.s`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/mcu/bl/bl602/src/arch/rv32imac/start.s)
+-   [__Start Code from BL602 IoT SDK: `start.S`__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602/evb/src/boot/gcc/start.S)
 
-Based on...
+![Start Code from BL602 IoT SDK: start.S](https://lupyuen.github.io/images/mynewt-start.png)
 
-[`hw/mcu/sifive/fe310/src/arch/rv32imac/start.s`](https://github.com/apache/mynewt-core/blob/master/hw/mcu/sifive/fe310/src/arch/rv32imac/start.s)
+_Start Code from BL602 IoT SDK: start.S_
 
-Though it should look like this...
+For Mynewt we're using this Start Code instead...
 
-[`start.S`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602/evb/src/boot/gcc/start.S)
+-   [__Start Code for Mynewt BL602: `start.s`__](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/mcu/bl/bl602/src/arch/rv32imac/start.s)
+
+(Adapted from [FE310 Start Code](https://github.com/apache/mynewt-core/blob/master/hw/mcu/sifive/fe310/src/arch/rv32imac/start.s))
+
+Mynewt's Start Code initialises the RAM before calling the `main` function.
+
+_Is Mynewt's Start Code any different from the BL602 SDK?_
+
+When we compare Mynewt's Start Code with the BL602 SDK, we see that the BL602 SDK Start Code uses the Boot Partition and Flash Configuration. [More details](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602/evb/src/boot/gcc/start.S#L27-L54)
+
+This code will have to be inserted into Mynewt's Start Code, when our firmware is ready to be loaded into Flash Memory.
 
 # Decouple SiFive FE310 from RV32IMAC
 
