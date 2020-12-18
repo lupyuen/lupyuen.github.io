@@ -325,12 +325,16 @@ bsp.flash_map:
             size:    1024kB    # 0x100 000
 </code></pre>
 <h1 id="set-firmware-target" class="section-header"><a href="#set-firmware-target">7 Set Firmware Target</a></h1>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/targets/pinecone_app/target.yml"><code>targets/pinecone_app/target.yml</code></a></p>
+<p>We select the Mynewt Firmware to be built by creating a Firmware Target...</p>
+<ul>
+<li><strong>PineCone Firmware Target</strong>: <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/targets/pinecone_app/target.yml"><code>targets/pinecone_app/target.yml</code></a></li>
+</ul>
 <pre><code class="language-yaml">target.app: apps/blinky
 target.bsp: &quot;hw/bsp/pinecone&quot;
 target.build_profile: debug
 </code></pre>
+<p>Here we specify that our firmware code comes from the <a href="https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/apps/blinky">Blinky Sample App</a>. And our firmware will be compiled for the PineCone BL602 Board.</p>
+<p>Also check out the <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/targets/pinecone_app/pkg.yml"><strong>Target Package</strong></a> and the <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/targets/pinecone_app/syscfg.yml"><strong>Target Configuration</strong></a>.</p>
 <h1 id="build-the-firmware" class="section-header"><a href="#build-the-firmware">8 Build the Firmware</a></h1>
 <p>TODO</p>
 <pre><code class="language-bash">#  Download the source files

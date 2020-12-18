@@ -299,15 +299,19 @@ In future we'll have a proper Reboot Log and a User File System for saving files
 
 # Set Firmware Target
 
-TODO
+We select the Mynewt Firmware to be built by creating a Firmware Target...
 
-[`targets/pinecone_app/target.yml`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/targets/pinecone_app/target.yml)
+-   __PineCone Firmware Target__: [`targets/pinecone_app/target.yml`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/targets/pinecone_app/target.yml)
 
 ```yaml
 target.app: apps/blinky
 target.bsp: "hw/bsp/pinecone"
 target.build_profile: debug
 ```
+
+Here we specify that our firmware code comes from the [Blinky Sample App](https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/apps/blinky). And our firmware will be compiled for the PineCone BL602 Board.
+
+Also check out the [__Target Package__](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/targets/pinecone_app/pkg.yml) and the [__Target Configuration__](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/targets/pinecone_app/syscfg.yml).
 
 # Build the Firmware
 
