@@ -430,20 +430,26 @@ objsize
 <p><img src="https://lupyuen.github.io/images/mynewt-hal.png" alt="Missing Functions in Mynewt HAL" /></p>
 <p><em>Missing Functions in Mynewt HAL</em></p>
 <p>We can see that Mynewt's HAL consists of low-level functions that control BL602's hardware functions: Flash Memory, Interrupts, Watchdog, GPIO, ...</p>
-<p>We'll be filling in these missing functions someday... But for now I have inserted Stub Functions.</p>
-<p>Which means that the firmware will build OK... Just that GPIO and the other features won't actually work when we run the firmware.</p>
+<p>We'll be filling in these missing HAL functions someday... But for now I have inserted Stub Functions.</p>
+<p>Which means that the firmware will build OK... Just that GPIO and other features won't actually work when we run the firmware.</p>
 <p><em>How shall we fill in the HAL Functions for PineCone?</em></p>
 <p>The HAL functions (GPIO, I2C, SPI, ...) are already implemented here...</p>
 <ul>
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/components"><strong>BL602 IoT SDK Firmware Components</strong></a></li>
 </ul>
-<p>We shall copy and paste the source files from above and embed them inside here...</p>
+<p>We shall copy and paste the source files from above and embed them here...</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/hw/mcu/bl/bl602/src/ext"><strong>Mynewt External Source Files for BL602</strong></a></li>
 </ul>
-<p>The BL602 SDK Functions will look different from the Mynewt HAL API. Thus we'll have to create some adapter code in C to make the BL602 Functions look like the Mynewt HAL.</p>
+<p>The BL602 SDK Functions look different from the Mynewt HAL API. Thus we'll have to create some adapter code in C to make the BL602 Functions look like the Mynewt HAL.</p>
+<p>The code that adapts the BL602 SDK to Mynewt HAL shall be placed here...</p>
+<ul>
+<li><a href="https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/hw/mcu/bl/bl602/src"><strong>Mynewt HAL for BL602</strong></a></li>
+</ul>
+<p>As we can see from the GPIO pic below, our job now is to <strong>adapt the BL602 SDK</strong> (left) <strong>to the Mynewt HAL</strong> (right).</p>
 <p>(For reference: Here's how the <a href="https://github.com/apache/mynewt-core/tree/master/hw/mcu/sifive/fe310/src">Mynewt HAL for SiFive FE310</a> is adapted from the <a href="https://github.com/apache/mynewt-core/tree/master/hw/mcu/sifive/src/ext/freedom-e-sdk_3235929">FE310 SDK</a>)</p>
 <p><img src="https://lupyuen.github.io/images/mynewt-hal2.png" alt="BL602 GPIO SDK (left) vs Mynewt GPIO HAL (right)" /></p>
+<p><em>BL602 GPIO SDK (left) vs Mynewt GPIO HAL (right)</em></p>
 <h1 id="implement-start-code" class="section-header"><a href="#implement-start-code">10 Implement Start Code</a></h1>
 <p>TODO</p>
 <p>We are using...</p>
