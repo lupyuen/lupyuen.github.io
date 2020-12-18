@@ -422,11 +422,11 @@ Which means that the firmware will build OK... Just that GPIO and other features
 
 _How shall we fill in the HAL Functions for PineCone?_
 
-The HAL functions (GPIO, I2C, SPI, ...) are already implemented here...
+The BL602 HAL functions (GPIO, I2C, SPI, ...) are already implemented here...
 
 -  [__BL602 IoT SDK Firmware Components__](https://github.com/lupyuen/bl_iot_sdk/tree/master/components)
 
-We shall copy and paste the source files from above and embed them here...
+We shall copy the source files from above and embed them here...
 
 -  [__Mynewt External Source Files for BL602__](https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/hw/mcu/bl/bl602/src/ext)
 
