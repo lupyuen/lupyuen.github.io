@@ -134,7 +134,7 @@ The code here was derived from SiFive HiFive1 Board: [`hw/bsp/hifive1`](https://
 
 # Define Linker Script
 
-The Linker Script tells GCC about the Memory Layout for executing our firmware...
+The Linker Script tells GCC Compiler about the Memory Layout for executing our firmware...
 
 1.  __Flash Memory Area__: For firmware code and read-only data
 
@@ -147,7 +147,7 @@ Here's our Linker Script for PineCone...
 ```text
 MEMORY
 {
-  /* Use this memory layout when firmware is loaded into RAM. 
+  /* Use this memory layout when firmware is loaded into cache memory. 
      Based on https://github.com/lupyuen/pinecone-rust/blob/main/memory.x */
   flash (rxai!w) : ORIGIN = 0x22008000, LENGTH = 48K /* Instruction Cache Memory */
   ram   (wxa!ri) : ORIGIN = 0x22014000, LENGTH = 48K /* Data Cache Memory */
@@ -159,7 +159,8 @@ Note that we're loading the firmware code and read-only data into BL602's Instru
 In future when we're ready to load our firmware into Flash Memory, we'll use this memory layout instead...
 
 ```text
-  /* TODO: Use this memory layout when firmware is loaded into Flash Memory */
+  /* TODO: Use this memory layout when firmware is loaded into Flash Memory 
+     Based on Based on https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602/evb/ld/flash_rom.ld */
   flash (rxai!w) : ORIGIN = 0x23000000, LENGTH = 4M   /* Flash Memory */
   ram   (wxa!ri) : ORIGIN = 0x4200c000, LENGTH = 216K /* RAM          */
 ```
@@ -190,7 +191,7 @@ TODO
 [`hw/bsp/pinecone/bsp.yml`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/bsp/pinecone/bsp.yml)
 
 ```yaml
-# BL602 RAM starts at 0x2200 8000, size 48 KB
+# BL602 Instruction Cache Memory starts at 0x2200 8000, size 48 KB
 # Based on https://github.com/lupyuen/pinecone-rust/blob/main/memory.x
 bsp.flash_map:
     areas:
@@ -219,6 +220,8 @@ bsp.flash_map:
             size:    1kB    # 0x400
 ```
 
+User areas...
+
 ```yaml
         # User areas.
         # Reboot Log
@@ -237,7 +240,9 @@ bsp.flash_map:
             size:    1kB    # 0x400
 ```
 
-Use this memory layout when firmware is loaded into Flash Memory
+## Alternative Firmware Memory Map
+
+Use this firmware memory map when firmware is loaded into Flash Memory
 
 ```yaml
 # TODO: Use this memory layout when firmware is loaded into Flash Memory
@@ -267,6 +272,8 @@ bsp.flash_map:
             offset:  0x23300000
             size:    4kB       # 0x1000
 ```
+
+User areas...
 
 ```yaml
         # User areas.
