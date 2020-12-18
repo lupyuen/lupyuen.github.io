@@ -131,6 +131,58 @@ The Board Support Package for PineCone contains code that's specific to PineCone
 
 The code here was derived from SiFive HiFive1 Board: [`hw/bsp/hifive1`](https://github.com/apache/mynewt-core/tree/master/hw/bsp/hifive1)
 
+
+# Define Linker Script
+
+The Linker Script tells GCC about the Memory Layout for executing our firmware...
+
+1.  __Flash Memory Area__: For firmware code and read-only data
+
+1.  __RAM Memory Area__: For read/write data
+
+Here's our Linker Script for PineCone...
+
+-   __PineCone Linker Script__: [`hw/bsp/pinecone/bsp_app.ld`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/bsp/pinecone/bsp_app.ld)
+
+```text
+MEMORY
+{
+  /* Use this memory layout when firmware is loaded into RAM. 
+     Based on https://github.com/lupyuen/pinecone-rust/blob/main/memory.x */
+  flash (rxai!w) : ORIGIN = 0x22008000, LENGTH = 48K /* Instruction Cache Memory */
+  ram   (wxa!ri) : ORIGIN = 0x22014000, LENGTH = 48K /* Data Cache Memory */
+}
+```
+
+Note that we're loading the firmware code and read-only data into BL602's Instruction Cache Memory (similar to RAM), not into Flash Memory. (We'll learn why in a while)
+
+In future when we're ready to load our firmware into Flash Memory, we'll use this memory layout instead...
+
+```text
+  /* TODO: Use this memory layout when firmware is loaded into Flash Memory */
+  flash (rxai!w) : ORIGIN = 0x23000000, LENGTH = 4M   /* Flash Memory */
+  ram   (wxa!ri) : ORIGIN = 0x4200c000, LENGTH = 216K /* RAM          */
+```
+
+(This is commented out in [`bsp_app.ld`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/bsp/pinecone/bsp_app.ld))
+
+## Bootloader Image Header
+
+We're presently not using a Bootloader on PineCone...
+
+```text
+/* Bootloader not in use. */
+_imghdr_size = 0x0;
+```
+
+In future when we use the Mynewt Bootloader, we need to reserve some space for the Bootloader Image Header, which is located at the start of the firmware code...
+
+```text
+/* This linker script is used for images and thus contains an image header */
+/* TODO: Uncomment the next line when Bootloader is in use */
+_imghdr_size = 0x20;
+```
+
 # Define Firmware Memory Map
 
 TODO
@@ -138,10 +190,6 @@ TODO
 [`hw/bsp/pinecone/bsp.yml`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/bsp/pinecone/bsp.yml)
 
 ```yaml
-# BL602 Flash Memory Map
-# TODO: Sync with bsp_app.ld
-
-# Use this memory layout when firmware is loaded into RAM
 # BL602 RAM starts at 0x2200 8000, size 48 KB
 # Based on https://github.com/lupyuen/pinecone-rust/blob/main/memory.x
 bsp.flash_map:
@@ -169,7 +217,9 @@ bsp.flash_map:
             device:  0
             offset:  0x22013000
             size:    1kB    # 0x400
+```
 
+```yaml
         # User areas.
         # Reboot Log
         # TODO: Reboot Log not in use
@@ -192,7 +242,7 @@ Use this memory layout when firmware is loaded into Flash Memory
 ```yaml
 # TODO: Use this memory layout when firmware is loaded into Flash Memory
 # BL602 Flash starts at 0x2300 0000, size 4 MB
-# Based on https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602/evb/ld/flash_rom.ld#L7-L13
+# Based on https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602/evb/ld/flash_rom.ld
 bsp.flash_map:
     areas:
         # System areas.
@@ -216,7 +266,9 @@ bsp.flash_map:
             device:  0
             offset:  0x23300000
             size:    4kB       # 0x1000
+```
 
+```yaml
         # User areas.
         # Reboot Log
         FLASH_AREA_REBOOT_LOG:
@@ -231,63 +283,6 @@ bsp.flash_map:
             offset:  0x23200000
             size:    1024kB    # 0x100 000
 ```
-
-Memory map should be...
-
-```text
-Name             Origin             Length             Attributes
-rom              0x0000000021015000 0x000000000000b000 axrl !w
-flash            0x0000000023000000 0x0000000000400000 axrl !w
-ram_tcm          0x000000004200c000 0x0000000000036000 axw
-ram_wifi         0x0000000042042000 0x000000000000a000 axw
-*default*        0x0000000000000000 0xffffffffffffffff
-```
-
-Based on...
-
-[`sdk_app_helloworld.map`](https://github.com/lupyuen/bl_iot_sdk/releases/download/v0.0.4/sdk_app_helloworld.map)
-
-[`flash_rom.ld`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602/evb/ld/flash_rom.ld#L7-L13)
-
-# Define Linker Script
-
-TODO
-
-[`hw/bsp/pinecone/bsp_app.ld`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/bsp/pinecone/bsp_app.ld)
-
-```text
-MEMORY
-{
-  /* Use this memory layout when firmware is loaded into RAM. Based on https://github.com/lupyuen/pinecone-rust/blob/main/memory.x */
-  flash (rxai!w) : ORIGIN = 0x22008000, LENGTH = 48K
-  ram   (wxa!ri) : ORIGIN = 0x22014000, LENGTH = 48K
-}
-```
-
-Use this memory layout when firmware is loaded into Flash Memory
-
-```text
-  /* TODO: Use this memory layout when firmware is loaded into Flash Memory */
-  flash (rxai!w) : ORIGIN = 0x23000000, LENGTH = 4M
-  ram   (wxa!ri) : ORIGIN = 0x4200c000, LENGTH = 216K
-  /* TODO: Add WiFi RAM at 0x4204 2000, length 0xa000 */
-```
-
-Bootloader not in use
-
-```text
-/* TODO: Bootloader not in use. Set Image Header Size to 0x20 when Bootloader is in use */
-_imghdr_size = 0x0;
-```
-
-When Bootloader is in use
-
-```text
-/* This linker script is used for images and thus contains an image header */
-/* TODO: Uncomment the next line when Bootloader is in use */
-_imghdr_size = 0x20;
-```
-
 # Set Firmware Target
 
 TODO

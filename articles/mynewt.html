@@ -70,8 +70,9 @@
 <li><a href="#mynewt-project-and-firmware">2.1 Mynewt Project and Firmware</a><ul></ul></li></ul></li>
 <li><a href="#add-microcontroller-definition">3 Add Microcontroller Definition</a><ul></ul></li>
 <li><a href="#add-board-support-package">4 Add Board Support Package</a><ul></ul></li>
-<li><a href="#define-firmware-memory-map">5 Define Firmware Memory Map</a><ul></ul></li>
-<li><a href="#define-linker-script">6 Define Linker Script</a><ul></ul></li>
+<li><a href="#define-linker-script">5 Define Linker Script</a><ul>
+<li><a href="#bootloader-image-header">5.1 Bootloader Image Header</a><ul></ul></li></ul></li>
+<li><a href="#define-firmware-memory-map">6 Define Firmware Memory Map</a><ul></ul></li>
 <li><a href="#set-firmware-target">7 Set Firmware Target</a><ul></ul></li>
 <li><a href="#build-the-firmware">8 Build the Firmware</a><ul></ul></li>
 <li><a href="#replace-hal-functions-by-stubs">9 Replace HAL Functions by Stubs</a><ul></ul></li>
@@ -187,14 +188,49 @@ compiler.path.objcopy: &quot;riscv-none-embed-objcopy&quot;
 </ul>
 <p>The Board Support Package for PineCone contains code that's specific to PineCone. <a href="https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/hw/bsp/pinecone/src">More details</a></p>
 <p>The code here was derived from SiFive HiFive1 Board: <a href="https://github.com/apache/mynewt-core/tree/master/hw/bsp/hifive1"><code>hw/bsp/hifive1</code></a></p>
-<h1 id="define-firmware-memory-map" class="section-header"><a href="#define-firmware-memory-map">5 Define Firmware Memory Map</a></h1>
+<h1 id="define-linker-script" class="section-header"><a href="#define-linker-script">5 Define Linker Script</a></h1>
+<p>The Linker Script tells GCC about the Memory Layout for executing our firmware...</p>
+<ol>
+<li>
+<p><strong>Flash Memory Area</strong>: For firmware code and read-only data</p>
+</li>
+<li>
+<p><strong>RAM Memory Area</strong>: For read/write data</p>
+</li>
+</ol>
+<p>Here's our Linker Script for PineCone...</p>
+<ul>
+<li><strong>PineCone Linker Script</strong>: <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/bsp/pinecone/bsp_app.ld"><code>hw/bsp/pinecone/bsp_app.ld</code></a></li>
+</ul>
+<pre><code class="language-text">MEMORY
+{
+  /* Use this memory layout when firmware is loaded into RAM. 
+     Based on https://github.com/lupyuen/pinecone-rust/blob/main/memory.x */
+  flash (rxai!w) : ORIGIN = 0x22008000, LENGTH = 48K /* Instruction Cache Memory */
+  ram   (wxa!ri) : ORIGIN = 0x22014000, LENGTH = 48K /* Data Cache Memory */
+}
+</code></pre>
+<p>Note that we're loading the firmware code and read-only data into BL602's Instruction Cache Memory (similar to RAM), not into Flash Memory. (We'll learn why in a while)</p>
+<p>In future when we're ready to load our firmware into Flash Memory, we'll use this memory layout instead...</p>
+<pre><code class="language-text">  /* TODO: Use this memory layout when firmware is loaded into Flash Memory */
+  flash (rxai!w) : ORIGIN = 0x23000000, LENGTH = 4M   /* Flash Memory */
+  ram   (wxa!ri) : ORIGIN = 0x4200c000, LENGTH = 216K /* RAM          */
+</code></pre>
+<p>(This is commented out in <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/bsp/pinecone/bsp_app.ld"><code>bsp_app.ld</code></a>)</p>
+<h2 id="bootloader-image-header" class="section-header"><a href="#bootloader-image-header">5.1 Bootloader Image Header</a></h2>
+<p>We're presently not using a Bootloader on PineCone...</p>
+<pre><code class="language-text">/* Bootloader not in use. */
+_imghdr_size = 0x0;
+</code></pre>
+<p>In future when we use the Mynewt Bootloader, we need to reserve some space for the Bootloader Image Header, which is located at the start of the firmware code...</p>
+<pre><code class="language-text">/* This linker script is used for images and thus contains an image header */
+/* TODO: Uncomment the next line when Bootloader is in use */
+_imghdr_size = 0x20;
+</code></pre>
+<h1 id="define-firmware-memory-map" class="section-header"><a href="#define-firmware-memory-map">6 Define Firmware Memory Map</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/bsp/pinecone/bsp.yml"><code>hw/bsp/pinecone/bsp.yml</code></a></p>
-<pre><code class="language-yaml"># BL602 Flash Memory Map
-# TODO: Sync with bsp_app.ld
-
-# Use this memory layout when firmware is loaded into RAM
-# BL602 RAM starts at 0x2200 8000, size 48 KB
+<pre><code class="language-yaml"># BL602 RAM starts at 0x2200 8000, size 48 KB
 # Based on https://github.com/lupyuen/pinecone-rust/blob/main/memory.x
 bsp.flash_map:
     areas:
@@ -221,8 +257,8 @@ bsp.flash_map:
             device:  0
             offset:  0x22013000
             size:    1kB    # 0x400
-
-        # User areas.
+</code></pre>
+<pre><code class="language-yaml">        # User areas.
         # Reboot Log
         # TODO: Reboot Log not in use
         FLASH_AREA_REBOOT_LOG:
@@ -241,7 +277,7 @@ bsp.flash_map:
 <p>Use this memory layout when firmware is loaded into Flash Memory</p>
 <pre><code class="language-yaml"># TODO: Use this memory layout when firmware is loaded into Flash Memory
 # BL602 Flash starts at 0x2300 0000, size 4 MB
-# Based on https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602/evb/ld/flash_rom.ld#L7-L13
+# Based on https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602/evb/ld/flash_rom.ld
 bsp.flash_map:
     areas:
         # System areas.
@@ -265,8 +301,8 @@ bsp.flash_map:
             device:  0
             offset:  0x23300000
             size:    4kB       # 0x1000
-
-        # User areas.
+</code></pre>
+<pre><code class="language-yaml">        # User areas.
         # Reboot Log
         FLASH_AREA_REBOOT_LOG:
             user_id: 0
@@ -279,42 +315,6 @@ bsp.flash_map:
             device:  0
             offset:  0x23200000
             size:    1024kB    # 0x100 000
-</code></pre>
-<p>Memory map should be...</p>
-<pre><code class="language-text">Name             Origin             Length             Attributes
-rom              0x0000000021015000 0x000000000000b000 axrl !w
-flash            0x0000000023000000 0x0000000000400000 axrl !w
-ram_tcm          0x000000004200c000 0x0000000000036000 axw
-ram_wifi         0x0000000042042000 0x000000000000a000 axw
-*default*        0x0000000000000000 0xffffffffffffffff
-</code></pre>
-<p>Based on...</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/releases/download/v0.0.4/sdk_app_helloworld.map"><code>sdk_app_helloworld.map</code></a></p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602/evb/ld/flash_rom.ld#L7-L13"><code>flash_rom.ld</code></a></p>
-<h1 id="define-linker-script" class="section-header"><a href="#define-linker-script">6 Define Linker Script</a></h1>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/bsp/pinecone/bsp_app.ld"><code>hw/bsp/pinecone/bsp_app.ld</code></a></p>
-<pre><code class="language-text">MEMORY
-{
-  /* Use this memory layout when firmware is loaded into RAM. Based on https://github.com/lupyuen/pinecone-rust/blob/main/memory.x */
-  flash (rxai!w) : ORIGIN = 0x22008000, LENGTH = 48K
-  ram   (wxa!ri) : ORIGIN = 0x22014000, LENGTH = 48K
-}
-</code></pre>
-<p>Use this memory layout when firmware is loaded into Flash Memory</p>
-<pre><code class="language-text">  /* TODO: Use this memory layout when firmware is loaded into Flash Memory */
-  flash (rxai!w) : ORIGIN = 0x23000000, LENGTH = 4M
-  ram   (wxa!ri) : ORIGIN = 0x4200c000, LENGTH = 216K
-  /* TODO: Add WiFi RAM at 0x4204 2000, length 0xa000 */
-</code></pre>
-<p>Bootloader not in use</p>
-<pre><code class="language-text">/* TODO: Bootloader not in use. Set Image Header Size to 0x20 when Bootloader is in use */
-_imghdr_size = 0x0;
-</code></pre>
-<p>When Bootloader is in use</p>
-<pre><code class="language-text">/* This linker script is used for images and thus contains an image header */
-/* TODO: Uncomment the next line when Bootloader is in use */
-_imghdr_size = 0x20;
 </code></pre>
 <h1 id="set-firmware-target" class="section-header"><a href="#set-firmware-target">7 Set Firmware Target</a></h1>
 <p>TODO</p>
