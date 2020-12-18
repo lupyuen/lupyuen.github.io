@@ -420,7 +420,17 @@ We'll be filling in these missing functions someday... But for now I have insert
 
 Which means that the firmware will build OK... Just that GPIO and the other features won't actually work when we run the firmware.
 
-_How shall we fill in the HAL Functions?_
+_How shall we fill in the HAL Functions for PineCone?_
+
+The HAL functions (GPIO, I2C, SPI, ...) are already implemented here...
+
+-  [__BL602 IoT SDK Firmware Components__](https://github.com/lupyuen/bl_iot_sdk/tree/master/components)
+
+We shall copy and paste the source files from above and embed them inside here...
+
+-  [__Mynewt External Source Files for BL602__](https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/hw/mcu/bl/bl602/src/ext)
+
+The BL602 SDK Functions will look different from the Mynewt HAL API. Thus we'll have to create some adapter code in C to make the BL602 Functions work like the Mynewt HAL.
 
 # Fill in Start Code
 
