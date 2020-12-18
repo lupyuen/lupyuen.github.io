@@ -470,21 +470,56 @@ When we compare Mynewt's Start Code with the BL602 SDK, we see that the BL602 SD
 
 This code will have to be inserted into Mynewt's Start Code, when our firmware is ready to be loaded into Flash Memory.
 
-# Decouple SiFive FE310 from RV32IMAC
+# rv32imfc vs rv32imac
+
+[According to the SDK](https://github.com/lupyuen/bl_iot_sdk/blob/master/make_scripts_riscv/project.mk#L223), BL602 uses a RISC-V Core (SiFive E21) that's designated __`rv32imfc`__ based on its capabilities...
+
+| Designation | Meaning |
+|:---:|:---|
+| __`rv32i`__ | 32-bit RISC-V with 32 registers
+| __`m`__ | Multiplication + Division
+| __`f`__ | Single-Precision Hardware Floating Point
+| __`c`__ | Compressed Instructions
+| __`a`__ | Atomic Instructions
+
+[(Here's the whole list)](https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions)
+
+However Mynewt today supports only __`rv32imac`__...
+
+| Designation | Meaning |
+|:---:|:---|
+| __`rv32i`__ | 32-bit RISC-V with 32 registers
+| __`m`__ | Multiplication + Division
+| __`a`__ | __Atomic Instructions__
+| __`c`__ | Compressed Instructions
+
+_What's the difference?_
+
+Mynewt doesn't support RISC-V __Hardware Floating Point__ yet... But it supports __Atomic Instructions__ (for data synchronisation).
+
+Thus for now we'll compile our Mynewt Firmware for `rv32imac` (without Hardware Floating Point)...
+
+-   [__Mynewt Support for `rv32imac`__](https://github.com/apache/mynewt-core/tree/master/kernel/os/src/arch/rv32imac)
+
+In future we'll have to implement `rv32imfc` (with Hardware Floating Point) in Mynewt.
+
+![SiFive FE310 Reference in Mynewt rv32imac](https://lupyuen.github.io/images/mynewt-fe310.png)
+
+_SiFive FE310 Reference in Mynewt rv32imac_
+
+# Decouple SiFive FE310 from rv32imac
 
 TODO
+
+There's a peculiar problem with RISC-V on Mynewt...
 
 Fix dependency of rv32imac on fe310...
 
 ```text
-Error: In file included from repos/apache-mynewt-core/kernel/os/include/os/os_fault.h:24,
-                from repos/apache-mynewt-core/libc/baselibc/include/assert.h:24,
-                from repos/apache-mynewt-core/hw/hal/src/hal_flash.c:21:
+Error: In file included from ...
 repos/apache-mynewt-core/kernel/os/include/os/arch/rv32imac/os/os_arch.h:24:10: fatal error: mcu/fe310.h: No such file or directory
 #include "mcu/fe310.h"
 ```
-
-![SiFive FE310 Reference in RV32IMAC](https://lupyuen.github.io/images/mynewt-fe310.png)
 
 # Inspect the Firmware
 
