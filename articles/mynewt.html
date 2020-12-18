@@ -76,7 +76,7 @@
 <li><a href="#future-flash-map">6.1 Future Flash Map</a><ul></ul></li></ul></li>
 <li><a href="#set-firmware-target">7 Set Firmware Target</a><ul></ul></li>
 <li><a href="#build-the-firmware">8 Build the Firmware</a><ul></ul></li>
-<li><a href="#implement-hal-functions">9 Implement HAL Functions</a><ul></ul></li>
+<li><a href="#implement-hardware-abstraction-layer">9 Implement Hardware Abstraction Layer</a><ul></ul></li>
 <li><a href="#implement-start-code">10 Implement Start Code</a><ul></ul></li>
 <li><a href="#decouple-sifive-fe310-from-rv32imac">11 Decouple SiFive FE310 from RV32IMAC</a><ul></ul></li>
 <li><a href="#inspect-the-firmware">12 Inspect the Firmware</a><ul></ul></li>
@@ -424,7 +424,7 @@ objsize
 <p>The compiled ELF firmware is located at...</p>
 <pre><code class="language-text">pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky/blinky.elf
 </code></pre>
-<h1 id="implement-hal-functions" class="section-header"><a href="#implement-hal-functions">9 Implement HAL Functions</a></h1>
+<h1 id="implement-hardware-abstraction-layer" class="section-header"><a href="#implement-hardware-abstraction-layer">9 Implement Hardware Abstraction Layer</a></h1>
 <p>The above steps will build successfully a minimal port of Mynewt for PineCone.</p>
 <p>That's because I have fixed many missing functions in Mynewt's Hardware Abstraction Layer (HAL), like these...</p>
 <p><img src="https://lupyuen.github.io/images/mynewt-hal.png" alt="Missing Functions in Mynewt HAL" /></p>

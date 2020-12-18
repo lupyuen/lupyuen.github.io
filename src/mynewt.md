@@ -404,7 +404,7 @@ The compiled ELF firmware is located at...
 pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky/blinky.elf
 ```
 
-# Implement HAL Functions
+# Implement Hardware Abstraction Layer
 
 The above steps will build successfully a minimal port of Mynewt for PineCone.
 
