@@ -131,7 +131,6 @@ The Board Support Package for PineCone contains code that's specific to PineCone
 
 The code here was derived from SiFive HiFive1 Board: [`hw/bsp/hifive1`](https://github.com/apache/mynewt-core/tree/master/hw/bsp/hifive1)
 
-
 # Define Linker Script
 
 The Linker Script tells GCC Compiler about the Memory Layout for executing our firmware...
@@ -315,6 +314,8 @@ Also check out the [__Target Package__](https://github.com/lupyuen/pinecone-rust
 
 # Build the Firmware
 
+We have created a minimal port of Mynewt to PineCone. Here's how we build the firmware...
+
 1.  Install Mynewt's `newt` tool according to the instructions here...
 
     -   [Installing `newt`](https://mynewt.apache.org/latest/newt/install/index.html)
@@ -405,9 +406,21 @@ pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky/blinky.elf
 
 # Replace HAL Functions by Stubs
 
-TODO
+The above steps will build successfully a minimal port of Mynewt for PineCone.
 
-![Mynewt HAL](https://lupyuen.github.io/images/mynewt-hal.png)
+That's because I have fixed many missing functions in Mynewt's Hardware Abstraction Layer (HAL), like these...
+
+![Missing Functions in Mynewt HAL](https://lupyuen.github.io/images/mynewt-hal.png)
+
+_Missing Functions in Mynewt HAL_
+
+We can see that Mynewt's HAL consists of low-level functions that control BL602's hardware functions: Flash Memory, Interrupts, Watchdog, GPIO, ...
+
+We'll be filling in these missing functions someday... But for now I have inserted Stub Functions.
+
+Which means that the firmware will build OK... Just that GPIO and the other features won't actually work when we run the firmware.
+
+_How shall we fill in the HAL Functions?_
 
 # Fill in Start Code
 
