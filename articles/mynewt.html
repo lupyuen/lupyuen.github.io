@@ -384,12 +384,45 @@ newt install
 <span class="ident">pinecone</span><span class="op">-</span><span class="ident">rust</span><span class="op">-</span><span class="ident">mynewt</span><span class="op">/</span><span class="ident">xpack</span><span class="op">-</span><span class="ident">riscv</span><span class="op">-</span><span class="ident">none</span><span class="op">-</span><span class="ident">embed</span><span class="op">-</span><span class="ident">gcc</span></pre></div>
 </li>
 <li>
-<p>Build the firmware...</p>
+<p>At the command prompt, enter...</p>
 <pre><code class="language-bash">export PATH=&quot;$PWD/xpack-riscv-none-embed-gcc/bin:$PATH&quot;
 newt build pinecone_app
 </code></pre>
 </li>
 </ol>
+<p>We should see this...</p>
+<pre><code class="language-text">Linking /Users/Luppy/pinecone/pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky/blinky.elf
+Target successfully built: targets/pinecone_app
+</code></pre>
+<p>Followed by the size of the firmware (8,488 bytes) and its library components...</p>
+<pre><code class="language-text">+ newt size -v pinecone_app
+Size of Application Image: app
+Mem flash: 0x22008000-0x22014000
+Mem ram: 0x22014000-0x22020000
+  flash     ram 
+      6     525 *fill*
+    172       0 @apache-mynewt-core_hw_hal.a
+   4494    8213 @apache-mynewt-core_kernel_os.a
+     80       0 @apache-mynewt-core_libc_baselibc.a
+    702     128 @apache-mynewt-core_sys_flash_map.a
+      2       0 @apache-mynewt-core_sys_log_modlog.a
+    782      29 @apache-mynewt-core_sys_mfg.a
+     30       5 @apache-mynewt-core_sys_sysinit.a
+     72       0 @apache-mynewt-core_util_mem.a
+     60       8 apps_blinky.a
+     44      12 hw_bsp_pinecone.a
+    580     228 hw_mcu_bl_bl602.a
+     92       0 pinecone_app-sysinit-app.a
+    292    1064 libg.a
+Loading compiler pinecone-rust-mynewt/compiler/riscv-none-embed, buildProfile debug
+
+objsize
+   text    data     bss     dec     hex filename
+   8488      28    9104   17620    44d4 pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky/blinky.elf
+</code></pre>
+<p>The compiled ELF firmware is located at...</p>
+<pre><code class="language-text">pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky/blinky.elf
+</code></pre>
 <h1 id="replace-hal-functions-by-stubs" class="section-header"><a href="#replace-hal-functions-by-stubs">9 Replace HAL Functions by Stubs</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/mynewt-hal.png" alt="Mynewt HAL" /></p>

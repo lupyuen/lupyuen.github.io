@@ -354,12 +354,54 @@ Also check out the [__Target Package__](https://github.com/lupyuen/pinecone-rust
     pinecone-rust-mynewt/xpack-riscv-none-embed-gcc
     ```
 
-1.  Build the firmware...
+1.  At the command prompt, enter...
 
     ```bash
     export PATH="$PWD/xpack-riscv-none-embed-gcc/bin:$PATH"
     newt build pinecone_app
     ```
+
+We should see this...
+
+```text
+Linking /Users/Luppy/pinecone/pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky/blinky.elf
+Target successfully built: targets/pinecone_app
+```
+
+Followed by the size of the firmware (8,488 bytes) and its library components...
+
+```text
++ newt size -v pinecone_app
+Size of Application Image: app
+Mem flash: 0x22008000-0x22014000
+Mem ram: 0x22014000-0x22020000
+  flash     ram 
+      6     525 *fill*
+    172       0 @apache-mynewt-core_hw_hal.a
+   4494    8213 @apache-mynewt-core_kernel_os.a
+     80       0 @apache-mynewt-core_libc_baselibc.a
+    702     128 @apache-mynewt-core_sys_flash_map.a
+      2       0 @apache-mynewt-core_sys_log_modlog.a
+    782      29 @apache-mynewt-core_sys_mfg.a
+     30       5 @apache-mynewt-core_sys_sysinit.a
+     72       0 @apache-mynewt-core_util_mem.a
+     60       8 apps_blinky.a
+     44      12 hw_bsp_pinecone.a
+    580     228 hw_mcu_bl_bl602.a
+     92       0 pinecone_app-sysinit-app.a
+    292    1064 libg.a
+Loading compiler pinecone-rust-mynewt/compiler/riscv-none-embed, buildProfile debug
+
+objsize
+   text    data     bss     dec     hex filename
+   8488      28    9104   17620    44d4 pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky/blinky.elf
+```
+
+The compiled ELF firmware is located at...
+
+```text
+pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky/blinky.elf
+```
 
 # Replace HAL Functions by Stubs
 
