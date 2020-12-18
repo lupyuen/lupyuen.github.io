@@ -430,7 +430,9 @@ We shall copy and paste the source files from above and embed them inside here..
 
 -  [__Mynewt External Source Files for BL602__](https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/hw/mcu/bl/bl602/src/ext)
 
-The BL602 SDK Functions will look different from the Mynewt HAL API. Thus we'll have to create some adapter code in C to make the BL602 Functions work like the Mynewt HAL.
+The BL602 SDK Functions will look different from the Mynewt HAL API. Thus we'll have to create some adapter code in C to make the BL602 Functions look like the Mynewt HAL.
+
+(For reference: Here's how the [Mynewt HAL for SiFive FE310](https://github.com/apache/mynewt-core/tree/master/hw/mcu/sifive/fe310/src) is adapted from the [FE310 SDK](https://github.com/apache/mynewt-core/tree/master/hw/mcu/sifive/src/ext/freedom-e-sdk_3235929))
 
 # Fill in Start Code
 
