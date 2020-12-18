@@ -495,16 +495,26 @@ objsize
 <p><img src="https://lupyuen.github.io/images/mynewt-fe310.png" alt="SiFive FE310 Reference in Mynewt rv32imac" /></p>
 <p><em>SiFive FE310 Reference in Mynewt rv32imac</em></p>
 <h1 id="decouple-sifive-fe310-from-rv32imac" class="section-header"><a href="#decouple-sifive-fe310-from-rv32imac">12 Decouple SiFive FE310 from rv32imac</a></h1>
-<p>TODO</p>
-<p>There's a peculiar problem with RISC-V on Mynewt...</p>
-<p>Fix dependency of rv32imac on fe310...</p>
+<p>There's a peculiar problem compiling RISC-V Firmware on Mynewt...</p>
 <pre><code class="language-text">Error: In file included from ...
 repos/apache-mynewt-core/kernel/os/include/os/arch/rv32imac/os/os_arch.h:24:10: fatal error: mcu/fe310.h: No such file or directory
 #include &quot;mcu/fe310.h&quot;
 </code></pre>
+<p>This error shows that <code>rv32imac</code>, the RISC-V support in Mynewt, is dependent on SiFive FE310. Which looks really odd. </p>
+<p>(Probably done that way because FE310 is the only RISC-V Microcontroller supported by Mynewt)</p>
+<p>We work around this problem by creating Stub Files like these...</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/mcu/bl/bl602/include/mcu/fe310.h"><code>mcu/fe310.h</code></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/mcu/bl/bl602/include/env/freedom-e300-hifive1/platform.h"><code>env/freedom-e300-hifive1/platform.h</code></a></p>
+</li>
+</ul>
+<p>These Stub Files point to the correct Header Files for BL602, so that our BL602 Firmware can be compiled successfully.</p>
+<p><img src="https://lupyuen.github.io/images/mynewt-disassembly.png" alt="Mynewt Disassembly" /></p>
 <h1 id="inspect-the-firmware" class="section-header"><a href="#inspect-the-firmware">13 Inspect the Firmware</a></h1>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/mynewt-disassembly.png" alt="Mynewt Disassembly" /></p>
 <pre><code class="language-text">Linking /Users/Luppy/pinecone/pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky/blinky.elf
 Target successfully built: targets/pinecone_app
 + newt size -v pinecone_app
