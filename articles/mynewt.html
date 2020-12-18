@@ -497,7 +497,8 @@ objsize
 <h1 id="decouple-sifive-fe310-from-rv32imac" class="section-header"><a href="#decouple-sifive-fe310-from-rv32imac">12 Decouple SiFive FE310 from rv32imac</a></h1>
 <p>There's a peculiar problem compiling RISC-V Firmware on Mynewt...</p>
 <pre><code class="language-text">Error: In file included from ...
-repos/apache-mynewt-core/kernel/os/include/os/arch/rv32imac/os/os_arch.h:24:10: fatal error: mcu/fe310.h: No such file or directory
+repos/apache-mynewt-core/kernel/os/include/os/arch/rv32imac/os/os_arch.h:24:10:
+fatal error: mcu/fe310.h: No such file or directory
 #include &quot;mcu/fe310.h&quot;
 </code></pre>
 <p>This error shows that <code>rv32imac</code>, the RISC-V support in Mynewt, is dependent on SiFive FE310. Which looks really odd. </p>

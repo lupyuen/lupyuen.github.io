@@ -513,7 +513,8 @@ There's a peculiar problem compiling RISC-V Firmware on Mynewt...
 
 ```text
 Error: In file included from ...
-repos/apache-mynewt-core/kernel/os/include/os/arch/rv32imac/os/os_arch.h:24:10: fatal error: mcu/fe310.h: No such file or directory
+repos/apache-mynewt-core/kernel/os/include/os/arch/rv32imac/os/os_arch.h:24:10:
+fatal error: mcu/fe310.h: No such file or directory
 #include "mcu/fe310.h"
 ```
 
