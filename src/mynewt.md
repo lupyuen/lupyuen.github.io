@@ -616,7 +616,7 @@ We're ready to run our Mynewt Firmware on PineCone!
 
 # Debug Firmware with VSCode
 
-Here's how we run and debug our Mynewt Firmware with [__VSCode__](https://code.visualstudio.com/)!
+Now we run and debug our Mynewt Firmware with [__VSCode__](https://code.visualstudio.com/)...
 
 1.  Launch VSCode
 
