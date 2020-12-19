@@ -722,10 +722,36 @@ We'll need to port the UART HAL from the BL602 IoT SDK to Mynewt.
 
 # What's Next
 
-TODO
+There's more work to be done porting Mynewt to PineCone...
 
-Failed port to gd32
-Now easier to port
+1.  __Port the Hardware Abstraction Layer__ from BL602 IoT SDK to Mynewt: GPIO, UART, PWM, I2C, SPI...
+
+    (Assuming we find a good way to test the interfaces)
+
+1.  __Bluetooth LE__: We shall reverse engineer the Bluetooth LE Stack on PineCone. Then replace it by the open source [__NimBLE Stack__](https://github.com/apache/mynewt-nimble).
+
+1.  __WiFi__: Also needs to be reverse engineered. We might be able to port this Mynewt WiFi Driver to PineCone...
+
+    - [`mynewt_arduino_zero/libs/winc1500`](https://github.com/runtimeco/mynewt_arduino_zero/tree/master/libs/winc1500)
+
+    - [`mynewt_arduino_zero/apps/winc1500_wifi`](https://github.com/runtimeco/mynewt_arduino_zero/tree/master/apps/winc1500_wifi)
+
+
+1.  __Rust__ will be supported so that we may build complex firmware without falling into traps with C Pointers.
+
+Then we shall have a fully __Open Source Operating System for PineCone!__
+
+_How confident are we of porting Mynewt to PineCone BL602?_
+
+One year ago I [failed to port Mynewt](https://medium.com/@ly.lee/hey-gd32-vf103-on-risc-v-i-surrender-for-now-d39d0c7b0001?source=friends_link&sk=c0504ac574bf571219fabe174eef4de5) to an earlier RISC-V Microcontroller (GD32 VF103)
+
+_But Second's Time The Charm!_
+
+PineCone's BL602 Microcontroller runs on a RISC-V Core that's similar to SiFive FE310. And porting Mynewt from FE310 to BL602 seems quick and easy.
+
+[(As seen on Twitter)](https://twitter.com/MisterTechBlog/status/1338759961526951937?s=19)
+
+Stay Tuned!
 
 -   [Check out my articles](https://lupyuen.github.io)
 
@@ -834,3 +860,118 @@ newt target set pinecone_app build_profile=debug
 ```
 
 https://mynewt.apache.org/latest/tutorials/blinky/blinky_stm32f4disc.html
+
+# Appendix: VSCode Settings
+
+## Debugger Settings
+
+TODO
+
+The VSCode Debugger Settings may be found in [`.vscode/launch.json`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/.vscode/launch.json)
+
+This file defines... 
+
+-   Firmware Path (`target`)
+
+-   GDB Path (`gdbpath`)
+
+-   OpenOCD Path (in `autorun`, after `target remote`)
+
+```json
+{
+    //  VSCode Debugger Config for PineCone BL602
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "BL602",
+            "type": "gdb",
+            "request": "launch",
+            //  Application Executable to be flashed before debugging
+            "target": "${workspaceRoot}/target/riscv32imac-unknown-none-elf/debug/bl602-rust-guide",
+            "cwd": "${workspaceRoot}",
+            "gdbpath": "${workspaceRoot}/xpack-riscv-none-embed-gcc/bin/riscv-none-embed-gdb",
+            "valuesFormatting": "parseText",
+            "autorun": [
+                //  Before loading the Application, run these gdb commands.
+                //  Set timeout for executing openocd commands.
+                "set remotetimeout 600",
+
+                //  This indicates that an unrecognized breakpoint location should automatically result in a pending breakpoint being created.
+                "set breakpoint pending on",
+
+                //  Set breakpoints
+                "break main",  //  Break at main()
+
+                //  Launch OpenOCD. Based on https://www.justinmklam.com/posts/2017/10/vscode-debugger-setup/
+                "target remote | xpack-openocd/bin/openocd -c \"gdb_port pipe; log_output openocd.log\" -f openocd.cfg ",
+
+                //  Load the program into cache memory
+                "load",
+
+                //  Run the program until we hit the main() breakpoint
+                "continue",
+            ]
+        }
+    ]
+}
+```
+
+## Task Settings
+
+The VSCode Task Settings may be found in [`.vscode/tasks.json`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/.vscode/tasks.json)
+
+This file defines the VSCode Task for building the Rust Firmware...
+
+```json
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            //  Build firmware
+            "label": "Build Firmware",
+            "type": "shell",
+            "windows": {
+                "command": "cmd",
+                "args": [
+                    "/c",
+                    " cargo build && echo ✅ ◾ ️Done! "
+                ]
+            },
+            "osx": {
+                "command": "bash",
+                "args": [
+                    "-c", "-l",
+                    " pkill openocd ; set -e -x ; cargo build ; echo ✅ ◾ ️Done! "
+                ]
+            },
+            "linux": {
+                "command": "bash",
+                "args": [
+                    "-c", "-l",
+                    " pkill openocd ; set -e -x ; cargo build ; echo ✅ ◾ ️Done! "
+                ]
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [ 
+                {
+                    //  Problem matcher for GNU Linker, e.g. /Users/Luppy/mynewt/stm32bluepill-mynewt-sensor/apps/my_sensor_app/src/ATParser.h:82: undefined reference to `operator delete[](void*)'
+                    "fileLocation": [ "absolute" ],
+                    "pattern": {
+                        "regexp": "^(/.*):(\\d+):\\s+(.*)$",
+                        "file": 1,
+                        "line": 2,
+                        "message": 3,
+                        // "code": 3,
+                        // "severity": 4,
+                    }                    
+                }
+            ],
+            "presentation": {
+                "clear": true
+            }
+        },
+        ...
+```

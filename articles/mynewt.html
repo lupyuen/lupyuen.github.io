@@ -91,7 +91,10 @@
 <li><a href="#whats-next">16 What's Next</a><ul></ul></li>
 <li><a href="#appendix-load-firmware-to-cache-memory-not-flash-memory">17 Appendix: Load Firmware to Cache Memory, not Flash Memory</a><ul></ul></li>
 <li><a href="#appendix-install-newt">18 Appendix: Install newt</a><ul></ul></li>
-<li><a href="#appendix-create-the-mynewt-firmware">19 Appendix: Create the Mynewt Firmware</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/mynewt-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board with Sipeed JTAG Debugger" /></p>
+<li><a href="#appendix-create-the-mynewt-firmware">19 Appendix: Create the Mynewt Firmware</a><ul></ul></li>
+<li><a href="#appendix-vscode-settings">20 Appendix: VSCode Settings</a><ul>
+<li><a href="#debugger-settings">20.1 Debugger Settings</a><ul></ul></li>
+<li><a href="#task-settings">20.2 Task Settings</a><ul></ul></li></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/mynewt-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board with Sipeed JTAG Debugger" /></p>
 <p>Our journey so far... </p>
 <ol>
 <li>
@@ -674,9 +677,37 @@ Mem ram:   0x22014000-0x22020000
 <p>PineCone's UART Port is wired to the USB Connector. We could test PineCone's UART Port over USB.</p>
 <p>We'll need to port the UART HAL from the BL602 IoT SDK to Mynewt.</p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">16 What's Next</a></h1>
-<p>TODO</p>
-<p>Failed port to gd32
-Now easier to port</p>
+<p>There's more work to be done porting Mynewt to PineCone...</p>
+<ol>
+<li>
+<p><strong>Port the Hardware Abstraction Layer</strong> from BL602 IoT SDK to Mynewt: GPIO, UART, PWM, I2C, SPI...</p>
+<p>(Assuming we find a good way to test the interfaces)</p>
+</li>
+<li>
+<p><strong>Bluetooth LE</strong>: We shall reverse engineer the Bluetooth LE Stack on PineCone. Then replace it by the open source <a href="https://github.com/apache/mynewt-nimble"><strong>NimBLE Stack</strong></a>.</p>
+</li>
+<li>
+<p><strong>WiFi</strong>: Also needs to be reverse engineered. We might be able to port this Mynewt WiFi Driver to PineCone...</p>
+<ul>
+<li>
+<p><a href="https://github.com/runtimeco/mynewt_arduino_zero/tree/master/libs/winc1500"><code>mynewt_arduino_zero/libs/winc1500</code></a></p>
+</li>
+<li>
+<p><a href="https://github.com/runtimeco/mynewt_arduino_zero/tree/master/apps/winc1500_wifi"><code>mynewt_arduino_zero/apps/winc1500_wifi</code></a></p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Rust</strong> will be supported so that we may build complex firmware without falling into traps with C Pointers.</p>
+</li>
+</ol>
+<p>Then we shall have a fully <strong>Open Source Operating System for PineCone!</strong></p>
+<p><em>How confident are we of porting Mynewt to PineCone BL602?</em></p>
+<p>One year ago I <a href="https://medium.com/@ly.lee/hey-gd32-vf103-on-risc-v-i-surrender-for-now-d39d0c7b0001?source=friends_link&amp;sk=c0504ac574bf571219fabe174eef4de5">failed to port Mynewt</a> to an earlier RISC-V Microcontroller (GD32 VF103)</p>
+<p><em>But Second's Time The Charm!</em></p>
+<p>PineCone's BL602 Microcontroller runs on a RISC-V Core that's similar to SiFive FE310. And porting Mynewt from FE310 to BL602 seems quick and easy.</p>
+<p><a href="https://twitter.com/MisterTechBlog/status/1338759961526951937?s=19">(As seen on Twitter)</a></p>
+<p>Stay Tuned!</p>
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io">Check out my articles</a></p>
@@ -758,6 +789,113 @@ newt target set pinecone_app bsp=@apache-mynewt-core/hw/bsp/hifive1
 newt target set pinecone_app build_profile=debug
 </code></pre>
 <p>https://mynewt.apache.org/latest/tutorials/blinky/blinky_stm32f4disc.html</p>
+<h1 id="appendix-vscode-settings" class="section-header"><a href="#appendix-vscode-settings">20 Appendix: VSCode Settings</a></h1><h2 id="debugger-settings" class="section-header"><a href="#debugger-settings">20.1 Debugger Settings</a></h2>
+<p>TODO</p>
+<p>The VSCode Debugger Settings may be found in <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/.vscode/launch.json"><code>.vscode/launch.json</code></a></p>
+<p>This file defines... </p>
+<ul>
+<li>
+<p>Firmware Path (<code>target</code>)</p>
+</li>
+<li>
+<p>GDB Path (<code>gdbpath</code>)</p>
+</li>
+<li>
+<p>OpenOCD Path (in <code>autorun</code>, after <code>target remote</code>)</p>
+</li>
+</ul>
+<pre><code class="language-json">{
+    //  VSCode Debugger Config for PineCone BL602
+    &quot;version&quot;: &quot;0.2.0&quot;,
+    &quot;configurations&quot;: [
+        {
+            &quot;name&quot;: &quot;BL602&quot;,
+            &quot;type&quot;: &quot;gdb&quot;,
+            &quot;request&quot;: &quot;launch&quot;,
+            //  Application Executable to be flashed before debugging
+            &quot;target&quot;: &quot;${workspaceRoot}/target/riscv32imac-unknown-none-elf/debug/bl602-rust-guide&quot;,
+            &quot;cwd&quot;: &quot;${workspaceRoot}&quot;,
+            &quot;gdbpath&quot;: &quot;${workspaceRoot}/xpack-riscv-none-embed-gcc/bin/riscv-none-embed-gdb&quot;,
+            &quot;valuesFormatting&quot;: &quot;parseText&quot;,
+            &quot;autorun&quot;: [
+                //  Before loading the Application, run these gdb commands.
+                //  Set timeout for executing openocd commands.
+                &quot;set remotetimeout 600&quot;,
+
+                //  This indicates that an unrecognized breakpoint location should automatically result in a pending breakpoint being created.
+                &quot;set breakpoint pending on&quot;,
+
+                //  Set breakpoints
+                &quot;break main&quot;,  //  Break at main()
+
+                //  Launch OpenOCD. Based on https://www.justinmklam.com/posts/2017/10/vscode-debugger-setup/
+                &quot;target remote | xpack-openocd/bin/openocd -c \&quot;gdb_port pipe; log_output openocd.log\&quot; -f openocd.cfg &quot;,
+
+                //  Load the program into cache memory
+                &quot;load&quot;,
+
+                //  Run the program until we hit the main() breakpoint
+                &quot;continue&quot;,
+            ]
+        }
+    ]
+}
+</code></pre>
+<h2 id="task-settings" class="section-header"><a href="#task-settings">20.2 Task Settings</a></h2>
+<p>The VSCode Task Settings may be found in <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/.vscode/tasks.json"><code>.vscode/tasks.json</code></a></p>
+<p>This file defines the VSCode Task for building the Rust Firmware...</p>
+<pre><code class="language-json">{
+    &quot;version&quot;: &quot;2.0.0&quot;,
+    &quot;tasks&quot;: [
+        {
+            //  Build firmware
+            &quot;label&quot;: &quot;Build Firmware&quot;,
+            &quot;type&quot;: &quot;shell&quot;,
+            &quot;windows&quot;: {
+                &quot;command&quot;: &quot;cmd&quot;,
+                &quot;args&quot;: [
+                    &quot;/c&quot;,
+                    &quot; cargo build &amp;&amp; echo ✅ ◾ ️Done! &quot;
+                ]
+            },
+            &quot;osx&quot;: {
+                &quot;command&quot;: &quot;bash&quot;,
+                &quot;args&quot;: [
+                    &quot;-c&quot;, &quot;-l&quot;,
+                    &quot; pkill openocd ; set -e -x ; cargo build ; echo ✅ ◾ ️Done! &quot;
+                ]
+            },
+            &quot;linux&quot;: {
+                &quot;command&quot;: &quot;bash&quot;,
+                &quot;args&quot;: [
+                    &quot;-c&quot;, &quot;-l&quot;,
+                    &quot; pkill openocd ; set -e -x ; cargo build ; echo ✅ ◾ ️Done! &quot;
+                ]
+            },
+            &quot;group&quot;: {
+                &quot;kind&quot;: &quot;build&quot;,
+                &quot;isDefault&quot;: true
+            },
+            &quot;problemMatcher&quot;: [ 
+                {
+                    //  Problem matcher for GNU Linker, e.g. /Users/Luppy/mynewt/stm32bluepill-mynewt-sensor/apps/my_sensor_app/src/ATParser.h:82: undefined reference to `operator delete[](void*)'
+                    &quot;fileLocation&quot;: [ &quot;absolute&quot; ],
+                    &quot;pattern&quot;: {
+                        &quot;regexp&quot;: &quot;^(/.*):(\\d+):\\s+(.*)$&quot;,
+                        &quot;file&quot;: 1,
+                        &quot;line&quot;: 2,
+                        &quot;message&quot;: 3,
+                        // &quot;code&quot;: 3,
+                        // &quot;severity&quot;: 4,
+                    }                    
+                }
+            ],
+            &quot;presentation&quot;: {
+                &quot;clear&quot;: true
+            }
+        },
+        ...
+</code></pre>
 
     
 </body>
