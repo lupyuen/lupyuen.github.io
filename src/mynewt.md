@@ -614,7 +614,81 @@ _Debug Firmware with VSCode_
 
 # Debug Firmware with VSCode
 
-TODO
+GDB Debugging feels One Dimensional... An endless stream of text.  Fortunately we got Two Dimensional graphical debugging: [__VSCode__](https://code.visualstudio.com/)!
+
+1.  Launch VSCode
+
+1.  Click __`File → Open`__
+
+    Select the folder __`pinecone-rust`__
+
+1.  Click __`Terminal → Run Build Task`__
+
+    This builds the Rust Firmware. The RISC-V ELF Firmware image is generated here...
+
+    ```
+    pinecone-rust/target/riscv32imac-unknown-none-elf/debug/bl602-rust-guide
+    ```
+
+    This step also terminates any OpenOCD processes that are running. (Linux and macOS only)
+
+1.  Click __`Run → Start Debugging`__
+
+    The debugger loads our Rust Firmware to PineCone's Cache Memory and begins execution.
+
+    Click __`View → Debug Console`__ to view the Debug Console. GDB messages will be shown here.
+
+1.  The debugger pauses execution at the first line of the `main` function
+
+    We should see the screen below...
+
+    [Watch on YouTube](https://youtu.be/b9f2vxYahHY)
+
+![VSCode Debugger with Rust Firmware for PineCone BL602](https://lupyuen.github.io/images/debug-vscode.png)
+
+_VSCode Debugger with Rust Firmware for PineCone BL602_
+
+## Debugging Features
+
+We may use these features for debugging our Rust Firmware...
+
+1.  __Variables__ (Left Top Pane): Inspect global and local variables
+
+1.  __Watch__ (Left Centre): Show the value of expressions
+
+1.  __Call Stack__ (Left Bottom): Navigate the stack trace and its variables
+
+1.  __Debug Console__ (Centre): Enter GDB commands here
+
+1.  __Debug Toolbar__ (Top Right): Continue / Pause, Step Over, Step Into, Step Out, Restart, Stop
+
+1.  To set a __Breakpoint__, click the Gutter Column at the left of the source code
+
+1.  When we're done with debugging, click the Stop button in the Debug Toolbar at top right
+
+[Watch on YouTube](https://youtu.be/b9f2vxYahHY)
+
+[More about VSCode Debugger](https://code.visualstudio.com/docs/editor/debugging)
+
+## Terminating OpenOCD
+
+Before we start a new debugging session with __`Run → Start Debugging`__...
+
+_We must always click __`Terminal → Run Build Task`__ first!_
+
+That's because stopping the debugger will leave OpenOCD running (and locking up the connection to PineCone). 
+
+Clicking __`Run Build Task`__ will terminate the OpenOCD task, so that the next debugging session can restart OpenOCD successfully.
+
+For Windows: Sorry we need to terminate the OpenOCD task manually with the Task Manager.
+
+In case of OpenOCD problems, check the OpenOCD log file...
+
+```
+pinecone-rust/openocd.log
+```
+
+For details on the VSCode settings, check the section "Appendix: VSCode Settings" below.
 
 # Load Firmware to Cache Memory, not Flash Memory
 
