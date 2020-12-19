@@ -696,7 +696,7 @@ We have an interesting problem here... PineCone is a barebones board that doesn'
 
 It will be challenging to test the various interfaces ported to Mynewt. (I might test with the [__Bus Pirate Probe__](http://dangerousprototypes.com/docs/Bus_Pirate))
 
-For now I'll do __"Opportunistic Porting and Testing"__... I'll port and test only those interfaces that I can test.
+For now I'll do __"Opportunistic Porting and Testing"__... I'll port to Mynewt only those PineCone Interfaces that I can test.
 
 __Do you have ideas for testing an RTOS on PineCone? Let us know!__
 
