@@ -688,14 +688,6 @@ pinecone-rust-mynewt/openocd.log
 
 For details on the VSCode settings, check the section "Appendix: VSCode Settings" below.
 
-# Load Firmware to Cache Memory, not Flash Memory
-
-TODO
-
-![Loading Mynewt Firmware to Flash Memory](https://lupyuen.github.io/images/mynewt-flash.png)
-
-![Loading Mynewt Firmware to RAM](https://lupyuen.github.io/images/mynewt-ram.png)
-
 # How To Test
 
 _How shall we test Mynewt on PineCone? Or any other RTOS ported to PineCone?_
@@ -744,6 +736,14 @@ Now easier to port
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [`github.com/lupyuen/lupyuen.github.io/src/mynewt.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/mynewt.md)
+
+# Appendix: Load Firmware to Cache Memory, not Flash Memory
+
+TODO
+
+![Loading Mynewt Firmware to Flash Memory](https://lupyuen.github.io/images/mynewt-flash.png)
+
+![Loading Mynewt Firmware to RAM](https://lupyuen.github.io/images/mynewt-ram.png)
 
 # Appendix: Install newt
 
