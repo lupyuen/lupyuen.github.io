@@ -81,10 +81,15 @@
 <li><a href="#risc-v-rv32imfc-vs-rv32imac">11 RISC-V rv32imfc vs rv32imac</a><ul></ul></li>
 <li><a href="#decouple-sifive-fe310-from-rv32imac">12 Decouple SiFive FE310 from rv32imac</a><ul></ul></li>
 <li><a href="#inspect-the-firmware">13 Inspect the Firmware</a><ul></ul></li>
-<li><a href="#debug-firmware-with-vscode">14 Debug Firmware with VSCode</a><ul></ul></li>
-<li><a href="#load-firmware-to-cache-memory-not-flash-memory">15 Load Firmware to Cache Memory, not Flash Memory</a><ul></ul></li>
-<li><a href="#how-to-test">16 How To Test</a><ul></ul></li>
-<li><a href="#whats-next">17 What's Next</a><ul></ul></li>
+<li><a href="#debug-firmware-with-vscode">14 Debug Firmware with VSCode</a><ul>
+<li><a href="#debugging-features">14.1 Debugging Features</a><ul></ul></li>
+<li><a href="#terminating-openocd">14.2 Terminating OpenOCD</a><ul></ul></li></ul></li>
+<li><a href="#how-to-test">15 How To Test</a><ul>
+<li><a href="#testing-the-led">15.1 Testing the LED</a><ul></ul></li>
+<li><a href="#testing-the-jumper">15.2 Testing the Jumper</a><ul></ul></li>
+<li><a href="#testing-the-uart-port">15.3 Testing the UART Port</a><ul></ul></li></ul></li>
+<li><a href="#whats-next">16 What's Next</a><ul></ul></li>
+<li><a href="#appendix-load-firmware-to-cache-memory-not-flash-memory">17 Appendix: Load Firmware to Cache Memory, not Flash Memory</a><ul></ul></li>
 <li><a href="#appendix-install-newt">18 Appendix: Install newt</a><ul></ul></li>
 <li><a href="#appendix-create-the-mynewt-firmware">19 Appendix: Create the Mynewt Firmware</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/mynewt-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board with Sipeed JTAG Debugger" /></p>
 <p>Our journey so far... </p>
@@ -390,6 +395,9 @@ newt install
 <pre><code class="language-bash">#  Build the firmware
 export PATH=&quot;$PWD/xpack-riscv-none-embed-gcc/bin:$PATH&quot;
 newt build pinecone_app
+
+#  Display the firmware size
+newt size -v pinecone_app
 </code></pre>
 </li>
 </ol>
@@ -518,6 +526,9 @@ fatal error: mcu/fe310.h: No such file or directory
 <pre><code class="language-bash">#  Build the firmware
 export PATH=&quot;$PWD/xpack-riscv-none-embed-gcc/bin:$PATH&quot;
 newt build pinecone_app
+
+#  Display the firmware size
+newt size -v pinecone_app
 </code></pre>
 <p>We should see...</p>
 <pre><code class="language-text">Linking pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky/blinky.elf
@@ -579,27 +590,90 @@ Mem ram:   0x22014000-0x22020000
 <p>Inspect the RISC-V Disassembly: <a href="https://github.com/lupyuen/pinecone-rust-mynewt/releases/download/v1.0.0/blinky.elf.lst"><code>blinky.elf.lst</code></a></p>
 <p>It should look similar to our <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/mcu/bl/bl602/src/arch/rv32imac/start.s">Start Code</a>. And it should be located at the Start Address of our firmware: <code>0x2200 8000</code>.</p>
 <p>We're ready to run our Mynewt Firmware on PineCone!</p>
+<h1 id="debug-firmware-with-vscode" class="section-header"><a href="#debug-firmware-with-vscode">14 Debug Firmware with VSCode</a></h1>
+<p>Now we run and debug our Mynewt Firmware with <a href="https://code.visualstudio.com/"><strong>VSCode</strong></a>...</p>
+<ol>
+<li>
+<p>Launch VSCode</p>
+</li>
+<li>
+<p>Click <strong><code>File → Open</code></strong></p>
+<p>Select the folder <strong><code>pinecone-rust-mynewt</code></strong></p>
+</li>
+<li>
+<p>Click <strong><code>Terminal → Run Build Task</code></strong></p>
+<p>This builds the Mynewt Firmware. The RISC-V ELF Firmware image is generated here...</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="ident">pinecone</span><span class="op">-</span><span class="ident">rust</span><span class="op">-</span><span class="ident">mynewt</span><span class="op">/</span><span class="ident">bin</span><span class="op">/</span><span class="ident">targets</span><span class="op">/</span><span class="ident">pinecone_app</span><span class="op">/</span><span class="ident">app</span><span class="op">/</span><span class="ident">apps</span><span class="op">/</span><span class="ident">blinky</span><span class="op">/</span><span class="ident">blinky</span>.<span class="ident">elf</span></pre></div>
+<p>This step also terminates any OpenOCD processes that are running. (Linux and macOS only)</p>
+</li>
+<li>
+<p>Click <strong><code>Run → Start Debugging</code></strong></p>
+<p>The debugger loads our Mynewt Firmware to PineCone's Cache Memory and begins execution.</p>
+<p>Click <strong><code>View → Debug Console</code></strong> to view the Debug Console. GDB messages will be shown here.</p>
+</li>
+<li>
+<p>The debugger pauses execution at the first line of the <code>main</code> function</p>
+<p>We should see the screen below...</p>
+</li>
+</ol>
 <p><img src="https://lupyuen.github.io/images/mynewt-debug.png" alt="Debug Firmware with VSCode" /></p>
 <p><em>Debug Firmware with VSCode</em></p>
-<h1 id="debug-firmware-with-vscode" class="section-header"><a href="#debug-firmware-with-vscode">14 Debug Firmware with VSCode</a></h1>
-<p>TODO</p>
-<h1 id="load-firmware-to-cache-memory-not-flash-memory" class="section-header"><a href="#load-firmware-to-cache-memory-not-flash-memory">15 Load Firmware to Cache Memory, not Flash Memory</a></h1>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/mynewt-flash.png" alt="Loading Mynewt Firmware to Flash Memory" /></p>
-<p><img src="https://lupyuen.github.io/images/mynewt-ram.png" alt="Loading Mynewt Firmware to RAM" /></p>
-<h1 id="how-to-test" class="section-header"><a href="#how-to-test">16 How To Test</a></h1>
-<p>TODO</p>
-<p>Opportunistic porting
-Led
-Remap
-We could test the onboard jumper</p>
-<p>Do you have ideas for testing an RTOS on PineCone? Let us know!</p>
-<p>Will have Rust</p>
-<p>Hope to have NimBLE</p>
-<p>WiFi stack
-https://github.com/runtimeco/mynewt_arduino_zero/tree/master/apps/winc1500_wifi</p>
-<p>https://github.com/runtimeco/mynewt_arduino_zero/tree/master/libs/winc1500</p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">17 What's Next</a></h1>
+<h2 id="debugging-features" class="section-header"><a href="#debugging-features">14.1 Debugging Features</a></h2>
+<p>We may use these features for debugging our Mynewt Firmware...</p>
+<ol>
+<li>
+<p><strong>Variables</strong> (Left Top Pane): Inspect global and local variables</p>
+</li>
+<li>
+<p><strong>Watch</strong> (Left Centre): Show the value of expressions</p>
+</li>
+<li>
+<p><strong>Call Stack</strong> (Left Bottom): Navigate the stack trace and its variables</p>
+</li>
+<li>
+<p><strong>Debug Console</strong> (Centre): Enter GDB commands here</p>
+</li>
+<li>
+<p><strong>Debug Toolbar</strong> (Top Right): Continue / Pause, Step Over, Step Into, Step Out, Restart, Stop</p>
+</li>
+<li>
+<p>To set a <strong>Breakpoint</strong>, click the Gutter Column at the left of the source code</p>
+</li>
+<li>
+<p>When we're done with debugging, click the Stop button in the Debug Toolbar at top right</p>
+</li>
+</ol>
+<p><a href="https://code.visualstudio.com/docs/editor/debugging">More about VSCode Debugger</a></p>
+<h2 id="terminating-openocd" class="section-header"><a href="#terminating-openocd">14.2 Terminating OpenOCD</a></h2>
+<p>Before we start a new debugging session with <strong><code>Run → Start Debugging</code></strong>...</p>
+<p><em>We must always click <strong><code>Terminal → Run Build Task</code></strong> first!</em></p>
+<p>That's because stopping the debugger will leave OpenOCD running (and locking up the connection to PineCone). </p>
+<p>Clicking <strong><code>Run Build Task</code></strong> will terminate the OpenOCD task, so that the next debugging session can restart OpenOCD successfully.</p>
+<p>For Windows: Sorry we need to terminate the OpenOCD task manually with the Task Manager.</p>
+<p>In case of OpenOCD problems, check the OpenOCD log file...</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="ident">pinecone</span><span class="op">-</span><span class="ident">rust</span><span class="op">-</span><span class="ident">mynewt</span><span class="op">/</span><span class="ident">openocd</span>.<span class="ident">log</span></pre></div>
+<p>For details on the VSCode settings, check the section &quot;Appendix: VSCode Settings&quot; below.</p>
+<h1 id="how-to-test" class="section-header"><a href="#how-to-test">15 How To Test</a></h1>
+<p><em>How shall we test Mynewt on PineCone? Or any other RTOS ported to PineCone?</em></p>
+<p>We have an interesting problem here... PineCone is a barebones board that doesn't have any sensors or actuators connected on interfaces like I2C and SPI.</p>
+<p>It will be challenging to test the various interfaces ported to Mynewt. (I might test with the <a href="http://dangerousprototypes.com/docs/Bus_Pirate"><strong>Bus Pirate Probe</strong></a>)</p>
+<p>For now I'll do <strong>&quot;Opportunistic Porting and Testing&quot;</strong>... I'll port to Mynewt only those PineCone Interfaces that I can test.</p>
+<p><strong>Do you have ideas for testing an RTOS on PineCone? Let us know!</strong></p>
+<h2 id="testing-the-led" class="section-header"><a href="#testing-the-led">15.1 Testing the LED</a></h2>
+<p>Testing PineCone's onboard RGB LED over GPIO seems easy... Except that the LED is connected to the JTAG Port. So the debugger will fail.</p>
+<p>In the earlier articles we learnt about remapping the JTAG port. This could be a (complicated) solution to test and debug the GPIO Port.</p>
+<p>Meanwhile I'll proceed to port the GPIO HAL from the BL602 IoT SDK to Mynewt, as discussed earlier.</p>
+<h2 id="testing-the-jumper" class="section-header"><a href="#testing-the-jumper">15.2 Testing the Jumper</a></h2>
+<p>We could test GPIO Input with PineCone's onboard jumper.</p>
+<p>This should be straightforward, right after we port over the GPIO HAL to Mynewt.</p>
+<h2 id="testing-the-uart-port" class="section-header"><a href="#testing-the-uart-port">15.3 Testing the UART Port</a></h2>
+<p>PineCone's UART Port is wired to the USB Connector. We could test PineCone's UART Port over USB.</p>
+<p>We'll need to port the UART HAL from the BL602 IoT SDK to Mynewt.</p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">16 What's Next</a></h1>
 <p>TODO</p>
 <p>Failed port to gd32
 Now easier to port</p>
@@ -616,6 +690,34 @@ Now easier to port</p>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/mynewt.md"><code>github.com/lupyuen/lupyuen.github.io/src/mynewt.md</code></a></p>
+<h1 id="appendix-load-firmware-to-cache-memory-not-flash-memory" class="section-header"><a href="#appendix-load-firmware-to-cache-memory-not-flash-memory">17 Appendix: Load Firmware to Cache Memory, not Flash Memory</a></h1>
+<p><em>Why did we load our Mynewt Firmware to Cache Memory instead of Flash Memory?</em></p>
+<p>Because OpenOCD couldn't load our firmware into Flash Memory. </p>
+<p>(Probably because of Flash Protection. Or because writing to BL602 Flash Memory hasn't been implemented in OpenOCD.)</p>
+<p><img src="https://lupyuen.github.io/images/mynewt-flash.png" alt="Loading Mynewt Firmware to Flash Memory" /></p>
+<p><em>What happens when we load our firmware to Flash Memory?</em></p>
+<p>The screen above shows the first version of the Mynewt Firmware, that loads into Flash Memory.</p>
+<p>We used this GDB command to dump out the first 10 words of PineCone's Flash Memory...</p>
+<pre><code class="language-text">x/10x _reset_handler
+</code></pre>
+<p>(_reset_handler is the function name of Mynewt's Start Code, located at the start of our firmware)</p>
+<p>When we compare the dumped data with our Firmware Disassembly, we see that the bytes don't match.</p>
+<p>Hence we deduce that our Mynewt Firmware wasn't loaded correctly into Flash Memory.</p>
+<p><img src="https://lupyuen.github.io/images/mynewt-ram.png" alt="Loading Mynewt Firmware to Cache Memory" /></p>
+<p><em>What happens when we load our firmware to Cache Memory?</em></p>
+<p>Here's the second try, loading our Mynewt Firmware to Cache Memory. (The same way that we loaded Rust Firmware in our previous article)</p>
+<p>Entering the same GDB Command...</p>
+<pre><code class="language-text">x/10x _reset_handler
+</code></pre>
+<p>We see that the data is identical. Our Mynewt Firmware is loaded correctly to Cache Memory indeed!</p>
+<p><em>But we can't run Mynewt Firmware in Cache Memory forever right?</em></p>
+<p>The solution is to load our firmware to PineCone over USB (UART). (And flipping the jumper)</p>
+<p>We may integrate with VSCode the Go, Rust or Python scripts for loading our firmware to PineCone over USB...</p>
+<ol>
+<li><a href="https://github.com/bouffalolab/BLOpenFlasher"><code>bouffalolab/BLOpenFlasher</code></a> (Go)</li>
+<li><a href="https://github.com/spacemeowx2/blflash"><code>spacemeowx2/blflash</code></a> (Rust)</li>
+<li><a href="https://github.com/stschake/bl60x-flash"><code>stschake/bl60x-flash</code></a> (Python)</li>
+</ol>
 <h1 id="appendix-install-newt" class="section-header"><a href="#appendix-install-newt">18 Appendix: Install newt</a></h1>
 <p>We may install Mynewt's <code>newt</code> tool according to the instructions here...</p>
 <ul>
