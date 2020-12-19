@@ -704,7 +704,7 @@ Mem ram:   0x22014000-0x22020000
 <p>Then we shall have a fully <strong>Open Source Operating System for PineCone!</strong></p>
 <p><em>How confident are we of porting Mynewt to PineCone BL602?</em></p>
 <p>One year ago I <a href="https://medium.com/@ly.lee/hey-gd32-vf103-on-risc-v-i-surrender-for-now-d39d0c7b0001?source=friends_link&amp;sk=c0504ac574bf571219fabe174eef4de5">failed to port Mynewt</a> to an earlier RISC-V Microcontroller (GD32 VF103)</p>
-<p><em>But Second's Time The Charm!</em></p>
+<p><em>But Second Time's The Charm!</em></p>
 <p>PineCone's BL602 Microcontroller runs on a RISC-V Core that's similar to SiFive FE310. And porting Mynewt from FE310 to BL602 seems quick and easy.</p>
 <p><a href="https://twitter.com/MisterTechBlog/status/1338759961526951937?s=19">(As seen on Twitter)</a></p>
 <p>Stay Tuned!</p>
@@ -731,7 +731,7 @@ Mem ram:   0x22014000-0x22020000
 <p>We used this GDB command to dump out the first 10 words of PineCone's Flash Memory...</p>
 <pre><code class="language-text">x/10x _reset_handler
 </code></pre>
-<p>(_reset_handler is the function name of Mynewt's Start Code, located at the start of our firmware)</p>
+<p>(<code>_reset_handler</code> is the function name of Mynewt's Start Code, located at the start of our firmware)</p>
 <p>When we compare the dumped data with our Firmware Disassembly, we see that the bytes don't match.</p>
 <p>Hence we deduce that our Mynewt Firmware wasn't loaded correctly into Flash Memory.</p>
 <p><img src="https://lupyuen.github.io/images/mynewt-ram.png" alt="Loading Mynewt Firmware to Cache Memory" /></p>

@@ -745,7 +745,7 @@ _How confident are we of porting Mynewt to PineCone BL602?_
 
 One year ago I [failed to port Mynewt](https://medium.com/@ly.lee/hey-gd32-vf103-on-risc-v-i-surrender-for-now-d39d0c7b0001?source=friends_link&sk=c0504ac574bf571219fabe174eef4de5) to an earlier RISC-V Microcontroller (GD32 VF103)
 
-_But Second's Time The Charm!_
+_But Second Time's The Charm!_
 
 PineCone's BL602 Microcontroller runs on a RISC-V Core that's similar to SiFive FE310. And porting Mynewt from FE310 to BL602 seems quick and easy.
 
@@ -784,7 +784,7 @@ We used this GDB command to dump out the first 10 words of PineCone's Flash Memo
 x/10x _reset_handler
 ```
 
-(_reset_handler is the function name of Mynewt's Start Code, located at the start of our firmware)
+(`_reset_handler` is the function name of Mynewt's Start Code, located at the start of our firmware)
 
 When we compare the dumped data with our Firmware Disassembly, we see that the bytes don't match.
 
