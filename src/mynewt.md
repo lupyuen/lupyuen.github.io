@@ -737,13 +737,56 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [`github.com/lupyuen/lupyuen.github.io/src/mynewt.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/mynewt.md)
 
+
 # Appendix: Load Firmware to Cache Memory, not Flash Memory
 
-TODO
+_Why did we load our Mynewt Firmware to Cache Memory instead of Flash Memory?_
+
+Because OpenOCD couldn't load our firmware into Flash Memory. 
+
+(Probably because of Flash Protection. Or because writing to BL602 Flash Memory hasn't been implemented in OpenOCD.)
 
 ![Loading Mynewt Firmware to Flash Memory](https://lupyuen.github.io/images/mynewt-flash.png)
 
-![Loading Mynewt Firmware to RAM](https://lupyuen.github.io/images/mynewt-ram.png)
+_What happens when we load our firmware to Flash Memory?_
+
+The screen above shows the first version of the Mynewt Firmware, that loads into Flash Memory.
+
+We used this GDB command to dump out the first 10 words of PineCone's Flash Memory...
+
+```text
+x/10x _reset_handler
+```
+
+(_reset_handler is the function name of Mynewt's Start Code, located at the start of our firmware)
+
+When we compare the dumped data with our Firmware Disassembly, we see that the bytes don't match.
+
+Hence we deduce that our Mynewt Firmware wasn't loaded correctly into Flash Memory.
+
+![Loading Mynewt Firmware to Cache Memory](https://lupyuen.github.io/images/mynewt-ram.png)
+
+_What happens when we load our firmware to Cache Memory?_
+
+Here's the second try, loading our Mynewt Firmware to Cache Memory. (The same way that we loaded Rust Firmware in our previous article)
+
+Entering the same GDB Command...
+
+```text
+x/10x _reset_handler
+```
+
+We see that the data is identical. Our Mynewt Firmware is loaded correctly to Cache Memory indeed!
+
+_But we can't run Mynewt Firmware in Cache Memory forever right?_
+
+The solution is to load our firmware to PineCone over USB (UART). (And flipping the jumper)
+
+We may integrate with VSCode the Go, Rust or Python scripts for loading our firmware to PineCone over USB...
+
+1.  [`bouffalolab/BLOpenFlasher`](https://github.com/bouffalolab/BLOpenFlasher) (Go)
+1.  [`spacemeowx2/blflash`](https://github.com/spacemeowx2/blflash) (Rust)
+1.  [`stschake/bl60x-flash`](https://github.com/stschake/bl60x-flash) (Python)
 
 # Appendix: Install newt
 
