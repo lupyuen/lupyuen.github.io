@@ -698,23 +698,35 @@ TODO
 
 # How To Test
 
-TODO
+_How shall we test Mynewt on PineCone? Or any other RTOS ported to PineCone?_
 
-Opportunistic porting
-Led
-Remap
-We could test the onboard jumper
+We have an interesting problem here... PineCone is a barebones board that doesn't have any sensors or actuators connected on interfaces like I2C and SPI.
 
-Do you have ideas for testing an RTOS on PineCone? Let us know!
+It will be challenging to test the various interfaces ported to Mynewt. (I might test with the [__Bus Pirate Probe__](http://dangerousprototypes.com/docs/Bus_Pirate))
 
-Will have Rust
+For now I'll do __"Opportunistic Porting and Testing"__... I'll port and test only those interfaces that I can test.
 
-Hope to have NimBLE
+__Do you have ideas for testing an RTOS on PineCone? Let us know!__
 
-WiFi stack
-https://github.com/runtimeco/mynewt_arduino_zero/tree/master/apps/winc1500_wifi
+## Testing the LED
 
-https://github.com/runtimeco/mynewt_arduino_zero/tree/master/libs/winc1500
+Testing PineCone's onboard RGB LED over GPIO seems easy... Except that the LED is connected to the JTAG Port. So the debugger will fail.
+
+In the earlier articles we learnt about remapping the JTAG port. This could be a (complicated) solution to test and debug the GPIO Port.
+
+Meanwhile I'll proceed to port the GPIO HAL from the BL602 IoT SDK to Mynewt, as discussed earlier.
+
+## Testing the Jumper
+
+We could test GPIO Input with PineCone's onboard jumper.
+
+This should be straightforward, right after we port over the GPIO HAL to Mynewt.
+
+## Testing the UART Port
+
+PineCone's UART Port is wired to the USB Connector. We could test PineCone's UART Port over USB.
+
+We'll need to port the UART HAL from the BL602 IoT SDK to Mynewt.
 
 # What's Next
 
