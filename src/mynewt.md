@@ -614,33 +614,29 @@ It should look similar to our [Start Code](https://github.com/lupyuen/pinecone-r
 
 We're ready to run our Mynewt Firmware on PineCone!
 
-![Debug Firmware with VSCode](https://lupyuen.github.io/images/mynewt-debug.png)
-
-_Debug Firmware with VSCode_
-
 # Debug Firmware with VSCode
 
-GDB Debugging feels One Dimensional... An endless stream of text.  Fortunately we got Two Dimensional graphical debugging: [__VSCode__](https://code.visualstudio.com/)!
+Here's how we run and debug our Mynewt Firmware with [__VSCode__](https://code.visualstudio.com/)!
 
 1.  Launch VSCode
 
 1.  Click __`File → Open`__
 
-    Select the folder __`pinecone-rust`__
+    Select the folder __`pinecone-rust-mynewt`__
 
 1.  Click __`Terminal → Run Build Task`__
 
-    This builds the Rust Firmware. The RISC-V ELF Firmware image is generated here...
+    This builds the Mynewt Firmware. The RISC-V ELF Firmware image is generated here...
 
     ```
-    pinecone-rust/target/riscv32imac-unknown-none-elf/debug/bl602-rust-guide
+    pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky/blinky.elf
     ```
 
     This step also terminates any OpenOCD processes that are running. (Linux and macOS only)
 
 1.  Click __`Run → Start Debugging`__
 
-    The debugger loads our Rust Firmware to PineCone's Cache Memory and begins execution.
+    The debugger loads our Mynewt Firmware to PineCone's Cache Memory and begins execution.
 
     Click __`View → Debug Console`__ to view the Debug Console. GDB messages will be shown here.
 
@@ -648,15 +644,13 @@ GDB Debugging feels One Dimensional... An endless stream of text.  Fortunately w
 
     We should see the screen below...
 
-    [Watch on YouTube](https://youtu.be/b9f2vxYahHY)
+![Debug Firmware with VSCode](https://lupyuen.github.io/images/mynewt-debug.png)
 
-![VSCode Debugger with Rust Firmware for PineCone BL602](https://lupyuen.github.io/images/debug-vscode.png)
-
-_VSCode Debugger with Rust Firmware for PineCone BL602_
+_Debug Firmware with VSCode_
 
 ## Debugging Features
 
-We may use these features for debugging our Rust Firmware...
+We may use these features for debugging our Mynewt Firmware...
 
 1.  __Variables__ (Left Top Pane): Inspect global and local variables
 
@@ -671,8 +665,6 @@ We may use these features for debugging our Rust Firmware...
 1.  To set a __Breakpoint__, click the Gutter Column at the left of the source code
 
 1.  When we're done with debugging, click the Stop button in the Debug Toolbar at top right
-
-[Watch on YouTube](https://youtu.be/b9f2vxYahHY)
 
 [More about VSCode Debugger](https://code.visualstudio.com/docs/editor/debugging)
 
@@ -691,7 +683,7 @@ For Windows: Sorry we need to terminate the OpenOCD task manually with the Task 
 In case of OpenOCD problems, check the OpenOCD log file...
 
 ```
-pinecone-rust/openocd.log
+pinecone-rust-mynewt/openocd.log
 ```
 
 For details on the VSCode settings, check the section "Appendix: VSCode Settings" below.
