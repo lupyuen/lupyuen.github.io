@@ -361,6 +361,9 @@ We have created a minimal port of Mynewt to PineCone. Here's how we build the fi
     #  Build the firmware
     export PATH="$PWD/xpack-riscv-none-embed-gcc/bin:$PATH"
     newt build pinecone_app
+
+    #  Display the firmware size
+    newt size -v pinecone_app
     ```
 
 We should see this...
@@ -538,6 +541,9 @@ We're almost ready to run Mynewt on PineCone! Let's do one final check before ru
 #  Build the firmware
 export PATH="$PWD/xpack-riscv-none-embed-gcc/bin:$PATH"
 newt build pinecone_app
+
+#  Display the firmware size
+newt size -v pinecone_app
 ```
 
 We should see...
