@@ -82,7 +82,7 @@
 <li><a href="#decouple-sifive-fe310-from-rv32imac">12 Decouple SiFive FE310 from rv32imac</a><ul></ul></li>
 <li><a href="#inspect-the-firmware">13 Inspect the Firmware</a><ul></ul></li>
 <li><a href="#debug-firmware-with-vscode">14 Debug Firmware with VSCode</a><ul></ul></li>
-<li><a href="#load-firmware-to-ram-not-flash-memory">15 Load Firmware to RAM, not Flash Memory</a><ul></ul></li>
+<li><a href="#load-firmware-to-cache-memory-not-flash-memory">15 Load Firmware to Cache Memory, not Flash Memory</a><ul></ul></li>
 <li><a href="#how-to-test">16 How To Test</a><ul></ul></li>
 <li><a href="#whats-next">17 What's Next</a><ul></ul></li>
 <li><a href="#appendix-install-newt">18 Appendix: Install newt</a><ul></ul></li>
@@ -387,7 +387,8 @@ newt install
 </li>
 <li>
 <p>At the command prompt, enter...</p>
-<pre><code class="language-bash">export PATH=&quot;$PWD/xpack-riscv-none-embed-gcc/bin:$PATH&quot;
+<pre><code class="language-bash">#  Build the firmware
+export PATH=&quot;$PWD/xpack-riscv-none-embed-gcc/bin:$PATH&quot;
 newt build pinecone_app
 </code></pre>
 </li>
@@ -512,16 +513,22 @@ fatal error: mcu/fe310.h: No such file or directory
 </li>
 </ul>
 <p>These Stub Files point to the correct Header Files for BL602, so that our BL602 Firmware can be compiled successfully.</p>
-<p><img src="https://lupyuen.github.io/images/mynewt-disassembly.png" alt="Mynewt Disassembly" /></p>
 <h1 id="inspect-the-firmware" class="section-header"><a href="#inspect-the-firmware">13 Inspect the Firmware</a></h1>
-<p>TODO</p>
-<pre><code class="language-text">Linking /Users/Luppy/pinecone/pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky/blinky.elf
+<p>We're almost ready to run Mynewt on PineCone! Let's do one final check before running our firmware...</p>
+<pre><code class="language-bash">#  Build the firmware
+export PATH=&quot;$PWD/xpack-riscv-none-embed-gcc/bin:$PATH&quot;
+newt build pinecone_app
+</code></pre>
+<p>We should see...</p>
+<pre><code class="language-text">Linking pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky/blinky.elf
 Target successfully built: targets/pinecone_app
 + newt size -v pinecone_app
 Size of Application Image: app
 Mem flash: 0x22008000-0x22014000
-Mem ram: 0x22014000-0x22020000
-  flash     ram 
+Mem ram:   0x22014000-0x22020000
+</code></pre>
+<p>Yep this matches our Instruction Cache Memory (<code>0x2200 8000</code>) and Data Cache Memory (<code>0x2201 4000</code>).</p>
+<pre><code class="language-text">  flash     ram 
       6     525 *fill*
     172       0 @apache-mynewt-core_hw_hal.a
    4494    8213 @apache-mynewt-core_kernel_os.a
@@ -536,18 +543,47 @@ Mem ram: 0x22014000-0x22020000
     580     228 hw_mcu_bl_bl602.a
      92       0 pinecone_app-sysinit-app.a
     292    1064 libg.a
-Loading compiler /Users/Luppy/pinecone/pinecone-rust-mynewt/compiler/riscv-none-embed, buildProfile debug
-
-objsize
-   text    data     bss     dec     hex filename
-   8488      28    9104   17620    44d4 /Users/Luppy/pinecone/pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky/blinky.elf
 </code></pre>
-<p>Mynewt Firmware should look similar to this disassembled Hello World firmware...</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/releases/download/v0.0.4/sdk_app_helloworld.S"><code>sdk_app_helloworld.S</code></a></p>
+<p>Here are all the code modules linked into our Mynewt Firmware. Note that...</p>
+<ul>
+<li>
+<p>Mynewt Kernel takes the most memory</p>
+</li>
+<li>
+<p>Our BL602 HAL <code>hw_mcu_bl_bl602</code> is tiny because it's mostly Stub Functions</p>
+</li>
+</ul>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="ident">Loading</span> <span class="ident">compiler</span> <span class="ident">pinecone</span><span class="op">-</span><span class="ident">rust</span><span class="op">-</span><span class="ident">mynewt</span><span class="op">/</span><span class="ident">compiler</span><span class="op">/</span><span class="ident">riscv</span><span class="op">-</span><span class="ident">none</span><span class="op">-</span><span class="ident">embed</span>, <span class="ident">buildProfile</span> <span class="ident">debug</span>
+<span class="ident">objsize</span>
+   <span class="ident">text</span>    <span class="ident">data</span>     <span class="ident">bss</span>     <span class="ident">dec</span>     <span class="ident">hex</span> <span class="ident">filename</span>
+   <span class="number">8488</span>      <span class="number">28</span>    <span class="number">9104</span>   <span class="number">17620</span>    <span class="number">44d4</span> <span class="ident">pinecone</span><span class="op">-</span><span class="ident">rust</span><span class="op">-</span><span class="ident">mynewt</span><span class="op">/</span><span class="ident">bin</span><span class="op">/</span><span class="ident">targets</span><span class="op">/</span><span class="ident">pinecone_app</span><span class="op">/</span><span class="ident">app</span><span class="op">/</span><span class="ident">apps</span><span class="op">/</span><span class="ident">blinky</span><span class="op">/</span><span class="ident">blinky</span>.<span class="ident">elf</span></pre></div>
+<p>Our Mynewt Firmware contains 8,488 bytes of code and data. It runs with 9,104 bytes of RAM (BSS).</p>
+<p>The firmware build produces the following files in...</p>
+<pre><code class="language-text">pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky
+</code></pre>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/pinecone-rust-mynewt/releases/download/v1.0.0/blinky.elf"><strong><code>blinky.elf</code></strong></a>: Our Mynewt Firmware in ELF Format (<a href="https://github.com/lupyuen/pinecone-rust-mynewt/releases/download/v1.0.0/blinky.elf">See this</a>)</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/pinecone-rust-mynewt/releases/download/v1.0.0/blinky.elf.map"><strong><code>blinky.elf.map</code></strong></a>: Memory Map of our Mynewt Firmware (<a href="https://github.com/lupyuen/pinecone-rust-mynewt/releases/download/v1.0.0/blinky.elf.map">See this</a>)</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/pinecone-rust-mynewt/releases/download/v1.0.0/blinky.elf.lst"><strong><code>blinky.elf.lst</code></strong></a>: RISC-V Disassembly of our Mynewt Firmware (<a href="https://github.com/lupyuen/pinecone-rust-mynewt/releases/download/v1.0.0/blinky.elf.lst">See this</a>)</p>
+</li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/mynewt-disassembly.png" alt="RISC-V Disassembly of Mynewt Firmware" /></p>
+<p><em>RISC-V Disassembly of Mynewt Firmware</em></p>
+<p>Inspect the RISC-V Disassembly: <a href="https://github.com/lupyuen/pinecone-rust-mynewt/releases/download/v1.0.0/blinky.elf.lst"><code>blinky.elf.lst</code></a></p>
+<p>It should look similar to our <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/mcu/bl/bl602/src/arch/rv32imac/start.s">Start Code</a>. And it should be located at the Start Address of our firmware: <code>0x2200 8000</code>.</p>
+<p>We're ready to run our Mynewt Firmware on PineCone!</p>
+<p><img src="https://lupyuen.github.io/images/mynewt-debug.png" alt="Debug Firmware with VSCode" /></p>
+<p><em>Debug Firmware with VSCode</em></p>
 <h1 id="debug-firmware-with-vscode" class="section-header"><a href="#debug-firmware-with-vscode">14 Debug Firmware with VSCode</a></h1>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/mynewt-debug.png" alt="Mynewt Debugging" /></p>
-<h1 id="load-firmware-to-ram-not-flash-memory" class="section-header"><a href="#load-firmware-to-ram-not-flash-memory">15 Load Firmware to RAM, not Flash Memory</a></h1>
+<h1 id="load-firmware-to-cache-memory-not-flash-memory" class="section-header"><a href="#load-firmware-to-cache-memory-not-flash-memory">15 Load Firmware to Cache Memory, not Flash Memory</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/mynewt-flash.png" alt="Loading Mynewt Firmware to Flash Memory" /></p>
 <p><img src="https://lupyuen.github.io/images/mynewt-ram.png" alt="Loading Mynewt Firmware to RAM" /></p>
