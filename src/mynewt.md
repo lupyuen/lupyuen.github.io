@@ -1,6 +1,6 @@
 # Porting Mynewt to PineCone BL602
 
-![PineCone BL602 RISC-V Evaluation Board with Sipeed JTAG Debugger](https://lupyuen.github.io/images/mynewt-title.jpg)
+![Debugging Mynewt Firmware with VSCode](https://lupyuen.github.io/images/mynewt-title.png)
 
 Our journey so far... 
 
