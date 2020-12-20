@@ -618,6 +618,14 @@ We're ready to run our Mynewt Firmware on PineCone!
 
 Now we run and debug our Mynewt Firmware with [__VSCode__](https://code.visualstudio.com/)...
 
+1.  Connect PineCone and the JTAG Debugger to our computer. See the article...
+
+    ["Connect PineCone BL602 to OpenOCD"](https://lupyuen.github.io/articles/openocd), Section 4, [Connect JTAG Debugger to PineCone](https://lupyuen.github.io/articles/openocd#connect-jtag-debugger-to-pinecone)
+
+1.  Download and run OpenOCD. See the article...
+
+    ["Connect PineCone BL602 to OpenOCD"](https://lupyuen.github.io/articles/openocd), Section 5, ["Download and run OpenOCD"](https://lupyuen.github.io/articles/openocd#download-and-run-openocd)
+
 1.  Launch VSCode
 
 1.  Click __`File → Open`__
@@ -844,9 +852,7 @@ Or we may build from the source code...
 
 # Appendix: Create the Mynewt Firmware
 
-TODO
-
-Install newt
+Mynewt Project `pinecone-rust-mynewt` and Mynewt Firmware `pinecone_app` were originally created using these steps...
 
 ```bash
 newt new pinecone-rust-mynewt
@@ -859,13 +865,15 @@ newt target set pinecone_app bsp=@apache-mynewt-core/hw/bsp/hifive1
 newt target set pinecone_app build_profile=debug
 ```
 
-https://mynewt.apache.org/latest/tutorials/blinky/blinky_stm32f4disc.html
+We don't need to create them again, just download from...
+
+-   [`github.com/lupyuen/pinecone-rust-mynewt`](https://github.com/lupyuen/pinecone-rust-mynewt)
+
+The steps above were based on the [Blinky Tutorial for STM32F4-Discovery](https://mynewt.apache.org/latest/tutorials/blinky/blinky_stm32f4disc.html).
 
 # Appendix: VSCode Settings
 
 ## Debugger Settings
-
-TODO
 
 The VSCode Debugger Settings may be found in [`.vscode/launch.json`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/.vscode/launch.json)
 
@@ -877,6 +885,8 @@ This file defines...
 
 -   OpenOCD Path (in `autorun`, after `target remote`)
 
+-   GDB Commands to be executed upon starting the debugger (`autorun`)
+
 ```json
 {
     //  VSCode Debugger Config for PineCone BL602
@@ -887,7 +897,7 @@ This file defines...
             "type": "gdb",
             "request": "launch",
             //  Application Executable to be flashed before debugging
-            "target": "${workspaceRoot}/target/riscv32imac-unknown-none-elf/debug/bl602-rust-guide",
+            "target": "${workspaceRoot}/bin/targets/pinecone_app/app/apps/blinky/blinky.elf",
             "cwd": "${workspaceRoot}",
             "gdbpath": "${workspaceRoot}/xpack-riscv-none-embed-gcc/bin/riscv-none-embed-gdb",
             "valuesFormatting": "parseText",
@@ -900,16 +910,23 @@ This file defines...
                 "set breakpoint pending on",
 
                 //  Set breakpoints
-                "break main",  //  Break at main()
+                "break main",                             //  Break at main()
+                "break __assert_func",                    //  Break for any C assert failures
+                //  "break os_default_irq",                   //  Break for any Mynewt unhandled interrupts
+                //  "break core::panicking::panic",       //  Break for any Rust assert failures and panics
+                //  "break core::result::unwrap_failed",  //  Break for any Rust unwrap and expect failures
 
                 //  Launch OpenOCD. Based on https://www.justinmklam.com/posts/2017/10/vscode-debugger-setup/
                 "target remote | xpack-openocd/bin/openocd -c \"gdb_port pipe; log_output openocd.log\" -f openocd.cfg ",
 
-                //  Load the program into cache memory
+                //  Load the program into board memory
                 "load",
 
+                //  Execute one RISC-V instruction and stop
+                //  "stepi",
+
                 //  Run the program until we hit the main() breakpoint
-                "continue",
+                //  "continue",
             ]
         }
     ]
@@ -920,10 +937,12 @@ This file defines...
 
 The VSCode Task Settings may be found in [`.vscode/tasks.json`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/.vscode/tasks.json)
 
-This file defines the VSCode Task for building the Rust Firmware...
+This file defines the VSCode Task for building the Mynewt Firmware...
 
 ```json
 {
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
     "version": "2.0.0",
     "tasks": [
         {
@@ -934,21 +953,21 @@ This file defines the VSCode Task for building the Rust Firmware...
                 "command": "cmd",
                 "args": [
                     "/c",
-                    " cargo build && echo ✅ ◾ ️Done! "
+                    " newt build pinecone_app && echo ✅ ◾ ️Done! "
                 ]
             },
             "osx": {
                 "command": "bash",
                 "args": [
                     "-c", "-l",
-                    " pkill openocd ; set -e -x ; cargo build ; echo ✅ ◾ ️Done! "
+                    " scripts/build-app.sh && echo ✅ ◾ ️Done! "
                 ]
             },
             "linux": {
                 "command": "bash",
                 "args": [
                     "-c", "-l",
-                    " pkill openocd ; set -e -x ; cargo build ; echo ✅ ◾ ️Done! "
+                    " scripts/build-app.sh && echo ✅ ◾ ️Done! "
                 ]
             },
             "group": {
@@ -974,4 +993,36 @@ This file defines the VSCode Task for building the Rust Firmware...
             }
         },
         ...
+```
+
+`scripts/build-app.sh`(https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/scripts/build-app.sh) does the following...
+
+1.  Terminate the OpenOCD process
+
+1.  Build the Mynewt Firmware
+
+1.  Display the firmware size
+
+```bash
+#!/usr/bin/env bash
+#  macOS and Linux Bash script to build Mynewt Firmware
+
+set -e  #  Exit when any command fails
+set -x  #  Echo commands
+
+#  Terminate any OpenOCD processes from the debug session
+set +e  #  Ignore errors
+pkill openocd
+set -e  #  Stop on errors
+
+#  Add GCC to the PATH
+set +x  #  Stop echo
+export PATH="$PWD/xpack-riscv-none-embed-gcc/bin:$PATH"
+set -x  #  Echo commands
+
+#  Build the Mynewt Firmware
+newt build pinecone_app
+
+#  Display the firmware size
+newt size -v pinecone_app
 ```
