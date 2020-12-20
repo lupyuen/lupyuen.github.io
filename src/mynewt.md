@@ -620,7 +620,7 @@ Now we run and debug our Mynewt Firmware with [__VSCode__](https://code.visualst
 
 1.  Connect PineCone and the JTAG Debugger to our computer. See the article...
 
-    ["Connect PineCone BL602 to OpenOCD"](https://lupyuen.github.io/articles/openocd), Section 4, [Connect JTAG Debugger to PineCone](https://lupyuen.github.io/articles/openocd#connect-jtag-debugger-to-pinecone)
+    ["Connect PineCone BL602 to OpenOCD"](https://lupyuen.github.io/articles/openocd), Section 4, ["Connect JTAG Debugger to PineCone"](https://lupyuen.github.io/articles/openocd#connect-jtag-debugger-to-pinecone)
 
 1.  Download and run OpenOCD. See the article...
 
