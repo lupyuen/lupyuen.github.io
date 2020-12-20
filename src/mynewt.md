@@ -953,7 +953,7 @@ This file defines the VSCode Task for building the Mynewt Firmware...
                 "command": "cmd",
                 "args": [
                     "/c",
-                    " newt build pinecone_app && echo ✅ ◾ ️Done! "
+                    " newt build pinecone_app && newt size -v pinecone_app && echo ✅ ◾ ️Done! "
                 ]
             },
             "osx": {
