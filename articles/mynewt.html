@@ -597,6 +597,14 @@ Mem ram:   0x22014000-0x22020000
 <p>Now we run and debug our Mynewt Firmware with <a href="https://code.visualstudio.com/"><strong>VSCode</strong></a>...</p>
 <ol>
 <li>
+<p>Connect PineCone and the JTAG Debugger to our computer. See the article...</p>
+<p><a href="https://lupyuen.github.io/articles/openocd">&quot;Connect PineCone BL602 to OpenOCD&quot;</a>, Section 4, <a href="https://lupyuen.github.io/articles/openocd#connect-jtag-debugger-to-pinecone">Connect JTAG Debugger to PineCone</a></p>
+</li>
+<li>
+<p>Download and run OpenOCD. See the article...</p>
+<p><a href="https://lupyuen.github.io/articles/openocd">&quot;Connect PineCone BL602 to OpenOCD&quot;</a>, Section 5, <a href="https://lupyuen.github.io/articles/openocd#download-and-run-openocd">&quot;Download and run OpenOCD&quot;</a></p>
+</li>
+<li>
 <p>Launch VSCode</p>
 </li>
 <li>
@@ -777,8 +785,7 @@ newt version
 </li>
 </ol>
 <h1 id="appendix-create-the-mynewt-firmware" class="section-header"><a href="#appendix-create-the-mynewt-firmware">19 Appendix: Create the Mynewt Firmware</a></h1>
-<p>TODO</p>
-<p>Install newt</p>
+<p>Mynewt Project <code>pinecone-rust-mynewt</code> and Mynewt Firmware <code>pinecone_app</code> were originally created using these steps...</p>
 <pre><code class="language-bash">newt new pinecone-rust-mynewt
 cd pinecone-rust-mynewt
 newt upgrade
@@ -788,9 +795,12 @@ newt target set pinecone_app app=apps/blinky
 newt target set pinecone_app bsp=@apache-mynewt-core/hw/bsp/hifive1
 newt target set pinecone_app build_profile=debug
 </code></pre>
-<p>https://mynewt.apache.org/latest/tutorials/blinky/blinky_stm32f4disc.html</p>
+<p>We don't need to create them again, just download from...</p>
+<ul>
+<li><a href="https://github.com/lupyuen/pinecone-rust-mynewt"><code>github.com/lupyuen/pinecone-rust-mynewt</code></a></li>
+</ul>
+<p>The steps above were based on the <a href="https://mynewt.apache.org/latest/tutorials/blinky/blinky_stm32f4disc.html">Blinky Tutorial for STM32F4-Discovery</a>.</p>
 <h1 id="appendix-vscode-settings" class="section-header"><a href="#appendix-vscode-settings">20 Appendix: VSCode Settings</a></h1><h2 id="debugger-settings" class="section-header"><a href="#debugger-settings">20.1 Debugger Settings</a></h2>
-<p>TODO</p>
 <p>The VSCode Debugger Settings may be found in <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/.vscode/launch.json"><code>.vscode/launch.json</code></a></p>
 <p>This file defines... </p>
 <ul>
@@ -803,6 +813,9 @@ newt target set pinecone_app build_profile=debug
 <li>
 <p>OpenOCD Path (in <code>autorun</code>, after <code>target remote</code>)</p>
 </li>
+<li>
+<p>GDB Commands to be executed upon starting the debugger (<code>autorun</code>)</p>
+</li>
 </ul>
 <pre><code class="language-json">{
     //  VSCode Debugger Config for PineCone BL602
@@ -813,7 +826,7 @@ newt target set pinecone_app build_profile=debug
             &quot;type&quot;: &quot;gdb&quot;,
             &quot;request&quot;: &quot;launch&quot;,
             //  Application Executable to be flashed before debugging
-            &quot;target&quot;: &quot;${workspaceRoot}/target/riscv32imac-unknown-none-elf/debug/bl602-rust-guide&quot;,
+            &quot;target&quot;: &quot;${workspaceRoot}/bin/targets/pinecone_app/app/apps/blinky/blinky.elf&quot;,
             &quot;cwd&quot;: &quot;${workspaceRoot}&quot;,
             &quot;gdbpath&quot;: &quot;${workspaceRoot}/xpack-riscv-none-embed-gcc/bin/riscv-none-embed-gdb&quot;,
             &quot;valuesFormatting&quot;: &quot;parseText&quot;,
@@ -826,16 +839,23 @@ newt target set pinecone_app build_profile=debug
                 &quot;set breakpoint pending on&quot;,
 
                 //  Set breakpoints
-                &quot;break main&quot;,  //  Break at main()
+                &quot;break main&quot;,                             //  Break at main()
+                &quot;break __assert_func&quot;,                    //  Break for any C assert failures
+                //  &quot;break os_default_irq&quot;,                   //  Break for any Mynewt unhandled interrupts
+                //  &quot;break core::panicking::panic&quot;,       //  Break for any Rust assert failures and panics
+                //  &quot;break core::result::unwrap_failed&quot;,  //  Break for any Rust unwrap and expect failures
 
                 //  Launch OpenOCD. Based on https://www.justinmklam.com/posts/2017/10/vscode-debugger-setup/
                 &quot;target remote | xpack-openocd/bin/openocd -c \&quot;gdb_port pipe; log_output openocd.log\&quot; -f openocd.cfg &quot;,
 
-                //  Load the program into cache memory
+                //  Load the program into board memory
                 &quot;load&quot;,
 
+                //  Execute one RISC-V instruction and stop
+                //  &quot;stepi&quot;,
+
                 //  Run the program until we hit the main() breakpoint
-                &quot;continue&quot;,
+                //  &quot;continue&quot;,
             ]
         }
     ]
@@ -843,8 +863,10 @@ newt target set pinecone_app build_profile=debug
 </code></pre>
 <h2 id="task-settings" class="section-header"><a href="#task-settings">20.2 Task Settings</a></h2>
 <p>The VSCode Task Settings may be found in <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/.vscode/tasks.json"><code>.vscode/tasks.json</code></a></p>
-<p>This file defines the VSCode Task for building the Rust Firmware...</p>
+<p>This file defines the VSCode Task for building the Mynewt Firmware...</p>
 <pre><code class="language-json">{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
     &quot;version&quot;: &quot;2.0.0&quot;,
     &quot;tasks&quot;: [
         {
@@ -855,21 +877,21 @@ newt target set pinecone_app build_profile=debug
                 &quot;command&quot;: &quot;cmd&quot;,
                 &quot;args&quot;: [
                     &quot;/c&quot;,
-                    &quot; cargo build &amp;&amp; echo ✅ ◾ ️Done! &quot;
+                    &quot; newt build pinecone_app &amp;&amp; echo ✅ ◾ ️Done! &quot;
                 ]
             },
             &quot;osx&quot;: {
                 &quot;command&quot;: &quot;bash&quot;,
                 &quot;args&quot;: [
                     &quot;-c&quot;, &quot;-l&quot;,
-                    &quot; pkill openocd ; set -e -x ; cargo build ; echo ✅ ◾ ️Done! &quot;
+                    &quot; scripts/build-app.sh &amp;&amp; echo ✅ ◾ ️Done! &quot;
                 ]
             },
             &quot;linux&quot;: {
                 &quot;command&quot;: &quot;bash&quot;,
                 &quot;args&quot;: [
                     &quot;-c&quot;, &quot;-l&quot;,
-                    &quot; pkill openocd ; set -e -x ; cargo build ; echo ✅ ◾ ️Done! &quot;
+                    &quot; scripts/build-app.sh &amp;&amp; echo ✅ ◾ ️Done! &quot;
                 ]
             },
             &quot;group&quot;: {
@@ -895,6 +917,40 @@ newt target set pinecone_app build_profile=debug
             }
         },
         ...
+</code></pre>
+<p><code>scripts/build-app.sh</code>(https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/scripts/build-app.sh) does the following...</p>
+<ol>
+<li>
+<p>Terminate the OpenOCD process</p>
+</li>
+<li>
+<p>Build the Mynewt Firmware</p>
+</li>
+<li>
+<p>Display the firmware size</p>
+</li>
+</ol>
+<pre><code class="language-bash">#!/usr/bin/env bash
+#  macOS and Linux Bash script to build Mynewt Firmware
+
+set -e  #  Exit when any command fails
+set -x  #  Echo commands
+
+#  Terminate any OpenOCD processes from the debug session
+set +e  #  Ignore errors
+pkill openocd
+set -e  #  Stop on errors
+
+#  Add GCC to the PATH
+set +x  #  Stop echo
+export PATH=&quot;$PWD/xpack-riscv-none-embed-gcc/bin:$PATH&quot;
+set -x  #  Echo commands
+
+#  Build the Mynewt Firmware
+newt build pinecone_app
+
+#  Display the firmware size
+newt size -v pinecone_app
 </code></pre>
 
     
