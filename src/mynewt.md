@@ -345,16 +345,36 @@ We have created a minimal port of Mynewt to PineCone. Here's how we build the fi
 
     -   [Other builds of xPack GCC RISC-V](https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases/tag/v8.3.0-2.3)
 
-1.  Extract the downloaded archive.
-
-    On Windows: [Use 7-Zip](https://www.7-zip.org/)
+    Extract the downloaded archive. On Windows: [Use 7-Zip](https://www.7-zip.org/)
 
 1.  Copy the extracted xPack GCC RISC-V folder to the `pinecone-rust-mynewt` folder.
 
-    Rename the folder as...
+    Rename the copied folder as...
 
     ```
     pinecone-rust-mynewt/xpack-riscv-none-embed-gcc
+    ```
+
+1.  Download OpenOCD from the [xPack OpenOCD site](https://github.com/xpack-dev-tools/openocd-xpack/releases/tag/v0.10.0-15/)... (Other variants of OpenOCD may not work with PineCone)
+
+    -   [xPack OpenOCD for Linux x64](https://github.com/xpack-dev-tools/openocd-xpack/releases/download/v0.10.0-15/xpack-openocd-0.10.0-15-linux-x64.tar.gz)
+
+    -   [xPack OpenOCD for Linux Arm64](https://github.com/xpack-dev-tools/openocd-xpack/releases/download/v0.10.0-15/xpack-openocd-0.10.0-15-linux-arm64.tar.gz)
+
+    -   [xPack OpenOCD for macOS x64](https://github.com/xpack-dev-tools/openocd-xpack/releases/download/v0.10.0-15/xpack-openocd-0.10.0-15-darwin-x64.tar.gz)
+
+    -   [xPack OpenOCD for Windows x64](https://github.com/xpack-dev-tools/openocd-xpack/releases/download/v0.10.0-15/xpack-openocd-0.10.0-15-win32-x64.zip)
+
+    -   [Other builds of xPack OpenOCD](https://github.com/xpack-dev-tools/openocd-xpack/releases/tag/v0.10.0-15/)
+
+    Extract the downloaded file. On Windows: [Use 7-Zip](https://www.7-zip.org/)
+
+1.  Copy the extracted xPack OpenOCD folder to the `pinecone-rust-mynewt` folder.
+
+    Rename the copied folder as...
+
+    ```
+    pinecone-rust-mynewt/xpack-openocd
     ```
 
 1.  At the command prompt, enter...
@@ -623,10 +643,6 @@ Now we run and debug our Mynewt Firmware with [__VSCode__](https://code.visualst
 1.  Connect PineCone and the JTAG Debugger to our computer. See the article...
 
     ["Connect PineCone BL602 to OpenOCD"](https://lupyuen.github.io/articles/openocd), Section 4, ["Connect JTAG Debugger to PineCone"](https://lupyuen.github.io/articles/openocd#connect-jtag-debugger-to-pinecone)
-
-1.  Download and run OpenOCD. See the article...
-
-    ["Connect PineCone BL602 to OpenOCD"](https://lupyuen.github.io/articles/openocd), Section 5, ["Download and run OpenOCD"](https://lupyuen.github.io/articles/openocd#download-and-run-openocd)
 
 1.  Launch VSCode
 

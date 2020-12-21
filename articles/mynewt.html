@@ -382,17 +382,42 @@ newt install
 <p><a href="https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases/tag/v8.3.0-2.3">Other builds of xPack GCC RISC-V</a></p>
 </li>
 </ul>
-</li>
-<li>
-<p>Extract the downloaded archive.</p>
-<p>On Windows: <a href="https://www.7-zip.org/">Use 7-Zip</a></p>
+<p>Extract the downloaded archive. On Windows: <a href="https://www.7-zip.org/">Use 7-Zip</a></p>
 </li>
 <li>
 <p>Copy the extracted xPack GCC RISC-V folder to the <code>pinecone-rust-mynewt</code> folder.</p>
-<p>Rename the folder as...</p>
+<p>Rename the copied folder as...</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="ident">pinecone</span><span class="op">-</span><span class="ident">rust</span><span class="op">-</span><span class="ident">mynewt</span><span class="op">/</span><span class="ident">xpack</span><span class="op">-</span><span class="ident">riscv</span><span class="op">-</span><span class="ident">none</span><span class="op">-</span><span class="ident">embed</span><span class="op">-</span><span class="ident">gcc</span></pre></div>
+</li>
+<li>
+<p>Download OpenOCD from the <a href="https://github.com/xpack-dev-tools/openocd-xpack/releases/tag/v0.10.0-15/">xPack OpenOCD site</a>... (Other variants of OpenOCD may not work with PineCone)</p>
+<ul>
+<li>
+<p><a href="https://github.com/xpack-dev-tools/openocd-xpack/releases/download/v0.10.0-15/xpack-openocd-0.10.0-15-linux-x64.tar.gz">xPack OpenOCD for Linux x64</a></p>
+</li>
+<li>
+<p><a href="https://github.com/xpack-dev-tools/openocd-xpack/releases/download/v0.10.0-15/xpack-openocd-0.10.0-15-linux-arm64.tar.gz">xPack OpenOCD for Linux Arm64</a></p>
+</li>
+<li>
+<p><a href="https://github.com/xpack-dev-tools/openocd-xpack/releases/download/v0.10.0-15/xpack-openocd-0.10.0-15-darwin-x64.tar.gz">xPack OpenOCD for macOS x64</a></p>
+</li>
+<li>
+<p><a href="https://github.com/xpack-dev-tools/openocd-xpack/releases/download/v0.10.0-15/xpack-openocd-0.10.0-15-win32-x64.zip">xPack OpenOCD for Windows x64</a></p>
+</li>
+<li>
+<p><a href="https://github.com/xpack-dev-tools/openocd-xpack/releases/tag/v0.10.0-15/">Other builds of xPack OpenOCD</a></p>
+</li>
+</ul>
+<p>Extract the downloaded file. On Windows: <a href="https://www.7-zip.org/">Use 7-Zip</a></p>
+</li>
+<li>
+<p>Copy the extracted xPack OpenOCD folder to the <code>pinecone-rust-mynewt</code> folder.</p>
+<p>Rename the copied folder as...</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="ident">pinecone</span><span class="op">-</span><span class="ident">rust</span><span class="op">-</span><span class="ident">mynewt</span><span class="op">/</span><span class="ident">xpack</span><span class="op">-</span><span class="ident">openocd</span></pre></div>
 </li>
 <li>
 <p>At the command prompt, enter...</p>
@@ -600,10 +625,6 @@ Mem ram:   0x22014000-0x22020000
 <li>
 <p>Connect PineCone and the JTAG Debugger to our computer. See the article...</p>
 <p><a href="https://lupyuen.github.io/articles/openocd">&quot;Connect PineCone BL602 to OpenOCD&quot;</a>, Section 4, <a href="https://lupyuen.github.io/articles/openocd#connect-jtag-debugger-to-pinecone">&quot;Connect JTAG Debugger to PineCone&quot;</a></p>
-</li>
-<li>
-<p>Download and run OpenOCD. See the article...</p>
-<p><a href="https://lupyuen.github.io/articles/openocd">&quot;Connect PineCone BL602 to OpenOCD&quot;</a>, Section 5, <a href="https://lupyuen.github.io/articles/openocd#download-and-run-openocd">&quot;Download and run OpenOCD&quot;</a></p>
 </li>
 <li>
 <p>Launch VSCode</p>
