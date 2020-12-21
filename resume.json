@@ -156,6 +156,13 @@
   ],
   "publications": [
     {
+      "name": "Porting Mynewt to PineCone BL602",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2020-12-21",
+      "website": "https://lupyuen.github.io/articles/mynewt",
+      "summary": "How we port Apache Mynewt embedded operating system to the PineCone BL602 RISC-V Board"
+    },
+    {
       "name": "Better Open Source Advocate",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2020-12-15",

@@ -4,6 +4,12 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Porting Mynewt to PineCone BL602</title>
+            <link>https://lupyuen.github.io/articles/mynewt</link>
+            <description><![CDATA[How we port Apache Mynewt embedded operating system to the PineCone BL602 RISC-V Board]]></description>
+            <pubDate>Mon, 21 Dec 2020 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Better Open Source Advocate</title>
             <link>https://lupyuen.github.io/articles/advocate</link>
             <description><![CDATA[I made mistakes in 2020... Here's how I'll do better in 2021]]></description>
