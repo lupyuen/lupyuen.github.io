@@ -18,6 +18,8 @@ Today we'll learn to build and debug [__Rust Firmware for PineCone__](https://gi
 
 The instructions here should work on Linux, macOS and Windows.
 
+[Watch the Sneak Peek on YouTube](https://youtu.be/b9f2vxYahHY)
+
 # Install OpenOCD, Rust and GDB
 
 ##  Install OpenOCD

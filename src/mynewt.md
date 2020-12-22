@@ -16,6 +16,8 @@ Our journey so far...
 
 Today we'll learn about our ongoing port of Apache Mynewt embedded operating system to PineCone.
 
+[Watch the Sneak Peek on YouTube](https://youtu.be/iDS8CBplSw8)
+
 _Why port Mynewt to BL602?_
 
 Since FreeRTOS is already supported on BL602 (for multitasking Bluetooth LE and WiFi in the background), let's port a modern embedded operating system like Mynewt.
@@ -672,6 +674,8 @@ Now we run and debug our Mynewt Firmware with [__VSCode__](https://code.visualst
 
     We should see the screen below...
 
+    [Watch on YouTube](https://youtu.be/iDS8CBplSw8)
+
 ![Debug Firmware with VSCode](https://lupyuen.github.io/images/mynewt-debug.png)
 
 _Debug Firmware with VSCode_
@@ -693,6 +697,8 @@ We may use these features for debugging our Mynewt Firmware...
 1.  To set a __Breakpoint__, click the Gutter Column at the left of the source code
 
 1.  When we're done with debugging, click the Stop button in the Debug Toolbar at top right
+
+[Watch on YouTube](https://youtu.be/iDS8CBplSw8)
 
 [More about VSCode Debugger](https://code.visualstudio.com/docs/editor/debugging)
 
