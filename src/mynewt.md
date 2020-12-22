@@ -4,6 +4,8 @@
 
 _Debugging Mynewt Firmware with VSCode_
 
+📝 _21 Dec 2020_
+
 Our journey so far... 
 
 1.  We took a quick peek at [__PineCone BL602 RISC-V Evaluation Board__](https://lupyuen.github.io/articles/pinecone)...

@@ -4,6 +4,8 @@
 
 _Debugging PineCone BL602 RISC-V Evaluation Board with Sipeed JTAG Debugger_
 
+📝 _14 Dec 2020_
+
 Earlier we took a quick peek at [__PineCone BL602 RISC-V Evaluation Board__](https://lupyuen.github.io/articles/pinecone)...
 
 Then we [__connected PineCone to OpenOCD__](https://lupyuen.github.io/articles/openocd) with a JTAG Debugger...
@@ -758,7 +760,9 @@ __Porting [Apache Mynewt RTOS](http://mynewt.apache.org/) to PineCone__
 
 _And yes it shall support Rust too!_
 
-Stay Tuned!
+Read about it here...
+
+-   ["Porting Mynewt to PineCone BL602"](https://lupyuen.github.io/articles/mynewt)
 
 -   [Check out my articles](https://lupyuen.github.io)
 

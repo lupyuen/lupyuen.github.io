@@ -4,6 +4,8 @@
 
 _PineCone BL602 RISC-V Evaluation Board connected to Sipeed JTAG Debugger_
 
+📝 _11 Dec 2020_
+
 Today we'll learn to connect the [__PineCone BL602 RISC-V Evaluation Board__](https://lupyuen.github.io/articles/pinecone) to OpenOCD for flashing and debugging PineCone firmware.
 
 # What is OpenOCD?
@@ -721,7 +723,9 @@ I'll also be testing on PineCone the [Embedded Rust Firmware](https://github.com
 
 Read about it here...
 
--   [Next Article: "Debug Rust on PineCone BL602 with VSCode and GDB"](https://lupyuen.github.io/articles/debug)
+-   ["Debug Rust on PineCone BL602 with VSCode and GDB"](https://lupyuen.github.io/articles/debug)
+
+-   ["Porting Mynewt to PineCone BL602"](https://lupyuen.github.io/articles/mynewt)
 
 -   [Check out my articles](https://lupyuen.github.io)
 

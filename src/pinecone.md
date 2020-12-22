@@ -2,6 +2,8 @@
 
 ![PineCone BL602 RISC-V Evaluation Board](https://lupyuen.github.io/images/pinecone-title.jpg)
 
+📝 _11 Nov 2020_
+
 Pine64 is graciously giving away the __PineCone BL602 RISC-V Evaluation Board__ to folks participating in the [__PineCone Nutcracker Challenge__](https://www.pine64.org/2020/10/28/nutcracker-challenge-blob-free-wifi-ble/).
 
 Let's learn about the PineCone Board... And how it helps the [__RISC-V Open Source Ecosystem__](https://en.wikipedia.org/wiki/RISC-V).
@@ -504,9 +506,13 @@ And you might earn a free PineCone Evaluation Board!
 
 We're in the middle of a pandemic. Why not take the time to learn some RISC-V... And contribute to the RISC-V Open Source Ecosystem!
 
--   [Next Article: "Connect PineCone BL602 to OpenOCD"](https://lupyuen.github.io/articles/openocd)
+More about PineCone...
 
--   [Next Article: "Debug Rust on PineCone BL602 with VSCode and GDB"](https://lupyuen.github.io/articles/debug)
+-   ["Connect PineCone BL602 to OpenOCD"](https://lupyuen.github.io/articles/openocd)
+
+-   ["Debug Rust on PineCone BL602 with VSCode and GDB"](https://lupyuen.github.io/articles/debug)
+
+-   ["Porting Mynewt to PineCone BL602"](https://lupyuen.github.io/articles/mynewt)
 
 -   [Check out my articles](https://lupyuen.github.io)
 
