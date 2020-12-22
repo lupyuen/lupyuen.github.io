@@ -896,6 +896,10 @@ We don't need to create them again, just download from...
 
 The steps above were based on the [Blinky Tutorial for STM32F4-Discovery](https://mynewt.apache.org/latest/tutorials/blinky/blinky_stm32f4disc.html).
 
+I added this Git Modules file so that the Mynewt source files will be downloaded together with the repo...
+
+-   [`.gitmodules`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/.gitmodules)
+
 # Appendix: VSCode Settings
 
 ## Debugger Settings
