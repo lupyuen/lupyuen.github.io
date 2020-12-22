@@ -359,15 +359,9 @@ target.build_profile: debug
 </li>
 <li>
 <p>At the command prompt, enter...</p>
-<pre><code class="language-bash">#  Download PineCone source files
-git clone https://github.com/lupyuen/pinecone-rust-mynewt
+<pre><code class="language-bash">#  Download source files
+git clone --recursive https://github.com/lupyuen/pinecone-rust-mynewt
 cd pinecone-rust-mynewt
-
-#  Download Mynewt source files
-cd repos
-rm -r apache-mynewt-core
-git clone --branch mynewt_1_8_0_tag https://github.com/apache/mynewt-core apache-mynewt-core
-cd ..
 </code></pre>
 </li>
 <li>
