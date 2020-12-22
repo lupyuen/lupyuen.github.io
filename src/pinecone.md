@@ -2,7 +2,7 @@
 
 ![PineCone BL602 RISC-V Evaluation Board](https://lupyuen.github.io/images/pinecone-title.jpg)
 
-📝 _11 Nov 2020_
+📝 _29 Nov 2020_
 
 Pine64 is graciously giving away the __PineCone BL602 RISC-V Evaluation Board__ to folks participating in the [__PineCone Nutcracker Challenge__](https://www.pine64.org/2020/10/28/nutcracker-challenge-blob-free-wifi-ble/).
 
