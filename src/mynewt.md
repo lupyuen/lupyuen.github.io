@@ -14,7 +14,7 @@ Our journey so far...
 
 1.  And we [__debugged Rust on PineCone__](https://lupyuen.github.io/articles/debug) with VSCode and GDB
 
-Today we'll learn about our ongoing port of Apache Mynewt embedded operating system to PineCone.
+Today we'll learn about our port of [__Apache Mynewt__](https://mynewt.apache.org/) embedded operating system to PineCone.
 
 [Watch the Sneak Peek on YouTube](https://youtu.be/iDS8CBplSw8)
 
