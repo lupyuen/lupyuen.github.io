@@ -331,10 +331,15 @@ We have created a minimal port of Mynewt to PineCone. Here's how we build the fi
 1.  At the command prompt, enter...
 
     ```bash
-    #  Download the source files
-    git clone --recursive https://github.com/lupyuen/pinecone-rust-mynewt
+    #  Download PineCone source files
+    git clone https://github.com/lupyuen/pinecone-rust-mynewt
     cd pinecone-rust-mynewt
-    newt install
+
+    #  Download Mynewt source files
+    cd repos
+    rm -r apache-mynewt-core
+    git clone --branch mynewt_1_8_0_tag https://github.com/apache/mynewt-core apache-mynewt-core
+    cd ..
     ```
 
 1.  Download GCC from the [xPack GCC for RISC-V site](https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases/tag/v8.3.0-2.3)...
