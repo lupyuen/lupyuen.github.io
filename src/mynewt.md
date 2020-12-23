@@ -753,6 +753,8 @@ PineCone's UART Port is wired to the USB Connector. We could test PineCone's UAR
 
 We'll need to port the UART HAL from the BL602 IoT SDK to Mynewt.
 
+![Furry PineCone](https://lupyuen.github.io/images/mynewt-furry.jpg)
+
 # What's Next
 
 There's more work to be done porting Mynewt to PineCone...
