@@ -18,6 +18,8 @@ PineCone is based on the BL602 combo chipset made by [Nanjing-based Bouffalo Lab
 
     _That's a game changer!_
 
+    [BL602 as a drop-in replacement for ESP8266](https://twitter.com/MisterTechBlog/status/1341917385230483457)
+
 1. __Power Efficient__: BL602 is perfect for wearables and other power-constrained devices. (Maybe even PineTime!)
 
     By performance, BL602 belongs to the same class of microcontrollers as Nordic nRF52832. BL602 won't run Linux, [but neither does PineTime](https://lupyuen.github.io/pinetime-rust-mynewt/articles/pinetime).
