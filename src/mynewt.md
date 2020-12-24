@@ -765,6 +765,8 @@ There's more work to be done porting Mynewt to PineCone...
 
     The porting work is now ongoing at the [`gpio` branch of `pinecone-rust-mynewt`](https://github.com/lupyuen/pinecone-rust-mynewt/tree/gpio), the BL602 IoT SDK is [located here](https://github.com/lupyuen/pinecone-rust-mynewt/tree/gpio/hw/mcu/bl/bl602/ext).
 
+    [Follow the progress on Twitter](https://twitter.com/MisterTechBlog/status/1341390236312510465)
+
 1.  __Bluetooth LE__: We shall reverse engineer the Bluetooth LE Stack on PineCone. Then replace it by the open source [__NimBLE Stack__](https://github.com/apache/mynewt-nimble).
 
 1.  __WiFi__: Also needs to be reverse engineered. We might be able to port this Mynewt WiFi Driver to PineCone...
