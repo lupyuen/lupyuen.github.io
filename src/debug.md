@@ -20,6 +20,8 @@ The instructions here should work on Linux, macOS and Windows.
 
 [Watch the Sneak Peek on YouTube](https://youtu.be/b9f2vxYahHY)
 
+[Note: There's a new doc on BL602, OpenOCD and GDB. Check it out here](https://github.com/bouffalolab/bl_docs/tree/main/BL602_Openocd&GDB/en)
+
 # Install OpenOCD, Rust and GDB
 
 ##  Install OpenOCD

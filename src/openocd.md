@@ -8,6 +8,8 @@ _PineCone BL602 RISC-V Evaluation Board connected to Sipeed JTAG Debugger_
 
 Today we'll learn to connect the [__PineCone BL602 RISC-V Evaluation Board__](https://lupyuen.github.io/articles/pinecone) to OpenOCD for flashing and debugging PineCone firmware.
 
+[Note: There's a new doc on BL602, OpenOCD and GDB. Check it out here](https://github.com/bouffalolab/bl_docs/tree/main/BL602_Openocd&GDB/en)
+
 # What is OpenOCD?
 
 __OpenOCD__ is the open source software that runs on our computer and connects to microcontrollers (like PineCone) to...
