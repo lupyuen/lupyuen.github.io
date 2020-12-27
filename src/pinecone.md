@@ -254,6 +254,8 @@ The BL602 docs are located in the [__BL602 Docs Repo__](https://github.com/pine6
 
 -   [__BL602 ISP Flash Programming__](https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en)
 
+-   [__BL602 OpenOCD and GDB Guide__](https://github.com/bouffalolab/bl_docs/tree/main/BL602_Openocd&GDB/en)
+
 -   [__PineCone Schematics__](https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf)
 
 BL602's RISC-V Core seems to be based on either [__SiFive E21__](https://www.sifive.com/cores/e21) or [__SiFive E24__](https://www.sifive.com/cores/e24) (to be confirmed, [though the SDK source code suggests E21](https://github.com/pine64/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Inc/bl602_gpio.h#L98))...
