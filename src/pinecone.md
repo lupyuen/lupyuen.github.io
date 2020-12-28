@@ -403,9 +403,13 @@ Check out these tools, which will probably run on Linux, macOS and Windows...
 
 _Why is firmware flashing so complicated on PineCone?_
 
-Because the firmware needs to be pre-processed before flashing.  Boot Headers need to be added to the firmware before flashing.
+Because the firmware needs to be pre-processed before flashing.
 
-[More about Boot Headers](https://github.com/renzenicolai/bl602tool)
+Boot Headers need to be added to the firmware before flashing.  The Device Tree needs to be flashed to PineCone too.
+
+-   [Transforming PineCone Firmware before flashing](https://github.com/bouffalolab/BLOpenFlasher/blob/main/flash_tool.go)
+
+-   [PineCone Device Tree](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/device_tree/bl_factory_params_IoTKitA_40M.dts)
 
 _Is JTAG supported for flashing firmware to the PineCone Board?_
 
@@ -413,7 +417,7 @@ JTAG works for loading firmware into PineCone's Cache Memory (similar to RAM). B
 
 So we must flash firmware to PineCone over UART.
 
-[More about BL602 and JTAG](https://github.com/bouffalolab/bl_docs/tree/main/BL602_Openocd&GDB/en)
+-   [More about BL602 and JTAG](https://github.com/bouffalolab/bl_docs/tree/main/BL602_Openocd&GDB/en)
 
 _Are SWD and ST-Link supported for flashing firmware to the PineCone board?_
 
