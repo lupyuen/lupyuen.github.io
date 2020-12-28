@@ -394,13 +394,13 @@ Check out these tools, which will probably run on Linux, macOS and Windows...
 
 1.  [`bouffalolab/BLOpenFlasher`](https://github.com/bouffalolab/BLOpenFlasher) (Go)
 
-1.  [`spacemeowx2/blflash`](https://github.com/spacemeowx2/blflash) (Rust)
-
-1.  [`mkroman/bouffalo-cli`](https://github.com/mkroman/bouffalo-cli) (Rust)
-
 1.  [`stschake/bl60x-flash`](https://github.com/stschake/bl60x-flash) (Python)
 
 1.  [`renzenicolai/bl602tool`](https://github.com/renzenicolai/bl602tool) (Python)
+
+1.  [`spacemeowx2/blflash`](https://github.com/spacemeowx2/blflash) (Rust)
+
+1.  [`mkroman/bouffalo-cli`](https://github.com/mkroman/bouffalo-cli) (Rust)
 
 _Are SWD and ST-Link supported for flashing firmware to the PineCone board?_
 
