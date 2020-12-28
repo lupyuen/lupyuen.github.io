@@ -403,6 +403,8 @@ Check out these tools, which will probably run on Linux, macOS and Windows...
 
 1.  [`mkroman/bouffalo-cli`](https://github.com/mkroman/bouffalo-cli) (Rust)
 
+![Transforming PineCone Firmware before flashing](https://lupyuen.github.io/images/pinecone-flash-steps.png)
+
 _Why is firmware flashing so complicated on PineCone?_
 
 Because the firmware needs to be pre-processed before flashing.
