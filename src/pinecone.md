@@ -393,6 +393,8 @@ Check out these tools, which will probably run on Linux, macOS and Windows...
 
 1.  [`bouffalolab/BLOpenFlasher`](https://github.com/bouffalolab/BLOpenFlasher) (Go)
 
+    [Follow my updates on Twitter](https://twitter.com/MisterTechBlog/status/1343421251675508736)
+
 1.  [`stschake/bl60x-flash`](https://github.com/stschake/bl60x-flash) (Python)
 
 1.  [`renzenicolai/bl602tool`](https://github.com/renzenicolai/bl602tool) (Python)
