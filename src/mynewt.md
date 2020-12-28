@@ -811,6 +811,8 @@ Because OpenOCD couldn't load our firmware into Flash Memory.
 
 (Probably because of Flash Protection. Or because writing to BL602 Flash Memory hasn't been implemented in OpenOCD.)
 
+[More about BL602 and JTAG](https://github.com/bouffalolab/bl_docs/tree/main/BL602_Openocd&GDB/en)
+
 ![Loading Mynewt Firmware to Flash Memory](https://lupyuen.github.io/images/mynewt-flash.png)
 
 _What happens when we load our firmware to Flash Memory?_
@@ -850,8 +852,14 @@ The solution is to load our firmware to PineCone over USB (UART). (And flipping 
 We may integrate with VSCode the Go, Rust or Python scripts for loading our firmware to PineCone over USB...
 
 1.  [`bouffalolab/BLOpenFlasher`](https://github.com/bouffalolab/BLOpenFlasher) (Go)
-1.  [`spacemeowx2/blflash`](https://github.com/spacemeowx2/blflash) (Rust)
+
 1.  [`stschake/bl60x-flash`](https://github.com/stschake/bl60x-flash) (Python)
+
+1.  [`renzenicolai/bl602tool`](https://github.com/renzenicolai/bl602tool) (Python)
+
+1.  [`spacemeowx2/blflash`](https://github.com/spacemeowx2/blflash) (Rust)
+
+1.  [`mkroman/bouffalo-cli`](https://github.com/mkroman/bouffalo-cli) (Rust)
 
 # Appendix: Install newt
 

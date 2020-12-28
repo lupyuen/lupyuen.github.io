@@ -761,6 +761,7 @@ Mem ram:   0x22014000-0x22020000
 <p><em>Why did we load our Mynewt Firmware to Cache Memory instead of Flash Memory?</em></p>
 <p>Because OpenOCD couldn't load our firmware into Flash Memory. </p>
 <p>(Probably because of Flash Protection. Or because writing to BL602 Flash Memory hasn't been implemented in OpenOCD.)</p>
+<p><a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_Openocd&amp;GDB/en">More about BL602 and JTAG</a></p>
 <p><img src="https://lupyuen.github.io/images/mynewt-flash.png" alt="Loading Mynewt Firmware to Flash Memory" /></p>
 <p><em>What happens when we load our firmware to Flash Memory?</em></p>
 <p>The screen above shows the first version of the Mynewt Firmware, that loads into Flash Memory.</p>
@@ -781,9 +782,21 @@ Mem ram:   0x22014000-0x22020000
 <p>The solution is to load our firmware to PineCone over USB (UART). (And flipping the jumper)</p>
 <p>We may integrate with VSCode the Go, Rust or Python scripts for loading our firmware to PineCone over USB...</p>
 <ol>
-<li><a href="https://github.com/bouffalolab/BLOpenFlasher"><code>bouffalolab/BLOpenFlasher</code></a> (Go)</li>
-<li><a href="https://github.com/spacemeowx2/blflash"><code>spacemeowx2/blflash</code></a> (Rust)</li>
-<li><a href="https://github.com/stschake/bl60x-flash"><code>stschake/bl60x-flash</code></a> (Python)</li>
+<li>
+<p><a href="https://github.com/bouffalolab/BLOpenFlasher"><code>bouffalolab/BLOpenFlasher</code></a> (Go)</p>
+</li>
+<li>
+<p><a href="https://github.com/stschake/bl60x-flash"><code>stschake/bl60x-flash</code></a> (Python)</p>
+</li>
+<li>
+<p><a href="https://github.com/renzenicolai/bl602tool"><code>renzenicolai/bl602tool</code></a> (Python)</p>
+</li>
+<li>
+<p><a href="https://github.com/spacemeowx2/blflash"><code>spacemeowx2/blflash</code></a> (Rust)</p>
+</li>
+<li>
+<p><a href="https://github.com/mkroman/bouffalo-cli"><code>mkroman/bouffalo-cli</code></a> (Rust)</p>
+</li>
 </ol>
 <h1 id="appendix-install-newt" class="section-header"><a href="#appendix-install-newt">18 Appendix: Install newt</a></h1>
 <p>We may install Mynewt's <code>newt</code> tool according to the instructions here...</p>

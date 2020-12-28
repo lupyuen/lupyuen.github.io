@@ -381,7 +381,6 @@ In case of problems, check the instructions in...
 
 -   [Dev Cube Guide](https://pine64.github.io/bl602-docs/Developer_Environment/BLFlashEnv/BLFlashEnv.html)
 
-
 -   [Linux Starter Guide](https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html)
 
 -   [Windows Starter Guide](https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html)
@@ -401,6 +400,20 @@ Check out these tools, which will probably run on Linux, macOS and Windows...
 1.  [`spacemeowx2/blflash`](https://github.com/spacemeowx2/blflash) (Rust)
 
 1.  [`mkroman/bouffalo-cli`](https://github.com/mkroman/bouffalo-cli) (Rust)
+
+_Why is firmware flashing so complicated on PineCone?_
+
+Because the firmware needs to be pre-processed before flashing.  Boot Headers need to be added to the firmware before flashing.
+
+[More about Boot Headers](https://github.com/renzenicolai/bl602tool)
+
+_Is JTAG supported for flashing firmware to the PineCone Board?_
+
+JTAG works for loading firmware into PineCone's Cache Memory (similar to RAM). But not to PineCone's Internal Flash ROM (XIP Flash).
+
+So we must flash firmware to PineCone over UART.
+
+[More about BL602 and JTAG](https://github.com/bouffalolab/bl_docs/tree/main/BL602_Openocd&GDB/en)
 
 _Are SWD and ST-Link supported for flashing firmware to the PineCone board?_
 
