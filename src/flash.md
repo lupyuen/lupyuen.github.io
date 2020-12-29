@@ -68,10 +68,12 @@ utils.StartProgram:
     			                                                    
 "bl602/image/fwimage.bin                                                   
 0x10000",
-    			                                                            "bl602/image/ro_params.dtb                                                        
+    			                                                            
+"bl602/image/ro_params.dtb                                                        
 0x1F8000",   			                                                                
 
-```    			                                                                    utils.StartProgram(   			                                                                    
+```    			                                                                    
+utils.StartProgram(   			                                                                    
 "/dev/ttyUSB0", 
 nil, 
 512000, 
@@ -81,3 +83,8 @@ bins,
 5000
 ) 			                                                                    
 ```
+
+https://github.com/bouffalolab/BLOpenFlasher/issues/2
+
+two baudrate setting: 512000 is for downloading eflash_loader.bin, and 2000000 for downloading the generated bins.
+
