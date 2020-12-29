@@ -93,6 +93,8 @@ two baudrate setting: 512000 is for downloading eflash_loader.bin, and 2000000 f
 
 # BL602 Device Tree
 
+Note that the WiFi SSID configuration is stored here.
+
 https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/device_tree/bl_factory_params_IoTKitA_40M.dts
 
 ```text
