@@ -95,7 +95,7 @@ https://github.com/bouffalolab/BLOpenFlasher/issues/2
 
 two baudrate setting: 512000 is for downloading eflash_loader.bin, and 2000000 for downloading the generated bins.
 
-# BL602 Partition Table
+# Appendix: BL602 Partition Table
 
 [`github.com/bouffalolab/BLOpenFlasher/bl602/partition/partition_cfg_2M.toml`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/partition/partition_cfg_2M.toml)
 
@@ -196,7 +196,7 @@ len = 0
 #len = 0
 ```
 
-# BL602 Device Tree
+# Appendix: BL602 Device Tree
 
 Note that the WiFi SSID configuration is stored here.
 
@@ -546,7 +546,7 @@ https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/device_tree/bl_fact
 };
 ```
 
-# BL602 EFuse Configuration
+# Appendix: BL602 EFuse Configuration
 
 [`github.com/bouffalolab/BLOpenFlasher/bl602/efuse_bootheader/efuse_bootheader_cfg.conf`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/efuse_bootheader/efuse_bootheader_cfg.conf)
 
