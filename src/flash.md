@@ -28,6 +28,9 @@ Output:
 FWOffset:
 0x2000,     
 
+Boot2 Firmware:
+https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/bl602_boot2
+
 # Generate Firmware Image                                                                            
             
 EFuse Configuration:            
