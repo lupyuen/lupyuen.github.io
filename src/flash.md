@@ -45,6 +45,10 @@ Output:
 FWOffset:
 0x1000,                                     
 
+https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/system/efuse.html
+
+number of eFuses which can store system and user parameters. Each eFuse is a one-bit field which can be programmed to 1 after which it cannot be reverted back to 0. Some of system parameters are using these eFuse bits directly by hardware modules 
+
 # Device Tree to DTB
                                            
 Script:
