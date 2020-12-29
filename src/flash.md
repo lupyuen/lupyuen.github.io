@@ -746,3 +746,238 @@ hash_7 = 0
 
 crc32 = 0xdeadbeef
 ```
+
+# Appendix: Windows Flashing Log
+
+```text
+[23:01:59.398] - [param]
+interface_type = "Uart"
+comport_uart = "COM5"
+speed_uart = "2000000"
+speed_jlink = "1000"
+bl60x_brd = "IoTKitA"
+bl60x_xtal = "40M"
+aes_key = ""
+aes_iv = ""
+addr = "0x0"
+
+[check_box]
+partition_download = true
+boot2_download = true
+bin_download = true
+media_download = false
+use_romfs = false
+mfg_download = false
+ro_params_download = true
+ckb_erase_all = "False"
+encrypt = false
+download_single = false
+
+[input_path]
+pt_bin_input = "C:\\pinecone\\bl_iot_sdk\\tools\\flash_tool\\bl602\\partition\\partition_cfg_2M.toml"
+boot2_bin_input = "C:\\pinecone\\bl_iot_sdk\\image_conf\\bl602\\blsp_boot2_release.bin"
+cfg2_bin_input = "C:\\Users\\guppy\\Downloads\\customer_app.zip\\sdk_app_helloworld\\build_out\\sdk_app_helloworld.bin"
+meida_bin_input = ""
+romfs_dir_input = ""
+mfg_bin_input = ""
+img_bin_input = ""
+[23:01:59.406] - ========= Interface is Uart =========
+[23:01:59.420] - eflash loader bin is eflash_loader_40m.bin
+[23:01:59.421] - ========= chip flash id: ef4015 =========
+[23:01:59.468] - Update flash cfg finished
+[23:01:59.492] - create partition.bin, pt_new == True
+[23:01:59.504] - bl60x_fw_boot_head_gen xtal: 40M
+[23:01:59.509] - Create bootheader using C:\pinecone\bl_iot_sdk\tools\flash_tool\bl602\efuse_bootheader/efuse_bootheader_cfg.ini
+[23:01:59.510] - Updating data according to <C:\pinecone\bl_iot_sdk\tools\flash_tool\bl602\efuse_bootheader/efuse_bootheader_cfg.ini[BOOTHEADER_CFG]>
+[23:01:59.513] - Created file len:176
+[23:01:59.532] - Create efuse using C:\pinecone\bl_iot_sdk\tools\flash_tool\bl602\efuse_bootheader/efuse_bootheader_cfg.ini
+[23:01:59.532] - Updating data according to <C:\pinecone\bl_iot_sdk\tools\flash_tool\bl602\efuse_bootheader/efuse_bootheader_cfg.ini[EFUSE_CFG]>
+[23:01:59.535] - Created file len:128
+[23:01:59.570] - ========= sp image create =========
+[23:01:59.642] - Image hash is b'1b80574f36095a60475887c38abcbd10735eb6b2c07f7b119b79fe6755445dfa'
+[23:01:59.643] - Header crc: b'6309dbed'
+[23:01:59.643] - Write flash img
+[23:01:59.677] - bl60x_fw_boot_head_gen xtal: 40M
+[23:01:59.682] - Create bootheader using C:\pinecone\bl_iot_sdk\tools\flash_tool\bl602\efuse_bootheader/efuse_bootheader_cfg.ini
+[23:01:59.683] - Updating data according to <C:\pinecone\bl_iot_sdk\tools\flash_tool\bl602\efuse_bootheader/efuse_bootheader_cfg.ini[BOOTHEADER_CFG]>
+[23:01:59.685] - Created file len:176
+[23:01:59.693] - Create efuse using C:\pinecone\bl_iot_sdk\tools\flash_tool\bl602\efuse_bootheader/efuse_bootheader_cfg.ini
+[23:01:59.694] - Updating data according to <C:\pinecone\bl_iot_sdk\tools\flash_tool\bl602\efuse_bootheader/efuse_bootheader_cfg.ini[EFUSE_CFG]>
+[23:01:59.697] - Created file len:128
+[23:01:59.732] - ========= sp image create =========
+[23:01:59.773] - Image hash is b'26d56114b6c744112d88dccf5de778fb40a7feffdd9cb9e0b9c0c299461bf48d'
+[23:01:59.773] - Header crc: b'2a98df4f'
+[23:01:59.774] - Write flash img
+[23:01:59.804] - FW Header is 176, 3920 still needed
+[23:01:59.806] - FW OTA bin header is Done. Len is 4096
+[23:01:59.854] - FW OTA bin is Done. Len is 25216
+[23:01:59.931] - FW OTA xz is Done
+[23:01:59.932] - ========= eflash loader config =========
+[23:01:59.956] - =========C:\pinecone\bl_iot_sdk\tools\flash_tool\bl602\device_tree/bl_factory_params_IoTKitA_40M.dtsbl602/device_tree/ro_params.dtb=========
+[23:02:00.260] - Version: bflb_eflash_loader_v1.7.2
+[23:02:00.261] - Program Start
+[23:02:00.261] - option is ['-p', '-t', 'flash', '-d', 'COM5']
+[23:02:00.262] - Config file: C:\pinecone\bl_iot_sdk\tools\flash_tool\bl602\eflash_loader/eflash_loader_cfg.ini
+[23:02:00.263] - com device: COM5
+[23:02:00.264] - chiptype: bl602
+[23:02:00.264] - ========= Interface is Uart =========
+[23:02:00.265] - Eflash load helper file: C:\pinecone\bl_iot_sdk\tools\flash_tool\bl602\eflash_loader/eflash_loader_40m.bin
+[23:02:00.265] - ========= load eflash_loader.bin =========
+[23:02:00.265] - Load eflash_loader.bin via uart
+[23:02:00.266] - ========= image load =========
+[23:02:00.541] - tx rx and power off, press the machine!
+[23:02:00.542] - cutoff time is 0.1
+[23:02:00.651] - power on tx and rx
+[23:02:01.463] - reset cnt: 0, reset hold: 0.005, shake hand delay: 0.1
+[23:02:01.464] - clean buf
+[23:02:01.571] - send sync
+[23:02:01.805] - ack is b'4f4b'
+[23:02:01.852] - shake hand success
+[23:02:02.420] - get_boot_info
+[23:02:02.423] - data read is b'010000000000000003000000619dc005b9181d00'
+[23:02:02.424] - sign is 0 encrypt is 0
+[23:02:02.424] - segcnt is 1
+[23:02:02.433] - segdata_len is 21872
+[23:02:02.518] - 4080/21872
+[23:02:02.603] - 8160/21872
+[23:02:02.689] - 12240/21872
+[23:02:02.774] - 16320/21872
+[23:02:02.859] - 20400/21872
+[23:02:02.891] - 21872/21872
+[23:02:02.894] - Run img
+[23:02:03.007] - Load helper bin time cost(ms): 2741.156982421875
+[23:02:03.115] - Program operation
+[23:02:03.116] - ========= flash read jedec ID =========
+[23:02:03.116] - Flash load shake hand
+[23:02:03.117] - clean buf
+[23:02:03.226] - send sync
+[23:02:03.463] - ack is b'4f4b'
+[23:02:03.512] - Read flash jedec ID
+[23:02:03.513] - readdata:
+[23:02:03.514] - b'ef401500'
+[23:02:03.514] - Finished
+[23:02:03.515] - Dealing Index 0
+[23:02:03.516] - ========= programming bl602/img_create/whole_img_boot2.bin to 0x00000000
+[23:02:03.517] - ========= flash load =========
+[23:02:03.518] - ========= flash erase =========
+[23:02:03.519] - Erase flash  from 0x0 to 0xb6cf
+[23:02:03.813] - Erase time cost(ms): 292.946044921875
+[23:02:03.855] - Load 2048/46800 {"progress":4}
+Load 4096/46800 {"progress":8}
+[23:02:03.893] - Load 6144/46800 {"progress":13}
+Load 8192/46800 {"progress":17}
+[23:02:03.929] - Load 10240/46800 {"progress":21}
+Load 12288/46800 {"progress":26}
+[23:02:03.966] - Load 14336/46800 {"progress":30}
+Load 16384/46800 {"progress":35}
+[23:02:04.004] - Load 18432/46800 {"progress":39}
+Load 20480/46800 {"progress":43}
+[23:02:04.041] - Load 22528/46800 {"progress":48}
+Load 24576/46800 {"progress":52}
+[23:02:04.079] - Load 26624/46800 {"progress":56}
+Load 28672/46800 {"progress":61}
+[23:02:04.115] - Load 30720/46800 {"progress":65}
+Load 32768/46800 {"progress":70}
+[23:02:04.151] - Load 34816/46800 {"progress":74}
+Load 36864/46800 {"progress":78}
+[23:02:04.187] - Load 38912/46800 {"progress":83}
+Load 40960/46800 {"progress":87}
+[23:02:04.224] - Load 43008/46800 {"progress":91}
+Load 45056/46800 {"progress":96}
+[23:02:04.240] - Load 46800/46800 {"progress":100}
+[23:02:04.241] - Write check
+[23:02:04.243] - Flash load time cost(ms): 428.165283203125
+[23:02:04.243] - Finished
+[23:02:04.245] - Sha caled by host: cc1ce53503cdf01b3ec47225589046bf6e99b3ddba900f8ed9a6201ebb9f323f
+[23:02:04.245] - xip mode Verify
+[23:02:04.259] - Read Sha256/46800
+[23:02:04.260] - Flash xip readsha time cost(ms): 13.030517578125
+[23:02:04.260] - Finished
+[23:02:04.262] - Sha caled by dev: cc1ce53503cdf01b3ec47225589046bf6e99b3ddba900f8ed9a6201ebb9f323f
+[23:02:04.263] - Verify success
+[23:02:04.263] - Dealing Index 1
+[23:02:04.264] - ========= programming bl602/partition/partition.bin to 0xe000
+[23:02:04.264] - ========= flash load =========
+[23:02:04.265] - ========= flash erase =========
+[23:02:04.265] - Erase flash  from 0xe000 to 0xe10f
+[23:02:04.301] - Erase time cost(ms): 36.224609375
+[23:02:04.306] - Load 272/272 {"progress":100}
+[23:02:04.306] - Write check
+[23:02:04.309] - Flash load time cost(ms): 7.0009765625
+[23:02:04.309] - Finished
+[23:02:04.310] - Sha caled by host: da4d2fe7d42a71246b0e84d64665b70ad701435f89716c48e6f23ef55340eaa0
+[23:02:04.310] - xip mode Verify
+[23:02:04.320] - Read Sha256/272
+[23:02:04.320] - Flash xip readsha time cost(ms): 8.000732421875
+[23:02:04.320] - Finished
+[23:02:04.322] - Sha caled by dev: da4d2fe7d42a71246b0e84d64665b70ad701435f89716c48e6f23ef55340eaa0
+[23:02:04.323] - Verify success
+[23:02:04.323] - Dealing Index 2
+[23:02:04.324] - ========= programming bl602/partition/partition.bin to 0xf000
+[23:02:04.324] - ========= flash load =========
+[23:02:04.325] - ========= flash erase =========
+[23:02:04.325] - Erase flash  from 0xf000 to 0xf10f
+[23:02:04.362] - Erase time cost(ms): 36.013427734375
+[23:02:04.367] - Load 272/272 {"progress":100}
+[23:02:04.368] - Write check
+[23:02:04.370] - Flash load time cost(ms): 6.999755859375
+[23:02:04.370] - Finished
+[23:02:04.371] - Sha caled by host: da4d2fe7d42a71246b0e84d64665b70ad701435f89716c48e6f23ef55340eaa0
+[23:02:04.372] - xip mode Verify
+[23:02:04.382] - Read Sha256/272
+[23:02:04.382] - Flash xip readsha time cost(ms): 8.004150390625
+[23:02:04.382] - Finished
+[23:02:04.384] - Sha caled by dev: da4d2fe7d42a71246b0e84d64665b70ad701435f89716c48e6f23ef55340eaa0
+[23:02:04.385] - Verify success
+[23:02:04.385] - Dealing Index 3
+[23:02:04.386] - ========= programming bl602/img_create/whole_img.bin to 0x10000
+[23:02:04.386] - ========= flash load =========
+[23:02:04.387] - ========= flash erase =========
+[23:02:04.387] - Erase flash  from 0x10000 to 0x1627f
+[23:02:04.612] - Erase time cost(ms): 223.555419921875
+[23:02:04.656] - Load 2048/25216 {"progress":8}
+Load 4096/25216 {"progress":16}
+[23:02:04.700] - Load 6144/25216 {"progress":24}
+Load 8192/25216 {"progress":32}
+[23:02:04.743] - Load 10240/25216 {"progress":40}
+Load 12288/25216 {"progress":48}
+[23:02:04.781] - Load 14336/25216 {"progress":56}
+Load 16384/25216 {"progress":64}
+[23:02:04.818] - Load 18432/25216 {"progress":73}
+Load 20480/25216 {"progress":81}
+[23:02:04.856] - Load 22528/25216 {"progress":89}
+Load 24576/25216 {"progress":97}
+[23:02:04.862] - Load 25216/25216 {"progress":100}
+[23:02:04.863] - Write check
+[23:02:04.865] - Flash load time cost(ms): 251.464599609375
+[23:02:04.866] - Finished
+[23:02:04.867] - Sha caled by host: 3507cc26ec24cff845d18eafeb5b50e57e94b443fc539994e79e1f5e8e83a18d
+[23:02:04.867] - xip mode Verify
+[23:02:04.880] - Read Sha256/25216
+[23:02:04.880] - Flash xip readsha time cost(ms): 10.96826171875
+[23:02:04.881] - Finished
+[23:02:04.883] - Sha caled by dev: 3507cc26ec24cff845d18eafeb5b50e57e94b443fc539994e79e1f5e8e83a18d
+[23:02:04.883] - Verify success
+[23:02:04.883] - Dealing Index 4
+[23:02:04.884] - ========= programming bl602/device_tree/ro_params.dtb to 0x1f8000
+[23:02:04.884] - ========= flash load =========
+[23:02:04.885] - ========= flash erase =========
+[23:02:04.885] - Erase flash  from 0x1f8000 to 0x1f9626
+[23:02:04.957] - Erase time cost(ms): 71.47705078125
+[23:02:04.993] - Load 2048/5671 {"progress":36}
+Load 4096/5671 {"progress":72}
+[23:02:05.009] - Load 5671/5671 {"progress":100}
+[23:02:05.009] - Write check
+[23:02:05.011] - Flash load time cost(ms): 52.88330078125
+[23:02:05.012] - Finished
+[23:02:05.012] - Sha caled by host: ae42d69b09c2eb134b202b412c00ff175e10b625e2d3c0a2820378bd341926b8
+[23:02:05.013] - xip mode Verify
+[23:02:05.023] - Read Sha256/5671
+[23:02:05.023] - Flash xip readsha time cost(ms): 8.00732421875
+[23:02:05.024] - Finished
+[23:02:05.026] - Sha caled by dev: ae42d69b09c2eb134b202b412c00ff175e10b625e2d3c0a2820378bd341926b8
+[23:02:05.026] - Verify success
+[23:02:05.027] - Program Finished
+[23:02:05.028] - All time cost(ms): 4766.982421875
+[23:02:05.136] - [All Success]
+```
