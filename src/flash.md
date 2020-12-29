@@ -8,7 +8,7 @@ Based on [`github.com/bouffalolab/BLOpenFlasher/flash_tool.go`](https://github.c
 
 # Generate Partition
         
-Input:       
+Partition Map:       
 "bl602/partition/partition_cfg_2M.toml",
                 
 Output:              
@@ -16,7 +16,7 @@ Output:
 
 # Boot To Image                                                                     
             
-Input:        
+EFuse Configuration:        
 "bl602/efuse_bootheader/efuse_bootheader_cfg.conf",
                     
 Boot Binary:                 
@@ -30,7 +30,7 @@ FWOffset:
 
 # Generate Firmware Image                                                                            
             
-Input:            
+EFuse Configuration:            
 "bl602/efuse_bootheader/efuse_bootheader_cfg.conf",
                     
 Firmware Binary:                
@@ -40,7 +40,6 @@ Output:
 "bl602/image/fwimage.bin",
                                     
 FWOffset:
-
 0x1000,                                     
 
 # Device Tree to DTB
