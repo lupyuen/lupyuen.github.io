@@ -8,7 +8,7 @@ Based on [`github.com/bouffalolab/BLOpenFlasher/flash_tool.go`](https://github.c
 
 # Generate Partition
         
-Partition Map:       
+Partition Table:       
 "bl602/partition/partition_cfg_2M.toml",
                 
 Output:              
@@ -90,6 +90,107 @@ bins,
 https://github.com/bouffalolab/BLOpenFlasher/issues/2
 
 two baudrate setting: 512000 is for downloading eflash_loader.bin, and 2000000 for downloading the generated bins.
+
+# BL602 Partition Table
+
+https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/partition/partition_cfg_2M.toml
+
+```text
+[pt_table]
+#partition table is 4K in size
+address0 = 0xE000
+address1 = 0xF000
+
+[[pt_entry]]
+type = 0
+name = "FW"
+device = 0
+address0 = 0x10000
+size0 = 0xC8000
+address1 = 0xD8000
+size1 = 0x88000
+# compressed image must set len,normal image can left it to 0
+len = 0
+
+[[pt_entry]]
+type = 2
+name = "mfg"
+device = 0
+address0 = 0x160000
+size0 = 0x32000
+address1 = 0
+size1 = 0
+# compressed image must set len,normal image can left it to 0
+len = 0
+
+[[pt_entry]]
+type = 3
+name = "media"
+device = 0
+address0 = 0x192000
+size0 = 0x57000
+address1 = 0
+size1 = 0
+# compressed image must set len,normal image can left it to 0
+len = 0
+
+[[pt_entry]]
+type = 4
+name = "PSM"
+device = 0
+address0 = 0x1E9000
+size0 = 0x8000
+address1 = 0
+size1 = 0
+# compressed image must set len,normal image can left it to 0
+len = 0
+
+[[pt_entry]]
+type = 5
+name = "KEY"
+device = 0
+address0 = 0x1F1000
+size0 = 0x2000
+address1 = 0
+size1 = 0
+# compressed image must set len,normal image can left it to 0
+len = 0
+
+[[pt_entry]]
+type = 6
+name = "DATA"
+device = 0
+address0 = 0x1F3000
+size0 = 0x5000
+address1 = 0
+size1 = 0
+# compressed image must set len,normal image can left it to 0
+len = 0
+
+
+[[pt_entry]]
+type = 7
+name = "factory"
+device = 0
+address0 = 0x1F8000
+size0 = 0x7000
+address1 = 0
+size1 = 0
+# compressed image must set len,normal image can left it to 0
+len = 0
+
+#if user want to put RF calibration data on flash, uncomment following pt entry
+#[[pt_entry]]
+#type = 8
+#name = "rf_para"
+#device = 0
+#address0 = 0x1FF000
+#size0 = 0x1000
+#address1 = 0
+#size1 = 0
+## compressed image must set len,normal image can left it to 0
+#len = 0
+```
 
 # BL602 Device Tree
 
