@@ -93,7 +93,7 @@ two baudrate setting: 512000 is for downloading eflash_loader.bin, and 2000000 f
 
 # BL602 Partition Table
 
-https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/partition/partition_cfg_2M.toml
+[`github.com/bouffalolab/BLOpenFlasher/bl602/partition/partition_cfg_2M.toml`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/partition/partition_cfg_2M.toml)
 
 ```text
 [pt_table]
