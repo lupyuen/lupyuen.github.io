@@ -8,60 +8,68 @@ TODO
 
 # Flash Firmware from Linux
 
-Install rustup. Then run...
+1.  Set the PineCone Jumper to H
 
-```bash
-sudo rustup default nightly
-sudo cargo install blflash
-```
+1.  Connect PineCone to the USB port
 
-We should see...
+1.  Install `rustup` from [`rustup.rs`](https://rustup.rs)
 
-```text
-    Updating crates.io index
-  Downloaded blflash v0.1.0
-  Downloaded 1 crate (57.5 KB) in 2.92s
-  Installing blflash v0.1.0
-  ...
-   Compiling blflash v0.1.0
-    Finished release [optimized] target(s) in 6m 09s
-  Installing /root/.cargo/bin/blflash
-   Installed package `blflash v0.1.0` (executable `blflash`)
-```
+1.  Then run...
 
-Enter this to flash the firmware...
+    ```bash
+    git clone --recursive https://github.com/spacemeowx2/blflash
+    cd blflash
+    sudo rustup default nightly
+    sudo cargo build
+    ```
 
-```bash
-sudo cargo run flash ~/BLOpenFlasher/bl602/bl602.bin --port /dev/ttyUSB0 
-```
+1.  We should see...
 
-(Change `~/BLOpenFlasher/bl602/bl602.bin` to the full path of the firmware binary to be flashed)
+    ```text
+        Updating crates.io index
+    Downloaded blflash v0.1.0
+    Downloaded 1 crate (57.5 KB) in 2.92s
+    Installing blflash v0.1.0
+    ...
+    Compiling blflash v0.1.0
+        Finished release [optimized] target(s) in 6m 09s
+    Installing /root/.cargo/bin/blflash
+    Installed package `blflash v0.1.0` (executable `blflash`)
+    ```
 
-We should see...
+1.  Enter this to flash our firmware...
 
-```text
-    Finished dev [unoptimized + debuginfo] target(s) in 0.10s
-     Running `target/debug/blflash flash /home/luppy/BLOpenFlasher/bl602/bl602.bin --port /dev/ttyUSB0`
-[INFO  blflash::flasher] Start connection...
-[TRACE blflash::flasher] 5ms send count 55
-[TRACE blflash::flasher] handshake sent elapsed 1.059862ms
-[INFO  blflash::flasher] Connection Succeed
-[INFO  blflash] Bootrom version: 1
-[TRACE blflash] Boot info: BootInfo { len: 14, bootrom_version: 1, otp_info: [0, 0, 0, 0, 3, 0, 0, 0, 61, 9d, c0, 5, b9, 18, 1d, 0] }
-[INFO  blflash::flasher] Sending eflash_loader...
-[INFO  blflash::flasher] Finished 3.375522563s 8.47KB/s
-[TRACE blflash::flasher] 5ms send count 500
-[TRACE blflash::flasher] handshake sent elapsed 6.51343ms
-[INFO  blflash::flasher] Entered eflash_loader
-[INFO  blflash::flasher] Skip segment addr: 0 size: 47504 sha256 matches
-[INFO  blflash::flasher] Skip segment addr: e000 size: 272 sha256 matches
-[INFO  blflash::flasher] Skip segment addr: f000 size: 272 sha256 matches
-[INFO  blflash::flasher] Skip segment addr: 10000 size: 869328 sha256 matches
-[INFO  blflash::flasher] Skip segment addr: 1f8000 size: 5671 sha256 matches
-[INFO  blflash] Success
-```
+    ```bash
+    sudo cargo run flash ~/BLOpenFlasher/bl602/bl602.bin --port /dev/ttyUSB0 
+    ```
 
-Tested on Arm64 Linux (Pinebook Pro)
+    (Change `~/BLOpenFlasher/bl602/bl602.bin` to the full path of the firmware binary to be flashed)
+
+1.  We should see...
+
+    ```text
+        Finished dev [unoptimized + debuginfo] target(s) in 0.10s
+        Running `target/debug/blflash flash /home/luppy/BLOpenFlasher/bl602/bl602.bin --port /dev/ttyUSB0`
+    [INFO  blflash::flasher] Start connection...
+    [TRACE blflash::flasher] 5ms send count 55
+    [TRACE blflash::flasher] handshake sent elapsed 1.059862ms
+    [INFO  blflash::flasher] Connection Succeed
+    [INFO  blflash] Bootrom version: 1
+    [TRACE blflash] Boot info: BootInfo { len: 14, bootrom_version: 1, otp_info: [0, 0, 0, 0, 3, 0, 0, 0, 61, 9d, c0, 5, b9, 18, 1d, 0] }
+    [INFO  blflash::flasher] Sending eflash_loader...
+    [INFO  blflash::flasher] Finished 3.375522563s 8.47KB/s
+    [TRACE blflash::flasher] 5ms send count 500
+    [TRACE blflash::flasher] handshake sent elapsed 6.51343ms
+    [INFO  blflash::flasher] Entered eflash_loader
+    [INFO  blflash::flasher] Skip segment addr: 0 size: 47504 sha256 matches
+    [INFO  blflash::flasher] Skip segment addr: e000 size: 272 sha256 matches
+    [INFO  blflash::flasher] Skip segment addr: f000 size: 272 sha256 matches
+    [INFO  blflash::flasher] Skip segment addr: 10000 size: 869328 sha256 matches
+    [INFO  blflash::flasher] Skip segment addr: 1f8000 size: 5671 sha256 matches
+    [INFO  blflash] Success
+    ```
+
+Tested on Arm64 Linux (Pinebook Pro with Manjaro)
 
 # How Flashing Works
 
