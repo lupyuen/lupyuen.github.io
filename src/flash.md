@@ -8,7 +8,7 @@ _PineCone BL602 RISC-V Evaluation Board_
 
 TODO
 
-# Flash Firmware with Linux
+# Flash Firmware with Linux, macOS and Windows
 
 ##  Install rustup
 
@@ -59,16 +59,24 @@ __For Linux:__ Install `rustup` as a Superuser.
 1.  Flash our firmware as Superuser...
 
     ```bash
-    sudo cargo run flash ~/bl602.bin --port /dev/ttyUSB0 
+    sudo cargo run flash sdk_app_helloworld.bin --port /dev/ttyUSB0 
     ```
 
-    (Change `~/bl602.bin` to the full path of the firmware binary to be flashed)
+    (Change `sdk_app_helloworld.bin` to the full path of the firmware binary to be flashed. Change the USB serial port `/dev/ttyUSB0` if necessary.)
+
+    __For Windows:__
+
+    ```bash
+    cargo run flash sdk_app_helloworld.bin --port COM5
+    ```
+
+    (Change `sdk_app_helloworld.bin` to the full path of the firmware binary to be flashed. Change `COM5` to the serial port assigned to PineCone.)
 
 1.  We should see...
 
     ```text
         Finished dev [unoptimized + debuginfo] target(s) in 0.10s
-        Running `target/debug/blflash flash ~/bl602.bin --port /dev/ttyUSB0`
+        Running `target/debug/blflash flash sdk_app_helloworld.bin --port /dev/ttyUSB0`
     [INFO  blflash::flasher] Start connection...
     [TRACE blflash::flasher] 5ms send count 55
     [TRACE blflash::flasher] handshake sent elapsed 1.059862ms
@@ -105,23 +113,35 @@ __For Linux:__ Install `rustup` as a Superuser.
 
 1.  After flashing, switch the __PineCone Jumper (IO8)__ back to `L`. 
 
-    Reconnect PineCone to the USB port. Our firmware begins running.
+    Reconnect PineCone to the USB port. 
+    
+    Our firmware begins running.
 
-1.  To watch our firmware running, connect to the PineCone Serial Console as Superuser (at 2 Mbps)...
+1.  To watch our firmware run, connect to the PineCone Serial Console as Superuser (at 2 Mbps)...
 
     ```bash
     sudo screen /dev/ttyUSB0 2000000
     ```
 
-    Press the `RST` Button on PineCone to restart the board.  As PineCone boots, we shall see the console output from our firmware.
-
-    To exit the console, press `Ctrl-A` then `k` then `y`
-
-    __For Windows:__ Use `putty` instead to connect to the `COM` Port at 2 Mbps.
+    __For Windows:__ Use `putty` to connect to PineCone's `COM` Port (like `COM5`) at speed `2000000` (2 Mbps)
     
     [Download putty for Windows](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html)
 
-These steps were tested on Arm64 Linux (Pinebook Pro with Manjaro).
+    ![Connect putty to COM Port at speed 2000000](https://lupyuen.github.io/images/flash-putty.png)
+
+1.  Press the `RST` Button on PineCone to restart the board.  As PineCone boots, we shall see the console output from our firmware...
+
+    ```text
+    [helloworld]   start
+    [helloworld]   helloworld
+    [helloworld]   end
+    ```
+
+    __For Linux and macOS:__ To exit the `screen` console, press `Ctrl-A` then `k` then `y`
+
+    __For Windows:__ Close the `putty` window
+
+These steps were tested on Arm64 Linux (Pinebook Pro with Manjaro), macOS Catalina and Windows 10.
 
 ![Flashing Firmware to PineCone BL602](https://lupyuen.github.io/images/pinecone-flash-steps.png)
 
@@ -160,7 +180,7 @@ EFuse Configuration:
 "bl602/efuse_bootheader/efuse_bootheader_cfg.conf",
                     
 Firmware Binary:                
-"bl602/bl602.bin",
+"bl602/sdk_app_helloworld.bin",
                             
 Output:                        
 "bl602/image/fwimage.bin",
