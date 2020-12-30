@@ -8,9 +8,17 @@ _PineCone BL602 RISC-V Evaluation Board_
 
 TODO
 
-# Flash Firmware from Linux
+# Flash Firmware with Linux
 
-1.  Install `rustup` from [`rustup.rs`](https://rustup.rs)
+##  Install rustup
+
+Install `rustup` from [`rustup.rs`](https://rustup.rs)
+
+Select the default options.
+
+__For Linux:__ Install `rustup` as a Superuser.
+
+##  Download and build blflash
 
 1.  Download the `blflash` source code...
 
@@ -19,13 +27,20 @@ TODO
     cd blflash
     ```
 
-    (Version 0.1.0 of `blflash` installed via `cargo install blflash` doesn't work)
+    (Why can't we just `cargo install blflash`? Because it installs version 0.1.0 of `blflash` which doesn't work)
 
-1.  Build `blflash` as superuser...
+1.  Build `blflash` as Superuser...
 
     ```bash
     sudo rustup default nightly
     sudo cargo build
+    ```
+
+    __For Windows:__
+
+    ```bash
+    rustup default nightly
+    cargo build
     ```
 
 1.  We should see...
@@ -35,23 +50,25 @@ TODO
     Finished dev [unoptimized + debuginfo] target(s) in 4m 28s
     ```
 
-1.  Set the PineCone Jumper to H
+##  Flash the firmware
 
-1.  Connect PineCone to the USB port
+1.  Set the __PineCone Jumper (IO8)__ to `H`.
 
-1.  Flash our firmware as superuser...
+    Connect PineCone to the USB port.
+
+1.  Flash our firmware as Superuser...
 
     ```bash
-    sudo cargo run flash ~/BLOpenFlasher/bl602/bl602.bin --port /dev/ttyUSB0 
+    sudo cargo run flash ~/bl602.bin --port /dev/ttyUSB0 
     ```
 
-    (Change `~/BLOpenFlasher/bl602/bl602.bin` to the full path of the firmware binary to be flashed)
+    (Change `~/bl602.bin` to the full path of the firmware binary to be flashed)
 
 1.  We should see...
 
     ```text
         Finished dev [unoptimized + debuginfo] target(s) in 0.10s
-        Running `target/debug/blflash flash /home/luppy/BLOpenFlasher/bl602/bl602.bin --port /dev/ttyUSB0`
+        Running `target/debug/blflash flash ~/bl602.bin --port /dev/ttyUSB0`
     [INFO  blflash::flasher] Start connection...
     [TRACE blflash::flasher] 5ms send count 55
     [TRACE blflash::flasher] handshake sent elapsed 1.059862ms
@@ -82,25 +99,29 @@ TODO
     caused by: Operation timed out
     ```
 
-    Disconnect PineCone from the USB port. Check that the Jumper is set to H. Retry the flash command.
+    Disconnect PineCone from the USB port. Check that the PineCone Jumper is set to `H`. Retry the flash command.
 
-1.  After flashing, switch the PineCone Jumper back to L. 
+## Watch the firmware run
+
+1.  After flashing, switch the __PineCone Jumper (IO8)__ back to `L`. 
 
     Reconnect PineCone to the USB port. Our firmware begins running.
 
-1.  To watch our firmware running, connect to the PineCone Serial Console (at 2 Mbps)...
+1.  To watch our firmware running, connect to the PineCone Serial Console as Superuser (at 2 Mbps)...
 
     ```bash
     sudo screen /dev/ttyUSB0 2000000
     ```
 
-    Press the `RST` Button on PineCone to restart the board.
+    Press the `RST` Button on PineCone to restart the board.  As PineCone boots, we shall see the console output from our firmware.
 
-    We should see the console output as PineCone boots.
+    To exit the console, press `Ctrl-A` then `k` then `y`
 
-1.  To exit the console, press `Ctrl-A` then `k` then `y`
+    __For Windows:__ Use `putty` instead to connect to the `COM` Port at 2 Mbps.
+    
+    [Download putty for Windows](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html)
 
-Tested on Arm64 Linux (Pinebook Pro with Manjaro)
+These steps were tested on Arm64 Linux (Pinebook Pro with Manjaro).
 
 ![Flashing Firmware to PineCone BL602](https://lupyuen.github.io/images/pinecone-flash-steps.png)
 
