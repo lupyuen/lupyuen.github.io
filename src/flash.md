@@ -4,9 +4,70 @@
 
 📝 _29 Dec 2020_
 
+TODO
+
+# Flash Firmware from Linux
+
+Install rustup. Then run...
+
+```bash
+sudo rustup default nightly
+sudo cargo install blflash
+```
+
+We should see...
+
+```text
+    Updating crates.io index
+  Downloaded blflash v0.1.0
+  Downloaded 1 crate (57.5 KB) in 2.92s
+  Installing blflash v0.1.0
+  ...
+   Compiling blflash v0.1.0
+    Finished release [optimized] target(s) in 6m 09s
+  Installing /root/.cargo/bin/blflash
+   Installed package `blflash v0.1.0` (executable `blflash`)
+```
+
+Enter this to flash the firmware...
+
+```bash
+sudo cargo run flash ~/BLOpenFlasher/bl602/bl602.bin --port /dev/ttyUSB0 
+```
+
+(Change `~/BLOpenFlasher/bl602/bl602.bin` to the full path of the firmware binary to be flashed)
+
+We should see...
+
+```text
+    Finished dev [unoptimized + debuginfo] target(s) in 0.10s
+     Running `target/debug/blflash flash /home/luppy/BLOpenFlasher/bl602/bl602.bin --port /dev/ttyUSB0`
+[INFO  blflash::flasher] Start connection...
+[TRACE blflash::flasher] 5ms send count 55
+[TRACE blflash::flasher] handshake sent elapsed 1.059862ms
+[INFO  blflash::flasher] Connection Succeed
+[INFO  blflash] Bootrom version: 1
+[TRACE blflash] Boot info: BootInfo { len: 14, bootrom_version: 1, otp_info: [0, 0, 0, 0, 3, 0, 0, 0, 61, 9d, c0, 5, b9, 18, 1d, 0] }
+[INFO  blflash::flasher] Sending eflash_loader...
+[INFO  blflash::flasher] Finished 3.375522563s 8.47KB/s
+[TRACE blflash::flasher] 5ms send count 500
+[TRACE blflash::flasher] handshake sent elapsed 6.51343ms
+[INFO  blflash::flasher] Entered eflash_loader
+[INFO  blflash::flasher] Skip segment addr: 0 size: 47504 sha256 matches
+[INFO  blflash::flasher] Skip segment addr: e000 size: 272 sha256 matches
+[INFO  blflash::flasher] Skip segment addr: f000 size: 272 sha256 matches
+[INFO  blflash::flasher] Skip segment addr: 10000 size: 869328 sha256 matches
+[INFO  blflash::flasher] Skip segment addr: 1f8000 size: 5671 sha256 matches
+[INFO  blflash] Success
+```
+
+Tested on Arm64 Linux (Pinebook Pro)
+
+# How Flashing Works
+
 Based on [`github.com/bouffalolab/BLOpenFlasher/flash_tool.go`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/flash_tool.go)
 
-# Generate Partition
+## Generate Partition
         
 Partition Table:       
 "bl602/partition/partition_cfg_2M.toml",
@@ -14,7 +75,7 @@ Partition Table:
 Output:              
 "bl602/image/partition.bin",                   
 
-# Boot To Image                                                                     
+## Boot To Image                                                                     
             
 EFuse Configuration:        
 "bl602/efuse_bootheader/efuse_bootheader_cfg.conf",
@@ -31,7 +92,7 @@ FWOffset:
 Boot2 Firmware:
 https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/bl602_boot2
 
-# Generate Firmware Image                                                                            
+## Generate Firmware Image                                                                            
             
 EFuse Configuration:            
 "bl602/efuse_bootheader/efuse_bootheader_cfg.conf",
@@ -49,7 +110,7 @@ https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/system
 
 number of eFuses which can store system and user parameters. Each eFuse is a one-bit field which can be programmed to 1 after which it cannot be reverted back to 0. Some of system parameters are using these eFuse bits directly by hardware modules 
 
-# Device Tree to DTB
+## Device Tree to DTB
                                            
 Script:
 "dts2dtb.py",
@@ -60,7 +121,7 @@ Device Tree:
 Output:
 "bl602/image/ro_params.dtb"
 
-# Flash to ROM
+## Flash to ROM
     	
 utils.StartProgram:
     			                            
