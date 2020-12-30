@@ -65,25 +65,26 @@
 
     <h1 class="title">Flashing Firmware to PineCone BL602</h1>
     <nav id="TOC"><ul>
-<li><a href="#flash-firmware-with-linux-macos-and-windows">1 Flash Firmware with Linux, macOS and Windows</a><ul>
+<li><a href="#flash-bl602-firmware-with-linux-macos-and-windows">1 Flash BL602 Firmware with Linux, macOS and Windows</a><ul>
 <li><a href="#install-rustup">1.1 Install rustup</a><ul></ul></li>
 <li><a href="#download-and-build-blflash">1.2 Download and build blflash</a><ul></ul></li>
 <li><a href="#flash-the-firmware">1.3 Flash the firmware</a><ul></ul></li>
 <li><a href="#watch-the-firmware-run">1.4 Watch the firmware run</a><ul></ul></li></ul></li>
-<li><a href="#how-flashing-works">2 How Flashing Works</a><ul>
-<li><a href="#generate-partition">2.1 Generate Partition</a><ul></ul></li>
-<li><a href="#boot-to-image">2.2 Boot To Image</a><ul></ul></li>
-<li><a href="#generate-firmware-image">2.3 Generate Firmware Image</a><ul></ul></li>
-<li><a href="#device-tree-to-dtb">2.4 Device Tree to DTB</a><ul></ul></li>
-<li><a href="#flash-to-rom">2.5 Flash to ROM</a><ul></ul></li></ul></li>
-<li><a href="#appendix-bl602-partition-table">3 Appendix: BL602 Partition Table</a><ul></ul></li>
-<li><a href="#appendix-bl602-device-tree">4 Appendix: BL602 Device Tree</a><ul></ul></li>
-<li><a href="#appendix-bl602-efuse-configuration">5 Appendix: BL602 EFuse Configuration</a><ul></ul></li>
-<li><a href="#appendix-bldevcube-flashing-log">6 Appendix: BLDevCube Flashing Log</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/flash-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board" /></p>
+<li><a href="#what-else-can-we-flash-to-bl602">2 What Else Can We Flash To BL602?</a><ul></ul></li>
+<li><a href="#partition-table">3 Partition Table</a><ul></ul></li>
+<li><a href="#boot-image">4 Boot Image</a><ul></ul></li>
+<li><a href="#firmware-image">5 Firmware Image</a><ul></ul></li>
+<li><a href="#efuse-configuration">6 EFuse Configuration</a><ul></ul></li>
+<li><a href="#device-tree">7 Device Tree</a><ul></ul></li>
+<li><a href="#flash-to-rom">8 Flash to ROM</a><ul></ul></li>
+<li><a href="#appendix-bl602-partition-table">9 Appendix: BL602 Partition Table</a><ul></ul></li>
+<li><a href="#appendix-bl602-device-tree">10 Appendix: BL602 Device Tree</a><ul></ul></li>
+<li><a href="#appendix-bl602-efuse-configuration">11 Appendix: BL602 EFuse Configuration</a><ul></ul></li>
+<li><a href="#appendix-bldevcube-flashing-log">12 Appendix: BLDevCube Flashing Log</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/flash-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board" /></p>
 <p><em>PineCone BL602 RISC-V Evaluation Board</em></p>
 <p>📝 <em>29 Dec 2020</em></p>
 <p>TODO</p>
-<h1 id="flash-firmware-with-linux-macos-and-windows" class="section-header"><a href="#flash-firmware-with-linux-macos-and-windows">1 Flash Firmware with Linux, macOS and Windows</a></h1><h2 id="install-rustup" class="section-header"><a href="#install-rustup">1.1 Install rustup</a></h2>
+<h1 id="flash-bl602-firmware-with-linux-macos-and-windows" class="section-header"><a href="#flash-bl602-firmware-with-linux-macos-and-windows">1 Flash BL602 Firmware with Linux, macOS and Windows</a></h1><h2 id="install-rustup" class="section-header"><a href="#install-rustup">1.1 Install rustup</a></h2>
 <ol>
 <li>
 <p>Install <code>rustup</code> from <a href="https://rustup.rs"><code>rustup.rs</code></a></p>
@@ -218,14 +219,28 @@ caused by: Invalid argument
 </ol>
 <p>These steps were tested on Arm64 Linux (Pinebook Pro with Manjaro), macOS Catalina and Windows 10.</p>
 <p><img src="https://lupyuen.github.io/images/pinecone-flash-steps.png" alt="Flashing Firmware to PineCone BL602" /></p>
-<h1 id="how-flashing-works" class="section-header"><a href="#how-flashing-works">2 How Flashing Works</a></h1>
-<p>Based on <a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/flash_tool.go"><code>github.com/bouffalolab/BLOpenFlasher/flash_tool.go</code></a></p>
-<h2 id="generate-partition" class="section-header"><a href="#generate-partition">2.1 Generate Partition</a></h2>
+<h1 id="what-else-can-we-flash-to-bl602" class="section-header"><a href="#what-else-can-we-flash-to-bl602">2 What Else Can We Flash To BL602?</a></h1>
+<p>So far we have only flashed our Firmware Image to PineCone. This is one of 6 interesting things that we may flash to BL602's Internal Flash ROM...</p>
+<table><thead><tr><th align="left">ROM Address</th><th align="left">ROM Contents</th></tr></thead><tbody>
+<tr><td align="left"><strong>Boot Image</strong> <br> <code>0x0000 0000</code></td><td align="left">Code and data for the boot firmware</td></tr>
+<tr><td align="left"><strong>Partition Table</strong> <br> <code>0x0000 E000</code></td><td align="left">Partition Table for the Flash ROM</td></tr>
+<tr><td align="left"><strong>Partition Table</strong> <br> <code>0x0000 F000</code></td><td align="left">Another Partition Table for the Flash ROM (For redundancy?)</td></tr>
+<tr><td align="left"><strong>Firmware Image</strong> <br> <code>0x0001 0000</code></td><td align="left">Code and data for the application firmware</td></tr>
+<tr><td align="left"><strong>Device Tree</strong> <br> <code>0x001F 8000</code></td><td align="left">Default settings for peripherals and ports: UART, GPIO, SPI, WiFi, ...</td></tr>
+</tbody></table>
+<p>This info was derived from the official Go flashing tool for BL602...</p>
+<ul>
+<li><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/flash_tool.go"><code>github.com/bouffalolab/BLOpenFlasher/flash_tool.go</code></a></li>
+</ul>
+<p>Let's look at each area of BL602's Internal Flash ROM.</p>
+<h1 id="partition-table" class="section-header"><a href="#partition-table">3 Partition Table</a></h1>
+<p>TODO</p>
 <p>Partition Table:<br />
 &quot;bl602/partition/partition_cfg_2M.toml&quot;,</p>
 <p>Output:<br />
 &quot;bl602/image/partition.bin&quot;,</p>
-<h2 id="boot-to-image" class="section-header"><a href="#boot-to-image">2.2 Boot To Image</a></h2>
+<h1 id="boot-image" class="section-header"><a href="#boot-image">4 Boot Image</a></h1>
+<p>TODO</p>
 <p>EFuse Configuration:<br />
 &quot;bl602/efuse_bootheader/efuse_bootheader_cfg.conf&quot;,</p>
 <p>Boot Binary:<br />
@@ -236,7 +251,8 @@ caused by: Invalid argument
 0x2000,</p>
 <p>Boot2 Firmware:
 https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/bl602_boot2</p>
-<h2 id="generate-firmware-image" class="section-header"><a href="#generate-firmware-image">2.3 Generate Firmware Image</a></h2>
+<h1 id="firmware-image" class="section-header"><a href="#firmware-image">5 Firmware Image</a></h1>
+<p>TODO</p>
 <p>EFuse Configuration:<br />
 &quot;bl602/efuse_bootheader/efuse_bootheader_cfg.conf&quot;,</p>
 <p>Firmware Binary:<br />
@@ -245,16 +261,20 @@ https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/bl602_boot2</p>
 &quot;bl602/image/fwimage.bin&quot;,</p>
 <p>FWOffset:
 0x1000,</p>
+<h1 id="efuse-configuration" class="section-header"><a href="#efuse-configuration">6 EFuse Configuration</a></h1>
+<p>TODO</p>
 <p>https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/system/efuse.html</p>
 <p>number of eFuses which can store system and user parameters. Each eFuse is a one-bit field which can be programmed to 1 after which it cannot be reverted back to 0. Some of system parameters are using these eFuse bits directly by hardware modules </p>
-<h2 id="device-tree-to-dtb" class="section-header"><a href="#device-tree-to-dtb">2.4 Device Tree to DTB</a></h2>
+<h1 id="device-tree" class="section-header"><a href="#device-tree">7 Device Tree</a></h1>
+<p>TODO</p>
 <p>Script:
 &quot;dts2dtb.py&quot;,</p>
 <p>Device Tree:
 &quot;bl602/device_tree/bl_factory_params_IoTKitA_40M.dts&quot;,</p>
 <p>Output:
 &quot;bl602/image/ro_params.dtb&quot;</p>
-<h2 id="flash-to-rom" class="section-header"><a href="#flash-to-rom">2.5 Flash to ROM</a></h2>
+<h1 id="flash-to-rom" class="section-header"><a href="#flash-to-rom">8 Flash to ROM</a></h1>
+<p>TODO</p>
 <p>utils.StartProgram:</p>
 <p>&quot;bl602/image/boot2image.bin<br />
 0x000000&quot;,</p>
@@ -279,8 +299,8 @@ https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/bl602_boot2</p>
 ) 			                                                                    </pre></div>
 <p>https://github.com/bouffalolab/BLOpenFlasher/issues/2</p>
 <p>two baudrate setting: 512000 is for downloading eflash_loader.bin, and 2000000 for downloading the generated bins.</p>
-<h1 id="appendix-bl602-partition-table" class="section-header"><a href="#appendix-bl602-partition-table">3 Appendix: BL602 Partition Table</a></h1>
-<p><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/partition/partition_cfg_2M.toml"><code>github.com/bouffalolab/BLOpenFlasher/bl602/partition/partition_cfg_2M.toml</code></a></p>
+<h1 id="appendix-bl602-partition-table" class="section-header"><a href="#appendix-bl602-partition-table">9 Appendix: BL602 Partition Table</a></h1>
+<p><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/partition/partition_cfg_2M.toml"><code>BLOpenFlasher/bl602/partition/partition_cfg_2M.toml</code></a></p>
 <pre><code class="language-text">[pt_table]
 #partition table is 4K in size
 address0 = 0xE000
@@ -376,9 +396,9 @@ len = 0
 ## compressed image must set len,normal image can left it to 0
 #len = 0
 </code></pre>
-<h1 id="appendix-bl602-device-tree" class="section-header"><a href="#appendix-bl602-device-tree">4 Appendix: BL602 Device Tree</a></h1>
+<h1 id="appendix-bl602-device-tree" class="section-header"><a href="#appendix-bl602-device-tree">10 Appendix: BL602 Device Tree</a></h1>
 <p>Note that the WiFi SSID configuration is stored here.</p>
-<p>https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/device_tree/bl_factory_params_IoTKitA_40M.dts</p>
+<p><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/device_tree/bl_factory_params_IoTKitA_40M.dts"><code>BLOpenFlasher/bl602/device_tree/bl_factory_params_IoTKitA_40M.dts</code></a></p>
 <pre><code class="language-text">/dts-v1/;
 /include/ &quot;bl602_base.dtsi&quot;;
 // version: 17
@@ -721,8 +741,8 @@ len = 0
     };
 };
 </code></pre>
-<h1 id="appendix-bl602-efuse-configuration" class="section-header"><a href="#appendix-bl602-efuse-configuration">5 Appendix: BL602 EFuse Configuration</a></h1>
-<p><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/efuse_bootheader/efuse_bootheader_cfg.conf"><code>github.com/bouffalolab/BLOpenFlasher/bl602/efuse_bootheader/efuse_bootheader_cfg.conf</code></a></p>
+<h1 id="appendix-bl602-efuse-configuration" class="section-header"><a href="#appendix-bl602-efuse-configuration">11 Appendix: BL602 EFuse Configuration</a></h1>
+<p><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/efuse_bootheader/efuse_bootheader_cfg.conf"><code>BLOpenFlasher/bl602/efuse_bootheader/efuse_bootheader_cfg.conf</code></a></p>
 <pre><code class="language-text">[EFUSE_CFG]
 ########################################################################
 #2bits
@@ -918,7 +938,7 @@ hash_7 = 0
 
 crc32 = 0xdeadbeef
 </code></pre>
-<h1 id="appendix-bldevcube-flashing-log" class="section-header"><a href="#appendix-bldevcube-flashing-log">6 Appendix: BLDevCube Flashing Log</a></h1>
+<h1 id="appendix-bldevcube-flashing-log" class="section-header"><a href="#appendix-bldevcube-flashing-log">12 Appendix: BLDevCube Flashing Log</a></h1>
 <p>Here is a sample flashing log emitted by <code>bl_iot_sdk/tools/flash_tool/BLDevCube.exe</code> on Windows...</p>
 <pre><code class="language-text">[23:01:59.398] - [param]
 interface_type = &quot;Uart&quot;
