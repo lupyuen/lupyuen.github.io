@@ -29,14 +29,16 @@ __For Linux:__ Install `rustup` as a Superuser.
 
     (Why can't we just `cargo install blflash`? Because it installs version 0.1.0 of `blflash` which doesn't work)
 
-1.  Build `blflash` as Superuser...
+1.  Build `blflash`...
+
+    __For Linux:__
 
     ```bash
     sudo rustup default nightly
     sudo cargo build
     ```
 
-    __For Windows:__
+    __For macOS and Windows:__
 
     ```bash
     rustup default nightly
@@ -56,13 +58,23 @@ __For Linux:__ Install `rustup` as a Superuser.
 
     Connect PineCone to the USB port.
 
-1.  Flash our firmware as Superuser...
+1.  Enter this to flash our firmware...
+
+    __For Linux:__
 
     ```bash
     sudo cargo run flash sdk_app_helloworld.bin --port /dev/ttyUSB0 
     ```
 
     (Change `sdk_app_helloworld.bin` to the full path of the firmware binary to be flashed. Change the USB serial port `/dev/ttyUSB0` if necessary.)
+
+    __For macOS:__
+
+    ```bash
+    cargo run flash sdk_app_helloworld.bin --port /dev/tty.usbserial-1420
+    ```
+
+    (Change `sdk_app_helloworld.bin` to the full path of the firmware binary to be flashed. Change the USB serial port `/dev/tty.usbserial-1420` to PineCone's USB Serial Device.)
 
     __For Windows:__
 
@@ -109,6 +121,17 @@ __For Linux:__ Install `rustup` as a Superuser.
 
     Disconnect PineCone from the USB port. Check that the PineCone Jumper is set to `H`. Retry the flash command.
 
+1.  On macOS we see this error...
+
+    ```text
+    [INFO  blflash::flasher] Sending eflash_loader...
+    [INFO  blflash::flasher] Finished 2.988880532s 9.56KB/s
+    Error: IO error while using serial port: Invalid argument
+    caused by: Invalid argument
+    ```
+
+    If anyone knows how to fix this, please let us know!
+
 ## Watch the firmware run
 
 1.  After flashing, switch the __PineCone Jumper (IO8)__ back to `L`. 
@@ -117,10 +140,18 @@ __For Linux:__ Install `rustup` as a Superuser.
     
     Our firmware begins running.
 
-1.  To watch our firmware run, connect to the PineCone Serial Console as Superuser (at 2 Mbps)...
+1.  To watch our firmware run, connect to the PineCone Serial Console (at 2 Mbps)...
+
+    __For Linux:__
 
     ```bash
     sudo screen /dev/ttyUSB0 2000000
+    ```
+
+    __For macOS:__
+
+    ```bash
+    screen /dev/tty.usbserial-1420 2000000                 
     ```
 
     __For Windows:__ Use `putty` to connect to PineCone's `COM` Port (like `COM5`) at speed `2000000` (2 Mbps)
