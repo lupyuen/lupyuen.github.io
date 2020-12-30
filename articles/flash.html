@@ -79,14 +79,20 @@
 <li><a href="#appendix-bl602-partition-table">3 Appendix: BL602 Partition Table</a><ul></ul></li>
 <li><a href="#appendix-bl602-device-tree">4 Appendix: BL602 Device Tree</a><ul></ul></li>
 <li><a href="#appendix-bl602-efuse-configuration">5 Appendix: BL602 EFuse Configuration</a><ul></ul></li>
-<li><a href="#appendix-windows-flashing-log">6 Appendix: Windows Flashing Log</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/flash-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board" /></p>
+<li><a href="#appendix-bldevcube-flashing-log">6 Appendix: BLDevCube Flashing Log</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/flash-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board" /></p>
 <p><em>PineCone BL602 RISC-V Evaluation Board</em></p>
 <p>📝 <em>29 Dec 2020</em></p>
 <p>TODO</p>
 <h1 id="flash-firmware-with-linux-macos-and-windows" class="section-header"><a href="#flash-firmware-with-linux-macos-and-windows">1 Flash Firmware with Linux, macOS and Windows</a></h1><h2 id="install-rustup" class="section-header"><a href="#install-rustup">1.1 Install rustup</a></h2>
+<ol>
+<li>
 <p>Install <code>rustup</code> from <a href="https://rustup.rs"><code>rustup.rs</code></a></p>
+</li>
+<li>
 <p>Select the default options.</p>
 <p><strong>For Linux:</strong> Install <code>rustup</code> as a Superuser.</p>
+</li>
+</ol>
 <h2 id="download-and-build-blflash" class="section-header"><a href="#download-and-build-blflash">1.2 Download and build blflash</a></h2>
 <ol>
 <li>
@@ -129,7 +135,7 @@ Finished dev [unoptimized + debuginfo] target(s) in 4m 28s
 <p><strong>For macOS:</strong></p>
 <pre><code class="language-bash">cargo run flash sdk_app_helloworld.bin --port /dev/tty.usbserial-1420
 </code></pre>
-<p>(Change <code>sdk_app_helloworld.bin</code> to the full path of the firmware binary to be flashed. Change the USB serial port <code>/dev/tty.usbserial-1420</code> to PineCone's USB Serial Device.)</p>
+<p>(Change <code>sdk_app_helloworld.bin</code> to the full path of the firmware binary to be flashed. Change <code>/dev/tty.usbserial-1420</code> to the USB Serial Device assigned to PineCone.)</p>
 <p><strong>For Windows:</strong></p>
 <pre><code class="language-bash">cargo run flash sdk_app_helloworld.bin --port COM5
 </code></pre>
@@ -191,9 +197,11 @@ caused by: Invalid argument
 <p><strong>For Linux:</strong></p>
 <pre><code class="language-bash">sudo screen /dev/ttyUSB0 2000000
 </code></pre>
+<p>(Change the USB serial port <code>/dev/ttyUSB0</code> if necessary)</p>
 <p><strong>For macOS:</strong></p>
 <pre><code class="language-bash">screen /dev/tty.usbserial-1420 2000000                 
 </code></pre>
+<p>(Change <code>/dev/tty.usbserial-1420</code> to the USB Serial Device assigned to PineCone)</p>
 <p><strong>For Windows:</strong> Use <code>putty</code> to connect to PineCone's <code>COM</code> Port (like <code>COM5</code>) at speed <code>2000000</code> (2 Mbps)</p>
 <p><a href="https://www.chiark.greenend.org.uk/%7Esgtatham/putty/latest.html">Download putty for Windows</a></p>
 <p><img src="https://lupyuen.github.io/images/flash-putty.png" alt="Connect putty to COM Port at speed 2000000" /></p>
@@ -910,7 +918,8 @@ hash_7 = 0
 
 crc32 = 0xdeadbeef
 </code></pre>
-<h1 id="appendix-windows-flashing-log" class="section-header"><a href="#appendix-windows-flashing-log">6 Appendix: Windows Flashing Log</a></h1>
+<h1 id="appendix-bldevcube-flashing-log" class="section-header"><a href="#appendix-bldevcube-flashing-log">6 Appendix: BLDevCube Flashing Log</a></h1>
+<p>Here is a sample flashing log emitted by <code>bl_iot_sdk/tools/flash_tool/BLDevCube.exe</code> on Windows...</p>
 <pre><code class="language-text">[23:01:59.398] - [param]
 interface_type = &quot;Uart&quot;
 comport_uart = &quot;COM5&quot;
@@ -937,7 +946,7 @@ download_single = false
 [input_path]
 pt_bin_input = &quot;C:\\pinecone\\bl_iot_sdk\\tools\\flash_tool\\bl602\\partition\\partition_cfg_2M.toml&quot;
 boot2_bin_input = &quot;C:\\pinecone\\bl_iot_sdk\\image_conf\\bl602\\blsp_boot2_release.bin&quot;
-cfg2_bin_input = &quot;C:\\Users\\guppy\\Downloads\\customer_app.zip\\sdk_app_helloworld\\build_out\\sdk_app_helloworld.bin&quot;
+cfg2_bin_input = &quot;C:\\Users\\user\\Downloads\\customer_app.zip\\sdk_app_helloworld\\build_out\\sdk_app_helloworld.bin&quot;
 meida_bin_input = &quot;&quot;
 romfs_dir_input = &quot;&quot;
 mfg_bin_input = &quot;&quot;
