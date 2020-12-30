@@ -227,6 +227,8 @@ FWOffset:
 Boot2 Firmware:
 https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/bl602_boot2
 
+https://limitedresults.com/2019/11/pwn-the-esp32-forever-flash-encryption-and-sec-boot-keys-extraction/
+
 # Firmware Image                                                                            
 
 TODO
