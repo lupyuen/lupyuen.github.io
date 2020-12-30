@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <title>Flashing Firmware to PineCone BL602</title>
+
+    
+    <!-- Begin scripts/articles/*-header.html: Article Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<meta property="og:title" 
+    content="Flashing Firmware to PineCone BL602" 
+    data-rh="true">
+<meta property="og:description" 
+    content="What really happens when we flash RISC-V firmware to PineCone BL602 Board" 
+    data-rh="true">
+<meta property="og:image" 
+    content="https://lupyuen.github.io/images/flash-title.jpg">
+<meta property="og:type" 
+    content="article" data-rh="true">
+<!-- End scripts/articles/*-header.html -->
+<!-- Begin scripts/rustdoc-header.html: Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<link rel="alternate" type="application/rss+xml" title="RSS Feed for lupyuen" href="/rss.xml" />
+<link rel="stylesheet" type="text/css" href="../normalize.css">
+<link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle">
+<link rel="stylesheet" type="text/css" href="../dark.css">
+<link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle">
+<link rel="stylesheet" type="text/css" href="../prism.css">
+<script src="../storage.js"></script><noscript>
+<link rel="stylesheet" href="../noscript.css"></noscript>
+<link rel="shortcut icon" href="../favicon.ico">
+<style type="text/css">
+    #crate-search {
+        background-image: url("../down-arrow.svg");
+    }
+    a {
+        color: #77d;
+    }
+</style>
+<!-- End scripts/rustdoc-header.html -->
+
+
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+        <!-- Begin scripts/rustdoc-before.html: Pre-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
+
+    <!-- Begin Theme Picker -->
+    <div class="theme-picker" style="left: 0"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg"
+        width="18" alt="Pick another theme!"></button>
+        <div id="theme-choices"></div>
+    </div>
+    <script src="../theme.js"></script>
+    <script src="../prism.js"></script>
+    <!-- Theme Picker -->
+
+    <!-- End scripts/rustdoc-before.html -->
+    
+
+    <h1 class="title">Flashing Firmware to PineCone BL602</h1>
+    <nav id="TOC"><ul>
+<li><a href="#flash-firmware-from-linux">1 Flash Firmware from Linux</a><ul></ul></li>
+<li><a href="#how-flashing-works">2 How Flashing Works</a><ul>
+<li><a href="#generate-partition">2.1 Generate Partition</a><ul></ul></li>
+<li><a href="#boot-to-image">2.2 Boot To Image</a><ul></ul></li>
+<li><a href="#generate-firmware-image">2.3 Generate Firmware Image</a><ul></ul></li>
+<li><a href="#device-tree-to-dtb">2.4 Device Tree to DTB</a><ul></ul></li>
+<li><a href="#flash-to-rom">2.5 Flash to ROM</a><ul></ul></li></ul></li>
+<li><a href="#appendix-bl602-partition-table">3 Appendix: BL602 Partition Table</a><ul></ul></li>
+<li><a href="#appendix-bl602-device-tree">4 Appendix: BL602 Device Tree</a><ul></ul></li>
+<li><a href="#appendix-bl602-efuse-configuration">5 Appendix: BL602 EFuse Configuration</a><ul></ul></li>
+<li><a href="#appendix-windows-flashing-log">6 Appendix: Windows Flashing Log</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/flash-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board" /></p>
+<p><em>PineCone BL602 RISC-V Evaluation Board</em></p>
+<p>📝 <em>29 Dec 2020</em></p>
+<p>TODO</p>
+<h1 id="flash-firmware-from-linux" class="section-header"><a href="#flash-firmware-from-linux">1 Flash Firmware from Linux</a></h1>
+<ol>
+<li>
+<p>Install <code>rustup</code> from <a href="https://rustup.rs"><code>rustup.rs</code></a></p>
+</li>
+<li>
+<p>Download the <code>blflash</code> source code...</p>
+<pre><code class="language-bash">git clone --recursive https://github.com/spacemeowx2/blflash
+cd blflash
+</code></pre>
+<p>(Version 0.1.0 of <code>blflash</code> installed via <code>cargo install blflash</code> doesn't work)</p>
+</li>
+<li>
+<p>Build <code>blflash</code> as superuser...</p>
+<pre><code class="language-bash">sudo rustup default nightly
+sudo cargo build
+</code></pre>
+</li>
+<li>
+<p>We should see...</p>
+<pre><code class="language-text">Compiling blflash v0.2.1 (blflash/blflash)
+Finished dev [unoptimized + debuginfo] target(s) in 4m 28s
+</code></pre>
+</li>
+<li>
+<p>Set the PineCone Jumper to H</p>
+</li>
+<li>
+<p>Connect PineCone to the USB port</p>
+</li>
+<li>
+<p>Flash our firmware as superuser...</p>
+<pre><code class="language-bash">sudo cargo run flash ~/BLOpenFlasher/bl602/bl602.bin --port /dev/ttyUSB0 
+</code></pre>
+<p>(Change <code>~/BLOpenFlasher/bl602/bl602.bin</code> to the full path of the firmware binary to be flashed)</p>
+</li>
+<li>
+<p>We should see...</p>
+<pre><code class="language-text">    Finished dev [unoptimized + debuginfo] target(s) in 0.10s
+    Running `target/debug/blflash flash /home/luppy/BLOpenFlasher/bl602/bl602.bin --port /dev/ttyUSB0`
+[INFO  blflash::flasher] Start connection...
+[TRACE blflash::flasher] 5ms send count 55
+[TRACE blflash::flasher] handshake sent elapsed 1.059862ms
+[INFO  blflash::flasher] Connection Succeed
+[INFO  blflash] Bootrom version: 1
+[TRACE blflash] Boot info: BootInfo { len: 14, bootrom_version: 1, otp_info: [0, 0, 0, 0, 3, 0, 0, 0, 61, 9d, c0, 5, b9, 18, 1d, 0] }
+[INFO  blflash::flasher] Sending eflash_loader...
+[INFO  blflash::flasher] Finished 3.375522563s 8.47KB/s
+[TRACE blflash::flasher] 5ms send count 500
+[TRACE blflash::flasher] handshake sent elapsed 6.51343ms
+[INFO  blflash::flasher] Entered eflash_loader
+[INFO  blflash::flasher] Skip segment addr: 0 size: 47504 sha256 matches
+[INFO  blflash::flasher] Skip segment addr: e000 size: 272 sha256 matches
+[INFO  blflash::flasher] Skip segment addr: f000 size: 272 sha256 matches
+[INFO  blflash::flasher] Skip segment addr: 10000 size: 869328 sha256 matches
+[INFO  blflash::flasher] Skip segment addr: 1f8000 size: 5671 sha256 matches
+[INFO  blflash] Success
+</code></pre>
+</li>
+<li>
+<p>If we see this error...</p>
+<pre><code class="language-text">[INFO  blflash::flasher] Start connection...
+[TRACE blflash::flasher] 5ms send count 55
+[TRACE blflash::flasher] handshake sent elapsed 850.287µs
+[INFO  blflash::flasher] Connection Succeed
+Error: IO error: Operation timed out
+caused by: Operation timed out
+</code></pre>
+<p>Disconnect PineCone from the USB port. Check that the Jumper is set to H. Retry the flash command.</p>
+</li>
+<li>
+<p>After flashing, switch the PineCone Jumper back to L. </p>
+<p>Reconnect PineCone to the USB port. Our firmware begins running.</p>
+</li>
+<li>
+<p>To watch our firmware running, connect to the PineCone Serial Console (at 2 Mbps)...</p>
+<pre><code class="language-bash">sudo screen /dev/ttyUSB0 2000000
+</code></pre>
+<p>Press the <code>RST</code> Button on PineCone to restart the board.</p>
+<p>We should see the console output as PineCone boots.</p>
+</li>
+<li>
+<p>To exit the console, press <code>Ctrl-A</code> then <code>k</code> then <code>y</code></p>
+</li>
+</ol>
+<p>Tested on Arm64 Linux (Pinebook Pro with Manjaro)</p>
+<p><img src="https://lupyuen.github.io/images/pinecone-flash-steps.png" alt="Flashing Firmware to PineCone BL602" /></p>
+<h1 id="how-flashing-works" class="section-header"><a href="#how-flashing-works">2 How Flashing Works</a></h1>
+<p>Based on <a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/flash_tool.go"><code>github.com/bouffalolab/BLOpenFlasher/flash_tool.go</code></a></p>
+<h2 id="generate-partition" class="section-header"><a href="#generate-partition">2.1 Generate Partition</a></h2>
+<p>Partition Table:<br />
+&quot;bl602/partition/partition_cfg_2M.toml&quot;,</p>
+<p>Output:<br />
+&quot;bl602/image/partition.bin&quot;,</p>
+<h2 id="boot-to-image" class="section-header"><a href="#boot-to-image">2.2 Boot To Image</a></h2>
+<p>EFuse Configuration:<br />
+&quot;bl602/efuse_bootheader/efuse_bootheader_cfg.conf&quot;,</p>
+<p>Boot Binary:<br />
+&quot;bl602/builtin_imgs/blsp_boot2.bin&quot;,</p>
+<p>Output:<br />
+&quot;bl602/image/boot2image.bin&quot;,</p>
+<p>FWOffset:
+0x2000,</p>
+<p>Boot2 Firmware:
+https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/bl602_boot2</p>
+<h2 id="generate-firmware-image" class="section-header"><a href="#generate-firmware-image">2.3 Generate Firmware Image</a></h2>
+<p>EFuse Configuration:<br />
+&quot;bl602/efuse_bootheader/efuse_bootheader_cfg.conf&quot;,</p>
+<p>Firmware Binary:<br />
+&quot;bl602/bl602.bin&quot;,</p>
+<p>Output:<br />
+&quot;bl602/image/fwimage.bin&quot;,</p>
+<p>FWOffset:
+0x1000,</p>
+<p>https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/system/efuse.html</p>
+<p>number of eFuses which can store system and user parameters. Each eFuse is a one-bit field which can be programmed to 1 after which it cannot be reverted back to 0. Some of system parameters are using these eFuse bits directly by hardware modules </p>
+<h2 id="device-tree-to-dtb" class="section-header"><a href="#device-tree-to-dtb">2.4 Device Tree to DTB</a></h2>
+<p>Script:
+&quot;dts2dtb.py&quot;,</p>
+<p>Device Tree:
+&quot;bl602/device_tree/bl_factory_params_IoTKitA_40M.dts&quot;,</p>
+<p>Output:
+&quot;bl602/image/ro_params.dtb&quot;</p>
+<h2 id="flash-to-rom" class="section-header"><a href="#flash-to-rom">2.5 Flash to ROM</a></h2>
+<p>utils.StartProgram:</p>
+<p>&quot;bl602/image/boot2image.bin<br />
+0x000000&quot;,</p>
+<p>&quot;bl602/image/partition.bin<br />
+0xE000&quot;,</p>
+<p>&quot;bl602/image/partition.bin<br />
+0xF000&quot;,</p>
+<p>&quot;bl602/image/fwimage.bin<br />
+0x10000&quot;,</p>
+<p>&quot;bl602/image/ro_params.dtb<br />
+0x1F8000&quot;,</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="ident">utils</span>.<span class="ident">StartProgram</span>(   			                                                                    
+<span class="string">&quot;/dev/ttyUSB0&quot;</span>, 
+<span class="ident">nil</span>, 
+<span class="number">512000</span>, 
+<span class="string">&quot;bl602/eflash_loader/eflash_loader_40m.bin&quot;</span>, 
+<span class="number">2000000</span>, 
+<span class="ident">bins</span>, 
+<span class="number">5000</span>
+) 			                                                                    </pre></div>
+<p>https://github.com/bouffalolab/BLOpenFlasher/issues/2</p>
+<p>two baudrate setting: 512000 is for downloading eflash_loader.bin, and 2000000 for downloading the generated bins.</p>
+<h1 id="appendix-bl602-partition-table" class="section-header"><a href="#appendix-bl602-partition-table">3 Appendix: BL602 Partition Table</a></h1>
+<p><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/partition/partition_cfg_2M.toml"><code>github.com/bouffalolab/BLOpenFlasher/bl602/partition/partition_cfg_2M.toml</code></a></p>
+<pre><code class="language-text">[pt_table]
+#partition table is 4K in size
+address0 = 0xE000
+address1 = 0xF000
+
+[[pt_entry]]
+type = 0
+name = &quot;FW&quot;
+device = 0
+address0 = 0x10000
+size0 = 0xC8000
+address1 = 0xD8000
+size1 = 0x88000
+# compressed image must set len,normal image can left it to 0
+len = 0
+
+[[pt_entry]]
+type = 2
+name = &quot;mfg&quot;
+device = 0
+address0 = 0x160000
+size0 = 0x32000
+address1 = 0
+size1 = 0
+# compressed image must set len,normal image can left it to 0
+len = 0
+
+[[pt_entry]]
+type = 3
+name = &quot;media&quot;
+device = 0
+address0 = 0x192000
+size0 = 0x57000
+address1 = 0
+size1 = 0
+# compressed image must set len,normal image can left it to 0
+len = 0
+
+[[pt_entry]]
+type = 4
+name = &quot;PSM&quot;
+device = 0
+address0 = 0x1E9000
+size0 = 0x8000
+address1 = 0
+size1 = 0
+# compressed image must set len,normal image can left it to 0
+len = 0
+
+[[pt_entry]]
+type = 5
+name = &quot;KEY&quot;
+device = 0
+address0 = 0x1F1000
+size0 = 0x2000
+address1 = 0
+size1 = 0
+# compressed image must set len,normal image can left it to 0
+len = 0
+
+[[pt_entry]]
+type = 6
+name = &quot;DATA&quot;
+device = 0
+address0 = 0x1F3000
+size0 = 0x5000
+address1 = 0
+size1 = 0
+# compressed image must set len,normal image can left it to 0
+len = 0
+
+
+[[pt_entry]]
+type = 7
+name = &quot;factory&quot;
+device = 0
+address0 = 0x1F8000
+size0 = 0x7000
+address1 = 0
+size1 = 0
+# compressed image must set len,normal image can left it to 0
+len = 0
+
+#if user want to put RF calibration data on flash, uncomment following pt entry
+#[[pt_entry]]
+#type = 8
+#name = &quot;rf_para&quot;
+#device = 0
+#address0 = 0x1FF000
+#size0 = 0x1000
+#address1 = 0
+#size1 = 0
+## compressed image must set len,normal image can left it to 0
+#len = 0
+</code></pre>
+<h1 id="appendix-bl602-device-tree" class="section-header"><a href="#appendix-bl602-device-tree">4 Appendix: BL602 Device Tree</a></h1>
+<p>Note that the WiFi SSID configuration is stored here.</p>
+<p>https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/device_tree/bl_factory_params_IoTKitA_40M.dts</p>
+<pre><code class="language-text">/dts-v1/;
+/include/ &quot;bl602_base.dtsi&quot;;
+// version: 17
+// last_comp_version: 16
+// boot_cpuid_phys: 0x0
+
+/ {
+    model = &quot;bl bl602 AVB board&quot;;
+    compatible = &quot;bl,bl602-sample&quot;, &quot;bl,bl602-common&quot;;
+    #address-cells = &lt;0x1&gt;;
+    #size-cells = &lt;0x1&gt;;
+    gpio {
+        #address-cells = &lt;1&gt;;
+        #size-cells = &lt;1&gt;;
+        max_num = &lt;40&gt;;
+        gpio0 {                                  
+            status = &quot;okay&quot;;                     
+            pin  = &lt;5&gt;;                          
+            feature = &quot;led&quot;;                     
+            active = &quot;Hi&quot;; //Hi or Lo
+            mode = &quot;blink&quot;; //blink or hearbeat
+            time = &lt;100&gt;; //duration for this mode
+        };
+        gpio1 {                                  
+            status = &quot;disable&quot;;                     
+            pin  = &lt;6&gt;;                          
+            feature = &quot;led&quot;;                     
+            active = &quot;Hi&quot;; //Hi or Lo
+            mode = &quot;blink&quot;; //blink or hearbeat
+            time = &lt;100&gt;; //duration for this mode
+        };
+        gpio2 {
+            status = &quot;okay&quot;;
+            pin = &lt;2&gt;;
+            feature = &quot;button&quot;;
+            active = &quot;Hi&quot;;
+            mode = &quot;multipress&quot;;
+            button {
+                debounce = &lt;10&gt;;
+                short_press_ms {
+                    start = &lt;100&gt;;
+                    end = &lt;3000&gt;;
+                    kevent = &lt;2&gt;;
+                };
+                long_press_ms {
+                    start = &lt;6000&gt;;
+                    end = &lt;10000&gt;;
+                    kevent = &lt;3&gt;;
+                };
+                longlong_press_ms {
+                    start = &lt;15000&gt;;
+                    kevent = &lt;4&gt;;
+                };
+                trig_level = &quot;Hi&quot;;
+            };
+            hbn_use = &quot;disable&quot;;
+        };
+    };
+    i2s {
+        #address-cells = &lt;1&gt;;
+        #size-cells = &lt;1&gt;;
+        i2s@40017000 {
+            status = &quot;okay&quot;;
+            compatible = &quot;bl602_i2s&quot;;
+            reg = &lt;0x40017000 0x100&gt;;
+            mclk_only = &quot;okay&quot;;
+            pin {
+                mclk = &lt;11&gt;;
+            };
+        };
+        i2s@40017100 {
+            status = &quot;okay&quot;;
+            compatible = &quot;bl602_i2s&quot;;
+            reg = &lt;0x40017100 0x100&gt;;
+            mclk_only = &quot;disable&quot;;
+            pin {
+                bclk = &lt;12&gt;;
+                fs = &lt;29&gt;;
+                do = &lt;30&gt;;
+                di = &lt;31&gt;;
+            };
+        };
+    };
+    i2c {
+        #address-cells = &lt;1&gt;;
+        #size-cells = &lt;1&gt;;
+        i2c@40011000 {
+            status = &quot;okay&quot;;
+            compatible = &quot;bl602_i2c&quot;;
+            reg = &lt;0x40011000 0x100&gt;;
+            pin {
+                scl = &lt;32&gt;;
+                sda = &lt;13&gt;;
+            };
+            devices {
+                list_addr = &lt;0x18 0x21&gt;;
+                list_driver = &quot;i2c_es8311&quot;, &quot;i2c_gc0308&gt;&quot;;
+            };
+        };
+        i2c@40011100 {
+            status = &quot;disable&quot;;
+            compatible = &quot;bl602_i2c&quot;;
+            reg = &lt;0x40011100 0x100&gt;;
+            pin {
+                /*empty here*/
+            };
+        };
+    };
+    timer {
+        #address-cells = &lt;1&gt;;
+        #size-cells = &lt;1&gt;;
+        timer@40014000 {
+            status = &quot;disable&quot;;
+            compatible = &quot;bl602_timer&quot;;
+            reg = &lt;0x40014000 0x100&gt;;
+        };
+        timer@40014100 {
+            status = &quot;disable&quot;;
+            compatible = &quot;bl602_timer&quot;;
+            reg = &lt;0x40014100 0x100&gt;;
+        };
+    };
+    pwm {
+        #address-cells = &lt;1&gt;;
+        #size-cells = &lt;1&gt;;
+        pwm@4000A420 {
+            status = &quot;okay&quot;;
+            compatible = &quot;bl602_pwm&quot;;
+            reg = &lt;0x4000A420 0x20&gt;;
+            path = &quot;/dev/pwm0&quot;;
+            id = &lt;0&gt;;
+            pin = &lt;0&gt;;
+            freq = &lt;800000&gt;;
+            duty = &lt;50&gt;;
+        };
+        pwm@4000A440 {
+            status = &quot;disable&quot;;
+            reg = &lt;0x4000A440 0x20&gt;;
+            path = &quot;/dev/pwm1&quot;;
+            id = &lt;1&gt;;
+            pin = &lt;1&gt;;
+            freq = &lt;5000&gt;;
+            duty = &lt;50&gt;;
+        };
+        pwm@4000A460 {
+            status = &quot;disable&quot;;
+            reg = &lt;0x4000A460 0x20&gt;;
+            path = &quot;/dev/pwm2&quot;;
+            id = &lt;2&gt;;
+            pin = &lt;2&gt;;
+            freq = &lt;5000&gt;;
+            duty = &lt;50&gt;;
+        };
+        pwm@4000A480 {
+            status = &quot;disable&quot;;
+            reg = &lt;0x4000A480 0x20&gt;;
+            path = &quot;/dev/pwm3&quot;;
+            id = &lt;3&gt;;
+            pin = &lt;3&gt;;
+            freq = &lt;5000&gt;;
+            duty = &lt;50&gt;;
+        };
+        pwm@4000A4A0 {
+            status = &quot;disable&quot;;
+            reg = &lt;0x4000A4A0 0x20&gt;;
+            path = &quot;/dev/pwm4&quot;;
+            id = &lt;4&gt;;
+            pin = &lt;4&gt;;
+            freq = &lt;5000&gt;;
+            duty = &lt;50&gt;;
+        };
+    };
+    ir {
+        #address-cells = &lt;1&gt;;
+        #size-cells = &lt;1&gt;;
+        ctrltype = &lt;0&gt;;
+        tx {
+            status = &quot;disable&quot;;
+            pin = &lt;11&gt;;         // only support 11
+            mode = &quot;NEC&quot;;       // NEC、ExtenedNEC、RC5、SWM
+            interval = &lt;100&gt;;   // ms
+            active_mode = &quot;Hi&quot;; //Hi、Lo
+        };
+        rx {
+            status = &quot;okay&quot;;
+            pin = &lt;12&gt;;         // only support 12 13
+            mode = &quot;NEC&quot;;       // NEC、ExtenedNEC、RC5、SWM
+            active_mode = &quot;Hi&quot;; //Hi、Lo
+        };
+    };
+    uart {
+        #address-cells = &lt;1&gt;;
+        #size-cells = &lt;1&gt;;
+        uart@4000A000 {
+            status = &quot;okay&quot;;
+            id = &lt;0&gt;;
+            compatible = &quot;bl602_uart&quot;;
+            path = &quot;/dev/ttyS0&quot;;
+            baudrate = &lt;2000000&gt;;
+            pin {
+                rx = &lt;7&gt;;
+                tx = &lt;16&gt;;
+            };
+            buf_size {
+                rx_size = &lt;512&gt;;
+                tx_size = &lt;512&gt;;
+            };
+            feature {
+                tx = &quot;okay&quot;;
+                rx = &quot;okay&quot;;
+                cts = &quot;disable&quot;;
+                rts = &quot;disable&quot;;
+            };
+        };
+        uart@4000A100 {
+            status = &quot;okay&quot;;
+            id = &lt;1&gt;;
+            compatible = &quot;bl602_uart&quot;;
+            path = &quot;/dev/ttyS1&quot;;
+            baudrate = &lt;115200&gt;;
+            pin {
+                rx = &lt;3&gt;;
+                tx = &lt;4&gt;;
+            };
+            buf_size {
+                rx_size = &lt;512&gt;;
+                tx_size = &lt;512&gt;;
+            };
+            feature {
+                tx = &quot;okay&quot;;
+                rx = &quot;okay&quot;;
+                cts = &quot;disable&quot;;
+                rts = &quot;disable&quot;;
+            };
+        };
+    };
+    spi {
+        #address-cells = &lt;1&gt;;
+        #size-cells = &lt;1&gt;;
+        spi@4000F000 {
+            status = &quot;okay&quot;;         /* okay disable */
+            mode = &quot;master&quot;;
+            reg = &lt;0x4000F000 0x100&gt;;   /* 4KB */
+            path = &quot;/dev/spi0&quot;;
+            port = &lt;0&gt;;
+            polar_phase = &lt;1&gt;;                 /* 0,1,2,3 */
+            freq = &lt;6000000&gt;;
+            pin {
+                clk = &lt;3&gt;;
+                cs = &lt;2&gt;;
+                mosi = &lt;1&gt;;
+                miso = &lt;0&gt;;
+            };
+            dma_cfg {
+                tx_dma_ch = &lt;2&gt;;
+                rx_dma_ch = &lt;3&gt;;
+            };
+        };
+    };
+    gpip {
+        #address-cells = &lt;1&gt;;
+        #size-cells = &lt;1&gt;;
+        adc_key {
+            status = &quot;disable&quot;;
+            pin = &lt;9&gt;;
+            interrupt  = &lt;3&gt;;
+            key_vol = &lt;0 100 400 300 500&gt;;
+            key_pcb = &quot;SW1&quot;, &quot;SW2&quot;, &quot;SW3&quot;, &quot;SW4&quot;,&quot;SW5&quot;;
+            key_event = &quot;Usr1&quot;, &quot;Usr2&quot;, &quot;Start&quot;, &quot;Up&quot;, &quot;Down&quot;;
+            key_raw = &lt;1 2 3 4 5&gt;;
+        };
+    };
+    qspi {
+        #address-cells = &lt;1&gt;;
+        #size-cells = &lt;1&gt;;
+        qspi@4000A000 {
+            status = &quot;disable&quot;;
+            reg = &lt;0x4000A000 0x1000&gt;;/* 4KB */
+        };
+    };
+    wifi {
+        #address-cells = &lt;1&gt;;
+        #size-cells = &lt;1&gt;;
+        region {
+            country_code = &lt;86&gt;;
+        };
+        mac {
+            mode = &quot;MBF&quot;;
+            sta_mac_addr = [C8 43 57 82 73 40];
+            ap_mac_addr = [C8 43 57 82 73 02];
+        };
+        sta {
+            ssid = &quot;yourssid&quot;;
+            pwd = &quot;yourapssword&quot;;
+            auto_connect_enable = &lt;0&gt;;
+        };
+        ap {
+            ssid = &quot;bl_test_005&quot;;
+            pwd = &quot;12345678&quot;;
+            ap_channel = &lt;11&gt;;
+            auto_chan_detect = &quot;disable&quot;;
+        };
+        brd_rf {
+            xtal_mode = &quot;MF&quot;;
+            xtal = &lt;36 36 0 60 60&gt;;
+            /*
+            pwr_table = &lt;   4 3 3 186
+                            4 3 4 176
+                            4 3 5 167
+                            3 3 0 159
+                            3 3 1 149
+                            3 3 2 140
+                            3 3 3 129
+                            3 3 4 119
+                            3 3 5 110
+                            2 3 0 101
+                            2 3 1 91
+                            2 3 2 82
+                            2 3 3 72
+                            2 3 4 62
+                            2 3 5 52
+                            1 3 3 10&gt;;
+            */
+            pwr_mode = &quot;bf&quot;;//B: only use power offset in EFUSE; b: use power offset in EFUSE with incremental mode; F: only use power offset in Flash; f: use power offset in Flash with incremental mode
+            pwr_table_11b = &lt;20 20 20 18&gt;;//1Mbps 2Mbps 5.5Mbps 11Mbps
+            pwr_table_11g = &lt;18 18 18 18 18 18 14 14&gt;; //6Mbps 9Mbps 12Mbps 18MBps 24Mbps 36Mbps 48Mbps 54Mbps
+            pwr_table_11n = &lt;18 18 18 18 18 16 14 14&gt;; //MCS0 MCS1 MCS2 MCS3 MCS4 MCS5 MCS6 MCS7
+            pwr_offset = &lt;10 10 10 10 10 10 10 10 10 10 10 10 10 10&gt;;//due to the limit of current DTC, negative value is used. So we work around by adding all the poweroffset with 10. so 8 represents -2; 10 represents 0; 13 represents 3
+            channel_div_table = &lt;0x1EEC4EC4 0x1EFCB7CB 0x1F0D20D2 0x1F1D89D8 0x1F2DF2DF 0x1F3E5BE5 0x1F4EC4EC 0x1F5F2DF2 0x1F6F96F9 0x1F800000 0x1F906906 0x1FA0D20D 0x1FB13B13 0x1FD89D89 0x201F81F8&gt;;
+            channel_cnt_table = &lt;0xA78A 0xA7E3 0xA83C 0xA895 0xA8ED 0xA946 0xA99F 0xA9F8 0xAA51 0xAAAA 0xAB03 0xAB5C 0xABB5 0xAC8A&gt;;
+            lo_fcal_div = &lt;0x56B&gt;;
+        };
+    };
+    bluetooth {
+        #address-cells = &lt;1&gt;;
+        #size-cells = &lt;1&gt;;
+        brd_rf {
+            pwr_table_ble = &lt;13&gt;;  //range:-3~15dbm; if set -3, please set 253 here
+        };
+    };
+};
+</code></pre>
+<h1 id="appendix-bl602-efuse-configuration" class="section-header"><a href="#appendix-bl602-efuse-configuration">5 Appendix: BL602 EFuse Configuration</a></h1>
+<p><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/efuse_bootheader/efuse_bootheader_cfg.conf"><code>github.com/bouffalolab/BLOpenFlasher/bl602/efuse_bootheader/efuse_bootheader_cfg.conf</code></a></p>
+<pre><code class="language-text">[EFUSE_CFG]
+########################################################################
+#2bits
+ef_sf_aes_mode = 0
+#2bits
+ef_sboot_sign_mode = 0
+#2bits
+ef_sboot_en = 0
+#2bits
+ef_dbg_jtag_dis = 0
+#4bits
+ef_dbg_mode = 0
+#32bits
+ef_dbg_pwd_low = 0
+#32bits
+ef_dbg_pwd_high = 0
+###################################################################
+ef_key_slot_2_w0 = 0
+ef_key_slot_2_w1 = 0
+ef_key_slot_2_w2 = 0
+ef_key_slot_2_w3 = 0
+ef_key_slot_3_w0 = 0
+ef_key_slot_3_w1 = 0
+ef_key_slot_3_w2 = 0
+ef_key_slot_3_w3 = 0
+ef_key_slot_4_w0 = 0
+ef_key_slot_4_w1 = 0
+ef_key_slot_4_w2 = 0
+ef_key_slot_4_w3 = 0
+
+wr_lock_key_slot_4_l = 0
+wr_lock_dbg_pwd = 0
+wr_lock_key_slot_2 = 0
+wr_lock_key_slot_3 = 0
+wr_lock_key_slot_4_h = 0
+rd_lock_dbg_pwd = 0
+rd_lock_key_slot_2 = 0
+rd_lock_key_slot_3 = 0
+rd_lock_key_slot_4 = 0
+
+[BOOTHEADER_CFG]
+magic_code = 0x504e4642
+revision = 0x01
+#########################flash cfg#############################
+flashcfg_magic_code = 0x47464346
+#flashcfg_magic_code=0
+io_mode = 4
+cont_read_support = 1
+#0.5T sfctrl_clk_delay=0 sfctrl_clk_invert=3
+#1 T sfctrl_clk_delay=1 sfctrl_clk_invert=1
+#1.5T sfctrl_clk_delay=1 sfctrl_clk_invert=3
+sfctrl_clk_delay = 1
+sfctrl_clk_invert = 0x01
+
+reset_en_cmd = 0x66
+reset_cmd = 0x99
+exit_contread_cmd = 0xff
+exit_contread_cmd_size = 3
+
+jedecid_cmd = 0x9f
+jedecid_cmd_dmy_clk = 0
+qpi_jedecid_cmd = 0x9f
+qpi_jedecid_dmy_clk = 0
+
+sector_size = 4
+mfg_id = 0xef
+page_size = 256
+
+chip_erase_cmd = 0xc7
+sector_erase_cmd = 0x20
+blk32k_erase_cmd = 0x52
+blk64k_erase_cmd = 0xd8
+
+write_enable_cmd = 0x06
+page_prog_cmd = 0x02
+qpage_prog_cmd = 0x32
+qual_page_prog_addr_mode = 0
+
+fast_read_cmd = 0x0b
+fast_read_dmy_clk = 1
+qpi_fast_read_cmd = 0x0b
+qpi_fast_read_dmy_clk = 1
+
+fast_read_do_cmd = 0x3b
+fast_read_do_dmy_clk = 1
+fast_read_dio_cmd = 0xbb
+fast_read_dio_dmy_clk = 0
+
+fast_read_qo_cmd = 0x6b
+fast_read_qo_dmy_clk = 1
+fast_read_qio_cmd = 0xeb
+fast_read_qio_dmy_clk = 2
+
+qpi_fast_read_qio_cmd = 0xeb
+qpi_fast_read_qio_dmy_clk = 2
+qpi_page_prog_cmd = 0x02
+write_vreg_enable_cmd = 0x50
+
+wel_reg_index = 0
+qe_reg_index = 1
+busy_reg_index = 0
+wel_bit_pos = 1
+
+qe_bit_pos = 1
+busy_bit_pos = 0
+wel_reg_write_len = 2
+wel_reg_read_len = 1
+
+qe_reg_write_len = 1
+qe_reg_read_len = 1
+release_power_down = 0xab
+busy_reg_read_len = 1
+
+reg_read_cmd0 = 0x05
+reg_read_cmd1 = 0x35
+
+reg_write_cmd0 = 0x01
+reg_write_cmd1 = 0x31
+
+enter_qpi_cmd = 0x38
+exit_qpi_cmd = 0xff
+cont_read_code = 0x20
+cont_read_exit_code = 0xff
+
+burst_wrap_cmd = 0x77
+burst_wrap_dmy_clk = 0x03
+burst_wrap_data_mode = 2
+burst_wrap_code = 0x40
+
+de_burst_wrap_cmd = 0x77
+de_burst_wrap_cmd_dmy_clk = 0x03
+de_burst_wrap_code_mode = 2
+de_burst_wrap_code = 0xF0
+
+sector_erase_time = 300
+blk32k_erase_time = 1200
+
+blk64k_erase_time = 1200
+page_prog_time = 5
+
+chip_erase_time = 200000
+power_down_delay = 3
+qe_data = 0
+
+flashcfg_crc32 = 0
+
+#########################clk cfg####################################
+clkcfg_magic_code = 0x47464350
+#clkcfg_magic_code=0
+
+#0:Not use XTAL to set PLL,1:XTAL is 24M ,2:XTAL is 32M ,3:XTAL is 38.4M
+#4:XTAL is 40M,5:XTAL is 26M,6:XTAL is RC32M
+xtal_type = 4
+#0:RC32M,1:XTAL,2:PLL 48M,3:PLL 120M,4:PLL 160M,5:PLL 192M
+pll_clk = 4
+hclk_div = 0
+bclk_div = 1
+#0:120M,1:XCLK(RC32M or XTAL),2:48M,3:80M,4:BCLK,5:96M
+flash_clk_type = 3
+flash_clk_div = 1
+clkcfg_crc32 = 0
+
+########################boot cfg####################################
+#1:ECC
+sign = 0
+#1:AES128,2:AES256,3:AES192
+encrypt_type = 0
+key_sel = 0
+no_segment = 1
+cache_enable = 1
+notload_in_bootrom = 0
+aes_region_lock = 0
+cache_way_disable = 0x03
+crc_ignore = 0
+hash_ignore = 0
+
+########################image cfg####################################
+#total image len or segment count 
+img_len = 0x100
+bootentry = 0
+#img RAM address or flash offset 
+img_start = 0x2000
+
+#img hash
+hash_0 = 0xdeadbeef
+hash_1 = 0
+hash_2 = 0
+hash_3 = 0
+hash_4 = 0
+hash_5 = 0
+hash_6 = 0
+hash_7 = 0
+
+crc32 = 0xdeadbeef
+</code></pre>
+<h1 id="appendix-windows-flashing-log" class="section-header"><a href="#appendix-windows-flashing-log">6 Appendix: Windows Flashing Log</a></h1>
+<pre><code class="language-text">[23:01:59.398] - [param]
+interface_type = &quot;Uart&quot;
+comport_uart = &quot;COM5&quot;
+speed_uart = &quot;2000000&quot;
+speed_jlink = &quot;1000&quot;
+bl60x_brd = &quot;IoTKitA&quot;
+bl60x_xtal = &quot;40M&quot;
+aes_key = &quot;&quot;
+aes_iv = &quot;&quot;
+addr = &quot;0x0&quot;
+
+[check_box]
+partition_download = true
+boot2_download = true
+bin_download = true
+media_download = false
+use_romfs = false
+mfg_download = false
+ro_params_download = true
+ckb_erase_all = &quot;False&quot;
+encrypt = false
+download_single = false
+
+[input_path]
+pt_bin_input = &quot;C:\\pinecone\\bl_iot_sdk\\tools\\flash_tool\\bl602\\partition\\partition_cfg_2M.toml&quot;
+boot2_bin_input = &quot;C:\\pinecone\\bl_iot_sdk\\image_conf\\bl602\\blsp_boot2_release.bin&quot;
+cfg2_bin_input = &quot;C:\\Users\\guppy\\Downloads\\customer_app.zip\\sdk_app_helloworld\\build_out\\sdk_app_helloworld.bin&quot;
+meida_bin_input = &quot;&quot;
+romfs_dir_input = &quot;&quot;
+mfg_bin_input = &quot;&quot;
+img_bin_input = &quot;&quot;
+[23:01:59.406] - ========= Interface is Uart =========
+[23:01:59.420] - eflash loader bin is eflash_loader_40m.bin
+[23:01:59.421] - ========= chip flash id: ef4015 =========
+[23:01:59.468] - Update flash cfg finished
+[23:01:59.492] - create partition.bin, pt_new == True
+[23:01:59.504] - bl60x_fw_boot_head_gen xtal: 40M
+[23:01:59.509] - Create bootheader using C:\pinecone\bl_iot_sdk\tools\flash_tool\bl602\efuse_bootheader/efuse_bootheader_cfg.ini
+[23:01:59.510] - Updating data according to &lt;C:\pinecone\bl_iot_sdk\tools\flash_tool\bl602\efuse_bootheader/efuse_bootheader_cfg.ini[BOOTHEADER_CFG]&gt;
+[23:01:59.513] - Created file len:176
+[23:01:59.532] - Create efuse using C:\pinecone\bl_iot_sdk\tools\flash_tool\bl602\efuse_bootheader/efuse_bootheader_cfg.ini
+[23:01:59.532] - Updating data according to &lt;C:\pinecone\bl_iot_sdk\tools\flash_tool\bl602\efuse_bootheader/efuse_bootheader_cfg.ini[EFUSE_CFG]&gt;
+[23:01:59.535] - Created file len:128
+[23:01:59.570] - ========= sp image create =========
+[23:01:59.642] - Image hash is b'1b80574f36095a60475887c38abcbd10735eb6b2c07f7b119b79fe6755445dfa'
+[23:01:59.643] - Header crc: b'6309dbed'
+[23:01:59.643] - Write flash img
+[23:01:59.677] - bl60x_fw_boot_head_gen xtal: 40M
+[23:01:59.682] - Create bootheader using C:\pinecone\bl_iot_sdk\tools\flash_tool\bl602\efuse_bootheader/efuse_bootheader_cfg.ini
+[23:01:59.683] - Updating data according to &lt;C:\pinecone\bl_iot_sdk\tools\flash_tool\bl602\efuse_bootheader/efuse_bootheader_cfg.ini[BOOTHEADER_CFG]&gt;
+[23:01:59.685] - Created file len:176
+[23:01:59.693] - Create efuse using C:\pinecone\bl_iot_sdk\tools\flash_tool\bl602\efuse_bootheader/efuse_bootheader_cfg.ini
+[23:01:59.694] - Updating data according to &lt;C:\pinecone\bl_iot_sdk\tools\flash_tool\bl602\efuse_bootheader/efuse_bootheader_cfg.ini[EFUSE_CFG]&gt;
+[23:01:59.697] - Created file len:128
+[23:01:59.732] - ========= sp image create =========
+[23:01:59.773] - Image hash is b'26d56114b6c744112d88dccf5de778fb40a7feffdd9cb9e0b9c0c299461bf48d'
+[23:01:59.773] - Header crc: b'2a98df4f'
+[23:01:59.774] - Write flash img
+[23:01:59.804] - FW Header is 176, 3920 still needed
+[23:01:59.806] - FW OTA bin header is Done. Len is 4096
+[23:01:59.854] - FW OTA bin is Done. Len is 25216
+[23:01:59.931] - FW OTA xz is Done
+[23:01:59.932] - ========= eflash loader config =========
+[23:01:59.956] - =========C:\pinecone\bl_iot_sdk\tools\flash_tool\bl602\device_tree/bl_factory_params_IoTKitA_40M.dtsbl602/device_tree/ro_params.dtb=========
+[23:02:00.260] - Version: bflb_eflash_loader_v1.7.2
+[23:02:00.261] - Program Start
+[23:02:00.261] - option is ['-p', '-t', 'flash', '-d', 'COM5']
+[23:02:00.262] - Config file: C:\pinecone\bl_iot_sdk\tools\flash_tool\bl602\eflash_loader/eflash_loader_cfg.ini
+[23:02:00.263] - com device: COM5
+[23:02:00.264] - chiptype: bl602
+[23:02:00.264] - ========= Interface is Uart =========
+[23:02:00.265] - Eflash load helper file: C:\pinecone\bl_iot_sdk\tools\flash_tool\bl602\eflash_loader/eflash_loader_40m.bin
+[23:02:00.265] - ========= load eflash_loader.bin =========
+[23:02:00.265] - Load eflash_loader.bin via uart
+[23:02:00.266] - ========= image load =========
+[23:02:00.541] - tx rx and power off, press the machine!
+[23:02:00.542] - cutoff time is 0.1
+[23:02:00.651] - power on tx and rx
+[23:02:01.463] - reset cnt: 0, reset hold: 0.005, shake hand delay: 0.1
+[23:02:01.464] - clean buf
+[23:02:01.571] - send sync
+[23:02:01.805] - ack is b'4f4b'
+[23:02:01.852] - shake hand success
+[23:02:02.420] - get_boot_info
+[23:02:02.423] - data read is b'010000000000000003000000619dc005b9181d00'
+[23:02:02.424] - sign is 0 encrypt is 0
+[23:02:02.424] - segcnt is 1
+[23:02:02.433] - segdata_len is 21872
+[23:02:02.518] - 4080/21872
+[23:02:02.603] - 8160/21872
+[23:02:02.689] - 12240/21872
+[23:02:02.774] - 16320/21872
+[23:02:02.859] - 20400/21872
+[23:02:02.891] - 21872/21872
+[23:02:02.894] - Run img
+[23:02:03.007] - Load helper bin time cost(ms): 2741.156982421875
+[23:02:03.115] - Program operation
+[23:02:03.116] - ========= flash read jedec ID =========
+[23:02:03.116] - Flash load shake hand
+[23:02:03.117] - clean buf
+[23:02:03.226] - send sync
+[23:02:03.463] - ack is b'4f4b'
+[23:02:03.512] - Read flash jedec ID
+[23:02:03.513] - readdata:
+[23:02:03.514] - b'ef401500'
+[23:02:03.514] - Finished
+[23:02:03.515] - Dealing Index 0
+[23:02:03.516] - ========= programming bl602/img_create/whole_img_boot2.bin to 0x00000000
+[23:02:03.517] - ========= flash load =========
+[23:02:03.518] - ========= flash erase =========
+[23:02:03.519] - Erase flash  from 0x0 to 0xb6cf
+[23:02:03.813] - Erase time cost(ms): 292.946044921875
+[23:02:03.855] - Load 2048/46800 {&quot;progress&quot;:4}
+Load 4096/46800 {&quot;progress&quot;:8}
+[23:02:03.893] - Load 6144/46800 {&quot;progress&quot;:13}
+Load 8192/46800 {&quot;progress&quot;:17}
+[23:02:03.929] - Load 10240/46800 {&quot;progress&quot;:21}
+Load 12288/46800 {&quot;progress&quot;:26}
+[23:02:03.966] - Load 14336/46800 {&quot;progress&quot;:30}
+Load 16384/46800 {&quot;progress&quot;:35}
+[23:02:04.004] - Load 18432/46800 {&quot;progress&quot;:39}
+Load 20480/46800 {&quot;progress&quot;:43}
+[23:02:04.041] - Load 22528/46800 {&quot;progress&quot;:48}
+Load 24576/46800 {&quot;progress&quot;:52}
+[23:02:04.079] - Load 26624/46800 {&quot;progress&quot;:56}
+Load 28672/46800 {&quot;progress&quot;:61}
+[23:02:04.115] - Load 30720/46800 {&quot;progress&quot;:65}
+Load 32768/46800 {&quot;progress&quot;:70}
+[23:02:04.151] - Load 34816/46800 {&quot;progress&quot;:74}
+Load 36864/46800 {&quot;progress&quot;:78}
+[23:02:04.187] - Load 38912/46800 {&quot;progress&quot;:83}
+Load 40960/46800 {&quot;progress&quot;:87}
+[23:02:04.224] - Load 43008/46800 {&quot;progress&quot;:91}
+Load 45056/46800 {&quot;progress&quot;:96}
+[23:02:04.240] - Load 46800/46800 {&quot;progress&quot;:100}
+[23:02:04.241] - Write check
+[23:02:04.243] - Flash load time cost(ms): 428.165283203125
+[23:02:04.243] - Finished
+[23:02:04.245] - Sha caled by host: cc1ce53503cdf01b3ec47225589046bf6e99b3ddba900f8ed9a6201ebb9f323f
+[23:02:04.245] - xip mode Verify
+[23:02:04.259] - Read Sha256/46800
+[23:02:04.260] - Flash xip readsha time cost(ms): 13.030517578125
+[23:02:04.260] - Finished
+[23:02:04.262] - Sha caled by dev: cc1ce53503cdf01b3ec47225589046bf6e99b3ddba900f8ed9a6201ebb9f323f
+[23:02:04.263] - Verify success
+[23:02:04.263] - Dealing Index 1
+[23:02:04.264] - ========= programming bl602/partition/partition.bin to 0xe000
+[23:02:04.264] - ========= flash load =========
+[23:02:04.265] - ========= flash erase =========
+[23:02:04.265] - Erase flash  from 0xe000 to 0xe10f
+[23:02:04.301] - Erase time cost(ms): 36.224609375
+[23:02:04.306] - Load 272/272 {&quot;progress&quot;:100}
+[23:02:04.306] - Write check
+[23:02:04.309] - Flash load time cost(ms): 7.0009765625
+[23:02:04.309] - Finished
+[23:02:04.310] - Sha caled by host: da4d2fe7d42a71246b0e84d64665b70ad701435f89716c48e6f23ef55340eaa0
+[23:02:04.310] - xip mode Verify
+[23:02:04.320] - Read Sha256/272
+[23:02:04.320] - Flash xip readsha time cost(ms): 8.000732421875
+[23:02:04.320] - Finished
+[23:02:04.322] - Sha caled by dev: da4d2fe7d42a71246b0e84d64665b70ad701435f89716c48e6f23ef55340eaa0
+[23:02:04.323] - Verify success
+[23:02:04.323] - Dealing Index 2
+[23:02:04.324] - ========= programming bl602/partition/partition.bin to 0xf000
+[23:02:04.324] - ========= flash load =========
+[23:02:04.325] - ========= flash erase =========
+[23:02:04.325] - Erase flash  from 0xf000 to 0xf10f
+[23:02:04.362] - Erase time cost(ms): 36.013427734375
+[23:02:04.367] - Load 272/272 {&quot;progress&quot;:100}
+[23:02:04.368] - Write check
+[23:02:04.370] - Flash load time cost(ms): 6.999755859375
+[23:02:04.370] - Finished
+[23:02:04.371] - Sha caled by host: da4d2fe7d42a71246b0e84d64665b70ad701435f89716c48e6f23ef55340eaa0
+[23:02:04.372] - xip mode Verify
+[23:02:04.382] - Read Sha256/272
+[23:02:04.382] - Flash xip readsha time cost(ms): 8.004150390625
+[23:02:04.382] - Finished
+[23:02:04.384] - Sha caled by dev: da4d2fe7d42a71246b0e84d64665b70ad701435f89716c48e6f23ef55340eaa0
+[23:02:04.385] - Verify success
+[23:02:04.385] - Dealing Index 3
+[23:02:04.386] - ========= programming bl602/img_create/whole_img.bin to 0x10000
+[23:02:04.386] - ========= flash load =========
+[23:02:04.387] - ========= flash erase =========
+[23:02:04.387] - Erase flash  from 0x10000 to 0x1627f
+[23:02:04.612] - Erase time cost(ms): 223.555419921875
+[23:02:04.656] - Load 2048/25216 {&quot;progress&quot;:8}
+Load 4096/25216 {&quot;progress&quot;:16}
+[23:02:04.700] - Load 6144/25216 {&quot;progress&quot;:24}
+Load 8192/25216 {&quot;progress&quot;:32}
+[23:02:04.743] - Load 10240/25216 {&quot;progress&quot;:40}
+Load 12288/25216 {&quot;progress&quot;:48}
+[23:02:04.781] - Load 14336/25216 {&quot;progress&quot;:56}
+Load 16384/25216 {&quot;progress&quot;:64}
+[23:02:04.818] - Load 18432/25216 {&quot;progress&quot;:73}
+Load 20480/25216 {&quot;progress&quot;:81}
+[23:02:04.856] - Load 22528/25216 {&quot;progress&quot;:89}
+Load 24576/25216 {&quot;progress&quot;:97}
+[23:02:04.862] - Load 25216/25216 {&quot;progress&quot;:100}
+[23:02:04.863] - Write check
+[23:02:04.865] - Flash load time cost(ms): 251.464599609375
+[23:02:04.866] - Finished
+[23:02:04.867] - Sha caled by host: 3507cc26ec24cff845d18eafeb5b50e57e94b443fc539994e79e1f5e8e83a18d
+[23:02:04.867] - xip mode Verify
+[23:02:04.880] - Read Sha256/25216
+[23:02:04.880] - Flash xip readsha time cost(ms): 10.96826171875
+[23:02:04.881] - Finished
+[23:02:04.883] - Sha caled by dev: 3507cc26ec24cff845d18eafeb5b50e57e94b443fc539994e79e1f5e8e83a18d
+[23:02:04.883] - Verify success
+[23:02:04.883] - Dealing Index 4
+[23:02:04.884] - ========= programming bl602/device_tree/ro_params.dtb to 0x1f8000
+[23:02:04.884] - ========= flash load =========
+[23:02:04.885] - ========= flash erase =========
+[23:02:04.885] - Erase flash  from 0x1f8000 to 0x1f9626
+[23:02:04.957] - Erase time cost(ms): 71.47705078125
+[23:02:04.993] - Load 2048/5671 {&quot;progress&quot;:36}
+Load 4096/5671 {&quot;progress&quot;:72}
+[23:02:05.009] - Load 5671/5671 {&quot;progress&quot;:100}
+[23:02:05.009] - Write check
+[23:02:05.011] - Flash load time cost(ms): 52.88330078125
+[23:02:05.012] - Finished
+[23:02:05.012] - Sha caled by host: ae42d69b09c2eb134b202b412c00ff175e10b625e2d3c0a2820378bd341926b8
+[23:02:05.013] - xip mode Verify
+[23:02:05.023] - Read Sha256/5671
+[23:02:05.023] - Flash xip readsha time cost(ms): 8.00732421875
+[23:02:05.024] - Finished
+[23:02:05.026] - Sha caled by dev: ae42d69b09c2eb134b202b412c00ff175e10b625e2d3c0a2820378bd341926b8
+[23:02:05.026] - Verify success
+[23:02:05.027] - Program Finished
+[23:02:05.028] - All time cost(ms): 4766.982421875
+[23:02:05.136] - [All Success]
+</code></pre>
+
+    
+</body>
+</html>

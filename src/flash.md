@@ -1,6 +1,8 @@
 # Flashing Firmware to PineCone BL602
 
-![Flashing Firmware to PineCone BL602](https://lupyuen.github.io/images/pinecone-flash-steps.png)
+![PineCone BL602 RISC-V Evaluation Board](https://lupyuen.github.io/images/flash-title.jpg)
+
+_PineCone BL602 RISC-V Evaluation Board_
 
 📝 _29 Dec 2020_
 
@@ -8,17 +10,20 @@ TODO
 
 # Flash Firmware from Linux
 
-1.  Set the PineCone Jumper to H
-
-1.  Connect PineCone to the USB port
-
 1.  Install `rustup` from [`rustup.rs`](https://rustup.rs)
 
-1.  Then run...
+1.  Download the `blflash` source code...
 
     ```bash
     git clone --recursive https://github.com/spacemeowx2/blflash
     cd blflash
+    ```
+
+    (Version 0.1.0 of `blflash` installed via `cargo install blflash` doesn't work)
+
+1.  Build `blflash` as superuser...
+
+    ```bash
     sudo rustup default nightly
     sudo cargo build
     ```
@@ -26,18 +31,15 @@ TODO
 1.  We should see...
 
     ```text
-        Updating crates.io index
-    Downloaded blflash v0.1.0
-    Downloaded 1 crate (57.5 KB) in 2.92s
-    Installing blflash v0.1.0
-    ...
-    Compiling blflash v0.1.0
-        Finished release [optimized] target(s) in 6m 09s
-    Installing /root/.cargo/bin/blflash
-    Installed package `blflash v0.1.0` (executable `blflash`)
+    Compiling blflash v0.2.1 (blflash/blflash)
+    Finished dev [unoptimized + debuginfo] target(s) in 4m 28s
     ```
 
-1.  Enter this to flash our firmware...
+1.  Set the PineCone Jumper to H
+
+1.  Connect PineCone to the USB port
+
+1.  Flash our firmware as superuser...
 
     ```bash
     sudo cargo run flash ~/BLOpenFlasher/bl602/bl602.bin --port /dev/ttyUSB0 
@@ -69,7 +71,38 @@ TODO
     [INFO  blflash] Success
     ```
 
+1.  If we see this error...
+
+    ```text
+    [INFO  blflash::flasher] Start connection...
+    [TRACE blflash::flasher] 5ms send count 55
+    [TRACE blflash::flasher] handshake sent elapsed 850.287µs
+    [INFO  blflash::flasher] Connection Succeed
+    Error: IO error: Operation timed out
+    caused by: Operation timed out
+    ```
+
+    Disconnect PineCone from the USB port. Check that the Jumper is set to H. Retry the flash command.
+
+1.  After flashing, switch the PineCone Jumper back to L. 
+
+    Reconnect PineCone to the USB port. Our firmware begins running.
+
+1.  To watch our firmware running, connect to the PineCone Serial Console (at 2 Mbps)...
+
+    ```bash
+    sudo screen /dev/ttyUSB0 2000000
+    ```
+
+    Press the `RST` Button on PineCone to restart the board.
+
+    We should see the console output as PineCone boots.
+
+1.  To exit the console, press `Ctrl-A` then `k` then `y`
+
 Tested on Arm64 Linux (Pinebook Pro with Manjaro)
+
+![Flashing Firmware to PineCone BL602](https://lupyuen.github.io/images/pinecone-flash-steps.png)
 
 # How Flashing Works
 
