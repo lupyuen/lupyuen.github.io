@@ -8,7 +8,7 @@ _PineCone BL602 RISC-V Evaluation Board_
 
 TODO
 
-# Flash Firmware with Linux, macOS and Windows
+# Flash BL602 Firmware with Linux, macOS and Windows
 
 ##  Install rustup
 
@@ -180,11 +180,27 @@ These steps were tested on Arm64 Linux (Pinebook Pro with Manjaro), macOS Catali
 
 ![Flashing Firmware to PineCone BL602](https://lupyuen.github.io/images/pinecone-flash-steps.png)
 
-# How Flashing Works
+# What Else Can We Flash To BL602?
 
-Based on [`github.com/bouffalolab/BLOpenFlasher/flash_tool.go`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/flash_tool.go)
+So far we have only flashed our Firmware Image to PineCone. This is one of 6 interesting things that we may flash to BL602's Internal Flash ROM...
 
-## Generate Partition
+| ROM Address | ROM Contents |
+|:---|:---|
+| __Boot Image__ <br> `0x0000 0000`      | Code and data for the boot firmware		
+| __Partition Table__ <br> `0x0000 E000` | Partition Table for the Flash ROM
+| __Partition Table__ <br> `0x0000 F000` | Another Partition Table for the Flash ROM (For redundancy?)
+| __Firmware Image__ <br> `0x0001 0000`	 | Code and data for the application firmware
+| __Device Tree__ <br> `0x001F 8000`     | Default settings for peripherals and ports: UART, GPIO, SPI, WiFi, ...
+
+This info was derived from the official Go flashing tool for BL602...
+
+-   [`github.com/bouffalolab/BLOpenFlasher/flash_tool.go`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/flash_tool.go)
+
+Let's look at each area of BL602's Internal Flash ROM.
+
+# Partition Table
+
+TODO
         
 Partition Table:       
 "bl602/partition/partition_cfg_2M.toml",
@@ -192,8 +208,10 @@ Partition Table:
 Output:              
 "bl602/image/partition.bin",                   
 
-## Boot To Image                                                                     
-            
+# Boot Image                                                                     
+
+TODO
+
 EFuse Configuration:        
 "bl602/efuse_bootheader/efuse_bootheader_cfg.conf",
                     
@@ -209,8 +227,10 @@ FWOffset:
 Boot2 Firmware:
 https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/bl602_boot2
 
-## Generate Firmware Image                                                                            
-            
+# Firmware Image                                                                            
+
+TODO
+
 EFuse Configuration:            
 "bl602/efuse_bootheader/efuse_bootheader_cfg.conf",
                     
@@ -223,12 +243,18 @@ Output:
 FWOffset:
 0x1000,                                     
 
+# EFuse Configuration
+
+TODO
+
 https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/system/efuse.html
 
 number of eFuses which can store system and user parameters. Each eFuse is a one-bit field which can be programmed to 1 after which it cannot be reverted back to 0. Some of system parameters are using these eFuse bits directly by hardware modules 
 
-## Device Tree to DTB
-                                           
+# Device Tree
+
+TODO
+
 Script:
 "dts2dtb.py",
 
@@ -238,7 +264,9 @@ Device Tree:
 Output:
 "bl602/image/ro_params.dtb"
 
-## Flash to ROM
+# Flash to ROM
+
+TODO
     	
 utils.StartProgram:
     			                            
@@ -275,7 +303,7 @@ two baudrate setting: 512000 is for downloading eflash_loader.bin, and 2000000 f
 
 # Appendix: BL602 Partition Table
 
-[`github.com/bouffalolab/BLOpenFlasher/bl602/partition/partition_cfg_2M.toml`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/partition/partition_cfg_2M.toml)
+[`BLOpenFlasher/bl602/partition/partition_cfg_2M.toml`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/partition/partition_cfg_2M.toml)
 
 ```text
 [pt_table]
@@ -378,7 +406,7 @@ len = 0
 
 Note that the WiFi SSID configuration is stored here.
 
-https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/device_tree/bl_factory_params_IoTKitA_40M.dts
+[`BLOpenFlasher/bl602/device_tree/bl_factory_params_IoTKitA_40M.dts`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/device_tree/bl_factory_params_IoTKitA_40M.dts)
 
 ```text
 /dts-v1/;
@@ -726,7 +754,7 @@ https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/device_tree/bl_fact
 
 # Appendix: BL602 EFuse Configuration
 
-[`github.com/bouffalolab/BLOpenFlasher/bl602/efuse_bootheader/efuse_bootheader_cfg.conf`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/efuse_bootheader/efuse_bootheader_cfg.conf)
+[`BLOpenFlasher/bl602/efuse_bootheader/efuse_bootheader_cfg.conf`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/efuse_bootheader/efuse_bootheader_cfg.conf)
 
 ```text
 [EFUSE_CFG]
