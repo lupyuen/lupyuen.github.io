@@ -12,11 +12,11 @@ TODO
 
 ##  Install rustup
 
-Install `rustup` from [`rustup.rs`](https://rustup.rs)
+1.  Install `rustup` from [`rustup.rs`](https://rustup.rs)
 
-Select the default options.
+1.  Select the default options.
 
-__For Linux:__ Install `rustup` as a Superuser.
+    __For Linux:__ Install `rustup` as a Superuser.
 
 ##  Download and build blflash
 
@@ -74,7 +74,7 @@ __For Linux:__ Install `rustup` as a Superuser.
     cargo run flash sdk_app_helloworld.bin --port /dev/tty.usbserial-1420
     ```
 
-    (Change `sdk_app_helloworld.bin` to the full path of the firmware binary to be flashed. Change the USB serial port `/dev/tty.usbserial-1420` to PineCone's USB Serial Device.)
+    (Change `sdk_app_helloworld.bin` to the full path of the firmware binary to be flashed. Change `/dev/tty.usbserial-1420` to the USB Serial Device assigned to PineCone.)
 
     __For Windows:__
 
@@ -148,11 +148,15 @@ __For Linux:__ Install `rustup` as a Superuser.
     sudo screen /dev/ttyUSB0 2000000
     ```
 
+    (Change the USB serial port `/dev/ttyUSB0` if necessary)
+
     __For macOS:__
 
     ```bash
     screen /dev/tty.usbserial-1420 2000000                 
     ```
+
+    (Change `/dev/tty.usbserial-1420` to the USB Serial Device assigned to PineCone)
 
     __For Windows:__ Use `putty` to connect to PineCone's `COM` Port (like `COM5`) at speed `2000000` (2 Mbps)
     
@@ -921,7 +925,9 @@ hash_7 = 0
 crc32 = 0xdeadbeef
 ```
 
-# Appendix: Windows Flashing Log
+# Appendix: BLDevCube Flashing Log
+
+Here is a sample flashing log emitted by `bl_iot_sdk/tools/flash_tool/BLDevCube.exe` on Windows...
 
 ```text
 [23:01:59.398] - [param]
@@ -950,7 +956,7 @@ download_single = false
 [input_path]
 pt_bin_input = "C:\\pinecone\\bl_iot_sdk\\tools\\flash_tool\\bl602\\partition\\partition_cfg_2M.toml"
 boot2_bin_input = "C:\\pinecone\\bl_iot_sdk\\image_conf\\bl602\\blsp_boot2_release.bin"
-cfg2_bin_input = "C:\\Users\\guppy\\Downloads\\customer_app.zip\\sdk_app_helloworld\\build_out\\sdk_app_helloworld.bin"
+cfg2_bin_input = "C:\\Users\\user\\Downloads\\customer_app.zip\\sdk_app_helloworld\\build_out\\sdk_app_helloworld.bin"
 meida_bin_input = ""
 romfs_dir_input = ""
 mfg_bin_input = ""
