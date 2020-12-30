@@ -182,7 +182,7 @@ These steps were tested on Arm64 Linux (Pinebook Pro with Manjaro), macOS Catali
 
 # What Else Can We Flash To BL602?
 
-So far we have only flashed our Firmware Image to PineCone. This is one of 6 interesting things that we may flash to BL602's Internal Flash ROM...
+So far we have only flashed our Firmware Image to PineCone. This is one of 5 interesting things that we may flash to BL602's Internal Flash ROM...
 
 | ROM Address | ROM Contents |
 |:---|:---|
