@@ -12,7 +12,7 @@ _PineCone BL602 RISC-V Evaluation Board_
 
 1.  Then we [__connected PineCone to OpenOCD__](https://lupyuen.github.io/articles/openocd) with a JTAG Debugger...
 
-1.  And we [__debugged Rust on PineCone__](https://lupyuen.github.io/articles/debug) with VSCode and GDB
+1.  And we [__debugged Rust on PineCone__](https://lupyuen.github.io/articles/debug) with VSCode and GDB...
 
 1.  Finally we ported [__Apache Mynewt operating system to PineCone__](https://lupyuen.github.io/articles/mynewt)
 
@@ -246,7 +246,7 @@ Let's look at each area of BL602's Internal Flash ROM.
 
 # Partition Table
 
-The Partition Table says where everything is located in ROM. It's like the above ROM Table... But converted to binary format and stored into ROM (twice).
+The __Partition Table___ says where everything is located in ROM. It's like the above ROM Table... But converted to binary format and stored into ROM (twice).
 
 The Partition Table is referenced by the Start Code for BL602 Firmware...
 
@@ -499,33 +499,46 @@ This complicated setting configures the WiFi stack (including SSID)...
 
 # Boot Image
 
-TODO
-                    
-Boot Binary:                 
-"bl602/builtin_imgs/blsp_boot2.bin",
+Located at ROM address `0x0`, the __Boot Image__ contains the firmware code that is run first upon booting BL602....
+
+1.  __Boot Image Binary__ is at...
+
+    -   [`blsp_boot2.bin`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/builtin_imgs/blsp_boot2.bin)
                             
-Output:                     
-"bl602/image/boot2image.bin",
+1.  Which gets encrypted with the __EFuse Configuration__ to create (with firmware offset `0x2000`)...
+
+    -   [`boot2image.bin`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/image/boot2image.bin) 
+
+    (For development, we have disabled encryption in the EFuse Configuration)
                                     
-FWOffset:
-0x2000,     
+1.  Which is flashed to BL602 ROM at address `0x0`, whenever we update the firmware
 
-Boot2 Firmware:
-https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/bl602_boot2
+The BL602 Boot Firmware Source Code is located here...
 
+-   [`bl_iot_sdk/customer_app/bl602_boot2`](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/bl602_boot2)
+
+The BL602 Boot Firmware seems to be doing... stuff.
+
+Would you like me to...
+
+1.  Study the BL602 Boot Firmware Source Code
+
+1.  And explain how it works, in an article?
+
+Please support me as a [GitHub Sponsor](https://github.com/sponsors/lupyuen)! 🙏
 
 # Firmware Image
 
 TODO
 
 EFuse Configuration:            
-"bl602/efuse_bootheader/efuse_bootheader_cfg.conf",
+"https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/efuse_bootheader/efuse_bootheader_cfg.conf",
                     
 Firmware Binary:                
-"bl602/sdk_app_helloworld.bin",
+"https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/bl602.bin",
                             
 Output:                        
-"bl602/image/fwimage.bin",
+"https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/image/fwimage.bin",
                                     
 FWOffset:
 0x1000,                                     
