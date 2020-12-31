@@ -30,9 +30,9 @@ Today we shall learn to...
 
 # Flash BL602 Firmware with Linux, macOS and Windows
 
-Follow these steps to flash a BL602 Firmware Binary File (like `sdk_app_helloworld.bin`) on our Linux (x64 and Arm64), macOS or Windows computer.
+Follow these steps to flash a BL602 Firmware Binary File (like `sdk_app_helloworld.bin`) from Linux (x64 and Arm64), macOS and Windows to PineCone.
 
-(On Windows: Use plain old Windows CMD Command Prompt, not WSL)
+(On Windows: Use plain old Windows CMD Command Prompt to execute the commands, not WSL)
 
 ##  Install rustup
 
@@ -46,7 +46,7 @@ Follow these steps to flash a BL602 Firmware Binary File (like `sdk_app_hellowor
 
 ##  Download and build blflash
 
-We'll use `blflash`, the flashing tool created in Rust by [`spacemeowx2`](https://github.com/spacemeowx2).
+We'll use [__`blflash`__](https://github.com/spacemeowx2/blflash), the flashing tool created in Rust by [`spacemeowx2`](https://github.com/spacemeowx2).
 
 1.  Download the `blflash` source code...
 
@@ -182,6 +182,8 @@ We'll use `blflash`, the flashing tool created in Rust by [`spacemeowx2`](https:
     cargo run flash sdk_app_helloworld.bin --port /dev/tty.usbserial-1420 --initial-baud-rate 115200 --baud-rate 115200
     ```    
 
+[See the flashing screenshots](https://lupyuen.github.io/articles/flash#appendix-bl602-flashing-screenshots)
+
 ## Watch the firmware run
 
 1.  After flashing, switch the __PineCone Jumper (IO8)__ back to `L`. 
@@ -312,6 +314,8 @@ len      = 0
 
 This is the Partition Entry for the Device Tree at ROM address `0x1F8000`. We'll cover the Device Tree in a while.
 
+[More about BL602 Partition Table](https://lupyuen.github.io/articles/flash#appendix-bl602-partition-table)
+
 # EFuse Configuration
 
 _What's an EFuse in BL602?_
@@ -351,6 +355,8 @@ ef_dbg_pwd_low     = 0
 ef_dbg_pwd_high    = 0
 ```
 
+[More about BL602 EFuse Configuration](https://lupyuen.github.io/articles/flash#appendix-bl602-efuse-configuration)
+
 # Boot Image
 
 Located at ROM address `0x0`, the __Boot Image__ contains the firmware code that is run first upon booting BL602....
@@ -379,7 +385,7 @@ Would you like me to...
 
 1.  And explain how it works, in an article?
 
-Please support my work as a [GitHub Sponsor](https://github.com/sponsors/lupyuen)! 🙏
+Please support my work by becoming my [GitHub Sponsor](https://github.com/sponsors/lupyuen)! 🙏
 
 # Firmware Image
 
@@ -546,6 +552,8 @@ This complicated setting configures the WiFi stack (including SSID)...
             auto_chan_detect = "disable";
         };
 ```
+
+[More about BL602 Device Tree](https://lupyuen.github.io/articles/flash#appendix-bl602-device-tree)
 
 [More about Linux Device Trees](https://www.kernel.org/doc/html/latest/devicetree/usage-model.html)
 
