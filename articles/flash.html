@@ -416,6 +416,7 @@ ef_dbg_pwd_high    = 0
 </ul>
 <p>This function initialises the GPIO port by loading the Device Tree from ROM.</p>
 <p>Here are some interesting snippets from the BL602 Device Tree: <a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/device_tree/bl_factory_params_IoTKitA_40M.dts"><code>bl_factory_params_IoTKitA_40M.dts</code></a></p>
+<p>(&quot;<code>40M</code>&quot; refers to the BL602 Clock Speed: 40 MHz)</p>
 <p>(FYI: Some RISC-V microcontrollers don't use Device Trees, like GD32 VF103. Device Trees seem to be common among microcontrollers based on SiFive RISC-V Cores, including BL602.)</p>
 <h2 id="gpio-led" class="section-header"><a href="#gpio-led">7.1 GPIO LED</a></h2>
 <p>This setting configures GPIO 5 for LED output...</p>
@@ -552,9 +553,61 @@ ef_dbg_pwd_high    = 0
 <p>EFlash Loader must acknowledge the data transfer within 5 seconds. Or the flashing shall be considered failed.</p>
 <p>(Where is the source code for the EFlash Loader? 🤔)</p>
 <h1 id="blflash-vs-blopenflasher" class="section-header"><a href="#blflash-vs-blopenflasher">9 blflash vs BLOpenFlasher</a></h1>
-<p>TODO</p>
-<p><em>Why the switcheroo? We started this article with blflash (in Rust) ... And pivoted to BLOpenFlasher (in Go)?</em></p>
-<p>Because of... issues <a href="https://github.com/bouffalolab/BLOpenFlasher/issues/2">(See this)</a></p>
+<p><em>We started this article with blflash (in Rust) ... And pivoted to BLOpenFlasher (in Go)? Why the switcheroo?</em></p>
+<ul>
+<li>
+<p>BLOpenFlasher is the official open-source flashing tool for BL602... But we couldn't run make it work on Linux and Windows CMD <a href="https://github.com/bouffalolab/BLOpenFlasher/issues/2">(See this)</a></p>
+</li>
+<li>
+<p><code>blflash</code> (created by <a href="https://github.com/spacemeowx2"><code>spacemeowx2</code></a>) was derived from BLOpenFlasher and it works great on Linux and Windows CMD</p>
+</li>
+</ul>
+<p>Hence we'll use <code>blflash</code> for flashing BL602... But to understand the flashing internals we shall refer to the official reference implementation: BLOpenFlasher.</p>
+<p><em>How different is <code>blflash</code> from BLOpenFlasher?</em></p>
+<ol>
+<li>
+<p><code>blflash</code> transmits the EFlash Loader at <strong>115.2 kbps</strong> (vs <strong>512 kbps</strong> in BLOpenFlasher)</p>
+<p><code>blflash</code> transmits the ROM data to be flashed at <strong>1 Mbps</strong> (vs <strong>2 Mbps</strong> in BLOpenFlasher)</p>
+<p>The transmission speeds may be specified through the command-line options <code>initial_baud_rate</code> (for EFlash Loader) and <code>baud_rate</code> (for ROM data).</p>
+</li>
+<li>
+<p><code>blflash</code> doesn't support compiling Device Trees into binary format.</p>
+<p>It uses a hard-coded binary Device Tree located here...</p>
+<ul>
+<li>Device Tree Binary: <a href="https://github.com/spacemeowx2/blflash/blob/main/blflash/src/chip/bl602/cfg/ro_params.dtb"><code>ro_params.dtb</code></a></li>
+</ul>
+<p>BLOpenFlasher uses a Python script to compile the Device Tree into binary...</p>
+<ul>
+<li>Compile Device Tree to binary format: <a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/dts2dtb.py"><code>dts2dtb.py</code></a></li>
+</ul>
+</li>
+<li>
+<p>What if we need to modify the Device Tree?</p>
+<p>We could compile the Device Tree with BLOpenFlasher. Then transfer the compiled Device Tree binary...</p>
+<ul>
+<li><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/image/ro_params.dtb"><code>bl602/image/ro_params.dtb</code></a></li>
+</ul>
+<p>...from BLOpenFlasher to <code>blflash</code> for flashing.</p>
+</li>
+<li>
+<p>Configuration files and firmware binaries for <code>blflash</code>...</p>
+<ul>
+<li>
+<p>Partition Table: <a href="https://github.com/spacemeowx2/blflash/blob/main/blflash/src/chip/bl602/cfg/partition_cfg_2M.toml"><code>partition_cfg_2M.toml</code></a></p>
+</li>
+<li>
+<p>EFuse Configuration: <a href="https://github.com/spacemeowx2/blflash/blob/main/blflash/src/chip/bl602/cfg/efuse_bootheader_cfg.conf"><code>efuse_bootheader_cfg.conf</code></a></p>
+</li>
+<li>
+<p>EFlash Loader: <a href="https://github.com/spacemeowx2/blflash/blob/main/blflash/src/chip/bl602/image/eflash_loader_40m.bin"><code>eflash_loader_40m.bin</code></a></p>
+</li>
+<li>
+<p>Boot Image: <a href="https://github.com/spacemeowx2/blflash/blob/main/blflash/src/chip/bl602/image/blsp_boot2.bin"><code>blsp_boot2.bin</code></a></p>
+</li>
+</ul>
+</li>
+</ol>
+<p>This information was derived from <a href="https://github.com/spacemeowx2/blflash/blob/main/blflash/src/main.rs"><code>main.rs</code></a> in <a href="https://github.com/spacemeowx2/blflash"><code>blflash</code></a></p>
 <h1 id="appendix-bl602-partition-table" class="section-header"><a href="#appendix-bl602-partition-table">10 Appendix: BL602 Partition Table</a></h1>
 <p>From <a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/partition/partition_cfg_2M.toml"><code>BLOpenFlasher/bl602/partition/partition_cfg_2M.toml</code></a></p>
 <p>Converted to &quot;bl602/image/partition.bin&quot; and flashed to <code>0xE000</code> and <code>0xF000</code></p>
