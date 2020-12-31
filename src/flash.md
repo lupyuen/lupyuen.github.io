@@ -117,24 +117,24 @@ We'll use `blflash`, the flashing tool created in Rust by [`spacemeowx2`](https:
 1.  We should see...
 
     ```text
-        Finished dev [unoptimized + debuginfo] target(s) in 0.10s
-        Running `target/debug/blflash flash sdk_app_helloworld.bin --port /dev/ttyUSB0`
-    [INFO  blflash::flasher] Start connection...
-    [TRACE blflash::flasher] 5ms send count 55
-    [TRACE blflash::flasher] handshake sent elapsed 1.059862ms
-    [INFO  blflash::flasher] Connection Succeed
+    Finished dev [unoptimized + debuginfo] target(s) in 0.10s
+    Running `target/debug/blflash flash sdk_app_helloworld.bin --port /dev/ttyUSB0`
+    Start connection...
+    5ms send count 55
+    handshake sent elapsed 1.059862ms
+    Connection Succeed
     ```
 
     `blflash` has connected successfully to PineCone over the USB Serial port.
 
     ```text
-    [INFO  blflash] Bootrom version: 1
-    [TRACE blflash] Boot info: BootInfo { len: 14, bootrom_version: 1, otp_info: [0, 0, 0, 0, 3, 0, 0, 0, 61, 9d, c0, 5, b9, 18, 1d, 0] }
-    [INFO  blflash::flasher] Sending eflash_loader...
-    [INFO  blflash::flasher] Finished 3.375522563s 8.47KB/s
-    [TRACE blflash::flasher] 5ms send count 500
-    [TRACE blflash::flasher] handshake sent elapsed 6.51343ms
-    [INFO  blflash::flasher] Entered eflash_loader
+    Bootrom version: 1
+    Boot info: BootInfo { len: 14, bootrom_version: 1, otp_info: [0, 0, 0, 0, 3, 0, 0, 0, 61, 9d, c0, 5, b9, 18, 1d, 0] }
+    Sending eflash_loader...
+    Finished 3.375522563s 8.47KB/s
+    5ms send count 500
+    handshake sent elapsed 6.51343ms
+    Entered eflash_loader
     ```
 
     `blflash` starts by sending the `eflash_loader` program to PineCone. Then `eflash_loader` starts running on PineCone.
@@ -142,12 +142,12 @@ We'll use `blflash`, the flashing tool created in Rust by [`spacemeowx2`](https:
     `eflash_loader` receives our firmware from `blflash` and flashes our firmware to ROM...
 
     ```text
-    [INFO  blflash::flasher] Skip segment addr: 0 size: 47504 sha256 matches
-    [INFO  blflash::flasher] Skip segment addr: e000 size: 272 sha256 matches
-    [INFO  blflash::flasher] Skip segment addr: f000 size: 272 sha256 matches
-    [INFO  blflash::flasher] Skip segment addr: 10000 size: 869328 sha256 matches
-    [INFO  blflash::flasher] Skip segment addr: 1f8000 size: 5671 sha256 matches
-    [INFO  blflash] Success
+    Skip segment addr: 0 size: 47504 sha256 matches
+    Skip segment addr: e000 size: 272 sha256 matches
+    Skip segment addr: f000 size: 272 sha256 matches
+    Skip segment addr: 10000 size: 869328 sha256 matches
+    Skip segment addr: 1f8000 size: 5671 sha256 matches
+    Success
     ```
 
     `blflash` (and `eflash_loader`) has successfully flashed 5 locations in BL602 ROM: `0x0`, `0xe000`, `0xf000`, `0x10000` (that's our firmware) and `0x1f8000`
@@ -157,10 +157,10 @@ We'll use `blflash`, the flashing tool created in Rust by [`spacemeowx2`](https:
 1.  If we see this error...
 
     ```text
-    [INFO  blflash::flasher] Start connection...
-    [TRACE blflash::flasher] 5ms send count 55
-    [TRACE blflash::flasher] handshake sent elapsed 850.287µs
-    [INFO  blflash::flasher] Connection Succeed
+    Start connection...
+    5ms send count 55
+    handshake sent elapsed 850.287µs
+    Connection Succeed
     Error: IO error: Operation timed out
     caused by: Operation timed out
     ```
@@ -170,8 +170,8 @@ We'll use `blflash`, the flashing tool created in Rust by [`spacemeowx2`](https:
 1.  If we see this error...
 
     ```text
-    [INFO  blflash::flasher] Sending eflash_loader...
-    [INFO  blflash::flasher] Finished 2.988880532s 9.56KB/s
+    Sending eflash_loader...
+    Finished 2.988880532s 9.56KB/s
     Error: IO error while using serial port: Invalid argument
     caused by: Invalid argument
     ```
@@ -642,11 +642,15 @@ _How different is `blflash` from BLOpenFlasher?_
 
 This information was derived from [`main.rs`](https://github.com/spacemeowx2/blflash/blob/main/blflash/src/main.rs) in [`blflash`](https://github.com/spacemeowx2/blflash)
 
+![PineCone BL602 connected to Pinebook Pro](https://lupyuen.github.io/images/flash-pinebook.jpg)
+
+_PineCone BL602 connected to Pinebook Pro_
+
 # What's Next
 
-It has been fun reverse-engineering the BL602 source code... I'm getting better at it!
+I had fun reverse-engineering the BL602 source code... And I'm delighted that the BL602 Community is creating really awesome tools!
 
-I hope to uncover more BL602 goodies... Stay tuned!
+I hope to uncover more BL602 goodies in 2021. Stay tuned!
 
 -   [Check out my articles](https://lupyuen.github.io)
 
