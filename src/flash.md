@@ -30,7 +30,7 @@ Today we shall learn to...
 
 # Flash BL602 Firmware with Linux, macOS and Windows
 
-Follow these steps to flash a Firmware Binary File (like `sdk_app_helloworld.bin`) on our Linux (x64 and Arm64), macOS or Windows computer.
+Follow these steps to flash a BL602 Firmware Binary File (like `sdk_app_helloworld.bin`) on our Linux (x64 and Arm64), macOS or Windows computer.
 
 (On Windows: Use plain old Windows CMD Command Prompt, not WSL)
 
@@ -103,6 +103,8 @@ We'll use `blflash`, the flashing tool created in Rust by [`spacemeowx2`](https:
     ```
 
     (Change `sdk_app_helloworld.bin` to the full path of the firmware binary to be flashed. Change `/dev/tty.usbserial-1420` to the USB Serial Device assigned to PineCone.)
+
+    Note that we're throttling the USB Serial Port from the default 1 Mbps to 115.2 kbps... macOS has trouble connecting to BL602 at high speeds.
 
     __For Windows:__
 
@@ -205,6 +207,8 @@ We'll use `blflash`, the flashing tool created in Rust by [`spacemeowx2`](https:
     ```
 
     (Change `/dev/tty.usbserial-1420` to the USB Serial Device assigned to PineCone)
+
+    Note: This probably won't work on macOS because 2 Mbps is too high for the macOS USB Serial Port. If you have a fix for this, please let us know!
 
     __For Windows:__ Use `putty` to connect to PineCone's `COM` Port (like `COM5`) at speed `2000000` (2 Mbps)
     
@@ -587,7 +591,7 @@ _We started this article with blflash (in Rust) ... And pivoted to BLOpenFlasher
 
 -   [__BLOpenFlasher__](https://github.com/bouffalolab/BLOpenFlasher) is the official open-source flashing tool for BL602... But we couldn't run make it work on Linux and Windows CMD [(See this)](https://github.com/bouffalolab/BLOpenFlasher/issues/2)
 
--   [__`blflash`__](https://github.com/spacemeowx2/blflash) (created by [`spacemeowx2`](https://github.com/spacemeowx2)) was derived from BLOpenFlasher and it works great on Linux and Windows CMD
+-   [__`blflash`__](https://github.com/spacemeowx2/blflash) (created by [`spacemeowx2`](https://github.com/spacemeowx2)) was derived from BLOpenFlasher and it works great on Linux, macOS and Windows CMD
 
 Hence we'll use `blflash` for flashing BL602... But to understand the flashing internals we shall refer to the official reference implementation: BLOpenFlasher.
 
