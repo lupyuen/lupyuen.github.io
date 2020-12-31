@@ -234,7 +234,9 @@ We'll use [__`blflash`__](https://github.com/spacemeowx2/blflash), the flashing 
 
 These steps were tested on Arm64 Linux (Pinebook Pro with Manjaro), macOS Catalina and Windows 10.
 
-![Flashing Firmware to PineCone BL602](https://lupyuen.github.io/images/pinecone-flash-steps.png)
+![BL602 Flashing Process Reverse-Engineered from BLOpenFlasher](https://lupyuen.github.io/images/pinecone-flash-steps.png)
+
+_BL602 Flashing Process Reverse-Engineered from BLOpenFlasher_
 
 # What Else Can We Flash To BL602?
 
