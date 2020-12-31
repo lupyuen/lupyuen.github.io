@@ -426,37 +426,10 @@
 </li>
 </ul>
 <h3 id="other-flashing-tools" class="section-header"><a href="#other-flashing-tools">4.2.1 Other Flashing Tools</a></h3>
-<p><em>Are there other tools for flashing firmware to PineCone over UART?</em></p>
-<p>Check out these tools, which will probably run on Linux, macOS and Windows...</p>
-<ol>
-<li>
-<p><a href="https://github.com/bouffalolab/BLOpenFlasher"><code>bouffalolab/BLOpenFlasher</code></a> (Go)</p>
-<p><a href="https://twitter.com/MisterTechBlog/status/1343421251675508736">Follow my updates on Twitter</a></p>
-</li>
-<li>
-<p><a href="https://github.com/stschake/bl60x-flash"><code>stschake/bl60x-flash</code></a> (Python)</p>
-</li>
-<li>
-<p><a href="https://github.com/renzenicolai/bl602tool"><code>renzenicolai/bl602tool</code></a> (Python)</p>
-</li>
-<li>
-<p><a href="https://github.com/spacemeowx2/blflash"><code>spacemeowx2/blflash</code></a> (Rust)</p>
-</li>
-<li>
-<p><a href="https://github.com/mkroman/bouffalo-cli"><code>mkroman/bouffalo-cli</code></a> (Rust)</p>
-</li>
-</ol>
-<p><img src="https://lupyuen.github.io/images/pinecone-flash-steps.png" alt="Transforming PineCone Firmware before flashing" /></p>
-<p><em>Why is firmware flashing so complicated on PineCone?</em></p>
-<p>Because the firmware needs to be pre-processed before flashing.</p>
-<p>Boot Headers need to be added to the firmware before flashing.  The Device Tree needs to be flashed to PineCone too.</p>
+<p><em>Are there command-line tools for flashing firmware to PineCone on Linux, macOS and Windows?</em></p>
+<p>Check out the article...</p>
 <ul>
-<li>
-<p><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/flash_tool.go">Transforming PineCone Firmware before flashing</a></p>
-</li>
-<li>
-<p><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/device_tree/bl_factory_params_IoTKitA_40M.dts">PineCone Device Tree</a></p>
-</li>
+<li><a href="https://lupyuen.github.io/articles/flash">&quot;Flashing Firmware to PineCone BL602&quot;</a></li>
 </ul>
 <p><em>Is JTAG supported for flashing firmware to the PineCone Board?</em></p>
 <p>JTAG works for loading firmware into PineCone's Cache Memory (similar to RAM). But not to PineCone's Internal Flash ROM (XIP Flash).</p>
@@ -565,6 +538,9 @@ make
 </li>
 <li>
 <p><a href="https://lupyuen.github.io/articles/mynewt">&quot;Porting Mynewt to PineCone BL602&quot;</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/flash">&quot;Flashing Firmware to PineCone BL602&quot;</a></p>
 </li>
 <li>
 <p><a href="https://lupyuen.github.io">Check out my articles</a></p>
