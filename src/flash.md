@@ -186,17 +186,58 @@ So far we have only flashed our Firmware Image to PineCone. This is one of 5 int
 
 | ROM Address | ROM Contents |
 |:---|:---|
-| __Boot Image__ <br> `0x0000 0000`      | Code and data for the boot firmware		
-| __Partition Table__ <br> `0x0000 E000` | Partition Table for the Flash ROM
-| __Partition Table__ <br> `0x0000 F000` | Another Partition Table for the Flash ROM (For redundancy?)
-| __Firmware Image__ <br> `0x0001 0000`	 | Code and data for the application firmware
-| __Device Tree__ <br> `0x001F 8000`     | Default settings for peripherals and ports: UART, GPIO, SPI, WiFi, ...
+| __Boot Image__ <br> `0x0000 0000`      | Code and data for <br>Boot Firmware		
+| __Partition Table__ <br> `0x0000 E000` | Partition Table for <br>Flash ROM
+| __Partition Table__ <br> `0x0000 F000` | Partition Table for <br> Flash ROM <br>(For redundancy?)
+| __Firmware Image__ <br> `0x0001 0000`	 | Code and data for <br> Application firmware
+| __Device Tree__ <br> `0x001F 8000`     | Default settings for<br> peripherals and ports: <br>UART, GPIO, SPI, WiFi, ...
 
-This info was derived from the official Go flashing tool for BL602...
+This info was deciphered from the official Go flashing tool for BL602...
 
--   [`github.com/bouffalolab/BLOpenFlasher/flash_tool.go`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/flash_tool.go)
+-   [Source Code for BLOpenFlasher](https://github.com/bouffalolab/BLOpenFlasher)
+
+-   Refer to [`flash_tool.go`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/flash_tool.go)
 
 Let's look at each area of BL602's Internal Flash ROM.
+
+# EFuse Configuration
+
+_What's an EFuse in BL602?_
+
+An EFuse stores one bit of data (`0` or `1`) in a special way... Once an EFuse is set to `1`, it can never be reset to `0`.
+
+_How are EFuses used in BL602?_
+
+Since the EFuses are one-time write-only bits, they are useful for storing Encryption Keys securely.
+
+Once the Encryption Keys have been injected into BL602's EFuses, they can never be changed.
+
+_Why would we need Encryption Keys in BL602?_
+
+To make it harder for unauthorised folks to dump out the BL602 Firmware or tamper with it.
+
+BL602 disallows the reading of Encryption Keys once they have been set.
+
+_Do we really need to encrypt our firmware?_
+
+For development we will leave the EFuse Configuration empty, so that our firmware won't be encrypted.
+
+EFuse Configuration is used when we're ready to release a commercial product with BL602 inside.
+
+[How EFuses are used in ESP32... And how Encryption Keys were compromised](https://limitedresults.com/2019/11/pwn-the-esp32-forever-flash-encryption-and-sec-boot-keys-extraction/)
+
+Snippet from BL602's EFuse Configuration: [`efuse_bootheader_cfg.conf`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/efuse_bootheader/efuse_bootheader_cfg.conf)
+
+```text
+[EFUSE_CFG]
+ef_sf_aes_mode     = 0
+ef_sboot_sign_mode = 0
+ef_sboot_en        = 0
+ef_dbg_jtag_dis    = 0
+ef_dbg_mode        = 0
+ef_dbg_pwd_low     = 0
+ef_dbg_pwd_high    = 0
+```
 
 # Partition Table
 
@@ -211,9 +252,6 @@ Output:
 # Boot Image                                                                     
 
 TODO
-
-EFuse Configuration:        
-"bl602/efuse_bootheader/efuse_bootheader_cfg.conf",
                     
 Boot Binary:                 
 "bl602/builtin_imgs/blsp_boot2.bin",
@@ -227,7 +265,6 @@ FWOffset:
 Boot2 Firmware:
 https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/bl602_boot2
 
-https://limitedresults.com/2019/11/pwn-the-esp32-forever-flash-encryption-and-sec-boot-keys-extraction/
 
 # Firmware Image                                                                            
 
@@ -244,14 +281,6 @@ Output:
                                     
 FWOffset:
 0x1000,                                     
-
-# EFuse Configuration
-
-TODO
-
-https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/system/efuse.html
-
-number of eFuses which can store system and user parameters. Each eFuse is a one-bit field which can be programmed to 1 after which it cannot be reverted back to 0. Some of system parameters are using these eFuse bits directly by hardware modules 
 
 # Device Tree
 
