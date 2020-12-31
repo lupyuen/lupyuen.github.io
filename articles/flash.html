@@ -179,7 +179,7 @@ Finished dev [unoptimized + debuginfo] target(s) in 4m 28s
 </code></pre>
 <p>(Change <code>sdk_app_helloworld.bin</code> to the full path of the firmware binary to be flashed. Change the USB serial port <code>/dev/ttyUSB0</code> if necessary.)</p>
 <p><strong>For macOS:</strong></p>
-<pre><code class="language-bash">cargo run flash sdk_app_helloworld.bin --port /dev/tty.usbserial-1420
+<pre><code class="language-bash">cargo run flash sdk_app_helloworld.bin --port /dev/tty.usbserial-1420 --initial-baud-rate 115200 --baud-rate 115200
 </code></pre>
 <p>(Change <code>sdk_app_helloworld.bin</code> to the full path of the firmware binary to be flashed. Change <code>/dev/tty.usbserial-1420</code> to the USB Serial Device assigned to PineCone.)</p>
 <p><strong>For Windows:</strong></p>
@@ -229,13 +229,15 @@ caused by: Operation timed out
 <p>Disconnect PineCone from the USB port. Check that the PineCone Jumper is set to <code>H</code>. Retry the flash command.</p>
 </li>
 <li>
-<p>On macOS we see this error...</p>
+<p>If we see this error...</p>
 <pre><code class="language-text">[INFO  blflash::flasher] Sending eflash_loader...
 [INFO  blflash::flasher] Finished 2.988880532s 9.56KB/s
 Error: IO error while using serial port: Invalid argument
 caused by: Invalid argument
 </code></pre>
-<p>If anyone knows how to fix this, please let us know!</p>
+<p>It probably means that the buad rate is too high. Try specifying a lower baud rate, like...</p>
+<pre><code class="language-bash">cargo run flash sdk_app_helloworld.bin --port /dev/tty.usbserial-1420 --initial-baud-rate 115200 --baud-rate 115200
+</code></pre>
 </li>
 </ol>
 <h2 id="watch-the-firmware-run" class="section-header"><a href="#watch-the-firmware-run">1.4 Watch the firmware run</a></h2>

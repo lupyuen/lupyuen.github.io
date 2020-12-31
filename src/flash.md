@@ -99,7 +99,7 @@ We'll use `blflash`, the flashing tool created in Rust by [`spacemeowx2`](https:
     __For macOS:__
 
     ```bash
-    cargo run flash sdk_app_helloworld.bin --port /dev/tty.usbserial-1420
+    cargo run flash sdk_app_helloworld.bin --port /dev/tty.usbserial-1420 --initial-baud-rate 115200 --baud-rate 115200
     ```
 
     (Change `sdk_app_helloworld.bin` to the full path of the firmware binary to be flashed. Change `/dev/tty.usbserial-1420` to the USB Serial Device assigned to PineCone.)
@@ -165,7 +165,7 @@ We'll use `blflash`, the flashing tool created in Rust by [`spacemeowx2`](https:
 
     Disconnect PineCone from the USB port. Check that the PineCone Jumper is set to `H`. Retry the flash command.
 
-1.  On macOS we see this error...
+1.  If we see this error...
 
     ```text
     [INFO  blflash::flasher] Sending eflash_loader...
@@ -174,7 +174,11 @@ We'll use `blflash`, the flashing tool created in Rust by [`spacemeowx2`](https:
     caused by: Invalid argument
     ```
 
-    If anyone knows how to fix this, please let us know!
+    It probably means that the buad rate is too high. Try specifying a lower baud rate, like...
+
+    ```bash
+    cargo run flash sdk_app_helloworld.bin --port /dev/tty.usbserial-1420 --initial-baud-rate 115200 --baud-rate 115200
+    ```    
 
 ## Watch the firmware run
 
