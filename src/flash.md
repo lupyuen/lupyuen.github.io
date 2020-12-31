@@ -254,7 +254,7 @@ Let's look at each area of BL602's Internal Flash ROM.
 
 # Partition Table
 
-The __Partition Table___ says where everything is located in ROM. It's like the above ROM Table... But converted to binary format and stored into ROM (twice).
+The __Partition Table__ says where everything is located in ROM. It's like the above ROM Table... But converted to binary format and stored into ROM (twice).
 
 The Partition Table is referenced by the Start Code for BL602 Firmware...
 
@@ -610,6 +610,8 @@ _How different is `blflash` from BLOpenFlasher?_
         --baud-rate 115200
     ```
 
+    Note: The USB Serial Port on macOS won't connect to BL602 at 1 Mbps. Connect at a lower speed like 115.2 kbps.
+
 1.  `blflash` doesn't support compiling Device Trees into binary format.
 
     It uses a hard-coded binary Device Tree located here...
@@ -654,21 +656,27 @@ I hope to uncover more BL602 goodies... Stay tuned!
 
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
-[`github.com/lupyuen/lupyuen.github.io/src/flash.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/flash.md)
+[`lupyuen.github.io/src/flash.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/flash.md)
 
 # Appendix: BL602 Flashing Screenshots
 
-## Manjaro Linux Arm64 on Pinebook Pro
+## Linux Arm64
 
 ![Manjaro Linux Arm64 on Pinebook Pro](https://lupyuen.github.io/images/flash-linux.png)
+
+_Manjaro Linux Arm64 on Pinebook Pro_
 
 ## macOS Catalina
 
 ![macOS Catalina](https://lupyuen.github.io/images/flash-macos.png)
 
+_macOS Catalina_
+
 ## Windows 10
 
 ![Windows 10](https://lupyuen.github.io/images/flash-windows.png)
+
+_Windows 10_
 
 # Appendix: BL602 Partition Table
 
@@ -1125,7 +1133,7 @@ len = 0
 
 # Appendix: BL602 EFuse Configuration
 
--   From [`BLOpenFlasher/bl602/ efuse_bootheader/efuse_bootheader_cfg.conf`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/efuse_bootheader/efuse_bootheader_cfg.conf)
+-   From [`BLOpenFlasher/bl602/ efuse_bootheader/ efuse_bootheader_cfg.conf`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/efuse_bootheader/efuse_bootheader_cfg.conf)
 
 -   Will be used for transforming Boot Image and Firmware Image
 
@@ -1328,7 +1336,7 @@ crc32 = 0xdeadbeef
 
 # Appendix: BLDevCube Flashing Log
 
-Sample flashing log emitted by `bl_iot_sdk/tools/flash_tool/BLDevCube.exe` on Windows...
+Sample flashing log emitted by `bl_iot_sdk/tools/ flash_tool/BLDevCube.exe` on Windows...
 
 ```text
 [23:01:59.398] - [param]
