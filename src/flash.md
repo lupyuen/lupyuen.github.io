@@ -583,6 +583,86 @@ _Why the switcheroo? We started this article with blflash (in Rust) ... And pivo
 
 Because of... issues [(See this)](https://github.com/bouffalolab/BLOpenFlasher/issues/2)
 
+https://github.com/spacemeowx2/blflash/blob/main/blflash/src/main.rs
+
+
+```
+struct Connection {
+    /// Serial port
+    #[structopt(short, long)]
+    port: String,
+    /// Flash baud rate
+    #[structopt(short, long, default_value = "1000000")]
+    baud_rate: usize,
+    /// Initial baud rate
+    #[structopt(long, default_value = "115200")]
+    initial_baud_rate: usize,
+}
+
+#[derive(StructOpt)]
+struct Boot2Opt {
+    /// Path to partition_cfg.toml, default to be partition/partition_cfg_2M.toml
+    #[structopt(parse(from_os_str))]
+    partition_cfg: Option<PathBuf>,
+    /// Path to efuse_bootheader_cfg.conf
+    #[structopt(parse(from_os_str))]
+    boot_header_cfg: Option<PathBuf>,
+    /// Without boot2
+    #[structopt(short, long)]
+    without_boot2: bool,
+}
+
+#[derive(StructOpt)]
+struct FlashOpt {
+    #[structopt(flatten)]
+    conn: Connection,
+    /// Bin file
+    #[structopt(parse(from_os_str))]
+    image: PathBuf,
+    /// Don't skip if hash matches
+    #[structopt(short, long)]
+    force: bool,
+    #[structopt(flatten)]
+    boot: Boot2Opt,
+}
+
+#[derive(StructOpt)]
+struct CheckOpt {
+    #[structopt(flatten)]
+    conn: Connection,
+    /// Bin file
+    #[structopt(parse(from_os_str))]
+    image: PathBuf,
+    #[structopt(flatten)]
+    boot: Boot2Opt,
+}
+
+#[derive(StructOpt)]
+struct DumpOpt {
+    #[structopt(flatten)]
+    conn: Connection,
+    /// Output file
+    #[structopt(parse(from_os_str))]
+    output: PathBuf,
+    /// start address
+    #[structopt(parse(try_from_str = parse_int::parse), default_value = "0")]
+    start: u32,
+    /// end address
+    #[structopt(parse(try_from_str = parse_int::parse), default_value = "0x100000")]
+    end: u32,
+}
+
+#[derive(StructOpt)]
+enum Opt {
+    /// Flash image to serial
+    Flash(FlashOpt),
+    /// Check if the device's flash matches the image
+    Check(CheckOpt),
+    /// Dump the whole flash to a file
+    Dump(DumpOpt),
+}
+```
+
 # Appendix: BL602 Partition Table
 
 From [`BLOpenFlasher/bl602/partition/partition_cfg_2M.toml`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/partition/partition_cfg_2M.toml)
