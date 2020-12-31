@@ -254,6 +254,8 @@ This info was deciphered from the official Go flashing tool for BL602: __BLOpenF
 
 -   Refer to [`flash_tool.go`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/flash_tool.go)
 
+-   See [BL602 ISP Flash Programming Doc](https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en) for the UART Flashing Protocol
+
 Let's look at each area of BL602's Internal Flash ROM.
 
 # Partition Table
@@ -566,7 +568,13 @@ Earlier we saw that our firmware is flashed to BL602 in two stages... (Just like
 1.  __Stage 1__: Transmit the __EFlash Loader__ to BL602
 
 1.  __Stage 2__: Transmit our firmware to the EFlash Loader and write to ROM
-    	
+
+Let's zoom into each stage of the flashing process.
+
+The BL602 UART Flashing Protocol is explained here...
+
+-   [BL602 ISP Flash Programming](https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en)
+
 ## Flashing Stage 1
 
 First we transmit the firmware code for the EFlash Loader to BL602 at 512 kbps... (Slower = More Reliable)

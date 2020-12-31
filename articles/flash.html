@@ -299,6 +299,9 @@ caused by: Invalid argument
 <li>
 <p>Refer to <a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/flash_tool.go"><code>flash_tool.go</code></a></p>
 </li>
+<li>
+<p>See <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en">BL602 ISP Flash Programming Doc</a> for the UART Flashing Protocol</p>
+</li>
 </ul>
 <p>Let's look at each area of BL602's Internal Flash ROM.</p>
 <h1 id="partition-table" class="section-header"><a href="#partition-table">3 Partition Table</a></h1>
@@ -547,6 +550,11 @@ ef_dbg_pwd_high    = 0
 <p><strong>Stage 2</strong>: Transmit our firmware to the EFlash Loader and write to ROM</p>
 </li>
 </ol>
+<p>Let's zoom into each stage of the flashing process.</p>
+<p>The BL602 UART Flashing Protocol is explained here...</p>
+<ul>
+<li><a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en">BL602 ISP Flash Programming</a></li>
+</ul>
 <h2 id="flashing-stage-1" class="section-header"><a href="#flashing-stage-1">8.1 Flashing Stage 1</a></h2>
 <p>First we transmit the firmware code for the EFlash Loader to BL602 at 512 kbps... (Slower = More Reliable)</p>
 <ul>
