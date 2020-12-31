@@ -411,6 +411,8 @@ This function initialises the GPIO port by loading the Device Tree from ROM.
 
 Here are some interesting snippets from the BL602 Device Tree: [`bl_factory_params_IoTKitA_40M.dts`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/device_tree/bl_factory_params_IoTKitA_40M.dts)
 
+("`40M`" refers to the BL602 Clock Speed: 40 MHz)
+
 (FYI: Some RISC-V microcontrollers don't use Device Trees, like GD32 VF103. Device Trees seem to be common among microcontrollers based on SiFive RISC-V Cores, including BL602.)
 
 ## GPIO LED
@@ -577,91 +579,51 @@ EFlash Loader must acknowledge the data transfer within 5 seconds. Or the flashi
 
 # blflash vs BLOpenFlasher
 
-TODO
+_We started this article with blflash (in Rust) ... And pivoted to BLOpenFlasher (in Go)? Why the switcheroo?_
 
-_Why the switcheroo? We started this article with blflash (in Rust) ... And pivoted to BLOpenFlasher (in Go)?_
+-   BLOpenFlasher is the official open-source flashing tool for BL602... But we couldn't run make it work on Linux and Windows CMD [(See this)](https://github.com/bouffalolab/BLOpenFlasher/issues/2)
 
-Because of... issues [(See this)](https://github.com/bouffalolab/BLOpenFlasher/issues/2)
+-   `blflash` (created by [`spacemeowx2`](https://github.com/spacemeowx2)) was derived from BLOpenFlasher and it works great on Linux and Windows CMD
 
-https://github.com/spacemeowx2/blflash/blob/main/blflash/src/main.rs
+Hence we'll use `blflash` for flashing BL602... But to understand the flashing internals we shall refer to the official reference implementation: BLOpenFlasher.
 
+_How different is `blflash` from BLOpenFlasher?_
 
-```
-struct Connection {
-    /// Serial port
-    #[structopt(short, long)]
-    port: String,
-    /// Flash baud rate
-    #[structopt(short, long, default_value = "1000000")]
-    baud_rate: usize,
-    /// Initial baud rate
-    #[structopt(long, default_value = "115200")]
-    initial_baud_rate: usize,
-}
+1.  `blflash` transmits the EFlash Loader at __115.2 kbps__ (vs __512 kbps__ in BLOpenFlasher)
 
-#[derive(StructOpt)]
-struct Boot2Opt {
-    /// Path to partition_cfg.toml, default to be partition/partition_cfg_2M.toml
-    #[structopt(parse(from_os_str))]
-    partition_cfg: Option<PathBuf>,
-    /// Path to efuse_bootheader_cfg.conf
-    #[structopt(parse(from_os_str))]
-    boot_header_cfg: Option<PathBuf>,
-    /// Without boot2
-    #[structopt(short, long)]
-    without_boot2: bool,
-}
+    `blflash` transmits the ROM data to be flashed at __1 Mbps__ (vs __2 Mbps__ in BLOpenFlasher)
 
-#[derive(StructOpt)]
-struct FlashOpt {
-    #[structopt(flatten)]
-    conn: Connection,
-    /// Bin file
-    #[structopt(parse(from_os_str))]
-    image: PathBuf,
-    /// Don't skip if hash matches
-    #[structopt(short, long)]
-    force: bool,
-    #[structopt(flatten)]
-    boot: Boot2Opt,
-}
+    The transmission speeds may be specified through the command-line options `initial_baud_rate` (for EFlash Loader) and `baud_rate` (for ROM data).
 
-#[derive(StructOpt)]
-struct CheckOpt {
-    #[structopt(flatten)]
-    conn: Connection,
-    /// Bin file
-    #[structopt(parse(from_os_str))]
-    image: PathBuf,
-    #[structopt(flatten)]
-    boot: Boot2Opt,
-}
+1.  `blflash` doesn't support compiling Device Trees into binary format.
 
-#[derive(StructOpt)]
-struct DumpOpt {
-    #[structopt(flatten)]
-    conn: Connection,
-    /// Output file
-    #[structopt(parse(from_os_str))]
-    output: PathBuf,
-    /// start address
-    #[structopt(parse(try_from_str = parse_int::parse), default_value = "0")]
-    start: u32,
-    /// end address
-    #[structopt(parse(try_from_str = parse_int::parse), default_value = "0x100000")]
-    end: u32,
-}
+    It uses a hard-coded binary Device Tree located here...
 
-#[derive(StructOpt)]
-enum Opt {
-    /// Flash image to serial
-    Flash(FlashOpt),
-    /// Check if the device's flash matches the image
-    Check(CheckOpt),
-    /// Dump the whole flash to a file
-    Dump(DumpOpt),
-}
-```
+    -   Device Tree Binary: [`ro_params.dtb`](https://github.com/spacemeowx2/blflash/blob/main/blflash/src/chip/bl602/cfg/ro_params.dtb)
+
+    BLOpenFlasher uses a Python script to compile the Device Tree into binary...
+
+    -   Compile Device Tree to binary format: [`dts2dtb.py`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/dts2dtb.py)
+
+1.  What if we need to modify the Device Tree?
+
+    We could compile the Device Tree with BLOpenFlasher. Then transfer the compiled Device Tree binary...
+
+    -   [`bl602/image/ro_params.dtb`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/image/ro_params.dtb)
+
+    ...from BLOpenFlasher to `blflash` for flashing.
+
+1.  Configuration files and firmware binaries for `blflash`...
+
+    -   Partition Table: [`partition_cfg_2M.toml`](https://github.com/spacemeowx2/blflash/blob/main/blflash/src/chip/bl602/cfg/partition_cfg_2M.toml)
+
+    -   EFuse Configuration: [`efuse_bootheader_cfg.conf`](https://github.com/spacemeowx2/blflash/blob/main/blflash/src/chip/bl602/cfg/efuse_bootheader_cfg.conf)
+
+    -   EFlash Loader: [`eflash_loader_40m.bin`](https://github.com/spacemeowx2/blflash/blob/main/blflash/src/chip/bl602/image/eflash_loader_40m.bin)
+
+    -   Boot Image: [`blsp_boot2.bin`](https://github.com/spacemeowx2/blflash/blob/main/blflash/src/chip/bl602/image/blsp_boot2.bin)
+
+This information was derived from [`main.rs`](https://github.com/spacemeowx2/blflash/blob/main/blflash/src/main.rs) in [`blflash`](https://github.com/spacemeowx2/blflash)
 
 # Appendix: BL602 Partition Table
 
