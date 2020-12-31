@@ -4,13 +4,35 @@
 
 _PineCone BL602 RISC-V Evaluation Board_
 
-📝 _29 Dec 2020_
+📝 _1 Jan 2021_
 
-TODO
+2020 has been an awesome year for PineCone BL602!
+
+1.  We took a quick peek at [__PineCone BL602 RISC-V Evaluation Board__](https://lupyuen.github.io/articles/pinecone)...
+
+1.  Then we [__connected PineCone to OpenOCD__](https://lupyuen.github.io/articles/openocd) with a JTAG Debugger...
+
+1.  And we [__debugged Rust on PineCone__](https://lupyuen.github.io/articles/debug) with VSCode and GDB
+
+1.  Finally we ported [__Apache Mynewt operating system to PineCone__](https://lupyuen.github.io/articles/mynewt)
+
+Today we shall learn to...
+
+1.  __Flash BL602 Firmware__ to the PineCone Board on any computer: __Linux (x64 and Arm64), macOS, Windows__
+
+1.  Appreciate all the things that we can flash to the PineCone BL602 Board...
+
+    -   __Partition Table__
+    -   __EFuse Configuration__
+    -   __Boot Image__
+    -   __Firmware Image__
+    -   __Device Tree__
 
 # Flash BL602 Firmware with Linux, macOS and Windows
 
-On Windows: Use plain old Windows CMD Commpand Prompt, not WSL.
+Follow these steps to flash a Firmware Binary File (like `sdk_app_helloworld.bin`) on our Linux (x64 and Arm64), macOS or Windows computer.
+
+(On Windows: Use plain old Windows CMD Commpand Prompt, not WSL)
 
 ##  Install rustup
 
@@ -23,6 +45,8 @@ On Windows: Use plain old Windows CMD Commpand Prompt, not WSL.
     __For Windows:__ Install `rustup` under plain old Windows, not WSL
 
 ##  Download and build blflash
+
+We'll use `blflash`, the flashing tool created in Rust by [`spacemeowx2`](https://github.com/spacemeowx2).
 
 1.  Download the `blflash` source code...
 
@@ -196,13 +220,69 @@ So far we have only flashed our Firmware Image to PineCone. This is one of 5 int
 | __Firmware Image__ <br> `0x0001 0000`	 | Code and data for <br> Application Firmware
 | __Device Tree__ <br> `0x001F 8000`     | Default settings for<br> peripherals and ports: <br>UART, GPIO, SPI, WiFi, ...
 
-This info was deciphered from the official Go flashing tool for BL602...
+This info was deciphered from the official Go flashing tool for BL602: __BLOpenFlasher__...
 
 -   [Source Code for BLOpenFlasher](https://github.com/bouffalolab/BLOpenFlasher)
 
 -   Refer to [`flash_tool.go`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/flash_tool.go)
 
 Let's look at each area of BL602's Internal Flash ROM.
+
+# Partition Table
+
+The Partition Table says where everything is located in ROM. It's like the above ROM Table... But converted to binary format and stored into ROM (twice).
+
+The Partition Table is referenced by the Start Code for BL602 Firmware...
+
+-   Browse the [BL602 Start Code](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602/evb/src/boot/gcc/start.S)
+
+-   See ["Porting Mynewt to PineCone BL602"](https://lupyuen.github.io/articles/mynewt), Section 10: ["Implement Start Code"](https://lupyuen.github.io/articles/mynewt#implement-start-code
+)
+            
+Here's a snippet from BL602's Partition Table: [`partition_cfg_2M.toml`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/partition/partition_cfg_2M.toml)
+
+```text
+[pt_table]
+# Partition table is 4K in size (0x1000 bytes)
+address0 = 0xE000
+address1 = 0xF000
+```
+
+This says that the Partition Table (4,096 bytes in binary form) is stored at two ROM addresses: `0xE000` and `0xF000`
+
+_(Is the Partition Table stored twice for redundancy... In case one gets corrupted?)_
+
+Here's the first Partition Entry in the Partition Table...
+
+```text
+[[pt_entry]]
+type     = 0
+name     = "FW"
+device   = 0
+address0 = 0x10000
+size0    = 0xC8000
+address1 = 0xD8000
+size1    = 0x88000
+len      = 0
+```
+
+It says that our Firmware Image is located at ROM address `0x10000`.
+
+_(But why two contiguous sections: `0x10000` and `0xD8000`?)_
+
+```text
+[[pt_entry]]
+type     = 7
+name     = "factory"
+device   = 0
+address0 = 0x1F8000
+size0    = 0x7000
+address1 = 0
+size1    = 0
+len      = 0
+```
+
+This is the Partition Entry for the Device Tree at ROM address `0x1F8000`. We'll cover the Device Tree in a while.
 
 # EFuse Configuration
 
@@ -242,24 +322,6 @@ ef_dbg_mode        = 0
 ef_dbg_pwd_low     = 0
 ef_dbg_pwd_high    = 0
 ```
-
-# Partition Table
-
-TODO
-
-The Partition Table says where everything is located in ROM. It's like the above ROM Table ....But converted to binary format
-
-Here's a snippet:
-
-referenced by the Start Code for BL602 Firmware
-
-Partition Table:       
-"bl602/partition/partition_cfg_2M.toml",
-                
-Output:              
-"bl602/image/partition.bin",                   
-
-https://lupyuen.github.io/articles/mynewt#implement-start-code
 
 # Boot Image                                                                     
 
@@ -348,11 +410,13 @@ two baudrate setting: 512000 is for downloading eflash_loader.bin, and 2000000 f
 
 TODO
 
-Why the switcheroo? We started with blflash (in Rust) ... And pivoted to BLOpenFlasher (in Go)?
+_Why the switcheroo? We started this article with blflash (in Rust) ... And pivoted to BLOpenFlasher (in Go)?_
 
 # Appendix: BL602 Partition Table
 
-[`BLOpenFlasher/bl602/partition/partition_cfg_2M.toml`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/partition/partition_cfg_2M.toml)
+From [`BLOpenFlasher/bl602/partition/partition_cfg_2M.toml`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/partition/partition_cfg_2M.toml)
+
+Converted to "bl602/image/partition.bin" and flashed to `0xE000` and `0xF000`
 
 ```text
 [pt_table]
