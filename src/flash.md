@@ -252,6 +252,8 @@ This says that the Partition Table (4,096 bytes in binary form) is stored at two
 
 _(Is the Partition Table stored twice for redundancy... In case one gets corrupted?)_
 
+## Partition Entry for Firmware
+
 Here's the first Partition Entry in the Partition Table...
 
 ```text
@@ -269,6 +271,8 @@ len      = 0
 It says that our Firmware Image is located at ROM address `0x10000`.
 
 _(But why two contiguous sections: `0x10000` and `0xD8000`?)_
+
+## Partition Entry for Device Tree
 
 ```text
 [[pt_entry]]
@@ -368,6 +372,8 @@ Device Tree:
 
 Output:
 "bl602/image/ro_params.dtb"
+
+https://www.kernel.org/doc/html/latest/devicetree/usage-model.html
 
 # Flash to ROM
 
