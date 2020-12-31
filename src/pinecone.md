@@ -294,6 +294,8 @@ We flash RISC-V firmware to the PineCone board through the __USB Serial Connecti
 
     Unzip the files in `customer_app.zip`
 
+    Or download this Hello World sample firmware: [`sdk_app_helloworld.bin`](https://github.com/lupyuen/bl_iot_sdk/releases/download/v1.0.0/sdk_app_helloworld.bin)
+
 1.  Download the __PineCone SDK `bl_iot_sdk`__...
 
     ```bash
@@ -334,7 +336,7 @@ We flash RISC-V firmware to the PineCone board through the __USB Serial Connecti
         bl_iot_sdk/image_conf/bl602/blsp_boot2_release.bin
         ```
 
-    -   ✅ __Firmware Bin__: Click `Browse` and select from the PineCone Sample Firmware...
+    -   ✅ __Firmware Bin__: Click `Browse` and select from the PineCone Sample Firmware `sdk_app_helloworld.bin`...
 
         ```
         customer_app.zip/sdk_app_helloworld/build_out/sdk_app_helloworld.bin
