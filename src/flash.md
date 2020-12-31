@@ -308,7 +308,7 @@ This is the Partition Entry for the Device Tree at ROM address `0x1F8000`. We'll
 
 _What's an EFuse in BL602?_
 
-An EFuse stores one bit of data (`0` or `1`) in a special way... Once an EFuse is set to `1`, it can never be reset to `0`.
+An __EFuse__ stores one bit of data (`0` or `1`) in a special way... Once an EFuse is set to `1`, it can never be reset to `0`.
 
 _How are EFuses used in BL602?_
 
@@ -347,12 +347,33 @@ ef_dbg_pwd_high    = 0
 
 _What's a Device Tree?_
 
-Device Tree:
-"bl602/device_tree/bl_factory_params_IoTKitA_40M.dts",
+In Linux, a __Device Tree__ describes the computer hardware and its settings: Board, Memory, SoC, USB Devices, ...  (In Windows, the hardware settings are stored in the Windows Registry)
 
-[More about Linux Device Trees](https://www.kernel.org/doc/html/latest/devicetree/usage-model.html)
+BL602 doesn't run Linux (yet). But it uses a similar Device Tree to load the __settings for the BL602 peripherals and ports__: GPIO, UART, PWM, SPI, WiFi, ...
+
+Whenever we update the firmware on BL602, the Device Tree is converted to binary format and flashed to BL602 ROM.
+
+_Arm Microcontrollers don't use Device Trees... Is this overkill for BL602?_
+
+We may configure BL602's peripherals and ports through the firmware code by calling the BL602 Hardware Abstraction Layer (HAL). So it's not mandatory to use the Device Tree.
+
+Configuring the WiFi stack for BL602 can get cumbersome if we code it in the firmware. Thus is makes sense to embed the WiFi configuration inside the Device Tree. (We'll see this in a while)
+
+_Which functions in the BL602 HAL will use the Device Tree to configure the BL602 peripherals and ports?_
+
+Look for BL602 HAL Functions named `dts` like...
+
+-   [`hal_gpio_init_from_dts`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_gpio.c#L174-L200)
+
+This function initialises the GPIO port by loading the Device Tree from ROM.
+
+Here are some interesting snippets from the BL602 Device Tree: [`bl_factory_params_IoTKitA_40M.dts`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/device_tree/bl_factory_params_IoTKitA_40M.dts)
+
+(FYI: Some RISC-V microcontrollers don't use Device Trees, like GD32 VF103. Device Trees seem to be common among microcontrollers based on SiFive RISC-V Cores, including BL602.)
 
 ## GPIO LED
+
+This setting configures GPIO 0 for LED output...
 
 ```text
 gpio0 {                                  
@@ -365,6 +386,8 @@ gpio0 {
 ```
 
 ## GPIO Button
+
+Here we configure GPIO 2 as a Button Input (note the debounce logic)...
 
 ```text
 gpio2 {
@@ -393,6 +416,8 @@ gpio2 {
 ```
 
 ## UART
+
+This is the default UART setting, on GPIO 7 and 16...
 
 ```text
     uart {
@@ -423,6 +448,9 @@ gpio2 {
 
 ## PWM
 
+This PWM setting could be useful for turning PineCone's onboard RGB LED into a Disco Light...
+
+```text
     pwm {
         #address-cells = <1>;
         #size-cells = <1>;
@@ -436,8 +464,11 @@ gpio2 {
             freq = <800000>;
             duty = <50>;
         };
+```
 
 ## WiFi
+
+This complicated setting configures the WiFi stack (including SSID)...
 
 ```text
     wifi {
@@ -463,6 +494,8 @@ gpio2 {
             auto_chan_detect = "disable";
         };
 ```
+
+[More about Linux Device Trees](https://www.kernel.org/doc/html/latest/devicetree/usage-model.html)
 
 # Boot Image
 
