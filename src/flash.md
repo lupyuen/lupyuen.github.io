@@ -593,7 +593,7 @@ _How different is `blflash` from BLOpenFlasher?_
 
     `blflash` transmits the ROM data to be flashed at __1 Mbps__ (vs __2 Mbps__ in BLOpenFlasher)
 
-    The transmission speeds may be specified through the command-line options `initial_baud_rate` (for EFlash Loader) and `baud_rate` (for ROM data).
+    The transmission speeds may be specified through the command-line options `--initial-baud-rate` (for EFlash Loader) and `--baud-rate` (for ROM data).
 
 1.  `blflash` doesn't support compiling Device Trees into binary format.
 
