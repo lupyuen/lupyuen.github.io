@@ -242,7 +242,13 @@ ef_dbg_pwd_high    = 0
 # Partition Table
 
 TODO
-        
+
+The Partition Table says where everything is located in ROM. It's like the above ROM Table ....But converted to binary format
+
+Here's a snippet:
+
+referenced by the Start Code for BL602 Firmware
+
 Partition Table:       
 "bl602/partition/partition_cfg_2M.toml",
                 
