@@ -10,13 +10,17 @@ TODO
 
 # Flash BL602 Firmware with Linux, macOS and Windows
 
+On Windows: Use plain old Windows CMD Commpand Prompt, not WSL.
+
 ##  Install rustup
 
 1.  Install `rustup` from [`rustup.rs`](https://rustup.rs)
 
 1.  Select the default options.
 
-    __For Linux:__ Install `rustup` as a Superuser.
+    __For Linux:__ Install `rustup` as a Superuser
+
+    __For Windows:__ Install `rustup` under plain old Windows, not WSL
 
 ##  Download and build blflash
 
@@ -339,6 +343,12 @@ bins,
 https://github.com/bouffalolab/BLOpenFlasher/issues/2
 
 two baudrate setting: 512000 is for downloading eflash_loader.bin, and 2000000 for downloading the generated bins.
+
+# blflash vs BLOpenFlasher
+
+TODO
+
+Why the switcheroo? We started with blflash (in Rust) ... And pivoted to BLOpenFlasher (in Go)?
 
 # Appendix: BL602 Partition Table
 
