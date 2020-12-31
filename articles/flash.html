@@ -100,7 +100,7 @@
 <p>Then we <a href="https://lupyuen.github.io/articles/openocd"><strong>connected PineCone to OpenOCD</strong></a> with a JTAG Debugger...</p>
 </li>
 <li>
-<p>And we <a href="https://lupyuen.github.io/articles/debug"><strong>debugged Rust on PineCone</strong></a> with VSCode and GDB</p>
+<p>And we <a href="https://lupyuen.github.io/articles/debug"><strong>debugged Rust on PineCone</strong></a> with VSCode and GDB...</p>
 </li>
 <li>
 <p>Finally we ported <a href="https://lupyuen.github.io/articles/mynewt"><strong>Apache Mynewt operating system to PineCone</strong></a></p>
@@ -289,7 +289,7 @@ caused by: Invalid argument
 </ul>
 <p>Let's look at each area of BL602's Internal Flash ROM.</p>
 <h1 id="partition-table" class="section-header"><a href="#partition-table">3 Partition Table</a></h1>
-<p>The Partition Table says where everything is located in ROM. It's like the above ROM Table... But converted to binary format and stored into ROM (twice).</p>
+<p>The <strong>Partition Table</strong>_ says where everything is located in ROM. It's like the above ROM Table... But converted to binary format and stored into ROM (twice).</p>
 <p>The Partition Table is referenced by the Start Code for BL602 Firmware...</p>
 <ul>
 <li>
@@ -363,7 +363,7 @@ ef_dbg_pwd_high    = 0
 <p>Whenever we update the firmware on BL602, the Device Tree is converted to binary format and flashed to BL602 ROM.</p>
 <p><em>Arm Microcontrollers don't use Device Trees... Is this overkill for BL602?</em></p>
 <p>We may configure BL602's peripherals and ports through the firmware code by calling the BL602 Hardware Abstraction Layer (HAL). So it's not mandatory to use the Device Tree.</p>
-<p>Configuring the WiFi stack for BL602 can get cumbersome if we code it in the firmware. Thus is makes sense to embed the WiFi configuration inside the Device Tree. (We'll see this in a while)</p>
+<p>Configuring the WiFi stack for BL602 can get cumbersome if we code it in the firmware. Thus it makes sense to embed the WiFi configuration inside the Device Tree. (We'll see this in a while)</p>
 <p><em>Which functions in the BL602 HAL will use the Device Tree to configure the BL602 peripherals and ports?</em></p>
 <p>Look for BL602 HAL Functions named <code>dts</code> like...</p>
 <ul>
@@ -478,23 +478,48 @@ ef_dbg_pwd_high    = 0
 </code></pre>
 <p><a href="https://www.kernel.org/doc/html/latest/devicetree/usage-model.html">More about Linux Device Trees</a></p>
 <h1 id="boot-image" class="section-header"><a href="#boot-image">6 Boot Image</a></h1>
-<p>TODO</p>
-<p>Boot Binary:<br />
-&quot;bl602/builtin_imgs/blsp_boot2.bin&quot;,</p>
-<p>Output:<br />
-&quot;bl602/image/boot2image.bin&quot;,</p>
-<p>FWOffset:
-0x2000,</p>
-<p>Boot2 Firmware:
-https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/bl602_boot2</p>
+<p>Located at ROM address <code>0x0</code>, the <strong>Boot Image</strong> contains the firmware code that is run first upon booting BL602....</p>
+<ol>
+<li>
+<p><strong>Boot Image Binary</strong> is at...</p>
+<ul>
+<li><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/builtin_imgs/blsp_boot2.bin"><code>blsp_boot2.bin</code></a></li>
+</ul>
+</li>
+<li>
+<p>Which gets encrypted with the <strong>EFuse Configuration</strong> to create (with firmware offset <code>0x2000</code>)...</p>
+<ul>
+<li><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/image/boot2image.bin"><code>boot2image.bin</code></a> </li>
+</ul>
+<p>(For development, we have disabled encryption in the EFuse Configuration)</p>
+</li>
+<li>
+<p>Which is flashed to BL602 ROM at address <code>0x0</code>, whenever we update the firmware</p>
+</li>
+</ol>
+<p>The BL602 Boot Firmware Source Code is located here...</p>
+<ul>
+<li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/bl602_boot2"><code>bl_iot_sdk/customer_app/bl602_boot2</code></a></li>
+</ul>
+<p>The BL602 Boot Firmware seems to be doing... stuff.</p>
+<p>Would you like me to...</p>
+<ol>
+<li>
+<p>Study the BL602 Boot Firmware Source Code</p>
+</li>
+<li>
+<p>And explain how it works, in an article?</p>
+</li>
+</ol>
+<p>Please support my work as a <a href="https://github.com/sponsors/lupyuen">GitHub Sponsor</a>! 🙏</p>
 <h1 id="firmware-image" class="section-header"><a href="#firmware-image">7 Firmware Image</a></h1>
 <p>TODO</p>
 <p>EFuse Configuration:<br />
-&quot;bl602/efuse_bootheader/efuse_bootheader_cfg.conf&quot;,</p>
+&quot;https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/efuse_bootheader/efuse_bootheader_cfg.conf&quot;,</p>
 <p>Firmware Binary:<br />
-&quot;bl602/sdk_app_helloworld.bin&quot;,</p>
+&quot;https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/bl602.bin&quot;,</p>
 <p>Output:<br />
-&quot;bl602/image/fwimage.bin&quot;,</p>
+&quot;https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/image/fwimage.bin&quot;,</p>
 <p>FWOffset:
 0x1000,</p>
 <h1 id="flash-to-rom" class="section-header"><a href="#flash-to-rom">8 Flash to ROM</a></h1>
