@@ -130,8 +130,9 @@
 </li>
 </ol>
 <h1 id="flash-bl602-firmware-with-linux-macos-and-windows" class="section-header"><a href="#flash-bl602-firmware-with-linux-macos-and-windows">1 Flash BL602 Firmware with Linux, macOS and Windows</a></h1>
-<p>Follow these steps to flash a BL602 Firmware Binary File (like <code>sdk_app_helloworld.bin</code>) on our Linux (x64 and Arm64), macOS or Windows computer.</p>
-<p>(On Windows: Use plain old Windows CMD Command Prompt, not WSL)</p>
+<p>Follow these steps to flash a BL602 Firmware Binary File (like <code>sdk_app_helloworld.bin</code>) from Linux (x64 and Arm64), macOS and Windows to PineCone.</p>
+<p>(On Windows: Use plain old Windows CMD Command Prompt to execute the commands, not WSL)</p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/releases/download/v1.0.0/sdk_app_helloworld.bin">Download demo firmware <code>sdk_app_helloworld.bin</code></a></p>
 <h2 id="install-rustup" class="section-header"><a href="#install-rustup">1.1 Install rustup</a></h2>
 <ol>
 <li>
@@ -144,7 +145,7 @@
 </li>
 </ol>
 <h2 id="download-and-build-blflash" class="section-header"><a href="#download-and-build-blflash">1.2 Download and build blflash</a></h2>
-<p>We'll use <code>blflash</code>, the flashing tool created in Rust by <a href="https://github.com/spacemeowx2"><code>spacemeowx2</code></a>.</p>
+<p>We'll use <a href="https://github.com/spacemeowx2/blflash"><strong><code>blflash</code></strong></a>, the flashing tool created in Rust by <a href="https://github.com/spacemeowx2"><code>spacemeowx2</code></a>.</p>
 <ol>
 <li>
 <p>Download the <code>blflash</code> source code...</p>
@@ -246,6 +247,7 @@ caused by: Invalid argument
 </code></pre>
 </li>
 </ol>
+<p><a href="https://lupyuen.github.io/articles/flash#appendix-bl602-flashing-screenshots">See the flashing screenshots</a></p>
 <h2 id="watch-the-firmware-run" class="section-header"><a href="#watch-the-firmware-run">1.4 Watch the firmware run</a></h2>
 <ol>
 <li>
@@ -344,6 +346,7 @@ size1    = 0
 len      = 0
 </code></pre>
 <p>This is the Partition Entry for the Device Tree at ROM address <code>0x1F8000</code>. We'll cover the Device Tree in a while.</p>
+<p><a href="https://lupyuen.github.io/articles/flash#appendix-bl602-partition-table">More about BL602 Partition Table</a></p>
 <h1 id="efuse-configuration" class="section-header"><a href="#efuse-configuration">4 EFuse Configuration</a></h1>
 <p><em>What's an EFuse in BL602?</em></p>
 <p>An <strong>EFuse</strong> stores one bit of data (<code>0</code> or <code>1</code>) in a special way... Once an EFuse is set to <code>1</code>, it can never be reset to <code>0</code>.</p>
@@ -367,6 +370,7 @@ ef_dbg_mode        = 0
 ef_dbg_pwd_low     = 0
 ef_dbg_pwd_high    = 0
 </code></pre>
+<p><a href="https://lupyuen.github.io/articles/flash#appendix-bl602-efuse-configuration">More about BL602 EFuse Configuration</a></p>
 <h1 id="boot-image" class="section-header"><a href="#boot-image">5 Boot Image</a></h1>
 <p>Located at ROM address <code>0x0</code>, the <strong>Boot Image</strong> contains the firmware code that is run first upon booting BL602....</p>
 <ol>
@@ -401,7 +405,7 @@ ef_dbg_pwd_high    = 0
 <p>And explain how it works, in an article?</p>
 </li>
 </ol>
-<p>Please support my work as a <a href="https://github.com/sponsors/lupyuen">GitHub Sponsor</a>! 🙏</p>
+<p>Please support my work by becoming my <a href="https://github.com/sponsors/lupyuen">GitHub Sponsor</a>! 🙏</p>
 <h1 id="firmware-image" class="section-header"><a href="#firmware-image">6 Firmware Image</a></h1>
 <p>Located at ROM address <code>0x10000</code>, the <strong>Firmware Image</strong> contains our application firmware code that is run after the boot firmware.</p>
 <p>Our firmware binary (<code>sdk_app_helloworld.bin</code>) gets transformed with the <strong>EFuse Configuration</strong> to create (with firmware offset <code>0x1000</code>)...</p>
@@ -531,6 +535,7 @@ ef_dbg_pwd_high    = 0
             auto_chan_detect = &quot;disable&quot;;
         };
 </code></pre>
+<p><a href="https://lupyuen.github.io/articles/flash#appendix-bl602-device-tree">More about BL602 Device Tree</a></p>
 <p><a href="https://www.kernel.org/doc/html/latest/devicetree/usage-model.html">More about Linux Device Trees</a></p>
 <h1 id="flash-firmware-in-2-stages" class="section-header"><a href="#flash-firmware-in-2-stages">8 Flash Firmware in 2 Stages</a></h1>
 <p>Earlier we saw that our firmware is flashed to BL602 in two stages... (Just like the Falcon Rocket)</p>
