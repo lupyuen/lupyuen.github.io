@@ -525,7 +525,7 @@ Would you like me to...
 
 1.  And explain how it works, in an article?
 
-Please support me as a [GitHub Sponsor](https://github.com/sponsors/lupyuen)! 🙏
+Please support my work as a [GitHub Sponsor](https://github.com/sponsors/lupyuen)! 🙏
 
 # Firmware Image
 
