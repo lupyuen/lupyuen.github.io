@@ -34,6 +34,8 @@ Follow these steps to flash a BL602 Firmware Binary File (like `sdk_app_hellowor
 
 (On Windows: Use plain old Windows CMD Command Prompt to execute the commands, not WSL)
 
+[Download demo firmware `sdk_app_helloworld.bin`](https://github.com/lupyuen/bl_iot_sdk/releases/download/v1.0.0/sdk_app_helloworld.bin)
+
 ##  Install rustup
 
 1.  Install `rustup` from [`rustup.rs`](https://rustup.rs)
