@@ -89,7 +89,7 @@
 <li><a href="#blflash-vs-blopenflasher">9 blflash vs BLOpenFlasher</a><ul></ul></li>
 <li><a href="#whats-next">10 What's Next</a><ul></ul></li>
 <li><a href="#appendix-bl602-flashing-screenshots">11 Appendix: BL602 Flashing Screenshots</a><ul>
-<li><a href="#manjaro-linux-arm64-on-pinebook-pro">11.1 Manjaro Linux Arm64 on Pinebook Pro</a><ul></ul></li>
+<li><a href="#linux-arm64">11.1 Linux Arm64</a><ul></ul></li>
 <li><a href="#macos-catalina">11.2 macOS Catalina</a><ul></ul></li>
 <li><a href="#windows-10">11.3 Windows 10</a><ul></ul></li></ul></li>
 <li><a href="#appendix-bl602-partition-table">12 Appendix: BL602 Partition Table</a><ul></ul></li>
@@ -300,7 +300,7 @@ caused by: Invalid argument
 </ul>
 <p>Let's look at each area of BL602's Internal Flash ROM.</p>
 <h1 id="partition-table" class="section-header"><a href="#partition-table">3 Partition Table</a></h1>
-<p>The <strong>Partition Table</strong>_ says where everything is located in ROM. It's like the above ROM Table... But converted to binary format and stored into ROM (twice).</p>
+<p>The <strong>Partition Table</strong> says where everything is located in ROM. It's like the above ROM Table... But converted to binary format and stored into ROM (twice).</p>
 <p>The Partition Table is referenced by the Start Code for BL602 Firmware...</p>
 <ul>
 <li>
@@ -583,6 +583,7 @@ ef_dbg_pwd_high    = 0
     --initial-baud-rate 115200 \
     --baud-rate 115200
 </code></pre>
+<p>Note: The USB Serial Port on macOS won't connect to BL602 at 1 Mbps. Connect at a lower speed like 115.2 kbps.</p>
 </li>
 <li>
 <p><code>blflash</code> doesn't support compiling Device Trees into binary format.</p>
@@ -637,13 +638,16 @@ ef_dbg_pwd_high    = 0
 </li>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
-<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/flash.md"><code>github.com/lupyuen/lupyuen.github.io/src/flash.md</code></a></p>
-<h1 id="appendix-bl602-flashing-screenshots" class="section-header"><a href="#appendix-bl602-flashing-screenshots">11 Appendix: BL602 Flashing Screenshots</a></h1><h2 id="manjaro-linux-arm64-on-pinebook-pro" class="section-header"><a href="#manjaro-linux-arm64-on-pinebook-pro">11.1 Manjaro Linux Arm64 on Pinebook Pro</a></h2>
+<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/flash.md"><code>lupyuen.github.io/src/flash.md</code></a></p>
+<h1 id="appendix-bl602-flashing-screenshots" class="section-header"><a href="#appendix-bl602-flashing-screenshots">11 Appendix: BL602 Flashing Screenshots</a></h1><h2 id="linux-arm64" class="section-header"><a href="#linux-arm64">11.1 Linux Arm64</a></h2>
 <p><img src="https://lupyuen.github.io/images/flash-linux.png" alt="Manjaro Linux Arm64 on Pinebook Pro" /></p>
+<p><em>Manjaro Linux Arm64 on Pinebook Pro</em></p>
 <h2 id="macos-catalina" class="section-header"><a href="#macos-catalina">11.2 macOS Catalina</a></h2>
 <p><img src="https://lupyuen.github.io/images/flash-macos.png" alt="macOS Catalina" /></p>
+<p><em>macOS Catalina</em></p>
 <h2 id="windows-10" class="section-header"><a href="#windows-10">11.3 Windows 10</a></h2>
 <p><img src="https://lupyuen.github.io/images/flash-windows.png" alt="Windows 10" /></p>
+<p><em>Windows 10</em></p>
 <h1 id="appendix-bl602-partition-table" class="section-header"><a href="#appendix-bl602-partition-table">12 Appendix: BL602 Partition Table</a></h1>
 <ul>
 <li>
@@ -1102,7 +1106,7 @@ len = 0
 <h1 id="appendix-bl602-efuse-configuration" class="section-header"><a href="#appendix-bl602-efuse-configuration">14 Appendix: BL602 EFuse Configuration</a></h1>
 <ul>
 <li>
-<p>From <a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/efuse_bootheader/efuse_bootheader_cfg.conf"><code>BLOpenFlasher/bl602/ efuse_bootheader/efuse_bootheader_cfg.conf</code></a></p>
+<p>From <a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/efuse_bootheader/efuse_bootheader_cfg.conf"><code>BLOpenFlasher/bl602/ efuse_bootheader/ efuse_bootheader_cfg.conf</code></a></p>
 </li>
 <li>
 <p>Will be used for transforming Boot Image and Firmware Image</p>
@@ -1304,7 +1308,7 @@ hash_7 = 0
 crc32 = 0xdeadbeef
 </code></pre>
 <h1 id="appendix-bldevcube-flashing-log" class="section-header"><a href="#appendix-bldevcube-flashing-log">15 Appendix: BLDevCube Flashing Log</a></h1>
-<p>Sample flashing log emitted by <code>bl_iot_sdk/tools/flash_tool/BLDevCube.exe</code> on Windows...</p>
+<p>Sample flashing log emitted by <code>bl_iot_sdk/tools/ flash_tool/BLDevCube.exe</code> on Windows...</p>
 <pre><code class="language-text">[23:01:59.398] - [param]
 interface_type = &quot;Uart&quot;
 comport_uart = &quot;COM5&quot;
