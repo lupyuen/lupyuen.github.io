@@ -255,6 +255,8 @@ Partition Table:
 Output:              
 "bl602/image/partition.bin",                   
 
+https://lupyuen.github.io/articles/mynewt#implement-start-code
+
 # Boot Image                                                                     
 
 TODO
