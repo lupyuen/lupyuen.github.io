@@ -387,33 +387,11 @@ In case of problems, check the instructions in...
 
 ### Other Flashing Tools
 
-_Are there other tools for flashing firmware to PineCone over UART?_
+_Are there command-line tools for flashing firmware to PineCone on Linux, macOS and Windows?_
 
-Check out these tools, which will probably run on Linux, macOS and Windows...
+Check out the article...
 
-1.  [`bouffalolab/BLOpenFlasher`](https://github.com/bouffalolab/BLOpenFlasher) (Go)
-
-    [Follow my updates on Twitter](https://twitter.com/MisterTechBlog/status/1343421251675508736)
-
-1.  [`stschake/bl60x-flash`](https://github.com/stschake/bl60x-flash) (Python)
-
-1.  [`renzenicolai/bl602tool`](https://github.com/renzenicolai/bl602tool) (Python)
-
-1.  [`spacemeowx2/blflash`](https://github.com/spacemeowx2/blflash) (Rust)
-
-1.  [`mkroman/bouffalo-cli`](https://github.com/mkroman/bouffalo-cli) (Rust)
-
-![Transforming PineCone Firmware before flashing](https://lupyuen.github.io/images/pinecone-flash-steps.png)
-
-_Why is firmware flashing so complicated on PineCone?_
-
-Because the firmware needs to be pre-processed before flashing.
-
-Boot Headers need to be added to the firmware before flashing.  The Device Tree needs to be flashed to PineCone too.
-
--   [Transforming PineCone Firmware before flashing](https://github.com/bouffalolab/BLOpenFlasher/blob/main/flash_tool.go)
-
--   [PineCone Device Tree](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/device_tree/bl_factory_params_IoTKitA_40M.dts)
+-   ["Flashing Firmware to PineCone BL602"](https://lupyuen.github.io/articles/flash)
 
 _Is JTAG supported for flashing firmware to the PineCone Board?_
 
@@ -542,6 +520,8 @@ More about PineCone...
 -   ["Debug Rust on PineCone BL602 with VSCode and GDB"](https://lupyuen.github.io/articles/debug)
 
 -   ["Porting Mynewt to PineCone BL602"](https://lupyuen.github.io/articles/mynewt)
+
+-   ["Flashing Firmware to PineCone BL602"](https://lupyuen.github.io/articles/flash)
 
 -   [Check out my articles](https://lupyuen.github.io)
 

@@ -849,17 +849,11 @@ _But we can't run Mynewt Firmware in Cache Memory forever right?_
 
 The solution is to load our firmware to PineCone over USB (UART). (And flipping the jumper)
 
-We may integrate with VSCode the Go, Rust or Python scripts for loading our firmware to PineCone over USB...
+We may integrate with VSCode the command-line scripts for loading our firmware to PineCone.
 
-1.  [`bouffalolab/BLOpenFlasher`](https://github.com/bouffalolab/BLOpenFlasher) (Go)
+Check out the article...
 
-1.  [`stschake/bl60x-flash`](https://github.com/stschake/bl60x-flash) (Python)
-
-1.  [`renzenicolai/bl602tool`](https://github.com/renzenicolai/bl602tool) (Python)
-
-1.  [`spacemeowx2/blflash`](https://github.com/spacemeowx2/blflash) (Rust)
-
-1.  [`mkroman/bouffalo-cli`](https://github.com/mkroman/bouffalo-cli) (Rust)
+-   ["Flashing Firmware to PineCone BL602"](https://lupyuen.github.io/articles/flash)
 
 # Appendix: Install newt
 

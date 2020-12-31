@@ -729,6 +729,8 @@ Read about it here...
 
 -   ["Porting Mynewt to PineCone BL602"](https://lupyuen.github.io/articles/mynewt)
 
+-   ["Flashing Firmware to PineCone BL602"](https://lupyuen.github.io/articles/flash)
+
 -   [Check out my articles](https://lupyuen.github.io)
 
 -   [RSS Feed](https://lupyuen.github.io/rss.xml)
