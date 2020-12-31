@@ -373,16 +373,16 @@ Here are some interesting snippets from the BL602 Device Tree: [`bl_factory_para
 
 ## GPIO LED
 
-This setting configures GPIO 0 for LED output...
+This setting configures GPIO 5 for LED output...
 
 ```text
 gpio0 {                                  
-    status = "okay";                     
-    pin  = <5>;                          
+    status  = "okay";                     
+    pin     = <5>;                          
     feature = "led";                     
-    active = "Hi"; //Hi or Lo
-    mode = "blink"; //blink or hearbeat
-    time = <100>; //duration for this mode
+    active  = "Hi";     //  Hi or Lo
+    mode    = "blink";  //  blink or hearbeat
+    time    = <100>;    //  Duration for this mode
 ```
 
 ## GPIO Button
@@ -391,25 +391,25 @@ Here we configure GPIO 2 as a Button Input (note the debounce logic)...
 
 ```text
 gpio2 {
-    status = "okay";
-    pin = <2>;
+    status  = "okay";
+    pin     = <2>;
     feature = "button";
-    active = "Hi";
-    mode = "multipress";
+    active  = "Hi";
+    mode    = "multipress";
     button {
-        debounce = <10>;
+        debounce   = <10>;
         short_press_ms {
-            start = <100>;
-            end = <3000>;
+            start  = <100>;
+            end    = <3000>;
             kevent = <2>;
         };
         long_press_ms {
-            start = <6000>;
-            end = <10000>;
+            start  = <6000>;
+            end    = <10000>;
             kevent = <3>;
         };
         longlong_press_ms {
-            start = <15000>;
+            start  = <15000>;
             kevent = <4>;
         };
         trig_level = "Hi";
@@ -417,18 +417,18 @@ gpio2 {
 
 ## UART
 
-This is the default UART setting, on GPIO 7 and 16...
+This is the default UART setting, on GPIO 7 and 16 at 2 Mbps...
 
 ```text
     uart {
         #address-cells = <1>;
-        #size-cells = <1>;
+        #size-cells    = <1>;
         uart@4000A000 {
-            status = "okay";
-            id = <0>;
+            status     = "okay";
+            id         = <0>;
             compatible = "bl602_uart";
-            path = "/dev/ttyS0";
-            baudrate = <2000000>;
+            path       = "/dev/ttyS0";
+            baudrate   = <2000000>;
             pin {
                 rx = <7>;
                 tx = <16>;
@@ -438,8 +438,8 @@ This is the default UART setting, on GPIO 7 and 16...
                 tx_size = <512>;
             };
             feature {
-                tx = "okay";
-                rx = "okay";
+                tx  = "okay";
+                rx  = "okay";
                 cts = "disable";
                 rts = "disable";
             };
@@ -453,16 +453,16 @@ This PWM setting could be useful for turning PineCone's onboard RGB LED into a D
 ```text
     pwm {
         #address-cells = <1>;
-        #size-cells = <1>;
+        #size-cells    = <1>;
         pwm@4000A420 {
-            status = "okay";
+            status     = "okay";
             compatible = "bl602_pwm";
-            reg = <0x4000A420 0x20>;
-            path = "/dev/pwm0";
-            id = <0>;
-            pin = <0>;
-            freq = <800000>;
-            duty = <50>;
+            reg        = <0x4000A420 0x20>;
+            path       = "/dev/pwm0";
+            id         = <0>;
+            pin        = <0>;
+            freq       = <800000>;
+            duty       = <50>;
         };
 ```
 
@@ -473,24 +473,24 @@ This complicated setting configures the WiFi stack (including SSID)...
 ```text
     wifi {
         #address-cells = <1>;
-        #size-cells = <1>;
+        #size-cells    = <1>;
         region {
             country_code = <86>;
         };
         mac {
-            mode = "MBF";
+            mode         = "MBF";
             sta_mac_addr = [C8 43 57 82 73 40];
-            ap_mac_addr = [C8 43 57 82 73 02];
+            ap_mac_addr  = [C8 43 57 82 73 02];
         };
         sta {
             ssid = "yourssid";
-            pwd = "yourapssword";
+            pwd  = "yourapssword";
             auto_connect_enable = <0>;
         };
         ap {
             ssid = "bl_test_005";
-            pwd = "12345678";
-            ap_channel = <11>;
+            pwd  = "12345678";
+            ap_channel       = <11>;
             auto_chan_detect = "disable";
         };
 ```
