@@ -75,14 +75,14 @@
 <li><a href="#partition-entry-for-firmware">3.1 Partition Entry for Firmware</a><ul></ul></li>
 <li><a href="#partition-entry-for-device-tree">3.2 Partition Entry for Device Tree</a><ul></ul></li></ul></li>
 <li><a href="#efuse-configuration">4 EFuse Configuration</a><ul></ul></li>
-<li><a href="#device-tree">5 Device Tree</a><ul>
-<li><a href="#gpio-led">5.1 GPIO LED</a><ul></ul></li>
-<li><a href="#gpio-button">5.2 GPIO Button</a><ul></ul></li>
-<li><a href="#uart">5.3 UART</a><ul></ul></li>
-<li><a href="#pwm">5.4 PWM</a><ul></ul></li>
-<li><a href="#wifi">5.5 WiFi</a><ul></ul></li></ul></li>
-<li><a href="#boot-image">6 Boot Image</a><ul></ul></li>
-<li><a href="#firmware-image">7 Firmware Image</a><ul></ul></li>
+<li><a href="#boot-image">5 Boot Image</a><ul></ul></li>
+<li><a href="#firmware-image">6 Firmware Image</a><ul></ul></li>
+<li><a href="#device-tree">7 Device Tree</a><ul>
+<li><a href="#gpio-led">7.1 GPIO LED</a><ul></ul></li>
+<li><a href="#gpio-button">7.2 GPIO Button</a><ul></ul></li>
+<li><a href="#uart">7.3 UART</a><ul></ul></li>
+<li><a href="#pwm">7.4 PWM</a><ul></ul></li>
+<li><a href="#wifi">7.5 WiFi</a><ul></ul></li></ul></li>
 <li><a href="#flash-firmware-in-2-stages">8 Flash Firmware in 2 Stages</a><ul>
 <li><a href="#flashing-stage-1">8.1 Flashing Stage 1</a><ul></ul></li>
 <li><a href="#flashing-stage-2">8.2 Flashing Stage 2</a><ul></ul></li></ul></li>
@@ -358,128 +358,7 @@ ef_dbg_mode        = 0
 ef_dbg_pwd_low     = 0
 ef_dbg_pwd_high    = 0
 </code></pre>
-<h1 id="device-tree" class="section-header"><a href="#device-tree">5 Device Tree</a></h1>
-<p><em>What's a Device Tree?</em></p>
-<p>In Linux, a <strong>Device Tree</strong> describes the computer hardware and its settings: Board, Memory, SoC, USB Devices, ...  (In Windows, the hardware settings are stored in the Windows Registry)</p>
-<p>BL602 doesn't run Linux (yet). But it uses a similar Device Tree to load the <strong>settings for the BL602 peripherals and ports</strong>: GPIO, UART, PWM, SPI, WiFi, ...</p>
-<p>Whenever we update the firmware on BL602, the Device Tree is converted to binary format and flashed to BL602 ROM.</p>
-<p><em>Arm Microcontrollers don't use Device Trees... Is this overkill for BL602?</em></p>
-<p>We may configure BL602's peripherals and ports through the firmware code by calling the BL602 Hardware Abstraction Layer (HAL). So it's not mandatory to use the Device Tree.</p>
-<p>Configuring the WiFi stack for BL602 can get cumbersome if we code it in the firmware. Thus it makes sense to embed the WiFi configuration inside the Device Tree. (We'll see this in a while)</p>
-<p><em>Which functions in the BL602 HAL will use the Device Tree to configure the BL602 peripherals and ports?</em></p>
-<p>Look for BL602 HAL Functions named <code>dts</code> like...</p>
-<ul>
-<li><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_gpio.c#L174-L200"><code>hal_gpio_init_from_dts</code></a></li>
-</ul>
-<p>This function initialises the GPIO port by loading the Device Tree from ROM.</p>
-<p>Here are some interesting snippets from the BL602 Device Tree: <a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/device_tree/bl_factory_params_IoTKitA_40M.dts"><code>bl_factory_params_IoTKitA_40M.dts</code></a></p>
-<p>(FYI: Some RISC-V microcontrollers don't use Device Trees, like GD32 VF103. Device Trees seem to be common among microcontrollers based on SiFive RISC-V Cores, including BL602.)</p>
-<h2 id="gpio-led" class="section-header"><a href="#gpio-led">5.1 GPIO LED</a></h2>
-<p>This setting configures GPIO 5 for LED output...</p>
-<pre><code class="language-text">gpio0 {                                  
-    status  = &quot;okay&quot;;                     
-    pin     = &lt;5&gt;;                          
-    feature = &quot;led&quot;;                     
-    active  = &quot;Hi&quot;;     //  Hi or Lo
-    mode    = &quot;blink&quot;;  //  blink or hearbeat
-    time    = &lt;100&gt;;    //  Duration for this mode
-</code></pre>
-<h2 id="gpio-button" class="section-header"><a href="#gpio-button">5.2 GPIO Button</a></h2>
-<p>Here we configure GPIO 2 as a Button Input (note the debounce logic)...</p>
-<pre><code class="language-text">gpio2 {
-    status  = &quot;okay&quot;;
-    pin     = &lt;2&gt;;
-    feature = &quot;button&quot;;
-    active  = &quot;Hi&quot;;
-    mode    = &quot;multipress&quot;;
-    button {
-        debounce   = &lt;10&gt;;
-        short_press_ms {
-            start  = &lt;100&gt;;
-            end    = &lt;3000&gt;;
-            kevent = &lt;2&gt;;
-        };
-        long_press_ms {
-            start  = &lt;6000&gt;;
-            end    = &lt;10000&gt;;
-            kevent = &lt;3&gt;;
-        };
-        longlong_press_ms {
-            start  = &lt;15000&gt;;
-            kevent = &lt;4&gt;;
-        };
-        trig_level = &quot;Hi&quot;;
-</code></pre>
-<h2 id="uart" class="section-header"><a href="#uart">5.3 UART</a></h2>
-<p>This is the default UART setting, on GPIO 7 and 16 at 2 Mbps...</p>
-<pre><code class="language-text">    uart {
-        #address-cells = &lt;1&gt;;
-        #size-cells    = &lt;1&gt;;
-        uart@4000A000 {
-            status     = &quot;okay&quot;;
-            id         = &lt;0&gt;;
-            compatible = &quot;bl602_uart&quot;;
-            path       = &quot;/dev/ttyS0&quot;;
-            baudrate   = &lt;2000000&gt;;
-            pin {
-                rx = &lt;7&gt;;
-                tx = &lt;16&gt;;
-            };
-            buf_size {
-                rx_size = &lt;512&gt;;
-                tx_size = &lt;512&gt;;
-            };
-            feature {
-                tx  = &quot;okay&quot;;
-                rx  = &quot;okay&quot;;
-                cts = &quot;disable&quot;;
-                rts = &quot;disable&quot;;
-            };
-        };
-</code></pre>
-<h2 id="pwm" class="section-header"><a href="#pwm">5.4 PWM</a></h2>
-<p>This PWM setting could be useful for turning PineCone's onboard RGB LED into a Disco Light...</p>
-<pre><code class="language-text">    pwm {
-        #address-cells = &lt;1&gt;;
-        #size-cells    = &lt;1&gt;;
-        pwm@4000A420 {
-            status     = &quot;okay&quot;;
-            compatible = &quot;bl602_pwm&quot;;
-            reg        = &lt;0x4000A420 0x20&gt;;
-            path       = &quot;/dev/pwm0&quot;;
-            id         = &lt;0&gt;;
-            pin        = &lt;0&gt;;
-            freq       = &lt;800000&gt;;
-            duty       = &lt;50&gt;;
-        };
-</code></pre>
-<h2 id="wifi" class="section-header"><a href="#wifi">5.5 WiFi</a></h2>
-<p>This complicated setting configures the WiFi stack (including SSID)...</p>
-<pre><code class="language-text">    wifi {
-        #address-cells = &lt;1&gt;;
-        #size-cells    = &lt;1&gt;;
-        region {
-            country_code = &lt;86&gt;;
-        };
-        mac {
-            mode         = &quot;MBF&quot;;
-            sta_mac_addr = [C8 43 57 82 73 40];
-            ap_mac_addr  = [C8 43 57 82 73 02];
-        };
-        sta {
-            ssid = &quot;yourssid&quot;;
-            pwd  = &quot;yourapssword&quot;;
-            auto_connect_enable = &lt;0&gt;;
-        };
-        ap {
-            ssid = &quot;bl_test_005&quot;;
-            pwd  = &quot;12345678&quot;;
-            ap_channel       = &lt;11&gt;;
-            auto_chan_detect = &quot;disable&quot;;
-        };
-</code></pre>
-<p><a href="https://www.kernel.org/doc/html/latest/devicetree/usage-model.html">More about Linux Device Trees</a></p>
-<h1 id="boot-image" class="section-header"><a href="#boot-image">6 Boot Image</a></h1>
+<h1 id="boot-image" class="section-header"><a href="#boot-image">5 Boot Image</a></h1>
 <p>Located at ROM address <code>0x0</code>, the <strong>Boot Image</strong> contains the firmware code that is run first upon booting BL602....</p>
 <ol>
 <li>
@@ -514,7 +393,7 @@ ef_dbg_pwd_high    = 0
 </li>
 </ol>
 <p>Please support my work as a <a href="https://github.com/sponsors/lupyuen">GitHub Sponsor</a>! 🙏</p>
-<h1 id="firmware-image" class="section-header"><a href="#firmware-image">7 Firmware Image</a></h1>
+<h1 id="firmware-image" class="section-header"><a href="#firmware-image">6 Firmware Image</a></h1>
 <p>Located at ROM address <code>0x10000</code>, the <strong>Firmware Image</strong> contains our application firmware code that is run after the boot firmware.</p>
 <p>Our firmware binary (<code>sdk_app_helloworld.bin</code>) gets transformed with the <strong>EFuse Configuration</strong> to create (with firmware offset <code>0x1000</code>)...</p>
 <ul>
@@ -522,6 +401,127 @@ ef_dbg_pwd_high    = 0
 </ul>
 <p>(For development, we have disabled encryption in the EFuse Configuration)</p>
 <p>The transformed binary is flashed to BL602 at ROM address <code>0x10000</code>.</p>
+<h1 id="device-tree" class="section-header"><a href="#device-tree">7 Device Tree</a></h1>
+<p><em>What's a Device Tree?</em></p>
+<p>In Linux, a <strong>Device Tree</strong> describes the computer hardware and its settings: Board, Memory, SoC, USB Devices, ...  (In Windows, the hardware settings are stored in the Windows Registry)</p>
+<p>BL602 doesn't run Linux (yet). But it uses a similar Device Tree to load the <strong>settings for the BL602 peripherals and ports</strong>: GPIO, UART, PWM, SPI, WiFi, ...</p>
+<p>Whenever we update the firmware on BL602, the Device Tree is converted to binary format and flashed to BL602 ROM.</p>
+<p><em>Arm Microcontrollers don't use Device Trees... Is this overkill for BL602?</em></p>
+<p>We may configure BL602's peripherals and ports through the firmware code by calling the BL602 Hardware Abstraction Layer (HAL). So it's not mandatory to use the Device Tree.</p>
+<p>Configuring the WiFi stack for BL602 can get cumbersome if we code it in the firmware. Thus it makes sense to embed the WiFi configuration inside the Device Tree. (We'll see this in a while)</p>
+<p><em>Which functions in the BL602 HAL will use the Device Tree to configure the BL602 peripherals and ports?</em></p>
+<p>Look for BL602 HAL Functions named <code>dts</code> like...</p>
+<ul>
+<li><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_gpio.c#L174-L200"><code>hal_gpio_init_from_dts</code></a></li>
+</ul>
+<p>This function initialises the GPIO port by loading the Device Tree from ROM.</p>
+<p>Here are some interesting snippets from the BL602 Device Tree: <a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/device_tree/bl_factory_params_IoTKitA_40M.dts"><code>bl_factory_params_IoTKitA_40M.dts</code></a></p>
+<p>(FYI: Some RISC-V microcontrollers don't use Device Trees, like GD32 VF103. Device Trees seem to be common among microcontrollers based on SiFive RISC-V Cores, including BL602.)</p>
+<h2 id="gpio-led" class="section-header"><a href="#gpio-led">7.1 GPIO LED</a></h2>
+<p>This setting configures GPIO 5 for LED output...</p>
+<pre><code class="language-text">gpio0 {                                  
+    status  = &quot;okay&quot;;                     
+    pin     = &lt;5&gt;;                          
+    feature = &quot;led&quot;;                     
+    active  = &quot;Hi&quot;;     //  Hi or Lo
+    mode    = &quot;blink&quot;;  //  blink or hearbeat
+    time    = &lt;100&gt;;    //  Duration for this mode
+</code></pre>
+<h2 id="gpio-button" class="section-header"><a href="#gpio-button">7.2 GPIO Button</a></h2>
+<p>Here we configure GPIO 2 as a Button Input (note the debounce logic)...</p>
+<pre><code class="language-text">gpio2 {
+    status  = &quot;okay&quot;;
+    pin     = &lt;2&gt;;
+    feature = &quot;button&quot;;
+    active  = &quot;Hi&quot;;
+    mode    = &quot;multipress&quot;;
+    button {
+        debounce   = &lt;10&gt;;
+        short_press_ms {
+            start  = &lt;100&gt;;
+            end    = &lt;3000&gt;;
+            kevent = &lt;2&gt;;
+        };
+        long_press_ms {
+            start  = &lt;6000&gt;;
+            end    = &lt;10000&gt;;
+            kevent = &lt;3&gt;;
+        };
+        longlong_press_ms {
+            start  = &lt;15000&gt;;
+            kevent = &lt;4&gt;;
+        };
+        trig_level = &quot;Hi&quot;;
+</code></pre>
+<h2 id="uart" class="section-header"><a href="#uart">7.3 UART</a></h2>
+<p>This is the default UART setting, on GPIO 7 and 16 at 2 Mbps...</p>
+<pre><code class="language-text">    uart {
+        #address-cells = &lt;1&gt;;
+        #size-cells    = &lt;1&gt;;
+        uart@4000A000 {
+            status     = &quot;okay&quot;;
+            id         = &lt;0&gt;;
+            compatible = &quot;bl602_uart&quot;;
+            path       = &quot;/dev/ttyS0&quot;;
+            baudrate   = &lt;2000000&gt;;
+            pin {
+                rx = &lt;7&gt;;
+                tx = &lt;16&gt;;
+            };
+            buf_size {
+                rx_size = &lt;512&gt;;
+                tx_size = &lt;512&gt;;
+            };
+            feature {
+                tx  = &quot;okay&quot;;
+                rx  = &quot;okay&quot;;
+                cts = &quot;disable&quot;;
+                rts = &quot;disable&quot;;
+            };
+        };
+</code></pre>
+<h2 id="pwm" class="section-header"><a href="#pwm">7.4 PWM</a></h2>
+<p>This PWM setting could be useful for turning PineCone's onboard RGB LED into a Disco Light...</p>
+<pre><code class="language-text">    pwm {
+        #address-cells = &lt;1&gt;;
+        #size-cells    = &lt;1&gt;;
+        pwm@4000A420 {
+            status     = &quot;okay&quot;;
+            compatible = &quot;bl602_pwm&quot;;
+            reg        = &lt;0x4000A420 0x20&gt;;
+            path       = &quot;/dev/pwm0&quot;;
+            id         = &lt;0&gt;;
+            pin        = &lt;0&gt;;
+            freq       = &lt;800000&gt;;
+            duty       = &lt;50&gt;;
+        };
+</code></pre>
+<h2 id="wifi" class="section-header"><a href="#wifi">7.5 WiFi</a></h2>
+<p>This complicated setting configures the WiFi stack (including SSID)...</p>
+<pre><code class="language-text">    wifi {
+        #address-cells = &lt;1&gt;;
+        #size-cells    = &lt;1&gt;;
+        region {
+            country_code = &lt;86&gt;;
+        };
+        mac {
+            mode         = &quot;MBF&quot;;
+            sta_mac_addr = [C8 43 57 82 73 40];
+            ap_mac_addr  = [C8 43 57 82 73 02];
+        };
+        sta {
+            ssid = &quot;yourssid&quot;;
+            pwd  = &quot;yourapssword&quot;;
+            auto_connect_enable = &lt;0&gt;;
+        };
+        ap {
+            ssid = &quot;bl_test_005&quot;;
+            pwd  = &quot;12345678&quot;;
+            ap_channel       = &lt;11&gt;;
+            auto_chan_detect = &quot;disable&quot;;
+        };
+</code></pre>
+<p><a href="https://www.kernel.org/doc/html/latest/devicetree/usage-model.html">More about Linux Device Trees</a></p>
 <h1 id="flash-firmware-in-2-stages" class="section-header"><a href="#flash-firmware-in-2-stages">8 Flash Firmware in 2 Stages</a></h1>
 <p>Earlier we saw that our firmware is flashed to BL602 in two stages... (Just like the Falcon Rocket)</p>
 <ol>

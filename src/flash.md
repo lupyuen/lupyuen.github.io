@@ -343,6 +343,48 @@ ef_dbg_pwd_low     = 0
 ef_dbg_pwd_high    = 0
 ```
 
+# Boot Image
+
+Located at ROM address `0x0`, the __Boot Image__ contains the firmware code that is run first upon booting BL602....
+
+1.  __Boot Image Binary__ is at...
+
+    -   [`blsp_boot2.bin`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/builtin_imgs/blsp_boot2.bin)
+                            
+1.  Which gets transformed with the __EFuse Configuration__ to create (with firmware offset `0x2000`)...
+
+    -   [`boot2image.bin`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/image/boot2image.bin) 
+
+    (For development, we have disabled encryption in the EFuse Configuration)
+                                    
+1.  Which is flashed to BL602 ROM at address `0x0`, whenever we update the firmware
+
+The BL602 Boot Firmware Source Code is located here...
+
+-   [`bl_iot_sdk/customer_app/bl602_boot2`](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/bl602_boot2)
+
+The BL602 Boot Firmware seems to be doing... stuff.
+
+Would you like me to...
+
+1.  Study the BL602 Boot Firmware Source Code
+
+1.  And explain how it works, in an article?
+
+Please support my work as a [GitHub Sponsor](https://github.com/sponsors/lupyuen)! 🙏
+
+# Firmware Image
+
+Located at ROM address `0x10000`, the __Firmware Image__ contains our application firmware code that is run after the boot firmware.
+
+Our firmware binary (`sdk_app_helloworld.bin`) gets transformed with the __EFuse Configuration__ to create (with firmware offset `0x1000`)...
+
+-   `bl602/image/fwimage.bin`
+
+(For development, we have disabled encryption in the EFuse Configuration)
+
+The transformed binary is flashed to BL602 at ROM address `0x10000`.
+
 # Device Tree
 
 _What's a Device Tree?_
@@ -496,48 +538,6 @@ This complicated setting configures the WiFi stack (including SSID)...
 ```
 
 [More about Linux Device Trees](https://www.kernel.org/doc/html/latest/devicetree/usage-model.html)
-
-# Boot Image
-
-Located at ROM address `0x0`, the __Boot Image__ contains the firmware code that is run first upon booting BL602....
-
-1.  __Boot Image Binary__ is at...
-
-    -   [`blsp_boot2.bin`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/builtin_imgs/blsp_boot2.bin)
-                            
-1.  Which gets transformed with the __EFuse Configuration__ to create (with firmware offset `0x2000`)...
-
-    -   [`boot2image.bin`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/image/boot2image.bin) 
-
-    (For development, we have disabled encryption in the EFuse Configuration)
-                                    
-1.  Which is flashed to BL602 ROM at address `0x0`, whenever we update the firmware
-
-The BL602 Boot Firmware Source Code is located here...
-
--   [`bl_iot_sdk/customer_app/bl602_boot2`](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/bl602_boot2)
-
-The BL602 Boot Firmware seems to be doing... stuff.
-
-Would you like me to...
-
-1.  Study the BL602 Boot Firmware Source Code
-
-1.  And explain how it works, in an article?
-
-Please support my work as a [GitHub Sponsor](https://github.com/sponsors/lupyuen)! 🙏
-
-# Firmware Image
-
-Located at ROM address `0x10000`, the __Firmware Image__ contains our application firmware code that is run after the boot firmware.
-
-Our firmware binary (`sdk_app_helloworld.bin`) gets transformed with the __EFuse Configuration__ to create (with firmware offset `0x1000`)...
-
--   `bl602/image/fwimage.bin`
-
-(For development, we have disabled encryption in the EFuse Configuration)
-
-The transformed binary is flashed to BL602 at ROM address `0x10000`.
 
 # Flash Firmware in 2 Stages
 
