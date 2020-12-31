@@ -71,7 +71,9 @@
 <li><a href="#flash-the-firmware">1.3 Flash the firmware</a><ul></ul></li>
 <li><a href="#watch-the-firmware-run">1.4 Watch the firmware run</a><ul></ul></li></ul></li>
 <li><a href="#what-else-can-we-flash-to-bl602">2 What Else Can We Flash To BL602?</a><ul></ul></li>
-<li><a href="#partition-table">3 Partition Table</a><ul></ul></li>
+<li><a href="#partition-table">3 Partition Table</a><ul>
+<li><a href="#partition-entry-for-firmware">3.1 Partition Entry for Firmware</a><ul></ul></li>
+<li><a href="#partition-entry-for-device-tree">3.2 Partition Entry for Device Tree</a><ul></ul></li></ul></li>
 <li><a href="#efuse-configuration">4 EFuse Configuration</a><ul></ul></li>
 <li><a href="#boot-image">5 Boot Image</a><ul></ul></li>
 <li><a href="#firmware-image">6 Firmware Image</a><ul></ul></li>
@@ -105,7 +107,7 @@
 <p><strong>Flash BL602 Firmware</strong> to the PineCone Board on any computer: <strong>Linux (x64 and Arm64), macOS, Windows</strong></p>
 </li>
 <li>
-<p>Appreciate all the things that we can flash to the PineCone BL602 Board...</p>
+<p>Appreciate all the things that we can flash to BL602...</p>
 <ul>
 <li><strong>Partition Table</strong></li>
 <li><strong>EFuse Configuration</strong></li>
@@ -117,7 +119,7 @@
 </ol>
 <h1 id="flash-bl602-firmware-with-linux-macos-and-windows" class="section-header"><a href="#flash-bl602-firmware-with-linux-macos-and-windows">1 Flash BL602 Firmware with Linux, macOS and Windows</a></h1>
 <p>Follow these steps to flash a Firmware Binary File (like <code>sdk_app_helloworld.bin</code>) on our Linux (x64 and Arm64), macOS or Windows computer.</p>
-<p>(On Windows: Use plain old Windows CMD Commpand Prompt, not WSL)</p>
+<p>(On Windows: Use plain old Windows CMD Command Prompt, not WSL)</p>
 <h2 id="install-rustup" class="section-header"><a href="#install-rustup">1.1 Install rustup</a></h2>
 <ol>
 <li>
@@ -186,20 +188,27 @@ Finished dev [unoptimized + debuginfo] target(s) in 4m 28s
 [TRACE blflash::flasher] 5ms send count 55
 [TRACE blflash::flasher] handshake sent elapsed 1.059862ms
 [INFO  blflash::flasher] Connection Succeed
-[INFO  blflash] Bootrom version: 1
+</code></pre>
+<p><code>blflash</code> has connected successfully to PineCone over the USB Serial port.</p>
+<pre><code class="language-text">[INFO  blflash] Bootrom version: 1
 [TRACE blflash] Boot info: BootInfo { len: 14, bootrom_version: 1, otp_info: [0, 0, 0, 0, 3, 0, 0, 0, 61, 9d, c0, 5, b9, 18, 1d, 0] }
 [INFO  blflash::flasher] Sending eflash_loader...
 [INFO  blflash::flasher] Finished 3.375522563s 8.47KB/s
 [TRACE blflash::flasher] 5ms send count 500
 [TRACE blflash::flasher] handshake sent elapsed 6.51343ms
 [INFO  blflash::flasher] Entered eflash_loader
-[INFO  blflash::flasher] Skip segment addr: 0 size: 47504 sha256 matches
+</code></pre>
+<p><code>blflash</code> starts by sending the <code>eflash_loader</code> program to PineCone.</p>
+<p>Then <code>eflash_loader</code> starts running on PineCone.</p>
+<p><code>eflash_loader</code> receives our firmware from <code>blflash</code> and flashes our firmware to ROM...</p>
+<pre><code class="language-text">[INFO  blflash::flasher] Skip segment addr: 0 size: 47504 sha256 matches
 [INFO  blflash::flasher] Skip segment addr: e000 size: 272 sha256 matches
 [INFO  blflash::flasher] Skip segment addr: f000 size: 272 sha256 matches
 [INFO  blflash::flasher] Skip segment addr: 10000 size: 869328 sha256 matches
 [INFO  blflash::flasher] Skip segment addr: 1f8000 size: 5671 sha256 matches
 [INFO  blflash] Success
 </code></pre>
+<p><code>blflash</code> (and <code>eflash_loader</code>) has successfully flashed 5 locations in ROM. We'll learn more about this.</p>
 </li>
 <li>
 <p>If we see this error...</p>
@@ -293,6 +302,7 @@ address1 = 0xF000
 </code></pre>
 <p>This says that the Partition Table (4,096 bytes in binary form) is stored at two ROM addresses: <code>0xE000</code> and <code>0xF000</code></p>
 <p><em>(Is the Partition Table stored twice for redundancy... In case one gets corrupted?)</em></p>
+<h2 id="partition-entry-for-firmware" class="section-header"><a href="#partition-entry-for-firmware">3.1 Partition Entry for Firmware</a></h2>
 <p>Here's the first Partition Entry in the Partition Table...</p>
 <pre><code class="language-text">[[pt_entry]]
 type     = 0
@@ -306,6 +316,7 @@ len      = 0
 </code></pre>
 <p>It says that our Firmware Image is located at ROM address <code>0x10000</code>.</p>
 <p><em>(But why two contiguous sections: <code>0x10000</code> and <code>0xD8000</code>?)</em></p>
+<h2 id="partition-entry-for-device-tree" class="section-header"><a href="#partition-entry-for-device-tree">3.2 Partition Entry for Device Tree</a></h2>
 <pre><code class="language-text">[[pt_entry]]
 type     = 7
 name     = &quot;factory&quot;
@@ -368,6 +379,7 @@ https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/bl602_boot2</p>
 &quot;bl602/device_tree/bl_factory_params_IoTKitA_40M.dts&quot;,</p>
 <p>Output:
 &quot;bl602/image/ro_params.dtb&quot;</p>
+<p>https://www.kernel.org/doc/html/latest/devicetree/usage-model.html</p>
 <h1 id="flash-to-rom" class="section-header"><a href="#flash-to-rom">8 Flash to ROM</a></h1>
 <p>TODO</p>
 <p>utils.StartProgram:</p>

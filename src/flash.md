@@ -121,6 +121,11 @@ We'll use `blflash`, the flashing tool created in Rust by [`spacemeowx2`](https:
     [TRACE blflash::flasher] 5ms send count 55
     [TRACE blflash::flasher] handshake sent elapsed 1.059862ms
     [INFO  blflash::flasher] Connection Succeed
+    ```
+
+    `blflash` has connected successfully to PineCone over the USB Serial port.
+
+    ```text
     [INFO  blflash] Bootrom version: 1
     [TRACE blflash] Boot info: BootInfo { len: 14, bootrom_version: 1, otp_info: [0, 0, 0, 0, 3, 0, 0, 0, 61, 9d, c0, 5, b9, 18, 1d, 0] }
     [INFO  blflash::flasher] Sending eflash_loader...
@@ -128,6 +133,15 @@ We'll use `blflash`, the flashing tool created in Rust by [`spacemeowx2`](https:
     [TRACE blflash::flasher] 5ms send count 500
     [TRACE blflash::flasher] handshake sent elapsed 6.51343ms
     [INFO  blflash::flasher] Entered eflash_loader
+    ```
+
+    `blflash` starts by sending the `eflash_loader` program to PineCone.
+
+    Then `eflash_loader` starts running on PineCone.
+    
+    `eflash_loader` receives our firmware from `blflash` and flashes our firmware to ROM...
+
+    ```text
     [INFO  blflash::flasher] Skip segment addr: 0 size: 47504 sha256 matches
     [INFO  blflash::flasher] Skip segment addr: e000 size: 272 sha256 matches
     [INFO  blflash::flasher] Skip segment addr: f000 size: 272 sha256 matches
@@ -135,6 +149,8 @@ We'll use `blflash`, the flashing tool created in Rust by [`spacemeowx2`](https:
     [INFO  blflash::flasher] Skip segment addr: 1f8000 size: 5671 sha256 matches
     [INFO  blflash] Success
     ```
+
+    `blflash` (and `eflash_loader`) has successfully flashed 5 locations in ROM. We'll learn more about this.
 
 1.  If we see this error...
 
@@ -327,7 +343,7 @@ ef_dbg_pwd_low     = 0
 ef_dbg_pwd_high    = 0
 ```
 
-# Boot Image                                                                     
+# Boot Image
 
 TODO
                     
@@ -344,7 +360,7 @@ Boot2 Firmware:
 https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/bl602_boot2
 
 
-# Firmware Image                                                                            
+# Firmware Image
 
 TODO
 
