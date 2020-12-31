@@ -527,6 +527,43 @@ Would you like me to...
 
 Please support my work as a [GitHub Sponsor](https://github.com/sponsors/lupyuen)! 🙏
 
+# Flash Firmware in 2 Stages
+
+Earlier we saw that our firmware is flashed to BL602 in two stages...
+
+1.  __Stage 1__: Transmit the __EFlash Loader__ to BL602
+
+1.  __Stage 2__: Transmit our firmware to the EFlash Loader and write to ROM
+    	
+## Flash Stage 1
+
+First we transmit the firmware code for the EFlash Loader to BL602 at 512 kbps... (Slower = More Reliable)
+
+-   EFlash Loader Binary: [`eflash_loader_40m.bin`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/eflash_loader/eflash_loader_40m.bin)
+
+(`40m` refers to the BL602 Clock Speed: 40 MHz)
+
+And we start running the EFlash Loader on BL602. (Probably in Cache Memory, similar to RAM)
+
+## Flash Stage 2
+
+```    			                                                                    
+utils.StartProgram(   			                                                                    
+"/dev/ttyUSB0", 
+nil, 
+512000, 
+"bl602/eflash_loader/eflash_loader_40m.bin", 
+2000000, 
+bins, 
+5000
+) 			                                                                    
+```
+
+(Where is the source code for the EFlash Loader? 🤔)
+
+
+two baudrate setting: 512000 is for downloading eflash_loader.bin, and 2000000 for downloading the generated bins.
+
 # Firmware Image
 
 TODO
@@ -543,48 +580,15 @@ Output:
 FWOffset:
 0x1000,                                     
 
-# Flash to ROM
-
-TODO
-    	
-utils.StartProgram:
-    			                            
-"bl602/image/boot2image.bin			                            
-0x000000",
-    			                                    
-"bl602/image/partition.bin 			                                    
-0xE000",
-    			                                            
-"bl602/image/partition.bin                                          
-0xF000",
-    			                                                    
-"bl602/image/fwimage.bin                                                   
-0x10000",
-    			                                                            
-"bl602/image/ro_params.dtb                                                        
-0x1F8000",   			                                                                
-
-```    			                                                                    
-utils.StartProgram(   			                                                                    
-"/dev/ttyUSB0", 
-nil, 
-512000, 
-"bl602/eflash_loader/eflash_loader_40m.bin", 
-2000000, 
-bins, 
-5000
-) 			                                                                    
-```
-
-https://github.com/bouffalolab/BLOpenFlasher/issues/2
-
-two baudrate setting: 512000 is for downloading eflash_loader.bin, and 2000000 for downloading the generated bins.
-
 # blflash vs BLOpenFlasher
 
 TODO
 
 _Why the switcheroo? We started this article with blflash (in Rust) ... And pivoted to BLOpenFlasher (in Go)?_
+
+Because of... issues
+
+https://github.com/bouffalolab/BLOpenFlasher/issues/2
 
 # Appendix: BL602 Partition Table
 
