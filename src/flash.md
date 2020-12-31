@@ -189,7 +189,7 @@ So far we have only flashed our Firmware Image to PineCone. This is one of 5 int
 | __Boot Image__ <br> `0x0000 0000`      | Code and data for <br>Boot Firmware		
 | __Partition Table__ <br> `0x0000 E000` | Partition Table for <br>Flash ROM
 | __Partition Table__ <br> `0x0000 F000` | Partition Table for <br> Flash ROM <br>(For redundancy?)
-| __Firmware Image__ <br> `0x0001 0000`	 | Code and data for <br> Application firmware
+| __Firmware Image__ <br> `0x0001 0000`	 | Code and data for <br> Application Firmware
 | __Device Tree__ <br> `0x001F 8000`     | Default settings for<br> peripherals and ports: <br>UART, GPIO, SPI, WiFi, ...
 
 This info was deciphered from the official Go flashing tool for BL602...
