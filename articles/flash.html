@@ -195,40 +195,40 @@ Finished dev [unoptimized + debuginfo] target(s) in 4m 28s
 </li>
 <li>
 <p>We should see...</p>
-<pre><code class="language-text">    Finished dev [unoptimized + debuginfo] target(s) in 0.10s
-    Running `target/debug/blflash flash sdk_app_helloworld.bin --port /dev/ttyUSB0`
-[INFO  blflash::flasher] Start connection...
-[TRACE blflash::flasher] 5ms send count 55
-[TRACE blflash::flasher] handshake sent elapsed 1.059862ms
-[INFO  blflash::flasher] Connection Succeed
+<pre><code class="language-text">Finished dev [unoptimized + debuginfo] target(s) in 0.10s
+Running `target/debug/blflash flash sdk_app_helloworld.bin --port /dev/ttyUSB0`
+Start connection...
+5ms send count 55
+handshake sent elapsed 1.059862ms
+Connection Succeed
 </code></pre>
 <p><code>blflash</code> has connected successfully to PineCone over the USB Serial port.</p>
-<pre><code class="language-text">[INFO  blflash] Bootrom version: 1
-[TRACE blflash] Boot info: BootInfo { len: 14, bootrom_version: 1, otp_info: [0, 0, 0, 0, 3, 0, 0, 0, 61, 9d, c0, 5, b9, 18, 1d, 0] }
-[INFO  blflash::flasher] Sending eflash_loader...
-[INFO  blflash::flasher] Finished 3.375522563s 8.47KB/s
-[TRACE blflash::flasher] 5ms send count 500
-[TRACE blflash::flasher] handshake sent elapsed 6.51343ms
-[INFO  blflash::flasher] Entered eflash_loader
+<pre><code class="language-text">Bootrom version: 1
+Boot info: BootInfo { len: 14, bootrom_version: 1, otp_info: [0, 0, 0, 0, 3, 0, 0, 0, 61, 9d, c0, 5, b9, 18, 1d, 0] }
+Sending eflash_loader...
+Finished 3.375522563s 8.47KB/s
+5ms send count 500
+handshake sent elapsed 6.51343ms
+Entered eflash_loader
 </code></pre>
 <p><code>blflash</code> starts by sending the <code>eflash_loader</code> program to PineCone. Then <code>eflash_loader</code> starts running on PineCone.</p>
 <p><code>eflash_loader</code> receives our firmware from <code>blflash</code> and flashes our firmware to ROM...</p>
-<pre><code class="language-text">[INFO  blflash::flasher] Skip segment addr: 0 size: 47504 sha256 matches
-[INFO  blflash::flasher] Skip segment addr: e000 size: 272 sha256 matches
-[INFO  blflash::flasher] Skip segment addr: f000 size: 272 sha256 matches
-[INFO  blflash::flasher] Skip segment addr: 10000 size: 869328 sha256 matches
-[INFO  blflash::flasher] Skip segment addr: 1f8000 size: 5671 sha256 matches
-[INFO  blflash] Success
+<pre><code class="language-text">Skip segment addr: 0 size: 47504 sha256 matches
+Skip segment addr: e000 size: 272 sha256 matches
+Skip segment addr: f000 size: 272 sha256 matches
+Skip segment addr: 10000 size: 869328 sha256 matches
+Skip segment addr: 1f8000 size: 5671 sha256 matches
+Success
 </code></pre>
 <p><code>blflash</code> (and <code>eflash_loader</code>) has successfully flashed 5 locations in BL602 ROM: <code>0x0</code>, <code>0xe000</code>, <code>0xf000</code>, <code>0x10000</code> (that's our firmware) and <code>0x1f8000</code></p>
 <p>We'll learn more about this.</p>
 </li>
 <li>
 <p>If we see this error...</p>
-<pre><code class="language-text">[INFO  blflash::flasher] Start connection...
-[TRACE blflash::flasher] 5ms send count 55
-[TRACE blflash::flasher] handshake sent elapsed 850.287µs
-[INFO  blflash::flasher] Connection Succeed
+<pre><code class="language-text">Start connection...
+5ms send count 55
+handshake sent elapsed 850.287µs
+Connection Succeed
 Error: IO error: Operation timed out
 caused by: Operation timed out
 </code></pre>
@@ -236,8 +236,8 @@ caused by: Operation timed out
 </li>
 <li>
 <p>If we see this error...</p>
-<pre><code class="language-text">[INFO  blflash::flasher] Sending eflash_loader...
-[INFO  blflash::flasher] Finished 2.988880532s 9.56KB/s
+<pre><code class="language-text">Sending eflash_loader...
+Finished 2.988880532s 9.56KB/s
 Error: IO error while using serial port: Invalid argument
 caused by: Invalid argument
 </code></pre>
@@ -623,9 +623,11 @@ ef_dbg_pwd_high    = 0
 </li>
 </ol>
 <p>This information was derived from <a href="https://github.com/spacemeowx2/blflash/blob/main/blflash/src/main.rs"><code>main.rs</code></a> in <a href="https://github.com/spacemeowx2/blflash"><code>blflash</code></a></p>
+<p><img src="https://lupyuen.github.io/images/flash-pinebook.jpg" alt="PineCone BL602 connected to Pinebook Pro" /></p>
+<p><em>PineCone BL602 connected to Pinebook Pro</em></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">10 What's Next</a></h1>
-<p>It has been fun reverse-engineering the BL602 source code... I'm getting better at it!</p>
-<p>I hope to uncover more BL602 goodies... Stay tuned!</p>
+<p>I had fun reverse-engineering the BL602 source code... And I'm delighted that the BL602 Community is creating really awesome tools!</p>
+<p>I hope to uncover more BL602 goodies in 2021. Stay tuned!</p>
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io">Check out my articles</a></p>
