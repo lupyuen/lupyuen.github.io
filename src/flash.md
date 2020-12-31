@@ -32,7 +32,7 @@ Today we shall learn to...
 
 Follow these steps to flash a Firmware Binary File (like `sdk_app_helloworld.bin`) on our Linux (x64 and Arm64), macOS or Windows computer.
 
-(On Windows: Use plain old Windows CMD Commpand Prompt, not WSL)
+(On Windows: Use plain old Windows CMD Command Prompt, not WSL)
 
 ##  Install rustup
 
