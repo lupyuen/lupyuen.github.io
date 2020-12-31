@@ -579,7 +579,7 @@ EFlash Loader must acknowledge the data transfer within 5 seconds. Or the flashi
 
 # blflash vs BLOpenFlasher
 
-_We started this article with blflash (in Rust) ... And pivoted to BLOpenFlasher (in Go)? Why the switcheroo?_
+_We started this article with blflash (in Rust) ... And pivoted to BLOpenFlasher (in Go). Why the switcheroo?_
 
 -   [__BLOpenFlasher__](https://github.com/bouffalolab/BLOpenFlasher) is the official open-source flashing tool for BL602... But we couldn't run make it work on Linux and Windows CMD [(See this)](https://github.com/bouffalolab/BLOpenFlasher/issues/2)
 
