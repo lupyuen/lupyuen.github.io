@@ -135,9 +135,7 @@ We'll use `blflash`, the flashing tool created in Rust by [`spacemeowx2`](https:
     [INFO  blflash::flasher] Entered eflash_loader
     ```
 
-    `blflash` starts by sending the `eflash_loader` program to PineCone.
-
-    Then `eflash_loader` starts running on PineCone.
+    `blflash` starts by sending the `eflash_loader` program to PineCone. Then `eflash_loader` starts running on PineCone.
     
     `eflash_loader` receives our firmware from `blflash` and flashes our firmware to ROM...
 
@@ -150,7 +148,9 @@ We'll use `blflash`, the flashing tool created in Rust by [`spacemeowx2`](https:
     [INFO  blflash] Success
     ```
 
-    `blflash` (and `eflash_loader`) has successfully flashed 5 locations in ROM. We'll learn more about this.
+    `blflash` (and `eflash_loader`) has successfully flashed 5 locations in BL602 ROM: `0x0`, `0xe000`, `0xf000`, `0x10000` (that's our firmware) and `0x1f8000`
+    
+    We'll learn more about this.
 
 1.  If we see this error...
 
@@ -343,6 +343,127 @@ ef_dbg_pwd_low     = 0
 ef_dbg_pwd_high    = 0
 ```
 
+# Device Tree
+
+_What's a Device Tree?_
+
+Device Tree:
+"bl602/device_tree/bl_factory_params_IoTKitA_40M.dts",
+
+[More about Linux Device Trees](https://www.kernel.org/doc/html/latest/devicetree/usage-model.html)
+
+## GPIO LED
+
+```text
+gpio0 {                                  
+    status = "okay";                     
+    pin  = <5>;                          
+    feature = "led";                     
+    active = "Hi"; //Hi or Lo
+    mode = "blink"; //blink or hearbeat
+    time = <100>; //duration for this mode
+```
+
+## GPIO Button
+
+```text
+gpio2 {
+    status = "okay";
+    pin = <2>;
+    feature = "button";
+    active = "Hi";
+    mode = "multipress";
+    button {
+        debounce = <10>;
+        short_press_ms {
+            start = <100>;
+            end = <3000>;
+            kevent = <2>;
+        };
+        long_press_ms {
+            start = <6000>;
+            end = <10000>;
+            kevent = <3>;
+        };
+        longlong_press_ms {
+            start = <15000>;
+            kevent = <4>;
+        };
+        trig_level = "Hi";
+```
+
+## UART
+
+```text
+    uart {
+        #address-cells = <1>;
+        #size-cells = <1>;
+        uart@4000A000 {
+            status = "okay";
+            id = <0>;
+            compatible = "bl602_uart";
+            path = "/dev/ttyS0";
+            baudrate = <2000000>;
+            pin {
+                rx = <7>;
+                tx = <16>;
+            };
+            buf_size {
+                rx_size = <512>;
+                tx_size = <512>;
+            };
+            feature {
+                tx = "okay";
+                rx = "okay";
+                cts = "disable";
+                rts = "disable";
+            };
+        };
+```
+
+## PWM
+
+    pwm {
+        #address-cells = <1>;
+        #size-cells = <1>;
+        pwm@4000A420 {
+            status = "okay";
+            compatible = "bl602_pwm";
+            reg = <0x4000A420 0x20>;
+            path = "/dev/pwm0";
+            id = <0>;
+            pin = <0>;
+            freq = <800000>;
+            duty = <50>;
+        };
+
+## WiFi
+
+```text
+    wifi {
+        #address-cells = <1>;
+        #size-cells = <1>;
+        region {
+            country_code = <86>;
+        };
+        mac {
+            mode = "MBF";
+            sta_mac_addr = [C8 43 57 82 73 40];
+            ap_mac_addr = [C8 43 57 82 73 02];
+        };
+        sta {
+            ssid = "yourssid";
+            pwd = "yourapssword";
+            auto_connect_enable = <0>;
+        };
+        ap {
+            ssid = "bl_test_005";
+            pwd = "12345678";
+            ap_channel = <11>;
+            auto_chan_detect = "disable";
+        };
+```
+
 # Boot Image
 
 TODO
@@ -375,21 +496,6 @@ Output:
                                     
 FWOffset:
 0x1000,                                     
-
-# Device Tree
-
-TODO
-
-Script:
-"dts2dtb.py",
-
-Device Tree:
-"bl602/device_tree/bl_factory_params_IoTKitA_40M.dts",
-
-Output:
-"bl602/image/ro_params.dtb"
-
-https://www.kernel.org/doc/html/latest/devicetree/usage-model.html
 
 # Flash to ROM
 
@@ -542,6 +648,8 @@ len = 0
 Note that the WiFi SSID configuration is stored here.
 
 [`BLOpenFlasher/bl602/device_tree/bl_factory_params_IoTKitA_40M.dts`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/device_tree/bl_factory_params_IoTKitA_40M.dts)
+
+Converted by script "dts2dtb.py" to "bl602/image/ro_params.dtb" and flashed to `0x1F8000`
 
 ```text
 /dts-v1/;
