@@ -174,7 +174,7 @@ We'll use `blflash`, the flashing tool created in Rust by [`spacemeowx2`](https:
     caused by: Invalid argument
     ```
 
-    It probably means that the baud rate is too high. Try a lower baud rate...
+    It probably means that the baud rate is too high. Try a lower baud rate like 115.2 kbps...
 
     ```bash
     cargo run flash sdk_app_helloworld.bin --port /dev/tty.usbserial-1420 --initial-baud-rate 115200 --baud-rate 115200
@@ -597,17 +597,24 @@ _How different is `blflash` from BLOpenFlasher?_
 
     `blflash` transmits the ROM data to be flashed at __1 Mbps__ (vs __2 Mbps__ in BLOpenFlasher)
 
-    The transmission speeds may be specified through the command-line options `--initial-baud-rate` (for EFlash Loader) and `--baud-rate` (for ROM data).
+    The transmission speeds may be specified through the command-line options `--initial-baud-rate` (for EFlash Loader) and `--baud-rate` (for ROM data)...
+
+    ```bash
+    cargo run flash sdk_app_helloworld.bin \
+        --port /dev/tty.usbserial-1420 \
+        --initial-baud-rate 115200 \
+        --baud-rate 115200
+    ```
 
 1.  `blflash` doesn't support compiling Device Trees into binary format.
 
     It uses a hard-coded binary Device Tree located here...
 
-    -   Device Tree Binary: [`ro_params.dtb`](https://github.com/spacemeowx2/blflash/blob/main/blflash/src/chip/bl602/cfg/ro_params.dtb)
+    -   __Device Tree Binary__: [`ro_params.dtb`](https://github.com/spacemeowx2/blflash/blob/main/blflash/src/chip/bl602/cfg/ro_params.dtb)
 
     BLOpenFlasher uses a Python script to compile the Device Tree into binary...
 
-    -   Compile Device Tree to binary format: [`dts2dtb.py`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/dts2dtb.py)
+    -   __Compile Device Tree to binary format__: [`dts2dtb.py`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/dts2dtb.py)
 
 1.  What if we need to modify the Device Tree?
 
@@ -619,21 +626,51 @@ _How different is `blflash` from BLOpenFlasher?_
 
 1.  Configuration files and firmware binaries for `blflash`...
 
-    -   Partition Table: [`partition_cfg_2M.toml`](https://github.com/spacemeowx2/blflash/blob/main/blflash/src/chip/bl602/cfg/partition_cfg_2M.toml)
+    -   __Partition Table__: [`partition_cfg_2M.toml`](https://github.com/spacemeowx2/blflash/blob/main/blflash/src/chip/bl602/cfg/partition_cfg_2M.toml)
 
-    -   EFuse Configuration: [`efuse_bootheader_cfg.conf`](https://github.com/spacemeowx2/blflash/blob/main/blflash/src/chip/bl602/cfg/efuse_bootheader_cfg.conf)
+    -   __EFuse Configuration__: [`efuse_bootheader_cfg.conf`](https://github.com/spacemeowx2/blflash/blob/main/blflash/src/chip/bl602/cfg/efuse_bootheader_cfg.conf)
 
-    -   EFlash Loader: [`eflash_loader_40m.bin`](https://github.com/spacemeowx2/blflash/blob/main/blflash/src/chip/bl602/image/eflash_loader_40m.bin)
+    -   __Boot Image__: [`blsp_boot2.bin`](https://github.com/spacemeowx2/blflash/blob/main/blflash/src/chip/bl602/image/blsp_boot2.bin)
 
-    -   Boot Image: [`blsp_boot2.bin`](https://github.com/spacemeowx2/blflash/blob/main/blflash/src/chip/bl602/image/blsp_boot2.bin)
+    -   __EFlash Loader__: [`eflash_loader_40m.bin`](https://github.com/spacemeowx2/blflash/blob/main/blflash/src/chip/bl602/image/eflash_loader_40m.bin)
 
 This information was derived from [`main.rs`](https://github.com/spacemeowx2/blflash/blob/main/blflash/src/main.rs) in [`blflash`](https://github.com/spacemeowx2/blflash)
 
+# What's Next
+
+It has been fun reverse-engineering the BL602 source code... I'm getting better at it!
+
+I hope to uncover more BL602 goodies... Stay tuned!
+
+-   [Check out my articles](https://lupyuen.github.io)
+
+-   [RSS Feed](https://lupyuen.github.io/rss.xml)
+
+-   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+
+_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
+
+[`github.com/lupyuen/lupyuen.github.io/src/flash.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/flash.md)
+
+# Appendix: BL602 Flashing Screenshots
+
+## Manjaro Linux Arm64 on Pinebook Pro
+
+![Manjaro Linux Arm64 on Pinebook Pro](https://lupyuen.github.io/images/flash-linux.png)
+
+## macOS Catalina
+
+![macOS Catalina](https://lupyuen.github.io/images/flash-macos.png)
+
+## Windows 10
+
+![Windows 10](https://lupyuen.github.io/images/flash-windows.png)
+
 # Appendix: BL602 Partition Table
 
-From [`BLOpenFlasher/bl602/partition/partition_cfg_2M.toml`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/partition/partition_cfg_2M.toml)
+-   From [`BLOpenFlasher/bl602/ partition/partition_cfg_2M.toml`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/partition/partition_cfg_2M.toml)
 
-Converted to "bl602/image/partition.bin" and flashed to `0xE000` and `0xF000`
+-   Will be converted to `bl602/image/partition.bin` and flashed to `0xE000` and `0xF000`
 
 ```text
 [pt_table]
@@ -734,11 +771,9 @@ len = 0
 
 # Appendix: BL602 Device Tree
 
-Note that the WiFi SSID configuration is stored here.
+-   From [`BLOpenFlasher/bl602/device_tree/ bl_factory_params_IoTKitA_40M.dts`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/device_tree/bl_factory_params_IoTKitA_40M.dts)
 
-[`BLOpenFlasher/bl602/device_tree/bl_factory_params_IoTKitA_40M.dts`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/device_tree/bl_factory_params_IoTKitA_40M.dts)
-
-Converted by script "dts2dtb.py" to "bl602/image/ro_params.dtb" and flashed to `0x1F8000`
+-   Will be converted by script [`dts2dtb.py`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/dts2dtb.py) to `bl602/image/ro_params.dtb` and flashed to `0x1F8000`
 
 ```text
 /dts-v1/;
@@ -1086,7 +1121,9 @@ Converted by script "dts2dtb.py" to "bl602/image/ro_params.dtb" and flashed to `
 
 # Appendix: BL602 EFuse Configuration
 
-[`BLOpenFlasher/bl602/efuse_bootheader/efuse_bootheader_cfg.conf`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/efuse_bootheader/efuse_bootheader_cfg.conf)
+-   From [`BLOpenFlasher/bl602/ efuse_bootheader/efuse_bootheader_cfg.conf`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/efuse_bootheader/efuse_bootheader_cfg.conf)
+
+-   Will be used for transforming Boot Image and Firmware Image
 
 ```text
 [EFUSE_CFG]
@@ -1287,7 +1324,7 @@ crc32 = 0xdeadbeef
 
 # Appendix: BLDevCube Flashing Log
 
-Here is a sample flashing log emitted by `bl_iot_sdk/tools/flash_tool/BLDevCube.exe` on Windows...
+Sample flashing log emitted by `bl_iot_sdk/tools/flash_tool/BLDevCube.exe` on Windows...
 
 ```text
 [23:01:59.398] - [param]
