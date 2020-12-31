@@ -174,7 +174,7 @@ We'll use `blflash`, the flashing tool created in Rust by [`spacemeowx2`](https:
     caused by: Invalid argument
     ```
 
-    It probably means that the buad rate is too high. Try specifying a lower baud rate, like...
+    It probably means that the baud rate is too high. Try a lower baud rate...
 
     ```bash
     cargo run flash sdk_app_helloworld.bin --port /dev/tty.usbserial-1420 --initial-baud-rate 115200 --baud-rate 115200
