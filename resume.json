@@ -156,6 +156,13 @@
   ],
   "publications": [
     {
+      "name": "Flashing Firmware to PineCone BL602",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2021-01-01",
+      "website": "https://lupyuen.github.io/articles/flash",
+      "summary": "What happens when we flash RISC-V firmware to PineCone BL602 Board... And what's inside the BL602 Boot Image, Partition Table, Device Tree and EFuse Configuration"
+    },
+    {
       "name": "Porting Mynewt to PineCone BL602",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2020-12-21",
