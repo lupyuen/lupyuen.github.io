@@ -357,7 +357,7 @@ _Arm Microcontrollers don't use Device Trees... Is this overkill for BL602?_
 
 We may configure BL602's peripherals and ports through the firmware code by calling the BL602 Hardware Abstraction Layer (HAL). So it's not mandatory to use the Device Tree.
 
-Configuring the WiFi stack for BL602 can get cumbersome if we code it in the firmware. Thus is makes sense to embed the WiFi configuration inside the Device Tree. (We'll see this in a while)
+Configuring the WiFi stack for BL602 can get cumbersome if we code it in the firmware. Thus it makes sense to embed the WiFi configuration inside the Device Tree. (We'll see this in a while)
 
 _Which functions in the BL602 HAL will use the Device Tree to configure the BL602 peripherals and ports?_
 
