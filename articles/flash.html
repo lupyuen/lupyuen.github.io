@@ -580,12 +580,12 @@ ef_dbg_pwd_high    = 0
 <li><a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en">BL602 ISP Flash Programming</a></li>
 </ul>
 <h2 id="flashing-stage-1" class="section-header"><a href="#flashing-stage-1">8.1 Flashing Stage 1</a></h2>
-<p>First we transmit the firmware code for the EFlash Loader to BL602 at 512 kbps... (Slower = More Reliable)</p>
+<p>First we transmit the firmware code for the EFlash Loader to BL602 at <strong>512 kbps</strong>... (Slower = More Reliable)</p>
 <ul>
 <li>EFlash Loader Binary: <a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/eflash_loader/eflash_loader_40m.bin"><code>eflash_loader_40m.bin</code></a></li>
 </ul>
 <p>(&quot;<code>40m</code>&quot; refers to the BL602 Clock Speed: 40 MHz)</p>
-<p>Then we start running the EFlash Loader on BL602. (Probably in Cache Memory, similar to RAM)</p>
+<p>Then we start running the EFlash Loader on BL602 in Cache Memory (similar to RAM) at address <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/tools/flash_tool/bl602/eflash_loader/eflash_loader.map#L7439"><code>0x2201 0000</code></a></p>
 <h2 id="flashing-stage-2" class="section-header"><a href="#flashing-stage-2">8.2 Flashing Stage 2</a></h2>
 <p>Next we transmit 5 chunks of data to EFlash Loader, which writes them to BL602 ROM...</p>
 <table><thead><tr><th align="left">ROM Address</th><th align="left">ROM Contents</th></tr></thead><tbody>
@@ -595,9 +595,9 @@ ef_dbg_pwd_high    = 0
 <tr><td align="left"><code>0x0001 0000</code></td><td align="left"><strong>Firmware Image</strong> <br>(transformed)</td></tr>
 <tr><td align="left"><code>0x001F 8000</code></td><td align="left"><strong>Device Tree</strong> <br>(binary format)</td></tr>
 </tbody></table>
-<p>The data is transmitted at 2 Mbps. (Instead of 512 kbps earlier)</p>
+<p>The data is transmitted at <strong>2 Mbps</strong>. (Instead of 512 kbps earlier)</p>
 <p>EFlash Loader must acknowledge the data transfer within 5 seconds. Or the flashing shall be considered failed.</p>
-<p>(Where is the source code for the EFlash Loader? 🤔)</p>
+<p>(Where is the source code for the EFlash Loader: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/tools/flash_tool/bl602/eflash_loader/eflash_loader.map#L7460"><code>bflb_eflash_loader_cmds</code></a>? 🤔)</p>
 <h1 id="blflash-vs-blopenflasher" class="section-header"><a href="#blflash-vs-blopenflasher">9 blflash vs BLOpenFlasher</a></h1>
 <p><em>We started this article with blflash (in Rust) ... And pivoted to BLOpenFlasher (in Go). Why the switcheroo?</em></p>
 <ul>

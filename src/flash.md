@@ -621,13 +621,13 @@ The BL602 UART Flashing Protocol is explained here...
 
 ## Flashing Stage 1
 
-First we transmit the firmware code for the EFlash Loader to BL602 at 512 kbps... (Slower = More Reliable)
+First we transmit the firmware code for the EFlash Loader to BL602 at __512 kbps__... (Slower = More Reliable)
 
 -   EFlash Loader Binary: [`eflash_loader_40m.bin`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/eflash_loader/eflash_loader_40m.bin)
 
 ("`40m`" refers to the BL602 Clock Speed: 40 MHz)
 
-Then we start running the EFlash Loader on BL602. (Probably in Cache Memory, similar to RAM)
+Then we start running the EFlash Loader on BL602 in Cache Memory (similar to RAM) at address [`0x2201 0000`](https://github.com/lupyuen/bl_iot_sdk/blob/master/tools/flash_tool/bl602/eflash_loader/eflash_loader.map#L7439)
 
 ## Flashing Stage 2
 
@@ -641,11 +641,11 @@ Next we transmit 5 chunks of data to EFlash Loader, which writes them to BL602 R
 | `0x0001 0000`	| __Firmware Image__ <br>(transformed)
 | `0x001F 8000` | __Device Tree__ <br>(binary format)
 
-The data is transmitted at 2 Mbps. (Instead of 512 kbps earlier)
+The data is transmitted at __2 Mbps__. (Instead of 512 kbps earlier)
 
 EFlash Loader must acknowledge the data transfer within 5 seconds. Or the flashing shall be considered failed.
 
-(Where is the source code for the EFlash Loader? 🤔)
+(Where is the source code for the EFlash Loader: [`bflb_eflash_loader_cmds`](https://github.com/lupyuen/bl_iot_sdk/blob/master/tools/flash_tool/bl602/eflash_loader/eflash_loader.map#L7460)? 🤔)
 
 # blflash vs BLOpenFlasher
 
