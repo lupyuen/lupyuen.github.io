@@ -714,9 +714,11 @@ _PineCone BL602 connected to Pinebook Pro_
 
 # What's Next
 
-I had fun reverse-engineering the BL602 source code... And I'm delighted that the BL602 Community is creating really awesome tools!
+I had fun reverse-engineering the BL602 source code... And I'm delighted that the BL602 Community is creating really awesome tools like `blflash`!
 
 I hope to uncover more BL602 goodies in 2021. Stay tuned!
+
+-   [Discuss on Reddit](https://www.reddit.com/r/RISCV/comments/knsju9/flashing_firmware_to_pinecone_bl602/)
 
 -   [Check out my articles](https://lupyuen.github.io)
 
