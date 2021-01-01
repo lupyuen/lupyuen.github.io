@@ -28,6 +28,8 @@ Today we shall learn to...
     -   __Firmware Image__
     -   __Device Tree__
 
+And we'll better understand the (undocumented) internals of the BL602 SoC!
+
 # Flash BL602 Firmware with Linux, macOS and Windows
 
 Follow these steps to flash a BL602 Firmware Binary File (like `sdk_app_helloworld.bin`) from Linux (x64 and Arm64), macOS and Windows to PineCone.
