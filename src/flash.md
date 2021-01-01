@@ -663,6 +663,8 @@ EFlash Loader must acknowledge the data transfer within 5 seconds. Or the flashi
 
 (Where is the source code for the EFlash Loader: [`bflb_eflash_loader_cmds`](https://github.com/lupyuen/bl_iot_sdk/blob/master/tools/flash_tool/bl602/eflash_loader/eflash_loader.map#L7460)? 🤔)
 
+[More about EFlash Loader in BL602 ISP Doc](https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en)
+
 # blflash vs BLOpenFlasher
 
 _We started this article with blflash (in Rust) ... And pivoted to BLOpenFlasher (in Go). Why the switcheroo?_
