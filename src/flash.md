@@ -150,15 +150,19 @@ _Flashing PineCone with Manjaro Linux Arm64 on Pinebook Pro_
     EFlash Loader receives our firmware from `blflash` and flashes our firmware to ROM...
 
     ```text
-    Skip segment addr: 0 size: 47504 sha256 matches
+    Erase flash addr: 0 size: 47504
+    Program flash... c85e11a0083a27f72f6e1bab9b67cac98d5d31ed90b64b78e6e89e070d782c58
+    Program done 836.9393ms 55.49KB/s
     Skip segment addr: e000 size: 272 sha256 matches
     Skip segment addr: f000 size: 272 sha256 matches
-    Skip segment addr: 10000 size: 869328 sha256 matches
+    Erase flash addr: 10000 size: 25216
+    Program flash... 86e0abb8907b99dfc8e7771f58aa9c5473fc2439b3aa38613d0ad895681d656e
+    Program done 489.5002ms 50.36KB/s
     Skip segment addr: 1f8000 size: 5671 sha256 matches
     Success
     ```
 
-    `blflash` (and EFlash Loader) has successfully flashed 5 locations in BL602 ROM: `0x0`, `0xe000`, `0xf000`, `0x10000` (that's our firmware) and `0x1f8000`
+    `blflash` (and EFlash Loader) has successfully erased and flashed 5 locations in BL602 ROM: `0x0`, `0xe000`, `0xf000`, `0x10000` (that's our firmware) and `0x1f8000`
     
     We'll learn more about this.
 
