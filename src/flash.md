@@ -395,7 +395,7 @@ ef_dbg_pwd_high    = 0
 
 ![Transforming BL602 Boot Image](https://lupyuen.github.io/images/pinecone-flash-steps2a.png)
 
-_Transforming BL602 Boot Image_
+_Transforming the BL602 Boot Image_
 
 # Boot Image
 
@@ -429,7 +429,7 @@ Please support my work by becoming my [GitHub Sponsor](https://github.com/sponso
 
 ![Transforming BL602 Firmware Image](https://lupyuen.github.io/images/pinecone-flash-steps2b.png)
 
-_Transforming BL602 Firmware Image_
+_Transforming the BL602 Firmware Image_
 
 # Firmware Image
 
@@ -752,7 +752,7 @@ _Windows 10_
 
 -   From [`BLOpenFlasher/bl602/ partition/partition_cfg_2M.toml`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/partition/partition_cfg_2M.toml)
 
--   Will be converted to `bl602/image/partition.bin` and flashed to `0xE000` and `0xF000`
+-   Will be compiled to binary format `bl602/image/partition.bin` and flashed to `0xE000` and `0xF000`
 
 ![Compiling the BL602 Partition Table](https://lupyuen.github.io/images/pinecone-flash-steps2c.png)
 
@@ -859,11 +859,11 @@ len = 0
 
 -   From [`BLOpenFlasher/bl602/device_tree/ bl_factory_params_IoTKitA_40M.dts`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/device_tree/bl_factory_params_IoTKitA_40M.dts)
 
--   Will be converted by script [`dts2dtb.py`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/dts2dtb.py) to `bl602/image/ro_params.dtb` and flashed to `0x1F8000`
+-   Will be compiled by Python script [`dts2dtb.py`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/dts2dtb.py) to binary format `bl602/image/ro_params.dtb` and flashed to `0x1F8000`
 
 ![Compiling the BL602 Device Tree](https://lupyuen.github.io/images/pinecone-flash-steps2d.png)
 
-_BL602 Device Tree_
+_Compiling the BL602 Device Tree_
 
 ```text
 /dts-v1/;

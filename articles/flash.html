@@ -393,7 +393,7 @@ ef_dbg_pwd_high    = 0
 </code></pre>
 <p><a href="https://lupyuen.github.io/articles/flash#appendix-bl602-efuse-configuration">More about BL602 EFuse Configuration</a></p>
 <p><img src="https://lupyuen.github.io/images/pinecone-flash-steps2a.png" alt="Transforming BL602 Boot Image" /></p>
-<p><em>Transforming BL602 Boot Image</em></p>
+<p><em>Transforming the BL602 Boot Image</em></p>
 <h1 id="boot-image" class="section-header"><a href="#boot-image">5 Boot Image</a></h1>
 <p>Located at ROM address <code>0x0</code>, the <strong>Boot Image</strong> contains the firmware code that is run first upon booting BL602....</p>
 <ol>
@@ -430,7 +430,7 @@ ef_dbg_pwd_high    = 0
 </ol>
 <p>Please support my work by becoming my <a href="https://github.com/sponsors/lupyuen">GitHub Sponsor</a>! 🙏</p>
 <p><img src="https://lupyuen.github.io/images/pinecone-flash-steps2b.png" alt="Transforming BL602 Firmware Image" /></p>
-<p><em>Transforming BL602 Firmware Image</em></p>
+<p><em>Transforming the BL602 Firmware Image</em></p>
 <h1 id="firmware-image" class="section-header"><a href="#firmware-image">6 Firmware Image</a></h1>
 <p>Located at ROM address <code>0x10000</code>, the <strong>Firmware Image</strong> contains our application firmware code that is run after the boot firmware.</p>
 <p>Our firmware binary (<code>sdk_app_helloworld.bin</code>) gets transformed with the <strong>EFuse Configuration</strong> to create (with firmware offset <code>0x1000</code>)...</p>
@@ -695,7 +695,7 @@ ef_dbg_pwd_high    = 0
 <p>From <a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/partition/partition_cfg_2M.toml"><code>BLOpenFlasher/bl602/ partition/partition_cfg_2M.toml</code></a></p>
 </li>
 <li>
-<p>Will be converted to <code>bl602/image/partition.bin</code> and flashed to <code>0xE000</code> and <code>0xF000</code></p>
+<p>Will be compiled to binary format <code>bl602/image/partition.bin</code> and flashed to <code>0xE000</code> and <code>0xF000</code></p>
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/pinecone-flash-steps2c.png" alt="Compiling the BL602 Partition Table" /></p>
@@ -801,11 +801,11 @@ len = 0
 <p>From <a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/device_tree/bl_factory_params_IoTKitA_40M.dts"><code>BLOpenFlasher/bl602/device_tree/ bl_factory_params_IoTKitA_40M.dts</code></a></p>
 </li>
 <li>
-<p>Will be converted by script <a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/dts2dtb.py"><code>dts2dtb.py</code></a> to <code>bl602/image/ro_params.dtb</code> and flashed to <code>0x1F8000</code></p>
+<p>Will be compiled by Python script <a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/dts2dtb.py"><code>dts2dtb.py</code></a> to binary format <code>bl602/image/ro_params.dtb</code> and flashed to <code>0x1F8000</code></p>
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/pinecone-flash-steps2d.png" alt="Compiling the BL602 Device Tree" /></p>
-<p><em>BL602 Device Tree</em></p>
+<p><em>Compiling the BL602 Device Tree</em></p>
 <pre><code class="language-text">/dts-v1/;
 /include/ &quot;bl602_base.dtsi&quot;;
 // version: 17
