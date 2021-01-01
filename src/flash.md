@@ -44,7 +44,7 @@ Follow these steps to flash a BL602 Firmware Binary File (like `sdk_app_hellowor
 
 1.  Select the default options.
 
-    __For Linux:__ Install `rustup` as a Superuser
+    __For Linux:__ Install `rustup` as a Superuser with the `sudo` command
 
     __For Windows:__ Install `rustup` under plain old Windows, not WSL
 
