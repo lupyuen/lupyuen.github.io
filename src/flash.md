@@ -232,7 +232,7 @@ _Firmware running on PineCone_
 
     ![Connect putty to COM Port at speed 2000000](https://lupyuen.github.io/images/flash-putty.png)
 
-1.  Press the __`RST` Button__ on PineCone to restart the board.  As PineCone boots, we shall see the console output from our firmware...
+1.  Press the __`RST` Button__ on PineCone to restart the board.  As PineCone boots, we shall see the console output from our firmware: [`sdk_app_helloworld.bin`](https://github.com/lupyuen/bl_iot_sdk/releases/download/v1.0.0/sdk_app_helloworld.bin)
 
     ```text
     [helloworld]   start
