@@ -143,9 +143,9 @@ _Flashing PineCone with Manjaro Linux Arm64 on Pinebook Pro_
     Entered eflash_loader
     ```
 
-    `blflash` starts by sending the `eflash_loader` program to PineCone. Then `eflash_loader` starts running on PineCone.
+    `blflash` starts by sending the __EFlash Loader__ program to PineCone. Then EFlash Loader starts running on PineCone.
     
-    `eflash_loader` receives our firmware from `blflash` and flashes our firmware to ROM...
+    EFlash Loader receives our firmware from `blflash` and flashes our firmware to ROM...
 
     ```text
     Skip segment addr: 0 size: 47504 sha256 matches
@@ -156,7 +156,7 @@ _Flashing PineCone with Manjaro Linux Arm64 on Pinebook Pro_
     Success
     ```
 
-    `blflash` (and `eflash_loader`) has successfully flashed 5 locations in BL602 ROM: `0x0`, `0xe000`, `0xf000`, `0x10000` (that's our firmware) and `0x1f8000`
+    `blflash` (and EFlash Loader) has successfully flashed 5 locations in BL602 ROM: `0x0`, `0xe000`, `0xf000`, `0x10000` (that's our firmware) and `0x1f8000`
     
     We'll learn more about this.
 
@@ -230,7 +230,7 @@ _Firmware running on PineCone_
 
     ![Connect putty to COM Port at speed 2000000](https://lupyuen.github.io/images/flash-putty.png)
 
-1.  Press the `RST` Button on PineCone to restart the board.  As PineCone boots, we shall see the console output from our firmware...
+1.  Press the __`RST` Button__ on PineCone to restart the board.  As PineCone boots, we shall see the console output from our firmware...
 
     ```text
     [helloworld]   start
@@ -241,6 +241,14 @@ _Firmware running on PineCone_
     __For Linux and macOS:__ To exit the `screen` console, press `Ctrl-A` then `k` then `y`
 
     __For Windows:__ Close the `putty` window
+
+1.  What happens when we leave the PineCone Jumper in the `L` Position and connect with `screen` or `putty`?
+
+    We'll see that PineCone is stuck in a Holding Pattern, waiting to be flashed...
+
+    ![PineCone waiting to be flashed](https://lupyuen.github.io/images/flash-wait.png)
+
+    _PineCone waiting to be flashed_
 
 These steps were tested on Arm64 Linux (Pinebook Pro with Manjaro), macOS Catalina and Windows 10.
 
@@ -270,9 +278,9 @@ This info was deciphered from the official Go flashing tool for BL602: __BLOpenF
 
 Let's look at each area of BL602's Internal Flash ROM.
 
-![BL602 Partition Table](https://lupyuen.github.io/images/pinecone-flash-steps2c.png)
+![Compiling the BL602 Partition Table](https://lupyuen.github.io/images/pinecone-flash-steps2c.png)
 
-_BL602 Partition Table_
+_Compiling the BL602 Partition Table_
 
 # Partition Table
 
@@ -285,9 +293,9 @@ The Partition Table is referenced by the Start Code for BL602 Firmware...
 -   See ["Porting Mynewt to PineCone BL602"](https://lupyuen.github.io/articles/mynewt), Section 10: ["Implement Start Code"](https://lupyuen.github.io/articles/mynewt#implement-start-code
 )
 
-![Start Code from BL602 IoT SDK: start.S](https://lupyuen.github.io/images/mynewt-start.png)
+![BL602 Start Code refers to the Partition Table](https://lupyuen.github.io/images/flash-start.png)
 
-_Start Code from BL602 IoT SDK: start.S_
+_BL602 Start Code refers to the Partition Table_
 
 Here's a snippet from BL602's Partition Table: [`partition_cfg_2M.toml`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/partition/partition_cfg_2M.toml)
 
@@ -340,9 +348,9 @@ This is the Partition Entry for the Device Tree at ROM address `0x1F8000`. We'll
 
 [More about BL602 Partition Table](https://lupyuen.github.io/articles/flash#appendix-bl602-partition-table)
 
-![BL602 EFuse Configuration](https://lupyuen.github.io/images/pinecone-flash-steps3.png)
+![Transforming firmware images with BL602 EFuse Configuration](https://lupyuen.github.io/images/pinecone-flash-steps3.png)
 
-_BL602 EFuse Configuration_
+_Transforming firmware images with BL602 EFuse Configuration_
 
 # EFuse Configuration
 
@@ -385,9 +393,9 @@ ef_dbg_pwd_high    = 0
 
 [More about BL602 EFuse Configuration](https://lupyuen.github.io/articles/flash#appendix-bl602-efuse-configuration)
 
-![BL602 Boot Image](https://lupyuen.github.io/images/pinecone-flash-steps2a.png)
+![Transforming BL602 Boot Image](https://lupyuen.github.io/images/pinecone-flash-steps2a.png)
 
-_BL602 Boot Image_
+_Transforming BL602 Boot Image_
 
 # Boot Image
 
@@ -419,9 +427,9 @@ Would you like me to...
 
 Please support my work by becoming my [GitHub Sponsor](https://github.com/sponsors/lupyuen)! 🙏
 
-![BL602 Firmware Image](https://lupyuen.github.io/images/pinecone-flash-steps2b.png)
+![Transforming BL602 Firmware Image](https://lupyuen.github.io/images/pinecone-flash-steps2b.png)
 
-_BL602 Firmware Image_
+_Transforming BL602 Firmware Image_
 
 # Firmware Image
 
@@ -435,9 +443,9 @@ Our firmware binary (`sdk_app_helloworld.bin`) gets transformed with the __EFuse
 
 The transformed binary is flashed to BL602 at ROM address `0x10000`.
 
-![BL602 Device Tree](https://lupyuen.github.io/images/pinecone-flash-steps2d.png)
+![Compiling the BL602 Device Tree](https://lupyuen.github.io/images/pinecone-flash-steps2d.png)
 
-_BL602 Device Tree_
+_Compiling the BL602 Device Tree_
 
 # Device Tree
 
@@ -676,11 +684,11 @@ _How different is `blflash` from BLOpenFlasher?_
 
     -   __Compile Device Tree to binary format__: [`dts2dtb.py`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/dts2dtb.py)
 
-    ![BL602 Device Tree Compilation](https://lupyuen.github.io/images/pinecone-flash-steps2d.png)
+    ![Compiling the BL602 Device Tree](https://lupyuen.github.io/images/pinecone-flash-steps2d.png)
 
-    _BL602 Device Tree Compilation_
+    _Compiling the BL602 Device Tree_
 
-1.  What if we need to modify the Device Tree?
+1.  What if we need to modify the Device Tree (like the WiFi SSID settings)?
 
     We could compile the Device Tree with BLOpenFlasher. Then transfer the compiled Device Tree binary...
 
@@ -746,9 +754,9 @@ _Windows 10_
 
 -   Will be converted to `bl602/image/partition.bin` and flashed to `0xE000` and `0xF000`
 
-![BL602 Partition Table](https://lupyuen.github.io/images/pinecone-flash-steps2c.png)
+![Compiling the BL602 Partition Table](https://lupyuen.github.io/images/pinecone-flash-steps2c.png)
 
-_BL602 Partition Table_
+_Compiling the BL602 Partition Table_
 
 ```text
 [pt_table]
@@ -853,7 +861,7 @@ len = 0
 
 -   Will be converted by script [`dts2dtb.py`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/dts2dtb.py) to `bl602/image/ro_params.dtb` and flashed to `0x1F8000`
 
-![BL602 Device Tree](https://lupyuen.github.io/images/pinecone-flash-steps2d.png)
+![Compiling the BL602 Device Tree](https://lupyuen.github.io/images/pinecone-flash-steps2d.png)
 
 _BL602 Device Tree_
 
@@ -1207,9 +1215,9 @@ _BL602 Device Tree_
 
 -   Will be used for transforming Boot Image and Firmware Image
 
-![BL602 EFuse Configuration](https://lupyuen.github.io/images/pinecone-flash-steps3.png)
+![Transforming firmware images with BL602 EFuse Configuration](https://lupyuen.github.io/images/pinecone-flash-steps3.png)
 
-_BL602 EFuse Configuration_
+_Transforming firmware images with BL602 EFuse Configuration_
 
 ```text
 [EFUSE_CFG]
