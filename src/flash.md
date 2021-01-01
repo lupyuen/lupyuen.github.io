@@ -59,8 +59,6 @@ We'll use [__`blflash`__](https://github.com/spacemeowx2/blflash), the flashing 
     cd blflash
     ```
 
-    (Why can't we just `cargo install blflash`? Because it installs version 0.1.0 of `blflash` which doesn't work)
-
 1.  Build `blflash`...
 
     __For Linux:__
@@ -83,6 +81,8 @@ We'll use [__`blflash`__](https://github.com/spacemeowx2/blflash), the flashing 
     Compiling blflash v0.2.1 (blflash/blflash)
     Finished dev [unoptimized + debuginfo] target(s) in 4m 28s
     ```
+
+(Why can't we just `cargo install blflash`? Because it installs version 0.1.0 of `blflash` which doesn't work)
 
 ![Flashing PineCone with Manjaro Linux Arm64 on Pinebook Pro](https://lupyuen.github.io/images/flash-linux.png)
 
