@@ -18,7 +18,7 @@ _PineCone BL602 RISC-V Evaluation Board_
 
 Today we shall learn to...
 
-1.  __Flash BL602 Firmware__ to the PineCone Board on any computer: __Linux (x64 and Arm64), macOS, Windows__
+1.  __Flash BL602 Firmware__ to the PineCone Board with open-source tools on any computer: __Linux x64, Linux Arm64, macOS and Windows__
 
 1.  Appreciate all the things that we can flash to BL602...
 
@@ -32,9 +32,9 @@ And we'll better understand the (undocumented) internals of the __BL602 RISC-V +
 
 # Flash BL602 Firmware with Linux, macOS and Windows
 
-Follow these steps to flash a BL602 Firmware Binary File (like `sdk_app_helloworld.bin`) from Linux (x64 and Arm64), macOS and Windows to PineCone.
+Follow these steps to flash a BL602 Firmware Binary File (like `sdk_app_helloworld.bin`) to PineCone from Linux x64, Linux Arm64, macOS and Windows.
 
-(On Windows: Use plain old Windows CMD Command Prompt to execute the commands, not WSL)
+(On Windows: Use plain old Windows CMD Command Prompt to run the commands, not WSL)
 
 [Download demo firmware `sdk_app_helloworld.bin`](https://github.com/lupyuen/bl_iot_sdk/releases/download/v1.0.0/sdk_app_helloworld.bin)
 

@@ -116,7 +116,7 @@
 <p>Today we shall learn to...</p>
 <ol>
 <li>
-<p><strong>Flash BL602 Firmware</strong> to the PineCone Board on any computer: <strong>Linux (x64 and Arm64), macOS, Windows</strong></p>
+<p><strong>Flash BL602 Firmware</strong> to the PineCone Board with open-source tools on any computer: <strong>Linux x64, Linux Arm64, macOS and Windows</strong></p>
 </li>
 <li>
 <p>Appreciate all the things that we can flash to BL602...</p>
@@ -131,8 +131,8 @@
 </ol>
 <p>And we'll better understand the (undocumented) internals of the <strong>BL602 RISC-V + WiFi + Bluetooth SoC</strong>!</p>
 <h1 id="flash-bl602-firmware-with-linux-macos-and-windows" class="section-header"><a href="#flash-bl602-firmware-with-linux-macos-and-windows">1 Flash BL602 Firmware with Linux, macOS and Windows</a></h1>
-<p>Follow these steps to flash a BL602 Firmware Binary File (like <code>sdk_app_helloworld.bin</code>) from Linux (x64 and Arm64), macOS and Windows to PineCone.</p>
-<p>(On Windows: Use plain old Windows CMD Command Prompt to execute the commands, not WSL)</p>
+<p>Follow these steps to flash a BL602 Firmware Binary File (like <code>sdk_app_helloworld.bin</code>) to PineCone from Linux x64, Linux Arm64, macOS and Windows.</p>
+<p>(On Windows: Use plain old Windows CMD Command Prompt to run the commands, not WSL)</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/releases/download/v1.0.0/sdk_app_helloworld.bin">Download demo firmware <code>sdk_app_helloworld.bin</code></a></p>
 <h2 id="install-rustup" class="section-header"><a href="#install-rustup">1.1 Install rustup</a></h2>
 <ol>
@@ -217,14 +217,18 @@ Entered eflash_loader
 </code></pre>
 <p><code>blflash</code> starts by sending the <strong>EFlash Loader</strong> program to PineCone. Then EFlash Loader starts running on PineCone.</p>
 <p>EFlash Loader receives our firmware from <code>blflash</code> and flashes our firmware to ROM...</p>
-<pre><code class="language-text">Skip segment addr: 0 size: 47504 sha256 matches
+<pre><code class="language-text">Erase flash addr: 0 size: 47504
+Program flash... c85e11a0083a27f72f6e1bab9b67cac98d5d31ed90b64b78e6e89e070d782c58
+Program done 836.9393ms 55.49KB/s
 Skip segment addr: e000 size: 272 sha256 matches
 Skip segment addr: f000 size: 272 sha256 matches
-Skip segment addr: 10000 size: 869328 sha256 matches
+Erase flash addr: 10000 size: 25216
+Program flash... 86e0abb8907b99dfc8e7771f58aa9c5473fc2439b3aa38613d0ad895681d656e
+Program done 489.5002ms 50.36KB/s
 Skip segment addr: 1f8000 size: 5671 sha256 matches
 Success
 </code></pre>
-<p><code>blflash</code> (and EFlash Loader) has successfully flashed 5 locations in BL602 ROM: <code>0x0</code>, <code>0xe000</code>, <code>0xf000</code>, <code>0x10000</code> (that's our firmware) and <code>0x1f8000</code></p>
+<p><code>blflash</code> (and EFlash Loader) has successfully erased and flashed 5 locations in BL602 ROM: <code>0x0</code>, <code>0xe000</code>, <code>0xf000</code>, <code>0x10000</code> (that's our firmware) and <code>0x1f8000</code></p>
 <p>We'll learn more about this.</p>
 </li>
 <li>
