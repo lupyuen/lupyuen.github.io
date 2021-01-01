@@ -340,6 +340,10 @@ This is the Partition Entry for the Device Tree at ROM address `0x1F8000`. We'll
 
 [More about BL602 Partition Table](https://lupyuen.github.io/articles/flash#appendix-bl602-partition-table)
 
+![BL602 EFuse Configuration](https://lupyuen.github.io/images/pinecone-flash-steps3.png)
+
+_BL602 EFuse Configuration_
+
 # EFuse Configuration
 
 _What's an EFuse in BL602?_
@@ -1202,6 +1206,10 @@ _BL602 Device Tree_
 -   From [`BLOpenFlasher/bl602/ efuse_bootheader/ efuse_bootheader_cfg.conf`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/efuse_bootheader/efuse_bootheader_cfg.conf)
 
 -   Will be used for transforming Boot Image and Firmware Image
+
+![BL602 EFuse Configuration](https://lupyuen.github.io/images/pinecone-flash-steps3.png)
+
+_BL602 EFuse Configuration_
 
 ```text
 [EFUSE_CFG]
