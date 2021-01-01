@@ -101,12 +101,12 @@ We'll use [__`blflash`__](https://github.com/spacemeowx2/blflash), the flashing 
     __For macOS:__
 
     ```bash
-    cargo run flash sdk_app_helloworld.bin --port /dev/tty.usbserial-1420 --initial-baud-rate 115200 --baud-rate 115200
+    cargo run flash sdk_app_helloworld.bin --port /dev/tty.usbserial-1420 --initial-baud-rate 230400 --baud-rate 230400
     ```
 
     (Change `sdk_app_helloworld.bin` to the full path of the firmware binary to be flashed. Change `/dev/tty.usbserial-1420` to the USB Serial Device assigned to PineCone.)
 
-    Note that we're throttling the USB Serial Port from the default 1 Mbps to 115.2 kbps... macOS has trouble connecting to BL602 at high speeds.
+    Note that we're throttling the USB Serial Port from the default 1 Mbps to 230.4 kbps... macOS has trouble connecting to BL602 at high speeds.
 
     __For Windows:__
 

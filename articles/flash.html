@@ -185,10 +185,10 @@ Finished dev [unoptimized + debuginfo] target(s) in 4m 28s
 </code></pre>
 <p>(Change <code>sdk_app_helloworld.bin</code> to the full path of the firmware binary to be flashed. Change the USB serial port <code>/dev/ttyUSB0</code> if necessary.)</p>
 <p><strong>For macOS:</strong></p>
-<pre><code class="language-bash">cargo run flash sdk_app_helloworld.bin --port /dev/tty.usbserial-1420 --initial-baud-rate 115200 --baud-rate 115200
+<pre><code class="language-bash">cargo run flash sdk_app_helloworld.bin --port /dev/tty.usbserial-1420 --initial-baud-rate 230400 --baud-rate 230400
 </code></pre>
 <p>(Change <code>sdk_app_helloworld.bin</code> to the full path of the firmware binary to be flashed. Change <code>/dev/tty.usbserial-1420</code> to the USB Serial Device assigned to PineCone.)</p>
-<p>Note that we're throttling the USB Serial Port from the default 1 Mbps to 115.2 kbps... macOS has trouble connecting to BL602 at high speeds.</p>
+<p>Note that we're throttling the USB Serial Port from the default 1 Mbps to 230.4 kbps... macOS has trouble connecting to BL602 at high speeds.</p>
 <p><strong>For Windows:</strong></p>
 <pre><code class="language-bash">cargo run flash sdk_app_helloworld.bin --port COM5
 </code></pre>
