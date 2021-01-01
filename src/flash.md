@@ -244,6 +244,12 @@ _Firmware running on PineCone_
 
     __For Windows:__ Close the `putty` window
 
+1.  Here's the console output for BL602 Firmware that supports WiFi and interactive commands: [`bl602.bin`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/bl602.bin)
+
+    ![Console output for BL602 WiFi Firmware](https://lupyuen.github.io/images/flash-wifi.png)
+
+    _Console output for BL602 WiFi Firmware_
+
 1.  What happens when we leave the PineCone Jumper in the `L` Position and connect with `screen` or `putty`?
 
     We'll see that PineCone is stuck in a Holding Pattern, waiting to be flashed...
