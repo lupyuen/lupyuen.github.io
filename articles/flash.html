@@ -172,10 +172,12 @@ Finished dev [unoptimized + debuginfo] target(s) in 4m 28s
 </code></pre>
 </li>
 </ol>
+<p><img src="https://lupyuen.github.io/images/flash-linux.png" alt="Flashing PineCone with Manjaro Linux Arm64 on Pinebook Pro" /></p>
+<p><em>Flashing PineCone with Manjaro Linux Arm64 on Pinebook Pro</em></p>
 <h2 id="flash-the-firmware" class="section-header"><a href="#flash-the-firmware">1.3 Flash the firmware</a></h2>
 <ol>
 <li>
-<p>Set the <strong>PineCone Jumper (IO8)</strong> to <code>H</code>.</p>
+<p>Set the <strong>PineCone Jumper (IO 8)</strong> to the <strong><code>H</code> Position</strong> <a href="https://lupyuen.github.io/images/pinecone-jumperh.jpg">(Like this)</a></p>
 <p>Connect PineCone to the USB port.</p>
 </li>
 <li>
@@ -248,11 +250,14 @@ caused by: Invalid argument
 </li>
 </ol>
 <p><a href="https://lupyuen.github.io/articles/flash#appendix-bl602-flashing-screenshots">See the flashing screenshots</a></p>
+<p><img src="https://lupyuen.github.io/images/flash-screen.png" alt="Firmware running on PineCone" /></p>
+<p><em>Firmware running on PineCone</em></p>
 <h2 id="watch-the-firmware-run" class="section-header"><a href="#watch-the-firmware-run">1.4 Watch the firmware run</a></h2>
 <ol>
 <li>
-<p>After flashing, switch the <strong>PineCone Jumper (IO8)</strong> back to <code>L</code>. </p>
-<p>Reconnect PineCone to the USB port. </p>
+<p>After flashing, disconnect PineCone from the USB port.</p>
+<p>Set the <strong>PineCone Jumper (IO 8)</strong> to the <strong><code>L</code> Position</strong> <a href="https://lupyuen.github.io/images/pinecone-jumperl.jpg">(Like this)</a></p>
+<p>Reconnect PineCone to the USB port.</p>
 <p>Our firmware begins running.</p>
 </li>
 <li>
@@ -305,8 +310,10 @@ caused by: Invalid argument
 </li>
 </ul>
 <p>Let's look at each area of BL602's Internal Flash ROM.</p>
+<p><img src="https://lupyuen.github.io/images/mynewt-start.png" alt="Start Code from BL602 IoT SDK: start.S" /></p>
+<p><em>Start Code from BL602 IoT SDK: start.S</em></p>
 <h1 id="partition-table" class="section-header"><a href="#partition-table">3 Partition Table</a></h1>
-<p>The <strong>Partition Table</strong> says where everything is located in ROM. It's like the above ROM Table... But converted to binary format and stored into ROM (twice).</p>
+<p>The <strong>Partition Table</strong> says where everything is located in ROM. It's like the ROM Table above... But converted to binary format and stored into ROM (twice).</p>
 <p>The Partition Table is referenced by the Start Code for BL602 Firmware...</p>
 <ul>
 <li>

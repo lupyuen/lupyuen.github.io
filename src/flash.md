@@ -82,9 +82,13 @@ We'll use [__`blflash`__](https://github.com/spacemeowx2/blflash), the flashing 
     Finished dev [unoptimized + debuginfo] target(s) in 4m 28s
     ```
 
+![Flashing PineCone with Manjaro Linux Arm64 on Pinebook Pro](https://lupyuen.github.io/images/flash-linux.png)
+
+_Flashing PineCone with Manjaro Linux Arm64 on Pinebook Pro_
+
 ##  Flash the firmware
 
-1.  Set the __PineCone Jumper (IO8)__ to `H`.
+1.  Set the __PineCone Jumper (IO 8)__ to the __`H` Position__ [(Like this)](https://lupyuen.github.io/images/pinecone-jumperh.jpg)
 
     Connect PineCone to the USB port.
 
@@ -186,12 +190,18 @@ We'll use [__`blflash`__](https://github.com/spacemeowx2/blflash), the flashing 
 
 [See the flashing screenshots](https://lupyuen.github.io/articles/flash#appendix-bl602-flashing-screenshots)
 
+![Firmware running on PineCone](https://lupyuen.github.io/images/flash-screen.png)
+
+_Firmware running on PineCone_
+
 ## Watch the firmware run
 
-1.  After flashing, switch the __PineCone Jumper (IO8)__ back to `L`. 
+1.  After flashing, disconnect PineCone from the USB port.  
 
-    Reconnect PineCone to the USB port. 
+    Set the __PineCone Jumper (IO 8)__ to the __`L` Position__ [(Like this)](https://lupyuen.github.io/images/pinecone-jumperl.jpg)
     
+    Reconnect PineCone to the USB port.
+
     Our firmware begins running.
 
 1.  To watch our firmware run, connect to the PineCone Serial Console (at 2 Mbps)...
@@ -260,9 +270,13 @@ This info was deciphered from the official Go flashing tool for BL602: __BLOpenF
 
 Let's look at each area of BL602's Internal Flash ROM.
 
+![Start Code from BL602 IoT SDK: start.S](https://lupyuen.github.io/images/mynewt-start.png)
+
+_Start Code from BL602 IoT SDK: start.S_
+
 # Partition Table
 
-The __Partition Table__ says where everything is located in ROM. It's like the above ROM Table... But converted to binary format and stored into ROM (twice).
+The __Partition Table__ says where everything is located in ROM. It's like the ROM Table above... But converted to binary format and stored into ROM (twice).
 
 The Partition Table is referenced by the Start Code for BL602 Firmware...
 
