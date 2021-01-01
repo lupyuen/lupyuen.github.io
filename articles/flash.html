@@ -310,8 +310,8 @@ caused by: Invalid argument
 </li>
 </ul>
 <p>Let's look at each area of BL602's Internal Flash ROM.</p>
-<p><img src="https://lupyuen.github.io/images/mynewt-start.png" alt="Start Code from BL602 IoT SDK: start.S" /></p>
-<p><em>Start Code from BL602 IoT SDK: start.S</em></p>
+<p><img src="https://lupyuen.github.io/images/pinecone-flash-steps2c.png" alt="BL602 Partition Table" /></p>
+<p><em>BL602 Partition Table</em></p>
 <h1 id="partition-table" class="section-header"><a href="#partition-table">3 Partition Table</a></h1>
 <p>The <strong>Partition Table</strong> says where everything is located in ROM. It's like the ROM Table above... But converted to binary format and stored into ROM (twice).</p>
 <p>The Partition Table is referenced by the Start Code for BL602 Firmware...</p>
@@ -323,6 +323,8 @@ caused by: Invalid argument
 <p>See <a href="https://lupyuen.github.io/articles/mynewt">&quot;Porting Mynewt to PineCone BL602&quot;</a>, Section 10: <a href="https://lupyuen.github.io/articles/mynewt#implement-start-code">&quot;Implement Start Code&quot;</a></p>
 </li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/mynewt-start.png" alt="Start Code from BL602 IoT SDK: start.S" /></p>
+<p><em>Start Code from BL602 IoT SDK: start.S</em></p>
 <p>Here's a snippet from BL602's Partition Table: <a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/partition/partition_cfg_2M.toml"><code>partition_cfg_2M.toml</code></a></p>
 <pre><code class="language-text">[pt_table]
 # Partition table is 4K in size (0x1000 bytes)
@@ -382,6 +384,8 @@ ef_dbg_pwd_low     = 0
 ef_dbg_pwd_high    = 0
 </code></pre>
 <p><a href="https://lupyuen.github.io/articles/flash#appendix-bl602-efuse-configuration">More about BL602 EFuse Configuration</a></p>
+<p><img src="https://lupyuen.github.io/images/pinecone-flash-steps2a.png" alt="BL602 Boot Image" /></p>
+<p><em>BL602 Boot Image</em></p>
 <h1 id="boot-image" class="section-header"><a href="#boot-image">5 Boot Image</a></h1>
 <p>Located at ROM address <code>0x0</code>, the <strong>Boot Image</strong> contains the firmware code that is run first upon booting BL602....</p>
 <ol>
@@ -417,6 +421,8 @@ ef_dbg_pwd_high    = 0
 </li>
 </ol>
 <p>Please support my work by becoming my <a href="https://github.com/sponsors/lupyuen">GitHub Sponsor</a>! 🙏</p>
+<p><img src="https://lupyuen.github.io/images/pinecone-flash-steps2b.png" alt="BL602 Firmware Image" /></p>
+<p><em>BL602 Firmware Image</em></p>
 <h1 id="firmware-image" class="section-header"><a href="#firmware-image">6 Firmware Image</a></h1>
 <p>Located at ROM address <code>0x10000</code>, the <strong>Firmware Image</strong> contains our application firmware code that is run after the boot firmware.</p>
 <p>Our firmware binary (<code>sdk_app_helloworld.bin</code>) gets transformed with the <strong>EFuse Configuration</strong> to create (with firmware offset <code>0x1000</code>)...</p>
@@ -425,6 +431,8 @@ ef_dbg_pwd_high    = 0
 </ul>
 <p>(For development, we have disabled encryption in the EFuse Configuration)</p>
 <p>The transformed binary is flashed to BL602 at ROM address <code>0x10000</code>.</p>
+<p><img src="https://lupyuen.github.io/images/pinecone-flash-steps2d.png" alt="BL602 Device Tree" /></p>
+<p><em>BL602 Device Tree</em></p>
 <h1 id="device-tree" class="section-header"><a href="#device-tree">7 Device Tree</a></h1>
 <p><em>What's a Device Tree?</em></p>
 <p>In Linux, a <strong>Device Tree</strong> describes the computer hardware and its settings: Board, Memory, SoC, USB Devices, ...  (In Windows, the hardware settings are stored in the Windows Registry)</p>
@@ -616,6 +624,8 @@ ef_dbg_pwd_high    = 0
 <ul>
 <li><strong>Compile Device Tree to binary format</strong>: <a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/dts2dtb.py"><code>dts2dtb.py</code></a></li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/pinecone-flash-steps2d.png" alt="BL602 Device Tree Compilation" /></p>
+<p><em>BL602 Device Tree Compilation</em></p>
 </li>
 <li>
 <p>What if we need to modify the Device Tree?</p>
@@ -680,6 +690,8 @@ ef_dbg_pwd_high    = 0
 <p>Will be converted to <code>bl602/image/partition.bin</code> and flashed to <code>0xE000</code> and <code>0xF000</code></p>
 </li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/pinecone-flash-steps2c.png" alt="BL602 Partition Table" /></p>
+<p><em>BL602 Partition Table</em></p>
 <pre><code class="language-text">[pt_table]
 #partition table is 4K in size
 address0 = 0xE000
@@ -784,6 +796,8 @@ len = 0
 <p>Will be converted by script <a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/dts2dtb.py"><code>dts2dtb.py</code></a> to <code>bl602/image/ro_params.dtb</code> and flashed to <code>0x1F8000</code></p>
 </li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/pinecone-flash-steps2d.png" alt="BL602 Device Tree" /></p>
+<p><em>BL602 Device Tree</em></p>
 <pre><code class="language-text">/dts-v1/;
 /include/ &quot;bl602_base.dtsi&quot;;
 // version: 17

@@ -270,9 +270,9 @@ This info was deciphered from the official Go flashing tool for BL602: __BLOpenF
 
 Let's look at each area of BL602's Internal Flash ROM.
 
-![Start Code from BL602 IoT SDK: start.S](https://lupyuen.github.io/images/mynewt-start.png)
+![BL602 Partition Table](https://lupyuen.github.io/images/pinecone-flash-steps2c.png)
 
-_Start Code from BL602 IoT SDK: start.S_
+_BL602 Partition Table_
 
 # Partition Table
 
@@ -284,7 +284,11 @@ The Partition Table is referenced by the Start Code for BL602 Firmware...
 
 -   See ["Porting Mynewt to PineCone BL602"](https://lupyuen.github.io/articles/mynewt), Section 10: ["Implement Start Code"](https://lupyuen.github.io/articles/mynewt#implement-start-code
 )
-            
+
+![Start Code from BL602 IoT SDK: start.S](https://lupyuen.github.io/images/mynewt-start.png)
+
+_Start Code from BL602 IoT SDK: start.S_
+
 Here's a snippet from BL602's Partition Table: [`partition_cfg_2M.toml`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/partition/partition_cfg_2M.toml)
 
 ```text
@@ -377,6 +381,10 @@ ef_dbg_pwd_high    = 0
 
 [More about BL602 EFuse Configuration](https://lupyuen.github.io/articles/flash#appendix-bl602-efuse-configuration)
 
+![BL602 Boot Image](https://lupyuen.github.io/images/pinecone-flash-steps2a.png)
+
+_BL602 Boot Image_
+
 # Boot Image
 
 Located at ROM address `0x0`, the __Boot Image__ contains the firmware code that is run first upon booting BL602....
@@ -407,6 +415,10 @@ Would you like me to...
 
 Please support my work by becoming my [GitHub Sponsor](https://github.com/sponsors/lupyuen)! 🙏
 
+![BL602 Firmware Image](https://lupyuen.github.io/images/pinecone-flash-steps2b.png)
+
+_BL602 Firmware Image_
+
 # Firmware Image
 
 Located at ROM address `0x10000`, the __Firmware Image__ contains our application firmware code that is run after the boot firmware.
@@ -418,6 +430,10 @@ Our firmware binary (`sdk_app_helloworld.bin`) gets transformed with the __EFuse
 (For development, we have disabled encryption in the EFuse Configuration)
 
 The transformed binary is flashed to BL602 at ROM address `0x10000`.
+
+![BL602 Device Tree](https://lupyuen.github.io/images/pinecone-flash-steps2d.png)
+
+_BL602 Device Tree_
 
 # Device Tree
 
@@ -656,6 +672,10 @@ _How different is `blflash` from BLOpenFlasher?_
 
     -   __Compile Device Tree to binary format__: [`dts2dtb.py`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/dts2dtb.py)
 
+    ![BL602 Device Tree Compilation](https://lupyuen.github.io/images/pinecone-flash-steps2d.png)
+
+    _BL602 Device Tree Compilation_
+
 1.  What if we need to modify the Device Tree?
 
     We could compile the Device Tree with BLOpenFlasher. Then transfer the compiled Device Tree binary...
@@ -721,6 +741,10 @@ _Windows 10_
 -   From [`BLOpenFlasher/bl602/ partition/partition_cfg_2M.toml`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/partition/partition_cfg_2M.toml)
 
 -   Will be converted to `bl602/image/partition.bin` and flashed to `0xE000` and `0xF000`
+
+![BL602 Partition Table](https://lupyuen.github.io/images/pinecone-flash-steps2c.png)
+
+_BL602 Partition Table_
 
 ```text
 [pt_table]
@@ -824,6 +848,10 @@ len = 0
 -   From [`BLOpenFlasher/bl602/device_tree/ bl_factory_params_IoTKitA_40M.dts`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/device_tree/bl_factory_params_IoTKitA_40M.dts)
 
 -   Will be converted by script [`dts2dtb.py`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/dts2dtb.py) to `bl602/image/ro_params.dtb` and flashed to `0x1F8000`
+
+![BL602 Device Tree](https://lupyuen.github.io/images/pinecone-flash-steps2d.png)
+
+_BL602 Device Tree_
 
 ```text
 /dts-v1/;
