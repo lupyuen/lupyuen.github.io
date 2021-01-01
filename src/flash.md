@@ -298,17 +298,6 @@ _Compiling the BL602 Partition Table_
 
 The __Partition Table__ says where everything is located in ROM. It's like the ROM Table above... But converted to binary format and stored into ROM (twice).
 
-The Partition Table is referenced by the Start Code for BL602 Firmware...
-
--   Browse the [BL602 Start Code](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602/evb/src/boot/gcc/start.S)
-
--   See ["Porting Mynewt to PineCone BL602"](https://lupyuen.github.io/articles/mynewt), Section 10: ["Implement Start Code"](https://lupyuen.github.io/articles/mynewt#implement-start-code
-)
-
-![BL602 Start Code refers to the Partition Table](https://lupyuen.github.io/images/flash-start.png)
-
-_BL602 Start Code refers to the Partition Table_
-
 Here's a snippet from BL602's Partition Table: [`partition_cfg_2M.toml`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/partition/partition_cfg_2M.toml)
 
 ```text
@@ -358,6 +347,19 @@ len      = 0
 
 This is the Partition Entry for the Device Tree at ROM address `0x1F8000`. We'll cover the Device Tree in a while.
 
+![BL602 Start Code refers to the Partition Table](https://lupyuen.github.io/images/flash-start.png)
+
+_BL602 Start Code refers to the Partition Table_
+
+## Start Code uses Partition Table
+
+The Partition Table is referenced by the Start Code for BL602 Firmware...
+
+-   Browse the [BL602 Start Code](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602/evb/src/boot/gcc/start.S)
+
+-   See ["Porting Mynewt to PineCone BL602"](https://lupyuen.github.io/articles/mynewt), Section 10: ["Implement Start Code"](https://lupyuen.github.io/articles/mynewt#implement-start-code
+)
+
 [More about BL602 Partition Table](https://lupyuen.github.io/articles/flash#appendix-bl602-partition-table)
 
 ![Transforming firmware images with BL602 EFuse Configuration](https://lupyuen.github.io/images/pinecone-flash-steps3.png)
@@ -369,6 +371,8 @@ _Transforming firmware images with BL602 EFuse Configuration_
 _What's an EFuse in BL602?_
 
 An __EFuse__ stores one bit of data (`0` or `1`) in a special way... Once an EFuse is set to `1`, it can never be reset to `0`.
+
+BL602 has 1,024 EFuses (1,024 bits).
 
 _How are EFuses used in BL602?_
 
