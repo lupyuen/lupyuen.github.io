@@ -28,7 +28,7 @@ Today we shall learn to...
     -   __Firmware Image__
     -   __Device Tree__
 
-And we'll better understand the (undocumented) internals of the BL602 SoC!
+And we'll better understand the (undocumented) internals of the __BL602 RISC-V + WiFi + Bluetooth SoC__!
 
 # Flash BL602 Firmware with Linux, macOS and Windows
 
