@@ -824,14 +824,13 @@
         "Google Cloud IoT",
         "Azure IoT",
         "thethings.io",
-        "Ubidots",
         "Embedded Rust",
         "Embedded C",
-        "Arduino",
-        "STM32",
-        "Blue Pill",
+        "Mynewt",
         "ESP8266",
-        "nRF24L01"
+        "STM32",
+        "nRF52",
+        "BL602"
       ]
     },
     {
