@@ -236,7 +236,7 @@ Connection Succeed
 Error: IO error: Operation timed out
 caused by: Operation timed out
 </code></pre>
-<p>Disconnect PineCone from the USB port. Check that the PineCone Jumper is set to <code>H</code>. Retry the flash command.</p>
+<p>Disconnect PineCone from the USB port. Check that the PineCone Jumper (IO 8) is set to <code>H</code>. Retry the flash command.</p>
 </li>
 <li>
 <p>If we see this error...</p>
@@ -291,7 +291,7 @@ caused by: Invalid argument
 <p><em>Console output for BL602 WiFi Firmware</em></p>
 </li>
 <li>
-<p>What happens when we leave the PineCone Jumper in the <code>L</code> Position and connect with <code>screen</code> or <code>putty</code>?</p>
+<p>What happens when we leave the PineCone Jumper (IO 8) in the <code>H</code> Position.. And connect with <code>screen</code> or <code>putty</code>?</p>
 <p>We'll see that PineCone is stuck in a Holding Pattern, waiting to be flashed...</p>
 <p><img src="https://lupyuen.github.io/images/flash-wait.png" alt="PineCone waiting to be flashed" /></p>
 <p><em>PineCone waiting to be flashed</em></p>

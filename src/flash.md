@@ -173,7 +173,7 @@ _Flashing PineCone with Manjaro Linux Arm64 on Pinebook Pro_
     caused by: Operation timed out
     ```
 
-    Disconnect PineCone from the USB port. Check that the PineCone Jumper is set to `H`. Retry the flash command.
+    Disconnect PineCone from the USB port. Check that the PineCone Jumper (IO 8) is set to `H`. Retry the flash command.
 
 1.  If we see this error...
 
@@ -250,7 +250,7 @@ _Firmware running on PineCone_
 
     _Console output for BL602 WiFi Firmware_
 
-1.  What happens when we leave the PineCone Jumper in the `L` Position and connect with `screen` or `putty`?
+1.  What happens when we leave the PineCone Jumper (IO 8) in the `H` Position.. And connect with `screen` or `putty`?
 
     We'll see that PineCone is stuck in a Holding Pattern, waiting to be flashed...
 
