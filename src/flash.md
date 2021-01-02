@@ -321,7 +321,7 @@ address1 = 0xF000
 
 This says that the Partition Table (4,096 bytes in binary form) is stored at two offsets: `0xE000` and `0xF000`
 
-The second Partition Table might possibly be used in future to support a second RISC-V core. [See this](https://www.reddit.com/r/RISCV/comments/knsju9/flashing_firmware_to_pinecone_bl602/ghs633c?utm_source=share&utm_medium=web2x&context=3)
+The second Partition Table might possibly be used in future to support a second CPU. [See this](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_boot2.c#L475-L505)
 
 ## Partition Entry for Firmware
 
