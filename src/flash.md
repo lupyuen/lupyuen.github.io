@@ -270,19 +270,19 @@ These steps were tested on Arm64 Linux (Pinebook Pro with Manjaro), macOS Catali
 
 _BL602 Flashing Process reverse engineered from BLOpenFlasher_
 
-# What Else Can We Flash To BL602?
+# What Else Gets Flashed To BL602?
 
-So far we have only flashed our Firmware Image to PineCone. This is one of 5 interesting things that we may flash to BL602's Internal Flash ROM...
+Whenever we flash the firmware of BL602, `blflash` transmits to BL602 a __Flash Image__ that contains 5 sections of data...
 
 | Offset | Contents |
 |:---|:---|
 | __Boot Image__ <br> `0x0000 0000`      | Code and data for <br>Boot Firmware		
-| __Partition Table__ <br> `0x0000 E000` | Partition Table for <br>Flash ROM
-| __Partition Table__ <br> `0x0000 F000` | Partition Table for <br> Flash ROM <br>(For second core?)
+| __Partition Table__ <br> `0x0000 E000` | Partition Table for <br>Flash Image
+| __Partition Table__ <br> `0x0000 F000` | Partition Table for <br> Flash Image <br>(For second core?)
 | __Firmware Image__ <br> `0x0001 0000`	 | Code and data for <br> Application Firmware
 | __Device Tree__ <br> `0x001F 8000`     | Default settings for<br> peripherals and ports: <br>UART, GPIO, SPI, WiFi, ...
 
-(The addresses above are Offsets into the Flash Image that is transmitted by `blflash` to BL602 for flashing)
+The addresses above are Offsets into the Flash Image that is transmitted by `blflash` to BL602 for flashing.
 
 This info was deciphered from the official open-source Go flashing tool for BL602: __BLOpenFlasher__...
 
@@ -292,7 +292,7 @@ This info was deciphered from the official open-source Go flashing tool for BL60
 
 -   See [BL602 ISP Flash Programming Doc](https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en) for the UART Flashing Protocol
 
-Let's look at each area of BL602's Internal Flash ROM.
+Let's look at each section of the Flash Image.
 
 ## XIP Flash Memory vs Boot ROM
 
@@ -308,7 +308,7 @@ _Compiling the BL602 Partition Table_
 
 # Partition Table
 
-The __Partition Table__ specifies the structure of the data that will be flashed to ROM. It's like the ROM Table above... But converted to binary format and transmitted to BL602 (twice).
+The __Partition Table__ specifies the structure of the Flash Image that will be flashed to ROM. It's like the ROM Table above... But converted to binary format and transmitted to BL602 (twice).
 
 Here's a snippet from BL602's Partition Table: [`partition_cfg_2M.toml`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/partition/partition_cfg_2M.toml)
 
@@ -419,6 +419,45 @@ ef_dbg_pwd_low     = 0
 ef_dbg_pwd_high    = 0
 ```
 
+## Boot Header Configuration
+
+The EFuse Configuration also includes a __Boot Header Configuration__ that specifies how the Boot Image and Firmware Image should be flashed to ROM.
+
+Here's a snippet from [`efuse_bootheader_cfg.conf`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/efuse_bootheader/efuse_bootheader_cfg.conf)...
+
+```text
+[BOOTHEADER_CFG]
+magic_code          = 0x504e4642
+revision            = 0x01
+flashcfg_magic_code = 0x47464346
+io_mode             = 4
+cont_read_support   = 1
+sfctrl_clk_delay    = 1
+sfctrl_clk_invert   = 0x01
+
+reset_en_cmd        = 0x66
+reset_cmd           = 0x99
+exit_contread_cmd   = 0xff
+exit_contread_cmd_size = 3
+
+jedecid_cmd         = 0x9f
+jedecid_cmd_dmy_clk = 0
+qpi_jedecid_cmd     = 0x9f
+qpi_jedecid_dmy_clk = 0
+
+sector_size = 4
+mfg_id      = 0xef
+page_size   = 256
+
+chip_erase_cmd   = 0xc7
+sector_erase_cmd = 0x20
+blk32k_erase_cmd = 0x52
+blk64k_erase_cmd = 0xd8
+...
+```
+
+JEDEC refers to the [Common Flash Memory Interface](https://en.wikipedia.org/wiki/Common_Flash_Memory_Interface) that's used to access Flash Memory.
+
 [More about BL602 EFuse Configuration](https://lupyuen.github.io/articles/flash#appendix-bl602-efuse-configuration)
 
 ![Transforming BL602 Boot Image](https://lupyuen.github.io/images/pinecone-flash-steps2a.png)
@@ -433,7 +472,7 @@ Located at offset `0x0`, the __Boot Image__ contains the firmware code that is r
 
     -   [`blsp_boot2.bin`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/builtin_imgs/blsp_boot2.bin)
                             
-1.  Which gets transformed with the __EFuse Configuration__ to create (with firmware offset `0x2000`)...
+1.  Which gets transformed with the __EFuse Configuration__ (and Boot Header Configuration) to create (with firmware offset `0x2000`)...
 
     -   [`boot2image.bin`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/image/boot2image.bin) 
 
@@ -463,7 +502,7 @@ _Transforming the BL602 Firmware Image_
 
 Located at offset `0x10000`, the __Firmware Image__ contains our application firmware code that is run after the boot firmware.
 
-Our firmware binary (`sdk_app_helloworld.bin`) gets transformed with the __EFuse Configuration__ to create (with firmware offset `0x1000`)...
+Our firmware binary (`sdk_app_helloworld.bin`) gets transformed with the __EFuse Configuration__ (and Boot Header Configuration) to create (with firmware offset `0x1000`)...
 
 -   `bl602/image/fwimage.bin`
 
@@ -635,7 +674,7 @@ This complicated setting configures the WiFi stack (including SSID)...
 
 [More about Linux Device Trees](https://www.kernel.org/doc/html/latest/devicetree/usage-model.html)
 
-_(TODO: Where is the Device Tree stored in XIP Flash ROM?)_
+_(TODO: Where is the Device Tree stored in XIP Flash ROM? Is this Device Tree used by EFlash Loader?)_
 
 # Flash Firmware in 2 Stages
 
@@ -643,7 +682,7 @@ Earlier we saw that our firmware is flashed to BL602 in two stages... (Just like
 
 1.  __Stage 1__: Transmit the __EFlash Loader__ to BL602
 
-1.  __Stage 2__: Transmit our firmware to the EFlash Loader and write to ROM
+1.  __Stage 2__: Transmit our Flash Image to the EFlash Loader and write to ROM
 
 Let's zoom into each stage of the flashing process.
 
@@ -663,7 +702,7 @@ Then we start running the EFlash Loader on BL602 in RAM at address [`0x2201 0000
 
 ## Flashing Stage 2
 
-Next we compose the __Flash Image__ that contains 5 sections of data to be flashed...
+Next we compose the __Flash Image__ that contains 5 sections of data...
 
 | Offset | Contents |
 |:---|:---|
@@ -673,7 +712,7 @@ Next we compose the __Flash Image__ that contains 5 sections of data to be flash
 | `0x0001 0000`	| __Firmware Image__ <br>(transformed)
 | `0x001F 8000` | __Device Tree__ <br>(binary format)
 
-Then we transmit the Flash Image to EFlash Loader, which writes them to BL602 ROM.
+Then we transmit the Flash Image to EFlash Loader, which updates the BL602 Flash ROM.
 
 The data is transmitted at __2 Mbps__. (Instead of 512 kbps earlier)
 
@@ -1252,6 +1291,8 @@ _Compiling the BL602 Device Tree_
 -   From [`BLOpenFlasher/bl602/ efuse_bootheader/ efuse_bootheader_cfg.conf`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/efuse_bootheader/efuse_bootheader_cfg.conf)
 
 -   Will be used for transforming Boot Image and Firmware Image
+
+-   Also includes the Boot Header Configuration
 
 ![Transforming firmware images with BL602 EFuse Configuration](https://lupyuen.github.io/images/pinecone-flash-steps3.png)
 

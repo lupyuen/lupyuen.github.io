@@ -70,13 +70,14 @@
 <li><a href="#download-and-build-blflash">1.2 Download and build blflash</a><ul></ul></li>
 <li><a href="#flash-the-firmware">1.3 Flash the firmware</a><ul></ul></li>
 <li><a href="#watch-the-firmware-run">1.4 Watch the firmware run</a><ul></ul></li></ul></li>
-<li><a href="#what-else-can-we-flash-to-bl602">2 What Else Can We Flash To BL602?</a><ul>
+<li><a href="#what-else-gets-flashed-to-bl602">2 What Else Gets Flashed To BL602?</a><ul>
 <li><a href="#xip-flash-memory-vs-boot-rom">2.1 XIP Flash Memory vs Boot ROM</a><ul></ul></li></ul></li>
 <li><a href="#partition-table">3 Partition Table</a><ul>
 <li><a href="#partition-entry-for-firmware">3.1 Partition Entry for Firmware</a><ul></ul></li>
 <li><a href="#partition-entry-for-device-tree">3.2 Partition Entry for Device Tree</a><ul></ul></li>
 <li><a href="#start-code-uses-partition-table">3.3 Start Code uses Partition Table</a><ul></ul></li></ul></li>
-<li><a href="#efuse-configuration">4 EFuse Configuration</a><ul></ul></li>
+<li><a href="#efuse-configuration">4 EFuse Configuration</a><ul>
+<li><a href="#boot-header-configuration">4.1 Boot Header Configuration</a><ul></ul></li></ul></li>
 <li><a href="#boot-image">5 Boot Image</a><ul></ul></li>
 <li><a href="#firmware-image">6 Firmware Image</a><ul></ul></li>
 <li><a href="#device-tree">7 Device Tree</a><ul>
@@ -307,16 +308,16 @@ caused by: Invalid argument
 <p>These steps were tested on Arm64 Linux (Pinebook Pro with Manjaro), macOS Catalina and Windows 10.</p>
 <p><img src="https://lupyuen.github.io/images/pinecone-flash-steps.png" alt="BL602 Flashing Process reverse engineered from BLOpenFlasher" /></p>
 <p><em>BL602 Flashing Process reverse engineered from BLOpenFlasher</em></p>
-<h1 id="what-else-can-we-flash-to-bl602" class="section-header"><a href="#what-else-can-we-flash-to-bl602">2 What Else Can We Flash To BL602?</a></h1>
-<p>So far we have only flashed our Firmware Image to PineCone. This is one of 5 interesting things that we may flash to BL602's Internal Flash ROM...</p>
+<h1 id="what-else-gets-flashed-to-bl602" class="section-header"><a href="#what-else-gets-flashed-to-bl602">2 What Else Gets Flashed To BL602?</a></h1>
+<p>Whenever we flash the firmware of BL602, <code>blflash</code> transmits to BL602 a <strong>Flash Image</strong> that contains 5 sections of data...</p>
 <table><thead><tr><th align="left">Offset</th><th align="left">Contents</th></tr></thead><tbody>
 <tr><td align="left"><strong>Boot Image</strong> <br> <code>0x0000 0000</code></td><td align="left">Code and data for <br>Boot Firmware</td></tr>
-<tr><td align="left"><strong>Partition Table</strong> <br> <code>0x0000 E000</code></td><td align="left">Partition Table for <br>Flash ROM</td></tr>
-<tr><td align="left"><strong>Partition Table</strong> <br> <code>0x0000 F000</code></td><td align="left">Partition Table for <br> Flash ROM <br>(For second core?)</td></tr>
+<tr><td align="left"><strong>Partition Table</strong> <br> <code>0x0000 E000</code></td><td align="left">Partition Table for <br>Flash Image</td></tr>
+<tr><td align="left"><strong>Partition Table</strong> <br> <code>0x0000 F000</code></td><td align="left">Partition Table for <br> Flash Image <br>(For second core?)</td></tr>
 <tr><td align="left"><strong>Firmware Image</strong> <br> <code>0x0001 0000</code></td><td align="left">Code and data for <br> Application Firmware</td></tr>
 <tr><td align="left"><strong>Device Tree</strong> <br> <code>0x001F 8000</code></td><td align="left">Default settings for<br> peripherals and ports: <br>UART, GPIO, SPI, WiFi, ...</td></tr>
 </tbody></table>
-<p>(The addresses above are Offsets into the Flash Image that is transmitted by <code>blflash</code> to BL602 for flashing)</p>
+<p>The addresses above are Offsets into the Flash Image that is transmitted by <code>blflash</code> to BL602 for flashing.</p>
 <p>This info was deciphered from the official open-source Go flashing tool for BL602: <strong>BLOpenFlasher</strong>...</p>
 <ul>
 <li>
@@ -329,7 +330,7 @@ caused by: Invalid argument
 <p>See <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en">BL602 ISP Flash Programming Doc</a> for the UART Flashing Protocol</p>
 </li>
 </ul>
-<p>Let's look at each area of BL602's Internal Flash ROM.</p>
+<p>Let's look at each section of the Flash Image.</p>
 <h2 id="xip-flash-memory-vs-boot-rom" class="section-header"><a href="#xip-flash-memory-vs-boot-rom">2.1 XIP Flash Memory vs Boot ROM</a></h2>
 <p>In this article we'll use &quot;ROM&quot; to refer to BL602's <strong>XIP Flash Memory</strong> (at address <code>0x2300 0000</code> with size 16 MB). </p>
 <p>(XIP means Execute In Place... We can execute firmware code here without transferring to RAM or Cache Memory)</p>
@@ -337,7 +338,7 @@ caused by: Invalid argument
 <p><img src="https://lupyuen.github.io/images/pinecone-flash-steps2c.png" alt="Compiling the BL602 Partition Table" /></p>
 <p><em>Compiling the BL602 Partition Table</em></p>
 <h1 id="partition-table" class="section-header"><a href="#partition-table">3 Partition Table</a></h1>
-<p>The <strong>Partition Table</strong> specifies the structure of the data that will be flashed to ROM. It's like the ROM Table above... But converted to binary format and transmitted to BL602 (twice).</p>
+<p>The <strong>Partition Table</strong> specifies the structure of the Flash Image that will be flashed to ROM. It's like the ROM Table above... But converted to binary format and transmitted to BL602 (twice).</p>
 <p>Here's a snippet from BL602's Partition Table: <a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/partition/partition_cfg_2M.toml"><code>partition_cfg_2M.toml</code></a></p>
 <pre><code class="language-text">[pt_table]
 # Partition table is 4K in size (0x1000 bytes)
@@ -411,6 +412,39 @@ ef_dbg_mode        = 0
 ef_dbg_pwd_low     = 0
 ef_dbg_pwd_high    = 0
 </code></pre>
+<h2 id="boot-header-configuration" class="section-header"><a href="#boot-header-configuration">4.1 Boot Header Configuration</a></h2>
+<p>The EFuse Configuration also includes a <strong>Boot Header Configuration</strong> that specifies how the Boot Image and Firmware Image should be flashed to ROM.</p>
+<p>Here's a snippet from <a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/efuse_bootheader/efuse_bootheader_cfg.conf"><code>efuse_bootheader_cfg.conf</code></a>...</p>
+<pre><code class="language-text">[BOOTHEADER_CFG]
+magic_code          = 0x504e4642
+revision            = 0x01
+flashcfg_magic_code = 0x47464346
+io_mode             = 4
+cont_read_support   = 1
+sfctrl_clk_delay    = 1
+sfctrl_clk_invert   = 0x01
+
+reset_en_cmd        = 0x66
+reset_cmd           = 0x99
+exit_contread_cmd   = 0xff
+exit_contread_cmd_size = 3
+
+jedecid_cmd         = 0x9f
+jedecid_cmd_dmy_clk = 0
+qpi_jedecid_cmd     = 0x9f
+qpi_jedecid_dmy_clk = 0
+
+sector_size = 4
+mfg_id      = 0xef
+page_size   = 256
+
+chip_erase_cmd   = 0xc7
+sector_erase_cmd = 0x20
+blk32k_erase_cmd = 0x52
+blk64k_erase_cmd = 0xd8
+...
+</code></pre>
+<p>JEDEC refers to the <a href="https://en.wikipedia.org/wiki/Common_Flash_Memory_Interface">Common Flash Memory Interface</a> that's used to access Flash Memory.</p>
 <p><a href="https://lupyuen.github.io/articles/flash#appendix-bl602-efuse-configuration">More about BL602 EFuse Configuration</a></p>
 <p><img src="https://lupyuen.github.io/images/pinecone-flash-steps2a.png" alt="Transforming BL602 Boot Image" /></p>
 <p><em>Transforming the BL602 Boot Image</em></p>
@@ -424,7 +458,7 @@ ef_dbg_pwd_high    = 0
 </ul>
 </li>
 <li>
-<p>Which gets transformed with the <strong>EFuse Configuration</strong> to create (with firmware offset <code>0x2000</code>)...</p>
+<p>Which gets transformed with the <strong>EFuse Configuration</strong> (and Boot Header Configuration) to create (with firmware offset <code>0x2000</code>)...</p>
 <ul>
 <li><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/image/boot2image.bin"><code>boot2image.bin</code></a> </li>
 </ul>
@@ -453,7 +487,7 @@ ef_dbg_pwd_high    = 0
 <p><em>Transforming the BL602 Firmware Image</em></p>
 <h1 id="firmware-image" class="section-header"><a href="#firmware-image">6 Firmware Image</a></h1>
 <p>Located at offset <code>0x10000</code>, the <strong>Firmware Image</strong> contains our application firmware code that is run after the boot firmware.</p>
-<p>Our firmware binary (<code>sdk_app_helloworld.bin</code>) gets transformed with the <strong>EFuse Configuration</strong> to create (with firmware offset <code>0x1000</code>)...</p>
+<p>Our firmware binary (<code>sdk_app_helloworld.bin</code>) gets transformed with the <strong>EFuse Configuration</strong> (and Boot Header Configuration) to create (with firmware offset <code>0x1000</code>)...</p>
 <ul>
 <li><code>bl602/image/fwimage.bin</code></li>
 </ul>
@@ -585,7 +619,7 @@ ef_dbg_pwd_high    = 0
 </code></pre>
 <p><a href="https://lupyuen.github.io/articles/flash#appendix-bl602-device-tree">More about BL602 Device Tree</a></p>
 <p><a href="https://www.kernel.org/doc/html/latest/devicetree/usage-model.html">More about Linux Device Trees</a></p>
-<p><em>(TODO: Where is the Device Tree stored in XIP Flash ROM?)</em></p>
+<p><em>(TODO: Where is the Device Tree stored in XIP Flash ROM? Is this Device Tree used by EFlash Loader?)</em></p>
 <h1 id="flash-firmware-in-2-stages" class="section-header"><a href="#flash-firmware-in-2-stages">8 Flash Firmware in 2 Stages</a></h1>
 <p>Earlier we saw that our firmware is flashed to BL602 in two stages... (Just like the Falcon Rocket)</p>
 <ol>
@@ -593,7 +627,7 @@ ef_dbg_pwd_high    = 0
 <p><strong>Stage 1</strong>: Transmit the <strong>EFlash Loader</strong> to BL602</p>
 </li>
 <li>
-<p><strong>Stage 2</strong>: Transmit our firmware to the EFlash Loader and write to ROM</p>
+<p><strong>Stage 2</strong>: Transmit our Flash Image to the EFlash Loader and write to ROM</p>
 </li>
 </ol>
 <p>Let's zoom into each stage of the flashing process.</p>
@@ -609,7 +643,7 @@ ef_dbg_pwd_high    = 0
 <p>(&quot;<code>40m</code>&quot; refers to the BL602 Clock Speed: 40 MHz)</p>
 <p>Then we start running the EFlash Loader on BL602 in RAM at address <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/tools/flash_tool/bl602/eflash_loader/eflash_loader.map#L7439"><code>0x2201 0000</code></a></p>
 <h2 id="flashing-stage-2" class="section-header"><a href="#flashing-stage-2">8.2 Flashing Stage 2</a></h2>
-<p>Next we compose the <strong>Flash Image</strong> that contains 5 sections of data to be flashed...</p>
+<p>Next we compose the <strong>Flash Image</strong> that contains 5 sections of data...</p>
 <table><thead><tr><th align="left">Offset</th><th align="left">Contents</th></tr></thead><tbody>
 <tr><td align="left"><code>0x0000 0000</code></td><td align="left"><strong>Boot Image</strong> <br>(transformed)</td></tr>
 <tr><td align="left"><code>0x0000 E000</code></td><td align="left"><strong>Partition Table</strong> <br>(binary format)</td></tr>
@@ -617,7 +651,7 @@ ef_dbg_pwd_high    = 0
 <tr><td align="left"><code>0x0001 0000</code></td><td align="left"><strong>Firmware Image</strong> <br>(transformed)</td></tr>
 <tr><td align="left"><code>0x001F 8000</code></td><td align="left"><strong>Device Tree</strong> <br>(binary format)</td></tr>
 </tbody></table>
-<p>Then we transmit the Flash Image to EFlash Loader, which writes them to BL602 ROM.</p>
+<p>Then we transmit the Flash Image to EFlash Loader, which updates the BL602 Flash ROM.</p>
 <p>The data is transmitted at <strong>2 Mbps</strong>. (Instead of 512 kbps earlier)</p>
 <p>EFlash Loader must acknowledge the data transfer within 5 seconds. Or the flashing shall be considered failed.</p>
 <p>(Where is the source code for the EFlash Loader: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/tools/flash_tool/bl602/eflash_loader/eflash_loader.map#L7460"><code>bflb_eflash_loader_cmds</code></a>? 🤔)</p>
@@ -1182,6 +1216,9 @@ len = 0
 </li>
 <li>
 <p>Will be used for transforming Boot Image and Firmware Image</p>
+</li>
+<li>
+<p>Also includes the Boot Header Configuration</p>
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/pinecone-flash-steps3.png" alt="Transforming firmware images with BL602 EFuse Configuration" /></p>
