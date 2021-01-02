@@ -674,7 +674,7 @@ This complicated setting configures the WiFi stack (including SSID)...
 
 [More about Linux Device Trees](https://www.kernel.org/doc/html/latest/devicetree/usage-model.html)
 
-_(TODO: Where is the Device Tree stored in XIP Flash ROM? Is this Device Tree used by EFlash Loader?)_
+_(TODO: Where is the Device Tree stored in XIP Flash ROM? Is this Device Tree used by EFlash Loader or Boot Image?)_
 
 # Flash Firmware in 2 Stages
 
