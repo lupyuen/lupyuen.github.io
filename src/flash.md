@@ -458,7 +458,7 @@ blk64k_erase_cmd = 0xd8
 
 JEDEC refers to the [Common Flash Memory Interface](https://en.wikipedia.org/wiki/Common_Flash_Memory_Interface) that's used to access Flash Memory.
 
-![Transforming BL602 Boot Image](https://lupyuen.github.io/images/flash-bootheader.png)
+![Boot Header at base of XIP Flash Memory `0x2300 0000`](https://lupyuen.github.io/images/flash-bootheader.png)
 
 Here we see that the Boot Header (in binary form) is located at the base of XIP Flash Memory (`0x2300 0000`).
 
@@ -489,6 +489,8 @@ The BL602 Boot Firmware Source Code is located here...
 -   [`bl_iot_sdk/customer_app/bl602_boot2`](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/bl602_boot2)
 
 The BL602 Boot Firmware seems to be doing... stuff.
+
+![Robot Chicken in Boot Image](https://lupyuen.github.io/images/flash-chicken.png)
 
 Would you like me to...
 
