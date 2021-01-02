@@ -147,7 +147,7 @@ _Flashing PineCone with Manjaro Linux Arm64 on Pinebook Pro_
 
     `blflash` starts by sending the __EFlash Loader__ program to PineCone. Then EFlash Loader starts running on PineCone.
     
-    EFlash Loader receives our firmware from `blflash` and flashes our firmware to ROM...
+    EFlash Loader receives our __Flash Image__ from `blflash` and flashes our firmware to ROM...
 
     ```text
     Erase flash addr: 0 size: 47504
@@ -162,7 +162,9 @@ _Flashing PineCone with Manjaro Linux Arm64 on Pinebook Pro_
     Success
     ```
 
-    `blflash` (and EFlash Loader) has successfully erased and flashed 5 locations in BL602 ROM from offsets: `0x0`, `0xe000`, `0xf000`, `0x10000` (that's our firmware) and `0x1f8000`
+    `blflash` (and EFlash Loader) has successfully erased and flashed 5 sections in BL602 ROM.
+    
+    The ROM sections were extracted from our Flash Image at offsets `0x0`, `0xe000`, `0xf000`, `0x10000` (that's our firmware) and `0x1f8000`
     
     We'll learn more about this.
 
@@ -264,9 +266,9 @@ _Firmware running on PineCone_
 
 These steps were tested on Arm64 Linux (Pinebook Pro with Manjaro), macOS Catalina and Windows 10.
 
-![BL602 Flashing Process Reverse-Engineered from BLOpenFlasher](https://lupyuen.github.io/images/pinecone-flash-steps.png)
+![BL602 Flashing Process reverse engineered from BLOpenFlasher](https://lupyuen.github.io/images/pinecone-flash-steps.png)
 
-_BL602 Flashing Process Reverse-Engineered from BLOpenFlasher_
+_BL602 Flashing Process reverse engineered from BLOpenFlasher_
 
 # What Else Can We Flash To BL602?
 
@@ -279,6 +281,8 @@ So far we have only flashed our Firmware Image to PineCone. This is one of 5 int
 | __Partition Table__ <br> `0x0000 F000` | Partition Table for <br> Flash ROM <br>(For second core?)
 | __Firmware Image__ <br> `0x0001 0000`	 | Code and data for <br> Application Firmware
 | __Device Tree__ <br> `0x001F 8000`     | Default settings for<br> peripherals and ports: <br>UART, GPIO, SPI, WiFi, ...
+
+(The addresses above are Offsets into the Flash Image that is transmitted by `blflash` to BL602 for flashing)
 
 This info was deciphered from the official open-source Go flashing tool for BL602: __BLOpenFlasher__...
 
@@ -659,7 +663,7 @@ Then we start running the EFlash Loader on BL602 in RAM at address [`0x2201 0000
 
 ## Flashing Stage 2
 
-Next we transmit 5 chunks of data to EFlash Loader, which writes them to BL602 ROM...
+Next we compose the __Flash Image__ that contains 5 sections of data to be flashed...
 
 | Offset | Contents |
 |:---|:---|
@@ -668,6 +672,8 @@ Next we transmit 5 chunks of data to EFlash Loader, which writes them to BL602 R
 | `0x0000 F000` | __Partition Table__ <br>(binary format)
 | `0x0001 0000`	| __Firmware Image__ <br>(transformed)
 | `0x001F 8000` | __Device Tree__ <br>(binary format)
+
+Then we transmit the Flash Image to EFlash Loader, which writes them to BL602 ROM.
 
 The data is transmitted at __2 Mbps__. (Instead of 512 kbps earlier)
 
