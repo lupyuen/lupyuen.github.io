@@ -70,7 +70,8 @@
 <li><a href="#download-and-build-blflash">1.2 Download and build blflash</a><ul></ul></li>
 <li><a href="#flash-the-firmware">1.3 Flash the firmware</a><ul></ul></li>
 <li><a href="#watch-the-firmware-run">1.4 Watch the firmware run</a><ul></ul></li></ul></li>
-<li><a href="#what-else-can-we-flash-to-bl602">2 What Else Can We Flash To BL602?</a><ul></ul></li>
+<li><a href="#what-else-can-we-flash-to-bl602">2 What Else Can We Flash To BL602?</a><ul>
+<li><a href="#xip-flash-memory-vs-boot-rom">2.1 XIP Flash Memory vs Boot ROM</a><ul></ul></li></ul></li>
 <li><a href="#partition-table">3 Partition Table</a><ul>
 <li><a href="#partition-entry-for-firmware">3.1 Partition Entry for Firmware</a><ul></ul></li>
 <li><a href="#partition-entry-for-device-tree">3.2 Partition Entry for Device Tree</a><ul></ul></li>
@@ -314,7 +315,6 @@ caused by: Invalid argument
 <tr><td align="left"><strong>Firmware Image</strong> <br> <code>0x0001 0000</code></td><td align="left">Code and data for <br> Application Firmware</td></tr>
 <tr><td align="left"><strong>Device Tree</strong> <br> <code>0x001F 8000</code></td><td align="left">Default settings for<br> peripherals and ports: <br>UART, GPIO, SPI, WiFi, ...</td></tr>
 </tbody></table>
-<p>(TODO: These addresses need to be adjusted with the base address of BL602's XIP Flash Memory, which starts at <code>0x2300 0000</code>. Will be updated shortly.)</p>
 <p>This info was deciphered from the official open-source Go flashing tool for BL602: <strong>BLOpenFlasher</strong>...</p>
 <ul>
 <li>
@@ -328,6 +328,10 @@ caused by: Invalid argument
 </li>
 </ul>
 <p>Let's look at each area of BL602's Internal Flash ROM.</p>
+<h2 id="xip-flash-memory-vs-boot-rom" class="section-header"><a href="#xip-flash-memory-vs-boot-rom">2.1 XIP Flash Memory vs Boot ROM</a></h2>
+<p>In this article we'll use &quot;ROM&quot; to refer to BL602's <strong>XIP Flash Memory</strong> (at address <code>0x2300 0000</code> with size 16 MB). </p>
+<p>(XIP means Execute In Place... We can execute firmware code here without transferring to RAM or Cache Memory)</p>
+<p>The <a href="https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf">BL602 Reference Manual</a> uses &quot;ROM&quot; to refer to BL602's <strong>Boot ROM</strong> (at address <code>0x2100 0000</code> with size 128 KB).</p>
 <p><img src="https://lupyuen.github.io/images/pinecone-flash-steps2c.png" alt="Compiling the BL602 Partition Table" /></p>
 <p><em>Compiling the BL602 Partition Table</em></p>
 <h1 id="partition-table" class="section-header"><a href="#partition-table">3 Partition Table</a></h1>

@@ -280,8 +280,6 @@ So far we have only flashed our Firmware Image to PineCone. This is one of 5 int
 | __Firmware Image__ <br> `0x0001 0000`	 | Code and data for <br> Application Firmware
 | __Device Tree__ <br> `0x001F 8000`     | Default settings for<br> peripherals and ports: <br>UART, GPIO, SPI, WiFi, ...
 
-(TODO: These addresses need to be adjusted with the base address of BL602's XIP Flash Memory, which starts at `0x2300 0000`. Will be updated shortly.)
-
 This info was deciphered from the official open-source Go flashing tool for BL602: __BLOpenFlasher__...
 
 -   [Source Code for BLOpenFlasher](https://github.com/bouffalolab/BLOpenFlasher)
@@ -291,6 +289,14 @@ This info was deciphered from the official open-source Go flashing tool for BL60
 -   See [BL602 ISP Flash Programming Doc](https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en) for the UART Flashing Protocol
 
 Let's look at each area of BL602's Internal Flash ROM.
+
+## XIP Flash Memory vs Boot ROM
+
+In this article we'll use "ROM" to refer to BL602's __XIP Flash Memory__ (at address `0x2300 0000` with size 16 MB). 
+
+(XIP means Execute In Place... We can execute firmware code here without transferring to RAM or Cache Memory)
+
+The [BL602 Reference Manual](https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf) uses "ROM" to refer to BL602's __Boot ROM__ (at address `0x2100 0000` with size 128 KB).
 
 ![Compiling the BL602 Partition Table](https://lupyuen.github.io/images/pinecone-flash-steps2c.png)
 
