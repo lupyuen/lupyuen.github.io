@@ -162,7 +162,7 @@ _Flashing PineCone with Manjaro Linux Arm64 on Pinebook Pro_
     Success
     ```
 
-    `blflash` (and EFlash Loader) has successfully erased and flashed 5 locations in BL602 ROM: `0x0`, `0xe000`, `0xf000`, `0x10000` (that's our firmware) and `0x1f8000`
+    `blflash` (and EFlash Loader) has successfully erased and flashed 5 locations in BL602 ROM from offsets: `0x0`, `0xe000`, `0xf000`, `0x10000` (that's our firmware) and `0x1f8000`
     
     We'll learn more about this.
 
@@ -272,7 +272,7 @@ _BL602 Flashing Process Reverse-Engineered from BLOpenFlasher_
 
 So far we have only flashed our Firmware Image to PineCone. This is one of 5 interesting things that we may flash to BL602's Internal Flash ROM...
 
-| ROM Address | ROM Contents |
+| Offset | Contents |
 |:---|:---|
 | __Boot Image__ <br> `0x0000 0000`      | Code and data for <br>Boot Firmware		
 | __Partition Table__ <br> `0x0000 E000` | Partition Table for <br>Flash ROM
@@ -309,7 +309,7 @@ address0 = 0xE000
 address1 = 0xF000
 ```
 
-This says that the Partition Table (4,096 bytes in binary form) is stored at two ROM addresses: `0xE000` and `0xF000`
+This says that the Partition Table (4,096 bytes in binary form) is stored at two offsets: `0xE000` and `0xF000`
 
 _(Is the Partition Table stored twice for redundancy... In case one gets corrupted?)_
 
@@ -329,7 +329,7 @@ size1    = 0x88000
 len      = 0
 ```
 
-It says that our Firmware Image is located at ROM address `0x10000`.
+It says that our Firmware Image is located at offset `0x10000`.
 
 _(But why two contiguous sections: `0x10000` and `0xD8000`?)_
 
@@ -347,7 +347,7 @@ size1    = 0
 len      = 0
 ```
 
-This is the Partition Entry for the Device Tree at ROM address `0x1F8000`. We'll cover the Device Tree in a while.
+This is the Partition Entry for the Device Tree at offset `0x1F8000`. We'll cover the Device Tree in a while.
 
 ![BL602 Start Code refers to the Partition Table](https://lupyuen.github.io/images/flash-start.png)
 
@@ -417,7 +417,7 @@ _Transforming the BL602 Boot Image_
 
 # Boot Image
 
-Located at ROM address `0x0`, the __Boot Image__ contains the firmware code that is run first upon booting BL602....
+Located at offset `0x0`, the __Boot Image__ contains the firmware code that is run first upon booting BL602....
 
 1.  __Boot Image Binary__ is at...
 
@@ -429,7 +429,7 @@ Located at ROM address `0x0`, the __Boot Image__ contains the firmware code that
 
     (For development, we have disabled encryption in the EFuse Configuration)
                                     
-1.  Which is flashed to BL602 ROM at address `0x0`, whenever we update the firmware
+1.  Which is flashed to BL602 Flash ROM whenever we update the firmware
 
 The BL602 Boot Firmware Source Code is located here...
 
@@ -451,7 +451,7 @@ _Transforming the BL602 Firmware Image_
 
 # Firmware Image
 
-Located at ROM address `0x10000`, the __Firmware Image__ contains our application firmware code that is run after the boot firmware.
+Located at offset `0x10000`, the __Firmware Image__ contains our application firmware code that is run after the boot firmware.
 
 Our firmware binary (`sdk_app_helloworld.bin`) gets transformed with the __EFuse Configuration__ to create (with firmware offset `0x1000`)...
 
@@ -459,7 +459,7 @@ Our firmware binary (`sdk_app_helloworld.bin`) gets transformed with the __EFuse
 
 (For development, we have disabled encryption in the EFuse Configuration)
 
-The transformed binary is flashed to BL602 at ROM address `0x10000`.
+The transformed binary is then flashed to BL602 Flash ROM.
 
 ![Compiling the BL602 Device Tree](https://lupyuen.github.io/images/pinecone-flash-steps2d.png)
 
@@ -645,13 +645,13 @@ First we transmit the firmware code for the EFlash Loader to BL602 at __512 kbps
 
 ("`40m`" refers to the BL602 Clock Speed: 40 MHz)
 
-Then we start running the EFlash Loader on BL602 in Cache Memory (similar to RAM) at address [`0x2201 0000`](https://github.com/lupyuen/bl_iot_sdk/blob/master/tools/flash_tool/bl602/eflash_loader/eflash_loader.map#L7439)
+Then we start running the EFlash Loader on BL602 in RAM at address [`0x2201 0000`](https://github.com/lupyuen/bl_iot_sdk/blob/master/tools/flash_tool/bl602/eflash_loader/eflash_loader.map#L7439)
 
 ## Flashing Stage 2
 
 Next we transmit 5 chunks of data to EFlash Loader, which writes them to BL602 ROM...
 
-| ROM Address | ROM Contents |
+| Offset | Contents |
 |:---|:---|
 | `0x0000 0000` | __Boot Image__ <br>(transformed)
 | `0x0000 E000` | __Partition Table__ <br>(binary format)

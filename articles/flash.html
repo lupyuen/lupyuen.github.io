@@ -229,7 +229,7 @@ Program done 489.5002ms 50.36KB/s
 Skip segment addr: 1f8000 size: 5671 sha256 matches
 Success
 </code></pre>
-<p><code>blflash</code> (and EFlash Loader) has successfully erased and flashed 5 locations in BL602 ROM: <code>0x0</code>, <code>0xe000</code>, <code>0xf000</code>, <code>0x10000</code> (that's our firmware) and <code>0x1f8000</code></p>
+<p><code>blflash</code> (and EFlash Loader) has successfully erased and flashed 5 locations in BL602 ROM from offsets: <code>0x0</code>, <code>0xe000</code>, <code>0xf000</code>, <code>0x10000</code> (that's our firmware) and <code>0x1f8000</code></p>
 <p>We'll learn more about this.</p>
 </li>
 <li>
@@ -307,7 +307,7 @@ caused by: Invalid argument
 <p><em>BL602 Flashing Process Reverse-Engineered from BLOpenFlasher</em></p>
 <h1 id="what-else-can-we-flash-to-bl602" class="section-header"><a href="#what-else-can-we-flash-to-bl602">2 What Else Can We Flash To BL602?</a></h1>
 <p>So far we have only flashed our Firmware Image to PineCone. This is one of 5 interesting things that we may flash to BL602's Internal Flash ROM...</p>
-<table><thead><tr><th align="left">ROM Address</th><th align="left">ROM Contents</th></tr></thead><tbody>
+<table><thead><tr><th align="left">Offset</th><th align="left">Contents</th></tr></thead><tbody>
 <tr><td align="left"><strong>Boot Image</strong> <br> <code>0x0000 0000</code></td><td align="left">Code and data for <br>Boot Firmware</td></tr>
 <tr><td align="left"><strong>Partition Table</strong> <br> <code>0x0000 E000</code></td><td align="left">Partition Table for <br>Flash ROM</td></tr>
 <tr><td align="left"><strong>Partition Table</strong> <br> <code>0x0000 F000</code></td><td align="left">Partition Table for <br> Flash ROM <br>(For redundancy?)</td></tr>
@@ -338,7 +338,7 @@ caused by: Invalid argument
 address0 = 0xE000
 address1 = 0xF000
 </code></pre>
-<p>This says that the Partition Table (4,096 bytes in binary form) is stored at two ROM addresses: <code>0xE000</code> and <code>0xF000</code></p>
+<p>This says that the Partition Table (4,096 bytes in binary form) is stored at two offsets: <code>0xE000</code> and <code>0xF000</code></p>
 <p><em>(Is the Partition Table stored twice for redundancy... In case one gets corrupted?)</em></p>
 <h2 id="partition-entry-for-firmware" class="section-header"><a href="#partition-entry-for-firmware">3.1 Partition Entry for Firmware</a></h2>
 <p>Here's the first Partition Entry in the Partition Table...</p>
@@ -352,7 +352,7 @@ address1 = 0xD8000
 size1    = 0x88000
 len      = 0
 </code></pre>
-<p>It says that our Firmware Image is located at ROM address <code>0x10000</code>.</p>
+<p>It says that our Firmware Image is located at offset <code>0x10000</code>.</p>
 <p><em>(But why two contiguous sections: <code>0x10000</code> and <code>0xD8000</code>?)</em></p>
 <h2 id="partition-entry-for-device-tree" class="section-header"><a href="#partition-entry-for-device-tree">3.2 Partition Entry for Device Tree</a></h2>
 <pre><code class="language-text">[[pt_entry]]
@@ -365,7 +365,7 @@ address1 = 0
 size1    = 0
 len      = 0
 </code></pre>
-<p>This is the Partition Entry for the Device Tree at ROM address <code>0x1F8000</code>. We'll cover the Device Tree in a while.</p>
+<p>This is the Partition Entry for the Device Tree at offset <code>0x1F8000</code>. We'll cover the Device Tree in a while.</p>
 <p><img src="https://lupyuen.github.io/images/flash-start.png" alt="BL602 Start Code refers to the Partition Table" /></p>
 <p><em>BL602 Start Code refers to the Partition Table</em></p>
 <h2 id="start-code-uses-partition-table" class="section-header"><a href="#start-code-uses-partition-table">3.3 Start Code uses Partition Table</a></h2>
@@ -409,7 +409,7 @@ ef_dbg_pwd_high    = 0
 <p><img src="https://lupyuen.github.io/images/pinecone-flash-steps2a.png" alt="Transforming BL602 Boot Image" /></p>
 <p><em>Transforming the BL602 Boot Image</em></p>
 <h1 id="boot-image" class="section-header"><a href="#boot-image">5 Boot Image</a></h1>
-<p>Located at ROM address <code>0x0</code>, the <strong>Boot Image</strong> contains the firmware code that is run first upon booting BL602....</p>
+<p>Located at offset <code>0x0</code>, the <strong>Boot Image</strong> contains the firmware code that is run first upon booting BL602....</p>
 <ol>
 <li>
 <p><strong>Boot Image Binary</strong> is at...</p>
@@ -425,7 +425,7 @@ ef_dbg_pwd_high    = 0
 <p>(For development, we have disabled encryption in the EFuse Configuration)</p>
 </li>
 <li>
-<p>Which is flashed to BL602 ROM at address <code>0x0</code>, whenever we update the firmware</p>
+<p>Which is flashed to BL602 Flash ROM whenever we update the firmware</p>
 </li>
 </ol>
 <p>The BL602 Boot Firmware Source Code is located here...</p>
@@ -446,13 +446,13 @@ ef_dbg_pwd_high    = 0
 <p><img src="https://lupyuen.github.io/images/pinecone-flash-steps2b.png" alt="Transforming BL602 Firmware Image" /></p>
 <p><em>Transforming the BL602 Firmware Image</em></p>
 <h1 id="firmware-image" class="section-header"><a href="#firmware-image">6 Firmware Image</a></h1>
-<p>Located at ROM address <code>0x10000</code>, the <strong>Firmware Image</strong> contains our application firmware code that is run after the boot firmware.</p>
+<p>Located at offset <code>0x10000</code>, the <strong>Firmware Image</strong> contains our application firmware code that is run after the boot firmware.</p>
 <p>Our firmware binary (<code>sdk_app_helloworld.bin</code>) gets transformed with the <strong>EFuse Configuration</strong> to create (with firmware offset <code>0x1000</code>)...</p>
 <ul>
 <li><code>bl602/image/fwimage.bin</code></li>
 </ul>
 <p>(For development, we have disabled encryption in the EFuse Configuration)</p>
-<p>The transformed binary is flashed to BL602 at ROM address <code>0x10000</code>.</p>
+<p>The transformed binary is then flashed to BL602 Flash ROM.</p>
 <p><img src="https://lupyuen.github.io/images/pinecone-flash-steps2d.png" alt="Compiling the BL602 Device Tree" /></p>
 <p><em>Compiling the BL602 Device Tree</em></p>
 <h1 id="device-tree" class="section-header"><a href="#device-tree">7 Device Tree</a></h1>
@@ -599,10 +599,10 @@ ef_dbg_pwd_high    = 0
 <li>EFlash Loader Binary: <a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/eflash_loader/eflash_loader_40m.bin"><code>eflash_loader_40m.bin</code></a></li>
 </ul>
 <p>(&quot;<code>40m</code>&quot; refers to the BL602 Clock Speed: 40 MHz)</p>
-<p>Then we start running the EFlash Loader on BL602 in Cache Memory (similar to RAM) at address <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/tools/flash_tool/bl602/eflash_loader/eflash_loader.map#L7439"><code>0x2201 0000</code></a></p>
+<p>Then we start running the EFlash Loader on BL602 in RAM at address <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/tools/flash_tool/bl602/eflash_loader/eflash_loader.map#L7439"><code>0x2201 0000</code></a></p>
 <h2 id="flashing-stage-2" class="section-header"><a href="#flashing-stage-2">8.2 Flashing Stage 2</a></h2>
 <p>Next we transmit 5 chunks of data to EFlash Loader, which writes them to BL602 ROM...</p>
-<table><thead><tr><th align="left">ROM Address</th><th align="left">ROM Contents</th></tr></thead><tbody>
+<table><thead><tr><th align="left">Offset</th><th align="left">Contents</th></tr></thead><tbody>
 <tr><td align="left"><code>0x0000 0000</code></td><td align="left"><strong>Boot Image</strong> <br>(transformed)</td></tr>
 <tr><td align="left"><code>0x0000 E000</code></td><td align="left"><strong>Partition Table</strong> <br>(binary format)</td></tr>
 <tr><td align="left"><code>0x0000 F000</code></td><td align="left"><strong>Partition Table</strong> <br>(binary format)</td></tr>
