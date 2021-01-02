@@ -493,7 +493,7 @@ blk64k_erase_cmd = 0xd8
 </ul>
 <p>(For development, we have disabled encryption in the EFuse Configuration)</p>
 <p>The transformed binary is then flashed to BL602 Flash ROM.</p>
-<p><em>(TODO: Both the Boot Image and Firmware Image are compiled to execute at XIP Flash Address <code>0x2300 0000</code>... How can two programs coexist at the same address?)</em></p>
+<p><em>(TODO: Both the Boot Image and Firmware Image are compiled to execute at XIP Flash Address <code>0x2300 0000</code>... How can two programs coexist at the same address? Does Boot Image contain the code to move Firmware Image to address <code>0x2300 0000</code>, overwriting the Boot Image?)</em></p>
 <p><img src="https://lupyuen.github.io/images/pinecone-flash-steps2d.png" alt="Compiling the BL602 Device Tree" /></p>
 <p><em>Compiling the BL602 Device Tree</em></p>
 <h1 id="device-tree" class="section-header"><a href="#device-tree">7 Device Tree</a></h1>

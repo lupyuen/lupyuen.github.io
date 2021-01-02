@@ -510,7 +510,7 @@ Our firmware binary (`sdk_app_helloworld.bin`) gets transformed with the __EFuse
 
 The transformed binary is then flashed to BL602 Flash ROM.
 
-_(TODO: Both the Boot Image and Firmware Image are compiled to execute at XIP Flash Address `0x2300 0000`... How can two programs coexist at the same address?)_
+_(TODO: Both the Boot Image and Firmware Image are compiled to execute at XIP Flash Address `0x2300 0000`... How can two programs coexist at the same address? Does Boot Image contain the code to move Firmware Image to address `0x2300 0000`, overwriting the Boot Image?)_
 
 ![Compiling the BL602 Device Tree](https://lupyuen.github.io/images/pinecone-flash-steps2d.png)
 
