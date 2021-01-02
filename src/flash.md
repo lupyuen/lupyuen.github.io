@@ -304,7 +304,7 @@ _Compiling the BL602 Partition Table_
 
 # Partition Table
 
-The __Partition Table__ says where everything is located in ROM. It's like the ROM Table above... But converted to binary format and stored into ROM (twice).
+The __Partition Table__ specifies the structure of the data that will be flashed to ROM. It's like the ROM Table above... But converted to binary format and transmitted to BL602 (twice).
 
 Here's a snippet from BL602's Partition Table: [`partition_cfg_2M.toml`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/partition/partition_cfg_2M.toml)
 
@@ -467,6 +467,8 @@ Our firmware binary (`sdk_app_helloworld.bin`) gets transformed with the __EFuse
 
 The transformed binary is then flashed to BL602 Flash ROM.
 
+_(TODO: Both the Boot Image and Firmware Image are compiled to execute at XIP Flash Address `0x2300 0000`... How can two programs coexist at the same address?)_
+
 ![Compiling the BL602 Device Tree](https://lupyuen.github.io/images/pinecone-flash-steps2d.png)
 
 _Compiling the BL602 Device Tree_
@@ -628,6 +630,8 @@ This complicated setting configures the WiFi stack (including SSID)...
 [More about BL602 Device Tree](https://lupyuen.github.io/articles/flash#appendix-bl602-device-tree)
 
 [More about Linux Device Trees](https://www.kernel.org/doc/html/latest/devicetree/usage-model.html)
+
+_(TODO: Where is the Device Tree stored in XIP Flash ROM?)_
 
 # Flash Firmware in 2 Stages
 
