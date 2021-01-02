@@ -458,6 +458,10 @@ blk64k_erase_cmd = 0xd8
 
 JEDEC refers to the [Common Flash Memory Interface](https://en.wikipedia.org/wiki/Common_Flash_Memory_Interface) that's used to access Flash Memory.
 
+![Transforming BL602 Boot Image](https://lupyuen.github.io/images/flash-bootheader.png)
+
+Here we see that the Boot Header (in binary form) is located at the base of XIP Flash Memory (`0x2300 0000`).
+
 [More about BL602 EFuse Configuration](https://lupyuen.github.io/articles/flash#appendix-bl602-efuse-configuration)
 
 ![Transforming BL602 Boot Image](https://lupyuen.github.io/images/pinecone-flash-steps2a.png)
