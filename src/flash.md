@@ -280,6 +280,8 @@ So far we have only flashed our Firmware Image to PineCone. This is one of 5 int
 | __Firmware Image__ <br> `0x0001 0000`	 | Code and data for <br> Application Firmware
 | __Device Tree__ <br> `0x001F 8000`     | Default settings for<br> peripherals and ports: <br>UART, GPIO, SPI, WiFi, ...
 
+(TODO: These addresses need to be adjusted with the base address of BL602's XIP Flash Memory, which starts at `0x2300 0000`. Will be updated shortly.)
+
 This info was deciphered from the official open-source Go flashing tool for BL602: __BLOpenFlasher__...
 
 -   [Source Code for BLOpenFlasher](https://github.com/bouffalolab/BLOpenFlasher)

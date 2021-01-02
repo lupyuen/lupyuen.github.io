@@ -314,6 +314,7 @@ caused by: Invalid argument
 <tr><td align="left"><strong>Firmware Image</strong> <br> <code>0x0001 0000</code></td><td align="left">Code and data for <br> Application Firmware</td></tr>
 <tr><td align="left"><strong>Device Tree</strong> <br> <code>0x001F 8000</code></td><td align="left">Default settings for<br> peripherals and ports: <br>UART, GPIO, SPI, WiFi, ...</td></tr>
 </tbody></table>
+<p>(TODO: These addresses need to be adjusted with the base address of BL602's XIP Flash Memory, which starts at <code>0x2300 0000</code>. Will be updated shortly.)</p>
 <p>This info was deciphered from the official open-source Go flashing tool for BL602: <strong>BLOpenFlasher</strong>...</p>
 <ul>
 <li>
