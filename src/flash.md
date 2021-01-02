@@ -276,7 +276,7 @@ So far we have only flashed our Firmware Image to PineCone. This is one of 5 int
 |:---|:---|
 | __Boot Image__ <br> `0x0000 0000`      | Code and data for <br>Boot Firmware		
 | __Partition Table__ <br> `0x0000 E000` | Partition Table for <br>Flash ROM
-| __Partition Table__ <br> `0x0000 F000` | Partition Table for <br> Flash ROM <br>(For redundancy?)
+| __Partition Table__ <br> `0x0000 F000` | Partition Table for <br> Flash ROM <br>(For second core?)
 | __Firmware Image__ <br> `0x0001 0000`	 | Code and data for <br> Application Firmware
 | __Device Tree__ <br> `0x001F 8000`     | Default settings for<br> peripherals and ports: <br>UART, GPIO, SPI, WiFi, ...
 
@@ -317,7 +317,7 @@ address1 = 0xF000
 
 This says that the Partition Table (4,096 bytes in binary form) is stored at two offsets: `0xE000` and `0xF000`
 
-_(Is the Partition Table stored twice for redundancy... In case one gets corrupted?)_
+The second Partition Table might possibly be used in future to support a second RISC-V core. [See this](https://www.reddit.com/r/RISCV/comments/knsju9/flashing_firmware_to_pinecone_bl602/ghs633c?utm_source=share&utm_medium=web2x&context=3)
 
 ## Partition Entry for Firmware
 

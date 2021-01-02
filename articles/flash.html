@@ -311,7 +311,7 @@ caused by: Invalid argument
 <table><thead><tr><th align="left">Offset</th><th align="left">Contents</th></tr></thead><tbody>
 <tr><td align="left"><strong>Boot Image</strong> <br> <code>0x0000 0000</code></td><td align="left">Code and data for <br>Boot Firmware</td></tr>
 <tr><td align="left"><strong>Partition Table</strong> <br> <code>0x0000 E000</code></td><td align="left">Partition Table for <br>Flash ROM</td></tr>
-<tr><td align="left"><strong>Partition Table</strong> <br> <code>0x0000 F000</code></td><td align="left">Partition Table for <br> Flash ROM <br>(For redundancy?)</td></tr>
+<tr><td align="left"><strong>Partition Table</strong> <br> <code>0x0000 F000</code></td><td align="left">Partition Table for <br> Flash ROM <br>(For second core?)</td></tr>
 <tr><td align="left"><strong>Firmware Image</strong> <br> <code>0x0001 0000</code></td><td align="left">Code and data for <br> Application Firmware</td></tr>
 <tr><td align="left"><strong>Device Tree</strong> <br> <code>0x001F 8000</code></td><td align="left">Default settings for<br> peripherals and ports: <br>UART, GPIO, SPI, WiFi, ...</td></tr>
 </tbody></table>
@@ -343,7 +343,7 @@ address0 = 0xE000
 address1 = 0xF000
 </code></pre>
 <p>This says that the Partition Table (4,096 bytes in binary form) is stored at two offsets: <code>0xE000</code> and <code>0xF000</code></p>
-<p><em>(Is the Partition Table stored twice for redundancy... In case one gets corrupted?)</em></p>
+<p>The second Partition Table might possibly be used in future to support a second RISC-V core. <a href="https://www.reddit.com/r/RISCV/comments/knsju9/flashing_firmware_to_pinecone_bl602/ghs633c?utm_source=share&amp;utm_medium=web2x&amp;context=3">See this</a></p>
 <h2 id="partition-entry-for-firmware" class="section-header"><a href="#partition-entry-for-firmware">3.1 Partition Entry for Firmware</a></h2>
 <p>Here's the first Partition Entry in the Partition Table...</p>
 <pre><code class="language-text">[[pt_entry]]
