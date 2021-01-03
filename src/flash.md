@@ -266,6 +266,26 @@ _Firmware running on PineCone_
 
 These steps were tested on Arm64 Linux (Pinebook Pro with Manjaro), macOS Catalina and Windows 10.
 
+## For macOS: CH340 USB Serial Driver
+
+PineCone includes a CH340N USB-to-UART module to expose BL620's UART Port via PineCone's USB Port.
+
+We should use the CH340 Driver provided by Apple. To check, connect PineCone to the USB port and enter...
+
+```bash
+sudo dmesg
+```
+
+We should see...
+
+```text
+DK: AppleUSBCHCOM-0x1000d21bd::start(IOUSBHostInterface-0x1000d21b6) ok
+```
+
+`AppleUSBCHCOM` is the CH340 Driver provided by Apple for macOS Catalina.
+
+[More about this](https://community.platformio.org/t/troubleshooting-ch340g-issues-on-macos/9522)
+
 ![BL602 Flashing Process reverse engineered from BLOpenFlasher](https://lupyuen.github.io/images/pinecone-flash-steps.png)
 
 _BL602 Flashing Process reverse engineered from BLOpenFlasher_

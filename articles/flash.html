@@ -69,7 +69,8 @@
 <li><a href="#install-rustup">1.1 Install rustup</a><ul></ul></li>
 <li><a href="#download-and-build-blflash">1.2 Download and build blflash</a><ul></ul></li>
 <li><a href="#flash-the-firmware">1.3 Flash the firmware</a><ul></ul></li>
-<li><a href="#watch-the-firmware-run">1.4 Watch the firmware run</a><ul></ul></li></ul></li>
+<li><a href="#watch-the-firmware-run">1.4 Watch the firmware run</a><ul></ul></li>
+<li><a href="#for-macos-ch340-usb-serial-driver">1.5 For macOS: CH340 USB Serial Driver</a><ul></ul></li></ul></li>
 <li><a href="#what-else-gets-flashed-to-bl602">2 What Else Gets Flashed To BL602?</a><ul>
 <li><a href="#xip-flash-memory-vs-boot-rom">2.1 XIP Flash Memory vs Boot ROM</a><ul></ul></li></ul></li>
 <li><a href="#partition-table">3 Partition Table</a><ul>
@@ -306,6 +307,16 @@ caused by: Invalid argument
 </li>
 </ol>
 <p>These steps were tested on Arm64 Linux (Pinebook Pro with Manjaro), macOS Catalina and Windows 10.</p>
+<h2 id="for-macos-ch340-usb-serial-driver" class="section-header"><a href="#for-macos-ch340-usb-serial-driver">1.5 For macOS: CH340 USB Serial Driver</a></h2>
+<p>PineCone includes a CH340N USB-to-UART module to expose BL620's UART Port via PineCone's USB Port.</p>
+<p>We should use the CH340 Driver provided by Apple. To check, connect PineCone to the USB port and enter...</p>
+<pre><code class="language-bash">sudo dmesg
+</code></pre>
+<p>We should see...</p>
+<pre><code class="language-text">DK: AppleUSBCHCOM-0x1000d21bd::start(IOUSBHostInterface-0x1000d21b6) ok
+</code></pre>
+<p><code>AppleUSBCHCOM</code> is the CH340 Driver provided by Apple for macOS Catalina.</p>
+<p><a href="https://community.platformio.org/t/troubleshooting-ch340g-issues-on-macos/9522">More about this</a></p>
 <p><img src="https://lupyuen.github.io/images/pinecone-flash-steps.png" alt="BL602 Flashing Process reverse engineered from BLOpenFlasher" /></p>
 <p><em>BL602 Flashing Process reverse engineered from BLOpenFlasher</em></p>
 <h1 id="what-else-gets-flashed-to-bl602" class="section-header"><a href="#what-else-gets-flashed-to-bl602">2 What Else Gets Flashed To BL602?</a></h1>
