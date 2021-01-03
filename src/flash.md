@@ -168,7 +168,16 @@ _Flashing PineCone with Manjaro Linux Arm64 on Pinebook Pro_
     
     We'll learn more about this.
 
-1.  If we see this error...
+1.  If we see this...
+
+    ```text
+    Start connection...
+    5ms send count 115
+    handshake sent elapsed 72.001µs
+    Retry 1
+    ```
+
+    Or this...
 
     ```text
     Start connection...
