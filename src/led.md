@@ -1,6 +1,6 @@
 # Control PineCone BL602 RGB LED with GPIO and PWM
 
-# GPIO
+# Control RGB LED with GPIO
 
 Flash the GPIO Demo Firmware to PineCone: [`sdk_app_gpio.bin`](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_gpio)
 
@@ -45,7 +45,7 @@ gpio-set 17 1
 
 To exit `screen`, press `Ctrl-A` then `k` then `y`
 
-# PWM
+# Control RGB LED with PWM
 
 Flash the Modified PWM Demo Firmware to PineCone: [`sdk_app_pwm.bin`](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_pwm)
 
