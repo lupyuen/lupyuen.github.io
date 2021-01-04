@@ -6,6 +6,14 @@ _PineCone BL602 RISC-V Evaluation Board connected to Pinebook Pro_
 
 📝 _6 Jan 2021_
 
+Today we shall learn to control PineCone's onboard RGB LED in two ways...
+
+1.  With GPIO
+
+1.  With Pulse Width Modulation (PWM)
+
+...By calling the BL602 Hardware Abstraction Layer in C.
+
 # Control RGB LED with GPIO
 
 Flash the __GPIO Demo Firmware__ to PineCone: [`sdk_app_gpio.bin`](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_gpio)
@@ -92,7 +100,6 @@ int bl_gpio_input_get_value(uint8_t pin);
 
 These above functions are called by the GPIO Demo Firmware here: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_gpio/sdk_app_gpio/demo.c)
 
-
 ## GPIO Interrupts
 
 To allow a GPIO Pin to trigger interrupts (like when a button is pressed), we call these GPIO HAL Functions: [`bl_gpio.h`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_gpio.h)
@@ -107,6 +114,10 @@ void bl_gpio_register(gpio_ctx_t *pstnode);
 Check the GPIO HAL Source Code for details...
 
 -   [GPIO HAL Source Code](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_gpio.c)
+
+# From GPIO to Pulse Width Modulation (PWM)
+
+TODO
 
 # Control RGB LED with PWM
 
