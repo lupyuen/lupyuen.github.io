@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <title>Control PineCone BL602 RGB LED with GPIO and PWM</title>
+
+    
+    <!-- Begin scripts/articles/*-header.html: Article Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<meta property="og:title" 
+    content="Control PineCone BL602 RGB LED with GPIO and PWM" 
+    data-rh="true">
+<meta property="og:description" 
+    content="How we control PineCone BL602's RGB LED by calling the BL602 GPIO and PWM Functions" 
+    data-rh="true">
+<meta property="og:image" 
+    content="https://lupyuen.github.io/images/led-title.jpg">
+<meta property="og:type" 
+    content="article" data-rh="true">
+<!-- End scripts/articles/*-header.html -->
+<!-- Begin scripts/rustdoc-header.html: Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<link rel="alternate" type="application/rss+xml" title="RSS Feed for lupyuen" href="/rss.xml" />
+<link rel="stylesheet" type="text/css" href="../normalize.css">
+<link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle">
+<link rel="stylesheet" type="text/css" href="../dark.css">
+<link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle">
+<link rel="stylesheet" type="text/css" href="../prism.css">
+<script src="../storage.js"></script><noscript>
+<link rel="stylesheet" href="../noscript.css"></noscript>
+<link rel="shortcut icon" href="../favicon.ico">
+<style type="text/css">
+    #crate-search {
+        background-image: url("../down-arrow.svg");
+    }
+    a {
+        color: #77d;
+    }
+</style>
+<!-- End scripts/rustdoc-header.html -->
+
+
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+        <!-- Begin scripts/rustdoc-before.html: Pre-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
+
+    <!-- Begin Theme Picker -->
+    <div class="theme-picker" style="left: 0"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg"
+        width="18" alt="Pick another theme!"></button>
+        <div id="theme-choices"></div>
+    </div>
+    <script src="../theme.js"></script>
+    <script src="../prism.js"></script>
+    <!-- Theme Picker -->
+
+    <!-- End scripts/rustdoc-before.html -->
+    
+
+    <h1 class="title">Control PineCone BL602 RGB LED with GPIO and PWM</h1>
+    <nav id="TOC"><ul>
+<li><a href="#control-rgb-led-with-gpio">1 Control RGB LED with GPIO</a><ul></ul></li>
+<li><a href="#how-it-works-bl602-gpio">2 How It Works: BL602 GPIO</a><ul>
+<li><a href="#enable-gpio">2.1 Enable GPIO</a><ul></ul></li>
+<li><a href="#read-and-write-gpio">2.2 Read and Write GPIO</a><ul></ul></li>
+<li><a href="#gpio-interrupts">2.3 GPIO Interrupts</a><ul></ul></li></ul></li>
+<li><a href="#from-gpio-to-pulse-width-modulation-pwm">3 From GPIO to Pulse Width Modulation (PWM)</a><ul></ul></li>
+<li><a href="#control-rgb-led-with-pwm">4 Control RGB LED with PWM</a><ul></ul></li>
+<li><a href="#how-it-works-bl602-pwm">5 How It Works: BL602 PWM</a><ul>
+<li><a href="#initialise-pwm">5.1 Initialise PWM</a><ul></ul></li>
+<li><a href="#pwm-frequency-and-duty-cycle">5.2 PWM Frequency and Duty Cycle</a><ul></ul></li>
+<li><a href="#pwm-operation">5.3 PWM Operation</a><ul></ul></li>
+<li><a href="#whats-next">5.4 What's Next</a><ul></ul></li></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/led-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board connected to Pinebook Pro" /></p>
+<p><em>PineCone BL602 RISC-V Evaluation Board connected to Pinebook Pro</em></p>
+<p>📝 <em>6 Jan 2021</em></p>
+<p>Today we shall learn to control PineCone's onboard RGB LED in two ways...</p>
+<ol>
+<li>
+<p><strong>With GPIO</strong></p>
+</li>
+<li>
+<p><strong>With Pulse Width Modulation (PWM)</strong></p>
+</li>
+</ol>
+<p>...By calling <strong>BL602's Hardware Abstraction Layer</strong> in C.</p>
+<h1 id="control-rgb-led-with-gpio" class="section-header"><a href="#control-rgb-led-with-gpio">1 Control RGB LED with GPIO</a></h1>
+<p>Flash the <strong>GPIO Demo Firmware</strong> to PineCone: <a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_gpio"><code>sdk_app_gpio.bin</code></a></p>
+<p>Connect to PineCone...</p>
+<pre><code class="language-bash">sudo screen /dev/ttyUSB0 2000000
+</code></pre>
+<p>Press the RST Button on PineCone to restart the firmware.</p>
+<p>Press Enter to reveal the command prompt.</p>
+<p>Set GPIO 11 (Blue), 14 (Green), 17 (Red) to output (no pullup, no pulldown)...</p>
+<pre><code class="language-bash">gpio-func 11 0 0 0
+gpio-func 14 0 0 0
+gpio-func 17 0 0 0
+</code></pre>
+<p>Switch off the 3 LEDs (High = Off)...</p>
+<pre><code class="language-bash">gpio-set 11 1
+gpio-set 14 1
+gpio-set 17 1
+</code></pre>
+<p>Switch on and off each of the 3 LEDs: Blue, Green, Red (Low = On)...</p>
+<pre><code class="language-bash">gpio-set 11 0
+gpio-set 11 1
+
+gpio-set 14 0
+gpio-set 14 1
+
+gpio-set 17 0
+gpio-set 17 1
+</code></pre>
+<p>To exit <code>screen</code>, press <code>Ctrl-A</code> then <code>k</code> then <code>y</code></p>
+<p><a href="https://youtu.be/yaXsfM1ne4w">Watch the GPIO Demo Video on YouTube</a></p>
+<h1 id="how-it-works-bl602-gpio" class="section-header"><a href="#how-it-works-bl602-gpio">2 How It Works: BL602 GPIO</a></h1>
+<p>Let's look at the BL602 GPIO Functions called by the GPIO Demo Firmware: <a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_gpio"><code>sdk_app_gpio.bin</code></a></p>
+<h2 id="enable-gpio" class="section-header"><a href="#enable-gpio">2.1 Enable GPIO</a></h2>
+<p>To designate a GPIO Pin for input or output, we call these GPIO HAL Functions: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_gpio.h"><code>bl_gpio.h</code></a></p>
+<pre><code class="language-c">int bl_gpio_enable_output(uint8_t pin, uint8_t pullup, uint8_t pulldown);
+int bl_gpio_enable_input( uint8_t pin, uint8_t pullup, uint8_t pulldown);
+</code></pre>
+<ul>
+<li>
+<p><code>pin</code> is the GPIO Pin Number, so <code>pin=0</code> refers to GPIO 0.</p>
+</li>
+<li>
+<p><code>pullup</code> is set to 1 if the pin should be pulled up electrically, 0 otherwise.</p>
+</li>
+<li>
+<p><code>pulldown</code> is set to 1 if the pin should be pulled down electrically, 0 otherwise.</p>
+</li>
+</ul>
+<h2 id="read-and-write-gpio" class="section-header"><a href="#read-and-write-gpio">2.2 Read and Write GPIO</a></h2>
+<p>To read or write a GPIO Pin, we call these GPIO HAL Functions: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_gpio.h"><code>bl_gpio.h</code></a></p>
+<pre><code class="language-c">int bl_gpio_output_set(uint8_t pin, uint8_t value);
+int bl_gpio_input_get( uint8_t pin, uint8_t *value);
+int bl_gpio_input_get_value(uint8_t pin);
+</code></pre>
+<ul>
+<li>
+<p><code>pin</code> is the GPIO Pin Number.</p>
+</li>
+<li>
+<p><code>value</code> is the value to be read or written.</p>
+</li>
+<li>
+<p><code>bl_gpio_input_get</code> stores the value read at the pointer passed in.</p>
+</li>
+</ul>
+<p>These above functions are called by the GPIO Demo Firmware here: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_gpio/sdk_app_gpio/demo.c"><code>demo.c</code></a></p>
+<h2 id="gpio-interrupts" class="section-header"><a href="#gpio-interrupts">2.3 GPIO Interrupts</a></h2>
+<p>To allow a GPIO Pin to trigger interrupts (like when a button is pressed), we call these GPIO HAL Functions: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_gpio.h"><code>bl_gpio.h</code></a></p>
+<pre><code class="language-c">int  bl_gpio_int_clear( uint8_t gpioPin, uint8_t intClear);
+void bl_gpio_intmask(   uint8_t gpiopin, uint8_t mask);
+void bl_set_gpio_intmod(uint8_t gpioPin, uint8_t intCtrlMod, uint8_t intTrgMod);
+void bl_gpio_register(gpio_ctx_t *pstnode);
+</code></pre>
+<p>Check the GPIO HAL Source Code for details...</p>
+<ul>
+<li><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_gpio.c">GPIO HAL Source Code</a></li>
+</ul>
+<h1 id="from-gpio-to-pulse-width-modulation-pwm" class="section-header"><a href="#from-gpio-to-pulse-width-modulation-pwm">3 From GPIO to Pulse Width Modulation (PWM)</a></h1>
+<p>TODO</p>
+<h1 id="control-rgb-led-with-pwm" class="section-header"><a href="#control-rgb-led-with-pwm">4 Control RGB LED with PWM</a></h1>
+<p>Flash the <strong>Modified PWM Demo Firmware</strong> to PineCone: <a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_pwm"><code>sdk_app_pwm.bin</code></a></p>
+<p>(The firmware was modified to run without a Device Tree. <a href="https://github.com/lupyuen/bl_iot_sdk/pull/1">More details</a>)</p>
+<p>Connect to PineCone...</p>
+<pre><code class="language-bash">sudo screen /dev/ttyUSB0 2000000
+</code></pre>
+<p>Press the RST Button on PineCone to restart the firmware. Ignore the errors.</p>
+<p>Press Enter to reveal the command prompt.</p>
+<p>Assign GPIO 11 (Blue), 17 (Red), 14 (Green) to <strong>PWM Channels</strong> 1, 2 and 4.  Set <strong>PWM Frequency</strong> to 2 kHz. (Each LED will blink at 2,000 cycles per second)</p>
+<pre><code class="language-bash">pwm_init 1 11 2000
+pwm_init 2 17 2000
+pwm_init 4 14 2000
+</code></pre>
+<p>Set <strong>PWM Duty Cycle</strong> for all 3 PWM Channels to 100%. Which means that 100% of the time, the 3 PWM Channels will be set to 1 (High). Which means total darkness: All 3 LEDs will be switched off 100% of the time.</p>
+<pre><code class="language-bash">pwm_duty_set 1 100
+pwm_duty_set 2 100
+pwm_duty_set 4 100
+</code></pre>
+<p>Start the PWM Output for all 3 PWM Channels...</p>
+<pre><code class="language-bash">pwm_start 1
+pwm_start 2
+pwm_start 4
+</code></pre>
+<p>Gradually decrease the PWM Duty Cycle for PWM Channel 1 (Blue) from 100% to 0%. This means the Blue LED will gradually get brighter...</p>
+<pre><code class="language-bash">pwm_duty_set 1 75
+pwm_duty_set 1 50
+pwm_duty_set 1 25
+pwm_duty_set 1 0
+</code></pre>
+<p>To exit <code>screen</code>, press <code>Ctrl-A</code> then <code>k</code> then <code>y</code></p>
+<p><a href="https://youtu.be/66h2rXXc6Tk">Watch the PWM Demo Video on YouTube</a></p>
+<h1 id="how-it-works-bl602-pwm" class="section-header"><a href="#how-it-works-bl602-pwm">5 How It Works: BL602 PWM</a></h1>
+<p>Now we look at the BL602 PWM Functions called by the PWM Demo Firmware: <a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_pwm"><code>sdk_app_pwm.bin</code></a></p>
+<h2 id="initialise-pwm" class="section-header"><a href="#initialise-pwm">5.1 Initialise PWM</a></h2>
+<p>To designate a GPIO PIN as a PWM Channel, we call this PWM HAL Function: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_pwm.h"><code>bl_pwm.h</code></a></p>
+<pre><code class="language-c">int32_t bl_pwm_init(uint8_t id, uint8_t pin, uint32_t freq);
+</code></pre>
+<ul>
+<li>
+<p><code>id</code> is the PWM Channel ID (0 to 4). BL602 supports 5 PWM Channels: PWM 0 to PWM 4.</p>
+</li>
+<li>
+<p><code>pin</code> is the GPIO Pin Number, so <code>pin=0</code> refers to GPIO 0.</p>
+</li>
+<li>
+<p><code>freq</code> is the PWM Frequency (in Hz / Cycles Per Second). So <code>freq=2000</code> means that the PWM Channel will be blinked 2,000 cycles every second. <code>freq</code> must be between 2,000 and 800,000 (inclusive).</p>
+</li>
+</ul>
+<p>Not all GPIO Pins may be assigned to a PWM Channel. Check &quot;Table 3.1: Pin description&quot; (Page 27) in <a href="https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf">BL602 Reference Manual</a>.</p>
+<h2 id="pwm-frequency-and-duty-cycle" class="section-header"><a href="#pwm-frequency-and-duty-cycle">5.2 PWM Frequency and Duty Cycle</a></h2>
+<p>We set the Frequency and Duty Cycle on a PWM Channel by calling these PWM HAL Functions: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_pwm.h"><code>bl_pwm.h</code></a></p>
+<pre><code class="language-c">int32_t bl_pwm_set_freq(uint8_t id, uint32_t freq);
+int32_t bl_pwm_set_duty(uint8_t id, float duty);
+</code></pre>
+<ul>
+<li>
+<p><code>id</code> is the PWM Channel ID (0 to 4).</p>
+</li>
+<li>
+<p><code>freq</code> is the PWM Frequency (in Hz / Cycles Per Second). <code>freq</code> must be between 2,000 and 800,000 (inclusive).</p>
+</li>
+<li>
+<p><code>duty</code> is the PWM Duty Cycle (0 to 100). When <code>duty=25</code>, it means that in every PWM Cycle...</p>
+<ul>
+<li>PWM Ouput is 1 (High) for the initial 25% of the PWM Cycle</li>
+<li>Followed by PWM Output 0 (Low) for the remaining 75% of the PWM Cycle</li>
+</ul>
+</li>
+</ul>
+<p>To get the Duty Cycle for a PWM Channel, we call this function...</p>
+<pre><code class="language-c">int32_t bl_pwm_get_duty(uint8_t id, float *p_duty);
+</code></pre>
+<ul>
+<li><code>bl_pwm_get_duty</code> stores the Duty Cycle at the pointer passed in <code>p_duty</code>.</li>
+</ul>
+<h2 id="pwm-operation" class="section-header"><a href="#pwm-operation">5.3 PWM Operation</a></h2>
+<p>We start and stop a PWM Channel by calling these PWM HAL Functions: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_pwm.h"><code>bl_pwm.h</code></a></p>
+<pre><code class="language-c">int32_t bl_pwm_start(uint8_t id);
+int32_t bl_pwm_stop( uint8_t id);
+</code></pre>
+<ul>
+<li><code>id</code> is the PWM Channel ID (0 to 4).</li>
+</ul>
+<p>The above PWM HAL Functions are defined here...</p>
+<ul>
+<li><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_pwm.c">PWM HAL Source Code</a></li>
+</ul>
+<p>The PWM HAL Functions are called by the PWM Demo Firmware here: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_pwm/sdk_app_pwm/main.c"><code>main.c</code></a></p>
+<h2 id="whats-next" class="section-header"><a href="#whats-next">5.4 What's Next</a></h2>
+<p>TODO</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io">Check out my articles</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/rss.xml">RSS Feed</a></p>
+</li>
+<li>
+<p><a href="https://github.com/sponsors/lupyuen">Sponsor me a coffee</a></p>
+</li>
+</ul>
+<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
+<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/led.md"><code>lupyuen.github.io/src/led.md</code></a></p>
+
+    
+</body>
+</html>
