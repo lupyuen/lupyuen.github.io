@@ -98,7 +98,7 @@ To exit `screen`, press `Ctrl-A` then `k` then `y`
 
 # How It Works: BL602 GPIO
 
-TODO
+Let's look at the BL602 GPIO Functions called by the GPIO Demo Firmware: [`sdk_app_gpio.bin`](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_gpio)
 
 ## Enable GPIO
 
@@ -129,7 +129,7 @@ int bl_gpio_input_get_value(uint8_t pin);
 
 `pin` is the GPIO Pin Number. `value` is the value to be read or written.
 
-`bl_gpio_input_get` writes the value at the pointer passed in.
+`bl_gpio_input_get` stores the value read at the pointer passed in.
 
 ## GPIO Interrupts
 
@@ -150,7 +150,7 @@ https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_gpio/sdk_
 
 # How It Works: BL602 PWM
 
-TODO
+Now we look at the BL602 PWM Functions called by the PWM Demo Firmware: [`sdk_app_pwm.bin`](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_pwm)
 
 ## Initialise PWM
 
