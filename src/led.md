@@ -1,8 +1,14 @@
 # Control PineCone BL602 RGB LED with GPIO and PWM
 
+![PineCone BL602 RISC-V Evaluation Board connected to Pinebook Pro](https://lupyuen.github.io/images/led-title.jpg)
+
+_PineCone BL602 RISC-V Evaluation Board connected to Pinebook Pro_
+
+📝 _6 Jan 2021_
+
 # Control RGB LED with GPIO
 
-Flash the GPIO Demo Firmware to PineCone: [`sdk_app_gpio.bin`](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_gpio)
+Flash the __GPIO Demo Firmware__ to PineCone: [`sdk_app_gpio.bin`](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_gpio)
 
 Connect to PineCone...
 
@@ -104,9 +110,9 @@ Check the GPIO HAL Source Code for details...
 
 # Control RGB LED with PWM
 
-Flash the Modified PWM Demo Firmware to PineCone: [`sdk_app_pwm.bin`](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_pwm)
+Flash the __Modified PWM Demo Firmware__ to PineCone: [`sdk_app_pwm.bin`](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_pwm)
 
-(Modified to run without Device Tree)
+(The firmware was modified to run without a Device Tree. [More details](https://github.com/lupyuen/bl_iot_sdk/pull/1))
 
 Connect to PineCone...
 
@@ -182,18 +188,35 @@ We set the Frequency and Duty Cycle on a PWM Channel by calling these PWM HAL Fu
 ```c
 int32_t bl_pwm_set_freq(uint8_t id, uint32_t freq);
 int32_t bl_pwm_set_duty(uint8_t id, float duty);
+```
+
+-   `id` is the PWM Channel ID (0 to 4).
+
+-   `freq` is the PWM Frequency (in Hz / Cycles Per Second). `freq` must be between 2,000 and 800,000 (inclusive).
+
+-   `duty` is the PWM Duty Cycle (0 to 100). When `duty=25`, it means that in every PWM Cycle...
+
+    - PWM Ouput is 1 (High) for the initial 25% of the PWM Cycle
+    - Followed by PWM Output 0 (Low) for the remaining 75% of the PWM Cycle
+
+To get the Duty Cycle for a PWM Channel, we call this function...
+
+```c
 int32_t bl_pwm_get_duty(uint8_t id, float *p_duty);
 ```
+
+-   `bl_pwm_get_duty` stores the Duty Cycle at the pointer passed in `p_duty`.
 
 ## PWM Operation
 
 We start and stop a PWM Channel by calling these PWM HAL Functions: [`bl_pwm.h`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_pwm.h)
 
-
 ```c
 int32_t bl_pwm_start(uint8_t id);
 int32_t bl_pwm_stop( uint8_t id);
 ```
+
+-   `id` is the PWM Channel ID (0 to 4).
 
 The above PWM HAL Functions are defined here...
 
