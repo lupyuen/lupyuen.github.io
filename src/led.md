@@ -45,6 +45,8 @@ gpio-set 17 1
 
 To exit `screen`, press `Ctrl-A` then `k` then `y`
 
+[Watch the GPIO Demo Video on YouTube](https://youtu.be/yaXsfM1ne4w)
+
 # How It Works: BL602 GPIO
 
 Let's look at the BL602 GPIO Functions called by the GPIO Demo Firmware: [`sdk_app_gpio.bin`](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_gpio)
@@ -59,11 +61,11 @@ int bl_gpio_enable_output(uint8_t pin, uint8_t pullup, uint8_t pulldown);
 int bl_gpio_enable_input( uint8_t pin, uint8_t pullup, uint8_t pulldown);
 ```
 
-`pin` is the GPIO Pin Number, so `pin=0` refers to GPIO 0.
+-   `pin` is the GPIO Pin Number, so `pin=0` refers to GPIO 0.
 
-`pullup` is set to 1 if the pin should be pulled up electrically, 0 otherwise.
+-   `pullup` is set to 1 if the pin should be pulled up electrically, 0 otherwise.
 
-`pulldown` is set to 1 if the pin should be pulled down electrically, 0 otherwise.
+-   `pulldown` is set to 1 if the pin should be pulled down electrically, 0 otherwise.
 
 ## Read and Write GPIO
 
@@ -76,9 +78,11 @@ int bl_gpio_input_get( uint8_t pin, uint8_t *value);
 int bl_gpio_input_get_value(uint8_t pin);
 ```
 
-`pin` is the GPIO Pin Number. `value` is the value to be read or written.
+-   `pin` is the GPIO Pin Number.
 
-`bl_gpio_input_get` stores the value read at the pointer passed in.
+-   `value` is the value to be read or written.
+
+-   `bl_gpio_input_get` stores the value read at the pointer passed in.
 
 These above functions are called by the GPIO Demo Firmware here: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_gpio/sdk_app_gpio/demo.c)
 
@@ -149,18 +153,27 @@ pwm_duty_set 1 0
 
 To exit `screen`, press `Ctrl-A` then `k` then `y`
 
+[Watch the PWM Demo Video on YouTube](https://youtu.be/66h2rXXc6Tk)
+
 # How It Works: BL602 PWM
 
 Now we look at the BL602 PWM Functions called by the PWM Demo Firmware: [`sdk_app_pwm.bin`](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_pwm)
 
 ## Initialise PWM
 
-We initialise a PWM Channel by calling this PWM HAL Function: [`bl_pwm.h`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_pwm.h)
-
+To designate a GPIO PIN as a PWM Channel, we call this PWM HAL Function: [`bl_pwm.h`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_pwm.h)
 
 ```c
 int32_t bl_pwm_init(uint8_t id, uint8_t pin, uint32_t freq);
 ```
+
+-   `id` is the PWM Channel ID (0 to 4). BL602 supports 5 PWM Channels: PWM 0 to PWM 4.
+
+-   `pin` is the GPIO Pin Number, so `pin=0` refers to GPIO 0.
+
+-   `freq` is the PWM Frequency (in Hz / Cycles Per Second). So `freq=2000` means that the PWM Channel will be blinked 2,000 cycles every second. `freq` must be between 2,000 and 800,000 (inclusive).
+
+Not all GPIO Pins may be assigned to a PWM Channel. Check "Table 3.1: Pin description" (Page 27) in [BL602 Reference Manual](https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf).
 
 ## PWM Frequency and Duty Cycle
 
