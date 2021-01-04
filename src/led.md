@@ -2,6 +2,18 @@
 
 # GPIO
 
+Flash the [`sdk_app_gpio.bin`](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_gpio) demo firmware to PineCone.
+
+Connect to PineCone...
+
+```bash
+sudo screen /dev/ttyUSB0 2000000
+```
+
+Press the RST Button on PineCone to restart the firmware.
+
+Press Enter to reveal the command prompt.
+
 Set GPIO 11 (Blue), 14 (Green), 17 (Red) to output (no pullup, no pulldown)...
 
 ```bash
@@ -30,6 +42,8 @@ gpio-set 14 1
 gpio-set 17 0
 gpio-set 17 1
 ```
+
+To exit `screen`, press `Ctrl-A` then `k` then `y`
 
 # PWM
 
