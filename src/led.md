@@ -45,6 +45,59 @@ gpio-set 17 1
 
 To exit `screen`, press `Ctrl-A` then `k` then `y`
 
+# How It Works: BL602 GPIO
+
+Let's look at the BL602 GPIO Functions called by the GPIO Demo Firmware: [`sdk_app_gpio.bin`](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_gpio)
+
+## Enable GPIO
+
+To designate a GPIO Pin for input or output, we call these GPIO HAL Functions: [`bl_gpio.h`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_gpio.h)
+
+
+```c
+int bl_gpio_enable_output(uint8_t pin, uint8_t pullup, uint8_t pulldown);
+int bl_gpio_enable_input( uint8_t pin, uint8_t pullup, uint8_t pulldown);
+```
+
+`pin` is the GPIO Pin Number, so `pin=0` refers to GPIO 0.
+
+`pullup` is set to 1 if the pin should be pulled up electrically, 0 otherwise.
+
+`pulldown` is set to 1 if the pin should be pulled down electrically, 0 otherwise.
+
+## Read and Write GPIO
+
+To read or write a GPIO Pin, we call these GPIO HAL Functions: [`bl_gpio.h`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_gpio.h)
+
+
+```c
+int bl_gpio_output_set(uint8_t pin, uint8_t value);
+int bl_gpio_input_get( uint8_t pin, uint8_t *value);
+int bl_gpio_input_get_value(uint8_t pin);
+```
+
+`pin` is the GPIO Pin Number. `value` is the value to be read or written.
+
+`bl_gpio_input_get` stores the value read at the pointer passed in.
+
+These above functions are called by the GPIO Demo Firmware here: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_gpio/sdk_app_gpio/demo.c)
+
+
+## GPIO Interrupts
+
+To allow a GPIO Pin to trigger interrupts (like when a button is pressed), we call these GPIO HAL Functions: [`bl_gpio.h`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_gpio.h)
+
+```c
+int  bl_gpio_int_clear( uint8_t gpioPin, uint8_t intClear);
+void bl_gpio_intmask(   uint8_t gpiopin, uint8_t mask);
+void bl_set_gpio_intmod(uint8_t gpioPin, uint8_t intCtrlMod, uint8_t intTrgMod);
+void bl_gpio_register(gpio_ctx_t *pstnode);
+```
+
+Check the GPIO HAL Source Code for details...
+
+-   [GPIO HAL Source Code](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_gpio.c)
+
 # Control RGB LED with PWM
 
 Flash the Modified PWM Demo Firmware to PineCone: [`sdk_app_pwm.bin`](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_pwm)
@@ -96,58 +149,6 @@ pwm_duty_set 1 0
 
 To exit `screen`, press `Ctrl-A` then `k` then `y`
 
-# How It Works: BL602 GPIO
-
-Let's look at the BL602 GPIO Functions called by the GPIO Demo Firmware: [`sdk_app_gpio.bin`](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_gpio)
-
-## Enable GPIO
-
-To designate a GPIO Pin for input or output, we call these GPIO HAL Functions: [`bl_gpio.h`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_gpio.h)
-
-
-```c
-int bl_gpio_enable_output(uint8_t pin, uint8_t pullup, uint8_t pulldown);
-int bl_gpio_enable_input( uint8_t pin, uint8_t pullup, uint8_t pulldown);
-```
-
-`pin` is the GPIO Pin Number, so `pin=0` refers to GPIO 0.
-
-`pullup` is set to 1 if the pin should be pulled up electrically, 0 otherwise.
-
-`pulldown` is set to 1 if the pin should be pulled down electrically, 0 otherwise.
-
-## Read and Write GPIO
-
-To read or write a GPIO Pin, we call these GPIO HAL Functions: [`bl_gpio.h`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_gpio.h)
-
-
-```c
-int bl_gpio_output_set(uint8_t pin, uint8_t value);
-int bl_gpio_input_get( uint8_t pin, uint8_t *value);
-int bl_gpio_input_get_value(uint8_t pin);
-```
-
-`pin` is the GPIO Pin Number. `value` is the value to be read or written.
-
-`bl_gpio_input_get` stores the value read at the pointer passed in.
-
-## GPIO Interrupts
-
-To allow a GPIO Pin to trigger interrupts (like when a button is pressed), we call these GPIO HAL Functions: [`bl_gpio.h`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_gpio.h)
-
-```c
-int  bl_gpio_int_clear( uint8_t gpioPin, uint8_t intClear);
-void bl_gpio_intmask(   uint8_t gpiopin, uint8_t mask);
-void bl_set_gpio_intmod(uint8_t gpioPin, uint8_t intCtrlMod, uint8_t intTrgMod);
-void bl_gpio_register(gpio_ctx_t *pstnode);
-```
-
-Check the GPIO HAL Source Code for details...
-
--   [GPIO HAL Source Code](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_gpio.c)
-
-https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_gpio/sdk_app_gpio/demo.c
-
 # How It Works: BL602 PWM
 
 Now we look at the BL602 PWM Functions called by the PWM Demo Firmware: [`sdk_app_pwm.bin`](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_pwm)
@@ -185,4 +186,4 @@ The above PWM HAL Functions are defined here...
 
 -   [PWM HAL Source Code](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_pwm.c)
 
-https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_pwm/sdk_app_pwm/main.c
+The PWM HAL Functions are called by the PWM Demo Firmware here: [`main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_pwm/sdk_app_pwm/main.c)
