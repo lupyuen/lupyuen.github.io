@@ -136,7 +136,7 @@ Each GPIO Pin is binary... Either On or Off. Let's flip each LED and count the c
 
 _Only 8 colours?! That's not a Full Colour RGB LED!_
 
-GPIO Pins are binary (not analogue)... So are LEDs. This will allow us to switch each LED On and Off, nothing in between (no 50 shades of grey)...
+GPIO Pins are binary (not analogue)... So are LEDs. This will let us switch each LED On and Off, nothing in between (no 50 shades of grey)...
 
 ???
 
