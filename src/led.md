@@ -119,7 +119,66 @@ To see the above GPIO HAL Functions in action, check out the GPIO Demo Source Co
 
 # From GPIO to Pulse Width Modulation (PWM)
 
-TODO
+_How many colours can we show on the RGB LED through GPIO?_
+
+Each GPIO Pin is binary... Either On or Off. Let's flip each LED and count the colours...
+
+| Red | Green | Blue | Colour |
+|:---:|:---:|:---:|:---|
+| Off | Off | Off | __Black__
+| ON | Off | Off | __Red__
+| Off | ON | Off | __Green__
+| ON | ON | Off | __Yellow__
+| Off | Off | ON | __Blue__
+| ON | Off | ON | __Magenta__
+| Off | ON | ON | __Cyan__
+| ON | ON | ON | __White__
+
+_Only 8 colours?! That's not a Full Colour RGB LED!_
+
+GPIO Pins are binary (not analogue)... So are LEDs. This will allow us to switch each LED On and Off, nothing in between (no 50 shades of grey)...
+
+???
+
+But what if we strobe or __blink the LEDs very quickly__ (a thousand times a second)...
+
+???
+
+Aha! We get something that's neither On nor Off... It's __halfway between Light and Dark__!
+
+Now what if we __tweak the spacing__ between the On and Off parts (keeping the same blinking frequency)...
+
+???
+
+We'll get __many, many shades of grey__! (>50 yes!)
+
+And if we apply this nifty trick to each of the RGB LEDs, we'll get our Full Colour RGB LED!
+
+_How shall we program the rapid blinking? Call the GPIO Functions in a loop?_
+
+Not a good idea, because our microcontroller will become very busy blinking the LEDs. No time for reading sensors or transmitting data!
+
+Thankfully we have __Pulse Width Modulation (PWM)__... Our BL602 Microcontroller (and many others) will happily strobe the LED pins for us, without coding any loops.
+
+Here's the schematic for PineCone's RGB LED...
+
+![PineCone RGB LED Schematic](https://lupyuen.github.io/images/led-rgb.png)
+
+_What are CH1, CH2 and CH4?_
+
+CH1, CH2 and CH4 are __PWM Channels__. Each PWM Channel will let us strobe the output on one pin. (Hence we need 3 PWM Channels)
+
+Let's match the 3 GPIO Pins and 3 PWM Channels to the Pin Mapping Table...
+
+![BL602 Pin Mapping](https://lupyuen.github.io/images/led-pins.png)
+
+The table says that __GPIO 11, 17 and 14__ may be mapped to __PWM Channels 1, 2 and 4__ (by calling the PWM HAL Functions). Perfect!
+
+Remember that we tweaked the spacing of the blinking to get multiple levels of brightness?
+
+We call this the __Duty Cycle__ in PWM.
+
+Let's experiment with the RGB LED on PWM...
 
 # Control RGB LED with PWM
 
@@ -173,6 +232,14 @@ pwm_duty_set 1 0
 To exit `screen`, press `Ctrl-A` then `k` then `y`
 
 [Watch the PWM Demo Video on YouTube](https://youtu.be/66h2rXXc6Tk)
+
+# PWM Duty Cycle
+
+TODO
+
+![BL602 Pulse Width Modulation](https://lupyuen.github.io/images/led-pwm.png)
+
+_BL602 Pulse Width Modulation_
 
 # How It Works: BL602 PWM
 
