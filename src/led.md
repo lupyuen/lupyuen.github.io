@@ -233,14 +233,6 @@ To exit `screen`, press `Ctrl-A` then `k` then `y`
 
 [Watch the PWM Demo Video on YouTube](https://youtu.be/66h2rXXc6Tk)
 
-# PWM Duty Cycle
-
-TODO
-
-![BL602 Pulse Width Modulation](https://lupyuen.github.io/images/led-pwm.png)
-
-_BL602 Pulse Width Modulation_
-
 # How It Works: BL602 PWM
 
 Now we look at the BL602 PWM Functions called by the PWM Demo Firmware: [`sdk_app_pwm.bin`](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_pwm)
@@ -259,7 +251,7 @@ int32_t bl_pwm_init(uint8_t id, uint8_t pin, uint32_t freq);
 
 -   `freq` is the PWM Frequency (in Hz / Cycles Per Second). So `freq=2000` means that the PWM Channel will be blinked 2,000 cycles every second. `freq` must be between 2,000 and 800,000 (inclusive).
 
-Not all GPIO Pins may be assigned to a PWM Channel. Check "Table 3.1: Pin description" (Page 27) in [BL602 Reference Manual](https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf).
+Not all GPIO Pins may be assigned to a PWM Channel. Check "Table 3.1: Pin description" (Page 27) in [BL602 Reference Manual](https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en).
 
 ## PWM Frequency and Duty Cycle
 
@@ -305,6 +297,61 @@ The above PWM HAL Functions are defined here...
 To see the above PWM HAL Functions in action, check out the PWM Demo Source Code...
 
 -   [__PWM Demo Source Code: `main.c`__](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_pwm/sdk_app_pwm/main.c)
+
+# BL602 PWM Internals
+
+This helpful diagram from the [BL602 Reference Manual](https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en) (Page 158) explains the internals of BL602's PWM...
+
+![BL602 Pulse Width Modulation](https://lupyuen.github.io/images/led-pwm.png)
+
+_BL602 Pulse Width Modulation_
+
+1.  BL602's PWM uses an __Internal Counter__ to generate a Sawtooth Wave
+
+1.  Each cycle of the Sawtooth Wave has a duration (__PWM Period__) that's determined by the __PWM Frequency__ (PWM Period = 1 / PWM Frequency)
+
+1.  The PWM Channel outputs 0 or 1 by comparing the Internal Counter with two values: __PWM Threshold1__ (the lower limit) and __PWM Threshold2__ (the upper limit)
+
+1.  We assume that __PWM Threshold1 (the lower limit) is always 0__. That's because the BL602 PWM HAL Function [`bl_pwm_set_duty`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_pwm.c#L126-L140) always sets Threshold1 to 0.
+
+1.  What's the value of PWM Threshold2 (the upper limit)? That's computed based on the PWM Period and __PWM Duty Cycle__: [`bl_pwm_set_duty`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_pwm.c#L126-L140)
+
+    ```c
+    //  The Duty Cycle `duty` is between 0 to 100
+    threshold2 = ( period / 100 ) * duty;
+    ```
+
+    So when we increase the Duty Cycle, Threshold2 gets higher.
+
+1.  Here's the PWM Output logic...
+
+    -   When the __Internal Counter is below Threshold2__, the PWM Channel outputs __1__.
+
+    -   And when the __Internal Counter is above Threshold2__, the PWM Channel outputs __0__.
+
+1.  What happens when we __increase the Duty Cycle__?
+
+    Threshold2 gets higher, hence the PWM Channel __outputs 1 more often__.
+
+1.  That's precisely the definition of Duty Cycle...
+
+    __Duty Cycle__ is the percentage of time (0 to 100) within a Cycle that's spent Working. ("Working" means Output=1)
+
+    Outside of the Duty Cycle, our PWM Channel is Idle. (Output=0)
+
+1.  Note that the Working vs Idle definition is __flipped for our LED__...
+
+    -   __Working__ (Output=1) switches the __LED OFF__
+
+    -   __Idle__ (Output=0) switches the __LED ON__
+
+1.  Which explains this odd behaviour we've seen earlier...
+
+    -   Higher Duty Cycle decreases our LED Brightness
+
+    -   Lower Duty Cycle increases our LED Brightness
+
+    (Yep the Duty Cycle is Inversely Proportional to the LED Brightness)
 
 ## What's Next
 
