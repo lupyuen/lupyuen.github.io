@@ -98,8 +98,6 @@ int bl_gpio_input_get_value(uint8_t pin);
 
 -   `bl_gpio_input_get` stores the value read at the pointer passed in.
 
-These above functions are called by the GPIO Demo Firmware here: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_gpio/sdk_app_gpio/demo.c)
-
 ## GPIO Interrupts
 
 To allow a GPIO Pin to trigger interrupts (like when a button is pressed), we call these GPIO HAL Functions: [`bl_gpio.h`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_gpio.h)
@@ -113,7 +111,11 @@ void bl_gpio_register(gpio_ctx_t *pstnode);
 
 Check the GPIO HAL Source Code for details...
 
--   [GPIO HAL Source Code](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_gpio.c)
+-   [__GPIO HAL Source Code__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_gpio.c)
+
+To see the above GPIO HAL Functions in action, check out the GPIO Demo Source Code...
+
+-   [__GPIO Demo Source Code: `demo.c`__](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_gpio/sdk_app_gpio/demo.c)
 
 # From GPIO to Pulse Width Modulation (PWM)
 
@@ -231,9 +233,11 @@ int32_t bl_pwm_stop( uint8_t id);
 
 The above PWM HAL Functions are defined here...
 
--   [PWM HAL Source Code](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_pwm.c)
+-   [__PWM HAL Source Code__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_pwm.c)
 
-The PWM HAL Functions are called by the PWM Demo Firmware here: [`main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_pwm/sdk_app_pwm/main.c)
+To see the above PWM HAL Functions in action, check out the PWM Demo Source Code...
+
+-   [__PWM Demo Source Code: `main.c`__](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_pwm/sdk_app_pwm/main.c)
 
 ## What's Next
 
