@@ -353,7 +353,7 @@ _BL602 Pulse Width Modulation_
 
     (Yep the Duty Cycle is Inversely Proportional to the LED Brightness)
 
-## What's Next
+# What's Next
 
 TODO
 
