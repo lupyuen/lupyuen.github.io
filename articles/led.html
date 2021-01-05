@@ -72,12 +72,12 @@
 <li><a href="#gpio-interrupts">2.3 GPIO Interrupts</a><ul></ul></li></ul></li>
 <li><a href="#from-gpio-to-pulse-width-modulation-pwm">3 From GPIO to Pulse Width Modulation (PWM)</a><ul></ul></li>
 <li><a href="#control-rgb-led-with-pwm">4 Control RGB LED with PWM</a><ul></ul></li>
-<li><a href="#pwm-duty-cycle">5 PWM Duty Cycle</a><ul></ul></li>
-<li><a href="#how-it-works-bl602-pwm">6 How It Works: BL602 PWM</a><ul>
-<li><a href="#initialise-pwm">6.1 Initialise PWM</a><ul></ul></li>
-<li><a href="#pwm-frequency-and-duty-cycle">6.2 PWM Frequency and Duty Cycle</a><ul></ul></li>
-<li><a href="#pwm-operation">6.3 PWM Operation</a><ul></ul></li>
-<li><a href="#whats-next">6.4 What's Next</a><ul></ul></li></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/led-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board connected to Pinebook Pro" /></p>
+<li><a href="#how-it-works-bl602-pwm">5 How It Works: BL602 PWM</a><ul>
+<li><a href="#initialise-pwm">5.1 Initialise PWM</a><ul></ul></li>
+<li><a href="#pwm-frequency-and-duty-cycle">5.2 PWM Frequency and Duty Cycle</a><ul></ul></li>
+<li><a href="#pwm-operation">5.3 PWM Operation</a><ul></ul></li></ul></li>
+<li><a href="#bl602-pwm-internals">6 BL602 PWM Internals</a><ul>
+<li><a href="#whats-next">6.1 What's Next</a><ul></ul></li></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/led-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board connected to Pinebook Pro" /></p>
 <p><em>PineCone BL602 RISC-V Evaluation Board connected to Pinebook Pro</em></p>
 <p>📝 <em>6 Jan 2021</em></p>
 <p>Today we shall learn to control PineCone's onboard RGB LED in two ways...</p>
@@ -236,13 +236,9 @@ pwm_duty_set 1 0
 </code></pre>
 <p>To exit <code>screen</code>, press <code>Ctrl-A</code> then <code>k</code> then <code>y</code></p>
 <p><a href="https://youtu.be/66h2rXXc6Tk">Watch the PWM Demo Video on YouTube</a></p>
-<h1 id="pwm-duty-cycle" class="section-header"><a href="#pwm-duty-cycle">5 PWM Duty Cycle</a></h1>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/led-pwm.png" alt="BL602 Pulse Width Modulation" /></p>
-<p><em>BL602 Pulse Width Modulation</em></p>
-<h1 id="how-it-works-bl602-pwm" class="section-header"><a href="#how-it-works-bl602-pwm">6 How It Works: BL602 PWM</a></h1>
+<h1 id="how-it-works-bl602-pwm" class="section-header"><a href="#how-it-works-bl602-pwm">5 How It Works: BL602 PWM</a></h1>
 <p>Now we look at the BL602 PWM Functions called by the PWM Demo Firmware: <a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_pwm"><code>sdk_app_pwm.bin</code></a></p>
-<h2 id="initialise-pwm" class="section-header"><a href="#initialise-pwm">6.1 Initialise PWM</a></h2>
+<h2 id="initialise-pwm" class="section-header"><a href="#initialise-pwm">5.1 Initialise PWM</a></h2>
 <p>To designate a GPIO PIN as a PWM Channel, we call this PWM HAL Function: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_pwm.h"><code>bl_pwm.h</code></a></p>
 <pre><code class="language-c">int32_t bl_pwm_init(uint8_t id, uint8_t pin, uint32_t freq);
 </code></pre>
@@ -257,8 +253,8 @@ pwm_duty_set 1 0
 <p><code>freq</code> is the PWM Frequency (in Hz / Cycles Per Second). So <code>freq=2000</code> means that the PWM Channel will be blinked 2,000 cycles every second. <code>freq</code> must be between 2,000 and 800,000 (inclusive).</p>
 </li>
 </ul>
-<p>Not all GPIO Pins may be assigned to a PWM Channel. Check &quot;Table 3.1: Pin description&quot; (Page 27) in <a href="https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf">BL602 Reference Manual</a>.</p>
-<h2 id="pwm-frequency-and-duty-cycle" class="section-header"><a href="#pwm-frequency-and-duty-cycle">6.2 PWM Frequency and Duty Cycle</a></h2>
+<p>Not all GPIO Pins may be assigned to a PWM Channel. Check &quot;Table 3.1: Pin description&quot; (Page 27) in <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en">BL602 Reference Manual</a>.</p>
+<h2 id="pwm-frequency-and-duty-cycle" class="section-header"><a href="#pwm-frequency-and-duty-cycle">5.2 PWM Frequency and Duty Cycle</a></h2>
 <p>We set the Frequency and Duty Cycle on a PWM Channel by calling these PWM HAL Functions: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_pwm.h"><code>bl_pwm.h</code></a></p>
 <pre><code class="language-c">int32_t bl_pwm_set_freq(uint8_t id, uint32_t freq);
 int32_t bl_pwm_set_duty(uint8_t id, float duty);
@@ -284,7 +280,7 @@ int32_t bl_pwm_set_duty(uint8_t id, float duty);
 <ul>
 <li><code>bl_pwm_get_duty</code> stores the Duty Cycle at the pointer passed in <code>p_duty</code>.</li>
 </ul>
-<h2 id="pwm-operation" class="section-header"><a href="#pwm-operation">6.3 PWM Operation</a></h2>
+<h2 id="pwm-operation" class="section-header"><a href="#pwm-operation">5.3 PWM Operation</a></h2>
 <p>We start and stop a PWM Channel by calling these PWM HAL Functions: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_pwm.h"><code>bl_pwm.h</code></a></p>
 <pre><code class="language-c">int32_t bl_pwm_start(uint8_t id);
 int32_t bl_pwm_stop( uint8_t id);
@@ -300,7 +296,75 @@ int32_t bl_pwm_stop( uint8_t id);
 <ul>
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_pwm/sdk_app_pwm/main.c"><strong>PWM Demo Source Code: <code>main.c</code></strong></a></li>
 </ul>
-<h2 id="whats-next" class="section-header"><a href="#whats-next">6.4 What's Next</a></h2>
+<h1 id="bl602-pwm-internals" class="section-header"><a href="#bl602-pwm-internals">6 BL602 PWM Internals</a></h1>
+<p>This helpful diagram from the <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en">BL602 Reference Manual</a> (Page 158) explains the internals of BL602's PWM...</p>
+<p><img src="https://lupyuen.github.io/images/led-pwm.png" alt="BL602 Pulse Width Modulation" /></p>
+<p><em>BL602 Pulse Width Modulation</em></p>
+<ol>
+<li>
+<p>BL602's PWM uses an <strong>Internal Counter</strong> to generate a Sawtooth Wave</p>
+</li>
+<li>
+<p>Each cycle of the Sawtooth Wave has a duration (<strong>PWM Period</strong>) that's determined by the <strong>PWM Frequency</strong> (PWM Period = 1 / PWM Frequency)</p>
+</li>
+<li>
+<p>The PWM Channel outputs 0 or 1 by comparing the Internal Counter with two values: <strong>PWM Threshold1</strong> (the lower limit) and <strong>PWM Threshold2</strong> (the upper limit)</p>
+</li>
+<li>
+<p>We assume that <strong>PWM Threshold1 (the lower limit) is always 0</strong>. That's because the BL602 PWM HAL Function <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_pwm.c#L126-L140"><code>bl_pwm_set_duty</code></a> always sets Threshold1 to 0.</p>
+</li>
+<li>
+<p>What's the value of PWM Threshold2 (the upper limit)? That's computed based on the PWM Period and <strong>PWM Duty Cycle</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_pwm.c#L126-L140"><code>bl_pwm_set_duty</code></a></p>
+<pre><code class="language-c">//  The Duty Cycle `duty` is between 0 to 100
+threshold2 = ( period / 100 ) * duty;
+</code></pre>
+<p>So when we increase the Duty Cycle, Threshold2 gets higher.</p>
+</li>
+<li>
+<p>Here's the PWM Output logic...</p>
+<ul>
+<li>
+<p>When the <strong>Internal Counter is below Threshold2</strong>, the PWM Channel outputs <strong>1</strong>.</p>
+</li>
+<li>
+<p>And when the <strong>Internal Counter is above Threshold2</strong>, the PWM Channel outputs <strong>0</strong>.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>What happens when we <strong>increase the Duty Cycle</strong>?</p>
+<p>Threshold2 gets higher, hence the PWM Channel <strong>outputs 1 more often</strong>.</p>
+</li>
+<li>
+<p>That's precisely the definition of Duty Cycle...</p>
+<p><strong>Duty Cycle</strong> is the percentage of time (0 to 100) within a Cycle that's spent Working. (&quot;Working&quot; means Output=1)</p>
+<p>Outside of the Duty Cycle, our PWM Channel is Idle. (Output=0)</p>
+</li>
+<li>
+<p>Note that the Working vs Idle definition is <strong>flipped for our LED</strong>...</p>
+<ul>
+<li>
+<p><strong>Working</strong> (Output=1) switches the <strong>LED OFF</strong></p>
+</li>
+<li>
+<p><strong>Idle</strong> (Output=0) switches the <strong>LED ON</strong></p>
+</li>
+</ul>
+</li>
+<li>
+<p>Which explains this odd behaviour we've seen earlier...</p>
+<ul>
+<li>
+<p>Higher Duty Cycle decreases our LED Brightness</p>
+</li>
+<li>
+<p>Lower Duty Cycle increases our LED Brightness</p>
+</li>
+</ul>
+<p>(Yep the Duty Cycle is Inversely Proportional to the LED Brightness)</p>
+</li>
+</ol>
+<h2 id="whats-next" class="section-header"><a href="#whats-next">6.1 What's Next</a></h2>
 <p>TODO</p>
 <ul>
 <li>
