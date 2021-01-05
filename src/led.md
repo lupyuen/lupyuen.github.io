@@ -138,17 +138,17 @@ _Only 8 colours?! That's not a Full Colour RGB LED!_
 
 GPIO Pins are binary (not analogue)... So are LEDs. This will let us switch each LED On and Off, nothing in between (no 50 shades of grey)...
 
-???
+![Switching LED on and off with GPIO](https://lupyuen.github.io/images/led-off-on.jpg)
 
 But what if we strobe or __blink the LEDs very quickly__ (a thousand times a second)...
 
-???
+![Blink the LED very quickly](https://lupyuen.github.io/images/led-wave1.jpg)
 
 Aha! We'll see something that's neither On nor Off... It's __halfway between Light and Dark__!
 
 Now what if we __tweak the spacing__ between the On and Off parts (keeping the same blinking frequency)...
 
-???
+![Blink the LED with spacing](https://lupyuen.github.io/images/led-wave2.jpg)
 
 We'll get __many, many shades of grey__! (>50 yes!)
 
