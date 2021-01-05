@@ -36,7 +36,7 @@ gpio-func 14 0 0 0
 gpio-func 17 0 0 0
 ```
 
-Switch off the 3 LEDs (High = Off)...
+Switch off the 3 LEDs (1 = Off)...
 
 ```bash
 gpio-set 11 1
@@ -44,7 +44,7 @@ gpio-set 14 1
 gpio-set 17 1
 ```
 
-Switch on and off each of the 3 LEDs: Blue, Green, Red (Low = On)...
+Switch on and off each of the 3 LEDs: Blue, Green, Red (0 = On)...
 
 ```bash
 gpio-set 11 0
@@ -94,7 +94,7 @@ int bl_gpio_input_get_value(uint8_t pin);
 
 -   `pin` is the GPIO Pin Number.
 
--   `value` is the value to be read or written.
+-   `value` is the value to be read or written (0=Low, 1=High).
 
 -   `bl_gpio_input_get` stores the value read at the pointer passed in.
 
@@ -144,7 +144,7 @@ But what if we strobe or __blink the LEDs very quickly__ (a thousand times a sec
 
 ???
 
-Aha! We get something that's neither On nor Off... It's __halfway between Light and Dark__!
+Aha! We'll see something that's neither On nor Off... It's __halfway between Light and Dark__!
 
 Now what if we __tweak the spacing__ between the On and Off parts (keeping the same blinking frequency)...
 
@@ -174,7 +174,7 @@ Let's match the 3 GPIO Pins and 3 PWM Channels to the Pin Mapping Table...
 
 The table says that __GPIO 11, 17 and 14__ may be mapped to __PWM Channels 1, 2 and 4__ (by calling the PWM HAL Functions). Perfect!
 
-Remember that we tweaked the spacing of the blinking to get multiple levels of brightness?
+Remember that we tweaked the spacing of the blinking to get many levels of brightness?
 
 We call this the __Duty Cycle__ in PWM.
 
