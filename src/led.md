@@ -448,22 +448,72 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [`lupyuen.github.io/src/led.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/led.md)
 
-# Appendix: Fix BL602 Firmware for macOS
+# Appendix: Fix BL602 Demo Firmware for macOS
 
-TODO
+There's a problem accessing the BL602 Demo Firmware from macOS...
 
-https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_gpio/sdk_app_gpio/main.c#L266
+BL602 Demo Firmware configures the UART Port for 2 Mbps, which is too fast for the CH340 USB Serial Driver on macOS.
 
-https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_pwm/sdk_app_pwm/main.c#L599
+To make this work with macOS, we need to lower the UART baud rate from 2 Mbps to 230.4 kbps.
 
-https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_helloworld/sdk_app_helloworld/main.c#L80
+1.  In the BL602 Demo Firmware, edit the `main.c` source file, like...
 
-Change
+    -   [`sdk_app_gpio/main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_gpio/sdk_app_gpio/main.c#L266)
 
-```c
-bl_uart_init(0, 16, 7, 255, 255, 2 * 1000 * 1000);
-```
+    -   [`sdk_app_pwm/main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_pwm/sdk_app_pwm/main.c#L599)
 
-```c
-bl_uart_init(0, 16, 7, 255, 255, 230400);
-```
+    -   [`sdk_app_helloworld/main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_helloworld/sdk_app_helloworld/main.c#L80)
+
+1.  Look for this line that configures the UART port for 2 Mbps...
+
+    ```c
+    bl_uart_init(0, 16, 7, 255, 255, 2 * 1000 * 1000);
+    ```
+
+    Change it to 230.4 kbps...
+
+    ```c
+    bl_uart_init(0, 16, 7, 255, 255, 230400);
+    ```
+
+1.  Rebuild the firmware.
+
+1.  Edit the BL602 Device Tree: [`bl_factory_params_IoTKitA_40M.dts`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/device_tree/bl_factory_params_IoTKitA_40M.dts)
+
+    Look for...
+
+    ```text
+    uart {
+        #address-cells = <1>;
+        #size-cells = <1>;
+        uart@4000A000 {
+            status = "okay";
+            id = <0>;
+            compatible = "bl602_uart";
+            path = "/dev/ttyS0";
+            baudrate = <2000000>;
+    ```
+
+    Change `baudrate` to...
+
+    ```text
+            baudrate = <230400>;
+    ```
+
+1.  Compile the Device Tree with BLOpenFlasher.
+
+    Copy the compiled Device Tree `ro_params.dtb` to `blflash`
+
+    Flash the firmware to PineCone with `blflash`
+
+    [More details](https://lupyuen.github.io/articles/flash#blflash-vs-blopenflasher)
+
+1.  After flashing, set the PineCone Jumper IO8 to `L` Position.
+
+    We should be able to access the Demo Firmware at 230.4 kbps...
+
+    ```bash
+    screen /dev/tty.usbserial-1420 230400                 
+    ```
+
+Please lemme know if this works. Thanks!
