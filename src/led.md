@@ -6,7 +6,7 @@ _PineCone BL602 RISC-V Evaluation Board connected to Pinebook Pro_
 
 📝 _6 Jan 2021_
 
-Today is a good day to take control of PineCone's onboard RGB LED in two ways...
+Today we shall take control of __PineCone's Onboard RGB LED__ in two ways...
 
 1.  __GPIO__
 
@@ -18,48 +18,70 @@ We'll also discover how the Demo Firmware calls __BL602's Hardware Abstraction L
 
 # Control RGB LED with GPIO
 
-Flash the __GPIO Demo Firmware__ to PineCone: [`sdk_app_gpio.bin`](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_gpio)
+Let's flash and run the __GPIO Demo__ from the BL602 IoT SDK...
 
-Connect to PineCone...
+1.  Download the __BL602 Demo Firmware Binaries__... 
 
-```bash
-sudo screen /dev/ttyUSB0 2000000
-```
+    -   [__BL602 Demo Firmware Binaries__: `customer_app.zip`](https://github.com/lupyuen/bl_iot_sdk/releases/download/v1.0.0/customer_app.zip)
 
-Press the RST Button on PineCone to restart the firmware.
+1.  Extract `customer_app.zip`. Look for the file...
 
-Press Enter to reveal the command prompt.
+    ```text
+    sdk_app_gpio/build_out/sdk_app_gpio.bin
+    ```
 
-Set GPIO 11 (Blue), 14 (Green), 17 (Red) to output (no pullup, no pulldown)...
+1.  Flash `sdk_app_gpio.bin` to PineCone. Follow the instructions in the article...
 
-```bash
-gpio-func 11 0 0 0
-gpio-func 14 0 0 0
-gpio-func 17 0 0 0
-```
+    -   [__"Flashing Firmware to PineCone BL602"__](https://lupyuen.github.io/articles/flash)
 
-Switch off the 3 LEDs (1 = Off)...
+    After flashing, flip the __PineCone Jumper (IO 8)__ to the __`L` Position__ [(Like this)](https://lupyuen.github.io/images/pinecone-jumperl.jpg)
 
-```bash
-gpio-set 11 1
-gpio-set 14 1
-gpio-set 17 1
-```
+1.  Connect to PineCone...
 
-Switch on and off each of the 3 LEDs: Blue, Green, Red (0 = On)...
+    __For Linux:__
 
-```bash
-gpio-set 11 0
-gpio-set 11 1
+    ```bash
+    sudo screen /dev/ttyUSB0 2000000
+    ```
 
-gpio-set 14 0
-gpio-set 14 1
+    __For Windows:__ Use `putty` ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
 
-gpio-set 17 0
-gpio-set 17 1
-```
+    __For macOS:__ See the macOS Instructions below
 
-To exit `screen`, press `Ctrl-A` then `k` then `y`
+1.  Press the __RST Button__ on PineCone to restart the firmware.
+
+1.  Press `Enter` to reveal the command prompt.
+
+1.  Enter these commands to set GPIO 11 (Blue), 14 (Green), 17 (Red) to output (no pullup, no pulldown)...
+
+    ```bash
+    gpio-func 11 0 0 0
+    gpio-func 14 0 0 0
+    gpio-func 17 0 0 0
+    ```
+
+1.  Switch off the 3 LEDs (1 = Off)...
+
+    ```bash
+    gpio-set 11 1
+    gpio-set 14 1
+    gpio-set 17 1
+    ```
+
+1.  Switch on and off each of the 3 LEDs: Blue, Green, Red (0 = On, 1 = Off)...
+
+    ```bash
+    gpio-set 11 0
+    gpio-set 11 1
+
+    gpio-set 14 0
+    gpio-set 14 1
+
+    gpio-set 17 0
+    gpio-set 17 1
+    ```
+
+1.  To exit `screen`, press `Ctrl-A` then `k` then `y`
 
 [Watch the GPIO Demo Video on YouTube](https://youtu.be/yaXsfM1ne4w)
 
@@ -89,6 +111,8 @@ gpio-func 8 1 PULLUP PULLDOWN
 Please lemme know!
 
 # How It Works: BL602 GPIO
+
+The GPIO Demo Firmware calls the GPIO Functions provided by the __BL602 Hardware Abstraction Layer (HAL)__.
 
 Let's look at the BL602 GPIO Functions called by the GPIO Demo Firmware: [`sdk_app_gpio.bin`](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_gpio)
 
@@ -209,60 +233,90 @@ Let's experiment with the RGB LED on PWM...
 
 # Control RGB LED with PWM
 
-Flash the __Modified PWM Demo Firmware__ to PineCone: [`sdk_app_pwm.bin`](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_pwm)
+Now we'll switch PineCone to the __Modified PWM Demo__ from the BL602 IoT SDK.
 
 (The firmware was modified to run without a Device Tree. [More details](https://github.com/lupyuen/bl_iot_sdk/pull/1))
 
-Connect to PineCone...
+1.  Download the __BL602 Demo Firmware Binaries__... 
 
-```bash
-sudo screen /dev/ttyUSB0 2000000
-```
+    -   [__BL602 Demo Firmware Binaries__: `customer_app.zip`](https://github.com/lupyuen/bl_iot_sdk/releases/download/v1.0.0/customer_app.zip)
 
-Press the RST Button on PineCone to restart the firmware. Ignore the errors.
+1.  Extract `customer_app.zip`. Look for the file...
 
-Press Enter to reveal the command prompt.
+    ```text
+    sdk_app_pwm/build_out/sdk_app_pwm.bin
+    ```
 
-Assign GPIO 11 (Blue), 17 (Red), 14 (Green) to __PWM Channels__ 1, 2 and 4.  Set __PWM Frequency__ to 2 kHz. (Each LED will blink at 2,000 cycles per second)
+1.  Flash `sdk_app_pwm.bin` to PineCone. Follow the instructions in the article...
 
-```bash
-pwm_init 1 11 2000
-pwm_init 2 17 2000
-pwm_init 4 14 2000
-```
+    -   [__"Flashing Firmware to PineCone BL602"__](https://lupyuen.github.io/articles/flash)
 
-Set __PWM Duty Cycle__ for all 3 PWM Channels to 100%. Which means that 100% of the time, the 3 PWM Channels will be set to 1 (High). Which means total darkness: All 3 LEDs will be switched off 100% of the time.
+    After flashing, flip the __PineCone Jumper (IO 8)__ to the __`L` Position__ [(Like this)](https://lupyuen.github.io/images/pinecone-jumperl.jpg)
 
-```bash
-pwm_duty_set 1 100
-pwm_duty_set 2 100
-pwm_duty_set 4 100
-```
+1.  Connect to PineCone...
 
-Start the PWM Output for all 3 PWM Channels...
+    __For Linux:__
 
-```bash
-pwm_start 1
-pwm_start 2
-pwm_start 4
-```
+    ```bash
+    sudo screen /dev/ttyUSB0 2000000
+    ```
 
-Gradually decrease the PWM Duty Cycle for PWM Channel 1 (Blue) from 100% to 0%. This means the Blue LED will gradually get brighter...
+    __For Windows:__ Use `putty` ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
 
-```bash
-pwm_duty_set 1 75
-pwm_duty_set 1 50
-pwm_duty_set 1 25
-pwm_duty_set 1 0
-```
+    __For macOS:__ See the macOS Instructions below
 
-To exit `screen`, press `Ctrl-A` then `k` then `y`
+1.  Press the __RST Button__ on PineCone to restart the firmware.
+
+1.  Press `Enter` to reveal the command prompt.
+
+1.  Assign GPIO 11 (Blue), 17 (Red), 14 (Green) to __PWM Channels__ 1, 2 and 4.
+
+    Set the __PWM Frequency__ to 2 kHz. (Each LED will blink at 2,000 cycles per second)
+
+    ```bash
+    pwm_init 1 11 2000
+    pwm_init 2 17 2000
+    pwm_init 4 14 2000
+    ```
+
+1.  Set __PWM Duty Cycle__ for all 3 PWM Channels to 100%. 
+
+    Which means that 100% of the time, the 3 PWM Channels will be set to 1 (High). 
+    
+    Which means total darkness: All 3 LEDs will be switched off 100% of the time.
+
+    ```bash
+    pwm_duty_set 1 100
+    pwm_duty_set 2 100
+    pwm_duty_set 4 100
+    ```
+
+1.  Start the PWM Output for all 3 PWM Channels...
+
+    ```bash
+    pwm_start 1
+    pwm_start 2
+    pwm_start 4
+    ```
+
+1.  Gradually decrease the PWM Duty Cycle for PWM Channel 1 (Blue) from 100% to 0%. 
+
+    This means the Blue LED will gradually get brighter.
+
+    ```bash
+    pwm_duty_set 1 75
+    pwm_duty_set 1 50
+    pwm_duty_set 1 25
+    pwm_duty_set 1 0
+    ```
+
+1.  To exit `screen`, press `Ctrl-A` then `k` then `y`
 
 [Watch the PWM Demo Video on YouTube](https://youtu.be/66h2rXXc6Tk)
 
 # How It Works: BL602 PWM
 
-Now we look at the BL602 PWM Functions called by the PWM Demo Firmware: [`sdk_app_pwm.bin`](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_pwm)
+Now we look at the BL602 PWM HAL Functions called by the PWM Demo Firmware: [`sdk_app_pwm.bin`](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_pwm)
 
 ## Initialise PWM
 
@@ -393,3 +447,7 @@ TODO
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [`lupyuen.github.io/src/led.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/led.md)
+
+# Appendix: macOS
+
+TODO
