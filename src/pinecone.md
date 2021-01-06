@@ -6,6 +6,8 @@
 
 Pine64 is graciously giving away the __PineCone BL602 RISC-V Evaluation Board__ to folks participating in the [__PineCone Nutcracker Challenge__](https://www.pine64.org/2020/10/28/nutcracker-challenge-blob-free-wifi-ble/).
 
+[(PineCone is now available for purchase)](https://pine64.com/product/pinecone-bl602-evaluation-board/?v=0446c16e2e66)
+
 Let's learn about the PineCone Board... And how it helps the [__RISC-V Open Source Ecosystem__](https://en.wikipedia.org/wiki/RISC-V).
 
 # PineCone BL602: Why does it matter?
@@ -512,6 +514,8 @@ _How shall we learn about writing RISC-V firmware for BL602?_
 Getting involved with the [PineCone Nutcracker Challenge](https://www.pine64.org/2020/10/28/nutcracker-challenge-blob-free-wifi-ble/) is a great way to learn about RISC-V... Especially for Embedded Engineers exploring Arm alternatives.
 
 And you might earn a free PineCone Evaluation Board!
+
+[(PineCone is now available for purchase)](https://pine64.com/product/pinecone-bl602-evaluation-board/?v=0446c16e2e66)
 
 We're in the middle of a pandemic. Why not take the time to learn some RISC-V... And contribute to the RISC-V Open Source Ecosystem!
 
