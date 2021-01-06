@@ -14,7 +14,11 @@ Today we shall take control of __PineCone's Onboard RGB LED__ in two ways...
 
 We'll do this with the __GPIO and PWM Demo Firmware__ from the [__BL602 IoT SDK__](https://github.com/lupyuen/bl_iot_sdk).
 
-We'll also discover how the Demo Firmware calls __BL602's Hardware Abstraction Layer__ in C to perform GPIO and PWM Functions.
+Through the Demo Firmware we shall learn to call __BL602's Hardware Abstraction Layer__ in C to perform GPIO and PWM Functions.
+
+If you're new to PineCone BL602, check out my article...
+
+-   [__"Quick Peek of PineCone BL602 RISC-V Evaluation Board"__](https://lupyuen.github.io/articles/pinecone)
 
 # Control RGB LED with GPIO
 
@@ -436,7 +440,15 @@ _BL602 Pulse Width Modulation_
 
 # What's Next
 
-TODO
+Today we have we have explored the GPIO and PWM HAL Functions through the BL602 Demo Firmware.
+
+We're now ready to call the GPIO and PWM HAL Functions from a modern embedded operating system... Apache Mynewt!
+
+This will become part of the port of Mynewt to BL602, that we have started here...
+
+["Porting Mynewt to PineCone BL602"](https://lupyuen.github.io/articles/mynewt)
+
+Stay Tuned!
 
 -   [Check out my articles](https://lupyuen.github.io)
 
