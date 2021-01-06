@@ -12,7 +12,7 @@
     content="Control PineCone BL602 RGB LED with GPIO and PWM" 
     data-rh="true">
 <meta property="og:description" 
-    content="How we control PineCone BL602's RGB LED by calling the BL602 GPIO and PWM Functions" 
+    content="Explore the BL602 GPIO and PWM Demo Firmware... And how they call the GPIO and PWM Hardware Abstraction Layer" 
     data-rh="true">
 <meta property="og:image" 
     content="https://lupyuen.github.io/images/led-title.jpg">
@@ -97,8 +97,16 @@
 <ul>
 <li><a href="https://lupyuen.github.io/articles/pinecone"><strong>&quot;Quick Peek of PineCone BL602 RISC-V Evaluation Board&quot;</strong></a></li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/led-rgb.png" alt="PineCone RGB LED Schematic" /></p>
+<p><em>PineCone RGB LED Schematic</em></p>
 <h1 id="control-rgb-led-with-gpio" class="section-header"><a href="#control-rgb-led-with-gpio">1 Control RGB LED with GPIO</a></h1>
-<p>Let's flash and run the <strong>GPIO Demo</strong> from the BL602 IoT SDK...</p>
+<p>According to the <a href="https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf">PineCone Schematics</a>, the onboard RGB LED is connected to these GPIO Pins...</p>
+<table><thead><tr><th align="left">LED</th><th align="left">GPIO Pin</th></tr></thead><tbody>
+<tr><td align="left">Blue</td><td align="left">GPIO 11</td></tr>
+<tr><td align="left">Red</td><td align="left">GPIO 17</td></tr>
+<tr><td align="left">Green</td><td align="left">GPIO 14</td></tr>
+</tbody></table>
+<p>Let's flash the <strong>GPIO Demo</strong> from the BL602 IoT SDK and interact with the above GPIO Pins...</p>
 <ol>
 <li>
 <p>Download the <strong>BL602 Demo Firmware Binaries</strong>... </p>
@@ -163,8 +171,10 @@ gpio-set 17 1
 </li>
 </ol>
 <p><a href="https://youtu.be/yaXsfM1ne4w">Watch the GPIO Demo Video on YouTube</a></p>
+<p><img src="https://lupyuen.github.io/images/led-jumper.png" alt="PineCone Jumper Schematic" /></p>
+<p><em>PineCone Jumper Schematic</em></p>
 <h1 id="gpio-exercise-for-the-reader" class="section-header"><a href="#gpio-exercise-for-the-reader">2 GPIO Exercise for The Reader</a></h1>
-<p>PineCone has an Onboard Jumper that's connected to GPIO 8.</p>
+<p>According to the <a href="https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf">PineCone Schematics</a>, the onboard jumper is connected to GPIO 8.</p>
 <p>Can we use this command to read the jumper?</p>
 <pre><code class="language-bash">gpio-get 8
 </code></pre>

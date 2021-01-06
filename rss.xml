@@ -4,6 +4,12 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Control PineCone BL602 RGB LED with GPIO and PWM</title>
+            <link>https://lupyuen.github.io/articles/led</link>
+            <description><![CDATA[Explore the BL602 GPIO and PWM Demo Firmware... And how they call the GPIO and PWM Hardware Abstraction Layer]]></description>
+            <pubDate>Wed, 06 Jan 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Flashing Firmware to PineCone BL602</title>
             <link>https://lupyuen.github.io/articles/flash</link>
             <description><![CDATA[What happens when we flash RISC-V firmware to PineCone BL602 Board... And what's inside the BL602 Boot Image, Partition Table, Device Tree and EFuse Configuration]]></description>
