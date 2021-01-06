@@ -24,7 +24,7 @@ Let's flash and run the __GPIO Demo__ from the BL602 IoT SDK...
 
     -   [__BL602 Demo Firmware Binaries__: `customer_app.zip`](https://github.com/lupyuen/bl_iot_sdk/releases/download/v1.0.0/customer_app.zip)
 
-1.  Extract `customer_app.zip`. Look for the file...
+1.  Unzip `customer_app.zip`. Look for the file...
 
     ```text
     sdk_app_gpio/build_out/sdk_app_gpio.bin
@@ -46,7 +46,7 @@ Let's flash and run the __GPIO Demo__ from the BL602 IoT SDK...
 
     __For Windows:__ Use `putty` ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
 
-    __For macOS:__ See the macOS Instructions below
+    __For macOS:__ See ["Appendix: Fix BL602 Demo Firmware for macOS"](https://lupyuen.github.io/articles/led#appendix-fix-bl602-demo-firmware-for-macos)
 
 1.  Press the __RST Button__ on PineCone to restart the firmware.
 
@@ -241,7 +241,7 @@ Now we'll switch PineCone to the __Modified PWM Demo__ from the BL602 IoT SDK.
 
     -   [__BL602 Demo Firmware Binaries__: `customer_app.zip`](https://github.com/lupyuen/bl_iot_sdk/releases/download/v1.0.0/customer_app.zip)
 
-1.  Extract `customer_app.zip`. Look for the file...
+1.  Unzip `customer_app.zip`. Look for the file...
 
     ```text
     sdk_app_pwm/build_out/sdk_app_pwm.bin
@@ -263,7 +263,7 @@ Now we'll switch PineCone to the __Modified PWM Demo__ from the BL602 IoT SDK.
 
     __For Windows:__ Use `putty` ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
 
-    __For macOS:__ See the macOS Instructions below
+    __For macOS:__ See ["Appendix: Fix BL602 Demo Firmware for macOS"](https://lupyuen.github.io/articles/led#appendix-fix-bl602-demo-firmware-for-macos)
 
 1.  Press the __RST Button__ on PineCone to restart the firmware. Ignore the errors.
 

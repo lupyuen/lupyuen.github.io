@@ -239,7 +239,7 @@ _Firmware running on PineCone_
 
     (Change `/dev/tty.usbserial-1420` to the USB Serial Device assigned to PineCone)
 
-    Note: This probably won't work on macOS because 2 Mbps is too high for the macOS USB Serial Port. If you have a fix for this, please let us know!
+    Note: This probably won't work on macOS because 2 Mbps is too high for the macOS USB Serial Port. The BL602 Demo Firmware needs to be recompiled to reduce the UART baud rate. See ["Fix BL602 Demo Firmware for macOS"](https://lupyuen.github.io/articles/led#appendix-fix-bl602-demo-firmware-for-macos)
 
     __For Windows:__ Use `putty` to connect to PineCone's `COM` Port (like `COM5`) at speed `2000000` (2 Mbps)
     
@@ -294,6 +294,10 @@ DK: AppleUSBCHCOM-0x1000d21bd::start(IOUSBHostInterface-0x1000d21b6) ok
 `AppleUSBCHCOM` is the CH340 Driver provided by Apple for macOS Catalina.
 
 [More about this](https://community.platformio.org/t/troubleshooting-ch340g-issues-on-macos/9522)
+
+The BL602 Demo Firmware needs to be recompiled to reduce the UART baud rate.
+
+See ["Fix BL602 Demo Firmware for macOS"](https://lupyuen.github.io/articles/led#appendix-fix-bl602-demo-firmware-for-macos)
 
 ![BL602 Flashing Process reverse engineered from BLOpenFlasher](https://lupyuen.github.io/images/pinecone-flash-steps.png)
 
