@@ -20,9 +20,21 @@ If you're new to PineCone BL602, check out my article...
 
 -   [__"Quick Peek of PineCone BL602 RISC-V Evaluation Board"__](https://lupyuen.github.io/articles/pinecone)
 
+![PineCone RGB LED Schematic](https://lupyuen.github.io/images/led-rgb.png)
+
+_PineCone RGB LED Schematic_
+
 # Control RGB LED with GPIO
 
-Let's flash and run the __GPIO Demo__ from the BL602 IoT SDK...
+According to the [PineCone Schematics](https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf), the onboard RGB LED is connected to these GPIO Pins...
+
+| LED | GPIO Pin
+|:---|:---|
+| Blue  | GPIO 11
+| Red   | GPIO 17
+| Green | GPIO 14
+
+Let's flash the __GPIO Demo__ from the BL602 IoT SDK and interact with the above GPIO Pins...
 
 1.  Download the __BL602 Demo Firmware Binaries__... 
 
@@ -89,9 +101,13 @@ Let's flash and run the __GPIO Demo__ from the BL602 IoT SDK...
 
 [Watch the GPIO Demo Video on YouTube](https://youtu.be/yaXsfM1ne4w)
 
+![PineCone Jumper Schematic](https://lupyuen.github.io/images/led-jumper.png)
+
+_PineCone Jumper Schematic_
+
 # GPIO Exercise for The Reader
 
-PineCone has an Onboard Jumper that's connected to GPIO 8.
+According to the [PineCone Schematics](https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf), the onboard jumper is connected to GPIO 8.
 
 Can we use this command to read the jumper?
 
