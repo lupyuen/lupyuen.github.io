@@ -66,7 +66,15 @@ Let's flash the __GPIO Demo__ from the BL602 IoT SDK and interact with the above
 
 1.  Press the __RST Button__ on PineCone to restart the firmware.
 
+    We should see this...
+
+    ![BL602 GPIO Demo](https://lupyuen.github.io/images/led-gpio1.png)
+
 1.  Press `Enter` to reveal the command prompt.
+
+    Enter `help` to see the commands...
+
+    ![BL602 GPIO Demo Commands](https://lupyuen.github.io/images/led-gpio2.png)
 
 1.  Enter these commands to set GPIO 11 (Blue), 14 (Green), 17 (Red) to output (no pullup, no pulldown)...
 
