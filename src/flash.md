@@ -834,6 +834,8 @@ I hope to uncover more BL602 goodies in 2021. Stay tuned!
 
 -   [Discuss this article on Reddit](https://www.reddit.com/r/RISCV/comments/knsju9/flashing_firmware_to_pinecone_bl602/)
 
+-   ["Control PineCone BL602 RGB LED with GPIO and PWM"](https://lupyuen.github.io/articles/led)
+
 -   [Check out my articles](https://lupyuen.github.io)
 
 -   [RSS Feed](https://lupyuen.github.io/rss.xml)
