@@ -61,6 +61,31 @@ To exit `screen`, press `Ctrl-A` then `k` then `y`
 
 [Watch the GPIO Demo Video on YouTube](https://youtu.be/yaXsfM1ne4w)
 
+# GPIO Exercise for The Reader
+
+PineCone has an Onboard Jumper that's connected to GPIO 8.
+
+Can we use this command to read the jumper?
+
+```bash
+gpio-get 8
+```
+
+Flip the jumper and check whether the value changes.
+
+Remember to use this command to configure GPIO 8...
+
+```bash
+gpio-func 8 1 PULLUP PULLDOWN
+```
+
+-   `8` is the GPIO Number
+-   `1` to configure the GPIO for Input (instead of output)
+-   `PULLUP` is `0` for No Pullup, `1` for Pullup
+-   `PULLDOWN` is `0` for No Pulldown, `1` for Pulldown
+
+Please lemme know!
+
 # How It Works: BL602 GPIO
 
 Let's look at the BL602 GPIO Functions called by the GPIO Demo Firmware: [`sdk_app_gpio.bin`](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_gpio)
