@@ -286,7 +286,7 @@ caused by: Invalid argument
 <pre><code class="language-bash">screen /dev/tty.usbserial-1420 2000000                 
 </code></pre>
 <p>(Change <code>/dev/tty.usbserial-1420</code> to the USB Serial Device assigned to PineCone)</p>
-<p>Note: This probably won't work on macOS because 2 Mbps is too high for the macOS USB Serial Port. If you have a fix for this, please let us know!</p>
+<p>Note: This probably won't work on macOS because 2 Mbps is too high for the macOS USB Serial Port. The BL602 Demo Firmware needs to be recompiled to reduce the UART baud rate. See <a href="https://lupyuen.github.io/articles/led#appendix-fix-bl602-demo-firmware-for-macos">&quot;Fix BL602 Demo Firmware for macOS&quot;</a></p>
 <p><strong>For Windows:</strong> Use <code>putty</code> to connect to PineCone's <code>COM</code> Port (like <code>COM5</code>) at speed <code>2000000</code> (2 Mbps)</p>
 <p><a href="https://www.chiark.greenend.org.uk/%7Esgtatham/putty/latest.html">Download putty for Windows</a></p>
 <p><img src="https://lupyuen.github.io/images/flash-putty.png" alt="Connect putty to COM Port at speed 2000000" /></p>
@@ -323,6 +323,8 @@ caused by: Invalid argument
 </code></pre>
 <p><code>AppleUSBCHCOM</code> is the CH340 Driver provided by Apple for macOS Catalina.</p>
 <p><a href="https://community.platformio.org/t/troubleshooting-ch340g-issues-on-macos/9522">More about this</a></p>
+<p>The BL602 Demo Firmware needs to be recompiled to reduce the UART baud rate.</p>
+<p>See <a href="https://lupyuen.github.io/articles/led#appendix-fix-bl602-demo-firmware-for-macos">&quot;Fix BL602 Demo Firmware for macOS&quot;</a></p>
 <p><img src="https://lupyuen.github.io/images/pinecone-flash-steps.png" alt="BL602 Flashing Process reverse engineered from BLOpenFlasher" /></p>
 <p><em>BL602 Flashing Process reverse engineered from BLOpenFlasher</em></p>
 <h1 id="what-else-gets-flashed-to-bl602" class="section-header"><a href="#what-else-gets-flashed-to-bl602">2 What Else Gets Flashed To BL602?</a></h1>
