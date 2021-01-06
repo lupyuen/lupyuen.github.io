@@ -66,18 +66,19 @@
     <h1 class="title">Control PineCone BL602 RGB LED with GPIO and PWM</h1>
     <nav id="TOC"><ul>
 <li><a href="#control-rgb-led-with-gpio">1 Control RGB LED with GPIO</a><ul></ul></li>
-<li><a href="#how-it-works-bl602-gpio">2 How It Works: BL602 GPIO</a><ul>
-<li><a href="#enable-gpio">2.1 Enable GPIO</a><ul></ul></li>
-<li><a href="#read-and-write-gpio">2.2 Read and Write GPIO</a><ul></ul></li>
-<li><a href="#gpio-interrupts">2.3 GPIO Interrupts</a><ul></ul></li></ul></li>
-<li><a href="#from-gpio-to-pulse-width-modulation-pwm">3 From GPIO to Pulse Width Modulation (PWM)</a><ul></ul></li>
-<li><a href="#control-rgb-led-with-pwm">4 Control RGB LED with PWM</a><ul></ul></li>
-<li><a href="#how-it-works-bl602-pwm">5 How It Works: BL602 PWM</a><ul>
-<li><a href="#initialise-pwm">5.1 Initialise PWM</a><ul></ul></li>
-<li><a href="#pwm-frequency-and-duty-cycle">5.2 PWM Frequency and Duty Cycle</a><ul></ul></li>
-<li><a href="#pwm-operation">5.3 PWM Operation</a><ul></ul></li></ul></li>
-<li><a href="#bl602-pwm-internals">6 BL602 PWM Internals</a><ul></ul></li>
-<li><a href="#whats-next">7 What's Next</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/led-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board connected to Pinebook Pro" /></p>
+<li><a href="#gpio-exercise-for-the-reader">2 GPIO Exercise for The Reader</a><ul></ul></li>
+<li><a href="#how-it-works-bl602-gpio">3 How It Works: BL602 GPIO</a><ul>
+<li><a href="#enable-gpio">3.1 Enable GPIO</a><ul></ul></li>
+<li><a href="#read-and-write-gpio">3.2 Read and Write GPIO</a><ul></ul></li>
+<li><a href="#gpio-interrupts">3.3 GPIO Interrupts</a><ul></ul></li></ul></li>
+<li><a href="#from-gpio-to-pulse-width-modulation-pwm">4 From GPIO to Pulse Width Modulation (PWM)</a><ul></ul></li>
+<li><a href="#control-rgb-led-with-pwm">5 Control RGB LED with PWM</a><ul></ul></li>
+<li><a href="#how-it-works-bl602-pwm">6 How It Works: BL602 PWM</a><ul>
+<li><a href="#initialise-pwm">6.1 Initialise PWM</a><ul></ul></li>
+<li><a href="#pwm-frequency-and-duty-cycle">6.2 PWM Frequency and Duty Cycle</a><ul></ul></li>
+<li><a href="#pwm-operation">6.3 PWM Operation</a><ul></ul></li></ul></li>
+<li><a href="#bl602-pwm-internals">7 BL602 PWM Internals</a><ul></ul></li>
+<li><a href="#whats-next">8 What's Next</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/led-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board connected to Pinebook Pro" /></p>
 <p><em>PineCone BL602 RISC-V Evaluation Board connected to Pinebook Pro</em></p>
 <p>📝 <em>6 Jan 2021</em></p>
 <p>Today we shall learn to control PineCone's onboard RGB LED in two ways...</p>
@@ -119,9 +120,25 @@ gpio-set 17 1
 </code></pre>
 <p>To exit <code>screen</code>, press <code>Ctrl-A</code> then <code>k</code> then <code>y</code></p>
 <p><a href="https://youtu.be/yaXsfM1ne4w">Watch the GPIO Demo Video on YouTube</a></p>
-<h1 id="how-it-works-bl602-gpio" class="section-header"><a href="#how-it-works-bl602-gpio">2 How It Works: BL602 GPIO</a></h1>
+<h1 id="gpio-exercise-for-the-reader" class="section-header"><a href="#gpio-exercise-for-the-reader">2 GPIO Exercise for The Reader</a></h1>
+<p>PineCone has an Onboard Jumper that's connected to GPIO 8.</p>
+<p>Can we use this command to read the jumper?</p>
+<pre><code class="language-bash">gpio-get 8
+</code></pre>
+<p>Flip the jumper and check whether the value changes.</p>
+<p>Remember to use this command to configure GPIO 8...</p>
+<pre><code class="language-bash">gpio-func 8 1 PULLUP PULLDOWN
+</code></pre>
+<ul>
+<li><code>8</code> is the GPIO Number</li>
+<li><code>1</code> to configure the GPIO for Input (instead of output)</li>
+<li><code>PULLUP</code> is <code>0</code> for No Pullup, <code>1</code> for Pullup</li>
+<li><code>PULLDOWN</code> is <code>0</code> for No Pulldown, <code>1</code> for Pulldown</li>
+</ul>
+<p>Please lemme know!</p>
+<h1 id="how-it-works-bl602-gpio" class="section-header"><a href="#how-it-works-bl602-gpio">3 How It Works: BL602 GPIO</a></h1>
 <p>Let's look at the BL602 GPIO Functions called by the GPIO Demo Firmware: <a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_gpio"><code>sdk_app_gpio.bin</code></a></p>
-<h2 id="enable-gpio" class="section-header"><a href="#enable-gpio">2.1 Enable GPIO</a></h2>
+<h2 id="enable-gpio" class="section-header"><a href="#enable-gpio">3.1 Enable GPIO</a></h2>
 <p>To designate a GPIO Pin for input or output, we call these GPIO HAL Functions: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_gpio.h"><code>bl_gpio.h</code></a></p>
 <pre><code class="language-c">int bl_gpio_enable_output(uint8_t pin, uint8_t pullup, uint8_t pulldown);
 int bl_gpio_enable_input( uint8_t pin, uint8_t pullup, uint8_t pulldown);
@@ -137,7 +154,7 @@ int bl_gpio_enable_input( uint8_t pin, uint8_t pullup, uint8_t pulldown);
 <p><code>pulldown</code> is set to 1 if the pin should be pulled down electrically, 0 otherwise.</p>
 </li>
 </ul>
-<h2 id="read-and-write-gpio" class="section-header"><a href="#read-and-write-gpio">2.2 Read and Write GPIO</a></h2>
+<h2 id="read-and-write-gpio" class="section-header"><a href="#read-and-write-gpio">3.2 Read and Write GPIO</a></h2>
 <p>To read or write a GPIO Pin, we call these GPIO HAL Functions: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_gpio.h"><code>bl_gpio.h</code></a></p>
 <pre><code class="language-c">int bl_gpio_output_set(uint8_t pin, uint8_t value);
 int bl_gpio_input_get( uint8_t pin, uint8_t *value);
@@ -154,7 +171,7 @@ int bl_gpio_input_get_value(uint8_t pin);
 <p><code>bl_gpio_input_get</code> stores the value read at the pointer passed in.</p>
 </li>
 </ul>
-<h2 id="gpio-interrupts" class="section-header"><a href="#gpio-interrupts">2.3 GPIO Interrupts</a></h2>
+<h2 id="gpio-interrupts" class="section-header"><a href="#gpio-interrupts">3.3 GPIO Interrupts</a></h2>
 <p>To allow a GPIO Pin to trigger interrupts (like when a button is pressed), we call these GPIO HAL Functions: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_gpio.h"><code>bl_gpio.h</code></a></p>
 <pre><code class="language-c">int  bl_gpio_int_clear( uint8_t gpioPin, uint8_t intClear);
 void bl_gpio_intmask(   uint8_t gpiopin, uint8_t mask);
@@ -169,7 +186,7 @@ void bl_gpio_register(gpio_ctx_t *pstnode);
 <ul>
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_gpio/sdk_app_gpio/demo.c"><strong>GPIO Demo Source Code: <code>demo.c</code></strong></a></li>
 </ul>
-<h1 id="from-gpio-to-pulse-width-modulation-pwm" class="section-header"><a href="#from-gpio-to-pulse-width-modulation-pwm">3 From GPIO to Pulse Width Modulation (PWM)</a></h1>
+<h1 id="from-gpio-to-pulse-width-modulation-pwm" class="section-header"><a href="#from-gpio-to-pulse-width-modulation-pwm">4 From GPIO to Pulse Width Modulation (PWM)</a></h1>
 <p><em>How many colours can we show on the RGB LED through GPIO?</em></p>
 <p>Each GPIO Pin is binary... Either On or Off. Let's flip each LED and count the colours...</p>
 <table><thead><tr><th align="center">Red</th><th align="center">Green</th><th align="center">Blue</th><th align="left">Colour</th></tr></thead><tbody>
@@ -205,7 +222,7 @@ void bl_gpio_register(gpio_ctx_t *pstnode);
 <p>Remember that we tweaked the spacing of the blinking to get many levels of brightness?</p>
 <p>We call this the <strong>Duty Cycle</strong> in PWM.</p>
 <p>Let's experiment with the RGB LED on PWM...</p>
-<h1 id="control-rgb-led-with-pwm" class="section-header"><a href="#control-rgb-led-with-pwm">4 Control RGB LED with PWM</a></h1>
+<h1 id="control-rgb-led-with-pwm" class="section-header"><a href="#control-rgb-led-with-pwm">5 Control RGB LED with PWM</a></h1>
 <p>Flash the <strong>Modified PWM Demo Firmware</strong> to PineCone: <a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_pwm"><code>sdk_app_pwm.bin</code></a></p>
 <p>(The firmware was modified to run without a Device Tree. <a href="https://github.com/lupyuen/bl_iot_sdk/pull/1">More details</a>)</p>
 <p>Connect to PineCone...</p>
@@ -236,9 +253,9 @@ pwm_duty_set 1 0
 </code></pre>
 <p>To exit <code>screen</code>, press <code>Ctrl-A</code> then <code>k</code> then <code>y</code></p>
 <p><a href="https://youtu.be/66h2rXXc6Tk">Watch the PWM Demo Video on YouTube</a></p>
-<h1 id="how-it-works-bl602-pwm" class="section-header"><a href="#how-it-works-bl602-pwm">5 How It Works: BL602 PWM</a></h1>
+<h1 id="how-it-works-bl602-pwm" class="section-header"><a href="#how-it-works-bl602-pwm">6 How It Works: BL602 PWM</a></h1>
 <p>Now we look at the BL602 PWM Functions called by the PWM Demo Firmware: <a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_pwm"><code>sdk_app_pwm.bin</code></a></p>
-<h2 id="initialise-pwm" class="section-header"><a href="#initialise-pwm">5.1 Initialise PWM</a></h2>
+<h2 id="initialise-pwm" class="section-header"><a href="#initialise-pwm">6.1 Initialise PWM</a></h2>
 <p>To designate a GPIO PIN as a PWM Channel, we call this PWM HAL Function: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_pwm.h"><code>bl_pwm.h</code></a></p>
 <pre><code class="language-c">int32_t bl_pwm_init(uint8_t id, uint8_t pin, uint32_t freq);
 </code></pre>
@@ -254,7 +271,7 @@ pwm_duty_set 1 0
 </li>
 </ul>
 <p>Not all GPIO Pins may be assigned to a PWM Channel. Check &quot;Table 3.1: Pin description&quot; (Page 27) in <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en">BL602 Reference Manual</a>.</p>
-<h2 id="pwm-frequency-and-duty-cycle" class="section-header"><a href="#pwm-frequency-and-duty-cycle">5.2 PWM Frequency and Duty Cycle</a></h2>
+<h2 id="pwm-frequency-and-duty-cycle" class="section-header"><a href="#pwm-frequency-and-duty-cycle">6.2 PWM Frequency and Duty Cycle</a></h2>
 <p>We set the Frequency and Duty Cycle on a PWM Channel by calling these PWM HAL Functions: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_pwm.h"><code>bl_pwm.h</code></a></p>
 <pre><code class="language-c">int32_t bl_pwm_set_freq(uint8_t id, uint32_t freq);
 int32_t bl_pwm_set_duty(uint8_t id, float duty);
@@ -280,7 +297,7 @@ int32_t bl_pwm_set_duty(uint8_t id, float duty);
 <ul>
 <li><code>bl_pwm_get_duty</code> stores the Duty Cycle at the pointer passed in <code>p_duty</code>.</li>
 </ul>
-<h2 id="pwm-operation" class="section-header"><a href="#pwm-operation">5.3 PWM Operation</a></h2>
+<h2 id="pwm-operation" class="section-header"><a href="#pwm-operation">6.3 PWM Operation</a></h2>
 <p>We start and stop a PWM Channel by calling these PWM HAL Functions: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_pwm.h"><code>bl_pwm.h</code></a></p>
 <pre><code class="language-c">int32_t bl_pwm_start(uint8_t id);
 int32_t bl_pwm_stop( uint8_t id);
@@ -296,7 +313,7 @@ int32_t bl_pwm_stop( uint8_t id);
 <ul>
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_pwm/sdk_app_pwm/main.c"><strong>PWM Demo Source Code: <code>main.c</code></strong></a></li>
 </ul>
-<h1 id="bl602-pwm-internals" class="section-header"><a href="#bl602-pwm-internals">6 BL602 PWM Internals</a></h1>
+<h1 id="bl602-pwm-internals" class="section-header"><a href="#bl602-pwm-internals">7 BL602 PWM Internals</a></h1>
 <p>This helpful diagram from the <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en">BL602 Reference Manual</a> (Page 158) explains the internals of BL602's PWM...</p>
 <p><img src="https://lupyuen.github.io/images/led-pwm.png" alt="BL602 Pulse Width Modulation" /></p>
 <p><em>BL602 Pulse Width Modulation</em></p>
@@ -364,7 +381,7 @@ threshold2 = ( period / 100 ) * duty;
 <p>(Yep the Duty Cycle is Inversely Proportional to the LED Brightness)</p>
 </li>
 </ol>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">7 What's Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">8 What's Next</a></h1>
 <p>TODO</p>
 <ul>
 <li>
