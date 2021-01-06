@@ -98,7 +98,7 @@ BL602 is an interesting microcontroller... Each pin may be remapped to various f
 
 To find the default JTAG Pins, we refer to...
 
--   [BL602 Reference Manual](https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf)
+-   [BL602 Reference Manual](https://github.com/pine64/bl602-docs/blob/main/mirrored/BL602_BL604_RM_1.2_en.pdf)
 
     Section 3.2.8, "GPIO Function" (Pages 27 to 40)
 
