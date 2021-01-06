@@ -274,7 +274,7 @@ void bl_gpio_register(gpio_ctx_t *pstnode);
 <p><img src="https://lupyuen.github.io/images/led-rgb.png" alt="PineCone RGB LED Schematic" /></p>
 <p><em>What are CH1, CH2 and CH4?</em></p>
 <p>CH1, CH2 and CH4 are <strong>PWM Channels</strong>. Each PWM Channel will let us strobe the output on one pin. (Hence we need 3 PWM Channels)</p>
-<p>Let's match the 3 GPIO Pins and 3 PWM Channels to the Pin Mapping Table...</p>
+<p>Let's match the 3 GPIO Pins and 3 PWM Channels to the Pin Mapping Table: <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en">BL602 Reference Manual</a> (Page 27)</p>
 <p><img src="https://lupyuen.github.io/images/led-pins.png" alt="BL602 Pin Mapping" /></p>
 <p>The table says that <strong>GPIO 11, 17 and 14</strong> may be mapped to <strong>PWM Channels 1, 2 and 4</strong> (by calling the PWM HAL Functions). Perfect!</p>
 <p>Remember that we tweaked the spacing of the blinking to get many levels of brightness?</p>

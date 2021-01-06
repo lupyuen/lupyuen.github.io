@@ -247,7 +247,7 @@ _What are CH1, CH2 and CH4?_
 
 CH1, CH2 and CH4 are __PWM Channels__. Each PWM Channel will let us strobe the output on one pin. (Hence we need 3 PWM Channels)
 
-Let's match the 3 GPIO Pins and 3 PWM Channels to the Pin Mapping Table...
+Let's match the 3 GPIO Pins and 3 PWM Channels to the Pin Mapping Table: [BL602 Reference Manual](https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en) (Page 27)
 
 ![BL602 Pin Mapping](https://lupyuen.github.io/images/led-pins.png)
 
