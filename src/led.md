@@ -448,6 +448,22 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [`lupyuen.github.io/src/led.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/led.md)
 
-# Appendix: macOS
+# Appendix: Fix BL602 Firmware for macOS
 
 TODO
+
+https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_gpio/sdk_app_gpio/main.c#L266
+
+https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_pwm/sdk_app_pwm/main.c#L599
+
+https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_helloworld/sdk_app_helloworld/main.c#L80
+
+Change
+
+```c
+bl_uart_init(0, 16, 7, 255, 255, 2 * 1000 * 1000);
+```
+
+```c
+bl_uart_init(0, 16, 7, 255, 255, 230400);
+```
