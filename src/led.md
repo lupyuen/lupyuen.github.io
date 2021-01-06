@@ -474,6 +474,8 @@ This will become part of the port of Mynewt to BL602, that we have started here.
 
 Stay Tuned!
 
+-   [Discuss this article on Reddit](https://www.reddit.com/r/RISCV/comments/krkm6g/control_pinecone_bl602_rgb_led_with_gpio_and_pwm/?utm_source=share&utm_medium=web2x&context=3)
+
 -   [Check out my articles](https://lupyuen.github.io)
 
 -   [RSS Feed](https://lupyuen.github.io/rss.xml)
