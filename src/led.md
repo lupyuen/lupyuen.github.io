@@ -265,7 +265,7 @@ Now we'll switch PineCone to the __Modified PWM Demo__ from the BL602 IoT SDK.
 
     __For macOS:__ See the macOS Instructions below
 
-1.  Press the __RST Button__ on PineCone to restart the firmware.
+1.  Press the __RST Button__ on PineCone to restart the firmware. Ignore the errors.
 
 1.  Press `Enter` to reveal the command prompt.
 
