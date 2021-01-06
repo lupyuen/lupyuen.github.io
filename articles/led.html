@@ -92,7 +92,11 @@
 </li>
 </ol>
 <p>We'll do this with the <strong>GPIO and PWM Demo Firmware</strong> from the <a href="https://github.com/lupyuen/bl_iot_sdk"><strong>BL602 IoT SDK</strong></a>.</p>
-<p>We'll also discover how the Demo Firmware calls <strong>BL602's Hardware Abstraction Layer</strong> in C to perform GPIO and PWM Functions.</p>
+<p>Through the Demo Firmware we shall learn to call <strong>BL602's Hardware Abstraction Layer</strong> in C to perform GPIO and PWM Functions.</p>
+<p>If you're new to PineCone BL602, check out my article...</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/pinecone"><strong>&quot;Quick Peek of PineCone BL602 RISC-V Evaluation Board&quot;</strong></a></li>
+</ul>
 <h1 id="control-rgb-led-with-gpio" class="section-header"><a href="#control-rgb-led-with-gpio">1 Control RGB LED with GPIO</a></h1>
 <p>Let's flash and run the <strong>GPIO Demo</strong> from the BL602 IoT SDK...</p>
 <ol>
@@ -103,7 +107,7 @@
 </ul>
 </li>
 <li>
-<p>Extract <code>customer_app.zip</code>. Look for the file...</p>
+<p>Unzip <code>customer_app.zip</code>. Look for the file...</p>
 <pre><code class="language-text">sdk_app_gpio/build_out/sdk_app_gpio.bin
 </code></pre>
 </li>
@@ -120,7 +124,7 @@
 <pre><code class="language-bash">sudo screen /dev/ttyUSB0 2000000
 </code></pre>
 <p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
-<p><strong>For macOS:</strong> See the macOS Instructions below</p>
+<p><strong>For macOS:</strong> See <a href="https://lupyuen.github.io/articles/led#appendix-fix-bl602-demo-firmware-for-macos">&quot;Appendix: Fix BL602 Demo Firmware for macOS&quot;</a></p>
 </li>
 <li>
 <p>Press the <strong>RST Button</strong> on PineCone to restart the firmware.</p>
@@ -273,7 +277,7 @@ void bl_gpio_register(gpio_ctx_t *pstnode);
 </ul>
 </li>
 <li>
-<p>Extract <code>customer_app.zip</code>. Look for the file...</p>
+<p>Unzip <code>customer_app.zip</code>. Look for the file...</p>
 <pre><code class="language-text">sdk_app_pwm/build_out/sdk_app_pwm.bin
 </code></pre>
 </li>
@@ -290,7 +294,7 @@ void bl_gpio_register(gpio_ctx_t *pstnode);
 <pre><code class="language-bash">sudo screen /dev/ttyUSB0 2000000
 </code></pre>
 <p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
-<p><strong>For macOS:</strong> See the macOS Instructions below</p>
+<p><strong>For macOS:</strong> See <a href="https://lupyuen.github.io/articles/led#appendix-fix-bl602-demo-firmware-for-macos">&quot;Appendix: Fix BL602 Demo Firmware for macOS&quot;</a></p>
 </li>
 <li>
 <p>Press the <strong>RST Button</strong> on PineCone to restart the firmware. Ignore the errors.</p>
@@ -465,7 +469,11 @@ threshold2 = ( period / 100 ) * duty;
 </li>
 </ol>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">8 What's Next</a></h1>
-<p>TODO</p>
+<p>Today we have we have explored the GPIO and PWM HAL Functions through the BL602 Demo Firmware.</p>
+<p>We're now ready to call the GPIO and PWM HAL Functions from a modern embedded operating system... Apache Mynewt!</p>
+<p>This will become part of the port of Mynewt to BL602, that we have started here...</p>
+<p><a href="https://lupyuen.github.io/articles/mynewt">&quot;Porting Mynewt to PineCone BL602&quot;</a></p>
+<p>Stay Tuned!</p>
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io">Check out my articles</a></p>
