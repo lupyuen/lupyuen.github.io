@@ -78,37 +78,72 @@
 <li><a href="#pwm-frequency-and-duty-cycle">6.2 PWM Frequency and Duty Cycle</a><ul></ul></li>
 <li><a href="#pwm-operation">6.3 PWM Operation</a><ul></ul></li></ul></li>
 <li><a href="#bl602-pwm-internals">7 BL602 PWM Internals</a><ul></ul></li>
-<li><a href="#whats-next">8 What's Next</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/led-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board connected to Pinebook Pro" /></p>
+<li><a href="#whats-next">8 What's Next</a><ul></ul></li>
+<li><a href="#appendix-macos">9 Appendix: macOS</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/led-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board connected to Pinebook Pro" /></p>
 <p><em>PineCone BL602 RISC-V Evaluation Board connected to Pinebook Pro</em></p>
 <p>📝 <em>6 Jan 2021</em></p>
-<p>Today we shall learn to control PineCone's onboard RGB LED in two ways...</p>
+<p>Today we shall take control of <strong>PineCone's Onboard RGB LED</strong> in two ways...</p>
 <ol>
 <li>
-<p><strong>With GPIO</strong></p>
+<p><strong>GPIO</strong></p>
 </li>
 <li>
-<p><strong>With Pulse Width Modulation (PWM)</strong></p>
+<p><strong>Pulse Width Modulation (PWM)</strong></p>
 </li>
 </ol>
-<p>...By calling <strong>BL602's Hardware Abstraction Layer</strong> in C.</p>
+<p>We'll do this with the <strong>GPIO and PWM Demo Firmware</strong> from the <a href="https://github.com/lupyuen/bl_iot_sdk"><strong>BL602 IoT SDK</strong></a>.</p>
+<p>We'll also discover how the Demo Firmware calls <strong>BL602's Hardware Abstraction Layer</strong> in C to perform GPIO and PWM Functions.</p>
 <h1 id="control-rgb-led-with-gpio" class="section-header"><a href="#control-rgb-led-with-gpio">1 Control RGB LED with GPIO</a></h1>
-<p>Flash the <strong>GPIO Demo Firmware</strong> to PineCone: <a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_gpio"><code>sdk_app_gpio.bin</code></a></p>
+<p>Let's flash and run the <strong>GPIO Demo</strong> from the BL602 IoT SDK...</p>
+<ol>
+<li>
+<p>Download the <strong>BL602 Demo Firmware Binaries</strong>... </p>
+<ul>
+<li><a href="https://github.com/lupyuen/bl_iot_sdk/releases/download/v1.0.0/customer_app.zip"><strong>BL602 Demo Firmware Binaries</strong>: <code>customer_app.zip</code></a></li>
+</ul>
+</li>
+<li>
+<p>Extract <code>customer_app.zip</code>. Look for the file...</p>
+<pre><code class="language-text">sdk_app_gpio/build_out/sdk_app_gpio.bin
+</code></pre>
+</li>
+<li>
+<p>Flash <code>sdk_app_gpio.bin</code> to PineCone. Follow the instructions in the article...</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/flash"><strong>&quot;Flashing Firmware to PineCone BL602&quot;</strong></a></li>
+</ul>
+<p>After flashing, flip the <strong>PineCone Jumper (IO 8)</strong> to the <strong><code>L</code> Position</strong> <a href="https://lupyuen.github.io/images/pinecone-jumperl.jpg">(Like this)</a></p>
+</li>
+<li>
 <p>Connect to PineCone...</p>
+<p><strong>For Linux:</strong></p>
 <pre><code class="language-bash">sudo screen /dev/ttyUSB0 2000000
 </code></pre>
-<p>Press the RST Button on PineCone to restart the firmware.</p>
-<p>Press Enter to reveal the command prompt.</p>
-<p>Set GPIO 11 (Blue), 14 (Green), 17 (Red) to output (no pullup, no pulldown)...</p>
+<p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
+<p><strong>For macOS:</strong> See the macOS Instructions below</p>
+</li>
+<li>
+<p>Press the <strong>RST Button</strong> on PineCone to restart the firmware.</p>
+</li>
+<li>
+<p>Press <code>Enter</code> to reveal the command prompt.</p>
+</li>
+<li>
+<p>Enter these commands to set GPIO 11 (Blue), 14 (Green), 17 (Red) to output (no pullup, no pulldown)...</p>
 <pre><code class="language-bash">gpio-func 11 0 0 0
 gpio-func 14 0 0 0
 gpio-func 17 0 0 0
 </code></pre>
+</li>
+<li>
 <p>Switch off the 3 LEDs (1 = Off)...</p>
 <pre><code class="language-bash">gpio-set 11 1
 gpio-set 14 1
 gpio-set 17 1
 </code></pre>
-<p>Switch on and off each of the 3 LEDs: Blue, Green, Red (0 = On)...</p>
+</li>
+<li>
+<p>Switch on and off each of the 3 LEDs: Blue, Green, Red (0 = On, 1 = Off)...</p>
 <pre><code class="language-bash">gpio-set 11 0
 gpio-set 11 1
 
@@ -118,7 +153,11 @@ gpio-set 14 1
 gpio-set 17 0
 gpio-set 17 1
 </code></pre>
+</li>
+<li>
 <p>To exit <code>screen</code>, press <code>Ctrl-A</code> then <code>k</code> then <code>y</code></p>
+</li>
+</ol>
 <p><a href="https://youtu.be/yaXsfM1ne4w">Watch the GPIO Demo Video on YouTube</a></p>
 <h1 id="gpio-exercise-for-the-reader" class="section-header"><a href="#gpio-exercise-for-the-reader">2 GPIO Exercise for The Reader</a></h1>
 <p>PineCone has an Onboard Jumper that's connected to GPIO 8.</p>
@@ -137,6 +176,7 @@ gpio-set 17 1
 </ul>
 <p>Please lemme know!</p>
 <h1 id="how-it-works-bl602-gpio" class="section-header"><a href="#how-it-works-bl602-gpio">3 How It Works: BL602 GPIO</a></h1>
+<p>The GPIO Demo Firmware calls the GPIO Functions provided by the <strong>BL602 Hardware Abstraction Layer (HAL)</strong>.</p>
 <p>Let's look at the BL602 GPIO Functions called by the GPIO Demo Firmware: <a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_gpio"><code>sdk_app_gpio.bin</code></a></p>
 <h2 id="enable-gpio" class="section-header"><a href="#enable-gpio">3.1 Enable GPIO</a></h2>
 <p>To designate a GPIO Pin for input or output, we call these GPIO HAL Functions: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_gpio.h"><code>bl_gpio.h</code></a></p>
@@ -223,38 +263,81 @@ void bl_gpio_register(gpio_ctx_t *pstnode);
 <p>We call this the <strong>Duty Cycle</strong> in PWM.</p>
 <p>Let's experiment with the RGB LED on PWM...</p>
 <h1 id="control-rgb-led-with-pwm" class="section-header"><a href="#control-rgb-led-with-pwm">5 Control RGB LED with PWM</a></h1>
-<p>Flash the <strong>Modified PWM Demo Firmware</strong> to PineCone: <a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_pwm"><code>sdk_app_pwm.bin</code></a></p>
+<p>Now we'll switch PineCone to the <strong>Modified PWM Demo</strong> from the BL602 IoT SDK.</p>
 <p>(The firmware was modified to run without a Device Tree. <a href="https://github.com/lupyuen/bl_iot_sdk/pull/1">More details</a>)</p>
+<ol>
+<li>
+<p>Download the <strong>BL602 Demo Firmware Binaries</strong>... </p>
+<ul>
+<li><a href="https://github.com/lupyuen/bl_iot_sdk/releases/download/v1.0.0/customer_app.zip"><strong>BL602 Demo Firmware Binaries</strong>: <code>customer_app.zip</code></a></li>
+</ul>
+</li>
+<li>
+<p>Extract <code>customer_app.zip</code>. Look for the file...</p>
+<pre><code class="language-text">sdk_app_pwm/build_out/sdk_app_pwm.bin
+</code></pre>
+</li>
+<li>
+<p>Flash <code>sdk_app_pwm.bin</code> to PineCone. Follow the instructions in the article...</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/flash"><strong>&quot;Flashing Firmware to PineCone BL602&quot;</strong></a></li>
+</ul>
+<p>After flashing, flip the <strong>PineCone Jumper (IO 8)</strong> to the <strong><code>L</code> Position</strong> <a href="https://lupyuen.github.io/images/pinecone-jumperl.jpg">(Like this)</a></p>
+</li>
+<li>
 <p>Connect to PineCone...</p>
+<p><strong>For Linux:</strong></p>
 <pre><code class="language-bash">sudo screen /dev/ttyUSB0 2000000
 </code></pre>
-<p>Press the RST Button on PineCone to restart the firmware. Ignore the errors.</p>
-<p>Press Enter to reveal the command prompt.</p>
-<p>Assign GPIO 11 (Blue), 17 (Red), 14 (Green) to <strong>PWM Channels</strong> 1, 2 and 4.  Set <strong>PWM Frequency</strong> to 2 kHz. (Each LED will blink at 2,000 cycles per second)</p>
+<p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
+<p><strong>For macOS:</strong> See the macOS Instructions below</p>
+</li>
+<li>
+<p>Press the <strong>RST Button</strong> on PineCone to restart the firmware.</p>
+</li>
+<li>
+<p>Press <code>Enter</code> to reveal the command prompt.</p>
+</li>
+<li>
+<p>Assign GPIO 11 (Blue), 17 (Red), 14 (Green) to <strong>PWM Channels</strong> 1, 2 and 4.</p>
+<p>Set the <strong>PWM Frequency</strong> to 2 kHz. (Each LED will blink at 2,000 cycles per second)</p>
 <pre><code class="language-bash">pwm_init 1 11 2000
 pwm_init 2 17 2000
 pwm_init 4 14 2000
 </code></pre>
-<p>Set <strong>PWM Duty Cycle</strong> for all 3 PWM Channels to 100%. Which means that 100% of the time, the 3 PWM Channels will be set to 1 (High). Which means total darkness: All 3 LEDs will be switched off 100% of the time.</p>
+</li>
+<li>
+<p>Set <strong>PWM Duty Cycle</strong> for all 3 PWM Channels to 100%. </p>
+<p>Which means that 100% of the time, the 3 PWM Channels will be set to 1 (High). </p>
+<p>Which means total darkness: All 3 LEDs will be switched off 100% of the time.</p>
 <pre><code class="language-bash">pwm_duty_set 1 100
 pwm_duty_set 2 100
 pwm_duty_set 4 100
 </code></pre>
+</li>
+<li>
 <p>Start the PWM Output for all 3 PWM Channels...</p>
 <pre><code class="language-bash">pwm_start 1
 pwm_start 2
 pwm_start 4
 </code></pre>
-<p>Gradually decrease the PWM Duty Cycle for PWM Channel 1 (Blue) from 100% to 0%. This means the Blue LED will gradually get brighter...</p>
+</li>
+<li>
+<p>Gradually decrease the PWM Duty Cycle for PWM Channel 1 (Blue) from 100% to 0%. </p>
+<p>This means the Blue LED will gradually get brighter.</p>
 <pre><code class="language-bash">pwm_duty_set 1 75
 pwm_duty_set 1 50
 pwm_duty_set 1 25
 pwm_duty_set 1 0
 </code></pre>
+</li>
+<li>
 <p>To exit <code>screen</code>, press <code>Ctrl-A</code> then <code>k</code> then <code>y</code></p>
+</li>
+</ol>
 <p><a href="https://youtu.be/66h2rXXc6Tk">Watch the PWM Demo Video on YouTube</a></p>
 <h1 id="how-it-works-bl602-pwm" class="section-header"><a href="#how-it-works-bl602-pwm">6 How It Works: BL602 PWM</a></h1>
-<p>Now we look at the BL602 PWM Functions called by the PWM Demo Firmware: <a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_pwm"><code>sdk_app_pwm.bin</code></a></p>
+<p>Now we look at the BL602 PWM HAL Functions called by the PWM Demo Firmware: <a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_pwm"><code>sdk_app_pwm.bin</code></a></p>
 <h2 id="initialise-pwm" class="section-header"><a href="#initialise-pwm">6.1 Initialise PWM</a></h2>
 <p>To designate a GPIO PIN as a PWM Channel, we call this PWM HAL Function: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_pwm.h"><code>bl_pwm.h</code></a></p>
 <pre><code class="language-c">int32_t bl_pwm_init(uint8_t id, uint8_t pin, uint32_t freq);
@@ -396,6 +479,8 @@ threshold2 = ( period / 100 ) * duty;
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/led.md"><code>lupyuen.github.io/src/led.md</code></a></p>
+<h1 id="appendix-macos" class="section-header"><a href="#appendix-macos">9 Appendix: macOS</a></h1>
+<p>TODO</p>
 
     
 </body>
