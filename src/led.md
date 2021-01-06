@@ -6,13 +6,15 @@ _PineCone BL602 RISC-V Evaluation Board connected to Pinebook Pro_
 
 📝 _6 Jan 2021_
 
-Today we shall learn to control PineCone's onboard RGB LED in two ways...
+Today is a good day to take control of PineCone's onboard RGB LED in two ways...
 
-1.  __With GPIO__
+1.  __GPIO__
 
-1.  __With Pulse Width Modulation (PWM)__
+1.  __Pulse Width Modulation (PWM)__
 
-...By calling __BL602's Hardware Abstraction Layer__ in C.
+We'll do this with the __GPIO and PWM Demo Firmware__ from the [__BL602 IoT SDK__](https://github.com/lupyuen/bl_iot_sdk).
+
+We'll also discover how the Demo Firmware calls __BL602's Hardware Abstraction Layer__ in C to perform GPIO and PWM Functions.
 
 # Control RGB LED with GPIO
 
