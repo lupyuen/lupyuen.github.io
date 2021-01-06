@@ -504,6 +504,7 @@ threshold2 = ( period / 100 ) * duty;
 <h1 id="appendix-fix-bl602-demo-firmware-for-macos" class="section-header"><a href="#appendix-fix-bl602-demo-firmware-for-macos">9 Appendix: Fix BL602 Demo Firmware for macOS</a></h1>
 <p>There's a problem accessing the BL602 Demo Firmware from macOS...</p>
 <p>BL602 Demo Firmware configures the UART Port for 2 Mbps, which is too fast for the CH340 USB Serial Driver on macOS.</p>
+<p><a href="https://twitter.com/madushan1000/status/1345352779502669824">(This seems to be a problem with IOKit on macOS)</a></p>
 <p>To make this work with macOS, we need to lower the UART baud rate from 2 Mbps to 230.4 kbps.</p>
 <ol>
 <li>
