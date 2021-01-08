@@ -210,7 +210,9 @@ ln -s &quot;$PWD/xpack-riscv-none-embed-gcc/bin/riscv-none-embed-gdb&quot; &quot
 <li>
 <p>In File Explorer, open the folder...</p>
 
-<pre><code>pinecone-rust\xpack-riscv-none-embed-gcc\bin</code></pre></li>
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="ident">pinecone</span><span class="op">-</span><span class="ident">rust</span>\<span class="ident">xpack</span><span class="op">-</span><span class="ident">riscv</span><span class="op">-</span><span class="ident">none</span><span class="op">-</span><span class="ident">embed</span><span class="op">-</span><span class="ident">gcc</span>\<span class="ident">bin</span></pre></div>
+</li>
 <li>
 <p>Copy and paste the file <code>riscv-none-embed-gdb.exe</code></p>
 </li>
@@ -220,7 +222,8 @@ ln -s &quot;$PWD/xpack-riscv-none-embed-gcc/bin/riscv-none-embed-gdb&quot; &quot
 <li>
 <p>Go to Windows Settings and add to <code>PATH</code> the full pathname of the above folder, which will look like this...</p>
 
-<pre><code>c:\pinecone-rust\xpack-riscv-none-embed-gcc\bin</code></pre>
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="ident">c</span>:\<span class="ident">pinecone</span><span class="op">-</span><span class="ident">rust</span>\<span class="ident">xpack</span><span class="op">-</span><span class="ident">riscv</span><span class="op">-</span><span class="ident">none</span><span class="op">-</span><span class="ident">embed</span><span class="op">-</span><span class="ident">gcc</span>\<span class="ident">bin</span></pre></div>
 <p>Change <code>c:\pinecone-rust</code> to the location of the <code>pinecone-rust</code> folder.</p>
 </li>
 </ul>
@@ -516,7 +519,7 @@ target = &quot;riscv32imac-unknown-none-elf&quot;
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="attribute">#[<span class="ident">riscv_rt</span>::<span class="ident">entry</span>]</span>
-<span class="kw">fn</span> <span class="ident">main</span>() <span class="op">-&gt;</span> <span class="op">!</span> {
+<span class="kw">fn</span> <span class="ident">main</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
     <span class="kw">let</span> <span class="ident">dp</span> <span class="op">=</span> <span class="ident">pac</span>::<span class="ident">Peripherals</span>::<span class="ident">take</span>().<span class="ident">unwrap</span>();
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">parts</span> <span class="op">=</span> <span class="ident">dp</span>.<span class="ident">GLB</span>.<span class="ident">split</span>();
     ...
@@ -532,7 +535,7 @@ target = &quot;riscv32imac-unknown-none-elf&quot;
 <p>Followed by the declaration of our Entry Function <code>main</code>...</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">fn</span> <span class="ident">main</span>() <span class="op">-&gt;</span> <span class="op">!</span> {</pre></div>
+<span class="kw">fn</span> <span class="ident">main</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {</pre></div>
 <p>This means that our Rust Function <code>main</code> will be called when the firmware starts, after initialising the registers and RAM. (<a href="https://github.com/rust-embedded/riscv-rt/blob/master/asm.S">More details</a>) </p>
 <p>(The return type &quot;<code>-&gt; !</code>&quot; means that the function will loop forever, never returning)</p>
 <h2 id="fetch-the-peripheral-registers" class="section-header"><a href="#fetch-the-peripheral-registers">5.2 Fetch the Peripheral Registers</a></h2>
