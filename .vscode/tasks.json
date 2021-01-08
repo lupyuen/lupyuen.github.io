@@ -48,7 +48,7 @@
                 "args": [
                     "-c",
                     "-l",
-                    " article=led ; set -e -x ; git pull ; cat scripts/articles/$article-header.html scripts/rustdoc-header.html >article-rustdoc-header.html ; rustdoc --output articles --html-in-header article-rustdoc-header.html --html-before-content scripts/rustdoc-before.html src/$article.md ; echo ✅ ◾ ️Done! "
+                    " git pull && scripts/gen-articles.sh && echo ✅ ◾ ️Done! "
                 ]
             },
             "linux": {
@@ -56,7 +56,7 @@
                 "args": [
                     "-c",
                     "-l",
-                    " article=led ; set -e -x ; git pull ; cat scripts/articles/$article-header.html scripts/rustdoc-header.html >article-rustdoc-header.html ; rustdoc --output articles --html-in-header article-rustdoc-header.html --html-before-content scripts/rustdoc-before.html src/$article.md ; echo ✅ ◾ ️Done! "
+                    " git pull && scripts/gen-articles.sh && echo ✅ ◾ ️Done! "
                 ]
             },
             "problemMatcher": [],

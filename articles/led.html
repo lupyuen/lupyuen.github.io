@@ -70,13 +70,15 @@
 <li><a href="#how-it-works-bl602-gpio">3 How It Works: BL602 GPIO</a><ul>
 <li><a href="#enable-gpio">3.1 Enable GPIO</a><ul></ul></li>
 <li><a href="#read-and-write-gpio">3.2 Read and Write GPIO</a><ul></ul></li>
-<li><a href="#gpio-interrupts">3.3 GPIO Interrupts</a><ul></ul></li></ul></li>
+<li><a href="#gpio-interrupts">3.3 GPIO Interrupts</a><ul></ul></li>
+<li><a href="#gpio-device-tree">3.4 GPIO Device Tree</a><ul></ul></li></ul></li>
 <li><a href="#from-gpio-to-pulse-width-modulation-pwm">4 From GPIO to Pulse Width Modulation (PWM)</a><ul></ul></li>
 <li><a href="#control-rgb-led-with-pwm">5 Control RGB LED with PWM</a><ul></ul></li>
 <li><a href="#how-it-works-bl602-pwm">6 How It Works: BL602 PWM</a><ul>
 <li><a href="#initialise-pwm">6.1 Initialise PWM</a><ul></ul></li>
 <li><a href="#pwm-frequency-and-duty-cycle">6.2 PWM Frequency and Duty Cycle</a><ul></ul></li>
-<li><a href="#pwm-operation">6.3 PWM Operation</a><ul></ul></li></ul></li>
+<li><a href="#pwm-operation">6.3 PWM Operation</a><ul></ul></li>
+<li><a href="#pwm-device-tree">6.4 PWM Device Tree</a><ul></ul></li></ul></li>
 <li><a href="#bl602-pwm-internals">7 BL602 PWM Internals</a><ul></ul></li>
 <li><a href="#whats-next">8 What's Next</a><ul></ul></li>
 <li><a href="#appendix-fix-bl602-demo-firmware-for-macos">9 Appendix: Fix BL602 Demo Firmware for macOS</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/led-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board connected to Pinebook Pro" /></p>
@@ -238,12 +240,19 @@ void bl_gpio_register(gpio_ctx_t *pstnode);
 </code></pre>
 <p>Check the GPIO HAL Source Code for details...</p>
 <ul>
-<li><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_gpio.c"><strong>GPIO HAL Source Code</strong></a></li>
+<li><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_gpio.c"><strong>GPIO HAL Source Code: <code>bl_gpio.c</code></strong></a></li>
 </ul>
 <p>To see the above GPIO HAL Functions in action, check out the GPIO Demo Source Code...</p>
 <ul>
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_gpio/sdk_app_gpio/demo.c"><strong>GPIO Demo Source Code: <code>demo.c</code></strong></a></li>
 </ul>
+<h2 id="gpio-device-tree" class="section-header"><a href="#gpio-device-tree">3.4 GPIO Device Tree</a></h2>
+<p>There is an alternative set of functions for controlling GPIO... </p>
+<ul>
+<li><strong>GPIO Device Tree</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_gpio.h"><strong><code>hal_gpio.h</code></strong></a>, <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_gpio.c"><strong><code>hal_gpio.c</code></strong></a></li>
+</ul>
+<p>These functions are meant to be used with the <strong>BL602 Device Tree</strong>.</p>
+<p><a href="https://lupyuen.github.io/articles/flash#device-tree">More about BL602 Device Tree</a></p>
 <h1 id="from-gpio-to-pulse-width-modulation-pwm" class="section-header"><a href="#from-gpio-to-pulse-width-modulation-pwm">4 From GPIO to Pulse Width Modulation (PWM)</a></h1>
 <p><em>How many colours can we show on the RGB LED through GPIO?</em></p>
 <p>Each GPIO Pin is binary... Either On or Off. Let's flip each LED and count the colours...</p>
@@ -408,12 +417,19 @@ int32_t bl_pwm_stop( uint8_t id);
 </ul>
 <p>The above PWM HAL Functions are defined here...</p>
 <ul>
-<li><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_pwm.c"><strong>PWM HAL Source Code</strong></a></li>
+<li><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_pwm.c"><strong>PWM HAL Source Code: <code>bl_pwm.c</code></strong></a></li>
 </ul>
 <p>To see the above PWM HAL Functions in action, check out the PWM Demo Source Code...</p>
 <ul>
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_pwm/sdk_app_pwm/main.c"><strong>PWM Demo Source Code: <code>main.c</code></strong></a></li>
 </ul>
+<h2 id="pwm-device-tree" class="section-header"><a href="#pwm-device-tree">6.4 PWM Device Tree</a></h2>
+<p>There is an alternative set of functions for controlling PWM... </p>
+<ul>
+<li><strong>PWM Device Tree</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_pwm.h"><strong><code>hal_pwm.h</code></strong></a>, <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_pwm.c"><strong><code>hal_pwm.c</code></strong></a></li>
+</ul>
+<p>These functions are meant to be used with the <strong>BL602 Device Tree</strong>.</p>
+<p><a href="https://lupyuen.github.io/articles/flash#device-tree">More about BL602 Device Tree</a></p>
 <h1 id="bl602-pwm-internals" class="section-header"><a href="#bl602-pwm-internals">7 BL602 PWM Internals</a></h1>
 <p>This helpful diagram from the <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en">BL602 Reference Manual</a> (Page 158) explains the internals of BL602's PWM...</p>
 <p><img src="https://lupyuen.github.io/images/led-pwm.png" alt="BL602 Pulse Width Modulation" /></p>
