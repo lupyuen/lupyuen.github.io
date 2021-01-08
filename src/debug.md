@@ -44,7 +44,7 @@ The instructions here should work on Linux, macOS and Windows.
 
     Rename it as...
 
-    ```
+    ```text
     pinecone-rust/xpack-openocd
     ```
 
@@ -58,7 +58,7 @@ Install Rust with support for nightly target `riscv32imac-unknown-none-elf`....
    
 1.  Press Enter to select...
 
-    ```
+    ```text
     1) Proceed with installation (default)
     ```
 
@@ -97,7 +97,7 @@ Now we install [__xPack GCC for RISC-V__](https://xpack.github.io/riscv-none-emb
 
     Rename the folder as...
 
-    ```
+    ```text
     pinecone-rust/xpack-riscv-none-embed-gcc
     ```
 
@@ -114,7 +114,7 @@ Now we install [__xPack GCC for RISC-V__](https://xpack.github.io/riscv-none-emb
 
     -   In File Explorer, open the folder...
     
-        ```
+        ```text
         pinecone-rust\xpack-riscv-none-embed-gcc\bin
         ```
     
@@ -124,7 +124,7 @@ Now we install [__xPack GCC for RISC-V__](https://xpack.github.io/riscv-none-emb
 
     -   Go to Windows Settings and add to `PATH` the full pathname of the above folder, which will look like this...
 
-        ```
+        ```text
         c:\pinecone-rust\xpack-riscv-none-embed-gcc\bin
         ```
 
@@ -228,7 +228,7 @@ warning: 3 warnings emitted
 
 This creates the RISC-V ELF Firmware image for PineCone...
 
-```
+```text
 pinecone-rust/target/riscv32imac-unknown-none-elf/debug/bl602-rust-guide
 ```
 

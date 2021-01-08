@@ -199,7 +199,7 @@ _(FYI: The Linker Maps loaded into Google Sheet for [`bl602_demo_wifi`](https://
 
 Remember that Wireless RAM starts at address `0x4203 0000`?  I have highlighted in yellow the 19 largest variables in Wireless RAM...
 
-```
+```text
 __bss_start
 __wifi_bss_start
 rx_dma_hdrdesc
@@ -328,19 +328,19 @@ We flash RISC-V firmware to the PineCone board through the __USB Serial Connecti
 
     -   ✅ __Partition Table__: Click `Browse` and select from the PineCone SDK...
 
-        ```
+        ```text
         bl_iot_sdk/tools/flash_tool/bl602/partition/partition_cfg_2M.toml
         ```
     
     -   ✅ __Boot2 Bin__: Click `Browse` and select from the PineCone SDK...
 
-        ```
+        ```text
         bl_iot_sdk/image_conf/bl602/blsp_boot2_release.bin
         ```
 
     -   ✅ __Firmware Bin__: Click `Browse` and select from the PineCone Sample Firmware `sdk_app_helloworld.bin`...
 
-        ```
+        ```text
         customer_app.zip/sdk_app_helloworld/build_out/sdk_app_helloworld.bin
         ```
 
@@ -354,7 +354,7 @@ We flash RISC-V firmware to the PineCone board through the __USB Serial Connecti
 
     This flashes the firmware to PineCone. We should see...
 
-    ```
+    ```text
     Verify success
     Program Finished
     ```
@@ -373,7 +373,7 @@ We flash RISC-V firmware to the PineCone board through the __USB Serial Connecti
 
     Our firmware starts to run. We should see...
 
-    ```
+    ```text
     [helloworld]   start
     [helloworld]   helloworld
     [helloworld]   end

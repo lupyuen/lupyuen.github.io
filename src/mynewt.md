@@ -354,7 +354,7 @@ We have created a minimal port of Mynewt to PineCone. Here's how we build the fi
 
     Rename the copied folder as...
 
-    ```
+    ```text
     pinecone-rust-mynewt/xpack-riscv-none-embed-gcc
     ```
 
@@ -376,7 +376,7 @@ We have created a minimal port of Mynewt to PineCone. Here's how we build the fi
 
     Rename the copied folder as...
 
-    ```
+    ```text
     pinecone-rust-mynewt/xpack-openocd
     ```
 
@@ -608,7 +608,7 @@ Here are all the code modules linked into our Mynewt Firmware. Note that...
 
 -   Our BL602 HAL `hw_mcu_bl_bl602` is tiny because it's mostly Stub Functions
 
-```
+```text
 Loading compiler pinecone-rust-mynewt/compiler/riscv-none-embed, buildProfile debug
 objsize
    text    data     bss     dec     hex filename
@@ -657,7 +657,7 @@ Now we run and debug our Mynewt Firmware with [__VSCode__](https://code.visualst
 
     This builds the Mynewt Firmware. The RISC-V ELF Firmware image is generated here...
 
-    ```
+    ```text
     pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky/blinky.elf
     ```
 
@@ -715,7 +715,7 @@ For Windows: Sorry we need to terminate the OpenOCD task manually with the Task 
 
 In case of OpenOCD problems, check the OpenOCD log file...
 
-```
+```text
 pinecone-rust-mynewt/openocd.log
 ```
 

@@ -221,7 +221,7 @@ Change `OPENOCD_DIRECTORY` to the directory that contains the extracted xPack Op
 
 We should see this output in OpenOCD...
 
-```
+```text
 xPack OpenOCD, x86_64 Open On-Chip Debugger 0.10.0+dev-00378-ge5be992df (2020-06-26-12:31)
 Licensed under GNU GPL v2
 For bug reports, read
@@ -237,7 +237,7 @@ This is very important... `0x20000c05` is the CPU ID that identifies the BL602 M
 
 If we see any CPU ID other than `0x20000c05`, it probably means that our JTAG connection is loose. Or that we have connected our JTAG Debugger to the incorrect PineCone Pins.
 
-```
+```text
 Info : datacount=1 progbufsize=2
 Info : Disabling abstract command reads from CSRs.
 Info : Examined RISC-V core; found 1 harts
@@ -248,7 +248,7 @@ Info : Listening on port 3333 for gdb connections
 
 Then we see some info about PineCone's BL602 Microcontroller. And we see that OpenOCD is ready to accept debugging commands from GDB.
 
-```
+```text
 Info : JTAG tap: riscv.cpu tap/device found: 0x20000c05 (mfg: 0x602 (<unknown>), part: 0x0000, ver: 0x2)
 reset-assert-pre
 reset-deassert-post
@@ -269,7 +269,7 @@ To stop OpenOCD and disconnect from PineCone, press `Ctrl-C`.
 
 If we see...
 
-```
+```text
 Error: unable to open ftdi device with vid 0403, pid 6010, description '*', serial '*' at bus location '*'
 ```
 
@@ -277,7 +277,7 @@ It means that OpenOCD couldn't detect the JTAG Debugger. Check that the FT2232 d
 
 If we see...
 
-```
+```text
 Error: failed read at 0x11, status=1
 Error: Hart 0 is unavailable.
 Error: Hart 0 doesn't exist.
