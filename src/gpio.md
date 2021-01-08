@@ -115,6 +115,136 @@ Meanwhile I'll do Rust the shortcut way... Run it on top of Mynewt. (Instead of 
 
 Yep! Very soon we shall write embedded programs for PineCone BL602 the simpler safer way in __Rust and Mynewt__. (Without the headaches of C Pointers!)
 
+# GitHub Actions Workflow
+
+TODO
+
+[`.github/workflows/main.yml`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/.github/workflows/main.yml)
+
+```yaml
+# GitHub Actions Workflow to build Rust+Mynewt Firmware for PineCone BL602
+
+# Name of this Workflow
+name: Build Firmware
+
+# When to run this Workflow...
+on:
+
+  # Run this Workflow when files are updated (Pushed) in this Branch
+  push:
+    branches: [ main ]
+    
+  # Also run this Workflow when a Pull Request is created or updated in this Branch
+  pull_request:
+    branches: [ main ]
+
+# Steps to run for the Workflow
+jobs:
+  build:
+
+    # Run these steps on Ubuntu
+    runs-on: ubuntu-latest
+
+    steps:
+        
+    #########################################################################################
+    # Checkout
+      
+    - name: Checkout source files
+      uses: actions/checkout@v2
+      with:
+        submodules: 'recursive'
+
+    - name: Check cache for newt
+      id:   cache-newt
+      uses: actions/cache@v2
+      env:
+        cache-name: cache-newt
+      with:
+        path: ${{ runner.temp }}/mynewt-newt
+        key:  ${{ runner.os }}-build-${{ env.cache-name }}
+        restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}
+
+    - name: Install newt
+      if:   steps.cache-newt.outputs.cache-hit != 'true'  # Install newt if not found in cache
+      run:  |
+        source scripts/install-version.sh
+        cd ${{ runner.temp }}
+        git clone --branch $mynewt_version https://github.com/apache/mynewt-newt/
+        cd mynewt-newt/
+        ./build.sh
+        newt/newt version
+        export PATH=$PATH:${{ runner.temp }}/mynewt-newt/newt
+        newt version
+
+    - name: Show files
+      run:  set ; pwd ; ls -l
+
+    #########################################################################################
+    # Download and Cache Dependencies
+
+    # - name: Fetch cache for Rust Toolchain
+    #   id:   cache-rust
+    #   uses: actions/cache@v2
+    #   with:
+    #     path: |
+    #       ~/.cargo/registry
+    #       ~/.cargo/git
+    #       target
+    #     key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+    # - name: Install Rust Target thumbv7em-none-eabihf
+    #   run:  |
+    #     rustup default nightly
+    #     rustup target add thumbv7em-none-eabihf
+    
+    - name: Check cache for xPack RISC-V Toolchain xpack-riscv-none-embed-gcc
+      id:   cache-toolchain
+      uses: actions/cache@v2
+      env:
+        cache-name: cache-toolchain
+      with:
+        path: xpack-riscv-none-embed-gcc
+        key:  ${{ runner.os }}-build-${{ env.cache-name }}
+        restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}
+
+    - name: Install xPack RISC-V Toolchain xpack-riscv-none-embed-gcc
+      if:   steps.cache-toolchain.outputs.cache-hit != 'true'  # Install toolchain if not found in cache
+      run:  |
+        wget -qO- https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases/download/v8.3.0-2.3/xpack-riscv-none-embed-gcc-8.3.0-2.3-linux-x64.tar.gz | tar -xz
+        mv xpack-riscv-none-embed-gcc-* xpack-riscv-none-embed-gcc
+
+    #########################################################################################
+    # Build and Upload Rust+Mynewt Application Firmware
+
+    - name: Build Application Firmware
+      run:  |
+        export PATH=$PATH:${{ runner.temp }}/mynewt-newt/newt
+        ./scripts/build-app.sh
+
+    - name: Upload Application Firmware
+      uses: actions/upload-artifact@v2
+      with:
+        name: blinky.elf
+        path: bin/targets/pinecone_app/app/apps/blinky/blinky.elf
+
+    - name: Upload Application Firmware Outputs
+      uses: actions/upload-artifact@v2
+      with:
+        name: blinky.zip
+        path: bin/targets/pinecone_app/app/apps/blinky/blinky.*
+
+    #########################################################################################
+    # Finish
+
+    - name: Find output
+      run:  |
+        find bin/targets/pinecone_app/app/apps/blinky -name "blinky.*" -ls
+      
+# RISC-V Toolchain will only be cached if the build succeeds.
+# So make sure that the first build always succeeds, e.g. comment out the "Build" step.
+```
+
 # What's Next
 
 TODO
