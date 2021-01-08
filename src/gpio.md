@@ -1,9 +1,5 @@
 # Mynewt GPIO ported to PineCone BL602 RISC-V Board
 
-![PineCone BL602 RISC-V Evaluation Board with LED controlled by Apache Mynewt](https://lupyuen.github.io/images/gpio-title.jpg)
-
-_PineCone BL602 RISC-V Evaluation Board with LED controlled by Apache Mynewt_
-
 📝 _15 Jan 2021_
 
 A month ago we started porting __Apache Mynewt__, a modern embedded operating system, to PineCone BL602...
@@ -23,6 +19,10 @@ Today we shall...
 If you're new to PineCone BL602, check out my article...
 
 -   [__"Quick Peek of PineCone BL602 RISC-V Evaluation Board"__](https://lupyuen.github.io/articles/pinecone)
+
+![PineCone BL602 RISC-V Evaluation Board with LED controlled by Apache Mynewt](https://lupyuen.github.io/images/gpio-title.jpg)
+
+_PineCone BL602 RISC-V Evaluation Board with LED controlled by Apache Mynewt_
 
 # Our Mynewt GPIO Program
 
@@ -49,14 +49,18 @@ int main(int argc, char **argv) {
     hal_gpio_init_out(LED_RED_PIN,   1);
 
     //  Switch on Blue LED (0 = On)
-    hal_gpio_init_out(LED_BLUE_PIN,  0);
+    hal_gpio_write(LED_BLUE_PIN,  0);
 
     //  Loop forever
     for(;;) {}
 }
 ```
 
-The Blue LED switches on, exactly like the pic above.
+We're looking at the beauty of Mynewt... Minimal fuss, easy to read, perfect for __learning embedded programming!__
+
+Mynewt Programs are __Portable__ too... `hal_gpio_init_out` and `hal_gpio_write` will work on many microcontrollers: STM32 Blue Pill (Arm), Nordic Semi nRF52 (Arm too), SiFive HiFive1 (RISC-V)... And now PineCone BL602 (RISC-V yay!)
+
+The GPIO Pin numbers will differ. But on PineCone, this Mynewt Program switches on the Blue LED, exactly like the pic above.
 
 Let's find out how we made this work.
 
