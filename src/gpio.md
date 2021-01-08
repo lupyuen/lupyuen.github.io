@@ -91,9 +91,11 @@ Let's find out how we made this work.
 
 >_Zephyr? It's well supported by Linux Foundation and many microcontroller manufacturers_
 
--   Maybe something simpler than __Zephyr__?
+-   Maybe something simpler than __Zephyr__? As simple as the program above? 
 
-    As simple as the program above? (We'll save Zephyr for the bravest embedded professionals)
+    Something that compiles easily on Linux, macOS and Windows... Without WSL and Docker?
+    
+    (We'll save Zephyr for the bravest embedded professionals)
 
 >_Alrighty Nitpicky... We're left with Mynewt. But it's not as popular as Zephyr_
 
