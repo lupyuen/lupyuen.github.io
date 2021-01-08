@@ -69,51 +69,51 @@ Let's find out how we made this work.
 
 >_We have many options for learning Embedded Programming on PineCone BL602... Why Mynewt?_
 
-Let's review the options available today for learning Embedded Programming on PineCone BL602...
+-   Let's review the options available today for learning Embedded Programming on PineCone BL602...
 
 >_BL602's native IoT SDK looks easy for coding BL602 in C... Supports Multitasking through FreeRTOS (like reading sensor data and sending to network concurrently)_
 
-But with __BL602 IoT SDK__ we'll be locked in to BL602. Our programs won't run on other microcontrollers. 
+-   But with __BL602 IoT SDK__ we'll be locked in to BL602. Our programs won't run on other microcontrollers. 
 
-And we can't easily port programs from other devices to BL602 either.
+    And we can't easily port programs from other devices to BL602 either.
 
 >_What if we wrap up the BL602 IoT SDK with Arduino Libraries?_
 
-__Arduino__ is kinda ancient for embedded coding. (And the Bit Banging looks disturbing) 
+-   __Arduino__ is kinda ancient for embedded coding. (And the Bit Banging looks disturbing) 
 
-Could there be a modern alternative that works better with today's multitasking microcontrollers?
+    Could there be a modern alternative that works better with today's multitasking microcontrollers?
 
 >_Like Mbed OS? The newer Arduino SAMD boards support mbed OS_
 
-__Mbed OS__ looks complex for learners. (Based on C++)
+-   __Mbed OS__ looks complex for learners. (Based on C++)
 
-And Mbed OS was created by Arm so...
+    And Mbed OS was created by Arm so...
 
 >_Zephyr? It's well supported by Linux Foundation and many microcontroller manufacturers_
 
-Maybe something simpler than __Zephyr__?
+-   Maybe something simpler than __Zephyr__?
 
-As simple as the program above? (We'll save Zephyr for the bravest embedded professionals)
+    As simple as the program above? (We'll save Zephyr for the bravest embedded professionals)
 
 >_Alrighty Nitpicky... We're left with Mynewt. But it's not as popular as Zephyr_
 
-__Mynewt__ was designed as a simple tiny OS... And that's OK!
+-   __Mynewt__ was designed as a simple tiny OS... And that's OK!
 
-(Mynewt is named after "minute" i.e. "small", not the lizard)
+    (Mynewt is named after "minute" i.e. "small", not the lizard)
 
-Mynewt is easy to port to BL602. And our porting work will benefit Zephyr later.
+    Mynewt is easy to port to BL602. And our porting work will benefit Zephyr later.
 
 >_What about Embedded Rust? We have many fans._
 
-__Embedded Rust__ looks very promising... Clean and safe embedded coding.
+-   __Embedded Rust__ looks very promising... Clean and safe embedded coding.
 
-There's ongoing work on Embedded Rust for BL602 so let's wait for it.
+    There's ongoing work on Embedded Rust for BL602 so let's wait for it.
 
-Meanwhile I'll do Rust the shortcut way... Run it on top of Mynewt. (Instead of Bare Metal)
+    Meanwhile I'll do Rust the shortcut way... Run it on top of Mynewt. (Instead of Bare Metal)
 
 >_So we'll have Rust on Mynewt?_
 
-Yep! Very soon we shall write embedded programs for PineCone BL602 the simpler safer way in __Rust and Mynewt__. (Without the headaches of C Pointers!)
+-   Yep! Very soon we shall write embedded programs for PineCone BL602 the simpler safer way in __Rust and Mynewt__. (Without the headaches of C Pointers!)
 
 # GitHub Actions Workflow
 
