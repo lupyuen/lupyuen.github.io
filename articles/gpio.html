@@ -65,7 +65,8 @@
 
     <h1 class="title">Mynewt GPIO ported to PineCone BL602 RISC-V Board</h1>
     <nav id="TOC"><ul>
-<li><a href="#whats-next">1 What's Next</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/gpio-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board with LED controlled by Apache Mynewt" /></p>
+<li><a href="#our-mynewt-gpio-program">1 Our Mynewt GPIO Program</a><ul></ul></li>
+<li><a href="#whats-next">2 What's Next</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/gpio-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board with LED controlled by Apache Mynewt" /></p>
 <p><em>PineCone BL602 RISC-V Evaluation Board with LED controlled by Apache Mynewt</em></p>
 <p>📝 <em>15 Jan 2021</em></p>
 <p>A month ago we started porting <strong>Apache Mynewt</strong>, a modern embedded operating system, to PineCone BL602...</p>
@@ -89,7 +90,37 @@
 <ul>
 <li><a href="https://lupyuen.github.io/articles/pinecone"><strong>&quot;Quick Peek of PineCone BL602 RISC-V Evaluation Board&quot;</strong></a></li>
 </ul>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">1 What's Next</a></h1>
+<h1 id="our-mynewt-gpio-program" class="section-header"><a href="#our-mynewt-gpio-program">1 Our Mynewt GPIO Program</a></h1>
+<p>Here's the Mynewt Program that actually runs on our PineCone BL602 Board and switches on the Blue LED: <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/apps/blinky/src/main.c"><code>main.c</code></a></p>
+<pre><code class="language-c">#include &lt;sysinit/sysinit.h&gt;  //  Init Functions
+#include &lt;os/os.h&gt;            //  Mynewt Functions
+#include &lt;bsp/bsp.h&gt;          //  Board Support Package
+#include &lt;hal/hal_gpio.h&gt;     //  Mynewt HAL for GPIO
+
+//  Define the LED GPIOs: 11 (Blue), 14 (Green), 17 (Red)
+#define LED_BLUE_PIN  11
+#define LED_GREEN_PIN 14
+#define LED_RED_PIN   17
+
+int main(int argc, char **argv) {
+    //  Initialise Mynewt drivers
+    sysinit();
+
+    //  Set the LED GPIOs to output mode. Switch off the LEDs (1 = Off)
+    hal_gpio_init_out(LED_BLUE_PIN,  1);
+    hal_gpio_init_out(LED_GREEN_PIN, 1);
+    hal_gpio_init_out(LED_RED_PIN,   1);
+
+    //  Switch on Blue LED (0 = On)
+    hal_gpio_init_out(LED_BLUE_PIN,  0);
+
+    //  Loop forever
+    for(;;) {}
+}
+</code></pre>
+<p>The Blue LED switches on, exactly like the pic above.</p>
+<p>Let's find out how we made this work.</p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">2 What's Next</a></h1>
 <p>TODO</p>
 <ul>
 <li>
