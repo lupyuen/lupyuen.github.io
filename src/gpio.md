@@ -65,6 +65,10 @@ The GPIO Pin numbers will differ. But on PineCone, this Mynewt Program lights up
 
 Let's find out how we made this work.
 
+# But Why Mynewt?
+
+TODO
+
 # What's Next
 
 TODO
