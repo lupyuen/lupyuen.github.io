@@ -244,14 +244,13 @@
 <p><em>(FYI: The Linker Maps loaded into Google Sheet for <a href="https://github.com/pine64/bl_iot_sdk/tree/master/customer_app/bl602_demo_wifi"><code>bl602_demo_wifi</code></a> and <a href="https://github.com/pine64/bl_iot_sdk/tree/master/customer_app/sdk_app_ble_sync"><code>sdk_app_ble_sync</code></a> are here: <a href="https://docs.google.com/spreadsheets/d/1m8-fc9_ocOwMuw_oRur4j6xqVli6x-Tm-M5ZIKwNWRk/edit#gid=381366828&amp;fvid=1359565135">Google Sheet for <code>bl602_demo_wifi</code></a>, <a href="https://docs.google.com/spreadsheets/d/1HJev8fdmIMyIxeRFx2cpsq1C5rEYgGZf7Tank3hYK88/edit#gid=381366828&amp;fvid=1359565135">Google Sheet for <code>sdk_app_ble_sync</code></a>)</em></p>
 <h2 id="find-the-wifi-buffers" class="section-header"><a href="#find-the-wifi-buffers">3.3 Find the WiFi Buffers</a></h2>
 <p>Remember that Wireless RAM starts at address <code>0x4203 0000</code>?  I have highlighted in yellow the 19 largest variables in Wireless RAM...</p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="ident">__bss_start</span>
-<span class="ident">__wifi_bss_start</span>
-<span class="ident">rx_dma_hdrdesc</span>
-<span class="ident">_data_load</span>
-<span class="ident">ram_heap</span>
-...</pre></div>
+<pre><code class="language-text">__bss_start
+__wifi_bss_start
+rx_dma_hdrdesc
+_data_load
+ram_heap
+...
+</code></pre>
 <p>(The addresses of the variables are shown in the <code>Offset</code> column)</p>
 <p>These are likely the WiFi Buffers that our WiFi Driver uses to send and receive WiFi packets, also to control the WiFi operation.</p>
 <h2 id="identify-the-wifi-functions" class="section-header"><a href="#identify-the-wifi-functions">3.4 Identify the WiFi Functions</a></h2>
@@ -368,21 +367,18 @@
 </li>
 <li>
 <p>✅ <strong>Partition Table</strong>: Click <code>Browse</code> and select from the PineCone SDK...</p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="ident">bl_iot_sdk</span><span class="op">/</span><span class="ident">tools</span><span class="op">/</span><span class="ident">flash_tool</span><span class="op">/</span><span class="ident">bl602</span><span class="op">/</span><span class="ident">partition</span><span class="op">/</span><span class="ident">partition_cfg_2M</span>.<span class="ident">toml</span></pre></div>
+<pre><code class="language-text">bl_iot_sdk/tools/flash_tool/bl602/partition/partition_cfg_2M.toml
+</code></pre>
 </li>
 <li>
 <p>✅ <strong>Boot2 Bin</strong>: Click <code>Browse</code> and select from the PineCone SDK...</p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="ident">bl_iot_sdk</span><span class="op">/</span><span class="ident">image_conf</span><span class="op">/</span><span class="ident">bl602</span><span class="op">/</span><span class="ident">blsp_boot2_release</span>.<span class="ident">bin</span></pre></div>
+<pre><code class="language-text">bl_iot_sdk/image_conf/bl602/blsp_boot2_release.bin
+</code></pre>
 </li>
 <li>
 <p>✅ <strong>Firmware Bin</strong>: Click <code>Browse</code> and select from the PineCone Sample Firmware <code>sdk_app_helloworld.bin</code>...</p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="ident">customer_app</span>.<span class="ident">zip</span><span class="op">/</span><span class="ident">sdk_app_helloworld</span><span class="op">/</span><span class="ident">build_out</span><span class="op">/</span><span class="ident">sdk_app_helloworld</span>.<span class="ident">bin</span></pre></div>
+<pre><code class="language-text">customer_app.zip/sdk_app_helloworld/build_out/sdk_app_helloworld.bin
+</code></pre>
 <p>This is the <a href="https://github.com/pine64/bl_iot_sdk/blob/master/customer_app/sdk_app_helloworld">&quot;Hello World&quot;</a> sample firmware that we'll be flashing.</p>
 <p>The three files selected should NOT have any spaces in their pathnames.</p>
 <p><a href="https://lupyuen.github.io/images/pinecone-flash.png">See the screenshot above</a></p>
@@ -392,10 +388,9 @@
 <li>
 <p>Click <code>Create &amp; Program</code></p>
 <p>This flashes the firmware to PineCone. We should see...</p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="ident">Verify</span> <span class="ident">success</span>
-<span class="ident">Program</span> <span class="ident">Finished</span></pre></div>
+<pre><code class="language-text">Verify success
+Program Finished
+</code></pre>
 <p><a href="https://lupyuen.github.io/images/pinecone-flash.png">See the screenshot</a></p>
 </li>
 <li>
@@ -407,11 +402,10 @@
 <p>Click <code>Open UART</code></p>
 <p>Press the <code>RST</code> button on PineCone <a href="https://lupyuen.github.io/images/pinecone-rst.jpg">(Look here)</a></p>
 <p>Our firmware starts to run. We should see...</p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-[<span class="ident">helloworld</span>]   <span class="ident">start</span>
-[<span class="ident">helloworld</span>]   <span class="ident">helloworld</span>
-[<span class="ident">helloworld</span>]   <span class="ident">end</span></pre></div>
+<pre><code class="language-text">[helloworld]   start
+[helloworld]   helloworld
+[helloworld]   end
+</code></pre>
 <p><a href="https://lupyuen.github.io/images/pinecone-helloworld.png">See the screenshot</a></p>
 </li>
 </ol>

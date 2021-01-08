@@ -269,53 +269,48 @@ OPENOCD_DIRECTORY\bin\openocd
 <p>Change <code>OPENOCD_DIRECTORY</code> to the directory that contains the extracted xPack OpenOCD files.</p>
 <h2 id="openocd-output" class="section-header"><a href="#openocd-output">5.4 OpenOCD Output</a></h2>
 <p>We should see this output in OpenOCD...</p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="ident">xPack</span> <span class="ident">OpenOCD</span>, <span class="ident">x86_64</span> <span class="ident">Open</span> <span class="ident">On</span><span class="op">-</span><span class="ident">Chip</span> <span class="ident">Debugger</span> <span class="number">0.10</span>.<span class="number">0</span><span class="op">+</span><span class="ident">dev</span><span class="op">-</span><span class="number">00378</span><span class="op">-</span><span class="ident">ge5be992df</span> (<span class="number">2020</span><span class="op">-</span><span class="number">06</span><span class="op">-</span><span class="number">26</span><span class="op">-</span><span class="number">12</span>:<span class="number">31</span>)
-<span class="ident">Licensed</span> <span class="ident">under</span> <span class="ident">GNU</span> <span class="ident">GPL</span> <span class="ident">v2</span>
-<span class="ident">For</span> <span class="ident">bug</span> <span class="ident">reports</span>, <span class="ident">read</span>
-        <span class="ident">http</span>:<span class="comment">//openocd.org/doc/doxygen/bugs.html</span>
-<span class="ident">Ready</span> <span class="kw">for</span> <span class="ident">Remote</span> <span class="ident">Connections</span>
-<span class="ident">Info</span> : <span class="ident">clock</span> <span class="ident">speed</span> <span class="number">100</span> <span class="ident">kHz</span>
-<span class="ident">Info</span> : <span class="ident">JTAG</span> <span class="ident">tap</span>: <span class="ident">riscv</span>.<span class="ident">cpu</span> <span class="ident">tap</span><span class="op">/</span><span class="ident">device</span> <span class="ident">found</span>: <span class="number">0x20000c05</span> (<span class="ident">mfg</span>: <span class="number">0x602</span> (<span class="op">&lt;</span><span class="ident">unknown</span><span class="op">&gt;</span>), <span class="ident">part</span>: <span class="number">0x0000</span>, <span class="ident">ver</span>: <span class="number">0x2</span>)</pre></div>
+<pre><code class="language-text">xPack OpenOCD, x86_64 Open On-Chip Debugger 0.10.0+dev-00378-ge5be992df (2020-06-26-12:31)
+Licensed under GNU GPL v2
+For bug reports, read
+        http://openocd.org/doc/doxygen/bugs.html
+Ready for Remote Connections
+Info : clock speed 100 kHz
+Info : JTAG tap: riscv.cpu tap/device found: 0x20000c05 (mfg: 0x602 (&lt;unknown&gt;), part: 0x0000, ver: 0x2)
+</code></pre>
 <p>Notice the mysterious number <code>0x20000c05</code>?</p>
 <p>This is very important... <code>0x20000c05</code> is the CPU ID that identifies the BL602 Microcontroller. It shows that our JTAG connection is OK.</p>
 <p>If we see any CPU ID other than <code>0x20000c05</code>, it probably means that our JTAG connection is loose. Or that we have connected our JTAG Debugger to the incorrect PineCone Pins.</p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="ident">Info</span> : <span class="ident">datacount</span><span class="op">=</span><span class="number">1</span> <span class="ident">progbufsize</span><span class="op">=</span><span class="number">2</span>
-<span class="ident">Info</span> : <span class="ident">Disabling</span> <span class="kw">abstract</span> <span class="ident">command</span> <span class="ident">reads</span> <span class="ident">from</span> <span class="ident">CSRs</span>.
-<span class="ident">Info</span> : <span class="ident">Examined</span> <span class="ident">RISC</span><span class="op">-</span><span class="ident">V</span> <span class="ident">core</span>; <span class="ident">found</span> <span class="number">1</span> <span class="ident">harts</span>
-<span class="ident">Info</span> :  <span class="ident">hart</span> <span class="number">0</span>: <span class="ident">XLEN</span><span class="op">=</span><span class="number">32</span>, <span class="ident">misa</span><span class="op">=</span><span class="number">0x40801125</span>
-<span class="ident">Info</span> : <span class="ident">starting</span> <span class="ident">gdb</span> <span class="ident">server</span> <span class="kw">for</span> <span class="ident">riscv</span>.<span class="ident">cpu</span>.<span class="number">0</span> <span class="ident">on</span> <span class="number">3333</span>
-<span class="ident">Info</span> : <span class="ident">Listening</span> <span class="ident">on</span> <span class="ident">port</span> <span class="number">3333</span> <span class="kw">for</span> <span class="ident">gdb</span> <span class="ident">connections</span></pre></div>
+<pre><code class="language-text">Info : datacount=1 progbufsize=2
+Info : Disabling abstract command reads from CSRs.
+Info : Examined RISC-V core; found 1 harts
+Info :  hart 0: XLEN=32, misa=0x40801125
+Info : starting gdb server for riscv.cpu.0 on 3333
+Info : Listening on port 3333 for gdb connections
+</code></pre>
 <p>Then we see some info about PineCone's BL602 Microcontroller. And we see that OpenOCD is ready to accept debugging commands from GDB.</p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="ident">Info</span> : <span class="ident">JTAG</span> <span class="ident">tap</span>: <span class="ident">riscv</span>.<span class="ident">cpu</span> <span class="ident">tap</span><span class="op">/</span><span class="ident">device</span> <span class="ident">found</span>: <span class="number">0x20000c05</span> (<span class="ident">mfg</span>: <span class="number">0x602</span> (<span class="op">&lt;</span><span class="ident">unknown</span><span class="op">&gt;</span>), <span class="ident">part</span>: <span class="number">0x0000</span>, <span class="ident">ver</span>: <span class="number">0x2</span>)
-<span class="ident">reset</span><span class="op">-</span><span class="ident">assert</span><span class="op">-</span><span class="ident">pre</span>
-<span class="ident">reset</span><span class="op">-</span><span class="ident">deassert</span><span class="op">-</span><span class="ident">post</span>
-<span class="ident">Info</span> : <span class="ident">Disabling</span> <span class="kw">abstract</span> <span class="ident">command</span> <span class="ident">writes</span> <span class="ident">to</span> <span class="ident">CSRs</span>.
-<span class="ident">reset</span><span class="op">-</span><span class="ident">init</span>
-<span class="ident">Info</span> : <span class="ident">Listening</span> <span class="ident">on</span> <span class="ident">port</span> <span class="number">6666</span> <span class="kw">for</span> <span class="ident">tcl</span> <span class="ident">connections</span></pre></div>
+<pre><code class="language-text">Info : JTAG tap: riscv.cpu tap/device found: 0x20000c05 (mfg: 0x602 (&lt;unknown&gt;), part: 0x0000, ver: 0x2)
+reset-assert-pre
+reset-deassert-post
+Info : Disabling abstract command writes to CSRs.
+reset-init
+Info : Listening on port 6666 for tcl connections
+</code></pre>
 <p>Finally OpenOCD restarts the JTAG connection. And it listens for OpenOCD (TCL) commands.</p>
 <p>If we see CPU ID <code>0x20000c05</code> and the messages above... Congratulations OpenOCD is now connected to PineCone's JTAG Port!</p>
 <p>OpenOCD is all ready to flash and debug PineCone firmware. (Which we'll cover in the next article)</p>
 <p>To stop OpenOCD and disconnect from PineCone, press <code>Ctrl-C</code>.</p>
 <h2 id="troubleshoot-openocd" class="section-header"><a href="#troubleshoot-openocd">5.5 Troubleshoot OpenOCD</a></h2>
 <p>If we see...</p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="ident">Error</span>: <span class="ident">unable</span> <span class="ident">to</span> <span class="ident">open</span> <span class="ident">ftdi</span> <span class="ident">device</span> <span class="ident">with</span> <span class="ident">vid</span> <span class="number">0403</span>, <span class="ident">pid</span> <span class="number">6010</span>, <span class="ident">description</span> <span class="string">&#39;*&#39;</span>, <span class="ident">serial</span> <span class="string">&#39;*&#39;</span> <span class="ident">at</span> <span class="ident">bus</span> <span class="ident">location</span> <span class="string">&#39;*&#39;</span></pre></div>
+<pre><code class="language-text">Error: unable to open ftdi device with vid 0403, pid 6010, description '*', serial '*' at bus location '*'
+</code></pre>
 <p>It means that OpenOCD couldn't detect the JTAG Debugger. Check that the FT2232 drivers are installed correctly.</p>
 <p>If we see...</p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="ident">Error</span>: <span class="ident">failed</span> <span class="ident">read</span> <span class="ident">at</span> <span class="number">0x11</span>, <span class="ident">status</span><span class="op">=</span><span class="number">1</span>
-<span class="ident">Error</span>: <span class="ident">Hart</span> <span class="number">0</span> <span class="ident">is</span> <span class="ident">unavailable</span>.
-<span class="ident">Error</span>: <span class="ident">Hart</span> <span class="number">0</span> <span class="ident">doesn</span><span class="lifetime">&#39;t</span> <span class="ident">exist</span>.
-<span class="ident">Info</span> : <span class="ident">Hart</span> <span class="number">0</span> <span class="ident">unexpectedly</span> <span class="macro">reset</span><span class="macro">!</span>
-<span class="ident">Error</span>: <span class="ident">failed</span> <span class="ident">read</span> <span class="ident">at</span> <span class="number">0x11</span>, <span class="ident">status</span><span class="op">=</span><span class="number">1</span></pre></div>
+<pre><code class="language-text">Error: failed read at 0x11, status=1
+Error: Hart 0 is unavailable.
+Error: Hart 0 doesn't exist.
+Info : Hart 0 unexpectedly reset!
+Error: failed read at 0x11, status=1
+</code></pre>
 <p>Check that the <code>GND</code> Pin is connected from the JTAG Debugger to PineCone.</p>
 <p><a href="https://mcuoneclipse.com/2019/10/20/jtag-debugging-the-esp32-with-ft2232-and-openocd/">More tips on connecting OpenOCD to FT2232</a></p>
 <h1 id="openocd-script" class="section-header"><a href="#openocd-script">6 OpenOCD Script</a></h1>

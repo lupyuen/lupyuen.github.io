@@ -137,9 +137,8 @@
 <li>
 <p>Copy the extracted xPack OpenOCD folder to the <code>pinecone-rust</code> folder</p>
 <p>Rename it as...</p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="ident">pinecone</span><span class="op">-</span><span class="ident">rust</span><span class="op">/</span><span class="ident">xpack</span><span class="op">-</span><span class="ident">openocd</span></pre></div>
+<pre><code class="language-text">pinecone-rust/xpack-openocd
+</code></pre>
 </li>
 </ol>
 <h2 id="install-rust" class="section-header"><a href="#install-rust">1.2 Install Rust</a></h2>
@@ -151,9 +150,8 @@
 </li>
 <li>
 <p>Press Enter to select...</p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="number">1</span>) <span class="ident">Proceed</span> <span class="ident">with</span> <span class="ident">installation</span> (<span class="ident">default</span>)</pre></div>
+<pre><code class="language-text">1) Proceed with installation (default)
+</code></pre>
 </li>
 <li>
 <p><strong>For Linux and macOS:</strong> Open a command prompt and enter...</p>
@@ -195,9 +193,8 @@ rustup target add riscv32imac-unknown-none-elf
 <li>
 <p>Copy the extracted xPack GCC RISC-V folder to the <code>pinecone-rust</code> folder.</p>
 <p>Rename the folder as...</p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="ident">pinecone</span><span class="op">-</span><span class="ident">rust</span><span class="op">/</span><span class="ident">xpack</span><span class="op">-</span><span class="ident">riscv</span><span class="op">-</span><span class="ident">none</span><span class="op">-</span><span class="ident">embed</span><span class="op">-</span><span class="ident">gcc</span></pre></div>
+<pre><code class="language-text">pinecone-rust/xpack-riscv-none-embed-gcc
+</code></pre>
 </li>
 <li>
 <p>Create a symbolic link for the GDB executable, so that Rust can find it...</p>
@@ -209,9 +206,8 @@ ln -s &quot;$PWD/xpack-riscv-none-embed-gcc/bin/riscv-none-embed-gdb&quot; &quot
 <ul>
 <li>
 <p>In File Explorer, open the folder...</p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="ident">pinecone</span><span class="op">-</span><span class="ident">rust</span>\<span class="ident">xpack</span><span class="op">-</span><span class="ident">riscv</span><span class="op">-</span><span class="ident">none</span><span class="op">-</span><span class="ident">embed</span><span class="op">-</span><span class="ident">gcc</span>\<span class="ident">bin</span></pre></div>
+<pre><code class="language-text">pinecone-rust\xpack-riscv-none-embed-gcc\bin
+</code></pre>
 </li>
 <li>
 <p>Copy and paste the file <code>riscv-none-embed-gdb.exe</code></p>
@@ -221,9 +217,8 @@ ln -s &quot;$PWD/xpack-riscv-none-embed-gcc/bin/riscv-none-embed-gdb&quot; &quot
 </li>
 <li>
 <p>Go to Windows Settings and add to <code>PATH</code> the full pathname of the above folder, which will look like this...</p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="ident">c</span>:\<span class="ident">pinecone</span><span class="op">-</span><span class="ident">rust</span>\<span class="ident">xpack</span><span class="op">-</span><span class="ident">riscv</span><span class="op">-</span><span class="ident">none</span><span class="op">-</span><span class="ident">embed</span><span class="op">-</span><span class="ident">gcc</span>\<span class="ident">bin</span></pre></div>
+<pre><code class="language-text">c:\pinecone-rust\xpack-riscv-none-embed-gcc\bin
+</code></pre>
 <p>Change <code>c:\pinecone-rust</code> to the location of the <code>pinecone-rust</code> folder.</p>
 </li>
 </ul>
@@ -312,9 +307,8 @@ warning: 3 warnings emitted
     Finished dev [unoptimized + debuginfo] target(s) in 1m 17s
 </code></pre>
 <p>This creates the RISC-V ELF Firmware image for PineCone...</p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="ident">pinecone</span><span class="op">-</span><span class="ident">rust</span><span class="op">/</span><span class="ident">target</span><span class="op">/</span><span class="ident">riscv32imac</span><span class="op">-</span><span class="ident">unknown</span><span class="op">-</span><span class="ident">none</span><span class="op">-</span><span class="ident">elf</span><span class="op">/</span><span class="ident">debug</span><span class="op">/</span><span class="ident">bl602</span><span class="op">-</span><span class="ident">rust</span><span class="op">-</span><span class="ident">guide</span></pre></div>
+<pre><code class="language-text">pinecone-rust/target/riscv32imac-unknown-none-elf/debug/bl602-rust-guide
+</code></pre>
 <h2 id="rust-firmware-vs-c-firmware" class="section-header"><a href="#rust-firmware-vs-c-firmware">2.1 Rust Firmware vs C Firmware</a></h2>
 <p><em>Is Rust Firmware any different from the <a href="https://lupyuen.github.io/articles/pinecone">C Firmware</a> that we have seen earlier?</em></p>
 <p>From the Memory Map below, we can see that...</p>
