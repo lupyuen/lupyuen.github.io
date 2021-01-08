@@ -24,6 +24,41 @@ If you're new to PineCone BL602, check out my article...
 
 -   [__"Quick Peek of PineCone BL602 RISC-V Evaluation Board"__](https://lupyuen.github.io/articles/pinecone)
 
+# Our Mynewt GPIO Program
+
+Here's the Mynewt Program that actually runs on our PineCone BL602 Board and switches on the Blue LED: [`main.c`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/apps/blinky/src/main.c)
+
+```c
+#include <sysinit/sysinit.h>  //  Init Functions
+#include <os/os.h>            //  Mynewt Functions
+#include <bsp/bsp.h>          //  Board Support Package
+#include <hal/hal_gpio.h>     //  Mynewt HAL for GPIO
+
+//  Define the LED GPIOs: 11 (Blue), 14 (Green), 17 (Red)
+#define LED_BLUE_PIN  11
+#define LED_GREEN_PIN 14
+#define LED_RED_PIN   17
+
+int main(int argc, char **argv) {
+    //  Initialise Mynewt drivers
+    sysinit();
+
+    //  Set the LED GPIOs to output mode. Switch off the LEDs (1 = Off)
+    hal_gpio_init_out(LED_BLUE_PIN,  1);
+    hal_gpio_init_out(LED_GREEN_PIN, 1);
+    hal_gpio_init_out(LED_RED_PIN,   1);
+
+    //  Switch on Blue LED (0 = On)
+    hal_gpio_init_out(LED_BLUE_PIN,  0);
+
+    //  Loop forever
+    for(;;) {}
+}
+```
+
+The Blue LED switches on, exactly like the pic above.
+
+Let's find out how we made this work.
 
 # What's Next
 
