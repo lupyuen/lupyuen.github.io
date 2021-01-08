@@ -196,6 +196,16 @@ To see the above GPIO HAL Functions in action, check out the GPIO Demo Source Co
 
 -   [__GPIO Demo Source Code: `demo.c`__](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_gpio/sdk_app_gpio/demo.c)
 
+## GPIO Device Tree
+
+There is an alternative set of functions for controlling GPIO... 
+
+-   __GPIO Device Tree__: [`hal_gpio.h`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_gpio.h), [`hal_gpio.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_gpio.c)
+
+These functions are meant to be used with the __BL602 Device Tree__.
+
+[More about BL602 Device Tree](https://lupyuen.github.io/articles/flash#device-tree)
+
 # From GPIO to Pulse Width Modulation (PWM)
 
 _How many colours can we show on the RGB LED through GPIO?_
@@ -406,6 +416,16 @@ The above PWM HAL Functions are defined here...
 To see the above PWM HAL Functions in action, check out the PWM Demo Source Code...
 
 -   [__PWM Demo Source Code: `main.c`__](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_pwm/sdk_app_pwm/main.c)
+
+## PWM Device Tree
+
+There is an alternative set of functions for controlling PWM... 
+
+-   __PWM Device Tree__: [`hal_pwm.h`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_pwm.h), [`hal_pwm.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_pwm.c)
+
+These functions are meant to be used with the __BL602 Device Tree__.
+
+[More about BL602 Device Tree](https://lupyuen.github.io/articles/flash#device-tree)
 
 # BL602 PWM Internals
 
