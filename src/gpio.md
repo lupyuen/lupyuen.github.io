@@ -43,7 +43,8 @@ int main(int argc, char **argv) {
     //  Initialise Mynewt drivers
     sysinit();
 
-    //  Set the LED GPIOs to output mode. Switch off the LEDs (1 = Off)
+    //  Set the LED GPIOs to output mode. 
+    //  Switch off the LEDs (1 = Off)
     hal_gpio_init_out(LED_BLUE_PIN,  1);
     hal_gpio_init_out(LED_GREEN_PIN, 1);
     hal_gpio_init_out(LED_RED_PIN,   1);
