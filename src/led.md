@@ -190,7 +190,7 @@ void bl_gpio_register(gpio_ctx_t *pstnode);
 
 Check the GPIO HAL Source Code for details...
 
--   [__GPIO HAL Source Code__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_gpio.c)
+-   [__GPIO HAL Source Code: `bl_gpio.c`__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_gpio.c)
 
 To see the above GPIO HAL Functions in action, check out the GPIO Demo Source Code...
 
@@ -200,7 +200,7 @@ To see the above GPIO HAL Functions in action, check out the GPIO Demo Source Co
 
 There is an alternative set of functions for controlling GPIO... 
 
--   __GPIO Device Tree__: [`hal_gpio.h`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_gpio.h), [`hal_gpio.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_gpio.c)
+-   __GPIO Device Tree__: [__`hal_gpio.h`__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_gpio.h), [__`hal_gpio.c`__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_gpio.c)
 
 These functions are meant to be used with the __BL602 Device Tree__.
 
@@ -411,7 +411,7 @@ int32_t bl_pwm_stop( uint8_t id);
 
 The above PWM HAL Functions are defined here...
 
--   [__PWM HAL Source Code__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_pwm.c)
+-   [__PWM HAL Source Code: `bl_pwm.c`__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_pwm.c)
 
 To see the above PWM HAL Functions in action, check out the PWM Demo Source Code...
 
@@ -421,7 +421,7 @@ To see the above PWM HAL Functions in action, check out the PWM Demo Source Code
 
 There is an alternative set of functions for controlling PWM... 
 
--   __PWM Device Tree__: [`hal_pwm.h`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_pwm.h), [`hal_pwm.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_pwm.c)
+-   __PWM Device Tree__: [__`hal_pwm.h`__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_pwm.h), [__`hal_pwm.c`__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_pwm.c)
 
 These functions are meant to be used with the __BL602 Device Tree__.
 
