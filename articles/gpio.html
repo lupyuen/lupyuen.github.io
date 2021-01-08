@@ -66,9 +66,7 @@
     <h1 class="title">Mynewt GPIO ported to PineCone BL602 RISC-V Board</h1>
     <nav id="TOC"><ul>
 <li><a href="#our-mynewt-gpio-program">1 Our Mynewt GPIO Program</a><ul></ul></li>
-<li><a href="#whats-next">2 What's Next</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/gpio-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board with LED controlled by Apache Mynewt" /></p>
-<p><em>PineCone BL602 RISC-V Evaluation Board with LED controlled by Apache Mynewt</em></p>
-<p>📝 <em>15 Jan 2021</em></p>
+<li><a href="#whats-next">2 What's Next</a><ul></ul></li></ul></nav><p>📝 <em>15 Jan 2021</em></p>
 <p>A month ago we started porting <strong>Apache Mynewt</strong>, a modern embedded operating system, to PineCone BL602...</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/mynewt"><strong>&quot;Porting Mynewt to PineCone BL602&quot;</strong></a></li>
@@ -90,6 +88,8 @@
 <ul>
 <li><a href="https://lupyuen.github.io/articles/pinecone"><strong>&quot;Quick Peek of PineCone BL602 RISC-V Evaluation Board&quot;</strong></a></li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/gpio-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board with LED controlled by Apache Mynewt" /></p>
+<p><em>PineCone BL602 RISC-V Evaluation Board with LED controlled by Apache Mynewt</em></p>
 <h1 id="our-mynewt-gpio-program" class="section-header"><a href="#our-mynewt-gpio-program">1 Our Mynewt GPIO Program</a></h1>
 <p>Here's the Mynewt Program that actually runs on our PineCone BL602 Board and switches on the Blue LED: <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/apps/blinky/src/main.c"><code>main.c</code></a></p>
 <pre><code class="language-c">#include &lt;sysinit/sysinit.h&gt;  //  Init Functions
@@ -112,13 +112,15 @@ int main(int argc, char **argv) {
     hal_gpio_init_out(LED_RED_PIN,   1);
 
     //  Switch on Blue LED (0 = On)
-    hal_gpio_init_out(LED_BLUE_PIN,  0);
+    hal_gpio_write(LED_BLUE_PIN,  0);
 
     //  Loop forever
     for(;;) {}
 }
 </code></pre>
-<p>The Blue LED switches on, exactly like the pic above.</p>
+<p>We're looking at the beauty of Mynewt... Minimal fuss, easy to read, perfect for <strong>learning embedded programming!</strong></p>
+<p>Mynewt Programs are <strong>Portable</strong> too... <code>hal_gpio_init_out</code> and <code>hal_gpio_write</code> will work on many microcontrollers: STM32 Blue Pill (Arm), Nordic Semi nRF52 (Arm too), SiFive HiFive1 (RISC-V)... And now PineCone BL602 (RISC-V yay!)</p>
+<p>The GPIO Pin numbers will differ. But on PineCone, this Mynewt Program switches on the Blue LED, exactly like the pic above.</p>
 <p>Let's find out how we made this work.</p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">2 What's Next</a></h1>
 <p>TODO</p>
