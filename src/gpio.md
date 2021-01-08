@@ -60,7 +60,7 @@ We're looking at the beauty of Mynewt... Minimal fuss, easy to read, perfect for
 
 Mynewt Programs are __Portable__ too... `hal_gpio_init_out` and `hal_gpio_write` will work on many microcontrollers: STM32 Blue Pill (Arm), Nordic Semi nRF52 (Arm too), SiFive HiFive1 (RISC-V)... And now PineCone BL602 (RISC-V yay!)
 
-The GPIO Pin numbers will differ. But on PineCone, this Mynewt Program switches on the Blue LED, exactly like the pic above.
+The GPIO Pin numbers will differ. But on PineCone, this Mynewt Program lights up the Blue LED, exactly like the pic above.
 
 Let's find out how we made this work.
 
