@@ -1,0 +1,69 @@
+# GitHub Actions Workflow to convert articles from Markdown to HTML
+
+# Name of this Workflow
+name: Build Articles
+
+# When to run this Workflow...
+on:
+
+  # Run this Workflow when files are updated (Pushed) in this Branch
+  push:
+    branches: [ master ]
+    
+  # Also run this Workflow when a Pull Request is created or updated in this Branch
+  pull_request:
+    branches: [ master ]
+
+# Steps to run for the Workflow
+jobs:
+  build:
+
+    # Run these steps on Ubuntu
+    runs-on: ubuntu-latest
+
+    steps:
+        
+    #########################################################################################
+    # Checkout
+      
+    - name: Checkout source files
+      uses: actions/checkout@v2
+      with:
+        submodules: 'recursive'
+
+    - name: Show files
+      run:  set ; pwd ; ls -l
+
+    #########################################################################################
+    # Build Articles
+
+    - name: Build Articles
+      run:  |
+        ./scripts/gen-articles.sh
+
+    #########################################################################################
+    # Check in Articles
+
+    - name: Commit GitHub Pages
+      uses: EndBug/add-and-commit@v4.4.0
+      with:
+        # Arguments for the git add command
+        add: articles
+        # The name of the user that will be displayed as the author of the commit
+        # author_name: # optional
+        # The email of the user that will be displayed as the author of the commit
+        # author_email: # optional
+        # The directory where your repository is located. You should use actions/checkout first to set it up
+        # cwd: # optional, default is .
+        # Whether to use the force option on git add, in order to bypass eventual gitignores
+        # force: # optional, default is false
+        # Whether to use the signoff option on git commit
+        # signoff: # optional, default is false
+        # The message for the commit
+        # message: # optional, default is Commit from GitHub Actions
+        # Name of the branch to use, if different from the one that triggered the workflow
+        # ref: # optional
+        # Arguments for the git rm command
+        # remove: # optional, default is 
+        # The name of the tag to add to the new commit
+        # tag: # optional, default is 
