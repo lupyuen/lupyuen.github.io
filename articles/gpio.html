@@ -129,43 +129,71 @@ int main(int argc, char **argv) {
 <blockquote>
 <p><em>We have many options for learning Embedded Programming on PineCone BL602... Why Mynewt?</em></p>
 </blockquote>
-<p>Let's review the options available today for learning Embedded Programming on PineCone BL602...</p>
+<ul>
+<li>Let's review the options available today for learning Embedded Programming on PineCone BL602...</li>
+</ul>
 <blockquote>
 <p><em>BL602's native IoT SDK looks easy for coding BL602 in C... Supports Multitasking through FreeRTOS (like reading sensor data and sending to network concurrently)</em></p>
 </blockquote>
+<ul>
+<li>
 <p>But with <strong>BL602 IoT SDK</strong> we'll be locked in to BL602. Our programs won't run on other microcontrollers. </p>
 <p>And we can't easily port programs from other devices to BL602 either.</p>
+</li>
+</ul>
 <blockquote>
 <p><em>What if we wrap up the BL602 IoT SDK with Arduino Libraries?</em></p>
 </blockquote>
+<ul>
+<li>
 <p><strong>Arduino</strong> is kinda ancient for embedded coding. (And the Bit Banging looks disturbing) </p>
 <p>Could there be a modern alternative that works better with today's multitasking microcontrollers?</p>
+</li>
+</ul>
 <blockquote>
 <p><em>Like Mbed OS? The newer Arduino SAMD boards support mbed OS</em></p>
 </blockquote>
+<ul>
+<li>
 <p><strong>Mbed OS</strong> looks complex for learners. (Based on C++)</p>
 <p>And Mbed OS was created by Arm so...</p>
+</li>
+</ul>
 <blockquote>
 <p><em>Zephyr? It's well supported by Linux Foundation and many microcontroller manufacturers</em></p>
 </blockquote>
+<ul>
+<li>
 <p>Maybe something simpler than <strong>Zephyr</strong>?</p>
 <p>As simple as the program above? (We'll save Zephyr for the bravest embedded professionals)</p>
+</li>
+</ul>
 <blockquote>
 <p><em>Alrighty Nitpicky... We're left with Mynewt. But it's not as popular as Zephyr</em></p>
 </blockquote>
+<ul>
+<li>
 <p><strong>Mynewt</strong> was designed as a simple tiny OS... And that's OK!</p>
 <p>(Mynewt is named after &quot;minute&quot; i.e. &quot;small&quot;, not the lizard)</p>
 <p>Mynewt is easy to port to BL602. And our porting work will benefit Zephyr later.</p>
+</li>
+</ul>
 <blockquote>
 <p><em>What about Embedded Rust? We have many fans.</em></p>
 </blockquote>
+<ul>
+<li>
 <p><strong>Embedded Rust</strong> looks very promising... Clean and safe embedded coding.</p>
 <p>There's ongoing work on Embedded Rust for BL602 so let's wait for it.</p>
 <p>Meanwhile I'll do Rust the shortcut way... Run it on top of Mynewt. (Instead of Bare Metal)</p>
+</li>
+</ul>
 <blockquote>
 <p><em>So we'll have Rust on Mynewt?</em></p>
 </blockquote>
-<p>Yep! Very soon we shall write embedded programs for PineCone BL602 the simpler safer way in <strong>Rust and Mynewt</strong>. (Without the headaches of C Pointers!)</p>
+<ul>
+<li>Yep! Very soon we shall write embedded programs for PineCone BL602 the simpler safer way in <strong>Rust and Mynewt</strong>. (Without the headaches of C Pointers!)</li>
+</ul>
 <h1 id="github-actions-workflow" class="section-header"><a href="#github-actions-workflow">3 GitHub Actions Workflow</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/.github/workflows/main.yml"><code>.github/workflows/main.yml</code></a></p>
