@@ -124,7 +124,7 @@ int main(int argc, char **argv) {
 </code></pre>
 <p>We're looking at the beauty of Mynewt... Minimal fuss, easy to read, perfect for <strong>learning embedded programming!</strong></p>
 <p>Mynewt Programs are <strong>Portable</strong> too... <code>hal_gpio_init_out</code> and <code>hal_gpio_write</code> will work on many microcontrollers: STM32 Blue Pill (Arm), Nordic Semi nRF52 (Arm too), SiFive HiFive1 (RISC-V)... And now PineCone BL602 (RISC-V yay!)</p>
-<p>The GPIO Pin numbers will differ. But on PineCone, this Mynewt Program lights up the Blue LED, exactly like the pic above.</p>
+<p>The GPIO Pin Numbers will differ. But on PineCone, this Mynewt Program lights up the Blue LED, exactly like the pic above.</p>
 <p>Let's find out how we made this work.</p>
 <h1 id="but-why-mynewt" class="section-header"><a href="#but-why-mynewt">2 But Why Mynewt?</a></h1>
 <blockquote>
@@ -197,8 +197,30 @@ int main(int argc, char **argv) {
 <li>Yep! Very soon we shall write embedded programs for PineCone BL602 the simpler safer way in <strong>Rust and Mynewt</strong>. (Without the headaches of C Pointers!)</li>
 </ul>
 <h1 id="mynewt-and-bl602-layers" class="section-header"><a href="#mynewt-and-bl602-layers">3 Mynewt and BL602 Layers</a></h1>
-<p>TODO</p>
+<p><em>How does Mynewt create programs that are portable to other microcontrollers?</em></p>
+<p>By using layers of code that isolate the differences between microcontrollers (like BL602) and boards (like PineCone).</p>
+<p>(Dressing in layers is a very good thing... Especially in Winter!)</p>
+<p>Here's how we layer the code in Mynewt...</p>
 <p><img src="https://lupyuen.github.io/images/gpio-stack.png" alt="Mynewt and BL602 IoT SDK Layers" /></p>
+<ol>
+<li>
+<p><strong>Main Function</strong>: We've seen the Main Function at the top of the article... It lights up the Blue LED.</p>
+<p>Assuming that the GPIO Pin Number is defined correctly, the same Main Function will light up the LED on any microcontroller.</p>
+<p>That's why this is portable, <strong>Hardware Independent</strong> code. A key feature of modern embedded operating systems.</p>
+</li>
+<li>
+<p><strong>Board Support Package</strong>: TODO</p>
+</li>
+<li>
+<p><strong>Microcontroller Package</strong>: TODO</p>
+</li>
+<li>
+<p><strong>Hardware Abstraction Layer</strong>: TODO</p>
+</li>
+<li>
+<p><strong>Standard Driver</strong>: TODO</p>
+</li>
+</ol>
 <h1 id="github-actions-workflow" class="section-header"><a href="#github-actions-workflow">4 GitHub Actions Workflow</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/.github/workflows/main.yml"><code>.github/workflows/main.yml</code></a></p>
