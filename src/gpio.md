@@ -117,6 +117,12 @@ Let's find out how we made this work.
 
 -   Yep! Very soon we shall write embedded programs for PineCone BL602 the simpler safer way in __Rust and Mynewt__. (Without the headaches of C Pointers!)
 
+# Mynewt and BL602 Layers
+
+TODO
+
+![Mynewt and BL602 IoT SDK Layers](https://lupyuen.github.io/images/gpio-stack.png)
+
 # GitHub Actions Workflow
 
 TODO
