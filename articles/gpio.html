@@ -205,14 +205,16 @@ int main(int argc, char **argv) {
 <ol>
 <li>
 <p><strong>Main Function</strong>: We've seen the Main Function at the top of the article... It lights up the Blue LED.</p>
-<p>Assuming that the GPIO Pin Number is defined correctly, the same Main Function will light up the LED on any microcontroller.</p>
+<p>Assuming that the GPIO Pin Number is defined correctly, the same Main Function will light up the LED <strong>on any microcontroller</strong>.</p>
 <p>That's why this is portable, <strong>Hardware Independent</strong> code. A key feature of modern embedded operating systems.</p>
 </li>
 <li>
-<p><strong>Board Support Package</strong>: TODO</p>
+<p><strong>Board Support Package</strong>: This layer contains code that's specific to the Hardware Board, like PineCone.</p>
+<p>The Blue LED is connected at GPIO 11 on PineCone... And these details will vary depending on the BL602 Board that we use (say PineCone vs Pinenut).</p>
+<p>So it makes sense to capture such <strong>Board Specific</strong> details inside the Board Support Package layer.</p>
 </li>
 <li>
-<p><strong>Microcontroller Package</strong>: TODO</p>
+<p><strong>Microcontroller Package</strong>: This layer is specific to the Microcontroller (like BL602). The Microcontroller Package is reused by all Boards that are based on the same Microcontroller (like PineCone and Pinenut).</p>
 </li>
 <li>
 <p><strong>Hardware Abstraction Layer</strong>: TODO</p>
