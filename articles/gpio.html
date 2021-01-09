@@ -217,12 +217,16 @@ int main(int argc, char **argv) {
 <p><strong>Microcontroller Package</strong>: This layer is specific to the Microcontroller (like BL602). The Microcontroller Package is reused by all Boards that are based on the same Microcontroller (like PineCone and Pinenut).</p>
 </li>
 <li>
-<p><strong>Hardware Abstraction Layer</strong>: TODO</p>
+<p><strong>Hardware Abstraction Layer</strong>: This layer is lifted directly from the <strong>BL602 IoT SDK</strong> (with minimal changes).</p>
+<p>Here we find the functions that control the BL602 hardware: GPIO, PWM, UART, I2C, SPI, ...</p>
 </li>
 <li>
-<p><strong>Standard Driver</strong>: TODO</p>
+<p><strong>Standard Driver</strong>: This layer is unique to BL602. The Hardware Abstraction Layer in BL602 calls this layer to access the Hardware Registers to perform hardware functions.</p>
 </li>
 </ol>
+<p><em>What about the rest of the BL602 IoT SDK?</em></p>
+<p>We have integrated the smallest subset of functions from the BL602 SDK that are needed for Mynewt. The rest are not needed (yet).</p>
+<p>In particular, we don't compile under Mynewt the FreeRTOS driver code from the BL602 SDK. Because running two operating systems side by side would be a disaster!</p>
 <h1 id="github-actions-workflow" class="section-header"><a href="#github-actions-workflow">4 GitHub Actions Workflow</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/.github/workflows/main.yml"><code>.github/workflows/main.yml</code></a></p>
