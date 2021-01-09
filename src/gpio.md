@@ -143,9 +143,17 @@ Here's how we layer the code in Mynewt...
 
 1.  __Microcontroller Package__: This layer is specific to the Microcontroller (like BL602). The Microcontroller Package is reused by all Boards that are based on the same Microcontroller (like PineCone and Pinenut).
 
-1.  __Hardware Abstraction Layer__: TODO
+1.  __Hardware Abstraction Layer__: This layer is lifted directly from the __BL602 IoT SDK__ (with minimal changes).
 
-1.  __Standard Driver__: TODO
+    Here we find the functions that control the BL602 hardware: GPIO, PWM, UART, I2C, SPI, ...
+
+1.  __Standard Driver__: This layer is unique to BL602. The Hardware Abstraction Layer in BL602 calls this layer to access the Hardware Registers to perform hardware functions.
+
+_What about the rest of the BL602 IoT SDK?_
+
+We have integrated the smallest subset of functions from the BL602 SDK that are needed for Mynewt. The rest are not needed (yet).
+
+In particular, we don't compile under Mynewt the FreeRTOS driver code from the BL602 SDK. Because running two operating systems side by side would be a disaster!
 
 # GitHub Actions Workflow
 
