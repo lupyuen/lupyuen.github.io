@@ -131,13 +131,17 @@ Here's how we layer the code in Mynewt...
 
 1.  __Main Function__: We've seen the Main Function at the top of the article... It lights up the Blue LED.
 
-    Assuming that the GPIO Pin Number is defined correctly, the same Main Function will light up the LED on any microcontroller.
+    Assuming that the GPIO Pin Number is defined correctly, the same Main Function will light up the LED __on any microcontroller__.
 
     That's why this is portable, __Hardware Independent__ code. A key feature of modern embedded operating systems.
 
-1.  __Board Support Package__: TODO
+1.  __Board Support Package__: This layer contains code that's specific to the Hardware Board, like PineCone.
 
-1.  __Microcontroller Package__: TODO
+    The Blue LED is connected at GPIO 11 on PineCone... And these details will vary depending on the BL602 Board that we use (say PineCone vs Pinenut).
+
+    So it makes sense to capture such __Board Specific__ details inside the Board Support Package layer.
+
+1.  __Microcontroller Package__: This layer is specific to the Microcontroller (like BL602). The Microcontroller Package is reused by all Boards that are based on the same Microcontroller (like PineCone and Pinenut).
 
 1.  __Hardware Abstraction Layer__: TODO
 
