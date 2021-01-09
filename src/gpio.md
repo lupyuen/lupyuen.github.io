@@ -61,7 +61,7 @@ We're looking at the beauty of Mynewt... Minimal fuss, easy to read, perfect for
 
 Mynewt Programs are __Portable__ too... `hal_gpio_init_out` and `hal_gpio_write` will work on many microcontrollers: STM32 Blue Pill (Arm), Nordic Semi nRF52 (Arm too), SiFive HiFive1 (RISC-V)... And now PineCone BL602 (RISC-V yay!)
 
-The GPIO Pin numbers will differ. But on PineCone, this Mynewt Program lights up the Blue LED, exactly like the pic above.
+The GPIO Pin Numbers will differ. But on PineCone, this Mynewt Program lights up the Blue LED, exactly like the pic above.
 
 Let's find out how we made this work.
 
@@ -119,9 +119,29 @@ Let's find out how we made this work.
 
 # Mynewt and BL602 Layers
 
-TODO
+_How does Mynewt create programs that are portable to other microcontrollers?_
+
+By using layers of code that isolate the differences between microcontrollers (like BL602) and boards (like PineCone).
+
+(Dressing in layers is a very good thing... Especially in Winter!)
+
+Here's how we layer the code in Mynewt...
 
 ![Mynewt and BL602 IoT SDK Layers](https://lupyuen.github.io/images/gpio-stack.png)
+
+1.  __Main Function__: We've seen the Main Function at the top of the article... It lights up the Blue LED.
+
+    Assuming that the GPIO Pin Number is defined correctly, the same Main Function will light up the LED on any microcontroller.
+
+    That's why this is portable, __Hardware Independent__ code. A key feature of modern embedded operating systems.
+
+1.  __Board Support Package__: TODO
+
+1.  __Microcontroller Package__: TODO
+
+1.  __Hardware Abstraction Layer__: TODO
+
+1.  __Standard Driver__: TODO
 
 # GitHub Actions Workflow
 
