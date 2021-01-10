@@ -69,8 +69,10 @@
 <li><a href="#but-why-mynewt">2 But Why Mynewt?</a><ul></ul></li>
 <li><a href="#mynewt-and-bl602-layers">3 Mynewt and BL602 Layers</a><ul></ul></li>
 <li><a href="#calling-the-mynewt-and-bl602-layers">4 Calling the Mynewt and BL602 Layers</a><ul></ul></li>
-<li><a href="#github-actions-workflow">5 GitHub Actions Workflow</a><ul></ul></li>
-<li><a href="#whats-next">6 What's Next</a><ul></ul></li></ul></nav><p>📝 <em>15 Jan 2021</em></p>
+<li><a href="#compile-bl602-sdk-under-mynewt">5 Compile BL602 SDK under Mynewt</a><ul></ul></li>
+<li><a href="#freertos-references-in-bl602-sdk">6 FreeRTOS References in BL602 SDK</a><ul></ul></li>
+<li><a href="#github-actions-workflow">7 GitHub Actions Workflow</a><ul></ul></li>
+<li><a href="#whats-next">8 What's Next</a><ul></ul></li></ul></nav><p>📝 <em>15 Jan 2021</em></p>
 <p>A month ago we started porting <strong>Apache Mynewt</strong>, a modern embedded operating system, to PineCone BL602...</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/mynewt"><strong>&quot;Porting Mynewt to PineCone BL602&quot;</strong></a></li>
@@ -268,7 +270,51 @@ int main(int argc, char **argv) {
 <p><code>GLB_GPIO_Init</code> manipulates the GLB Hardware Register to control the GPIO Hardware and switch GPIO 11 to output mode.</p>
 </li>
 </ol>
-<h1 id="github-actions-workflow" class="section-header"><a href="#github-actions-workflow">5 GitHub Actions Workflow</a></h1>
+<h1 id="compile-bl602-sdk-under-mynewt" class="section-header"><a href="#compile-bl602-sdk-under-mynewt">5 Compile BL602 SDK under Mynewt</a></h1>
+<p><em>How do we specify which folders of BL602 IoT SDK to compile under Mynewt?</em></p>
+<p>Remember that we're compiling the smallest subset of functions from the BL602 IoT SDK that are needed for Mynewt...</p>
+<ol>
+<li>
+<p><strong>BL602 Hardware Abstraction Layer</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/components/hal_drv/bl602_hal"><code>hal_drv/bl602_hal</code></a></p>
+</li>
+<li>
+<p><strong>BL602 Standard Driver</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/components/bl602/bl602_std/bl602_std/StdDriver"><code>bl602/bl602_std/ bl602_std/StdDriver</code></a></p>
+</li>
+</ol>
+<p>We specify these folders in Mynewt's Microcontroller Package for BL602: <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/mcu/bl/bl602/pkg.yml"><code>hw/mcu/bl/ bl602/pkg.yml</code></a></p>
+<pre><code class="language-yaml">pkg.src_dirs:
+    - src
+    # Select the BL602 IoT SDK folders to be included for the build
+    - ext/bl_iot_sdk/components/hal_drv/bl602_hal
+    - ext/bl_iot_sdk/components/bl602/bl602_std/bl602_std/StdDriver/Src
+</code></pre>
+<p>The Microcontroller Package for BL602 also specifies the Include Folders and the GCC Compiler Options: <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/mcu/bl/bl602/pkg.yml"><code>pkg.yml</code></a></p>
+<pre><code class="language-yaml">pkg.cflags: 
+    - -march=rv32imac 
+    - -mabi=ilp32
+    # BL602 IoT SDK definitions
+    - -DCONF_USER_ENABLE_PSRAM 
+    - -DconfigUSE_TICKLESS_IDLE=0 
+    - -DFEATURE_WIFI_DISABLE=1 
+    - -DCFG_FREERTOS 
+    - -DARCH_RISCV 
+    - -DBL602 
+    ...
+    # Where the BL602 IoT SDK include files are located
+    - -Ihw/mcu/bl/bl602/ext/bl_iot_sdk/components/bl602/bl602_std/bl602_std/Common/partition
+    - -Ihw/mcu/bl/bl602/ext/bl_iot_sdk/components/bl602/bl602_std/bl602_std/Common/sim_print
+    - -Ihw/mcu/bl/bl602/ext/bl_iot_sdk/components/bl602/bl602_std/bl602_std/Common/soft_crc
+    ...
+</code></pre>
+<p>To preserve the integrity of the BL602 IoT SDK, the entire SDK is mounted under the Mynewt Project as a Git Submodule at...</p>
+<ul>
+<li><a href="https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/hw/mcu/bl/bl602/ext"><code>hw/mcu/bl/bl602/ext</code></a></li>
+</ul>
+<h1 id="freertos-references-in-bl602-sdk" class="section-header"><a href="#freertos-references-in-bl602-sdk">6 FreeRTOS References in BL602 SDK</a></h1>
+<p><em>What about FreeRTOS?</em></p>
+<p>We don't compile under Mynewt the FreeRTOS driver code from the BL602 SDK. Because running two operating systems side by side would be a disaster!</p>
+<p>TODO</p>
+<h1 id="github-actions-workflow" class="section-header"><a href="#github-actions-workflow">7 GitHub Actions Workflow</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/.github/workflows/main.yml"><code>.github/workflows/main.yml</code></a></p>
 <pre><code class="language-yaml"># GitHub Actions Workflow to build Rust+Mynewt Firmware for PineCone BL602
@@ -393,7 +439,7 @@ jobs:
 # RISC-V Toolchain will only be cached if the build succeeds.
 # So make sure that the first build always succeeds, e.g. comment out the &quot;Build&quot; step.
 </code></pre>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">6 What's Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">8 What's Next</a></h1>
 <p>TODO</p>
 <ul>
 <li>
