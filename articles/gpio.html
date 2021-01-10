@@ -101,11 +101,6 @@
 #include &lt;bsp/bsp.h&gt;          //  Board Support Package
 #include &lt;hal/hal_gpio.h&gt;     //  Mynewt HAL for GPIO
 
-//  Define the LED GPIOs: 11 (Blue), 14 (Green), 17 (Red)
-#define LED_BLUE_PIN  11
-#define LED_GREEN_PIN 14
-#define LED_RED_PIN   17
-
 int main(int argc, char **argv) {
     //  Initialise Mynewt drivers
     sysinit();
@@ -126,6 +121,12 @@ int main(int argc, char **argv) {
 <p>We're looking at the beauty of Mynewt... Minimal fuss, easy to read, perfect for <strong>learning embedded programming!</strong></p>
 <p>Mynewt Programs are <strong>Portable</strong> too... <code>hal_gpio_init_out</code> and <code>hal_gpio_write</code> will work on many microcontrollers: STM32 Blue Pill (Arm), Nordic Semi nRF52 (Arm too), SiFive HiFive1 (RISC-V)... And now PineCone BL602 (RISC-V yay!)</p>
 <p>The GPIO Pin Numbers will differ. But on PineCone, this Mynewt Program lights up the Blue LED, exactly like the pic above.</p>
+<p>The LED GPIOs are defined in <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/bsp/pinecone/include/bsp/bsp.h"><code>bsp/bsp.h</code></a>...</p>
+<pre><code class="language-c">//  Define the LED GPIOs: 11 (Blue), 14 (Green), 17 (Red)
+#define LED_BLUE_PIN  11
+#define LED_GREEN_PIN 14
+#define LED_RED_PIN   17
+</code></pre>
 <p>Let's find out how we made this work.</p>
 <h1 id="but-why-mynewt" class="section-header"><a href="#but-why-mynewt">2 But Why Mynewt?</a></h1>
 <blockquote>
@@ -231,16 +232,42 @@ int main(int argc, char **argv) {
 <h1 id="calling-the-mynewt-and-bl602-layers" class="section-header"><a href="#calling-the-mynewt-and-bl602-layers">4 Calling the Mynewt and BL602 Layers</a></h1>
 <p>To better understand the Mynewt and BL602 Layers, let's study the chain of function calls for a GPIO operation...</p>
 <p><img src="https://lupyuen.github.io/images/gpio-stack2.png" alt="Mynewt and BL602 IoT SDK Layers" /></p>
+<ol>
+<li>
 <p>TODO</p>
+<p><a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/apps/blinky/src/main.c"><code>main.c</code></a></p>
 <pre><code class="language-c">int main(int argc, char **argv) {
     //  Set the Blue LED GPIO to output mode
     hal_gpio_init_out(LED_BLUE_PIN,  1);
 </code></pre>
+</li>
+<li>
 <p>TODO</p>
-<pre><code class="language-c">//  Define the Blue LED GPIOs
+<p><a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/bsp/pinecone/include/bsp/bsp.h"><code>bsp/bsp.h</code></a></p>
+<pre><code class="language-c">//  Define the Blue LED GPIO
 #define LED_BLUE_PIN  11
 </code></pre>
+</li>
+<li>
 <p>TODO</p>
+<p><a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/mcu/bl/bl602/src/hal_gpio.c"><code>bl602/hal_gpio.c</code></a></p>
+<pre><code class="language-c">int hal_gpio_init_out(int pin, int val) {
+    int rc = bl_gpio_enable_output(pin, 0, 0);
+</code></pre>
+</li>
+<li>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_gpio.c"><code>bl602_hal/bl_gpio.c</code></a></p>
+<pre><code class="language-c">int bl_gpio_enable_output(uint8_t pin, uint8_t pullup, uint8_t pulldown) {
+    ...
+    GLB_GPIO_Init(&amp;cfg);
+</code></pre>
+</li>
+<li>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c"><code>StdDriver/bl602_glb.c</code></a></p>
+</li>
+</ol>
 <h1 id="github-actions-workflow" class="section-header"><a href="#github-actions-workflow">5 GitHub Actions Workflow</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/.github/workflows/main.yml"><code>.github/workflows/main.yml</code></a></p>
