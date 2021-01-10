@@ -248,6 +248,12 @@ pkg.cflags:
     ...
 ```
 
+The above options were obtained by running `make` in Trace Mode when building the BL602 IoT SDK...
+
+```bash
+make --trace
+```
+
 To preserve the integrity of the BL602 IoT SDK, the entire SDK is mounted under the Mynewt Project as a Git Submodule at...
 
 -   [`hw/mcu/bl/bl602/ext`](https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/hw/mcu/bl/bl602/ext)
