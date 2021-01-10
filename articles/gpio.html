@@ -250,7 +250,7 @@ int main(int argc, char **argv) {
 </li>
 <li>
 <p><code>hal_gpio_init_out</code> is a standard Mynewt GPIO Function that works on any microcontroller. But its implementation is specific to the microcontroller.</p>
-<p>Here's the implementation of <code>hal_gpio_init_out</code> in our <strong>Board Support Package for BL602</strong>: <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/mcu/bl/bl602/src/hal_gpio.c"><code>bl602/hal_gpio.c</code></a></p>
+<p>Here's the implementation of <code>hal_gpio_init_out</code> in our <strong>Microcontroller Package for BL602</strong>: <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/mcu/bl/bl602/src/hal_gpio.c"><code>bl602/hal_gpio.c</code></a></p>
 <pre><code class="language-c">int hal_gpio_init_out(int pin, int val) {
     int rc = bl_gpio_enable_output(pin, 0, 0);
 </code></pre>
