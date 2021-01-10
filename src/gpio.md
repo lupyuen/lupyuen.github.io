@@ -277,6 +277,9 @@ Mynewt fails to compile this because `xSemaphoreCreateMutexStatic` isn't defined
 
 It compiles OK under Mynewt for now. But eventually we need to implement `xSemaphoreCreateMutexStatic` with a Mynewt Semaphore.
 
+Here are the other Mock Declarations for FreeRTOS on Mynewt...
+-   [`hw/mcu/bl/bl602/include`](https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/hw/mcu/bl/bl602/include)
+
 _Should the BL602 Hardware Abstraction Layer call FreeRTOS?_
 
 This is highly unusual... The Hardware Abstraction Layer (HAL) is meant to called by various Operating Systems. So we don't expect BL602 HAL to call FreeRTOS directly.
