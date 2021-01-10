@@ -328,7 +328,7 @@ int main(int argc, char **argv) {
 <li><a href="https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/hw/mcu/bl/bl602/include"><code>hw/mcu/bl/bl602/include</code></a></li>
 </ul>
 <p><em>Should the BL602 Hardware Abstraction Layer call FreeRTOS?</em></p>
-<p>This is highly unusual... The Hardware Abstraction Layer (HAL) is meant to called by various Operating Systems. So we don't expect BL602 HAL to call FreeRTOS directly.</p>
+<p>This is highly unusual... The Hardware Abstraction Layer (HAL) is Low-Level Code that's meant to called by various Operating Systems. So we don't expect BL602 HAL to call FreeRTOS directly.</p>
 <p>(STM32 Blue Pill HAL and nRF52 HAL don't call any Operating Systems either)</p>
 <p>This unusual structure seems similar to ESP32, where FreeRTOS is embedded into the ESP32 HAL.</p>
 <p>We can still go ahead and port Mynewt (and other Operating Systems) to BL602. Just that we need to emulate the FreeRTOS functions in Mynewt (and other Operating Systems).</p>
