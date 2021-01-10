@@ -157,9 +157,26 @@ In particular, we don't compile under Mynewt the FreeRTOS driver code from the B
 
 # Calling the Mynewt and BL602 Layers
 
-TODO
+To better understand the Mynewt and BL602 Layers, let's study the chain of function calls for a GPIO operation...
 
 ![Mynewt and BL602 IoT SDK Layers](https://lupyuen.github.io/images/gpio-stack2.png)
+
+TODO
+
+```c
+int main(int argc, char **argv) {
+    //  Set the Blue LED GPIO to output mode
+    hal_gpio_init_out(LED_BLUE_PIN,  1);
+```
+
+TODO
+
+```c
+//  Define the Blue LED GPIOs
+#define LED_BLUE_PIN  11
+```
+
+TODO
 
 # GitHub Actions Workflow
 
