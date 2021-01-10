@@ -161,13 +161,11 @@ In particular, we don't compile under Mynewt the FreeRTOS driver code from the B
 
 # Calling the Mynewt and BL602 Layers
 
-To better understand the Mynewt and BL602 Layers, let's study the chain of function calls for a GPIO operation...
+To better understand the Mynewt and BL602 Layers, let's walk through the chain of function calls for a GPIO operation...
 
 ![Mynewt and BL602 IoT SDK Layers](https://lupyuen.github.io/images/gpio-stack2.png)
 
-1.  TODO
-
-    [`main.c`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/apps/blinky/src/main.c)
+1.  In the Hardware-Agnostic __Main Function__, we set the LED GPIO to output mode like so: [`main.c`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/apps/blinky/src/main.c)
 
     ```c
     int main(int argc, char **argv) {
@@ -175,27 +173,27 @@ To better understand the Mynewt and BL602 Layers, let's study the chain of funct
         hal_gpio_init_out(LED_BLUE_PIN,  1);
     ```
 
-1.  TODO
+    The Mynewt GPIO Function `hal_gpio_init_out` works on any microcontroller.
 
-    [`bsp/bsp.h`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/bsp/pinecone/include/bsp/bsp.h)
+1.  `LED_BLUE_PIN` is the GPIO Pin Number for the Blue LED.
+
+    The GPIO Pin Number will differ across various Boards, so `LED_BLUE_PIN` is defined in the __Board Support Package for PineCone__: [`bsp/bsp.h`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/bsp/pinecone/include/bsp/bsp.h)
 
     ```c
     //  Define the Blue LED GPIO
     #define LED_BLUE_PIN  11
     ```
 
-1.  TODO
+1.  `hal_gpio_init_out` is a standard Mynewt GPIO Function that works on any microcontroller. But its implementation is specific to the microcontroller.
 
-    [`bl602/hal_gpio.c`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/mcu/bl/bl602/src/hal_gpio.c)
+    Here's the implementation of `hal_gpio_init_out` in our __Board Support Package for BL602__: [`bl602/hal_gpio.c`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/mcu/bl/bl602/src/hal_gpio.c)
 
     ```c
     int hal_gpio_init_out(int pin, int val) {
         int rc = bl_gpio_enable_output(pin, 0, 0);
     ```
 
-1.  TODO
-
-    [`bl602_hal/bl_gpio.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_gpio.c)
+1.  The above implementation calls `bl_gpio_enable_output`, which is defined in the __Hardware Abstraction Layer from BL602 IoT SDK__: [`bl602_hal/bl_gpio.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_gpio.c)
 
     ```c
     int bl_gpio_enable_output(uint8_t pin, uint8_t pullup, uint8_t pulldown) {
@@ -203,9 +201,11 @@ To better understand the Mynewt and BL602 Layers, let's study the chain of funct
         GLB_GPIO_Init(&cfg);
     ```
 
-1.  TODO
+1.  And finally we call `GLB_GPIO_Init`, which is defined in the __Standard Driver from BL602 IoT SDK__: [`StdDriver/bl602_glb.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c)
 
-    [`StdDriver/bl602_glb.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c)
+    GLB refers to __BL602's Global Register__.
+    
+    `GLB_GPIO_Init` manipulates the GLB Hardware Register to control the GPIO Hardware and switch GPIO 11 to output mode.
 
 # GitHub Actions Workflow
 
