@@ -207,6 +207,59 @@ To better understand the Mynewt and BL602 Layers, let's walk through the chain o
     
     `GLB_GPIO_Init` manipulates the GLB Hardware Register to control the GPIO Hardware and switch GPIO 11 to output mode.
 
+# Compile BL602 SDK under Mynewt
+
+_How do we specify which folders of BL602 IoT SDK to compile under Mynewt?_
+
+Remember that we're compiling the smallest subset of functions from the BL602 IoT SDK that are needed for Mynewt...
+
+1.  __BL602 Hardware Abstraction Layer__: [`hal_drv/bl602_hal`](https://github.com/lupyuen/bl_iot_sdk/tree/master/components/hal_drv/bl602_hal)
+
+1.  __BL602 Standard Driver__: [`bl602/bl602_std/ bl602_std/StdDriver`](https://github.com/lupyuen/bl_iot_sdk/tree/master/components/bl602/bl602_std/bl602_std/StdDriver)
+
+We specify these folders in Mynewt's Microcontroller Package for BL602: [`hw/mcu/bl/ bl602/pkg.yml`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/mcu/bl/bl602/pkg.yml)
+
+```yaml
+pkg.src_dirs:
+    - src
+    # Select the BL602 IoT SDK folders to be included for the build
+    - ext/bl_iot_sdk/components/hal_drv/bl602_hal
+    - ext/bl_iot_sdk/components/bl602/bl602_std/bl602_std/StdDriver/Src
+```
+
+The Microcontroller Package for BL602 also specifies the Include Folders and the GCC Compiler Options: [`pkg.yml`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/mcu/bl/bl602/pkg.yml)
+
+```yaml
+pkg.cflags: 
+    - -march=rv32imac 
+    - -mabi=ilp32
+    # BL602 IoT SDK definitions
+    - -DCONF_USER_ENABLE_PSRAM 
+    - -DconfigUSE_TICKLESS_IDLE=0 
+    - -DFEATURE_WIFI_DISABLE=1 
+    - -DCFG_FREERTOS 
+    - -DARCH_RISCV 
+    - -DBL602 
+    ...
+    # Where the BL602 IoT SDK include files are located
+    - -Ihw/mcu/bl/bl602/ext/bl_iot_sdk/components/bl602/bl602_std/bl602_std/Common/partition
+    - -Ihw/mcu/bl/bl602/ext/bl_iot_sdk/components/bl602/bl602_std/bl602_std/Common/sim_print
+    - -Ihw/mcu/bl/bl602/ext/bl_iot_sdk/components/bl602/bl602_std/bl602_std/Common/soft_crc
+    ...
+```
+
+To preserve the integrity of the BL602 IoT SDK, the entire SDK is mounted under the Mynewt Project as a Git Submodule at...
+
+-   [`hw/mcu/bl/bl602/ext`](https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/hw/mcu/bl/bl602/ext)
+
+# FreeRTOS References in BL602 SDK
+
+_What about FreeRTOS?_
+
+We don't compile under Mynewt the FreeRTOS driver code from the BL602 SDK. Because running two operating systems side by side would be a disaster!
+
+TODO
+
 # GitHub Actions Workflow
 
 TODO
