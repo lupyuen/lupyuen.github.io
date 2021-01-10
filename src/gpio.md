@@ -155,6 +155,12 @@ We have integrated the smallest subset of functions from the BL602 SDK that are 
 
 In particular, we don't compile under Mynewt the FreeRTOS driver code from the BL602 SDK. Because running two operating systems side by side would be a disaster!
 
+# Calling the Mynewt and BL602 Layers
+
+TODO
+
+![Mynewt and BL602 IoT SDK Layers](https://lupyuen.github.io/images/gpio-stack2.png)
+
 # GitHub Actions Workflow
 
 TODO
