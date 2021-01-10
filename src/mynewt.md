@@ -786,11 +786,11 @@ One year ago I [failed to port Mynewt](https://medium.com/@ly.lee/hey-gd32-vf103
 
 _But Second Time's The Charm!_
 
-PineCone's BL602 Microcontroller runs on a RISC-V Core that's similar to SiFive FE310. And porting Mynewt from FE310 to BL602 seems quick and easy.
+PineCone's BL602 Microcontroller runs on a RISC-V Core that's similar to SiFive FE310. And porting Mynewt from FE310 to BL602 seems quick and easy. [(As seen on Twitter)](https://twitter.com/MisterTechBlog/status/1338759961526951937?s=19)
 
-[(As seen on Twitter)](https://twitter.com/MisterTechBlog/status/1338759961526951937?s=19)
+The port of Mynewt to PineCone BL602 continues here...
 
-Stay Tuned!
+-   ["Mynewt GPIO ported to PineCone BL602 RISC-V Board"](https://lupyuen.github.io/articles/gpio)
 
 -   ["Flashing Firmware to PineCone BL602"](https://lupyuen.github.io/articles/flash)
 

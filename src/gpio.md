@@ -186,7 +186,7 @@ To better understand the Mynewt and BL602 Layers, let's walk through the chain o
 
 1.  `hal_gpio_init_out` is a standard Mynewt GPIO Function that works on any microcontroller. But its implementation is specific to the microcontroller.
 
-    Here's the implementation of `hal_gpio_init_out` in our __Board Support Package for BL602__: [`bl602/hal_gpio.c`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/mcu/bl/bl602/src/hal_gpio.c)
+    Here's the implementation of `hal_gpio_init_out` in our __Microcontroller Package for BL602__: [`bl602/hal_gpio.c`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/mcu/bl/bl602/src/hal_gpio.c)
 
     ```c
     int hal_gpio_init_out(int pin, int val) {
