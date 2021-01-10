@@ -229,8 +229,18 @@ int main(int argc, char **argv) {
 <p>We have integrated the smallest subset of functions from the BL602 SDK that are needed for Mynewt. The rest are not needed (yet).</p>
 <p>In particular, we don't compile under Mynewt the FreeRTOS driver code from the BL602 SDK. Because running two operating systems side by side would be a disaster!</p>
 <h1 id="calling-the-mynewt-and-bl602-layers" class="section-header"><a href="#calling-the-mynewt-and-bl602-layers">4 Calling the Mynewt and BL602 Layers</a></h1>
-<p>TODO</p>
+<p>To better understand the Mynewt and BL602 Layers, let's study the chain of function calls for a GPIO operation...</p>
 <p><img src="https://lupyuen.github.io/images/gpio-stack2.png" alt="Mynewt and BL602 IoT SDK Layers" /></p>
+<p>TODO</p>
+<pre><code class="language-c">int main(int argc, char **argv) {
+    //  Set the Blue LED GPIO to output mode
+    hal_gpio_init_out(LED_BLUE_PIN,  1);
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-c">//  Define the Blue LED GPIOs
+#define LED_BLUE_PIN  11
+</code></pre>
+<p>TODO</p>
 <h1 id="github-actions-workflow" class="section-header"><a href="#github-actions-workflow">5 GitHub Actions Workflow</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/.github/workflows/main.yml"><code>.github/workflows/main.yml</code></a></p>
