@@ -139,19 +139,29 @@ Here's how we layer the code in Mynewt...
 
     That's why this is portable, __Hardware Independent__ code. A key feature of modern embedded operating systems.
 
+    -   [__Main Function: `main.c`__](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/apps/blinky/src/main.c)
+
 1.  __Board Support Package__: This layer contains code that's specific to the Hardware Board, like PineCone.
 
     The Blue LED is connected at GPIO 11 on PineCone... And these details will vary depending on the BL602 Board that we use (say PineCone vs Pinenut).
 
     So it makes sense to capture such __Board Specific__ details inside the Board Support Package layer.
 
+    -   [__PineCone Board Support Package: `hw/bsp/pinecone`__](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/bsp/pinecone)
+
 1.  __Microcontroller Package__: This layer is specific to the Microcontroller (like BL602). The Microcontroller Package is reused by all Boards that are based on the same Microcontroller (like PineCone and Pinenut).
+
+    -   [__BL602 Microcontroller Package: `hw/mcu/bl/bl602`__](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/mcu/bl/bl602)
 
 1.  __Hardware Abstraction Layer__: This layer is lifted directly from the __BL602 IoT SDK__ (with minimal changes).
 
     Here we find the functions that control the BL602 hardware: GPIO, PWM, UART, I2C, SPI, ...
 
+    -   [__BL602 Hardware Abstraction Layer: `components/hal_drv/bl602_hal`__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal)
+
 1.  __Standard Driver__: This layer is unique to BL602. The Hardware Abstraction Layer in BL602 calls this layer to access the Hardware Registers to perform hardware functions.
+
+    -   [__BL602 Standard Driver: `components/bl602/ bl602_std/bl602_std/StdDriver`__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src)
 
 _What about the rest of the BL602 IoT SDK?_
 
