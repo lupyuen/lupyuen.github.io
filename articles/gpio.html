@@ -68,8 +68,9 @@
 <li><a href="#our-mynewt-gpio-program">1 Our Mynewt GPIO Program</a><ul></ul></li>
 <li><a href="#but-why-mynewt">2 But Why Mynewt?</a><ul></ul></li>
 <li><a href="#mynewt-and-bl602-layers">3 Mynewt and BL602 Layers</a><ul></ul></li>
-<li><a href="#github-actions-workflow">4 GitHub Actions Workflow</a><ul></ul></li>
-<li><a href="#whats-next">5 What's Next</a><ul></ul></li></ul></nav><p>📝 <em>15 Jan 2021</em></p>
+<li><a href="#calling-the-mynewt-and-bl602-layers">4 Calling the Mynewt and BL602 Layers</a><ul></ul></li>
+<li><a href="#github-actions-workflow">5 GitHub Actions Workflow</a><ul></ul></li>
+<li><a href="#whats-next">6 What's Next</a><ul></ul></li></ul></nav><p>📝 <em>15 Jan 2021</em></p>
 <p>A month ago we started porting <strong>Apache Mynewt</strong>, a modern embedded operating system, to PineCone BL602...</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/mynewt"><strong>&quot;Porting Mynewt to PineCone BL602&quot;</strong></a></li>
@@ -227,7 +228,10 @@ int main(int argc, char **argv) {
 <p><em>What about the rest of the BL602 IoT SDK?</em></p>
 <p>We have integrated the smallest subset of functions from the BL602 SDK that are needed for Mynewt. The rest are not needed (yet).</p>
 <p>In particular, we don't compile under Mynewt the FreeRTOS driver code from the BL602 SDK. Because running two operating systems side by side would be a disaster!</p>
-<h1 id="github-actions-workflow" class="section-header"><a href="#github-actions-workflow">4 GitHub Actions Workflow</a></h1>
+<h1 id="calling-the-mynewt-and-bl602-layers" class="section-header"><a href="#calling-the-mynewt-and-bl602-layers">4 Calling the Mynewt and BL602 Layers</a></h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/gpio-stack2.png" alt="Mynewt and BL602 IoT SDK Layers" /></p>
+<h1 id="github-actions-workflow" class="section-header"><a href="#github-actions-workflow">5 GitHub Actions Workflow</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/.github/workflows/main.yml"><code>.github/workflows/main.yml</code></a></p>
 <pre><code class="language-yaml"># GitHub Actions Workflow to build Rust+Mynewt Firmware for PineCone BL602
@@ -352,7 +356,7 @@ jobs:
 # RISC-V Toolchain will only be cached if the build succeeds.
 # So make sure that the first build always succeeds, e.g. comment out the &quot;Build&quot; step.
 </code></pre>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">5 What's Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">6 What's Next</a></h1>
 <p>TODO</p>
 <ul>
 <li>
