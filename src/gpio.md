@@ -282,7 +282,7 @@ Here are the other Mock Declarations for FreeRTOS on Mynewt...
 
 _Should the BL602 Hardware Abstraction Layer call FreeRTOS?_
 
-This is highly unusual... The Hardware Abstraction Layer (HAL) is meant to called by various Operating Systems. So we don't expect BL602 HAL to call FreeRTOS directly.
+This is highly unusual... The Hardware Abstraction Layer (HAL) is Low-Level Code that's meant to called by various Operating Systems. So we don't expect BL602 HAL to call FreeRTOS directly.
 
 (STM32 Blue Pill HAL and nRF52 HAL don't call any Operating Systems either)
 
