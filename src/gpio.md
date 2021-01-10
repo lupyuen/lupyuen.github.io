@@ -260,11 +260,32 @@ To preserve the integrity of the BL602 IoT SDK, the entire SDK is mounted under 
 
 # FreeRTOS References in BL602 SDK
 
-_What about FreeRTOS?_
+_Does the BL602 IoT SDK depend on any External Library?_
 
-We don't compile under Mynewt the FreeRTOS driver code from the BL602 SDK. Because running two operating systems side by side would be a disaster!
+Unfortunately yes... The BL602 IoT SDK (Hardware Abstraction Layer) depends on FreeRTOS. And this complicates the porting to Mynewt.
 
-TODO
+Let's look at this code from the BL602 Security (Crypto) HAL: [`bl602_hal/bl_sec.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_sec.c)
+
+```c
+int bl_sec_init(void) {
+    g_bl_sec_sha_mutex = xSemaphoreCreateMutexStatic(&sha_mutex_buf);
+```
+
+This code calls FreeRTOS to create a Mutex (Mutually Exclusive Lock) to prevent tasks from accessing some shared data concurrently.
+
+Mynewt fails to compile this because `xSemaphoreCreateMutexStatic` isn't defined. To work around this, we gave Mynewt a Mock Declaration for the undefined function: [`semphr.h`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/mcu/bl/bl602/include/semphr.h)
+
+It compiles OK under Mynewt for now. But eventually we need to implement `xSemaphoreCreateMutexStatic` with a Mynewt Semaphore.
+
+_Should the BL602 Hardware Abstraction Layer call FreeRTOS?_
+
+This is highly unusual... The Hardware Abstraction Layer (HAL) is meant to called by various Operating Systems. So we don't expect BL602 HAL to call FreeRTOS directly.
+
+(STM32 Blue Pill HAL and nRF52 HAL don't call any Operating Systems either)
+
+This unusual structure seems similar to ESP32, where FreeRTOS is embedded into the ESP32 HAL.
+
+We can still go ahead and port Mynewt (and other Operating Systems) to BL602. Just that we need to emulate the FreeRTOS functions in Mynewt (and other Operating Systems).
 
 # GitHub Actions Workflow
 
