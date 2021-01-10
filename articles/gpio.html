@@ -211,21 +211,36 @@ int main(int argc, char **argv) {
 <p><strong>Main Function</strong>: We've seen the Main Function at the top of the article... It lights up the Blue LED.</p>
 <p>Assuming that the GPIO Pin Number is defined correctly, the same Main Function will light up the LED <strong>on any microcontroller</strong>.</p>
 <p>That's why this is portable, <strong>Hardware Independent</strong> code. A key feature of modern embedded operating systems.</p>
+<ul>
+<li><a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/apps/blinky/src/main.c"><strong>Main Function: <code>main.c</code></strong></a></li>
+</ul>
 </li>
 <li>
 <p><strong>Board Support Package</strong>: This layer contains code that's specific to the Hardware Board, like PineCone.</p>
 <p>The Blue LED is connected at GPIO 11 on PineCone... And these details will vary depending on the BL602 Board that we use (say PineCone vs Pinenut).</p>
 <p>So it makes sense to capture such <strong>Board Specific</strong> details inside the Board Support Package layer.</p>
+<ul>
+<li><a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/bsp/pinecone"><strong>PineCone Board Support Package: <code>hw/bsp/pinecone</code></strong></a></li>
+</ul>
 </li>
 <li>
 <p><strong>Microcontroller Package</strong>: This layer is specific to the Microcontroller (like BL602). The Microcontroller Package is reused by all Boards that are based on the same Microcontroller (like PineCone and Pinenut).</p>
+<ul>
+<li><a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/mcu/bl/bl602"><strong>BL602 Microcontroller Package: <code>hw/mcu/bl/bl602</code></strong></a></li>
+</ul>
 </li>
 <li>
 <p><strong>Hardware Abstraction Layer</strong>: This layer is lifted directly from the <strong>BL602 IoT SDK</strong> (with minimal changes).</p>
 <p>Here we find the functions that control the BL602 hardware: GPIO, PWM, UART, I2C, SPI, ...</p>
+<ul>
+<li><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal"><strong>BL602 Hardware Abstraction Layer: <code>components/hal_drv/bl602_hal</code></strong></a></li>
+</ul>
 </li>
 <li>
 <p><strong>Standard Driver</strong>: This layer is unique to BL602. The Hardware Abstraction Layer in BL602 calls this layer to access the Hardware Registers to perform hardware functions.</p>
+<ul>
+<li><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src"><strong>BL602 Standard Driver: <code>components/bl602/ bl602_std/bl602_std/StdDriver</code></strong></a></li>
+</ul>
 </li>
 </ol>
 <p><em>What about the rest of the BL602 IoT SDK?</em></p>
