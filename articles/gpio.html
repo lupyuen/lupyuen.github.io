@@ -323,6 +323,10 @@ int main(int argc, char **argv) {
 <p>This code calls FreeRTOS to create a Mutex (Mutually Exclusive Lock) to prevent tasks from accessing some shared data concurrently.</p>
 <p>Mynewt fails to compile this because <code>xSemaphoreCreateMutexStatic</code> isn't defined. To work around this, we gave Mynewt a Mock Declaration for the undefined function: <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/mcu/bl/bl602/include/semphr.h"><code>semphr.h</code></a></p>
 <p>It compiles OK under Mynewt for now. But eventually we need to implement <code>xSemaphoreCreateMutexStatic</code> with a Mynewt Semaphore.</p>
+<p>Here are the other Mock Declarations for FreeRTOS on Mynewt...</p>
+<ul>
+<li><a href="https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/hw/mcu/bl/bl602/include"><code>hw/mcu/bl/bl602/include</code></a></li>
+</ul>
 <p><em>Should the BL602 Hardware Abstraction Layer call FreeRTOS?</em></p>
 <p>This is highly unusual... The Hardware Abstraction Layer (HAL) is meant to called by various Operating Systems. So we don't expect BL602 HAL to call FreeRTOS directly.</p>
 <p>(STM32 Blue Pill HAL and nRF52 HAL don't call any Operating Systems either)</p>
