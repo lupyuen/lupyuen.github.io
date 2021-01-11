@@ -302,6 +302,10 @@ We can still go ahead and port Mynewt (and other Operating Systems) to BL602. Ju
 
 # Fix BL602 SDK for Mynewt
 
+Mynewt is strict and uptight when compiling C code with GCC... Any warnings emitted by GCC will fail the Mynewt build.
+
+Here are the fixes we made to the BL602 IoT SDK to resolve the warnings...
+
 TODO
 
 [`components/hal_drv/ bl602_hal/bl_adc.c`](https://github.com/pine64/bl_iot_sdk/compare/master...lupyuen:fix-gcc-warnings#diff-50c41592b050878713231111ff6302905f1f2aa7bedff6b250ff6fd6d219cc33)
@@ -310,6 +314,7 @@ TODO
 int bl_adc_gpio_init(int gpio_num) {
     uint8_t adc_pin = gpio_num;
     GLB_GPIO_Func_Init(GPIO_FUN_ANALOG, &adc_pin, 1);
+    //  Fails because GCC expects adc_pin to be GLB_GPIO_Type, not uint8_t
 ```
 
 To...
@@ -325,11 +330,13 @@ To...
     for (i = 0; i < GPIO_MODULE_MAX; i++) {
         memset(gpio_node, 0, sizeof(gpio_node));
         sprintf(gpio_node, "gpio%d", i);
+        //  Fails because gpio_node may overflow
 ```
 
 To...
 
 ```c
+        //  Limit to size of gpio_node
         snprintf(gpio_node, sizeof(gpio_node), "gpio%d", i);
 ```
 
@@ -340,13 +347,35 @@ struct romapi_freertos_map* hal_sys_romapi_get(void)
 {
     extern uint8_t __global_pointer_head$;
     memset(&__global_pointer_head$, 0, 0x498);
+    //  Fails because the pointer references a single byte, not 0x498 bytes
 ```
 
 To...
 
 ```c
+    //  Declare a pointer that references an array of 0x498 bytes
     extern uint8_t __global_pointer_head$[0x498];
 ```
+
+PR: https://github.com/pine64/bl_iot_sdk/pull/84
+
+4 changes have not been pushed upstream, needs more impact analysis...
+
+Variable set but not used:
+
+https://github.com/pine64/bl_iot_sdk/pull/84#discussion_r549207518
+
+Invalid format strings:
+
+https://github.com/lupyuen/bl_iot_sdk/commit/2393379c2fd9177cd62484667a0ce07157370e43#diff-99dc1c18d04bd746c17e484406a6f9e5fe733c1f9751adb364ad636253f5c1ae
+
+Misplaced main function:
+
+https://github.com/lupyuen/bl_iot_sdk/commit/2393379c2fd9177cd62484667a0ce07157370e43#diff-d1eb6a16f4855132d64e9decec8de3b44d06d52c03e6825a0dc71dd595cbe157
+
+Missing include:
+
+https://github.com/lupyuen/bl_iot_sdk/commit/2393379c2fd9177cd62484667a0ce07157370e43#diff-3b9ce4151983dedcd6bc4e3788a8b30b249ff106bd987df589b409cc72f9f2b9
 
 # GitHub Actions Workflow
 
