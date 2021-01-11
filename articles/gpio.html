@@ -368,7 +368,7 @@ GLB_GPIO_Type adc_pin = gpio_num;
 </code></pre>
 <h2 id="buffer-overflow" class="section-header"><a href="#buffer-overflow">7.2 Buffer Overflow</a></h2>
 <p>This potential Buffer Overflow seems scary: <a href="https://github.com/pine64/bl_iot_sdk/compare/master...lupyuen:fix-gcc-warnings#diff-c60188dbf9788696071897d85f50ea1e97b474a7271f6f5de3b46241184c7902"><code>components/hal_drv/ bl602_hal/hal_button.c</code></a></p>
-<pre><code class="language-c">int i;
+<pre><code class="language-c">int i = ...;
 char gpio_node[10] = &quot;gpio&quot;;
 sprintf(gpio_node, &quot;gpio%d&quot;, i);
 //  Fails because gpio_node may overflow
@@ -384,7 +384,7 @@ snprintf(gpio_node, sizeof(gpio_node), &quot;gpio%d&quot;, i);
 memset(&amp;__global_pointer_head$, 0, 0x498);
 //  Fails because the pointer references a single byte, not 0x498 bytes
 </code></pre>
-<p>GCC doesn't like this because it says that the pointer references a single byte... Copying <code>0x498</code> bytes to the pointer would surely cause an overflow!</p>
+<p>GCC thinks that the pointer references a single byte... Copying <code>0x498</code> bytes to the pointer would surely cause an overflow!</p>
 <p>Thus we do the right thing and tell GCC that it's really a pointer to an array of <code>0x498</code> bytes...</p>
 <pre><code class="language-c">//  Pointer to an array of 0x498 bytes
 extern uint8_t __global_pointer_head$[0x498];
