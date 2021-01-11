@@ -390,15 +390,25 @@ The above fixes (plus a few minor ones) have been submitted upstream as a Pull R
 
 # Automated Build with GitHub Actions
 
-When porting Mynewt to BL602, it's good to make sure that we don't break any existing code by accident. (Especially the BL602 IoT SDK, which we have tweaked slightly for Mynewt)
+When porting Mynewt to BL602, it's good to make sure that we don't __break any existing code by accident__. (Especially the BL602 IoT SDK, which we have tweaked slightly for Mynewt)
 
-That's why we use GitHub Actions to build automatically the Mynewt code (plus the core parts of BL602 IoT SDK) whenever we commit any changes.
+That's why we use __GitHub Actions to compile automatically__ the Mynewt code (plus the core parts of BL602 IoT SDK) whenever we __commit any changes__.
 
-Here's the GitHub Actions Workflow that's triggered for Automated Builds: [`.github/workflows/main.yml`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/.github/workflows/main.yml)
+_How long does GitHub take to compile our Mynewt + BL602 SDK Code?_
+
+__TWO MINUTES__. Thus if ever commit some bad code (that can't be compiled) into the repo, GitHub will alert us in TWO MINUTES (via email) that something has gone terribly wrong in our repo.
+
+We'll see the results of the Automated Build here (please log in to GitHub first)...
+
+-   [__GitHub Actions for `pinecone-rust-mynewt`__](https://github.com/lupyuen/pinecone-rust-mynewt/actions)
+
+To complete the build in TWO MINUTES, we use some caching magic inside our GitHub Actions Workflow.
+
+Let learn how it works: [`.github/workflows/main.yml`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/.github/workflows/main.yml)
 
 ## Trigger Conditions
 
-TODO
+At the top of the GitHub Actions Workflow, we state the conditions that will trigger the Automated Build...
 
 ```yaml
 # Name of this Workflow
@@ -414,9 +424,11 @@ on:
     branches: [ main ]
 ```
 
-## Build Platform
+This says that the Automated Build will be triggered whenever we commit code to the `main` branch. Or when we create a Pull Request for the `main` branch.
 
-TODO
+## Build Environment
+
+We'll use an Ubuntu x64 virtual machine (hosted at GitHub) to compile our code...
 
 ```yaml
 # Steps to run for the Workflow
