@@ -316,12 +316,13 @@ TODO
 int bl_adc_gpio_init(int gpio_num) {
     uint8_t adc_pin = gpio_num;
     GLB_GPIO_Func_Init(GPIO_FUN_ANALOG, &adc_pin, 1);
-    //  Fails because GCC expects adc_pin to be GLB_GPIO_Type, not uint8_t
+    //  Fails because GCC expects adc_pin to be an enum, not uint8_t
 ```
 
 To...
 
 ```c
+    //  Declare adc_pin as enum instead of uint8_t
     GLB_GPIO_Type adc_pin = gpio_num;
 ```
 
@@ -342,7 +343,7 @@ TODO
 To...
 
 ```c
-        //  Limit to size of gpio_node
+        //  Limit formatting to size of gpio_node
         snprintf(gpio_node, sizeof(gpio_node), "gpio%d", i);
 ```
 
@@ -363,7 +364,7 @@ struct romapi_freertos_map* hal_sys_romapi_get(void)
 To...
 
 ```c
-    //  Declare a pointer that references an array of 0x498 bytes
+    //  Pointer to an array of 0x498 bytes
     extern uint8_t __global_pointer_head$[0x498];
 ```
 
