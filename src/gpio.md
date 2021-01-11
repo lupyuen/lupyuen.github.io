@@ -396,6 +396,8 @@ That's why we use GitHub Actions to build automatically the Mynewt code (plus th
 
 Here's the GitHub Actions Workflow that's triggered for Automated Builds: [`.github/workflows/main.yml`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/.github/workflows/main.yml)
 
+## Trigger Conditions
+
 TODO
 
 ```yaml
@@ -404,22 +406,31 @@ name: Build Firmware
 
 # When to run this Workflow...
 on:
-
   # Run this Workflow when files are updated (Pushed) in this Branch
   push:
-    branches: [ main ]
-    
+    branches: [ main ]    
   # Also run this Workflow when a Pull Request is created or updated in this Branch
   pull_request:
     branches: [ main ]
+```
 
+## Build Platform
+
+TODO
+
+```yaml
 # Steps to run for the Workflow
 jobs:
   build:
-
     # Run these steps on Ubuntu
     runs-on: ubuntu-latest
+```
 
+## Checkout Source Files
+
+TODO
+
+```yaml
     steps:
         
     #########################################################################################
@@ -429,7 +440,13 @@ jobs:
       uses: actions/checkout@v2
       with:
         submodules: 'recursive'
+```
 
+## Check Cache for newt
+
+TODO
+
+```yaml
     - name: Check cache for newt
       id:   cache-newt
       uses: actions/cache@v2
@@ -439,7 +456,13 @@ jobs:
         path: ${{ runner.temp }}/mynewt-newt
         key:  ${{ runner.os }}-build-${{ env.cache-name }}
         restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}
+```
 
+## Download and Build newt
+
+TODO
+
+```yaml
     - name: Install newt
       if:   steps.cache-newt.outputs.cache-hit != 'true'  # Install newt if not found in cache
       run:  |
@@ -451,10 +474,22 @@ jobs:
         newt/newt version
         export PATH=$PATH:${{ runner.temp }}/mynewt-newt/newt
         newt version
+```
 
+## Show Files
+
+TODO
+
+```yaml
     - name: Show files
       run:  set ; pwd ; ls -l
+```
 
+## Check Cache for GCC
+
+TODO
+
+```yaml
     #########################################################################################
     # Download and Cache Dependencies
     
@@ -467,13 +502,25 @@ jobs:
         path: xpack-riscv-none-embed-gcc
         key:  ${{ runner.os }}-build-${{ env.cache-name }}
         restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}
+```
 
+## Download GCC
+
+TODO
+
+```yaml
     - name: Install xPack RISC-V Toolchain xpack-riscv-none-embed-gcc
       if:   steps.cache-toolchain.outputs.cache-hit != 'true'  # Install toolchain if not found in cache
       run:  |
         wget -qO- https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases/download/v8.3.0-2.3/xpack-riscv-none-embed-gcc-8.3.0-2.3-linux-x64.tar.gz | tar -xz
         mv xpack-riscv-none-embed-gcc-* xpack-riscv-none-embed-gcc
+```
 
+## Build Mynewt Firmware
+
+TODO
+
+```yaml
     #########################################################################################
     # Build and Upload Rust+Mynewt Application Firmware
 
@@ -481,26 +528,48 @@ jobs:
       run:  |
         export PATH=$PATH:${{ runner.temp }}/mynewt-newt/newt
         ./scripts/build-app.sh
+```
 
+## Upload Mynewt Firmware
+
+TODO
+
+```yaml
     - name: Upload Application Firmware
       uses: actions/upload-artifact@v2
       with:
         name: blinky.elf
         path: bin/targets/pinecone_app/app/apps/blinky/blinky.elf
+```
 
+TODO
+
+```yaml
     - name: Upload Application Firmware Outputs
       uses: actions/upload-artifact@v2
       with:
         name: blinky.zip
         path: bin/targets/pinecone_app/app/apps/blinky/blinky.*
+```
 
+## Show Output
+
+TODO
+
+```yaml
     #########################################################################################
     # Finish
 
     - name: Find output
       run:  |
         find bin/targets/pinecone_app/app/apps/blinky -name "blinky.*" -ls
-      
+```
+
+## Caching Considerations
+
+TODO
+
+```yaml
 # RISC-V Toolchain will only be cached if the build succeeds.
 # So make sure that the first build always succeeds, e.g. comment out the "Build" step.
 ```
