@@ -438,7 +438,7 @@ extern uint8_t __global_pointer_head$[0x498];
 <p>When porting Mynewt to BL602, it's good to make sure that we don't <strong>break any existing code by accident</strong>. (Especially the BL602 IoT SDK, which we have tweaked slightly for Mynewt)</p>
 <p>That's why we use <strong>GitHub Actions to compile automatically</strong> the Mynewt code (plus the core parts of BL602 IoT SDK) whenever we <strong>commit any changes</strong>.</p>
 <p><em>How long does GitHub take to compile our Mynewt + BL602 SDK Code?</em></p>
-<p><strong>TWO MINUTES</strong>. Thus if ever commit some bad code (that can't be compiled) into the repo, GitHub will alert us in TWO MINUTES (via email) that something has gone terribly wrong in our repo.</p>
+<p><strong>TWO MINUTES</strong>. Thus if we ever commit some bad code (that can't be compiled) into the repo, GitHub will alert us in TWO MINUTES (via email) that something has gone terribly wrong in our repo.</p>
 <p>We'll see the results of the Automated Build here (please log in to GitHub first)...</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinecone-rust-mynewt/actions"><strong>GitHub Actions for <code>pinecone-rust-mynewt</code></strong></a></li>
