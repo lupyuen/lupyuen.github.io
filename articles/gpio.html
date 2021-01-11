@@ -74,9 +74,8 @@
 <li><a href="#fix-bl602-sdk-for-mynewt">7 Fix BL602 SDK for Mynewt</a><ul>
 <li><a href="#mismatched-types">7.1 Mismatched Types</a><ul></ul></li>
 <li><a href="#buffer-overflow">7.2 Buffer Overflow</a><ul></ul></li>
-<li><a href="#another-buffer-overflow">7.3 Another Buffer Overflow</a><ul></ul></li>
-<li><a href="#pull-request">7.4 Pull Request</a><ul></ul></li>
-<li><a href="#pending-analysis">7.5 Pending Analysis</a><ul></ul></li></ul></li>
+<li><a href="#external-pointer-reference">7.3 External Pointer Reference</a><ul></ul></li>
+<li><a href="#pull-request-and-pending-analysis">7.4 Pull Request and Pending Analysis</a><ul></ul></li></ul></li>
 <li><a href="#github-actions-workflow">8 GitHub Actions Workflow</a><ul></ul></li>
 <li><a href="#whats-next">9 What's Next</a><ul></ul></li></ul></nav><p>📝 <em>15 Jan 2021</em></p>
 <p>A month ago we started porting <strong>Apache Mynewt</strong>, a modern embedded operating system, to PineCone BL602...</p>
@@ -355,59 +354,73 @@ int main(int argc, char **argv) {
 <p>We can still go ahead and port Mynewt (and other Operating Systems) to BL602. Just that we need to emulate the FreeRTOS functions in Mynewt (and other Operating Systems).</p>
 <h1 id="fix-bl602-sdk-for-mynewt" class="section-header"><a href="#fix-bl602-sdk-for-mynewt">7 Fix BL602 SDK for Mynewt</a></h1>
 <p>Mynewt is strict and uptight when compiling C code with GCC... Any warnings emitted by GCC will fail the Mynewt build.</p>
-<p>Here are the fixes we made to the BL602 IoT SDK to resolve the warnings...</p>
+<p>We made the following fixes to the BL602 IoT SDK to resolve the warnings...</p>
 <h2 id="mismatched-types" class="section-header"><a href="#mismatched-types">7.1 Mismatched Types</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/pine64/bl_iot_sdk/compare/master...lupyuen:fix-gcc-warnings#diff-50c41592b050878713231111ff6302905f1f2aa7bedff6b250ff6fd6d219cc33"><code>components/hal_drv/ bl602_hal/bl_adc.c</code></a></p>
-<pre><code class="language-c">int bl_adc_gpio_init(int gpio_num) {
-    uint8_t adc_pin = gpio_num;
-    GLB_GPIO_Func_Init(GPIO_FUN_ANALOG, &amp;adc_pin, 1);
-    //  Fails because GCC expects adc_pin to be an enum, not uint8_t
+<p>Here we're passing <code>adc_pin</code> as a number: <a href="https://github.com/pine64/bl_iot_sdk/compare/master...lupyuen:fix-gcc-warnings#diff-50c41592b050878713231111ff6302905f1f2aa7bedff6b250ff6fd6d219cc33"><code>components/hal_drv/ bl602_hal/bl_adc.c</code></a></p>
+<pre><code class="language-c">uint8_t adc_pin = gpio_num;
+GLB_GPIO_Func_Init(GPIO_FUN_ANALOG, &amp;adc_pin, 1);
+//  Fails because GCC expects adc_pin to be an enum, not a number
 </code></pre>
-<p>To...</p>
-<pre><code class="language-c">    //  Declare adc_pin as enum instead of uint8_t
-    GLB_GPIO_Type adc_pin = gpio_num;
+<p>Which displeases the GCC Compiler because the function <code>GLB_GPIO_Func_Init</code> expects an enum <code>GLB_GPIO_Type</code>, not a number.</p>
+<p>The fix is simple...</p>
+<pre><code class="language-c">//  Declare as enum instead of number
+GLB_GPIO_Type adc_pin = gpio_num;
 </code></pre>
 <h2 id="buffer-overflow" class="section-header"><a href="#buffer-overflow">7.2 Buffer Overflow</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/pine64/bl_iot_sdk/compare/master...lupyuen:fix-gcc-warnings#diff-c60188dbf9788696071897d85f50ea1e97b474a7271f6f5de3b46241184c7902"><code>components/hal_drv/ bl602_hal/hal_button.c</code></a></p>
-<pre><code class="language-c">    char gpio_node[10] = &quot;gpio&quot;;
-    for (i = 0; i &lt; GPIO_MODULE_MAX; i++) {
-        memset(gpio_node, 0, sizeof(gpio_node));
-        sprintf(gpio_node, &quot;gpio%d&quot;, i);
-        //  Fails because gpio_node may overflow
+<p>This potential Buffer Overflow seems scary: <a href="https://github.com/pine64/bl_iot_sdk/compare/master...lupyuen:fix-gcc-warnings#diff-c60188dbf9788696071897d85f50ea1e97b474a7271f6f5de3b46241184c7902"><code>components/hal_drv/ bl602_hal/hal_button.c</code></a></p>
+<pre><code class="language-c">int i;
+char gpio_node[10] = &quot;gpio&quot;;
+sprintf(gpio_node, &quot;gpio%d&quot;, i);
+//  Fails because gpio_node may overflow
 </code></pre>
-<p>To...</p>
-<pre><code class="language-c">        //  Limit formatting to size of gpio_node
-        snprintf(gpio_node, sizeof(gpio_node), &quot;gpio%d&quot;, i);
+<p>GCC thinks that <code>i</code> may exceed 5 digits (because it's a 32-bit integer), causing <code>gpio_node</code> to overflow.</p>
+<p>For our safety (and to placate GCC), we switch <code>sprintf</code> to <code>snprintf</code>, which limits the output size...</p>
+<pre><code class="language-c">//  Limit formatting to size of gpio_node
+snprintf(gpio_node, sizeof(gpio_node), &quot;gpio%d&quot;, i);
 </code></pre>
-<h2 id="another-buffer-overflow" class="section-header"><a href="#another-buffer-overflow">7.3 Another Buffer Overflow</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/pine64/bl_iot_sdk/compare/master...lupyuen:fix-gcc-warnings#diff-29ee70160cf58784272419fe4769f988b944038e2d68800b3f51aa179feea412"><code>components/hal_drv/ bl602_hal/hal_sys.c</code></a></p>
-<pre><code class="language-c">struct romapi_freertos_map* hal_sys_romapi_get(void)
-{
-    extern uint8_t __global_pointer_head$;
-    memset(&amp;__global_pointer_head$, 0, 0x498);
-    //  Fails because the pointer references a single byte, not 0x498 bytes
+<h2 id="external-pointer-reference" class="section-header"><a href="#external-pointer-reference">7.3 External Pointer Reference</a></h2>
+<p>Here we use a pointer that's defined in a GCC Linker Script: <a href="https://github.com/pine64/bl_iot_sdk/compare/master...lupyuen:fix-gcc-warnings#diff-29ee70160cf58784272419fe4769f988b944038e2d68800b3f51aa179feea412"><code>components/hal_drv/ bl602_hal/hal_sys.c</code></a></p>
+<pre><code class="language-c">extern uint8_t __global_pointer_head$;
+memset(&amp;__global_pointer_head$, 0, 0x498);
+//  Fails because the pointer references a single byte, not 0x498 bytes
 </code></pre>
-<p>To...</p>
-<pre><code class="language-c">    //  Pointer to an array of 0x498 bytes
-    extern uint8_t __global_pointer_head$[0x498];
+<p>GCC doesn't like this because it says that the pointer references a single byte... Copying <code>0x498</code> bytes to the pointer would surely cause an overflow!</p>
+<p>Thus we do the right thing and tell GCC that it's really a pointer to an array of <code>0x498</code> bytes...</p>
+<pre><code class="language-c">//  Pointer to an array of 0x498 bytes
+extern uint8_t __global_pointer_head$[0x498];
 </code></pre>
-<h2 id="pull-request" class="section-header"><a href="#pull-request">7.4 Pull Request</a></h2>
-<p>TODO</p>
-<p>PR: https://github.com/pine64/bl_iot_sdk/pull/84</p>
-<h2 id="pending-analysis" class="section-header"><a href="#pending-analysis">7.5 Pending Analysis</a></h2>
-<p>TODO</p>
-<p>4 changes have not been pushed upstream, needs more impact analysis...</p>
-<p>Variable set but not used:</p>
-<p>https://github.com/pine64/bl_iot_sdk/pull/84#discussion_r549207518</p>
-<p>Invalid format strings:</p>
-<p>https://github.com/lupyuen/bl_iot_sdk/commit/2393379c2fd9177cd62484667a0ce07157370e43#diff-99dc1c18d04bd746c17e484406a6f9e5fe733c1f9751adb364ad636253f5c1ae</p>
-<p>Misplaced main function:</p>
-<p>https://github.com/lupyuen/bl_iot_sdk/commit/2393379c2fd9177cd62484667a0ce07157370e43#diff-d1eb6a16f4855132d64e9decec8de3b44d06d52c03e6825a0dc71dd595cbe157</p>
-<p>Missing include:</p>
-<p>https://github.com/lupyuen/bl_iot_sdk/commit/2393379c2fd9177cd62484667a0ce07157370e43#diff-3b9ce4151983dedcd6bc4e3788a8b30b249ff106bd987df589b409cc72f9f2b9</p>
+<h2 id="pull-request-and-pending-analysis" class="section-header"><a href="#pull-request-and-pending-analysis">7.4 Pull Request and Pending Analysis</a></h2>
+<p>The above fixes (plus a few minor ones) have been submitted upstream as a Pull Request...</p>
+<ul>
+<li><a href="https://github.com/pine64/bl_iot_sdk/pull/84"><strong>GCC Fixes for BL602 SDK on Mynewt</strong></a></li>
+</ul>
+<p>4 fixes have not been pushed upstream yet, because they need more Impact Analysis...</p>
+<ol>
+<li>
+<p>Variable set but not used</p>
+<ul>
+<li><a href="https://github.com/pine64/bl_iot_sdk/pull/84#discussion_r549207518"><code>components/hal_drv/ bl602_hal/hal_board.c</code></a></li>
+</ul>
+</li>
+<li>
+<p>Mismatched format strings</p>
+<ul>
+<li><a href="https://github.com/lupyuen/bl_iot_sdk/commit/2393379c2fd9177cd62484667a0ce07157370e43#diff-99dc1c18d04bd746c17e484406a6f9e5fe733c1f9751adb364ad636253f5c1ae"><code>components/bl602/bl602_std/ bl602_std/StdDriver/Src/ bl602_common.c</code></a></li>
+</ul>
+</li>
+<li>
+<p>Misplaced main function</p>
+<ul>
+<li><a href="https://github.com/lupyuen/bl_iot_sdk/commit/2393379c2fd9177cd62484667a0ce07157370e43#diff-d1eb6a16f4855132d64e9decec8de3b44d06d52c03e6825a0dc71dd595cbe157"><code>components/bl602/bl602_std/ bl602_std/StdDriver/Src/bl602_mfg_flash.c</code></a></li>
+</ul>
+</li>
+<li>
+<p>Missing include</p>
+<ul>
+<li><a href="https://github.com/lupyuen/bl_iot_sdk/commit/2393379c2fd9177cd62484667a0ce07157370e43#diff-3b9ce4151983dedcd6bc4e3788a8b30b249ff106bd987df589b409cc72f9f2b9"><code>components/bl602/bl602_std/ bl602_std/StdDriver/Src/bl602_romdriver.c</code></a></li>
+</ul>
+</li>
+</ol>
 <h1 id="github-actions-workflow" class="section-header"><a href="#github-actions-workflow">8 GitHub Actions Workflow</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/.github/workflows/main.yml"><code>.github/workflows/main.yml</code></a></p>
