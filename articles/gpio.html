@@ -349,11 +349,14 @@ int main(int argc, char **argv) {
 <p>This unusual structure seems similar to ESP32, where FreeRTOS is embedded into the ESP32 HAL.</p>
 <p>We can still go ahead and port Mynewt (and other Operating Systems) to BL602. Just that we need to emulate the FreeRTOS functions in Mynewt (and other Operating Systems).</p>
 <h1 id="fix-bl602-sdk-for-mynewt" class="section-header"><a href="#fix-bl602-sdk-for-mynewt">7 Fix BL602 SDK for Mynewt</a></h1>
+<p>Mynewt is strict and uptight when compiling C code with GCC... Any warnings emitted by GCC will fail the Mynewt build.</p>
+<p>Here are the fixes we made to the BL602 IoT SDK to resolve the warnings...</p>
 <p>TODO</p>
 <p><a href="https://github.com/pine64/bl_iot_sdk/compare/master...lupyuen:fix-gcc-warnings#diff-50c41592b050878713231111ff6302905f1f2aa7bedff6b250ff6fd6d219cc33"><code>components/hal_drv/ bl602_hal/bl_adc.c</code></a></p>
 <pre><code class="language-c">int bl_adc_gpio_init(int gpio_num) {
     uint8_t adc_pin = gpio_num;
     GLB_GPIO_Func_Init(GPIO_FUN_ANALOG, &amp;adc_pin, 1);
+    //  Fails because GCC expects adc_pin to be GLB_GPIO_Type, not uint8_t
 </code></pre>
 <p>To...</p>
 <pre><code class="language-c">    GLB_GPIO_Type adc_pin = gpio_num;
@@ -363,19 +366,33 @@ int main(int argc, char **argv) {
     for (i = 0; i &lt; GPIO_MODULE_MAX; i++) {
         memset(gpio_node, 0, sizeof(gpio_node));
         sprintf(gpio_node, &quot;gpio%d&quot;, i);
+        //  Fails because gpio_node may overflow
 </code></pre>
 <p>To...</p>
-<pre><code class="language-c">        snprintf(gpio_node, sizeof(gpio_node), &quot;gpio%d&quot;, i);
+<pre><code class="language-c">        //  Limit to size of gpio_node
+        snprintf(gpio_node, sizeof(gpio_node), &quot;gpio%d&quot;, i);
 </code></pre>
 <p><a href="https://github.com/pine64/bl_iot_sdk/compare/master...lupyuen:fix-gcc-warnings#diff-29ee70160cf58784272419fe4769f988b944038e2d68800b3f51aa179feea412"><code>components/hal_drv/ bl602_hal/hal_sys.c</code></a></p>
 <pre><code class="language-c">struct romapi_freertos_map* hal_sys_romapi_get(void)
 {
     extern uint8_t __global_pointer_head$;
     memset(&amp;__global_pointer_head$, 0, 0x498);
+    //  Fails because the pointer references a single byte, not 0x498 bytes
 </code></pre>
 <p>To...</p>
-<pre><code class="language-c">    extern uint8_t __global_pointer_head$[0x498];
+<pre><code class="language-c">    //  Declare a pointer that references an array of 0x498 bytes
+    extern uint8_t __global_pointer_head$[0x498];
 </code></pre>
+<p>PR: https://github.com/pine64/bl_iot_sdk/pull/84</p>
+<p>4 changes have not been pushed upstream, needs more impact analysis...</p>
+<p>Variable set but not used:</p>
+<p>https://github.com/pine64/bl_iot_sdk/pull/84#discussion_r549207518</p>
+<p>Invalid format strings:</p>
+<p>https://github.com/lupyuen/bl_iot_sdk/commit/2393379c2fd9177cd62484667a0ce07157370e43#diff-99dc1c18d04bd746c17e484406a6f9e5fe733c1f9751adb364ad636253f5c1ae</p>
+<p>Misplaced main function:</p>
+<p>https://github.com/lupyuen/bl_iot_sdk/commit/2393379c2fd9177cd62484667a0ce07157370e43#diff-d1eb6a16f4855132d64e9decec8de3b44d06d52c03e6825a0dc71dd595cbe157</p>
+<p>Missing include:</p>
+<p>https://github.com/lupyuen/bl_iot_sdk/commit/2393379c2fd9177cd62484667a0ce07157370e43#diff-3b9ce4151983dedcd6bc4e3788a8b30b249ff106bd987df589b409cc72f9f2b9</p>
 <h1 id="github-actions-workflow" class="section-header"><a href="#github-actions-workflow">8 GitHub Actions Workflow</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/.github/workflows/main.yml"><code>.github/workflows/main.yml</code></a></p>
