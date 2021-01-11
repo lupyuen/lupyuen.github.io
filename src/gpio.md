@@ -404,7 +404,7 @@ We'll see the results of the Automated Build here (please log in to GitHub first
 
 To complete the build in TWO MINUTES, we use some caching magic inside our GitHub Actions Workflow.
 
-Let learn how it works: [`.github/workflows/main.yml`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/.github/workflows/main.yml)
+Let's learn how it works: [`.github/workflows/main.yml`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/.github/workflows/main.yml)
 
 ## Trigger Conditions
 
