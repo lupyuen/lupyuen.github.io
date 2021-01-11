@@ -609,6 +609,10 @@ actions/cache@v2
 
 TODO
 
+![Sensors and actuators to be tested with PineCone BL602](https://lupyuen.github.io/images/gpio-sensors.jpg)
+
+_Sensors and actuators to be tested with PineCone BL602_
+
 # What's Next
 
 TODO
