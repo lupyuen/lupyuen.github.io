@@ -388,15 +388,17 @@ The above fixes (plus a few minor ones) have been submitted upstream as a Pull R
 
     -   [`components/bl602/bl602_std/ bl602_std/StdDriver/Src/ bl602_romdriver.c`](https://github.com/lupyuen/bl_iot_sdk/commit/2393379c2fd9177cd62484667a0ce07157370e43#diff-3b9ce4151983dedcd6bc4e3788a8b30b249ff106bd987df589b409cc72f9f2b9)
 
-# GitHub Actions Workflow
+# Automated Build with GitHub Actions
+
+When porting Mynewt to BL602, it's good to make sure that we don't break any existing code by accident. (Especially the BL602 IoT SDK, which we have tweaked slightly for Mynewt)
+
+That's why we use GitHub Actions to build automatically the Mynewt code (plus the core parts of BL602 IoT SDK) whenever we commit any changes.
+
+Here's the GitHub Actions Workflow that gets triggered for Automated Builds: [`.github/workflows/main.yml`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/.github/workflows/main.yml)
 
 TODO
 
-[`.github/workflows/main.yml`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/.github/workflows/main.yml)
-
 ```yaml
-# GitHub Actions Workflow to build Rust+Mynewt Firmware for PineCone BL602
-
 # Name of this Workflow
 name: Build Firmware
 
@@ -455,21 +457,6 @@ jobs:
 
     #########################################################################################
     # Download and Cache Dependencies
-
-    # - name: Fetch cache for Rust Toolchain
-    #   id:   cache-rust
-    #   uses: actions/cache@v2
-    #   with:
-    #     path: |
-    #       ~/.cargo/registry
-    #       ~/.cargo/git
-    #       target
-    #     key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-
-    # - name: Install Rust Target thumbv7em-none-eabihf
-    #   run:  |
-    #     rustup default nightly
-    #     rustup target add thumbv7em-none-eabihf
     
     - name: Check cache for xPack RISC-V Toolchain xpack-riscv-none-embed-gcc
       id:   cache-toolchain
@@ -517,6 +504,29 @@ jobs:
 # RISC-V Toolchain will only be cached if the build succeeds.
 # So make sure that the first build always succeeds, e.g. comment out the "Build" step.
 ```
+
+TODO
+
+```text
+path: /home/runner/work/_temp/mynewt-newt
+    key: Linux-build-cache-newt
+        restore-keys: Linux-build-cache-newt
+          env:
+              cache-name: cache-newt
+
+actions/cache@v2
+  with:
+      path: xpack-riscv-none-embed-gcc
+          key: Linux-build-cache-toolchain
+              restore-keys: Linux-build-cache-toolchain
+                env:
+                    cache-name: cache-toolchain
+
+```
+
+# Run Mynewt on PineCone
+
+TODO
 
 # What's Next
 
