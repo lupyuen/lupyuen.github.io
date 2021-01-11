@@ -362,10 +362,11 @@ int main(int argc, char **argv) {
 <pre><code class="language-c">int bl_adc_gpio_init(int gpio_num) {
     uint8_t adc_pin = gpio_num;
     GLB_GPIO_Func_Init(GPIO_FUN_ANALOG, &amp;adc_pin, 1);
-    //  Fails because GCC expects adc_pin to be GLB_GPIO_Type, not uint8_t
+    //  Fails because GCC expects adc_pin to be an enum, not uint8_t
 </code></pre>
 <p>To...</p>
-<pre><code class="language-c">    GLB_GPIO_Type adc_pin = gpio_num;
+<pre><code class="language-c">    //  Declare adc_pin as enum instead of uint8_t
+    GLB_GPIO_Type adc_pin = gpio_num;
 </code></pre>
 <h2 id="buffer-overflow" class="section-header"><a href="#buffer-overflow">7.2 Buffer Overflow</a></h2>
 <p>TODO</p>
@@ -377,7 +378,7 @@ int main(int argc, char **argv) {
         //  Fails because gpio_node may overflow
 </code></pre>
 <p>To...</p>
-<pre><code class="language-c">        //  Limit to size of gpio_node
+<pre><code class="language-c">        //  Limit formatting to size of gpio_node
         snprintf(gpio_node, sizeof(gpio_node), &quot;gpio%d&quot;, i);
 </code></pre>
 <h2 id="another-buffer-overflow" class="section-header"><a href="#another-buffer-overflow">7.3 Another Buffer Overflow</a></h2>
@@ -390,7 +391,7 @@ int main(int argc, char **argv) {
     //  Fails because the pointer references a single byte, not 0x498 bytes
 </code></pre>
 <p>To...</p>
-<pre><code class="language-c">    //  Declare a pointer that references an array of 0x498 bytes
+<pre><code class="language-c">    //  Pointer to an array of 0x498 bytes
     extern uint8_t __global_pointer_head$[0x498];
 </code></pre>
 <h2 id="pull-request" class="section-header"><a href="#pull-request">7.4 Pull Request</a></h2>
