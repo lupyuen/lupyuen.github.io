@@ -300,6 +300,54 @@ This unusual structure seems similar to ESP32, where FreeRTOS is embedded into t
 
 We can still go ahead and port Mynewt (and other Operating Systems) to BL602. Just that we need to emulate the FreeRTOS functions in Mynewt (and other Operating Systems).
 
+# Fix BL602 SDK for Mynewt
+
+TODO
+
+[`components/hal_drv/ bl602_hal/bl_adc.c`](https://github.com/pine64/bl_iot_sdk/compare/master...lupyuen:fix-gcc-warnings#diff-50c41592b050878713231111ff6302905f1f2aa7bedff6b250ff6fd6d219cc33)
+
+```c
+int bl_adc_gpio_init(int gpio_num) {
+    uint8_t adc_pin = gpio_num;
+    GLB_GPIO_Func_Init(GPIO_FUN_ANALOG, &adc_pin, 1);
+```
+
+To...
+
+```c
+    GLB_GPIO_Type adc_pin = gpio_num;
+```
+
+[`components/hal_drv/ bl602_hal/hal_button.c`](https://github.com/pine64/bl_iot_sdk/compare/master...lupyuen:fix-gcc-warnings#diff-c60188dbf9788696071897d85f50ea1e97b474a7271f6f5de3b46241184c7902)
+
+```c
+    char gpio_node[10] = "gpio";
+    for (i = 0; i < GPIO_MODULE_MAX; i++) {
+        memset(gpio_node, 0, sizeof(gpio_node));
+        sprintf(gpio_node, "gpio%d", i);
+```
+
+To...
+
+```c
+        snprintf(gpio_node, sizeof(gpio_node), "gpio%d", i);
+```
+
+[`components/hal_drv/ bl602_hal/hal_sys.c`](https://github.com/pine64/bl_iot_sdk/compare/master...lupyuen:fix-gcc-warnings#diff-29ee70160cf58784272419fe4769f988b944038e2d68800b3f51aa179feea412)
+
+```c
+struct romapi_freertos_map* hal_sys_romapi_get(void)
+{
+    extern uint8_t __global_pointer_head$;
+    memset(&__global_pointer_head$, 0, 0x498);
+```
+
+To...
+
+```c
+    extern uint8_t __global_pointer_head$[0x498];
+```
+
 # GitHub Actions Workflow
 
 TODO
