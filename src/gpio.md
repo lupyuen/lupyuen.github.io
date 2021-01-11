@@ -304,97 +304,89 @@ We can still go ahead and port Mynewt (and other Operating Systems) to BL602. Ju
 
 Mynewt is strict and uptight when compiling C code with GCC... Any warnings emitted by GCC will fail the Mynewt build.
 
-Here are the fixes we made to the BL602 IoT SDK to resolve the warnings...
+We made the following fixes to the BL602 IoT SDK to resolve the warnings...
 
 ## Mismatched Types
 
-TODO
-
-[`components/hal_drv/ bl602_hal/bl_adc.c`](https://github.com/pine64/bl_iot_sdk/compare/master...lupyuen:fix-gcc-warnings#diff-50c41592b050878713231111ff6302905f1f2aa7bedff6b250ff6fd6d219cc33)
+Here we're passing `adc_pin` as a number: [`components/hal_drv/ bl602_hal/bl_adc.c`](https://github.com/pine64/bl_iot_sdk/compare/master...lupyuen:fix-gcc-warnings#diff-50c41592b050878713231111ff6302905f1f2aa7bedff6b250ff6fd6d219cc33)
 
 ```c
-int bl_adc_gpio_init(int gpio_num) {
-    uint8_t adc_pin = gpio_num;
-    GLB_GPIO_Func_Init(GPIO_FUN_ANALOG, &adc_pin, 1);
-    //  Fails because GCC expects adc_pin to be an enum, not uint8_t
+uint8_t adc_pin = gpio_num;
+GLB_GPIO_Func_Init(GPIO_FUN_ANALOG, &adc_pin, 1);
+//  Fails because GCC expects adc_pin to be an enum, not a number
 ```
 
-To...
+Which displeases the GCC Compiler because the function `GLB_GPIO_Func_Init` expects an enum `GLB_GPIO_Type`, not a number.
+
+The fix is simple...
 
 ```c
-    //  Declare adc_pin as enum instead of uint8_t
-    GLB_GPIO_Type adc_pin = gpio_num;
+//  Declare as enum instead of number
+GLB_GPIO_Type adc_pin = gpio_num;
 ```
 
 ## Buffer Overflow
 
-TODO
-
-[`components/hal_drv/ bl602_hal/hal_button.c`](https://github.com/pine64/bl_iot_sdk/compare/master...lupyuen:fix-gcc-warnings#diff-c60188dbf9788696071897d85f50ea1e97b474a7271f6f5de3b46241184c7902)
+This potential Buffer Overflow seems scary: [`components/hal_drv/ bl602_hal/hal_button.c`](https://github.com/pine64/bl_iot_sdk/compare/master...lupyuen:fix-gcc-warnings#diff-c60188dbf9788696071897d85f50ea1e97b474a7271f6f5de3b46241184c7902)
 
 ```c
-    char gpio_node[10] = "gpio";
-    for (i = 0; i < GPIO_MODULE_MAX; i++) {
-        memset(gpio_node, 0, sizeof(gpio_node));
-        sprintf(gpio_node, "gpio%d", i);
-        //  Fails because gpio_node may overflow
+int i;
+char gpio_node[10] = "gpio";
+sprintf(gpio_node, "gpio%d", i);
+//  Fails because gpio_node may overflow
 ```
 
-To...
+GCC thinks that `i` may exceed 5 digits (because it's a 32-bit integer), causing `gpio_node` to overflow.
+
+For our safety (and to placate GCC), we switch `sprintf` to `snprintf`, which limits the output size...
 
 ```c
-        //  Limit formatting to size of gpio_node
-        snprintf(gpio_node, sizeof(gpio_node), "gpio%d", i);
+//  Limit formatting to size of gpio_node
+snprintf(gpio_node, sizeof(gpio_node), "gpio%d", i);
 ```
 
-## Another Buffer Overflow
+## External Pointer Reference
 
-TODO
-
-[`components/hal_drv/ bl602_hal/hal_sys.c`](https://github.com/pine64/bl_iot_sdk/compare/master...lupyuen:fix-gcc-warnings#diff-29ee70160cf58784272419fe4769f988b944038e2d68800b3f51aa179feea412)
+Here we use a pointer that's defined in a GCC Linker Script: [`components/hal_drv/ bl602_hal/hal_sys.c`](https://github.com/pine64/bl_iot_sdk/compare/master...lupyuen:fix-gcc-warnings#diff-29ee70160cf58784272419fe4769f988b944038e2d68800b3f51aa179feea412)
 
 ```c
-struct romapi_freertos_map* hal_sys_romapi_get(void)
-{
-    extern uint8_t __global_pointer_head$;
-    memset(&__global_pointer_head$, 0, 0x498);
-    //  Fails because the pointer references a single byte, not 0x498 bytes
+extern uint8_t __global_pointer_head$;
+memset(&__global_pointer_head$, 0, 0x498);
+//  Fails because the pointer references a single byte, not 0x498 bytes
 ```
 
-To...
+GCC doesn't like this because it says that the pointer references a single byte... Copying `0x498` bytes to the pointer would surely cause an overflow!
+
+Thus we do the right thing and tell GCC that it's really a pointer to an array of `0x498` bytes...
 
 ```c
-    //  Pointer to an array of 0x498 bytes
-    extern uint8_t __global_pointer_head$[0x498];
+//  Pointer to an array of 0x498 bytes
+extern uint8_t __global_pointer_head$[0x498];
 ```
 
-## Pull Request
+## Pull Request and Pending Analysis
 
-TODO
+The above fixes (plus a few minor ones) have been submitted upstream as a Pull Request...
 
-PR: https://github.com/pine64/bl_iot_sdk/pull/84
+-   [__GCC Fixes for BL602 SDK on Mynewt__](https://github.com/pine64/bl_iot_sdk/pull/84)
 
-## Pending Analysis
+4 fixes have not been pushed upstream yet, because they need more Impact Analysis...
 
-TODO
+1.  Variable set but not used
 
-4 changes have not been pushed upstream, needs more impact analysis...
+    -   [`components/hal_drv/ bl602_hal/hal_board.c`](https://github.com/pine64/bl_iot_sdk/pull/84#discussion_r549207518)
 
-Variable set but not used:
+1.  Mismatched format strings
 
-https://github.com/pine64/bl_iot_sdk/pull/84#discussion_r549207518
+    -   [`components/bl602/bl602_std/ bl602_std/StdDriver/Src/ bl602_common.c`](https://github.com/lupyuen/bl_iot_sdk/commit/2393379c2fd9177cd62484667a0ce07157370e43#diff-99dc1c18d04bd746c17e484406a6f9e5fe733c1f9751adb364ad636253f5c1ae)
 
-Invalid format strings:
+1.  Misplaced main function
 
-https://github.com/lupyuen/bl_iot_sdk/commit/2393379c2fd9177cd62484667a0ce07157370e43#diff-99dc1c18d04bd746c17e484406a6f9e5fe733c1f9751adb364ad636253f5c1ae
+    -   [`components/bl602/bl602_std/ bl602_std/StdDriver/Src/bl602_mfg_flash.c`](https://github.com/lupyuen/bl_iot_sdk/commit/2393379c2fd9177cd62484667a0ce07157370e43#diff-d1eb6a16f4855132d64e9decec8de3b44d06d52c03e6825a0dc71dd595cbe157)
 
-Misplaced main function:
+1.  Missing include
 
-https://github.com/lupyuen/bl_iot_sdk/commit/2393379c2fd9177cd62484667a0ce07157370e43#diff-d1eb6a16f4855132d64e9decec8de3b44d06d52c03e6825a0dc71dd595cbe157
-
-Missing include:
-
-https://github.com/lupyuen/bl_iot_sdk/commit/2393379c2fd9177cd62484667a0ce07157370e43#diff-3b9ce4151983dedcd6bc4e3788a8b30b249ff106bd987df589b409cc72f9f2b9
+    -   [`components/bl602/bl602_std/ bl602_std/StdDriver/Src/bl602_romdriver.c`](https://github.com/lupyuen/bl_iot_sdk/commit/2393379c2fd9177cd62484667a0ce07157370e43#diff-3b9ce4151983dedcd6bc4e3788a8b30b249ff106bd987df589b409cc72f9f2b9)
 
 # GitHub Actions Workflow
 
