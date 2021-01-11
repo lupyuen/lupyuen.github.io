@@ -394,7 +394,7 @@ When porting Mynewt to BL602, it's good to make sure that we don't break any exi
 
 That's why we use GitHub Actions to build automatically the Mynewt code (plus the core parts of BL602 IoT SDK) whenever we commit any changes.
 
-Here's the GitHub Actions Workflow that gets triggered for Automated Builds: [`.github/workflows/main.yml`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/.github/workflows/main.yml)
+Here's the GitHub Actions Workflow that's triggered for Automated Builds: [`.github/workflows/main.yml`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/.github/workflows/main.yml)
 
 TODO
 
