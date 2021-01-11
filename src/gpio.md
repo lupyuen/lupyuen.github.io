@@ -368,7 +368,7 @@ extern uint8_t __global_pointer_head$[0x498];
 
 The above fixes (plus a few minor ones) have been submitted upstream as a Pull Request...
 
--   [__GCC Fixes for BL602 SDK on Mynewt__](https://github.com/pine64/bl_iot_sdk/pull/84)
+-   [__Fix GCC Warning for BL602 SDK on Mynewt__](https://github.com/pine64/bl_iot_sdk/pull/84)
 
 4 fixes have not been pushed upstream yet, because they need more Impact Analysis...
 
