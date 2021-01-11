@@ -306,6 +306,8 @@ Mynewt is strict and uptight when compiling C code with GCC... Any warnings emit
 
 Here are the fixes we made to the BL602 IoT SDK to resolve the warnings...
 
+## Mismatched Types
+
 TODO
 
 [`components/hal_drv/ bl602_hal/bl_adc.c`](https://github.com/pine64/bl_iot_sdk/compare/master...lupyuen:fix-gcc-warnings#diff-50c41592b050878713231111ff6302905f1f2aa7bedff6b250ff6fd6d219cc33)
@@ -322,6 +324,10 @@ To...
 ```c
     GLB_GPIO_Type adc_pin = gpio_num;
 ```
+
+## Buffer Overflow
+
+TODO
 
 [`components/hal_drv/ bl602_hal/hal_button.c`](https://github.com/pine64/bl_iot_sdk/compare/master...lupyuen:fix-gcc-warnings#diff-c60188dbf9788696071897d85f50ea1e97b474a7271f6f5de3b46241184c7902)
 
@@ -340,6 +346,10 @@ To...
         snprintf(gpio_node, sizeof(gpio_node), "gpio%d", i);
 ```
 
+## Another Buffer Overflow
+
+TODO
+
 [`components/hal_drv/ bl602_hal/hal_sys.c`](https://github.com/pine64/bl_iot_sdk/compare/master...lupyuen:fix-gcc-warnings#diff-29ee70160cf58784272419fe4769f988b944038e2d68800b3f51aa179feea412)
 
 ```c
@@ -357,7 +367,15 @@ To...
     extern uint8_t __global_pointer_head$[0x498];
 ```
 
+## Pull Request
+
+TODO
+
 PR: https://github.com/pine64/bl_iot_sdk/pull/84
+
+## Pending Analysis
+
+TODO
 
 4 changes have not been pushed upstream, needs more impact analysis...
 
