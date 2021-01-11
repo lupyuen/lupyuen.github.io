@@ -78,7 +78,7 @@
 <li><a href="#pull-request-and-pending-analysis">7.4 Pull Request and Pending Analysis</a><ul></ul></li></ul></li>
 <li><a href="#automated-build-with-github-actions">8 Automated Build with GitHub Actions</a><ul>
 <li><a href="#trigger-conditions">8.1 Trigger Conditions</a><ul></ul></li>
-<li><a href="#build-platform">8.2 Build Platform</a><ul></ul></li>
+<li><a href="#build-environment">8.2 Build Environment</a><ul></ul></li>
 <li><a href="#checkout-source-files">8.3 Checkout Source Files</a><ul></ul></li>
 <li><a href="#check-cache-for-newt">8.4 Check Cache for newt</a><ul></ul></li>
 <li><a href="#download-and-build-newt">8.5 Download and Build newt</a><ul></ul></li>
@@ -435,11 +435,18 @@ extern uint8_t __global_pointer_head$[0x498];
 </li>
 </ol>
 <h1 id="automated-build-with-github-actions" class="section-header"><a href="#automated-build-with-github-actions">8 Automated Build with GitHub Actions</a></h1>
-<p>When porting Mynewt to BL602, it's good to make sure that we don't break any existing code by accident. (Especially the BL602 IoT SDK, which we have tweaked slightly for Mynewt)</p>
-<p>That's why we use GitHub Actions to build automatically the Mynewt code (plus the core parts of BL602 IoT SDK) whenever we commit any changes.</p>
-<p>Here's the GitHub Actions Workflow that's triggered for Automated Builds: <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/.github/workflows/main.yml"><code>.github/workflows/main.yml</code></a></p>
+<p>When porting Mynewt to BL602, it's good to make sure that we don't <strong>break any existing code by accident</strong>. (Especially the BL602 IoT SDK, which we have tweaked slightly for Mynewt)</p>
+<p>That's why we use <strong>GitHub Actions to compile automatically</strong> the Mynewt code (plus the core parts of BL602 IoT SDK) whenever we <strong>commit any changes</strong>.</p>
+<p><em>How long does GitHub take to compile our Mynewt + BL602 SDK Code?</em></p>
+<p><strong>TWO MINUTES</strong>. Thus if ever commit some bad code (that can't be compiled) into the repo, GitHub will alert us in TWO MINUTES (via email) that something has gone terribly wrong in our repo.</p>
+<p>We'll see the results of the Automated Build here (please log in to GitHub first)...</p>
+<ul>
+<li><a href="https://github.com/lupyuen/pinecone-rust-mynewt/actions"><strong>GitHub Actions for <code>pinecone-rust-mynewt</code></strong></a></li>
+</ul>
+<p>To complete the build in TWO MINUTES, we use some caching magic inside our GitHub Actions Workflow.</p>
+<p>Let learn how it works: <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/.github/workflows/main.yml"><code>.github/workflows/main.yml</code></a></p>
 <h2 id="trigger-conditions" class="section-header"><a href="#trigger-conditions">8.1 Trigger Conditions</a></h2>
-<p>TODO</p>
+<p>At the top of the GitHub Actions Workflow, we state the conditions that will trigger the Automated Build...</p>
 <pre><code class="language-yaml"># Name of this Workflow
 name: Build Firmware
 
@@ -452,8 +459,9 @@ on:
   pull_request:
     branches: [ main ]
 </code></pre>
-<h2 id="build-platform" class="section-header"><a href="#build-platform">8.2 Build Platform</a></h2>
-<p>TODO</p>
+<p>This says that the Automated Build will be triggered whenever we commit code to the <code>main</code> branch. Or when we create a Pull Request for the <code>main</code> branch.</p>
+<h2 id="build-environment" class="section-header"><a href="#build-environment">8.2 Build Environment</a></h2>
+<p>We'll use an Ubuntu x64 virtual machine (hosted at GitHub) to compile our code...</p>
 <pre><code class="language-yaml"># Steps to run for the Workflow
 jobs:
   build:
