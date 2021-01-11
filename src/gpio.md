@@ -382,11 +382,11 @@ The above fixes (plus a few minor ones) have been submitted upstream as a Pull R
 
 1.  Misplaced main function
 
-    -   [`components/bl602/bl602_std/ bl602_std/StdDriver/Src/bl602_mfg_flash.c`](https://github.com/lupyuen/bl_iot_sdk/commit/2393379c2fd9177cd62484667a0ce07157370e43#diff-d1eb6a16f4855132d64e9decec8de3b44d06d52c03e6825a0dc71dd595cbe157)
+    -   [`components/bl602/bl602_std/ bl602_std/StdDriver/Src/ bl602_mfg_flash.c`](https://github.com/lupyuen/bl_iot_sdk/commit/2393379c2fd9177cd62484667a0ce07157370e43#diff-d1eb6a16f4855132d64e9decec8de3b44d06d52c03e6825a0dc71dd595cbe157)
 
 1.  Missing include
 
-    -   [`components/bl602/bl602_std/ bl602_std/StdDriver/Src/bl602_romdriver.c`](https://github.com/lupyuen/bl_iot_sdk/commit/2393379c2fd9177cd62484667a0ce07157370e43#diff-3b9ce4151983dedcd6bc4e3788a8b30b249ff106bd987df589b409cc72f9f2b9)
+    -   [`components/bl602/bl602_std/ bl602_std/StdDriver/Src/ bl602_romdriver.c`](https://github.com/lupyuen/bl_iot_sdk/commit/2393379c2fd9177cd62484667a0ce07157370e43#diff-3b9ce4151983dedcd6bc4e3788a8b30b249ff106bd987df589b409cc72f9f2b9)
 
 # GitHub Actions Workflow
 
