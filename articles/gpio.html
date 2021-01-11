@@ -71,7 +71,12 @@
 <li><a href="#calling-the-mynewt-and-bl602-layers">4 Calling the Mynewt and BL602 Layers</a><ul></ul></li>
 <li><a href="#compile-bl602-sdk-under-mynewt">5 Compile BL602 SDK under Mynewt</a><ul></ul></li>
 <li><a href="#freertos-references-in-bl602-sdk">6 FreeRTOS References in BL602 SDK</a><ul></ul></li>
-<li><a href="#fix-bl602-sdk-for-mynewt">7 Fix BL602 SDK for Mynewt</a><ul></ul></li>
+<li><a href="#fix-bl602-sdk-for-mynewt">7 Fix BL602 SDK for Mynewt</a><ul>
+<li><a href="#mismatched-types">7.1 Mismatched Types</a><ul></ul></li>
+<li><a href="#buffer-overflow">7.2 Buffer Overflow</a><ul></ul></li>
+<li><a href="#another-buffer-overflow">7.3 Another Buffer Overflow</a><ul></ul></li>
+<li><a href="#pull-request">7.4 Pull Request</a><ul></ul></li>
+<li><a href="#pending-analysis">7.5 Pending Analysis</a><ul></ul></li></ul></li>
 <li><a href="#github-actions-workflow">8 GitHub Actions Workflow</a><ul></ul></li>
 <li><a href="#whats-next">9 What's Next</a><ul></ul></li></ul></nav><p>📝 <em>15 Jan 2021</em></p>
 <p>A month ago we started porting <strong>Apache Mynewt</strong>, a modern embedded operating system, to PineCone BL602...</p>
@@ -351,6 +356,7 @@ int main(int argc, char **argv) {
 <h1 id="fix-bl602-sdk-for-mynewt" class="section-header"><a href="#fix-bl602-sdk-for-mynewt">7 Fix BL602 SDK for Mynewt</a></h1>
 <p>Mynewt is strict and uptight when compiling C code with GCC... Any warnings emitted by GCC will fail the Mynewt build.</p>
 <p>Here are the fixes we made to the BL602 IoT SDK to resolve the warnings...</p>
+<h2 id="mismatched-types" class="section-header"><a href="#mismatched-types">7.1 Mismatched Types</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/pine64/bl_iot_sdk/compare/master...lupyuen:fix-gcc-warnings#diff-50c41592b050878713231111ff6302905f1f2aa7bedff6b250ff6fd6d219cc33"><code>components/hal_drv/ bl602_hal/bl_adc.c</code></a></p>
 <pre><code class="language-c">int bl_adc_gpio_init(int gpio_num) {
@@ -361,6 +367,8 @@ int main(int argc, char **argv) {
 <p>To...</p>
 <pre><code class="language-c">    GLB_GPIO_Type adc_pin = gpio_num;
 </code></pre>
+<h2 id="buffer-overflow" class="section-header"><a href="#buffer-overflow">7.2 Buffer Overflow</a></h2>
+<p>TODO</p>
 <p><a href="https://github.com/pine64/bl_iot_sdk/compare/master...lupyuen:fix-gcc-warnings#diff-c60188dbf9788696071897d85f50ea1e97b474a7271f6f5de3b46241184c7902"><code>components/hal_drv/ bl602_hal/hal_button.c</code></a></p>
 <pre><code class="language-c">    char gpio_node[10] = &quot;gpio&quot;;
     for (i = 0; i &lt; GPIO_MODULE_MAX; i++) {
@@ -372,6 +380,8 @@ int main(int argc, char **argv) {
 <pre><code class="language-c">        //  Limit to size of gpio_node
         snprintf(gpio_node, sizeof(gpio_node), &quot;gpio%d&quot;, i);
 </code></pre>
+<h2 id="another-buffer-overflow" class="section-header"><a href="#another-buffer-overflow">7.3 Another Buffer Overflow</a></h2>
+<p>TODO</p>
 <p><a href="https://github.com/pine64/bl_iot_sdk/compare/master...lupyuen:fix-gcc-warnings#diff-29ee70160cf58784272419fe4769f988b944038e2d68800b3f51aa179feea412"><code>components/hal_drv/ bl602_hal/hal_sys.c</code></a></p>
 <pre><code class="language-c">struct romapi_freertos_map* hal_sys_romapi_get(void)
 {
@@ -383,7 +393,11 @@ int main(int argc, char **argv) {
 <pre><code class="language-c">    //  Declare a pointer that references an array of 0x498 bytes
     extern uint8_t __global_pointer_head$[0x498];
 </code></pre>
+<h2 id="pull-request" class="section-header"><a href="#pull-request">7.4 Pull Request</a></h2>
+<p>TODO</p>
 <p>PR: https://github.com/pine64/bl_iot_sdk/pull/84</p>
+<h2 id="pending-analysis" class="section-header"><a href="#pending-analysis">7.5 Pending Analysis</a></h2>
+<p>TODO</p>
 <p>4 changes have not been pushed upstream, needs more impact analysis...</p>
 <p>Variable set but not used:</p>
 <p>https://github.com/pine64/bl_iot_sdk/pull/84#discussion_r549207518</p>
