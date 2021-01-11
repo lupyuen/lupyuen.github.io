@@ -396,7 +396,7 @@ That's why we use __GitHub Actions to compile automatically__ the Mynewt code (p
 
 _How long does GitHub take to compile our Mynewt + BL602 SDK Code?_
 
-__TWO MINUTES__. Thus if ever commit some bad code (that can't be compiled) into the repo, GitHub will alert us in TWO MINUTES (via email) that something has gone terribly wrong in our repo.
+__TWO MINUTES__. Thus if we ever commit some bad code (that can't be compiled) into the repo, GitHub will alert us in TWO MINUTES (via email) that something has gone terribly wrong in our repo.
 
 We'll see the results of the Automated Build here (please log in to GitHub first)...
 
