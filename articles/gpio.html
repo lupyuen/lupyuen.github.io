@@ -76,7 +76,19 @@
 <li><a href="#buffer-overflow">7.2 Buffer Overflow</a><ul></ul></li>
 <li><a href="#external-pointer-reference">7.3 External Pointer Reference</a><ul></ul></li>
 <li><a href="#pull-request-and-pending-analysis">7.4 Pull Request and Pending Analysis</a><ul></ul></li></ul></li>
-<li><a href="#automated-build-with-github-actions">8 Automated Build with GitHub Actions</a><ul></ul></li>
+<li><a href="#automated-build-with-github-actions">8 Automated Build with GitHub Actions</a><ul>
+<li><a href="#trigger-conditions">8.1 Trigger Conditions</a><ul></ul></li>
+<li><a href="#build-platform">8.2 Build Platform</a><ul></ul></li>
+<li><a href="#checkout-source-files">8.3 Checkout Source Files</a><ul></ul></li>
+<li><a href="#check-cache-for-newt">8.4 Check Cache for newt</a><ul></ul></li>
+<li><a href="#download-and-build-newt">8.5 Download and Build newt</a><ul></ul></li>
+<li><a href="#show-files">8.6 Show Files</a><ul></ul></li>
+<li><a href="#check-cache-for-gcc">8.7 Check Cache for GCC</a><ul></ul></li>
+<li><a href="#download-gcc">8.8 Download GCC</a><ul></ul></li>
+<li><a href="#build-mynewt-firmware">8.9 Build Mynewt Firmware</a><ul></ul></li>
+<li><a href="#upload-mynewt-firmware">8.10 Upload Mynewt Firmware</a><ul></ul></li>
+<li><a href="#show-output">8.11 Show Output</a><ul></ul></li>
+<li><a href="#caching-considerations">8.12 Caching Considerations</a><ul></ul></li></ul></li>
 <li><a href="#run-mynewt-on-pinecone">9 Run Mynewt on PineCone</a><ul></ul></li>
 <li><a href="#whats-next">10 What's Next</a><ul></ul></li></ul></nav><p>📝 <em>15 Jan 2021</em></p>
 <p>A month ago we started porting <strong>Apache Mynewt</strong>, a modern embedded operating system, to PineCone BL602...</p>
@@ -426,29 +438,31 @@ extern uint8_t __global_pointer_head$[0x498];
 <p>When porting Mynewt to BL602, it's good to make sure that we don't break any existing code by accident. (Especially the BL602 IoT SDK, which we have tweaked slightly for Mynewt)</p>
 <p>That's why we use GitHub Actions to build automatically the Mynewt code (plus the core parts of BL602 IoT SDK) whenever we commit any changes.</p>
 <p>Here's the GitHub Actions Workflow that's triggered for Automated Builds: <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/.github/workflows/main.yml"><code>.github/workflows/main.yml</code></a></p>
+<h2 id="trigger-conditions" class="section-header"><a href="#trigger-conditions">8.1 Trigger Conditions</a></h2>
 <p>TODO</p>
 <pre><code class="language-yaml"># Name of this Workflow
 name: Build Firmware
 
 # When to run this Workflow...
 on:
-
   # Run this Workflow when files are updated (Pushed) in this Branch
   push:
-    branches: [ main ]
-    
+    branches: [ main ]    
   # Also run this Workflow when a Pull Request is created or updated in this Branch
   pull_request:
     branches: [ main ]
-
-# Steps to run for the Workflow
+</code></pre>
+<h2 id="build-platform" class="section-header"><a href="#build-platform">8.2 Build Platform</a></h2>
+<p>TODO</p>
+<pre><code class="language-yaml"># Steps to run for the Workflow
 jobs:
   build:
-
     # Run these steps on Ubuntu
     runs-on: ubuntu-latest
-
-    steps:
+</code></pre>
+<h2 id="checkout-source-files" class="section-header"><a href="#checkout-source-files">8.3 Checkout Source Files</a></h2>
+<p>TODO</p>
+<pre><code class="language-yaml">    steps:
         
     #########################################################################################
     # Checkout
@@ -457,8 +471,10 @@ jobs:
       uses: actions/checkout@v2
       with:
         submodules: 'recursive'
-
-    - name: Check cache for newt
+</code></pre>
+<h2 id="check-cache-for-newt" class="section-header"><a href="#check-cache-for-newt">8.4 Check Cache for newt</a></h2>
+<p>TODO</p>
+<pre><code class="language-yaml">    - name: Check cache for newt
       id:   cache-newt
       uses: actions/cache@v2
       env:
@@ -467,8 +483,10 @@ jobs:
         path: ${{ runner.temp }}/mynewt-newt
         key:  ${{ runner.os }}-build-${{ env.cache-name }}
         restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}
-
-    - name: Install newt
+</code></pre>
+<h2 id="download-and-build-newt" class="section-header"><a href="#download-and-build-newt">8.5 Download and Build newt</a></h2>
+<p>TODO</p>
+<pre><code class="language-yaml">    - name: Install newt
       if:   steps.cache-newt.outputs.cache-hit != 'true'  # Install newt if not found in cache
       run:  |
         source scripts/install-version.sh
@@ -479,11 +497,15 @@ jobs:
         newt/newt version
         export PATH=$PATH:${{ runner.temp }}/mynewt-newt/newt
         newt version
-
-    - name: Show files
+</code></pre>
+<h2 id="show-files" class="section-header"><a href="#show-files">8.6 Show Files</a></h2>
+<p>TODO</p>
+<pre><code class="language-yaml">    - name: Show files
       run:  set ; pwd ; ls -l
-
-    #########################################################################################
+</code></pre>
+<h2 id="check-cache-for-gcc" class="section-header"><a href="#check-cache-for-gcc">8.7 Check Cache for GCC</a></h2>
+<p>TODO</p>
+<pre><code class="language-yaml">    #########################################################################################
     # Download and Cache Dependencies
     
     - name: Check cache for xPack RISC-V Toolchain xpack-riscv-none-embed-gcc
@@ -495,41 +517,52 @@ jobs:
         path: xpack-riscv-none-embed-gcc
         key:  ${{ runner.os }}-build-${{ env.cache-name }}
         restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}
-
-    - name: Install xPack RISC-V Toolchain xpack-riscv-none-embed-gcc
+</code></pre>
+<h2 id="download-gcc" class="section-header"><a href="#download-gcc">8.8 Download GCC</a></h2>
+<p>TODO</p>
+<pre><code class="language-yaml">    - name: Install xPack RISC-V Toolchain xpack-riscv-none-embed-gcc
       if:   steps.cache-toolchain.outputs.cache-hit != 'true'  # Install toolchain if not found in cache
       run:  |
         wget -qO- https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases/download/v8.3.0-2.3/xpack-riscv-none-embed-gcc-8.3.0-2.3-linux-x64.tar.gz | tar -xz
         mv xpack-riscv-none-embed-gcc-* xpack-riscv-none-embed-gcc
-
-    #########################################################################################
+</code></pre>
+<h2 id="build-mynewt-firmware" class="section-header"><a href="#build-mynewt-firmware">8.9 Build Mynewt Firmware</a></h2>
+<p>TODO</p>
+<pre><code class="language-yaml">    #########################################################################################
     # Build and Upload Rust+Mynewt Application Firmware
 
     - name: Build Application Firmware
       run:  |
         export PATH=$PATH:${{ runner.temp }}/mynewt-newt/newt
         ./scripts/build-app.sh
-
-    - name: Upload Application Firmware
+</code></pre>
+<h2 id="upload-mynewt-firmware" class="section-header"><a href="#upload-mynewt-firmware">8.10 Upload Mynewt Firmware</a></h2>
+<p>TODO</p>
+<pre><code class="language-yaml">    - name: Upload Application Firmware
       uses: actions/upload-artifact@v2
       with:
         name: blinky.elf
         path: bin/targets/pinecone_app/app/apps/blinky/blinky.elf
-
-    - name: Upload Application Firmware Outputs
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-yaml">    - name: Upload Application Firmware Outputs
       uses: actions/upload-artifact@v2
       with:
         name: blinky.zip
         path: bin/targets/pinecone_app/app/apps/blinky/blinky.*
-
-    #########################################################################################
+</code></pre>
+<h2 id="show-output" class="section-header"><a href="#show-output">8.11 Show Output</a></h2>
+<p>TODO</p>
+<pre><code class="language-yaml">    #########################################################################################
     # Finish
 
     - name: Find output
       run:  |
         find bin/targets/pinecone_app/app/apps/blinky -name &quot;blinky.*&quot; -ls
-      
-# RISC-V Toolchain will only be cached if the build succeeds.
+</code></pre>
+<h2 id="caching-considerations" class="section-header"><a href="#caching-considerations">8.12 Caching Considerations</a></h2>
+<p>TODO</p>
+<pre><code class="language-yaml"># RISC-V Toolchain will only be cached if the build succeeds.
 # So make sure that the first build always succeeds, e.g. comment out the &quot;Build&quot; step.
 </code></pre>
 <p>TODO</p>
