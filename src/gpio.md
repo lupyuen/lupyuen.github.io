@@ -603,7 +603,7 @@ If the GCC Compiler exists in our cache, the Cache Action will restore the GCC f
 
 ## Download GCC Compiler
 
-If the GCC Compiler doesn't exist in our cache, we download the [__xPack RISC-V Toolchain `xpack-riscv-none-embed-gcc`__](https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases)...
+If the GCC Compiler doesn't exist in our cache, we download the [__xPack RISC-V Toolchain: `xpack-riscv-none-embed-gcc`__](https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases)
 
 ```yaml
     - name: Install xPack RISC-V Toolchain xpack-riscv-none-embed-gcc
@@ -614,15 +614,15 @@ If the GCC Compiler doesn't exist in our cache, we download the [__xPack RISC-V 
         mv xpack-riscv-none-embed-gcc-* xpack-riscv-none-embed-gcc
 ```
 
-After downloading the GCC Compiler, the Cache Action `actions/cache@v2` (from the previous step) caches our `xpack-riscv-none-embed-gcc` folder...
+(Remember: We check `steps.cache-toolchain` and skip this step if the GCC Compiler is already in our cache)
+
+After downloading the GCC Compiler, the Cache Action `actions/cache@v2` (from the previous step) caches our GCC folder...
 
 ```text
 path:  xpack-riscv-none-embed-gcc
 ```
 
-TODO
-
-400 MB (zipped)
+Caching the GCC Compiler is essential for reducing the Automated Build time to 2 minutes... Because each download of the xPack RISC-V Toolchain takes a whopping __400 MB!__ (Zipped!)
 
 ## Build Mynewt Firmware
 
