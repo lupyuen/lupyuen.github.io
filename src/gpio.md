@@ -571,9 +571,13 @@ TODO
       run:  set ; pwd ; ls -l
 ```
 
-## Check Cache for GCC
+![Mynewt Automated Build completed in 2 minutes](https://lupyuen.github.io/images/gpio-action.png)
 
-TODO
+_Mynewt Automated Build completed in 2 minutes_
+
+## Check Cache for GCC Compiler
+
+Remember how we cached the `newt` tool to cut down on the build time? We'll do the same for our GCC Compiler...
 
 ```yaml
     - name: Check cache for xPack RISC-V Toolchain xpack-riscv-none-embed-gcc
@@ -587,13 +591,24 @@ TODO
         restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}
 ```
 
-## Download GCC
+First we try to load the GCC Compiler from the cache with these settings...
+
+```text
+path:         xpack-riscv-none-embed-gcc
+key:          Linux-build-cache-toolchain
+restore-keys: Linux-build-cache-toolchain
+```
+
+If the GCC Compiler exists in our cache, the Cache Action will restore the GCC folder `xpack-riscv-none-embed-gcc` into the current directory (which is the root of our repo).
+
+## Download GCC Compiler
 
 TODO
 
 ```yaml
     - name: Install xPack RISC-V Toolchain xpack-riscv-none-embed-gcc
-      if:   steps.cache-toolchain.outputs.cache-hit != 'true'  # Install toolchain if not found in cache
+      # Install toolchain if not found in cache
+      if:   steps.cache-toolchain.outputs.cache-hit != 'true'  
       run:  |
         wget -qO- https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases/download/v8.3.0-2.3/xpack-riscv-none-embed-gcc-8.3.0-2.3-linux-x64.tar.gz | tar -xz
         mv xpack-riscv-none-embed-gcc-* xpack-riscv-none-embed-gcc
@@ -649,19 +664,6 @@ TODO
 ```yaml
 # RISC-V Toolchain will only be cached if the build succeeds.
 # So make sure that the first build always succeeds, e.g. comment out the "Build" step.
-```
-
-TODO
-
-```text
-actions/cache@v2
-  with:
-      path: xpack-riscv-none-embed-gcc
-          key: Linux-build-cache-toolchain
-              restore-keys: Linux-build-cache-toolchain
-                env:
-                    cache-name: cache-toolchain
-
 ```
 
 # Run Mynewt on PineCone
