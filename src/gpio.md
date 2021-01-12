@@ -440,14 +440,16 @@ jobs:
 
 ## Checkout Source Files
 
-TODO
+Here begins the steps for our Mynewt + BL602 SDK Automated Build with GitHub Actions.
+
+First we check out the source files from the repo recursively, including the following submodules...
+
+1.  BL602 IoT SDK at [`hw/mcu/bl/bl602/ext`](https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/hw/mcu/bl/bl602/ext)
+
+1.  Mynewt Core, NimBLE, MCU Manager and MCUBoot at [`repos`](https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/repos)
 
 ```yaml
-    steps:
-        
-    #########################################################################################
-    # Checkout
-      
+    steps:        
     - name: Checkout source files
       uses: actions/checkout@v2
       with:
@@ -456,7 +458,11 @@ TODO
 
 ## Check Cache for newt
 
-TODO
+Mynewt doesn't use `make` to build... It uses its own [build tool named `newt`](https://github.com/apache/mynewt-newt/).
+
+Developed in Go, `newt` runs on Linux, macOS and Windows CMD.
+
+We fetch the `newt` executable from our GitHub Actions Cache, if it exists...
 
 ```yaml
     - name: Check cache for newt
@@ -470,13 +476,60 @@ TODO
         restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}
 ```
 
+(If `newt` isn't found in our cache, we build `newt` and cache it in the next step)
+
+Each cache has a name, ours is `cache-newt`...
+
+```yaml
+      env:
+        cache-name: cache-newt
+```
+
+This Cache Action `actions/cache@v2` requires 3 parameters: `path`, `key` and `restore-keys`...
+
+```yaml
+      with:
+        path: ${{ runner.temp }}/mynewt-newt
+        key:  ${{ runner.os }}-build-${{ env.cache-name }}
+        restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}
+```
+
+Given that our GitHub Actions Environment is defined as...
+
+```text
+runner.temp    = /home/runner/work/_temp
+runner.os      = Linux
+env.cache-name = cache-newt
+```
+
+Our parameters will get expanded to...
+
+```yaml
+path:         /home/runner/work/_temp/mynewt-newt
+key:          Linux-build-cache-newt
+restore-keys: Linux-build-cache-newt
+```
+
+Thus the Cache Action will cache and restore the `newt` folder at this temporary folder...
+
+```text
+path: /home/runner/work/_temp/mynewt-newt
+```
+
+And to avoid confusion with other caches in the same workflow, we give it a unique key...
+
+```text
+key: Linux-build-cache-newt
+```
+
 ## Download and Build newt
 
-TODO
+Here's how we download and build `newt` if it doesn't exist in our cache...
 
 ```yaml
     - name: Install newt
-      if:   steps.cache-newt.outputs.cache-hit != 'true'  # Install newt if not found in cache
+      # Install newt if not found in cache
+      if:   steps.cache-newt.outputs.cache-hit != 'true'  
       run:  |
         source scripts/install-version.sh
         cd ${{ runner.temp }}
@@ -487,6 +540,25 @@ TODO
         export PATH=$PATH:${{ runner.temp }}/mynewt-newt/newt
         newt version
 ```
+
+Note the condition: We execute this step only when `newt` doesn't exist in our cache...
+
+```yaml
+      # Install newt if not found in cache
+      if:   steps.cache-newt.outputs.cache-hit != 'true'
+```
+
+(`steps.cache-newt` refers to the cache checking from the previous step)
+
+After building `newt`, the Cache Action `actions/cache@v2` (from the previous step) caches our `newt` folder...
+
+```text
+path: /home/runner/work/_temp/mynewt-newt
+```
+
+And restores the `newt` folder whenever we run the Automated Build.
+
+This caching enables us to complete the Automated Build in two minutes. We'll use caching again for the GCC Compiler.
 
 ## Show Files
 
@@ -502,9 +574,6 @@ TODO
 TODO
 
 ```yaml
-    #########################################################################################
-    # Download and Cache Dependencies
-    
     - name: Check cache for xPack RISC-V Toolchain xpack-riscv-none-embed-gcc
       id:   cache-toolchain
       uses: actions/cache@v2
@@ -533,9 +602,6 @@ TODO
 TODO
 
 ```yaml
-    #########################################################################################
-    # Build and Upload Rust+Mynewt Application Firmware
-
     - name: Build Application Firmware
       run:  |
         export PATH=$PATH:${{ runner.temp }}/mynewt-newt/newt
@@ -569,9 +635,6 @@ TODO
 TODO
 
 ```yaml
-    #########################################################################################
-    # Finish
-
     - name: Find output
       run:  |
         find bin/targets/pinecone_app/app/apps/blinky -name "blinky.*" -ls
@@ -589,12 +652,6 @@ TODO
 TODO
 
 ```text
-path: /home/runner/work/_temp/mynewt-newt
-    key: Linux-build-cache-newt
-        restore-keys: Linux-build-cache-newt
-          env:
-              cache-name: cache-newt
-
 actions/cache@v2
   with:
       path: xpack-riscv-none-embed-gcc
