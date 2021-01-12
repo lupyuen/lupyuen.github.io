@@ -582,7 +582,7 @@ restore-keys: Linux-build-cache-toolchain
 </code></pre>
 <p>If the GCC Compiler exists in our cache, the Cache Action will restore the GCC folder <code>xpack-riscv-none-embed-gcc</code> into the current directory (which is the root of our repo).</p>
 <h2 id="download-gcc-compiler" class="section-header"><a href="#download-gcc-compiler">8.8 Download GCC Compiler</a></h2>
-<p>If the GCC Compiler doesn't exist in our cache, we download the <a href="https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases"><strong>xPack RISC-V Toolchain <code>xpack-riscv-none-embed-gcc</code></strong></a>...</p>
+<p>If the GCC Compiler doesn't exist in our cache, we download the <a href="https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases"><strong>xPack RISC-V Toolchain: <code>xpack-riscv-none-embed-gcc</code></strong></a></p>
 <pre><code class="language-yaml">    - name: Install xPack RISC-V Toolchain xpack-riscv-none-embed-gcc
       # Install toolchain if not found in cache
       if:   steps.cache-toolchain.outputs.cache-hit != 'true'  
@@ -590,11 +590,11 @@ restore-keys: Linux-build-cache-toolchain
         wget -qO- https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases/download/v8.3.0-2.3/xpack-riscv-none-embed-gcc-8.3.0-2.3-linux-x64.tar.gz | tar -xz
         mv xpack-riscv-none-embed-gcc-* xpack-riscv-none-embed-gcc
 </code></pre>
-<p>After downloading the GCC Compiler, the Cache Action <code>actions/cache@v2</code> (from the previous step) caches our <code>xpack-riscv-none-embed-gcc</code> folder...</p>
+<p>(Remember: We check <code>steps.cache-toolchain</code> and skip this step if the GCC Compiler is already in our cache)</p>
+<p>After downloading the GCC Compiler, the Cache Action <code>actions/cache@v2</code> (from the previous step) caches our GCC folder...</p>
 <pre><code class="language-text">path:  xpack-riscv-none-embed-gcc
 </code></pre>
-<p>TODO</p>
-<p>400 MB (zipped)</p>
+<p>Caching the GCC Compiler is essential for reducing the Automated Build time to 2 minutes... Because each download of the xPack RISC-V Toolchain takes a whopping <strong>400 MB!</strong> (Zipped!)</p>
 <h2 id="build-mynewt-firmware" class="section-header"><a href="#build-mynewt-firmware">8.9 Build Mynewt Firmware</a></h2>
 <p>TODO</p>
 <pre><code class="language-yaml">    - name: Build Application Firmware
