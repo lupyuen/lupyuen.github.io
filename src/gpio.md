@@ -555,7 +555,7 @@ Note the condition: We execute this step only when `newt` doesn't exist in our c
 After building `newt`, the Cache Action `actions/cache@v2` (from the previous step) caches our `newt` folder...
 
 ```text
-path: /home/runner/work/_temp/mynewt-newt
+path:  /home/runner/work/_temp/mynewt-newt
 ```
 
 And restores the `newt` folder whenever we run the Automated Build.
@@ -603,7 +603,7 @@ If the GCC Compiler exists in our cache, the Cache Action will restore the GCC f
 
 ## Download GCC Compiler
 
-TODO
+If the GCC Compiler doesn't exist in our cache, we download the [__xPack RISC-V Toolchain `xpack-riscv-none-embed-gcc`__](https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases)...
 
 ```yaml
     - name: Install xPack RISC-V Toolchain xpack-riscv-none-embed-gcc
@@ -613,6 +613,14 @@ TODO
         wget -qO- https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases/download/v8.3.0-2.3/xpack-riscv-none-embed-gcc-8.3.0-2.3-linux-x64.tar.gz | tar -xz
         mv xpack-riscv-none-embed-gcc-* xpack-riscv-none-embed-gcc
 ```
+
+After downloading the GCC Compiler, the Cache Action `actions/cache@v2` (from the previous step) caches our `xpack-riscv-none-embed-gcc` folder...
+
+```text
+path:  xpack-riscv-none-embed-gcc
+```
+
+TODO
 
 400 MB (zipped)
 
@@ -671,6 +679,33 @@ TODO
 # Run Mynewt on PineCone
 
 TODO
+
+```text
+Breakpoint 1 at 0x220092ba: file apps/blinky/src/main.c, line 30.
+Breakpoint 2 at 0x22008242: file repos/apache-mynewt-core/kernel/os/src/arch/rv32imac/os_fault.c, line 30.
+Remote debugging using | xpack-openocd/bin/openocd -c "gdb_port pipe; log_output openocd.log" -f openocd.cfg
+Running executable
+xPack OpenOCD, x86_64 Open On-Chip Debugger 0.10.0+dev-00378-ge5be992df (2020-06-26-12:31)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+0x21000000 in ?? ()
+Not implemented stop reason (assuming exception): undefined
+Loading section .init, size 0xa2 lma 0x22008000
+Loading section .text, size 0x1c1c lma 0x220080a4
+Loading section .tcm_code, size 0xaa0 lma 0x22009cc0
+Loading section .rodata, size 0x94 lma 0x2200a760
+Loading section .sdata2.HFXOSC_PLL_256_MHZ, size 0x8 lma 0x2200a7f4
+Loading section .sdata2._global_impure_ptr, size 0x4 lma 0x2200a7fc
+Loading section .data, size 0x438 lma 0x2200a800
+Loading section .sdata, size 0x1c lma 0x2200ac38
+Start address 0x22008000, load size 11346
+Transfer rate: 2 KB/sec, 1418 bytes/write.
+
+Breakpoint 1, main (argc=0, argv=0x0) at apps/blinky/src/main.c:30
+30	int main(int argc, char **argv) {
+Debugger is not authenticated to target Debug Module. (dmstatus=0x0). Use `riscv authdata_read` and `riscv authdata_write` commands to authenticate.
+```
 
 # What's Next
 
