@@ -541,6 +541,7 @@ restore-keys: Linux-build-cache-newt
         export PATH=$PATH:${{ runner.temp }}/mynewt-newt/newt
         newt version
 </code></pre>
+<p>(We set <code>mynewt_version</code> to <code>mynewt_1_8_0_tag</code> in <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/scripts/install-version.sh"><code>scripts/install-version.sh</code></a>)</p>
 <p>Note the condition: We execute this step only when <code>newt</code> doesn't exist in our cache...</p>
 <pre><code class="language-yaml">      # Install newt if not found in cache
       if:   steps.cache-newt.outputs.cache-hit != 'true'
