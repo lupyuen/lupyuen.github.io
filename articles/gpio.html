@@ -83,8 +83,8 @@
 <li><a href="#check-cache-for-newt">8.4 Check Cache for newt</a><ul></ul></li>
 <li><a href="#download-and-build-newt">8.5 Download and Build newt</a><ul></ul></li>
 <li><a href="#show-files">8.6 Show Files</a><ul></ul></li>
-<li><a href="#check-cache-for-gcc">8.7 Check Cache for GCC</a><ul></ul></li>
-<li><a href="#download-gcc">8.8 Download GCC</a><ul></ul></li>
+<li><a href="#check-cache-for-gcc-compiler">8.7 Check Cache for GCC Compiler</a><ul></ul></li>
+<li><a href="#download-gcc-compiler">8.8 Download GCC Compiler</a><ul></ul></li>
 <li><a href="#build-mynewt-firmware">8.9 Build Mynewt Firmware</a><ul></ul></li>
 <li><a href="#upload-mynewt-firmware">8.10 Upload Mynewt Firmware</a><ul></ul></li>
 <li><a href="#show-output">8.11 Show Output</a><ul></ul></li>
@@ -561,8 +561,10 @@ restore-keys: Linux-build-cache-newt
 <pre><code class="language-yaml">    - name: Show files
       run:  set ; pwd ; ls -l
 </code></pre>
-<h2 id="check-cache-for-gcc" class="section-header"><a href="#check-cache-for-gcc">8.7 Check Cache for GCC</a></h2>
-<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/gpio-action.png" alt="Mynewt Automated Build completed in 2 minutes" /></p>
+<p><em>Mynewt Automated Build completed in 2 minutes</em></p>
+<h2 id="check-cache-for-gcc-compiler" class="section-header"><a href="#check-cache-for-gcc-compiler">8.7 Check Cache for GCC Compiler</a></h2>
+<p>Remember how we cached the <code>newt</code> tool to cut down on the build time? We'll do the same for our GCC Compiler...</p>
 <pre><code class="language-yaml">    - name: Check cache for xPack RISC-V Toolchain xpack-riscv-none-embed-gcc
       id:   cache-toolchain
       uses: actions/cache@v2
@@ -573,10 +575,17 @@ restore-keys: Linux-build-cache-newt
         key:  ${{ runner.os }}-build-${{ env.cache-name }}
         restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}
 </code></pre>
-<h2 id="download-gcc" class="section-header"><a href="#download-gcc">8.8 Download GCC</a></h2>
+<p>First we try to load the GCC Compiler from the cache with these settings...</p>
+<pre><code class="language-text">path:         xpack-riscv-none-embed-gcc
+key:          Linux-build-cache-toolchain
+restore-keys: Linux-build-cache-toolchain
+</code></pre>
+<p>If the GCC Compiler exists in our cache, the Cache Action will restore the GCC folder <code>xpack-riscv-none-embed-gcc</code> into the current directory (which is the root of our repo).</p>
+<h2 id="download-gcc-compiler" class="section-header"><a href="#download-gcc-compiler">8.8 Download GCC Compiler</a></h2>
 <p>TODO</p>
 <pre><code class="language-yaml">    - name: Install xPack RISC-V Toolchain xpack-riscv-none-embed-gcc
-      if:   steps.cache-toolchain.outputs.cache-hit != 'true'  # Install toolchain if not found in cache
+      # Install toolchain if not found in cache
+      if:   steps.cache-toolchain.outputs.cache-hit != 'true'  
       run:  |
         wget -qO- https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases/download/v8.3.0-2.3/xpack-riscv-none-embed-gcc-8.3.0-2.3-linux-x64.tar.gz | tar -xz
         mv xpack-riscv-none-embed-gcc-* xpack-riscv-none-embed-gcc
@@ -613,16 +622,6 @@ restore-keys: Linux-build-cache-newt
 <p>TODO</p>
 <pre><code class="language-yaml"># RISC-V Toolchain will only be cached if the build succeeds.
 # So make sure that the first build always succeeds, e.g. comment out the &quot;Build&quot; step.
-</code></pre>
-<p>TODO</p>
-<pre><code class="language-text">actions/cache@v2
-  with:
-      path: xpack-riscv-none-embed-gcc
-          key: Linux-build-cache-toolchain
-              restore-keys: Linux-build-cache-toolchain
-                env:
-                    cache-name: cache-toolchain
-
 </code></pre>
 <h1 id="run-mynewt-on-pinecone" class="section-header"><a href="#run-mynewt-on-pinecone">9 Run Mynewt on PineCone</a></h1>
 <p>TODO</p>
