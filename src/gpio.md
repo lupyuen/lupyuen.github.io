@@ -635,6 +635,52 @@ TODO
         ./scripts/build-app.sh
 ```
 
+[`scripts/build-app.sh`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/scripts/build-app.sh)
+
+```bash
+#  Add GCC to the PATH
+export PATH="$PWD/xpack-riscv-none-embed-gcc/bin:$PATH"
+
+#  Build the Mynewt Firmware
+newt build pinecone_app
+
+#  Display the firmware size
+newt size -v pinecone_app
+```
+
+We'll see the results of the Automated Build here (please log in to GitHub first)...
+
+-   [__GitHub Actions for `pinecone-rust-mynewt`__](https://github.com/lupyuen/pinecone-rust-mynewt/actions)
+
+```text
+Linking /home/runner/work/pinecone-rust-mynewt/pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky/blinky.elf
+Target successfully built: targets/pinecone_app
++ newt size -v pinecone_app
+Size of Application Image: app
+Mem flash: 0x22008000-0x22014000
+Mem ram: 0x22014000-0x22020000
+  flash     ram 
+      6     529 *fill*
+    172       0 @apache-mynewt-core_hw_hal.a
+   4442    8213 @apache-mynewt-core_kernel_os.a
+     80       0 @apache-mynewt-core_libc_baselibc.a
+    702     128 @apache-mynewt-core_sys_flash_map.a
+      2       0 @apache-mynewt-core_sys_log_modlog.a
+    782      29 @apache-mynewt-core_sys_mfg.a
+     30       5 @apache-mynewt-core_sys_sysinit.a
+     72       0 @apache-mynewt-core_util_mem.a
+     36       0 apps_blinky.a
+     44      12 hw_bsp_pinecone.a
+   3486     228 hw_mcu_bl_bl602.a
+     92       0 pinecone_app-sysinit-app.a
+    292    1064 libg.a
+Loading compiler /home/runner/work/pinecone-rust-mynewt/pinecone-rust-mynewt/compiler/riscv-none-embed, buildProfile debug
+
+objsize
+   text	   data	    bss	    dec	    hex	filename
+  11318	     28	   9100	  20446	   4fde	/home/runner/work/pinecone-rust-mynewt/pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky/blinky.elf
+```
+
 ## Upload Mynewt Firmware
 
 TODO
@@ -704,6 +750,11 @@ Transfer rate: 2 KB/sec, 1418 bytes/write.
 
 Breakpoint 1, main (argc=0, argv=0x0) at apps/blinky/src/main.c:30
 30	int main(int argc, char **argv) {
+```
+
+TODO
+
+```text
 Debugger is not authenticated to target Debug Module. (dmstatus=0x0). Use `riscv authdata_read` and `riscv authdata_write` commands to authenticate.
 ```
 
