@@ -697,11 +697,11 @@ _Sensors and actuators to be tested with PineCone BL602_
 | Knock Switch | Digital
 | Mini Reed Switch | Digital
 | Analog Temperature | Analog
-| Analog & Digital Temperature | Analog, Digital
+| Analog & Digital <br>Temperature | Analog, Digital
 | Button Switch | Digital
 | Tilt Switch | Digital
 | Photoresistor | Analog
-| Digital Temperature & Humidity (DHT11) | Digital (Serial)
+| Digital Temperature <br>& Humidity (DHT11) | Digital (Serial)
 | High Sensitivity Audio | Analog, Digital
 | Metal Touch | Analog, Digital
 | Flame | Analog, Digital
