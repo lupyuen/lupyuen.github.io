@@ -614,6 +614,8 @@ TODO
         mv xpack-riscv-none-embed-gcc-* xpack-riscv-none-embed-gcc
 ```
 
+400 MB (zipped)
+
 ## Build Mynewt Firmware
 
 TODO
