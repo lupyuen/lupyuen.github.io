@@ -668,10 +668,6 @@ actions/cache@v2
 
 TODO
 
-![Sensors and actuators to be tested with PineCone BL602](https://lupyuen.github.io/images/gpio-sensors.jpg)
-
-_Sensors and actuators to be tested with PineCone BL602_
-
 # What's Next
 
 TODO
@@ -685,3 +681,42 @@ TODO
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [`lupyuen.github.io/src/gpio.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/gpio.md)
+
+# Appendix: Inventory of Sensors and Actuators
+
+![Sensors and actuators to be tested with PineCone BL602](https://lupyuen.github.io/images/gpio-sensors.jpg)
+
+_Sensors and actuators to be tested with PineCone BL602_
+
+## Sensors
+
+| Sensor | Outputs |
+|:---|:---|
+| Linear Hall | Analog, Digital
+| Shock Switch | Digital
+| Knock Switch | Digital
+| Mini Reed Switch | Digital
+| Analog Temperature | Analog
+| Analog & Digital Temperature | Analog, Digital
+| Button Switch | Digital
+| Tilt Switch | Digital
+| Photoresistor | Analog
+| Digital Temperature & Humidity (DHT11) | Digital (Serial)
+| High Sensitivity Audio | Analog, Digital
+| Metal Touch | Analog, Digital
+| Flame | Analog, Digital
+
+## Actuators
+
+| Actuator | Input |
+|:---|:---|
+| Laser Transmitter | Digital
+| Active Buzzer | Digital
+| Passive Buzzer | Digital
+| Relay | Digital
+
+## Sensor + Actuator
+
+| Sensor + Actuator | Input / Output |
+|:---|:---|
+| Infrared Transmitter & Receiver | Digital
