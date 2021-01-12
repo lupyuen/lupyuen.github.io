@@ -541,6 +541,8 @@ Here's how we download and build `newt` if it doesn't exist in our cache...
         newt version
 ```
 
+(We set `mynewt_version` to `mynewt_1_8_0_tag` in [`scripts/install-version.sh`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/scripts/install-version.sh))
+
 Note the condition: We execute this step only when `newt` doesn't exist in our cache...
 
 ```yaml
