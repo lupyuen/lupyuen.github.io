@@ -824,7 +824,7 @@ Breakpoint 1, main (argc=0, argv=0x0) at apps/blinky/src/main.c:30
 
 When the debugger code hits the first breakpoint (in the `main` function), click the Continue button in the Debug Toolbar. (Or press F5)
 
-# JTAG Foiled By GPIO
+## JTAG Foiled By GPIO
 
 Calamity strikes as our Mynewt GPIO Firmware runs.
 
