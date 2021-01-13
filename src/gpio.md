@@ -839,9 +839,9 @@ That's because PineCone's RGB LED is __connected to the same pins as the JTAG po
 
 | PineCone Pin | LED Pin | JTAG Pin |
 |:---|:---|:---|
-| `IO 11` | __`Blue`__  | __`TDO`__
-| `IO 14` | __`Green`__ | __`TCK`__
-| `IO 17` | __`Red`__   | __`TDI`__
+| __`GPIO 11`__ | `Blue`  | `TDO`
+| __`GPIO 14`__ | `Green` | `TCK`
+| __`GPIO 17`__ | `Red`   | `TDI`
 
 (See ["If you love the LED... Set it free!"](https://lupyuen.github.io/articles/openocd#if-you-love-the-led-set-it-free))
 
