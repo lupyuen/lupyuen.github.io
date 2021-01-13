@@ -89,13 +89,13 @@
 <li><a href="#upload-mynewt-firmware">8.10 Upload Mynewt Firmware</a><ul></ul></li>
 <li><a href="#show-output">8.11 Show Output</a><ul></ul></li>
 <li><a href="#caching-considerations">8.12 Caching Considerations</a><ul></ul></li></ul></li>
-<li><a href="#run-mynewt-on-pinecone">9 Run Mynewt on PineCone</a><ul></ul></li>
-<li><a href="#jtag-foiled-by-gpio">10 JTAG Foiled By GPIO</a><ul></ul></li>
-<li><a href="#whats-next">11 What's Next</a><ul></ul></li>
-<li><a href="#appendix-inventory-of-sensors-and-actuators">12 Appendix: Inventory of Sensors and Actuators</a><ul>
-<li><a href="#sensors">12.1 Sensors</a><ul></ul></li>
-<li><a href="#actuators">12.2 Actuators</a><ul></ul></li>
-<li><a href="#sensor--actuator">12.3 Sensor + Actuator</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>15 Jan 2021</em></p>
+<li><a href="#run-mynewt-on-pinecone">9 Run Mynewt on PineCone</a><ul>
+<li><a href="#jtag-foiled-by-gpio">9.1 JTAG Foiled By GPIO</a><ul></ul></li></ul></li>
+<li><a href="#whats-next">10 What's Next</a><ul></ul></li>
+<li><a href="#appendix-inventory-of-sensors-and-actuators">11 Appendix: Inventory of Sensors and Actuators</a><ul>
+<li><a href="#sensors">11.1 Sensors</a><ul></ul></li>
+<li><a href="#actuators">11.2 Actuators</a><ul></ul></li>
+<li><a href="#sensor--actuator">11.3 Sensor + Actuator</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>15 Jan 2021</em></p>
 <p>A month ago we started porting <strong>Apache Mynewt</strong>, a modern embedded operating system, to PineCone BL602...</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/mynewt"><strong>&quot;Porting Mynewt to PineCone BL602&quot;</strong></a></li>
@@ -749,7 +749,7 @@ Transfer rate: 2 KB/sec, 1418 bytes/write.
 30	int main(int argc, char **argv) {
 </code></pre>
 <p>When the debugger code hits the first breakpoint (in the <code>main</code> function), click the Continue button in the Debug Toolbar. (Or press F5)</p>
-<h1 id="jtag-foiled-by-gpio" class="section-header"><a href="#jtag-foiled-by-gpio">10 JTAG Foiled By GPIO</a></h1>
+<h2 id="jtag-foiled-by-gpio" class="section-header"><a href="#jtag-foiled-by-gpio">9.1 JTAG Foiled By GPIO</a></h2>
 <p>Calamity strikes as our Mynewt GPIO Firmware runs.</p>
 <p>Yes the Blue LED lights up, but we also see this error in GDB...</p>
 <pre><code class="language-text">Debugger is not authenticated to target Debug Module. (dmstatus=0x0).
@@ -765,7 +765,7 @@ Use `riscv authdata_read` and `riscv authdata_write` commands to authenticate.
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/gpio-sensors.jpg" alt="Sensors and actuators to be tested with PineCone BL602" /></p>
 <p><em>Sensors and actuators to be tested with PineCone BL602</em></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">11 What's Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">10 What's Next</a></h1>
 <p>TODO</p>
 <p>DHT11</p>
 <p><a href="https://medium.com/coinmonks/watch-stm32-blue-pill-juggle-two-spi-sensors-with-dma-20cd1aa89869?source=friends_link&amp;sk=eea71070ce6d9aea3a6108e882749a99">More about BME280</a></p>
@@ -782,10 +782,10 @@ Use `riscv authdata_read` and `riscv authdata_write` commands to authenticate.
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/gpio.md"><code>lupyuen.github.io/src/gpio.md</code></a></p>
-<h1 id="appendix-inventory-of-sensors-and-actuators" class="section-header"><a href="#appendix-inventory-of-sensors-and-actuators">12 Appendix: Inventory of Sensors and Actuators</a></h1>
+<h1 id="appendix-inventory-of-sensors-and-actuators" class="section-header"><a href="#appendix-inventory-of-sensors-and-actuators">11 Appendix: Inventory of Sensors and Actuators</a></h1>
 <p><img src="https://lupyuen.github.io/images/gpio-sensors.jpg" alt="Sensors and actuators to be tested with PineCone BL602" /></p>
 <p><em>Sensors and actuators to be tested with PineCone BL602</em></p>
-<h2 id="sensors" class="section-header"><a href="#sensors">12.1 Sensors</a></h2><table><thead><tr><th align="left">Sensor</th><th align="left">Outputs</th></tr></thead><tbody>
+<h2 id="sensors" class="section-header"><a href="#sensors">11.1 Sensors</a></h2><table><thead><tr><th align="left">Sensor</th><th align="left">Outputs</th></tr></thead><tbody>
 <tr><td align="left">Linear Hall</td><td align="left">Analog, Digital</td></tr>
 <tr><td align="left">Shock Switch</td><td align="left">Digital</td></tr>
 <tr><td align="left">Knock Switch</td><td align="left">Digital</td></tr>
@@ -800,13 +800,13 @@ Use `riscv authdata_read` and `riscv authdata_write` commands to authenticate.
 <tr><td align="left">Metal Touch</td><td align="left">Analog, Digital</td></tr>
 <tr><td align="left">Flame</td><td align="left">Analog, Digital</td></tr>
 </tbody></table>
-<h2 id="actuators" class="section-header"><a href="#actuators">12.2 Actuators</a></h2><table><thead><tr><th align="left">Actuator</th><th align="left">Input</th></tr></thead><tbody>
+<h2 id="actuators" class="section-header"><a href="#actuators">11.2 Actuators</a></h2><table><thead><tr><th align="left">Actuator</th><th align="left">Input</th></tr></thead><tbody>
 <tr><td align="left">Laser Transmitter</td><td align="left">Digital</td></tr>
 <tr><td align="left">Active Buzzer</td><td align="left">Digital</td></tr>
 <tr><td align="left">Passive Buzzer</td><td align="left">Digital</td></tr>
 <tr><td align="left">Relay</td><td align="left">Digital</td></tr>
 </tbody></table>
-<h2 id="sensor--actuator" class="section-header"><a href="#sensor--actuator">12.3 Sensor + Actuator</a></h2><table><thead><tr><th align="left">Sensor + Actuator</th><th align="left">Input / Output</th></tr></thead><tbody>
+<h2 id="sensor--actuator" class="section-header"><a href="#sensor--actuator">11.3 Sensor + Actuator</a></h2><table><thead><tr><th align="left">Sensor + Actuator</th><th align="left">Input / Output</th></tr></thead><tbody>
 <tr><td align="left">Infrared Transmitter &amp; Receiver</td><td align="left">Digital</td></tr>
 </tbody></table>
 
