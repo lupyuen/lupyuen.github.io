@@ -804,7 +804,7 @@ The port of Mynewt to PineCone BL602 continues here...
 
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
-[`github.com/lupyuen/lupyuen.github.io/src/mynewt.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/mynewt.md)
+[`lupyuen.github.io/src/mynewt.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/mynewt.md)
 
 
 # Appendix: Load Firmware to Cache Memory, not Flash Memory

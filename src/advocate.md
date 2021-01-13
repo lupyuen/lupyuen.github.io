@@ -84,5 +84,5 @@ Happy Holidays Everyone! Stay Healthy, Have A Great 2021! 😀
 
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
-[`github.com/lupyuen/lupyuen.github.io/src/advocate.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/advocate.md)
+[`lupyuen.github.io/src/advocate.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/advocate.md)
 
