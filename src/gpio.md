@@ -822,11 +822,30 @@ Breakpoint 1, main (argc=0, argv=0x0) at apps/blinky/src/main.c:30
 30	int main(int argc, char **argv) {
 ```
 
-TODO
+When the debugger code hits the first breakpoint (in the `main` function), click the Continue button in the Debug Toolbar. (Or press F5)
+
+# JTAG Foiled By GPIO
+
+Calamity strikes as our Mynewt GPIO Firmware runs.
+
+Yes the Blue LED lights up, but we also see this error in GDB...
 
 ```text
-Debugger is not authenticated to target Debug Module. (dmstatus=0x0). Use `riscv authdata_read` and `riscv authdata_write` commands to authenticate.
+Debugger is not authenticated to target Debug Module. (dmstatus=0x0).
+Use `riscv authdata_read` and `riscv authdata_write` commands to authenticate.
 ```
+
+That's because PineCone's RGB LED is __connected to the same pins as the JTAG port!__
+
+| PineCone Pin | LED Pin | JTAG Pin |
+|:---|:---|:---|
+| `IO 11` | __`Blue`__  | __`TDO`__
+| `IO 14` | __`Green`__ | __`TCK`__
+| `IO 17` | __`Red`__   | __`TDI`__
+
+(See ["If you love the LED... Set it free!"](https://lupyuen.github.io/articles/openocd#if-you-love-the-led-set-it-free))
+
+TODO
 
 ![Sensors and actuators to be tested with PineCone BL602](https://lupyuen.github.io/images/gpio-sensors.jpg)
 
