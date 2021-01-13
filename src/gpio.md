@@ -626,7 +626,7 @@ Caching the GCC Compiler is essential for reducing the Automated Build time to 2
 
 ## Build Mynewt Firmware
 
-TODO
+Now that we have the build tools ready (`newt` and GCC Compiler), let's build Mynewt with GitHub Actions...
 
 ```yaml
     - name: Build Application Firmware
@@ -635,7 +635,7 @@ TODO
         ./scripts/build-app.sh
 ```
 
-[`scripts/build-app.sh`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/scripts/build-app.sh)
+This sets the path of `newt` and calls the build script: [`scripts/build-app.sh`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/scripts/build-app.sh)
 
 ```bash
 #  Add GCC to the PATH
@@ -648,9 +648,11 @@ newt build pinecone_app
 newt size -v pinecone_app
 ```
 
-We'll see the results of the Automated Build here (please log in to GitHub first)...
+We can see the results of the Automated Build here (please log in to GitHub first)...
 
 -   [__GitHub Actions for `pinecone-rust-mynewt`__](https://github.com/lupyuen/pinecone-rust-mynewt/actions)
+
+Here's a peek at the Automated Build log at GitHub Actions...
 
 ```text
 Linking /home/runner/work/pinecone-rust-mynewt/pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky/blinky.elf
@@ -659,6 +661,13 @@ Target successfully built: targets/pinecone_app
 Size of Application Image: app
 Mem flash: 0x22008000-0x22014000
 Mem ram: 0x22014000-0x22020000
+```
+
+Note that the "Flash Memory" actually points to the Cache Memory at `0x2200 8000`.
+
+This means that our firmware is meant to be tested and debugged with OpenOCD and GDB (or VSCode). (Instead of being flashed to Flash Memory)
+
+```text
   flash     ram 
       6     529 *fill*
     172       0 @apache-mynewt-core_hw_hal.a
@@ -674,12 +683,20 @@ Mem ram: 0x22014000-0x22020000
    3486     228 hw_mcu_bl_bl602.a
      92       0 pinecone_app-sysinit-app.a
     292    1064 libg.a
-Loading compiler /home/runner/work/pinecone-rust-mynewt/pinecone-rust-mynewt/compiler/riscv-none-embed, buildProfile debug
+```
 
+Here are the components of our firmware. The BL602 IoT SDK (GPIO HAL and Standard Driver) occupies 3.4 KB of code and read-only data in `hw_mcu_bl_bl602.a`.
+
+The Mynewt Kernel `apache-mynewt-core_kernel_os.a` occupies 4.3 KB of code and read-only data, plus another 8 KB of read-write data in RAM. (Mostly for the Kernel Stack)
+
+```text
+Loading compiler /home/runner/work/pinecone-rust-mynewt/pinecone-rust-mynewt/compiler/riscv-none-embed, buildProfile debug
 objsize
    text	   data	    bss	    dec	    hex	filename
   11318	     28	   9100	  20446	   4fde	/home/runner/work/pinecone-rust-mynewt/pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky/blinky.elf
 ```
+
+The build creates a Firmware ELF File `blinky.elf` that contains 11 KB of code and read-only data.
 
 ## Upload Mynewt Firmware
 
