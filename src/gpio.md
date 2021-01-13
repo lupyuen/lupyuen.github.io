@@ -761,7 +761,25 @@ TODO
 
 # Run Mynewt on PineCone
 
-TODO
+To test and debug the updated Mynewt on PineCone with our Linux / macOS / Windows computer...
+
+1.  Download and install `newt`, GCC, OpenOCD, VSCode and `pinecone-rust-mynewt`...
+
+    ["Build the Firmware"](https://lupyuen.github.io/articles/mynewt#build-the-firmware)
+
+1.  Build the Mynewt firmware on our computer using the instructions above.
+
+    Alternatively, [download `blinky.elf` from here](https://github.com/lupyuen/pinecone-rust-mynewt/releases/download/v2.0.0/blinky.elf) and copy it to...
+
+    ```text
+    pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky
+    ```
+
+1.  Connect PineCone to our computer with a JTAG Debugger and start the VSCode Debugger...
+
+    ["Debug Firmware with VSCode"](https://lupyuen.github.io/articles/mynewt#debug-firmware-with-vscode)
+
+In the GDB Debug Console we'll see this...
 
 ```text
 Breakpoint 1 at 0x220092ba: file apps/blinky/src/main.c, line 30.
@@ -769,16 +787,20 @@ Breakpoint 2 at 0x22008242: file repos/apache-mynewt-core/kernel/os/src/arch/rv3
 Remote debugging using | xpack-openocd/bin/openocd -c "gdb_port pipe; log_output openocd.log" -f openocd.cfg
 Running executable
 xPack OpenOCD, x86_64 Open On-Chip Debugger 0.10.0+dev-00378-ge5be992df (2020-06-26-12:31)
-Licensed under GNU GPL v2
-For bug reports, read
-	http://openocd.org/doc/doxygen/bugs.html
-0x21000000 in ?? ()
 ```
 
-TODO
+This says that we have set two breakpoints. And that OpenOCD has been started, talking to PineCone.
 
 ```text
+0x21000000 in ?? ()
 Not implemented stop reason (assuming exception): undefined
+```
+
+OpenOCD has taken control of BL602 and has halted the execution at address `0x2100 0000`
+
+Which is really interesting because `0x2100 0000` is the address of __BL602's Boot ROM__.  Thus we have evidence that BL602 starts running the Boot ROM code at `0x2100 0000` whenever it reboots.
+
+```text
 Loading section .init, size 0xa2 lma 0x22008000
 Loading section .text, size 0x1c1c lma 0x220080a4
 Loading section .tcm_code, size 0xaa0 lma 0x22009cc0
@@ -803,6 +825,10 @@ TODO
 ```text
 Debugger is not authenticated to target Debug Module. (dmstatus=0x0). Use `riscv authdata_read` and `riscv authdata_write` commands to authenticate.
 ```
+
+![Sensors and actuators to be tested with PineCone BL602](https://lupyuen.github.io/images/gpio-sensors.jpg)
+
+_Sensors and actuators to be tested with PineCone BL602_
 
 # What's Next
 
