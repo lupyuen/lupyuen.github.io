@@ -845,7 +845,9 @@ That's because PineCone's RGB LED is __connected to the same pins as the JTAG po
 
 (See ["If you love the LED... Set it free!"](https://lupyuen.github.io/articles/openocd#if-you-love-the-led-set-it-free))
 
-TODO
+When we flip the LEDs on and off, the __JTAG Debugger connection drops.__
+
+But our firmware is indeed flipping the LEDs correctly, so we're done with GPIO testing on Mynewt!
 
 ![Sensors and actuators to be tested with PineCone BL602](https://lupyuen.github.io/images/gpio-sensors.jpg)
 
