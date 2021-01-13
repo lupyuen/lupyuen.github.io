@@ -658,15 +658,37 @@ objsize
         name: blinky.elf
         path: bin/targets/pinecone_app/app/apps/blinky/blinky.elf
 </code></pre>
-<p>Here we save the Mynewt Firmware ELF File <code>blinky.elf</code> as an Artifact, to make it accessible for everyone to download.</p>
+<p>Here we save the Mynewt Firmware ELF File <code>blinky.elf</code> as an Artifact, to make it accessible for everyone to download. <a href="https://github.com/lupyuen/pinecone-rust-mynewt/releases/download/v2.0.0/blinky.elf">Download here</a></p>
 <pre><code class="language-yaml">    - name: Upload Application Firmware Outputs
       uses: actions/upload-artifact@v2
       with:
         name: blinky.zip
         path: bin/targets/pinecone_app/app/apps/blinky/blinky.*
 </code></pre>
-<p>Next we upload</p>
-<p>TODO</p>
+<p>Next we upload another Artifact named <code>blinky.zip</code> that contains some useful files from the Mynewt Automated Build...</p>
+<ol>
+<li>
+<p><code>blinky.elf.bin</code>: Mynewt Firmware Binary.</p>
+<p>Contains only the firmware code and read-only data, without the debugging symbols.</p>
+<ul>
+<li><a href="https://github.com/lupyuen/pinecone-rust-mynewt/releases/download/v2.0.0/blinky.elf.bin">Download here</a></li>
+</ul>
+</li>
+<li>
+<p><code>blinky.elf.map</code>: GCC Linker Map for our Mynewt Firmware. </p>
+<p>Shows the addresses of every function and global variable in our firmware.</p>
+<ul>
+<li><a href="https://github.com/lupyuen/pinecone-rust-mynewt/releases/download/v2.0.0/blinky.elf.map">Download here</a></li>
+</ul>
+</li>
+<li>
+<p><code>blinky.elf.lst</code>: RISC-V Assembly Code for our Mynewt Firmware.</p>
+<p>Disassembled from our firmware build.</p>
+<ul>
+<li><a href="https://github.com/lupyuen/pinecone-rust-mynewt/releases/download/v2.0.0/blinky.elf.lst">Download here</a></li>
+</ul>
+</li>
+</ol>
 <h2 id="show-output" class="section-header"><a href="#show-output">8.11 Show Output</a></h2>
 <p>TODO</p>
 <pre><code class="language-yaml">    - name: Find output
@@ -689,7 +711,9 @@ Licensed under GNU GPL v2
 For bug reports, read
 	http://openocd.org/doc/doxygen/bugs.html
 0x21000000 in ?? ()
-Not implemented stop reason (assuming exception): undefined
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-text">Not implemented stop reason (assuming exception): undefined
 Loading section .init, size 0xa2 lma 0x22008000
 Loading section .text, size 0x1c1c lma 0x220080a4
 Loading section .tcm_code, size 0xaa0 lma 0x22009cc0
@@ -699,8 +723,9 @@ Loading section .sdata2._global_impure_ptr, size 0x4 lma 0x2200a7fc
 Loading section .data, size 0x438 lma 0x2200a800
 Loading section .sdata, size 0x1c lma 0x2200ac38
 Start address 0x22008000, load size 11346
-Transfer rate: 2 KB/sec, 1418 bytes/write.
-
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-text">Transfer rate: 2 KB/sec, 1418 bytes/write.
 Breakpoint 1, main (argc=0, argv=0x0) at apps/blinky/src/main.c:30
 30	int main(int argc, char **argv) {
 </code></pre>
@@ -709,6 +734,8 @@ Breakpoint 1, main (argc=0, argv=0x0) at apps/blinky/src/main.c:30
 </code></pre>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">10 What's Next</a></h1>
 <p>TODO</p>
+<p>DHT11</p>
+<p><a href="https://medium.com/coinmonks/watch-stm32-blue-pill-juggle-two-spi-sensors-with-dma-20cd1aa89869?source=friends_link&amp;sk=eea71070ce6d9aea3a6108e882749a99">More about BME280</a></p>
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io">Check out my articles</a></p>
