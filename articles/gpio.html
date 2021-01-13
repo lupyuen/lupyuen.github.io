@@ -740,10 +740,11 @@ Loading section .sdata2._global_impure_ptr, size 0x4 lma 0x2200a7fc
 Loading section .data, size 0x438 lma 0x2200a800
 Loading section .sdata, size 0x1c lma 0x2200ac38
 Start address 0x22008000, load size 11346
+Transfer rate: 2 KB/sec, 1418 bytes/write.
 </code></pre>
-<p>TODO</p>
-<pre><code class="language-text">Transfer rate: 2 KB/sec, 1418 bytes/write.
-Breakpoint 1, main (argc=0, argv=0x0) at apps/blinky/src/main.c:30
+<p>Our GDB Script (<a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/.vscode/launch.json#L15-L39">see this</a>) has loaded our firmware to BL602 at address <code>0x2200 8000</code>, which is in Cache Memory.</p>
+<p>(BL602 doesn't support flashing firmware to Flash Memory with OpenOCD. <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_Openocd%26GDB/en">More details</a>)</p>
+<pre><code class="language-text">Breakpoint 1, main (argc=0, argv=0x0) at apps/blinky/src/main.c:30
 30	int main(int argc, char **argv) {
 </code></pre>
 <p>TODO</p>
