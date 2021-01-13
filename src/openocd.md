@@ -603,7 +603,7 @@ The firmware code from the previous section has been built and uploaded as a Git
 
 1.  Browse to this GitHub Release...
 
-    [`github.com/lupyuen/bl_iot_sdk/releases/tag/v0.0.4`](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v0.0.4)
+    [`github.com/lupyuen/bl_iot_sdk/ releases/tag/v0.0.4`](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v0.0.4)
 
 1.  Scroll to the bottom. Under `Assets`, click `build_out.zip`
 
