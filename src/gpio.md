@@ -828,7 +828,7 @@ When the debugger code hits the first breakpoint (in the `main` function), click
 
 Calamity strikes as our Mynewt GPIO Firmware runs.
 
-Yes the Blue LED lights up, but we also see this error in GDB...
+Yes the Blue LED lights up, but we see this error in GDB...
 
 ```text
 Debugger is not authenticated to target Debug Module. (dmstatus=0x0).
