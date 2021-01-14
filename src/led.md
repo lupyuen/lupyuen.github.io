@@ -492,7 +492,11 @@ This will become part of the port of Mynewt to BL602, that we have started here.
 
 ["Porting Mynewt to PineCone BL602"](https://lupyuen.github.io/articles/mynewt)
 
-Stay Tuned!
+Here's the updated port of Mynewt BL602 that supports GPIO...
+
+["Mynewt GPIO ported to PineCone BL602 RISC-V Board"](https://lupyuen.github.io/articles/gpio)
+
+And the work on Mynewt BL602 continues... Stay Tuned!
 
 -   [Discuss this article on Reddit](https://www.reddit.com/r/RISCV/comments/krkm6g/control_pinecone_bl602_rgb_led_with_gpio_and_pwm/?utm_source=share&utm_medium=web2x&context=3)
 
