@@ -561,10 +561,14 @@ restore-keys: Linux-build-cache-newt
 <p>And restores the <code>newt</code> folder whenever we run the Automated Build.</p>
 <p>This caching enables us to complete the Automated Build in two minutes. We'll use caching again for the GCC Compiler.</p>
 <h2 id="show-files" class="section-header"><a href="#show-files">8.6 Show Files</a></h2>
-<p>TODO</p>
+<p>For troubleshooting our Automated Build, we dump the GitHub Actions Environmment Variables and the File System like so...</p>
 <pre><code class="language-yaml">    - name: Show files
       run:  set ; pwd ; ls -l
 </code></pre>
+<p>And here's the output...</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/gpio#appendix-github-actions-environment"><strong>GitHub Actions Environmment</strong></a></li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/gpio-action.png" alt="Mynewt Automated Build completed in 2 minutes" /></p>
 <p><em>Mynewt Automated Build completed in 2 minutes</em></p>
 <h2 id="check-cache-for-gcc-compiler" class="section-header"><a href="#check-cache-for-gcc-compiler">8.7 Check Cache for GCC Compiler</a></h2>
