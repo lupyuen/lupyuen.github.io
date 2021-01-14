@@ -115,7 +115,7 @@ Let's find out how we made this work.
 
 -   __Embedded Rust__ looks very promising... Clean and safe embedded coding.
 
-    There's ongoing work on Embedded Rust for BL602 so let's wait for it.
+    There's ongoing work on Embedded Rust for BL602 so let's wait for it. [More details](https://github.com/sipeed/bl602-hal)
 
     Meanwhile I'll do Rust the shortcut way... Run it on top of Mynewt. (Instead of Bare Metal)
 
@@ -912,6 +912,8 @@ We shall experiment with the [BME280 Rust Driver](https://crates.io/crates/bme28
 
 Yes we shall be adding support for __UART__ on Mynewt BL602, so that we can view debugging messages.
 
+And __Timers__ so that we can poll for GPIO Inputs.
+
 Stay Tuned!
 
 -   [Check out my articles](https://lupyuen.github.io)
@@ -923,6 +925,12 @@ Stay Tuned!
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [`lupyuen.github.io/src/gpio.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/gpio.md)
+
+# Notes
+
+1.  There is a GPIO feature that hasn't been implemented on Mynewt BL602: Trigger an interrupt when a GPIO Input changes. [See this](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/mcu/bl/bl602/src/hal_gpio.c#L142-L283)
+
+    This requires CLNT Interrupts to be supported on Mynewt BL602.
 
 # Appendix: Inventory of Sensors and Actuators
 
