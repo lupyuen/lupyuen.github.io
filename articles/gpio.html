@@ -767,9 +767,35 @@ Use `riscv authdata_read` and `riscv authdata_write` commands to authenticate.
 <p><img src="https://lupyuen.github.io/images/gpio-sensors.jpg" alt="Sensors and actuators to be tested with PineCone BL602" /></p>
 <p><em>Sensors and actuators to be tested with PineCone BL602</em></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">10 What's Next</a></h1>
-<p>TODO</p>
-<p>DHT11</p>
-<p><a href="https://medium.com/coinmonks/watch-stm32-blue-pill-juggle-two-spi-sensors-with-dma-20cd1aa89869?source=friends_link&amp;sk=eea71070ce6d9aea3a6108e882749a99">More about BME280</a></p>
+<p>We'll be testing Mynewt on PineCone BL602 with an interesting mix of Sensors and Actuators shown above. <a href="https://lupyuen.github.io/articles/gpio#appendix-inventory-of-sensors-and-actuators">Here's the list</a></p>
+<p>Most of the Sensors and Actuators will work fine with GPIO on Mynewt. But some require additional support from Mynewt: <strong>Pulse Width Modulation</strong> and <strong>Analog to Digital Converter</strong>. </p>
+<p>We shall integrate with Mynewt the respective Hardware Abstraction Layers from the BL602 IoT SDK.</p>
+<blockquote>
+<p><em>What about DHT11, the Temperature and Humidity Sensor? (Lower right corner)</em></p>
+</blockquote>
+<p>DHT11 will be a problem because it transmits Serial Data in an unusual way <strong>(bidirectional single wire)</strong> that's incompatible with UART, I2C and SPI. <a href="https://www.mouser.com/datasheet/2/758/DHT11-Technical-Data-Sheet-Translated-Version-1143054.pdf">See DHT11 Datasheet</a></p>
+<p>We would have to read the data from DHT11 via <strong>Bit Banging</strong>. Which is hard to do reliably on a multitasking operating system like Mynewt. <a href="https://medium.com/@ly.lee/openocd-on-raspberry-pi-better-with-swd-on-spi-7dea9caeb590?source=friends_link&amp;sk=df399bfd913d3e262447d28aa5af6b63">More about the evils of Bit Banging</a></p>
+<blockquote>
+<p><em>Is there a better Temperature and Humidity Sensor that connects with standard interfaces... And works well with mutitasking?</em></p>
+</blockquote>
+<p>Yes BME280 senses Temperature, Humidity and Altitude (Air Pressure). BME280 supports <strong>both I2C and SPI</strong> interfaces. <a href="https://medium.com/coinmonks/watch-stm32-blue-pill-juggle-two-spi-sensors-with-dma-20cd1aa89869?source=friends_link&amp;sk=eea71070ce6d9aea3a6108e882749a99">More about BME280</a></p>
+<p>We shall we using BME280 for testing the implementation of I2C and SPI on Mynewt BL602.</p>
+<blockquote>
+<p><em>How do we find Software Drivers for BME280 and other Sensors and Actuators?</em></p>
+</blockquote>
+<p>This will be a problem for all operating systems running on BL602: Getting the <strong>Sensor / Actuator Drivers for Mynewt, FreeRTOS, Zephyr, RIOT, ...</strong></p>
+<p>Each operating system has its own Hardware Abstraction Layer (HAL) for talking to hardware interfaces (like I2C, SPI and Timers). Thus we'll never find drivers that will work across all operaing system.</p>
+<blockquote>
+<p><em>What if we could standardise the HAL across all operating systems?</em></p>
+</blockquote>
+<p>There's one possibility: <strong>Adopt the Rust Embedded HAL.</strong> I have previously ported the Rust Embedded HAL to Mynewt (for PineTime). <a href="https://medium.com/@ly.lee/optimising-pinetimes-display-driver-with-rust-and-mynewt-3ba269ea2f5c?source=friends_link&amp;sk=4d2cbd2e6cd2343eed62d214814f7b81">More details</a></p>
+<p>Once we have the Rust Embedded HAL ported to Mynewt (and other operating systems), we'll be able to use the <strong>Rust Embedded Drivers</strong>. <a href="https://github.com/rust-embedded/awesome-embedded-rust/blob/master/README.md#driver-crates">List of Rust Embedded Drivers</a></p>
+<p>(And we'll have to code our firmware in Rust of course)</p>
+<blockquote>
+<p><em>Anything else we'll be supporting in Mynewt BL602?</em></p>
+</blockquote>
+<p>Yes we shall be adding support for <strong>UART</strong> on Mynewt BL602, so that we can view debugging messages.</p>
+<p>Stay Tuned!</p>
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io">Check out my articles</a></p>
