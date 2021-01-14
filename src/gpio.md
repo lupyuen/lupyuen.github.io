@@ -943,3 +943,140 @@ _Sensors and actuators to be tested with PineCone BL602_
 | Sensor + Actuator | Input / Output |
 |:---|:---|
 | Infrared Transmitter & Receiver | Digital
+
+# Appendix: GitHub Actions Environment
+
+Here's how we dump the GitHub Actions Environmment Variables and the File System...
+
+```yaml
+    - name: Show files
+      run:  set ; pwd ; ls -l
+```
+
+And here's the output...
+
+## Environment Variables
+
+```text
+AGENT_TOOLSDIRECTORY=/opt/hostedtoolcache
+ANDROID_HOME=/usr/local/lib/android/sdk
+ANDROID_SDK_ROOT=/usr/local/lib/android/sdk
+ANT_HOME=/usr/share/ant
+AZURE_EXTENSION_DIR=/opt/az/azcliextensions
+BASH=/usr/bin/bash
+BASHOPTS=checkwinsize:cmdhist:complete_fullquote:extquote:force_fignore:globasciiranges:hostcomplete:interactive_comments:progcomp:promptvars:sourcepath
+BASH_ALIASES=()
+BASH_ARGC=()
+BASH_ARGV=()
+BASH_CMDS=()
+BASH_LINENO=([0]="0")
+BASH_SOURCE=([0]="/home/runner/work/_temp/e317ee99-ed5d-4e4d-bf6d-765dc458355d.sh")
+BASH_VERSINFO=([0]="5" [1]="0" [2]="17" [3]="1" [4]="release" [5]="x86_64-pc-linux-gnu")
+BASH_VERSION='5.0.17(1)-release'
+CHROMEWEBDRIVER=/usr/local/share/chrome_driver
+CHROME_BIN=/usr/bin/google-chrome
+CI=true
+CONDA=/usr/share/miniconda
+DEBIAN_FRONTEND=noninteractive
+DEPLOYMENT_BASEPATH=/opt/runner
+DIRSTACK=()
+DOTNET_MULTILEVEL_LOOKUP='"0"'
+DOTNET_NOLOGO='"1"'
+DOTNET_SKIP_FIRST_TIME_EXPERIENCE='"1"'
+EUID=1001
+GECKOWEBDRIVER=/usr/local/share/gecko_driver
+GITHUB_ACTION=run2
+GITHUB_ACTIONS=true
+GITHUB_ACTION_REF=
+GITHUB_ACTION_REPOSITORY=
+GITHUB_ACTOR=lupyuen
+GITHUB_API_URL=https://api.github.com
+GITHUB_BASE_REF=
+GITHUB_ENV=/home/runner/work/_temp/_runner_file_commands/set_env_64d8b762-fb69-4a06-8cda-f76ea66e06b5
+GITHUB_EVENT_NAME=push
+GITHUB_EVENT_PATH=/home/runner/work/_temp/_github_workflow/event.json
+GITHUB_GRAPHQL_URL=https://api.github.com/graphql
+GITHUB_HEAD_REF=
+GITHUB_JOB=build
+GITHUB_PATH=/home/runner/work/_temp/_runner_file_commands/add_path_64d8b762-fb69-4a06-8cda-f76ea66e06b5
+GITHUB_REF=refs/heads/main
+GITHUB_REPOSITORY=lupyuen/pinecone-rust-mynewt
+GITHUB_REPOSITORY_OWNER=lupyuen
+GITHUB_RETENTION_DAYS=90
+GITHUB_RUN_ID=474939609
+GITHUB_RUN_NUMBER=5
+GITHUB_SERVER_URL=https://github.com
+GITHUB_SHA=bafe061d1fa6e96cc014e4e9a3444a43a1c5144d
+GITHUB_WORKFLOW='Build Firmware'
+GITHUB_WORKSPACE=/home/runner/work/pinecone-rust-mynewt/pinecone-rust-mynewt
+GOROOT=/opt/hostedtoolcache/go/1.14.13/x64
+GOROOT_1_14_X64=/opt/hostedtoolcache/go/1.14.13/x64
+GOROOT_1_15_X64=/opt/hostedtoolcache/go/1.15.6/x64
+GRADLE_HOME=/usr/share/gradle
+GROUPS=()
+HOME=/home/runner
+HOMEBREW_CELLAR='"/home/linuxbrew/.linuxbrew/Cellar"'
+HOMEBREW_PREFIX='"/home/linuxbrew/.linuxbrew"'
+HOMEBREW_REPOSITORY='"/home/linuxbrew/.linuxbrew/Homebrew"'
+HOSTNAME=fv-az29-728
+HOSTTYPE=x86_64
+IFS=$' \t\n'
+INVOCATION_ID=448992154cf94065a2a551779d186946
+ImageOS=ubuntu20
+ImageVersion=20201210.0
+JAVA_HOME=/usr/lib/jvm/adoptopenjdk-11-hotspot-amd64
+JAVA_HOME_11_X64=/usr/lib/jvm/adoptopenjdk-11-hotspot-amd64
+JAVA_HOME_8_X64=/usr/lib/jvm/adoptopenjdk-8-hotspot-amd64
+JOURNAL_STREAM=9:19739
+LANG=C.UTF-8
+LEIN_HOME=/usr/local/lib/lein
+LEIN_JAR=/usr/local/lib/lein/self-installs/leiningen-2.9.5-standalone.jar
+M2_HOME=/usr/share/apache-maven-3.6.3
+MACHTYPE=x86_64-pc-linux-gnu
+OPTERR=1
+OPTIND=1
+OSTYPE=linux-gnu
+PATH=/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:/opt/pipx_bin:/usr/share/rust/.cargo/bin:/home/runner/.config/composer/vendor/bin:/home/runner/.dotnet/tools:/snap/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+PERFLOG_LOCATION_SETTING=RUNNER_PERFLOG
+PIPX_BIN_DIR='"/opt/pipx_bin"'
+PIPX_HOME='"/opt/pipx"'
+POWERSHELL_DISTRIBUTION_CHANNEL=GitHub-Actions-ubuntu20
+PPID=1419
+PS4='+ '
+***
+RUNNER_OS=Linux
+RUNNER_PERFLOG=/home/runner/perflog
+RUNNER_TEMP=/home/runner/work/_temp
+RUNNER_TOOL_CACHE=/opt/hostedtoolcache
+RUNNER_TRACKING_ID=github_bd1e8ac9-ce6e-4066-bc5e-9e1017d2a08c
+RUNNER_USER=runner
+RUNNER_WORKSPACE=/home/runner/work/pinecone-rust-mynewt
+SELENIUM_JAR_PATH=/usr/share/java/selenium-server-standalone.jar
+SHELL=/bin/bash
+SHELLOPTS=braceexpand:errexit:hashall:interactive-comments
+SHLVL=1
+SWIFT_PATH=/usr/share/swift/usr/bin
+TERM=dumb
+UID=1001
+USER=runner
+VCPKG_INSTALLATION_ROOT=/usr/local/share/vcpkg
+_=/usr/bin/bash
+```
+
+## File System
+
+```text
+/home/runner/work/pinecone-rust-mynewt/pinecone-rust-mynewt
+total 52
+-rw-r--r-- 1 runner docker 11357 Jan 10 02:24 LICENSE
+-rw-r--r-- 1 runner docker   241 Jan 10 02:24 NOTICE
+-rw-r--r-- 1 runner docker   583 Jan 10 02:24 README.md
+drwxr-xr-x 3 runner docker  4096 Jan 10 02:24 apps
+drwxr-xr-x 3 runner docker  4096 Jan 10 02:24 compiler
+drwxr-xr-x 4 runner docker  4096 Jan 10 02:24 hw
+-rw-r--r-- 1 runner docker  1807 Jan 10 02:24 openocd.cfg
+-rw-r--r-- 1 runner docker  1081 Jan 10 02:24 project.yml
+drwxr-xr-x 7 runner docker  4096 Jan 10 02:24 repos
+drwxr-xr-x 2 runner docker  4096 Jan 10 02:24 scripts
+drwxr-xr-x 4 runner docker  4096 Jan 10 02:24 targets
+```
