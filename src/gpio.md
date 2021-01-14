@@ -89,6 +89,8 @@ Let's find out how we made this work.
 
     Could there be a modern alternative that works better with today's multitasking microcontrollers?
 
+    [More about Arduino on BL602](https://github.com/pine64/ArduinoCore-bouffalo)
+
 >_Like Mbed OS? The newer Arduino SAMD boards support mbed OS_
 
 -   __Mbed OS__ looks complex for learners. (Based on C++)
