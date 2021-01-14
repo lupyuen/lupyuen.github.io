@@ -16,6 +16,8 @@ Today we shall...
 
 1.   __Map Mynewt's GPIO Functions__ to BL602's Hardware Abstraction Layer
 
+1.   __Build Mynewt BL602 automatically__ with GitHub Actions
+
 If you're new to PineCone BL602, check out my article...
 
 -   [__"Quick Peek of PineCone BL602 RISC-V Evaluation Board"__](https://lupyuen.github.io/articles/pinecone)
@@ -768,12 +770,13 @@ And here's the captured info...
 
 ## Caching Considerations
 
-TODO
+Remember how we cached `newt` and the GCC Compiler with GitHub Actions?
 
-```yaml
-# RISC-V Toolchain will only be cached if the build succeeds.
-# So make sure that the first build always succeeds, e.g. comment out the "Build" step.
-```
+Note that the cache will be populated __only when the build succeeds.__
+
+When creating a new GitHub Actions Workflow, we should first comment out the build steps (to let the build succeed), let the caching happen, then uncomment the build steps.
+
+With caching in effect, we save a lot of time testing and troubleshooting our Automated Build.
 
 # Run Mynewt on PineCone
 
