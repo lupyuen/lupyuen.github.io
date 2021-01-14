@@ -4,6 +4,12 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Mynewt GPIO ported to PineCone BL602 RISC-V Board</title>
+            <link>https://lupyuen.github.io/articles/gpio</link>
+            <description><![CDATA[How we ported the BL602 RISC-V Hardware Abstraction Layer to Apache Mynewt ... Starting with GPIO]]></description>
+            <pubDate>Fri, 15 Jan 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Control PineCone BL602 RGB LED with GPIO and PWM</title>
             <link>https://lupyuen.github.io/articles/led</link>
             <description><![CDATA[Explore the BL602 GPIO and PWM Demo Firmware... And how they call the GPIO and PWM Hardware Abstraction Layer]]></description>
