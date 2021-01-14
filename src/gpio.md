@@ -887,6 +887,8 @@ Once we have the Rust Embedded HAL ported to Mynewt (and other operating systems
 
 (And we'll have to code our firmware in Rust of course)
 
+We shall experiment with the [BME280 Rust Driver](https://crates.io/crates/bme280) on Mynewt BL602.
+
 >_Anything else we'll be supporting in Mynewt BL602?_
 
 Yes we shall be adding support for __UART__ on Mynewt BL602, so that we can view debugging messages.
