@@ -115,6 +115,9 @@
 <li>
 <p><strong>Map Mynewt's GPIO Functions</strong> to BL602's Hardware Abstraction Layer</p>
 </li>
+<li>
+<p><strong>Build Mynewt BL602 automatically</strong> with GitHub Actions</p>
+</li>
 </ol>
 <p>If you're new to PineCone BL602, check out my article...</p>
 <ul>
@@ -712,10 +715,10 @@ objsize
 5439532    300 -rw-r--r--   1 runner   docker     303790 Jan 10 02:26 bin/targets/pinecone_app/app/apps/blinky/blinky.elf.lst
 </code></pre>
 <h2 id="caching-considerations" class="section-header"><a href="#caching-considerations">8.12 Caching Considerations</a></h2>
-<p>TODO</p>
-<pre><code class="language-yaml"># RISC-V Toolchain will only be cached if the build succeeds.
-# So make sure that the first build always succeeds, e.g. comment out the &quot;Build&quot; step.
-</code></pre>
+<p>Remember how we cached <code>newt</code> and the GCC Compiler with GitHub Actions?</p>
+<p>Note that the cache will be populated <strong>only when the build succeeds.</strong></p>
+<p>When creating a new GitHub Actions Workflow, we should first comment out the build steps (to let the build succeed), let the caching happen, then uncomment the build steps.</p>
+<p>With caching in effect, we save a lot of time testing and troubleshooting our Automated Build.</p>
 <h1 id="run-mynewt-on-pinecone" class="section-header"><a href="#run-mynewt-on-pinecone">9 Run Mynewt on PineCone</a></h1>
 <p>To test and debug the updated Mynewt on PineCone with our Linux / macOS / Windows computer...</p>
 <ol>
