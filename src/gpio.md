@@ -855,11 +855,43 @@ _Sensors and actuators to be tested with PineCone BL602_
 
 # What's Next
 
-TODO
+We'll be testing Mynewt on PineCone BL602 with an interesting mix of Sensors and Actuators shown above. [Here's the list](https://lupyuen.github.io/articles/gpio#appendix-inventory-of-sensors-and-actuators)
 
-DHT11
+Most of the Sensors and Actuators will work fine with GPIO on Mynewt. But some require additional support from Mynewt: __Pulse Width Modulation__ and __Analog to Digital Converter__. 
 
-[More about BME280](https://medium.com/coinmonks/watch-stm32-blue-pill-juggle-two-spi-sensors-with-dma-20cd1aa89869?source=friends_link&sk=eea71070ce6d9aea3a6108e882749a99)
+We shall integrate with Mynewt the respective Hardware Abstraction Layers from the BL602 IoT SDK.
+
+>_What about DHT11, the Temperature and Humidity Sensor? (Lower right corner)_
+
+DHT11 will be a problem because it transmits Serial Data in an unusual way __(bidirectional single wire)__ that's incompatible with UART, I2C and SPI. [See DHT11 Datasheet](https://www.mouser.com/datasheet/2/758/DHT11-Technical-Data-Sheet-Translated-Version-1143054.pdf)
+
+We would have to read the data from DHT11 via __Bit Banging__. Which is hard to do reliably on a multitasking operating system like Mynewt. [More about the evils of Bit Banging](https://medium.com/@ly.lee/openocd-on-raspberry-pi-better-with-swd-on-spi-7dea9caeb590?source=friends_link&sk=df399bfd913d3e262447d28aa5af6b63)
+
+>_Is there a better Temperature and Humidity Sensor that connects with standard interfaces... And works well with mutitasking?_
+
+Yes BME280 senses Temperature, Humidity and Altitude (Air Pressure). BME280 supports __both I2C and SPI__ interfaces. [More about BME280](https://medium.com/coinmonks/watch-stm32-blue-pill-juggle-two-spi-sensors-with-dma-20cd1aa89869?source=friends_link&sk=eea71070ce6d9aea3a6108e882749a99)
+
+We shall we using BME280 for testing the implementation of I2C and SPI on Mynewt BL602.
+
+>_How do we find Software Drivers for BME280 and other Sensors and Actuators?_
+
+This will be a problem for all operating systems running on BL602: Getting the __Sensor / Actuator Drivers for Mynewt, FreeRTOS, Zephyr, RIOT, ...__
+
+Each operating system has its own Hardware Abstraction Layer (HAL) for talking to hardware interfaces (like I2C, SPI and Timers). Thus we'll never find drivers that will work across all operaing system.
+
+>_What if we could standardise the HAL across all operating systems?_
+
+There's one possibility: __Adopt the Rust Embedded HAL.__ I have previously ported the Rust Embedded HAL to Mynewt (for PineTime). [More details](https://medium.com/@ly.lee/optimising-pinetimes-display-driver-with-rust-and-mynewt-3ba269ea2f5c?source=friends_link&sk=4d2cbd2e6cd2343eed62d214814f7b81)
+
+Once we have the Rust Embedded HAL ported to Mynewt (and other operating systems), we'll be able to use the __Rust Embedded Drivers__. [List of Rust Embedded Drivers](https://github.com/rust-embedded/awesome-embedded-rust/blob/master/README.md#driver-crates)
+
+(And we'll have to code our firmware in Rust of course)
+
+>_Anything else we'll be supporting in Mynewt BL602?_
+
+Yes we shall be adding support for __UART__ on Mynewt BL602, so that we can view debugging messages.
+
+Stay Tuned!
 
 -   [Check out my articles](https://lupyuen.github.io)
 
