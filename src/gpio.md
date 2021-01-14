@@ -746,12 +746,24 @@ Next we upload another Artifact named `blinky.zip` that contains some useful fil
 
 ## Show Output
 
-TODO
+It's good to keep a record of the files created from the build: pathname, timestamp, file size, ...
+
+Here's how we capture the build output info with GitHub Actions...
 
 ```yaml
     - name: Find output
       run:  |
         find bin/targets/pinecone_app/app/apps/blinky -name "blinky.*" -ls
+```
+
+And here's the captured info...
+
+```text
+5439531     12 -rwxr-xr-x   1 runner   docker      11348 Jan 10 02:26 bin/targets/pinecone_app/app/apps/blinky/blinky.elf.bin
+5439528    348 -rw-r--r--   1 runner   docker     354281 Jan 10 02:26 bin/targets/pinecone_app/app/apps/blinky/blinky.elf.map
+5439529    392 -rwxr-xr-x   1 runner   docker     401104 Jan 10 02:26 bin/targets/pinecone_app/app/apps/blinky/blinky.elf
+5439530      4 -rw-r--r--   1 runner   docker       3309 Jan 10 02:26 bin/targets/pinecone_app/app/apps/blinky/blinky.elf.cmd
+5439532    300 -rw-r--r--   1 runner   docker     303790 Jan 10 02:26 bin/targets/pinecone_app/app/apps/blinky/blinky.elf.lst
 ```
 
 ## Caching Considerations
