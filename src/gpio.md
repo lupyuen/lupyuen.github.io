@@ -564,12 +564,16 @@ This caching enables us to complete the Automated Build in two minutes. We'll us
 
 ## Show Files
 
-TODO
+For troubleshooting our Automated Build, we dump the GitHub Actions Environmment Variables and the File System like so...
 
 ```yaml
     - name: Show files
       run:  set ; pwd ; ls -l
 ```
+
+And here's the output...
+
+-   [__GitHub Actions Environmment__](https://lupyuen.github.io/articles/gpio#appendix-github-actions-environment)
 
 ![Mynewt Automated Build completed in 2 minutes](https://lupyuen.github.io/images/gpio-action.png)
 
