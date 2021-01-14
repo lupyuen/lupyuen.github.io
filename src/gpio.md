@@ -2,7 +2,7 @@
 
 📝 _15 Jan 2021_
 
-A month ago we started porting __Apache Mynewt__, a modern embedded operating system, to PineCone BL602...
+A month ago we started porting [__Apache Mynewt__](https://mynewt.apache.org/), a modern embedded operating system, to PineCone BL602...
 
 -   [__"Porting Mynewt to PineCone BL602"__](https://lupyuen.github.io/articles/mynewt)
 
