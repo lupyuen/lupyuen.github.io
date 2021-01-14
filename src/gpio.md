@@ -885,7 +885,7 @@ There's one possibility: __Adopt the Rust Embedded HAL.__ I have previously port
 
 Once we have the Rust Embedded HAL ported to Mynewt (and other operating systems), we'll be able to use the __Rust Embedded Drivers__. [List of Rust Embedded Drivers](https://github.com/rust-embedded/awesome-embedded-rust/blob/master/README.md#driver-crates)
 
-(And we'll have to code our firmware in Rust of course)
+(And we'll code our firmware in Rust of course)
 
 We shall experiment with the [BME280 Rust Driver](https://crates.io/crates/bme280) on Mynewt BL602.
 
