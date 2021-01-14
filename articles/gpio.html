@@ -92,13 +92,14 @@
 <li><a href="#run-mynewt-on-pinecone">9 Run Mynewt on PineCone</a><ul>
 <li><a href="#jtag-foiled-by-gpio">9.1 JTAG Foiled By GPIO</a><ul></ul></li></ul></li>
 <li><a href="#whats-next">10 What's Next</a><ul></ul></li>
-<li><a href="#appendix-inventory-of-sensors-and-actuators">11 Appendix: Inventory of Sensors and Actuators</a><ul>
-<li><a href="#sensors">11.1 Sensors</a><ul></ul></li>
-<li><a href="#actuators">11.2 Actuators</a><ul></ul></li>
-<li><a href="#sensor--actuator">11.3 Sensor + Actuator</a><ul></ul></li></ul></li>
-<li><a href="#appendix-github-actions-environment">12 Appendix: GitHub Actions Environment</a><ul>
-<li><a href="#environment-variables">12.1 Environment Variables</a><ul></ul></li>
-<li><a href="#file-system">12.2 File System</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>15 Jan 2021</em></p>
+<li><a href="#notes">11 Notes</a><ul></ul></li>
+<li><a href="#appendix-inventory-of-sensors-and-actuators">12 Appendix: Inventory of Sensors and Actuators</a><ul>
+<li><a href="#sensors">12.1 Sensors</a><ul></ul></li>
+<li><a href="#actuators">12.2 Actuators</a><ul></ul></li>
+<li><a href="#sensor--actuator">12.3 Sensor + Actuator</a><ul></ul></li></ul></li>
+<li><a href="#appendix-github-actions-environment">13 Appendix: GitHub Actions Environment</a><ul>
+<li><a href="#environment-variables">13.1 Environment Variables</a><ul></ul></li>
+<li><a href="#file-system">13.2 File System</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>15 Jan 2021</em></p>
 <p>A month ago we started porting <strong>Apache Mynewt</strong>, a modern embedded operating system, to PineCone BL602...</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/mynewt"><strong>&quot;Porting Mynewt to PineCone BL602&quot;</strong></a></li>
@@ -219,7 +220,7 @@ int main(int argc, char **argv) {
 <ul>
 <li>
 <p><strong>Embedded Rust</strong> looks very promising... Clean and safe embedded coding.</p>
-<p>There's ongoing work on Embedded Rust for BL602 so let's wait for it.</p>
+<p>There's ongoing work on Embedded Rust for BL602 so let's wait for it. <a href="https://github.com/sipeed/bl602-hal">More details</a></p>
 <p>Meanwhile I'll do Rust the shortcut way... Run it on top of Mynewt. (Instead of Bare Metal)</p>
 </li>
 </ul>
@@ -814,6 +815,7 @@ Use `riscv authdata_read` and `riscv authdata_write` commands to authenticate.
 <p><em>Anything else we'll be supporting in Mynewt BL602?</em></p>
 </blockquote>
 <p>Yes we shall be adding support for <strong>UART</strong> on Mynewt BL602, so that we can view debugging messages.</p>
+<p>And <strong>Timers</strong> so that we can poll for GPIO Inputs.</p>
 <p>Stay Tuned!</p>
 <ul>
 <li>
@@ -828,10 +830,17 @@ Use `riscv authdata_read` and `riscv authdata_write` commands to authenticate.
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/gpio.md"><code>lupyuen.github.io/src/gpio.md</code></a></p>
-<h1 id="appendix-inventory-of-sensors-and-actuators" class="section-header"><a href="#appendix-inventory-of-sensors-and-actuators">11 Appendix: Inventory of Sensors and Actuators</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">11 Notes</a></h1>
+<ol>
+<li>
+<p>There is a GPIO feature that hasn't been implemented on Mynewt BL602: Trigger an interrupt when a GPIO Input changes. <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/mcu/bl/bl602/src/hal_gpio.c#L142-L283">See this</a></p>
+<p>This requires CLNT Interrupts to be supported on Mynewt BL602.</p>
+</li>
+</ol>
+<h1 id="appendix-inventory-of-sensors-and-actuators" class="section-header"><a href="#appendix-inventory-of-sensors-and-actuators">12 Appendix: Inventory of Sensors and Actuators</a></h1>
 <p><img src="https://lupyuen.github.io/images/gpio-sensors.jpg" alt="Sensors and actuators to be tested with PineCone BL602" /></p>
 <p><em>Sensors and actuators to be tested with PineCone BL602</em></p>
-<h2 id="sensors" class="section-header"><a href="#sensors">11.1 Sensors</a></h2><table><thead><tr><th align="left">Sensor</th><th align="left">Outputs</th></tr></thead><tbody>
+<h2 id="sensors" class="section-header"><a href="#sensors">12.1 Sensors</a></h2><table><thead><tr><th align="left">Sensor</th><th align="left">Outputs</th></tr></thead><tbody>
 <tr><td align="left">Linear Hall</td><td align="left">Analog, Digital</td></tr>
 <tr><td align="left">Shock Switch</td><td align="left">Digital</td></tr>
 <tr><td align="left">Knock Switch</td><td align="left">Digital</td></tr>
@@ -846,22 +855,22 @@ Use `riscv authdata_read` and `riscv authdata_write` commands to authenticate.
 <tr><td align="left">Metal Touch</td><td align="left">Analog, Digital</td></tr>
 <tr><td align="left">Flame</td><td align="left">Analog, Digital</td></tr>
 </tbody></table>
-<h2 id="actuators" class="section-header"><a href="#actuators">11.2 Actuators</a></h2><table><thead><tr><th align="left">Actuator</th><th align="left">Input</th></tr></thead><tbody>
+<h2 id="actuators" class="section-header"><a href="#actuators">12.2 Actuators</a></h2><table><thead><tr><th align="left">Actuator</th><th align="left">Input</th></tr></thead><tbody>
 <tr><td align="left">Laser Transmitter</td><td align="left">Digital</td></tr>
 <tr><td align="left">Active Buzzer</td><td align="left">Digital</td></tr>
 <tr><td align="left">Passive Buzzer</td><td align="left">Digital</td></tr>
 <tr><td align="left">Relay</td><td align="left">Digital</td></tr>
 </tbody></table>
-<h2 id="sensor--actuator" class="section-header"><a href="#sensor--actuator">11.3 Sensor + Actuator</a></h2><table><thead><tr><th align="left">Sensor + Actuator</th><th align="left">Input / Output</th></tr></thead><tbody>
+<h2 id="sensor--actuator" class="section-header"><a href="#sensor--actuator">12.3 Sensor + Actuator</a></h2><table><thead><tr><th align="left">Sensor + Actuator</th><th align="left">Input / Output</th></tr></thead><tbody>
 <tr><td align="left">Infrared Transmitter &amp; Receiver</td><td align="left">Digital</td></tr>
 </tbody></table>
-<h1 id="appendix-github-actions-environment" class="section-header"><a href="#appendix-github-actions-environment">12 Appendix: GitHub Actions Environment</a></h1>
+<h1 id="appendix-github-actions-environment" class="section-header"><a href="#appendix-github-actions-environment">13 Appendix: GitHub Actions Environment</a></h1>
 <p>Here's how we dump the GitHub Actions Environmment Variables and the File System...</p>
 <pre><code class="language-yaml">    - name: Show files
       run:  set ; pwd ; ls -l
 </code></pre>
 <p>And here's the output...</p>
-<h2 id="environment-variables" class="section-header"><a href="#environment-variables">12.1 Environment Variables</a></h2>
+<h2 id="environment-variables" class="section-header"><a href="#environment-variables">13.1 Environment Variables</a></h2>
 <pre><code class="language-text">AGENT_TOOLSDIRECTORY=/opt/hostedtoolcache
 ANDROID_HOME=/usr/local/lib/android/sdk
 ANDROID_SDK_ROOT=/usr/local/lib/android/sdk
@@ -966,7 +975,7 @@ USER=runner
 VCPKG_INSTALLATION_ROOT=/usr/local/share/vcpkg
 _=/usr/bin/bash
 </code></pre>
-<h2 id="file-system" class="section-header"><a href="#file-system">12.2 File System</a></h2>
+<h2 id="file-system" class="section-header"><a href="#file-system">13.2 File System</a></h2>
 <pre><code class="language-text">/home/runner/work/pinecone-rust-mynewt/pinecone-rust-mynewt
 total 52
 -rw-r--r-- 1 runner docker 11357 Jan 10 02:24 LICENSE
