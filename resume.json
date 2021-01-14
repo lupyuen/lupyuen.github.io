@@ -147,6 +147,13 @@
   ],
   "publications": [
     {
+      "name": "Mynewt GPIO ported to PineCone BL602 RISC-V Board",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2021-01-15",
+      "website": "https://lupyuen.github.io/articles/gpio",
+      "summary": "How we ported the BL602 RISC-V Hardware Abstraction Layer to Apache Mynewt ... Starting with GPIO"
+    },
+    {
       "name": "Control PineCone BL602 RGB LED with GPIO and PWM",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-01-06",
