@@ -839,6 +839,7 @@ Use `riscv authdata_read` and `riscv authdata_write` commands to authenticate.
 <li>
 <p>My thoughts on <strong>Teaching IoT and Embedded Programming</strong> with Sensors and Actuators?</p>
 <p>Let's move away from boring old GPIO-based Sensors and Actuators... And teach <strong>modern ones based on I2C and SPI!</strong></p>
+<p>(<a href="(https://medium.com/coinmonks/watch-stm32-blue-pill-juggle-two-spi-sensors-with-dma-20cd1aa89869?source=friends_link&amp;sk=eea71070ce6d9aea3a6108e882749a99)">Like BME280</a>)</p>
 </li>
 <li>
 <p>To teach IoT with PineCone or Pinenut BL602, we need to add on...</p>
@@ -856,10 +857,10 @@ Use `riscv authdata_read` and `riscv authdata_write` commands to authenticate.
 </li>
 <li>
 <p>Will newbies find it difficult to code firmware for an SPI Display?</p>
-<p>Not if we adopt a <strong>Common Graphics Library like LVGL</strong> that will work on all BL602 operating systems.</p>
-<p>On PineTime we have proven that LVGL (and the ST7789 driver) works perfectly fine on FreeRTOS, Mynewt, RIOT, Zephyr, ...</p>
-<p>We have even created Web Simulators for PineTime based on LVGL + WebAssembly.</p>
-<p>LVGL is a great way for newbies to <strong>create Graphical Embedded Apps in C and Rust</strong>, our PineTime experience has shown.</p>
+<p>Not if we adopt a <strong>Common Graphics Library like LVGL</strong> that will work on all BL602 operating systems. <a href="https://docs.lvgl.io/latest/en/html/intro/index.html">More about LVGL</a></p>
+<p>On PineTime we have proven that LVGL (and the ST7789 driver) works perfectly fine on <a href="https://lupyuen.github.io/pinetime-rust-mynewt/articles/cloud">FreeRTOS</a>, <a href="https://lupyuen.github.io/pinetime-rust-mynewt/articles/timesync">Mynewt</a>, <a href="https://lupyuen.github.io/pinetime-rust-riot/articles/watch_face">RIOT</a>, <a href="https://github.com/endian-albin/pinetime-hypnos">Zephyr</a>, ...</p>
+<p>We have even created Web Simulators for PineTime based on LVGL + WebAssembly. <a href="https://lupyuen.github.io/pinetime-rust-mynewt/articles/simulator">See this</a></p>
+<p>LVGL is a great way for newbies to <strong>create Graphical Embedded Apps in C and Rust</strong>, our PineTime experience has shown. <a href="https://lupyuen.github.io/pinetime-rust-mynewt/articles/watchface">LVGL on Rust</a></p>
 <p>(Especially when BL602 has more RAM and Flash Memory than PineTime)</p>
 </li>
 <li>
