@@ -350,7 +350,7 @@ target.build_profile: debug
 <p>Here we specify that our firmware code comes from the <a href="https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/apps/blinky">Blinky Sample App</a>. And our firmware will be compiled for the PineCone BL602 Board.</p>
 <p>Also check out the <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/targets/pinecone_app/pkg.yml"><strong>Target Package</strong></a> and the <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/targets/pinecone_app/syscfg.yml"><strong>Target Configuration</strong></a>.</p>
 <h1 id="build-the-firmware" class="section-header"><a href="#build-the-firmware">8 Build the Firmware</a></h1>
-<p>We have created a minimal port of Mynewt to PineCone. Here's how we build the firmware...</p>
+<p>We have created a minimal port of Mynewt to PineCone. Here's how we build the firmware on Linux, macOS and Windows (plain old CMD, without WSL and MSYS2)...</p>
 <ol>
 <li>
 <p>Install Mynewt's <code>newt</code> tool according to the instructions here...</p>
@@ -492,7 +492,7 @@ objsize
 </ul>
 <p>We shall copy the source files from above and embed them here...</p>
 <ul>
-<li><a href="https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/hw/mcu/bl/bl602/src/ext"><strong>Mynewt External Source Files for BL602</strong></a></li>
+<li><a href="https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/hw/mcu/bl/bl602/ext"><strong>Mynewt External Source Files for BL602</strong></a></li>
 </ul>
 <p>The BL602 SDK Functions look different from the Mynewt HAL API. Thus we'll have to create some adapter code in C to make the BL602 Functions look like the Mynewt HAL.</p>
 <p>The code that adapts the BL602 SDK to Mynewt HAL shall be placed here...</p>
@@ -633,7 +633,7 @@ objsize
 <p>It should look similar to our <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/mcu/bl/bl602/src/arch/rv32imac/start.s">Start Code</a>. And it should be located at the Start Address of our firmware: <code>0x2200 8000</code>.</p>
 <p>We're ready to run our Mynewt Firmware on PineCone!</p>
 <h1 id="debug-firmware-with-vscode" class="section-header"><a href="#debug-firmware-with-vscode">14 Debug Firmware with VSCode</a></h1>
-<p>Now we run and debug our Mynewt Firmware with <a href="https://code.visualstudio.com/"><strong>VSCode</strong></a>...</p>
+<p>Now we run and debug our Mynewt Firmware with <a href="https://code.visualstudio.com/"><strong>VSCode</strong></a> on Linux, macOS and Windows...</p>
 <ol>
 <li>
 <p>Connect PineCone and the JTAG Debugger to our computer. See the article...</p>
@@ -725,9 +725,6 @@ objsize
 <ol>
 <li>
 <p><strong>Port the Hardware Abstraction Layer</strong> from BL602 IoT SDK to Mynewt: GPIO, UART, PWM, I2C, SPI...</p>
-<p>(Assuming we find a good way to test the interfaces)</p>
-<p>The porting work is now ongoing at the <a href="https://github.com/lupyuen/pinecone-rust-mynewt/tree/gpio"><code>gpio</code> branch of <code>pinecone-rust-mynewt</code></a>, the BL602 IoT SDK is <a href="https://github.com/lupyuen/pinecone-rust-mynewt/tree/gpio/hw/mcu/bl/bl602/ext">located here</a>.</p>
-<p><a href="https://twitter.com/MisterTechBlog/status/1341390236312510465">Follow the progress on Twitter</a></p>
 </li>
 <li>
 <p><strong>Bluetooth LE</strong>: We shall reverse engineer the Bluetooth LE Stack on PineCone. Then replace it by the open source <a href="https://github.com/apache/mynewt-nimble"><strong>NimBLE Stack</strong></a>.</p>
