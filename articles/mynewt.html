@@ -90,7 +90,9 @@
 <li><a href="#testing-the-uart-port">15.3 Testing the UART Port</a><ul></ul></li></ul></li>
 <li><a href="#whats-next">16 What's Next</a><ul></ul></li>
 <li><a href="#appendix-load-firmware-to-cache-memory-not-flash-memory">17 Appendix: Load Firmware to Cache Memory, not Flash Memory</a><ul></ul></li>
-<li><a href="#appendix-install-newt">18 Appendix: Install newt</a><ul></ul></li>
+<li><a href="#appendix-install-newt">18 Appendix: Install newt</a><ul>
+<li><a href="#linux-and-macos">18.1 Linux and macOS</a><ul></ul></li>
+<li><a href="#windows">18.2 Windows</a><ul></ul></li></ul></li>
 <li><a href="#appendix-create-the-mynewt-firmware">19 Appendix: Create the Mynewt Firmware</a><ul></ul></li>
 <li><a href="#appendix-vscode-settings">20 Appendix: VSCode Settings</a><ul>
 <li><a href="#debugger-settings">20.1 Debugger Settings</a><ul></ul></li>
@@ -383,12 +385,15 @@ cd pinecone-rust-mynewt
 <p><a href="https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases/tag/v8.3.0-2.3">Other builds of xPack GCC RISC-V</a></p>
 </li>
 </ul>
-<p>Extract the downloaded archive. On Windows: <a href="https://www.7-zip.org/">Use 7-Zip</a></p>
+<p>Extract the downloaded archive.</p>
 </li>
 <li>
 <p>Copy the extracted xPack GCC RISC-V folder to the <code>pinecone-rust-mynewt</code> folder.</p>
 <p>Rename the copied folder as...</p>
 <pre><code class="language-text">pinecone-rust-mynewt/xpack-riscv-none-embed-gcc
+</code></pre>
+<p><strong>For Windows:</strong> Add the full path of <code>xpack-riscv-none-embed-gcc/bin</code> to the PATH. For example...</p>
+<pre><code class="language-text">c:\pinecone-rust-mynewt\xpack-riscv-none-embed-gcc\bin
 </code></pre>
 </li>
 <li>
@@ -410,22 +415,32 @@ cd pinecone-rust-mynewt
 <p><a href="https://github.com/xpack-dev-tools/openocd-xpack/releases/tag/v0.10.0-15/">Other builds of xPack OpenOCD</a></p>
 </li>
 </ul>
-<p>Extract the downloaded file. On Windows: <a href="https://www.7-zip.org/">Use 7-Zip</a></p>
+<p>Extract the downloaded archive.</p>
 </li>
 <li>
 <p>Copy the extracted xPack OpenOCD folder to the <code>pinecone-rust-mynewt</code> folder.</p>
 <p>Rename the copied folder as...</p>
 <pre><code class="language-text">pinecone-rust-mynewt/xpack-openocd
 </code></pre>
+<p><strong>For Windows:</strong> Add the full path of <code>xpack-openocd/bin</code> to the PATH. For example...</p>
+<pre><code class="language-text">c:\pinecone-rust-mynewt\pinecone-rust-mynewt\xpack-openocd\bin
+</code></pre>
 </li>
 <li>
-<p>At the command prompt, enter...</p>
+<p><strong>For Linux and macOS:</strong> Enter at the command prompt...</p>
 <pre><code class="language-bash">#  Build the firmware
 export PATH=&quot;$PWD/xpack-riscv-none-embed-gcc/bin:$PATH&quot;
 newt build pinecone_app
 
 #  Display the firmware size
 newt size -v pinecone_app
+</code></pre>
+<p><strong>For Windows:</strong> Enter at the command prompt...</p>
+<pre><code class="language-cmd">::  Build the firmware
+newt\newt.exe build pinecone_app
+
+::  Display the firmware size
+newt\newt.exe size -v pinecone_app
 </code></pre>
 </li>
 </ol>
@@ -794,6 +809,7 @@ objsize
 <li><a href="https://mynewt.apache.org/latest/newt/install/index.html">Installing <code>newt</code></a></li>
 </ul>
 <p>Or we may build from the source code...</p>
+<h2 id="linux-and-macos" class="section-header"><a href="#linux-and-macos">18.1 Linux and macOS</a></h2>
 <ol>
 <li>
 <p>Install the <a href="https://golang.org/dl/">latest version of Go</a></p>
@@ -812,6 +828,39 @@ newt version
 <li>
 <p>We should see...</p>
 <pre><code class="language-text">Apache Newt 1.8.0
+</code></pre>
+</li>
+</ol>
+<h2 id="windows" class="section-header"><a href="#windows">18.2 Windows</a></h2>
+<p>The Windows version of <code>newt</code> is already bundled at...</p>
+<pre><code class="language-text">pinecone-rust-mynewt\newt\newt.exe
+</code></pre>
+<p>The build script <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/scripts/build-app.cmd"><code>build-app.cmd</code></a> uses the above <code>newt</code> executable.</p>
+<p>However, the <code>newt</code> executable triggers a Windows Defender warning (because it wasn't built as a certified executable). We need to <strong>update the Windows Security settings</strong> to allow the <code>newt</code> executable to run.</p>
+<p>To build <code>newt</code> from the source code, follow these steps...</p>
+<ol>
+<li>
+<p>Install the <a href="https://golang.org/dl/">latest version of Go</a></p>
+</li>
+<li>
+<p>At a command prompt, enter...</p>
+<pre><code class="language-cmd">git clone --branch mynewt_1_8_0_tag https://github.com/apache/mynewt-newt/
+cd mynewt-newt\newt
+go build
+newt.exe version
+</code></pre>
+</li>
+<li>
+<p>We should see...</p>
+<pre><code class="language-text">Apache Newt 1.8.0
+</code></pre>
+</li>
+<li>
+<p>Copy the <code>newt</code> executable from...</p>
+<pre><code class="language-text">mynewt-newt\newt\newt.exe
+</code></pre>
+<p>To...</p>
+<pre><code class="language-text">pinecone-rust-mynewt\newt\newt.exe
 </code></pre>
 </li>
 </ol>
