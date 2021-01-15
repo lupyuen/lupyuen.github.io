@@ -793,9 +793,9 @@ There's more work to be done porting Mynewt to PineCone...
 
 1.  __WiFi__: Also needs to be reverse engineered. We might be able to port this Mynewt WiFi Driver to PineCone...
 
-    - [`mynewt_arduino_zero/libs/winc1500`](https://github.com/runtimeco/mynewt_arduino_zero/tree/master/libs/winc1500)
+    - [`mynewt_arduino_zero/ libs/winc1500`](https://github.com/runtimeco/mynewt_arduino_zero/tree/master/libs/winc1500)
 
-    - [`mynewt_arduino_zero/apps/winc1500_wifi`](https://github.com/runtimeco/mynewt_arduino_zero/tree/master/apps/winc1500_wifi)
+    - [`mynewt_arduino_zero/ apps/winc1500_wifi`](https://github.com/runtimeco/mynewt_arduino_zero/tree/master/apps/winc1500_wifi)
 
 
 1.  __Rust__ will be supported so that we may build complex firmware without falling into traps with C Pointers.
