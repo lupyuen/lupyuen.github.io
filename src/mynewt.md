@@ -320,7 +320,7 @@ Also check out the [__Target Package__](https://github.com/lupyuen/pinecone-rust
 
 # Build the Firmware
 
-We have created a minimal port of Mynewt to PineCone. Here's how we build the firmware...
+We have created a minimal port of Mynewt to PineCone. Here's how we build the firmware on Linux, macOS and Windows (plain old CMD, without WSL and MSYS2)...
 
 1.  Install Mynewt's `newt` tool according to the instructions here...
 
@@ -479,7 +479,7 @@ The BL602 HAL functions (GPIO, I2C, SPI, ...) are already implemented here...
 
 We shall copy the source files from above and embed them here...
 
--  [__Mynewt External Source Files for BL602__](https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/hw/mcu/bl/bl602/src/ext)
+-  [__Mynewt External Source Files for BL602__](https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/hw/mcu/bl/bl602/ext)
 
 The BL602 SDK Functions look different from the Mynewt HAL API. Thus we'll have to create some adapter code in C to make the BL602 Functions look like the Mynewt HAL.
 
@@ -663,7 +663,7 @@ We're ready to run our Mynewt Firmware on PineCone!
 
 # Debug Firmware with VSCode
 
-Now we run and debug our Mynewt Firmware with [__VSCode__](https://code.visualstudio.com/)...
+Now we run and debug our Mynewt Firmware with [__VSCode__](https://code.visualstudio.com/) on Linux, macOS and Windows...
 
 1.  Connect PineCone and the JTAG Debugger to our computer. See the article...
 
@@ -782,12 +782,6 @@ We'll need to port the UART HAL from the BL602 IoT SDK to Mynewt.
 There's more work to be done porting Mynewt to PineCone...
 
 1.  __Port the Hardware Abstraction Layer__ from BL602 IoT SDK to Mynewt: GPIO, UART, PWM, I2C, SPI...
-
-    (Assuming we find a good way to test the interfaces)
-
-    The porting work is now ongoing at the [`gpio` branch of `pinecone-rust-mynewt`](https://github.com/lupyuen/pinecone-rust-mynewt/tree/gpio), the BL602 IoT SDK is [located here](https://github.com/lupyuen/pinecone-rust-mynewt/tree/gpio/hw/mcu/bl/bl602/ext).
-
-    [Follow the progress on Twitter](https://twitter.com/MisterTechBlog/status/1341390236312510465)
 
 1.  __Bluetooth LE__: We shall reverse engineer the Bluetooth LE Stack on PineCone. Then replace it by the open source [__NimBLE Stack__](https://github.com/apache/mynewt-nimble).
 
