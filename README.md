@@ -1,5 +1,7 @@
 # Lup Yuen's Articles
 
+Please feel free to reproduce and/or translate my articles... And promote IoT Education for all! 🙂
+
 -  [List of Articles](https://lupyuen.github.io)
 
 -  [RSS Feed](https://lupyuen.github.io/rss.xml)
