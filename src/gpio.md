@@ -954,6 +954,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     LVGL is a great way for newbies to __create Graphical Embedded Apps in C and Rust__, our PineTime experience has shown.
 
+    (Especially when BL602 has more RAM and Flash Memory than PineTime)
+
 1.  There is a GPIO feature that hasn't been implemented on Mynewt BL602: Trigger an interrupt when a GPIO Input changes. [See this](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/mcu/bl/bl602/src/hal_gpio.c#L142-L283)
 
     This requires CLNT Interrupts to be supported on Mynewt BL602.
