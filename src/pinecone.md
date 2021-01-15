@@ -266,7 +266,9 @@ BL602's RISC-V Core seems to be based on either [__SiFive E21__](https://www.sif
 
 -   [__SiFive E24 Manual__](https://sifive.cdn.prismic.io/sifive/dffb6a15-80b3-42cb-99e1-23ce6fd1d052_sifive_E24_rtl_full_20G1.03.00_manual.pdf)
 
-More tools for PineCone BL602 may be found here...
+More docs and tools for PineCone BL602 may be found here...
+
+-   [__Nutcracker Wiki__](https://wiki.pine64.org/wiki/Nutcracker)
 
 -   [__Awesome Bouffalo__](https://github.com/mkroman/awesome-bouffalo)
 
