@@ -932,6 +932,28 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Notes
 
+1.  My thoughts on __Teaching IoT and Embedded Programming__ with Sensors and Actuators?
+
+    Let's move away from boring old GPIO-based Sensors and Actuators... And teach __modern ones based on I2C and SPI!__
+
+1.  To teach IoT with PineCone or Pinenut BL602, we need to add on...
+
+    -   __SPI Display Controller with LED / OLED / EPaper display__ (like ST7789 on PineTime)
+
+    -   __I2C Touch Controller or Keypad__ (like on PineTime)
+
+    -   __Battery__
+
+1.  Will newbies find it difficult to write firmware with an SPI Display?
+
+    Not if we adopt a __Common Graphics Library like LVGL__ that will work on all BL602 operating systems.
+
+    On PineTime we have proven that LVGL (and the ST7789 driver) works perfectly fine on FreeRTOS, Mynewt, RIOT, Zephyr, ...
+
+    We have even created Web Simuators for PineTime based on LVGL + WebAssembly.
+
+    LVGL is a great way for newbies to __create Graphical Embedded Apps in C and Rust__, our PineTime experience has shown.
+
 1.  There is a GPIO feature that hasn't been implemented on Mynewt BL602: Trigger an interrupt when a GPIO Input changes. [See this](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/mcu/bl/bl602/src/hal_gpio.c#L142-L283)
 
     This requires CLNT Interrupts to be supported on Mynewt BL602.
