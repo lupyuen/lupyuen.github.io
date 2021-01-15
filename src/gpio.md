@@ -944,7 +944,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     -   __Battery__
 
-1.  Will newbies find it difficult to write firmware with an SPI Display?
+1.  Will newbies find it difficult to code firmware for an SPI Display?
 
     Not if we adopt a __Common Graphics Library like LVGL__ that will work on all BL602 operating systems.
 
