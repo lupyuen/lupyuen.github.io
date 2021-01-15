@@ -954,6 +954,10 @@ To build `newt` from the source code, follow these steps...
     pinecone-rust-mynewt\newt\newt.exe
     ```
 
+![Mynewt BL602 built with Windows CMD](https://lupyuen.github.io/images/mynewt-windows.png)
+
+_Mynewt BL602 built with Windows CMD_
+
 # Appendix: Create the Mynewt Firmware
 
 Mynewt Project `pinecone-rust-mynewt` and Mynewt Firmware `pinecone_app` were originally created using these steps...
