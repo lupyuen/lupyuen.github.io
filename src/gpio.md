@@ -936,7 +936,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     Let's move away from boring old GPIO-based Sensors and Actuators... And teach __modern ones based on I2C and SPI!__
 
-    ([Like BME280]((https://medium.com/coinmonks/watch-stm32-blue-pill-juggle-two-spi-sensors-with-dma-20cd1aa89869?source=friends_link&sk=eea71070ce6d9aea3a6108e882749a99)))
+    ([Like BME280](https://medium.com/coinmonks/watch-stm32-blue-pill-juggle-two-spi-sensors-with-dma-20cd1aa89869?source=friends_link&sk=eea71070ce6d9aea3a6108e882749a99))
 
 1.  To teach IoT with PineCone or Pinenut BL602, we need to add on...
 
