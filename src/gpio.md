@@ -936,6 +936,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     Let's move away from boring old GPIO-based Sensors and Actuators... And teach __modern ones based on I2C and SPI!__
 
+    ([Like BME280]((https://medium.com/coinmonks/watch-stm32-blue-pill-juggle-two-spi-sensors-with-dma-20cd1aa89869?source=friends_link&sk=eea71070ce6d9aea3a6108e882749a99)))
+
 1.  To teach IoT with PineCone or Pinenut BL602, we need to add on...
 
     -   __SPI Display Controller with LED / OLED / EPaper display__ (like ST7789 on PineTime)
@@ -946,13 +948,13 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  Will newbies find it difficult to code firmware for an SPI Display?
 
-    Not if we adopt a __Common Graphics Library like LVGL__ that will work on all BL602 operating systems.
+    Not if we adopt a __Common Graphics Library like LVGL__ that will work on all BL602 operating systems. [More about LVGL](https://docs.lvgl.io/latest/en/html/intro/index.html)
 
-    On PineTime we have proven that LVGL (and the ST7789 driver) works perfectly fine on FreeRTOS, Mynewt, RIOT, Zephyr, ...
+    On PineTime we have proven that LVGL (and the ST7789 driver) works perfectly fine on [FreeRTOS](https://lupyuen.github.io/pinetime-rust-mynewt/articles/cloud), [Mynewt](https://lupyuen.github.io/pinetime-rust-mynewt/articles/timesync), [RIOT](https://lupyuen.github.io/pinetime-rust-riot/articles/watch_face), [Zephyr](https://github.com/endian-albin/pinetime-hypnos), ...
 
-    We have even created Web Simulators for PineTime based on LVGL + WebAssembly.
+    We have even created Web Simulators for PineTime based on LVGL + WebAssembly. [See this](https://lupyuen.github.io/pinetime-rust-mynewt/articles/simulator)
 
-    LVGL is a great way for newbies to __create Graphical Embedded Apps in C and Rust__, our PineTime experience has shown.
+    LVGL is a great way for newbies to __create Graphical Embedded Apps in C and Rust__, our PineTime experience has shown. [LVGL on Rust](https://lupyuen.github.io/pinetime-rust-mynewt/articles/watchface)
 
     (Especially when BL602 has more RAM and Flash Memory than PineTime)
 
