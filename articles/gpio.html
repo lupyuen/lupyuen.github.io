@@ -837,6 +837,31 @@ Use `riscv authdata_read` and `riscv authdata_write` commands to authenticate.
 <h1 id="notes" class="section-header"><a href="#notes">11 Notes</a></h1>
 <ol>
 <li>
+<p>My thoughts on <strong>Teaching IoT and Embedded Programming</strong> with Sensors and Actuators?</p>
+<p>Let's move away from boring old GPIO-based Sensors and Actuators... And teach <strong>modern ones based on I2C and SPI!</strong></p>
+</li>
+<li>
+<p>To teach IoT with PineCone or Pinenut BL602, we need to add on...</p>
+<ul>
+<li>
+<p><strong>SPI Display Controller with LED / OLED / EPaper display</strong> (like ST7789 on PineTime)</p>
+</li>
+<li>
+<p><strong>I2C Touch Controller or Keypad</strong> (like on PineTime)</p>
+</li>
+<li>
+<p><strong>Battery</strong></p>
+</li>
+</ul>
+</li>
+<li>
+<p>Will newbies find it difficult to write firmware with an SPI Display?</p>
+<p>Not if we adopt a <strong>Common Graphics Library like LVGL</strong> that will work on all BL602 operating systems.</p>
+<p>On PineTime we have proven that LVGL (and the ST7789 driver) works perfectly fine on FreeRTOS, Mynewt, RIOT, Zephyr, ...</p>
+<p>We have even created Web Simuators for PineTime based on LVGL + WebAssembly.</p>
+<p>LVGL is a great way for newbies to <strong>create Graphical Embedded Apps in C and Rust</strong>, our PineTime experience has shown.</p>
+</li>
+<li>
 <p>There is a GPIO feature that hasn't been implemented on Mynewt BL602: Trigger an interrupt when a GPIO Input changes. <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/mcu/bl/bl602/src/hal_gpio.c#L142-L283">See this</a></p>
 <p>This requires CLNT Interrupts to be supported on Mynewt BL602.</p>
 </li>
