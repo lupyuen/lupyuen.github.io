@@ -348,7 +348,7 @@ We have created a minimal port of Mynewt to PineCone. Here's how we build the fi
 
     -   [Other builds of xPack GCC RISC-V](https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases/tag/v8.3.0-2.3)
 
-    Extract the downloaded archive. On Windows: [Use 7-Zip](https://www.7-zip.org/)
+    Extract the downloaded archive.
 
 1.  Copy the extracted xPack GCC RISC-V folder to the `pinecone-rust-mynewt` folder.
 
@@ -356,6 +356,12 @@ We have created a minimal port of Mynewt to PineCone. Here's how we build the fi
 
     ```text
     pinecone-rust-mynewt/xpack-riscv-none-embed-gcc
+    ```
+
+    __For Windows:__ Add the full path of `xpack-riscv-none-embed-gcc/bin` to the PATH. For example...
+
+    ```text
+    c:\pinecone-rust-mynewt\xpack-riscv-none-embed-gcc\bin
     ```
 
 1.  Download OpenOCD from the [xPack OpenOCD site](https://github.com/xpack-dev-tools/openocd-xpack/releases/tag/v0.10.0-15/)... (Other variants of OpenOCD may not work with PineCone)
@@ -370,7 +376,7 @@ We have created a minimal port of Mynewt to PineCone. Here's how we build the fi
 
     -   [Other builds of xPack OpenOCD](https://github.com/xpack-dev-tools/openocd-xpack/releases/tag/v0.10.0-15/)
 
-    Extract the downloaded file. On Windows: [Use 7-Zip](https://www.7-zip.org/)
+    Extract the downloaded archive.
 
 1.  Copy the extracted xPack OpenOCD folder to the `pinecone-rust-mynewt` folder.
 
@@ -380,7 +386,13 @@ We have created a minimal port of Mynewt to PineCone. Here's how we build the fi
     pinecone-rust-mynewt/xpack-openocd
     ```
 
-1.  At the command prompt, enter...
+    __For Windows:__ Add the full path of `xpack-openocd/bin` to the PATH. For example...
+
+    ```text
+    c:\pinecone-rust-mynewt\pinecone-rust-mynewt\xpack-openocd\bin
+    ```
+
+1.  __For Linux and macOS:__ Enter at the command prompt...
 
     ```bash
     #  Build the firmware
@@ -389,6 +401,16 @@ We have created a minimal port of Mynewt to PineCone. Here's how we build the fi
 
     #  Display the firmware size
     newt size -v pinecone_app
+    ```
+
+    __For Windows:__ Enter at the command prompt...
+
+    ```cmd
+    ::  Build the firmware
+    newt\newt.exe build pinecone_app
+
+    ::  Display the firmware size
+    newt\newt.exe size -v pinecone_app
     ```
 
 We should see this...
@@ -867,6 +889,8 @@ We may install Mynewt's `newt` tool according to the instructions here...
 
 Or we may build from the source code...
 
+## Linux and macOS
+
 1.  Install the [latest version of Go](https://golang.org/dl/)
 
 1.  At a command prompt, enter...
@@ -885,6 +909,49 @@ Or we may build from the source code...
 
     ```text
     Apache Newt 1.8.0
+    ```
+
+## Windows
+
+The Windows version of `newt` is already bundled at...
+
+```text
+pinecone-rust-mynewt\newt\newt.exe
+```
+
+The build script [`build-app.cmd`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/scripts/build-app.cmd) uses the above `newt` executable.
+
+However, the `newt` executable triggers a Windows Defender warning (because it wasn't built as a certified executable). We need to __update the Windows Security settings__ to allow the `newt` executable to run.
+
+To build `newt` from the source code, follow these steps...
+
+1.  Install the [latest version of Go](https://golang.org/dl/)
+
+1.  At a command prompt, enter...
+
+    ```cmd
+    git clone --branch mynewt_1_8_0_tag https://github.com/apache/mynewt-newt/
+    cd mynewt-newt\newt
+    go build
+    newt.exe version
+    ```
+
+1.  We should see...
+
+    ```text
+    Apache Newt 1.8.0
+    ```
+
+1.  Copy the `newt` executable from...
+
+    ```text
+    mynewt-newt\newt\newt.exe
+    ```
+
+    To...
+
+    ```text
+    pinecone-rust-mynewt\newt\newt.exe
     ```
 
 # Appendix: Create the Mynewt Firmware
