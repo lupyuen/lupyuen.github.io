@@ -950,7 +950,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     On PineTime we have proven that LVGL (and the ST7789 driver) works perfectly fine on FreeRTOS, Mynewt, RIOT, Zephyr, ...
 
-    We have even created Web Simuators for PineTime based on LVGL + WebAssembly.
+    We have even created Web Simulators for PineTime based on LVGL + WebAssembly.
 
     LVGL is a great way for newbies to __create Graphical Embedded Apps in C and Rust__, our PineTime experience has shown.
 
