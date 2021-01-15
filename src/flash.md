@@ -325,6 +325,8 @@ This info was deciphered from the official open-source Go flashing tool for BL60
 
 -   See [BL602 ISP Flash Programming Doc](https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en) for the UART Flashing Protocol
 
+-   See ["Documenting the BouffaloLab BL602 firmware image format"](https://maero.dk/bl602-firmware-image-format/)
+
 Let's look at each section of the Flash Image.
 
 ## XIP Flash Memory vs Boot ROM
