@@ -890,7 +890,7 @@ We would have to read the data from DHT11 via __Bit Banging__. Which is hard to 
 
 >_Is there a better Temperature and Humidity Sensor that connects with standard interfaces... And works well with mutitasking?_
 
-Yes BME280 senses Temperature, Humidity and Altitude (Air Pressure). BME280 supports __both I2C and SPI__ interfaces. [More about BME280](https://medium.com/coinmonks/watch-stm32-blue-pill-juggle-two-spi-sensors-with-dma-20cd1aa89869?source=friends_link&sk=eea71070ce6d9aea3a6108e882749a99)
+Yes BME280 senses Temperature, Humidity and Altitude (Air Pressure). BME280 supports __both I2C and SPI__ interfaces. [More about BME280](https://medium.com/@ly.lee/create-your-iot-gadget-with-apache-mynewt-and-stm32-blue-pill-d689b3ca725?source=friends_link&sk=d511426d5a2217ebd06789b3eef7df54)
 
 We shall we using BME280 for testing the implementation of I2C and SPI on Mynewt BL602.
 
@@ -936,7 +936,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     Let's move away from boring old GPIO-based Sensors and Actuators... And teach __modern ones based on I2C and SPI!__
 
-    ([Like BME280](https://medium.com/coinmonks/watch-stm32-blue-pill-juggle-two-spi-sensors-with-dma-20cd1aa89869?source=friends_link&sk=eea71070ce6d9aea3a6108e882749a99))
+    ([Like BME280](https://medium.com/@ly.lee/create-your-iot-gadget-with-apache-mynewt-and-stm32-blue-pill-d689b3ca725?source=friends_link&sk=d511426d5a2217ebd06789b3eef7df54))
 
 1.  To teach IoT with PineCone or Pinenut BL602, we need to add on...
 
