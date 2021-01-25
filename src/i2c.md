@@ -14,10 +14,6 @@ TODO
 
 TODO
 
-![](https://lupyuen.github.io/images/i2c-exception.png)
-
-TODO
-
 ![](https://lupyuen.github.io/images/i2c-pinebook.png)
 
 TODO
@@ -86,6 +82,10 @@ TODO
 
 TODO
 
+![](https://lupyuen.github.io/images/i2c-inithal.png)
+
+TODO
+
 # Port BL602 I2C to Mynewt
 
 TODO
@@ -105,3 +105,15 @@ TODO
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [`lupyuen.github.io/src/i2c.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/i2c.md)
+
+# Appendix: How to Troubleshoot RISC-V Exceptions
+
+TODO
+
+![](https://lupyuen.github.io/images/i2c-exception.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/i2c-disassembly.png)
+
+TODO
