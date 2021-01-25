@@ -254,9 +254,9 @@ read_msg.block   = I2C_M_BLOCK;  //  Wait until data has been read
 </code></pre>
 <p>Next we set the <strong>I2C Port</strong> (0) and the <strong>I2C Operation</strong> (Blocking Read).</p>
 <pre><code class="language-c">//  Set the I2C buffer
-read_msg.buf     = read_buf;     //  Read buffer
-read_msg.len     = data_len;     //  Number of bytes to be read
-read_msg.idex    = 0;            //  Index of next byte to be read into buf
+read_msg.buf     = read_buf;  //  Read buffer
+read_msg.len     = data_len;  //  Number of bytes to be read
+read_msg.idex    = 0;         //  Index of next byte to be read into buf
 </code></pre>
 <p>Then we assign the data buffer <code>read_buf</code> to <code>read_msg</code> and set the number of bytes to be read (1).</p>
 <p><code>idex</code> is the index into the buffer <code>read_buf</code>. Our I2C Interrupt Handler will increment this index as it populates the buffer upon receiving data.</p>
