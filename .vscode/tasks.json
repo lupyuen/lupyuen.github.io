@@ -48,7 +48,7 @@
                 "args": [
                     "-c",
                     "-l",
-                    " git pull && scripts/gen-articles.sh && echo ✅ ◾ ️Done! "
+                    " git pull && echo ✅ ◾ ️Done! "
                 ]
             },
             "linux": {
@@ -56,7 +56,7 @@
                 "args": [
                     "-c",
                     "-l",
-                    " git pull && scripts/gen-articles.sh && echo ✅ ◾ ️Done! "
+                    " git pull && echo ✅ ◾ ️Done! "
                 ]
             },
             "problemMatcher": [],

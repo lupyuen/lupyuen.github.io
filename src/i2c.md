@@ -111,18 +111,28 @@ To sum up: We need to reproduce on BL602 the two `[Start] ... [Stop]` transactio
 
 # Initialise I2C Port
 
-TODO
+Remember our Command-Line Firmware [`sdk_app_i2c`](https://github.com/lupyuen/bl_iot_sdk/tree/i2c/customer_app/sdk_app_i2c) for testing I2C on BL602?
 
-[`sdk_app_i2c/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L333-L354)
+Here's the command for initialising the I2C Port...
+
+```
+#  i2c_init
+```
+
+Let's discover how this command calls the Low Level I2C HAL to initialise the I2C Port: [`sdk_app_i2c/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L333-L359)
+
+## Select I2C Port
 
 ```c
-/// Init I2C functions. Based on hal_i2c_init in hal_i2c.c
+/// Init I2C Port. Based on hal_i2c_init in hal_i2c.c
 static void test_i2c_init(char *buf, int len, int argc, char **argv) {
     //  Use I2C Port 0
     const int i2cx = 0;
 ```
 
-TODO
+We'll use __I2C Port 0__, the one and only I2C Port on BL602.
+
+## Assign I2C Pins and set I2C Frequency
 
 ```c
     //  Init I2C Port 0 to GPIO 3 and 4
@@ -132,7 +142,13 @@ TODO
     i2c_set_freq(500, i2cx);
 ```
 
-TODO
+We call `i2c_gpio_init` to assign __GPIO 3 and 4 as the SDA and SCL pins__ for I2C Port 0.
+
+Then we call `i2c_set_freq` to set the __I2C Frequency__ to 500 kbps.
+
+## Enable I2C Interrupts
+
+The I2C Port triggers __I2C Interrupts__ after sending and receiving queued data, also when an error occurs. So we need to enable I2C Interrupts...
 
 ```c
     //  Disable I2C Port 0
@@ -143,35 +159,54 @@ TODO
     I2C_IntMask(i2cx, I2C_INT_ALL, MASK);
 ```
 
-TODO
+We disable the I2C Port, then enable I2C Interrupts on the I2C Port.
+
+## Register I2C Interrupt Handler
+
+To handle I2C Interrupts we __register an Interrupt Handler Function__...
 
 ```c
     //  Register the I2C Interrupt Handler
     bl_irq_register_with_ctx(
-        I2C_IRQn, 
-        test_i2c_interrupt_entry, 
-        &gpstmsg
+        I2C_IRQn,                  //  For I2C Interrupt:
+        test_i2c_interrupt_entry,  //  Interrupt Handler
+        &gpstmsg                   //  Pointer to current I2C Message
     );
 }
 ```
 
-TODO
+Here we register the function `test_i2c_interrupt_entry` as the Interrupt Handler Function for I2C Interrupts. (More about this function in a while)
+
+`gpstmsg` is the __Interrupt Context__ that will be passed to the Interrupt Handler Function...
+
+```c
+/// Global pointer to current I2C Message
+static i2c_msg_t *gpstmsg;
+```
+
+`gpstmsg` points to the __current I2C Message__ being sent or received, so that the Interrupt Handler knows which Message Buffer to use for sending and receiving data.
+
+## I2C HAL Functions
+
+The following functions called above are defined in the __Low Level I2C HAL__: [`bl_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c)
 
 ```text
 i2c_gpio_init, i2c_set_freq
 ```
 
-TODO
+These functions are defined in the __BL602 Interrupt HAL__: [`bl_irq.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_irq.c)
+
+```text
+bl_irq_enable, bl_irq_register_with_ctx
+```
+
+And these functions are defined in the __BL602 Standard Driver__: [`bl602_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_i2c.c)
 
 ```text
 I2C_Disable, I2C_IntMask
 ```
 
-TODO
-
-```text
-bl_irq_enable, bl_irq_register_with_ctx
-```
+(The BL602 Standard Driver contains low-level functions to manipulate the BL602 Hardware Registers)
 
 # I2C Message Struct
 
