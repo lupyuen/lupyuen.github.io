@@ -97,13 +97,13 @@ BL602 will initiate two I2C Transactions, indicated by `[Start] ... [Stop]`
 
 _What are 0xEE and 0xEF?_
 
-They are the read/write variants of the I2C Device ID `0x77`...
+They are the Read / Write aliases of the I2C Device ID `0x77`...
 
 -    `0xEE` = (`0x77` * 2) + 0, for Writing Data
 
 -    `0xEF` = (`0x77` * 2) + 1, for Reading Data
 
-I2C uses this even/odd convention to indicate whether we're writing or reading data.
+I2C uses this even / odd convention to indicate whether we're writing or reading data.
 
 To sum up: We need to reproduce on BL602 the two `[Start] ... [Stop]` transactions. Which includes sending 3 bytes (`0xEE`, `0xD0`, `0xEF`) and receiving 1 byte (`0x60`).
 
@@ -142,6 +142,8 @@ plus sending 3 bytes, and
 receiving 1 byte.
 
 The byte received should be 0x60.
+
+http://dangerousprototypes.com/docs/I2C
 
 # Initialise I2C Port
 
