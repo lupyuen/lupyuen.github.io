@@ -220,9 +220,9 @@ Here's how we create an I2C Message: [`sdk_app_i2c/demo.c`](https://github.com/l
 
 ```c
 //  Define I2C message and buffer
-static i2c_msg_t read_msg;      //  Message for reading I2C Data
-static uint8_t   read_buf[32];  //  Buffer for reading I2C Data
-int data_len = 1;               //  Bytes to be read
+static i2c_msg_t read_msg;    //  Message for reading I2C Data
+static uint8_t read_buf[32];  //  Buffer for reading I2C Data
+int data_len = 1;             //  Bytes to be read
 ```
 
 First we define `read_msg` as a static I2C Message. 
@@ -233,18 +233,18 @@ The data returned by our BME280 Sensor shall be stored in the static buffer `rea
 
 ```c
 //  Set the I2C operation    
-read_msg.i2cx    = 0;            //  I2C Port
-read_msg.direct  = I2C_M_READ;   //  Read I2C data
-read_msg.block   = I2C_M_BLOCK;  //  Wait until data has been read
+read_msg.i2cx   = 0;            //  I2C Port
+read_msg.direct = I2C_M_READ;   //  Read I2C data
+read_msg.block  = I2C_M_BLOCK;  //  Wait until data has been read
 ```
 
 Next we set the __I2C Port__ (0) and the __I2C Operation__ (Blocking Read).
 
 ```c
 //  Set the I2C buffer
-read_msg.buf     = read_buf;  //  Read buffer
-read_msg.len     = data_len;  //  Number of bytes to be read
-read_msg.idex    = 0;         //  Index of next byte to be read into buf
+read_msg.buf  = read_buf;  //  Read buffer
+read_msg.len  = data_len;  //  Number of bytes to be read
+read_msg.idex = 0;         //  Index of next byte to be read into buf
 ```
 
 Then we assign the data buffer `read_buf` to `read_msg` and set the number of bytes to be read (1).
@@ -257,10 +257,10 @@ TODO
 
 ```c
 //  Set device address and register address
-read_msg.addr    = 0x77;   //  BME280 I2C Secondary Address (Primary Address is 0x76)
-read_msg.subflag = 1;      //  Enable Register Address
-read_msg.subaddr = 0xd0;   //  Register Address (BME280 Chip ID)
-read_msg.sublen  = 1;      //  Length of Register Address (bytes)
+read_msg.addr    = 0x77;  //  BME280 I2C Secondary Address (Primary Address is 0x76)
+read_msg.subflag = 1;     //  Enable Register Address
+read_msg.subaddr = 0xd0;  //  Register Address (BME280 Chip ID)
+read_msg.sublen  = 1;     //  Length of Register Address (bytes)
 ```
 
 ![](https://lupyuen.github.io/images/i2c-confuse.png)
