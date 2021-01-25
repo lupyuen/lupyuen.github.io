@@ -208,27 +208,107 @@ I2C_Disable, I2C_IntMask
 
 (The BL602 Standard Driver contains low-level functions to manipulate the BL602 Hardware Registers)
 
-# I2C Message Struct
+# I2C Message
+
+Our objective is to __read Register `0xD0`__ from our BME280 Sensor with __Device ID `0x77`__
+
+We specify these details in an __I2C Message Struct `i2c_msg_t`__ that's defined in the Low Level I2C HAL.
+
+Here's how we create an I2C Message: [`sdk_app_i2c/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L406-L434)
+
+## Define I2C Message and Buffer
+
+```c
+//  Define I2C message and buffer
+static i2c_msg_t read_msg;      //  Message for reading I2C Data
+static uint8_t   read_buf[32];  //  Buffer for reading I2C Data
+int data_len = 1;               //  Bytes to be read
+```
+
+First we define `read_msg` as a static I2C Message. 
+
+The data returned by our BME280 Sensor shall be stored in the static buffer `read_buf`.
+
+## Set I2C Operation and Buffer
+
+```c
+//  Set the I2C operation    
+read_msg.i2cx    = 0;            //  I2C Port
+read_msg.direct  = I2C_M_READ;   //  Read I2C data
+read_msg.block   = I2C_M_BLOCK;  //  Wait until data has been read
+```
+
+Next we set the __I2C Port__ (0) and the __I2C Operation__ (Blocking Read).
+
+```c
+//  Set the I2C buffer
+read_msg.buf     = read_buf;     //  Read buffer
+read_msg.len     = data_len;     //  Number of bytes to be read
+read_msg.idex    = 0;            //  Index of next byte to be read into buf
+```
+
+Then we assign the data buffer `read_buf` to `read_msg` and set the number of bytes to be read (1).
+
+`idex` is the index into the buffer `read_buf`. Our I2C Interrupt Handler will increment this index as it populates the buffer upon receiving data.
+
+## Set I2C Device Address and Register Address
 
 TODO
 
-![](https://lupyuen.github.io/images/i2c-reference.jpg)
-
-TODO
-
-![](https://lupyuen.github.io/images/i2c-reference2.jpg)
-
-TODO
-
-# I2C Register Addressing
-
-TODO
+```c
+//  Set device address and register address
+read_msg.addr    = 0x77;   //  BME280 I2C Secondary Address (Primary Address is 0x76)
+read_msg.subflag = 1;      //  Enable Register Address
+read_msg.subaddr = 0xd0;   //  Register Address (BME280 Chip ID)
+read_msg.sublen  = 1;      //  Length of Register Address (bytes)
+```
 
 ![](https://lupyuen.github.io/images/i2c-confuse.png)
 
 TODO
 
 # Read I2C Register
+
+TODO
+
+[`sdk_app_i2c/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L406-L434)
+
+```c
+static void test_i2c_start_read(char *buf, int len, int argc, char **argv) {
+    //  Start reading data from I2C device
+    //  Expect result 0x60 for BME280, 0x58 for BMP280
+    int data_len = 1;  //  Bytes to be read
+    memset(read_buf, 0, sizeof(read_buf));
+
+    //  Set the I2C operation    
+    read_msg.i2cx    = 0;            //  I2C Port
+    read_msg.direct  = I2C_M_READ;   //  Read I2C data
+    read_msg.block   = I2C_M_BLOCK;  //  Wait until data has been read
+
+    //  Set the I2C buffer
+    read_msg.buf     = read_buf;     //  Read buffer
+    read_msg.len     = data_len;     //  Number of bytes to be read
+    read_msg.idex    = 0;            //  Index of next byte to be read into buf
+
+    //  Set device address and register address
+    read_msg.addr    = 0x77;   //  BME280 I2C Secondary Address (Primary Address is 0x76)
+    read_msg.subflag = 1;      //  Enable Register Address
+    read_msg.subaddr = 0xd0;   //  Register Address (BME280 Chip ID)
+    read_msg.sublen  = 1;      //  Length of Register Address (bytes)
+
+    //  Start the I2C transfer and enable I2C interrupts
+    gpstmsg = &read_msg;
+    i2c_transfer_start(&read_msg);
+
+    //  do_read_data will be called to read data in the I2C Interrupt Handler (test_i2c_transferbytes)
+}
+```
+
+![](https://lupyuen.github.io/images/i2c-reference.jpg)
+
+TODO
+
+![](https://lupyuen.github.io/images/i2c-reference2.jpg)
 
 TODO
 
