@@ -113,6 +113,66 @@ To sum up: We need to reproduce on BL602 the two `[Start] ... [Stop]` transactio
 
 TODO
 
+[`sdk_app_i2c/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L333-L354)
+
+```c
+/// Init I2C functions. Based on hal_i2c_init in hal_i2c.c
+static void test_i2c_init(char *buf, int len, int argc, char **argv) {
+    //  Use I2C Port 0
+    const int i2cx = 0;
+```
+
+TODO
+
+```c
+    //  Init I2C Port 0 to GPIO 3 and 4
+    i2c_gpio_init(i2cx);
+
+    //  Set I2C Port 0 to 500 kbps
+    i2c_set_freq(500, i2cx);
+```
+
+TODO
+
+```c
+    //  Disable I2C Port 0
+    I2C_Disable(i2cx);    
+
+    //  Enable I2C interrupts   
+    bl_irq_enable(I2C_IRQn);
+    I2C_IntMask(i2cx, I2C_INT_ALL, MASK);
+```
+
+TODO
+
+```c
+    //  Register the I2C Interrupt Handler
+    bl_irq_register_with_ctx(
+        I2C_IRQn, 
+        test_i2c_interrupt_entry, 
+        &gpstmsg
+    );
+}
+```
+
+TODO
+
+```text
+i2c_gpio_init, i2c_set_freq
+```
+
+TODO
+
+```text
+I2C_Disable, I2C_IntMask
+```
+
+TODO
+
+```text
+bl_irq_enable, bl_irq_register_with_ctx
+```
+
 # I2C Message Struct
 
 TODO
