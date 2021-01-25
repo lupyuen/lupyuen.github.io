@@ -48,7 +48,7 @@ The firmware will work on all BL602 boards, including PineCone and Pinenut.
 
 _PineCone BL602 connected to SparkFun BME280 I2C Sensor_
 
-# Connect BL602 to BME280
+# Connect BL602 to BME280 I2C Sensor
 
 Let's connect BL602 to the [__Bosch BME280 I2C Sensor for Temperature, Humidity and Air Pressure__](https://learn.sparkfun.com/tutorials/sparkfun-bme280-breakout-hookup-guide)
 
