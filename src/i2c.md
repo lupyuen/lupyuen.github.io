@@ -16,7 +16,7 @@ BL602's I2C HAL is packaged as two levels...
 
     The Low Level HAL manipulates the BL602 I2C Registers directly to perform I2C functions.
 
-1.  __High Level HAL [`hal_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c)__: This calls the Low Level HAL, and uses FreeRTOS.
+1.  __High Level HAL [`hal_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c)__: This calls the Low Level HAL, and uses the Device Tree and FreeRTOS.
 
     (Why does the High Level HAL use FreeRTOS? We'll learn in a while)
 
@@ -44,11 +44,68 @@ We shall test BL602 I2C with this BL602 Command-Line Firmware (modded from BL602
 
 The firmware will work on all BL602 boards, including PineCone and Pinenut.
 
+![PineCone BL602 RISC-V Evaluation Board connected to BME280 I2C Sensor](https://lupyuen.github.io/images/i2c-title.jpg)
+
 # I2C Protocol for BME280
 
-TODO
+Let's connect BL602 to the [__Bosch BME280 I2C Sensor for Temperature, Humidity and Air Pressure__](https://learn.sparkfun.com/tutorials/sparkfun-bme280-breakout-hookup-guide)
 
-[Building a Rust Driver for PineTime’s Touch Controller](https://medium.com/@ly.lee/building-a-rust-driver-for-pinetimes-touch-controller-cbc1a5d5d3e9?source=friends_link&sk=d8cf73fc943d9c0e960627d768f309cb)
+(Air Pressure is very useful for sensing which level of a building we're on!)
+
+Connect BL602 to BME280 according to the pic above...
+
+| BL602 Pin | BME280 Pin | Wire Colour
+|:---:|:---:|:---|
+| __`GPIO 3`__ | `SDA` | Green 
+| __`GPIO 4`__ | `SCL` | Blue
+| __`3V3`__ | `3.3V` | Red
+| __`GND`__ | `GND` | Black
+
+The Low Level I2C HAL assigns GPIO 3 and 4 to the I2C Port on BL602. (See "Section 3.2.8: GPIO Function" in the BL602 Reference Manual)
+
+(If we're using the High Level I2C HAL, the I2C Pins are defined in the Device Tree)
+
+_What shall we accomplish with BL602 and BME280?_
+
+1.  We'll access BME280 at __I2C Device ID `0x77`__
+
+    (BME280 may be configured as Device ID `0x76` or `0x77`. Sparkfun BME280 in the pic above uses `0x77`)
+
+1.  BME280 has an I2C Register, __Chip ID, at Register `0xD0`__
+
+1.  Reading the Chip ID Register will give us the __Chip ID value `0x60`__ 
+
+    (`0x60` identifies the chip as BME280)
+
+_What are the data bytes that will be sent by BL602 to BME280 over I2C?_
+
+Here's the I2C Data that will be sent by BL602 to BME280...
+
+```text
+    [Start] 0xEE  0xD0  [Stop]
+
+    [Start] 0xEF [Read] [Stop]
+```
+
+BL602 will initiate two I2C Transactions, indicated by `[Start] ... [Stop]`
+
+1.  In the First I2C Transaction, BL602 specifies the I2C Register to be read: `0xD0` (Chip ID)
+
+1.  In the Second I2C Transaction, BME280 returns the value of the Chip ID Register, indicated by `[Read]`
+
+_What are 0xEE and 0xEF?_
+
+They are the read/write variants of the I2C Device ID `0x77`...
+
+-    `0xEE` = (`0x77` * 2) + 0, for Writing Data
+
+-    `0xEF` = (`0x77` * 2) + 1, for Reading Data
+
+I2C uses this even/odd convention to indicate whether we're writing or reading data.
+
+To sum up: We need to reproduce on BL602 the two `[Start] ... [Stop]` transactions. Which includes sending 3 bytes (`0xEE`, `0xD0`, `0xEF`) and receiving 1 byte (`0x60`).
+
+[More about I2C](https://medium.com/@ly.lee/building-a-rust-driver-for-pinetimes-touch-controller-cbc1a5d5d3e9?source=friends_link&sk=d8cf73fc943d9c0e960627d768f309cb)
 
 # Test BME280 with Bus Pirate
 
@@ -59,6 +116,32 @@ TODO
 TODO
 
 ![](https://lupyuen.github.io/images/i2c-buspirate2.png)
+
+TODO
+
+BME280 has I2C Device ID 0x77. We want to read 
+Register 0xd0 (Chip ID).
+
+BME280 was tested with this Bus Pirate I2C command...
+    [0xee 0xd0] [0xef r]
+
+Which means...
+    <Start> 0xee 0xd0 <Stop>
+    <Start> 0xef <Read> <Stop>
+
+In which...
+    0xee = (0x77 * 2) + 0, for writing
+    0xef = (0x77 * 2) + 1, for reading
+    0xd0 = Register to be read (Chip ID)
+
+We need to reproduce on BL602 the two 
+<Start> ... <Stop> transactions, 
+plus sending 3 bytes, and 
+receiving 1 byte.
+
+The byte received should be 0x60.
+
+# Initialise I2C Port
 
 TODO
 
