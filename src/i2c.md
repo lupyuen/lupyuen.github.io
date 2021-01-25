@@ -10,6 +10,18 @@ _PineCone BL602 RISC-V Evaluation Board connected to BME280 I2C Sensor_
 
 TODO
 
+![](https://lupyuen.github.io/images/i2c-fail.jpg)
+
+TODO
+
+![](https://lupyuen.github.io/images/i2c-exception.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/i2c-pinebook.png)
+
+TODO
+
 # I2C Protocol for BME280
 
 TODO
@@ -18,7 +30,23 @@ TODO
 
 TODO
 
+![](https://lupyuen.github.io/images/i2c-buspirate.jpg)
+
+TODO
+
+![](https://lupyuen.github.io/images/i2c-buspirate2.png)
+
+TODO
+
 # I2C Message Struct
+
+TODO
+
+![](https://lupyuen.github.io/images/i2c-reference.jpg)
+
+TODO
+
+![](https://lupyuen.github.io/images/i2c-reference2.jpg)
 
 TODO
 
@@ -26,11 +54,31 @@ TODO
 
 TODO
 
+![](https://lupyuen.github.io/images/i2c-confuse.png)
+
+TODO
+
 # Read I2C Register
 
 TODO
 
+![](https://lupyuen.github.io/images/i2c-init.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/i2c-success.png)
+
+TODO
+
 # I2C Interrupt Handler
+
+TODO
+
+![](https://lupyuen.github.io/images/i2c-handler.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/i2c-interrupt.png)
 
 TODO
 
@@ -43,6 +91,8 @@ TODO
 TODO
 
 # What's Next
+
+![](https://lupyuen.github.io/images/i2c-hack.jpg)
 
 TODO
 
