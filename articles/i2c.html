@@ -68,14 +68,15 @@
 <li><a href="#bl602-i2c-hardware-abstraction-layer-high-level-vs-low-level">1 BL602 I2C Hardware Abstraction Layer: High Level vs Low Level</a><ul></ul></li>
 <li><a href="#i2c-protocol-for-bme280">2 I2C Protocol for BME280</a><ul></ul></li>
 <li><a href="#test-bme280-with-bus-pirate">3 Test BME280 with Bus Pirate</a><ul></ul></li>
-<li><a href="#i2c-message-struct">4 I2C Message Struct</a><ul></ul></li>
-<li><a href="#i2c-register-addressing">5 I2C Register Addressing</a><ul></ul></li>
-<li><a href="#read-i2c-register">6 Read I2C Register</a><ul></ul></li>
-<li><a href="#i2c-interrupt-handler">7 I2C Interrupt Handler</a><ul></ul></li>
-<li><a href="#why-we-need-an-embedded-os-for-i2c">8 Why we need an Embedded OS for I2C</a><ul></ul></li>
-<li><a href="#port-bl602-i2c-to-mynewt">9 Port BL602 I2C to Mynewt</a><ul></ul></li>
-<li><a href="#whats-next">10 What's Next</a><ul></ul></li>
-<li><a href="#appendix-how-to-troubleshoot-risc-v-exceptions">11 Appendix: How to Troubleshoot RISC-V Exceptions</a><ul></ul></li></ul></nav><p>📝 <em>29 Jan 2021</em></p>
+<li><a href="#initialise-i2c-port">4 Initialise I2C Port</a><ul></ul></li>
+<li><a href="#i2c-message-struct">5 I2C Message Struct</a><ul></ul></li>
+<li><a href="#i2c-register-addressing">6 I2C Register Addressing</a><ul></ul></li>
+<li><a href="#read-i2c-register">7 Read I2C Register</a><ul></ul></li>
+<li><a href="#i2c-interrupt-handler">8 I2C Interrupt Handler</a><ul></ul></li>
+<li><a href="#why-we-need-an-embedded-os-for-i2c">9 Why we need an Embedded OS for I2C</a><ul></ul></li>
+<li><a href="#port-bl602-i2c-to-mynewt">10 Port BL602 I2C to Mynewt</a><ul></ul></li>
+<li><a href="#whats-next">11 What's Next</a><ul></ul></li>
+<li><a href="#appendix-how-to-troubleshoot-risc-v-exceptions">12 Appendix: How to Troubleshoot RISC-V Exceptions</a><ul></ul></li></ul></nav><p>📝 <em>29 Jan 2021</em></p>
 <p><img src="https://lupyuen.github.io/images/i2c-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board connected to BME280 I2C Sensor" /></p>
 <p><em>PineCone BL602 RISC-V Evaluation Board connected to BME280 I2C Sensor</em></p>
 <h1 id="bl602-i2c-hardware-abstraction-layer-high-level-vs-low-level" class="section-header"><a href="#bl602-i2c-hardware-abstraction-layer-high-level-vs-low-level">1 BL602 I2C Hardware Abstraction Layer: High Level vs Low Level</a></h1>
@@ -87,7 +88,7 @@
 <p>The Low Level HAL manipulates the BL602 I2C Registers directly to perform I2C functions.</p>
 </li>
 <li>
-<p><strong>High Level HAL <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c"><code>hal_i2c.c</code></a></strong>: This calls the Low Level HAL, and uses FreeRTOS.</p>
+<p><strong>High Level HAL <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c"><code>hal_i2c.c</code></a></strong>: This calls the Low Level HAL, and uses the Device Tree and FreeRTOS.</p>
 <p>(Why does the High Level HAL use FreeRTOS? We'll learn in a while)</p>
 </li>
 </ol>
@@ -111,42 +112,112 @@
 <p><img src="https://lupyuen.github.io/images/i2c-fail.jpg" alt="BL602 Command-Line Firmware sdk_app_i2c" /></p>
 <p>(Don't worry, we'll make it hunky dory by the end of the article!)</p>
 <p>The firmware will work on all BL602 boards, including PineCone and Pinenut.</p>
+<p><img src="https://lupyuen.github.io/images/i2c-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board connected to BME280 I2C Sensor" /></p>
 <h1 id="i2c-protocol-for-bme280" class="section-header"><a href="#i2c-protocol-for-bme280">2 I2C Protocol for BME280</a></h1>
-<p>TODO</p>
-<p><a href="https://medium.com/@ly.lee/building-a-rust-driver-for-pinetimes-touch-controller-cbc1a5d5d3e9?source=friends_link&amp;sk=d8cf73fc943d9c0e960627d768f309cb">Building a Rust Driver for PineTime’s Touch Controller</a></p>
+<p>Let's connect BL602 to the <a href="https://learn.sparkfun.com/tutorials/sparkfun-bme280-breakout-hookup-guide"><strong>Bosch BME280 I2C Sensor for Temperature, Humidity and Air Pressure</strong></a></p>
+<p>(Air Pressure is very useful for sensing which level of a building we're on!)</p>
+<p>Connect BL602 to BME280 according to the pic above...</p>
+<table><thead><tr><th align="center">BL602 Pin</th><th align="center">BME280 Pin</th><th align="left">Wire Colour</th></tr></thead><tbody>
+<tr><td align="center"><strong><code>GPIO 3</code></strong></td><td align="center"><code>SDA</code></td><td align="left">Green</td></tr>
+<tr><td align="center"><strong><code>GPIO 4</code></strong></td><td align="center"><code>SCL</code></td><td align="left">Blue</td></tr>
+<tr><td align="center"><strong><code>3V3</code></strong></td><td align="center"><code>3.3V</code></td><td align="left">Red</td></tr>
+<tr><td align="center"><strong><code>GND</code></strong></td><td align="center"><code>GND</code></td><td align="left">Black</td></tr>
+</tbody></table>
+<p>The Low Level I2C HAL assigns GPIO 3 and 4 to the I2C Port on BL602. (See &quot;Section 3.2.8: GPIO Function&quot; in the BL602 Reference Manual)</p>
+<p>(If we're using the High Level I2C HAL, the I2C Pins are defined in the Device Tree)</p>
+<p><em>What shall we accomplish with BL602 and BME280?</em></p>
+<ol>
+<li>
+<p>We'll access BME280 at <strong>I2C Device ID <code>0x77</code></strong></p>
+<p>(BME280 may be configured as Device ID <code>0x76</code> or <code>0x77</code>. Sparkfun BME280 in the pic above uses <code>0x77</code>)</p>
+</li>
+<li>
+<p>BME280 has an I2C Register, <strong>Chip ID, at Register <code>0xD0</code></strong></p>
+</li>
+<li>
+<p>Reading the Chip ID Register will give us the <strong>Chip ID value <code>0x60</code></strong> </p>
+<p>(<code>0x60</code> identifies the chip as BME280)</p>
+</li>
+</ol>
+<p><em>What are the data bytes that will be sent by BL602 to BME280 over I2C?</em></p>
+<p>Here's the I2C Data that will be sent by BL602 to BME280...</p>
+<pre><code class="language-text">    [Start] 0xEE  0xD0  [Stop]
+
+    [Start] 0xEF [Read] [Stop]
+</code></pre>
+<p>BL602 will initiate two I2C Transactions, indicated by <code>[Start] ... [Stop]</code></p>
+<ol>
+<li>
+<p>In the First I2C Transaction, BL602 specifies the I2C Register to be read: <code>0xD0</code> (Chip ID)</p>
+</li>
+<li>
+<p>In the Second I2C Transaction, BME280 returns the value of the Chip ID Register, indicated by <code>[Read]</code></p>
+</li>
+</ol>
+<p><em>What are 0xEE and 0xEF?</em></p>
+<p>They are the read/write variants of the I2C Device ID <code>0x77</code>...</p>
+<ul>
+<li>
+<p><code>0xEE</code> = (<code>0x77</code> * 2) + 0, for Writing Data</p>
+</li>
+<li>
+<p><code>0xEF</code> = (<code>0x77</code> * 2) + 1, for Reading Data</p>
+</li>
+</ul>
+<p>I2C uses this even/odd convention to indicate whether we're writing or reading data.</p>
+<p>To sum up: We need to reproduce on BL602 the two <code>[Start] ... [Stop]</code> transactions. Which includes sending 3 bytes (<code>0xEE</code>, <code>0xD0</code>, <code>0xEF</code>) and receiving 1 byte (<code>0x60</code>).</p>
+<p><a href="https://medium.com/@ly.lee/building-a-rust-driver-for-pinetimes-touch-controller-cbc1a5d5d3e9?source=friends_link&amp;sk=d8cf73fc943d9c0e960627d768f309cb">More about I2C</a></p>
 <h1 id="test-bme280-with-bus-pirate" class="section-header"><a href="#test-bme280-with-bus-pirate">3 Test BME280 with Bus Pirate</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-buspirate.jpg" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-buspirate2.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="i2c-message-struct" class="section-header"><a href="#i2c-message-struct">4 I2C Message Struct</a></h1>
+<p>BME280 has I2C Device ID 0x77. We want to read 
+Register 0xd0 (Chip ID).</p>
+<p>BME280 was tested with this Bus Pirate I2C command...
+[0xee 0xd0] [0xef r]</p>
+<p>Which means...
+<Start> 0xee 0xd0 <Stop>
+<Start> 0xef <Read> <Stop></p>
+<p>In which...
+0xee = (0x77 * 2) + 0, for writing
+0xef = (0x77 * 2) + 1, for reading
+0xd0 = Register to be read (Chip ID)</p>
+<p>We need to reproduce on BL602 the two 
+<Start> ... <Stop> transactions, 
+plus sending 3 bytes, and 
+receiving 1 byte.</p>
+<p>The byte received should be 0x60.</p>
+<h1 id="initialise-i2c-port" class="section-header"><a href="#initialise-i2c-port">4 Initialise I2C Port</a></h1>
+<p>TODO</p>
+<h1 id="i2c-message-struct" class="section-header"><a href="#i2c-message-struct">5 I2C Message Struct</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-reference.jpg" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-reference2.jpg" alt="" /></p>
 <p>TODO</p>
-<h1 id="i2c-register-addressing" class="section-header"><a href="#i2c-register-addressing">5 I2C Register Addressing</a></h1>
+<h1 id="i2c-register-addressing" class="section-header"><a href="#i2c-register-addressing">6 I2C Register Addressing</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-confuse.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="read-i2c-register" class="section-header"><a href="#read-i2c-register">6 Read I2C Register</a></h1>
+<h1 id="read-i2c-register" class="section-header"><a href="#read-i2c-register">7 Read I2C Register</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-init.png" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-success.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="i2c-interrupt-handler" class="section-header"><a href="#i2c-interrupt-handler">7 I2C Interrupt Handler</a></h1>
+<h1 id="i2c-interrupt-handler" class="section-header"><a href="#i2c-interrupt-handler">8 I2C Interrupt Handler</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-handler.png" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-interrupt.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="why-we-need-an-embedded-os-for-i2c" class="section-header"><a href="#why-we-need-an-embedded-os-for-i2c">8 Why we need an Embedded OS for I2C</a></h1>
+<h1 id="why-we-need-an-embedded-os-for-i2c" class="section-header"><a href="#why-we-need-an-embedded-os-for-i2c">9 Why we need an Embedded OS for I2C</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-inithal.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="port-bl602-i2c-to-mynewt" class="section-header"><a href="#port-bl602-i2c-to-mynewt">9 Port BL602 I2C to Mynewt</a></h1>
+<h1 id="port-bl602-i2c-to-mynewt" class="section-header"><a href="#port-bl602-i2c-to-mynewt">10 Port BL602 I2C to Mynewt</a></h1>
 <p>TODO</p>
 <ol>
 <li>Shared vars</li>
@@ -156,7 +227,7 @@
 Mynewt bus</p>
 <p>Map to Mynewt / rust
 They dont support register address</p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">10 What's Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">11 What's Next</a></h1>
 <p><img src="https://lupyuen.github.io/images/i2c-hack.jpg" alt="" /></p>
 <p>TODO</p>
 <ul>
@@ -172,7 +243,7 @@ They dont support register address</p>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/i2c.md"><code>lupyuen.github.io/src/i2c.md</code></a></p>
-<h1 id="appendix-how-to-troubleshoot-risc-v-exceptions" class="section-header"><a href="#appendix-how-to-troubleshoot-risc-v-exceptions">11 Appendix: How to Troubleshoot RISC-V Exceptions</a></h1>
+<h1 id="appendix-how-to-troubleshoot-risc-v-exceptions" class="section-header"><a href="#appendix-how-to-troubleshoot-risc-v-exceptions">12 Appendix: How to Troubleshoot RISC-V Exceptions</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-exception.png" alt="" /></p>
 <p>TODO</p>
