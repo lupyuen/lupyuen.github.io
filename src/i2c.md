@@ -109,42 +109,6 @@ To sum up: We need to reproduce on BL602 the two `[Start] ... [Stop]` transactio
 
 [More about I2C](https://medium.com/@ly.lee/building-a-rust-driver-for-pinetimes-touch-controller-cbc1a5d5d3e9?source=friends_link&sk=d8cf73fc943d9c0e960627d768f309cb)
 
-# Test BME280 with Bus Pirate
-
-TODO
-
-![](https://lupyuen.github.io/images/i2c-buspirate.jpg)
-
-TODO
-
-![](https://lupyuen.github.io/images/i2c-buspirate2.png)
-
-TODO
-
-BME280 has I2C Device ID 0x77. We want to read 
-Register 0xd0 (Chip ID).
-
-BME280 was tested with this Bus Pirate I2C command...
-    [0xee 0xd0] [0xef r]
-
-Which means...
-    <Start> 0xee 0xd0 <Stop>
-    <Start> 0xef <Read> <Stop>
-
-In which...
-    0xee = (0x77 * 2) + 0, for writing
-    0xef = (0x77 * 2) + 1, for reading
-    0xd0 = Register to be read (Chip ID)
-
-We need to reproduce on BL602 the two 
-<Start> ... <Stop> transactions, 
-plus sending 3 bytes, and 
-receiving 1 byte.
-
-The byte received should be 0x60.
-
-http://dangerousprototypes.com/docs/I2C
-
 # Initialise I2C Port
 
 TODO
@@ -229,6 +193,42 @@ TODO
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [`lupyuen.github.io/src/i2c.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/i2c.md)
+
+# Appendix: Test BME280 with Bus Pirate
+
+TODO
+
+![](https://lupyuen.github.io/images/i2c-buspirate.jpg)
+
+TODO
+
+![](https://lupyuen.github.io/images/i2c-buspirate2.png)
+
+TODO
+
+BME280 has I2C Device ID 0x77. We want to read 
+Register 0xd0 (Chip ID).
+
+BME280 was tested with this Bus Pirate I2C command...
+    [0xee 0xd0] [0xef r]
+
+Which means...
+    <Start> 0xee 0xd0 <Stop>
+    <Start> 0xef <Read> <Stop>
+
+In which...
+    0xee = (0x77 * 2) + 0, for writing
+    0xef = (0x77 * 2) + 1, for reading
+    0xd0 = Register to be read (Chip ID)
+
+We need to reproduce on BL602 the two 
+<Start> ... <Stop> transactions, 
+plus sending 3 bytes, and 
+receiving 1 byte.
+
+The byte received should be 0x60.
+
+http://dangerousprototypes.com/docs/I2C
 
 # Appendix: How to Troubleshoot RISC-V Exceptions
 
