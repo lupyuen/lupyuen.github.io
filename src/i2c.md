@@ -79,7 +79,9 @@ _What shall we accomplish with BL602 and BME280?_
 
     (`0x60` identifies the chip as BME280)
 
-_What are the data bytes that will be sent by BL602 to BME280 over I2C?_
+## I2C Protocol for BME280
+
+_What are the data bytes that will be sent by BL602?_
 
 Here's the I2C Data that will be sent by BL602 to BME280...
 
@@ -186,9 +188,11 @@ static i2c_msg_t *gpstmsg;
 
 `gpstmsg` points to the __current I2C Message__ being sent or received, so that the Interrupt Handler knows which Message Buffer to use for sending and receiving data.
 
-## I2C HAL Functions
+## HAL Functions
 
-The following functions called above are defined in the __Low Level I2C HAL__: [`bl_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c)
+Let's list down the HAL Functions called above and where they are defined...
+
+The following functions are defined in the __Low Level I2C HAL__: [`bl_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c)
 
 ```text
 i2c_gpio_init, i2c_set_freq
@@ -253,19 +257,51 @@ Then we assign the data buffer `read_buf` to `read_msg` and set the number of by
 
 ## Set I2C Device Address and Register Address
 
-TODO
+We'll be reading data from BME280, which has Device ID `0x77`.
+
+We specify the __Device Address__ like so...
 
 ```c
-//  Set device address and register address
-read_msg.addr    = 0x77;  //  BME280 I2C Secondary Address (Primary Address is 0x76)
+//  Set device address
+read_msg.addr = 0x77;  //  BME280 I2C Secondary Address (Primary Address is 0x76)
+```
+
+_Now here's the really really interesting thing about BL602..._
+
+Remember that we will be reading Register `0xD0` (Chip ID) on BME280?
+
+We specify the __Register Address__ in this incredibly easy peasy way...
+
+```c
+//  Set register address
 read_msg.subflag = 1;     //  Enable Register Address
 read_msg.subaddr = 0xd0;  //  Register Address (BME280 Chip ID)
 read_msg.sublen  = 1;     //  Length of Register Address (bytes)
 ```
 
-![](https://lupyuen.github.io/images/i2c-confuse.png)
+__This I2C Register Address feature is unique to BL602!__
 
-TODO
+The I2C Register Address feature is __not available__ on STM32 Blue Pill, Nordic nRF52, GigaDevice GD32 VF103 (RISC-V), ESP32, ... Not even on Raspberry Pi Pico!
+
+(Though it seems to be supported on [NXP Microcontrollers](https://mcuxpresso.nxp.com/api_doc/dev/116/group__i2c.html) as "I2C Subaddress")
+
+Thus __BL602 I2C works a little differently__ from other microcontrollers.
+
+This may complicate the support for I2C in Embedded Operating Systems like Mynewt, RIOT and Zephyr. (More about this in a while)
+
+## I2C Terms
+
+The I2C Documentation in the BL602 Reference Manual appears somewhat confusing because of the I2C Register Address feature. [See this](https://lupyuen.github.io/images/i2c-confuse.png)
+
+In this article we shall standardise on these I2C Terms...
+
+1.  We say __"Device Address"__
+
+    (Instead of "Slave Address", "Slave Device")
+
+1.  We say __"Register Address"__
+
+    (Instead of "Subaddress", "Slave Device Address", "Slave Device Register Address")
 
 # Read I2C Register
 
