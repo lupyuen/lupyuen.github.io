@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <title>PineCone BL602 talks to I2C Sensors</title>
+
+    
+    <!-- Begin scripts/articles/*-header.html: Article Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<meta property="og:title" 
+    content="PineCone BL602 talks to I2C Sensors" 
+    data-rh="true">
+<meta property="og:description" 
+    content="How we call the BL602 RISC-V Hardware Abstraction Layer to access the BME280 I2C Sensor" 
+    data-rh="true">
+<meta property="og:image" 
+    content="https://lupyuen.github.io/images/i2c-title.jpg">
+<meta property="og:type" 
+    content="article" data-rh="true">
+<!-- End scripts/articles/*-header.html -->
+<!-- Begin scripts/rustdoc-header.html: Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<link rel="alternate" type="application/rss+xml" title="RSS Feed for lupyuen" href="/rss.xml" />
+<link rel="stylesheet" type="text/css" href="../normalize.css">
+<link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle">
+<link rel="stylesheet" type="text/css" href="../dark.css">
+<link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle">
+<link rel="stylesheet" type="text/css" href="../prism.css">
+<script src="../storage.js"></script><noscript>
+<link rel="stylesheet" href="../noscript.css"></noscript>
+<link rel="shortcut icon" href="../favicon.ico">
+<style type="text/css">
+    #crate-search {
+        background-image: url("../down-arrow.svg");
+    }
+    a {
+        color: #77d;
+    }
+</style>
+<!-- End scripts/rustdoc-header.html -->
+
+
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+        <!-- Begin scripts/rustdoc-before.html: Pre-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
+
+    <!-- Begin Theme Picker -->
+    <div class="theme-picker" style="left: 0"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg"
+        width="18" alt="Pick another theme!"></button>
+        <div id="theme-choices"></div>
+    </div>
+    <script src="../theme.js"></script>
+    <script src="../prism.js"></script>
+    <!-- Theme Picker -->
+
+    <!-- End scripts/rustdoc-before.html -->
+    
+
+    <h1 class="title">PineCone BL602 talks to I2C Sensors</h1>
+    <nav id="TOC"><ul>
+<li><a href="#bl602-i2c-hardware-abstraction-layer-high-level-vs-low-level">1 BL602 I2C Hardware Abstraction Layer: High Level vs Low Level</a><ul></ul></li>
+<li><a href="#i2c-protocol-for-bme280">2 I2C Protocol for BME280</a><ul></ul></li>
+<li><a href="#test-bme280-with-bus-pirate">3 Test BME280 with Bus Pirate</a><ul></ul></li>
+<li><a href="#i2c-message-struct">4 I2C Message Struct</a><ul></ul></li>
+<li><a href="#i2c-register-addressing">5 I2C Register Addressing</a><ul></ul></li>
+<li><a href="#read-i2c-register">6 Read I2C Register</a><ul></ul></li>
+<li><a href="#i2c-interrupt-handler">7 I2C Interrupt Handler</a><ul></ul></li>
+<li><a href="#why-we-need-an-embedded-os-for-i2c">8 Why we need an Embedded OS for I2C</a><ul></ul></li>
+<li><a href="#port-bl602-i2c-to-mynewt">9 Port BL602 I2C to Mynewt</a><ul></ul></li>
+<li><a href="#whats-next">10 What's Next</a><ul></ul></li></ul></nav><p>📝 <em>29 Jan 2021</em></p>
+<p><img src="https://lupyuen.github.io/images/i2c-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board connected to BME280 I2C Sensor" /></p>
+<p><em>PineCone BL602 RISC-V Evaluation Board connected to BME280 I2C Sensor</em></p>
+<h1 id="bl602-i2c-hardware-abstraction-layer-high-level-vs-low-level" class="section-header"><a href="#bl602-i2c-hardware-abstraction-layer-high-level-vs-low-level">1 BL602 I2C Hardware Abstraction Layer: High Level vs Low Level</a></h1>
+<p>TODO</p>
+<h1 id="i2c-protocol-for-bme280" class="section-header"><a href="#i2c-protocol-for-bme280">2 I2C Protocol for BME280</a></h1>
+<p>TODO</p>
+<h1 id="test-bme280-with-bus-pirate" class="section-header"><a href="#test-bme280-with-bus-pirate">3 Test BME280 with Bus Pirate</a></h1>
+<p>TODO</p>
+<h1 id="i2c-message-struct" class="section-header"><a href="#i2c-message-struct">4 I2C Message Struct</a></h1>
+<p>TODO</p>
+<h1 id="i2c-register-addressing" class="section-header"><a href="#i2c-register-addressing">5 I2C Register Addressing</a></h1>
+<p>TODO</p>
+<h1 id="read-i2c-register" class="section-header"><a href="#read-i2c-register">6 Read I2C Register</a></h1>
+<p>TODO</p>
+<h1 id="i2c-interrupt-handler" class="section-header"><a href="#i2c-interrupt-handler">7 I2C Interrupt Handler</a></h1>
+<p>TODO</p>
+<h1 id="why-we-need-an-embedded-os-for-i2c" class="section-header"><a href="#why-we-need-an-embedded-os-for-i2c">8 Why we need an Embedded OS for I2C</a></h1>
+<p>TODO</p>
+<h1 id="port-bl602-i2c-to-mynewt" class="section-header"><a href="#port-bl602-i2c-to-mynewt">9 Port BL602 I2C to Mynewt</a></h1>
+<p>TODO</p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">10 What's Next</a></h1>
+<p>TODO</p>
+<ul>
+<li>
+<p><a href="https://github.com/sponsors/lupyuen">Sponsor me a coffee</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io">Check out my articles</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/rss.xml">RSS Feed</a></p>
+</li>
+</ul>
+<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
+<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/i2c.md"><code>lupyuen.github.io/src/i2c.md</code></a></p>
+
+    
+</body>
+</html>
