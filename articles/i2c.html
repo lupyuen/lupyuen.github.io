@@ -112,7 +112,8 @@
 <p><img src="https://lupyuen.github.io/images/i2c-fail.jpg" alt="BL602 Command-Line Firmware sdk_app_i2c" /></p>
 <p>(Don't worry, we'll make it hunky dory by the end of the article!)</p>
 <p>The firmware will work on all BL602 boards, including PineCone and Pinenut.</p>
-<p><img src="https://lupyuen.github.io/images/i2c-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board connected to BME280 I2C Sensor" /></p>
+<p><img src="https://lupyuen.github.io/images/i2c-bme280.jpg" alt="PineCone BL602 connected to SparkFun BME280 I2C Sensor" /></p>
+<p><em>PineCone BL602 connected to SparkFun BME280 I2C Sensor</em></p>
 <h1 id="i2c-protocol-for-bme280" class="section-header"><a href="#i2c-protocol-for-bme280">2 I2C Protocol for BME280</a></h1>
 <p>Let's connect BL602 to the <a href="https://learn.sparkfun.com/tutorials/sparkfun-bme280-breakout-hookup-guide"><strong>Bosch BME280 I2C Sensor for Temperature, Humidity and Air Pressure</strong></a></p>
 <p>(Air Pressure is very useful for sensing which level of a building we're on!)</p>
@@ -129,7 +130,7 @@
 <ol>
 <li>
 <p>We'll access BME280 at <strong>I2C Device ID <code>0x77</code></strong></p>
-<p>(BME280 may be configured as Device ID <code>0x76</code> or <code>0x77</code>. Sparkfun BME280 in the pic above uses <code>0x77</code>)</p>
+<p>(BME280 may be configured as Device ID <code>0x76</code> or <code>0x77</code>. SparkFun BME280 in the pic above uses <code>0x77</code>)</p>
 </li>
 <li>
 <p>BME280 has an I2C Register, <strong>Chip ID, at Register <code>0xD0</code></strong></p>
