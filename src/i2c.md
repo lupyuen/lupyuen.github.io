@@ -242,9 +242,9 @@ Next we set the __I2C Port__ (0) and the __I2C Operation__ (Blocking Read).
 
 ```c
 //  Set the I2C buffer
-read_msg.buf     = read_buf;     //  Read buffer
-read_msg.len     = data_len;     //  Number of bytes to be read
-read_msg.idex    = 0;            //  Index of next byte to be read into buf
+read_msg.buf     = read_buf;  //  Read buffer
+read_msg.len     = data_len;  //  Number of bytes to be read
+read_msg.idex    = 0;         //  Index of next byte to be read into buf
 ```
 
 Then we assign the data buffer `read_buf` to `read_msg` and set the number of bytes to be read (1).
