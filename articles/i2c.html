@@ -66,17 +66,19 @@
     <h1 class="title">PineCone BL602 talks to I2C Sensors</h1>
     <nav id="TOC"><ul>
 <li><a href="#bl602-i2c-hardware-abstraction-layer-high-level-vs-low-level">1 BL602 I2C Hardware Abstraction Layer: High Level vs Low Level</a><ul></ul></li>
-<li><a href="#connect-bl602-to-bme280-i2c-sensor">2 Connect BL602 to BME280 I2C Sensor</a><ul></ul></li>
+<li><a href="#connect-bl602-to-bme280-i2c-sensor">2 Connect BL602 to BME280 I2C Sensor</a><ul>
+<li><a href="#i2c-protocol-for-bme280">2.1 I2C Protocol for BME280</a><ul></ul></li></ul></li>
 <li><a href="#initialise-i2c-port">3 Initialise I2C Port</a><ul>
 <li><a href="#select-i2c-port">3.1 Select I2C Port</a><ul></ul></li>
 <li><a href="#assign-i2c-pins-and-set-i2c-frequency">3.2 Assign I2C Pins and set I2C Frequency</a><ul></ul></li>
 <li><a href="#enable-i2c-interrupts">3.3 Enable I2C Interrupts</a><ul></ul></li>
 <li><a href="#register-i2c-interrupt-handler">3.4 Register I2C Interrupt Handler</a><ul></ul></li>
-<li><a href="#i2c-hal-functions">3.5 I2C HAL Functions</a><ul></ul></li></ul></li>
+<li><a href="#hal-functions">3.5 HAL Functions</a><ul></ul></li></ul></li>
 <li><a href="#i2c-message">4 I2C Message</a><ul>
 <li><a href="#define-i2c-message-and-buffer">4.1 Define I2C Message and Buffer</a><ul></ul></li>
 <li><a href="#set-i2c-operation-and-buffer">4.2 Set I2C Operation and Buffer</a><ul></ul></li>
-<li><a href="#set-i2c-device-address-and-register-address">4.3 Set I2C Device Address and Register Address</a><ul></ul></li></ul></li>
+<li><a href="#set-i2c-device-address-and-register-address">4.3 Set I2C Device Address and Register Address</a><ul></ul></li>
+<li><a href="#i2c-terms">4.4 I2C Terms</a><ul></ul></li></ul></li>
 <li><a href="#read-i2c-register">5 Read I2C Register</a><ul></ul></li>
 <li><a href="#i2c-interrupt-handler">6 I2C Interrupt Handler</a><ul></ul></li>
 <li><a href="#why-we-need-an-embedded-os-for-i2c">7 Why we need an Embedded OS for I2C</a><ul></ul></li>
@@ -147,7 +149,8 @@
 <p>(<code>0x60</code> identifies the chip as BME280)</p>
 </li>
 </ol>
-<p><em>What are the data bytes that will be sent by BL602 to BME280 over I2C?</em></p>
+<h2 id="i2c-protocol-for-bme280" class="section-header"><a href="#i2c-protocol-for-bme280">2.1 I2C Protocol for BME280</a></h2>
+<p><em>What are the data bytes that will be sent by BL602?</em></p>
 <p>Here's the I2C Data that will be sent by BL602 to BME280...</p>
 <pre><code class="language-text">    [Start] 0xEE  0xD0  [Stop]
 
@@ -223,8 +226,9 @@ static void test_i2c_init(char *buf, int len, int argc, char **argv) {
 static i2c_msg_t *gpstmsg;
 </code></pre>
 <p><code>gpstmsg</code> points to the <strong>current I2C Message</strong> being sent or received, so that the Interrupt Handler knows which Message Buffer to use for sending and receiving data.</p>
-<h2 id="i2c-hal-functions" class="section-header"><a href="#i2c-hal-functions">3.5 I2C HAL Functions</a></h2>
-<p>The following functions called above are defined in the <strong>Low Level I2C HAL</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c"><code>bl_i2c.c</code></a></p>
+<h2 id="hal-functions" class="section-header"><a href="#hal-functions">3.5 HAL Functions</a></h2>
+<p>Let's list down the HAL Functions called above and where they are defined...</p>
+<p>The following functions are defined in the <strong>Low Level I2C HAL</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c"><code>bl_i2c.c</code></a></p>
 <pre><code class="language-text">i2c_gpio_init, i2c_set_freq
 </code></pre>
 <p>These functions are defined in the <strong>BL602 Interrupt HAL</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_irq.c"><code>bl_irq.c</code></a></p>
@@ -261,15 +265,37 @@ read_msg.idex = 0;         //  Index of next byte to be read into buf
 <p>Then we assign the data buffer <code>read_buf</code> to <code>read_msg</code> and set the number of bytes to be read (1).</p>
 <p><code>idex</code> is the index into the buffer <code>read_buf</code>. Our I2C Interrupt Handler will increment this index as it populates the buffer upon receiving data.</p>
 <h2 id="set-i2c-device-address-and-register-address" class="section-header"><a href="#set-i2c-device-address-and-register-address">4.3 Set I2C Device Address and Register Address</a></h2>
-<p>TODO</p>
-<pre><code class="language-c">//  Set device address and register address
-read_msg.addr    = 0x77;  //  BME280 I2C Secondary Address (Primary Address is 0x76)
+<p>We'll be reading data from BME280, which has Device ID <code>0x77</code>.</p>
+<p>We specify the <strong>Device Address</strong> like so...</p>
+<pre><code class="language-c">//  Set device address
+read_msg.addr = 0x77;  //  BME280 I2C Secondary Address (Primary Address is 0x76)
+</code></pre>
+<p><em>Now here's the really really interesting thing about BL602...</em></p>
+<p>Remember that we will be reading Register <code>0xD0</code> (Chip ID) on BME280?</p>
+<p>We specify the <strong>Register Address</strong> in this incredibly easy peasy way...</p>
+<pre><code class="language-c">//  Set register address
 read_msg.subflag = 1;     //  Enable Register Address
 read_msg.subaddr = 0xd0;  //  Register Address (BME280 Chip ID)
 read_msg.sublen  = 1;     //  Length of Register Address (bytes)
 </code></pre>
-<p><img src="https://lupyuen.github.io/images/i2c-confuse.png" alt="" /></p>
-<p>TODO</p>
+<p><strong>This I2C Register Address feature is unique to BL602!</strong></p>
+<p>The I2C Register Address feature is <strong>not available</strong> on STM32 Blue Pill, Nordic nRF52, GigaDevice GD32 VF103 (RISC-V), ESP32, ... Not even on Raspberry Pi Pico!</p>
+<p>(Though it seems to be supported on <a href="https://mcuxpresso.nxp.com/api_doc/dev/116/group__i2c.html">NXP Microcontrollers</a> as &quot;I2C Subaddress&quot;)</p>
+<p>Thus <strong>BL602 I2C works a little differently</strong> from other microcontrollers.</p>
+<p>This may complicate the support for I2C in Embedded Operating Systems like Mynewt, RIOT and Zephyr. (More about this in a while)</p>
+<h2 id="i2c-terms" class="section-header"><a href="#i2c-terms">4.4 I2C Terms</a></h2>
+<p>The I2C Documentation in the BL602 Reference Manual appears somewhat confusing because of the I2C Register Address feature. <a href="https://lupyuen.github.io/images/i2c-confuse.png">See this</a></p>
+<p>In this article we shall standardise on these I2C Terms...</p>
+<ol>
+<li>
+<p>We say <strong>&quot;Device Address&quot;</strong></p>
+<p>(Instead of &quot;Slave Address&quot;, &quot;Slave Device&quot;)</p>
+</li>
+<li>
+<p>We say <strong>&quot;Register Address&quot;</strong></p>
+<p>(Instead of &quot;Subaddress&quot;, &quot;Slave Device Address&quot;, &quot;Slave Device Register Address&quot;)</p>
+</li>
+</ol>
 <h1 id="read-i2c-register" class="section-header"><a href="#read-i2c-register">5 Read I2C Register</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L406-L434"><code>sdk_app_i2c/demo.c</code></a></p>
