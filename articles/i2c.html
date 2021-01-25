@@ -73,15 +73,17 @@
 <li><a href="#enable-i2c-interrupts">3.3 Enable I2C Interrupts</a><ul></ul></li>
 <li><a href="#register-i2c-interrupt-handler">3.4 Register I2C Interrupt Handler</a><ul></ul></li>
 <li><a href="#i2c-hal-functions">3.5 I2C HAL Functions</a><ul></ul></li></ul></li>
-<li><a href="#i2c-message-struct">4 I2C Message Struct</a><ul></ul></li>
-<li><a href="#i2c-register-addressing">5 I2C Register Addressing</a><ul></ul></li>
-<li><a href="#read-i2c-register">6 Read I2C Register</a><ul></ul></li>
-<li><a href="#i2c-interrupt-handler">7 I2C Interrupt Handler</a><ul></ul></li>
-<li><a href="#why-we-need-an-embedded-os-for-i2c">8 Why we need an Embedded OS for I2C</a><ul></ul></li>
-<li><a href="#port-bl602-i2c-to-mynewt">9 Port BL602 I2C to Mynewt</a><ul></ul></li>
-<li><a href="#whats-next">10 What's Next</a><ul></ul></li>
-<li><a href="#appendix-test-bme280-with-bus-pirate">11 Appendix: Test BME280 with Bus Pirate</a><ul></ul></li>
-<li><a href="#appendix-how-to-troubleshoot-risc-v-exceptions">12 Appendix: How to Troubleshoot RISC-V Exceptions</a><ul></ul></li></ul></nav><p>📝 <em>29 Jan 2021</em></p>
+<li><a href="#i2c-message">4 I2C Message</a><ul>
+<li><a href="#define-i2c-message-and-buffer">4.1 Define I2C Message and Buffer</a><ul></ul></li>
+<li><a href="#set-i2c-operation-and-buffer">4.2 Set I2C Operation and Buffer</a><ul></ul></li>
+<li><a href="#set-i2c-device-address-and-register-address">4.3 Set I2C Device Address and Register Address</a><ul></ul></li></ul></li>
+<li><a href="#read-i2c-register">5 Read I2C Register</a><ul></ul></li>
+<li><a href="#i2c-interrupt-handler">6 I2C Interrupt Handler</a><ul></ul></li>
+<li><a href="#why-we-need-an-embedded-os-for-i2c">7 Why we need an Embedded OS for I2C</a><ul></ul></li>
+<li><a href="#port-bl602-i2c-to-mynewt">8 Port BL602 I2C to Mynewt</a><ul></ul></li>
+<li><a href="#whats-next">9 What's Next</a><ul></ul></li>
+<li><a href="#appendix-test-bme280-with-bus-pirate">10 Appendix: Test BME280 with Bus Pirate</a><ul></ul></li>
+<li><a href="#appendix-how-to-troubleshoot-risc-v-exceptions">11 Appendix: How to Troubleshoot RISC-V Exceptions</a><ul></ul></li></ul></nav><p>📝 <em>29 Jan 2021</em></p>
 <p><img src="https://lupyuen.github.io/images/i2c-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board connected to BME280 I2C Sensor" /></p>
 <p><em>PineCone BL602 RISC-V Evaluation Board connected to BME280 I2C Sensor</em></p>
 <h1 id="bl602-i2c-hardware-abstraction-layer-high-level-vs-low-level" class="section-header"><a href="#bl602-i2c-hardware-abstraction-layer-high-level-vs-low-level">1 BL602 I2C Hardware Abstraction Layer: High Level vs Low Level</a></h1>
@@ -232,33 +234,93 @@ static i2c_msg_t *gpstmsg;
 <pre><code class="language-text">I2C_Disable, I2C_IntMask
 </code></pre>
 <p>(The BL602 Standard Driver contains low-level functions to manipulate the BL602 Hardware Registers)</p>
-<h1 id="i2c-message-struct" class="section-header"><a href="#i2c-message-struct">4 I2C Message Struct</a></h1>
+<h1 id="i2c-message" class="section-header"><a href="#i2c-message">4 I2C Message</a></h1>
+<p>Our objective is to <strong>read Register <code>0xD0</code></strong> from our BME280 Sensor with <strong>Device ID <code>0x77</code></strong></p>
+<p>We specify these details in an <strong>I2C Message Struct <code>i2c_msg_t</code></strong> that's defined in the Low Level I2C HAL.</p>
+<p>Here's how we create an I2C Message: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L406-L434"><code>sdk_app_i2c/demo.c</code></a></p>
+<h2 id="define-i2c-message-and-buffer" class="section-header"><a href="#define-i2c-message-and-buffer">4.1 Define I2C Message and Buffer</a></h2>
+<pre><code class="language-c">//  Define I2C message and buffer
+static i2c_msg_t read_msg;      //  Message for reading I2C Data
+static uint8_t   read_buf[32];  //  Buffer for reading I2C Data
+int data_len = 1;               //  Bytes to be read
+</code></pre>
+<p>First we define <code>read_msg</code> as a static I2C Message. </p>
+<p>The data returned by our BME280 Sensor shall be stored in the static buffer <code>read_buf</code>.</p>
+<h2 id="set-i2c-operation-and-buffer" class="section-header"><a href="#set-i2c-operation-and-buffer">4.2 Set I2C Operation and Buffer</a></h2>
+<pre><code class="language-c">//  Set the I2C operation    
+read_msg.i2cx    = 0;            //  I2C Port
+read_msg.direct  = I2C_M_READ;   //  Read I2C data
+read_msg.block   = I2C_M_BLOCK;  //  Wait until data has been read
+</code></pre>
+<p>Next we set the <strong>I2C Port</strong> (0) and the <strong>I2C Operation</strong> (Blocking Read).</p>
+<pre><code class="language-c">//  Set the I2C buffer
+read_msg.buf     = read_buf;     //  Read buffer
+read_msg.len     = data_len;     //  Number of bytes to be read
+read_msg.idex    = 0;            //  Index of next byte to be read into buf
+</code></pre>
+<p>Then we assign the data buffer <code>read_buf</code> to <code>read_msg</code> and set the number of bytes to be read (1).</p>
+<p><code>idex</code> is the index into the buffer <code>read_buf</code>. Our I2C Interrupt Handler will increment this index as it populates the buffer upon receiving data.</p>
+<h2 id="set-i2c-device-address-and-register-address" class="section-header"><a href="#set-i2c-device-address-and-register-address">4.3 Set I2C Device Address and Register Address</a></h2>
 <p>TODO</p>
+<pre><code class="language-c">//  Set device address and register address
+read_msg.addr    = 0x77;   //  BME280 I2C Secondary Address (Primary Address is 0x76)
+read_msg.subflag = 1;      //  Enable Register Address
+read_msg.subaddr = 0xd0;   //  Register Address (BME280 Chip ID)
+read_msg.sublen  = 1;      //  Length of Register Address (bytes)
+</code></pre>
+<p><img src="https://lupyuen.github.io/images/i2c-confuse.png" alt="" /></p>
+<p>TODO</p>
+<h1 id="read-i2c-register" class="section-header"><a href="#read-i2c-register">5 Read I2C Register</a></h1>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L406-L434"><code>sdk_app_i2c/demo.c</code></a></p>
+<pre><code class="language-c">static void test_i2c_start_read(char *buf, int len, int argc, char **argv) {
+    //  Start reading data from I2C device
+    //  Expect result 0x60 for BME280, 0x58 for BMP280
+    int data_len = 1;  //  Bytes to be read
+    memset(read_buf, 0, sizeof(read_buf));
+
+    //  Set the I2C operation    
+    read_msg.i2cx    = 0;            //  I2C Port
+    read_msg.direct  = I2C_M_READ;   //  Read I2C data
+    read_msg.block   = I2C_M_BLOCK;  //  Wait until data has been read
+
+    //  Set the I2C buffer
+    read_msg.buf     = read_buf;     //  Read buffer
+    read_msg.len     = data_len;     //  Number of bytes to be read
+    read_msg.idex    = 0;            //  Index of next byte to be read into buf
+
+    //  Set device address and register address
+    read_msg.addr    = 0x77;   //  BME280 I2C Secondary Address (Primary Address is 0x76)
+    read_msg.subflag = 1;      //  Enable Register Address
+    read_msg.subaddr = 0xd0;   //  Register Address (BME280 Chip ID)
+    read_msg.sublen  = 1;      //  Length of Register Address (bytes)
+
+    //  Start the I2C transfer and enable I2C interrupts
+    gpstmsg = &amp;read_msg;
+    i2c_transfer_start(&amp;read_msg);
+
+    //  do_read_data will be called to read data in the I2C Interrupt Handler (test_i2c_transferbytes)
+}
+</code></pre>
 <p><img src="https://lupyuen.github.io/images/i2c-reference.jpg" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-reference2.jpg" alt="" /></p>
-<p>TODO</p>
-<h1 id="i2c-register-addressing" class="section-header"><a href="#i2c-register-addressing">5 I2C Register Addressing</a></h1>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/i2c-confuse.png" alt="" /></p>
-<p>TODO</p>
-<h1 id="read-i2c-register" class="section-header"><a href="#read-i2c-register">6 Read I2C Register</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-init.png" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-success.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="i2c-interrupt-handler" class="section-header"><a href="#i2c-interrupt-handler">7 I2C Interrupt Handler</a></h1>
+<h1 id="i2c-interrupt-handler" class="section-header"><a href="#i2c-interrupt-handler">6 I2C Interrupt Handler</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-handler.png" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-interrupt.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="why-we-need-an-embedded-os-for-i2c" class="section-header"><a href="#why-we-need-an-embedded-os-for-i2c">8 Why we need an Embedded OS for I2C</a></h1>
+<h1 id="why-we-need-an-embedded-os-for-i2c" class="section-header"><a href="#why-we-need-an-embedded-os-for-i2c">7 Why we need an Embedded OS for I2C</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-inithal.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="port-bl602-i2c-to-mynewt" class="section-header"><a href="#port-bl602-i2c-to-mynewt">9 Port BL602 I2C to Mynewt</a></h1>
+<h1 id="port-bl602-i2c-to-mynewt" class="section-header"><a href="#port-bl602-i2c-to-mynewt">8 Port BL602 I2C to Mynewt</a></h1>
 <p>TODO</p>
 <ol>
 <li>Shared vars</li>
@@ -268,7 +330,7 @@ static i2c_msg_t *gpstmsg;
 Mynewt bus</p>
 <p>Map to Mynewt / rust
 They dont support register address</p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">10 What's Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">9 What's Next</a></h1>
 <p><img src="https://lupyuen.github.io/images/i2c-hack.jpg" alt="" /></p>
 <p>TODO</p>
 <ul>
@@ -284,7 +346,7 @@ They dont support register address</p>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/i2c.md"><code>lupyuen.github.io/src/i2c.md</code></a></p>
-<h1 id="appendix-test-bme280-with-bus-pirate" class="section-header"><a href="#appendix-test-bme280-with-bus-pirate">11 Appendix: Test BME280 with Bus Pirate</a></h1>
+<h1 id="appendix-test-bme280-with-bus-pirate" class="section-header"><a href="#appendix-test-bme280-with-bus-pirate">10 Appendix: Test BME280 with Bus Pirate</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-buspirate.jpg" alt="" /></p>
 <p>TODO</p>
@@ -307,7 +369,7 @@ plus sending 3 bytes, and
 receiving 1 byte.</p>
 <p>The byte received should be 0x60.</p>
 <p>http://dangerousprototypes.com/docs/I2C</p>
-<h1 id="appendix-how-to-troubleshoot-risc-v-exceptions" class="section-header"><a href="#appendix-how-to-troubleshoot-risc-v-exceptions">12 Appendix: How to Troubleshoot RISC-V Exceptions</a></h1>
+<h1 id="appendix-how-to-troubleshoot-risc-v-exceptions" class="section-header"><a href="#appendix-how-to-troubleshoot-risc-v-exceptions">11 Appendix: How to Troubleshoot RISC-V Exceptions</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-exception.png" alt="" /></p>
 <p>TODO</p>
