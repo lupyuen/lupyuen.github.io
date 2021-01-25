@@ -67,7 +67,12 @@
     <nav id="TOC"><ul>
 <li><a href="#bl602-i2c-hardware-abstraction-layer-high-level-vs-low-level">1 BL602 I2C Hardware Abstraction Layer: High Level vs Low Level</a><ul></ul></li>
 <li><a href="#connect-bl602-to-bme280-i2c-sensor">2 Connect BL602 to BME280 I2C Sensor</a><ul></ul></li>
-<li><a href="#initialise-i2c-port">3 Initialise I2C Port</a><ul></ul></li>
+<li><a href="#initialise-i2c-port">3 Initialise I2C Port</a><ul>
+<li><a href="#select-i2c-port">3.1 Select I2C Port</a><ul></ul></li>
+<li><a href="#assign-i2c-pins-and-set-i2c-frequency">3.2 Assign I2C Pins and set I2C Frequency</a><ul></ul></li>
+<li><a href="#enable-i2c-interrupts">3.3 Enable I2C Interrupts</a><ul></ul></li>
+<li><a href="#register-i2c-interrupt-handler">3.4 Register I2C Interrupt Handler</a><ul></ul></li>
+<li><a href="#i2c-hal-functions">3.5 I2C HAL Functions</a><ul></ul></li></ul></li>
 <li><a href="#i2c-message-struct">4 I2C Message Struct</a><ul></ul></li>
 <li><a href="#i2c-register-addressing">5 I2C Register Addressing</a><ul></ul></li>
 <li><a href="#read-i2c-register">6 Read I2C Register</a><ul></ul></li>
@@ -169,21 +174,30 @@
 <p>To sum up: We need to reproduce on BL602 the two <code>[Start] ... [Stop]</code> transactions. Which includes sending 3 bytes (<code>0xEE</code>, <code>0xD0</code>, <code>0xEF</code>) and receiving 1 byte (<code>0x60</code>).</p>
 <p><a href="https://medium.com/@ly.lee/building-a-rust-driver-for-pinetimes-touch-controller-cbc1a5d5d3e9?source=friends_link&amp;sk=d8cf73fc943d9c0e960627d768f309cb">More about I2C</a></p>
 <h1 id="initialise-i2c-port" class="section-header"><a href="#initialise-i2c-port">3 Initialise I2C Port</a></h1>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L333-L354"><code>sdk_app_i2c/demo.c</code></a></p>
-<pre><code class="language-c">/// Init I2C functions. Based on hal_i2c_init in hal_i2c.c
+<p>Remember our Command-Line Firmware <a href="https://github.com/lupyuen/bl_iot_sdk/tree/i2c/customer_app/sdk_app_i2c"><code>sdk_app_i2c</code></a> for testing I2C on BL602?</p>
+<p>Here's the command for initialising the I2C Port...</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+</pre></div>
+<p>Let's discover how this command calls the Low Level I2C HAL to initialise the I2C Port: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L333-L359"><code>sdk_app_i2c/demo.c</code></a></p>
+<h2 id="select-i2c-port" class="section-header"><a href="#select-i2c-port">3.1 Select I2C Port</a></h2>
+<pre><code class="language-c">/// Init I2C Port. Based on hal_i2c_init in hal_i2c.c
 static void test_i2c_init(char *buf, int len, int argc, char **argv) {
     //  Use I2C Port 0
     const int i2cx = 0;
 </code></pre>
-<p>TODO</p>
+<p>We'll use <strong>I2C Port 0</strong>, the one and only I2C Port on BL602.</p>
+<h2 id="assign-i2c-pins-and-set-i2c-frequency" class="section-header"><a href="#assign-i2c-pins-and-set-i2c-frequency">3.2 Assign I2C Pins and set I2C Frequency</a></h2>
 <pre><code class="language-c">    //  Init I2C Port 0 to GPIO 3 and 4
     i2c_gpio_init(i2cx);
 
     //  Set I2C Port 0 to 500 kbps
     i2c_set_freq(500, i2cx);
 </code></pre>
-<p>TODO</p>
+<p>We call <code>i2c_gpio_init</code> to assign <strong>GPIO 3 and 4 as the SDA and SCL pins</strong> for I2C Port 0.</p>
+<p>Then we call <code>i2c_set_freq</code> to set the <strong>I2C Frequency</strong> to 500 kbps.</p>
+<h2 id="enable-i2c-interrupts" class="section-header"><a href="#enable-i2c-interrupts">3.3 Enable I2C Interrupts</a></h2>
+<p>The I2C Port triggers <strong>I2C Interrupts</strong> after sending and receiving queued data, also when an error occurs. So we need to enable I2C Interrupts...</p>
 <pre><code class="language-c">    //  Disable I2C Port 0
     I2C_Disable(i2cx);    
 
@@ -191,24 +205,34 @@ static void test_i2c_init(char *buf, int len, int argc, char **argv) {
     bl_irq_enable(I2C_IRQn);
     I2C_IntMask(i2cx, I2C_INT_ALL, MASK);
 </code></pre>
-<p>TODO</p>
+<p>We disable the I2C Port, then enable I2C Interrupts on the I2C Port.</p>
+<h2 id="register-i2c-interrupt-handler" class="section-header"><a href="#register-i2c-interrupt-handler">3.4 Register I2C Interrupt Handler</a></h2>
+<p>To handle I2C Interrupts we <strong>register an Interrupt Handler Function</strong>...</p>
 <pre><code class="language-c">    //  Register the I2C Interrupt Handler
     bl_irq_register_with_ctx(
-        I2C_IRQn, 
-        test_i2c_interrupt_entry, 
-        &amp;gpstmsg
+        I2C_IRQn,                  //  For I2C Interrupt:
+        test_i2c_interrupt_entry,  //  Interrupt Handler
+        &amp;gpstmsg                   //  Pointer to current I2C Message
     );
 }
 </code></pre>
-<p>TODO</p>
+<p>Here we register the function <code>test_i2c_interrupt_entry</code> as the Interrupt Handler Function for I2C Interrupts. (More about this function in a while)</p>
+<p><code>gpstmsg</code> is the <strong>Interrupt Context</strong> that will be passed to the Interrupt Handler Function...</p>
+<pre><code class="language-c">/// Global pointer to current I2C Message
+static i2c_msg_t *gpstmsg;
+</code></pre>
+<p><code>gpstmsg</code> points to the <strong>current I2C Message</strong> being sent or received, so that the Interrupt Handler knows which Message Buffer to use for sending and receiving data.</p>
+<h2 id="i2c-hal-functions" class="section-header"><a href="#i2c-hal-functions">3.5 I2C HAL Functions</a></h2>
+<p>The following functions called above are defined in the <strong>Low Level I2C HAL</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c"><code>bl_i2c.c</code></a></p>
 <pre><code class="language-text">i2c_gpio_init, i2c_set_freq
 </code></pre>
-<p>TODO</p>
-<pre><code class="language-text">I2C_Disable, I2C_IntMask
-</code></pre>
-<p>TODO</p>
+<p>These functions are defined in the <strong>BL602 Interrupt HAL</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_irq.c"><code>bl_irq.c</code></a></p>
 <pre><code class="language-text">bl_irq_enable, bl_irq_register_with_ctx
 </code></pre>
+<p>And these functions are defined in the <strong>BL602 Standard Driver</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_i2c.c"><code>bl602_i2c.c</code></a></p>
+<pre><code class="language-text">I2C_Disable, I2C_IntMask
+</code></pre>
+<p>(The BL602 Standard Driver contains low-level functions to manipulate the BL602 Hardware Registers)</p>
 <h1 id="i2c-message-struct" class="section-header"><a href="#i2c-message-struct">4 I2C Message Struct</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-reference.jpg" alt="" /></p>
