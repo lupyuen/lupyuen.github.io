@@ -67,15 +67,15 @@
     <nav id="TOC"><ul>
 <li><a href="#bl602-i2c-hardware-abstraction-layer-high-level-vs-low-level">1 BL602 I2C Hardware Abstraction Layer: High Level vs Low Level</a><ul></ul></li>
 <li><a href="#connect-bl602-to-bme280-i2c-sensor">2 Connect BL602 to BME280 I2C Sensor</a><ul></ul></li>
-<li><a href="#test-bme280-with-bus-pirate">3 Test BME280 with Bus Pirate</a><ul></ul></li>
-<li><a href="#initialise-i2c-port">4 Initialise I2C Port</a><ul></ul></li>
-<li><a href="#i2c-message-struct">5 I2C Message Struct</a><ul></ul></li>
-<li><a href="#i2c-register-addressing">6 I2C Register Addressing</a><ul></ul></li>
-<li><a href="#read-i2c-register">7 Read I2C Register</a><ul></ul></li>
-<li><a href="#i2c-interrupt-handler">8 I2C Interrupt Handler</a><ul></ul></li>
-<li><a href="#why-we-need-an-embedded-os-for-i2c">9 Why we need an Embedded OS for I2C</a><ul></ul></li>
-<li><a href="#port-bl602-i2c-to-mynewt">10 Port BL602 I2C to Mynewt</a><ul></ul></li>
-<li><a href="#whats-next">11 What's Next</a><ul></ul></li>
+<li><a href="#initialise-i2c-port">3 Initialise I2C Port</a><ul></ul></li>
+<li><a href="#i2c-message-struct">4 I2C Message Struct</a><ul></ul></li>
+<li><a href="#i2c-register-addressing">5 I2C Register Addressing</a><ul></ul></li>
+<li><a href="#read-i2c-register">6 Read I2C Register</a><ul></ul></li>
+<li><a href="#i2c-interrupt-handler">7 I2C Interrupt Handler</a><ul></ul></li>
+<li><a href="#why-we-need-an-embedded-os-for-i2c">8 Why we need an Embedded OS for I2C</a><ul></ul></li>
+<li><a href="#port-bl602-i2c-to-mynewt">9 Port BL602 I2C to Mynewt</a><ul></ul></li>
+<li><a href="#whats-next">10 What's Next</a><ul></ul></li>
+<li><a href="#appendix-test-bme280-with-bus-pirate">11 Appendix: Test BME280 with Bus Pirate</a><ul></ul></li>
 <li><a href="#appendix-how-to-troubleshoot-risc-v-exceptions">12 Appendix: How to Troubleshoot RISC-V Exceptions</a><ul></ul></li></ul></nav><p>📝 <em>29 Jan 2021</em></p>
 <p><img src="https://lupyuen.github.io/images/i2c-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board connected to BME280 I2C Sensor" /></p>
 <p><em>PineCone BL602 RISC-V Evaluation Board connected to BME280 I2C Sensor</em></p>
@@ -168,7 +168,61 @@
 <p>I2C uses this even / odd convention to indicate whether we're writing or reading data.</p>
 <p>To sum up: We need to reproduce on BL602 the two <code>[Start] ... [Stop]</code> transactions. Which includes sending 3 bytes (<code>0xEE</code>, <code>0xD0</code>, <code>0xEF</code>) and receiving 1 byte (<code>0x60</code>).</p>
 <p><a href="https://medium.com/@ly.lee/building-a-rust-driver-for-pinetimes-touch-controller-cbc1a5d5d3e9?source=friends_link&amp;sk=d8cf73fc943d9c0e960627d768f309cb">More about I2C</a></p>
-<h1 id="test-bme280-with-bus-pirate" class="section-header"><a href="#test-bme280-with-bus-pirate">3 Test BME280 with Bus Pirate</a></h1>
+<h1 id="initialise-i2c-port" class="section-header"><a href="#initialise-i2c-port">3 Initialise I2C Port</a></h1>
+<p>TODO</p>
+<h1 id="i2c-message-struct" class="section-header"><a href="#i2c-message-struct">4 I2C Message Struct</a></h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/i2c-reference.jpg" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/i2c-reference2.jpg" alt="" /></p>
+<p>TODO</p>
+<h1 id="i2c-register-addressing" class="section-header"><a href="#i2c-register-addressing">5 I2C Register Addressing</a></h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/i2c-confuse.png" alt="" /></p>
+<p>TODO</p>
+<h1 id="read-i2c-register" class="section-header"><a href="#read-i2c-register">6 Read I2C Register</a></h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/i2c-init.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/i2c-success.png" alt="" /></p>
+<p>TODO</p>
+<h1 id="i2c-interrupt-handler" class="section-header"><a href="#i2c-interrupt-handler">7 I2C Interrupt Handler</a></h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/i2c-handler.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/i2c-interrupt.png" alt="" /></p>
+<p>TODO</p>
+<h1 id="why-we-need-an-embedded-os-for-i2c" class="section-header"><a href="#why-we-need-an-embedded-os-for-i2c">8 Why we need an Embedded OS for I2C</a></h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/i2c-inithal.png" alt="" /></p>
+<p>TODO</p>
+<h1 id="port-bl602-i2c-to-mynewt" class="section-header"><a href="#port-bl602-i2c-to-mynewt">9 Port BL602 I2C to Mynewt</a></h1>
+<p>TODO</p>
+<ol>
+<li>Shared vars</li>
+<li>Block until transfer is done</li>
+</ol>
+<p>Use primitive from Mynewt, Zephyr, riot
+Mynewt bus</p>
+<p>Map to Mynewt / rust
+They dont support register address</p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">10 What's Next</a></h1>
+<p><img src="https://lupyuen.github.io/images/i2c-hack.jpg" alt="" /></p>
+<p>TODO</p>
+<ul>
+<li>
+<p><a href="https://github.com/sponsors/lupyuen">Sponsor me a coffee</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io">Check out my articles</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/rss.xml">RSS Feed</a></p>
+</li>
+</ul>
+<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
+<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/i2c.md"><code>lupyuen.github.io/src/i2c.md</code></a></p>
+<h1 id="appendix-test-bme280-with-bus-pirate" class="section-header"><a href="#appendix-test-bme280-with-bus-pirate">11 Appendix: Test BME280 with Bus Pirate</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-buspirate.jpg" alt="" /></p>
 <p>TODO</p>
@@ -191,60 +245,6 @@ plus sending 3 bytes, and
 receiving 1 byte.</p>
 <p>The byte received should be 0x60.</p>
 <p>http://dangerousprototypes.com/docs/I2C</p>
-<h1 id="initialise-i2c-port" class="section-header"><a href="#initialise-i2c-port">4 Initialise I2C Port</a></h1>
-<p>TODO</p>
-<h1 id="i2c-message-struct" class="section-header"><a href="#i2c-message-struct">5 I2C Message Struct</a></h1>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/i2c-reference.jpg" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/i2c-reference2.jpg" alt="" /></p>
-<p>TODO</p>
-<h1 id="i2c-register-addressing" class="section-header"><a href="#i2c-register-addressing">6 I2C Register Addressing</a></h1>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/i2c-confuse.png" alt="" /></p>
-<p>TODO</p>
-<h1 id="read-i2c-register" class="section-header"><a href="#read-i2c-register">7 Read I2C Register</a></h1>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/i2c-init.png" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/i2c-success.png" alt="" /></p>
-<p>TODO</p>
-<h1 id="i2c-interrupt-handler" class="section-header"><a href="#i2c-interrupt-handler">8 I2C Interrupt Handler</a></h1>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/i2c-handler.png" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/i2c-interrupt.png" alt="" /></p>
-<p>TODO</p>
-<h1 id="why-we-need-an-embedded-os-for-i2c" class="section-header"><a href="#why-we-need-an-embedded-os-for-i2c">9 Why we need an Embedded OS for I2C</a></h1>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/i2c-inithal.png" alt="" /></p>
-<p>TODO</p>
-<h1 id="port-bl602-i2c-to-mynewt" class="section-header"><a href="#port-bl602-i2c-to-mynewt">10 Port BL602 I2C to Mynewt</a></h1>
-<p>TODO</p>
-<ol>
-<li>Shared vars</li>
-<li>Block until transfer is done</li>
-</ol>
-<p>Use primitive from Mynewt, Zephyr, riot
-Mynewt bus</p>
-<p>Map to Mynewt / rust
-They dont support register address</p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">11 What's Next</a></h1>
-<p><img src="https://lupyuen.github.io/images/i2c-hack.jpg" alt="" /></p>
-<p>TODO</p>
-<ul>
-<li>
-<p><a href="https://github.com/sponsors/lupyuen">Sponsor me a coffee</a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.github.io">Check out my articles</a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.github.io/rss.xml">RSS Feed</a></p>
-</li>
-</ul>
-<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
-<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/i2c.md"><code>lupyuen.github.io/src/i2c.md</code></a></p>
 <h1 id="appendix-how-to-troubleshoot-risc-v-exceptions" class="section-header"><a href="#appendix-how-to-troubleshoot-risc-v-exceptions">12 Appendix: How to Troubleshoot RISC-V Exceptions</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-exception.png" alt="" /></p>
