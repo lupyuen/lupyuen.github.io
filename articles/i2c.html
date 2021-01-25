@@ -170,6 +170,45 @@
 <p><a href="https://medium.com/@ly.lee/building-a-rust-driver-for-pinetimes-touch-controller-cbc1a5d5d3e9?source=friends_link&amp;sk=d8cf73fc943d9c0e960627d768f309cb">More about I2C</a></p>
 <h1 id="initialise-i2c-port" class="section-header"><a href="#initialise-i2c-port">3 Initialise I2C Port</a></h1>
 <p>TODO</p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L333-L354"><code>sdk_app_i2c/demo.c</code></a></p>
+<pre><code class="language-c">/// Init I2C functions. Based on hal_i2c_init in hal_i2c.c
+static void test_i2c_init(char *buf, int len, int argc, char **argv) {
+    //  Use I2C Port 0
+    const int i2cx = 0;
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-c">    //  Init I2C Port 0 to GPIO 3 and 4
+    i2c_gpio_init(i2cx);
+
+    //  Set I2C Port 0 to 500 kbps
+    i2c_set_freq(500, i2cx);
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-c">    //  Disable I2C Port 0
+    I2C_Disable(i2cx);    
+
+    //  Enable I2C interrupts   
+    bl_irq_enable(I2C_IRQn);
+    I2C_IntMask(i2cx, I2C_INT_ALL, MASK);
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-c">    //  Register the I2C Interrupt Handler
+    bl_irq_register_with_ctx(
+        I2C_IRQn, 
+        test_i2c_interrupt_entry, 
+        &amp;gpstmsg
+    );
+}
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-text">i2c_gpio_init, i2c_set_freq
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-text">I2C_Disable, I2C_IntMask
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-text">bl_irq_enable, bl_irq_register_with_ctx
+</code></pre>
 <h1 id="i2c-message-struct" class="section-header"><a href="#i2c-message-struct">4 I2C Message Struct</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-reference.jpg" alt="" /></p>
