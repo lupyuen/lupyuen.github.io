@@ -156,7 +156,7 @@
 </li>
 </ol>
 <p><em>What are 0xEE and 0xEF?</em></p>
-<p>They are the read/write variants of the I2C Device ID <code>0x77</code>...</p>
+<p>They are the Read / Write aliases of the I2C Device ID <code>0x77</code>...</p>
 <ul>
 <li>
 <p><code>0xEE</code> = (<code>0x77</code> * 2) + 0, for Writing Data</p>
@@ -165,7 +165,7 @@
 <p><code>0xEF</code> = (<code>0x77</code> * 2) + 1, for Reading Data</p>
 </li>
 </ul>
-<p>I2C uses this even/odd convention to indicate whether we're writing or reading data.</p>
+<p>I2C uses this even / odd convention to indicate whether we're writing or reading data.</p>
 <p>To sum up: We need to reproduce on BL602 the two <code>[Start] ... [Stop]</code> transactions. Which includes sending 3 bytes (<code>0xEE</code>, <code>0xD0</code>, <code>0xEF</code>) and receiving 1 byte (<code>0x60</code>).</p>
 <p><a href="https://medium.com/@ly.lee/building-a-rust-driver-for-pinetimes-touch-controller-cbc1a5d5d3e9?source=friends_link&amp;sk=d8cf73fc943d9c0e960627d768f309cb">More about I2C</a></p>
 <h1 id="test-bme280-with-bus-pirate" class="section-header"><a href="#test-bme280-with-bus-pirate">3 Test BME280 with Bus Pirate</a></h1>
@@ -190,6 +190,7 @@ Register 0xd0 (Chip ID).</p>
 plus sending 3 bytes, and 
 receiving 1 byte.</p>
 <p>The byte received should be 0x60.</p>
+<p>http://dangerousprototypes.com/docs/I2C</p>
 <h1 id="initialise-i2c-port" class="section-header"><a href="#initialise-i2c-port">4 Initialise I2C Port</a></h1>
 <p>TODO</p>
 <h1 id="i2c-message-struct" class="section-header"><a href="#i2c-message-struct">5 I2C Message Struct</a></h1>
