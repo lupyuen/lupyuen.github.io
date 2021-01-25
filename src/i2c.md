@@ -44,7 +44,9 @@ We shall test BL602 I2C with this BL602 Command-Line Firmware (modded from BL602
 
 The firmware will work on all BL602 boards, including PineCone and Pinenut.
 
-![PineCone BL602 RISC-V Evaluation Board connected to BME280 I2C Sensor](https://lupyuen.github.io/images/i2c-title.jpg)
+![PineCone BL602 connected to SparkFun BME280 I2C Sensor](https://lupyuen.github.io/images/i2c-bme280.jpg)
+
+_PineCone BL602 connected to SparkFun BME280 I2C Sensor_
 
 # I2C Protocol for BME280
 
@@ -69,7 +71,7 @@ _What shall we accomplish with BL602 and BME280?_
 
 1.  We'll access BME280 at __I2C Device ID `0x77`__
 
-    (BME280 may be configured as Device ID `0x76` or `0x77`. Sparkfun BME280 in the pic above uses `0x77`)
+    (BME280 may be configured as Device ID `0x76` or `0x77`. SparkFun BME280 in the pic above uses `0x77`)
 
 1.  BME280 has an I2C Register, __Chip ID, at Register `0xD0`__
 
