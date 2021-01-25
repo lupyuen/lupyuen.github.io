@@ -176,9 +176,8 @@
 <h1 id="initialise-i2c-port" class="section-header"><a href="#initialise-i2c-port">3 Initialise I2C Port</a></h1>
 <p>Remember our Command-Line Firmware <a href="https://github.com/lupyuen/bl_iot_sdk/tree/i2c/customer_app/sdk_app_i2c"><code>sdk_app_i2c</code></a> for testing I2C on BL602?</p>
 <p>Here's the command for initialising the I2C Port...</p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-</pre></div>
+<pre><code class="language-text">#  i2c_init
+</code></pre>
 <p>Let's discover how this command calls the Low Level I2C HAL to initialise the I2C Port: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L333-L359"><code>sdk_app_i2c/demo.c</code></a></p>
 <h2 id="select-i2c-port" class="section-header"><a href="#select-i2c-port">3.1 Select I2C Port</a></h2>
 <pre><code class="language-c">/// Init I2C Port. Based on hal_i2c_init in hal_i2c.c
