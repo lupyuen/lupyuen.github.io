@@ -240,33 +240,33 @@ static i2c_msg_t *gpstmsg;
 <p>Here's how we create an I2C Message: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L406-L434"><code>sdk_app_i2c/demo.c</code></a></p>
 <h2 id="define-i2c-message-and-buffer" class="section-header"><a href="#define-i2c-message-and-buffer">4.1 Define I2C Message and Buffer</a></h2>
 <pre><code class="language-c">//  Define I2C message and buffer
-static i2c_msg_t read_msg;      //  Message for reading I2C Data
-static uint8_t   read_buf[32];  //  Buffer for reading I2C Data
-int data_len = 1;               //  Bytes to be read
+static i2c_msg_t read_msg;    //  Message for reading I2C Data
+static uint8_t read_buf[32];  //  Buffer for reading I2C Data
+int data_len = 1;             //  Bytes to be read
 </code></pre>
 <p>First we define <code>read_msg</code> as a static I2C Message. </p>
 <p>The data returned by our BME280 Sensor shall be stored in the static buffer <code>read_buf</code>.</p>
 <h2 id="set-i2c-operation-and-buffer" class="section-header"><a href="#set-i2c-operation-and-buffer">4.2 Set I2C Operation and Buffer</a></h2>
 <pre><code class="language-c">//  Set the I2C operation    
-read_msg.i2cx    = 0;            //  I2C Port
-read_msg.direct  = I2C_M_READ;   //  Read I2C data
-read_msg.block   = I2C_M_BLOCK;  //  Wait until data has been read
+read_msg.i2cx   = 0;            //  I2C Port
+read_msg.direct = I2C_M_READ;   //  Read I2C data
+read_msg.block  = I2C_M_BLOCK;  //  Wait until data has been read
 </code></pre>
 <p>Next we set the <strong>I2C Port</strong> (0) and the <strong>I2C Operation</strong> (Blocking Read).</p>
 <pre><code class="language-c">//  Set the I2C buffer
-read_msg.buf     = read_buf;  //  Read buffer
-read_msg.len     = data_len;  //  Number of bytes to be read
-read_msg.idex    = 0;         //  Index of next byte to be read into buf
+read_msg.buf  = read_buf;  //  Read buffer
+read_msg.len  = data_len;  //  Number of bytes to be read
+read_msg.idex = 0;         //  Index of next byte to be read into buf
 </code></pre>
 <p>Then we assign the data buffer <code>read_buf</code> to <code>read_msg</code> and set the number of bytes to be read (1).</p>
 <p><code>idex</code> is the index into the buffer <code>read_buf</code>. Our I2C Interrupt Handler will increment this index as it populates the buffer upon receiving data.</p>
 <h2 id="set-i2c-device-address-and-register-address" class="section-header"><a href="#set-i2c-device-address-and-register-address">4.3 Set I2C Device Address and Register Address</a></h2>
 <p>TODO</p>
 <pre><code class="language-c">//  Set device address and register address
-read_msg.addr    = 0x77;   //  BME280 I2C Secondary Address (Primary Address is 0x76)
-read_msg.subflag = 1;      //  Enable Register Address
-read_msg.subaddr = 0xd0;   //  Register Address (BME280 Chip ID)
-read_msg.sublen  = 1;      //  Length of Register Address (bytes)
+read_msg.addr    = 0x77;  //  BME280 I2C Secondary Address (Primary Address is 0x76)
+read_msg.subflag = 1;     //  Enable Register Address
+read_msg.subaddr = 0xd0;  //  Register Address (BME280 Chip ID)
+read_msg.sublen  = 1;     //  Length of Register Address (bytes)
 </code></pre>
 <p><img src="https://lupyuen.github.io/images/i2c-confuse.png" alt="" /></p>
 <p>TODO</p>
