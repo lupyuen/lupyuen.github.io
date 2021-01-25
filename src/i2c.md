@@ -115,7 +115,7 @@ Remember our Command-Line Firmware [`sdk_app_i2c`](https://github.com/lupyuen/bl
 
 Here's the command for initialising the I2C Port...
 
-```
+```text
 #  i2c_init
 ```
 
