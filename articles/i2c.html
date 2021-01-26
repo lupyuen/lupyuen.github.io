@@ -389,14 +389,17 @@ static void test_i2c_interrupt_entry(void *ctx) {
 <p><img src="https://lupyuen.github.io/images/i2c-interrupt.png" alt="BL602 I2C Interrupts" /></p>
 <p>Some good... Some not so good. Let's handle each type of interrupt...</p>
 <h2 id="i2c-data-received" class="section-header"><a href="#i2c-data-received">6.2 I2C Data Received</a></h2>
+<p>(For I2C Read Operation)</p>
+<p>When we receive data from our I2C Sensor... It's good news!</p>
 <pre><code class="language-c">    if (BL_IS_REG_BIT_SET(reason, I2C_RXF_INT)) {
         //  Receive FIFO Ready
         count_rfx++;
         msg-&gt;event = EV_I2C_RXF_INT;
         //  Should not return
 </code></pre>
-<p>TODO</p>
+<p>This condition flows through to the end of our Interrupt Handler, and calls <code>test_i2c_transferbytes</code> to copy the received data into our Message Buffer and receive more data.</p>
 <h2 id="i2c-transfer-end" class="section-header"><a href="#i2c-transfer-end">6.3 I2C Transfer End</a></h2>
+<p>If the I2C data transfer is ending, we call <code>test_i2c_stop</code> to disable the I2C Port.</p>
 <pre><code class="language-c">    } else if (BL_IS_REG_BIT_SET(reason, I2C_END_INT)) {
         //  Transfer End
         count_end++;
@@ -404,8 +407,9 @@ static void test_i2c_interrupt_entry(void *ctx) {
         test_i2c_stop(msg);
         return;  //  Stop now
 </code></pre>
-<p>TODO</p>
+<p>This condition quits our Interrupt Handler right away.</p>
 <h2 id="i2c-no-acknowledge" class="section-header"><a href="#i2c-no-acknowledge">6.4 I2C No Acknowledge</a></h2>
+<p>This is bad... We encounter I2C No Acknowledge usually when the I2C Device Address is misconfigured (say <code>0x76</code> instead of <code>0x77</code>).</p>
 <pre><code class="language-c">    } else if (BL_IS_REG_BIT_SET(reason, I2C_NAK_INT)) {
         //  No Acknowledge
         count_nak++;  
@@ -413,16 +417,19 @@ static void test_i2c_interrupt_entry(void *ctx) {
         test_i2c_stop(msg);
         return;  //  Stop now
 </code></pre>
-<p>TODO</p>
+<p>We disable the I2C Port and quit the Interrupt Handler right away.</p>
 <h2 id="i2c-data-transmitted" class="section-header"><a href="#i2c-data-transmitted">6.5 I2C Data Transmitted</a></h2>
+<p>(For I2C Write Operation)</p>
+<p>This is good, it means that the queued data has been transmitted...</p>
 <pre><code class="language-c">    } else if (BL_IS_REG_BIT_SET(reason, I2C_TXF_INT)) {
         //  Transmit FIFO Ready
         count_txf++;  
         msg-&gt;event = EV_I2C_TXF_INT;
         //  Should not return
 </code></pre>
-<p>TODO</p>
+<p>This condition flows through to the end of our Interrupt Handler, and calls <code>test_i2c_transferbytes</code> to transmit the next 4 bytes of data from our Message Buffer.</p>
 <h2 id="i2c-errors" class="section-header"><a href="#i2c-errors">6.6 I2C Errors</a></h2>
+<p>Lastly we handle the remaining errors: <strong>Arbitration Lost, FIFO Error, Unknown Error</strong>...</p>
 <pre><code class="language-c">    } else if (BL_IS_REG_BIT_SET(reason, I2C_ARB_INT)) {
         //  Arbitration Lost
         count_arb++;  
@@ -443,13 +450,22 @@ static void test_i2c_interrupt_entry(void *ctx) {
         //  Should not return
     }
 </code></pre>
-<p>TODO</p>
+<p>We disable the I2C Port and quit the Interrupt Handler right away. (Except for Unknown Error)</p>
 <h2 id="receive-and-transmit-data" class="section-header"><a href="#receive-and-transmit-data">6.7 Receive and Transmit Data</a></h2>
+<p>For I2C Data Received and I2C Data Transmitted, our Interrupt Handler flows through to this code...</p>
 <pre><code class="language-c">    //  For Receive FIFO Ready and Transmit FIFO Ready, transfer 32 bits of data
     test_i2c_transferbytes(msg);
 }
 </code></pre>
-<p>TODO</p>
+<p><code>test_i2c_transferbytes</code> does the following...</p>
+<ul>
+<li>
+<p><strong>For I2C Read Operation:</strong> Copy the received data into our Message Buffer and receive more data.</p>
+</li>
+<li>
+<p><strong>For I2C Write Operation:</strong> Transmit the next 4 bytes of data from our Message Buffer.</p>
+</li>
+</ul>
 <h1 id="stop-i2c-read" class="section-header"><a href="#stop-i2c-read">7 Stop I2C Read</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-reference.jpg" alt="" /></p>
