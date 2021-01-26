@@ -732,7 +732,7 @@ TODO
 
 # Why we need an Embedded OS for I2C
 
-We have 2 problems...
+We have 2 problems when calling the Low Level I2C HAL...
 
 1.  Our program __doesn't wait for I2C Read/Write Operations to complete.__
 
@@ -770,24 +770,11 @@ Yes! We may implement the two Solutions with any Embedded Operating System that 
 
 Thus to do meaningful work with I2C (like reading I2C Sensor Data periodically and processing the data), we need to use the __Low Level I2C HAL together with an Embedded Operating System__.
 
-# Port BL602 I2C to Mynewt
+![Hacking BL602 and BME280 on a Saturday night](https://lupyuen.github.io/images/i2c-hack.jpg)
 
-TODO
-
-1. Shared vars
-2. Block until transfer is done
-
-Use primitive from Mynewt, Zephyr, riot
-Mynewt bus
-
-Map to Mynewt / rust
-They dont support register address
+_Hacking BL602 and BME280 on a Saturday Night_
 
 # What's Next
-
-![](https://lupyuen.github.io/images/i2c-hack.jpg)
-
-TODO
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
@@ -802,6 +789,12 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  Check out the __[BL602 I2C HAL for Arduino](https://github.com/pine64/ArduinoCore-bouffalo/blob/main/libraries/Wire/src/Wire.cpp)__
+
+1.  Why is BL602's __I2C Register Address__ feature incompatible with Mynewt (and other embedded operating systems)?
+
+    Because Mynewt exposes an I2C API that __controls the I2C Stop Bit explicitly__. [(See this `last_op` parameter)](https://mynewt.apache.org/latest/os/modules/hal/hal_i2c/hal_i2c.html#c.hal_i2c_master_write)
+
+    When porting BL602 I2C to Mynewt, we need to reconcile the two styles of I2C coding: __Register Address vs Stop Bit.__
 
 1.  Quiz for the Reader: What could go wrong with this code?
 
