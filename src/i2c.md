@@ -588,6 +588,44 @@ If there is no more data to be received, we suppress the I2C Data Received Inter
 
 TODO
 
+[`sdk_app_i2c/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L446-L456)
+
+```c
+/// Stop reading data from I2C device
+static void test_i2c_stop_read(char *buf, int len, int argc, char **argv) {
+    //  Stop the I2C transfer on I2C Port 0
+    test_i2c_stop(&read_msg);
+
+    //  Dump the data received
+    for (int i = 0; i < read_msg.len; i++) {
+        printf("%02x\n", read_buf[i]);
+    }
+}
+```
+
+TODO
+
+[`sdk_app_i2c/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L236-L247)
+
+```c
+/// Stop the I2C Transfer. Called by I2C Interrupt Handler. 
+/// Based on i2c_callback in hal_i2c.c
+static void test_i2c_stop(i2c_msg_t *msg) {
+    //  Disable I2C Port
+    I2C_Disable(msg->i2cx);
+
+    //  Suppress all I2C Interrupts
+    I2C_IntMask(msg->i2cx, I2C_INT_ALL, MASK);
+
+    //  Clear any error status
+    i2c_clear_status(msg->i2cx);
+}
+```
+
+# Build and Run the Firmware
+
+TODO
+
 ```text
 # help
 ====User Commands====
