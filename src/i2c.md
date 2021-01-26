@@ -744,13 +744,27 @@ TODO
 
 We have 2 problems...
 
-1.  Our program __doesn't wait for I2C Read/Write Operations to complete__
+1.  Our program __doesn't wait for I2C Read/Write Operations to complete.__
 
-    __Solution:__
+    TODO
 
-1.  Our program uses __shared global variables for I2C Operations__
+    __Solution:__ TODO
 
-    __Solution:__
+1.  Our program uses __shared variables for I2C Read/Write Operations.__
+
+    Remember these?
+
+    ```c    
+    static i2c_msg_t *gpstmsg;    //  Global pointer to current I2C Message
+    static i2c_msg_t read_msg;    //  Message for reading I2C Data
+    static uint8_t read_buf[32];  //  Buffer for reading I2C Data
+    ```
+
+    These global variables will get really confused when we talk to multiple I2C Sensors.
+
+    In fact, the entire __I2C Port is a shared resource__! It needs to be protected from overlapping I2C Operations.
+
+    __Solution:__ TODO
 
 ![](https://lupyuen.github.io/images/i2c-inithal.png)
 
