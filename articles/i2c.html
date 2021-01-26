@@ -509,8 +509,10 @@ static void test_i2c_transferbytes(i2c_msg_t *msg) {
 <p>If there is no more data to be received, we suppress the I2C Data Received Interrupts.</p>
 <p><code>do_read_data</code> is defined in the <strong>Low Level I2C HAL</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c"><code>bl_i2c.c</code></a></p>
 <h1 id="stop-i2c-read" class="section-header"><a href="#stop-i2c-read">8 Stop I2C Read</a></h1>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L446-L456"><code>sdk_app_i2c/demo.c</code></a></p>
+<p>The final command that we'll enter into the BL602 Firmware will terminate the I2C transfer...</p>
+<pre><code class="language-text">#  i2c_stop_read
+</code></pre>
+<p>This command calls <code>test_i2c_stop</code> to close the I2C Port: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L446-L456"><code>sdk_app_i2c/demo.c</code></a></p>
 <pre><code class="language-c">/// Stop reading data from I2C device
 static void test_i2c_stop_read(char *buf, int len, int argc, char **argv) {
     //  Stop the I2C transfer on I2C Port 0
@@ -522,8 +524,8 @@ static void test_i2c_stop_read(char *buf, int len, int argc, char **argv) {
     }
 }
 </code></pre>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L236-L247"><code>sdk_app_i2c/demo.c</code></a></p>
+<p>The command also dumps the data received in the I2C Message Buffer.</p>
+<p>Here's how <code>test_i2c_stop</code> closes the I2C Port: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L236-L247"><code>sdk_app_i2c/demo.c</code></a></p>
 <pre><code class="language-c">/// Stop the I2C Transfer. Called by I2C Interrupt Handler. 
 /// Based on i2c_callback in hal_i2c.c
 static void test_i2c_stop(i2c_msg_t *msg) {
@@ -537,6 +539,7 @@ static void test_i2c_stop(i2c_msg_t *msg) {
     i2c_clear_status(msg-&gt;i2cx);
 }
 </code></pre>
+<p><code>i2c_clear_status</code> is defined in the <strong>Low Level I2C HAL</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c"><code>bl_i2c.c</code></a></p>
 <h1 id="build-and-run-the-firmware" class="section-header"><a href="#build-and-run-the-firmware">9 Build and Run the Firmware</a></h1>
 <p>TODO</p>
 <pre><code class="language-bash">git clone --recursive --branch i2c https://github.com/lupyuen/bl_iot_sdk
