@@ -730,14 +730,6 @@ TODO
 
 TODO
 
-![](https://lupyuen.github.io/images/i2c-reference.jpg)
-
-TODO
-
-![](https://lupyuen.github.io/images/i2c-reference2.png)
-
-TODO
-
 # Why we need an Embedded OS for I2C
 
 We have 2 problems...
@@ -803,8 +795,6 @@ TODO
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [`lupyuen.github.io/src/i2c.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/i2c.md)
-
-![](https://lupyuen.github.io/images/i2c-inithal.png)
 
 # Notes
 
@@ -921,3 +911,19 @@ riscv-none-embed-objdump \
     >build_out/sdk_app_i2c.S \
     2>&1
 ```
+
+# Appendix: TODO
+
+TODO
+
+![](https://lupyuen.github.io/images/i2c-inithal.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/i2c-reference.jpg)
+
+TODO
+
+![](https://lupyuen.github.io/images/i2c-reference2.png)
+
+TODO
