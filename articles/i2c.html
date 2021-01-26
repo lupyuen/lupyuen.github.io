@@ -94,7 +94,11 @@
 <li><a href="#i2c-write-operation">7.1 I2C Write Operation</a><ul></ul></li>
 <li><a href="#i2c-read-operation">7.2 I2C Read Operation</a><ul></ul></li></ul></li>
 <li><a href="#stop-i2c-read">8 Stop I2C Read</a><ul></ul></li>
-<li><a href="#build-and-run-the-firmware">9 Build and Run the Firmware</a><ul></ul></li>
+<li><a href="#build-and-run-the-firmware">9 Build and Run the Firmware</a><ul>
+<li><a href="#build-the-firmware">9.1 Build the firmware</a><ul></ul></li>
+<li><a href="#flash-the-firmware">9.2 Flash the firmware</a><ul></ul></li>
+<li><a href="#run-the-firmware">9.3 Run the firmware</a><ul></ul></li>
+<li><a href="#enter-i2c-commands">9.4 Enter I2C commands</a><ul></ul></li></ul></li>
 <li><a href="#why-we-need-an-embedded-os-for-i2c">10 Why we need an Embedded OS for I2C</a><ul></ul></li>
 <li><a href="#port-bl602-i2c-to-mynewt">11 Port BL602 I2C to Mynewt</a><ul></ul></li>
 <li><a href="#whats-next">12 What's Next</a><ul></ul></li>
@@ -543,6 +547,8 @@ static void test_i2c_stop(i2c_msg_t *msg) {
 <p><code>i2c_clear_status</code> is defined in the <strong>Low Level I2C HAL</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c"><code>bl_i2c.c</code></a></p>
 <h1 id="build-and-run-the-firmware" class="section-header"><a href="#build-and-run-the-firmware">9 Build and Run the Firmware</a></h1>
 <p>TODO</p>
+<h2 id="build-the-firmware" class="section-header"><a href="#build-the-firmware">9.1 Build the firmware</a></h2>
+<p>TODO</p>
 <pre><code class="language-bash">git clone --recursive --branch i2c https://github.com/lupyuen/bl_iot_sdk
 cd bl_iot_sdk/customer_app/sdk_app_i2c
 
@@ -554,6 +560,7 @@ make
 # TODO: Change ~/blflash to the full path of blflash
 cp build_out/sdk_app_i2c.bin ~/blflash
 </code></pre>
+<h2 id="flash-the-firmware" class="section-header"><a href="#flash-the-firmware">9.2 Flash the firmware</a></h2>
 <p>TODO</p>
 <pre><code class="language-bash"># TODO: Change ~/blflash to the full path of blflash
 cd ~/blflash
@@ -568,12 +575,14 @@ cargo run flash sdk_app_i2c.bin \
     --initial-baud-rate 230400 \
     --baud-rate 230400
 </code></pre>
+<h2 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">9.3 Run the firmware</a></h2>
 <p>TODO</p>
 <pre><code class="language-bash"># For Linux:
 sudo screen /dev/ttyUSB0 2000000
 
 # For macOS: Doesn't work because 2 Mbps is not supported by macOS
 </code></pre>
+<h2 id="enter-i2c-commands" class="section-header"><a href="#enter-i2c-commands">9.4 Enter I2C commands</a></h2>
 <p>TODO</p>
 <pre><code class="language-text"># help
 ====User Commands====
@@ -610,13 +619,13 @@ Unknown:    0
 60
 </code></pre>
 <p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/i2c-success.png" alt="" /></p>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-reference.jpg" alt="" /></p>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/i2c-reference2.jpg" alt="" /></p>
+<p><img src="https://lupyuen.github.io/images/i2c-reference2.png" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-init.png" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/i2c-success.png" alt="" /></p>
 <p>TODO</p>
 <h1 id="why-we-need-an-embedded-os-for-i2c" class="section-header"><a href="#why-we-need-an-embedded-os-for-i2c">10 Why we need an Embedded OS for I2C</a></h1>
 <p>TODO</p>
