@@ -588,7 +588,7 @@ If there is no more data to be received, we suppress the I2C Data Received Inter
 
 # Stop I2C Read
 
-The final command that we'll enter into the BL602 Firmware will terminate the I2C transfer...
+Here's the final command that we'll enter into the BL602 Firmware... It terminates the I2C transfer.
 
 ```text
 #  i2c_stop_read
@@ -611,7 +611,7 @@ static void test_i2c_stop_read(char *buf, int len, int argc, char **argv) {
 
 The command also dumps the data received in the I2C Message Buffer.
 
-Here's how `test_i2c_stop` closes the I2C Port: [`sdk_app_i2c/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L236-L247)
+`test_i2c_stop` closes the I2C Port like so: [`sdk_app_i2c/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L236-L247)
 
 ```c
 /// Stop the I2C Transfer. Called by I2C Interrupt Handler. 
