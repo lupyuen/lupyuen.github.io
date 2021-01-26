@@ -740,15 +740,17 @@ TODO
 
 # Why we need an Embedded OS for I2C
 
-TODO
-
 We have 2 problems...
 
 1.  Our program __doesn't wait for I2C Read/Write Operations to complete.__
 
-    TODO
+    If we enter the command `i2c_stop_read` really quickly, it might __terminate the I2C Read Operation before it's done!__
+    
+    (Assuming we can type at superhuman speed)
 
-    __Solution:__ TODO
+    The I2C data transfer happens in the background, executed by the Interrupt Handler. The Foreground Task isn't notified when the data transfer is complete.
+
+    __Solution:__ Our Interrupt Handler should use a __Semaphore or a Message Queue__ to notify the Foreground Task when the data transfer is done.
 
 1.  Our program uses __shared variables for I2C Read/Write Operations.__
 
@@ -764,9 +766,9 @@ We have 2 problems...
 
     In fact, the entire __I2C Port is a shared resource__! It needs to be protected from overlapping I2C Operations.
 
-    __Solution:__ TODO
+    __Solution:__ Our Interrupt Handler should use a __Semaphore or a Mutex Lock__ to prevent concurrent updates to the shared variables.
 
-![](https://lupyuen.github.io/images/i2c-inithal.png)
+    We could use a __Message Queue to enqueue I2C Requests__ and execute the I2C Requests one at a time.
 
 TODO
 
@@ -798,6 +800,8 @@ TODO
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [`lupyuen.github.io/src/i2c.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/i2c.md)
+
+![](https://lupyuen.github.io/images/i2c-inithal.png)
 
 # Notes
 
