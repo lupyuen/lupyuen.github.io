@@ -90,12 +90,13 @@
 <li><a href="#i2c-data-transmitted">6.5 I2C Data Transmitted</a><ul></ul></li>
 <li><a href="#i2c-errors">6.6 I2C Errors</a><ul></ul></li>
 <li><a href="#receive-and-transmit-data">6.7 Receive and Transmit Data</a><ul></ul></li></ul></li>
-<li><a href="#stop-i2c-read">7 Stop I2C Read</a><ul></ul></li>
-<li><a href="#why-we-need-an-embedded-os-for-i2c">8 Why we need an Embedded OS for I2C</a><ul></ul></li>
-<li><a href="#port-bl602-i2c-to-mynewt">9 Port BL602 I2C to Mynewt</a><ul></ul></li>
-<li><a href="#whats-next">10 What's Next</a><ul></ul></li>
-<li><a href="#appendix-test-bme280-with-bus-pirate">11 Appendix: Test BME280 with Bus Pirate</a><ul></ul></li>
-<li><a href="#appendix-how-to-troubleshoot-risc-v-exceptions">12 Appendix: How to Troubleshoot RISC-V Exceptions</a><ul></ul></li></ul></nav><p>📝 <em>29 Jan 2021</em></p>
+<li><a href="#transmit-and-receive-i2c-data">7 Transmit and Receive I2C Data</a><ul></ul></li>
+<li><a href="#stop-i2c-read">8 Stop I2C Read</a><ul></ul></li>
+<li><a href="#why-we-need-an-embedded-os-for-i2c">9 Why we need an Embedded OS for I2C</a><ul></ul></li>
+<li><a href="#port-bl602-i2c-to-mynewt">10 Port BL602 I2C to Mynewt</a><ul></ul></li>
+<li><a href="#whats-next">11 What's Next</a><ul></ul></li>
+<li><a href="#appendix-test-bme280-with-bus-pirate">12 Appendix: Test BME280 with Bus Pirate</a><ul></ul></li>
+<li><a href="#appendix-how-to-troubleshoot-risc-v-exceptions">13 Appendix: How to Troubleshoot RISC-V Exceptions</a><ul></ul></li></ul></nav><p>📝 <em>29 Jan 2021</em></p>
 <p><strong><a href="https://lupyuen.github.io/articles/pinecone">PineCone BL602</a> (<a href="https://wiki.pine64.org/wiki/Nutcracker#Pinenut-01S_Module_information_and_schematics">and Pinenut</a>)</strong> is an awesome RISC-V Microcontroller Board with WiFi and Bluetooth LE Networking.</p>
 <p>But to turn PineCone BL602 into an <strong>IoT Gadget</strong> we need one more thing... </p>
 <p><strong>An I2C Sensor!</strong></p>
@@ -453,20 +454,51 @@ static void test_i2c_interrupt_entry(void *ctx) {
 <p>We disable the I2C Port and quit the Interrupt Handler right away. (Except for Unknown Error)</p>
 <h2 id="receive-and-transmit-data" class="section-header"><a href="#receive-and-transmit-data">6.7 Receive and Transmit Data</a></h2>
 <p>For I2C Data Received and I2C Data Transmitted, our Interrupt Handler flows through to this code...</p>
-<pre><code class="language-c">    //  For Receive FIFO Ready and Transmit FIFO Ready, transfer 32 bits of data
+<pre><code class="language-c">    //  For Receive FIFO Ready and Transmit FIFO Ready, transfer 4 bytes of data
     test_i2c_transferbytes(msg);
 }
 </code></pre>
 <p><code>test_i2c_transferbytes</code> does the following...</p>
 <ul>
 <li>
-<p><strong>For I2C Read Operation:</strong> Copy the received data into our Message Buffer and receive more data.</p>
+<p><strong>For I2C Read Operation:</strong> Copy the received data into our Message Buffer (4 bytes at a time) and receive more data.</p>
 </li>
 <li>
 <p><strong>For I2C Write Operation:</strong> Transmit the next 4 bytes of data from our Message Buffer.</p>
 </li>
 </ul>
-<h1 id="stop-i2c-read" class="section-header"><a href="#stop-i2c-read">7 Stop I2C Read</a></h1>
+<p>More about this in the next section...</p>
+<h1 id="transmit-and-receive-i2c-data" class="section-header"><a href="#transmit-and-receive-i2c-data">7 Transmit and Receive I2C Data</a></h1>
+<p>BL602 I2C has a <strong>FIFO Queue (First In First Out) of 4 bytes</strong> for transmitting and receiving I2C data.</p>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L244-L270"><code>sdk_app_i2c/demo.c</code></a></p>
+<pre><code class="language-c">/// For Rx FIFO Ready and Tx FIFO Ready, transfer 4 bytes of data. Called by I2C Interrupt Handler.  Based on i2c_transferbytes in hal_i2c.c
+static void test_i2c_transferbytes(i2c_msg_t *msg) {
+    //  For I2C Write Operation and I2C Data Transmitted Interrupt...
+    if (msg-&gt;direct == I2C_M_WRITE &amp;&amp; msg-&gt;event == EV_I2C_TXF_INT) {
+        if (msg-&gt;idex &lt; msg-&gt;len) {
+            //  If there is buffer data to be transmitted, transmit 4 bytes from buffer
+            do_write_data(msg);
+        } else if (msg-&gt;idex == msg-&gt;len) {
+            //  Otherwise suppress all future Data Transmitted Interrupts
+            I2C_IntMask(msg-&gt;i2cx, I2C_TX_FIFO_READY_INT, MASK);
+            return;
+        } else {
+        } 
+    //  For I2C Read Operation and I2C Data Received Interrupt...
+    } else if (msg-&gt;direct == I2C_M_READ &amp;&amp; msg-&gt;event == EV_I2C_RXF_INT) {
+        if (msg-&gt;idex &lt; msg-&gt;len) {
+            //  If there is data to be received, copy 4 bytes into buffer
+             do_read_data(msg);      
+        } else {
+            //  Otherwise suppress all future Data Received Interrupts
+            I2C_IntMask(msg-&gt;i2cx, I2C_RX_FIFO_READY_INT, MASK);
+            return;
+        } 
+    }
+}
+</code></pre>
+<h1 id="stop-i2c-read" class="section-header"><a href="#stop-i2c-read">8 Stop I2C Read</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-reference.jpg" alt="" /></p>
 <p>TODO</p>
@@ -476,11 +508,11 @@ static void test_i2c_interrupt_entry(void *ctx) {
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-success.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="why-we-need-an-embedded-os-for-i2c" class="section-header"><a href="#why-we-need-an-embedded-os-for-i2c">8 Why we need an Embedded OS for I2C</a></h1>
+<h1 id="why-we-need-an-embedded-os-for-i2c" class="section-header"><a href="#why-we-need-an-embedded-os-for-i2c">9 Why we need an Embedded OS for I2C</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-inithal.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="port-bl602-i2c-to-mynewt" class="section-header"><a href="#port-bl602-i2c-to-mynewt">9 Port BL602 I2C to Mynewt</a></h1>
+<h1 id="port-bl602-i2c-to-mynewt" class="section-header"><a href="#port-bl602-i2c-to-mynewt">10 Port BL602 I2C to Mynewt</a></h1>
 <p>TODO</p>
 <ol>
 <li>Shared vars</li>
@@ -490,7 +522,7 @@ static void test_i2c_interrupt_entry(void *ctx) {
 Mynewt bus</p>
 <p>Map to Mynewt / rust
 They dont support register address</p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">10 What's Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">11 What's Next</a></h1>
 <p><img src="https://lupyuen.github.io/images/i2c-hack.jpg" alt="" /></p>
 <p>TODO</p>
 <ul>
@@ -506,7 +538,7 @@ They dont support register address</p>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/i2c.md"><code>lupyuen.github.io/src/i2c.md</code></a></p>
-<h1 id="appendix-test-bme280-with-bus-pirate" class="section-header"><a href="#appendix-test-bme280-with-bus-pirate">11 Appendix: Test BME280 with Bus Pirate</a></h1>
+<h1 id="appendix-test-bme280-with-bus-pirate" class="section-header"><a href="#appendix-test-bme280-with-bus-pirate">12 Appendix: Test BME280 with Bus Pirate</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-buspirate.jpg" alt="" /></p>
 <p>TODO</p>
@@ -529,7 +561,7 @@ plus sending 3 bytes, and
 receiving 1 byte.</p>
 <p>The byte received should be 0x60.</p>
 <p>http://dangerousprototypes.com/docs/I2C</p>
-<h1 id="appendix-how-to-troubleshoot-risc-v-exceptions" class="section-header"><a href="#appendix-how-to-troubleshoot-risc-v-exceptions">12 Appendix: How to Troubleshoot RISC-V Exceptions</a></h1>
+<h1 id="appendix-how-to-troubleshoot-risc-v-exceptions" class="section-header"><a href="#appendix-how-to-troubleshoot-risc-v-exceptions">13 Appendix: How to Troubleshoot RISC-V Exceptions</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-exception.png" alt="" /></p>
 <p>TODO</p>
