@@ -586,9 +586,13 @@ If there is no more data to be received, we suppress the I2C Data Received Inter
 
 # Stop I2C Read
 
-TODO
+The final command that we'll enter into the BL602 Firmware will terminate the I2C transfer...
 
-[`sdk_app_i2c/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L446-L456)
+```text
+#  i2c_stop_read
+```
+
+This command calls `test_i2c_stop` to close the I2C Port: [`sdk_app_i2c/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L446-L456)
 
 ```c
 /// Stop reading data from I2C device
@@ -603,9 +607,9 @@ static void test_i2c_stop_read(char *buf, int len, int argc, char **argv) {
 }
 ```
 
-TODO
+The command also dumps the data received in the I2C Message Buffer.
 
-[`sdk_app_i2c/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L236-L247)
+Here's how `test_i2c_stop` closes the I2C Port: [`sdk_app_i2c/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L236-L247)
 
 ```c
 /// Stop the I2C Transfer. Called by I2C Interrupt Handler. 
@@ -621,6 +625,8 @@ static void test_i2c_stop(i2c_msg_t *msg) {
     i2c_clear_status(msg->i2cx);
 }
 ```
+
+`i2c_clear_status` is defined in the __Low Level I2C HAL__: [`bl_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c)
 
 # Build and Run the Firmware
 
