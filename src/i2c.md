@@ -584,6 +584,8 @@ If there is no more data to be received, we suppress the I2C Data Received Inter
 
 `do_read_data` is defined in the __Low Level I2C HAL__: [`bl_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c)
 
+(FYI: `test_i2c_transferbytes` is the fixed version of `i2c_transferbytes` from the High Level I2C HAL [`hal_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c). [Here's the fix](https://lupyuen.github.io/images/i2c-transferbytes.png))
+
 # Stop I2C Read
 
 The final command that we'll enter into the BL602 Firmware will terminate the I2C transfer...
