@@ -634,6 +634,10 @@ static void test_i2c_stop(i2c_msg_t *msg) {
 
 TODO
 
+## Build the firmware
+
+TODO
+
 ```bash
 git clone --recursive --branch i2c https://github.com/lupyuen/bl_iot_sdk
 cd bl_iot_sdk/customer_app/sdk_app_i2c
@@ -646,6 +650,8 @@ make
 # TODO: Change ~/blflash to the full path of blflash
 cp build_out/sdk_app_i2c.bin ~/blflash
 ```
+
+## Flash the firmware
 
 TODO
 
@@ -664,6 +670,8 @@ cargo run flash sdk_app_i2c.bin \
     --baud-rate 230400
 ```
 
+## Run the firmware
+
 TODO
 
 ```bash
@@ -672,6 +680,8 @@ sudo screen /dev/ttyUSB0 2000000
 
 # For macOS: Doesn't work because 2 Mbps is not supported by macOS
 ```
+
+## Enter I2C commands
 
 TODO
 
@@ -713,19 +723,19 @@ Unknown:    0
 
 TODO
 
+![](https://lupyuen.github.io/images/i2c-success.png)
+
+TODO
+
 ![](https://lupyuen.github.io/images/i2c-reference.jpg)
 
 TODO
 
-![](https://lupyuen.github.io/images/i2c-reference2.jpg)
+![](https://lupyuen.github.io/images/i2c-reference2.png)
 
 TODO
 
 ![](https://lupyuen.github.io/images/i2c-init.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/i2c-success.png)
 
 TODO
 
