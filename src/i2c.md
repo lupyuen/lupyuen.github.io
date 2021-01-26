@@ -638,7 +638,10 @@ TODO
 
 TODO
 
+`i2c` branch
+
 ```bash
+# Download the i2c branch
 git clone --recursive --branch i2c https://github.com/lupyuen/bl_iot_sdk
 cd bl_iot_sdk/customer_app/sdk_app_i2c
 
@@ -776,9 +779,17 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  Check out the __[BL602 I2C HAL for Arduino](https://github.com/pine64/ArduinoCore-bouffalo/blob/main/libraries/Wire/src/Wire.cpp)__
 
-1.  Quiz for the Reader: What could go wrong with this code from the Low Level I2C HAL [`bl_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c)?
+1.  Quiz for the Reader: What could go wrong with this code?
 
-    ![](https://lupyuen.github.io/images/i2c-init.png)
+    ![i2c_gpio_init: What happens when i2cx is NOT I2C0](https://lupyuen.github.io/images/i2c-init.png)
+
+    (From Low Level I2C HAL [`bl_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c))
+
+1.  Another Quiz for the Reader: Why does this code look dubious?
+    
+    ![i2c_transferbytes: Assignment inside Condition](https://lupyuen.github.io/images/i2c-transferbytes.png)
+
+    (From High Level I2C HAL [`hal_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c))
 
 # Appendix: Test BME280 with Bus Pirate
 
