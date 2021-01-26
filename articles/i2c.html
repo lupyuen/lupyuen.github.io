@@ -102,8 +102,9 @@
 <li><a href="#why-we-need-an-embedded-os-for-i2c">10 Why we need an Embedded OS for I2C</a><ul></ul></li>
 <li><a href="#port-bl602-i2c-to-mynewt">11 Port BL602 I2C to Mynewt</a><ul></ul></li>
 <li><a href="#whats-next">12 What's Next</a><ul></ul></li>
-<li><a href="#appendix-test-bme280-with-bus-pirate">13 Appendix: Test BME280 with Bus Pirate</a><ul></ul></li>
-<li><a href="#appendix-how-to-troubleshoot-risc-v-exceptions">14 Appendix: How to Troubleshoot RISC-V Exceptions</a><ul></ul></li></ul></nav><p>📝 <em>29 Jan 2021</em></p>
+<li><a href="#notes">13 Notes</a><ul></ul></li>
+<li><a href="#appendix-test-bme280-with-bus-pirate">14 Appendix: Test BME280 with Bus Pirate</a><ul></ul></li>
+<li><a href="#appendix-how-to-troubleshoot-risc-v-exceptions">15 Appendix: How to Troubleshoot RISC-V Exceptions</a><ul></ul></li></ul></nav><p>📝 <em>29 Jan 2021</em></p>
 <p><strong><a href="https://lupyuen.github.io/articles/pinecone">PineCone BL602</a> (<a href="https://wiki.pine64.org/wiki/Nutcracker#Pinenut-01S_Module_information_and_schematics">and Pinenut</a>)</strong> is an awesome RISC-V Microcontroller Board with WiFi and Bluetooth LE Networking.</p>
 <p>But to turn PineCone BL602 into an <strong>IoT Gadget</strong> we need one more thing... </p>
 <p><strong>An I2C Sensor!</strong></p>
@@ -625,8 +626,6 @@ Unknown:    0
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-reference2.png" alt="" /></p>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/i2c-init.png" alt="" /></p>
-<p>TODO</p>
 <h1 id="why-we-need-an-embedded-os-for-i2c" class="section-header"><a href="#why-we-need-an-embedded-os-for-i2c">10 Why we need an Embedded OS for I2C</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-inithal.png" alt="" /></p>
@@ -657,7 +656,17 @@ They dont support register address</p>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/i2c.md"><code>lupyuen.github.io/src/i2c.md</code></a></p>
-<h1 id="appendix-test-bme280-with-bus-pirate" class="section-header"><a href="#appendix-test-bme280-with-bus-pirate">13 Appendix: Test BME280 with Bus Pirate</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">13 Notes</a></h1>
+<ol>
+<li>
+<p>Check out the <strong><a href="https://github.com/pine64/ArduinoCore-bouffalo/blob/main/libraries/Wire/src/Wire.cpp">BL602 I2C HAL for Arduino</a></strong></p>
+</li>
+<li>
+<p>Quiz for the Reader: What could go wrong with this code from the Low Level I2C HAL <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c"><code>bl_i2c.c</code></a>?</p>
+<p><img src="https://lupyuen.github.io/images/i2c-init.png" alt="" /></p>
+</li>
+</ol>
+<h1 id="appendix-test-bme280-with-bus-pirate" class="section-header"><a href="#appendix-test-bme280-with-bus-pirate">14 Appendix: Test BME280 with Bus Pirate</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-buspirate.jpg" alt="" /></p>
 <p>TODO</p>
@@ -680,7 +689,7 @@ plus sending 3 bytes, and
 receiving 1 byte.</p>
 <p>The byte received should be 0x60.</p>
 <p>http://dangerousprototypes.com/docs/I2C</p>
-<h1 id="appendix-how-to-troubleshoot-risc-v-exceptions" class="section-header"><a href="#appendix-how-to-troubleshoot-risc-v-exceptions">14 Appendix: How to Troubleshoot RISC-V Exceptions</a></h1>
+<h1 id="appendix-how-to-troubleshoot-risc-v-exceptions" class="section-header"><a href="#appendix-how-to-troubleshoot-risc-v-exceptions">15 Appendix: How to Troubleshoot RISC-V Exceptions</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-exception.png" alt="" /></p>
 <p>TODO</p>
