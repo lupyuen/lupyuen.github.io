@@ -807,11 +807,15 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     ![i2c_gpio_init: What happens when i2cx is NOT I2C0](https://lupyuen.github.io/images/i2c-init.png)
 
+    [__Here's The Answer__](https://twitter.com/MisterTechBlog/status/1351441955637534720?s=20)
+
     (From Low Level I2C HAL [`bl_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c))
 
 1.  Another Quiz for the Reader: Why does this code look dubious?
     
     ![i2c_transferbytes: Assignment inside Condition](https://lupyuen.github.io/images/i2c-transferbytes.png)
+
+    [__Here's The Answer__](https://github.com/bouffalolab/bl_iot_sdk/issues/33)
 
     (From High Level I2C HAL [`hal_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c))
 
