@@ -735,10 +735,6 @@ TODO
 
 TODO
 
-![](https://lupyuen.github.io/images/i2c-init.png)
-
-TODO
-
 # Why we need an Embedded OS for I2C
 
 TODO
@@ -775,6 +771,14 @@ TODO
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [`lupyuen.github.io/src/i2c.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/i2c.md)
+
+# Notes
+
+1.  Check out the __[BL602 I2C HAL for Arduino](https://github.com/pine64/ArduinoCore-bouffalo/blob/main/libraries/Wire/src/Wire.cpp)__
+
+1.  Quiz for the Reader: What could go wrong with this code from the Low Level I2C HAL [`bl_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c)?
+
+    ![](https://lupyuen.github.io/images/i2c-init.png)
 
 # Appendix: Test BME280 with Bus Pirate
 
