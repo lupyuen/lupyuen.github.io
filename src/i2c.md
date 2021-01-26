@@ -571,6 +571,44 @@ static void test_i2c_transferbytes(i2c_msg_t *msg) {
 
 TODO
 
+```text
+# help
+====User Commands====
+i2c_status               : I2C status
+i2c_init                 : Init I2C port
+i2c_start_read           : Start reading I2C data
+i2c_stop_read            : Stop reading I2C data
+
+# i2c_init
+
+# i2c_status
+Interrupts: 0
+Trans End:  0
+Tx Ready:   0
+Rx Ready:   0
+NACK:       0
+Arb Lost:   0
+FIFO Error: 0
+Unknown:    0
+
+# i2c_start_read
+
+# i2c_status
+Interrupts: 2
+Trans End:  1
+Tx Ready:   0
+Rx Ready:   1
+NACK:       0
+Arb Lost:   0
+FIFO Error: 0
+Unknown:    0
+
+# i2c_stop_read
+60
+```
+
+TODO
+
 ![](https://lupyuen.github.io/images/i2c-reference.jpg)
 
 TODO
