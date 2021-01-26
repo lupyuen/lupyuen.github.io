@@ -742,6 +742,16 @@ TODO
 
 TODO
 
+We have 2 problems...
+
+1.  Our program __doesn't wait for I2C Read/Write Operations to complete__
+
+    __Solution:__
+
+1.  Our program uses __shared global variables for I2C Operations__
+
+    __Solution:__
+
 ![](https://lupyuen.github.io/images/i2c-inithal.png)
 
 TODO
