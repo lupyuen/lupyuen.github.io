@@ -770,6 +770,9 @@ We have 2 problems...
 
     We could use a __Message Queue to enqueue I2C Requests__ and execute the I2C Requests one at a time.
 
+If fact, when we implement these two Solutions in FreeRTOS... We'll get the __High Level I2C HAL!__ (See [`hal_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c))
+
+
 TODO
 
 # Port BL602 I2C to Mynewt
