@@ -641,7 +641,7 @@ TODO
 `i2c` branch
 
 ```bash
-# Download the i2c branch
+# Download the i2c branch of lupyuen's bl_iot_sdk
 git clone --recursive --branch i2c https://github.com/lupyuen/bl_iot_sdk
 cd bl_iot_sdk/customer_app/sdk_app_i2c
 
