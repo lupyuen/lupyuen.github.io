@@ -82,7 +82,7 @@
 <li><a href="#start-i2c-read">5 Start I2C Read</a><ul>
 <li><a href="#create-i2c-message">5.1 Create I2C Message</a><ul></ul></li>
 <li><a href="#start-i2c-transfer">5.2 Start I2C Transfer</a><ul></ul></li></ul></li>
-<li><a href="#i2c-interrupt-handler">6 I2C Interrupt Handler</a><ul>
+<li><a href="#handle-i2c-interrupts">6 Handle I2C Interrupts</a><ul>
 <li><a href="#get-i2c-message-and-interrupt-reason">6.1 Get I2C Message and Interrupt Reason</a><ul></ul></li>
 <li><a href="#i2c-data-received">6.2 I2C Data Received</a><ul></ul></li>
 <li><a href="#i2c-transfer-end">6.3 I2C Transfer End</a><ul></ul></li>
@@ -147,7 +147,7 @@
 <tr><td align="center"><strong><code>3V3</code></strong></td><td align="center"><code>3.3V</code></td><td align="left">Red</td></tr>
 <tr><td align="center"><strong><code>GND</code></strong></td><td align="center"><code>GND</code></td><td align="left">Black</td></tr>
 </tbody></table>
-<p>The Low Level I2C HAL assigns GPIO 3 and 4 to the I2C Port on BL602. (See &quot;Section 3.2.8: GPIO Function&quot; in the BL602 Reference Manual)</p>
+<p>The Low Level I2C HAL assigns GPIO 3 and 4 to the I2C Port on BL602. (See <strong>&quot;Section 3.2.8: GPIO Function&quot;</strong> in the <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en"><strong>BL602 Reference Manual</strong></a>)</p>
 <p>(If we're using the High Level I2C HAL, the I2C Pins are defined in the Device Tree)</p>
 <p><em>What shall we accomplish with BL602 and BME280?</em></p>
 <ol>
@@ -298,7 +298,7 @@ read_msg.sublen  = 1;     //  Length of Register Address (bytes)
 <p>Thus <strong>BL602 I2C works a little differently</strong> from other microcontrollers.</p>
 <p>This may complicate the support for I2C in Embedded Operating Systems like Mynewt, RIOT and Zephyr. (More about this in a while)</p>
 <h2 id="i2c-terms" class="section-header"><a href="#i2c-terms">4.4 I2C Terms</a></h2>
-<p>The I2C Documentation in the BL602 Reference Manual appears somewhat confusing because of the I2C Register Address feature. <a href="https://lupyuen.github.io/images/i2c-confuse.png">See this</a></p>
+<p>The I2C Documentation in the <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en">BL602 Reference Manual</a> appears somewhat confusing because of the I2C Register Address feature. <a href="https://lupyuen.github.io/images/i2c-confuse.png">See this</a></p>
 <p>In this article we shall standardise on these I2C Terms...</p>
 <ol>
 <li>
@@ -361,8 +361,8 @@ static void test_i2c_start_read(char *buf, int len, int argc, char **argv) {
 <p>The I2C data transfer happens in the background, thanks to our <strong>I2C Interrupt Handler</strong>.</p>
 <p>Our I2C Interrupt Handler receives the I2C data from the BME280 Sensor and populates our read buffer <code>read_buf</code></p>
 <p>Let's go deep into our I2C Interrupt Handler...</p>
-<h1 id="i2c-interrupt-handler" class="section-header"><a href="#i2c-interrupt-handler">6 I2C Interrupt Handler</a></h1>
-<p>TODO</p>
+<h1 id="handle-i2c-interrupts" class="section-header"><a href="#handle-i2c-interrupts">6 Handle I2C Interrupts</a></h1>
+<p>Earlier we registered <code>test_i2c_interrupt_entry</code> as our Interrupt Handler for I2C Interrupts...</p>
 <pre><code class="language-c">//  Register the I2C Interrupt Handler
 bl_irq_register_with_ctx(
     I2C_IRQn,                  //  For I2C Interrupt:
@@ -370,9 +370,10 @@ bl_irq_register_with_ctx(
     &amp;gpstmsg                   //  Pointer to current I2C Message
 );
 </code></pre>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L266-L321"><code>sdk_app_i2c/demo.c</code></a></p>
+<p>And the current I2C Message <code>gpstmsg</code> will be passed as our Interrupt Context.</p>
+<p>Let's find out how our Interrupt Handler handles I2C Interrupts: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L266-L321"><code>sdk_app_i2c/demo.c</code></a></p>
 <h2 id="get-i2c-message-and-interrupt-reason" class="section-header"><a href="#get-i2c-message-and-interrupt-reason">6.1 Get I2C Message and Interrupt Reason</a></h2>
+<p>When an I2C Interrupt is triggered, we fetch the Interrupt Reason and the I2C Message (from the Interrupt Context)...</p>
 <pre><code class="language-c">/// I2C Interrupt Handler. Based on i2c_interrupt_entry in hal_i2c.c
 static void test_i2c_interrupt_entry(void *ctx) {
     //  Fetch the current I2C Message from the Interrupt Context
@@ -384,7 +385,9 @@ static void test_i2c_interrupt_entry(void *ctx) {
     //  Handle each reason and increment the Interrupt Counters
     count_int++;  //  Overall interrupts
 </code></pre>
-<p>TODO</p>
+<p>According to the <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en"><strong>BL602 Reference Manual</strong></a> there are 6 kinds of I2C Interrupts...</p>
+<p><img src="https://lupyuen.github.io/images/i2c-interrupt.png" alt="BL602 I2C Interrupts" /></p>
+<p>Some good... Some not so good. Let's handle each type of interrupt...</p>
 <h2 id="i2c-data-received" class="section-header"><a href="#i2c-data-received">6.2 I2C Data Received</a></h2>
 <pre><code class="language-c">    if (BL_IS_REG_BIT_SET(reason, I2C_RXF_INT)) {
         //  Receive FIFO Ready
@@ -446,8 +449,6 @@ static void test_i2c_interrupt_entry(void *ctx) {
     test_i2c_transferbytes(pstmsg);
 }
 </code></pre>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/i2c-interrupt.png" alt="" /></p>
 <p>TODO</p>
 <h1 id="stop-i2c-read" class="section-header"><a href="#stop-i2c-read">7 Stop I2C Read</a></h1>
 <p>TODO</p>
