@@ -2,6 +2,14 @@
 
 📝 _29 Jan 2021_
 
+__[PineCone BL602](https://lupyuen.github.io/articles/pinecone) ([and Pinenut](https://wiki.pine64.org/wiki/Nutcracker#Pinenut-01S_Module_information_and_schematics))__ is an awesome RISC-V Microcontroller Board with WiFi and Bluetooth LE Networking.
+
+But to turn PineCone BL602 into an __IoT Gadget__ we need one more thing... 
+
+__An I2C Sensor!__
+
+Today we shall connect PineCone / Pinenut / Any BL602 Board to an I2C Sensor and read some data.
+
 ![PineCone BL602 RISC-V Evaluation Board connected to BME280 I2C Sensor](https://lupyuen.github.io/images/i2c-title.jpg)
 
 _PineCone BL602 RISC-V Evaluation Board connected to BME280 I2C Sensor_
@@ -303,13 +311,27 @@ In this article we shall standardise on these I2C Terms...
 
     (Instead of "Subaddress", "Slave Device Address", "Slave Device Register Address")
 
-# Read I2C Register
+# Start I2C Read
 
-TODO
+Now that we have created our I2C Message, let's watch it in action!
 
-[`sdk_app_i2c/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L406-L434)
+To begin reading data from our BME280 Sensor, we enter this command...
+
+```text
+#  i2c_start_read
+```
+
+Let's find out what happens inside that command: [`sdk_app_i2c/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L406-L434)
+
+## Create I2C Message
+
+We start by creating the I2C Message. We have seen this code earlier for creating the message...
 
 ```c
+//  Define I2C message and buffer
+static i2c_msg_t read_msg;    //  Message for reading I2C Data
+static uint8_t read_buf[32];  //  Buffer for reading I2C Data
+
 static void test_i2c_start_read(char *buf, int len, int argc, char **argv) {
     //  Start reading data from I2C device
     //  Expect result 0x60 for BME280, 0x58 for BMP280
@@ -331,14 +353,51 @@ static void test_i2c_start_read(char *buf, int len, int argc, char **argv) {
     read_msg.subflag = 1;      //  Enable Register Address
     read_msg.subaddr = 0xd0;   //  Register Address (BME280 Chip ID)
     read_msg.sublen  = 1;      //  Length of Register Address (bytes)
+```
 
+## Start I2C Transfer
+
+Now we start the I2C data transfer...
+
+```c
     //  Start the I2C transfer and enable I2C interrupts
     gpstmsg = &read_msg;
     i2c_transfer_start(&read_msg);
 
-    //  do_read_data will be called to read data in the I2C Interrupt Handler (test_i2c_transferbytes)
+    //  do_read_data will be called to read data 
+    //  in the I2C Interrupt Handler (test_i2c_transferbytes)
 }
 ```
+
+We point `gpstmsg` to our I2C Message. (Will be used for saving data into our buffer)
+
+Then we call `i2c_transfer_start` to start the I2C data transfer and enable the I2C Interrupts.
+
+`i2c_transfer_start` is defined in the __Low Level I2C HAL__: [`bl_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c)
+
+_How does BL602 receive the I2C data from our BME280 Sensor?_
+
+The I2C data transfer happens in the background, thanks to our __I2C Interrupt Handler__.
+
+Our I2C Interrupt Handler receives the I2C data from the BME280 Sensor and populates our read buffer `read_buf`
+
+Let's go deep into our I2C Interrupt Handler...
+
+# I2C Interrupt Handler
+
+TODO
+
+![](https://lupyuen.github.io/images/i2c-handler.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/i2c-interrupt.png)
+
+TODO
+
+# Stop I2C Read
+
+TODO
 
 ![](https://lupyuen.github.io/images/i2c-reference.jpg)
 
@@ -353,18 +412,6 @@ TODO
 TODO
 
 ![](https://lupyuen.github.io/images/i2c-success.png)
-
-TODO
-
-# I2C Interrupt Handler
-
-TODO
-
-![](https://lupyuen.github.io/images/i2c-handler.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/i2c-interrupt.png)
 
 TODO
 
