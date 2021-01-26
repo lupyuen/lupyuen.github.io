@@ -425,6 +425,10 @@ Some good... Some not so good. Let's handle each type of interrupt...
 
 ## I2C Data Received
 
+(For I2C Read Operation)
+
+When we receive data from our I2C Sensor... It's good news!
+
 ```c
     if (BL_IS_REG_BIT_SET(reason, I2C_RXF_INT)) {
         //  Receive FIFO Ready
@@ -433,9 +437,11 @@ Some good... Some not so good. Let's handle each type of interrupt...
         //  Should not return
 ```
 
-TODO
+This condition flows through to the end of our Interrupt Handler, and calls `test_i2c_transferbytes` to copy the received data into our Message Buffer and receive more data.
 
 ## I2C Transfer End
+
+If the I2C data transfer is ending, we call `test_i2c_stop` to disable the I2C Port.
 
 ```c
     } else if (BL_IS_REG_BIT_SET(reason, I2C_END_INT)) {
@@ -446,9 +452,11 @@ TODO
         return;  //  Stop now
 ```
 
-TODO
+This condition quits our Interrupt Handler right away.
 
 ## I2C No Acknowledge
+
+This is bad... We encounter I2C No Acknowledge usually when the I2C Device Address is misconfigured (say `0x76` instead of `0x77`).
 
 ```c
     } else if (BL_IS_REG_BIT_SET(reason, I2C_NAK_INT)) {
@@ -459,9 +467,13 @@ TODO
         return;  //  Stop now
 ```
 
-TODO
+We disable the I2C Port and quit the Interrupt Handler right away.
 
 ## I2C Data Transmitted
+
+(For I2C Write Operation)
+
+This is good, it means that the queued data has been transmitted...
 
 ```c
     } else if (BL_IS_REG_BIT_SET(reason, I2C_TXF_INT)) {
@@ -471,9 +483,11 @@ TODO
         //  Should not return
 ```
 
-TODO
+This condition flows through to the end of our Interrupt Handler, and calls `test_i2c_transferbytes` to transmit the next 4 bytes of data from our Message Buffer.
 
 ## I2C Errors
+
+Lastly we handle the remaining errors: __Arbitration Lost, FIFO Error, Unknown Error__...
 
 ```c
     } else if (BL_IS_REG_BIT_SET(reason, I2C_ARB_INT)) {
@@ -497,9 +511,11 @@ TODO
     }
 ```
 
-TODO
+We disable the I2C Port and quit the Interrupt Handler right away. (Except for Unknown Error)
 
 ## Receive and Transmit Data
+
+For I2C Data Received and I2C Data Transmitted, our Interrupt Handler flows through to this code...
 
 ```c
     //  For Receive FIFO Ready and Transmit FIFO Ready, transfer 32 bits of data
@@ -507,7 +523,11 @@ TODO
 }
 ```
 
-TODO
+`test_i2c_transferbytes` does the following...
+
+-   __For I2C Read Operation:__ Copy the received data into our Message Buffer and receive more data.
+
+-   __For I2C Write Operation:__ Transmit the next 4 bytes of data from our Message Buffer.
 
 # Stop I2C Read
 
