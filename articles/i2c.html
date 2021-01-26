@@ -550,7 +550,9 @@ static void test_i2c_stop(i2c_msg_t *msg) {
 <p>TODO</p>
 <h2 id="build-the-firmware" class="section-header"><a href="#build-the-firmware">9.1 Build the firmware</a></h2>
 <p>TODO</p>
-<pre><code class="language-bash">git clone --recursive --branch i2c https://github.com/lupyuen/bl_iot_sdk
+<p><code>i2c</code> branch</p>
+<pre><code class="language-bash"># Download the i2c branch
+git clone --recursive --branch i2c https://github.com/lupyuen/bl_iot_sdk
 cd bl_iot_sdk/customer_app/sdk_app_i2c
 
 # TODO: Change this to the full path of bl_iot_sdk
@@ -662,8 +664,14 @@ They dont support register address</p>
 <p>Check out the <strong><a href="https://github.com/pine64/ArduinoCore-bouffalo/blob/main/libraries/Wire/src/Wire.cpp">BL602 I2C HAL for Arduino</a></strong></p>
 </li>
 <li>
-<p>Quiz for the Reader: What could go wrong with this code from the Low Level I2C HAL <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c"><code>bl_i2c.c</code></a>?</p>
-<p><img src="https://lupyuen.github.io/images/i2c-init.png" alt="" /></p>
+<p>Quiz for the Reader: What could go wrong with this code?</p>
+<p><img src="https://lupyuen.github.io/images/i2c-init.png" alt="i2c_gpio_init: What happens when i2cx is NOT I2C0" /></p>
+<p>(From Low Level I2C HAL <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c"><code>bl_i2c.c</code></a>)</p>
+</li>
+<li>
+<p>Another Quiz for the Reader: Why does this code look dubious?</p>
+<p><img src="https://lupyuen.github.io/images/i2c-transferbytes.png" alt="i2c_transferbytes: Assignment inside Condition" /></p>
+<p>(From High Level I2C HAL <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c"><code>hal_i2c.c</code></a>)</p>
 </li>
 </ol>
 <h1 id="appendix-test-bme280-with-bus-pirate" class="section-header"><a href="#appendix-test-bme280-with-bus-pirate">14 Appendix: Test BME280 with Bus Pirate</a></h1>
