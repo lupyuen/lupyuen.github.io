@@ -629,13 +629,14 @@ Unknown:    0
 <p><img src="https://lupyuen.github.io/images/i2c-reference2.png" alt="" /></p>
 <p>TODO</p>
 <h1 id="why-we-need-an-embedded-os-for-i2c" class="section-header"><a href="#why-we-need-an-embedded-os-for-i2c">10 Why we need an Embedded OS for I2C</a></h1>
-<p>TODO</p>
 <p>We have 2 problems...</p>
 <ol>
 <li>
 <p>Our program <strong>doesn't wait for I2C Read/Write Operations to complete.</strong></p>
-<p>TODO</p>
-<p><strong>Solution:</strong> TODO</p>
+<p>If we enter the command <code>i2c_stop_read</code> really quickly, it might <strong>terminate the I2C Read Operation before it's done!</strong></p>
+<p>(Assuming we can type at superhuman speed)</p>
+<p>The I2C data transfer happens in the background, executed by the Interrupt Handler. The Foreground Task isn't notified when the data transfer is complete.</p>
+<p><strong>Solution:</strong> Our Interrupt Handler should use a <strong>Semaphore or a Message Queue</strong> to notify the Foreground Task when the data transfer is done.</p>
 </li>
 <li>
 <p>Our program uses <strong>shared variables for I2C Read/Write Operations.</strong></p>
@@ -646,10 +647,10 @@ static uint8_t read_buf[32];  //  Buffer for reading I2C Data
 </code></pre>
 <p>These global variables will get really confused when we talk to multiple I2C Sensors.</p>
 <p>In fact, the entire <strong>I2C Port is a shared resource</strong>! It needs to be protected from overlapping I2C Operations.</p>
-<p><strong>Solution:</strong> TODO</p>
+<p><strong>Solution:</strong> Our Interrupt Handler should use a <strong>Semaphore or a Mutex Lock</strong> to prevent concurrent updates to the shared variables.</p>
+<p>We could use a <strong>Message Queue to enqueue I2C Requests</strong> and execute the I2C Requests one at a time.</p>
 </li>
 </ol>
-<p><img src="https://lupyuen.github.io/images/i2c-inithal.png" alt="" /></p>
 <p>TODO</p>
 <h1 id="port-bl602-i2c-to-mynewt" class="section-header"><a href="#port-bl602-i2c-to-mynewt">11 Port BL602 I2C to Mynewt</a></h1>
 <p>TODO</p>
@@ -677,6 +678,7 @@ They dont support register address</p>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/i2c.md"><code>lupyuen.github.io/src/i2c.md</code></a></p>
+<p><img src="https://lupyuen.github.io/images/i2c-inithal.png" alt="" /></p>
 <h1 id="notes" class="section-header"><a href="#notes">13 Notes</a></h1>
 <ol>
 <li>
