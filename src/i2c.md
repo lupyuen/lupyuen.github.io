@@ -764,8 +764,11 @@ We have 2 problems...
 
 If fact, when we implement these two Solutions in FreeRTOS... We'll get the __High Level I2C HAL!__ (See [`hal_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c))
 
+_Instead of FreeRTOS... Can we implement the two Solutions with Mynewt, RIOT or Zephyr?_
 
-TODO
+Yes! We may implement the two Solutions with any Embedded Operating System that supports __Task Synchronisation__ features (Semaphore, Mutex, Message Queue).
+
+Thus to do meaningful work with I2C (like reading I2C Sensor Data periodically and processing the data), we need to use the __Low Level I2C HAL together with an Embedded Operating System__.
 
 # Port BL602 I2C to Mynewt
 
