@@ -90,7 +90,9 @@
 <li><a href="#i2c-data-transmitted">6.5 I2C Data Transmitted</a><ul></ul></li>
 <li><a href="#i2c-errors">6.6 I2C Errors</a><ul></ul></li>
 <li><a href="#receive-and-transmit-data">6.7 Receive and Transmit Data</a><ul></ul></li></ul></li>
-<li><a href="#transmit-and-receive-i2c-data">7 Transmit and Receive I2C Data</a><ul></ul></li>
+<li><a href="#transmit-and-receive-i2c-data">7 Transmit and Receive I2C Data</a><ul>
+<li><a href="#i2c-write-operation">7.1 I2C Write Operation</a><ul></ul></li>
+<li><a href="#i2c-read-operation">7.2 I2C Read Operation</a><ul></ul></li></ul></li>
 <li><a href="#stop-i2c-read">8 Stop I2C Read</a><ul></ul></li>
 <li><a href="#why-we-need-an-embedded-os-for-i2c">9 Why we need an Embedded OS for I2C</a><ul></ul></li>
 <li><a href="#port-bl602-i2c-to-mynewt">10 Port BL602 I2C to Mynewt</a><ul></ul></li>
@@ -470,9 +472,12 @@ static void test_i2c_interrupt_entry(void *ctx) {
 <p>More about this in the next section...</p>
 <h1 id="transmit-and-receive-i2c-data" class="section-header"><a href="#transmit-and-receive-i2c-data">7 Transmit and Receive I2C Data</a></h1>
 <p>BL602 I2C has a <strong>FIFO Queue (First In First Out) of 4 bytes</strong> for transmitting and receiving I2C data.</p>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L244-L270"><code>sdk_app_i2c/demo.c</code></a></p>
-<pre><code class="language-c">/// For Rx FIFO Ready and Tx FIFO Ready, transfer 4 bytes of data. Called by I2C Interrupt Handler.  Based on i2c_transferbytes in hal_i2c.c
+<p>Our I2C Interrupt Handler calls <code>test_i2c_transferbytes</code> to transmit and receive data in 4-byte chunks.</p>
+<p>Here's how it works for I2C Write and I2C Read Operations: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L244-L270"><code>sdk_app_i2c/demo.c</code></a></p>
+<h2 id="i2c-write-operation" class="section-header"><a href="#i2c-write-operation">7.1 I2C Write Operation</a></h2>
+<p>In an I2C Write Operation, we handle the I2C Data Transmitted Interrupt by <strong>transmitting the next 4 bytes from the Message Buffer</strong>...</p>
+<pre><code class="language-c">/// For Rx FIFO Ready and Tx FIFO Ready, transfer 4 bytes of data. 
+/// Called by I2C Interrupt Handler. Based on i2c_transferbytes in hal_i2c.c
 static void test_i2c_transferbytes(i2c_msg_t *msg) {
     //  For I2C Write Operation and I2C Data Transmitted Interrupt...
     if (msg-&gt;direct == I2C_M_WRITE &amp;&amp; msg-&gt;event == EV_I2C_TXF_INT) {
@@ -480,24 +485,28 @@ static void test_i2c_transferbytes(i2c_msg_t *msg) {
             //  If there is buffer data to be transmitted, transmit 4 bytes from buffer
             do_write_data(msg);
         } else if (msg-&gt;idex == msg-&gt;len) {
-            //  Otherwise suppress all future Data Transmitted Interrupts
+            //  Otherwise suppress the Data Transmitted Interrupts
             I2C_IntMask(msg-&gt;i2cx, I2C_TX_FIFO_READY_INT, MASK);
-            return;
-        } else {
         } 
-    //  For I2C Read Operation and I2C Data Received Interrupt...
+</code></pre>
+<p>If there is no more data to be transmitted, we suppress the I2C Data Transmitted Interrupts.</p>
+<p><code>do_write_data</code> is defined in the <strong>Low Level I2C HAL</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c"><code>bl_i2c.c</code></a></p>
+<h2 id="i2c-read-operation" class="section-header"><a href="#i2c-read-operation">7.2 I2C Read Operation</a></h2>
+<p>In an I2C Read Operation, we handle the I2C Data Received Interrupt by <strong>copying the received bytes into the Message Buffer, 4 bytes at a time</strong>...</p>
+<pre><code class="language-c">    //  For I2C Read Operation and I2C Data Received Interrupt...
     } else if (msg-&gt;direct == I2C_M_READ &amp;&amp; msg-&gt;event == EV_I2C_RXF_INT) {
         if (msg-&gt;idex &lt; msg-&gt;len) {
             //  If there is data to be received, copy 4 bytes into buffer
-             do_read_data(msg);      
+            do_read_data(msg);      
         } else {
-            //  Otherwise suppress all future Data Received Interrupts
+            //  Otherwise suppress the Data Received Interrupts
             I2C_IntMask(msg-&gt;i2cx, I2C_RX_FIFO_READY_INT, MASK);
-            return;
         } 
     }
 }
 </code></pre>
+<p>If there is no more data to be received, we suppress the I2C Data Received Interrupts.</p>
+<p><code>do_read_data</code> is defined in the <strong>Low Level I2C HAL</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c"><code>bl_i2c.c</code></a></p>
 <h1 id="stop-i2c-read" class="section-header"><a href="#stop-i2c-read">8 Stop I2C Read</a></h1>
 <p>TODO</p>
 <pre><code class="language-text"># help
