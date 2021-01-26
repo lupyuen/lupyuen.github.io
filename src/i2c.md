@@ -387,7 +387,119 @@ Let's go deep into our I2C Interrupt Handler...
 
 TODO
 
-![](https://lupyuen.github.io/images/i2c-handler.png)
+```c
+//  Register the I2C Interrupt Handler
+bl_irq_register_with_ctx(
+    I2C_IRQn,                  //  For I2C Interrupt:
+    test_i2c_interrupt_entry,  //  Interrupt Handler
+    &gpstmsg                   //  Pointer to current I2C Message
+);
+```
+
+TODO
+
+[`sdk_app_i2c/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L266-L321)
+
+## Get I2C Message and Interrupt Reason
+
+```c
+/// I2C Interrupt Handler. Based on i2c_interrupt_entry in hal_i2c.c
+static void test_i2c_interrupt_entry(void *ctx) {
+    //  Fetch the current I2C Message from the Interrupt Context
+    i2c_msg_t *pstmsg = *((i2c_msg_t **)ctx);
+
+    //  Get the reason for the interrupt
+    uint32_t reason = BL_RD_REG(I2C_BASE, I2C_INT_STS);
+
+    //  Handle each reason and increment the Interrupt Counters
+    count_int++;  //  Overall interrupts
+```
+
+TODO
+
+## I2C Data Received
+
+```c
+    if (BL_IS_REG_BIT_SET(reason, I2C_RXF_INT)) {
+        //  Receive FIFO Ready
+        count_rfx++;
+        pstmsg->event = EV_I2C_RXF_INT;
+        //  Should not return
+```
+
+TODO
+
+## I2C Transfer End
+
+```c
+    } else if (BL_IS_REG_BIT_SET(reason, I2C_END_INT)) {
+        //  Transfer End
+        count_end++;
+        pstmsg->event = EV_I2C_END_INT;
+        test_i2c_callback(pstmsg);
+        return;  //  Stop now
+```
+
+TODO
+
+## I2C No Acknowledge
+
+```c
+    } else if (BL_IS_REG_BIT_SET(reason, I2C_NAK_INT)) {
+        //  No Acknowledge
+        count_nak++;  
+        pstmsg->event = EV_I2C_NAK_INT;
+        test_i2c_callback(pstmsg);
+        return;  //  Stop now
+```
+
+TODO
+
+## I2C Data Transmitted
+
+```c
+    } else if (BL_IS_REG_BIT_SET(reason, I2C_TXF_INT)) {
+        //  Transmit FIFO Ready
+        count_txf++;  
+        pstmsg->event = EV_I2C_TXF_INT;
+        //  Should not return
+```
+
+TODO
+
+## I2C Errors
+
+```c
+    } else if (BL_IS_REG_BIT_SET(reason, I2C_ARB_INT)) {
+        //  Arbitration Lost
+        count_arb++;  
+        pstmsg->event = EV_I2C_ARB_INT;
+        test_i2c_callback(pstmsg);
+        return;  //  Stop now
+    } else if (BL_IS_REG_BIT_SET(reason,I2C_FER_INT)) {
+        //  FIFO Error
+        count_fer++;  
+        pstmsg->event = EV_I2C_FER_INT;
+        test_i2c_callback(pstmsg);
+        return;  //  Stop now
+    } else {
+        //  Unknown Error
+        count_unk++;  
+        pstmsg->event = EV_I2C_UNKNOW_INT; 
+        test_i2c_callback(pstmsg);
+        //  Should not return
+    }
+```
+
+TODO
+
+## Receive and Transmit Data
+
+```c
+    //  For Receive FIFO Ready and Transmit FIFO Ready, transfer 32 bits of data
+    test_i2c_transferbytes(pstmsg);
+}
+```
 
 TODO
 
