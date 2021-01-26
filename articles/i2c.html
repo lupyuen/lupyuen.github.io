@@ -94,11 +94,12 @@
 <li><a href="#i2c-write-operation">7.1 I2C Write Operation</a><ul></ul></li>
 <li><a href="#i2c-read-operation">7.2 I2C Read Operation</a><ul></ul></li></ul></li>
 <li><a href="#stop-i2c-read">8 Stop I2C Read</a><ul></ul></li>
-<li><a href="#why-we-need-an-embedded-os-for-i2c">9 Why we need an Embedded OS for I2C</a><ul></ul></li>
-<li><a href="#port-bl602-i2c-to-mynewt">10 Port BL602 I2C to Mynewt</a><ul></ul></li>
-<li><a href="#whats-next">11 What's Next</a><ul></ul></li>
-<li><a href="#appendix-test-bme280-with-bus-pirate">12 Appendix: Test BME280 with Bus Pirate</a><ul></ul></li>
-<li><a href="#appendix-how-to-troubleshoot-risc-v-exceptions">13 Appendix: How to Troubleshoot RISC-V Exceptions</a><ul></ul></li></ul></nav><p>📝 <em>29 Jan 2021</em></p>
+<li><a href="#build-and-run-the-firmware">9 Build and Run the Firmware</a><ul></ul></li>
+<li><a href="#why-we-need-an-embedded-os-for-i2c">10 Why we need an Embedded OS for I2C</a><ul></ul></li>
+<li><a href="#port-bl602-i2c-to-mynewt">11 Port BL602 I2C to Mynewt</a><ul></ul></li>
+<li><a href="#whats-next">12 What's Next</a><ul></ul></li>
+<li><a href="#appendix-test-bme280-with-bus-pirate">13 Appendix: Test BME280 with Bus Pirate</a><ul></ul></li>
+<li><a href="#appendix-how-to-troubleshoot-risc-v-exceptions">14 Appendix: How to Troubleshoot RISC-V Exceptions</a><ul></ul></li></ul></nav><p>📝 <em>29 Jan 2021</em></p>
 <p><strong><a href="https://lupyuen.github.io/articles/pinecone">PineCone BL602</a> (<a href="https://wiki.pine64.org/wiki/Nutcracker#Pinenut-01S_Module_information_and_schematics">and Pinenut</a>)</strong> is an awesome RISC-V Microcontroller Board with WiFi and Bluetooth LE Networking.</p>
 <p>But to turn PineCone BL602 into an <strong>IoT Gadget</strong> we need one more thing... </p>
 <p><strong>An I2C Sensor!</strong></p>
@@ -509,6 +510,35 @@ static void test_i2c_transferbytes(i2c_msg_t *msg) {
 <p><code>do_read_data</code> is defined in the <strong>Low Level I2C HAL</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c"><code>bl_i2c.c</code></a></p>
 <h1 id="stop-i2c-read" class="section-header"><a href="#stop-i2c-read">8 Stop I2C Read</a></h1>
 <p>TODO</p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L446-L456"><code>sdk_app_i2c/demo.c</code></a></p>
+<pre><code class="language-c">/// Stop reading data from I2C device
+static void test_i2c_stop_read(char *buf, int len, int argc, char **argv) {
+    //  Stop the I2C transfer on I2C Port 0
+    test_i2c_stop(&amp;read_msg);
+
+    //  Dump the data received
+    for (int i = 0; i &lt; read_msg.len; i++) {
+        printf(&quot;%02x\n&quot;, read_buf[i]);
+    }
+}
+</code></pre>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L236-L247"><code>sdk_app_i2c/demo.c</code></a></p>
+<pre><code class="language-c">/// Stop the I2C Transfer. Called by I2C Interrupt Handler. 
+/// Based on i2c_callback in hal_i2c.c
+static void test_i2c_stop(i2c_msg_t *msg) {
+    //  Disable I2C Port
+    I2C_Disable(msg-&gt;i2cx);
+
+    //  Suppress all I2C Interrupts
+    I2C_IntMask(msg-&gt;i2cx, I2C_INT_ALL, MASK);
+
+    //  Clear any error status
+    i2c_clear_status(msg-&gt;i2cx);
+}
+</code></pre>
+<h1 id="build-and-run-the-firmware" class="section-header"><a href="#build-and-run-the-firmware">9 Build and Run the Firmware</a></h1>
+<p>TODO</p>
 <pre><code class="language-text"># help
 ====User Commands====
 i2c_status               : I2C status
@@ -552,11 +582,11 @@ Unknown:    0
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-success.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="why-we-need-an-embedded-os-for-i2c" class="section-header"><a href="#why-we-need-an-embedded-os-for-i2c">9 Why we need an Embedded OS for I2C</a></h1>
+<h1 id="why-we-need-an-embedded-os-for-i2c" class="section-header"><a href="#why-we-need-an-embedded-os-for-i2c">10 Why we need an Embedded OS for I2C</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-inithal.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="port-bl602-i2c-to-mynewt" class="section-header"><a href="#port-bl602-i2c-to-mynewt">10 Port BL602 I2C to Mynewt</a></h1>
+<h1 id="port-bl602-i2c-to-mynewt" class="section-header"><a href="#port-bl602-i2c-to-mynewt">11 Port BL602 I2C to Mynewt</a></h1>
 <p>TODO</p>
 <ol>
 <li>Shared vars</li>
@@ -566,7 +596,7 @@ Unknown:    0
 Mynewt bus</p>
 <p>Map to Mynewt / rust
 They dont support register address</p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">11 What's Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">12 What's Next</a></h1>
 <p><img src="https://lupyuen.github.io/images/i2c-hack.jpg" alt="" /></p>
 <p>TODO</p>
 <ul>
@@ -582,7 +612,7 @@ They dont support register address</p>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/i2c.md"><code>lupyuen.github.io/src/i2c.md</code></a></p>
-<h1 id="appendix-test-bme280-with-bus-pirate" class="section-header"><a href="#appendix-test-bme280-with-bus-pirate">12 Appendix: Test BME280 with Bus Pirate</a></h1>
+<h1 id="appendix-test-bme280-with-bus-pirate" class="section-header"><a href="#appendix-test-bme280-with-bus-pirate">13 Appendix: Test BME280 with Bus Pirate</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-buspirate.jpg" alt="" /></p>
 <p>TODO</p>
@@ -605,7 +635,7 @@ plus sending 3 bytes, and
 receiving 1 byte.</p>
 <p>The byte received should be 0x60.</p>
 <p>http://dangerousprototypes.com/docs/I2C</p>
-<h1 id="appendix-how-to-troubleshoot-risc-v-exceptions" class="section-header"><a href="#appendix-how-to-troubleshoot-risc-v-exceptions">13 Appendix: How to Troubleshoot RISC-V Exceptions</a></h1>
+<h1 id="appendix-how-to-troubleshoot-risc-v-exceptions" class="section-header"><a href="#appendix-how-to-troubleshoot-risc-v-exceptions">14 Appendix: How to Troubleshoot RISC-V Exceptions</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-exception.png" alt="" /></p>
 <p>TODO</p>
