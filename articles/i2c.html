@@ -539,6 +539,38 @@ static void test_i2c_stop(i2c_msg_t *msg) {
 </code></pre>
 <h1 id="build-and-run-the-firmware" class="section-header"><a href="#build-and-run-the-firmware">9 Build and Run the Firmware</a></h1>
 <p>TODO</p>
+<pre><code class="language-bash">git clone --recursive --branch i2c https://github.com/lupyuen/bl_iot_sdk
+cd bl_iot_sdk/customer_app/sdk_app_i2c
+
+# TODO: Change this to the full path of bl_iot_sdk
+export BL60X_SDK_PATH=$HOME/bl_iot_sdk
+export CONFIG_CHIP_NAME=BL602
+make
+
+# TODO: Change ~/blflash to the full path of blflash
+cp build_out/sdk_app_i2c.bin ~/blflash
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-bash"># TODO: Change ~/blflash to the full path of blflash
+cd ~/blflash
+
+# For Linux:
+sudo cargo run flash sdk_app_i2c.bin \
+    --port /dev/ttyUSB0
+
+# For macOS:
+cargo run flash sdk_app_i2c.bin \
+    --port /dev/tty.usbserial-1420 \
+    --initial-baud-rate 230400 \
+    --baud-rate 230400
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-bash"># For Linux:
+sudo screen /dev/ttyUSB0 2000000
+
+# For macOS: Doesn't work because 2 Mbps is not supported by macOS
+</code></pre>
+<p>TODO</p>
 <pre><code class="language-text"># help
 ====User Commands====
 i2c_status               : I2C status
