@@ -649,7 +649,9 @@ static uint8_t read_buf[32];  //  Buffer for reading I2C Data
 </li>
 </ol>
 <p>If fact, when we implement these two Solutions in FreeRTOS... We'll get the <strong>High Level I2C HAL!</strong> (See <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c"><code>hal_i2c.c</code></a>)</p>
-<p>TODO</p>
+<p><em>Instead of FreeRTOS... Can we implement the two Solutions with Mynewt, RIOT or Zephyr?</em></p>
+<p>Yes! We may implement the two Solutions with any Embedded Operating System that supports <strong>Task Synchronisation</strong> features (Semaphore, Mutex, Message Queue).</p>
+<p>Thus to do meaningful work with I2C (like reading I2C Sensor Data periodically and processing the data), we need to use the <strong>Low Level I2C HAL together with an Embedded Operating System</strong>.</p>
 <h1 id="port-bl602-i2c-to-mynewt" class="section-header"><a href="#port-bl602-i2c-to-mynewt">11 Port BL602 I2C to Mynewt</a></h1>
 <p>TODO</p>
 <ol>
