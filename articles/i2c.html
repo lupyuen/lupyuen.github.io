@@ -700,24 +700,55 @@ static uint8_t read_buf[32];  //  Buffer for reading I2C Data
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-buspirate.jpg" alt="" /></p>
 <p>TODO</p>
+<p>Connect Bus Pirate to BME280 according to the pic above...</p>
+<table><thead><tr><th align="center">Bus Pirate Pin</th><th align="center">BME280 Pin</th></tr></thead><tbody>
+<tr><td align="center"><strong><code>MOSI</code></strong></td><td align="center"><code>SDA</code></td></tr>
+<tr><td align="center"><strong><code>CLK</code></strong></td><td align="center"><code>SCL</code></td></tr>
+<tr><td align="center"><strong><code>3.3V</code></strong></td><td align="center"><code>3.3V</code></td></tr>
+<tr><td align="center"><strong><code>GND</code></strong></td><td align="center"><code>GND</code></td></tr>
+</tbody></table>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/i2c-buspirate1.png" alt="" /></p>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-buspirate2.png" alt="" /></p>
 <p>TODO</p>
-<p>BME280 has I2C Device ID 0x77. We want to read 
-Register 0xd0 (Chip ID).</p>
-<p>BME280 was tested with this Bus Pirate I2C command...
-[0xee 0xd0] [0xef r]</p>
-<p>Which means...
-<Start> 0xee 0xd0 <Stop>
-<Start> 0xef <Read> <Stop></p>
-<p>In which...
-0xee = (0x77 * 2) + 0, for writing
-0xef = (0x77 * 2) + 1, for reading
-0xd0 = Register to be read (Chip ID)</p>
-<p>We need to reproduce on BL602 the two 
-<Start> ... <Stop> transactions, 
-plus sending 3 bytes, and 
-receiving 1 byte.</p>
-<p>The byte received should be 0x60.</p>
+<p><img src="https://lupyuen.github.io/images/i2c-buspirate3.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/i2c-buspirate4.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/i2c-buspirate5.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/i2c-buspirate6.png" alt="" /></p>
+<p>TODO</p>
+<p>BME280 was tested with this Bus Pirate I2C command...</p>
+<pre><code class="language-text">    [0xee 0xd0] [0xef r]
+</code></pre>
+<p>Here's the I2C Data that will be sent by BL602 to BME280...</p>
+<pre><code class="language-text">    [Start] 0xEE  0xD0  [Stop]
+
+    [Start] 0xEF [Read] [Stop]
+</code></pre>
+<p>BL602 will initiate two I2C Transactions, indicated by <code>[Start] ... [Stop]</code></p>
+<ol>
+<li>
+<p>In the First I2C Transaction, BL602 specifies the I2C Register to be read: <code>0xD0</code> (Chip ID)</p>
+</li>
+<li>
+<p>In the Second I2C Transaction, BME280 returns the value of the Chip ID Register, indicated by <code>[Read]</code></p>
+</li>
+</ol>
+<p><em>What are 0xEE and 0xEF?</em></p>
+<p>They are the Read / Write aliases of the I2C Device ID <code>0x77</code>...</p>
+<ul>
+<li>
+<p><code>0xEE</code> = (<code>0x77</code> * 2) + 0, for Writing Data</p>
+</li>
+<li>
+<p><code>0xEF</code> = (<code>0x77</code> * 2) + 1, for Reading Data</p>
+</li>
+</ul>
+<p>I2C uses this even / odd convention to indicate whether we're writing or reading data.</p>
+<p>To sum up: We need to reproduce on BL602 the two <code>[Start] ... [Stop]</code> transactions. Which includes sending 3 bytes (<code>0xEE</code>, <code>0xD0</code>, <code>0xEF</code>) and receiving 1 byte (<code>0x60</code>).</p>
 <p>http://dangerousprototypes.com/docs/I2C</p>
 <h1 id="appendix-how-to-troubleshoot-risc-v-exceptions" class="section-header"><a href="#appendix-how-to-troubleshoot-risc-v-exceptions">14 Appendix: How to Troubleshoot RISC-V Exceptions</a></h1>
 <p>TODO</p>
