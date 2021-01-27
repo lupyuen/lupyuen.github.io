@@ -832,54 +832,86 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Test BME280 with Bus Pirate
 
-TODO
+[__Bus Pirate__](http://dangerousprototypes.com/docs/Bus_Pirate) is a useful gadget for verifying whether our BME280 Sensor works OK. And for checking the I2C bytes that should be sent down the wire to BME280.
 
-![](https://lupyuen.github.io/images/i2c-buspirate.jpg)
+[(Bus Pirate also works as a simple Protocol Analyser for sniffing I2C data)](http://dangerousprototypes.com/docs/I2C)
 
-TODO
+Here's how we test BME280 with Bus Pirate...
 
-Connect Bus Pirate to BME280 according to the pic above...
+![Bus Pirate connected to BME280](https://lupyuen.github.io/images/i2c-buspirate.jpg)
 
-| Bus Pirate Pin | BME280 Pin
-|:---:|:---:
-| __`MOSI`__ | `SDA`
-| __`CLK`__ | `SCL`
-| __`3.3V`__ | `3.3V`
-| __`GND`__ | `GND`
+1.  Connect Bus Pirate to BME280 according to the pic above...
 
-TODO
+    | Bus Pirate Pin | BME280 Pin
+    |:---:|:---:
+    | __`MOSI`__ | `SDA`
+    | __`CLK`__ | `SCL`
+    | __`3.3V`__ | `3.3V`
+    | __`GND`__ | `GND`
 
-![](https://lupyuen.github.io/images/i2c-buspirate2.png)
+1.  Connect Bus Pirate to our computer's USB port.
 
-TODO
+    Open a Serial Terminal for Bus Pirate.
 
-![](https://lupyuen.github.io/images/i2c-buspirate3.png)
+1.  Enter __`m`__ for the menu
 
-TODO
+    Select __`I2C`__
 
-![](https://lupyuen.github.io/images/i2c-buspirate4.png)
+    ![Bus Pirate Menu](https://lupyuen.github.io/images/i2c-buspirate2.png)
 
-TODO
+1.  Select __`Hardware`__
 
-![](https://lupyuen.github.io/images/i2c-buspirate5.png)
+    Select __`400 kbps`__
 
-TODO
+    ![I2C Speed](https://lupyuen.github.io/images/i2c-buspirate3.png)
 
-![](https://lupyuen.github.io/images/i2c-buspirate6.png)
+1.  Enter __`W`__ to power up BME280
 
-TODO
+    ![Power up BME280](https://lupyuen.github.io/images/i2c-buspirate4.png)
 
-![Bus Pirate Help](https://lupyuen.github.io/images/i2c-buspirate1.png)
+1.  Enter __`(1)`__ to scan the I2C Bus
 
-TODO
+    ![Scan I2C bus](https://lupyuen.github.io/images/i2c-buspirate5.png)
 
-BME280 was tested with this Bus Pirate I2C command...
+1.  Here we see that BME280 has been detected at I2C Address `0x77`
+
+    I2C uses the even / odd address convention to indicate whether we're writing or reading data. So our BME280 at address `0x77` appears as two Read / Write aliases...
+
+    -    __`0xEE`__ = (`0x77` * 2) + 0, for Writing Data
+
+    -    __`0xEF`__ = (`0x77` * 2) + 1, for Reading Data
+
+1.  To read Register `0xD0` (Chip ID) from BME280, enter this command...
+
+    ```text
+    [0xee 0xd0] [0xef r]
+    ```
+
+    (More about this later)
+
+1.  We should see the result `0x60`, which is the Chip ID for BME280
+
+    ![Read register 0xD0](https://lupyuen.github.io/images/i2c-buspirate6.png)
+
+We tested BME280 with this Bus Pirate I2C command...
 
 ```text
     [0xee 0xd0] [0xef r]
 ```
 
-Here's the I2C Data that will be sent by BL602 to BME280...
+This means that Bus Pirate will initiate two I2C Transactions, indicated by __`[ ... ]`__
+
+1.  __In the First I2C Transaction:__ Bus Pirate sends __`0xEE`__ to indicate a Write Transaction (for address `0x77`). 
+
+    Then it sends the I2C Register to be read: __`0xD0`__ (Chip ID)
+
+1.  __In the Second I2C Transaction:__ Bus Pirate sends __`0xEF`__ to indicate a Read Transaction (for address `0x77`). 
+
+    BME280 returns the value of the Chip ID Register, indicated by __`r`__
+
+To sum up: Bus Pirate initiates two `[ ... ]` transactions. The transactions will send 3 bytes (`0xEE`, `0xD0`, `0xEF`) and receive 1 byte (`0x60`).
+
+This is identical to the I2C data transmitted by BL602 to BME280 that have seen earlier in the article...
 
 ```text
     [Start] 0xEE  0xD0  [Stop]
@@ -887,25 +919,11 @@ Here's the I2C Data that will be sent by BL602 to BME280...
     [Start] 0xEF [Read] [Stop]
 ```
 
-BL602 will initiate two I2C Transactions, indicated by `[Start] ... [Stop]`
+For help on other Bus Pirate commands, enter __`?`__
 
-1.  In the First I2C Transaction, BL602 specifies the I2C Register to be read: `0xD0` (Chip ID)
+![Bus Pirate Help](https://lupyuen.github.io/images/i2c-buspirate1.png)
 
-1.  In the Second I2C Transaction, BME280 returns the value of the Chip ID Register, indicated by `[Read]`
-
-_What are 0xEE and 0xEF?_
-
-They are the Read / Write aliases of the I2C Device ID `0x77`...
-
--    `0xEE` = (`0x77` * 2) + 0, for Writing Data
-
--    `0xEF` = (`0x77` * 2) + 1, for Reading Data
-
-I2C uses this even / odd convention to indicate whether we're writing or reading data.
-
-To sum up: We need to reproduce on BL602 the two `[Start] ... [Stop]` transactions. Which includes sending 3 bytes (`0xEE`, `0xD0`, `0xEF`) and receiving 1 byte (`0x60`).
-
-http://dangerousprototypes.com/docs/I2C
+[Check out the I2C Guide for Bus Pirate](http://dangerousprototypes.com/docs/I2C)
 
 # Appendix: How to Troubleshoot RISC-V Exceptions
 
