@@ -758,7 +758,7 @@ We have 2 problems when calling the Low Level I2C HAL...
 
     In fact, the entire __I2C Port is a shared resource__! It needs to be protected from overlapping I2C Operations.
 
-    __Solution:__ Our Interrupt Handler should use a __Semaphore or a Mutex Lock__ to prevent concurrent updates to the shared variables.
+    __Solution:__ Our program should use a __Semaphore or a Mutex Lock__ to prevent concurrent updates to the shared variables.
 
     We could use a __Message Queue to enqueue I2C Requests__ and execute the I2C Requests one at a time.
 
