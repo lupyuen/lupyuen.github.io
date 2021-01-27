@@ -262,6 +262,7 @@ static i2c_msg_t *gpstmsg;
 <pre><code class="language-text">I2C_Disable, I2C_IntMask
 </code></pre>
 <p>(The BL602 Standard Driver contains low-level functions to manipulate the BL602 Hardware Registers)</p>
+<p><img src="https://lupyuen.github.io/images/i2c-cartoon6.png" alt="I2C Message" /></p>
 <h1 id="i2c-message" class="section-header"><a href="#i2c-message">4 I2C Message</a></h1>
 <p>Our objective is to <strong>read Register <code>0xD0</code></strong> from our BME280 Sensor with <strong>Device ID <code>0x77</code></strong></p>
 <p>We specify these details in an <strong>I2C Message Struct <code>i2c_msg_t</code></strong> that's defined in the Low Level I2C HAL.</p>
@@ -696,6 +697,7 @@ static uint8_t read_buf[32];  //  Buffer for reading I2C Data
 <p>(From High Level I2C HAL <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c"><code>hal_i2c.c</code></a>)</p>
 </li>
 </ol>
+<p><img src="https://lupyuen.github.io/images/i2c-cartoon7.png" alt="Bus Pirate" /></p>
 <h1 id="appendix-test-bme280-with-bus-pirate" class="section-header"><a href="#appendix-test-bme280-with-bus-pirate">13 Appendix: Test BME280 with Bus Pirate</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-buspirate.jpg" alt="" /></p>
@@ -708,8 +710,6 @@ static uint8_t read_buf[32];  //  Buffer for reading I2C Data
 <tr><td align="center"><strong><code>GND</code></strong></td><td align="center"><code>GND</code></td></tr>
 </tbody></table>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/i2c-buspirate1.png" alt="" /></p>
-<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-buspirate2.png" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-buspirate3.png" alt="" /></p>
@@ -719,6 +719,8 @@ static uint8_t read_buf[32];  //  Buffer for reading I2C Data
 <p><img src="https://lupyuen.github.io/images/i2c-buspirate5.png" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-buspirate6.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/i2c-buspirate1.png" alt="Bus Pirate Help" /></p>
 <p>TODO</p>
 <p>BME280 was tested with this Bus Pirate I2C command...</p>
 <pre><code class="language-text">    [0xee 0xd0] [0xef r]
