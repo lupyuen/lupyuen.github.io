@@ -201,6 +201,7 @@
 <p>I2C uses this even / odd convention to indicate whether we're writing or reading data.</p>
 <p>To sum up: We need to reproduce on BL602 the two <code>[Start] ... [Stop]</code> transactions. Which includes sending 3 bytes (<code>0xEE</code>, <code>0xD0</code>, <code>0xEF</code>) and receiving 1 byte (<code>0x60</code>).</p>
 <p><a href="https://medium.com/@ly.lee/building-a-rust-driver-for-pinetimes-touch-controller-cbc1a5d5d3e9?source=friends_link&amp;sk=d8cf73fc943d9c0e960627d768f309cb">More about I2C</a></p>
+<p><img src="https://lupyuen.github.io/images/i2c-cartoon4.png" alt="Initialise I2C Port" /></p>
 <h1 id="initialise-i2c-port" class="section-header"><a href="#initialise-i2c-port">3 Initialise I2C Port</a></h1>
 <p>Remember our Command-Line Firmware <a href="https://github.com/lupyuen/bl_iot_sdk/tree/i2c/customer_app/sdk_app_i2c"><code>sdk_app_i2c</code></a> for testing I2C on BL602?</p>
 <p>Here's the command for initialising the I2C Port...</p>
@@ -517,6 +518,7 @@ static void test_i2c_transferbytes(i2c_msg_t *msg) {
 <p>If there is no more data to be received, we suppress the I2C Data Received Interrupts.</p>
 <p><code>do_read_data</code> is defined in the <strong>Low Level I2C HAL</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c"><code>bl_i2c.c</code></a></p>
 <p>(FYI: <code>test_i2c_transferbytes</code> is the fixed version of <code>i2c_transferbytes</code> from the High Level I2C HAL <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c"><code>hal_i2c.c</code></a>. <a href="https://lupyuen.github.io/images/i2c-transferbytes.png">Here's the fix</a>)</p>
+<p><img src="https://lupyuen.github.io/images/i2c-cartoon5.png" alt="Stop I2C Read" /></p>
 <h1 id="stop-i2c-read" class="section-header"><a href="#stop-i2c-read">8 Stop I2C Read</a></h1>
 <p>Here's the final command that we'll enter into the BL602 Firmware... It terminates the I2C transfer.</p>
 <pre><code class="language-text">#  i2c_stop_read
