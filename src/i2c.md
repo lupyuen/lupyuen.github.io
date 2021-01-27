@@ -834,31 +834,72 @@ TODO
 
 TODO
 
+Connect Bus Pirate to BME280 according to the pic above...
+
+| Bus Pirate Pin | BME280 Pin
+|:---:|:---:
+| __`MOSI`__ | `SDA`
+| __`CLK`__ | `SCL`
+| __`3.3V`__ | `3.3V`
+| __`GND`__ | `GND`
+
+TODO
+
+![](https://lupyuen.github.io/images/i2c-buspirate1.png)
+
+TODO
+
 ![](https://lupyuen.github.io/images/i2c-buspirate2.png)
 
 TODO
 
-BME280 has I2C Device ID 0x77. We want to read 
-Register 0xd0 (Chip ID).
+![](https://lupyuen.github.io/images/i2c-buspirate3.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/i2c-buspirate4.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/i2c-buspirate5.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/i2c-buspirate6.png)
+
+TODO
 
 BME280 was tested with this Bus Pirate I2C command...
+
+```text
     [0xee 0xd0] [0xef r]
+```
 
-Which means...
-    <Start> 0xee 0xd0 <Stop>
-    <Start> 0xef <Read> <Stop>
+Here's the I2C Data that will be sent by BL602 to BME280...
 
-In which...
-    0xee = (0x77 * 2) + 0, for writing
-    0xef = (0x77 * 2) + 1, for reading
-    0xd0 = Register to be read (Chip ID)
+```text
+    [Start] 0xEE  0xD0  [Stop]
 
-We need to reproduce on BL602 the two 
-<Start> ... <Stop> transactions, 
-plus sending 3 bytes, and 
-receiving 1 byte.
+    [Start] 0xEF [Read] [Stop]
+```
 
-The byte received should be 0x60.
+BL602 will initiate two I2C Transactions, indicated by `[Start] ... [Stop]`
+
+1.  In the First I2C Transaction, BL602 specifies the I2C Register to be read: `0xD0` (Chip ID)
+
+1.  In the Second I2C Transaction, BME280 returns the value of the Chip ID Register, indicated by `[Read]`
+
+_What are 0xEE and 0xEF?_
+
+They are the Read / Write aliases of the I2C Device ID `0x77`...
+
+-    `0xEE` = (`0x77` * 2) + 0, for Writing Data
+
+-    `0xEF` = (`0x77` * 2) + 1, for Reading Data
+
+I2C uses this even / odd convention to indicate whether we're writing or reading data.
+
+To sum up: We need to reproduce on BL602 the two `[Start] ... [Stop]` transactions. Which includes sending 3 bytes (`0xEE`, `0xD0`, `0xEF`) and receiving 1 byte (`0x60`).
 
 http://dangerousprototypes.com/docs/I2C
 
