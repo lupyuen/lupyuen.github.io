@@ -920,22 +920,6 @@ riscv-none-embed-objdump \
     2>&1
 ```
 
-# Appendix: TODO
-
-TODO
-
-![](https://lupyuen.github.io/images/i2c-inithal.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/i2c-reference.jpg)
-
-TODO
-
-![](https://lupyuen.github.io/images/i2c-reference2.png)
-
-TODO
-
 ![Sketching I2C cartoons](https://lupyuen.github.io/images/i2c-sketch.jpg)
 
-_Sketching I2C cartoons_
+_Sketching I2C cartoons. [Download the Photoshop images](https://github.com/lupyuen/lupyuen.github.io/releases/tag/v1.0.0)_
