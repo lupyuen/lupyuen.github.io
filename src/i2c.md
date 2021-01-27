@@ -513,7 +513,7 @@ Lastly we handle the remaining errors: __Arbitration Lost, FIFO Error, Unknown E
 
 We disable the I2C Port and quit the Interrupt Handler right away. (Except for Unknown Error)
 
-## Receive and Transmit Data
+## Transfer Data
 
 For I2C Data Received and I2C Data Transmitted, our Interrupt Handler flows through to this code...
 
@@ -530,6 +530,8 @@ For I2C Data Received and I2C Data Transmitted, our Interrupt Handler flows thro
 -   __For I2C Write Operation:__ Transmit the next 4 bytes of data from our Message Buffer.
 
 More about this in the next section...
+
+![Transmit and Receive I2C Data](https://lupyuen.github.io/images/i2c-cartoon1.png)
 
 # Transmit and Receive I2C Data
 
