@@ -89,7 +89,7 @@
 <li><a href="#i2c-no-acknowledge">6.4 I2C No Acknowledge</a><ul></ul></li>
 <li><a href="#i2c-data-transmitted">6.5 I2C Data Transmitted</a><ul></ul></li>
 <li><a href="#i2c-errors">6.6 I2C Errors</a><ul></ul></li>
-<li><a href="#receive-and-transmit-data">6.7 Receive and Transmit Data</a><ul></ul></li></ul></li>
+<li><a href="#transfer-data">6.7 Transfer Data</a><ul></ul></li></ul></li>
 <li><a href="#transmit-and-receive-i2c-data">7 Transmit and Receive I2C Data</a><ul>
 <li><a href="#i2c-write-operation">7.1 I2C Write Operation</a><ul></ul></li>
 <li><a href="#i2c-read-operation">7.2 I2C Read Operation</a><ul></ul></li></ul></li>
@@ -460,7 +460,7 @@ static void test_i2c_interrupt_entry(void *ctx) {
     }
 </code></pre>
 <p>We disable the I2C Port and quit the Interrupt Handler right away. (Except for Unknown Error)</p>
-<h2 id="receive-and-transmit-data" class="section-header"><a href="#receive-and-transmit-data">6.7 Receive and Transmit Data</a></h2>
+<h2 id="transfer-data" class="section-header"><a href="#transfer-data">6.7 Transfer Data</a></h2>
 <p>For I2C Data Received and I2C Data Transmitted, our Interrupt Handler flows through to this code...</p>
 <pre><code class="language-c">    //  For Receive FIFO Ready and Transmit FIFO Ready, transfer 4 bytes of data
     test_i2c_transferbytes(msg);
@@ -476,6 +476,7 @@ static void test_i2c_interrupt_entry(void *ctx) {
 </li>
 </ul>
 <p>More about this in the next section...</p>
+<p><img src="https://lupyuen.github.io/images/i2c-cartoon1.png" alt="Transmit and Receive I2C Data" /></p>
 <h1 id="transmit-and-receive-i2c-data" class="section-header"><a href="#transmit-and-receive-i2c-data">7 Transmit and Receive I2C Data</a></h1>
 <p>BL602 I2C has a <strong>FIFO Queue (First In First Out) of 4 bytes</strong> for transmitting and receiving I2C data.</p>
 <p>Our I2C Interrupt Handler calls <code>test_i2c_transferbytes</code> to transmit and receive data in 4-byte chunks.</p>
