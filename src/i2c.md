@@ -119,6 +119,8 @@ To sum up: We need to reproduce on BL602 the two `[Start] ... [Stop]` transactio
 
 [More about I2C](https://medium.com/@ly.lee/building-a-rust-driver-for-pinetimes-touch-controller-cbc1a5d5d3e9?source=friends_link&sk=d8cf73fc943d9c0e960627d768f309cb)
 
+![Initialise I2C Port](https://lupyuen.github.io/images/i2c-cartoon4.png)
+
 # Initialise I2C Port
 
 Remember our Command-Line Firmware [`sdk_app_i2c`](https://github.com/lupyuen/bl_iot_sdk/tree/i2c/customer_app/sdk_app_i2c) for testing I2C on BL602?
@@ -591,6 +593,8 @@ If there is no more data to be received, we suppress the I2C Data Received Inter
 `do_read_data` is defined in the __Low Level I2C HAL__: [`bl_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c)
 
 (FYI: `test_i2c_transferbytes` is the fixed version of `i2c_transferbytes` from the High Level I2C HAL [`hal_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c). [Here's the fix](https://lupyuen.github.io/images/i2c-transferbytes.png))
+
+![Stop I2C Read](https://lupyuen.github.io/images/i2c-cartoon5.png)
 
 # Stop I2C Read
 
