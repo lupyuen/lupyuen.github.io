@@ -224,6 +224,8 @@ I2C_Disable, I2C_IntMask
 
 (The BL602 Standard Driver contains low-level functions to manipulate the BL602 Hardware Registers)
 
+![I2C Message](https://lupyuen.github.io/images/i2c-cartoon6.png)
+
 # I2C Message
 
 Our objective is to __read Register `0xD0`__ from our BME280 Sensor with __Device ID `0x77`__
@@ -826,6 +828,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     (From High Level I2C HAL [`hal_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c))
 
+![Bus Pirate](https://lupyuen.github.io/images/i2c-cartoon7.png)
+
 # Appendix: Test BME280 with Bus Pirate
 
 TODO
@@ -842,10 +846,6 @@ Connect Bus Pirate to BME280 according to the pic above...
 | __`CLK`__ | `SCL`
 | __`3.3V`__ | `3.3V`
 | __`GND`__ | `GND`
-
-TODO
-
-![](https://lupyuen.github.io/images/i2c-buspirate1.png)
 
 TODO
 
@@ -866,6 +866,10 @@ TODO
 TODO
 
 ![](https://lupyuen.github.io/images/i2c-buspirate6.png)
+
+TODO
+
+![Bus Pirate Help](https://lupyuen.github.io/images/i2c-buspirate1.png)
 
 TODO
 
