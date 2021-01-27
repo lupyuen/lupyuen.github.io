@@ -10,6 +10,8 @@ __An I2C Sensor!__
 
 Today we shall connect PineCone / Pinenut / Any BL602 Board to an I2C Sensor and read some data.
 
+We shall also discover a feature that's unique to BL602: __I2C Register Addresses__
+
 ![PineCone BL602 RISC-V Evaluation Board connected to BME280 I2C Sensor](https://lupyuen.github.io/images/i2c-title.jpg)
 
 _PineCone BL602 RISC-V Evaluation Board connected to BME280 I2C Sensor_
