@@ -311,6 +311,8 @@ In this article we shall standardise on these I2C Terms...
 
     (Instead of "Subaddress", "Slave Device Address", "Slave Device Register Address")
 
+![Start I2C Read](https://lupyuen.github.io/images/i2c-cartoon2.png)
+
 # Start I2C Read
 
 Now that we have created our I2C Message, let's watch it in action!
@@ -382,6 +384,8 @@ The I2C data transfer happens in the background, thanks to our __I2C Interrupt H
 Our I2C Interrupt Handler receives the I2C data from the BME280 Sensor and populates our read buffer `read_buf`
 
 Let's go deep into our I2C Interrupt Handler...
+
+![Handle I2C Interrupts](https://lupyuen.github.io/images/i2c-cartoon3.png)
 
 # Handle I2C Interrupts
 
