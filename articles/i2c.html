@@ -319,6 +319,7 @@ read_msg.sublen  = 1;     //  Length of Register Address (bytes)
 <p>(Instead of &quot;Subaddress&quot;, &quot;Slave Device Address&quot;, &quot;Slave Device Register Address&quot;)</p>
 </li>
 </ol>
+<p><img src="https://lupyuen.github.io/images/i2c-cartoon2.png" alt="Start I2C Read" /></p>
 <h1 id="start-i2c-read" class="section-header"><a href="#start-i2c-read">5 Start I2C Read</a></h1>
 <p>Now that we have created our I2C Message, let's watch it in action!</p>
 <p>To begin reading data from our BME280 Sensor, we enter this command...</p>
@@ -370,6 +371,7 @@ static void test_i2c_start_read(char *buf, int len, int argc, char **argv) {
 <p>The I2C data transfer happens in the background, thanks to our <strong>I2C Interrupt Handler</strong>.</p>
 <p>Our I2C Interrupt Handler receives the I2C data from the BME280 Sensor and populates our read buffer <code>read_buf</code></p>
 <p>Let's go deep into our I2C Interrupt Handler...</p>
+<p><img src="https://lupyuen.github.io/images/i2c-cartoon3.png" alt="Handle I2C Interrupts" /></p>
 <h1 id="handle-i2c-interrupts" class="section-header"><a href="#handle-i2c-interrupts">6 Handle I2C Interrupts</a></h1>
 <p>Earlier we registered <code>test_i2c_interrupt_entry</code> as our Interrupt Handler for I2C Interrupts...</p>
 <pre><code class="language-c">//  Register the I2C Interrupt Handler
