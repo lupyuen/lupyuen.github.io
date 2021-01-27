@@ -927,3 +927,7 @@ TODO
 ![](https://lupyuen.github.io/images/i2c-reference2.png)
 
 TODO
+
+![Sketching I2C cartoons](https://lupyuen.github.io/images/i2c-sketch.jpg)
+
+_Sketching I2C cartoons_
