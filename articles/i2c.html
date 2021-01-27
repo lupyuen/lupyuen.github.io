@@ -643,7 +643,7 @@ static uint8_t read_buf[32];  //  Buffer for reading I2C Data
 </code></pre>
 <p>These global variables will get really confused when we talk to multiple I2C Sensors.</p>
 <p>In fact, the entire <strong>I2C Port is a shared resource</strong>! It needs to be protected from overlapping I2C Operations.</p>
-<p><strong>Solution:</strong> Our Interrupt Handler should use a <strong>Semaphore or a Mutex Lock</strong> to prevent concurrent updates to the shared variables.</p>
+<p><strong>Solution:</strong> Our program should use a <strong>Semaphore or a Mutex Lock</strong> to prevent concurrent updates to the shared variables.</p>
 <p>We could use a <strong>Message Queue to enqueue I2C Requests</strong> and execute the I2C Requests one at a time.</p>
 </li>
 </ol>
