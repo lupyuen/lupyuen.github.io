@@ -516,7 +516,9 @@ There's a problem accessing the BL602 Demo Firmware from macOS...
 
 BL602 Demo Firmware configures the UART Port for 2 Mbps, which is too fast for the CH340 USB Serial Driver on macOS.
 
-[(This seems to be a problem with IOKit on macOS)](https://twitter.com/madushan1000/status/1345352779502669824)
+This seems to be a problem with IOKit on macOS. [See this](https://twitter.com/madushan1000/status/1345352779502669824)
+
+[__UPDATE: Running VMWare on macOS might fix the problem. See this__](https://twitter.com/M0JEK/status/1354202261828861954?s=20)
 
 To make this work with macOS, we need to lower the UART baud rate from 2 Mbps to 230.4 kbps.
 
