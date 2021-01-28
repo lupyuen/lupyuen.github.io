@@ -102,8 +102,8 @@
 <li><a href="#why-we-need-an-embedded-os-for-i2c">10 Why we need an Embedded OS for I2C</a><ul></ul></li>
 <li><a href="#whats-next">11 What's Next</a><ul></ul></li>
 <li><a href="#notes">12 Notes</a><ul></ul></li>
-<li><a href="#appendix-test-bme280-with-bus-pirate">13 Appendix: Test BME280 with Bus Pirate</a><ul></ul></li>
-<li><a href="#appendix-how-to-troubleshoot-risc-v-exceptions">14 Appendix: How to Troubleshoot RISC-V Exceptions</a><ul></ul></li></ul></nav><p>📝 <em>29 Jan 2021</em></p>
+<li><a href="#appendix-how-to-troubleshoot-risc-v-exceptions">13 Appendix: How to Troubleshoot RISC-V Exceptions</a><ul></ul></li>
+<li><a href="#appendix-test-bme280-with-bus-pirate">14 Appendix: Test BME280 with Bus Pirate</a><ul></ul></li></ul></nav><p>📝 <em>29 Jan 2021</em></p>
 <p><strong><a href="https://lupyuen.github.io/articles/pinecone">PineCone BL602</a> (<a href="https://wiki.pine64.org/wiki/Nutcracker#Pinenut-01S_Module_information_and_schematics">and Pinenut</a>)</strong> is an awesome RISC-V Microcontroller Board with WiFi and Bluetooth LE Networking.</p>
 <p>But to turn PineCone BL602 into an <strong>IoT Gadget</strong> we need one more thing... </p>
 <p><strong>An I2C Sensor!</strong></p>
@@ -751,8 +751,70 @@ static uint8_t read_buf[32];  //  Buffer for reading I2C Data
 <p>(From High Level I2C HAL <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c"><code>hal_i2c.c</code></a>)</p>
 </li>
 </ol>
+<p><img src="https://lupyuen.github.io/images/i2c-cartoon8.png" alt="Bug" /></p>
+<h1 id="appendix-how-to-troubleshoot-risc-v-exceptions" class="section-header"><a href="#appendix-how-to-troubleshoot-risc-v-exceptions">13 Appendix: How to Troubleshoot RISC-V Exceptions</a></h1>
+<p>Here's how I tracked down my first RISC-V Exception and fixed it...</p>
+<p><img src="https://lupyuen.github.io/images/i2c-exception.png" alt="RISC-V Exception in sdk_app_i2c" /></p>
+<p>When our program <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/"><code>sdk_app_i2c</code></a> is sending I2C data, the program crashes with the RISC-V Exception shown above...</p>
+<pre><code class="language-text"># start_write_data
+Exception Entry---&gt;&gt;&gt;
+mcause 30000007, mepc 23008fe2, mtval 00000014
+Exception code: 7
+msg: Store/AMO access fault
+</code></pre>
+<p>What does this mean?</p>
+<ul>
+<li>
+<p><strong><code>mcause</code> (Machine Cause Register)</strong>: Tells us the reason for the exception. <a href="http://www.five-embeddev.com/riscv-isa-manual/latest/machine.html#sec:mcause">More details</a></p>
+<p>The Exception Code is 7 (Store/AMO Access Fault), which means that we have accessed an invalid memory address.</p>
+<p>(Probably a bad pointer)</p>
+<p><a href="http://www.five-embeddev.com/riscv-isa-manual/latest/machine.html#sec:mcause">List of RISC-V Exception Codes</a></p>
+</li>
+<li>
+<p><strong><code>mepc</code> (Machine Exception Program Counter)</strong>: The address of the code that caused the exception. <a href="http://www.five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-exception-program-counter-mepc">More details</a></p>
+<p>We'll look up the code address <code>0x2300 8fe2</code> in a while.</p>
+</li>
+<li>
+<p><strong><code>mtval</code> (Machine Trap Value Register)</strong>: The invalid address that was accessed. <a href="http://www.five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-value-register-mtval">More details</a></p>
+<p>Our program attempted to access the invalid address <code>0x000 00014</code> and crashed.</p>
+<p>Looks like a null pointer problem!</p>
+</li>
+</ul>
+<p>Let's track down code address <code>0x2300 8fe2</code> and find out why it caused the exception...</p>
+<p><img src="https://lupyuen.github.io/images/i2c-disassembly.png" alt="RISC-V Disassembly" /></p>
+<ol>
+<li>
+<p>According to the RISC-V Disassembly <a href="https://github.com/lupyuen/bl_iot_sdk/releases/download/v1.0.1/sdk_app_i2c.S"><code>sdk_app_i2c.S</code></a>, the code address <code>0x2300 8fe2</code> is located in the I2C Interrupt Handler of the BL602 I2C HAL (See pic)</p>
+<ul>
+<li><a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c#L97-L133"><code>i2c_interrupt_entry</code> in <code>hal_i2c.c</code></a></li>
+</ul>
+</li>
+<li>
+<p>Why did it crash? Because the Interrupt Context <code>ctx</code> is null!</p>
+<p>In fact, the I2C Interrupt Handler <code>i2c_interrupt_entry</code> shouldn't have been called.</p>
+<p>It comes from the High Level HAL <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c"><code>hal_i2c.c</code></a>, but we're actually using the Low Level HAL <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c"><code>bl_i2c.c</code></a>.</p>
+</li>
+<li>
+<p>Why was <code>i2c_interrupt_entry</code> set as the I2C Interrupt Handler?</p>
+<p>Because <code>hal_i2c_init</code> was called here...</p>
+<ul>
+<li><a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/main.c#L159-L199"><code>aos_loop_proc</code> in <code>main.c</code></a></li>
+</ul>
+</li>
+</ol>
+<p><img src="https://lupyuen.github.io/images/i2c-inithal.png" alt="I2C Init HAL" /></p>
+<p>After commenting out <code>hal_i2c_init</code>, the program no longer uses <code>i2c_interrupt_entry</code> as the I2C Interrupt Handler.</p>
+<p>And no more crashing!</p>
+<p><em>How did we get the RISC-V Disassembly?</em></p>
+<p>We generate RISC-V Disassembly <code>sdk_app_i2c.S</code> from ELF Executable <code>sdk_app_i2c.elf</code> with this command...</p>
+<pre><code class="language-bash">riscv-none-embed-objdump \
+    -t -S --demangle --line-numbers --wide \
+    sdk_app_i2c.elf \
+    &gt;sdk_app_i2c.S \
+    2&gt;&amp;1
+</code></pre>
 <p><img src="https://lupyuen.github.io/images/i2c-cartoon7.png" alt="Bus Pirate" /></p>
-<h1 id="appendix-test-bme280-with-bus-pirate" class="section-header"><a href="#appendix-test-bme280-with-bus-pirate">13 Appendix: Test BME280 with Bus Pirate</a></h1>
+<h1 id="appendix-test-bme280-with-bus-pirate" class="section-header"><a href="#appendix-test-bme280-with-bus-pirate">14 Appendix: Test BME280 with Bus Pirate</a></h1>
 <p><a href="http://dangerousprototypes.com/docs/Bus_Pirate"><strong>Bus Pirate</strong></a> is a useful gadget for verifying whether our BME280 Sensor works OK. And for checking the I2C bytes that should be sent down the wire to BME280.</p>
 <p><a href="http://dangerousprototypes.com/docs/I2C">(Bus Pirate also works as a simple Protocol Analyser for sniffing I2C data)</a></p>
 <p>Here's how we test BME280 (or BMP280) with Bus Pirate...</p>
@@ -836,68 +898,6 @@ static uint8_t read_buf[32];  //  Buffer for reading I2C Data
 <p>For help on other Bus Pirate commands, enter <strong><code>?</code></strong></p>
 <p><img src="https://lupyuen.github.io/images/i2c-buspirate1.png" alt="Bus Pirate Help" /></p>
 <p><a href="http://dangerousprototypes.com/docs/I2C">Check out the I2C Guide for Bus Pirate</a></p>
-<p><img src="https://lupyuen.github.io/images/i2c-cartoon8.png" alt="Bug" /></p>
-<h1 id="appendix-how-to-troubleshoot-risc-v-exceptions" class="section-header"><a href="#appendix-how-to-troubleshoot-risc-v-exceptions">14 Appendix: How to Troubleshoot RISC-V Exceptions</a></h1>
-<p>Here's how I tracked down my first RISC-V Exception and fixed it...</p>
-<p><img src="https://lupyuen.github.io/images/i2c-exception.png" alt="RISC-V Exception in sdk_app_i2c" /></p>
-<p>When our program <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/"><code>sdk_app_i2c</code></a> is sending I2C data, the program crashes with the RISC-V Exception shown above...</p>
-<pre><code class="language-text"># start_write_data
-Exception Entry---&gt;&gt;&gt;
-mcause 30000007, mepc 23008fe2, mtval 00000014
-Exception code: 7
-msg: Store/AMO access fault
-</code></pre>
-<p>What does this mean?</p>
-<ul>
-<li>
-<p><strong><code>mcause</code> (Machine Cause Register)</strong>: Tells us the reason for the exception. <a href="http://www.five-embeddev.com/riscv-isa-manual/latest/machine.html#sec:mcause">More details</a></p>
-<p>The Exception Code is 7 (Store/AMO Access Fault), which means that we have accessed an invalid memory address.</p>
-<p>(Probably a bad pointer)</p>
-<p><a href="http://www.five-embeddev.com/riscv-isa-manual/latest/machine.html#sec:mcause">List of RISC-V Exception Codes</a></p>
-</li>
-<li>
-<p><strong><code>mepc</code> (Machine Exception Program Counter)</strong>: The address of the code that caused the exception. <a href="http://www.five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-exception-program-counter-mepc">More details</a></p>
-<p>We'll look up the code address <code>0x2300 8fe2</code> in a while.</p>
-</li>
-<li>
-<p><strong><code>mtval</code> (Machine Trap Value Register)</strong>: The invalid address that was accessed. <a href="http://www.five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-value-register-mtval">More details</a></p>
-<p>Our program attempted to access the invalid address <code>0x000 00014</code> and crashed.</p>
-<p>Looks like a null pointer problem!</p>
-</li>
-</ul>
-<p>Let's track down code address <code>0x2300 8fe2</code> and find out why it caused the exception...</p>
-<p><img src="https://lupyuen.github.io/images/i2c-disassembly.png" alt="RISC-V Disassembly" /></p>
-<ol>
-<li>
-<p>According to the RISC-V Disassembly <a href="https://github.com/lupyuen/bl_iot_sdk/releases/download/v1.0.1/sdk_app_i2c.S"><code>sdk_app_i2c.S</code></a>, the code address <code>0x2300 8fe2</code> is located in the I2C Interrupt Handler of the BL602 I2C HAL (See pic)</p>
-<ul>
-<li><a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c#L97-L133"><code>i2c_interrupt_entry</code> in <code>hal_i2c.c</code></a></li>
-</ul>
-</li>
-<li>
-<p>Why did it crash? Because the Interrupt Context <code>ctx</code> is null!</p>
-<p>In fact, the I2C Interrupt Handler <code>i2c_interrupt_entry</code> shouldn't have been called.</p>
-<p>It comes from the High Level HAL <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c"><code>hal_i2c.c</code></a>, but we're actually using the Low Level HAL <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c"><code>bl_i2c.c</code></a>.</p>
-</li>
-<li>
-<p>Why was <code>i2c_interrupt_entry</code> set as the I2C Interrupt Handler?</p>
-<p>Because <code>hal_i2c_init</code> was called here...</p>
-<ul>
-<li><a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/main.c#L159-L199"><code>aos_loop_proc</code> in <code>main.c</code></a></li>
-</ul>
-</li>
-</ol>
-<p><img src="https://lupyuen.github.io/images/i2c-inithal.png" alt="I2C Init HAL" /></p>
-<p>After commenting out <code>hal_i2c_init</code>, the program no longer uses <code>i2c_interrupt_entry</code> as the I2C Interrupt Handler.</p>
-<p>And no more crashing!</p>
-<p><em>How did we get the RISC-V Disassembly?</em></p>
-<p>We generate RISC-V Disassembly <code>sdk_app_i2c.S</code> from ELF Executable <code>sdk_app_i2c.elf</code> with this command...</p>
-<pre><code class="language-bash">riscv-none-embed-objdump \
-    -t -S --demangle --line-numbers --wide \
-    sdk_app_i2c.elf \
-    &gt;sdk_app_i2c.S \
-    2&gt;&amp;1
-</code></pre>
 <p><img src="https://lupyuen.github.io/images/i2c-sketch.jpg" alt="Sketching I2C cartoons" /></p>
 <p><em>Sketching I2C cartoons. <a href="https://github.com/lupyuen/lupyuen.github.io/releases/tag/v1.0.0">Download the Photoshop images</a></em></p>
 
