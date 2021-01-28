@@ -611,8 +611,8 @@ cargo run flash sdk_app_i2c.bin \
 <pre><code class="language-bash"># For Linux:
 sudo screen /dev/ttyUSB0 2000000
 
-# For macOS: Doesn't work because 2 Mbps is not supported by macOS
-# See https://lupyuen.github.io/articles/led#appendix-fix-bl602-demo-firmware-for-macos
+# For macOS: Doesn't work because 2 Mbps is not supported by macOS for USB Serial.
+# Try using VMWare on macOS. See https://lupyuen.github.io/articles/led#appendix-fix-bl602-demo-firmware-for-macos
 </code></pre>
 <p>On Windows, use <code>putty</code>.</p>
 <p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">More details on connecting to BL602</a></p>
