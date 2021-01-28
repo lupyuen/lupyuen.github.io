@@ -357,7 +357,7 @@ static void test_i2c_start_read(char *buf, int len, int argc, char **argv) {
     read_msg.subaddr = 0xd0;   //  Register Address (BME280 Chip ID)
     read_msg.sublen  = 1;      //  Length of Register Address (bytes)
 </code></pre>
-<p>(FYI: For I2C Write Operations <code>I2C_M_WRITE</code>, the Message <code>buf</code> field should point to a byte array that contains the I2C Data that will be written to the I2C Register)</p>
+<p>(For I2C Write Operation <code>I2C_M_WRITE</code>: The Message buffer field <code>buf</code> should point to a byte array that contains the I2C Data that will be written to the I2C Register)</p>
 <h2 id="start-i2c-transfer" class="section-header"><a href="#start-i2c-transfer">5.2 Start I2C Transfer</a></h2>
 <p>Now we start the I2C data transfer...</p>
 <pre><code class="language-c">    //  Start the I2C transfer and enable I2C interrupts
