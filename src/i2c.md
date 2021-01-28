@@ -723,8 +723,8 @@ Connect to BL602's UART Port at 2 Mbps like so...
 # For Linux:
 sudo screen /dev/ttyUSB0 2000000
 
-# For macOS: Doesn't work because 2 Mbps is not supported by macOS
-# See https://lupyuen.github.io/articles/led#appendix-fix-bl602-demo-firmware-for-macos
+# For macOS: Doesn't work because 2 Mbps is not supported by macOS for USB Serial.
+# Try using VMWare on macOS. See https://lupyuen.github.io/articles/led#appendix-fix-bl602-demo-firmware-for-macos
 ```
 
 On Windows, use `putty`.
