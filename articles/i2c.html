@@ -552,10 +552,14 @@ static void test_i2c_stop(i2c_msg_t *msg) {
 }
 </code></pre>
 <p><code>i2c_clear_status</code> is defined in the <strong>Low Level I2C HAL</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c"><code>bl_i2c.c</code></a></p>
+<p><img src="https://lupyuen.github.io/images/i2c-success.png" alt="Reading BME280 with sdk_app_i2c firmware" /></p>
+<p><em>Reading BME280 with sdk_app_i2c firmware</em></p>
 <h1 id="build-and-run-the-firmware" class="section-header"><a href="#build-and-run-the-firmware">9 Build and Run the Firmware</a></h1>
 <p>TODO</p>
 <h2 id="build-the-firmware" class="section-header"><a href="#build-the-firmware">9.1 Build the firmware</a></h2>
 <p>TODO</p>
+<p>Download from https://github.com/lupyuen/bl_iot_sdk/releases/tag/v2.0.0</p>
+<p>Or build from source:</p>
 <p><code>i2c</code> branch</p>
 <pre><code class="language-bash"># Download the i2c branch of lupyuen's bl_iot_sdk
 git clone --recursive --branch i2c https://github.com/lupyuen/bl_iot_sdk
@@ -599,11 +603,15 @@ i2c_status               : I2C status
 i2c_init                 : Init I2C port
 i2c_start_read           : Start reading I2C data
 i2c_stop_read            : Stop reading I2C data
-
-# i2c_init
-
-# i2c_status
-Interrupts: 0
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-text"># i2c_init
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-text"># i2c_status
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-text">Interrupts: 0
 Trans End:  0
 Tx Ready:   0
 Rx Ready:   0
@@ -611,11 +619,15 @@ NACK:       0
 Arb Lost:   0
 FIFO Error: 0
 Unknown:    0
-
-# i2c_start_read
-
-# i2c_status
-Interrupts: 2
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-text"># i2c_start_read
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-text"># i2c_status
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-text">Interrupts: 2
 Trans End:  1
 Tx Ready:   0
 Rx Ready:   1
@@ -623,12 +635,13 @@ NACK:       0
 Arb Lost:   0
 FIFO Error: 0
 Unknown:    0
-
-# i2c_stop_read
-60
 </code></pre>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/i2c-success.png" alt="" /></p>
+<pre><code class="language-text"># i2c_stop_read
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-text">60
+</code></pre>
 <p>TODO</p>
 <h1 id="why-we-need-an-embedded-os-for-i2c" class="section-header"><a href="#why-we-need-an-embedded-os-for-i2c">10 Why we need an Embedded OS for I2C</a></h1>
 <p>We have 2 problems when calling the Low Level I2C HAL...</p>
@@ -839,8 +852,8 @@ msg: Store/AMO access fault
 <p>We generate RISC-V Disassembly <code>sdk_app_i2c.S</code> from ELF Executable <code>sdk_app_i2c.elf</code> with this command...</p>
 <pre><code class="language-bash">riscv-none-embed-objdump \
     -t -S --demangle --line-numbers --wide \
-    build_out/sdk_app_i2c.elf \
-    &gt;build_out/sdk_app_i2c.S \
+    sdk_app_i2c.elf \
+    &gt;sdk_app_i2c.S \
     2&gt;&amp;1
 </code></pre>
 <p><img src="https://lupyuen.github.io/images/i2c-sketch.jpg" alt="Sketching I2C cartoons" /></p>
