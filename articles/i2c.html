@@ -781,19 +781,31 @@ static uint8_t read_buf[32];  //  Buffer for reading I2C Data
 <p>For help on other Bus Pirate commands, enter <strong><code>?</code></strong></p>
 <p><img src="https://lupyuen.github.io/images/i2c-buspirate1.png" alt="Bus Pirate Help" /></p>
 <p><a href="http://dangerousprototypes.com/docs/I2C">Check out the I2C Guide for Bus Pirate</a></p>
+<p><img src="https://lupyuen.github.io/images/i2c-cartoon8.png" alt="Bug" /></p>
 <h1 id="appendix-how-to-troubleshoot-risc-v-exceptions" class="section-header"><a href="#appendix-how-to-troubleshoot-risc-v-exceptions">14 Appendix: How to Troubleshoot RISC-V Exceptions</a></h1>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/i2c-exception.png" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/i2c-disassembly.png" alt="" /></p>
-<p>TODO</p>
-<p>When sending I2C data, this program crashes with the exception...</p>
+<p>Here's how I tracked down my first RISC-V Exception and fixed it...</p>
+<p><img src="https://lupyuen.github.io/images/i2c-exception.png" alt="RISC-V Exception in sdk_app_i2c" /></p>
+<p>When our program <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/"><code>sdk_app_i2c</code></a> is sending I2C data, the program crashes with the exception shown above...</p>
 <pre><code class="language-text"># start_write_data
 Exception Entry---&gt;&gt;&gt;
 mcause 30000007, mepc 23008fe2, mtval 00000014
 Exception code: 7
 msg: Store/AMO access fault
 </code></pre>
+<p>TODO</p>
+<ul>
+<li>
+<p><code>mcause</code></p>
+</li>
+<li>
+<p><code>mepc</code></p>
+</li>
+<li>
+<p><code>mtval</code></p>
+</li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/i2c-disassembly.png" alt="" /></p>
+<p>TODO</p>
 <p>Here's why...</p>
 <ol>
 <li>
@@ -841,6 +853,7 @@ msg: Store/AMO access fault
     &gt;build_out/sdk_app_i2c.S \
     2&gt;&amp;1
 </code></pre>
+<p><img src="https://lupyuen.github.io/images/i2c-inithal.png" alt="I2C Init HAL" /></p>
 <p><img src="https://lupyuen.github.io/images/i2c-sketch.jpg" alt="Sketching I2C cartoons" /></p>
 <p><em>Sketching I2C cartoons. <a href="https://github.com/lupyuen/lupyuen.github.io/releases/tag/v1.0.0">Download the Photoshop images</a></em></p>
 
