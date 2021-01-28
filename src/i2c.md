@@ -758,7 +758,7 @@ Let's enter some I2C commands to read our BME280 Sensor!
     # i2c_init
     ```
 
-    (Earlier we've seen this code for this command)
+    (Earlier we've seen the code for this command)
 
 1.  Before doing any I2C business, let's __dump the Interrupt Counters__ to see which I2C Interrupts get triggered...
 
@@ -783,7 +783,7 @@ Let's enter some I2C commands to read our BME280 Sensor!
     # i2c_start_read
     ```
 
-    (We've seen this code for this command as well)
+    (We've seen the code for this command as well)
 
 1.  Again we dump the Interrupt Counters...
 
