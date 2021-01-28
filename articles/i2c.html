@@ -662,14 +662,14 @@ Rx Ready:   0  Unknown:    0
 <p>Again we dump the Interrupt Counters...</p>
 <pre><code class="language-text"># i2c_status
 </code></pre>
-<p>Aha Something Different! We have encountered one interrupt for Data Received (Rx Ready), because BME280 has returned some I2C data to BL602...</p>
+<p>Aha Something Different! We have encountered <strong>one interrupt for Data Received</strong> (Rx Ready), because BME280 has returned some I2C data to BL602...</p>
 <pre><code class="language-text">Interrupts: 2  NACK:       0
 Trans End:  1  Arb Lost:   0
 Tx Ready:   0  FIFO Error: 0
 Rx Ready:   1  Unknown:    0    
 </code></pre>
 <p>After receiving the data (one byte) from BME280 (and saving it), our Interrupt Handler terminates the I2C connection.</p>
-<p>Hence we see one interrupt for Transaction End. We're done!</p>
+<p>Hence we see <strong>one interrupt for Transaction End</strong>. We're done!</p>
 </li>
 <li>
 <p>To <strong>check the data received</strong>, enter this command...</p>
