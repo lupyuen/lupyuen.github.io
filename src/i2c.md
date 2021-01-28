@@ -644,6 +644,10 @@ static void test_i2c_stop(i2c_msg_t *msg) {
 
 `i2c_clear_status` is defined in the __Low Level I2C HAL__: [`bl_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c)
 
+![Reading BME280 with sdk_app_i2c firmware](https://lupyuen.github.io/images/i2c-success.png)
+
+_Reading BME280 with sdk_app_i2c firmware_
+
 # Build and Run the Firmware
 
 TODO
@@ -651,6 +655,10 @@ TODO
 ## Build the firmware
 
 TODO
+
+Download from https://github.com/lupyuen/bl_iot_sdk/releases/tag/v2.0.0
+
+Or build from source:
 
 `i2c` branch
 
@@ -709,10 +717,23 @@ i2c_status               : I2C status
 i2c_init                 : Init I2C port
 i2c_start_read           : Start reading I2C data
 i2c_stop_read            : Stop reading I2C data
+```
 
+TODO
+
+```text
 # i2c_init
+```
 
+TODO
+
+```text
 # i2c_status
+```
+
+TODO
+
+```text
 Interrupts: 0
 Trans End:  0
 Tx Ready:   0
@@ -721,10 +742,23 @@ NACK:       0
 Arb Lost:   0
 FIFO Error: 0
 Unknown:    0
+```
 
+TODO
+
+```text
 # i2c_start_read
+```
 
+TODO
+
+```text
 # i2c_status
+```
+
+TODO
+
+```text
 Interrupts: 2
 Trans End:  1
 Tx Ready:   0
@@ -733,14 +767,19 @@ NACK:       0
 Arb Lost:   0
 FIFO Error: 0
 Unknown:    0
-
-# i2c_stop_read
-60
 ```
 
 TODO
 
-![](https://lupyuen.github.io/images/i2c-success.png)
+```text
+# i2c_stop_read
+```
+
+TODO
+
+```text
+60
+```
 
 TODO
 
@@ -996,8 +1035,8 @@ We generate RISC-V Disassembly `sdk_app_i2c.S` from ELF Executable `sdk_app_i2c.
 ```bash
 riscv-none-embed-objdump \
     -t -S --demangle --line-numbers --wide \
-    build_out/sdk_app_i2c.elf \
-    >build_out/sdk_app_i2c.S \
+    sdk_app_i2c.elf \
+    >sdk_app_i2c.S \
     2>&1
 ```
 
