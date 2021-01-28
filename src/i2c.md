@@ -831,6 +831,10 @@ _Hacking BL602 and BME280 on a Saturday Night_
 
 TODO
 
+Mynewt
+
+Incoming SPI displays
+
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
 -   [Check out my articles](https://lupyuen.github.io)
