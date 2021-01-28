@@ -854,13 +854,21 @@ We have 2 problems when calling the Low Level I2C HAL...
 
     We could use a __Message Queue to enqueue I2C Requests__ and execute the I2C Requests one at a time.
 
-If fact, when we implement these two Solutions in FreeRTOS... We'll get the __High Level I2C HAL!__ (See [`hal_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c))
+_What happens when we implement the two Solutions in FreeRTOS?_
+
+When we implement these two Solutions in FreeRTOS... We'll get the __High Level I2C HAL!__ (See [`hal_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c))
+
+Hence the High Level I2C HAL (which calls FreeRTOS) is fully functional today for processing I2C Sensor Data.
+
+[See the original (unmodified) High Level I2C HAL Demo](https://github.com/bouffalolab/bl_iot_sdk/tree/master/customer_app/sdk_app_i2c)
 
 _Instead of FreeRTOS... Can we implement the two Solutions with Mynewt, RIOT or Zephyr?_
 
 Yes! We may implement the two Solutions with any Embedded Operating System that supports __Task Synchronisation__ features (Semaphore, Mutex, Message Queue).
 
 Thus to do meaningful work with I2C (like reading I2C Sensor Data periodically and processing the data), we need to use the __Low Level I2C HAL together with an Embedded Operating System__.
+
+The High Level I2C HAL is a great reference that guides us on the proper implementation of the two Solutions on any operating system.
 
 ![Hacking BL602 and BME280 on a Saturday night](https://lupyuen.github.io/images/i2c-hack.jpg)
 
