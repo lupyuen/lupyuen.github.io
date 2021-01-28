@@ -650,17 +650,15 @@ _Reading BME280 with sdk_app_i2c firmware_
 
 # Build and Run the Firmware
 
-TODO
+We've read the I2C code... Let's download, flash and run the [`sdk_app_i2c`](https://github.com/lupyuen/bl_iot_sdk/tree/i2c/customer_app/sdk_app_i2c) firmware!
 
 ## Build the firmware
 
-TODO
+Download the Firmware Binary File __`sdk_app_i2c.bin`__ from...
 
-Download from https://github.com/lupyuen/bl_iot_sdk/releases/tag/v2.0.0
+-  [__Binary Release of `sdk_app_i2c`__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v2.0.0)
 
-Or build from source:
-
-`i2c` branch
+Alternatively, we may build the Firmware Binary File `sdk_app_i2c.bin` from the [source code](https://github.com/lupyuen/bl_iot_sdk/tree/i2c/customer_app/sdk_app_i2c)...
 
 ```bash
 # Download the i2c branch of lupyuen's bl_iot_sdk
@@ -676,9 +674,23 @@ make
 cp build_out/sdk_app_i2c.bin ~/blflash
 ```
 
+[More details on building bl_iot_sdk](https://lupyuen.github.io/articles/pinecone#building-firmware)
+
+(Remember to use the __`i2c`__ branch, not the default __`master`__ branch)
+
 ## Flash the firmware
 
-TODO
+Follow these steps to install `blflash`...
+
+1.  [__"Install rustup"__](https://lupyuen.github.io/articles/flash#install-rustup)
+
+1.  [__"Download and build blflash"__](https://lupyuen.github.io/articles/flash#download-and-build-blflash)
+
+We assume that our Firmware Binary File `sdk_app_i2c.bin` has been copied to the `blflash` folder.
+
+Set BL602 to __Flashing Mode__. For PineCone, this means setting the onboard jumper (IO 8) to the `H` Position [(Like this)](https://lupyuen.github.io/images/pinecone-jumperh.jpg)
+
+Enter these commands to flash `sdk_app_i2c.bin` to BL602 over UART...
 
 ```bash
 # TODO: Change ~/blflash to the full path of blflash
@@ -695,9 +707,13 @@ cargo run flash sdk_app_i2c.bin \
     --baud-rate 230400
 ```
 
+[More details on flashing firmware](https://lupyuen.github.io/articles/flash#flash-the-firmware)
+
 ## Run the firmware
 
-TODO
+Set BL602 to __Normal Mode__ (Non-Flashing). For PineCone, this means setting the onboard jumper (IO 8) to the `L` Position [(Like this)](https://lupyuen.github.io/images/pinecone-jumperl.jpg)
+
+Connect to BL602 like so...
 
 ```bash
 # For Linux:
@@ -705,6 +721,10 @@ sudo screen /dev/ttyUSB0 2000000
 
 # For macOS: Doesn't work because 2 Mbps is not supported by macOS
 ```
+
+On Windows, use `putty`.
+
+[More details on connecting to BL602](https://lupyuen.github.io/articles/flash#watch-the-firmware-run)
 
 ## Enter I2C commands
 
