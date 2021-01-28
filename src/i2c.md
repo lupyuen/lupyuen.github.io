@@ -56,7 +56,7 @@ The firmware will work on all BL602 boards, including PineCone and Pinenut.
 
 ![PineCone BL602 connected to SparkFun BME280 I2C Sensor](https://lupyuen.github.io/images/i2c-bme280.jpg)
 
-_PineCone BL602 connected to SparkFun BME280 I2C Sensor_
+_PineCone BL602 connected to [SparkFun BME280 I2C Sensor](https://www.sparkfun.com/products/13676)_
 
 # Connect BL602 to BME280 I2C Sensor
 
@@ -83,7 +83,7 @@ _What shall we accomplish with BL602 and BME280?_
 
 1.  We'll access BME280 at __I2C Device ID `0x77`__
 
-    (BME280 may be configured as Device ID `0x76` or `0x77`. SparkFun BME280 in the pic above uses `0x77`)
+    (BME280 may be configured as Device ID `0x76` or `0x77`. [SparkFun BME280](https://www.sparkfun.com/products/13676) in the pic above uses `0x77`)
 
 1.  BME280 has an I2C Register, __Chip ID, at Register `0xD0`__
 
@@ -364,6 +364,8 @@ static void test_i2c_start_read(char *buf, int len, int argc, char **argv) {
     read_msg.subaddr = 0xd0;   //  Register Address (BME280 Chip ID)
     read_msg.sublen  = 1;      //  Length of Register Address (bytes)
 ```
+
+(FYI: For I2C Write Operations `I2C_M_WRITE`, the Message `buf` field should point to a byte array that contains the I2C Data that will be written to the I2C Register)
 
 ## Start I2C Transfer
 
@@ -866,13 +868,17 @@ _Hacking BL602 and BME280 on a Saturday Night_
 
 # What's Next
 
-TODO
+Now that we understand the inner workings of I2C on BL602...
 
-Mynewt
+1.  Let's __port BL602 I2C to Mynewt__...
 
-Incoming SPI displays
+    (Like we did for BL602 GPIO)
 
-There is plenty more code in the [__BL602 IoT SDK__](https://github.com/bouffalolab/bl_iot_sdk) to be deciphered and documented: __UART, SPI, ADC, DAC, WiFi, Bluetooth LE,__ ...
+1.  Also __start working on BL602 SPI__!
+
+    (I'm expecting to receive some SPI displays... Many thanks to my Generous Sponsor! 😀 )
+
+There's plenty more code in the [__BL602 IoT SDK__](https://github.com/bouffalolab/bl_iot_sdk) to be deciphered and documented: __UART, SPI, ADC, DAC, WiFi, Bluetooth LE,__ ...
 
 [__Come Join Us... Make BL602 Better!__](https://wiki.pine64.org/wiki/Nutcracker)
 
