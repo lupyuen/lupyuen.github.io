@@ -365,7 +365,7 @@ static void test_i2c_start_read(char *buf, int len, int argc, char **argv) {
     read_msg.sublen  = 1;      //  Length of Register Address (bytes)
 ```
 
-(FYI: For I2C Write Operations `I2C_M_WRITE`, the Message `buf` field should point to a byte array that contains the I2C Data that will be written to the I2C Register)
+(For I2C Write Operation `I2C_M_WRITE`: The Message buffer field `buf` should point to a byte array that contains the I2C Data that will be written to the I2C Register)
 
 ## Start I2C Transfer
 
