@@ -688,7 +688,9 @@ Follow these steps to install `blflash`...
 
 We assume that our Firmware Binary File `sdk_app_i2c.bin` has been copied to the `blflash` folder.
 
-Set BL602 to __Flashing Mode__. For PineCone, this means setting the onboard jumper (IO 8) to the `H` Position [(Like this)](https://lupyuen.github.io/images/pinecone-jumperh.jpg)
+Set BL602 to __Flashing Mode__ and restart the board.
+
+For PineCone, this means setting the onboard jumper (IO 8) to the `H` Position [(Like this)](https://lupyuen.github.io/images/pinecone-jumperh.jpg)
 
 Enter these commands to flash `sdk_app_i2c.bin` to BL602 over UART...
 
@@ -711,7 +713,9 @@ cargo run flash sdk_app_i2c.bin \
 
 ## Run the firmware
 
-Set BL602 to __Normal Mode__ (Non-Flashing). For PineCone, this means setting the onboard jumper (IO 8) to the `L` Position [(Like this)](https://lupyuen.github.io/images/pinecone-jumperl.jpg)
+Set BL602 to __Normal Mode__ (Non-Flashing) and restart the board.
+
+For PineCone, this means setting the onboard jumper (IO 8) to the `L` Position [(Like this)](https://lupyuen.github.io/images/pinecone-jumperl.jpg)
 
 Connect to BL602's UART Port at 2 Mbps like so...
 
