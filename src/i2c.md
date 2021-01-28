@@ -925,19 +925,15 @@ For help on other Bus Pirate commands, enter __`?`__
 
 [Check out the I2C Guide for Bus Pirate](http://dangerousprototypes.com/docs/I2C)
 
+![Bug](https://lupyuen.github.io/images/i2c-cartoon8.png)
+
 # Appendix: How to Troubleshoot RISC-V Exceptions
 
-TODO
+Here's how I tracked down my first RISC-V Exception and fixed it...
 
-![](https://lupyuen.github.io/images/i2c-exception.png)
+![RISC-V Exception in sdk_app_i2c](https://lupyuen.github.io/images/i2c-exception.png)
 
-TODO
-
-![](https://lupyuen.github.io/images/i2c-disassembly.png)
-
-TODO
-
-When sending I2C data, this program crashes with the exception...
+When our program [`sdk_app_i2c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/) is sending I2C data, the program crashes with the exception shown above...
 
 ```text
 # start_write_data
@@ -946,6 +942,19 @@ mcause 30000007, mepc 23008fe2, mtval 00000014
 Exception code: 7
 msg: Store/AMO access fault
 ```
+
+TODO
+
+-   `mcause`
+
+-   `mepc`
+
+-   `mtval`
+
+![](https://lupyuen.github.io/images/i2c-disassembly.png)
+
+TODO
+
 
 Here's why...
 
@@ -984,6 +993,8 @@ riscv-none-embed-objdump \
     >build_out/sdk_app_i2c.S \
     2>&1
 ```
+
+![I2C Init HAL](https://lupyuen.github.io/images/i2c-inithal.png)
 
 ![Sketching I2C cartoons](https://lupyuen.github.io/images/i2c-sketch.jpg)
 
