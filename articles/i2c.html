@@ -555,12 +555,13 @@ static void test_i2c_stop(i2c_msg_t *msg) {
 <p><img src="https://lupyuen.github.io/images/i2c-success.png" alt="Reading BME280 with sdk_app_i2c firmware" /></p>
 <p><em>Reading BME280 with sdk_app_i2c firmware</em></p>
 <h1 id="build-and-run-the-firmware" class="section-header"><a href="#build-and-run-the-firmware">9 Build and Run the Firmware</a></h1>
-<p>TODO</p>
+<p>We've read the I2C code... Let's download, flash and run the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/i2c/customer_app/sdk_app_i2c"><code>sdk_app_i2c</code></a> firmware!</p>
 <h2 id="build-the-firmware" class="section-header"><a href="#build-the-firmware">9.1 Build the firmware</a></h2>
-<p>TODO</p>
-<p>Download from https://github.com/lupyuen/bl_iot_sdk/releases/tag/v2.0.0</p>
-<p>Or build from source:</p>
-<p><code>i2c</code> branch</p>
+<p>Download the Firmware Binary File <strong><code>sdk_app_i2c.bin</code></strong> from...</p>
+<ul>
+<li><a href="https://github.com/lupyuen/bl_iot_sdk/releases/tag/v2.0.0"><strong>Binary Release of <code>sdk_app_i2c</code></strong></a></li>
+</ul>
+<p>Alternatively, we may build the Firmware Binary File <code>sdk_app_i2c.bin</code> from the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/i2c/customer_app/sdk_app_i2c">source code</a>...</p>
 <pre><code class="language-bash"># Download the i2c branch of lupyuen's bl_iot_sdk
 git clone --recursive --branch i2c https://github.com/lupyuen/bl_iot_sdk
 cd bl_iot_sdk/customer_app/sdk_app_i2c
@@ -573,8 +574,21 @@ make
 # TODO: Change ~/blflash to the full path of blflash
 cp build_out/sdk_app_i2c.bin ~/blflash
 </code></pre>
+<p><a href="https://lupyuen.github.io/articles/pinecone#building-firmware">More details on building bl_iot_sdk</a></p>
+<p>(Remember to use the <strong><code>i2c</code></strong> branch, not the default <strong><code>master</code></strong> branch)</p>
 <h2 id="flash-the-firmware" class="section-header"><a href="#flash-the-firmware">9.2 Flash the firmware</a></h2>
-<p>TODO</p>
+<p>Follow these steps to install <code>blflash</code>...</p>
+<ol>
+<li>
+<p><a href="https://lupyuen.github.io/articles/flash#install-rustup"><strong>&quot;Install rustup&quot;</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/flash#download-and-build-blflash"><strong>&quot;Download and build blflash&quot;</strong></a></p>
+</li>
+</ol>
+<p>We assume that our Firmware Binary File <code>sdk_app_i2c.bin</code> has been copied to the <code>blflash</code> folder.</p>
+<p>Set BL602 to <strong>Flashing Mode</strong>. For PineCone, this means setting the onboard jumper (IO 8) to the <code>H</code> Position <a href="https://lupyuen.github.io/images/pinecone-jumperh.jpg">(Like this)</a></p>
+<p>Enter these commands to flash <code>sdk_app_i2c.bin</code> to BL602 over UART...</p>
 <pre><code class="language-bash"># TODO: Change ~/blflash to the full path of blflash
 cd ~/blflash
 
@@ -588,13 +602,17 @@ cargo run flash sdk_app_i2c.bin \
     --initial-baud-rate 230400 \
     --baud-rate 230400
 </code></pre>
+<p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">More details on flashing firmware</a></p>
 <h2 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">9.3 Run the firmware</a></h2>
-<p>TODO</p>
+<p>Set BL602 to <strong>Normal Mode</strong> (Non-Flashing). For PineCone, this means setting the onboard jumper (IO 8) to the <code>L</code> Position <a href="https://lupyuen.github.io/images/pinecone-jumperl.jpg">(Like this)</a></p>
+<p>Connect to BL602 like so...</p>
 <pre><code class="language-bash"># For Linux:
 sudo screen /dev/ttyUSB0 2000000
 
 # For macOS: Doesn't work because 2 Mbps is not supported by macOS
 </code></pre>
+<p>On Windows, use <code>putty</code>.</p>
+<p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">More details on connecting to BL602</a></p>
 <h2 id="enter-i2c-commands" class="section-header"><a href="#enter-i2c-commands">9.4 Enter I2C commands</a></h2>
 <p>TODO</p>
 <pre><code class="language-text"># help
