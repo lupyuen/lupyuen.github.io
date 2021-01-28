@@ -858,7 +858,9 @@ _What happens when we implement the two Solutions in FreeRTOS?_
 
 When we implement these two Solutions in FreeRTOS... We'll get the __High Level I2C HAL!__ (See [`hal_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c))
 
-Hence the High Level I2C HAL (which calls FreeRTOS) is fully functional today for processing I2C Sensor Data.
+Hence the High Level I2C HAL (which calls FreeRTOS) is __fully functional today__ for processing I2C Sensor Data.
+
+The High Level I2C HAL lacks documentation, but the code explained in this article looks highly similar to the High Level I2C HAL.
 
 [See the original (unmodified) High Level I2C HAL Demo](https://github.com/bouffalolab/bl_iot_sdk/tree/master/customer_app/sdk_app_i2c)
 
@@ -911,6 +913,12 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
     Because Mynewt exposes an I2C API that __controls the I2C Stop Bit explicitly__. [(See this `last_op` parameter)](https://mynewt.apache.org/latest/os/modules/hal/hal_i2c/hal_i2c.html#c.hal_i2c_master_write)
 
     When porting BL602 I2C to Mynewt, we need to reconcile the two styles of I2C coding: __Register Address vs Stop Bit.__
+
+1.  We talked about reading I2C Registers... What about __writing to I2C Registers__?
+
+    The code should be similar. The demo program contains code for writing to I2C Registers, but it hasn't been tested. And it needs cleaning up. [See this](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L376-L414)
+
+1.  __BL602 SPI__ doesn't have a Low Level HAL... It only comes as a High Level HAL with FreeRTOS. Which will be a challenging exploration. [See this](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_spi.c)
 
 1.  Quiz for the Reader: What could go wrong with this code?
 
