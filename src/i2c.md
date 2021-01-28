@@ -933,7 +933,7 @@ Here's how I tracked down my first RISC-V Exception and fixed it...
 
 ![RISC-V Exception in sdk_app_i2c](https://lupyuen.github.io/images/i2c-exception.png)
 
-When our program [`sdk_app_i2c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/) is sending I2C data, the program crashes with the exception shown above...
+When our program [`sdk_app_i2c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/) is sending I2C data, the program crashes with the RISC-V Exception shown above...
 
 ```text
 # start_write_data
@@ -943,26 +943,25 @@ Exception code: 7
 msg: Store/AMO access fault
 ```
 
+What does this mean?
+
+-   __`mcause` (Machine Cause Register)__: Tells us the reason for the exception. [See this](http://www.five-embeddev.com/riscv-isa-manual/latest/machine.html#sec:mcause)
+
+    The Exception Code is 7 (Store/AMO Access Fault), which means that we have accessed an invalid memory address. (Probably a bad pointer)
+
+    [List of RISC-V Exception Codes](http://www.five-embeddev.com/riscv-isa-manual/latest/machine.html#sec:mcause)
+
+-   __`mepc` (Machine Exception Program Counter)__: The address of the code that caused the exception. [See this](http://www.five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-exception-program-counter-mepc)
+
+    We'll look up the code address `0x2300 8fe2` in a while.
+
+-   __`mtval` (Machine Trap Value Register)__: The invalid address that was accessed. [See this](http://www.five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-value-register-mtval)
+
+    Our program attempted to access the invalid address `0x000 00014` and crashed. Looks like a null pointer problem!
+
+Let's track down code address `0x2300 8fe2` and find out why it caused the exception...
+
 TODO
-
--   `mcause`
-
--   `mepc`
-
--   `mtval`
-
-![](https://lupyuen.github.io/images/i2c-disassembly.png)
-
-TODO
-
-
-Here's why...
-
-1. BL602 I2C HAL (Hardware Abstraction Layer) comes in two levels...
-
-    - __Low Level HAL [`bl_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c)__: This runs on Bare Metal, directly manipulating the BL602 I2C Registers.
-
-    - __High Level HAL [`hal_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c)__: This calls the Low Level HAL, and uses FreeRTOS to synchronise the I2C Interrupt Handler with the Main Task.
 
 1. We're now using the __Low Level HAL [`bl_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c)__, because we'll be replacing FreeRTOS by Mynewt.
 
@@ -994,7 +993,13 @@ riscv-none-embed-objdump \
     2>&1
 ```
 
+![](https://lupyuen.github.io/images/i2c-disassembly.png)
+
+TODO
+
 ![I2C Init HAL](https://lupyuen.github.io/images/i2c-inithal.png)
+
+TODO
 
 ![Sketching I2C cartoons](https://lupyuen.github.io/images/i2c-sketch.jpg)
 
