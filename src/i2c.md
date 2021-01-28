@@ -713,13 +713,14 @@ cargo run flash sdk_app_i2c.bin \
 
 Set BL602 to __Normal Mode__ (Non-Flashing). For PineCone, this means setting the onboard jumper (IO 8) to the `L` Position [(Like this)](https://lupyuen.github.io/images/pinecone-jumperl.jpg)
 
-Connect to BL602 like so...
+Connect to BL602's UART Port at 2 Mbps like so...
 
 ```bash
 # For Linux:
 sudo screen /dev/ttyUSB0 2000000
 
 # For macOS: Doesn't work because 2 Mbps is not supported by macOS
+# See https://lupyuen.github.io/articles/led#appendix-fix-bl602-demo-firmware-for-macos
 ```
 
 On Windows, use `putty`.
@@ -729,6 +730,8 @@ On Windows, use `putty`.
 ## Enter I2C commands
 
 TODO
+
+Press Enter to reveal the command prompt.
 
 ```text
 # help
