@@ -156,6 +156,7 @@
 <tr><td align="center"><strong><code>3V3</code></strong></td><td align="center"><code>3.3V</code></td><td align="left">Red</td></tr>
 <tr><td align="center"><strong><code>GND</code></strong></td><td align="center"><code>GND</code></td><td align="left">Black</td></tr>
 </tbody></table>
+<p>(The steps in this article will work for BMP280 too)</p>
 <p>The Low Level I2C HAL assigns GPIO 3 and 4 to the I2C Port on BL602. (See <strong>&quot;Section 3.2.8: GPIO Function&quot;</strong> in the <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en"><strong>BL602 Reference Manual</strong></a>)</p>
 <p>(If we're using the High Level I2C HAL, the I2C Pins are defined in the Device Tree)</p>
 <p><em>What shall we accomplish with BL602 and BME280?</em></p>
@@ -169,7 +170,7 @@
 </li>
 <li>
 <p>Reading the Chip ID Register will give us the <strong>Chip ID value <code>0x60</code></strong> </p>
-<p>(<code>0x60</code> identifies the chip as BME280)</p>
+<p>(<code>0x60</code> identifies the chip as BME280. For BMP280 the Chip ID is <code>0x58</code>)</p>
 </li>
 </ol>
 <h2 id="i2c-protocol-for-bme280" class="section-header"><a href="#i2c-protocol-for-bme280">2.1 I2C Protocol for BME280</a></h2>
@@ -555,7 +556,7 @@ static void test_i2c_stop(i2c_msg_t *msg) {
 <p><img src="https://lupyuen.github.io/images/i2c-success.png" alt="Reading BME280 with sdk_app_i2c firmware" /></p>
 <p><em>Reading BME280 with sdk_app_i2c firmware</em></p>
 <h1 id="build-and-run-the-firmware" class="section-header"><a href="#build-and-run-the-firmware">9 Build and Run the Firmware</a></h1>
-<p>We've read the I2C code... Let's download, flash and run the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/i2c/customer_app/sdk_app_i2c"><code>sdk_app_i2c</code></a> firmware!</p>
+<p>We've read the I2C code... Let's download, flash and run the modded <a href="https://github.com/lupyuen/bl_iot_sdk/tree/i2c/customer_app/sdk_app_i2c"><code>sdk_app_i2c</code></a> firmware!</p>
 <h2 id="build-the-firmware" class="section-header"><a href="#build-the-firmware">9.1 Build the firmware</a></h2>
 <p>Download the Firmware Binary File <strong><code>sdk_app_i2c.bin</code></strong> from...</p>
 <ul>
@@ -617,8 +618,13 @@ sudo screen /dev/ttyUSB0 2000000
 <p>On Windows, use <code>putty</code>.</p>
 <p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">More details on connecting to BL602</a></p>
 <h2 id="enter-i2c-commands" class="section-header"><a href="#enter-i2c-commands">9.4 Enter I2C commands</a></h2>
-<p>TODO</p>
+<p>Let's enter some I2C commands to read our BME280 Sensor!</p>
+<ol>
+<li>
 <p>Press Enter to reveal the command prompt.</p>
+</li>
+<li>
+<p>Enter <code>help</code> to see the available commands...</p>
 <pre><code class="language-text"># help
 ====User Commands====
 i2c_status               : I2C status
@@ -626,45 +632,56 @@ i2c_init                 : Init I2C port
 i2c_start_read           : Start reading I2C data
 i2c_stop_read            : Stop reading I2C data
 </code></pre>
-<p>TODO</p>
+</li>
+<li>
+<p>First we <strong>initialise our I2C Port</strong>. </p>
+<p>Enter this command...</p>
 <pre><code class="language-text"># i2c_init
 </code></pre>
-<p>TODO</p>
+<p>(Earlier we've seen this code for this command)</p>
+</li>
+<li>
+<p>Before doing any I2C business, let's <strong>dump the Interrupt Counters</strong> to see which I2C Interrupts get triggered...</p>
 <pre><code class="language-text"># i2c_status
 </code></pre>
-<p>TODO</p>
-<pre><code class="language-text">Interrupts: 0
-Trans End:  0
-Tx Ready:   0
-Rx Ready:   0
-NACK:       0
-Arb Lost:   0
-FIFO Error: 0
-Unknown:    0
+<p>We should see...</p>
+<pre><code class="language-text">Interrupts: 0  NACK:       0
+Trans End:  0  Arb Lost:   0
+Tx Ready:   0  FIFO Error: 0
+Rx Ready:   0  Unknown:    0
 </code></pre>
-<p>TODO</p>
+<p>Which means that no I2C Interrupts have been triggered yet.</p>
+</li>
+<li>
+<p>Now we <strong>start the I2C Read Operation</strong>...</p>
 <pre><code class="language-text"># i2c_start_read
 </code></pre>
-<p>TODO</p>
+<p>(We've seen this code for this command as well)</p>
+</li>
+<li>
+<p>Again we dump the Interrupt Counters...</p>
 <pre><code class="language-text"># i2c_status
 </code></pre>
-<p>TODO</p>
-<pre><code class="language-text">Interrupts: 2
-Trans End:  1
-Tx Ready:   0
-Rx Ready:   1
-NACK:       0
-Arb Lost:   0
-FIFO Error: 0
-Unknown:    0
+<p>Aha Something Different! We have encountered one interrupt for Data Received (Rx Ready), because BME280 has returned some I2C data to BL602...</p>
+<pre><code class="language-text">Interrupts: 2  NACK:       0
+Trans End:  1  Arb Lost:   0
+Tx Ready:   0  FIFO Error: 0
+Rx Ready:   1  Unknown:    0    
 </code></pre>
-<p>TODO</p>
+<p>After receiving the data (one byte) from BME280 (and saving it), our Interrupt Handler terminates the I2C connection.</p>
+<p>Hence we see one interrupt for Transaction End. We're done!</p>
+</li>
+<li>
+<p>To <strong>check the data received</strong>, enter this command...</p>
 <pre><code class="language-text"># i2c_stop_read
 </code></pre>
-<p>TODO</p>
+<p>Remember that we're reading the Chip ID from BME280. We should see this Chip ID...</p>
 <pre><code class="language-text">60
 </code></pre>
-<p>TODO</p>
+<p>(For BMP280 the Chip ID is <code>0x58</code>)</p>
+</li>
+</ol>
+<p>Congratulations! We have successfully read the BME280 Sensor from BL602 over I2C!</p>
 <h1 id="why-we-need-an-embedded-os-for-i2c" class="section-header"><a href="#why-we-need-an-embedded-os-for-i2c">10 Why we need an Embedded OS for I2C</a></h1>
 <p>We have 2 problems when calling the Low Level I2C HAL...</p>
 <ol>
@@ -738,11 +755,11 @@ static uint8_t read_buf[32];  //  Buffer for reading I2C Data
 <h1 id="appendix-test-bme280-with-bus-pirate" class="section-header"><a href="#appendix-test-bme280-with-bus-pirate">13 Appendix: Test BME280 with Bus Pirate</a></h1>
 <p><a href="http://dangerousprototypes.com/docs/Bus_Pirate"><strong>Bus Pirate</strong></a> is a useful gadget for verifying whether our BME280 Sensor works OK. And for checking the I2C bytes that should be sent down the wire to BME280.</p>
 <p><a href="http://dangerousprototypes.com/docs/I2C">(Bus Pirate also works as a simple Protocol Analyser for sniffing I2C data)</a></p>
-<p>Here's how we test BME280 with Bus Pirate...</p>
+<p>Here's how we test BME280 (or BMP280) with Bus Pirate...</p>
 <p><img src="https://lupyuen.github.io/images/i2c-buspirate.jpg" alt="Bus Pirate connected to BME280" /></p>
 <ol>
 <li>
-<p>Connect Bus Pirate to BME280 according to the pic above...</p>
+<p>Connect Bus Pirate to BME280 (or BMP280) according to the pic above...</p>
 <table><thead><tr><th align="center">Bus Pirate Pin</th><th align="center">BME280 Pin</th></tr></thead><tbody>
 <tr><td align="center"><strong><code>MOSI</code></strong></td><td align="center"><code>SDA</code></td></tr>
 <tr><td align="center"><strong><code>CLK</code></strong></td><td align="center"><code>SCL</code></td></tr>
@@ -793,6 +810,7 @@ static uint8_t read_buf[32];  //  Buffer for reading I2C Data
 <li>
 <p>We should see the result <code>0x60</code>, which is the Chip ID for BME280</p>
 <p><img src="https://lupyuen.github.io/images/i2c-buspirate6.png" alt="Read register 0xD0" /></p>
+<p>(For BMP280 the Chip ID is <code>0x58</code>)</p>
 </li>
 </ol>
 <p>We tested BME280 with this Bus Pirate I2C command...</p>
