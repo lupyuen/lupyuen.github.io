@@ -145,7 +145,7 @@
 <p>(Don't worry, we'll make it hunky dory by the end of the article!)</p>
 <p>The firmware will work on all BL602 boards, including PineCone and Pinenut.</p>
 <p><img src="https://lupyuen.github.io/images/i2c-bme280.jpg" alt="PineCone BL602 connected to SparkFun BME280 I2C Sensor" /></p>
-<p><em>PineCone BL602 connected to SparkFun BME280 I2C Sensor</em></p>
+<p><em>PineCone BL602 connected to <a href="https://www.sparkfun.com/products/13676">SparkFun BME280 I2C Sensor</a></em></p>
 <h1 id="connect-bl602-to-bme280-i2c-sensor" class="section-header"><a href="#connect-bl602-to-bme280-i2c-sensor">2 Connect BL602 to BME280 I2C Sensor</a></h1>
 <p>Let's connect BL602 to the <a href="https://learn.sparkfun.com/tutorials/sparkfun-bme280-breakout-hookup-guide"><strong>Bosch BME280 I2C Sensor for Temperature, Humidity and Air Pressure</strong></a></p>
 <p>(Air Pressure is very useful for sensing which level of a building we're on!)</p>
@@ -163,7 +163,7 @@
 <ol>
 <li>
 <p>We'll access BME280 at <strong>I2C Device ID <code>0x77</code></strong></p>
-<p>(BME280 may be configured as Device ID <code>0x76</code> or <code>0x77</code>. SparkFun BME280 in the pic above uses <code>0x77</code>)</p>
+<p>(BME280 may be configured as Device ID <code>0x76</code> or <code>0x77</code>. <a href="https://www.sparkfun.com/products/13676">SparkFun BME280</a> in the pic above uses <code>0x77</code>)</p>
 </li>
 <li>
 <p>BME280 has an I2C Register, <strong>Chip ID, at Register <code>0xD0</code></strong></p>
@@ -357,6 +357,7 @@ static void test_i2c_start_read(char *buf, int len, int argc, char **argv) {
     read_msg.subaddr = 0xd0;   //  Register Address (BME280 Chip ID)
     read_msg.sublen  = 1;      //  Length of Register Address (bytes)
 </code></pre>
+<p>(FYI: For I2C Write Operations <code>I2C_M_WRITE</code>, the Message <code>buf</code> field should point to a byte array that contains the I2C Data that will be written to the I2C Register)</p>
 <h2 id="start-i2c-transfer" class="section-header"><a href="#start-i2c-transfer">5.2 Start I2C Transfer</a></h2>
 <p>Now we start the I2C data transfer...</p>
 <pre><code class="language-c">    //  Start the I2C transfer and enable I2C interrupts
@@ -712,10 +713,18 @@ static uint8_t read_buf[32];  //  Buffer for reading I2C Data
 <p><img src="https://lupyuen.github.io/images/i2c-hack.jpg" alt="Hacking BL602 and BME280 on a Saturday night" /></p>
 <p><em>Hacking BL602 and BME280 on a Saturday Night</em></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">11 What's Next</a></h1>
-<p>TODO</p>
-<p>Mynewt</p>
-<p>Incoming SPI displays</p>
-<p>There is plenty more code in the <a href="https://github.com/bouffalolab/bl_iot_sdk"><strong>BL602 IoT SDK</strong></a> to be deciphered and documented: <strong>UART, SPI, ADC, DAC, WiFi, Bluetooth LE,</strong> ...</p>
+<p>Now that we understand the inner workings of I2C on BL602...</p>
+<ol>
+<li>
+<p>Let's <strong>port BL602 I2C to Mynewt</strong>...</p>
+<p>(Like we did for BL602 GPIO)</p>
+</li>
+<li>
+<p>Also <strong>start working on BL602 SPI</strong>!</p>
+<p>(I'm expecting to receive some SPI displays... Many thanks to my Generous Sponsor! 😀 )</p>
+</li>
+</ol>
+<p>There's plenty more code in the <a href="https://github.com/bouffalolab/bl_iot_sdk"><strong>BL602 IoT SDK</strong></a> to be deciphered and documented: <strong>UART, SPI, ADC, DAC, WiFi, Bluetooth LE,</strong> ...</p>
 <p><a href="https://wiki.pine64.org/wiki/Nutcracker"><strong>Come Join Us... Make BL602 Better!</strong></a></p>
 <p>🙏 👍 😀</p>
 <ul>
