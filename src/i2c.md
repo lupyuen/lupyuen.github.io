@@ -945,43 +945,51 @@ msg: Store/AMO access fault
 
 What does this mean?
 
--   __`mcause` (Machine Cause Register)__: Tells us the reason for the exception. [See this](http://www.five-embeddev.com/riscv-isa-manual/latest/machine.html#sec:mcause)
+-   __`mcause` (Machine Cause Register)__: Tells us the reason for the exception. [More details](http://www.five-embeddev.com/riscv-isa-manual/latest/machine.html#sec:mcause)
 
-    The Exception Code is 7 (Store/AMO Access Fault), which means that we have accessed an invalid memory address. (Probably a bad pointer)
+    The Exception Code is 7 (Store/AMO Access Fault), which means that we have accessed an invalid memory address.
+    
+    (Probably a bad pointer)
 
     [List of RISC-V Exception Codes](http://www.five-embeddev.com/riscv-isa-manual/latest/machine.html#sec:mcause)
 
--   __`mepc` (Machine Exception Program Counter)__: The address of the code that caused the exception. [See this](http://www.five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-exception-program-counter-mepc)
+-   __`mepc` (Machine Exception Program Counter)__: The address of the code that caused the exception. [More details](http://www.five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-exception-program-counter-mepc)
 
     We'll look up the code address `0x2300 8fe2` in a while.
 
--   __`mtval` (Machine Trap Value Register)__: The invalid address that was accessed. [See this](http://www.five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-value-register-mtval)
+-   __`mtval` (Machine Trap Value Register)__: The invalid address that was accessed. [More details](http://www.five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-value-register-mtval)
 
-    Our program attempted to access the invalid address `0x000 00014` and crashed. Looks like a null pointer problem!
+    Our program attempted to access the invalid address `0x000 00014` and crashed.
+    
+    Looks like a null pointer problem!
 
 Let's track down code address `0x2300 8fe2` and find out why it caused the exception...
 
-TODO
+![RISC-V Disassembly](https://lupyuen.github.io/images/i2c-disassembly.png)
 
-1. We're now using the __Low Level HAL [`bl_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c)__, because we'll be replacing FreeRTOS by Mynewt.
-
-1. According to the RISC-V Disassembly [`sdk_app_i2c.S`](https://github.com/lupyuen/bl_iot_sdk/releases/download/v1.0.1/sdk_app_i2c.S), the MEPC (Machine Exception Program Counter) `0x2300 8fe2` is located in the I2C Interrupt Handler of the BL602 I2C HAL
+1. According to the RISC-V Disassembly [`sdk_app_i2c.S`](https://github.com/lupyuen/bl_iot_sdk/releases/download/v1.0.1/sdk_app_i2c.S), the code address `0x2300 8fe2` is located in the I2C Interrupt Handler of the BL602 I2C HAL (See pic)
 
     - [`i2c_interrupt_entry` in `hal_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c#L97-L133)
 
 1. Why did it crash? Because the Interrupt Context `ctx` is null!
 
-    In fact, the I2C Interrupt Handler `i2c_interrupt_entry` shouldn't have been called. It comes from the High Level HAL [`hal_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c), but we're actually using the Low Level HAL [`bl_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c).
+    In fact, the I2C Interrupt Handler `i2c_interrupt_entry` shouldn't have been called.
+    
+    It comes from the High Level HAL [`hal_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c), but we're actually using the Low Level HAL [`bl_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c).
 
-1. Why was `i2c_interrupt_entry` set as the I2C Interrupt Handler? Because `hal_i2c_init` was called here...
+1. Why was `i2c_interrupt_entry` set as the I2C Interrupt Handler?
+
+    Because `hal_i2c_init` was called here...
 
     - [`aos_loop_proc` in `main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/main.c#L159-L199)
 
-1. After commenting out `hal_i2c_init`, the program no longer uses `i2c_interrupt_entry` as the I2C Interrupt Handler.
+![I2C Init HAL](https://lupyuen.github.io/images/i2c-inithal.png)
 
-    And no more crashing!
+After commenting out `hal_i2c_init`, the program no longer uses `i2c_interrupt_entry` as the I2C Interrupt Handler.
 
-1. But it still doesn't read the I2C sensor correctly... The result is always 0.
+And no more crashing!
+
+_How did we get the RISC-V Disassembly?_
 
 We generate RISC-V Disassembly `sdk_app_i2c.S` from ELF Executable `sdk_app_i2c.elf` with this command...
 
@@ -992,14 +1000,6 @@ riscv-none-embed-objdump \
     >build_out/sdk_app_i2c.S \
     2>&1
 ```
-
-![](https://lupyuen.github.io/images/i2c-disassembly.png)
-
-TODO
-
-![I2C Init HAL](https://lupyuen.github.io/images/i2c-inithal.png)
-
-TODO
 
 ![Sketching I2C cartoons](https://lupyuen.github.io/images/i2c-sketch.jpg)
 
