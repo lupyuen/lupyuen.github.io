@@ -791,7 +791,7 @@ Let's enter some I2C commands to read our BME280 Sensor!
     # i2c_status
     ```
 
-    Aha Something Different! We have encountered one interrupt for Data Received (Rx Ready), because BME280 has returned some I2C data to BL602...
+    Aha Something Different! We have encountered __one interrupt for Data Received__ (Rx Ready), because BME280 has returned some I2C data to BL602...
 
     ```text
     Interrupts: 2  NACK:       0
@@ -802,7 +802,7 @@ Let's enter some I2C commands to read our BME280 Sensor!
 
     After receiving the data (one byte) from BME280 (and saving it), our Interrupt Handler terminates the I2C connection.
 
-    Hence we see one interrupt for Transaction End. We're done!
+    Hence we see __one interrupt for Transaction End__. We're done!
 
 1.  To __check the data received__, enter this command...
 
