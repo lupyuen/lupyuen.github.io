@@ -795,49 +795,47 @@ msg: Store/AMO access fault
 <p>What does this mean?</p>
 <ul>
 <li>
-<p><strong><code>mcause</code> (Machine Cause Register)</strong>: Tells us the reason for the exception. <a href="http://www.five-embeddev.com/riscv-isa-manual/latest/machine.html#sec:mcause">See this</a></p>
-<p>The Exception Code is 7 (Store/AMO Access Fault), which means that we have accessed an invalid memory address. (Probably a bad pointer)</p>
+<p><strong><code>mcause</code> (Machine Cause Register)</strong>: Tells us the reason for the exception. <a href="http://www.five-embeddev.com/riscv-isa-manual/latest/machine.html#sec:mcause">More details</a></p>
+<p>The Exception Code is 7 (Store/AMO Access Fault), which means that we have accessed an invalid memory address.</p>
+<p>(Probably a bad pointer)</p>
 <p><a href="http://www.five-embeddev.com/riscv-isa-manual/latest/machine.html#sec:mcause">List of RISC-V Exception Codes</a></p>
 </li>
 <li>
-<p><strong><code>mepc</code> (Machine Exception Program Counter)</strong>: The address of the code that caused the exception. <a href="http://www.five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-exception-program-counter-mepc">See this</a></p>
+<p><strong><code>mepc</code> (Machine Exception Program Counter)</strong>: The address of the code that caused the exception. <a href="http://www.five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-exception-program-counter-mepc">More details</a></p>
 <p>We'll look up the code address <code>0x2300 8fe2</code> in a while.</p>
 </li>
 <li>
-<p><strong><code>mtval</code> (Machine Trap Value Register)</strong>: The invalid address that was accessed. <a href="http://www.five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-value-register-mtval">See this</a></p>
-<p>Our program attempted to access the invalid address <code>0x000 00014</code> and crashed. Looks like a null pointer problem!</p>
+<p><strong><code>mtval</code> (Machine Trap Value Register)</strong>: The invalid address that was accessed. <a href="http://www.five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-value-register-mtval">More details</a></p>
+<p>Our program attempted to access the invalid address <code>0x000 00014</code> and crashed.</p>
+<p>Looks like a null pointer problem!</p>
 </li>
 </ul>
 <p>Let's track down code address <code>0x2300 8fe2</code> and find out why it caused the exception...</p>
-<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/i2c-disassembly.png" alt="RISC-V Disassembly" /></p>
 <ol>
 <li>
-<p>We're now using the <strong>Low Level HAL <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c"><code>bl_i2c.c</code></a></strong>, because we'll be replacing FreeRTOS by Mynewt.</p>
-</li>
-<li>
-<p>According to the RISC-V Disassembly <a href="https://github.com/lupyuen/bl_iot_sdk/releases/download/v1.0.1/sdk_app_i2c.S"><code>sdk_app_i2c.S</code></a>, the MEPC (Machine Exception Program Counter) <code>0x2300 8fe2</code> is located in the I2C Interrupt Handler of the BL602 I2C HAL</p>
+<p>According to the RISC-V Disassembly <a href="https://github.com/lupyuen/bl_iot_sdk/releases/download/v1.0.1/sdk_app_i2c.S"><code>sdk_app_i2c.S</code></a>, the code address <code>0x2300 8fe2</code> is located in the I2C Interrupt Handler of the BL602 I2C HAL (See pic)</p>
 <ul>
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c#L97-L133"><code>i2c_interrupt_entry</code> in <code>hal_i2c.c</code></a></li>
 </ul>
 </li>
 <li>
 <p>Why did it crash? Because the Interrupt Context <code>ctx</code> is null!</p>
-<p>In fact, the I2C Interrupt Handler <code>i2c_interrupt_entry</code> shouldn't have been called. It comes from the High Level HAL <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c"><code>hal_i2c.c</code></a>, but we're actually using the Low Level HAL <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c"><code>bl_i2c.c</code></a>.</p>
+<p>In fact, the I2C Interrupt Handler <code>i2c_interrupt_entry</code> shouldn't have been called.</p>
+<p>It comes from the High Level HAL <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c"><code>hal_i2c.c</code></a>, but we're actually using the Low Level HAL <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c"><code>bl_i2c.c</code></a>.</p>
 </li>
 <li>
-<p>Why was <code>i2c_interrupt_entry</code> set as the I2C Interrupt Handler? Because <code>hal_i2c_init</code> was called here...</p>
+<p>Why was <code>i2c_interrupt_entry</code> set as the I2C Interrupt Handler?</p>
+<p>Because <code>hal_i2c_init</code> was called here...</p>
 <ul>
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/main.c#L159-L199"><code>aos_loop_proc</code> in <code>main.c</code></a></li>
 </ul>
 </li>
-<li>
+</ol>
+<p><img src="https://lupyuen.github.io/images/i2c-inithal.png" alt="I2C Init HAL" /></p>
 <p>After commenting out <code>hal_i2c_init</code>, the program no longer uses <code>i2c_interrupt_entry</code> as the I2C Interrupt Handler.</p>
 <p>And no more crashing!</p>
-</li>
-<li>
-<p>But it still doesn't read the I2C sensor correctly... The result is always 0.</p>
-</li>
-</ol>
+<p><em>How did we get the RISC-V Disassembly?</em></p>
 <p>We generate RISC-V Disassembly <code>sdk_app_i2c.S</code> from ELF Executable <code>sdk_app_i2c.elf</code> with this command...</p>
 <pre><code class="language-bash">riscv-none-embed-objdump \
     -t -S --demangle --line-numbers --wide \
@@ -845,10 +843,6 @@ msg: Store/AMO access fault
     &gt;build_out/sdk_app_i2c.S \
     2&gt;&amp;1
 </code></pre>
-<p><img src="https://lupyuen.github.io/images/i2c-disassembly.png" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/i2c-inithal.png" alt="I2C Init HAL" /></p>
-<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-sketch.jpg" alt="Sketching I2C cartoons" /></p>
 <p><em>Sketching I2C cartoons. <a href="https://github.com/lupyuen/lupyuen.github.io/releases/tag/v1.0.0">Download the Photoshop images</a></em></p>
 
