@@ -785,40 +785,32 @@ static uint8_t read_buf[32];  //  Buffer for reading I2C Data
 <h1 id="appendix-how-to-troubleshoot-risc-v-exceptions" class="section-header"><a href="#appendix-how-to-troubleshoot-risc-v-exceptions">14 Appendix: How to Troubleshoot RISC-V Exceptions</a></h1>
 <p>Here's how I tracked down my first RISC-V Exception and fixed it...</p>
 <p><img src="https://lupyuen.github.io/images/i2c-exception.png" alt="RISC-V Exception in sdk_app_i2c" /></p>
-<p>When our program <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/"><code>sdk_app_i2c</code></a> is sending I2C data, the program crashes with the exception shown above...</p>
+<p>When our program <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/"><code>sdk_app_i2c</code></a> is sending I2C data, the program crashes with the RISC-V Exception shown above...</p>
 <pre><code class="language-text"># start_write_data
 Exception Entry---&gt;&gt;&gt;
 mcause 30000007, mepc 23008fe2, mtval 00000014
 Exception code: 7
 msg: Store/AMO access fault
 </code></pre>
-<p>TODO</p>
+<p>What does this mean?</p>
 <ul>
 <li>
-<p><code>mcause</code></p>
+<p><strong><code>mcause</code> (Machine Cause Register)</strong>: Tells us the reason for the exception. <a href="http://www.five-embeddev.com/riscv-isa-manual/latest/machine.html#sec:mcause">See this</a></p>
+<p>The Exception Code is 7 (Store/AMO Access Fault), which means that we have accessed an invalid memory address. (Probably a bad pointer)</p>
+<p><a href="http://www.five-embeddev.com/riscv-isa-manual/latest/machine.html#sec:mcause">List of RISC-V Exception Codes</a></p>
 </li>
 <li>
-<p><code>mepc</code></p>
+<p><strong><code>mepc</code> (Machine Exception Program Counter)</strong>: The address of the code that caused the exception. <a href="http://www.five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-exception-program-counter-mepc">See this</a></p>
+<p>We'll look up the code address <code>0x2300 8fe2</code> in a while.</p>
 </li>
 <li>
-<p><code>mtval</code></p>
+<p><strong><code>mtval</code> (Machine Trap Value Register)</strong>: The invalid address that was accessed. <a href="http://www.five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-value-register-mtval">See this</a></p>
+<p>Our program attempted to access the invalid address <code>0x000 00014</code> and crashed. Looks like a null pointer problem!</p>
 </li>
 </ul>
-<p><img src="https://lupyuen.github.io/images/i2c-disassembly.png" alt="" /></p>
+<p>Let's track down code address <code>0x2300 8fe2</code> and find out why it caused the exception...</p>
 <p>TODO</p>
-<p>Here's why...</p>
 <ol>
-<li>
-<p>BL602 I2C HAL (Hardware Abstraction Layer) comes in two levels...</p>
-<ul>
-<li>
-<p><strong>Low Level HAL <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c"><code>bl_i2c.c</code></a></strong>: This runs on Bare Metal, directly manipulating the BL602 I2C Registers.</p>
-</li>
-<li>
-<p><strong>High Level HAL <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c"><code>hal_i2c.c</code></a></strong>: This calls the Low Level HAL, and uses FreeRTOS to synchronise the I2C Interrupt Handler with the Main Task.</p>
-</li>
-</ul>
-</li>
 <li>
 <p>We're now using the <strong>Low Level HAL <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c"><code>bl_i2c.c</code></a></strong>, because we'll be replacing FreeRTOS by Mynewt.</p>
 </li>
@@ -853,7 +845,10 @@ msg: Store/AMO access fault
     &gt;build_out/sdk_app_i2c.S \
     2&gt;&amp;1
 </code></pre>
+<p><img src="https://lupyuen.github.io/images/i2c-disassembly.png" alt="" /></p>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-inithal.png" alt="I2C Init HAL" /></p>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/i2c-sketch.jpg" alt="Sketching I2C cartoons" /></p>
 <p><em>Sketching I2C cartoons. <a href="https://github.com/lupyuen/lupyuen.github.io/releases/tag/v1.0.0">Download the Photoshop images</a></em></p>
 
