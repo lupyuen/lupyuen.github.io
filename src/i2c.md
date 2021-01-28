@@ -872,6 +872,12 @@ Mynewt
 
 Incoming SPI displays
 
+There is plenty more code in the [__BL602 IoT SDK__](https://github.com/bouffalolab/bl_iot_sdk) to be deciphered and documented: __UART, SPI, ADC, DAC, WiFi, Bluetooth LE,__ ...
+
+[__Come Join Us... Make BL602 Better!__](https://wiki.pine64.org/wiki/Nutcracker)
+
+🙏 👍 😀
+
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
 -   [Check out my articles](https://lupyuen.github.io)
