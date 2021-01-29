@@ -928,6 +928,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  __BL602 SPI__ doesn't have a Low Level HAL... It only comes as a High Level HAL with FreeRTOS. Which will be a challenging exploration. [See this](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_spi.c)
 
+1.  This article is the expanded version of [__this Twitter Thread__](https://twitter.com/MisterTechBlog/status/1352937390776545281?s=19)
+
 1.  __Quiz for the Reader:__ What could go wrong with this code?
 
     ![i2c_gpio_init: What happens when i2cx is NOT I2C0](https://lupyuen.github.io/images/i2c-init.png)
