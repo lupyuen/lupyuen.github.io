@@ -763,6 +763,11 @@ static uint8_t read_buf[32];  //  Buffer for reading I2C Data
 <p>The code should be similar. The demo program contains code for writing to I2C Registers, but it hasn't been tested. And it needs cleaning up. <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L376-L418">See this</a></p>
 </li>
 <li>
+<p>Why aren't we using <strong>DMA for I2C</strong>?</p>
+<p>DMA for I2C (and SPI) sounds overkill for an IoT Gadget. We should keep the firmware simple and easy to maintain. (Until we have more maintainers)</p>
+<p>We'll come back later to implement DMA for I2C (and SPI) if we need to do any high-speed bulk data transfer.</p>
+</li>
+<li>
 <p><strong>BL602 SPI</strong> doesn't have a Low Level HAL... It only comes as a High Level HAL with FreeRTOS. Which will be a challenging exploration. <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_spi.c">See this</a></p>
 </li>
 <li>
