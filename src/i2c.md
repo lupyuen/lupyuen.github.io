@@ -26,7 +26,9 @@ BL602's I2C HAL is packaged as two levels...
 
     The Low Level HAL manipulates the BL602 I2C Registers directly to perform I2C functions.
 
-1.  __High Level HAL [`hal_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c)__: This calls the Low Level HAL, and uses the Device Tree and FreeRTOS.
+1.  __High Level HAL [`hal_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c)__: This calls the Low Level HAL, and uses the Device Tree and FreeRTOS.  
+
+    The High Level HAL is called by the [AliOS Firmware](https://github.com/alibaba/AliOS-Things) created by the BL602 IoT SDK.
 
     (Why does the High Level HAL use FreeRTOS? We'll learn in a while)
 
