@@ -28,7 +28,7 @@ PineCone is based on the BL602 combo chipset made by [Nanjing-based Bouffalo Lab
 
 1. __CPU is based on RISC-V, not Arm__: Yep this scares most people, because BL602 will NOT run code compiled for Arm processors. Instead we need to use the [32-bit RISC-V version of the GCC compiler](https://xpack.github.io/riscv-none-embed-gcc/) to recompile our programs.
 
-    FreeRTOS has been ported to BL602. ([More details](https://github.com/pine64/bl_iot_sdk/tree/master/components/bl602)) But other Real Time Operating Systems (like [Zephyr](https://www.zephyrproject.org/), [RIOT](https://www.riot-os.org/) and [Mynewt](https://mynewt.apache.org/)) have been slow to adopt RISC-V. (We'll learn why in a while)
+    [FreeRTOS + AliOS](https://github.com/alibaba/AliOS-Things) has been ported to BL602. ([More details](https://github.com/pine64/bl_iot_sdk/tree/master/components/bl602)) But other Real Time Operating Systems (like [Zephyr](https://www.zephyrproject.org/), [RIOT](https://www.riot-os.org/) and [Mynewt](https://mynewt.apache.org/)) have been slow to adopt RISC-V. (We'll learn why in a while)
 
     Rust runs perfectly fine on RISC-V microcontrollers. ([Here's the proof](https://medium.com/@ly.lee/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v-4054a5922493?source=friends_link&sk=215cd06186d912277d0469224666d60d))
 
@@ -90,7 +90,7 @@ Let's compare BL602 with the two most popular models of 32-bit RISC-V microcontr
 1.  [__BL602__](https://github.com/pine64/bl602-docs) (Released 2020)
     -   No commercial products yet
     -   Supports Bluetooth LE and WiFi (unlike the earlier microcontrollers)
-    -   Supported by FreeRTOS
+    -   Supported by [FreeRTOS + AliOS](https://github.com/alibaba/AliOS-Things)
     -   __Not Supported by PlatformIO, Mynewt, RIOT and Zephyr__
 
 As we can see, firmware support is not so great for newer RISC-V microcontrollers.
@@ -445,7 +445,7 @@ We may use Linux, Windows or macOS to build the BL602 firmware...
 
 On Windows, MSYS2 is required. Alternatively, we may use Windows Subsystem for Linux (WSL). (Some USB Devices don't work under WSL... Beware!)
 
-The built firmware includes FreeRTOS for [handing Bluetooth LE and WiFi operations in the background](https://github.com/pine64/bl_iot_sdk/blob/master/customer_app/bl602_demo_at/bl602_demo_at/main.c#L629-L833). [More details](https://github.com/pine64/bl_iot_sdk/tree/master/components/bl602)
+The built firmware includes [FreeRTOS + AliOS](https://github.com/alibaba/AliOS-Things) for [handing Bluetooth LE and WiFi operations in the background](https://github.com/pine64/bl_iot_sdk/blob/master/customer_app/bl602_demo_at/bl602_demo_at/main.c#L629-L833). [More details](https://github.com/pine64/bl_iot_sdk/tree/master/components/bl602)
 
 _Can we download the firmware without building it ourselves?_
 
@@ -547,6 +547,10 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Notes
 
-1. Besides PineCone, there are [other dev boards based on BL602](https://github.com/pine64/bl_iot_sdk#hardware). However it's not clear whether the firmware is 100% compatible with these boards.
+1.  Besides PineCone, there are [__other dev boards based on BL602__](https://github.com/pine64/bl_iot_sdk#hardware). However it's not clear whether the firmware is 100% compatible with these boards.
 
-1. Can we flash firmware to PineCone via a Web Browser through the [__Web Serial API__](https://dev.to/unjavascripter/the-amazing-powers-of-the-web-web-serial-api-3ilc)? That would be really interesting.
+1.  Can we flash firmware to PineCone via a Web Browser through the [__Web Serial API__](https://dev.to/unjavascripter/the-amazing-powers-of-the-web-web-serial-api-3ilc)? That would be really interesting.
+
+1.  Took me a while to realise that BL602 IoT SDK is [__built with AliOS__](https://github.com/alibaba/AliOS-Things) (with FreeRTOS underneath)
+
+    [See this Twitter Thread](https://twitter.com/MisterTechBlog/status/1355181209404334083?s=20)
