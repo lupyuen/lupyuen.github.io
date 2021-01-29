@@ -840,6 +840,18 @@ msg: Store/AMO access fault
     &gt;sdk_app_i2c.S \
     2&gt;&amp;1
 </code></pre>
+<p><em>Is it safe to comment out <code>hal_i2c_init</code>?</em></p>
+<p>Not quite. When we comment out <code>hal_i2c_init</code>, we disable the High Level I2C HAL functions in our demo firmware <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/"><code>sdk_app_i2c</code></a></p>
+<p>That's the reason why we haven't merged the <code>i2c</code> branch to the <code>master</code> branch...</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/"><strong><code>i2c</code> Branch</strong></a> is used for testing Low Level I2C HAL</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_i2c/"><strong><code>master</code> Branch</strong></a> is used for testing High Level I2C HAL</p>
+</li>
+</ul>
+<p>(The proper fix is to create a new command that calls <code>hal_i2c_init</code>)</p>
 <p><img src="https://lupyuen.github.io/images/i2c-cartoon7.png" alt="Bus Pirate" /></p>
 <h1 id="appendix-test-bme280-with-bus-pirate" class="section-header"><a href="#appendix-test-bme280-with-bus-pirate">14 Appendix: Test BME280 with Bus Pirate</a></h1>
 <p><a href="http://dangerousprototypes.com/docs/Bus_Pirate"><strong>Bus Pirate</strong></a> is a useful gadget for verifying whether our BME280 Sensor works OK. And for checking the I2C bytes that should be sent down the wire to BME280.</p>
