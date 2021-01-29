@@ -108,7 +108,7 @@
 </li>
 <li>
 <p><strong>CPU is based on RISC-V, not Arm</strong>: Yep this scares most people, because BL602 will NOT run code compiled for Arm processors. Instead we need to use the <a href="https://xpack.github.io/riscv-none-embed-gcc/">32-bit RISC-V version of the GCC compiler</a> to recompile our programs.</p>
-<p>FreeRTOS has been ported to BL602. (<a href="https://github.com/pine64/bl_iot_sdk/tree/master/components/bl602">More details</a>) But other Real Time Operating Systems (like <a href="https://www.zephyrproject.org/">Zephyr</a>, <a href="https://www.riot-os.org/">RIOT</a> and <a href="https://mynewt.apache.org/">Mynewt</a>) have been slow to adopt RISC-V. (We'll learn why in a while)</p>
+<p><a href="https://github.com/alibaba/AliOS-Things">FreeRTOS + AliOS</a> has been ported to BL602. (<a href="https://github.com/pine64/bl_iot_sdk/tree/master/components/bl602">More details</a>) But other Real Time Operating Systems (like <a href="https://www.zephyrproject.org/">Zephyr</a>, <a href="https://www.riot-os.org/">RIOT</a> and <a href="https://mynewt.apache.org/">Mynewt</a>) have been slow to adopt RISC-V. (We'll learn why in a while)</p>
 <p>Rust runs perfectly fine on RISC-V microcontrollers. (<a href="https://medium.com/@ly.lee/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v-4054a5922493?source=friends_link&amp;sk=215cd06186d912277d0469224666d60d">Here's the proof</a>)</p>
 </li>
 </ol>
@@ -168,7 +168,7 @@
 <ul>
 <li>No commercial products yet</li>
 <li>Supports Bluetooth LE and WiFi (unlike the earlier microcontrollers)</li>
-<li>Supported by FreeRTOS</li>
+<li>Supported by <a href="https://github.com/alibaba/AliOS-Things">FreeRTOS + AliOS</a></li>
 <li><strong>Not Supported by PlatformIO, Mynewt, RIOT and Zephyr</strong></li>
 </ul>
 </li>
@@ -471,7 +471,7 @@ make
 </li>
 </ul>
 <p>On Windows, MSYS2 is required. Alternatively, we may use Windows Subsystem for Linux (WSL). (Some USB Devices don't work under WSL... Beware!)</p>
-<p>The built firmware includes FreeRTOS for <a href="https://github.com/pine64/bl_iot_sdk/blob/master/customer_app/bl602_demo_at/bl602_demo_at/main.c#L629-L833">handing Bluetooth LE and WiFi operations in the background</a>. <a href="https://github.com/pine64/bl_iot_sdk/tree/master/components/bl602">More details</a></p>
+<p>The built firmware includes <a href="https://github.com/alibaba/AliOS-Things">FreeRTOS + AliOS</a> for <a href="https://github.com/pine64/bl_iot_sdk/blob/master/customer_app/bl602_demo_at/bl602_demo_at/main.c#L629-L833">handing Bluetooth LE and WiFi operations in the background</a>. <a href="https://github.com/pine64/bl_iot_sdk/tree/master/components/bl602">More details</a></p>
 <p><em>Can we download the firmware without building it ourselves?</em></p>
 <p>The firmware is built automatically in the cloud by GitHub Actions...</p>
 <ul>
@@ -565,10 +565,14 @@ make
 <h1 id="notes" class="section-header"><a href="#notes">6 Notes</a></h1>
 <ol>
 <li>
-<p>Besides PineCone, there are <a href="https://github.com/pine64/bl_iot_sdk#hardware">other dev boards based on BL602</a>. However it's not clear whether the firmware is 100% compatible with these boards.</p>
+<p>Besides PineCone, there are <a href="https://github.com/pine64/bl_iot_sdk#hardware"><strong>other dev boards based on BL602</strong></a>. However it's not clear whether the firmware is 100% compatible with these boards.</p>
 </li>
 <li>
 <p>Can we flash firmware to PineCone via a Web Browser through the <a href="https://dev.to/unjavascripter/the-amazing-powers-of-the-web-web-serial-api-3ilc"><strong>Web Serial API</strong></a>? That would be really interesting.</p>
+</li>
+<li>
+<p>Took me a while to realise that BL602 IoT SDK is <a href="https://github.com/alibaba/AliOS-Things"><strong>built with AliOS</strong></a> (with FreeRTOS underneath)</p>
+<p><a href="https://twitter.com/MisterTechBlog/status/1355181209404334083?s=20">See this Twitter Thread</a></p>
 </li>
 </ol>
 
