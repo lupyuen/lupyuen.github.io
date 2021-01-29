@@ -208,7 +208,7 @@
 <p>Here's the command for initialising the I2C Port...</p>
 <pre><code class="language-text">#  i2c_init
 </code></pre>
-<p>Let's discover how this command calls the Low Level I2C HAL to initialise the I2C Port: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L333-L359"><code>sdk_app_i2c/demo.c</code></a></p>
+<p>Let's discover how this command calls the Low Level I2C HAL to initialise the I2C Port: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L343-L369"><code>sdk_app_i2c/demo.c</code></a></p>
 <h2 id="select-i2c-port" class="section-header"><a href="#select-i2c-port">3.1 Select I2C Port</a></h2>
 <pre><code class="language-c">/// Init I2C Port. Based on hal_i2c_init in hal_i2c.c
 static void test_i2c_init(char *buf, int len, int argc, char **argv) {
@@ -267,7 +267,7 @@ static i2c_msg_t *gpstmsg;
 <h1 id="i2c-message" class="section-header"><a href="#i2c-message">4 I2C Message</a></h1>
 <p>Our objective is to <strong>read Register <code>0xD0</code></strong> from our BME280 Sensor with <strong>Device ID <code>0x77</code></strong></p>
 <p>We specify these details in an <strong>I2C Message Struct <code>i2c_msg_t</code></strong> that's defined in the Low Level I2C HAL.</p>
-<p>Here's how we create an I2C Message: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L406-L434"><code>sdk_app_i2c/demo.c</code></a></p>
+<p>Here's how we create an I2C Message: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L424-L442"><code>sdk_app_i2c/demo.c</code></a></p>
 <h2 id="define-i2c-message-and-buffer" class="section-header"><a href="#define-i2c-message-and-buffer">4.1 Define I2C Message and Buffer</a></h2>
 <pre><code class="language-c">//  Define I2C message and buffer
 static i2c_msg_t read_msg;    //  Message for reading I2C Data
@@ -328,7 +328,7 @@ read_msg.sublen  = 1;     //  Length of Register Address (bytes)
 <p>To begin reading data from our BME280 Sensor, we enter this command...</p>
 <pre><code class="language-text">#  i2c_start_read
 </code></pre>
-<p>Let's find out what happens inside that command: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L406-L434"><code>sdk_app_i2c/demo.c</code></a></p>
+<p>Let's find out what happens inside that command: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L420-L448"><code>sdk_app_i2c/demo.c</code></a></p>
 <h2 id="create-i2c-message" class="section-header"><a href="#create-i2c-message">5.1 Create I2C Message</a></h2>
 <p>We start by creating the I2C Message. We have seen this code earlier for creating the message...</p>
 <pre><code class="language-c">//  Define I2C message and buffer
@@ -386,7 +386,7 @@ bl_irq_register_with_ctx(
 );
 </code></pre>
 <p>And the current I2C Message <code>gpstmsg</code> will be passed as our Interrupt Context.</p>
-<p>Let's find out how our Interrupt Handler handles I2C Interrupts: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L266-L321"><code>sdk_app_i2c/demo.c</code></a></p>
+<p>Let's find out how our Interrupt Handler handles I2C Interrupts: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L273-L328"><code>sdk_app_i2c/demo.c</code></a></p>
 <h2 id="get-i2c-message-and-interrupt-reason" class="section-header"><a href="#get-i2c-message-and-interrupt-reason">6.1 Get I2C Message and Interrupt Reason</a></h2>
 <p>When an I2C Interrupt is triggered, we fetch the Interrupt Reason and the I2C Message (from the Interrupt Context)...</p>
 <pre><code class="language-c">/// I2C Interrupt Handler. Based on i2c_interrupt_entry in hal_i2c.c
@@ -486,7 +486,7 @@ static void test_i2c_interrupt_entry(void *ctx) {
 <h1 id="transmit-and-receive-i2c-data" class="section-header"><a href="#transmit-and-receive-i2c-data">7 Transmit and Receive I2C Data</a></h1>
 <p>BL602 I2C has a <strong>FIFO Queue (First In First Out) of 4 bytes</strong> for transmitting and receiving I2C data.</p>
 <p>Our I2C Interrupt Handler calls <code>test_i2c_transferbytes</code> to transmit and receive data in 4-byte chunks.</p>
-<p>Here's how it works for I2C Write and I2C Read Operations: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L244-L270"><code>sdk_app_i2c/demo.c</code></a></p>
+<p>Here's how it works for I2C Write and I2C Read Operations: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L249-L271"><code>sdk_app_i2c/demo.c</code></a></p>
 <h2 id="i2c-write-operation" class="section-header"><a href="#i2c-write-operation">7.1 I2C Write Operation</a></h2>
 <p>In an I2C Write Operation, we handle the I2C Data Transmitted Interrupt by <strong>transmitting the next 4 bytes from the Message Buffer</strong>...</p>
 <pre><code class="language-c">/// For Rx FIFO Ready and Tx FIFO Ready, transfer 4 bytes of data. 
@@ -526,7 +526,7 @@ static void test_i2c_transferbytes(i2c_msg_t *msg) {
 <p>Here's the final command that we'll enter into the BL602 Firmware... It terminates the I2C transfer.</p>
 <pre><code class="language-text">#  i2c_stop_read
 </code></pre>
-<p>This command calls <code>test_i2c_stop</code> to close the I2C Port: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L446-L456"><code>sdk_app_i2c/demo.c</code></a></p>
+<p>This command calls <code>test_i2c_stop</code> to close the I2C Port: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L450-L460"><code>sdk_app_i2c/demo.c</code></a></p>
 <pre><code class="language-c">/// Stop reading data from I2C device
 static void test_i2c_stop_read(char *buf, int len, int argc, char **argv) {
     //  Stop the I2C transfer on I2C Port 0
@@ -760,19 +760,19 @@ static uint8_t read_buf[32];  //  Buffer for reading I2C Data
 </li>
 <li>
 <p>We talked about reading I2C Registers... What about <strong>writing to I2C Registers</strong>?</p>
-<p>The code should be similar. The demo program contains code for writing to I2C Registers, but it hasn't been tested. And it needs cleaning up. <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L376-L414">See this</a></p>
+<p>The code should be similar. The demo program contains code for writing to I2C Registers, but it hasn't been tested. And it needs cleaning up. <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L376-L418">See this</a></p>
 </li>
 <li>
-<p><strong>BL602 SPI</strong> doesn't have a Low Level HAL... It only comes as a High Level HAL with FreeRTOS. Which will be a challenging exploration. <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_spi.c">See this</a></p>
+<p><strong>BL602 SPI</strong> doesn't have a Low Level HAL... It only comes as a High Level HAL with FreeRTOS. Which will be a challenging exploration. <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_spi.c">See this</a></p>
 </li>
 <li>
-<p>Quiz for the Reader: What could go wrong with this code?</p>
+<p><strong>Quiz for the Reader:</strong> What could go wrong with this code?</p>
 <p><img src="https://lupyuen.github.io/images/i2c-init.png" alt="i2c_gpio_init: What happens when i2cx is NOT I2C0" /></p>
 <p><a href="https://twitter.com/MisterTechBlog/status/1351441955637534720?s=20"><strong>Here's The Answer</strong></a></p>
 <p>(From Low Level I2C HAL <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c"><code>bl_i2c.c</code></a>)</p>
 </li>
 <li>
-<p>Another Quiz for the Reader: Why does this code look dubious?</p>
+<p><strong>Another Quiz for the Reader:</strong> Why does this code look dubious?</p>
 <p><img src="https://lupyuen.github.io/images/i2c-transferbytes.png" alt="i2c_transferbytes: Assignment inside Condition" /></p>
 <p><a href="https://github.com/bouffalolab/bl_iot_sdk/issues/33"><strong>Here's The Answer</strong></a></p>
 <p>(From High Level I2C HAL <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c"><code>hal_i2c.c</code></a>)</p>
