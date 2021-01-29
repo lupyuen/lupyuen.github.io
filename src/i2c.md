@@ -1036,6 +1036,10 @@ That's the reason why we haven't merged the `i2c` branch to the `master` branch.
 
 (The proper fix is to create a new command that calls `hal_i2c_init`)
 
+_What are the `aos` functions in the code above?_
+
+The `aos` functions are defined in [AliOS](https://github.com/alibaba/AliOS-Things). Remember that the High Level I2C HAL is called by AliOS Firmware.
+
 ![Bus Pirate](https://lupyuen.github.io/images/i2c-cartoon7.png)
 
 # Appendix: Test BME280 with Bus Pirate
