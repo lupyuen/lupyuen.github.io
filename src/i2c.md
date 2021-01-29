@@ -135,7 +135,7 @@ Here's the command for initialising the I2C Port...
 #  i2c_init
 ```
 
-Let's discover how this command calls the Low Level I2C HAL to initialise the I2C Port: [`sdk_app_i2c/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L333-L359)
+Let's discover how this command calls the Low Level I2C HAL to initialise the I2C Port: [`sdk_app_i2c/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L343-L369)
 
 ## Select I2C Port
 
@@ -234,7 +234,7 @@ Our objective is to __read Register `0xD0`__ from our BME280 Sensor with __Devic
 
 We specify these details in an __I2C Message Struct `i2c_msg_t`__ that's defined in the Low Level I2C HAL.
 
-Here's how we create an I2C Message: [`sdk_app_i2c/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L406-L434)
+Here's how we create an I2C Message: [`sdk_app_i2c/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L424-L442)
 
 ## Define I2C Message and Buffer
 
@@ -331,7 +331,7 @@ To begin reading data from our BME280 Sensor, we enter this command...
 #  i2c_start_read
 ```
 
-Let's find out what happens inside that command: [`sdk_app_i2c/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L406-L434)
+Let's find out what happens inside that command: [`sdk_app_i2c/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L420-L448)
 
 ## Create I2C Message
 
@@ -412,7 +412,7 @@ bl_irq_register_with_ctx(
 
 And the current I2C Message `gpstmsg` will be passed as our Interrupt Context.
 
-Let's find out how our Interrupt Handler handles I2C Interrupts: [`sdk_app_i2c/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L266-L321)
+Let's find out how our Interrupt Handler handles I2C Interrupts: [`sdk_app_i2c/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L273-L328)
 
 ## Get I2C Message and Interrupt Reason
 
@@ -553,7 +553,7 @@ BL602 I2C has a __FIFO Queue (First In First Out) of 4 bytes__ for transmitting 
 
 Our I2C Interrupt Handler calls `test_i2c_transferbytes` to transmit and receive data in 4-byte chunks.
 
-Here's how it works for I2C Write and I2C Read Operations: [`sdk_app_i2c/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L244-L270)
+Here's how it works for I2C Write and I2C Read Operations: [`sdk_app_i2c/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L249-L271)
 
 ## I2C Write Operation
 
@@ -612,7 +612,7 @@ Here's the final command that we'll enter into the BL602 Firmware... It terminat
 #  i2c_stop_read
 ```
 
-This command calls `test_i2c_stop` to close the I2C Port: [`sdk_app_i2c/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L446-L456)
+This command calls `test_i2c_stop` to close the I2C Port: [`sdk_app_i2c/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L450-L460)
 
 ```c
 /// Stop reading data from I2C device
@@ -918,11 +918,11 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  We talked about reading I2C Registers... What about __writing to I2C Registers__?
 
-    The code should be similar. The demo program contains code for writing to I2C Registers, but it hasn't been tested. And it needs cleaning up. [See this](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L376-L414)
+    The code should be similar. The demo program contains code for writing to I2C Registers, but it hasn't been tested. And it needs cleaning up. [See this](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L376-L418)
 
-1.  __BL602 SPI__ doesn't have a Low Level HAL... It only comes as a High Level HAL with FreeRTOS. Which will be a challenging exploration. [See this](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_spi.c)
+1.  __BL602 SPI__ doesn't have a Low Level HAL... It only comes as a High Level HAL with FreeRTOS. Which will be a challenging exploration. [See this](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_spi.c)
 
-1.  Quiz for the Reader: What could go wrong with this code?
+1.  __Quiz for the Reader:__ What could go wrong with this code?
 
     ![i2c_gpio_init: What happens when i2cx is NOT I2C0](https://lupyuen.github.io/images/i2c-init.png)
 
@@ -930,7 +930,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     (From Low Level I2C HAL [`bl_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c))
 
-1.  Another Quiz for the Reader: Why does this code look dubious?
+1.  __Another Quiz for the Reader:__ Why does this code look dubious?
     
     ![i2c_transferbytes: Assignment inside Condition](https://lupyuen.github.io/images/i2c-transferbytes.png)
 
