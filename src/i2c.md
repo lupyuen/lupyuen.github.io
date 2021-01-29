@@ -1014,6 +1014,18 @@ riscv-none-embed-objdump \
     2>&1
 ```
 
+_Is it safe to comment out `hal_i2c_init`?_
+
+Not quite. When we comment out `hal_i2c_init`, we disable the High Level I2C HAL functions in our demo firmware [`sdk_app_i2c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/)
+
+That's the reason why we haven't merged the `i2c` branch to the `master` branch...
+
+-   [__`i2c` Branch__](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/) is used for testing Low Level I2C HAL
+
+-   [__`master` Branch__](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_i2c/) is used for testing High Level I2C HAL
+
+(The proper fix is to create a new command that calls `hal_i2c_init`)
+
 ![Bus Pirate](https://lupyuen.github.io/images/i2c-cartoon7.png)
 
 # Appendix: Test BME280 with Bus Pirate
