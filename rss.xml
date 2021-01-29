@@ -4,6 +4,12 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>PineCone BL602 talks to I2C Sensors</title>
+            <link>https://lupyuen.github.io/articles/i2c</link>
+            <description><![CDATA[How we call the BL602 RISC-V Hardware Abstraction Layer to access the BME280 I2C Sensor]]></description>
+            <pubDate>Fri, 29 Jan 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Mynewt GPIO ported to PineCone BL602 RISC-V Board</title>
             <link>https://lupyuen.github.io/articles/gpio</link>
             <description><![CDATA[How we ported the BL602 RISC-V Hardware Abstraction Layer to Apache Mynewt ... Starting with GPIO]]></description>
