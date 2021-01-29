@@ -882,11 +882,11 @@ Now that we understand the inner workings of I2C on BL602...
 
 1.  Let's __port BL602 I2C to Mynewt__...
 
-    (Like we did for BL602 GPIO)
+    [(Like we did for BL602 GPIO)](https://lupyuen.github.io/articles/gpio)
 
 1.  Also __start working on BL602 SPI__!
 
-    (I'm expecting to receive some SPI displays... Many thanks to my Generous Sponsor! 😀 )
+    [(I'm expecting to receive some SPI displays... Many thanks to my Generous Sponsor! 😀 )](https://twitter.com/MisterTechBlog/status/1354776244018057218?s=20)
 
 There's plenty more code in the [__BL602 IoT SDK__](https://github.com/bouffalolab/bl_iot_sdk) to be deciphered and documented: __UART, SPI, ADC, DAC, WiFi, Bluetooth LE,__ ...
 
