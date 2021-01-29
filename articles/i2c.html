@@ -861,6 +861,8 @@ msg: Store/AMO access fault
 </li>
 </ul>
 <p>(The proper fix is to create a new command that calls <code>hal_i2c_init</code>)</p>
+<p><em>What are the <code>aos</code> functions in the code above?</em></p>
+<p>The <code>aos</code> functions are defined in <a href="https://github.com/alibaba/AliOS-Things">AliOS</a>. Remember that the High Level I2C HAL is called by AliOS Firmware.</p>
 <p><img src="https://lupyuen.github.io/images/i2c-cartoon7.png" alt="Bus Pirate" /></p>
 <h1 id="appendix-test-bme280-with-bus-pirate" class="section-header"><a href="#appendix-test-bme280-with-bus-pirate">14 Appendix: Test BME280 with Bus Pirate</a></h1>
 <p><a href="http://dangerousprototypes.com/docs/Bus_Pirate"><strong>Bus Pirate</strong></a> is a useful gadget for verifying whether our BME280 Sensor works OK. And for checking the I2C bytes that should be sent down the wire to BME280.</p>
