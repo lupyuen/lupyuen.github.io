@@ -920,6 +920,12 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     The code should be similar. The demo program contains code for writing to I2C Registers, but it hasn't been tested. And it needs cleaning up. [See this](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L376-L418)
 
+1.  Why aren't we using __DMA for I2C__?
+
+    DMA for I2C (and SPI) sounds overkill for an IoT Gadget. We should keep the firmware simple and easy to maintain. (Until we have more maintainers)
+
+    We'll come back later to implement DMA for I2C (and SPI) if we need to do any high-speed bulk data transfer.
+
 1.  __BL602 SPI__ doesn't have a Low Level HAL... It only comes as a High Level HAL with FreeRTOS. Which will be a challenging exploration. [See this](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_spi.c)
 
 1.  __Quiz for the Reader:__ What could go wrong with this code?
