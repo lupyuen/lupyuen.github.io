@@ -862,7 +862,19 @@ When we implement these two Solutions in FreeRTOS... We'll get the __High Level 
 
 Hence the High Level I2C HAL (which calls FreeRTOS) is __fully functional today__ for processing I2C Sensor Data.
 
-The High Level I2C HAL lacks documentation, but the code explained in this article looks highly similar to the High Level I2C HAL.
+_But the High Level I2C HAL lacks documentation... How do we use it?_
+
+The code explained in this article looks highly similar to the High Level I2C HAL.
+
+Here's the list of functions we've seen in this article, and their equivalent functions in the High Level I2C HAL...
+
+| Function In <br> This Article | Function In <br> High Level HAL |
+|:---|:---|
+| [`test_i2c`<br>`_init`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L343-L369) | [`hal_i2c`<br>`_init`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c#L272-L298)
+| [`test_i2c`<br>`_start_read`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L420-L448) | [`hal_i2c`<br>`_read_block`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c#L300-L324)
+| [`test_i2c`<br>`_interrupt`<br>`_entry`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L273-L328) | [`i2c`<br>`_interrupt`<br>`_entry`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c#L97-L133)
+| [`test_i2c`<br>`_transferbytes`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L249-L271) | [`i2c`<br>`_transferbytes`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c#L74-L95) 
+| [`test_i2c`<br>`_stop`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L236-L247) | [`i2c`<br>`_callback`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c#L52-L72)
 
 [See the original (unmodified) High Level I2C HAL Demo](https://github.com/bouffalolab/bl_iot_sdk/tree/master/customer_app/sdk_app_i2c)
 
