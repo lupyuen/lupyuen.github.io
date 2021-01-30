@@ -856,6 +856,8 @@ We have 2 problems when calling the Low Level I2C HAL...
 
     We could use a __Message Queue to enqueue I2C Requests__ and execute the I2C Requests one at a time.
 
+## High Level HAL unmasked
+
 _What happens when we implement the two Solutions in FreeRTOS?_
 
 When we implement these two Solutions in FreeRTOS... We'll get the __High Level I2C HAL!__ (See [`hal_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c))
@@ -876,7 +878,11 @@ Here's the list of functions we've seen in this article, and their equivalent fu
 | [`test_i2c`<br>`_transferbytes`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L249-L271) | [`i2c`<br>`_transferbytes`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c#L74-L95) 
 | [`test_i2c`<br>`_stop`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L236-L247) | [`i2c`<br>`_callback`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c#L52-L72)
 
-[See the original (unmodified) High Level I2C HAL Demo](https://github.com/bouffalolab/bl_iot_sdk/tree/master/customer_app/sdk_app_i2c)
+-   [See the Chinese docs for High Level I2C HAL](https://help.aliyun.com/document_detail/161064.html?spm=a2c4g.11186623.6.577.492c4564jOCOjU)
+
+-   [See the original (unmodified) High Level I2C HAL Demo](https://github.com/bouffalolab/bl_iot_sdk/tree/master/customer_app/sdk_app_i2c)
+
+## High Level HAL without FreeRTOS
 
 _Instead of FreeRTOS... Can we implement the two Solutions with Mynewt, RIOT or Zephyr?_
 
