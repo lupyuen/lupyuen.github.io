@@ -26,6 +26,28 @@ Also we'll learn to __troubleshoot BL602 SPI with a Logic Analyser__.
 
 ![PineCone BL602 RISC-V Evaluation Board connected to BME280 SPI Sensor](https://lupyuen.github.io/images/spi-title.jpg)
 
+# Times Are a-Changin'
+
+Humans evolve... So do the terms that we use!
+
+This article will become obsolete quickly unless we adopt the [__new names for SPI Pins__](https://www.oshwa.org/a-resolution-to-redefine-spi-signal-names)...
+
+-  We'll say __"Serial Data In"__ _(instead of "MISO")_
+
+-  And we'll say __"Serial Data Out"__ _(instead of "MOSI")_
+
+-  We'll refer to BL602 as the __"SPI Controller"__
+
+-  And BME280 as the __"SPI Peripheral"__
+
+Note that Serial Data In and Serial Data Out are flipped across the SPI Controller and the SPI Peripheral...
+
+-  __Serial Data In on BL602__ connects to __Serial Data Out on BME280__
+
+-  And __Serial Data Out on BL602__ connects to __Serial Data In on BME280__
+
+(Yep it works like the Transmit / Receive pins for a UART port)
+
 # What's Next
 
 TODO
