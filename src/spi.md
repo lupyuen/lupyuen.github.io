@@ -50,6 +50,38 @@ Note that Serial Data In and Serial Data Out are flipped across the SPI Controll
 
 (Yep it works like the Transmit / Receive pins for a UART port)
 
+# BL602 Hardware Abstraction Layer for SPI
+
+TODO
+
+# Connect BL602 to BME280 SPI Sensor
+
+TODO
+
+# Initialise SPI Port
+
+TODO
+
+# Transmit SPI Data
+
+TODO
+
+# Receive SPI Data
+
+TODO
+
+# Show the Results
+
+TODO
+
+# Build and Run the Firmware
+
+TODO
+
+# Port BL602 SPI HAL to other Operating Systems
+
+TODO
+
 # What's Next
 
 TODO
@@ -63,3 +95,11 @@ TODO
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [`lupyuen.github.io/src/spi.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/spi.md)
+
+# Appendix: Test BME280 with Bus Pirate
+
+TODO
+
+# Appendix: Troubleshoot BL602 SPI with Logic Analyser
+
+TODO
