@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <title>PineCone BL602 talks SPI too!</title>
+
+    
+    <!-- Begin scripts/articles/*-header.html: Article Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<meta property="og:title" 
+    content="PineCone BL602 talks SPI too!" 
+    data-rh="true">
+<meta property="og:description" 
+    content="PineCone BL602 RISC-V Board talks to BME280 Sensor over SPI... Let's find out how" 
+    data-rh="true">
+<meta property="og:image" 
+    content="https://lupyuen.github.io/images/spi-title.jpg">
+<meta property="og:type" 
+    content="article" data-rh="true">
+<!-- End scripts/articles/*-header.html -->
+<!-- Begin scripts/rustdoc-header.html: Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<link rel="alternate" type="application/rss+xml" title="RSS Feed for lupyuen" href="/rss.xml" />
+<link rel="stylesheet" type="text/css" href="../normalize.css">
+<link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle">
+<link rel="stylesheet" type="text/css" href="../dark.css">
+<link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle">
+<link rel="stylesheet" type="text/css" href="../prism.css">
+<script src="../storage.js"></script><noscript>
+<link rel="stylesheet" href="../noscript.css"></noscript>
+<link rel="shortcut icon" href="../favicon.ico">
+<style type="text/css">
+    #crate-search {
+        background-image: url("../down-arrow.svg");
+    }
+    a {
+        color: #77d;
+    }
+</style>
+<!-- End scripts/rustdoc-header.html -->
+
+
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+        <!-- Begin scripts/rustdoc-before.html: Pre-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
+
+    <!-- Begin Theme Picker -->
+    <div class="theme-picker" style="left: 0"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg"
+        width="18" alt="Pick another theme!"></button>
+        <div id="theme-choices"></div>
+    </div>
+    <script src="../theme.js"></script>
+    <script src="../prism.js"></script>
+    <!-- Theme Picker -->
+
+    <!-- End scripts/rustdoc-before.html -->
+    
+
+    <h1 class="title">PineCone BL602 talks SPI too!</h1>
+    <nav id="TOC"><ul>
+<li><a href="#whats-next">1 What's Next</a><ul></ul></li></ul></nav><p>📝 <em>10 Feb 2021</em></p>
+<p>Here's the source code for BL602 accessing BME280 over SPI: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c"><code>sdk_app_spi/demo.c</code></a></p>
+<p>In this article we'll study the source code and look into these issues with BL602 SPI...</p>
+<ol>
+<li>
+<p>The pins for <strong>Serial Data In</strong> and <strong>Serial Data Out</strong> seem to be flipped, when observed with a Logic Analyser. </p>
+<p>This contradicts the BL602 Reference Manual.</p>
+</li>
+<li>
+<p>To talk to BME280, we must configure BL602 for <strong>SPI Polarity 0, Phase 1</strong>.</p>
+<p>Though the Logic Analyser shows that it looks like SPI Phase 0.</p>
+</li>
+<li>
+<p>BL602's <strong>SPI Chip Select Pin</strong> doesn't work with BME280's SPI protocol.</p>
+<p>We'll control the SPI Chip Select Pin ourselves.</p>
+</li>
+<li>
+<p>Setting <strong>Serial Data Out to Pin 0</strong> will switch on the WiFi LED.</p>
+<p>We'll switch to a different pin for Serial Data Out.</p>
+</li>
+</ol>
+<p>Also we'll learn to <strong>troubleshoot BL602 SPI with a Logic Analyser</strong>.</p>
+<p><img src="https://lupyuen.github.io/images/spi-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board connected to BME280 SPI Sensor" /></p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">1 What's Next</a></h1>
+<p>TODO</p>
+<ul>
+<li>
+<p><a href="https://github.com/sponsors/lupyuen">Sponsor me a coffee</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io">Check out my articles</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/rss.xml">RSS Feed</a></p>
+</li>
+</ul>
+<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
+<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/spi.md"><code>lupyuen.github.io/src/spi.md</code></a></p>
+
+    
+</body>
+</html>
