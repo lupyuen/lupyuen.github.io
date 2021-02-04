@@ -381,7 +381,7 @@ TODO
 
 TODO
 
-# Appendix: Inside BL602 HAL
+# Appendix: Inside BL602 SPI HAL
 
 TODO
 
