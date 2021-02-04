@@ -24,7 +24,9 @@ In this article we'll study the source code and look into these issues with BL60
 
 Also we'll learn to __troubleshoot BL602 SPI with a Logic Analyser__.
 
-![PineCone BL602 RISC-V Evaluation Board connected to BME280 SPI Sensor](https://lupyuen.github.io/images/spi-title.jpg)
+![PineCone BL602 RISC-V Board connected to BME280 SPI Sensor](https://lupyuen.github.io/images/spi-title.jpg)
+
+_PineCone BL602 RISC-V Board connected to BME280 SPI Sensor_
 
 # Times Are a-Changin'
 
