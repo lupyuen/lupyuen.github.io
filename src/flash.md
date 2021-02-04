@@ -573,6 +573,8 @@ We may configure BL602's peripherals and ports through the firmware code by call
 
 Configuring the WiFi stack for BL602 can get cumbersome if we code it in the firmware. Thus it makes sense to embed the WiFi configuration inside the Device Tree. (We'll see this in a while)
 
+__UPDATE:__ Device Trees are used on BL602 because the BL602 IoT SDK is partly based on [__AliOS Things__](https://github.com/alibaba/AliOS-Things) embedded operating system. This enables AliOS to access BL602 peripherals and ports via the Linux-style `/dev` name. For example, `/dev/ttyS0` refers to the UART console.
+
 _Which functions in the BL602 HAL will use the Device Tree to configure the BL602 peripherals and ports?_
 
 Look for BL602 HAL Functions named `dts` like...
