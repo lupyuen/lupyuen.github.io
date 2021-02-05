@@ -152,9 +152,9 @@ Here's how BL602 and BME280 will talk over SPI...
 
 The __SPI Chip Select Pin (CS)__ and __SPI Clock Pin (SCK)__ will frame and synchronise the data transfer...
 
-![BL602 talks to BME280 over SPI](https://lupyuen.github.io/images/spi-analyse9a.png)
+![BL602 talks to BME280 over SPI, visualised by a Logic Analyser](https://lupyuen.github.io/images/spi-analyse9a.png)
 
-_BL602 talks to BME280 over SPI_
+_BL602 talks to BME280 over SPI, visualised by a Logic Analyser_
 
 # Initialise SPI Port
 
