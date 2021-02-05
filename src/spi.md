@@ -142,11 +142,19 @@ _What shall we accomplish with BL602 and BME280?_
 
     (`0x60` identifies the chip as BME280. For BMP280 the Chip ID is `0x58`)
 
-_What are the data bytes that will be sent by BL602?_
+_What's the SPI Data that will be transferred between BL602 and BME280?_
 
-Here's the SPI Data that will be sent by BL602 to BME280...
+Here's how BL602 and BME280 will talk over SPI...
 
-TODO
+1.  BL602 transmits byte __`0xD0`__ to BME280 on __Serial Data Out__ _(formerly MOSI)_
+
+1.  BME280 returns byte __`0x60`__ to BL602 on __Serial Data In__ _(formerly MISO)_
+
+The __SPI Chip Select Pin (CS)__ and __SPI Clock Pin (SCK)__ will frame and synchronise the data transfer...
+
+![BL602 talks to BME280 over SPI](https://lupyuen.github.io/images/spi-analyse9a.png)
+
+_BL602 talks to BME280 over SPI_
 
 # Initialise SPI Port
 
