@@ -280,13 +280,29 @@ Our SPI Port is initialised, all set for transferring data!
 
 # Transfer SPI Data
 
-TODO
+SPI Controllers (like BL602) and Peripherals (like BME280) can transmit and receive SPI Data simultaneously... Because SPI allows __Full Duplex__ communication.
+
+When the BL602 SPI HAL executes an __SPI Transfer__ request, it's __transmitting and receiving data simultaneously__.
+
+Remember how BL602 and BME280 will talk over SPI?
+
+1.  BL602 transmits byte __`0xD0`__ to BME280
+
+1.  BL602 receives byte __`0x60`__ from BME280
+
+BL602 SPI HAL handles this as __two SPI Transfer__ requests of one byte each...
+
+1.  __First SPI Transfer__: BL602 transmits byte __`0xD0`__
+
+1.  __Second SPI Transfer__: BL602 receives byte __`0x60`__
+
+(Yep there will be "wasted data"... We don't need the received byte from the first request... And the transmitted byte from the second request)
+
+Let's construct the two SPI Transfer requests.
 
 ## Transmit and Receive Buffers
 
-TODO
-
-[`sdk_app_spi/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L102-L108)
+First we define the __Transmit and Receive Buffers__ (one byte each) for the two SPI Transfers: [`sdk_app_spi/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L102-L108)
 
 ```c
 /// SPI Transmit and Receive Buffers for First SPI Transfer
@@ -298,16 +314,13 @@ static uint8_t tx_buf2[1];  //  Unused. For safety, we shall transmit 0xFF which
 static uint8_t rx_buf2[1];  //  We expect to receive Chip ID (0x60) from BME280
 ```
 
-TODO
+## Initialise SPI Buffers and Transfers
 
-Clear the buffers
-
-[`sdk_app_spi/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L110-L156)
+Let's at the function in our demo firmware that creates the two SPI Transfers and executes them: `test_spi_transfer` from [`sdk_app_spi/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L110-L156)
 
 ```c
 /// Start the SPI data transfer
-static void test_spi_transfer(char *buf, int len, int argc, char **argv)
-{
+static void test_spi_transfer(char *buf, int len, int argc, char **argv) {
     //  Clear the buffers
     memset(&tx_buf1, 0, sizeof(tx_buf1));
     memset(&rx_buf1, 0, sizeof(rx_buf1));
@@ -319,13 +332,11 @@ static void test_spi_transfer(char *buf, int len, int argc, char **argv)
     memset(transfers, 0, sizeof(transfers));    
 ```
 
-TODO
-
-Prepare 2 SPI Transfers
+Here we erase the Transmit and Receive Buffers, and prepare two SPI Transfers.
 
 ## First SPI Transfer
 
-TODO
+Next we define the First SPI Transfer...
 
 ```c
     //  First SPI Transfer: Transmit Register ID (0xD0) to BME280
@@ -335,9 +346,15 @@ TODO
     transfers[0].len    = sizeof(tx_buf1);     //  How many bytes
 ```
 
+We'll be transmitting one byte __`0xD0`__ to BME280. This goes into the __Transmit Buffer `tx_buf1`__
+
+We set the __Transmit and Receive Buffers__ for the First SPI Transfer in __`transfers[0]`__
+
+Also we set the __data length__ of the First SPI Transfer (one byte) in __`transfers[0]`__
+
 ## Second SPI Transfer
 
-TODO
+Then we define the Second SPI Transfer...
 
 ```c
     //  Second SPI Transfer: Receive Chip ID (0x60) from BME280
@@ -346,6 +363,12 @@ TODO
     transfers[1].rx_buf = (uint32_t) rx_buf2;  //  Receive Buffer (Chip ID)
     transfers[1].len    = sizeof(tx_buf2);     //  How many bytes
 ```
+
+BME280 will ignore the byte transmitted by BL602 in the Second SPI Transfer. But let's send __`0xFF`__ for safety. This goes into the __Transmit Buffer `tx_buf2`__
+
+We set the __Transmit and Receive Buffers__ for the Second SPI Transfer in __`transfers[1]`__
+
+Also we set the __data length__ of the Second SPI Transfer (one byte) in __`transfers[1]`__
 
 ## Execute the SPI Transfers
 
