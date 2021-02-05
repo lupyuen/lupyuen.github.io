@@ -76,7 +76,8 @@
 <li><a href="#initialise-spi-buffers-and-transfers">5.2 Initialise SPI Buffers and Transfers</a><ul></ul></li>
 <li><a href="#first-spi-transfer">5.3 First SPI Transfer</a><ul></ul></li>
 <li><a href="#second-spi-transfer">5.4 Second SPI Transfer</a><ul></ul></li>
-<li><a href="#execute-the-spi-transfers">5.5 Execute the SPI Transfers</a><ul></ul></li></ul></li>
+<li><a href="#execute-the-spi-transfers">5.5 Execute the SPI Transfers</a><ul></ul></li>
+<li><a href="#spi-with-direct-memory-access">5.6 SPI with Direct Memory Access</a><ul></ul></li></ul></li>
 <li><a href="#control-our-own-chip-select-pin">6 Control our own Chip Select Pin</a><ul></ul></li>
 <li><a href="#show-the-results">7 Show the Results</a><ul></ul></li>
 <li><a href="#build-and-run-the-firmware">8 Build and Run the Firmware</a><ul></ul></li>
@@ -429,14 +430,13 @@ static void test_spi_transfer(char *buf, int len, int argc, char **argv) {
 <p>We set the <strong>Transmit and Receive Buffers</strong> for the Second SPI Transfer in <strong><code>transfers[1]</code></strong></p>
 <p>Also we set the <strong>data length</strong> of the Second SPI Transfer (one byte) in <strong><code>transfers[1]</code></strong></p>
 <h2 id="execute-the-spi-transfers" class="section-header"><a href="#execute-the-spi-transfers">5.5 Execute the SPI Transfers</a></h2>
-<p>TODO</p>
-<p>Set Chip Select pin to Low, to activate BME280</p>
+<p>Now we're ready to execute the two SPI Transfers!</p>
+<p>By SPI Convention, we set the <strong>Chip Select Pin to Low</strong> to activate BME280 (and get it ready for talking)...</p>
 <pre><code class="language-c">    //  Set Chip Select pin to Low, to activate BME280
     int rc = bl_gpio_output_set(SPI_CS_PIN, 0);
     assert(rc == 0);
 </code></pre>
-<p>TODO</p>
-<p>Execute the two SPI Transfers with the DMA Controller</p>
+<p>Now that we have BME280's attention, we execute the two SPI Transfers by calling the BL602 SPI HAL Function <code>hal_spi_transfer</code>...</p>
 <pre><code class="language-c">    //  Execute the two SPI Transfers with the DMA Controller
     rc = hal_spi_transfer(
         &amp;spi,       //  SPI Device
@@ -448,15 +448,19 @@ static void test_spi_transfer(char *buf, int len, int argc, char **argv) {
     //  DMA Controller will transmit and receive the SPI data in the background.
     //  hal_spi_transfer will wait for the two SPI Transfers to complete before returning.
 </code></pre>
-<p>TODO</p>
-<p>Now that we're done with the two SPI Transfers...</p>
-<p>Set Chip Select pin to High, to deactivate BME280</p>
+<p><code>hal_spi_transfer</code> will wait for the two SPI Transfers to complete before returning.</p>
+<p>When we're done with the two SPI Transfers, we set the <strong>Chip Select Pin to High</strong> to deactivate BME280 (and put it to sleep)...</p>
 <pre><code class="language-c">    //  Now that we're done with the two SPI Transfers...
     //  Set Chip Select pin to High, to deactivate BME280
     rc = bl_gpio_output_set(SPI_CS_PIN, 1);
     assert(rc == 0);
 }
 </code></pre>
+<p><strong>Mission Accomplished!</strong> The Receive Buffer for the Second SPI Transfer <strong><code>rx_buf2</code></strong> will contain the data received from BME280: <strong><code>0x60</code></strong>.</p>
+<p>We'll witness this shortly.</p>
+<h2 id="spi-with-direct-memory-access" class="section-header"><a href="#spi-with-direct-memory-access">5.6 SPI with Direct Memory Access</a></h2>
+<p><em>What's Direct Memory Access? How does it help with SPI?</em></p>
+<p>TODO</p>
 <h1 id="control-our-own-chip-select-pin" class="section-header"><a href="#control-our-own-chip-select-pin">6 Control our own Chip Select Pin</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L86-L99"><code>sdk_app_spi/demo.c</code></a></p>
