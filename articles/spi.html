@@ -223,9 +223,19 @@
 <p>(<code>0x60</code> identifies the chip as BME280. For BMP280 the Chip ID is <code>0x58</code>)</p>
 </li>
 </ol>
-<p><em>What are the data bytes that will be sent by BL602?</em></p>
-<p>Here's the SPI Data that will be sent by BL602 to BME280...</p>
-<p>TODO</p>
+<p><em>What's the SPI Data that will be transferred between BL602 and BME280?</em></p>
+<p>Here's how BL602 and BME280 will talk over SPI...</p>
+<ol>
+<li>
+<p>BL602 transmits byte <strong><code>0xD0</code></strong> to BME280 on <strong>Serial Data Out</strong> <em>(formerly MOSI)</em></p>
+</li>
+<li>
+<p>BME280 returns byte <strong><code>0x60</code></strong> to BL602 on <strong>Serial Data In</strong> <em>(formerly MISO)</em></p>
+</li>
+</ol>
+<p>The <strong>SPI Chip Select Pin (CS)</strong> and <strong>SPI Clock Pin (SCK)</strong> will frame and synchronise the data transfer...</p>
+<p><img src="https://lupyuen.github.io/images/spi-analyse9a.png" alt="BL602 talks to BME280 over SPI" /></p>
+<p><em>BL602 talks to BME280 over SPI</em></p>
 <h1 id="initialise-spi-port" class="section-header"><a href="#initialise-spi-port">4 Initialise SPI Port</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L45-L100"><code>sdk_app_spi/demo.c</code></a></p>
