@@ -278,9 +278,29 @@ Our SPI Port is initialised, all set for transferring data!
 
 (The custom BL602 SPI HAL Function `spi_init` shall be explained in the Appendix)
 
-# Transmit SPI Data
+# Transfer SPI Data
 
 TODO
+
+## Transmit and Receive Buffers
+
+TODO
+
+[`sdk_app_spi/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L102-L108)
+
+```c
+/// SPI Transmit and Receive Buffers for First SPI Transfer
+static uint8_t tx_buf1[1];  //  We shall transmit Register ID (0xD0)
+static uint8_t rx_buf1[1];  //  Unused. We expect to receive the result from BME280 in the second SPI Transfer.
+
+/// SPI Transmit and Receive Buffers for Second SPI Transfer
+static uint8_t tx_buf2[1];  //  Unused. For safety, we shall transmit 0xFF which is a read command (not write).
+static uint8_t rx_buf2[1];  //  We expect to receive Chip ID (0x60) from BME280
+```
+
+TODO
+
+Clear the buffers
 
 [`sdk_app_spi/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L110-L156)
 
@@ -297,24 +317,54 @@ static void test_spi_transfer(char *buf, int len, int argc, char **argv)
     //  Prepare 2 SPI Transfers
     static spi_ioc_transfer_t transfers[2];
     memset(transfers, 0, sizeof(transfers));    
+```
 
+TODO
+
+Prepare 2 SPI Transfers
+
+## Define First SPI Transfer
+
+TODO
+
+```c
     //  First SPI Transfer: Transmit Register ID (0xD0) to BME280
     tx_buf1[0] = 0xd0;  //  Read BME280 Chip ID Register (0xD0). Read/Write Bit (High Bit) is 1 for Read.
     transfers[0].tx_buf = (uint32_t) tx_buf1;  //  Transmit Buffer (Register ID)
     transfers[0].rx_buf = (uint32_t) rx_buf1;  //  Receive Buffer
     transfers[0].len    = sizeof(tx_buf1);     //  How many bytes
+```
 
+## Define Second SPI Transfer
+
+TODO
+
+```c
     //  Second SPI Transfer: Receive Chip ID (0x60) from BME280
     tx_buf2[0] = 0xff;  //  Unused. Read/Write Bit (High Bit) is 1 for Read.
     transfers[1].tx_buf = (uint32_t) tx_buf2;  //  Transmit Buffer
     transfers[1].rx_buf = (uint32_t) rx_buf2;  //  Receive Buffer (Chip ID)
     transfers[1].len    = sizeof(tx_buf2);     //  How many bytes
+```
 
+## Execute the SPI Transfers
+
+TODO
+
+Set Chip Select pin to Low, to activate BME280
+
+```c
     //  Set Chip Select pin to Low, to activate BME280
     printf("Set CS pin %d to low\r\n", SPI_CS_PIN);
     int rc = bl_gpio_output_set(SPI_CS_PIN, 0);
     assert(rc == 0);
+```
 
+TODO
+
+Execute the two SPI Transfers with the DMA Controller
+
+```c
     //  Execute the two SPI Transfers with the DMA Controller
     rc = hal_spi_transfer(
         &spi,       //  SPI Device
@@ -325,18 +375,22 @@ static void test_spi_transfer(char *buf, int len, int argc, char **argv)
 
     //  DMA Controller will transmit and receive the SPI data in the background.
     //  hal_spi_transfer will wait for the two SPI Transfers to complete before returning.
-    //  Now that we're done with the two SPI Transfers...
+```
 
+TODO
+
+Now that we're done with the two SPI Transfers...
+
+Set Chip Select pin to High, to deactivate BME280
+
+```c
+    //  Now that we're done with the two SPI Transfers...
     //  Set Chip Select pin to High, to deactivate BME280
     rc = bl_gpio_output_set(SPI_CS_PIN, 1);
     assert(rc == 0);
     printf("Set CS pin %d to high\r\n", SPI_CS_PIN);
 }
 ```
-
-# Receive SPI Data
-
-TODO
 
 # Control our own Chip Select Pin
 
@@ -433,32 +487,10 @@ TODO
 
 ```text
 # help
-====Build-in Commands====
-====Support 4 cmds once, seperate by ; ====
-help                     : print this
-p                        : print memory
-m                        : modify memory
-echo                     : echo for command
-exit                     : close CLI
-devname                  : print device name
-sysver                   : system version
-reboot                   : reboot system
-poweroff                 : poweroff system
-reset                    : system reset
-time                     : system time
-ota                      : system ota
-ps                      : thread dump
-ls                       : file list
-hexdump                  : dump file
-cat                      : cat file
-
 ====User Commands====
 spi_init                 : Init SPI port
 spi_transfer             : Transfer SPI data
 spi_result               : Show SPI data received
-blogset                  : blog pri set level
-blogdump                 : blog info dump
-bl_sys_time_now          : sys time now
 
 # spi_init
 port0 eventloop init = 42010b48
