@@ -73,8 +73,8 @@
 <li><a href="#initialise-spi-port">4 Initialise SPI Port</a><ul></ul></li>
 <li><a href="#transfer-spi-data">5 Transfer SPI Data</a><ul>
 <li><a href="#transmit-and-receive-buffers">5.1 Transmit and Receive Buffers</a><ul></ul></li>
-<li><a href="#define-first-spi-transfer">5.2 Define First SPI Transfer</a><ul></ul></li>
-<li><a href="#define-second-spi-transfer">5.3 Define Second SPI Transfer</a><ul></ul></li>
+<li><a href="#first-spi-transfer">5.2 First SPI Transfer</a><ul></ul></li>
+<li><a href="#second-spi-transfer">5.3 Second SPI Transfer</a><ul></ul></li>
 <li><a href="#execute-the-spi-transfers">5.4 Execute the SPI Transfers</a><ul></ul></li></ul></li>
 <li><a href="#control-our-own-chip-select-pin">6 Control our own Chip Select Pin</a><ul></ul></li>
 <li><a href="#show-the-results">7 Show the Results</a><ul></ul></li>
@@ -388,7 +388,7 @@ static void test_spi_transfer(char *buf, int len, int argc, char **argv)
 </code></pre>
 <p>TODO</p>
 <p>Prepare 2 SPI Transfers</p>
-<h2 id="define-first-spi-transfer" class="section-header"><a href="#define-first-spi-transfer">5.2 Define First SPI Transfer</a></h2>
+<h2 id="first-spi-transfer" class="section-header"><a href="#first-spi-transfer">5.2 First SPI Transfer</a></h2>
 <p>TODO</p>
 <pre><code class="language-c">    //  First SPI Transfer: Transmit Register ID (0xD0) to BME280
     tx_buf1[0] = 0xd0;  //  Read BME280 Chip ID Register (0xD0). Read/Write Bit (High Bit) is 1 for Read.
@@ -396,7 +396,7 @@ static void test_spi_transfer(char *buf, int len, int argc, char **argv)
     transfers[0].rx_buf = (uint32_t) rx_buf1;  //  Receive Buffer
     transfers[0].len    = sizeof(tx_buf1);     //  How many bytes
 </code></pre>
-<h2 id="define-second-spi-transfer" class="section-header"><a href="#define-second-spi-transfer">5.3 Define Second SPI Transfer</a></h2>
+<h2 id="second-spi-transfer" class="section-header"><a href="#second-spi-transfer">5.3 Second SPI Transfer</a></h2>
 <p>TODO</p>
 <pre><code class="language-c">    //  Second SPI Transfer: Receive Chip ID (0x60) from BME280
     tx_buf2[0] = 0xff;  //  Unused. Read/Write Bit (High Bit) is 1 for Read.
