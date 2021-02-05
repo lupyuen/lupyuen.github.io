@@ -357,7 +357,7 @@ static void test_spi_init(char *buf, int len, int argc, char **argv) {
 </code></pre>
 <p>(More about Chip Select in a while)</p>
 <p>Our SPI Port is initialised, all set for transferring data!</p>
-<p>(The custom BL602 SPI HAL Function <code>spi_init</code> shall be explained in the Appendix)</p>
+<p>(BL602 SPI HAL Function <code>spi_init</code> shall be explained in the Appendix)</p>
 <h1 id="transfer-spi-data" class="section-header"><a href="#transfer-spi-data">5 Transfer SPI Data</a></h1>
 <p>SPI Controllers (like BL602) and Peripherals (like BME280) can transmit and receive SPI Data simultaneously... Because SPI allows <strong>Full Duplex</strong> communication.</p>
 <p>When the BL602 SPI HAL executes an <strong>SPI Transfer</strong> request, it's <strong>transmitting and receiving data simultaneously</strong>.</p>
@@ -392,7 +392,7 @@ static uint8_t tx_buf2[1];  //  Unused. For safety, we shall transmit 0xFF which
 static uint8_t rx_buf2[1];  //  We expect to receive Chip ID (0x60) from BME280
 </code></pre>
 <h2 id="initialise-spi-buffers-and-transfers" class="section-header"><a href="#initialise-spi-buffers-and-transfers">5.2 Initialise SPI Buffers and Transfers</a></h2>
-<p>Let's at the function in our demo firmware that creates the two SPI Transfers and executes them: <code>test_spi_transfer</code> from <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L110-L156"><code>sdk_app_spi/demo.c</code></a></p>
+<p>Let's look at the function in our demo firmware that creates the two SPI Transfers and executes them: <code>test_spi_transfer</code> from <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L110-L156"><code>sdk_app_spi/demo.c</code></a></p>
 <pre><code class="language-c">/// Start the SPI data transfer
 static void test_spi_transfer(char *buf, int len, int argc, char **argv) {
     //  Clear the buffers
