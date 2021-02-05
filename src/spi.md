@@ -467,6 +467,183 @@ All SPI Transfers done with the BL602 SPI HAL will use super-efficient DMA.
 
 (See `hal_spi_transfer` in the Appendix for the BL602 DMA implementation)
 
+# Build and Run the Firmware
+
+Download the Firmware Binary File __`sdk_app_spi.bin`__ from...
+
+-  [__Binary Release of `sdk_app_spi`__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v3.0.0)
+
+Alternatively, we may build the Firmware Binary File `sdk_app_spi.bin` from the [source code](https://github.com/lupyuen/bl_iot_sdk/tree/spi/customer_app/sdk_app_spi)...
+
+```bash
+# Download the spi branch of lupyuen's bl_iot_sdk
+git clone --recursive --branch spi https://github.com/lupyuen/bl_iot_sdk
+cd bl_iot_sdk/customer_app/sdk_app_spi
+
+# TODO: Change this to the full path of bl_iot_sdk
+export BL60X_SDK_PATH=$HOME/bl_iot_sdk
+export CONFIG_CHIP_NAME=BL602
+make
+
+# TODO: Change ~/blflash to the full path of blflash
+cp build_out/sdk_app_spi.bin ~/blflash
+```
+
+[More details on building bl_iot_sdk](https://lupyuen.github.io/articles/pinecone#building-firmware)
+
+(Remember to use the __`spi`__ branch, not the default __`master`__ branch)
+
+## Flash the firmware
+
+Follow these steps to install `blflash`...
+
+1.  [__"Install rustup"__](https://lupyuen.github.io/articles/flash#install-rustup)
+
+1.  [__"Download and build blflash"__](https://lupyuen.github.io/articles/flash#download-and-build-blflash)
+
+We assume that our Firmware Binary File `sdk_app_spi.bin` has been copied to the `blflash` folder.
+
+Set BL602 to __Flashing Mode__ and restart the board.
+
+For PineCone, this means setting the onboard jumper (IO 8) to the `H` Position [(Like this)](https://lupyuen.github.io/images/pinecone-jumperh.jpg)
+
+Enter these commands to flash `sdk_app_spi.bin` to BL602 over UART...
+
+```bash
+# TODO: Change ~/blflash to the full path of blflash
+cd ~/blflash
+
+# For Linux:
+sudo cargo run flash sdk_app_spi.bin \
+    --port /dev/ttyUSB0
+
+# For macOS:
+cargo run flash sdk_app_spi.bin \
+    --port /dev/tty.usbserial-1420 \
+    --initial-baud-rate 230400 \
+    --baud-rate 230400
+```
+
+[More details on flashing firmware](https://lupyuen.github.io/articles/flash#flash-the-firmware)
+
+## Run the firmware
+
+Set BL602 to __Normal Mode__ (Non-Flashing) and restart the board.
+
+For PineCone, this means setting the onboard jumper (IO 8) to the `L` Position [(Like this)](https://lupyuen.github.io/images/pinecone-jumperl.jpg)
+
+Connect to BL602's UART Port at 2 Mbps like so...
+
+```bash
+# For Linux:
+sudo screen /dev/ttyUSB0 2000000
+
+# For macOS: Doesn't work because 2 Mbps is not supported by macOS for USB Serial.
+# Try using VMWare on macOS. See https://lupyuen.github.io/articles/led#appendix-fix-bl602-demo-firmware-for-macos
+```
+
+On Windows, use `putty`.
+
+[More details on connecting to BL602](https://lupyuen.github.io/articles/flash#watch-the-firmware-run)
+
+## Enter SPI commands
+
+Let's enter some SPI commands to read our BME280 Sensor!
+
+1.  Press Enter to reveal the command prompt.
+
+1.  Enter `help` to see the available commands...
+
+    ```text
+    # help
+    ====User Commands====
+    spi_init                 : Init SPI port
+    spi_transfer             : Transfer SPI data
+    spi_result               : Show SPI data received
+    ```
+
+1.  First we __initialise our SPI Port__. 
+
+    Enter this command...
+
+    ```text
+    # spi_init
+    ```
+
+    `spi_init` calls the function `test_spi_init`, which we have seen earlier.
+
+1.  We should see this...
+
+    ```text
+    port0 eventloop init = 42010b48
+    [HAL] [SPI] Init :
+    port=0, mode=0, polar_phase = 1, freq=200000, tx_dma_ch=2, rx_dma_ch=3, pin_clk=3, pin_cs=2, pin_mosi=1, pin_miso=4
+    set rwspeed = 200000
+    hal_gpio_init: cs:2, clk:3, mosi:1, miso: 4
+    hal_gpio_init: SPI controller mode
+    hal_spi_init.
+    Set CS pin 14 to high
+    ```
+
+1.  Now we __start the two SPI Transfers__...
+
+    ```text
+    # spi_transfer
+    ```
+
+    `spi_transfer` calls the function `test_spi_transfer`, which we have seen earlier.
+
+1.  We should see this...
+
+    ```text
+    Set CS pin 14 to low
+    hal_spi_transfr = 2
+    transfer xfer[0].len = 1
+    Tx DMA src=0x4200d1b8, dest=0x4000a288, size=1, si=1, di=0, i=1
+    Rx DMA src=0x4000a28c, dest=0x4200d1b0, size=1, si=0, di=1, i=1
+    recv all event group.
+    transfer xfer[1].len = 1
+    Tx DMA src=0x4200d1bc, dest=0x4000a288, size=1, si=1, di=0, i=1
+    Rx DMA src=0x4000a28c, dest=0x4200d1b4, size=1, si=0, di=1, i=1
+    recv all event group.
+    Set CS pin 14 to high
+    ```
+
+1.  Finally we display the __SPI Data received__ from BME280...
+
+    ```text
+    # spi_result
+    ```
+
+    `spi_result` is defined here: [`sdk_app_spi/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L158-L182)
+
+1.  We should see this...
+
+    ```text
+    SPI Transfer #1: Received Data 0x0x4200d1b0:
+    ff
+    SPI Transfer #2: Received Data 0x0x4200d1b4:
+    60
+    Tx Interrupts: 2
+    Tx Status:     0x0
+    Tx Term Count: 0x0
+    Tx Error:      0x0
+    Rx Interrupts: 2
+    Rx Status:     0x0
+    Rx Term Count: 0x0
+    Rx Error:      0x0
+    ```
+
+    Remember that we're reading the Chip ID from BME280. We should see this Chip ID under __`SPI Transfer #2`__...
+
+    ```text
+    60
+    ```
+
+    (For BMP280 the Chip ID is `0x58`)
+
+Congratulations! We have successfully read the BME280 Sensor from BL602 over SPI!
+
 # Control our own Chip Select Pin
 
 TODO
@@ -480,7 +657,11 @@ static void test_spi_init(...) {
     //  Configure Chip Select pin as a GPIO Pin
     GLB_GPIO_Type pins[1];
     pins[0] = SPI_CS_PIN;
-    BL_Err_Type rc2 = GLB_GPIO_Func_Init(GPIO_FUN_SWGPIO, pins, sizeof(pins) / sizeof(pins[0]));
+    BL_Err_Type rc2 = GLB_GPIO_Func_Init(
+        GPIO_FUN_SWGPIO,  //  Configure as GPIO 
+        pins,             //  Pins to be configured (Pin 14)
+        sizeof(pins) / sizeof(pins[0])  //  Number of pins (1)
+    );
     assert(rc2 == SUCCESS);
 
     //  Configure Chip Select pin as a GPIO Output Pin (instead of GPIO Input)
@@ -500,7 +681,6 @@ static void test_spi_init(...) {
 static void test_spi_transfer(...) {    
     ...
     //  Set Chip Select pin to Low, to activate BME280
-    printf("Set CS pin %d to low\r\n", SPI_CS_PIN);
     int rc = bl_gpio_output_set(SPI_CS_PIN, 0);
     assert(rc == 0);
 
@@ -519,7 +699,6 @@ static void test_spi_transfer(...) {
     //  Set Chip Select pin to High, to deactivate BME280
     rc = bl_gpio_output_set(SPI_CS_PIN, 1);
     assert(rc == 0);
-    printf("Set CS pin %d to high\r\n", SPI_CS_PIN);
 ```
 
 # Show the Results
@@ -554,55 +733,6 @@ static void test_spi_result(char *buf, int len, int argc, char **argv)
     printf("Rx Term Count: 0x%x\r\n", g_rx_tc);
     printf("Rx Error:      0x%x\r\n", g_rx_error);
 }
-```
-
-# Build and Run the Firmware
-
-TODO
-
-```text
-# help
-====User Commands====
-spi_init                 : Init SPI port
-spi_transfer             : Transfer SPI data
-spi_result               : Show SPI data received
-
-# spi_init
-port0 eventloop init = 42010b48
-[HAL] [SPI] Init :
-port=0, mode=0, polar_phase = 1, freq=200000, tx_dma_ch=2, rx_dma_ch=3, pin_clk=3, pin_cs=2, pin_mosi=1, pin_miso=4
-set rwspeed = 200000
-hal_gpio_init: cs:2, clk:3, mosi:1, miso: 4
-hal_gpio_init: SPI controller mode
-hal_spi_init.
-Set CS pin 14 to high
-
-# spi_transfer
-Set CS pin 14 to low
-hal_spi_transfr = 2
-transfer xfer[0].len = 1
-Tx DMA src=0x4200d1b8, dest=0x4000a288, size=1, si=1, di=0, i=1
-Rx DMA src=0x4000a28c, dest=0x4200d1b0, size=1, si=0, di=1, i=1
-recv all event group.
-transfer xfer[1].len = 1
-Tx DMA src=0x4200d1bc, dest=0x4000a288, size=1, si=1, di=0, i=1
-Rx DMA src=0x4000a28c, dest=0x4200d1b4, size=1, si=0, di=1, i=1
-recv all event group.
-Set CS pin 14 to high
-
-# spi_result
-SPI Transfer #1: Received Data 0x0x4200d1b0:
-  ff
-SPI Transfer #2: Received Data 0x0x4200d1b4:
-  60
-Tx Interrupts: 2
-Tx Status:     0x0
-Tx Term Count: 0x0
-Tx Error:      0x0
-Rx Interrupts: 2
-Rx Status:     0x0
-Rx Term Count: 0x0
-Rx Error:      0x0
 ```
 
 # SPI Data Pins are flipped
