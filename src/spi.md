@@ -276,6 +276,8 @@ Because we're not ready to talk to BME280 yet, we set the Chip Select Pin to Hig
 
 Our SPI Port is initialised, all set for transferring data!
 
+(The custom BL602 SPI HAL Function `spi_init` shall be explained in the Appendix)
+
 # Transmit SPI Data
 
 TODO
