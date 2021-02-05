@@ -413,6 +413,8 @@ __Mission Accomplished!__ The Receive Buffer for the Second SPI Transfer __`rx_b
 
 We'll witness this shortly.
 
+(BL602 SPI HAL Function `hal_spi_transfer` shall be explained in the Appendix)
+
 ## SPI with Direct Memory Access
 
 _What's Direct Memory Access? How does it help SPI?_
