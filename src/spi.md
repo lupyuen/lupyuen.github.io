@@ -771,9 +771,79 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 TODO
 
+Testing BME280 SPI with Bus Pirate:
+(See http://dangerousprototypes.com/docs/SPI)
+
+```text
+HiZ> m
+1. HiZ
+2. 1-WIRE
+3. UART
+4. I2C
+5. SPI
+6. 2WIRE
+7. 3WIRE
+8. KEYB
+9. LCD
+10. PIC
+11. DIO
+x. exit(without change)
+
+(1)> 5
+Set speed:
+ 1. 30KHz
+ 2. 125KHz
+ 3. 250KHz
+ 4. 1MHz
+
+(1)> 3
+Clock polarity:
+ 1. Idle low *default
+ 2. Idle high
+
+(1)>
+Output clock edge:
+ 1. Idle to active
+ 2. Active to idle *default
+
+(2)>
+Input sample phase:
+ 1. Middle *default
+ 2. End
+
+(1)>
+CS:
+ 1. CS
+ 2. /CS *default
+
+(2)>
+Select output type:
+ 1. Open drain (H=Hi-Z, L=GND)
+ 2. Normal (H=3.3V, L=GND)
+
+(1)>
+Clutch disengaged!!!
+To finish setup, start up the power supplies with command 'W'
+Ready
+
+SPI> W
+POWER SUPPLIES ON
+Clutch engaged!!!
+
+SPI> [ 0xD0 r ]
+/CS ENABLED
+WRITE: 0xD0 
+READ: 0x60 
+/CS DISABLED
+```
+
 # Appendix: Troubleshoot BL602 SPI with Logic Analyser
 
 TODO
+
+![PineCone BL602 RISC-V Board connected to LA2016 Logic Analyser and BME280 SPI Sensor](https://lupyuen.github.io/images/spi-analyser.jpg)
+
+_PineCone BL602 RISC-V Board connected to LA2016 Logic Analyser and BME280 SPI Sensor_
 
 # Appendix: Inside BL602 SPI HAL
 
