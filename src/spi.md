@@ -34,9 +34,9 @@ Humans evolve... So do the terms that we use!
 
 This article will become obsolete quickly unless we adopt the [__new names for SPI Pins__](https://www.oshwa.org/a-resolution-to-redefine-spi-signal-names)...
 
--  We'll say __"Serial Data In"__ _(instead of "MISO")_
+-  We'll say __"Serial Data In (SDI)"__ _(instead of "MISO")_
 
--  And we'll say __"Serial Data Out"__ _(instead of "MOSI")_
+-  And we'll say __"Serial Data Out (SDO)"__ _(instead of "MOSI")_
 
 -  We'll refer to BL602 as the __"SPI Controller"__
 
@@ -87,6 +87,64 @@ The firmware will work on __all BL602 boards,__ including PineCone and Pinenut.
 _PineCone BL602 connected to [SparkFun BME280 Sensor](https://www.sparkfun.com/products/13676)  over SPI_
 
 # Connect BL602 to BME280 SPI Sensor
+
+Let's connect BL602 to the [__Bosch BME280 Sensor for Temperature, Humidity and Air Pressure__](https://learn.sparkfun.com/tutorials/sparkfun-bme280-breakout-hookup-guide)
+
+(The steps in this article will work for BMP280 too)
+
+BME280 supports two interfaces: SPI (6 pins) and I2C (4 pins). We shall connect to the __SPI side of BME280__.
+
+_Don't use any pins on the I2C side! (Because the `3V3` pin selects SPI or I2C)_
+
+Connect BL602 to BME280 (the SPI side with 6 pins) according to the pic above...
+
+| BL602 Pin | BME280 SPI | Wire Colour
+|:---:|:---:|:---|
+| __`GPIO 1`__ | `SDO` | Green 
+| __`GPIO 2`__ | Do Not <br> Connect | Do Not <br> Connect
+| __`GPIO 3`__ | `SCK` | Yellow 
+| __`GPIO 4`__ | `SDI` | Blue
+| __`GPIO 14`__ | `CS` | Orange 
+| __`3V3`__ | `3.3V` | Red
+| __`GND`__ | `GND` | Black
+
+(For BME280: SDO = MISO and SDI = MOSI)
+
+We'll talk about GPIO 2 in a while.
+
+## Selecting SPI Pins
+
+We're NOT using the [Recommended SPI Pins for PineCone and Pinenut](https://wiki.pine64.org/wiki/Nutcracker#Pinenut-12S_Module_information): GPIO 0, 11, 14, 17.
+
+And we're NOT using the [Default SPI Pins for BL602 Device Tree](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/device_tree/bl_factory_params_IoTKitA_40M.dts#L237-L259): GPIO 0, 1, 2, 3.
+
+_Why did we choose these pins for SPI?_
+
+- __GPIO 0__ is connected to the __PineCone's WiFi LED__ (Is this documented somewhere?)
+
+- __GPIO 11, 14, 17__ are connected to __PineCone's RGB LED__
+
+We won't use these PineCone LED Pins for SPI because...
+
+1.  Somebody else will probably use the LED Pins to control the LEDs. Contention ensues!
+
+1.  Lights switching on for no reason is just plain... Spooky
+
+(Sorry my mistake... I shouldn't be using Pin 14 for Chip Select. Beware of contention!)
+
+## SPI Protocol for BME280
+
+_What shall we accomplish with BL602 and BME280?_
+
+1.  BME280 has a __Chip ID Register, at Register ID `0xD0`__
+
+1.  Reading the Chip ID Register will give us the __Chip ID value `0x60`__ 
+
+    (`0x60` identifies the chip as BME280. For BMP280 the Chip ID is `0x58`)
+
+_What are the data bytes that will be sent by BL602?_
+
+Here's the SPI Data that will be sent by BL602 to BME280...
 
 TODO
 
