@@ -372,9 +372,9 @@ Also we set the __data length__ of the Second SPI Transfer (one byte) in __`tran
 
 ## Execute the SPI Transfers
 
-TODO
+Now we're ready to execute the two SPI Transfers!
 
-Set Chip Select pin to Low, to activate BME280
+By SPI Convention, we set the __Chip Select Pin to Low__ to activate BME280 (and get it ready for talking)...
 
 ```c
     //  Set Chip Select pin to Low, to activate BME280
@@ -382,9 +382,7 @@ Set Chip Select pin to Low, to activate BME280
     assert(rc == 0);
 ```
 
-TODO
-
-Execute the two SPI Transfers with the DMA Controller
+Now that we have BME280's attention, we execute the two SPI Transfers by calling the BL602 SPI HAL Function `hal_spi_transfer`...
 
 ```c
     //  Execute the two SPI Transfers with the DMA Controller
@@ -399,11 +397,9 @@ Execute the two SPI Transfers with the DMA Controller
     //  hal_spi_transfer will wait for the two SPI Transfers to complete before returning.
 ```
 
-TODO
+`hal_spi_transfer` will wait for the two SPI Transfers to complete before returning.
 
-Now that we're done with the two SPI Transfers...
-
-Set Chip Select pin to High, to deactivate BME280
+When we're done with the two SPI Transfers, we set the __Chip Select Pin to High__ to deactivate BME280 (and put it to sleep)...
 
 ```c
     //  Now that we're done with the two SPI Transfers...
@@ -412,6 +408,16 @@ Set Chip Select pin to High, to deactivate BME280
     assert(rc == 0);
 }
 ```
+
+__Mission Accomplished!__ The Receive Buffer for the Second SPI Transfer __`rx_buf2`__ will contain the data received from BME280: __`0x60`__.
+
+We'll witness this shortly.
+
+## SPI with Direct Memory Access
+
+_What's Direct Memory Access? How does it help with SPI?_
+
+TODO
 
 # Control our own Chip Select Pin
 
