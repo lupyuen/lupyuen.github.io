@@ -461,7 +461,54 @@ static void test_spi_transfer(char *buf, int len, int argc, char **argv) {
 <p>(BL602 SPI HAL Function <code>hal_spi_transfer</code> shall be explained in the Appendix)</p>
 <h2 id="spi-with-direct-memory-access" class="section-header"><a href="#spi-with-direct-memory-access">5.6 SPI with Direct Memory Access</a></h2>
 <p><em>What's Direct Memory Access? How does it help SPI?</em></p>
-<p>TODO</p>
+<p><strong>Direct Memory Access (DMA)</strong> is a BL602 hardware feature that will automagically copy data from RAM to the SPI Port (and back)... Without any intervention from our firmware code!</p>
+<p>Here's how SPI works with and without DMA...</p>
+<p><strong>SPI Without DMA:</strong></p>
+<ol>
+<li>
+<p>Firmware code transmits and receives <strong>4 bytes of data</strong></p>
+<p>(Because BL602 has an SPI buffer size of 4 bytes)</p>
+</li>
+<li>
+<p>Waits for <strong>Transfer Complete Interrupt</strong></p>
+</li>
+<li>
+<p>Firmware code transmits and receives another <strong>4 bytes of data</strong></p>
+</li>
+<li>
+<p>Waits for <strong>Transfer Complete Interrupt</strong></p>
+</li>
+<li>
+<p>Repeat until <strong>all bytes</strong> have been transmitted and received</p>
+</li>
+<li>
+<p><em>What if we're blasting 1,000 bytes to an SPI Display Controller?</em></p>
+<p>Our CPU will be <strong>interrupted 250 times</strong> to transmit data.</p>
+<p>Not so efficient!</p>
+</li>
+</ol>
+<p><strong>SPI With DMA:</strong></p>
+<ol>
+<li>
+<p>Firmware code tells the <strong>DMA Controller</strong> the addresses of the <strong>Transmit and Receive Buffers</strong>, and how many bytes to transmit and receive</p>
+<p>(BL602 DMA Controller uses a <strong>DMA Linked List</strong> with two entries: Transmit Buffer and Receive Buffer)</p>
+</li>
+<li>
+<p>DMA Controller transmits and receives <strong>the entire buffer</strong> automatically</p>
+<p>(Even when the firmware code is running!)</p>
+</li>
+<li>
+<p>DMA Controller triggers two <strong>DMA Complete Interrupts</strong></p>
+<p>(One interrupt for Transmit Complete, another interrupt for Receive Complete)</p>
+</li>
+<li>
+<p><em>What if we're blasting 1,000 bytes to an SPI Display Controller?</em></p>
+<p>Our CPU will be <strong>interrupted only twice!</strong></p>
+<p>That's super efficient!</p>
+</li>
+</ol>
+<p>All SPI Transfers done with the BL602 SPI HAL will use super-efficient DMA.</p>
+<p>(See <code>hal_spi_transfer</code> in the Appendix for the BL602 DMA implementation)</p>
 <h1 id="control-our-own-chip-select-pin" class="section-header"><a href="#control-our-own-chip-select-pin">6 Control our own Chip Select Pin</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L86-L99"><code>sdk_app_spi/demo.c</code></a></p>
