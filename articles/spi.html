@@ -759,8 +759,73 @@ static void test_spi_result(char *buf, int len, int argc, char **argv)
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/spi.md"><code>lupyuen.github.io/src/spi.md</code></a></p>
 <h1 id="appendix-test-bme280-with-bus-pirate" class="section-header"><a href="#appendix-test-bme280-with-bus-pirate">14 Appendix: Test BME280 with Bus Pirate</a></h1>
 <p>TODO</p>
+<p>Testing BME280 SPI with Bus Pirate:
+(See http://dangerousprototypes.com/docs/SPI)</p>
+<pre><code class="language-text">HiZ&gt; m
+1. HiZ
+2. 1-WIRE
+3. UART
+4. I2C
+5. SPI
+6. 2WIRE
+7. 3WIRE
+8. KEYB
+9. LCD
+10. PIC
+11. DIO
+x. exit(without change)
+
+(1)&gt; 5
+Set speed:
+ 1. 30KHz
+ 2. 125KHz
+ 3. 250KHz
+ 4. 1MHz
+
+(1)&gt; 3
+Clock polarity:
+ 1. Idle low *default
+ 2. Idle high
+
+(1)&gt;
+Output clock edge:
+ 1. Idle to active
+ 2. Active to idle *default
+
+(2)&gt;
+Input sample phase:
+ 1. Middle *default
+ 2. End
+
+(1)&gt;
+CS:
+ 1. CS
+ 2. /CS *default
+
+(2)&gt;
+Select output type:
+ 1. Open drain (H=Hi-Z, L=GND)
+ 2. Normal (H=3.3V, L=GND)
+
+(1)&gt;
+Clutch disengaged!!!
+To finish setup, start up the power supplies with command 'W'
+Ready
+
+SPI&gt; W
+POWER SUPPLIES ON
+Clutch engaged!!!
+
+SPI&gt; [ 0xD0 r ]
+/CS ENABLED
+WRITE: 0xD0 
+READ: 0x60 
+/CS DISABLED
+</code></pre>
 <h1 id="appendix-troubleshoot-bl602-spi-with-logic-analyser" class="section-header"><a href="#appendix-troubleshoot-bl602-spi-with-logic-analyser">15 Appendix: Troubleshoot BL602 SPI with Logic Analyser</a></h1>
 <p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/spi-analyser.jpg" alt="PineCone BL602 RISC-V Board connected to LA2016 Logic Analyser and BME280 SPI Sensor" /></p>
+<p><em>PineCone BL602 RISC-V Board connected to LA2016 Logic Analyser and BME280 SPI Sensor</em></p>
 <h1 id="appendix-inside-bl602-spi-hal" class="section-header"><a href="#appendix-inside-bl602-spi-hal">16 Appendix: Inside BL602 SPI HAL</a></h1>
 <p>TODO</p>
 <h2 id="definitions" class="section-header"><a href="#definitions">16.1 Definitions</a></h2>
