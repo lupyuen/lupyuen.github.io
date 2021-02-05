@@ -276,7 +276,7 @@ Because we're not ready to talk to BME280 yet, we set the Chip Select Pin to Hig
 
 Our SPI Port is initialised, all set for transferring data!
 
-(The custom BL602 SPI HAL Function `spi_init` shall be explained in the Appendix)
+(BL602 SPI HAL Function `spi_init` shall be explained in the Appendix)
 
 # Transfer SPI Data
 
@@ -316,7 +316,7 @@ static uint8_t rx_buf2[1];  //  We expect to receive Chip ID (0x60) from BME280
 
 ## Initialise SPI Buffers and Transfers
 
-Let's at the function in our demo firmware that creates the two SPI Transfers and executes them: `test_spi_transfer` from [`sdk_app_spi/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L110-L156)
+Let's look at the function in our demo firmware that creates the two SPI Transfers and executes them: `test_spi_transfer` from [`sdk_app_spi/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L110-L156)
 
 ```c
 /// Start the SPI data transfer
