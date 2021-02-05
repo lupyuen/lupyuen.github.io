@@ -415,7 +415,7 @@ We'll witness this shortly.
 
 ## SPI with Direct Memory Access
 
-_What's Direct Memory Access? How does it help with SPI?_
+_What's Direct Memory Access? How does it help SPI?_
 
 TODO
 
