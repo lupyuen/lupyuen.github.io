@@ -78,9 +78,12 @@
 <li><a href="#second-spi-transfer">5.4 Second SPI Transfer</a><ul></ul></li>
 <li><a href="#execute-the-spi-transfers">5.5 Execute the SPI Transfers</a><ul></ul></li>
 <li><a href="#spi-with-direct-memory-access">5.6 SPI with Direct Memory Access</a><ul></ul></li></ul></li>
-<li><a href="#control-our-own-chip-select-pin">6 Control our own Chip Select Pin</a><ul></ul></li>
-<li><a href="#show-the-results">7 Show the Results</a><ul></ul></li>
-<li><a href="#build-and-run-the-firmware">8 Build and Run the Firmware</a><ul></ul></li>
+<li><a href="#build-and-run-the-firmware">6 Build and Run the Firmware</a><ul>
+<li><a href="#flash-the-firmware">6.1 Flash the firmware</a><ul></ul></li>
+<li><a href="#run-the-firmware">6.2 Run the firmware</a><ul></ul></li>
+<li><a href="#enter-spi-commands">6.3 Enter SPI commands</a><ul></ul></li></ul></li>
+<li><a href="#control-our-own-chip-select-pin">7 Control our own Chip Select Pin</a><ul></ul></li>
+<li><a href="#show-the-results">8 Show the Results</a><ul></ul></li>
 <li><a href="#spi-data-pins-are-flipped">9 SPI Data Pins are flipped</a><ul></ul></li>
 <li><a href="#spi-polarity-and-phase">10 SPI Polarity and Phase</a><ul></ul></li>
 <li><a href="#pin-0-controls-wifi-led">11 Pin 0 controls WiFi LED</a><ul></ul></li>
@@ -509,7 +512,150 @@ static void test_spi_transfer(char *buf, int len, int argc, char **argv) {
 </ol>
 <p>All SPI Transfers done with the BL602 SPI HAL will use super-efficient DMA.</p>
 <p>(See <code>hal_spi_transfer</code> in the Appendix for the BL602 DMA implementation)</p>
-<h1 id="control-our-own-chip-select-pin" class="section-header"><a href="#control-our-own-chip-select-pin">6 Control our own Chip Select Pin</a></h1>
+<h1 id="build-and-run-the-firmware" class="section-header"><a href="#build-and-run-the-firmware">6 Build and Run the Firmware</a></h1>
+<p>Download the Firmware Binary File <strong><code>sdk_app_spi.bin</code></strong> from...</p>
+<ul>
+<li><a href="https://github.com/lupyuen/bl_iot_sdk/releases/tag/v3.0.0"><strong>Binary Release of <code>sdk_app_spi</code></strong></a></li>
+</ul>
+<p>Alternatively, we may build the Firmware Binary File <code>sdk_app_spi.bin</code> from the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/spi/customer_app/sdk_app_spi">source code</a>...</p>
+<pre><code class="language-bash"># Download the spi branch of lupyuen's bl_iot_sdk
+git clone --recursive --branch spi https://github.com/lupyuen/bl_iot_sdk
+cd bl_iot_sdk/customer_app/sdk_app_spi
+
+# TODO: Change this to the full path of bl_iot_sdk
+export BL60X_SDK_PATH=$HOME/bl_iot_sdk
+export CONFIG_CHIP_NAME=BL602
+make
+
+# TODO: Change ~/blflash to the full path of blflash
+cp build_out/sdk_app_spi.bin ~/blflash
+</code></pre>
+<p><a href="https://lupyuen.github.io/articles/pinecone#building-firmware">More details on building bl_iot_sdk</a></p>
+<p>(Remember to use the <strong><code>spi</code></strong> branch, not the default <strong><code>master</code></strong> branch)</p>
+<h2 id="flash-the-firmware" class="section-header"><a href="#flash-the-firmware">6.1 Flash the firmware</a></h2>
+<p>Follow these steps to install <code>blflash</code>...</p>
+<ol>
+<li>
+<p><a href="https://lupyuen.github.io/articles/flash#install-rustup"><strong>&quot;Install rustup&quot;</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/flash#download-and-build-blflash"><strong>&quot;Download and build blflash&quot;</strong></a></p>
+</li>
+</ol>
+<p>We assume that our Firmware Binary File <code>sdk_app_spi.bin</code> has been copied to the <code>blflash</code> folder.</p>
+<p>Set BL602 to <strong>Flashing Mode</strong> and restart the board.</p>
+<p>For PineCone, this means setting the onboard jumper (IO 8) to the <code>H</code> Position <a href="https://lupyuen.github.io/images/pinecone-jumperh.jpg">(Like this)</a></p>
+<p>Enter these commands to flash <code>sdk_app_spi.bin</code> to BL602 over UART...</p>
+<pre><code class="language-bash"># TODO: Change ~/blflash to the full path of blflash
+cd ~/blflash
+
+# For Linux:
+sudo cargo run flash sdk_app_spi.bin \
+    --port /dev/ttyUSB0
+
+# For macOS:
+cargo run flash sdk_app_spi.bin \
+    --port /dev/tty.usbserial-1420 \
+    --initial-baud-rate 230400 \
+    --baud-rate 230400
+</code></pre>
+<p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">More details on flashing firmware</a></p>
+<h2 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">6.2 Run the firmware</a></h2>
+<p>Set BL602 to <strong>Normal Mode</strong> (Non-Flashing) and restart the board.</p>
+<p>For PineCone, this means setting the onboard jumper (IO 8) to the <code>L</code> Position <a href="https://lupyuen.github.io/images/pinecone-jumperl.jpg">(Like this)</a></p>
+<p>Connect to BL602's UART Port at 2 Mbps like so...</p>
+<pre><code class="language-bash"># For Linux:
+sudo screen /dev/ttyUSB0 2000000
+
+# For macOS: Doesn't work because 2 Mbps is not supported by macOS for USB Serial.
+# Try using VMWare on macOS. See https://lupyuen.github.io/articles/led#appendix-fix-bl602-demo-firmware-for-macos
+</code></pre>
+<p>On Windows, use <code>putty</code>.</p>
+<p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">More details on connecting to BL602</a></p>
+<h2 id="enter-spi-commands" class="section-header"><a href="#enter-spi-commands">6.3 Enter SPI commands</a></h2>
+<p>Let's enter some SPI commands to read our BME280 Sensor!</p>
+<ol>
+<li>
+<p>Press Enter to reveal the command prompt.</p>
+</li>
+<li>
+<p>Enter <code>help</code> to see the available commands...</p>
+<pre><code class="language-text"># help
+====User Commands====
+spi_init                 : Init SPI port
+spi_transfer             : Transfer SPI data
+spi_result               : Show SPI data received
+</code></pre>
+</li>
+<li>
+<p>First we <strong>initialise our SPI Port</strong>. </p>
+<p>Enter this command...</p>
+<pre><code class="language-text"># spi_init
+</code></pre>
+<p><code>spi_init</code> calls the function <code>test_spi_init</code>, which we have seen earlier.</p>
+</li>
+<li>
+<p>We should see this...</p>
+<pre><code class="language-text">port0 eventloop init = 42010b48
+[HAL] [SPI] Init :
+port=0, mode=0, polar_phase = 1, freq=200000, tx_dma_ch=2, rx_dma_ch=3, pin_clk=3, pin_cs=2, pin_mosi=1, pin_miso=4
+set rwspeed = 200000
+hal_gpio_init: cs:2, clk:3, mosi:1, miso: 4
+hal_gpio_init: SPI controller mode
+hal_spi_init.
+Set CS pin 14 to high
+</code></pre>
+</li>
+<li>
+<p>Now we <strong>start the two SPI Transfers</strong>...</p>
+<pre><code class="language-text"># spi_transfer
+</code></pre>
+<p><code>spi_transfer</code> calls the function <code>test_spi_transfer</code>, which we have seen earlier.</p>
+</li>
+<li>
+<p>We should see this...</p>
+<pre><code class="language-text">Set CS pin 14 to low
+hal_spi_transfr = 2
+transfer xfer[0].len = 1
+Tx DMA src=0x4200d1b8, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200d1b0, size=1, si=0, di=1, i=1
+recv all event group.
+transfer xfer[1].len = 1
+Tx DMA src=0x4200d1bc, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200d1b4, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+</code></pre>
+</li>
+<li>
+<p>Finally we display the <strong>SPI Data received</strong> from BME280...</p>
+<pre><code class="language-text"># spi_result
+</code></pre>
+<p><code>spi_result</code> is defined here: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L158-L182"><code>sdk_app_spi/demo.c</code></a></p>
+</li>
+<li>
+<p>We should see this...</p>
+<pre><code class="language-text">SPI Transfer #1: Received Data 0x0x4200d1b0:
+ff
+SPI Transfer #2: Received Data 0x0x4200d1b4:
+60
+Tx Interrupts: 2
+Tx Status:     0x0
+Tx Term Count: 0x0
+Tx Error:      0x0
+Rx Interrupts: 2
+Rx Status:     0x0
+Rx Term Count: 0x0
+Rx Error:      0x0
+</code></pre>
+<p>Remember that we're reading the Chip ID from BME280. We should see this Chip ID under <strong><code>SPI Transfer #2</code></strong>...</p>
+<pre><code class="language-text">60
+</code></pre>
+<p>(For BMP280 the Chip ID is <code>0x58</code>)</p>
+</li>
+</ol>
+<p>Congratulations! We have successfully read the BME280 Sensor from BL602 over SPI!</p>
+<h1 id="control-our-own-chip-select-pin" class="section-header"><a href="#control-our-own-chip-select-pin">7 Control our own Chip Select Pin</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L86-L99"><code>sdk_app_spi/demo.c</code></a></p>
 <pre><code class="language-c">/// Init the SPI Port
@@ -518,7 +664,11 @@ static void test_spi_init(...) {
     //  Configure Chip Select pin as a GPIO Pin
     GLB_GPIO_Type pins[1];
     pins[0] = SPI_CS_PIN;
-    BL_Err_Type rc2 = GLB_GPIO_Func_Init(GPIO_FUN_SWGPIO, pins, sizeof(pins) / sizeof(pins[0]));
+    BL_Err_Type rc2 = GLB_GPIO_Func_Init(
+        GPIO_FUN_SWGPIO,  //  Configure as GPIO 
+        pins,             //  Pins to be configured (Pin 14)
+        sizeof(pins) / sizeof(pins[0])  //  Number of pins (1)
+    );
     assert(rc2 == SUCCESS);
 
     //  Configure Chip Select pin as a GPIO Output Pin (instead of GPIO Input)
@@ -535,7 +685,6 @@ static void test_spi_init(...) {
 static void test_spi_transfer(...) {    
     ...
     //  Set Chip Select pin to Low, to activate BME280
-    printf(&quot;Set CS pin %d to low\r\n&quot;, SPI_CS_PIN);
     int rc = bl_gpio_output_set(SPI_CS_PIN, 0);
     assert(rc == 0);
 
@@ -554,9 +703,8 @@ static void test_spi_transfer(...) {
     //  Set Chip Select pin to High, to deactivate BME280
     rc = bl_gpio_output_set(SPI_CS_PIN, 1);
     assert(rc == 0);
-    printf(&quot;Set CS pin %d to high\r\n&quot;, SPI_CS_PIN);
 </code></pre>
-<h1 id="show-the-results" class="section-header"><a href="#show-the-results">7 Show the Results</a></h1>
+<h1 id="show-the-results" class="section-header"><a href="#show-the-results">8 Show the Results</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L158-L182"><code>sdk_app_spi/demo.c</code></a></p>
 <pre><code class="language-c">/// Show the SPI data received and the interrupt counters
@@ -584,51 +732,6 @@ static void test_spi_result(char *buf, int len, int argc, char **argv)
     printf(&quot;Rx Term Count: 0x%x\r\n&quot;, g_rx_tc);
     printf(&quot;Rx Error:      0x%x\r\n&quot;, g_rx_error);
 }
-</code></pre>
-<h1 id="build-and-run-the-firmware" class="section-header"><a href="#build-and-run-the-firmware">8 Build and Run the Firmware</a></h1>
-<p>TODO</p>
-<pre><code class="language-text"># help
-====User Commands====
-spi_init                 : Init SPI port
-spi_transfer             : Transfer SPI data
-spi_result               : Show SPI data received
-
-# spi_init
-port0 eventloop init = 42010b48
-[HAL] [SPI] Init :
-port=0, mode=0, polar_phase = 1, freq=200000, tx_dma_ch=2, rx_dma_ch=3, pin_clk=3, pin_cs=2, pin_mosi=1, pin_miso=4
-set rwspeed = 200000
-hal_gpio_init: cs:2, clk:3, mosi:1, miso: 4
-hal_gpio_init: SPI controller mode
-hal_spi_init.
-Set CS pin 14 to high
-
-# spi_transfer
-Set CS pin 14 to low
-hal_spi_transfr = 2
-transfer xfer[0].len = 1
-Tx DMA src=0x4200d1b8, dest=0x4000a288, size=1, si=1, di=0, i=1
-Rx DMA src=0x4000a28c, dest=0x4200d1b0, size=1, si=0, di=1, i=1
-recv all event group.
-transfer xfer[1].len = 1
-Tx DMA src=0x4200d1bc, dest=0x4000a288, size=1, si=1, di=0, i=1
-Rx DMA src=0x4000a28c, dest=0x4200d1b4, size=1, si=0, di=1, i=1
-recv all event group.
-Set CS pin 14 to high
-
-# spi_result
-SPI Transfer #1: Received Data 0x0x4200d1b0:
-  ff
-SPI Transfer #2: Received Data 0x0x4200d1b4:
-  60
-Tx Interrupts: 2
-Tx Status:     0x0
-Tx Term Count: 0x0
-Tx Error:      0x0
-Rx Interrupts: 2
-Rx Status:     0x0
-Rx Term Count: 0x0
-Rx Error:      0x0
 </code></pre>
 <h1 id="spi-data-pins-are-flipped" class="section-header"><a href="#spi-data-pins-are-flipped">9 SPI Data Pins are flipped</a></h1>
 <p>TODO</p>
