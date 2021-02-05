@@ -67,7 +67,9 @@
     <nav id="TOC"><ul>
 <li><a href="#times-are-a-changin">1 Times Are a-Changin'</a><ul></ul></li>
 <li><a href="#bl602-hardware-abstraction-layer-for-spi">2 BL602 Hardware Abstraction Layer for SPI</a><ul></ul></li>
-<li><a href="#connect-bl602-to-bme280-spi-sensor">3 Connect BL602 to BME280 SPI Sensor</a><ul></ul></li>
+<li><a href="#connect-bl602-to-bme280-spi-sensor">3 Connect BL602 to BME280 SPI Sensor</a><ul>
+<li><a href="#selecting-spi-pins">3.1 Selecting SPI Pins</a><ul></ul></li>
+<li><a href="#spi-protocol-for-bme280">3.2 SPI Protocol for BME280</a><ul></ul></li></ul></li>
 <li><a href="#initialise-spi-port">4 Initialise SPI Port</a><ul></ul></li>
 <li><a href="#transmit-spi-data">5 Transmit SPI Data</a><ul></ul></li>
 <li><a href="#receive-spi-data">6 Receive SPI Data</a><ul></ul></li>
@@ -121,10 +123,10 @@
 <p>This article will become obsolete quickly unless we adopt the <a href="https://www.oshwa.org/a-resolution-to-redefine-spi-signal-names"><strong>new names for SPI Pins</strong></a>...</p>
 <ul>
 <li>
-<p>We'll say <strong>&quot;Serial Data In&quot;</strong> <em>(instead of &quot;MISO&quot;)</em></p>
+<p>We'll say <strong>&quot;Serial Data In (SDI)&quot;</strong> <em>(instead of &quot;MISO&quot;)</em></p>
 </li>
 <li>
-<p>And we'll say <strong>&quot;Serial Data Out&quot;</strong> <em>(instead of &quot;MOSI&quot;)</em></p>
+<p>And we'll say <strong>&quot;Serial Data Out (SDO)&quot;</strong> <em>(instead of &quot;MOSI&quot;)</em></p>
 </li>
 <li>
 <p>We'll refer to BL602 as the <strong>&quot;SPI Controller&quot;</strong></p>
@@ -172,6 +174,57 @@
 <p><img src="https://lupyuen.github.io/images/spi-connect.jpg" alt="PineCone BL602 connected to SparkFun BME280 Sensor over SPI" /></p>
 <p><em>PineCone BL602 connected to <a href="https://www.sparkfun.com/products/13676">SparkFun BME280 Sensor</a>  over SPI</em></p>
 <h1 id="connect-bl602-to-bme280-spi-sensor" class="section-header"><a href="#connect-bl602-to-bme280-spi-sensor">3 Connect BL602 to BME280 SPI Sensor</a></h1>
+<p>Let's connect BL602 to the <a href="https://learn.sparkfun.com/tutorials/sparkfun-bme280-breakout-hookup-guide"><strong>Bosch BME280 Sensor for Temperature, Humidity and Air Pressure</strong></a></p>
+<p>(The steps in this article will work for BMP280 too)</p>
+<p>BME280 supports two interfaces: SPI (6 pins) and I2C (4 pins). We shall connect to the <strong>SPI side of BME280</strong>.</p>
+<p><em>Don't use any pins on the I2C side! (Because the <code>3V3</code> pin selects SPI or I2C)</em></p>
+<p>Connect BL602 to BME280 (the SPI side with 6 pins) according to the pic above...</p>
+<table><thead><tr><th align="center">BL602 Pin</th><th align="center">BME280 SPI</th><th align="left">Wire Colour</th></tr></thead><tbody>
+<tr><td align="center"><strong><code>GPIO 1</code></strong></td><td align="center"><code>SDO</code></td><td align="left">Green</td></tr>
+<tr><td align="center"><strong><code>GPIO 2</code></strong></td><td align="center">Do Not <br> Connect</td><td align="left">Do Not <br> Connect</td></tr>
+<tr><td align="center"><strong><code>GPIO 3</code></strong></td><td align="center"><code>SCK</code></td><td align="left">Yellow</td></tr>
+<tr><td align="center"><strong><code>GPIO 4</code></strong></td><td align="center"><code>SDI</code></td><td align="left">Blue</td></tr>
+<tr><td align="center"><strong><code>GPIO 14</code></strong></td><td align="center"><code>CS</code></td><td align="left">Orange</td></tr>
+<tr><td align="center"><strong><code>3V3</code></strong></td><td align="center"><code>3.3V</code></td><td align="left">Red</td></tr>
+<tr><td align="center"><strong><code>GND</code></strong></td><td align="center"><code>GND</code></td><td align="left">Black</td></tr>
+</tbody></table>
+<p>(For BME280: SDO = MISO and SDI = MOSI)</p>
+<p>We'll talk about GPIO 2 in a while.</p>
+<h2 id="selecting-spi-pins" class="section-header"><a href="#selecting-spi-pins">3.1 Selecting SPI Pins</a></h2>
+<p>We're NOT using the <a href="https://wiki.pine64.org/wiki/Nutcracker#Pinenut-12S_Module_information">Recommended SPI Pins for PineCone and Pinenut</a>: GPIO 0, 11, 14, 17.</p>
+<p>And we're NOT using the <a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/device_tree/bl_factory_params_IoTKitA_40M.dts#L237-L259">Default SPI Pins for BL602 Device Tree</a>: GPIO 0, 1, 2, 3.</p>
+<p><em>Why did we choose these pins for SPI?</em></p>
+<ul>
+<li>
+<p><strong>GPIO 0</strong> is connected to the <strong>PineCone's WiFi LED</strong> (Is this documented somewhere?)</p>
+</li>
+<li>
+<p><strong>GPIO 11, 14, 17</strong> are connected to <strong>PineCone's RGB LED</strong></p>
+</li>
+</ul>
+<p>We won't use these PineCone LED Pins for SPI because...</p>
+<ol>
+<li>
+<p>Somebody else will probably use the LED Pins to control the LEDs. Contention ensues!</p>
+</li>
+<li>
+<p>Lights switching on for no reason is just plain... Spooky</p>
+</li>
+</ol>
+<p>(Sorry my mistake... I shouldn't be using Pin 14 for Chip Select. Beware of contention!)</p>
+<h2 id="spi-protocol-for-bme280" class="section-header"><a href="#spi-protocol-for-bme280">3.2 SPI Protocol for BME280</a></h2>
+<p><em>What shall we accomplish with BL602 and BME280?</em></p>
+<ol>
+<li>
+<p>BME280 has a <strong>Chip ID Register, at Register ID <code>0xD0</code></strong></p>
+</li>
+<li>
+<p>Reading the Chip ID Register will give us the <strong>Chip ID value <code>0x60</code></strong> </p>
+<p>(<code>0x60</code> identifies the chip as BME280. For BMP280 the Chip ID is <code>0x58</code>)</p>
+</li>
+</ol>
+<p><em>What are the data bytes that will be sent by BL602?</em></p>
+<p>Here's the SPI Data that will be sent by BL602 to BME280...</p>
 <p>TODO</p>
 <h1 id="initialise-spi-port" class="section-header"><a href="#initialise-spi-port">4 Initialise SPI Port</a></h1>
 <p>TODO</p>
