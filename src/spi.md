@@ -378,7 +378,6 @@ Set Chip Select pin to Low, to activate BME280
 
 ```c
     //  Set Chip Select pin to Low, to activate BME280
-    printf("Set CS pin %d to low\r\n", SPI_CS_PIN);
     int rc = bl_gpio_output_set(SPI_CS_PIN, 0);
     assert(rc == 0);
 ```
@@ -411,7 +410,6 @@ Set Chip Select pin to High, to deactivate BME280
     //  Set Chip Select pin to High, to deactivate BME280
     rc = bl_gpio_output_set(SPI_CS_PIN, 1);
     assert(rc == 0);
-    printf("Set CS pin %d to high\r\n", SPI_CS_PIN);
 }
 ```
 
