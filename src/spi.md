@@ -158,9 +158,7 @@ _BL602 talks to BME280 over SPI, visualised by a Logic Analyser_
 
 # Initialise SPI Port
 
-TODO
-
-[`sdk_app_spi/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L45-L100)
+Before we initialise the SPI Port, we define these constants and variables in [`sdk_app_spi/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L45-L100) 
 
 ```c
 /// Use SPI Port Number 0
@@ -171,55 +169,112 @@ TODO
 
 /// SPI Port
 static spi_dev_t spi;
+```
 
+-   `SPI_Port` is the SPI Port Number. We use the one and only port on BL602: __SPI Port 0__
+
+-   `SPI_CS_PIN` is the Pin Number for the SPI Chip Select Pin. We select __Pin 14__
+
+-   `spi` is the device instance of the SPI Port
+
+Our demo firmware initialises the SPI Port in the function `test_spi_init` from [`sdk_app_spi/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L45-L100) 
+
+```c
 /// Init the SPI Port
-static void test_spi_init(char *buf, int len, int argc, char **argv)
-{
+static void test_spi_init(char *buf, int len, int argc, char **argv) {
     //  Configure the SPI Port
-    //  Note: The Chip Select Pin below (2) must NOT be the same as SPI_CS_PIN (14). 
-    //  Because the SPI Pin Function will override the GPIO Pin Function!
-
-    //  TODO: The pins for Serial Data In and Serial Data Out seem to be flipped,
-    //  when observed with a Logic Analyser. This contradicts the 
-    //  BL602 Reference Manual. Why ???
-
-    //  TODO: We must set Polarity=0, Phase=1. Though the Logic Analyser shows
-    //  that it looks like Phase=0. Why ???
-
-    //  TODO: Setting Serial Data Out to Pin 0 will switch on the WiFi LED.
-    //  Why ???
-
     int rc = spi_init(
         &spi,        //  SPI Device
         SPI_PORT,    //  SPI Port
-        0,           //  SPI Mode: 0 for Controller (formerly Master), 1 for Peripheral (formerly Slave)
-        1,           //  SPI Polar Phase: 0 (CPOL=0, CPHA=0), 1 (CPOL=0, CPHA=1), 2 (CPOL=1, CPHA=0) or 3 (CPOL=1, CPHA=1)
+        0,           //  SPI Mode: 0 for Controller
+        1,           //  SPI Polarity and Phase: 1 for (CPOL=0, CPHA=1)
         200 * 1000,  //  SPI Frequency (200 kHz)
         2,   //  Transmit DMA Channel
         3,   //  Receive DMA Channel
-        3,   //  (Yellow) SPI Clock Pin 
-        2,   //  (Unused) SPI Chip Select Pin (Unused because we control GPIO 14 ourselves as Chip Select Pin. This must NOT be set to 14, SPI will override our GPIO!)
-        1,   //  (Green)  SPI Serial Data In Pin  (formerly MISO)
-        4    //  (Blue)   SPI Serial Data Out Pin (formerly MOSI)
+        3,   //  SPI Clock Pin 
+        2,   //  Unused SPI Chip Select Pin
+        1,   //  SPI Serial Data In Pin  (formerly MISO)
+        4    //  SPI Serial Data Out Pin (formerly MOSI)
     );
     assert(rc == 0);
+```
 
+This function initialises `spi` by calling the (custom) BL602 SPI HAL Function `spi_init`.
+
+Here are the parameters for `spi_init`...
+
+-   __SPI Device:__ SPI device instance to be initialised, __`spi`__
+
+-   __SPI Port:__ SPI Port Number __0__
+
+-   __SPI Mode:__ We choose __0__ to configure BL602 as __SPI Controller__. Valid values are...
+
+    -   0 to configure BL602 as SPI Controller
+    -   1 to configure BL602 as SPI Peripheral.
+
+-   __SPI Polarity and Phase:__ We choose __1__ for __Polarity 0 (CPOL), Phase 1 (CPHA)__. Valid values are...
+
+    -   0 for CPOL=0, CPHA=0
+    -   1 for CPOL=0, CPHA=1
+    -   2 for CPOL=1, CPHA=0
+    -   3 for CPOL=1, CPHA=1
+
+    (There's a bug with SPI Polarity and Phase, more about this later)
+
+-   __SPI Frequency:__ We set the SPI Frequency (Hz) to 200,000, which means __200 kHz__.
+
+    (Slow but reliable, and easier to troubleshoot)
+
+    SPI Frequency ranges from 200 kHz to 4 Mbps.
+
+-   __Transmit DMA Channel:__ We select __DMA Channel 2__ for transmitting SPI Data
+
+-   __Receive DMA Channel:__ We select __DMA Channel 3__ for receiving SPI Data
+
+-   __SPI Clock Pin:__ We select __Pin 3__
+
+-   __Unused SPI Chip Select Pin:__ We select __Pin 2__. 
+
+    We won't connect this pin to BME280, but it must NOT be the same as the Actual Chip Select Pin (14)
+
+    (More about Chip Select later)
+
+-   __SPI Serial Data In Pin:__ We select __Pin 1__ _(Formerly MISO)_
+
+-   __SPI Serial Data Out Pin:__ We select __Pin 4__ _(Formerly MOSI)_
+
+Next we configure the Actual Chip Select Pin (14) as a GPIO Pin...
+
+```c
     //  Configure Chip Select pin as a GPIO Pin
     GLB_GPIO_Type pins[1];
     pins[0] = SPI_CS_PIN;
-    BL_Err_Type rc2 = GLB_GPIO_Func_Init(GPIO_FUN_SWGPIO, pins, sizeof(pins) / sizeof(pins[0]));
+    BL_Err_Type rc2 = GLB_GPIO_Func_Init(
+        GPIO_FUN_SWGPIO,  //  Configure as GPIO 
+        pins,             //  Pins to be configured (Pin 14)
+        sizeof(pins) / sizeof(pins[0])  //  Number of pins (1)
+    );
     assert(rc2 == SUCCESS);
+```
 
+(We'll find out why later)
+
+Because we're not ready to talk to BME280 yet, we set the Chip Select Pin to High to deactivate BME280...
+
+```c
     //  Configure Chip Select pin as a GPIO Output Pin (instead of GPIO Input)
     rc = bl_gpio_enable_output(SPI_CS_PIN, 0, 0);
     assert(rc == 0);
 
     //  Set Chip Select pin to High, to deactivate BME280
-    printf("Set CS pin %d to high\r\n", SPI_CS_PIN);
     rc = bl_gpio_output_set(SPI_CS_PIN, 1);
     assert(rc == 0);
 }
 ```
+
+(More about Chip Select in a while)
+
+Our SPI Port is initialised, all set for transferring data!
 
 # Transmit SPI Data
 
