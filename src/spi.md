@@ -634,6 +634,8 @@ Let's enter some SPI commands to read our BME280 Sensor!
     Rx Error:      0x0
     ```
 
+    This shows that we have encountered __two Transmit Interrupts__ and __two Receive Interrupts__, no errors. Which is expected for two SPI Transfers.
+
     Remember that we're reading the Chip ID from BME280. We should see this Chip ID under __`SPI Transfer #2`__...
 
     ```text
