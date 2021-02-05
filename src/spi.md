@@ -323,7 +323,7 @@ TODO
 
 Prepare 2 SPI Transfers
 
-## Define First SPI Transfer
+## First SPI Transfer
 
 TODO
 
@@ -335,7 +335,7 @@ TODO
     transfers[0].len    = sizeof(tx_buf1);     //  How many bytes
 ```
 
-## Define Second SPI Transfer
+## Second SPI Transfer
 
 TODO
 
