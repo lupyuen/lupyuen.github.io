@@ -419,7 +419,53 @@ We'll witness this shortly.
 
 _What's Direct Memory Access? How does it help SPI?_
 
-TODO
+__Direct Memory Access (DMA)__ is a BL602 hardware feature that will automagically copy data from RAM to the SPI Port (and back)... Without any intervention from our firmware code!
+
+Here's how SPI works with and without DMA...
+
+__SPI Without DMA:__
+
+1.  Firmware code transmits and receives __4 bytes of data__
+
+    (Because BL602 has an SPI buffer size of 4 bytes)
+
+1.  Waits for __Transfer Complete Interrupt__
+
+1.  Firmware code transmits and receives another __4 bytes of data__
+
+1.  Waits for __Transfer Complete Interrupt__
+
+1.  Repeat until __all bytes__ have been transmitted and received
+
+1.  _What if we're blasting 1,000 bytes to an SPI Display Controller?_
+
+    Our CPU will be __interrupted 250 times__ to transmit data.
+
+    Not so efficient!
+
+__SPI With DMA:__
+
+1.  Firmware code tells the __DMA Controller__ the addresses of the __Transmit and Receive Buffers__, and how many bytes to transmit and receive
+
+    (BL602 DMA Controller uses a __DMA Linked List__ with two entries: Transmit Buffer and Receive Buffer)
+
+1.  DMA Controller transmits and receives __the entire buffer__ automatically
+
+    (Even when the firmware code is running!)
+
+1.  DMA Controller triggers two __DMA Complete Interrupts__
+
+    (One interrupt for Transmit Complete, another interrupt for Receive Complete)
+
+1.  _What if we're blasting 1,000 bytes to an SPI Display Controller?_
+
+    Our CPU will be __interrupted only twice!__
+
+    That's super efficient!
+
+All SPI Transfers done with the BL602 SPI HAL will use super-efficient DMA.
+
+(See `hal_spi_transfer` in the Appendix for the BL602 DMA implementation)
 
 # Control our own Chip Select Pin
 
