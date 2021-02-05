@@ -432,7 +432,6 @@ static void test_spi_transfer(char *buf, int len, int argc, char **argv) {
 <p>TODO</p>
 <p>Set Chip Select pin to Low, to activate BME280</p>
 <pre><code class="language-c">    //  Set Chip Select pin to Low, to activate BME280
-    printf(&quot;Set CS pin %d to low\r\n&quot;, SPI_CS_PIN);
     int rc = bl_gpio_output_set(SPI_CS_PIN, 0);
     assert(rc == 0);
 </code></pre>
@@ -456,7 +455,6 @@ static void test_spi_transfer(char *buf, int len, int argc, char **argv) {
     //  Set Chip Select pin to High, to deactivate BME280
     rc = bl_gpio_output_set(SPI_CS_PIN, 1);
     assert(rc == 0);
-    printf(&quot;Set CS pin %d to high\r\n&quot;, SPI_CS_PIN);
 }
 </code></pre>
 <h1 id="control-our-own-chip-select-pin" class="section-header"><a href="#control-our-own-chip-select-pin">6 Control our own Chip Select Pin</a></h1>
