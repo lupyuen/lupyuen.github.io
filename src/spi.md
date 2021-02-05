@@ -52,7 +52,39 @@ Note that Serial Data In and Serial Data Out are flipped across the SPI Controll
 
 # BL602 Hardware Abstraction Layer for SPI
 
-TODO
+The BL602 IoT SDK contains an __SPI Hardware Abstraction Layer (HAL)__ that we may call in our C programs to transfer data over SPI...
+
+-   [__BL602 SPI HAL: `bl602_hal/hal_spi.c`__](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c)
+
+However there are a couple of concerns over the BL602 SPI HAL...
+
+1.  __BL602 SPI HAL doesn't support all BL602 SPI features__.
+
+    It supports SPI Transfers via __Direct Memory Access (DMA)__. Which is good for blasting pixels to Display Controllers (like ST7789).
+
+    But it __doesn't support byte-by-byte SPI Transfer__, like the [__Arduino SPI HAL for BL602__](https://github.com/pine64/ArduinoCore-bouffalo/blob/main/libraries/SPI/src/SPI.cpp).
+
+1.  __BL602 SPI HAL was designed to work with [AliOS Things](https://github.com/alibaba/AliOS-Things)__ operating system and its Virtual File System.
+
+    It uses the AliOS Device Tree for configuring the SPI Port. Which might be overkill for some embedded programs.
+
+    I have added an SPI HAL function [__`spi_init`__](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L838-L886) that lets us __call the SPI HAL without AliOS Things__ and its Device Tree.
+
+1.  __BL602 SPI HAL works only with FreeRTOS__.  
+
+    Unlike the BL602 HALs for GPIO, PWM and I2C, there's no Low Level HAL that works on all operating systems.
+
+    But we may port the SPI HAL to other operating systems by emulating a few FreeRTOS functions for Event Groups.  (More about this later)
+
+Hence we can still __write SPI programs for BL602 without AliOS__. And I'll highlight the SPI features that have special limitations.
+
+We shall test BL602 SPI with this BL602 Command-Line Firmware that I have created: [`sdk_app_spi`](https://github.com/lupyuen/bl_iot_sdk/tree/spi/customer_app/sdk_app_spi)
+
+The firmware will work on __all BL602 boards,__ including PineCone and Pinenut.
+
+![PineCone BL602 connected to SparkFun BME280 Sensor over SPI](https://lupyuen.github.io/images/spi-connect.jpg)
+
+_PineCone BL602 connected to [SparkFun BME280 Sensor](https://www.sparkfun.com/products/13676)  over SPI_
 
 # Connect BL602 to BME280 SPI Sensor
 
