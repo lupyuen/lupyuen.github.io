@@ -144,7 +144,33 @@
 </ul>
 <p>(Yep it works like the Transmit / Receive pins for a UART port)</p>
 <h1 id="bl602-hardware-abstraction-layer-for-spi" class="section-header"><a href="#bl602-hardware-abstraction-layer-for-spi">2 BL602 Hardware Abstraction Layer for SPI</a></h1>
-<p>TODO</p>
+<p>The BL602 IoT SDK contains an <strong>SPI Hardware Abstraction Layer (HAL)</strong> that we may call in our C programs to transfer data over SPI...</p>
+<ul>
+<li><a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c"><strong>BL602 SPI HAL: <code>bl602_hal/hal_spi.c</code></strong></a></li>
+</ul>
+<p>However there are a couple of concerns over the BL602 SPI HAL...</p>
+<ol>
+<li>
+<p><strong>BL602 SPI HAL doesn't support all BL602 SPI features</strong>.</p>
+<p>It supports SPI Transfers via <strong>Direct Memory Access (DMA)</strong>. Which is good for blasting pixels to Display Controllers (like ST7789).</p>
+<p>But it <strong>doesn't support byte-by-byte SPI Transfer</strong>, like the <a href="https://github.com/pine64/ArduinoCore-bouffalo/blob/main/libraries/SPI/src/SPI.cpp"><strong>Arduino SPI HAL for BL602</strong></a>.</p>
+</li>
+<li>
+<p><strong>BL602 SPI HAL was designed to work with <a href="https://github.com/alibaba/AliOS-Things">AliOS Things</a></strong> operating system and its Virtual File System.</p>
+<p>It uses the AliOS Device Tree for configuring the SPI Port. Which might be overkill for some embedded programs.</p>
+<p>I have added an SPI HAL function <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L838-L886"><strong><code>spi_init</code></strong></a> that lets us <strong>call the SPI HAL without AliOS Things</strong> and its Device Tree.</p>
+</li>
+<li>
+<p><strong>BL602 SPI HAL works only with FreeRTOS</strong>.</p>
+<p>Unlike the BL602 HALs for GPIO, PWM and I2C, there's no Low Level HAL that works on all operating systems.</p>
+<p>But we may port the SPI HAL to other operating systems by emulating a few FreeRTOS functions for Event Groups.  (More about this later)</p>
+</li>
+</ol>
+<p>Hence we can still <strong>write SPI programs for BL602 without AliOS</strong>. And I'll highlight the SPI features that have special limitations.</p>
+<p>We shall test BL602 SPI with this BL602 Command-Line Firmware that I have created: <a href="https://github.com/lupyuen/bl_iot_sdk/tree/spi/customer_app/sdk_app_spi"><code>sdk_app_spi</code></a></p>
+<p>The firmware will work on <strong>all BL602 boards,</strong> including PineCone and Pinenut.</p>
+<p><img src="https://lupyuen.github.io/images/spi-connect.jpg" alt="PineCone BL602 connected to SparkFun BME280 Sensor over SPI" /></p>
+<p><em>PineCone BL602 connected to <a href="https://www.sparkfun.com/products/13676">SparkFun BME280 Sensor</a>  over SPI</em></p>
 <h1 id="connect-bl602-to-bme280-spi-sensor" class="section-header"><a href="#connect-bl602-to-bme280-spi-sensor">3 Connect BL602 to BME280 SPI Sensor</a></h1>
 <p>TODO</p>
 <h1 id="initialise-spi-port" class="section-header"><a href="#initialise-spi-port">4 Initialise SPI Port</a></h1>
