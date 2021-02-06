@@ -1395,8 +1395,9 @@ int spi_init(spi_dev_t *spi, uint8_t port,
 }
 </code></pre>
 <h2 id="hal_spi_transfer-execute-spi-transfer" class="section-header"><a href="#hal_spi_transfer-execute-spi-transfer">15.7 hal_spi_transfer: Execute SPI Transfer</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L482-L522"><code>bl602_hal/hal_spi.c</code></a></p>
+<p><code>hal_spi_transfer</code> is called by our demo firmware to execute multiple SPI Transfers with DMA.</p>
+<p><code>hal_spi_transfer</code> is a Blocking Function... It waits for the SPI Transfers to complete before returning.</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L482-L522"><code>bl602_hal/hal_spi.c</code></a></p>
 <pre><code class="language-c">int hal_spi_transfer(spi_dev_t *spi_dev, void *xfer, uint8_t size)
 {
     uint16_t i;
@@ -1420,16 +1421,15 @@ int spi_init(spi_dev_t *spi, uint8_t port,
     blog_info(&quot;hal_spi_transfer = %d\r\n&quot;, size);
 #endif
 </code></pre>
-<p>TODO</p>
-<p>Set CS to Low to enable the SPI Peripheral</p>
-<p>HARDCS doesn't work</p>
+<p>Parameter <code>xfer</code> contains an array of SPI Transfers (<code>spi_ioc_transfer_t</code>).</p>
+<p>Parameter <code>size</code> specifies the number of SPI Transfers in <code>xfer</code>.</p>
+<p>If <code>HAL_SPI_HARDCS</code> is 0, this code is supposed to set the Chip Select Pin to Low via GPIO (which activates the SPI Peripheral). But it doesn't work.</p>
 <pre><code class="language-c">#if (0 == HAL_SPI_HARDCS)
     blog_info(&quot;Set CS pin %d to low\r\n&quot;, priv_data-&gt;hwspi[spi_dev-&gt;port].pin_cs);
     bl_gpio_output_set(priv_data-&gt;hwspi[spi_dev-&gt;port].pin_cs, 0);
 #endif
 </code></pre>
-<p>TODO</p>
-<p>Execute and wait for each SPI DMA Transfer to complete</p>
+<p>For every SPI Transfer: We call <code>hal_spi_dma_trans</code> to execute the SPI Transfer, and wait for the SPI Transfer to complete.</p>
 <pre><code class="language-c">    for (i = 0; i &lt; size; i++) {
 #if (HAL_SPI_DEBUG)
         blog_info(&quot;transfer xfer[%d].len = %ld\r\n&quot;, i, s_xfer[i].len);
@@ -1438,14 +1438,11 @@ int spi_init(spi_dev_t *spi, uint8_t port,
                 (uint8_t *)s_xfer[i].tx_buf, (uint8_t *)s_xfer[i].rx_buf, s_xfer[i].len);
     }
 </code></pre>
-<p>TODO</p>
-<p>Set CS to High to disable the SPI Peripheral</p>
-<p>HARDCS doesn't work</p>
+<p>If <code>HAL_SPI_HARDCS</code> is 0, this code is supposed to set the Chip Select Pin to High via GPIO (which deactivates the SPI Peripheral). But it doesn't work.</p>
 <pre><code class="language-c">#if (0 == HAL_SPI_HARDCS)
     bl_gpio_output_set(priv_data-&gt;hwspi[spi_dev-&gt;port].pin_cs, 1);
     blog_info(&quot;Set CS pin %d to high\r\n&quot;, priv_data-&gt;hwspi[spi_dev-&gt;port].pin_cs);
 #endif
-
     return 0;
 }
 </code></pre>
