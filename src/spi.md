@@ -915,6 +915,8 @@ _Bus Pirate connected to BME280 Sensor over SPI_
 
 [__Bus Pirate__](http://dangerousprototypes.com/docs/Bus_Pirate) is a useful gadget for verifying whether our BME280 Sensor works OK. And for checking the SPI signals that should be sent down the wire to BME280.
 
+Here's how we test BME280 (or BMP280) with Bus Pirate...
+
 1.  Connect Bus Pirate to BME280 (or BMP280) according to the pic above...
 
     | Bus Pirate Pin | BME280 SPI Pin
@@ -926,98 +928,152 @@ _Bus Pirate connected to BME280 Sensor over SPI_
     | __`3.3V`__ | `3.3V`
     | __`GND`__ | `GND`
 
-    Connect to the SPI side of BME280 (with 6 pins). Don't use any pins on the I2C side (with 4 pins).
+    Connect to the __SPI side of BME280__ (with 6 pins).
+    
+    Don't use any pins on the I2C side (with 4 pins).
 
 1.  Connect Bus Pirate to our computer's USB port.
 
     Open a Serial Terminal for Bus Pirate.
 
-TODO
+1.  Enter __`m`__ to show the menu
 
-```text
-HiZ> m
-1. HiZ
-2. 1-WIRE
-3. UART
-4. I2C
-5. SPI
-6. 2WIRE
-7. 3WIRE
-8. KEYB
-9. LCD
-10. PIC
-11. DIO
-x. exit(without change)
+    Select __`SPI`__
 
-(1)> 5
-Set speed:
- 1. 30KHz
- 2. 125KHz
- 3. 250KHz
- 4. 1MHz
+    ```text
+    HiZ> m
+    1. HiZ
+    2. 1-WIRE
+    3. UART
+    4. I2C
+    5. SPI
+    6. 2WIRE
+    7. 3WIRE
+    8. KEYB
+    9. LCD
+    10. PIC
+    11. DIO
+    x. exit(without change)
 
-(1)> 3
-Clock polarity:
- 1. Idle low *default
- 2. Idle high
+    (1)> 5
+    ```
 
-(1)>
-Output clock edge:
- 1. Idle to active
- 2. Active to idle *default
+1.  Select __`250 kHz`__
 
-(2)>
-Input sample phase:
- 1. Middle *default
- 2. End
+    ```text
+    Set speed:
+    1. 30KHz
+    2. 125KHz
+    3. 250KHz
+    4. 1MHz
 
-(1)>
-CS:
- 1. CS
- 2. /CS *default
+    (1)> 3
+    ```
 
-(2)>
-Select output type:
- 1. Open drain (H=Hi-Z, L=GND)
- 2. Normal (H=3.3V, L=GND)
+1.  Select __`Idle Low`__
 
-(1)>
-Clutch disengaged!!!
-To finish setup, start up the power supplies with command 'W'
-Ready
+    ```text
+    Clock polarity:
+    1. Idle low *default
+    2. Idle high
 
-SPI> W
-POWER SUPPLIES ON
-Clutch engaged!!!
+    (1)>
+    ```
 
-SPI> [ 0xD0 r ]
-/CS ENABLED
-WRITE: 0xD0 
-READ: 0x60 
-/CS DISABLED
-```
+1.  Select __`Active To Idle`__
 
-TODO
+    ```text
+    Output clock edge:
+    1. Idle to active
+    2. Active to idle *default
 
-The Bus Pirate SPI command...
+    (2)>
+    ```
+
+1.  Select __`Middle`__
+
+    ```text
+    Input sample phase:
+    1. Middle *default
+    2. End
+
+    (1)>
+    ```
+
+1.  Select __`/CS`__
+
+    ```text
+    CS:
+    1. CS
+    2. /CS *default
+
+    (2)>
+    ```
+
+1.  Select __`Open Drain`__
+
+    ```text
+    Select output type:
+    1. Open drain (H=Hi-Z, L=GND)
+    2. Normal (H=3.3V, L=GND)
+
+    (1)>
+    Clutch disengaged!!!
+    To finish setup, start up the power supplies with command 'W'
+    Ready
+    ```
+
+1.  Enter __`W`__ to power on BME280
+
+    ```text
+    SPI> W
+    POWER SUPPLIES ON
+    Clutch engaged!!!
+    ```
+
+1.  Enter this command...
+
+    ```text
+    [ 0xD0 r ]
+    ```
+
+    (We'll learn why in a while)
+
+1.  We should see...
+
+    ```text
+    SPI> [ 0xD0 r ]
+    /CS ENABLED
+    WRITE: 0xD0 
+    READ: 0x60 
+    /CS DISABLED
+    ```
+
+    This means that the result is `0x60`, which is the Chip ID for BME280.
+
+    (For BMP280 the Chip ID is `0x58`)
+
+This Bus Pirate SPI command...
 
 ```text
 [ 0xD0 r ]
 ```
 
-TODO
+Will do this...
 
-means...
+1.  Set __Chip Select Pin to Low__ (to activate BME280)
 
-1.  Set Chip Select Pin to Low (to activate BME280)
+1.  __Transmit byte `0xD0`__ to BME280
 
-1.  Transmit byte `0xD0` to BME280
+1.  __Receive one byte__ from BME280
 
-1.  Read one byte from BME280
+1.  Set __Chip Select Pin to High__ (to deactivate BME280)
 
-1.  Set Chip Select Pin to High (to deactivate BME280)
+This will read BME280's __Chip ID Register `0xD0`__.
 
-TODO
+We expect the byte received to be __`0x60`__, which is the Chip ID for BME280.
+
+(For BMP280 the Chip ID is `0x58`)
 
 ![Bus Pirate talks to BME280 over SPI, visualised by LA2016 Logic Analyser](https://lupyuen.github.io/images/spi-analyse1a.png)
 
