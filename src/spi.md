@@ -913,9 +913,26 @@ _Bus Pirate connected to BME280 Sensor over SPI_
 
 # Appendix: Test BME280 SPI Interface with Bus Pirate
 
-TODO
-
 [__Bus Pirate__](http://dangerousprototypes.com/docs/Bus_Pirate) is a useful gadget for verifying whether our BME280 Sensor works OK. And for checking the SPI signals that should be sent down the wire to BME280.
+
+1.  Connect Bus Pirate to BME280 (or BMP280) according to the pic above...
+
+    | Bus Pirate Pin | BME280 SPI Pin
+    |:---:|:---:
+    | __`MOSI`__ | `SDI`
+    | __`MISO`__ | `SDO`
+    | __`CLK`__ | `SCK`
+    | __`CS`__ | `CS`
+    | __`3.3V`__ | `3.3V`
+    | __`GND`__ | `GND`
+
+    Connect to the SPI side of BME280 (with 6 pins). Don't use any pins on the I2C side (with 4 pins).
+
+1.  Connect Bus Pirate to our computer's USB port.
+
+    Open a Serial Terminal for Bus Pirate.
+
+TODO
 
 ```text
 HiZ> m
@@ -1008,6 +1025,10 @@ _Bus Pirate talks to BME280 over SPI, visualised by LA2016 Logic Analyser_
 
 [Check out the SPI Guide for Bus Pirate](http://dangerousprototypes.com/docs/SPI)
 
+![PineCone BL602 RISC-V Board connected to LA2016 Logic Analyser and BME280 SPI Sensor](https://lupyuen.github.io/images/spi-analyser.jpg)
+
+_PineCone BL602 RISC-V Board connected to LA2016 Logic Analyser and BME280 SPI Sensor_
+
 # Appendix: Troubleshoot BL602 SPI with Logic Analyser
 
 TODO
@@ -1016,11 +1037,27 @@ TODO
 
 User Guide is under "Learn and Documents"
 
-![PineCone BL602 RISC-V Board connected to LA2016 Logic Analyser and BME280 SPI Sensor](https://lupyuen.github.io/images/spi-analyser.jpg)
+Connect the Logic Analyser to BL602 according to the pic above...
 
-_PineCone BL602 RISC-V Board connected to LA2016 Logic Analyser and BME280 SPI Sensor_
+| Logic Analyser | BL602 Pin
+|:---:|:---
+| __`CH0`__ | `GPIO 4  (SDO)`
+| __`CH1`__ | `GPIO 1  (SDI)`
+| __`CH2`__ | `GPIO 3  (SCK)`
+| __`CH3`__ | `GPIO 14 (CS)`
+| __`GND`__ | `GND`
 
 TODO
+
+Rule of Single Power Source: Be sure that BL602 and Logic Analyser are powered by the same source, i.e. both are connected to the same PC.
+
+1.  Power off BL602 and Logic Analyser
+
+1.  Connect __`GND`__ from BL602 to Logic Analyser
+
+1.  Power on BL602 and Logic Analyser
+
+1.  Connect the remaining pins from BL602 to Logic Analyser
 
 ![BL602 talks to BME280 over SPI, visualised by LA2016 Logic Analyser](https://lupyuen.github.io/images/spi-analyse9a.png)
 
