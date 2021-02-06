@@ -813,7 +813,7 @@ int rc = spi_init(
 <p>To summarise the spooky mysteries we have observed on BL602 SPI...</p>
 <ol>
 <li>
-<p>The SPI Pins for <strong>Serial Data In</strong> and <strong>Serial Data Out</strong> seem to be flipped, when observed with a Logic Analyser. </p>
+<p>SPI Pins for <strong>Serial Data In</strong> and <strong>Serial Data Out</strong> seem to be flipped, when observed with a Logic Analyser. </p>
 <p>This contradicts the BL602 Reference Manual.</p>
 <p>To fix this, we <strong>flip the Serial Data In and Serial Data Out Pins</strong>.</p>
 </li>
@@ -835,7 +835,7 @@ int rc = spi_init(
 </li>
 </ol>
 <p>We have implemented workarounds for these issues.</p>
-<p><strong>BL602 SPI is good to go!</strong></p>
+<p><strong>BL602 SPI is Good To Go!</strong></p>
 <h1 id="port-bl602-spi-hal-to-other-operating-systems" class="section-header"><a href="#port-bl602-spi-hal-to-other-operating-systems">11 Port BL602 SPI HAL to other Operating Systems</a></h1>
 <p>TODO</p>
 <p>We may port the SPI HAL to other operating systems by emulating a few FreeRTOS functions for Event Groups.</p>
