@@ -1138,6 +1138,7 @@ Compute the Clock Divider for 4 MHz
             break;
         }
     }
+```
 
 TODO
 
@@ -1276,7 +1277,9 @@ static void hal_spi_dma_init(spi_hw_t *arg)
     spi_id = hw_arg->ssp_id;
 ```
 
-Set the SPI Timing parameters
+TODO
+
+Set the SPI Timing Intervals
 
 ```c
     /* clock */
@@ -1350,7 +1353,7 @@ Init SPI Port and disable it. Disable all interrupts.
 
 TODO
 
-Configure FIFO Threshold
+Configure FIFO Threshold. Use DMA for FIFO.
 
 ```c
     /* fifo */
@@ -1511,7 +1514,7 @@ Define the DMA parameters
 
 TODO
 
-pvPortMalloc to allocate data via FreeRTOS
+pvPortMalloc to allocate DMA Linked List via FreeRTOS
 
 ```c
     *pptxlli = pvPortMalloc(sizeof(DMA_LLI_Ctrl_Type) * count);
@@ -1644,7 +1647,7 @@ For Transmit DMA: Copy data from RAM to SPI Port
 
 TODO
 
-For Receive DMA: Copy data from SPI to RAM Port
+For Receive DMA: Copy data from SPI Port to RAM
 
 ```c
     rxllicfg.dir = DMA_TRNS_P2M;
