@@ -999,40 +999,60 @@ READ: 0x60
 <p><a href="http://dangerousprototypes.com/docs/SPI">Check out the SPI Guide for Bus Pirate</a></p>
 <p><img src="https://lupyuen.github.io/images/spi-analyse1a.png" alt="Bus Pirate talks to BME280 over SPI, visualised by LA2016 Logic Analyser" /></p>
 <p><em>Bus Pirate talks to BME280 over SPI, visualised by LA2016 Logic Analyser</em></p>
-<p>To see the actual SPI Signals on each SPI Pin (shown above), we will use a <strong>Logic Analyser</strong>.</p>
+<p>To see the actual SPI Signals on each Bus Pirate Pin (shown above), we will use a <strong>Logic Analyser</strong>.</p>
+<p>This is useful for comparing and checking whether BL602 is sending the right SPI Signals to BME280.</p>
 <p>The next section explains how.</p>
 <p><img src="https://lupyuen.github.io/images/spi-analyser.jpg" alt="PineCone BL602 RISC-V Board connected to LA2016 Logic Analyser and BME280 SPI Sensor" /></p>
 <p><em>PineCone BL602 RISC-V Board connected to LA2016 Logic Analyser and BME280 SPI Sensor</em></p>
 <h1 id="appendix-troubleshoot-bl602-spi-with-logic-analyser" class="section-header"><a href="#appendix-troubleshoot-bl602-spi-with-logic-analyser">14 Appendix: Troubleshoot BL602 SPI with Logic Analyser</a></h1>
-<p>TODO</p>
-<p><a href="https://www.seeedstudio.com/LA2016-Logic-Analyzer-p-2218.html">LA2016 Logic Analyser</a></p>
-<p>User Guide is under &quot;Learn and Documents&quot;</p>
+<p>We shall use the <a href="https://www.seeedstudio.com/LA2016-Logic-Analyzer-p-2218.html"><strong>LA2016 Logic Analyser</strong></a> to capture and decode the SPI Signals between BL602 and BME280. (Also between Bus Pirate and BME280)</p>
+<p>(LA2016 User Guide is in the link above, under &quot;Learn and Documents&quot;)</p>
 <p>Connect the Logic Analyser to BL602 according to the pic above...</p>
 <table><thead><tr><th align="center">Logic Analyser</th><th align="left">BL602 Pin</th></tr></thead><tbody>
-<tr><td align="center"><strong><code>CH0</code></strong></td><td align="left"><code>GPIO 4  (SDO)</code></td></tr>
-<tr><td align="center"><strong><code>CH1</code></strong></td><td align="left"><code>GPIO 1  (SDI)</code></td></tr>
+<tr><td align="center"><strong><code>CH0</code></strong></td><td align="left"><code>GPIO 4  (SDO / MOSI)</code></td></tr>
+<tr><td align="center"><strong><code>CH1</code></strong></td><td align="left"><code>GPIO 1  (SDI / MISO)</code></td></tr>
 <tr><td align="center"><strong><code>CH2</code></strong></td><td align="left"><code>GPIO 3  (SCK)</code></td></tr>
 <tr><td align="center"><strong><code>CH3</code></strong></td><td align="left"><code>GPIO 14 (CS)</code></td></tr>
 <tr><td align="center"><strong><code>GND</code></strong></td><td align="left"><code>GND</code></td></tr>
 </tbody></table>
-<p>TODO</p>
-<p>Rule of Single Power Source: Be sure that BL602 and Logic Analyser are powered by the same source, i.e. both are connected to the same PC.</p>
+<p>But be very careful!</p>
+<p><strong>Rule of Single Power Source</strong>: Be sure that BL602 and Logic Analyser are powered by the same source... Both must be connected to the same computer!</p>
+<p>Also the LA2016 User Guide says that the measured voltage is <strong>highly sensitive to grounding</strong>. We shall connect BL602 to the Logic Analyser in this sequence...</p>
 <ol>
 <li>
-<p>Power off BL602 and Logic Analyser</p>
+<p><strong>Disconnect BL602 and Logic Analyser</strong> from our computer's USB ports</p>
 </li>
 <li>
-<p>Connect <strong><code>GND</code></strong> from BL602 to Logic Analyser</p>
+<p><strong>Connect <code>GND</code></strong> from BL602 to Logic Analyser</p>
 </li>
 <li>
-<p>Power on BL602 and Logic Analyser</p>
+<p><strong>Connect BL602 and Logic Analyser</strong> to our computer's USB ports</p>
 </li>
 <li>
-<p>Connect the remaining pins from BL602 to Logic Analyser</p>
+<p><strong>Connect the remaining pins</strong> from BL602 to Logic Analyser</p>
 </li>
 </ol>
+<p>Then do this...</p>
+<ol>
+<li>
+<p><strong>Launch the Logic Analyser Software</strong> on our computer</p>
+</li>
+<li>
+<p><strong>Start capturing</strong> the SPI Signals with the Logic Analyser Software</p>
+</li>
+<li>
+<p><strong>Open a Serial Terminal</strong> to BL602.</p>
+<p><strong>Enter the SPI commands</strong> to read BME280's Chip ID Register.</p>
+</li>
+<li>
+<p>Switch back to the Logic Analyser Software.</p>
+<p><strong>Select the SPI Analyser</strong> to decode the SPI Signals.</p>
+</li>
+</ol>
+<p>We should see the decoded SPI Signals between BL602 and BME280 on all four SPI pins...</p>
 <p><img src="https://lupyuen.github.io/images/spi-analyse9a.png" alt="BL602 talks to BME280 over SPI, visualised by LA2016 Logic Analyser" /></p>
 <p><em>BL602 talks to BME280 over SPI, visualised by LA2016 Logic Analyser</em></p>
+<p>This should look similar to the decoded SPI Signals between Bus Pirate and BME280. <a href="https://lupyuen.github.io/images/spi-analyse1a.png">(See this)</a></p>
 <h1 id="appendix-inside-bl602-spi-hal" class="section-header"><a href="#appendix-inside-bl602-spi-hal">15 Appendix: Inside BL602 SPI HAL</a></h1>
 <p>TODO</p>
 <p>We have not changed any logic in the SPI HAL. We have added debug code. Also we added <code>spi_init</code> based on <code>spi_arg_set_fdt2</code> and <code>vfs_spi_init_fullname</code> for Device Tree.</p>
