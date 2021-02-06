@@ -88,8 +88,8 @@
 <li><a href="#set-chip-select-to-high">7.3 Set Chip Select to High</a><ul></ul></li></ul></li>
 <li><a href="#spi-data-pins-are-flipped">8 SPI Data Pins are flipped</a><ul></ul></li>
 <li><a href="#spi-phase-looks-sus">9 SPI Phase looks sus</a><ul></ul></li>
-<li><a href="#port-bl602-spi-hal-to-other-operating-systems">10 Port BL602 SPI HAL to other Operating Systems</a><ul></ul></li>
-<li><a href="#unsolved-mysteries">11 Unsolved Mysteries</a><ul></ul></li>
+<li><a href="#unsolved-mysteries">10 Unsolved Mysteries</a><ul></ul></li>
+<li><a href="#port-bl602-spi-hal-to-other-operating-systems">11 Port BL602 SPI HAL to other Operating Systems</a><ul></ul></li>
 <li><a href="#whats-next">12 What's Next</a><ul></ul></li>
 <li><a href="#appendix-test-bme280-with-bus-pirate">13 Appendix: Test BME280 with Bus Pirate</a><ul></ul></li>
 <li><a href="#appendix-troubleshoot-bl602-spi-with-logic-analyser">14 Appendix: Troubleshoot BL602 SPI with Logic Analyser</a><ul></ul></li>
@@ -809,29 +809,36 @@ int rc = spi_init(
 <p>Again this seems to be a bug in the BL602 hardware or documentation.</p>
 <p><strong>Be careful when configuring the BL602 SPI Phase... It doesn't quite work the way we expect!</strong></p>
 <p>(Yep I painstakingly verified... Setting BL602 to SPI Polarity 0, Phase 0 doesn't work with BME280)</p>
-<h1 id="port-bl602-spi-hal-to-other-operating-systems" class="section-header"><a href="#port-bl602-spi-hal-to-other-operating-systems">10 Port BL602 SPI HAL to other Operating Systems</a></h1>
-<p>TODO</p>
-<p>We may port the SPI HAL to other operating systems by emulating a few FreeRTOS functions for Event Groups.</p>
-<h1 id="unsolved-mysteries" class="section-header"><a href="#unsolved-mysteries">11 Unsolved Mysteries</a></h1>
-<p>TODO</p>
+<h1 id="unsolved-mysteries" class="section-header"><a href="#unsolved-mysteries">10 Unsolved Mysteries</a></h1>
+<p>To summarise the spooky mysteries we have observed on BL602 SPI...</p>
 <ol>
 <li>
-<p>The pins for <strong>Serial Data In</strong> and <strong>Serial Data Out</strong> seem to be flipped, when observed with a Logic Analyser. </p>
+<p>The SPI Pins for <strong>Serial Data In</strong> and <strong>Serial Data Out</strong> seem to be flipped, when observed with a Logic Analyser. </p>
 <p>This contradicts the BL602 Reference Manual.</p>
+<p>To fix this, we <strong>flip the Serial Data In and Serial Data Out Pins</strong>.</p>
 </li>
 <li>
-<p>To talk to BME280, we must configure BL602 for <strong>SPI Polarity 0, Phase 1</strong>.</p>
-<p>Though the Logic Analyser shows that it looks like SPI Phase 0.</p>
+<p>To talk to BME280, we must configure BL602 for <strong>SPI Polarity 0 Phase 1</strong>.</p>
+<p>Though the Logic Analyser shows that BL602 behaves as SPI Polarity 0 Phase 0 (not Phase 1).</p>
+<p><strong>Be careful when configuring BL602's SPI Phase.</strong></p>
 </li>
 <li>
+<p>Using <strong>Pin 0 for SPI</strong> will switch on the WiFi LED on PineCone.</p>
+<p>(This is undocumented behaviour... What else does Pin 0 do?)</p>
+<p>We'll switch to <strong>Pin 4 for SPI Serial Data Out.</strong></p>
+</li>
+<li>
+<p>(This is neither spooky nor mysterious... But we fixed it anyway)</p>
 <p>BL602's <strong>SPI Chip Select Pin</strong> doesn't work with BME280's SPI protocol.</p>
-<p>We'll control the SPI Chip Select Pin ourselves.</p>
-</li>
-<li>
-<p>Setting <strong>Serial Data Out to Pin 0</strong> will switch on the WiFi LED.</p>
-<p>We'll switch to a different pin for Serial Data Out.</p>
+<p>And it doesn't support multiple SPI Peripherals.</p>
+<p>We'll <strong>control the SPI Chip Select Pin</strong> ourselves with GPIO.</p>
 </li>
 </ol>
+<p>We have implemented workarounds for these issues.</p>
+<p><strong>BL602 SPI is good to go!</strong></p>
+<h1 id="port-bl602-spi-hal-to-other-operating-systems" class="section-header"><a href="#port-bl602-spi-hal-to-other-operating-systems">11 Port BL602 SPI HAL to other Operating Systems</a></h1>
+<p>TODO</p>
+<p>We may port the SPI HAL to other operating systems by emulating a few FreeRTOS functions for Event Groups.</p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">12 What's Next</a></h1>
 <p>TODO</p>
 <ul>
