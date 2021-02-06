@@ -1580,9 +1580,11 @@ Finally we register the DMA Interrupt Handlers: `bl_spi0_dma_int_handler_tx` and
 
 ## hal_spi_transfer: Execute SPI Transfer
 
-TODO
+`hal_spi_transfer` is called by our demo firmware to execute multiple SPI Transfers with DMA.
 
-[`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L482-L522)
+`hal_spi_transfer` is a Blocking Function... It waits for the SPI Transfers to complete before returning.
+
+From [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L482-L522)
 
 ```c
 int hal_spi_transfer(spi_dev_t *spi_dev, void *xfer, uint8_t size)
@@ -1609,11 +1611,11 @@ int hal_spi_transfer(spi_dev_t *spi_dev, void *xfer, uint8_t size)
 #endif
 ```
 
-TODO
+Parameter `xfer` contains an array of SPI Transfers (`spi_ioc_transfer_t`).
 
-Set CS to Low to enable the SPI Peripheral
+Parameter `size` specifies the number of SPI Transfers in `xfer`.
 
-HARDCS doesn't work
+If `HAL_SPI_HARDCS` is 0, this code is supposed to set the Chip Select Pin to Low via GPIO (which activates the SPI Peripheral). But it doesn't work.
 
 ```c
 #if (0 == HAL_SPI_HARDCS)
@@ -1622,9 +1624,7 @@ HARDCS doesn't work
 #endif
 ```
 
-TODO
-
-Execute and wait for each SPI DMA Transfer to complete
+For every SPI Transfer: We call `hal_spi_dma_trans` to execute the SPI Transfer, and wait for the SPI Transfer to complete.
 
 ```c
     for (i = 0; i < size; i++) {
@@ -1636,22 +1636,16 @@ Execute and wait for each SPI DMA Transfer to complete
     }
 ```
 
-TODO
-
-Set CS to High to disable the SPI Peripheral
-
-HARDCS doesn't work
+If `HAL_SPI_HARDCS` is 0, this code is supposed to set the Chip Select Pin to High via GPIO (which deactivates the SPI Peripheral). But it doesn't work.
 
 ```c
 #if (0 == HAL_SPI_HARDCS)
     bl_gpio_output_set(priv_data->hwspi[spi_dev->port].pin_cs, 1);
     blog_info("Set CS pin %d to high\r\n", priv_data->hwspi[spi_dev->port].pin_cs);
 #endif
-
     return 0;
 }
 ```
-
 
 ## lli_list_init: Init DMA Linked List
 
