@@ -881,9 +881,27 @@ __BL602 SPI is Good To Go!__
 
 # Port BL602 SPI HAL to other Operating Systems
 
+_BL602 SPI HAL runs on FreeRTOS today. Will the SPI HAL run on other Embedded Operating Systems?_
+
 TODO
 
 We may port the SPI HAL to other operating systems by emulating a few FreeRTOS functions for Event Groups.
+
+1.  `xEventGroupCreate`: Create the Event Group for DMA Interrupt Handler to notify Foreground Task
+
+1.  `xEventGroupClearBits`: Clear the Event Group
+
+1.  `xEventGroupWaitBits`: Wait for Event Group
+
+1.  `xEventGroupSetBitsFromISR`: Notify the Event Group
+
+1.  `portYIELD_FROM_ISR`: ???
+
+1.  `pvPortMalloc`: Allocate DMA Linked List via FreeRTOS
+
+1.  `vPortFree`: Free the allocated data
+
+The usage of these functions is explained in the Appendix.
 
 # What's Next
 
@@ -1145,11 +1163,13 @@ This should look similar to the decoded SPI Signals between Bus Pirate and BME28
 
 # Appendix: Inside BL602 SPI HAL
 
-TODO
+Let's walk through the BL602 SPI HAL code and understand how it performs SPI Transfers with DMA.
 
-We have not changed any logic in the SPI HAL. We have added debug code. Also we added `spi_init` based on `spi_arg_set_fdt2` and `vfs_spi_init_fullname` for Device Tree.
+We haven't modified any logic in the SPI HAL. (Though we have added some debug code to understand how the HAL works)
 
-Let's walk through the SPI HAL code and understand how it performs SPI Transfers with DMA.
+We added the function `spi_init` to initialise the SPI Port without using the AliOS Device Tree.
+
+`spi_init` was derived from the SPI HAL Functions `spi_arg_set_fdt2` and `vfs_spi_init_fullname` (which use the AliOS Device Tree).
 
 ## Definitions
 
@@ -1160,8 +1180,14 @@ HARDCS doesn't work
 [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L57-L58)
 
 ```c
-#define HAL_SPI_DEBUG       (1)  ////  TODO: Change to 0 for production to disable logging
-#define HAL_SPI_HARDCS      (1)  ////  TODO: When set to 0, this is supposed to control Chip Select Pin as GPIO (instead of SPI). But this doesn't work, because the pin has been configured for SPI Port, which overrides GPIO.
+//  TODO: Change to 0 for production to disable logging
+#define HAL_SPI_DEBUG       (1)  
+
+//  TODO: When set to 0, this is supposed to control 
+//  Chip Select Pin as GPIO (instead of SPI). 
+//  But this doesn't work, because the pin has been 
+//  configured for SPI Port, which overrides GPIO.
+#define HAL_SPI_HARDCS      (1)
 ```
 
 ## spi_init: Init SPI Port
@@ -1481,8 +1507,10 @@ TODO
 Init SPI Port and disable it. Disable all interrupts.
 
 ```c
-    SPI_Init(0,&spicfg);  //// TODO: In future when there are multiple SPI ports, this should be SPI_Init(spi_id, &spicfg)
-
+    //  TODO: In future when there are multiple 
+    //  SPI ports, this should be 
+    //  SPI_Init(spi_id, &spicfg)
+    SPI_Init(0,&spicfg);  
     if (hw_arg->mode == 0)
     {
         SPI_Disable(spi_id, SPI_WORK_MODE_MASTER);
@@ -1519,13 +1547,12 @@ Configure Transmit DMA Interrupts and enable them
 
 TODO
 
-Configure Receive DMA Interrupts and enable them
+Configure Receive DMA Interrupts and enable the interrupts
 
 ```c
     DMA_IntMask(hw_arg->rx_dma_ch, DMA_INT_ALL, MASK);
     DMA_IntMask(hw_arg->rx_dma_ch, DMA_INT_TCOMPLETED, UNMASK); 
     DMA_IntMask(hw_arg->rx_dma_ch, DMA_INT_ERR, UNMASK);
-
     bl_irq_enable(DMA_ALL_IRQn);
 ```
 
@@ -1536,7 +1563,6 @@ Register the DMA Interrupt Handlers
 ```c
     bl_dma_irq_register(hw_arg->tx_dma_ch, bl_spi0_dma_int_handler_tx, NULL, NULL);
     bl_dma_irq_register(hw_arg->rx_dma_ch, bl_spi0_dma_int_handler_rx, NULL, NULL);
-
     return;
 }
 ```
@@ -1837,7 +1863,6 @@ Create DMA Linked List from SPI Transfers
     ret = lli_list_init(&ptxlli, &prxlli, TxData, RxData, Len);
     if (ret < 0) {
         blog_error("init lli failed. \r\n");
-
         return;
     }
 ```
@@ -1849,8 +1874,8 @@ Assign the DMA Linked List to the DMA Controller
 ```c
     DMA_LLI_Init(arg->tx_dma_ch, &txllicfg);
     DMA_LLI_Init(arg->rx_dma_ch, &rxllicfg);
-    DMA_LLI_Update(arg->tx_dma_ch,(uint32_t)ptxlli);
-    DMA_LLI_Update(arg->rx_dma_ch,(uint32_t)prxlli);
+    DMA_LLI_Update(arg->tx_dma_ch, (uint32_t) ptxlli);
+    DMA_LLI_Update(arg->rx_dma_ch, (uint32_t) prxlli);
 ```
 
 TODO
