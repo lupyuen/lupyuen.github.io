@@ -84,10 +84,10 @@
 <li><a href="#enter-spi-commands">6.3 Enter SPI commands</a><ul></ul></li></ul></li>
 <li><a href="#control-our-own-chip-select-pin">7 Control our own Chip Select Pin</a><ul>
 <li><a href="#configure-chip-select-pin-as-gpio-output-pin">7.1 Configure Chip Select Pin as GPIO Output Pin</a><ul></ul></li>
-<li><a href="#set-chip-select-pin-to-low">7.2 Set Chip Select Pin to Low</a><ul></ul></li>
-<li><a href="#set-chip-select-pin-to-high">7.3 Set Chip Select Pin to High</a><ul></ul></li></ul></li>
+<li><a href="#set-chip-select-to-low">7.2 Set Chip Select to Low</a><ul></ul></li>
+<li><a href="#set-chip-select-to-high">7.3 Set Chip Select to High</a><ul></ul></li></ul></li>
 <li><a href="#spi-data-pins-are-flipped">8 SPI Data Pins are flipped</a><ul></ul></li>
-<li><a href="#spi-polarity-and-phase">9 SPI Polarity and Phase</a><ul></ul></li>
+<li><a href="#spi-phase-looks-sus">9 SPI Phase looks sus</a><ul></ul></li>
 <li><a href="#port-bl602-spi-hal-to-other-operating-systems">10 Port BL602 SPI HAL to other Operating Systems</a><ul></ul></li>
 <li><a href="#unsolved-mysteries">11 Unsolved Mysteries</a><ul></ul></li>
 <li><a href="#whats-next">12 What's Next</a><ul></ul></li>
@@ -717,7 +717,7 @@ static void test_spi_init(...) {
     assert(rc == 0);
 </code></pre>
 <p>We're ready to toggle Pin 14 as a GPIO Output Pin!</p>
-<h2 id="set-chip-select-pin-to-low" class="section-header"><a href="#set-chip-select-pin-to-low">7.2 Set Chip Select Pin to Low</a></h2>
+<h2 id="set-chip-select-to-low" class="section-header"><a href="#set-chip-select-to-low">7.2 Set Chip Select to Low</a></h2>
 <p>To set our Chip Select Pin to Low (which activates BME280), we do this: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L135-L155"><code>sdk_app_spi/demo.c</code></a></p>
 <pre><code class="language-c">/// Start the SPI data transfer
 static void test_spi_transfer(...) {    
@@ -730,7 +730,7 @@ static void test_spi_transfer(...) {
     ...
 </code></pre>
 <p>We set Chip Select to Low just before executing the two SPI Transfers.</p>
-<h2 id="set-chip-select-pin-to-high" class="section-header"><a href="#set-chip-select-pin-to-high">7.3 Set Chip Select Pin to High</a></h2>
+<h2 id="set-chip-select-to-high" class="section-header"><a href="#set-chip-select-to-high">7.3 Set Chip Select to High</a></h2>
 <p>To set our Chip Select Pin to High (which deactivates BME280), we do this...</p>
 <pre><code class="language-c">    //  Set Chip Select pin to High, to deactivate BME280
     rc = bl_gpio_output_set(SPI_CS_PIN, 1);
@@ -749,7 +749,7 @@ static void test_spi_transfer(...) {
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/spi-analyse2a.png" alt="BL602 SPI Data Pins are flipped" /></p>
 <p><em>BL602 SPI Data Pins are flipped</em></p>
-<h1 id="spi-polarity-and-phase" class="section-header"><a href="#spi-polarity-and-phase">9 SPI Polarity and Phase</a></h1>
+<h1 id="spi-phase-looks-sus" class="section-header"><a href="#spi-phase-looks-sus">9 SPI Phase looks sus</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/spi-analyse10a.png" alt="BL602 SPI Polarity 0, Phase 1" /></p>
 <p><em>BL602 SPI Polarity 0, Phase 1</em></p>
