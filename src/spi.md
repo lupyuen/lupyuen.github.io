@@ -1081,7 +1081,9 @@ We expect the byte received to be __`0x60`__, which is the Chip ID for BME280.
 
 _Bus Pirate talks to BME280 over SPI, visualised by LA2016 Logic Analyser_
 
-To see the actual SPI Signals on each SPI Pin (shown above), we will use a __Logic Analyser__.
+To see the actual SPI Signals on each Bus Pirate Pin (shown above), we will use a __Logic Analyser__.
+
+This is useful for comparing and checking whether BL602 is sending the right SPI Signals to BME280.
 
 The next section explains how.
 
@@ -1091,37 +1093,55 @@ _PineCone BL602 RISC-V Board connected to LA2016 Logic Analyser and BME280 SPI S
 
 # Appendix: Troubleshoot BL602 SPI with Logic Analyser
 
-TODO
+We shall use the [__LA2016 Logic Analyser__](https://www.seeedstudio.com/LA2016-Logic-Analyzer-p-2218.html) to capture and decode the SPI Signals between BL602 and BME280. (Also between Bus Pirate and BME280)
 
-[LA2016 Logic Analyser](https://www.seeedstudio.com/LA2016-Logic-Analyzer-p-2218.html)
-
-User Guide is under "Learn and Documents"
+(LA2016 User Guide is in the link above, under "Learn and Documents")
 
 Connect the Logic Analyser to BL602 according to the pic above...
 
 | Logic Analyser | BL602 Pin
 |:---:|:---
-| __`CH0`__ | `GPIO 4  (SDO)`
-| __`CH1`__ | `GPIO 1  (SDI)`
+| __`CH0`__ | `GPIO 4  (SDO / MOSI)`
+| __`CH1`__ | `GPIO 1  (SDI / MISO)`
 | __`CH2`__ | `GPIO 3  (SCK)`
 | __`CH3`__ | `GPIO 14 (CS)`
 | __`GND`__ | `GND`
 
-TODO
+But be very careful!
 
-Rule of Single Power Source: Be sure that BL602 and Logic Analyser are powered by the same source, i.e. both are connected to the same PC.
+__Rule of Single Power Source__: Be sure that BL602 and Logic Analyser are powered by the same source... Both must be connected to the same computer!
 
-1.  Power off BL602 and Logic Analyser
+Also the LA2016 User Guide says that the measured voltage is __highly sensitive to grounding__. We shall connect BL602 to the Logic Analyser in this sequence...
 
-1.  Connect __`GND`__ from BL602 to Logic Analyser
+1.  __Disconnect BL602 and Logic Analyser__ from our computer's USB ports
 
-1.  Power on BL602 and Logic Analyser
+1.  __Connect `GND`__ from BL602 to Logic Analyser
 
-1.  Connect the remaining pins from BL602 to Logic Analyser
+1.  __Connect BL602 and Logic Analyser__ to our computer's USB ports
+
+1.  __Connect the remaining pins__ from BL602 to Logic Analyser
+
+Then do this...
+
+1.  __Launch the Logic Analyser Software__ on our computer
+
+1.  __Start capturing__ the SPI Signals with the Logic Analyser Software
+
+1.  __Open a Serial Terminal__ to BL602.
+
+    __Enter the SPI commands__ to read BME280's Chip ID Register.
+
+1.  Switch back to the Logic Analyser Software.
+
+    __Select the SPI Analyser__ to decode the SPI Signals.
+
+We should see the decoded SPI Signals between BL602 and BME280 on all four SPI pins...
 
 ![BL602 talks to BME280 over SPI, visualised by LA2016 Logic Analyser](https://lupyuen.github.io/images/spi-analyse9a.png)
 
 _BL602 talks to BME280 over SPI, visualised by LA2016 Logic Analyser_
+
+This should look similar to the decoded SPI Signals between Bus Pirate and BME280. [(See this)](https://lupyuen.github.io/images/spi-analyse1a.png)
 
 # Appendix: Inside BL602 SPI HAL
 
