@@ -82,11 +82,15 @@
 <li><a href="#flash-the-firmware">6.1 Flash the firmware</a><ul></ul></li>
 <li><a href="#run-the-firmware">6.2 Run the firmware</a><ul></ul></li>
 <li><a href="#enter-spi-commands">6.3 Enter SPI commands</a><ul></ul></li></ul></li>
-<li><a href="#control-our-own-chip-select-pin">7 Control our own Chip Select Pin</a><ul></ul></li>
+<li><a href="#control-our-own-chip-select-pin">7 Control our own Chip Select Pin</a><ul>
+<li><a href="#configure-chip-select-pin-as-gpio-output-pin">7.1 Configure Chip Select Pin as GPIO Output Pin</a><ul></ul></li>
+<li><a href="#set-chip-select-pin-to-high">7.2 Set Chip Select Pin to High</a><ul></ul></li>
+<li><a href="#set-chip-select-pin-to-low">7.3 Set Chip Select Pin to Low</a><ul></ul></li>
+<li><a href="#and-back-to-high">7.4 And back to High</a><ul></ul></li></ul></li>
 <li><a href="#spi-data-pins-are-flipped">8 SPI Data Pins are flipped</a><ul></ul></li>
 <li><a href="#spi-polarity-and-phase">9 SPI Polarity and Phase</a><ul></ul></li>
-<li><a href="#pin-0-controls-wifi-led">10 Pin 0 controls WiFi LED</a><ul></ul></li>
-<li><a href="#port-bl602-spi-hal-to-other-operating-systems">11 Port BL602 SPI HAL to other Operating Systems</a><ul></ul></li>
+<li><a href="#port-bl602-spi-hal-to-other-operating-systems">10 Port BL602 SPI HAL to other Operating Systems</a><ul></ul></li>
+<li><a href="#unsolved-mysteries">11 Unsolved Mysteries</a><ul></ul></li>
 <li><a href="#whats-next">12 What's Next</a><ul></ul></li>
 <li><a href="#appendix-test-bme280-with-bus-pirate">13 Appendix: Test BME280 with Bus Pirate</a><ul></ul></li>
 <li><a href="#appendix-troubleshoot-bl602-spi-with-logic-analyser">14 Appendix: Troubleshoot BL602 SPI with Logic Analyser</a><ul></ul></li>
@@ -685,7 +689,9 @@ int rc = spi_init(
 </li>
 </ol>
 <p>Here's how we control the Chip Select Pin ourselves...</p>
+<h2 id="configure-chip-select-pin-as-gpio-output-pin" class="section-header"><a href="#configure-chip-select-pin-as-gpio-output-pin">7.1 Configure Chip Select Pin as GPIO Output Pin</a></h2>
 <p>TODO</p>
+<p>Configure Chip Select pin as a GPIO Pin</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L86-L99"><code>sdk_app_spi/demo.c</code></a></p>
 <pre><code class="language-c">/// Init the SPI Port
 static void test_spi_init(...) {
@@ -699,16 +705,24 @@ static void test_spi_init(...) {
         sizeof(pins) / sizeof(pins[0])  //  Number of pins (1)
     );
     assert(rc2 == SUCCESS);
-
-    //  Configure Chip Select pin as a GPIO Output Pin (instead of GPIO Input)
+</code></pre>
+<p>TODO</p>
+<p>Configure Chip Select pin as a GPIO Output Pin (instead of GPIO Input)</p>
+<pre><code class="language-c">    //  Configure Chip Select pin as a GPIO Output Pin (instead of GPIO Input)
     rc = bl_gpio_enable_output(SPI_CS_PIN, 0, 0);
     assert(rc == 0);
-
-    //  Set Chip Select pin to High, to deactivate BME280
+</code></pre>
+<h2 id="set-chip-select-pin-to-high" class="section-header"><a href="#set-chip-select-pin-to-high">7.2 Set Chip Select Pin to High</a></h2>
+<p>TODO</p>
+<p>Set Chip Select pin to High, to deactivate BME280</p>
+<pre><code class="language-c">    //  Set Chip Select pin to High, to deactivate BME280
     printf(&quot;Set CS pin %d to high\r\n&quot;, SPI_CS_PIN);
     rc = bl_gpio_output_set(SPI_CS_PIN, 1);
     assert(rc == 0);
 </code></pre>
+<h2 id="set-chip-select-pin-to-low" class="section-header"><a href="#set-chip-select-pin-to-low">7.3 Set Chip Select Pin to Low</a></h2>
+<p>TODO</p>
+<p>Set Chip Select pin to Low, to activate BME280</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L135-L155"><code>sdk_app_spi/demo.c</code></a></p>
 <pre><code class="language-c">/// Start the SPI data transfer
 static void test_spi_transfer(...) {    
@@ -717,32 +731,47 @@ static void test_spi_transfer(...) {
     int rc = bl_gpio_output_set(SPI_CS_PIN, 0);
     assert(rc == 0);
 
-    //  Execute the two SPI Transfers with the DMA Controller
-    rc = hal_spi_transfer(
-        &amp;spi,       //  SPI Device
-        transfers,  //  SPI Transfers
-        sizeof(transfers) / sizeof(transfers[0])  //  How many transfers (Number of requests, not bytes)
-    );
-    assert(rc == 0);
-
-    //  DMA Controller will transmit and receive the SPI data in the background.
-    //  hal_spi_transfer will wait for the two SPI Transfers to complete before returning.
-    //  Now that we're done with the two SPI Transfers...
-
-    //  Set Chip Select pin to High, to deactivate BME280
+    //  (Omitted) Execute the two SPI Transfers with the DMA Controller
+    ...
+</code></pre>
+<h2 id="and-back-to-high" class="section-header"><a href="#and-back-to-high">7.4 And back to High</a></h2>
+<p>TODO</p>
+<p>Set Chip Select pin to High, to deactivate BME280</p>
+<pre><code class="language-c">    //  Set Chip Select pin to High, to deactivate BME280
     rc = bl_gpio_output_set(SPI_CS_PIN, 1);
     assert(rc == 0);
 </code></pre>
 <h1 id="spi-data-pins-are-flipped" class="section-header"><a href="#spi-data-pins-are-flipped">8 SPI Data Pins are flipped</a></h1>
 <p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/spi-analyse2a.png" alt="BL602 SPI Data Pins are flipped" /></p>
+<p><em>BL602 SPI Data Pins are flipped</em></p>
 <h1 id="spi-polarity-and-phase" class="section-header"><a href="#spi-polarity-and-phase">9 SPI Polarity and Phase</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/spi-analyse10a.png" alt="BL602 SPI Polarity 0, Phase 1" /></p>
 <p><em>BL602 SPI Polarity 0, Phase 1</em></p>
-<h1 id="pin-0-controls-wifi-led" class="section-header"><a href="#pin-0-controls-wifi-led">10 Pin 0 controls WiFi LED</a></h1>
+<h1 id="port-bl602-spi-hal-to-other-operating-systems" class="section-header"><a href="#port-bl602-spi-hal-to-other-operating-systems">10 Port BL602 SPI HAL to other Operating Systems</a></h1>
 <p>TODO</p>
-<h1 id="port-bl602-spi-hal-to-other-operating-systems" class="section-header"><a href="#port-bl602-spi-hal-to-other-operating-systems">11 Port BL602 SPI HAL to other Operating Systems</a></h1>
+<p>We may port the SPI HAL to other operating systems by emulating a few FreeRTOS functions for Event Groups.</p>
+<h1 id="unsolved-mysteries" class="section-header"><a href="#unsolved-mysteries">11 Unsolved Mysteries</a></h1>
 <p>TODO</p>
+<ol>
+<li>
+<p>The pins for <strong>Serial Data In</strong> and <strong>Serial Data Out</strong> seem to be flipped, when observed with a Logic Analyser. </p>
+<p>This contradicts the BL602 Reference Manual.</p>
+</li>
+<li>
+<p>To talk to BME280, we must configure BL602 for <strong>SPI Polarity 0, Phase 1</strong>.</p>
+<p>Though the Logic Analyser shows that it looks like SPI Phase 0.</p>
+</li>
+<li>
+<p>BL602's <strong>SPI Chip Select Pin</strong> doesn't work with BME280's SPI protocol.</p>
+<p>We'll control the SPI Chip Select Pin ourselves.</p>
+</li>
+<li>
+<p>Setting <strong>Serial Data Out to Pin 0</strong> will switch on the WiFi LED.</p>
+<p>We'll switch to a different pin for Serial Data Out.</p>
+</li>
+</ol>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">12 What's Next</a></h1>
 <p>TODO</p>
 <ul>
@@ -830,6 +859,9 @@ READ: 0x60
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/spi-analyser.jpg" alt="PineCone BL602 RISC-V Board connected to LA2016 Logic Analyser and BME280 SPI Sensor" /></p>
 <p><em>PineCone BL602 RISC-V Board connected to LA2016 Logic Analyser and BME280 SPI Sensor</em></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/spi-analyse9a.png" alt="BL602 talks to BME280 over SPI, visualised by LA2016 Logic Analyser" /></p>
+<p><em>BL602 talks to BME280 over SPI, visualised by LA2016 Logic Analyser</em></p>
 <h1 id="appendix-inside-bl602-spi-hal" class="section-header"><a href="#appendix-inside-bl602-spi-hal">15 Appendix: Inside BL602 SPI HAL</a></h1>
 <p>TODO</p>
 <h2 id="definitions" class="section-header"><a href="#definitions">15.1 Definitions</a></h2>
