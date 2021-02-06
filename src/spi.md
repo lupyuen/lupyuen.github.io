@@ -10,7 +10,7 @@ __We'll need SPI on BL602!__
 
 Today we shall connect the BL602 RISC-V SoC to a simple SPI Sensor: __BME280__
 
-We'll learn about the SPI quirks on BL602...
+We'll learn about the SPI quirks on BL602 and how we fixed them...
 
 1.  __Serial Data In__ and __Serial Data Out__ seem to be flipped
 
@@ -19,8 +19,6 @@ We'll learn about the SPI quirks on BL602...
 1.  Why we shouldn't use __Pin 0 for SPI__
 
 1.  Why we should control __SPI Chip Select__ ourselves
-
-And how we fixed them.
 
 Also we'll learn to __troubleshoot BL602 SPI with a Logic Analyser__.
 
