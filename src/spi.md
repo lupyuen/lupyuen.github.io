@@ -648,6 +648,36 @@ Congratulations! We have successfully read the BME280 Sensor from BL602 over SPI
 
 # Control our own Chip Select Pin
 
+Remember earlier we said that we're not using Pin 2, the designated Chip Select Pin from the BL602 SPI Port...
+
+```c
+//  Configure the SPI Port
+int rc = spi_init(
+    ...
+    2,   //  Unused SPI Chip Select Pin
+```
+
+But instead, we're using Pin 14 as our own Chip Select Pin?
+
+```c
+/// Use GPIO 14 as SPI Chip Select Pin
+#define SPI_CS_PIN 14
+```
+
+Two reasons why we're controlling the Chip Select Pin ourselves...
+
+![BL602 talks to BME280 over SPI, visualised by a Logic Analyser](https://lupyuen.github.io/images/spi-analyse4a.png)
+
+1.  __We get to shape the Chip Select Signal ourselves__
+
+    TODO
+
+1.  __We want to control multiple SPI Peripherals__
+
+    TODO
+
+Here's how we control the Chip Select Pin ourselves...
+
 TODO
 
 [`sdk_app_spi/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L86-L99)
@@ -703,40 +733,6 @@ static void test_spi_transfer(...) {
     assert(rc == 0);
 ```
 
-# Show the Results
-
-TODO
-
-[`sdk_app_spi/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L158-L182)
-
-```c
-/// Show the SPI data received and the interrupt counters
-static void test_spi_result(char *buf, int len, int argc, char **argv)
-{
-    //  Show the received data
-    printf("SPI Transfer #1: Received Data 0x%p:\r\n", rx_buf1);
-    for (int i = 0; i < sizeof(rx_buf1); i++) {
-        printf("  %02x\r\n", rx_buf1[i]);
-    }
-    printf("SPI Transfer #2: Received Data 0x%p:\r\n", rx_buf2);
-    for (int i = 0; i < sizeof(rx_buf2); i++) {
-        printf("  %02x\r\n", rx_buf2[i]);
-    }
-
-    //  Show the Interrupt Counters, Status and Error Codes defined in components/hal_drv/bl602_hal/hal_spi.c
-    extern int g_tx_counter, g_rx_counter;
-    extern uint32_t g_tx_status, g_tx_tc, g_tx_error, g_rx_status, g_rx_tc, g_rx_error;
-    printf("Tx Interrupts: %d\r\n",   g_tx_counter);
-    printf("Tx Status:     0x%x\r\n", g_tx_status);
-    printf("Tx Term Count: 0x%x\r\n", g_tx_tc);
-    printf("Tx Error:      0x%x\r\n", g_tx_error);
-    printf("Rx Interrupts: %d\r\n",   g_rx_counter);
-    printf("Rx Status:     0x%x\r\n", g_rx_status);
-    printf("Rx Term Count: 0x%x\r\n", g_rx_tc);
-    printf("Rx Error:      0x%x\r\n", g_rx_error);
-}
-```
-
 # SPI Data Pins are flipped
 
 TODO
@@ -744,6 +740,10 @@ TODO
 # SPI Polarity and Phase
 
 TODO
+
+![BL602 SPI Polarity 0, Phase 1](https://lupyuen.github.io/images/spi-analyse10a.png)
+
+_BL602 SPI Polarity 0, Phase 1_
 
 # Pin 0 controls WiFi LED
 
