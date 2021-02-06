@@ -860,7 +860,7 @@ __Be careful when configuring the BL602 SPI Phase... It doesn't quite work the w
 
 To summarise the spooky mysteries we have observed on BL602 SPI...
 
-1.  The SPI Pins for __Serial Data In__ and __Serial Data Out__ seem to be flipped, when observed with a Logic Analyser. 
+1.  SPI Pins for __Serial Data In__ and __Serial Data Out__ seem to be flipped, when observed with a Logic Analyser. 
 
     This contradicts the BL602 Reference Manual.
 
@@ -888,7 +888,7 @@ To summarise the spooky mysteries we have observed on BL602 SPI...
 
 We have implemented workarounds for these issues.
 
-__BL602 SPI is good to go!__
+__BL602 SPI is Good To Go!__
 
 # Port BL602 SPI HAL to other Operating Systems
 
