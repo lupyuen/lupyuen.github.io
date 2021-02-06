@@ -688,17 +688,20 @@ _Why are we controlling the Chip Select Pin ourselves?_
 
     [More about connecting multiple SPI Peripherals](https://learn.sparkfun.com/tutorials/serial-peripheral-interface-spi/all#chip-select-cs)
 
-Here's how we control the Chip Select Pin ourselves...
+Here's how we use BL602 GPIO to control our Chip Select Pin...
 
 ## Configure Chip Select Pin as GPIO Output Pin
 
-TODO
+BL602 is extremely versatile for Pin Functions... We may assign __any BL602 Pin as GPIO, SPI, I2C, UART, PWM or JTAG!__
 
-Configure Chip Select pin as a GPIO Pin
+(See Table 3.1 "Pin Description", Page 27 in the [BL602 Reference Manual](https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en))
 
-[`sdk_app_spi/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L86-L99)
+We configure Pin 14 for GPIO like so: [`sdk_app_spi/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L86-L99)
 
 ```c
+/// Use GPIO 14 as SPI Chip Select Pin
+#define SPI_CS_PIN 14
+
 /// Init the SPI Port
 static void test_spi_init(...) {
     ...
@@ -713,9 +716,11 @@ static void test_spi_init(...) {
     assert(rc2 == SUCCESS);
 ```
 
-TODO
+We call __`GLB_GPIO_Func_Init`__ to configure Pin 14 as a plain GPIO Pin: `GPIO_FUN_SWGPIO`.
 
-Configure Chip Select pin as a GPIO Output Pin (instead of GPIO Input)
+(`GLB_GPIO_Func_Init` comes from the __BL602 Standard Driver__: [`bl602_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c))
+
+Now that Pin 14 is configured as a GPIO Pin, let's configure it for __GPIO Output__ (instead of GPIO Input)...
 
 ```c
     //  Configure Chip Select pin as a GPIO Output Pin (instead of GPIO Input)
@@ -723,26 +728,11 @@ Configure Chip Select pin as a GPIO Output Pin (instead of GPIO Input)
     assert(rc == 0);
 ```
 
-## Set Chip Select Pin to High
-
-TODO
-
-Set Chip Select pin to High, to deactivate BME280
-
-```c
-    //  Set Chip Select pin to High, to deactivate BME280
-    printf("Set CS pin %d to high\r\n", SPI_CS_PIN);
-    rc = bl_gpio_output_set(SPI_CS_PIN, 1);
-    assert(rc == 0);
-```
+We're ready to toggle Pin 14 as a GPIO Output Pin!
 
 ## Set Chip Select Pin to Low
 
-TODO
-
-Set Chip Select pin to Low, to activate BME280
-
-[`sdk_app_spi/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L135-L155)
+To set our Chip Select Pin to Low (which activates BME280), we do this: [`sdk_app_spi/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L135-L155)
 
 ```c
 /// Start the SPI data transfer
@@ -756,17 +746,23 @@ static void test_spi_transfer(...) {
     ...
 ```
 
-## And back to High 
+We set Chip Select to Low just before executing the two SPI Transfers.
 
-TODO
+## Set Chip Select Pin to High
 
-Set Chip Select pin to High, to deactivate BME280
+To set our Chip Select Pin to High (which deactivates BME280), we do this...
 
 ```c
     //  Set Chip Select pin to High, to deactivate BME280
     rc = bl_gpio_output_set(SPI_CS_PIN, 1);
     assert(rc == 0);
 ```
+
+We set Chip Select to High in two places...
+
+1.  When we initialise the SPI Port
+
+1.  After completing the two SPI Transfers
 
 # SPI Data Pins are flipped
 
