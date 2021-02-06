@@ -666,15 +666,27 @@ But instead, we're using Pin 14 as our own Chip Select Pin...
 
 _Why are we controlling the Chip Select Pin ourselves?_
 
-![BL602 talks to BME280 over SPI, visualised by a Logic Analyser](https://lupyuen.github.io/images/spi-analyse4a.png)
+![Chip Select Pin from SPI Port connected to BME280](https://lupyuen.github.io/images/spi-analyse4a.png)
 
 1.  __We get to shape the Chip Select Signal ourselves__
 
-    TODO
+    When we use the Chip Select Pin from the SPI Port, the __Chip Select Pin goes High__ between the two SPI Transfers. (See pic above)
 
-1.  __We want to control multiple SPI Peripherals__
+    This is not good... We expect the __Chip Select Pin to stay Low__ between the two SPI Transfers! [(See this)](https://lupyuen.github.io/images/spi-analyse9a.png)
 
-    TODO
+    We'll control the Chip Select Pin ourselves to produce the desired signal shape.
+
+    (How do we know that the Chip Select Pin should stay Low? From the Bus Pirate data captured by the Logic Analyser)
+
+1.  __We want to control multiple SPI Peripherals with BL602__
+
+    We may connect multiple SPI Peripherals to BL602 at the same time: BME280 Sensor, ST7789 Display Controller, SX1262 LoRa Transceiver, ...
+
+    BL602's Serial Data In, Serial Data Out and Clock Pins may be shared by the SPI Peripherals... __But each SPI Periperhal needs its own Chip Select Pin__.
+
+    Hence we'll control the Chip Select Pin ourselves to support multiple SPI Peripherals.
+
+    [More about connecting multiple SPI Peripherals](https://learn.sparkfun.com/tutorials/serial-peripheral-interface-spi/all#chip-select-cs)
 
 Here's how we control the Chip Select Pin ourselves...
 
@@ -836,6 +848,12 @@ WRITE: 0xD0
 READ: 0x60 
 /CS DISABLED
 ```
+
+TODO
+
+![Bus Pirate talks to BME280 over SPI, visualised by a Logic Analyser](https://lupyuen.github.io/images/spi-analyse1a.png)
+
+_Bus Pirate talks to BME280 over SPI, visualised by a Logic Analyser_
 
 # Appendix: Troubleshoot BL602 SPI with Logic Analyser
 
