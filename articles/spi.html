@@ -1026,13 +1026,10 @@ int spi_init(spi_dev_t *spi, uint8_t port,
             break;
         }
     }
-
-TODO
-
-Validate the Clock Divider: 200 kHz to 4 MHz
-
-```c
-    if (real_flag != 1) {
+</code></pre>
+<p>TODO</p>
+<p>Validate the Clock Divider: 200 kHz to 4 MHz</p>
+<pre><code class="language-c">    if (real_flag != 1) {
         if (i == 0) {
             blog_error(&quot;The max speed is 40000000 Hz, please set it smaller.&quot;);
             return -1;
@@ -1138,7 +1135,8 @@ Validate the Clock Divider: 200 kHz to 4 MHz
     
     spi_id = hw_arg-&gt;ssp_id;
 </code></pre>
-<p>Set the SPI Timing parameters</p>
+<p>TODO</p>
+<p>Set the SPI Timing Intervals</p>
 <pre><code class="language-c">    /* clock */
     /*1  ---&gt;  40 Mhz
      *2  ---&gt;  20 Mhz
@@ -1196,7 +1194,7 @@ Validate the Clock Divider: 200 kHz to 4 MHz
     SPI_IntMask(spi_id,SPI_INT_ALL,MASK);
 </code></pre>
 <p>TODO</p>
-<p>Configure FIFO Threshold</p>
+<p>Configure FIFO Threshold. Use DMA for FIFO.</p>
 <pre><code class="language-c">    /* fifo */
     fifocfg.txFifoThreshold = 1;
     fifocfg.rxFifoThreshold = 1;
@@ -1311,7 +1309,7 @@ Validate the Clock Divider: 200 kHz to 4 MHz
     dmactrl.SLargerD = 0;
 </code></pre>
 <p>TODO</p>
-<p>pvPortMalloc to allocate data via FreeRTOS</p>
+<p>pvPortMalloc to allocate DMA Linked List via FreeRTOS</p>
 <pre><code class="language-c">    *pptxlli = pvPortMalloc(sizeof(DMA_LLI_Ctrl_Type) * count);
     if (*pptxlli == NULL) {
         blog_error(&quot;malloc lli failed. \r\n&quot;);
@@ -1409,7 +1407,7 @@ Validate the Clock Divider: 200 kHz to 4 MHz
     txllicfg.dstPeriph = DMA_REQ_SPI_TX;
 </code></pre>
 <p>TODO</p>
-<p>For Receive DMA: Copy data from SPI to RAM Port</p>
+<p>For Receive DMA: Copy data from SPI Port to RAM</p>
 <pre><code class="language-c">    rxllicfg.dir = DMA_TRNS_P2M;
     rxllicfg.srcPeriph = DMA_REQ_SPI_RX;
     rxllicfg.dstPeriph = DMA_REQ_NONE;
