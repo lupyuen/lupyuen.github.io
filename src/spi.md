@@ -911,12 +911,11 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 _Bus Pirate connected to BME280 Sensor over SPI_
 
-# Appendix: Test BME280 with Bus Pirate
+# Appendix: Test BME280 SPI Interface with Bus Pirate
 
 TODO
 
-Testing BME280 SPI with Bus Pirate:
-(See http://dangerousprototypes.com/docs/SPI)
+[__Bus Pirate__](http://dangerousprototypes.com/docs/Bus_Pirate) is a useful gadget for verifying whether our BME280 Sensor works OK. And for checking the SPI signals that should be sent down the wire to BME280.
 
 ```text
 HiZ> m
@@ -983,13 +982,39 @@ READ: 0x60
 
 TODO
 
-![Bus Pirate talks to BME280 over SPI, visualised by a Logic Analyser](https://lupyuen.github.io/images/spi-analyse1a.png)
+The Bus Pirate SPI command...
 
-_Bus Pirate talks to BME280 over SPI, visualised by a Logic Analyser_
+```text
+[ 0xD0 r ]
+```
+
+TODO
+
+means...
+
+1.  Set Chip Select Pin to Low (to activate BME280)
+
+1.  Transmit byte `0xD0` to BME280
+
+1.  Read one byte from BME280
+
+1.  Set Chip Select Pin to High (to deactivate BME280)
+
+TODO
+
+![Bus Pirate talks to BME280 over SPI, visualised by LA2016 Logic Analyser](https://lupyuen.github.io/images/spi-analyse1a.png)
+
+_Bus Pirate talks to BME280 over SPI, visualised by LA2016 Logic Analyser_
+
+[Check out the SPI Guide for Bus Pirate](http://dangerousprototypes.com/docs/SPI)
 
 # Appendix: Troubleshoot BL602 SPI with Logic Analyser
 
 TODO
+
+[LA2016 Logic Analyser](https://www.seeedstudio.com/LA2016-Logic-Analyzer-p-2218.html)
+
+User Guide is under "Learn and Documents"
 
 ![PineCone BL602 RISC-V Board connected to LA2016 Logic Analyser and BME280 SPI Sensor](https://lupyuen.github.io/images/spi-analyser.jpg)
 
