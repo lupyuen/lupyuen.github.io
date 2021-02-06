@@ -852,6 +852,7 @@ int rc = spi_init(
 <p><em>Bus Pirate connected to BME280 Sensor over SPI</em></p>
 <h1 id="appendix-test-bme280-spi-interface-with-bus-pirate" class="section-header"><a href="#appendix-test-bme280-spi-interface-with-bus-pirate">13 Appendix: Test BME280 SPI Interface with Bus Pirate</a></h1>
 <p><a href="http://dangerousprototypes.com/docs/Bus_Pirate"><strong>Bus Pirate</strong></a> is a useful gadget for verifying whether our BME280 Sensor works OK. And for checking the SPI signals that should be sent down the wire to BME280.</p>
+<p>Here's how we test BME280 (or BMP280) with Bus Pirate...</p>
 <ol>
 <li>
 <p>Connect Bus Pirate to BME280 (or BMP280) according to the pic above...</p>
@@ -863,14 +864,16 @@ int rc = spi_init(
 <tr><td align="center"><strong><code>3.3V</code></strong></td><td align="center"><code>3.3V</code></td></tr>
 <tr><td align="center"><strong><code>GND</code></strong></td><td align="center"><code>GND</code></td></tr>
 </tbody></table>
-<p>Connect to the SPI side of BME280 (with 6 pins). Don't use any pins on the I2C side (with 4 pins).</p>
+<p>Connect to the <strong>SPI side of BME280</strong> (with 6 pins).</p>
+<p>Don't use any pins on the I2C side (with 4 pins).</p>
 </li>
 <li>
 <p>Connect Bus Pirate to our computer's USB port.</p>
 <p>Open a Serial Terminal for Bus Pirate.</p>
 </li>
-</ol>
-<p>TODO</p>
+<li>
+<p>Enter <strong><code>m</code></strong> to show the menu</p>
+<p>Select <strong><code>SPI</code></strong></p>
 <pre><code class="language-text">HiZ&gt; m
 1. HiZ
 2. 1-WIRE
@@ -886,73 +889,113 @@ int rc = spi_init(
 x. exit(without change)
 
 (1)&gt; 5
-Set speed:
- 1. 30KHz
- 2. 125KHz
- 3. 250KHz
- 4. 1MHz
+</code></pre>
+</li>
+<li>
+<p>Select <strong><code>250 kHz</code></strong></p>
+<pre><code class="language-text">Set speed:
+1. 30KHz
+2. 125KHz
+3. 250KHz
+4. 1MHz
 
 (1)&gt; 3
-Clock polarity:
- 1. Idle low *default
- 2. Idle high
+</code></pre>
+</li>
+<li>
+<p>Select <strong><code>Idle Low</code></strong></p>
+<pre><code class="language-text">Clock polarity:
+1. Idle low *default
+2. Idle high
 
 (1)&gt;
-Output clock edge:
- 1. Idle to active
- 2. Active to idle *default
+</code></pre>
+</li>
+<li>
+<p>Select <strong><code>Active To Idle</code></strong></p>
+<pre><code class="language-text">Output clock edge:
+1. Idle to active
+2. Active to idle *default
 
 (2)&gt;
-Input sample phase:
- 1. Middle *default
- 2. End
+</code></pre>
+</li>
+<li>
+<p>Select <strong><code>Middle</code></strong></p>
+<pre><code class="language-text">Input sample phase:
+1. Middle *default
+2. End
 
 (1)&gt;
-CS:
- 1. CS
- 2. /CS *default
+</code></pre>
+</li>
+<li>
+<p>Select <strong><code>/CS</code></strong></p>
+<pre><code class="language-text">CS:
+1. CS
+2. /CS *default
 
 (2)&gt;
-Select output type:
- 1. Open drain (H=Hi-Z, L=GND)
- 2. Normal (H=3.3V, L=GND)
+</code></pre>
+</li>
+<li>
+<p>Select <strong><code>Open Drain</code></strong></p>
+<pre><code class="language-text">Select output type:
+1. Open drain (H=Hi-Z, L=GND)
+2. Normal (H=3.3V, L=GND)
 
 (1)&gt;
 Clutch disengaged!!!
 To finish setup, start up the power supplies with command 'W'
 Ready
-
-SPI&gt; W
+</code></pre>
+</li>
+<li>
+<p>Enter <strong><code>W</code></strong> to power on BME280</p>
+<pre><code class="language-text">SPI&gt; W
 POWER SUPPLIES ON
 Clutch engaged!!!
-
-SPI&gt; [ 0xD0 r ]
+</code></pre>
+</li>
+<li>
+<p>Enter this command...</p>
+<pre><code class="language-text">[ 0xD0 r ]
+</code></pre>
+<p>(We'll learn why in a while)</p>
+</li>
+<li>
+<p>We should see...</p>
+<pre><code class="language-text">SPI&gt; [ 0xD0 r ]
 /CS ENABLED
 WRITE: 0xD0 
 READ: 0x60 
 /CS DISABLED
 </code></pre>
-<p>TODO</p>
-<p>The Bus Pirate SPI command...</p>
-<pre><code class="language-text">[ 0xD0 r ]
-</code></pre>
-<p>TODO</p>
-<p>means...</p>
-<ol>
-<li>
-<p>Set Chip Select Pin to Low (to activate BME280)</p>
-</li>
-<li>
-<p>Transmit byte <code>0xD0</code> to BME280</p>
-</li>
-<li>
-<p>Read one byte from BME280</p>
-</li>
-<li>
-<p>Set Chip Select Pin to High (to deactivate BME280)</p>
+<p>This means that the result is <code>0x60</code>, which is the Chip ID for BME280.</p>
+<p>(For BMP280 the Chip ID is <code>0x58</code>)</p>
 </li>
 </ol>
-<p>TODO</p>
+<p>This Bus Pirate SPI command...</p>
+<pre><code class="language-text">[ 0xD0 r ]
+</code></pre>
+<p>Will do this...</p>
+<ol>
+<li>
+<p>Set <strong>Chip Select Pin to Low</strong> (to activate BME280)</p>
+</li>
+<li>
+<p><strong>Transmit byte <code>0xD0</code></strong> to BME280</p>
+</li>
+<li>
+<p><strong>Receive one byte</strong> from BME280</p>
+</li>
+<li>
+<p>Set <strong>Chip Select Pin to High</strong> (to deactivate BME280)</p>
+</li>
+</ol>
+<p>This will read BME280's <strong>Chip ID Register <code>0xD0</code></strong>.</p>
+<p>We expect the byte received to be <strong><code>0x60</code></strong>, which is the Chip ID for BME280.</p>
+<p>(For BMP280 the Chip ID is <code>0x58</code>)</p>
 <p><img src="https://lupyuen.github.io/images/spi-analyse1a.png" alt="Bus Pirate talks to BME280 over SPI, visualised by LA2016 Logic Analyser" /></p>
 <p><em>Bus Pirate talks to BME280 over SPI, visualised by LA2016 Logic Analyser</em></p>
 <p><a href="http://dangerousprototypes.com/docs/SPI">Check out the SPI Guide for Bus Pirate</a></p>
