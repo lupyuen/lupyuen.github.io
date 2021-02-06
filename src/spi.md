@@ -18,6 +18,8 @@ We'll learn about the SPI quirks on BL602...
 
 1.  Why we shouldn't use __Pin 0 for SPI__
 
+1.  Why we should control __SPI Chip Select__ ourselves
+
 And how we fixed them.
 
 Also we'll learn to __troubleshoot BL602 SPI with a Logic Analyser__.
