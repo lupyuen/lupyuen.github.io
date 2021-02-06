@@ -771,14 +771,14 @@ static void test_spi_transfer(...) {
 <tr><td align="center"><strong><code>GPIO 4</code></strong></td><td align="center"><code>SDI</code></td><td align="left">Blue</td></tr>
 </tbody></table>
 <p>This works perfectly fine, though it contradicts the BL602 Reference Manual.</p>
-<p>Because of this bug, we shall refer to <strong>Pin 1 as Serial Data In</strong> <em>(formerly MISO)</em>, and <strong>Pin 4 as Serial Data Out</strong> (formerly MOSI): <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L45-L100"><code>sdk_app_spi/demo.c</code></a> </p>
+<p>Because of this bug, we shall refer to <strong>Pin 1 as Serial Data In</strong> <em>(formerly MISO)</em>, and <strong>Pin 4 as Serial Data Out</strong> <em>(formerly MOSI)</em>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L45-L100"><code>sdk_app_spi/demo.c</code></a> </p>
 <pre><code class="language-c">//  Configure the SPI Port
 int rc = spi_init(
     ...
     1,   //  SPI Serial Data In Pin  (formerly MISO)
     4    //  SPI Serial Data Out Pin (formerly MOSI)
 </code></pre>
-<p>(Could this be happening because we have mistakenly configured BL602 as an SPI Peripheral instead of SPI Controller? 🤔 )</p>
+<p>(Could we have mistakenly configured BL602 as SPI Peripheral... Instead of SPI Controller? 🤔 )</p>
 <h1 id="spi-phase-looks-sus" class="section-header"><a href="#spi-phase-looks-sus">9 SPI Phase looks sus</a></h1>
 <p>Here's another spooky problem: <strong>BL602 SPI Phase seems incorrect</strong>.</p>
 <p>Earlier we have configured BL602 for <strong>SPI Polarity 0 (CPOL), Phase 1 (CPHA)</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L45-L100"><code>sdk_app_spi/demo.c</code></a> </p>
@@ -794,7 +794,7 @@ int rc = spi_init(
 <ul>
 <li><a href="https://www.analog.com/en/analog-dialogue/articles/introduction-to-spi-interface.html#"><strong>Introduction to SPI Interface</strong></a></li>
 </ul>
-<p>Doesn't this look like <strong>SPI Phase 0, not Phase 1?</strong></p>
+<p>Doesn't this look like <strong>SPI Polarity 0 Phase 0, not Phase 1?</strong></p>
 <p>Here's another odd thing: This BL602 SPI Configuration (SPI Polarity 0, Phase 1) works perfectly splendid with BME280...</p>
 <p><em>Yet BME280 doesn't support SPI Polarity 0, Phase 1!</em></p>
 <p>BME280 only supports...</p>
