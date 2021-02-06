@@ -828,30 +828,38 @@ int rc = spi_init(
 <p>We have implemented workarounds for these issues.</p>
 <p><strong>BL602 SPI is Good To Go!</strong></p>
 <h1 id="port-bl602-spi-hal-to-other-operating-systems" class="section-header"><a href="#port-bl602-spi-hal-to-other-operating-systems">11 Port BL602 SPI HAL to other Operating Systems</a></h1>
-<p><em>BL602 SPI HAL runs on FreeRTOS today. Will the SPI HAL run on other Embedded Operating Systems?</em></p>
-<p>TODO</p>
-<p>We may port the SPI HAL to other operating systems by emulating a few FreeRTOS functions for Event Groups.</p>
+<p><em>BL602 SPI HAL runs on FreeRTOS today. Will the SPI HAL run on other Embedded Operating Systems? Like Mynewt, RIOT, Zephyr, ...</em></p>
+<p>We may port the BL602 SPI HAL to other operating systems by <strong>emulating these FreeRTOS functions for Event Groups</strong>...</p>
 <ol>
 <li>
-<p><code>xEventGroupCreate</code>: Create the Event Group for DMA Interrupt Handler to notify Foreground Task</p>
+<p><code>xEventGroupCreate</code>: Create an Event Group </p>
+<p>(Used by the DMA Interrupt Handlers to notify the Foreground Task)</p>
 </li>
 <li>
 <p><code>xEventGroupClearBits</code>: Clear the Event Group</p>
+<p>(Called by the Foreground Task)</p>
 </li>
 <li>
 <p><code>xEventGroupWaitBits</code>: Wait for Event Group</p>
+<p>(Called by the Foreground Task)</p>
 </li>
 <li>
 <p><code>xEventGroupSetBitsFromISR</code>: Notify the Event Group</p>
+<p>(Called by the DMA Interrupt Handlers)</p>
 </li>
 <li>
-<p><code>portYIELD_FROM_ISR</code>: TODO</p>
+<p><code>portYIELD_FROM_ISR</code>: Wakes up the Foreground Task that's waiting for the Event Group.</p>
+<p>(Called by the DMA Interrupt Handlers)</p>
+</li>
+</ol>
+<p>We also need to <strong>emulate these FreeRTOS heap memory functions</strong>, which are similar to <code>malloc</code> and <code>free</code>...</p>
+<ol>
+<li>
+<p><code>pvPortMalloc</code>: Allocate heap memory</p>
+<p>(For creating the DMA Linked List)</p>
 </li>
 <li>
-<p><code>pvPortMalloc</code>: Allocate DMA Linked List via FreeRTOS</p>
-</li>
-<li>
-<p><code>vPortFree</code>: Free the allocated data</p>
+<p><code>vPortFree</code>: Free the allocated heap memory</p>
 </li>
 </ol>
 <p>The usage of these functions is explained in the Appendix.</p>
@@ -1099,8 +1107,8 @@ READ: 0x60
 <h2 id="spi_init-init-spi-port" class="section-header"><a href="#spi_init-init-spi-port">15.2 spi_init: Init SPI Port</a></h2>
 <p>We added the function <code>spi_init</code> to initialise the SPI Port without using the AliOS Device Tree. This function is called by our demo firmware.</p>
 <p><code>spi_init</code> was derived from the SPI HAL Functions <code>spi_arg_set_fdt2</code> and <code>vfs_spi_init_fullname</code> (which use the AliOS Device Tree).</p>
-<p>Note that there is only a single global instance of SPI Data. 
-<code>spi_init</code> shall only be called once by our firmware.</p>
+<p>Note that there is only a <strong>single global instance of SPI Data.</strong> </p>
+<p><strong><code>spi_init</code> shall only be called once by our firmware.</strong></p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L838-L886"><code>bl602_hal/hal_spi.c</code></a></p>
 <pre><code class="language-c">//  Global single instance of SPI Data. 
 //  We support only one instance of SPI Device.
