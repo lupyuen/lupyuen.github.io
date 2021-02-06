@@ -287,6 +287,7 @@ static void test_spi_init(char *buf, int len, int argc, char **argv) {
     assert(rc == 0);
 </code></pre>
 <p>This function initialises <code>spi</code> by calling the (custom) BL602 SPI HAL Function <code>spi_init</code>.</p>
+<p>(<code>spi_init</code> may only be called once in our firmware, because it maintains a single global instance of SPI device)</p>
 <p>Here are the parameters for <code>spi_init</code>...</p>
 <ul>
 <li>
@@ -844,7 +845,7 @@ int rc = spi_init(
 <p><code>xEventGroupSetBitsFromISR</code>: Notify the Event Group</p>
 </li>
 <li>
-<p><code>portYIELD_FROM_ISR</code>: ???</p>
+<p><code>portYIELD_FROM_ISR</code>: TODO</p>
 </li>
 <li>
 <p><code>pvPortMalloc</code>: Allocate DMA Linked List via FreeRTOS</p>
@@ -1082,24 +1083,24 @@ READ: 0x60
 <p>Let's walk through the BL602 SPI HAL code and understand how it performs SPI Transfers with DMA.</p>
 <p>We haven't modified any logic in the SPI HAL. (Though we have added some debug code to understand how the HAL works)</p>
 <p>We added the function <code>spi_init</code> to initialise the SPI Port without using the AliOS Device Tree.</p>
-<p><code>spi_init</code> was derived from the SPI HAL Functions <code>spi_arg_set_fdt2</code> and <code>vfs_spi_init_fullname</code> (which use the AliOS Device Tree).</p>
 <h2 id="definitions" class="section-header"><a href="#definitions">15.1 Definitions</a></h2>
-<p>TODO</p>
-<p>HARDCS doesn't work</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L57-L58"><code>bl602_hal/hal_spi.c</code></a></p>
+<p><code>HAL_SPI_DEBUG</code> is presently set to <code>1</code> to enable debug messages. </p>
+<p>For production we should change this to <code>0</code> in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L57-L58"><code>bl602_hal/hal_spi.c</code></a></p>
 <pre><code class="language-c">//  TODO: Change to 0 for production to disable logging
 #define HAL_SPI_DEBUG       (1)  
-
-//  TODO: When set to 0, this is supposed to control 
+</code></pre>
+<p><code>HAL_SPI_HARDCS</code> is supposed to control the Chip Select Pin via GPIO... But it doesn't work according to our testing.</p>
+<pre><code class="language-c">//  TODO: When set to 0, this is supposed to control 
 //  Chip Select Pin as GPIO (instead of SPI). 
 //  But this doesn't work, because the pin has been 
 //  configured for SPI Port, which overrides GPIO.
 #define HAL_SPI_HARDCS      (1)
 </code></pre>
 <h2 id="spi_init-init-spi-port" class="section-header"><a href="#spi_init-init-spi-port">15.2 spi_init: Init SPI Port</a></h2>
-<p>TODO</p>
-<p>Global single instance of SPI Data. We support only one instance of SPI Device.</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L838-L886"><code>bl602_hal/hal_spi.c</code></a></p>
+<p>We added the function <code>spi_init</code> to initialise the SPI Port without using the AliOS Device Tree. This function is called by our demo firmware.</p>
+<p><code>spi_init</code> was derived from the SPI HAL Functions <code>spi_arg_set_fdt2</code> and <code>vfs_spi_init_fullname</code> (which use the AliOS Device Tree).</p>
+<p>Note that there is only a single global instance of SPI Data. We support only one instance of SPI Device.</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L838-L886"><code>bl602_hal/hal_spi.c</code></a></p>
 <pre><code class="language-c">//  Global single instance of SPI Data. We support only one instance of SPI Device.
 static spi_priv_data_t g_spi_data;
 
@@ -1115,8 +1116,8 @@ int spi_init(spi_dev_t *spi, uint8_t port,
     g_hal_buf = &amp;g_spi_data;
     memset(g_hal_buf, 0, sizeof(spi_priv_data_t));
 </code></pre>
-<p>TODO</p>
-<p>Create the Event Group for DMA Interrupt Handler to notify Foreground Task</p>
+<p>We call <code>xEventGroupCreate</code> to create a FreeRTOS Event Group.</p>
+<p>This Event Group will be signalled by the DMA Interrupt Handlers to notify the Foreground Task that the DMA Transmit and Receive Requests have been completed.</p>
 <pre><code class="language-c">    //  Create the Event Group for DMA Interrupt Handler to notify Foreground Task
     g_hal_buf-&gt;hwspi[port].spi_dma_event_group = xEventGroupCreate();
     blog_info(&quot;port%d eventloop init = %08lx\r\n&quot;, port,
@@ -1125,8 +1126,7 @@ int spi_init(spi_dev_t *spi, uint8_t port,
         return -ENOMEM;
     }
 </code></pre>
-<p>TODO</p>
-<p>Init the SPI Device</p>
+<p>We set the internal fields of the SPI device...</p>
 <pre><code class="language-c">    //  Init the SPI Device
     memset(spi, 0, sizeof(spi_dev_t));
     spi-&gt;port = port;
@@ -1148,8 +1148,7 @@ int spi_init(spi_dev_t *spi, uint8_t port,
     blog_info(&quot;[HAL] [SPI] Init :\r\nport=%d, mode=%d, polar_phase = %d, freq=%ld, tx_dma_ch=%d, rx_dma_ch=%d, pin_clk=%d, pin_cs=%d, pin_mosi=%d, pin_miso=%d\r\n&quot;,
         port, mode, polar_phase, freq, tx_dma_ch, rx_dma_ch, pin_clk, pin_cs, pin_mosi, pin_miso);
 </code></pre>
-<p>TODO</p>
-<p>Init the SPI speed, pins and DMA</p>
+<p>We call <code>hal_spi_set_rwspeed</code> to set the SPI Frequency, assign the pins to SPI, and initialise the DMA...</p>
 <pre><code class="language-c">    //  Init the SPI speed, pins and DMA
     int rc = hal_spi_set_rwspeed(spi, freq);
     assert(rc == 0);
