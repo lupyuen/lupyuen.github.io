@@ -96,7 +96,7 @@
 <li><a href="#appendix-inside-bl602-spi-hal">15 Appendix: Inside BL602 SPI HAL</a><ul>
 <li><a href="#definitions">15.1 Definitions</a><ul></ul></li>
 <li><a href="#spi_init-init-spi-port">15.2 spi_init: Init SPI Port</a><ul></ul></li>
-<li><a href="#hal_spi_set_rwspeed-set-spi-speed">15.3 hal_spi_set_rwspeed: Set SPI Speed</a><ul></ul></li>
+<li><a href="#hal_spi_set_rwspeed-set-spi-frequency">15.3 hal_spi_set_rwspeed: Set SPI Frequency</a><ul></ul></li>
 <li><a href="#hal_spi_init-init-spi-pins-and-dma">15.4 hal_spi_init: Init SPI Pins and DMA</a><ul></ul></li>
 <li><a href="#hal_gpio_init-init-spi-pins">15.5 hal_gpio_init: Init SPI Pins</a><ul></ul></li>
 <li><a href="#hal_spi_dma_init-init-spi-dma">15.6 hal_spi_dma_init: Init SPI DMA</a><ul></ul></li>
@@ -316,7 +316,7 @@ static void test_spi_init(char *buf, int len, int argc, char **argv) {
 <li>
 <p><strong>SPI Frequency:</strong> We set the SPI Frequency (Hz) to 200,000, which means <strong>200 kHz</strong>.</p>
 <p>(Slow but reliable, and easier to troubleshoot)</p>
-<p>SPI Frequency ranges from 200 kHz to 4 Mbps.</p>
+<p>SPI Frequency ranges from 200 kHz to 4 MHz.</p>
 </li>
 <li>
 <p><strong>Transmit DMA Channel:</strong> We select <strong>DMA Channel 2</strong> for transmitting SPI Data</p>
@@ -1093,7 +1093,8 @@ READ: 0x60
 <p>We added the function <code>spi_init</code> to initialise the SPI Port without using the AliOS Device Tree.</p>
 <h2 id="definitions" class="section-header"><a href="#definitions">15.1 Definitions</a></h2>
 <p><code>HAL_SPI_DEBUG</code> is presently set to <code>1</code> to enable debug messages. </p>
-<p>For production we should change this to <code>0</code> in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L57-L58"><code>bl602_hal/hal_spi.c</code></a></p>
+<p>For production we should change this to <code>0</code>.</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L57-L58"><code>bl602_hal/hal_spi.c</code></a></p>
 <pre><code class="language-c">//  TODO: Change to 0 for production to disable logging
 #define HAL_SPI_DEBUG       (1)  
 </code></pre>
@@ -1160,16 +1161,16 @@ int spi_init(spi_dev_t *spi, uint8_t port,
     blog_info(&quot;[HAL] [SPI] Init :\r\nport=%d, mode=%d, polar_phase = %d, freq=%ld, tx_dma_ch=%d, rx_dma_ch=%d, pin_clk=%d, pin_cs=%d, pin_mosi=%d, pin_miso=%d\r\n&quot;,
         port, mode, polar_phase, freq, tx_dma_ch, rx_dma_ch, pin_clk, pin_cs, pin_mosi, pin_miso);
 </code></pre>
-<p>We call <code>hal_spi_set_rwspeed</code> to set the SPI Frequency, assign the pins to SPI, and initialise the DMA...</p>
+<p>Finally we call <code>hal_spi_set_rwspeed</code> to set the SPI Frequency, assign the SPI Pins and initialise the DMA...</p>
 <pre><code class="language-c">    //  Init the SPI speed, pins and DMA
     int rc = hal_spi_set_rwspeed(spi, freq);
     assert(rc == 0);
     return rc;
 }
 </code></pre>
-<h2 id="hal_spi_set_rwspeed-set-spi-speed" class="section-header"><a href="#hal_spi_set_rwspeed-set-spi-speed">15.3 hal_spi_set_rwspeed: Set SPI Speed</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L430-L480"><code>bl602_hal/hal_spi.c</code></a></p>
+<h2 id="hal_spi_set_rwspeed-set-spi-frequency" class="section-header"><a href="#hal_spi_set_rwspeed-set-spi-frequency">15.3 hal_spi_set_rwspeed: Set SPI Frequency</a></h2>
+<p><code>hal_spi_set_rwspeed</code> is called by <code>spi_init</code> to set the SPI Frequency, assign the SPI Pins and initialise the DMA.</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L430-L480"><code>bl602_hal/hal_spi.c</code></a></p>
 <pre><code class="language-c">int hal_spi_set_rwspeed(spi_dev_t *spi_dev, uint32_t speed)
 {
     spi_priv_data_t *data;
@@ -1185,8 +1186,9 @@ int spi_init(spi_dev_t *spi, uint8_t port,
         return 0;
     }
 </code></pre>
-<p>TODO</p>
-<p>Compute the Clock Divider for 4 MHz</p>
+<p>Parameter <code>speed</code> is the SPI Frequency (in Hz) from 200,000 (200 kHz) to 4,000,000 (4 MHz).</p>
+<p>The Actual SPI Frequency needs to be divisible by 4,000,000.</p>
+<p>Here we compute the divisor for the SPI Frequency and derive the Actual SPI Frequency <code>real_speed</code>...</p>
 <pre><code class="language-c">    for (i = 0; i &lt; 256; i++) {
         if (speed == (40000000/(i+1))) {
             real_speed = speed;
@@ -1198,8 +1200,7 @@ int spi_init(spi_dev_t *spi, uint8_t port,
         }
     }
 </code></pre>
-<p>TODO</p>
-<p>Validate the Clock Divider: 200 kHz to 4 MHz</p>
+<p>We validate that the Actual SPI Frequency is in the range 200 kHz to 4 MHz...</p>
 <pre><code class="language-c">    if (real_flag != 1) {
         if (i == 0) {
             blog_error(&quot;The max speed is 40000000 Hz, please set it smaller.&quot;);
@@ -1218,20 +1219,19 @@ int spi_init(spi_dev_t *spi, uint8_t port,
         }
     }
 </code></pre>
-<p>TODO</p>
-<p>Set the Clock Divider</p>
+<p>We set the Actual SPI Frequency...</p>
 <pre><code class="language-c">    data = (spi_priv_data_t *)spi_dev-&gt;priv;
     data-&gt;hwspi[spi_dev-&gt;port].freq = real_speed;
     spi_dev-&gt;config.freq = real_speed;
-
-    hal_spi_init(spi_dev);
+</code></pre>
+<p>Finally we call <code>hal_spi_init</code> to assign the SPI Pins and initialise the DMA.</p>
+<pre><code class="language-c">    hal_spi_init(spi_dev);
     return 0;
 }
 </code></pre>
 <h2 id="hal_spi_init-init-spi-pins-and-dma" class="section-header"><a href="#hal_spi_init-init-spi-pins-and-dma">15.4 hal_spi_init: Init SPI Pins and DMA</a></h2>
-<p>TODO</p>
-<p>Init SPI Pins and DMA</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L360-L384"><code>bl602_hal/hal_spi.c</code></a></p>
+<p><code>hal_spi_init</code> is called by <code>hal_spi_set_rwspeed</code> to assign the SPI Pins and initialise the DMA.</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L360-L384"><code>bl602_hal/hal_spi.c</code></a></p>
 <pre><code class="language-c">int32_t hal_spi_init(spi_dev_t *spi)
 {
     int i;
@@ -1245,8 +1245,9 @@ int spi_init(spi_dev_t *spi, uint8_t port,
     if (data == NULL) {
         return -1;
     }
-
-    for (i = 0; i &lt; SPI_NUM_MAX; i++) {
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-c">    for (i = 0; i &lt; SPI_NUM_MAX; i++) {
         hal_gpio_init(&amp;data-&gt;hwspi[i]);
         hal_spi_dma_init(&amp;data-&gt;hwspi[i]);
     }
