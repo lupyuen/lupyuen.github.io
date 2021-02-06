@@ -105,26 +105,23 @@
 <li><a href="#lli_list_init-init-dma-linked-list">15.9 lli_list_init: Init DMA Linked List</a><ul></ul></li>
 <li><a href="#bl_spi0_dma_int_handler_tx-transmit-dma-interrupt-handler">15.10 bl_spi0_dma_int_handler_tx: Transmit DMA Interrupt Handler</a><ul></ul></li>
 <li><a href="#bl_spi0_dma_int_handler_rx-receive-dma-interrupt-handler">15.11 bl_spi0_dma_int_handler_rx: Receive DMA Interrupt Handler</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>10 Feb 2021</em></p>
-<p>Here's the source code for BL602 accessing BME280 over SPI: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c"><code>sdk_app_spi/demo.c</code></a></p>
-<p>In this article we'll study the source code and look into these issues with BL602 SPI...</p>
+<p><a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone</strong></a> and <a href="https://wiki.pine64.org/wiki/Nutcracker#Pinenut-01S_Module_information_and_schematics"><strong>Pinenut BL602</strong></a> work great with I2C Sensors. <a href="https://lupyuen.github.io/articles/i2c">(See this)</a></p>
+<p>But what if we're connecting BL602 to <strong>High Bandwidth</strong> peripherals... Like the ST7789 Display Controller and the SX1262 LoRa Transceiver?</p>
+<p><strong>We'll need SPI on BL602!</strong></p>
+<p>Today we shall connect the BL602 RISC-V SoC to a simple SPI Sensor: <strong>BME280</strong></p>
+<p>We'll learn about the SPI quirks on BL602...</p>
 <ol>
 <li>
-<p>The pins for <strong>Serial Data In</strong> and <strong>Serial Data Out</strong> seem to be flipped, when observed with a Logic Analyser. </p>
-<p>This contradicts the BL602 Reference Manual.</p>
+<p><strong>Serial Data In</strong> and <strong>Serial Data Out</strong> seem to be flipped</p>
 </li>
 <li>
-<p>To talk to BME280, we must configure BL602 for <strong>SPI Polarity 0, Phase 1</strong>.</p>
-<p>Though the Logic Analyser shows that it looks like SPI Phase 0.</p>
+<p><strong>SPI Phase 1</strong> behaves like Phase 0</p>
 </li>
 <li>
-<p>BL602's <strong>SPI Chip Select Pin</strong> doesn't work with BME280's SPI protocol.</p>
-<p>We'll control the SPI Chip Select Pin ourselves.</p>
-</li>
-<li>
-<p>Setting <strong>Serial Data Out to Pin 0</strong> will switch on the WiFi LED.</p>
-<p>We'll switch to a different pin for Serial Data Out.</p>
+<p>Why we shouldn't use <strong>Pin 0 for SPI</strong></p>
 </li>
 </ol>
+<p>And how we fixed them.</p>
 <p>Also we'll learn to <strong>troubleshoot BL602 SPI with a Logic Analyser</strong>.</p>
 <p><img src="https://lupyuen.github.io/images/spi-title.jpg" alt="PineCone BL602 RISC-V Board connected to BME280 SPI Sensor" /></p>
 <p><em>PineCone BL602 RISC-V Board connected to BME280 SPI Sensor</em></p>
