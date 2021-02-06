@@ -98,7 +98,7 @@
 <li><a href="#spi_init-init-spi-port">15.2 spi_init: Init SPI Port</a><ul></ul></li>
 <li><a href="#hal_spi_set_rwspeed-set-spi-frequency">15.3 hal_spi_set_rwspeed: Set SPI Frequency</a><ul></ul></li>
 <li><a href="#hal_spi_init-init-spi-pins-and-dma">15.4 hal_spi_init: Init SPI Pins and DMA</a><ul></ul></li>
-<li><a href="#hal_gpio_init-init-spi-pins">15.5 hal_gpio_init: Init SPI Pins</a><ul></ul></li>
+<li><a href="#hal_gpio_init-assign-spi-pins">15.5 hal_gpio_init: Assign SPI Pins</a><ul></ul></li>
 <li><a href="#hal_spi_dma_init-init-spi-dma">15.6 hal_spi_dma_init: Init SPI DMA</a><ul></ul></li>
 <li><a href="#hal_spi_transfer-execute-spi-transfer">15.7 hal_spi_transfer: Execute SPI Transfer</a><ul></ul></li>
 <li><a href="#lli_list_init-init-dma-linked-list">15.8 lli_list_init: Init DMA Linked List</a><ul></ul></li>
@@ -1161,7 +1161,7 @@ int spi_init(spi_dev_t *spi, uint8_t port,
     blog_info(&quot;[HAL] [SPI] Init :\r\nport=%d, mode=%d, polar_phase = %d, freq=%ld, tx_dma_ch=%d, rx_dma_ch=%d, pin_clk=%d, pin_cs=%d, pin_mosi=%d, pin_miso=%d\r\n&quot;,
         port, mode, polar_phase, freq, tx_dma_ch, rx_dma_ch, pin_clk, pin_cs, pin_mosi, pin_miso);
 </code></pre>
-<p>Finally we call <code>hal_spi_set_rwspeed</code> to set the SPI Frequency, assign the SPI Pins and initialise the DMA...</p>
+<p>Finally we call <code>hal_spi_set_rwspeed</code> to set the SPI Frequency, assign the SPI Pins and initialise the DMA Controller...</p>
 <pre><code class="language-c">    //  Init the SPI speed, pins and DMA
     int rc = hal_spi_set_rwspeed(spi, freq);
     assert(rc == 0);
@@ -1169,7 +1169,7 @@ int spi_init(spi_dev_t *spi, uint8_t port,
 }
 </code></pre>
 <h2 id="hal_spi_set_rwspeed-set-spi-frequency" class="section-header"><a href="#hal_spi_set_rwspeed-set-spi-frequency">15.3 hal_spi_set_rwspeed: Set SPI Frequency</a></h2>
-<p><code>hal_spi_set_rwspeed</code> is called by <code>spi_init</code> to set the SPI Frequency, assign the SPI Pins and initialise the DMA.</p>
+<p><code>hal_spi_set_rwspeed</code> is called by <code>spi_init</code> to set the SPI Frequency, assign the SPI Pins and initialise the DMA Controller.</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L430-L480"><code>bl602_hal/hal_spi.c</code></a></p>
 <pre><code class="language-c">int hal_spi_set_rwspeed(spi_dev_t *spi_dev, uint32_t speed)
 {
@@ -1224,13 +1224,13 @@ int spi_init(spi_dev_t *spi, uint8_t port,
     data-&gt;hwspi[spi_dev-&gt;port].freq = real_speed;
     spi_dev-&gt;config.freq = real_speed;
 </code></pre>
-<p>Finally we call <code>hal_spi_init</code> to assign the SPI Pins and initialise the DMA.</p>
+<p>Finally we call <code>hal_spi_init</code> to assign the SPI Pins and initialise the DMA Controller.</p>
 <pre><code class="language-c">    hal_spi_init(spi_dev);
     return 0;
 }
 </code></pre>
 <h2 id="hal_spi_init-init-spi-pins-and-dma" class="section-header"><a href="#hal_spi_init-init-spi-pins-and-dma">15.4 hal_spi_init: Init SPI Pins and DMA</a></h2>
-<p><code>hal_spi_init</code> is called by <code>hal_spi_set_rwspeed</code> to assign the SPI Pins and initialise the DMA.</p>
+<p><code>hal_spi_init</code> is called by <code>hal_spi_set_rwspeed</code> to assign the SPI Pins and initialise the DMA Controller.</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L360-L384"><code>bl602_hal/hal_spi.c</code></a></p>
 <pre><code class="language-c">int32_t hal_spi_init(spi_dev_t *spi)
 {
@@ -1246,7 +1246,15 @@ int spi_init(spi_dev_t *spi, uint8_t port,
         return -1;
     }
 </code></pre>
-<p>TODO</p>
+<p>For every SPI Port (there's only one: SPI Port 0)...</p>
+<ol>
+<li>
+<p>We call <code>hal_gpio_init</code> to assign the SPI Pins</p>
+</li>
+<li>
+<p>We call <code>hal_spi_dma_init</code> to initialise the DMA Controller</p>
+</li>
+</ol>
 <pre><code class="language-c">    for (i = 0; i &lt; SPI_NUM_MAX; i++) {
         hal_gpio_init(&amp;data-&gt;hwspi[i]);
         hal_spi_dma_init(&amp;data-&gt;hwspi[i]);
@@ -1259,10 +1267,9 @@ int spi_init(spi_dev_t *spi, uint8_t port,
     return 0;
 }
 </code></pre>
-<h2 id="hal_gpio_init-init-spi-pins" class="section-header"><a href="#hal_gpio_init-init-spi-pins">15.5 hal_gpio_init: Init SPI Pins</a></h2>
-<p>TODO</p>
-<p>Assign pins to SPI</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L98-L124"><code>bl602_hal/hal_spi.c</code></a></p>
+<h2 id="hal_gpio_init-assign-spi-pins" class="section-header"><a href="#hal_gpio_init-assign-spi-pins">15.5 hal_gpio_init: Assign SPI Pins</a></h2>
+<p><code>hal_gpio_init</code> is called by <code>hal_spi_init</code> to assign the SPI Pins.</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L98-L124"><code>bl602_hal/hal_spi.c</code></a></p>
 <pre><code class="language-c">static void hal_gpio_init(spi_hw_t *arg)
 {
     GLB_GPIO_Type gpiopins[4];
@@ -1272,16 +1279,17 @@ int spi_init(spi_dev_t *spi, uint8_t port,
         return;
     }
     blog_info(&quot;hal_gpio_init: cs:%d, clk:%d, mosi:%d, miso: %d\r\n&quot;, arg-&gt;pin_cs, arg-&gt;pin_clk, arg-&gt;pin_mosi, arg-&gt;pin_miso);
-
-    gpiopins[0] = arg-&gt;pin_cs;
+</code></pre>
+<p>We call <code>GLB_GPIO_Func_Init</code> to assign the four SPI Pins to the SPI Port.</p>
+<p>The sequence of the SPI Pins doesn't matter, because each pin has a fixed SPI Function (like Serial Data In, Serial Data Out) within the SPI Port...</p>
+<pre><code class="language-c">    gpiopins[0] = arg-&gt;pin_cs;
     gpiopins[1] = arg-&gt;pin_clk;
     gpiopins[2] = arg-&gt;pin_mosi;
-    gpiopins[3] = arg-&gt;pin_miso;
-    
+    gpiopins[3] = arg-&gt;pin_miso;    
     GLB_GPIO_Func_Init(GPIO_FUN_SPI,gpiopins,sizeof(gpiopins)/sizeof(gpiopins[0]));
 </code></pre>
-<p>TODO</p>
-<p>Configure SPI Controller / Peripheral</p>
+<p>(<code>GLB_GPIO_Func_Init</code> comes from the <strong>BL602 Standard Driver</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c"><code>bl602_i2c.c</code></a>)</p>
+<p>Finally we configure the SPI Port as SPI Controller or Peripheral...</p>
 <pre><code class="language-c">    if (arg-&gt;mode == 0) {
         blog_info(&quot;hal_gpio_init: SPI controller mode\r\n&quot;);
         GLB_Set_SPI_0_ACT_MOD_Sel(GLB_SPI_PAD_ACT_AS_MASTER);
@@ -1289,7 +1297,6 @@ int spi_init(spi_dev_t *spi, uint8_t port,
         blog_info(&quot;hal_gpio_init: SPI peripheral mode\r\n&quot;);
         GLB_Set_SPI_0_ACT_MOD_Sel(GLB_SPI_PAD_ACT_AS_SLAVE);
     }
-
     return;
 }
 </code></pre>
