@@ -101,7 +101,7 @@
 <li><a href="#hal_gpio_init-assign-spi-pins">15.5 hal_gpio_init: Assign SPI Pins</a><ul></ul></li>
 <li><a href="#hal_spi_dma_init-init-spi-dma">15.6 hal_spi_dma_init: Init SPI DMA</a><ul></ul></li>
 <li><a href="#hal_spi_transfer-execute-spi-transfer">15.7 hal_spi_transfer: Execute SPI Transfer</a><ul></ul></li>
-<li><a href="#lli_list_init-init-dma-linked-list">15.8 lli_list_init: Init DMA Linked List</a><ul></ul></li>
+<li><a href="#lli_list_init-create-dma-linked-list">15.8 lli_list_init: Create DMA Linked List</a><ul></ul></li>
 <li><a href="#hal_spi_dma_trans-execute-spi-transfer-with-dma">15.9 hal_spi_dma_trans: Execute SPI Transfer with DMA</a><ul></ul></li>
 <li><a href="#bl_spi0_dma_int_handler_tx-transmit-dma-interrupt-handler">15.10 bl_spi0_dma_int_handler_tx: Transmit DMA Interrupt Handler</a><ul></ul></li>
 <li><a href="#bl_spi0_dma_int_handler_rx-receive-dma-interrupt-handler">15.11 bl_spi0_dma_int_handler_rx: Receive DMA Interrupt Handler</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>10 Feb 2021</em></p>
@@ -1446,17 +1446,25 @@ int spi_init(spi_dev_t *spi, uint8_t port,
     return 0;
 }
 </code></pre>
-<h2 id="lli_list_init-init-dma-linked-list" class="section-header"><a href="#lli_list_init-init-dma-linked-list">15.8 lli_list_init: Init DMA Linked List</a></h2>
-<p>TODO</p>
-<p>Create DMA Linked List</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L126-L205"><code>bl602_hal/hal_spi.c</code></a></p>
+<h2 id="lli_list_init-create-dma-linked-list" class="section-header"><a href="#lli_list_init-create-dma-linked-list">15.8 lli_list_init: Create DMA Linked List</a></h2>
+<p>BL602's DMA Controller accepts a <strong>DMA Linked List</strong> of DMA Requests that will be executed automatically.</p>
+<p>In <code>lli_list_init</code> we'll create a DMA Linked List containing two types of DMA Requests...</p>
+<ol>
+<li>
+<p><strong>SPI Transmit:</strong> Copy data from RAM to SPI Port for transmission</p>
+</li>
+<li>
+<p><strong>SPI Receive:</strong> Copy received data from SPI Port to RAM</p>
+</li>
+</ol>
+<p><code>lli_list_init</code> is called by <code>hal_spi_dma_trans</code>.</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L126-L205"><code>bl602_hal/hal_spi.c</code></a></p>
 <pre><code class="language-c">static int lli_list_init(DMA_LLI_Ctrl_Type **pptxlli, DMA_LLI_Ctrl_Type **pprxlli, uint8_t *ptx_data, uint8_t *prx_data, uint32_t length)
 {
     uint32_t i = 0;
     uint32_t count;
     uint32_t remainder;
     struct DMA_Control_Reg dmactrl;
-
 
     count = length / LLI_BUFF_SIZE;
     remainder = length % LLI_BUFF_SIZE;
@@ -1465,8 +1473,7 @@ int spi_init(spi_dev_t *spi, uint8_t port,
         count = count + 1;
     }
 </code></pre>
-<p>TODO</p>
-<p>Define the DMA parameters</p>
+<p>We define the parameters for the DMA Request...</p>
 <pre><code class="language-c">    dmactrl.SBSize = DMA_BURST_SIZE_1;
     dmactrl.DBSize = DMA_BURST_SIZE_1;
     dmactrl.SWidth = DMA_TRNS_WIDTH_8BITS;
@@ -1474,29 +1481,23 @@ int spi_init(spi_dev_t *spi, uint8_t port,
     dmactrl.Prot = 0;
     dmactrl.SLargerD = 0;
 </code></pre>
-<p>TODO</p>
-<p>pvPortMalloc to allocate DMA Linked List via FreeRTOS</p>
+<p>We call <code>pvPortMalloc</code> (from FreeRTOS) to allocate heap memory for storing the DMA Linked List...</p>
 <pre><code class="language-c">    *pptxlli = pvPortMalloc(sizeof(DMA_LLI_Ctrl_Type) * count);
     if (*pptxlli == NULL) {
         blog_error(&quot;malloc lli failed. \r\n&quot;);
-
         return -1;
     }
-
     *pprxlli = pvPortMalloc(sizeof(DMA_LLI_Ctrl_Type) * count);
     if (*pprxlli == NULL) {
         blog_error(&quot;malloc lli failed.&quot;);
         vPortFree(*pptxlli);
-
         return -1;
     }
 </code></pre>
-<p>TODO</p>
-<p>For each SPI Transfer, create Transmit DMA and Receive DMA Requests</p>
+<p>For each SPI Transfer, we create the DMA Requests for SPI Transmit and SPI Receive...</p>
 <pre><code class="language-c">    for (i = 0; i &lt; count; i++) {
 </code></pre>
-<p>TODO</p>
-<p>Compute the DMA Transmit / Receive Size</p>
+<p>We compute the DMA Transmit / Receive Size...</p>
 <pre><code class="language-c">        if (remainder == 0) {
             dmactrl.TransferSize = LLI_BUFF_SIZE;
         } else {
@@ -1519,15 +1520,13 @@ int spi_init(spi_dev_t *spi, uint8_t port,
         } <span class="kw">else</span> {
             <span class="ident">dmactrl</span>.<span class="ident">I</span> <span class="op">=</span> <span class="number">0</span>;
         }</pre></div>
-<p>TODO</p>
-<p>Transmit DMA: Copy data from RAM to SPI Port</p>
+<p>For SPI Transmit: We create a DMA Request that copies data from RAM to the SPI Port for transmission...</p>
 <pre><code class="language-c">        (*pptxlli)[i].srcDmaAddr = (uint32_t)(ptx_data + i * LLI_BUFF_SIZE);
         (*pptxlli)[i].destDmaAddr = (uint32_t)(SPI_BASE+SPI_FIFO_WDATA_OFFSET);
         (*pptxlli)[i].dmaCtrl = dmactrl;
         blog_info(&quot;Tx DMA src=0x%x, dest=0x%x, size=%d, si=%d, di=%d, i=%d\r\n&quot;, (unsigned) (*pptxlli)[i].srcDmaAddr, (unsigned) (*pptxlli)[i].destDmaAddr, dmactrl.TransferSize, dmactrl.SI, dmactrl.DI, dmactrl.I);
 </code></pre>
-<p>TODO</p>
-<p>Receive DMA: Copy data from SPI Port to RAM</p>
+<p>For SPI Receive: We create a DMA Request that copies the received data from the SPI Port to RAM...</p>
 <pre><code class="language-c">        dmactrl.SI = DMA_MINC_DISABLE;
         dmactrl.DI = DMA_MINC_ENABLE;
         (*pprxlli)[i].srcDmaAddr = (uint32_t)(SPI_BASE+SPI_FIFO_RDATA_OFFSET);
@@ -1535,8 +1534,7 @@ int spi_init(spi_dev_t *spi, uint8_t port,
         (*pprxlli)[i].dmaCtrl = dmactrl;
         blog_info(&quot;Rx DMA src=0x%x, dest=0x%x, size=%d, si=%d, di=%d, i=%d\r\n&quot;, (unsigned) (*pprxlli)[i].srcDmaAddr, (unsigned) (*pprxlli)[i].destDmaAddr, dmactrl.TransferSize, dmactrl.SI, dmactrl.DI, dmactrl.I);
 </code></pre>
-<p>TODO</p>
-<p>Append to DMA Linked List</p>
+<p>Finally we append both DMA Requests to the DMA Linked List...</p>
 <pre><code class="language-c">        if (i != 0) {
             (*pptxlli)[i-1].nextLLI = (uint32_t)&amp;(*pptxlli)[i];
             (*pprxlli)[i-1].nextLLI = (uint32_t)&amp;(*pprxlli)[i];
@@ -1545,7 +1543,6 @@ int spi_init(spi_dev_t *spi, uint8_t port,
         (*pptxlli)[i].nextLLI = 0;
         (*pprxlli)[i].nextLLI = 0;
     }
-
     return 0;
 }
 </code></pre>
