@@ -1760,11 +1760,11 @@ Define Interrupt Counters and error status
 [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L769-L808)
 
 ```c
-////  TODO: Interrupt Counters for Transmit and Receive
+//  Interrupt Counters for Transmit and Receive
 int g_tx_counter;
 int g_rx_counter;
 
-////  TODO: Status, Terminal Counts and Error Codes for Transmit and Receive
+//  Status, Terminal Counts and Error Codes for Transmit and Receive
 uint32_t g_tx_status;  //  Transmit Status (from 0x4000c000)
 uint32_t g_tx_tc;      //  Transmit Terminal Count (from 0x4000c004)
 uint32_t g_tx_error;   //  Transmit Error Code (from 0x4000c00c)
