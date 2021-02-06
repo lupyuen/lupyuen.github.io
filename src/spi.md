@@ -2,25 +2,23 @@
 
 📝 _10 Feb 2021_
 
-Here's the source code for BL602 accessing BME280 over SPI: [`sdk_app_spi/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c)
+[__PineCone__](https://lupyuen.github.io/articles/pinecone) and [__Pinenut BL602__](https://wiki.pine64.org/wiki/Nutcracker#Pinenut-01S_Module_information_and_schematics) work great with I2C Sensors. [(See this)](https://lupyuen.github.io/articles/i2c)
 
-In this article we'll study the source code and look into these issues with BL602 SPI...
+But what if we're connecting BL602 to __High Bandwidth__ peripherals... Like the ST7789 Display Controller and the SX1262 LoRa Transceiver?
 
-1.  The pins for __Serial Data In__ and __Serial Data Out__ seem to be flipped, when observed with a Logic Analyser. 
+__We'll need SPI on BL602!__
 
-    This contradicts the BL602 Reference Manual.
+Today we shall connect the BL602 RISC-V SoC to a simple SPI Sensor: __BME280__
 
-1.  To talk to BME280, we must configure BL602 for __SPI Polarity 0, Phase 1__.
+We'll learn about the SPI quirks on BL602...
 
-    Though the Logic Analyser shows that it looks like SPI Phase 0.
+1.  __Serial Data In__ and __Serial Data Out__ seem to be flipped
 
-1.  BL602's __SPI Chip Select Pin__ doesn't work with BME280's SPI protocol.
+1.  __SPI Phase 1__ behaves like Phase 0
 
-    We'll control the SPI Chip Select Pin ourselves.
+1.  Why we shouldn't use __Pin 0 for SPI__
 
-1.  Setting __Serial Data Out to Pin 0__ will switch on the WiFi LED.
-
-    We'll switch to a different pin for Serial Data Out.
+And how we fixed them.
 
 Also we'll learn to __troubleshoot BL602 SPI with a Logic Analyser__.
 
