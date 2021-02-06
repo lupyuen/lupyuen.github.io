@@ -803,7 +803,7 @@ This seems to be a bug in the BL602 hardware or documentation. We fix this by __
 
 This works perfectly fine, though it contradicts the BL602 Reference Manual.
 
-Because of this bug, we shall refer to __Pin 1 as Serial Data In__ _(formerly MISO)_, and __Pin 4 as Serial Data Out__ (formerly MOSI): [`sdk_app_spi/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L45-L100) 
+Because of this bug, we shall refer to __Pin 1 as Serial Data In__ _(formerly MISO)_, and __Pin 4 as Serial Data Out__ _(formerly MOSI)_: [`sdk_app_spi/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L45-L100) 
 
 ```c
 //  Configure the SPI Port
@@ -813,7 +813,7 @@ int rc = spi_init(
     4    //  SPI Serial Data Out Pin (formerly MOSI)
 ```
 
-(Could this be happening because we have mistakenly configured BL602 as an SPI Peripheral instead of SPI Controller? 🤔 )
+(Could we have mistakenly configured BL602 as SPI Peripheral... Instead of SPI Controller? 🤔 )
 
 # SPI Phase looks sus
 
@@ -838,7 +838,7 @@ Now compare this with the SPI Polarity and Phase diagrams here...
 
 -   [__Introduction to SPI Interface__](https://www.analog.com/en/analog-dialogue/articles/introduction-to-spi-interface.html#)
 
-Doesn't this look like __SPI Phase 0, not Phase 1?__
+Doesn't this look like __SPI Polarity 0 Phase 0, not Phase 1?__
 
 Here's another odd thing: This BL602 SPI Configuration (SPI Polarity 0, Phase 1) works perfectly splendid with BME280...
 
