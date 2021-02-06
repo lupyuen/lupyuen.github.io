@@ -827,8 +827,33 @@ int rc = spi_init(
 <p>We have implemented workarounds for these issues.</p>
 <p><strong>BL602 SPI is Good To Go!</strong></p>
 <h1 id="port-bl602-spi-hal-to-other-operating-systems" class="section-header"><a href="#port-bl602-spi-hal-to-other-operating-systems">11 Port BL602 SPI HAL to other Operating Systems</a></h1>
+<p><em>BL602 SPI HAL runs on FreeRTOS today. Will the SPI HAL run on other Embedded Operating Systems?</em></p>
 <p>TODO</p>
 <p>We may port the SPI HAL to other operating systems by emulating a few FreeRTOS functions for Event Groups.</p>
+<ol>
+<li>
+<p><code>xEventGroupCreate</code>: Create the Event Group for DMA Interrupt Handler to notify Foreground Task</p>
+</li>
+<li>
+<p><code>xEventGroupClearBits</code>: Clear the Event Group</p>
+</li>
+<li>
+<p><code>xEventGroupWaitBits</code>: Wait for Event Group</p>
+</li>
+<li>
+<p><code>xEventGroupSetBitsFromISR</code>: Notify the Event Group</p>
+</li>
+<li>
+<p><code>portYIELD_FROM_ISR</code>: ???</p>
+</li>
+<li>
+<p><code>pvPortMalloc</code>: Allocate DMA Linked List via FreeRTOS</p>
+</li>
+<li>
+<p><code>vPortFree</code>: Free the allocated data</p>
+</li>
+</ol>
+<p>The usage of these functions is explained in the Appendix.</p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">12 What's Next</a></h1>
 <p>TODO</p>
 <p>ST7789 Display Controller</p>
@@ -1054,15 +1079,22 @@ READ: 0x60
 <p><em>BL602 talks to BME280 over SPI, visualised by LA2016 Logic Analyser</em></p>
 <p>This should look similar to the decoded SPI Signals between Bus Pirate and BME280. <a href="https://lupyuen.github.io/images/spi-analyse1a.png">(See this)</a></p>
 <h1 id="appendix-inside-bl602-spi-hal" class="section-header"><a href="#appendix-inside-bl602-spi-hal">15 Appendix: Inside BL602 SPI HAL</a></h1>
-<p>TODO</p>
-<p>We have not changed any logic in the SPI HAL. We have added debug code. Also we added <code>spi_init</code> based on <code>spi_arg_set_fdt2</code> and <code>vfs_spi_init_fullname</code> for Device Tree.</p>
-<p>Let's walk through the SPI HAL code and understand how it performs SPI Transfers with DMA.</p>
+<p>Let's walk through the BL602 SPI HAL code and understand how it performs SPI Transfers with DMA.</p>
+<p>We haven't modified any logic in the SPI HAL. (Though we have added some debug code to understand how the HAL works)</p>
+<p>We added the function <code>spi_init</code> to initialise the SPI Port without using the AliOS Device Tree.</p>
+<p><code>spi_init</code> was derived from the SPI HAL Functions <code>spi_arg_set_fdt2</code> and <code>vfs_spi_init_fullname</code> (which use the AliOS Device Tree).</p>
 <h2 id="definitions" class="section-header"><a href="#definitions">15.1 Definitions</a></h2>
 <p>TODO</p>
 <p>HARDCS doesn't work</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L57-L58"><code>bl602_hal/hal_spi.c</code></a></p>
-<pre><code class="language-c">#define HAL_SPI_DEBUG       (1)  ////  TODO: Change to 0 for production to disable logging
-#define HAL_SPI_HARDCS      (1)  ////  TODO: When set to 0, this is supposed to control Chip Select Pin as GPIO (instead of SPI). But this doesn't work, because the pin has been configured for SPI Port, which overrides GPIO.
+<pre><code class="language-c">//  TODO: Change to 0 for production to disable logging
+#define HAL_SPI_DEBUG       (1)  
+
+//  TODO: When set to 0, this is supposed to control 
+//  Chip Select Pin as GPIO (instead of SPI). 
+//  But this doesn't work, because the pin has been 
+//  configured for SPI Port, which overrides GPIO.
+#define HAL_SPI_HARDCS      (1)
 </code></pre>
 <h2 id="spi_init-init-spi-port" class="section-header"><a href="#spi_init-init-spi-port">15.2 spi_init: Init SPI Port</a></h2>
 <p>TODO</p>
@@ -1310,8 +1342,10 @@ int spi_init(spi_dev_t *spi, uint8_t port,
 </code></pre>
 <p>TODO</p>
 <p>Init SPI Port and disable it. Disable all interrupts.</p>
-<pre><code class="language-c">    SPI_Init(0,&amp;spicfg);  //// TODO: In future when there are multiple SPI ports, this should be SPI_Init(spi_id, &amp;spicfg)
-
+<pre><code class="language-c">    //  TODO: In future when there are multiple 
+    //  SPI ports, this should be 
+    //  SPI_Init(spi_id, &amp;spicfg)
+    SPI_Init(0,&amp;spicfg);  
     if (hw_arg-&gt;mode == 0)
     {
         SPI_Disable(spi_id, SPI_WORK_MODE_MASTER);
@@ -1338,18 +1372,16 @@ int spi_init(spi_dev_t *spi, uint8_t port,
     DMA_IntMask(hw_arg-&gt;tx_dma_ch, DMA_INT_ERR, UNMASK);
 </code></pre>
 <p>TODO</p>
-<p>Configure Receive DMA Interrupts and enable them</p>
+<p>Configure Receive DMA Interrupts and enable the interrupts</p>
 <pre><code class="language-c">    DMA_IntMask(hw_arg-&gt;rx_dma_ch, DMA_INT_ALL, MASK);
     DMA_IntMask(hw_arg-&gt;rx_dma_ch, DMA_INT_TCOMPLETED, UNMASK); 
     DMA_IntMask(hw_arg-&gt;rx_dma_ch, DMA_INT_ERR, UNMASK);
-
     bl_irq_enable(DMA_ALL_IRQn);
 </code></pre>
 <p>TODO</p>
 <p>Register the DMA Interrupt Handlers</p>
 <pre><code class="language-c">    bl_dma_irq_register(hw_arg-&gt;tx_dma_ch, bl_spi0_dma_int_handler_tx, NULL, NULL);
     bl_dma_irq_register(hw_arg-&gt;rx_dma_ch, bl_spi0_dma_int_handler_rx, NULL, NULL);
-
     return;
 }
 </code></pre>
@@ -1565,7 +1597,6 @@ int spi_init(spi_dev_t *spi, uint8_t port,
 <pre><code class="language-c">    ret = lli_list_init(&amp;ptxlli, &amp;prxlli, TxData, RxData, Len);
     if (ret &lt; 0) {
         blog_error(&quot;init lli failed. \r\n&quot;);
-
         return;
     }
 </code></pre>
@@ -1573,8 +1604,8 @@ int spi_init(spi_dev_t *spi, uint8_t port,
 <p>Assign the DMA Linked List to the DMA Controller</p>
 <pre><code class="language-c">    DMA_LLI_Init(arg-&gt;tx_dma_ch, &amp;txllicfg);
     DMA_LLI_Init(arg-&gt;rx_dma_ch, &amp;rxllicfg);
-    DMA_LLI_Update(arg-&gt;tx_dma_ch,(uint32_t)ptxlli);
-    DMA_LLI_Update(arg-&gt;rx_dma_ch,(uint32_t)prxlli);
+    DMA_LLI_Update(arg-&gt;tx_dma_ch, (uint32_t) ptxlli);
+    DMA_LLI_Update(arg-&gt;rx_dma_ch, (uint32_t) prxlli);
 </code></pre>
 <p>TODO</p>
 <p>Enable DMA</p>
