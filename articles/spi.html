@@ -746,7 +746,7 @@ static void test_spi_transfer(...) {
 </li>
 </ol>
 <h1 id="spi-data-pins-are-flipped" class="section-header"><a href="#spi-data-pins-are-flipped">8 SPI Data Pins are flipped</a></h1>
-<p>Here's a strange problem about the BL602 SPI Data Pins that has spooked me till today...</p>
+<p>Here's a strange problem about the BL602 SPI Data Pins that still spooks me today...</p>
 <p>Recall that we're using <strong>Pins 1 and 4 as the SPI Data Pins</strong>.</p>
 <p>Yep BL602 will let us assign Pins 1 and 4 to the SPI Port... But within that SPI Port, <strong>each pin serves a fixed SPI Function</strong> (like Serial Data In and Serial Data Out).</p>
 <p>Here's what the <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en">BL602 Reference Manual</a> says (Table 3.1 &quot;Pin Description&quot;, Page 27)...</p>
@@ -771,11 +771,44 @@ static void test_spi_transfer(...) {
 <tr><td align="center"><strong><code>GPIO 4</code></strong></td><td align="center"><code>SDI</code></td><td align="left">Blue</td></tr>
 </tbody></table>
 <p>This works perfectly fine, though it contradicts the BL602 Reference Manual.</p>
+<p>Because of this bug, we shall refer to <strong>Pin 1 as Serial Data In</strong> <em>(formerly MISO)</em>, and <strong>Pin 4 as Serial Data Out</strong> (formerly MOSI): <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L45-L100"><code>sdk_app_spi/demo.c</code></a> </p>
+<pre><code class="language-c">//  Configure the SPI Port
+int rc = spi_init(
+    ...
+    1,   //  SPI Serial Data In Pin  (formerly MISO)
+    4    //  SPI Serial Data Out Pin (formerly MOSI)
+</code></pre>
 <p>(Could this be happening because we have mistakenly configured BL602 as an SPI Peripheral instead of SPI Controller? 🤔 )</p>
 <h1 id="spi-phase-looks-sus" class="section-header"><a href="#spi-phase-looks-sus">9 SPI Phase looks sus</a></h1>
-<p>TODO</p>
+<p>Here's another spooky problem: <strong>BL602 SPI Phase seems incorrect</strong>.</p>
+<p>Earlier we have configured BL602 for <strong>SPI Polarity 0 (CPOL), Phase 1 (CPHA)</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L45-L100"><code>sdk_app_spi/demo.c</code></a> </p>
+<pre><code class="language-c">//  Configure the SPI Port
+int rc = spi_init(
+    ...
+    1,           //  SPI Polarity and Phase: 1 for (CPOL=0, CPHA=1)
+</code></pre>
+<p>Here's how it looks with a Logic Analyser...</p>
 <p><img src="https://lupyuen.github.io/images/spi-analyse10a.png" alt="BL602 SPI Polarity 0, Phase 1" /></p>
-<p><em>BL602 SPI Polarity 0, Phase 1</em></p>
+<p>Note that the <strong>Serial Data Out Pin</strong> <em>(formerly MOSI)</em> <strong>goes High</strong>... <strong>before the Clock Pin goes High</strong>.</p>
+<p>Now compare this with the SPI Polarity and Phase diagrams here...</p>
+<ul>
+<li><a href="https://www.analog.com/en/analog-dialogue/articles/introduction-to-spi-interface.html#"><strong>Introduction to SPI Interface</strong></a></li>
+</ul>
+<p>Doesn't this look like <strong>SPI Phase 0, not Phase 1?</strong></p>
+<p>Here's another odd thing: This BL602 SPI Configuration (SPI Polarity 0, Phase 1) works perfectly splendid with BME280...</p>
+<p><em>Yet BME280 doesn't support SPI Polarity 0, Phase 1!</em></p>
+<p>BME280 only supports...</p>
+<ul>
+<li>
+<p>SPI Polarity 0, Phase 0</p>
+</li>
+<li>
+<p>SPI Polarity 1, Phase 1</p>
+</li>
+</ul>
+<p>Again this seems to be a bug in the BL602 hardware or documentation.</p>
+<p><strong>Be careful when configuring the BL602 SPI Phase... It doesn't quite work the way we expect!</strong></p>
+<p>(Yep I painstakingly verified... Setting BL602 to SPI Polarity 0, Phase 0 doesn't work with BME280)</p>
 <h1 id="port-bl602-spi-hal-to-other-operating-systems" class="section-header"><a href="#port-bl602-spi-hal-to-other-operating-systems">10 Port BL602 SPI HAL to other Operating Systems</a></h1>
 <p>TODO</p>
 <p>We may port the SPI HAL to other operating systems by emulating a few FreeRTOS functions for Event Groups.</p>
