@@ -768,7 +768,7 @@ We set Chip Select to High in two places...
 
 # SPI Data Pins are flipped
 
-Here's a strange problem about the BL602 SPI Data Pins that has spooked me till today...
+Here's a strange problem about the BL602 SPI Data Pins that still spooks me today...
 
 Recall that we're using __Pins 1 and 4 as the SPI Data Pins__.
 
@@ -803,15 +803,58 @@ This seems to be a bug in the BL602 hardware or documentation. We fix this by __
 
 This works perfectly fine, though it contradicts the BL602 Reference Manual.
 
+Because of this bug, we shall refer to __Pin 1 as Serial Data In__ _(formerly MISO)_, and __Pin 4 as Serial Data Out__ (formerly MOSI): [`sdk_app_spi/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L45-L100) 
+
+```c
+//  Configure the SPI Port
+int rc = spi_init(
+    ...
+    1,   //  SPI Serial Data In Pin  (formerly MISO)
+    4    //  SPI Serial Data Out Pin (formerly MOSI)
+```
+
 (Could this be happening because we have mistakenly configured BL602 as an SPI Peripheral instead of SPI Controller? 🤔 )
 
 # SPI Phase looks sus
 
-TODO
+Here's another spooky problem: __BL602 SPI Phase seems incorrect__.
+
+Earlier we have configured BL602 for __SPI Polarity 0 (CPOL), Phase 1 (CPHA)__: [`sdk_app_spi/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L45-L100) 
+
+```c
+//  Configure the SPI Port
+int rc = spi_init(
+    ...
+    1,           //  SPI Polarity and Phase: 1 for (CPOL=0, CPHA=1)
+```
+
+Here's how it looks with a Logic Analyser...
 
 ![BL602 SPI Polarity 0, Phase 1](https://lupyuen.github.io/images/spi-analyse10a.png)
 
-_BL602 SPI Polarity 0, Phase 1_
+Note that the __Serial Data Out Pin__ _(formerly MOSI)_ __goes High__... __before the Clock Pin goes High__.
+
+Now compare this with the SPI Polarity and Phase diagrams here...
+
+-   [__Introduction to SPI Interface__](https://www.analog.com/en/analog-dialogue/articles/introduction-to-spi-interface.html#)
+
+Doesn't this look like __SPI Phase 0, not Phase 1?__
+
+Here's another odd thing: This BL602 SPI Configuration (SPI Polarity 0, Phase 1) works perfectly splendid with BME280...
+
+_Yet BME280 doesn't support SPI Polarity 0, Phase 1!_
+
+BME280 only supports...
+
+-   SPI Polarity 0, Phase 0
+
+-   SPI Polarity 1, Phase 1
+
+Again this seems to be a bug in the BL602 hardware or documentation.
+
+__Be careful when configuring the BL602 SPI Phase... It doesn't quite work the way we expect!__
+
+(Yep I painstakingly verified... Setting BL602 to SPI Polarity 0, Phase 0 doesn't work with BME280)
 
 # Port BL602 SPI HAL to other Operating Systems
 
