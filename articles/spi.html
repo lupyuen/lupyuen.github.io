@@ -91,7 +91,7 @@
 <li><a href="#unsolved-mysteries">10 Unsolved Mysteries</a><ul></ul></li>
 <li><a href="#port-bl602-spi-hal-to-other-operating-systems">11 Port BL602 SPI HAL to other Operating Systems</a><ul></ul></li>
 <li><a href="#whats-next">12 What's Next</a><ul></ul></li>
-<li><a href="#appendix-test-bme280-with-bus-pirate">13 Appendix: Test BME280 with Bus Pirate</a><ul></ul></li>
+<li><a href="#appendix-test-bme280-spi-interface-with-bus-pirate">13 Appendix: Test BME280 SPI Interface with Bus Pirate</a><ul></ul></li>
 <li><a href="#appendix-troubleshoot-bl602-spi-with-logic-analyser">14 Appendix: Troubleshoot BL602 SPI with Logic Analyser</a><ul></ul></li>
 <li><a href="#appendix-inside-bl602-spi-hal">15 Appendix: Inside BL602 SPI HAL</a><ul>
 <li><a href="#definitions">15.1 Definitions</a><ul></ul></li>
@@ -850,10 +850,9 @@ int rc = spi_init(
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/spi.md"><code>lupyuen.github.io/src/spi.md</code></a></p>
 <p><img src="https://lupyuen.github.io/images/spi-buspirate.jpg" alt="Bus Pirate connected to BME280 Sensor over SPI" /></p>
 <p><em>Bus Pirate connected to BME280 Sensor over SPI</em></p>
-<h1 id="appendix-test-bme280-with-bus-pirate" class="section-header"><a href="#appendix-test-bme280-with-bus-pirate">13 Appendix: Test BME280 with Bus Pirate</a></h1>
+<h1 id="appendix-test-bme280-spi-interface-with-bus-pirate" class="section-header"><a href="#appendix-test-bme280-spi-interface-with-bus-pirate">13 Appendix: Test BME280 SPI Interface with Bus Pirate</a></h1>
 <p>TODO</p>
-<p>Testing BME280 SPI with Bus Pirate:
-(See http://dangerousprototypes.com/docs/SPI)</p>
+<p><a href="http://dangerousprototypes.com/docs/Bus_Pirate"><strong>Bus Pirate</strong></a> is a useful gadget for verifying whether our BME280 Sensor works OK. And for checking the SPI signals that should be sent down the wire to BME280.</p>
 <pre><code class="language-text">HiZ&gt; m
 1. HiZ
 2. 1-WIRE
@@ -916,10 +915,33 @@ READ: 0x60
 /CS DISABLED
 </code></pre>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/spi-analyse1a.png" alt="Bus Pirate talks to BME280 over SPI, visualised by a Logic Analyser" /></p>
-<p><em>Bus Pirate talks to BME280 over SPI, visualised by a Logic Analyser</em></p>
+<p>The Bus Pirate SPI command...</p>
+<pre><code class="language-text">[ 0xD0 r ]
+</code></pre>
+<p>TODO</p>
+<p>means...</p>
+<ol>
+<li>
+<p>Set Chip Select Pin to Low (to activate BME280)</p>
+</li>
+<li>
+<p>Transmit byte <code>0xD0</code> to BME280</p>
+</li>
+<li>
+<p>Read one byte from BME280</p>
+</li>
+<li>
+<p>Set Chip Select Pin to High (to deactivate BME280)</p>
+</li>
+</ol>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/spi-analyse1a.png" alt="Bus Pirate talks to BME280 over SPI, visualised by LA2016 Logic Analyser" /></p>
+<p><em>Bus Pirate talks to BME280 over SPI, visualised by LA2016 Logic Analyser</em></p>
+<p><a href="http://dangerousprototypes.com/docs/SPI">Check out the SPI Guide for Bus Pirate</a></p>
 <h1 id="appendix-troubleshoot-bl602-spi-with-logic-analyser" class="section-header"><a href="#appendix-troubleshoot-bl602-spi-with-logic-analyser">14 Appendix: Troubleshoot BL602 SPI with Logic Analyser</a></h1>
 <p>TODO</p>
+<p><a href="https://www.seeedstudio.com/LA2016-Logic-Analyzer-p-2218.html">LA2016 Logic Analyser</a></p>
+<p>User Guide is under &quot;Learn and Documents&quot;</p>
 <p><img src="https://lupyuen.github.io/images/spi-analyser.jpg" alt="PineCone BL602 RISC-V Board connected to LA2016 Logic Analyser and BME280 SPI Sensor" /></p>
 <p><em>PineCone BL602 RISC-V Board connected to LA2016 Logic Analyser and BME280 SPI Sensor</em></p>
 <p>TODO</p>
