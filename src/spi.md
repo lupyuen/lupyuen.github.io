@@ -225,7 +225,7 @@ Here are the parameters for `spi_init`...
 
     (Slow but reliable, and easier to troubleshoot)
 
-    SPI Frequency ranges from 200 kHz to 4 Mbps.
+    SPI Frequency ranges from 200 kHz to 4 MHz.
 
 -   __Transmit DMA Channel:__ We select __DMA Channel 2__ for transmitting SPI Data
 
@@ -1187,7 +1187,9 @@ We added the function `spi_init` to initialise the SPI Port without using the Al
 
 `HAL_SPI_DEBUG` is presently set to `1` to enable debug messages. 
 
-For production we should change this to `0` in [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L57-L58)
+For production we should change this to `0`.
+
+From [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L57-L58)
 
 ```c
 //  TODO: Change to 0 for production to disable logging
@@ -1275,7 +1277,7 @@ We set the internal fields of the SPI device...
         port, mode, polar_phase, freq, tx_dma_ch, rx_dma_ch, pin_clk, pin_cs, pin_mosi, pin_miso);
 ```
 
-We call `hal_spi_set_rwspeed` to set the SPI Frequency, assign the pins to SPI, and initialise the DMA...
+Finally we call `hal_spi_set_rwspeed` to set the SPI Frequency, assign the SPI Pins and initialise the DMA...
 
 ```c
     //  Init the SPI speed, pins and DMA
@@ -1285,11 +1287,11 @@ We call `hal_spi_set_rwspeed` to set the SPI Frequency, assign the pins to SPI, 
 }
 ```
 
-## hal_spi_set_rwspeed: Set SPI Speed
+## hal_spi_set_rwspeed: Set SPI Frequency
 
-TODO
+`hal_spi_set_rwspeed` is called by `spi_init` to set the SPI Frequency, assign the SPI Pins and initialise the DMA.
 
-[`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L430-L480)
+From [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L430-L480)
 
 ```c
 int hal_spi_set_rwspeed(spi_dev_t *spi_dev, uint32_t speed)
@@ -1308,9 +1310,11 @@ int hal_spi_set_rwspeed(spi_dev_t *spi_dev, uint32_t speed)
     }
 ```
 
-TODO
+Parameter `speed` is the SPI Frequency (in Hz) from 200,000 (200 kHz) to 4,000,000 (4 MHz).
 
-Compute the Clock Divider for 4 MHz
+The Actual SPI Frequency needs to be divisible by 4,000,000.
+
+Here we compute the divisor for the SPI Frequency and derive the Actual SPI Frequency `real_speed`...
 
 ```c
     for (i = 0; i < 256; i++) {
@@ -1325,9 +1329,7 @@ Compute the Clock Divider for 4 MHz
     }
 ```
 
-TODO
-
-Validate the Clock Divider: 200 kHz to 4 MHz
+We validate that the Actual SPI Frequency is in the range 200 kHz to 4 MHz...
 
 ```c
     if (real_flag != 1) {
@@ -1349,15 +1351,17 @@ Validate the Clock Divider: 200 kHz to 4 MHz
     }
 ```
 
-TODO
-
-Set the Clock Divider
+We set the Actual SPI Frequency...
 
 ```c
     data = (spi_priv_data_t *)spi_dev->priv;
     data->hwspi[spi_dev->port].freq = real_speed;
     spi_dev->config.freq = real_speed;
+```
 
+Finally we call `hal_spi_init` to assign the SPI Pins and initialise the DMA.
+
+```c
     hal_spi_init(spi_dev);
     return 0;
 }
@@ -1365,11 +1369,9 @@ Set the Clock Divider
 
 ## hal_spi_init: Init SPI Pins and DMA
 
-TODO
+`hal_spi_init` is called by `hal_spi_set_rwspeed` to assign the SPI Pins and initialise the DMA.
 
-Init SPI Pins and DMA
-
-[`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L360-L384)
+From [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L360-L384)
 
 ```c
 int32_t hal_spi_init(spi_dev_t *spi)
@@ -1385,7 +1387,11 @@ int32_t hal_spi_init(spi_dev_t *spi)
     if (data == NULL) {
         return -1;
     }
+```
 
+TODO
+
+```c
     for (i = 0; i < SPI_NUM_MAX; i++) {
         hal_gpio_init(&data->hwspi[i]);
         hal_spi_dma_init(&data->hwspi[i]);
