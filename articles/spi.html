@@ -996,9 +996,11 @@ READ: 0x60
 <p>This will read BME280's <strong>Chip ID Register <code>0xD0</code></strong>.</p>
 <p>We expect the byte received to be <strong><code>0x60</code></strong>, which is the Chip ID for BME280.</p>
 <p>(For BMP280 the Chip ID is <code>0x58</code>)</p>
+<p><a href="http://dangerousprototypes.com/docs/SPI">Check out the SPI Guide for Bus Pirate</a></p>
 <p><img src="https://lupyuen.github.io/images/spi-analyse1a.png" alt="Bus Pirate talks to BME280 over SPI, visualised by LA2016 Logic Analyser" /></p>
 <p><em>Bus Pirate talks to BME280 over SPI, visualised by LA2016 Logic Analyser</em></p>
-<p><a href="http://dangerousprototypes.com/docs/SPI">Check out the SPI Guide for Bus Pirate</a></p>
+<p>To see the actual SPI Signals on each SPI Pin (shown above), we will use a <strong>Logic Analyser</strong>.</p>
+<p>The next section explains how.</p>
 <p><img src="https://lupyuen.github.io/images/spi-analyser.jpg" alt="PineCone BL602 RISC-V Board connected to LA2016 Logic Analyser and BME280 SPI Sensor" /></p>
 <p><em>PineCone BL602 RISC-V Board connected to LA2016 Logic Analyser and BME280 SPI Sensor</em></p>
 <h1 id="appendix-troubleshoot-bl602-spi-with-logic-analyser" class="section-header"><a href="#appendix-troubleshoot-bl602-spi-with-logic-analyser">14 Appendix: Troubleshoot BL602 SPI with Logic Analyser</a></h1>
