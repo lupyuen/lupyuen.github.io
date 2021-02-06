@@ -1075,11 +1075,15 @@ We expect the byte received to be __`0x60`__, which is the Chip ID for BME280.
 
 (For BMP280 the Chip ID is `0x58`)
 
+[Check out the SPI Guide for Bus Pirate](http://dangerousprototypes.com/docs/SPI)
+
 ![Bus Pirate talks to BME280 over SPI, visualised by LA2016 Logic Analyser](https://lupyuen.github.io/images/spi-analyse1a.png)
 
 _Bus Pirate talks to BME280 over SPI, visualised by LA2016 Logic Analyser_
 
-[Check out the SPI Guide for Bus Pirate](http://dangerousprototypes.com/docs/SPI)
+To see the actual SPI Signals on each SPI Pin (shown above), we will use a __Logic Analyser__.
+
+The next section explains how.
 
 ![PineCone BL602 RISC-V Board connected to LA2016 Logic Analyser and BME280 SPI Sensor](https://lupyuen.github.io/images/spi-analyser.jpg)
 
