@@ -648,7 +648,7 @@ Congratulations! We have successfully read the BME280 Sensor from BL602 over SPI
 
 # Control our own Chip Select Pin
 
-Remember earlier we said that we're not using Pin 2, the designated Chip Select Pin from the BL602 SPI Port...
+Earlier we said that we're not using Pin 2, the designated Chip Select Pin from the BL602 SPI Port...
 
 ```c
 //  Configure the SPI Port
@@ -657,14 +657,14 @@ int rc = spi_init(
     2,   //  Unused SPI Chip Select Pin
 ```
 
-But instead, we're using Pin 14 as our own Chip Select Pin?
+But instead, we're using Pin 14 as our own Chip Select Pin...
 
 ```c
 /// Use GPIO 14 as SPI Chip Select Pin
 #define SPI_CS_PIN 14
 ```
 
-Two reasons why we're controlling the Chip Select Pin ourselves...
+_Why are we controlling the Chip Select Pin ourselves?_
 
 ![BL602 talks to BME280 over SPI, visualised by a Logic Analyser](https://lupyuen.github.io/images/spi-analyse4a.png)
 
