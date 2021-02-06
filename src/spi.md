@@ -768,11 +768,42 @@ We set Chip Select to High in two places...
 
 # SPI Data Pins are flipped
 
-TODO
+Here's a strange problem about the BL602 SPI Data Pins that has spooked me till today...
+
+Recall that we're using __Pins 1 and 4 as the SPI Data Pins__.
+
+Yep BL602 will let us assign Pins 1 and 4 to the SPI Port... But within that SPI Port, __each pin serves a fixed SPI Function__ (like Serial Data In and Serial Data Out).
+
+Here's what the [BL602 Reference Manual](https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en) says (Table 3.1 "Pin Description", Page 27)...
+
+![SPI Functions for Pins 1 and 4](https://lupyuen.github.io/images/spi-gpio.png)
+
+-   __GPIO 1__ should be __BL602 Serial Data Out__ _(formerly MOSI)_
+
+    Which connects to __BME280 Serial Data In__
+
+-   __GPIO 4__ should be __BL602 Serial Data In__ _(formerly MISO)_
+
+    Which connects to __BME280 Serial Data Out__
+
+(Remember that Data In/Out are flipped across BL602 and BME280)
+
+Yet when we connect BL602 to BME280 in the above manner, we'll see this...
 
 ![BL602 SPI Data Pins are flipped](https://lupyuen.github.io/images/spi-analyse2a.png)
 
-_BL602 SPI Data Pins are flipped_
+__The two BL602 SPI Data Pins are flipped!__ (According to the Logic Analyser)
+
+This seems to be a bug in the BL602 hardware or documentation. We fix this by __flipping the two data pins__...
+
+| BL602 Pin | BME280 SPI | Wire Colour
+|:---:|:---:|:---|
+| __`GPIO 1`__ | `SDO` | Green 
+| __`GPIO 4`__ | `SDI` | Blue
+
+This works perfectly fine, though it contradicts the BL602 Reference Manual.
+
+(Could this be happening because we have mistakenly configured BL602 as an SPI Peripheral instead of SPI Controller? 🤔 )
 
 # SPI Phase looks sus
 
