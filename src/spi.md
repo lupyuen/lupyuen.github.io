@@ -1647,13 +1647,19 @@ If `HAL_SPI_HARDCS` is 0, this code is supposed to set the Chip Select Pin to Hi
 }
 ```
 
-## lli_list_init: Init DMA Linked List
+## lli_list_init: Create DMA Linked List
 
-TODO
+BL602's DMA Controller accepts a __DMA Linked List__ of DMA Requests that will be executed automatically.
 
-Create DMA Linked List
+In `lli_list_init` we'll create a DMA Linked List containing two types of DMA Requests...
 
-[`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L126-L205)
+1.  __SPI Transmit:__ Copy data from RAM to SPI Port for transmission
+
+1.  __SPI Receive:__ Copy received data from SPI Port to RAM
+
+`lli_list_init` is called by `hal_spi_dma_trans`.
+
+From [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L126-L205)
 
 ```c
 static int lli_list_init(DMA_LLI_Ctrl_Type **pptxlli, DMA_LLI_Ctrl_Type **pprxlli, uint8_t *ptx_data, uint8_t *prx_data, uint32_t length)
@@ -1663,7 +1669,6 @@ static int lli_list_init(DMA_LLI_Ctrl_Type **pptxlli, DMA_LLI_Ctrl_Type **pprxll
     uint32_t remainder;
     struct DMA_Control_Reg dmactrl;
 
-
     count = length / LLI_BUFF_SIZE;
     remainder = length % LLI_BUFF_SIZE;
 
@@ -1672,9 +1677,7 @@ static int lli_list_init(DMA_LLI_Ctrl_Type **pptxlli, DMA_LLI_Ctrl_Type **pprxll
     }
 ```
 
-TODO
-
-Define the DMA parameters
+We define the parameters for the DMA Request...
 
 ```c
     dmactrl.SBSize = DMA_BURST_SIZE_1;
@@ -1685,38 +1688,29 @@ Define the DMA parameters
     dmactrl.SLargerD = 0;
 ```
 
-TODO
-
-pvPortMalloc to allocate DMA Linked List via FreeRTOS
+We call `pvPortMalloc` (from FreeRTOS) to allocate heap memory for storing the DMA Linked List...
 
 ```c
     *pptxlli = pvPortMalloc(sizeof(DMA_LLI_Ctrl_Type) * count);
     if (*pptxlli == NULL) {
         blog_error("malloc lli failed. \r\n");
-
         return -1;
     }
-
     *pprxlli = pvPortMalloc(sizeof(DMA_LLI_Ctrl_Type) * count);
     if (*pprxlli == NULL) {
         blog_error("malloc lli failed.");
         vPortFree(*pptxlli);
-
         return -1;
     }
 ```
 
-TODO
-
-For each SPI Transfer, create Transmit DMA and Receive DMA Requests
+For each SPI Transfer, we create the DMA Requests for SPI Transmit and SPI Receive...
 
 ```c
     for (i = 0; i < count; i++) {
 ```
 
-TODO
-
-Compute the DMA Transmit / Receive Size
+We compute the DMA Transmit / Receive Size...
 
 ```c
         if (remainder == 0) {
@@ -1744,9 +1738,8 @@ What is this ???
             dmactrl.I = 0;
         }
 ```
-TODO
 
-Transmit DMA: Copy data from RAM to SPI Port
+For SPI Transmit: We create a DMA Request that copies data from RAM to the SPI Port for transmission...
 
 ```c
         (*pptxlli)[i].srcDmaAddr = (uint32_t)(ptx_data + i * LLI_BUFF_SIZE);
@@ -1755,9 +1748,7 @@ Transmit DMA: Copy data from RAM to SPI Port
         blog_info("Tx DMA src=0x%x, dest=0x%x, size=%d, si=%d, di=%d, i=%d\r\n", (unsigned) (*pptxlli)[i].srcDmaAddr, (unsigned) (*pptxlli)[i].destDmaAddr, dmactrl.TransferSize, dmactrl.SI, dmactrl.DI, dmactrl.I);
 ```
 
-TODO
-
-Receive DMA: Copy data from SPI Port to RAM
+For SPI Receive: We create a DMA Request that copies the received data from the SPI Port to RAM...
 
 ```c
         dmactrl.SI = DMA_MINC_DISABLE;
@@ -1768,9 +1759,7 @@ Receive DMA: Copy data from SPI Port to RAM
         blog_info("Rx DMA src=0x%x, dest=0x%x, size=%d, si=%d, di=%d, i=%d\r\n", (unsigned) (*pprxlli)[i].srcDmaAddr, (unsigned) (*pprxlli)[i].destDmaAddr, dmactrl.TransferSize, dmactrl.SI, dmactrl.DI, dmactrl.I);
 ```
 
-TODO
-
-Append to DMA Linked List
+Finally we append both DMA Requests to the DMA Linked List...
 
 ```c
         if (i != 0) {
@@ -1781,7 +1770,6 @@ Append to DMA Linked List
         (*pptxlli)[i].nextLLI = 0;
         (*pprxlli)[i].nextLLI = 0;
     }
-
     return 0;
 }
 ```
