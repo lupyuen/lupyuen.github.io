@@ -732,7 +732,7 @@ Now that Pin 14 is configured as a GPIO Pin, let's configure it for __GPIO Outpu
 
 We're ready to toggle Pin 14 as a GPIO Output Pin!
 
-## Set Chip Select Pin to Low
+## Set Chip Select to Low
 
 To set our Chip Select Pin to Low (which activates BME280), we do this: [`sdk_app_spi/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L135-L155)
 
@@ -750,7 +750,7 @@ static void test_spi_transfer(...) {
 
 We set Chip Select to Low just before executing the two SPI Transfers.
 
-## Set Chip Select Pin to High
+## Set Chip Select to High
 
 To set our Chip Select Pin to High (which deactivates BME280), we do this...
 
@@ -774,7 +774,7 @@ TODO
 
 _BL602 SPI Data Pins are flipped_
 
-# SPI Polarity and Phase
+# SPI Phase looks sus
 
 TODO
 
