@@ -1249,7 +1249,7 @@ int spi_init(spi_dev_t *spi, uint8_t port,
 <p>For every SPI Port (there's only one: SPI Port 0)...</p>
 <ol>
 <li>
-<p>We call <code>hal_gpio_init</code> to assign the SPI Pins</p>
+<p>We call <code>hal_gpio_init</code> to assign the SPI Pins and configure the SPI Port as SPI Controller or Peripheral</p>
 </li>
 <li>
 <p>We call <code>hal_spi_dma_init</code> to initialise the DMA Controller</p>
@@ -1268,7 +1268,7 @@ int spi_init(spi_dev_t *spi, uint8_t port,
 }
 </code></pre>
 <h2 id="hal_gpio_init-assign-spi-pins" class="section-header"><a href="#hal_gpio_init-assign-spi-pins">15.5 hal_gpio_init: Assign SPI Pins</a></h2>
-<p><code>hal_gpio_init</code> is called by <code>hal_spi_init</code> to assign the SPI Pins.</p>
+<p><code>hal_gpio_init</code> is called by <code>hal_spi_init</code> to assign the SPI Pins and configure the SPI Port as SPI Controller or Peripheral.</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L98-L124"><code>bl602_hal/hal_spi.c</code></a></p>
 <pre><code class="language-c">static void hal_gpio_init(spi_hw_t *arg)
 {
@@ -1301,8 +1301,8 @@ int spi_init(spi_dev_t *spi, uint8_t port,
 }
 </code></pre>
 <h2 id="hal_spi_dma_init-init-spi-dma" class="section-header"><a href="#hal_spi_dma_init-init-spi-dma">15.6 hal_spi_dma_init: Init SPI DMA</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L207-L288"><code>bl602_hal/hal_spi.c</code></a></p>
+<p><code>hal_spi_dma_init</code> is called by <code>hal_spi_init</code> to initialise the DMA Controller.</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L207-L288"><code>bl602_hal/hal_spi.c</code></a></p>
 <pre><code class="language-c">static void hal_spi_dma_init(spi_hw_t *arg)
 {
     spi_hw_t *hw_arg = arg;
@@ -1310,12 +1310,10 @@ int spi_init(spi_dev_t *spi, uint8_t port,
     SPI_ClockCfg_Type clockcfg;
     SPI_FifoCfg_Type fifocfg;
     SPI_ID_Type spi_id;
-    uint8_t clk_div;
-    
+    uint8_t clk_div;    
     spi_id = hw_arg-&gt;ssp_id;
 </code></pre>
-<p>TODO</p>
-<p>Set the SPI Timing Intervals</p>
+<p>We set the Timing Intervals for the SPI Clock (according to the Actual SPI Frequency)...</p>
 <pre><code class="language-c">    /* clock */
     /*1  ---&gt;  40 Mhz
      *2  ---&gt;  20 Mhz
@@ -1332,8 +1330,7 @@ int spi_init(spi_dev_t *spi, uint8_t port,
     clockcfg.intervalLen = clk_div;
     SPI_ClockConfig(spi_id, &amp;clockcfg);
 </code></pre>
-<p>TODO</p>
-<p>Set SPI Config</p>
+<p>We set the SPI Configuration: Deglitching, Continuous Chip Enable, Byte Sequence, Bit Sequence, Frame Size...</p>
 <pre><code class="language-c">    /* spi config */
     spicfg.deglitchEnable = DISABLE;
     spicfg.continuousEnable = ENABLE;
@@ -1341,8 +1338,7 @@ int spi_init(spi_dev_t *spi, uint8_t port,
     spicfg.bitSequence = SPI_BIT_INVERSE_MSB_FIRST,
     spicfg.frameSize = SPI_FRAME_SIZE_8;
 </code></pre>
-<p>TODO</p>
-<p>Set SPI Polarity and Phase</p>
+<p>We set the SPI Polarity and Phase...</p>
 <pre><code class="language-c">    if (hw_arg-&gt;polar_phase == 0) {
         spicfg.clkPhaseInv = SPI_CLK_PHASE_INVERSE_0;
         spicfg.clkPolarity = SPI_CLK_POLARITY_LOW;
@@ -1359,8 +1355,7 @@ int spi_init(spi_dev_t *spi, uint8_t port,
         blog_error(&quot;node support polar_phase \r\n&quot;);
     }
 </code></pre>
-<p>TODO</p>
-<p>Init SPI Port and disable it. Disable all interrupts.</p>
+<p>We initialise the SPI Port and disable it. We disable all interrupts.</p>
 <pre><code class="language-c">    //  TODO: In future when there are multiple 
     //  SPI ports, this should be 
     //  SPI_Init(spi_id, &amp;spicfg)
@@ -1371,11 +1366,9 @@ int spi_init(spi_dev_t *spi, uint8_t port,
     } else {
         SPI_Disable(spi_id, SPI_WORK_MODE_SLAVE);
     }
-
     SPI_IntMask(spi_id,SPI_INT_ALL,MASK);
 </code></pre>
-<p>TODO</p>
-<p>Configure FIFO Threshold. Use DMA for FIFO.</p>
+<p>We configure the SPI FIFO (First-In First-Out Queue) Threshold, and use DMA for FIFO...</p>
 <pre><code class="language-c">    /* fifo */
     fifocfg.txFifoThreshold = 1;
     fifocfg.rxFifoThreshold = 1;
@@ -1383,22 +1376,19 @@ int spi_init(spi_dev_t *spi, uint8_t port,
     fifocfg.rxFifoDmaEnable = ENABLE;
     SPI_FifoConfig(spi_id,&amp;fifocfg);
 </code></pre>
-<p>TODO</p>
-<p>Configure Transmit DMA Interrupts and enable them</p>
+<p>We configure the Transmit DMA Interrupts...</p>
 <pre><code class="language-c">    DMA_Disable();
     DMA_IntMask(hw_arg-&gt;tx_dma_ch, DMA_INT_ALL, MASK);
     DMA_IntMask(hw_arg-&gt;tx_dma_ch, DMA_INT_TCOMPLETED, UNMASK);
     DMA_IntMask(hw_arg-&gt;tx_dma_ch, DMA_INT_ERR, UNMASK);
 </code></pre>
-<p>TODO</p>
-<p>Configure Receive DMA Interrupts and enable the interrupts</p>
+<p>We configure the Receive DMA Interrupts and enable the DMA interrupts...</p>
 <pre><code class="language-c">    DMA_IntMask(hw_arg-&gt;rx_dma_ch, DMA_INT_ALL, MASK);
     DMA_IntMask(hw_arg-&gt;rx_dma_ch, DMA_INT_TCOMPLETED, UNMASK); 
     DMA_IntMask(hw_arg-&gt;rx_dma_ch, DMA_INT_ERR, UNMASK);
     bl_irq_enable(DMA_ALL_IRQn);
 </code></pre>
-<p>TODO</p>
-<p>Register the DMA Interrupt Handlers</p>
+<p>Finally we register the DMA Interrupt Handlers: <code>bl_spi0_dma_int_handler_tx</code> and <code>bl_spi0_dma_int_handler_rx</code>...</p>
 <pre><code class="language-c">    bl_dma_irq_register(hw_arg-&gt;tx_dma_ch, bl_spi0_dma_int_handler_tx, NULL, NULL);
     bl_dma_irq_register(hw_arg-&gt;rx_dma_ch, bl_spi0_dma_int_handler_rx, NULL, NULL);
     return;
