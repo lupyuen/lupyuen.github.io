@@ -676,6 +676,8 @@ _Why are we controlling the Chip Select Pin ourselves?_
 
     We'll control the Chip Select Pin ourselves to produce the desired signal shape.
 
+    (It's like shaping our own eyebrows)
+
     (How do we know that the Chip Select Pin should stay Low? From the Bus Pirate data captured by the Logic Analyser)
 
 1.  __We want to control multiple SPI Peripherals with BL602__
