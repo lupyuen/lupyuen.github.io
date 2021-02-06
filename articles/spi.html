@@ -851,8 +851,26 @@ int rc = spi_init(
 <p><img src="https://lupyuen.github.io/images/spi-buspirate.jpg" alt="Bus Pirate connected to BME280 Sensor over SPI" /></p>
 <p><em>Bus Pirate connected to BME280 Sensor over SPI</em></p>
 <h1 id="appendix-test-bme280-spi-interface-with-bus-pirate" class="section-header"><a href="#appendix-test-bme280-spi-interface-with-bus-pirate">13 Appendix: Test BME280 SPI Interface with Bus Pirate</a></h1>
-<p>TODO</p>
 <p><a href="http://dangerousprototypes.com/docs/Bus_Pirate"><strong>Bus Pirate</strong></a> is a useful gadget for verifying whether our BME280 Sensor works OK. And for checking the SPI signals that should be sent down the wire to BME280.</p>
+<ol>
+<li>
+<p>Connect Bus Pirate to BME280 (or BMP280) according to the pic above...</p>
+<table><thead><tr><th align="center">Bus Pirate Pin</th><th align="center">BME280 SPI Pin</th></tr></thead><tbody>
+<tr><td align="center"><strong><code>MOSI</code></strong></td><td align="center"><code>SDI</code></td></tr>
+<tr><td align="center"><strong><code>MISO</code></strong></td><td align="center"><code>SDO</code></td></tr>
+<tr><td align="center"><strong><code>CLK</code></strong></td><td align="center"><code>SCK</code></td></tr>
+<tr><td align="center"><strong><code>CS</code></strong></td><td align="center"><code>CS</code></td></tr>
+<tr><td align="center"><strong><code>3.3V</code></strong></td><td align="center"><code>3.3V</code></td></tr>
+<tr><td align="center"><strong><code>GND</code></strong></td><td align="center"><code>GND</code></td></tr>
+</tbody></table>
+<p>Connect to the SPI side of BME280 (with 6 pins). Don't use any pins on the I2C side (with 4 pins).</p>
+</li>
+<li>
+<p>Connect Bus Pirate to our computer's USB port.</p>
+<p>Open a Serial Terminal for Bus Pirate.</p>
+</li>
+</ol>
+<p>TODO</p>
 <pre><code class="language-text">HiZ&gt; m
 1. HiZ
 2. 1-WIRE
@@ -938,13 +956,36 @@ READ: 0x60
 <p><img src="https://lupyuen.github.io/images/spi-analyse1a.png" alt="Bus Pirate talks to BME280 over SPI, visualised by LA2016 Logic Analyser" /></p>
 <p><em>Bus Pirate talks to BME280 over SPI, visualised by LA2016 Logic Analyser</em></p>
 <p><a href="http://dangerousprototypes.com/docs/SPI">Check out the SPI Guide for Bus Pirate</a></p>
+<p><img src="https://lupyuen.github.io/images/spi-analyser.jpg" alt="PineCone BL602 RISC-V Board connected to LA2016 Logic Analyser and BME280 SPI Sensor" /></p>
+<p><em>PineCone BL602 RISC-V Board connected to LA2016 Logic Analyser and BME280 SPI Sensor</em></p>
 <h1 id="appendix-troubleshoot-bl602-spi-with-logic-analyser" class="section-header"><a href="#appendix-troubleshoot-bl602-spi-with-logic-analyser">14 Appendix: Troubleshoot BL602 SPI with Logic Analyser</a></h1>
 <p>TODO</p>
 <p><a href="https://www.seeedstudio.com/LA2016-Logic-Analyzer-p-2218.html">LA2016 Logic Analyser</a></p>
 <p>User Guide is under &quot;Learn and Documents&quot;</p>
-<p><img src="https://lupyuen.github.io/images/spi-analyser.jpg" alt="PineCone BL602 RISC-V Board connected to LA2016 Logic Analyser and BME280 SPI Sensor" /></p>
-<p><em>PineCone BL602 RISC-V Board connected to LA2016 Logic Analyser and BME280 SPI Sensor</em></p>
+<p>Connect the Logic Analyser to BL602 according to the pic above...</p>
+<table><thead><tr><th align="center">Logic Analyser</th><th align="left">BL602 Pin</th></tr></thead><tbody>
+<tr><td align="center"><strong><code>CH0</code></strong></td><td align="left"><code>GPIO 4  (SDO)</code></td></tr>
+<tr><td align="center"><strong><code>CH1</code></strong></td><td align="left"><code>GPIO 1  (SDI)</code></td></tr>
+<tr><td align="center"><strong><code>CH2</code></strong></td><td align="left"><code>GPIO 3  (SCK)</code></td></tr>
+<tr><td align="center"><strong><code>CH3</code></strong></td><td align="left"><code>GPIO 14 (CS)</code></td></tr>
+<tr><td align="center"><strong><code>GND</code></strong></td><td align="left"><code>GND</code></td></tr>
+</tbody></table>
 <p>TODO</p>
+<p>Rule of Single Power Source: Be sure that BL602 and Logic Analyser are powered by the same source, i.e. both are connected to the same PC.</p>
+<ol>
+<li>
+<p>Power off BL602 and Logic Analyser</p>
+</li>
+<li>
+<p>Connect <strong><code>GND</code></strong> from BL602 to Logic Analyser</p>
+</li>
+<li>
+<p>Power on BL602 and Logic Analyser</p>
+</li>
+<li>
+<p>Connect the remaining pins from BL602 to Logic Analyser</p>
+</li>
+</ol>
 <p><img src="https://lupyuen.github.io/images/spi-analyse9a.png" alt="BL602 talks to BME280 over SPI, visualised by LA2016 Logic Analyser" /></p>
 <p><em>BL602 talks to BME280 over SPI, visualised by LA2016 Logic Analyser</em></p>
 <h1 id="appendix-inside-bl602-spi-hal" class="section-header"><a href="#appendix-inside-bl602-spi-hal">15 Appendix: Inside BL602 SPI HAL</a></h1>
