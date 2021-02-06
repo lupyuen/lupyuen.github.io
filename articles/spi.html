@@ -746,9 +746,32 @@ static void test_spi_transfer(...) {
 </li>
 </ol>
 <h1 id="spi-data-pins-are-flipped" class="section-header"><a href="#spi-data-pins-are-flipped">8 SPI Data Pins are flipped</a></h1>
-<p>TODO</p>
+<p>Here's a strange problem about the BL602 SPI Data Pins that has spooked me till today...</p>
+<p>Recall that we're using <strong>Pins 1 and 4 as the SPI Data Pins</strong>.</p>
+<p>Yep BL602 will let us assign Pins 1 and 4 to the SPI Port... But within that SPI Port, <strong>each pin serves a fixed SPI Function</strong> (like Serial Data In and Serial Data Out).</p>
+<p>Here's what the <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en">BL602 Reference Manual</a> says (Table 3.1 &quot;Pin Description&quot;, Page 27)...</p>
+<p><img src="https://lupyuen.github.io/images/spi-gpio.png" alt="SPI Functions for Pins 1 and 4" /></p>
+<ul>
+<li>
+<p><strong>GPIO 1</strong> should be <strong>BL602 Serial Data Out</strong> <em>(formerly MOSI)</em></p>
+<p>Which connects to <strong>BME280 Serial Data In</strong></p>
+</li>
+<li>
+<p><strong>GPIO 4</strong> should be <strong>BL602 Serial Data In</strong> <em>(formerly MISO)</em></p>
+<p>Which connects to <strong>BME280 Serial Data Out</strong></p>
+</li>
+</ul>
+<p>(Remember that Data In/Out are flipped across BL602 and BME280)</p>
+<p>Yet when we connect BL602 to BME280 in the above manner, we'll see this...</p>
 <p><img src="https://lupyuen.github.io/images/spi-analyse2a.png" alt="BL602 SPI Data Pins are flipped" /></p>
-<p><em>BL602 SPI Data Pins are flipped</em></p>
+<p><strong>The two BL602 SPI Data Pins are flipped!</strong> (According to the Logic Analyser)</p>
+<p>This seems to be a bug in the BL602 hardware or documentation. We fix this by <strong>flipping the two data pins</strong>...</p>
+<table><thead><tr><th align="center">BL602 Pin</th><th align="center">BME280 SPI</th><th align="left">Wire Colour</th></tr></thead><tbody>
+<tr><td align="center"><strong><code>GPIO 1</code></strong></td><td align="center"><code>SDO</code></td><td align="left">Green</td></tr>
+<tr><td align="center"><strong><code>GPIO 4</code></strong></td><td align="center"><code>SDI</code></td><td align="left">Blue</td></tr>
+</tbody></table>
+<p>This works perfectly fine, though it contradicts the BL602 Reference Manual.</p>
+<p>(Could this be happening because we have mistakenly configured BL602 as an SPI Peripheral instead of SPI Controller? 🤔 )</p>
 <h1 id="spi-phase-looks-sus" class="section-header"><a href="#spi-phase-looks-sus">9 SPI Phase looks sus</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/spi-analyse10a.png" alt="BL602 SPI Polarity 0, Phase 1" /></p>
