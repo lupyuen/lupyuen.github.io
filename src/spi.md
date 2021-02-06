@@ -910,6 +910,10 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [`lupyuen.github.io/src/spi.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/spi.md)
 
+![Bus Pirate connected to BME280 Sensor over SPI](https://lupyuen.github.io/images/spi-buspirate.jpg)
+
+_Bus Pirate connected to BME280 Sensor over SPI_
+
 # Appendix: Test BME280 with Bus Pirate
 
 TODO
