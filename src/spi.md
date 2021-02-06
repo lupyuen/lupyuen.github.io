@@ -1198,16 +1198,20 @@ We added the function `spi_init` to initialise the SPI Port without using the Al
 
 `spi_init` was derived from the SPI HAL Functions `spi_arg_set_fdt2` and `vfs_spi_init_fullname` (which use the AliOS Device Tree).
 
-Note that there is only a single global instance of SPI Data. We support only one instance of SPI Device.
+Note that there is only a single global instance of SPI Data. 
+`spi_init` shall only be called once by our firmware.
 
 From [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L838-L886)
 
 ```c
-//  Global single instance of SPI Data. We support only one instance of SPI Device.
+//  Global single instance of SPI Data. 
+//  We support only one instance of SPI Device.
 static spi_priv_data_t g_spi_data;
 
-//  Init the SPI Device for DMA without calling AOS and Device Tree. Return non-zero in case of error. Supports only one instance of SPI Device.
-//  Based on vfs_spi_init_fullname.
+//  Init the SPI Device for DMA without calling AOS and 
+//  Device Tree. Return non-zero in case of error. 
+//  Supports only one instance of SPI Device.
+//  Based on spi_arg_set_fdt2 and vfs_spi_init_fullname.
 int spi_init(spi_dev_t *spi, uint8_t port,
     uint8_t mode, uint8_t polar_phase, uint32_t freq, uint8_t tx_dma_ch, uint8_t rx_dma_ch,
     uint8_t pin_clk, uint8_t pin_cs, uint8_t pin_mosi, uint8_t pin_miso)
