@@ -1776,9 +1776,9 @@ Finally we append both DMA Requests to the DMA Linked List...
 
 ## hal_spi_dma_trans: Execute SPI Transfer with DMA
 
-TODO
+`hal_spi_dma_trans` is called by `hal_spi_transfer` to execute an SPI Transfer with DMA, and wait for the SPI Transfer to complete.
 
-[`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L290-L358)
+From [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L290-L358)
 
 ```c
 static void hal_spi_dma_trans(spi_hw_t *arg, uint8_t *TxData, uint8_t *RxData, uint32_t Len)
@@ -1796,9 +1796,7 @@ static void hal_spi_dma_trans(spi_hw_t *arg, uint8_t *TxData, uint8_t *RxData, u
     }
 ```
 
-TODO
-
-For Transmit DMA: Copy data from RAM to SPI Port
+We define the DMA Request for SPI Transmit...
 
 ```c
     txllicfg.dir = DMA_TRNS_M2P;
@@ -1806,9 +1804,11 @@ For Transmit DMA: Copy data from RAM to SPI Port
     txllicfg.dstPeriph = DMA_REQ_SPI_TX;
 ```
 
-TODO
+-   `DMA_TRNS_M2P` means Memory to Peripheral Transfer
 
-For Receive DMA: Copy data from SPI Port to RAM
+-   `DMA_REQ_SPI_TX` says that the destination is the SPI Transmit Port
+
+We define the DMA Request for SPI Receive...
 
 ```c
     rxllicfg.dir = DMA_TRNS_P2M;
@@ -1816,17 +1816,17 @@ For Receive DMA: Copy data from SPI Port to RAM
     rxllicfg.dstPeriph = DMA_REQ_NONE;
 ```
 
-TODO
+-   `DMA_TRNS_P2M` means Peripheral to Memory Transfer
 
-Clear the Event Group
+-   `DMA_REQ_SPI_RX` says that the source is the SPI Receive Port
+
+We clear the Event Group (from FreeRTOS) so that we can be signalled by the DMA Interrupt Handlers (when the DMA Requests are done)...
 
 ```c
     xEventGroupClearBits(arg->spi_dma_event_group, EVT_GROUP_SPI_DMA_TR);
 ```
 
-TODO
-
-Disable DMA and DMA Interrupts
+We disable the DMA Channels and DMA Interrupts...
 
 ```c
     DMA_Channel_Disable(arg->tx_dma_ch);
@@ -1835,9 +1835,7 @@ Disable DMA and DMA Interrupts
     bl_dma_int_clear(arg->rx_dma_ch);
 ```
 
-TODO
-
-Enable SPI Controller or SPI Peripheral mode
+We enable the DMA Controller and enable SPI for Controller or Peripheral mode...
 
 ```c
     DMA_Enable();
@@ -1848,9 +1846,7 @@ Enable SPI Controller or SPI Peripheral mode
     }
 ```
 
-TODO
-
-Create DMA Linked List from SPI Transfers
+We call `lli_list_init` to create the DMA Linked List that will contain every SPI Transfer...
 
 ```c
     ret = lli_list_init(&ptxlli, &prxlli, TxData, RxData, Len);
@@ -1860,9 +1856,7 @@ Create DMA Linked List from SPI Transfers
     }
 ```
 
-TODO
-
-Assign the DMA Linked List to the DMA Controller
+We assign the DMA Linked List to the DMA Controller...
 
 ```c
     DMA_LLI_Init(arg->tx_dma_ch, &txllicfg);
@@ -1871,18 +1865,14 @@ Assign the DMA Linked List to the DMA Controller
     DMA_LLI_Update(arg->rx_dma_ch, (uint32_t) prxlli);
 ```
 
-TODO
-
-Enable DMA
+We enable the DMA Channels. The DMA Controller will transfer data according to the DMA Linked List...
 
 ```c
     DMA_Channel_Enable(arg->tx_dma_ch);
     DMA_Channel_Enable(arg->rx_dma_ch);
 ```
 
-TODO
-
-Wait until signalled by both DMA Interrupt Handlers
+We wait until the Event Group is signalled by both DMA Interrupt Handlers: Transmit Complete and Receive Complete...
 
 ```c
     ////  TODO: SPI Transfer may hang here, waiting for FreeRTOS Event Group 
@@ -1901,9 +1891,7 @@ Wait until signalled by both DMA Interrupt Handlers
     }
 ```
 
-TODO
-
-Free the malloc data
+Finally we free the heap memory for the DMA Linked List...
 
 ```c
     vPortFree(ptxlli);
