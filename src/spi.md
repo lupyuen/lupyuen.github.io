@@ -702,18 +702,15 @@ We configure Pin 14 for GPIO like so: [`sdk_app_spi/demo.c`](https://github.com/
 /// Use GPIO 14 as SPI Chip Select Pin
 #define SPI_CS_PIN 14
 
-/// Init the SPI Port
-static void test_spi_init(...) {
-    ...
-    //  Configure Chip Select pin as a GPIO Pin
-    GLB_GPIO_Type pins[1];
-    pins[0] = SPI_CS_PIN;
-    BL_Err_Type rc2 = GLB_GPIO_Func_Init(
-        GPIO_FUN_SWGPIO,  //  Configure as GPIO 
-        pins,             //  Pins to be configured (Pin 14)
-        sizeof(pins) / sizeof(pins[0])  //  Number of pins (1)
-    );
-    assert(rc2 == SUCCESS);
+//  Configure Chip Select pin as a GPIO Pin
+GLB_GPIO_Type pins[1];
+pins[0] = SPI_CS_PIN;
+BL_Err_Type rc2 = GLB_GPIO_Func_Init(
+    GPIO_FUN_SWGPIO,  //  Configure as GPIO 
+    pins,             //  Pins to be configured (Pin 14)
+    sizeof(pins) / sizeof(pins[0])  //  Number of pins (1)
+);
+assert(rc2 == SUCCESS);
 ```
 
 We call __`GLB_GPIO_Func_Init`__ to configure Pin 14 as a plain GPIO Pin: `GPIO_FUN_SWGPIO`.
@@ -723,9 +720,9 @@ We call __`GLB_GPIO_Func_Init`__ to configure Pin 14 as a plain GPIO Pin: `GPIO_
 Now that Pin 14 is configured as a GPIO Pin, let's configure it for __GPIO Output__ (instead of GPIO Input)...
 
 ```c
-    //  Configure Chip Select pin as a GPIO Output Pin (instead of GPIO Input)
-    rc = bl_gpio_enable_output(SPI_CS_PIN, 0, 0);
-    assert(rc == 0);
+//  Configure Chip Select pin as a GPIO Output Pin (instead of GPIO Input)
+rc = bl_gpio_enable_output(SPI_CS_PIN, 0, 0);
+assert(rc == 0);
 ```
 
 We're ready to toggle Pin 14 as a GPIO Output Pin!
@@ -735,15 +732,9 @@ We're ready to toggle Pin 14 as a GPIO Output Pin!
 To set our Chip Select Pin to Low (which activates BME280), we do this: [`sdk_app_spi/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L135-L155)
 
 ```c
-/// Start the SPI data transfer
-static void test_spi_transfer(...) {    
-    ...
-    //  Set Chip Select pin to Low, to activate BME280
-    int rc = bl_gpio_output_set(SPI_CS_PIN, 0);
-    assert(rc == 0);
-
-    //  (Omitted) Execute the two SPI Transfers with the DMA Controller
-    ...
+//  Set Chip Select pin to Low, to activate BME280
+int rc = bl_gpio_output_set(SPI_CS_PIN, 0);
+assert(rc == 0);
 ```
 
 We set Chip Select to Low just before executing the two SPI Transfers.
@@ -753,9 +744,9 @@ We set Chip Select to Low just before executing the two SPI Transfers.
 To set our Chip Select Pin to High (which deactivates BME280), we do this...
 
 ```c
-    //  Set Chip Select pin to High, to deactivate BME280
-    rc = bl_gpio_output_set(SPI_CS_PIN, 1);
-    assert(rc == 0);
+//  Set Chip Select pin to High, to deactivate BME280
+rc = bl_gpio_output_set(SPI_CS_PIN, 1);
+assert(rc == 0);
 ```
 
 We set Chip Select to High in two places...
