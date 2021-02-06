@@ -667,15 +667,21 @@ int rc = spi_init(
 #define SPI_CS_PIN 14
 </code></pre>
 <p><em>Why are we controlling the Chip Select Pin ourselves?</em></p>
-<p><img src="https://lupyuen.github.io/images/spi-analyse4a.png" alt="BL602 talks to BME280 over SPI, visualised by a Logic Analyser" /></p>
+<p><img src="https://lupyuen.github.io/images/spi-analyse4a.png" alt="Chip Select Pin from SPI Port connected to BME280" /></p>
 <ol>
 <li>
 <p><strong>We get to shape the Chip Select Signal ourselves</strong></p>
-<p>TODO</p>
+<p>When we use the Chip Select Pin from the SPI Port, the <strong>Chip Select Pin goes High</strong> between the two SPI Transfers. (See pic above)</p>
+<p>This is not good... We expect the <strong>Chip Select Pin to stay Low</strong> between the two SPI Transfers! <a href="https://lupyuen.github.io/images/spi-analyse9a.png">(See this)</a></p>
+<p>We'll control the Chip Select Pin ourselves to produce the desired signal shape.</p>
+<p>(How do we know that the Chip Select Pin should stay Low? From the Bus Pirate data captured by the Logic Analyser)</p>
 </li>
 <li>
-<p><strong>We want to control multiple SPI Peripherals</strong></p>
-<p>TODO</p>
+<p><strong>We want to control multiple SPI Peripherals with BL602</strong></p>
+<p>We may connect multiple SPI Peripherals to BL602 at the same time: BME280 Sensor, ST7789 Display Controller, SX1262 LoRa Transceiver, ...</p>
+<p>BL602's Serial Data In, Serial Data Out and Clock Pins may be shared by the SPI Peripherals... <strong>But each SPI Periperhal needs its own Chip Select Pin</strong>.</p>
+<p>Hence we'll control the Chip Select Pin ourselves to support multiple SPI Peripherals.</p>
+<p><a href="https://learn.sparkfun.com/tutorials/serial-peripheral-interface-spi/all#chip-select-cs">More about connecting multiple SPI Peripherals</a></p>
 </li>
 </ol>
 <p>Here's how we control the Chip Select Pin ourselves...</p>
@@ -817,6 +823,9 @@ WRITE: 0xD0
 READ: 0x60 
 /CS DISABLED
 </code></pre>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/spi-analyse1a.png" alt="Bus Pirate talks to BME280 over SPI, visualised by a Logic Analyser" /></p>
+<p><em>Bus Pirate talks to BME280 over SPI, visualised by a Logic Analyser</em></p>
 <h1 id="appendix-troubleshoot-bl602-spi-with-logic-analyser" class="section-header"><a href="#appendix-troubleshoot-bl602-spi-with-logic-analyser">14 Appendix: Troubleshoot BL602 SPI with Logic Analyser</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/spi-analyser.jpg" alt="PineCone BL602 RISC-V Board connected to LA2016 Logic Analyser and BME280 SPI Sensor" /></p>
