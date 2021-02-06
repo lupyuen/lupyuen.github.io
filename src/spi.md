@@ -883,25 +883,37 @@ __BL602 SPI is Good To Go!__
 
 # Port BL602 SPI HAL to other Operating Systems
 
-_BL602 SPI HAL runs on FreeRTOS today. Will the SPI HAL run on other Embedded Operating Systems?_
+_BL602 SPI HAL runs on FreeRTOS today. Will the SPI HAL run on other Embedded Operating Systems? Like Mynewt, RIOT, Zephyr, ..._
 
-TODO
+We may port the BL602 SPI HAL to other operating systems by __emulating these FreeRTOS functions for Event Groups__...
 
-We may port the SPI HAL to other operating systems by emulating a few FreeRTOS functions for Event Groups.
+1.  `xEventGroupCreate`: Create an Event Group 
 
-1.  `xEventGroupCreate`: Create the Event Group for DMA Interrupt Handler to notify Foreground Task
+    (Used by the DMA Interrupt Handlers to notify the Foreground Task)
 
 1.  `xEventGroupClearBits`: Clear the Event Group
 
+    (Called by the Foreground Task)
+
 1.  `xEventGroupWaitBits`: Wait for Event Group
+
+    (Called by the Foreground Task)
 
 1.  `xEventGroupSetBitsFromISR`: Notify the Event Group
 
-1.  `portYIELD_FROM_ISR`: TODO
+    (Called by the DMA Interrupt Handlers)
 
-1.  `pvPortMalloc`: Allocate DMA Linked List via FreeRTOS
+1.  `portYIELD_FROM_ISR`: Wakes up the Foreground Task that's waiting for the Event Group.
 
-1.  `vPortFree`: Free the allocated data
+    (Called by the DMA Interrupt Handlers)
+
+We also need to __emulate these FreeRTOS heap memory functions__, which are similar to `malloc` and `free`...
+
+1.  `pvPortMalloc`: Allocate heap memory
+
+    (For creating the DMA Linked List)
+
+1.  `vPortFree`: Free the allocated heap memory
 
 The usage of these functions is explained in the Appendix.
 
@@ -1198,8 +1210,9 @@ We added the function `spi_init` to initialise the SPI Port without using the Al
 
 `spi_init` was derived from the SPI HAL Functions `spi_arg_set_fdt2` and `vfs_spi_init_fullname` (which use the AliOS Device Tree).
 
-Note that there is only a single global instance of SPI Data. 
-`spi_init` shall only be called once by our firmware.
+Note that there is only a __single global instance of SPI Data.__ 
+
+__`spi_init` shall only be called once by our firmware.__
 
 From [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L838-L886)
 
