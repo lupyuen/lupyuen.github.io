@@ -656,17 +656,17 @@ Rx Error:      0x0
 </ol>
 <p>Congratulations! We have successfully read the BME280 Sensor from BL602 over SPI!</p>
 <h1 id="control-our-own-chip-select-pin" class="section-header"><a href="#control-our-own-chip-select-pin">7 Control our own Chip Select Pin</a></h1>
-<p>Remember earlier we said that we're not using Pin 2, the designated Chip Select Pin from the BL602 SPI Port...</p>
+<p>Earlier we said that we're not using Pin 2, the designated Chip Select Pin from the BL602 SPI Port...</p>
 <pre><code class="language-c">//  Configure the SPI Port
 int rc = spi_init(
     ...
     2,   //  Unused SPI Chip Select Pin
 </code></pre>
-<p>But instead, we're using Pin 14 as our own Chip Select Pin?</p>
+<p>But instead, we're using Pin 14 as our own Chip Select Pin...</p>
 <pre><code class="language-c">/// Use GPIO 14 as SPI Chip Select Pin
 #define SPI_CS_PIN 14
 </code></pre>
-<p>Two reasons why we're controlling the Chip Select Pin ourselves...</p>
+<p><em>Why are we controlling the Chip Select Pin ourselves?</em></p>
 <p><img src="https://lupyuen.github.io/images/spi-analyse4a.png" alt="BL602 talks to BME280 over SPI, visualised by a Logic Analyser" /></p>
 <ol>
 <li>
