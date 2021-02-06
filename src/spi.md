@@ -889,6 +889,14 @@ We may port the SPI HAL to other operating systems by emulating a few FreeRTOS f
 
 TODO
 
+ST7789 Display Controller
+
+There's plenty more code in the [__BL602 IoT SDK__](https://github.com/bouffalolab/bl_iot_sdk) to be deciphered and documented: __UART, ADC, DAC, WiFi, Bluetooth LE,__ ...
+
+[__Come Join Us... Make BL602 Better!__](https://wiki.pine64.org/wiki/Nutcracker)
+
+🙏 👍 😀
+
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
 -   [Check out my articles](https://lupyuen.github.io)
@@ -997,9 +1005,15 @@ _BL602 talks to BME280 over SPI, visualised by LA2016 Logic Analyser_
 
 TODO
 
+We have not changed any logic in the SPI HAL. We have added debug code. Also we added `spi_init` based on `spi_arg_set_fdt2` and `vfs_spi_init_fullname` for Device Tree.
+
+Let's walk through the SPI HAL code and understand how it performs SPI Transfers with DMA.
+
 ## Definitions
 
 TODO
+
+HARDCS doesn't work
 
 [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L57-L58)
 
@@ -1012,13 +1026,15 @@ TODO
 
 TODO
 
+Global single instance of SPI Data. We support only one instance of SPI Device.
+
 [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L838-L886)
 
 ```c
-//  Global single instance of SPI Data. We supports only one instance of SPI Device.
+//  Global single instance of SPI Data. We support only one instance of SPI Device.
 static spi_priv_data_t g_spi_data;
 
-//  TODO: Init the SPI Device for DMA without calling AOS and Device Tree. Return non-zero in case of error. Supports only one instance of SPI Device.
+//  Init the SPI Device for DMA without calling AOS and Device Tree. Return non-zero in case of error. Supports only one instance of SPI Device.
 //  Based on vfs_spi_init_fullname.
 int spi_init(spi_dev_t *spi, uint8_t port,
     uint8_t mode, uint8_t polar_phase, uint32_t freq, uint8_t tx_dma_ch, uint8_t rx_dma_ch,
@@ -1029,7 +1045,13 @@ int spi_init(spi_dev_t *spi, uint8_t port,
     //  Use the global single instance of SPI Data
     g_hal_buf = &g_spi_data;
     memset(g_hal_buf, 0, sizeof(spi_priv_data_t));
+```
 
+TODO
+
+Create the Event Group for DMA Interrupt Handler to notify Foreground Task
+
+```c
     //  Create the Event Group for DMA Interrupt Handler to notify Foreground Task
     g_hal_buf->hwspi[port].spi_dma_event_group = xEventGroupCreate();
     blog_info("port%d eventloop init = %08lx\r\n", port,
@@ -1037,7 +1059,13 @@ int spi_init(spi_dev_t *spi, uint8_t port,
     if (NULL == g_hal_buf->hwspi[port].spi_dma_event_group) {
         return -ENOMEM;
     }
+```
 
+TODO
+
+Init the SPI Device
+
+```c
     //  Init the SPI Device
     memset(spi, 0, sizeof(spi_dev_t));
     spi->port = port;
@@ -1058,7 +1086,13 @@ int spi_init(spi_dev_t *spi, uint8_t port,
     spi->priv = g_hal_buf;
     blog_info("[HAL] [SPI] Init :\r\nport=%d, mode=%d, polar_phase = %d, freq=%ld, tx_dma_ch=%d, rx_dma_ch=%d, pin_clk=%d, pin_cs=%d, pin_mosi=%d, pin_miso=%d\r\n",
         port, mode, polar_phase, freq, tx_dma_ch, rx_dma_ch, pin_clk, pin_cs, pin_mosi, pin_miso);
+```
 
+TODO
+
+Init the SPI speed, pins and DMA
+
+```c
     //  Init the SPI speed, pins and DMA
     int rc = hal_spi_set_rwspeed(spi, freq);
     assert(rc == 0);
@@ -1087,7 +1121,13 @@ int hal_spi_set_rwspeed(spi_dev_t *spi_dev, uint32_t speed)
         blog_info("speed not change.\r\n");
         return 0;
     }
+```
 
+TODO
+
+Compute the Clock Divider for 4 MHz
+
+```c
     for (i = 0; i < 256; i++) {
         if (speed == (40000000/(i+1))) {
             real_speed = speed;
@@ -1099,6 +1139,11 @@ int hal_spi_set_rwspeed(spi_dev_t *spi_dev, uint32_t speed)
         }
     }
 
+TODO
+
+Validate the Clock Divider: 200 kHz to 4 MHz
+
+```c
     if (real_flag != 1) {
         if (i == 0) {
             blog_error("The max speed is 40000000 Hz, please set it smaller.");
@@ -1116,7 +1161,13 @@ int hal_spi_set_rwspeed(spi_dev_t *spi_dev, uint32_t speed)
             }
         }
     }
+```
 
+TODO
+
+Set the Clock Divider
+
+```c
     data = (spi_priv_data_t *)spi_dev->priv;
     data->hwspi[spi_dev->port].freq = real_speed;
     spi_dev->config.freq = real_speed;
@@ -1129,6 +1180,8 @@ int hal_spi_set_rwspeed(spi_dev_t *spi_dev, uint32_t speed)
 ## hal_spi_init: Init SPI Pins and DMA
 
 TODO
+
+Init SPI Pins and DMA
 
 [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L360-L384)
 
@@ -1164,6 +1217,8 @@ int32_t hal_spi_init(spi_dev_t *spi)
 
 TODO
 
+Assign pins to SPI
+
 [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L98-L124)
 
 ```c
@@ -1183,7 +1238,13 @@ static void hal_gpio_init(spi_hw_t *arg)
     gpiopins[3] = arg->pin_miso;
     
     GLB_GPIO_Func_Init(GPIO_FUN_SPI,gpiopins,sizeof(gpiopins)/sizeof(gpiopins[0]));
+```
 
+TODO
+
+Configure SPI Controller / Peripheral
+
+```c
     if (arg->mode == 0) {
         blog_info("hal_gpio_init: SPI controller mode\r\n");
         GLB_Set_SPI_0_ACT_MOD_Sel(GLB_SPI_PAD_ACT_AS_MASTER);
@@ -1213,7 +1274,11 @@ static void hal_spi_dma_init(spi_hw_t *arg)
     uint8_t clk_div;
     
     spi_id = hw_arg->ssp_id;
+```
 
+Set the SPI Timing parameters
+
+```c
     /* clock */
     /*1  --->  40 Mhz
      *2  --->  20 Mhz
@@ -1229,14 +1294,26 @@ static void hal_spi_dma_init(spi_hw_t *arg)
     clockcfg.dataPhase1Len = clk_div;
     clockcfg.intervalLen = clk_div;
     SPI_ClockConfig(spi_id, &clockcfg);
+```
 
+TODO
+
+Set SPI Config
+
+```c
     /* spi config */
     spicfg.deglitchEnable = DISABLE;
     spicfg.continuousEnable = ENABLE;
     spicfg.byteSequence = SPI_BYTE_INVERSE_BYTE0_FIRST,
     spicfg.bitSequence = SPI_BIT_INVERSE_MSB_FIRST,
     spicfg.frameSize = SPI_FRAME_SIZE_8;
+```
 
+TODO
+
+Set SPI Polarity and Phase
+
+```c
     if (hw_arg->polar_phase == 0) {
         spicfg.clkPhaseInv = SPI_CLK_PHASE_INVERSE_0;
         spicfg.clkPolarity = SPI_CLK_POLARITY_LOW;
@@ -1252,6 +1329,13 @@ static void hal_spi_dma_init(spi_hw_t *arg)
     } else {
         blog_error("node support polar_phase \r\n");
     }
+```
+
+TODO
+
+Init SPI Port and disable it. Disable all interrupts.
+
+```c
     SPI_Init(0,&spicfg);  //// TODO: In future when there are multiple SPI ports, this should be SPI_Init(spi_id, &spicfg)
 
     if (hw_arg->mode == 0)
@@ -1262,24 +1346,49 @@ static void hal_spi_dma_init(spi_hw_t *arg)
     }
 
     SPI_IntMask(spi_id,SPI_INT_ALL,MASK);
+```
 
+TODO
+
+Configure FIFO Threshold
+
+```c
     /* fifo */
     fifocfg.txFifoThreshold = 1;
     fifocfg.rxFifoThreshold = 1;
     fifocfg.txFifoDmaEnable = ENABLE;
     fifocfg.rxFifoDmaEnable = ENABLE;
     SPI_FifoConfig(spi_id,&fifocfg);
+```
 
+TODO
+
+Configure Transmit DMA Interrupts and enable them
+
+```c
     DMA_Disable();
     DMA_IntMask(hw_arg->tx_dma_ch, DMA_INT_ALL, MASK);
     DMA_IntMask(hw_arg->tx_dma_ch, DMA_INT_TCOMPLETED, UNMASK);
     DMA_IntMask(hw_arg->tx_dma_ch, DMA_INT_ERR, UNMASK);
+```
 
+TODO
+
+Configure Receive DMA Interrupts and enable them
+
+```c
     DMA_IntMask(hw_arg->rx_dma_ch, DMA_INT_ALL, MASK);
     DMA_IntMask(hw_arg->rx_dma_ch, DMA_INT_TCOMPLETED, UNMASK); 
     DMA_IntMask(hw_arg->rx_dma_ch, DMA_INT_ERR, UNMASK);
 
     bl_irq_enable(DMA_ALL_IRQn);
+```
+
+TODO
+
+Register the DMA Interrupt Handlers
+
+```c
     bl_dma_irq_register(hw_arg->tx_dma_ch, bl_spi0_dma_int_handler_tx, NULL, NULL);
     bl_dma_irq_register(hw_arg->rx_dma_ch, bl_spi0_dma_int_handler_rx, NULL, NULL);
 
@@ -1316,11 +1425,26 @@ int hal_spi_transfer(spi_dev_t *spi_dev, void *xfer, uint8_t size)
 #if (HAL_SPI_DEBUG)
     blog_info("hal_spi_transfer = %d\r\n", size);
 #endif
+```
 
+TODO
+
+Set CS to Low to enable the SPI Peripheral
+
+HARDCS doesn't work
+
+```c
 #if (0 == HAL_SPI_HARDCS)
     blog_info("Set CS pin %d to low\r\n", priv_data->hwspi[spi_dev->port].pin_cs);
     bl_gpio_output_set(priv_data->hwspi[spi_dev->port].pin_cs, 0);
 #endif
+```
+
+TODO
+
+Execute and wait for each SPI DMA Transfer to complete
+
+```c
     for (i = 0; i < size; i++) {
 #if (HAL_SPI_DEBUG)
         blog_info("transfer xfer[%d].len = %ld\r\n", i, s_xfer[i].len);
@@ -1328,10 +1452,159 @@ int hal_spi_transfer(spi_dev_t *spi_dev, void *xfer, uint8_t size)
         hal_spi_dma_trans(&priv_data->hwspi[spi_dev->port],
                 (uint8_t *)s_xfer[i].tx_buf, (uint8_t *)s_xfer[i].rx_buf, s_xfer[i].len);
     }
+```
+
+TODO
+
+Set CS to High to disable the SPI Peripheral
+
+HARDCS doesn't work
+
+```c
 #if (0 == HAL_SPI_HARDCS)
     bl_gpio_output_set(priv_data->hwspi[spi_dev->port].pin_cs, 1);
     blog_info("Set CS pin %d to high\r\n", priv_data->hwspi[spi_dev->port].pin_cs);
 #endif
+
+    return 0;
+}
+```
+
+
+## lli_list_init: Init DMA Linked List
+
+TODO
+
+Create DMA Linked List
+
+[`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L126-L205)
+
+```c
+static int lli_list_init(DMA_LLI_Ctrl_Type **pptxlli, DMA_LLI_Ctrl_Type **pprxlli, uint8_t *ptx_data, uint8_t *prx_data, uint32_t length)
+{
+    uint32_t i = 0;
+    uint32_t count;
+    uint32_t remainder;
+    struct DMA_Control_Reg dmactrl;
+
+
+    count = length / LLI_BUFF_SIZE;
+    remainder = length % LLI_BUFF_SIZE;
+
+    if (remainder != 0) {
+        count = count + 1;
+    }
+```
+
+TODO
+
+Define the DMA parameters
+
+```c
+    dmactrl.SBSize = DMA_BURST_SIZE_1;
+    dmactrl.DBSize = DMA_BURST_SIZE_1;
+    dmactrl.SWidth = DMA_TRNS_WIDTH_8BITS;
+    dmactrl.DWidth = DMA_TRNS_WIDTH_8BITS;
+    dmactrl.Prot = 0;
+    dmactrl.SLargerD = 0;
+```
+
+TODO
+
+pvPortMalloc to allocate data via FreeRTOS
+
+```c
+    *pptxlli = pvPortMalloc(sizeof(DMA_LLI_Ctrl_Type) * count);
+    if (*pptxlli == NULL) {
+        blog_error("malloc lli failed. \r\n");
+
+        return -1;
+    }
+
+    *pprxlli = pvPortMalloc(sizeof(DMA_LLI_Ctrl_Type) * count);
+    if (*pprxlli == NULL) {
+        blog_error("malloc lli failed.");
+        vPortFree(*pptxlli);
+
+        return -1;
+    }
+```
+
+TODO
+
+For each SPI Transfer, create Transmit DMA and Receive DMA Requests
+
+```c
+    for (i = 0; i < count; i++) {
+```
+
+TODO
+
+Compute the DMA Transmit / Receive Size
+
+```c
+        if (remainder == 0) {
+            dmactrl.TransferSize = LLI_BUFF_SIZE;
+        } else {
+            if (i == count - 1) {
+                dmactrl.TransferSize = remainder;
+            } else {
+                dmactrl.TransferSize = LLI_BUFF_SIZE;
+            }
+        }
+```
+
+TODO
+
+What is this ???
+
+```
+        dmactrl.SI = DMA_MINC_ENABLE;
+        dmactrl.DI = DMA_MINC_DISABLE;
+            
+        if (i == count - 1) {
+            dmactrl.I = 1;
+        } else {
+            dmactrl.I = 0;
+        }
+```
+TODO
+
+Transmit DMA: Copy data from RAM to SPI Port
+
+```c
+        (*pptxlli)[i].srcDmaAddr = (uint32_t)(ptx_data + i * LLI_BUFF_SIZE);
+        (*pptxlli)[i].destDmaAddr = (uint32_t)(SPI_BASE+SPI_FIFO_WDATA_OFFSET);
+        (*pptxlli)[i].dmaCtrl = dmactrl;
+        blog_info("Tx DMA src=0x%x, dest=0x%x, size=%d, si=%d, di=%d, i=%d\r\n", (unsigned) (*pptxlli)[i].srcDmaAddr, (unsigned) (*pptxlli)[i].destDmaAddr, dmactrl.TransferSize, dmactrl.SI, dmactrl.DI, dmactrl.I);
+```
+
+TODO
+
+Receive DMA: Copy data from SPI Port to RAM
+
+```c
+        dmactrl.SI = DMA_MINC_DISABLE;
+        dmactrl.DI = DMA_MINC_ENABLE;
+        (*pprxlli)[i].srcDmaAddr = (uint32_t)(SPI_BASE+SPI_FIFO_RDATA_OFFSET);
+        (*pprxlli)[i].destDmaAddr = (uint32_t)(prx_data + i * LLI_BUFF_SIZE);
+        (*pprxlli)[i].dmaCtrl = dmactrl;
+        blog_info("Rx DMA src=0x%x, dest=0x%x, size=%d, si=%d, di=%d, i=%d\r\n", (unsigned) (*pprxlli)[i].srcDmaAddr, (unsigned) (*pprxlli)[i].destDmaAddr, dmactrl.TransferSize, dmactrl.SI, dmactrl.DI, dmactrl.I);
+```
+
+TODO
+
+Append to DMA Linked List
+
+```c
+        if (i != 0) {
+            (*pptxlli)[i-1].nextLLI = (uint32_t)&(*pptxlli)[i];
+            (*pprxlli)[i-1].nextLLI = (uint32_t)&(*pprxlli)[i];
+        }
+
+        (*pptxlli)[i].nextLLI = 0;
+        (*pprxlli)[i].nextLLI = 0;
+    }
 
     return 0;
 }
@@ -1357,44 +1630,98 @@ static void hal_spi_dma_trans(spi_hw_t *arg, uint8_t *TxData, uint8_t *RxData, u
         blog_error("arg err.\r\n");
         return;
     }
+```
 
+TODO
+
+For Transmit DMA: Copy data from RAM to SPI Port
+
+```c
     txllicfg.dir = DMA_TRNS_M2P;
     txllicfg.srcPeriph = DMA_REQ_NONE; 
     txllicfg.dstPeriph = DMA_REQ_SPI_TX;
+```
 
+TODO
+
+For Receive DMA: Copy data from SPI to RAM Port
+
+```c
     rxllicfg.dir = DMA_TRNS_P2M;
     rxllicfg.srcPeriph = DMA_REQ_SPI_RX;
     rxllicfg.dstPeriph = DMA_REQ_NONE;
+```
 
+TODO
 
+Clear the Event Group
+
+```c
     xEventGroupClearBits(arg->spi_dma_event_group, EVT_GROUP_SPI_DMA_TR);
+```
 
+TODO
+
+Disable DMA and DMA Interrupts
+
+```c
     DMA_Channel_Disable(arg->tx_dma_ch);
     DMA_Channel_Disable(arg->rx_dma_ch);
     bl_dma_int_clear(arg->tx_dma_ch);
     bl_dma_int_clear(arg->rx_dma_ch);
-    DMA_Enable();
+```
 
+TODO
+
+Enable SPI Controller or SPI Peripheral mode
+
+```c
+    DMA_Enable();
     if (arg->mode == 0) {
         SPI_Enable(arg->ssp_id, SPI_WORK_MODE_MASTER);
     } else {
         SPI_Enable(arg->ssp_id, SPI_WORK_MODE_SLAVE);
     }
+```
 
+TODO
+
+Create DMA Linked List from SPI Transfers
+
+```c
     ret = lli_list_init(&ptxlli, &prxlli, TxData, RxData, Len);
     if (ret < 0) {
         blog_error("init lli failed. \r\n");
 
         return;
     }
+```
 
+TODO
+
+Assign the DMA Linked List to the DMA Controller
+
+```c
     DMA_LLI_Init(arg->tx_dma_ch, &txllicfg);
     DMA_LLI_Init(arg->rx_dma_ch, &rxllicfg);
     DMA_LLI_Update(arg->tx_dma_ch,(uint32_t)ptxlli);
     DMA_LLI_Update(arg->rx_dma_ch,(uint32_t)prxlli);
+```
+
+TODO
+
+Enable DMA
+
+```c
     DMA_Channel_Enable(arg->tx_dma_ch);
     DMA_Channel_Enable(arg->rx_dma_ch);
+```
 
+TODO
+
+Wait until signalled by both DMA Interrupt Handlers
+
+```c
     ////  TODO: SPI Transfer may hang here, waiting for FreeRTOS Event Group 
     ////  if it isn't notified by DMA Interrupt Handler.  To troubleshoot,
     ////  comment out ALL lines below until end of function.
@@ -1409,104 +1736,23 @@ static void hal_spi_dma_trans(spi_hw_t *arg, uint8_t *TxData, uint8_t *RxData, u
     if ((uxBits & EVT_GROUP_SPI_DMA_TR) == EVT_GROUP_SPI_DMA_TR) {
         blog_info("recv all event group.\r\n");
     }
-
-    vPortFree(ptxlli);
-    vPortFree(prxlli);
-}
 ```
-
-## lli_list_init: Init DMA Linked List
 
 TODO
 
-[`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L126-L205)
+Free the malloc data
 
 ```c
-static int lli_list_init(DMA_LLI_Ctrl_Type **pptxlli, DMA_LLI_Ctrl_Type **pprxlli, uint8_t *ptx_data, uint8_t *prx_data, uint32_t length)
-{
-    uint32_t i = 0;
-    uint32_t count;
-    uint32_t remainder;
-    struct DMA_Control_Reg dmactrl;
-
-
-    count = length / LLI_BUFF_SIZE;
-    remainder = length % LLI_BUFF_SIZE;
-
-    if (remainder != 0) {
-        count = count + 1;
-    }
-
-    dmactrl.SBSize = DMA_BURST_SIZE_1;
-    dmactrl.DBSize = DMA_BURST_SIZE_1;
-    dmactrl.SWidth = DMA_TRNS_WIDTH_8BITS;
-    dmactrl.DWidth = DMA_TRNS_WIDTH_8BITS;
-    dmactrl.Prot = 0;
-    dmactrl.SLargerD = 0;
-
-    *pptxlli = pvPortMalloc(sizeof(DMA_LLI_Ctrl_Type) * count);
-    if (*pptxlli == NULL) {
-        blog_error("malloc lli failed. \r\n");
-
-        return -1;
-    }
-
-    *pprxlli = pvPortMalloc(sizeof(DMA_LLI_Ctrl_Type) * count);
-    if (*pprxlli == NULL) {
-        blog_error("malloc lli failed.");
-        vPortFree(*pptxlli);
-
-        return -1;
-    }
-
-    for (i = 0; i < count; i++) {
-        if (remainder == 0) {
-            dmactrl.TransferSize = LLI_BUFF_SIZE;
-        } else {
-            if (i == count - 1) {
-                dmactrl.TransferSize = remainder;
-            } else {
-                dmactrl.TransferSize = LLI_BUFF_SIZE;
-            }
-        }
-
-        dmactrl.SI = DMA_MINC_ENABLE;
-        dmactrl.DI = DMA_MINC_DISABLE;
-            
-        if (i == count - 1) {
-            dmactrl.I = 1;
-        } else {
-            dmactrl.I = 0;
-        }
-
-        (*pptxlli)[i].srcDmaAddr = (uint32_t)(ptx_data + i * LLI_BUFF_SIZE);
-        (*pptxlli)[i].destDmaAddr = (uint32_t)(SPI_BASE+SPI_FIFO_WDATA_OFFSET);
-        (*pptxlli)[i].dmaCtrl = dmactrl;
-        blog_info("Tx DMA src=0x%x, dest=0x%x, size=%d, si=%d, di=%d, i=%d\r\n", (unsigned) (*pptxlli)[i].srcDmaAddr, (unsigned) (*pptxlli)[i].destDmaAddr, dmactrl.TransferSize, dmactrl.SI, dmactrl.DI, dmactrl.I);
-
-        dmactrl.SI = DMA_MINC_DISABLE;
-        dmactrl.DI = DMA_MINC_ENABLE;
-        (*pprxlli)[i].srcDmaAddr = (uint32_t)(SPI_BASE+SPI_FIFO_RDATA_OFFSET);
-        (*pprxlli)[i].destDmaAddr = (uint32_t)(prx_data + i * LLI_BUFF_SIZE);
-        (*pprxlli)[i].dmaCtrl = dmactrl;
-        blog_info("Rx DMA src=0x%x, dest=0x%x, size=%d, si=%d, di=%d, i=%d\r\n", (unsigned) (*pprxlli)[i].srcDmaAddr, (unsigned) (*pprxlli)[i].destDmaAddr, dmactrl.TransferSize, dmactrl.SI, dmactrl.DI, dmactrl.I);
-
-        if (i != 0) {
-            (*pptxlli)[i-1].nextLLI = (uint32_t)&(*pptxlli)[i];
-            (*pprxlli)[i-1].nextLLI = (uint32_t)&(*pprxlli)[i];
-        }
-
-        (*pptxlli)[i].nextLLI = 0;
-        (*pprxlli)[i].nextLLI = 0;
-    }
-
-    return 0;
+    vPortFree(ptxlli);
+    vPortFree(prxlli);
 }
 ```
 
 ## bl_spi0_dma_int_handler_tx: Transmit DMA Interrupt Handler
 
 TODO
+
+Define Interrupt Counters and error status
 
 [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L769-L808)
 
@@ -1522,14 +1768,26 @@ uint32_t g_tx_error;   //  Transmit Error Code (from 0x4000c00c)
 uint32_t g_rx_status;  //  Receive Status (from 0x4000c000)
 uint32_t g_rx_tc;      //  Receive Terminal Count (0x4000c004)
 uint32_t g_rx_error;   //  Receive Error Code (0x4000c00c)
+```
 
+TODO
+
+Count the interrupts
+
+```c
 void bl_spi0_dma_int_handler_tx(void)
 {
     g_tx_counter++;  //  Increment the Transmit Interrupt Counter
     g_tx_status = *(uint32_t *) 0x4000c000;  //  Set the Transmit Status
     g_tx_tc     = *(uint32_t *) 0x4000c004;  //  Set the Transmit Terminal Count
     if (g_tx_error == 0) { g_tx_error = *(uint32_t *) 0x4000c00c; }  //  Set the Transmit Error Code
+```
 
+TODO
+
+Notify the Event Group
+
+```c
     BaseType_t xResult = pdFAIL;
     BaseType_t xHigherPriorityTaskWoken = pdFALSE;
 
@@ -1557,6 +1815,8 @@ void bl_spi0_dma_int_handler_tx(void)
 
 TODO
 
+Count the interrupts
+
 [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L810-L836)
 
 ```c
@@ -1566,7 +1826,13 @@ void bl_spi0_dma_int_handler_rx(void)
     g_rx_status = *(uint32_t *) 0x4000c000;  //  Set the Receive Status
     g_rx_tc     = *(uint32_t *) 0x4000c004;  //  Set the Receive Terminal Count
     if (g_rx_error == 0) { g_rx_error = *(uint32_t *) 0x4000c00c; }  //  Set the Receive Error Code
+```
 
+TODO
+
+Notify the Event Group
+
+```c
     BaseType_t xResult = pdFAIL;
     BaseType_t xHigherPriorityTaskWoken = pdFALSE;
 
