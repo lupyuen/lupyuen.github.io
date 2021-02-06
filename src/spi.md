@@ -856,31 +856,45 @@ __Be careful when configuring the BL602 SPI Phase... It doesn't quite work the w
 
 (Yep I painstakingly verified... Setting BL602 to SPI Polarity 0, Phase 0 doesn't work with BME280)
 
+# Unsolved Mysteries
+
+To summarise the spooky mysteries we have observed on BL602 SPI...
+
+1.  The SPI Pins for __Serial Data In__ and __Serial Data Out__ seem to be flipped, when observed with a Logic Analyser. 
+
+    This contradicts the BL602 Reference Manual.
+
+    To fix this, we __flip the Serial Data In and Serial Data Out Pins__.
+
+1.  To talk to BME280, we must configure BL602 for __SPI Polarity 0 Phase 1__.
+
+    Though the Logic Analyser shows that BL602 behaves as SPI Polarity 0 Phase 0 (not Phase 1).
+
+    __Be careful when configuring BL602's SPI Phase.__
+
+1.  Using __Pin 0 for SPI__ will switch on the WiFi LED on PineCone.
+
+    (This is undocumented behaviour... What else does Pin 0 do?)
+
+    We'll switch to __Pin 4 for SPI Serial Data Out.__
+
+1.  (This is neither spooky nor mysterious... But we fixed it anyway)
+
+    BL602's __SPI Chip Select Pin__ doesn't work with BME280's SPI protocol.
+
+    And it doesn't support multiple SPI Peripherals.
+
+    We'll __control the SPI Chip Select Pin__ ourselves with GPIO.
+
+We have implemented workarounds for these issues.
+
+__BL602 SPI is good to go!__
+
 # Port BL602 SPI HAL to other Operating Systems
 
 TODO
 
 We may port the SPI HAL to other operating systems by emulating a few FreeRTOS functions for Event Groups.
-
-# Unsolved Mysteries
-
-TODO
-
-1.  The pins for __Serial Data In__ and __Serial Data Out__ seem to be flipped, when observed with a Logic Analyser. 
-
-    This contradicts the BL602 Reference Manual.
-
-1.  To talk to BME280, we must configure BL602 for __SPI Polarity 0, Phase 1__.
-
-    Though the Logic Analyser shows that it looks like SPI Phase 0.
-
-1.  BL602's __SPI Chip Select Pin__ doesn't work with BME280's SPI protocol.
-
-    We'll control the SPI Chip Select Pin ourselves.
-
-1.  Setting __Serial Data Out to Pin 0__ will switch on the WiFi LED.
-
-    We'll switch to a different pin for Serial Data Out.
 
 # What's Next
 
