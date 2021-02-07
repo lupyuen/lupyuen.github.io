@@ -105,7 +105,7 @@
 <li><a href="#hal_spi_dma_trans-execute-spi-transfer-with-dma">15.9 hal_spi_dma_trans: Execute SPI Transfer with DMA</a><ul></ul></li>
 <li><a href="#dma-interrupt-counters">15.10 DMA Interrupt Counters</a><ul></ul></li>
 <li><a href="#bl_spi0_dma_int_handler_tx-transmit-dma-interrupt-handler">15.11 bl_spi0_dma_int_handler_tx: Transmit DMA Interrupt Handler</a><ul></ul></li>
-<li><a href="#bl_spi0_dma_int_handler_rx-receive-dma-interrupt-handler">15.12 bl_spi0_dma_int_handler_rx: Receive DMA Interrupt Handler</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>10 Feb 2021</em></p>
+<li><a href="#bl_spi0_dma_int_handler_rx-receive-dma-interrupt-handler">15.12 bl_spi0_dma_int_handler_rx: Receive DMA Interrupt Handler</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>7 Feb 2021</em></p>
 <p><a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone</strong></a> and <a href="https://wiki.pine64.org/wiki/Nutcracker#Pinenut-01S_Module_information_and_schematics"><strong>Pinenut BL602</strong></a> work great with I2C Sensors. <a href="https://lupyuen.github.io/articles/i2c">(See this)</a></p>
 <p>But what if we're connecting BL602 to <strong>High Bandwidth</strong> peripherals... Like the ST7789 Display Controller and the SX1262 LoRa Transceiver?</p>
 <p><strong>We'll need SPI on BL602!</strong></p>
@@ -366,7 +366,7 @@ static void test_spi_init(char *buf, int len, int argc, char **argv) {
 </code></pre>
 <p>(More about Chip Select in a while)</p>
 <p>Our SPI Port is initialised, all set for transferring data!</p>
-<p>(BL602 SPI HAL Function <code>spi_init</code> shall be explained in the Appendix)</p>
+<p><a href="https://lupyuen.github.io/articles/spi#spi_init-init-spi-port">(BL602 SPI HAL Function <code>spi_init</code> shall be explained in the Appendix)</a></p>
 <h1 id="transfer-spi-data" class="section-header"><a href="#transfer-spi-data">5 Transfer SPI Data</a></h1>
 <p>SPI Controllers (like BL602) and Peripherals (like BME280) can transmit and receive SPI Data simultaneously... Because SPI allows <strong>Full Duplex</strong> communication.</p>
 <p>When the BL602 SPI HAL executes an <strong>SPI Transfer</strong> request, it's <strong>transmitting and receiving data simultaneously</strong>.</p>
@@ -468,7 +468,7 @@ static void test_spi_transfer(char *buf, int len, int argc, char **argv) {
 </code></pre>
 <p><strong>Mission Accomplished!</strong> The Receive Buffer for the Second SPI Transfer <strong><code>rx_buf2</code></strong> will contain the data received from BME280: <strong><code>0x60</code></strong>.</p>
 <p>We'll witness this shortly.</p>
-<p>(BL602 SPI HAL Function <code>hal_spi_transfer</code> shall be explained in the Appendix)</p>
+<p><a href="https://lupyuen.github.io/articles/spi#hal_spi_transfer-execute-spi-transfer">(BL602 SPI HAL Function <code>hal_spi_transfer</code> shall be explained in the Appendix)</a></p>
 <h2 id="spi-with-direct-memory-access" class="section-header"><a href="#spi-with-direct-memory-access">5.6 SPI with Direct Memory Access</a></h2>
 <p><em>What's Direct Memory Access? How does it help SPI?</em></p>
 <p><strong>Direct Memory Access (DMA)</strong> is a BL602 hardware feature that will automagically copy data from RAM to the SPI Port (and back)... Without any intervention from our firmware code!</p>
@@ -518,7 +518,7 @@ static void test_spi_transfer(char *buf, int len, int argc, char **argv) {
 </li>
 </ol>
 <p>All SPI Transfers done with the BL602 SPI HAL will use super-efficient DMA.</p>
-<p>(See <code>hal_spi_transfer</code> in the Appendix for the BL602 DMA implementation)</p>
+<p><a href="https://lupyuen.github.io/articles/spi#hal_spi_transfer-execute-spi-transfer">(See <code>hal_spi_transfer</code> in the Appendix for the BL602 DMA implementation)</a></p>
 <p><img src="https://lupyuen.github.io/images/spi-firmware3.jpg" alt="SPI Demo Firmware for BL602" /></p>
 <p><em>SPI Demo Firmware for BL602</em></p>
 <h1 id="build-and-run-the-firmware" class="section-header"><a href="#build-and-run-the-firmware">6 Build and Run the Firmware</a></h1>
@@ -870,7 +870,7 @@ int rc = spi_init(
 <p><code>vPortFree</code>: Free the allocated heap memory</p>
 </li>
 </ol>
-<p>The usage of these functions is explained in the Appendix.</p>
+<p><a href="https://lupyuen.github.io/articles/spi#appendix-inside-bl602-spi-hal">(The usage of these functions is explained in the Appendix)</a></p>
 <p><img src="https://lupyuen.github.io/images/spi-st7789.jpg" alt="ST7789 Display Controller with SPI Interface" /></p>
 <p><em>ST7789 Display Controller with SPI Interface</em></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">12 What's Next</a></h1>
