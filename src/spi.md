@@ -1445,9 +1445,7 @@ static void hal_gpio_init(spi_hw_t *arg)
     blog_info("hal_gpio_init: cs:%d, clk:%d, mosi:%d, miso: %d\r\n", arg->pin_cs, arg->pin_clk, arg->pin_mosi, arg->pin_miso);
 ```
 
-We call `GLB_GPIO_Func_Init` to assign the four SPI Pins to the SPI Port.
-
-The sequence of the SPI Pins doesn't matter, because each pin has a fixed SPI Function (like Serial Data In, Serial Data Out) within the SPI Port...
+We call `GLB_GPIO_Func_Init` to assign the four SPI Pins to the SPI Port...
 
 ```c
     gpiopins[0] = arg->pin_cs;
@@ -1456,6 +1454,8 @@ The sequence of the SPI Pins doesn't matter, because each pin has a fixed SPI Fu
     gpiopins[3] = arg->pin_miso;    
     GLB_GPIO_Func_Init(GPIO_FUN_SPI,gpiopins,sizeof(gpiopins)/sizeof(gpiopins[0]));
 ```
+
+The sequence of the SPI Pins doesn't matter, because each pin has a fixed SPI Function (like Serial Data In, Serial Data Out) within the SPI Port.
 
 (`GLB_GPIO_Func_Init` comes from the __BL602 Standard Driver__: [`bl602_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c))
 
