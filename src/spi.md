@@ -631,7 +631,7 @@ Let's enter some SPI commands to read our BME280 Sensor!
     # spi_result
     ```
 
-    `spi_result` is defined here: [`sdk_app_spi/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L158-L182)
+    (`spi_result` is defined here in [`sdk_app_spi/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L158-L182))
 
 1.  We should see this...
 
@@ -694,7 +694,7 @@ _Why are we controlling the Chip Select Pin ourselves?_
 
     (It's like shaping our own eyebrows... We have complete control!)
 
-    (How do we know that the Chip Select Pin should stay Low? From the Bus Pirate data captured by the Logic Analyser)
+    (How do we know that the Chip Select Pin should stay Low? From the Bus Pirate data captured by the Logic Analyser. [See this](https://lupyuen.github.io/images/spi-analyse1a.png))
 
 1.  __We want to control multiple SPI Peripherals with BL602__
 
