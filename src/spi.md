@@ -1228,7 +1228,7 @@ From [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/comp
 
 We added the function `spi_init` to initialise the SPI Port without using the AliOS Device Tree. This function is called by our demo firmware.
 
-`spi_init` was derived from the SPI HAL Functions `spi_arg_set_fdt2` and `vfs_spi_init_fullname` (which use the AliOS Device Tree).
+`spi_init` was derived from the SPI HAL Functions [`spi_arg_set_fdt2`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L597-L760) and [`vfs_spi_init_fullname`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L524-L591) (which use the AliOS Device Tree).
 
 Note that there is only a __single global instance of SPI Data.__ 
 
@@ -1295,7 +1295,7 @@ We set the internal fields of the SPI device...
         port, mode, polar_phase, freq, tx_dma_ch, rx_dma_ch, pin_clk, pin_cs, pin_mosi, pin_miso);
 ```
 
-Finally we call `hal_spi_set_rwspeed` to set the SPI Frequency, assign the SPI Pins and initialise the DMA Controller...
+Finally we call [`hal_spi_set_rwspeed`](https://lupyuen.github.io/articles/spi#hal_spi_set_rwspeed-set-spi-frequency) to set the SPI Frequency, assign the SPI Pins and initialise the DMA Controller...
 
 ```c
     //  Init the SPI speed, pins and DMA
@@ -1307,7 +1307,7 @@ Finally we call `hal_spi_set_rwspeed` to set the SPI Frequency, assign the SPI P
 
 ## hal_spi_set_rwspeed: Set SPI Frequency
 
-`hal_spi_set_rwspeed` is called by `spi_init` to set the SPI Frequency, assign the SPI Pins and initialise the DMA Controller.
+`hal_spi_set_rwspeed` is called by [`spi_init`](https://lupyuen.github.io/articles/spi#spi_init-init-spi-port) to set the SPI Frequency, assign the SPI Pins and initialise the DMA Controller.
 
 From [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L430-L480)
 
@@ -1377,7 +1377,7 @@ We set the Actual SPI Frequency...
     spi_dev->config.freq = real_speed;
 ```
 
-Finally we call `hal_spi_init` to assign the SPI Pins and initialise the DMA Controller.
+Finally we call [`hal_spi_init`](https://lupyuen.github.io/articles/spi#hal_spi_init-init-spi-pins-and-dma) to assign the SPI Pins and initialise the DMA Controller.
 
 ```c
     hal_spi_init(spi_dev);
@@ -1387,7 +1387,7 @@ Finally we call `hal_spi_init` to assign the SPI Pins and initialise the DMA Con
 
 ## hal_spi_init: Init SPI Pins and DMA
 
-`hal_spi_init` is called by `hal_spi_set_rwspeed` to assign the SPI Pins and initialise the DMA Controller.
+`hal_spi_init` is called by [`hal_spi_set_rwspeed`](https://lupyuen.github.io/articles/spi#hal_spi_set_rwspeed-set-spi-frequency) to assign the SPI Pins and initialise the DMA Controller.
 
 From [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L360-L384)
 
@@ -1409,9 +1409,9 @@ int32_t hal_spi_init(spi_dev_t *spi)
 
 For every SPI Port (there's only one: SPI Port 0)...
 
-1.  We call `hal_gpio_init` to assign the SPI Pins and configure the SPI Port as SPI Controller or Peripheral
+1.  We call [`hal_gpio_init`](https://lupyuen.github.io/articles/spi#hal_gpio_init-assign-spi-pins) to assign the SPI Pins and configure the SPI Port as SPI Controller or Peripheral
 
-1.  We call `hal_spi_dma_init` to initialise the DMA Controller
+1.  We call [`hal_spi_dma_init`](https://lupyuen.github.io/articles/spi#hal_spi_dma_init-init-spi-dma) to initialise the DMA Controller
 
 ```c
     for (i = 0; i < SPI_NUM_MAX; i++) {
@@ -1429,7 +1429,7 @@ For every SPI Port (there's only one: SPI Port 0)...
 
 ## hal_gpio_init: Assign SPI Pins
 
-`hal_gpio_init` is called by `hal_spi_init` to assign the SPI Pins and configure the SPI Port as SPI Controller or Peripheral.
+`hal_gpio_init` is called by [`hal_spi_init`](https://lupyuen.github.io/articles/spi#hal_spi_init-init-spi-pins-and-dma) to assign the SPI Pins and configure the SPI Port as SPI Controller or Peripheral.
 
 From [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L98-L124)
 
@@ -1475,7 +1475,7 @@ Finally we configure the SPI Port as SPI Controller or Peripheral...
 
 ## hal_spi_dma_init: Init SPI DMA
 
-`hal_spi_dma_init` is called by `hal_spi_init` to initialise the DMA Controller.
+`hal_spi_dma_init` is called by [`hal_spi_init`](https://lupyuen.github.io/articles/spi#hal_spi_init-init-spi-pins-and-dma) to initialise the DMA Controller.
 
 From [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L207-L288)
 
@@ -1599,7 +1599,11 @@ We configure the Receive DMA Interrupts and enable the DMA interrupts...
     bl_irq_enable(DMA_ALL_IRQn);
 ```
 
-Finally we register the DMA Interrupt Handlers: `bl_spi0_dma_int_handler_tx` and `bl_spi0_dma_int_handler_rx`...
+Finally we register the DMA Interrupt Handlers...
+
+1.  __Transmit DMA Interrupt Handler:__ [`bl_spi0_dma_int_handler_tx`](https://lupyuen.github.io/articles/spi#bl_spi0_dma_int_handler_tx-transmit-dma-interrupt-handler)
+
+1.  __Receive DMA Interrupt Handler:__ [`bl_spi0_dma_int_handler_rx`](https://lupyuen.github.io/articles/spi#bl_spi0_dma_int_handler_rx-receive-dma-interrupt-handler)
 
 ```c
     bl_dma_irq_register(hw_arg->tx_dma_ch, bl_spi0_dma_int_handler_tx, NULL, NULL);
@@ -1654,7 +1658,7 @@ If `HAL_SPI_HARDCS` is 0, this code is supposed to set the Chip Select Pin to Lo
 #endif
 ```
 
-__For every SPI Transfer:__ We call `hal_spi_dma_trans` to execute the SPI Transfer, and wait for the SPI Transfer to complete.
+__For every SPI Transfer:__ We call [`hal_spi_dma_trans`](https://lupyuen.github.io/articles/spi#hal_spi_dma_trans-execute-spi-transfer-with-dma) to execute the SPI Transfer, and wait for the SPI Transfer to complete.
 
 ```c
     for (i = 0; i < size; i++) {
@@ -1687,7 +1691,7 @@ In `lli_list_init` we'll create two DMA Linked Lists of DMA Requests...
 
 1.  Another DMA Linked List for __SPI Receive:__ Copy received data from SPI Port to RAM
 
-`lli_list_init` is called by `hal_spi_dma_trans`.
+`lli_list_init` is called by [`hal_spi_dma_trans`](https://lupyuen.github.io/articles/spi#hal_spi_dma_trans-execute-spi-transfer-with-dma).
 
 From [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L126-L205)
 
@@ -1865,7 +1869,7 @@ Here's the debug output from `lli_list_init` when it creates the DMA Linked List
 
 ## hal_spi_dma_trans: Execute SPI Transfer with DMA
 
-`hal_spi_dma_trans` is called by `hal_spi_transfer` to execute an SPI Transfer with DMA, and wait for the SPI Transfer to complete.
+`hal_spi_dma_trans` is called by [`hal_spi_transfer`](https://lupyuen.github.io/articles/spi#hal_spi_transfer-execute-spi-transfer) to execute an SPI Transfer with DMA, and wait for the SPI Transfer to complete.
 
 From [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L290-L358)
 
