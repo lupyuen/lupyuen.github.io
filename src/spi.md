@@ -110,9 +110,9 @@ Connect BL602 to BME280 (the SPI side with 6 pins) according to the pic above...
 
 We'll talk about GPIO 2 in a while.
 
-![BL602 SPI Pins 1 (SDO), 3 (Clock), 4 (SDI) and 14 (Chip Select)](https://lupyuen.github.io/images/spi-pins.jpg)
+![BL602 SPI Pins 1 (SDI), 3 (Clock), 4 (SDO) and 14 (Chip Select)](https://lupyuen.github.io/images/spi-pins.jpg)
 
-_BL602 SPI Pins 1 (SDO), 3 (Clock), 4 (SDI) and 14 (Chip Select)_
+_BL602 SPI Pins 1 (SDI), 3 (Clock), 4 (SDO) and 14 (Chip Select)_
 
 ## Selecting SPI Pins
 
