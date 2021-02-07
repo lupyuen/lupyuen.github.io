@@ -1792,7 +1792,7 @@ __For SPI Receive:__ We create a DMA Request that copies the received data from 
         blog_info("Rx DMA src=0x%x, dest=0x%x, size=%d, si=%d, di=%d, i=%d\r\n", (unsigned) (*pprxlli)[i].srcDmaAddr, (unsigned) (*pprxlli)[i].destDmaAddr, dmactrl.TransferSize, dmactrl.SI, dmactrl.DI, dmactrl.I);
 ```
 
-Finally we append both DMA Requests to the DMA Linked List...
+Finally we append both DMA Requests to the DMA Linked Lists (Transmit and Receive)...
 
 ```c
         if (i != 0) {
@@ -1919,7 +1919,7 @@ We enable the DMA Controller and enable SPI for Controller or Peripheral mode...
     }
 ```
 
-We call `lli_list_init` to create the DMA Linked List that will contain every SPI Transfer...
+We call `lli_list_init` to create the DMA Linked Lists (Transmit and Receive) that will contain every SPI Transfer...
 
 ```c
     ret = lli_list_init(&ptxlli, &prxlli, TxData, RxData, Len);
@@ -1929,7 +1929,7 @@ We call `lli_list_init` to create the DMA Linked List that will contain every SP
     }
 ```
 
-We assign the DMA Linked List to the DMA Controller...
+We assign the DMA Linked Lists (Transmit and Receive) to the DMA Controller...
 
 ```c
     DMA_LLI_Init(arg->tx_dma_ch, &txllicfg);
@@ -1938,7 +1938,7 @@ We assign the DMA Linked List to the DMA Controller...
     DMA_LLI_Update(arg->rx_dma_ch, (uint32_t) prxlli);
 ```
 
-We enable the DMA Channels. The DMA Controller will transfer data according to the DMA Linked List...
+We enable the DMA Channels. The DMA Controller will transfer data according to the DMA Linked Lists...
 
 ```c
     DMA_Channel_Enable(arg->tx_dma_ch);
@@ -1978,7 +1978,7 @@ TODO
 
 Define Interrupt Counters and error status
 
-[`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L769-L808)
+From [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L769-L808)
 
 ```c
 //  Interrupt Counters for Transmit and Receive
