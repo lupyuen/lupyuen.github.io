@@ -110,6 +110,10 @@ Connect BL602 to BME280 (the SPI side with 6 pins) according to the pic above...
 
 We'll talk about GPIO 2 in a while.
 
+![BL602 SPI Pins 1 (SDO), 3 (Clock), 4 (SDI) and 14 (Chip Select)](https://lupyuen.github.io/images/spi-pins.jpg)
+
+_BL602 SPI Pins 1 (SDO), 3 (Clock), 4 (SDI) and 14 (Chip Select)_
+
 ## Selecting SPI Pins
 
 We're NOT using the [Recommended SPI Pins for PineCone and Pinenut](https://wiki.pine64.org/wiki/Nutcracker#Pinenut-12S_Module_information): GPIO 0, 11, 14, 17.
@@ -299,6 +303,10 @@ BL602 SPI HAL handles this as __two SPI Transfer__ requests of one byte each...
 (Yep there will be "wasted data"... We don't need the received byte from the first request... And the transmitted byte from the second request)
 
 Let's construct the two SPI Transfer requests.
+
+![First and Second SPI Transfers](https://lupyuen.github.io/images/spi-analyse9b.png)
+
+_First and Second SPI Transfers_
 
 ## Transmit and Receive Buffers
 
