@@ -147,6 +147,13 @@
   ],
   "publications": [
     {
+      "name": "PineCone BL602 talks SPI too!",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2021-02-07",
+      "website": "https://lupyuen.github.io/articles/spi",
+      "summary": "PineCone BL602 RISC-V Board talks to BME280 Sensor over SPI... Let's find out how"
+    },
+    {
       "name": "PineCone BL602 talks to I2C Sensors",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-01-29",

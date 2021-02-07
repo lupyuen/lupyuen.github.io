@@ -1,6 +1,6 @@
 # PineCone BL602 talks SPI too!
 
-📝 _10 Feb 2021_
+📝 _7 Feb 2021_
 
 [__PineCone__](https://lupyuen.github.io/articles/pinecone) and [__Pinenut BL602__](https://wiki.pine64.org/wiki/Nutcracker#Pinenut-01S_Module_information_and_schematics) work great with I2C Sensors. [(See this)](https://lupyuen.github.io/articles/i2c)
 
@@ -280,7 +280,7 @@ Because we're not ready to talk to BME280 yet, we set the Chip Select Pin to Hig
 
 Our SPI Port is initialised, all set for transferring data!
 
-(BL602 SPI HAL Function `spi_init` shall be explained in the Appendix)
+[(BL602 SPI HAL Function `spi_init` shall be explained in the Appendix)](https://lupyuen.github.io/articles/spi#spi_init-init-spi-port)
 
 # Transfer SPI Data
 
@@ -421,7 +421,7 @@ __Mission Accomplished!__ The Receive Buffer for the Second SPI Transfer __`rx_b
 
 We'll witness this shortly.
 
-(BL602 SPI HAL Function `hal_spi_transfer` shall be explained in the Appendix)
+[(BL602 SPI HAL Function `hal_spi_transfer` shall be explained in the Appendix)](https://lupyuen.github.io/articles/spi#hal_spi_transfer-execute-spi-transfer)
 
 ## SPI with Direct Memory Access
 
@@ -473,7 +473,7 @@ __SPI With DMA:__
 
 All SPI Transfers done with the BL602 SPI HAL will use super-efficient DMA.
 
-(See `hal_spi_transfer` in the Appendix for the BL602 DMA implementation)
+[(See `hal_spi_transfer` in the Appendix for the BL602 DMA implementation)](https://lupyuen.github.io/articles/spi#hal_spi_transfer-execute-spi-transfer)
 
 ![SPI Demo Firmware for BL602](https://lupyuen.github.io/images/spi-firmware3.jpg)
 
@@ -929,7 +929,7 @@ We also need to __emulate these FreeRTOS heap memory functions__, which are simi
 
 1.  `vPortFree`: Free the allocated heap memory
 
-The usage of these functions is explained in the Appendix.
+[(The usage of these functions is explained in the Appendix)](https://lupyuen.github.io/articles/spi#appendix-inside-bl602-spi-hal)
 
 ![ST7789 Display Controller with SPI Interface](https://lupyuen.github.io/images/spi-st7789.jpg)
 
