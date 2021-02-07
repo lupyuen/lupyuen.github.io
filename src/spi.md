@@ -1605,7 +1605,11 @@ Finally we register the DMA Interrupt Handlers...
 
 1.  __Transmit DMA Interrupt Handler:__ [`bl_spi0_dma_int_handler_tx`](https://lupyuen.github.io/articles/spi#bl_spi0_dma_int_handler_tx-transmit-dma-interrupt-handler)
 
+    This will be triggered when an SPI DMA Transmit Request completes (successfully or unsuccessfully)
+
 1.  __Receive DMA Interrupt Handler:__ [`bl_spi0_dma_int_handler_rx`](https://lupyuen.github.io/articles/spi#bl_spi0_dma_int_handler_rx-receive-dma-interrupt-handler)
+
+    This will be triggered when an SPI DMA Receive Request completes (successfully or unsuccessfully)
 
 ```c
     bl_dma_irq_register(hw_arg->tx_dma_ch, bl_spi0_dma_int_handler_tx, NULL, NULL);
@@ -1996,8 +2000,6 @@ Thus when we wait for `EVT_GROUP_SPI_DMA_TR`, we're waiting for the SPI DMA Tran
 
 [(`EVT_GROUP_SPI_DMA_TR` is defined here)](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L70-L72)
 
-
-
 Finally we free the heap memory for the DMA Linked List...
 
 ```c
@@ -2047,6 +2049,8 @@ The Interrupt Counters, Status and Error Codes are set by the DMA Interrupt Hand
 
 `bl_spi0_dma_int_handler_tx` is the DMA Interrupt Handler that's triggered when an SPI DMA Transmit Request completes (successfully or unsuccessfully).
 
+The DMA Interrupt Handler is registered by [`hal_spi_dma_init`](https://lupyuen.github.io/articles/spi#hal_spi_dma_init-init-spi-dma).
+
 From [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L769-L808)
 
 ```c
@@ -2089,6 +2093,8 @@ Then we call `portYIELD_FROM_ISR` to wake up the Foreground Task that's waiting 
 ## bl_spi0_dma_int_handler_rx: Receive DMA Interrupt Handler
 
 `bl_spi0_dma_int_handler_rx` is the DMA Interrupt Handler that's triggered when an SPI DMA Receive Request completes (successfully or unsuccessfully).
+
+The DMA Interrupt Handler is registered by [`hal_spi_dma_init`](https://lupyuen.github.io/articles/spi#hal_spi_dma_init-init-spi-dma).
 
 From [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L810-L836)
 
