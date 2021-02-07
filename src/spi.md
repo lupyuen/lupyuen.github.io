@@ -160,6 +160,8 @@ _BL602 talks to BME280 over SPI, visualised by a Logic Analyser_
 
 # Initialise SPI Port
 
+Let's dive into the code for our SPI Demo Firmware!
+
 Before we initialise the SPI Port, we define these constants and variables in [`sdk_app_spi/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L45-L100) 
 
 ```c
