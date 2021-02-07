@@ -1475,7 +1475,17 @@ static void hal_spi_dma_init(spi_hw_t *arg)
     spi_id = hw_arg->ssp_id;
 ```
 
-We set the Timing Intervals for the SPI Clock (according to the Actual SPI Frequency)...
+We configure the __Timing Intervals for the SPI Clock__ (according to the Actual SPI Frequency)...
+
+1.  Length of the Start Condition
+
+1.  Length of the Stop Condition
+
+1.  Length of Phase 0
+
+1.  Length of Phase 1
+
+1.  Interval between each frame of data
 
 ```c
     /* clock */
@@ -1487,13 +1497,15 @@ We set the Timing Intervals for the SPI Clock (according to the Actual SPI Frequ
      * */
     clk_div = (uint8_t)(40000000 / hw_arg->freq);
     GLB_Set_SPI_CLK(ENABLE,0);
-    clockcfg.startLen = clk_div;
-    clockcfg.stopLen = clk_div;
+    clockcfg.startLen      = clk_div;
+    clockcfg.stopLen       = clk_div;
     clockcfg.dataPhase0Len = clk_div;
     clockcfg.dataPhase1Len = clk_div;
-    clockcfg.intervalLen = clk_div;
+    clockcfg.intervalLen   = clk_div;
     SPI_ClockConfig(spi_id, &clockcfg);
 ```
+
+(This is currently a Square Wave... But we may shape the SPI Clock if necessary)
 
 We set the SPI Configuration: Deglitching, Continuous Chip Enable, Byte Sequence, Bit Sequence, Frame Size...
 
@@ -1626,7 +1638,7 @@ If `HAL_SPI_HARDCS` is 0, this code is supposed to set the Chip Select Pin to Lo
 #endif
 ```
 
-For every SPI Transfer: We call `hal_spi_dma_trans` to execute the SPI Transfer, and wait for the SPI Transfer to complete.
+__For every SPI Transfer:__ We call `hal_spi_dma_trans` to execute the SPI Transfer, and wait for the SPI Transfer to complete.
 
 ```c
     for (i = 0; i < size; i++) {
@@ -1653,11 +1665,11 @@ If `HAL_SPI_HARDCS` is 0, this code is supposed to set the Chip Select Pin to Hi
 
 BL602's DMA Controller accepts a __DMA Linked List__ of DMA Requests that will be executed automatically.
 
-In `lli_list_init` we'll create a DMA Linked List containing two types of DMA Requests...
+In `lli_list_init` we'll create two DMA Linked Lists of DMA Requests...
 
-1.  __SPI Transmit:__ Copy data from RAM to SPI Port for transmission
+1.  One DMA Linked List for __SPI Transmit:__ Copy data from RAM to SPI Port for transmission
 
-1.  __SPI Receive:__ Copy received data from SPI Port to RAM
+1.  Another DMA Linked List for __SPI Receive:__ Copy received data from SPI Port to RAM
 
 `lli_list_init` is called by `hal_spi_dma_trans`.
 
@@ -1706,7 +1718,7 @@ We call `pvPortMalloc` (from FreeRTOS) to allocate heap memory for storing the D
     }
 ```
 
-For each SPI Transfer, we create the DMA Requests for SPI Transmit and SPI Receive...
+__For every SPI Transfer:__ We create the DMA Requests for SPI Transmit and SPI Receive...
 
 ```c
     for (i = 0; i < count; i++) {
@@ -1726,14 +1738,22 @@ We compute the DMA Transmit / Receive Size...
         }
 ```
 
-TODO
+__For SPI Transmit:__ We configure the __DMA Automatic Address Accumulation__ for Source (SI) and Destination (DI)...
 
-What is this ???
-
-```
+```c
         dmactrl.SI = DMA_MINC_ENABLE;
         dmactrl.DI = DMA_MINC_DISABLE;
-            
+```
+
+The BL602 Reference Manual doesn't explain Automatic Address Accumulation. 
+
+Let's assume that the above configuration will auto-increment the Source RAM Address (SI) when the DMA Controller copies data from RAM to the SPI Port.
+
+We don't auto-increment the Destination Address (DI) because the SPI Port uses a single address for transmitting data: `spi_fifo_wdata` at `0x4000a288`
+
+We set I to 1 if this is the last entry in the DMA Linked List...
+
+```c
         if (i == count - 1) {
             dmactrl.I = 1;
         } else {
@@ -1741,23 +1761,34 @@ What is this ???
         }
 ```
 
-For SPI Transmit: We create a DMA Request that copies data from RAM to the SPI Port for transmission...
+__For SPI Transmit:__ We create a DMA Request that copies data from RAM to the SPI Port for transmission...
 
 ```c
         (*pptxlli)[i].srcDmaAddr = (uint32_t)(ptx_data + i * LLI_BUFF_SIZE);
         (*pptxlli)[i].destDmaAddr = (uint32_t)(SPI_BASE+SPI_FIFO_WDATA_OFFSET);
         (*pptxlli)[i].dmaCtrl = dmactrl;
+
         blog_info("Tx DMA src=0x%x, dest=0x%x, size=%d, si=%d, di=%d, i=%d\r\n", (unsigned) (*pptxlli)[i].srcDmaAddr, (unsigned) (*pptxlli)[i].destDmaAddr, dmactrl.TransferSize, dmactrl.SI, dmactrl.DI, dmactrl.I);
 ```
 
-For SPI Receive: We create a DMA Request that copies the received data from the SPI Port to RAM...
+__For SPI Receive:__ We configure the __DMA Automatic Address Accumulation__ for Source (SI) and Destination (DI)...
 
 ```c
         dmactrl.SI = DMA_MINC_DISABLE;
         dmactrl.DI = DMA_MINC_ENABLE;
+```
+
+Let's assume that this will auto-increment the Destination RAM Address (DI) when the DMA Controller copies the received data from the SPI Port to RAM.
+
+We don't auto-increment the Source Address (SI) because the SPI Port uses a single address for receiving data: `spi_fifo_rdata` at `0x4000a28c`
+
+__For SPI Receive:__ We create a DMA Request that copies the received data from the SPI Port to RAM...
+
+```c
         (*pprxlli)[i].srcDmaAddr = (uint32_t)(SPI_BASE+SPI_FIFO_RDATA_OFFSET);
         (*pprxlli)[i].destDmaAddr = (uint32_t)(prx_data + i * LLI_BUFF_SIZE);
         (*pprxlli)[i].dmaCtrl = dmactrl;
+
         blog_info("Rx DMA src=0x%x, dest=0x%x, size=%d, si=%d, di=%d, i=%d\r\n", (unsigned) (*pprxlli)[i].srcDmaAddr, (unsigned) (*pprxlli)[i].destDmaAddr, dmactrl.TransferSize, dmactrl.SI, dmactrl.DI, dmactrl.I);
 ```
 
@@ -1775,6 +1806,46 @@ Finally we append both DMA Requests to the DMA Linked List...
     return 0;
 }
 ```
+
+Here's the debug output from `lli_list_init` when it creates the DMA Linked Lists (Transmit and Receive) for our two SPI Transfers...
+
+1.  __DMA Linked Lists (Transmit and Receive) for First SPI Transfer:__
+
+    ```text
+    Tx DMA src=0x4200d1b8, dest=0x4000a288, size=1, si=1, di=0, i=1
+    Rx DMA src=0x4000a28c, dest=0x4200d1b0, size=1, si=0, di=1, i=1
+    ```
+
+    The Transmit DMA Linked List __`Tx DMA`__ copies the data from our first Transmit Buffer __`tx_buf1`__ to the SPI Port...
+
+    -   __`Tx DMA src`__ is the address of our first Transmit Buffer `tx_buf1`
+
+    -   __`Tx DMA dest`__ is the address of the SPI Transmit FIFO: `spi_fifo_wdata` at `0x4000a288`
+
+    The Receive DMA Linked List __`Rx DMA`__ copies the received data from the SPI Port to our first Receive Buffer __`rx_buf1`__...
+
+    -   __`Rx DMA src`__ is the address of the SPI Receive FIFO: `spi_fifo_rdata` at `0x4000a28c`
+
+    -   __`Rx DMA dest`__ is the address of our first Receive Buffer `rx_buf1`
+
+1.  __DMA Linked Lists (Transmit and Receive) for Second SPI Transfer:__
+
+    ```text
+    Tx DMA src=0x4200d1bc, dest=0x4000a288, size=1, si=1, di=0, i=1
+    Rx DMA src=0x4000a28c, dest=0x4200d1b4, size=1, si=0, di=1, i=1
+    ```
+
+    The Transmit DMA Linked List __`Tx DMA`__ copies the data from our second Transmit Buffer __`tx_buf2`__ to the SPI Port...
+
+    -   __`Tx DMA src`__ is the address of our second Transmit Buffer `tx_buf2`
+
+    -   __`Tx DMA dest`__ is the address of the SPI Transmit FIFO: `spi_fifo_wdata` at `0x4000a288`
+
+    The Receive DMA Linked List __`Rx DMA`__ copies the received data from the SPI Port to our second Receive Buffer __`rx_buf2`__...
+
+    -   __`Rx DMA src`__ is the address of the SPI Receive FIFO: `spi_fifo_rdata` at `0x4000a28c`
+    
+    -   __`Rx DMA dest`__ is the address of our second Receive Buffer `rx_buf2`
 
 ## hal_spi_dma_trans: Execute SPI Transfer with DMA
 
