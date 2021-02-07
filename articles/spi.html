@@ -1119,7 +1119,7 @@ READ: 0x60
 </code></pre>
 <h2 id="spi_init-init-spi-port" class="section-header"><a href="#spi_init-init-spi-port">15.2 spi_init: Init SPI Port</a></h2>
 <p>We added the function <code>spi_init</code> to initialise the SPI Port without using the AliOS Device Tree. This function is called by our demo firmware.</p>
-<p><code>spi_init</code> was derived from the SPI HAL Functions <code>spi_arg_set_fdt2</code> and <code>vfs_spi_init_fullname</code> (which use the AliOS Device Tree).</p>
+<p><code>spi_init</code> was derived from the SPI HAL Functions <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L597-L760"><code>spi_arg_set_fdt2</code></a> and <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L524-L591"><code>vfs_spi_init_fullname</code></a> (which use the AliOS Device Tree).</p>
 <p>Note that there is only a <strong>single global instance of SPI Data.</strong> </p>
 <p><strong><code>spi_init</code> shall only be called once by our firmware.</strong></p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L838-L886"><code>bl602_hal/hal_spi.c</code></a></p>
@@ -1173,7 +1173,7 @@ int spi_init(spi_dev_t *spi, uint8_t port,
     blog_info(&quot;[HAL] [SPI] Init :\r\nport=%d, mode=%d, polar_phase = %d, freq=%ld, tx_dma_ch=%d, rx_dma_ch=%d, pin_clk=%d, pin_cs=%d, pin_mosi=%d, pin_miso=%d\r\n&quot;,
         port, mode, polar_phase, freq, tx_dma_ch, rx_dma_ch, pin_clk, pin_cs, pin_mosi, pin_miso);
 </code></pre>
-<p>Finally we call <code>hal_spi_set_rwspeed</code> to set the SPI Frequency, assign the SPI Pins and initialise the DMA Controller...</p>
+<p>Finally we call <a href="https://lupyuen.github.io/articles/spi#hal_spi_set_rwspeed-set-spi-frequency"><code>hal_spi_set_rwspeed</code></a> to set the SPI Frequency, assign the SPI Pins and initialise the DMA Controller...</p>
 <pre><code class="language-c">    //  Init the SPI speed, pins and DMA
     int rc = hal_spi_set_rwspeed(spi, freq);
     assert(rc == 0);
@@ -1181,7 +1181,7 @@ int spi_init(spi_dev_t *spi, uint8_t port,
 }
 </code></pre>
 <h2 id="hal_spi_set_rwspeed-set-spi-frequency" class="section-header"><a href="#hal_spi_set_rwspeed-set-spi-frequency">15.3 hal_spi_set_rwspeed: Set SPI Frequency</a></h2>
-<p><code>hal_spi_set_rwspeed</code> is called by <code>spi_init</code> to set the SPI Frequency, assign the SPI Pins and initialise the DMA Controller.</p>
+<p><code>hal_spi_set_rwspeed</code> is called by <a href="https://lupyuen.github.io/articles/spi#spi_init-init-spi-port"><code>spi_init</code></a> to set the SPI Frequency, assign the SPI Pins and initialise the DMA Controller.</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L430-L480"><code>bl602_hal/hal_spi.c</code></a></p>
 <pre><code class="language-c">int hal_spi_set_rwspeed(spi_dev_t *spi_dev, uint32_t speed)
 {
@@ -1236,13 +1236,13 @@ int spi_init(spi_dev_t *spi, uint8_t port,
     data-&gt;hwspi[spi_dev-&gt;port].freq = real_speed;
     spi_dev-&gt;config.freq = real_speed;
 </code></pre>
-<p>Finally we call <code>hal_spi_init</code> to assign the SPI Pins and initialise the DMA Controller.</p>
+<p>Finally we call <a href="https://lupyuen.github.io/articles/spi#hal_spi_init-init-spi-pins-and-dma"><code>hal_spi_init</code></a> to assign the SPI Pins and initialise the DMA Controller.</p>
 <pre><code class="language-c">    hal_spi_init(spi_dev);
     return 0;
 }
 </code></pre>
 <h2 id="hal_spi_init-init-spi-pins-and-dma" class="section-header"><a href="#hal_spi_init-init-spi-pins-and-dma">15.4 hal_spi_init: Init SPI Pins and DMA</a></h2>
-<p><code>hal_spi_init</code> is called by <code>hal_spi_set_rwspeed</code> to assign the SPI Pins and initialise the DMA Controller.</p>
+<p><code>hal_spi_init</code> is called by <a href="https://lupyuen.github.io/articles/spi#hal_spi_set_rwspeed-set-spi-frequency"><code>hal_spi_set_rwspeed</code></a> to assign the SPI Pins and initialise the DMA Controller.</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L360-L384"><code>bl602_hal/hal_spi.c</code></a></p>
 <pre><code class="language-c">int32_t hal_spi_init(spi_dev_t *spi)
 {
@@ -1261,10 +1261,10 @@ int spi_init(spi_dev_t *spi, uint8_t port,
 <p>For every SPI Port (there's only one: SPI Port 0)...</p>
 <ol>
 <li>
-<p>We call <code>hal_gpio_init</code> to assign the SPI Pins and configure the SPI Port as SPI Controller or Peripheral</p>
+<p>We call <a href="https://lupyuen.github.io/articles/spi#hal_gpio_init-assign-spi-pins"><code>hal_gpio_init</code></a> to assign the SPI Pins and configure the SPI Port as SPI Controller or Peripheral</p>
 </li>
 <li>
-<p>We call <code>hal_spi_dma_init</code> to initialise the DMA Controller</p>
+<p>We call <a href="https://lupyuen.github.io/articles/spi#hal_spi_dma_init-init-spi-dma"><code>hal_spi_dma_init</code></a> to initialise the DMA Controller</p>
 </li>
 </ol>
 <pre><code class="language-c">    for (i = 0; i &lt; SPI_NUM_MAX; i++) {
@@ -1280,7 +1280,7 @@ int spi_init(spi_dev_t *spi, uint8_t port,
 }
 </code></pre>
 <h2 id="hal_gpio_init-assign-spi-pins" class="section-header"><a href="#hal_gpio_init-assign-spi-pins">15.5 hal_gpio_init: Assign SPI Pins</a></h2>
-<p><code>hal_gpio_init</code> is called by <code>hal_spi_init</code> to assign the SPI Pins and configure the SPI Port as SPI Controller or Peripheral.</p>
+<p><code>hal_gpio_init</code> is called by <a href="https://lupyuen.github.io/articles/spi#hal_spi_init-init-spi-pins-and-dma"><code>hal_spi_init</code></a> to assign the SPI Pins and configure the SPI Port as SPI Controller or Peripheral.</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L98-L124"><code>bl602_hal/hal_spi.c</code></a></p>
 <pre><code class="language-c">static void hal_gpio_init(spi_hw_t *arg)
 {
@@ -1313,7 +1313,7 @@ int spi_init(spi_dev_t *spi, uint8_t port,
 }
 </code></pre>
 <h2 id="hal_spi_dma_init-init-spi-dma" class="section-header"><a href="#hal_spi_dma_init-init-spi-dma">15.6 hal_spi_dma_init: Init SPI DMA</a></h2>
-<p><code>hal_spi_dma_init</code> is called by <code>hal_spi_init</code> to initialise the DMA Controller.</p>
+<p><code>hal_spi_dma_init</code> is called by <a href="https://lupyuen.github.io/articles/spi#hal_spi_init-init-spi-pins-and-dma"><code>hal_spi_init</code></a> to initialise the DMA Controller.</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L207-L288"><code>bl602_hal/hal_spi.c</code></a></p>
 <pre><code class="language-c">static void hal_spi_dma_init(spi_hw_t *arg)
 {
@@ -1418,7 +1418,15 @@ int spi_init(spi_dev_t *spi, uint8_t port,
     DMA_IntMask(hw_arg-&gt;rx_dma_ch, DMA_INT_ERR, UNMASK);
     bl_irq_enable(DMA_ALL_IRQn);
 </code></pre>
-<p>Finally we register the DMA Interrupt Handlers: <code>bl_spi0_dma_int_handler_tx</code> and <code>bl_spi0_dma_int_handler_rx</code>...</p>
+<p>Finally we register the DMA Interrupt Handlers...</p>
+<ol>
+<li>
+<p><strong>Transmit DMA Interrupt Handler:</strong> <a href="https://lupyuen.github.io/articles/spi#bl_spi0_dma_int_handler_tx-transmit-dma-interrupt-handler"><code>bl_spi0_dma_int_handler_tx</code></a></p>
+</li>
+<li>
+<p><strong>Receive DMA Interrupt Handler:</strong> <a href="https://lupyuen.github.io/articles/spi#bl_spi0_dma_int_handler_rx-receive-dma-interrupt-handler"><code>bl_spi0_dma_int_handler_rx</code></a></p>
+</li>
+</ol>
 <pre><code class="language-c">    bl_dma_irq_register(hw_arg-&gt;tx_dma_ch, bl_spi0_dma_int_handler_tx, NULL, NULL);
     bl_dma_irq_register(hw_arg-&gt;rx_dma_ch, bl_spi0_dma_int_handler_rx, NULL, NULL);
     return;
@@ -1459,7 +1467,7 @@ int spi_init(spi_dev_t *spi, uint8_t port,
     bl_gpio_output_set(priv_data-&gt;hwspi[spi_dev-&gt;port].pin_cs, 0);
 #endif
 </code></pre>
-<p><strong>For every SPI Transfer:</strong> We call <code>hal_spi_dma_trans</code> to execute the SPI Transfer, and wait for the SPI Transfer to complete.</p>
+<p><strong>For every SPI Transfer:</strong> We call <a href="https://lupyuen.github.io/articles/spi#hal_spi_dma_trans-execute-spi-transfer-with-dma"><code>hal_spi_dma_trans</code></a> to execute the SPI Transfer, and wait for the SPI Transfer to complete.</p>
 <pre><code class="language-c">    for (i = 0; i &lt; size; i++) {
 #if (HAL_SPI_DEBUG)
         blog_info(&quot;transfer xfer[%d].len = %ld\r\n&quot;, i, s_xfer[i].len);
@@ -1487,7 +1495,7 @@ int spi_init(spi_dev_t *spi, uint8_t port,
 <p>Another DMA Linked List for <strong>SPI Receive:</strong> Copy received data from SPI Port to RAM</p>
 </li>
 </ol>
-<p><code>lli_list_init</code> is called by <code>hal_spi_dma_trans</code>.</p>
+<p><code>lli_list_init</code> is called by <a href="https://lupyuen.github.io/articles/spi#hal_spi_dma_trans-execute-spi-transfer-with-dma"><code>hal_spi_dma_trans</code></a>.</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L126-L205"><code>bl602_hal/hal_spi.c</code></a></p>
 <pre><code class="language-c">static int lli_list_init(DMA_LLI_Ctrl_Type **pptxlli, DMA_LLI_Ctrl_Type **pprxlli, uint8_t *ptx_data, uint8_t *prx_data, uint32_t length)
 {
@@ -1636,7 +1644,7 @@ Rx DMA src=0x4000a28c, dest=0x4200d1b4, size=1, si=0, di=1, i=1
 </li>
 </ol>
 <h2 id="hal_spi_dma_trans-execute-spi-transfer-with-dma" class="section-header"><a href="#hal_spi_dma_trans-execute-spi-transfer-with-dma">15.9 hal_spi_dma_trans: Execute SPI Transfer with DMA</a></h2>
-<p><code>hal_spi_dma_trans</code> is called by <code>hal_spi_transfer</code> to execute an SPI Transfer with DMA, and wait for the SPI Transfer to complete.</p>
+<p><code>hal_spi_dma_trans</code> is called by <a href="https://lupyuen.github.io/articles/spi#hal_spi_transfer-execute-spi-transfer"><code>hal_spi_transfer</code></a> to execute an SPI Transfer with DMA, and wait for the SPI Transfer to complete.</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L290-L358"><code>bl602_hal/hal_spi.c</code></a></p>
 <pre><code class="language-c">static void hal_spi_dma_trans(spi_hw_t *arg, uint8_t *TxData, uint8_t *RxData, uint32_t Len)
 {
