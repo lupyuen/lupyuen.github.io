@@ -1423,9 +1423,11 @@ int spi_init(spi_dev_t *spi, uint8_t port,
 <ol>
 <li>
 <p><strong>Transmit DMA Interrupt Handler:</strong> <a href="https://lupyuen.github.io/articles/spi#bl_spi0_dma_int_handler_tx-transmit-dma-interrupt-handler"><code>bl_spi0_dma_int_handler_tx</code></a></p>
+<p>This will be triggered when an SPI DMA Transmit Request completes (successfully or unsuccessfully)</p>
 </li>
 <li>
 <p><strong>Receive DMA Interrupt Handler:</strong> <a href="https://lupyuen.github.io/articles/spi#bl_spi0_dma_int_handler_rx-receive-dma-interrupt-handler"><code>bl_spi0_dma_int_handler_rx</code></a></p>
+<p>This will be triggered when an SPI DMA Receive Request completes (successfully or unsuccessfully)</p>
 </li>
 </ol>
 <pre><code class="language-c">    bl_dma_irq_register(hw_arg-&gt;tx_dma_ch, bl_spi0_dma_int_handler_tx, NULL, NULL);
@@ -1782,6 +1784,7 @@ Rx Error:      0x0
 <p>The Interrupt Counters, Status and Error Codes are set by the DMA Interrupt Handlers: <code>bl_spi0_dma_int_handler_tx</code> and <code>bl_spi0_dma_int_handler_rx</code>.</p>
 <h2 id="bl_spi0_dma_int_handler_tx-transmit-dma-interrupt-handler" class="section-header"><a href="#bl_spi0_dma_int_handler_tx-transmit-dma-interrupt-handler">15.11 bl_spi0_dma_int_handler_tx: Transmit DMA Interrupt Handler</a></h2>
 <p><code>bl_spi0_dma_int_handler_tx</code> is the DMA Interrupt Handler that's triggered when an SPI DMA Transmit Request completes (successfully or unsuccessfully).</p>
+<p>The DMA Interrupt Handler is registered by <a href="https://lupyuen.github.io/articles/spi#hal_spi_dma_init-init-spi-dma"><code>hal_spi_dma_init</code></a>.</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L769-L808"><code>bl602_hal/hal_spi.c</code></a></p>
 <pre><code class="language-c">void bl_spi0_dma_int_handler_tx(void)
 {
@@ -1816,6 +1819,7 @@ Rx Error:      0x0
 </code></pre>
 <h2 id="bl_spi0_dma_int_handler_rx-receive-dma-interrupt-handler" class="section-header"><a href="#bl_spi0_dma_int_handler_rx-receive-dma-interrupt-handler">15.12 bl_spi0_dma_int_handler_rx: Receive DMA Interrupt Handler</a></h2>
 <p><code>bl_spi0_dma_int_handler_rx</code> is the DMA Interrupt Handler that's triggered when an SPI DMA Receive Request completes (successfully or unsuccessfully).</p>
+<p>The DMA Interrupt Handler is registered by <a href="https://lupyuen.github.io/articles/spi#hal_spi_dma_init-init-spi-dma"><code>hal_spi_dma_init</code></a>.</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L810-L836"><code>bl602_hal/hal_spi.c</code></a></p>
 <pre><code class="language-c">void bl_spi0_dma_int_handler_rx(void)
 {
