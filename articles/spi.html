@@ -103,8 +103,9 @@
 <li><a href="#hal_spi_transfer-execute-spi-transfer">15.7 hal_spi_transfer: Execute SPI Transfer</a><ul></ul></li>
 <li><a href="#lli_list_init-create-dma-linked-list">15.8 lli_list_init: Create DMA Linked List</a><ul></ul></li>
 <li><a href="#hal_spi_dma_trans-execute-spi-transfer-with-dma">15.9 hal_spi_dma_trans: Execute SPI Transfer with DMA</a><ul></ul></li>
-<li><a href="#bl_spi0_dma_int_handler_tx-transmit-dma-interrupt-handler">15.10 bl_spi0_dma_int_handler_tx: Transmit DMA Interrupt Handler</a><ul></ul></li>
-<li><a href="#bl_spi0_dma_int_handler_rx-receive-dma-interrupt-handler">15.11 bl_spi0_dma_int_handler_rx: Receive DMA Interrupt Handler</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>10 Feb 2021</em></p>
+<li><a href="#dma-interrupt-counters">15.10 DMA Interrupt Counters</a><ul></ul></li>
+<li><a href="#bl_spi0_dma_int_handler_tx-transmit-dma-interrupt-handler">15.11 bl_spi0_dma_int_handler_tx: Transmit DMA Interrupt Handler</a><ul></ul></li>
+<li><a href="#bl_spi0_dma_int_handler_rx-receive-dma-interrupt-handler">15.12 bl_spi0_dma_int_handler_rx: Receive DMA Interrupt Handler</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>10 Feb 2021</em></p>
 <p><a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone</strong></a> and <a href="https://wiki.pine64.org/wiki/Nutcracker#Pinenut-01S_Module_information_and_schematics"><strong>Pinenut BL602</strong></a> work great with I2C Sensors. <a href="https://lupyuen.github.io/articles/i2c">(See this)</a></p>
 <p>But what if we're connecting BL602 to <strong>High Bandwidth</strong> peripherals... Like the ST7789 Display Controller and the SX1262 LoRa Transceiver?</p>
 <p><strong>We'll need SPI on BL602!</strong></p>
@@ -1729,24 +1730,36 @@ Rx DMA src=0x4000a28c, dest=0x4200d1b4, size=1, si=0, di=1, i=1
     vPortFree(prxlli);
 }
 </code></pre>
-<h2 id="bl_spi0_dma_int_handler_tx-transmit-dma-interrupt-handler" class="section-header"><a href="#bl_spi0_dma_int_handler_tx-transmit-dma-interrupt-handler">15.10 bl_spi0_dma_int_handler_tx: Transmit DMA Interrupt Handler</a></h2>
-<p>TODO</p>
-<p>Define Interrupt Counters and error status</p>
+<h2 id="dma-interrupt-counters" class="section-header"><a href="#dma-interrupt-counters">15.10 DMA Interrupt Counters</a></h2>
+<p>To check whether the DMA Interrupts are working correctly, we added Interrupt Counters and captured the Status and Error Codes.</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L769-L808"><code>bl602_hal/hal_spi.c</code></a></p>
 <pre><code class="language-c">//  Interrupt Counters for Transmit and Receive
 int g_tx_counter;
 int g_rx_counter;
 
 //  Status, Terminal Counts and Error Codes for Transmit and Receive
-uint32_t g_tx_status;  //  Transmit Status (from 0x4000c000)
+uint32_t g_tx_status;  //  Transmit Status         (from 0x4000c000)
 uint32_t g_tx_tc;      //  Transmit Terminal Count (from 0x4000c004)
-uint32_t g_tx_error;   //  Transmit Error Code (from 0x4000c00c)
-uint32_t g_rx_status;  //  Receive Status (from 0x4000c000)
-uint32_t g_rx_tc;      //  Receive Terminal Count (0x4000c004)
-uint32_t g_rx_error;   //  Receive Error Code (0x4000c00c)
+uint32_t g_tx_error;   //  Transmit Error Code     (from 0x4000c00c)
+uint32_t g_rx_status;  //  Receive Status          (from 0x4000c000)
+uint32_t g_rx_tc;      //  Receive Terminal Count  (from 0x4000c004)
+uint32_t g_rx_error;   //  Receive Error Code      (from 0x4000c00c)
 </code></pre>
-<p>TODO</p>
-<p>Count the interrupts</p>
+<p>These values are displayed when we enter the SPI Command <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L158-L182"><code>spi_result</code></a>.</p>
+<p>When we complete two SPI Transfers successfully, we should see these values...</p>
+<pre><code class="language-text">Tx Interrupts: 2
+Tx Status:     0x0
+Tx Term Count: 0x0
+Tx Error:      0x0
+Rx Interrupts: 2
+Rx Status:     0x0
+Rx Term Count: 0x0
+Rx Error:      0x0
+</code></pre>
+<p>The Interrupt Counters, Status and Error Codes are set by the DMA Interrupt Handlers: <code>bl_spi0_dma_int_handler_tx</code> and <code>bl_spi0_dma_int_handler_rx</code>.</p>
+<h2 id="bl_spi0_dma_int_handler_tx-transmit-dma-interrupt-handler" class="section-header"><a href="#bl_spi0_dma_int_handler_tx-transmit-dma-interrupt-handler">15.11 bl_spi0_dma_int_handler_tx: Transmit DMA Interrupt Handler</a></h2>
+<p><code>bl_spi0_dma_int_handler_tx</code> is the DMA Interrupt Handler that's triggered when an SPI DMA Transmit Request completes (successfully or unsuccessfully).</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L769-L808"><code>bl602_hal/hal_spi.c</code></a></p>
 <pre><code class="language-c">void bl_spi0_dma_int_handler_tx(void)
 {
     g_tx_counter++;  //  Increment the Transmit Interrupt Counter
@@ -1754,8 +1767,7 @@ uint32_t g_rx_error;   //  Receive Error Code (0x4000c00c)
     g_tx_tc     = *(uint32_t *) 0x4000c004;  //  Set the Transmit Terminal Count
     if (g_tx_error == 0) { g_tx_error = *(uint32_t *) 0x4000c00c; }  //  Set the Transmit Error Code
 </code></pre>
-<p>TODO</p>
-<p>Notify the Event Group</p>
+<p>We notify the Event Group to wake up the Foreground Task that's waiting for the SPI DMA Transmit Request to complete (<code>hal_spi_dma_trans</code>)...</p>
 <pre><code class="language-c">    BaseType_t xResult = pdFAIL;
     BaseType_t xHigherPriorityTaskWoken = pdFALSE;
 
@@ -1778,10 +1790,9 @@ uint32_t g_rx_error;   //  Receive Error Code (0x4000c00c)
     return;
 }
 </code></pre>
-<h2 id="bl_spi0_dma_int_handler_rx-receive-dma-interrupt-handler" class="section-header"><a href="#bl_spi0_dma_int_handler_rx-receive-dma-interrupt-handler">15.11 bl_spi0_dma_int_handler_rx: Receive DMA Interrupt Handler</a></h2>
-<p>TODO</p>
-<p>Count the interrupts</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L810-L836"><code>bl602_hal/hal_spi.c</code></a></p>
+<h2 id="bl_spi0_dma_int_handler_rx-receive-dma-interrupt-handler" class="section-header"><a href="#bl_spi0_dma_int_handler_rx-receive-dma-interrupt-handler">15.12 bl_spi0_dma_int_handler_rx: Receive DMA Interrupt Handler</a></h2>
+<p><code>bl_spi0_dma_int_handler_rx</code> is the DMA Interrupt Handler that's triggered when an SPI DMA Receive Request completes (successfully or unsuccessfully).</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L810-L836"><code>bl602_hal/hal_spi.c</code></a></p>
 <pre><code class="language-c">void bl_spi0_dma_int_handler_rx(void)
 {
     g_rx_counter++;  //  Increment the Receive Interrupt Counter
@@ -1789,8 +1800,7 @@ uint32_t g_rx_error;   //  Receive Error Code (0x4000c00c)
     g_rx_tc     = *(uint32_t *) 0x4000c004;  //  Set the Receive Terminal Count
     if (g_rx_error == 0) { g_rx_error = *(uint32_t *) 0x4000c00c; }  //  Set the Receive Error Code
 </code></pre>
-<p>TODO</p>
-<p>Notify the Event Group</p>
+<p>We notify the Event Group to wake up the Foreground Task that's waiting for the SPI DMA Receive Request to complete (<code>hal_spi_dma_trans</code>)...</p>
 <pre><code class="language-c">    BaseType_t xResult = pdFAIL;
     BaseType_t xHigherPriorityTaskWoken = pdFALSE;
 
