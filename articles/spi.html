@@ -1721,7 +1721,7 @@ Rx DMA src=0x4000a28c, dest=0x4200d1b4, size=1, si=0, di=1, i=1
 <pre><code class="language-c">    DMA_Channel_Enable(arg-&gt;tx_dma_ch);
     DMA_Channel_Enable(arg-&gt;rx_dma_ch);
 </code></pre>
-<p>We wait until the Event Group is signalled by both DMA Interrupt Handlers: Transmit Complete and Receive Complete...</p>
+<p>We call <code>xEventGroupWaitBits</code> (from FreeRTOS) to wait until the Event Group is signalled by both DMA Interrupt Handlers: Transmit Complete and Receive Complete...</p>
 <pre><code class="language-c">    ////  TODO: SPI Transfer may hang here, waiting for FreeRTOS Event Group 
     ////  if it isn't notified by DMA Interrupt Handler.  To troubleshoot,
     ////  comment out ALL lines below until end of function.
@@ -1737,6 +1737,17 @@ Rx DMA src=0x4000a28c, dest=0x4200d1b4, size=1, si=0, di=1, i=1
         blog_info(&quot;recv all event group.\r\n&quot;);
     }
 </code></pre>
+<p><strong><code>EVT_GROUP_SPI_DMA_TR</code></strong> is a combination of two Events...</p>
+<ol>
+<li>
+<p><strong><code>EVT_GROUP_SPI_DMA_TX</code>:</strong> The Transmit DMA Interrupt Handler triggers this Event when an SPI DMA Transmit Request completes (successfully or unsuccessfully)</p>
+</li>
+<li>
+<p><strong><code>EVT_GROUP_SPI_DMA_RX</code>:</strong> The Receive DMA Interrupt Handler triggers this Event when an SPI DMA Receive Request completes (successfully or unsuccessfully)</p>
+</li>
+</ol>
+<p>Thus when we wait for <code>EVT_GROUP_SPI_DMA_TR</code>, we're waiting for the SPI DMA Transmit AND Receive Requests to complete.</p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L70-L72">(<code>EVT_GROUP_SPI_DMA_TR</code> is defined here)</a></p>
 <p>Finally we free the heap memory for the DMA Linked List...</p>
 <pre><code class="language-c">    vPortFree(ptxlli);
     vPortFree(prxlli);
@@ -1779,7 +1790,8 @@ Rx Error:      0x0
     g_tx_tc     = *(uint32_t *) 0x4000c004;  //  Set the Transmit Terminal Count
     if (g_tx_error == 0) { g_tx_error = *(uint32_t *) 0x4000c00c; }  //  Set the Transmit Error Code
 </code></pre>
-<p>We notify the Event Group to wake up the Foreground Task that's waiting for the SPI DMA Transmit Request to complete (<code>hal_spi_dma_trans</code>)...</p>
+<p>We call <code>xEventGroupSetBitsFromISR</code> to notify the Event Group, by triggering the <code>EVT_GROUP_SPI_DMA_TX</code> Event.</p>
+<p>Then we call <code>portYIELD_FROM_ISR</code> to wake up the Foreground Task that's waiting for the SPI DMA Transmit Request to complete (<code>hal_spi_dma_trans</code>).</p>
 <pre><code class="language-c">    BaseType_t xResult = pdFAIL;
     BaseType_t xHigherPriorityTaskWoken = pdFALSE;
 
@@ -1812,7 +1824,8 @@ Rx Error:      0x0
     g_rx_tc     = *(uint32_t *) 0x4000c004;  //  Set the Receive Terminal Count
     if (g_rx_error == 0) { g_rx_error = *(uint32_t *) 0x4000c00c; }  //  Set the Receive Error Code
 </code></pre>
-<p>We notify the Event Group to wake up the Foreground Task that's waiting for the SPI DMA Receive Request to complete (<code>hal_spi_dma_trans</code>)...</p>
+<p>We call <code>xEventGroupSetBitsFromISR</code> to notify the Event Group, by triggering the <code>EVT_GROUP_SPI_DMA_RX</code> Event.</p>
+<p>Then we call <code>portYIELD_FROM_ISR</code> to wake up the Foreground Task that's waiting for the SPI DMA Receive Request to complete (<code>hal_spi_dma_trans</code>).</p>
 <pre><code class="language-c">    BaseType_t xResult = pdFAIL;
     BaseType_t xHigherPriorityTaskWoken = pdFALSE;
 
