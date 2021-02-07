@@ -91,21 +91,22 @@
 <li><a href="#unsolved-mysteries">10 Unsolved Mysteries</a><ul></ul></li>
 <li><a href="#port-bl602-spi-hal-to-other-operating-systems">11 Port BL602 SPI HAL to other Operating Systems</a><ul></ul></li>
 <li><a href="#whats-next">12 What's Next</a><ul></ul></li>
-<li><a href="#appendix-test-bme280-spi-interface-with-bus-pirate">13 Appendix: Test BME280 SPI Interface with Bus Pirate</a><ul></ul></li>
-<li><a href="#appendix-troubleshoot-bl602-spi-with-logic-analyser">14 Appendix: Troubleshoot BL602 SPI with Logic Analyser</a><ul></ul></li>
-<li><a href="#appendix-inside-bl602-spi-hal">15 Appendix: Inside BL602 SPI HAL</a><ul>
-<li><a href="#definitions">15.1 Definitions</a><ul></ul></li>
-<li><a href="#spi_init-init-spi-port">15.2 spi_init: Init SPI Port</a><ul></ul></li>
-<li><a href="#hal_spi_set_rwspeed-set-spi-frequency">15.3 hal_spi_set_rwspeed: Set SPI Frequency</a><ul></ul></li>
-<li><a href="#hal_spi_init-init-spi-pins-and-dma">15.4 hal_spi_init: Init SPI Pins and DMA</a><ul></ul></li>
-<li><a href="#hal_gpio_init-assign-spi-pins">15.5 hal_gpio_init: Assign SPI Pins</a><ul></ul></li>
-<li><a href="#hal_spi_dma_init-init-spi-dma">15.6 hal_spi_dma_init: Init SPI DMA</a><ul></ul></li>
-<li><a href="#hal_spi_transfer-execute-spi-transfer">15.7 hal_spi_transfer: Execute SPI Transfer</a><ul></ul></li>
-<li><a href="#lli_list_init-create-dma-linked-list">15.8 lli_list_init: Create DMA Linked List</a><ul></ul></li>
-<li><a href="#hal_spi_dma_trans-execute-spi-transfer-with-dma">15.9 hal_spi_dma_trans: Execute SPI Transfer with DMA</a><ul></ul></li>
-<li><a href="#dma-interrupt-counters">15.10 DMA Interrupt Counters</a><ul></ul></li>
-<li><a href="#bl_spi0_dma_int_handler_tx-transmit-dma-interrupt-handler">15.11 bl_spi0_dma_int_handler_tx: Transmit DMA Interrupt Handler</a><ul></ul></li>
-<li><a href="#bl_spi0_dma_int_handler_rx-receive-dma-interrupt-handler">15.12 bl_spi0_dma_int_handler_rx: Receive DMA Interrupt Handler</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>7 Feb 2021</em></p>
+<li><a href="#notes">13 Notes</a><ul></ul></li>
+<li><a href="#appendix-test-bme280-spi-interface-with-bus-pirate">14 Appendix: Test BME280 SPI Interface with Bus Pirate</a><ul></ul></li>
+<li><a href="#appendix-troubleshoot-bl602-spi-with-logic-analyser">15 Appendix: Troubleshoot BL602 SPI with Logic Analyser</a><ul></ul></li>
+<li><a href="#appendix-inside-bl602-spi-hal">16 Appendix: Inside BL602 SPI HAL</a><ul>
+<li><a href="#definitions">16.1 Definitions</a><ul></ul></li>
+<li><a href="#spi_init-init-spi-port">16.2 spi_init: Init SPI Port</a><ul></ul></li>
+<li><a href="#hal_spi_set_rwspeed-set-spi-frequency">16.3 hal_spi_set_rwspeed: Set SPI Frequency</a><ul></ul></li>
+<li><a href="#hal_spi_init-init-spi-pins-and-dma">16.4 hal_spi_init: Init SPI Pins and DMA</a><ul></ul></li>
+<li><a href="#hal_gpio_init-assign-spi-pins">16.5 hal_gpio_init: Assign SPI Pins</a><ul></ul></li>
+<li><a href="#hal_spi_dma_init-init-spi-dma">16.6 hal_spi_dma_init: Init SPI DMA</a><ul></ul></li>
+<li><a href="#hal_spi_transfer-execute-spi-transfer">16.7 hal_spi_transfer: Execute SPI Transfer</a><ul></ul></li>
+<li><a href="#lli_list_init-create-dma-linked-list">16.8 lli_list_init: Create DMA Linked List</a><ul></ul></li>
+<li><a href="#hal_spi_dma_trans-execute-spi-transfer-with-dma">16.9 hal_spi_dma_trans: Execute SPI Transfer with DMA</a><ul></ul></li>
+<li><a href="#dma-interrupt-counters">16.10 DMA Interrupt Counters</a><ul></ul></li>
+<li><a href="#bl_spi0_dma_int_handler_tx-transmit-dma-interrupt-handler">16.11 bl_spi0_dma_int_handler_tx: Transmit DMA Interrupt Handler</a><ul></ul></li>
+<li><a href="#bl_spi0_dma_int_handler_rx-receive-dma-interrupt-handler">16.12 bl_spi0_dma_int_handler_rx: Receive DMA Interrupt Handler</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>7 Feb 2021</em></p>
 <p><a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone</strong></a> and <a href="https://wiki.pine64.org/wiki/Nutcracker#Pinenut-01S_Module_information_and_schematics"><strong>Pinenut BL602</strong></a> work great with I2C Sensors. <a href="https://lupyuen.github.io/articles/i2c">(See this)</a></p>
 <p>But what if we're connecting BL602 to <strong>High Bandwidth</strong> peripherals... Like the ST7789 Display Controller and the SX1262 LoRa Transceiver?</p>
 <p><strong>We'll need SPI on BL602!</strong></p>
@@ -895,9 +896,13 @@ int rc = spi_init(
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/spi.md"><code>lupyuen.github.io/src/spi.md</code></a></p>
+<h1 id="notes" class="section-header"><a href="#notes">13 Notes</a></h1>
+<ol>
+<li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1354972803179507715?s=19">this meandering Twitter Thread</a></li>
+</ol>
 <p><img src="https://lupyuen.github.io/images/spi-buspirate.jpg" alt="Bus Pirate connected to BME280 Sensor over SPI" /></p>
 <p><em>Bus Pirate connected to BME280 Sensor over SPI</em></p>
-<h1 id="appendix-test-bme280-spi-interface-with-bus-pirate" class="section-header"><a href="#appendix-test-bme280-spi-interface-with-bus-pirate">13 Appendix: Test BME280 SPI Interface with Bus Pirate</a></h1>
+<h1 id="appendix-test-bme280-spi-interface-with-bus-pirate" class="section-header"><a href="#appendix-test-bme280-spi-interface-with-bus-pirate">14 Appendix: Test BME280 SPI Interface with Bus Pirate</a></h1>
 <p><a href="http://dangerousprototypes.com/docs/Bus_Pirate"><strong>Bus Pirate</strong></a> is a useful gadget for verifying whether our BME280 Sensor works OK. And for checking the SPI signals that should be sent down the wire to BME280.</p>
 <p>Here's how we test BME280 (or BMP280) with Bus Pirate...</p>
 <ol>
@@ -1051,7 +1056,7 @@ READ: 0x60
 <p>The next section explains how.</p>
 <p><img src="https://lupyuen.github.io/images/spi-analyser.jpg" alt="PineCone BL602 RISC-V Board connected to LA2016 Logic Analyser and BME280 SPI Sensor" /></p>
 <p><em>PineCone BL602 RISC-V Board connected to LA2016 Logic Analyser and BME280 SPI Sensor</em></p>
-<h1 id="appendix-troubleshoot-bl602-spi-with-logic-analyser" class="section-header"><a href="#appendix-troubleshoot-bl602-spi-with-logic-analyser">14 Appendix: Troubleshoot BL602 SPI with Logic Analyser</a></h1>
+<h1 id="appendix-troubleshoot-bl602-spi-with-logic-analyser" class="section-header"><a href="#appendix-troubleshoot-bl602-spi-with-logic-analyser">15 Appendix: Troubleshoot BL602 SPI with Logic Analyser</a></h1>
 <p>We shall use the <a href="https://www.seeedstudio.com/LA2016-Logic-Analyzer-p-2218.html"><strong>LA2016 Logic Analyser</strong></a> to capture and decode the SPI Signals between BL602 and BME280. (Also between Bus Pirate and BME280)</p>
 <p>(LA2016 User Guide is in the link above, under &quot;Learn and Documents&quot;)</p>
 <p>Connect the Logic Analyser to BL602 according to the pic above...</p>
@@ -1100,11 +1105,11 @@ READ: 0x60
 <p><img src="https://lupyuen.github.io/images/spi-analyse9a.png" alt="BL602 talks to BME280 over SPI, visualised by LA2016 Logic Analyser" /></p>
 <p><em>BL602 talks to BME280 over SPI, visualised by LA2016 Logic Analyser</em></p>
 <p>This should look similar to the decoded SPI Signals between Bus Pirate and BME280. <a href="https://lupyuen.github.io/images/spi-analyse1a.png">(See this)</a></p>
-<h1 id="appendix-inside-bl602-spi-hal" class="section-header"><a href="#appendix-inside-bl602-spi-hal">15 Appendix: Inside BL602 SPI HAL</a></h1>
+<h1 id="appendix-inside-bl602-spi-hal" class="section-header"><a href="#appendix-inside-bl602-spi-hal">16 Appendix: Inside BL602 SPI HAL</a></h1>
 <p>Let's walk through the BL602 SPI HAL code and understand how it performs SPI Transfers with DMA.</p>
 <p>We haven't modified any logic in the SPI HAL. (Though we have added some debug code to understand how the HAL works)</p>
 <p>We added the function <code>spi_init</code> to initialise the SPI Port without using the AliOS Device Tree.</p>
-<h2 id="definitions" class="section-header"><a href="#definitions">15.1 Definitions</a></h2>
+<h2 id="definitions" class="section-header"><a href="#definitions">16.1 Definitions</a></h2>
 <p><code>HAL_SPI_DEBUG</code> is presently set to <code>1</code> to enable debug messages. </p>
 <p>For production we should change this to <code>0</code>.</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L57-L58"><code>bl602_hal/hal_spi.c</code></a></p>
@@ -1118,7 +1123,7 @@ READ: 0x60
 //  configured for SPI Port, which overrides GPIO.
 #define HAL_SPI_HARDCS      (1)
 </code></pre>
-<h2 id="spi_init-init-spi-port" class="section-header"><a href="#spi_init-init-spi-port">15.2 spi_init: Init SPI Port</a></h2>
+<h2 id="spi_init-init-spi-port" class="section-header"><a href="#spi_init-init-spi-port">16.2 spi_init: Init SPI Port</a></h2>
 <p>We added the function <code>spi_init</code> to initialise the SPI Port without using the AliOS Device Tree. This function is called by our demo firmware.</p>
 <p><code>spi_init</code> was derived from the SPI HAL Functions <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L597-L760"><code>spi_arg_set_fdt2</code></a> and <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L524-L591"><code>vfs_spi_init_fullname</code></a> (which use the AliOS Device Tree).</p>
 <p>Note that there is only a <strong>single global instance of SPI Data.</strong> </p>
@@ -1181,7 +1186,7 @@ int spi_init(spi_dev_t *spi, uint8_t port,
     return rc;
 }
 </code></pre>
-<h2 id="hal_spi_set_rwspeed-set-spi-frequency" class="section-header"><a href="#hal_spi_set_rwspeed-set-spi-frequency">15.3 hal_spi_set_rwspeed: Set SPI Frequency</a></h2>
+<h2 id="hal_spi_set_rwspeed-set-spi-frequency" class="section-header"><a href="#hal_spi_set_rwspeed-set-spi-frequency">16.3 hal_spi_set_rwspeed: Set SPI Frequency</a></h2>
 <p><code>hal_spi_set_rwspeed</code> is called by <a href="https://lupyuen.github.io/articles/spi#spi_init-init-spi-port"><code>spi_init</code></a> to set the SPI Frequency, assign the SPI Pins and initialise the DMA Controller.</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L430-L480"><code>bl602_hal/hal_spi.c</code></a></p>
 <pre><code class="language-c">int hal_spi_set_rwspeed(spi_dev_t *spi_dev, uint32_t speed)
@@ -1242,7 +1247,7 @@ int spi_init(spi_dev_t *spi, uint8_t port,
     return 0;
 }
 </code></pre>
-<h2 id="hal_spi_init-init-spi-pins-and-dma" class="section-header"><a href="#hal_spi_init-init-spi-pins-and-dma">15.4 hal_spi_init: Init SPI Pins and DMA</a></h2>
+<h2 id="hal_spi_init-init-spi-pins-and-dma" class="section-header"><a href="#hal_spi_init-init-spi-pins-and-dma">16.4 hal_spi_init: Init SPI Pins and DMA</a></h2>
 <p><code>hal_spi_init</code> is called by <a href="https://lupyuen.github.io/articles/spi#hal_spi_set_rwspeed-set-spi-frequency"><code>hal_spi_set_rwspeed</code></a> to assign the SPI Pins and initialise the DMA Controller.</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L360-L384"><code>bl602_hal/hal_spi.c</code></a></p>
 <pre><code class="language-c">int32_t hal_spi_init(spi_dev_t *spi)
@@ -1280,7 +1285,7 @@ int spi_init(spi_dev_t *spi, uint8_t port,
     return 0;
 }
 </code></pre>
-<h2 id="hal_gpio_init-assign-spi-pins" class="section-header"><a href="#hal_gpio_init-assign-spi-pins">15.5 hal_gpio_init: Assign SPI Pins</a></h2>
+<h2 id="hal_gpio_init-assign-spi-pins" class="section-header"><a href="#hal_gpio_init-assign-spi-pins">16.5 hal_gpio_init: Assign SPI Pins</a></h2>
 <p><code>hal_gpio_init</code> is called by <a href="https://lupyuen.github.io/articles/spi#hal_spi_init-init-spi-pins-and-dma"><code>hal_spi_init</code></a> to assign the SPI Pins and configure the SPI Port as SPI Controller or Peripheral.</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L98-L124"><code>bl602_hal/hal_spi.c</code></a></p>
 <pre><code class="language-c">static void hal_gpio_init(spi_hw_t *arg)
@@ -1313,7 +1318,7 @@ int spi_init(spi_dev_t *spi, uint8_t port,
     return;
 }
 </code></pre>
-<h2 id="hal_spi_dma_init-init-spi-dma" class="section-header"><a href="#hal_spi_dma_init-init-spi-dma">15.6 hal_spi_dma_init: Init SPI DMA</a></h2>
+<h2 id="hal_spi_dma_init-init-spi-dma" class="section-header"><a href="#hal_spi_dma_init-init-spi-dma">16.6 hal_spi_dma_init: Init SPI DMA</a></h2>
 <p><code>hal_spi_dma_init</code> is called by <a href="https://lupyuen.github.io/articles/spi#hal_spi_init-init-spi-pins-and-dma"><code>hal_spi_init</code></a> to initialise the DMA Controller.</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L207-L288"><code>bl602_hal/hal_spi.c</code></a></p>
 <pre><code class="language-c">static void hal_spi_dma_init(spi_hw_t *arg)
@@ -1435,7 +1440,7 @@ int spi_init(spi_dev_t *spi, uint8_t port,
     return;
 }
 </code></pre>
-<h2 id="hal_spi_transfer-execute-spi-transfer" class="section-header"><a href="#hal_spi_transfer-execute-spi-transfer">15.7 hal_spi_transfer: Execute SPI Transfer</a></h2>
+<h2 id="hal_spi_transfer-execute-spi-transfer" class="section-header"><a href="#hal_spi_transfer-execute-spi-transfer">16.7 hal_spi_transfer: Execute SPI Transfer</a></h2>
 <p><code>hal_spi_transfer</code> is called by our demo firmware to execute multiple SPI Transfers with DMA.</p>
 <p><code>hal_spi_transfer</code> is a Blocking Function... It waits for the SPI Transfers to complete before returning.</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L482-L522"><code>bl602_hal/hal_spi.c</code></a></p>
@@ -1487,7 +1492,7 @@ int spi_init(spi_dev_t *spi, uint8_t port,
     return 0;
 }
 </code></pre>
-<h2 id="lli_list_init-create-dma-linked-list" class="section-header"><a href="#lli_list_init-create-dma-linked-list">15.8 lli_list_init: Create DMA Linked List</a></h2>
+<h2 id="lli_list_init-create-dma-linked-list" class="section-header"><a href="#lli_list_init-create-dma-linked-list">16.8 lli_list_init: Create DMA Linked List</a></h2>
 <p>BL602's DMA Controller accepts a <strong>DMA Linked List</strong> of DMA Requests that will be executed automatically.</p>
 <p>In <code>lli_list_init</code> we'll create two DMA Linked Lists of DMA Requests...</p>
 <ol>
@@ -1556,6 +1561,7 @@ int spi_init(spi_dev_t *spi, uint8_t port,
 <p>The BL602 Reference Manual doesn't explain Automatic Address Accumulation. </p>
 <p>Let's assume that the above configuration will auto-increment the Source RAM Address (SI) when the DMA Controller copies data from RAM to the SPI Port.</p>
 <p>We don't auto-increment the Destination Address (DI) because the SPI Port uses a single address for transmitting data: <code>spi_fifo_wdata</code> at <code>0x4000a288</code></p>
+<p><a href="https://twitter.com/MisterTechBlog/status/1358502589105508352?s=19">More about Automatic Address Accumulation</a></p>
 <p>We set I to 1 if this is the last entry in the DMA Linked List...</p>
 <pre><code class="language-c">        if (i == count - 1) {
             dmactrl.I = 1;
@@ -1646,7 +1652,7 @@ Rx DMA src=0x4000a28c, dest=0x4200d1b4, size=1, si=0, di=1, i=1
 </ul>
 </li>
 </ol>
-<h2 id="hal_spi_dma_trans-execute-spi-transfer-with-dma" class="section-header"><a href="#hal_spi_dma_trans-execute-spi-transfer-with-dma">15.9 hal_spi_dma_trans: Execute SPI Transfer with DMA</a></h2>
+<h2 id="hal_spi_dma_trans-execute-spi-transfer-with-dma" class="section-header"><a href="#hal_spi_dma_trans-execute-spi-transfer-with-dma">16.9 hal_spi_dma_trans: Execute SPI Transfer with DMA</a></h2>
 <p><code>hal_spi_dma_trans</code> is called by <a href="https://lupyuen.github.io/articles/spi#hal_spi_transfer-execute-spi-transfer"><code>hal_spi_transfer</code></a> to execute an SPI Transfer with DMA, and wait for the SPI Transfer to complete.</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L290-L358"><code>bl602_hal/hal_spi.c</code></a></p>
 <pre><code class="language-c">static void hal_spi_dma_trans(spi_hw_t *arg, uint8_t *TxData, uint8_t *RxData, uint32_t Len)
@@ -1755,7 +1761,7 @@ Rx DMA src=0x4000a28c, dest=0x4200d1b4, size=1, si=0, di=1, i=1
     vPortFree(prxlli);
 }
 </code></pre>
-<h2 id="dma-interrupt-counters" class="section-header"><a href="#dma-interrupt-counters">15.10 DMA Interrupt Counters</a></h2>
+<h2 id="dma-interrupt-counters" class="section-header"><a href="#dma-interrupt-counters">16.10 DMA Interrupt Counters</a></h2>
 <p>To check whether the DMA Interrupts are working correctly, we added Interrupt Counters and captured the Status and Error Codes.</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L769-L808"><code>bl602_hal/hal_spi.c</code></a></p>
 <pre><code class="language-c">//  Interrupt Counters for Transmit and Receive
@@ -1782,7 +1788,7 @@ Rx Term Count: 0x0
 Rx Error:      0x0
 </code></pre>
 <p>The Interrupt Counters, Status and Error Codes are set by the DMA Interrupt Handlers: <code>bl_spi0_dma_int_handler_tx</code> and <code>bl_spi0_dma_int_handler_rx</code>.</p>
-<h2 id="bl_spi0_dma_int_handler_tx-transmit-dma-interrupt-handler" class="section-header"><a href="#bl_spi0_dma_int_handler_tx-transmit-dma-interrupt-handler">15.11 bl_spi0_dma_int_handler_tx: Transmit DMA Interrupt Handler</a></h2>
+<h2 id="bl_spi0_dma_int_handler_tx-transmit-dma-interrupt-handler" class="section-header"><a href="#bl_spi0_dma_int_handler_tx-transmit-dma-interrupt-handler">16.11 bl_spi0_dma_int_handler_tx: Transmit DMA Interrupt Handler</a></h2>
 <p><code>bl_spi0_dma_int_handler_tx</code> is the DMA Interrupt Handler that's triggered when an SPI DMA Transmit Request completes (successfully or unsuccessfully).</p>
 <p>The DMA Interrupt Handler is registered by <a href="https://lupyuen.github.io/articles/spi#hal_spi_dma_init-init-spi-dma"><code>hal_spi_dma_init</code></a>.</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L769-L808"><code>bl602_hal/hal_spi.c</code></a></p>
@@ -1817,7 +1823,7 @@ Rx Error:      0x0
     return;
 }
 </code></pre>
-<h2 id="bl_spi0_dma_int_handler_rx-receive-dma-interrupt-handler" class="section-header"><a href="#bl_spi0_dma_int_handler_rx-receive-dma-interrupt-handler">15.12 bl_spi0_dma_int_handler_rx: Receive DMA Interrupt Handler</a></h2>
+<h2 id="bl_spi0_dma_int_handler_rx-receive-dma-interrupt-handler" class="section-header"><a href="#bl_spi0_dma_int_handler_rx-receive-dma-interrupt-handler">16.12 bl_spi0_dma_int_handler_rx: Receive DMA Interrupt Handler</a></h2>
 <p><code>bl_spi0_dma_int_handler_rx</code> is the DMA Interrupt Handler that's triggered when an SPI DMA Receive Request completes (successfully or unsuccessfully).</p>
 <p>The DMA Interrupt Handler is registered by <a href="https://lupyuen.github.io/articles/spi#hal_spi_dma_init-init-spi-dma"><code>hal_spi_dma_init</code></a>.</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L810-L836"><code>bl602_hal/hal_spi.c</code></a></p>
