@@ -947,6 +947,8 @@ There's plenty more code in the [__BL602 IoT SDK__](https://github.com/bouffalol
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
+-   [Discuss this article on Reddit](https://www.reddit.com/r/RISCV/comments/lehhrv/pinecone_bl602_talks_spi_too/?utm_source=share&utm_medium=web2x&context=3)
+
 -   [Check out my articles](https://lupyuen.github.io)
 
 -   [RSS Feed](https://lupyuen.github.io/rss.xml)
