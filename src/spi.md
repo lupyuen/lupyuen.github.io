@@ -917,6 +917,10 @@ We also need to __emulate these FreeRTOS heap memory functions__, which are simi
 
 The usage of these functions is explained in the Appendix.
 
+![ST7789 Display Controller with SPI Interface](https://lupyuen.github.io/images/spi-st7789.jpg)
+
+_ST7789 Display Controller with SPI Interface_
+
 # What's Next
 
 TODO
