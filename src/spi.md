@@ -475,7 +475,13 @@ All SPI Transfers done with the BL602 SPI HAL will use super-efficient DMA.
 
 (See `hal_spi_transfer` in the Appendix for the BL602 DMA implementation)
 
+![SPI Demo Firmware for BL602](https://lupyuen.github.io/images/spi-firmware3.jpg)
+
+_SPI Demo Firmware for BL602_
+
 # Build and Run the Firmware
+
+Let's run the SPI Demo Firmware for BL602.
 
 Download the Firmware Binary File __`sdk_app_spi.bin`__ from...
 
