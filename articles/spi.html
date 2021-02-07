@@ -1561,7 +1561,7 @@ int spi_init(spi_dev_t *spi, uint8_t port,
 
         blog_info(&quot;Rx DMA src=0x%x, dest=0x%x, size=%d, si=%d, di=%d, i=%d\r\n&quot;, (unsigned) (*pprxlli)[i].srcDmaAddr, (unsigned) (*pprxlli)[i].destDmaAddr, dmactrl.TransferSize, dmactrl.SI, dmactrl.DI, dmactrl.I);
 </code></pre>
-<p>Finally we append both DMA Requests to the DMA Linked List...</p>
+<p>Finally we append both DMA Requests to the DMA Linked Lists (Transmit and Receive)...</p>
 <pre><code class="language-c">        if (i != 0) {
             (*pptxlli)[i-1].nextLLI = (uint32_t)&amp;(*pptxlli)[i];
             (*pprxlli)[i-1].nextLLI = (uint32_t)&amp;(*pprxlli)[i];
@@ -1684,20 +1684,20 @@ Rx DMA src=0x4000a28c, dest=0x4200d1b4, size=1, si=0, di=1, i=1
         SPI_Enable(arg-&gt;ssp_id, SPI_WORK_MODE_SLAVE);
     }
 </code></pre>
-<p>We call <code>lli_list_init</code> to create the DMA Linked List that will contain every SPI Transfer...</p>
+<p>We call <code>lli_list_init</code> to create the DMA Linked Lists (Transmit and Receive) that will contain every SPI Transfer...</p>
 <pre><code class="language-c">    ret = lli_list_init(&amp;ptxlli, &amp;prxlli, TxData, RxData, Len);
     if (ret &lt; 0) {
         blog_error(&quot;init lli failed. \r\n&quot;);
         return;
     }
 </code></pre>
-<p>We assign the DMA Linked List to the DMA Controller...</p>
+<p>We assign the DMA Linked Lists (Transmit and Receive) to the DMA Controller...</p>
 <pre><code class="language-c">    DMA_LLI_Init(arg-&gt;tx_dma_ch, &amp;txllicfg);
     DMA_LLI_Init(arg-&gt;rx_dma_ch, &amp;rxllicfg);
     DMA_LLI_Update(arg-&gt;tx_dma_ch, (uint32_t) ptxlli);
     DMA_LLI_Update(arg-&gt;rx_dma_ch, (uint32_t) prxlli);
 </code></pre>
-<p>We enable the DMA Channels. The DMA Controller will transfer data according to the DMA Linked List...</p>
+<p>We enable the DMA Channels. The DMA Controller will transfer data according to the DMA Linked Lists...</p>
 <pre><code class="language-c">    DMA_Channel_Enable(arg-&gt;tx_dma_ch);
     DMA_Channel_Enable(arg-&gt;rx_dma_ch);
 </code></pre>
@@ -1725,7 +1725,7 @@ Rx DMA src=0x4000a28c, dest=0x4200d1b4, size=1, si=0, di=1, i=1
 <h2 id="bl_spi0_dma_int_handler_tx-transmit-dma-interrupt-handler" class="section-header"><a href="#bl_spi0_dma_int_handler_tx-transmit-dma-interrupt-handler">15.10 bl_spi0_dma_int_handler_tx: Transmit DMA Interrupt Handler</a></h2>
 <p>TODO</p>
 <p>Define Interrupt Counters and error status</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L769-L808"><code>bl602_hal/hal_spi.c</code></a></p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L769-L808"><code>bl602_hal/hal_spi.c</code></a></p>
 <pre><code class="language-c">//  Interrupt Counters for Transmit and Receive
 int g_tx_counter;
 int g_rx_counter;
