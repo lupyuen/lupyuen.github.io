@@ -923,9 +923,7 @@ _ST7789 Display Controller with SPI Interface_
 
 # What's Next
 
-TODO
-
-ST7789 Display Controller
+Now that we have SPI working on BL602, let's test it with the __ST7789 Display Controller__... And maybe with the __LVGL Graphics Library__ too!
 
 There's plenty more code in the [__BL602 IoT SDK__](https://github.com/bouffalolab/bl_iot_sdk) to be deciphered and documented: __UART, ADC, DAC, WiFi, Bluetooth LE,__ ...
 
