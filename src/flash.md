@@ -603,6 +603,8 @@ gpio0 {
     time    = <100>;    //  Duration for this mode
 ```
 
+[Device Tree Source](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/device_tree/bl_factory_params_IoTKitA_40M.dts#L16-L23)
+
 ## GPIO Button
 
 Here we configure GPIO 2 as a Button Input (note the debounce logic)...
@@ -633,85 +635,135 @@ gpio2 {
         trig_level = "Hi";
 ```
 
+[Device Tree Source](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/device_tree/bl_factory_params_IoTKitA_40M.dts#L32-L57)
+
 ## UART
 
-This is the default UART setting, on GPIO 7 and 16 at 2 Mbps...
+This is the default UART setting for `/dev/ttyS0`, on GPIO 7 and 16 at 2 Mbps...
 
 ```text
-    uart {
-        #address-cells = <1>;
-        #size-cells    = <1>;
-        uart@4000A000 {
-            status     = "okay";
-            id         = <0>;
-            compatible = "bl602_uart";
-            path       = "/dev/ttyS0";
-            baudrate   = <2000000>;
-            pin {
-                rx = <7>;
-                tx = <16>;
-            };
-            buf_size {
-                rx_size = <512>;
-                tx_size = <512>;
-            };
-            feature {
-                tx  = "okay";
-                rx  = "okay";
-                cts = "disable";
-                rts = "disable";
-            };
-        };
+uart@4000A000 {
+    status     = "okay";
+    id         = <0>;
+    compatible = "bl602_uart";
+    path       = "/dev/ttyS0";
+    baudrate   = <2000000>;
+    pin {
+        rx = <7>;
+        tx = <16>;
+    };
+    buf_size {
+        rx_size = <512>;
+        tx_size = <512>;
+    };
+    feature {
+        tx  = "okay";
+        rx  = "okay";
+        cts = "disable";
+        rts = "disable";
+    };
+};
 ```
+
+[Device Tree Source](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/device_tree/bl_factory_params_IoTKitA_40M.dts#L194-L214)
+
+(Baud Rate `2000000` is too high for macOS... We should lower it to `230400`. [See this](https://lupyuen.github.io/articles/led#appendix-fix-bl602-demo-firmware-for-macos))
+
+There is a second UART Port at `/dev/ttyS1`, on GPIO 3 and 4 at 115.2 kbps...
+
+```text
+uart@4000A100 {
+    status = "okay";
+    id = <1>;
+    compatible = "bl602_uart";
+    path = "/dev/ttyS1";
+    baudrate = <115200>;
+    pin {
+        rx = <3>;
+        tx = <4>;
+    };
+    buf_size {
+        rx_size = <512>;
+        tx_size = <512>;
+    };
+    feature {
+        tx = "okay";
+        rx = "okay";
+        cts = "disable";
+        rts = "disable";
+    };
+};
+```
+
+[Device Tree Source](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/device_tree/bl_factory_params_IoTKitA_40M.dts#L215-L235)
 
 ## PWM
 
 This PWM setting could be useful for turning PineCone's onboard RGB LED into a Disco Light...
 
 ```text
-    pwm {
-        #address-cells = <1>;
-        #size-cells    = <1>;
-        pwm@4000A420 {
-            status     = "okay";
-            compatible = "bl602_pwm";
-            reg        = <0x4000A420 0x20>;
-            path       = "/dev/pwm0";
-            id         = <0>;
-            pin        = <0>;
-            freq       = <800000>;
-            duty       = <50>;
-        };
+pwm {
+    #address-cells = <1>;
+    #size-cells    = <1>;
+    pwm@4000A420 {
+        status     = "okay";
+        compatible = "bl602_pwm";
+        reg        = <0x4000A420 0x20>;
+        path       = "/dev/pwm0";
+        id         = <0>;
+        pin        = <0>;
+        freq       = <800000>;
+        duty       = <50>;
+    };
 ```
+
+[Device Tree Source](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/device_tree/bl_factory_params_IoTKitA_40M.dts#L126-L135)
 
 ## WiFi
 
 This complicated setting configures the WiFi stack (including SSID)...
 
 ```text
-    wifi {
-        #address-cells = <1>;
-        #size-cells    = <1>;
-        region {
-            country_code = <86>;
-        };
-        mac {
-            mode         = "MBF";
-            sta_mac_addr = [C8 43 57 82 73 40];
-            ap_mac_addr  = [C8 43 57 82 73 02];
-        };
-        sta {
-            ssid = "yourssid";
-            pwd  = "yourapssword";
-            auto_connect_enable = <0>;
-        };
-        ap {
-            ssid = "bl_test_005";
-            pwd  = "12345678";
-            ap_channel       = <11>;
-            auto_chan_detect = "disable";
-        };
+wifi {
+    #address-cells = <1>;
+    #size-cells    = <1>;
+    region {
+        country_code = <86>;
+    };
+    mac {
+        mode         = "MBF";
+        sta_mac_addr = [C8 43 57 82 73 40];
+        ap_mac_addr  = [C8 43 57 82 73 02];
+    };
+    sta {
+        ssid = "yourssid";
+        pwd  = "yourapssword";
+        auto_connect_enable = <0>;
+    };
+    ap {
+        ssid = "bl_test_005";
+        pwd  = "12345678";
+        ap_channel       = <11>;
+        auto_chan_detect = "disable";
+    };
 ```
+
+[Device Tree Source](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/device_tree/bl_factory_params_IoTKitA_40M.dts#L281-L333)
+
+## Bluetooth
+
+Bluetooth is configured in the Device Tree too...
+
+```text
+bluetooth {
+    #address-cells = <1>;
+    #size-cells = <1>;
+    brd_rf {
+        pwr_table_ble = <13>;  //range:-3~15dbm; if set -3, please set 253 here
+    };
+```
+
+[Device Tree Source](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/device_tree/bl_factory_params_IoTKitA_40M.dts#L334-L340)
 
 [More about BL602 Device Tree](https://lupyuen.github.io/articles/flash#appendix-bl602-device-tree)
 
