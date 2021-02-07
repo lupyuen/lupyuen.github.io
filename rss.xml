@@ -4,6 +4,12 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>PineCone BL602 talks SPI too!</title>
+            <link>https://lupyuen.github.io/articles/spi</link>
+            <description><![CDATA[PineCone BL602 RISC-V Board talks to BME280 Sensor over SPI... Let's find out how]]></description>
+            <pubDate>Sun, 07 Feb 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>PineCone BL602 talks to I2C Sensors</title>
             <link>https://lupyuen.github.io/articles/i2c</link>
             <description><![CDATA[How we call the BL602 RISC-V Hardware Abstraction Layer to access the BME280 I2C Sensor]]></description>
