@@ -199,6 +199,8 @@
 </tbody></table>
 <p>(For BME280: SDO = MISO and SDI = MOSI)</p>
 <p>We'll talk about GPIO 2 in a while.</p>
+<p><img src="https://lupyuen.github.io/images/spi-pins.jpg" alt="BL602 SPI Pins 1 (SDO), 3 (Clock), 4 (SDI) and 14 (Chip Select)" /></p>
+<p><em>BL602 SPI Pins 1 (SDO), 3 (Clock), 4 (SDI) and 14 (Chip Select)</em></p>
 <h2 id="selecting-spi-pins" class="section-header"><a href="#selecting-spi-pins">3.1 Selecting SPI Pins</a></h2>
 <p>We're NOT using the <a href="https://wiki.pine64.org/wiki/Nutcracker#Pinenut-12S_Module_information">Recommended SPI Pins for PineCone and Pinenut</a>: GPIO 0, 11, 14, 17.</p>
 <p>And we're NOT using the <a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/device_tree/bl_factory_params_IoTKitA_40M.dts#L237-L259">Default SPI Pins for BL602 Device Tree</a>: GPIO 0, 1, 2, 3.</p>
@@ -387,6 +389,8 @@ static void test_spi_init(char *buf, int len, int argc, char **argv) {
 </ol>
 <p>(Yep there will be &quot;wasted data&quot;... We don't need the received byte from the first request... And the transmitted byte from the second request)</p>
 <p>Let's construct the two SPI Transfer requests.</p>
+<p><img src="https://lupyuen.github.io/images/spi-analyse9b.png" alt="First and Second SPI Transfers" /></p>
+<p><em>First and Second SPI Transfers</em></p>
 <h2 id="transmit-and-receive-buffers" class="section-header"><a href="#transmit-and-receive-buffers">5.1 Transmit and Receive Buffers</a></h2>
 <p>First we define the <strong>Transmit and Receive Buffers</strong> (one byte each) for the two SPI Transfers: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L102-L108"><code>sdk_app_spi/demo.c</code></a></p>
 <pre><code class="language-c">/// SPI Transmit and Receive Buffers for First SPI Transfer
