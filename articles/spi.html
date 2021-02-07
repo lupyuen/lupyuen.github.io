@@ -1292,14 +1292,14 @@ int spi_init(spi_dev_t *spi, uint8_t port,
     }
     blog_info(&quot;hal_gpio_init: cs:%d, clk:%d, mosi:%d, miso: %d\r\n&quot;, arg-&gt;pin_cs, arg-&gt;pin_clk, arg-&gt;pin_mosi, arg-&gt;pin_miso);
 </code></pre>
-<p>We call <code>GLB_GPIO_Func_Init</code> to assign the four SPI Pins to the SPI Port.</p>
-<p>The sequence of the SPI Pins doesn't matter, because each pin has a fixed SPI Function (like Serial Data In, Serial Data Out) within the SPI Port...</p>
+<p>We call <code>GLB_GPIO_Func_Init</code> to assign the four SPI Pins to the SPI Port...</p>
 <pre><code class="language-c">    gpiopins[0] = arg-&gt;pin_cs;
     gpiopins[1] = arg-&gt;pin_clk;
     gpiopins[2] = arg-&gt;pin_mosi;
     gpiopins[3] = arg-&gt;pin_miso;    
     GLB_GPIO_Func_Init(GPIO_FUN_SPI,gpiopins,sizeof(gpiopins)/sizeof(gpiopins[0]));
 </code></pre>
+<p>The sequence of the SPI Pins doesn't matter, because each pin has a fixed SPI Function (like Serial Data In, Serial Data Out) within the SPI Port.</p>
 <p>(<code>GLB_GPIO_Func_Init</code> comes from the <strong>BL602 Standard Driver</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c"><code>bl602_i2c.c</code></a>)</p>
 <p>Finally we configure the SPI Port as SPI Controller or Peripheral...</p>
 <pre><code class="language-c">    if (arg-&gt;mode == 0) {
