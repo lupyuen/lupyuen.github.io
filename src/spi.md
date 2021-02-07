@@ -959,6 +959,10 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [`lupyuen.github.io/src/spi.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/spi.md)
 
+# Notes
+
+1.  This article is the expanded version of [this meandering Twitter Thread](https://twitter.com/MisterTechBlog/status/1354972803179507715?s=19)
+
 ![Bus Pirate connected to BME280 Sensor over SPI](https://lupyuen.github.io/images/spi-buspirate.jpg)
 
 _Bus Pirate connected to BME280 Sensor over SPI_
@@ -1776,6 +1780,8 @@ The BL602 Reference Manual doesn't explain Automatic Address Accumulation.
 Let's assume that the above configuration will auto-increment the Source RAM Address (SI) when the DMA Controller copies data from RAM to the SPI Port.
 
 We don't auto-increment the Destination Address (DI) because the SPI Port uses a single address for transmitting data: `spi_fifo_wdata` at `0x4000a288`
+
+[More about Automatic Address Accumulation](https://twitter.com/MisterTechBlog/status/1358502589105508352?s=19)
 
 We set I to 1 if this is the last entry in the DMA Linked List...
 
