@@ -1238,7 +1238,11 @@ From [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/comp
 
 We added the function `spi_init` to initialise the SPI Port without using the AliOS Device Tree. This function is called by our demo firmware.
 
-`spi_init` was derived from the SPI HAL Functions [`spi_arg_set_fdt2`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L597-L760) and [`vfs_spi_init_fullname`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L524-L591) (which use the AliOS Device Tree).
+`spi_init` was derived from these SPI HAL Functions (which use the AliOS Device Tree)...
+
+- [`spi_arg_set_fdt2`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L597-L760)
+
+- [`vfs_spi_init_fullname`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L524-L591)
 
 Note that there is only a __single global instance of SPI Data.__ 
 
@@ -1304,6 +1308,10 @@ We set the internal fields of the SPI device...
     blog_info("[HAL] [SPI] Init :\r\nport=%d, mode=%d, polar_phase = %d, freq=%ld, tx_dma_ch=%d, rx_dma_ch=%d, pin_clk=%d, pin_cs=%d, pin_mosi=%d, pin_miso=%d\r\n",
         port, mode, polar_phase, freq, tx_dma_ch, rx_dma_ch, pin_clk, pin_cs, pin_mosi, pin_miso);
 ```
+
+[(This code is derived from `vfs_spi_init_fullname`)](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L563-L580)
+
+Note that we don't assign the SPI Frequency yet.  We'll assign later in `hal_spi_set_rwspeed` because the function validates the SPI Frequency.
 
 Finally we call [`hal_spi_set_rwspeed`](https://lupyuen.github.io/articles/spi#hal_spi_set_rwspeed-set-spi-frequency) to set the SPI Frequency, assign the SPI Pins and initialise the DMA Controller...
 
