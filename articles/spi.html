@@ -699,7 +699,8 @@ int rc = spi_init(
 <p><a href="https://learn.sparkfun.com/tutorials/serial-peripheral-interface-spi/all#chip-select-cs">More about connecting multiple SPI Peripherals</a></p>
 </li>
 </ol>
-<p>Here's how we use BL602 GPIO to control our Chip Select Pin...</p>
+<p>Read on to learn how we use BL602 GPIO to control our Chip Select Pin.</p>
+<p>(Remember: Don't use Pin 2 for any other purpose... Because the SPI Port is still controlling it!)</p>
 <h2 id="configure-chip-select-pin-as-gpio-output-pin" class="section-header"><a href="#configure-chip-select-pin-as-gpio-output-pin">7.1 Configure Chip Select Pin as GPIO Output Pin</a></h2>
 <p>BL602 is extremely versatile for Pin Functions... We may assign <strong>any BL602 Pin as GPIO, SPI, I2C, UART, PWM or JTAG!</strong></p>
 <p>(See Table 3.1 &quot;Pin Description&quot;, Page 27 in the <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en">BL602 Reference Manual</a>)</p>
@@ -1157,6 +1158,7 @@ int spi_init(spi_dev_t *spi, uint8_t port,
     g_hal_buf = &amp;g_spi_data;
     memset(g_hal_buf, 0, sizeof(spi_priv_data_t));
 </code></pre>
+<p><a href="https://lupyuen.github.io/articles/spi#initialise-spi-port">(The parameters for <code>spi_init</code> are listed here)</a></p>
 <p>We call <code>xEventGroupCreate</code> to create a FreeRTOS Event Group.</p>
 <p>This Event Group will be signalled by the DMA Interrupt Handlers to notify the Foreground Task that the DMA Transmit and Receive Requests have been completed.</p>
 <pre><code class="language-c">    //  Create the Event Group for DMA Interrupt Handler to notify Foreground Task
