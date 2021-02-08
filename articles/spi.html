@@ -1586,6 +1586,7 @@ int spi_init(spi_dev_t *spi, uint8_t port,
 <p>(In the original Chinese docs, &quot;Automatic Address Accumulation&quot; actually means &quot;Automatic Address Increment&quot;. <a href="https://twitter.com/MisterTechBlog/status/1358502589105508352?s=19">See this</a>)</p>
 <p>Let's assume that the above configuration will auto-increment the Source RAM Address (SI) when the DMA Controller copies data from RAM to the SPI Port.</p>
 <p>We don't auto-increment the Destination Address (DI) because the SPI Port uses a single address for transmitting data: <code>spi_fifo_wdata</code> at <code>0x4000a288</code></p>
+<p>(<code>DMA_MINC_ENABLE</code> means &quot;Enable Memory Increment Mode&quot;, <code>DMA_MINC_DISABLE</code> means &quot;Disable Memory Increment Mode&quot;. <a href="https://www.st.com/content/ccc/resource/technical/document/user_manual/2f/71/ba/b8/75/54/47/cf/DM00105879.pdf/files/DM00105879.pdf/jcr:content/translations/en.DM00105879.pdf">See this</a>)</p>
 <p>We set I to 1 if this is the last entry in the DMA Linked List...</p>
 <pre><code class="language-c">        if (i == count - 1) {
             dmactrl.I = 1;
@@ -1606,6 +1607,7 @@ int spi_init(spi_dev_t *spi, uint8_t port,
 </code></pre>
 <p>Let's assume that this will auto-increment the Destination RAM Address (DI) when the DMA Controller copies the received data from the SPI Port to RAM.</p>
 <p>We don't auto-increment the Source Address (SI) because the SPI Port uses a single address for receiving data: <code>spi_fifo_rdata</code> at <code>0x4000a28c</code></p>
+<p>(<code>DMA_MINC_ENABLE</code> means &quot;Enable Memory Increment Mode&quot;, <code>DMA_MINC_DISABLE</code> means &quot;Disable Memory Increment Mode&quot;. <a href="https://www.st.com/content/ccc/resource/technical/document/user_manual/2f/71/ba/b8/75/54/47/cf/DM00105879.pdf/files/DM00105879.pdf/jcr:content/translations/en.DM00105879.pdf">See this</a>)</p>
 <p><strong>For SPI Receive:</strong> We create a DMA Request that copies the received data from the SPI Port to RAM...</p>
 <pre><code class="language-c">        (*pprxlli)[i].srcDmaAddr = (uint32_t)(SPI_BASE+SPI_FIFO_RDATA_OFFSET);
         (*pprxlli)[i].destDmaAddr = (uint32_t)(prx_data + i * LLI_BUFF_SIZE);
