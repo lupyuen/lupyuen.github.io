@@ -822,7 +822,7 @@ int rc = spi_init(
     4    //  SPI Serial Data Out Pin (formerly MOSI)
 ```
 
-(Could we have mistakenly configured BL602 as SPI Peripheral... Instead of SPI Controller? 🤔 )
+(Could we have mistakenly configured BL602 as SPI Peripheral... Instead of SPI Controller? 🤔)
 
 # SPI Phase looks sus
 

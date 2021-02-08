@@ -910,11 +910,13 @@ Now that we understand the inner workings of I2C on BL602...
 
     [(Like we did for BL602 GPIO)](https://lupyuen.github.io/articles/gpio)
 
-1.  Also __start working on BL602 SPI__!
+1.  Also __work on BL602 SPI__! Check out the article...
 
-    [(I'm expecting to receive some SPI displays... Many thanks to my Generous Sponsor! 😀 )](https://twitter.com/MisterTechBlog/status/1354776244018057218?s=20)
+    [__"PineCone BL602 talks SPI too"__](https://lupyuen.github.io/articles/spi)
 
-There's plenty more code in the [__BL602 IoT SDK__](https://github.com/bouffalolab/bl_iot_sdk) to be deciphered and documented: __UART, SPI, ADC, DAC, WiFi, Bluetooth LE,__ ...
+    [(I have received ST7789 SPI displays for testing... Many thanks to my Generous Sponsor! 😀)](https://twitter.com/MisterTechBlog/status/1354776244018057218?s=20)
+
+There's plenty more code in the [__BL602 IoT SDK__](https://github.com/bouffalolab/bl_iot_sdk) to be deciphered and documented: __UART, ADC, DAC, WiFi, Bluetooth LE,__ ...
 
 [__Come Join Us... Make BL602 Better!__](https://wiki.pine64.org/wiki/Nutcracker)
 
