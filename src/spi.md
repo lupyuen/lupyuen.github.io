@@ -98,15 +98,15 @@ _Don't use any pins on the I2C side! (Because the `3V3` pin selects SPI or I2C)_
 
 Connect BL602 to BME280 (the SPI side with 6 pins) according to the pic above...
 
-| BL602 Pin | BME280 SPI | Wire Colour
-|:---|:---|:---|
-| __`GPIO 1`__ | `SDO` _(MISO)_ | Green 
-| __`GPIO 2`__ | Do Not <br> Connect | Do Not <br> Connect
-| __`GPIO 3`__ | `SCK` | Yellow 
-| __`GPIO 4`__ | `SDI` _(MOSI)_ | Blue
-| __`GPIO 14`__ | `CS` | Orange 
-| __`3V3`__ | `3.3V` | Red
-| __`GND`__ | `GND` | Black
+| BL602 Pin     | BME280 SPI     | Wire Colour |
+|:--------------|:---------------|:------------|
+| __`GPIO 1`__  | `SDO` _(MISO)_ | Green 
+| __`GPIO 2`__  | Do Not <br> Connect | Do Not <br> Connect
+| __`GPIO 3`__  | `SCK`          | Yellow 
+| __`GPIO 4`__  | `SDI` _(MOSI)_ | Blue
+| __`GPIO 14`__ | `CS`           | Orange 
+| __`3V3`__     | `3.3V`         | Red
+| __`GND`__     | `GND`          | Black
 
 We'll talk about GPIO 2 in a while.
 
