@@ -191,16 +191,15 @@
 <p>BME280 supports two interfaces: SPI (6 pins) and I2C (4 pins). We shall connect to the <strong>SPI side of BME280</strong>.</p>
 <p><em>Don't use any pins on the I2C side! (Because the <code>3V3</code> pin selects SPI or I2C)</em></p>
 <p>Connect BL602 to BME280 (the SPI side with 6 pins) according to the pic above...</p>
-<table><thead><tr><th align="center">BL602 Pin</th><th align="center">BME280 SPI</th><th align="left">Wire Colour</th></tr></thead><tbody>
-<tr><td align="center"><strong><code>GPIO 1</code></strong></td><td align="center"><code>SDO</code></td><td align="left">Green</td></tr>
-<tr><td align="center"><strong><code>GPIO 2</code></strong></td><td align="center">Do Not <br> Connect</td><td align="left">Do Not <br> Connect</td></tr>
-<tr><td align="center"><strong><code>GPIO 3</code></strong></td><td align="center"><code>SCK</code></td><td align="left">Yellow</td></tr>
-<tr><td align="center"><strong><code>GPIO 4</code></strong></td><td align="center"><code>SDI</code></td><td align="left">Blue</td></tr>
-<tr><td align="center"><strong><code>GPIO 14</code></strong></td><td align="center"><code>CS</code></td><td align="left">Orange</td></tr>
-<tr><td align="center"><strong><code>3V3</code></strong></td><td align="center"><code>3.3V</code></td><td align="left">Red</td></tr>
-<tr><td align="center"><strong><code>GND</code></strong></td><td align="center"><code>GND</code></td><td align="left">Black</td></tr>
+<table><thead><tr><th align="left">BL602 Pin</th><th align="left">BME280 SPI</th><th align="left">Wire Colour</th></tr></thead><tbody>
+<tr><td align="left"><strong><code>GPIO 1</code></strong></td><td align="left"><code>SDO</code> <em>(MISO)</em></td><td align="left">Green</td></tr>
+<tr><td align="left"><strong><code>GPIO 2</code></strong></td><td align="left">Do Not <br> Connect</td><td align="left">Do Not <br> Connect</td></tr>
+<tr><td align="left"><strong><code>GPIO 3</code></strong></td><td align="left"><code>SCK</code></td><td align="left">Yellow</td></tr>
+<tr><td align="left"><strong><code>GPIO 4</code></strong></td><td align="left"><code>SDI</code> <em>(MOSI)</em></td><td align="left">Blue</td></tr>
+<tr><td align="left"><strong><code>GPIO 14</code></strong></td><td align="left"><code>CS</code></td><td align="left">Orange</td></tr>
+<tr><td align="left"><strong><code>3V3</code></strong></td><td align="left"><code>3.3V</code></td><td align="left">Red</td></tr>
+<tr><td align="left"><strong><code>GND</code></strong></td><td align="left"><code>GND</code></td><td align="left">Black</td></tr>
 </tbody></table>
-<p>(For BME280: SDO = MISO and SDI = MOSI)</p>
 <p>We'll talk about GPIO 2 in a while.</p>
 <p><img src="https://lupyuen.github.io/images/spi-pins.jpg" alt="BL602 SPI Pins 1 (SDI), 3 (Clock), 4 (SDO) and 14 (Chip Select)" /></p>
 <p><em>BL602 SPI Pins 1 (SDI), 3 (Clock), 4 (SDO) and 14 (Chip Select)</em></p>
