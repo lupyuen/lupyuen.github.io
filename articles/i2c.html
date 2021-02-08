@@ -622,13 +622,11 @@ cargo run flash sdk_app_i2c.bin \
 <p>Set BL602 to <strong>Normal Mode</strong> (Non-Flashing) and restart the board.</p>
 <p>For PineCone, this means setting the onboard jumper (IO 8) to the <code>L</code> Position <a href="https://lupyuen.github.io/images/pinecone-jumperl.jpg">(Like this)</a></p>
 <p>Connect to BL602's UART Port at 2 Mbps like so...</p>
-<pre><code class="language-bash"># For Linux:
-sudo screen /dev/ttyUSB0 2000000
-
-# For macOS: Doesn't work because 2 Mbps is not supported by macOS for USB Serial.
-# Try using VMWare on macOS. See https://lupyuen.github.io/articles/led#appendix-fix-bl602-demo-firmware-for-macos
+<p><strong>For Linux:</strong></p>
+<pre><code class="language-bash">sudo screen /dev/ttyUSB0 2000000
 </code></pre>
-<p>On Windows, use <code>putty</code>.</p>
+<p><strong>For macOS:</strong> Use CoolTerm (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
+<p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">More details on connecting to BL602</a></p>
 <h2 id="enter-i2c-commands" class="section-header"><a href="#enter-i2c-commands">9.4 Enter I2C commands</a></h2>
 <p>Let's enter some I2C commands to read our BME280 Sensor!</p>

@@ -133,8 +133,8 @@
 <p><strong>For Linux:</strong></p>
 <pre><code class="language-bash">sudo screen /dev/ttyUSB0 2000000
 </code></pre>
+<p><strong>For macOS:</strong> Use CoolTerm (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
-<p><strong>For macOS:</strong> See <a href="https://lupyuen.github.io/articles/led#appendix-fix-bl602-demo-firmware-for-macos">&quot;Appendix: Fix BL602 Demo Firmware for macOS&quot;</a></p>
 </li>
 <li>
 <p>Press the <strong>RST Button</strong> on PineCone to restart the firmware.</p>
@@ -316,8 +316,8 @@ void bl_gpio_register(gpio_ctx_t *pstnode);
 <p><strong>For Linux:</strong></p>
 <pre><code class="language-bash">sudo screen /dev/ttyUSB0 2000000
 </code></pre>
+<p><strong>For macOS:</strong> Use CoolTerm (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
-<p><strong>For macOS:</strong> See <a href="https://lupyuen.github.io/articles/led#appendix-fix-bl602-demo-firmware-for-macos">&quot;Appendix: Fix BL602 Demo Firmware for macOS&quot;</a></p>
 </li>
 <li>
 <p>Press the <strong>RST Button</strong> on PineCone to restart the firmware. Ignore the errors.</p>
@@ -523,11 +523,31 @@ threshold2 = ( period / 100 ) * duty;
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/led.md"><code>lupyuen.github.io/src/led.md</code></a></p>
 <h1 id="appendix-fix-bl602-demo-firmware-for-macos" class="section-header"><a href="#appendix-fix-bl602-demo-firmware-for-macos">9 Appendix: Fix BL602 Demo Firmware for macOS</a></h1>
-<p>There's a problem accessing the BL602 Demo Firmware from macOS...</p>
-<p>BL602 Demo Firmware configures the UART Port for 2 Mbps, which is too fast for the CH340 USB Serial Driver on macOS.</p>
-<p>This seems to be a problem with IOKit on macOS. <a href="https://twitter.com/madushan1000/status/1345352779502669824">See this</a></p>
-<p><a href="https://twitter.com/M0JEK/status/1354202261828861954?s=20"><strong>UPDATE: Running VMWare on macOS might fix the problem. See this</strong></a></p>
-<p>To make this work with macOS, we need to lower the UART baud rate from 2 Mbps to 230.4 kbps.</p>
+<p><em>On macOS, why doesn't <code>screen</code> work for accessing the BL602 Demo Firmware?</em></p>
+<p>BL602 Demo Firmware configures the UART Port for 2 Mbps.</p>
+<p>This causes problems for older serial apps (like <code>screen</code>) that don't call macOS IOKit. <a href="https://twitter.com/madushan1000/status/1345352779502669824">See this</a></p>
+<p>To fix this, use a newer serial app like <strong>CoolTerm</strong>...</p>
+<ol>
+<li>
+<p><a href="https://freeware.the-meiers.org/"><strong>Download CoolTerm</strong></a></p>
+</li>
+<li>
+<p>Click <strong><code>Options</code></strong></p>
+</li>
+<li>
+<p>Set <strong><code>Port</code></strong> to <strong><code>usbserial-1420</code></strong></p>
+</li>
+<li>
+<p>Set <strong><code>Baudrate</code></strong> to <strong><code>2000000</code></strong> (2 Mbps)</p>
+</li>
+<li>
+<p>Click <strong><code>Connect</code></strong></p>
+</li>
+</ol>
+<p><img src="https://lupyuen.github.io/images/led-coolterm.png" alt="CoolTerm Options" /></p>
+<p><a href="https://twitter.com/Kongduino/status/1358557946670551040">(Many thanks to @Kongduino)</a></p>
+<p><em>What if we really really want to use older serial apps like <code>screen</code>?</em></p>
+<p>This is NOT recommended... But to support older serial apps with macOS, we need to lower the UART baud rate from 2 Mbps to 230.4 kbps.</p>
 <ol>
 <li>
 <p>In the BL602 Demo Firmware, edit the <code>main.c</code> source file, like...</p>
@@ -584,7 +604,6 @@ threshold2 = ( period / 100 ) * duty;
 </code></pre>
 </li>
 </ol>
-<p>Please lemme know if this works. Thanks!</p>
 
     
 </body>

@@ -284,10 +284,25 @@ caused by: Invalid argument
 </code></pre>
 <p>(Change the USB serial port <code>/dev/ttyUSB0</code> if necessary)</p>
 <p><strong>For macOS:</strong></p>
-<pre><code class="language-bash">screen /dev/tty.usbserial-1420 2000000                 
-</code></pre>
-<p>(Change <code>/dev/tty.usbserial-1420</code> to the USB Serial Device assigned to PineCone)</p>
-<p>Note: This probably won't work on macOS because 2 Mbps is too high for the macOS USB Serial Port. The BL602 Demo Firmware needs to be recompiled to reduce the UART baud rate. See <a href="https://lupyuen.github.io/articles/led#appendix-fix-bl602-demo-firmware-for-macos">&quot;Fix BL602 Demo Firmware for macOS&quot;</a></p>
+<ol>
+<li>
+<p><a href="https://freeware.the-meiers.org/"><strong>Download CoolTerm</strong></a></p>
+</li>
+<li>
+<p>Click <strong><code>Options</code></strong></p>
+</li>
+<li>
+<p>Set <strong><code>Port</code></strong> to <strong><code>usbserial-1420</code></strong></p>
+</li>
+<li>
+<p>Set <strong><code>Baudrate</code></strong> to <strong><code>2000000</code></strong> (2 Mbps)</p>
+</li>
+<li>
+<p>Click <strong><code>Connect</code></strong></p>
+</li>
+</ol>
+<p><img src="https://lupyuen.github.io/images/led-coolterm.png" alt="CoolTerm Options" /></p>
+<p>(Older macOS apps like <code>screen</code> won't work at 2 Mbps. See <a href="https://lupyuen.github.io/articles/led#appendix-fix-bl602-demo-firmware-for-macos">&quot;Fix BL602 Demo Firmware for macOS&quot;</a>)</p>
 <p><strong>For Windows:</strong> Use <code>putty</code> to connect to PineCone's <code>COM</code> Port (like <code>COM5</code>) at speed <code>2000000</code> (2 Mbps)</p>
 <p><a href="https://www.chiark.greenend.org.uk/%7Esgtatham/putty/latest.html">Download putty for Windows</a></p>
 <p><img src="https://lupyuen.github.io/images/flash-putty.png" alt="Connect putty to COM Port at speed 2000000" /></p>
@@ -298,7 +313,8 @@ caused by: Invalid argument
 [helloworld]   helloworld
 [helloworld]   end
 </code></pre>
-<p><strong>For Linux and macOS:</strong> To exit the <code>screen</code> console, press <code>Ctrl-A</code> then <code>k</code> then <code>y</code></p>
+<p><strong>For Linux:</strong> To exit the <code>screen</code> console, press <code>Ctrl-A</code> then <code>k</code> then <code>y</code></p>
+<p><strong>For macOS:</strong> Close the CoolTerm window</p>
 <p><strong>For Windows:</strong> Close the <code>putty</code> window</p>
 </li>
 <li>
