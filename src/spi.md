@@ -708,7 +708,9 @@ _Why are we controlling the Chip Select Pin ourselves?_
 
     [More about connecting multiple SPI Peripherals](https://learn.sparkfun.com/tutorials/serial-peripheral-interface-spi/all#chip-select-cs)
 
-Here's how we use BL602 GPIO to control our Chip Select Pin...
+Read on to learn how we use BL602 GPIO to control our Chip Select Pin.
+
+(Remember: Don't use Pin 2 for any other purpose... Because the SPI Port is still controlling it!)
 
 ## Configure Chip Select Pin as GPIO Output Pin
 
@@ -1269,6 +1271,8 @@ int spi_init(spi_dev_t *spi, uint8_t port,
     g_hal_buf = &g_spi_data;
     memset(g_hal_buf, 0, sizeof(spi_priv_data_t));
 ```
+
+[(The parameters for `spi_init` are listed here)](https://lupyuen.github.io/articles/spi#initialise-spi-port)
 
 We call `xEventGroupCreate` to create a FreeRTOS Event Group.
 
