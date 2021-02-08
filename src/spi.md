@@ -1807,6 +1807,8 @@ Let's assume that the above configuration will auto-increment the Source RAM Add
 
 We don't auto-increment the Destination Address (DI) because the SPI Port uses a single address for transmitting data: `spi_fifo_wdata` at `0x4000a288`
 
+(`DMA_MINC_ENABLE` means "Enable Memory Increment Mode", `DMA_MINC_DISABLE` means "Disable Memory Increment Mode". [See this](https://www.st.com/content/ccc/resource/technical/document/user_manual/2f/71/ba/b8/75/54/47/cf/DM00105879.pdf/files/DM00105879.pdf/jcr:content/translations/en.DM00105879.pdf))
+
 We set I to 1 if this is the last entry in the DMA Linked List...
 
 ```c
@@ -1837,6 +1839,8 @@ __For SPI Receive:__ We configure the __DMA Automatic Address Accumulation (Incr
 Let's assume that this will auto-increment the Destination RAM Address (DI) when the DMA Controller copies the received data from the SPI Port to RAM.
 
 We don't auto-increment the Source Address (SI) because the SPI Port uses a single address for receiving data: `spi_fifo_rdata` at `0x4000a28c`
+
+(`DMA_MINC_ENABLE` means "Enable Memory Increment Mode", `DMA_MINC_DISABLE` means "Disable Memory Increment Mode". [See this](https://www.st.com/content/ccc/resource/technical/document/user_manual/2f/71/ba/b8/75/54/47/cf/DM00105879.pdf/files/DM00105879.pdf/jcr:content/translations/en.DM00105879.pdf))
 
 __For SPI Receive:__ We create a DMA Request that copies the received data from the SPI Port to RAM...
 
