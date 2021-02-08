@@ -1424,13 +1424,23 @@ int spi_init(spi_dev_t *spi, uint8_t port,
     fifocfg.rxFifoDmaEnable = ENABLE;
     SPI_FifoConfig(spi_id,&amp;fifocfg);
 </code></pre>
-<p>We configure the Transmit DMA Interrupts...</p>
+<p><strong>SPI FIFO</strong> is the <strong>Transmit / Receive Queue for SPI</strong>. The SPI FIFO Transmit and Receive Queues can buffer up to <strong>4 bytes</strong> each...</p>
+<ul>
+<li>
+<p><strong>SPI Transmit FIFO:</strong> <code>spi_fifo_wdata</code> at <code>0x4000a288</code></p>
+</li>
+<li>
+<p><strong>SPI Receive FIFO:</strong> <code>spi_fifo_rdata</code> at <code>0x4000a28c</code></p>
+</li>
+</ul>
+<p>When we set the SPI FIFO Thresholds to 1 (<code>txFifoThreshold</code> and <code>rxFifoThreshold</code>), the SPI Port will notify the DMA Controller whenever one byte has been transmitted or received, so that the DMA Controller will copy the next transmit / receive byte.</p>
+<p>Next we configure the Transmit DMA Interrupts...</p>
 <pre><code class="language-c">    DMA_Disable();
     DMA_IntMask(hw_arg-&gt;tx_dma_ch, DMA_INT_ALL, MASK);
     DMA_IntMask(hw_arg-&gt;tx_dma_ch, DMA_INT_TCOMPLETED, UNMASK);
     DMA_IntMask(hw_arg-&gt;tx_dma_ch, DMA_INT_ERR, UNMASK);
 </code></pre>
-<p>We configure the Receive DMA Interrupts and enable the DMA interrupts...</p>
+<p>Then we configure the Receive DMA Interrupts and enable the DMA interrupts...</p>
 <pre><code class="language-c">    DMA_IntMask(hw_arg-&gt;rx_dma_ch, DMA_INT_ALL, MASK);
     DMA_IntMask(hw_arg-&gt;rx_dma_ch, DMA_INT_TCOMPLETED, UNMASK); 
     DMA_IntMask(hw_arg-&gt;rx_dma_ch, DMA_INT_ERR, UNMASK);
@@ -1768,7 +1778,7 @@ Rx DMA src=0x4000a28c, dest=0x4200d1b4, size=1, si=0, di=1, i=1
 </ol>
 <p>Thus when we wait for <code>EVT_GROUP_SPI_DMA_TR</code>, we're waiting for the SPI DMA Transmit AND Receive Requests to complete.</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L70-L72">(<code>EVT_GROUP_SPI_DMA_TR</code> is defined here)</a></p>
-<p>Finally we free the heap memory for the DMA Linked List...</p>
+<p>Finally we free the heap memory for the DMA Linked Lists (Transmit and Receive)...</p>
 <pre><code class="language-c">    vPortFree(ptxlli);
     vPortFree(prxlli);
 }
