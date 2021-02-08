@@ -1801,11 +1801,11 @@ __For SPI Transmit:__ We configure the __DMA Automatic Address Accumulation__ fo
 
 The [BL602 Reference Manual](https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en) doesn't explain Automatic Address Accumulation. (See Section 6.3.2 "DMA Channel Configuration", Page 73)
 
+(In the original Chinese docs, "Automatic Address Accumulation" actually means "Automatic Address Increment". [See this](https://twitter.com/MisterTechBlog/status/1358502589105508352?s=19))
+
 Let's assume that the above configuration will auto-increment the Source RAM Address (SI) when the DMA Controller copies data from RAM to the SPI Port.
 
 We don't auto-increment the Destination Address (DI) because the SPI Port uses a single address for transmitting data: `spi_fifo_wdata` at `0x4000a288`
-
-[More about Automatic Address Accumulation](https://twitter.com/MisterTechBlog/status/1358502589105508352?s=19)
 
 We set I to 1 if this is the last entry in the DMA Linked List...
 
@@ -1827,7 +1827,7 @@ __For SPI Transmit:__ We create a DMA Request that copies data from RAM to the S
         blog_info("Tx DMA src=0x%x, dest=0x%x, size=%d, si=%d, di=%d, i=%d\r\n", (unsigned) (*pptxlli)[i].srcDmaAddr, (unsigned) (*pptxlli)[i].destDmaAddr, dmactrl.TransferSize, dmactrl.SI, dmactrl.DI, dmactrl.I);
 ```
 
-__For SPI Receive:__ We configure the __DMA Automatic Address Accumulation__ for Source (SI) and Destination (DI)...
+__For SPI Receive:__ We configure the __DMA Automatic Address Accumulation (Increment)__ for Source (SI) and Destination (DI)...
 
 ```c
         dmactrl.SI = DMA_MINC_DISABLE;
