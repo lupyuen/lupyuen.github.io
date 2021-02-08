@@ -747,6 +747,8 @@ assert(rc == 0);
 
 We're ready to toggle Pin 14 as a GPIO Output Pin!
 
+(`bl_gpio_enable_output` comes from the __BL602 GPIO Low Level HAL__. [See this](https://lupyuen.github.io/articles/led#enable-gpio))
+
 ## Set Chip Select to Low
 
 To set our Chip Select Pin to Low (which activates BME280), we do this: [`sdk_app_spi/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L135-L155)
@@ -758,6 +760,8 @@ assert(rc == 0);
 ```
 
 We set Chip Select to Low just before executing the two SPI Transfers.
+
+(`bl_gpio_output_set` comes from the __BL602 GPIO Low Level HAL__. [See this](https://lupyuen.github.io/articles/led#read-and-write-gpio))
 
 ## Set Chip Select to High
 
