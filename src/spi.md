@@ -2014,43 +2014,6 @@ Finally we free the heap memory for the DMA Linked List...
 }
 ```
 
-## DMA Interrupt Counters
-
-To check whether the DMA Interrupts are working correctly, we added Interrupt Counters and captured the Status and Error Codes.
-
-From [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L769-L808)
-
-```c
-//  Interrupt Counters for Transmit and Receive
-int g_tx_counter;
-int g_rx_counter;
-
-//  Status, Terminal Counts and Error Codes for Transmit and Receive
-uint32_t g_tx_status;  //  Transmit Status         (from 0x4000c000)
-uint32_t g_tx_tc;      //  Transmit Terminal Count (from 0x4000c004)
-uint32_t g_tx_error;   //  Transmit Error Code     (from 0x4000c00c)
-uint32_t g_rx_status;  //  Receive Status          (from 0x4000c000)
-uint32_t g_rx_tc;      //  Receive Terminal Count  (from 0x4000c004)
-uint32_t g_rx_error;   //  Receive Error Code      (from 0x4000c00c)
-```
-
-These values are displayed when we enter the SPI Command [`spi_result`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L158-L182).
-
-When we complete two SPI Transfers successfully, we should see these values...
-
-```text
-Tx Interrupts: 2
-Tx Status:     0x0
-Tx Term Count: 0x0
-Tx Error:      0x0
-Rx Interrupts: 2
-Rx Status:     0x0
-Rx Term Count: 0x0
-Rx Error:      0x0
-```
-
-The Interrupt Counters, Status and Error Codes are set by the DMA Interrupt Handlers: `bl_spi0_dma_int_handler_tx` and `bl_spi0_dma_int_handler_rx`.
-
 ## bl_spi0_dma_int_handler_tx: Transmit DMA Interrupt Handler
 
 `bl_spi0_dma_int_handler_tx` is the DMA Interrupt Handler that's triggered when an SPI DMA Transmit Request completes (successfully or unsuccessfully).
@@ -2067,6 +2030,8 @@ void bl_spi0_dma_int_handler_tx(void)
     g_tx_tc     = *(uint32_t *) 0x4000c004;  //  Set the Transmit Terminal Count
     if (g_tx_error == 0) { g_tx_error = *(uint32_t *) 0x4000c00c; }  //  Set the Transmit Error Code
 ```
+
+[(`g_tx_counter`, `g_tx_status` and `g_tx_tc` are explained here)](https://lupyuen.github.io/articles/spi#dma-interrupt-counters)
 
 We call `xEventGroupSetBitsFromISR` to notify the Event Group, by triggering the `EVT_GROUP_SPI_DMA_TX` Event.
 
@@ -2113,6 +2078,8 @@ void bl_spi0_dma_int_handler_rx(void)
     if (g_rx_error == 0) { g_rx_error = *(uint32_t *) 0x4000c00c; }  //  Set the Receive Error Code
 ```
 
+[(`g_rx_counter`, `g_rx_status` and `g_rx_tc` are explained here)](https://lupyuen.github.io/articles/spi#dma-interrupt-counters)
+
 We call `xEventGroupSetBitsFromISR` to notify the Event Group, by triggering the `EVT_GROUP_SPI_DMA_RX` Event.
 
 Then we call `portYIELD_FROM_ISR` to wake up the Foreground Task that's waiting for the SPI DMA Receive Request to complete (`hal_spi_dma_trans`).
@@ -2139,3 +2106,48 @@ Then we call `portYIELD_FROM_ISR` to wake up the Foreground Task that's waiting 
     return;
 }
 ```
+
+## DMA Interrupt Counters
+
+To check whether the DMA Interrupts are working correctly, we added Interrupt Counters and captured the Status and Error Codes.
+
+From [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L769-L808)
+
+```c
+//  Interrupt Counters for Transmit and Receive
+int g_tx_counter;
+int g_rx_counter;
+
+//  Status, Terminal Counts and Error Codes for Transmit and Receive
+uint32_t g_tx_status;  //  Transmit Status         (from 0x4000c000)
+uint32_t g_tx_tc;      //  Transmit Terminal Count (from 0x4000c004)
+uint32_t g_tx_error;   //  Transmit Error Code     (from 0x4000c00c)
+uint32_t g_rx_status;  //  Receive Status          (from 0x4000c000)
+uint32_t g_rx_tc;      //  Receive Terminal Count  (from 0x4000c004)
+uint32_t g_rx_error;   //  Receive Error Code      (from 0x4000c00c)
+```
+
+These values are displayed when we enter the SPI Command [`spi_result`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L158-L182).
+
+When we complete two SPI Transfers successfully, we should see these values...
+
+```text
+Tx Interrupts: 2
+Tx Status:     0x0
+Tx Term Count: 0x0
+Tx Error:      0x0
+Rx Interrupts: 2
+Rx Status:     0x0
+Rx Term Count: 0x0
+Rx Error:      0x0
+```
+
+The Interrupt Counters, Status and Error Codes are set by the DMA Interrupt Handlers...
+
+1.  __Transmit DMA Interrupt Handler:__ [`bl_spi0_dma_int_handler_tx`](https://lupyuen.github.io/articles/spi#bl_spi0_dma_int_handler_tx-transmit-dma-interrupt-handler)
+
+    This will be triggered when an SPI DMA Transmit Request completes (successfully or unsuccessfully)
+
+1.  __Receive DMA Interrupt Handler:__ [`bl_spi0_dma_int_handler_rx`](https://lupyuen.github.io/articles/spi#bl_spi0_dma_int_handler_rx-receive-dma-interrupt-handler)
+
+    This will be triggered when an SPI DMA Receive Request completes (successfully or unsuccessfully)
