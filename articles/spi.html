@@ -725,6 +725,7 @@ rc = bl_gpio_enable_output(SPI_CS_PIN, 0, 0);
 assert(rc == 0);
 </code></pre>
 <p>We're ready to toggle Pin 14 as a GPIO Output Pin!</p>
+<p>(<code>bl_gpio_enable_output</code> comes from the <strong>BL602 GPIO Low Level HAL</strong>. <a href="https://lupyuen.github.io/articles/led#enable-gpio">See this</a>)</p>
 <h2 id="set-chip-select-to-low" class="section-header"><a href="#set-chip-select-to-low">7.2 Set Chip Select to Low</a></h2>
 <p>To set our Chip Select Pin to Low (which activates BME280), we do this: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L135-L155"><code>sdk_app_spi/demo.c</code></a></p>
 <pre><code class="language-c">//  Set Chip Select pin to Low, to activate BME280
@@ -732,6 +733,7 @@ int rc = bl_gpio_output_set(SPI_CS_PIN, 0);
 assert(rc == 0);
 </code></pre>
 <p>We set Chip Select to Low just before executing the two SPI Transfers.</p>
+<p>(<code>bl_gpio_output_set</code> comes from the <strong>BL602 GPIO Low Level HAL</strong>. <a href="https://lupyuen.github.io/articles/led#read-and-write-gpio">See this</a>)</p>
 <h2 id="set-chip-select-to-high" class="section-header"><a href="#set-chip-select-to-high">7.3 Set Chip Select to High</a></h2>
 <p>To set our Chip Select Pin to High (which deactivates BME280), we do this...</p>
 <pre><code class="language-c">//  Set Chip Select pin to High, to deactivate BME280
