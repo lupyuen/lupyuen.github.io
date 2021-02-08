@@ -233,13 +233,19 @@ _Firmware running on PineCone_
 
     __For macOS:__
 
-    ```bash
-    screen /dev/tty.usbserial-1420 2000000                 
-    ```
+    1.  [__Download CoolTerm__](https://freeware.the-meiers.org/)
 
-    (Change `/dev/tty.usbserial-1420` to the USB Serial Device assigned to PineCone)
+    1.  Click __`Options`__
 
-    Note: This probably won't work on macOS because 2 Mbps is too high for the macOS USB Serial Port. The BL602 Demo Firmware needs to be recompiled to reduce the UART baud rate. See ["Fix BL602 Demo Firmware for macOS"](https://lupyuen.github.io/articles/led#appendix-fix-bl602-demo-firmware-for-macos)
+    1.  Set __`Port`__ to __`usbserial-1420`__
+
+    1.  Set __`Baudrate`__ to __`2000000`__ (2 Mbps)
+
+    1.  Click __`Connect`__
+
+    ![CoolTerm Options](https://lupyuen.github.io/images/led-coolterm.png)
+
+    (Older macOS apps like `screen` won't work at 2 Mbps. See ["Fix BL602 Demo Firmware for macOS"](https://lupyuen.github.io/articles/led#appendix-fix-bl602-demo-firmware-for-macos))
 
     __For Windows:__ Use `putty` to connect to PineCone's `COM` Port (like `COM5`) at speed `2000000` (2 Mbps)
     
@@ -255,7 +261,9 @@ _Firmware running on PineCone_
     [helloworld]   end
     ```
 
-    __For Linux and macOS:__ To exit the `screen` console, press `Ctrl-A` then `k` then `y`
+    __For Linux:__ To exit the `screen` console, press `Ctrl-A` then `k` then `y`
+
+    __For macOS:__ Close the CoolTerm window
 
     __For Windows:__ Close the `putty` window
 

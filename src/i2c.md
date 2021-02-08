@@ -731,15 +731,15 @@ For PineCone, this means setting the onboard jumper (IO 8) to the `L` Position [
 
 Connect to BL602's UART Port at 2 Mbps like so...
 
-```bash
-# For Linux:
-sudo screen /dev/ttyUSB0 2000000
+__For Linux:__
 
-# For macOS: Doesn't work because 2 Mbps is not supported by macOS for USB Serial.
-# Try using VMWare on macOS. See https://lupyuen.github.io/articles/led#appendix-fix-bl602-demo-firmware-for-macos
+```bash
+sudo screen /dev/ttyUSB0 2000000
 ```
 
-On Windows, use `putty`.
+__For macOS:__ Use CoolTerm ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
+
+__For Windows:__ Use `putty` ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
 
 [More details on connecting to BL602](https://lupyuen.github.io/articles/flash#watch-the-firmware-run)
 

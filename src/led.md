@@ -60,9 +60,9 @@ Let's flash the __GPIO Demo__ from the BL602 IoT SDK and interact with the above
     sudo screen /dev/ttyUSB0 2000000
     ```
 
-    __For Windows:__ Use `putty` ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
+    __For macOS:__ Use CoolTerm ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
 
-    __For macOS:__ See ["Appendix: Fix BL602 Demo Firmware for macOS"](https://lupyuen.github.io/articles/led#appendix-fix-bl602-demo-firmware-for-macos)
+    __For Windows:__ Use `putty` ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
 
 1.  Press the __RST Button__ on PineCone to restart the firmware.
 
@@ -299,9 +299,9 @@ Now we'll switch PineCone to the __Modified PWM Demo__ from the BL602 IoT SDK.
     sudo screen /dev/ttyUSB0 2000000
     ```
 
-    __For Windows:__ Use `putty` ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
+    __For macOS:__ Use CoolTerm ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
 
-    __For macOS:__ See ["Appendix: Fix BL602 Demo Firmware for macOS"](https://lupyuen.github.io/articles/led#appendix-fix-bl602-demo-firmware-for-macos)
+    __For Windows:__ Use `putty` ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
 
 1.  Press the __RST Button__ on PineCone to restart the firmware. Ignore the errors.
 
@@ -512,15 +512,31 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Fix BL602 Demo Firmware for macOS
 
-There's a problem accessing the BL602 Demo Firmware from macOS...
+_On macOS, why doesn't `screen` work for accessing the BL602 Demo Firmware?_
 
-BL602 Demo Firmware configures the UART Port for 2 Mbps, which is too fast for the CH340 USB Serial Driver on macOS.
+BL602 Demo Firmware configures the UART Port for 2 Mbps.
 
-This seems to be a problem with IOKit on macOS. [See this](https://twitter.com/madushan1000/status/1345352779502669824)
+This causes problems for older serial apps (like `screen`) that don't call macOS IOKit. [See this](https://twitter.com/madushan1000/status/1345352779502669824)
 
-[__UPDATE: Running VMWare on macOS might fix the problem. See this__](https://twitter.com/M0JEK/status/1354202261828861954?s=20)
+To fix this, use a newer serial app like __CoolTerm__...
 
-To make this work with macOS, we need to lower the UART baud rate from 2 Mbps to 230.4 kbps.
+1.  [__Download CoolTerm__](https://freeware.the-meiers.org/)
+
+1.  Click __`Options`__
+
+1.  Set __`Port`__ to __`usbserial-1420`__
+
+1.  Set __`Baudrate`__ to __`2000000`__ (2 Mbps)
+
+1.  Click __`Connect`__
+
+![CoolTerm Options](https://lupyuen.github.io/images/led-coolterm.png)
+
+[(Many thanks to @Kongduino)](https://twitter.com/Kongduino/status/1358557946670551040)
+
+_What if we really really want to use older serial apps like `screen`?_
+
+This is NOT recommended... But to support older serial apps with macOS, we need to lower the UART baud rate from 2 Mbps to 230.4 kbps.
 
 1.  In the BL602 Demo Firmware, edit the `main.c` source file, like...
 
@@ -581,5 +597,3 @@ To make this work with macOS, we need to lower the UART baud rate from 2 Mbps to
     ```bash
     screen /dev/tty.usbserial-1420 230400                 
     ```
-
-Please lemme know if this works. Thanks!
