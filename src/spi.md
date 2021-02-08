@@ -1599,7 +1599,15 @@ We configure the SPI FIFO (First-In First-Out Queue) Threshold, and use DMA for 
     SPI_FifoConfig(spi_id,&fifocfg);
 ```
 
-We configure the Transmit DMA Interrupts...
+__SPI FIFO__ is the __Transmit / Receive Queue for SPI__. The SPI FIFO Transmit and Receive Queues can buffer up to __4 bytes__ each...
+
+-   __SPI Transmit FIFO:__ `spi_fifo_wdata` at `0x4000a288`
+
+-   __SPI Receive FIFO:__ `spi_fifo_rdata` at `0x4000a28c`
+
+When we set the SPI FIFO Thresholds to 1 (`txFifoThreshold` and `rxFifoThreshold`), the SPI Port will notify the DMA Controller whenever one byte has been transmitted or received, so that the DMA Controller will copy the next transmit / receive byte.
+
+Next we configure the Transmit DMA Interrupts...
 
 ```c
     DMA_Disable();
@@ -1608,7 +1616,7 @@ We configure the Transmit DMA Interrupts...
     DMA_IntMask(hw_arg->tx_dma_ch, DMA_INT_ERR, UNMASK);
 ```
 
-We configure the Receive DMA Interrupts and enable the DMA interrupts...
+Then we configure the Receive DMA Interrupts and enable the DMA interrupts...
 
 ```c
     DMA_IntMask(hw_arg->rx_dma_ch, DMA_INT_ALL, MASK);
@@ -2018,7 +2026,7 @@ Thus when we wait for `EVT_GROUP_SPI_DMA_TR`, we're waiting for the SPI DMA Tran
 
 [(`EVT_GROUP_SPI_DMA_TR` is defined here)](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L70-L72)
 
-Finally we free the heap memory for the DMA Linked List...
+Finally we free the heap memory for the DMA Linked Lists (Transmit and Receive)...
 
 ```c
     vPortFree(ptxlli);
