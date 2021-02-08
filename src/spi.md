@@ -68,6 +68,8 @@ However there are a couple of concerns over the BL602 SPI HAL...
 
     I have added an SPI HAL function [__`spi_init`__](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L838-L886) that lets us __call the SPI HAL without AliOS Things__ and its Device Tree.
 
+    [More about BL602 Device Tree](https://lupyuen.github.io/articles/flash#device-tree)
+
 1.  __BL602 SPI HAL works only with FreeRTOS__.  
 
     Unlike the BL602 HALs for GPIO, PWM and I2C, there's no Low Level HAL that works on all operating systems.
@@ -939,7 +941,9 @@ _ST7789 Display Controller with SPI Interface_
 
 # What's Next
 
-Now that we have SPI working on BL602, let's test it with the __ST7789 Display Controller__... And maybe with the __LVGL Graphics Library__ too!
+Now that we have SPI working on BL602, let's test it with the [__ST7789 Display Controller__](https://www.rhydolabz.com/documents/33/ST7789.pdf)... And maybe with the [__LVGL Graphics Library__](https://docs.lvgl.io/latest/en/html/intro/index.html) too!
+
+Eventually I'll be porting BL602 SPI HAL to [__Apache Mynewt operating system__](https://lupyuen.github.io/articles/gpio)... So that we can build BL602 SPI applications in Rust!
 
 There's plenty more code in the [__BL602 IoT SDK__](https://github.com/bouffalolab/bl_iot_sdk) to be deciphered and documented: __UART, ADC, DAC, WiFi, Bluetooth LE,__ ...
 
@@ -1775,7 +1779,7 @@ __For SPI Transmit:__ We configure the __DMA Automatic Address Accumulation__ fo
         dmactrl.DI = DMA_MINC_DISABLE;
 ```
 
-The BL602 Reference Manual doesn't explain Automatic Address Accumulation. 
+The [BL602 Reference Manual](https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en) doesn't explain Automatic Address Accumulation. (See Section 6.3.2 "DMA Channel Configuration", Page 73)
 
 Let's assume that the above configuration will auto-increment the Source RAM Address (SI) when the DMA Controller copies data from RAM to the SPI Port.
 
