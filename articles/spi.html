@@ -1127,7 +1127,15 @@ READ: 0x60
 </code></pre>
 <h2 id="spi_init-init-spi-port" class="section-header"><a href="#spi_init-init-spi-port">16.2 spi_init: Init SPI Port</a></h2>
 <p>We added the function <code>spi_init</code> to initialise the SPI Port without using the AliOS Device Tree. This function is called by our demo firmware.</p>
-<p><code>spi_init</code> was derived from the SPI HAL Functions <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L597-L760"><code>spi_arg_set_fdt2</code></a> and <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L524-L591"><code>vfs_spi_init_fullname</code></a> (which use the AliOS Device Tree).</p>
+<p><code>spi_init</code> was derived from these SPI HAL Functions (which use the AliOS Device Tree)...</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L597-L760"><code>spi_arg_set_fdt2</code></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L524-L591"><code>vfs_spi_init_fullname</code></a></p>
+</li>
+</ul>
 <p>Note that there is only a <strong>single global instance of SPI Data.</strong> </p>
 <p><strong><code>spi_init</code> shall only be called once by our firmware.</strong></p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L838-L886"><code>bl602_hal/hal_spi.c</code></a></p>
@@ -1181,6 +1189,8 @@ int spi_init(spi_dev_t *spi, uint8_t port,
     blog_info(&quot;[HAL] [SPI] Init :\r\nport=%d, mode=%d, polar_phase = %d, freq=%ld, tx_dma_ch=%d, rx_dma_ch=%d, pin_clk=%d, pin_cs=%d, pin_mosi=%d, pin_miso=%d\r\n&quot;,
         port, mode, polar_phase, freq, tx_dma_ch, rx_dma_ch, pin_clk, pin_cs, pin_mosi, pin_miso);
 </code></pre>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L563-L580">(This code is derived from <code>vfs_spi_init_fullname</code>)</a></p>
+<p>Note that we don't assign the SPI Frequency yet.  We'll assign later in <code>hal_spi_set_rwspeed</code> because the function validates the SPI Frequency.</p>
 <p>Finally we call <a href="https://lupyuen.github.io/articles/spi#hal_spi_set_rwspeed-set-spi-frequency"><code>hal_spi_set_rwspeed</code></a> to set the SPI Frequency, assign the SPI Pins and initialise the DMA Controller...</p>
 <pre><code class="language-c">    //  Init the SPI speed, pins and DMA
     int rc = hal_spi_set_rwspeed(spi, freq);
