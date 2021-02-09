@@ -947,6 +947,8 @@ _ST7789 Display Controller with SPI Interface_
 
 Now that we have SPI working on BL602, let's test it with the [__ST7789 Display Controller__](https://www.rhydolabz.com/documents/33/ST7789.pdf)... And maybe with the [__LVGL Graphics Library__](https://docs.lvgl.io/latest/en/html/intro/index.html) too!
 
+-   [__Follow the BL602 + ST7789 + LVGL Progress in this Twitter Thread__](https://twitter.com/MisterTechBlog/status/1358691021073178624?s=20)
+
 Eventually I'll be porting BL602 SPI HAL to [__Apache Mynewt operating system__](https://lupyuen.github.io/articles/gpio)... So that we can build BL602 SPI applications in Rust!
 
 There's plenty more code in the [__BL602 IoT SDK__](https://github.com/bouffalolab/bl_iot_sdk) to be deciphered and documented: __UART, ADC, DAC, WiFi, Bluetooth LE,__ ...
