@@ -2,7 +2,7 @@
 
 📝 _14 Feb 2021_
 
-In our last article we configured PineCone BL602 to connect to a simple SPI Peripheral: BME280 Sensor for Temperature / Humidity / Air Pressure.
+In our last article we configured PineCone BL602 to connect to a simple SPI Peripheral: BME280 Sensor for Temperature / Humidity / Air Pressure. [(See this)](https://lupyuen.github.io/articles/spi)
 
 Today we shall connect PineCone BL602 / Pinenut / Any BL602 Board to a more powerful SPI Peripheral: __ST7789 Display Controller__.
 
@@ -235,6 +235,107 @@ static uint8_t spi_rx_buf[BUFFER_ROWS * COL_COUNT * BYTES_PER_PIXEL];
 ```
 
 We limit each SPI Transfer to 10 rows of pixels. More about this later.
+
+# Transmit ST7789 Commands
+
+Now that we have our SPI Transmit Function `transmit_spi`, let's call it to send some ST7789 Commands!
+
+_What's inside an ST7789 Command?_
+
+An ST779 Command consists of...
+
+1.  __1 byte__ for the __Command Code__, followed by...
+
+1. __0 or more bytes__ for the __Command Parameters__ 
+
+We'll transmit an ST7789 Command like so...
+
+```c
+//  Define the ST7789 Command Code (1 byte: 0x33)
+#define VSCRDER  0x33
+
+//  Define the ST7789 Command Parameters (6 bytes)
+static const uint8_t VSCRDER_PARA[] = { 0x00, 0x00, 0x14, 0x00, 0x00, 0x00 };
+
+//  Transmit the ST7789 Command
+write_command(
+    VSCRDER,              //  Command Code (1 byte)
+    VSCRDER_PARA,         //  Command Parameters (6 bytes)
+    sizeof(VSCRDER_PARA)  //  Number of parameters (6)
+);
+```
+
+Now there's a special way to transmit Command Codes and Parameters to ST7789...
+
+## ST7789 Command vs Parameters
+
+_Why does ST7789 need a Data / Command Pin (Pin 5)?_
+
+Because...
+
+-  We set __Data / Command Pin to Low__ when transmitting the __Command Code__
+
+-  We set __Data / Command Pin to High__ when transmitting the __Command Parameters__
+
+_What???_
+
+Yep ST7789 is a little unique (and somewhat inefficient)... We need to __flip the Data / Command Pin__ when transmitting an ST7789 Command and its Parameters.
+
+Here's how `write_command` transmits the Command Code and Parameters: [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L228-L244)
+
+```c
+/// Transmit ST7789 command code and parameters. `len` is the number of parameters.
+int write_command(uint8_t command, const uint8_t *params, uint16_t len) {
+    //  Set Data / Command Pin to Low to tell ST7789 this is a command
+    int rc = bl_gpio_output_set(DISPLAY_DC_PIN, 0);
+    assert(rc == 0);
+```
+
+Here we call BL602 GPIO to set the Data / Command Pin to Low.
+
+Then we transmit the Command Code (1 byte)...
+
+```c
+    //  Transmit the command byte
+    rc = transmit_spi(&command, 1);
+    assert(rc == 0);
+```
+
+Next we transmit the Command Parameters by calling `write_data`...
+
+```c
+    //  Transmit the parameters as data bytes
+    if (params != NULL && len > 0) {
+        rc = write_data(params, len);
+        assert(rc == 0);
+    }
+    return 0;
+}
+```
+
+As expected, `write_data` flips the Data / Command Pin to High: [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L246-L256)
+
+```c
+/// Transmit ST7789 data
+int write_data(const uint8_t *data, uint16_t len) {
+    //  Set Data / Command Pin to High to tell ST7789 this is data
+    int rc = bl_gpio_output_set(DISPLAY_DC_PIN, 1);
+    assert(rc == 0);
+```
+
+Then it transmits the Command Parameters...
+
+```c
+    //  Transmit the data bytes
+    rc = transmit_spi(data, len);
+    assert(rc == 0);
+    return 0;
+}
+```
+
+We'll be calling `write_command` very often... So yes the flipping of the Data / Command Pin will be done many many times.
+
+Let's watch how we call `write_command`...
 
 # ST7789 Display Driver
 
@@ -532,64 +633,6 @@ static int set_orientation(uint8_t orientation) {
         int rc = write_command(MADCTL, orientation_para, 1);
         assert(rc == 0);
     }
-    return 0;
-}
-```
-
-## write_command
-
-TODO
-
-[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L228-L244)
-
-```c
-/// Transmit ST7789 command and parameters. `len` is the number of parameters.
-int write_command(uint8_t command, const uint8_t *params, uint16_t len) {
-    //  Set Data / Command Pin to Low to tell ST7789 this is a command
-    int rc = bl_gpio_output_set(DISPLAY_DC_PIN, 0);
-    assert(rc == 0);
-```
-
-TODO
-
-```c
-    //  Transmit the command byte
-    rc = transmit_spi(&command, 1);
-    assert(rc == 0);
-```
-
-TODO
-
-```c
-    //  Transmit the parameters as data bytes
-    if (params != NULL && len > 0) {
-        rc = write_data(params, len);
-        assert(rc == 0);
-    }
-    return 0;
-}
-```
-
-## write_data
-
-TODO
-
-[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L246-L256)
-
-```c
-/// Transmit ST7789 data
-int write_data(const uint8_t *data, uint16_t len) {
-    //  Set Data / Command Pin to High to tell ST7789 this is data
-    int rc = bl_gpio_output_set(DISPLAY_DC_PIN, 1);
-    assert(rc == 0);
-```
-
-TODO
-
-```c
-    //  Transmit the data bytes
-    rc = transmit_spi(data, len);
-    assert(rc == 0);
     return 0;
 }
 ```
