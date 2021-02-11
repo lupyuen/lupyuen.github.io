@@ -12,6 +12,14 @@ _PineCone BL602 RISC-V Board rendering text and graphics on ST7789 SPI Display w
 
 TODO
 
+![](https://lupyuen.github.io/images/display-connect2.jpg)
+
+TODO
+
+![](https://lupyuen.github.io/images/display-connect3.jpg)
+
+TODO
+
 # Render an Image
 
 TODO
@@ -20,7 +28,15 @@ TODO
 
 TODO
 
+![](https://lupyuen.github.io/images/display-addlvgl.png)
+
+TODO
+
 # Build and Run the Firmware
+
+TODO
+
+![](https://lupyuen.github.io/images/display-log.jpg)
 
 TODO
 
@@ -32,27 +48,9 @@ TODO
 
 TODO
 
-![](https://lupyuen.github.io/images/display-box3.jpg)
-
-TODO
-
-![](https://lupyuen.github.io/images/display-connect2.jpg)
-
-TODO
-
-![](https://lupyuen.github.io/images/display-connect3.jpg)
-
-TODO
-
-![](https://lupyuen.github.io/images/display-addlvgl.png)
-
-TODO
-
 ![](https://lupyuen.github.io/images/display-battery.jpg)
 
 TODO
-
-![](https://lupyuen.github.io/images/display-log.jpg)
 
 # What's Next
 
@@ -74,11 +72,15 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [`lupyuen.github.io/src/spi.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/spi.md)
 
+TODO
+
+![](https://lupyuen.github.io/images/display-box3.jpg)
+
 # Notes
 
 1.  This article is the expanded version of [this meandering Twitter Thread](https://twitter.com/MisterTechBlog/status/1358691021073178624?s=20)
 
-# Appendix: Troubleshooting SPI Hanging
+# Appendix: Troubleshoot SPI Hanging
 
 TODO
 
