@@ -49,11 +49,21 @@ Connect BL602 to ST7789 as follows...
 
 ![](https://lupyuen.github.io/images/display-connect2.jpg)
 
-TODO
+_Why are Pins 1, 2 and 14 unused?_
 
-## Why were the pins chosen?
+-   __`GPIO 1`__ is __SPI Serial Data In__ on BL602. _(Formerly MISO)_
 
-TODO
+    We won't be reading data from the ST7789 Display, so this pin is unused.
+
+-   __`GPIO 2`__ is the __Unused SPI Chip Select__ on BL602.
+
+    According to the last article, we won't be using this pin because we'll be controlling Chip Select ourselves on `GPIO 14`.
+
+-   __`GPIO 14`__ is the __Actual SPI Chip Select__ on BL602.
+
+    According to the last article, we'll be controling Chip Select ourselves on `GPIO 14`.
+
+    However our ST7789 Display doesn't have a Chip Select Pin, so this pin is unused.
 
 ![](https://lupyuen.github.io/images/display-connect3.jpg)
 
