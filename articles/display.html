@@ -118,6 +118,26 @@
 <p><img src="https://lupyuen.github.io/images/display-title.jpg" alt="PineCone BL602 RISC-V Board rendering text and graphics on ST7789 SPI Display with LVGL Graphics Library" /></p>
 <p><em>PineCone BL602 RISC-V Board rendering text and graphics on ST7789 SPI Display with LVGL Graphics Library</em></p>
 <h1 id="connect-bl602-to-st7789-spi-display" class="section-header"><a href="#connect-bl602-to-st7789-spi-display">1 Connect BL602 to ST7789 SPI Display</a></h1>
+<p>Let's look at the non-obvious pins on our ST7789 Display...</p>
+<p><img src="https://lupyuen.github.io/images/spi-st7789.jpg" alt="ST7789 Display" /></p>
+<p>(Make sure that it says <strong><code>Interface SPI</code></strong>)</p>
+<ul>
+<li>
+<p><strong><code>SCL</code>: Clock Pin</strong>. This goes to the <strong>SPI Clock Pin</strong> on BL602.</p>
+</li>
+<li>
+<p><strong><code>SDA</code>: Data Pin</strong>. This goes to the <strong>SPI Serial Data Out Pin</strong> on BL602. <em>(Formerly MOSI)</em></p>
+</li>
+<li>
+<p><strong><code>RES</code>: Reset Pin</strong>. We'll toggle this pin with BL602 GPIO to force a <strong>Hardware Reset</strong>.</p>
+</li>
+<li>
+<p><strong><code>DC</code>: Data / Command Pin</strong>. We set this pin to <strong>Low when sending a command</strong> on the Data Pin. And to <strong>High when sending data</strong> on the Data Pin.</p>
+</li>
+<li>
+<p><strong><code>BLK</code>: Backlight Pin</strong>. We set this pin to High to switch on the backlight.</p>
+</li>
+</ul>
 <p>Connect BL602 to ST7789 as follows...</p>
 <table><thead><tr><th align="left">BL602 Pin</th><th align="left">ST7789 SPI</th><th align="left">Wire Colour</th></tr></thead><tbody>
 <tr><td align="left"><strong><code>GPIO 1</code></strong></td><td align="left">Do Not Connect <br> <em>(MISO)</em></td><td align="left"></td></tr>
