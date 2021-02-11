@@ -51,7 +51,11 @@ TODO
 
 /// SPI Device Instance. Used by display.c
 spi_dev_t spi_device;
+```
 
+TODO
+
+```c
 /// Command to init the display
 static void test_display_init(char *buf, int len, int argc, char **argv)
 {
@@ -61,7 +65,11 @@ static void test_display_init(char *buf, int len, int argc, char **argv)
     //  TODO: The pins for Serial Data In and Serial Data Out seem to be flipped,
     //  when observed with a Logic Analyser. This contradicts the 
     //  BL602 Reference Manual. Why ???
+```
 
+TODO
+
+```c
     //  Configure the SPI Port
     int rc = spi_init(
         &spi_device, //  SPI Device
@@ -77,7 +85,11 @@ static void test_display_init(char *buf, int len, int argc, char **argv)
         4    //  (Blue)   SPI Serial Data Out Pin (formerly MOSI)
     );
     assert(rc == 0);
+```
 
+TODO
+
+```c
     //  Configure the GPIO Pins, init the display controller and switch on backlight
     rc = init_display();
     assert(rc == 0);
@@ -151,39 +163,71 @@ int init_display(void) {
     pins[3] = DISPLAY_BLK_PIN;
     BL_Err_Type rc2 = GLB_GPIO_Func_Init(GPIO_FUN_SWGPIO, pins, sizeof(pins) / sizeof(pins[0]));
     assert(rc2 == SUCCESS);
+```
 
+TODO
+
+```c
     //  Configure Chip Select, Data/Command, Reset, Backlight pins as GPIO Output Pins (instead of GPIO Input)
     int rc;
     rc = bl_gpio_enable_output(DISPLAY_CS_PIN,  0, 0);  assert(rc == 0);
     rc = bl_gpio_enable_output(DISPLAY_DC_PIN,  0, 0);  assert(rc == 0);
     rc = bl_gpio_enable_output(DISPLAY_RST_PIN, 0, 0);  assert(rc == 0);
     rc = bl_gpio_enable_output(DISPLAY_BLK_PIN, 0, 0);  assert(rc == 0);
+```
 
+TODO
+
+```c
     //  Set Chip Select pin to High, to deactivate SPI Peripheral (not used for ST7789)
     printf("Set CS pin %d to high\r\n", DISPLAY_CS_PIN);
     rc = bl_gpio_output_set(DISPLAY_CS_PIN, 1);  assert(rc == 0);
+```
 
+TODO
+
+```c
     //  Switch on backlight
     rc = backlight_on();  assert(rc == 0);
+```
 
+TODO
+
+```c
     //  Reset the display controller through the Reset Pin
     rc = hard_reset();  assert(rc == 0);
+```
 
+TODO
+
+```c
     //  Software Reset: Reset the display controller through firmware (ST7789 Datasheet Page 163)
     //  https://www.rhydolabz.com/documents/33/ST7789.pdf
     rc = write_command(SWRESET, NULL, 0);  assert(rc == 0);
     delay_ms(200);  //  Need to wait at least 200 milliseconds
+```
 
+TODO
+
+```c
     //  Sleep Out: Disable sleep (ST7789 Datasheet Page 184)
     rc = write_command(SLPOUT, NULL, 0);  assert(rc == 0);
     delay_ms(200);  //  Need to wait at least 200 milliseconds
+```
 
+TODO
+
+```c
     //  TODO: This is needed to fix the Fallen Lorry problem, 
     //  although this command comes from ST7735, not ST7789.
     //  https://twitter.com/MisterTechBlog/status/1359077419156598785?s=20
     static const uint8_t PWCTR1_PARA[] = { 0xA2, 0x02, 0x84 };
     rc = write_command(PWCTR1, PWCTR1_PARA, sizeof(PWCTR1_PARA));  assert(rc == 0);
+```
 
+TODO
+
+```c
     //  Vertical Scrolling Definition: 0 TSA, 320 VSA, 0 BSA (ST7789 Datasheet Page 208)
     static const uint8_t VSCRDER_PARA[] = { 0x00, 0x00, 0x14, 0x00, 0x00, 0x00 };
     rc = write_command(VSCRDER, VSCRDER_PARA, sizeof(VSCRDER_PARA));  assert(rc == 0);
@@ -191,21 +235,37 @@ int init_display(void) {
     //  Normal Display Mode On (ST7789 Datasheet Page 187)
     rc = write_command(NORON, NULL, 0);  assert(rc == 0);
     delay_ms(10);  //  Need to wait at least 200 milliseconds
+```
 
+TODO
+
+```c
     //  Display Inversion: Invert the display colours (light becomes dark and vice versa) (ST7789 Datasheet Pages 188, 190)
     if (INVERTED) {
         rc = write_command(INVON, NULL, 0);  assert(rc == 0);
     } else {
         rc = write_command(INVOFF, NULL, 0);  assert(rc == 0);
     }
+```
 
+TODO
+
+```c
     //  Set orientation to Landscape or Portrait
     rc = set_orientation(Landscape);  assert(rc == 0);
+```
 
+TODO
+
+```c
     //  Interface Pixel Format: 16-bit RGB565 colour (ST7789 Datasheet Page 224)
     static const uint8_t COLMOD_PARA[] = { 0x55 };
     rc = write_command(COLMOD, COLMOD_PARA, sizeof(COLMOD_PARA));  assert(rc == 0);
-    
+```
+
+TODO
+
+```c    
     //  Display On: Turn on display (ST7789 Datasheet Page 196)
     rc = write_command(DISPON, NULL, 0);  assert(rc == 0);
     delay_ms(200);  //  Need to wait at least 200 milliseconds
@@ -225,26 +285,52 @@ int display_image(void) {
     //  Render each batch of 10 rows
     printf("Displaying image...\r\n");
     for (uint8_t row = 0; row < ROW_COUNT; row += BUFFER_ROWS) {
+```
+
+TODO
+
+```c
         uint8_t top    = row;
         uint8_t bottom = (row + BUFFER_ROWS - 1) < ROW_COUNT 
             ? (row + BUFFER_ROWS - 1) 
             : (ROW_COUNT - 1);
         uint8_t left   = 0;
         uint8_t right  = COL_COUNT - 1;
+```
 
+TODO
+
+```c
         //  Compute the offset and how many bytes we will transmit.
         uint32_t offset = ((top * COL_COUNT) + left) * BYTES_PER_PIXEL;
         uint16_t len    = (bottom - top + 1) * (right - left + 1) * BYTES_PER_PIXEL;
+```
 
+TODO
+
+```c
         //  Copy the image pixels from Flash ROM to RAM, because Flash ROM may be too slow for DMA at 4 MHz
         memcpy(spi_tx_buf, image_data + offset, len);
+```
 
+TODO
+
+```c
         //  Set the display window.
         int rc = set_window(left, top, right, bottom); assert(rc == 0);
+```
 
+TODO
+
+```c
         //  Memory Write: Write the bytes from RAM to display (ST7789 Datasheet Page 202)
         rc = write_command(RAMWR, NULL, 0); assert(rc == 0);
         rc = write_data(spi_tx_buf, len);   assert(rc == 0);
+```
+
+TODO
+
+```c
     }
     printf("Image displayed\r\n");
     return 0;
@@ -263,11 +349,20 @@ int set_window(uint8_t left, uint8_t top, uint8_t right, uint8_t bottom) {
     assert(left < COL_COUNT && right < COL_COUNT && top < ROW_COUNT && bottom < ROW_COUNT);
     assert(left <= right);
     assert(top <= bottom);
+```
+
+TODO
+
+```c
     //  Set Address Window Columns (ST7789 Datasheet Page 198)
     int rc = write_command(CASET, NULL, 0); assert(rc == 0);
     uint8_t col_para[4] = { 0x00, left, 0x00, right };
     rc = write_data(col_para, 4); assert(rc == 0);
+```
 
+TODO
+
+```c
     //  Set Address Window Rows (ST7789 Datasheet Page 200)
     rc = write_command(RASET, NULL, 0); assert(rc == 0);
     uint8_t row_para[4] = { 0x00, top, 0x00, bottom };
@@ -311,11 +406,19 @@ int write_command(uint8_t command, const uint8_t *params, uint16_t len) {
     //  Set Data / Command Pin to Low to tell ST7789 this is a command
     int rc = bl_gpio_output_set(DISPLAY_DC_PIN, 0);
     assert(rc == 0);
+```
 
+TODO
+
+```c
     //  Transmit the command byte
     rc = transmit_spi(&command, 1);
     assert(rc == 0);
+```
 
+TODO
+
+```c
     //  Transmit the parameters as data bytes
     if (params != NULL && len > 0) {
         rc = write_data(params, len);
@@ -337,7 +440,11 @@ int write_data(const uint8_t *data, uint16_t len) {
     //  Set Data / Command Pin to High to tell ST7789 this is data
     int rc = bl_gpio_output_set(DISPLAY_DC_PIN, 1);
     assert(rc == 0);
+```
 
+TODO
+
+```c
     //  Transmit the data bytes
     rc = transmit_spi(data, len);
     assert(rc == 0);
@@ -357,22 +464,38 @@ static int transmit_spi(const uint8_t *data, uint16_t len) {
     assert(data != NULL);
     if (len == 0) { return 0; }
     if (len > sizeof(spi_rx_buf)) { printf("transmit_spi error: Too much data %d\r\n", len); return 1; }
+```
 
+TODO
+
+```c
     //  Clear the receive buffer
     memset(&spi_rx_buf, 0, sizeof(spi_rx_buf));
+```
 
+TODO
+
+```c
     //  Prepare SPI Transfer
     static spi_ioc_transfer_t transfer;
     memset(&transfer, 0, sizeof(transfer));    
     transfer.tx_buf = (uint32_t) data;        //  Transmit Buffer
     transfer.rx_buf = (uint32_t) spi_rx_buf;  //  Receive Buffer
     transfer.len    = len;                    //  How many bytes
+```
 
+TODO
+
+```c
     //  Select the SPI Peripheral (not used for ST7789)
     printf("Set CS pin %d to low\r\n", DISPLAY_CS_PIN);
     int rc = bl_gpio_output_set(DISPLAY_CS_PIN, 0);
     assert(rc == 0);
+```
 
+TODO
+
+```c
     //  Execute the SPI Transfer with the DMA Controller
     rc = hal_spi_transfer(
         &spi_device,  //  SPI Device
@@ -383,6 +506,11 @@ static int transmit_spi(const uint8_t *data, uint16_t len) {
 
     //  DMA Controller will transmit and receive the SPI data in the background.
     //  hal_spi_transfer will wait for the SPI Transfer to complete before returning.
+```
+
+TODO
+
+```c
     //  Now that we're done with the SPI Transfer...
 
     //  De-select the SPI Peripheral (not used for ST7789)
@@ -425,7 +553,11 @@ int backlight_on(void) {
     int rc = bl_gpio_output_set(DISPLAY_BLK_PIN, 1);
     assert(rc == 0);
     return 0;
+```
 
+TODO
+
+```c
     //  Can we have multiple levels of backlight brightness?
     //  Yes! Configure the Backlight Pin as a PWM Pin (instead of GPIO).
     //  Set the PWM Duty Cycle to control the brightness.
@@ -464,254 +596,7 @@ static void delay_ms(uint32_t ms) {
 }
 ```
 
-# Render Text and Graphics with LVGL
-
-TODO
-
-## LVGL Display Driver for ST7789
-
-TODO
-
-## lv_port_disp_init
-
-TODO
-
-[`lv_port_disp.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_port_disp.c#L64-L113)
-
-```c
-void lv_port_disp_init(void)
-{
-    /*-------------------------
-     * Initialize your display
-     * -----------------------*/
-    disp_init();
-
-    /*-----------------------------
-     * Create a buffer for drawing
-     *----------------------------*/
-
-    /* LVGL requires a buffer where it draws the objects. The buffer's has to be greater than 1 display row
-     * We create ONE buffer with 10 rows. LVGL will draw the display's content here and write it to the display
-     * */
-
-    static lv_disp_buf_t disp_buf_1;
-    lv_disp_buf_init(&disp_buf_1, spi_tx_buf, NULL, LV_HOR_RES_MAX * BUFFER_ROWS);   /*Initialize the display buffer*/
-
-    /*-----------------------------------
-     * Register the display in LVGL
-     *----------------------------------*/
-
-    lv_disp_drv_t disp_drv;                         /*Descriptor of a display driver*/
-    lv_disp_drv_init(&disp_drv);                    /*Basic initialization*/
-
-    /*Set up the functions to access to your display*/
-
-    /*Set the resolution of the display*/
-    disp_drv.hor_res = LV_HOR_RES_MAX;
-    disp_drv.ver_res = LV_VER_RES_MAX;
-
-    /*Used to copy the buffer's content to the display*/
-    disp_drv.flush_cb = disp_flush;
-
-    /*Set a display buffer*/
-    disp_drv.buffer = &disp_buf_1;
-
-    /*Finally register the driver*/
-    lv_disp_drv_register(&disp_drv);
-}
-```
-
-## disp_flush
-
-TODO
-
-[`lv_port_disp.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_port_disp.c#L126-L154)
-
-```c
-/// ST7789 Commands. From https://github.com/almindor/st7789/blob/master/src/instruction.rs
-/// TODO: Move to display.c
-#define RAMWR 0x2C
-
-/* Flush the content of the internal buffer the specific area on the display
- * You can use DMA or any hardware acceleration to do this operation in the background but
- * 'lv_disp_flush_ready()' has to be called when finished. */
-static void disp_flush(lv_disp_drv_t * disp_drv, const lv_area_t * area, lv_color_t * color_p)
-{
-    printf("Flush display: left=%d, top=%d, right=%d, bottom=%d...\r\n", area->x1, area->y1, area->x2, area->y2);
-    assert(area->x2 >= area->x1);
-    assert(area->y2 >= area->y1);
-
-    //  Set the ST7789 display window
-    int rc = set_window(area->x1, area->y1, area->x2, area->y2); assert(rc == 0);
-
-    //  Memory Write: Write the bytes to display (ST7789 Datasheet Page 202)
-    //  TODO: Move to display.c
-    int len = 
-        ((area->x2 - area->x1) + 1) *  //  Width
-        ((area->y2 - area->y1) + 1) *  //  Height
-        2;                             //  2 bytes per pixel
-    rc = write_command(RAMWR, NULL, 0); assert(rc == 0);
-    rc = write_data((const uint8_t *) color_p, len); assert(rc == 0);
-
-    /* IMPORTANT!!!
-     * Inform the graphics library that you are ready with the flushing*/
-    lv_disp_flush_ready(disp_drv);
-}
-```
-
-TODO
-
-[`lv_conf.h`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_conf.h#L24-L41)
-
-```c
-/// Number of rows in SPI Transmit and Receive Buffers. Used by display.c and lv_port_disp.c
-#define BUFFER_ROWS             (10)
-
-/* Maximal horizontal and vertical resolution to support by the library.*/
-#define LV_HOR_RES_MAX          (240)
-#define LV_VER_RES_MAX          (240)
-
-/* Color depth:
- * - 1:  1 byte per pixel
- * - 8:  RGB332
- * - 16: RGB565
- * - 32: ARGB8888
- */
-#define LV_COLOR_DEPTH     16
-
-/* Swap the 2 bytes of RGB565 color.
- * Useful if the display has a 8 bit interface (e.g. SPI)*/
-#define LV_COLOR_16_SWAP   1
-```
-
-## LVGL Application
-
-TODO
-
-## lvgl_init
-
-TODO
-
-[`lvgl.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L25-L48)
-
-```c
-/// Set to true if LVGL has already been lvgl_initialised
-static bool lvgl_initialised = false;
-
-/// Set to true if LVGL widgets have been created
-static bool lvgl_created = false;
-
-/// Button Widget
-static lv_obj_t *btn = NULL;
-
-/// Label Widget
-static lv_obj_t *label = NULL;
-
-/// Init the LVGL library
-int lvgl_init(void) {   
-    //  Assume that display controller has been lvgl_initialised 
-    if (lvgl_initialised) { return 0; }  //  Init only once
-    lvgl_initialised = true;
-    printf("Init LVGL...\r\n");
-
-    //  Init the LVGL display
-    lv_init();
-    lv_port_disp_init();
-    return 0;
-}
-```
-
-## lvgl_create
-
-TODO
-
-[`lvgl.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L50-L64)
-
-```c
-/// Create a Button Widget and a Label Widget
-int lvgl_create(void) {
-    assert(lvgl_initialised);        //  LVGL must have been initialised
-    if (lvgl_created) { return 0; }  //  Create widgets only once
-    lvgl_created = true;
-    printf("Create LVGL widgets...\r\n");
-
-    btn = lv_btn_create(lv_scr_act(), NULL);  //  Add a button the current screen
-    lv_obj_set_pos(btn, 10, 80);              //  Set its position
-    lv_obj_set_size(btn, 220, 80);            //  Set its size
-
-    label = lv_label_create(btn, NULL);       //  Add a label to the button
-    lv_label_set_text(label, "BL602 LVGL");   //  Set the label text
-    return 0;
-}
-```
-
-## lvgl_update
-
-TODO
-
-[`lvgl.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L66-L78)
-
-```c
-/// Update the Widgets
-int lvgl_update(void) {
-    assert(lvgl_created);  //  LVGL widgets must have been created
-    assert(label != NULL);
-    printf("Update LVGL widgets...\r\n");
-
-    //  Set the button label to a new message
-    static int counter = 1;
-    char msg[20]; 
-    snprintf(msg, sizeof(msg), "SO COOL! #%d", counter++);
-    lv_label_set_text(label, msg);
-    return 0;
-}
-```
-
-## lvgl_render
-
-TODO
-
-[`lvgl.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L80-L91)
-
-```c
-/// Render the LVGL display
-int lvgl_render(void) {
-    assert(lvgl_created);  //  LVGL widgets must have been created
-    printf("Render LVGL display...\r\n");
-
-    //  Must tick at least 100 milliseconds to force LVGL to render display
-    lv_tick_inc(100);
-
-    //  Call LVGL to render the display and flush our display driver
-    lv_task_handler();
-    return 0;
-}
-```
-
-## Add LVGL to Makefile
-
-TODO
-
-[`make_scripts_riscv/ component_wrapper.mk`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/make_scripts_riscv/component_wrapper.mk#L42-L51)
-
-```text
-#### TODO: Add LVGL to build in a cleaner way
-COMPONENT_SRCDIRS += \
-	./lvgl/src/lv_core \
-	./lvgl/src/lv_draw \
-	./lvgl/src/lv_font \
-	./lvgl/src/lv_gpu  \
-	./lvgl/src/lv_hal  \
-	./lvgl/src/lv_misc   \
-	./lvgl/src/lv_themes \
-	./lvgl/src/lv_widgets
-```
-
-![](https://lupyuen.github.io/images/display-addlvgl.png)
-
-TODO
-
-# Build and Run the Firmware
+# Build and Run the ST7789 Firmware
 
 TODO
 
@@ -808,6 +693,337 @@ Tx DMA src=0x42013858, dest=0x4000a288, size=704, si=1, di=0, i=1
 Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704, si=0, di=1, i=1
 ...
 ```
+
+# Render Text and Graphics with LVGL
+
+TODO
+
+## LVGL Display Driver for ST7789
+
+TODO
+
+## lv_port_disp_init
+
+TODO
+
+[`lv_port_disp.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_port_disp.c#L64-L113)
+
+```c
+void lv_port_disp_init(void)
+{
+    /*-------------------------
+     * Initialize your display
+     * -----------------------*/
+    disp_init();
+```
+
+TODO
+
+```c
+    /*-----------------------------
+     * Create a buffer for drawing
+     *----------------------------*/
+
+    /* LVGL requires a buffer where it draws the objects. The buffer's has to be greater than 1 display row
+     * We create ONE buffer with 10 rows. LVGL will draw the display's content here and write it to the display
+     * */
+
+    static lv_disp_buf_t disp_buf_1;
+    lv_disp_buf_init(&disp_buf_1, spi_tx_buf, NULL, LV_HOR_RES_MAX * BUFFER_ROWS);   /*Initialize the display buffer*/
+```
+
+TODO
+
+```c
+    /*-----------------------------------
+     * Register the display in LVGL
+     *----------------------------------*/
+
+    lv_disp_drv_t disp_drv;                         /*Descriptor of a display driver*/
+    lv_disp_drv_init(&disp_drv);                    /*Basic initialization*/
+```
+
+TODO
+
+```c
+    /*Set up the functions to access to your display*/
+
+    /*Set the resolution of the display*/
+    disp_drv.hor_res = LV_HOR_RES_MAX;
+    disp_drv.ver_res = LV_VER_RES_MAX;
+```
+
+TODO
+
+```c
+    /*Used to copy the buffer's content to the display*/
+    disp_drv.flush_cb = disp_flush;
+```
+
+TODO
+
+```c
+    /*Set a display buffer*/
+    disp_drv.buffer = &disp_buf_1;
+```
+
+TODO
+
+```c
+    /*Finally register the driver*/
+    lv_disp_drv_register(&disp_drv);
+}
+```
+
+## disp_flush
+
+TODO
+
+[`lv_port_disp.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_port_disp.c#L126-L154)
+
+```c
+/// ST7789 Commands. From https://github.com/almindor/st7789/blob/master/src/instruction.rs
+/// TODO: Move to display.c
+#define RAMWR 0x2C
+
+/* Flush the content of the internal buffer the specific area on the display
+ * You can use DMA or any hardware acceleration to do this operation in the background but
+ * 'lv_disp_flush_ready()' has to be called when finished. */
+static void disp_flush(lv_disp_drv_t * disp_drv, const lv_area_t * area, lv_color_t * color_p)
+{
+    printf("Flush display: left=%d, top=%d, right=%d, bottom=%d...\r\n", area->x1, area->y1, area->x2, area->y2);
+    assert(area->x2 >= area->x1);
+    assert(area->y2 >= area->y1);
+```
+
+TODO
+
+```c
+    //  Set the ST7789 display window
+    int rc = set_window(area->x1, area->y1, area->x2, area->y2); assert(rc == 0);
+```
+
+TODO
+
+```c
+    //  Memory Write: Write the bytes to display (ST7789 Datasheet Page 202)
+    //  TODO: Move to display.c
+    int len = 
+        ((area->x2 - area->x1) + 1) *  //  Width
+        ((area->y2 - area->y1) + 1) *  //  Height
+        2;                             //  2 bytes per pixel
+    rc = write_command(RAMWR, NULL, 0); assert(rc == 0);
+    rc = write_data((const uint8_t *) color_p, len); assert(rc == 0);
+```
+
+TODO
+
+```c
+    /* IMPORTANT!!!
+     * Inform the graphics library that you are ready with the flushing*/
+    lv_disp_flush_ready(disp_drv);
+}
+```
+
+TODO
+
+[`lv_conf.h`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_conf.h#L24-L41)
+
+```c
+/// Number of rows in SPI Transmit and Receive Buffers. Used by display.c and lv_port_disp.c
+#define BUFFER_ROWS             (10)
+```
+
+TODO
+
+```c
+/* Maximal horizontal and vertical resolution to support by the library.*/
+#define LV_HOR_RES_MAX          (240)
+#define LV_VER_RES_MAX          (240)
+```
+
+TODO
+
+```c
+/* Color depth:
+ * - 1:  1 byte per pixel
+ * - 8:  RGB332
+ * - 16: RGB565
+ * - 32: ARGB8888
+ */
+#define LV_COLOR_DEPTH     16
+```
+
+TODO
+
+```c
+/* Swap the 2 bytes of RGB565 color.
+ * Useful if the display has a 8 bit interface (e.g. SPI)*/
+#define LV_COLOR_16_SWAP   1
+```
+
+## LVGL Application
+
+TODO
+
+## lvgl_init
+
+TODO
+
+[`lvgl.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L25-L48)
+
+```c
+/// Set to true if LVGL has already been lvgl_initialised
+static bool lvgl_initialised = false;
+
+/// Set to true if LVGL widgets have been created
+static bool lvgl_created = false;
+```
+
+TODO
+
+```c
+/// Button Widget
+static lv_obj_t *btn = NULL;
+
+/// Label Widget
+static lv_obj_t *label = NULL;
+```
+
+TODO
+
+```c
+/// Init the LVGL library
+int lvgl_init(void) {   
+    //  Assume that display controller has been lvgl_initialised 
+    if (lvgl_initialised) { return 0; }  //  Init only once
+    lvgl_initialised = true;
+    printf("Init LVGL...\r\n");
+
+    //  Init the LVGL display
+    lv_init();
+    lv_port_disp_init();
+    return 0;
+}
+```
+
+## lvgl_create
+
+TODO
+
+[`lvgl.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L50-L64)
+
+```c
+/// Create a Button Widget and a Label Widget
+int lvgl_create(void) {
+    assert(lvgl_initialised);        //  LVGL must have been initialised
+    if (lvgl_created) { return 0; }  //  Create widgets only once
+    lvgl_created = true;
+    printf("Create LVGL widgets...\r\n");
+```
+
+TODO
+
+```c
+    btn = lv_btn_create(lv_scr_act(), NULL);  //  Add a button the current screen
+    lv_obj_set_pos(btn, 10, 80);              //  Set its position
+    lv_obj_set_size(btn, 220, 80);            //  Set its size
+```
+
+TODO
+
+```c
+    label = lv_label_create(btn, NULL);       //  Add a label to the button
+    lv_label_set_text(label, "BL602 LVGL");   //  Set the label text
+    return 0;
+}
+```
+
+## lvgl_update
+
+TODO
+
+[`lvgl.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L66-L78)
+
+```c
+/// Update the Widgets
+int lvgl_update(void) {
+    assert(lvgl_created);  //  LVGL widgets must have been created
+    assert(label != NULL);
+    printf("Update LVGL widgets...\r\n");
+```
+
+TODO
+
+```c
+    //  Set the button label to a new message
+    static int counter = 1;
+    char msg[20]; 
+    snprintf(msg, sizeof(msg), "SO COOL! #%d", counter++);
+    lv_label_set_text(label, msg);
+    return 0;
+}
+```
+
+## lvgl_render
+
+TODO
+
+[`lvgl.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L80-L91)
+
+```c
+/// Render the LVGL display
+int lvgl_render(void) {
+    assert(lvgl_created);  //  LVGL widgets must have been created
+    printf("Render LVGL display...\r\n");
+```
+
+TODO
+
+```c
+    //  Must tick at least 100 milliseconds to force LVGL to render display
+    lv_tick_inc(100);
+```
+
+TODO
+
+```c
+    //  Call LVGL to render the display and flush our display driver
+    lv_task_handler();
+    return 0;
+}
+```
+
+## Add LVGL to Makefile
+
+TODO
+
+[`make_scripts_riscv/ component_wrapper.mk`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/make_scripts_riscv/component_wrapper.mk#L42-L51)
+
+```text
+#### TODO: Add LVGL to build in a cleaner way
+COMPONENT_SRCDIRS += \
+	./lvgl/src/lv_core \
+	./lvgl/src/lv_draw \
+	./lvgl/src/lv_font \
+	./lvgl/src/lv_gpu  \
+	./lvgl/src/lv_hal  \
+	./lvgl/src/lv_misc   \
+	./lvgl/src/lv_themes \
+	./lvgl/src/lv_widgets
+```
+
+![](https://lupyuen.github.io/images/display-addlvgl.png)
+
+TODO
+
+# Build and Run the LVGL Firmware
+
+TODO
+
+## display_init
+
+TODO
 
 ## lvgl_init
 
