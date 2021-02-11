@@ -242,13 +242,13 @@ Now that we have our SPI Transmit Function `transmit_spi`, let's call it to send
 
 _What's inside an ST7789 Command?_
 
-An ST779 Command consists of...
+An ST7789 Command consists of...
 
 1.  __1 byte__ for the __Command Code__, followed by...
 
 1. __0 or more bytes__ for the __Command Parameters__ 
 
-We'll transmit an ST7789 Command like so...
+We transmit an ST7789 Command by calling `write_command`...
 
 ```c
 //  Define the ST7789 Command Code (1 byte: 0x33)
@@ -265,7 +265,7 @@ write_command(
 );
 ```
 
-Now there's a special way to transmit Command Codes and Parameters to ST7789...
+There's a special way to transmit Command Codes and Parameters to ST7789...
 
 ## ST7789 Command vs Parameters
 
@@ -333,7 +333,7 @@ Then it transmits the Command Parameters...
 }
 ```
 
-We'll be calling `write_command` very often... So yes the flipping of the Data / Command Pin will be done many many times.
+We'll be calling `write_command` very often... So yes the Data / Command Pin will be flipped many many times.
 
 Let's watch how we call `write_command`...
 
