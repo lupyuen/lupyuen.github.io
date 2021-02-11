@@ -607,23 +607,12 @@ Build Version: release_bl_iot_sdk_1.6.11-1-g66bb28da-dirty
 Build Date: Feb 10 2021
 Build Time: 13:33:01
 ------------------------------------------------------------
-
 blog init set power on level 2, 2, 2.
 [IRQ] Clearing and Disable all the pending IRQ...
 [OS] Starting aos_loop_proc task...
 [OS] Starting OS Scheduler...
-=== 32 task inited
-====== bloop dump ======
-  bitmap_evt 0
-  bitmap_msg 0
---->>> timer list:
-  32 task:
-    task[31] : SYS [built-in]
-      evt handler 0x230228d2, msg handler 0x230228a2, trigged cnt 0, bitmap async 0 sync 0, time consumed 0us acc 0ms, max 0us
 Init CLI with event Driven
 ```
-
-## help
 
 TODO
 
@@ -1017,7 +1006,7 @@ COMPONENT_SRCDIRS += \
 
 TODO
 
-# Build and Run the LVGL Firmware
+# Run the LVGL Firmware
 
 TODO
 
