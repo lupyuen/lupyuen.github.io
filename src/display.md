@@ -2,7 +2,13 @@
 
 📝 _14 Feb 2021_
 
-TODO
+In our last article we configured PineCone BL602 to connect to a simple SPI Peripheral: BME280 Sensor for Temperature / Humidity / Air Pressure.
+
+Today we shall connect PineCone BL602 / Pinenut / Any BL602 Board to a more powerful SPI Peripheral: __ST7789 Display Controller__.
+
+We'll be using the __LVGL Graphics Library__ to render text and graphics to the ST7789 Display.
+
+The Demo Firmware in this article will run on PineCone, Pinenut and __any BL602 Board__.
 
 ![PineCone BL602 RISC-V Board rendering text and graphics on ST7789 SPI Display with LVGL Graphics Library](https://lupyuen.github.io/images/display-title.jpg)
 
@@ -10,24 +16,24 @@ _PineCone BL602 RISC-V Board rendering text and graphics on ST7789 SPI Display w
 
 # Connect BL602 to ST7789 SPI Display
 
-TODO
+Connect BL602 to ST7789 as follows...
 
 | BL602 Pin     | ST7789 SPI          | Wire Colour 
 |:--------------|:--------------------|:-------------------
-| __`GPIO 1`__  | Do Not <br> Connect <br> _(MISO)_ |
-| __`GPIO 2`__  | Do Not <br> Connect |
+| __`GPIO 1`__  | Do Not Connect <br> _(MISO)_ |
+| __`GPIO 2`__  | Do Not Connect |
 | __`GPIO 3`__  | `SCL`               | Yellow 
 | __`GPIO 4`__  | `SDA` _(MOSI)_      | Blue
 | __`GPIO 5`__  | `DC`                | White
 | __`GPIO 11`__ | `RST`               | Orange
 | __`GPIO 12`__ | `BLK`               | Purple
-| __`GPIO 14`__ | Do Not <br> Connect |
+| __`GPIO 14`__ | Do Not Connect |
 | __`3V3`__     | `3.3V`              | Red
 | __`GND`__     | `GND`               | Black
 
-TODO
-
 ![](https://lupyuen.github.io/images/display-connect2.jpg)
+
+## Why were the pins chosen?
 
 TODO
 
