@@ -69,47 +69,20 @@ _Why are Pins 1, 2 and 14 unused?_
 
 _PineCone BL602 Pins connected to ST7789: 3 (Yellow), 4 (Blue), 5 (White), 11 (Orange) and 12 (Purple)_
 
-# Render an Image
+# Initialise SPI Port
 
-TODO
+To initialise BL602's SPI Port, we used the same code as the previous article, except for two modifications: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/demo.c#L62-L97)
 
-## test_display_init
-
-TODO
-
-[`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/demo.c#L62-L97)
-
-```c
-/// Use SPI Port Number 0
-#define SPI_PORT   0
-
-/// SPI Device Instance. Used by display.c
-spi_dev_t spi_device;
-```
-
-TODO
 
 ```c
 /// Command to init the display
-static void test_display_init(char *buf, int len, int argc, char **argv)
-{
-    //  Note: The Chip Select Pin below (2) must NOT be the same as DISPLAY_CS_PIN (14). 
-    //  Because the SPI Pin Function will override the GPIO Pin Function!
-
-    //  TODO: The pins for Serial Data In and Serial Data Out seem to be flipped,
-    //  when observed with a Logic Analyser. This contradicts the 
-    //  BL602 Reference Manual. Why ???
-```
-
-TODO
-
-```c
+static void test_display_init(char *buf, int len, int argc, char **argv) {
     //  Configure the SPI Port
     int rc = spi_init(
         &spi_device, //  SPI Device
         SPI_PORT,    //  SPI Port
-        0,           //  SPI Mode: 0 for Controller (formerly Master), 1 for Peripheral (formerly Slave)
-        3,           //  SPI Polar Phase: Must be 3 for ST7789. Valid values: 0 (CPOL=0, CPHA=0), 1 (CPOL=0, CPHA=1), 2 (CPOL=1, CPHA=0) or 3 (CPOL=1, CPHA=1)
+        0,           //  SPI Mode: 0 for Controller (formerly Master)
+        3,           //  SPI Polarity Phase: Must be 3 for ST7789 (CPOL=1, CPHA=1)
         4 * 1000 * 1000,  //  SPI Frequency (4 MHz, which is the max speed)
         2,   //  Transmit DMA Channel
         3,   //  Receive DMA Channel
@@ -121,34 +94,45 @@ TODO
     assert(rc == 0);
 ```
 
-TODO
+[(`spi_init` is explained here)](https://lupyuen.github.io/articles/spi#initialise-spi-port)
+
+Here are the modifications from the previous article...
+
+1.  __SPI Polarity Phase is 3 (Polarity 1, Phase 1)__: This is needed specifically for ST7789's SPI Interface
+
+    (Be careful with SPI Phase on BL602... It doesn't work the way we expect. [See this](https://lupyuen.github.io/articles/spi#spi-phase-looks-sus))
+
+1.  __SPI Frequency is 4 MHz__: This is the maximum SPI Frequency for BL602... Because we want to blast pixels the fastest speed possible to ST7789.
+
+This part is also specific to ST7789...
+
+1.  Configure the GPIO Pins
+
+1.  Initialise the Display Controller
+
+1.  Switch on the backlight
 
 ```c
-    //  Configure the GPIO Pins, init the display controller and switch on backlight
+    //  Configure the GPIO Pins, init the display controller 
+    //  and switch on backlight
     rc = init_display();
     assert(rc == 0);
 }
 ```
 
-TODO
+We'll explain `init_display` in a while.
 
-[`demo.h`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/demo.h#L33-L43)
+`SPI_PORT` and `spi_device` are unchanged...
 
 ```c
-/// Use GPIO 5 as ST7789 Data/Command Pin (DC)
-#define DISPLAY_DC_PIN 5
+/// Use SPI Port Number 0
+#define SPI_PORT   0
 
-/// Use GPIO 11 as ST7789 Reset Pin (RST)
-#define DISPLAY_RST_PIN 11
-
-/// Use GPIO 12 as ST7789 Backlight Pin (BLK)
-#define DISPLAY_BLK_PIN 12
-
-/// Use GPIO 14 as SPI Chip Select Pin (Unused for ST7789 SPI)
-#define DISPLAY_CS_PIN 14
+/// SPI Device Instance. Used by display.c
+spi_dev_t spi_device;
 ```
 
-## ST7789 Display Driver
+# ST7789 Display Driver
 
 TODO
 
@@ -177,6 +161,26 @@ uint8_t spi_tx_buf[BUFFER_ROWS * COL_COUNT * BYTES_PER_PIXEL];
 /// SPI Receive Buffer. We don't actually receive data, but SPI Transfer needs this.
 /// Contains 10 rows of 240 pixels of 2 bytes each (16-bit colour).
 static uint8_t spi_rx_buf[BUFFER_ROWS * COL_COUNT * BYTES_PER_PIXEL];
+```
+
+## Pin Definitions
+
+TODO
+
+[`demo.h`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/demo.h#L33-L43)
+
+```c
+/// Use GPIO 5 as ST7789 Data/Command Pin (DC)
+#define DISPLAY_DC_PIN 5
+
+/// Use GPIO 11 as ST7789 Reset Pin (RST)
+#define DISPLAY_RST_PIN 11
+
+/// Use GPIO 12 as ST7789 Backlight Pin (BLK)
+#define DISPLAY_BLK_PIN 12
+
+/// Use GPIO 14 as SPI Chip Select Pin (Unused for ST7789 SPI)
+#define DISPLAY_CS_PIN 14
 ```
 
 ## init_display
