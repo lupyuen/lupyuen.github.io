@@ -82,9 +82,8 @@
 <li><a href="#backlight_off">2.13 backlight_off</a><ul></ul></li>
 <li><a href="#delay_ms">2.14 delay_ms</a><ul></ul></li></ul></li>
 <li><a href="#build-and-run-the-st7789-firmware">3 Build and Run the ST7789 Firmware</a><ul>
-<li><a href="#help">3.1 help</a><ul></ul></li>
-<li><a href="#display_init">3.2 display_init</a><ul></ul></li>
-<li><a href="#display_image-1">3.3 display_image</a><ul></ul></li></ul></li>
+<li><a href="#display_init">3.1 display_init</a><ul></ul></li>
+<li><a href="#display_image-1">3.2 display_image</a><ul></ul></li></ul></li>
 <li><a href="#render-text-and-graphics-with-lvgl">4 Render Text and Graphics with LVGL</a><ul>
 <li><a href="#lvgl-display-driver-for-st7789">4.1 LVGL Display Driver for ST7789</a><ul></ul></li>
 <li><a href="#lv_port_disp_init">4.2 lv_port_disp_init</a><ul></ul></li>
@@ -95,7 +94,7 @@
 <li><a href="#lvgl_update">4.7 lvgl_update</a><ul></ul></li>
 <li><a href="#lvgl_render">4.8 lvgl_render</a><ul></ul></li>
 <li><a href="#add-lvgl-to-makefile">4.9 Add LVGL to Makefile</a><ul></ul></li></ul></li>
-<li><a href="#build-and-run-the-lvgl-firmware">5 Build and Run the LVGL Firmware</a><ul>
+<li><a href="#run-the-lvgl-firmware">5 Run the LVGL Firmware</a><ul>
 <li><a href="#display_init-1">5.1 display_init</a><ul></ul></li>
 <li><a href="#lvgl_init-1">5.2 lvgl_init</a><ul></ul></li>
 <li><a href="#lvgl_create-1">5.3 lvgl_create</a><ul></ul></li>
@@ -527,22 +526,12 @@ Build Version: release_bl_iot_sdk_1.6.11-1-g66bb28da-dirty
 Build Date: Feb 10 2021
 Build Time: 13:33:01
 ------------------------------------------------------------
-
 blog init set power on level 2, 2, 2.
 [IRQ] Clearing and Disable all the pending IRQ...
 [OS] Starting aos_loop_proc task...
 [OS] Starting OS Scheduler...
-=== 32 task inited
-====== bloop dump ======
-  bitmap_evt 0
-  bitmap_msg 0
----&gt;&gt;&gt; timer list:
-  32 task:
-    task[31] : SYS [built-in]
-      evt handler 0x230228d2, msg handler 0x230228a2, trigged cnt 0, bitmap async 0 sync 0, time consumed 0us acc 0ms, max 0us
 Init CLI with event Driven
 </code></pre>
-<h2 id="help" class="section-header"><a href="#help">3.1 help</a></h2>
 <p>TODO</p>
 <pre><code class="language-text"># help
 ====User Commands====
@@ -559,7 +548,7 @@ lvgl_render              : Render LVGL display
 2                        : Init display, init LVGL, create LVGL widgets, render LVGL display
 3                        : Update LVGL widgets, render LVGL display
 </code></pre>
-<h2 id="display_init" class="section-header"><a href="#display_init">3.2 display_init</a></h2>
+<h2 id="display_init" class="section-header"><a href="#display_init">3.1 display_init</a></h2>
 <p>TODO</p>
 <pre><code class="language-text"># display_init
 port0 eventloop init = 42013ef8
@@ -581,7 +570,7 @@ Set CS pin 14 to high
 TODO Delay 200
 ...
 </code></pre>
-<h2 id="display_image-1" class="section-header"><a href="#display_image-1">3.3 display_image</a></h2>
+<h2 id="display_image-1" class="section-header"><a href="#display_image-1">3.2 display_image</a></h2>
 <p>TODO</p>
 <pre><code class="language-text"># display_image
 Displaying image...
@@ -817,7 +806,7 @@ COMPONENT_SRCDIRS += \
 </code></pre>
 <p><img src="https://lupyuen.github.io/images/display-addlvgl.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="build-and-run-the-lvgl-firmware" class="section-header"><a href="#build-and-run-the-lvgl-firmware">5 Build and Run the LVGL Firmware</a></h1>
+<h1 id="run-the-lvgl-firmware" class="section-header"><a href="#run-the-lvgl-firmware">5 Run the LVGL Firmware</a></h1>
 <p>TODO</p>
 <h2 id="display_init-1" class="section-header"><a href="#display_init-1">5.1 display_init</a></h2>
 <p>TODO</p>
