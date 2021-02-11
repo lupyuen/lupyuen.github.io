@@ -77,3 +77,11 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [this meandering Twitter Thread](https://twitter.com/MisterTechBlog/status/1358691021073178624?s=20)
+
+# Appendix: Troubleshooting SPI Hanging
+
+TODO
+
+# Appendix: Show Assertion Failures
+
+TODO
