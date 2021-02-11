@@ -714,7 +714,7 @@ There's plenty more code in the [__BL602 IoT SDK__](https://github.com/bouffalol
 
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
-[`lupyuen.github.io/src/spi.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/spi.md)
+[`lupyuen.github.io/src/display.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/display.md)
 
 TODO
 
