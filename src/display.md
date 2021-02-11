@@ -39,7 +39,11 @@ TODO
 
 TODO
 
-https://github.com/lupyuen/bl_iot_sdk/blob/01a3d0db6cd78538f424a33b3d542e2d63e8e2e1/customer_app/sdk_app_st7789/sdk_app_st7789/demo.c#L62-L97
+## test_display_init
+
+TODO
+
+[`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/demo.c#L62-L97)
 
 ```c
 /// Use SPI Port Number 0
@@ -82,7 +86,7 @@ static void test_display_init(char *buf, int len, int argc, char **argv)
 
 TODO
 
-https://github.com/lupyuen/bl_iot_sdk/blob/45f820238f7ecacec241c0e50d0007d67cb5ba20/customer_app/sdk_app_st7789/sdk_app_st7789/demo.h#L33-L43
+[`demo.h`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/demo.h#L33-L43)
 
 ```c
 /// Use GPIO 5 as ST7789 Data/Command Pin (DC)
@@ -102,7 +106,7 @@ https://github.com/lupyuen/bl_iot_sdk/blob/45f820238f7ecacec241c0e50d0007d67cb5b
 
 TODO
 
-https://github.com/lupyuen/bl_iot_sdk/blob/2ee49baa5457021d20590374d46f08cb587a4066/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L79-L83
+[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L79-L83)
 
 ```c
 /// RGB565 Image. Converted by https://github.com/lupyuen/pinetime-graphic
@@ -112,9 +116,11 @@ static const uint8_t image_data[] = {  //  Should be 115,200 bytes
 };
 ```
 
+## SPI Transmit and Receive Buffers
+
 TODO
 
-https://github.com/lupyuen/bl_iot_sdk/blob/2ee49baa5457021d20590374d46f08cb587a4066/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L85-L92
+[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L85-L92)
 
 ```c
 /// SPI Transmit Buffer. We always copy pixels from Flash ROM to RAM
@@ -127,9 +133,11 @@ uint8_t spi_tx_buf[BUFFER_ROWS * COL_COUNT * BYTES_PER_PIXEL];
 static uint8_t spi_rx_buf[BUFFER_ROWS * COL_COUNT * BYTES_PER_PIXEL];
 ```
 
+## init_display
+
 TODO
 
-https://github.com/lupyuen/bl_iot_sdk/blob/2ee49baa5457021d20590374d46f08cb587a4066/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L94-L164
+[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L94-L164)
 
 ```c
 /// Initialise the ST7789 display controller. Based on https://github.com/almindor/st7789/blob/master/src/lib.rs
@@ -205,9 +213,11 @@ int init_display(void) {
 }
 ```
 
+## display_image
+
 TODO
 
-https://github.com/lupyuen/bl_iot_sdk/blob/2ee49baa5457021d20590374d46f08cb587a4066/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L166-L194
+[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L166-L194)
 
 ```c
 /// Display image on ST7789 display controller
@@ -241,9 +251,11 @@ int display_image(void) {
 }
 ```
 
+## set_window
+
 TODO
 
-https://github.com/lupyuen/bl_iot_sdk/blob/2ee49baa5457021d20590374d46f08cb587a4066/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L196-L211
+[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L196-L211)
 
 ```c
 /// Set the ST7789 display window to the coordinates (left, top), (right, bottom)
@@ -264,9 +276,11 @@ int set_window(uint8_t left, uint8_t top, uint8_t right, uint8_t bottom) {
 }
 ```
 
+## set_orientation
+
 TODO
 
-https://github.com/lupyuen/bl_iot_sdk/blob/2ee49baa5457021d20590374d46f08cb587a4066/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L213-L226
+[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L213-L226)
 
 ```c
 /// Set the display orientation
@@ -285,9 +299,11 @@ static int set_orientation(uint8_t orientation) {
 }
 ```
 
+## write_command
+
 TODO
 
-https://github.com/lupyuen/bl_iot_sdk/blob/2ee49baa5457021d20590374d46f08cb587a4066/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L228-L244
+[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L228-L244)
 
 ```c
 /// Transmit ST7789 command and parameters. `len` is the number of parameters.
@@ -309,9 +325,11 @@ int write_command(uint8_t command, const uint8_t *params, uint16_t len) {
 }
 ```
 
+## write_data
+
 TODO
 
-https://github.com/lupyuen/bl_iot_sdk/blob/2ee49baa5457021d20590374d46f08cb587a4066/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L246-L256
+[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L246-L256)
 
 ```c
 /// Transmit ST7789 data
@@ -327,9 +345,11 @@ int write_data(const uint8_t *data, uint16_t len) {
 }
 ```
 
+## transmit_spi
+
 TODO
 
-https://github.com/lupyuen/bl_iot_sdk/blob/2ee49baa5457021d20590374d46f08cb587a4066/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L258-L296
+[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L258-L296)
 
 ```c
 /// Write to the SPI port
@@ -373,9 +393,11 @@ static int transmit_spi(const uint8_t *data, uint16_t len) {
 }
 ```
 
+## hard_reset
+
 TODO
 
-https://github.com/lupyuen/bl_iot_sdk/blob/2ee49baa5457021d20590374d46f08cb587a4066/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L298-L306
+[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L298-L306)
 
 ```c
 /// Reset the display controller
@@ -389,9 +411,11 @@ static int hard_reset(void) {
 }
 ```
 
+## backlight_on
+
 TODO
 
-https://github.com/lupyuen/bl_iot_sdk/blob/2ee49baa5457021d20590374d46f08cb587a4066/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L308-L320
+[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L308-L320)
 
 ```c
 /// Switch on backlight
@@ -409,9 +433,11 @@ int backlight_on(void) {
 }
 ```
 
+## backlight_off
+
 TODO
 
-https://github.com/lupyuen/bl_iot_sdk/blob/2ee49baa5457021d20590374d46f08cb587a4066/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L322-L329
+[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L322-L329)
 
 ```c
 /// Switch off backlight
@@ -424,9 +450,11 @@ int backlight_off(void) {
 }
 ```
 
+## delay_ms
+
 TODO
 
-https://github.com/lupyuen/bl_iot_sdk/blob/2ee49baa5457021d20590374d46f08cb587a4066/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L331-L335
+[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L331-L335)
 
 ```c
 /// Delay for the specified number of milliseconds
@@ -444,7 +472,11 @@ TODO
 
 TODO
 
-https://github.com/lupyuen/bl_iot_sdk/blob/2ee49baa5457021d20590374d46f08cb587a4066/customer_app/sdk_app_st7789/sdk_app_st7789/lv_port_disp.c#L64-L113
+## lv_port_disp_init
+
+TODO
+
+[`lv_port_disp.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_port_disp.c#L64-L113)
 
 ```c
 void lv_port_disp_init(void)
@@ -489,9 +521,11 @@ void lv_port_disp_init(void)
 }
 ```
 
+## disp_flush
+
 TODO
 
-https://github.com/lupyuen/bl_iot_sdk/blob/2ee49baa5457021d20590374d46f08cb587a4066/customer_app/sdk_app_st7789/sdk_app_st7789/lv_port_disp.c#L126-L154
+[`lv_port_disp.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_port_disp.c#L126-L154)
 
 ```c
 /// ST7789 Commands. From https://github.com/almindor/st7789/blob/master/src/instruction.rs
@@ -527,7 +561,7 @@ static void disp_flush(lv_disp_drv_t * disp_drv, const lv_area_t * area, lv_colo
 
 TODO
 
-https://github.com/lupyuen/bl_iot_sdk/blob/4eb22062a77c95f90afe60f3b2cff9e38548b287/customer_app/sdk_app_st7789/sdk_app_st7789/lv_conf.h#L24-L41
+[`lv_conf.h`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_conf.h#L24-L41)
 
 ```c
 /// Number of rows in SPI Transmit and Receive Buffers. Used by display.c and lv_port_disp.c
@@ -550,11 +584,15 @@ https://github.com/lupyuen/bl_iot_sdk/blob/4eb22062a77c95f90afe60f3b2cff9e38548b
 #define LV_COLOR_16_SWAP   1
 ```
 
-## LVGL User Interface
+## LVGL Application
 
 TODO
 
-https://github.com/lupyuen/bl_iot_sdk/blob/6160874abc7055ba326eebcb2c98343cbf96dafe/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L25-L48
+## lvgl_init
+
+TODO
+
+[`lvgl.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L25-L48)
 
 ```c
 /// Set to true if LVGL has already been lvgl_initialised
@@ -583,9 +621,11 @@ int lvgl_init(void) {
 }
 ```
 
+## lvgl_create
+
 TODO
 
-https://github.com/lupyuen/bl_iot_sdk/blob/6160874abc7055ba326eebcb2c98343cbf96dafe/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L50-L64
+[`lvgl.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L50-L64)
 
 ```c
 /// Create a Button Widget and a Label Widget
@@ -605,9 +645,11 @@ int lvgl_create(void) {
 }
 ```
 
+## lvgl_update
+
 TODO
 
-https://github.com/lupyuen/bl_iot_sdk/blob/6160874abc7055ba326eebcb2c98343cbf96dafe/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L66-L78
+[`lvgl.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L66-L78)
 
 ```c
 /// Update the Widgets
@@ -625,9 +667,11 @@ int lvgl_update(void) {
 }
 ```
 
+## lvgl_render
+
 TODO
 
-https://github.com/lupyuen/bl_iot_sdk/blob/6160874abc7055ba326eebcb2c98343cbf96dafe/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L80-L91
+[`lvgl.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L80-L91)
 
 ```c
 /// Render the LVGL display
@@ -648,7 +692,7 @@ int lvgl_render(void) {
 
 TODO
 
-https://github.com/lupyuen/bl_iot_sdk/blob/e483636fd813c1cc0977333260dd08b14dfc7cd8/make_scripts_riscv/component_wrapper.mk#L42-L51
+[`make_scripts_riscv/ component_wrapper.mk`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/make_scripts_riscv/component_wrapper.mk#L42-L51)
 
 ```text
 #### TODO: Add LVGL to build in a cleaner way
@@ -933,7 +977,7 @@ TODO
 
 TODO
 
-https://github.com/lupyuen/bl_iot_sdk/blob/6728e37e7eb4eab17bfa3c208864da4be3dde3b5/components/hal_drv/bl602_hal/hal_spi.c#L341-L354
+[`components/hal_drv/ bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/components/hal_drv/bl602_hal/hal_spi.c#L341-L354)
 
 ```c
 static void hal_spi_dma_trans(spi_hw_t *arg, uint8_t *TxData, uint8_t *RxData, uint32_t Len) {
@@ -954,7 +998,7 @@ static void hal_spi_dma_trans(spi_hw_t *arg, uint8_t *TxData, uint8_t *RxData, u
 
 TODO
 
-https://github.com/lupyuen/bl_iot_sdk/blob/01a3d0db6cd78538f424a33b3d542e2d63e8e2e1/customer_app/sdk_app_st7789/sdk_app_st7789/demo.c#L224-L235
+[`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/demo.c#L224-L235)
 
 ```c
 /// TODO: We now show assertion failures in development.
@@ -975,4 +1019,4 @@ void __assert_func(const char *file, int line, const char *func, const char *fai
 
 TODO
 
-https://github.com/lupyuen/bl_iot_sdk/blob/4eb22062a77c95f90afe60f3b2cff9e38548b287/customer_app/sdk_app_st7789/sdk_app_st7789/lv_conf.h
+[`lv_conf.h`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_conf.h)
