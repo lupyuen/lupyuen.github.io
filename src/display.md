@@ -16,7 +16,7 @@ _PineCone BL602 RISC-V Board rendering text and graphics on ST7789 SPI Display w
 
 # Connect BL602 to ST7789 SPI Display
 
-Let's look at the non-obvious pins on our ST7789 Display...
+Let's inspect the (non-obvious) pins on our ST7789 Display...
 
 ![ST7789 Display](https://lupyuen.github.io/images/spi-st7789.jpg)
 
@@ -30,7 +30,7 @@ Let's look at the non-obvious pins on our ST7789 Display...
 
 -   __`DC`: Data / Command Pin__. We set this pin to __Low when sending a command__ on the Data Pin. And to __High when sending data__ on the Data Pin.
 
--   __`BLK`: Backlight Pin__. We set this pin to High to switch on the backlight.
+-   __`BLK`: Backlight Pin__. We set this pin to High to __switch on the backlight__.
 
 Connect BL602 to ST7789 as follows...
 
@@ -47,7 +47,7 @@ Connect BL602 to ST7789 as follows...
 | __`3V3`__     | `3.3V`              | Red
 | __`GND`__     | `GND`               | Black
 
-![](https://lupyuen.github.io/images/display-connect2.jpg)
+![PineCone BL602 connected to ST7789](https://lupyuen.github.io/images/display-connect2.jpg)
 
 _Why are Pins 1, 2 and 14 unused?_
 
@@ -65,9 +65,9 @@ _Why are Pins 1, 2 and 14 unused?_
 
     However our ST7789 Display doesn't have a Chip Select Pin, so this pin is unused.
 
-![](https://lupyuen.github.io/images/display-connect3.jpg)
+![PineCone BL602 Pins connected to ST7789: 3 (Yellow), 4 (Blue), 5 (White), 11 (Orange) and 12 (Purple)](https://lupyuen.github.io/images/display-connect3.jpg)
 
-TODO
+_PineCone BL602 Pins connected to ST7789: 3 (Yellow), 4 (Blue), 5 (White), 11 (Orange) and 12 (Purple)_
 
 # Render an Image
 
