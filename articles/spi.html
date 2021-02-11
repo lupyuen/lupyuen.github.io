@@ -321,7 +321,7 @@ static void test_spi_init(char *buf, int len, int argc, char **argv) {
 <li>
 <p><strong>SPI Frequency:</strong> We set the SPI Frequency (Hz) to 200,000, which means <strong>200 kHz</strong>.</p>
 <p>(Slow but reliable, and easier to troubleshoot)</p>
-<p>SPI Frequency ranges from 200 kHz to 4 MHz.</p>
+<p>SPI Frequency ranges from 200 kHz to 40 MHz.</p>
 </li>
 <li>
 <p><strong>Transmit DMA Channel:</strong> We select <strong>DMA Channel 2</strong> for transmitting SPI Data</p>
@@ -1220,8 +1220,8 @@ int spi_init(spi_dev_t *spi, uint8_t port,
         return 0;
     }
 </code></pre>
-<p>Parameter <code>speed</code> is the SPI Frequency (in Hz) from 200,000 (200 kHz) to 4,000,000 (4 MHz).</p>
-<p>The Actual SPI Frequency needs to be divisible by 4,000,000.</p>
+<p>Parameter <code>speed</code> is the SPI Frequency (in Hz) from 200,000 (200 kHz) to 40,000,000 (40 MHz).</p>
+<p>The Actual SPI Frequency needs to be divisible by 40,000,000.</p>
 <p>Here we compute the divisor for the SPI Frequency and derive the Actual SPI Frequency <code>real_speed</code>...</p>
 <pre><code class="language-c">    for (i = 0; i &lt; 256; i++) {
         if (speed == (40000000/(i+1))) {
@@ -1234,7 +1234,7 @@ int spi_init(spi_dev_t *spi, uint8_t port,
         }
     }
 </code></pre>
-<p>We validate that the Actual SPI Frequency is in the range 200 kHz to 4 MHz...</p>
+<p>We validate that the Actual SPI Frequency is in the range 200 kHz to 40 MHz...</p>
 <pre><code class="language-c">    if (real_flag != 1) {
         if (i == 0) {
             blog_error(&quot;The max speed is 40000000 Hz, please set it smaller.&quot;);
