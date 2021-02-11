@@ -83,8 +83,11 @@
 <li><a href="#backlight_off">2.13 backlight_off</a><ul></ul></li>
 <li><a href="#delay_ms">2.14 delay_ms</a><ul></ul></li></ul></li>
 <li><a href="#build-and-run-the-st7789-firmware">3 Build and Run the ST7789 Firmware</a><ul>
-<li><a href="#display_init">3.1 display_init</a><ul></ul></li>
-<li><a href="#display_image-1">3.2 display_image</a><ul></ul></li></ul></li>
+<li><a href="#flash-the-firmware">3.1 Flash the firmware</a><ul></ul></li>
+<li><a href="#run-the-firmware">3.2 Run the firmware</a><ul></ul></li>
+<li><a href="#enter-st7789-commands">3.3 Enter ST7789 commands</a><ul></ul></li>
+<li><a href="#display_init">3.4 display_init</a><ul></ul></li>
+<li><a href="#display_image-1">3.5 display_image</a><ul></ul></li></ul></li>
 <li><a href="#render-text-and-graphics-with-lvgl">4 Render Text and Graphics with LVGL</a><ul>
 <li><a href="#lvgl-display-driver-for-st7789">4.1 LVGL Display Driver for ST7789</a><ul></ul></li>
 <li><a href="#lv_port_disp_init">4.2 lv_port_disp_init</a><ul></ul></li>
@@ -523,6 +526,65 @@ static void delay_ms(uint32_t ms) {
 }
 </code></pre>
 <h1 id="build-and-run-the-st7789-firmware" class="section-header"><a href="#build-and-run-the-st7789-firmware">3 Build and Run the ST7789 Firmware</a></h1>
+<p>Let's run the ST7789 Demo Firmware for BL602.</p>
+<p>TODO: Download the Firmware Binary File <strong><code>sdk_app_st7789.bin</code></strong> from...</p>
+<ul>
+<li><a href="https://github.com/lupyuen/bl_iot_sdk/releases/tag/v3.0.0"><strong>TODO: Binary Release of <code>sdk_appst7789</code></strong></a></li>
+</ul>
+<p>TODO: Alternatively, we may build the Firmware Binary File <code>sdk_app_st7789.bin</code> from the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/st7789/customer_app/sdk_app_st7789">source code</a>...</p>
+<pre><code class="language-bash"># Download the st7789 branch of lupyuen's bl_iot_sdk
+git clone --recursive --branch st7789 https://github.com/lupyuen/bl_iot_sdk
+cd bl_iot_sdk/customer_app/sdk_app_st7789
+
+# TODO: Change this to the full path of bl_iot_sdk
+export BL60X_SDK_PATH=$HOME/bl_iot_sdk
+export CONFIG_CHIP_NAME=BL602
+make
+
+# TODO: Change ~/blflash to the full path of blflash
+cp build_out/sdk_app_st7789.bin ~/blflash
+</code></pre>
+<p><a href="https://lupyuen.github.io/articles/pinecone#building-firmware">More details on building bl_iot_sdk</a></p>
+<p>(Remember to use the <strong><code>st7789</code></strong> branch, not the default <strong><code>master</code></strong> branch)</p>
+<h2 id="flash-the-firmware" class="section-header"><a href="#flash-the-firmware">3.1 Flash the firmware</a></h2>
+<p>Follow these steps to install <code>blflash</code>...</p>
+<ol>
+<li>
+<p><a href="https://lupyuen.github.io/articles/flash#install-rustup"><strong>&quot;Install rustup&quot;</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/flash#download-and-build-blflash"><strong>&quot;Download and build blflash&quot;</strong></a></p>
+</li>
+</ol>
+<p>We assume that our Firmware Binary File <code>sdk_app_st7789.bin</code> has been copied to the <code>blflash</code> folder.</p>
+<p>Set BL602 to <strong>Flashing Mode</strong> and restart the board.</p>
+<p>For PineCone, this means setting the onboard jumper (IO 8) to the <code>H</code> Position <a href="https://lupyuen.github.io/images/pinecone-jumperh.jpg">(Like this)</a></p>
+<p>Enter these commands to flash <code>sdk_app_st7789.bin</code> to BL602 over UART...</p>
+<pre><code class="language-bash"># TODO: Change ~/blflash to the full path of blflash
+cd ~/blflash
+
+# For Linux:
+sudo cargo run flash sdk_app_st7789.bin \
+    --port /dev/ttyUSB0
+
+# For macOS:
+cargo run flash sdk_app_st7789.bin \
+    --port /dev/tty.usbserial-1420 \
+    --initial-baud-rate 230400 \
+    --baud-rate 230400
+</code></pre>
+<p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">More details on flashing firmware</a></p>
+<h2 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">3.2 Run the firmware</a></h2>
+<p>Set BL602 to <strong>Normal Mode</strong> (Non-Flashing) and restart the board.</p>
+<p>For PineCone, this means setting the onboard jumper (IO 8) to the <code>L</code> Position <a href="https://lupyuen.github.io/images/pinecone-jumperl.jpg">(Like this)</a></p>
+<p>Connect to BL602's UART Port at 2 Mbps like so...</p>
+<p><strong>For Linux:</strong></p>
+<pre><code class="language-bash">sudo screen /dev/ttyUSB0 2000000
+</code></pre>
+<p><strong>For macOS:</strong> Use CoolTerm (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
+<p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
+<p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">More details on connecting to BL602</a></p>
+<h2 id="enter-st7789-commands" class="section-header"><a href="#enter-st7789-commands">3.3 Enter ST7789 commands</a></h2>
 <p>TODO</p>
 <pre><code class="language-text">------------------------------------------------------------
 RISC-V Core Feature:RV32-ACFIMX
@@ -552,7 +614,7 @@ lvgl_render              : Render LVGL display
 2                        : Init display, init LVGL, create LVGL widgets, render LVGL display
 3                        : Update LVGL widgets, render LVGL display
 </code></pre>
-<h2 id="display_init" class="section-header"><a href="#display_init">3.1 display_init</a></h2>
+<h2 id="display_init" class="section-header"><a href="#display_init">3.4 display_init</a></h2>
 <p>TODO</p>
 <pre><code class="language-text"># display_init
 port0 eventloop init = 42013ef8
@@ -574,7 +636,7 @@ Set CS pin 14 to high
 TODO Delay 200
 ...
 </code></pre>
-<h2 id="display_image-1" class="section-header"><a href="#display_image-1">3.2 display_image</a></h2>
+<h2 id="display_image-1" class="section-header"><a href="#display_image-1">3.5 display_image</a></h2>
 <p>TODO</p>
 <pre><code class="language-text"># display_image
 Displaying image...
