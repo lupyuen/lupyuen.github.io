@@ -231,7 +231,7 @@ Here are the parameters for `spi_init`...
 
     (Slow but reliable, and easier to troubleshoot)
 
-    SPI Frequency ranges from 200 kHz to 4 MHz.
+    SPI Frequency ranges from 200 kHz to 40 MHz.
 
 -   __Transmit DMA Channel:__ We select __DMA Channel 2__ for transmitting SPI Data
 
@@ -1354,9 +1354,9 @@ int hal_spi_set_rwspeed(spi_dev_t *spi_dev, uint32_t speed)
     }
 ```
 
-Parameter `speed` is the SPI Frequency (in Hz) from 200,000 (200 kHz) to 4,000,000 (4 MHz).
+Parameter `speed` is the SPI Frequency (in Hz) from 200,000 (200 kHz) to 40,000,000 (40 MHz).
 
-The Actual SPI Frequency needs to be divisible by 4,000,000.
+The Actual SPI Frequency needs to be divisible by 40,000,000.
 
 Here we compute the divisor for the SPI Frequency and derive the Actual SPI Frequency `real_speed`...
 
@@ -1373,7 +1373,7 @@ Here we compute the divisor for the SPI Frequency and derive the Actual SPI Freq
     }
 ```
 
-We validate that the Actual SPI Frequency is in the range 200 kHz to 4 MHz...
+We validate that the Actual SPI Frequency is in the range 200 kHz to 40 MHz...
 
 ```c
     if (real_flag != 1) {
