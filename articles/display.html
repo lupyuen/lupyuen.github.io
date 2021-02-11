@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <title>PineCone BL602 Blasting Pixels to ST7789 Display with LVGL Library</title>
+
+    
+    <!-- Begin scripts/articles/*-header.html: Article Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<meta property="og:title" 
+    content="PineCone BL602 Blasting Pixels to ST7789 Display with LVGL Library" 
+    data-rh="true">
+<meta property="og:description" 
+    content="How we render text and graphics on PineCone BL602 RISC-V Board ... With ST7789 SPI Display and LVGL Graphics Library" 
+    data-rh="true">
+<meta property="og:image" 
+    content="https://lupyuen.github.io/images/display-title.jpg">
+<meta property="og:type" 
+    content="article" data-rh="true">
+<!-- End scripts/articles/*-header.html -->
+<!-- Begin scripts/rustdoc-header.html: Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<link rel="alternate" type="application/rss+xml" title="RSS Feed for lupyuen" href="/rss.xml" />
+<link rel="stylesheet" type="text/css" href="../normalize.css">
+<link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle">
+<link rel="stylesheet" type="text/css" href="../dark.css">
+<link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle">
+<link rel="stylesheet" type="text/css" href="../prism.css">
+<script src="../storage.js"></script><noscript>
+<link rel="stylesheet" href="../noscript.css"></noscript>
+<link rel="shortcut icon" href="../favicon.ico">
+<style type="text/css">
+    #crate-search {
+        background-image: url("../down-arrow.svg");
+    }
+    a {
+        color: #77d;
+    }
+</style>
+<!-- End scripts/rustdoc-header.html -->
+
+
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+        <!-- Begin scripts/rustdoc-before.html: Pre-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
+
+    <!-- Begin Theme Picker -->
+    <div class="theme-picker" style="left: 0"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg"
+        width="18" alt="Pick another theme!"></button>
+        <div id="theme-choices"></div>
+    </div>
+    <script src="../theme.js"></script>
+    <script src="../prism.js"></script>
+    <!-- Theme Picker -->
+
+    <!-- End scripts/rustdoc-before.html -->
+    
+
+    <h1 class="title">PineCone BL602 Blasting Pixels to ST7789 Display with LVGL Library</h1>
+    <nav id="TOC"><ul>
+<li><a href="#connect-bl602-to-st7789-spi-display">1 Connect BL602 to ST7789 SPI Display</a><ul></ul></li>
+<li><a href="#render-an-image">2 Render an Image</a><ul></ul></li>
+<li><a href="#render-text-and-graphics-with-lvgl">3 Render Text and Graphics with LVGL</a><ul></ul></li>
+<li><a href="#build-and-run-the-firmware">4 Build and Run the Firmware</a><ul></ul></li>
+<li><a href="#spi-dma-works-great-with-ram-not-so-much-with-flash-rom">5 SPI DMA works great with RAM, not so much with Flash ROM</a><ul></ul></li>
+<li><a href="#port-st7789-and-lvgl-to-other-operating-systems">6 Port ST7789 and LVGL to other Operating Systems</a><ul></ul></li>
+<li><a href="#whats-next">7 What's Next</a><ul></ul></li>
+<li><a href="#notes">8 Notes</a><ul></ul></li></ul></nav><p>📝 <em>14 Feb 2021</em></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/display-title.jpg" alt="PineCone BL602 RISC-V Board rendering text and graphics on ST7789 SPI Display with LVGL Graphics Library" /></p>
+<p><em>PineCone BL602 RISC-V Board rendering text and graphics on ST7789 SPI Display with LVGL Graphics Library</em></p>
+<h1 id="connect-bl602-to-st7789-spi-display" class="section-header"><a href="#connect-bl602-to-st7789-spi-display">1 Connect BL602 to ST7789 SPI Display</a></h1>
+<p>TODO</p>
+<h1 id="render-an-image" class="section-header"><a href="#render-an-image">2 Render an Image</a></h1>
+<p>TODO</p>
+<h1 id="render-text-and-graphics-with-lvgl" class="section-header"><a href="#render-text-and-graphics-with-lvgl">3 Render Text and Graphics with LVGL</a></h1>
+<p>TODO</p>
+<h1 id="build-and-run-the-firmware" class="section-header"><a href="#build-and-run-the-firmware">4 Build and Run the Firmware</a></h1>
+<p>TODO</p>
+<h1 id="spi-dma-works-great-with-ram-not-so-much-with-flash-rom" class="section-header"><a href="#spi-dma-works-great-with-ram-not-so-much-with-flash-rom">5 SPI DMA works great with RAM, not so much with Flash ROM</a></h1>
+<p>TODO</p>
+<h1 id="port-st7789-and-lvgl-to-other-operating-systems" class="section-header"><a href="#port-st7789-and-lvgl-to-other-operating-systems">6 Port ST7789 and LVGL to other Operating Systems</a></h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/display-box3.jpg" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/display-connect2.jpg" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/display-connect3.jpg" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/display-addlvgl.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/display-battery.jpg" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/display-log.jpg" alt="" /></p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">7 What's Next</a></h1>
+<p>TODO</p>
+<p>There's plenty more code in the <a href="https://github.com/bouffalolab/bl_iot_sdk"><strong>BL602 IoT SDK</strong></a> to be deciphered and documented: <strong>UART, ADC, DAC, WiFi, Bluetooth LE,</strong> ...</p>
+<p><a href="https://wiki.pine64.org/wiki/Nutcracker"><strong>Come Join Us... Make BL602 Better!</strong></a></p>
+<p>🙏 👍 😀</p>
+<ul>
+<li>
+<p><a href="https://github.com/sponsors/lupyuen">Sponsor me a coffee</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io">Check out my articles</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/rss.xml">RSS Feed</a></p>
+</li>
+</ul>
+<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
+<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/spi.md"><code>lupyuen.github.io/src/spi.md</code></a></p>
+<h1 id="notes" class="section-header"><a href="#notes">8 Notes</a></h1>
+<ol>
+<li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1358691021073178624?s=20">this meandering Twitter Thread</a></li>
+</ol>
+
+    
+</body>
+</html>
