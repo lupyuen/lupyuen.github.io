@@ -71,8 +71,9 @@ _PineCone BL602 Pins connected to ST7789: 3 (Yellow), 4 (Blue), 5 (White), 11 (O
 
 # Initialise SPI Port
 
-To initialise BL602's SPI Port, we used the same code as the previous article, except for two modifications: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/demo.c#L62-L97)
+To initialise BL602's SPI Port, we used the same code as the previous article, except for two modifications.
 
+Here's how our function `test_display_init` initialises the SPI Port: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/demo.c#L62-L97)
 
 ```c
 /// Command to init the display
@@ -131,6 +132,105 @@ We'll explain `init_display` in a while.
 /// SPI Device Instance. Used by display.c
 spi_dev_t spi_device;
 ```
+
+# Transfer SPI Data
+
+For transmitting SPI Data to ST7789, the code looks highly similar to our previous article. (Except that we're not interested in the data received)
+
+Here's how our function `transmit_spi` transmits data to ST7789: [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L258-L296)
+
+```c
+/// Write to the SPI port. `data` is the array of bytes to be written. `len` is the number of bytes.
+static int transmit_spi(const uint8_t *data, uint16_t len) {
+    //  Clear the receive buffer
+    memset(&spi_rx_buf, 0, sizeof(spi_rx_buf));
+```
+
+We pass to `transmit_spi` the array of bytes to be written (`data`) and the number of bytes to be written (`len`).
+
+We prepare the SPI Transfer the same way...
+
+```c
+    //  Prepare SPI Transfer
+    static spi_ioc_transfer_t transfer;
+    memset(&transfer, 0, sizeof(transfer));    
+    transfer.tx_buf = (uint32_t) data;        //  Transmit Buffer
+    transfer.rx_buf = (uint32_t) spi_rx_buf;  //  Receive Buffer
+    transfer.len    = len;                    //  How many bytes
+```
+
+(We'll explain `spi_rx_buf` in a while)
+
+We control the Chip Select Pin via GPIO the same way...
+
+```c
+    //  Select the SPI Peripheral (not used for ST7789)
+    int rc = bl_gpio_output_set(DISPLAY_CS_PIN, 0);
+    assert(rc == 0);
+```
+
+We execute the SPI Transfer and wait for it to complete...
+
+```c
+    //  Execute the SPI Transfer with the DMA Controller
+    rc = hal_spi_transfer(
+        &spi_device,  //  SPI Device
+        &transfer,    //  SPI Transfers
+        1             //  How many transfers (Number of requests, not bytes)
+    );
+    assert(rc == 0);
+
+    //  DMA Controller will transmit and receive the SPI data in the background.
+    //  hal_spi_transfer will wait for the SPI Transfer to complete before returning.
+```
+
+Finally we flip the Chip Select Pin to end the SPI Transfer...
+
+```c
+    //  Now that we're done with the SPI Transfer...
+
+    //  De-select the SPI Peripheral (not used for ST7789)
+    rc = bl_gpio_output_set(DISPLAY_CS_PIN, 1);
+    assert(rc == 0);
+    return 0;
+}
+```
+
+We're using the same Pin 14 as the Chip Select Pin: [`demo.h`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/demo.h#L33-L43)
+
+```c
+/// Use GPIO 14 as SPI Chip Select Pin (Unused for ST7789 SPI)
+#define DISPLAY_CS_PIN 14
+```
+
+The Chip Select Pin is not used by the ST7789 Display that we have chosen... But other ST7789 Displays may use it. 
+
+(Like the one in PineTime Smartwatch)
+
+_What's `spi_rx_buf` in the SPI Transfer?_
+
+Remember that the BL602 SPI Hardware Abstraction Layer (HAL) only executes SPI Transfers... Every SPI Transmit Request must be paired with an SPI Receive Request.
+
+We're not really interested in receiving data from ST7789, but we need to provide an SPI Receive Buffer anyway: `spi_rx_buf`
+
+That's why we set `spi_rx_buf` as the SPI Receive Buffer for our SPI Transfer...
+
+```c
+//  Prepare SPI Transfer
+transfer.tx_buf = (uint32_t) data;        //  Transmit Buffer
+transfer.rx_buf = (uint32_t) spi_rx_buf;  //  Receive Buffer
+transfer.len    = len;                    //  How many bytes
+```
+
+`spi_rx_buf` is defined in [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L85-L92)
+
+```c
+/// SPI Receive Buffer. We don't actually receive data, but SPI Transfer needs this.
+/// Contains 10 rows of 240 pixels of 2 bytes each (16-bit colour).
+static uint8_t spi_rx_buf[BUFFER_ROWS * COL_COUNT * BYTES_PER_PIXEL];
+```
+
+We limit each SPI Transfer to 10 rows of pixels. More about this later.
 
 # ST7789 Display Driver
 
@@ -486,75 +586,6 @@ TODO
     //  Transmit the data bytes
     rc = transmit_spi(data, len);
     assert(rc == 0);
-    return 0;
-}
-```
-
-## transmit_spi
-
-TODO
-
-[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L258-L296)
-
-```c
-/// Write to the SPI port
-static int transmit_spi(const uint8_t *data, uint16_t len) {
-    assert(data != NULL);
-    if (len == 0) { return 0; }
-    if (len > sizeof(spi_rx_buf)) { printf("transmit_spi error: Too much data %d\r\n", len); return 1; }
-```
-
-TODO
-
-```c
-    //  Clear the receive buffer
-    memset(&spi_rx_buf, 0, sizeof(spi_rx_buf));
-```
-
-TODO
-
-```c
-    //  Prepare SPI Transfer
-    static spi_ioc_transfer_t transfer;
-    memset(&transfer, 0, sizeof(transfer));    
-    transfer.tx_buf = (uint32_t) data;        //  Transmit Buffer
-    transfer.rx_buf = (uint32_t) spi_rx_buf;  //  Receive Buffer
-    transfer.len    = len;                    //  How many bytes
-```
-
-TODO
-
-```c
-    //  Select the SPI Peripheral (not used for ST7789)
-    printf("Set CS pin %d to low\r\n", DISPLAY_CS_PIN);
-    int rc = bl_gpio_output_set(DISPLAY_CS_PIN, 0);
-    assert(rc == 0);
-```
-
-TODO
-
-```c
-    //  Execute the SPI Transfer with the DMA Controller
-    rc = hal_spi_transfer(
-        &spi_device,  //  SPI Device
-        &transfer,    //  SPI Transfers
-        1             //  How many transfers (Number of requests, not bytes)
-    );
-    assert(rc == 0);
-
-    //  DMA Controller will transmit and receive the SPI data in the background.
-    //  hal_spi_transfer will wait for the SPI Transfer to complete before returning.
-```
-
-TODO
-
-```c
-    //  Now that we're done with the SPI Transfer...
-
-    //  De-select the SPI Peripheral (not used for ST7789)
-    rc = bl_gpio_output_set(DISPLAY_CS_PIN, 1);
-    assert(rc == 0);
-    printf("Set CS pin %d to high\r\n", DISPLAY_CS_PIN);
     return 0;
 }
 ```
