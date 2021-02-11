@@ -16,6 +16,22 @@ _PineCone BL602 RISC-V Board rendering text and graphics on ST7789 SPI Display w
 
 # Connect BL602 to ST7789 SPI Display
 
+Let's look at the non-obvious pins on our ST7789 Display...
+
+![ST7789 Display](https://lupyuen.github.io/images/spi-st7789.jpg)
+
+(Make sure that it says __`Interface SPI`__)
+
+-   __`SCL`: Clock Pin__. This goes to the __SPI Clock Pin__ on BL602.
+
+-   __`SDA`: Data Pin__. This goes to the __SPI Serial Data Out Pin__ on BL602. _(Formerly MOSI)_
+
+-   __`RES`: Reset Pin__. We'll toggle this pin with BL602 GPIO to force a __Hardware Reset__.
+
+-   __`DC`: Data / Command Pin__. We set this pin to __Low when sending a command__ on the Data Pin. And to __High when sending data__ on the Data Pin.
+
+-   __`BLK`: Backlight Pin__. We set this pin to High to switch on the backlight.
+
 Connect BL602 to ST7789 as follows...
 
 | BL602 Pin     | ST7789 SPI          | Wire Colour 
