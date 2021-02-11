@@ -117,7 +117,7 @@
 <p><img src="https://lupyuen.github.io/images/display-title.jpg" alt="PineCone BL602 RISC-V Board rendering text and graphics on ST7789 SPI Display with LVGL Graphics Library" /></p>
 <p><em>PineCone BL602 RISC-V Board rendering text and graphics on ST7789 SPI Display with LVGL Graphics Library</em></p>
 <h1 id="connect-bl602-to-st7789-spi-display" class="section-header"><a href="#connect-bl602-to-st7789-spi-display">1 Connect BL602 to ST7789 SPI Display</a></h1>
-<p>Let's look at the non-obvious pins on our ST7789 Display...</p>
+<p>Let's inspect the (non-obvious) pins on our ST7789 Display...</p>
 <p><img src="https://lupyuen.github.io/images/spi-st7789.jpg" alt="ST7789 Display" /></p>
 <p>(Make sure that it says <strong><code>Interface SPI</code></strong>)</p>
 <ul>
@@ -134,7 +134,7 @@
 <p><strong><code>DC</code>: Data / Command Pin</strong>. We set this pin to <strong>Low when sending a command</strong> on the Data Pin. And to <strong>High when sending data</strong> on the Data Pin.</p>
 </li>
 <li>
-<p><strong><code>BLK</code>: Backlight Pin</strong>. We set this pin to High to switch on the backlight.</p>
+<p><strong><code>BLK</code>: Backlight Pin</strong>. We set this pin to High to <strong>switch on the backlight</strong>.</p>
 </li>
 </ul>
 <p>Connect BL602 to ST7789 as follows...</p>
@@ -150,7 +150,7 @@
 <tr><td align="left"><strong><code>3V3</code></strong></td><td align="left"><code>3.3V</code></td><td align="left">Red</td></tr>
 <tr><td align="left"><strong><code>GND</code></strong></td><td align="left"><code>GND</code></td><td align="left">Black</td></tr>
 </tbody></table>
-<p><img src="https://lupyuen.github.io/images/display-connect2.jpg" alt="" /></p>
+<p><img src="https://lupyuen.github.io/images/display-connect2.jpg" alt="PineCone BL602 connected to ST7789" /></p>
 <p><em>Why are Pins 1, 2 and 14 unused?</em></p>
 <ul>
 <li>
@@ -167,8 +167,8 @@
 <p>However our ST7789 Display doesn't have a Chip Select Pin, so this pin is unused.</p>
 </li>
 </ul>
-<p><img src="https://lupyuen.github.io/images/display-connect3.jpg" alt="" /></p>
-<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/display-connect3.jpg" alt="PineCone BL602 Pins connected to ST7789: 3 (Yellow), 4 (Blue), 5 (White), 11 (Orange) and 12 (Purple)" /></p>
+<p><em>PineCone BL602 Pins connected to ST7789: 3 (Yellow), 4 (Blue), 5 (White), 11 (Orange) and 12 (Purple)</em></p>
 <h1 id="render-an-image" class="section-header"><a href="#render-an-image">2 Render an Image</a></h1>
 <p>TODO</p>
 <h2 id="test_display_init" class="section-header"><a href="#test_display_init">2.1 test_display_init</a></h2>
