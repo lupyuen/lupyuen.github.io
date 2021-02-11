@@ -604,6 +604,87 @@ static void delay_ms(uint32_t ms) {
 
 # Build and Run the ST7789 Firmware
 
+Let's run the ST7789 Demo Firmware for BL602.
+
+TODO: Download the Firmware Binary File __`sdk_app_st7789.bin`__ from...
+
+-  [__TODO: Binary Release of `sdk_appst7789`__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v3.0.0)
+
+TODO: Alternatively, we may build the Firmware Binary File `sdk_app_st7789.bin` from the [source code](https://github.com/lupyuen/bl_iot_sdk/tree/st7789/customer_app/sdk_app_st7789)...
+
+```bash
+# Download the st7789 branch of lupyuen's bl_iot_sdk
+git clone --recursive --branch st7789 https://github.com/lupyuen/bl_iot_sdk
+cd bl_iot_sdk/customer_app/sdk_app_st7789
+
+# TODO: Change this to the full path of bl_iot_sdk
+export BL60X_SDK_PATH=$HOME/bl_iot_sdk
+export CONFIG_CHIP_NAME=BL602
+make
+
+# TODO: Change ~/blflash to the full path of blflash
+cp build_out/sdk_app_st7789.bin ~/blflash
+```
+
+[More details on building bl_iot_sdk](https://lupyuen.github.io/articles/pinecone#building-firmware)
+
+(Remember to use the __`st7789`__ branch, not the default __`master`__ branch)
+
+## Flash the firmware
+
+Follow these steps to install `blflash`...
+
+1.  [__"Install rustup"__](https://lupyuen.github.io/articles/flash#install-rustup)
+
+1.  [__"Download and build blflash"__](https://lupyuen.github.io/articles/flash#download-and-build-blflash)
+
+We assume that our Firmware Binary File `sdk_app_st7789.bin` has been copied to the `blflash` folder.
+
+Set BL602 to __Flashing Mode__ and restart the board.
+
+For PineCone, this means setting the onboard jumper (IO 8) to the `H` Position [(Like this)](https://lupyuen.github.io/images/pinecone-jumperh.jpg)
+
+Enter these commands to flash `sdk_app_st7789.bin` to BL602 over UART...
+
+```bash
+# TODO: Change ~/blflash to the full path of blflash
+cd ~/blflash
+
+# For Linux:
+sudo cargo run flash sdk_app_st7789.bin \
+    --port /dev/ttyUSB0
+
+# For macOS:
+cargo run flash sdk_app_st7789.bin \
+    --port /dev/tty.usbserial-1420 \
+    --initial-baud-rate 230400 \
+    --baud-rate 230400
+```
+
+[More details on flashing firmware](https://lupyuen.github.io/articles/flash#flash-the-firmware)
+
+## Run the firmware
+
+Set BL602 to __Normal Mode__ (Non-Flashing) and restart the board.
+
+For PineCone, this means setting the onboard jumper (IO 8) to the `L` Position [(Like this)](https://lupyuen.github.io/images/pinecone-jumperl.jpg)
+
+Connect to BL602's UART Port at 2 Mbps like so...
+
+__For Linux:__
+
+```bash
+sudo screen /dev/ttyUSB0 2000000
+```
+
+__For macOS:__ Use CoolTerm ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
+
+__For Windows:__ Use `putty` ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
+
+[More details on connecting to BL602](https://lupyuen.github.io/articles/flash#watch-the-firmware-run)
+
+## Enter ST7789 commands
+
 TODO
 
 ```text
