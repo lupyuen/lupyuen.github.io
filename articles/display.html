@@ -297,7 +297,7 @@ static uint8_t spi_rx_buf[BUFFER_ROWS * COL_COUNT * BYTES_PER_PIXEL];
 <h1 id="transmit-st7789-commands" class="section-header"><a href="#transmit-st7789-commands">4 Transmit ST7789 Commands</a></h1>
 <p>Now that we have our SPI Transmit Function <code>transmit_spi</code>, let's call it to send some ST7789 Commands!</p>
 <p><em>What's inside an ST7789 Command?</em></p>
-<p>An ST779 Command consists of...</p>
+<p>An ST7789 Command consists of...</p>
 <ol>
 <li>
 <p><strong>1 byte</strong> for the <strong>Command Code</strong>, followed by...</p>
@@ -306,7 +306,7 @@ static uint8_t spi_rx_buf[BUFFER_ROWS * COL_COUNT * BYTES_PER_PIXEL];
 <p><strong>0 or more bytes</strong> for the <strong>Command Parameters</strong> </p>
 </li>
 </ol>
-<p>We'll transmit an ST7789 Command like so...</p>
+<p>We transmit an ST7789 Command by calling <code>write_command</code>...</p>
 <pre><code class="language-c">//  Define the ST7789 Command Code (1 byte: 0x33)
 #define VSCRDER  0x33
 
@@ -320,7 +320,7 @@ write_command(
     sizeof(VSCRDER_PARA)  //  Number of parameters (6)
 );
 </code></pre>
-<p>Now there's a special way to transmit Command Codes and Parameters to ST7789...</p>
+<p>There's a special way to transmit Command Codes and Parameters to ST7789...</p>
 <h2 id="st7789-command-vs-parameters" class="section-header"><a href="#st7789-command-vs-parameters">4.1 ST7789 Command vs Parameters</a></h2>
 <p><em>Why does ST7789 need a Data / Command Pin (Pin 5)?</em></p>
 <p>Because...</p>
@@ -370,7 +370,7 @@ int write_data(const uint8_t *data, uint16_t len) {
     return 0;
 }
 </code></pre>
-<p>We'll be calling <code>write_command</code> very often... So yes the flipping of the Data / Command Pin will be done many many times.</p>
+<p>We'll be calling <code>write_command</code> very often... So yes the Data / Command Pin will be flipped many many times.</p>
 <p>Let's watch how we call <code>write_command</code>...</p>
 <h1 id="st7789-display-driver" class="section-header"><a href="#st7789-display-driver">5 ST7789 Display Driver</a></h1>
 <p>TODO</p>
