@@ -84,7 +84,7 @@ static void test_display_init(char *buf, int len, int argc, char **argv) {
         SPI_PORT,    //  SPI Port
         0,           //  SPI Mode: 0 for Controller (formerly Master)
         3,           //  SPI Polarity Phase: Must be 3 for ST7789 (CPOL=1, CPHA=1)
-        4 * 1000 * 1000,  //  SPI Frequency (4 MHz, which is the max speed)
+        5 * 1000 * 1000,  //  SPI Frequency (5 MHz, reduce this in case of problems)
         2,   //  Transmit DMA Channel
         3,   //  Receive DMA Channel
         3,   //  (Yellow) SPI Clock Pin 
@@ -103,7 +103,11 @@ Here are the modifications from the previous article...
 
     (Be careful with SPI Phase on BL602... It doesn't work the way we expect. [See this](https://lupyuen.github.io/articles/spi#spi-phase-looks-sus))
 
-1.  __SPI Frequency is 4 MHz__: This is the maximum SPI Frequency for BL602... Because we want to blast pixels the fastest speed possible to ST7789.
+1.  __SPI Frequency is 5 MHz__: Why bump up the SPI Frequency? To blast pixels the fastest speed possible to ST7789!
+
+    BL602 supports up to __40 MHz__ for SPI Frequency... But __5 MHz__ is the maximum SPI Frequency that was tested OK for my setup. (Beyond that the SPI Transfer hangs)
+
+    If you're having problems with SPI Transfers (like hanging), reduce the SPI Frequency. (Lowest SPI Frequency is 200 kHz)
 
 This part is also specific to ST7789...
 
