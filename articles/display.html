@@ -65,7 +65,8 @@
 
     <h1 class="title">PineCone BL602 Blasting Pixels to ST7789 Display with LVGL Library</h1>
     <nav id="TOC"><ul>
-<li><a href="#connect-bl602-to-st7789-spi-display">1 Connect BL602 to ST7789 SPI Display</a><ul></ul></li>
+<li><a href="#connect-bl602-to-st7789-spi-display">1 Connect BL602 to ST7789 SPI Display</a><ul>
+<li><a href="#why-were-the-pins-chosen">1.1 Why were the pins chosen?</a><ul></ul></li></ul></li>
 <li><a href="#render-an-image">2 Render an Image</a><ul>
 <li><a href="#test_display_init">2.1 test_display_init</a><ul></ul></li>
 <li><a href="#st7789-display-driver">2.2 ST7789 Display Driver</a><ul></ul></li>
@@ -107,25 +108,28 @@
 <li><a href="#appendix-troubleshoot-spi-hanging">10 Appendix: Troubleshoot SPI Hanging</a><ul></ul></li>
 <li><a href="#appendix-show-assertion-failures">11 Appendix: Show Assertion Failures</a><ul></ul></li>
 <li><a href="#appendix-configure-lvgl-for-bl602-and-st7789">12 Appendix: Configure LVGL for BL602 and ST7789</a><ul></ul></li></ul></nav><p>📝 <em>14 Feb 2021</em></p>
-<p>TODO</p>
+<p>In our last article we configured PineCone BL602 to connect to a simple SPI Peripheral: BME280 Sensor for Temperature / Humidity / Air Pressure.</p>
+<p>Today we shall connect PineCone BL602 / Pinenut / Any BL602 Board to a more powerful SPI Peripheral: <strong>ST7789 Display Controller</strong>.</p>
+<p>We'll be using the <strong>LVGL Graphics Library</strong> to render text and graphics to the ST7789 Display.</p>
+<p>The Demo Firmware in this article will run on PineCone, Pinenut and <strong>any BL602 Board</strong>.</p>
 <p><img src="https://lupyuen.github.io/images/display-title.jpg" alt="PineCone BL602 RISC-V Board rendering text and graphics on ST7789 SPI Display with LVGL Graphics Library" /></p>
 <p><em>PineCone BL602 RISC-V Board rendering text and graphics on ST7789 SPI Display with LVGL Graphics Library</em></p>
 <h1 id="connect-bl602-to-st7789-spi-display" class="section-header"><a href="#connect-bl602-to-st7789-spi-display">1 Connect BL602 to ST7789 SPI Display</a></h1>
-<p>TODO</p>
+<p>Connect BL602 to ST7789 as follows...</p>
 <table><thead><tr><th align="left">BL602 Pin</th><th align="left">ST7789 SPI</th><th align="left">Wire Colour</th></tr></thead><tbody>
-<tr><td align="left"><strong><code>GPIO 1</code></strong></td><td align="left">Do Not <br> Connect <br> <em>(MISO)</em></td><td align="left"></td></tr>
-<tr><td align="left"><strong><code>GPIO 2</code></strong></td><td align="left">Do Not <br> Connect</td><td align="left"></td></tr>
+<tr><td align="left"><strong><code>GPIO 1</code></strong></td><td align="left">Do Not Connect <br> <em>(MISO)</em></td><td align="left"></td></tr>
+<tr><td align="left"><strong><code>GPIO 2</code></strong></td><td align="left">Do Not Connect</td><td align="left"></td></tr>
 <tr><td align="left"><strong><code>GPIO 3</code></strong></td><td align="left"><code>SCL</code></td><td align="left">Yellow</td></tr>
 <tr><td align="left"><strong><code>GPIO 4</code></strong></td><td align="left"><code>SDA</code> <em>(MOSI)</em></td><td align="left">Blue</td></tr>
 <tr><td align="left"><strong><code>GPIO 5</code></strong></td><td align="left"><code>DC</code></td><td align="left">White</td></tr>
 <tr><td align="left"><strong><code>GPIO 11</code></strong></td><td align="left"><code>RST</code></td><td align="left">Orange</td></tr>
 <tr><td align="left"><strong><code>GPIO 12</code></strong></td><td align="left"><code>BLK</code></td><td align="left">Purple</td></tr>
-<tr><td align="left"><strong><code>GPIO 14</code></strong></td><td align="left">Do Not <br> Connect</td><td align="left"></td></tr>
+<tr><td align="left"><strong><code>GPIO 14</code></strong></td><td align="left">Do Not Connect</td><td align="left"></td></tr>
 <tr><td align="left"><strong><code>3V3</code></strong></td><td align="left"><code>3.3V</code></td><td align="left">Red</td></tr>
 <tr><td align="left"><strong><code>GND</code></strong></td><td align="left"><code>GND</code></td><td align="left">Black</td></tr>
 </tbody></table>
-<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/display-connect2.jpg" alt="" /></p>
+<h2 id="why-were-the-pins-chosen" class="section-header"><a href="#why-were-the-pins-chosen">1.1 Why were the pins chosen?</a></h2>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/display-connect3.jpg" alt="" /></p>
 <p>TODO</p>
