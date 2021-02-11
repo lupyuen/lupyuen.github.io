@@ -87,3 +87,7 @@ TODO
 # Appendix: Show Assertion Failures
 
 TODO
+
+# Appendix: Configure LVGL for BL602 and ST7789
+
+TODO
