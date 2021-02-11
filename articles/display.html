@@ -648,6 +648,1925 @@ COMPONENT_SRCDIRS += \
 <p>TODO</p>
 <h1 id="build-and-run-the-firmware" class="section-header"><a href="#build-and-run-the-firmware">4 Build and Run the Firmware</a></h1>
 <p>TODO</p>
+<pre><code class="language-text">------------------------------------------------------------
+RISC-V Core Feature:RV32-ACFIMX
+Build Version: release_bl_iot_sdk_1.6.11-1-g66bb28da-dirty
+Build Date: Feb 10 2021
+Build Time: 13:33:01
+------------------------------------------------------------
+
+blog init set power on level 2, 2, 2.
+[IRQ] Clearing and Disable all the pending IRQ...
+[OS] Starting aos_loop_proc task...
+[OS] Starting OS Scheduler...
+=== 32 task inited
+====== bloop dump ======
+  bitmap_evt 0
+  bitmap_msg 0
+---&gt;&gt;&gt; timer list:
+  32 task:
+    task[31] : SYS [built-in]
+      evt handler 0x230228d2, msg handler 0x230228a2, trigged cnt 0, bitmap async 0 sync 0, time consumed 0us acc 0ms, max 0us
+Init CLI with event Driven
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-text"># help
+====User Commands====
+display_init             : Init display
+display_image            : Display image
+display_result           : Show result
+backlight_on             : Backlight on
+backlight_off            : Backlight off
+lvgl_init                : Init LVGL
+lvgl_create              : Create LVGL widgets
+lvgl_update              : Update LVGL widgets
+lvgl_render              : Render LVGL display
+1                        : Init display, display image
+2                        : Init display, init LVGL, create LVGL widgets, render LVGL display
+3                        : Update LVGL widgets, render LVGL display
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-text"># display_init
+port0 eventloop init = 42013ef8
+[HAL] [SPI] Init :
+port=0, mode=0, polar_phase = 3, freq=4000000, tx_dma_ch=2, rx_dma_ch=3, pin_clk=3, pin_cs=2, pin_mosi=1, pin_miso=4
+set rwspeed = 4000000
+hal_gpio_init: cs:2, clk:3, mosi:1, miso: 4
+hal_gpio_init: SPI controller mode
+hal_spi_init.
+Set CS pin 14 to high
+Set BLK pin 12 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dcdf, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+TODO Delay 200
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dcdf, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+TODO Delay 200
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dcdf, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 3
+Tx DMA src=0x23050458, dest=0x4000a288, size=3, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=3, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dcdf, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 6
+Tx DMA src=0x2305045c, dest=0x4000a288, size=6, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=6, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dcdf, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+TODO Delay 10
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dcdf, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dcdf, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dcf8, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dcdf, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x23050454, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dcdf, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+TODO Delay 200
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-text"># display_image
+Displaying image...
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dc9f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200dcb8, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dc9f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pn 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200dcbc, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dccf, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4800
+Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013058, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200f768, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013858, dest=0x4000a288, size=704, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dc9f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200dcb8, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dc9f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200dcbc, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dccf, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4800
+Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013058, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200f768, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013858, dest=0x4000a288, size=704, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dc9f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200dcb8, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set S pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dc9f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200dcbc, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dccf, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4800
+Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013058, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200f768, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013858, dest=0x4000a288, size=704, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dc9f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200dcb8, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dc9f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200dcbc, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dccf, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4800
+Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013058, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200f768, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013858, dest=0x4000a288, size=704, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dc9f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200dcb8, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dc9f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200dcbc, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dccf, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4800
+Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013058, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200f768, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013858, dest=0x4000a288, size=704, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dc9f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200dcb8, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dc9f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200dcbc, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dccf, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4800
+Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013058, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200f768, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013858, dest=0x4000a288, size=704, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dc9f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200dcb8, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dc9f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200dcbc, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dccf, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4800
+Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013058, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200f768, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013858, dest=0x4000a288, size=704, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dc9f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200dcb8, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dc9f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200dcbc, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dccf, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4800
+Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013058, dest0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200f768, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013858, dest=0x4000a288, size=704, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704, i=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dc9f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200dcb8, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dc9f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200dcbc, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dccf, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4800
+Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013058, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200f768, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013858, dest=0x4000a288, size=704, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dc9f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200dcb8, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dc9f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200dcbc, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dccf, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4800
+Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013058, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200f768, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013858, dest=0x4000a288, size=704, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dc9f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200dcb8, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dc9f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200dcbc, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dccf, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4800
+Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013058, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200f768, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013858, dest=0x4000a288, size=704, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dc9f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200dcb8, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dc9f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200dcbc, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dccf, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4800
+Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013058, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200f768, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013858, dest=0x4000a288, size=704, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dc9f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200dcb8, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dc9f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200dcbc, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dccf, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4800
+Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013058, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200f768, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013858, dest=0x4000a288, size=704, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dc9f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200dcb8, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dc9f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200dcbc, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dccf, dest=x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4800
+Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013058, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200f768, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013858, dest=0x4000a288, size=704, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dc9f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200dcb8, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dc9f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200dcbc, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dccf, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4800
+Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013058, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200f768, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013858, dest=0x4000a288, size=704, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dc9f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200dcb8, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dc9f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200dcbc, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dccf, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4800
+Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013058, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200f768, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013858, dest=0x4000a288, size=704, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dc9f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200dcb8, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dc9f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200dcbc, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dccf, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4800
+Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013058, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200f768, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013858, dest=0x4000a288, size=704, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dc9f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200dcb8, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dc9f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200dcbc, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dccf, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4800
+Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013058, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200f768, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013858, dest=0x4000a288, size=704, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dc9f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200dcb8, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dc9f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200dcbc, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dccf, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4800
+Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013058, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200f768, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013858, dest=0x4000a288, size=704, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dc9f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200dcb8, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dc9f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200dcbc, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dccf, dest=0x4000a288, size=1, si=1, di=0,i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4800
+Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013058, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200f768, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013858, dest=0x4000a288, size=704, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dc9f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200dcb8, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dc9f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to igh
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200dcbc, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200dccf, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4800
+Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013058, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200f768, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013858, dest=0x4000a288, size=704, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704, si=0, di=1, i=1
+recv a
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-text"># lvgl_init
+Init LVGL...
+Trace: lv_init started 	(lv_obj.c #172 lv_init())
+Info: lv_init ready 	(lv_obj.c #231 lv_init())
+Trace: Screen create started 	(lv_obj.c #273 lv_obj_create())
+Info: Object create ready 	(lv_obj.c #461 lv_obj_create())
+Trace: Screen create started 	(v_obj.c #273 lv_obj_create())
+Info: Object create ready 	(lv_obj.c #461 lv_obj_create())
+Trace: Screen create started 	(lv_obj.c #273 lv_obj_create())
+Info: Object create ready 	(lv_obj.c #461 lv_obj_create())
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-text"># lvgl_create
+Create LVGL widgets...
+Trace: button create started 	(lv_btn.c #61 lv_btn_create())
+Trace: container create started 	(lv_cont.c #74 lv_cont_create())
+Trace: Object create started 	(lv_obj.c #305 lv_obj_create())
+Info: Object create ready 	(lv_obj.c #461 lv_obj_create())
+Info: container created 	(lv_cont.c #121 lv_cont_create())
+Info: button created 	(lv_btn.c #106 lv_btn_create())
+Trace: label create started 	(lv_label.c #78 lv_label_create())
+Trace: Object create started 	(lv_obj.c #305 lv_obj_create())
+Info: Object create ready 	(lv_obj.c #461 lv_obj_create())
+Info: label created 	(lv_label.c #165 lv_label_create())
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-text"># lvgl_render
+Render LVGL display...
+Trace: lv_task_handler started 	(lv_task.c #67 lv_task_handler())
+Trace: lv_refr_task: started 	(lv_refr.c #177 _lv_disp_refr_task())
+Flush display: left=0, top=0, right=239, bottom=9...
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db4f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200db68, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db4f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200db6c, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db7f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4800
+Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013058, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200f768, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013858, dest=0x4000a288, size=704, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Flush display: left=0, top=10, right=239, bottom=19...
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db4f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200db68, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db4f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200db6c, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db7f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4800
+Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013058, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200f768, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013858, dest=0x4000a288, size=704, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Flush display: left=0, top=20, right=239, bottom=29...
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db4f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200db68, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db4f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200db6c, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db7f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4800
+Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013058, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200f768, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013858, dest=0x4000a288, size=704, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Flush display: left=0, top=30, right=239, bottom=39...
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db4f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200db68, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db4f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200db6c, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db7f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4800
+Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013058, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200f768, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013858, dest=0x4000a288, size=704, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Flush display: left=0, top=40, right=239, bottom=49...
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db4f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=04200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200db68, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db4f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200db6c, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db7f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4800
+Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013058, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200f768, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013858, dest=0x4000a288, size=704, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Flush display: left=0, top=50, right=239, bottom=59...
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db4f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200db68, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db4f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200db6c, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db7f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4800
+Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013058, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200f768, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013858, dest=0x4000a288, size=704, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Flush display: left=0, top=60, right=239, bottom=69...
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db4f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200db68, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db4f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200db6c, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db7f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4800
+Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013058, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200f768, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013858, dest=0x4000a288, size=704, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Flush display: left=0, top=70, right=239, bottom=79...
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db4f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200db68, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db4f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200db6c, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db7f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4800
+Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013058, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200f768, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013858, dest=0x4000a288, size=704, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Flush display: left=0, top=80, right=239, bottom=89...
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db4f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200db68, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db4f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200db6c, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db7f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event roup.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4800
+Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013058, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200f768, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013858, dest=0x4000a288, size=704, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Flush display: left=0, top=90, right=239, bottom=99...
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db4f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200db68, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db4f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len =4
+Tx DMA src=0x4200db6c, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db7f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4800
+Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013058, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200f768, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013858, dest=0x4000a288, size=704, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Flush display: left=0, top=100, right=239, bottom=109...
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db4f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200db68, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db4f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200db6c, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db7f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4800
+Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013058, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200f768, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013858, dest=0x4000a288, size=704, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Flush display: left=0, top=110, right=239, bottom=119...
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db4f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200db68, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db4f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200db6c, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db7f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4800
+Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013058, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200f768, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013858, dest=0x4000a288, size=704, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Flush display: left=0, top=120, right=239, bottom=129...
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db4f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200db68, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db4f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200db6c, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db7f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4800
+Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013058, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200f768, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013858, dest=0x4000a288, size=704, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Flush display: left=0, top=130, right=239, bottom=139...
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db4f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200db68, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db4f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200db6c, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db7f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4800
+Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013058, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200f768, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013858, dest=0x4000a288, size=704, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Flush display: left=0, top=140, right=239, bottom=149...
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db4f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-text"># lvgl_update
+Update LVGL widgets...
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-text"># lvgl_render
+Render LVGL display...
+Trace: lv_task_handler started 	(lv_task.c #67 lv_task_handler())
+Trace: lv_refr_task: started 	(lv_refr.c #177 _lv_disp_refr_task())
+Flush display: left=45, top=107, right=196, bottom=121...
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db4f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200db68, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db4f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200db6c, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db7f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4560
+Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013058, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200f768, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013858, dest=0x4000a288, size=464, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ff68, size=464, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Flush display: left=45, top=122, right=196, bottom=133...
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db4f, dest=0x4000a288, sze=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200db68, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db4f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4
+Tx DMA src=0x4200db6c, dest=0x4000a288, size=4, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=4, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200db7f, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 3648
+Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013058, dest=0x4000a288, size=1600, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200f768, size=1600, si=0, di=1, i=1
+recv all event group.
+Set CS pin 14 to high
+Trace: lv_refr_task: ready 	(lv_refr.c #321 _lv_disp_refr_task())
+Trace: lv_task_handler ready 	(lv_task.c #180 lv_task_handler())
+
+# 
+</code></pre>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/display-log.jpg" alt="" /></p>
 <p>TODO</p>
 <h1 id="spi-dma-works-great-with-ram-not-so-much-with-flash-rom" class="section-header"><a href="#spi-dma-works-great-with-ram-not-so-much-with-flash-rom">5 SPI DMA works great with RAM, not so much with Flash ROM</a></h1>
