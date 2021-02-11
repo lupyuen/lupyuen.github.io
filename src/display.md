@@ -33,6 +33,8 @@ Connect BL602 to ST7789 as follows...
 
 ![](https://lupyuen.github.io/images/display-connect2.jpg)
 
+TODO
+
 ## Why were the pins chosen?
 
 TODO
