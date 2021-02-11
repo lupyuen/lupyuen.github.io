@@ -65,8 +65,7 @@
 
     <h1 class="title">PineCone BL602 Blasting Pixels to ST7789 Display with LVGL Library</h1>
     <nav id="TOC"><ul>
-<li><a href="#connect-bl602-to-st7789-spi-display">1 Connect BL602 to ST7789 SPI Display</a><ul>
-<li><a href="#why-were-the-pins-chosen">1.1 Why were the pins chosen?</a><ul></ul></li></ul></li>
+<li><a href="#connect-bl602-to-st7789-spi-display">1 Connect BL602 to ST7789 SPI Display</a><ul></ul></li>
 <li><a href="#render-an-image">2 Render an Image</a><ul>
 <li><a href="#test_display_init">2.1 test_display_init</a><ul></ul></li>
 <li><a href="#st7789-display-driver">2.2 ST7789 Display Driver</a><ul></ul></li>
@@ -152,9 +151,22 @@
 <tr><td align="left"><strong><code>GND</code></strong></td><td align="left"><code>GND</code></td><td align="left">Black</td></tr>
 </tbody></table>
 <p><img src="https://lupyuen.github.io/images/display-connect2.jpg" alt="" /></p>
-<p>TODO</p>
-<h2 id="why-were-the-pins-chosen" class="section-header"><a href="#why-were-the-pins-chosen">1.1 Why were the pins chosen?</a></h2>
-<p>TODO</p>
+<p><em>Why are Pins 1, 2 and 14 unused?</em></p>
+<ul>
+<li>
+<p><strong><code>GPIO 1</code></strong> is <strong>SPI Serial Data In</strong> on BL602. <em>(Formerly MISO)</em></p>
+<p>We won't be reading data from the ST7789 Display, so this pin is unused.</p>
+</li>
+<li>
+<p><strong><code>GPIO 2</code></strong> is the <strong>Unused SPI Chip Select</strong> on BL602.</p>
+<p>According to the last article, we won't be using this pin because we'll be controlling Chip Select ourselves on <code>GPIO 14</code>.</p>
+</li>
+<li>
+<p><strong><code>GPIO 14</code></strong> is the <strong>Actual SPI Chip Select</strong> on BL602.</p>
+<p>According to the last article, we'll be controling Chip Select ourselves on <code>GPIO 14</code>.</p>
+<p>However our ST7789 Display doesn't have a Chip Select Pin, so this pin is unused.</p>
+</li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/display-connect3.jpg" alt="" /></p>
 <p>TODO</p>
 <h1 id="render-an-image" class="section-header"><a href="#render-an-image">2 Render an Image</a></h1>
