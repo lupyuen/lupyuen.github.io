@@ -342,31 +342,22 @@ Let's watch how we call `write_command`...
 
 TODO
 
-[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L39-L41)
-
 ```c
-/// ST7789 Colour Settings
-#define INVERTED 1  //  Display colours are inverted
-#define RGB      1  //  Display colours are RGB    
+//  Set orientation to Landscape or Portrait
+set_orientation(Landscape);
 ```
 
 TODO
-
-[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L68-L72)
-
-TODO
-
-```c
-/// ST7789 Orientation. From https://github.com/almindor/st7789/blob/master/src/lib.rs#L42-L52
-#define Portrait         0x00  //  No inverting
-#define Landscape        0x60  //  Invert column and page/column order
-#define PortraitSwapped  0xC0  //  Invert page and column order
-#define LandscapeSwapped 0xA0  //  Invert page and page/column order
-```
 
 [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L213-L226)
 
 ```c
+/// ST7789 Colour Settings
+#define RGB      1  //  Display colours are RGB    
+
+/// ST7789 Command for Memory Data Access Control. From https://github.com/almindor/st7789/blob/master/src/instruction.rs
+#define MADCTL   0x36
+
 /// Set the display orientation: Portrait, Landscape, PortraitSwapped or LandscapeSwapped
 static int set_orientation(uint8_t orientation) {
     //  Memory Data Access Control (ST7789 Datasheet Page 215)
@@ -381,6 +372,16 @@ static int set_orientation(uint8_t orientation) {
     }
     return 0;
 }
+```
+
+TODO
+
+```c
+/// ST7789 Orientation. From https://github.com/almindor/st7789/blob/master/src/lib.rs#L42-L52
+#define Portrait         0x00  //  No inverting
+#define Landscape        0x60  //  Invert column and page/column order
+#define PortraitSwapped  0xC0  //  Invert page and column order
+#define LandscapeSwapped 0xA0  //  Invert page and page/column order
 ```
 
 # ST7789 Display Driver
@@ -560,6 +561,16 @@ TODO
     delay_ms(200);  //  Need to wait at least 200 milliseconds
     return 0;
 }
+```
+
+TODO
+
+[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L39-L41)
+
+```c
+/// ST7789 Colour Settings
+#define INVERTED 1  //  Display colours are inverted
+#define RGB      1  //  Display colours are RGB    
 ```
 
 ## display_image
