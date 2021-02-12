@@ -284,7 +284,8 @@ Yep ST7789 is a little unique (and somewhat inefficient)... We need to __flip th
 Here's how `write_command` transmits the Command Code and Parameters: [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L228-L244)
 
 ```c
-/// Transmit ST7789 command code and parameters. `len` is the number of parameters.
+/// Transmit ST7789 command and parameters. `params` is the array of 
+/// parameter bytes, `len` is the number of parameters.
 int write_command(uint8_t command, const uint8_t *params, uint16_t len) {
     //  Set Data / Command Pin to Low to tell ST7789 this is a command
     int rc = bl_gpio_output_set(DISPLAY_DC_PIN, 0);
@@ -316,7 +317,7 @@ Next we transmit the Command Parameters by calling `write_data`...
 As expected, `write_data` flips the Data / Command Pin to High: [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L246-L256)
 
 ```c
-/// Transmit ST7789 data
+/// Transmit data to ST7789. `data` is the array of bytes to be transmitted, `len` is the number of bytes.
 int write_data(const uint8_t *data, uint16_t len) {
     //  Set Data / Command Pin to High to tell ST7789 this is data
     int rc = bl_gpio_output_set(DISPLAY_DC_PIN, 1);
@@ -336,6 +337,51 @@ Then it transmits the Command Parameters...
 We'll be calling `write_command` very often... So yes the Data / Command Pin will be flipped many many times.
 
 Let's watch how we call `write_command`...
+
+## Set Display Orientation
+
+TODO
+
+[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L39-L41)
+
+```c
+/// ST7789 Colour Settings
+#define INVERTED 1  //  Display colours are inverted
+#define RGB      1  //  Display colours are RGB    
+```
+
+TODO
+
+[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L68-L72)
+
+TODO
+
+```c
+/// ST7789 Orientation. From https://github.com/almindor/st7789/blob/master/src/lib.rs#L42-L52
+#define Portrait         0x00  //  No inverting
+#define Landscape        0x60  //  Invert column and page/column order
+#define PortraitSwapped  0xC0  //  Invert page and column order
+#define LandscapeSwapped 0xA0  //  Invert page and page/column order
+```
+
+[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L213-L226)
+
+```c
+/// Set the display orientation: Portrait, Landscape, PortraitSwapped or LandscapeSwapped
+static int set_orientation(uint8_t orientation) {
+    //  Memory Data Access Control (ST7789 Datasheet Page 215)
+    if (RGB) {
+        uint8_t orientation_para[1] = { orientation };
+        int rc = write_command(MADCTL, orientation_para, 1);
+        assert(rc == 0);
+    } else {
+        uint8_t orientation_para[1] = { orientation | 0x08 };
+        int rc = write_command(MADCTL, orientation_para, 1);
+        assert(rc == 0);
+    }
+    return 0;
+}
+```
 
 # ST7789 Display Driver
 
@@ -368,7 +414,9 @@ uint8_t spi_tx_buf[BUFFER_ROWS * COL_COUNT * BYTES_PER_PIXEL];
 static uint8_t spi_rx_buf[BUFFER_ROWS * COL_COUNT * BYTES_PER_PIXEL];
 ```
 
-## Pin Definitions
+# Initialise ST7789 Display
+
+Pin Definitions
 
 TODO
 
@@ -387,8 +435,6 @@ TODO
 /// Use GPIO 14 as SPI Chip Select Pin (Unused for ST7789 SPI)
 #define DISPLAY_CS_PIN 14
 ```
-
-## init_display
 
 TODO
 
@@ -610,29 +656,6 @@ TODO
     rc = write_command(RASET, NULL, 0); assert(rc == 0);
     uint8_t row_para[4] = { 0x00, top, 0x00, bottom };
     rc = write_data(row_para, 4); assert(rc == 0);
-    return 0;
-}
-```
-
-## set_orientation
-
-TODO
-
-[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L213-L226)
-
-```c
-/// Set the display orientation
-static int set_orientation(uint8_t orientation) {
-    //  Memory Data Access Control (ST7789 Datasheet Page 215)
-    if (RGB) {
-        uint8_t orientation_para[1] = { orientation };
-        int rc = write_command(MADCTL, orientation_para, 1);
-        assert(rc == 0);
-    } else {
-        uint8_t orientation_para[1] = { orientation | 0x08 };
-        int rc = write_command(MADCTL, orientation_para, 1);
-        assert(rc == 0);
-    }
     return 0;
 }
 ```
