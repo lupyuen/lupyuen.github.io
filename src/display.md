@@ -746,9 +746,9 @@ Let's run the ST7789 Demo Firmware for BL602.
 
 TODO: Download the Firmware Binary File __`sdk_app_st7789.bin`__ from...
 
--  [__TODO: Binary Release of `sdk_appst7789`__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v3.0.0)
+-  [__Binary Release of `sdk_appst7789`__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v4.0.0)
 
-TODO: Alternatively, we may build the Firmware Binary File `sdk_app_st7789.bin` from the [source code](https://github.com/lupyuen/bl_iot_sdk/tree/st7789/customer_app/sdk_app_st7789)...
+Alternatively, we may build the Firmware Binary File `sdk_app_st7789.bin` from the [source code](https://github.com/lupyuen/bl_iot_sdk/tree/st7789/customer_app/sdk_app_st7789)...
 
 ```bash
 # Download the st7789 branch of lupyuen's bl_iot_sdk
@@ -1456,3 +1456,44 @@ void __assert_func(const char *file, int line, const char *func, const char *fai
 TODO
 
 [`lv_conf.h`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_conf.h)
+
+# Appendix: macOS Script to Build, Flash and Run BL602 Firmware
+
+TODO
+
+[`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/run.sh#L1-L32)
+
+```bash
+#!/usr/bin/env bash
+#  macOS script to build, flash and run BL602 Firmware
+
+set -e  #  Exit when any command fails
+set -x  #  Echo commands
+
+#  Build for BL602
+export CONFIG_CHIP_NAME=BL602
+
+#  Where BL602 IoT SDK is located
+export BL60X_SDK_PATH=$PWD/../..
+
+#  Where blflash is located
+export BLFLASH_PATH=$PWD/../../../blflash
+
+#  Build the firmware
+make
+
+#  Copy firmware to blflash
+cp build_out/sdk_app_st7789.bin $BLFLASH_PATH
+
+#  Flash the firmware
+pushd $BLFLASH_PATH
+cargo run flash sdk_app_st7789.bin \
+    --port /dev/tty.usbserial-1420 \
+    --initial-baud-rate 230400 \
+    --baud-rate 230400
+sleep 5
+popd
+
+#  Run the firmware
+open -a CoolTerm
+```
