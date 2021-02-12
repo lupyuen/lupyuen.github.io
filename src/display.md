@@ -390,11 +390,13 @@ We'll be seeing more `write_command` in a while... Brace ourselves!
 
 # Initialise ST7789 Display
 
-Pin Definitions
+_What's the Hardest Thing about ST7789?_
 
-TODO
+Initialising the ST7789 Display correctly!
 
-[`demo.h`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/demo.h#L33-L43)
+It takes __EIGHT commands__ to initialise ST7789... One wrong parameter and nothing appears!
+
+Before we watch the 8 tortuous ST7789 initialisation commands, let's meet our cast of ST7789 Pins: [`demo.h`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/demo.h#L33-L43)
 
 ```c
 /// Use GPIO 5 as ST7789 Data/Command Pin (DC)
@@ -410,12 +412,13 @@ TODO
 #define DISPLAY_CS_PIN 14
 ```
 
-TODO
+We've met these pins earlier when we connected BL602 to ST7789: __Data / Command, Reset, Backlight and Chip Select.__
 
-[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L94-L164)
+Now we peek behind the scenes of `init_display`, our function that initialises the display: [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L94-L164)
 
 ```c
-/// Initialise the ST7789 display controller. Based on https://github.com/almindor/st7789/blob/master/src/lib.rs
+/// Initialise the ST7789 display controller. 
+/// Based on https://github.com/almindor/st7789/blob/master/src/lib.rs
 int init_display(void) {
     //  Assume that SPI port 0 has been initialised.
     //  Configure Chip Select, Data/Command, Reset, Backlight pins as GPIO Pins
@@ -424,14 +427,23 @@ int init_display(void) {
     pins[1] = DISPLAY_DC_PIN;
     pins[2] = DISPLAY_RST_PIN;
     pins[3] = DISPLAY_BLK_PIN;
-    BL_Err_Type rc2 = GLB_GPIO_Func_Init(GPIO_FUN_SWGPIO, pins, sizeof(pins) / sizeof(pins[0]));
+    BL_Err_Type rc2 = GLB_GPIO_Func_Init(
+        GPIO_FUN_SWGPIO,  //  Configure the pins as GPIO
+        pins,             //  Pins to be configured
+        sizeof(pins) / sizeof(pins[0])  //  4 pins
+    );
     assert(rc2 == SUCCESS);
 ```
 
-TODO
+(Yep this code was backported from Rust to C... Because the Rust version looks neater. [See this](https://github.com/almindor/st7789/blob/master/src/lib.rs))
+
+Here we configure our four Pins as __GPIO Pins__: Data / Command, Reset, Backlight and Chip Select.
+
+Next we configure the four pins as __GPIO Output Pins__ (instead of GPIO Input)...
 
 ```c
-    //  Configure Chip Select, Data/Command, Reset, Backlight pins as GPIO Output Pins (instead of GPIO Input)
+    //  Configure Chip Select, Data/Command, Reset, 
+    //  Backlight pins as GPIO Output Pins (instead of GPIO Input)
     int rc;
     rc = bl_gpio_enable_output(DISPLAY_CS_PIN,  0, 0);  assert(rc == 0);
     rc = bl_gpio_enable_output(DISPLAY_DC_PIN,  0, 0);  assert(rc == 0);
@@ -439,29 +451,28 @@ TODO
     rc = bl_gpio_enable_output(DISPLAY_BLK_PIN, 0, 0);  assert(rc == 0);
 ```
 
-TODO
+We __deactivate ST7789__ by setting Chip Select to High...
 
 ```c
     //  Set Chip Select pin to High, to deactivate SPI Peripheral (not used for ST7789)
-    printf("Set CS pin %d to high\r\n", DISPLAY_CS_PIN);
     rc = bl_gpio_output_set(DISPLAY_CS_PIN, 1);  assert(rc == 0);
 ```
 
-TODO
+Recall that the ST7789 Backlight is controlled by the Backlight Pin. Let's __flip on the backlight__...
 
 ```c
     //  Switch on backlight
     rc = backlight_on();  assert(rc == 0);
-```
 
-TODO
-
-```c
     //  Reset the display controller through the Reset Pin
     rc = hard_reset();  assert(rc == 0);
 ```
 
-TODO
+Also we execute an ST7789 __Hardware Reset__ by toggling the Reset Pin.
+
+(More about `backlight_on` and `hard_reset` in a while)
+
+Here comes the first of eight ST7789 Commands: We send the Software Reset command to ST7789...
 
 ```c
     //  Software Reset: Reset the display controller through firmware (ST7789 Datasheet Page 163)
@@ -470,27 +481,25 @@ TODO
     delay_ms(200);  //  Need to wait at least 200 milliseconds
 ```
 
-TODO
+Next we send three commands to ST7789 to __disable sleep__, define the __vertical scrolling__, and set the __display mode__...
 
 ```c
     //  Sleep Out: Disable sleep (ST7789 Datasheet Page 184)
     rc = write_command(SLPOUT, NULL, 0);  assert(rc == 0);
     delay_ms(200);  //  Need to wait at least 200 milliseconds
-```
 
-TODO
-
-```c
     //  Vertical Scrolling Definition: 0 TSA, 320 VSA, 0 BSA (ST7789 Datasheet Page 208)
     static const uint8_t VSCRDER_PARA[] = { 0x00, 0x00, 0x14, 0x00, 0x00, 0x00 };
     rc = write_command(VSCRDER, VSCRDER_PARA, sizeof(VSCRDER_PARA));  assert(rc == 0);
 
     //  Normal Display Mode On (ST7789 Datasheet Page 187)
     rc = write_command(NORON, NULL, 0);  assert(rc == 0);
-    delay_ms(10);  //  Need to wait at least 200 milliseconds
+    delay_ms(10);  //  Need to wait at least 10 milliseconds
 ```
 
-TODO
+(I won't pretend to know what they mean... [Check the ST7789 Datasheet for details](https://www.rhydolabz.com/documents/33/ST7789.pdf))
+
+We have defined `INVERTED` as `1`. [(See this)]((https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L39-L41)) This will configure our display to __invert the display colours__...
 
 ```c
     //  Display Inversion: Invert the display colours (light becomes dark and vice versa) (ST7789 Datasheet Pages 188, 190)
@@ -501,14 +510,18 @@ TODO
     }
 ```
 
-TODO
+(This inversion setting seems to be the norm for ST7789)
+
+Three more ST7789 commands! This one sets the Display Orientation to Portrait...
 
 ```c
-    //  Set orientation to Landscape or Portrait
-    rc = set_orientation(Landscape);  assert(rc == 0);
+    //  Set orientation to Portrait
+    rc = set_orientation(Portrait);  assert(rc == 0);
 ```
 
-TODO
+(We've seen `set_orientation` earlier)
+
+ST7789 shall display 65,536 different colours, because we tell it to use __16-Bit RGB565 Colour Encoding__...
 
 ```c
     //  Interface Pixel Format: 16-bit RGB565 colour (ST7789 Datasheet Page 224)
@@ -516,7 +529,9 @@ TODO
     rc = write_command(COLMOD, COLMOD_PARA, sizeof(COLMOD_PARA));  assert(rc == 0);
 ```
 
-TODO
+(This means 2 bytes of colour per pixel. [More about RGB565](https://lupyuen.github.io/pinetime-rust-mynewt/articles/mcuboot#draw-a-line))
+
+Finally! The last command turns on the ST7789 Display Controller...
 
 ```c    
     //  Display On: Turn on display (ST7789 Datasheet Page 196)
@@ -526,15 +541,7 @@ TODO
 }
 ```
 
-TODO
-
-[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L39-L41)
-
-```c
-/// ST7789 Colour Settings
-#define INVERTED 1  //  Display colours are inverted
-#define RGB      1  //  Display colours are RGB    
-```
+Our ST7789 Display is all ready for action!
 
 ## hard_reset
 
