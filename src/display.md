@@ -744,9 +744,9 @@ TODO
 
 Let's run the ST7789 Demo Firmware for BL602.
 
-TODO: Download the Firmware Binary File __`sdk_app_st7789.bin`__ from...
+Download the Firmware Binary File __`sdk_app_st7789.bin`__ from...
 
--  [__Binary Release of `sdk_appst7789`__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v4.0.0)
+-  [__Binary Release of `sdk_app_st7789`__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v4.0.0)
 
 Alternatively, we may build the Firmware Binary File `sdk_app_st7789.bin` from the [source code](https://github.com/lupyuen/bl_iot_sdk/tree/st7789/customer_app/sdk_app_st7789)...
 
