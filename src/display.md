@@ -10,6 +10,8 @@ We'll be using the __LVGL Graphics Library__ to render text and graphics to the 
 
 The Demo Firmware in this article will run on PineCone, Pinenut and __any BL602 Board__.
 
+[__Watch the Demo Video on YouTube__](https://www.youtube.com/watch?v=PkP-CeYLXUA)
+
 ![PineCone BL602 RISC-V Board rendering text and graphics on ST7789 SPI Display with LVGL Graphics Library](https://lupyuen.github.io/images/display-title.jpg)
 
 _PineCone BL602 RISC-V Board rendering text and graphics on ST7789 SPI Display with LVGL Graphics Library_
