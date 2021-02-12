@@ -108,7 +108,8 @@
 <li><a href="#notes">13 Notes</a><ul></ul></li>
 <li><a href="#appendix-troubleshoot-spi-hanging">14 Appendix: Troubleshoot SPI Hanging</a><ul></ul></li>
 <li><a href="#appendix-show-assertion-failures">15 Appendix: Show Assertion Failures</a><ul></ul></li>
-<li><a href="#appendix-configure-lvgl-for-bl602-and-st7789">16 Appendix: Configure LVGL for BL602 and ST7789</a><ul></ul></li></ul></nav><p>📝 <em>14 Feb 2021</em></p>
+<li><a href="#appendix-configure-lvgl-for-bl602-and-st7789">16 Appendix: Configure LVGL for BL602 and ST7789</a><ul></ul></li>
+<li><a href="#appendix-macos-script-to-build-flash-and-run-bl602-firmware">17 Appendix: macOS Script to Build, Flash and Run BL602 Firmware</a><ul></ul></li></ul></nav><p>📝 <em>14 Feb 2021</em></p>
 <p>In our last article we configured PineCone BL602 to connect to a simple SPI Peripheral: BME280 Sensor for Temperature / Humidity / Air Pressure. <a href="https://lupyuen.github.io/articles/spi">(See this)</a></p>
 <p>Today we shall connect PineCone BL602 / Pinenut / Any BL602 Board to a more powerful SPI Peripheral: <strong>ST7789 Display Controller</strong>.</p>
 <p>We'll be using the <strong>LVGL Graphics Library</strong> to render text and graphics to the ST7789 Display.</p>
@@ -651,9 +652,9 @@ int set_window(uint8_t left, uint8_t top, uint8_t right, uint8_t bottom) {
 <p>Let's run the ST7789 Demo Firmware for BL602.</p>
 <p>TODO: Download the Firmware Binary File <strong><code>sdk_app_st7789.bin</code></strong> from...</p>
 <ul>
-<li><a href="https://github.com/lupyuen/bl_iot_sdk/releases/tag/v3.0.0"><strong>TODO: Binary Release of <code>sdk_appst7789</code></strong></a></li>
+<li><a href="https://github.com/lupyuen/bl_iot_sdk/releases/tag/v4.0.0"><strong>Binary Release of <code>sdk_appst7789</code></strong></a></li>
 </ul>
-<p>TODO: Alternatively, we may build the Firmware Binary File <code>sdk_app_st7789.bin</code> from the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/st7789/customer_app/sdk_app_st7789">source code</a>...</p>
+<p>Alternatively, we may build the Firmware Binary File <code>sdk_app_st7789.bin</code> from the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/st7789/customer_app/sdk_app_st7789">source code</a>...</p>
 <pre><code class="language-bash"># Download the st7789 branch of lupyuen's bl_iot_sdk
 git clone --recursive --branch st7789 https://github.com/lupyuen/bl_iot_sdk
 cd bl_iot_sdk/customer_app/sdk_app_st7789
@@ -1153,6 +1154,42 @@ void __assert_func(const char *file, int line, const char *func, const char *fai
 <h1 id="appendix-configure-lvgl-for-bl602-and-st7789" class="section-header"><a href="#appendix-configure-lvgl-for-bl602-and-st7789">16 Appendix: Configure LVGL for BL602 and ST7789</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_conf.h"><code>lv_conf.h</code></a></p>
+<h1 id="appendix-macos-script-to-build-flash-and-run-bl602-firmware" class="section-header"><a href="#appendix-macos-script-to-build-flash-and-run-bl602-firmware">17 Appendix: macOS Script to Build, Flash and Run BL602 Firmware</a></h1>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/run.sh#L1-L32"><code>run.sh</code></a></p>
+<pre><code class="language-bash">#!/usr/bin/env bash
+#  macOS script to build, flash and run BL602 Firmware
+
+set -e  #  Exit when any command fails
+set -x  #  Echo commands
+
+#  Build for BL602
+export CONFIG_CHIP_NAME=BL602
+
+#  Where BL602 IoT SDK is located
+export BL60X_SDK_PATH=$PWD/../..
+
+#  Where blflash is located
+export BLFLASH_PATH=$PWD/../../../blflash
+
+#  Build the firmware
+make
+
+#  Copy firmware to blflash
+cp build_out/sdk_app_st7789.bin $BLFLASH_PATH
+
+#  Flash the firmware
+pushd $BLFLASH_PATH
+cargo run flash sdk_app_st7789.bin \
+    --port /dev/tty.usbserial-1420 \
+    --initial-baud-rate 230400 \
+    --baud-rate 230400
+sleep 5
+popd
+
+#  Run the firmware
+open -a CoolTerm
+</code></pre>
 
     
 </body>
