@@ -906,6 +906,8 @@ Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704, si=0, di=1, i=1
 ...
 ```
 
+[Check out the complete log](https://gist.github.com/lupyuen/9f26626d7c8081ae64d58eba70e07a80)
+
 # Render Text and Graphics with LVGL
 
 TODO
@@ -1354,6 +1356,10 @@ Trace: lv_refr_task: ready 	(lv_refr.c #321 _lv_disp_refr_task())
 Trace: lv_task_handler ready 	(lv_task.c #180 lv_task_handler())
 # 
 ```
+
+TODO
+
+[Check out the complete log](https://gist.github.com/lupyuen/9f26626d7c8081ae64d58eba70e07a80)
 
 TODO
 
