@@ -84,7 +84,7 @@ static void test_display_init(char *buf, int len, int argc, char **argv) {
         SPI_PORT,    //  SPI Port
         0,           //  SPI Mode: 0 for Controller (formerly Master)
         3,           //  SPI Polarity Phase: Must be 3 for ST7789 (CPOL=1, CPHA=1)
-        5 * 1000 * 1000,  //  SPI Frequency (5 MHz, reduce this in case of problems)
+        4 * 1000 * 1000,  //  SPI Frequency (4 MHz, reduce this in case of problems)
         2,   //  Transmit DMA Channel
         3,   //  Receive DMA Channel
         3,   //  (Yellow) SPI Clock Pin 
@@ -103,9 +103,9 @@ Here are the modifications from the previous article...
 
     (Be careful with SPI Phase on BL602... It doesn't work the way we expect. [See this](https://lupyuen.github.io/articles/spi#spi-phase-looks-sus))
 
-1.  __SPI Frequency is 5 MHz__: Why bump up the SPI Frequency? To blast pixels the fastest speed possible to ST7789!
+1.  __SPI Frequency is 4 MHz__: Why bump up the SPI Frequency? To blast pixels the fastest speed possible to ST7789!
 
-    BL602 supports up to __40 MHz__ for SPI Frequency... But __5 MHz__ is the maximum SPI Frequency that was tested OK for my setup. (Beyond that the SPI Transfer hangs)
+    BL602 supports up to __40 MHz__ for SPI Frequency... But __4 MHz__ is the maximum SPI Frequency that was tested OK for my setup. (Beyond that the SPI Transfer hangs)
 
     If you're having problems with SPI Transfers (like hanging), reduce the SPI Frequency. (Lowest SPI Frequency is 200 kHz)
 
@@ -340,16 +340,26 @@ Let's watch how we call `write_command`...
 
 ## Set Display Orientation
 
-TODO
+The ST7789 Display Controller is highly versatile. It will let you flip it, reverse it, even do the ["Fallen Lorry"](https://twitter.com/MisterTechBlog/status/1359077419156598785?s=20)... Without changing the rendering code!
+
+ST7789 supports four Display Orientations...
 
 ```c
-//  Set orientation to Landscape or Portrait
-set_orientation(Landscape);
+/// ST7789 Orientation. From https://github.com/almindor/st7789/blob/master/src/lib.rs#L42-L52
+#define Portrait         0x00  //  No inverting
+#define Landscape        0x60  //  Invert column and page/column order
+#define PortraitSwapped  0xC0  //  Invert page and column order
+#define LandscapeSwapped 0xA0  //  Invert page and page/column order
 ```
 
-TODO
+We set the Display Orientation like so...
 
-[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L213-L226)
+```c
+//  Set orientation to Portrait
+set_orientation(Portrait);
+```
+
+`set_orientation` calls `write_command` (which we have seen earlier) to send the ST7789 Command (Memory Data Access Control) over SPI: [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L213-L226)
 
 ```c
 /// ST7789 Colour Settings
@@ -374,46 +384,7 @@ static int set_orientation(uint8_t orientation) {
 }
 ```
 
-TODO
-
-```c
-/// ST7789 Orientation. From https://github.com/almindor/st7789/blob/master/src/lib.rs#L42-L52
-#define Portrait         0x00  //  No inverting
-#define Landscape        0x60  //  Invert column and page/column order
-#define PortraitSwapped  0xC0  //  Invert page and column order
-#define LandscapeSwapped 0xA0  //  Invert page and page/column order
-```
-
-# ST7789 Display Driver
-
-TODO
-
-[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L79-L83)
-
-```c
-/// RGB565 Image. Converted by https://github.com/lupyuen/pinetime-graphic
-/// from PNG file https://github.com/lupyuen/pinetime-logo-loader/blob/master/logos/pine64-rainbow.png
-static const uint8_t image_data[] = {  //  Should be 115,200 bytes
-#include "image.inc"
-};
-```
-
-## SPI Transmit and Receive Buffers
-
-TODO
-
-[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L85-L92)
-
-```c
-/// SPI Transmit Buffer. We always copy pixels from Flash ROM to RAM
-/// before transmitting, because Flash ROM may be too slow for DMA at 4 MHz.
-/// Contains 10 rows of 240 pixels of 2 bytes each (16-bit colour).
-uint8_t spi_tx_buf[BUFFER_ROWS * COL_COUNT * BYTES_PER_PIXEL];
-
-/// SPI Receive Buffer. We don't actually receive data, but SPI Transfer needs this.
-/// Contains 10 rows of 240 pixels of 2 bytes each (16-bit colour).
-static uint8_t spi_rx_buf[BUFFER_ROWS * COL_COUNT * BYTES_PER_PIXEL];
-```
+We'll be seeing more `write_command` in a while... Brace ourselves!
 
 # Initialise ST7789 Display
 
@@ -508,16 +479,6 @@ TODO
 TODO
 
 ```c
-    //  TODO: This is needed to fix the Fallen Lorry problem, 
-    //  although this command comes from ST7735, not ST7789.
-    //  https://twitter.com/MisterTechBlog/status/1359077419156598785?s=20
-    static const uint8_t PWCTR1_PARA[] = { 0xA2, 0x02, 0x84 };
-    rc = write_command(PWCTR1, PWCTR1_PARA, sizeof(PWCTR1_PARA));  assert(rc == 0);
-```
-
-TODO
-
-```c
     //  Vertical Scrolling Definition: 0 TSA, 320 VSA, 0 BSA (ST7789 Datasheet Page 208)
     static const uint8_t VSCRDER_PARA[] = { 0x00, 0x00, 0x14, 0x00, 0x00, 0x00 };
     rc = write_command(VSCRDER, VSCRDER_PARA, sizeof(VSCRDER_PARA));  assert(rc == 0);
@@ -571,6 +532,112 @@ TODO
 /// ST7789 Colour Settings
 #define INVERTED 1  //  Display colours are inverted
 #define RGB      1  //  Display colours are RGB    
+```
+
+## hard_reset
+
+TODO
+
+[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L298-L306)
+
+```c
+/// Reset the display controller
+static int hard_reset(void) {
+    //  Toggle the Reset Pin: High, Low, High
+    int rc;
+    rc = bl_gpio_output_set(DISPLAY_RST_PIN, 1);  assert(rc == 0);
+    rc = bl_gpio_output_set(DISPLAY_RST_PIN, 0);  assert(rc == 0);
+    rc = bl_gpio_output_set(DISPLAY_RST_PIN, 1);  assert(rc == 0);
+    return 0;
+}
+```
+
+## backlight_on
+
+TODO
+
+[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L308-L320)
+
+```c
+/// Switch on backlight
+int backlight_on(void) {
+    //  Set the Backlight Pin to High
+    printf("Set BLK pin %d to high\r\n", DISPLAY_BLK_PIN);
+    int rc = bl_gpio_output_set(DISPLAY_BLK_PIN, 1);
+    assert(rc == 0);
+    return 0;
+```
+
+TODO
+
+```c
+    //  Can we have multiple levels of backlight brightness?
+    //  Yes! Configure the Backlight Pin as a PWM Pin (instead of GPIO).
+    //  Set the PWM Duty Cycle to control the brightness.
+    //  See https://lupyuen.github.io/articles/led#from-gpio-to-pulse-width-modulation-pwm
+}
+```
+
+## backlight_off
+
+TODO
+
+[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L322-L329)
+
+```c
+/// Switch off backlight
+int backlight_off(void) {
+    //  Set the Backlight Pin to Low
+    printf("Set BLK pin %d to low\r\n", DISPLAY_BLK_PIN);
+    int rc = bl_gpio_output_set(DISPLAY_BLK_PIN, 0);
+    assert(rc == 0);
+    return 0;
+}
+```
+
+## delay_ms
+
+TODO
+
+[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L331-L335)
+
+```c
+/// Delay for the specified number of milliseconds
+static void delay_ms(uint32_t ms) {
+    //  TODO: Implement delay. For now we write to console, which also introduces a delay.
+    printf("TODO Delay %d\r\n", ms);
+}
+```
+
+# Display Image
+
+TODO
+
+[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L79-L83)
+
+```c
+/// RGB565 Image. Converted by https://github.com/lupyuen/pinetime-graphic
+/// from PNG file https://github.com/lupyuen/pinetime-logo-loader/blob/master/logos/pine64-rainbow.png
+static const uint8_t image_data[] = {  //  Should be 115,200 bytes
+#include "image.inc"
+};
+```
+
+## SPI Transmit and Receive Buffers
+
+TODO
+
+[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L85-L92)
+
+```c
+/// SPI Transmit Buffer. We always copy pixels from Flash ROM to RAM
+/// before transmitting, because Flash ROM may be too slow for DMA at 4 MHz.
+/// Contains 10 rows of 240 pixels of 2 bytes each (16-bit colour).
+uint8_t spi_tx_buf[BUFFER_ROWS * COL_COUNT * BYTES_PER_PIXEL];
+
+/// SPI Receive Buffer. We don't actually receive data, but SPI Transfer needs this.
+/// Contains 10 rows of 240 pixels of 2 bytes each (16-bit colour).
+static uint8_t spi_rx_buf[BUFFER_ROWS * COL_COUNT * BYTES_PER_PIXEL];
 ```
 
 ## display_image
@@ -668,81 +735,6 @@ TODO
     uint8_t row_para[4] = { 0x00, top, 0x00, bottom };
     rc = write_data(row_para, 4); assert(rc == 0);
     return 0;
-}
-```
-
-## hard_reset
-
-TODO
-
-[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L298-L306)
-
-```c
-/// Reset the display controller
-static int hard_reset(void) {
-    //  Toggle the Reset Pin: High, Low, High
-    int rc;
-    rc = bl_gpio_output_set(DISPLAY_RST_PIN, 1);  assert(rc == 0);
-    rc = bl_gpio_output_set(DISPLAY_RST_PIN, 0);  assert(rc == 0);
-    rc = bl_gpio_output_set(DISPLAY_RST_PIN, 1);  assert(rc == 0);
-    return 0;
-}
-```
-
-## backlight_on
-
-TODO
-
-[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L308-L320)
-
-```c
-/// Switch on backlight
-int backlight_on(void) {
-    //  Set the Backlight Pin to High
-    printf("Set BLK pin %d to high\r\n", DISPLAY_BLK_PIN);
-    int rc = bl_gpio_output_set(DISPLAY_BLK_PIN, 1);
-    assert(rc == 0);
-    return 0;
-```
-
-TODO
-
-```c
-    //  Can we have multiple levels of backlight brightness?
-    //  Yes! Configure the Backlight Pin as a PWM Pin (instead of GPIO).
-    //  Set the PWM Duty Cycle to control the brightness.
-    //  See https://lupyuen.github.io/articles/led#from-gpio-to-pulse-width-modulation-pwm
-}
-```
-
-## backlight_off
-
-TODO
-
-[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L322-L329)
-
-```c
-/// Switch off backlight
-int backlight_off(void) {
-    //  Set the Backlight Pin to Low
-    printf("Set BLK pin %d to low\r\n", DISPLAY_BLK_PIN);
-    int rc = bl_gpio_output_set(DISPLAY_BLK_PIN, 0);
-    assert(rc == 0);
-    return 0;
-}
-```
-
-## delay_ms
-
-TODO
-
-[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L331-L335)
-
-```c
-/// Delay for the specified number of milliseconds
-static void delay_ms(uint32_t ms) {
-    //  TODO: Implement delay. For now we write to console, which also introduces a delay.
-    printf("TODO Delay %d\r\n", ms);
 }
 ```
 
