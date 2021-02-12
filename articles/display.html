@@ -374,22 +374,18 @@ int write_data(const uint8_t *data, uint16_t len) {
 <p>Let's watch how we call <code>write_command</code>...</p>
 <h2 id="set-display-orientation" class="section-header"><a href="#set-display-orientation">4.2 Set Display Orientation</a></h2>
 <p>TODO</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L39-L41"><code>display.c</code></a></p>
-<pre><code class="language-c">/// ST7789 Colour Settings
-#define INVERTED 1  //  Display colours are inverted
-#define RGB      1  //  Display colours are RGB    
+<pre><code class="language-c">//  Set orientation to Landscape or Portrait
+set_orientation(Landscape);
 </code></pre>
 <p>TODO</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L68-L72"><code>display.c</code></a></p>
-<p>TODO</p>
-<pre><code class="language-c">/// ST7789 Orientation. From https://github.com/almindor/st7789/blob/master/src/lib.rs#L42-L52
-#define Portrait         0x00  //  No inverting
-#define Landscape        0x60  //  Invert column and page/column order
-#define PortraitSwapped  0xC0  //  Invert page and column order
-#define LandscapeSwapped 0xA0  //  Invert page and page/column order
-</code></pre>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L213-L226"><code>display.c</code></a></p>
-<pre><code class="language-c">/// Set the display orientation: Portrait, Landscape, PortraitSwapped or LandscapeSwapped
+<pre><code class="language-c">/// ST7789 Colour Settings
+#define RGB      1  //  Display colours are RGB    
+
+/// ST7789 Command for Memory Data Access Control. From https://github.com/almindor/st7789/blob/master/src/instruction.rs
+#define MADCTL   0x36
+
+/// Set the display orientation: Portrait, Landscape, PortraitSwapped or LandscapeSwapped
 static int set_orientation(uint8_t orientation) {
     //  Memory Data Access Control (ST7789 Datasheet Page 215)
     if (RGB) {
@@ -403,6 +399,13 @@ static int set_orientation(uint8_t orientation) {
     }
     return 0;
 }
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-c">/// ST7789 Orientation. From https://github.com/almindor/st7789/blob/master/src/lib.rs#L42-L52
+#define Portrait         0x00  //  No inverting
+#define Landscape        0x60  //  Invert column and page/column order
+#define PortraitSwapped  0xC0  //  Invert page and column order
+#define LandscapeSwapped 0xA0  //  Invert page and page/column order
 </code></pre>
 <h1 id="st7789-display-driver" class="section-header"><a href="#st7789-display-driver">5 ST7789 Display Driver</a></h1>
 <p>TODO</p>
@@ -526,6 +529,12 @@ int init_display(void) {
     delay_ms(200);  //  Need to wait at least 200 milliseconds
     return 0;
 }
+</code></pre>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L39-L41"><code>display.c</code></a></p>
+<pre><code class="language-c">/// ST7789 Colour Settings
+#define INVERTED 1  //  Display colours are inverted
+#define RGB      1  //  Display colours are RGB    
 </code></pre>
 <h2 id="display_image" class="section-header"><a href="#display_image">6.1 display_image</a></h2>
 <p>TODO</p>
