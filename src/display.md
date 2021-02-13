@@ -1320,7 +1320,13 @@ TODO
 
 TODO
 
-# Port ST7789 and LVGL to other Operating Systems
+# Port ST7789 and LVGL to other BL602 Operating Systems
+
+Like an episode of WandaVision, this article has dropped many hints about its Origin Story... Yep the code in this article came from __PineTime Smartwatch!__
+
+-   [__Check out the `pinetime_lvgl_mynewt` repo__](https://gitlab.com/lupyuen/pinetime_lvgl_mynewt/-/tree/master/)
+
+-   And the reused source files: __[`display.c`](https://gitlab.com/lupyuen/pinetime_lvgl_mynewt/-/blob/master/src/pinetime/display.c), [`lvgl.c`](https://gitlab.com/lupyuen/pinetime_lvgl_mynewt/-/blob/master/src/pinetime/lvgl.c), [`lv_conf.h`](https://gitlab.com/lupyuen/pinetime_lvgl_mynewt/-/blob/master/lv_conf.h), [`lv_port_disp.c`](https://gitlab.com/lupyuen/pinetime_lvgl_mynewt/-/blob/master/src/pinetime/lv_port_disp.c)__
 
 TODO
 
