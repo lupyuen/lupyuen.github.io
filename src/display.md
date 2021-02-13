@@ -543,117 +543,28 @@ Finally! The last command turns on the ST7789 Display Controller...
 
 Our ST7789 Display is all ready for action!
 
-## hard_reset
-
-TODO
-
-[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L298-L306)
-
-```c
-/// Reset the display controller
-static int hard_reset(void) {
-    //  Toggle the Reset Pin: High, Low, High
-    int rc;
-    rc = bl_gpio_output_set(DISPLAY_RST_PIN, 1);  assert(rc == 0);
-    rc = bl_gpio_output_set(DISPLAY_RST_PIN, 0);  assert(rc == 0);
-    rc = bl_gpio_output_set(DISPLAY_RST_PIN, 1);  assert(rc == 0);
-    return 0;
-}
-```
-
-## backlight_on
-
-TODO
-
-[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L308-L320)
-
-```c
-/// Switch on backlight
-int backlight_on(void) {
-    //  Set the Backlight Pin to High
-    printf("Set BLK pin %d to high\r\n", DISPLAY_BLK_PIN);
-    int rc = bl_gpio_output_set(DISPLAY_BLK_PIN, 1);
-    assert(rc == 0);
-    return 0;
-```
-
-TODO
-
-```c
-    //  Can we have multiple levels of backlight brightness?
-    //  Yes! Configure the Backlight Pin as a PWM Pin (instead of GPIO).
-    //  Set the PWM Duty Cycle to control the brightness.
-    //  See https://lupyuen.github.io/articles/led#from-gpio-to-pulse-width-modulation-pwm
-}
-```
-
-## backlight_off
-
-TODO
-
-[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L322-L329)
-
-```c
-/// Switch off backlight
-int backlight_off(void) {
-    //  Set the Backlight Pin to Low
-    printf("Set BLK pin %d to low\r\n", DISPLAY_BLK_PIN);
-    int rc = bl_gpio_output_set(DISPLAY_BLK_PIN, 0);
-    assert(rc == 0);
-    return 0;
-}
-```
-
-## delay_ms
-
-TODO
-
-[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L331-L335)
-
-```c
-/// Delay for the specified number of milliseconds
-static void delay_ms(uint32_t ms) {
-    //  TODO: Implement delay. For now we write to console, which also introduces a delay.
-    printf("TODO Delay %d\r\n", ms);
-}
-```
-
 ![PineCone BL602 rendering on ST7789 a photo of Jewel Changi, Singapore](https://lupyuen.github.io/images/display-jewel5.jpg)
 
 _PineCone BL602 rendering on ST7789 a photo of [Jewel Changi, Singapore](https://en.wikipedia.org/wiki/Jewel_Changi_Airport)_
 
 # Display Image on ST7789
 
-TODO
+For our first act... BL602 renders an image to our ST7789 Display! [(Based on this photo)](https://lupyuen.github.io/images/display-jewel2.jpg)
 
-[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L79-L83)
-
-```c
-/// RGB565 Image. Converted by https://github.com/lupyuen/pinetime-graphic
-/// from PNG file https://github.com/lupyuen/pinetime-logo-loader/blob/master/logos/pine64-rainbow.png
-static const uint8_t image_data[] = {  //  Should be 115,200 bytes
-#include "image.inc"
-};
-```
-
-## SPI Transmit and Receive Buffers
-
-TODO
-
-[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L85-L92)
+First we prepare a buffer for transmitting pixels to ST7789: [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L85-L92)
 
 ```c
 /// SPI Transmit Buffer. We always copy pixels from Flash ROM to RAM
 /// before transmitting, because Flash ROM may be too slow for DMA at 4 MHz.
 /// Contains 10 rows of 240 pixels of 2 bytes each (16-bit colour).
 uint8_t spi_tx_buf[BUFFER_ROWS * COL_COUNT * BYTES_PER_PIXEL];
-
-/// SPI Receive Buffer. We don't actually receive data, but SPI Transfer needs this.
-/// Contains 10 rows of 240 pixels of 2 bytes each (16-bit colour).
-static uint8_t spi_rx_buf[BUFFER_ROWS * COL_COUNT * BYTES_PER_PIXEL];
 ```
 
-## display_image
+The SPI Transmit Buffer `spi_tx_buf` is the same size as our SPI Receive Buffer `spi_rx_buf`.
+
+Both buffers are sized to store __10 rows of pixels, each row with 240 pixels, each pixel with 2 colour bytes__ (16-bit colour).
+
+(Our display has __240 rows of pixels__, so we'll use our buffers __24 times__ to render an image)
 
 TODO
 
@@ -663,13 +574,8 @@ TODO
 /// Display image on ST7789 display controller
 int display_image(void) {
     //  Render each batch of 10 rows
-    printf("Displaying image...\r\n");
     for (uint8_t row = 0; row < ROW_COUNT; row += BUFFER_ROWS) {
-```
-
-TODO
-
-```c
+        //  Compute the (left, top) and (right, bottom) coordinates of the 10-row window
         uint8_t top    = row;
         uint8_t bottom = (row + BUFFER_ROWS - 1) < ROW_COUNT 
             ? (row + BUFFER_ROWS - 1) 
@@ -706,13 +612,7 @@ TODO
         //  Memory Write: Write the bytes from RAM to display (ST7789 Datasheet Page 202)
         rc = write_command(RAMWR, NULL, 0); assert(rc == 0);
         rc = write_data(spi_tx_buf, len);   assert(rc == 0);
-```
-
-TODO
-
-```c
     }
-    printf("Image displayed\r\n");
     return 0;
 }
 ```
@@ -749,6 +649,16 @@ TODO
     rc = write_data(row_para, 4); assert(rc == 0);
     return 0;
 }
+```
+
+[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L79-L83)
+
+```c
+/// RGB565 Image. Converted by https://github.com/lupyuen/pinetime-graphic
+/// from PNG file https://github.com/lupyuen/pinetime-logo-loader/blob/master/logos/pine64-rainbow.png
+static const uint8_t image_data[] = {  //  Should be 115,200 bytes
+#include "image.inc"
+};
 ```
 
 # Build and Run the ST7789 Firmware
@@ -1507,4 +1417,81 @@ popd
 
 #  Run the firmware
 open -a CoolTerm
+```
+
+# Appendix: ST7789 Reset, Backlight and Delay
+
+## hard_reset
+
+TODO
+
+[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L298-L306)
+
+```c
+/// Reset the display controller
+static int hard_reset(void) {
+    //  Toggle the Reset Pin: High, Low, High
+    int rc;
+    rc = bl_gpio_output_set(DISPLAY_RST_PIN, 1);  assert(rc == 0);
+    rc = bl_gpio_output_set(DISPLAY_RST_PIN, 0);  assert(rc == 0);
+    rc = bl_gpio_output_set(DISPLAY_RST_PIN, 1);  assert(rc == 0);
+    return 0;
+}
+```
+
+## backlight_on
+
+TODO
+
+[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L308-L320)
+
+```c
+/// Switch on backlight
+int backlight_on(void) {
+    //  Set the Backlight Pin to High
+    printf("Set BLK pin %d to high\r\n", DISPLAY_BLK_PIN);
+    int rc = bl_gpio_output_set(DISPLAY_BLK_PIN, 1);
+    assert(rc == 0);
+    return 0;
+```
+
+TODO
+
+```c
+    //  Can we have multiple levels of backlight brightness?
+    //  Yes! Configure the Backlight Pin as a PWM Pin (instead of GPIO).
+    //  Set the PWM Duty Cycle to control the brightness.
+    //  See https://lupyuen.github.io/articles/led#from-gpio-to-pulse-width-modulation-pwm
+}
+```
+
+## backlight_off
+
+TODO
+
+[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L322-L329)
+
+```c
+/// Switch off backlight
+int backlight_off(void) {
+    //  Set the Backlight Pin to Low
+    printf("Set BLK pin %d to low\r\n", DISPLAY_BLK_PIN);
+    int rc = bl_gpio_output_set(DISPLAY_BLK_PIN, 0);
+    assert(rc == 0);
+    return 0;
+}
+```
+
+## delay_ms
+
+TODO
+
+[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L331-L335)
+
+```c
+/// Delay for the specified number of milliseconds
+static void delay_ms(uint32_t ms) {
+    //  TODO: Implement delay. For now we write to console, which also introduces a delay.
+    printf("TODO Delay %d\r\n", ms);
+}
 ```
