@@ -293,6 +293,8 @@ Connect at 2 Mbps. When we enter __`help`__, it will respond with a list of comm
 
 ## For macOS: CH340 USB Serial Driver
 
+We should use __CoolTerm__ on macOS, not `screen`. See [__"Fix BL602 Demo Firmware for macOS"__](https://lupyuen.github.io/articles/led#appendix-fix-bl602-demo-firmware-for-macos)
+
 PineCone includes a CH340N USB-to-UART module to expose BL620's UART Port via PineCone's USB Port.
 
 We should use the CH340 Driver provided by Apple. To check, connect PineCone to the USB port and enter...
@@ -307,13 +309,7 @@ We should see...
 DK: AppleUSBCHCOM-0x1000d21bd::start(IOUSBHostInterface-0x1000d21b6) ok
 ```
 
-`AppleUSBCHCOM` is the CH340 Driver provided by Apple for macOS Catalina.
-
-[More about this](https://community.platformio.org/t/troubleshooting-ch340g-issues-on-macos/9522)
-
-The BL602 Demo Firmware needs to be recompiled to reduce the UART baud rate.
-
-See ["Fix BL602 Demo Firmware for macOS"](https://lupyuen.github.io/articles/led#appendix-fix-bl602-demo-firmware-for-macos)
+`AppleUSBCHCOM` is the CH340 Driver provided by Apple for macOS Catalina. [More about this](https://community.platformio.org/t/troubleshooting-ch340g-issues-on-macos/9522)
 
 ![BL602 Flashing Process reverse engineered from BLOpenFlasher](https://lupyuen.github.io/images/pinecone-flash-steps.png)
 
