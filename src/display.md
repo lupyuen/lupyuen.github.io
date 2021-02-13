@@ -644,7 +644,45 @@ Finally one last ST7789 Command (Memory Write) to blast the pixel data from our 
 
 We repeat this 24 times to render each Display Window of 10 pixel rows... And [Jewel Changi, Singapore](https://en.wikipedia.org/wiki/Jewel_Changi_Airport) magically appears on our ST7789 Display!
 
-## set_window
+## Modding the Photo
+
+_Jewel Changi, Singapore looks truly awesome... But can we show a cat photo instead?_
+
+Absolutely! The photo is rendered from this `image_data` array that's compiled into BL602's Flash ROM: [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L76-L82)
+
+```c
+/// RGB565 Image. Converted by https://github.com/lupyuen/pinetime-graphic
+/// from PNG file https://github.com/lupyuen/pinetime-logo-loader/blob/master/logos/pine64-rainbow.png
+static const uint8_t image_data[] = {  //  Should be 115,200 bytes
+#include "image.inc"
+};
+```
+
+Here we see that `image_data` includes this file that contains 115,200 bytes of pixel data: [`image.inc`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/image.inc)
+
+```text
+0xa5, 0x35, 0x6b, 0x4d, 0x42, 0x49, 0x74, 0x10, 0xb5, 0xd7, 0x4a, 0x29, 0x83, 0xcf, 0xef, 0x9d,
+0xdf, 0x1b, 0x8c, 0x52, 0x31, 0x45, 0x4a, 0x28, 0x73, 0x8e, 0xad, 0x95, 0xad, 0x96, 0x7c, 0x10,
+0x7c, 0x11, 0xd6, 0xfb, 0xf7, 0xde, 0xd6, 0xfb, 0xe7, 0x7d, 0xb5, 0x97, 0x42, 0x09, 0x9c, 0xf3,
+...
+```
+
+(That's 240 pixel rows * 240 pixel columns * 2 bytes per pixel)
+
+To create our own `image.inc`, prepare a 240 x 240 PNG file named `image.png`. Then do this...
+
+```bash
+# Download the pinetime-graphic source code
+git clone https://github.com/lupyuen/pinetime-graphic
+cd pinetime-graphic
+
+# Convert the PNG file to a C array
+cargo run -v image.png >image.inc
+```
+
+[(Check out the `pinetime-graphic` source code here)](https://github.com/lupyuen/pinetime-graphic/blob/master/README.md)
+
+## ST7789 Display Window
 
 TODO
 
@@ -668,27 +706,6 @@ TODO
     rc = write_data(row_para, 4); assert(rc == 0);
     return 0;
 }
-```
-
-[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L76-L82)
-
-```c
-/// RGB565 Image. Converted by https://github.com/lupyuen/pinetime-graphic
-/// from PNG file https://github.com/lupyuen/pinetime-logo-loader/blob/master/logos/pine64-rainbow.png
-static const uint8_t image_data[] = {  //  Should be 115,200 bytes
-#include "image.inc"
-};
-```
-
-TODO
-
-[`image.inc`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/image.inc)
-
-```text
-0xa5, 0x35, 0x6b, 0x4d, 0x42, 0x49, 0x74, 0x10, 0xb5, 0xd7, 0x4a, 0x29, 0x83, 0xcf, 0xef, 0x9d,
-0xdf, 0x1b, 0x8c, 0x52, 0x31, 0x45, 0x4a, 0x28, 0x73, 0x8e, 0xad, 0x95, 0xad, 0x96, 0x7c, 0x10,
-0x7c, 0x11, 0xd6, 0xfb, 0xf7, 0xde, 0xd6, 0xfb, 0xe7, 0x7d, 0xb5, 0x97, 0x42, 0x09, 0x9c, 0xf3,
-...
 ```
 
 # Build and Run the ST7789 Firmware
