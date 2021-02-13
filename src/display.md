@@ -618,7 +618,11 @@ static void delay_ms(uint32_t ms) {
 }
 ```
 
-# Display Image
+![PineCone BL602 rendering on ST7789 a photo of Jewel Changi, Singapore](https://lupyuen.github.io/images/display-jewel5.jpg)
+
+_PineCone BL602 rendering on ST7789 a photo of [Jewel Changi, Singapore](https://en.wikipedia.org/wiki/Jewel_Changi_Airport)_
+
+# Display Image on ST7789
 
 TODO
 
