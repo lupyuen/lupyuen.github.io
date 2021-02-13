@@ -608,10 +608,12 @@ static const uint8_t image_data[] = {  //  Should be 115,200 bytes
 git clone https://github.com/lupyuen/pinetime-graphic
 cd pinetime-graphic
 
+# TODO: Copy image.png to the pinetime-graphic folder
+
 # Convert the PNG file to a C array
 cargo run -v image.png &gt;image.inc
 </code></pre>
-<p><a href="https://github.com/lupyuen/pinetime-graphic/blob/master/README.md">(Check out the <code>pinetime-graphic</code> source code here)</a></p>
+<p><a href="https://github.com/lupyuen/pinetime-graphic">(Check out the <code>pinetime-graphic</code> source code here)</a></p>
 <h2 id="st7789-display-window" class="section-header"><a href="#st7789-display-window">6.2 ST7789 Display Window</a></h2>
 <p>Before we blast pixels to ST7789, here's how <code>set_window</code> sets the ST7789 Display Window, bounded by the coordinates <code>(left, top)</code> and <code>(right, bottom)</code>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L188-L205"><code>display.c</code></a></p>
 <pre><code class="language-c">/// Set the ST7789 display window to the coordinates (left, top), (right, bottom)
