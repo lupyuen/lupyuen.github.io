@@ -579,7 +579,7 @@ Let's blast 10 rows of pixels to ST7789, and do it 24 times: [`display.c`](https
 ```c
 /// Display image on ST7789 display controller
 int display_image(void) {
-    //  Render each batch of 10 rows
+    //  Render each batch of 10 rows. ROW_COUNT is 240, BUFFER_ROWS is 10.
     for (uint8_t row = 0; row < ROW_COUNT; row += BUFFER_ROWS) {
         //  Compute the (left, top) and (right, bottom) coordinates of the 10-row window
         uint8_t top    = row;
@@ -587,8 +587,10 @@ int display_image(void) {
             ? (row + BUFFER_ROWS - 1) 
             : (ROW_COUNT - 1);
         uint8_t left   = 0;
-        uint8_t right  = COL_COUNT - 1;
+        uint8_t right  = COL_COUNT - 1;  //  COL_COUNT is 240
 ```
+
+_What are `left`, `right`, `top` and `bottom`?_
 
 TODO
 
