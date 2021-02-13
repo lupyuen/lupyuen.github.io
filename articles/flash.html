@@ -339,6 +339,7 @@ caused by: Invalid argument
 <li><a href="https://www.reddit.com/r/RISCV/comments/knsju9/flashing_firmware_to_pinecone_bl602/gn7rw3i?utm_source=share&amp;utm_medium=web2x&amp;context=3"><strong>Discuss MagicHome BL602 on Reddit</strong></a></li>
 </ul>
 <h2 id="for-macos-ch340-usb-serial-driver" class="section-header"><a href="#for-macos-ch340-usb-serial-driver">1.5 For macOS: CH340 USB Serial Driver</a></h2>
+<p>We should use <strong>CoolTerm</strong> on macOS, not <code>screen</code>. See <a href="https://lupyuen.github.io/articles/led#appendix-fix-bl602-demo-firmware-for-macos"><strong>&quot;Fix BL602 Demo Firmware for macOS&quot;</strong></a></p>
 <p>PineCone includes a CH340N USB-to-UART module to expose BL620's UART Port via PineCone's USB Port.</p>
 <p>We should use the CH340 Driver provided by Apple. To check, connect PineCone to the USB port and enter...</p>
 <pre><code class="language-bash">sudo dmesg
@@ -346,10 +347,7 @@ caused by: Invalid argument
 <p>We should see...</p>
 <pre><code class="language-text">DK: AppleUSBCHCOM-0x1000d21bd::start(IOUSBHostInterface-0x1000d21b6) ok
 </code></pre>
-<p><code>AppleUSBCHCOM</code> is the CH340 Driver provided by Apple for macOS Catalina.</p>
-<p><a href="https://community.platformio.org/t/troubleshooting-ch340g-issues-on-macos/9522">More about this</a></p>
-<p>The BL602 Demo Firmware needs to be recompiled to reduce the UART baud rate.</p>
-<p>See <a href="https://lupyuen.github.io/articles/led#appendix-fix-bl602-demo-firmware-for-macos">&quot;Fix BL602 Demo Firmware for macOS&quot;</a></p>
+<p><code>AppleUSBCHCOM</code> is the CH340 Driver provided by Apple for macOS Catalina. <a href="https://community.platformio.org/t/troubleshooting-ch340g-issues-on-macos/9522">More about this</a></p>
 <p><img src="https://lupyuen.github.io/images/pinecone-flash-steps.png" alt="BL602 Flashing Process reverse engineered from BLOpenFlasher" /></p>
 <p><em>BL602 Flashing Process reverse engineered from BLOpenFlasher</em></p>
 <h1 id="what-else-gets-flashed-to-bl602" class="section-header"><a href="#what-else-gets-flashed-to-bl602">2 What Else Gets Flashed To BL602?</a></h1>
