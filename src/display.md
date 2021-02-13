@@ -725,8 +725,8 @@ Alternatively, we may build the Firmware Binary File `sdk_app_st7789.bin` from t
 git clone --recursive --branch st7789 https://github.com/lupyuen/bl_iot_sdk
 cd bl_iot_sdk/customer_app/sdk_app_st7789
 
-# TODO: Replace sdk_app_st7789/image.inc by Our Favourite Cat.
-# See https://lupyuen.github.io/articles/display#modding-the-photo
+# TODO: Replace sdk_app_st7789/image.inc
+# by Our Favourite Cat. See https://lupyuen.github.io/articles/display#modding-the-photo
 
 # TODO: Change this to the full path of bl_iot_sdk
 export BL60X_SDK_PATH=$HOME/bl_iot_sdk
