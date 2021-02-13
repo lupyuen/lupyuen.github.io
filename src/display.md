@@ -233,7 +233,11 @@ transfer.len    = len;                    //  How many bytes
 ```c
 /// SPI Receive Buffer. We don't actually receive data, but SPI Transfer needs this.
 /// Contains 10 rows of 240 pixels of 2 bytes each (16-bit colour).
-static uint8_t spi_rx_buf[BUFFER_ROWS * COL_COUNT * BYTES_PER_PIXEL];
+static uint8_t spi_rx_buf[
+    BUFFER_ROWS        //  10 rows of pixels
+    * COL_COUNT        //  240 columns of pixels per row
+    * BYTES_PER_PIXEL  //  2 bytes per pixel
+];
 ```
 
 We limit each SPI Transfer to 10 rows of pixels. More about this later.
@@ -549,15 +553,19 @@ _PineCone BL602 rendering on ST7789 a photo of [Jewel Changi, Singapore](https:/
 
 # Display Image on ST7789
 
-For our first act... BL602 renders an image to our ST7789 Display! [(Based on this photo)](https://lupyuen.github.io/images/display-jewel2.jpg)
+Our First Act: BL602 renders an image to our ST7789 Display! [(Based on this photo)](https://lupyuen.github.io/images/display-jewel2.jpg)
 
-First we prepare a buffer for transmitting pixels to ST7789: [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L85-L92)
+Prologue: We prepare a buffer for transmitting pixels to ST7789: [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L85-L92)
 
 ```c
 /// SPI Transmit Buffer. We always copy pixels from Flash ROM to RAM
 /// before transmitting, because Flash ROM may be too slow for DMA at 4 MHz.
 /// Contains 10 rows of 240 pixels of 2 bytes each (16-bit colour).
-uint8_t spi_tx_buf[BUFFER_ROWS * COL_COUNT * BYTES_PER_PIXEL];
+uint8_t spi_tx_buf[
+    BUFFER_ROWS        //  10 rows of pixels
+    * COL_COUNT        //  240 columns of pixels per row
+    * BYTES_PER_PIXEL  //  2 bytes per pixel
+];
 ```
 
 The SPI Transmit Buffer `spi_tx_buf` is the same size as our SPI Receive Buffer `spi_rx_buf`.
@@ -566,9 +574,7 @@ Both buffers are sized to store __10 rows of pixels, each row with 240 pixels, e
 
 (Our display has __240 rows of pixels__, so we'll use our buffers __24 times__ to render an image)
 
-TODO
-
-[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L166-L194)
+Let's blast 10 rows of pixels to ST7789, and do it 24 times: [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L166-L194)
 
 ```c
 /// Display image on ST7789 display controller
