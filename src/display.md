@@ -793,90 +793,113 @@ __For Windows:__ Use `putty` ([See this](https://lupyuen.github.io/articles/flas
 
 ## Enter ST7789 commands
 
-TODO
+Let's enter some commands to display an image!
 
-```text
-------------------------------------------------------------
-RISC-V Core Feature:RV32-ACFIMX
-Build Version: release_bl_iot_sdk_1.6.11-1-g66bb28da-dirty
-Build Date: Feb 10 2021
-Build Time: 13:33:01
-------------------------------------------------------------
-blog init set power on level 2, 2, 2.
-[IRQ] Clearing and Disable all the pending IRQ...
-[OS] Starting aos_loop_proc task...
-[OS] Starting OS Scheduler...
-Init CLI with event Driven
-```
+1.  Press Enter to reveal the command prompt.
 
-TODO
+1.  Enter `help` to see the available commands...
 
-```text
-# help
-====User Commands====
-display_init             : Init display
-display_image            : Display image
-display_result           : Show result
-backlight_on             : Backlight on
-backlight_off            : Backlight off
-lvgl_init                : Init LVGL
-lvgl_create              : Create LVGL widgets
-lvgl_update              : Update LVGL widgets
-lvgl_render              : Render LVGL display
-1                        : Init display, display image
-2                        : Init display, init LVGL, create LVGL widgets, render LVGL display
-3                        : Update LVGL widgets, render LVGL display
-```
+    ```text
+    # help
+    ====User Commands====
+    display_init             : Init display
+    display_image            : Display image
+    display_result           : Show result
+    backlight_on             : Backlight on
+    backlight_off            : Backlight off
+    lvgl_init                : Init LVGL
+    lvgl_create              : Create LVGL widgets
+    lvgl_update              : Update LVGL widgets
+    lvgl_render              : Render LVGL display
+    1                        : Init display, display image
+    2                        : Init display, init LVGL, create LVGL widgets, render LVGL display
+    3                        : Update LVGL widgets, render LVGL display
+    ```
 
-## display_init
+    (We'll cover the LVGL commands later)
 
-TODO
+1.  First we __initialise our SPI Port and ST7789 Display__. 
 
-```text
-# display_init
-port0 eventloop init = 42013ef8
-[HAL] [SPI] Init :
-port=0, mode=0, polar_phase = 3, freq=4000000, tx_dma_ch=2, rx_dma_ch=3, pin_clk=3, pin_cs=2, pin_mosi=1, pin_miso=4
-set rwspeed = 4000000
-hal_gpio_init: cs:2, clk:3, mosi:1, miso: 4
-hal_gpio_init: SPI controller mode
-hal_spi_init.
-Set CS pin 14 to high
-Set BLK pin 12 to high
-Set CS pin 14 to low
-hal_spi_transfer = 1
-transfer xfer[0].len = 1
-Tx DMA src=0x4200dcdf, dest=0x4000a288, size=1, si=1, di=0, i=1
-Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
-recv all event group.
-Set CS pin 14 to high
-TODO Delay 200
-...
-```
+    Enter this command...
 
-## display_image
+    ```text
+    # display_init
+    ```
 
-TODO
+    `display_init` calls the function `test_display_init`, which we have seen earlier.
 
-```text
-# display_image
-Displaying image...
-```
+1.  We should see this...
 
-TODO
+    ```text
+    # display_init
+    port0 eventloop init = 42013ef8
+    [HAL] [SPI] Init :
+    port=0, mode=0, polar_phase = 3, freq=4000000, tx_dma_ch=2, rx_dma_ch=3, pin_clk=3, pin_cs=2, pin_mosi=1, pin_miso=4
+    set rwspeed = 4000000
+    hal_gpio_init: cs:2, clk:3, mosi:1, miso: 4
+    hal_gpio_init: SPI controller mode
+    hal_spi_init.
+    Set CS pin 14 to high
+    Set BLK pin 12 to high
+    Set CS pin 14 to low
+    hal_spi_transfer = 1
+    transfer xfer[0].len = 1
+    Tx DMA src=0x4200dcdf, dest=0x4000a288, size=1, si=1, di=0, i=1
+    Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
+    recv all event group.
+    Set CS pin 14 to high
+    TODO Delay 200
+    ...
+    ```
 
-```text
-Set CS pin 14 to low
-hal_spi_transfer = 1
-transfer xfer[0].len = 4800
-Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
-Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
-Tx DMA src=0x42013058, dest=0x4000a288, size=2048, si=1, di=0, i=0
-Rx DMA src=0x4000a28c, dest=0x4200f768, size=2048, si=0, di=1, i=0
-Tx DMA src=0x42013858, dest=0x4000a288, size=704, si=1, di=0, i=1
-Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704, si=0, di=1, i=1
-...
-```
+1.  Next we __display the image on ST7789__...
+
+    ```text
+    # display_image
+    ```
+
+    `display_image` calls the function `display_image`, which we have seen earlier.
+
+1.  We should see this...
+
+    ```text
+    # display_image
+    Displaying image...
+    Set CS pin 14 to low
+    hal_spi_transfer = 1
+    transfer xfer[0].len = 4800
+    Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
+    Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
+    Tx DMA src=0x42013058, dest=0x4000a288, size=2048, si=1, di=0, i=0
+    Rx DMA src=0x4000a28c, dest=0x4200f768, size=2048, si=0, di=1, i=0
+    Tx DMA src=0x42013858, dest=0x4000a288, size=704,  si=1, di=0, i=1
+    Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704,  si=0, di=1, i=1
+    ...
+    ```
+
+1.  _Why so many SPI DMA Transfers?_
+
+    Each SPI DMA Transfer is limited to __2,048 bytes__. 
+
+    Whenever we transmit our SPI Buffer of __4,800 bytes__ (10 rows of pixels), __BL602 SPI HAL helpfully breaks down the request__ into multiple SPI DMA requests (of max 2,048 bytes each).
+
+1.  Here's a Tip: Instead of entering the two commands...
+
+    ```text
+    # display_init
+    ...
+    # display_image
+    ```
+
+    We may enter this as a shortcut...
+
+    ```text
+    # 1
+    ```
+
+    Which will initialise the ST7789 display and render the image in a single command.
+
+Congratulations! Jewel Changi, Singapore (or Our Favourite Cat) now appears on our ST7789 Display!
 
 [Check out the complete log](https://gist.github.com/lupyuen/9f26626d7c8081ae64d58eba70e07a80)
 
