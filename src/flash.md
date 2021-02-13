@@ -283,11 +283,13 @@ _Firmware running on PineCone_
 
 These steps were tested on Arm64 Linux (Pinebook Pro with Manjaro), macOS Catalina and Windows 10.
 
-__UPDATE For MagicHome BL602 WiFi LED Controller:__ This gadget doesn't have a Reset Button, so it will be hard to see the `helloworld` message. Use the `sdk_app_gpio.bin` GPIO Demo Firmware instead...
+__UPDATE For MagicHome BL602 WiFi LED Controller:__ This gadget doesn't have a Reset Button, so it will be hard to see the `helloworld` message. Use the __`sdk_app_gpio.bin` GPIO Demo Firmware__ instead...
 
--   ["Control RGB LED with GPIO"](https://lupyuen.github.io/articles/led#control-rgb-led-with-gpio)
+-   [__"Control RGB LED with GPIO"__](https://lupyuen.github.io/articles/led#control-rgb-led-with-gpio)
 
 Connect at 2 Mbps. When we enter __`help`__, it will respond with a list of commands. This is useful for validating that our firmware is running on MagicHome BL602.
+
+-   [__Discuss MagicHome BL602 on Reddit__](https://www.reddit.com/r/RISCV/comments/knsju9/flashing_firmware_to_pinecone_bl602/gn7rw3i?utm_source=share&utm_medium=web2x&context=3)
 
 ## For macOS: CH340 USB Serial Driver
 
