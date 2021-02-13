@@ -80,34 +80,33 @@
 <li><a href="#run-the-firmware">7.2 Run the firmware</a><ul></ul></li>
 <li><a href="#enter-st7789-commands">7.3 Enter ST7789 commands</a><ul></ul></li></ul></li>
 <li><a href="#render-text-and-graphics-with-lvgl">8 Render Text and Graphics with LVGL</a><ul>
-<li><a href="#lvgl-display-driver-for-st7789">8.1 LVGL Display Driver for ST7789</a><ul></ul></li>
-<li><a href="#lv_port_disp_init">8.2 lv_port_disp_init</a><ul></ul></li>
-<li><a href="#disp_flush">8.3 disp_flush</a><ul></ul></li>
-<li><a href="#lvgl-application">8.4 LVGL Application</a><ul></ul></li>
-<li><a href="#lvgl_init">8.5 lvgl_init</a><ul></ul></li>
-<li><a href="#lvgl_create">8.6 lvgl_create</a><ul></ul></li>
-<li><a href="#lvgl_update">8.7 lvgl_update</a><ul></ul></li>
-<li><a href="#lvgl_render">8.8 lvgl_render</a><ul></ul></li>
-<li><a href="#add-lvgl-to-makefile">8.9 Add LVGL to Makefile</a><ul></ul></li></ul></li>
-<li><a href="#run-the-lvgl-firmware">9 Run the LVGL Firmware</a><ul>
-<li><a href="#display_init">9.1 display_init</a><ul></ul></li>
-<li><a href="#lvgl_init-1">9.2 lvgl_init</a><ul></ul></li>
-<li><a href="#lvgl_create-1">9.3 lvgl_create</a><ul></ul></li>
-<li><a href="#lvgl_render-1">9.4 lvgl_render</a><ul></ul></li>
-<li><a href="#lvgl_update-1">9.5 lvgl_update</a><ul></ul></li></ul></li>
-<li><a href="#spi-dma-works-great-with-ram-not-so-much-with-flash-rom">10 SPI DMA works great with RAM, not so much with Flash ROM</a><ul></ul></li>
-<li><a href="#port-st7789-and-lvgl-to-other-bl602-operating-systems">11 Port ST7789 and LVGL to other BL602 Operating Systems</a><ul></ul></li>
-<li><a href="#whats-next">12 What's Next</a><ul></ul></li>
-<li><a href="#notes">13 Notes</a><ul></ul></li>
-<li><a href="#appendix-troubleshoot-spi-hanging">14 Appendix: Troubleshoot SPI Hanging</a><ul></ul></li>
-<li><a href="#appendix-show-assertion-failures">15 Appendix: Show Assertion Failures</a><ul></ul></li>
-<li><a href="#appendix-configure-lvgl-for-bl602-and-st7789">16 Appendix: Configure LVGL for BL602 and ST7789</a><ul></ul></li>
-<li><a href="#appendix-macos-script-to-build-flash-and-run-bl602-firmware">17 Appendix: macOS Script to Build, Flash and Run BL602 Firmware</a><ul></ul></li>
-<li><a href="#appendix-st7789-reset-backlight-and-delay">18 Appendix: ST7789 Reset, Backlight and Delay</a><ul>
-<li><a href="#hard_reset">18.1 hard_reset</a><ul></ul></li>
-<li><a href="#backlight_on">18.2 backlight_on</a><ul></ul></li>
-<li><a href="#backlight_off">18.3 backlight_off</a><ul></ul></li>
-<li><a href="#delay_ms">18.4 delay_ms</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>14 Feb 2021</em></p>
+<li><a href="#create-the-widgets">8.1 Create the Widgets</a><ul></ul></li>
+<li><a href="#update-the-widgets">8.2 Update the Widgets</a><ul></ul></li>
+<li><a href="#render-the-display">8.3 Render the Display</a><ul></ul></li>
+<li><a href="#initialise-lvgl">8.4 Initialise LVGL</a><ul></ul></li></ul></li>
+<li><a href="#lvgl-display-driver-for-st7789">9 LVGL Display Driver for ST7789</a><ul>
+<li><a href="#lv_port_disp_init">9.1 lv_port_disp_init</a><ul></ul></li>
+<li><a href="#disp_flush">9.2 disp_flush</a><ul></ul></li>
+<li><a href="#add-lvgl-to-makefile">9.3 Add LVGL to Makefile</a><ul></ul></li></ul></li>
+<li><a href="#run-the-lvgl-firmware">10 Run the LVGL Firmware</a><ul>
+<li><a href="#display_init">10.1 display_init</a><ul></ul></li>
+<li><a href="#lvgl_init">10.2 lvgl_init</a><ul></ul></li>
+<li><a href="#lvgl_create">10.3 lvgl_create</a><ul></ul></li>
+<li><a href="#lvgl_render">10.4 lvgl_render</a><ul></ul></li>
+<li><a href="#lvgl_update">10.5 lvgl_update</a><ul></ul></li></ul></li>
+<li><a href="#spi-dma-works-great-with-ram-not-so-much-with-flash-rom">11 SPI DMA works great with RAM, not so much with Flash ROM</a><ul></ul></li>
+<li><a href="#port-st7789-and-lvgl-to-other-bl602-operating-systems">12 Port ST7789 and LVGL to other BL602 Operating Systems</a><ul></ul></li>
+<li><a href="#whats-next">13 What's Next</a><ul></ul></li>
+<li><a href="#notes">14 Notes</a><ul></ul></li>
+<li><a href="#appendix-troubleshoot-spi-hanging">15 Appendix: Troubleshoot SPI Hanging</a><ul></ul></li>
+<li><a href="#appendix-show-assertion-failures">16 Appendix: Show Assertion Failures</a><ul></ul></li>
+<li><a href="#appendix-configure-lvgl-for-bl602-and-st7789">17 Appendix: Configure LVGL for BL602 and ST7789</a><ul></ul></li>
+<li><a href="#appendix-macos-script-to-build-flash-and-run-bl602-firmware">18 Appendix: macOS Script to Build, Flash and Run BL602 Firmware</a><ul></ul></li>
+<li><a href="#appendix-st7789-reset-backlight-and-delay">19 Appendix: ST7789 Reset, Backlight and Delay</a><ul>
+<li><a href="#hard_reset">19.1 hard_reset</a><ul></ul></li>
+<li><a href="#backlight_on">19.2 backlight_on</a><ul></ul></li>
+<li><a href="#backlight_off">19.3 backlight_off</a><ul></ul></li>
+<li><a href="#delay_ms">19.4 delay_ms</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>14 Feb 2021</em></p>
 <p>In our last article we configured PineCone BL602 to connect to a simple SPI Peripheral: BME280 Sensor for Temperature / Humidity / Air Pressure. <a href="https://lupyuen.github.io/articles/spi">(See this)</a></p>
 <p>Today we shall connect PineCone BL602 / Pinenut / Any BL602 Board to a more powerful SPI Peripheral: <strong>ST7789 Display Controller</strong>.</p>
 <p>We'll be using the <strong>LVGL Graphics Library</strong> to render text and graphics to the ST7789 Display.</p>
@@ -799,10 +798,90 @@ Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704,  si=0, di=1, i=1
 <p>Congratulations! Jewel Changi, Singapore (or Our Favourite Cat) now appears on our ST7789 Display!</p>
 <p><a href="https://gist.github.com/lupyuen/9f26626d7c8081ae64d58eba70e07a80">Check out the complete log</a></p>
 <h1 id="render-text-and-graphics-with-lvgl" class="section-header"><a href="#render-text-and-graphics-with-lvgl">8 Render Text and Graphics with LVGL</a></h1>
+<p><em>Rendering photos on BL602 and ST7789 is great... But is it useful for creating IoT Gadgets?</em></p>
+<p>Not really, we'll need to render text and shapes to show meaningful information. (Like a mini-dashboard)</p>
+<p><em>Is there a way to render text and graphics on BL602 + ST7789... Similar to mobile apps?</em></p>
+<p>Yes there is a way... We call the open-source <strong>LVGL Graphics Library!</strong></p>
+<p>Watch how we render this simple screen with LVGL: A Button and a Text Label...</p>
 <p>TODO</p>
-<h2 id="lvgl-display-driver-for-st7789" class="section-header"><a href="#lvgl-display-driver-for-st7789">8.1 LVGL Display Driver for ST7789</a></h2>
+<h2 id="create-the-widgets" class="section-header"><a href="#create-the-widgets">8.1 Create the Widgets</a></h2>
 <p>TODO</p>
-<h2 id="lv_port_disp_init" class="section-header"><a href="#lv_port_disp_init">8.2 lv_port_disp_init</a></h2>
+<pre><code class="language-c">/// Button Widget
+static lv_obj_t *btn = NULL;
+
+/// Label Widget
+static lv_obj_t *label = NULL;
+</code></pre>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L50-L64"><code>lvgl.c</code></a></p>
+<pre><code class="language-c">/// Create a Button Widget and a Label Widget
+int lvgl_create(void) {
+    ...
+    btn = lv_btn_create(lv_scr_act(), NULL);  //  Add a button the current screen
+    lv_obj_set_pos(btn, 10, 80);              //  Set its position
+    lv_obj_set_size(btn, 220, 80);            //  Set its size
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-c">    label = lv_label_create(btn, NULL);       //  Add a label to the button
+    lv_label_set_text(label, &quot;BL602 LVGL&quot;);   //  Set the label text
+    return 0;
+}
+</code></pre>
+<h2 id="update-the-widgets" class="section-header"><a href="#update-the-widgets">8.2 Update the Widgets</a></h2>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L66-L78"><code>lvgl.c</code></a></p>
+<pre><code class="language-c">/// Update the Widgets
+int lvgl_update(void) {
+    ...
+    //  Set the button label to a new message
+    static int counter = 1;
+    char msg[20]; 
+    snprintf(msg, sizeof(msg), &quot;SO COOL! #%d&quot;, counter++);
+    lv_label_set_text(label, msg);
+    return 0;
+}
+</code></pre>
+<h2 id="render-the-display" class="section-header"><a href="#render-the-display">8.3 Render the Display</a></h2>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L80-L91"><code>lvgl.c</code></a></p>
+<pre><code class="language-c">/// Render the LVGL display
+int lvgl_render(void) {
+    ...
+    //  Must tick at least 100 milliseconds to force LVGL to render display
+    lv_tick_inc(100);
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-c">    //  Call LVGL to render the display and flush our display driver
+    lv_task_handler();
+    return 0;
+}
+</code></pre>
+<h2 id="initialise-lvgl" class="section-header"><a href="#initialise-lvgl">8.4 Initialise LVGL</a></h2>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L25-L48"><code>lvgl.c</code></a></p>
+<pre><code class="language-c">/// Set to true if LVGL has already been lvgl_initialised
+static bool lvgl_initialised = false;
+
+/// Set to true if LVGL widgets have been created
+static bool lvgl_created = false;
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-c">/// Init the LVGL library
+int lvgl_init(void) {   
+    //  Assume that display controller has been lvgl_initialised 
+    if (lvgl_initialised) { return 0; }  //  Init only once
+    lvgl_initialised = true;
+    printf(&quot;Init LVGL...\r\n&quot;);
+
+    //  Init the LVGL display
+    lv_init();
+    lv_port_disp_init();
+    return 0;
+}
+</code></pre>
+<h1 id="lvgl-display-driver-for-st7789" class="section-header"><a href="#lvgl-display-driver-for-st7789">9 LVGL Display Driver for ST7789</a></h1>
+<p>TODO</p>
+<h2 id="lv_port_disp_init" class="section-header"><a href="#lv_port_disp_init">9.1 lv_port_disp_init</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_port_disp.c#L64-L113"><code>lv_port_disp.c</code></a></p>
 <pre><code class="language-c">void lv_port_disp_init(void)
@@ -852,7 +931,7 @@ Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704,  si=0, di=1, i=1
     lv_disp_drv_register(&amp;disp_drv);
 }
 </code></pre>
-<h2 id="disp_flush" class="section-header"><a href="#disp_flush">8.3 disp_flush</a></h2>
+<h2 id="disp_flush" class="section-header"><a href="#disp_flush">9.2 disp_flush</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_port_disp.c#L126-L154"><code>lv_port_disp.c</code></a></p>
 <pre><code class="language-c">/// ST7789 Commands. From https://github.com/almindor/st7789/blob/master/src/instruction.rs
@@ -912,96 +991,7 @@ static void disp_flush(lv_disp_drv_t * disp_drv, const lv_area_t * area, lv_colo
  * Useful if the display has a 8 bit interface (e.g. SPI)*/
 #define LV_COLOR_16_SWAP   1
 </code></pre>
-<h2 id="lvgl-application" class="section-header"><a href="#lvgl-application">8.4 LVGL Application</a></h2>
-<p>TODO</p>
-<h2 id="lvgl_init" class="section-header"><a href="#lvgl_init">8.5 lvgl_init</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L25-L48"><code>lvgl.c</code></a></p>
-<pre><code class="language-c">/// Set to true if LVGL has already been lvgl_initialised
-static bool lvgl_initialised = false;
-
-/// Set to true if LVGL widgets have been created
-static bool lvgl_created = false;
-</code></pre>
-<p>TODO</p>
-<pre><code class="language-c">/// Button Widget
-static lv_obj_t *btn = NULL;
-
-/// Label Widget
-static lv_obj_t *label = NULL;
-</code></pre>
-<p>TODO</p>
-<pre><code class="language-c">/// Init the LVGL library
-int lvgl_init(void) {   
-    //  Assume that display controller has been lvgl_initialised 
-    if (lvgl_initialised) { return 0; }  //  Init only once
-    lvgl_initialised = true;
-    printf(&quot;Init LVGL...\r\n&quot;);
-
-    //  Init the LVGL display
-    lv_init();
-    lv_port_disp_init();
-    return 0;
-}
-</code></pre>
-<h2 id="lvgl_create" class="section-header"><a href="#lvgl_create">8.6 lvgl_create</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L50-L64"><code>lvgl.c</code></a></p>
-<pre><code class="language-c">/// Create a Button Widget and a Label Widget
-int lvgl_create(void) {
-    assert(lvgl_initialised);        //  LVGL must have been initialised
-    if (lvgl_created) { return 0; }  //  Create widgets only once
-    lvgl_created = true;
-    printf(&quot;Create LVGL widgets...\r\n&quot;);
-</code></pre>
-<p>TODO</p>
-<pre><code class="language-c">    btn = lv_btn_create(lv_scr_act(), NULL);  //  Add a button the current screen
-    lv_obj_set_pos(btn, 10, 80);              //  Set its position
-    lv_obj_set_size(btn, 220, 80);            //  Set its size
-</code></pre>
-<p>TODO</p>
-<pre><code class="language-c">    label = lv_label_create(btn, NULL);       //  Add a label to the button
-    lv_label_set_text(label, &quot;BL602 LVGL&quot;);   //  Set the label text
-    return 0;
-}
-</code></pre>
-<h2 id="lvgl_update" class="section-header"><a href="#lvgl_update">8.7 lvgl_update</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L66-L78"><code>lvgl.c</code></a></p>
-<pre><code class="language-c">/// Update the Widgets
-int lvgl_update(void) {
-    assert(lvgl_created);  //  LVGL widgets must have been created
-    assert(label != NULL);
-    printf(&quot;Update LVGL widgets...\r\n&quot;);
-</code></pre>
-<p>TODO</p>
-<pre><code class="language-c">    //  Set the button label to a new message
-    static int counter = 1;
-    char msg[20]; 
-    snprintf(msg, sizeof(msg), &quot;SO COOL! #%d&quot;, counter++);
-    lv_label_set_text(label, msg);
-    return 0;
-}
-</code></pre>
-<h2 id="lvgl_render" class="section-header"><a href="#lvgl_render">8.8 lvgl_render</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L80-L91"><code>lvgl.c</code></a></p>
-<pre><code class="language-c">/// Render the LVGL display
-int lvgl_render(void) {
-    assert(lvgl_created);  //  LVGL widgets must have been created
-    printf(&quot;Render LVGL display...\r\n&quot;);
-</code></pre>
-<p>TODO</p>
-<pre><code class="language-c">    //  Must tick at least 100 milliseconds to force LVGL to render display
-    lv_tick_inc(100);
-</code></pre>
-<p>TODO</p>
-<pre><code class="language-c">    //  Call LVGL to render the display and flush our display driver
-    lv_task_handler();
-    return 0;
-}
-</code></pre>
-<h2 id="add-lvgl-to-makefile" class="section-header"><a href="#add-lvgl-to-makefile">8.9 Add LVGL to Makefile</a></h2>
+<h2 id="add-lvgl-to-makefile" class="section-header"><a href="#add-lvgl-to-makefile">9.3 Add LVGL to Makefile</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/make_scripts_riscv/component_wrapper.mk#L42-L51"><code>make_scripts_riscv/ component_wrapper.mk</code></a></p>
 <pre><code class="language-text">#### TODO: Add LVGL to build in a cleaner way
@@ -1017,11 +1007,11 @@ COMPONENT_SRCDIRS += \
 </code></pre>
 <p><img src="https://lupyuen.github.io/images/display-addlvgl.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="run-the-lvgl-firmware" class="section-header"><a href="#run-the-lvgl-firmware">9 Run the LVGL Firmware</a></h1>
+<h1 id="run-the-lvgl-firmware" class="section-header"><a href="#run-the-lvgl-firmware">10 Run the LVGL Firmware</a></h1>
 <p>TODO</p>
-<h2 id="display_init" class="section-header"><a href="#display_init">9.1 display_init</a></h2>
+<h2 id="display_init" class="section-header"><a href="#display_init">10.1 display_init</a></h2>
 <p>TODO</p>
-<h2 id="lvgl_init-1" class="section-header"><a href="#lvgl_init-1">9.2 lvgl_init</a></h2>
+<h2 id="lvgl_init" class="section-header"><a href="#lvgl_init">10.2 lvgl_init</a></h2>
 <p>TODO</p>
 <pre><code class="language-text"># lvgl_init
 Init LVGL...
@@ -1034,7 +1024,7 @@ Info: Object create ready 	(lv_obj.c #461 lv_obj_create())
 Trace: Screen create started 	(lv_obj.c #273 lv_obj_create())
 Info: Object create ready 	(lv_obj.c #461 lv_obj_create())
 </code></pre>
-<h2 id="lvgl_create-1" class="section-header"><a href="#lvgl_create-1">9.3 lvgl_create</a></h2>
+<h2 id="lvgl_create" class="section-header"><a href="#lvgl_create">10.3 lvgl_create</a></h2>
 <p>TODO</p>
 <pre><code class="language-text"># lvgl_create
 Create LVGL widgets...
@@ -1049,7 +1039,7 @@ Trace: Object create started 	(lv_obj.c #305 lv_obj_create())
 Info: Object create ready 	(lv_obj.c #461 lv_obj_create())
 Info: label created 	(lv_label.c #165 lv_label_create())
 </code></pre>
-<h2 id="lvgl_render-1" class="section-header"><a href="#lvgl_render-1">9.4 lvgl_render</a></h2>
+<h2 id="lvgl_render" class="section-header"><a href="#lvgl_render">10.4 lvgl_render</a></h2>
 <p>TODO</p>
 <pre><code class="language-text"># lvgl_render
 Render LVGL display...
@@ -1085,7 +1075,7 @@ Flush display: left=0, top=40, right=239, bottom=49...
 Trace: lv_task_handler ready 	(lv_task.c #180 lv_task_handler())
 # 
 </code></pre>
-<h2 id="lvgl_update-1" class="section-header"><a href="#lvgl_update-1">9.5 lvgl_update</a></h2>
+<h2 id="lvgl_update" class="section-header"><a href="#lvgl_update">10.5 lvgl_update</a></h2>
 <p>TODO</p>
 <pre><code class="language-text"># lvgl_update
 Update LVGL widgets...
@@ -1110,9 +1100,9 @@ Trace: lv_task_handler ready 	(lv_task.c #180 lv_task_handler())
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/display-log.jpg" alt="" /></p>
 <p>TODO</p>
-<h1 id="spi-dma-works-great-with-ram-not-so-much-with-flash-rom" class="section-header"><a href="#spi-dma-works-great-with-ram-not-so-much-with-flash-rom">10 SPI DMA works great with RAM, not so much with Flash ROM</a></h1>
+<h1 id="spi-dma-works-great-with-ram-not-so-much-with-flash-rom" class="section-header"><a href="#spi-dma-works-great-with-ram-not-so-much-with-flash-rom">11 SPI DMA works great with RAM, not so much with Flash ROM</a></h1>
 <p>TODO</p>
-<h1 id="port-st7789-and-lvgl-to-other-bl602-operating-systems" class="section-header"><a href="#port-st7789-and-lvgl-to-other-bl602-operating-systems">11 Port ST7789 and LVGL to other BL602 Operating Systems</a></h1>
+<h1 id="port-st7789-and-lvgl-to-other-bl602-operating-systems" class="section-header"><a href="#port-st7789-and-lvgl-to-other-bl602-operating-systems">12 Port ST7789 and LVGL to other BL602 Operating Systems</a></h1>
 <p>Like an episode of WandaVision, this article has dropped many hints about its Origin Story... Yep the code in this article came from <strong>PineTime Smartwatch!</strong></p>
 <ul>
 <li>
@@ -1125,7 +1115,7 @@ Trace: lv_task_handler ready 	(lv_task.c #180 lv_task_handler())
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/display-battery.jpg" alt="" /></p>
 <p>TODO</p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">12 What's Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">13 What's Next</a></h1>
 <p>TODO</p>
 <p>There's plenty more code in the <a href="https://github.com/bouffalolab/bl_iot_sdk"><strong>BL602 IoT SDK</strong></a> to be deciphered and documented: <strong>UART, ADC, DAC, WiFi, Bluetooth LE,</strong> ...</p>
 <p><a href="https://wiki.pine64.org/wiki/Nutcracker"><strong>Come Join Us... Make BL602 Better!</strong></a></p>
@@ -1145,11 +1135,11 @@ Trace: lv_task_handler ready 	(lv_task.c #180 lv_task_handler())
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/display.md"><code>lupyuen.github.io/src/display.md</code></a></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/display-box3.jpg" alt="" /></p>
-<h1 id="notes" class="section-header"><a href="#notes">13 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">14 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1358691021073178624?s=20">this meandering Twitter Thread</a></li>
 </ol>
-<h1 id="appendix-troubleshoot-spi-hanging" class="section-header"><a href="#appendix-troubleshoot-spi-hanging">14 Appendix: Troubleshoot SPI Hanging</a></h1>
+<h1 id="appendix-troubleshoot-spi-hanging" class="section-header"><a href="#appendix-troubleshoot-spi-hanging">15 Appendix: Troubleshoot SPI Hanging</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/components/hal_drv/bl602_hal/hal_spi.c#L341-L354"><code>components/hal_drv/ bl602_hal/hal_spi.c</code></a></p>
 <pre><code class="language-c">static void hal_spi_dma_trans(spi_hw_t *arg, uint8_t *TxData, uint8_t *RxData, uint32_t Len) {
@@ -1165,7 +1155,7 @@ Trace: lv_task_handler ready 	(lv_task.c #180 lv_task_handler())
                                      pdTRUE,
                                      portMAX_DELAY);
 </code></pre>
-<h1 id="appendix-show-assertion-failures" class="section-header"><a href="#appendix-show-assertion-failures">15 Appendix: Show Assertion Failures</a></h1>
+<h1 id="appendix-show-assertion-failures" class="section-header"><a href="#appendix-show-assertion-failures">16 Appendix: Show Assertion Failures</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/demo.c#L224-L235"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// TODO: We now show assertion failures in development.
@@ -1181,10 +1171,10 @@ void __assert_func(const char *file, int line, const char *func, const char *fai
 	for (;;) {}
 }
 </code></pre>
-<h1 id="appendix-configure-lvgl-for-bl602-and-st7789" class="section-header"><a href="#appendix-configure-lvgl-for-bl602-and-st7789">16 Appendix: Configure LVGL for BL602 and ST7789</a></h1>
+<h1 id="appendix-configure-lvgl-for-bl602-and-st7789" class="section-header"><a href="#appendix-configure-lvgl-for-bl602-and-st7789">17 Appendix: Configure LVGL for BL602 and ST7789</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_conf.h"><code>lv_conf.h</code></a></p>
-<h1 id="appendix-macos-script-to-build-flash-and-run-bl602-firmware" class="section-header"><a href="#appendix-macos-script-to-build-flash-and-run-bl602-firmware">17 Appendix: macOS Script to Build, Flash and Run BL602 Firmware</a></h1>
+<h1 id="appendix-macos-script-to-build-flash-and-run-bl602-firmware" class="section-header"><a href="#appendix-macos-script-to-build-flash-and-run-bl602-firmware">18 Appendix: macOS Script to Build, Flash and Run BL602 Firmware</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/run.sh#L1-L32"><code>run.sh</code></a></p>
 <pre><code class="language-bash">#!/usr/bin/env bash
@@ -1220,7 +1210,7 @@ popd
 #  Run the firmware
 open -a CoolTerm
 </code></pre>
-<h1 id="appendix-st7789-reset-backlight-and-delay" class="section-header"><a href="#appendix-st7789-reset-backlight-and-delay">18 Appendix: ST7789 Reset, Backlight and Delay</a></h1><h2 id="hard_reset" class="section-header"><a href="#hard_reset">18.1 hard_reset</a></h2>
+<h1 id="appendix-st7789-reset-backlight-and-delay" class="section-header"><a href="#appendix-st7789-reset-backlight-and-delay">19 Appendix: ST7789 Reset, Backlight and Delay</a></h1><h2 id="hard_reset" class="section-header"><a href="#hard_reset">19.1 hard_reset</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L290-L300"><code>display.c</code></a></p>
 <pre><code class="language-c">/// Reset the display controller
@@ -1233,7 +1223,7 @@ static int hard_reset(void) {
     return 0;
 }
 </code></pre>
-<h2 id="backlight_on" class="section-header"><a href="#backlight_on">18.2 backlight_on</a></h2>
+<h2 id="backlight_on" class="section-header"><a href="#backlight_on">19.2 backlight_on</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L300-L314"><code>display.c</code></a></p>
 <pre><code class="language-c">/// Switch on backlight
@@ -1251,7 +1241,7 @@ int backlight_on(void) {
     //  See https://lupyuen.github.io/articles/led#from-gpio-to-pulse-width-modulation-pwm
 }
 </code></pre>
-<h2 id="backlight_off" class="section-header"><a href="#backlight_off">18.3 backlight_off</a></h2>
+<h2 id="backlight_off" class="section-header"><a href="#backlight_off">19.3 backlight_off</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L314-L323"><code>display.c</code></a></p>
 <pre><code class="language-c">/// Switch off backlight
@@ -1263,7 +1253,7 @@ int backlight_off(void) {
     return 0;
 }
 </code></pre>
-<h2 id="delay_ms" class="section-header"><a href="#delay_ms">18.4 delay_ms</a></h2>
+<h2 id="delay_ms" class="section-header"><a href="#delay_ms">19.4 delay_ms</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L323-L328"><code>display.c</code></a></p>
 <pre><code class="language-c">/// Delay for the specified number of milliseconds
