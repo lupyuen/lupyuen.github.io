@@ -932,9 +932,126 @@ Congratulations! Jewel Changi, Singapore (or Our Favourite Cat) now appears on o
 
 # Render Text and Graphics with LVGL
 
+_Rendering photos on BL602 and ST7789 is great... But is it useful for creating IoT Gadgets?_
+
+Not really, we'll need to render text and shapes to show meaningful information. (Like a mini-dashboard)
+
+_Is there a way to render text and graphics on BL602 + ST7789... Similar to mobile apps?_
+
+Yes there is a way... We call the open-source __LVGL Graphics Library!__
+
+Watch how we render this simple screen with LVGL: A Button and a Text Label...
+
 TODO
 
-## LVGL Display Driver for ST7789
+## Create the Widgets
+
+TODO
+
+```c
+/// Button Widget
+static lv_obj_t *btn = NULL;
+
+/// Label Widget
+static lv_obj_t *label = NULL;
+```
+
+TODO
+
+[`lvgl.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L50-L64)
+
+```c
+/// Create a Button Widget and a Label Widget
+int lvgl_create(void) {
+    ...
+    btn = lv_btn_create(lv_scr_act(), NULL);  //  Add a button the current screen
+    lv_obj_set_pos(btn, 10, 80);              //  Set its position
+    lv_obj_set_size(btn, 220, 80);            //  Set its size
+```
+
+TODO
+
+```c
+    label = lv_label_create(btn, NULL);       //  Add a label to the button
+    lv_label_set_text(label, "BL602 LVGL");   //  Set the label text
+    return 0;
+}
+```
+
+## Update the Widgets
+
+TODO
+
+[`lvgl.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L66-L78)
+
+```c
+/// Update the Widgets
+int lvgl_update(void) {
+    ...
+    //  Set the button label to a new message
+    static int counter = 1;
+    char msg[20]; 
+    snprintf(msg, sizeof(msg), "SO COOL! #%d", counter++);
+    lv_label_set_text(label, msg);
+    return 0;
+}
+```
+
+## Render the Display
+
+TODO
+
+[`lvgl.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L80-L91)
+
+```c
+/// Render the LVGL display
+int lvgl_render(void) {
+    ...
+    //  Must tick at least 100 milliseconds to force LVGL to render display
+    lv_tick_inc(100);
+```
+
+TODO
+
+```c
+    //  Call LVGL to render the display and flush our display driver
+    lv_task_handler();
+    return 0;
+}
+```
+
+## Initialise LVGL
+
+TODO
+
+[`lvgl.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L25-L48)
+
+```c
+/// Set to true if LVGL has already been lvgl_initialised
+static bool lvgl_initialised = false;
+
+/// Set to true if LVGL widgets have been created
+static bool lvgl_created = false;
+```
+
+TODO
+
+```c
+/// Init the LVGL library
+int lvgl_init(void) {   
+    //  Assume that display controller has been lvgl_initialised 
+    if (lvgl_initialised) { return 0; }  //  Init only once
+    lvgl_initialised = true;
+    printf("Init LVGL...\r\n");
+
+    //  Init the LVGL display
+    lv_init();
+    lv_port_disp_init();
+    return 0;
+}
+```
+
+# LVGL Display Driver for ST7789
 
 TODO
 
@@ -1096,138 +1213,6 @@ TODO
 /* Swap the 2 bytes of RGB565 color.
  * Useful if the display has a 8 bit interface (e.g. SPI)*/
 #define LV_COLOR_16_SWAP   1
-```
-
-## LVGL Application
-
-TODO
-
-## lvgl_init
-
-TODO
-
-[`lvgl.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L25-L48)
-
-```c
-/// Set to true if LVGL has already been lvgl_initialised
-static bool lvgl_initialised = false;
-
-/// Set to true if LVGL widgets have been created
-static bool lvgl_created = false;
-```
-
-TODO
-
-```c
-/// Button Widget
-static lv_obj_t *btn = NULL;
-
-/// Label Widget
-static lv_obj_t *label = NULL;
-```
-
-TODO
-
-```c
-/// Init the LVGL library
-int lvgl_init(void) {   
-    //  Assume that display controller has been lvgl_initialised 
-    if (lvgl_initialised) { return 0; }  //  Init only once
-    lvgl_initialised = true;
-    printf("Init LVGL...\r\n");
-
-    //  Init the LVGL display
-    lv_init();
-    lv_port_disp_init();
-    return 0;
-}
-```
-
-## lvgl_create
-
-TODO
-
-[`lvgl.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L50-L64)
-
-```c
-/// Create a Button Widget and a Label Widget
-int lvgl_create(void) {
-    assert(lvgl_initialised);        //  LVGL must have been initialised
-    if (lvgl_created) { return 0; }  //  Create widgets only once
-    lvgl_created = true;
-    printf("Create LVGL widgets...\r\n");
-```
-
-TODO
-
-```c
-    btn = lv_btn_create(lv_scr_act(), NULL);  //  Add a button the current screen
-    lv_obj_set_pos(btn, 10, 80);              //  Set its position
-    lv_obj_set_size(btn, 220, 80);            //  Set its size
-```
-
-TODO
-
-```c
-    label = lv_label_create(btn, NULL);       //  Add a label to the button
-    lv_label_set_text(label, "BL602 LVGL");   //  Set the label text
-    return 0;
-}
-```
-
-## lvgl_update
-
-TODO
-
-[`lvgl.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L66-L78)
-
-```c
-/// Update the Widgets
-int lvgl_update(void) {
-    assert(lvgl_created);  //  LVGL widgets must have been created
-    assert(label != NULL);
-    printf("Update LVGL widgets...\r\n");
-```
-
-TODO
-
-```c
-    //  Set the button label to a new message
-    static int counter = 1;
-    char msg[20]; 
-    snprintf(msg, sizeof(msg), "SO COOL! #%d", counter++);
-    lv_label_set_text(label, msg);
-    return 0;
-}
-```
-
-## lvgl_render
-
-TODO
-
-[`lvgl.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L80-L91)
-
-```c
-/// Render the LVGL display
-int lvgl_render(void) {
-    assert(lvgl_created);  //  LVGL widgets must have been created
-    printf("Render LVGL display...\r\n");
-```
-
-TODO
-
-```c
-    //  Must tick at least 100 milliseconds to force LVGL to render display
-    lv_tick_inc(100);
-```
-
-TODO
-
-```c
-    //  Call LVGL to render the display and flush our display driver
-    lv_task_handler();
-    return 0;
-}
 ```
 
 ## Add LVGL to Makefile
