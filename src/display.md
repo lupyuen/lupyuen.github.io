@@ -594,6 +594,10 @@ _What are `left`, `right`, `top` and `bottom`?_
 
 TODO
 
+![ST77789 Display Windows](https://lupyuen.github.io/images/display-window.png)
+
+TODO
+
 ```c
         //  Compute the offset and how many bytes we will transmit.
         uint32_t offset = ((top * COL_COUNT) + left) * BYTES_PER_PIXEL;
