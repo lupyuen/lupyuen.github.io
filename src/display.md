@@ -926,6 +926,8 @@ Let's enter some commands to display an image!
 
     Which will initialise the ST7789 display and render the image in a single command.
 
+    [__Watch the Demo Video on YouTube__](https://www.youtube.com/watch?v=PkP-CeYLXUA)
+
 Congratulations! Jewel Changi, Singapore (or Our Favourite Cat) now appears on our ST7789 Display!
 
 [Check out the complete log](https://gist.github.com/lupyuen/9f26626d7c8081ae64d58eba70e07a80)
@@ -1365,6 +1367,8 @@ Trace: lv_task_handler ready 	(lv_task.c #180 lv_task_handler())
 ```
 
 TODO
+
+[__Watch the Demo Video on YouTube__](https://www.youtube.com/watch?v=PkP-CeYLXUA)
 
 [Check out the complete log](https://gist.github.com/lupyuen/9f26626d7c8081ae64d58eba70e07a80)
 
