@@ -543,7 +543,9 @@ uint8_t spi_tx_buf[
 int display_image(void) {
     //  Render each batch of 10 rows. ROW_COUNT is 240, BUFFER_ROWS is 10.
     for (uint8_t row = 0; row &lt; ROW_COUNT; row += BUFFER_ROWS) {
-        //  Compute the (left, top) and (right, bottom) coordinates of the 10-row window
+
+        //  Compute the (left, top) and (right, bottom) 
+        //  coordinates of the 10-row window
         uint8_t top    = row;
         uint8_t bottom = (row + BUFFER_ROWS - 1) &lt; ROW_COUNT 
             ? (row + BUFFER_ROWS - 1) 
@@ -552,22 +554,29 @@ int display_image(void) {
         uint8_t right  = COL_COUNT - 1;  //  COL_COUNT is 240
 </code></pre>
 <p><em>What are <code>left</code>, <code>right</code>, <code>top</code> and <code>bottom</code>?</em></p>
-<p>TODO</p>
+<p>Before we blast a batch of 10 pixel rows to ST7789 over SPI, we tell ST7789 the <strong><code>(left, top)</code> and <code>(right, bottom)</code> coordinates of the Display Window</strong> for the pixel rows.</p>
+<p>The code above computes the coordinates of the Display Window like so...</p>
 <p><img src="https://lupyuen.github.io/images/display-window.png" alt="ST77789 Display Windows" /></p>
-<p>TODO</p>
+<p>Next we compute the byte offset of our image in Flash ROM, and the number of bytes to blast...</p>
 <pre><code class="language-c">        //  Compute the offset and how many bytes we will transmit.
-        uint32_t offset = ((top * COL_COUNT) + left) * BYTES_PER_PIXEL;
-        uint16_t len    = (bottom - top + 1) * (right - left + 1) * BYTES_PER_PIXEL;
+        //  COL_COUNT is 240, BYTES_PER_PIXEL is 2.
+        uint32_t offset = ((top * COL_COUNT) + left) 
+            * BYTES_PER_PIXEL;
+        uint16_t len    = (bottom - top + 1) 
+            * (right - left + 1) 
+            * BYTES_PER_PIXEL;
 </code></pre>
-<p>TODO</p>
+<p>We copy 10 rows of pixel data from our image in Flash ROM to the SPI Transmit Buffer...</p>
 <pre><code class="language-c">        //  Copy the image pixels from Flash ROM to RAM, because Flash ROM may be too slow for DMA at 4 MHz
         memcpy(spi_tx_buf, image_data + offset, len);
 </code></pre>
-<p>TODO</p>
+<p>(Why don't we transmit the data straight from Flash ROM? We'll explain in a while)</p>
+<p>Here's another... ST7789 Command! This sets the coordinates of the ST7789 Display Window...</p>
 <pre><code class="language-c">        //  Set the display window.
         int rc = set_window(left, top, right, bottom); assert(rc == 0);
 </code></pre>
-<p>TODO</p>
+<p>(We'll see <code>set_window</code> in a while)</p>
+<p>Finally one last ST7789 Command (Memory Write) to blast the pixel data from our SPI Transmit Buffer to the ST7789 Display...</p>
 <pre><code class="language-c">        //  Memory Write: Write the bytes from RAM to display (ST7789 Datasheet Page 202)
         rc = write_command(RAMWR, NULL, 0); assert(rc == 0);
         rc = write_data(spi_tx_buf, len);   assert(rc == 0);
@@ -575,6 +584,7 @@ int display_image(void) {
     return 0;
 }
 </code></pre>
+<p>Repeat this 24 times to render each Display Window of 10 rows... And <a href="https://en.wikipedia.org/wiki/Jewel_Changi_Airport">Jewel Changi, Singapore</a> magically appears on our ST7789 Display!</p>
 <h2 id="set_window" class="section-header"><a href="#set_window">6.1 set_window</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L196-L211"><code>display.c</code></a></p>
