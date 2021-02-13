@@ -231,7 +231,7 @@ spi_dev_t spi_device;
 </code></pre>
 <h1 id="transfer-spi-data" class="section-header"><a href="#transfer-spi-data">3 Transfer SPI Data</a></h1>
 <p>For transmitting SPI Data to ST7789, the code looks highly similar to our previous article. (Except that we're not interested in the data received)</p>
-<p>Here's how our function <code>transmit_spi</code> transmits data to ST7789: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L258-L296"><code>display.c</code></a></p>
+<p>Here's how our function <code>transmit_spi</code> transmits data to ST7789: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L250-L290"><code>display.c</code></a></p>
 <pre><code class="language-c">/// Write to the SPI port. `data` is the array of bytes to be written. `len` is the number of bytes.
 static int transmit_spi(const uint8_t *data, uint16_t len) {
     //  Clear the receive buffer
@@ -288,7 +288,7 @@ transfer.tx_buf = (uint32_t) data;        //  Transmit Buffer
 transfer.rx_buf = (uint32_t) spi_rx_buf;  //  Receive Buffer
 transfer.len    = len;                    //  How many bytes
 </code></pre>
-<p><code>spi_rx_buf</code> is defined in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L85-L92"><code>display.c</code></a></p>
+<p><code>spi_rx_buf</code> is defined in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L82-L91"><code>display.c</code></a></p>
 <pre><code class="language-c">/// SPI Receive Buffer. We don't actually receive data, but SPI Transfer needs this.
 /// Contains 10 rows of 240 pixels of 2 bytes each (16-bit colour).
 static uint8_t spi_rx_buf[
@@ -338,7 +338,7 @@ write_command(
 </ul>
 <p><em>What???</em></p>
 <p>Yep ST7789 is a little unique (and somewhat inefficient)... We need to <strong>flip the Data / Command Pin</strong> when transmitting an ST7789 Command and its Parameters.</p>
-<p>Here's how <code>write_command</code> transmits the Command Code and Parameters: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L228-L244"><code>display.c</code></a></p>
+<p>Here's how <code>write_command</code> transmits the Command Code and Parameters: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L220-L238"><code>display.c</code></a></p>
 <pre><code class="language-c">/// Transmit ST7789 command and parameters. `params` is the array of 
 /// parameter bytes, `len` is the number of parameters.
 int write_command(uint8_t command, const uint8_t *params, uint16_t len) {
@@ -361,7 +361,7 @@ int write_command(uint8_t command, const uint8_t *params, uint16_t len) {
     return 0;
 }
 </code></pre>
-<p>As expected, <code>write_data</code> flips the Data / Command Pin to High: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L246-L256"><code>display.c</code></a></p>
+<p>As we expect, <code>write_data</code> flips the Data / Command Pin to High: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L238-L250"><code>display.c</code></a></p>
 <pre><code class="language-c">/// Transmit data to ST7789. `data` is the array of bytes to be transmitted, `len` is the number of bytes.
 int write_data(const uint8_t *data, uint16_t len) {
     //  Set Data / Command Pin to High to tell ST7789 this is data
@@ -390,11 +390,12 @@ int write_data(const uint8_t *data, uint16_t len) {
 <pre><code class="language-c">//  Set orientation to Portrait
 set_orientation(Portrait);
 </code></pre>
-<p><code>set_orientation</code> calls <code>write_command</code> (which we have seen earlier) to send the ST7789 Command (Memory Data Access Control) over SPI: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L213-L226"><code>display.c</code></a></p>
+<p><code>set_orientation</code> calls <code>write_command</code> (which we have seen earlier) to send the ST7789 Command (Memory Data Access Control) over SPI: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L205-L220"><code>display.c</code></a></p>
 <pre><code class="language-c">/// ST7789 Colour Settings
 #define RGB      1  //  Display colours are RGB    
 
-/// ST7789 Command for Memory Data Access Control. From https://github.com/almindor/st7789/blob/master/src/instruction.rs
+/// ST7789 Command for Memory Data Access Control. 
+/// From https://github.com/almindor/st7789/blob/master/src/instruction.rs
 #define MADCTL   0x36
 
 /// Set the display orientation: Portrait, Landscape, PortraitSwapped or LandscapeSwapped
@@ -431,7 +432,7 @@ static int set_orientation(uint8_t orientation) {
 #define DISPLAY_CS_PIN 14
 </code></pre>
 <p>We've met these pins earlier when we connected BL602 to ST7789: <strong>Data / Command, Reset, Backlight and Chip Select.</strong></p>
-<p>Now we peek behind the scenes of <code>init_display</code>, our function that initialises the display: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L94-L164"><code>display.c</code></a></p>
+<p>Now we peek behind the scenes of <code>init_display</code>, our function that initialises the display: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L91-L157"><code>display.c</code></a></p>
 <pre><code class="language-c">/// Initialise the ST7789 display controller. 
 /// Based on https://github.com/almindor/st7789/blob/master/src/lib.rs
 int init_display(void) {
@@ -525,7 +526,7 @@ int init_display(void) {
 <p><em>PineCone BL602 rendering on ST7789 a photo of <a href="https://en.wikipedia.org/wiki/Jewel_Changi_Airport">Jewel Changi, Singapore</a></em></p>
 <h1 id="display-image-on-st7789" class="section-header"><a href="#display-image-on-st7789">6 Display Image on ST7789</a></h1>
 <p>Our First Act: BL602 renders an image to our ST7789 Display! <a href="https://lupyuen.github.io/images/display-jewel2.jpg">(Based on this photo)</a></p>
-<p>Prologue: We prepare a buffer for transmitting pixels to ST7789: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L85-L92"><code>display.c</code></a></p>
+<p>Prologue: We prepare a buffer for transmitting pixels to ST7789: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L82-L91"><code>display.c</code></a></p>
 <pre><code class="language-c">/// SPI Transmit Buffer. We always copy pixels from Flash ROM to RAM
 /// before transmitting, because Flash ROM may be too slow for DMA at 4 MHz.
 /// Contains 10 rows of 240 pixels of 2 bytes each (16-bit colour).
@@ -538,7 +539,7 @@ uint8_t spi_tx_buf[
 <p>The SPI Transmit Buffer <code>spi_tx_buf</code> is the same size as our SPI Receive Buffer <code>spi_rx_buf</code>.</p>
 <p>Both buffers are sized to store <strong>10 rows of pixels, each row with 240 pixels, each pixel with 2 colour bytes</strong> (16-bit colour).</p>
 <p>(Our display has <strong>240 rows of pixels</strong>, so we'll use our buffers <strong>24 times</strong> to render an image)</p>
-<p>Let's blast 10 rows of pixels to ST7789, and do it 24 times: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L166-L194"><code>display.c</code></a></p>
+<p>We shall blast 10 rows of pixels to ST7789, and do it 24 times: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L157-L188"><code>display.c</code></a></p>
 <pre><code class="language-c">/// Display image on ST7789 display controller
 int display_image(void) {
     //  Render each batch of 10 rows. ROW_COUNT is 240, BUFFER_ROWS is 10.
@@ -570,7 +571,7 @@ int display_image(void) {
 <pre><code class="language-c">        //  Copy the image pixels from Flash ROM to RAM, because Flash ROM may be too slow for DMA at 4 MHz
         memcpy(spi_tx_buf, image_data + offset, len);
 </code></pre>
-<p>(Why don't we transmit the data straight from Flash ROM? We'll explain in a while)</p>
+<p>(What's <code>image_data</code>?  Why don't we transmit the data straight from Flash ROM? We'll explain in a while)</p>
 <p>Here's another... ST7789 Command! This sets the coordinates of the ST7789 Display Window...</p>
 <pre><code class="language-c">        //  Set the display window.
         int rc = set_window(left, top, right, bottom); assert(rc == 0);
@@ -584,18 +585,13 @@ int display_image(void) {
     return 0;
 }
 </code></pre>
-<p>Repeat this 24 times to render each Display Window of 10 rows... And <a href="https://en.wikipedia.org/wiki/Jewel_Changi_Airport">Jewel Changi, Singapore</a> magically appears on our ST7789 Display!</p>
+<p>We repeat this 24 times to render each Display Window of 10 pixel rows... And <a href="https://en.wikipedia.org/wiki/Jewel_Changi_Airport">Jewel Changi, Singapore</a> magically appears on our ST7789 Display!</p>
 <h2 id="set_window" class="section-header"><a href="#set_window">6.1 set_window</a></h2>
 <p>TODO</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L196-L211"><code>display.c</code></a></p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L188-L205"><code>display.c</code></a></p>
 <pre><code class="language-c">/// Set the ST7789 display window to the coordinates (left, top), (right, bottom)
 int set_window(uint8_t left, uint8_t top, uint8_t right, uint8_t bottom) {
-    assert(left &lt; COL_COUNT &amp;&amp; right &lt; COL_COUNT &amp;&amp; top &lt; ROW_COUNT &amp;&amp; bottom &lt; ROW_COUNT);
-    assert(left &lt;= right);
-    assert(top &lt;= bottom);
-</code></pre>
-<p>TODO</p>
-<pre><code class="language-c">    //  Set Address Window Columns (ST7789 Datasheet Page 198)
+    //  Set Address Window Columns (ST7789 Datasheet Page 198)
     int rc = write_command(CASET, NULL, 0); assert(rc == 0);
     uint8_t col_para[4] = { 0x00, left, 0x00, right };
     rc = write_data(col_para, 4); assert(rc == 0);
@@ -608,18 +604,25 @@ int set_window(uint8_t left, uint8_t top, uint8_t right, uint8_t bottom) {
     return 0;
 }
 </code></pre>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L79-L83"><code>display.c</code></a></p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L76-L82"><code>display.c</code></a></p>
 <pre><code class="language-c">/// RGB565 Image. Converted by https://github.com/lupyuen/pinetime-graphic
 /// from PNG file https://github.com/lupyuen/pinetime-logo-loader/blob/master/logos/pine64-rainbow.png
 static const uint8_t image_data[] = {  //  Should be 115,200 bytes
 #include &quot;image.inc&quot;
 };
 </code></pre>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/image.inc"><code>image.inc</code></a></p>
+<pre><code class="language-text">0xa5, 0x35, 0x6b, 0x4d, 0x42, 0x49, 0x74, 0x10, 0xb5, 0xd7, 0x4a, 0x29, 0x83, 0xcf, 0xef, 0x9d,
+0xdf, 0x1b, 0x8c, 0x52, 0x31, 0x45, 0x4a, 0x28, 0x73, 0x8e, 0xad, 0x95, 0xad, 0x96, 0x7c, 0x10,
+0x7c, 0x11, 0xd6, 0xfb, 0xf7, 0xde, 0xd6, 0xfb, 0xe7, 0x7d, 0xb5, 0x97, 0x42, 0x09, 0x9c, 0xf3,
+...
+</code></pre>
 <h1 id="build-and-run-the-st7789-firmware" class="section-header"><a href="#build-and-run-the-st7789-firmware">7 Build and Run the ST7789 Firmware</a></h1>
 <p>Let's run the ST7789 Demo Firmware for BL602.</p>
 <p>Download the Firmware Binary File <strong><code>sdk_app_st7789.bin</code></strong> from...</p>
 <ul>
-<li><a href="https://github.com/lupyuen/bl_iot_sdk/releases/tag/v4.0.0"><strong>Binary Release of <code>sdk_app_st7789</code></strong></a></li>
+<li><a href="https://github.com/lupyuen/bl_iot_sdk/releases/tag/v4.0.1"><strong>Binary Release of <code>sdk_app_st7789</code></strong></a></li>
 </ul>
 <p>Alternatively, we may build the Firmware Binary File <code>sdk_app_st7789.bin</code> from the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/st7789/customer_app/sdk_app_st7789">source code</a>...</p>
 <pre><code class="language-bash"># Download the st7789 branch of lupyuen's bl_iot_sdk
@@ -1168,7 +1171,7 @@ open -a CoolTerm
 </code></pre>
 <h1 id="appendix-st7789-reset-backlight-and-delay" class="section-header"><a href="#appendix-st7789-reset-backlight-and-delay">18 Appendix: ST7789 Reset, Backlight and Delay</a></h1><h2 id="hard_reset" class="section-header"><a href="#hard_reset">18.1 hard_reset</a></h2>
 <p>TODO</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L298-L306"><code>display.c</code></a></p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L290-L300"><code>display.c</code></a></p>
 <pre><code class="language-c">/// Reset the display controller
 static int hard_reset(void) {
     //  Toggle the Reset Pin: High, Low, High
@@ -1181,7 +1184,7 @@ static int hard_reset(void) {
 </code></pre>
 <h2 id="backlight_on" class="section-header"><a href="#backlight_on">18.2 backlight_on</a></h2>
 <p>TODO</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L308-L320"><code>display.c</code></a></p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L300-L314"><code>display.c</code></a></p>
 <pre><code class="language-c">/// Switch on backlight
 int backlight_on(void) {
     //  Set the Backlight Pin to High
@@ -1199,7 +1202,7 @@ int backlight_on(void) {
 </code></pre>
 <h2 id="backlight_off" class="section-header"><a href="#backlight_off">18.3 backlight_off</a></h2>
 <p>TODO</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L322-L329"><code>display.c</code></a></p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L314-L323"><code>display.c</code></a></p>
 <pre><code class="language-c">/// Switch off backlight
 int backlight_off(void) {
     //  Set the Backlight Pin to Low
@@ -1211,7 +1214,7 @@ int backlight_off(void) {
 </code></pre>
 <h2 id="delay_ms" class="section-header"><a href="#delay_ms">18.4 delay_ms</a></h2>
 <p>TODO</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L331-L335"><code>display.c</code></a></p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L323-L328"><code>display.c</code></a></p>
 <pre><code class="language-c">/// Delay for the specified number of milliseconds
 static void delay_ms(uint32_t ms) {
     //  TODO: Implement delay. For now we write to console, which also introduces a delay.
