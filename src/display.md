@@ -684,9 +684,7 @@ cargo run -v image.png >image.inc
 
 ## ST7789 Display Window
 
-TODO
-
-[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L188-L205)
+Before we blast pixels to ST7789, here's how `set_window` sets the ST7789 Display Window, bounded by the coordinates `(left, top)` and `(right, bottom)`: [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L188-L205)
 
 ```c
 /// Set the ST7789 display window to the coordinates (left, top), (right, bottom)
@@ -697,7 +695,7 @@ int set_window(uint8_t left, uint8_t top, uint8_t right, uint8_t bottom) {
     rc = write_data(col_para, 4); assert(rc == 0);
 ```
 
-TODO
+`set_window` first sends the ST7789 Command to set the Address Window Columns. That's followed by the `left` and `right` values.
 
 ```c
     //  Set Address Window Rows (ST7789 Datasheet Page 200)
@@ -707,6 +705,8 @@ TODO
     return 0;
 }
 ```
+
+Then `set_window` sends the ST7789 Command to set the Address Window Rows, followed by the `top` and `bottom` values.
 
 # Build and Run the ST7789 Firmware
 
