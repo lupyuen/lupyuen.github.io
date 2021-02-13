@@ -97,7 +97,7 @@
 <li><a href="#lvgl_render-1">9.4 lvgl_render</a><ul></ul></li>
 <li><a href="#lvgl_update-1">9.5 lvgl_update</a><ul></ul></li></ul></li>
 <li><a href="#spi-dma-works-great-with-ram-not-so-much-with-flash-rom">10 SPI DMA works great with RAM, not so much with Flash ROM</a><ul></ul></li>
-<li><a href="#port-st7789-and-lvgl-to-other-operating-systems">11 Port ST7789 and LVGL to other Operating Systems</a><ul></ul></li>
+<li><a href="#port-st7789-and-lvgl-to-other-bl602-operating-systems">11 Port ST7789 and LVGL to other BL602 Operating Systems</a><ul></ul></li>
 <li><a href="#whats-next">12 What's Next</a><ul></ul></li>
 <li><a href="#notes">13 Notes</a><ul></ul></li>
 <li><a href="#appendix-troubleshoot-spi-hanging">14 Appendix: Troubleshoot SPI Hanging</a><ul></ul></li>
@@ -1058,7 +1058,16 @@ Trace: lv_task_handler ready 	(lv_task.c #180 lv_task_handler())
 <p>TODO</p>
 <h1 id="spi-dma-works-great-with-ram-not-so-much-with-flash-rom" class="section-header"><a href="#spi-dma-works-great-with-ram-not-so-much-with-flash-rom">10 SPI DMA works great with RAM, not so much with Flash ROM</a></h1>
 <p>TODO</p>
-<h1 id="port-st7789-and-lvgl-to-other-operating-systems" class="section-header"><a href="#port-st7789-and-lvgl-to-other-operating-systems">11 Port ST7789 and LVGL to other Operating Systems</a></h1>
+<h1 id="port-st7789-and-lvgl-to-other-bl602-operating-systems" class="section-header"><a href="#port-st7789-and-lvgl-to-other-bl602-operating-systems">11 Port ST7789 and LVGL to other BL602 Operating Systems</a></h1>
+<p>Like an episode of WandaVision, this article has dropped many hints about its Origin Story... Yep the code in this article came from <strong>PineTime Smartwatch!</strong></p>
+<ul>
+<li>
+<p><a href="https://gitlab.com/lupyuen/pinetime_lvgl_mynewt/-/tree/master/"><strong>Check out the <code>pinetime_lvgl_mynewt</code> repo</strong></a></p>
+</li>
+<li>
+<p>And the reused source files: <strong><a href="https://gitlab.com/lupyuen/pinetime_lvgl_mynewt/-/blob/master/src/pinetime/display.c"><code>display.c</code></a>, <a href="https://gitlab.com/lupyuen/pinetime_lvgl_mynewt/-/blob/master/src/pinetime/lvgl.c"><code>lvgl.c</code></a>, <a href="https://gitlab.com/lupyuen/pinetime_lvgl_mynewt/-/blob/master/lv_conf.h"><code>lv_conf.h</code></a>, <a href="https://gitlab.com/lupyuen/pinetime_lvgl_mynewt/-/blob/master/src/pinetime/lv_port_disp.c"><code>lv_port_disp.c</code></a></strong></p>
+</li>
+</ul>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/display-battery.jpg" alt="" /></p>
 <p>TODO</p>
