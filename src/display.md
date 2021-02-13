@@ -581,7 +581,9 @@ Let's blast 10 rows of pixels to ST7789, and do it 24 times: [`display.c`](https
 int display_image(void) {
     //  Render each batch of 10 rows. ROW_COUNT is 240, BUFFER_ROWS is 10.
     for (uint8_t row = 0; row < ROW_COUNT; row += BUFFER_ROWS) {
-        //  Compute the (left, top) and (right, bottom) coordinates of the 10-row window
+
+        //  Compute the (left, top) and (right, bottom) 
+        //  coordinates of the 10-row window
         uint8_t top    = row;
         uint8_t bottom = (row + BUFFER_ROWS - 1) < ROW_COUNT 
             ? (row + BUFFER_ROWS - 1) 
@@ -592,33 +594,43 @@ int display_image(void) {
 
 _What are `left`, `right`, `top` and `bottom`?_
 
-TODO
+Before we blast a batch of 10 pixel rows to ST7789 over SPI, we tell ST7789 the __`(left, top)` and `(right, bottom)` coordinates of the Display Window__ for the pixel rows.
+
+The code above computes the coordinates of the Display Window like so...
 
 ![ST77789 Display Windows](https://lupyuen.github.io/images/display-window.png)
 
-TODO
+Next we compute the byte offset of our image in Flash ROM, and the number of bytes to blast...
 
 ```c
         //  Compute the offset and how many bytes we will transmit.
-        uint32_t offset = ((top * COL_COUNT) + left) * BYTES_PER_PIXEL;
-        uint16_t len    = (bottom - top + 1) * (right - left + 1) * BYTES_PER_PIXEL;
+        //  COL_COUNT is 240, BYTES_PER_PIXEL is 2.
+        uint32_t offset = ((top * COL_COUNT) + left) 
+            * BYTES_PER_PIXEL;
+        uint16_t len    = (bottom - top + 1) 
+            * (right - left + 1) 
+            * BYTES_PER_PIXEL;
 ```
 
-TODO
+We copy 10 rows of pixel data from our image in Flash ROM to the SPI Transmit Buffer...
 
 ```c
         //  Copy the image pixels from Flash ROM to RAM, because Flash ROM may be too slow for DMA at 4 MHz
         memcpy(spi_tx_buf, image_data + offset, len);
 ```
 
-TODO
+(Why don't we transmit the data straight from Flash ROM? We'll explain in a while)
+
+Here's another... ST7789 Command! This sets the coordinates of the ST7789 Display Window...
 
 ```c
         //  Set the display window.
         int rc = set_window(left, top, right, bottom); assert(rc == 0);
 ```
 
-TODO
+(We'll see `set_window` in a while)
+
+Finally one last ST7789 Command (Memory Write) to blast the pixel data from our SPI Transmit Buffer to the ST7789 Display...
 
 ```c
         //  Memory Write: Write the bytes from RAM to display (ST7789 Datasheet Page 202)
@@ -628,6 +640,8 @@ TODO
     return 0;
 }
 ```
+
+Repeat this 24 times to render each Display Window of 10 rows... And [Jewel Changi, Singapore](https://en.wikipedia.org/wiki/Jewel_Changi_Airport) magically appears on our ST7789 Display!
 
 ## set_window
 
