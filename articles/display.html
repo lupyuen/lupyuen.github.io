@@ -613,8 +613,7 @@ cargo run -v image.png &gt;image.inc
 </code></pre>
 <p><a href="https://github.com/lupyuen/pinetime-graphic/blob/master/README.md">(Check out the <code>pinetime-graphic</code> source code here)</a></p>
 <h2 id="st7789-display-window" class="section-header"><a href="#st7789-display-window">6.2 ST7789 Display Window</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L188-L205"><code>display.c</code></a></p>
+<p>Before we blast pixels to ST7789, here's how <code>set_window</code> sets the ST7789 Display Window, bounded by the coordinates <code>(left, top)</code> and <code>(right, bottom)</code>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L188-L205"><code>display.c</code></a></p>
 <pre><code class="language-c">/// Set the ST7789 display window to the coordinates (left, top), (right, bottom)
 int set_window(uint8_t left, uint8_t top, uint8_t right, uint8_t bottom) {
     //  Set Address Window Columns (ST7789 Datasheet Page 198)
@@ -622,7 +621,7 @@ int set_window(uint8_t left, uint8_t top, uint8_t right, uint8_t bottom) {
     uint8_t col_para[4] = { 0x00, left, 0x00, right };
     rc = write_data(col_para, 4); assert(rc == 0);
 </code></pre>
-<p>TODO</p>
+<p><code>set_window</code> first sends the ST7789 Command to set the Address Window Columns. That's followed by the <code>left</code> and <code>right</code> values.</p>
 <pre><code class="language-c">    //  Set Address Window Rows (ST7789 Datasheet Page 200)
     rc = write_command(RASET, NULL, 0); assert(rc == 0);
     uint8_t row_para[4] = { 0x00, top, 0x00, bottom };
@@ -630,6 +629,7 @@ int set_window(uint8_t left, uint8_t top, uint8_t right, uint8_t bottom) {
     return 0;
 }
 </code></pre>
+<p>Then <code>set_window</code> sends the ST7789 Command to set the Address Window Rows, followed by the <code>top</code> and <code>bottom</code> values.</p>
 <h1 id="build-and-run-the-st7789-firmware" class="section-header"><a href="#build-and-run-the-st7789-firmware">7 Build and Run the ST7789 Firmware</a></h1>
 <p>Let's run the ST7789 Demo Firmware for BL602.</p>
 <p>Download the Firmware Binary File <strong><code>sdk_app_st7789.bin</code></strong> from...</p>
