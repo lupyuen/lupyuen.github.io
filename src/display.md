@@ -725,6 +725,9 @@ Alternatively, we may build the Firmware Binary File `sdk_app_st7789.bin` from t
 git clone --recursive --branch st7789 https://github.com/lupyuen/bl_iot_sdk
 cd bl_iot_sdk/customer_app/sdk_app_st7789
 
+# TODO: Replace sdk_app_st7789/image.inc by Our Favourite Cat.
+# See https://lupyuen.github.io/articles/display#modding-the-photo
+
 # TODO: Change this to the full path of bl_iot_sdk
 export BL60X_SDK_PATH=$HOME/bl_iot_sdk
 export CONFIG_CHIP_NAME=BL602
@@ -807,16 +810,24 @@ Let's enter some commands to display an image!
     display_result           : Show result
     backlight_on             : Backlight on
     backlight_off            : Backlight off
+    ```
+
+    We'll cover the LVGL commands later...    
+
+    ```text
     lvgl_init                : Init LVGL
     lvgl_create              : Create LVGL widgets
     lvgl_update              : Update LVGL widgets
     lvgl_render              : Render LVGL display
+    ```
+
+    And these shortcuts too...
+
+    ```text
     1                        : Init display, display image
     2                        : Init display, init LVGL, create LVGL widgets, render LVGL display
     3                        : Update LVGL widgets, render LVGL display
     ```
-
-    (We'll cover the LVGL commands later)
 
 1.  First we __initialise our SPI Port and ST7789 Display__. 
 
@@ -826,7 +837,7 @@ Let's enter some commands to display an image!
     # display_init
     ```
 
-    `display_init` calls the function `test_display_init`, which we have seen earlier.
+    This command calls the function `test_display_init` and `init_display`, which we have seen earlier.
 
 1.  We should see this...
 
@@ -836,11 +847,21 @@ Let's enter some commands to display an image!
     [HAL] [SPI] Init :
     port=0, mode=0, polar_phase = 3, freq=4000000, tx_dma_ch=2, rx_dma_ch=3, pin_clk=3, pin_cs=2, pin_mosi=1, pin_miso=4
     set rwspeed = 4000000
+    ```
+
+    The above messages say that our SPI Port has been configured by the BL602 SPI HAL.
+
+    ```text
     hal_gpio_init: cs:2, clk:3, mosi:1, miso: 4
     hal_gpio_init: SPI controller mode
     hal_spi_init.
     Set CS pin 14 to high
     Set BLK pin 12 to high
+    ```
+
+    `init_display` has just configured the GPIO Pins and switched on the backlight.
+
+    ```text
     Set CS pin 14 to low
     hal_spi_transfer = 1
     transfer xfer[0].len = 1
@@ -852,13 +873,15 @@ Let's enter some commands to display an image!
     ...
     ```
 
+    Followed by the eight ST7789 Init Commands sent by `init_display`.
+
 1.  Next we __display the image on ST7789__...
 
     ```text
     # display_image
     ```
 
-    `display_image` calls the function `display_image`, which we have seen earlier.
+    This command calls the function `display_image`, which we have seen earlier.
 
 1.  We should see this...
 
@@ -876,6 +899,10 @@ Let's enter some commands to display an image!
     Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704,  si=0, di=1, i=1
     ...
     ```
+
+    That's `display_image` blasting the ST7789 Commands to set the Display Window, then blasting the pixel data for 10 rows.
+
+    This repeats 24 times until the entire image is rendered.
 
 1.  _Why so many SPI DMA Transfers?_
 
