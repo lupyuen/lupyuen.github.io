@@ -78,9 +78,7 @@
 <li><a href="#build-and-run-the-st7789-firmware">7 Build and Run the ST7789 Firmware</a><ul>
 <li><a href="#flash-the-firmware">7.1 Flash the firmware</a><ul></ul></li>
 <li><a href="#run-the-firmware">7.2 Run the firmware</a><ul></ul></li>
-<li><a href="#enter-st7789-commands">7.3 Enter ST7789 commands</a><ul></ul></li>
-<li><a href="#display_init">7.4 display_init</a><ul></ul></li>
-<li><a href="#display_image">7.5 display_image</a><ul></ul></li></ul></li>
+<li><a href="#enter-st7789-commands">7.3 Enter ST7789 commands</a><ul></ul></li></ul></li>
 <li><a href="#render-text-and-graphics-with-lvgl">8 Render Text and Graphics with LVGL</a><ul>
 <li><a href="#lvgl-display-driver-for-st7789">8.1 LVGL Display Driver for ST7789</a><ul></ul></li>
 <li><a href="#lv_port_disp_init">8.2 lv_port_disp_init</a><ul></ul></li>
@@ -92,7 +90,7 @@
 <li><a href="#lvgl_render">8.8 lvgl_render</a><ul></ul></li>
 <li><a href="#add-lvgl-to-makefile">8.9 Add LVGL to Makefile</a><ul></ul></li></ul></li>
 <li><a href="#run-the-lvgl-firmware">9 Run the LVGL Firmware</a><ul>
-<li><a href="#display_init-1">9.1 display_init</a><ul></ul></li>
+<li><a href="#display_init">9.1 display_init</a><ul></ul></li>
 <li><a href="#lvgl_init-1">9.2 lvgl_init</a><ul></ul></li>
 <li><a href="#lvgl_create-1">9.3 lvgl_create</a><ul></ul></li>
 <li><a href="#lvgl_render-1">9.4 lvgl_render</a><ul></ul></li>
@@ -692,20 +690,13 @@ cargo run flash sdk_app_st7789.bin \
 <p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">More details on connecting to BL602</a></p>
 <h2 id="enter-st7789-commands" class="section-header"><a href="#enter-st7789-commands">7.3 Enter ST7789 commands</a></h2>
-<p>TODO</p>
-<pre><code class="language-text">------------------------------------------------------------
-RISC-V Core Feature:RV32-ACFIMX
-Build Version: release_bl_iot_sdk_1.6.11-1-g66bb28da-dirty
-Build Date: Feb 10 2021
-Build Time: 13:33:01
-------------------------------------------------------------
-blog init set power on level 2, 2, 2.
-[IRQ] Clearing and Disable all the pending IRQ...
-[OS] Starting aos_loop_proc task...
-[OS] Starting OS Scheduler...
-Init CLI with event Driven
-</code></pre>
-<p>TODO</p>
+<p>Let's enter some commands to display an image!</p>
+<ol>
+<li>
+<p>Press Enter to reveal the command prompt.</p>
+</li>
+<li>
+<p>Enter <code>help</code> to see the available commands...</p>
 <pre><code class="language-text"># help
 ====User Commands====
 display_init             : Init display
@@ -721,8 +712,17 @@ lvgl_render              : Render LVGL display
 2                        : Init display, init LVGL, create LVGL widgets, render LVGL display
 3                        : Update LVGL widgets, render LVGL display
 </code></pre>
-<h2 id="display_init" class="section-header"><a href="#display_init">7.4 display_init</a></h2>
-<p>TODO</p>
+<p>(We'll cover the LVGL commands later)</p>
+</li>
+<li>
+<p>First we <strong>initialise our SPI Port and ST7789 Display</strong>. </p>
+<p>Enter this command...</p>
+<pre><code class="language-text"># display_init
+</code></pre>
+<p><code>display_init</code> calls the function <code>test_display_init</code>, which we have seen earlier.</p>
+</li>
+<li>
+<p>We should see this...</p>
 <pre><code class="language-text"># display_init
 port0 eventloop init = 42013ef8
 [HAL] [SPI] Init :
@@ -743,23 +743,47 @@ Set CS pin 14 to high
 TODO Delay 200
 ...
 </code></pre>
-<h2 id="display_image" class="section-header"><a href="#display_image">7.5 display_image</a></h2>
-<p>TODO</p>
+</li>
+<li>
+<p>Next we <strong>display the image on ST7789</strong>...</p>
+<pre><code class="language-text"># display_image
+</code></pre>
+<p><code>display_image</code> calls the function <code>display_image</code>, which we have seen earlier.</p>
+</li>
+<li>
+<p>We should see this...</p>
 <pre><code class="language-text"># display_image
 Displaying image...
-</code></pre>
-<p>TODO</p>
-<pre><code class="language-text">Set CS pin 14 to low
+Set CS pin 14 to low
 hal_spi_transfer = 1
 transfer xfer[0].len = 4800
 Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
 Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
 Tx DMA src=0x42013058, dest=0x4000a288, size=2048, si=1, di=0, i=0
 Rx DMA src=0x4000a28c, dest=0x4200f768, size=2048, si=0, di=1, i=0
-Tx DMA src=0x42013858, dest=0x4000a288, size=704, si=1, di=0, i=1
-Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704, si=0, di=1, i=1
+Tx DMA src=0x42013858, dest=0x4000a288, size=704,  si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704,  si=0, di=1, i=1
 ...
 </code></pre>
+</li>
+<li>
+<p><em>Why so many SPI DMA Transfers?</em></p>
+<p>Each SPI DMA Transfer is limited to <strong>2,048 bytes</strong>. </p>
+<p>Whenever we transmit our SPI Buffer of <strong>4,800 bytes</strong> (10 rows of pixels), <strong>BL602 SPI HAL helpfully breaks down the request</strong> into multiple SPI DMA requests (of max 2,048 bytes each).</p>
+</li>
+<li>
+<p>Here's a Tip: Instead of entering the two commands...</p>
+<pre><code class="language-text"># display_init
+...
+# display_image
+</code></pre>
+<p>We may enter this as a shortcut...</p>
+<pre><code class="language-text"># 1
+</code></pre>
+<p>Which will initialise the ST7789 display and render the image in a single command.</p>
+</li>
+</ol>
+<p>Congratulations! Jewel Changi, Singapore (or Our Favourite Cat) now appears on our ST7789 Display!</p>
 <p><a href="https://gist.github.com/lupyuen/9f26626d7c8081ae64d58eba70e07a80">Check out the complete log</a></p>
 <h1 id="render-text-and-graphics-with-lvgl" class="section-header"><a href="#render-text-and-graphics-with-lvgl">8 Render Text and Graphics with LVGL</a></h1>
 <p>TODO</p>
@@ -982,7 +1006,7 @@ COMPONENT_SRCDIRS += \
 <p>TODO</p>
 <h1 id="run-the-lvgl-firmware" class="section-header"><a href="#run-the-lvgl-firmware">9 Run the LVGL Firmware</a></h1>
 <p>TODO</p>
-<h2 id="display_init-1" class="section-header"><a href="#display_init-1">9.1 display_init</a></h2>
+<h2 id="display_init" class="section-header"><a href="#display_init">9.1 display_init</a></h2>
 <p>TODO</p>
 <h2 id="lvgl_init-1" class="section-header"><a href="#lvgl_init-1">9.2 lvgl_init</a></h2>
 <p>TODO</p>
