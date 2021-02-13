@@ -676,11 +676,13 @@ To create our own `image.inc`, prepare a 240 x 240 PNG file named `image.png`. T
 git clone https://github.com/lupyuen/pinetime-graphic
 cd pinetime-graphic
 
+# TODO: Copy image.png to the pinetime-graphic folder
+
 # Convert the PNG file to a C array
 cargo run -v image.png >image.inc
 ```
 
-[(Check out the `pinetime-graphic` source code here)](https://github.com/lupyuen/pinetime-graphic/blob/master/README.md)
+[(Check out the `pinetime-graphic` source code here)](https://github.com/lupyuen/pinetime-graphic)
 
 ## ST7789 Display Window
 
