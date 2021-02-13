@@ -553,6 +553,8 @@ int display_image(void) {
 </code></pre>
 <p><em>What are <code>left</code>, <code>right</code>, <code>top</code> and <code>bottom</code>?</em></p>
 <p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/display-window.png" alt="ST77789 Display Windows" /></p>
+<p>TODO</p>
 <pre><code class="language-c">        //  Compute the offset and how many bytes we will transmit.
         uint32_t offset = ((top * COL_COUNT) + left) * BYTES_PER_PIXEL;
         uint16_t len    = (bottom - top + 1) * (right - left + 1) * BYTES_PER_PIXEL;
