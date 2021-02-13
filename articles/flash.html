@@ -330,6 +330,11 @@ caused by: Invalid argument
 </li>
 </ol>
 <p>These steps were tested on Arm64 Linux (Pinebook Pro with Manjaro), macOS Catalina and Windows 10.</p>
+<p><strong>UPDATE For MagicHome BL602 WiFi LED Controller:</strong> This gadget doesn't have a Reset Button, so it will be hard to see the <code>helloworld</code> message. Use the <code>sdk_app_gpio.bin</code> GPIO Demo Firmware instead...</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/led#control-rgb-led-with-gpio">&quot;Control RGB LED with GPIO&quot;</a></li>
+</ul>
+<p>Connect at 2 Mbps. When we enter <strong><code>help</code></strong>, it will respond with a list of commands. This is useful for validating that our firmware is running on MagicHome BL602.</p>
 <h2 id="for-macos-ch340-usb-serial-driver" class="section-header"><a href="#for-macos-ch340-usb-serial-driver">1.5 For macOS: CH340 USB Serial Driver</a></h2>
 <p>PineCone includes a CH340N USB-to-UART module to expose BL620's UART Port via PineCone's USB Port.</p>
 <p>We should use the CH340 Driver provided by Apple. To check, connect PineCone to the USB port and enter...</p>
