@@ -1031,9 +1031,11 @@ LVGL makes it really easy to create dynamic screens for IoT Gadgets... Even for 
 
 ## Render the Display
 
-TODO
+LVGL was designed for interactive displays (like touchscreens). 
 
-[`lvgl.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L80-L91)
+It refreshes the display efficiently without consuming too much CPU and RAM. (Which are scarce on IoT Gadgets)
+
+Here's how we tell LVGL to render the screen that we have created (or updated): [`lvgl.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L80-L91)
 
 ```c
 /// Render the LVGL display
@@ -1041,16 +1043,16 @@ int lvgl_render(void) {
     ...
     //  Must tick at least 100 milliseconds to force LVGL to render display
     lv_tick_inc(100);
-```
 
-TODO
-
-```c
     //  Call LVGL to render the display and flush our display driver
     lv_task_handler();
     return 0;
 }
 ```
+
+The rendering code in `lvgl_render` looks unusual... But that's because we're pretending to be an interactive gadget.
+
+(This code should make sense once we start building interactive gadgets with BL602)
 
 ## Initialise LVGL
 
