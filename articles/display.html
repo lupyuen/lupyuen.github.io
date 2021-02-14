@@ -84,16 +84,16 @@
 <li><a href="#update-the-widgets">8.2 Update the Widgets</a><ul></ul></li>
 <li><a href="#render-the-display">8.3 Render the Display</a><ul></ul></li>
 <li><a href="#initialise-lvgl">8.4 Initialise LVGL</a><ul></ul></li></ul></li>
-<li><a href="#lvgl-display-driver-for-st7789">9 LVGL Display Driver for ST7789</a><ul>
-<li><a href="#lv_port_disp_init">9.1 lv_port_disp_init</a><ul></ul></li>
-<li><a href="#disp_flush">9.2 disp_flush</a><ul></ul></li>
-<li><a href="#add-lvgl-to-makefile">9.3 Add LVGL to Makefile</a><ul></ul></li></ul></li>
-<li><a href="#run-the-lvgl-firmware">10 Run the LVGL Firmware</a><ul>
-<li><a href="#display_init">10.1 display_init</a><ul></ul></li>
-<li><a href="#lvgl_init">10.2 lvgl_init</a><ul></ul></li>
-<li><a href="#lvgl_create">10.3 lvgl_create</a><ul></ul></li>
-<li><a href="#lvgl_render">10.4 lvgl_render</a><ul></ul></li>
-<li><a href="#lvgl_update">10.5 lvgl_update</a><ul></ul></li></ul></li>
+<li><a href="#run-the-lvgl-firmware">9 Run the LVGL Firmware</a><ul>
+<li><a href="#display_init">9.1 display_init</a><ul></ul></li>
+<li><a href="#lvgl_init">9.2 lvgl_init</a><ul></ul></li>
+<li><a href="#lvgl_create">9.3 lvgl_create</a><ul></ul></li>
+<li><a href="#lvgl_render">9.4 lvgl_render</a><ul></ul></li>
+<li><a href="#lvgl_update">9.5 lvgl_update</a><ul></ul></li></ul></li>
+<li><a href="#lvgl-display-driver-for-st7789">10 LVGL Display Driver for ST7789</a><ul>
+<li><a href="#lv_port_disp_init">10.1 lv_port_disp_init</a><ul></ul></li>
+<li><a href="#disp_flush">10.2 disp_flush</a><ul></ul></li>
+<li><a href="#add-lvgl-to-makefile">10.3 Add LVGL to Makefile</a><ul></ul></li></ul></li>
 <li><a href="#spi-dma-works-great-with-ram-not-so-much-with-flash-rom">11 SPI DMA works great with RAM, not so much with Flash ROM</a><ul></ul></li>
 <li><a href="#port-st7789-and-lvgl-to-other-bl602-operating-systems">12 Port ST7789 and LVGL to other BL602 Operating Systems</a><ul></ul></li>
 <li><a href="#whats-next">13 What's Next</a><ul></ul></li>
@@ -879,18 +879,16 @@ int lvgl_render(void) {
 <p>The rendering code in <code>lvgl_render</code> looks unusual... But that's because we're pretending to be an interactive gadget.</p>
 <p>(This code should make sense once we start building interactive gadgets with BL602)</p>
 <h2 id="initialise-lvgl" class="section-header"><a href="#initialise-lvgl">8.4 Initialise LVGL</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L25-L48"><code>lvgl.c</code></a></p>
+<p>(One last thing before the demo...)</p>
+<p>Here's how we initialise the LVGL Library: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L25-L48"><code>lvgl.c</code></a></p>
 <pre><code class="language-c">/// Set to true if LVGL has already been lvgl_initialised
 static bool lvgl_initialised = false;
-</code></pre>
-<p>TODO</p>
-<pre><code class="language-c">/// Init the LVGL library
+
+/// Init the LVGL library
 int lvgl_init(void) {   
-    //  Assume that display controller has been lvgl_initialised 
+    //  Assume that display controller has been initialised 
     if (lvgl_initialised) { return 0; }  //  Init only once
     lvgl_initialised = true;
-    printf(&quot;Init LVGL...\r\n&quot;);
 
     //  Init the LVGL display
     lv_init();
@@ -898,9 +896,108 @@ int lvgl_init(void) {
     return 0;
 }
 </code></pre>
-<h1 id="lvgl-display-driver-for-st7789" class="section-header"><a href="#lvgl-display-driver-for-st7789">9 LVGL Display Driver for ST7789</a></h1>
 <p>TODO</p>
-<h2 id="lv_port_disp_init" class="section-header"><a href="#lv_port_disp_init">9.1 lv_port_disp_init</a></h2>
+<h1 id="run-the-lvgl-firmware" class="section-header"><a href="#run-the-lvgl-firmware">9 Run the LVGL Firmware</a></h1>
+<p>TODO</p>
+<h2 id="display_init" class="section-header"><a href="#display_init">9.1 display_init</a></h2>
+<p>TODO</p>
+<h2 id="lvgl_init" class="section-header"><a href="#lvgl_init">9.2 lvgl_init</a></h2>
+<p>TODO</p>
+<pre><code class="language-text"># lvgl_init
+Init LVGL...
+Trace: lv_init started 	(lv_obj.c #172 lv_init())
+Info: lv_init ready 	(lv_obj.c #231 lv_init())
+Trace: Screen create started 	(lv_obj.c #273 lv_obj_create())
+Info: Object create ready 	(lv_obj.c #461 lv_obj_create())
+Trace: Screen create started 	(v_obj.c #273 lv_obj_create())
+Info: Object create ready 	(lv_obj.c #461 lv_obj_create())
+Trace: Screen create started 	(lv_obj.c #273 lv_obj_create())
+Info: Object create ready 	(lv_obj.c #461 lv_obj_create())
+</code></pre>
+<h2 id="lvgl_create" class="section-header"><a href="#lvgl_create">9.3 lvgl_create</a></h2>
+<p>TODO</p>
+<pre><code class="language-text"># lvgl_create
+Create LVGL widgets...
+Trace: button create started 	(lv_btn.c #61 lv_btn_create())
+Trace: container create started 	(lv_cont.c #74 lv_cont_create())
+Trace: Object create started 	(lv_obj.c #305 lv_obj_create())
+Info: Object create ready 	(lv_obj.c #461 lv_obj_create())
+Info: container created 	(lv_cont.c #121 lv_cont_create())
+Info: button created 	(lv_btn.c #106 lv_btn_create())
+Trace: label create started 	(lv_label.c #78 lv_label_create())
+Trace: Object create started 	(lv_obj.c #305 lv_obj_create())
+Info: Object create ready 	(lv_obj.c #461 lv_obj_create())
+Info: label created 	(lv_label.c #165 lv_label_create())
+</code></pre>
+<h2 id="lvgl_render" class="section-header"><a href="#lvgl_render">9.4 lvgl_render</a></h2>
+<p>TODO</p>
+<pre><code class="language-text"># lvgl_render
+Render LVGL display...
+Trace: lv_task_handler started 	(lv_task.c #67 lv_task_handler())
+Trace: lv_refr_task: started 	(lv_refr.c #177 _lv_disp_refr_task())
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-text">Flush display: left=0, top=0, right=239, bottom=9...
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-text">Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4800
+Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013058, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200f768, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013858, dest=0x4000a288, size=704, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704, si=0, di=1, i=1
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-text">Flush display: left=0, top=10, right=239, bottom=19...
+...
+Flush display: left=0, top=20, right=239, bottom=29...
+...
+Flush display: left=0, top=30, right=239, bottom=39...
+...
+Flush display: left=0, top=40, right=239, bottom=49...
+...
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-text">Trace: lv_refr_task: ready 	(lv_refr.c #321 _lv_disp_refr_task())
+Trace: lv_task_handler ready 	(lv_task.c #180 lv_task_handler())
+# 
+</code></pre>
+<p><img src="https://lupyuen.github.io/images/display-lvgl3.jpg" alt="Button and label rendered with LVGL" /></p>
+<p><em>Button and label rendered with LVGL</em></p>
+<h2 id="lvgl_update" class="section-header"><a href="#lvgl_update">9.5 lvgl_update</a></h2>
+<p>TODO</p>
+<pre><code class="language-text"># lvgl_update
+Update LVGL widgets...
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-text"># lvgl_render
+Render LVGL display...
+Trace: lv_task_handler started 	(lv_task.c #67 lv_task_handler())
+Trace: lv_refr_task: started 	(lv_refr.c #177 _lv_disp_refr_task())
+Flush display: left=45, top=107, right=196, bottom=121...
+...
+Flush display: left=45, top=122, right=196, bottom=133...
+...
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-text">Trace: lv_refr_task: ready 	(lv_refr.c #321 _lv_disp_refr_task())
+Trace: lv_task_handler ready 	(lv_task.c #180 lv_task_handler())
+# 
+</code></pre>
+<p><img src="https://lupyuen.github.io/images/display-cool3.jpg" alt="Updated LVGL label" /></p>
+<p><em>Updated LVGL label</em></p>
+<p>TODO</p>
+<p><a href="https://www.youtube.com/watch?v=PkP-CeYLXUA"><strong>Watch the Demo Video on YouTube</strong></a></p>
+<p><a href="https://gist.github.com/lupyuen/9f26626d7c8081ae64d58eba70e07a80">Check out the complete log</a></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/display-log.jpg" alt="" /></p>
+<p>TODO</p>
+<h1 id="lvgl-display-driver-for-st7789" class="section-header"><a href="#lvgl-display-driver-for-st7789">10 LVGL Display Driver for ST7789</a></h1>
+<p>TODO</p>
+<h2 id="lv_port_disp_init" class="section-header"><a href="#lv_port_disp_init">10.1 lv_port_disp_init</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_port_disp.c#L64-L113"><code>lv_port_disp.c</code></a></p>
 <pre><code class="language-c">void lv_port_disp_init(void)
@@ -950,7 +1047,7 @@ int lvgl_init(void) {
     lv_disp_drv_register(&amp;disp_drv);
 }
 </code></pre>
-<h2 id="disp_flush" class="section-header"><a href="#disp_flush">9.2 disp_flush</a></h2>
+<h2 id="disp_flush" class="section-header"><a href="#disp_flush">10.2 disp_flush</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_port_disp.c#L126-L154"><code>lv_port_disp.c</code></a></p>
 <pre><code class="language-c">/// ST7789 Commands. From https://github.com/almindor/st7789/blob/master/src/instruction.rs
@@ -1010,7 +1107,7 @@ static void disp_flush(lv_disp_drv_t * disp_drv, const lv_area_t * area, lv_colo
  * Useful if the display has a 8 bit interface (e.g. SPI)*/
 #define LV_COLOR_16_SWAP   1
 </code></pre>
-<h2 id="add-lvgl-to-makefile" class="section-header"><a href="#add-lvgl-to-makefile">9.3 Add LVGL to Makefile</a></h2>
+<h2 id="add-lvgl-to-makefile" class="section-header"><a href="#add-lvgl-to-makefile">10.3 Add LVGL to Makefile</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/make_scripts_riscv/component_wrapper.mk#L42-L51"><code>make_scripts_riscv/ component_wrapper.mk</code></a></p>
 <pre><code class="language-text">#### TODO: Add LVGL to build in a cleaner way
@@ -1025,100 +1122,6 @@ COMPONENT_SRCDIRS += \
 	./lvgl/src/lv_widgets
 </code></pre>
 <p><img src="https://lupyuen.github.io/images/display-addlvgl.png" alt="" /></p>
-<p>TODO</p>
-<h1 id="run-the-lvgl-firmware" class="section-header"><a href="#run-the-lvgl-firmware">10 Run the LVGL Firmware</a></h1>
-<p>TODO</p>
-<h2 id="display_init" class="section-header"><a href="#display_init">10.1 display_init</a></h2>
-<p>TODO</p>
-<h2 id="lvgl_init" class="section-header"><a href="#lvgl_init">10.2 lvgl_init</a></h2>
-<p>TODO</p>
-<pre><code class="language-text"># lvgl_init
-Init LVGL...
-Trace: lv_init started 	(lv_obj.c #172 lv_init())
-Info: lv_init ready 	(lv_obj.c #231 lv_init())
-Trace: Screen create started 	(lv_obj.c #273 lv_obj_create())
-Info: Object create ready 	(lv_obj.c #461 lv_obj_create())
-Trace: Screen create started 	(v_obj.c #273 lv_obj_create())
-Info: Object create ready 	(lv_obj.c #461 lv_obj_create())
-Trace: Screen create started 	(lv_obj.c #273 lv_obj_create())
-Info: Object create ready 	(lv_obj.c #461 lv_obj_create())
-</code></pre>
-<h2 id="lvgl_create" class="section-header"><a href="#lvgl_create">10.3 lvgl_create</a></h2>
-<p>TODO</p>
-<pre><code class="language-text"># lvgl_create
-Create LVGL widgets...
-Trace: button create started 	(lv_btn.c #61 lv_btn_create())
-Trace: container create started 	(lv_cont.c #74 lv_cont_create())
-Trace: Object create started 	(lv_obj.c #305 lv_obj_create())
-Info: Object create ready 	(lv_obj.c #461 lv_obj_create())
-Info: container created 	(lv_cont.c #121 lv_cont_create())
-Info: button created 	(lv_btn.c #106 lv_btn_create())
-Trace: label create started 	(lv_label.c #78 lv_label_create())
-Trace: Object create started 	(lv_obj.c #305 lv_obj_create())
-Info: Object create ready 	(lv_obj.c #461 lv_obj_create())
-Info: label created 	(lv_label.c #165 lv_label_create())
-</code></pre>
-<h2 id="lvgl_render" class="section-header"><a href="#lvgl_render">10.4 lvgl_render</a></h2>
-<p>TODO</p>
-<pre><code class="language-text"># lvgl_render
-Render LVGL display...
-Trace: lv_task_handler started 	(lv_task.c #67 lv_task_handler())
-Trace: lv_refr_task: started 	(lv_refr.c #177 _lv_disp_refr_task())
-</code></pre>
-<p>TODO</p>
-<pre><code class="language-text">Flush display: left=0, top=0, right=239, bottom=9...
-</code></pre>
-<p>TODO</p>
-<pre><code class="language-text">Set CS pin 14 to low
-hal_spi_transfer = 1
-transfer xfer[0].len = 4800
-Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
-Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
-Tx DMA src=0x42013058, dest=0x4000a288, size=2048, si=1, di=0, i=0
-Rx DMA src=0x4000a28c, dest=0x4200f768, size=2048, si=0, di=1, i=0
-Tx DMA src=0x42013858, dest=0x4000a288, size=704, si=1, di=0, i=1
-Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704, si=0, di=1, i=1
-</code></pre>
-<p>TODO</p>
-<pre><code class="language-text">Flush display: left=0, top=10, right=239, bottom=19...
-...
-Flush display: left=0, top=20, right=239, bottom=29...
-...
-Flush display: left=0, top=30, right=239, bottom=39...
-...
-Flush display: left=0, top=40, right=239, bottom=49...
-...
-</code></pre>
-<p>TODO</p>
-<pre><code class="language-text">Trace: lv_refr_task: ready 	(lv_refr.c #321 _lv_disp_refr_task())
-Trace: lv_task_handler ready 	(lv_task.c #180 lv_task_handler())
-# 
-</code></pre>
-<h2 id="lvgl_update" class="section-header"><a href="#lvgl_update">10.5 lvgl_update</a></h2>
-<p>TODO</p>
-<pre><code class="language-text"># lvgl_update
-Update LVGL widgets...
-</code></pre>
-<p>TODO</p>
-<pre><code class="language-text"># lvgl_render
-Render LVGL display...
-Trace: lv_task_handler started 	(lv_task.c #67 lv_task_handler())
-Trace: lv_refr_task: started 	(lv_refr.c #177 _lv_disp_refr_task())
-Flush display: left=45, top=107, right=196, bottom=121...
-...
-Flush display: left=45, top=122, right=196, bottom=133...
-...
-</code></pre>
-<p>TODO</p>
-<pre><code class="language-text">Trace: lv_refr_task: ready 	(lv_refr.c #321 _lv_disp_refr_task())
-Trace: lv_task_handler ready 	(lv_task.c #180 lv_task_handler())
-# 
-</code></pre>
-<p>TODO</p>
-<p><a href="https://www.youtube.com/watch?v=PkP-CeYLXUA"><strong>Watch the Demo Video on YouTube</strong></a></p>
-<p><a href="https://gist.github.com/lupyuen/9f26626d7c8081ae64d58eba70e07a80">Check out the complete log</a></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/display-log.jpg" alt="" /></p>
 <p>TODO</p>
 <h1 id="spi-dma-works-great-with-ram-not-so-much-with-flash-rom" class="section-header"><a href="#spi-dma-works-great-with-ram-not-so-much-with-flash-rom">11 SPI DMA works great with RAM, not so much with Flash ROM</a></h1>
 <p>TODO</p>
