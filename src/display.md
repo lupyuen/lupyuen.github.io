@@ -996,18 +996,32 @@ _Updated LVGL label_
 
 ## Update the Widgets
 
-TODO
+Static screens don't look terribly exciting on IoT Gadgets... Let's make our screens dynamic! (Like the pic above)
 
-[`lvgl.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L66-L78)
+Here's our function `lvgl_update` that will change the label text every time it's called: [`lvgl.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L66-L78)
 
 ```c
 /// Update the Widgets
 int lvgl_update(void) {
     ...
-    //  Set the button label to a new message
+    //  Compose a message that changes every time we're called
     static int counter = 1;
     char msg[20]; 
     snprintf(msg, sizeof(msg), "SO COOL! #%d", counter++);
+```
+
+First we compose a dynamic message...
+
+```text
+SO COOL! #1
+```
+
+...That changes (the number at the end) every time the function is called.
+
+Then we set the label text to the new message...
+
+```c
+    //  Set the button label to the new message
     lv_label_set_text(label, msg);
     return 0;
 }
