@@ -840,15 +840,22 @@ int lvgl_create(void) {
 <p><img src="https://lupyuen.github.io/images/display-cool2.jpg" alt="Updated LVGL label" /></p>
 <p><em>Updated LVGL label</em></p>
 <h2 id="update-the-widgets" class="section-header"><a href="#update-the-widgets">8.2 Update the Widgets</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L66-L78"><code>lvgl.c</code></a></p>
+<p>Static screens don't look terribly exciting on IoT Gadgets... Let's make our screens dynamic! (Like the pic above)</p>
+<p>Here's our function <code>lvgl_update</code> that will change the label text every time it's called: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L66-L78"><code>lvgl.c</code></a></p>
 <pre><code class="language-c">/// Update the Widgets
 int lvgl_update(void) {
     ...
-    //  Set the button label to a new message
+    //  Compose a message that changes every time we're called
     static int counter = 1;
     char msg[20]; 
     snprintf(msg, sizeof(msg), &quot;SO COOL! #%d&quot;, counter++);
+</code></pre>
+<p>First we compose a dynamic message...</p>
+<pre><code class="language-text">SO COOL! #1
+</code></pre>
+<p>...That changes (the number at the end) every time the function is called.</p>
+<p>Then we set the label text to the new message...</p>
+<pre><code class="language-c">    //  Set the button label to the new message
     lv_label_set_text(label, msg);
     return 0;
 }
