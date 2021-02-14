@@ -860,6 +860,7 @@ int lvgl_update(void) {
     return 0;
 }
 </code></pre>
+<p>LVGL makes it really easy to create dynamic screens for IoT Gadgets.</p>
 <h2 id="render-the-display" class="section-header"><a href="#render-the-display">8.3 Render the Display</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L80-L91"><code>lvgl.c</code></a></p>
@@ -880,9 +881,6 @@ int lvgl_render(void) {
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L25-L48"><code>lvgl.c</code></a></p>
 <pre><code class="language-c">/// Set to true if LVGL has already been lvgl_initialised
 static bool lvgl_initialised = false;
-
-/// Set to true if LVGL widgets have been created
-static bool lvgl_created = false;
 </code></pre>
 <p>TODO</p>
 <pre><code class="language-c">/// Init the LVGL library
