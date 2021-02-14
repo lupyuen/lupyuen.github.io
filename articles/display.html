@@ -803,8 +803,9 @@ Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704,  si=0, di=1, i=1
 <p>Not really, we'll need to render text and shapes to show meaningful information. (Like a mini-dashboard)</p>
 <p><em>Is there a way to render text and graphics on BL602 + ST7789... Similar to mobile apps?</em></p>
 <p>Yes there is a way... We call the open-source <strong>LVGL Graphics Library!</strong></p>
-<p>Watch how we render this simple screen with LVGL: A Button and a Text Label...</p>
-<p>TODO</p>
+<p>Watch how we render this simple screen with LVGL: <strong>A Button and a Text Label...</strong></p>
+<p><img src="https://lupyuen.github.io/images/display-lvgl2.jpg" alt="Button and label rendered with LVGL" /></p>
+<p><em>Button and label rendered with LVGL</em></p>
 <h2 id="create-the-widgets" class="section-header"><a href="#create-the-widgets">8.1 Create the Widgets</a></h2>
 <p>TODO</p>
 <pre><code class="language-c">/// Button Widget
@@ -828,6 +829,8 @@ int lvgl_create(void) {
     return 0;
 }
 </code></pre>
+<p><img src="https://lupyuen.github.io/images/display-cool2.jpg" alt="Updated LVGL label" /></p>
+<p><em>Updated LVGL label</em></p>
 <h2 id="update-the-widgets" class="section-header"><a href="#update-the-widgets">8.2 Update the Widgets</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L66-L78"><code>lvgl.c</code></a></p>
