@@ -988,7 +988,7 @@ Next we create the label for the button and set the text...
 }
 ```
 
-That's it, we're done with our LVGL button and label!
+And that's how we create a button and a label in our function `lvgl_create`!
 
 ![Updated LVGL label](https://lupyuen.github.io/images/display-cool2.jpg)
 
