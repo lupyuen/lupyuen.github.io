@@ -224,6 +224,7 @@ static void test_display_init(char *buf, int len, int argc, char **argv) {
 /// SPI Device Instance. Used by display.c
 spi_dev_t spi_device;
 </code></pre>
+<p><img src="https://lupyuen.github.io/images/display-cartoon.png" alt="Transfer SPI Data with DMA" /></p>
 <h1 id="transfer-spi-data" class="section-header"><a href="#transfer-spi-data">3 Transfer SPI Data</a></h1>
 <p>For transmitting SPI Data to ST7789, the code looks highly similar to our previous article. (Except that we're not interested in the data received)</p>
 <p>Here's how our function <code>transmit_spi</code> transmits data to ST7789: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L250-L290"><code>display.c</code></a></p>
