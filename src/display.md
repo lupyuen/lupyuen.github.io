@@ -1056,24 +1056,19 @@ The rendering code in `lvgl_render` looks unusual... But that's because we're pr
 
 ## Initialise LVGL
 
-TODO
+(One last thing before the demo...)
 
-[`lvgl.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L25-L48)
+Here's how we initialise the LVGL Library: [`lvgl.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L25-L48)
 
 ```c
 /// Set to true if LVGL has already been lvgl_initialised
 static bool lvgl_initialised = false;
-```
 
-TODO
-
-```c
 /// Init the LVGL library
 int lvgl_init(void) {   
-    //  Assume that display controller has been lvgl_initialised 
+    //  Assume that display controller has been initialised 
     if (lvgl_initialised) { return 0; }  //  Init only once
     lvgl_initialised = true;
-    printf("Init LVGL...\r\n");
 
     //  Init the LVGL display
     lv_init();
@@ -1081,6 +1076,154 @@ int lvgl_init(void) {
     return 0;
 }
 ```
+
+TODO
+
+# Run the LVGL Firmware
+
+TODO
+
+## display_init
+
+TODO
+
+## lvgl_init
+
+TODO
+
+```text
+# lvgl_init
+Init LVGL...
+Trace: lv_init started 	(lv_obj.c #172 lv_init())
+Info: lv_init ready 	(lv_obj.c #231 lv_init())
+Trace: Screen create started 	(lv_obj.c #273 lv_obj_create())
+Info: Object create ready 	(lv_obj.c #461 lv_obj_create())
+Trace: Screen create started 	(v_obj.c #273 lv_obj_create())
+Info: Object create ready 	(lv_obj.c #461 lv_obj_create())
+Trace: Screen create started 	(lv_obj.c #273 lv_obj_create())
+Info: Object create ready 	(lv_obj.c #461 lv_obj_create())
+```
+
+## lvgl_create
+
+TODO
+
+```text
+# lvgl_create
+Create LVGL widgets...
+Trace: button create started 	(lv_btn.c #61 lv_btn_create())
+Trace: container create started 	(lv_cont.c #74 lv_cont_create())
+Trace: Object create started 	(lv_obj.c #305 lv_obj_create())
+Info: Object create ready 	(lv_obj.c #461 lv_obj_create())
+Info: container created 	(lv_cont.c #121 lv_cont_create())
+Info: button created 	(lv_btn.c #106 lv_btn_create())
+Trace: label create started 	(lv_label.c #78 lv_label_create())
+Trace: Object create started 	(lv_obj.c #305 lv_obj_create())
+Info: Object create ready 	(lv_obj.c #461 lv_obj_create())
+Info: label created 	(lv_label.c #165 lv_label_create())
+```
+
+## lvgl_render
+
+TODO
+
+```text
+# lvgl_render
+Render LVGL display...
+Trace: lv_task_handler started 	(lv_task.c #67 lv_task_handler())
+Trace: lv_refr_task: started 	(lv_refr.c #177 _lv_disp_refr_task())
+```
+
+TODO
+
+```text
+Flush display: left=0, top=0, right=239, bottom=9...
+```
+
+TODO
+
+```text
+Set CS pin 14 to low
+hal_spi_transfer = 1
+transfer xfer[0].len = 4800
+Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013058, dest=0x4000a288, size=2048, si=1, di=0, i=0
+Rx DMA src=0x4000a28c, dest=0x4200f768, size=2048, si=0, di=1, i=0
+Tx DMA src=0x42013858, dest=0x4000a288, size=704, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704, si=0, di=1, i=1
+```
+
+TODO
+
+```text
+Flush display: left=0, top=10, right=239, bottom=19...
+...
+Flush display: left=0, top=20, right=239, bottom=29...
+...
+Flush display: left=0, top=30, right=239, bottom=39...
+...
+Flush display: left=0, top=40, right=239, bottom=49...
+...
+```
+
+TODO
+
+```text
+Trace: lv_refr_task: ready 	(lv_refr.c #321 _lv_disp_refr_task())
+Trace: lv_task_handler ready 	(lv_task.c #180 lv_task_handler())
+# 
+```
+
+![Button and label rendered with LVGL](https://lupyuen.github.io/images/display-lvgl3.jpg)
+
+_Button and label rendered with LVGL_
+
+## lvgl_update
+
+TODO
+
+```text
+# lvgl_update
+Update LVGL widgets...
+```
+
+TODO
+
+```text
+# lvgl_render
+Render LVGL display...
+Trace: lv_task_handler started 	(lv_task.c #67 lv_task_handler())
+Trace: lv_refr_task: started 	(lv_refr.c #177 _lv_disp_refr_task())
+Flush display: left=45, top=107, right=196, bottom=121...
+...
+Flush display: left=45, top=122, right=196, bottom=133...
+...
+```
+
+TODO
+
+```text
+Trace: lv_refr_task: ready 	(lv_refr.c #321 _lv_disp_refr_task())
+Trace: lv_task_handler ready 	(lv_task.c #180 lv_task_handler())
+# 
+```
+
+![Updated LVGL label](https://lupyuen.github.io/images/display-cool3.jpg)
+
+_Updated LVGL label_
+
+TODO
+
+[__Watch the Demo Video on YouTube__](https://www.youtube.com/watch?v=PkP-CeYLXUA)
+
+[Check out the complete log](https://gist.github.com/lupyuen/9f26626d7c8081ae64d58eba70e07a80)
+
+TODO
+
+![](https://lupyuen.github.io/images/display-log.jpg)
+
+TODO
 
 # LVGL Display Driver for ST7789
 
@@ -1266,144 +1409,6 @@ COMPONENT_SRCDIRS += \
 ```
 
 ![](https://lupyuen.github.io/images/display-addlvgl.png)
-
-TODO
-
-# Run the LVGL Firmware
-
-TODO
-
-## display_init
-
-TODO
-
-## lvgl_init
-
-TODO
-
-```text
-# lvgl_init
-Init LVGL...
-Trace: lv_init started 	(lv_obj.c #172 lv_init())
-Info: lv_init ready 	(lv_obj.c #231 lv_init())
-Trace: Screen create started 	(lv_obj.c #273 lv_obj_create())
-Info: Object create ready 	(lv_obj.c #461 lv_obj_create())
-Trace: Screen create started 	(v_obj.c #273 lv_obj_create())
-Info: Object create ready 	(lv_obj.c #461 lv_obj_create())
-Trace: Screen create started 	(lv_obj.c #273 lv_obj_create())
-Info: Object create ready 	(lv_obj.c #461 lv_obj_create())
-```
-
-## lvgl_create
-
-TODO
-
-```text
-# lvgl_create
-Create LVGL widgets...
-Trace: button create started 	(lv_btn.c #61 lv_btn_create())
-Trace: container create started 	(lv_cont.c #74 lv_cont_create())
-Trace: Object create started 	(lv_obj.c #305 lv_obj_create())
-Info: Object create ready 	(lv_obj.c #461 lv_obj_create())
-Info: container created 	(lv_cont.c #121 lv_cont_create())
-Info: button created 	(lv_btn.c #106 lv_btn_create())
-Trace: label create started 	(lv_label.c #78 lv_label_create())
-Trace: Object create started 	(lv_obj.c #305 lv_obj_create())
-Info: Object create ready 	(lv_obj.c #461 lv_obj_create())
-Info: label created 	(lv_label.c #165 lv_label_create())
-```
-
-## lvgl_render
-
-TODO
-
-```text
-# lvgl_render
-Render LVGL display...
-Trace: lv_task_handler started 	(lv_task.c #67 lv_task_handler())
-Trace: lv_refr_task: started 	(lv_refr.c #177 _lv_disp_refr_task())
-```
-
-TODO
-
-```text
-Flush display: left=0, top=0, right=239, bottom=9...
-```
-
-TODO
-
-```text
-Set CS pin 14 to low
-hal_spi_transfer = 1
-transfer xfer[0].len = 4800
-Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
-Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
-Tx DMA src=0x42013058, dest=0x4000a288, size=2048, si=1, di=0, i=0
-Rx DMA src=0x4000a28c, dest=0x4200f768, size=2048, si=0, di=1, i=0
-Tx DMA src=0x42013858, dest=0x4000a288, size=704, si=1, di=0, i=1
-Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704, si=0, di=1, i=1
-```
-
-TODO
-
-```text
-Flush display: left=0, top=10, right=239, bottom=19...
-...
-Flush display: left=0, top=20, right=239, bottom=29...
-...
-Flush display: left=0, top=30, right=239, bottom=39...
-...
-Flush display: left=0, top=40, right=239, bottom=49...
-...
-```
-
-TODO
-
-```text
-Trace: lv_refr_task: ready 	(lv_refr.c #321 _lv_disp_refr_task())
-Trace: lv_task_handler ready 	(lv_task.c #180 lv_task_handler())
-# 
-```
-
-## lvgl_update
-
-TODO
-
-```text
-# lvgl_update
-Update LVGL widgets...
-```
-
-TODO
-
-```text
-# lvgl_render
-Render LVGL display...
-Trace: lv_task_handler started 	(lv_task.c #67 lv_task_handler())
-Trace: lv_refr_task: started 	(lv_refr.c #177 _lv_disp_refr_task())
-Flush display: left=45, top=107, right=196, bottom=121...
-...
-Flush display: left=45, top=122, right=196, bottom=133...
-...
-```
-
-TODO
-
-```text
-Trace: lv_refr_task: ready 	(lv_refr.c #321 _lv_disp_refr_task())
-Trace: lv_task_handler ready 	(lv_task.c #180 lv_task_handler())
-# 
-```
-
-TODO
-
-[__Watch the Demo Video on YouTube__](https://www.youtube.com/watch?v=PkP-CeYLXUA)
-
-[Check out the complete log](https://gist.github.com/lupyuen/9f26626d7c8081ae64d58eba70e07a80)
-
-TODO
-
-![](https://lupyuen.github.io/images/display-log.jpg)
 
 TODO
 
