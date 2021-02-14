@@ -862,20 +862,22 @@ int lvgl_update(void) {
 </code></pre>
 <p>LVGL makes it really easy to create dynamic screens for IoT Gadgets... Even for RISC-V BL602!</p>
 <h2 id="render-the-display" class="section-header"><a href="#render-the-display">8.3 Render the Display</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L80-L91"><code>lvgl.c</code></a></p>
+<p>LVGL was designed for interactive displays (like touchscreens). </p>
+<p>It refreshes the display efficiently without consuming too much CPU and RAM. (Which are scarce on IoT Gadgets)</p>
+<p>Here's how we tell LVGL to render the screen that we have created (or updated): <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L80-L91"><code>lvgl.c</code></a></p>
 <pre><code class="language-c">/// Render the LVGL display
 int lvgl_render(void) {
     ...
     //  Must tick at least 100 milliseconds to force LVGL to render display
     lv_tick_inc(100);
-</code></pre>
-<p>TODO</p>
-<pre><code class="language-c">    //  Call LVGL to render the display and flush our display driver
+
+    //  Call LVGL to render the display and flush our display driver
     lv_task_handler();
     return 0;
 }
 </code></pre>
+<p>The rendering code in <code>lvgl_render</code> looks unusual... But that's because we're pretending to be an interactive gadget.</p>
+<p>(This code should make sense once we start building interactive gadgets with BL602)</p>
 <h2 id="initialise-lvgl" class="section-header"><a href="#initialise-lvgl">8.4 Initialise LVGL</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L25-L48"><code>lvgl.c</code></a></p>
