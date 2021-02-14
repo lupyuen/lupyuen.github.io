@@ -85,11 +85,8 @@
 <li><a href="#render-the-display">8.3 Render the Display</a><ul></ul></li>
 <li><a href="#initialise-lvgl">8.4 Initialise LVGL</a><ul></ul></li></ul></li>
 <li><a href="#run-the-lvgl-firmware">9 Run the LVGL Firmware</a><ul>
-<li><a href="#display_init">9.1 display_init</a><ul></ul></li>
-<li><a href="#lvgl_init">9.2 lvgl_init</a><ul></ul></li>
-<li><a href="#lvgl_create">9.3 lvgl_create</a><ul></ul></li>
-<li><a href="#lvgl_render">9.4 lvgl_render</a><ul></ul></li>
-<li><a href="#lvgl_update">9.5 lvgl_update</a><ul></ul></li></ul></li>
+<li><a href="#create-lvgl-screen">9.1 Create LVGL Screen</a><ul></ul></li>
+<li><a href="#update-lvgl-screen">9.2 Update LVGL Screen</a><ul></ul></li></ul></li>
 <li><a href="#lvgl-display-driver-for-st7789">10 LVGL Display Driver for ST7789</a><ul>
 <li><a href="#lv_port_disp_init">10.1 lv_port_disp_init</a><ul></ul></li>
 <li><a href="#disp_flush">10.2 disp_flush</a><ul></ul></li>
@@ -106,7 +103,7 @@
 <li><a href="#hard_reset">19.1 hard_reset</a><ul></ul></li>
 <li><a href="#backlight_on">19.2 backlight_on</a><ul></ul></li>
 <li><a href="#backlight_off">19.3 backlight_off</a><ul></ul></li>
-<li><a href="#delay_ms">19.4 delay_ms</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>14 Feb 2021</em></p>
+<li><a href="#delay_ms">19.4 delay_ms</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>16 Feb 2021</em></p>
 <p>In our last article we configured <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602</strong></a> to connect to a simple SPI Peripheral: BME280 Sensor for Temperature / Humidity / Air Pressure. <a href="https://lupyuen.github.io/articles/spi">(See this)</a></p>
 <p>Today we shall connect PineCone BL602 / Pinenut / Any BL602 Board to a more powerful SPI Peripheral: <strong>ST7789 Display Controller</strong>.</p>
 <p>We'll be using the <strong>LVGL Graphics Library</strong> to render text and graphics to the ST7789 Display.</p>
@@ -899,9 +896,9 @@ int lvgl_init(void) {
 <p>TODO</p>
 <h1 id="run-the-lvgl-firmware" class="section-header"><a href="#run-the-lvgl-firmware">9 Run the LVGL Firmware</a></h1>
 <p>TODO</p>
-<h2 id="display_init" class="section-header"><a href="#display_init">9.1 display_init</a></h2>
+<p>display_init</p>
 <p>TODO</p>
-<h2 id="lvgl_init" class="section-header"><a href="#lvgl_init">9.2 lvgl_init</a></h2>
+<p>lvgl_init</p>
 <p>TODO</p>
 <pre><code class="language-text"># lvgl_init
 Init LVGL...
@@ -914,7 +911,7 @@ Info: Object create ready 	(lv_obj.c #461 lv_obj_create())
 Trace: Screen create started 	(lv_obj.c #273 lv_obj_create())
 Info: Object create ready 	(lv_obj.c #461 lv_obj_create())
 </code></pre>
-<h2 id="lvgl_create" class="section-header"><a href="#lvgl_create">9.3 lvgl_create</a></h2>
+<h2 id="create-lvgl-screen" class="section-header"><a href="#create-lvgl-screen">9.1 Create LVGL Screen</a></h2>
 <p>TODO</p>
 <pre><code class="language-text"># lvgl_create
 Create LVGL widgets...
@@ -929,7 +926,7 @@ Trace: Object create started 	(lv_obj.c #305 lv_obj_create())
 Info: Object create ready 	(lv_obj.c #461 lv_obj_create())
 Info: label created 	(lv_label.c #165 lv_label_create())
 </code></pre>
-<h2 id="lvgl_render" class="section-header"><a href="#lvgl_render">9.4 lvgl_render</a></h2>
+<p>lvgl_render</p>
 <p>TODO</p>
 <pre><code class="language-text"># lvgl_render
 Render LVGL display...
@@ -967,7 +964,7 @@ Trace: lv_task_handler ready 	(lv_task.c #180 lv_task_handler())
 </code></pre>
 <p><img src="https://lupyuen.github.io/images/display-lvgl3.jpg" alt="Button and label rendered with LVGL" /></p>
 <p><em>Button and label rendered with LVGL</em></p>
-<h2 id="lvgl_update" class="section-header"><a href="#lvgl_update">9.5 lvgl_update</a></h2>
+<h2 id="update-lvgl-screen" class="section-header"><a href="#update-lvgl-screen">9.2 Update LVGL Screen</a></h2>
 <p>TODO</p>
 <pre><code class="language-text"># lvgl_update
 Update LVGL widgets...
