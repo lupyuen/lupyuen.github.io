@@ -942,9 +942,11 @@ _Is there a way to render text and graphics on BL602 + ST7789... Similar to mobi
 
 Yes there is a way... We call the open-source __LVGL Graphics Library!__
 
-Watch how we render this simple screen with LVGL: A Button and a Text Label...
+Watch how we render this simple screen with LVGL: __A Button and a Text Label...__
 
-TODO
+![Button and label rendered with LVGL](https://lupyuen.github.io/images/display-lvgl2.jpg)
+
+_Button and label rendered with LVGL_
 
 ## Create the Widgets
 
@@ -979,6 +981,10 @@ TODO
     return 0;
 }
 ```
+
+![Updated LVGL label](https://lupyuen.github.io/images/display-cool2.jpg)
+
+_Updated LVGL label_
 
 ## Update the Widgets
 
