@@ -802,33 +802,41 @@ Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704,  si=0, di=1, i=1
 <p><em>Rendering photos on BL602 and ST7789 is great... But is it useful for creating IoT Gadgets?</em></p>
 <p>Not really, we'll need to render text and shapes to show meaningful information. (Like a mini-dashboard)</p>
 <p><em>Is there a way to render text and graphics on BL602 + ST7789... Similar to mobile apps?</em></p>
-<p>Yes there is a way... We call the open-source <strong>LVGL Graphics Library!</strong></p>
+<p>Yes there's a way... We call the open-source <strong><a href="https://docs.lvgl.io/latest/en/html/intro/index.html">LVGL Graphics Library</a>!</strong></p>
 <p>Watch how we render this simple screen with LVGL: <strong>A Button and a Text Label...</strong></p>
 <p><img src="https://lupyuen.github.io/images/display-lvgl2.jpg" alt="Button and label rendered with LVGL" /></p>
 <p><em>Button and label rendered with LVGL</em></p>
 <h2 id="create-the-widgets" class="section-header"><a href="#create-the-widgets">8.1 Create the Widgets</a></h2>
-<p>TODO</p>
+<p>First we declare the <strong>LVGL Widgets</strong> (user interface controls) for our button and our label...</p>
 <pre><code class="language-c">/// Button Widget
 static lv_obj_t *btn = NULL;
 
 /// Label Widget
 static lv_obj_t *label = NULL;
 </code></pre>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L50-L64"><code>lvgl.c</code></a></p>
+<p>We create the button and set its position and size like so: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L50-L64"><code>lvgl.c</code></a></p>
 <pre><code class="language-c">/// Create a Button Widget and a Label Widget
 int lvgl_create(void) {
     ...
-    btn = lv_btn_create(lv_scr_act(), NULL);  //  Add a button the current screen
-    lv_obj_set_pos(btn, 10, 80);              //  Set its position
-    lv_obj_set_size(btn, 220, 80);            //  Set its size
+    //  Add a button the current screen
+    btn = lv_btn_create(lv_scr_act(), NULL);
+
+    //  Set its position (left = 10, top = 80)
+    lv_obj_set_pos(btn, 10, 80);              
+
+    //  Set its size (width = 220, height = 80)
+    lv_obj_set_size(btn, 220, 80);            
 </code></pre>
-<p>TODO</p>
-<pre><code class="language-c">    label = lv_label_create(btn, NULL);       //  Add a label to the button
-    lv_label_set_text(label, &quot;BL602 LVGL&quot;);   //  Set the label text
+<p>Next we create the label for the button and set the text...</p>
+<pre><code class="language-c">    //  Add a label to the button
+    label = lv_label_create(btn, NULL);       
+
+    //  Set the label text
+    lv_label_set_text(label, &quot;BL602 LVGL&quot;);   
     return 0;
 }
 </code></pre>
+<p>That's it, we're done with our LVGL button and label!</p>
 <p><img src="https://lupyuen.github.io/images/display-cool2.jpg" alt="Updated LVGL label" /></p>
 <p><em>Updated LVGL label</em></p>
 <h2 id="update-the-widgets" class="section-header"><a href="#update-the-widgets">8.2 Update the Widgets</a></h2>
