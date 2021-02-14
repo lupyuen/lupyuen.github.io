@@ -395,6 +395,8 @@ static int set_orientation(uint8_t orientation) {
 
 We'll be seeing more `write_command` in a while... Brace ourselves!
 
+![Initialise ST7789 Display](https://lupyuen.github.io/images/display-cartoon2.png)
+
 # Initialise ST7789 Display
 
 _What's the Hardest Thing about ST7789?_
