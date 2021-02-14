@@ -1,6 +1,6 @@
 # PineCone BL602 Blasting Pixels to ST7789 Display with LVGL Library
 
-📝 _14 Feb 2021_
+📝 _16 Feb 2021_
 
 In our last article we configured [__PineCone BL602__](https://lupyuen.github.io/articles/pinecone) to connect to a simple SPI Peripheral: BME280 Sensor for Temperature / Humidity / Air Pressure. [(See this)](https://lupyuen.github.io/articles/spi)
 
@@ -1083,11 +1083,11 @@ TODO
 
 TODO
 
-## display_init
+display_init
 
 TODO
 
-## lvgl_init
+lvgl_init
 
 TODO
 
@@ -1104,7 +1104,7 @@ Trace: Screen create started 	(lv_obj.c #273 lv_obj_create())
 Info: Object create ready 	(lv_obj.c #461 lv_obj_create())
 ```
 
-## lvgl_create
+## Create LVGL Screen
 
 TODO
 
@@ -1123,7 +1123,7 @@ Info: Object create ready 	(lv_obj.c #461 lv_obj_create())
 Info: label created 	(lv_label.c #165 lv_label_create())
 ```
 
-## lvgl_render
+lvgl_render
 
 TODO
 
@@ -1179,7 +1179,7 @@ Trace: lv_task_handler ready 	(lv_task.c #180 lv_task_handler())
 
 _Button and label rendered with LVGL_
 
-## lvgl_update
+## Update LVGL Screen
 
 TODO
 
