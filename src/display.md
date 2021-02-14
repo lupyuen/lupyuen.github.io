@@ -940,7 +940,7 @@ Not really, we'll need to render text and shapes to show meaningful information.
 
 _Is there a way to render text and graphics on BL602 + ST7789... Similar to mobile apps?_
 
-Yes there is a way... We call the open-source __LVGL Graphics Library!__
+Yes there's a way... We call the open-source __[LVGL Graphics Library](https://docs.lvgl.io/latest/en/html/intro/index.html)!__
 
 Watch how we render this simple screen with LVGL: __A Button and a Text Label...__
 
@@ -950,7 +950,7 @@ _Button and label rendered with LVGL_
 
 ## Create the Widgets
 
-TODO
+First we declare the __LVGL Widgets__ (user interface controls) for our button and our label...
 
 ```c
 /// Button Widget
@@ -960,27 +960,35 @@ static lv_obj_t *btn = NULL;
 static lv_obj_t *label = NULL;
 ```
 
-TODO
-
-[`lvgl.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L50-L64)
+We create the button and set its position and size like so: [`lvgl.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L50-L64)
 
 ```c
 /// Create a Button Widget and a Label Widget
 int lvgl_create(void) {
     ...
-    btn = lv_btn_create(lv_scr_act(), NULL);  //  Add a button the current screen
-    lv_obj_set_pos(btn, 10, 80);              //  Set its position
-    lv_obj_set_size(btn, 220, 80);            //  Set its size
+    //  Add a button the current screen
+    btn = lv_btn_create(lv_scr_act(), NULL);
+
+    //  Set its position (left = 10, top = 80)
+    lv_obj_set_pos(btn, 10, 80);              
+
+    //  Set its size (width = 220, height = 80)
+    lv_obj_set_size(btn, 220, 80);            
 ```
 
-TODO
+Next we create the label for the button and set the text...
 
 ```c
-    label = lv_label_create(btn, NULL);       //  Add a label to the button
-    lv_label_set_text(label, "BL602 LVGL");   //  Set the label text
+    //  Add a label to the button
+    label = lv_label_create(btn, NULL);       
+
+    //  Set the label text
+    lv_label_set_text(label, "BL602 LVGL");   
     return 0;
 }
 ```
+
+That's it, we're done with our LVGL button and label!
 
 ![Updated LVGL label](https://lupyuen.github.io/images/display-cool2.jpg)
 
