@@ -2,7 +2,7 @@
 
 📝 _14 Feb 2021_
 
-In our last article we configured PineCone BL602 to connect to a simple SPI Peripheral: BME280 Sensor for Temperature / Humidity / Air Pressure. [(See this)](https://lupyuen.github.io/articles/spi)
+In our last article we configured [__PineCone BL602__](https://lupyuen.github.io/articles/pinecone) to connect to a simple SPI Peripheral: BME280 Sensor for Temperature / Humidity / Air Pressure. [(See this)](https://lupyuen.github.io/articles/spi)
 
 Today we shall connect PineCone BL602 / Pinenut / Any BL602 Board to a more powerful SPI Peripheral: __ST7789 Display Controller__.
 
