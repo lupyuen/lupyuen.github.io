@@ -139,6 +139,8 @@ We'll explain `init_display` in a while.
 spi_dev_t spi_device;
 ```
 
+![Transfer SPI Data with DMA](https://lupyuen.github.io/images/display-cartoon.png)
+
 # Transfer SPI Data
 
 For transmitting SPI Data to ST7789, the code looks highly similar to our previous article. (Except that we're not interested in the data received)
