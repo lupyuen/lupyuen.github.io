@@ -1027,7 +1027,7 @@ Then we set the label text to the new message...
 }
 ```
 
-LVGL makes it really easy to create dynamic screens for IoT Gadgets.
+LVGL makes it really easy to create dynamic screens for IoT Gadgets... Even for RISC-V BL602!
 
 ## Render the Display
 
