@@ -1027,6 +1027,8 @@ Then we set the label text to the new message...
 }
 ```
 
+LVGL makes it really easy to create dynamic screens for IoT Gadgets.
+
 ## Render the Display
 
 TODO
@@ -1059,9 +1061,6 @@ TODO
 ```c
 /// Set to true if LVGL has already been lvgl_initialised
 static bool lvgl_initialised = false;
-
-/// Set to true if LVGL widgets have been created
-static bool lvgl_created = false;
 ```
 
 TODO
