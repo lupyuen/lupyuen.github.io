@@ -106,9 +106,10 @@
 <li><a href="#backlight_on">19.2 backlight_on</a><ul></ul></li>
 <li><a href="#backlight_off">19.3 backlight_off</a><ul></ul></li>
 <li><a href="#delay_ms">19.4 delay_ms</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>16 Feb 2021</em></p>
-<p>In our last article we configured <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602</strong></a> to connect to a simple SPI Peripheral: BME280 Sensor for Temperature / Humidity / Air Pressure. <a href="https://lupyuen.github.io/articles/spi">(See this)</a></p>
+<p>In our last article we configured <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602</strong></a> to connect to a simple SPI Peripheral: <strong>BME280 Sensor</strong>. <a href="https://lupyuen.github.io/articles/spi">(See this)</a></p>
 <p>Today we shall connect PineCone BL602 / Pinenut / Any BL602 Board to a more powerful SPI Peripheral: <strong>ST7789 Display Controller</strong>.</p>
 <p>We'll be using the <strong>LVGL Graphics Library</strong> to render text and graphics to the ST7789 Display.</p>
+<p><em>(Yep LVGL runs on RISC-V!)</em></p>
 <p>The Demo Firmware in this article will run on PineCone, Pinenut and <strong>any BL602 Board</strong>.</p>
 <p><a href="https://www.youtube.com/watch?v=PkP-CeYLXUA"><strong>Watch the Demo Video on YouTube</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/display-title.jpg" alt="PineCone BL602 RISC-V Board rendering text and graphics on ST7789 SPI Display with LVGL Graphics Library" /></p>
@@ -1063,28 +1064,36 @@ Flush display: left=0, top=40, right=239, bottom=49...
 <p><img src="https://lupyuen.github.io/images/display-lvgl3.jpg" alt="Button and label rendered by LVGL on Sunday morning" /></p>
 <p><em>Button and label rendered by LVGL on Sunday morning</em></p>
 <h2 id="update-lvgl-widgets" class="section-header"><a href="#update-lvgl-widgets">9.4 Update LVGL Widgets</a></h2>
-<p>TODO</p>
+<ol>
+<li>
+<p>Enter this command to <strong>update the LVGL Widgets</strong>...</p>
 <pre><code class="language-text"># lvgl_update
-Update LVGL widgets...
 </code></pre>
-<p>TODO</p>
+<p>This command calls the function <strong><code>lvgl_update</code></strong>, which we have seen earlier.</p>
+<p>Remember that <code>lvgl_update</code> updates the label text to...</p>
+<pre><code class="language-text">SO COOL! #1
+</code></pre>
+</li>
+<li>
+<p>Then this command to <strong>render the updated LVGL Screen</strong>...</p>
 <pre><code class="language-text"># lvgl_render
-Render LVGL display...
-Trace: lv_task_handler started 	(lv_task.c #67 lv_task_handler())
-Trace: lv_refr_task: started 	(lv_refr.c #177 _lv_disp_refr_task())
-Flush display: left=45, top=107, right=196, bottom=121...
+</code></pre>
+<p>(We've used this command in the previous section)</p>
+</li>
+<li>
+<p>This time LVGL renders our updated screen a little differently...</p>
+<pre><code class="language-text">Flush display: left=45, top=107, right=196, bottom=121...
 ...
 Flush display: left=45, top=122, right=196, bottom=133...
 ...
 </code></pre>
-<p>TODO</p>
-<pre><code class="language-text">Trace: lv_refr_task: ready 	(lv_refr.c #321 _lv_disp_refr_task())
-Trace: lv_task_handler ready 	(lv_task.c #180 lv_task_handler())
-# 
-</code></pre>
+<p>Instead of re-rendering all 240 pixel rows, <strong>LVGL renders only the pixel rows that have changed!</strong></p>
+<p>(Very clever!)</p>
+<p>That's why LVGL is perfect for RISC-V IoT Gadgets that have CPU and RAM constraints.</p>
+</li>
+</ol>
 <p><img src="https://lupyuen.github.io/images/display-cool3.jpg" alt="Updated LVGL label" /></p>
 <p><em>Updated LVGL label</em></p>
-<p>TODO</p>
 <p><a href="https://www.youtube.com/watch?v=PkP-CeYLXUA"><strong>Watch the Demo Video on YouTube</strong></a></p>
 <p><a href="https://gist.github.com/lupyuen/9f26626d7c8081ae64d58eba70e07a80">Check out the complete log</a></p>
 <p>TODO</p>
