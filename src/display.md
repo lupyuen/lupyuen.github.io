@@ -714,6 +714,10 @@ int set_window(uint8_t left, uint8_t top, uint8_t right, uint8_t bottom) {
 
 Then `set_window` sends the ST7789 Command to set the Address Window Rows, followed by the `top` and `bottom` values.
 
+![ST7789 demo firmware for BL602](https://lupyuen.github.io/images/display-firmware.jpg)
+
+_ST7789 demo firmware for BL602_
+
 # Build and Run the ST7789 Firmware
 
 Let's run the ST7789 Demo Firmware for BL602.
@@ -1082,6 +1086,10 @@ int lvgl_init(void) {
 ```
 
 TODO
+
+![LVGL demo firmware for BL602](https://lupyuen.github.io/images/display-firmware.jpg)
+
+_LVGL demo firmware for BL602_
 
 # Run the LVGL Firmware
 
