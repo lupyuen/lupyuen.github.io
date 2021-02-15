@@ -1513,17 +1513,58 @@ Hopefully somebody will find a better way to add LVGL to BL602 Firmware.
 
 # Can We Blast Pixels Faster?
 
-TODO
+_Some people might say that blasting pixels at 4 Mbps is rather slow... Can we do faster?_
 
-SPI Timeout
+BL602 SPI is technically rated for __40 MHz__ (or 40 Mbps). But during our testing, the SPI DMA Transfer to ST7789 tends to hang at speeds beyond 4 Mbps.
 
-Suppress SPI Receive
+(Why does it hang instead of crashing with an exception? Because the BL602 SPI HAL doesn't set the SPI Timeout. We'll explain this shortly)
 
-SPI DMA works great with RAM, not so much with Flash ROM
+Here are some possible causes for __SPI DMA Transfers failing beyond 4 Mbps...__
 
-Limited by the electrical connection on our breadboard, [according to TL (Pine64 Boss)](https://twitter.com/TLLim888/status/1359433708491534337?s=19)
+1.  We're using a __Breadboard to connect BL602 and ST7789__, and the Electrical Connection may limit the speed. [As suggested by TL (Pine64 Boss)](https://twitter.com/TLLim888/status/1359433708491534337?s=19)
 
-(Sorry... I love Colourful Curvy Cables)
+    (Sorry... But I love Colourful Curvy Cables!)
+
+    Perhaps this problem will be fixed when we create a proper Printed Circuit Board for BL602 and ST7789.
+
+1.  We're calling the BL602 SPI HAL to Transmit AND Receive SPI data... But we're __not supposed to receive any SPI data from ST7789.__
+
+    (Perhaps BL602 is stuck waiting for ST7789 to return data over SPI)
+
+    To test this, we would need to hack the BL602 SPI HAL and disable SPI Receive.
+
+    (Here's where we should hack: [`lli_list_init`](https://lupyuen.github.io/articles/spi#lli_list_init-create-dma-linked-list) and [`hal_spi_dma_trans`](https://lupyuen.github.io/articles/spi#hal_spi_dma_trans-execute-spi-transfer-with-dma))
+
+1.  When I was blasting the photo directly from BL602 Flash ROM to ST7789, I had to lower the speed to 2 Mbps to avoid hanging.
+
+    That's why we copy the photo to RAM before blasting to ST7789 at 4 Mbps.
+
+    Lesson Learnt: __Don't blast pixels from Flash ROM to ST7789__... Somehow DMA works slower for Flash ROM.
+
+    Could there be some other DMA limitation that's failing the SPI Transfer beyond 4 Mbps?
+
+_How do we set an SPI Timeout for easier troubleshooting... So that it doesn't hang?_
+
+Here's how we modify the BL602 SPI HAL to set the SPI Timeout to 100 milliseconds: [`components/hal_drv/ bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/components/hal_drv/bl602_hal/hal_spi.c#L341-L354)
+
+```c
+static void hal_spi_dma_trans(...) {
+    ...
+    //  Wait for for the FreeRTOS Event Group,
+    //  which is signalled by the SPI DMA Transmit and
+    //  Receive Interrupt Handlers when the transfer completes.
+    uxBits = xEventGroupWaitBits(   //  Wait for...
+        arg->spi_dma_event_group,   //  Event Group
+        EVT_GROUP_SPI_DMA_TR,       //  For BOTH Transmit and Receive to complete
+        pdTRUE,                     //  Clear bits on exit
+        pdTRUE,                     //  Both Transmit and Receive bits must be set
+        //  Set SPI Timeout to 100 milliseconds.
+        //  Previously portMAX_DELAY (no timeout).
+        100 / portTICK_PERIOD_MS
+    );
+```
+
+Then enter the `display_result` command to dump the Interrupt Counters and Error Codes. [(See this)](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/demo.c#L116-L130)
 
 ![Watch face for PineTime Smartwatch rendered with LVGL](https://lupyuen.github.io/images/timesync-title.png)
 
@@ -1570,27 +1611,6 @@ TODO
 # Notes
 
 1.  This article is the expanded version of [this meandering Twitter Thread](https://twitter.com/MisterTechBlog/status/1358691021073178624?s=20)
-
-# Appendix: Troubleshoot SPI Hanging
-
-TODO
-
-[`components/hal_drv/ bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/components/hal_drv/bl602_hal/hal_spi.c#L341-L354)
-
-```c
-static void hal_spi_dma_trans(spi_hw_t *arg, uint8_t *TxData, uint8_t *RxData, uint32_t Len) {
-    ...
-    ////  TODO: To troubleshoot SPI Transfers that hang (like ST7789 at 4 MHz), change...
-    ////      portMAX_DELAY);
-    ////  To...
-    ////      100 / portTICK_PERIOD_MS);
-    ////  Which will change the SPI Timeout from "Wait Forever" to 100 milliseconds. Then check the Interrupt Counters.
-    uxBits = xEventGroupWaitBits(arg->spi_dma_event_group,
-                                     EVT_GROUP_SPI_DMA_TR,
-                                     pdTRUE,
-                                     pdTRUE,
-                                     portMAX_DELAY);
-```
 
 # Appendix: Show Assertion Failures
 
