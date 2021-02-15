@@ -96,14 +96,14 @@
 <li><a href="#port-st7789-and-lvgl-to-other-bl602-operating-systems">12 Port ST7789 and LVGL to other BL602 Operating Systems</a><ul></ul></li>
 <li><a href="#whats-next">13 What's Next</a><ul></ul></li>
 <li><a href="#notes">14 Notes</a><ul></ul></li>
-<li><a href="#appendix-show-assertion-failures">15 Appendix: Show Assertion Failures</a><ul></ul></li>
-<li><a href="#appendix-configure-lvgl-for-bl602-and-st7789">16 Appendix: Configure LVGL for BL602 and ST7789</a><ul></ul></li>
-<li><a href="#appendix-macos-script-to-build-flash-and-run-bl602-firmware">17 Appendix: macOS Script to Build, Flash and Run BL602 Firmware</a><ul></ul></li>
-<li><a href="#appendix-st7789-reset-backlight-and-delay">18 Appendix: ST7789 Reset, Backlight and Delay</a><ul>
-<li><a href="#hard_reset">18.1 hard_reset</a><ul></ul></li>
-<li><a href="#backlight_on">18.2 backlight_on</a><ul></ul></li>
-<li><a href="#backlight_off">18.3 backlight_off</a><ul></ul></li>
-<li><a href="#delay_ms">18.4 delay_ms</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>16 Feb 2021</em></p>
+<li><a href="#appendix-show-assertion-failures-in-bl602-firmware">15 Appendix: Show Assertion Failures in BL602 Firmware</a><ul></ul></li>
+<li><a href="#appendix-macos-script-to-build-flash-and-run-bl602-firmware">16 Appendix: macOS Script to Build, Flash and Run BL602 Firmware</a><ul></ul></li>
+<li><a href="#appendix-st7789-reset-backlight-and-delay">17 Appendix: ST7789 Reset, Backlight and Delay</a><ul>
+<li><a href="#hard_reset">17.1 hard_reset</a><ul></ul></li>
+<li><a href="#backlight_on">17.2 backlight_on</a><ul></ul></li>
+<li><a href="#backlight_off">17.3 backlight_off</a><ul></ul></li>
+<li><a href="#delay_ms">17.4 delay_ms</a><ul></ul></li></ul></li>
+<li><a href="#appendix-configure-lvgl-for-bl602-and-st7789">18 Appendix: Configure LVGL for BL602 and ST7789</a><ul></ul></li></ul></nav><p>📝 <em>16 Feb 2021</em></p>
 <p>In our last article we configured <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602</strong></a> to connect to a simple SPI Peripheral: <strong>BME280 Sensor</strong>. <a href="https://lupyuen.github.io/articles/spi">(See this)</a></p>
 <p>Today we shall connect PineCone BL602 / Pinenut / Any BL602 Board to a more powerful SPI Peripheral: <strong>ST7789 Display Controller</strong>.</p>
 <p>We'll be using the <strong>LVGL Graphics Library</strong> to render text and graphics to the ST7789 Display.</p>
@@ -1267,6 +1267,7 @@ COMPONENT_SRCDIRS += \
     );
 </code></pre>
 <p>Then enter the <code>display_result</code> command to dump the Interrupt Counters and Error Codes. <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/demo.c#L116-L130">(See this)</a></p>
+<p>Also check the Appendix on enabling Assertion Failure messages.</p>
 <p><img src="https://lupyuen.github.io/images/timesync-title.png" alt="Watch face for PineTime Smartwatch rendered with LVGL" /></p>
 <p><em>Watch face for PineTime Smartwatch rendered with LVGL</em></p>
 <h1 id="port-st7789-and-lvgl-to-other-bl602-operating-systems" class="section-header"><a href="#port-st7789-and-lvgl-to-other-bl602-operating-systems">12 Port ST7789 and LVGL to other BL602 Operating Systems</a></h1>
@@ -1314,26 +1315,36 @@ COMPONENT_SRCDIRS += \
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1358691021073178624?s=20">this meandering Twitter Thread</a></li>
 </ol>
-<h1 id="appendix-show-assertion-failures" class="section-header"><a href="#appendix-show-assertion-failures">15 Appendix: Show Assertion Failures</a></h1>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/demo.c#L224-L235"><code>demo.c</code></a></p>
-<pre><code class="language-c">/// TODO: We now show assertion failures in development.
-/// For production, comment out this function to use the system default,
+<h1 id="appendix-show-assertion-failures-in-bl602-firmware" class="section-header"><a href="#appendix-show-assertion-failures-in-bl602-firmware">15 Appendix: Show Assertion Failures in BL602 Firmware</a></h1>
+<p>By default, firmware created by the BL602 IoT SDK will NOT show Assertion Failure messages.</p>
+<p>So this code...</p>
+<pre><code class="language-c">#include &lt;assert.h&gt;
+
+//  Stop with an assertion failure
+assert(false);
+</code></pre>
+<p>...Will fail silently, without any messages, and loop forever.</p>
+<p>(Not so productive for troubleshooting firmware problems!)</p>
+<p>To show Assertion Failure messages, we add this function to our BL602 programs: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/demo.c#L224-L235"><code>demo.c</code></a></p>
+<pre><code class="language-c">/// TODO: We now show assertion failures 
+/// in development. For production, comment 
+/// out this function to use the system default,
 /// which loops forever without messages.
-void __assert_func(const char *file, int line, const char *func, const char *failedexpr)
+void __assert_func(const char *file, int line, 
+    const char *func, const char *failedexpr)
 {
-    //  Show the assertion failure, file, line, function name
+    //  Show the assertion failure, file, 
+    //  line, function name
 	printf(&quot;Assertion Failed \&quot;%s\&quot;: file \&quot;%s\&quot;, line %d%s%s\r\n&quot;,
         failedexpr, file, line, func ? &quot;, function: &quot; : &quot;&quot;,
         func ? func : &quot;&quot;);
-	//  Loop forever, do not pass go, do not collect $200
+
+	//  Loop forever, do not pass go, 
+    //  do not collect $200
 	for (;;) {}
 }
 </code></pre>
-<h1 id="appendix-configure-lvgl-for-bl602-and-st7789" class="section-header"><a href="#appendix-configure-lvgl-for-bl602-and-st7789">16 Appendix: Configure LVGL for BL602 and ST7789</a></h1>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_conf.h"><code>lv_conf.h</code></a></p>
-<h1 id="appendix-macos-script-to-build-flash-and-run-bl602-firmware" class="section-header"><a href="#appendix-macos-script-to-build-flash-and-run-bl602-firmware">17 Appendix: macOS Script to Build, Flash and Run BL602 Firmware</a></h1>
+<h1 id="appendix-macos-script-to-build-flash-and-run-bl602-firmware" class="section-header"><a href="#appendix-macos-script-to-build-flash-and-run-bl602-firmware">16 Appendix: macOS Script to Build, Flash and Run BL602 Firmware</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/run.sh#L1-L32"><code>run.sh</code></a></p>
 <pre><code class="language-bash">#!/usr/bin/env bash
@@ -1369,7 +1380,7 @@ popd
 #  Run the firmware
 open -a CoolTerm
 </code></pre>
-<h1 id="appendix-st7789-reset-backlight-and-delay" class="section-header"><a href="#appendix-st7789-reset-backlight-and-delay">18 Appendix: ST7789 Reset, Backlight and Delay</a></h1><h2 id="hard_reset" class="section-header"><a href="#hard_reset">18.1 hard_reset</a></h2>
+<h1 id="appendix-st7789-reset-backlight-and-delay" class="section-header"><a href="#appendix-st7789-reset-backlight-and-delay">17 Appendix: ST7789 Reset, Backlight and Delay</a></h1><h2 id="hard_reset" class="section-header"><a href="#hard_reset">17.1 hard_reset</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L290-L300"><code>display.c</code></a></p>
 <pre><code class="language-c">/// Reset the display controller
@@ -1382,7 +1393,7 @@ static int hard_reset(void) {
     return 0;
 }
 </code></pre>
-<h2 id="backlight_on" class="section-header"><a href="#backlight_on">18.2 backlight_on</a></h2>
+<h2 id="backlight_on" class="section-header"><a href="#backlight_on">17.2 backlight_on</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L300-L314"><code>display.c</code></a></p>
 <pre><code class="language-c">/// Switch on backlight
@@ -1400,7 +1411,7 @@ int backlight_on(void) {
     //  See https://lupyuen.github.io/articles/led#from-gpio-to-pulse-width-modulation-pwm
 }
 </code></pre>
-<h2 id="backlight_off" class="section-header"><a href="#backlight_off">18.3 backlight_off</a></h2>
+<h2 id="backlight_off" class="section-header"><a href="#backlight_off">17.3 backlight_off</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L314-L323"><code>display.c</code></a></p>
 <pre><code class="language-c">/// Switch off backlight
@@ -1412,7 +1423,7 @@ int backlight_off(void) {
     return 0;
 }
 </code></pre>
-<h2 id="delay_ms" class="section-header"><a href="#delay_ms">18.4 delay_ms</a></h2>
+<h2 id="delay_ms" class="section-header"><a href="#delay_ms">17.4 delay_ms</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L323-L328"><code>display.c</code></a></p>
 <pre><code class="language-c">/// Delay for the specified number of milliseconds
@@ -1421,6 +1432,9 @@ static void delay_ms(uint32_t ms) {
     printf(&quot;TODO Delay %d\r\n&quot;, ms);
 }
 </code></pre>
+<h1 id="appendix-configure-lvgl-for-bl602-and-st7789" class="section-header"><a href="#appendix-configure-lvgl-for-bl602-and-st7789">18 Appendix: Configure LVGL for BL602 and ST7789</a></h1>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_conf.h"><code>lv_conf.h</code></a></p>
 
     
 </body>
