@@ -1179,9 +1179,9 @@ Now we enter the commands to __initialise the SPI Port, ST7789 Display and LVGL 
     ```text
     Init LVGL...
     Trace: lv_init started 	     (lv_obj.c #172 lv_init())
-    Info: lv_init ready 	     (lv_obj.c #231 lv_init())
+    Info:  lv_init ready 	     (lv_obj.c #231 lv_init())
     Trace: Screen create started (lv_obj.c #273 lv_obj_create())
-    Info: Object create ready 	 (lv_obj.c #461 lv_obj_create())
+    Info:  Object create ready 	 (lv_obj.c #461 lv_obj_create())
     ```
 
     The above messages say that the LVGL Library has initialised the screen.
@@ -1205,9 +1205,9 @@ Now we enter the commands to __initialise the SPI Port, ST7789 Display and LVGL 
     Trace: button create started 	(lv_btn.c #61 lv_btn_create())
     Trace: container create started (lv_cont.c #74 lv_cont_create())
     Trace: Object create started 	(lv_obj.c #305 lv_obj_create())
-    Info: Object create ready 	    (lv_obj.c #461 lv_obj_create())
-    Info: container created 	    (lv_cont.c #121 lv_cont_create())
-    Info: button created 	        (lv_btn.c #106 lv_btn_create())
+    Info:  Object create ready 	    (lv_obj.c #461 lv_obj_create())
+    Info:  container created 	    (lv_cont.c #121 lv_cont_create())
+    Info:  button created 	        (lv_btn.c #106 lv_btn_create())
     ```
 
     LVGL has created the __Button Widget__ and its __Widget Container__. 
@@ -1217,8 +1217,8 @@ Now we enter the commands to __initialise the SPI Port, ST7789 Display and LVGL 
     ```text
     Trace: label create started 	(lv_label.c #78 lv_label_create())
     Trace: Object create started 	(lv_obj.c #305 lv_obj_create())
-    Info: Object create ready 	    (lv_obj.c #461 lv_obj_create())
-    Info: label created 	        (lv_label.c #165 lv_label_create())
+    Info:  Object create ready 	    (lv_obj.c #461 lv_obj_create())
+    Info:  label created 	        (lv_label.c #165 lv_label_create())
     ```
 
     Then LVGL creates the __Label Widget__ and assigns it to the Button Widget.
@@ -1241,7 +1241,7 @@ Now we enter the commands to __initialise the SPI Port, ST7789 Display and LVGL 
     Trace: lv_refr_task: started 	(lv_refr.c #177 _lv_disp_refr_task())
     ```
 
-    TODO
+    Remember that we're pretending to be an interactive gadget... And we're calling the LVGL Task Handler to refresh our screen.
 
     ```text
     Flush display: left=0, top=0, right=239, bottom=9...
@@ -1513,9 +1513,13 @@ COMPONENT_SRCDIRS += \
 
 TODO
 
-# SPI DMA works great with RAM, not so much with Flash ROM
+# Can we blast pixels faster?
 
 TODO
+
+SPI DMA works great with RAM, not so much with Flash ROM
+
+(Oh yes I love Colourful Curvy Cables)
 
 # Port ST7789 and LVGL to other BL602 Operating Systems
 
