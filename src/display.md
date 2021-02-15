@@ -1340,6 +1340,28 @@ _Updated LVGL label_
 
 Let's find out how the __ST7789 Display Driver__ for LVGL calls __`write_data`__ and __`transmit_spi`__ to blast pixels over SPI DMA.
 
+Here are the __ST7789 Specifications__ for LVGL: [`lv_conf.h`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_conf.h#L24-L41)
+
+```c
+/// Number of rows in SPI Transmit and Receive Buffers. 
+/// Used by display.c and lv_port_disp.c
+#define BUFFER_ROWS       (10)
+
+/// Horizontal and vertical resolution
+#define LV_HOR_RES_MAX    (240)
+#define LV_VER_RES_MAX    (240)
+
+/// Color depth: 16 (RGB565)
+#define LV_COLOR_DEPTH     16
+
+/// Swap the 2 bytes of RGB565 color
+#define LV_COLOR_16_SWAP   1
+```
+
+Note that LVGL is buffering 10 pixel rows of data in RAM. 
+
+(It's the same buffer we used for rendering photos: __`spi_tx_buf`__)
+
 This function __`disp_flush`__ is called by LVGL to blast a Display Window of pixels from RAM to the ST7789 Display: [`lv_port_disp.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_port_disp.c#L126-L154)
 
 ```c
@@ -1360,7 +1382,7 @@ static void disp_flush(
     ); assert(rc == 0);
 ```
 
-TODO
+Here we set the ST7789 Display Window, calling the `set_window` function that we've defined earlier.
 
 ```c
     //  How many pixels we'll be rendering
@@ -1374,7 +1396,9 @@ TODO
     rc = write_data((const uint8_t *) color_p, len); assert(rc == 0);
 ```
 
-TODO
+Next we call `write_command` and `write_data` to blast the pixel data to ST7789.
+
+As we have seen, `write_data` calls BL602 SPI HAL to blast the data to our SPI Port, accelerated by DMA.
 
 ```c
     //  Inform LVGL that we are done with the flushing
@@ -1382,25 +1406,7 @@ TODO
 }
 ```
 
-TODO
-
-[`lv_conf.h`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_conf.h#L24-L41)
-
-```c
-/// Number of rows in SPI Transmit and Receive Buffers. 
-/// Used by display.c and lv_port_disp.c
-#define BUFFER_ROWS       (10)
-
-//  Horizontal and vertical resolution
-#define LV_HOR_RES_MAX    (240)
-#define LV_VER_RES_MAX    (240)
-
-//  Color depth: 16 (RGB565)
-#define LV_COLOR_DEPTH     16
-
-//  Swap the 2 bytes of RGB565 color
-#define LV_COLOR_16_SWAP   1
-```
+By convention, we call the LVGL function `lv_disp_flush_ready` when we're done.
 
 ## Initialise Display Driver
 
