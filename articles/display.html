@@ -93,7 +93,7 @@
 <li><a href="#lv_port_disp_init">10.1 lv_port_disp_init</a><ul></ul></li>
 <li><a href="#disp_flush">10.2 disp_flush</a><ul></ul></li>
 <li><a href="#add-lvgl-to-makefile">10.3 Add LVGL to Makefile</a><ul></ul></li></ul></li>
-<li><a href="#can-we-blast-pixels-faster">11 Can we blast pixels faster?</a><ul></ul></li>
+<li><a href="#can-we-blast-pixels-faster">11 Can We Blast Pixels Faster?</a><ul></ul></li>
 <li><a href="#port-st7789-and-lvgl-to-other-bl602-operating-systems">12 Port ST7789 and LVGL to other BL602 Operating Systems</a><ul></ul></li>
 <li><a href="#whats-next">13 What's Next</a><ul></ul></li>
 <li><a href="#notes">14 Notes</a><ul></ul></li>
@@ -1026,16 +1026,24 @@ Info:  label created 	        (lv_label.c #165 lv_label_create())
 Trace: lv_task_handler started 	(lv_task.c #67 lv_task_handler())
 Trace: lv_refr_task: started 	(lv_refr.c #177 _lv_disp_refr_task())
 </code></pre>
-<p>Remember that we're pretending to be an interactive gadget... And we're calling the LVGL Task Handler to refresh our screen.</p>
+<p>Remember that we're pretending to be an interactive gadget... And we're calling the <strong>LVGL Task Handler</strong> to refresh our screen.</p>
+</li>
+<li>
+<p>Then we see this...</p>
 <pre><code class="language-text">Flush display: left=0, top=0, right=239, bottom=9...
 </code></pre>
-<p>TODO</p>
+<p>Here our <strong>ST7789 Display Driver</strong> for LVGL renders the <strong>first 10 rows</strong> of the LVGL screen.</p>
+<p>(Guess where it goes?)</p>
 <pre><code class="language-text">transfer xfer[0].len = 4800
 Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
 Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
 ...
 </code></pre>
-<p>TODO</p>
+<p>Yep our ST7789 Driver calls <strong><code>write_data</code></strong> and <strong><code>transmit_spi</code></strong> to blast the 10 pixel rows to ST7789 over SPI DMA... </p>
+<p><strong>The same way that we render Jewel Changi, Singapore and Our Favourite Feline!</strong></p>
+</li>
+<li>
+<p>Our ST7789 Driver blasts the <strong>next Display Window of 10 pixel rows</strong>...</p>
 <pre><code class="language-text">Flush display: left=0, top=10, right=239, bottom=19...
 ...
 Flush display: left=0, top=20, right=239, bottom=29...
@@ -1045,14 +1053,15 @@ Flush display: left=0, top=30, right=239, bottom=39...
 Flush display: left=0, top=40, right=239, bottom=49...
 ...
 </code></pre>
-<p>TODO</p>
-<pre><code class="language-text">Trace: lv_refr_task: ready 	(lv_refr.c #321 _lv_disp_refr_task())
-Trace: lv_task_handler ready 	(lv_task.c #180 lv_task_handler())
-</code></pre>
+<p>We do this <strong>24 times</strong> to render the entire LVGL Screen.</p>
+<p>LVGL is <strong>super efficient</strong> in using RAM. It doesn't need an entire 240 x 240 Screen Buffer in RAM... Only <strong>10 rows of 240 pixel columns</strong> will do!</p>
+</li>
+<li>
+<p>Finally we see our LVGL Screen (Button and Label) rendered on the ST7789 Display...</p>
 </li>
 </ol>
-<p><img src="https://lupyuen.github.io/images/display-lvgl3.jpg" alt="Button and label rendered with LVGL" /></p>
-<p><em>Button and label rendered with LVGL</em></p>
+<p><img src="https://lupyuen.github.io/images/display-lvgl3.jpg" alt="Button and label rendered by LVGL on Sunday morning" /></p>
+<p><em>Button and label rendered by LVGL on Sunday morning</em></p>
 <h2 id="update-lvgl-widgets" class="section-header"><a href="#update-lvgl-widgets">9.4 Update LVGL Widgets</a></h2>
 <p>TODO</p>
 <pre><code class="language-text"># lvgl_update
@@ -1209,10 +1218,13 @@ COMPONENT_SRCDIRS += \
 </code></pre>
 <p><img src="https://lupyuen.github.io/images/display-addlvgl.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="can-we-blast-pixels-faster" class="section-header"><a href="#can-we-blast-pixels-faster">11 Can we blast pixels faster?</a></h1>
+<h1 id="can-we-blast-pixels-faster" class="section-header"><a href="#can-we-blast-pixels-faster">11 Can We Blast Pixels Faster?</a></h1>
 <p>TODO</p>
+<p>SPI Timeout</p>
+<p>Suppress SPI Receive</p>
 <p>SPI DMA works great with RAM, not so much with Flash ROM</p>
-<p>(Oh yes I love Colourful Curvy Cables)</p>
+<p>Limited by the electrical connection on our breadboard, <a href="https://twitter.com/TLLim888/status/1359433708491534337?s=19">according to TL (Pine64 Boss)</a></p>
+<p>(Sorry... I love Colourful Curvy Cables)</p>
 <h1 id="port-st7789-and-lvgl-to-other-bl602-operating-systems" class="section-header"><a href="#port-st7789-and-lvgl-to-other-bl602-operating-systems">12 Port ST7789 and LVGL to other BL602 Operating Systems</a></h1>
 <p>Like an episode of WandaVision, this article has dropped many hints about its Origin Story... Yep the code in this article came from <strong>PineTime Smartwatch!</strong></p>
 <ul>
