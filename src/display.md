@@ -1408,7 +1408,7 @@ As we have seen, `write_data` calls BL602 SPI HAL to blast the data to our SPI P
 
 By convention, we call the LVGL function `lv_disp_flush_ready` when we're done.
 
-## Initialise Display Driver
+## Register the Display Driver
 
 TODO
 
