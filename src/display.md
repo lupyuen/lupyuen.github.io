@@ -1478,18 +1478,23 @@ _LVGL source code in BL602 demo firmware_
 
 ## Add LVGL to BL602 Firmware
 
-_How did we add the LVGL Source Code to the BL602 Demo Firmware?_
+_How did we add the LVGL Source Code to the BL602 Firmware?_
 
-TODO
+Not so elegantly, I'm afraid. (See pic above)
+
+The LVGL Library lives in a strange place, inside the __`lvgl`__ folder under `sdk_app_st7789`...
 
 ```bash
+#  How we added LVGL Library under sdk_app_st7789
 cd bl_iot_sdk/customer_app/sdk_app_st7789/sdk_app_st7789
 git submodule add https://github.com/lvgl/lvgl
 ```
 
-TODO
+_Why is this a strange place?_
 
-[`make_scripts_riscv/ component_wrapper.mk`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/make_scripts_riscv/component_wrapper.mk#L42-L51)
+Because the BL602 SDK Makefile doesn't recognise subfolders under `sdk_app_st7789`.
+
+Here's the hack we added to a Common Makefile to support LVGL: [`make_scripts_riscv/ component_wrapper.mk`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/make_scripts_riscv/component_wrapper.mk#L42-L51)
 
 ```text
 # TODO: Add LVGL to build in a cleaner way
@@ -1504,7 +1509,7 @@ COMPONENT_SRCDIRS += \
 	./lvgl/src/lv_widgets
 ```
 
-TODO
+Hopefully somebody will find a better way to add LVGL to BL602 Firmware.
 
 # Can We Blast Pixels Faster?
 
