@@ -1338,9 +1338,9 @@ _Updated LVGL label_
 
 # ST7789 Display Driver for LVGL
 
-TODO
+Let's find out how the __ST7789 Display Driver__ for LVGL calls __`write_data`__ and __`transmit_spi`__ to blast pixels over SPI DMA.
 
-[`lv_port_disp.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_port_disp.c#L126-L154)
+This function __`disp_flush`__ is called by LVGL to blast a Display Window of pixels from RAM to the ST7789 Display: [`lv_port_disp.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_port_disp.c#L126-L154)
 
 ```c
 /// ST7789 Command for Memory Write. From https://github.com/almindor/st7789/blob/master/src/instruction.rs
