@@ -724,7 +724,7 @@ Let's run the ST7789 Demo Firmware for BL602.
 
 Download the Firmware Binary File __`sdk_app_st7789.bin`__ from...
 
--  [__Binary Release of `sdk_app_st7789`__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v4.0.1)
+-  [__`sdk_app_st7789` Binary Release__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v4.0.1)
 
 Alternatively, we may build the Firmware Binary File `sdk_app_st7789.bin` from the [source code](https://github.com/lupyuen/bl_iot_sdk/tree/st7789/customer_app/sdk_app_st7789)...
 
@@ -845,7 +845,7 @@ Let's enter some commands to display an image!
     # display_init
     ```
 
-    This command calls the function `test_display_init` and `init_display`, which we have seen earlier.
+    This command calls the functions `test_display_init` and `init_display`, which we have seen earlier.
 
 1.  We should see this...
 
@@ -1093,105 +1093,192 @@ _LVGL demo firmware for BL602_
 
 # Run the LVGL Firmware
 
-TODO
+Now we run the LVGL Demo Firmware for BL602... Which happens to be the same ST7889 Demo Firmware that we've run earlier: __`sdk_app_st7789.bin`__
 
-display_init
+-  [__`sdk_app_st7789` Binary Release__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v4.0.1)
 
-TODO
+-  [__`sdk_app_st7789` Source Code__](https://github.com/lupyuen/bl_iot_sdk/tree/st7789/customer_app/sdk_app_st7789)
 
-lvgl_init
+1.  Flash the `sdk_app_st7789.bin` firmware to our BL602 Board
 
-TODO
+1.  Set BL602 to __Normal Mode__ (Non-Flashing) and restart the board.
 
-```text
-# lvgl_init
-Init LVGL...
-Trace: lv_init started 	(lv_obj.c #172 lv_init())
-Info: lv_init ready 	(lv_obj.c #231 lv_init())
-Trace: Screen create started 	(lv_obj.c #273 lv_obj_create())
-Info: Object create ready 	(lv_obj.c #461 lv_obj_create())
-Trace: Screen create started 	(v_obj.c #273 lv_obj_create())
-Info: Object create ready 	(lv_obj.c #461 lv_obj_create())
-Trace: Screen create started 	(lv_obj.c #273 lv_obj_create())
-Info: Object create ready 	(lv_obj.c #461 lv_obj_create())
-```
+    For PineCone, this means setting the onboard jumper (IO 8) to the `L` Position [(Like this)](https://lupyuen.github.io/images/pinecone-jumperl.jpg)
 
-## Create LVGL Screen
+1.  Connect to BL602's UART Port at 2 Mbps like so...
 
-TODO
+    __For Linux:__
 
-```text
-# lvgl_create
-Create LVGL widgets...
-Trace: button create started 	(lv_btn.c #61 lv_btn_create())
-Trace: container create started 	(lv_cont.c #74 lv_cont_create())
-Trace: Object create started 	(lv_obj.c #305 lv_obj_create())
-Info: Object create ready 	(lv_obj.c #461 lv_obj_create())
-Info: container created 	(lv_cont.c #121 lv_cont_create())
-Info: button created 	(lv_btn.c #106 lv_btn_create())
-Trace: label create started 	(lv_label.c #78 lv_label_create())
-Trace: Object create started 	(lv_obj.c #305 lv_obj_create())
-Info: Object create ready 	(lv_obj.c #461 lv_obj_create())
-Info: label created 	(lv_label.c #165 lv_label_create())
-```
+    ```bash
+    sudo screen /dev/ttyUSB0 2000000
+    ```
 
-lvgl_render
+    __For macOS:__ Use CoolTerm ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
 
-TODO
+    __For Windows:__ Use `putty` ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
 
-```text
-# lvgl_render
-Render LVGL display...
-Trace: lv_task_handler started 	(lv_task.c #67 lv_task_handler())
-Trace: lv_refr_task: started 	(lv_refr.c #177 _lv_disp_refr_task())
-```
+    [More details on connecting to BL602](https://lupyuen.github.io/articles/flash#watch-the-firmware-run)
 
-TODO
+## Initialise ST7789 and LVGL
 
-```text
-Flush display: left=0, top=0, right=239, bottom=9...
-```
+Now we enter the commands to __initialise the SPI Port, ST7789 Display and LVGL Library__...
 
-TODO
+1.  Press Enter to reveal the command prompt.
 
-```text
-Set CS pin 14 to low
-hal_spi_transfer = 1
-transfer xfer[0].len = 4800
-Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
-Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
-Tx DMA src=0x42013058, dest=0x4000a288, size=2048, si=1, di=0, i=0
-Rx DMA src=0x4000a28c, dest=0x4200f768, size=2048, si=0, di=1, i=0
-Tx DMA src=0x42013858, dest=0x4000a288, size=704, si=1, di=0, i=1
-Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704, si=0, di=1, i=1
-```
+1.  Enter `help` to see the available commands...
 
-TODO
+    ```text
+    # help
+    ====User Commands====
+    display_init             : Init display
+    display_image            : Display image
+    display_result           : Show result
+    backlight_on             : Backlight on
+    backlight_off            : Backlight off
+    ```
 
-```text
-Flush display: left=0, top=10, right=239, bottom=19...
-...
-Flush display: left=0, top=20, right=239, bottom=29...
-...
-Flush display: left=0, top=30, right=239, bottom=39...
-...
-Flush display: left=0, top=40, right=239, bottom=49...
-...
-```
+    We'll run these LVGL commands in a while...    
 
-TODO
+    ```text
+    lvgl_init                : Init LVGL
+    lvgl_create              : Create LVGL widgets
+    lvgl_update              : Update LVGL widgets
+    lvgl_render              : Render LVGL display
+    ```
 
-```text
-Trace: lv_refr_task: ready 	(lv_refr.c #321 _lv_disp_refr_task())
-Trace: lv_task_handler ready 	(lv_task.c #180 lv_task_handler())
-# 
-```
+    And these shortcuts too...
+
+    ```text
+    1                        : Init display, display image
+    2                        : Init display, init LVGL, create LVGL widgets, render LVGL display
+    3                        : Update LVGL widgets, render LVGL display
+    ```
+
+1.  Enter this command to __initialise the SPI Port and ST7789 Display__...
+
+    ```text
+    # display_init
+    ```
+
+    This command calls the functions __`test_display_init` and `init_display`__, which we have seen earlier.
+
+    (We've covered this command earlier under ST7789 Demo Firmware)
+
+1.  Enter this command to __initialise the LVGL Library__
+
+    ```text
+    # lvgl_init
+    ```
+
+    This command calls the function __`lvgl_init`__, which we have seen earlier.
+
+1.  We should see this...
+
+    ```text
+    Init LVGL...
+    Trace: lv_init started 	     (lv_obj.c #172 lv_init())
+    Info: lv_init ready 	     (lv_obj.c #231 lv_init())
+    Trace: Screen create started (lv_obj.c #273 lv_obj_create())
+    Info: Object create ready 	 (lv_obj.c #461 lv_obj_create())
+    ```
+
+    The above messages say that the LVGL Library has initialised the screen.
+    
+    We're all set to create some LVGL Widgets!
+
+## Create LVGL Widgets
+
+1.  Enter this command to __create the LVGL Widgets__ (Button and Label)...
+
+    ```text
+    # lvgl_create
+    ```
+
+    This command calls the function __`lvgl_create`__, which we have seen earlier.
+
+1.  We should see this...
+
+    ```text
+    Create LVGL widgets...
+    Trace: button create started 	(lv_btn.c #61 lv_btn_create())
+    Trace: container create started (lv_cont.c #74 lv_cont_create())
+    Trace: Object create started 	(lv_obj.c #305 lv_obj_create())
+    Info: Object create ready 	    (lv_obj.c #461 lv_obj_create())
+    Info: container created 	    (lv_cont.c #121 lv_cont_create())
+    Info: button created 	        (lv_btn.c #106 lv_btn_create())
+    ```
+
+    LVGL has created the __Button Widget__ and its __Widget Container__. 
+    
+    (Because our Button Widget will contain a Label Widget)
+
+    ```text
+    Trace: label create started 	(lv_label.c #78 lv_label_create())
+    Trace: Object create started 	(lv_obj.c #305 lv_obj_create())
+    Info: Object create ready 	    (lv_obj.c #461 lv_obj_create())
+    Info: label created 	        (lv_label.c #165 lv_label_create())
+    ```
+
+    Then LVGL creates the __Label Widget__ and assigns it to the Button Widget.
+
+## Render LVGL Screen
+
+1.  Enter this command to __render the LVGL Screen__...
+
+    ```text
+    # lvgl_render
+    ```
+
+    This command calls the function __`lvgl_render`__, which we have seen earlier.
+
+1.  We should see this...
+
+    ```text
+    Render LVGL display...
+    Trace: lv_task_handler started 	(lv_task.c #67 lv_task_handler())
+    Trace: lv_refr_task: started 	(lv_refr.c #177 _lv_disp_refr_task())
+    ```
+
+    TODO
+
+    ```text
+    Flush display: left=0, top=0, right=239, bottom=9...
+    ```
+
+    TODO
+
+    ```text
+    transfer xfer[0].len = 4800
+    Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
+    Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
+    ...
+    ```
+
+    TODO
+
+    ```text
+    Flush display: left=0, top=10, right=239, bottom=19...
+    ...
+    Flush display: left=0, top=20, right=239, bottom=29...
+    ...
+    Flush display: left=0, top=30, right=239, bottom=39...
+    ...
+    Flush display: left=0, top=40, right=239, bottom=49...
+    ...
+    ```
+
+    TODO
+
+    ```text
+    Trace: lv_refr_task: ready 	(lv_refr.c #321 _lv_disp_refr_task())
+    Trace: lv_task_handler ready 	(lv_task.c #180 lv_task_handler())
+    ```
 
 ![Button and label rendered with LVGL](https://lupyuen.github.io/images/display-lvgl3.jpg)
 
 _Button and label rendered with LVGL_
 
-## Update LVGL Screen
+## Update LVGL Widgets
 
 TODO
 
