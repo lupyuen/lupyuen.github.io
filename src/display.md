@@ -1472,16 +1472,27 @@ Finally we register the ST7789 Display Driver with LVGL. We have just configured
 
 1.  Call `disp_flush` to blast the pixels from `spi_tx_buf` to ST7789 over SPI DMA
 
+![LVGL source code in BL602 demo firmware](https://lupyuen.github.io/images/display-addlvgl.png)
+
+_LVGL source code in BL602 demo firmware_
+
 ## Add LVGL to BL602 Firmware
 
 _How did we add the LVGL Source Code to the BL602 Demo Firmware?_
 
 TODO
 
+```bash
+cd bl_iot_sdk/customer_app/sdk_app_st7789/sdk_app_st7789
+git submodule add https://github.com/lvgl/lvgl
+```
+
+TODO
+
 [`make_scripts_riscv/ component_wrapper.mk`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/make_scripts_riscv/component_wrapper.mk#L42-L51)
 
 ```text
-#### TODO: Add LVGL to build in a cleaner way
+# TODO: Add LVGL to build in a cleaner way
 COMPONENT_SRCDIRS += \
 	./lvgl/src/lv_core \
 	./lvgl/src/lv_draw \
@@ -1492,8 +1503,6 @@ COMPONENT_SRCDIRS += \
 	./lvgl/src/lv_themes \
 	./lvgl/src/lv_widgets
 ```
-
-![](https://lupyuen.github.io/images/display-addlvgl.png)
 
 TODO
 
@@ -1510,6 +1519,10 @@ SPI DMA works great with RAM, not so much with Flash ROM
 Limited by the electrical connection on our breadboard, [according to TL (Pine64 Boss)](https://twitter.com/TLLim888/status/1359433708491534337?s=19)
 
 (Sorry... I love Colourful Curvy Cables)
+
+![Watch face for PineTime Smartwatch rendered with LVGL](https://lupyuen.github.io/images/timesync-title.png)
+
+_Watch face for PineTime Smartwatch rendered with LVGL_
 
 # Port ST7789 and LVGL to other BL602 Operating Systems
 
