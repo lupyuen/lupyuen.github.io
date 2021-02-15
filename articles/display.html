@@ -1101,16 +1101,27 @@ Flush display: left=45, top=122, right=196, bottom=133...
 <pre><code class="language-c">/// ST7789 Command for Memory Write. From https://github.com/almindor/st7789/blob/master/src/instruction.rs
 #define RAMWR 0x2C
 
-static void disp_flush(lv_disp_drv_t * disp_drv, const lv_area_t * area, lv_color_t * color_p) {
-    //  Set the ST7789 display window
-    int rc = set_window(area-&gt;x1, area-&gt;y1, area-&gt;x2, area-&gt;y2); assert(rc == 0);
+static void disp_flush(
+    lv_disp_drv_t *disp_drv,  //  LVGL Display Driver
+    const lv_area_t *area,    //  Display Window Coordinates
+    lv_color_t * color_p      //  Pixel data (RGB565)
+) {
+    //  Set the ST7789 display window coordinates to (Left, Top), (Right, Bottom)
+    int rc = set_window(
+        area-&gt;x1,  //  Left
+        area-&gt;y1,  //  Top
+        area-&gt;x2,  //  Right
+        area-&gt;y2   //  Bottom
+    ); assert(rc == 0);
 </code></pre>
 <p>TODO</p>
-<pre><code class="language-c">    //  Memory Write: Write the bytes to display (ST7789 Datasheet Page 202)
+<pre><code class="language-c">    //  How many pixels we'll be rendering
     int len = 
         ((area-&gt;x2 - area-&gt;x1) + 1) *  //  Width
         ((area-&gt;y2 - area-&gt;y1) + 1) *  //  Height
         2;                             //  2 bytes per pixel
+
+    //  Memory Write: Write the bytes to display (ST7789 Datasheet Page 202)
     rc = write_command(RAMWR, NULL, 0); assert(rc == 0);
     rc = write_data((const uint8_t *) color_p, len); assert(rc == 0);
 </code></pre>
