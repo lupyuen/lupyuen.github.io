@@ -85,8 +85,10 @@
 <li><a href="#render-the-display">8.3 Render the Display</a><ul></ul></li>
 <li><a href="#initialise-lvgl">8.4 Initialise LVGL</a><ul></ul></li></ul></li>
 <li><a href="#run-the-lvgl-firmware">9 Run the LVGL Firmware</a><ul>
-<li><a href="#create-lvgl-screen">9.1 Create LVGL Screen</a><ul></ul></li>
-<li><a href="#update-lvgl-screen">9.2 Update LVGL Screen</a><ul></ul></li></ul></li>
+<li><a href="#initialise-st7789-and-lvgl">9.1 Initialise ST7789 and LVGL</a><ul></ul></li>
+<li><a href="#create-lvgl-widgets">9.2 Create LVGL Widgets</a><ul></ul></li>
+<li><a href="#render-lvgl-screen">9.3 Render LVGL Screen</a><ul></ul></li>
+<li><a href="#update-lvgl-widgets">9.4 Update LVGL Widgets</a><ul></ul></li></ul></li>
 <li><a href="#lvgl-display-driver-for-st7789">10 LVGL Display Driver for ST7789</a><ul>
 <li><a href="#lv_port_disp_init">10.1 lv_port_disp_init</a><ul></ul></li>
 <li><a href="#disp_flush">10.2 disp_flush</a><ul></ul></li>
@@ -634,7 +636,7 @@ int set_window(uint8_t left, uint8_t top, uint8_t right, uint8_t bottom) {
 <p>Let's run the ST7789 Demo Firmware for BL602.</p>
 <p>Download the Firmware Binary File <strong><code>sdk_app_st7789.bin</code></strong> from...</p>
 <ul>
-<li><a href="https://github.com/lupyuen/bl_iot_sdk/releases/tag/v4.0.1"><strong>Binary Release of <code>sdk_app_st7789</code></strong></a></li>
+<li><a href="https://github.com/lupyuen/bl_iot_sdk/releases/tag/v4.0.1"><strong><code>sdk_app_st7789</code> Binary Release</strong></a></li>
 </ul>
 <p>Alternatively, we may build the Firmware Binary File <code>sdk_app_st7789.bin</code> from the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/st7789/customer_app/sdk_app_st7789">source code</a>...</p>
 <pre><code class="language-bash"># Download the st7789 branch of lupyuen's bl_iot_sdk
@@ -725,7 +727,7 @@ lvgl_render              : Render LVGL display
 <p>Enter this command...</p>
 <pre><code class="language-text"># display_init
 </code></pre>
-<p>This command calls the function <code>test_display_init</code> and <code>init_display</code>, which we have seen earlier.</p>
+<p>This command calls the functions <code>test_display_init</code> and <code>init_display</code>, which we have seen earlier.</p>
 </li>
 <li>
 <p>We should see this...</p>
@@ -901,41 +903,125 @@ int lvgl_init(void) {
 <p><img src="https://lupyuen.github.io/images/display-firmware.jpg" alt="LVGL demo firmware for BL602" /></p>
 <p><em>LVGL demo firmware for BL602</em></p>
 <h1 id="run-the-lvgl-firmware" class="section-header"><a href="#run-the-lvgl-firmware">9 Run the LVGL Firmware</a></h1>
-<p>TODO</p>
-<p>display_init</p>
-<p>TODO</p>
-<p>lvgl_init</p>
-<p>TODO</p>
+<p>Now we run the LVGL Demo Firmware for BL602... Which happens to be the same ST7889 Demo Firmware that we've run earlier: <strong><code>sdk_app_st7789.bin</code></strong></p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/releases/tag/v4.0.1"><strong><code>sdk_app_st7789</code> Binary Release</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/st7789/customer_app/sdk_app_st7789"><strong><code>sdk_app_st7789</code> Source Code</strong></a></p>
+</li>
+</ul>
+<ol>
+<li>
+<p>Flash the <code>sdk_app_st7789.bin</code> firmware to our BL602 Board</p>
+</li>
+<li>
+<p>Set BL602 to <strong>Normal Mode</strong> (Non-Flashing) and restart the board.</p>
+<p>For PineCone, this means setting the onboard jumper (IO 8) to the <code>L</code> Position <a href="https://lupyuen.github.io/images/pinecone-jumperl.jpg">(Like this)</a></p>
+</li>
+<li>
+<p>Connect to BL602's UART Port at 2 Mbps like so...</p>
+<p><strong>For Linux:</strong></p>
+<pre><code class="language-bash">sudo screen /dev/ttyUSB0 2000000
+</code></pre>
+<p><strong>For macOS:</strong> Use CoolTerm (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
+<p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
+<p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">More details on connecting to BL602</a></p>
+</li>
+</ol>
+<h2 id="initialise-st7789-and-lvgl" class="section-header"><a href="#initialise-st7789-and-lvgl">9.1 Initialise ST7789 and LVGL</a></h2>
+<p>Now we enter the commands to <strong>initialise the SPI Port, ST7789 Display and LVGL Library</strong>...</p>
+<ol>
+<li>
+<p>Press Enter to reveal the command prompt.</p>
+</li>
+<li>
+<p>Enter <code>help</code> to see the available commands...</p>
+<pre><code class="language-text"># help
+====User Commands====
+display_init             : Init display
+display_image            : Display image
+display_result           : Show result
+backlight_on             : Backlight on
+backlight_off            : Backlight off
+</code></pre>
+<p>We'll run these LVGL commands in a while...</p>
+<pre><code class="language-text">lvgl_init                : Init LVGL
+lvgl_create              : Create LVGL widgets
+lvgl_update              : Update LVGL widgets
+lvgl_render              : Render LVGL display
+</code></pre>
+<p>And these shortcuts too...</p>
+<pre><code class="language-text">1                        : Init display, display image
+2                        : Init display, init LVGL, create LVGL widgets, render LVGL display
+3                        : Update LVGL widgets, render LVGL display
+</code></pre>
+</li>
+<li>
+<p>Enter this command to <strong>initialise the SPI Port and ST7789 Display</strong>...</p>
+<pre><code class="language-text"># display_init
+</code></pre>
+<p>This command calls the functions <strong><code>test_display_init</code> and <code>init_display</code></strong>, which we have seen earlier.</p>
+<p>(We've covered this command earlier under ST7789 Demo Firmware)</p>
+</li>
+<li>
+<p>Enter this command to <strong>initialise the LVGL Library</strong></p>
 <pre><code class="language-text"># lvgl_init
-Init LVGL...
-Trace: lv_init started 	(lv_obj.c #172 lv_init())
-Info: lv_init ready 	(lv_obj.c #231 lv_init())
-Trace: Screen create started 	(lv_obj.c #273 lv_obj_create())
-Info: Object create ready 	(lv_obj.c #461 lv_obj_create())
-Trace: Screen create started 	(v_obj.c #273 lv_obj_create())
-Info: Object create ready 	(lv_obj.c #461 lv_obj_create())
-Trace: Screen create started 	(lv_obj.c #273 lv_obj_create())
-Info: Object create ready 	(lv_obj.c #461 lv_obj_create())
 </code></pre>
-<h2 id="create-lvgl-screen" class="section-header"><a href="#create-lvgl-screen">9.1 Create LVGL Screen</a></h2>
-<p>TODO</p>
+<p>This command calls the function <strong><code>lvgl_init</code></strong>, which we have seen earlier.</p>
+</li>
+<li>
+<p>We should see this...</p>
+<pre><code class="language-text">Init LVGL...
+Trace: lv_init started 	     (lv_obj.c #172 lv_init())
+Info: lv_init ready 	     (lv_obj.c #231 lv_init())
+Trace: Screen create started (lv_obj.c #273 lv_obj_create())
+Info: Object create ready 	 (lv_obj.c #461 lv_obj_create())
+</code></pre>
+<p>The above messages say that the LVGL Library has initialised the screen.</p>
+<p>We're all set to create some LVGL Widgets!</p>
+</li>
+</ol>
+<h2 id="create-lvgl-widgets" class="section-header"><a href="#create-lvgl-widgets">9.2 Create LVGL Widgets</a></h2>
+<ol>
+<li>
+<p>Enter this command to <strong>create the LVGL Widgets</strong> (Button and Label)...</p>
 <pre><code class="language-text"># lvgl_create
-Create LVGL widgets...
-Trace: button create started 	(lv_btn.c #61 lv_btn_create())
-Trace: container create started 	(lv_cont.c #74 lv_cont_create())
-Trace: Object create started 	(lv_obj.c #305 lv_obj_create())
-Info: Object create ready 	(lv_obj.c #461 lv_obj_create())
-Info: container created 	(lv_cont.c #121 lv_cont_create())
-Info: button created 	(lv_btn.c #106 lv_btn_create())
-Trace: label create started 	(lv_label.c #78 lv_label_create())
-Trace: Object create started 	(lv_obj.c #305 lv_obj_create())
-Info: Object create ready 	(lv_obj.c #461 lv_obj_create())
-Info: label created 	(lv_label.c #165 lv_label_create())
 </code></pre>
-<p>lvgl_render</p>
-<p>TODO</p>
+<p>This command calls the function <strong><code>lvgl_create</code></strong>, which we have seen earlier.</p>
+</li>
+<li>
+<p>We should see this...</p>
+<pre><code class="language-text">Create LVGL widgets...
+Trace: button create started 	(lv_btn.c #61 lv_btn_create())
+Trace: container create started (lv_cont.c #74 lv_cont_create())
+Trace: Object create started 	(lv_obj.c #305 lv_obj_create())
+Info: Object create ready 	    (lv_obj.c #461 lv_obj_create())
+Info: container created 	    (lv_cont.c #121 lv_cont_create())
+Info: button created 	        (lv_btn.c #106 lv_btn_create())
+</code></pre>
+<p>LVGL has created the <strong>Button Widget</strong> and its <strong>Widget Container</strong>. </p>
+<p>(Because our Button Widget will contain a Label Widget)</p>
+<pre><code class="language-text">Trace: label create started 	(lv_label.c #78 lv_label_create())
+Trace: Object create started 	(lv_obj.c #305 lv_obj_create())
+Info: Object create ready 	    (lv_obj.c #461 lv_obj_create())
+Info: label created 	        (lv_label.c #165 lv_label_create())
+</code></pre>
+<p>Then LVGL creates the <strong>Label Widget</strong> and assigns it to the Button Widget.</p>
+</li>
+</ol>
+<h2 id="render-lvgl-screen" class="section-header"><a href="#render-lvgl-screen">9.3 Render LVGL Screen</a></h2>
+<ol>
+<li>
+<p>Enter this command to <strong>render the LVGL Screen</strong>...</p>
 <pre><code class="language-text"># lvgl_render
-Render LVGL display...
+</code></pre>
+<p>This command calls the function <strong><code>lvgl_render</code></strong>, which we have seen earlier.</p>
+</li>
+<li>
+<p>We should see this...</p>
+<pre><code class="language-text">Render LVGL display...
 Trace: lv_task_handler started 	(lv_task.c #67 lv_task_handler())
 Trace: lv_refr_task: started 	(lv_refr.c #177 _lv_disp_refr_task())
 </code></pre>
@@ -943,15 +1029,10 @@ Trace: lv_refr_task: started 	(lv_refr.c #177 _lv_disp_refr_task())
 <pre><code class="language-text">Flush display: left=0, top=0, right=239, bottom=9...
 </code></pre>
 <p>TODO</p>
-<pre><code class="language-text">Set CS pin 14 to low
-hal_spi_transfer = 1
-transfer xfer[0].len = 4800
+<pre><code class="language-text">transfer xfer[0].len = 4800
 Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
 Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
-Tx DMA src=0x42013058, dest=0x4000a288, size=2048, si=1, di=0, i=0
-Rx DMA src=0x4000a28c, dest=0x4200f768, size=2048, si=0, di=1, i=0
-Tx DMA src=0x42013858, dest=0x4000a288, size=704, si=1, di=0, i=1
-Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704, si=0, di=1, i=1
+...
 </code></pre>
 <p>TODO</p>
 <pre><code class="language-text">Flush display: left=0, top=10, right=239, bottom=19...
@@ -966,11 +1047,12 @@ Flush display: left=0, top=40, right=239, bottom=49...
 <p>TODO</p>
 <pre><code class="language-text">Trace: lv_refr_task: ready 	(lv_refr.c #321 _lv_disp_refr_task())
 Trace: lv_task_handler ready 	(lv_task.c #180 lv_task_handler())
-# 
 </code></pre>
+</li>
+</ol>
 <p><img src="https://lupyuen.github.io/images/display-lvgl3.jpg" alt="Button and label rendered with LVGL" /></p>
 <p><em>Button and label rendered with LVGL</em></p>
-<h2 id="update-lvgl-screen" class="section-header"><a href="#update-lvgl-screen">9.2 Update LVGL Screen</a></h2>
+<h2 id="update-lvgl-widgets" class="section-header"><a href="#update-lvgl-widgets">9.4 Update LVGL Widgets</a></h2>
 <p>TODO</p>
 <pre><code class="language-text"># lvgl_update
 Update LVGL widgets...
