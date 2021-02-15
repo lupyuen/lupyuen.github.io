@@ -2,11 +2,13 @@
 
 📝 _16 Feb 2021_
 
-In our last article we configured [__PineCone BL602__](https://lupyuen.github.io/articles/pinecone) to connect to a simple SPI Peripheral: BME280 Sensor for Temperature / Humidity / Air Pressure. [(See this)](https://lupyuen.github.io/articles/spi)
+In our last article we configured [__PineCone BL602__](https://lupyuen.github.io/articles/pinecone) to connect to a simple SPI Peripheral: __BME280 Sensor__. [(See this)](https://lupyuen.github.io/articles/spi)
 
 Today we shall connect PineCone BL602 / Pinenut / Any BL602 Board to a more powerful SPI Peripheral: __ST7789 Display Controller__.
 
 We'll be using the __LVGL Graphics Library__ to render text and graphics to the ST7789 Display.
+
+_(Yep LVGL runs on RISC-V!)_
 
 The Demo Firmware in this article will run on PineCone, Pinenut and __any BL602 Board__.
 
@@ -1289,39 +1291,46 @@ _Button and label rendered by LVGL on Sunday morning_
 
 ## Update LVGL Widgets
 
-TODO
+1.  Enter this command to __update the LVGL Widgets__...
 
-```text
-# lvgl_update
-Update LVGL widgets...
-```
+    ```text
+    # lvgl_update
+    ```
 
-TODO
+    This command calls the function __`lvgl_update`__, which we have seen earlier.
 
-```text
-# lvgl_render
-Render LVGL display...
-Trace: lv_task_handler started 	(lv_task.c #67 lv_task_handler())
-Trace: lv_refr_task: started 	(lv_refr.c #177 _lv_disp_refr_task())
-Flush display: left=45, top=107, right=196, bottom=121...
-...
-Flush display: left=45, top=122, right=196, bottom=133...
-...
-```
+    Remember that `lvgl_update` updates the label text to...
 
-TODO
+    ```text
+    SO COOL! #1
+    ```
 
-```text
-Trace: lv_refr_task: ready 	(lv_refr.c #321 _lv_disp_refr_task())
-Trace: lv_task_handler ready 	(lv_task.c #180 lv_task_handler())
-# 
-```
+1.  Then this command to __render the updated LVGL Screen__...
+
+    ```text
+    # lvgl_render
+    ```
+
+    (We've used this command in the previous section)
+
+1.  This time LVGL renders our updated screen a little differently...
+
+    ```text
+    Flush display: left=45, top=107, right=196, bottom=121...
+    ...
+    Flush display: left=45, top=122, right=196, bottom=133...
+    ...
+    ```
+
+    Instead of re-rendering all 240 pixel rows, __LVGL renders only the pixel rows that have changed!__
+
+    (Very clever!)
+
+    That's why LVGL is perfect for RISC-V IoT Gadgets that have CPU and RAM constraints.
 
 ![Updated LVGL label](https://lupyuen.github.io/images/display-cool3.jpg)
 
 _Updated LVGL label_
-
-TODO
 
 [__Watch the Demo Video on YouTube__](https://www.youtube.com/watch?v=PkP-CeYLXUA)
 
