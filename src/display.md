@@ -1408,11 +1408,15 @@ As we have seen, `write_data` calls BL602 SPI HAL to blast the data to our SPI P
 
 By convention, we call the LVGL function `lv_disp_flush_ready` when we're done.
 
+And that's how __`disp_flush`__ blasts a Display Window of pixels from RAM to the ST7789 Display over SPI DMA!
+
 ## Register the Display Driver
 
-TODO
+_How does LVGL call `disp_flush`?_
 
-[`lv_port_disp.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_port_disp.c#L64-L113)
+When we register our ST7789 Display Driver with LVGL, we set `disp_flush` as the __Callback Function__ for rendering a Display Window of pixels.
+
+Here's how we __register our ST7789 Display Driver__ with LVGL: [`lv_port_disp.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_port_disp.c#L64-L113)
 
 ```c
 void lv_port_disp_init(void) {
@@ -1432,10 +1436,12 @@ void lv_port_disp_init(void) {
     );
 ```
 
-TODO
+Here in __`lv_port_disp_init`__ we set __`spi_tx_buf`__ as the buffer for 10 rows of pixels.
+
+Recall that `spi_tx_buf` is the SPI Transmit Buffer we used for rendering the photo on ST7789.
 
 ```c
-    //  Register the display in LVGL
+    //  Init the display driver
     lv_disp_drv_t disp_drv;        //  Descriptor of a display driver
     lv_disp_drv_init(&disp_drv);   //  Basic initialization
 
@@ -1445,15 +1451,30 @@ TODO
 
     //  Set the callback for copying the buffer's content to the display
     disp_drv.flush_cb = disp_flush;
-    //  Set the display buffer
+```
+
+In the code above we initialise the ST7789 Display Driver and set the Callback Function to `disp_flush`.
+
+```c
+    //  Set the buffer for the display driver
     disp_drv.buffer = &disp_buf_1;
 
-    //  Register the driver
+    //  Register the display driver
     lv_disp_drv_register(&disp_drv);
 }
 ```
 
-## Add LVGL to Makefile
+Finally we register the ST7789 Display Driver with LVGL. We have just configured LVGL to...
+
+1.  Use `spi_tx_buf` as the rendering buffer in RAM
+
+    (Containing 10 rows of pixels)
+
+1.  Call `disp_flush` to blast the pixels from `spi_tx_buf` to ST7789 over SPI DMA
+
+## Add LVGL to BL602 Firmware
+
+_How did we add the LVGL Source Code to the BL602 Demo Firmware?_
 
 TODO
 
