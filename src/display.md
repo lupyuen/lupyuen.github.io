@@ -1241,13 +1241,17 @@ Now we enter the commands to __initialise the SPI Port, ST7789 Display and LVGL 
     Trace: lv_refr_task: started 	(lv_refr.c #177 _lv_disp_refr_task())
     ```
 
-    Remember that we're pretending to be an interactive gadget... And we're calling the LVGL Task Handler to refresh our screen.
+    Remember that we're pretending to be an interactive gadget... And we're calling the __LVGL Task Handler__ to refresh our screen.
+
+1.  Then we see this...
 
     ```text
     Flush display: left=0, top=0, right=239, bottom=9...
     ```
 
-    TODO
+    Here our __ST7789 Display Driver__ for LVGL renders the __first 10 rows__ of the LVGL screen.
+
+    (Guess where it goes?)
 
     ```text
     transfer xfer[0].len = 4800
@@ -1256,7 +1260,11 @@ Now we enter the commands to __initialise the SPI Port, ST7789 Display and LVGL 
     ...
     ```
 
-    TODO
+    Yep our ST7789 Driver calls __`write_data`__ and __`transmit_spi`__ to blast the 10 pixel rows to ST7789 over SPI DMA... 
+    
+    __The same way that we render Jewel Changi, Singapore and Our Favourite Feline!__
+
+1.  Our ST7789 Driver blasts the __next Display Window of 10 pixel rows__...
 
     ```text
     Flush display: left=0, top=10, right=239, bottom=19...
@@ -1268,17 +1276,16 @@ Now we enter the commands to __initialise the SPI Port, ST7789 Display and LVGL 
     Flush display: left=0, top=40, right=239, bottom=49...
     ...
     ```
+    
+    We do this __24 times__ to render the entire LVGL Screen.
 
-    TODO
+    LVGL is __super efficient__ in using RAM. It doesn't need an entire 240 x 240 Screen Buffer in RAM... Only __10 rows of 240 pixel columns__ will do!
 
-    ```text
-    Trace: lv_refr_task: ready 	(lv_refr.c #321 _lv_disp_refr_task())
-    Trace: lv_task_handler ready 	(lv_task.c #180 lv_task_handler())
-    ```
+1.  Finally we see our LVGL Screen (Button and Label) rendered on the ST7789 Display...
 
-![Button and label rendered with LVGL](https://lupyuen.github.io/images/display-lvgl3.jpg)
+![Button and label rendered by LVGL on Sunday morning](https://lupyuen.github.io/images/display-lvgl3.jpg)
 
-_Button and label rendered with LVGL_
+_Button and label rendered by LVGL on Sunday morning_
 
 ## Update LVGL Widgets
 
@@ -1513,13 +1520,19 @@ COMPONENT_SRCDIRS += \
 
 TODO
 
-# Can we blast pixels faster?
+# Can We Blast Pixels Faster?
 
 TODO
 
+SPI Timeout
+
+Suppress SPI Receive
+
 SPI DMA works great with RAM, not so much with Flash ROM
 
-(Oh yes I love Colourful Curvy Cables)
+Limited by the electrical connection on our breadboard, [according to TL (Pine64 Boss)](https://twitter.com/TLLim888/status/1359433708491534337?s=19)
+
+(Sorry... I love Colourful Curvy Cables)
 
 # Port ST7789 and LVGL to other BL602 Operating Systems
 
