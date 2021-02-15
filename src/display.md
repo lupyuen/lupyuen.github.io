@@ -1093,11 +1093,13 @@ _LVGL demo firmware for BL602_
 
 # Run the LVGL Firmware
 
-Now we run the LVGL Demo Firmware for BL602... Which happens to be the same ST7889 Demo Firmware that we've run earlier: __`sdk_app_st7789.bin`__
+Now we run the LVGL Demo Firmware for BL602... Which happens to be the same ST7789 Demo Firmware that we've run earlier: __`sdk_app_st7789.bin`__
 
 -  [__`sdk_app_st7789` Binary Release__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v4.0.1)
 
 -  [__`sdk_app_st7789` Source Code__](https://github.com/lupyuen/bl_iot_sdk/tree/st7789/customer_app/sdk_app_st7789)
+
+Follow these steps...
 
 1.  Flash the `sdk_app_st7789.bin` firmware to our BL602 Board
 
