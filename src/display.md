@@ -1566,6 +1566,8 @@ static void hal_spi_dma_trans(...) {
 
 Then enter the `display_result` command to dump the Interrupt Counters and Error Codes. [(See this)](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/demo.c#L116-L130)
 
+Also check the Appendix on enabling Assertion Failure messages.
+
 ![Watch face for PineTime Smartwatch rendered with LVGL](https://lupyuen.github.io/images/timesync-title.png)
 
 _Watch face for PineTime Smartwatch rendered with LVGL_
@@ -1628,32 +1630,44 @@ TODO
 
 1.  This article is the expanded version of [this meandering Twitter Thread](https://twitter.com/MisterTechBlog/status/1358691021073178624?s=20)
 
-# Appendix: Show Assertion Failures
+# Appendix: Show Assertion Failures in BL602 Firmware
 
-TODO
+By default, firmware created by the BL602 IoT SDK will NOT show Assertion Failure messages.
 
-[`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/demo.c#L224-L235)
+So this code...
 
 ```c
-/// TODO: We now show assertion failures in development.
-/// For production, comment out this function to use the system default,
+#include <assert.h>
+
+//  Stop with an assertion failure
+assert(false);
+```
+
+...Will fail silently, without any messages, and loop forever.
+
+(Not so productive for troubleshooting firmware problems!)
+
+To show Assertion Failure messages, we add this function to our BL602 programs: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/demo.c#L224-L235)
+
+```c
+/// TODO: We now show assertion failures 
+/// in development. For production, comment 
+/// out this function to use the system default,
 /// which loops forever without messages.
-void __assert_func(const char *file, int line, const char *func, const char *failedexpr)
+void __assert_func(const char *file, int line, 
+    const char *func, const char *failedexpr)
 {
-    //  Show the assertion failure, file, line, function name
+    //  Show the assertion failure, file, 
+    //  line, function name
 	printf("Assertion Failed \"%s\": file \"%s\", line %d%s%s\r\n",
         failedexpr, file, line, func ? ", function: " : "",
         func ? func : "");
-	//  Loop forever, do not pass go, do not collect $200
+
+	//  Loop forever, do not pass go, 
+    //  do not collect $200
 	for (;;) {}
 }
 ```
-
-# Appendix: Configure LVGL for BL602 and ST7789
-
-TODO
-
-[`lv_conf.h`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_conf.h)
 
 # Appendix: macOS Script to Build, Flash and Run BL602 Firmware
 
@@ -1772,3 +1786,9 @@ static void delay_ms(uint32_t ms) {
     printf("TODO Delay %d\r\n", ms);
 }
 ```
+
+# Appendix: Configure LVGL for BL602 and ST7789
+
+TODO
+
+[`lv_conf.h`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_conf.h)
