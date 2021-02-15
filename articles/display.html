@@ -1270,7 +1270,9 @@ COMPONENT_SRCDIRS += \
 <p><img src="https://lupyuen.github.io/images/timesync-title.png" alt="Watch face for PineTime Smartwatch rendered with LVGL" /></p>
 <p><em>Watch face for PineTime Smartwatch rendered with LVGL</em></p>
 <h1 id="port-st7789-and-lvgl-to-other-bl602-operating-systems" class="section-header"><a href="#port-st7789-and-lvgl-to-other-bl602-operating-systems">12 Port ST7789 and LVGL to other BL602 Operating Systems</a></h1>
-<p>Like an episode of WandaVision, this article has dropped many hints about its Origin Story... Yep the code in this article came from <strong>PineTime Smartwatch!</strong></p>
+<p><em>The ST7789 and LVGL code for BL602 runs on FreeRTOS today. Will the code run on other Embedded Operating Systems? Like Mynewt, RIOT, Zephyr, Rust, ...</em></p>
+<p>Yes! Like an episode of WandaVision, this article has dropped many hints about its Origin Story... </p>
+<p><strong>The code in this article came from PineTime Smartwatch!</strong></p>
 <ul>
 <li>
 <p><a href="https://gitlab.com/lupyuen/pinetime_lvgl_mynewt/-/tree/master/"><strong>Check out the <code>pinetime_lvgl_mynewt</code> repo</strong></a></p>
@@ -1279,9 +1281,12 @@ COMPONENT_SRCDIRS += \
 <p>And the reused source files: <strong><a href="https://gitlab.com/lupyuen/pinetime_lvgl_mynewt/-/blob/master/src/pinetime/display.c"><code>display.c</code></a>, <a href="https://gitlab.com/lupyuen/pinetime_lvgl_mynewt/-/blob/master/src/pinetime/lvgl.c"><code>lvgl.c</code></a>, <a href="https://gitlab.com/lupyuen/pinetime_lvgl_mynewt/-/blob/master/lv_conf.h"><code>lv_conf.h</code></a>, <a href="https://gitlab.com/lupyuen/pinetime_lvgl_mynewt/-/blob/master/src/pinetime/lv_port_disp.c"><code>lv_port_disp.c</code></a></strong></p>
 </li>
 </ul>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/display-battery.jpg" alt="" /></p>
-<p>TODO</p>
+<p>On PineTime this ST7789 + LVGL code (or a highly similar variant) worked OK on <strong>FreeRTOS, Mynewt, RIOT, Zephyr... Even Rust!</strong></p>
+<p>Sure PineTime runs on an Arm Microcontroller (nRF52). But all we did today was to swap out PineTime's SPI and GPIO HAL (Hardware Abstraction Layer)... And drop in the <strong>BL602 SPI and GPIO HAL!</strong></p>
+<p>It took only a few days to get the PineTime ST7789 + LVGL code running on BL602.</p>
+<p>That's the beauty of coding Embedded Programs with HAL... Our programs become <strong>much easier to port to other Microcontrollers and Operating Systems.</strong></p>
+<p><img src="https://lupyuen.github.io/images/display-battery.jpg" alt="PineCone BL602 with ST7789 Display powered by battery" /></p>
+<p><em>PineCone BL602 with ST7789 Display powered by battery</em></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">13 What's Next</a></h1>
 <p>TODO</p>
 <p>There's plenty more code in the <a href="https://github.com/bouffalolab/bl_iot_sdk"><strong>BL602 IoT SDK</strong></a> to be deciphered and documented: <strong>UART, ADC, DAC, WiFi, Bluetooth LE,</strong> ...</p>
