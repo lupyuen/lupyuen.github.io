@@ -93,7 +93,7 @@
 <li><a href="#lv_port_disp_init">10.1 lv_port_disp_init</a><ul></ul></li>
 <li><a href="#disp_flush">10.2 disp_flush</a><ul></ul></li>
 <li><a href="#add-lvgl-to-makefile">10.3 Add LVGL to Makefile</a><ul></ul></li></ul></li>
-<li><a href="#spi-dma-works-great-with-ram-not-so-much-with-flash-rom">11 SPI DMA works great with RAM, not so much with Flash ROM</a><ul></ul></li>
+<li><a href="#can-we-blast-pixels-faster">11 Can we blast pixels faster?</a><ul></ul></li>
 <li><a href="#port-st7789-and-lvgl-to-other-bl602-operating-systems">12 Port ST7789 and LVGL to other BL602 Operating Systems</a><ul></ul></li>
 <li><a href="#whats-next">13 What's Next</a><ul></ul></li>
 <li><a href="#notes">14 Notes</a><ul></ul></li>
@@ -976,9 +976,9 @@ lvgl_render              : Render LVGL display
 <p>We should see this...</p>
 <pre><code class="language-text">Init LVGL...
 Trace: lv_init started 	     (lv_obj.c #172 lv_init())
-Info: lv_init ready 	     (lv_obj.c #231 lv_init())
+Info:  lv_init ready 	     (lv_obj.c #231 lv_init())
 Trace: Screen create started (lv_obj.c #273 lv_obj_create())
-Info: Object create ready 	 (lv_obj.c #461 lv_obj_create())
+Info:  Object create ready 	 (lv_obj.c #461 lv_obj_create())
 </code></pre>
 <p>The above messages say that the LVGL Library has initialised the screen.</p>
 <p>We're all set to create some LVGL Widgets!</p>
@@ -998,16 +998,16 @@ Info: Object create ready 	 (lv_obj.c #461 lv_obj_create())
 Trace: button create started 	(lv_btn.c #61 lv_btn_create())
 Trace: container create started (lv_cont.c #74 lv_cont_create())
 Trace: Object create started 	(lv_obj.c #305 lv_obj_create())
-Info: Object create ready 	    (lv_obj.c #461 lv_obj_create())
-Info: container created 	    (lv_cont.c #121 lv_cont_create())
-Info: button created 	        (lv_btn.c #106 lv_btn_create())
+Info:  Object create ready 	    (lv_obj.c #461 lv_obj_create())
+Info:  container created 	    (lv_cont.c #121 lv_cont_create())
+Info:  button created 	        (lv_btn.c #106 lv_btn_create())
 </code></pre>
 <p>LVGL has created the <strong>Button Widget</strong> and its <strong>Widget Container</strong>. </p>
 <p>(Because our Button Widget will contain a Label Widget)</p>
 <pre><code class="language-text">Trace: label create started 	(lv_label.c #78 lv_label_create())
 Trace: Object create started 	(lv_obj.c #305 lv_obj_create())
-Info: Object create ready 	    (lv_obj.c #461 lv_obj_create())
-Info: label created 	        (lv_label.c #165 lv_label_create())
+Info:  Object create ready 	    (lv_obj.c #461 lv_obj_create())
+Info:  label created 	        (lv_label.c #165 lv_label_create())
 </code></pre>
 <p>Then LVGL creates the <strong>Label Widget</strong> and assigns it to the Button Widget.</p>
 </li>
@@ -1026,7 +1026,7 @@ Info: label created 	        (lv_label.c #165 lv_label_create())
 Trace: lv_task_handler started 	(lv_task.c #67 lv_task_handler())
 Trace: lv_refr_task: started 	(lv_refr.c #177 _lv_disp_refr_task())
 </code></pre>
-<p>TODO</p>
+<p>Remember that we're pretending to be an interactive gadget... And we're calling the LVGL Task Handler to refresh our screen.</p>
 <pre><code class="language-text">Flush display: left=0, top=0, right=239, bottom=9...
 </code></pre>
 <p>TODO</p>
@@ -1209,8 +1209,10 @@ COMPONENT_SRCDIRS += \
 </code></pre>
 <p><img src="https://lupyuen.github.io/images/display-addlvgl.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="spi-dma-works-great-with-ram-not-so-much-with-flash-rom" class="section-header"><a href="#spi-dma-works-great-with-ram-not-so-much-with-flash-rom">11 SPI DMA works great with RAM, not so much with Flash ROM</a></h1>
+<h1 id="can-we-blast-pixels-faster" class="section-header"><a href="#can-we-blast-pixels-faster">11 Can we blast pixels faster?</a></h1>
 <p>TODO</p>
+<p>SPI DMA works great with RAM, not so much with Flash ROM</p>
+<p>(Oh yes I love Colourful Curvy Cables)</p>
 <h1 id="port-st7789-and-lvgl-to-other-bl602-operating-systems" class="section-header"><a href="#port-st7789-and-lvgl-to-other-bl602-operating-systems">12 Port ST7789 and LVGL to other BL602 Operating Systems</a></h1>
 <p>Like an episode of WandaVision, this article has dropped many hints about its Origin Story... Yep the code in this article came from <strong>PineTime Smartwatch!</strong></p>
 <ul>
