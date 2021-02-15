@@ -89,10 +89,9 @@
 <li><a href="#create-lvgl-widgets">9.2 Create LVGL Widgets</a><ul></ul></li>
 <li><a href="#render-lvgl-screen">9.3 Render LVGL Screen</a><ul></ul></li>
 <li><a href="#update-lvgl-widgets">9.4 Update LVGL Widgets</a><ul></ul></li></ul></li>
-<li><a href="#lvgl-display-driver-for-st7789">10 LVGL Display Driver for ST7789</a><ul>
-<li><a href="#lv_port_disp_init">10.1 lv_port_disp_init</a><ul></ul></li>
-<li><a href="#disp_flush">10.2 disp_flush</a><ul></ul></li>
-<li><a href="#add-lvgl-to-makefile">10.3 Add LVGL to Makefile</a><ul></ul></li></ul></li>
+<li><a href="#st7789-display-driver-for-lvgl">10 ST7789 Display Driver for LVGL</a><ul>
+<li><a href="#initialise-display-driver">10.1 Initialise Display Driver</a><ul></ul></li>
+<li><a href="#add-lvgl-to-makefile">10.2 Add LVGL to Makefile</a><ul></ul></li></ul></li>
 <li><a href="#can-we-blast-pixels-faster">11 Can We Blast Pixels Faster?</a><ul></ul></li>
 <li><a href="#port-st7789-and-lvgl-to-other-bl602-operating-systems">12 Port ST7789 and LVGL to other BL602 Operating Systems</a><ul></ul></li>
 <li><a href="#whats-next">13 What's Next</a><ul></ul></li>
@@ -901,8 +900,8 @@ int lvgl_init(void) {
 }
 </code></pre>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/display-firmware.jpg" alt="LVGL demo firmware for BL602" /></p>
-<p><em>LVGL demo firmware for BL602</em></p>
+<p><img src="https://lupyuen.github.io/images/display-log.jpg" alt="LVGL demo firmware running on CoolTerm" /></p>
+<p><em>LVGL demo firmware running on CoolTerm</em></p>
 <h1 id="run-the-lvgl-firmware" class="section-header"><a href="#run-the-lvgl-firmware">9 Run the LVGL Firmware</a></h1>
 <p>Now we run the LVGL Demo Firmware for BL602... Which happens to be the same ST7789 Demo Firmware that we've run earlier: <strong><code>sdk_app_st7789.bin</code></strong></p>
 <ul>
@@ -1096,84 +1095,18 @@ Flush display: left=45, top=122, right=196, bottom=133...
 <p><em>Updated LVGL label</em></p>
 <p><a href="https://www.youtube.com/watch?v=PkP-CeYLXUA"><strong>Watch the Demo Video on YouTube</strong></a></p>
 <p><a href="https://gist.github.com/lupyuen/9f26626d7c8081ae64d58eba70e07a80">Check out the complete log</a></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/display-log.jpg" alt="" /></p>
-<p>TODO</p>
-<h1 id="lvgl-display-driver-for-st7789" class="section-header"><a href="#lvgl-display-driver-for-st7789">10 LVGL Display Driver for ST7789</a></h1>
-<p>TODO</p>
-<h2 id="lv_port_disp_init" class="section-header"><a href="#lv_port_disp_init">10.1 lv_port_disp_init</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_port_disp.c#L64-L113"><code>lv_port_disp.c</code></a></p>
-<pre><code class="language-c">void lv_port_disp_init(void)
-{
-    /*-------------------------
-     * Initialize your display
-     * -----------------------*/
-    disp_init();
-</code></pre>
-<p>TODO</p>
-<pre><code class="language-c">    /*-----------------------------
-     * Create a buffer for drawing
-     *----------------------------*/
-
-    /* LVGL requires a buffer where it draws the objects. The buffer's has to be greater than 1 display row
-     * We create ONE buffer with 10 rows. LVGL will draw the display's content here and write it to the display
-     * */
-
-    static lv_disp_buf_t disp_buf_1;
-    lv_disp_buf_init(&amp;disp_buf_1, spi_tx_buf, NULL, LV_HOR_RES_MAX * BUFFER_ROWS);   /*Initialize the display buffer*/
-</code></pre>
-<p>TODO</p>
-<pre><code class="language-c">    /*-----------------------------------
-     * Register the display in LVGL
-     *----------------------------------*/
-
-    lv_disp_drv_t disp_drv;                         /*Descriptor of a display driver*/
-    lv_disp_drv_init(&amp;disp_drv);                    /*Basic initialization*/
-</code></pre>
-<p>TODO</p>
-<pre><code class="language-c">    /*Set up the functions to access to your display*/
-
-    /*Set the resolution of the display*/
-    disp_drv.hor_res = LV_HOR_RES_MAX;
-    disp_drv.ver_res = LV_VER_RES_MAX;
-</code></pre>
-<p>TODO</p>
-<pre><code class="language-c">    /*Used to copy the buffer's content to the display*/
-    disp_drv.flush_cb = disp_flush;
-</code></pre>
-<p>TODO</p>
-<pre><code class="language-c">    /*Set a display buffer*/
-    disp_drv.buffer = &amp;disp_buf_1;
-</code></pre>
-<p>TODO</p>
-<pre><code class="language-c">    /*Finally register the driver*/
-    lv_disp_drv_register(&amp;disp_drv);
-}
-</code></pre>
-<h2 id="disp_flush" class="section-header"><a href="#disp_flush">10.2 disp_flush</a></h2>
+<h1 id="st7789-display-driver-for-lvgl" class="section-header"><a href="#st7789-display-driver-for-lvgl">10 ST7789 Display Driver for LVGL</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_port_disp.c#L126-L154"><code>lv_port_disp.c</code></a></p>
-<pre><code class="language-c">/// ST7789 Commands. From https://github.com/almindor/st7789/blob/master/src/instruction.rs
-/// TODO: Move to display.c
+<pre><code class="language-c">/// ST7789 Command for Memory Write. From https://github.com/almindor/st7789/blob/master/src/instruction.rs
 #define RAMWR 0x2C
 
-/* Flush the content of the internal buffer the specific area on the display
- * You can use DMA or any hardware acceleration to do this operation in the background but
- * 'lv_disp_flush_ready()' has to be called when finished. */
-static void disp_flush(lv_disp_drv_t * disp_drv, const lv_area_t * area, lv_color_t * color_p)
-{
-    printf(&quot;Flush display: left=%d, top=%d, right=%d, bottom=%d...\r\n&quot;, area-&gt;x1, area-&gt;y1, area-&gt;x2, area-&gt;y2);
-    assert(area-&gt;x2 &gt;= area-&gt;x1);
-    assert(area-&gt;y2 &gt;= area-&gt;y1);
-</code></pre>
-<p>TODO</p>
-<pre><code class="language-c">    //  Set the ST7789 display window
+static void disp_flush(lv_disp_drv_t * disp_drv, const lv_area_t * area, lv_color_t * color_p) {
+    //  Set the ST7789 display window
     int rc = set_window(area-&gt;x1, area-&gt;y1, area-&gt;x2, area-&gt;y2); assert(rc == 0);
 </code></pre>
 <p>TODO</p>
 <pre><code class="language-c">    //  Memory Write: Write the bytes to display (ST7789 Datasheet Page 202)
-    //  TODO: Move to display.c
     int len = 
         ((area-&gt;x2 - area-&gt;x1) + 1) *  //  Width
         ((area-&gt;y2 - area-&gt;y1) + 1) *  //  Height
@@ -1182,36 +1115,64 @@ static void disp_flush(lv_disp_drv_t * disp_drv, const lv_area_t * area, lv_colo
     rc = write_data((const uint8_t *) color_p, len); assert(rc == 0);
 </code></pre>
 <p>TODO</p>
-<pre><code class="language-c">    /* IMPORTANT!!!
-     * Inform the graphics library that you are ready with the flushing*/
+<pre><code class="language-c">    //  Inform LVGL that we are done with the flushing
     lv_disp_flush_ready(disp_drv);
 }
 </code></pre>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_conf.h#L24-L41"><code>lv_conf.h</code></a></p>
-<pre><code class="language-c">/// Number of rows in SPI Transmit and Receive Buffers. Used by display.c and lv_port_disp.c
-#define BUFFER_ROWS             (10)
-</code></pre>
-<p>TODO</p>
-<pre><code class="language-c">/* Maximal horizontal and vertical resolution to support by the library.*/
-#define LV_HOR_RES_MAX          (240)
-#define LV_VER_RES_MAX          (240)
-</code></pre>
-<p>TODO</p>
-<pre><code class="language-c">/* Color depth:
- * - 1:  1 byte per pixel
- * - 8:  RGB332
- * - 16: RGB565
- * - 32: ARGB8888
- */
+<pre><code class="language-c">/// Number of rows in SPI Transmit and Receive Buffers. 
+/// Used by display.c and lv_port_disp.c
+#define BUFFER_ROWS       (10)
+
+//  Horizontal and vertical resolution
+#define LV_HOR_RES_MAX    (240)
+#define LV_VER_RES_MAX    (240)
+
+//  Color depth: 16 (RGB565)
 #define LV_COLOR_DEPTH     16
-</code></pre>
-<p>TODO</p>
-<pre><code class="language-c">/* Swap the 2 bytes of RGB565 color.
- * Useful if the display has a 8 bit interface (e.g. SPI)*/
+
+//  Swap the 2 bytes of RGB565 color
 #define LV_COLOR_16_SWAP   1
 </code></pre>
-<h2 id="add-lvgl-to-makefile" class="section-header"><a href="#add-lvgl-to-makefile">10.3 Add LVGL to Makefile</a></h2>
+<h2 id="initialise-display-driver" class="section-header"><a href="#initialise-display-driver">10.1 Initialise Display Driver</a></h2>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_port_disp.c#L64-L113"><code>lv_port_disp.c</code></a></p>
+<pre><code class="language-c">void lv_port_disp_init(void) {
+    //  Initialize our display
+    disp_init();
+
+    //  Create a buffer for drawing: LVGL requires a buffer where 
+    //  it draws the objects. The buffer has to be greater than 1 
+    //  display row.  We create one buffer spi_tx_buf with 10 rows. 
+    //  LVGL will draw the display's content here and write it to the display
+    static lv_disp_buf_t disp_buf_1;
+    lv_disp_buf_init(
+        &amp;disp_buf_1, 
+        spi_tx_buf, 
+        NULL, 
+        LV_HOR_RES_MAX * BUFFER_ROWS
+    );
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-c">    //  Register the display in LVGL
+    lv_disp_drv_t disp_drv;        //  Descriptor of a display driver
+    lv_disp_drv_init(&amp;disp_drv);   //  Basic initialization
+
+    //  Set the resolution of the display
+    disp_drv.hor_res = LV_HOR_RES_MAX;
+    disp_drv.ver_res = LV_VER_RES_MAX;
+
+    //  Set the callback for copying the buffer's content to the display
+    disp_drv.flush_cb = disp_flush;
+    //  Set the display buffer
+    disp_drv.buffer = &amp;disp_buf_1;
+
+    //  Register the driver
+    lv_disp_drv_register(&amp;disp_drv);
+}
+</code></pre>
+<h2 id="add-lvgl-to-makefile" class="section-header"><a href="#add-lvgl-to-makefile">10.2 Add LVGL to Makefile</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/make_scripts_riscv/component_wrapper.mk#L42-L51"><code>make_scripts_riscv/ component_wrapper.mk</code></a></p>
 <pre><code class="language-text">#### TODO: Add LVGL to build in a cleaner way
