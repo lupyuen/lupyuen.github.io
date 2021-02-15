@@ -1096,8 +1096,8 @@ Flush display: left=45, top=122, right=196, bottom=133...
 <p><a href="https://www.youtube.com/watch?v=PkP-CeYLXUA"><strong>Watch the Demo Video on YouTube</strong></a></p>
 <p><a href="https://gist.github.com/lupyuen/9f26626d7c8081ae64d58eba70e07a80">Check out the complete log</a></p>
 <h1 id="st7789-display-driver-for-lvgl" class="section-header"><a href="#st7789-display-driver-for-lvgl">10 ST7789 Display Driver for LVGL</a></h1>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_port_disp.c#L126-L154"><code>lv_port_disp.c</code></a></p>
+<p>Let's find out how the <strong>ST7789 Display Driver</strong> for LVGL calls <strong><code>write_data</code></strong> and <strong><code>transmit_spi</code></strong> to blast pixels over SPI DMA.</p>
+<p>This function <strong><code>disp_flush</code></strong> is called by LVGL to blast a Display Window of pixels from RAM to the ST7789 Display: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_port_disp.c#L126-L154"><code>lv_port_disp.c</code></a></p>
 <pre><code class="language-c">/// ST7789 Command for Memory Write. From https://github.com/almindor/st7789/blob/master/src/instruction.rs
 #define RAMWR 0x2C
 
