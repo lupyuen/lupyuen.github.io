@@ -1097,6 +1097,23 @@ Flush display: left=45, top=122, right=196, bottom=133...
 <p><a href="https://gist.github.com/lupyuen/9f26626d7c8081ae64d58eba70e07a80">Check out the complete log</a></p>
 <h1 id="st7789-display-driver-for-lvgl" class="section-header"><a href="#st7789-display-driver-for-lvgl">10 ST7789 Display Driver for LVGL</a></h1>
 <p>Let's find out how the <strong>ST7789 Display Driver</strong> for LVGL calls <strong><code>write_data</code></strong> and <strong><code>transmit_spi</code></strong> to blast pixels over SPI DMA.</p>
+<p>Here are the <strong>ST7789 Specifications</strong> for LVGL: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_conf.h#L24-L41"><code>lv_conf.h</code></a></p>
+<pre><code class="language-c">/// Number of rows in SPI Transmit and Receive Buffers. 
+/// Used by display.c and lv_port_disp.c
+#define BUFFER_ROWS       (10)
+
+/// Horizontal and vertical resolution
+#define LV_HOR_RES_MAX    (240)
+#define LV_VER_RES_MAX    (240)
+
+/// Color depth: 16 (RGB565)
+#define LV_COLOR_DEPTH     16
+
+/// Swap the 2 bytes of RGB565 color
+#define LV_COLOR_16_SWAP   1
+</code></pre>
+<p>Note that LVGL is buffering 10 pixel rows of data in RAM. </p>
+<p>(It's the same buffer we used for rendering photos: <strong><code>spi_tx_buf</code></strong>)</p>
 <p>This function <strong><code>disp_flush</code></strong> is called by LVGL to blast a Display Window of pixels from RAM to the ST7789 Display: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_port_disp.c#L126-L154"><code>lv_port_disp.c</code></a></p>
 <pre><code class="language-c">/// ST7789 Command for Memory Write. From https://github.com/almindor/st7789/blob/master/src/instruction.rs
 #define RAMWR 0x2C
@@ -1114,7 +1131,7 @@ static void disp_flush(
         area-&gt;y2   //  Bottom
     ); assert(rc == 0);
 </code></pre>
-<p>TODO</p>
+<p>Here we set the ST7789 Display Window, calling the <code>set_window</code> function that we've defined earlier.</p>
 <pre><code class="language-c">    //  How many pixels we'll be rendering
     int len = 
         ((area-&gt;x2 - area-&gt;x1) + 1) *  //  Width
@@ -1125,27 +1142,13 @@ static void disp_flush(
     rc = write_command(RAMWR, NULL, 0); assert(rc == 0);
     rc = write_data((const uint8_t *) color_p, len); assert(rc == 0);
 </code></pre>
-<p>TODO</p>
+<p>Next we call <code>write_command</code> and <code>write_data</code> to blast the pixel data to ST7789.</p>
+<p>As we have seen, <code>write_data</code> calls BL602 SPI HAL to blast the data to our SPI Port, accelerated by DMA.</p>
 <pre><code class="language-c">    //  Inform LVGL that we are done with the flushing
     lv_disp_flush_ready(disp_drv);
 }
 </code></pre>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_conf.h#L24-L41"><code>lv_conf.h</code></a></p>
-<pre><code class="language-c">/// Number of rows in SPI Transmit and Receive Buffers. 
-/// Used by display.c and lv_port_disp.c
-#define BUFFER_ROWS       (10)
-
-//  Horizontal and vertical resolution
-#define LV_HOR_RES_MAX    (240)
-#define LV_VER_RES_MAX    (240)
-
-//  Color depth: 16 (RGB565)
-#define LV_COLOR_DEPTH     16
-
-//  Swap the 2 bytes of RGB565 color
-#define LV_COLOR_16_SWAP   1
-</code></pre>
+<p>By convention, we call the LVGL function <code>lv_disp_flush_ready</code> when we're done.</p>
 <h2 id="initialise-display-driver" class="section-header"><a href="#initialise-display-driver">10.1 Initialise Display Driver</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_port_disp.c#L64-L113"><code>lv_port_disp.c</code></a></p>
