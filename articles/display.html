@@ -1204,13 +1204,16 @@ static void disp_flush(
 <p><img src="https://lupyuen.github.io/images/display-addlvgl.png" alt="LVGL source code in BL602 demo firmware" /></p>
 <p><em>LVGL source code in BL602 demo firmware</em></p>
 <h2 id="add-lvgl-to-bl602-firmware" class="section-header"><a href="#add-lvgl-to-bl602-firmware">10.2 Add LVGL to BL602 Firmware</a></h2>
-<p><em>How did we add the LVGL Source Code to the BL602 Demo Firmware?</em></p>
-<p>TODO</p>
-<pre><code class="language-bash">cd bl_iot_sdk/customer_app/sdk_app_st7789/sdk_app_st7789
+<p><em>How did we add the LVGL Source Code to the BL602 Firmware?</em></p>
+<p>Not so elegantly, I'm afraid. (See pic above)</p>
+<p>The LVGL Library lives in a strange place, inside the <strong><code>lvgl</code></strong> folder under <code>sdk_app_st7789</code>...</p>
+<pre><code class="language-bash">#  How we added LVGL Library under sdk_app_st7789
+cd bl_iot_sdk/customer_app/sdk_app_st7789/sdk_app_st7789
 git submodule add https://github.com/lvgl/lvgl
 </code></pre>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/make_scripts_riscv/component_wrapper.mk#L42-L51"><code>make_scripts_riscv/ component_wrapper.mk</code></a></p>
+<p><em>Why is this a strange place?</em></p>
+<p>Because the BL602 SDK Makefile doesn't recognise subfolders under <code>sdk_app_st7789</code>.</p>
+<p>Here's the hack we added to a Common Makefile to support LVGL: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/make_scripts_riscv/component_wrapper.mk#L42-L51"><code>make_scripts_riscv/ component_wrapper.mk</code></a></p>
 <pre><code class="language-text"># TODO: Add LVGL to build in a cleaner way
 COMPONENT_SRCDIRS += \
 	./lvgl/src/lv_core \
@@ -1222,7 +1225,7 @@ COMPONENT_SRCDIRS += \
 	./lvgl/src/lv_themes \
 	./lvgl/src/lv_widgets
 </code></pre>
-<p>TODO</p>
+<p>Hopefully somebody will find a better way to add LVGL to BL602 Firmware.</p>
 <h1 id="can-we-blast-pixels-faster" class="section-header"><a href="#can-we-blast-pixels-faster">11 Can We Blast Pixels Faster?</a></h1>
 <p>TODO</p>
 <p>SPI Timeout</p>
