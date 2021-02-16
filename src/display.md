@@ -481,8 +481,6 @@ Recall that the ST7789 Backlight is controlled by the Backlight Pin. Let's __fli
 
 Also we execute an ST7789 __Hardware Reset__ by toggling the Reset Pin.
 
-(More about `backlight_on` and `hard_reset` in a while)
-
 Here comes the first of eight ST7789 Commands: We send the Software Reset command to ST7789...
 
 ```c
@@ -491,6 +489,8 @@ Here comes the first of eight ST7789 Commands: We send the Software Reset comman
     rc = write_command(SWRESET, NULL, 0);  assert(rc == 0);
     delay_ms(200);  //  Need to wait at least 200 milliseconds
 ```
+
+(More about `backlight_on`, `hard_reset` and `delay_ms` in the Appendix. [See this](https://lupyuen.github.io/articles/display#appendix-st7789-reset-backlight-and-delay))
 
 Next we send three commands to ST7789 to __disable sleep__, define the __vertical scrolling__, and set the __display mode__...
 
