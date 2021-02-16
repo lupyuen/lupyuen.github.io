@@ -942,6 +942,10 @@ Congratulations! Jewel Changi, Singapore (or Our Favourite Cat) now appears on o
 
 [Check out the complete log](https://gist.github.com/lupyuen/9f26626d7c8081ae64d58eba70e07a80)
 
+![PineCone BL602 rendering on ST7789 a photo of Jewel Changi, Singapore](https://lupyuen.github.io/images/display-jewel6.jpg)
+
+_PineCone BL602 rendering on ST7789 a photo of [Jewel Changi, Singapore](https://en.wikipedia.org/wiki/Jewel_Changi_Airport)_
+
 # Render Text and Graphics with LVGL
 
 _Rendering photos on BL602 and ST7789 is great... But is it useful for creating IoT Gadgets?_
