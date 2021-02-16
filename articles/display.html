@@ -1267,7 +1267,7 @@ COMPONENT_SRCDIRS += \
     );
 </code></pre>
 <p>Then enter the <code>display_result</code> command to dump the Interrupt Counters and Error Codes. <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/demo.c#L116-L130">(See this)</a></p>
-<p>Also check the Appendix on enabling Assertion Failure messages.</p>
+<p>Remember to enable Assertion Failure messages in our firmware. <a href="https://lupyuen.github.io/articles/display#appendix-show-assertion-failures-in-bl602-firmware">(See this)</a></p>
 <p><img src="https://lupyuen.github.io/images/timesync-title.png" alt="Watch face for PineTime Smartwatch rendered with LVGL" /></p>
 <p><em>Watch face for PineTime Smartwatch rendered with LVGL</em></p>
 <h1 id="port-st7789-and-lvgl-to-other-bl602-operating-systems" class="section-header"><a href="#port-st7789-and-lvgl-to-other-bl602-operating-systems">12 Port ST7789 and LVGL to other BL602 Operating Systems</a></h1>
@@ -1434,7 +1434,140 @@ static void delay_ms(uint32_t ms) {
 </code></pre>
 <h1 id="appendix-configure-lvgl-for-bl602-and-st7789" class="section-header"><a href="#appendix-configure-lvgl-for-bl602-and-st7789">18 Appendix: Configure LVGL for BL602 and ST7789</a></h1>
 <p>TODO</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_conf.h"><code>lv_conf.h</code></a></p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_conf.h"><strong>LVGL Configuration for BL602 and ST7789: <code>lv_conf.h</code></strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lvgl/lvgl/blob/e6de537952c3c2d9f37096938dd5b876c6ba6802/lv_conf_template.h"><strong>LVGL Configuration Template: <code>lv_conf_template.h</code></strong></a></p>
+</li>
+</ul>
+<pre><code class="language-c">#if 1
+//  Previously #if 0
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-c">/// Number of rows in SPI Transmit and Receive Buffers. Used by display.c and lv_port_disp.c
+#define BUFFER_ROWS             (10)
+
+/* Maximal horizontal and vertical resolution to support by the library.*/
+#define LV_HOR_RES_MAX          (240)
+#define LV_VER_RES_MAX          (240)
+
+/* Swap the 2 bytes of RGB565 color.
+ * Useful if the display has a 8 bit interface (e.g. SPI)*/
+#define LV_COLOR_16_SWAP   1
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-c">/* Dot Per Inch: used to initialize default sizes.
+ * E.g. a button with width = LV_DPI / 2 -&gt; half inch wide
+ * (Not so important, you can adjust it to modify default sizes and spaces)*/
+#define LV_DPI              100     /*[px]*/
+//  Previously 130
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-c">/* Size of the memory used by `lv_mem_alloc` in bytes (&gt;= 2kB)*/
+#  define LV_MEM_SIZE    (4U * 1024U)
+//  Previously (32U * 1024U)
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-c">/* Drag throw slow-down in [%]. Greater value -&gt; faster slow-down */
+#define LV_INDEV_DEF_DRAG_THROW           20
+//  Previously 10
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-c">/* 1: Enable shadow drawing on rectangles*/
+#define LV_USE_SHADOW           0
+//  Previously 1
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-c">/* 1: Enable GPU interface*/
+#define LV_USE_GPU              0   /*Only enables `gpu_fill_cb` and `gpu_blend_cb` in the disp. drv- */
+//  Previously 1
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-c">/* 1: Enable file system (might be required for images */
+#define LV_USE_FILESYSTEM       0
+//  Previously 1
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-c">/*1: Add a `user_data` to drivers and objects*/
+#define LV_USE_USER_DATA        1
+//  Previously 1
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-c">/*1: Enable the log module*/
+#define LV_USE_LOG      1  //  TODO: Should be set to 0 for production
+//  Previously 0
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-c">/* How important log should be added:
+ * LV_LOG_LEVEL_TRACE       A lot of logs to give detailed information
+ * LV_LOG_LEVEL_INFO        Log important events
+ * LV_LOG_LEVEL_WARN        Log if something unwanted happened but didn't cause a problem
+ * LV_LOG_LEVEL_ERROR       Only critical issue, when the system may fail
+ * LV_LOG_LEVEL_NONE        Do not log anything
+ */
+#  define LV_LOG_LEVEL    LV_LOG_LEVEL_TRACE
+//  Previously LV_LOG_LEVEL_WARN
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-c">/* 1: Print the log with 'printf';
+ * 0: user need to register a callback with `lv_log_register_print_cb`*/
+#  define LV_LOG_PRINTF   1
+//  Previously 0
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-c">/* If Debug is enabled LittelvGL validates the parameters of the functions.
+ * If an invalid parameter is found an error log message is printed and
+ * the MCU halts at the error. (`LV_USE_LOG` should be enabled)
+ * If you are debugging the MCU you can pause
+ * the debugger to see exactly where the issue is.
+ *
+ * The behavior of asserts can be overwritten by redefining them here.
+ * E.g. #define LV_ASSERT_MEM(p)  &lt;my_assert_code&gt;
+ */
+#define LV_USE_DEBUG        1  //  TODO: Previously 0
+//  Previously 0
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-c">/*Check if the styles are properly initialized. (Fast)*/
+#define LV_USE_ASSERT_STYLE     1
+//  Previously 0
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-c">#define LV_FONT_MONTSERRAT_14    0
+//  Previously 1
+
+#define LV_FONT_MONTSERRAT_24    1
+//  Previously 0
+
+#define LV_THEME_DEFAULT_FONT_SMALL         &amp;lv_font_montserrat_24
+#define LV_THEME_DEFAULT_FONT_NORMAL        &amp;lv_font_montserrat_24
+#define LV_THEME_DEFAULT_FONT_SUBTITLE      &amp;lv_font_montserrat_24
+#define LV_THEME_DEFAULT_FONT_TITLE         &amp;lv_font_montserrat_24
+//  Previously &amp;lv_font_montserrat_14
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-c">#define LV_THEME_DEFAULT_FLAG               LV_THEME_MATERIAL_FLAG_DARK
+//  Previously LV_THEME_MATERIAL_FLAG_LIGHT
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-c">/* If a word is at least this long, will break wherever &quot;prettiest&quot;
+ * To disable, set to a value &lt;= 0 */
+#define LV_TXT_LINE_BREAK_LONG_LEN          12
+//  Previously 0
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-c">/* Draw line more precisely at cost of performance.
+ * Useful if there are lot of lines any minor are visible
+ * 0: No extra precision
+ * 1: Some extra precision
+ * 2: Best precision
+ */
+#  define LV_LINEMETER_PRECISE    0
+//  Previously 1
+</code></pre>
+<p>TODO</p>
 
     
 </body>
