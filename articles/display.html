@@ -105,8 +105,8 @@
 <li><a href="#delay_ms">17.4 delay_ms</a><ul></ul></li></ul></li>
 <li><a href="#appendix-configure-lvgl-for-bl602-and-st7789">18 Appendix: Configure LVGL for BL602 and ST7789</a><ul></ul></li></ul></nav><p>📝 <em>16 Feb 2021</em></p>
 <p>In our last article we configured <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602</strong></a> to connect to a simple SPI Peripheral: <strong>BME280 Sensor</strong>. <a href="https://lupyuen.github.io/articles/spi">(See this)</a></p>
-<p>Today we shall connect PineCone BL602 / Pinenut / Any BL602 Board to a more powerful SPI Peripheral: <strong>ST7789 Display Controller</strong>.</p>
-<p>We'll be using the <strong>LVGL Graphics Library</strong> to render text and graphics to the ST7789 Display.</p>
+<p>Today we shall connect <strong>PineCone BL602 / Pinenut / Any BL602 Board</strong> to a more powerful SPI Peripheral: <strong>ST7789 Display Controller</strong>.</p>
+<p>We'll be using the open-source <strong><a href="https://docs.lvgl.io/latest/en/html/intro/index.html">LVGL Graphics Library</a></strong> to render text and graphics to our ST7789 Display.</p>
 <p><em>(Yep LVGL runs on RISC-V!)</em></p>
 <p>The Demo Firmware in this article will run on PineCone, Pinenut and <strong>any BL602 Board</strong>.</p>
 <p><a href="https://www.youtube.com/watch?v=PkP-CeYLXUA"><strong>Watch the Demo Video on YouTube</strong></a></p>
@@ -1322,11 +1322,18 @@ COMPONENT_SRCDIRS += \
 <p><img src="https://lupyuen.github.io/images/display-battery.jpg" alt="PineCone BL602 with ST7789 Display powered by battery" /></p>
 <p><em>PineCone BL602 with ST7789 Display powered by battery</em></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">13 What's Next</a></h1>
-<p>TODO</p>
-<p>Education</p>
-<p>LoRa</p>
-<p>Deconstructed PineTime</p>
-<p>There's plenty more code in the <a href="https://github.com/bouffalolab/bl_iot_sdk"><strong>BL602 IoT SDK</strong></a> to be deciphered and documented: <strong>UART, ADC, DAC, WiFi, Bluetooth LE,</strong> ...</p>
+<p>Two exciting things coming up...</p>
+<ol>
+<li>
+<p><strong>LoRa on BL602:</strong> We'll be connecting <a href="https://www.semtech.com/products/wireless-rf/lora-transceivers/sx1276"><strong>Semtech SX1276</strong></a> to BL602 to achieve <strong>Triple Wireless Connectivity</strong>... WiFi, Bluetooth LE AND LoRa!</p>
+<p>(Many thanks to <a href="https://twitter.com/MisterTechBlog/status/1358220182309593089?s=20"><strong>RAKwireless</strong></a> for providing a LoRa Node for our BL602 experiments!)</p>
+</li>
+<li>
+<p><strong>BL602 for Education:</strong> We'll be creating more <strong>Open-Source Educational Content</strong> to make BL602 (and RISC-V) fully accessible to learners around the world.</p>
+<p>Hopefully someday we'll see a <a href="https://twitter.com/MisterTechBlog/status/1359676842337210370?s=20"><strong>Deconstructed PineTime Smartwatch</strong></a>: BL602 (RISC-V, WiFi, Bluetooth LE, LoRa) plus the sensors, actuators and display from a smartwatch... Connected on a Breadboard for easy coding!</p>
+</li>
+</ol>
+<p>Meanwhile there's plenty more code in the <a href="https://github.com/bouffalolab/bl_iot_sdk"><strong>BL602 IoT SDK</strong></a> to be deciphered and documented: <strong>UART, ADC, DAC, WiFi, Bluetooth LE,</strong> ...</p>
 <p><a href="https://wiki.pine64.org/wiki/Nutcracker"><strong>Come Join Us... Make BL602 Better!</strong></a></p>
 <p>🙏 👍 😀</p>
 <ul>
