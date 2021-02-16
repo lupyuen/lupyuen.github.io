@@ -1811,14 +1811,17 @@ Here are the differences...
     ```c
     /// Number of rows in SPI Transmit and Receive Buffers. Used by display.c and lv_port_disp.c
     #define BUFFER_ROWS             (10)
+    //  Previously non-existent
 
     /* Maximal horizontal and vertical resolution to support by the library.*/
     #define LV_HOR_RES_MAX          (240)
     #define LV_VER_RES_MAX          (240)
+    //  Previously 480 and 320
 
     /* Swap the 2 bytes of RGB565 color.
     * Useful if the display has a 8 bit interface (e.g. SPI)*/
     #define LV_COLOR_16_SWAP   1
+    //  Previously 0
     ```
 
 1.  TODO
