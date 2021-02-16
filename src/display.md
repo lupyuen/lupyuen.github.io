@@ -936,11 +936,11 @@ Let's enter some commands to display an image!
 
     Which will initialise the ST7789 display and render the image in a single command.
 
+    Congratulations! Jewel Changi, Singapore (or Our Favourite Cat) now appears on our ST7789 Display!
+
     [__Watch the Demo Video on YouTube__](https://www.youtube.com/watch?v=PkP-CeYLXUA)
 
-Congratulations! Jewel Changi, Singapore (or Our Favourite Cat) now appears on our ST7789 Display!
-
-[Check out the complete log](https://gist.github.com/lupyuen/9f26626d7c8081ae64d58eba70e07a80)
+    [__Check out the complete log__](https://gist.github.com/lupyuen/9f26626d7c8081ae64d58eba70e07a80)
 
 ![PineCone BL602 rendering on ST7789 a photo of Jewel Changi, Singapore](https://lupyuen.github.io/images/display-jewel6.jpg)
 
@@ -1336,13 +1336,13 @@ _Button and label rendered by LVGL on Sunday morning_
 
     That's why LVGL is perfect for RISC-V IoT Gadgets that have CPU and RAM constraints.
 
+    [__Watch the Demo Video on YouTube__](https://www.youtube.com/watch?v=PkP-CeYLXUA)
+
+    [__Check out the complete log__](https://gist.github.com/lupyuen/9f26626d7c8081ae64d58eba70e07a80)
+
 ![Updated LVGL label](https://lupyuen.github.io/images/display-cool3.jpg)
 
 _Updated LVGL label_
-
-[__Watch the Demo Video on YouTube__](https://www.youtube.com/watch?v=PkP-CeYLXUA)
-
-[Check out the complete log](https://gist.github.com/lupyuen/9f26626d7c8081ae64d58eba70e07a80)
 
 # ST7789 Display Driver for LVGL
 
