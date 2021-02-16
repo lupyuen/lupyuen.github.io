@@ -1255,6 +1255,7 @@ COMPONENT_SRCDIRS += \
 </code></pre>
 <p>Hopefully somebody will find a better way to add LVGL to BL602 Firmware.</p>
 <p><a href="https://lupyuen.github.io/articles/display#appendix-configure-lvgl-for-bl602-and-st7789"><strong>Check the Appendix for the LVGL Configuration</strong></a></p>
+<p><img src="https://lupyuen.github.io/images/display-cartoon3.png" alt="Transfer SPI Data with DMA limited at 4 Mbps" /></p>
 <h1 id="can-we-blast-pixels-faster" class="section-header"><a href="#can-we-blast-pixels-faster">11 Can We Blast Pixels Faster?</a></h1>
 <p><em>Some people might say that blasting pixels at 4 Mbps is rather slow... Can we do faster?</em></p>
 <p>BL602 SPI is technically rated for <strong>40 MHz</strong> (or 40 Mbps). But during our testing, the SPI DMA Transfer to ST7789 tends to hang at speeds beyond 4 Mbps.</p>
@@ -1325,11 +1326,11 @@ COMPONENT_SRCDIRS += \
 <p>Two exciting things coming up...</p>
 <ol>
 <li>
-<p><strong>LoRa on BL602:</strong> We'll be connecting <a href="https://www.semtech.com/products/wireless-rf/lora-transceivers/sx1276"><strong>Semtech SX1276</strong></a> to BL602 to achieve <strong>Triple Wireless Connectivity</strong>... WiFi, Bluetooth LE AND LoRa!</p>
+<p><strong>LoRa on BL602:</strong> We shall connect <a href="https://www.semtech.com/products/wireless-rf/lora-transceivers/sx1276"><strong>Semtech SX1276</strong></a> to BL602 to achieve <strong>Triple Wireless Connectivity</strong>... WiFi, Bluetooth LE AND LoRa!</p>
 <p>(Many thanks to <a href="https://twitter.com/MisterTechBlog/status/1358220182309593089?s=20"><strong>RAKwireless</strong></a> for providing a LoRa Node for our BL602 experiments!)</p>
 </li>
 <li>
-<p><strong>BL602 for Education:</strong> We'll be creating more <strong>Open-Source Educational Content</strong> to make BL602 (and RISC-V) fully accessible to learners around the world.</p>
+<p><strong>BL602 for Education:</strong> We shall create more <strong>Open-Source Educational Content</strong> to make BL602 (and RISC-V) fully accessible to learners around the world.</p>
 <p>Hopefully someday we'll see a <a href="https://twitter.com/MisterTechBlog/status/1359676842337210370?s=20"><strong>Deconstructed PineTime Smartwatch</strong></a>: BL602 (RISC-V, WiFi, Bluetooth LE, LoRa) plus the sensors, actuators and display from a smartwatch... Connected on a Breadboard for easy coding!</p>
 </li>
 </ol>
@@ -1355,7 +1356,19 @@ COMPONENT_SRCDIRS += \
 <p><img src="https://lupyuen.github.io/images/display-box3.jpg" alt="PineCone BL602 with ST7789 Display in a box" /></p>
 <h1 id="notes" class="section-header"><a href="#notes">14 Notes</a></h1>
 <ol>
-<li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1358691021073178624?s=20">this meandering Twitter Thread</a></li>
+<li>
+<p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1358691021073178624?s=20">this meandering Twitter Thread</a></p>
+</li>
+<li>
+<p>To run a command at startup (like in the photos above and below), modify the function <strong><code>cli_init</code></strong> in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/demo.c#L210-L222"><code>demo.c</code></a></p>
+<pre><code class="language-c">/// Init the command-line interface
+int cli_init(void) {
+    //  To run a command at startup, use this...
+    test_1(&quot;&quot;, 0, 0, NULL);
+    return 0;
+}
+</code></pre>
+</li>
 </ol>
 <h1 id="appendix-show-assertion-failures-in-bl602-firmware" class="section-header"><a href="#appendix-show-assertion-failures-in-bl602-firmware">15 Appendix: Show Assertion Failures in BL602 Firmware</a></h1>
 <p>By default, firmware created by the BL602 IoT SDK will NOT show Assertion Failure messages.</p>
