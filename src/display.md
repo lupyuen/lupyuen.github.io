@@ -69,6 +69,10 @@ _Why are Pins 1, 2 and 14 unused?_
 
     However our ST7789 Display doesn't have a Chip Select Pin, so this pin is unused.
 
+_We're running out of BL602 Pins... Can we reduce the number of pins connected to ST7789?_
+
+Possibly... If we connect ST7789's Reset and Backlight Pins to 3V3 or GND.
+
 ![PineCone BL602 Pins connected to ST7789: 3 (Yellow), 4 (Blue), 5 (White), 11 (Orange) and 12 (Purple)](https://lupyuen.github.io/images/display-connect3.jpg)
 
 _PineCone BL602 Pins connected to ST7789: 3 (Yellow), 4 (Blue), 5 (White), 11 (Orange) and 12 (Purple)_
