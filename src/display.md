@@ -1087,7 +1087,11 @@ int lvgl_init(void) {
 }
 ```
 
-TODO
+Check out the LVGL docs...
+
+-   [__Learn the Basics of LVGL__](https://docs.lvgl.io/latest/en/html/get-started/quick-overview.html#learn-the-basics)
+
+-   [__Examples of LVGL__](https://docs.lvgl.io/latest/en/html/get-started/quick-overview.html#examples)
 
 ![LVGL demo firmware running on CoolTerm](https://lupyuen.github.io/images/display-log.jpg)
 
@@ -1511,6 +1515,8 @@ COMPONENT_SRCDIRS += \
 
 Hopefully somebody will find a better way to add LVGL to BL602 Firmware.
 
+[__Check the Appendix for the LVGL Configuration__](https://lupyuen.github.io/articles/display#appendix-configure-lvgl-for-bl602-and-st7789)
+
 # Can We Blast Pixels Faster?
 
 _Some people might say that blasting pixels at 4 Mbps is rather slow... Can we do faster?_
@@ -1791,22 +1797,22 @@ static void delay_ms(uint32_t ms) {
 
 Here's how we configured LVGL for BL602 and ST7789.
 
-We compare the modified and original LVGL configuration...
+We compare the modified and original LVGL configurations...
 
 -   [__LVGL Configuration for BL602 and ST7789: `lv_conf.h`__](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_conf.h)
 
 -   [__LVGL Configuration Template: `lv_conf_template.h`__](https://github.com/lvgl/lvgl/blob/e6de537952c3c2d9f37096938dd5b876c6ba6802/lv_conf_template.h)
 
-Here are the differences...
+And the differences are...
 
-1.  aa
+1.  This is needed to enable the LVGL configuration...
 
     ```c
     #if 1
     //  Previously #if 0
     ```
 
-1.  TODO
+1.  These are the settings specific to our ST7789 Display Hardware...
 
     ```c
     /// Number of rows in SPI Transmit and Receive Buffers. Used by display.c and lv_port_disp.c
@@ -1824,7 +1830,7 @@ Here are the differences...
     //  Previously 0
     ```
 
-1.  TODO
+1.  We lower the Dots Per Inch because we have a tiny display...
 
     ```c
     /* Dot Per Inch: used to initialize default sizes.
@@ -1834,7 +1840,9 @@ Here are the differences...
     //  Previously 130
     ```
 
-1.  TODO
+1.  LVGL maintains its own Heap Memory for Widgets. We're reserving 4 KB of RAM for LVGL Heap Memory. 
+
+    If we run out of Heap Memory, increase this value.
 
     ```c
     /* Size of the memory used by `lv_mem_alloc` in bytes (>= 2kB)*/
@@ -1842,7 +1850,7 @@ Here are the differences...
     //  Previously (32U * 1024U)
     ```
 
-1.  TODO
+1.  This will be useful when we have a touchscreen like PineTime...
 
     ```c
     /* Drag throw slow-down in [%]. Greater value -> faster slow-down */
@@ -1850,7 +1858,7 @@ Here are the differences...
     //  Previously 10
     ```
 
-1.  TODO
+1.  For efficiency we disable shadows...
 
     ```c
     /* 1: Enable shadow drawing on rectangles*/
@@ -1858,7 +1866,7 @@ Here are the differences...
     //  Previously 1
     ```
 
-1.  TODO
+1.  We're not using a GPU...
 
     ```c
     /* 1: Enable GPU interface*/
@@ -1866,7 +1874,7 @@ Here are the differences...
     //  Previously 1
     ```
 
-1.  TODO
+1.  We don't have a file system...
 
     ```c
     /* 1: Enable file system (might be required for images */
@@ -1874,7 +1882,7 @@ Here are the differences...
     //  Previously 1
     ```
 
-1.  TODO
+1.  The `user_data` field is useful for porting LVGL apps from other platforms (like InfiniTime)...
 
     ```c
     /*1: Add a `user_data` to drivers and objects*/
@@ -1882,7 +1890,7 @@ Here are the differences...
     //  Previously 1
     ```
 
-1.  TODO
+1.  We enable logging. Switch this to 0 in production...
 
     ```c
     /*1: Enable the log module*/
@@ -1890,7 +1898,7 @@ Here are the differences...
     //  Previously 0
     ```
 
-1.  TODO
+1.  We enable detailed logging for easier troubleshooting...
 
     ```c
     /* How important log should be added:
@@ -1904,7 +1912,7 @@ Here are the differences...
     //  Previously LV_LOG_LEVEL_WARN
     ```
 
-1.  TODO
+1.  We show log messages with `printf`...
 
     ```c
     /* 1: Print the log with 'printf';
@@ -1913,7 +1921,7 @@ Here are the differences...
     //  Previously 0
     ```
 
-1.  TODO
+1.  We validate LVGL parameters. Switch this to 0 in production...
 
     ```c
     /* If Debug is enabled LittelvGL validates the parameters of the functions.
@@ -1925,11 +1933,11 @@ Here are the differences...
     * The behavior of asserts can be overwritten by redefining them here.
     * E.g. #define LV_ASSERT_MEM(p)  <my_assert_code>
     */
-    #define LV_USE_DEBUG        1  //  TODO: Previously 0
+    #define LV_USE_DEBUG        1
     //  Previously 0
     ```
 
-1.  TODO
+1.  We validate LVGL Styles. This is useful when porting apps from previous versions of LVGL, because LVGL Styles have been revamped between Versions 6 and 7...
 
     ```c
     /*Check if the styles are properly initialized. (Fast)*/
@@ -1937,7 +1945,7 @@ Here are the differences...
     //  Previously 0
     ```
 
-1.  TODO
+1.  We change the Default Font from size 14 to 24.  We will probably change the Font Size to support different types of apps...
 
     ```c
     #define LV_FONT_MONTSERRAT_14    0
@@ -1953,14 +1961,14 @@ Here are the differences...
     //  Previously &lv_font_montserrat_14
     ```
 
-1.  TODO
+1.  We select Dark Material as the Default Theme. Which is odd because our screens look like Light Material...
 
     ```c
     #define LV_THEME_DEFAULT_FLAG               LV_THEME_MATERIAL_FLAG_DARK
     //  Previously LV_THEME_MATERIAL_FLAG_LIGHT
     ```
 
-1.  TODO
+1.  Since our display is tiny, we break long words...
 
     ```c
     /* If a word is at least this long, will break wherever "prettiest"
@@ -1969,7 +1977,7 @@ Here are the differences...
     //  Previously 0
     ```
 
-1.  TODO
+1.  We don't need no precise lines for our tiny display...
 
     ```c
     /* Draw line more precisely at cost of performance.
@@ -1981,5 +1989,3 @@ Here are the differences...
     #  define LV_LINEMETER_PRECISE    0
     //  Previously 1
     ```
-
-1.  TODO
