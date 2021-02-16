@@ -1098,7 +1098,26 @@ Flush display: left=45, top=122, right=196, bottom=133...
 <p>Instead of re-rendering all 240 pixel rows, <strong>LVGL renders only the pixel rows that have changed!</strong></p>
 <p>(Very clever!)</p>
 <p>That's why LVGL is perfect for RISC-V IoT Gadgets that have CPU and RAM constraints.</p>
+</li>
+<li>
+<p>Here are two Shortcuts: This Shortcut Command...</p>
+<pre><code class="language-text"># 2
+</code></pre>
+<p>Is equivalent to...</p>
+<pre><code class="language-text"># display_init
+# lvgl_init
+# lvgl_create
+# lvgl_render
+</code></pre>
+<p>And this Shortcut Command...</p>
+<pre><code class="language-text"># 3
+</code></pre>
+<p>Is equivalent to...</p>
+<pre><code class="language-text"># lvgl_update
+# lvgl_render
+</code></pre>
 <p><a href="https://www.youtube.com/watch?v=PkP-CeYLXUA"><strong>Watch the Demo Video on YouTube</strong></a></p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/demo.c#L210-L222"><strong>How to run a Command at Startup</strong></a></p>
 <p><a href="https://gist.github.com/lupyuen/9f26626d7c8081ae64d58eba70e07a80"><strong>Check out the complete log</strong></a></p>
 </li>
 </ol>
@@ -1304,6 +1323,9 @@ COMPONENT_SRCDIRS += \
 <p><em>PineCone BL602 with ST7789 Display powered by battery</em></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">13 What's Next</a></h1>
 <p>TODO</p>
+<p>Education</p>
+<p>LoRa</p>
+<p>Deconstructed PineTime</p>
 <p>There's plenty more code in the <a href="https://github.com/bouffalolab/bl_iot_sdk"><strong>BL602 IoT SDK</strong></a> to be deciphered and documented: <strong>UART, ADC, DAC, WiFi, Bluetooth LE,</strong> ...</p>
 <p><a href="https://wiki.pine64.org/wiki/Nutcracker"><strong>Come Join Us... Make BL602 Better!</strong></a></p>
 <p>🙏 👍 😀</p>
@@ -1320,8 +1342,7 @@ COMPONENT_SRCDIRS += \
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/display.md"><code>lupyuen.github.io/src/display.md</code></a></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/display-box3.jpg" alt="" /></p>
+<p><img src="https://lupyuen.github.io/images/display-box3.jpg" alt="PineCone BL602 with ST7789 Display in a box" /></p>
 <h1 id="notes" class="section-header"><a href="#notes">14 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1358691021073178624?s=20">this meandering Twitter Thread</a></li>
@@ -1356,8 +1377,7 @@ void __assert_func(const char *file, int line,
 }
 </code></pre>
 <h1 id="appendix-macos-script-to-build-flash-and-run-bl602-firmware" class="section-header"><a href="#appendix-macos-script-to-build-flash-and-run-bl602-firmware">16 Appendix: macOS Script to Build, Flash and Run BL602 Firmware</a></h1>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/run.sh#L1-L32"><code>run.sh</code></a></p>
+<p>Here's the script I use on macOS to automate the building, flashing and running of BL602 firmware: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/run.sh#L1-L32"><code>run.sh</code></a></p>
 <pre><code class="language-bash">#!/usr/bin/env bash
 #  macOS script to build, flash and run BL602 Firmware
 
@@ -1391,9 +1411,12 @@ popd
 #  Run the firmware
 open -a CoolTerm
 </code></pre>
-<h1 id="appendix-st7789-reset-backlight-and-delay" class="section-header"><a href="#appendix-st7789-reset-backlight-and-delay">17 Appendix: ST7789 Reset, Backlight and Delay</a></h1><h2 id="hard_reset" class="section-header"><a href="#hard_reset">17.1 hard_reset</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L290-L300"><code>display.c</code></a></p>
+<p>Note that we need to flip the jumper for GPIO 8 before and after flashing the firmware.</p>
+<h1 id="appendix-st7789-reset-backlight-and-delay" class="section-header"><a href="#appendix-st7789-reset-backlight-and-delay">17 Appendix: ST7789 Reset, Backlight and Delay</a></h1>
+<p>Let's cover the remaining ST7789 functions for Reset, Backlight and Delay.</p>
+<h2 id="hard_reset" class="section-header"><a href="#hard_reset">17.1 hard_reset</a></h2>
+<p>We execute a Hard Reset of ST7789 Display by toggling the Reset Pin to High, then Low, then High again...</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L290-L300"><code>display.c</code></a></p>
 <pre><code class="language-c">/// Reset the display controller
 static int hard_reset(void) {
     //  Toggle the Reset Pin: High, Low, High
@@ -1405,26 +1428,21 @@ static int hard_reset(void) {
 }
 </code></pre>
 <h2 id="backlight_on" class="section-header"><a href="#backlight_on">17.2 backlight_on</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L300-L314"><code>display.c</code></a></p>
+<p>To switch on the backlight, we set the Backlight Pin to High...</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L300-L314"><code>display.c</code></a></p>
 <pre><code class="language-c">/// Switch on backlight
 int backlight_on(void) {
     //  Set the Backlight Pin to High
-    printf(&quot;Set BLK pin %d to high\r\n&quot;, DISPLAY_BLK_PIN);
     int rc = bl_gpio_output_set(DISPLAY_BLK_PIN, 1);
     assert(rc == 0);
     return 0;
 </code></pre>
-<p>TODO</p>
-<pre><code class="language-c">    //  Can we have multiple levels of backlight brightness?
-    //  Yes! Configure the Backlight Pin as a PWM Pin (instead of GPIO).
-    //  Set the PWM Duty Cycle to control the brightness.
-    //  See https://lupyuen.github.io/articles/led#from-gpio-to-pulse-width-modulation-pwm
-}
-</code></pre>
+<p><em>Can we have multiple levels of backlight brightness?</em></p>
+<p>Yes! We may configure the Backlight Pin as a PWM Pin (instead of GPIO).</p>
+<p>Then set the PWM Duty Cycle to control the brightness. <a href="https://lupyuen.github.io/articles/led#from-gpio-to-pulse-width-modulation-pwm">(See this)</a></p>
 <h2 id="backlight_off" class="section-header"><a href="#backlight_off">17.3 backlight_off</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L314-L323"><code>display.c</code></a></p>
+<p>To switch off the backlight, we set the Backlight Pin to Low...</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L314-L323"><code>display.c</code></a></p>
 <pre><code class="language-c">/// Switch off backlight
 int backlight_off(void) {
     //  Set the Backlight Pin to Low
@@ -1435,14 +1453,16 @@ int backlight_off(void) {
 }
 </code></pre>
 <h2 id="delay_ms" class="section-header"><a href="#delay_ms">17.4 delay_ms</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L323-L328"><code>display.c</code></a></p>
+<p>This function sleeps for the specified number of milliseconds...</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L323-L328"><code>display.c</code></a></p>
 <pre><code class="language-c">/// Delay for the specified number of milliseconds
 static void delay_ms(uint32_t ms) {
     //  TODO: Implement delay. For now we write to console, which also introduces a delay.
     printf(&quot;TODO Delay %d\r\n&quot;, ms);
 }
 </code></pre>
+<p>For now we call <code>printf</code>, introduces a short delay because it writes to the UART Port.</p>
+<p>But we should fix this once we find the right delay function from BL602 SDK.</p>
 <h1 id="appendix-configure-lvgl-for-bl602-and-st7789" class="section-header"><a href="#appendix-configure-lvgl-for-bl602-and-st7789">18 Appendix: Configure LVGL for BL602 and ST7789</a></h1>
 <p>Here's how we configured LVGL for BL602 and ST7789.</p>
 <p>We compare the modified and original LVGL configurations...</p>
