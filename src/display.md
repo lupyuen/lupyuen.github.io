@@ -1912,6 +1912,8 @@ And the differences are...
     //  Previously LV_LOG_LEVEL_WARN
     ```
 
+    (Normally we don't enable detailed logging with LVGL on embedded devices... But BL602 seems surprisingly capable, so we turn it on)
+
 1.  We show log messages with `printf`...
 
     ```c
