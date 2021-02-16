@@ -147,6 +147,13 @@
   ],
   "publications": [
     {
+      "name": "PineCone BL602 Blasting Pixels to ST7789 Display with LVGL Library",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2021-02-16",
+      "website": "https://lupyuen.github.io/articles/display",
+      "summary": "How we render text and graphics on PineCone BL602 RISC-V Board ... With ST7789 SPI Display and LVGL Graphics Library"
+    },
+    {
       "name": "PineCone BL602 talks SPI too!",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-02-07",
