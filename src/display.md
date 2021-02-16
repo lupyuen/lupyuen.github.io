@@ -4,9 +4,9 @@
 
 In our last article we configured [__PineCone BL602__](https://lupyuen.github.io/articles/pinecone) to connect to a simple SPI Peripheral: __BME280 Sensor__. [(See this)](https://lupyuen.github.io/articles/spi)
 
-Today we shall connect PineCone BL602 / Pinenut / Any BL602 Board to a more powerful SPI Peripheral: __ST7789 Display Controller__.
+Today we shall connect __PineCone BL602 / Pinenut / Any BL602 Board__ to a more powerful SPI Peripheral: __ST7789 Display Controller__.
 
-We'll be using the __LVGL Graphics Library__ to render text and graphics to the ST7789 Display.
+We'll be using the open-source __[LVGL Graphics Library](https://docs.lvgl.io/latest/en/html/intro/index.html)__ to render text and graphics to our ST7789 Display.
 
 _(Yep LVGL runs on RISC-V!)_
 
@@ -1644,15 +1644,17 @@ _PineCone BL602 with ST7789 Display powered by battery_
 
 # What's Next
 
-TODO
+Two exciting things coming up...
 
-Education
+1.  __LoRa on BL602:__ We'll be connecting [__Semtech SX1276__](https://www.semtech.com/products/wireless-rf/lora-transceivers/sx1276) to BL602 to achieve __Triple Wireless Connectivity__... WiFi, Bluetooth LE AND LoRa!
 
-LoRa
+    (Many thanks to [__RAKwireless__](https://twitter.com/MisterTechBlog/status/1358220182309593089?s=20) for providing a LoRa Node for our BL602 experiments!)
 
-Deconstructed PineTime
+1.  __BL602 for Education:__ We'll be creating more __Open-Source Educational Content__ to make BL602 (and RISC-V) fully accessible to learners around the world.
 
-There's plenty more code in the [__BL602 IoT SDK__](https://github.com/bouffalolab/bl_iot_sdk) to be deciphered and documented: __UART, ADC, DAC, WiFi, Bluetooth LE,__ ...
+    Hopefully someday we'll see a [__Deconstructed PineTime Smartwatch__](https://twitter.com/MisterTechBlog/status/1359676842337210370?s=20): BL602 (RISC-V, WiFi, Bluetooth LE, LoRa) plus the sensors, actuators and display from a smartwatch... Connected on a Breadboard for easy coding!
+
+Meanwhile there's plenty more code in the [__BL602 IoT SDK__](https://github.com/bouffalolab/bl_iot_sdk) to be deciphered and documented: __UART, ADC, DAC, WiFi, Bluetooth LE,__ ...
 
 [__Come Join Us... Make BL602 Better!__](https://wiki.pine64.org/wiki/Nutcracker)
 
