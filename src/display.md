@@ -4,13 +4,13 @@
 
 In our last article we configured [__PineCone BL602__](https://lupyuen.github.io/articles/pinecone) to connect to a simple SPI Peripheral: __BME280 Sensor__. [(See this)](https://lupyuen.github.io/articles/spi)
 
-Today we shall connect __PineCone BL602 / Pinenut / Any BL602 Board__ to a more powerful SPI Peripheral: __ST7789 Display Controller__.
+Today we shall connect PineCone BL602 / Pinenut / Any BL602 Board to a more powerful SPI Peripheral: __ST7789 Display Controller__.
 
 We'll be using the open-source __[LVGL Graphics Library](https://docs.lvgl.io/latest/en/html/intro/index.html)__ to render text and graphics to our ST7789 Display.
 
 _(Yep LVGL runs on RISC-V!)_
 
-The Demo Firmware in this article will run on PineCone, Pinenut and __any BL602 Board__.
+The Demo Firmware in this article will run on __PineCone, Pinenut and Any BL602 Board__.
 
 [__Watch the Demo Video on YouTube__](https://www.youtube.com/watch?v=PkP-CeYLXUA)
 
@@ -1661,6 +1661,8 @@ Meanwhile there's plenty more code in the [__BL602 IoT SDK__](https://github.com
 🙏 👍 😀
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+
+-   [Discuss this article on Reddit](https://www.reddit.com/r/RISCV/comments/lku3mt/pinecone_bl602_blasting_pixels_to_st7789_display/?utm_source=share&utm_medium=web2x&context=3)
 
 -   [Check out my articles](https://lupyuen.github.io)
 
