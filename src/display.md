@@ -1566,7 +1566,7 @@ static void hal_spi_dma_trans(...) {
 
 Then enter the `display_result` command to dump the Interrupt Counters and Error Codes. [(See this)](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/demo.c#L116-L130)
 
-Also check the Appendix on enabling Assertion Failure messages.
+Remember to enable Assertion Failure messages in our firmware. [(See this)](https://lupyuen.github.io/articles/display#appendix-show-assertion-failures-in-bl602-firmware)
 
 ![Watch face for PineTime Smartwatch rendered with LVGL](https://lupyuen.github.io/images/timesync-title.png)
 
@@ -1791,4 +1791,187 @@ static void delay_ms(uint32_t ms) {
 
 TODO
 
-[`lv_conf.h`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_conf.h)
+-   [__LVGL Configuration for BL602 and ST7789: `lv_conf.h`__](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_conf.h)
+
+-   [__LVGL Configuration Template: `lv_conf_template.h`__](https://github.com/lvgl/lvgl/blob/e6de537952c3c2d9f37096938dd5b876c6ba6802/lv_conf_template.h)
+
+
+```c
+#if 1
+//  Previously #if 0
+```
+
+TODO
+
+```c
+/// Number of rows in SPI Transmit and Receive Buffers. Used by display.c and lv_port_disp.c
+#define BUFFER_ROWS             (10)
+
+/* Maximal horizontal and vertical resolution to support by the library.*/
+#define LV_HOR_RES_MAX          (240)
+#define LV_VER_RES_MAX          (240)
+
+/* Swap the 2 bytes of RGB565 color.
+ * Useful if the display has a 8 bit interface (e.g. SPI)*/
+#define LV_COLOR_16_SWAP   1
+```
+
+TODO
+
+```c
+/* Dot Per Inch: used to initialize default sizes.
+ * E.g. a button with width = LV_DPI / 2 -> half inch wide
+ * (Not so important, you can adjust it to modify default sizes and spaces)*/
+#define LV_DPI              100     /*[px]*/
+//  Previously 130
+```
+
+TODO
+
+```c
+/* Size of the memory used by `lv_mem_alloc` in bytes (>= 2kB)*/
+#  define LV_MEM_SIZE    (4U * 1024U)
+//  Previously (32U * 1024U)
+```
+
+TODO
+
+```c
+/* Drag throw slow-down in [%]. Greater value -> faster slow-down */
+#define LV_INDEV_DEF_DRAG_THROW           20
+//  Previously 10
+```
+
+TODO
+
+```c
+/* 1: Enable shadow drawing on rectangles*/
+#define LV_USE_SHADOW           0
+//  Previously 1
+```
+
+TODO
+
+```c
+/* 1: Enable GPU interface*/
+#define LV_USE_GPU              0   /*Only enables `gpu_fill_cb` and `gpu_blend_cb` in the disp. drv- */
+//  Previously 1
+```
+
+TODO
+
+```c
+/* 1: Enable file system (might be required for images */
+#define LV_USE_FILESYSTEM       0
+//  Previously 1
+```
+
+TODO
+
+```c
+/*1: Add a `user_data` to drivers and objects*/
+#define LV_USE_USER_DATA        1
+//  Previously 1
+```
+
+TODO
+
+```c
+/*1: Enable the log module*/
+#define LV_USE_LOG      1  //  TODO: Should be set to 0 for production
+//  Previously 0
+```
+
+TODO
+
+```c
+/* How important log should be added:
+ * LV_LOG_LEVEL_TRACE       A lot of logs to give detailed information
+ * LV_LOG_LEVEL_INFO        Log important events
+ * LV_LOG_LEVEL_WARN        Log if something unwanted happened but didn't cause a problem
+ * LV_LOG_LEVEL_ERROR       Only critical issue, when the system may fail
+ * LV_LOG_LEVEL_NONE        Do not log anything
+ */
+#  define LV_LOG_LEVEL    LV_LOG_LEVEL_TRACE
+//  Previously LV_LOG_LEVEL_WARN
+```
+
+TODO
+
+```c
+/* 1: Print the log with 'printf';
+ * 0: user need to register a callback with `lv_log_register_print_cb`*/
+#  define LV_LOG_PRINTF   1
+//  Previously 0
+```
+
+TODO
+
+```c
+/* If Debug is enabled LittelvGL validates the parameters of the functions.
+ * If an invalid parameter is found an error log message is printed and
+ * the MCU halts at the error. (`LV_USE_LOG` should be enabled)
+ * If you are debugging the MCU you can pause
+ * the debugger to see exactly where the issue is.
+ *
+ * The behavior of asserts can be overwritten by redefining them here.
+ * E.g. #define LV_ASSERT_MEM(p)  <my_assert_code>
+ */
+#define LV_USE_DEBUG        1  //  TODO: Previously 0
+//  Previously 0
+```
+
+TODO
+
+```c
+/*Check if the styles are properly initialized. (Fast)*/
+#define LV_USE_ASSERT_STYLE     1
+//  Previously 0
+```
+
+TODO
+
+```c
+#define LV_FONT_MONTSERRAT_14    0
+//  Previously 1
+
+#define LV_FONT_MONTSERRAT_24    1
+//  Previously 0
+
+#define LV_THEME_DEFAULT_FONT_SMALL         &lv_font_montserrat_24
+#define LV_THEME_DEFAULT_FONT_NORMAL        &lv_font_montserrat_24
+#define LV_THEME_DEFAULT_FONT_SUBTITLE      &lv_font_montserrat_24
+#define LV_THEME_DEFAULT_FONT_TITLE         &lv_font_montserrat_24
+//  Previously &lv_font_montserrat_14
+```
+
+TODO
+
+```c
+#define LV_THEME_DEFAULT_FLAG               LV_THEME_MATERIAL_FLAG_DARK
+//  Previously LV_THEME_MATERIAL_FLAG_LIGHT
+```
+
+TODO
+
+```c
+/* If a word is at least this long, will break wherever "prettiest"
+ * To disable, set to a value <= 0 */
+#define LV_TXT_LINE_BREAK_LONG_LEN          12
+//  Previously 0
+```
+
+TODO
+
+```c
+/* Draw line more precisely at cost of performance.
+ * Useful if there are lot of lines any minor are visible
+ * 0: No extra precision
+ * 1: Some extra precision
+ * 2: Best precision
+ */
+#  define LV_LINEMETER_PRECISE    0
+//  Previously 1
+```
+
+TODO
