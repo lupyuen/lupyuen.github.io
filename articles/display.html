@@ -795,11 +795,11 @@ Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704,  si=0, di=1, i=1
 <pre><code class="language-text"># 1
 </code></pre>
 <p>Which will initialise the ST7789 display and render the image in a single command.</p>
+<p>Congratulations! Jewel Changi, Singapore (or Our Favourite Cat) now appears on our ST7789 Display!</p>
 <p><a href="https://www.youtube.com/watch?v=PkP-CeYLXUA"><strong>Watch the Demo Video on YouTube</strong></a></p>
+<p><a href="https://gist.github.com/lupyuen/9f26626d7c8081ae64d58eba70e07a80"><strong>Check out the complete log</strong></a></p>
 </li>
 </ol>
-<p>Congratulations! Jewel Changi, Singapore (or Our Favourite Cat) now appears on our ST7789 Display!</p>
-<p><a href="https://gist.github.com/lupyuen/9f26626d7c8081ae64d58eba70e07a80">Check out the complete log</a></p>
 <p><img src="https://lupyuen.github.io/images/display-jewel6.jpg" alt="PineCone BL602 rendering on ST7789 a photo of Jewel Changi, Singapore" /></p>
 <p><em>PineCone BL602 rendering on ST7789 a photo of <a href="https://en.wikipedia.org/wiki/Jewel_Changi_Airport">Jewel Changi, Singapore</a></em></p>
 <h1 id="render-text-and-graphics-with-lvgl" class="section-header"><a href="#render-text-and-graphics-with-lvgl">8 Render Text and Graphics with LVGL</a></h1>
@@ -1098,12 +1098,12 @@ Flush display: left=45, top=122, right=196, bottom=133...
 <p>Instead of re-rendering all 240 pixel rows, <strong>LVGL renders only the pixel rows that have changed!</strong></p>
 <p>(Very clever!)</p>
 <p>That's why LVGL is perfect for RISC-V IoT Gadgets that have CPU and RAM constraints.</p>
+<p><a href="https://www.youtube.com/watch?v=PkP-CeYLXUA"><strong>Watch the Demo Video on YouTube</strong></a></p>
+<p><a href="https://gist.github.com/lupyuen/9f26626d7c8081ae64d58eba70e07a80"><strong>Check out the complete log</strong></a></p>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/display-cool3.jpg" alt="Updated LVGL label" /></p>
 <p><em>Updated LVGL label</em></p>
-<p><a href="https://www.youtube.com/watch?v=PkP-CeYLXUA"><strong>Watch the Demo Video on YouTube</strong></a></p>
-<p><a href="https://gist.github.com/lupyuen/9f26626d7c8081ae64d58eba70e07a80">Check out the complete log</a></p>
 <h1 id="st7789-display-driver-for-lvgl" class="section-header"><a href="#st7789-display-driver-for-lvgl">10 ST7789 Display Driver for LVGL</a></h1>
 <p>Let's find out how the <strong>ST7789 Display Driver</strong> for LVGL calls <strong><code>write_data</code></strong> and <strong><code>transmit_spi</code></strong> to blast pixels over SPI DMA.</p>
 <p>Here are the <strong>ST7789 Specifications</strong> for LVGL: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_conf.h#L24-L41"><code>lv_conf.h</code></a></p>
