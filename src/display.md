@@ -1551,6 +1551,8 @@ Hopefully somebody will find a better way to add LVGL to BL602 Firmware.
 
 [__Check the Appendix for the LVGL Configuration__](https://lupyuen.github.io/articles/display#appendix-configure-lvgl-for-bl602-and-st7789)
 
+![Transfer SPI Data with DMA limited at 4 Mbps](https://lupyuen.github.io/images/display-cartoon3.png)
+
 # Can We Blast Pixels Faster?
 
 _Some people might say that blasting pixels at 4 Mbps is rather slow... Can we do faster?_
@@ -1646,11 +1648,11 @@ _PineCone BL602 with ST7789 Display powered by battery_
 
 Two exciting things coming up...
 
-1.  __LoRa on BL602:__ We'll be connecting [__Semtech SX1276__](https://www.semtech.com/products/wireless-rf/lora-transceivers/sx1276) to BL602 to achieve __Triple Wireless Connectivity__... WiFi, Bluetooth LE AND LoRa!
+1.  __LoRa on BL602:__ We shall connect [__Semtech SX1276__](https://www.semtech.com/products/wireless-rf/lora-transceivers/sx1276) to BL602 to achieve __Triple Wireless Connectivity__... WiFi, Bluetooth LE AND LoRa!
 
     (Many thanks to [__RAKwireless__](https://twitter.com/MisterTechBlog/status/1358220182309593089?s=20) for providing a LoRa Node for our BL602 experiments!)
 
-1.  __BL602 for Education:__ We'll be creating more __Open-Source Educational Content__ to make BL602 (and RISC-V) fully accessible to learners around the world.
+1.  __BL602 for Education:__ We shall create more __Open-Source Educational Content__ to make BL602 (and RISC-V) fully accessible to learners around the world.
 
     Hopefully someday we'll see a [__Deconstructed PineTime Smartwatch__](https://twitter.com/MisterTechBlog/status/1359676842337210370?s=20): BL602 (RISC-V, WiFi, Bluetooth LE, LoRa) plus the sensors, actuators and display from a smartwatch... Connected on a Breadboard for easy coding!
 
@@ -1677,6 +1679,17 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [this meandering Twitter Thread](https://twitter.com/MisterTechBlog/status/1358691021073178624?s=20)
+
+1.  To run a command at startup (like in the photos above and below), modify the function __`cli_init`__ in [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/demo.c#L210-L222)
+
+    ```c
+    /// Init the command-line interface
+    int cli_init(void) {
+        //  To run a command at startup, use this...
+        test_1("", 0, 0, NULL);
+        return 0;
+    }
+    ```
 
 # Appendix: Show Assertion Failures in BL602 Firmware
 
