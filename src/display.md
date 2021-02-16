@@ -1336,8 +1336,38 @@ _Button and label rendered by LVGL on Sunday morning_
 
     That's why LVGL is perfect for RISC-V IoT Gadgets that have CPU and RAM constraints.
 
+1.  Here are two Shortcuts: This Shortcut Command...
+
+    ```text
+    # 2
+    ```
+
+    Is equivalent to...
+
+    ```text
+    # display_init
+    # lvgl_init
+    # lvgl_create
+    # lvgl_render
+    ```
+
+    And this Shortcut Command...
+
+    ```text
+    # 3
+    ```
+
+    Is equivalent to...
+
+    ```text
+    # lvgl_update
+    # lvgl_render
+    ```
+
     [__Watch the Demo Video on YouTube__](https://www.youtube.com/watch?v=PkP-CeYLXUA)
 
+    [__How to run a Command at Startup__](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/demo.c#L210-L222)
+    
     [__Check out the complete log__](https://gist.github.com/lupyuen/9f26626d7c8081ae64d58eba70e07a80)
 
 ![Updated LVGL label](https://lupyuen.github.io/images/display-cool3.jpg)
@@ -1616,6 +1646,12 @@ _PineCone BL602 with ST7789 Display powered by battery_
 
 TODO
 
+Education
+
+LoRa
+
+Deconstructed PineTime
+
 There's plenty more code in the [__BL602 IoT SDK__](https://github.com/bouffalolab/bl_iot_sdk) to be deciphered and documented: __UART, ADC, DAC, WiFi, Bluetooth LE,__ ...
 
 [__Come Join Us... Make BL602 Better!__](https://wiki.pine64.org/wiki/Nutcracker)
@@ -1632,9 +1668,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [`lupyuen.github.io/src/display.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/display.md)
 
-TODO
-
-![](https://lupyuen.github.io/images/display-box3.jpg)
+![PineCone BL602 with ST7789 Display in a box](https://lupyuen.github.io/images/display-box3.jpg)
 
 # Notes
 
@@ -1681,9 +1715,7 @@ void __assert_func(const char *file, int line,
 
 # Appendix: macOS Script to Build, Flash and Run BL602 Firmware
 
-TODO
-
-[`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/run.sh#L1-L32)
+Here's the script I use on macOS to automate the building, flashing and running of BL602 firmware: [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/run.sh#L1-L32)
 
 ```bash
 #!/usr/bin/env bash
@@ -1720,13 +1752,17 @@ popd
 open -a CoolTerm
 ```
 
+Note that we need to flip the jumper for GPIO 8 before and after flashing the firmware.
+
 # Appendix: ST7789 Reset, Backlight and Delay
+
+Let's cover the remaining ST7789 functions for Reset, Backlight and Delay.
 
 ## hard_reset
 
-TODO
+We execute a Hard Reset of ST7789 Display by toggling the Reset Pin to High, then Low, then High again...
 
-[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L290-L300)
+From [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L290-L300)
 
 ```c
 /// Reset the display controller
@@ -1742,35 +1778,30 @@ static int hard_reset(void) {
 
 ## backlight_on
 
-TODO
+To switch on the backlight, we set the Backlight Pin to High...
 
-[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L300-L314)
+From [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L300-L314)
 
 ```c
 /// Switch on backlight
 int backlight_on(void) {
     //  Set the Backlight Pin to High
-    printf("Set BLK pin %d to high\r\n", DISPLAY_BLK_PIN);
     int rc = bl_gpio_output_set(DISPLAY_BLK_PIN, 1);
     assert(rc == 0);
     return 0;
 ```
 
-TODO
+_Can we have multiple levels of backlight brightness?_
 
-```c
-    //  Can we have multiple levels of backlight brightness?
-    //  Yes! Configure the Backlight Pin as a PWM Pin (instead of GPIO).
-    //  Set the PWM Duty Cycle to control the brightness.
-    //  See https://lupyuen.github.io/articles/led#from-gpio-to-pulse-width-modulation-pwm
-}
-```
+Yes! We may configure the Backlight Pin as a PWM Pin (instead of GPIO).
+
+Then set the PWM Duty Cycle to control the brightness. [(See this)](https://lupyuen.github.io/articles/led#from-gpio-to-pulse-width-modulation-pwm)
 
 ## backlight_off
 
-TODO
+To switch off the backlight, we set the Backlight Pin to Low...
 
-[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L314-L323)
+From [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L314-L323)
 
 ```c
 /// Switch off backlight
@@ -1785,9 +1816,9 @@ int backlight_off(void) {
 
 ## delay_ms
 
-TODO
+This function sleeps for the specified number of milliseconds...
 
-[`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L323-L328)
+From [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L323-L328)
 
 ```c
 /// Delay for the specified number of milliseconds
@@ -1796,6 +1827,10 @@ static void delay_ms(uint32_t ms) {
     printf("TODO Delay %d\r\n", ms);
 }
 ```
+
+For now we call `printf`, introduces a short delay because it writes to the UART Port.
+
+But we should fix this once we find the right delay function from BL602 SDK.
 
 # Appendix: Configure LVGL for BL602 and ST7789
 
