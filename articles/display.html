@@ -471,13 +471,13 @@ int init_display(void) {
     rc = hard_reset();  assert(rc == 0);
 </code></pre>
 <p>Also we execute an ST7789 <strong>Hardware Reset</strong> by toggling the Reset Pin.</p>
-<p>(More about <code>backlight_on</code> and <code>hard_reset</code> in a while)</p>
 <p>Here comes the first of eight ST7789 Commands: We send the Software Reset command to ST7789...</p>
 <pre><code class="language-c">    //  Software Reset: Reset the display controller through firmware (ST7789 Datasheet Page 163)
     //  https://www.rhydolabz.com/documents/33/ST7789.pdf
     rc = write_command(SWRESET, NULL, 0);  assert(rc == 0);
     delay_ms(200);  //  Need to wait at least 200 milliseconds
 </code></pre>
+<p>(More about <code>backlight_on</code>, <code>hard_reset</code> and <code>delay_ms</code> in the Appendix. <a href="https://lupyuen.github.io/articles/display#appendix-st7789-reset-backlight-and-delay">See this</a>)</p>
 <p>Next we send three commands to ST7789 to <strong>disable sleep</strong>, define the <strong>vertical scrolling</strong>, and set the <strong>display mode</strong>...</p>
 <pre><code class="language-c">    //  Sleep Out: Disable sleep (ST7789 Datasheet Page 184)
     rc = write_command(SLPOUT, NULL, 0);  assert(rc == 0);
