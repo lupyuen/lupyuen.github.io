@@ -898,7 +898,15 @@ int lvgl_init(void) {
     return 0;
 }
 </code></pre>
-<p>TODO</p>
+<p>Check out the LVGL docs...</p>
+<ul>
+<li>
+<p><a href="https://docs.lvgl.io/latest/en/html/get-started/quick-overview.html#learn-the-basics"><strong>Learn the Basics of LVGL</strong></a></p>
+</li>
+<li>
+<p><a href="https://docs.lvgl.io/latest/en/html/get-started/quick-overview.html#examples"><strong>Examples of LVGL</strong></a></p>
+</li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/display-log.jpg" alt="LVGL demo firmware running on CoolTerm" /></p>
 <p><em>LVGL demo firmware running on CoolTerm</em></p>
 <h1 id="run-the-lvgl-firmware" class="section-header"><a href="#run-the-lvgl-firmware">9 Run the LVGL Firmware</a></h1>
@@ -1225,6 +1233,7 @@ COMPONENT_SRCDIRS += \
 	./lvgl/src/lv_widgets
 </code></pre>
 <p>Hopefully somebody will find a better way to add LVGL to BL602 Firmware.</p>
+<p><a href="https://lupyuen.github.io/articles/display#appendix-configure-lvgl-for-bl602-and-st7789"><strong>Check the Appendix for the LVGL Configuration</strong></a></p>
 <h1 id="can-we-blast-pixels-faster" class="section-header"><a href="#can-we-blast-pixels-faster">11 Can We Blast Pixels Faster?</a></h1>
 <p><em>Some people might say that blasting pixels at 4 Mbps is rather slow... Can we do faster?</em></p>
 <p>BL602 SPI is technically rated for <strong>40 MHz</strong> (or 40 Mbps). But during our testing, the SPI DMA Transfer to ST7789 tends to hang at speeds beyond 4 Mbps.</p>
@@ -1434,7 +1443,7 @@ static void delay_ms(uint32_t ms) {
 </code></pre>
 <h1 id="appendix-configure-lvgl-for-bl602-and-st7789" class="section-header"><a href="#appendix-configure-lvgl-for-bl602-and-st7789">18 Appendix: Configure LVGL for BL602 and ST7789</a></h1>
 <p>Here's how we configured LVGL for BL602 and ST7789.</p>
-<p>We compare the modified and original LVGL configuration...</p>
+<p>We compare the modified and original LVGL configurations...</p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_conf.h"><strong>LVGL Configuration for BL602 and ST7789: <code>lv_conf.h</code></strong></a></p>
@@ -1443,16 +1452,16 @@ static void delay_ms(uint32_t ms) {
 <p><a href="https://github.com/lvgl/lvgl/blob/e6de537952c3c2d9f37096938dd5b876c6ba6802/lv_conf_template.h"><strong>LVGL Configuration Template: <code>lv_conf_template.h</code></strong></a></p>
 </li>
 </ul>
-<p>Here are the differences...</p>
+<p>And the differences are...</p>
 <ol>
 <li>
-<p>aa</p>
+<p>This is needed to enable the LVGL configuration...</p>
 <pre><code class="language-c">#if 1
 //  Previously #if 0
 </code></pre>
 </li>
 <li>
-<p>TODO</p>
+<p>These are the settings specific to our ST7789 Display Hardware...</p>
 <pre><code class="language-c">/// Number of rows in SPI Transmit and Receive Buffers. Used by display.c and lv_port_disp.c
 #define BUFFER_ROWS             (10)
 //  Previously non-existent
@@ -1469,7 +1478,7 @@ static void delay_ms(uint32_t ms) {
 </code></pre>
 </li>
 <li>
-<p>TODO</p>
+<p>We lower the Dots Per Inch because we have a tiny display...</p>
 <pre><code class="language-c">/* Dot Per Inch: used to initialize default sizes.
 * E.g. a button with width = LV_DPI / 2 -&gt; half inch wide
 * (Not so important, you can adjust it to modify default sizes and spaces)*/
@@ -1478,56 +1487,57 @@ static void delay_ms(uint32_t ms) {
 </code></pre>
 </li>
 <li>
-<p>TODO</p>
+<p>LVGL maintains its own Heap Memory for Widgets. We're reserving 4 KB of RAM for LVGL Heap Memory. </p>
+<p>If we run out of Heap Memory, increase this value.</p>
 <pre><code class="language-c">/* Size of the memory used by `lv_mem_alloc` in bytes (&gt;= 2kB)*/
 #  define LV_MEM_SIZE    (4U * 1024U)
 //  Previously (32U * 1024U)
 </code></pre>
 </li>
 <li>
-<p>TODO</p>
+<p>This will be useful when we have a touchscreen like PineTime...</p>
 <pre><code class="language-c">/* Drag throw slow-down in [%]. Greater value -&gt; faster slow-down */
 #define LV_INDEV_DEF_DRAG_THROW           20
 //  Previously 10
 </code></pre>
 </li>
 <li>
-<p>TODO</p>
+<p>For efficiency we disable shadows...</p>
 <pre><code class="language-c">/* 1: Enable shadow drawing on rectangles*/
 #define LV_USE_SHADOW           0
 //  Previously 1
 </code></pre>
 </li>
 <li>
-<p>TODO</p>
+<p>We're not using a GPU...</p>
 <pre><code class="language-c">/* 1: Enable GPU interface*/
 #define LV_USE_GPU              0   /*Only enables `gpu_fill_cb` and `gpu_blend_cb` in the disp. drv- */
 //  Previously 1
 </code></pre>
 </li>
 <li>
-<p>TODO</p>
+<p>We don't have a file system...</p>
 <pre><code class="language-c">/* 1: Enable file system (might be required for images */
 #define LV_USE_FILESYSTEM       0
 //  Previously 1
 </code></pre>
 </li>
 <li>
-<p>TODO</p>
+<p>The <code>user_data</code> field is useful for porting LVGL apps from other platforms (like InfiniTime)...</p>
 <pre><code class="language-c">/*1: Add a `user_data` to drivers and objects*/
 #define LV_USE_USER_DATA        1
 //  Previously 1
 </code></pre>
 </li>
 <li>
-<p>TODO</p>
+<p>We enable logging. Switch this to 0 in production...</p>
 <pre><code class="language-c">/*1: Enable the log module*/
 #define LV_USE_LOG      1  //  TODO: Should be set to 0 for production
 //  Previously 0
 </code></pre>
 </li>
 <li>
-<p>TODO</p>
+<p>We enable detailed logging for easier troubleshooting...</p>
 <pre><code class="language-c">/* How important log should be added:
 * LV_LOG_LEVEL_TRACE       A lot of logs to give detailed information
 * LV_LOG_LEVEL_INFO        Log important events
@@ -1540,7 +1550,7 @@ static void delay_ms(uint32_t ms) {
 </code></pre>
 </li>
 <li>
-<p>TODO</p>
+<p>We show log messages with <code>printf</code>...</p>
 <pre><code class="language-c">/* 1: Print the log with 'printf';
 * 0: user need to register a callback with `lv_log_register_print_cb`*/
 #  define LV_LOG_PRINTF   1
@@ -1548,7 +1558,7 @@ static void delay_ms(uint32_t ms) {
 </code></pre>
 </li>
 <li>
-<p>TODO</p>
+<p>We validate LVGL parameters. Switch this to 0 in production...</p>
 <pre><code class="language-c">/* If Debug is enabled LittelvGL validates the parameters of the functions.
 * If an invalid parameter is found an error log message is printed and
 * the MCU halts at the error. (`LV_USE_LOG` should be enabled)
@@ -1558,19 +1568,19 @@ static void delay_ms(uint32_t ms) {
 * The behavior of asserts can be overwritten by redefining them here.
 * E.g. #define LV_ASSERT_MEM(p)  &lt;my_assert_code&gt;
 */
-#define LV_USE_DEBUG        1  //  TODO: Previously 0
+#define LV_USE_DEBUG        1
 //  Previously 0
 </code></pre>
 </li>
 <li>
-<p>TODO</p>
+<p>We validate LVGL Styles. This is useful when porting apps from previous versions of LVGL, because LVGL Styles have been revamped between Versions 6 and 7...</p>
 <pre><code class="language-c">/*Check if the styles are properly initialized. (Fast)*/
 #define LV_USE_ASSERT_STYLE     1
 //  Previously 0
 </code></pre>
 </li>
 <li>
-<p>TODO</p>
+<p>We change the Default Font from size 14 to 24.  We will probably change the Font Size to support different types of apps...</p>
 <pre><code class="language-c">#define LV_FONT_MONTSERRAT_14    0
 //  Previously 1
 
@@ -1585,13 +1595,13 @@ static void delay_ms(uint32_t ms) {
 </code></pre>
 </li>
 <li>
-<p>TODO</p>
+<p>We select Dark Material as the Default Theme. Which is odd because our screens look like Light Material...</p>
 <pre><code class="language-c">#define LV_THEME_DEFAULT_FLAG               LV_THEME_MATERIAL_FLAG_DARK
 //  Previously LV_THEME_MATERIAL_FLAG_LIGHT
 </code></pre>
 </li>
 <li>
-<p>TODO</p>
+<p>Since our display is tiny, we break long words...</p>
 <pre><code class="language-c">/* If a word is at least this long, will break wherever &quot;prettiest&quot;
 * To disable, set to a value &lt;= 0 */
 #define LV_TXT_LINE_BREAK_LONG_LEN          12
@@ -1599,7 +1609,7 @@ static void delay_ms(uint32_t ms) {
 </code></pre>
 </li>
 <li>
-<p>TODO</p>
+<p>We don't need no precise lines for our tiny display...</p>
 <pre><code class="language-c">/* Draw line more precisely at cost of performance.
 * Useful if there are lot of lines any minor are visible
 * 0: No extra precision
@@ -1609,9 +1619,6 @@ static void delay_ms(uint32_t ms) {
 #  define LV_LINEMETER_PRECISE    0
 //  Previously 1
 </code></pre>
-</li>
-<li>
-<p>TODO</p>
 </li>
 </ol>
 
