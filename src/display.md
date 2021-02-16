@@ -1553,6 +1553,8 @@ COMPONENT_SRCDIRS += \
 
 Hopefully somebody will find a better way to add LVGL to BL602 Firmware.
 
+The GitHub Actions Workflow was updated to do Recursive Checkout to populate the LVGL folder. [(See this)](https://github.com/lupyuen/bl_iot_sdk/commit/16f733d96391ab07aa01ceb0d6d3fdbca7044a10#diff-bdcc6a2a85f645f62724fe8dafbf0581cb0c1d65f6a76cb2985a9172e31a473c)
+
 [__Check the Appendix for the LVGL Configuration__](https://lupyuen.github.io/articles/display#appendix-configure-lvgl-for-bl602-and-st7789)
 
 ![Transfer SPI Data with DMA limited at 4 Mbps](https://lupyuen.github.io/images/display-cartoon3.png)
