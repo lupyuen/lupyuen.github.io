@@ -1777,7 +1777,7 @@ popd
 open -a CoolTerm
 ```
 
-Note that we need to flip the jumper for GPIO 8 before and after flashing the firmware.
+Note that we need to flip the jumper for GPIO 8 and press the Reset Button, before and after flashing the firmware.
 
 # Appendix: ST7789 Reset, Backlight and Delay
 
