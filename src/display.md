@@ -1697,6 +1697,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
     }
     ```
 
+    If the rendering hangs, lower the SPI Frequency to 2 MHz. (But why???)
+
 # Appendix: Show Assertion Failures in BL602 Firmware
 
 By default, firmware created by the BL602 IoT SDK will NOT show Assertion Failure messages.
