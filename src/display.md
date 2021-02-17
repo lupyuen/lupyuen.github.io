@@ -71,7 +71,7 @@ _Why are Pins 1, 2 and 14 unused?_
 
 _We're running out of BL602 Pins... Can we reduce the number of pins connected to ST7789?_
 
-Possibly... If we connect ST7789's Reset and Backlight Pins to 3V3 or GND.
+We may connect ST7789's Backlight Pin to 3V3. But we lose the ability to switch off the backlight and reduce power consumption.
 
 ![PineCone BL602 Pins connected to ST7789: 3 (Yellow), 4 (Blue), 5 (White), 11 (Orange) and 12 (Purple)](https://lupyuen.github.io/images/display-connect3.jpg)
 
