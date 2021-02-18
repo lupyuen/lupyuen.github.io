@@ -28,7 +28,7 @@ _PineCone BL602 RISC-V Board rendering an image on Grove Triple Colour E-Ink Dis
 
 # BL602 UART Hardware Abstraction Layer: High Level vs Low Level
 
-The BL602 IoT SDK contains an __UART Hardware Abstraction Layer (HAL)__ that we may call in our C programs to access the two UART Ports.
+The BL602 IoT SDK contains a __UART Hardware Abstraction Layer (HAL)__ that we may call in our C programs to access the two UART Ports.
 
 BL602's UART HAL is packaged as two levels...
 
@@ -40,7 +40,7 @@ BL602's UART HAL is packaged as two levels...
 
     The High Level HAL is called by the [AliOS Firmware](https://github.com/alibaba/AliOS-Things) created by the BL602 IoT SDK.
 
-    (AliOS functions are easy to identify... The function names begin with `aos_`)
+    (AliOS functions are easy to identify... Their function names begin with "`aos_`")
 
 Today we shall use the __Low Level UART HAL [`bl_uart.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_uart.c)__ because...
 
