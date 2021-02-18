@@ -425,8 +425,10 @@ Sending red pixels...
 <h1 id="black-and-red-bitmaps" class="section-header"><a href="#black-and-red-bitmaps">7 Black and Red Bitmaps</a></h1>
 <p><em>That's not a plain black and white image right? I see some red fringes...</em></p>
 <p>The E-Ink Display is actually showing a black, white AND red image!</p>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/demo.c#L46-L54"><code>demo.c</code></a></p>
+<p>We can't show Fifty Shades of Grey on our display... But we can use <strong>Red as a Single Shade of Grey!</strong></p>
+<p>Our E-Ink Display is capable of rendering <strong>two separate bitmaps: black and red.</strong></p>
+<p>(Any pixel that's not flipped on in the black and red bitmaps will appear as white... Thus it's a Triple Colour Display)</p>
+<p>Here's how we define the black and red bitmaps in our firmware: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/demo.c#L46-L54"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// Define the Black Pixels of the image
 const unsigned char IMAGE_BLACK[] = { 
     #include &quot;image_black.inc&quot;
