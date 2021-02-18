@@ -466,10 +466,7 @@ const unsigned char IMAGE_RED[] = {
 <p><strong>Red Bitmap</strong> contains pixels whose original RGB values range from <strong>86 to 215</strong> (between black and white)</p>
 </li>
 </ol>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/pinetime-graphic"><code>pinetime-graphic</code></a></p>
-<p>PNG File </p>
-<p>To convert the PNG image <code>uart-cartoon2.png</code> (202 x 104 resolution) to C arrays <code>image_black.inc</code> (black bitmap) and <code>image_red.inc</code> (red bitmap)...</p>
+<p>Here's how we convert the PNG file <a href="https://github.com/lupyuen/pinetime-graphic/blob/master/uart-cartoon2.png"><code>uart-cartoon2.png</code></a> (202 x 104 resolution) to the C arrays <code>image_black.inc</code> (black bitmap) and <code>image_red.inc</code> (red bitmap)..</p>
 <pre><code class="language-bash"># Download the source code
 git clone https://github.com/lupyuen/pinetime-graphic
 cd pinetime-graphic
@@ -482,8 +479,17 @@ cargo run -- --min 0  --max 85  uart-cartoon2.png &gt;image_black.inc
 # Convert the PNG file to a C array (red bitmap) with these min and max thresholds
 cargo run -- --min 86 --max 215 uart-cartoon2.png &gt;image_red.inc
 </code></pre>
-<p><a href="https://lupyuen.github.io/images/uart-cartoon.png">Here's the original high-resolution sketch</a></p>
-<p><a href="https://wiki.seeedstudio.com/Grove-Triple_Color_E-Ink_Display_2_13/#diy">More about the Grove E-Ink Image Format</a></p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/pinetime-graphic"><strong>Check out the <code>pinetime-graphic</code> source code</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/images/uart-cartoon.png"><strong>Here's the original high-resolution sketch</strong></a></p>
+</li>
+<li>
+<p><a href="https://wiki.seeedstudio.com/Grove-Triple_Color_E-Ink_Display_2_13/#diy"><strong>More about the Grove E-Ink Image Format</strong></a></p>
+</li>
+</ul>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">8 What's Next</a></h1>
 <p>TODO</p>
 <p>Meanwhile there's plenty more code in the <a href="https://github.com/bouffalolab/bl_iot_sdk"><strong>BL602 IoT SDK</strong></a> to be deciphered and documented: <strong>ADC, DAC, WiFi, Bluetooth LE,</strong> ...</p>
