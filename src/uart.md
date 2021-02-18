@@ -261,6 +261,10 @@ static void send_data(const uint8_t* data, uint32_t data_len) {
 }
 ```
 
+![Grove E-Ink Display close up](https://lupyuen.github.io/images/uart-connect4.jpg)
+
+_Grove E-Ink Display close up_
+
 # Black and Red Bitmaps
 
 TODO
