@@ -69,7 +69,7 @@ Connect BL602 to Grove E-Ink Display according to the pic above...
 | BL602 Pin     | E-Ink Display       | Wire Colour 
 |:--------------|:--------------------|:-------------------
 | __`GPIO 3`__  | `TX`                | Yellow 
-| __`GPIO 4`__  | `RX`                | Blue
+| __`GPIO 4`__  | `RX`                | Blue / White
 | __`3V3`__     | `3.3V`              | Red
 | __`GND`__     | `GND`               | Black
 
