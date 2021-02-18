@@ -98,7 +98,7 @@ We initialise the UART Port like so: [`demo.c`](https://github.com/lupyuen/bl_io
 /// Command to display image
 static void display_image(char *buf, int len, int argc, char **argv) {
     ...
-    //  Init UART Port 1 with Tx Pin 4, Rx Pin 3 for Rx at 230.4 kbps
+    //  Init UART Port 1 with Tx Pin 4, Rx Pin 3 at 230.4 kbps
     int rc = bl_uart_init(
         UART_PORT,  //  UART Port 1
         4,          //  Tx Pin (Blue)
@@ -232,15 +232,8 @@ From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk
 /// Command to display image
 static void display_image(char *buf, int len, int argc, char **argv) {
     ...
-    //  Init UART Port 1 with Tx Pin 4, Rx Pin 3 for Rx at 230.4 kbps
-    int rc = bl_uart_init(
-        UART_PORT,  //  UART Port 1
-        4,          //  Tx Pin (Blue)
-        3,          //  Rx Pin (Yellow)
-        255,        //  CTS Unused
-        255,        //  UTS Unused
-        230400      //  Buad Rate
-    );
+    //  Init UART Port 1 with Tx Pin 4, Rx Pin 3 at 230.4 kbps
+    int rc = bl_uart_init( ... );  //  Omitted, we have seen this earlier
     assert(rc == 0);
 
     //  Sleep for 10 milliseconds
@@ -264,6 +257,8 @@ TODO
     write_image_picture();
 }
 ```
+
+## Send Image Data
 
 TODO
 
