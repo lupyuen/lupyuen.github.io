@@ -254,8 +254,7 @@ void send_begin() {
 <p>If we're receiving lots of data through polling, we might lose some data. For such cases, we should use UART Interrupts or DMA.</p>
 <p>(The E-Ink Display code in this article was ported from Arduino to BL602. <a href="https://github.com/Seeed-Studio/Grove_Triple_Color_E-lnk_2.13/blob/master/examples/Eink_factory_code_213/Eink_factory_code_213.ino">See this</a>)</p>
 <h1 id="display-image" class="section-header"><a href="#display-image">5 Display Image</a></h1>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/demo.c#L132-L163"><code>demo.c</code></a></p>
+<p>Let's head back to <code>display_image</code>, the function in our Demo Firmware that controls the E-Ink Display to render an image: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/demo.c#L132-L163"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// Command to display image
 static void display_image(char *buf, int len, int argc, char **argv) {
     ...
@@ -266,18 +265,22 @@ static void display_image(char *buf, int len, int argc, char **argv) {
     //  Sleep for 10 milliseconds
     vTaskDelay(10 / portTICK_PERIOD_MS);
 </code></pre>
-<p>TODO</p>
+<p>We've initialised the UART Port with <code>bl_uart_init</code> (as seen earlier).</p>
+<p>To give the E-Ink Display a bit of time to get ready, we call <strong><code>vTaskDelay</code></strong> (from FreeRTOS) to sleep for 10 milliseconds.</p>
 <pre><code class="language-c">    //  Do the Start Transfer Handshake with E-Ink Display
     send_begin();
 
-    //  Sleep for 2 seconds
+    //  Sleep for 2 seconds (2000 milliseconds)
     vTaskDelay(2000 / portTICK_PERIOD_MS);
 </code></pre>
-<p>TODO</p>
+<p>Then we call <code>send_begin</code> to do the Start Transfer Handshake (from the previous section).</p>
+<p>We give the E-Ink Display a little more pondering time, by calling <code>vTaskDelay</code> to sleep for 2 seconds.</p>
 <pre><code class="language-c">    //  Send the display data
     write_image_picture();
 }
 </code></pre>
+<p>And we call <strong><code>write_image_picture</code></strong> to send the image data.</p>
+<p>Let's look inside <code>write_image_picture</code></p>
 <h2 id="send-image-data" class="section-header"><a href="#send-image-data">5.1 Send Image Data</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/demo.c#L106-L130"><code>demo.c</code></a></p>
