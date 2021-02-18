@@ -72,7 +72,8 @@
 <li><a href="#receive-data">4.1 Receive Data</a><ul></ul></li>
 <li><a href="#transmit-data">4.2 Transmit Data</a><ul></ul></li>
 <li><a href="#receive-again">4.3 Receive Again</a><ul></ul></li></ul></li>
-<li><a href="#display-image">5 Display Image</a><ul></ul></li>
+<li><a href="#display-image">5 Display Image</a><ul>
+<li><a href="#send-image-data">5.1 Send Image Data</a><ul></ul></li></ul></li>
 <li><a href="#build-and-run-the-firmware">6 Build and Run the Firmware</a><ul>
 <li><a href="#flash-the-firmware">6.1 Flash the firmware</a><ul></ul></li>
 <li><a href="#run-the-firmware">6.2 Run the firmware</a><ul></ul></li>
@@ -150,7 +151,7 @@
 /// Command to display image
 static void display_image(char *buf, int len, int argc, char **argv) {
     ...
-    //  Init UART Port 1 with Tx Pin 4, Rx Pin 3 for Rx at 230.4 kbps
+    //  Init UART Port 1 with Tx Pin 4, Rx Pin 3 at 230.4 kbps
     int rc = bl_uart_init(
         UART_PORT,  //  UART Port 1
         4,          //  Tx Pin (Blue)
@@ -258,15 +259,8 @@ void send_begin() {
 <pre><code class="language-c">/// Command to display image
 static void display_image(char *buf, int len, int argc, char **argv) {
     ...
-    //  Init UART Port 1 with Tx Pin 4, Rx Pin 3 for Rx at 230.4 kbps
-    int rc = bl_uart_init(
-        UART_PORT,  //  UART Port 1
-        4,          //  Tx Pin (Blue)
-        3,          //  Rx Pin (Yellow)
-        255,        //  CTS Unused
-        255,        //  UTS Unused
-        230400      //  Buad Rate
-    );
+    //  Init UART Port 1 with Tx Pin 4, Rx Pin 3 at 230.4 kbps
+    int rc = bl_uart_init( ... );  //  Omitted, we have seen this earlier
     assert(rc == 0);
 
     //  Sleep for 10 milliseconds
@@ -284,6 +278,7 @@ static void display_image(char *buf, int len, int argc, char **argv) {
     write_image_picture();
 }
 </code></pre>
+<h2 id="send-image-data" class="section-header"><a href="#send-image-data">5.1 Send Image Data</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/demo.c#L106-L130"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// Send Black and Red Image Data to display
