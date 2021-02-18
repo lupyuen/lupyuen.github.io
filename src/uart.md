@@ -448,9 +448,13 @@ _That's not a plain black and white image right? I see some red fringes..._
 
 The E-Ink Display is actually showing a black, white AND red image!
 
-TODO
+We can't show Fifty Shades of Grey on our display... But we can use __Red as a Single Shade of Grey!__
 
-From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/demo.c#L46-L54)
+Our E-Ink Display is capable of rendering __two separate bitmaps: black and red.__
+
+(Any pixel that's not flipped on in the black and red bitmaps will appear as white... Thus it's a Triple Colour Display)
+
+Here's how we define the black and red bitmaps in our firmware: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/demo.c#L46-L54)
 
 ```c
 /// Define the Black Pixels of the image
