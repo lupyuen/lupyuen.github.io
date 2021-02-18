@@ -439,22 +439,23 @@ const unsigned char IMAGE_RED[] = {
     #include &quot;image_red.inc&quot;
 };
 </code></pre>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/image_black.inc"><code>image_black.inc</code></a></p>
+<p>A peek into the black bitmap reveals this: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/image_black.inc"><code>image_black.inc</code></a></p>
 <pre><code class="language-text">//  Min: 0, Max: 85
 //  Rows: 104, Columns: 212
 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x3f, 0xff, 0xff, 0xff,
 0xff, 0xff, 0xff, 0xff, 0xff, 0xdf, 0xff, 0xff, 0xff, 0x1f, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
 ...
 </code></pre>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/image_red.inc"><code>image_red.inc</code></a></p>
+<p>And for the red bitmap: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/image_red.inc"><code>image_red.inc</code></a></p>
 <pre><code class="language-text">//  Min: 86, Max: 215
 //  Rows: 104, Columns: 212
 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
 0xff, 0xff, 0xff, 0xff, 0xff, 0xef, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
 ...
 </code></pre>
+<p><em>What are min and max?</em></p>
+<p>The black and red bitmaps were generated from a Greyscale PNG file.</p>
+<p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/pinetime-graphic"><code>pinetime-graphic</code></a></p>
 <p>PNG File <a href="https://github.com/lupyuen/pinetime-graphic/blob/master/uart-cartoon2.png"><code>uart-cartoon2.png</code></a></p>
 <p>To convert the PNG image <code>uart-cartoon2.png</code> (202 x 104 resolution) to C arrays <code>image_black.inc</code> (black bitmap) and <code>image_red.inc</code> (red bitmap)...</p>
