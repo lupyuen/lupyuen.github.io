@@ -164,7 +164,7 @@ static void display_image(char *buf, int len, int argc, char **argv) {
 <li>
 <p><strong>UART Port:</strong> We select <strong>UART Port 1</strong>.</p>
 <p>BL602 has 2 UART Ports: 0 and 1. </p>
-<p>UART Port 0 is reserved for the command-line interface, so we should always use UART Port 1.</p>
+<p>UART Port 0 is reserved for the Command-Line Interface, so we should always use UART Port 1.</p>
 </li>
 <li>
 <p><strong>Transmit Pin:</strong> We select <strong>Pin 4</strong>, as recommended by the <a href="https://lupyuen.github.io/articles/flash#uart">BL602 Device Tree</a>.</p>
@@ -181,6 +181,7 @@ static void display_image(char *buf, int len, int argc, char **argv) {
 </li>
 <li>
 <p><strong>Baud Rate:</strong> We set this to <strong>230400 bps</strong> (or 230.4 kbps), as specified in the Grove E-Ink Docs.</p>
+<p>Maximum baud rate is <strong>10 Mbps.</strong></p>
 </li>
 </ul>
 <p>We'll come back to <code>display_image</code> in a while. First let's learn to transmit and receive some UART data.</p>
