@@ -58,11 +58,13 @@ We shall call the BL602 Low Level UART HAL to control the Grove E-Ink Display wi
 
 The firmware will work on all BL602 boards, including PineCone and Pinenut.
 
+![PineCone BL602 connected to Grove E-Ink Display](https://lupyuen.github.io/images/uart-connect2.jpg)
+
+_PineCone BL602 connected to Grove E-Ink Display_
+
 # Connect BL602 to Grove E-Ink Display
 
-TODO
-
-Connect BL602 to Grove E-Ink Display as follows...
+Connect BL602 to Grove E-Ink Display according to the pic above...
 
 | BL602 Pin     | E-Ink Display       | Wire Colour 
 |:--------------|:--------------------|:-------------------
@@ -71,7 +73,17 @@ Connect BL602 to Grove E-Ink Display as follows...
 | __`3V3`__     | `3.3V`              | Red
 | __`GND`__     | `GND`               | Black
 
-![PineCone BL602 connected to Grove E-Ink Display](https://lupyuen.github.io/images/uart-connect2.jpg)
+Here's an extreme closeup of the PineCone BL602 pins...
+
+![PineCone BL602 connected to Grove E-Ink Display Closeup](https://lupyuen.github.io/images/uart-connect3.jpg)
+
+_The screen works without power! What magic is this?_
+
+Remember that E-Ink Displays only need power when we're updating the display.
+
+Which makes them very useful for Low Power IoT Gadgets.
+
+(But we're not supposed to update the screen too often)
 
 # Initialise UART Port
 
