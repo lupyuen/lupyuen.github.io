@@ -478,6 +478,8 @@ A peek into the black bitmap reveals this: [`image_black.inc`](https://github.co
 ...
 ```
 
+(That's 2,756 bytes: 104 rows * 212 columns * 1 bit per pixel)
+
 And for the red bitmap: [`image_red.inc`](https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/image_red.inc)
 
 ```text
@@ -488,15 +490,19 @@ And for the red bitmap: [`image_red.inc`](https://github.com/lupyuen/bl_iot_sdk/
 ...
 ```
 
-_What are min and max?_
+(Also 2,756 bytes)
 
-The black and red bitmaps were generated from a Greyscale PNG file.
+_What are Min and Max?_
+
+The black and red bitmaps were generated from a Greyscale PNG file: [`uart-cartoon2.png`](https://github.com/lupyuen/pinetime-graphic/blob/master/uart-cartoon2.png)
+
+Min and Max are the threshold RGB values used to generate each bitmap...
 
 TODO
 
 From [`pinetime-graphic`](https://github.com/lupyuen/pinetime-graphic)
 
-PNG File [`uart-cartoon2.png`](https://github.com/lupyuen/pinetime-graphic/blob/master/uart-cartoon2.png)
+PNG File 
 
 To convert the PNG image `uart-cartoon2.png` (202 x 104 resolution) to C arrays `image_black.inc` (black bitmap) and `image_red.inc` (red bitmap)...
 
@@ -513,6 +519,8 @@ cargo run -- --min 0  --max 85  uart-cartoon2.png >image_black.inc
 # Convert the PNG file to a C array (red bitmap) with these min and max thresholds
 cargo run -- --min 86 --max 215 uart-cartoon2.png >image_red.inc
 ```
+
+[Here's the original high-resolution sketch](https://lupyuen.github.io/images/uart-cartoon.png)
 
 [More about the Grove E-Ink Image Format](https://wiki.seeedstudio.com/Grove-Triple_Color_E-Ink_Display_2_13/#diy)
 
