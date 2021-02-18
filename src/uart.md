@@ -408,6 +408,70 @@ __For Windows:__ Use `putty` ([See this](https://lupyuen.github.io/articles/flas
 
 TODO
 
+```text
+# ▒Starting bl602 now....
+Booting BL602 Chip...
+██████╗ ██╗      ██████╗  ██████╗ ██████╗
+██╔══██╗██║     ██╔════╝ ██╔═████╗╚════██╗
+██████╔╝██║     ███████╗ ██║██╔██║ █████╔╝
+██╔══██╗██║     ██╔═══██╗████╔╝██║██╔═══╝
+██████╔╝███████╗╚██████╔╝╚██████╔╝███████╗
+╚═════╝ ╚══════╝ ╚═════╝  ╚═════╝ ╚══════╝
+
+
+------------------------------------------------------------
+RISC-V Core Feature:RV32-ACFIMX
+Build Version: release_bl_iot_sdk_1.6.11-1-g66bb28da-dirty
+Build Date: Feb 17 2021
+Build Time: 19:06:40
+-----------------------------------------------------------
+
+blog init set power on level 2, 2, 2.
+[IRQ] Clearing and Disable all the pending IRQ...
+[OS] Starting aos_loop_proc task...
+[OS] Starting OS Scheduler...
+Init CLI with event Driven
+
+# help
+====Build-in Commands====
+====Support 4 cmds once, seperate by ; ====
+help                     : print this
+p                        : print memory
+m                        : modify memory
+echo                     : echo for command
+exit                     : close CLI
+devname                  : print device name
+sysver                   : system version
+reboot                   : reboot system
+poweroff                 : poweroff system
+reset                    : system reset
+time                     : system time
+ota                      : system ota
+ps                       : thread dump
+ls                       : file list
+hexdump                  : dump file
+cat                      : cat file
+
+====User Commands====
+display_image            : Display image
+blogset                  : blog pri set level
+blogdump                 : blog info dump
+bl_sys_time_now          : sys time now
+
+# display_image
+Doing start transfer handshake...
+0x9d 0xbe 0x9f 0xbe 0xe8 0xcd 0x9e 0xad 0xea 0x2a 0x3a 0xf8
+Received 'c'
+Sent 'a'
+0x63
+Received 'b'
+Start transfer handshake OK
+Sending black pixels...
+Sending red pixels...
+
+#
+```
+
 # What's Next
 
 TODO
