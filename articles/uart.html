@@ -174,12 +174,14 @@ void send_begin() {
         //  Stop when we receive 'c'
         if (ch == 'c') { break; }
     }
-
-    //  Send 'a'
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-c">    //  Send 'a'
     int rc = bl_uart_data_send(UART_PORT, 'a');
     assert(rc == 0);
-
-    //  Wait until 'b' is received
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-c">    //  Wait until 'b' is received
     for (;;) {
         //  Read one byte from UART Port, returns -1 if nothing read
         int ch = bl_uart_data_recv(UART_PORT);
@@ -188,8 +190,9 @@ void send_begin() {
         //  Stop when we receive 'b'
         if (ch == 'b') { break; }
     }
-
-    //  Note that we're polling the UART Port, which is OK because we're
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-c">    //  Note that we're polling the UART Port, which is OK because we're
     //  mostly transmitting data, and receiving little data. If we're
     //  receiving lots of data, polling might lose some received data.
     //  For such cases, use UART Interrupts or DMA.
@@ -215,14 +218,16 @@ static void display_image(char *buf, int len, int argc, char **argv) {
 
     //  Sleep for 10 milliseconds
     vTaskDelay(10 / portTICK_PERIOD_MS);
-    
-    //  Do the Start Transfer Handshake with E-Ink Display
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-c">    //  Do the Start Transfer Handshake with E-Ink Display
     send_begin();
 
     //  Sleep for 2 seconds
     vTaskDelay(2000 / portTICK_PERIOD_MS);
-
-    //  Send the display data
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-c">    //  Send the display data
     write_image_picture();
 }
 </code></pre>
@@ -238,11 +243,13 @@ static void write_image_picture(void) {
         //  Sleep for 80 milliseconds
         vTaskDelay(80 / portTICK_PERIOD_MS);
     }
-
-    //  Sleep for 90 milliseconds
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-c">    //  Sleep for 90 milliseconds
     vTaskDelay(90 / portTICK_PERIOD_MS);
-
-    //  Send Red Pixels to display in 13 chunks of 212 bytes
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-c">    //  Send Red Pixels to display in 13 chunks of 212 bytes
     for (int i = 0; i &lt; 13; i++) {
         //  Send a chunk of 212 bytes
         send_data(&amp;IMAGE_RED[0 + i * 212], 212);
