@@ -224,9 +224,7 @@ If we're receiving lots of data through polling, we might lose some data. For su
 
 # Display Image
 
-TODO
-
-From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/demo.c#L132-L163)
+Let's head back to `display_image`, the function in our Demo Firmware that controls the E-Ink Display to render an image: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/demo.c#L132-L163)
 
 ```c
 /// Command to display image
@@ -240,23 +238,31 @@ static void display_image(char *buf, int len, int argc, char **argv) {
     vTaskDelay(10 / portTICK_PERIOD_MS);
 ```
 
-TODO
+We've initialised the UART Port with `bl_uart_init` (as seen earlier).
+
+To give the E-Ink Display a bit of time to get ready, we call __`vTaskDelay`__ (from FreeRTOS) to sleep for 10 milliseconds.
 
 ```c    
     //  Do the Start Transfer Handshake with E-Ink Display
     send_begin();
 
-    //  Sleep for 2 seconds
+    //  Sleep for 2 seconds (2000 milliseconds)
     vTaskDelay(2000 / portTICK_PERIOD_MS);
 ```
 
-TODO
+Then we call `send_begin` to do the Start Transfer Handshake (from the previous section).
+
+We give the E-Ink Display a little more pondering time, by calling `vTaskDelay` to sleep for 2 seconds.
 
 ```c
     //  Send the display data
     write_image_picture();
 }
 ```
+
+And we call __`write_image_picture`__ to send the image data.
+
+Let's look inside `write_image_picture`
 
 ## Send Image Data
 
