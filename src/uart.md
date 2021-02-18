@@ -502,13 +502,7 @@ Min and Max are the __Threshold RGB Values__ used to generate each bitmap...
 
 1.  __Red Bitmap__ contains pixels whose original RGB values range from __86 to 215__ (between black and white)
 
-TODO
-
-From [`pinetime-graphic`](https://github.com/lupyuen/pinetime-graphic)
-
-PNG File 
-
-To convert the PNG image `uart-cartoon2.png` (202 x 104 resolution) to C arrays `image_black.inc` (black bitmap) and `image_red.inc` (red bitmap)...
+Here's how we convert the PNG file [`uart-cartoon2.png`](https://github.com/lupyuen/pinetime-graphic/blob/master/uart-cartoon2.png) (202 x 104 resolution) to the C arrays `image_black.inc` (black bitmap) and `image_red.inc` (red bitmap)..
 
 ```bash
 # Download the source code
@@ -524,9 +518,11 @@ cargo run -- --min 0  --max 85  uart-cartoon2.png >image_black.inc
 cargo run -- --min 86 --max 215 uart-cartoon2.png >image_red.inc
 ```
 
-[Here's the original high-resolution sketch](https://lupyuen.github.io/images/uart-cartoon.png)
+-   [__Check out the `pinetime-graphic` source code__](https://github.com/lupyuen/pinetime-graphic)
 
-[More about the Grove E-Ink Image Format](https://wiki.seeedstudio.com/Grove-Triple_Color_E-Ink_Display_2_13/#diy)
+-   [__Here's the original high-resolution sketch__](https://lupyuen.github.io/images/uart-cartoon.png)
+
+-   [__More about the Grove E-Ink Image Format__](https://wiki.seeedstudio.com/Grove-Triple_Color_E-Ink_Display_2_13/#diy)
 
 # What's Next
 
