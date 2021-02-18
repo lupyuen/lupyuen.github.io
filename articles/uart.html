@@ -446,6 +446,7 @@ const unsigned char IMAGE_RED[] = {
 0xff, 0xff, 0xff, 0xff, 0xff, 0xdf, 0xff, 0xff, 0xff, 0x1f, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
 ...
 </code></pre>
+<p>(That's 2,756 bytes: 104 rows * 212 columns * 1 bit per pixel)</p>
 <p>And for the red bitmap: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/image_red.inc"><code>image_red.inc</code></a></p>
 <pre><code class="language-text">//  Min: 86, Max: 215
 //  Rows: 104, Columns: 212
@@ -453,11 +454,13 @@ const unsigned char IMAGE_RED[] = {
 0xff, 0xff, 0xff, 0xff, 0xff, 0xef, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
 ...
 </code></pre>
-<p><em>What are min and max?</em></p>
-<p>The black and red bitmaps were generated from a Greyscale PNG file.</p>
+<p>(Also 2,756 bytes)</p>
+<p><em>What are Min and Max?</em></p>
+<p>The black and red bitmaps were generated from a Greyscale PNG file: <a href="https://github.com/lupyuen/pinetime-graphic/blob/master/uart-cartoon2.png"><code>uart-cartoon2.png</code></a></p>
+<p>Min and Max are the threshold RGB values used to generate each bitmap...</p>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/pinetime-graphic"><code>pinetime-graphic</code></a></p>
-<p>PNG File <a href="https://github.com/lupyuen/pinetime-graphic/blob/master/uart-cartoon2.png"><code>uart-cartoon2.png</code></a></p>
+<p>PNG File </p>
 <p>To convert the PNG image <code>uart-cartoon2.png</code> (202 x 104 resolution) to C arrays <code>image_black.inc</code> (black bitmap) and <code>image_red.inc</code> (red bitmap)...</p>
 <pre><code class="language-bash"># Download the source code
 git clone https://github.com/lupyuen/pinetime-graphic
@@ -471,6 +474,7 @@ cargo run -- --min 0  --max 85  uart-cartoon2.png &gt;image_black.inc
 # Convert the PNG file to a C array (red bitmap) with these min and max thresholds
 cargo run -- --min 86 --max 215 uart-cartoon2.png &gt;image_red.inc
 </code></pre>
+<p><a href="https://lupyuen.github.io/images/uart-cartoon.png">Here's the original high-resolution sketch</a></p>
 <p><a href="https://wiki.seeedstudio.com/Grove-Triple_Color_E-Ink_Display_2_13/#diy">More about the Grove E-Ink Image Format</a></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">8 What's Next</a></h1>
 <p>TODO</p>
