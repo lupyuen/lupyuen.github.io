@@ -410,6 +410,8 @@ Sending red pixels...
 #
 ```
 
+[__Watch the Demo Video on YouTube__](https://youtu.be/mEChT3e-ITI)
+
 ![Grove E-Ink Display close up](https://lupyuen.github.io/images/uart-connect4.jpg)
 
 _Grove E-Ink Display close up_
