@@ -468,9 +468,7 @@ const unsigned char IMAGE_RED[] = {
 };
 ```
 
-TODO
-
-From [`image_black.inc`](https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/image_black.inc)
+A peek into the black bitmap reveals this: [`image_black.inc`](https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/image_black.inc)
 
 ```text
 //  Min: 0, Max: 85
@@ -480,9 +478,7 @@ From [`image_black.inc`](https://github.com/lupyuen/bl_iot_sdk/blob/eink/custome
 ...
 ```
 
-TODO
-
-From [`image_red.inc`](https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/image_red.inc)
+And for the red bitmap: [`image_red.inc`](https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/image_red.inc)
 
 ```text
 //  Min: 86, Max: 215
@@ -491,6 +487,12 @@ From [`image_red.inc`](https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_
 0xff, 0xff, 0xff, 0xff, 0xff, 0xef, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
 ...
 ```
+
+_What are min and max?_
+
+The black and red bitmaps were generated from a Greyscale PNG file.
+
+TODO
 
 From [`pinetime-graphic`](https://github.com/lupyuen/pinetime-graphic)
 
