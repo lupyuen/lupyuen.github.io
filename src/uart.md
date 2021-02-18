@@ -130,11 +130,19 @@ void send_begin() {
         //  Stop when we receive 'c'
         if (ch == 'c') { break; }
     }
+```
 
+TODO
+
+```c
     //  Send 'a'
     int rc = bl_uart_data_send(UART_PORT, 'a');
     assert(rc == 0);
+```
 
+TODO
+
+```c
     //  Wait until 'b' is received
     for (;;) {
         //  Read one byte from UART Port, returns -1 if nothing read
@@ -144,7 +152,11 @@ void send_begin() {
         //  Stop when we receive 'b'
         if (ch == 'b') { break; }
     }
+```
 
+TODO
+
+```c
     //  Note that we're polling the UART Port, which is OK because we're
     //  mostly transmitting data, and receiving little data. If we're
     //  receiving lots of data, polling might lose some received data.
@@ -177,13 +189,21 @@ static void display_image(char *buf, int len, int argc, char **argv) {
 
     //  Sleep for 10 milliseconds
     vTaskDelay(10 / portTICK_PERIOD_MS);
-    
+```
+
+TODO
+
+```c    
     //  Do the Start Transfer Handshake with E-Ink Display
     send_begin();
 
     //  Sleep for 2 seconds
     vTaskDelay(2000 / portTICK_PERIOD_MS);
+```
 
+TODO
+
+```c
     //  Send the display data
     write_image_picture();
 }
@@ -204,10 +224,18 @@ static void write_image_picture(void) {
         //  Sleep for 80 milliseconds
         vTaskDelay(80 / portTICK_PERIOD_MS);
     }
+```
 
+TODO
+
+```c
     //  Sleep for 90 milliseconds
     vTaskDelay(90 / portTICK_PERIOD_MS);
+```
 
+TODO
+
+```c
     //  Send Red Pixels to display in 13 chunks of 212 bytes
     for (int i = 0; i < 13; i++) {
         //  Send a chunk of 212 bytes
