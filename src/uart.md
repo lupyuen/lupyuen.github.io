@@ -118,7 +118,7 @@ It calls __`bl_uart_init`__ (from BL602 Low Level UART HAL) to initialise the UA
 
     BL602 has 2 UART Ports: 0 and 1. 
     
-    UART Port 0 is reserved for the command-line interface, so we should always use UART Port 1.
+    UART Port 0 is reserved for the Command-Line Interface, so we should always use UART Port 1.
 
 -   __Transmit Pin:__ We select __Pin 4__, as recommended by the [BL602 Device Tree](https://lupyuen.github.io/articles/flash#uart).
 
@@ -131,6 +131,8 @@ It calls __`bl_uart_init`__ (from BL602 Low Level UART HAL) to initialise the UA
 -   __RTS Pin:__ We set this to __255__ because we're not using Hardware Flow Control.
 
 -   __Baud Rate:__ We set this to __230400 bps__ (or 230.4 kbps), as specified in the Grove E-Ink Docs.
+
+    Maximum baud rate is __10 Mbps.__
 
 We'll come back to `display_image` in a while. First let's learn to transmit and receive some UART data.
 
