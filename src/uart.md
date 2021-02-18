@@ -138,16 +138,37 @@ We'll come back to `display_image` in a while. First let's learn to transmit and
 
 # Transfer UART Data
 
-TODO
+Before we send a bitmap to the E-Ink Display for rendering, we do a __Start Transfer Handshake__ to make sure that everybody's all ready...
 
-From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/demo.c#L56-L96)
+1.  We wait until we __receive the character `'c'`__ from the E-Ink Display
+
+1.  We __transmit the character `'a'`__ to the E-Ink Display
+
+1.  Finally we wait until we __receive the character `'b'`__ from the E-Ink Display
+
+Let's implement this with the BL602 Low Level UART HAL.
+
+## Receive Data
+
+Here's how we __receive one byte of data__ from the UART Port...
+
+```c
+//  Use UART Port 1 (UART Port 0 is reserved for console)
+#define UART_PORT 1
+
+//  Read one byte from UART Port 1, returns -1 if nothing read
+int ch = bl_uart_data_recv(UART_PORT);
+```
+
+Note that __`bl_uart_data_recv`__ (from the BL602 Low Level UART HAL) returns -1 if there's no data to be read.
+
+Thus we usually call `bl_uart_data_recv` in a loop like so: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/demo.c#L56-L96)
 
 ```c
 /// Do the Start Transfer Handshake with E-Ink Display:
 /// Receive 'c', send 'a', receive 'b'
 void send_begin() {
     //  Wait until 'c' is received
-    int last_ch = 0;
     for (;;) {
         //  Read one byte from UART Port, returns -1 if nothing read
         int ch = bl_uart_data_recv(UART_PORT);
@@ -158,7 +179,13 @@ void send_begin() {
     }
 ```
 
-TODO
+Here we define the function __`send_begin`__ that performs the Start Transfer Handshake.
+
+This code loops until the character `'c'` has been received from the UART Port. Which is the First Step of our handshake.
+
+## Transmit Data
+
+Second Step of the handshake: __Send the character `'a'`...__
 
 ```c
     //  Send 'a'
@@ -166,7 +193,11 @@ TODO
     assert(rc == 0);
 ```
 
-TODO
+Here we call __`bl_uart_data_send`__ (also from the BL602 Low Level UART HAL) to transmit the character `'a'` to the UART Port.
+
+## Receive Again
+
+Finally the Third Step: __Wait until `'b'` has been received__ from the UART Port...
 
 ```c
     //  Wait until 'b' is received
@@ -178,19 +209,18 @@ TODO
         //  Stop when we receive 'b'
         if (ch == 'b') { break; }
     }
-```
-
-TODO
-
-```c
-    //  Note that we're polling the UART Port, which is OK because we're
-    //  mostly transmitting data, and receiving little data. If we're
-    //  receiving lots of data, polling might lose some received data.
-    //  For such cases, use UART Interrupts or DMA.
 }
 ```
 
-Based on [`Eink_factory_code_213.ino`](https://github.com/Seeed-Studio/Grove_Triple_Color_E-lnk_2.13/blob/master/examples/Eink_factory_code_213/Eink_factory_code_213.ino)
+(Looks very similar to the First Step)
+
+And we're done with the Start Transfer Handshake!
+
+Note that we're polling the UART Port, which is OK because we're mostly transmitting data, and receiving little data. 
+
+If we're receiving lots of data through polling, we might lose some data. For such cases, we should use UART Interrupts or DMA.
+
+(The E-Ink Display code in this article was ported from Arduino to BL602. [See this](https://github.com/Seeed-Studio/Grove_Triple_Color_E-lnk_2.13/blob/master/examples/Eink_factory_code_213/Eink_factory_code_213.ino))
 
 # Display Image
 
