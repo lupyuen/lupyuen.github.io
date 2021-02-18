@@ -87,9 +87,9 @@ Which makes them very useful for Low Power IoT Gadgets.
 
 # Initialise UART Port
 
-TODO
+Let's dive into the code for our Demo Firmware!
 
-From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/demo.c#L132-L150)
+We initialise the UART Port like so: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/demo.c#L132-L150)
 
 ```c
 /// Use UART Port 1 (UART Port 0 is reserved for console)
@@ -104,11 +104,35 @@ static void display_image(char *buf, int len, int argc, char **argv) {
         4,          //  Tx Pin (Blue)
         3,          //  Rx Pin (Yellow)
         255,        //  CTS Unused
-        255,        //  UTS Unused
-        230400      //  Buad Rate
+        255,        //  RTS Unused
+        230400      //  Baud Rate
     );
     assert(rc == 0);
 ```
+
+Here we define __`display_image`__, the command that we'll be running in our Demo Firmware.
+
+It calls __`bl_uart_init`__ (from BL602 Low Level UART HAL) to initialise the UART Port with these parameters...
+
+-   __UART Port:__ We select __UART Port 1__.
+
+    BL602 has 2 UART Ports: 0 and 1. 
+    
+    UART Port 0 is reserved for the command-line interface, so we should always use UART Port 1.
+
+-   __Transmit Pin:__ We select __Pin 4__, as recommended by the [BL602 Device Tree](https://lupyuen.github.io/articles/flash#uart).
+
+    (For valid pins, check the [BL602 Reference Manual](https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en), Table 3.1 "Pin Description", Page 27)
+
+-   __Receive Pin:__ We select __Pin 3__, as recommended by the [BL602 Device Tree](https://lupyuen.github.io/articles/flash#uart).
+
+-   __CTS Pin:__ We set this to __255__ because we're not using Hardware Flow Control.
+
+-   __RTS Pin:__ We set this to __255__ because we're not using Hardware Flow Control.
+
+-   __Baud Rate:__ We set this to __230400 bps__ (or 230.4 kbps), as specified in the Grove E-Ink Docs.
+
+We'll come back to `display_image` in a while. First let's learn to transmit and receive some UART data.
 
 # Transfer UART Data
 
