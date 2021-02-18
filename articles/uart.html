@@ -122,16 +122,22 @@
 </ul>
 <p>We shall call the BL602 Low Level UART HAL to control the Grove E-Ink Display with this BL602 Command-Line Firmware: <a href="https://github.com/lupyuen/bl_iot_sdk/tree/eink/customer_app/sdk_app_uart_eink"><strong><code>sdk_app_uart_eink</code></strong></a></p>
 <p>The firmware will work on all BL602 boards, including PineCone and Pinenut.</p>
+<p><img src="https://lupyuen.github.io/images/uart-connect2.jpg" alt="PineCone BL602 connected to Grove E-Ink Display" /></p>
+<p><em>PineCone BL602 connected to Grove E-Ink Display</em></p>
 <h1 id="connect-bl602-to-grove-e-ink-display" class="section-header"><a href="#connect-bl602-to-grove-e-ink-display">2 Connect BL602 to Grove E-Ink Display</a></h1>
-<p>TODO</p>
-<p>Connect BL602 to Grove E-Ink Display as follows...</p>
+<p>Connect BL602 to Grove E-Ink Display according to the pic above...</p>
 <table><thead><tr><th align="left">BL602 Pin</th><th align="left">E-Ink Display</th><th align="left">Wire Colour</th></tr></thead><tbody>
 <tr><td align="left"><strong><code>GPIO 3</code></strong></td><td align="left"><code>TX</code></td><td align="left">Yellow</td></tr>
 <tr><td align="left"><strong><code>GPIO 4</code></strong></td><td align="left"><code>RX</code></td><td align="left">Blue</td></tr>
 <tr><td align="left"><strong><code>3V3</code></strong></td><td align="left"><code>3.3V</code></td><td align="left">Red</td></tr>
 <tr><td align="left"><strong><code>GND</code></strong></td><td align="left"><code>GND</code></td><td align="left">Black</td></tr>
 </tbody></table>
-<p><img src="https://lupyuen.github.io/images/uart-connect2.jpg" alt="PineCone BL602 connected to Grove E-Ink Display" /></p>
+<p>Here's an extreme closeup of the PineCone BL602 pins...</p>
+<p><img src="https://lupyuen.github.io/images/uart-connect3.jpg" alt="PineCone BL602 connected to Grove E-Ink Display Closeup" /></p>
+<p><em>The screen works without power! What magic is this?</em></p>
+<p>Remember that E-Ink Displays only need power when we're updating the display.</p>
+<p>Which makes them very useful for Low Power IoT Gadgets.</p>
+<p>(But we're not supposed to update the screen too often)</p>
 <h1 id="initialise-uart-port" class="section-header"><a href="#initialise-uart-port">3 Initialise UART Port</a></h1>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/demo.c#L132-L150"><code>demo.c</code></a></p>
