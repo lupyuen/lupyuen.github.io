@@ -496,7 +496,11 @@ _What are Min and Max?_
 
 The black and red bitmaps were generated from a Greyscale PNG file: [`uart-cartoon2.png`](https://github.com/lupyuen/pinetime-graphic/blob/master/uart-cartoon2.png)
 
-Min and Max are the threshold RGB values used to generate each bitmap...
+Min and Max are the __Threshold RGB Values__ used to generate each bitmap...
+
+1.  __Black Bitmap__ contains pixels whose original RGB values range from __0 to 85__ (close to black)
+
+1.  __Red Bitmap__ contains pixels whose original RGB values range from __86 to 215__ (between black and white)
 
 TODO
 
