@@ -62,19 +62,309 @@ The firmware will work on all BL602 boards, including PineCone and Pinenut.
 
 TODO
 
+Connect BL602 to Grove E-Ink Display as follows...
+
+| BL602 Pin     | E-Ink Display       | Wire Colour 
+|:--------------|:--------------------|:-------------------
+| __`GPIO 3`__  | `TX`                | Yellow 
+| __`GPIO 4`__  | `RX`                | Blue
+| __`3V3`__     | `3.3V`              | Red
+| __`GND`__     | `GND`               | Black
+
+![PineCone BL602 connected to Grove E-Ink Display](https://lupyuen.github.io/images/uart-connect2.jpg)
+
 # Initialise UART Port
 
 TODO
+
+From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/demo.c#L132-L150)
+
+```c
+/// Use UART Port 1 (UART Port 0 is reserved for console)
+#define UART_PORT 1
+
+/// Command to display image
+static void display_image(char *buf, int len, int argc, char **argv) {
+    ...
+    //  Init UART Port 1 with Tx Pin 4, Rx Pin 3 for Rx at 230.4 kbps
+    int rc = bl_uart_init(
+        UART_PORT,  //  UART Port 1
+        4,          //  Tx Pin (Blue)
+        3,          //  Rx Pin (Yellow)
+        255,        //  CTS Unused
+        255,        //  UTS Unused
+        230400      //  Buad Rate
+    );
+    assert(rc == 0);
+```
 
 # Transfer UART Data
 
 TODO
 
+From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/demo.c#L56-L96)
+
+```c
+/// Do the Start Transfer Handshake with E-Ink Display:
+/// Receive 'c', send 'a', receive 'b'
+void send_begin() {
+    //  Wait until 'c' is received
+    int last_ch = 0;
+    for (;;) {
+        //  Read one byte from UART Port, returns -1 if nothing read
+        int ch = bl_uart_data_recv(UART_PORT);
+        if (ch < 0) { continue; }  //  Loop until we receive something
+
+        //  Stop when we receive 'c'
+        if (ch == 'c') { break; }
+    }
+
+    //  Send 'a'
+    int rc = bl_uart_data_send(UART_PORT, 'a');
+    assert(rc == 0);
+
+    //  Wait until 'b' is received
+    for (;;) {
+        //  Read one byte from UART Port, returns -1 if nothing read
+        int ch = bl_uart_data_recv(UART_PORT);
+        if (ch < 0) { continue; }  //  Loop until we receive something
+
+        //  Stop when we receive 'b'
+        if (ch == 'b') { break; }
+    }
+
+    //  Note that we're polling the UART Port, which is OK because we're
+    //  mostly transmitting data, and receiving little data. If we're
+    //  receiving lots of data, polling might lose some received data.
+    //  For such cases, use UART Interrupts or DMA.
+}
+```
+
+Based on [`Eink_factory_code_213.ino`](https://github.com/Seeed-Studio/Grove_Triple_Color_E-lnk_2.13/blob/master/examples/Eink_factory_code_213/Eink_factory_code_213.ino)
+
 # Display Image
 
 TODO
 
+From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/demo.c#L132-L163)
+
+```c
+/// Command to display image
+static void display_image(char *buf, int len, int argc, char **argv) {
+    ...
+    //  Init UART Port 1 with Tx Pin 4, Rx Pin 3 for Rx at 230.4 kbps
+    int rc = bl_uart_init(
+        UART_PORT,  //  UART Port 1
+        4,          //  Tx Pin (Blue)
+        3,          //  Rx Pin (Yellow)
+        255,        //  CTS Unused
+        255,        //  UTS Unused
+        230400      //  Buad Rate
+    );
+    assert(rc == 0);
+
+    //  Sleep for 10 milliseconds
+    vTaskDelay(10 / portTICK_PERIOD_MS);
+    
+    //  Do the Start Transfer Handshake with E-Ink Display
+    send_begin();
+
+    //  Sleep for 2 seconds
+    vTaskDelay(2000 / portTICK_PERIOD_MS);
+
+    //  Send the display data
+    write_image_picture();
+}
+```
+
+TODO
+
+From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/demo.c#L106-L130)
+
+```c
+/// Send Black and Red Image Data to display
+static void write_image_picture(void) {    
+    //  Send Black Pixels to display in 13 chunks of 212 bytes
+    for (int i = 0; i < 13; i++) {
+        //  Send a chunk of 212 bytes
+        send_data(&IMAGE_BLACK[0 + i * 212], 212);
+
+        //  Sleep for 80 milliseconds
+        vTaskDelay(80 / portTICK_PERIOD_MS);
+    }
+
+    //  Sleep for 90 milliseconds
+    vTaskDelay(90 / portTICK_PERIOD_MS);
+
+    //  Send Red Pixels to display in 13 chunks of 212 bytes
+    for (int i = 0; i < 13; i++) {
+        //  Send a chunk of 212 bytes
+        send_data(&IMAGE_RED[0 + i * 212], 212);
+
+        //  Sleep for 80 milliseconds
+        vTaskDelay(80 / portTICK_PERIOD_MS);
+    }
+}
+```
+
+TODO
+
+From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/demo.c#L98-L104)
+
+```c
+/// Send data to display over UART. data_len is number of bytes.
+static void send_data(const uint8_t* data, uint32_t data_len) {
+    for (int i = 0; i < data_len; i++) {
+        int rc = bl_uart_data_send(UART_PORT, data[i]);
+        assert(rc == 0);
+    }
+}
+```
+
+# Black and Red Bitmaps
+
+TODO
+
+From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/demo.c#L46-L54)
+
+```c
+/// Define the Black Pixels of the image
+const unsigned char IMAGE_BLACK[] = { 
+    #include "image_black.inc"
+};
+
+/// Define the Red Pixels of the image
+const unsigned char IMAGE_RED[] = { 
+    #include "image_red.inc"
+};
+```
+
+TODO
+
+From [`image_black.inc`](https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/image_black.inc)
+
+```text
+//  Min: 0, Max: 85
+//  Rows: 104, Columns: 212
+0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x3f, 0xff, 0xff, 0xff,
+0xff, 0xff, 0xff, 0xff, 0xff, 0xdf, 0xff, 0xff, 0xff, 0x1f, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+...
+```
+
+TODO
+
+From [`image_red.inc`](https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/image_red.inc)
+
+```text
+//  Min: 86, Max: 215
+//  Rows: 104, Columns: 212
+0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+0xff, 0xff, 0xff, 0xff, 0xff, 0xef, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+...
+```
+
+From [`pinetime-graphic`](https://github.com/lupyuen/pinetime-graphic)
+
+PNG File [`uart-cartoon2.png`](https://github.com/lupyuen/pinetime-graphic/blob/master/uart-cartoon2.png)
+
+To convert the PNG image `uart-cartoon2.png` (202 x 104 resolution) to C arrays `image_black.inc` (black bitmap) and `image_red.inc` (red bitmap)...
+
+```bash
+# Download the source code
+git clone https://github.com/lupyuen/pinetime-graphic
+cd pinetime-graphic
+
+# TODO: Copy uart-cartoon2.png to the pinetime-graphic folder
+
+# Convert the PNG file to a C array (black bitmap) with these min and max thresholds
+cargo run -- --min 0  --max 85  uart-cartoon2.png >image_black.inc
+
+# Convert the PNG file to a C array (red bitmap) with these min and max thresholds
+cargo run -- --min 86 --max 215 uart-cartoon2.png >image_red.inc
+```
+
 # Build and Run the Firmware
+
+Let's run the E-Ink Display UART Demo Firmware for BL602.
+
+Download the Firmware Binary File __`sdk_app_uart_eink.bin`__ from...
+
+-  [__`sdk_app_uart_eink` Binary Release__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v5.0.0)
+
+Alternatively, we may build the Firmware Binary File `sdk_app_uart_eink.bin` from the [source code](https://github.com/lupyuen/bl_iot_sdk/tree/eink/customer_app/sdk_app_uart_eink)...
+
+```bash
+# Download the eink branch of lupyuen's bl_iot_sdk
+git clone --recursive --branch eink https://github.com/lupyuen/bl_iot_sdk
+cd bl_iot_sdk/customer_app/sdk_app_uart_eink
+
+# TODO: Change this to the full path of bl_iot_sdk
+export BL60X_SDK_PATH=$HOME/bl_iot_sdk
+export CONFIG_CHIP_NAME=BL602
+make
+
+# TODO: Change ~/blflash to the full path of blflash
+cp build_out/sdk_app_uart_eink.bin ~/blflash
+```
+
+[More details on building bl_iot_sdk](https://lupyuen.github.io/articles/pinecone#building-firmware)
+
+(Remember to use the __`eink`__ branch, not the default __`master`__ branch)
+
+## Flash the firmware
+
+Follow these steps to install `blflash`...
+
+1.  [__"Install rustup"__](https://lupyuen.github.io/articles/flash#install-rustup)
+
+1.  [__"Download and build blflash"__](https://lupyuen.github.io/articles/flash#download-and-build-blflash)
+
+We assume that our Firmware Binary File `sdk_app_st7789.bin` has been copied to the `blflash` folder.
+
+Set BL602 to __Flashing Mode__ and restart the board.
+
+For PineCone, this means setting the onboard jumper (IO 8) to the `H` Position [(Like this)](https://lupyuen.github.io/images/pinecone-jumperh.jpg)
+
+Enter these commands to flash `sdk_app_uart_eink.bin` to BL602 over UART...
+
+```bash
+# TODO: Change ~/blflash to the full path of blflash
+cd ~/blflash
+
+# For Linux:
+sudo cargo run flash sdk_app_uart_eink.bin \
+    --port /dev/ttyUSB0
+
+# For macOS:
+cargo run flash sdk_app_uart_eink.bin \
+    --port /dev/tty.usbserial-1420 \
+    --initial-baud-rate 230400 \
+    --baud-rate 230400
+```
+
+[More details on flashing firmware](https://lupyuen.github.io/articles/flash#flash-the-firmware)
+
+## Run the firmware
+
+Set BL602 to __Normal Mode__ (Non-Flashing) and restart the board.
+
+For PineCone, this means setting the onboard jumper (IO 8) to the `L` Position [(Like this)](https://lupyuen.github.io/images/pinecone-jumperl.jpg)
+
+Connect to BL602's UART Port at 2 Mbps like so...
+
+__For Linux:__
+
+```bash
+sudo screen /dev/ttyUSB0 2000000
+```
+
+__For macOS:__ Use CoolTerm ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
+
+__For Windows:__ Use `putty` ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
+
+[More details on connecting to BL602](https://lupyuen.github.io/articles/flash#watch-the-firmware-run)
+
+## Enter commands
 
 TODO
 
