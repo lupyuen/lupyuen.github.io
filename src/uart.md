@@ -261,72 +261,6 @@ static void send_data(const uint8_t* data, uint32_t data_len) {
 }
 ```
 
-![Grove E-Ink Display close up](https://lupyuen.github.io/images/uart-connect4.jpg)
-
-_Grove E-Ink Display close up_
-
-# Black and Red Bitmaps
-
-TODO
-
-From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/demo.c#L46-L54)
-
-```c
-/// Define the Black Pixels of the image
-const unsigned char IMAGE_BLACK[] = { 
-    #include "image_black.inc"
-};
-
-/// Define the Red Pixels of the image
-const unsigned char IMAGE_RED[] = { 
-    #include "image_red.inc"
-};
-```
-
-TODO
-
-From [`image_black.inc`](https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/image_black.inc)
-
-```text
-//  Min: 0, Max: 85
-//  Rows: 104, Columns: 212
-0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x3f, 0xff, 0xff, 0xff,
-0xff, 0xff, 0xff, 0xff, 0xff, 0xdf, 0xff, 0xff, 0xff, 0x1f, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-...
-```
-
-TODO
-
-From [`image_red.inc`](https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/image_red.inc)
-
-```text
-//  Min: 86, Max: 215
-//  Rows: 104, Columns: 212
-0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-0xff, 0xff, 0xff, 0xff, 0xff, 0xef, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-...
-```
-
-From [`pinetime-graphic`](https://github.com/lupyuen/pinetime-graphic)
-
-PNG File [`uart-cartoon2.png`](https://github.com/lupyuen/pinetime-graphic/blob/master/uart-cartoon2.png)
-
-To convert the PNG image `uart-cartoon2.png` (202 x 104 resolution) to C arrays `image_black.inc` (black bitmap) and `image_red.inc` (red bitmap)...
-
-```bash
-# Download the source code
-git clone https://github.com/lupyuen/pinetime-graphic
-cd pinetime-graphic
-
-# TODO: Copy uart-cartoon2.png to the pinetime-graphic folder
-
-# Convert the PNG file to a C array (black bitmap) with these min and max thresholds
-cargo run -- --min 0  --max 85  uart-cartoon2.png >image_black.inc
-
-# Convert the PNG file to a C array (red bitmap) with these min and max thresholds
-cargo run -- --min 86 --max 215 uart-cartoon2.png >image_red.inc
-```
-
 # Build and Run the Firmware
 
 Let's run the E-Ink Display UART Demo Firmware for BL602.
@@ -475,6 +409,78 @@ Sending red pixels...
 
 #
 ```
+
+![Grove E-Ink Display close up](https://lupyuen.github.io/images/uart-connect4.jpg)
+
+_Grove E-Ink Display close up_
+
+# Black and Red Bitmaps
+
+_That's not a plain black and white image right? I see some red fringes..._
+
+The E-Ink Display is actually showing a black, white AND red image!
+
+TODO
+
+From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/demo.c#L46-L54)
+
+```c
+/// Define the Black Pixels of the image
+const unsigned char IMAGE_BLACK[] = { 
+    #include "image_black.inc"
+};
+
+/// Define the Red Pixels of the image
+const unsigned char IMAGE_RED[] = { 
+    #include "image_red.inc"
+};
+```
+
+TODO
+
+From [`image_black.inc`](https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/image_black.inc)
+
+```text
+//  Min: 0, Max: 85
+//  Rows: 104, Columns: 212
+0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x3f, 0xff, 0xff, 0xff,
+0xff, 0xff, 0xff, 0xff, 0xff, 0xdf, 0xff, 0xff, 0xff, 0x1f, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+...
+```
+
+TODO
+
+From [`image_red.inc`](https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/image_red.inc)
+
+```text
+//  Min: 86, Max: 215
+//  Rows: 104, Columns: 212
+0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+0xff, 0xff, 0xff, 0xff, 0xff, 0xef, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+...
+```
+
+From [`pinetime-graphic`](https://github.com/lupyuen/pinetime-graphic)
+
+PNG File [`uart-cartoon2.png`](https://github.com/lupyuen/pinetime-graphic/blob/master/uart-cartoon2.png)
+
+To convert the PNG image `uart-cartoon2.png` (202 x 104 resolution) to C arrays `image_black.inc` (black bitmap) and `image_red.inc` (red bitmap)...
+
+```bash
+# Download the source code
+git clone https://github.com/lupyuen/pinetime-graphic
+cd pinetime-graphic
+
+# TODO: Copy uart-cartoon2.png to the pinetime-graphic folder
+
+# Convert the PNG file to a C array (black bitmap) with these min and max thresholds
+cargo run -- --min 0  --max 85  uart-cartoon2.png >image_black.inc
+
+# Convert the PNG file to a C array (red bitmap) with these min and max thresholds
+cargo run -- --min 86 --max 215 uart-cartoon2.png >image_red.inc
+```
+
+[More about the Grove E-Ink Image Format](https://wiki.seeedstudio.com/Grove-Triple_Color_E-Ink_Display_2_13/#diy)
 
 # What's Next
 
