@@ -91,7 +91,7 @@
 <p><img src="https://lupyuen.github.io/images/uart-title.jpg" alt="PineCone BL602 RISC-V Board rendering an image on Grove Triple Colour E-Ink Display with UART Interface" /></p>
 <p><em>PineCone BL602 RISC-V Board rendering an image on Grove Triple Colour E-Ink Display with UART Interface</em></p>
 <h1 id="bl602-uart-hardware-abstraction-layer-high-level-vs-low-level" class="section-header"><a href="#bl602-uart-hardware-abstraction-layer-high-level-vs-low-level">1 BL602 UART Hardware Abstraction Layer: High Level vs Low Level</a></h1>
-<p>The BL602 IoT SDK contains an <strong>UART Hardware Abstraction Layer (HAL)</strong> that we may call in our C programs to access the two UART Ports.</p>
+<p>The BL602 IoT SDK contains a <strong>UART Hardware Abstraction Layer (HAL)</strong> that we may call in our C programs to access the two UART Ports.</p>
 <p>BL602's UART HAL is packaged as two levels...</p>
 <ol>
 <li>
@@ -101,7 +101,7 @@
 <li>
 <p><strong>High Level HAL <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_uart.c"><code>hal_uart.c</code></a></strong>: This calls the Low Level HAL, and uses the Device Tree and FreeRTOS.</p>
 <p>The High Level HAL is called by the <a href="https://github.com/alibaba/AliOS-Things">AliOS Firmware</a> created by the BL602 IoT SDK.</p>
-<p>(AliOS functions are easy to identify... The function names begin with <code>aos_</code>)</p>
+<p>(AliOS functions are easy to identify... Their function names begin with &quot;<code>aos_</code>&quot;)</p>
 </li>
 </ol>
 <p>Today we shall use the <strong>Low Level UART HAL <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_uart.c"><code>bl_uart.c</code></a></strong> because...</p>
