@@ -631,3 +631,5 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1361848589496979458?s=20)
+
+1.  Would be great if we could have the STM32 Source Code for the Grove E-Ink Display. [(See this issue)](https://github.com/Seeed-Studio/Grove_Triple_Color_E-lnk_2.13/issues/3)
