@@ -52,7 +52,7 @@ Learn to call the BL602 __GPIO Hardware Abstraction Layer (HAL)__ to blink an LE
 
 Everything about the __BL602 PWM HAL__.
 
--   ["Control PineCone BL602 RGB LED with GPIO and PWM"](https://lupyuen.github.io/articles/led)
+-   ["From GPIO to Pulse Width Modulation (PWM)"](https://lupyuen.github.io/articles/led#from-gpio-to-pulse-width-modulation-pwm)
 
 ![](https://lupyuen.github.io/images/book-i2c.jpg)
 
@@ -76,9 +76,9 @@ How we call the __BL602 I2C HAL__ to access SPI Sensors and Displays.
 
 # DMA on BL602
 
-How we perform __SPI with DMA__ on BL602.
+How we __accelerate data transfers with DMA__ on BL602.
 
--   ["PineCone BL602 talks SPI too!"](https://lupyuen.github.io/articles/spi)
+-   ["SPI with Direct Memory Access"](https://lupyuen.github.io/articles/spi#spi-with-direct-memory-access)
 
 ![](https://lupyuen.github.io/images/book-uart.jpg)
 
@@ -102,25 +102,25 @@ Render text and graphics with the open-source __LVGL Library__.
 
 # OpenOCD on BL602
 
-TODO
+Before debugging BL602, we install __OpenOCD__ to connect a __JTAG Debugger__ to BL602
 
 -   ["Connect PineCone BL602 to OpenOCD"](https://lupyuen.github.io/articles/openocd)
 
 ![](https://lupyuen.github.io/images/book-debug.jpg)
 
-# VSCode and GDB on BL602
+# GDB and VSCode on BL602
 
-TODO
+How we __debug BL602 firmware__ with GDB and VSCode
 
 -   ["Debug Rust on PineCone BL602 with VSCode and GDB"](https://lupyuen.github.io/articles/debug)
 
--   ["Porting Mynewt to PineCone BL602"](https://lupyuen.github.io/articles/mynewt)
+-   ["Debug Mynewt with VSCode"](https://lupyuen.github.io/articles/mynewt#debug-firmware-with-vscode)
 
 ![](https://lupyuen.github.io/images/book-rust.jpg)
 
 # Rust on BL602
 
-TODO
+How we code BL602 firmware the __safer, simpler way with Rust.__
 
 -   ["Debug Rust on PineCone BL602 with VSCode and GDB"](https://lupyuen.github.io/articles/debug)
 
@@ -128,7 +128,7 @@ TODO
 
 # Mynewt on BL602
 
-TODO
+Will BL602 run without FreeRTOS? Study the ongoing port of __Apache Mynewt operating system__ to BL602.
 
 -   ["Porting Mynewt to PineCone BL602"](https://lupyuen.github.io/articles/mynewt)
 
@@ -138,13 +138,17 @@ TODO
 
 # What's Next
 
-Stay tuned for more: __LoRa, WiFi and BLE!__
+Stay tuned for more...
+
+1. __LoRa, WiFi and Bluetooth LE__
+
+1. __Mynewt and Rust__
+
+1. __IoT Education with BL602__
 
 ![](https://lupyuen.github.io/images/book-advocate.jpg)
 
 # About the Author
-
-TODO
 
 -   ["Better Open Source Advocate"](https://lupyuen.github.io/articles/advocate)
 
