@@ -618,7 +618,7 @@ Meanwhile there's plenty more code in the [__BL602 IoT SDK__](https://github.com
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
--   [Discuss this article on Reddit](https://www.reddit.com/r/RISCV/comments/lku3mt/pinecone_bl602_blasting_pixels_to_st7789_display/?utm_source=share&utm_medium=web2x&context=3)
+-   [Discuss this article on Reddit](https://www.reddit.com/r/RISCV/comments/ln4yfp/pinecone_bl602_talks_uart_to_grove_eink_display/?utm_source=share&utm_medium=web2x&context=3)
 
 -   [Check out my articles](https://lupyuen.github.io)
 
