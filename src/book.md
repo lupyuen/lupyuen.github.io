@@ -24,7 +24,7 @@ Many thanks to __Pine64__ for supporting my work on BL602 Open Source Education!
 
 # Introduction to BL602
 
-Find out what's inside the BL602 System-on-a-Chip (SoC)... And why it's unique among the microcontrollers we've been using.
+Find out what's inside the __BL602 System-on-a-Chip (SoC)__... And why it's unique among the microcontrollers we've seen.
 
 TODO
 
@@ -32,7 +32,7 @@ TODO
 
 TODO
 
-How we flash firmware to BL602 using command line tools on Linux, macOS and Windows.
+How we __flash firmware__ to BL602 using __command-line tools__ on Linux, macOS and Windows.
 
 # GPIO on BL602
 
