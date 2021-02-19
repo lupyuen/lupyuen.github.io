@@ -4,6 +4,12 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>PineCone BL602 Talks UART to Grove E-Ink Display</title>
+            <link>https://lupyuen.github.io/articles/uart</link>
+            <description><![CDATA[How we render an image with PineCone BL602 RISC-V Board ... On Grove Triple Colour E-Ink Display with UART Interface]]></description>
+            <pubDate>Fri, 19 Feb 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>PineCone BL602 Blasting Pixels to ST7789 Display with LVGL Library</title>
             <link>https://lupyuen.github.io/articles/display</link>
             <description><![CDATA[How we render text and graphics on PineCone BL602 RISC-V Board ... With ST7789 SPI Display and LVGL Graphics Library]]></description>
