@@ -14,7 +14,7 @@ Is there a book about the __BL602 SoC__ (RISC-V, WiFi and Bluetooth LE) that...
 
 1.  Is __open source,__ free to browse and reproduce?
 
-_You're reading it right now!_
+_You're reading the book right now!_
 
 Use this book to navigate the numerous BL602 articles that have been published on this site. (11 articles and still growing!)
 
@@ -42,7 +42,7 @@ How we __flash firmware__ to BL602 using __command-line tools__ on Linux, macOS 
 
 # GPIO on BL602
 
-Call the BL602 __GPIO Hardware Abstraction Layer (HAL)__ to blink an LED.
+Learn to call the BL602 __GPIO Hardware Abstraction Layer (HAL)__ to blink an LED.
 
 -   ["Control PineCone BL602 RGB LED with GPIO and PWM"](https://lupyuen.github.io/articles/led)
 
@@ -50,7 +50,7 @@ Call the BL602 __GPIO Hardware Abstraction Layer (HAL)__ to blink an LED.
 
 # PWM on BL602
 
-TODO
+Everything about the __BL602 PWM HAL__.
 
 -   ["Control PineCone BL602 RGB LED with GPIO and PWM"](https://lupyuen.github.io/articles/led)
 
@@ -58,7 +58,7 @@ TODO
 
 # I2C on BL602
 
-TODO
+Read an I2C Sensor by calling the __BL602 I2C HAL__.
 
 -   ["PineCone BL602 talks to I2C Sensors"](https://lupyuen.github.io/articles/i2c)
 
@@ -66,7 +66,7 @@ TODO
 
 # SPI on BL602
 
-TODO
+How we call the __BL602 I2C HAL__ to access SPI Sensors and Displays.
 
 -   ["PineCone BL602 talks SPI too!"](https://lupyuen.github.io/articles/spi)
 
@@ -76,7 +76,7 @@ TODO
 
 # DMA on BL602
 
-TODO
+How we perform __SPI with DMA__ on BL602.
 
 -   ["PineCone BL602 talks SPI too!"](https://lupyuen.github.io/articles/spi)
 
@@ -148,9 +148,7 @@ LoRa, WiFi, BLE
 
 TODO
 
-Better Open Source Advocate
-
--   [""](https://lupyuen.github.io/articles/advocate)
+-   ["Better Open Source Advocate"](https://lupyuen.github.io/articles/advocate)
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
