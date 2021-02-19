@@ -446,7 +446,7 @@ __For Windows:__ Use `putty` ([See this](https://lupyuen.github.io/articles/flas
 
 1.  Press Enter to reveal the command prompt.
 
-    Enter `help` to see the available commands...
+    Enter __`help`__ to see the available commands...
 
     ```text
     # help
@@ -476,7 +476,7 @@ __For Windows:__ Use `putty` ([See this](https://lupyuen.github.io/articles/flas
     bl_sys_time_now          : sys time now
     ```
 
-1.  Enter `display_image` to render an image on our E-Ink Display.
+1.  Enter __`display_image`__ to render an image on our E-Ink Display.
 
     (This executes the `display_image` function that we've seen earlier)
 
