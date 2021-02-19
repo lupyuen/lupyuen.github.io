@@ -84,7 +84,7 @@ How we perform __SPI with DMA__ on BL602.
 
 # UART on BL602
 
-TODO
+UART is used by E-Ink Displays, GPS Receivers and LoRa Transceivers. Here's how we call the __BL602 UART HAL.__
 
 -   ["PineCone BL602 Talks UART to Grove E-Ink Display"](https://lupyuen.github.io/articles/uart)
 
@@ -92,7 +92,7 @@ TODO
 
 # Graphics on BL602
 
-TODO
+Render text and graphics with the open-source __LVGL Library__.
 
 -   ["PineCone BL602 Blasting Pixels to ST7789 Display with LVGL Library"](https://lupyuen.github.io/articles/display)
 
@@ -138,9 +138,7 @@ TODO
 
 # What's Next
 
-TODO
-
-LoRa, WiFi, BLE
+Stay tuned for more: __LoRa, WiFi and BLE!__
 
 ![](https://lupyuen.github.io/images/book-advocate.jpg)
 
