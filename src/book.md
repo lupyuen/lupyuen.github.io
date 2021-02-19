@@ -30,55 +30,111 @@ Find out what's inside the __BL602 System-on-a-Chip (SoC)__... And why it's uniq
 
 -   ["Quick Peek of PineCone BL602 RISC-V Evaluation Board"](https://lupyuen.github.io/articles/pinecone)
 
+![](https://lupyuen.github.io/images/book-flash.jpg)
+
 # Flashing Firmware to BL602
 
 How we __flash firmware__ to BL602 using __command-line tools__ on Linux, macOS and Windows.
 
 -   ["Flashing Firmware to PineCone BL602"](https://lupyuen.github.io/articles/flash)
 
-![](https://lupyuen.github.io/images/book-flash.jpg)
+![](https://lupyuen.github.io/images/book-led.jpg)
 
 # GPIO on BL602
 
-TODO
+Call the BL602 __GPIO Hardware Abstraction Layer (HAL)__ to blink an LED.
 
-![](https://lupyuen.github.io/images/book-led.jpg)
+-   ["Control PineCone BL602 RGB LED with GPIO and PWM"](https://lupyuen.github.io/articles/led)
+
+![](https://lupyuen.github.io/images/book-pwm.jpg)
 
 # PWM on BL602
 
 TODO
 
+-   ["Control PineCone BL602 RGB LED with GPIO and PWM"](https://lupyuen.github.io/articles/led)
+
+![](https://lupyuen.github.io/images/book-i2c.jpg)
+
 # I2C on BL602
 
 TODO
+
+-   ["PineCone BL602 talks to I2C Sensors"](https://lupyuen.github.io/articles/i2c)
+
+![](https://lupyuen.github.io/images/book-spi.jpg)
 
 # SPI on BL602
 
 TODO
 
+-   ["PineCone BL602 talks SPI too!"](https://lupyuen.github.io/articles/spi)
+
+-   ["PineCone BL602 Blasting Pixels to ST7789 Display with LVGL Library"](https://lupyuen.github.io/articles/display)
+
+![](https://lupyuen.github.io/images/book-dma.jpg)
+
 # DMA on BL602
 
 TODO
+
+-   ["PineCone BL602 talks SPI too!"](https://lupyuen.github.io/articles/spi)
+
+![](https://lupyuen.github.io/images/book-uart.jpg)
+
+# UART on BL602
+
+TODO
+
+-   ["PineCone BL602 Talks UART to Grove E-Ink Display"](https://lupyuen.github.io/articles/uart)
+
+![](https://lupyuen.github.io/images/book-display.jpg)
 
 # Graphics on BL602
 
 TODO
 
+-   ["PineCone BL602 Blasting Pixels to ST7789 Display with LVGL Library"](https://lupyuen.github.io/articles/display)
+
+-   ["PineCone BL602 Talks UART to Grove E-Ink Display"](https://lupyuen.github.io/articles/uart)
+
+![](https://lupyuen.github.io/images/book-openocd.jpg)
+
 # OpenOCD on BL602
 
 TODO
+
+-   ["Connect PineCone BL602 to OpenOCD"](https://lupyuen.github.io/articles/openocd)
+
+![](https://lupyuen.github.io/images/book-debug.jpg)
 
 # VSCode and GDB on BL602
 
 TODO
 
+-   ["Debug Rust on PineCone BL602 with VSCode and GDB"](https://lupyuen.github.io/articles/debug)
+
+-   ["Porting Mynewt to PineCone BL602"](https://lupyuen.github.io/articles/mynewt)
+
+![](https://lupyuen.github.io/images/book-rust.jpg)
+
 # Rust on BL602
 
 TODO
 
+-   ["Debug Rust on PineCone BL602 with VSCode and GDB"](https://lupyuen.github.io/articles/debug)
+
+![](https://lupyuen.github.io/images/book-mynewt.jpg)
+
 # Mynewt on BL602
 
 TODO
+
+-   ["Porting Mynewt to PineCone BL602"](https://lupyuen.github.io/articles/mynewt)
+
+-   ["Mynewt GPIO ported to PineCone BL602 RISC-V Board"](https://lupyuen.github.io/articles/gpio)
+
+![](https://lupyuen.github.io/images/book-next.jpg)
 
 # What's Next
 
@@ -86,9 +142,15 @@ TODO
 
 LoRa, WiFi, BLE
 
+![](https://lupyuen.github.io/images/book-advocate.jpg)
+
 # About the Author
 
 TODO
+
+Better Open Source Advocate
+
+-   [""](https://lupyuen.github.io/articles/advocate)
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
