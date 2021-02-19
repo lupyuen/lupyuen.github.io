@@ -26,13 +26,13 @@ Many thanks to __Pine64__ for supporting my work on BL602 Open Source Education!
 
 Find out what's inside the __BL602 System-on-a-Chip (SoC)__... And why it's unique among the microcontrollers we've seen.
 
-TODO
+-   ["Quick Peek of PineCone BL602 RISC-V Evaluation Board"](https://lupyuen.github.io/articles/pinecone)
 
 # Flashing Firmware to BL602
 
-TODO
-
 How we __flash firmware__ to BL602 using __command-line tools__ on Linux, macOS and Windows.
+
+-   ["Flashing Firmware to PineCone BL602"](https://lupyuen.github.io/articles/flash)
 
 # GPIO on BL602
 
