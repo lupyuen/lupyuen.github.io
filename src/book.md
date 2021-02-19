@@ -22,6 +22,8 @@ The code in these articles have been tested on __PineCone__, but they should wor
 
 Many thanks to __Pine64__ for supporting my work on BL602 Open Source Education! Thanks also to __Bouffalo Lab__ for the encouraging notes.
 
+![](https://lupyuen.github.io/images/book-pinecone.jpg)
+
 # Introduction to BL602
 
 Find out what's inside the __BL602 System-on-a-Chip (SoC)__... And why it's unique among the microcontrollers we've seen.
@@ -34,9 +36,13 @@ How we __flash firmware__ to BL602 using __command-line tools__ on Linux, macOS 
 
 -   ["Flashing Firmware to PineCone BL602"](https://lupyuen.github.io/articles/flash)
 
+![](https://lupyuen.github.io/images/book-flash.jpg)
+
 # GPIO on BL602
 
 TODO
+
+![](https://lupyuen.github.io/images/book-led.jpg)
 
 # PWM on BL602
 
