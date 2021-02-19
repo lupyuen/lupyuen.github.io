@@ -72,13 +72,14 @@
 <li><a href="#i2c-on-bl602">5 I2C on BL602</a><ul></ul></li>
 <li><a href="#spi-on-bl602">6 SPI on BL602</a><ul></ul></li>
 <li><a href="#dma-on-bl602">7 DMA on BL602</a><ul></ul></li>
-<li><a href="#graphics-on-bl602">8 Graphics on BL602</a><ul></ul></li>
-<li><a href="#openocd-on-bl602">9 OpenOCD on BL602</a><ul></ul></li>
-<li><a href="#vscode-and-gdb-on-bl602">10 VSCode and GDB on BL602</a><ul></ul></li>
-<li><a href="#rust-on-bl602">11 Rust on BL602</a><ul></ul></li>
-<li><a href="#mynewt-on-bl602">12 Mynewt on BL602</a><ul></ul></li>
-<li><a href="#whats-next">13 What's Next</a><ul></ul></li>
-<li><a href="#about-the-author">14 About the Author</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2021</em></p>
+<li><a href="#uart-on-bl602">8 UART on BL602</a><ul></ul></li>
+<li><a href="#graphics-on-bl602">9 Graphics on BL602</a><ul></ul></li>
+<li><a href="#openocd-on-bl602">10 OpenOCD on BL602</a><ul></ul></li>
+<li><a href="#vscode-and-gdb-on-bl602">11 VSCode and GDB on BL602</a><ul></ul></li>
+<li><a href="#rust-on-bl602">12 Rust on BL602</a><ul></ul></li>
+<li><a href="#mynewt-on-bl602">13 Mynewt on BL602</a><ul></ul></li>
+<li><a href="#whats-next">14 What's Next</a><ul></ul></li>
+<li><a href="#about-the-author">15 About the Author</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2021</em></p>
 <p><img src="https://lupyuen.github.io/images/book-title.jpg" alt="PineCone BL602 RISC-V Board with Grove E-Ink Display" /></p>
 <p><em>PineCone BL602 RISC-V Board with Grove E-Ink Display</em></p>
 <p>Is there a book about the <strong>BL602 SoC</strong> (RISC-V, WiFi and Bluetooth LE) that...</p>
@@ -103,39 +104,110 @@
 <ul>
 <li><a href="https://lupyuen.github.io/articles/pinecone">&quot;Quick Peek of PineCone BL602 RISC-V Evaluation Board&quot;</a></li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/book-flash.jpg" alt="" /></p>
 <h1 id="flashing-firmware-to-bl602" class="section-header"><a href="#flashing-firmware-to-bl602">2 Flashing Firmware to BL602</a></h1>
 <p>How we <strong>flash firmware</strong> to BL602 using <strong>command-line tools</strong> on Linux, macOS and Windows.</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/flash">&quot;Flashing Firmware to PineCone BL602&quot;</a></li>
 </ul>
-<p><img src="https://lupyuen.github.io/images/book-flash.jpg" alt="" /></p>
-<h1 id="gpio-on-bl602" class="section-header"><a href="#gpio-on-bl602">3 GPIO on BL602</a></h1>
-<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/book-led.jpg" alt="" /></p>
+<h1 id="gpio-on-bl602" class="section-header"><a href="#gpio-on-bl602">3 GPIO on BL602</a></h1>
+<p>Call the BL602 <strong>GPIO Hardware Abstraction Layer (HAL)</strong> to blink an LED.</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/led">&quot;Control PineCone BL602 RGB LED with GPIO and PWM&quot;</a></li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/book-pwm.jpg" alt="" /></p>
 <h1 id="pwm-on-bl602" class="section-header"><a href="#pwm-on-bl602">4 PWM on BL602</a></h1>
 <p>TODO</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/led">&quot;Control PineCone BL602 RGB LED with GPIO and PWM&quot;</a></li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/book-i2c.jpg" alt="" /></p>
 <h1 id="i2c-on-bl602" class="section-header"><a href="#i2c-on-bl602">5 I2C on BL602</a></h1>
 <p>TODO</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/i2c">&quot;PineCone BL602 talks to I2C Sensors&quot;</a></li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/book-spi.jpg" alt="" /></p>
 <h1 id="spi-on-bl602" class="section-header"><a href="#spi-on-bl602">6 SPI on BL602</a></h1>
 <p>TODO</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/spi">&quot;PineCone BL602 talks SPI too!&quot;</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/display">&quot;PineCone BL602 Blasting Pixels to ST7789 Display with LVGL Library&quot;</a></p>
+</li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/book-dma.jpg" alt="" /></p>
 <h1 id="dma-on-bl602" class="section-header"><a href="#dma-on-bl602">7 DMA on BL602</a></h1>
 <p>TODO</p>
-<h1 id="graphics-on-bl602" class="section-header"><a href="#graphics-on-bl602">8 Graphics on BL602</a></h1>
-<p>TODO</p>
-<h1 id="openocd-on-bl602" class="section-header"><a href="#openocd-on-bl602">9 OpenOCD on BL602</a></h1>
-<p>TODO</p>
-<h1 id="vscode-and-gdb-on-bl602" class="section-header"><a href="#vscode-and-gdb-on-bl602">10 VSCode and GDB on BL602</a></h1>
-<p>TODO</p>
-<h1 id="rust-on-bl602" class="section-header"><a href="#rust-on-bl602">11 Rust on BL602</a></h1>
-<p>TODO</p>
-<h1 id="mynewt-on-bl602" class="section-header"><a href="#mynewt-on-bl602">12 Mynewt on BL602</a></h1>
-<p>TODO</p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">13 What's Next</a></h1>
-<p>TODO</p>
-<p>LoRa, WiFi, BLE</p>
-<h1 id="about-the-author" class="section-header"><a href="#about-the-author">14 About the Author</a></h1>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/spi">&quot;PineCone BL602 talks SPI too!&quot;</a></li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/book-uart.jpg" alt="" /></p>
+<h1 id="uart-on-bl602" class="section-header"><a href="#uart-on-bl602">8 UART on BL602</a></h1>
 <p>TODO</p>
 <ul>
+<li><a href="https://lupyuen.github.io/articles/uart">&quot;PineCone BL602 Talks UART to Grove E-Ink Display&quot;</a></li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/book-display.jpg" alt="" /></p>
+<h1 id="graphics-on-bl602" class="section-header"><a href="#graphics-on-bl602">9 Graphics on BL602</a></h1>
+<p>TODO</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/display">&quot;PineCone BL602 Blasting Pixels to ST7789 Display with LVGL Library&quot;</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/uart">&quot;PineCone BL602 Talks UART to Grove E-Ink Display&quot;</a></p>
+</li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/book-openocd.jpg" alt="" /></p>
+<h1 id="openocd-on-bl602" class="section-header"><a href="#openocd-on-bl602">10 OpenOCD on BL602</a></h1>
+<p>TODO</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/openocd">&quot;Connect PineCone BL602 to OpenOCD&quot;</a></li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/book-debug.jpg" alt="" /></p>
+<h1 id="vscode-and-gdb-on-bl602" class="section-header"><a href="#vscode-and-gdb-on-bl602">11 VSCode and GDB on BL602</a></h1>
+<p>TODO</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/debug">&quot;Debug Rust on PineCone BL602 with VSCode and GDB&quot;</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/mynewt">&quot;Porting Mynewt to PineCone BL602&quot;</a></p>
+</li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/book-rust.jpg" alt="" /></p>
+<h1 id="rust-on-bl602" class="section-header"><a href="#rust-on-bl602">12 Rust on BL602</a></h1>
+<p>TODO</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/debug">&quot;Debug Rust on PineCone BL602 with VSCode and GDB&quot;</a></li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/book-mynewt.jpg" alt="" /></p>
+<h1 id="mynewt-on-bl602" class="section-header"><a href="#mynewt-on-bl602">13 Mynewt on BL602</a></h1>
+<p>TODO</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/mynewt">&quot;Porting Mynewt to PineCone BL602&quot;</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/gpio">&quot;Mynewt GPIO ported to PineCone BL602 RISC-V Board&quot;</a></p>
+</li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/book-next.jpg" alt="" /></p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">14 What's Next</a></h1>
+<p>TODO</p>
+<p>LoRa, WiFi, BLE</p>
+<p><img src="https://lupyuen.github.io/images/book-advocate.jpg" alt="" /></p>
+<h1 id="about-the-author" class="section-header"><a href="#about-the-author">15 About the Author</a></h1>
+<p>TODO</p>
+<p>Better Open Source Advocate</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/advocate">&quot;&quot;</a></p>
+</li>
 <li>
 <p><a href="https://github.com/sponsors/lupyuen">Sponsor me a coffee</a></p>
 </li>
