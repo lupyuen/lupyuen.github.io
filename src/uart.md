@@ -1,6 +1,6 @@
 # PineCone BL602 Talks UART to Grove E-Ink Display
 
-📝 _20 Feb 2021_
+📝 _19 Feb 2021_
 
 Today we shall connect [__PineCone BL602 RISC-V Board__](https://lupyuen.github.io/articles/pinecone) to the [__Grove Triple Color E-Ink Display 2.13"__](https://wiki.seeedstudio.com/Grove-Triple_Color_E-Ink_Display_2_13/) with __UART Interface__.
 
@@ -600,7 +600,15 @@ cargo run -- --min 86 --max 215 uart-cartoon2.png >image_red.inc
 
 # What's Next
 
-TODO
+Exciting things coming up...
+
+1.  __LoRa on BL602:__ We shall connect [__Semtech SX1276__](https://www.semtech.com/products/wireless-rf/lora-transceivers/sx1276) to BL602 to achieve __Triple Wireless Connectivity__... WiFi, Bluetooth LE AND LoRa!
+
+    (Many thanks to [__RAKwireless__](https://twitter.com/MisterTechBlog/status/1358220182309593089?s=20) for providing a LoRa Node for our BL602 experiments!)
+
+1.  __BL602 for Education:__ We shall create more __Open-Source Educational Content__ to make BL602 (and RISC-V) fully accessible to learners around the world.
+
+    Hopefully someday we'll see a [__Deconstructed PineTime Smartwatch__](https://twitter.com/MisterTechBlog/status/1359676842337210370?s=20): BL602 (RISC-V, WiFi, Bluetooth LE, LoRa) plus the sensors, actuators and display from a smartwatch... Connected on a Breadboard for easy coding!
 
 Meanwhile there's plenty more code in the [__BL602 IoT SDK__](https://github.com/bouffalolab/bl_iot_sdk) to be deciphered and documented: __ADC, DAC, WiFi, Bluetooth LE,__ ...
 
@@ -619,3 +627,7 @@ Meanwhile there's plenty more code in the [__BL602 IoT SDK__](https://github.com
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [`lupyuen.github.io/src/uart.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/uart.md)
+
+# Notes
+
+1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1361848589496979458?s=20)

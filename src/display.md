@@ -1655,7 +1655,7 @@ _PineCone BL602 with ST7789 Display powered by battery_
 
 # What's Next
 
-Two exciting things coming up...
+Exciting things coming up...
 
 1.  __LoRa on BL602:__ We shall connect [__Semtech SX1276__](https://www.semtech.com/products/wireless-rf/lora-transceivers/sx1276) to BL602 to achieve __Triple Wireless Connectivity__... WiFi, Bluetooth LE AND LoRa!
 
