@@ -18,7 +18,7 @@ _You're reading the book right now!_
 
 Use this book to navigate the numerous BL602 articles that have been published on this site. (11 articles and still growing!)
 
-The code in these articles have been tested on __PineCone__, but they should work on other BL602 Boards: __Pinenut, DT-BL10, MagicHome BL602__.
+The programs in these articles have been tested on __PineCone__, but they should work on other BL602 Boards: __Pinenut, DT-BL10, MagicHome BL602__.
 
 Many thanks to __Pine64__ for supporting my work on BL602 Open Source Education! Thanks also to __Bouffalo Lab__ for the encouraging notes.
 
