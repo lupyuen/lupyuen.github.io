@@ -279,10 +279,11 @@ static void display_image(char *buf, int len, int argc, char **argv) {
     write_image_picture();
 }
 </code></pre>
-<p>And we call <strong><code>write_image_picture</code></strong> to send the image data.</p>
+<p>At the end of the function, we call <strong><code>write_image_picture</code></strong> to send the image data.</p>
 <p>Let's look inside <code>write_image_picture</code></p>
 <h2 id="send-image-data" class="section-header"><a href="#send-image-data">5.1 Send Image Data</a></h2>
-<p>TODO</p>
+<p>To display a image on our E-Ink Display, we shall transmit two bitmaps: Black Bitmap and Red Bitmap.</p>
+<p>(More about the Black and Red Bitmaps in a while)</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/demo.c#L106-L130"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// Send Black and Red Image Data to display
 static void write_image_picture(void) {    
@@ -295,11 +296,14 @@ static void write_image_picture(void) {
         vTaskDelay(80 / portTICK_PERIOD_MS);
     }
 </code></pre>
-<p>TODO</p>
+<p>Here we define the function <strong><code>write_image_picture</code></strong> that will transmit the two bitmaps to our E-Ink Display.</p>
+<p>We start with the Black Bitmap <strong><code>IMAGE_BLACK</code></strong>, calling <strong><code>send_data</code></strong> to transmit 13 chunks of 212 bytes each.</p>
+<p>(We'll see <code>send_data</code> in a while)</p>
+<p>Then we give our E-Ink Display display a short rest...</p>
 <pre><code class="language-c">    //  Sleep for 90 milliseconds
     vTaskDelay(90 / portTICK_PERIOD_MS);
 </code></pre>
-<p>TODO</p>
+<p>And we transmit the Red Bitmap <strong><code>IMAGE_RED</code></strong> the same way...</p>
 <pre><code class="language-c">    //  Send Red Pixels to display in 13 chunks of 212 bytes
     for (int i = 0; i &lt; 13; i++) {
         //  Send a chunk of 212 bytes
@@ -310,8 +314,7 @@ static void write_image_picture(void) {
     }
 }
 </code></pre>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/demo.c#L98-L104"><code>demo.c</code></a></p>
+<p>In <strong><code>send_data</code></strong> we transmit a chunk of data to our E-Ink Display like so: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/demo.c#L98-L104"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// Send data to display over UART. data_len is number of bytes.
 static void send_data(const uint8_t* data, uint32_t data_len) {
     for (int i = 0; i &lt; data_len; i++) {
@@ -320,6 +323,9 @@ static void send_data(const uint8_t* data, uint32_t data_len) {
     }
 }
 </code></pre>
+<p><code>send_data</code> calls <code>bl_uart_data_send</code> (from BL602 Low Level UART HAL) to transmit the data to the UART Port, one byte at a time. </p>
+<p>(We've seen this earlier during the handshake)</p>
+<p>That's all for the UART code that talks to the E-Ink Display!</p>
 <h1 id="build-and-run-the-firmware" class="section-header"><a href="#build-and-run-the-firmware">6 Build and Run the Firmware</a></h1>
 <p>Let's run the E-Ink Display UART Demo Firmware for BL602.</p>
 <p>Download the Firmware Binary File <strong><code>sdk_app_uart_eink.bin</code></strong> from...</p>
