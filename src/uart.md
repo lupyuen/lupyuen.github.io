@@ -260,13 +260,15 @@ We give the E-Ink Display a little more pondering time, by calling `vTaskDelay` 
 }
 ```
 
-And we call __`write_image_picture`__ to send the image data.
+At the end of the function, we call __`write_image_picture`__ to send the image data.
 
 Let's look inside `write_image_picture`
 
 ## Send Image Data
 
-TODO
+To display a image on our E-Ink Display, we shall transmit two bitmaps: Black Bitmap and Red Bitmap.
+
+(More about the Black and Red Bitmaps in a while)
 
 From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/demo.c#L106-L130)
 
@@ -283,14 +285,20 @@ static void write_image_picture(void) {
     }
 ```
 
-TODO
+Here we define the function __`write_image_picture`__ that will transmit the two bitmaps to our E-Ink Display.
+
+We start with the Black Bitmap __`IMAGE_BLACK`__, calling __`send_data`__ to transmit 13 chunks of 212 bytes each.
+
+(We'll see `send_data` in a while)
+
+Then we give our E-Ink Display display a short rest...
 
 ```c
     //  Sleep for 90 milliseconds
     vTaskDelay(90 / portTICK_PERIOD_MS);
 ```
 
-TODO
+And we transmit the Red Bitmap __`IMAGE_RED`__ the same way...
 
 ```c
     //  Send Red Pixels to display in 13 chunks of 212 bytes
@@ -304,9 +312,7 @@ TODO
 }
 ```
 
-TODO
-
-From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/demo.c#L98-L104)
+In __`send_data`__ we transmit a chunk of data to our E-Ink Display like so: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/demo.c#L98-L104)
 
 ```c
 /// Send data to display over UART. data_len is number of bytes.
@@ -317,6 +323,12 @@ static void send_data(const uint8_t* data, uint32_t data_len) {
     }
 }
 ```
+
+`send_data` calls `bl_uart_data_send` (from BL602 Low Level UART HAL) to transmit the data to the UART Port, one byte at a time. 
+
+(We've seen this earlier during the handshake)
+
+That's all for the UART code that talks to the E-Ink Display!
 
 # Build and Run the Firmware
 
