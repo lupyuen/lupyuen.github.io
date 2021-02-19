@@ -102,7 +102,7 @@ Render text and graphics with the open-source __LVGL Library__.
 
 # OpenOCD on BL602
 
-Before debugging BL602, we install __OpenOCD__ to connect a __JTAG Debugger__ to BL602
+Before debugging BL602, we install __OpenOCD__ to connect a __JTAG Debugger__ to BL602.
 
 -   ["Connect PineCone BL602 to OpenOCD"](https://lupyuen.github.io/articles/openocd)
 
@@ -110,7 +110,7 @@ Before debugging BL602, we install __OpenOCD__ to connect a __JTAG Debugger__ to
 
 # GDB and VSCode on BL602
 
-How we __debug BL602 firmware__ with GDB and VSCode
+How we __debug BL602 firmware__ with GDB and VSCode.
 
 -   ["Debug Rust on PineCone BL602 with VSCode and GDB"](https://lupyuen.github.io/articles/debug)
 
@@ -138,11 +138,11 @@ Will BL602 run without FreeRTOS? Study the ongoing port of __Apache Mynewt opera
 
 # What's Next
 
-Stay tuned for more...
+Check this book again for future updates...
 
 1. __LoRa, WiFi and Bluetooth LE__
 
-1. __Mynewt and Rust__
+1. __More Mynewt and Rust__
 
 1. __IoT Education with BL602__
 
