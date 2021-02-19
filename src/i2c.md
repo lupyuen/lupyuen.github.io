@@ -37,7 +37,7 @@ BL602's I2C HAL is packaged as two levels...
     The High Level HAL is called by the [AliOS Firmware](https://github.com/alibaba/AliOS-Things) created by the BL602 IoT SDK.
 
     (AliOS functions are easy to identify... Their function names begin with "`aos_`")
-    
+
     (Why does the High Level HAL use FreeRTOS? We'll learn in a while)
 
 Today we shall use the __Low Level I2C HAL [`bl_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c)__ because...
@@ -721,6 +721,9 @@ cargo run flash sdk_app_i2c.bin \
     --port /dev/tty.usbserial-1420 \
     --initial-baud-rate 230400 \
     --baud-rate 230400
+
+# For Windows: Change COM5 to the BL602 Serial Port
+cargo run flash sdk_app_i2c.bin --port COM5
 ```
 
 [More details on flashing firmware](https://lupyuen.github.io/articles/flash#flash-the-firmware)

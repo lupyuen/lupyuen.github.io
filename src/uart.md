@@ -387,6 +387,9 @@ cargo run flash sdk_app_uart_eink.bin \
     --port /dev/tty.usbserial-1420 \
     --initial-baud-rate 230400 \
     --baud-rate 230400
+
+# For Windows: Change COM5 to the BL602 Serial Port
+cargo run flash sdk_app_uart_eink.bin --port COM5
 ```
 
 [More details on flashing firmware](https://lupyuen.github.io/articles/flash#flash-the-firmware)
@@ -411,76 +414,104 @@ __For Windows:__ Use `putty` ([See this](https://lupyuen.github.io/articles/flas
 
 [More details on connecting to BL602](https://lupyuen.github.io/articles/flash#watch-the-firmware-run)
 
-## Enter commands
+## Enter the commands
 
-TODO
+1.  Press the Reset Button.
 
-```text
-# ▒Starting bl602 now....
-Booting BL602 Chip...
-██████╗ ██╗      ██████╗  ██████╗ ██████╗
-██╔══██╗██║     ██╔════╝ ██╔═████╗╚════██╗
-██████╔╝██║     ███████╗ ██║██╔██║ █████╔╝
-██╔══██╗██║     ██╔═══██╗████╔╝██║██╔═══╝
-██████╔╝███████╗╚██████╔╝╚██████╔╝███████╗
-╚═════╝ ╚══════╝ ╚═════╝  ╚═════╝ ╚══════╝
+    We should see BL602 starting our firmware...
 
+    ```text
+    # ▒Starting bl602 now....
+    Booting BL602 Chip...
+    ██████╗ ██╗      ██████╗  ██████╗ ██████╗
+    ██╔══██╗██║     ██╔════╝ ██╔═████╗╚════██╗
+    ██████╔╝██║     ███████╗ ██║██╔██║ █████╔╝
+    ██╔══██╗██║     ██╔═══██╗████╔╝██║██╔═══╝
+    ██████╔╝███████╗╚██████╔╝╚██████╔╝███████╗
+    ╚═════╝ ╚══════╝ ╚═════╝  ╚═════╝ ╚══════╝
 
-------------------------------------------------------------
-RISC-V Core Feature:RV32-ACFIMX
-Build Version: release_bl_iot_sdk_1.6.11-1-g66bb28da-dirty
-Build Date: Feb 17 2021
-Build Time: 19:06:40
------------------------------------------------------------
+    ------------------------------------------------------------
+    RISC-V Core Feature:RV32-ACFIMX
+    Build Version: release_bl_iot_sdk_1.6.11-1-g66bb28da-dirty
+    Build Date: Feb 17 2021
+    Build Time: 19:06:40
+    -----------------------------------------------------------
 
-blog init set power on level 2, 2, 2.
-[IRQ] Clearing and Disable all the pending IRQ...
-[OS] Starting aos_loop_proc task...
-[OS] Starting OS Scheduler...
-Init CLI with event Driven
+    blog init set power on level 2, 2, 2.
+    [IRQ] Clearing and Disable all the pending IRQ...
+    [OS] Starting aos_loop_proc task...
+    [OS] Starting OS Scheduler...
+    Init CLI with event Driven
+    ```
 
-# help
-====Build-in Commands====
-====Support 4 cmds once, seperate by ; ====
-help                     : print this
-p                        : print memory
-m                        : modify memory
-echo                     : echo for command
-exit                     : close CLI
-devname                  : print device name
-sysver                   : system version
-reboot                   : reboot system
-poweroff                 : poweroff system
-reset                    : system reset
-time                     : system time
-ota                      : system ota
-ps                       : thread dump
-ls                       : file list
-hexdump                  : dump file
-cat                      : cat file
+1.  Press Enter to reveal the command prompt.
 
-====User Commands====
-display_image            : Display image
-blogset                  : blog pri set level
-blogdump                 : blog info dump
-bl_sys_time_now          : sys time now
+    Enter `help` to see the available commands...
 
-# display_image
-Doing start transfer handshake...
-0x9d 0xbe 0x9f 0xbe 0xe8 0xcd 0x9e 0xad 0xea 0x2a 0x3a 0xf8
-Received 'c'
-Sent 'a'
-0x63
-Received 'b'
-Start transfer handshake OK
-Sending black pixels...
-Sending red pixels...
+    ```text
+    # help
+    ====Build-in Commands====
+    ====Support 4 cmds once, seperate by ; ====
+    help                     : print this
+    p                        : print memory
+    m                        : modify memory
+    echo                     : echo for command
+    exit                     : close CLI
+    devname                  : print device name
+    sysver                   : system version
+    reboot                   : reboot system
+    poweroff                 : poweroff system
+    reset                    : system reset
+    time                     : system time
+    ota                      : system ota
+    ps                       : thread dump
+    ls                       : file list
+    hexdump                  : dump file
+    cat                      : cat file
 
-#
-```
+    ====User Commands====
+    display_image            : Display image
+    blogset                  : blog pri set level
+    blogdump                 : blog info dump
+    bl_sys_time_now          : sys time now
+    ```
 
-[__Watch the Demo Video on YouTube__](https://youtu.be/mEChT3e-ITI)
+1.  Enter `display_image` to render an image on our E-Ink Display.
 
+    (This executes the `display_image` function that we've seen earlier)
+
+1.  We should see this...
+
+    ```text
+    # display_image
+    Doing start transfer handshake...
+    0x9d 0xbe 0x9f 0xbe 0xe8 0xcd 0x9e 0xad 0xea 0x2a 0x3a 0xf8
+    Received 'c'
+    Sent 'a'
+    0x63
+    Received 'b'
+    Start transfer handshake OK
+    ```
+
+    Here we see that our `display_image` function has completed the handshake.
+
+    (If the handshake hangs, disconnect BL602 our computer's USB port, reconnect it and run the firmware again.)
+
+1.  Then our `display_image` function sends the black and red bitmaps over the UART Port...
+
+    ```text
+    Sending black pixels...
+    Sending red pixels...
+    ```
+
+    The image appears on the display, like the pic below.
+
+1.  Note that the Grove E-Ink Display will flash some graphics when it is powered on...
+
+    -   [__Watch the Demo Video on YouTube__](https://youtu.be/mEChT3e-ITI)
+
+    This seems to be triggered by the STM32 F031 Microcontroller that's inside the Grove E-Ink Display. [(See the schematics)](https://wiki.seeedstudio.com/Grove-Triple_Color_E-Ink_Display_2_13/#schematic-online-viewer)
+    
 ![Grove E-Ink Display close up](https://lupyuen.github.io/images/uart-connect4.jpg)
 
 _Grove E-Ink Display close up_

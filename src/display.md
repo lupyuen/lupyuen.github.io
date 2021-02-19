@@ -784,6 +784,9 @@ cargo run flash sdk_app_st7789.bin \
     --port /dev/tty.usbserial-1420 \
     --initial-baud-rate 230400 \
     --baud-rate 230400
+
+# For Windows: Change COM5 to the BL602 Serial Port
+cargo run flash sdk_app_st7789.bin --port COM5
 ```
 
 [More details on flashing firmware](https://lupyuen.github.io/articles/flash#flash-the-firmware)
