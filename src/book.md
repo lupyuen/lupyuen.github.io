@@ -24,13 +24,15 @@ The code in these articles have been tested on __PineCone__, but they should wor
 
 # Introduction to BL602
 
+Find out what's inside the BL602 System-on-a-Chip (SoC)... And why it's unique among the microcontrollers we've been using.
+
 TODO
 
 # Flashing Firmware to BL602
 
 TODO
 
-How we flash command line tools on  Linux, macOS, Windows
+How we flash firmware to BL602 using command line tools on Linux, macOS and Windows.
 
 # GPIO on BL602
 
