@@ -77,7 +77,7 @@
 <li><a href="#build-and-run-the-firmware">6 Build and Run the Firmware</a><ul>
 <li><a href="#flash-the-firmware">6.1 Flash the firmware</a><ul></ul></li>
 <li><a href="#run-the-firmware">6.2 Run the firmware</a><ul></ul></li>
-<li><a href="#enter-commands">6.3 Enter commands</a><ul></ul></li></ul></li>
+<li><a href="#enter-the-commands">6.3 Enter the commands</a><ul></ul></li></ul></li>
 <li><a href="#black-and-red-bitmaps">7 Black and Red Bitmaps</a><ul></ul></li>
 <li><a href="#whats-next">8 What's Next</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2021</em></p>
 <p>Today we shall connect <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602 RISC-V Board</strong></a> to the <a href="https://wiki.seeedstudio.com/Grove-Triple_Color_E-Ink_Display_2_13/"><strong>Grove Triple Color E-Ink Display 2.13&quot;</strong></a> with <strong>UART Interface</strong>.</p>
@@ -373,6 +373,9 @@ cargo run flash sdk_app_uart_eink.bin \
     --port /dev/tty.usbserial-1420 \
     --initial-baud-rate 230400 \
     --baud-rate 230400
+
+# For Windows: Change COM5 to the BL602 Serial Port
+cargo run flash sdk_app_uart_eink.bin --port COM5
 </code></pre>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">More details on flashing firmware</a></p>
 <h2 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">6.2 Run the firmware</a></h2>
@@ -385,8 +388,11 @@ cargo run flash sdk_app_uart_eink.bin \
 <p><strong>For macOS:</strong> Use CoolTerm (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">More details on connecting to BL602</a></p>
-<h2 id="enter-commands" class="section-header"><a href="#enter-commands">6.3 Enter commands</a></h2>
-<p>TODO</p>
+<h2 id="enter-the-commands" class="section-header"><a href="#enter-the-commands">6.3 Enter the commands</a></h2>
+<ol>
+<li>
+<p>Press the Reset Button.</p>
+<p>We should see BL602 starting our firmware...</p>
 <pre><code class="language-text"># ▒Starting bl602 now....
 Booting BL602 Chip...
 ██████╗ ██╗      ██████╗  ██████╗ ██████╗
@@ -395,7 +401,6 @@ Booting BL602 Chip...
 ██╔══██╗██║     ██╔═══██╗████╔╝██║██╔═══╝
 ██████╔╝███████╗╚██████╔╝╚██████╔╝███████╗
 ╚═════╝ ╚══════╝ ╚═════╝  ╚═════╝ ╚══════╝
-
 
 ------------------------------------------------------------
 RISC-V Core Feature:RV32-ACFIMX
@@ -409,8 +414,12 @@ blog init set power on level 2, 2, 2.
 [OS] Starting aos_loop_proc task...
 [OS] Starting OS Scheduler...
 Init CLI with event Driven
-
-# help
+</code></pre>
+</li>
+<li>
+<p>Press Enter to reveal the command prompt.</p>
+<p>Enter <code>help</code> to see the available commands...</p>
+<pre><code class="language-text"># help
 ====Build-in Commands====
 ====Support 4 cmds once, seperate by ; ====
 help                     : print this
@@ -435,8 +444,15 @@ display_image            : Display image
 blogset                  : blog pri set level
 blogdump                 : blog info dump
 bl_sys_time_now          : sys time now
-
-# display_image
+</code></pre>
+</li>
+<li>
+<p>Enter <code>display_image</code> to render an image on our E-Ink Display.</p>
+<p>(This executes the <code>display_image</code> function that we've seen earlier)</p>
+</li>
+<li>
+<p>We should see this...</p>
+<pre><code class="language-text"># display_image
 Doing start transfer handshake...
 0x9d 0xbe 0x9f 0xbe 0xe8 0xcd 0x9e 0xad 0xea 0x2a 0x3a 0xf8
 Received 'c'
@@ -444,12 +460,25 @@ Sent 'a'
 0x63
 Received 'b'
 Start transfer handshake OK
-Sending black pixels...
-Sending red pixels...
-
-#
 </code></pre>
-<p><a href="https://youtu.be/mEChT3e-ITI"><strong>Watch the Demo Video on YouTube</strong></a></p>
+<p>Here we see that our <code>display_image</code> function has completed the handshake.</p>
+<p>(If the handshake hangs, disconnect BL602 our computer's USB port, reconnect it and run the firmware again.)</p>
+</li>
+<li>
+<p>Then our <code>display_image</code> function sends the black and red bitmaps over the UART Port...</p>
+<pre><code class="language-text">Sending black pixels...
+Sending red pixels...
+</code></pre>
+<p>The image appears on the display, like the pic below.</p>
+</li>
+<li>
+<p>Note that the Grove E-Ink Display will flash some graphics when it is powered on...</p>
+<ul>
+<li><a href="https://youtu.be/mEChT3e-ITI"><strong>Watch the Demo Video on YouTube</strong></a></li>
+</ul>
+<p>This seems to be triggered by the STM32 F031 Microcontroller that's inside the Grove E-Ink Display. <a href="https://wiki.seeedstudio.com/Grove-Triple_Color_E-Ink_Display_2_13/#schematic-online-viewer">(See the schematics)</a></p>
+</li>
+</ol>
 <p><img src="https://lupyuen.github.io/images/uart-connect4.jpg" alt="Grove E-Ink Display close up" /></p>
 <p><em>Grove E-Ink Display close up</em></p>
 <h1 id="black-and-red-bitmaps" class="section-header"><a href="#black-and-red-bitmaps">7 Black and Red Bitmaps</a></h1>
