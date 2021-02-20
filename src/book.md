@@ -86,7 +86,7 @@ How we __accelerate data transfers with DMA__ on BL602.
 
 # UART on BL602
 
-UART is used by E-Ink Displays, GPS Receivers and LoRa Transceivers. Here's how we call the __BL602 UART HAL.__
+UART is used by E-Ink Displays, GPS Receivers and LoRa Transceivers. To talk to these peripherals, we call the __BL602 UART HAL.__
 
 -   ["PineCone BL602 Talks UART to Grove E-Ink Display"](https://lupyuen.github.io/articles/uart)
 
