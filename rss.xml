@@ -4,6 +4,12 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>The RISC-V BL602 Book</title>
+            <link>https://lupyuen.github.io/articles/book</link>
+            <description><![CDATA[Your free open-source resource for learning RISC-V BL602 SoC]]></description>
+            <pubDate>Sat, 20 Feb 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>PineCone BL602 Talks UART to Grove E-Ink Display</title>
             <link>https://lupyuen.github.io/articles/uart</link>
             <description><![CDATA[How we render an image with PineCone BL602 RISC-V Board ... On Grove Triple Colour E-Ink Display with UART Interface]]></description>

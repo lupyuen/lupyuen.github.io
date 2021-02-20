@@ -147,6 +147,13 @@
   ],
   "publications": [
     {
+      "name": "The RISC-V BL602 Book",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2021-02-20",
+      "website": "https://lupyuen.github.io/articles/book",
+      "summary": "Your free open-source resource for learning RISC-V BL602 SoC"
+    },
+    {
       "name": "PineCone BL602 Talks UART to Grove E-Ink Display",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-02-19",
