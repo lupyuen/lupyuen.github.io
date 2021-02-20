@@ -34,7 +34,7 @@ Find out what's inside the __BL602 System-on-a-Chip (SoC)__... And why it's uniq
 
 # Flashing Firmware to BL602
 
-How we __flash firmware__ to BL602 using __command-line tools__ on Linux, macOS and Windows.
+How we __flash firmware__ to BL602 with __command-line tools__ on Linux, macOS and Windows.
 
 -   ["Flashing Firmware to PineCone BL602"](https://lupyuen.github.io/articles/flash)
 
@@ -50,7 +50,7 @@ Learn to call the BL602 __GPIO Hardware Abstraction Layer (HAL)__ to blink an LE
 
 # PWM on BL602
 
-Everything about the __BL602 PWM HAL__.
+Duty Cycle, Frequency and everything else about the __BL602 PWM HAL__.
 
 -   ["From GPIO to Pulse Width Modulation (PWM)"](https://lupyuen.github.io/articles/led#from-gpio-to-pulse-width-modulation-pwm)
 
