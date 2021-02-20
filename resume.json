@@ -388,7 +388,7 @@
       "name": "My First Week As Embedded FOSS Advocate",
       "publisher": "Medium",
       "releaseDate": "2020-02-04",
-      "website": "https://medium.com/@ly.lee/my-first-week-as-embedded-foss-advocate-106d625deae?source=friends_link&sk=4128d2bb8a7098658fafc462a1531d34",
+      "website": "https://web.archive.org/web/20200204112337/https://medium.com/@ly.lee/my-first-week-as-embedded-foss-advocate-106d625deae",
       "summary": "Have humans become so greedy for profit… That we have forgotten how to teach one another and advance our species?"
     },
     {
@@ -416,7 +416,7 @@
       "name": "OpenOCD on Raspberry Pi: Better with SWD on SPI",
       "publisher": "Medium",
       "releaseDate": "2020-01-18",
-      "website": "https://medium.com/@ly.lee/openocd-on-raspberry-pi-better-with-swd-on-spi-7dea9caeb590?source=friends_link&sk=df399bfd913d3e262447d28aa5af6b63",
+      "website": "https://web.archive.org/web/20200117210221/https://medium.com/@ly.lee/openocd-on-raspberry-pi-better-with-swd-on-spi-7dea9caeb590",
       "summary": "Instead of sending SWD data over GPIO one bit at a time, what if we could blast out the data over Raspberry Pi’s SPI interface?"
     },
     {
@@ -430,7 +430,7 @@
       "name": "Optimising PineTime’s Display Driver with Rust and Mynewt",
       "publisher": "Medium",
       "releaseDate": "2019-12-29",
-      "website": "https://medium.com/@ly.lee/optimising-pinetimes-display-driver-with-rust-and-mynewt-3ba269ea2f5c?source=friends_link&sk=4d2cbd2e6cd2343eed62d214814f7b81",
+      "website": "https://web.archive.org/web/20200121150820/https://medium.com/@ly.lee/optimising-pinetimes-display-driver-with-rust-and-mynewt-3ba269ea2f5c",
       "summary": "Simple tweaks like Batched Updates and Non-Blocking SPI can have a huge impact on rendering performance"
     },
     {
@@ -451,14 +451,14 @@
       "name": "Hey GD32 VF103 on RISC-V: I surrender… For now",
       "publisher": "Medium",
       "releaseDate": "2019-11-23",
-      "website": "https://medium.com/@ly.lee/hey-gd32-vf103-on-risc-v-i-surrender-for-now-d39d0c7b0001?source=friends_link&sk=c0504ac574bf571219fabe174eef4de5",
+      "website": "https://web.archive.org/web/20191123160606/https://medium.com/@ly.lee/hey-gd32-vf103-on-risc-v-i-surrender-for-now-d39d0c7b0001",
       "summary": "Porting Mynewt OS to GD32 VF103 on RISC-V was a nightmare"
     },
     {
       "name": "Building a Rust Driver for PineTime’s Touch Controller",
       "publisher": "Medium",
       "releaseDate": "2019-11-22",
-      "website": "https://medium.com/@ly.lee/building-a-rust-driver-for-pinetimes-touch-controller-cbc1a5d5d3e9?source=friends_link&sk=d8cf73fc943d9c0e960627d768f309cb",
+      "website": "https://web.archive.org/web/20191222054305/https://medium.com/@ly.lee/building-a-rust-driver-for-pinetimes-touch-controller-cbc1a5d5d3e9",
       "summary": "Programming the Hynitron CST816S Capacitive Touch Controller"
     },
     {
@@ -472,7 +472,7 @@
       "name": "Porting Apache Mynewt OS to GigaDevice GD32 VF103 on RISC-V",
       "publisher": "Medium",
       "releaseDate": "2019-10-30",
-      "website": "https://medium.com/@ly.lee/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v-4054a5922493?source=friends_link&sk=215cd06186d912277d0469224666d60d",
+      "website": "https://web.archive.org/web/20191126100556/https://medium.com/swlh/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v-4054a5922493?source=friends_link&sk=215cd06186d912277d0469224666d60d",
       "summary": "Many GD32 VF103 RISC-V developer boards are coming real soon... And Mynewt OS would be perfect for them"
     },
     {
@@ -486,7 +486,7 @@
       "name": "Coding nRF52 with Rust and Apache Mynewt on Visual Studio Code",
       "publisher": "Medium",
       "releaseDate": "2019-10-03",
-      "website": "https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004?source=friends_link&sk=bb4e2523b922d0870259ab3fa696c7da",
+      "website": "https://web.archive.org/web/20191204234923/https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004?source=friends_link&sk=bb4e2523b922d0870259ab3fa696c7da",
       "summary": "nRF52 works with popular open-source tools on Windows and macOS like VSCode, OpenOCD, Rust and ST-Link"
     },
     {
@@ -591,7 +591,7 @@
       "name": "Create your IoT gadget with Apache Mynewt and STM32 Blue Pill",
       "publisher": "Medium",
       "releaseDate": "2019-03-26",
-      "website": "https://medium.com/@ly.lee/create-your-iot-gadget-with-apache-mynewt-and-stm32-blue-pill-d689b3ca725?source=friends_link&sk=d511426d5a2217ebd06789b3eef7df54",
+      "website": "https://web.archive.org/web/20191130001232/https://medium.com/@ly.lee/create-your-iot-gadget-with-apache-mynewt-and-stm32-blue-pill-d689b3ca725",
       "summary": "Apache Mynewt is a free, open-source realtime operating system for microcontrollers"
     },
     {
