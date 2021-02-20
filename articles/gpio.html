@@ -794,11 +794,11 @@ Use `riscv authdata_read` and `riscv authdata_write` commands to authenticate.
 <p><em>What about DHT11, the Temperature and Humidity Sensor? (Lower right corner)</em></p>
 </blockquote>
 <p>DHT11 will be a problem because it transmits Serial Data in an unusual way <strong>(bidirectional single wire)</strong> that's incompatible with UART, I2C and SPI. <a href="https://www.mouser.com/datasheet/2/758/DHT11-Technical-Data-Sheet-Translated-Version-1143054.pdf">See DHT11 Datasheet</a></p>
-<p>We would have to read the data from DHT11 via <strong>Bit Banging</strong>. Which is hard to do reliably on a multitasking operating system like Mynewt. <a href="https://medium.com/@ly.lee/openocd-on-raspberry-pi-better-with-swd-on-spi-7dea9caeb590?source=friends_link&amp;sk=df399bfd913d3e262447d28aa5af6b63">More about the evils of Bit Banging</a></p>
+<p>We would have to read the data from DHT11 via <strong>Bit Banging</strong>. Which is hard to do reliably on a multitasking operating system like Mynewt. <a href="https://web.archive.org/web/20210207004844/https://medium.com/@ly.lee/openocd-on-raspberry-pi-better-with-swd-on-spi-7dea9caeb590">More about the evils of Bit Banging</a></p>
 <blockquote>
 <p><em>Is there a better Temperature and Humidity Sensor that connects with standard interfaces... And works well with mutitasking?</em></p>
 </blockquote>
-<p>Yes BME280 senses Temperature, Humidity and Altitude (Air Pressure). BME280 supports <strong>both I2C and SPI</strong> interfaces. <a href="https://medium.com/@ly.lee/create-your-iot-gadget-with-apache-mynewt-and-stm32-blue-pill-d689b3ca725?source=friends_link&amp;sk=d511426d5a2217ebd06789b3eef7df54">More about BME280</a></p>
+<p>Yes BME280 senses Temperature, Humidity and Altitude (Air Pressure). BME280 supports <strong>both I2C and SPI</strong> interfaces. <a href="https://web.archive.org/web/20191130001232/https://medium.com/@ly.lee/create-your-iot-gadget-with-apache-mynewt-and-stm32-blue-pill-d689b3ca725">More about BME280</a></p>
 <p>We shall we using BME280 for testing the implementation of I2C and SPI on Mynewt BL602.</p>
 <blockquote>
 <p><em>How do we find Software Drivers for BME280 and other Sensors and Actuators?</em></p>
@@ -808,7 +808,7 @@ Use `riscv authdata_read` and `riscv authdata_write` commands to authenticate.
 <blockquote>
 <p><em>What if we could standardise the HAL across all operating systems?</em></p>
 </blockquote>
-<p>There's one possibility: <strong>Adopt the Rust Embedded HAL.</strong> I have previously ported the Rust Embedded HAL to Mynewt (for PineTime). <a href="https://medium.com/@ly.lee/optimising-pinetimes-display-driver-with-rust-and-mynewt-3ba269ea2f5c?source=friends_link&amp;sk=4d2cbd2e6cd2343eed62d214814f7b81">More details</a></p>
+<p>There's one possibility: <strong>Adopt the Rust Embedded HAL.</strong> I have previously ported the Rust Embedded HAL to Mynewt (for PineTime). <a href="https://web.archive.org/web/20200612094614/https://medium.com/@ly.lee/optimising-pinetimes-display-driver-with-rust-and-mynewt-3ba269ea2f5c">More details</a></p>
 <p>Once we have the Rust Embedded HAL ported to Mynewt (and other operating systems), we'll be able to use the <strong>Rust Embedded Drivers</strong>. <a href="https://github.com/rust-embedded/awesome-embedded-rust/blob/master/README.md#driver-crates">List of Rust Embedded Drivers</a></p>
 <p>(And we'll code our firmware in Rust of course)</p>
 <p>We shall experiment with the <a href="https://crates.io/crates/bme280">BME280 Rust Driver</a> on Mynewt BL602.</p>
@@ -839,7 +839,7 @@ Use `riscv authdata_read` and `riscv authdata_write` commands to authenticate.
 <li>
 <p>My thoughts on <strong>Teaching IoT and Embedded Programming</strong> with Sensors and Actuators?</p>
 <p>Let's move away from boring old GPIO-based Sensors and Actuators... And teach <strong>modern ones based on I2C and SPI!</strong></p>
-<p>(<a href="https://medium.com/@ly.lee/create-your-iot-gadget-with-apache-mynewt-and-stm32-blue-pill-d689b3ca725?source=friends_link&amp;sk=d511426d5a2217ebd06789b3eef7df54">Like BME280</a>)</p>
+<p>(<a href="https://web.archive.org/web/20191130001232/https://medium.com/@ly.lee/create-your-iot-gadget-with-apache-mynewt-and-stm32-blue-pill-d689b3ca725">Like BME280</a>)</p>
 </li>
 <li>
 <p>To teach IoT with PineCone or Pinenut BL602, we need to add on...</p>
