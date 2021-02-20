@@ -886,11 +886,11 @@ We shall integrate with Mynewt the respective Hardware Abstraction Layers from t
 
 DHT11 will be a problem because it transmits Serial Data in an unusual way __(bidirectional single wire)__ that's incompatible with UART, I2C and SPI. [See DHT11 Datasheet](https://www.mouser.com/datasheet/2/758/DHT11-Technical-Data-Sheet-Translated-Version-1143054.pdf)
 
-We would have to read the data from DHT11 via __Bit Banging__. Which is hard to do reliably on a multitasking operating system like Mynewt. [More about the evils of Bit Banging](https://medium.com/@ly.lee/openocd-on-raspberry-pi-better-with-swd-on-spi-7dea9caeb590?source=friends_link&sk=df399bfd913d3e262447d28aa5af6b63)
+We would have to read the data from DHT11 via __Bit Banging__. Which is hard to do reliably on a multitasking operating system like Mynewt. [More about the evils of Bit Banging](https://web.archive.org/web/20210207004844/https://medium.com/@ly.lee/openocd-on-raspberry-pi-better-with-swd-on-spi-7dea9caeb590)
 
 >_Is there a better Temperature and Humidity Sensor that connects with standard interfaces... And works well with mutitasking?_
 
-Yes BME280 senses Temperature, Humidity and Altitude (Air Pressure). BME280 supports __both I2C and SPI__ interfaces. [More about BME280](https://medium.com/@ly.lee/create-your-iot-gadget-with-apache-mynewt-and-stm32-blue-pill-d689b3ca725?source=friends_link&sk=d511426d5a2217ebd06789b3eef7df54)
+Yes BME280 senses Temperature, Humidity and Altitude (Air Pressure). BME280 supports __both I2C and SPI__ interfaces. [More about BME280](https://web.archive.org/web/20191130001232/https://medium.com/@ly.lee/create-your-iot-gadget-with-apache-mynewt-and-stm32-blue-pill-d689b3ca725)
 
 We shall we using BME280 for testing the implementation of I2C and SPI on Mynewt BL602.
 
@@ -902,7 +902,7 @@ Each operating system has its own Hardware Abstraction Layer (HAL) for talking t
 
 >_What if we could standardise the HAL across all operating systems?_
 
-There's one possibility: __Adopt the Rust Embedded HAL.__ I have previously ported the Rust Embedded HAL to Mynewt (for PineTime). [More details](https://medium.com/@ly.lee/optimising-pinetimes-display-driver-with-rust-and-mynewt-3ba269ea2f5c?source=friends_link&sk=4d2cbd2e6cd2343eed62d214814f7b81)
+There's one possibility: __Adopt the Rust Embedded HAL.__ I have previously ported the Rust Embedded HAL to Mynewt (for PineTime). [More details](https://web.archive.org/web/20200612094614/https://medium.com/@ly.lee/optimising-pinetimes-display-driver-with-rust-and-mynewt-3ba269ea2f5c)
 
 Once we have the Rust Embedded HAL ported to Mynewt (and other operating systems), we'll be able to use the __Rust Embedded Drivers__. [List of Rust Embedded Drivers](https://github.com/rust-embedded/awesome-embedded-rust/blob/master/README.md#driver-crates)
 
@@ -936,7 +936,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     Let's move away from boring old GPIO-based Sensors and Actuators... And teach __modern ones based on I2C and SPI!__
 
-    ([Like BME280](https://medium.com/@ly.lee/create-your-iot-gadget-with-apache-mynewt-and-stm32-blue-pill-d689b3ca725?source=friends_link&sk=d511426d5a2217ebd06789b3eef7df54))
+    ([Like BME280](https://web.archive.org/web/20191130001232/https://medium.com/@ly.lee/create-your-iot-gadget-with-apache-mynewt-and-stm32-blue-pill-d689b3ca725))
 
 1.  To teach IoT with PineCone or Pinenut BL602, we need to add on...
 

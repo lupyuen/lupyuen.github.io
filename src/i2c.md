@@ -131,7 +131,7 @@ I2C uses this even / odd convention to indicate whether we're writing or reading
 
 To sum up: We need to reproduce on BL602 the two `[Start] ... [Stop]` transactions. Which includes sending 3 bytes (`0xEE`, `0xD0`, `0xEF`) and receiving 1 byte (`0x60`).
 
-[More about I2C](https://medium.com/@ly.lee/building-a-rust-driver-for-pinetimes-touch-controller-cbc1a5d5d3e9?source=friends_link&sk=d8cf73fc943d9c0e960627d768f309cb)
+[More about I2C](https://web.archive.org/web/20191222054305/https://medium.com/@ly.lee/building-a-rust-driver-for-pinetimes-touch-controller-cbc1a5d5d3e9)
 
 ![Initialise I2C Port](https://lupyuen.github.io/images/i2c-cartoon4.png)
 

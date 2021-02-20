@@ -798,7 +798,7 @@ Then we shall have a fully __Open Source Operating System for PineCone!__
 
 _How confident are we of porting Mynewt to PineCone BL602?_
 
-One year ago I [failed to port Mynewt](https://medium.com/@ly.lee/hey-gd32-vf103-on-risc-v-i-surrender-for-now-d39d0c7b0001?source=friends_link&sk=c0504ac574bf571219fabe174eef4de5) to an earlier RISC-V Microcontroller (GD32 VF103)
+One year ago I [failed to port Mynewt](https://web.archive.org/web/20191123160606/https://medium.com/@ly.lee/hey-gd32-vf103-on-risc-v-i-surrender-for-now-d39d0c7b0001) to an earlier RISC-V Microcontroller (GD32 VF103)
 
 _But Second Time's The Charm!_
 
