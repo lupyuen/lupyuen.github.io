@@ -10,7 +10,7 @@ Is there a book about the __BL602 SoC__ (RISC-V, WiFi and Bluetooth LE) that...
 
 1.  Explains in depth the __features of BL602__
 
-1.  Has lots of __annotated sample code,__ with real use cases
+1.  Has plenty of __annotated sample code,__ with real use cases
 
 1.  Is __open source,__ free to browse and reproduce?
 
