@@ -52,7 +52,7 @@ Note that Serial Data In and Serial Data Out are flipped across the SPI Controll
 
 The BL602 IoT SDK contains an __SPI Hardware Abstraction Layer (HAL)__ that we may call in our C programs to transfer data over SPI...
 
--   [__BL602 SPI HAL: `bl602_hal/hal_spi.c`__](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c)
+-   [__BL602 SPI HAL: `bl602_hal/hal_spi.c`__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_spi.c)
 
 However there are a couple of concerns over the BL602 SPI HAL...
 
@@ -66,7 +66,7 @@ However there are a couple of concerns over the BL602 SPI HAL...
 
     It uses the AliOS Device Tree for configuring the SPI Port. Which might be overkill for some embedded programs.
 
-    I have added an SPI HAL function [__`spi_init`__](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L838-L886) that lets us __call the SPI HAL without AliOS Things__ and its Device Tree.
+    I have added an SPI HAL function [__`spi_init`__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_spi.c#L838-L886) that lets us __call the SPI HAL without AliOS Things__ and its Device Tree.
 
     [More about BL602 Device Tree](https://lupyuen.github.io/articles/flash#device-tree)
 
@@ -475,7 +475,11 @@ __SPI With DMA:__
 
 All SPI Transfers done with the BL602 SPI HAL will use super-efficient DMA.
 
-[(See `hal_spi_transfer` in the Appendix for the BL602 DMA implementation)](https://lupyuen.github.io/articles/spi#hal_spi_transfer-execute-spi-transfer)
+To learn more about SPI with DMA...
+
+-   [How the SPI HAL creates a DMA Linked List](https://lupyuen.github.io/articles/spi#lli_list_init-create-dma-linked-list)
+
+-   [How the SPI HAL executes the DMA Linked List](https://lupyuen.github.io/articles/spi#hal_spi_dma_trans-execute-spi-transfer-with-dma)
 
 ![SPI Demo Firmware for BL602](https://lupyuen.github.io/images/spi-firmware3.jpg)
 
@@ -738,7 +742,7 @@ assert(rc2 == SUCCESS);
 
 We call __`GLB_GPIO_Func_Init`__ to configure Pin 14 as a plain GPIO Pin: `GPIO_FUN_SWGPIO`.
 
-(`GLB_GPIO_Func_Init` comes from the __BL602 Standard Driver__: [`bl602_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c))
+(`GLB_GPIO_Func_Init` comes from the __BL602 Standard Driver__: [`bl602_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c))
 
 Now that Pin 14 is configured as a GPIO Pin, let's configure it for __GPIO Output__ (instead of GPIO Input)...
 
@@ -1228,7 +1232,7 @@ We added the function `spi_init` to initialise the SPI Port without using the Al
 
 For production we should change this to `0`.
 
-From [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L57-L58)
+From [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_spi.c#L57-L58)
 
 ```c
 //  TODO: Change to 0 for production to disable logging
@@ -1251,15 +1255,15 @@ We added the function `spi_init` to initialise the SPI Port without using the Al
 
 `spi_init` was derived from these SPI HAL Functions (which use the AliOS Device Tree)...
 
-- [`spi_arg_set_fdt2`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L597-L760)
+- [`spi_arg_set_fdt2`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_spi.c#L597-L760)
 
-- [`vfs_spi_init_fullname`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L524-L591)
+- [`vfs_spi_init_fullname`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_spi.c#L524-L591)
 
 Note that there is only a __single global instance of SPI Data.__ 
 
 __`spi_init` shall only be called once by our firmware.__
 
-From [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L838-L886)
+From [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_spi.c#L838-L886)
 
 ```c
 //  Global single instance of SPI Data. 
@@ -1322,7 +1326,7 @@ We set the internal fields of the SPI device...
         port, mode, polar_phase, freq, tx_dma_ch, rx_dma_ch, pin_clk, pin_cs, pin_mosi, pin_miso);
 ```
 
-[(This code is derived from `vfs_spi_init_fullname`)](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L563-L580)
+[(This code is derived from `vfs_spi_init_fullname`)](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_spi.c#L563-L580)
 
 Note that we don't assign the SPI Frequency yet.  We'll assign later in `hal_spi_set_rwspeed` because the function validates the SPI Frequency.
 
@@ -1340,7 +1344,7 @@ Finally we call [`hal_spi_set_rwspeed`](https://lupyuen.github.io/articles/spi#h
 
 `hal_spi_set_rwspeed` is called by [`spi_init`](https://lupyuen.github.io/articles/spi#spi_init-init-spi-port) to set the SPI Frequency, assign the SPI Pins and initialise the DMA Controller.
 
-From [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L430-L480)
+From [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_spi.c#L430-L480)
 
 ```c
 int hal_spi_set_rwspeed(spi_dev_t *spi_dev, uint32_t speed)
@@ -1420,7 +1424,7 @@ Finally we call [`hal_spi_init`](https://lupyuen.github.io/articles/spi#hal_spi_
 
 `hal_spi_init` is called by [`hal_spi_set_rwspeed`](https://lupyuen.github.io/articles/spi#hal_spi_set_rwspeed-set-spi-frequency) to assign the SPI Pins and initialise the DMA Controller.
 
-From [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L360-L384)
+From [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_spi.c#L360-L384)
 
 ```c
 int32_t hal_spi_init(spi_dev_t *spi)
@@ -1462,7 +1466,7 @@ For every SPI Port (there's only one: SPI Port 0)...
 
 `hal_gpio_init` is called by [`hal_spi_init`](https://lupyuen.github.io/articles/spi#hal_spi_init-init-spi-pins-and-dma) to assign the SPI Pins and configure the SPI Port as SPI Controller or Peripheral.
 
-From [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L98-L124)
+From [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_spi.c#L98-L124)
 
 ```c
 static void hal_gpio_init(spi_hw_t *arg)
@@ -1488,7 +1492,7 @@ We call `GLB_GPIO_Func_Init` to assign the four SPI Pins to the SPI Port...
 
 The sequence of the SPI Pins doesn't matter, because each pin has a fixed SPI Function (like Serial Data In, Serial Data Out) within the SPI Port.
 
-(`GLB_GPIO_Func_Init` comes from the __BL602 Standard Driver__: [`bl602_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c))
+(`GLB_GPIO_Func_Init` comes from the __BL602 Standard Driver__: [`bl602_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c))
 
 Finally we configure the SPI Port as SPI Controller or Peripheral...
 
@@ -1508,7 +1512,7 @@ Finally we configure the SPI Port as SPI Controller or Peripheral...
 
 `hal_spi_dma_init` is called by [`hal_spi_init`](https://lupyuen.github.io/articles/spi#hal_spi_init-init-spi-pins-and-dma) to initialise the DMA Controller.
 
-From [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L207-L288)
+From [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_spi.c#L207-L288)
 
 ```c
 static void hal_spi_dma_init(spi_hw_t *arg)
@@ -1661,7 +1665,7 @@ Finally we register the DMA Interrupt Handlers...
 
 `hal_spi_transfer` is a Blocking Function... It waits for the SPI Transfers to complete before returning.
 
-From [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L482-L522)
+From [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_spi.c#L482-L522)
 
 ```c
 int hal_spi_transfer(spi_dev_t *spi_dev, void *xfer, uint8_t size)
@@ -1736,7 +1740,7 @@ In `lli_list_init` we'll create two DMA Linked Lists of DMA Requests...
 
 `lli_list_init` is called by [`hal_spi_dma_trans`](https://lupyuen.github.io/articles/spi#hal_spi_dma_trans-execute-spi-transfer-with-dma).
 
-From [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L126-L205)
+From [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_spi.c#L126-L205)
 
 ```c
 static int lli_list_init(DMA_LLI_Ctrl_Type **pptxlli, DMA_LLI_Ctrl_Type **pprxlli, uint8_t *ptx_data, uint8_t *prx_data, uint32_t length)
@@ -1745,7 +1749,13 @@ static int lli_list_init(DMA_LLI_Ctrl_Type **pptxlli, DMA_LLI_Ctrl_Type **pprxll
     uint32_t count;
     uint32_t remainder;
     struct DMA_Control_Reg dmactrl;
+```
 
+Each DMA Transfer Request is limited to __2048 bytes (`LLI_BUFF_SIZE`).__
+
+To execute larger requests, we break them into __smaller requests of 2048 bytes each__, and add them to the DMA Linked List...
+
+```c
     count = length / LLI_BUFF_SIZE;
     remainder = length % LLI_BUFF_SIZE;
 
@@ -1781,7 +1791,9 @@ We call `pvPortMalloc` (from FreeRTOS) to allocate heap memory for storing the D
     }
 ```
 
-__For every SPI Transfer:__ We create the DMA Requests for SPI Transmit and SPI Receive...
+__For every chunk of SPI Transfer (max 2048 bytes):__ 
+
+We create the DMA Requests for each chunk of SPI Transmit and SPI Receive...
 
 ```c
     for (i = 0; i < count; i++) {
@@ -1920,7 +1932,7 @@ Here's the debug output from `lli_list_init` when it creates the DMA Linked List
 
 `hal_spi_dma_trans` is called by [`hal_spi_transfer`](https://lupyuen.github.io/articles/spi#hal_spi_transfer-execute-spi-transfer) to execute an SPI Transfer with DMA, and wait for the SPI Transfer to complete.
 
-From [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L290-L358)
+From [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_spi.c#L290-L358)
 
 ```c
 static void hal_spi_dma_trans(spi_hw_t *arg, uint8_t *TxData, uint8_t *RxData, uint32_t Len)
@@ -2017,16 +2029,18 @@ We enable the DMA Channels. The DMA Controller will transfer data according to t
 We call `xEventGroupWaitBits` (from FreeRTOS) to wait until the Event Group is signalled by both DMA Interrupt Handlers: Transmit Complete and Receive Complete...
 
 ```c
-    ////  TODO: SPI Transfer may hang here, waiting for FreeRTOS Event Group 
-    ////  if it isn't notified by DMA Interrupt Handler.  To troubleshoot,
-    ////  comment out ALL lines below until end of function.
-    ////  Also comment out the second bl_gpio_output_set in hal_spi_transfer.
-    ////  And comment out the second bl_gpio_output_set in test_spi_transfer.
-    uxBits = xEventGroupWaitBits(arg->spi_dma_event_group,
-                                     EVT_GROUP_SPI_DMA_TR,
-                                     pdTRUE,
-                                     pdTRUE,
-                                     portMAX_DELAY);
+    //  TODO: To troubleshoot SPI Transfers that hang (like ST7789 at 4 MHz), change...
+    //      portMAX_DELAY);
+    //  To...
+    //      100 / portTICK_PERIOD_MS);
+    //  Which will change the SPI Timeout from "Wait Forever" to 100 milliseconds. Then check the Interrupt Counters.
+    uxBits = xEventGroupWaitBits(   //  Wait for...
+        arg->spi_dma_event_group,   //  Event Group
+        EVT_GROUP_SPI_DMA_TR,       //  For BOTH Transmit and Receive to complete
+        pdTRUE,                     //  Clear bits on exit
+        pdTRUE,                     //  Both Transmit and Receive bits must be set
+        portMAX_DELAY               //  Wait forever for both bits to be set
+    );
 
     if ((uxBits & EVT_GROUP_SPI_DMA_TR) == EVT_GROUP_SPI_DMA_TR) {
         blog_info("recv all event group.\r\n");
@@ -2041,7 +2055,7 @@ __`EVT_GROUP_SPI_DMA_TR`__ is a combination of two Events...
 
 Thus when we wait for `EVT_GROUP_SPI_DMA_TR`, we're waiting for the SPI DMA Transmit AND Receive Requests to complete.
 
-[(`EVT_GROUP_SPI_DMA_TR` is defined here)](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L70-L72)
+[(`EVT_GROUP_SPI_DMA_TR` is defined here)](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_spi.c#L70-L72)
 
 Finally we free the heap memory for the DMA Linked Lists (Transmit and Receive)...
 
@@ -2057,7 +2071,7 @@ Finally we free the heap memory for the DMA Linked Lists (Transmit and Receive).
 
 The DMA Interrupt Handler is registered by [`hal_spi_dma_init`](https://lupyuen.github.io/articles/spi#hal_spi_dma_init-init-spi-dma).
 
-From [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L769-L808)
+From [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_spi.c#L769-L808)
 
 ```c
 void bl_spi0_dma_int_handler_tx(void)
@@ -2082,9 +2096,10 @@ Then we call `portYIELD_FROM_ISR` to wake up the Foreground Task that's waiting 
         bl_dma_int_clear(g_hal_buf->hwspi[0].tx_dma_ch);
 
         if (g_hal_buf->hwspi[0].spi_dma_event_group != NULL) {
-            xResult = xEventGroupSetBitsFromISR(g_hal_buf->hwspi[0].spi_dma_event_group,
-                                                EVT_GROUP_SPI_DMA_TX,
-                                                &xHigherPriorityTaskWoken);
+            xResult = xEventGroupSetBitsFromISR(
+                g_hal_buf->hwspi[0].spi_dma_event_group,
+                EVT_GROUP_SPI_DMA_TX,
+                &xHigherPriorityTaskWoken);
         }
 
         if(xResult != pdFAIL) {
@@ -2104,7 +2119,7 @@ Then we call `portYIELD_FROM_ISR` to wake up the Foreground Task that's waiting 
 
 The DMA Interrupt Handler is registered by [`hal_spi_dma_init`](https://lupyuen.github.io/articles/spi#hal_spi_dma_init-init-spi-dma).
 
-From [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L810-L836)
+From [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_spi.c#L810-L836)
 
 ```c
 void bl_spi0_dma_int_handler_rx(void)
@@ -2129,9 +2144,10 @@ Then we call `portYIELD_FROM_ISR` to wake up the Foreground Task that's waiting 
         bl_dma_int_clear(g_hal_buf->hwspi[0].rx_dma_ch);
 
         if (g_hal_buf->hwspi[0].spi_dma_event_group != NULL) {
-            xResult = xEventGroupSetBitsFromISR(g_hal_buf->hwspi[0].spi_dma_event_group,
-                                                EVT_GROUP_SPI_DMA_RX,
-                                                &xHigherPriorityTaskWoken);
+            xResult = xEventGroupSetBitsFromISR(
+                g_hal_buf->hwspi[0].spi_dma_event_group,
+                EVT_GROUP_SPI_DMA_RX,
+                &xHigherPriorityTaskWoken);
         }
 
         if(xResult != pdFAIL) {
@@ -2148,7 +2164,7 @@ Then we call `portYIELD_FROM_ISR` to wake up the Foreground Task that's waiting 
 
 To check whether the DMA Interrupts are working correctly, we added Interrupt Counters and captured the Status and Error Codes.
 
-From [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/components/hal_drv/bl602_hal/hal_spi.c#L769-L808)
+From [`bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_spi.c#L769-L808)
 
 ```c
 //  Interrupt Counters for Transmit and Receive
@@ -2164,7 +2180,7 @@ uint32_t g_rx_tc;      //  Receive Terminal Count  (from 0x4000c004)
 uint32_t g_rx_error;   //  Receive Error Code      (from 0x4000c00c)
 ```
 
-These values are displayed when we enter the SPI Command [`spi_result`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L158-L182).
+These values are displayed when we enter the SPI Command [`spi_result`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L158-L182).
 
 When we complete two SPI Transfers successfully, we should see these values...
 
