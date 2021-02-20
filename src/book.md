@@ -66,7 +66,7 @@ Read an I2C Sensor by calling the __BL602 I2C HAL__.
 
 # SPI on BL602
 
-How we call the __BL602 I2C HAL__ to access SPI Sensors and Displays.
+How we call the __BL602 SPI HAL__ to access SPI Sensors and Displays.
 
 -   ["PineCone BL602 talks SPI too!"](https://lupyuen.github.io/articles/spi)
 
