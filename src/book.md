@@ -38,6 +38,8 @@ How we __flash firmware__ to BL602 with __command-line tools__ on Linux, macOS a
 
 -   ["Flashing Firmware to PineCone BL602"](https://lupyuen.github.io/articles/flash)
 
+-   ["How to Troubleshoot RISC-V Exceptions"](https://lupyuen.github.io/articles/i2c#appendix-how-to-troubleshoot-risc-v-exceptions)
+
 ![](https://lupyuen.github.io/images/book-led.jpg)
 
 # GPIO on BL602
