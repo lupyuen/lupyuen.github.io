@@ -1581,7 +1581,7 @@ int spi_init(spi_dev_t *spi, uint8_t port,
     }
 </code></pre>
 <p><strong>For every chunk of SPI Transfer (max 2048 bytes):</strong> </p>
-<p>We create the DMA Requests for each chunk of SPI Transmit and SPI Receive...</p>
+<p>We create the DMA Requests for each chunk of SPI Transmit and SPI Receive (max 2048 bytes)...</p>
 <pre><code class="language-c">    for (i = 0; i &lt; count; i++) {
 </code></pre>
 <p>We compute the DMA Transmit / Receive Size...</p>
@@ -1600,10 +1600,10 @@ int spi_init(spi_dev_t *spi, uint8_t port,
         dmactrl.DI = DMA_MINC_DISABLE;
 </code></pre>
 <p>The <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en">BL602 Reference Manual</a> doesn't explain Automatic Address Accumulation. (See Section 6.3.2 &quot;DMA Channel Configuration&quot;, Page 73)</p>
-<p>(In the original Chinese docs, &quot;Automatic Address Accumulation&quot; actually means &quot;Automatic Address Increment&quot;. <a href="https://twitter.com/MisterTechBlog/status/1358502589105508352?s=19">See this</a>)</p>
+<p><em>(In the original Chinese docs, &quot;Automatic Address Accumulation&quot; actually means &quot;Automatic Address Increment&quot;. <a href="https://twitter.com/MisterTechBlog/status/1358502589105508352?s=19">See this</a>)</em></p>
 <p>Let's assume that the above configuration will auto-increment the Source RAM Address (SI) when the DMA Controller copies data from RAM to the SPI Port.</p>
 <p>We don't auto-increment the Destination Address (DI) because the SPI Port uses a single address for transmitting data: <code>spi_fifo_wdata</code> at <code>0x4000a288</code></p>
-<p>(<code>DMA_MINC_ENABLE</code> means &quot;Enable Memory Increment Mode&quot;, <code>DMA_MINC_DISABLE</code> means &quot;Disable Memory Increment Mode&quot;. <a href="https://www.st.com/content/ccc/resource/technical/document/user_manual/2f/71/ba/b8/75/54/47/cf/DM00105879.pdf/files/DM00105879.pdf/jcr:content/translations/en.DM00105879.pdf">See this</a>)</p>
+<p><em>(<code>DMA_MINC_ENABLE</code> means &quot;Enable Memory Increment Mode&quot;, <code>DMA_MINC_DISABLE</code> means &quot;Disable Memory Increment Mode&quot;. <a href="https://www.st.com/content/ccc/resource/technical/document/user_manual/2f/71/ba/b8/75/54/47/cf/DM00105879.pdf/files/DM00105879.pdf/jcr:content/translations/en.DM00105879.pdf">See this</a>)</em></p>
 <p>We set I to 1 if this is the last entry in the DMA Linked List...</p>
 <pre><code class="language-c">        if (i == count - 1) {
             dmactrl.I = 1;
@@ -1624,7 +1624,7 @@ int spi_init(spi_dev_t *spi, uint8_t port,
 </code></pre>
 <p>Let's assume that this will auto-increment the Destination RAM Address (DI) when the DMA Controller copies the received data from the SPI Port to RAM.</p>
 <p>We don't auto-increment the Source Address (SI) because the SPI Port uses a single address for receiving data: <code>spi_fifo_rdata</code> at <code>0x4000a28c</code></p>
-<p>(<code>DMA_MINC_ENABLE</code> means &quot;Enable Memory Increment Mode&quot;, <code>DMA_MINC_DISABLE</code> means &quot;Disable Memory Increment Mode&quot;. <a href="https://www.st.com/content/ccc/resource/technical/document/user_manual/2f/71/ba/b8/75/54/47/cf/DM00105879.pdf/files/DM00105879.pdf/jcr:content/translations/en.DM00105879.pdf">See this</a>)</p>
+<p><em>(<code>DMA_MINC_ENABLE</code> means &quot;Enable Memory Increment Mode&quot;, <code>DMA_MINC_DISABLE</code> means &quot;Disable Memory Increment Mode&quot;. <a href="https://www.st.com/content/ccc/resource/technical/document/user_manual/2f/71/ba/b8/75/54/47/cf/DM00105879.pdf/files/DM00105879.pdf/jcr:content/translations/en.DM00105879.pdf">See this</a>)</em></p>
 <p><strong>For SPI Receive:</strong> We create a DMA Request that copies the received data from the SPI Port to RAM...</p>
 <pre><code class="language-c">        (*pprxlli)[i].srcDmaAddr = (uint32_t)(SPI_BASE+SPI_FIFO_RDATA_OFFSET);
         (*pprxlli)[i].destDmaAddr = (uint32_t)(prx_data + i * LLI_BUFF_SIZE);
@@ -1773,11 +1773,14 @@ Rx DMA src=0x4000a28c, dest=0x4200d1b4, size=1, si=0, di=1, i=1
     DMA_Channel_Enable(arg-&gt;rx_dma_ch);
 </code></pre>
 <p>We call <code>xEventGroupWaitBits</code> (from FreeRTOS) to wait until the Event Group is signalled by both DMA Interrupt Handlers: Transmit Complete and Receive Complete...</p>
-<pre><code class="language-c">    //  TODO: To troubleshoot SPI Transfers that hang (like ST7789 at 4 MHz), change...
-    //      portMAX_DELAY);
+<pre><code class="language-c">    //  TODO: To troubleshoot SPI Transfers that hang 
+    //  (like ST7789 above 4 MHz), change...
+    //      portMAX_DELAY
     //  To...
-    //      100 / portTICK_PERIOD_MS);
-    //  Which will change the SPI Timeout from &quot;Wait Forever&quot; to 100 milliseconds. Then check the Interrupt Counters.
+    //      100 / portTICK_PERIOD_MS
+    //  Which will change the SPI Timeout from 
+    //  &quot;Wait Forever&quot; to 100 milliseconds. 
+    //  Then check the Interrupt Counters and Error Codes.
     uxBits = xEventGroupWaitBits(   //  Wait for...
         arg-&gt;spi_dma_event_group,   //  Event Group
         EVT_GROUP_SPI_DMA_TR,       //  For BOTH Transmit and Receive to complete
@@ -1800,6 +1803,7 @@ Rx DMA src=0x4000a28c, dest=0x4200d1b4, size=1, si=0, di=1, i=1
 </li>
 </ol>
 <p>Thus when we wait for <code>EVT_GROUP_SPI_DMA_TR</code>, we're waiting for the SPI DMA Transmit AND Receive Requests to complete.</p>
+<p>Note that we're <strong>waiting forever</strong> until both requests complete. For easier troubleshooting, follow the instructions in the comments above to change the SPI Timeout from <strong><code>portMAX_DELAY</code></strong> to <strong><code>100 / portTICK_PERIOD_MS</code></strong></p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_spi.c#L70-L72">(<code>EVT_GROUP_SPI_DMA_TR</code> is defined here)</a></p>
 <p>Finally we free the heap memory for the DMA Linked Lists (Transmit and Receive)...</p>
 <pre><code class="language-c">    vPortFree(ptxlli);
