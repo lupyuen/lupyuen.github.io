@@ -154,6 +154,8 @@ Check this book again for future updates...
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
+-   ["Discuss this book on Reddit"](https://www.reddit.com/r/RISCV/comments/lnumsv/the_riscv_bl602_book/?utm_source=share&utm_medium=web2x&context=3)
+
 -   [Check out my articles](https://lupyuen.github.io)
 
 -   [RSS Feed](https://lupyuen.github.io/rss.xml)
