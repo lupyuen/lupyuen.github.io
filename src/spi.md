@@ -1793,7 +1793,7 @@ We call `pvPortMalloc` (from FreeRTOS) to allocate heap memory for storing the D
 
 __For every chunk of SPI Transfer (max 2048 bytes):__ 
 
-We create the DMA Requests for each chunk of SPI Transmit and SPI Receive...
+We create the DMA Requests for each chunk of SPI Transmit and SPI Receive (max 2048 bytes)...
 
 ```c
     for (i = 0; i < count; i++) {
@@ -1822,13 +1822,13 @@ __For SPI Transmit:__ We configure the __DMA Automatic Address Accumulation__ fo
 
 The [BL602 Reference Manual](https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en) doesn't explain Automatic Address Accumulation. (See Section 6.3.2 "DMA Channel Configuration", Page 73)
 
-(In the original Chinese docs, "Automatic Address Accumulation" actually means "Automatic Address Increment". [See this](https://twitter.com/MisterTechBlog/status/1358502589105508352?s=19))
+_(In the original Chinese docs, "Automatic Address Accumulation" actually means "Automatic Address Increment". [See this](https://twitter.com/MisterTechBlog/status/1358502589105508352?s=19))_
 
 Let's assume that the above configuration will auto-increment the Source RAM Address (SI) when the DMA Controller copies data from RAM to the SPI Port.
 
 We don't auto-increment the Destination Address (DI) because the SPI Port uses a single address for transmitting data: `spi_fifo_wdata` at `0x4000a288`
 
-(`DMA_MINC_ENABLE` means "Enable Memory Increment Mode", `DMA_MINC_DISABLE` means "Disable Memory Increment Mode". [See this](https://www.st.com/content/ccc/resource/technical/document/user_manual/2f/71/ba/b8/75/54/47/cf/DM00105879.pdf/files/DM00105879.pdf/jcr:content/translations/en.DM00105879.pdf))
+_(`DMA_MINC_ENABLE` means "Enable Memory Increment Mode", `DMA_MINC_DISABLE` means "Disable Memory Increment Mode". [See this](https://www.st.com/content/ccc/resource/technical/document/user_manual/2f/71/ba/b8/75/54/47/cf/DM00105879.pdf/files/DM00105879.pdf/jcr:content/translations/en.DM00105879.pdf))_
 
 We set I to 1 if this is the last entry in the DMA Linked List...
 
@@ -1861,7 +1861,7 @@ Let's assume that this will auto-increment the Destination RAM Address (DI) when
 
 We don't auto-increment the Source Address (SI) because the SPI Port uses a single address for receiving data: `spi_fifo_rdata` at `0x4000a28c`
 
-(`DMA_MINC_ENABLE` means "Enable Memory Increment Mode", `DMA_MINC_DISABLE` means "Disable Memory Increment Mode". [See this](https://www.st.com/content/ccc/resource/technical/document/user_manual/2f/71/ba/b8/75/54/47/cf/DM00105879.pdf/files/DM00105879.pdf/jcr:content/translations/en.DM00105879.pdf))
+_(`DMA_MINC_ENABLE` means "Enable Memory Increment Mode", `DMA_MINC_DISABLE` means "Disable Memory Increment Mode". [See this](https://www.st.com/content/ccc/resource/technical/document/user_manual/2f/71/ba/b8/75/54/47/cf/DM00105879.pdf/files/DM00105879.pdf/jcr:content/translations/en.DM00105879.pdf))_
 
 __For SPI Receive:__ We create a DMA Request that copies the received data from the SPI Port to RAM...
 
@@ -2029,11 +2029,14 @@ We enable the DMA Channels. The DMA Controller will transfer data according to t
 We call `xEventGroupWaitBits` (from FreeRTOS) to wait until the Event Group is signalled by both DMA Interrupt Handlers: Transmit Complete and Receive Complete...
 
 ```c
-    //  TODO: To troubleshoot SPI Transfers that hang (like ST7789 at 4 MHz), change...
-    //      portMAX_DELAY);
+    //  TODO: To troubleshoot SPI Transfers that hang 
+    //  (like ST7789 above 4 MHz), change...
+    //      portMAX_DELAY
     //  To...
-    //      100 / portTICK_PERIOD_MS);
-    //  Which will change the SPI Timeout from "Wait Forever" to 100 milliseconds. Then check the Interrupt Counters.
+    //      100 / portTICK_PERIOD_MS
+    //  Which will change the SPI Timeout from 
+    //  "Wait Forever" to 100 milliseconds. 
+    //  Then check the Interrupt Counters and Error Codes.
     uxBits = xEventGroupWaitBits(   //  Wait for...
         arg->spi_dma_event_group,   //  Event Group
         EVT_GROUP_SPI_DMA_TR,       //  For BOTH Transmit and Receive to complete
@@ -2054,6 +2057,8 @@ __`EVT_GROUP_SPI_DMA_TR`__ is a combination of two Events...
 1.  __`EVT_GROUP_SPI_DMA_RX`:__ The Receive DMA Interrupt Handler triggers this Event when an SPI DMA Receive Request completes (successfully or unsuccessfully)
 
 Thus when we wait for `EVT_GROUP_SPI_DMA_TR`, we're waiting for the SPI DMA Transmit AND Receive Requests to complete.
+
+Note that we're __waiting forever__ until both requests complete. For easier troubleshooting, follow the instructions in the comments above to change the SPI Timeout from __`portMAX_DELAY`__ to __`100 / portTICK_PERIOD_MS`__
 
 [(`EVT_GROUP_SPI_DMA_TR` is defined here)](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_spi.c#L70-L72)
 
