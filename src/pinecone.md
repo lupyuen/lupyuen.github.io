@@ -14,7 +14,7 @@ Let's learn about the PineCone Board... And how it helps the [__RISC-V Open Sour
 
 PineCone is based on the BL602 combo chipset made by [Nanjing-based Bouffalo Lab](https://www.bouffalolab.com/bl602)...
 
-1. __Low Cost__: BL602 is a [General Purpose 32-bit Microcontroller](https://github.com/pine64/bl602-docs). (Think [STM32 Blue Pill](https://web.archive.org/web/20191204194232/https://medium.com/@ly.lee/create-your-iot-gadget-with-apache-mynewt-and-stm32-blue-pill-d689b3ca725?source=friends_link&sk=d511426d5a2217ebd06789b3eef7df54), [Nordic nRF52](https://web.archive.org/web/20201223155813/https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004))
+1. __Low Cost__: BL602 is a [General Purpose 32-bit Microcontroller](https://github.com/pine64/bl602-docs). (Think [STM32 Blue Pill](https://web.archive.org/web/20191204194232/https://medium.com/@ly.lee/create-your-iot-gadget-with-apache-mynewt-and-stm32-blue-pill-d689b3ca725?source=friends_link&sk=d511426d5a2217ebd06789b3eef7df54), [Nordic nRF52](https://web.archive.org/web/20200922215225/https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004))
 
     But BL602 supports Bluetooth LE AND 2.4 GHz WiFi... At the __low low price of an ESP8266__.
 
@@ -30,7 +30,7 @@ PineCone is based on the BL602 combo chipset made by [Nanjing-based Bouffalo Lab
 
     [FreeRTOS + AliOS](https://github.com/alibaba/AliOS-Things) has been ported to BL602. ([More details](https://github.com/pine64/bl_iot_sdk/tree/master/components/bl602)) But other Real Time Operating Systems (like [Zephyr](https://www.zephyrproject.org/), [RIOT](https://www.riot-os.org/) and [Mynewt](https://mynewt.apache.org/)) have been slow to adopt RISC-V. (We'll learn why in a while)
 
-    Rust runs perfectly fine on RISC-V microcontrollers. ([Here's the proof](https://web.archive.org/web/20201125005403/https://medium.com/swlh/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v-4054a5922493?source=friends_link&sk=215cd06186d912277d0469224666d60d))
+    Rust runs perfectly fine on RISC-V microcontrollers. ([Here's the proof](https://web.archive.org/web/20191126100556/https://medium.com/swlh/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v-4054a5922493?source=friends_link&sk=215cd06186d912277d0469224666d60d))
 
 It's great that Pine64 is reaching out to the Open Source Community through the [PineCone Nutcracker initiative](https://www.pine64.org/2020/10/28/nutcracker-challenge-blob-free-wifi-ble/)... Because it takes A Humongous Village to get BL602 ready for real-world gadgets.
 
@@ -82,7 +82,7 @@ Let's compare BL602 with the two most popular models of 32-bit RISC-V microcontr
     -   Used in HiFive1 dev board
     -   Supported by major Real Time Operating Systems (including Mynewt, RIOT and Zephyr)
 
-1.  [__GigaDevice GD32 VF103__](https://web.archive.org/web/20201125005403/https://medium.com/swlh/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v-4054a5922493?source=friends_link&sk=215cd06186d912277d0469224666d60d) (Released 2019)
+1.  [__GigaDevice GD32 VF103__](https://web.archive.org/web/20191126100556/https://medium.com/swlh/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v-4054a5922493?source=friends_link&sk=215cd06186d912277d0469224666d60d) (Released 2019)
     -   Used in Pinecil soldering iron and [various dev boards](https://www.seeedstudio.com/catalogsearch/result/?q=Gd32)
     -   Supported by PlatformIO development tool
     -   __Not Supported by Mynewt, RIOT and Zephyr__
@@ -274,7 +274,7 @@ More docs and tools for PineCone BL602 may be found here...
 
 ## Form Factor
 
-The PineCone BL602 Evaluation Board has a similar form factor to other wireless dev boards, like [EBYTE E73-TBB](https://web.archive.org/web/20191217201803/https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004?source=friends_link&sk=bb4e2523b922d0870259ab3fa696c7da) (which is based on nRF52832)
+The PineCone BL602 Evaluation Board has a similar form factor to other wireless dev boards, like [EBYTE E73-TBB](https://web.archive.org/web/20191204234923/https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004?source=friends_link&sk=bb4e2523b922d0870259ab3fa696c7da) (which is based on nRF52832)
 
 The PineCone board comes with a __USB-C Connector__. When connected to our computer via USB, the BL602 board is recognised as a Serial Device, ready to be flashed.
 
@@ -409,7 +409,7 @@ So we must flash firmware to PineCone over UART.
 
 _Are SWD and ST-Link supported for flashing firmware to the PineCone board?_
 
-Sorry no. SWD is available only on Arm Microcontrollers. [(SWD was created by Arm)](https://web.archive.org/web/20210207004844/https://medium.com/@ly.lee/openocd-on-raspberry-pi-better-with-swd-on-spi-7dea9caeb590)
+Sorry no. SWD is available only on Arm Microcontrollers. [(SWD was created by Arm)](https://web.archive.org/web/20200117210221/https://medium.com/@ly.lee/openocd-on-raspberry-pi-better-with-swd-on-spi-7dea9caeb590)
 
 The UART flashing protocol for PineCone is described in the [__BL602 Flash Programming__](https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en) doc.
 
@@ -477,7 +477,7 @@ The development tools supported for BL602 are...
 
 1.  [__Eclipse__](https://pine64.github.io/bl602-docs/Developer_Environment/eclipse/eclipse.html)
 
-_(For the BL602 port of Mynewt: I'll be using VSCode as the development tool. Firmware build will be supported on plain old Windows (without MSYS2 / WSL), macOS, Linux, GitHub Actions and GitLab CI. More about [porting Mynewt to RISC-V](https://web.archive.org/web/20201112034919/https://medium.com/swlh/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v-4054a5922493) and [how it got stuck](https://web.archive.org/web/20191204194133/https://medium.com/@ly.lee/hey-gd32-vf103-on-risc-v-i-surrender-for-now-d39d0c7b0001?source=friends_link&sk=c0504ac574bf571219fabe174eef4de5))_
+_(For the BL602 port of Mynewt: I'll be using VSCode as the development tool. Firmware build will be supported on plain old Windows (without MSYS2 / WSL), macOS, Linux, GitHub Actions and GitLab CI. More about [porting Mynewt to RISC-V](https://web.archive.org/web/20191104074306/https://medium.com/swlh/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v-4054a5922493) and [how it got stuck](https://web.archive.org/web/20191204194133/https://medium.com/@ly.lee/hey-gd32-vf103-on-risc-v-i-surrender-for-now-d39d0c7b0001?source=friends_link&sk=c0504ac574bf571219fabe174eef4de5))_
 
 ## Debugging Firmware
 

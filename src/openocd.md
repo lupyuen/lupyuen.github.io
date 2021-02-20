@@ -82,7 +82,7 @@ Because JTAG was originally created for testing Printed Circuit Boards. JTAG sta
 
 _Is SWD supported for flashing and debugging firmware on PineCone?_
 
-Sorry no. SWD is available only on Arm Microcontrollers. [(SWD was created by Arm)](https://web.archive.org/web/20210207004844/https://medium.com/@ly.lee/openocd-on-raspberry-pi-better-with-swd-on-spi-7dea9caeb590)
+Sorry no. SWD is available only on Arm Microcontrollers. [(SWD was created by Arm)](https://web.archive.org/web/20200117210221/https://medium.com/@ly.lee/openocd-on-raspberry-pi-better-with-swd-on-spi-7dea9caeb590)
 
 SWD is derived from JTAG... It takes the 4 pins from JTAG and smashes them into 2 pins SWDCLK (Clock) and SWDIO (Birectional Data). [More details](https://en.wikipedia.org/wiki/JTAG#Similar_interface_standards)
 
