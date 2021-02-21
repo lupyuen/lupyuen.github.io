@@ -183,8 +183,42 @@ Finished dev [unoptimized + debuginfo] target(s) in 4m 28s
 <h2 id="flash-the-firmware" class="section-header"><a href="#flash-the-firmware">1.3 Flash the firmware</a></h2>
 <ol>
 <li>
+<p><strong>For PineCone:</strong></p>
+<ol>
+<li>
 <p>Set the <strong>PineCone Jumper (IO 8)</strong> to the <strong><code>H</code> Position</strong> <a href="https://lupyuen.github.io/images/pinecone-jumperh.jpg">(Like this)</a></p>
-<p>Connect PineCone to the USB port.</p>
+</li>
+<li>
+<p>Connect PineCone to the USB port. Press the Reset Button.</p>
+</li>
+</ol>
+<p><strong>For BL10:</strong></p>
+<ol>
+<li>
+<p>Connect BL10 to the USB port</p>
+</li>
+<li>
+<p>Press and hold the <strong>D8 Button (GPIO 8)</strong></p>
+</li>
+<li>
+<p>Press and release the <strong>EN Button (Reset)</strong></p>
+</li>
+<li>
+<p>Release the D8 Button</p>
+</li>
+</ol>
+<p><strong>For MagicHome BL602:</strong></p>
+<ol>
+<li>
+<p>Disconnect MagicHome from the USB Port</p>
+</li>
+<li>
+<p>Connect <strong>GPIO 8</strong> to <strong>3.3V</strong></p>
+</li>
+<li>
+<p>Connect MagicHome to the USB port</p>
+</li>
+</ol>
 </li>
 <li>
 <p>Enter this to flash our firmware...</p>
@@ -272,10 +306,35 @@ caused by: Invalid argument
 <h2 id="watch-the-firmware-run" class="section-header"><a href="#watch-the-firmware-run">1.4 Watch the firmware run</a></h2>
 <ol>
 <li>
+<p><strong>For PineCone:</strong></p>
+<ol>
+<li>
 <p>After flashing, disconnect PineCone from the USB port.</p>
+</li>
+<li>
 <p>Set the <strong>PineCone Jumper (IO 8)</strong> to the <strong><code>L</code> Position</strong> <a href="https://lupyuen.github.io/images/pinecone-jumperl.jpg">(Like this)</a></p>
-<p>Reconnect PineCone to the USB port.</p>
+</li>
+<li>
+<p>Reconnect PineCone to the USB port. Or press the Reset Button.</p>
 <p>Our firmware begins running.</p>
+</li>
+</ol>
+<p><strong>For BL10:</strong></p>
+<ol>
+<li>Press and release the <strong>EN Button (Reset)</strong></li>
+</ol>
+<p><strong>For MagicHome BL602:</strong></p>
+<ol>
+<li>
+<p>Disconnect MagicHome from the USB Port</p>
+</li>
+<li>
+<p>Connect <strong>GPIO 8</strong> to <strong>GND</strong></p>
+</li>
+<li>
+<p>Connect MagicHome to the USB port</p>
+</li>
+</ol>
 </li>
 <li>
 <p>To watch our firmware run, connect to the PineCone Serial Console (at 2 Mbps)...</p>
@@ -330,7 +389,7 @@ caused by: Invalid argument
 </li>
 </ol>
 <p>These steps were tested on Arm64 Linux (Pinebook Pro with Manjaro), macOS Catalina and Windows 10.</p>
-<p><strong>UPDATE For MagicHome BL602 WiFi LED Controller:</strong> This gadget doesn't have a Reset Button, so it will be hard to see the <code>helloworld</code> message. Use the <strong><code>sdk_app_gpio.bin</code> GPIO Demo Firmware</strong> instead...</p>
+<p><strong>For MagicHome BL602 WiFi LED Controller:</strong> This gadget doesn't have a Reset Button, so it will be hard to see the <code>helloworld</code> message. Use the <strong><code>sdk_app_gpio.bin</code> GPIO Demo Firmware</strong> instead...</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/led#control-rgb-led-with-gpio"><strong>&quot;Control RGB LED with GPIO&quot;</strong></a></li>
 </ul>

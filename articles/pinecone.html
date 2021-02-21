@@ -279,7 +279,7 @@ ram_heap
 <p>The BL602 docs are located in the <a href="https://github.com/pine64/bl602-docs"><strong>BL602 Docs Repo</strong></a>...</p>
 <ul>
 <li>
-<p><a href="https://pine64.github.io/bl602-docs/"><strong>BL602 Software Development Kit</strong></a></p>
+<p><a href="https://pine64.github.io/bl602-docs/"><strong>BL602 IoT Software Development Kit</strong></a></p>
 </li>
 <li>
 <p><a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_DS/en"><strong>BL602 Datasheet</strong></a></p>
@@ -315,6 +315,27 @@ ram_heap
 <p><a href="https://github.com/mkroman/awesome-bouffalo"><strong>Awesome Bouffalo</strong></a></p>
 </li>
 </ul>
+<p><em>Which dev boards are supported by the BL602 IoT SDK?</em></p>
+<p>Firmware built with the BL602 IoT SDK will work fine on...</p>
+<ol>
+<li>
+<p><a href="https://wiki.pine64.org/wiki/Nutcracker#PineCone_BL602_EVB_information_and_schematics"><strong>Pine64 PineCone</strong></a></p>
+</li>
+<li>
+<p><a href="https://wiki.pine64.org/wiki/Nutcracker#Pinenut-01S_Module_information_and_schematics"><strong>Pine64 Pinenut</strong></a></p>
+</li>
+<li>
+<p><a href="https://www.cnx-software.com/2020/10/25/bl602-iot-sdk-and-5-dt-bl10-wifi-ble-risc-v-development-board/"><strong>DOIT DT-BL10</strong></a></p>
+</li>
+<li>
+<p><a href="https://www.reddit.com/r/RISCV/comments/knsju9/flashing_firmware_to_pinecone_bl602/gn7rw3i?utm_source=share&amp;utm_medium=web2x&amp;context=3"><strong>MagicHome BL602 WiFi LED Controller</strong></a></p>
+</li>
+<li>
+<p><a href="https://kvrhdn.dev/blog/programming-the-bl602-evb-using-openocd-gdb-and-rust/"><strong>Sipeed BL602 EVB</strong></a></p>
+</li>
+</ol>
+<p>The programs published on this site (in the &quot;PineCone&quot; series of articles) will run on any of these boards.</p>
+<p>Just note that the boards have different jumpers, buttons and LEDs.</p>
 <h2 id="form-factor" class="section-header"><a href="#form-factor">4.1 Form Factor</a></h2>
 <p>The PineCone BL602 Evaluation Board has a similar form factor to other wireless dev boards, like <a href="https://web.archive.org/web/20191204234923/https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004?source=friends_link&amp;sk=bb4e2523b922d0870259ab3fa696c7da">EBYTE E73-TBB</a> (which is based on nRF52832)</p>
 <p>The PineCone board comes with a <strong>USB-C Connector</strong>. When connected to our computer via USB, the BL602 board is recognised as a Serial Device, ready to be flashed.</p>
@@ -446,7 +467,7 @@ Program Finished
 <p>We may use Linux, Windows or macOS to build the BL602 firmware...</p>
 <ul>
 <li>
-<p>If we haven't done so, download the PineCone BL602 SDK <code>bl_iot_sdk</code>...</p>
+<p>If we haven't done so, download the PineCone <strong>BL602 IoT SDK <code>bl_iot_sdk</code></strong>...</p>
 <pre><code class="language-bash">git clone --recursive https://github.com/pine64/bl_iot_sdk
 cd bl_iot_sdk
 </code></pre>
@@ -518,7 +539,7 @@ make
 <p>Start by reading the C source file: <a href="https://github.com/pine64/bl_iot_sdk/blob/master/customer_app/sdk_app_helloworld/sdk_app_helloworld/main.c"><code>main.c</code></a></p>
 </li>
 <li>
-<p>Then browse the other firmware samples in the BL602 SDK...</p>
+<p>Then browse the other firmware samples in the BL602 IoT SDK...</p>
 <p><a href="https://github.com/pine64/bl_iot_sdk/tree/master/customer_app"><code>bl_iot_sdk/customer_app</code></a></p>
 </li>
 <li>
@@ -565,7 +586,24 @@ make
 <h1 id="notes" class="section-header"><a href="#notes">6 Notes</a></h1>
 <ol>
 <li>
-<p>Besides PineCone, there are <a href="https://github.com/pine64/bl_iot_sdk#hardware"><strong>other dev boards based on BL602</strong></a>. However it's not clear whether the firmware is 100% compatible with these boards.</p>
+<p>Besides Pine64 PineCone, there are other dev boards based on BL602...</p>
+<ul>
+<li>
+<p><a href="https://wiki.pine64.org/wiki/Nutcracker#Pinenut-01S_Module_information_and_schematics"><strong>Pine64 Pinenut</strong></a></p>
+</li>
+<li>
+<p><a href="https://www.cnx-software.com/2020/10/25/bl602-iot-sdk-and-5-dt-bl10-wifi-ble-risc-v-development-board/"><strong>DOIT DT-BL10</strong></a></p>
+</li>
+<li>
+<p><a href="https://www.reddit.com/r/RISCV/comments/knsju9/flashing_firmware_to_pinecone_bl602/gn7rw3i?utm_source=share&amp;utm_medium=web2x&amp;context=3"><strong>MagicHome BL602 WiFi LED Controller</strong></a></p>
+</li>
+<li>
+<p><a href="https://kvrhdn.dev/blog/programming-the-bl602-evb-using-openocd-gdb-and-rust/"><strong>Sipeed BL602 EVB</strong></a></p>
+</li>
+</ul>
+<p>They are based on the same BL602 IoT SDK, so the same firmware should work on the various boards.</p>
+<p>The programs published on this site (in the &quot;PineCone&quot; series of articles) will run on any of these boards.</p>
+<p>Just note that the boards have different jumpers, buttons and LEDs.</p>
 </li>
 <li>
 <p>Can we flash firmware to PineCone via a Web Browser through the <a href="https://dev.to/unjavascripter/the-amazing-powers-of-the-web-web-serial-api-3ilc"><strong>Web Serial API</strong></a>? That would be really interesting.</p>
