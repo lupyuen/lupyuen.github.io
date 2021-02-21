@@ -214,7 +214,7 @@
 </ul>
 <p>I2C uses this even / odd convention to indicate whether we're writing or reading data.</p>
 <p>To sum up: We need to reproduce on BL602 the two <code>[Start] ... [Stop]</code> transactions. Which includes sending 3 bytes (<code>0xEE</code>, <code>0xD0</code>, <code>0xEF</code>) and receiving 1 byte (<code>0x60</code>).</p>
-<p><a href="https://web.archive.org/web/20191222054305/https://medium.com/@ly.lee/building-a-rust-driver-for-pinetimes-touch-controller-cbc1a5d5d3e9">More about I2C</a></p>
+<p><a href="https://lupyuen.github.io/articles/building-a-rust-driver-for-pinetimes-touch-controller">More about I2C</a></p>
 <p><img src="https://lupyuen.github.io/images/i2c-cartoon4.png" alt="Initialise I2C Port" /></p>
 <h1 id="initialise-i2c-port" class="section-header"><a href="#initialise-i2c-port">3 Initialise I2C Port</a></h1>
 <p>Remember our Command-Line Firmware <a href="https://github.com/lupyuen/bl_iot_sdk/tree/i2c/customer_app/sdk_app_i2c"><code>sdk_app_i2c</code></a> for testing I2C on BL602?</p>
