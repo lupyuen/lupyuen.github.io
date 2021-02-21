@@ -267,12 +267,8 @@
                   <p id="a357"
                     class="ig ih gk ii b ij jb ik il im jc in io ip jd iq ir is je it iu iv jf iw ix iz dh hg">1️⃣
                     Connect PineTime / nRF52 to the SPI port on Raspberry Pi…</p>
-                  <figure class="lt lu lv lw lx fn">
-                    <div class="fx s ah">
-                      <div class="ly ga s"></div>
-                    </div>
-                  </figure>
 
+                  <p><script src="https://gist.github.com/lupyuen/6913bcd5ff5a5d67698f8bac0d84599b.js"></script></p>
 
                   <p><img src="https://lupyuen.github.io/images/legacy/d2.png" /></p>
                 <p><em>Connecting Raspberry Pi to PineTime / nRF52.
@@ -543,13 +539,9 @@
                     gets utterly confused after the SWD Read Operation. Only way to fix this? <strong
                       class="ii cu">Reset the SWD connection and resynchronise by resending the JTAG-To-SWD
                       Sequence.</strong></p>
-                  <figure class="lt lu lv lw lx fn">
-                    <div class="fx s ah">
-                      <div class="ly ga s"></div>
-                    </div>
-                    <figcaption class="ge gf fe fc fd gg gh av b aw ax bt">                    </figcaption>
-                  </figure>
 
+                      <p><script src="https://gist.github.com/lupyuen/6913bcd5ff5a5d67698f8bac0d84599b.js"></script></p>
+                      
                   <p><img src="https://lupyuen.github.io/images/legacy/d9.png" /></p>
 <p><em>Sending the JTAG-To-SWD Sequence to reset SWD
                       connection. From <a
@@ -680,20 +672,8 @@
                     Throwaway Read IDCODE: <code
                       class="fy kp kq kr ks b"><strong class="ii cu">00</strong> 94 02 00 00 00 00 <strong class="ii cu">00</strong></code>
                   </p>
-                  <figure class="lt lu lv lw lx fn">
-                    <div class="fx s ah">
-                      <div class="ly ga s"></div>
-                    </div>
-                    <figcaption class="ge gf fe fc fd gg gh av b aw ax bt">                    </figcaption>
-                  </figure>
-
-                  <!--
-                    <p>
-                  <iframe src="https://gist.github.com/lupyuen/6913bcd5ff5a5d67698f8bac0d84599b" />
-                  </p>
-                  -->
-                  
-                  <p><img src="https://lupyuen.github.io/images/legacy/d0.png" /></p>
+                                  
+                  <p><script src="https://gist.github.com/lupyuen/6913bcd5ff5a5d67698f8bac0d84599b.js"></script></p>
 <p><em>Reset SWD Connection with Throwaway Read
                       IDCODE. From <a
                         href="https://web.archive.org/web/20210207004844/https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bcm2835spi.c"
@@ -870,15 +850,9 @@
                     take a calculated risk and assume that the <strong class="ii cu">SWD Write Acknowledgement is always
                       OK</strong>. Our SPI code always lies and returns <code class="fy kp kq kr ks b">100</code> to
                     OpenOCD.</p>
-                  <figure class="lt lu lv lw lx fn">
-                    <div class="fx s ah">
-                      <div class="ly ga s"></div>
-                    </div>
-                    <figcaption class="ge gf fe fc fd gg gh av b aw ax bt">                    </figcaption>
-                  </figure>
 
-                  
-                  <p><img src="https://lupyuen.github.io/images/legacy/d0.png" /></p>
+                    <p><script src="https://gist.github.com/lupyuen/6913bcd5ff5a5d67698f8bac0d84599b.js"></script></p>
+
 <p><em>Our SPI code always returns OK to OpenOCD for
                       SWD Write Acknowledgement. From <a
                         href="https://web.archive.org/web/20210207004844/https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bcm2835spi.c"
@@ -909,15 +883,9 @@
                     class="ig ih gk ii b ij jb ik il im jc in io ip jd iq ir is je it iu iv jf iw ix iz dh hg">Hence to
                     write value <code class="fy kp kq kr ks b">0x1E</code> to the ABORT Register, Pi only needs to blast
                     out 6 bytes over SPI to nRF52: <code class="fy kp kq kr ks b">81 d3 03 00 00 00</code></p>
-                  <figure class="lt lu lv lw lx fn">
-                    <div class="fx s ah">
-                      <div class="ly ga s"></div>
-                    </div>
-                    <figcaption class="ge gf fe fc fd gg gh av b aw ax bt">                    </figcaption>
-                  </figure>
 
-                  
-                  <p><img src="https://lupyuen.github.io/images/legacy/d0.png" /></p>
+                    <p><script src="https://gist.github.com/lupyuen/6913bcd5ff5a5d67698f8bac0d84599b.js"></script></p>
+
 <p><em>Sending 8 whole bytes from Pi to nRF52 for an
                       SPI Write Operation. From <a
                         href="https://web.archive.org/web/20210207004844/https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bcm2835spi.c"
@@ -1060,15 +1028,8 @@
                     class="ig ih gk ii b ij jb ik il im jc in io ip jd iq ir is je it iu iv jf iw ix iz dh hg">Let’s
                     write to the ABORT Register and <strong class="ii cu">clear the errors at every SWD connection
                       reset</strong>.</p>
-                  <figure class="lt lu lv lw lx fn">
-                    <div class="fx s ah">
-                      <div class="ly ga s"></div>
-                    </div>
-                    <figcaption class="ge gf fe fc fd gg gh av b aw ax bt">                    </figcaption>
-                  </figure>
+                  <p><script src="https://gist.github.com/lupyuen/6913bcd5ff5a5d67698f8bac0d84599b.js"></script></p>
 
-                  
-                  <p><img src="https://lupyuen.github.io/images/legacy/d0.png" /></p>
 <p><em>Clearing the errors at every SWD connect
                       reset by writing to ABORT. From <a
                         href="https://web.archive.org/web/20210207004844/https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bcm2835spi.c"
@@ -1138,29 +1099,14 @@
                   <p id="f7dd"
                     class="ig ih gk ii b ij jb ik il im jc in io ip jd iq ir is je it iu iv jf iw ix iz dh hg"><code
                       class="fy kp kq kr ks b">bitbang_exchange()</code> is called by OpenOCD like this…</p>
-                  <figure class="lt lu lv lw lx fn">
-                    <div class="fx s ah">
-                      <div class="ly ga s"></div>
-                    </div>
-                  </figure>
-
-                  
-                  <p><img src="https://lupyuen.github.io/images/legacy/d0.png" /></p>
+                      <p><script src="https://gist.github.com/lupyuen/6913bcd5ff5a5d67698f8bac0d84599b.js"></script></p>
 <p><em></em></p>
 
                   <p id="fb07"
                     class="ig ih gk ii b ij jb ik il im jc in io ip jd iq ir is je it iu iv jf iw ix iz dh hg">Here’s
                     the existing code for <code class="fy kp kq kr ks b">bitbang_exchange()</code> that transmits and
                     receives chunks of bits over GPIO…</p>
-                  <figure class="lt lu lv lw lx fn">
-                    <div class="fx s ah">
-                      <div class="ly ga s"></div>
-                    </div>
-                    <figcaption class="ge gf fe fc fd gg gh av b aw ax bt">                    </figcaption>
-                  </figure>
-
-                  
-                  <p><img src="https://lupyuen.github.io/images/legacy/d0.png" /></p>
+                    <p><script src="https://gist.github.com/lupyuen/6913bcd5ff5a5d67698f8bac0d84599b.js"></script></p>
 <p><em>From <a
                         href="https://web.archive.org/web/20210207004844/https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bitbang.c"
                         class="dn jg"
@@ -1171,15 +1117,7 @@
                     class="ig ih gk ii b ij jb ik il im jc in io ip jd iq ir is je it iu iv jf iw ix iz dh hg">And
                     here’s the modification we made for <code class="fy kp kq kr ks b">bitbang_exchange()</code> to
                     transmit and receives chunks of bits over SPI…</p>
-                  <figure class="lt lu lv lw lx fn">
-                    <div class="fx s ah">
-                      <div class="ly ga s"></div>
-                    </div>
-                    <figcaption class="ge gf fe fc fd gg gh av b aw ax bt">                    </figcaption>
-                  </figure>
-
-                  
-                  <p><img src="https://lupyuen.github.io/images/legacy/d0.png" /></p>
+                    <p><script src="https://gist.github.com/lupyuen/6913bcd5ff5a5d67698f8bac0d84599b.js"></script></p>
 <p><em>From <a
                         href="https://web.archive.org/web/20210207004844/https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bitbang.c"
                         class="dn jg"
@@ -1192,15 +1130,7 @@
                     <code
                       class="fy kp kq kr ks b"><a href="https://web.archive.org/web/20210207004844/https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bcm2835spi.c" class="dn jg" rel="noopener nofollow">bcm2835spi.c</a></code>.
                   </p>
-                  <figure class="lt lu lv lw lx fn">
-                    <div class="fx s ah">
-                      <div class="ly ga s"></div>
-                    </div>
-                    <figcaption class="ge gf fe fc fd gg gh av b aw ax bt">                    </figcaption>
-                  </figure>
-
-                  
-                  <p><img src="https://lupyuen.github.io/images/legacy/d0.png" /></p>
+                  <p><script src="https://gist.github.com/lupyuen/6913bcd5ff5a5d67698f8bac0d84599b.js"></script></p>
 <p><em>From <a
                         href="https://web.archive.org/web/20210207004844/https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bcm2835spi.c"
                         class="dn jg"
@@ -1213,15 +1143,7 @@
                       class="fy kp kq kr ks b">offset</code> and <code class="fy kp kq kr ks b">bit_cnt</code>
                     parameters to figure out whether this chunk came from an SWD Read or Write Operation, and which
                     chunk in that operation…</p>
-                  <figure class="lt lu lv lw lx fn">
-                    <div class="fx s ah">
-                      <div class="ly ga s"></div>
-                    </div>
-                    <figcaption class="ge gf fe fc fd gg gh av b aw ax bt">                    </figcaption>
-                  </figure>
-
-                  
-                  <p><img src="https://lupyuen.github.io/images/legacy/d0.png" /></p>
+                    <p><script src="https://gist.github.com/lupyuen/6913bcd5ff5a5d67698f8bac0d84599b.js"></script></p>
 <p><em>Deducing the chunk by offset and bit_cnt.
                       From <a
                         href="https://web.archive.org/web/20210207004844/https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bcm2835spi.c"
@@ -1240,15 +1162,7 @@
                     class="ig ih gk ii b ij jb ik il im jc in io ip jd iq ir is je it iu iv jf iw ix iz dh hg">In
                     Raspberry Pi, all bytes must be sent over SPI in Most Significant Bit format… But OpenOCD uses Least
                     Significant Bit format to manipulate the bytes. So we need to the reverse the bits like this…</p>
-                  <figure class="lt lu lv lw lx fn">
-                    <div class="fx s ah">
-                      <div class="ly ga s"></div>
-                    </div>
-                    <figcaption class="ge gf fe fc fd gg gh av b aw ax bt">                    </figcaption>
-                  </figure>
-
-                  
-                  <p><img src="https://lupyuen.github.io/images/legacy/d0.png" /></p>
+                    <p><script src="https://gist.github.com/lupyuen/6913bcd5ff5a5d67698f8bac0d84599b.js"></script></p>
 <p><em>From <a
                         href="https://web.archive.org/web/20210207004844/https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bcm2835spi.c"
                         class="dn jg"
@@ -1279,15 +1193,7 @@
                     class="ig ih gk ii b ij jb ik il im jc in io ip jd iq ir is je it iu iv jf iw ix iz dh hg"><a
                       href="https://web.archive.org/web/20210207004844/https://github.com/lupyuen/pi-swd-spi/blob/master/pi-swd-spi.c#L296-L394"
                       class="dn jg" rel="noopener nofollow">Here’s the output from the test program</a>…</p>
-                  <figure class="lt lu lv lw lx fn">
-                    <div class="fx s ah">
-                      <div class="ly ga s"></div>
-                    </div>
-                    <figcaption class="ge gf fe fc fd gg gh av b aw ax bt">                    </figcaption>
-                  </figure>
-
-                  
-                  <p><img src="https://lupyuen.github.io/images/legacy/d0.png" /></p>
+                      <p><script src="https://gist.github.com/lupyuen/6913bcd5ff5a5d67698f8bac0d84599b.js"></script></p>
 <p><em>SWD SPI Test Log. From <a
                         href="https://web.archive.org/web/20210207004844/https://github.com/lupyuen/pi-swd-spi/blob/master/pi-swd-spi.c#L296-L394"
                         class="dn jg"
