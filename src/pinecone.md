@@ -565,6 +565,12 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Notes
 
+1.  I'm not a Pine64 employee and I'm not paid by Pine64 to write these articles on BL602. 
+
+    Pine64 is my [GitHub Sponsor](https://github.com/sponsors/lupyuen) and they send me samples for evaluation and experimentation.
+
+    (I'm not connected to Bouffalo Lab either)
+
 1.  Besides Pine64 PineCone, there are other dev boards based on BL602...
     -   [__Pine64 Pinenut__](https://wiki.pine64.org/wiki/Nutcracker#Pinenut-01S_Module_information_and_schematics)
 
