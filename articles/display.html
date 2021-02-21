@@ -668,8 +668,43 @@ cp build_out/sdk_app_st7789.bin ~/blflash
 </li>
 </ol>
 <p>We assume that our Firmware Binary File <code>sdk_app_st7789.bin</code> has been copied to the <code>blflash</code> folder.</p>
-<p>Set BL602 to <strong>Flashing Mode</strong> and restart the board.</p>
-<p>For PineCone, this means setting the onboard jumper (IO 8) to the <code>H</code> Position <a href="https://lupyuen.github.io/images/pinecone-jumperh.jpg">(Like this)</a></p>
+<p>Set BL602 to <strong>Flashing Mode</strong> and restart the board...</p>
+<p><strong>For PineCone:</strong></p>
+<ol>
+<li>
+<p>Set the <strong>PineCone Jumper (IO 8)</strong> to the <strong><code>H</code> Position</strong> <a href="https://lupyuen.github.io/images/pinecone-jumperh.jpg">(Like this)</a></p>
+</li>
+<li>
+<p>Press the Reset Button</p>
+</li>
+</ol>
+<p><strong>For BL10:</strong></p>
+<ol>
+<li>
+<p>Connect BL10 to the USB port</p>
+</li>
+<li>
+<p>Press and hold the <strong>D8 Button (GPIO 8)</strong></p>
+</li>
+<li>
+<p>Press and release the <strong>EN Button (Reset)</strong></p>
+</li>
+<li>
+<p>Release the D8 Button</p>
+</li>
+</ol>
+<p><strong>For MagicHome BL602:</strong></p>
+<ol>
+<li>
+<p>Disconnect MagicHome from the USB Port</p>
+</li>
+<li>
+<p>Connect <strong>GPIO 8</strong> to <strong>3.3V</strong></p>
+</li>
+<li>
+<p>Reconnect MagicHome to the USB port</p>
+</li>
+</ol>
 <p>Enter these commands to flash <code>sdk_app_st7789.bin</code> to BL602 over UART...</p>
 <pre><code class="language-bash"># TODO: Change ~/blflash to the full path of blflash
 cd ~/blflash
@@ -689,9 +724,33 @@ cargo run flash sdk_app_st7789.bin --port COM5
 </code></pre>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">More details on flashing firmware</a></p>
 <h2 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">7.2 Run the firmware</a></h2>
-<p>Set BL602 to <strong>Normal Mode</strong> (Non-Flashing) and restart the board.</p>
-<p>For PineCone, this means setting the onboard jumper (IO 8) to the <code>L</code> Position <a href="https://lupyuen.github.io/images/pinecone-jumperl.jpg">(Like this)</a></p>
-<p>Connect to BL602's UART Port at 2 Mbps like so...</p>
+<p>Set BL602 to <strong>Normal Mode</strong> (Non-Flashing) and restart the board...</p>
+<p><strong>For PineCone:</strong></p>
+<ol>
+<li>
+<p>Set the <strong>PineCone Jumper (IO 8)</strong> to the <strong><code>L</code> Position</strong> <a href="https://lupyuen.github.io/images/pinecone-jumperl.jpg">(Like this)</a></p>
+</li>
+<li>
+<p>Press the Reset Button</p>
+</li>
+</ol>
+<p><strong>For BL10:</strong></p>
+<ol>
+<li>Press and release the <strong>EN Button (Reset)</strong></li>
+</ol>
+<p><strong>For MagicHome BL602:</strong></p>
+<ol>
+<li>
+<p>Disconnect MagicHome from the USB Port</p>
+</li>
+<li>
+<p>Connect <strong>GPIO 8</strong> to <strong>GND</strong></p>
+</li>
+<li>
+<p>Reconnect MagicHome to the USB port</p>
+</li>
+</ol>
+<p>After restarting, connect to BL602's UART Port at 2 Mbps like so...</p>
 <p><strong>For Linux:</strong></p>
 <pre><code class="language-bash">sudo screen /dev/ttyUSB0 2000000
 </code></pre>
@@ -932,8 +991,32 @@ int lvgl_init(void) {
 <p>Flash the <code>sdk_app_st7789.bin</code> firmware to our BL602 Board</p>
 </li>
 <li>
-<p>Set BL602 to <strong>Normal Mode</strong> (Non-Flashing) and restart the board.</p>
-<p>For PineCone, this means setting the onboard jumper (IO 8) to the <code>L</code> Position <a href="https://lupyuen.github.io/images/pinecone-jumperl.jpg">(Like this)</a></p>
+<p>Set BL602 to <strong>Normal Mode</strong> (Non-Flashing) and restart the board...</p>
+<p><strong>For PineCone:</strong></p>
+<ol>
+<li>
+<p>Set the <strong>PineCone Jumper (IO 8)</strong> to the <strong><code>L</code> Position</strong> <a href="https://lupyuen.github.io/images/pinecone-jumperl.jpg">(Like this)</a></p>
+</li>
+<li>
+<p>Press the Reset Button</p>
+</li>
+</ol>
+<p><strong>For BL10:</strong></p>
+<ol>
+<li>Press and release the <strong>EN Button (Reset)</strong></li>
+</ol>
+<p><strong>For MagicHome BL602:</strong></p>
+<ol>
+<li>
+<p>Disconnect MagicHome from the USB Port</p>
+</li>
+<li>
+<p>Connect <strong>GPIO 8</strong> to <strong>GND</strong></p>
+</li>
+<li>
+<p>Reconnect MagicHome to the USB port</p>
+</li>
+</ol>
 </li>
 <li>
 <p>Connect to BL602's UART Port at 2 Mbps like so...</p>
