@@ -794,7 +794,7 @@ Use `riscv authdata_read` and `riscv authdata_write` commands to authenticate.
 <p><em>What about DHT11, the Temperature and Humidity Sensor? (Lower right corner)</em></p>
 </blockquote>
 <p>DHT11 will be a problem because it transmits Serial Data in an unusual way <strong>(bidirectional single wire)</strong> that's incompatible with UART, I2C and SPI. <a href="https://www.mouser.com/datasheet/2/758/DHT11-Technical-Data-Sheet-Translated-Version-1143054.pdf">See DHT11 Datasheet</a></p>
-<p>We would have to read the data from DHT11 via <strong>Bit Banging</strong>. Which is hard to do reliably on a multitasking operating system like Mynewt. <a href="https://web.archive.org/web/20200117210221/https://medium.com/@ly.lee/openocd-on-raspberry-pi-better-with-swd-on-spi-7dea9caeb590">More about the evils of Bit Banging</a></p>
+<p>We would have to read the data from DHT11 via <strong>Bit Banging</strong>. Which is hard to do reliably on a multitasking operating system like Mynewt. <a href="https://lupyuen.github.io/articles/openocd-on-raspberry-pi-better-with-swd-on-spi">More about the evils of Bit Banging</a></p>
 <blockquote>
 <p><em>Is there a better Temperature and Humidity Sensor that connects with standard interfaces... And works well with mutitasking?</em></p>
 </blockquote>
