@@ -427,7 +427,7 @@ So we must flash firmware to PineCone over UART.
 
 _Are SWD and ST-Link supported for flashing firmware to the PineCone board?_
 
-Sorry no. SWD is available only on Arm Microcontrollers. [(SWD was created by Arm)](https://web.archive.org/web/20200117210221/https://medium.com/@ly.lee/openocd-on-raspberry-pi-better-with-swd-on-spi-7dea9caeb590)
+Sorry no. SWD is available only on Arm Microcontrollers. [(SWD was created by Arm)](https://lupyuen.github.io/articles/openocd-on-raspberry-pi-better-with-swd-on-spi)
 
 The UART flashing protocol for PineCone is described in the [__BL602 Flash Programming__](https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en) doc.
 

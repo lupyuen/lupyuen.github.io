@@ -886,7 +886,7 @@ We shall integrate with Mynewt the respective Hardware Abstraction Layers from t
 
 DHT11 will be a problem because it transmits Serial Data in an unusual way __(bidirectional single wire)__ that's incompatible with UART, I2C and SPI. [See DHT11 Datasheet](https://www.mouser.com/datasheet/2/758/DHT11-Technical-Data-Sheet-Translated-Version-1143054.pdf)
 
-We would have to read the data from DHT11 via __Bit Banging__. Which is hard to do reliably on a multitasking operating system like Mynewt. [More about the evils of Bit Banging](https://web.archive.org/web/20200117210221/https://medium.com/@ly.lee/openocd-on-raspberry-pi-better-with-swd-on-spi-7dea9caeb590)
+We would have to read the data from DHT11 via __Bit Banging__. Which is hard to do reliably on a multitasking operating system like Mynewt. [More about the evils of Bit Banging](https://lupyuen.github.io/articles/openocd-on-raspberry-pi-better-with-swd-on-spi)
 
 >_Is there a better Temperature and Humidity Sensor that connects with standard interfaces... And works well with mutitasking?_
 

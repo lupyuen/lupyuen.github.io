@@ -416,7 +416,7 @@
       "name": "OpenOCD on Raspberry Pi: Better with SWD on SPI",
       "publisher": "Medium",
       "releaseDate": "2020-01-18",
-      "website": "https://web.archive.org/web/20200117210221/https://medium.com/@ly.lee/openocd-on-raspberry-pi-better-with-swd-on-spi-7dea9caeb590",
+      "website": "https://lupyuen.github.io/articles/openocd-on-raspberry-pi-better-with-swd-on-spi",
       "summary": "Instead of sending SWD data over GPIO one bit at a time, what if we could blast out the data over Raspberry Pi’s SPI interface?"
     },
     {
