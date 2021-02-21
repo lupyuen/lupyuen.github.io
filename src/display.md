@@ -765,9 +765,31 @@ Follow these steps to install `blflash`...
 
 We assume that our Firmware Binary File `sdk_app_st7789.bin` has been copied to the `blflash` folder.
 
-Set BL602 to __Flashing Mode__ and restart the board.
+Set BL602 to __Flashing Mode__ and restart the board...
 
-For PineCone, this means setting the onboard jumper (IO 8) to the `H` Position [(Like this)](https://lupyuen.github.io/images/pinecone-jumperh.jpg)
+__For PineCone:__
+
+1.  Set the __PineCone Jumper (IO 8)__ to the __`H` Position__ [(Like this)](https://lupyuen.github.io/images/pinecone-jumperh.jpg)
+
+1.  Press the Reset Button
+
+__For BL10:__
+
+1.  Connect BL10 to the USB port
+
+1.  Press and hold the __D8 Button (GPIO 8)__
+
+1.  Press and release the __EN Button (Reset)__
+
+1.  Release the D8 Button
+
+__For MagicHome BL602:__
+
+1.  Disconnect MagicHome from the USB Port
+
+1.  Connect __GPIO 8__ to __3.3V__
+
+1.  Reconnect MagicHome to the USB port
 
 Enter these commands to flash `sdk_app_st7789.bin` to BL602 over UART...
 
@@ -793,11 +815,27 @@ cargo run flash sdk_app_st7789.bin --port COM5
 
 ## Run the firmware
 
-Set BL602 to __Normal Mode__ (Non-Flashing) and restart the board.
+Set BL602 to __Normal Mode__ (Non-Flashing) and restart the board...
 
-For PineCone, this means setting the onboard jumper (IO 8) to the `L` Position [(Like this)](https://lupyuen.github.io/images/pinecone-jumperl.jpg)
+__For PineCone:__
 
-Connect to BL602's UART Port at 2 Mbps like so...
+1.  Set the __PineCone Jumper (IO 8)__ to the __`L` Position__ [(Like this)](https://lupyuen.github.io/images/pinecone-jumperl.jpg)
+
+1.  Press the Reset Button
+
+__For BL10:__
+
+1.  Press and release the __EN Button (Reset)__
+
+__For MagicHome BL602:__
+
+1.  Disconnect MagicHome from the USB Port
+
+1.  Connect __GPIO 8__ to __GND__
+
+1.  Reconnect MagicHome to the USB port
+
+After restarting, connect to BL602's UART Port at 2 Mbps like so...
 
 __For Linux:__
 
@@ -1120,9 +1158,25 @@ Follow these steps...
 
 1.  Flash the `sdk_app_st7789.bin` firmware to our BL602 Board
 
-1.  Set BL602 to __Normal Mode__ (Non-Flashing) and restart the board.
+1.  Set BL602 to __Normal Mode__ (Non-Flashing) and restart the board...
 
-    For PineCone, this means setting the onboard jumper (IO 8) to the `L` Position [(Like this)](https://lupyuen.github.io/images/pinecone-jumperl.jpg)
+    __For PineCone:__
+
+    1.  Set the __PineCone Jumper (IO 8)__ to the __`L` Position__ [(Like this)](https://lupyuen.github.io/images/pinecone-jumperl.jpg)
+
+    1.  Press the Reset Button
+
+    __For BL10:__
+
+    1.  Press and release the __EN Button (Reset)__
+
+    __For MagicHome BL602:__
+
+    1.  Disconnect MagicHome from the USB Port
+
+    1.  Connect __GPIO 8__ to __GND__
+
+    1.  Reconnect MagicHome to the USB port
 
 1.  Connect to BL602's UART Port at 2 Mbps like so...
 

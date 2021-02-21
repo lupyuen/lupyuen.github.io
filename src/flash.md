@@ -90,11 +90,15 @@ _Flashing PineCone with Manjaro Linux Arm64 on Pinebook Pro_
 
 ##  Flash the firmware
 
-1.  __For PineCone:__
+1.  To flash the firmware, we set BL602 to __Flashing Mode__ and restart the board...
 
+    __For PineCone:__
+
+    1.  Connect PineCone to the USB port
+    
     1.  Set the __PineCone Jumper (IO 8)__ to the __`H` Position__ [(Like this)](https://lupyuen.github.io/images/pinecone-jumperh.jpg)
 
-    1.  Connect PineCone to the USB port. Press the Reset Button.
+    1.  Press the Reset Button
 
     __For BL10:__
 
@@ -112,7 +116,7 @@ _Flashing PineCone with Manjaro Linux Arm64 on Pinebook Pro_
     
     1.  Connect __GPIO 8__ to __3.3V__
     
-    1.  Connect MagicHome to the USB port
+    1.  Reconnect MagicHome to the USB port
     
 1.  Enter this to flash our firmware...
 
@@ -233,16 +237,14 @@ _Firmware running on PineCone_
 
 ## Watch the firmware run
 
-1.  __For PineCone:__
+1.  To run our firmware, we set BL602 to __Normal Mode__ (Non-Flashing) and restart the board...
 
-    1.  After flashing, disconnect PineCone from the USB port.  
+    __For PineCone:__
 
     1.  Set the __PineCone Jumper (IO 8)__ to the __`L` Position__ [(Like this)](https://lupyuen.github.io/images/pinecone-jumperl.jpg)
     
-    1.  Reconnect PineCone to the USB port. Or press the Reset Button.
+    1.  Press the Reset Button
     
-        Our firmware begins running.
-
     __For BL10:__
 
     1.  Press and release the __EN Button (Reset)__
@@ -253,7 +255,7 @@ _Firmware running on PineCone_
     
     1.  Connect __GPIO 8__ to __GND__
     
-    1.  Connect MagicHome to the USB port
+    1.  Reconnect MagicHome to the USB port
 
 1.  To watch our firmware run, connect to the PineCone Serial Console (at 2 Mbps)...
 

@@ -52,6 +52,8 @@ Let's flash the __GPIO Demo__ from the BL602 IoT SDK and interact with the above
 
     After flashing, flip the __PineCone Jumper (IO 8)__ to the __`L` Position__ [(Like this)](https://lupyuen.github.io/images/pinecone-jumperl.jpg)
 
+    Press the Reset Button.
+
 1.  Connect to PineCone...
 
     __For Linux:__
@@ -290,6 +292,8 @@ Now we'll switch PineCone to the __Modified PWM Demo__ from the BL602 IoT SDK.
     -   [__"Flashing Firmware to PineCone BL602"__](https://lupyuen.github.io/articles/flash)
 
     After flashing, flip the __PineCone Jumper (IO 8)__ to the __`L` Position__ [(Like this)](https://lupyuen.github.io/images/pinecone-jumperl.jpg)
+
+    Press the Reset Button.
 
 1.  Connect to PineCone...
 
@@ -590,7 +594,7 @@ This is NOT recommended... But to support older serial apps with macOS, we need 
 
     [More details](https://lupyuen.github.io/articles/flash#blflash-vs-blopenflasher)
 
-1.  After flashing, set the PineCone Jumper IO8 to `L` Position.
+1.  After flashing, set the PineCone Jumper IO8 to `L` Position. Press the Reset Button.
 
     We should be able to access the Demo Firmware at 230.4 kbps...
 

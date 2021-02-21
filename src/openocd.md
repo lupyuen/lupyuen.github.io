@@ -635,7 +635,7 @@ The firmware code from the previous section has been built and uploaded as a Git
 
 ## Start the Remap Firmware
 
-1.  After flashing the remap firmware, set the PineCone Jumper to `L` (Normal Mode) and power on PineCone
+1.  After flashing the remap firmware, set the PineCone Jumper to `L` (Normal Mode) and power on PineCone. (Or press the Reset Button)
 
 1.  PineCone's LED should light up bright white to signify that the JTAG Port has been remapped
 
