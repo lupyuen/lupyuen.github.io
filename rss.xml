@@ -107,7 +107,7 @@
         </item>
         <item>
             <title>Safer, Simpler Embedded Programs with Rust on RIOT</title>
-            <link>https://medium.com/@ly.lee/safer-simpler-embedded-programs-with-rust-on-riot-4ae11226ef2b?source=friends_link&amp;sk=226f003756ba7c51e10649b9bab3d860</link>
+            <link>https://web.archive.org/https://medium.com/@ly.lee/safer-simpler-embedded-programs-with-rust-on-riot-4ae11226ef2b?source=friends_link&amp;sk=226f003756ba7c51e10649b9bab3d860</link>
             <description><![CDATA[Tired of pointer problems on Embedded C? It’s time to switch over to a safer, simpler way of coding: Embedded Rust. We’ll look at Rust hosted on RIOT and how it’s used to create LVGL watch apps for PineTime Smart Watch.]]></description>
             <pubDate>Fri, 11 Sep 2020 00:00:00 +0000</pubDate>
         </item>
@@ -215,13 +215,13 @@
         </item>
         <item>
             <title>Debug RIOT-OS on PineTime with VSCode</title>
-            <link>https://medium.com/@ly.lee/debug-riot-os-on-pinetime-with-vscode-12f00c69c120?source=friends_link&amp;sk=a836d511355876bf81855db9f1e94124</link>
+            <link>https://web.archive.org/https://medium.com/@ly.lee/debug-riot-os-on-pinetime-with-vscode-12f00c69c120?source=friends_link&amp;sk=a836d511355876bf81855db9f1e94124</link>
             <description><![CDATA[VSCode debugging configuration for RIOT]]></description>
             <pubDate>Sun, 02 Feb 2020 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>If you’re in the East, please consider Rust!</title>
-            <link>https://medium.com/@ly.lee/if-youre-in-the-east-please-consider-rust-23fa05873397?source=friends_link&amp;sk=df52d4b5da80006ff42fc036ef01e12c</link>
+            <link>https://web.archive.org/https://medium.com/@ly.lee/if-youre-in-the-east-please-consider-rust-23fa05873397?source=friends_link&amp;sk=df52d4b5da80006ff42fc036ef01e12c</link>
             <description><![CDATA[Coding in Embedded C is like building a skyscraper without scaffolding]]></description>
             <pubDate>Fri, 24 Jan 2020 00:00:00 +0000</pubDate>
         </item>
@@ -257,7 +257,7 @@
         </item>
         <item>
             <title>My 5-Year IoT Mission</title>
-            <link>https://medium.com/@ly.lee/my-5-year-iot-mission-5f2f28348780?source=friends_link&amp;sk=8c9ab6f607d4b6af4a2b233e4096d623</link>
+            <link>https://web.archive.org/https://medium.com/@ly.lee/my-5-year-iot-mission-5f2f28348780?source=friends_link&amp;sk=8c9ab6f607d4b6af4a2b233e4096d623</link>
             <description><![CDATA[5 years ago I decided to fix every link in the IoT Chain so that we can create really useful and affordable IoT gadgets, the Lean and Agile Way]]></description>
             <pubDate>Wed, 04 Dec 2019 00:00:00 +0000</pubDate>
         </item>
@@ -287,7 +287,7 @@
         </item>
         <item>
             <title>Bluetooth Mesh with nRF52 and Apache Mynewt</title>
-            <link>https://medium.com/@ly.lee/bluetooth-mesh-with-nrf52-and-apache-mynewt-44823407c471?source=friends_link&amp;sk=ac433fa04e13f75985927c37db1e2b10</link>
+            <link>https://web.archive.org/https://medium.com/@ly.lee/bluetooth-mesh-with-nrf52-and-apache-mynewt-44823407c471?source=friends_link&amp;sk=ac433fa04e13f75985927c37db1e2b10</link>
             <description><![CDATA[Set up an nRF52 mesh network, step by step, without any coding]]></description>
             <pubDate>Tue, 15 Oct 2019 00:00:00 +0000</pubDate>
         </item>
@@ -299,85 +299,85 @@
         </item>
         <item>
             <title>Build an NB-IoT GPS Tracker on STM32 L476 with Apache Mynewt and Embedded Rust</title>
-            <link>https://medium.com/@ly.lee/build-an-nb-iot-gps-tracker-on-stm32-l476-with-apache-mynewt-and-embedded-rust-8c095a925546?source=friends_link&amp;sk=f3e802795d4fd7d569f0d67679e8c9e6</link>
+            <link>https://web.archive.org/https://medium.com/@ly.lee/build-an-nb-iot-gps-tracker-on-stm32-l476-with-apache-mynewt-and-embedded-rust-8c095a925546?source=friends_link&amp;sk=f3e802795d4fd7d569f0d67679e8c9e6</link>
             <description><![CDATA[Let’s build a simple gadget that determines its current location based on received GPS signals… And transmits the location to a server via NB-IoT]]></description>
             <pubDate>Sun, 22 Sep 2019 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Quick Peek of Huawei LiteOS with NB-IoT on Ghostyu NB-EK-L476 Developer Kit (STM32L476RCT6)</title>
-            <link>https://medium.com/@ly.lee/quick-peek-of-huawei-liteos-with-nb-iot-on-ghostyu-nb-ek-l476-developer-kit-2bbfb7f2fbcc?source=friends_link&amp;sk=37f71270cd52f497fb6fb8139917031c</link>
+            <link>https://web.archive.org/https://medium.com/@ly.lee/quick-peek-of-huawei-liteos-with-nb-iot-on-ghostyu-nb-ek-l476-developer-kit-2bbfb7f2fbcc?source=friends_link&amp;sk=37f71270cd52f497fb6fb8139917031c</link>
             <description><![CDATA[Peek into the LiteOS + Application source code that was bundled with the NB-IoT Developer Kit]]></description>
             <pubDate>Wed, 04 Sep 2019 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Low Power NB-IoT on STM32 Blue Pill with Apache Mynewt and Embedded Rust</title>
-            <link>https://medium.com/@ly.lee/low-power-nb-iot-on-stm32-blue-pill-with-apache-mynewt-and-embedded-rust-cef5a3ecdd90?source=friends_link&amp;sk=e232e68dc7c91dd4397e96d7dbde543a</link>
+            <link>https://web.archive.org/https://medium.com/@ly.lee/low-power-nb-iot-on-stm32-blue-pill-with-apache-mynewt-and-embedded-rust-cef5a3ecdd90?source=friends_link&amp;sk=e232e68dc7c91dd4397e96d7dbde543a</link>
             <description><![CDATA[Learn to optimise the power consumption of the NB-IoT Sensor Application in the previous tutorial]]></description>
             <pubDate>Fri, 30 Aug 2019 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Visual Embedded Rust Programming with Visual Studio Code</title>
-            <link>https://medium.com/@ly.lee/visual-embedded-rust-programming-with-visual-studio-code-1bc1262e398c?sk=222de63e45993aacd0db5a2e4b1f33c7</link>
+            <link>https://web.archive.org/https://medium.com/@ly.lee/visual-embedded-rust-programming-with-visual-studio-code-1bc1262e398c?sk=222de63e45993aacd0db5a2e4b1f33c7</link>
             <description><![CDATA[Create and edit Embedded Rust programs for STM32 Blue Pill and Apache Mynewt… By dragging and dropping blocks!]]></description>
             <pubDate>Sat, 17 Aug 2019 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Advanced Topics for Visual Embedded Rust Programming</title>
-            <link>https://medium.com/@ly.lee/advanced-topics-for-visual-embedded-rust-programming-ebf1627fe397?sk=01f0ae0e1b82efa9fd6b8e5616c736af</link>
+            <link>https://web.archive.org/https://medium.com/@ly.lee/advanced-topics-for-visual-embedded-rust-programming-ebf1627fe397?sk=01f0ae0e1b82efa9fd6b8e5616c736af</link>
             <description><![CDATA[Watch what happens behind the scenes when you create a Visual Embedded Rust program]]></description>
             <pubDate>Sat, 17 Aug 2019 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Rust Rocks NB-IoT! STM32 Blue Pill with Quectel BC95-G on Apache Mynewt</title>
-            <link>https://medium.com/@ly.lee/rust-rocks-nb-iot-stm32-blue-pill-with-quectel-bc95-g-on-apache-mynewt-ef62a7e28f7e?sk=aaa21371f68a07c543066b6b89a760f0</link>
+            <link>https://web.archive.org/https://medium.com/@ly.lee/rust-rocks-nb-iot-stm32-blue-pill-with-quectel-bc95-g-on-apache-mynewt-ef62a7e28f7e?sk=aaa21371f68a07c543066b6b89a760f0</link>
             <description><![CDATA[Hardly anyone writes embedded programs in Rust for microcontrollers (like STM32 Blue Pill), we all use C. But we really should switch to Rust!]]></description>
             <pubDate>Sun, 04 Aug 2019 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Connect STM32 Blue Pill to NB-IoT with Quectel BC95-G and Apache Mynewt</title>
-            <link>https://medium.com/@ly.lee/connect-stm32-blue-pill-to-nb-iot-with-quectel-bc95-g-and-apache-mynewt-c99a9d8417a9?source=friends_link&amp;sk=34fb9befbea42e98cb5942d66f594027</link>
+            <link>https://web.archive.org/https://medium.com/@ly.lee/connect-stm32-blue-pill-to-nb-iot-with-quectel-bc95-g-and-apache-mynewt-c99a9d8417a9?source=friends_link&amp;sk=34fb9befbea42e98cb5942d66f594027</link>
             <description><![CDATA[Let’s build an IoT sensor with a real microcontroller — STM32 Blue Pill — and a real NB-IoT module — Quectel BC95-G!]]></description>
             <pubDate>Thu, 25 Jul 2019 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Get Started with NB-IoT and Quectel modules</title>
-            <link>https://medium.com/@ly.lee/get-started-with-nb-iot-and-quectel-modules-6e7c581e0d61?sk=40ece196fc51f7a2903c9981f46efa46</link>
+            <link>https://web.archive.org/https://medium.com/@ly.lee/get-started-with-nb-iot-and-quectel-modules-6e7c581e0d61?sk=40ece196fc51f7a2903c9981f46efa46</link>
             <description><![CDATA[How to use a Quectel evaluation board to send a CoAP message to the CoAP server hosted at thethings.io]]></description>
             <pubDate>Mon, 15 Jul 2019 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Visual Programming with Embedded Rust? Yes we can with Apache Mynewt and Google Blockly!</title>
-            <link>https://medium.com/@ly.lee/visual-programming-with-embedded-rust-yes-we-can-with-apache-mynewt-and-google-blockly-8b67ef7412d7?source=friends_link&amp;sk=353fb92b6f20ebf885ff5c9be44fd6f2</link>
+            <link>https://web.archive.org/https://medium.com/@ly.lee/visual-programming-with-embedded-rust-yes-we-can-with-apache-mynewt-and-google-blockly-8b67ef7412d7?source=friends_link&amp;sk=353fb92b6f20ebf885ff5c9be44fd6f2</link>
             <description><![CDATA[Simpler embedded coding, the visual way]]></description>
             <pubDate>Thu, 11 Jul 2019 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Safer, Simpler Embedded Rust with Apache Mynewt on STM32 Blue Pill</title>
-            <link>https://medium.com/@ly.lee/safer-simpler-embedded-rust-with-apache-mynewt-on-stm32-blue-pill-d8fcb41969ac?source=friends_link&amp;sk=16a27a4b9910aadcfcb9881c02d84adc</link>
+            <link>https://web.archive.org/https://medium.com/@ly.lee/safer-simpler-embedded-rust-with-apache-mynewt-on-stm32-blue-pill-d8fcb41969ac?source=friends_link&amp;sk=16a27a4b9910aadcfcb9881c02d84adc</link>
             <description><![CDATA[Declarative and Procedural Macros (plus bindgen and tips for Visual Studio Code) to protect Embedded Rust coders from stumbling into embedded traps]]></description>
             <pubDate>Sun, 07 Jul 2019 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Hosting Embedded Rust apps on Apache Mynewt with STM32 Blue Pill</title>
-            <link>https://medium.com/@ly.lee/hosting-embedded-rust-apps-on-apache-mynewt-with-stm32-blue-pill-c86b119fe5f?source=friends_link&amp;sk=f58f4cf6c608fded4b354063e474a93b</link>
+            <link>https://web.archive.org/https://medium.com/@ly.lee/hosting-embedded-rust-apps-on-apache-mynewt-with-stm32-blue-pill-c86b119fe5f?source=friends_link&amp;sk=f58f4cf6c608fded4b354063e474a93b</link>
             <description><![CDATA[It’s time to drop our legacy programming practices and adopt smarter, safer ways to exploit these microcontrollers… starting with Apache Mynewt and Rust.]]></description>
             <pubDate>Sun, 09 Jun 2019 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Build Your IoT Sensor Network — STM32 Blue Pill + nRF24L01 + ESP8266 + Apache Mynewt + thethings.io</title>
-            <link>https://medium.com/@ly.lee/build-your-iot-sensor-network-stm32-blue-pill-nrf24l01-esp8266-apache-mynewt-thethings-io-ca7486523f5d?source=friends_link&amp;sk=e49514a7e616d4ff931dd24329a82ce0</link>
+            <link>https://web.archive.org/https://medium.com/@ly.lee/build-your-iot-sensor-network-stm32-blue-pill-nrf24l01-esp8266-apache-mynewt-thethings-io-ca7486523f5d?source=friends_link&amp;sk=e49514a7e616d4ff931dd24329a82ce0</link>
             <description><![CDATA[Let's build a Sensor Network running on two Blue Pills with nRF24L01 and ESP8266]]></description>
             <pubDate>Mon, 27 May 2019 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Super Blue Pill — Like STM32 Blue Pill, But Better!</title>
-            <link>https://medium.com/swlh/super-blue-pill-like-stm32-blue-pill-but-better-6d341d9347da?source=friends_link&amp;sk=956087171b9b9efcc484ea60b9c78c16</link>
+            <link>https://web.archive.org/https://medium.com/swlh/super-blue-pill-like-stm32-blue-pill-but-better-6d341d9347da?source=friends_link&amp;sk=956087171b9b9efcc484ea60b9c78c16</link>
             <description><![CDATA[Friendlier for newbies, supports ESP8266 WiFi and nRF24L01]]></description>
             <pubDate>Tue, 21 May 2019 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Connect STM32 Blue Pill to ESP8266 with Apache Mynewt</title>
-            <link>https://medium.com/@ly.lee/connect-stm32-blue-pill-to-esp8266-with-apache-mynewt-7edceb9e3b8d?source=friends_link&amp;sk=df729a82533d817ec6b2d9b626b6f66b</link>
+            <link>https://web.archive.org/https://medium.com/@ly.lee/connect-stm32-blue-pill-to-esp8266-with-apache-mynewt-7edceb9e3b8d?source=friends_link&amp;sk=df729a82533d817ec6b2d9b626b6f66b</link>
             <description><![CDATA[And WiFi Geolocation with ESP8266]]></description>
             <pubDate>Sat, 20 Apr 2019 00:00:00 +0000</pubDate>
         </item>
@@ -389,181 +389,181 @@
         </item>
         <item>
             <title>Push AWS IoT sensor data to Redshift with Kinesis Firehose</title>
-            <link>https://medium.com/@ly.lee/push-aws-iot-sensor-data-to-redshift-with-kinesis-firehose-385506264a00?source=friends_link&amp;sk=bd45be8b48fbb328ed1d65d10a8d7c38</link>
+            <link>https://web.archive.org/https://medium.com/@ly.lee/push-aws-iot-sensor-data-to-redshift-with-kinesis-firehose-385506264a00?source=friends_link&amp;sk=bd45be8b48fbb328ed1d65d10a8d7c38</link>
             <description><![CDATA[AWS IoT Rules Engine and Kinesis Firehose were designed to stream live sensor data into Redshift for storage and analysis]]></description>
             <pubDate>Sun, 10 Mar 2019 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Transform and Import a JSON file into Amazon Redshift with AWS Glue</title>
-            <link>https://medium.com/@ly.lee/transform-and-import-a-json-file-into-amazon-redshift-with-aws-glue-3371006e03ca?source=friends_link&amp;sk=a57bcec30f5b6b1c978dc4f35d8d6427</link>
+            <link>https://web.archive.org/https://medium.com/@ly.lee/transform-and-import-a-json-file-into-amazon-redshift-with-aws-glue-3371006e03ca?source=friends_link&amp;sk=a57bcec30f5b6b1c978dc4f35d8d6427</link>
             <description><![CDATA[With AWS Glue it’s now possible to keep our Redshift data warehouses in sync with JSON-based data stores… So we may exploit the full potential of business analytics and machine learning in AWS!]]></description>
             <pubDate>Fri, 08 Mar 2019 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Connecting AWS Lambda Node.JS to Redshift or PostgreSQL? Try AWS Lambda Layers!</title>
-            <link>https://medium.com/@ly.lee/connecting-aws-lambda-node-js-to-redshift-or-postgresql-try-aws-lambda-layers-78e60c27f39b?source=friends_link&amp;sk=84d0f78bddfece6049c2395741824e58</link>
+            <link>https://web.archive.org/https://medium.com/@ly.lee/connecting-aws-lambda-node-js-to-redshift-or-postgresql-try-aws-lambda-layers-78e60c27f39b?source=friends_link&amp;sk=84d0f78bddfece6049c2395741824e58</link>
             <description><![CDATA[With Lambda Layers it’s really easy to connect our Node.js Lambda Function to Redshift or PostgreSQL]]></description>
             <pubDate>Wed, 06 Mar 2019 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>STM32 Blue Pill — Bootloading the WebUSB Bootloader</title>
-            <link>https://medium.com/@ly.lee/stm32-blue-pill-bootloading-the-webusb-bootloader-63398ef5eb76?source=friends_link&amp;sk=8b43b83310910e64752a61cf630e0b78</link>
+            <link>https://web.archive.org/https://medium.com/@ly.lee/stm32-blue-pill-bootloading-the-webusb-bootloader-63398ef5eb76?source=friends_link&amp;sk=8b43b83310910e64752a61cf630e0b78</link>
             <description><![CDATA[How do we upgrade the Bootloader when it’s always running in the background, waiting for flashing requests? This article explains a special technique I used to upgrade the MakeCode Bootloader over WebUSB… I call it “Baseloading”]]></description>
             <pubDate>Mon, 25 Feb 2019 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>STM32 Blue Pill — Dissecting the WebUSB Bootloader for MakeCode</title>
-            <link>https://medium.com/@ly.lee/stm32-blue-pill-dissecting-the-webusb-bootloader-for-makecode-b7f1a1508e89?source=friends_link&amp;sk=661984e9775f991a97e5747a67214b60</link>
+            <link>https://web.archive.org/https://medium.com/@ly.lee/stm32-blue-pill-dissecting-the-webusb-bootloader-for-makecode-b7f1a1508e89?source=friends_link&amp;sk=661984e9775f991a97e5747a67214b60</link>
             <description><![CDATA[Explore the innards of the MakeCode Bootloader that I have ported to Blue Pill]]></description>
             <pubDate>Sat, 16 Feb 2019 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>STM32 Blue Pill — Unit Testing with Qemu Blue Pill Emulator</title>
-            <link>https://medium.com/@ly.lee/stm32-blue-pill-unit-testing-with-qemu-blue-pill-emulator-9d88002a68b2?source=friends_link&amp;sk=9a9389cdea5828cb48713f963c8f7615</link>
+            <link>https://web.archive.org/https://medium.com/@ly.lee/stm32-blue-pill-unit-testing-with-qemu-blue-pill-emulator-9d88002a68b2?source=friends_link&amp;sk=9a9389cdea5828cb48713f963c8f7615</link>
             <description><![CDATA[Computing sensor values in IoT devices can be prone to bugs… And Unit Testing can help to stop the bugs before they pollute the entire IoT chain]]></description>
             <pubDate>Thu, 07 Feb 2019 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>STM32 Blue Pill – Shrink your math libraries with Qfplib</title>
-            <link>https://medium.com/@ly.lee/stm32-blue-pill-shrink-your-math-libraries-with-qfplib-55093aab163a?source=friends_link&amp;sk=d7cd162dabcc45f96490e5e1f5f4c534</link>
+            <link>https://web.archive.org/https://medium.com/@ly.lee/stm32-blue-pill-shrink-your-math-libraries-with-qfplib-55093aab163a?source=friends_link&amp;sk=d7cd162dabcc45f96490e5e1f5f4c534</link>
             <description><![CDATA[Filling in tiny math functions with nano-float]]></description>
             <pubDate>Wed, 30 Jan 2019 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>STM32 Blue Pill — Analyse and Optimise Your RAM and ROM</title>
-            <link>https://medium.com/@ly.lee/stm32-blue-pill-analyse-and-optimise-your-ram-and-rom-9fc805e16ed7?source=friends_link&amp;sk=54719084d640bb1d92ac1097d623bba2</link>
+            <link>https://web.archive.org/https://medium.com/@ly.lee/stm32-blue-pill-analyse-and-optimise-your-ram-and-rom-9fc805e16ed7?source=friends_link&amp;sk=54719084d640bb1d92ac1097d623bba2</link>
             <description><![CDATA[Learn the tips and tools to prevent Blue Pill Bloat]]></description>
             <pubDate>Thu, 24 Jan 2019 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>STM32 Blue Pill USB Bootloader — How I fixed the USB Storage, Serial, DFU and WebUSB interfaces</title>
-            <link>https://medium.com/@ly.lee/stm32-blue-pill-usb-bootloader-how-i-fixed-the-usb-storage-serial-dfu-and-webusb-interfaces-36d7fe245b5c?source=friends_link&amp;sk=70a29cd31425ec4d03144bce14a1c922</link>
+            <link>https://web.archive.org/https://medium.com/@ly.lee/stm32-blue-pill-usb-bootloader-how-i-fixed-the-usb-storage-serial-dfu-and-webusb-interfaces-36d7fe245b5c?source=friends_link&amp;sk=70a29cd31425ec4d03144bce14a1c922</link>
             <description><![CDATA[STM32 Blue Pill is a remarkable microcontroller for US$ 2. I proved it by running the USB Storage, USB Serial, USB DFU (Direct Firmware Upgrade) and WebUSB interfaces all on the same Blue Pill concurrently, without any additional hardware!]]></description>
             <pubDate>Tue, 18 Dec 2018 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>STM32 Blue Pill Visual Programming with MakeCode, CODAL and libopencm3</title>
-            <link>https://medium.com/@ly.lee/work-in-progress-stm32-blue-pill-visual-programming-with-makecode-codal-and-libopencm3-422d308f252e?source=friends_link&amp;sk=b39519335652415d5f4aa17c9e4af1d2</link>
+            <link>https://web.archive.org/https://medium.com/@ly.lee/work-in-progress-stm32-blue-pill-visual-programming-with-makecode-codal-and-libopencm3-422d308f252e?source=friends_link&amp;sk=b39519335652415d5f4aa17c9e4af1d2</link>
             <description><![CDATA[This work-in-progress document describes an incomplete implementation of STM32 Blue Pill visual programming]]></description>
             <pubDate>Sun, 09 Dec 2018 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Sigfox Teacher Answers Your Questions</title>
-            <link>https://medium.com/@ly.lee/sigfox-teacher-answers-your-questions-7e47122716dc?source=friends_link&amp;sk=7668c0b2ecc6333cd60ff8e536501ebd</link>
+            <link>https://web.archive.org/https://medium.com/@ly.lee/sigfox-teacher-answers-your-questions-7e47122716dc?source=friends_link&amp;sk=7668c0b2ecc6333cd60ff8e536501ebd</link>
             <description><![CDATA[I teach Sigfox to working professionals. Here are their questions…]]></description>
             <pubDate>Fri, 07 Dec 2018 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>以 thethings.iO 來將 BBC micro:bit 感測器圖形化</title>
-            <link>https://medium.com/@ly.lee/%E4%BB%A5-thethings-io-%E4%BE%86%E5%B0%87-bbc-micro-bit-%E6%84%9F%E6%B8%AC%E5%99%A8%E5%9C%96%E5%BD%A2%E5%8C%96-4258b04dea6c?source=friends_link&amp;sk=4d0250276797fe60533c058d25cdbe90</link>
+            <link>https://web.archive.org/https://medium.com/@ly.lee/%E4%BB%A5-thethings-io-%E4%BE%86%E5%B0%87-bbc-micro-bit-%E6%84%9F%E6%B8%AC%E5%99%A8%E5%9C%96%E5%BD%A2%E5%8C%96-4258b04dea6c?source=friends_link&amp;sk=4d0250276797fe60533c058d25cdbe90</link>
             <description><![CDATA[ ]]></description>
             <pubDate>Thu, 29 Nov 2018 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Visualising BBC micro:bit sensors with thethings.iO</title>
-            <link>https://medium.com/@ly.lee/visualising-bbc-micro-bit-sensors-with-thethings-io-5689fb613531?source=friends_link&amp;sk=a8cfc404362ecbe3a26823f6a70fa5cb</link>
+            <link>https://web.archive.org/https://medium.com/@ly.lee/visualising-bbc-micro-bit-sensors-with-thethings-io-5689fb613531?source=friends_link&amp;sk=a8cfc404362ecbe3a26823f6a70fa5cb</link>
             <description><![CDATA[如果您可以將您以電池供應電力的BBC micro:bit設置在城市裡的任何一個角落來收集感測資料 … 或者是隨時查看從家裡、學校、工作場所即時更新的感測資料 … 不是很酷嗎？]]></description>
             <pubDate>Sat, 17 Nov 2018 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>連接 BBC micro:bit 與 Sigfox 物聯網</title>
-            <link>https://medium.com/@ly.lee/%E9%80%A3%E6%8E%A5-bbc-micro-bit-%E8%88%87-sigfox-%E7%89%A9%E8%81%AF%E7%B6%B2-36b0d453151e?source=friends_link&amp;sk=ad9099aabefe2a09ad4956589773621f</link>
+            <link>https://web.archive.org/https://medium.com/@ly.lee/%E9%80%A3%E6%8E%A5-bbc-micro-bit-%E8%88%87-sigfox-%E7%89%A9%E8%81%AF%E7%B6%B2-36b0d453151e?source=friends_link&amp;sk=ad9099aabefe2a09ad4956589773621f</link>
             <description><![CDATA[使用 BBC micro:bit 連接 Sigfox 物聯網網路會是一個很好幫助孩子們理解感測器與感測網路如何運作的理想方式。micro:bit 是新式以電池提供電力的感測器裝置典範，具備充足的處理能力並支援大多數的感測器類型。在教育用途上，Sigfox 可能是今日用於城市規模測試的感測網路之中，最為便宜的方案。]]></description>
             <pubDate>Tue, 13 Nov 2018 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Connect BBC micro:bit to Sigfox</title>
-            <link>https://medium.com/coinmonks/connect-bbc-micro-bit-to-sigfox-4d1603d19350?source=friends_link&amp;sk=05ceafa731e7c82d92e68f6fa2a1d5bd</link>
+            <link>https://web.archive.org/https://medium.com/coinmonks/connect-bbc-micro-bit-to-sigfox-4d1603d19350?source=friends_link&amp;sk=05ceafa731e7c82d92e68f6fa2a1d5bd</link>
             <description><![CDATA[BBC micro:bit connected to the Sigfox IoT network is the perfect way to help kids understand how Sensors and Sensor Networks operate. The micro:bit is a good representation of a modern battery-powered sensor device, with ample processing power and support for most types of sensors. For education, Sigfox is likely the cheapest option today for experimenting with a city-wide sensor network.]]></description>
             <pubDate>Mon, 05 Nov 2018 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>連接 STM32F103C8T6 Blue Pill 開發板與 Sigfox 物聯網</title>
-            <link>https://medium.com/@ly.lee/%E9%80%A3%E6%8E%A5-stm32f103c8t6-blue-pill-%E9%96%8B%E7%99%BC%E6%9D%BF%E8%88%87-sigfox-%E7%89%A9%E8%81%AF%E7%B6%B2-9fc6b01e616a?source=friends_link&amp;sk=58e0604e547a7603411297babc9ec92f</link>
+            <link>https://web.archive.org/https://medium.com/@ly.lee/%E9%80%A3%E6%8E%A5-stm32f103c8t6-blue-pill-%E9%96%8B%E7%99%BC%E6%9D%BF%E8%88%87-sigfox-%E7%89%A9%E8%81%AF%E7%B6%B2-9fc6b01e616a?source=friends_link&amp;sk=58e0604e547a7603411297babc9ec92f</link>
             <description><![CDATA[以 STM32 微處理器為核心的 STM32F103C8T6 Blue Pill 開發板連接 Sigfox 收發器模組來接取 Sigfox 物聯網網路可能會是設計一款低功率物聯網裝置的最佳組合。]]></description>
             <pubDate>Wed, 17 Oct 2018 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Connect STM32 Blue Pill to Sigfox</title>
-            <link>https://medium.com/coinmonks/connect-stm32-blue-pill-to-sigfox-28c6f91bddc1?source=friends_link&amp;sk=d0f0d9f40e36badadfb04dc4c0846775</link>
+            <link>https://web.archive.org/https://medium.com/coinmonks/connect-stm32-blue-pill-to-sigfox-28c6f91bddc1?source=friends_link&amp;sk=d0f0d9f40e36badadfb04dc4c0846775</link>
             <description><![CDATA[STM32 “Blue Pill” microcontroller connected to a transceiver module for the Sigfox IoT network might be the best combination for low-power IoT devices right now.]]></description>
             <pubDate>Fri, 28 Sep 2018 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Watch STM32 Blue Pill Juggle Two SPI Sensors With DMA</title>
-            <link>https://medium.com/coinmonks/watch-stm32-blue-pill-juggle-two-spi-sensors-with-dma-20cd1aa89869?source=friends_link&amp;sk=eea71070ce6d9aea3a6108e882749a99</link>
+            <link>https://web.archive.org/https://medium.com/coinmonks/watch-stm32-blue-pill-juggle-two-spi-sensors-with-dma-20cd1aa89869?source=friends_link&amp;sk=eea71070ce6d9aea3a6108e882749a99</link>
             <description><![CDATA[This article that explains all that I have learnt about SPI ports, DMA and interrupts on the Blue Pill]]></description>
             <pubDate>Wed, 19 Sep 2018 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Program Your First FPGA With GOWIN GW1N-4</title>
-            <link>https://medium.com/coinmonks/program-your-first-fpga-with-gowin-gw1n-4-b0d5c22b9fea?source=friends_link&amp;sk=d52b303b432a5268b5d485aea6ca404c</link>
+            <link>https://web.archive.org/https://medium.com/coinmonks/program-your-first-fpga-with-gowin-gw1n-4-b0d5c22b9fea?source=friends_link&amp;sk=d52b303b432a5268b5d485aea6ca404c</link>
             <description><![CDATA[As we learn how to program the FPGA, we’ll soon realise that FPGA programming is really extraordinary, unlike any other kind of programming we have done before]]></description>
             <pubDate>Wed, 05 Sep 2018 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Juggling STM32 Blue Pill For Arduino Jugglers</title>
-            <link>https://medium.com/coinmonks/juggling-stm32-blue-pill-for-arduino-jugglers-edf6820dc808?source=friends_link&amp;sk=7e812ce3062e69447d8ada7416f1ba9f</link>
+            <link>https://web.archive.org/https://medium.com/coinmonks/juggling-stm32-blue-pill-for-arduino-jugglers-edf6820dc808?source=friends_link&amp;sk=7e812ce3062e69447d8ada7416f1ba9f</link>
             <description><![CDATA[Upsizing from Arduino Uno to a 32-bit STM microcontroller doesn’t have to be hard]]></description>
             <pubDate>Mon, 27 Aug 2018 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Juggling Sigfox Downlink And Arduino Sensors With cocoOS</title>
-            <link>https://medium.com/coinmonks/juggling-sigfox-downlink-and-arduino-sensors-with-cocoos-4594be59bf1b?source=friends_link&amp;sk=a99be9407863e4af28f697648de4c7c7</link>
+            <link>https://web.archive.org/https://medium.com/coinmonks/juggling-sigfox-downlink-and-arduino-sensors-with-cocoos-4594be59bf1b?source=friends_link&amp;sk=a99be9407863e4af28f697648de4c7c7</link>
             <description><![CDATA[Using the cocoOS task scheduler to run Sensor Tasks concurrently while waiting for the Network and UART Tasks]]></description>
             <pubDate>Mon, 20 Aug 2018 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Juggling Arduino Sensors With cocoOS</title>
-            <link>https://medium.com/coinmonks/juggling-arduino-sensors-with-cocoos-403e14ec28be?source=friends_link&amp;sk=54d64c2fcbd5d7b6ddcbe605c1b3e7ea</link>
+            <link>https://web.archive.org/https://medium.com/coinmonks/juggling-arduino-sensors-with-cocoos-403e14ec28be?source=friends_link&amp;sk=54d64c2fcbd5d7b6ddcbe605c1b3e7ea</link>
             <description><![CDATA[Juggle multiple Arduino sensors, using an open source library for cooperative processing: cocoOS]]></description>
             <pubDate>Sat, 11 Aug 2018 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Why use FPGA for IoT? Here’s what I think…</title>
-            <link>https://medium.com/coinmonks/why-use-fpga-for-iot-heres-what-i-think-e513772514d6?source=friends_link&amp;sk=0ced124708f50b7be478f25198237f5e</link>
+            <link>https://web.archive.org/https://medium.com/coinmonks/why-use-fpga-for-iot-heres-what-i-think-e513772514d6?source=friends_link&amp;sk=0ced124708f50b7be478f25198237f5e</link>
             <description><![CDATA[Since FPGAs are already mainstream, could we use them to create IoT devices that are more power-efficient than current devices based on microcontrollers?]]></description>
             <pubDate>Tue, 31 Jul 2018 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Coding the STM32 Blue Pill with Rust and Visual Studio Code</title>
-            <link>https://medium.com/coinmonks/coding-the-stm32-blue-pill-with-rust-and-visual-studio-code-b21615d8a20?source=friends_link&amp;sk=9ca2ff6ad73ae7330bc122d73e94e83f</link>
+            <link>https://web.archive.org/https://medium.com/coinmonks/coding-the-stm32-blue-pill-with-rust-and-visual-studio-code-b21615d8a20?source=friends_link&amp;sk=9ca2ff6ad73ae7330bc122d73e94e83f</link>
             <description><![CDATA[Let's learn Rust, a modern systems programming language that promotes safe, concurrent low-level coding]]></description>
             <pubDate>Tue, 10 Jul 2018 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Making my first ever PCB with Seeed Fusion PCB assembly service</title>
-            <link>https://medium.com/coinmonks/making-my-first-ever-pcb-with-seeed-fusion-pcb-assembly-service-9af5736016b3?source=friends_link&amp;sk=4a66b1086f3232f2022c9c6a3bff0523</link>
+            <link>https://web.archive.org/https://medium.com/coinmonks/making-my-first-ever-pcb-with-seeed-fusion-pcb-assembly-service-9af5736016b3?source=friends_link&amp;sk=4a66b1086f3232f2022c9c6a3bff0523</link>
             <description><![CDATA[Here’s the story of the first gadget that I have ever created, with help from the brilliant minds at Seeed in Shenzhen]]></description>
             <pubDate>Thu, 05 Jul 2018 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Running Rust and FreeRTOS on the PADI IoT Stamp</title>
-            <link>https://medium.com/coinmonks/running-rust-and-freertos-on-the-padi-iot-stamp-fb36c5ef4844?source=friends_link&amp;sk=e89306e593d2781bbb272c0779eb5c24</link>
+            <link>https://web.archive.org/https://medium.com/coinmonks/running-rust-and-freertos-on-the-padi-iot-stamp-fb36c5ef4844?source=friends_link&amp;sk=e89306e593d2781bbb272c0779eb5c24</link>
             <description><![CDATA[Better tools for building robust and reliable programs for microcontrollers]]></description>
             <pubDate>Mon, 18 Jun 2018 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>First Impressions of Alibaba Cloud (Aliyun)</title>
-            <link>https://medium.com/@ly.lee/first-impressions-of-alibaba-cloud-aliyun-688dc46fa9b8?source=friends_link&amp;sk=0685f5028f4ce9575dfae9cc9515143d</link>
+            <link>https://web.archive.org/https://medium.com/@ly.lee/first-impressions-of-alibaba-cloud-aliyun-688dc46fa9b8?source=friends_link&amp;sk=0685f5028f4ce9575dfae9cc9515143d</link>
             <description><![CDATA[Could Alibaba Cloud be the economical cloud for high volume IoT?]]></description>
             <pubDate>Mon, 21 May 2018 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Multitasking on the Arduino with a Finite State Machine – And why you’ll need it for Sigfox Downlink</title>
-            <link>https://medium.com/coinmonks/multitasking-on-the-arduino-with-a-finite-state-machine-and-why-youll-need-it-for-sigfox-d52dafc55d8e?source=friends_link&amp;sk=ccb0128b230b6d678831b80100df43e8</link>
+            <link>https://web.archive.org/https://medium.com/coinmonks/multitasking-on-the-arduino-with-a-finite-state-machine-and-why-youll-need-it-for-sigfox-d52dafc55d8e?source=friends_link&amp;sk=ccb0128b230b6d678831b80100df43e8</link>
             <description><![CDATA[How to implement a Finite State Machine on the Arduino Uno]]></description>
             <pubDate>Sun, 13 May 2018 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Realtime sensor data processing with thethings.io and Amazon Web Services Kinesis</title>
-            <link>https://medium.com/coinmonks/realtime-sensor-data-processing-with-thethings-io-and-amazon-web-services-kinesis-e12ebb022106?source=friends_link&amp;sk=a57d58d346c283c79699efe384bca299</link>
+            <link>https://web.archive.org/https://medium.com/coinmonks/realtime-sensor-data-processing-with-thethings-io-and-amazon-web-services-kinesis-e12ebb022106?source=friends_link&amp;sk=a57d58d346c283c79699efe384bca299</link>
             <description><![CDATA[How to experiment with IoT today while minimising the security and performance risks, and keeping costs low]]></description>
             <pubDate>Tue, 01 May 2018 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>I Teach IoT. Here’s what you’ll learn</title>
-            <link>https://medium.com/@ly.lee/i-teach-iot-heres-what-you-ll-learn-3e0d1b997dd0?source=friends_link&amp;sk=ec31991f7245ccde1200dd950196a5e7</link>
+            <link>https://web.archive.org/https://medium.com/@ly.lee/i-teach-iot-heres-what-you-ll-learn-3e0d1b997dd0?source=friends_link&amp;sk=ec31991f7245ccde1200dd950196a5e7</link>
             <description><![CDATA[Arduino, Low Power Networks, IoT Networks, IoT Analytics, ...]]></description>
             <pubDate>Tue, 24 Apr 2018 00:00:00 +0000</pubDate>
         </item>
@@ -575,19 +575,19 @@
         </item>
         <item>
             <title>How To Build Your Sigfox Server (Version 1.0)</title>
-            <link>https://medium.com/@ly.lee/how-to-build-your-sigfox-server-version-1-0-6763732692fd?source=friends_link&amp;sk=641f65c458ec59fa27dddbe7735b118a</link>
+            <link>https://web.archive.org/https://medium.com/@ly.lee/how-to-build-your-sigfox-server-version-1-0-6763732692fd?source=friends_link&amp;sk=641f65c458ec59fa27dddbe7735b118a</link>
             <description><![CDATA[Building highly reliable, robust and scalable systems for processing Sigfox messages]]></description>
             <pubDate>Sat, 14 Oct 2017 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Story of the UnaShield</title>
-            <link>https://medium.com/@ly.lee/story-of-the-unashield-ff9e78fd7726?source=friends_link&amp;sk=180635fb871e134e0ba8f157a38ba8ef</link>
+            <link>https://web.archive.org/https://medium.com/@ly.lee/story-of-the-unashield-ff9e78fd7726?source=friends_link&amp;sk=180635fb871e134e0ba8f157a38ba8ef</link>
             <description><![CDATA[Co-created with Upton Lai, the brilliant guy who could make anything]]></description>
             <pubDate>Wed, 05 Jul 2017 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>IoT is a Bad Word</title>
-            <link>https://medium.com/@ly.lee/iot-is-a-bad-word-9003d9fab638?source=friends_link&amp;sk=f7d58ebca338f326b6be8dcb79c7d6f5</link>
+            <link>https://web.archive.org/https://medium.com/@ly.lee/iot-is-a-bad-word-9003d9fab638?source=friends_link&amp;sk=f7d58ebca338f326b6be8dcb79c7d6f5</link>
             <description><![CDATA[IoT is about solving real problems (not imaginary ones) in a sustainable way]]></description>
             <pubDate>Fri, 26 May 2017 00:00:00 +0000</pubDate>
         </item>
