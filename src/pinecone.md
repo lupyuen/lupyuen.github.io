@@ -576,6 +576,22 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     Just note that the boards have different jumpers, buttons and LEDs.
 
+1.  BL602 Bluetooth LE and WiFi are working ... But we need help to reverse engineer the blobs! 🙏
+
+    -  [__BLE Docs__](https://pine64.github.io/bl602-docs/Examples/demo_at/AT.html#ble-at-commands)
+
+    -  [__WiFi Docs__](https://pine64.github.io/bl602-docs/Examples/demo_at/AT.html#wi-fi-at-commands)
+
+1.  Here are the Bluetooth LE and WiFi demo apps and source code...
+
+    -  [__BLE Demo__](https://pine64.github.io/bl602-docs/Examples/demo_ble/ble.html)
+
+    -  [__BLE Source Code__](https://github.com/pine64/bl_iot_sdk/tree/master/customer_app/bl602_demo_event)
+
+    -  [__WiFi Demo__](https://pine64.github.io/bl602-docs/Examples/demo_wifi/wifi.html)
+
+    -  [__WiFi Source Code__](https://github.com/pine64/bl_iot_sdk/tree/master/customer_app/bl602_demo_wifi)
+
 1.  Can we flash firmware to PineCone via a Web Browser through the [__Web Serial API__](https://dev.to/unjavascripter/the-amazing-powers-of-the-web-web-serial-api-3ilc)? That would be really interesting.
 
 1.  Took me a while to realise that BL602 IoT SDK is [__built with AliOS__](https://github.com/alibaba/AliOS-Things) (with FreeRTOS underneath)
