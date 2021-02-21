@@ -541,23 +541,13 @@ We're in the middle of a pandemic. Why not take the time to learn some RISC-V...
 
 More about PineCone...
 
--   ["Connect PineCone BL602 to OpenOCD"](https://lupyuen.github.io/articles/openocd)
+-   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
--   ["Debug Rust on PineCone BL602 with VSCode and GDB"](https://lupyuen.github.io/articles/debug)
-
--   ["Porting Mynewt to PineCone BL602"](https://lupyuen.github.io/articles/mynewt)
-
--   ["Flashing Firmware to PineCone BL602"](https://lupyuen.github.io/articles/flash)
-
--   ["Control PineCone BL602 RGB LED with GPIO and PWM"](https://lupyuen.github.io/articles/led)
-
--   ["Mynewt GPIO ported to PineCone BL602 RISC-V Board"](https://lupyuen.github.io/articles/gpio)
+-   [Read "The RISC-V BL602 Book"](https://lupyuen.github.io/articles/book)
 
 -   [Check out my articles](https://lupyuen.github.io)
 
 -   [RSS Feed](https://lupyuen.github.io/rss.xml)
-
--   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
@@ -567,7 +557,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  I'm not a Pine64 employee and I'm not paid by Pine64 to write these articles on BL602. 
 
-    Pine64 is my [GitHub Sponsor](https://github.com/sponsors/lupyuen) and they send me samples for evaluation and experimentation.
+    Pine64 sponsors my coffee ([as a GitHub Sponsor](https://github.com/sponsors/lupyuen)) and they send me samples for evaluation and experimentation.
 
     (I'm not connected to Bouffalo Lab either)
 

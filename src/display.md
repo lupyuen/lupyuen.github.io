@@ -1733,6 +1733,8 @@ Meanwhile there's plenty more code in the [__BL602 IoT SDK__](https://github.com
 
 -   [Discuss this article on Reddit](https://www.reddit.com/r/RISCV/comments/lku3mt/pinecone_bl602_blasting_pixels_to_st7789_display/?utm_source=share&utm_medium=web2x&context=3)
 
+-   [Read "The RISC-V BL602 Book"](https://lupyuen.github.io/articles/book)
+
 -   [Check out my articles](https://lupyuen.github.io)
 
 -   [RSS Feed](https://lupyuen.github.io/rss.xml)

@@ -76,11 +76,13 @@ I must thank [My Sponsors](https://github.com/sponsors/lupyuen) for supporting m
 
 Happy Holidays Everyone! Stay Healthy, Have A Great 2021! 😀
 
+-   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+
+-   [Read "The RISC-V BL602 Book"](https://lupyuen.github.io/articles/book)
+
 -   [Check out my articles](https://lupyuen.github.io)
 
 -   [RSS Feed](https://lupyuen.github.io/rss.xml)
-
--   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 

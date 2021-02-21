@@ -936,17 +936,13 @@ I had fun reverse-engineering the BL602 source code... And I'm delighted that th
 
 I hope to uncover more BL602 goodies in 2021. Stay tuned!
 
--   [Discuss this article on Reddit](https://www.reddit.com/r/RISCV/comments/knsju9/flashing_firmware_to_pinecone_bl602/)
+-   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
--   ["Control PineCone BL602 RGB LED with GPIO and PWM"](https://lupyuen.github.io/articles/led)
-
--   ["Mynewt GPIO ported to PineCone BL602 RISC-V Board"](https://lupyuen.github.io/articles/gpio)
+-   [Read "The RISC-V BL602 Book"](https://lupyuen.github.io/articles/book)
 
 -   [Check out my articles](https://lupyuen.github.io)
 
 -   [RSS Feed](https://lupyuen.github.io/rss.xml)
-
--   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 

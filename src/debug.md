@@ -766,19 +766,13 @@ _And yes it shall support Rust too!_
 
 Read about it here...
 
--   ["Porting Mynewt to PineCone BL602"](https://lupyuen.github.io/articles/mynewt)
+-   [Read "The RISC-V BL602 Book"](https://lupyuen.github.io/articles/book)
 
--   ["Flashing Firmware to PineCone BL602"](https://lupyuen.github.io/articles/flash)
-
--   ["Control PineCone BL602 RGB LED with GPIO and PWM"](https://lupyuen.github.io/articles/led)
-
--   ["Mynewt GPIO ported to PineCone BL602 RISC-V Board"](https://lupyuen.github.io/articles/gpio)
+-   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
 -   [Check out my articles](https://lupyuen.github.io)
 
 -   [RSS Feed](https://lupyuen.github.io/rss.xml)
-
--   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
