@@ -203,6 +203,13 @@
                     </div>
                   </div>
                 </div>
+
+<p>
+  UPDATE: This code in this article has been archived in the <a href="https://github.com/lupyuen/pinetime-rust-mynewt/tree/pre-lvgl">pre-lvgl</a> branch of pinetime-rust-mynewt. 
+  The pinetime-rust-mynewt firmware has been revamped to support <a href="https://lupyuen.github.io/pinetime-rust-mynewt/articles/watchface">Rust Watch Faces on LVGL</a>. 
+  <a href="https://lupyuen.github.io/pinetime-rust-mynewt/articles/watchface">Check out the updates  </a>
+</p>
+
                 <p id="1b75" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">Pretend you’re my IoT student. I
                   give you a <a class="at cg hd he hf hg" target="_blank" rel="noopener"
                     href="https://lupyuen.github.io/articles/sneak-peek-of-pinetime-smart-watch-and-why-its-perfect-for-teaching-iot">PineTime
@@ -336,13 +343,9 @@
                     class="at cg hd he hf hg" target="_blank" rel="noopener nofollow"><strong class="gr ii">I2C
                       Probing</strong></a> and the Rust code on PineTime looks like this…</p>
                 <figure class="ik il im in io cz">
-                  <div class="dl r dd">
-                    <div class="jf r"><iframe
-                        src="https://web.archive.org/web/20191222054305if_/https://medium.com/media/11ab0ea3b680be598270e87000d24a77"
-                        allowfullscreen="" frameborder="0" height="0" width="0"
-                        title="See https://medium.com/@ly.lee/building-a-rust-driver-for-pinetimes-touch-controller-cbc1a5d5d3e9"
-                        class="cp t u dh ak" scrolling="auto"></iframe></div>
-                  </div>
+
+                  <p><script src="https://gist.github.com/lupyuen/471b5f467567e6031df9de8c308161ef.js"></script></p>
+
                   <p><em>Probing the I2C Bus on PineTime to discover
                     I2C devices. From <a
                       href="https://web.archive.org/web/20191222054305/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/pinetime/rust/app/src/touch_sensor.rs"
@@ -496,7 +499,7 @@
                     class="dm jg jh ji jj b">0x15</code>)</p>
                 <figure class="ik il im in io cz">
 
-                  ???
+                  <p><script src="https://gist.github.com/lupyuen/5640343e09de8d68d297bfe6560bb8eb.js"></script></p>
 
                   <p><em>Rust code to read a range of I2C Registers
                     from an I2C Device on PineTime. The steps in the comments refer to the steps in the diagram above.
@@ -541,7 +544,7 @@
                     class="gr ii">Area</strong>: Size of the touched area</p>
                 <figure class="ik il im in io cz">
 
-                  ???
+                  <p><script src="https://gist.github.com/lupyuen/b7ab0cd0d205672911f2000ea183d005.js"></script></p>
 
                   <p><em>63 bytes of raw touch data converted to 10
                     points of touch information. This is the Rust representation of the 10 touch points. From <a
@@ -575,13 +578,9 @@
                     class="hh">(Probably because it’s not meaningful to track 10 fingers on a tiny watch screen)</em>
                 </p>
                 <figure class="ik il im in io cz">
-                  <div class="dl r dd">
-                    <div class="jf r"><iframe
-                        src="https://web.archive.org/web/20191222054305if_/https://medium.com/media/4f10ea84aceaf382228b207fbb984e65"
-                        allowfullscreen="" frameborder="0" height="0" width="0"
-                        title="From https://medium.com/@ly.lee/building-a-rust-driver-for-pinetimes-touch-controller-cbc1a5d5d3e9"
-                        class="cp t u dh ak" scrolling="auto"></iframe></div>
-                  </div>
+
+                  <p><script src="https://gist.github.com/lupyuen/5640343e09de8d68d297bfe6560bb8eb.js"></script></p>
+
                   <p><em>Rust code to convert raw touch data to touch
                     point information. From <a
                       href="https://web.archive.org/web/20191222054305/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/pinetime/rust/app/src/touch_sensor.rs"
@@ -603,13 +602,9 @@
                   Here’s the Rust code that takes coordinates <code class="dm jg jh ji jj b">(X, Y)</code> and displays
                   them as <code class="dm jg jh ji jj b">X = …, Y = …</code> on the PineTime screen…</p>
                 <figure class="ik il im in io cz">
-                  <div class="dl r dd">
-                    <div class="jf r"><iframe
-                        src="https://web.archive.org/web/20191222054305if_/https://medium.com/media/f9ba7670bec10733e03a2893309c370f"
-                        allowfullscreen="" frameborder="0" height="0" width="0"
-                        title="From https://medium.com/@ly.lee/building-a-rust-driver-for-pinetimes-touch-controller-cbc1a5d5d3e9"
-                        class="cp t u dh ak" scrolling="auto"></iframe></div>
-                  </div>
+
+                  <p><script src="https://gist.github.com/lupyuen/b7ab0cd0d205672911f2000ea183d005.js"></script></p>
+
                   <p><em>Rust code to display the touched coordinates
                     on the screen. From <a
                       href="https://web.archive.org/web/20191222054305/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/pinetime/rust/app/src/display.rs"
@@ -690,13 +685,9 @@
                   generates a <strong class="gr ii">Touch Interrupt</strong> every time the screen is tapped. So let’s
                   hook on to the Touch Interrupt and do the touch processing there!</p>
                 <figure class="ik il im in io cz">
-                  <div class="dl r dd">
-                    <div class="jf r"><iframe
-                        src="https://web.archive.org/web/20191222054305if_/https://medium.com/media/3dea50a978bf5ebd4e77817807681ae0"
-                        allowfullscreen="" frameborder="0" height="0" width="0"
-                        title="From https://medium.com/@ly.lee/building-a-rust-driver-for-pinetimes-touch-controller-cbc1a5d5d3e9"
-                        class="cp t u dh ak" scrolling="auto"></iframe></div>
-                  </div>
+
+                  <p><script src="https://gist.github.com/lupyuen/8d54c8d201a111d6d596de428e538c62.js"></script></p>
+
                   <p><em>Assigning an Interrupt Handler for Touch
                     Interrupt. From <a
                       href="https://web.archive.org/web/20191222054305/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/pinetime/rust/app/src/touch_sensor.rs"
@@ -710,13 +701,9 @@
                     class="dm jg jh ji jj b">touch_interrupt_handler()</code> when the GPIO Pin switches from High to
                   Low. <em class="hh">(That’s when the screen is tapped)</em></p>
                 <figure class="ik il im in io cz">
-                  <div class="dl r dd">
-                    <div class="jf r"><iframe
-                        src="https://web.archive.org/web/20191222054305if_/https://medium.com/media/f0ef5e1da2bd594968d1ed6cdba4c5be"
-                        allowfullscreen="" frameborder="0" height="0" width="0"
-                        title="See https://medium.com/@ly.lee/building-a-rust-driver-for-pinetimes-touch-controller-cbc1a5d5d3e9"
-                        class="cp t u dh ak" scrolling="auto"></iframe></div>
-                  </div>
+
+                  <p><script src="https://gist.github.com/lupyuen/40ff076926597a5ba16a6ba68ec8832d.js"></script></p>
+
                   <p><em>Touch interrupt handler that’s called upon
                     touch. From <a
                       href="https://web.archive.org/web/20191222054305/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/pinetime/rust/app/src/touch_sensor.rs"
@@ -746,13 +733,9 @@
                     class="at cg hd he hf hg" target="_blank" rel="noopener nofollow"><strong class="gr ii">Event
                       Queue</strong></a>.</p>
                 <figure class="ik il im in io cz">
-                  <div class="dl r dd">
-                    <div class="jf r"><iframe
-                        src="https://web.archive.org/web/20191222054305if_/https://medium.com/media/5fa6b1b321bb25c9ea73c4c5bc9e3b47"
-                        allowfullscreen="" frameborder="0" height="0" width="0"
-                        title="See https://medium.com/@ly.lee/building-a-rust-driver-for-pinetimes-touch-controller-cbc1a5d5d3e9"
-                        class="cp t u dh ak" scrolling="auto"></iframe></div>
-                  </div>
+
+                  <p><script src="https://gist.github.com/lupyuen/3a438f3e2e399c5c4679af70fc63cf69.js"></script></p>
+
                   <p><em>Event callback for handling touch events. From
                     <a href="https://web.archive.org/web/20191222054305/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/pinetime/rust/app/src/touch_sensor.rs"
                       class="at cg hd he hf hg" target="_blank"
@@ -773,13 +756,9 @@
               <div class="n p">
                 <div class="iq ir is it iu iv ag iw ah ix aj ak">
                   <figure class="ik il im in io cz">
-                    <div class="dl r dd">
-                      <div class="jx r"><iframe
-                          src="https://web.archive.org/web/20191222054305if_/https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2F4_93mUkK--U%3Ffeature%3Doembed&amp;url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D4_93mUkK--U&amp;image=https%3A%2F%2Fi.ytimg.com%2Fvi%2F4_93mUkK--U%2Fhqdefault.jpg&amp;key=a19fcc184b9711e1b4764040d3dc5c07&amp;type=text%2Fhtml&amp;schema=youtube"
-                          allowfullscreen="" frameborder="0" height="480" width="854"
-                          title="PineTime Touch Controller with Rust and Mynewt OS" class="cp t u dh ak"
-                          scrolling="auto"></iframe></div>
-                    </div>
+
+                    <p><a href="https://youtu.be/4_93mUkK--U">[Watch demo video on YouTube]</a></p>
+
                     <p><em>PineTime Touch Controller fully functioning
                       with Touch Interrupts</em></p>
                   </figure>
