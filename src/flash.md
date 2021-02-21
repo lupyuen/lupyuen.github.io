@@ -110,13 +110,13 @@ _Flashing PineCone with Manjaro Linux Arm64 on Pinebook Pro_
     
     1.  Release the D8 Button
 
-    __For MagicHome BL602:__
+    __For Pinenut and MagicHome BL602:__
 
-    1.  Disconnect MagicHome from the USB Port
-    
+    1.  Disconnect the board from the USB Port
+
     1.  Connect __GPIO 8__ to __3.3V__
-    
-    1.  Reconnect MagicHome to the USB port
+
+    1.  Reconnect the board to the USB port
     
 1.  Enter this to flash our firmware...
 
@@ -249,13 +249,13 @@ _Firmware running on PineCone_
 
     1.  Press and release the __EN Button (Reset)__
     
-    __For MagicHome BL602:__
+    __For Pinenut and MagicHome BL602:__
 
-    1.  Disconnect MagicHome from the USB Port
-    
+    1.  Disconnect the board from the USB Port
+
     1.  Connect __GPIO 8__ to __GND__
-    
-    1.  Reconnect MagicHome to the USB port
+
+    1.  Reconnect the board to the USB port
 
 1.  To watch our firmware run, connect to the PineCone Serial Console (at 2 Mbps)...
 

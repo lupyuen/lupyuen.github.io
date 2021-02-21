@@ -720,13 +720,13 @@ __For BL10:__
 
 1.  Release the D8 Button
 
-__For MagicHome BL602:__
+__For Pinenut and MagicHome BL602:__
 
-1.  Disconnect MagicHome from the USB Port
+1.  Disconnect the board from the USB Port
 
 1.  Connect __GPIO 8__ to __3.3V__
 
-1.  Reconnect MagicHome to the USB port
+1.  Reconnect the board to the USB port
 
 Enter these commands to flash `sdk_app_i2c.bin` to BL602 over UART...
 
@@ -764,13 +764,13 @@ __For BL10:__
 
 1.  Press and release the __EN Button (Reset)__
 
-__For MagicHome BL602:__
+__For Pinenut and MagicHome BL602:__
 
-1.  Disconnect MagicHome from the USB Port
+1.  Disconnect the board from the USB Port
 
 1.  Connect __GPIO 8__ to __GND__
 
-1.  Reconnect MagicHome to the USB port
+1.  Reconnect the board to the USB port
 
 After restarting, connect to BL602's UART Port at 2 Mbps like so...
 
