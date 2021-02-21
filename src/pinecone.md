@@ -557,7 +557,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  I'm not a Pine64 employee and I'm not paid by Pine64 to write these articles on BL602. 
 
-    Pine64 sponsors my coffee ([as a GitHub Sponsor](https://github.com/sponsors/lupyuen)) and they send me samples for evaluation and experimentation.
+    Pine64 sponsors my coffee ([as a GitHub Sponsor](https://github.com/sponsors/lupyuen)) and they send me samples (of gadgets, not coffee) for evaluation and experimentation.
 
     (I'm not connected to Bouffalo Lab either)
 
