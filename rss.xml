@@ -227,7 +227,7 @@
         </item>
         <item>
             <title>Debug Rust+Mynewt Firmware for PineTime on Raspberry Pi</title>
-            <link>https://medium.com/@ly.lee/debug-rust-mynewt-firmware-for-pinetime-on-raspberry-pi-4b9ac2d093a9?source=friends_link&amp;sk=edb508c31e43d3ec40ecd8554f3405f6</link>
+            <link>https://web.archive.org/web/20200124105013/https://medium.com/@ly.lee/debug-rust-mynewt-firmware-for-pinetime-on-raspberry-pi-4b9ac2d093a9</link>
             <description><![CDATA[Using only a Raspberry Pi, we can debug the firmware on PineTime Smart Watch: Step into the flashed program line by line, set a breakpoint to pause execution at a line, inspect variables at runtime, … Just like the Embedded Pros!]]></description>
             <pubDate>Thu, 23 Jan 2020 00:00:00 +0000</pubDate>
         </item>
@@ -239,7 +239,7 @@
         </item>
         <item>
             <title>Build and Flash Rust+Mynewt Firmware for PineTime Smart Watch</title>
-            <link>https://medium.com/@ly.lee/build-and-flash-rust-mynewt-firmware-for-pinetime-smart-watch-5e14259c55?source=friends_link&amp;sk=150b2a73b84144e5ef25b985e65aebe9</link>
+            <link>https://web.archive.org/web/20200108000355/https://medium.com/@ly.lee/build-and-flash-rust-mynewt-firmware-for-pinetime-smart-watch-5e14259c55</link>
             <description><![CDATA[Programming a PineTime is not that hard… All you need is a Raspberry Pi, some wires and a little creativity!]]></description>
             <pubDate>Wed, 08 Jan 2020 00:00:00 +0000</pubDate>
         </item>
@@ -251,7 +251,7 @@
         </item>
         <item>
             <title>Porting [druid] Rust Widgets to PineTime Smart Watch</title>
-            <link>https://medium.com/@ly.lee/porting-druid-rust-widgets-to-pinetime-smart-watch-7e1d5a5d977a?source=friends_link&amp;sk=09b153c68483f7fa9e63350efd167b07</link>
+            <link>https://web.archive.org/web/20200109044808/https://medium.com/@ly.lee/porting-druid-rust-widgets-to-pinetime-smart-watch-7e1d5a5d977a</link>
             <description><![CDATA[Code Watch Apps in Rust the Declarative Way]]></description>
             <pubDate>Sat, 14 Dec 2019 00:00:00 +0000</pubDate>
         </item>
@@ -275,7 +275,7 @@
         </item>
         <item>
             <title>Sneak Peek of PineTime Smart Watch… And why it’s perfect for teaching IoT</title>
-            <link>https://medium.com/@ly.lee/sneak-peek-of-pinetime-smart-watch-and-why-its-perfect-for-teaching-iot-81b74161c159?source=friends_link&amp;sk=d9301466f5499bece3e7b638e99ec20d</link>
+            <link>https://web.archive.org/web/20200123051059/https://medium.com/swlh/sneak-peek-of-pinetime-smart-watch-and-why-its-perfect-for-teaching-iot-81b74161c159</link>
             <description><![CDATA[PineTime is the spiritual successor to BBC micro:bit]]></description>
             <pubDate>Fri, 15 Nov 2019 00:00:00 +0000</pubDate>
         </item>
