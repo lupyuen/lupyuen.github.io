@@ -192,17 +192,17 @@
                   <p id="8f9a"
                     class="ig ih gk ii b ij jb ik il im jc in io ip jd iq ir is je it iu iv jf iw ix iz dh hg">The setup
                     that we see above… Debugging nRF52 with a Raspberry Pi running <a
-                      href="https://web.archive.org/web/20210207004844/https://code.headmelted.com/" class="dn jg"
+                      href="https://code.headmelted.com/" class="dn jg"
                       rel="noopener nofollow">VSCode</a> and <a
-                      href="https://web.archive.org/web/20210207004844/http://openocd.org/doc/html/About.html#What-is-OpenOCD_003f"
+                      href="http://openocd.org/doc/html/About.html#What-is-OpenOCD_003f"
                       class="dn jg" rel="noopener nofollow">OpenOCD</a>… <em class="ja">Was impossible just a week
                       ago!</em></p>
                   <p id="7df9"
                     class="ig ih gk ii b ij jb ik il im jc in io ip jd iq ir is je it iu iv jf iw ix iz dh hg">OpenOCD
                     connects to nRF52 for flashing and debugging by running <a
-                      href="https://web.archive.org/web/20210207004844/https://github.com/MarkDing/swd_programing_sram"
+                      href="https://github.com/MarkDing/swd_programing_sram"
                       class="dn jg" rel="noopener nofollow">Arm’s SWD protocol</a> over GPIO <a
-                      href="https://web.archive.org/web/20210207004844/https://en.wikipedia.org/wiki/Bit_banging"
+                      href="https://en.wikipedia.org/wiki/Bit_banging"
                       class="dn jg" rel="noopener nofollow">Bit Banging</a>. OpenOCD was sending data to nRF52 <strong
                       class="ii cu">one bit at a time</strong>… Works fine when OpenOCD is the only task running, <em
                       class="ja">not when it’s sharing the CPU with VSCode and other interactive tasks!</em></p>
@@ -214,19 +214,19 @@
                     class="ig ih gk ii b ij jb ik il im jc in io ip jd iq ir is je it iu iv jf iw ix iz dh hg">Inst<span
                       id="rmm">e</span>ad of sending data over GPIO one bit at a time, <em class="ja">what if we could
                       blast out the data over </em><a
-                      href="https://web.archive.org/web/20210207004844/https://www.raspberrypi.org/documentation/hardware/raspberrypi/spi/README.md"
+                      href="https://www.raspberrypi.org/documentation/hardware/raspberrypi/spi/README.md"
                       class="dn jg" rel="noopener nofollow"><em class="ja">Raspberry Pi’s SPI interface</em></a><em
                       class="ja">?</em></p>
                   <p id="72df"
                     class="ig ih gk ii b ij jb ik il im jc in io ip jd iq ir is je it iu iv jf iw ix iz dh hg"><strong
                       class="ii cu">SPI (</strong><a
-                      href="https://web.archive.org/web/20210207004844/https://en.wikipedia.org/wiki/Serial_Peripheral_Interface"
+                      href="https://en.wikipedia.org/wiki/Serial_Peripheral_Interface"
                       class="dn jg" rel="noopener nofollow"><strong class="ii cu">Serial Peripheral
                         Interface</strong></a><strong class="ii cu">)</strong> is implemented as a <a
-                      href="https://web.archive.org/web/20210207004844/https://github.com/raspberrypi/linux/blob/rpi-3.12.y/drivers/spi/spi-bcm2708.c"
+                      href="https://github.com/raspberrypi/linux/blob/rpi-3.12.y/drivers/spi/spi-bcm2708.c"
                       class="dn jg" rel="noopener nofollow">kernel mode driver</a> with interrupts, so it runs with
                     <strong class="ii cu">high CPU priority</strong>. Raspberry Pi’s <a
-                      href="https://web.archive.org/web/20210207004844/https://www.raspberrypi.org/documentation/hardware/raspberrypi/bcm2835/BCM2835-ARM-Peripherals.pdf"
+                      href="https://www.raspberrypi.org/documentation/hardware/raspberrypi/bcm2835/BCM2835-ARM-Peripherals.pdf"
                       class="dn jg" rel="noopener nofollow">Broadcom microcontroller</a> supports Bidirectional SPI (31
                     MHz) with <strong class="ii cu">precise clocking and buffering</strong>. <em class="ja">Why not use
                       SPI for SWD?</em></p>
@@ -251,9 +251,9 @@
                       class="ii cu">UPDATE: There’s an easier way to build </strong><code
                       class="fy kp kq kr ks b"><strong class="ii cu">openocd-spi</strong></code><strong class="ii cu">
                       and use it to flash firmware… </strong><a
-                      href="https://web.archive.org/web/20210207004844/https://github.com/lupyuen/pinetime-updater"
+                      href="https://github.com/lupyuen/pinetime-updater"
                       class="dn jg" rel="noopener nofollow"><strong class="ii cu">Check out </strong></a><code
-                      class="fy kp kq kr ks b"><a href="https://web.archive.org/web/20210207004844/https://github.com/lupyuen/pinetime-updater" class="dn jg" rel="noopener nofollow"><strong class="ii cu">pinetime-updater</strong></a></code>
+                      class="fy kp kq kr ks b"><a href="https://github.com/lupyuen/pinetime-updater" class="dn jg" rel="noopener nofollow"><strong class="ii cu">pinetime-updater</strong></a></code>
                   </p>
                   <p id="0f26"
                     class="ig ih gk ii b ij jb ik il im jc in io ip jd iq ir is je it iu iv jf iw ix iz dh hg">The SPI
@@ -272,7 +272,7 @@
 
                   <p><img src="https://lupyuen.github.io/images/legacy/d2.png" /></p>
                 <p><em>Connecting Raspberry Pi to PineTime / nRF52.
-                      Based on <a href="https://web.archive.org/web/20210207004844/https://pinout.xyz/" class="dn jg"
+                      Based on <a href="https://pinout.xyz/" class="dn jg"
                         rel="noopener nofollow">https://pinout.xyz/</a></em></p>
 
                 </div>
@@ -302,7 +302,7 @@
                     class="ig ih gk ii b ij jb ik il im jc in io ip jd iq ir is je it iu iv jf iw ix iz dh hg">3️⃣
                     Download and build the modified OpenOCD…</p>
                   <pre
-                    class="lt lu lv lw lx mn mo mp"><span id="b44b" class="hg mq jp gk ks b di mr ms s mt">cd ~<br/>git clone <a href="https://web.archive.org/web/20210207004844/https://github.com/lupyuen/openocd-spi" class="dn jg" rel="noopener nofollow">https://github.com/lupyuen/openocd-spi</a><br/>cd openocd-spi<br/>./bootstrap<br/>./configure --enable-sysfsgpio --enable-bcm2835spi --enable-cmsis-dap<br/>make</span></pre>
+                    class="lt lu lv lw lx mn mo mp"><span id="b44b" class="hg mq jp gk ks b di mr ms s mt">cd ~<br/>git clone <a href="https://github.com/lupyuen/openocd-spi" class="dn jg" rel="noopener nofollow">https://github.com/lupyuen/openocd-spi</a><br/>cd openocd-spi<br/>./bootstrap<br/>./configure --enable-sysfsgpio --enable-bcm2835spi --enable-cmsis-dap<br/>make</span></pre>
                   <p id="8eda"
                     class="ig ih gk ii b ij jb ik il im jc in io ip jd iq ir is je it iu iv jf iw ix iz dh hg">The
                     modified OpenOCD executable is now at <code class="fy kp kq kr ks b">openocd-spi/src/openocd</code>
@@ -311,13 +311,13 @@
                     class="ig ih gk ii b ij jb ik il im jc in io ip jd iq ir is je it iu iv jf iw ix iz dh hg">If you
                     see this error…</p>
                   <pre
-                    class="lt lu lv lw lx mn mo mp"><span id="053f" class="hg mq jp gk ks b di mr ms s mt">Cloning into &#x27;openocd-spi/jimtcl&#x27;...<br/>fatal: unable to access &#x27;<a href="https://web.archive.org/web/20210207004844/http://repo.or.cz/r/jimtcl.git/'" class="dn jg" rel="noopener nofollow">http://repo.or.cz/r/jimtcl.git/&#x27;</a>: Recv failure: Connection reset by peer<br/>fatal: clone of &#x27;<a href="https://web.archive.org/web/20210207004844/http://repo.or.cz/r/jimtcl.git'" class="dn jg" rel="noopener nofollow">http://repo.or.cz/r/jimtcl.git&#x27;</a> into submodule path &#x27;/private/tmp/aa/openocd-spi/jimtcl&#x27; failed</span></pre>
+                    class="lt lu lv lw lx mn mo mp"><span id="053f" class="hg mq jp gk ks b di mr ms s mt">Cloning into &#x27;openocd-spi/jimtcl&#x27;...<br/>fatal: unable to access &#x27;<a href="http://repo.or.cz/r/jimtcl.git/'" class="dn jg" rel="noopener nofollow">http://repo.or.cz/r/jimtcl.git/&#x27;</a>: Recv failure: Connection reset by peer<br/>fatal: clone of &#x27;<a href="http://repo.or.cz/r/jimtcl.git'" class="dn jg" rel="noopener nofollow">http://repo.or.cz/r/jimtcl.git&#x27;</a> into submodule path &#x27;/private/tmp/aa/openocd-spi/jimtcl&#x27; failed</span></pre>
                   <p id="8ba3"
                     class="ig ih gk ii b ij jb ik il im jc in io ip jd iq ir is je it iu iv jf iw ix iz dh hg">It means
                     that the sub-repository for one of the dependencies <code class="fy kp kq kr ks b">jimtcl</code> is
                     temporarily down. You may download the pre-built <code class="fy kp kq kr ks b">openocd-spi</code>
                     binaries <a
-                      href="https://web.archive.org/web/20210207004844/https://github.com/lupyuen/pinetime-rust-mynewt/releases/download/openocd-spi2/openocd-spi.7z"
+                      href="https://github.com/lupyuen/pinetime-rust-mynewt/releases/download/openocd-spi2/openocd-spi.7z"
                       class="dn jg" rel="noopener nofollow">from this link</a>.</p>
                   <p id="5c77"
                     class="ig ih gk ii b ij jb ik il im jc in io ip jd iq ir is je it iu iv jf iw ix iz dh hg">4️⃣ If
@@ -359,9 +359,9 @@
                   <p id="48f5"
                     class="ig ih gk ii b ij jb ik il im jc in io ip jd iq ir is je it iu iv jf iw ix iz dh hg">OpenOCD
                     Script: <code
-                      class="fy kp kq kr ks b"><a href="https://web.archive.org/web/20210207004844/https://github.com/lupyuen/pinetime-rust-mynewt/blob/master/scripts/nrf52/flash-boot.ocd" class="dn jg" rel="noopener nofollow">flash-boot.ocd</a></code>
+                      class="fy kp kq kr ks b"><a href="https://github.com/lupyuen/pinetime-rust-mynewt/blob/master/scripts/nrf52/flash-boot.ocd" class="dn jg" rel="noopener nofollow">flash-boot.ocd</a></code>
                     and <code
-                      class="fy kp kq kr ks b"><a href="https://web.archive.org/web/20210207004844/https://github.com/lupyuen/pinetime-rust-mynewt/blob/master/scripts/nrf52-pi/swd-pi.ocd" class="dn jg" rel="noopener nofollow">swd-pi.ocd</a></code>
+                      class="fy kp kq kr ks b"><a href="https://github.com/lupyuen/pinetime-rust-mynewt/blob/master/scripts/nrf52-pi/swd-pi.ocd" class="dn jg" rel="noopener nofollow">swd-pi.ocd</a></code>
                   </p>
                   <p id="dad4"
                     class="ig ih gk ii b ij jb ik il im jc in io ip jd iq ir is je it iu iv jf iw ix iz dh hg">Shell
@@ -374,7 +374,7 @@
                   <p id="3b47"
                     class="ig ih gk ii b ij jb ik il im jc in io ip jd iq ir is je it iu iv jf iw ix iz dh hg">Make sure
                     that you select <code class="fy kp kq kr ks b">bcm2835spi</code> as the OpenOCD interface (in <code
-                      class="fy kp kq kr ks b"><a href="https://web.archive.org/web/20210207004844/https://github.com/lupyuen/pinetime-rust-mynewt/blob/master/scripts/nrf52-pi/swd-pi.ocd" class="dn jg" rel="noopener nofollow">swd-pi.ocd</a></code>).
+                      class="fy kp kq kr ks b"><a href="https://github.com/lupyuen/pinetime-rust-mynewt/blob/master/scripts/nrf52-pi/swd-pi.ocd" class="dn jg" rel="noopener nofollow">swd-pi.ocd</a></code>).
                   </p>
                   <pre
                     class="lt lu lv lw lx mn mo mp"><span id="ac0e" class="hg mq jp gk ks b di mr ms s mt"># Select the Broadcom SPI interface for Raspberry Pi (SWD transport)<br/>interface bcm2835spi </span><span id="273b" class="hg mq jp gk ks b di mu mv mw mx my ms s mt"># Set the SPI speed in kHz<br/>bcm2835spi_speed 31200  # 31.2 MHz</span></pre>
@@ -384,7 +384,7 @@
                       class="fy kp kq kr ks b">bcm2835spi_speed</code>, the SPI speed in kHz. <code
                       class="fy kp kq kr ks b">bcm2835spi_speed</code> defaults to <code
                       class="fy kp kq kr ks b">31200</code> (31.2 MHz). <a
-                      href="https://web.archive.org/web/20210207004844/https://www.raspberrypi.org/documentation/hardware/raspberrypi/spi/README.md"
+                      href="https://www.raspberrypi.org/documentation/hardware/raspberrypi/spi/README.md"
                       class="dn jg" rel="noopener nofollow"><em class="ja">Check this for the list of supported SPI
                         speeds</em></a></p>
                   <p id="5bc7"
@@ -419,12 +419,12 @@
                       class="ig ih ja ii b ij jb ik il im jc in io ip jd iq ir is je it iu iv jf iw ix iz dh hg"><em
                         class="gk">💎 </em>The Bidirectional SPI we’re using on Raspberry Pi is slightly different from
                       the <a
-                        href="https://web.archive.org/web/20210207004844/https://en.wikipedia.org/wiki/Serial_Peripheral_Interface"
+                        href="https://en.wikipedia.org/wiki/Serial_Peripheral_Interface"
                         class="dn jg" rel="noopener nofollow">normal SPI interface</a>… Normal SPI runs on 3 data pins:
                       SCLK (Clock), MOSI (Host → Target), MISO (Target → Host). The <a
-                        href="https://web.archive.org/web/20210207004844/https://www.raspberrypi.org/documentation/hardware/raspberrypi/bcm2835/BCM2835-ARM-Peripherals.pdf"
+                        href="https://www.raspberrypi.org/documentation/hardware/raspberrypi/bcm2835/BCM2835-ARM-Peripherals.pdf"
                         class="dn jg" rel="noopener nofollow">Broadcom microcontroller on Pi</a> supports <a
-                        href="https://web.archive.org/web/20210207004844/https://www.raspberrypi.org/documentation/hardware/raspberrypi/spi/README.md"
+                        href="https://www.raspberrypi.org/documentation/hardware/raspberrypi/spi/README.md"
                         class="dn jg" rel="noopener nofollow">SPI with 2 data pins</a>, by merging the MOSI and MISO
                       pins. Hence it’s called “Bidirectional SPI”. It’s pin-compatible with SWD, which also uses 2 data
                       pins.</p>
@@ -461,7 +461,7 @@
 <p><img src="https://lupyuen.github.io/images/legacy/d5.png" /></p>
 <p><em>SWD Read Operation with 2 undefined trailing
                     bits. From <a
-                      href="https://web.archive.org/web/20210207004844/https://docs.google.com/spreadsheets/d/12oXe1MTTEZVIbdmFXsOgOXVFHCQnYVvIw6fRpIQZybg/edit#gid=0"
+                      href="https://docs.google.com/spreadsheets/d/12oXe1MTTEZVIbdmFXsOgOXVFHCQnYVvIw6fRpIQZybg/edit#gid=0"
                       class="dn jg"
                       rel="noopener nofollow">https://docs.google.com/spreadsheets/d/12oXe1MTTEZVIbdmFXsOgOXVFHCQnYVvIw6fRpIQZybg/edit#gid=0</a>
                   </em></p>
@@ -544,7 +544,7 @@
                       
 <p><em>Sending the JTAG-To-SWD Sequence to reset SWD
                       connection. From <a
-                        href="https://web.archive.org/web/20210207004844/https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/swd.h"
+                        href="https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/swd.h"
                         class="dn jg"
                         rel="noopener nofollow">https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/swd.h</a>
 </em></p>
@@ -560,7 +560,7 @@
 
 <p><em>After every SWD Read Operation, send the
                       JTAG-To-SWD Sequence to reset SWD connection. From <a
-                        href="https://web.archive.org/web/20210207004844/https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bcm2835spi.c"
+                        href="https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bcm2835spi.c"
                         class="dn jg"
                         rel="noopener nofollow">https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bcm2835spi.c</a>
 </em></p>
@@ -588,7 +588,7 @@
                   <p><img src="https://lupyuen.github.io/images/legacy/d9.png" /></p>
 <p><em>Resetting the SWD connection. From ARM® Debug
                       Interface v5 Architecture Specification <a
-                        href="https://web.archive.org/web/20210207004844/https://github.com/MarkDing/swd_programing_sram/blob/master/Ref/ARM_debug.pdf"
+                        href="https://github.com/MarkDing/swd_programing_sram/blob/master/Ref/ARM_debug.pdf"
                         class="dn jg"
                         rel="noopener nofollow">https://github.com/MarkDing/swd_programing_sram/blob/master/Ref/ARM_debug.pdf</a>
 </em></p>
@@ -611,7 +611,7 @@
                 <p><img src="https://lupyuen.github.io/images/legacy/d10.png" /></p>
 <p><em>Read IDCODE Operation: Normal operation (above)
                     and Throwaway operation (below). From <a
-                      href="https://web.archive.org/web/20210207004844/https://docs.google.com/spreadsheets/d/12oXe1MTTEZVIbdmFXsOgOXVFHCQnYVvIw6fRpIQZybg/edit#gid=0"
+                      href="https://docs.google.com/spreadsheets/d/12oXe1MTTEZVIbdmFXsOgOXVFHCQnYVvIw6fRpIQZybg/edit#gid=0"
                       class="dn jg"
                       rel="noopener nofollow">https://docs.google.com/spreadsheets/d/12oXe1MTTEZVIbdmFXsOgOXVFHCQnYVvIw6fRpIQZybg/edit#gid=0</a>
 </em></p>
@@ -664,7 +664,7 @@
                     the SPI implementation of SWD, we see this special Throwaway Read IDCODE (<code
                       class="fy kp kq kr ks b">94 02 00 00 00 00</code>) that’s sent after every SWD connection reset in
                     <code
-                      class="fy kp kq kr ks b"><a href="https://web.archive.org/web/20210207004844/https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/spi.c" class="dn jg" rel="noopener nofollow">spi_transmit_resync</a>()</code>.
+                      class="fy kp kq kr ks b"><a href="https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/spi.c" class="dn jg" rel="noopener nofollow">spi_transmit_resync</a>()</code>.
                     To give sufficient clock cycles for nRF52 to do its job, we insert a null byte before and after the
                     Throwaway Read IDCODE: <code
                       class="fy kp kq kr ks b"><strong class="ii cu">00</strong> 94 02 00 00 00 00 <strong class="ii cu">00</strong></code>
@@ -673,7 +673,7 @@
                   <p><script src="https://gist.github.com/lupyuen/0d45e70d60bcd303a12392f13eebf80b.js"></script></p>
 <p><em>Reset SWD Connection with Throwaway Read
                       IDCODE. From <a
-                        href="https://web.archive.org/web/20210207004844/https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bcm2835spi.c"
+                        href="https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bcm2835spi.c"
                         class="dn jg"
                         rel="noopener nofollow">https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bcm2835spi.c</a>
 </em></p>
@@ -705,7 +705,7 @@
                 <p><img src="https://lupyuen.github.io/images/legacy/d11.png" /></p>
 <p><em>SWD Write Operation padded with 2 null bits.
                     From <a
-                      href="https://web.archive.org/web/20210207004844/https://docs.google.com/spreadsheets/d/12oXe1MTTEZVIbdmFXsOgOXVFHCQnYVvIw6fRpIQZybg/edit#gid=0"
+                      href="https://docs.google.com/spreadsheets/d/12oXe1MTTEZVIbdmFXsOgOXVFHCQnYVvIw6fRpIQZybg/edit#gid=0"
                       class="dn jg"
                       rel="noopener nofollow">https://docs.google.com/spreadsheets/d/12oXe1MTTEZVIbdmFXsOgOXVFHCQnYVvIw6fRpIQZybg/edit#gid=0</a>
                   </figcaption></em></p>
@@ -852,7 +852,7 @@
 
 <p><em>Our SPI code always returns OK to OpenOCD for
                       SWD Write Acknowledgement. From <a
-                        href="https://web.archive.org/web/20210207004844/https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bcm2835spi.c"
+                        href="https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bcm2835spi.c"
                         class="dn jg"
                         rel="noopener nofollow">https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bcm2835spi.c</a>
 </em></p>
@@ -865,7 +865,7 @@
                     class="ig ih gk ii b ij jb ik il im jc in io ip jd iq ir is je it iu iv jf iw ix iz dh hg">Here’s
                     how we mitigate the risk of write failures: <strong class="ii cu">We always read and verify the ROM
                       contents after flashing</strong>, like in <a
-                      href="https://web.archive.org/web/20210207004844/https://github.com/lupyuen/pinetime-rust-mynewt/blob/master/scripts/nrf52/flash-app.ocd"
+                      href="https://github.com/lupyuen/pinetime-rust-mynewt/blob/master/scripts/nrf52/flash-app.ocd"
                       class="dn jg" rel="noopener nofollow">this OpenOCD script</a>…</p>
                   <pre
                     class="lt lu lv lw lx mn mo mp"><span id="dd35" class="hg mq jp gk ks b di mr ms s mt">program bin/targets/nrf52_my_sensor/app/apps/my_sensor_app/my_sensor_app.img verify 0x00008000</span></pre>
@@ -885,7 +885,7 @@
 
 <p><em>Sending 8 whole bytes from Pi to nRF52 for an
                       SPI Write Operation. From <a
-                        href="https://web.archive.org/web/20210207004844/https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bcm2835spi.c"
+                        href="https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bcm2835spi.c"
                         class="dn jg"
                         rel="noopener nofollow">https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bcm2835spi.c</a>
 </em></p>
@@ -904,7 +904,7 @@
                   <p id="6561"
                     class="ig ih gk ii b ij kk ik il im kl in io ip km iq ir is kn it iu iv ko iw ix iz dh hg">We added
                     debug logs to the existing OpenOCD code in <code
-                      class="fy kp kq kr ks b"><a href="https://web.archive.org/web/20210207004844/https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bitbang.c#L414-L464" class="dn jg" rel="noopener nofollow">bitbang.c</a></code>
+                      class="fy kp kq kr ks b"><a href="https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bitbang.c#L414-L464" class="dn jg" rel="noopener nofollow">bitbang.c</a></code>
                     to compare the old GPIO and new SPI implementations of the SWD protocol.</p>
                   <p id="b1f6"
                     class="ig ih gk ii b ij jb ik il im jc in io ip jd iq ir is je it iu iv jf iw ix iz dh hg">Remember
@@ -927,7 +927,7 @@
                   <p><img src="https://lupyuen.github.io/images/legacy/d17.png" /></p>
 <p><em>Comparing the logs from SWD over GPIO (left)
                       with SWD over SPI (right). From <a
-                        href="https://web.archive.org/web/20210207004844/https://docs.google.com/spreadsheets/d/12oXe1MTTEZVIbdmFXsOgOXVFHCQnYVvIw6fRpIQZybg/edit#gid=900511571"
+                        href="https://docs.google.com/spreadsheets/d/12oXe1MTTEZVIbdmFXsOgOXVFHCQnYVvIw6fRpIQZybg/edit#gid=900511571"
                         class="dn jg"
                         rel="noopener nofollow">https://docs.google.com/spreadsheets/d/12oXe1MTTEZVIbdmFXsOgOXVFHCQnYVvIw6fRpIQZybg/edit#gid=900511571</a>
 </em></p>
@@ -940,7 +940,7 @@
                   <p id="6270"
                     class="ig ih gk ii b ij jb ik il im jc in io ip jd iq ir is je it iu iv jf iw ix iz dh hg">What’s
                     <code class="fy kp kq kr ks b">f0000003</code>? Let’s key that <a
-                      href="https://web.archive.org/web/20210207004844/https://docs.google.com/spreadsheets/d/12oXe1MTTEZVIbdmFXsOgOXVFHCQnYVvIw6fRpIQZybg/edit#gid=2077834467"
+                      href="https://docs.google.com/spreadsheets/d/12oXe1MTTEZVIbdmFXsOgOXVFHCQnYVvIw6fRpIQZybg/edit#gid=2077834467"
                       class="dn jg" rel="noopener nofollow">into this spreadsheet</a> to decode the Control/Status
                     value…</p>
                 </div>
@@ -951,7 +951,7 @@
                   
                 <p><img src="https://lupyuen.github.io/images/legacy/d18.png" /></p>
 <p><em>Control/Status Register Decoder: <a
-                      href="https://web.archive.org/web/20210207004844/https://docs.google.com/spreadsheets/d/12oXe1MTTEZVIbdmFXsOgOXVFHCQnYVvIw6fRpIQZybg/edit#gid=2077834467"
+                      href="https://docs.google.com/spreadsheets/d/12oXe1MTTEZVIbdmFXsOgOXVFHCQnYVvIw6fRpIQZybg/edit#gid=2077834467"
                       class="dn jg"
                       rel="noopener nofollow">https://docs.google.com/spreadsheets/d/12oXe1MTTEZVIbdmFXsOgOXVFHCQnYVvIw6fRpIQZybg/edit#gid=2077834467</a>
 </em></p>
@@ -969,7 +969,7 @@
                   <p><img src="https://lupyuen.github.io/images/legacy/d19.png" /></p>
 <p><em>STICKYORUN flag in the Control/Status
                       Register. From ARM® Debug Interface v5 Architecture Specification <a
-                        href="https://web.archive.org/web/20210207004844/https://github.com/MarkDing/swd_programing_sram/blob/master/Ref/ARM_debug.pdf"
+                        href="https://github.com/MarkDing/swd_programing_sram/blob/master/Ref/ARM_debug.pdf"
                         class="dn jg"
                         rel="noopener nofollow">https://github.com/MarkDing/swd_programing_sram/blob/master/Ref/ARM_debug.pdf</a>
 </em></p>
@@ -989,7 +989,7 @@
                   <p><img src="https://lupyuen.github.io/images/legacy/d20.png" /></p>
 <p><em>ABORT Register. From ARM® Debug Interface v5
                       Architecture Specification <a
-                        href="https://web.archive.org/web/20210207004844/https://github.com/MarkDing/swd_programing_sram/blob/master/Ref/ARM_debug.pdf"
+                        href="https://github.com/MarkDing/swd_programing_sram/blob/master/Ref/ARM_debug.pdf"
                         class="dn jg"
                         rel="noopener nofollow">https://github.com/MarkDing/swd_programing_sram/blob/master/Ref/ARM_debug.pdf</a>
 </em></p>
@@ -1029,7 +1029,7 @@
 
 <p><em>Clearing the errors at every SWD connect
                       reset by writing to ABORT. From <a
-                        href="https://web.archive.org/web/20210207004844/https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bcm2835spi.c"
+                        href="https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bcm2835spi.c"
                         class="dn jg"
                         rel="noopener nofollow">https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bcm2835spi.c</a>
 </em></p>
@@ -1055,7 +1055,7 @@
                   <p id="8ac8"
                     class="ig ih gk ii b ij jb ik il im jc in io ip jd iq ir is je it iu iv jf iw ix iz dh hg">OpenOCD
                     calls <code class="fy kp kq kr ks b">bitbang_exchange()</code> in <code
-                      class="fy kp kq kr ks b"><a href="https://web.archive.org/web/20210207004844/https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bitbang.c#L414-L464" class="dn jg" rel="noopener nofollow">bitbang.c</a></code>
+                      class="fy kp kq kr ks b"><a href="https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bitbang.c#L414-L464" class="dn jg" rel="noopener nofollow">bitbang.c</a></code>
                     whenever it needs to transmit or receive a chunk of bits in a fixed direction. OpenOCD calls <code
                       class="fy kp kq kr ks b">bitbang_exchange()</code> two times for every SWD Read, three times for
                     every SWD Write…</p>
@@ -1071,7 +1071,7 @@
 <p><em><code
                           class="fy kp kq kr ks b">SWD Read: bitbang_exchange()</code> called for two chunks of bits.
                         From <a
-                          href="https://web.archive.org/web/20210207004844/https://github.com/MarkDing/swd_programing_sram/blob/master/Ref/ARM_debug.pdf"
+                          href="https://github.com/MarkDing/swd_programing_sram/blob/master/Ref/ARM_debug.pdf"
                           class="dn jg"
                           rel="noopener nofollow">https://github.com/MarkDing/swd_programing_sram/blob/master/Ref/ARM_debug.pdf</a>
 </em></p>
@@ -1083,7 +1083,7 @@
 <p><em><code
                           class="fy kp kq kr ks b">SWD Write: bitbang_exchange()</code> called for three chunks of bits.
                         From <a
-                          href="https://web.archive.org/web/20210207004844/https://github.com/MarkDing/swd_programing_sram/blob/master/Ref/ARM_debug.pdf"
+                          href="https://github.com/MarkDing/swd_programing_sram/blob/master/Ref/ARM_debug.pdf"
                           class="dn jg"
                           rel="noopener nofollow">https://github.com/MarkDing/swd_programing_sram/blob/master/Ref/ARM_debug.pdf</a>
 </em></p>
@@ -1105,7 +1105,7 @@
                     receives chunks of bits over GPIO…</p>
                     <p><script src="https://gist.github.com/lupyuen/3cd1e1d2b020895389aa08262e77c8c4.js"></script></p>
 <p><em>From <a
-                        href="https://web.archive.org/web/20210207004844/https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bitbang.c"
+                        href="https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bitbang.c"
                         class="dn jg"
                         rel="noopener nofollow">https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bitbang.c</a>
 </em></p>
@@ -1116,7 +1116,7 @@
                     transmit and receives chunks of bits over SPI…</p>
                     <p><script src="https://gist.github.com/lupyuen/7c86cf1503cd13b08dd3d960bc2fb831.js"></script></p>
 <p><em>From <a
-                        href="https://web.archive.org/web/20210207004844/https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bitbang.c"
+                        href="https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bitbang.c"
                         class="dn jg"
                         rel="noopener nofollow">https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bitbang.c</a>
 </em></p>
@@ -1125,11 +1125,11 @@
                     class="ig ih gk ii b ij jb ik il im jc in io ip jd iq ir is je it iu iv jf iw ix iz dh hg">Which
                     simply forwards the call to our new function <code class="fy kp kq kr ks b">spi_exchange()</code> in
                     <code
-                      class="fy kp kq kr ks b"><a href="https://web.archive.org/web/20210207004844/https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bcm2835spi.c" class="dn jg" rel="noopener nofollow">bcm2835spi.c</a></code>.
+                      class="fy kp kq kr ks b"><a href="https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bcm2835spi.c" class="dn jg" rel="noopener nofollow">bcm2835spi.c</a></code>.
                   </p>
                   <p><script src="https://gist.github.com/lupyuen/252ac7dfc2f9426b8d29228ee5732031.js"></script></p>
 <p><em>From <a
-                        href="https://web.archive.org/web/20210207004844/https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bcm2835spi.c"
+                        href="https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bcm2835spi.c"
                         class="dn jg"
                         rel="noopener nofollow">https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bcm2835spi.c</a>
 </em></p>
@@ -1143,7 +1143,7 @@
                     <p><script src="https://gist.github.com/lupyuen/82adeeecf84f6b62d90d9536c3043105.js"></script></p>
 <p><em>Deducing the chunk by offset and bit_cnt.
                       From <a
-                        href="https://web.archive.org/web/20210207004844/https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bcm2835spi.c"
+                        href="https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bcm2835spi.c"
                         class="dn jg"
                         rel="noopener nofollow">https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bcm2835spi.c</a>
 </em></p>
@@ -1153,7 +1153,7 @@
                       class="ja">(Yeah this chunk handling smells bad… We should inject the SPI code into </em><code
                       class="fy kp kq kr ks b">bitbang_swd_read_reg()</code><em class="ja"> and </em><code
                       class="fy kp kq kr ks b">bitbang_swd_write_reg()</code><em class="ja"> in </em><code
-                      class="fy kp kq kr ks b"><a href="https://web.archive.org/web/20210207004844/https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bitbang.c#L414-L464" class="dn jg" rel="noopener nofollow">bitbang.c</a></code><em
+                      class="fy kp kq kr ks b"><a href="https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bitbang.c#L414-L464" class="dn jg" rel="noopener nofollow">bitbang.c</a></code><em
                       class="ja"> instead)</em></p>
                   <p id="b16e"
                     class="ig ih gk ii b ij jb ik il im jc in io ip jd iq ir is je it iu iv jf iw ix iz dh hg">In
@@ -1161,7 +1161,7 @@
                     Significant Bit format to manipulate the bytes. So we need to the reverse the bits like this…</p>
                     <p><script src="https://gist.github.com/lupyuen/92c7ed3bf9c3e6969b469aa471e07151.js"></script></p>
 <p><em>From <a
-                        href="https://web.archive.org/web/20210207004844/https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bcm2835spi.c"
+                        href="https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bcm2835spi.c"
                         class="dn jg"
                         rel="noopener nofollow">https://github.com/lupyuen/openocd-spi/blob/master/src/jtag/drivers/bcm2835spi.c</a>
 </em></p>
@@ -1180,7 +1180,7 @@
                   <p id="20e2"
                     class="ig ih gk ii b ij kk ik il im kl in io ip km iq ir is kn it iu iv ko iw ix iz dh hg">Before
                     implementing SWD over SPI in OpenOCD, I used a simple C program <code
-                      class="fy kp kq kr ks b"><a href="https://web.archive.org/web/20210207004844/https://github.com/lupyuen/pi-swd-spi/blob/master/pi-swd-spi.c" class="dn jg" rel="noopener nofollow">pi-swd-spi.c</a></code>
+                      class="fy kp kq kr ks b"><a href="https://github.com/lupyuen/pi-swd-spi/blob/master/pi-swd-spi.c" class="dn jg" rel="noopener nofollow">pi-swd-spi.c</a></code>
                     to test the individual SWD functions. I hope you’ll do the same when you’re modifying OpenOCD.</p>
                   <p id="8f99"
                     class="ig ih gk ii b ij jb ik il im jc in io ip jd iq ir is je it iu iv jf iw ix iz dh hg">The
@@ -1188,11 +1188,11 @@
                     JTAG-To-SWD reset, Throwaway Read IDCODE, Write ABORT, Read CTRL/STAT, …</p>
                   <p id="5bed"
                     class="ig ih gk ii b ij jb ik il im jc in io ip jd iq ir is je it iu iv jf iw ix iz dh hg"><a
-                      href="https://web.archive.org/web/20210207004844/https://github.com/lupyuen/pi-swd-spi/blob/master/pi-swd-spi.c#L296-L394"
+                      href="https://github.com/lupyuen/pi-swd-spi/blob/master/pi-swd-spi.c#L296-L394"
                       class="dn jg" rel="noopener nofollow">Here’s the output from the test program</a>…</p>
                       <p><script src="https://gist.github.com/lupyuen/41620f4978db2404556f2ffa8dd1ac59.js"></script></p>
 <p><em>SWD SPI Test Log. From <a
-                        href="https://web.archive.org/web/20210207004844/https://github.com/lupyuen/pi-swd-spi/blob/master/pi-swd-spi.c#L296-L394"
+                        href="https://github.com/lupyuen/pi-swd-spi/blob/master/pi-swd-spi.c#L296-L394"
                         class="dn jg"
                         rel="noopener nofollow">https://github.com/lupyuen/pi-swd-spi/blob/master/pi-swd-spi.c#L296-L394</a>
 </em></p>
@@ -1210,7 +1210,7 @@
                     Is Bad</h1>
                   <p id="f168"
                     class="ig ih gk ii b ij kk ik il im kl in io ip km iq ir is kn it iu iv ko iw ix iz dh hg"><a
-                      href="https://web.archive.org/web/20210207004844/https://en.wikipedia.org/wiki/Bit_banging"
+                      href="https://en.wikipedia.org/wiki/Bit_banging"
                       class="dn jg" rel="noopener nofollow">Bit Banging</a> means sending and receiving data one bit at
                     a time… By looping around, waiting and sending one bit, waiting and sending another bit, …</p>
                   <p id="c9a9"
@@ -1251,7 +1251,7 @@
                       class="ja">If Arm had slipped in two measly bits and rounded up to 48 bits, we would have been
                       using SWD over SPI, reliably and efficiently, a long time ago!</em></p>
                   <div class="kt ku kv kw kx ky"><a
-                      href="https://web.archive.org/web/20210207004844/https://github.com/sponsors/lupyuen"
+                      href="https://github.com/sponsors/lupyuen"
                       target="_blank" rel="noopener nofollow">
                       <div class="kz n ed">
                         <div class="la n ac p lb lc">
@@ -1293,7 +1293,7 @@
                     class="ig ih gk ii b ij kk ik il im kl in io ip km iq ir is kn it iu iv ko iw ix iz dh hg">The SPI
                     version of OpenOCD is now available as the PineTime Debugger. <em class="ja">Thanks everyone for
                       testing </em><code
-                      class="fy kp kq kr ks b"><a href="https://web.archive.org/web/20210207004844/https://github.com/lupyuen/openocd-spi" class="dn jg" rel="noopener nofollow">openocd-spi</a></code><em
+                      class="fy kp kq kr ks b"><a href="https://github.com/lupyuen/openocd-spi" class="dn jg" rel="noopener nofollow">openocd-spi</a></code><em
                       class="ja">… PineTime Debugger wouldn’t have been possible without you!</em> 😃</p>
                   <p id="acdf"
                     class="ig ih gk ii b ij jb ik il im jc in io ip jd iq ir is je it iu iv jf iw ix iz dh hg">Read this
@@ -1321,29 +1321,29 @@
                   <ul class="">
                     <li id="2003"
                       class="ig ih gk ii b ij jb ik il im jc in io ip jd iq ir is je it iu iv jf iw ix iz os nx ny hg">
-                      <a href="https://web.archive.org/web/20210207004844/https://github.com/MarkDing/swd_programing_sram"
+                      <a href="https://github.com/MarkDing/swd_programing_sram"
                         class="dn jg" rel="noopener nofollow"><em class="ja">Introduction to SWD</em></a></li>
                     <li id="6b0b"
                       class="ig ih gk ii b ij nz ik il im oa in io ip ob iq ir is oc it iu iv od iw ix iz os nx ny hg">
-                      <a href="https://web.archive.org/web/20210207004844/https://github.com/MarkDing/swd_programing_sram/blob/master/Ref/ARM_debug.pdf"
+                      <a href="https://github.com/MarkDing/swd_programing_sram/blob/master/Ref/ARM_debug.pdf"
                         class="dn jg" rel="noopener nofollow"><em class="ja">ARM® Debug Interface v5 Architecture
                           Specification</em></a></li>
                     <li id="60ea"
                       class="ig ih gk ii b ij nz ik il im oa in io ip ob iq ir is oc it iu iv od iw ix iz os nx ny hg">
-                      <a href="https://web.archive.org/web/20210207004844/https://www.raspberrypi.org/documentation/hardware/raspberrypi/spi/README.md"
+                      <a href="https://www.raspberrypi.org/documentation/hardware/raspberrypi/spi/README.md"
                         class="dn jg" rel="noopener nofollow"><em class="ja">Raspberry Pi SPI Hardware</em></a></li>
                     <li id="f7ef"
                       class="ig ih gk ii b ij nz ik il im oa in io ip ob iq ir is oc it iu iv od iw ix iz os nx ny hg">
-                      <a href="https://web.archive.org/web/20210207004844/https://github.com/raspberrypi/linux/blob/rpi-3.12.y/drivers/spi/spi-bcm2708.c"
+                      <a href="https://github.com/raspberrypi/linux/blob/rpi-3.12.y/drivers/spi/spi-bcm2708.c"
                         class="dn jg" rel="noopener nofollow"><em class="ja">Raspberry Pi SPI Kernel Driver</em></a>
                     </li>
                     <li id="9a3b"
                       class="ig ih gk ii b ij nz ik il im oa in io ip ob iq ir is oc it iu iv od iw ix iz os nx ny hg">
-                      <a href="https://web.archive.org/web/20210207004844/https://www.raspberrypi.org/documentation/hardware/raspberrypi/bcm2835/BCM2835-ARM-Peripherals.pdf"
+                      <a href="https://www.raspberrypi.org/documentation/hardware/raspberrypi/bcm2835/BCM2835-ARM-Peripherals.pdf"
                         class="dn jg" rel="noopener nofollow"><em class="ja">BCM2835 Peripherals Datasheet</em></a></li>
                     <li id="dc67"
                       class="ig ih gk ii b ij nz ik il im oa in io ip ob iq ir is oc it iu iv od iw ix iz os nx ny hg">
-                      <a href="https://web.archive.org/web/20210207004844/https://docs.google.com/spreadsheets/d/12oXe1MTTEZVIbdmFXsOgOXVFHCQnYVvIw6fRpIQZybg/edit#gid=0"
+                      <a href="https://docs.google.com/spreadsheets/d/12oXe1MTTEZVIbdmFXsOgOXVFHCQnYVvIw6fRpIQZybg/edit#gid=0"
                         class="dn jg" rel="noopener nofollow"><em class="ja">SWD mapping to SPI bytes</em></a></li>
                   </ul>
                 </div>
