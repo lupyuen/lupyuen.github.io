@@ -245,7 +245,7 @@
         </item>
         <item>
             <title>Optimising PineTime’s Display Driver with Rust and Mynewt</title>
-            <link>https://web.archive.org/web/20200121150820/https://medium.com/@ly.lee/optimising-pinetimes-display-driver-with-rust-and-mynewt-3ba269ea2f5c</link>
+            <link>https://lupyuen.github.io/articles/optimising-pinetimes-display-driver-with-rust-and-mynewt</link>
             <description><![CDATA[Simple tweaks like Batched Updates and Non-Blocking SPI can have a huge impact on rendering performance]]></description>
             <pubDate>Sun, 29 Dec 2019 00:00:00 +0000</pubDate>
         </item>

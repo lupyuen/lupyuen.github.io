@@ -902,7 +902,7 @@ Each operating system has its own Hardware Abstraction Layer (HAL) for talking t
 
 >_What if we could standardise the HAL across all operating systems?_
 
-There's one possibility: __Adopt the Rust Embedded HAL.__ I have previously ported the Rust Embedded HAL to Mynewt (for PineTime). [More details](https://web.archive.org/web/20200121150820/https://medium.com/@ly.lee/optimising-pinetimes-display-driver-with-rust-and-mynewt-3ba269ea2f5c)
+There's one possibility: __Adopt the Rust Embedded HAL.__ I have previously ported the Rust Embedded HAL to Mynewt (for PineTime). [More details](https://lupyuen.github.io/articles/optimising-pinetimes-display-driver-with-rust-and-mynewt)
 
 Once we have the Rust Embedded HAL ported to Mynewt (and other operating systems), we'll be able to use the __Rust Embedded Drivers__. [List of Rust Embedded Drivers](https://github.com/rust-embedded/awesome-embedded-rust/blob/master/README.md#driver-crates)
 
