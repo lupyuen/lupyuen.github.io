@@ -6,7 +6,9 @@
 *.ch8 binary
 *.exe binary
 *.fzz binary
+*.gif binary
 *.jpg binary
+*.jpeg binary
 *.png binary
 *.mp4 binary
 *.woff binary
