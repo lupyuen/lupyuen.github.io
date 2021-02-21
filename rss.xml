@@ -269,7 +269,7 @@
         </item>
         <item>
             <title>Building a Rust Driver for PineTime’s Touch Controller</title>
-            <link>https://web.archive.org/web/20191222054305/https://medium.com/@ly.lee/building-a-rust-driver-for-pinetimes-touch-controller-cbc1a5d5d3e9</link>
+            <link>https://lupyuen.github.io/articles/building-a-rust-driver-for-pinetimes-touch-controller</link>
             <description><![CDATA[Programming the Hynitron CST816S Capacitive Touch Controller]]></description>
             <pubDate>Fri, 22 Nov 2019 00:00:00 +0000</pubDate>
         </item>

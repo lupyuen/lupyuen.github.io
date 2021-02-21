@@ -226,14 +226,14 @@
                 <h1 id="6a39" class="hr hs ec bk bj ht ee hu eg hv hw hx hy hz ia ib ic">PineTime Touch Screen = Touch
                   Panel + Display Panel</h1>
                 <p id="e636" class="gp gq ec bk gr b gs id gu ie gw if gy ig ha ih hc">We carefully pry open the <a
-                    href="https://web.archive.org/web/20191222054305/https://wiki.pine64.org/index.php/PineTime"
+                    href="https://wiki.pine64.org/index.php/PineTime"
                     class="at cg hd he hf hg" target="_blank" rel="noopener nofollow">PineTime Smart Watch</a> with
                   tweezers (or forceps) and examine the Touch Screen. It looks like a single chunk of plastic… But it’s
                   actually two delicate pieces fused together: <a
-                    href="https://web.archive.org/web/20191222054305/http://files.pine64.org/doc/datasheet/pinetime/PineTime%20Touch%20Panel.jpg"
+                    href="http://files.pine64.org/doc/datasheet/pinetime/PineTime%20Touch%20Panel.jpg"
                     class="at cg hd he hf hg" target="_blank" rel="noopener nofollow"><strong class="gr ii">Touch
                       Panel</strong></a> and <a
-                    href="https://web.archive.org/web/20191222054305/http://files.pine64.org/doc/datasheet/pinetime/PineTime%20LCD%20Panel.jpg"
+                    href="http://files.pine64.org/doc/datasheet/pinetime/PineTime%20LCD%20Panel.jpg"
                     class="at cg hd he hf hg" target="_blank" rel="noopener nofollow"><strong class="gr ii">Display
                       Panel</strong></a>…</p>
                 <figure class="ik il im in io cz cl cm paragraph-image">
@@ -241,11 +241,11 @@
                   <p><img src="https://lupyuen.github.io/images/legacy/i2.png" /></p>
 
                   <p><em>PineTime Touch Panel and Display Panel. From
-                    <a href="https://web.archive.org/web/20191222054305/http://files.pine64.org/doc/datasheet/pinetime/PineTime%20LCD%20Panel.jpg"
+                    <a href="http://files.pine64.org/doc/datasheet/pinetime/PineTime%20LCD%20Panel.jpg"
                       class="at cg hd he hf hg" target="_blank"
                       rel="noopener nofollow">http://files.pine64.org/doc/datasheet/pinetime/PineTime%20LCD%20Panel.jpg</a>
                     and <a
-                      href="https://web.archive.org/web/20191222054305/http://files.pine64.org/doc/datasheet/pinetime/PineTime%20Touch%20Panel.jpg"
+                      href="http://files.pine64.org/doc/datasheet/pinetime/PineTime%20Touch%20Panel.jpg"
                       class="at cg hd he hf hg" target="_blank"
                       rel="noopener nofollow">http://files.pine64.org/doc/datasheet/pinetime/PineTime%20Touch%20Panel.jpg</a>
                   </em></p>
@@ -273,7 +273,7 @@
                     href="https://lupyuen.github.io/articles/sneak-peek-of-pinetime-smart-watch-and-why-its-perfect-for-teaching-iot">programmed
                     the ST7789 Display Controller</a> (via SPI) to render colour text and graphics on the Display Panel.
                   This week we’ll look at the <a
-                    href="https://web.archive.org/web/20191222054305/https://wiki.pine64.org/images/5/51/CST816S%E6%95%B0%E6%8D%AE%E6%89%8B%E5%86%8CV1.1.en.pdf"
+                    href="https://wiki.pine64.org/images/5/51/CST816S%E6%95%B0%E6%8D%AE%E6%89%8B%E5%86%8CV1.1.en.pdf"
                     class="at cg hd he hf hg" target="_blank" rel="noopener nofollow"><strong class="gr ii">Hynitron
                       CST816S Capacitive Touch Controller</strong></a> for PineTime’s Touch Panel…</p>
               </div>
@@ -287,10 +287,10 @@
                   Touch Controller</h1>
                 <p id="d9fa" class="gp gq ec bk gr b gs id gu ie gw if gy ig ha ih hc">The PineTime Touch Controller is
                   connected to the nRF52 Microcontroller via an <a
-                    href="https://web.archive.org/web/20191222054305/https://en.wikipedia.org/wiki/I%C2%B2C"
+                    href="https://en.wikipedia.org/wiki/I%C2%B2C"
                     class="at cg hd he hf hg" target="_blank" rel="noopener nofollow"><strong class="gr ii">I2C
                       Bus</strong></a>. That stands for <a
-                    href="https://web.archive.org/web/20191222054305/https://en.wikipedia.org/wiki/I%C2%B2C"
+                    href="https://en.wikipedia.org/wiki/I%C2%B2C"
                     class="at cg hd he hf hg" target="_blank" rel="noopener nofollow"><strong
                       class="gr ii">Inter-Integrated Circuit</strong></a><strong class="gr ii"> </strong>and is
                   pronounced “<em class="hh">I-squared-C”. (I used to call it “I-two-C” until my IoT students corrected
@@ -339,7 +339,7 @@
                     are no Ghost Stations in I2C…</em> When the Microcontroller sends a packet to a Slave Device at a
                   particular address, the <strong class="gr ii">Slave Device must respond</strong> with another packet.
                   This called <a
-                    href="https://web.archive.org/web/20191222054305/https://mynewt.apache.org/latest/os/modules/hal/hal_i2c/hal_i2c.html#c.hal_i2c_master_probe"
+                    href="https://mynewt.apache.org/latest/os/modules/hal/hal_i2c/hal_i2c.html#c.hal_i2c_master_probe"
                     class="at cg hd he hf hg" target="_blank" rel="noopener nofollow"><strong class="gr ii">I2C
                       Probing</strong></a> and the Rust code on PineTime looks like this…</p>
                 <figure class="ik il im in io cz">
@@ -348,7 +348,7 @@
 
                   <p><em>Probing the I2C Bus on PineTime to discover
                     I2C devices. From <a
-                      href="https://web.archive.org/web/20191222054305/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/pinetime/rust/app/src/touch_sensor.rs"
+                      href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/pinetime/rust/app/src/touch_sensor.rs"
                       class="at cg hd he hf hg" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/pinetime/rust/app/src/touch_sensor.rs</a>
                   </em></p>
@@ -356,16 +356,16 @@
                 <p id="92bb" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">There are only <strong
                     class="gr ii">128 possible I2C Addresses</strong> (0 to 127) so it’s feasible to identify all I2C
                   Slave Devices by probing each address. <em class="hh">(</em><a
-                    href="https://web.archive.org/web/20191222054305/https://learn.adafruit.com/i2c-addresses/the-list"
+                    href="https://learn.adafruit.com/i2c-addresses/the-list"
                     class="at cg hd he hf hg" target="_blank" rel="noopener nofollow"><em class="hh">Here’s a list of
                       I2C Addresses for popular devices</em></a><em class="hh">)</em></p>
                 <p id="e09b" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">Running the above code on
                   PineTime we find <strong class="gr ii">two devices</strong> on our I2C Bus, at I2C Addresses <code
                     class="dm jg jh ji jj b">0x18</code> and <code class="dm jg jh ji jj b">0x44</code>. That’s the <a
-                    href="https://web.archive.org/web/20191222054305/http://files.pine64.org/doc/datasheet/pinetime/BST-BMA421-FL000.pdf"
+                    href="http://files.pine64.org/doc/datasheet/pinetime/BST-BMA421-FL000.pdf"
                     class="at cg hd he hf hg" target="_blank" rel="noopener nofollow"><strong
                       class="gr ii">Accelerometer</strong></a> and <a
-                    href="https://web.archive.org/web/20191222054305/http://files.pine64.org/doc/datasheet/pinetime/HRS3300%20Heart%20Rate%20Sensor.pdf"
+                    href="http://files.pine64.org/doc/datasheet/pinetime/HRS3300%20Heart%20Rate%20Sensor.pdf"
                     class="at cg hd he hf hg" target="_blank" rel="noopener nofollow"><strong class="gr ii">Heart Rate
                       Sensor</strong></a><strong class="gr ii">.</strong> <em class="hh">(I verified against the
                     docs)</em></p>
@@ -417,11 +417,11 @@
 
                     <p><em>Touch Controller State Transition Diagram
                       from <a
-                        href="https://web.archive.org/web/20191222054305/http://files.pine64.org/doc/datasheet/pinetime/CST816S%E6%95%B0%E6%8D%AE%E6%89%8B%E5%86%8CV1.1.pdf"
+                        href="http://files.pine64.org/doc/datasheet/pinetime/CST816S%E6%95%B0%E6%8D%AE%E6%89%8B%E5%86%8CV1.1.pdf"
                         class="at cg hd he hf hg" target="_blank"
                         rel="noopener nofollow">http://files.pine64.org/doc/datasheet/pinetime/CST816S%E6%95%B0%E6%8D%AE%E6%89%8B%E5%86%8CV1.1.pdf</a>.
                       English Translation: <a
-                        href="https://web.archive.org/web/20191222054305/https://wiki.pine64.org/images/5/51/CST816S%E6%95%B0%E6%8D%AE%E6%89%8B%E5%86%8CV1.1.en.pdf"
+                        href="https://wiki.pine64.org/images/5/51/CST816S%E6%95%B0%E6%8D%AE%E6%89%8B%E5%86%8CV1.1.en.pdf"
                         class="at cg hd he hf hg" target="_blank"
                         rel="noopener nofollow">https://wiki.pine64.org/images/5/51/CST816S%E6%95%B0%E6%8D%AE%E6%89%8B%E5%86%8CV1.1.en.pdf</a>
                     </em></p>
@@ -433,12 +433,12 @@
               <div class="ac ae af ag ah dz aj ak">
                 <p id="a238" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">We stare hard at this State
                   Transition Diagram from the <a
-                    href="https://web.archive.org/web/20191222054305/http://files.pine64.org/doc/datasheet/pinetime/CST816S%E6%95%B0%E6%8D%AE%E6%89%8B%E5%86%8CV1.1.pdf"
+                    href="http://files.pine64.org/doc/datasheet/pinetime/CST816S%E6%95%B0%E6%8D%AE%E6%89%8B%E5%86%8CV1.1.pdf"
                     class="at cg hd he hf hg" target="_blank" rel="noopener nofollow">Touch Controller doc</a>. (The <a
-                    href="https://web.archive.org/web/20191222054305/https://wiki.pine64.org/images/5/51/CST816S%E6%95%B0%E6%8D%AE%E6%89%8B%E5%86%8CV1.1.en.pdf"
+                    href="https://wiki.pine64.org/images/5/51/CST816S%E6%95%B0%E6%8D%AE%E6%89%8B%E5%86%8CV1.1.en.pdf"
                     class="at cg hd he hf hg" target="_blank" rel="noopener nofollow">English Translation</a> looked
                   alien so we’re using the <a
-                    href="https://web.archive.org/web/20191222054305/http://files.pine64.org/doc/datasheet/pinetime/CST816S%E6%95%B0%E6%8D%AE%E6%89%8B%E5%86%8CV1.1.pdf"
+                    href="http://files.pine64.org/doc/datasheet/pinetime/CST816S%E6%95%B0%E6%8D%AE%E6%89%8B%E5%86%8CV1.1.pdf"
                     class="at cg hd he hf hg" target="_blank" rel="noopener nofollow">original Chinese version</a> with
                   my translation) <em class="hh">What is it trying to tell us?</em></p>
                 <p id="f4d3" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc"><em class="hh">It says that the
@@ -504,7 +504,7 @@
                   <p><em>Rust code to read a range of I2C Registers
                     from an I2C Device on PineTime. The steps in the comments refer to the steps in the diagram above.
                     From <a
-                      href="https://web.archive.org/web/20191222054305/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/pinetime/rust/app/src/touch_sensor.rs"
+                      href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/pinetime/rust/app/src/touch_sensor.rs"
                       class="at cg hd he hf hg" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/pinetime/rust/app/src/touch_sensor.rs</a>
                   </em></p>
@@ -525,7 +525,7 @@
                 <p id="cf3b" class="gp gq ec bk gr b gs id gu ie gw if gy ig ha ih hc">The PineTime Touch Controller
                   generates <strong class="gr ii">63 bytes of raw touch data</strong> on every touch. <em
                     class="hh">(</em><a
-                    href="https://web.archive.org/web/20191222054305/https://github.com/lupyuen/hynitron_i2c_cst0xxse/blob/master/cst0xx_core.c#L407-L466"
+                    href="https://github.com/lupyuen/hynitron_i2c_cst0xxse/blob/master/cst0xx_core.c#L407-L466"
                     class="at cg hd he hf hg" target="_blank" rel="noopener nofollow"><em class="hh">According to the
                       reference code here</em></a><em class="hh">)</em> When converted, these 63 bytes produce <strong
                     class="gr ii">10 points of touch information</strong>. Each point of touch information contains…</p>
@@ -548,7 +548,7 @@
 
                   <p><em>63 bytes of raw touch data converted to 10
                     points of touch information. This is the Rust representation of the 10 touch points. From <a
-                      href="https://web.archive.org/web/20191222054305/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/pinetime/rust/app/src/touch_sensor.rs"
+                      href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/pinetime/rust/app/src/touch_sensor.rs"
                       class="at cg hd he hf hg" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/pinetime/rust/app/src/touch_sensor.rs</a>
                   </em></p>
@@ -557,12 +557,12 @@
                     information for each point touched… Why do we need so much information? Why the
                     finger-pointing?</em></p>
                 <p id="35b7" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">Think of the classic 2010 iPad
-                  game <a href="https://web.archive.org/web/20191222054305/https://en.wikipedia.org/wiki/Fruit_Ninja"
+                  game <a href="https://en.wikipedia.org/wiki/Fruit_Ninja"
                     class="at cg hd he hf hg" target="_blank" rel="noopener nofollow"><em class="hh">Fruit
                       Ninja</em></a>… The game tracks the swiping motion of each finger to figure out which fruits (and
                   bombs) you’re slashing. So the tracking of each finger is important for swiping-based apps. <em
                     class="hh">(Like </em><a
-                    href="https://web.archive.org/web/20191222054305/https://en.wikipedia.org/wiki/Tinder_(app)"
+                    href="https://en.wikipedia.org/wiki/Tinder_(app)"
                     class="at cg hd he hf hg" target="_blank" rel="noopener nofollow"><em class="hh">Tinder</em></a><em
                     class="hh">)</em></p>
                 <p id="c40f" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">The Touch Controller doesn’t
@@ -571,7 +571,7 @@
                     appendage)</em> that’s swiping the screen. The Touch Action (touched / untouched / in contact) is
                   necessary to determine whether this is the start, middle or end of a swipe.</p>
                 <p id="aeef" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">Based on the <a
-                    href="https://web.archive.org/web/20191222054305/https://github.com/lupyuen/hynitron_i2c_cst0xxse/blob/master/cst0xx_core.c#L407-L466"
+                    href="https://github.com/lupyuen/hynitron_i2c_cst0xxse/blob/master/cst0xx_core.c#L407-L466"
                     class="at cg hd he hf hg" target="_blank" rel="noopener nofollow">reference code</a>, we derived the
                   following Rust function for reading and converting the 63 bytes of raw touch data into touch points.
                   Note that only the <em class="hh">first 5 touch points</em> out of 10 are converted. <em
@@ -583,7 +583,7 @@
 
                   <p><em>Rust code to convert raw touch data to touch
                     point information. From <a
-                      href="https://web.archive.org/web/20191222054305/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/pinetime/rust/app/src/touch_sensor.rs"
+                      href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/pinetime/rust/app/src/touch_sensor.rs"
                       class="at cg hd he hf hg" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/pinetime/rust/app/src/touch_sensor.rs</a>
                   </em></p>
@@ -607,14 +607,14 @@
 
                   <p><em>Rust code to display the touched coordinates
                     on the screen. From <a
-                      href="https://web.archive.org/web/20191222054305/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/pinetime/rust/app/src/display.rs"
+                      href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/pinetime/rust/app/src/display.rs"
                       class="at cg hd he hf hg" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/pinetime/rust/app/src/display.rs</a>
                   </em></p>
                 </figure>
                 <p id="90c0" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">Notice that we passed a special
                   <code
-                    class="dm jg jh ji jj b"><a href="https://web.archive.org/web/20191222054305/https://docs.rs/arrayvec/0.3.25/arrayvec/struct.ArrayString.html" class="at cg hd he hf hg" target="_blank" rel="noopener nofollow">arrayvec::ArrayString</a></code>
+                    class="dm jg jh ji jj b"><a href="https://docs.rs/arrayvec/0.3.25/arrayvec/struct.ArrayString.html" class="at cg hd he hf hg" target="_blank" rel="noopener nofollow">arrayvec::ArrayString</a></code>
                   type to the <code class="dm jg jh ji jj b">write!()</code> macro for storing the formatted text.
                   That’s because the <code class="dm jg jh ji jj b">write!()</code> macro normally accepts a <code
                     class="dm jg jh ji jj b">String</code> type for storing formatted text… But <code
@@ -649,7 +649,7 @@
                 <blockquote class="jq jr js">
                   <p id="5fab" class="gp gq ec hh gr b gs gt gu gv gw gx gy gz ha hb hc">For the strings you can also
                     use the <code class="dm jg jh ji jj b">String</code> type from the <code
-                      class="dm jg jh ji jj b"><a href="https://web.archive.org/web/20191222054305/https://crates.io/crates/heapless" class="at cg hd he hf hg" target="_blank" rel="noopener nofollow">heapless</a></code>
+                      class="dm jg jh ji jj b"><a href="https://crates.io/crates/heapless" class="at cg hd he hf hg" target="_blank" rel="noopener nofollow">heapless</a></code>
                     crate like this<br /><code
                       class="dm jg jh ji jj b">let mut buffer: <br/> heapless::String&lt; heapless::consts::U64 &gt; <br/> = heapless::String::new();</code>
                   </p>
@@ -690,7 +690,7 @@
 
                   <p><em>Assigning an Interrupt Handler for Touch
                     Interrupt. From <a
-                      href="https://web.archive.org/web/20191222054305/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/pinetime/rust/app/src/touch_sensor.rs"
+                      href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/pinetime/rust/app/src/touch_sensor.rs"
                       class="at cg hd he hf hg" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/pinetime/rust/app/src/touch_sensor.rs</a>
                   </em></p>
@@ -706,7 +706,7 @@
 
                   <p><em>Touch interrupt handler that’s called upon
                     touch. From <a
-                      href="https://web.archive.org/web/20191222054305/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/pinetime/rust/app/src/touch_sensor.rs"
+                      href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/pinetime/rust/app/src/touch_sensor.rs"
                       class="at cg hd he hf hg" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/pinetime/rust/app/src/touch_sensor.rs</a>
                   </em></p>
@@ -729,7 +729,7 @@
                 <p id="6eaf" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">So let’s be polite to Mynewt OS
                   and take up as little time as possible. We’ll defer the swiping of the fruit / bomb / dating profile…
                   By adding a <strong class="gr ii">Mynewt Event</strong> to <strong class="gr ii">Mynewt’s </strong><a
-                    href="https://web.archive.org/web/20191222054305/https://mynewt.apache.org/latest/os/core_os/event_queue/event_queue.html"
+                    href="https://mynewt.apache.org/latest/os/core_os/event_queue/event_queue.html"
                     class="at cg hd he hf hg" target="_blank" rel="noopener nofollow"><strong class="gr ii">Event
                       Queue</strong></a>.</p>
                 <figure class="ik il im in io cz">
@@ -737,7 +737,7 @@
                   <p><script src="https://gist.github.com/lupyuen/3a438f3e2e399c5c4679af70fc63cf69.js"></script></p>
 
                   <p><em>Event callback for handling touch events. From
-                    <a href="https://web.archive.org/web/20191222054305/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/pinetime/rust/app/src/touch_sensor.rs"
+                    <a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/pinetime/rust/app/src/touch_sensor.rs"
                       class="at cg hd he hf hg" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/pinetime/rust/app/src/touch_sensor.rs</a>
                   </em></p>
@@ -781,17 +781,6 @@
                           <div class="di ke fm fn kf fp">Sneak Peek of PineTime Smart Watch… And why it’s perfect for
                             teaching IoT</div>
                         </h2>
-                        <div class="la r">
-                          <h3 class="bj dy ds bl bo">
-                            <div class="di ke fm fn kf fp">I’m one of the lucky few who received the developer preview
-                              version of the PineTime Smart Watch by Pine64. (My official…</div>
-                          </h3>
-                        </div>
-                        <div class="lb r">
-                          <h4 class="bj dy ge bl bo">
-                            <div class="di ke fm fn kf fp">medium.com</div>
-                          </h4>
-                        </div>
                       </div>
                       <div class="lc r">
                         <div class="ld r le lf lg lc lh li lj"></div>
@@ -805,17 +794,6 @@
                         <h2 class="bj ht kz bl ec">
                           <div class="di ke fm fn kf fp">Porting [druid] Rust Widgets to PineTime Smart Watch</div>
                         </h2>
-                        <div class="la r">
-                          <h3 class="bj dy ds bl bo">
-                            <div class="di ke fm fn kf fp">A button that responds to our tapping and increments a
-                              counter… That’s what we shall accomplish today on the PineTime…</div>
-                          </h3>
-                        </div>
-                        <div class="lb r">
-                          <h4 class="bj dy ge bl bo">
-                            <div class="di ke fm fn kf fp">medium.com</div>
-                          </h4>
-                        </div>
                       </div>
                       <div class="lc r">
                         <div class="lk r le lf lg lc lh li lj"></div>
@@ -835,10 +813,10 @@
                   the right IoT Software to run on today’s IoT Hardware can be challenging because of <strong
                     class="gr ii">language issues</strong>. If you can read Chinese like me… <strong class="gr ii">Hang
                     on to this precious skill!</strong> <em class="hh">(Try watching </em><a
-                    href="https://web.archive.org/web/20191222054305/https://en.wikipedia.org/wiki/Story_of_Yanxi_Palace"
+                    href="https://en.wikipedia.org/wiki/Story_of_Yanxi_Palace"
                     class="at cg hd he hf hg" target="_blank" rel="noopener nofollow"><em class="hh">延禧攻略</em></a><em
                     class="hh"> or the </em><a
-                    href="https://web.archive.org/web/20191222054305/https://video.toggle.sg/en/8-news-tonight-5180828"
+                    href="https://video.toggle.sg/en/8-news-tonight-5180828"
                     class="at cg hd he hf hg" target="_blank" rel="noopener nofollow"><em class="hh">Mandarin
                       news</em></a><em class="hh">)</em></p>
                 <p id="582b" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">I bet at this very moment, a
@@ -853,9 +831,9 @@
                     for my permission.</strong></p>
                 <p id="8610" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">Although a few of my articles
                   have been translated into <a
-                    href="https://web.archive.org/web/20191222054305/https://www.kidscoding8.com/98097.html"
+                    href="https://www.kidscoding8.com/98097.html"
                     class="at cg hd he hf hg" target="_blank" rel="noopener nofollow">Chinese</a> and <a
-                    href="https://web.archive.org/web/20191222054305/https://qiita.com/ghibi/items/81fed94d9fc3eb81df62"
+                    href="https://qiita.com/ghibi/items/81fed94d9fc3eb81df62"
                     class="at cg hd he hf hg" target="_blank" rel="noopener nofollow">Japanese</a>… We can do better.
                   <em class="hh">Let’s share our IoT skills worldwide! </em>😀</p>
               </div>
@@ -869,7 +847,7 @@
                 <p id="36a6" class="gp gq ec bk gr b gs id gu ie gw if gy ig ha ih hc">Please refer to the <em
                     class="hh">“References”</em> section at the end of the previous article <em class="hh">“</em><a
                     class="at cg hd he hf hg" target="_blank" rel="noopener"
-                    href="/web/20191222054305/https://medium.com/swlh/sneak-peek-of-pinetime-smart-watch-and-why-its-perfect-for-teaching-iot-81b74161c159?source=friends_link&amp;sk=d9301466f5499bece3e7b638e99ec20d"><em
+                    href="https://lupyuen.github.io/articles/sneak-peek-of-pinetime-smart-watch-and-why-its-perfect-for-teaching-iot"><em
                       class="hh">Sneak Peek of PineTime Smart Watch… And why it’s perfect for teaching IoT</em></a><em
                     class="hh">”</em></p>
                 <p id="408d" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">To run the code on a PineTime
@@ -879,24 +857,13 @@
                   the <code class="dm jg jh ji jj b">pinetime</code> branch of this repository, which is the same branch
                   used in the previous article…</p>
                 <div class="jy jz ka kb kc kd"><a
-                    href="https://web.archive.org/web/20191222054305/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/pinetime"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/pinetime"
                     rel="noopener nofollow">
                     <section class="kg cl cm ak ce n ar kh ki kj kk kl km kn ko kp kq kr ks kt ku kv">
                       <div class="kw n co p kx ky">
                         <h2 class="bj ht kz bl ec">
                           <div class="di ke fm fn kf fp">lupyuen/stm32bluepill-mynewt-sensor</div>
                         </h2>
-                        <div class="la r">
-                          <h3 class="bj dy ds bl bo">
-                            <div class="di ke fm fn kf fp">This pinetime branch contains the firmware source code for
-                              PineTime Smart Watch with Apache Mynewt and Embedded Rust…</div>
-                          </h3>
-                        </div>
-                        <div class="lb r">
-                          <h4 class="bj dy ge bl bo">
-                            <div class="di ke fm fn kf fp">github.com</div>
-                          </h4>
-                        </div>
                       </div>
                       <div class="lc r">
                         <div class="ll r le lf lg lc lh li lj"></div>
