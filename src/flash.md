@@ -90,10 +90,30 @@ _Flashing PineCone with Manjaro Linux Arm64 on Pinebook Pro_
 
 ##  Flash the firmware
 
-1.  Set the __PineCone Jumper (IO 8)__ to the __`H` Position__ [(Like this)](https://lupyuen.github.io/images/pinecone-jumperh.jpg)
+1.  __For PineCone:__
 
-    Connect PineCone to the USB port.
+    1.  Set the __PineCone Jumper (IO 8)__ to the __`H` Position__ [(Like this)](https://lupyuen.github.io/images/pinecone-jumperh.jpg)
 
+    1.  Connect PineCone to the USB port. Press the Reset Button.
+
+    __For BL10:__
+
+    1.  Connect BL10 to the USB port
+    
+    1.  Press and hold the __D8 Button (GPIO 8)__
+    
+    1.  Press and release the __EN Button (Reset)__
+    
+    1.  Release the D8 Button
+
+    __For MagicHome BL602:__
+
+    1.  Disconnect MagicHome from the USB Port
+    
+    1.  Connect __GPIO 8__ to __3.3V__
+    
+    1.  Connect MagicHome to the USB port
+    
 1.  Enter this to flash our firmware...
 
     __For Linux:__
@@ -213,13 +233,27 @@ _Firmware running on PineCone_
 
 ## Watch the firmware run
 
-1.  After flashing, disconnect PineCone from the USB port.  
+1.  __For PineCone:__
 
-    Set the __PineCone Jumper (IO 8)__ to the __`L` Position__ [(Like this)](https://lupyuen.github.io/images/pinecone-jumperl.jpg)
+    1.  After flashing, disconnect PineCone from the USB port.  
+
+    1.  Set the __PineCone Jumper (IO 8)__ to the __`L` Position__ [(Like this)](https://lupyuen.github.io/images/pinecone-jumperl.jpg)
     
-    Reconnect PineCone to the USB port.
+    1.  Reconnect PineCone to the USB port. Or press the Reset Button.
+    
+        Our firmware begins running.
 
-    Our firmware begins running.
+    __For BL10:__
+
+    1.  Press and release the __EN Button (Reset)__
+    
+    __For MagicHome BL602:__
+
+    1.  Disconnect MagicHome from the USB Port
+    
+    1.  Connect __GPIO 8__ to __GND__
+    
+    1.  Connect MagicHome to the USB port
 
 1.  To watch our firmware run, connect to the PineCone Serial Console (at 2 Mbps)...
 
@@ -283,7 +317,7 @@ _Firmware running on PineCone_
 
 These steps were tested on Arm64 Linux (Pinebook Pro with Manjaro), macOS Catalina and Windows 10.
 
-__UPDATE For MagicHome BL602 WiFi LED Controller:__ This gadget doesn't have a Reset Button, so it will be hard to see the `helloworld` message. Use the __`sdk_app_gpio.bin` GPIO Demo Firmware__ instead...
+__For MagicHome BL602 WiFi LED Controller:__ This gadget doesn't have a Reset Button, so it will be hard to see the `helloworld` message. Use the __`sdk_app_gpio.bin` GPIO Demo Firmware__ instead...
 
 -   [__"Control RGB LED with GPIO"__](https://lupyuen.github.io/articles/led#control-rgb-led-with-gpio)
 
