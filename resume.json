@@ -437,7 +437,7 @@
       "name": "Porting [druid] Rust Widgets to PineTime Smart Watch",
       "publisher": "Medium",
       "releaseDate": "2019-12-14",
-      "website": "https://web.archive.org/web/20200109044808/https://medium.com/@ly.lee/porting-druid-rust-widgets-to-pinetime-smart-watch-7e1d5a5d977a",
+      "website": "https://lupyuen.github.io/articles/porting-druid-rust-widgets-to-pinetime-smart-watch",
       "summary": "Code Watch Apps in Rust the Declarative Way"
     },
     {
