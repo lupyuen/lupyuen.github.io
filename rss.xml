@@ -227,7 +227,7 @@
         </item>
         <item>
             <title>Debug Rust+Mynewt Firmware for PineTime on Raspberry Pi</title>
-            <link>https://web.archive.org/web/20200124105013/https://medium.com/@ly.lee/debug-rust-mynewt-firmware-for-pinetime-on-raspberry-pi-4b9ac2d093a9</link>
+            <link>https://lupyuen.github.io/articles/debug-rust-mynewt-firmware-for-pinetime-on-raspberry-pi</link>
             <description><![CDATA[Using only a Raspberry Pi, we can debug the firmware on PineTime Smart Watch: Step into the flashed program line by line, set a breakpoint to pause execution at a line, inspect variables at runtime, … Just like the Embedded Pros!]]></description>
             <pubDate>Thu, 23 Jan 2020 00:00:00 +0000</pubDate>
         </item>
@@ -239,7 +239,7 @@
         </item>
         <item>
             <title>Build and Flash Rust+Mynewt Firmware for PineTime Smart Watch</title>
-            <link>https://web.archive.org/web/20200108000355/https://medium.com/@ly.lee/build-and-flash-rust-mynewt-firmware-for-pinetime-smart-watch-5e14259c55</link>
+            <link>https://lupyuen.github.io/articles/build-and-flash-rust-mynewt-firmware-for-pinetime-smart-watch</link>
             <description><![CDATA[Programming a PineTime is not that hard… All you need is a Raspberry Pi, some wires and a little creativity!]]></description>
             <pubDate>Wed, 08 Jan 2020 00:00:00 +0000</pubDate>
         </item>
@@ -251,7 +251,7 @@
         </item>
         <item>
             <title>Porting [druid] Rust Widgets to PineTime Smart Watch</title>
-            <link>https://web.archive.org/web/20200109044808/https://medium.com/@ly.lee/porting-druid-rust-widgets-to-pinetime-smart-watch-7e1d5a5d977a</link>
+            <link>https://lupyuen.github.io/articles/porting-druid-rust-widgets-to-pinetime-smart-watch</link>
             <description><![CDATA[Code Watch Apps in Rust the Declarative Way]]></description>
             <pubDate>Sat, 14 Dec 2019 00:00:00 +0000</pubDate>
         </item>
