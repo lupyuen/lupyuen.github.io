@@ -3163,13 +3163,10 @@
                     class="dm hj hk hl hm b"><a href="https://web.archive.org/web/20191217201803/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/targets/nrf52_my_sensor/syscfg.yml" class="at cg hd he hf hg" target="_blank" rel="noopener nofollow">targets/nrf52_my_sensor/syscfg.yml</a></code>
                 </p>
                 <figure class="js jt ju jv jw cz">
-                  <div class="dl r dd">
-                    <div class="mc r"><iframe
-                        src="https://web.archive.org/web/20191217201803if_/https://medium.com/media/43607104cd463514b658262123f49e89"
-                        allowfullscreen="" frameborder="0" height="0" width="0"
-                        title="See https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004"
-                        class="cp t u dh ak" scrolling="auto"></iframe></div>
-                  </div>
+                  
+                  <p><script src="https://gist.github.com/lupyuen/aaa.js"></script></p>
+
+
                   <figcaption class="bo ds dt du dv cn cl cm dw dx bj dy">Application Settings. From <a
                       href="https://web.archive.org/web/20191217201803/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/targets/nrf52_my_sensor/syscfg.yml"
                       class="at cg hd he hf hg" target="_blank"
@@ -3309,13 +3306,10 @@
                     class="dm hj hk hl hm b"><a href="https://web.archive.org/web/20191217201803/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/apps/my_sensor_app/src/ble.c" class="at cg hd he hf hg" target="_blank" rel="noopener nofollow">apps/my_sensor_app/src/ble.c</a></code>.
                   Why did we code this in C and not Rust? We’ll discuss this in a while.</p>
                 <figure class="js jt ju jv jw cz">
-                  <div class="dl r dd">
-                    <div class="mc r"><iframe
-                        src="https://web.archive.org/web/20191217201803if_/https://medium.com/media/40954407eddb8f070d9398bd178b65af"
-                        allowfullscreen="" frameborder="0" height="0" width="0"
-                        title="See https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004"
-                        class="cp t u dh ak" scrolling="auto"></iframe></div>
-                  </div>
+                  
+                  <p><script src="https://gist.github.com/lupyuen/aaa.js"></script></p>
+
+
                 </figure>
                 <p id="be55" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc"><code
                     class="dm hj hk hl hm b">start_ble()</code> is called by the Rust <code
@@ -3330,13 +3324,10 @@
                   Controller are in sync. (Which happens very quickly upon startup… Just set a breakpoint in <code
                     class="dm hj hk hl hm b">ble_app_on_sync()</code> and watch!)</p>
                 <figure class="js jt ju jv jw cz">
-                  <div class="dl r dd">
-                    <div class="mc r"><iframe
-                        src="https://web.archive.org/web/20191217201803if_/https://medium.com/media/d744bac8f2329936df0ec1db7d3b3b20"
-                        allowfullscreen="" frameborder="0" height="0" width="0"
-                        title="See https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004"
-                        class="cp t u dh ak" scrolling="auto"></iframe></div>
-                  </div>
+                  
+                  <p><script src="https://gist.github.com/lupyuen/aaa.js"></script></p>
+
+
                 </figure>
                 <p id="acb7" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">When the Host and Controller are
                   in sync, <code class="dm hj hk hl hm b">ble_app_on_sync()</code> calls two functions to set up the
@@ -3353,13 +3344,10 @@
                   Transmitter with no receive capability, it’s OK to use a temporary random address, i.e. Non-Resolvable
                   Private Address.</p>
                 <figure class="js jt ju jv jw cz">
-                  <div class="dl r dd">
-                    <div class="mc r"><iframe
-                        src="https://web.archive.org/web/20191217201803if_/https://medium.com/media/eff555587fca2284e73276fde0f8025b"
-                        allowfullscreen="" frameborder="0" height="0" width="0"
-                        title="See https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004"
-                        class="cp t u dh ak" scrolling="auto"></iframe></div>
-                  </div>
+                  
+                  <p><script src="https://gist.github.com/lupyuen/aaa.js"></script></p>
+
+
                 </figure>
                 <p id="e5dd" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">Here’s how we call the NimBLE API
                   <code class="dm hj hk hl hm b">ble_hs_id_gen_rnd()</code> to generate that random 6-byte
@@ -3441,13 +3429,10 @@
                   iBeacon Transmitter in the store. Here’s how we broadcast the iBeacon ID, Major ID and Minor ID in
                   NimBLE…</p>
                 <figure class="js jt ju jv jw cz">
-                  <div class="dl r dd">
-                    <div class="mc r"><iframe
-                        src="https://web.archive.org/web/20191217201803if_/https://medium.com/media/7c8a567d23d2dd7d04b0a9d728ff2234"
-                        allowfullscreen="" frameborder="0" height="0" width="0"
-                        title="See https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004"
-                        class="cp t u dh ak" scrolling="auto"></iframe></div>
-                  </div>
+                  
+                  <p><script src="https://gist.github.com/lupyuen/aaa.js"></script></p>
+
+
                 </figure>
                 <p id="9a20" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">In our code we used an arbitrary
                   iBeacon ID <code class="dm hj hk hl hm b">uuid128</code> that’s defined as <code
@@ -3799,13 +3784,10 @@
                 <p id="ecb3" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">We’ll prove that by <strong
                     class="gr hh">polling a Simulated Mynewt Sensor with Rust</strong>! Here how we do that…</p>
                 <figure class="js jt ju jv jw cz">
-                  <div class="dl r dd">
-                    <div class="mc r"><iframe
-                        src="https://web.archive.org/web/20191217201803if_/https://medium.com/media/e30990e06ea216f3d0b0b83f55638273"
-                        allowfullscreen="" frameborder="0" height="0" width="0"
-                        title="See https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004"
-                        class="cp t u dh ak" scrolling="auto"></iframe></div>
-                  </div>
+                  
+                  <p><script src="https://gist.github.com/lupyuen/aaa.js"></script></p>
+
+
                   <figcaption class="bo ds dt du dv cn cl cm dw dx bj dy">Very first thing in any Mynewt Application:
                     Call sysinit(). From <a
                       href="https://web.archive.org/web/20191217201803/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/rust/app/src/lib.rs"
@@ -3823,13 +3805,10 @@
                     class="dm hj hk hl hm b">sysinit()</code> initialises the 2.4 GHz Radio Transceiver and the Stub
                   Temperature Sensor. We’ll talk about this simulated temperature sensor in a while.</p>
                 <figure class="js jt ju jv jw cz">
-                  <div class="dl r dd">
-                    <div class="mc r"><iframe
-                        src="https://web.archive.org/web/20191217201803if_/https://medium.com/media/89ef6837333a26121e8c78ada8adc3e5"
-                        allowfullscreen="" frameborder="0" height="0" width="0"
-                        title="See https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004"
-                        class="cp t u dh ak" scrolling="auto"></iframe></div>
-                  </div>
+                  
+                  <p><script src="https://gist.github.com/lupyuen/aaa.js"></script></p>
+
+
                   <figcaption class="bo ds dt du dv cn cl cm dw dx bj dy">Start polling the simulated temperature
                     sensor. From <a
                       href="https://web.archive.org/web/20191217201803/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/rust/app/src/lib.rs"
@@ -3852,13 +3831,10 @@
                     class="dm hj hk hl hm b"><a href="https://web.archive.org/web/20191217201803/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/rust/app/src/app_sensor.rs" class="at cg hd he hf hg" target="_blank" rel="noopener nofollow">app_sensor.rs</a></code>)
                   to begin polling the simulated temperature sensor every 10 seconds.</p>
                 <figure class="js jt ju jv jw cz">
-                  <div class="dl r dd">
-                    <div class="mc r"><iframe
-                        src="https://web.archive.org/web/20191217201803if_/https://medium.com/media/ab1194e77b12b3bb96a2b54b62d03809"
-                        allowfullscreen="" frameborder="0" height="0" width="0"
-                        title="See https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004"
-                        class="cp t u dh ak" scrolling="auto"></iframe></div>
-                  </div>
+                  
+                  <p><script src="https://gist.github.com/lupyuen/aaa.js"></script></p>
+
+
                   <figcaption class="bo ds dt du dv cn cl cm dw dx bj dy">Start broadcasting as iBeacon. From <a
                       href="https://web.archive.org/web/20191217201803/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/rust/app/src/lib.rs"
                       class="at cg hd he hf hg" target="_blank"
@@ -3874,13 +3850,10 @@
                     class="dm hj hk hl hm b">unsafe</code> tag will be removed once we create a safe and proper Rust
                   Wrapper for NimBLE.</p>
                 <figure class="js jt ju jv jw cz">
-                  <div class="dl r dd">
-                    <div class="mc r"><iframe
-                        src="https://web.archive.org/web/20191217201803if_/https://medium.com/media/b1940ac115a7c9c6a0fb38cd16c05be6"
-                        allowfullscreen="" frameborder="0" height="0" width="0"
-                        title="See https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004"
-                        class="cp t u dh ak" scrolling="auto"></iframe></div>
-                  </div>
+                  
+                  <p><script src="https://gist.github.com/lupyuen/aaa.js"></script></p>
+
+
                   <figcaption class="bo ds dt du dv cn cl cm dw dx bj dy">Mynewt Event Loop. From <a
                       href="https://web.archive.org/web/20191217201803/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/rust/app/src/lib.rs"
                       class="at cg hd he hf hg" target="_blank"
@@ -3905,13 +3878,10 @@
                     class="dm hj hk hl hm b"><a href="https://web.archive.org/web/20191217201803/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/rust/app/src/app_sensor.rs" class="at cg hd he hf hg" target="_blank" rel="noopener nofollow">app_sensor.rs</a></code>...
                 </p>
                 <figure class="js jt ju jv jw cz">
-                  <div class="dl r dd">
-                    <div class="mc r"><iframe
-                        src="https://web.archive.org/web/20191217201803if_/https://medium.com/media/18d940d3e87c16d2e6eeec1b6be88db0"
-                        allowfullscreen="" frameborder="0" height="0" width="0"
-                        title="See https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004"
-                        class="cp t u dh ak" scrolling="auto"></iframe></div>
-                  </div>
+                  
+                  <p><script src="https://gist.github.com/lupyuen/aaa.js"></script></p>
+
+
                   <figcaption class="bo ds dt du dv cn cl cm dw dx bj dy">Define the name of the Stub Temperature Sensor
                     and the polling interval. From <a
                       href="https://web.archive.org/web/20191217201803/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/rust/app/src/app_sensor.rs"
@@ -3942,13 +3912,10 @@
                   in a string that’s not null-terminated. So I have wrapped the Mynewt APIs to accept the safer,
                   efficient <code class="dm hj hk hl hm b">Strn</code> type that’s always null-terminated.</p>
                 <figure class="js jt ju jv jw cz">
-                  <div class="dl r dd">
-                    <div class="mc r"><iframe
-                        src="https://web.archive.org/web/20191217201803if_/https://medium.com/media/5d0cef4095c605de963acd97f3aec1f2"
-                        allowfullscreen="" frameborder="0" height="0" width="0"
-                        title="See https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004"
-                        class="cp t u dh ak" scrolling="auto"></iframe></div>
-                  </div>
+                  
+                  <p><script src="https://gist.github.com/lupyuen/aaa.js"></script></p>
+
+
                   <figcaption class="bo ds dt du dv cn cl cm dw dx bj dy">Fetch the Stub Temperature Sensor by name.
                     From <a
                       href="https://web.archive.org/web/20191217201803/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/rust/app/src/app_sensor.rs"
@@ -3962,13 +3929,10 @@
                   that returns a list of sensors (i.e. a Sensor Iterator) that match a name (<code
                     class="dm hj hk hl hm b">temp_stub_0</code>).</p>
                 <figure class="js jt ju jv jw cz">
-                  <div class="dl r dd">
-                    <div class="mc r"><iframe
-                        src="https://web.archive.org/web/20191217201803if_/https://medium.com/media/9757d1001683107fad61f81ff6410a1d"
-                        allowfullscreen="" frameborder="0" height="0" width="0"
-                        title="See https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004"
-                        class="cp t u dh ak" scrolling="auto"></iframe></div>
-                  </div>
+                  
+                  <p><script src="https://gist.github.com/lupyuen/aaa.js"></script></p>
+
+
                   <figcaption class="bo ds dt du dv cn cl cm dw dx bj dy">Set the polling interval for the Stub
                     Temperature Sensor. From <a
                       href="https://web.archive.org/web/20191217201803/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/rust/app/src/app_sensor.rs"
@@ -3983,13 +3947,10 @@
                     class="dm hj hk hl hm b">sensor::set_poll_rate_ms()</code> we’re kindly asking Mynewt to poll our
                   simulated temperature sensor every 10 seconds. <em class="hi">Truly awesome!</em></p>
                 <figure class="js jt ju jv jw cz">
-                  <div class="dl r dd">
-                    <div class="mc r"><iframe
-                        src="https://web.archive.org/web/20191217201803if_/https://medium.com/media/2bd85654c5e1dce3fe3d5ee5eb05a777"
-                        allowfullscreen="" frameborder="0" height="0" width="0"
-                        title="See https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004"
-                        class="cp t u dh ak" scrolling="auto"></iframe></div>
-                  </div>
+                  
+                  <p><script src="https://gist.github.com/lupyuen/aaa.js"></script></p>
+
+
                   <figcaption class="bo ds dt du dv cn cl cm dw dx bj dy">Create a Sensor Listener. From <a
                       href="https://web.archive.org/web/20191217201803/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/rust/app/src/app_sensor.rs"
                       class="at cg hd he hf hg" target="_blank"
@@ -4004,13 +3965,10 @@
                     class="dm hj hk hl hm b">aggregate_sensor_data()</code> is known as a Sensor Listener Function… It’s
                   a function that listens for updated sensor data and acts on the data.</p>
                 <figure class="js jt ju jv jw cz">
-                  <div class="dl r dd">
-                    <div class="mc r"><iframe
-                        src="https://web.archive.org/web/20191217201803if_/https://medium.com/media/5344a66f61be127d2ade70106f93b77b"
-                        allowfullscreen="" frameborder="0" height="0" width="0"
-                        title="See https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004"
-                        class="cp t u dh ak" scrolling="auto"></iframe></div>
-                  </div>
+                  
+                  <p><script src="https://gist.github.com/lupyuen/aaa.js"></script></p>
+
+
                   <figcaption class="bo ds dt du dv cn cl cm dw dx bj dy">Register the Sensor Listener with Mynewt
                     Sensor Framework. From <a
                       href="https://web.archive.org/web/20191217201803/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/rust/app/src/app_sensor.rs"
@@ -4043,13 +4001,10 @@
                   temperature sensor. Let’s see what happens inside <code
                     class="dm hj hk hl hm b">aggregate_sensor_data()</code>…</p>
                 <figure class="js jt ju jv jw cz">
-                  <div class="dl r dd">
-                    <div class="mc r"><iframe
-                        src="https://web.archive.org/web/20191217201803if_/https://medium.com/media/b09a40b73005b8024f05b796c12c91c8"
-                        allowfullscreen="" frameborder="0" height="0" width="0"
-                        title="See https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004"
-                        class="cp t u dh ak" scrolling="auto"></iframe></div>
-                  </div>
+                   
+                  <p><script src="https://gist.github.com/lupyuen/aaa.js"></script></p>
+
+
                   <figcaption class="bo ds dt du dv cn cl cm dw dx bj dy">Aggregate temperature data with GPS data. From
                     <a href="https://web.archive.org/web/20191217201803/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/rust/app/src/app_network.rs"
                       class="at cg hd he hf hg" target="_blank"
@@ -4066,13 +4021,10 @@
                   data without attaching any GPS coordinates. It calls <code
                     class="dm hj hk hl hm b">send_sensor_data()</code> to transmit the temperature data…</p>
                 <figure class="js jt ju jv jw cz">
-                  <div class="dl r dd">
-                    <div class="mc r"><iframe
-                        src="https://web.archive.org/web/20191217201803if_/https://medium.com/media/d2b9ea91ea9ca07a08b0f7a54d5f3d77"
-                        allowfullscreen="" frameborder="0" height="0" width="0"
-                        title="See https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004"
-                        class="cp t u dh ak" scrolling="auto"></iframe></div>
-                  </div>
+                  
+                  <p><script src="https://gist.github.com/lupyuen/aaa.js"></script></p>
+
+
                   <figcaption class="bo ds dt du dv cn cl cm dw dx bj dy">Send sensor data to CoAP server. From <a
                       href="https://web.archive.org/web/20191217201803/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/rust/app/src/app_network.rs"
                       class="at cg hd he hf hg" target="_blank"
@@ -4090,13 +4042,10 @@
                   thethings.io…<em class="hi"> The sensor data appears to transform itself magically for
                     thethings.io</em>. How is this possible? We’ll learn in a while…</p>
                 <figure class="js jt ju jv jw cz">
-                  <div class="dl r dd">
-                    <div class="mc r"><iframe
-                        src="https://web.archive.org/web/20191217201803if_/https://medium.com/media/85b161856f2c5c3829fa0ff6d8d57b67"
-                        allowfullscreen="" frameborder="0" height="0" width="0"
-                        title="See https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004"
-                        class="cp t u dh ak" scrolling="auto"></iframe></div>
-                  </div>
+                  
+                  <p><script src="https://gist.github.com/lupyuen/aaa.js"></script></p>
+
+
                   <figcaption class="bo ds dt du dv cn cl cm dw dx bj dy">Compose an outgoing CoAP message. From <a
                       href="https://web.archive.org/web/20191217201803/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/rust/app/src/app_network.rs"
                       class="at cg hd he hf hg" target="_blank"
@@ -4109,13 +4058,10 @@
                 <p id="ece0" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">For STM32, the Rusty trail
                   continues…</p>
                 <figure class="js jt ju jv jw cz">
-                  <div class="dl r dd">
-                    <div class="mc r"><iframe
-                        src="https://web.archive.org/web/20191217201803if_/https://medium.com/media/04b3b308f277584787df14f205c1d5c7"
-                        allowfullscreen="" frameborder="0" height="0" width="0"
-                        title="See https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004"
-                        class="cp t u dh ak" scrolling="auto"></iframe></div>
-                  </div>
+                  
+                  <p><script src="https://gist.github.com/lupyuen/aaa.js"></script></p>
+
+
                   <figcaption class="bo ds dt du dv cn cl cm dw dx bj dy">Compose and transmit the JSON Payload
                     containing the temperature and GPS data. From <a
                       href="https://web.archive.org/web/20191217201803/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/rust/app/src/app_network.rs"
@@ -4162,13 +4108,10 @@
                 <p id="9c62" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">The Output Log in Visual Studio
                   Code should look like this…</p>
                 <figure class="js jt ju jv jw cz">
-                  <div class="dl r dd">
-                    <div class="mc r"><iframe
-                        src="https://web.archive.org/web/20191217201803if_/https://medium.com/media/341e3e9f9d5843307118d42c572c1267"
-                        allowfullscreen="" frameborder="0" height="0" width="0"
-                        title="See https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004"
-                        class="cp t u dh ak" scrolling="auto"></iframe></div>
-                  </div>
+                  
+                  <p><script src="https://gist.github.com/lupyuen/aaa.js"></script></p>
+
+
                   <figcaption class="bo ds dt du dv cn cl cm dw dx bj dy">Output Log from <a
                       href="https://web.archive.org/web/20191217201803/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/logs/standalone-node.log"
                       class="at cg hd he hf hg" target="_blank"
@@ -4185,7 +4128,7 @@
                   <figure class="js jt ju jv jw cz">
                     <div class="dl r dd">
                       <div class="nm r"><iframe
-                          src="https://web.archive.org/web/20191217201803if_/https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FwqimbvJeGMo%3Ffeature%3Doembed&amp;url=http%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DwqimbvJeGMo&amp;image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FwqimbvJeGMo%2Fhqdefault.jpg&amp;key=a19fcc184b9711e1b4764040d3dc5c07&amp;type=text%2Fhtml&amp;schema=youtube"
+                          src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FwqimbvJeGMo%3Ffeature%3Doembed&amp;url=http%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DwqimbvJeGMo&amp;image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FwqimbvJeGMo%2Fhqdefault.jpg&amp;key=a19fcc184b9711e1b4764040d3dc5c07&amp;type=text%2Fhtml&amp;schema=youtube"
                           allowfullscreen="" frameborder="0" height="480" width="640"
                           title="nRF52 with Embedded Rust and Apache Mynewt" class="cp t u dh ak"
                           scrolling="auto"></iframe></div>
@@ -4477,13 +4420,10 @@
                 <p id="2744" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">Connect your nRF52 board to a
                   Raspberry Pi 1 / 2 / 3 / 4 (powered off) as follows (refer to the photo above)…</p>
                 <figure class="js jt ju jv jw cz">
-                  <div class="dl r dd">
-                    <div class="mc r"><iframe
-                        src="https://web.archive.org/web/20191217201803if_/https://medium.com/media/c85099c19b1b928341cc95daca594d59"
-                        allowfullscreen="" frameborder="0" height="0" width="0"
-                        title="See https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004"
-                        class="cp t u dh ak" scrolling="auto"></iframe></div>
-                  </div>
+                  
+                  <p><script src="https://gist.github.com/lupyuen/aaa.js"></script></p>
+
+
                   <figcaption class="bo ds dt du dv cn cl cm dw dx bj dy">Connecting nRF52 to Raspberry Pi. From <a
                       href="https://web.archive.org/web/20191217201803/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/scripts/nrf52/swd-pi.ocd"
                       class="at cg hd he hf hg" target="_blank"
@@ -4527,13 +4467,10 @@
                     class="dm hj hk hl hm b">bcm2835gpio_speed_coeffs</code> for your model of Raspberry Pi: <code
                     class="dm hj hk hl hm b">Pi 1 / 2 / 3 / 4</code></p>
                 <figure class="js jt ju jv jw cz">
-                  <div class="dl r dd">
-                    <div class="mc r"><iframe
-                        src="https://web.archive.org/web/20191217201803if_/https://medium.com/media/44eeeb63a84220283a2227783cf796cd"
-                        allowfullscreen="" frameborder="0" height="0" width="0"
-                        title="See https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004"
-                        class="cp t u dh ak" scrolling="auto"></iframe></div>
-                  </div>
+                  
+                  <p><script src="https://gist.github.com/lupyuen/aaa.js"></script></p>
+
+
                   <figcaption class="bo ds dt du dv cn cl cm dw dx bj dy">OpenOCD script. From <a
                       href="https://web.archive.org/web/20191217201803/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/scripts/nrf52/swd-pi.ocd"
                       class="at cg hd he hf hg" target="_blank"
@@ -4547,13 +4484,10 @@
                 <p id="3b5d" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">We should see the following log…
                 </p>
                 <figure class="js jt ju jv jw cz">
-                  <div class="dl r dd">
-                    <div class="mc r"><iframe
-                        src="https://web.archive.org/web/20191217201803if_/https://medium.com/media/0bc5dfa93e6a6b76d3d6b59ec4cd9579"
-                        allowfullscreen="" frameborder="0" height="0" width="0"
-                        title="See https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004"
-                        class="cp t u dh ak" scrolling="auto"></iframe></div>
-                  </div>
+                  
+                  <p><script src="https://gist.github.com/lupyuen/aaa.js"></script></p>
+
+
                   <figcaption class="bo ds dt du dv cn cl cm dw dx bj dy">OpenOCD Log from <a
                       href="https://web.archive.org/web/20191217201803/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/scripts/nrf52/swd-pi.log"
                       class="at cg hd he hf hg" target="_blank"
