@@ -22,6 +22,8 @@ The programs in these articles have been tested on __PineCone__, but they should
 
 Many thanks to __Pine64__ for supporting my work on BL602 Open Source Education! Thanks also to __Bouffalo Lab__ for the encouraging notes.
 
+If you find this book useful... [__please sponsor me a coffee__](https://github.com/sponsors/lupyuen). Thank you! 🙏 😀
+
 ![](https://lupyuen.github.io/images/book-pinecone.jpg)
 
 # Introduction to BL602
