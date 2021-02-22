@@ -409,7 +409,7 @@
       "name": "Debug Rust+Mynewt Firmware for PineTime on Raspberry Pi",
       "publisher": "Medium",
       "releaseDate": "2020-01-23",
-      "website": "https://web.archive.org/web/20200124105013/https://medium.com/@ly.lee/debug-rust-mynewt-firmware-for-pinetime-on-raspberry-pi-4b9ac2d093a9",
+      "website": "https://lupyuen.github.io/articles/debug-rust-mynewt-firmware-for-pinetime-on-raspberry-pi",
       "summary": "Using only a Raspberry Pi, we can debug the firmware on PineTime Smart Watch: Step into the flashed program line by line, set a breakpoint to pause execution at a line, inspect variables at runtime, … Just like the Embedded Pros!"
     },
     {
