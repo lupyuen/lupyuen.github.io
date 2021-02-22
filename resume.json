@@ -423,7 +423,7 @@
       "name": "Build and Flash Rust+Mynewt Firmware for PineTime Smart Watch",
       "publisher": "Medium",
       "releaseDate": "2020-01-08",
-      "website": "https://web.archive.org/web/20200108000355/https://medium.com/@ly.lee/build-and-flash-rust-mynewt-firmware-for-pinetime-smart-watch-5e14259c55",
+      "website": "https://lupyuen.github.io/articles/build-and-flash-rust-mynewt-firmware-for-pinetime-smart-watch",
       "summary": "Programming a PineTime is not that hard… All you need is a Raspberry Pi, some wires and a little creativity!"
     },
     {
