@@ -226,13 +226,13 @@
                   we have better open-source graphical FPGA programming tools that can synthesise exactly what I need,
                   without micromanaging every single LUT <em class="gw">(OK that’s an exaggeration)</em></p>
                 <p id="6481" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu"><strong class="gj gv">Porting
-                  </strong><a href="https://web.archive.org/web/20191123160606/https://mynewt.apache.org/"
+                  </strong><a href="https://mynewt.apache.org/"
                     class="at cg gx gy gz ha" target="_blank" rel="noopener nofollow"><strong class="gj gv">Mynewt
                       OS</strong></a><strong class="gj gv"> to </strong><a
-                    href="https://web.archive.org/web/20191123160606/https://www.gigadevice.com/products/microcontrollers/gd32/risc-v/"
+                    href="https://www.gigadevice.com/products/microcontrollers/gd32/risc-v/"
                     class="at cg gx gy gz ha" target="_blank" rel="noopener nofollow"><strong class="gj gv">GD32
                       VF103</strong></a><strong class="gj gv"> on </strong><a
-                    href="https://web.archive.org/web/20191123160606/https://en.wikipedia.org/wiki/RISC-V"
+                    href="https://en.wikipedia.org/wiki/RISC-V"
                     class="at cg gx gy gz ha" target="_blank" rel="noopener nofollow"><strong
                       class="gj gv">RISC-V</strong></a><strong class="gj gv"> is my second failure</strong>. <a
                     class="at cg gx gy gz ha" target="_blank" rel="noopener"
@@ -256,7 +256,7 @@
                   </div>
                   <figcaption class="bo ds dt du dv cn cl cm dw dx bj dy">History of GitHub commits on the GD32 VF103
                     port of Mynewt OS. From <a
-                      href="https://web.archive.org/web/20191123160606/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/commits/gd32vf103"
+                      href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/commits/gd32vf103"
                       class="at cg gx gy gz ha" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/commits/gd32vf103</a>
                   </figcaption>
@@ -299,10 +299,10 @@
                 <ol class="">
                   <li id="8a70" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu hr hs ht">Took me a while to
                     figure out how to <strong class="gj gv">connect OpenOCD to GD32 VF103 via JTAG</strong>. <a
-                      href="https://web.archive.org/web/20191123160606/https://github.com/Tencent/TencentOS-tiny/blob/master/doc/14.How_to_build_RISC-V_eclipse_development_environment.md"
+                      href="https://github.com/Tencent/TencentOS-tiny/blob/master/doc/14.How_to_build_RISC-V_eclipse_development_environment.md"
                       class="at cg gx gy gz ha" target="_blank" rel="noopener nofollow">Instructions were spotty</a>,
                     and I had to build a <a
-                      href="https://web.archive.org/web/20191123160606/https://github.com/riscv-mcu/riscv-openocd"
+                      href="https://github.com/riscv-mcu/riscv-openocd"
                       class="at cg gx gy gz ha" target="_blank" rel="noopener nofollow">special version of OpenOCD just
                       to support GD32 VF103</a>!</li>
                   <li id="9d76" class="gh gi ec bk gj b gk hu gm hv go hw gq hx gs hy gu hr hs ht">Building OpenOCD on
@@ -318,7 +318,7 @@
                   <li id="7555" class="gh gi ec bk gj b gk hu gm hv go hw gq hx gs hy gu hr hs ht"><strong
                       class="gj gv">Debug output goes… where?</strong> JTAG doesn’t expose a debug messaging port like
                     Arm Semihosting. So I have to use the UART port. Only <a
-                      href="https://web.archive.org/web/20191123160606/https://www.seeedstudio.com/Sipeed-USB-JTAG-TTL-RISC-V-Debugger-p-2910.html"
+                      href="https://www.seeedstudio.com/Sipeed-USB-JTAG-TTL-RISC-V-Debugger-p-2910.html"
                       class="at cg gx gy gz ha" target="_blank" rel="noopener nofollow">Sipeed’s JTAG dongle</a>
                     includes a UART interface… Are there other JTAG dongles that support this? I doubt so. <em
                       class="gw">(I gave up while porting the UART driver, which was supposed to make my debugging more
@@ -335,10 +335,10 @@
                     VF103 is just too different from SiFive FE310-G000</strong></p>
                 <p id="635d" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu">Mynewt (and Zephyr) has already
                   been ported to a RISC-V development board: <a
-                    href="https://web.archive.org/web/20191123160606/https://www.sifive.com/boards/hifive1"
+                    href="https://www.sifive.com/boards/hifive1"
                     class="at cg gx gy gz ha" target="_blank" rel="noopener nofollow"><strong class="gj gv">SiFive
                       HiFive1</strong></a> based on the <a
-                    href="https://web.archive.org/web/20191123160606/https://www.sifive.com/chip-designer#fe310"
+                    href="https://www.sifive.com/chip-designer#fe310"
                     class="at cg gx gy gz ha" target="_blank" rel="noopener nofollow"><strong class="gj gv">SiFive
                       FE310-G000</strong></a> microcontroller. So why don’t we start with the HiFive1 code and tweak it
                   for GD32 VF103?</p>
@@ -391,7 +391,7 @@
                   would escalate and the IoT Ecosystem in the East would stop producing Arm chips altogether, and move
                   on to RISC-V.</p>
                 <p id="b6a4" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu"><a
-                    href="https://web.archive.org/web/20191123160606/https://www.theverge.com/2019/10/25/20932096/arm-license-chip-architecture-huawei-trump-trade-ban-uk-us"
+                    href="https://www.theverge.com/2019/10/25/20932096/arm-license-chip-architecture-huawei-trump-trade-ban-uk-us"
                     class="at cg gx gy gz ha" target="_blank" rel="noopener nofollow"><em class="gw">But that’s not
                       happening any more</em></a><em class="gw">.</em></p>
                 <p id="c79e" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu">I backtracked to first principles
@@ -425,7 +425,7 @@
                   repository below. Basic features like task scheduling are working and so is Rust… Just that we have no
                   drivers for UART, I2C, SPI, CAN, USB, …</p>
                 <div class="id ie if ig ih ii"><a
-                    href="https://web.archive.org/web/20191123160606/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/gd32vf103?source=post_page-----d39d0c7b0001----------------------"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/gd32vf103?source=post_page-----d39d0c7b0001----------------------"
                     rel="noopener nofollow">
                     <section class="il cl cm ak ce n ar im in io ip iq ir is it iu iv iw ix iy iz ja">
                       <div class="jb n co p jc jd">
