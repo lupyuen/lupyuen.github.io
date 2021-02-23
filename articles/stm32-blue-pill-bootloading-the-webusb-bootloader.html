@@ -225,13 +225,13 @@
                       href="/web/20191204194111/https://medium.com/@ly.lee/stm32-blue-pill-dissecting-the-webusb-bootloader-for-makecode-b7f1a1508e89?source=friends_link&amp;sk=661984e9775f991a97e5747a67214b60"><strong
                         class="gf gv">MakeCode</strong></a><strong class="gf gv"> version 2029</strong>… Hitting the
                     DOWNLOAD button… Now regenerating the new <a
-                      href="https://web.archive.org/web/20191204194111/https://github.com/Microsoft/uf2"
+                      href="https://github.com/Microsoft/uf2"
                       class="at cg gr gs gt gu" target="_blank" rel="noopener nofollow">UF2 firmware image</a>…
                     Transmitting firmware image to all <a class="at cg gr gs gt gu" target="_blank" rel="noopener"
                       href="/web/20191204194111/https://medium.com/@ly.lee/stm32-blue-pill-dissecting-the-webusb-bootloader-for-makecode-b7f1a1508e89?source=friends_link&amp;sk=661984e9775f991a97e5747a67214b60">STM32-BLUEST-PILL
                       Bootloaders</a>… And <strong class="gf gv">Firmware version 2029</strong> has been flashed to all
                     1,000 devices! Wait we got 1,000 errors… “<strong class="gf gv">Critical system library </strong><a
-                      href="https://web.archive.org/web/20191204194111/https://github.com/libopencm3/libopencm3/wiki"
+                      href="https://github.com/libopencm3/libopencm3/wiki"
                       class="at cg gr gs gt gu" target="_blank" rel="noopener nofollow"><strong
                         class="gf gv">libopencm3</strong></a><strong class="gf gv"> version 2029 not found</strong>”…
                   </p>
@@ -255,20 +255,20 @@
               <div class="ac ae af ag ah dp aj ak">
                 <p id="943f" class="gc gd ds bk gf b gg gh gi gj gk gl gm gn go gp gq">With a Bootloader installed,
                   programming the <a
-                    href="https://web.archive.org/web/20191204194111/http://wiki.stm32duino.com/index.php?title=Blue_Pill"
+                    href="http://wiki.stm32duino.com/index.php?title=Blue_Pill"
                     class="at cg gr gs gt gu" target="_blank" rel="noopener nofollow">STM32 Blue Pill</a> via USB gets a
                   lot simpler and faster… <a
-                    href="https://web.archive.org/web/20191204194111/https://youtu.be/DSNDvrVOJns"
+                    href="https://youtu.be/DSNDvrVOJns"
                     class="at cg gr gs gt gu" target="_blank" rel="noopener nofollow">A single click</a> is all it takes
                   to flash the Blue Pill!</p>
                 <p id="1352" class="gc gd ds bk gf b gg gh gi gj gk gl gm gn go gp gq"><a class="at cg gr gs gt gu"
                     target="_blank" rel="noopener"
                     href="/web/20191204194111/https://medium.com/@ly.lee/stm32-blue-pill-dissecting-the-webusb-bootloader-for-makecode-b7f1a1508e89?source=friends_link&amp;sk=661984e9775f991a97e5747a67214b60">In
                     the previous article</a> we learned how our <a
-                    href="https://web.archive.org/web/20191204194111/https://makecode.com/about"
+                    href="https://makecode.com/about"
                     class="at cg gr gs gt gu" target="_blank" rel="noopener nofollow">MakeCode</a> Bootloader flashed
                   Applications to Blue Pill via <a
-                    href="https://web.archive.org/web/20191204194111/https://developers.google.com/web/updates/2016/03/access-usb-devices-on-the-web"
+                    href="https://developers.google.com/web/updates/2016/03/access-usb-devices-on-the-web"
                     class="at cg gr gs gt gu" target="_blank" rel="noopener nofollow">WebUSB</a>. The chronicles of <em
                     class="ge">Moon Base One</em> have taught us that we need a way to upgrade the Bootloader as well.
                 </p>
@@ -295,7 +295,7 @@
                 <h1 id="d5da" class="ho hp ds bk bj hq hr hs ht hu hv hw hx hy hz ia ib">Flashing with Zero Dependencies
                 </h1>
                 <p id="f42e" class="gc gd ds bk gf b gg ic gi id gk ie gm if go ig gq">Take a look at <a
-                    href="https://web.archive.org/web/20191204194111/https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/baseloader/baseloader.c#L256-L362"
+                    href="https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/baseloader/baseloader.c#L256-L362"
                     class="at cg gr gs gt gu" target="_blank" rel="noopener nofollow">this code that we use for flashing
                     the Blue Pill WebUSB Bootloader</a>…</p>
                 <figure class="ii ij ik il im cz cl cm paragraph-image">
@@ -315,7 +315,7 @@
                   </div>
                   <figcaption class="bo eu ir is ha cn cl cm it iu bj et">Baseloader code for flashing the Bootloader.
                     From <a
-                      href="https://web.archive.org/web/20191204194111/https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/baseloader/baseloader.c#L256-L362"
+                      href="https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/baseloader/baseloader.c#L256-L362"
                       class="at cg gr gs gt gu" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/baseloader/baseloader.c#L256-L362</a>
                   </figcaption>
@@ -323,7 +323,7 @@
                 <p id="48f9" class="gc gd ds bk gf b gg gh gi gj gk gl gm gn go gp gq">Looks like typical Blue Pill
                   code… <code class="dj iv iw ix iy b">baseloader_start()</code> calls some functions to <strong
                     class="gf gv">lock, unlock, erase and update</strong> Blue Pill’s flash memory. Now look at the <a
-                    href="https://web.archive.org/web/20191204194111/https://github.com/lupyuen/codal-libopencm3/blob/master/logs/firmware.dump#L875-L1650"
+                    href="https://github.com/lupyuen/codal-libopencm3/blob/master/logs/firmware.dump#L875-L1650"
                     class="at cg gr gs gt gu" target="_blank" rel="noopener nofollow">Arm Cortex-M3 assembly code</a>
                   that the C compiler generated for <code class="dj iv iw ix iy b">baseloader_start()</code>…</p>
                 <figure class="ii ij ik il im cz cl cm paragraph-image">
@@ -342,7 +342,7 @@
                     </div>
                   </div>
                   <figcaption class="bo eu ir is ha cn cl cm it iu bj et">Compiled Baseloader code. From <a
-                      href="https://web.archive.org/web/20191204194111/https://github.com/lupyuen/codal-libopencm3/blob/master/logs/firmware.dump#L875-L1650"
+                      href="https://github.com/lupyuen/codal-libopencm3/blob/master/logs/firmware.dump#L875-L1650"
                       class="at cg gr gs gt gu" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/codal-libopencm3/blob/master/logs/firmware.dump#L875-L1650</a>
                   </figcaption>
@@ -355,21 +355,21 @@
                     Dependencies</strong>!</p>
                 <p id="76bb" class="gc gd ds bk gf b gg gh gi gj gk gl gm gn go gp gq">How is that possible? That’s
                   because Blue Pill uses <a
-                    href="https://web.archive.org/web/20191204194111/https://en.wikipedia.org/wiki/Memory-mapped_I/O"
+                    href="https://en.wikipedia.org/wiki/Memory-mapped_I/O"
                     class="at cg gr gs gt gu" target="_blank" rel="noopener nofollow"><strong
                       class="gf gv">Memory-Mapped I/O</strong></a>. By reading/writing some special memory location, we
                   can control the Blue Pill peripherals, including the flash memory. The <a
-                    href="https://web.archive.org/web/20191204194111/https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/baseloader/baseloader.c#L67-L212"
+                    href="https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/baseloader/baseloader.c#L67-L212"
                     class="at cg gr gs gt gu" target="_blank" rel="noopener nofollow">lock / unlock / erase / update
                     functions above are actually C macros</a> that read/write the special memory addresses that control
                   the Blue Pill flash memory.</p>
                 <p id="5f8e" class="gc gd ds bk gf b gg gh gi gj gk gl gm gn go gp gq">Also note that <code
                     class="dj iv iw ix iy b">baseloader_start()</code> uses <a
-                    href="https://web.archive.org/web/20191204194111/https://en.wikipedia.org/wiki/Addressing_mode#PC-relative_2"
+                    href="https://en.wikipedia.org/wiki/Addressing_mode#PC-relative_2"
                     class="at cg gr gs gt gu" target="_blank" rel="noopener nofollow"><strong class="gf gv">Relative
                       Addresses</strong></a> (instead of Absolute Addresses) when branching conditionally to other parts
                   of the function. Just look at the above <a
-                    href="https://web.archive.org/web/20191204194111/https://www.st.com/content/ccc/resource/technical/document/programming_manual/5b/ca/8d/83/56/7f/40/08/CD00228163.pdf/files/CD00228163.pdf/jcr:content/translations/en.CD00228163.pdf"
+                    href="https://www.st.com/content/ccc/resource/technical/document/programming_manual/5b/ca/8d/83/56/7f/40/08/CD00228163.pdf/files/CD00228163.pdf/jcr:content/translations/en.CD00228163.pdf"
                     class="at cg gr gs gt gu" target="_blank" rel="noopener nofollow">branch instructions</a> like <code
                     class="dj iv iw ix iy b">bls.n, b.n, bcs.n</code>.</p>
                 <p id="afed" class="gc gd ds bk gf b gg gh gi gj gk gl gm gn go gp gq">Zero Dependencies + Relative
@@ -401,7 +401,7 @@
                   by step</h1>
                 <p id="d352" class="gc gd ds bk gf b gg ic gi id gk ie gm if go ig gq">How does our Blue Pill WebUSB
                   Bootloader upgrade its own code? Let’s watch how it’s done with the <a
-                    href="https://web.archive.org/web/20191204194111/https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/baseloader/baseloader.c"
+                    href="https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/baseloader/baseloader.c"
                     class="at cg gr gs gt gu" target="_blank" rel="noopener nofollow">Baseloader</a>…</p>
               </div>
             </div>
@@ -446,14 +446,14 @@
               <div class="ac ae af ag ah dp aj ak">
                 <p id="6931" class="gc gd ds bk gf b gg gh gi gj gk gl gm gn go gp gq">2️⃣ When we click <code
                     class="dj iv iw ix iy b">Download</code> to update the Blue Pill, the MakeCode Website <a
-                    href="https://web.archive.org/web/20191204194111/https://github.com/lupyuen/pxt/tree/master/pxtcompiler/emitter"
+                    href="https://github.com/lupyuen/pxt/tree/master/pxtcompiler/emitter"
                     class="at cg gr gs gt gu" target="_blank" rel="noopener nofollow">generates a Blue Pill firmware
                     image</a> with the <strong class="gf gv">same ROM layout</strong></p>
                 <p id="e30f" class="gc gd ds bk gf b gg gh gi gj gk gl gm gn go gp gq">3️⃣ MakeCode Website <a
-                    href="https://web.archive.org/web/20191204194111/https://github.com/lupyuen/pxt/blob/master/pxtlib/hf2.ts#L454-L495"
+                    href="https://github.com/lupyuen/pxt/blob/master/pxtlib/hf2.ts#L454-L495"
                     class="at cg gr gs gt gu" target="_blank" rel="noopener nofollow">transfers the firmware image in
                     chunks</a> to Blue Pill via the <a
-                    href="https://web.archive.org/web/20191204194111/https://github.com/lupyuen/pxt/blob/master/pxtlib/hf2.ts#L57-L123"
+                    href="https://github.com/lupyuen/pxt/blob/master/pxtlib/hf2.ts#L57-L123"
                     class="at cg gr gs gt gu" target="_blank" rel="noopener nofollow">USB HF2 protocol</a>, from low to
                   high address (<strong class="gf gv">Bootloader followed by Application</strong>)</p>
               </div>
@@ -476,7 +476,7 @@
               <div class="ac ae af ag ah dp aj ak">
                 <p id="ed3b" class="gc gd ds bk gf b gg gh gi gj gk gl gm gn go gp gq">4️⃣ Blue Pill Bootloader receives
                   <strong class="gf gv">the new Bootloader code</strong> and <a
-                    href="https://web.archive.org/web/20191204194111/https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/bootloader/hf2.c#L267-L294"
+                    href="https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/bootloader/hf2.c#L267-L294"
                     class="at cg gr gs gt gu" target="_blank" rel="noopener nofollow">writes temporarily into the
                     <strong class="gf gv">old Application region</strong></a></p>
               </div>
@@ -500,14 +500,14 @@
             <div class="n p">
               <div class="ac ae af ag ah dp aj ak">
                 <p id="8de9" class="gc gd ds bk gf b gg gh gi gj gk gl gm gn go gp gq">5️⃣ Bootloader <a
-                    href="https://web.archive.org/web/20191204194111/https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/bootloader/hf2.c#L304-L314"
+                    href="https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/bootloader/hf2.c#L304-L314"
                     class="at cg gr gs gt gu" target="_blank" rel="noopener nofollow">compares the old and new
                     Bootloader code</a>. Assuming that the code has changed, the Bootloader <a
-                    href="https://web.archive.org/web/20191204194111/https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/bootloader/hf2.c#L316-L332"
+                    href="https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/bootloader/hf2.c#L316-L332"
                     class="at cg gr gs gt gu" target="_blank" rel="noopener nofollow"><strong class="gf gv">clones the
                       Baseloader code</strong></a> (inside the Bootloader) into the next available ROM space. Bootloader
                   reboots the Blue Pill and <a
-                    href="https://web.archive.org/web/20191204194111/https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/bootloader/bootloader.c#L72-L155"
+                    href="https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/bootloader/bootloader.c#L72-L155"
                     class="at cg gr gs gt gu" target="_blank" rel="noopener nofollow"><strong class="gf gv">starts the
                       Baseloader</strong></a>.</p>
               </div>
@@ -529,7 +529,7 @@
             <div class="n p">
               <div class="ac ae af ag ah dp aj ak">
                 <p id="ac78" class="gc gd ds bk gf b gg gh gi gj gk gl gm gn go gp gq">6️⃣ Baseloader <a
-                    href="https://web.archive.org/web/20191204194111/https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/baseloader/baseloader.c#L314-L345"
+                    href="https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/baseloader/baseloader.c#L314-L345"
                     class="at cg gr gs gt gu" target="_blank" rel="noopener nofollow"><strong class="gf gv">moves the
                       new Bootloader code into the Bootloader ROM region</strong></a>, overwriting the old Bootloader.
                   The Bootloader is not running now, so it’s safe to overwrite.</p>
@@ -543,7 +543,7 @@
                   macros that access I/O memory). And because it branches to other parts of its own code through <strong
                     class="gf gv">Relative Addresses, not Absolute Addresses</strong>.</p>
                 <p id="d785" class="gc gd ds bk gf b gg gh gi gj gk gl gm gn go gp gq">9️⃣ Baseloader <a
-                    href="https://web.archive.org/web/20191204194111/https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/baseloader/baseloader.c#L353-L361"
+                    href="https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/baseloader/baseloader.c#L353-L361"
                     class="at cg gr gs gt gu" target="_blank" rel="noopener nofollow">reboots the Blue Pill</a> and
                   <strong class="gf gv">starts the new Bootloader</strong></p>
               </div>
@@ -566,7 +566,7 @@
               <div class="ac ae af ag ah dp aj ak">
                 <p id="a4da" class="gc gd ds bk gf b gg gh gi gj gk gl gm gn go gp gq">🔟 Bootloader continues to
                   receive the firmware from MakeCode via USB. Bootloader <a
-                    href="https://web.archive.org/web/20191204194111/https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/bootloader/hf2.c#L267-L295"
+                    href="https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/bootloader/hf2.c#L267-L295"
                     class="at cg gr gs gt gu" target="_blank" rel="noopener nofollow"><strong class="gf gv">writes the
                       updated Application code into the Application ROM region</strong></a><strong
                     class="gf gv">,</strong> overwriting the old Application code.</p>
@@ -624,13 +624,13 @@
 
 
                   <figcaption class="bo eu ir is ha cn cl cm it iu bj et">From <a
-                      href="https://web.archive.org/web/20191204194111/https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/bootloader/stm32f103/backup.c"
+                      href="https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/bootloader/stm32f103/backup.c"
                       class="at cg gr gs gt gu" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/bootloader/stm32f103/backup.c</a>
                   </figcaption>
                 </figure>
                 <p id="5eef" class="gc gd ds bk gf b gg gh gi gj gk gl gm gn go gp gq">In the <a
-                    href="https://web.archive.org/web/20191204194111/https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/bootloader/stm32f103/backup.c"
+                    href="https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/bootloader/stm32f103/backup.c"
                     class="at cg gr gs gt gu" target="_blank" rel="noopener nofollow">Bootloader code above</a> we use
                   macro <code class="dj iv iw ix iy b">RTC_BKP_DR()</code> to read and write the contents of the Backup
                   Registers. Note that the <code class="dj iv iw ix iy b">RTC_BKP_DR()</code> macro is called twice, so
@@ -647,19 +647,19 @@
                   Blue Pill restarts…</p>
                 <p id="42f7" class="gc gd ds bk gf b gg gh gi gj gk gl gm gn go gp gq">1️⃣ Before restarting, the
                   Bootloader sets the restart mode to Bootloader, Baseloader or Application Mode by calling <code
-                    class="dj iv iw ix iy b"><a href="https://web.archive.org/web/20191204194111/https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/bootloader/stm32f103/target_stm32f103.c#L240-L246" class="at cg gr gs gt gu" target="_blank" rel="noopener nofollow">boot_target_manifest_bootloader()</a>, <a href="https://web.archive.org/web/20191204194111/https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/bootloader/stm32f103/target_stm32f103.c#L232-L238" class="at cg gr gs gt gu" target="_blank" rel="noopener nofollow">boot_target_manifest_baseloader()</a></code>
+                    class="dj iv iw ix iy b"><a href="https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/bootloader/stm32f103/target_stm32f103.c#L240-L246" class="at cg gr gs gt gu" target="_blank" rel="noopener nofollow">boot_target_manifest_bootloader()</a>, <a href="https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/bootloader/stm32f103/target_stm32f103.c#L232-L238" class="at cg gr gs gt gu" target="_blank" rel="noopener nofollow">boot_target_manifest_baseloader()</a></code>
                   or <code
-                    class="dj iv iw ix iy b"><a href="https://web.archive.org/web/20191204194111/https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/bootloader/stm32f103/target_stm32f103.c#L224-L230" class="at cg gr gs gt gu" target="_blank" rel="noopener nofollow">boot_target_manifest_app()</a></code>.
+                    class="dj iv iw ix iy b"><a href="https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/bootloader/stm32f103/target_stm32f103.c#L224-L230" class="at cg gr gs gt gu" target="_blank" rel="noopener nofollow">boot_target_manifest_app()</a></code>.
                   These three functions store the restart mode into Backup Registers 0 and 1.</p>
                 <p id="d9a0" class="gc gd ds bk gf b gg gh gi gj gk gl gm gn go gp gq">1️⃣ Upon restarting, <code
-                    class="dj iv iw ix iy b"><a href="https://web.archive.org/web/20191204194111/https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/bootloader/bootloader.c#L157-L205" class="at cg gr gs gt gu" target="_blank" rel="noopener nofollow">bootloader_start()</a></code><a
-                    href="https://web.archive.org/web/20191204194111/https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/bootloader/bootloader.c#L157-L205"
+                    class="dj iv iw ix iy b"><a href="https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/bootloader/bootloader.c#L157-L205" class="at cg gr gs gt gu" target="_blank" rel="noopener nofollow">bootloader_start()</a></code><a
+                    href="https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/bootloader/bootloader.c#L157-L205"
                     class="at cg gr gs gt gu" target="_blank" rel="noopener nofollow"> in our Bootloader</a> is the
                   function that runs first. It calls <code
                     class="dj iv iw ix iy b">boot_target_get_startup_mode()</code> to get the restart mode.</p>
                 <p id="5016" class="gc gd ds bk gf b gg gh gi gj gk gl gm gn go gp gq">2️⃣ <code
-                    class="dj iv iw ix iy b"><a href="https://web.archive.org/web/20191204194111/https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/bootloader/stm32f103/target_stm32f103.c#L67-L103" class="at cg gr gs gt gu" target="_blank" rel="noopener nofollow">boot_target_get_startup_mode()</a></code><a
-                    href="https://web.archive.org/web/20191204194111/https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/bootloader/stm32f103/target_stm32f103.c#L67-L103"
+                    class="dj iv iw ix iy b"><a href="https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/bootloader/stm32f103/target_stm32f103.c#L67-L103" class="at cg gr gs gt gu" target="_blank" rel="noopener nofollow">boot_target_get_startup_mode()</a></code><a
+                    href="https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/bootloader/stm32f103/target_stm32f103.c#L67-L103"
                     class="at cg gr gs gt gu" target="_blank" rel="noopener nofollow"> in our Bootloader</a> reads the
                   Backup Registers 0 and 1 to get the restart mode.</p>
               </div>
@@ -812,11 +812,11 @@
                   for a great programming experience on Blue Pill, and we have come a long way since the first Blue Pill
                   Bootloader…</p>
                 <p id="0a5a" class="gc gd ds bk gf b gg gh gi gj gk gl gm gn go gp gq">1️⃣ <a
-                    href="https://web.archive.org/web/20191204194111/https://www.st.com/content/ccc/resource/technical/document/application_note/51/5f/03/1e/bd/9b/45/be/CD00264342.pdf/files/CD00264342.pdf/jcr:content/translations/en.CD00264342.pdf"
+                    href="https://www.st.com/content/ccc/resource/technical/document/application_note/51/5f/03/1e/bd/9b/45/be/CD00264342.pdf/files/CD00264342.pdf/jcr:content/translations/en.CD00264342.pdf"
                     class="at cg gr gs gt gu" target="_blank" rel="noopener nofollow">Blue Pill Factory-Installed
                     Bootloader</a>: Needs the UART pins to be connected before flashing. No USB support.</p>
                 <p id="8d95" class="gc gd ds bk gf b gg gh gi gj gk gl gm gn go gp gq">2️⃣ <a
-                    href="https://web.archive.org/web/20191204194111/https://github.com/rogerclarkmelbourne/STM32duino-bootloader"
+                    href="https://github.com/rogerclarkmelbourne/STM32duino-bootloader"
                     class="at cg gr gs gt gu" target="_blank" rel="noopener nofollow">Blue Pill Arduino Bootloader</a>:
                   Works with USB. Flashing works only with Arduino IDE client.</p>
                 <p id="d648" class="gc gd ds bk gf b gg gh gi gj gk gl gm gn go gp gq">3️⃣ <a class="at cg gr gs gt gu"

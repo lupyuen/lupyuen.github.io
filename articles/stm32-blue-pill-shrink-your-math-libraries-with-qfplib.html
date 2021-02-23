@@ -210,11 +210,11 @@
                 </div>
                 <p id="7318" class="fz ga ds bk gb b gc gd ge gf gg gh gi gj gk gl gm">Check out this magic trick… Why
                   does <a
-                    href="https://web.archive.org/web/20191204194230/http://wiki.stm32duino.com/index.php?title=Blue_Pill"
+                    href="http://wiki.stm32duino.com/index.php?title=Blue_Pill"
                     class="at cg gn go gp gq" target="_blank" rel="noopener nofollow">Blue Pill</a> think that <strong
                     class="gb gr">123</strong> times <strong class="gb gr">456</strong> is <strong
                     class="gb gr">123,456</strong> ???!!! <a
-                    href="https://web.archive.org/web/20191204194230/https://github.com/lupyuen/stm32bluepill-math-hack"
+                    href="https://github.com/lupyuen/stm32bluepill-math-hack"
                     class="at cg gn go gp gq" target="_blank" rel="noopener nofollow">Here’s the full source code</a>.
                 </p>
               </div>
@@ -276,7 +276,7 @@
                     class="gb gr">Blue Pill is not in that list.</strong> The math libraries are implemented in
                   software, not hardware. So a single call to <code class="dj hl hm hn ho b">sin()</code> could actually
                   keep the Blue Pill busy for a (short) while because of the <a
-                    href="https://web.archive.org/web/20191204194230/https://sourceware.org/git/?p=glibc.git;a=blob;f=sysdeps/ieee754/dbl-64/s_sin.c;h=7584afcd2b016fd94f8452d30f5d3542a831b5b3;hb=refs/heads/master"
+                    href="https://sourceware.org/git/?p=glibc.git;a=blob;f=sysdeps/ieee754/dbl-64/s_sin.c;h=7584afcd2b016fd94f8452d30f5d3542a831b5b3;hb=refs/heads/master"
                     class="at cg gn go gp gq" target="_blank" rel="noopener nofollow">complicated library code</a>. And
                   the complicated math code also causes Blue Pill programs to bloat beyond their ROM limit (64 KB).</p>
                 <p id="f95a" class="fz ga ds bk gb b gc gd ge gf gg gh gi gj gk gl gm">Is there a better way to do math
@@ -294,7 +294,7 @@
 
 
                   <figcaption class="bo eu gy gz ha cn cl cm hb hc bj et">From <a
-                      href="https://web.archive.org/web/20191204194230/https://github.com/lupyuen/stm32bluepill-math-hack/blob/master/src/main.c"
+                      href="https://github.com/lupyuen/stm32bluepill-math-hack/blob/master/src/main.c"
                       class="at cg gn go gp gq" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-math-hack/blob/master/src/main.c</a>
                   </figcaption>
@@ -302,7 +302,7 @@
                 <h1 id="b691" class="hz ia ds bk bj ib ic it ie iu ig iv ii iw ik ix im">Magic Trick Revealed</h1>
                 <p id="6695" class="fz ga ds bk gb b gc in ge io gg ip gi iq gk ir gm">Remember the above code from the
                   Magic Trick… Why does Blue Pill think that 123 times 456 is 123,456? Let’s look at the <a
-                    href="https://web.archive.org/web/20191204194230/https://github.com/lupyuen/stm32bluepill-math-hack/blob/master/firmware.dump"
+                    href="https://github.com/lupyuen/stm32bluepill-math-hack/blob/master/firmware.dump"
                     class="at cg gn go gp gq" target="_blank" rel="noopener nofollow">Assembly Code</a> (check <a
                     class="at cg gn go gp gq" target="_blank" rel="noopener"
                     href="/web/20191204194230/https://medium.com/@ly.lee/stm32-blue-pill-analyse-and-optimise-your-ram-and-rom-9fc805e16ed7?source=friends_link&amp;sk=54719084d640bb1d92ac1097d623bba2">my
@@ -329,7 +329,7 @@
                       </div>
                     </div>
                     <figcaption class="bo eu gy gz ha cn cl cm hb hc bj et">Assembly Code for the magic trick. From <a
-                        href="https://web.archive.org/web/20191204194230/https://github.com/lupyuen/stm32bluepill-math-hack/blob/master/firmware.dump"
+                        href="https://github.com/lupyuen/stm32bluepill-math-hack/blob/master/firmware.dump"
                         class="at cg gn go gp gq" target="_blank"
                         rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-math-hack/blob/master/firmware.dump</a>
                     </figcaption>
@@ -385,14 +385,14 @@
                   <p id="0df5" class="fz ga ds hp gb b gc gd ge gf gg gh gi gj gk gl gm">💎 About the <code
                       class="dj hl hm hn ho b">wrap</code>: The <code class="dj hl hm hn ho b">wrap</code> prefix was
                     inserted because we used this linker option in <a
-                      href="https://web.archive.org/web/20191204194230/https://github.com/lupyuen/stm32bluepill-math-hack/blob/master/platformio.ini"
+                      href="https://github.com/lupyuen/stm32bluepill-math-hack/blob/master/platformio.ini"
                       class="at cg gn go gp gq" target="_blank" rel="noopener nofollow">platformio.ini</a>:<code
                       class="dj hl hm hn ho b"> -Wl,-wrap,__aeabi_dmul</code>. Without <code
                       class="dj hl hm hn ho b">wrap</code>, the function name is actually <code
                       class="dj hl hm hn ho b"><em class="bk">__aeabi_dmul</em></code><em class="bk">. </em>By using
                     <code class="dj hl hm hn ho b">wrap</code> we can easily identify the functions that we have
                     intercepted. <a
-                      href="https://web.archive.org/web/20191204194230/http://infocenter.arm.com/help/topic/com.arm.doc.ihi0043d/IHI0043D_rtabi.pdf"
+                      href="http://infocenter.arm.com/help/topic/com.arm.doc.ihi0043d/IHI0043D_rtabi.pdf"
                       class="at cg gn go gp gq" target="_blank" rel="noopener nofollow">Check this doc for more info on
                       AEABI functions</a>.</p>
                 </blockquote>
@@ -404,7 +404,7 @@
             <div class="n p">
               <div class="ac ae af ag ah dp aj ak">
                 <div class="gs gt gu gv gw jx"><a
-                    href="https://web.archive.org/web/20191204194230/https://www.quinapalus.com/qfplib.html?source=post_page-----55093aab163a----------------------"
+                    href="https://www.quinapalus.com/qfplib.html?source=post_page-----55093aab163a----------------------"
                     rel="noopener nofollow">
                     <section class="ka cl cm ak ce n ar kb kc kd ke kf kg kh ki kj kk kl km kn ko kp">
                       <div class="kq n co p kr ks">
@@ -431,7 +431,7 @@
                 <h1 id="90cc" class="hz ia ds bk bj ib ic it ie iu ig iv ii iw ik ix im">Qfplib the tiny floating-point
                   library</h1>
                 <p id="2a56" class="fz ga ds bk gb b gc in ge io gg ip gi iq gk ir gm"><a
-                    href="https://web.archive.org/web/20191204194230/https://www.quinapalus.com/qfplib.html"
+                    href="https://www.quinapalus.com/qfplib.html"
                     class="at cg gn go gp gq" target="_blank" rel="noopener nofollow">Qfplib</a> is a floating-point
                   math library by Dr Mark Owen that’s incredibly small. In a mere <strong class="gb gr">1,224
                     bytes</strong> we get Assembly Code functions (specific to Arm Cortex-M0 and above) that compute…
@@ -456,7 +456,7 @@
                   computation code.</p>
                 <p id="db22" class="fz ga ds bk gb b gc gd ge gf gg gh gi gj gk gl gm">Be careful: There are <strong
                     class="gb gr">limitations in the Qfplib functions</strong>, <a
-                    href="https://web.archive.org/web/20191204194230/https://www.quinapalus.com/qfplib.html"
+                    href="https://www.quinapalus.com/qfplib.html"
                     class="at cg gn go gp gq" target="_blank" rel="noopener nofollow">as described here</a>. And Qfplib
                   only handles <strong class="gb gr">single-precision math, not double-precision</strong>. More about
                   this…</p>
@@ -480,7 +480,7 @@
                     bits</strong>).</p>
                 <p id="89d1" class="fz ga ds bk gb b gc gd ge gf gg gh gi gj gk gl gm">To be more specific…
                   single-precision numbers are stored in the <a
-                    href="https://web.archive.org/web/20191204194230/https://en.wikipedia.org/wiki/Single-precision_floating-point_format"
+                    href="https://en.wikipedia.org/wiki/Single-precision_floating-point_format"
                     class="at cg gn go gp gq" target="_blank" rel="noopener nofollow">IEEE 754 Single-Precision
                     format</a> which gives us <strong class="gb gr">6 significant decimal digits</strong>. So this <code
                     class="dj hl hm hn ho b">float</code> value is OK because it’s only 6 decimal digits…</p>
@@ -497,7 +497,7 @@
                   digits or more).</p>
                 <p id="22ca" class="fz ga ds bk gb b gc gd ge gf gg gh gi gj gk gl gm">With double-precision numbers
                   (stored as <a
-                    href="https://web.archive.org/web/20191204194230/https://en.wikipedia.org/wiki/Double-precision_floating-point_format"
+                    href="https://en.wikipedia.org/wiki/Double-precision_floating-point_format"
                     class="at cg gn go gp gq" target="_blank" rel="noopener nofollow">IEEE 754 Double-Precision
                     format</a>) we have room for <strong class="gb gr">15 significant decimal digits</strong>…</p>
                 <pre
@@ -546,7 +546,7 @@
                     class="dj hl hm hn ho b">doubles</code>. There’s a possibility that some <strong
                     class="gb gr">intermediate computation will overflow the 6-digit limitation of </strong><code
                     class="dj hl hm hn ho b"><strong class="gb gr">floats,</strong></code> l<a
-                    href="https://web.archive.org/web/20191204194230/https://github.com/adafruit/Adafruit_BME280_Library/blob/master/Adafruit_BME280.cpp#L591"
+                    href="https://github.com/adafruit/Adafruit_BME280_Library/blob/master/Adafruit_BME280.cpp#L591"
                     class="at cg gn go gp gq" target="_blank" rel="noopener nofollow">ike this computation</a>. GPS
                   coordinates (latitude, longitude) may require <code class="dj hl hm hn ho b">doubles</code> as well.
                 </p>
@@ -572,7 +572,7 @@
                   </div>
                   <figcaption class="bo eu gy gz ha cn cl cm hb hc bj et">nano-float function derived from Qfplib and
                     the unit test cases below. From <a
-                      href="https://web.archive.org/web/20191204194230/https://github.com/lupyuen/codal-libopencm3/blob/master/lib/nano-float/src/functions.c#L555-L585"
+                      href="https://github.com/lupyuen/codal-libopencm3/blob/master/lib/nano-float/src/functions.c#L555-L585"
                       class="at cg gn go gp gq" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/codal-libopencm3/blob/master/lib/nano-float/src/functions.c#L555-L585</a>
                   </figcaption>
@@ -613,10 +613,10 @@
                 <p id="3a62" class="fz ga ds bk gb b gc gd ge gf gg gh gi gj gk gl gm">This looks like a math textbook
                   exercise but let’s derive the missing functions based on Qfplib…</p>
                 <p id="bed3" class="fz ga ds bk gb b gc gd ge gf gg gh gi gj gk gl gm">1️⃣ <code
-                    class="dj hl hm hn ho b"><a href="https://web.archive.org/web/20191204194230/https://github.com/lupyuen/codal-libopencm3/blob/master/lib/nano-float/src/functions.c#L373-L408" class="at cg gn go gp gq" target="_blank" rel="noopener nofollow">log2</a></code><a
-                    href="https://web.archive.org/web/20191204194230/https://github.com/lupyuen/codal-libopencm3/blob/master/lib/nano-float/src/functions.c#L373-L408"
+                    class="dj hl hm hn ho b"><a href="https://github.com/lupyuen/codal-libopencm3/blob/master/lib/nano-float/src/functions.c#L373-L408" class="at cg gn go gp gq" target="_blank" rel="noopener nofollow">log2</a></code><a
+                    href="https://github.com/lupyuen/codal-libopencm3/blob/master/lib/nano-float/src/functions.c#L373-L408"
                     class="at cg gn go gp gq" target="_blank" rel="noopener nofollow"> and </a><code
-                    class="dj hl hm hn ho b"><a href="https://web.archive.org/web/20191204194230/https://github.com/lupyuen/codal-libopencm3/blob/master/lib/nano-float/src/functions.c#L373-L408" class="at cg gn go gp gq" target="_blank" rel="noopener nofollow">log10</a></code>
+                    class="dj hl hm hn ho b"><a href="https://github.com/lupyuen/codal-libopencm3/blob/master/lib/nano-float/src/functions.c#L373-L408" class="at cg gn go gp gq" target="_blank" rel="noopener nofollow">log10</a></code>
                   were derived from Qfplib’s <code class="dj hl hm hn ho b">qfp_fln</code> (natural logarithm function)
                   because…</p>
                 <figure class="gs gt gu gv gw cz cl cm paragraph-image">
@@ -633,15 +633,15 @@
                     </div>
                   </div>
                   <figcaption class="bo eu gy gz ha cn cl cm hb hc bj et"><a
-                      href="https://web.archive.org/web/20191204194230/https://en.wikipedia.org/wiki/Logarithm"
+                      href="https://en.wikipedia.org/wiki/Logarithm"
                       class="at cg gn go gp gq" target="_blank"
                       rel="noopener nofollow">https://en.wikipedia.org/wiki/Logarithm</a></figcaption>
                 </figure>
                 <p id="947f" class="fz ga ds bk gb b gc gd ge gf gg gh gi gj gk gl gm">2️⃣ <code
-                    class="dj hl hm hn ho b"><a href="https://web.archive.org/web/20191204194230/https://github.com/lupyuen/codal-libopencm3/blob/master/lib/nano-float/src/functions.c#L555-L629" class="at cg gn go gp gq" target="_blank" rel="noopener nofollow">asin</a></code><a
-                    href="https://web.archive.org/web/20191204194230/https://github.com/lupyuen/codal-libopencm3/blob/master/lib/nano-float/src/functions.c#L555-L629"
+                    class="dj hl hm hn ho b"><a href="https://github.com/lupyuen/codal-libopencm3/blob/master/lib/nano-float/src/functions.c#L555-L629" class="at cg gn go gp gq" target="_blank" rel="noopener nofollow">asin</a></code><a
+                    href="https://github.com/lupyuen/codal-libopencm3/blob/master/lib/nano-float/src/functions.c#L555-L629"
                     class="at cg gn go gp gq" target="_blank" rel="noopener nofollow"> and </a><code
-                    class="dj hl hm hn ho b"><a href="https://web.archive.org/web/20191204194230/https://github.com/lupyuen/codal-libopencm3/blob/master/lib/nano-float/src/functions.c#L555-L629" class="at cg gn go gp gq" target="_blank" rel="noopener nofollow">acos</a></code>
+                    class="dj hl hm hn ho b"><a href="https://github.com/lupyuen/codal-libopencm3/blob/master/lib/nano-float/src/functions.c#L555-L629" class="at cg gn go gp gq" target="_blank" rel="noopener nofollow">acos</a></code>
                   (inverse sine / cosine) were derived from Qfplib’s <code
                     class="dj hl hm hn ho b">qfp_fsqrt_fast</code> (square root) and <code
                     class="dj hl hm hn ho b">qfp_fatan2</code> (inverse tangent) because…</p>
@@ -659,19 +659,19 @@
                     </div>
                   </div>
                   <figcaption class="bo eu gy gz ha cn cl cm hb hc bj et"><a
-                      href="https://web.archive.org/web/20191204194230/https://en.wikipedia.org/wiki/Inverse_trigonometric_functions"
+                      href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions"
                       class="at cg gn go gp gq" target="_blank"
                       rel="noopener nofollow">https://en.wikipedia.org/wiki/Inverse_trigonometric_functions</a>
                   </figcaption>
                 </figure>
                 <p id="8a59" class="fz ga ds bk gb b gc gd ge gf gg gh gi gj gk gl gm">3️⃣ <code
-                    class="dj hl hm hn ho b"><a href="https://web.archive.org/web/20191204194230/https://github.com/lupyuen/codal-libopencm3/blob/master/lib/nano-float/src/functions.c#L631-L717" class="at cg gn go gp gq" target="_blank" rel="noopener nofollow">sinh</a></code><a
-                    href="https://web.archive.org/web/20191204194230/https://github.com/lupyuen/codal-libopencm3/blob/master/lib/nano-float/src/functions.c#L631-L717"
+                    class="dj hl hm hn ho b"><a href="https://github.com/lupyuen/codal-libopencm3/blob/master/lib/nano-float/src/functions.c#L631-L717" class="at cg gn go gp gq" target="_blank" rel="noopener nofollow">sinh</a></code><a
+                    href="https://github.com/lupyuen/codal-libopencm3/blob/master/lib/nano-float/src/functions.c#L631-L717"
                     class="at cg gn go gp gq" target="_blank" rel="noopener nofollow">, </a><code
-                    class="dj hl hm hn ho b"><a href="https://web.archive.org/web/20191204194230/https://github.com/lupyuen/codal-libopencm3/blob/master/lib/nano-float/src/functions.c#L631-L717" class="at cg gn go gp gq" target="_blank" rel="noopener nofollow">cosh</a></code><a
-                    href="https://web.archive.org/web/20191204194230/https://github.com/lupyuen/codal-libopencm3/blob/master/lib/nano-float/src/functions.c#L631-L717"
+                    class="dj hl hm hn ho b"><a href="https://github.com/lupyuen/codal-libopencm3/blob/master/lib/nano-float/src/functions.c#L631-L717" class="at cg gn go gp gq" target="_blank" rel="noopener nofollow">cosh</a></code><a
+                    href="https://github.com/lupyuen/codal-libopencm3/blob/master/lib/nano-float/src/functions.c#L631-L717"
                     class="at cg gn go gp gq" target="_blank" rel="noopener nofollow"> and </a><code
-                    class="dj hl hm hn ho b"><a href="https://web.archive.org/web/20191204194230/https://github.com/lupyuen/codal-libopencm3/blob/master/lib/nano-float/src/functions.c#L631-L717" class="at cg gn go gp gq" target="_blank" rel="noopener nofollow">tanh</a></code>
+                    class="dj hl hm hn ho b"><a href="https://github.com/lupyuen/codal-libopencm3/blob/master/lib/nano-float/src/functions.c#L631-L717" class="at cg gn go gp gq" target="_blank" rel="noopener nofollow">tanh</a></code>
                   (hyperbolic sine / cosine / tangent) were derived from Qfplib’s <code
                     class="dj hl hm hn ho b">qfp_fexp</code> (natural exponential) because…</p>
                 <figure class="gs gt gu gv gw cz cl cm paragraph-image">
@@ -688,18 +688,18 @@
                     </div>
                   </div>
                   <figcaption class="bo eu gy gz ha cn cl cm hb hc bj et"><a
-                      href="https://web.archive.org/web/20191204194230/https://en.wikipedia.org/wiki/Hyperbolic_function"
+                      href="https://en.wikipedia.org/wiki/Hyperbolic_function"
                       class="at cg gn go gp gq" target="_blank"
                       rel="noopener nofollow">https://en.wikipedia.org/wiki/Hyperbolic_function</a></figcaption>
                 </figure>
                 <p id="a3f7" class="fz ga ds bk gb b gc gd ge gf gg gh gi gj gk gl gm">4️⃣ <code
-                    class="dj hl hm hn ho b"><a href="https://web.archive.org/web/20191204194230/https://github.com/lupyuen/codal-libopencm3/blob/master/lib/nano-float/src/functions.c#L719-L819" class="at cg gn go gp gq" target="_blank" rel="noopener nofollow">asinh</a></code><a
-                    href="https://web.archive.org/web/20191204194230/https://github.com/lupyuen/codal-libopencm3/blob/master/lib/nano-float/src/functions.c#L719-L819"
+                    class="dj hl hm hn ho b"><a href="https://github.com/lupyuen/codal-libopencm3/blob/master/lib/nano-float/src/functions.c#L719-L819" class="at cg gn go gp gq" target="_blank" rel="noopener nofollow">asinh</a></code><a
+                    href="https://github.com/lupyuen/codal-libopencm3/blob/master/lib/nano-float/src/functions.c#L719-L819"
                     class="at cg gn go gp gq" target="_blank" rel="noopener nofollow">, </a><code
-                    class="dj hl hm hn ho b"><a href="https://web.archive.org/web/20191204194230/https://github.com/lupyuen/codal-libopencm3/blob/master/lib/nano-float/src/functions.c#L719-L819" class="at cg gn go gp gq" target="_blank" rel="noopener nofollow">acosh</a></code><a
-                    href="https://web.archive.org/web/20191204194230/https://github.com/lupyuen/codal-libopencm3/blob/master/lib/nano-float/src/functions.c#L719-L819"
+                    class="dj hl hm hn ho b"><a href="https://github.com/lupyuen/codal-libopencm3/blob/master/lib/nano-float/src/functions.c#L719-L819" class="at cg gn go gp gq" target="_blank" rel="noopener nofollow">acosh</a></code><a
+                    href="https://github.com/lupyuen/codal-libopencm3/blob/master/lib/nano-float/src/functions.c#L719-L819"
                     class="at cg gn go gp gq" target="_blank" rel="noopener nofollow"> and </a><code
-                    class="dj hl hm hn ho b"><a href="https://web.archive.org/web/20191204194230/https://github.com/lupyuen/codal-libopencm3/blob/master/lib/nano-float/src/functions.c#L719-L819" class="at cg gn go gp gq" target="_blank" rel="noopener nofollow">atanh</a></code>
+                    class="dj hl hm hn ho b"><a href="https://github.com/lupyuen/codal-libopencm3/blob/master/lib/nano-float/src/functions.c#L719-L819" class="at cg gn go gp gq" target="_blank" rel="noopener nofollow">atanh</a></code>
                   (inverse hyperbolic sine / cosine / tangent) were derived from <code
                     class="dj hl hm hn ho b">qfplib’s</code> <code class="dj hl hm hn ho b">qfp_fln</code> (natural
                   logarithm) and <code class="dj hl hm hn ho b">qfp_fsqrt_fast</code> (square root) because…</p>
@@ -717,7 +717,7 @@
                     </div>
                   </div>
                   <figcaption class="bo eu gy gz ha cn cl cm hb hc bj et"><a
-                      href="https://web.archive.org/web/20191204194230/https://en.wikipedia.org/wiki/Inverse_hyperbolic_functions"
+                      href="https://en.wikipedia.org/wiki/Inverse_hyperbolic_functions"
                       class="at cg gn go gp gq" target="_blank"
                       rel="noopener nofollow">https://en.wikipedia.org/wiki/Inverse_hyperbolic_functions</a>
                   </figcaption>
@@ -748,7 +748,7 @@
                 </div>
                 <figcaption class="bo eu gy gz ha cn cl cm hb hc bj et">nano-float unit tests automatically extracted
                   from the nano-float source code. From <a
-                    href="https://web.archive.org/web/20191204194230/https://docs.google.com/spreadsheets/d/1Uogm7SpgWVA4AiP6gqFkluaozFtlaEGMc4K2Mbfee7U/edit#gid=1740497564"
+                    href="https://docs.google.com/spreadsheets/d/1Uogm7SpgWVA4AiP6gqFkluaozFtlaEGMc4K2Mbfee7U/edit#gid=1740497564"
                     class="at cg gn go gp gq" target="_blank"
                     rel="noopener nofollow">https://docs.google.com/spreadsheets/d/1Uogm7SpgWVA4AiP6gqFkluaozFtlaEGMc4K2Mbfee7U/edit#gid=1740497564</a>
                 </figcaption>
@@ -773,7 +773,7 @@
                   test cases were automatically extracted from the <code class="dj hl hm hn ho b">nano-float</code>
                   source code by this Google Sheets spreadsheet…</p>
                 <div class="me mf mg mh mi jx"><a
-                    href="https://web.archive.org/web/20191204194230/https://docs.google.com/spreadsheets/d/1Uogm7SpgWVA4AiP6gqFkluaozFtlaEGMc4K2Mbfee7U/edit?source=post_page-----55093aab163a----------------------#gid=1740497564"
+                    href="https://docs.google.com/spreadsheets/d/1Uogm7SpgWVA4AiP6gqFkluaozFtlaEGMc4K2Mbfee7U/edit?source=post_page-----55093aab163a----------------------#gid=1740497564"
                     rel="noopener nofollow">
                     <section class="ka cl cm ak ce n ar kb kc kd ke kf kg kh ki kj kk kl km kn ko kp">
                       <div class="kq n co p kr ks">
@@ -800,7 +800,7 @@
                 <p id="42c3" class="fz ga ds bk gb b gc gd ge gf gg gh gi gj gk gl gm">Unit tests are also meant to be
                   run automatically at every rebuild. But the code requires a Blue Pill to execute. The solution:
                   <strong class="gb gr">Use the </strong><a
-                    href="https://web.archive.org/web/20191204194230/http://beckus.github.io/qemu_stm32/"
+                    href="http://beckus.github.io/qemu_stm32/"
                     class="at cg gn go gp gq" target="_blank" rel="noopener nofollow"><strong class="gb gr">Qemu Blue
                       Pill Emulator</strong></a><strong class="gb gr"> to execute the test cases</strong>, by simulating
                   a Blue Pill in software.</p>
@@ -829,7 +829,7 @@
                 </div>
                 <figcaption class="bo eu gy gz ha cn cl cm hb hc bj et">Memory usage of the MakeCode application on Blue
                   Pill, without Qfplib and nano-float. From <a
-                    href="https://web.archive.org/web/20191204194230/https://docs.google.com/spreadsheets/d/1DWFoh0Ui9j294htHzQrH-s6MuPRXct2zN8M9pj53CBk/edit#gid=381366828&amp;fvid=1359565135"
+                    href="https://docs.google.com/spreadsheets/d/1DWFoh0Ui9j294htHzQrH-s6MuPRXct2zN8M9pj53CBk/edit#gid=381366828&amp;fvid=1359565135"
                     class="at cg gn go gp gq" target="_blank"
                     rel="noopener nofollow">https://docs.google.com/spreadsheets/d/1DWFoh0Ui9j294htHzQrH-s6MuPRXct2zN8M9pj53CBk/edit#gid=381366828&amp;fvid=1359565135</a>
                 </figcaption>
@@ -840,7 +840,7 @@
                 <h1 id="1fae" class="hz ia ds bk bj ib ic it ie iu ig iv ii iw ik ix im">How I used Qfplib and
                   nano-float</h1>
                 <p id="4874" class="fz ga ds bk gb b gc in ge io gg ip gi iq gk ir gm"><a
-                    href="https://web.archive.org/web/20191204194230/https://makecode.com/docs"
+                    href="https://makecode.com/docs"
                     class="at cg gn go gp gq" target="_blank" rel="noopener nofollow">MakeCode</a> is visual programming
                   tool for creating embedded programs for microcontrollers (like the BBC micro:bit), simply by dragging
                   and dropping code blocks in a web browser. It’s the perfect way to teach embedded programming to
@@ -858,7 +858,7 @@
                       class="dj hl hm hn ho b">__wrap___aeabi_dmul</code> method described earlier, I intercepted the
                     single-precision and double-precision comparison and arithmetic operations (multiply, divide) and
                     used Qfplib instead. <a
-                      href="https://web.archive.org/web/20191204194230/https://github.com/lupyuen/newlib/blob/master/CMakeLists.txt#L28-L61"
+                      href="https://github.com/lupyuen/newlib/blob/master/CMakeLists.txt#L28-L61"
                       class="at cg gn go gp gq" target="_blank" rel="noopener nofollow">Here’s the complete list of
                       intercepted functions</a>.</li>
                   <li id="d282" class="fz ga ds bk gb b gc hg ge hh gg hi gi hj gk hk gm hd he hf">I used <code
@@ -892,7 +892,7 @@
                 </div>
                 <figcaption class="bo eu gy gz ha cn cl cm hb hc bj et">Memory usage of the MakeCode application on Blue
                   Pill, with Qfplib and nano-float. From <a
-                    href="https://web.archive.org/web/20191204194230/https://docs.google.com/spreadsheets/d/1OmD1XmUQJTIiXklYx-eui27MFBBhnXrCNaJwSUFDiN8/edit#gid=381366828&amp;fvid=1359565135"
+                    href="https://docs.google.com/spreadsheets/d/1OmD1XmUQJTIiXklYx-eui27MFBBhnXrCNaJwSUFDiN8/edit#gid=381366828&amp;fvid=1359565135"
                     class="at cg gn go gp gq" target="_blank"
                     rel="noopener nofollow">https://docs.google.com/spreadsheets/d/1OmD1XmUQJTIiXklYx-eui27MFBBhnXrCNaJwSUFDiN8/edit#gid=381366828&amp;fvid=1359565135</a>
                 </figcaption>

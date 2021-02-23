@@ -246,22 +246,22 @@
                 <h1 id="6a72" class="ib ic ar bz by id ie if ig ih ii ij ik il im in io">Create A Sample Blue Pill
                   Program</h1>
                 <p id="4214" class="gm gn ar bz go b gp ip gr iq gt ir gv is gx it gz">We’ll use <a
-                    href="https://web.archive.org/web/20191216120206/https://code.visualstudio.com/"
+                    href="https://code.visualstudio.com/"
                     class="bi cv iu iv iw ix" target="_blank" rel="noopener nofollow">Visual Studio Code</a> and the
                   PlatformIO Extension to create a simple LED blink program for analysing the RAM and ROM usage.</p>
                 <p id="8b5e" class="gm gn ar bz go b gp gq gr gs gt gu gv gw gx gy gz">Follow the steps in the video
                   below to install the PlatformIO Extension and create the sample program. Please copy the updated
                   content from <a
-                    href="https://web.archive.org/web/20191216120206/https://github.com/lupyuen/stm32bluepill-blink"
+                    href="https://github.com/lupyuen/stm32bluepill-blink"
                     class="bi cv iu iv iw ix" target="_blank" rel="noopener nofollow">my GitHub repository</a> for the
                   following files:</p>
                 <p id="8bf9" class="gm gn ar bz go b gp gq gr gs gt gu gv gw gx gy gz"><strong
                     class="go hh">platformio.ini</strong>: <code
-                    class="ea ha hb hc hd b"><a href="https://web.archive.org/web/20191216120206/https://github.com/lupyuen/stm32bluepill-blink/blob/master/platformio.ini" class="bi cv iu iv iw ix" target="_blank" rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-blink/blob/master/platformio.ini</a></code>
+                    class="ea ha hb hc hd b"><a href="https://github.com/lupyuen/stm32bluepill-blink/blob/master/platformio.ini" class="bi cv iu iv iw ix" target="_blank" rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-blink/blob/master/platformio.ini</a></code>
                 </p>
                 <p id="ab62" class="gm gn ar bz go b gp gq gr gs gt gu gv gw gx gy gz"><strong
                     class="go hh">main.c</strong>: <code
-                    class="ea ha hb hc hd b"><a href="https://web.archive.org/web/20191216120206/https://github.com/lupyuen/stm32bluepill-blink/blob/master/src/main.c" class="bi cv iu iv iw ix" target="_blank" rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-blink/blob/master/src/main.c</a></code>
+                    class="ea ha hb hc hd b"><a href="https://github.com/lupyuen/stm32bluepill-blink/blob/master/src/main.c" class="bi cv iu iv iw ix" target="_blank" rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-blink/blob/master/src/main.c</a></code>
                 </p>
                 <p id="cf1e" class="gm gn ar bz go b gp gq gr gs gt gu gv gw gx gy gz">If you don’t have a Blue Pill and
                   ST Link, you may skip the <strong class="go hh">Build</strong> and <strong
@@ -344,10 +344,10 @@
                 <p id="fb8a" class="gm gn ar bz go b gp gq gr gs gt gu gv gw gx gy gz">Or open the web version of the
                   Linker Script (split into 2 files):</p>
                 <p id="5c5f" class="gm gn ar bz go b gp gq gr gs gt gu gv gw gx gy gz"><code
-                    class="ea ha hb hc hd b"><a href="https://web.archive.org/web/20191216120206/https://github.com/libopencm3/libopencm3/blob/master/lib/stm32/f1/stm32f103x8.ld" class="bi cv iu iv iw ix" target="_blank" rel="noopener nofollow">https://github.com/libopencm3/libopencm3/blob/master/lib/stm32/f1/stm32f103x8.ld</a></code>
+                    class="ea ha hb hc hd b"><a href="https://github.com/libopencm3/libopencm3/blob/master/lib/stm32/f1/stm32f103x8.ld" class="bi cv iu iv iw ix" target="_blank" rel="noopener nofollow">https://github.com/libopencm3/libopencm3/blob/master/lib/stm32/f1/stm32f103x8.ld</a></code>
                 </p>
                 <p id="52b3" class="gm gn ar bz go b gp gq gr gs gt gu gv gw gx gy gz"><code
-                    class="ea ha hb hc hd b"><a href="https://web.archive.org/web/20191216120206/https://github.com/libopencm3/libopencm3/blob/master/lib/cortex-m-generic.ld" class="bi cv iu iv iw ix" target="_blank" rel="noopener nofollow">https://github.com/libopencm3/libopencm3/blob/master/lib/cortex-m-generic.ld</a></code>
+                    class="ea ha hb hc hd b"><a href="https://github.com/libopencm3/libopencm3/blob/master/lib/cortex-m-generic.ld" class="bi cv iu iv iw ix" target="_blank" rel="noopener nofollow">https://github.com/libopencm3/libopencm3/blob/master/lib/cortex-m-generic.ld</a></code>
                 </p>
                 <pre
                   class="iy iz ja jb jc je jf jg"><span id="d463" class="jh ic ar bz hd b fk ji jj r jk">MEMORY  /* Define memory regions. */<br/>{<br/>  <strong class="hd hh">rom</strong> (rx)  : ORIGIN = <strong class="hd hh">0x08000000</strong>, LENGTH = <strong class="hd hh">64K</strong><br/>  <strong class="hd hh">ram</strong> (rwx) : ORIGIN = <strong class="hd hh">0x20000000</strong>, LENGTH = <strong class="hd hh">20K</strong><br/>}</span></pre>
@@ -446,7 +446,7 @@
                 <p id="a86c" class="gm gn ar bz go b gp gq gr gs gt gu gv gw gx gy gz">The directive <code
                     class="ea ha hb hc hd b">&gt;ram AT &gt;rom</code> simply means “allocate in RAM and in ROM”. If
                   you’re wondering why it’s called BSS… <a
-                    href="https://web.archive.org/web/20191216120206/https://en.wikipedia.org/wiki/.bss"
+                    href="https://en.wikipedia.org/wiki/.bss"
                     class="bi cv iu iv iw ix" target="_blank" rel="noopener nofollow">here’s the story</a>.</p>
                 <h1 id="ce00" class="ib ic ar bz by id ie jq ig jr ii js ik jt im ju io">Stack</h1>
                 <pre
@@ -505,7 +505,7 @@
                       class="ea ha hb hc hd b">bootrom</code> and <code class="ea ha hb hc hd b">bootram</code>, each
                     with its own Sections, in this Linker Script (this allows me to partition the Blue Pill RAM and ROM
                     for the Bootloader and for the Application): <code
-                      class="ea ha hb hc hd b"><a href="https://web.archive.org/web/20191216120206/https://github.com/lupyuen/codal-libopencm3/blob/master/ld/stm32f103x8.ld" class="bi cv iu iv iw ix" target="_blank" rel="noopener nofollow">https://github.com/lupyuen/codal-libopencm3/blob/master/ld/stm32f103x8.ld</a></code>
+                      class="ea ha hb hc hd b"><a href="https://github.com/lupyuen/codal-libopencm3/blob/master/ld/stm32f103x8.ld" class="bi cv iu iv iw ix" target="_blank" rel="noopener nofollow">https://github.com/lupyuen/codal-libopencm3/blob/master/ld/stm32f103x8.ld</a></code>
                   </p>
                 </blockquote>
               </div>
@@ -522,7 +522,7 @@
                 <p id="e7e1" class="gm gn ar bz go b gp gq gr gs gt gu gv gw gx gy gz">After building the project, open
                   the <code class="ea ha hb hc hd b"><strong class="go hh">firmware.map</strong></code> file located at
                   the top folder of the project. Or <a
-                    href="https://web.archive.org/web/20191216120206/https://github.com/lupyuen/stm32bluepill-blink/blob/master/firmware.map"
+                    href="https://github.com/lupyuen/stm32bluepill-blink/blob/master/firmware.map"
                     class="bi cv iu iv iw ix" target="_blank" rel="noopener nofollow">browse the web version</a>.</p>
                 <p id="7b2c" class="gm gn ar bz go b gp gq gr gs gt gu gv gw gx gy gz"><code
                     class="ea ha hb hc hd b">firmware.map</code> is the <strong class="go hh">Linker Map</strong> that
@@ -602,7 +602,7 @@
                   <li id="8956" class="gm gn ar bz go b gp hi gr hj gt hk gv hl gx hm gz he hf hg">In <code
                       class="ea ha hb hc hd b">tasks.json</code> file that appears, replace the contents by the contents
                     of this file: <code
-                      class="ea ha hb hc hd b"><a href="https://web.archive.org/web/20191216120206/https://github.com/lupyuen/stm32bluepill-blink/blob/master/.vscode/tasks.json" class="bi cv iu iv iw ix" target="_blank" rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-blink/blob/master/.vscode/tasks.json</a></code>
+                      class="ea ha hb hc hd b"><a href="https://github.com/lupyuen/stm32bluepill-blink/blob/master/.vscode/tasks.json" class="bi cv iu iv iw ix" target="_blank" rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-blink/blob/master/.vscode/tasks.json</a></code>
                   </li>
                   <li id="356b" class="gm gn ar bz go b gp hi gr hj gt hk gv hl gx hm gz he hf hg">Click <code
                       class="ea ha hb hc hd b">Terminal → Run Task → 🔎 Disassemble STM32 Blue Pill</code></li>
@@ -616,7 +616,7 @@
                 <p id="0ce8" class="gm gn ar bz go b gp gq gr gs gt gu gv gw gx gy gz">To see the Assembly Code, open
                   the <code class="ea ha hb hc hd b">firmware.dump</code> file located at the top folder of your
                   project. Or open the web copy: <code
-                    class="ea ha hb hc hd b"><a href="https://web.archive.org/web/20191216120206/https://github.com/lupyuen/stm32bluepill-blink/blob/master/firmware.dump" class="bi cv iu iv iw ix" target="_blank" rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-blink/blob/master/firmware.dump</a></code>
+                    class="ea ha hb hc hd b"><a href="https://github.com/lupyuen/stm32bluepill-blink/blob/master/firmware.dump" class="bi cv iu iv iw ix" target="_blank" rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-blink/blob/master/firmware.dump</a></code>
                 </p>
               </div>
             </div>
@@ -647,7 +647,7 @@
                   RISC-based processor (Arm Cortex-M3) so the Assembly Code is easier to understand: <code
                     class="ea ha hb hc hd b">ldr</code> for Load Register, <code class="ea ha hb hc hd b">str</code> for
                   Store Register, … For details, check out the <a
-                    href="https://web.archive.org/web/20191216120206/https://www.st.com/content/ccc/resource/technical/document/programming_manual/5b/ca/8d/83/56/7f/40/08/CD00228163.pdf/files/CD00228163.pdf/jcr:content/translations/en.CD00228163.pdf"
+                    href="https://www.st.com/content/ccc/resource/technical/document/programming_manual/5b/ca/8d/83/56/7f/40/08/CD00228163.pdf/files/CD00228163.pdf/jcr:content/translations/en.CD00228163.pdf"
                     class="bi cv iu iv iw ix" target="_blank" rel="noopener nofollow">STM32 Cortex®-M3 programming
                     manual</a>.</p>
                 <p id="48b8" class="gm gn ar bz go b gp gq gr gs gt gu gv gw gx gy gz"><strong class="go hh">Every Blue
@@ -763,7 +763,7 @@
 
                   <figcaption class="cd fk jm jn hv dc da db jo jp by fj"><code
                       class="ea ha hb hc hd b">null_handler() and blocking_handler() f</code>rom <a
-                      href="https://web.archive.org/web/20191216120206/https://github.com/libopencm3/libopencm3/blob/master/lib/cm3/vector.c"
+                      href="https://github.com/libopencm3/libopencm3/blob/master/lib/cm3/vector.c"
                       class="bi cv iu iv iw ix" target="_blank"
                       rel="noopener nofollow">https://github.com/libopencm3/libopencm3/blob/master/lib/cm3/vector.c</a>
                   </figcaption>
@@ -782,7 +782,7 @@
 
                   <figcaption class="cd fk jm jn hv dc da db jo jp by fj"><code
                       class="ea ha hb hc hd b">reset_handler() f</code>rom <a
-                      href="https://web.archive.org/web/20191216120206/https://github.com/libopencm3/libopencm3/blob/master/lib/cm3/vector.c"
+                      href="https://github.com/libopencm3/libopencm3/blob/master/lib/cm3/vector.c"
                       class="bi cv iu iv iw ix" target="_blank"
                       rel="noopener nofollow">https://github.com/libopencm3/libopencm3/blob/master/lib/cm3/vector.c</a>
                   </figcaption>
@@ -826,7 +826,7 @@
                       class="go hh"> and use our own? </strong>Yes we can! I used a custom <code
                       class="ea ha hb hc hd b">reset_handler()</code> here to start either the Baseloader, Bootloader or
                     Application, depending on the settings stored in battery-backed memory: <code
-                      class="ea ha hb hc hd b"><a href="https://web.archive.org/web/20191216120206/https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/hal/reset_handler.c" class="bi cv iu iv iw ix" target="_blank" rel="noopener nofollow">https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/hal/reset_handler.c</a></code>
+                      class="ea ha hb hc hd b"><a href="https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/hal/reset_handler.c" class="bi cv iu iv iw ix" target="_blank" rel="noopener nofollow">https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/hal/reset_handler.c</a></code>
                   </p>
                   <p id="751b" class="gm gn ar hq go b gp gq gr gs gt gu gv gw gx gy gz"><em class="bz">💎</em> <strong
                       class="go hh">Why does the Vector Table point to </strong><code
@@ -836,7 +836,7 @@
                       the actual address of </strong><code
                       class="ea ha hb hc hd b"><strong class="go hh"><em class="bz">reset_handler()</em></strong></code><strong
                       class="go hh">? </strong>Because Arm says “<a
-                      href="https://web.archive.org/web/20191216120206/https://www.st.com/content/ccc/resource/technical/document/programming_manual/5b/ca/8d/83/56/7f/40/08/CD00228163.pdf/files/CD00228163.pdf/jcr:content/translations/en.CD00228163.pdf"
+                      href="https://www.st.com/content/ccc/resource/technical/document/programming_manual/5b/ca/8d/83/56/7f/40/08/CD00228163.pdf/files/CD00228163.pdf/jcr:content/translations/en.CD00228163.pdf"
                       class="bi cv iu iv iw ix" target="_blank" rel="noopener nofollow">the least-significant bit of
                       each vector must be 1, indicating that the exception handler is Thumb code</a>”. This applies to
                     the addresses of interrupt service routines in the Vector Table too.</p>
@@ -847,7 +847,7 @@
                       class="ea ha hb hc hd b">SCB_VTOR</code> register to the new Vector Table (because we don’t want
                     the Blue Pill to get confused if an exception occurs during flashing). This is also known as
                     “Relocating the Vector Table”… <code
-                      class="ea ha hb hc hd b"><a href="https://web.archive.org/web/20191216120206/https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/baseloader/baseloader.c" class="bi cv iu iv iw ix" target="_blank" rel="noopener nofollow">https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/baseloader/baseloader.c</a></code>
+                      class="ea ha hb hc hd b"><a href="https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/baseloader/baseloader.c" class="bi cv iu iv iw ix" target="_blank" rel="noopener nofollow">https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/baseloader/baseloader.c</a></code>
                   </p>
                 </blockquote>
                 <h1 id="cd59" class="ib ic ar bz by id ie jq ig jr ii js ik jt im ju io">Use Google Sheets To Analyse
@@ -859,7 +859,7 @@
                 <p id="917f" class="gm gn ar bz go b gp gq gr gs gt gu gv gw gx gy gz">Check out this Blue Pill Memory
                   Map that was generated from our sample blink program…</p>
                 <div class="ky kz la lb lc ld"><a
-                    href="https://web.archive.org/web/20191216120206/https://docs.google.com/spreadsheets/d/1F_j782DVhuUm1KspFxU2E3PQ1tuQd0QjPI81WqCyDrw/edit?source=post_page-----9fc805e16ed7----------------------#gid=381366828&amp;fvid=1359565135"
+                    href="https://docs.google.com/spreadsheets/d/1F_j782DVhuUm1KspFxU2E3PQ1tuQd0QjPI81WqCyDrw/edit?source=post_page-----9fc805e16ed7----------------------#gid=381366828&amp;fvid=1359565135"
                     rel="noopener nofollow">
                     <section class="lg da db ak ct n bh lh li lj lk ll lm ln lo lp lq lr ls lt lu lv">
                       <div class="lw n dd p lx ly">
@@ -911,7 +911,7 @@
                 <p id="f6d3" class="gm gn ar bz go b gp gq gr gs gt gu gv gw gx gy gz">1️⃣ Click this link to open the
                   Memory Map template…</p>
                 <div class="ky kz la lb lc ld"><a
-                    href="https://web.archive.org/web/20191216120206/https://docs.google.com/spreadsheets/d/1U_fh1UZZVWjcuUGTKg2JWYoHpfxZocge4s7rbFZpwzo/edit?usp=sharing&amp;source=post_page-----9fc805e16ed7----------------------"
+                    href="https://docs.google.com/spreadsheets/d/1U_fh1UZZVWjcuUGTKg2JWYoHpfxZocge4s7rbFZpwzo/edit?usp=sharing&amp;source=post_page-----9fc805e16ed7----------------------"
                     rel="noopener nofollow">
                     <section class="lg da db ak ct n bh lh li lj lk ll lm ln lo lp lq lr ls lt lu lv">
                       <div class="lw n dd p lx ly">
@@ -971,8 +971,8 @@
                 <h1 id="44b9" class="ib ic ar bz by id ie if ig ih ii ij ik il im in io">What Happens When We Add
                   sprintf()?</h1>
                 <p id="6c61" class="gm gn ar bz go b gp ip gr iq gt ir gv is gx it gz"><code
-                    class="ea ha hb hc hd b"><a href="https://web.archive.org/web/20191216120206/http://www.cplusplus.com/reference/cstdio/sprintf/" class="bi cv iu iv iw ix" target="_blank" rel="noopener nofollow">sprintf()</a></code><a
-                    href="https://web.archive.org/web/20191216120206/http://www.cplusplus.com/reference/cstdio/sprintf/"
+                    class="ea ha hb hc hd b"><a href="http://www.cplusplus.com/reference/cstdio/sprintf/" class="bi cv iu iv iw ix" target="_blank" rel="noopener nofollow">sprintf()</a></code><a
+                    href="http://www.cplusplus.com/reference/cstdio/sprintf/"
                     class="bi cv iu iv iw ix" target="_blank" rel="noopener nofollow"> is a common C function</a> used
                   for formatting numbers as strings. What happens to the RAM and ROM usage when we add it to our Blue
                   Pill program? Try it out yourself…</p>
@@ -989,7 +989,7 @@
                   Studio Code</p>
                 <p id="5d0c" class="gm gn ar bz go b gp gq gr gs gt gu gv gw gx gy gz">3️⃣ Copy the contents of <code
                     class="ea ha hb hc hd b">firmware.map</code> into a new copy of the <a
-                    href="https://web.archive.org/web/20191216120206/https://docs.google.com/spreadsheets/d/1U_fh1UZZVWjcuUGTKg2JWYoHpfxZocge4s7rbFZpwzo/edit?usp=sharing"
+                    href="https://docs.google.com/spreadsheets/d/1U_fh1UZZVWjcuUGTKg2JWYoHpfxZocge4s7rbFZpwzo/edit?usp=sharing"
                     class="bi cv iu iv iw ix" target="_blank" rel="noopener nofollow">Memory Map Template</a></p>
                 <p id="57f5" class="gm gn ar bz go b gp gq gr gs gt gu gv gw gx gy gz">4️⃣ Click the <code
                     class="ea ha hb hc hd b"><strong class="go hh">Symbols</strong></code> sheet</p>
@@ -1008,7 +1008,7 @@
                 <p id="8a8f" class="gm gn ar bz go b gp gq gr gs gt gu gv gw gx gy gz">What cause the ROM usage to jump
                   so much? Take a look at the Memory Map you have created. Or check out my copy of the Memory Map…</p>
                 <div class="ky kz la lb lc ld"><a
-                    href="https://web.archive.org/web/20191216120206/https://docs.google.com/spreadsheets/d/1ZfOGWiYJzpt1yYK86tdpoqn_u9CirU2wduPrjnRZkbg/edit?source=post_page-----9fc805e16ed7----------------------#gid=381366828&amp;fvid=1359565135"
+                    href="https://docs.google.com/spreadsheets/d/1ZfOGWiYJzpt1yYK86tdpoqn_u9CirU2wduPrjnRZkbg/edit?source=post_page-----9fc805e16ed7----------------------#gid=381366828&amp;fvid=1359565135"
                     rel="noopener nofollow">
                     <section class="lg da db ak ct n bh lh li lj lk ll lm ln lo lp lq lr ls lt lu lv">
                       <div class="lw n dd p lx ly">
@@ -1055,7 +1055,7 @@
                   don’t use <code class="ea ha hb hc hd b">sprintf()</code> and the <code
                     class="ea ha hb hc hd b">stdio</code> library in my Blue Pill programs. For logging, I wrote a
                   library that performs simple formatting of numbers: <code
-                    class="ea ha hb hc hd b"><a href="https://web.archive.org/web/20191216120206/https://github.com/lupyuen/codal-libopencm3/tree/master/stm32/logger" class="bi cv iu iv iw ix" target="_blank" rel="noopener nofollow">https://github.com/lupyuen/codal-libopencm3/tree/master/stm32/logger</a></code>
+                    class="ea ha hb hc hd b"><a href="https://github.com/lupyuen/codal-libopencm3/tree/master/stm32/logger" class="bi cv iu iv iw ix" target="_blank" rel="noopener nofollow">https://github.com/lupyuen/codal-libopencm3/tree/master/stm32/logger</a></code>
                 </p>
                 <p id="158e" class="gm gn ar bz go b gp gq gr gs gt gu gv gw gx gy gz">So now we have learnt how to use
                   Google Sheets to analyse the Linker Map to find large functions and variables. This should help fix
@@ -1094,7 +1094,7 @@
                   Memory Map to optimise the MakeCode runtime for Blue Pill. Here’s the file for the above Memory Map…
                 </p>
                 <div class="ky kz la lb lc ld"><a
-                    href="https://web.archive.org/web/20191216120206/https://docs.google.com/spreadsheets/d/1DWFoh0Ui9j294htHzQrH-s6MuPRXct2zN8M9pj53CBk/edit?source=post_page-----9fc805e16ed7----------------------#gid=381366828&amp;fvid=1359565135"
+                    href="https://docs.google.com/spreadsheets/d/1DWFoh0Ui9j294htHzQrH-s6MuPRXct2zN8M9pj53CBk/edit?source=post_page-----9fc805e16ed7----------------------#gid=381366828&amp;fvid=1359565135"
                     rel="noopener nofollow">
                     <section class="lg da db ak ct n bh lh li lj lk ll lm ln lo lp lq lr ls lt lu lv">
                       <div class="lw n dd p lx ly">
@@ -1148,7 +1148,7 @@
                   to identify the large objects to be fixed. After optimisation, the program is a lot smaller (shown
                   above). Here is the optimised Memory Map file…</p>
                 <div class="ky kz la lb lc ld"><a
-                    href="https://web.archive.org/web/20191216120206/https://docs.google.com/spreadsheets/d/1OmD1XmUQJTIiXklYx-eui27MFBBhnXrCNaJwSUFDiN8/edit?source=post_page-----9fc805e16ed7----------------------#gid=381366828&amp;fvid=1359565135"
+                    href="https://docs.google.com/spreadsheets/d/1OmD1XmUQJTIiXklYx-eui27MFBBhnXrCNaJwSUFDiN8/edit?source=post_page-----9fc805e16ed7----------------------#gid=381366828&amp;fvid=1359565135"
                     rel="noopener nofollow">
                     <section class="lg da db ak ct n bh lh li lj lk ll lm ln lo lp lq lr ls lt lu lv">
                       <div class="lw n dd p lx ly">
