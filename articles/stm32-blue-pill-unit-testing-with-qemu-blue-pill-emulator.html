@@ -247,7 +247,7 @@
                 <p id="e44d" class="gx gy cd ha b hb hc hd he hf hg hh hi hj hk hl hm hn ho hp hq cv ap">Computing
                   sensor values in IoT devices can be prone to bugs… And <strong class="ha hr">Unit Testing</strong> can
                   help to stop the bugs before they pollute the entire IoT chain. Check out <a
-                    href="https://web.archive.org/web/20200717195257/https://github.com/finitespace/BME280/blob/master/src/BME280.cpp"
+                    href="https://github.com/finitespace/BME280/blob/master/src/BME280.cpp"
                     class="bw gc id ie if ig" target="_blank" rel="noopener nofollow">this complicated computation</a>…
                 </p>
                 <figure class="ii ij ik il im da cn co paragraph-image">
@@ -268,14 +268,14 @@
                     </div>
                   </div>
                   <figcaption class="io hx cp cn co ip iq cc fe ff ce ch">BME280 Humidity Sensor Computation. From <a
-                      href="https://web.archive.org/web/20200717195257/https://github.com/finitespace/BME280/blob/master/src/BME280.cpp"
+                      href="https://github.com/finitespace/BME280/blob/master/src/BME280.cpp"
                       class="bw gc id ie if ig" target="_blank"
                       rel="noopener nofollow">https://github.com/finitespace/BME280/blob/master/src/BME280.cpp</a>
                   </figcaption>
                 </figure>
                 <p id="2e24" class="gx gy cd ha b hb hc hd he hf hg hh hi hj hk hl hm hn ho hp hq cv ap">This is the
                   actual function used to compute the ambient humidity for the <a
-                    href="https://web.archive.org/web/20200717195257/https://cdn-shop.adafruit.com/datasheets/BST-BMP280-DS001-11.pdf"
+                    href="https://cdn-shop.adafruit.com/datasheets/BST-BMP280-DS001-11.pdf"
                     class="bw gc id ie if ig" target="_blank" rel="noopener nofollow"><strong class="ha hr">BME280
                       Humidity Sensor</strong></a><strong class="ha hr"> </strong>(just like the story). It’s hard to
                   figure out whether this function computes the humidity correctly given the sensor’s register values
@@ -306,7 +306,7 @@
             <div class="n p">
               <div class="z ab ac ae af dt ah ai">
                 <div class="ii ij ik il im jd"><a
-                    href="https://web.archive.org/web/20200717195257/http://www.throwtheswitch.org/unity"
+                    href="http://www.throwtheswitch.org/unity"
                     target="_blank" rel="noopener nofollow">
                     <div class="je n bv">
                       <div class="jf n jg p jh ji">
@@ -324,10 +324,10 @@
                 <h1 id="667d" class="jr js cd cc jj jt ju jv jw jx jy jz ka kb kc kd ke kf kg kh ki ap">What’s A Test
                   Case?</h1>
                 <p id="543f" class="gx gy cd ha b hb kj hd he kk hg hh kl hj hk km hm hn kn hp hq cv ap">We’ll use the
-                  <a href="https://web.archive.org/web/20200717195257/http://www.throwtheswitch.org/unity"
+                  <a href="http://www.throwtheswitch.org/unity"
                     class="bw gc id ie if ig" target="_blank" rel="noopener nofollow">Unity Unit Test Library</a> (not
                   the game toolkit). Here’s a <a
-                    href="https://web.archive.org/web/20200717195257/https://github.com/lupyuen/stm32bluepill-unittest/blob/master/lib/nano-float/test/test.c#L66"
+                    href="https://github.com/lupyuen/stm32bluepill-unittest/blob/master/lib/nano-float/test/test.c#L66"
                     class="bw gc id ie if ig" target="_blank" rel="noopener nofollow">simple<strong class="ha hr"> Test
                       Case</strong></a> that divides two numbers and verifies the result…</p>
                 <pre
@@ -352,7 +352,7 @@
                   Results.</p>
                 <p id="dbc6" class="gx gy cd ha b hb hc hd he hf hg hh hi hj hk hl hm hn ho hp hq cv ap">Besides
                   comparing doubles, <a
-                    href="https://web.archive.org/web/20200717195257/http://www.throwtheswitch.org/unity"
+                    href="http://www.throwtheswitch.org/unity"
                     class="bw gc id ie if ig" target="_blank" rel="noopener nofollow">Unity supports other types</a> as
                   well, like…</p>
                 <pre
@@ -376,14 +376,14 @@
 
 
                   <figcaption class="io hx cp cn co ip iq cc fe ff ce ch">From <a
-                      href="https://web.archive.org/web/20200717195257/https://github.com/lupyuen/stm32bluepill-unittest/blob/master/lib/nano-float/test/test.c#L64-L71"
+                      href="https://github.com/lupyuen/stm32bluepill-unittest/blob/master/lib/nano-float/test/test.c#L64-L71"
                       class="bw gc id ie if ig" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-unittest/blob/master/lib/nano-float/test/test.c#L64-L71</a>
                   </figcaption>
                 </figure>
                 <p id="b71b" class="gx gy cd ha b hb hc hd he hf hg hh hi hj hk hl hm hn ho hp hq cv ap">To run the Test
                   Suites, we call their functions <a
-                    href="https://web.archive.org/web/20200717195257/https://github.com/lupyuen/stm32bluepill-unittest/blob/master/lib/nano-float/test/test.c#L428-L481"
+                    href="https://github.com/lupyuen/stm32bluepill-unittest/blob/master/lib/nano-float/test/test.c#L428-L481"
                     class="bw gc id ie if ig" target="_blank" rel="noopener nofollow">like this</a>…</p>
                 <pre
                   class="ii ij ik il im ko kp kq"><span id="b4dc" class="ap kr js cd iu b ff ks kt r ku">int test_nanofloat(void) {<br/>    //  Run unit tests.<br/>    UNITY_BEGIN();<br/>    RUN_TEST(test_aeabi_ddiv);<br/>    RUN_TEST(test_aeabi_dmul);<br/>    RUN_TEST(test_aeabi_dadd);<br/>    RUN_TEST(test_aeabi_dsub);<br/>    ...<br/>    UNITY_END();</span></pre>
@@ -395,16 +395,16 @@
                   class="ii ij ik il im ko kp kq"><span id="a122" class="ap kr js cd iu b ff ks kt r ku">#include &lt;logger.h&gt;<br/>#ifdef UNIT_TEST<br/>extern int test_nanofloat(void);<br/>#endif</span><span id="7c53" class="ap kr js cd iu b ff lb lc ld le lf kt r ku">int main(void)<br/>{ <br/> enable_log(); //  Enable logging via Arm Semihosting. <br/>               //  Note: ST Link must be connected.</span><span id="c737" class="ap kr js cd iu b ff lb lc ld le lf kt r ku">#ifdef UNIT_TEST<br/> test_nanofloat();<br/>#endif</span><span id="a034" class="ap kr js cd iu b ff lb lc ld le lf kt r ku"> debug_force_flush();   //  Flush the debug buffer before we halt.<br/> for (;;) {}            //  Loop forever.<br/>}</span><span id="7028" class="ap kr js cd iu b ff lb lc ld le lf kt r ku">#ifdef UNIT_TEST<br/>#include &quot;../lib/nano-float/test/test.c&quot;<br/>#endif</span></pre>
                 <p id="f0be" class="gx gy cd ha b hb hc hd he hf hg hh hi hj hk hl hm hn ho hp hq cv ap">I prefer to
                   call <code class="dm ir is it iu b">test_nanofloat()</code> <a
-                    href="https://web.archive.org/web/20200717195257/https://github.com/lupyuen/stm32bluepill-unittest/blob/master/src/main.c"
+                    href="https://github.com/lupyuen/stm32bluepill-unittest/blob/master/src/main.c"
                     class="bw gc id ie if ig" target="_blank" rel="noopener nofollow">from the </a><code
-                    class="dm ir is it iu b"><a href="https://web.archive.org/web/20200717195257/https://github.com/lupyuen/stm32bluepill-unittest/blob/master/src/main.c" class="bw gc id ie if ig" target="_blank" rel="noopener nofollow">main()</a></code><a
-                    href="https://web.archive.org/web/20200717195257/https://github.com/lupyuen/stm32bluepill-unittest/blob/master/src/main.c"
+                    class="dm ir is it iu b"><a href="https://github.com/lupyuen/stm32bluepill-unittest/blob/master/src/main.c" class="bw gc id ie if ig" target="_blank" rel="noopener nofollow">main()</a></code><a
+                    href="https://github.com/lupyuen/stm32bluepill-unittest/blob/master/src/main.c"
                     class="bw gc id ie if ig" target="_blank" rel="noopener nofollow"> function</a>, surrounded by <code
                     class="dm ir is it iu b">#ifdef UNIT_TEST</code>. So the unit test code will not be compiled into
                   the embedded program unless we define <code class="dm ir is it iu b">UNIT_TEST</code>.</p>
                 <p id="b288" class="gx gy cd ha b hb hc hd he hf hg hh hi hj hk hl hm hn ho hp hq cv ap"><code
                     class="dm ir is it iu b">UNIT_TEST</code> is defined as a compiler option in <code
-                    class="dm ir is it iu b"><a href="https://web.archive.org/web/20200717195257/https://github.com/lupyuen/stm32bluepill-unittest/blob/master/platformio.ini" class="bw gc id ie if ig" target="_blank" rel="noopener nofollow">platformio.ini</a></code>…
+                    class="dm ir is it iu b"><a href="https://github.com/lupyuen/stm32bluepill-unittest/blob/master/platformio.ini" class="bw gc id ie if ig" target="_blank" rel="noopener nofollow">platformio.ini</a></code>…
                 </p>
                 <pre
                   class="ii ij ik il im ko kp kq"><span id="0ba4" class="ap kr js cd iu b ff ks kt r ku">[env:bluepill_f103c8]<br/>...<br/>build_flags = <br/><strong class="iu hr">    ; Enable unit test. Comment this line to disable unit test.<br/>    -D UNIT_TEST</strong><br/>    -D UNITY_FLOAT_PRECISION=0.000001 <br/>    -D UNITY_DOUBLE_PRECISION=0.000001<br/>    -D UNITY_OUTPUT_CHAR=unity_output_char <br/>    -D UNITY_INCLUDE_DOUBLE <br/>    -D UNITY_EXCLUDE_SETJMP_H <br/>    -D UNITY_EXCLUDE_MATH_H</span></pre>
@@ -460,7 +460,7 @@
                   automatically whenever we update our Blue Pill program… That would be really helpful right?</p>
                 <p id="9cb9" class="gx gy cd ha b hb hc hd he hf hg hh hi hj hk hl hm hn ho hp hq cv ap">Fortunately the
                   “Virtual” Blue Pill actually exists: It’s called the <a
-                    href="https://web.archive.org/web/20200717195257/http://beckus.github.io/qemu_stm32/"
+                    href="http://beckus.github.io/qemu_stm32/"
                     class="bw gc id ie if ig" target="_blank" rel="noopener nofollow"><strong class="ha hr">Qemu Blue
                       Pill Emulator</strong></a>. That’s what we saw in the videos above. There was no physical Blue
                   Pill connected in the demos that we saw. The installation requires a few steps so let’s walk through
@@ -478,7 +478,7 @@
                   <p id="3714" class="li lj cd dw b lk ll lm ln lo lp hq ch">For Windows:</p>
                 </blockquote>
                 <p id="a653" class="gx gy cd ha b hb lq hd he lr hg hh ls hj hk lt hm hn lu hp hq cv ap">1️⃣ Install <a
-                    href="https://web.archive.org/web/20200717195257/https://docs.microsoft.com/en-us/windows/wsl/install-win10"
+                    href="https://docs.microsoft.com/en-us/windows/wsl/install-win10"
                     class="bw gc id ie if ig" target="_blank" rel="noopener nofollow">Windows Subsystem for Linux</a>.
                   Choose Ubuntu.</p>
                 <p id="da39" class="gx gy cd ha b hb hc hd he hf hg hh hi hj hk hl hm hn ho hp hq cv ap">2️⃣ Click <code
@@ -493,12 +493,12 @@
                   <p id="1661" class="li lj cd dw b lk lv lw lx ly lz hq ch">For macOS:</p>
                 </blockquote>
                 <p id="913b" class="gx gy cd ha b hb lq hd he lr hg hh ls hj hk lt hm hn lu hp hq cv ap">1️⃣ I<a
-                    href="https://web.archive.org/web/20200717195257/https://www.macports.org/"
+                    href="https://www.macports.org/"
                     class="bw gc id ie if ig" target="_blank" rel="noopener nofollow">nstall MacPorts</a></p>
                 <p id="025e" class="gx gy cd ha b hb hc hd he hf hg hh hi hj hk hl hm hn ho hp hq cv ap">2️⃣ Open a
                   command prompt and enter these commands…</p>
                 <pre
-                  class="ii ij ik il im ko kp kq"><span id="490d" class="ap kr js cd iu b ff ks kt r ku">cd ~</span><span id="f26d" class="ap kr js cd iu b ff lb lc ld le lf kt r ku">git clone <a href="https://web.archive.org/web/20200717195257/https://github.com/beckus/qemu_stm32.git" class="bw gc id ie if ig" target="_blank" rel="noopener nofollow">https://github.com/beckus/qemu_stm32.git</a></span><span id="6aa4" class="ap kr js cd iu b ff lb lc ld le lf kt r ku">cd <!-- -->qemu_stm32</span><span id="ffad" class="ap kr js cd iu b ff lb lc ld le lf kt r ku">sudo port install glib2-devel</span><span id="4007" class="ap kr js cd iu b ff lb lc ld le lf kt r ku">git submodule update --init pixman</span><span id="ce72" class="ap kr js cd iu b ff lb lc ld le lf kt r ku">git submodule update --init dtc</span><span id="e8a7" class="ap kr js cd iu b ff lb lc ld le lf kt r ku">./configure --enable-debug \<br/>  --target-list=”arm-softmmu” \<br/>  --python=python2 \<br/>  --disable-cocoa</span><span id="cffe" class="ap kr js cd iu b ff lb lc ld le lf kt r ku">make<!-- --> </span></pre>
+                  class="ii ij ik il im ko kp kq"><span id="490d" class="ap kr js cd iu b ff ks kt r ku">cd ~</span><span id="f26d" class="ap kr js cd iu b ff lb lc ld le lf kt r ku">git clone <a href="https://github.com/beckus/qemu_stm32.git" class="bw gc id ie if ig" target="_blank" rel="noopener nofollow">https://github.com/beckus/qemu_stm32.git</a></span><span id="6aa4" class="ap kr js cd iu b ff lb lc ld le lf kt r ku">cd <!-- -->qemu_stm32</span><span id="ffad" class="ap kr js cd iu b ff lb lc ld le lf kt r ku">sudo port install glib2-devel</span><span id="4007" class="ap kr js cd iu b ff lb lc ld le lf kt r ku">git submodule update --init pixman</span><span id="ce72" class="ap kr js cd iu b ff lb lc ld le lf kt r ku">git submodule update --init dtc</span><span id="e8a7" class="ap kr js cd iu b ff lb lc ld le lf kt r ku">./configure --enable-debug \<br/>  --target-list=”arm-softmmu” \<br/>  --python=python2 \<br/>  --disable-cocoa</span><span id="cffe" class="ap kr js cd iu b ff lb lc ld le lf kt r ku">make<!-- --> </span></pre>
                 <p id="9a7d" class="gx gy cd ha b hb hc hd he hf hg hh hi hj hk hl hm hn ho hp hq cv ap">For the <code
                     class="dm ir is it iu b">configure</code> step we assume Python version 2 is installed as <code
                     class="dm ir is it iu b">python2</code></p>
@@ -529,7 +529,7 @@
                   class="ii ij ik il im ko kp kq"><span id="e57b" class="ap kr js cd iu b ff ks kt r ku">cd ~<br/>git clone https://github.com/lupyuen/stm32bluepill-unittest</span></pre>
                 <p id="b0de" class="gx gy cd ha b hb hc hd he hf hg hh hi hj hk hl hm hn ho hp hq cv ap">3️⃣ Install
                   <strong class="ha hr">Visual Studio Code</strong> for Windows or macOS from <code
-                    class="dm ir is it iu b"><a href="https://web.archive.org/web/20200717195257/https://code.visualstudio.com/Download" class="bw gc id ie if ig" target="_blank" rel="noopener nofollow">https://code.visualstudio.com/Download</a></code>
+                    class="dm ir is it iu b"><a href="https://code.visualstudio.com/Download" class="bw gc id ie if ig" target="_blank" rel="noopener nofollow">https://code.visualstudio.com/Download</a></code>
                 </p>
                 <p id="b365" class="gx gy cd ha b hb hc hd he hf hg hh hi hj hk hl hm hn ho hp hq cv ap">4️⃣ Launch
                   <strong class="ha hr">Visual Studio Code</strong>. <br />Install the <strong class="ha hr">PlatformIO
@@ -647,7 +647,7 @@
                 </div>
                 <figcaption class="io hx cp cn co ip iq cc fe ff ce ch">nano-float unit tests automatically extracted
                   from the nano-float source code. From <a
-                    href="https://web.archive.org/web/20200717195257/https://docs.google.com/spreadsheets/d/1Uogm7SpgWVA4AiP6gqFkluaozFtlaEGMc4K2Mbfee7U/edit#gid=1740497564"
+                    href="https://docs.google.com/spreadsheets/d/1Uogm7SpgWVA4AiP6gqFkluaozFtlaEGMc4K2Mbfee7U/edit#gid=1740497564"
                     class="bw gc id ie if ig" target="_blank"
                     rel="noopener nofollow">https://docs.google.com/spreadsheets/d/1Uogm7SpgWVA4AiP6gqFkluaozFtlaEGMc4K2Mbfee7U/edit#gid=1740497564</a>
                 </figcaption>
@@ -669,7 +669,7 @@
                   Test Cases, writing the Unit Test code by hand will be tedious and hard to maintain. That’s why I
                   created a Google Sheets spreadsheet that generates the Unit Test code…</p>
                 <div class="mc md me mf mg jd"><a
-                    href="https://web.archive.org/web/20200717195257/https://docs.google.com/spreadsheets/d/1Uogm7SpgWVA4AiP6gqFkluaozFtlaEGMc4K2Mbfee7U/edit#gid=1740497564"
+                    href="https://docs.google.com/spreadsheets/d/1Uogm7SpgWVA4AiP6gqFkluaozFtlaEGMc4K2Mbfee7U/edit#gid=1740497564"
                     target="_blank" rel="noopener nofollow">
                     <div class="je n bv">
                       <div class="jf n jg p jh ji">
@@ -707,7 +707,7 @@
                   </div>
                   <figcaption class="io hx cp cn co ip iq cc fe ff ce ch">nano-float library source code and the unit
                     test cases below. From <a
-                      href="https://web.archive.org/web/20200717195257/https://github.com/lupyuen/codal-libopencm3/blob/master/lib/nano-float/src/functions.c#L555-L585"
+                      href="https://github.com/lupyuen/codal-libopencm3/blob/master/lib/nano-float/src/functions.c#L555-L585"
                       class="bw gc id ie if ig" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/codal-libopencm3/blob/master/lib/nano-float/src/functions.c#L555-L585</a>
                   </figcaption>
@@ -732,7 +732,7 @@
                     </div>
                   </div>
                   <figcaption class="io hx cp cn co ip iq cc fe ff ce ch">Test Suite generated by the spreadsheet. From
-                    <a href="https://web.archive.org/web/20200717195257/https://github.com/lupyuen/stm32bluepill-unittest/blob/master/lib/nano-float/test/test.c#L332-L336"
+                    <a href="https://github.com/lupyuen/stm32bluepill-unittest/blob/master/lib/nano-float/test/test.c#L332-L336"
                       class="bw gc id ie if ig" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-unittest/blob/master/lib/nano-float/test/test.c#L332-L336</a>
                   </figcaption>
@@ -750,7 +750,7 @@
                   Precision</h1>
                 <p id="174a" class="gx gy cd ha b hb kj hd he kk hg hh kl hj hk km hm hn kn hp hq cv ap">The above <code
                     class="dm ir is it iu b">gcc</code> compiler options were configured in <code
-                    class="dm ir is it iu b"><a href="https://web.archive.org/web/20200717195257/https://github.com/lupyuen/stm32bluepill-unittest/blob/master/platformio.ini" class="bw gc id ie if ig" target="_blank" rel="noopener nofollow">platformio.ini</a></code>.
+                    class="dm ir is it iu b"><a href="https://github.com/lupyuen/stm32bluepill-unittest/blob/master/platformio.ini" class="bw gc id ie if ig" target="_blank" rel="noopener nofollow">platformio.ini</a></code>.
                   Note that we defined <code class="dm ir is it iu b">UNITY_FLOAT_PRECISION</code> and <code
                     class="dm ir is it iu b">UNITY_DOUBLE_PRECISION</code> as <code
                     class="dm ir is it iu b">0.000001</code>. How do they affect the Unit Testing? If you remember this
@@ -810,11 +810,11 @@
                   incorrectly.</p>
                 <p id="95c8" class="gx gy cd ha b hb hc hd he hf hg hh hi hj hk hl hm hn ho hp hq cv ap">In Unit
                   Testing, the <a
-                    href="https://web.archive.org/web/20200717195257/https://en.wikipedia.org/wiki/Code_coverage"
+                    href="https://en.wikipedia.org/wiki/Code_coverage"
                     class="bw gc id ie if ig" target="_blank" rel="noopener nofollow"><strong class="ha hr">Test
                       Coverage</strong></a> info tells us the functions that have been called when we run Unit Tests.
                   For our simplified Test Coverage, we used an array of counters to <a
-                    href="https://web.archive.org/web/20200717195257/https://github.com/lupyuen/stm32bluepill-unittest/blob/master/lib/nano-float/src/functions.c"
+                    href="https://github.com/lupyuen/stm32bluepill-unittest/blob/master/lib/nano-float/src/functions.c"
                     class="bw gc id ie if ig" target="_blank" rel="noopener nofollow">track the functions called</a>…
                 </p>
                 <pre
@@ -822,7 +822,7 @@
                 <p id="e81b" class="gx gy cd ha b hb hc hd he hf hg hh hi hj hk hl hm hn ho hp hq cv ap"><code
                     class="dm ir is it iu b">float_usage_index</code> is an array of counters that count how many times
                   each function was called. When our <a
-                    href="https://web.archive.org/web/20200717195257/https://github.com/lupyuen/stm32bluepill-unittest/blob/master/lib/nano-float/test/test.c#L483-L504"
+                    href="https://github.com/lupyuen/stm32bluepill-unittest/blob/master/lib/nano-float/test/test.c#L483-L504"
                     class="bw gc id ie if ig" target="_blank" rel="noopener nofollow">Unit Test code</a> shows the
                   message…</p>
                 <pre
@@ -851,7 +851,7 @@
                 </h1>
                 <p id="5ae5" class="gx gy cd ha b hb kj hd he kk hg hh kl hj hk km hm hn kn hp hq cv ap">This is the
                   third article in a series of articles that explain how I ported and optimised the <a
-                    href="https://web.archive.org/web/20200717195257/https://makecode.com/docs"
+                    href="https://makecode.com/docs"
                     class="bw gc id ie if ig" target="_blank" rel="noopener nofollow">MakeCode visual programming
                     tool</a> for Blue Pill…</p>
                 <p id="bb72" class="gx gy cd ha b hb hc hd he hf hg hh hi hj hk hl hm hn ho hp hq cv ap">1️⃣ The first
