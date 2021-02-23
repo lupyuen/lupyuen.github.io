@@ -253,13 +253,13 @@
                   temperature at 5 different spots).</p>
                 <p id="6f5a" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">We’ll call them the <strong
                     class="gy hu">5 Sensor Nodes</strong>. Each Sensor Node will be an <a
-                    href="https://web.archive.org/web/20191204194039/http://wiki.stm32duino.com/index.php?title=Blue_Pill"
+                    href="http://wiki.stm32duino.com/index.php?title=Blue_Pill"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">STM32 Blue
                       Pill</strong></a> with a temperature sensor.</p>
                 <p id="6029" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">Running cables through the living
                   room is out of the question, so our Blue Pills will have to <strong class="gy hu">connect
                     wirelessly</strong> to transmit the temperature data. Perhaps with an <a
-                    href="https://web.archive.org/web/20191204194039/https://www.espressif.com/en/products/hardware/esp8266ex/overview"
+                    href="https://www.espressif.com/en/products/hardware/esp8266ex/overview"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">ESP8266
                       WiFi</strong></a> module?</p>
                 <p id="0ddc" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">But each Sensor Node is only
@@ -271,7 +271,7 @@
                   configure each ESP8266 with WiFi MAC Address security in case somebody spoofs our Sensor Nodes and
                   breaks into our home WiFi)</p>
                 <p id="b08b" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">The <a
-                    href="https://web.archive.org/web/20191204194039/https://www.sparkfun.com/datasheets/Components/nRF24L01_prelim_prod_spec_1_2.pdf"
+                    href="https://www.sparkfun.com/datasheets/Components/nRF24L01_prelim_prod_spec_1_2.pdf"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">Nordic
                       Semiconductor nRF24L01</strong></a><strong class="gy hu"> wireless transceiver</strong> is perfect
                   for this scenario. Each Blue Pill transmits the temperature data via the nRF24L01 module to a simple
@@ -279,7 +279,7 @@
                 </p>
                 <p id="bcd0" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">To bridge the 5 Sensor Nodes to a
                   proper IoT CoAP Server (like <a
-                    href="https://web.archive.org/web/20191204194039/https://thethings.io/" class="at cg io ip iq ir"
+                    href="https://thethings.io/" class="at cg io ip iq ir"
                     target="_blank" rel="noopener nofollow">thethings.io</a>), we use a Blue Pill running as a <strong
                     class="gy hu">Collector Node.</strong> It collects temperature data from Sensor Nodes via nRF24L01,
                   and transmits the data to the CoAP Server. That way, <strong class="gy hu">only ONE node</strong>
@@ -373,7 +373,7 @@
                     Node</strong>…</p>
                 <p id="c5ba" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">1️⃣ <strong class="gy hu">Two
                   </strong><a
-                    href="https://web.archive.org/web/20191204194039/http://wiki.stm32duino.com/index.php?title=Blue_Pill"
+                    href="http://wiki.stm32duino.com/index.php?title=Blue_Pill"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">Blue
                       Pills</strong></a>, or two <a class="at cg io ip iq ir" target="_blank" rel="noopener"
                     href="/web/20191204194039/https://medium.com/@ly.lee/super-blue-pill-like-stm32-blue-pill-but-better-6d341d9347da"><strong
@@ -405,25 +405,25 @@
                   </a></div>
                 <p id="cca4" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">2️⃣ <strong class="gy hu">Two
                     ST-Link V2 USB Adapters </strong>(<a
-                    href="https://web.archive.org/web/20191204194039/https://www.lazada.sg/-i105322107-s106873847.html?urlFlag=true&amp;mp=1"
+                    href="https://www.lazada.sg/-i105322107-s106873847.html?urlFlag=true&amp;mp=1"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">or compatible</a>) for connecting
                   the (Super) Blue Pills to your computers. Check <a class="at cg io ip iq ir" target="_blank"
                     rel="noopener"
                     href="/web/20191204194039/https://medium.com/@ly.lee/connect-stm32-blue-pill-to-esp8266-with-apache-mynewt-7edceb9e3b8d">the
                     previous article</a> for the instructions on connecting the (Super) Blue Pills to ST-Link V2. (Look
                   for the <a
-                    href="https://web.archive.org/web/20191204194039/https://cdn-images-1.medium.com/max/1120/1*XC9f49KW9neBDa762pfTTQ.png"
+                    href="https://cdn-images-1.medium.com/max/1120/1*XC9f49KW9neBDa762pfTTQ.png"
                     class="at cg io ip iq ir" target="_blank" rel="noopener">ST-Link V2 photo</a>)</p>
                 <p id="5edb" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">3️⃣ <strong class="gy hu">Two
                     Computers </strong>(Windows 10 or macOS)<strong class="gy hu"> </strong>for debugging the two
                   (Super) Blue Pills</p>
                 <p id="39cb" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">4️⃣ <strong class="gy hu">One
                     ESP8266 WiFi module</strong>. I tested with the <a
-                    href="https://web.archive.org/web/20191204194039/https://www.lazada.sg/-i281003794-s442063247.html?urlFlag=true&amp;mp=1&amp;spm=spm=a2o42.order_details.item_title.1"
+                    href="https://www.lazada.sg/-i281003794-s442063247.html?urlFlag=true&amp;mp=1&amp;spm=spm=a2o42.order_details.item_title.1"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">ESP-01S</a>.</p>
                 <p id="19fd" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">5️⃣ <strong class="gy hu">Two
                     nRF24L01 RF modules</strong>. I used the <a
-                    href="https://web.archive.org/web/20191204194039/https://www.lazada.sg/-i288146861-s465579095.html?urlFlag=true&amp;mp=1"
+                    href="https://www.lazada.sg/-i288146861-s465579095.html?urlFlag=true&amp;mp=1"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">nRF24L01+</a>, which includes an
                   RF power amplifier for longer range (up to 1 km).</p>
                 <figure class="hx hy hz ia ib cz eg ic cd id hl ie if ig ba ih ii ij ik il im paragraph-image">
@@ -530,11 +530,11 @@
                 <p id="c504" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">When the Collector Node and
                   Sensor Node are communicating correctly, you should see messages like these…</p>
                 <p id="b593" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">1️⃣ <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/logs/collector-node.log"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/logs/collector-node.log"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">Sample log for <strong
                       class="gy hu">Collector Node</strong></a></p>
                 <p id="d3d5" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">2️⃣ <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/logs/sensor-node.log"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/logs/sensor-node.log"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">Sample log for <strong
                       class="gy hu">Sensor Node</strong></a></p>
                 <p id="b5e6" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">However the Collector and Sensor
@@ -555,14 +555,14 @@
                 <p id="0f93" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj"><em class="hv">How does the
                     Collector Node know which Sensor Node sent the temperature data?</em> Each Sensor Node is
                   distinguished from the other 4 Sensor Nodes by an <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L66-L74"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L66-L74"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">8-bit
                       address that we allocate to each Sensor Node</strong></a>. For the demo we’re using these
                   addresses (in hexadecimal) for the <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/syscfg.yml#L77-L91"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/syscfg.yml#L77-L91"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">5 Sensor Nodes</a> (derived from
                   the <a
-                    href="https://web.archive.org/web/20191204194039/https://www.sparkfun.com/datasheets/Components/nRF24L01_prelim_prod_spec_1_2.pdf"
+                    href="https://www.sparkfun.com/datasheets/Components/nRF24L01_prelim_prod_spec_1_2.pdf"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">sample configuration in the
                     datasheet</a>)…</p>
                 <pre
@@ -577,16 +577,16 @@
                 <p id="21f2" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj"><em class="hv">What if our
                     neighbour decides to set up their own nRF24L01 Sensor Network?</em> To prevent address collisions,
                   we distinguish each Sensor Network by allocating a <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L57-L62"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L57-L62"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">unique
                       32-bit (4-byte) network address</strong></a>. For the demo we’re using <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/syscfg.yml#L74-L76"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/syscfg.yml#L74-L76"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">this network address</a>…</p>
                 <pre
                   class="hx hy hz ia ib lv lw lx"><span id="9e62" class="ly ji er bk lu b eh lz ma r mb">Sensor Network Address (four bytes): B3-B4-B5-B6</span></pre>
                 <p id="82bf" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">When we combine the Sensor
                   Network Address with the Sensor Node Address, we get <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L63-L74"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L63-L74"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">5 unique node address</a>, each
                   containing 5 bytes…</p>
                 <pre
@@ -624,10 +624,10 @@
               <div class="ac ae af ag ah eo aj ak">
                 <p id="d23b" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj"><em class="hv">What about the
                     Collector Node?</em> We’re free to allocate any unique <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L57-L62"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L57-L62"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">5-byte node address</a>. (No need
                   to share the same 4 bytes of the Sensor Network Address as the other nodes) <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/syscfg.yml#L71-L73"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/syscfg.yml#L71-L73"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">For the demo</a>, we’re using…</p>
                 <pre
                   class="hx hy hz ia ib lv lw lx"><span id="d89e" class="ly ji er bk lu b eh lz ma r mb">Collector Node Address (five bytes): 78-78-78-78-78</span></pre>
@@ -637,14 +637,14 @@
 
 
                   <figcaption class="bo eh ei ej ek cn cl cm el em bj en">nRF24L01 Settings. From <a
-                      href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/syscfg.yml#L66-L91"
+                      href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/syscfg.yml#L66-L91"
                       class="at cg io ip iq ir" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/syscfg.yml#L66-L91</a>
                   </figcaption>
                 </figure>
                 <p id="2381" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">If you need to configure the
                   nRF24L01 addresses to avoid conflicts with nearby nRF24L01 networks, edit the settings in <code
-                    class="eb lr ls lt lu b"><a href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/syscfg.yml#L66-L91" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">targets/bluepill_my_sensor/syscfg.yml</a></code>
+                    class="eb lr ls lt lu b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/syscfg.yml#L66-L91" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">targets/bluepill_my_sensor/syscfg.yml</a></code>
                 </p>
               </div>
             </div>
@@ -662,21 +662,21 @@
                 <p id="a34f" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">Inside every Blue Pill is a
                   <strong class="gy hu">unique 12-byte Hardware ID</strong> that’s burned in during manufacturing. I
                   have provided a <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/master/libs/sensor_network"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/master/libs/sensor_network"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">Sensor
                       Network Library</strong></a> that…</p>
                 <p id="b5a2" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">1️⃣ <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L326-L336"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L326-L336"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">Reads the Blue Pill’s Hardware
                     ID</a> (by calling Mynewt’s <code
-                    class="eb lr ls lt lu b"><a href="https://web.archive.org/web/20191204194039/https://mynewt.apache.org/latest/os/modules/hal/hal_bsp/hal_bsp.html#c.hal_bsp_hw_id" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">hal_bsp_hw_id</a>()</code>
+                    class="eb lr ls lt lu b"><a href="https://mynewt.apache.org/latest/os/modules/hal/hal_bsp/hal_bsp.html#c.hal_bsp_hw_id" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">hal_bsp_hw_id</a>()</code>
                   API)</p>
                 <p id="bf37" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">2️⃣ <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L336-L348"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L336-L348"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">Matches the Hardware ID</a>
                   against a configurable list of Hardware IDs for the Collector and Sensor Nodes</p>
                 <p id="256d" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">3️⃣ And <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L338-L342"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L338-L342"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">assigns the respective
                     addresses</a> for the Collector and Sensor Nodes.</p>
                 <figure class="hx hy hz ia ib cz eg ic cd id hl ie if ig ba ih ll lm ln lo im">
@@ -685,14 +685,14 @@
 
 
                   <figcaption class="bo eh ei ej ek cn cl cm el em bj en">Hardware ID settings. From <a
-                      href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/syscfg.yml#L44-L65"
+                      href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/syscfg.yml#L44-L65"
                       class="at cg io ip iq ir" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/syscfg.yml#L44-L65</a>
                   </figcaption>
                 </figure>
                 <p id="c2dc" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">All you need to do is to fill in
                   the list of Hardware IDs for your Blue Pills in <code
-                    class="eb lr ls lt lu b"><a href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/syscfg.yml#L44-L65" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">targets/bluepill_my_sensor/syscfg.yml</a></code>…
+                    class="eb lr ls lt lu b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/syscfg.yml#L44-L65" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">targets/bluepill_my_sensor/syscfg.yml</a></code>…
                 </p>
                 <p id="e411" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">To discover the Hardware ID for
                   your Blue Pill, start the debugger and watch out for this message at startup…</p>
@@ -704,17 +704,17 @@
                   class="hx hy hz ia ib lv lw lx"><span id="9797" class="ly ji er bk lu b eh lz ma r mb">0x57, 0xff, 0x6a, 0x06, 0x78, 0x78, 0x54, 0x50, 0x49, 0x29, 0x24, 0x67</span></pre>
                 <p id="b2b3" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">Rebuild the application and
                   restart the debugger. At startup, watch for <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L326-L347"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L326-L347"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">one of these messages</a> that
                   indicates the type of node…</p>
                 <pre
                   class="hx hy hz ia ib lv lw lx"><span id="307c" class="ly ji er bk lu b eh lz ma r mb">NET collector node<br/>NET sensor node #1</span></pre>
                 <p id="3a82" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">If you see <code
                     class="eb lr ls lt lu b">NET standalone node</code> it means that the program <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L242-L268"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L242-L268"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">was unable to match your Hardware
                     ID</a> with any Collector or Sensor Hardware IDs. Verify the list of Hardware IDs in <code
-                    class="eb lr ls lt lu b"><a href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/syscfg.yml#L44-L65" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">targets/bluepill_my_sensor/syscfg.yml</a></code>
+                    class="eb lr ls lt lu b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/syscfg.yml#L44-L65" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">targets/bluepill_my_sensor/syscfg.yml</a></code>
                 </p>
                 <p id="ceb3" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">So only <strong class="gy hu">ONE
                     version of the ROM image</strong> (containing all 6 Hardware IDs and node addresses) needs to be
@@ -743,23 +743,23 @@
 
                   <figcaption class="bo eh ei ej ek cn cl cm el em bj en">Calling Mynewt’s Sensor Framework to poll a
                     sensor. From <a
-                      href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/listen_sensor.c#L46-L76"
+                      href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/listen_sensor.c#L46-L76"
                       class="at cg io ip iq ir" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/listen_sensor.c#L46-L76</a>
                   </figcaption>
                 </figure>
                 <p id="2258" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">Mynewt has an excellent <a
-                    href="https://web.archive.org/web/20191204194039/https://mynewt.apache.org/latest/os/modules/sensor_framework/sensor_framework.html"
+                    href="https://mynewt.apache.org/latest/os/modules/sensor_framework/sensor_framework.html"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">Sensor
                       Framework</strong></a> that’s perfect for integrating IoT devices with sensors.</p>
                 <p id="d786" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">No need to code our own
                   background task to poll the sensor periodically (like our temperature sensor) and to process the
                   sensor data… Just tell the Sensor Framework <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/listen_sensor.c#L46-L76"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/listen_sensor.c#L46-L76"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">which sensor
                       to poll and how often</strong></a>!</p>
                 <p id="8c22" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">Mynewt triggers our <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/listen_sensor.c#L109-L152"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/listen_sensor.c#L109-L152"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">Listener
                       Function</strong></a> to process the sensor data that has been polled.</p>
                 <p id="dd49" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj"><em class="hv">But our new Sensor
@@ -773,28 +773,28 @@
 
                   <figcaption class="bo eh ei ej ek cn cl cm el em bj en">Declaring a Remote Sensor Type for the Raw
                     Temperature Sensor. From <a
-                      href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/syscfg.yml#L135-L155"
+                      href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/syscfg.yml#L135-L155"
                       class="at cg io ip iq ir" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/syscfg.yml#L135-L155</a>
                   </figcaption>
                 </figure>
                 <p id="6138" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">Yes, with the <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/master/libs/remote_sensor"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/master/libs/remote_sensor"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">Remote
                       Sensor Driver</strong></a> that I have provided! When installed on the Collector Node, the Remote
                   Sensor Driver enables Sensor Nodes (and attached sensors) to <strong class="gy hu">masquerade as
                     locally-attached sensors</strong>!</p>
                 <p id="a4ed" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">The above <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/syscfg.yml#L135-L155"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/syscfg.yml#L135-L155"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">Remote
                       Sensor Configuration</strong></a> tells Mynewt about a <strong class="gy hu">Raw Temperature
                     Sensor Type</strong> that’s attached to a Sensor Node (<code
-                    class="eb lr ls lt lu b"><a href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/syscfg.yml#L135-L155" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">targets/bluepill_my_sensor/syscfg.yml</a></code>)…
+                    class="eb lr ls lt lu b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/syscfg.yml#L135-L155" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">targets/bluepill_my_sensor/syscfg.yml</a></code>)…
                 </p>
                 <p id="56dd" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">1️⃣ <code
                     class="eb lr ls lt lu b"><strong class="gy hu">temp_raw</strong></code> is the name of the Raw
                   Temperature Sensor Type. This is an integer value (0 to 4095) that’s provided by the <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/master/libs/temp_stm32"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/master/libs/temp_stm32"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">Blue Pill Internal Temperature
                     Sensor</a> (<a class="at cg io ip iq ir" target="_blank" rel="noopener"
                     href="/web/20191204194039/https://medium.com/@ly.lee/connect-stm32-blue-pill-to-esp8266-with-apache-mynewt-7edceb9e3b8d">described
@@ -807,22 +807,22 @@
                     class="eb lr ls lt lu b"><strong class="gy hu">strd</strong></code> is the <code
                     class="eb lr ls lt lu b">union</code> type that shall store the sensor value in memory. This follows
                   Mynewt’s Sensor Framework convention of <a
-                    href="https://web.archive.org/web/20191204194039/https://mynewt.apache.org/latest/os/modules/sensor_framework/sensor_api.html#c.sensor_data_t"
+                    href="https://mynewt.apache.org/latest/os/modules/sensor_framework/sensor_api.html#c.sensor_data_t"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">using a </a><code
-                    class="eb lr ls lt lu b"><a href="https://web.archive.org/web/20191204194039/https://mynewt.apache.org/latest/os/modules/sensor_framework/sensor_api.html#c.sensor_data_t" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">union</a></code><a
-                    href="https://web.archive.org/web/20191204194039/https://mynewt.apache.org/latest/os/modules/sensor_framework/sensor_api.html#c.sensor_data_t"
+                    class="eb lr ls lt lu b"><a href="https://mynewt.apache.org/latest/os/modules/sensor_framework/sensor_api.html#c.sensor_data_t" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">union</a></code><a
+                    href="https://mynewt.apache.org/latest/os/modules/sensor_framework/sensor_api.html#c.sensor_data_t"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"> to store each type of sensor
                     value</a>. <code class="eb lr ls lt lu b">strd</code> is defined in <code
-                    class="eb lr ls lt lu b"><a href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/custom_sensor/include/custom_sensor/custom_sensor.h" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">libs/custom_sensor/include/custom_sensor/custom_sensor.h</a></code>
+                    class="eb lr ls lt lu b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/custom_sensor/include/custom_sensor/custom_sensor.h" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">libs/custom_sensor/include/custom_sensor/custom_sensor.h</a></code>
                 </p>
                 <p id="c328" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">4️⃣ <code
                     class="eb lr ls lt lu b"><strong class="gy hu">AMBIENT_TEMPERATURE_RAW</strong></code> is the unique
                   Sensor Type ID for the Raw Temperature Sensor Type. Mynewt’s Sensor Framework uses the <a
-                    href="https://web.archive.org/web/20191204194039/https://mynewt.apache.org/latest/os/modules/sensor_framework/sensor_api.html#c.SensorAPI::sensor_type_t"
+                    href="https://mynewt.apache.org/latest/os/modules/sensor_framework/sensor_api.html#c.SensorAPI::sensor_type_t"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">Sensor Type ID</a> to discover
                   which Sensor Drivers can return values of each Sensor Type. <code
                     class="eb lr ls lt lu b">AMBIENT_TEMPERATURE_RAW</code> is defined in <code
-                    class="eb lr ls lt lu b"><a href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/custom_sensor/include/custom_sensor/custom_sensor.h" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">libs/custom_sensor/include/custom_sensor/custom_sensor.h</a></code>
+                    class="eb lr ls lt lu b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/custom_sensor/include/custom_sensor/custom_sensor.h" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">libs/custom_sensor/include/custom_sensor/custom_sensor.h</a></code>
                 </p>
                 <p id="b230" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">5️⃣ The last 2 settings declare
                   whether the sensor provides integer (<code
@@ -835,22 +835,22 @@
 
 
                   <figcaption class="bo eh ei ej ek cn cl cm el em bj en">Starting the Remote Sensor Listeners. From <a
-                      href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/listen_sensor.c#L77-L108"
+                      href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/listen_sensor.c#L77-L108"
                       class="at cg io ip iq ir" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/listen_sensor.c#L77-L108</a>
                   </figcaption>
                 </figure>
                 <p id="1b85" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">Once we declare the Remote Sensor
                   Type for the remote temperature sensor (<a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/listen_sensor.c#L77-L108"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/listen_sensor.c#L77-L108"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">and start the Remote Sensor
                     Listeners</a>), we may program the sensor as though it were a local temperature sensor… <em
                     class="hv">Mynewt’s familiar Sensor Framework works exactly the same way!</em></p>
                 <p id="a553" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">Just provide a <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/listen_sensor.c#L109-L152"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/listen_sensor.c#L109-L152"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">Listener Function</a> and Mynewt
                   will helpfully <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/remote_sensor/src/route_coap.c#L64-L148"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/remote_sensor/src/route_coap.c#L64-L148"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">trigger the function whenever it
                     receives sensor data from the Sensor Nodes</a>.</p>
                 <p id="25d4" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">Programming with Distributed IoT
@@ -877,20 +877,20 @@
                   “28.9 degrees Celsius” will require a huge chunk of floating-point code (from the standard math
                   library) to be embedded in ROM. Which inflates the ROM size, bloating beyond the 64 KB limit.</p>
                 <p id="e6ca" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">In this demo we transmit the <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/temp_stm32/include/temp_stm32/temp_stm32.h#L35-L48"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/temp_stm32/include/temp_stm32/temp_stm32.h#L35-L48"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">raw temperature values as
                     integers</a> (directly from <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/temp_stm32/src/temp_stm32.c#L142-L183"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/temp_stm32/src/temp_stm32.c#L142-L183"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">Blue Pill’s Analogue-to-Digital
                     Converter</a>) instead of the <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/temp_stm32/src/temp_stm32.c#L184-L209"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/temp_stm32/src/temp_stm32.c#L184-L209"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">computed floating-point
                     temperature</a> values (<a class="at cg io ip iq ir" target="_blank" rel="noopener"
                     href="/web/20191204194039/https://medium.com/@ly.lee/connect-stm32-blue-pill-to-esp8266-with-apache-mynewt-7edceb9e3b8d">like
                     in the previous tutorial</a>). The integer sensor values are transmitted from the Sensor Node to the
                   Collector Node, and also from the Collector Node to the CoAP Server.</p>
                 <p id="df2f" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">The raw temperature values are <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/thethingsio-wifi-geolocation/blob/master/transform.js"
+                    href="https://github.com/lupyuen/thethingsio-wifi-geolocation/blob/master/transform.js"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">converted into floating-point</a>
                   only upon reaching the CoAP Server at thethings.io. So that we could visualise the temperature
                   properly as “28.9 degrees Celsius” instead of <code class="eb lr ls lt lu b">1745</code>.</p>
@@ -898,7 +898,7 @@
                   our ROM!</p>
                 <p id="40ec" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">2️⃣ <strong class="gy hu">Compact
                     CBOR encoding instead of JSON</strong>: Our Collector Node transmits the raw temperature to the <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L115-L118"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L115-L118"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">CoAP Server with JSON
                     encoding</a>, which is accepted by all CoAP Servers…</p>
                 <pre
@@ -909,52 +909,52 @@
                 <p id="3a47" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">But JSON bloats our sensor data
                   messages — we need <strong class="gy hu">10 data bytes</strong> to transmit the simple message above.
                   Hence our Sensor Network demo uses <a
-                    href="https://web.archive.org/web/20191204194039/https://en.wikipedia.org/wiki/CBOR"
+                    href="https://en.wikipedia.org/wiki/CBOR"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">CBOR
                       encoding</strong></a>, a compressed, binary version of JSON. And it’s natively supported by
                   Mynewt.</p>
                 <p id="b96d" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">Between the Sensor Node and the
                   Collector Node, we <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L115-L118"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L115-L118"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">encode sensor data messages in
                     CBOR format</a> instead of JSON. Which requires only <strong class="gy hu">6 data bytes</strong>
                   instead of 10 bytes for the above example!</p>
                 <p id="b62f" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">By adopting CBOR as the message
                   format in the local Sensor Network, we also simplify the design of the Remote Sensor Driver. The
                   driver only needs to <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/remote_sensor/src/route_coap.c#L149-L176"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/remote_sensor/src/route_coap.c#L149-L176"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">decode incoming CBOR messages</a>,
                   and <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/remote_sensor/src/route_coap.c#L109-L148"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/remote_sensor/src/route_coap.c#L109-L148"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">trigger the right Listener
                     Function</a>. The Remote Sensor Driver <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/remote_sensor/src/remote_sensor.c#L85-L96"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/remote_sensor/src/remote_sensor.c#L85-L96"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">selects the Listener Function</a>
                   based on the <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/remote_sensor/src/sensor_type_desc.h#L31-L46"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/remote_sensor/src/sensor_type_desc.h#L31-L46"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">sensor field name </a><code
-                    class="eb lr ls lt lu b"><a href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/remote_sensor/src/sensor_type_desc.h#L31-L46" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">&quot;t&quot;</a></code>
+                    class="eb lr ls lt lu b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/remote_sensor/src/sensor_type_desc.h#L31-L46" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">&quot;t&quot;</a></code>
                 </p>
                 <blockquote class="iv iw ix">
                   <p id="9e40" class="gw gx er hv gy b gz ha hb hc hd he hf hg hh hi hj"><em class="bk">💎 </em>Mynewt
                     natively encodes CoAP messages using CBOR encoding. We <a
-                      href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/nrf24l01/src/transport.cpp#L89-L128"
+                      href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/nrf24l01/src/transport.cpp#L89-L128"
                       class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">discard the CoAP Header</a>,
                     keeping only the CoAP Payload in CBOR, which occupies 6 data bytes. An additional byte <code
                       class="eb lr ls lt lu b">0xff</code> is added by Mynewt as the payload terminator. The final byte
                     of the nRF24L01 message is the <a
-                      href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/nrf24l01/src/transport.cpp#L110-L112"
+                      href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/nrf24l01/src/transport.cpp#L110-L112"
                       class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">message counter</a>, useful for
                     detecting missing messages.</p>
                   <p id="0282" class="gw gx er hv gy b gz ha hb hc hd he hf hg hh hi hj">nRF24L01 messages can be up to
                     32 bytes in length. But for the demo we have <a
-                      href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/nrf24l01/src/transport.cpp#L113-L116"
+                      href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/nrf24l01/src/transport.cpp#L113-L116"
                       class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">fixed the message length as 12
                       bytes</a>. It’s big enough to transmit 2 sensor values, yet small enough to reduce the risk of RF
                     interference and allow farther transmission distances. To change the message length, edit the <code
-                      class="eb lr ls lt lu b"><a href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/syscfg.yml#L110-L112" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">NRF24L01_TX_SIZE</a></code>
+                      class="eb lr ls lt lu b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/syscfg.yml#L110-L112" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">NRF24L01_TX_SIZE</a></code>
                     setting in <code
-                      class="eb lr ls lt lu b"><a href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/syscfg.yml#L110-L112" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">targets/bluepill_my_sensor/syscfg.yml</a></code>
+                      class="eb lr ls lt lu b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/syscfg.yml#L110-L112" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">targets/bluepill_my_sensor/syscfg.yml</a></code>
                   </p>
                 </blockquote>
               </div>
@@ -969,11 +969,11 @@
                 <p id="be5f" class="gw gx er bk gy b gz jv hb jw hd jx hf jy hh jz hj">Now that we have two formats for
                   encoding sensor data…</p>
                 <p id="6191" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">1️⃣ <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L115-L118"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L115-L118"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">CBOR
                       Encoding</strong></a> from Sensor Node to Collector Node (via nRF24L01)</p>
                 <p id="8566" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">2️⃣ <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L115-L118"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L115-L118"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">JSON
                       Encoding</strong></a> from Collector Node to CoAP Server (via ESP8266)</p>
                 <p id="b029" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj"><em class="hv">Does this make
@@ -982,45 +982,45 @@
                   Library hides the encoding details inside high-level functions that we may call to compose and
                   transmit messages…</p>
                 <p id="84a3" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">0️⃣ Previously we called <code
-                    class="eb lr ls lt lu b"><a href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_coap/src/sensor_coap.c#L156-L186" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">init_sensor_post</strong></a>() … <a href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_coap/src/sensor_coap.c#L187-L193" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">do_sensor_post</strong></a>()</code>
+                    class="eb lr ls lt lu b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_coap/src/sensor_coap.c#L156-L186" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">init_sensor_post</strong></a>() … <a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_coap/src/sensor_coap.c#L187-L193" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">do_sensor_post</strong></a>()</code>
                   to send CoAP messages to the CoAP Server via the ESP8266 Network Transport (from the ESP8266 Network
                   Driver)</p>
                 <p id="cf2a" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">1️⃣ Now we call <code
-                    class="eb lr ls lt lu b"><a href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L175-L185" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">init_collector_post</strong></a>() … <a href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L222-L231" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">do_collector_post</strong></a>()</code>
+                    class="eb lr ls lt lu b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L175-L185" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">init_collector_post</strong></a>() … <a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L222-L231" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">do_collector_post</strong></a>()</code>
                   to send messages to the Collector Node via the <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/nrf24l01/src/transport.cpp#L89-L157"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/nrf24l01/src/transport.cpp#L89-L157"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">nRF24L01 Network Transport</a>
                   (from the <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/master/libs/nrf24l01"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/master/libs/nrf24l01"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">nRF24L01 Network Driver</a>)</p>
                 <p id="9761" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">2️⃣ And we call <code
-                    class="eb lr ls lt lu b"><a href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L165-L174" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">init_server_post</strong></a>() … <a href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L212-L221" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">do_server_post</strong></a>()</code>
+                    class="eb lr ls lt lu b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L165-L174" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">init_server_post</strong></a>() … <a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L212-L221" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">do_server_post</strong></a>()</code>
                   to send messages to the CoAP Server via the <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/transport.cpp#L102-L131"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/transport.cpp#L102-L131"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">ESP8266 Network Transport</a>
                   (from the <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/master/libs/esp8266"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/master/libs/esp8266"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">ESP8266 Network Driver</a>)</p>
                 <p id="c7b8" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">The <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/master/libs/nrf24l01"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/master/libs/nrf24l01"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">nRF24L01
                       Network Driver</strong></a> was <a
-                    href="https://web.archive.org/web/20191204194039/https://os.mbed.com/users/Owen/code/nRF24L01P/file/8ae48233b4e4/nRF24L01P.cpp/"
+                    href="https://os.mbed.com/users/Owen/code/nRF24L01P/file/8ae48233b4e4/nRF24L01P.cpp/"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">ported from mbed</a> to Mynewt.
                   The driver settings may be found in <code
-                    class="eb lr ls lt lu b"><a href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/syscfg.yml#L92-L134" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">targets/bluepill_my_sensor/syscfg.yml</a></code>
+                    class="eb lr ls lt lu b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/syscfg.yml#L92-L134" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">targets/bluepill_my_sensor/syscfg.yml</a></code>
                 </p>
                 <p id="9f2c" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">The nRF24L01 driver is connected
                   to the SPI port and supports simple <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/nrf24l01/include/nrf24l01/nrf24l01.h#L84-L104"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/nrf24l01/include/nrf24l01/nrf24l01.h#L84-L104"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">transmit and receive
                     functions</a>. There’s no need to call the nRF24L01 functions directly — the Sensor Network Library
                   calls them when <code class="eb lr ls lt lu b">do_collector_post()</code> is invoked.</p>
                 <p id="5cd1" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">The nRF24L01 driver <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/nrf24l01/src/driver.cpp#L250-L271"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/nrf24l01/src/driver.cpp#L250-L271"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">handles interrupts</a> raised by
                   the nRF24L01 module when data has been received (so no polling is needed). The driver calls the <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/remote_sensor/src/route_coap.c#L64-L108"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/remote_sensor/src/route_coap.c#L64-L108"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">Receive Callback Function</a>
                   provided by the Remote Sensor Library. The callback function decodes the CBOR message and forwards it
                   to the Remote Sensor Listener Function.</p>
@@ -1036,60 +1036,60 @@
 
                   <figcaption class="bo eh ei ej ek cn cl cm el em bj en">Using CP macros to compose messages for
                     Collector Node and CoAP Server. From <a
-                      href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/send_coap.c#L182-L222"
+                      href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/send_coap.c#L182-L222"
                       class="at cg io ip iq ir" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/send_coap.c#L182-L222</a>
                   </figcaption>
                 </figure>
                 <p id="a696" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">Composing messages with the
                   macros <code
-                    class="eb lr ls lt lu b"><a href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_coap/include/sensor_coap/sensor_coap.h#L289-L324" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">CP_ITEM_STR</a>(), <a href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_coap/include/sensor_coap/sensor_coap.h#L289-L324" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">CP_ITEM_FLOAT</a>(), … </code>works
+                    class="eb lr ls lt lu b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_coap/include/sensor_coap/sensor_coap.h#L289-L324" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">CP_ITEM_STR</a>(), <a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_coap/include/sensor_coap/sensor_coap.h#L289-L324" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">CP_ITEM_FLOAT</a>(), … </code>works
                   exactly like before. The right encoding (CBOR or JSON) is automatically selected when we call <code
-                    class="eb lr ls lt lu b"><a href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L186-L195" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">init_collector_post</a>()</code>
+                    class="eb lr ls lt lu b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L186-L195" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">init_collector_post</a>()</code>
                   and <code
-                    class="eb lr ls lt lu b"><a href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L186-L195" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">init_server_post</a>()</code>
+                    class="eb lr ls lt lu b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L186-L195" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">init_server_post</a>()</code>
                 </p>
                 <p id="0e8d" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">To allow easier passing and
                   encoding of Sensor Values, we have created a <code
-                    class="eb lr ls lt lu b"><a href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_coap/include/sensor_coap/sensor_coap.h#L11-L20" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">sensor_value</strong></a> struct</code>
+                    class="eb lr ls lt lu b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_coap/include/sensor_coap/sensor_coap.h#L11-L20" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">sensor_value</strong></a> struct</code>
                   that contains one Sensor Key (e.g. <code class="eb lr ls lt lu b">&quot;t&quot;</code> for raw
                   temperature) and one Sensor Value (<code class="eb lr ls lt lu b">int</code> or <code
                     class="eb lr ls lt lu b">float</code>). New macros have been created to add a <code
                     class="eb lr ls lt lu b">sensor_value</code> to a message: <code
-                    class="eb lr ls lt lu b"><a href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_coap/include/sensor_coap/sensor_coap.h#L230-L235" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">CP_SET_INT_VAL</a>(), <a href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_coap/include/sensor_coap/sensor_coap.h#L236-L241" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">CP_SET_FLOAT_VAL</a>(), <a href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_coap/include/sensor_coap/sensor_coap.h#L262-L267" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">CP_ITEM_INT_VAL</a>(), <a href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_coap/include/sensor_coap/sensor_coap.h#L268-L273" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">CP_ITEM_FLOAT_VAL</a>()</code>.
+                    class="eb lr ls lt lu b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_coap/include/sensor_coap/sensor_coap.h#L230-L235" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">CP_SET_INT_VAL</a>(), <a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_coap/include/sensor_coap/sensor_coap.h#L236-L241" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">CP_SET_FLOAT_VAL</a>(), <a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_coap/include/sensor_coap/sensor_coap.h#L262-L267" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">CP_ITEM_INT_VAL</a>(), <a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_coap/include/sensor_coap/sensor_coap.h#L268-L273" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">CP_ITEM_FLOAT_VAL</a>()</code>.
                 </p>
                 <p id="c025" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">The new macros are used in <code
-                    class="eb lr ls lt lu b"><a href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/send_coap.c#L113-L224" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">apps/my_sensor_app/src/send_coap.c</a></code>
+                    class="eb lr ls lt lu b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/send_coap.c#L113-L224" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">apps/my_sensor_app/src/send_coap.c</a></code>
                   to compose <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/send_coap.c#L182-L224"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/send_coap.c#L182-L224"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">Collector Node messages</a> and <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/send_coap.c#L113-L181"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/send_coap.c#L113-L181"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">CoAP Server messages</a>. All
                   macros have been updated to <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_coap/include/sensor_coap/sensor_coap.h#L140-L218"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_coap/include/sensor_coap/sensor_coap.h#L140-L218"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">support both CBOR and JSON
                     encoding</a>, selected at runtime (instead of compile-time).</p>
                 <p id="c3d5" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">The Sensor Network Library brings
                   us one step closer to the vision of <strong class="gy hu">Network-Agnostic IoT</strong>… Doesn’t
                   matter whether our devices are connected via ESP8266 or nRF24L01, <em class="hv">the same code still
                     works</em>! The <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/README.md"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/README.md"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">Sensor Network Library</a>…</p>
                 <p id="a135" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">1️⃣ <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L326-L348"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L326-L348"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">Assigns
                       network addresses</strong></a> (nRF24L01)<strong class="gy hu"> </strong>based on one common ROM
                   image</p>
                 <p id="691b" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">2️⃣ <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/include/sensor_network/sensor_network.h#L82-L117"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/include/sensor_network/sensor_network.h#L82-L117"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">Provides
                       generic functions</strong></a> to perform operations on network interfaces, like <code
-                    class="eb lr ls lt lu b"><a href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L222-L231" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">do_collector_post</a>()</code>
+                    class="eb lr ls lt lu b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L222-L231" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">do_collector_post</a>()</code>
                   and <code
-                    class="eb lr ls lt lu b"><a href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L212-L221" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">do_server_post</a>()</code>
+                    class="eb lr ls lt lu b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L212-L221" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">do_server_post</a>()</code>
                 </p>
                 <p id="3050" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">3️⃣ <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L186-L195"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L186-L195"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">Selects
                       message encoding</strong></a> (CBOR or JSON) based on the destination of the message (Collector
                   Node vs CoAP Server)</p>
@@ -1102,12 +1102,12 @@
                   <p id="c8e4" class="gw gx er hv gy b gz ha hb hc hd he hf hg hh hi hj"><em class="bk">💎 </em>The
                     Sensor Network Library is clearly able to transmit sensor data locally (nRF24L01) and over internet
                     (ESP8266)… yet the library has <a
-                      href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/pkg.yml#L29-L33"
+                      href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/pkg.yml#L29-L33"
                       class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">no dependencies on the nRF24L01
                       and ESP8266 drivers</a>! This was done with a programming trick known as “<a
-                      href="https://web.archive.org/web/20191204194039/https://en.wikipedia.org/wiki/Inversion_of_control"
+                      href="https://en.wikipedia.org/wiki/Inversion_of_control"
                       class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">Inversion of Control</a>” — the
-                    <a href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L349-L360"
+                    <a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_network/src/sensor_network.c#L349-L360"
                       class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">network drivers register
                       themselves</a> with the Sensor Network library, not the other way around.</p>
                   <p id="13c2" class="gw gx er hv gy b gz ha hb hc hd he hf hg hh hi hj">This enables the Sensor Network
@@ -1124,7 +1124,7 @@
                 <h1 id="7071" class="jh ji er bk bj jj jk jl jm jn jo jp jq jr js jt ju">Configuring the CoAP Server at
                   thethings.io</h1>
                 <p id="ca3b" class="gw gx er bk gy b gz jv hb jw hd jx hf jy hh jz hj"><a
-                    href="https://web.archive.org/web/20191204194039/https://thethings.io/" class="at cg io ip iq ir"
+                    href="https://thethings.io/" class="at cg io ip iq ir"
                     target="_blank" rel="noopener nofollow">thethings.io</a> is an excellent example of a modern hosted
                   IoT server that’s capable of processing the CoAP standard-based sensor data transmitted by our
                   Collector Node. Follow the steps below to configure the CoAP Server at thethings.io and understand how
@@ -1135,7 +1135,7 @@
                   programs for processing the data: <code class="eb lr ls lt lu b">forward_geolocate</code>, <code
                     class="eb lr ls lt lu b">transform</code>, <code class="eb lr ls lt lu b">update_state</code>. The
                   scripts are located here: <code
-                    class="eb lr ls lt lu b"><a href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/thethingsio-wifi-geolocation" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">https://github.com/lupyuen/thethingsio-wifi-geolocation</a></code>
+                    class="eb lr ls lt lu b"><a href="https://github.com/lupyuen/thethingsio-wifi-geolocation" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">https://github.com/lupyuen/thethingsio-wifi-geolocation</a></code>
                 </p>
                 <p id="05d0" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">Click <code
                     class="eb lr ls lt lu b">CC</code> to view the instructions…</p>
@@ -1279,13 +1279,13 @@
 
 
                   <figcaption class="bo eh ei ej ek cn cl cm el em bj en">forward_geolocate Cloud Code Trigger. From <a
-                      href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/thethingsio-wifi-geolocation/blob/master/forward_geolocate.js#L61-L122"
+                      href="https://github.com/lupyuen/thethingsio-wifi-geolocation/blob/master/forward_geolocate.js#L61-L122"
                       class="at cg io ip iq ir" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/thethingsio-wifi-geolocation/blob/master/forward_geolocate.js#L61-L122</a>
                   </figcaption>
                 </figure>
                 <p id="0d33" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">1️⃣ <code
-                    class="eb lr ls lt lu b"><a href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/thethingsio-wifi-geolocation/blob/master/forward_geolocate.js" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">forward_geolocate</strong></a></code>
+                    class="eb lr ls lt lu b"><a href="https://github.com/lupyuen/thethingsio-wifi-geolocation/blob/master/forward_geolocate.js" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">forward_geolocate</strong></a></code>
                   is the Cloud Code Trigger that will receive any sensor data transmitted by our Collector Node over
                   CoAP. This trigger allows us to intercept the sensor values and transform them.</p>
                 <p id="f317" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">2️⃣ <code
@@ -1324,14 +1324,14 @@
 
 
                   <figcaption class="bo eh ei ej ek cn cl cm el em bj en">geolocate Cloud Code Function. From <a
-                      href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/thethingsio-wifi-geolocation/blob/master/geolocate.js#L66-L114"
+                      href="https://github.com/lupyuen/thethingsio-wifi-geolocation/blob/master/geolocate.js#L66-L114"
                       class="at cg io ip iq ir" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/thethingsio-wifi-geolocation/blob/master/geolocate.js#L66-L114</a>
                   </figcaption>
                 </figure>
                 <p id="464c" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">3️⃣ If WiFi Geolocation is
                   enabled, Cloud Code Function <code
-                    class="eb lr ls lt lu b"><a href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/thethingsio-wifi-geolocation/blob/master/geolocate.js" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">geolocate</strong></a></code>
+                    class="eb lr ls lt lu b"><a href="https://github.com/lupyuen/thethingsio-wifi-geolocation/blob/master/geolocate.js" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">geolocate</strong></a></code>
                   passes the WiFi SSID and Signal Strength info to the Google WiFi Geolocation API. This info was
                   obtained from the ESP8266 scanning nearby WiFI networks.</p>
                 <p id="35e4" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">The Geolocation API estimates the
@@ -1362,13 +1362,13 @@
 
 
                   <figcaption class="bo eh ei ej ek cn cl cm el em bj en">update_thing Cloud Code Function. From <a
-                      href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/thethingsio-wifi-geolocation/blob/master/update_thing.js#L5-L49"
+                      href="https://github.com/lupyuen/thethingsio-wifi-geolocation/blob/master/update_thing.js#L5-L49"
                       class="at cg io ip iq ir" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/thethingsio-wifi-geolocation/blob/master/update_thing.js#L5-L49</a>
                   </figcaption>
                 </figure>
                 <p id="c0e5" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">4️⃣ Cloud Function <code
-                    class="eb lr ls lt lu b"><a href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/thethingsio-wifi-geolocation/blob/master/update_thing.js" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">update_thing</strong></a></code>
+                    class="eb lr ls lt lu b"><a href="https://github.com/lupyuen/thethingsio-wifi-geolocation/blob/master/update_thing.js" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">update_thing</strong></a></code>
                   receives the updated sensor values (latitude, longitude, accuracy) and updates the thethings.io thing
                   state by calling the HTTP API.</p>
                 <p id="48d1" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">Since the option <code
@@ -1399,13 +1399,13 @@
 
 
                   <figcaption class="bo eh ei ej ek cn cl cm el em bj en">forward_geolocate Cloud Code Trigger. From <a
-                      href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/thethingsio-wifi-geolocation/blob/master/forward_geolocate.js#L61-L122"
+                      href="https://github.com/lupyuen/thethingsio-wifi-geolocation/blob/master/forward_geolocate.js#L61-L122"
                       class="at cg io ip iq ir" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/thethingsio-wifi-geolocation/blob/master/forward_geolocate.js#L61-L122</a>
                   </figcaption>
                 </figure>
                 <p id="fb55" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">6️⃣ The next step of <code
-                    class="eb lr ls lt lu b"><a href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/thethingsio-wifi-geolocation/blob/master/forward_geolocate.js" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">forward_geolocate</strong></a></code>
+                    class="eb lr ls lt lu b"><a href="https://github.com/lupyuen/thethingsio-wifi-geolocation/blob/master/forward_geolocate.js" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">forward_geolocate</strong></a></code>
                   checks whether the sensor values have been transformed (i.e. whether the <code
                     class="eb lr ls lt lu b">transformed</code> key exists).</p>
                 <p id="708e" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">If the values have not been
@@ -1433,13 +1433,13 @@
 
 
                   <figcaption class="bo eh ei ej ek cn cl cm el em bj en">transform Cloud Code Function. From <a
-                      href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/thethingsio-wifi-geolocation/blob/master/transform.js#L1-L36"
+                      href="https://github.com/lupyuen/thethingsio-wifi-geolocation/blob/master/transform.js#L1-L36"
                       class="at cg io ip iq ir" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/thethingsio-wifi-geolocation/blob/master/transform.js#L1-L36</a>
                   </figcaption>
                 </figure>
                 <p id="526d" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">7️⃣ Cloud Code Function <code
-                    class="eb lr ls lt lu b"><a href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/thethingsio-wifi-geolocation/blob/master/transform.js" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">transform</strong></a></code>
+                    class="eb lr ls lt lu b"><a href="https://github.com/lupyuen/thethingsio-wifi-geolocation/blob/master/transform.js" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">transform</strong></a></code>
                   computes the actual floating-point temperature <code class="eb lr ls lt lu b">tmp</code> given the raw
                   temperature <code class="eb lr ls lt lu b">t</code>.</p>
                 <p id="7991" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">It calls Cloud Code Function
@@ -1460,13 +1460,13 @@
 
                   <figcaption class="bo eh ei ej ek cn cl cm el em bj en">pushSensorData from Cloud Code Trigger
                     forward_geolocate. From <a
-                      href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/thethingsio-wifi-geolocation/blob/master/forward_geolocate.js#L17-L60"
+                      href="https://github.com/lupyuen/thethingsio-wifi-geolocation/blob/master/forward_geolocate.js#L17-L60"
                       class="at cg io ip iq ir" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/thethingsio-wifi-geolocation/blob/master/forward_geolocate.js#L17-L60</a>
                   </figcaption>
                 </figure>
                 <p id="3b21" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">8️⃣ <code
-                    class="eb lr ls lt lu b"><a href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/thethingsio-wifi-geolocation/blob/master/forward_geolocate.js" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">forward_geolocate</strong></a></code>
+                    class="eb lr ls lt lu b"><a href="https://github.com/lupyuen/thethingsio-wifi-geolocation/blob/master/forward_geolocate.js" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">forward_geolocate</strong></a></code>
                   takes the geolocated and transformed sensor values (latitude, longitude, accuracy, computed
                   temperature) and transmits them to an external server <code
                     class="eb lr ls lt lu b">blue-pill-geolocate.appspot.com</code> via a HTTP POST request.</p>
@@ -1474,7 +1474,7 @@
                   not using an external server to share your sensor data publicly.</p>
                 <p id="3e5d" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">Details of the external server
                   setup may be found in <code
-                    class="eb lr ls lt lu b"><a href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/gcloud-wifi-geolocation" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">gcloud-wifi-geolocation</a></code>
+                    class="eb lr ls lt lu b"><a href="https://github.com/lupyuen/gcloud-wifi-geolocation" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">gcloud-wifi-geolocation</a></code>
                 </p>
                 <figure class="hx hy hz ia ib cz cl cm paragraph-image">
                   <div class="dq dr ds dt ak">
@@ -1497,7 +1497,7 @@
                   thethings.io as sensor field <code class="eb lr ls lt lu b">node</code>. It’s possible to interpret
                   the <code class="eb lr ls lt lu b">node</code> field so that each Sensor Node is represented by a
                   different Thing in thethings.io. In the <code
-                    class="eb lr ls lt lu b"><a href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/thethingsio-wifi-geolocation/blob/master/update_thing.js" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">update_thing</strong></a></code>
+                    class="eb lr ls lt lu b"><a href="https://github.com/lupyuen/thethingsio-wifi-geolocation/blob/master/update_thing.js" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow"><strong class="gy hu">update_thing</strong></a></code>
                   Cloud Code Function, we may map <code class="eb lr ls lt lu b">node</code> to a Thing Token using a
                   predefined mapping table. If you need more details, drop me a note!</p>
               </div>
@@ -1513,29 +1513,29 @@
                   the encoding libraries for CoAP, JSON and CBOR message formats.</p>
                 <p id="99fd" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">To squeeze the code into 64 KB of
                   ROM on Blue Pill, we have switched to a <a
-                    href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/master/apps/boot_stub"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/master/apps/boot_stub"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">smaller bootloader called
                   </a><code
-                    class="eb lr ls lt lu b"><a href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/master/apps/boot_stub" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">boot_stub</a></code>.
+                    class="eb lr ls lt lu b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/master/apps/boot_stub" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">boot_stub</a></code>.
                   This bootloader doesn’t do any of the <a
-                    href="https://web.archive.org/web/20191204194039/https://mynewt.apache.org/latest/os/modules/bootloader/bootloader.html"
+                    href="https://mynewt.apache.org/latest/os/modules/bootloader/bootloader.html"
                     class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">typical Mynewt Bootloader
                     functions</a>; it simply jumps to the application code.</p>
                 <p id="a8ae" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">The bootloader fits in 4 KB of
                   ROM. The rest of the ROM (up to 60 KB) is available for the application.</p>
                 <p id="f496" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">The Board Support Package for
                   Blue Pill has been locally patched on your Mynewt build to use the new memory layout: <code
-                    class="eb lr ls lt lu b"><a href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/patch/bluepill.ld" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">bluepill.ld</a></code>,
+                    class="eb lr ls lt lu b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/patch/bluepill.ld" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">bluepill.ld</a></code>,
                   <code
-                    class="eb lr ls lt lu b"><a href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/patch/bsp.yml" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">bsp.yml</a></code>.
+                    class="eb lr ls lt lu b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/patch/bsp.yml" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">bsp.yml</a></code>.
                   The ROM flashing scripts in the <code
-                    class="eb lr ls lt lu b"><a href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/master/scripts" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">scripts</a></code>
+                    class="eb lr ls lt lu b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/master/scripts" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">scripts</a></code>
                   folder have also been updated.</p>
                 <p id="3f1d" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">The current application size is
                   close to 60 KB. If we’re not using the debugger, we may reduce the application size by switching the
                   build profile from <code class="eb lr ls lt lu b">debug</code> to <code
                     class="eb lr ls lt lu b">optimized</code> in <code
-                    class="eb lr ls lt lu b"><a href="https://web.archive.org/web/20191204194039/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/target.yml" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">targets/bluepill_my_sensor/target.yml</a></code>:
+                    class="eb lr ls lt lu b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/target.yml" class="at cg io ip iq ir" target="_blank" rel="noopener nofollow">targets/bluepill_my_sensor/target.yml</a></code>:
                 </p>
                 <pre
                   class="hx hy hz ia ib lv lw lx"><span id="0cca" class="ly ji er bk lu b eh lz ma r mb">target.build_profile: optimized</span></pre>
