@@ -201,19 +201,19 @@
                     class="at cg gy gz ha hb" target="_blank" rel="noopener"
                     href="/web/20200130165712/https://medium.com/@ly.lee/get-started-with-nb-iot-and-quectel-modules-6e7c581e0d61">previous
                     article</a> we learnt the AT commands for sending sensor data to a <a
-                    href="https://web.archive.org/web/20200130165712/https://en.wikipedia.org/wiki/Constrained_Application_Protocol"
+                    href="https://en.wikipedia.org/wiki/Constrained_Application_Protocol"
                     class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">CoAP</a> Server via a Quectel
                   NB-IoT module. Now let’s build an <strong class="gm hc">IoT sensor</strong> with a real
                   microcontroller — <a
-                    href="https://web.archive.org/web/20200130165712/https://wiki.stm32duino.com/index.php?title=Blue_Pill"
+                    href="https://wiki.stm32duino.com/index.php?title=Blue_Pill"
                     class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow"><strong class="gm hc">STM32 Blue
                       Pill </strong></a>— and a real NB-IoT module — <a
-                    href="https://web.archive.org/web/20200130165712/https://www.quectel.com/product/bc95g.htm"
+                    href="https://www.quectel.com/product/bc95g.htm"
                     class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow"><strong class="gm hc">Quectel
                       BC95-G</strong></a>!</p>
                 <p id="f3ab" class="gk gl dv bk gm b gn go gp gq gr gs gt gu gv gw gx cu"><em class="hd">Why are we
                     building it with </em><a
-                    href="https://web.archive.org/web/20200130165712/https://mynewt.apache.org/"
+                    href="https://mynewt.apache.org/"
                     class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow"><strong class="gm hc">Apache
                       Mynewt</strong></a><em class="hd"> realtime operating system?</em></p>
                 <p id="f3ff" class="gk gl dv bk gm b gn go gp gq gr gs gt gu gv gw gx cu">Because handling the AT
@@ -245,7 +245,7 @@
                 <p id="ba24" class="gk gl dv bk gm b gn go gp gq gr gs gt gu gv gw gx cu">The complete source code is
                   located here…</p>
                 <div class="hk hl hm hn ho hp"><a
-                    href="https://web.archive.org/web/20200130165712/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/nbiot"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/nbiot"
                     rel="noopener nofollow">
                     <div class="hs n ar">
                       <div class="ht n co p hu hv">
@@ -298,25 +298,25 @@
                 <p id="2382" class="gk gl dv bk gm b gn go gp gq gr gs gt gu gv gw gx cu">We’ll need the following
                   hardware…</p>
                 <p id="018a" class="gk gl dv bk gm b gn go gp gq gr gs gt gu gv gw gx cu">1️⃣ <a
-                    href="https://web.archive.org/web/20200130165712/https://www.aliexpress.com/wholesale?catId=0&amp;initiative_id=SB_20180924131057&amp;SearchText=stm32f103c8t6+development+board"
+                    href="https://www.aliexpress.com/wholesale?catId=0&amp;initiative_id=SB_20180924131057&amp;SearchText=stm32f103c8t6+development+board"
                     class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow"><strong class="gm hc">STM32 Blue
                       Pill</strong></a></p>
                 <p id="0051" class="gk gl dv bk gm b gn go gp gq gr gs gt gu gv gw gx cu">2️⃣ <a
-                    href="https://web.archive.org/web/20200130165712/https://www.aliexpress.com/wholesale?catId=0&amp;initiative_id=SB_20180924134644&amp;SearchText=st-link+v2"
+                    href="https://www.aliexpress.com/wholesale?catId=0&amp;initiative_id=SB_20180924134644&amp;SearchText=st-link+v2"
                     class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow"><strong class="gm hc">ST-Link V2
                       USB Adapter</strong></a></p>
                 <p id="7ed8" class="gk gl dv bk gm b gn go gp gq gr gs gt gu gv gw gx cu">3️⃣ <a
-                    href="https://web.archive.org/web/20200130165712/https://www.aliexpress.com/wholesale?catId=0&amp;initiative_id=SB_20190725022150&amp;SearchText=bc95-g+nb101&amp;switch_new_app=y"
+                    href="https://www.aliexpress.com/wholesale?catId=0&amp;initiative_id=SB_20190725022150&amp;SearchText=bc95-g+nb101&amp;switch_new_app=y"
                     class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow"><strong class="gm hc">Quectel
                       BC95-G Global NB-IoT Module</strong></a> (breakout board with antenna). I ordered mine <a
-                    href="https://web.archive.org/web/20200130165712/https://item.taobao.com/item.htm?id=577310122904"
+                    href="https://item.taobao.com/item.htm?id=577310122904"
                     class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">here</a>. The manual in Chinese is
-                  <a href="https://web.archive.org/web/20200130165712/http://rs.iotxx.com/uploads/doc/%E8%B0%B7%E9%9B%A8NB10x%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E%E4%B9%A6-V1.3.pdf"
+                  <a href="http://rs.iotxx.com/uploads/doc/%E8%B0%B7%E9%9B%A8NB10x%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E%E4%B9%A6-V1.3.pdf"
                     class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">here</a>.</p>
                 <p id="d9b5" class="gk gl dv bk gm b gn go gp gq gr gs gt gu gv gw gx cu">4️⃣ <strong
                     class="gm hc">NB-IoT SIM</strong> from your local NB-IoT network operator</p>
                 <p id="6520" class="gk gl dv bk gm b gn go gp gq gr gs gt gu gv gw gx cu">Many thanks to <a
-                    href="https://web.archive.org/web/20200130165712/https://www.starhub.com/" class="at cg gy gz ha hb"
+                    href="https://www.starhub.com/" class="at cg gy gz ha hb"
                     target="_blank" rel="noopener nofollow"><strong class="gm hc">StarHub</strong></a> for sponsoring
                   the NB-IoT SIM that I used for this tutorial!</p>
               </div>
@@ -363,7 +363,7 @@
                   the module kept restarting when I powered it from Blue Pill.)</p>
                 <p id="e180" class="gk gl dv bk gm b gn go gp gq gr gs gt gu gv gw gx cu"><strong class="gm hc">Check
                     the documentation for your Quectel breakout board to confirm that it supports 5V.</strong> (<a
-                    href="https://web.archive.org/web/20200130165712/http://rs.iotxx.com/uploads/doc/%E8%B0%B7%E9%9B%A8NB10x%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E%E4%B9%A6-V1.3.pdf"
+                    href="http://rs.iotxx.com/uploads/doc/%E8%B0%B7%E9%9B%A8NB10x%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E%E4%B9%A6-V1.3.pdf"
                     class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">Mine does</a>)</p>
                 <figure class="he hf hg hh hi cz dr je cd jf jg jh ji jj ba jk jl jm jn jo jp paragraph-image">
                   <div class="db dc dd de ak">
@@ -453,7 +453,7 @@
               <div class="ac ae af ag ah ds aj ak">
                 <p id="e671" class="gk gl dv bk gm b gn go gp gq gr gs gt gu gv gw gx cu">We have just installed a
                   simple program that <strong class="gm hc">reads Blue Pill’s </strong><a
-                    href="https://web.archive.org/web/20200130165712/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/nbiot/libs/temp_stm32"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/nbiot/libs/temp_stm32"
                     class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow"><strong class="gm hc">internal
                       temperature sensor</strong></a> every 10 seconds and <strong class="gm hc">sends the data to a
                     CoAP Server</strong> (thethings.io) over the NB-IoT network.</p>
@@ -484,14 +484,14 @@
 
 
                   <figcaption class="bo ff jr js im cn cl cm jt ju bj fe">From <a
-                      href="https://web.archive.org/web/20200130165712/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/apps/my_sensor_app/src/main.c"
+                      href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/apps/my_sensor_app/src/main.c"
                       class="at cg gy gz ha hb" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/apps/my_sensor_app/src/main.c</a>
                   </figcaption>
                 </figure>
                 <p id="b90b" class="gk gl dv bk gm b gn go gp gq gr gs gt gu gv gw gx cu"><code
                     class="dm kg kh ki kj b">main()</code> in <code
-                    class="dm kg kh ki kj b"><a href="https://web.archive.org/web/20200130165712/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/apps/my_sensor_app/src/main.c" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">apps/my_sensor_app/src/main.c</a></code>
+                    class="dm kg kh ki kj b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/apps/my_sensor_app/src/main.c" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">apps/my_sensor_app/src/main.c</a></code>
                   is the function called upon device startup. Mynewt applications are required to call <code
                     class="dm kg kh ki kj b">sysinit()</code> to start the system services and drivers, including the
                   drivers for the internal temperature sensor and the NB-IoT module.</p>
@@ -499,13 +499,13 @@
                     class="dm kg kh ki kj b">start_sensor_listener()</code> is called next to set up the polling
                   schedule for the temperature sensor. We’ll study this in a while.</p>
                 <p id="6e64" class="gk gl dv bk gm b gn go gp gq gr gs gt gu gv gw gx cu"><code
-                    class="dm kg kh ki kj b"><a href="https://web.archive.org/web/20200130165712/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/libs/sensor_network/src/sensor_network.c#L134-L142" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">start_server_transport</a>()</code>
+                    class="dm kg kh ki kj b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/libs/sensor_network/src/sensor_network.c#L134-L142" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">start_server_transport</a>()</code>
                   is called to connect the NB-IoT module to the NB-IoT network. This may take a few seconds to complete,
                   so <code class="dm kg kh ki kj b">start_server_transport()</code> will perform the connection as a <a
-                    href="https://web.archive.org/web/20200130165712/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/libs/sensor_network/src/sensor_network.c#L152-L194"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/libs/sensor_network/src/sensor_network.c#L152-L194"
                     class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">background task</a>. <code
                     class="dm kg kh ki kj b">start_server_transport()</code> is part of the <a
-                    href="https://web.archive.org/web/20200130165712/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/nbiot/libs/sensor_network"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/nbiot/libs/sensor_network"
                     class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">Sensor Network Library</a>.</p>
                 <p id="6b88" class="gk gl dv bk gm b gn go gp gq gr gs gt gu gv gw gx cu">The main event loop appears at
                   the end of the <code class="dm kg kh ki kj b">main()</code> function. This is required by Mynewt for
@@ -555,25 +555,25 @@
 
 
                   <figcaption class="bo ff jr js im cn cl cm jt ju bj fe">From <a
-                      href="https://web.archive.org/web/20200130165712/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/apps/my_sensor_app/src/sensor.c#L37-L62"
+                      href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/apps/my_sensor_app/src/sensor.c#L37-L62"
                       class="at cg gy gz ha hb" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/apps/my_sensor_app/src/sensor.c#L37-L62</a>
                   </figcaption>
                 </figure>
                 <p id="b8bb" class="gk gl dv bk gm b gn go gp gq gr gs gt gu gv gw gx cu"><code
                     class="dm kg kh ki kj b">start_sensor_listener()</code> in <code
-                    class="dm kg kh ki kj b"><a href="https://web.archive.org/web/20200130165712/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/apps/my_sensor_app/src/sensor.c#L37-L62" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">apps/my_sensor_app/src/sensor.c</a></code>
+                    class="dm kg kh ki kj b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/apps/my_sensor_app/src/sensor.c#L37-L62" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">apps/my_sensor_app/src/sensor.c</a></code>
                   is called by <code class="dm kg kh ki kj b">main()</code> to set the polling schedule for the
                   temperature sensor.</p>
                 <p id="350b" class="gk gl dv bk gm b gn go gp gq gr gs gt gu gv gw gx cu"><code
-                    class="dm kg kh ki kj b"><a href="https://web.archive.org/web/20200130165712/https://mynewt.apache.org/latest/os/modules/sensor_framework/sensor_mgr_api.html#c.sensor_set_poll_rate_ms" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">sensor_set_poll_rate_ms</a>()</code>
+                    class="dm kg kh ki kj b"><a href="https://mynewt.apache.org/latest/os/modules/sensor_framework/sensor_mgr_api.html#c.sensor_set_poll_rate_ms" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">sensor_set_poll_rate_ms</a>()</code>
                   is the Mynewt system function that’s called to set the temperature sensor (<code
-                    class="dm kg kh ki kj b"><a href="https://web.archive.org/web/20200130165712/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/nbiot/libs/temp_stm32" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">temp_stm32_0</a></code>)
+                    class="dm kg kh ki kj b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/nbiot/libs/temp_stm32" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">temp_stm32_0</a></code>)
                   to be polled every 10,000 milliseconds (or 10 seconds)</p>
                 <p id="ea66" class="gk gl dv bk gm b gn go gp gq gr gs gt gu gv gw gx cu"><em class="hd">What happens
                     when Mynewt has polled the sensor data?</em></p>
                 <p id="aa8b" class="gk gl dv bk gm b gn go gp gq gr gs gt gu gv gw gx cu">In the call to <code
-                    class="dm kg kh ki kj b"><a href="https://web.archive.org/web/20200130165712/https://mynewt.apache.org/latest/os/modules/sensor_framework/sensor_listener_api.html#c.sensor_register_listener" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">sensor_register_listener</a>() </code>(another
+                    class="dm kg kh ki kj b"><a href="https://mynewt.apache.org/latest/os/modules/sensor_framework/sensor_listener_api.html#c.sensor_register_listener" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">sensor_register_listener</a>() </code>(another
                   Mynewt system function), we instruct Mynewt to call our function <code
                     class="dm kg kh ki kj b">handle_sensor_data()</code> whenever it has polled for new sensor data.</p>
                 <figure class="he hf hg hh hi cz cl cm paragraph-image">
@@ -598,7 +598,7 @@
 
 
                   <figcaption class="bo ff jr js im cn cl cm jt ju bj fe">From <a
-                      href="https://web.archive.org/web/20200130165712/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/apps/my_sensor_app/src/sensor.c#L63-L89"
+                      href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/apps/my_sensor_app/src/sensor.c#L63-L89"
                       class="at cg gy gz ha hb" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/apps/my_sensor_app/src/sensor.c#L63-L89</a>
                   </figcaption>
@@ -606,7 +606,7 @@
                 <p id="b846" class="gk gl dv bk gm b gn go gp gq gr gs gt gu gv gw gx cu">Every 10 seconds after Mynewt
                   has obtained the raw sensor data from the temperature sensor, Mynewt calls <code
                     class="dm kg kh ki kj b">handle_sensor_data()</code> in <code
-                    class="dm kg kh ki kj b"><a href="https://web.archive.org/web/20200130165712/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/apps/my_sensor_app/src/sensor.c#L63-L89" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">apps/my_sensor_app/src/sensor.c</a></code>
+                    class="dm kg kh ki kj b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/apps/my_sensor_app/src/sensor.c#L63-L89" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">apps/my_sensor_app/src/sensor.c</a></code>
                   to work on the raw sensor data.</p>
                 <p id="0b15" class="gk gl dv bk gm b gn go gp gq gr gs gt gu gv gw gx cu"><code
                     class="dm kg kh ki kj b">handle_sensor_data()</code> wraps the raw sensor data into a <code
@@ -669,14 +669,14 @@
 
 
                   <figcaption class="bo ff jr js im cn cl cm jt ju bj fe">From <a
-                      href="https://web.archive.org/web/20200130165712/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/apps/my_sensor_app/src/network.c"
+                      href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/apps/my_sensor_app/src/network.c"
                       class="at cg gy gz ha hb" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/apps/my_sensor_app/src/network.c</a>
                   </figcaption>
                 </figure>
                 <p id="e846" class="gk gl dv bk gm b gn go gp gq gr gs gt gu gv gw gx cu"><code
                     class="dm kg kh ki kj b">send_sensor_data()</code> in <code
-                    class="dm kg kh ki kj b"><a href="https://web.archive.org/web/20200130165712/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/apps/my_sensor_app/src/network.c" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">apps/my_sensor_app/src/network.c</a></code>
+                    class="dm kg kh ki kj b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/apps/my_sensor_app/src/network.c" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">apps/my_sensor_app/src/network.c</a></code>
                   is called by <code class="dm kg kh ki kj b">handle_sensor_data()</code> to transmit sensor data. In
                   this program we’re transmitting sensor data to the CoAP server at thethings.io.</p>
                 <p id="3bb1" class="gk gl dv bk gm b gn go gp gq gr gs gt gu gv gw gx cu">thethings.io requires our
@@ -684,17 +684,17 @@
                 <pre
                   class="he hf hg hh hi lq lr ls"><span id="88dc" class="lt it dv bk kj b ff lu lv r lw">{&quot;values&quot;:[<br/>    {&quot;key&quot;:&quot;device&quot;,<br/>     &quot;value&quot;:&quot;010203&quot;},<br/>    {&quot;key&quot;:&quot;t&quot;,   <br/>     &quot;value&quot;:1715}<br/>]}</span></pre>
                 <p id="96d8" class="gk gl dv bk gm b gn go gp gq gr gs gt gu gv gw gx cu">By calling the macros <code
-                    class="dm kg kh ki kj b"><a href="https://web.archive.org/web/20200130165712/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/libs/sensor_coap/include/sensor_coap/sensor_coap.h#L223-L229" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">CP_ROOT</a></code>,
+                    class="dm kg kh ki kj b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/libs/sensor_coap/include/sensor_coap/sensor_coap.h#L223-L229" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">CP_ROOT</a></code>,
                   <code
-                    class="dm kg kh ki kj b"><a href="https://web.archive.org/web/20200130165712/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/libs/sensor_coap/include/sensor_coap/sensor_coap.h#L274-L280" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">CP_ARRAY</a></code>,
+                    class="dm kg kh ki kj b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/libs/sensor_coap/include/sensor_coap/sensor_coap.h#L274-L280" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">CP_ARRAY</a></code>,
                   <code
-                    class="dm kg kh ki kj b"><a href="https://web.archive.org/web/20200130165712/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/libs/sensor_coap/include/sensor_coap/sensor_coap.h#L316-L324" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">CP_ITEM_STR</a></code>
+                    class="dm kg kh ki kj b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/libs/sensor_coap/include/sensor_coap/sensor_coap.h#L316-L324" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">CP_ITEM_STR</a></code>
                   and <code
-                    class="dm kg kh ki kj b"><a href="https://web.archive.org/web/20200130165712/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/libs/sensor_coap/include/sensor_coap/sensor_coap.h#L262-L267" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">CP_ITEM_INT_VAL</a></code>,
+                    class="dm kg kh ki kj b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/libs/sensor_coap/include/sensor_coap/sensor_coap.h#L262-L267" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">CP_ITEM_INT_VAL</a></code>,
                   the program composes a JSON message in the above format based on our raw temperature value <code
                     class="dm kg kh ki kj b">t</code>.</p>
                 <p id="6c48" class="gk gl dv bk gm b gn go gp gq gr gs gt gu gv gw gx cu">When <code
-                    class="dm kg kh ki kj b"><a href="https://web.archive.org/web/20200130165712/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/libs/sensor_network/src/sensor_network.c#L284-L293" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">do_server_post</a>()</code>
+                    class="dm kg kh ki kj b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/libs/sensor_network/src/sensor_network.c#L284-L293" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">do_server_post</a>()</code>
                   is called, the JSON message is encoded as the payload of a CoAP message. The CoAP message is
                   transmitted as a UDP packet to thethings.io over the NB-IoT network.</p>
                 <p id="e2a1" class="gk gl dv bk gm b gn go gp gq gr gs gt gu gv gw gx cu">What’s <code
@@ -844,7 +844,7 @@
                 <h1 id="ea16" class="is it dv bk bj hw dx iu dz iv iw ix iy iz ja jb jc">Check The Log</h1>
                 <p id="8fc8" class="gk gl dv bk gm b gn ka gp kb gr kc gt kd gv ke gx cu">The log from our Blue Pill
                   should <a
-                    href="https://web.archive.org/web/20200130165712/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/logs/standalone-node.log"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/logs/standalone-node.log"
                     class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">look like this</a>. When we see
                   this in the log…</p>
                 <pre
@@ -871,7 +871,7 @@
 
 
                   <figcaption class="bo ff jr js im cn cl cm jt ju bj fe">From <a
-                      href="https://web.archive.org/web/20200130165712/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/logs/standalone-node.log#L61-L89"
+                      href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/logs/standalone-node.log#L61-L89"
                       class="at cg gy gz ha hb" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/logs/standalone-node.log#L61-L89</a>
                   </figcaption>
@@ -885,13 +885,13 @@
                   enables the NB-IoT radio transceiver (<code class="dm kg kh ki kj b">CFUN=1</code>) and starts
                   attaching to the NB-IoT network (<code class="dm kg kh ki kj b">CGATT=1</code>)</p>
                 <p id="4b45" class="gk gl dv bk gm b gn go gp gq gr gs gt gu gv gw gx cu"><em class="hd">The </em><a
-                    href="https://web.archive.org/web/20200130165712/http://www.techplayon.com/nb-iot-frequency-bands-as-per-3gpp-rel-13-14-and-15/"
+                    href="http://www.techplayon.com/nb-iot-frequency-bands-as-per-3gpp-rel-13-14-and-15/"
                     class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow"><em class="hd">NB-IoT Frequency
                       Band</em></a><em class="hd"> depends on your country and your NB-IoT network operator. Check with
                     your NB-IoT network operator for the Frequency Band to use.</em></p>
                 <p id="e731" class="gk gl dv bk gm b gn go gp gq gr gs gt gu gv gw gx cu">The NB-IoT Band is configured
                   here: <code
-                    class="dm kg kh ki kj b"><a href="https://web.archive.org/web/20200130165712/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/targets/bluepill_my_sensor/syscfg.yml" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">targets/bluepill_my_sensor/syscfg.yml</a></code>
+                    class="dm kg kh ki kj b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/targets/bluepill_my_sensor/syscfg.yml" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">targets/bluepill_my_sensor/syscfg.yml</a></code>
                 </p>
                 <p id="9ab1" class="gk gl dv bk gm b gn go gp gq gr gs gt gu gv gw gx cu">The program queries the NB-IoT
                   registration status (<code class="dm kg kh ki kj b">CEREG?</code>). The response <code
@@ -921,7 +921,7 @@
 
 
                   <figcaption class="bo ff jr js im cn cl cm jt ju bj fe">From <a
-                      href="https://web.archive.org/web/20200130165712/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/logs/standalone-node.log#L102-L109"
+                      href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/logs/standalone-node.log#L102-L109"
                       class="at cg gy gz ha hb" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/logs/standalone-node.log#L102-L109</a>
                   </figcaption>
@@ -962,7 +962,7 @@
 
 
                   <figcaption class="bo ff jr js im cn cl cm jt ju bj fe">From <a
-                      href="https://web.archive.org/web/20200130165712/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/logs/standalone-node.log#L113-L127"
+                      href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/logs/standalone-node.log#L113-L127"
                       class="at cg gy gz ha hb" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/logs/standalone-node.log#L113-L127</a>
                   </figcaption>
@@ -989,7 +989,7 @@
                 <p id="951a" class="gk gl dv bk gm b gn go gp gq gr gs gt gu gv gw gx cu">When we Ctrl-Click the URL in
                   the log…</p>
                 <pre
-                  class="he hf hg hh hi lq lr ls"><span id="ad81" class="lt it dv bk kj b ff lu lv r lw"><a href="https://web.archive.org/web/20200130165712/https://blue-pill-geolocate.appspot.com/?device=ac913c504b27e00bc8b68dfe843b297c" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">https://blue-pill-geolocate.appspot.com?device=ac913c</a>…</span></pre>
+                  class="he hf hg hh hi lq lr ls"><span id="ad81" class="lt it dv bk kj b ff lu lv r lw"><a href="https://blue-pill-geolocate.appspot.com/?device=ac913c504b27e00bc8b68dfe843b297c" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">https://blue-pill-geolocate.appspot.com?device=ac913c</a>…</span></pre>
                 <figure class="he hf hg hh hi cz dr je cd jf jg jh ji jj ba jk jl jm jn jo jp paragraph-image">
                   <div class="db dc dd de ak">
                     <div class="cl cm mc">
@@ -1012,7 +1012,7 @@
                   computed temperature value in degrees Celsius. That’s because <strong class="gm hc">thethings.io has
                     converted the raw temperature into the actual temperature</strong> (in degrees Celsius). We have
                   installed a <a
-                    href="https://web.archive.org/web/20200130165712/https://github.com/lupyuen/thethingsio-wifi-geolocation"
+                    href="https://github.com/lupyuen/thethingsio-wifi-geolocation"
                     class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">script at thethings.io</a> that
                   pushes the computed temperature to <code
                     class="dm kg kh ki kj b">blue-pill-geolocate.appspot.com</code>, so that we could see the computed
@@ -1080,7 +1080,7 @@
                   </div>
                   <figcaption class="bo ff jr js im cn cl cm jt ju bj fe">NB-IoT developer kit with onboard Quectel
                     BC35-G Global NB-IoT module and STM32L431RCT6 microcontroller. From <a
-                      href="https://web.archive.org/web/20200130165712/https://item.taobao.com/item.htm?spm=a230r.1.14.27.67a75d82e8brCe&amp;id=577708190839&amp;ns=1&amp;abbucket=15#detail"
+                      href="https://item.taobao.com/item.htm?spm=a230r.1.14.27.67a75d82e8brCe&amp;id=577708190839&amp;ns=1&amp;abbucket=15#detail"
                       class="at cg gy gz ha hb" target="_blank"
                       rel="noopener nofollow">https://item.taobao.com/item.htm?spm=a230r.1.14.27.67a75d82e8brCe&amp;id=577708190839&amp;ns=1&amp;abbucket=15#detail</a>
                   </figcaption>
@@ -1111,7 +1111,7 @@
                 <p id="59cd" class="gk gl dv bk gm b gn ka gp kb gr kc gt kd gv ke gx cu">The following Quectel
                   documents were very useful for understanding the AT commands. Download them from (free registration
                   required) <code
-                    class="dm kg kh ki kj b"><a href="https://web.archive.org/web/20200130165712/https://www.quectel.com/support/downloadb/TechnicalDocuments.htm" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">https://www.quectel.com/support/downloadb/TechnicalDocuments.htm</a></code>
+                    class="dm kg kh ki kj b"><a href="https://www.quectel.com/support/downloadb/TechnicalDocuments.htm" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">https://www.quectel.com/support/downloadb/TechnicalDocuments.htm</a></code>
                 </p>
                 <ol class="">
                   <li id="c054" class="gk gl dv bk gm b gn go gp gq gr gs gt gu gv gw gx mq mr ms"><strong
@@ -1141,43 +1141,43 @@
                 <p id="fcc6" class="gk gl dv bk gm b gn ka gp kb gr kc gt kd gv ke gx cu">The Mynewt driver I have
                   created for Quectel BC95-G is located here…</p>
                 <p id="42e8" class="gk gl dv bk gm b gn go gp gq gr gs gt gu gv gw gx cu"><code
-                    class="dm kg kh ki kj b"><a href="https://web.archive.org/web/20200130165712/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/nbiot/libs/bc95g" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/nbiot/libs/bc95g</a></code>
+                    class="dm kg kh ki kj b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/nbiot/libs/bc95g" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/nbiot/libs/bc95g</a></code>
                 </p>
                 <p id="0922" class="gk gl dv bk gm b gn go gp gq gr gs gt gu gv gw gx cu"><code
-                    class="dm kg kh ki kj b"><a href="https://web.archive.org/web/20200130165712/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/libs/bc95g/src/driver.cpp" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">driver.cpp</a></code>
+                    class="dm kg kh ki kj b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/libs/bc95g/src/driver.cpp" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">driver.cpp</a></code>
                   contains the main logic for the driver. It sends AT commands and handles responses and timeouts.</p>
                 <p id="2b3e" class="gk gl dv bk gm b gn go gp gq gr gs gt gu gv gw gx cu"><code
-                    class="dm kg kh ki kj b"><a href="https://web.archive.org/web/20200130165712/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/libs/bc95g/src/ATParser.cpp" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">ATParser</a></code>
+                    class="dm kg kh ki kj b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/libs/bc95g/src/ATParser.cpp" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">ATParser</a></code>
                   and <code
-                    class="dm kg kh ki kj b"><a href="https://web.archive.org/web/20200130165712/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/libs/bc95g/src/BufferedSerial.cpp" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">BufferedSerial</a></code>
+                    class="dm kg kh ki kj b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/libs/bc95g/src/BufferedSerial.cpp" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">BufferedSerial</a></code>
                   libraries (ported from mbed) are called by <code class="dm kg kh ki kj b">driver.cpp</code> to parse
                   the AT responses from the Quectel module. The dynamic heap memory allocation in the original mbed
                   version has been replaced by static memory buffers, to reduce RAM and ROM size.</p>
                 <p id="8e78" class="gk gl dv bk gm b gn go gp gq gr gs gt gu gv gw gx cu"><code
-                    class="dm kg kh ki kj b"><a href="https://web.archive.org/web/20200130165712/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/libs/bc95g/src/creator.cpp" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">creator.cpp</a></code>
+                    class="dm kg kh ki kj b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/libs/bc95g/src/creator.cpp" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">creator.cpp</a></code>
                   contains the driver creation code required by Mynewt</p>
                 <p id="3878" class="gk gl dv bk gm b gn go gp gq gr gs gt gu gv gw gx cu"><code
-                    class="dm kg kh ki kj b"><a href="https://web.archive.org/web/20200130165712/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/libs/bc95g/src/transport.cpp" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">transport.cpp</a></code>
+                    class="dm kg kh ki kj b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/libs/bc95g/src/transport.cpp" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">transport.cpp</a></code>
                   provides the OIC (Open Interconnect Consortium) network transport required for transmitting CoAP
                   messages via Mynewt’s OIC framework</p>
                 <p id="6e51" class="gk gl dv bk gm b gn go gp gq gr gs gt gu gv gw gx cu"><code
-                    class="dm kg kh ki kj b"><a href="https://web.archive.org/web/20200130165712/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/libs/bc95g/syscfg.yml" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">syscfg.yml</a></code>
+                    class="dm kg kh ki kj b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/libs/bc95g/syscfg.yml" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">syscfg.yml</a></code>
                   defines one configuration setting: <code class="dm kg kh ki kj b">NBIOT_BAND</code>, the NB-IoT band
                   (defaults to <code class="dm kg kh ki kj b">8</code>)</p>
                 <p id="aaca" class="gk gl dv bk gm b gn go gp gq gr gs gt gu gv gw gx cu"><code
-                    class="dm kg kh ki kj b"><a href="https://web.archive.org/web/20200130165712/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/libs/bc95g/pkg.yml" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">pkg.yml</a></code>
+                    class="dm kg kh ki kj b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/libs/bc95g/pkg.yml" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">pkg.yml</a></code>
                   instructs Mynewt to call <code
-                    class="dm kg kh ki kj b"><a href="https://web.archive.org/web/20200130165712/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/libs/bc95g/src/creator.cpp#L35-L64" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">bc95g_create</a>()</code>
+                    class="dm kg kh ki kj b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/libs/bc95g/src/creator.cpp#L35-L64" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">bc95g_create</a>()</code>
                   to initialise the driver during startup</p>
                 <p id="7df8" class="gk gl dv bk gm b gn go gp gq gr gs gt gu gv gw gx cu"><em class="hd">Why do we use
                   </em><code class="dm kg kh ki kj b">mbufs</code><em class="hd"> when transmitting sensor data? Like in
                   </em><code
-                    class="dm kg kh ki kj b"><a href="https://web.archive.org/web/20200130165712/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/libs/bc95g/src/driver.cpp#L553-L557" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">bc95g_socket_tx_mbuf</a>()</code>?
+                    class="dm kg kh ki kj b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/libs/bc95g/src/driver.cpp#L553-L557" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">bc95g_socket_tx_mbuf</a>()</code>?
                 </p>
                 <p id="990e" class="gk gl dv bk gm b gn go gp gq gr gs gt gu gv gw gx cu">An <code
-                    class="dm kg kh ki kj b"><a href="https://web.archive.org/web/20200130165712/https://mynewt.apache.org/latest/os/core_os/mbuf/mbuf.html" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">mbuf</a></code>
+                    class="dm kg kh ki kj b"><a href="https://mynewt.apache.org/latest/os/core_os/mbuf/mbuf.html" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">mbuf</a></code>
                   (“<a
-                    href="https://web.archive.org/web/20200130165712/https://mynewt.apache.org/latest/os/core_os/mbuf/mbuf.html"
+                    href="https://mynewt.apache.org/latest/os/core_os/mbuf/mbuf.html"
                     class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">memory buffer</a>”) is a chain of
                   memory blocks that’s optimised for transmitting network messages. Recall the structure of our CoAP
                   message from the <a class="at cg gy gz ha hb" target="_blank" rel="noopener"
@@ -1196,14 +1196,14 @@
                   composition of CoAP messages.</p>
                 <p id="7446" class="gk gl dv bk gm b gn go gp gq gr gs gt gu gv gw gx cu">That’s why in the driver code
                   we see the program <a
-                    href="https://web.archive.org/web/20200130165712/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/libs/bc95g/src/driver.cpp#L512-L527"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/libs/bc95g/src/driver.cpp#L512-L527"
                     class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">walking through each </a><code
-                    class="dm kg kh ki kj b"><a href="https://web.archive.org/web/20200130165712/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/libs/bc95g/src/driver.cpp#L512-L527" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">mbuf</a></code><a
-                    href="https://web.archive.org/web/20200130165712/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/libs/bc95g/src/driver.cpp#L512-L527"
+                    class="dm kg kh ki kj b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/libs/bc95g/src/driver.cpp#L512-L527" class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">mbuf</a></code><a
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nbiot/libs/bc95g/src/driver.cpp#L512-L527"
                     class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow"> in the chain</a> and transmitting
                   each <code class="dm kg kh ki kj b">mbuf</code>. This keeps the networking code highly efficient, just
                   like <a
-                    href="https://web.archive.org/web/20200130165712/https://www.freebsd.org/cgi/man.cgi?query=mbuf&amp;sektion=9&amp;manpath=FreeBSD+6.0-stable"
+                    href="https://www.freebsd.org/cgi/man.cgi?query=mbuf&amp;sektion=9&amp;manpath=FreeBSD+6.0-stable"
                     class="at cg gy gz ha hb" target="_blank" rel="noopener nofollow">early versions of the Unix
                     operating system</a>.</p>
               </div>
