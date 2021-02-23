@@ -226,25 +226,25 @@
                   </div>
                 </div>
                 <p id="69d8" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">I ordered a few <a
-                    href="https://web.archive.org/web/20191204194136/https://docs.google.com/document/d/1V96zQc8PbxuxEwsdd3wzEb7SxpDhbSsOOP6faiFPfzo/edit"
+                    href="https://docs.google.com/document/d/1V96zQc8PbxuxEwsdd3wzEb7SxpDhbSsOOP6faiFPfzo/edit"
                     class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">NB-IoT Developer Kits</a> from
                   Taobao.com and realised that their firmware had one thing in common… They were built with <a
-                    href="https://web.archive.org/web/20191204194136/https://liteos.github.io/en/kernel/"
+                    href="https://liteos.github.io/en/kernel/"
                     class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow"><strong class="gy ho">Huawei
                       LiteOS</strong></a>.</p>
                 <p id="d4e4" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">Although LiteOS is a new embedded
                   OS, we’ll find features that are commonly associated with modern Real-Time Operating Systems like <a
-                    href="https://web.archive.org/web/20191204194136/https://mynewt.apache.org/"
+                    href="https://mynewt.apache.org/"
                     class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">Apache Mynewt</a> and <a
-                    href="https://web.archive.org/web/20191204194136/https://www.zephyrproject.org/"
+                    href="https://www.zephyrproject.org/"
                     class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">Zephyr</a>.</p>
                 <p id="d084" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">In this article we’ll peek into
                   the LiteOS + Application source code that was bundled with the NB-IoT Developer Kit that I have just
                   received… <a
-                    href="https://web.archive.org/web/20191204194136/https://item.taobao.com/item.htm?spm=a1z10.5-c-s.w4002-16913145420.11.18f84e29msvnJa&amp;id=577139082865"
+                    href="https://item.taobao.com/item.htm?spm=a1z10.5-c-s.w4002-16913145420.11.18f84e29msvnJa&amp;id=577139082865"
                     class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow"><strong class="gy ho">Ghostyu
                       NB-EK-L476 Developer Kit</strong></a> (also available on <a
-                    href="https://web.archive.org/web/20191204194136/https://www.aliexpress.com/item/32947266380.html?spm=a2g0o.productlist.0.0.8d6c5a57G3F6vm&amp;algo_pvid=3dd0f3d8-597e-4028-8dba-ace9aa1b820a&amp;algo_expid=3dd0f3d8-597e-4028-8dba-ace9aa1b820a-10&amp;btsid=3cdd8617-4f90-46db-9567-423431c9e122&amp;ws_ab_test=searchweb0_0,searchweb201602_1,searchweb201603_52"
+                    href="https://www.aliexpress.com/item/32947266380.html?spm=a2g0o.productlist.0.0.8d6c5a57G3F6vm&amp;algo_pvid=3dd0f3d8-597e-4028-8dba-ace9aa1b820a&amp;algo_expid=3dd0f3d8-597e-4028-8dba-ace9aa1b820a-10&amp;btsid=3cdd8617-4f90-46db-9567-423431c9e122&amp;ws_ab_test=searchweb0_0,searchweb201602_1,searchweb201603_52"
                     class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">AliExpress</a>)</p>
                 <p id="78c1" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj"><em class="hp">(I bought the kit
                     myself from Taobao and I’m not paid to write this article)</em></p>
@@ -252,7 +252,7 @@
                   above) contains…</p>
                 <p id="ea01" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">0️⃣ <strong
                     class="gy ho">STMicroelectronics </strong><a
-                    href="https://web.archive.org/web/20191204194136/https://www.st.com/en/microcontrollers-microprocessors/stm32l476rc.html"
+                    href="https://www.st.com/en/microcontrollers-microprocessors/stm32l476rc.html"
                     class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow"><strong
                       class="gy ho">STM32L476RCT6</strong></a><strong class="gy ho"> microcontroller</strong></p>
                 <ul class="">
@@ -269,10 +269,10 @@
                 <p id="93eb" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">1️⃣ <strong class="gy ho">Quectel
                     BC95-B8 Band 8 NB-IoT Breakout Board with SIM slot</strong><br /><em class="hp">(Connected to Port
                     LPUART1, PA0 for Enable Pin, PB15 for Interrupt Pin. Note that </em><a
-                    href="https://web.archive.org/web/20191204194136/https://www.linkedin.com/posts/lupyuen_stm32-activity-6575887681237155840-5Uly"
+                    href="https://www.linkedin.com/posts/lupyuen_stm32-activity-6575887681237155840-5Uly"
                     class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow"><em class="hp">Port LPUART1 is not
                       the same as USART3</em></a><em class="hp">, but we may </em><a
-                    href="https://web.archive.org/web/20191204194136/https://www.linkedin.com/posts/lupyuen_stm32-activity-6576022871896915968-H8ne"
+                    href="https://www.linkedin.com/posts/lupyuen_stm32-activity-6576022871896915968-H8ne"
                     class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow"><em class="hp">swap the TX/RX pins
                       to make them the same</em></a><em class="hp">)</em></p>
                 <figure class="id ie if ig ih cz cl cm paragraph-image">
@@ -292,7 +292,7 @@
                   </div>
                   <figcaption class="bo eh ei ej ek cn cl cm el em bj en">NB-IoT Breakout Board with SIM slot
                     underneath. Note the unusual orientation of the SIM — the notch faces outwards not inwards. Many
-                    thanks to <a href="https://web.archive.org/web/20191204194136/https://www.starhub.com/"
+                    thanks to <a href="https://www.starhub.com/"
                       class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">StarHub</a> for sponsoring the
                     NB-IoT SIM!</figcaption>
                 </figure>
@@ -300,10 +300,10 @@
                   top right) is for <strong class="gy ho">NB-IoT Frequency Band 8 only</strong>, so it may not be
                   suitable for all countries. But you may buy and replace the breakout board with the version that
                   supports Global Frequency Bands: <a
-                    href="https://web.archive.org/web/20191204194136/https://item.taobao.com/item.htm?spm=a1z10.5-c-s.w4002-16913145420.25.7a33f55b1VkUtY&amp;id=577310122904"
+                    href="https://item.taobao.com/item.htm?spm=a1z10.5-c-s.w4002-16913145420.25.7a33f55b1VkUtY&amp;id=577310122904"
                     class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow"><strong class="gy ho">Quectel
                       BC95-G Global Band NB-IoT Breakout Board</strong></a><strong class="gy ho"> </strong>(also on <a
-                    href="https://web.archive.org/web/20191204194136/https://www.aliexpress.com/item/32920599836.html?spm=a2g0o.productlist.0.0.2a325a57wZrhkp&amp;algo_pvid=de28479e-f67f-4b51-b733-7920e772f73a&amp;algo_expid=de28479e-f67f-4b51-b733-7920e772f73a-16&amp;btsid=441f1582-ab5f-4f30-8bb1-9321a166f8e0&amp;ws_ab_test=searchweb0_0,searchweb201602_1,searchweb201603_52"
+                    href="https://www.aliexpress.com/item/32920599836.html?spm=a2g0o.productlist.0.0.2a325a57wZrhkp&amp;algo_pvid=de28479e-f67f-4b51-b733-7920e772f73a&amp;algo_expid=de28479e-f67f-4b51-b733-7920e772f73a-16&amp;btsid=441f1582-ab5f-4f30-8bb1-9321a166f8e0&amp;ws_ab_test=searchweb0_0,searchweb201602_1,searchweb201603_52"
                     class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">AliExpress</a>, ask for the BC95-G
                   version)</p>
                 <p id="4e2d" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj"><em class="hp">(I have used this
@@ -334,7 +334,7 @@
                     BC95-G (Global Band, right)</figcaption>
                 </figure>
                 <p id="7162" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">2️⃣ <a
-                    href="https://web.archive.org/web/20191204194136/https://www.quectel.com/product/l70r.htm"
+                    href="https://www.quectel.com/product/l70r.htm"
                     class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow"><strong class="gy ho">Quectel
                       L70-R GPS Module</strong></a><strong class="gy ho"> with GPS antenna</strong><br /><em
                     class="hp">(Port UART2, PA1 for Enable Pin)</em></p>
@@ -431,15 +431,15 @@
                     SWDIO, SWCLK, VCC, GND</figcaption>
                 </figure>
                 <p id="3e81" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj"><a
-                    href="https://web.archive.org/web/20191204194136/https://drive.google.com/file/d/14KZqMO6cj20eKqM85iJNth8vf_WbI5VM/view?usp=sharing"
+                    href="https://drive.google.com/file/d/14KZqMO6cj20eKqM85iJNth8vf_WbI5VM/view?usp=sharing"
                     class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">Here are the schematics</a> (in
                   Chinese)</p>
                 <p id="0fe6" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">The source code in this article
                   was downloaded from the official Ghostyu website at <code
-                    class="eb hy hz ia ib b"><a href="https://web.archive.org/web/20191204194136/http://doc.iotxx.com/NB-EK-L476" class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">doc.iotxx.com/NB-EK-L476</a></code>
+                    class="eb hy hz ia ib b"><a href="http://doc.iotxx.com/NB-EK-L476" class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">doc.iotxx.com/NB-EK-L476</a></code>
                   and reuploaded to GitHub…</p>
                 <div class="dj dk dl dm dn jd"><a
-                    href="https://web.archive.org/web/20191204194136/https://github.com/lupyuen/NB-EK-L476?source=post_page-----2bbfb7f2fbcc----------------------"
+                    href="https://github.com/lupyuen/NB-EK-L476?source=post_page-----2bbfb7f2fbcc----------------------"
                     rel="noopener nofollow">
                     <section class="jg cl cm ak ce n ar jh ji jj jk jl jm jn jo jp jq jr js jt ju jv">
                       <div class="jw n co p jx jy">
@@ -491,15 +491,15 @@
                 <p id="99b2" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">The source code folder consists
                   of three major subfolders…</p>
                 <p id="389f" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj"><code
-                    class="eb hy hz ia ib b"><a href="https://web.archive.org/web/20191204194136/https://github.com/lupyuen/NB-EK-L476/tree/master/kernel" class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">kernel</a></code>:
+                    class="eb hy hz ia ib b"><a href="https://github.com/lupyuen/NB-EK-L476/tree/master/kernel" class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">kernel</a></code>:
                   LiteOS kernel source code. This is provided by Huawei and is common to all LiteOS projects. Arm
                   Cortex-specific code is also located here.</p>
                 <p id="69c1" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj"><code
-                    class="eb hy hz ia ib b"><a href="https://web.archive.org/web/20191204194136/https://github.com/lupyuen/NB-EK-L476/tree/master/platform/" class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">platform</a></code>:
+                    class="eb hy hz ia ib b"><a href="https://github.com/lupyuen/NB-EK-L476/tree/master/platform/" class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">platform</a></code>:
                   Source code specific to the STM32L476RCT6 microcontroller and the NB-EK-L476 Developer Kit. This
                   folder is packaged by Ghostyu, the makers of the kit.</p>
                 <p id="abb1" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj"><code
-                    class="eb hy hz ia ib b"><a href="https://web.archive.org/web/20191204194136/https://github.com/lupyuen/NB-EK-L476/tree/master/user" class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">user</a></code>:
+                    class="eb hy hz ia ib b"><a href="https://github.com/lupyuen/NB-EK-L476/tree/master/user" class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">user</a></code>:
                   Application source code. Provided by Ghostyu.</p>
                 <p id="fc59" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">GCC, Keil and IAR build tools may
                   be used to build LiteOS and the embedded application.</p>
@@ -530,32 +530,32 @@
                 </figure>
                 <p id="652d" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">The LiteOS kernel functions are
                   located in the <code
-                    class="eb hy hz ia ib b"><a href="https://web.archive.org/web/20191204194136/https://github.com/lupyuen/NB-EK-L476/tree/master/kernel" class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">kernel</a></code>
+                    class="eb hy hz ia ib b"><a href="https://github.com/lupyuen/NB-EK-L476/tree/master/kernel" class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">kernel</a></code>
                   folder. The functions cover…</p>
                 <ul class="">
                   <li id="3664" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj hq hr hs"><a
-                      href="https://web.archive.org/web/20191204194136/https://liteos.github.io/en/kernel/memory.html"
+                      href="https://liteos.github.io/en/kernel/memory.html"
                       class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">Memory Management</a></li>
                   <li id="9ac8" class="gw gx er bk gy b gz ht hb hu hd hv hf hw hh hx hj hq hr hs">Interprocess
                     Communication (<a
-                      href="https://web.archive.org/web/20191204194136/https://liteos.github.io/en/kernel/queue.html#overview"
+                      href="https://liteos.github.io/en/kernel/queue.html#overview"
                       class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">Queues</a> and <a
-                      href="https://web.archive.org/web/20191204194136/https://liteos.github.io/en/kernel/event.html"
+                      href="https://liteos.github.io/en/kernel/event.html"
                       class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">Events</a>)</li>
                   <li id="263c" class="gw gx er bk gy b gz ht hb hu hd hv hf hw hh hx hj hq hr hs">Task Synchronisation
                     (<a
-                      href="https://web.archive.org/web/20191204194136/https://liteos.github.io/en/kernel/semaphore.html"
+                      href="https://liteos.github.io/en/kernel/semaphore.html"
                       class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">Semaphore</a> and <a
-                      href="https://web.archive.org/web/20191204194136/https://liteos.github.io/en/kernel/mutex.html"
+                      href="https://liteos.github.io/en/kernel/mutex.html"
                       class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">Mutex</a>)</li>
                   <li id="e69c" class="gw gx er bk gy b gz ht hb hu hd hv hf hw hh hx hj hq hr hs"><a
-                      href="https://web.archive.org/web/20191204194136/https://liteos.github.io/en/kernel/task.html#overview"
+                      href="https://liteos.github.io/en/kernel/task.html#overview"
                       class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">Task Management</a></li>
                   <li id="f205" class="gw gx er bk gy b gz ht hb hu hd hv hf hw hh hx hj hq hr hs"><a
-                      href="https://web.archive.org/web/20191204194136/https://liteos.github.io/en/kernel/time-magmt.html"
+                      href="https://liteos.github.io/en/kernel/time-magmt.html"
                       class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">Time Management</a></li>
                   <li id="6d59" class="gw gx er bk gy b gz ht hb hu hd hv hf hw hh hx hj hq hr hs"><a
-                      href="https://web.archive.org/web/20191204194136/https://liteos.github.io/en/kernel/interrupt.html#overview"
+                      href="https://liteos.github.io/en/kernel/interrupt.html#overview"
                       class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">Hardware Interrupts and
                       Exceptions</a></li>
                 </ul>
@@ -593,7 +593,7 @@
                   </div>
                 </div>
                 <figcaption class="bo eh ei ej ek cn cl cm el em bj en">Kernel Functions. From <a
-                    href="https://web.archive.org/web/20191204194136/https://github.com/lupyuen/NB-EK-L476/blob/master/kernel/base/core/los_task.c"
+                    href="https://github.com/lupyuen/NB-EK-L476/blob/master/kernel/base/core/los_task.c"
                     class="at cg hk hl hm hn" target="_blank"
                     rel="noopener nofollow">https://github.com/lupyuen/NB-EK-L476/blob/master/kernel/base/core/los_task.c</a>
                 </figcaption>
@@ -606,9 +606,9 @@
               <div class="ac ae af ag ah eo aj ak">
                 <h1 id="2e9d" class="ku kv er bk bj jz kw kx ky kz la lb lc ld le lf lg">Main Function</h1>
                 <p id="3367" class="gw gx er bk gy b gz lo hb lp hd lq hf lr hh ls hj">The <code
-                    class="eb hy hz ia ib b"><a href="https://web.archive.org/web/20191204194136/https://github.com/lupyuen/NB-EK-L476/blob/master/user/main.c" class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">main</a>()</code>
+                    class="eb hy hz ia ib b"><a href="https://github.com/lupyuen/NB-EK-L476/blob/master/user/main.c" class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">main</a>()</code>
                   function is located in the <code
-                    class="eb hy hz ia ib b"><a href="https://web.archive.org/web/20191204194136/https://github.com/lupyuen/NB-EK-L476/tree/master/user" class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">user</a></code>
+                    class="eb hy hz ia ib b"><a href="https://github.com/lupyuen/NB-EK-L476/tree/master/user" class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">user</a></code>
                   folder. The <code class="eb hy hz ia ib b">main()</code> function starts up the various functions of
                   the developer kit.</p>
                 <p id="aaff" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">In the same source file, we see
@@ -632,7 +632,7 @@
                   </div>
                 </div>
                 <figcaption class="bo eh ei ej ek cn cl cm el em bj en">main() function from <a
-                    href="https://web.archive.org/web/20191204194136/https://github.com/lupyuen/NB-EK-L476/blob/master/user/main.c"
+                    href="https://github.com/lupyuen/NB-EK-L476/blob/master/user/main.c"
                     class="at cg hk hl hm hn" target="_blank"
                     rel="noopener nofollow">https://github.com/lupyuen/NB-EK-L476/blob/master/user/main.c</a>
                 </figcaption>
@@ -645,7 +645,7 @@
               <div class="ac ae af ag ah eo aj ak">
                 <h1 id="5a68" class="ku kv er bk bj jz kw kx ky kz la lb lc ld le lf lg">Platform Functions</h1>
                 <p id="bb4e" class="gw gx er bk gy b gz lo hb lp hd lq hf lr hh ls hj">The <code
-                    class="eb hy hz ia ib b"><a href="https://web.archive.org/web/20191204194136/https://github.com/lupyuen/NB-EK-L476/tree/master/platform" class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">platform</a></code>
+                    class="eb hy hz ia ib b"><a href="https://github.com/lupyuen/NB-EK-L476/tree/master/platform" class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">platform</a></code>
                   folder contains code that’s specific to the microcontroller (STM32L4xx) and the development board
                   (NB-EK-L476). This folder is likely managed by Ghostyu since it contains code specific to their
                   development board. Here’s what we’ll find in the folder…</p>
@@ -665,48 +665,48 @@
                     </div>
                   </div>
                   <figcaption class="bo eh ei ej ek cn cl cm el em bj en">From <a
-                      href="https://web.archive.org/web/20191204194136/https://github.com/lupyuen/NB-EK-L476/blob/master/platform/STM32L476RC_NBEK/los_bsp_adapter.c"
+                      href="https://github.com/lupyuen/NB-EK-L476/blob/master/platform/STM32L476RC_NBEK/los_bsp_adapter.c"
                       class="at cg hk hl hm hn" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/NB-EK-L476/blob/master/platform/STM32L476RC_NBEK/los_bsp_adapter.c</a>
                   </figcaption>
                 </figure>
                 <p id="ae47" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj"><code
-                    class="eb hy hz ia ib b"><a href="https://web.archive.org/web/20191204194136/https://github.com/lupyuen/NB-EK-L476/tree/master/platform/STM32L476RC_NBEK/Display" class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">Display</a></code>:
+                    class="eb hy hz ia ib b"><a href="https://github.com/lupyuen/NB-EK-L476/tree/master/platform/STM32L476RC_NBEK/Display" class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">Display</a></code>:
                   Source code for the optional LED display (SPI)</p>
                 <p id="5f74" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj"><code
-                    class="eb hy hz ia ib b"><a href="https://web.archive.org/web/20191204194136/https://github.com/lupyuen/NB-EK-L476/tree/master/platform/STM32L476RC_NBEK/Drivers" class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">Drivers</a></code>:
+                    class="eb hy hz ia ib b"><a href="https://github.com/lupyuen/NB-EK-L476/tree/master/platform/STM32L476RC_NBEK/Drivers" class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">Drivers</a></code>:
                   STM32 HAL (explained below)</p>
                 <p id="49a1" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj"><code
-                    class="eb hy hz ia ib b"><a href="https://web.archive.org/web/20191204194136/https://github.com/lupyuen/NB-EK-L476/tree/master/platform/STM32L476RC_NBEK/GpsParse" class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">GpsParse</a></code>:
+                    class="eb hy hz ia ib b"><a href="https://github.com/lupyuen/NB-EK-L476/tree/master/platform/STM32L476RC_NBEK/GpsParse" class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">GpsParse</a></code>:
                   Driver for onboard Quectel L70-R GPS module</p>
                 <p id="ef13" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj"><code
-                    class="eb hy hz ia ib b"><a href="https://web.archive.org/web/20191204194136/https://github.com/lupyuen/NB-EK-L476/tree/master/platform/STM32L476RC_NBEK/NBxxModule" class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">NBxxModule</a></code>:
+                    class="eb hy hz ia ib b"><a href="https://github.com/lupyuen/NB-EK-L476/tree/master/platform/STM32L476RC_NBEK/NBxxModule" class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">NBxxModule</a></code>:
                   Driver for onboard Quectel BC95 NB-IoT module</p>
                 <p id="b22e" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj"><code
-                    class="eb hy hz ia ib b"><a href="https://web.archive.org/web/20191204194136/https://github.com/lupyuen/NB-EK-L476/tree/master/platform/STM32L476RC_NBEK/Src" class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">Src</a></code>:
+                    class="eb hy hz ia ib b"><a href="https://github.com/lupyuen/NB-EK-L476/tree/master/platform/STM32L476RC_NBEK/Src" class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">Src</a></code>:
                   Board-specific functions</p>
                 <p id="1c61" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">An drivers for various <a
-                    href="https://web.archive.org/web/20191204194136/https://github.com/lupyuen/NB-EK-L476/tree/master/platform/STM32L476RC_NBEK"
+                    href="https://github.com/lupyuen/NB-EK-L476/tree/master/platform/STM32L476RC_NBEK"
                     class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">Onboard Sensors and Outputs</a>:
                 </p>
                 <ul class="">
                   <li id="9008" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj hq hr hs"><a
-                      href="https://web.archive.org/web/20191204194136/https://github.com/lupyuen/NB-EK-L476/blob/master/platform/STM32L476RC_NBEK/los_bsp_flash.c"
+                      href="https://github.com/lupyuen/NB-EK-L476/blob/master/platform/STM32L476RC_NBEK/los_bsp_flash.c"
                       class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">Flash Memory</a></li>
                   <li id="4f66" class="gw gx er bk gy b gz ht hb hu hd hv hf hw hh hx hj hq hr hs"><a
-                      href="https://web.archive.org/web/20191204194136/https://github.com/lupyuen/NB-EK-L476/blob/master/platform/STM32L476RC_NBEK/los_bsp_key.c"
+                      href="https://github.com/lupyuen/NB-EK-L476/blob/master/platform/STM32L476RC_NBEK/los_bsp_key.c"
                       class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">Push Buttons</a></li>
                   <li id="2658" class="gw gx er bk gy b gz ht hb hu hd hv hf hw hh hx hj hq hr hs"><a
-                      href="https://web.archive.org/web/20191204194136/https://github.com/lupyuen/NB-EK-L476/blob/master/platform/STM32L476RC_NBEK/los_bsp_led.c"
+                      href="https://github.com/lupyuen/NB-EK-L476/blob/master/platform/STM32L476RC_NBEK/los_bsp_led.c"
                       class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">Green LED</a></li>
                   <li id="b756" class="gw gx er bk gy b gz ht hb hu hd hv hf hw hh hx hj hq hr hs"><a
-                      href="https://web.archive.org/web/20191204194136/https://github.com/lupyuen/NB-EK-L476/blob/master/platform/STM32L476RC_NBEK/los_bsp_led.h"
+                      href="https://github.com/lupyuen/NB-EK-L476/blob/master/platform/STM32L476RC_NBEK/los_bsp_led.h"
                       class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">White LED</a></li>
                   <li id="4b12" class="gw gx er bk gy b gz ht hb hu hd hv hf hw hh hx hj hq hr hs"><a
-                      href="https://web.archive.org/web/20191204194136/https://github.com/lupyuen/NB-EK-L476/blob/master/platform/STM32L476RC_NBEK/los_bsp_lux.c"
+                      href="https://github.com/lupyuen/NB-EK-L476/blob/master/platform/STM32L476RC_NBEK/los_bsp_lux.c"
                       class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">Light Sensor</a></li>
                   <li id="41dc" class="gw gx er bk gy b gz ht hb hu hd hv hf hw hh hx hj hq hr hs"><a
-                      href="https://web.archive.org/web/20191204194136/https://github.com/lupyuen/NB-EK-L476/blob/master/platform/STM32L476RC_NBEK/los_bsp_sht2x.c"
+                      href="https://github.com/lupyuen/NB-EK-L476/blob/master/platform/STM32L476RC_NBEK/los_bsp_sht2x.c"
                       class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">SHT20 Temperature and Humidity
                       Sensor</a></li>
                 </ul>
@@ -727,15 +727,15 @@
                   </div>
                 </figure>
                 <p id="ab4b" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">Under <code
-                    class="eb hy hz ia ib b"><a href="https://web.archive.org/web/20191204194136/https://github.com/lupyuen/NB-EK-L476/tree/master/platform/STM32L476RC_NBEK/Drivers" class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">platform/STM32L476RC_NBEK/Drivers</a></code>
+                    class="eb hy hz ia ib b"><a href="https://github.com/lupyuen/NB-EK-L476/tree/master/platform/STM32L476RC_NBEK/Drivers" class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">platform/STM32L476RC_NBEK/Drivers</a></code>
                   we find the standard STM32 HAL Functions, provided by STMicroelectronics. These are the low-level
                   Hardware Adaptation Layer functions called by the operating system to perform STM32-specific
                   operations like accessing the UART, I2C and SPI ports.</p>
                 <p id="3679" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">This is fairly common in embedded
                   operating systems, we see this in <a
-                    href="https://web.archive.org/web/20191204194136/https://github.com/zephyrproject-rtos/hal_stm32/tree/master/stm32cube/stm32l4xx/drivers/src"
+                    href="https://github.com/zephyrproject-rtos/hal_stm32/tree/master/stm32cube/stm32l4xx/drivers/src"
                     class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">Zephyr</a> and <a
-                    href="https://web.archive.org/web/20191204194136/https://github.com/apache/mynewt-core/tree/master/hw/mcu/stm/stm32l4xx/src/ext/Drivers/STM32L4xx_HAL_Driver/Src"
+                    href="https://github.com/apache/mynewt-core/tree/master/hw/mcu/stm/stm32l4xx/src/ext/Drivers/STM32L4xx_HAL_Driver/Src"
                     class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">Mynewt</a> too.</p>
               </div>
             </div>
@@ -752,7 +752,7 @@
                   </div>
                 </div>
                 <figcaption class="bo eh ei ej ek cn cl cm el em bj en">STM32 Hardware Adaptation Layer Functions. From
-                  <a href="https://web.archive.org/web/20191204194136/https://github.com/lupyuen/NB-EK-L476/blob/master/platform/STM32L476RC_NBEK/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.c"
+                  <a href="https://github.com/lupyuen/NB-EK-L476/blob/master/platform/STM32L476RC_NBEK/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.c"
                     class="at cg hk hl hm hn" target="_blank"
                     rel="noopener nofollow">https://github.com/lupyuen/NB-EK-L476/blob/master/platform/STM32L476RC_NBEK/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.c</a>
                 </figcaption>
@@ -765,9 +765,9 @@
               <div class="ac ae af ag ah eo aj ak">
                 <h1 id="1bd8" class="ku kv er bk bj jz kw kx ky kz la lb lc ld le lf lg">Quectel BC95 NB-IoT Driver</h1>
                 <p id="d7a3" class="gw gx er bk gy b gz lo hb lp hd lq hf lr hh ls hj">Inside the <code
-                    class="eb hy hz ia ib b"><a href="https://web.archive.org/web/20191204194136/https://github.com/lupyuen/NB-EK-L476/tree/master/platform" class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">platform</a></code>
+                    class="eb hy hz ia ib b"><a href="https://github.com/lupyuen/NB-EK-L476/tree/master/platform" class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">platform</a></code>
                   folder is the <a
-                    href="https://web.archive.org/web/20191204194136/https://github.com/lupyuen/NB-EK-L476/blob/master/platform/STM32L476RC_NBEK/NBxxModule/NB_BC95.c"
+                    href="https://github.com/lupyuen/NB-EK-L476/blob/master/platform/STM32L476RC_NBEK/NBxxModule/NB_BC95.c"
                     class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">driver developed by Ghostyu</a>
                   for the Quectel BC95 NB-IoT module, which is connected to Port UART1.</p>
                 <p id="287b" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">Below we see a State Transition
@@ -775,7 +775,7 @@
                     class="eb hy hz ia ib b">nb95_info_process</code>, <code class="eb hy hz ia ib b">cmd_next</code>, …
                 </p>
                 <p id="1970" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj"><em class="hp">(The </em><a
-                    href="https://web.archive.org/web/20191204194136/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/low-power/libs/bc95g"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/low-power/libs/bc95g"
                     class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow"><em class="hp">BC95 driver that I
                       have built</em></a><em class="hp"> for Apache Mynewt uses a different approach)</em></p>
               </div>
@@ -795,7 +795,7 @@
                   </div>
                 </div>
                 <figcaption class="bo eh ei ej ek cn cl cm el em bj en">Driver for Quectel BC95 NB-IoT Module. From <a
-                    href="https://web.archive.org/web/20191204194136/https://github.com/lupyuen/NB-EK-L476/blob/master/platform/STM32L476RC_NBEK/NBxxModule/NB_BC95.c"
+                    href="https://github.com/lupyuen/NB-EK-L476/blob/master/platform/STM32L476RC_NBEK/NBxxModule/NB_BC95.c"
                     class="at cg hk hl hm hn" target="_blank"
                     rel="noopener nofollow">https://github.com/lupyuen/NB-EK-L476/blob/master/platform/STM32L476RC_NBEK/NBxxModule/NB_BC95.c</a>
                 </figcaption>
@@ -820,7 +820,7 @@
                   </div>
                 </div>
                 <figcaption class="bo eh ei ej ek cn cl cm el em bj en">Driver for Quectel BC95 NB-IoT Module. From <a
-                    href="https://web.archive.org/web/20191204194136/https://github.com/lupyuen/NB-EK-L476/blob/master/platform/STM32L476RC_NBEK/NBxxModule/NB_BC95.c"
+                    href="https://github.com/lupyuen/NB-EK-L476/blob/master/platform/STM32L476RC_NBEK/NBxxModule/NB_BC95.c"
                     class="at cg hk hl hm hn" target="_blank"
                     rel="noopener nofollow">https://github.com/lupyuen/NB-EK-L476/blob/master/platform/STM32L476RC_NBEK/NBxxModule/NB_BC95.c</a>
                 </figcaption>
@@ -833,9 +833,9 @@
               <div class="ac ae af ag ah eo aj ak">
                 <h1 id="d1c0" class="ku kv er bk bj jz kw kx ky kz la lb lc ld le lf lg">Quectel L70-R GPS Driver</h1>
                 <p id="529d" class="gw gx er bk gy b gz lo hb lp hd lq hf lr hh ls hj">Also inside the <code
-                    class="eb hy hz ia ib b"><a href="https://web.archive.org/web/20191204194136/https://github.com/lupyuen/NB-EK-L476/tree/master/platform" class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">platform</a></code>
+                    class="eb hy hz ia ib b"><a href="https://github.com/lupyuen/NB-EK-L476/tree/master/platform" class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">platform</a></code>
                   folder, Ghostyu has included <a
-                    href="https://web.archive.org/web/20191204194136/https://github.com/lupyuen/NB-EK-L476/blob/master/platform/STM32L476RC_NBEK/GpsParse/gps_l70_r.c"
+                    href="https://github.com/lupyuen/NB-EK-L476/blob/master/platform/STM32L476RC_NBEK/GpsParse/gps_l70_r.c"
                     class="at cg hk hl hm hn" target="_blank" rel="noopener nofollow">a driver for the onboard Quectel
                     L70-R GPS module</a>, which is connected to Port UART2.</p>
                 <p id="b401" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">Here we see the code to transmit
@@ -855,7 +855,7 @@
                   </div>
                 </div>
                 <figcaption class="bo eh ei ej ek cn cl cm el em bj en">Driver for Quectel L70-R GPS module. From <a
-                    href="https://web.archive.org/web/20191204194136/https://github.com/lupyuen/NB-EK-L476/blob/master/platform/STM32L476RC_NBEK/GpsParse/gps_l70_r.c"
+                    href="https://github.com/lupyuen/NB-EK-L476/blob/master/platform/STM32L476RC_NBEK/GpsParse/gps_l70_r.c"
                     class="at cg hk hl hm hn" target="_blank"
                     rel="noopener nofollow">https://github.com/lupyuen/NB-EK-L476/blob/master/platform/STM32L476RC_NBEK/GpsParse/gps_l70_r.c</a>
                 </figcaption>
@@ -918,7 +918,7 @@
                   based on the Ghostyu NB-EK-L476 Developer Kit… In Embedded Rust!</p>
                 <p id="c1b5" class="gw gx er bk gy b gz ha hb hc hd he hf hg hh hi hj">Stay Tuned! Work in progress…</p>
                 <div class="dj dk dl dm dn jd"><a
-                    href="https://web.archive.org/web/20191204194136/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/l476?source=post_page-----2bbfb7f2fbcc----------------------"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/l476?source=post_page-----2bbfb7f2fbcc----------------------"
                     rel="noopener nofollow">
                     <section class="jg cl cm ak ce n ar jh ji jj jk jl jm jn jo jp jq jr js jt ju jv">
                       <div class="jw n co p jx jy">
@@ -968,7 +968,7 @@
                 </div>
                 <figcaption class="bo eh ei ej ek cn cl cm el em bj en">Rust and Mynewt running OK on the Ghostyu
                   NB-EK-L476 Developer Kit. From <a
-                    href="https://web.archive.org/web/20191204194136/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/l476"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/l476"
                     class="at cg hk hl hm hn" target="_blank"
                     rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/l476</a>
                 </figcaption>
