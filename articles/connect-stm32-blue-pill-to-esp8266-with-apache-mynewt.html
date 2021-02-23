@@ -218,7 +218,7 @@
                   </div>
                 </div>
                 <p id="79ce" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">The <a
-                    href="https://web.archive.org/web/20191204194251/https://en.wikipedia.org/wiki/ESP8266"
+                    href="https://en.wikipedia.org/wiki/ESP8266"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">ESP8266 WiFi
                       module</strong></a> is a brilliant invention… It connects your microcontroller to the WiFi network
                   (and the internet) through simple <code class="eb hk hl hm hn b">AT</code> commands. Since it <strong
@@ -230,10 +230,10 @@
                     command will complete</strong>. Maybe the server was slow in responding. Or the WiFi connection has
                   dropped and the module needs to reconnect.</p>
                 <p id="8c35" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">Today we’ll learn to solve this
-                  problem with <a href="https://web.archive.org/web/20191204194251/https://mynewt.apache.org/"
+                  problem with <a href="https://mynewt.apache.org/"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">Apache
                       Mynewt</strong></a>, a real-time embedded operating system. We’ll create an IoT application for <a
-                    href="https://web.archive.org/web/20191204194251/http://wiki.stm32duino.com/index.php?title=Blue_Pill"
+                    href="http://wiki.stm32duino.com/index.php?title=Blue_Pill"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">STM32 Blue
                       Pill</strong></a><strong class="gt hj"> </strong>that<strong class="gt hj"> multitasks the ESP8266
                     module</strong> with a <strong class="gt hj">temperature sensor</strong>. So while we’re waiting for
@@ -241,7 +241,7 @@
                   intervals.</p>
                 <p id="3466" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">Like in the real world, our IoT
                   application will transmit sensor data to an IoT server, via the <a
-                    href="https://web.archive.org/web/20191204194251/https://en.wikipedia.org/wiki/Constrained_Application_Protocol"
+                    href="https://en.wikipedia.org/wiki/Constrained_Application_Protocol"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong
                       class="gt hj">CoAP</strong></a> protocol, over the ESP8266 WiFi connection. We’ll also dig deeper
                   into WiFi networking… <em class="ho">Is it possible to compute your location accurately based on the
@@ -274,21 +274,21 @@
                     Blue Pill</strong></p>
                 <blockquote class="in io ip">
                   <p id="4ff0" class="gr gs ek ho gt b gu gv gw gx gy gz ha hb hc hd he">► <a
-                      href="https://web.archive.org/web/20191204194251/https://gist.github.com/lupyuen/5c7804c15a45abebfd5f567f0ada6c02"
+                      href="https://gist.github.com/lupyuen/5c7804c15a45abebfd5f567f0ada6c02"
                       class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">Where to buy</a></p>
                 </blockquote>
                 <p id="1c31" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">2️⃣ <strong class="gt hj">ST-Link
                     V2 USB Adapter</strong> <br />(or compatible)</p>
                 <blockquote class="in io ip">
                   <p id="4719" class="gr gs ek ho gt b gu gv gw gx gy gz ha hb hc hd he">► <a
-                      href="https://web.archive.org/web/20191204194251/https://gist.github.com/lupyuen/5c7804c15a45abebfd5f567f0ada6c02"
+                      href="https://gist.github.com/lupyuen/5c7804c15a45abebfd5f567f0ada6c02"
                       class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">Where to buy</a></p>
                 </blockquote>
                 <p id="b79a" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">3️⃣ <strong class="gt hj">ESP8266
                     WiFi Module</strong></p>
                 <blockquote class="in io ip">
                   <p id="aa6f" class="gr gs ek ho gt b gu gv gw gx gy gz ha hb hc hd he">► <a
-                      href="https://web.archive.org/web/20191204194251/https://gist.github.com/lupyuen/5c7804c15a45abebfd5f567f0ada6c02"
+                      href="https://gist.github.com/lupyuen/5c7804c15a45abebfd5f567f0ada6c02"
                       class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">Where to buy</a></p>
                 </blockquote>
                 <p id="c8b8" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">Connect Blue Pill to ESP8266 as
@@ -332,7 +332,7 @@
                     </div>
                     <figcaption class="bo fm ii ij ik cn cl cm il im bj fl">Connecting Blue Pill to ESP8266. Fritzing
                       File: <a
-                        href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/esp8266.fzz"
+                        href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/esp8266.fzz"
                         class="at cg hf hg hh hi" target="_blank"
                         rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/esp8266.fzz</a>
                     </figcaption>
@@ -361,11 +361,11 @@
                     plugged in</figcaption>
                 </figure>
                 <p id="01af" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">The tutorial also works with <a
-                    href="https://web.archive.org/web/20191204194251/https://detail.tmall.com/item.htm?id=568676838958"
+                    href="https://detail.tmall.com/item.htm?id=568676838958"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">this Supersized STM32 Blue
                     Pill</a> with ESP8266 module plugged in.</p>
                 <p id="62fe" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he"><a
-                    href="https://web.archive.org/web/20191204194251/https://youtu.be/YrKXdxB77Oc"
+                    href="https://youtu.be/YrKXdxB77Oc"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">Watch the video</a> to see our
                   application in action, installed on a real Blue Pill.</p>
                 <p id="2adb" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">Click <code
@@ -428,7 +428,7 @@
                 <p id="3d54" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">Here’s the complete source code
                   for the IoT application, libraries and drivers used in this tutorial…</p>
                 <div class="dj dk dl dm dn jz"><a
-                    href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor?source=post_page-----7edceb9e3b8d----------------------"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor?source=post_page-----7edceb9e3b8d----------------------"
                     rel="noopener nofollow">
                     <section class="kc cl cm ak ce n ar kd ke kf kg kh ki kj kk kl km kn ko kp kq kr">
                       <div class="ks n co p kt ku">
@@ -454,31 +454,31 @@
                   </a></div>
                 <p id="a885" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">Let’s peek at the top-level
                   functions in <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/master/apps/my_sensor_app/src" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">apps/my_sensor_app/src</a></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/master/apps/my_sensor_app/src" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">apps/my_sensor_app/src</a></code>
                   to understand how this application will <strong class="gt hj">read Blue Pill’s internal temperature
                     sensor</strong> and <strong class="gt hj">send the temperature data</strong> to a CoAP server…</p>
                 <p id="71a6" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">1️⃣ At startup, our main program
                   <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/main.c" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">main.c</strong></a></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/main.c" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">main.c</strong></a></code>
                   delegates the <strong class="gt hj">reading of sensor data</strong> to <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/listen_sensor.c" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">listen_sensor.c</a></code>.
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/listen_sensor.c" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">listen_sensor.c</a></code>.
                   It also delegates the <strong class="gt hj">transmitting of sensor data</strong> to <code
                     class="eb hk hl hm hn b">send_coap.c</code>.</p>
                 <p id="36ed" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">Mynewt understands the
                   dependencies between our drivers and libraries. It ensures that the drivers and libraries are
                   initialised in the correct sequence.</p>
                 <p id="f251" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">2️⃣ Sensor handler <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/listen_sensor.c" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">listen_sensor.c</strong></a></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/listen_sensor.c" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">listen_sensor.c</strong></a></code>
                   instructs Mynewt to <strong class="gt hj">poll the internal temperature sensor</strong> and to<strong
                     class="gt hj"> </strong>call a<strong class="gt hj"> custom Listener Function</strong> that will
                   <strong class="gt hj">transmit the polled data</strong> (via <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/send_coap.c" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">send_coap.c</a></code>).
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/send_coap.c" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">send_coap.c</a></code>).
                 </p>
                 <p id="7b65" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">With Mynewt it’s easy to
                   configure a sensor to be polled at regular intervals. Mynewt’s Sensor Framework lets us define a
                   Listener Function that will be called after polling.</p>
                 <p id="5a05" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">3️⃣ Network handler <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/send_coap.c" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">send_coap.c</strong></a></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/send_coap.c" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">send_coap.c</strong></a></code>
                   starts <strong class="gt hj">ESP8266 WiFi</strong> networking and <strong class="gt hj">transmits the
                     temperature data</strong> to a CoAP server like thethings.io.</p>
                 <p id="d89c" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">We’ll create a Mynewt driver for
@@ -499,7 +499,7 @@
                 <blockquote class="lg">
                   <div id="e7e5" class="lh li lj bk el b lk ll lm ln lo lp he">
                     <p class="el b lq lr bo"><a
-                        href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/main.c"
+                        href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/main.c"
                         class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">main.c</a> › Poll Temperature
                       Sensor, Transmit Sensor Data</p>
                   </div>
@@ -511,7 +511,7 @@
 
                 </figure>
                 <p id="0de0" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he"><code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/main.c#L13-L47" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">main</strong></a><strong class="gt hj">()</strong></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/main.c#L13-L47" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">main</strong></a><strong class="gt hj">()</strong></code>
                   is the overall program that starts ESP8266 WiFi networking and starts the polling of Blue Pill’s
                   internal temperature sensor. It calls the following functions…</p>
                 <p id="d854" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">1️⃣ <code
@@ -522,24 +522,24 @@
                 <p id="d78d" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">Mynewt auto-generates <code
                     class="eb hk hl hm hn b">sysinit()</code> during the application build and includes all the
                   initialisation functions for drivers and libraries. Here is a <a
-                    href="https://web.archive.org/web/20191204194251/https://gist.github.com/lupyuen/e6efd675c3f6fcb7d1470f2c17e6d1fb"
+                    href="https://gist.github.com/lupyuen/e6efd675c3f6fcb7d1470f2c17e6d1fb"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">sample </a><code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://gist.github.com/lupyuen/e6efd675c3f6fcb7d1470f2c17e6d1fb" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">sysinit</a>()</code>.
+                    class="eb hk hl hm hn b"><a href="https://gist.github.com/lupyuen/e6efd675c3f6fcb7d1470f2c17e6d1fb" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">sysinit</a>()</code>.
                   The functions are called in sequence according to their Stage Numbers. Our custom drivers and
                   libraries are initialised last, from <strong class="gt hj">Stage 600 </strong>onwards.</p>
                 <p id="69bc" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">2️⃣ <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/send_coap.c#L36-L54" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">start_network_task</strong></a><strong class="gt hj">()</strong></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/send_coap.c#L36-L54" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">start_network_task</strong></a><strong class="gt hj">()</strong></code>
                   to run the <strong class="gt hj">Network Task</strong> in the background. The Network Task starts
                   ESP8266 WiFi networking and registers the ESP8266 driver as the Transport Layer for transmitting CoAP
                   messages.</p>
                 <p id="f588" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">3️⃣ <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/listen_sensor.c#L46-L76" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">start_sensor_listener</strong></a><strong class="gt hj">()</strong></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/listen_sensor.c#L46-L76" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">start_sensor_listener</strong></a><strong class="gt hj">()</strong></code>
                   to start polling the internal temperature sensor and to register the Listener Function that will
                   process the polled sensor data.</p>
                 <p id="c77f" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">After that the <code
                     class="eb hk hl hm hn b">main()</code> function loops forever, receiving Mynewt events and
                   processing them with <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://mynewt.apache.org/latest/os/core_os/event_queue/event_queue.html#c.os_eventq_run" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">os_eventq_run</strong></a><strong class="gt hj">()</strong></code>.
+                    class="eb hk hl hm hn b"><a href="https://mynewt.apache.org/latest/os/core_os/event_queue/event_queue.html#c.os_eventq_run" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">os_eventq_run</strong></a><strong class="gt hj">()</strong></code>.
                   This is the standard Event Queue loop that’s required for all Mynewt applications.</p>
               </div>
             </div>
@@ -570,7 +570,7 @@
                 <blockquote class="lg">
                   <div id="aabd" class="lh li lj bk el b lk ll lm ln lo lp he">
                     <p class="el b lq lr bo"><a
-                        href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/listen_sensor.c"
+                        href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/listen_sensor.c"
                         class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">listen_sensor.c</a> › Poll
                       Internal Temperature Sensor</p>
                   </div>
@@ -582,20 +582,20 @@
 
                 </figure>
                 <p id="bbdc" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he"><code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/listen_sensor.c#L46-L76" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">start_sensor_listener</strong></a><strong class="gt hj">()</strong></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/listen_sensor.c#L46-L76" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">start_sensor_listener</strong></a><strong class="gt hj">()</strong></code>
                   configures Mynewt to poll the internal temperature sensor every 10 seconds and to process the received
                   temperature data with our custom function. It calls the following functions, which are provided by
                   Mynewt’s Sensor Framework…</p>
                 <p id="3432" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">1️⃣ <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://mynewt.apache.org/latest/os/modules/sensor_framework/sensor_mgr_api.html#c.sensor_set_poll_rate_ms" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">sensor_set_poll_rate_ms</strong></a><strong class="gt hj">()</strong></code>
+                    class="eb hk hl hm hn b"><a href="https://mynewt.apache.org/latest/os/modules/sensor_framework/sensor_mgr_api.html#c.sensor_set_poll_rate_ms" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">sensor_set_poll_rate_ms</strong></a><strong class="gt hj">()</strong></code>
                   to poll the internal temperature sensor every 10 seconds</p>
                 <p id="399d" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">2️⃣ <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://mynewt.apache.org/latest/os/modules/sensor_framework/sensor_mgr_api.html#c.sensor_mgr_find_next_bydevname" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">sensor_mgr_find_next_bydevname</strong></a><strong class="gt hj">()</strong></code>
+                    class="eb hk hl hm hn b"><a href="https://mynewt.apache.org/latest/os/modules/sensor_framework/sensor_mgr_api.html#c.sensor_mgr_find_next_bydevname" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">sensor_mgr_find_next_bydevname</strong></a><strong class="gt hj">()</strong></code>
                   to fetch the internal temperature sensor <code class="eb hk hl hm hn b">temp_stm32_0</code></p>
                 <p id="1dc2" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">3️⃣ <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://mynewt.apache.org/latest/os/modules/sensor_framework/sensor_listener_api.html#c.sensor_register_listener" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">sensor_register_listener</strong></a><strong class="gt hj">()</strong></code>
+                    class="eb hk hl hm hn b"><a href="https://mynewt.apache.org/latest/os/modules/sensor_framework/sensor_listener_api.html#c.sensor_register_listener" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">sensor_register_listener</strong></a><strong class="gt hj">()</strong></code>
                   to register a Listener Function <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/listen_sensor.c#L109-L153" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">read_temperature</a>()</code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/listen_sensor.c#L109-L153" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">read_temperature</a>()</code>
                   that will be called with the polled temperature data every 10 seconds. <code
                     class="eb hk hl hm hn b">read_temperature()</code> will transmit the temperature to the CoAP server.
                 </p>
@@ -632,7 +632,7 @@
                 <blockquote class="lg">
                   <div id="792c" class="lh li lj bk el b lk ll lm ln lo lp he">
                     <p class="el b lq lr bo"><a
-                        href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/send_coap.c"
+                        href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/send_coap.c"
                         class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">send_coap.c</a> › Start
                       ESP8266, Transmit Sensor Data</p>
                   </div>
@@ -644,9 +644,9 @@
 
                 </figure>
                 <p id="5fa2" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he"><code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/send_coap.c#L36-L54" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">start_network_task</strong></a><strong class="gt hj">()</strong></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/send_coap.c#L36-L54" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">start_network_task</strong></a><strong class="gt hj">()</strong></code>
                   starts the task that connects the ESP8266 to the WiFi network. It calls <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://mynewt.apache.org/latest/os/core_os/task/task.html#c.os_task_init" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">os_task_init</strong></a><strong class="gt hj">()</strong></code>
+                    class="eb hk hl hm hn b"><a href="https://mynewt.apache.org/latest/os/core_os/task/task.html#c.os_task_init" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">os_task_init</strong></a><strong class="gt hj">()</strong></code>
                   to start the <strong class="gt hj">Network Task</strong> in the background.</p>
                 <p id="5270" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">Mynewt is a preemptive
                   multitasking operating system. That’s how we create tasks in Mynewt to run at different priorities.
@@ -654,7 +654,7 @@
                   can proceed to run other functions.</p>
                 <p id="1e14" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">When the Network Task starts it
                   runs <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/send_coap.c#L55-L93" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">network_task_func</strong></a><strong class="gt hj">()</strong></code>...
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/send_coap.c#L55-L93" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">network_task_func</strong></a><strong class="gt hj">()</strong></code>...
                 </p>
                 <figure class="hq hr hs ht hu cz">
 
@@ -663,39 +663,39 @@
 
                 </figure>
                 <p id="07d3" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he"><code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/send_coap.c#L55-L93" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">network_task_func</strong></a><strong class="gt hj">()</strong></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/send_coap.c#L55-L93" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">network_task_func</strong></a><strong class="gt hj">()</strong></code>
                   is the function in the Network Task that connects the ESP8266 module to the WiFi network and registers
                   the ESP8266 module as the Transport Layer for sending CoAP messages. It calls the following functions:
                 </p>
                 <p id="f86d" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">1️⃣ <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/hmac_prng/src/hmac_prng.c#L53-L59" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">hmac_prng_generate</strong></a><strong class="gt hj">()</strong></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/hmac_prng/src/hmac_prng.c#L53-L59" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">hmac_prng_generate</strong></a><strong class="gt hj">()</strong></code>
                   to generate a random device ID, to assure privacy of the sensor data when viewed on a public website
                 </p>
                 <p id="ce3d" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">2️⃣ <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/apache/mynewt-core/blob/master/kernel/os/include/os/os_dev.h" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">os_dev_open</strong></a><strong class="gt hj">()</strong></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/apache/mynewt-core/blob/master/kernel/os/include/os/os_dev.h" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">os_dev_open</strong></a><strong class="gt hj">()</strong></code>
                   to lock the ESP8266 device for exclusive use</p>
                 <p id="8cca" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">3️⃣ <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/driver.cpp#L101-L118" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">esp8266_connect</strong></a><strong class="gt hj">()</strong></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/driver.cpp#L101-L118" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">esp8266_connect</strong></a><strong class="gt hj">()</strong></code>
                   to connect the ESP8266 to the WiFi router</p>
                 <p id="e4f1" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">4️⃣ <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/apache/mynewt-core/blob/master/kernel/os/include/os/os_dev.h" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">os_dev_close</strong></a><strong class="gt hj">()</strong></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/apache/mynewt-core/blob/master/kernel/os/include/os/os_dev.h" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">os_dev_close</strong></a><strong class="gt hj">()</strong></code>
                   to unlock the ESP8266 device and allow other tasks to use it</p>
                 <p id="6764" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">5️⃣ <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/transport.cpp#L35-L70" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">esp8266_register_transport</strong></a><strong class="gt hj">()</strong></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/transport.cpp#L35-L70" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">esp8266_register_transport</strong></a><strong class="gt hj">()</strong></code>
                   to register the ESP8266 device as the Transport Layer for transmitting CoAP messages</p>
                 <p id="d18b" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">6️⃣ <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/geolocate.c#L35-L83" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">geolocate</strong></a><strong class="gt hj">()</strong></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/geolocate.c#L35-L83" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">geolocate</strong></a><strong class="gt hj">()</strong></code>
                   (if <code class="eb hk hl hm hn b">WIFI_GEOLOCATION</code> is enabled) to compute latitude and
                   longitude based on WiFi Access Points scanned by ESP8266</p>
                 <p id="1420" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">7️⃣ <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://mynewt.apache.org/latest/os/core_os/mbuf/mbuf.html#c.os_msys_num_free" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">os_msys_num_free</strong></a><strong class="gt hj">()</strong></code>
+                    class="eb hk hl hm hn b"><a href="https://mynewt.apache.org/latest/os/core_os/mbuf/mbuf.html#c.os_msys_num_free" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">os_msys_num_free</strong></a><strong class="gt hj">()</strong></code>
                   to show number of free <code class="eb hk hl hm hn b">mbufs</code> every 10 seconds. <code
                     class="eb hk hl hm hn b">mbufs</code> are RAM memory buffers used for composing and transmitting
                   CoAP messages. The number should remain constant after a while.</p>
                 <p id="9178" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">8️⃣ <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://mynewt.apache.org/latest/os/core_os/time/os_time.html#c.os_time_delay" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">os_time_delay</strong></a><strong class="gt hj">()</strong></code>
+                    class="eb hk hl hm hn b"><a href="https://mynewt.apache.org/latest/os/core_os/time/os_time.html#c.os_time_delay" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">os_time_delay</strong></a><strong class="gt hj">()</strong></code>
                   to sleep for 10 seconds before calling <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://mynewt.apache.org/latest/os/core_os/mbuf/mbuf.html#c.os_msys_num_free" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">os_msys_num_free</a>() </code>again.
+                    class="eb hk hl hm hn b"><a href="https://mynewt.apache.org/latest/os/core_os/mbuf/mbuf.html#c.os_msys_num_free" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">os_msys_num_free</a>() </code>again.
                   While sleeping, Mynewt will schedule other tasks to run.</p>
                 <p id="ead0" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">Here we see how we open and lock
                   Mynewt drivers for exclusive access, to prevent other tasks from accessing the same interface.</p>
@@ -704,7 +704,7 @@
                   run.</p>
                 <p id="936e" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">Also in <code
                     class="eb hk hl hm hn b">send_coap.c</code> is <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/send_coap.c#L94-L112" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">send_sensor_data</strong></a><strong class="gt hj">(),</strong></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/send_coap.c#L94-L112" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">send_sensor_data</strong></a><strong class="gt hj">(),</strong></code>
                   the function that transmits the temperature sensor data to the CoAP server. We’ll examine this
                   function in a while.</p>
               </div>
@@ -719,11 +719,11 @@
                   with Visual Studio Code…</p>
                 <blockquote class="in io ip">
                   <p id="6f91" class="gr gs ek ho gt b gu gv gw gx gy gz ha hb hc hd he">► <a
-                      href="https://web.archive.org/web/20191204194251/https://youtu.be/uevCLrzLANk"
+                      href="https://youtu.be/uevCLrzLANk"
                       class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">Watch the video</a></p>
                 </blockquote>
                 <p id="6d1a" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">1️⃣ Install <a
-                    href="https://web.archive.org/web/20191204194251/https://code.visualstudio.com/"
+                    href="https://code.visualstudio.com/"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">Visual
                       Studio Code</strong></a> if you haven’t. Launch Visual Studio Code.</p>
                 <p id="2c2e" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">2️⃣ Click <code
@@ -733,7 +733,7 @@
                 <p id="8ae7" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">4️⃣ For <code
                     class="eb hk hl hm hn b"><strong class="gt hj">Repository URL</strong></code>, enter</p>
                 <p id="8197" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he"><code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">https://github.com/lupyuen/stm32bluepill-mynewt-sensor</strong></a></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">https://github.com/lupyuen/stm32bluepill-mynewt-sensor</strong></a></code>
                 </p>
                 <p id="6d0b" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">5️⃣ When prompted to <code
                     class="eb hk hl hm hn b"><strong class="gt hj">Select Repository Location</strong></code>…</p>
@@ -762,7 +762,7 @@
                     class="ho">”</em></p>
                 <blockquote class="in io ip">
                   <p id="41e2" class="gr gs ek ho gt b gu gv gw gx gy gz ha hb hc hd he">► <a
-                      href="https://web.archive.org/web/20191204194251/https://youtu.be/uevCLrzLANk"
+                      href="https://youtu.be/uevCLrzLANk"
                       class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">Watch the video</a></p>
                 </blockquote>
               </div>
@@ -799,7 +799,7 @@
                 <h1 id="53a6" class="jg jh ek bk bj ji jj jk jl jm jn jo jp jq jr js jt">Configure WiFi Settings</h1>
                 <p id="cacc" class="gr gs ek bk gt b gu ju gw jv gy jw ha jx hc jy he">In Visual Studio Code, open the
                   configuration file <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/syscfg.yml" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">targets/bluepill_my_sensor/syscfg.yml</strong></a></code>.
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/syscfg.yml" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">targets/bluepill_my_sensor/syscfg.yml</strong></a></code>.
                   Look for these lines:</p>
                 <pre
                   class="hq hr hs ht hu ma mb mc"><span id="dff9" class="md jh ek bk hn b fm me mf r mg">    # Connect to the WiFi access point with this SSID<br/>    WIFI_SSID:      &#x27;&quot;my_ssid&quot;&#x27;<br/>    <br/>    # Password for WiFi access point<br/>    WIFI_PASSWORD:  &#x27;&quot;my_password_is_secret&quot;&#x27;</span></pre>
@@ -819,7 +819,7 @@
                   class="hq hr hs ht hu ma mb mc"><span id="2c8c" class="md jh ek bk hn b fm me mf r mg">    # This becomes: My &quot;SSID&quot; goes here<br/>    WIFI_SSID:      &#x27;&quot;My \&quot;SSID\&quot; goes here&quot;&#x27;</span></pre>
                 <blockquote class="in io ip">
                   <p id="9984" class="gr gs ek ho gt b gu gv gw gx gy gz ha hb hc hd he">► <a
-                      href="https://web.archive.org/web/20191204194251/https://youtu.be/Wk11fIZr_cM"
+                      href="https://youtu.be/Wk11fIZr_cM"
                       class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">Watch the video</a></p>
                 </blockquote>
               </div>
@@ -838,19 +838,19 @@
                     class="ho">“</em><a class="at cg hf hg hh hi" target="_blank" rel="noopener"
                     href="/web/20191204194251/https://medium.com/@ly.lee/create-your-iot-gadget-with-apache-mynewt-and-stm32-blue-pill-d689b3ca725?source=friends_link&amp;sk=d511426d5a2217ebd06789b3eef7df54"><em
                       class="ho">Install Apache Mynewt for macOS</em></a><em class="ho">”. </em>For Ubuntu Linux, <a
-                    href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor#install-apache-mynewt-for-ubuntu-linux"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor#install-apache-mynewt-for-ubuntu-linux"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">refer to these instructions</a>.
                 </p>
                 <blockquote class="in io ip">
                   <p id="e781" class="gr gs ek ho gt b gu gv gw gx gy gz ha hb hc hd he">► <a
-                      href="https://web.archive.org/web/20191204194251/https://youtu.be/uevCLrzLANk?t=103"
+                      href="https://youtu.be/uevCLrzLANk?t=103"
                       class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">Watch the video</a></p>
                 </blockquote>
                 <p id="5b3b" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">2️⃣ Restart Visual Studio Code
                   after installing Mynewt</p>
                 <blockquote class="in io ip">
                   <p id="8c5a" class="gr gs ek ho gt b gu gv gw gx gy gz ha hb hc hd he">► <a
-                      href="https://web.archive.org/web/20191204194251/https://youtu.be/uevCLrzLANk?t=899"
+                      href="https://youtu.be/uevCLrzLANk?t=899"
                       class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">Watch the video</a></p>
                 </blockquote>
                 <p id="8ac1" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">3️⃣ Click <code
@@ -858,7 +858,7 @@
                 </p>
                 <blockquote class="in io ip">
                   <p id="4861" class="gr gs ek ho gt b gu gv gw gx gy gz ha hb hc hd he">► <a
-                      href="https://web.archive.org/web/20191204194251/https://youtu.be/LWJIAOFQBe0"
+                      href="https://youtu.be/LWJIAOFQBe0"
                       class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">Watch the video</a></p>
                 </blockquote>
                 <p id="6279" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">4️⃣ Click <code
@@ -883,12 +883,12 @@
                 <p id="be3e" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">You will encounter <code
                     class="eb hk hl hm hn b">invalid conversion</code> errors like this.</p>
                 <p id="fa0a" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">The workaround: <a
-                    href="https://web.archive.org/web/20191204194251/https://gist.github.com/lupyuen/bbc2dae52a8fdac1e70a60757fed1467"
+                    href="https://gist.github.com/lupyuen/bbc2dae52a8fdac1e70a60757fed1467"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">Follow the instructions here</a>
                   to edit 3 files in the Mynewt source code. Then build again.</p>
                 <blockquote class="in io ip">
                   <p id="7ba1" class="gr gs ek ho gt b gu gv gw gx gy gz ha hb hc hd he">► <a
-                      href="https://web.archive.org/web/20191204194251/https://youtu.be/8naNVsLzlic"
+                      href="https://youtu.be/8naNVsLzlic"
                       class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">Watch the video</a></p>
                 </blockquote>
                 <p id="a0bf" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">5️⃣ Click <code
@@ -896,7 +896,7 @@
                 </p>
                 <blockquote class="in io ip">
                   <p id="bcd1" class="gr gs ek ho gt b gu gv gw gx gy gz ha hb hc hd he">► <a
-                      href="https://web.archive.org/web/20191204194251/https://youtu.be/NU8CnHkOudM"
+                      href="https://youtu.be/NU8CnHkOudM"
                       class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">Watch the video</a></p>
                 </blockquote>
                 <p id="e361" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">6️⃣ Connect your Blue Pill and
@@ -906,7 +906,7 @@
                 </p>
                 <blockquote class="in io ip">
                   <p id="98c1" class="gr gs ek ho gt b gu gv gw gx gy gz ha hb hc hd he">► <a
-                      href="https://web.archive.org/web/20191204194251/https://youtu.be/ndGlxmj4N6o"
+                      href="https://youtu.be/ndGlxmj4N6o"
                       class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">Watch the video</a></p>
                 </blockquote>
                 <p id="f477" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">8️⃣ Click <code
@@ -914,7 +914,7 @@
                 </p>
                 <blockquote class="in io ip">
                   <p id="cc25" class="gr gs ek ho gt b gu gv gw gx gy gz ha hb hc hd he">► <a
-                      href="https://web.archive.org/web/20191204194251/https://youtu.be/5o4ff3fn-8Y"
+                      href="https://youtu.be/5o4ff3fn-8Y"
                       class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">Watch the video</a></p>
                 </blockquote>
                 <p id="cd5d" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">If you get stuck, refer to the
@@ -930,7 +930,7 @@
                 <p id="225d" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">The <code
                     class="eb hk hl hm hn b">Install Apache Mynewt</code> step installs a custom memory layout for Blue
                   Pill so that the bootloader and application both fit in 64 KB of ROM. <a
-                    href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/patch/README.md"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/patch/README.md"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">More details here</a>.</p>
               </div>
             </div>
@@ -945,7 +945,7 @@
                 </p>
                 <blockquote class="in io ip">
                   <p id="f423" class="gr gs ek ho gt b gu gv gw gx gy gz ha hb hc hd he">► <a
-                      href="https://web.archive.org/web/20191204194251/https://youtu.be/YrKXdxB77Oc"
+                      href="https://youtu.be/YrKXdxB77Oc"
                       class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">Watch the video</a></p>
                 </blockquote>
                 <p id="df64" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">1️⃣ Click <code
@@ -1125,11 +1125,11 @@
                 <p id="c3df" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">5️⃣ Your Blue Pill log should
                   look like this:</p>
                 <p id="00d7" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he"><code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://gist.github.com/lupyuen/1006f1b2144b489c895f14a036dad8fb" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">https://gist.github.com/lupyuen/1006f1b2144b489c895f14a036dad8fb</a></code>
+                    class="eb hk hl hm hn b"><a href="https://gist.github.com/lupyuen/1006f1b2144b489c895f14a036dad8fb" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">https://gist.github.com/lupyuen/1006f1b2144b489c895f14a036dad8fb</a></code>
                 </p>
                 <blockquote class="in io ip">
                   <p id="8869" class="gr gs ek ho gt b gu gv gw gx gy gz ha hb hc hd he">► <a
-                      href="https://web.archive.org/web/20191204194251/https://youtu.be/YrKXdxB77Oc"
+                      href="https://youtu.be/YrKXdxB77Oc"
                       class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">Watch the video</a></p>
                 </blockquote>
                 <p id="8a88" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">To understand what’s really
@@ -1185,15 +1185,15 @@
                     class="eb hk hl hm hn b">AT</code> and end with carriage return + line feed (<code
                     class="eb hk hl hm hn b">\r\n</code>). Like <code class="eb hk hl hm hn b">AT+RST</code> which is
                   the Reset command. You may check the entire list of AT commands in the <a
-                    href="https://web.archive.org/web/20191204194251/https://www.espressif.com/sites/default/files/documentation/4a-esp8266_at_instruction_set_en.pdf"
+                    href="https://www.espressif.com/sites/default/files/documentation/4a-esp8266_at_instruction_set_en.pdf"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><em class="ho">ESP8266 AT
                       Instruction Set</em></a> reference. Also check out the examples in the <a
-                    href="https://web.archive.org/web/20191204194251/https://www.espressif.com/sites/default/files/documentation/4b-esp8266_at_command_examples_en.pdf"
+                    href="https://www.espressif.com/sites/default/files/documentation/4b-esp8266_at_command_examples_en.pdf"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><em class="ho">ESP8266 AT Command
                       Examples</em></a> doc.</p>
                 <p id="19dd" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">Let’s run through the ESP8266
                   commands in the <a
-                    href="https://web.archive.org/web/20191204194251/https://gist.github.com/lupyuen/1006f1b2144b489c895f14a036dad8fb"
+                    href="https://gist.github.com/lupyuen/1006f1b2144b489c895f14a036dad8fb"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">sample log</a>…</p>
                 <blockquote class="lg">
                   <div id="66c4" class="lh li lj bk el b lk ll lm ln lo lp he">
@@ -1201,7 +1201,7 @@
                   </div>
                 </blockquote>
                 <p id="cc37" class="gr gs ek bk gt b gu mq gw mr gy ms ha mt hc mu he">To understand the <a
-                    href="https://web.archive.org/web/20191204194251/https://gist.github.com/lupyuen/1006f1b2144b489c895f14a036dad8fb"
+                    href="https://gist.github.com/lupyuen/1006f1b2144b489c895f14a036dad8fb"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">sample log</a>, look out for these
                   markers:</p>
                 <p id="9110" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he"><code
@@ -1242,15 +1242,15 @@
 
 
                   <figcaption class="bo fm ii ij ik cn cl cm il im bj fl">From <a
-                      href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/Controller.cpp#L83-L108"
+                      href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/Controller.cpp#L83-L108"
                       class="at cg hf hg hh hi" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/Controller.cpp#L83-L108</a>
                   </figcaption>
                 </figure>
                 <p id="66fe" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">Here’s the <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/Controller.cpp#L83-L108" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">ESP8266::reset()</a></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/Controller.cpp#L83-L108" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">ESP8266::reset()</a></code>
                   function in <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/Controller.cpp#L83-L108" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">libs/esp8266/src/Controller.cpp</a></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/Controller.cpp#L83-L108" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">libs/esp8266/src/Controller.cpp</a></code>
                   that sends the Reset command and matches the response keywords. <code
                     class="eb hk hl hm hn b">send()</code> is called to send a command to ESP8266. <code
                     class="eb hk hl hm hn b">recv(keyword)</code> will wait until the keyword is found in the response
@@ -1274,7 +1274,7 @@
 
                 </figure>
                 <p id="16d8" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">The function <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/Controller.cpp#L47-L64" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">ESP8266::setEcho()</a></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/Controller.cpp#L47-L64" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">ESP8266::setEcho()</a></code>
                   sends the <code class="eb hk hl hm hn b">ATE0</code> command and waits for the <code
                     class="eb hk hl hm hn b">OK</code> keyword.</p>
                 <p id="f2ac" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">The program sends three more
@@ -1305,15 +1305,15 @@
                 <p id="93fa" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he"><code
                     class="eb hk hl hm hn b">AT+CWJAP=”ssid”,”password”</code> connects the ESP8266 to the WiFi router
                   using the SSID and password. To change the WiFi settings, edit <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/syscfg.yml" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">targets/bluepill_my_sensor/syscfg.yml</a></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/syscfg.yml" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">targets/bluepill_my_sensor/syscfg.yml</a></code>
                 </p>
                 <p id="6231" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he"><code
                     class="eb hk hl hm hn b">AT+CIFSR</code> returns the WiFi connection details (IP and MAC addresses).
                 </p>
                 <p id="29a4" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">These commands are sent by <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/Controller.cpp#L121-L128" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">ESP8266::connect()</a></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/Controller.cpp#L121-L128" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">ESP8266::connect()</a></code>
                   and <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/Controller.cpp#L135-L144" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">ESP8266::getIPAddress()</a></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/Controller.cpp#L135-L144" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">ESP8266::getIPAddress()</a></code>
                 </p>
                 <figure class="hq hr hs ht hu cz">
 
@@ -1325,7 +1325,7 @@
                   Access Point fails, we’ll see a <code class="eb hk hl hm hn b">response mismatch</code> message
                   because the program has waited a while for the <code class="eb hk hl hm hn b">OK</code> response but
                   didn’t see any. If you see this message, check the WiFi settings in <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/syscfg.yml" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">targets/bluepill_my_sensor/syscfg.yml</a></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/syscfg.yml" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">targets/bluepill_my_sensor/syscfg.yml</a></code>
                 </p>
                 <blockquote class="lg">
                   <div id="85fa" class="lh li lj bk el b lk ll lm ln lo lp he">
@@ -1333,15 +1333,15 @@
                   </div>
                 </blockquote>
                 <p id="6609" class="gr gs ek bk gt b gu mq gw mr gy ms ha mt hc mu he"><code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/Controller.cpp#L83-L108" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">ESP8266::reset()</a></code>,
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/Controller.cpp#L83-L108" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">ESP8266::reset()</a></code>,
                   <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/Controller.cpp#L47-L64" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">setEcho()</a></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/Controller.cpp#L47-L64" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">setEcho()</a></code>
                   and <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/Controller.cpp#L121-L128" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">connect()</a></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/Controller.cpp#L121-L128" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">connect()</a></code>
                   are the functions that send the Reset, Echo and Connect commands to ESP8266… but for transmitting
                   sensor data over WiFi, it’s tedious to code our application to call each of these low-level functions.
                   So we have a high-level function, <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/driver.cpp#L101-L118" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">esp8266_connect()</a></code>,
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/driver.cpp#L101-L118" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">esp8266_connect()</a></code>,
                   that orchestrates (calls sequentially) the low-level functions to send the individual ESP8266
                   commands…</p>
                 <figure class="hq hr hs ht hu cz">
@@ -1350,16 +1350,16 @@
 
 
                   <figcaption class="bo fm ii ij ik cn cl cm il im bj fl">From <a
-                      href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/driver.cpp#L101-L118"
+                      href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/driver.cpp#L101-L118"
                       class="at cg hf hg hh hi" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/driver.cpp#L101-L118</a>
                   </figcaption>
                 </figure>
                 <p id="7e91" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he"><code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/driver.cpp#L101-L118" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">esp8266_connect()</a></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/driver.cpp#L101-L118" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">esp8266_connect()</a></code>
                   is the function that we should call in our application to restart the ESP8266 module and connect it to
                   the WiFi router, <a
-                    href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/send_coap.c#L69-L120"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/send_coap.c#L69-L120"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">like this</a>.</p>
                 <blockquote class="lg">
                   <div id="3101" class="lh li lj bk el b lk ll lm ln lo lp he">
@@ -1383,19 +1383,19 @@
                 <p id="24a1" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">For this tutorial you may use my
                   paid-subscription account at thethings.io, since it’s too tedious to set up your own CoAP server. (I’m
                   not sponsored by thethings.io) If you wish to use another server, edit the CoAP settings at <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/syscfg.yml" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">targets/bluepill_my_sensor/syscfg.yml</a></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/syscfg.yml" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">targets/bluepill_my_sensor/syscfg.yml</a></code>
                 </p>
                 <p id="a000" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">Back to the Open command <code
                     class="eb hk hl hm hn b">AT+CIPSTART=0,...</code> How did we know that socket <code
                     class="eb hk hl hm hn b">0</code> was available? We call the function <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/driver.cpp#L150-L170" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">esp8266_socket_open()</a></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/driver.cpp#L150-L170" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">esp8266_socket_open()</a></code>
                   to allocate a socket. The function tracks which sockets are in use, assuming that we call <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/driver.cpp#L172-L180" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">esp8266_socket_close()</a></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/driver.cpp#L172-L180" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">esp8266_socket_close()</a></code>
                   to deallocate the socket.</p>
                 <p id="f799" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">The Open command is sent by <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/Controller.cpp#L233-L244" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">ESP8266::open()</a></code>.
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/Controller.cpp#L233-L244" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">ESP8266::open()</a></code>.
                   We call it <a
-                    href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/transport.cpp#L35-L70"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/transport.cpp#L35-L70"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">like this</a> (look for <code
                     class="eb hk hl hm hn b">esp8266_socket_open()</code> and <code
                     class="eb hk hl hm hn b">esp8266_socket_connect()</code>).</p>
@@ -1427,30 +1427,30 @@
                   transmits the 177 bytes as a single UDP packet to thethings.io. Which is sufficient in this tutorial
                   for sending sensor data via the CoAP protocol (based on UDP).</p>
                 <p id="debe" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">The Send command is sent by <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/Controller.cpp#L246-L261" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">ESP8266::send()</a></code>.
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/Controller.cpp#L246-L261" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">ESP8266::send()</a></code>.
                   We call it <a
-                    href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/transport.cpp#L90-L118"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/transport.cpp#L90-L118"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">like this</a> (look for <code
                     class="eb hk hl hm hn b">esp8266_socket_send_mbuf()</code>, which transmits data stored as <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://mynewt.apache.org/latest/os/core_os/mbuf/mbuf.html" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">mbufs</a></code>).
+                    class="eb hk hl hm hn b"><a href="https://mynewt.apache.org/latest/os/core_os/mbuf/mbuf.html" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">mbufs</a></code>).
                 </p>
                 <p id="0969" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">ESP8266 Reset, Echo, Connect,
                   Open and Send commands are all that we need in this tutorial for sending sensor data to the CoAP
                   server at thethings.io. <a
-                    href="https://web.archive.org/web/20191204194251/https://en.wikipedia.org/wiki/Constrained_Application_Protocol"
+                    href="https://en.wikipedia.org/wiki/Constrained_Application_Protocol"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">CoAP is based on simple UDP
                     networking</a>, so it’s easy to implement on ESP8266 and constrained microcontrollers like Blue Pill
                   (unlike MQTT based on TCP).</p>
                 <p id="7202" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">The ESP8266 driver is located at
                   <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/master/libs/esp8266" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">libs/esp8266</a></code>.
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/master/libs/esp8266" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">libs/esp8266</a></code>.
                   It’s based on the mbed community project <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://os.mbed.com/teams/ESP8266/code/esp8266-driver/" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">esp8266-driver</a></code>,
+                    class="eb hk hl hm hn b"><a href="https://os.mbed.com/teams/ESP8266/code/esp8266-driver/" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">esp8266-driver</a></code>,
                   which I ported to Mynewt and added some performance enhancements meant for constrained platforms like
                   Blue Pill. Note that there’s a bug in the <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://mynewt.apache.org/latest/os/modules/baselibc.html#https://www.freebsd.org/cgi/man.cgi" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">baselibc</a></code>
+                    class="eb hk hl hm hn b"><a href="https://mynewt.apache.org/latest/os/modules/baselibc.html#https://www.freebsd.org/cgi/man.cgi" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">baselibc</a></code>
                   implementation of <code class="eb hk hl hm hn b">vsscanf()</code>. The corrected version is at <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/vsscanf.c" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">apps/my_sensor_app/src/vsscanf.c</a></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/vsscanf.c" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">apps/my_sensor_app/src/vsscanf.c</a></code>
                   and it must be placed in the same folder as <code class="eb hk hl hm hn b">main.c</code>.</p>
                 <blockquote class="in io ip">
                   <p id="4cfe" class="gr gs ek ho gt b gu gv gw gx gy gz ha hb hc hd he"><em class="bk">💎 </em>What’s
@@ -1473,32 +1473,32 @@
                   internal temperature sensor instead!</p>
                 <p id="ac6c" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">Blue Pill’s internal temperature
                   sensor may be accessed via the <a
-                    href="https://web.archive.org/web/20191204194251/https://en.wikipedia.org/wiki/Analog-to-digital_converter"
+                    href="https://en.wikipedia.org/wiki/Analog-to-digital_converter"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">Analogue-To-Digital Converter</a>
                   port ADC1, channel 16. Mynewt doesn’t have an ADC driver for Blue Pill, so I ported a <a
-                    href="https://web.archive.org/web/20191204194251/https://github.com/apache/mynewt-core/tree/master/hw/drivers/adc/adc_stm32f4"
+                    href="https://github.com/apache/mynewt-core/tree/master/hw/drivers/adc/adc_stm32f4"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">similar driver for STM32F4</a> to
                   Blue Pill (STM32F1). The new driver is named <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/master/libs/adc_stm32f1" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">adc_stm32f1</strong></a></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/master/libs/adc_stm32f1" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">adc_stm32f1</strong></a></code>
                   and it’s located at <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/master/libs/adc_stm32f1" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">libs/adc_stm32f1</a></code>.
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/master/libs/adc_stm32f1" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">libs/adc_stm32f1</a></code>.
                 </p>
                 <p id="fe9a" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">Remember in the previous tutorial
                   we called <code class="eb hk hl hm hn b">sensor_register_listener()</code> to register our custom
                   Listener Function named <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/listen_sensor.c#L52-L84" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">read_temperature()</a></code>?<strong
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/listen_sensor.c#L52-L84" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">read_temperature()</a></code>?<strong
                     class="gt hj"> </strong>Mynewt will call <code
                     class="eb hk hl hm hn b">read_temperature()</code><strong class="gt hj"> </strong>with the
                   temperature value<strong class="gt hj"> </strong>after polling<strong class="gt hj"> </strong>the
                   BME280 sensor every 10 seconds.</p>
                 <p id="305a" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">To make the Listener Function
                   work with the internal temperature sensor, we need to create a <a
-                    href="https://web.archive.org/web/20191204194251/https://mynewt.apache.org/latest/os/modules/sensor_framework/sensor_driver.html"
+                    href="https://mynewt.apache.org/latest/os/modules/sensor_framework/sensor_driver.html"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">Mynewt
                       Sensor Device Driver</strong></a>. Which I have done: the driver is named <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/master/libs/temp_stm32" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">temp_stm32</strong></a></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/master/libs/temp_stm32" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">temp_stm32</strong></a></code>
                   and it’s located at <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/master/libs/temp_stm32" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">libs/temp_stm32</a></code>.
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/master/libs/temp_stm32" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">libs/temp_stm32</a></code>.
                 </p>
                 <figure class="hq hr hs ht hu cz">
    
@@ -1506,20 +1506,20 @@
 
 
                   <figcaption class="bo fm ii ij ik cn cl cm il im bj fl">From <a
-                      href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/listen_sensor.c#L52-L84"
+                      href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/listen_sensor.c#L52-L84"
                       class="at cg hf hg hh hi" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/listen_sensor.c#L52-L84</a>
                   </figcaption>
                 </figure>
                 <p id="13d9" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">Thanks to <a
-                    href="https://web.archive.org/web/20191204194251/https://mynewt.apache.org/latest/os/modules/sensor_framework/sensor_framework.html"
+                    href="https://mynewt.apache.org/latest/os/modules/sensor_framework/sensor_framework.html"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">Mynewt’s Sensor Framework</a>, the
                   same Listener Function <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/listen_sensor.c#L52-L84" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">read_temperature()</a></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/listen_sensor.c#L52-L84" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">read_temperature()</a></code>
                   works for both BME280 and the internal temperature sensor! Notice that the function now calls <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/send_coap.c#L122-L173" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">send_sensor_data</strong>()</a></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/send_coap.c#L122-L173" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">send_sensor_data</strong>()</a></code>
                   to transmit the temperature sensor value. Let’s dig deeper into <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/send_coap.c#L122-L173" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">send_sensor_data()</a></code>…
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/send_coap.c#L122-L173" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">send_sensor_data()</a></code>…
                 </p>
               </div>
             </div>
@@ -1530,22 +1530,22 @@
               <div class="ac ae af ag ah eh aj ak">
                 <h1 id="d6e7" class="jg jh ek bk bj ji jj jk jl jm jn jo jp jq jr js jt">Send Sensor Data</h1>
                 <p id="39af" class="gr gs ek bk gt b gu ju gw jv gy jw ha jx hc jy he"><code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/send_coap.c#L122-L173" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">send_sensor_data(tmp)</a></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/send_coap.c#L122-L173" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">send_sensor_data(tmp)</a></code>
                   transmits the temperature sensor value <code class="eb hk hl hm hn b">tmp</code> to the CoAP server,
                   e.g. thethings.io. Mynewt has built-in support for CoAP — it’s part of the <a
-                    href="https://web.archive.org/web/20191204194251/https://mynewt.apache.org/latest/os/modules/sensor_framework/sensor_oic.html"
+                    href="https://mynewt.apache.org/latest/os/modules/sensor_framework/sensor_oic.html"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">Open
                       Interconnect Consortium (OIC)</strong> Sensor Library</a>. (<a
-                    href="https://web.archive.org/web/20191204194251/https://openconnectivity.org/developer/specifications"
+                    href="https://openconnectivity.org/developer/specifications"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">More details on OIC here</a>)</p>
                 <p id="14b3" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">Mynewt’s OIC library doesn’t
                   fully implement the <a
-                    href="https://web.archive.org/web/20191204194251/https://openconnectivity.org/specs/OCF_Cloud_Specification_v2.0.2.pdf"
+                    href="https://openconnectivity.org/specs/OCF_Cloud_Specification_v2.0.2.pdf"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">new OIC specification</a> for
                   transmitting sensor data to a server. So I created a library <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/master/libs/sensor_coap" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">sensor_coap</strong></a></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/master/libs/sensor_coap" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">sensor_coap</strong></a></code>
                   (located at <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/master/libs/sensor_coap" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">libs/sensor_coap</a></code>)
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/master/libs/sensor_coap" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">libs/sensor_coap</a></code>)
                   that fills in the missing features for composing and transmitting CoAP sensor data messages. Let’s
                   check out how <code class="eb hk hl hm hn b">send_sensor_data()</code> calls the <code
                     class="eb hk hl hm hn b">sensor_coap</code> library…</p>
@@ -1555,46 +1555,46 @@
 
 
                   <figcaption class="bo fm ii ij ik cn cl cm il im bj fl">From <a
-                      href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/send_coap.c#L122-L173"
+                      href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/send_coap.c#L122-L173"
                       class="at cg hf hg hh hi" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/send_coap.c#L122-L173</a>
                   </figcaption>
                 </figure>
                 <p id="ac09" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">1️⃣ <code
                     class="eb hk hl hm hn b">send_sensor_data()</code> calls <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_coap/src/sensor_coap.c#L40-L45" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">init_sensor_post()</strong></a></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_coap/src/sensor_coap.c#L40-L45" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">init_sensor_post()</strong></a></code>
                   (from the <code class="eb hk hl hm hn b">sensor_coap</code> library) to prepare a new CoAP sensor data
                   message</p>
                 <p id="7b13" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">2️⃣ <code
                     class="eb hk hl hm hn b">send_sensor_data()</code> then calls some <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_coap/include/sensor_coap/sensor_coap.h#L120-L180" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">CP_…()</strong></a></code><a
-                    href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_coap/include/sensor_coap/sensor_coap.h#L120-L180"
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_coap/include/sensor_coap/sensor_coap.h#L120-L180" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">CP_…()</strong></a></code><a
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_coap/include/sensor_coap/sensor_coap.h#L120-L180"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"> macros</a> (also from <code
                     class="eb hk hl hm hn b">sensor_coap</code> library) to compose the payload of the CoAP message that
                   will contain the sensor data…</p>
                 <p id="b4a2" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he"><code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_coap/include/sensor_coap/sensor_coap.h#L124-L129" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">CP_ROOT()</strong></a></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_coap/include/sensor_coap/sensor_coap.h#L124-L129" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">CP_ROOT()</strong></a></code>
                   creates the top-level root for the CoAP payload</p>
                 <p id="8b40" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he"><code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_coap/include/sensor_coap/sensor_coap.h#L131-L136" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">CP_ARRAY()</strong></a></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_coap/include/sensor_coap/sensor_coap.h#L131-L136" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">CP_ARRAY()</strong></a></code>
                   creates a child array in the payload, e.g. <code class="eb hk hl hm hn b">{ “values”:[ ] }</code></p>
                 <p id="cd12" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he"><code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_coap/include/sensor_coap/sensor_coap.h#L173-L180" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">CP_ITEM_STR()</strong></a></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_coap/include/sensor_coap/sensor_coap.h#L173-L180" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">CP_ITEM_STR()</strong></a></code>
                   and <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_coap/include/sensor_coap/sensor_coap.h#L164-L171" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">CP_ITEM_FLOAT()</strong></a></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_coap/include/sensor_coap/sensor_coap.h#L164-L171" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">CP_ITEM_FLOAT()</strong></a></code>
                   add string and floating-point values (with string keys) to the child array, e.g.</p>
                 <pre
                   class="hq hr hs ht hu ma mb mc"><span id="1a49" class="md jh ek bk hn b fm me mf r mg">{ “values”:[<br/>     {“key”:”tmp”, “value”:28.7} <br/>  ] }<!-- --> </span></pre>
                 <p id="838c" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">3️⃣ Finally <code
                     class="eb hk hl hm hn b">send_sensor_data()</code> calls <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_coap/src/sensor_coap.c#L154-L159" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">do_sensor_post()</strong></a></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_coap/src/sensor_coap.c#L154-L159" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">do_sensor_post()</strong></a></code>
                   to transmit the CoAP message to the server, with sensor data in the payload.</p>
                 <p id="cfab" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">Let’s look at the encoding of the
                   CoAP payload…</p>
                 <blockquote class="in io ip">
                   <p id="1705" class="gr gs ek ho gt b gu gv gw gx gy gz ha hb hc hd he"><em class="bk">💎 </em>We can
                     use loops to encode complex payloads. See <code
-                      class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/geolocate.c#L135-L192" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">apps/my_sensor_app/src/geolocate.c</a></code>
+                      class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/geolocate.c#L135-L192" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">apps/my_sensor_app/src/geolocate.c</a></code>
                   </p>
                 </blockquote>
               </div>
@@ -1605,16 +1605,16 @@
             <div class="n p">
               <div class="ac ae af ag ah eh aj ak">
                 <p id="b236" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">The <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/master/libs/sensor_coap" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">sensor_coap</a></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/master/libs/sensor_coap" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">sensor_coap</a></code>
                   library supports two formats for encoding the CoAP payload with the <code
                     class="eb hk hl hm hn b">CP…()</code> macros: <strong class="gt hj">JSON</strong> and <a
-                    href="https://web.archive.org/web/20191204194251/https://cbor.io/" class="at cg hf hg hh hi"
+                    href="https://cbor.io/" class="at cg hf hg hh hi"
                     target="_blank" rel="noopener nofollow"><strong class="gt hj">CBOR</strong></a>, a binary,
                   compressed variant of JSON. CBOR encoding (but not JSON) is supported natively by <a
-                    href="https://web.archive.org/web/20191204194251/https://mynewt.apache.org/latest/os/modules/sensor_framework/sensor_oic.html"
+                    href="https://mynewt.apache.org/latest/os/modules/sensor_framework/sensor_oic.html"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">Mynewt’s OIC library</a>, so I
                   added the JSON encoding to the <code class="eb hk hl hm hn b">sensor_coap</code> library (based on <a
-                    href="https://web.archive.org/web/20191204194251/https://mynewt.apache.org/latest/os/modules/json/json.html"
+                    href="https://mynewt.apache.org/latest/os/modules/json/json.html"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">Mynewt’s low-level JSON
                     library</a>).</p>
                 <p id="5343" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">With JSON encoding, <code
@@ -1626,11 +1626,11 @@
 
                 </figure>
                 <p id="553f" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">This CoAP JSON format works for
-                  <a href="https://web.archive.org/web/20191204194251/https://developers.thethings.io/docs/coap-protocol"
+                  <a href="https://developers.thethings.io/docs/coap-protocol"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">transmitting sensor data to
                     thethings.io</a>. (CBOR is not supported by thethings.io today). If you didn’t change the CoAP
                   settings in <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/syscfg.yml" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">syscfg.yml</a></code>,
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/syscfg.yml" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">syscfg.yml</a></code>,
                   the application will send your sensor data to my paid account at thethings.io.</p>
                 <p id="2c0d" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he"><em class="ho">For the purpose of
                     learning about transmitting sensor data over CoAP in this tutorial, I’ll allow you to send sensor
@@ -1642,7 +1642,7 @@
                 <blockquote class="in io ip">
                   <p id="e621" class="gr gs ek ho gt b gu gv gw gx gy gz ha hb hc hd he"><em class="bk">💎 </em>To
                     select JSON or CBOR encoding, edit the settings in <code
-                      class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/syscfg.yml" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">targets/bluepill_my_sensor/syscfg.yml</a></code>…<br />For
+                      class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/syscfg.yml" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">targets/bluepill_my_sensor/syscfg.yml</a></code>…<br />For
                     JSON encoding (default): <code class="eb hk hl hm hn b">COAP_JSON_ENCODING: 1<br/></code>For CBOR
                     encoding: <code class="eb hk hl hm hn b">COAP_CBOR_ENCODING: 1</code></p>
                 </blockquote>
@@ -1655,28 +1655,28 @@
               <div class="ac ae af ag ah eh aj ak">
                 <h1 id="fded" class="jg jh ek bk bj ji jj jk jl jm jn jo jp jq jr js jt">Send CoAP Message</h1>
                 <p id="08a7" class="gr gs ek bk gt b gu ju gw jv gy jw ha jx hc jy he">We saw earlier how <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/send_coap.c#L122-L173" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">send_sensor_data()</a></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/send_coap.c#L122-L173" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">send_sensor_data()</a></code>
                   transmits a CoAP sensor data message by calling <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_coap/src/sensor_coap.c#L154-L159" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">do_sensor_post()</a></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_coap/src/sensor_coap.c#L154-L159" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">do_sensor_post()</a></code>
                   defined in the <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/master/libs/sensor_coap" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">sensor_coap</a></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/master/libs/sensor_coap" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">sensor_coap</a></code>
                   library. You will be delighted to learn this: <code class="eb hk hl hm hn b">do_sensor_post()</code>
                   <em class="ho">doesn’t actually send the CoAP message itself!</em></p>
                 <p id="a585" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">Instead, <code
                     class="eb hk hl hm hn b">do_sensor_post()</code> forwards the message (via an <a
-                    href="https://web.archive.org/web/20191204194251/https://mynewt.apache.org/latest/tutorials/os_fundamentals/event_queue.html"
+                    href="https://mynewt.apache.org/latest/tutorials/os_fundamentals/event_queue.html"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">Event Queue</a>) to the <strong
                     class="gt hj">OIC Task</strong> running in the background, which will transmit the message. Why is
                   this a good thing? Because our sensor’s Listener Function <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/listen_sensor.c#L52-L84" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">read_temperature()</a></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/listen_sensor.c#L52-L84" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">read_temperature()</a></code>
                   <em class="ho">won’t be stuck waiting for the CoAP message to be transmitted!</em></p>
                 <p id="6830" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">The transmission will take place
                   in the background, so the Listener Function may happily crunch through the next set of sensor data and
                   prepare the new data for transmission. That’s the power of <a
-                    href="https://web.archive.org/web/20191204194251/https://mynewt.apache.org/latest/tutorials/os_fundamentals/tasks_lesson.html"
+                    href="https://mynewt.apache.org/latest/tutorials/os_fundamentals/tasks_lesson.html"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">multitasking in Mynewt</a>!</p>
                 <p id="5807" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">When you look back at the <a
-                    href="https://web.archive.org/web/20191204194251/https://gist.github.com/lupyuen/1006f1b2144b489c895f14a036dad8fb"
+                    href="https://gist.github.com/lupyuen/1006f1b2144b489c895f14a036dad8fb"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">sample log</a>, you’ll see these
                   events that triggered the sending of the CoAP message…</p>
                 <figure class="hq hr hs ht hu cz eg hv cd hw hx hy hz ia ba ib mv mw mx my ig">
@@ -1688,33 +1688,33 @@
                 <p id="1615" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">1️⃣ <code
                     class="eb hk hl hm hn b"><strong class="gt hj">ADC open ch 16</strong></code>: Mynewt Sensor
                   Framework prepares to read our internal temperature sensor <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/master/libs/temp_stm32" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">temp_stm32</a></code>,
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/master/libs/temp_stm32" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">temp_stm32</a></code>,
                   since we have configured Mynewt to poll the sensor every 10 seconds. <code
                     class="eb hk hl hm hn b">temp_stm32</code> calls the ADC driver <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/master/libs/adc_stm32f1" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">adc_stm32f1</a></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/master/libs/adc_stm32f1" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">adc_stm32f1</a></code>
                   to open port ADC1 channel 16, where the sensor may be accessed.</p>
                 <p id="3629" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">2️⃣ <code
                     class="eb hk hl hm hn b"><strong class="gt hj">STM read int temp sensor</strong></code>: <code
                     class="eb hk hl hm hn b">temp_stm32</code> <a
-                    href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/temp_stm32/src/temp_stm32.c#L142-L276"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/temp_stm32/src/temp_stm32.c#L142-L276"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">reads the internal temperature
                     sensor value</a> through the open ADC1 port. <code class="eb hk hl hm hn b">temp_stm32</code>
                   returns the temperature value <code class="eb hk hl hm hn b">29.86</code> to the Sensor Framework.</p>
                 <p id="92ef" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">3️⃣ <code
                     class="eb hk hl hm hn b"><strong class="gt hj">TMP poll data tmp 29.86</strong></code>: The Sensor
                   Framework calls our Listener Function <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/listen_sensor.c#L52-L84" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">read_temperature()</a></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/listen_sensor.c#L52-L84" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">read_temperature()</a></code>
                   with the temperature value <code class="eb hk hl hm hn b">29.86</code>. <code
                     class="eb hk hl hm hn b">read_temperature()</code> takes this value and calls the <code
                     class="eb hk hl hm hn b">sensor_coap</code> library to compose the CoAP message and transmit it.</p>
                 <p id="0df7" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">4️⃣ <code
                     class="eb hk hl hm hn b"><strong class="gt hj">CP&gt; payload size 105</strong></code>: The <code
                     class="eb hk hl hm hn b">sensor_coap</code> library <a
-                    href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_coap/src/sensor_coap.c#L57-L91"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_coap/src/sensor_coap.c#L57-L91"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">forwards the CoAP message to the
                     OIC Background Task</a> for transmission</p>
                 <p id="bdf9" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">5️⃣ We see the <a
-                    href="https://web.archive.org/web/20191204194251/https://gist.github.com/lupyuen/08d8565dfac19771644575d242aeb7ef"
+                    href="https://gist.github.com/lupyuen/08d8565dfac19771644575d242aeb7ef"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">JSON
                       payload</strong></a> that was composed by the <code class="eb hk hl hm hn b">sensor_coap</code>
                   library</p>
@@ -1744,7 +1744,7 @@
                     the URL</strong> to view the live sensor data transmitted by your Blue Pill.</p>
                 <blockquote class="in io ip">
                   <p id="b54a" class="gr gs ek ho gt b gu gv gw gx gy gz ha hb hc hd he">► <a
-                      href="https://web.archive.org/web/20191204194251/https://youtu.be/YrKXdxB77Oc?t=87"
+                      href="https://youtu.be/YrKXdxB77Oc?t=87"
                       class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">Watch the video</a></p>
                 </blockquote>
                 <p id="b4d4" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">The device ID changes when you
@@ -1769,9 +1769,9 @@
                 </figure>
                 <p id="19b5" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">The OIC Background Task receives
                   the forwarded CoAP message and transmits it by calling the <a
-                    href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/transport.cpp#L90-L118"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/transport.cpp#L90-L118"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">function </a><code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/transport.cpp#L90-L118" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">oc_tx_ucast()</a></code>.
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/transport.cpp#L90-L118" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">oc_tx_ucast()</a></code>.
                   The function invokes the ESP8266 driver to send the message via UDP. <code
                     class="eb hk hl hm hn b">ESP send udp</code> marks the beginning of the ESP8266 Send command, which
                   we have covered earlier.</p>
@@ -1780,15 +1780,15 @@
                     conserve RAM and avoid dynamic memory allocation (which can become unpredictable), the Mynewt OIC
                     Library and our <code class="eb hk hl hm hn b">sensor_coap</code> library both use
                     network-optimised, preallocated <code
-                      class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://mynewt.apache.org/latest/os/core_os/mbuf/mbuf.html" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">mbuf</a></code><a
-                      href="https://web.archive.org/web/20191204194251/https://mynewt.apache.org/latest/os/core_os/mbuf/mbuf.html"
+                      class="eb hk hl hm hn b"><a href="https://mynewt.apache.org/latest/os/core_os/mbuf/mbuf.html" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">mbuf</a></code><a
+                      href="https://mynewt.apache.org/latest/os/core_os/mbuf/mbuf.html"
                       class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"> buffers</a> in RAM while
                     composing and transmitting messages.</p>
                   <p id="4c26" class="gr gs ek ho gt b gu gv gw gx gy gz ha hb hc hd he">The ESP8266 driver supports <a
-                      href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/driver.cpp#L205-L214"
+                      href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/driver.cpp#L205-L214"
                       class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">transmitting </a><code
-                      class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/driver.cpp#L205-L214" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">mbuf</a></code><a
-                      href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/driver.cpp#L205-L214"
+                      class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/driver.cpp#L205-L214" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">mbuf</a></code><a
+                      href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/driver.cpp#L205-L214"
                       class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"> messages</a>, so there’s no
                     need to copy the data into into a flat array before transmission. Which saves RAM space and
                     processing time.</p>
@@ -1803,7 +1803,7 @@
                 <h1 id="ca6a" class="jg jh ek bk bj ji jj jk jl jm jn jo jp jq jr js jt">What is WiFi Geolocation?</h1>
                 <p id="2ebd" class="gr gs ek bk gt b gu ju gw jv gy jw ha jx hc jy he">Scary but true… Our mobile phones
                   are scanning all the WiFi Access Points in our homes and workplaces… <a
-                    href="https://web.archive.org/web/20191204194251/https://www.zdnet.com/article/how-google-and-everyone-else-gets-wi-fi-location-data/"
+                    href="https://www.zdnet.com/article/how-google-and-everyone-else-gets-wi-fi-location-data/"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><em class="ho">And sending the
                       data to Google and Apple</em></a><em class="ho">!</em></p>
                 <p id="2fb2" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">That’s why it’s possible today to
@@ -1825,7 +1825,7 @@
                   <figcaption class="bo fm ii ij ik cn cl cm il im bj fl">Google WiFi Geolocation API Input</figcaption>
                 </figure>
                 <p id="e44a" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">Google offers a <a
-                    href="https://web.archive.org/web/20191204194251/https://developers.google.com/maps/documentation/geolocation/intro"
+                    href="https://developers.google.com/maps/documentation/geolocation/intro"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">paid WiFi Geolocation API</a> for
                   computing your location.</p>
                 <p id="9090" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">After subscribing to the service,
@@ -1858,7 +1858,7 @@
                   <strong class="gt hj">indoors and outdoors</strong>. Often we connect a GPS Receiver to our
                   microcontroller to get the GPS location. GPS relies on satellite signals from the sky so it doesn’t
                   work indoors. And GPS performs poorly in cloudy weather, also when there are tall buildings nearby
-                  (the “<a href="https://web.archive.org/web/20191204194251/https://en.wikipedia.org/wiki/Street_canyon"
+                  (the “<a href="https://en.wikipedia.org/wiki/Street_canyon"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">Street Canyon</a>” effect).</p>
                 <p id="cbf6" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">WiFi Geolocation works as long as
                   there are known WiFi Access Points broadcasting at the location. Indoor, outdoor and maybe underground
@@ -1893,14 +1893,14 @@
                 <p id="6ebf" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he"><em class="ho">If you fully
                     understand and accept the consequences:</em> Proceed to enable WiFi Geolocation in your application:
                   Edit <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/syscfg.yml" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">targets/bluepill_my_sensor/syscfg.yml</a></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/targets/bluepill_my_sensor/syscfg.yml" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">targets/bluepill_my_sensor/syscfg.yml</a></code>
                   and uncomment this line (by removing the leading <code class="eb hk hl hm hn b">#</code>):</p>
                 <pre
                   class="hq hr hs ht hu ma mb mc"><span id="04ae" class="md jh ek bk hn b fm me mf r mg">WIFI_GEOLOCATION: 1  # Uncommented to enable WiFi Geolocation</span></pre>
                 <p id="e4cd" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">Rebuild the application and run
                   it. View the log. The overall logic for geolocation is driven by the <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/geolocate.c#L35-L83" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">geolocate()</a></code><a
-                    href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/geolocate.c#L35-L83"
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/geolocate.c#L35-L83" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">geolocate()</a></code><a
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/geolocate.c#L35-L83"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"> function</a> that’s called by the
                   Network Task at startup.</p>
                 <figure class="hq hr hs ht hu cz eg hv cd hw hx hy hz ia ba ib mv mw mx my ig">
@@ -1911,14 +1911,14 @@
                 </figure>
                 <p id="bc93" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">A new ESP8266 command appears in
                   the log: <code class="eb hk hl hm hn b">AT+CWLAP</code>. This is the command for ESP8266 to <a
-                    href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/Controller.cpp#L204-L231"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/Controller.cpp#L204-L231"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">scan for nearby WiFi Access
                     Points</a>.</p>
                 <p id="eb38" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">The program <a
-                    href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/geolocate.c#L44-L56"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/geolocate.c#L44-L56"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">picks the first 3 Access
                     Points</a> returned by the command and <a
-                    href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/geolocate.c#L134-L191"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/geolocate.c#L134-L191"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">composes a CoAP message</a>
                   containing…</p>
                 <p id="bdc4" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">1️⃣ The random device ID: <code
@@ -1930,7 +1930,7 @@
                   Strength: <code class="eb hk hl hm hn b">rssi0</code>, <code class="eb hk hl hm hn b">rssi1</code> and
                   <code class="eb hk hl hm hn b">rssi2</code></p>
                 <p id="c243" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">Then it <a
-                    href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/geolocate.c#L69-L82"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/geolocate.c#L69-L82"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">transmits the CoAP message</a> to
                   the CoAP server for my thethings.io account.</p>
                 <figure class="hq hr hs ht hu cz cl cm paragraph-image">
@@ -2099,7 +2099,7 @@
                 </p>
                 <p id="4942" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">3️⃣ I’ll be creating a Mynewt
                   driver to support <a
-                    href="https://web.archive.org/web/20191204194251/https://www.sparkfun.com/datasheets/Components/nRF24L01_prelim_prod_spec_1_2.pdf"
+                    href="https://www.sparkfun.com/datasheets/Components/nRF24L01_prelim_prod_spec_1_2.pdf"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">Nordic
                       Semiconductor nRF24L01</strong></a>, a low-cost long-range wireless module operating on 2.4 GHz.
                 </p>
@@ -2137,10 +2137,10 @@
                   </a></div>
                 <p id="ad3f" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">4️⃣ Lastly I’ll be writing about
                   this<a
-                    href="https://web.archive.org/web/20191204194251/https://detail.tmall.com/item.htm?id=568676838958"
+                    href="https://detail.tmall.com/item.htm?id=568676838958"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj"> exciting
                       new evolution of the STM32 Blue Pill</strong></a>. <em class="ho">(</em><a
-                    href="https://web.archive.org/web/20191204194251/https://www.linkedin.com/feed/update/urn:li:activity:6525729591317893120"
+                    href="https://www.linkedin.com/feed/update/urn:li:activity:6525729591317893120"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><em class="ho">Check out this
                       update</em></a><em class="ho">)</em></p>
                 <div class="dj dk dl dm dn jz"><a rel="noopener"
@@ -2184,7 +2184,7 @@
                   </div>
                   <figcaption class="bo fm ii ij ik cn cl cm il im bj fl">STM32 Blue Pill’s unnamed beefy twin brother.
                     Testing soon! <a
-                      href="https://web.archive.org/web/20191204194251/https://detail.tmall.com/item.htm?id=568676838958"
+                      href="https://detail.tmall.com/item.htm?id=568676838958"
                       class="at cg hf hg hh hi" target="_blank"
                       rel="noopener nofollow">https://detail.tmall.com/item.htm?id=568676838958</a></figcaption>
                 </figure>
@@ -2270,7 +2270,7 @@
                   matter. Here are some tips to improve the accuracy…</p>
                 <p id="2888" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">1️⃣ The program calls a <strong
                     class="gt hj">Filter Function</strong> <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/geolocate.c#L85-L110" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">filter_func()</strong></a></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/geolocate.c#L85-L110" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">filter_func()</strong></a></code>
                   to determine whether it should accept or reject an Access Point that has just been detected. <code
                     class="eb hk hl hm hn b">filter_func()</code> implements 2 types of checks…</p>
                 <p id="80bf" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">2️⃣ Reject an Access Point whose
@@ -2280,7 +2280,7 @@
                 </p>
                 <p id="c4c0" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">The matching of MAC Addresses is
                   done by <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/geolocate.c#L112-L121" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">mac_matches_pattern()</strong></a></code>.
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/geolocate.c#L112-L121" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">mac_matches_pattern()</strong></a></code>.
                 </p>
                 <figure class="hq hr hs ht hu cz eg hv cd hw hx hy hz ia ba ib mv mw mx my ig">
             
@@ -2290,7 +2290,7 @@
                 </figure>
                 <p id="1a05" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">The function matches each Access
                   Point’s MAC Address against a blacklist of patterns defined in the array <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/geolocate.c#L20-L26" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">skip_ssid</strong></a></code>.
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/geolocate.c#L20-L26" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">skip_ssid</strong></a></code>.
                 </p>
                 <p id="c099" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">In this example, any MAC
                   Addresses matching the patterns <code class="eb hk hl hm hn b">fc:39:98:*:*:*</code> or <code
@@ -2308,7 +2308,7 @@
                   GHz interfaces). When we select two MAC Addresses from the same WiFi Router for computing geolocation,
                   we are actually submitting redundant data that produces a geolocation that is less precise.</p>
                 <p id="0ccb" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">The function <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/geolocate.c#L123-L129" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">similar_mac()</strong></a></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/geolocate.c#L123-L129" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">similar_mac()</strong></a></code>
                   rejects any Access Point whose MAC Address is similar (they differ in only 1 byte) to any MAC Address
                   that has already been selected.</p>
               </div>
@@ -2357,7 +2357,7 @@
                   Function <code class="eb hk hl hm hn b">geolocate</code>. The two components work together to execute
                   geolocation requests and forward sensor data to the web application…</p>
                 <p id="fa33" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">1️⃣ <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/thethingsio-wifi-geolocation/blob/master/forward_geolocate.js" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">forward_geolocate</strong></a></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/thethingsio-wifi-geolocation/blob/master/forward_geolocate.js" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">forward_geolocate</strong></a></code>
                   is a Cloud Code Trigger that’s called upon receiving sensor data through any channel (including the
                   CoAP server that we’re using in this tutorial). As we have seen earlier, our device transmits the
                   temperature data in this JSON format…</p>
@@ -2392,7 +2392,7 @@
                   Instead, it forwards the data to the Cloud Code Function <code
                     class="eb hk hl hm hn b">geolocate</code>.</p>
                 <p id="1049" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">2️⃣ <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/thethingsio-wifi-geolocation/blob/master/geolocate.js" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">geolocate</strong></a></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/thethingsio-wifi-geolocation/blob/master/geolocate.js" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">geolocate</strong></a></code>
                   is a Cloud Code Function called by <code class="eb hk hl hm hn b">forward_geolocate</code> to perform
                   geolocation. The input contains 3 <code class="eb hk hl hm hn b">ssid</code> and 3 <code
                     class="eb hk hl hm hn b">rssi</code> values, representing the 3 WiFi Access Points scanned by the
@@ -2414,7 +2414,7 @@
                 <p id="86f1" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">More on the features that I have
                   implemented in thethings.io…</p>
                 <div class="dj dk dl dm dn jz"><a
-                    href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/thethingsio-wifi-geolocation?source=post_page-----7edceb9e3b8d----------------------"
+                    href="https://github.com/lupyuen/thethingsio-wifi-geolocation?source=post_page-----7edceb9e3b8d----------------------"
                     rel="noopener nofollow">
                     <section class="kc cl cm ak ce n ar kd ke kf kg kh ki kj kk kl km kn ko kp kq kr">
                       <div class="ks n co p kt ku">
@@ -2445,12 +2445,12 @@
                 </blockquote>
                 <p id="8fb4" class="gr gs ek bk gt b gu mq gw mr gy ms ha mt hc mu he">The web application was built
                   with Go, hosted on <a
-                    href="https://web.archive.org/web/20191204194251/https://cloud.google.com/appengine/docs/standard/go111/"
+                    href="https://cloud.google.com/appengine/docs/standard/go111/"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">Google Cloud App Engine Standard
                     Environment</a>. The web application receives sensor and geolocation data from thethings.io and
                   renders the data. The data is visible only to users with a valid device ID.</p>
                 <p id="fd6b" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">1️⃣ <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/gcloud-wifi-geolocation/blob/master/main.go" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">main.go</strong></a></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/gcloud-wifi-geolocation/blob/master/main.go" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">main.go</strong></a></code>
                   is the server-side Go program that implements two functions at these URLs…</p>
                 <p id="b9e7" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he"><code
                     class="eb hk hl hm hn b"><strong class="gt hj">/push</strong></code>: Receives a JSON document <code
@@ -2471,21 +2471,21 @@
                 <pre
                   class="hq hr hs ht hu ma mb mc"><span id="bb81" class="md jh ek bk hn b fm me mf r mg">{ &quot;device&quot;: &quot;01027f231f13739e8633f3b7da4e439f&quot;, <br/>  &quot;tmp&quot;: 28.95,    <br/>  &quot;latitude&quot;: 1.274, &quot;longitude&quot;: 103.81, &quot;accuracy&quot;: 40.1 }</span></pre>
                 <p id="22bf" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">2️⃣ <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/gcloud-wifi-geolocation/blob/master/public/index.html" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">index.html</strong></a></code>
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/gcloud-wifi-geolocation/blob/master/public/index.html" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">index.html</strong></a></code>
                   is a static HTML page with client-side JavaScript that renders the map using the <a
-                    href="https://web.archive.org/web/20191204194251/https://docs.mapbox.com/mapbox-gl-js/overview/"
+                    href="https://docs.mapbox.com/mapbox-gl-js/overview/"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">Mapbox GL JavaScript API</a>.</p>
                 <p id="8beb" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">The JavaScript polls the <code
                     class="eb hk hl hm hn b"><strong class="gt hj">/pull</strong></code> URL every 10 seconds via the
                   <code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://developers.google.com/web/updates/2015/03/introduction-to-fetch?authuser=0" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">fetch</a></code><a
-                    href="https://web.archive.org/web/20191204194251/https://developers.google.com/web/updates/2015/03/introduction-to-fetch?authuser=0"
+                    class="eb hk hl hm hn b"><a href="https://developers.google.com/web/updates/2015/03/introduction-to-fetch?authuser=0" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">fetch</a></code><a
+                    href="https://developers.google.com/web/updates/2015/03/introduction-to-fetch?authuser=0"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"> API</a>. When it detects any
                   changes to the sensor data (including location), it updates the map.</p>
                 <p id="ae42" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">Check out the Go source code for
                   the web application here…</p>
                 <div class="dj dk dl dm dn jz"><a
-                    href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/gcloud-wifi-geolocation?source=post_page-----7edceb9e3b8d----------------------"
+                    href="https://github.com/lupyuen/gcloud-wifi-geolocation?source=post_page-----7edceb9e3b8d----------------------"
                     rel="noopener nofollow">
                     <section class="kc cl cm ak ce n ar kd ke kf kg kh ki kj kk kl km kn ko kp kq kr">
                       <div class="ks n co p kt ku">
@@ -2536,10 +2536,10 @@
                     class="gt hj">CoAP message header</strong> (which always ends with <code
                     class="eb hk hl hm hn b">ff</code>) while the bottom part contains the <strong class="gt hj">CoAP
                     payload</strong> (notice that it’s all <a
-                    href="https://web.archive.org/web/20191204194251/https://en.wikipedia.org/wiki/ASCII"
+                    href="https://en.wikipedia.org/wiki/ASCII"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">ASCII</a>!) To decode the entire
                   message, we’ll use open-source <a
-                    href="https://web.archive.org/web/20191204194251/https://www.wireshark.org/"
+                    href="https://www.wireshark.org/"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">Wireshark</a> (available for
                   Windows, macOS and Linux).</p>
                 <p id="2f4c" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">1️⃣ Copy both parts of the
@@ -2799,7 +2799,7 @@
                     class="at cg hf hg hh hi" target="_blank" rel="noopener"
                     href="/web/20191204194251/https://medium.com/@ly.lee/stm32-blue-pill-analyse-and-optimise-your-ram-and-rom-9fc805e16ed7?source=friends_link&amp;sk=54719084d640bb1d92ac1097d623bba2">memory
                     map spreadsheet that I described in an earlier article</a>. The full spreadsheet is <a
-                    href="https://web.archive.org/web/20191204194251/https://docs.google.com/spreadsheets/d/1Xn5fiV3OafsAETZOtuAbUTMm7Yswq8X72AsvKGAarD0/edit#gid=381366828&amp;fvid=1359565135"
+                    href="https://docs.google.com/spreadsheets/d/1Xn5fiV3OafsAETZOtuAbUTMm7Yswq8X72AsvKGAarD0/edit#gid=381366828&amp;fvid=1359565135"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">available here</a>.</p>
               </div>
             </div>
@@ -2816,7 +2816,7 @@
                   </div>
                 </div>
                 <figcaption class="bo fm ii ij ik cn cl cm il im bj fl">ROM usage of the application. From <a
-                    href="https://web.archive.org/web/20191204194251/https://docs.google.com/spreadsheets/d/1Xn5fiV3OafsAETZOtuAbUTMm7Yswq8X72AsvKGAarD0/edit#gid=381366828&amp;fvid=1359565135"
+                    href="https://docs.google.com/spreadsheets/d/1Xn5fiV3OafsAETZOtuAbUTMm7Yswq8X72AsvKGAarD0/edit#gid=381366828&amp;fvid=1359565135"
                     class="at cg hf hg hh hi" target="_blank"
                     rel="noopener nofollow">https://docs.google.com/spreadsheets/d/1Xn5fiV3OafsAETZOtuAbUTMm7Yswq8X72AsvKGAarD0/edit#gid=381366828&amp;fvid=1359565135</a>
                 </figcaption>
@@ -2832,15 +2832,15 @@
                 <p id="f6e9" class="gr gs ek bk gt b gu ju gw jv gy jw ha jx hc jy he">The device ID was generated with
                   the open-source TinyCrypt library’s HMAC PRNG (pseudorandom number generator).</p>
                 <p id="1e7c" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he"><a
-                    href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/hmac_prng/src/hmac_prng.c#L16-L51"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/hmac_prng/src/hmac_prng.c#L16-L51"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">Our </a><code
-                    class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/hmac_prng/src/hmac_prng.c#L16-L51" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">hmac_prng</a></code><a
-                    href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/hmac_prng/src/hmac_prng.c#L16-L51"
+                    class="eb hk hl hm hn b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/hmac_prng/src/hmac_prng.c#L16-L51" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">hmac_prng</a></code><a
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/hmac_prng/src/hmac_prng.c#L16-L51"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"> library</a> simply calls
                   TinyCrypt, passing an entropy seed to initialise the generator.</p>
                 <p id="1f7f" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">The 32-bit entropy seed is
                   computed by <a
-                    href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/temp_stm32/src/temp_stm32.c#L207-L276"
+                    href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/temp_stm32/src/temp_stm32.c#L207-L276"
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">aggregating 64 temperature samples
                     from Blue Pill’s internal temperature sensor</a>.</p>
                 <figure class="hq hr hs ht hu cz cl cm paragraph-image">
