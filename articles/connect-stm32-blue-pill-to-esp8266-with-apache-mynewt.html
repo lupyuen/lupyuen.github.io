@@ -3512,12 +3512,10 @@
                   command — we send <code class="eb hk hl hm hn b">AT+RST</code> to the ESP8266 to restart the module
                   and clear any WiFi connections. Here’s the log for the Reset command…</p>
                 <figure class="hq hr hs ht hu cz eg hv cd hw hx hy hz ia ba ib mv mw mx my ig">
-                  <div class="ea r ds">
-                    <div class="lx r"><iframe
-                        src="https://web.archive.org/web/20191204194251if_/https://medium.com/media/b69ec44a7ff39ed52bbcf4129eef359c"
-                        allowfullscreen="" frameborder="0" height="0" width="0" title="esp8266-reset.log"
-                        class="cp t u dw ak" scrolling="auto"></iframe></div>
-                  </div>
+             
+                  <p><script src="https://gist.github.com/lupyuen/aaaaa.js"></script></p>
+
+
                 </figure>
                 <p id="38d4" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he"><code
                     class="eb hk hl hm hn b">AT&gt; (newline) AT+RST</code> means that we sent the command <code
@@ -3568,12 +3566,10 @@
                   matching, we disable the echoing by sending the <code class="eb hk hl hm hn b">ATE0</code> command.
                   Here’s the log…</p>
                 <figure class="hq hr hs ht hu cz eg hv cd hw hx hy hz ia ba ib mv mw mx my ig">
-                  <div class="ea r ds">
-                    <div class="lx r"><iframe
-                        src="https://web.archive.org/web/20191204194251if_/https://medium.com/media/ed60edd65717672687e918a4860f5a94"
-                        allowfullscreen="" frameborder="0" height="0" width="0" title="esp8266-echo.log"
-                        class="cp t u dw ak" scrolling="auto"></iframe></div>
-                  </div>
+                 
+                  <p><script src="https://gist.github.com/lupyuen/aaaaa.js"></script></p>
+
+
                 </figure>
                 <p id="16d8" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">The function <code
                     class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/esp8266/src/Controller.cpp#L47-L64" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">ESP8266::setEcho()</a></code>
@@ -3599,12 +3595,10 @@
                 <p id="5e7e" class="gr gs ek bk gt b gu mq gw mr gy ms ha mt hc mu he">After disabling the command echo,
                   we connect the ESP8266 to our WiFi Access Point to get internet access…</p>
                 <figure class="hq hr hs ht hu cz eg hv cd hw hx hy hz ia ba ib mv mw mx my ig">
-                  <div class="ea r ds">
-                    <div class="lx r"><iframe
-                        src="https://web.archive.org/web/20191204194251if_/https://medium.com/media/fd8a6cf9b4ed376decd5076d4f7901a4"
-                        allowfullscreen="" frameborder="0" height="0" width="0" title="esp8266-connect.log"
-                        class="cp t u dw ak" scrolling="auto"></iframe></div>
-                  </div>
+               
+                  <p><script src="https://gist.github.com/lupyuen/aaaaa.js"></script></p>
+
+
                 </figure>
                 <p id="93fa" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he"><code
                     class="eb hk hl hm hn b">AT+CWJAP=”ssid”,”password”</code> connects the ESP8266 to the WiFi router
@@ -3674,12 +3668,10 @@
                   our server, we need to open the server connection by sending the command <code
                     class="eb hk hl hm hn b">AT+CIPSTART=0,”UDP”,”coap.thethings.io”,5683</code></p>
                 <figure class="hq hr hs ht hu cz eg hv cd hw hx hy hz ia ba ib mv mw mx my ig">
-                  <div class="ea r ds">
-                    <div class="lx r"><iframe
-                        src="https://web.archive.org/web/20191204194251if_/https://medium.com/media/d7fd9d8a8c054b6e3fbb7104481cf0a5"
-                        allowfullscreen="" frameborder="0" height="0" width="0" title="esp8266-open.log"
-                        class="cp t u dw ak" scrolling="auto"></iframe></div>
-                  </div>
+              
+                  <p><script src="https://gist.github.com/lupyuen/aaaaa.js"></script></p>
+
+
                 </figure>
                 <p id="de56" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">This opens a connection on socket
                   number <code class="eb hk hl hm hn b">0</code> of the ESP8266 module.</p>
@@ -3713,12 +3705,10 @@
                 <p id="cdd9" class="gr gs ek bk gt b gu mq gw mr gy ms ha mt hc mu he">The final command for today: the
                   Send command.</p>
                 <figure class="hq hr hs ht hu cz eg hv cd hw hx hy hz ia ba ib mv mw mx my ig">
-                  <div class="ea r ds">
-                    <div class="lx r"><iframe
-                        src="https://web.archive.org/web/20191204194251if_/https://medium.com/media/1e93861f001902d88f0411833255a244"
-                        allowfullscreen="" frameborder="0" height="0" width="0" title="esp8266-send.log"
-                        class="cp t u dw ak" scrolling="auto"></iframe></div>
-                  </div>
+               
+                  <p><script src="https://gist.github.com/lupyuen/aaaaa.js"></script></p>
+
+
                 </figure>
                 <p id="b627" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he"><code
                     class="eb hk hl hm hn b">AT+CIPSEND=0,177</code> prepares the ESP8266 to transmit <code
@@ -3988,12 +3978,10 @@
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow">sample log</a>, you’ll see these
                   events that triggered the sending of the CoAP message…</p>
                 <figure class="hq hr hs ht hu cz eg hv cd hw hx hy hz ia ba ib mv mw mx my ig">
-                  <div class="ea r ds">
-                    <div class="lx r"><iframe
-                        src="https://web.archive.org/web/20191204194251if_/https://medium.com/media/ff66cd91aef6e928543ee4bcf99d33ab"
-                        allowfullscreen="" frameborder="0" height="0" width="0" title="send-coap.log"
-                        class="cp t u dw ak" scrolling="auto"></iframe></div>
-                  </div>
+               
+                  <p><script src="https://gist.github.com/lupyuen/aaaaa.js"></script></p>
+
+
                 </figure>
                 <p id="1615" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">1️⃣ <code
                     class="eb hk hl hm hn b"><strong class="gt hj">ADC open ch 16</strong></code>: Mynewt Sensor
@@ -4128,12 +4116,10 @@
                     class="gt hj">WiFi Geolocation</strong> — Google can compute your location when you give Google the
                   above information about the WiFi Access Points at your location.</p>
                 <figure class="hq hr hs ht hu cz eg hv cd hw hx hy hz ia ba ib mv mw mx my ig">
-                  <div class="ea r ds">
-                    <div class="lx r"><iframe
-                        src="https://web.archive.org/web/20191204194251if_/https://medium.com/media/8354aeecce14a5d6b786aa7a81050814"
-                        allowfullscreen="" frameborder="0" height="0" width="0" title="wifi-geolocation.json"
-                        class="cp t u dw ak" scrolling="auto"></iframe></div>
-                  </div>
+               
+                  <p><script src="https://gist.github.com/lupyuen/aaaaa.js"></script></p>
+
+
                   <figcaption class="bo fm ii ij ik cn cl cm il im bj fl">Google WiFi Geolocation API Input</figcaption>
                 </figure>
                 <p id="e44a" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">Google offers a <a
@@ -4216,12 +4202,10 @@
                     class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"> function</a> that’s called by the
                   Network Task at startup.</p>
                 <figure class="hq hr hs ht hu cz eg hv cd hw hx hy hz ia ba ib mv mw mx my ig">
-                  <div class="ea r ds">
-                    <div class="lx r"><iframe
-                        src="https://web.archive.org/web/20191204194251if_/https://medium.com/media/5b7c7b866b5d6c2f52ee5edc0cf6f1a1"
-                        allowfullscreen="" frameborder="0" height="0" width="0" title="esp8266-geolocation.log"
-                        class="cp t u dw ak" scrolling="auto"></iframe></div>
-                  </div>
+             
+                  <p><script src="https://gist.github.com/lupyuen/aaaaa.js"></script></p>
+
+
                 </figure>
                 <p id="bc93" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">A new ESP8266 command appears in
                   the log: <code class="eb hk hl hm hn b">AT+CWLAP</code>. This is the command for ESP8266 to <a
@@ -4597,12 +4581,10 @@
                     class="eb hk hl hm hn b"><a href="https://web.archive.org/web/20191204194251/https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/geolocate.c#L112-L121" class="at cg hf hg hh hi" target="_blank" rel="noopener nofollow"><strong class="gt hj">mac_matches_pattern()</strong></a></code>.
                 </p>
                 <figure class="hq hr hs ht hu cz eg hv cd hw hx hy hz ia ba ib mv mw mx my ig">
-                  <div class="ea r ds">
-                    <div class="lx r"><iframe
-                        src="https://web.archive.org/web/20191204194251if_/https://medium.com/media/29f0897b481b2fb2987c10f16a9bad83"
-                        allowfullscreen="" frameborder="0" height="0" width="0" title="geolocation-mac-pattern.c"
-                        class="cp t u dw ak" scrolling="auto"></iframe></div>
-                  </div>
+            
+                  <p><script src="https://gist.github.com/lupyuen/aaaaa.js"></script></p>
+
+
                 </figure>
                 <p id="1a05" class="gr gs ek bk gt b gu gv gw gx gy gz ha hb hc hd he">The function matches each Access
                   Point’s MAC Address against a blacklist of patterns defined in the array <code
