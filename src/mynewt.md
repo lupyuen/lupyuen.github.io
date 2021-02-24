@@ -827,7 +827,7 @@ Because OpenOCD couldn't load our Mynewt Firmware (and Rust Firmware) into Flash
 
 (Probably because of Flash Protection. Or because writing to BL602 Flash Memory hasn't been implemented in OpenOCD.)
 
-[More about BL602 and JTAG](https://github.com/bouffalolab/bl_docs/tree/main/BL602_Openocd&GDB/en)
+[BL602 JTAG doesn't support loading firmware into Flash Memory. See the BL602 JTAG Docs](https://github.com/bouffalolab/bl_docs/tree/main/BL602_Openocd&GDB/en)
 
 ![Loading Mynewt Firmware to Flash Memory](https://lupyuen.github.io/images/mynewt-flash.png)
 
