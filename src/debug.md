@@ -250,6 +250,8 @@ From the Memory Map below, we can see that...
 
 In the next section we shall use the GDB Debugger to load our Rust Firmware into the cache memory for debugging.
 
+[More about BL602 Cache Memory vs Flash Memory](https://lupyuen.github.io/articles/mynewt#appendix-load-firmware-to-cache-memory-not-flash-memory)
+
 ![Memory Map of PineCone Firmware: C vs Rust](https://lupyuen.github.io/images/debug-memory.png)
 
 _Memory Map of PineCone Firmware: C vs Rust_

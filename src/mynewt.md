@@ -821,9 +821,9 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Load Firmware to Cache Memory, not Flash Memory
 
-_Why did we load our Mynewt Firmware to Cache Memory instead of Flash Memory?_
+_Why did we load our Mynewt Firmware (and Rust Firmware) to Cache Memory instead of Flash Memory?_
 
-Because OpenOCD couldn't load our firmware into Flash Memory. 
+Because OpenOCD couldn't load our Mynewt Firmware (and Rust Firmware) into Flash Memory. 
 
 (Probably because of Flash Protection. Or because writing to BL602 Flash Memory hasn't been implemented in OpenOCD.)
 
