@@ -324,6 +324,9 @@ warning: 3 warnings emitted
 </li>
 </ol>
 <p>In the next section we shall use the GDB Debugger to load our Rust Firmware into the cache memory for debugging.</p>
+<p><em>Can we flash Rust Firmware with <code>blflash</code> and other UART flashing tools?</em></p>
+<p>Nope, <code>blflash</code> and other UART flashing tools will not load Rust Firmware into Cache Memory. They will load firmware only to Flash Memory.</p>
+<p>We need a JTAG Debugger for loading Rust Firmware into Cache Memory.</p>
 <p><a href="https://lupyuen.github.io/articles/mynewt#appendix-load-firmware-to-cache-memory-not-flash-memory">More about BL602 Cache Memory vs Flash Memory</a></p>
 <p><img src="https://lupyuen.github.io/images/debug-memory.png" alt="Memory Map of PineCone Firmware: C vs Rust" /></p>
 <p><em>Memory Map of PineCone Firmware: C vs Rust</em></p>
