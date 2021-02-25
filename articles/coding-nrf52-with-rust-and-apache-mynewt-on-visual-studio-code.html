@@ -72,7 +72,7 @@
           <div class="cp u cq cr cs ct"></div>
           <section class="cu cv cw cx cy">
             <div class="cz ak">
-              <figure class="da cz ak paragraph-image">
+              <div class="figure da cz ak paragraph-image">
 
                 <p><img src="https://lupyuen.github.io/images/legacy/o1.jpeg" /></p>
 
@@ -80,7 +80,7 @@
                 <figcaption><p><em>EBYTE E73-TBB Development Board with onboard
                   Nordic nRF52832 Microcontroller, connected to ST-Link USB Programmer. Shot with Sony NEX-7.
                 </em></p></figcaption>
-              </figure>
+              </div>
             </div>
             <div class="n p">
               <div class="ac ae af ag ah dz aj ak">
@@ -220,18 +220,18 @@
                   installed that indicates which iBeacon ID it’s seeking. When your phone detects a nearby iBeacon
                   Transmitter with a matching iBeacon ID, it wakes up the app so that the app can send you a custom
                   notification.</p>
-                <figure class="js jt ju jv jw cz cl cm paragraph-image">
+                <div class="figure js jt ju jv jw cz cl cm paragraph-image">
 
                   <p><img src="https://lupyuen.github.io/images/legacy/o2.png" /></p>
 
-                </figure>
+                </div>
                 <p id="4d90" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">In reality it’s hard to detect
                   Bluetooth 4 iBeacons reliably because of conflicts with WiFi, which also operates in the crowded 2.4
                   GHz airwaves (see <a
                     href="https://www.hindawi.com/journals/misy/2016/8367638/"
                     class="at cg hd he hf hg" target="_blank"
                     rel="noopener nofollow">https://www.hindawi.com/journals/misy/2016/8367638/</a>).</p>
-                <figure class="js jt ju jv jw cz dr jz cd ka kb kc kd ke ba kf kg kh ki kj kk paragraph-image">
+                <div class="figure js jt ju jv jw cz dr jz cd ka kb kc kd ke ba kf kg kh ki kj kk paragraph-image">
 
                   <p><img src="https://lupyuen.github.io/images/legacy/o3.png" /></p>
 
@@ -240,7 +240,7 @@
                       href="https://apps.apple.com/us/app/locate-beacon/id738709014"
                       class="at cg hd he hf hg" target="_blank"
                       rel="noopener nofollow">https://apps.apple.com/us/app/locate-beacon/id738709014</a></em></p></figcaption>
-                </figure>
+                </div>
                 <p id="f401" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">In this tutorial we’ll program
                   our nRF52 to be an iBeacon Transmitter, because…</p>
                 <ol class="">
@@ -290,7 +290,7 @@
                     href="https://infocenter.nordicsemi.com/pdf/S112_SDS_v3.1.pdf"
                     class="at cg hd he hf hg" target="_blank" rel="noopener nofollow">Nordic SoftDevice</a>. This is the
                   standard firmware provided by Nordic Semiconductor that implements the Bluetooth LE functions.</p>
-                <figure class="js jt ju jv jw cz dr jz cd ka kb kc kd ke ba kf kg kh ki kj kk paragraph-image">
+                <div class="figure js jt ju jv jw cz dr jz cd ka kb kc kd ke ba kf kg kh ki kj kk paragraph-image">
 
                   <p><img src="https://lupyuen.github.io/images/legacy/o4.png" /></p>
 
@@ -299,7 +299,7 @@
                       class="at cg hd he hf hg" target="_blank"
                       rel="noopener nofollow">https://infocenter.nordicsemi.com/topic/struct_nrf52/struct/nrf52_softdevices.html</a>
                   </em></p></figcaption>
-                </figure>
+                </div>
                 <p id="3ffc" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">The firmware runs as a base
                   system layer underneath our application code and RTOS.</p>
                 <p id="bd36" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">SoftDevice reserves some hardware
@@ -348,14 +348,14 @@
               <div class="ac ae af ag ah dz aj ak">
                 <h1 id="ffd4" class="jb jc ec bk bj io ee jd eg je jf jg jh ji jj jk jl">Why Visual Studio Code with
                   ST-Link (instead of nRFgo Studio with J-LINK)</h1>
-                <figure class="js jt ju jv jw cz cl cm paragraph-image">
+                <div class="figure js jt ju jv jw cz cl cm paragraph-image">
 
                   <p><img src="https://lupyuen.github.io/images/legacy/o5.jpeg" /></p>
 
                  
                   <figcaption><p><em>nRF52 Development Board connected to ST-Link
                     USB Programmer</em></p></figcaption>
-                </figure>
+                </div>
                 <p id="d46f" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">If you’re already familiar with
                   nRF52 development tools like <a
                     href="https://www.nordicsemi.com/Software-and-Tools/Development-Tools/nRFgo-Studio"
@@ -376,14 +376,14 @@
             <div class="cz">
               <div class="n p">
                 <div class="ky kz la lb lc ld ag le ah lf aj ak">
-                  <figure class="js jt ju jv jw cz lh li paragraph-image">
+                  <div class="figure js jt ju jv jw cz lh li paragraph-image">
 
                     <p><img src="https://lupyuen.github.io/images/legacy/o6.png" /></p>
 
                   
                     <figcaption><p><em>Debugging Embedded Rust on nRF52 with Visual
                       Studio Code and ST-Link</em></p></figcaption>
-                  </figure>
+                  </div>
                 </div>
               </div>
             </div>
@@ -403,14 +403,14 @@
                   SWD (Serial Wire Debug) Programmers. ST-Link is known as a High-Level Adapter… ST-Link doesn’t
                   implement all SWD functions, just the <em class="hi">minimal set of high-level functions needed for
                     flashing and debugging. </em>Thus ST-Link can’t be used for removing the nRF52 flash protection.</p>
-                <figure class="js jt ju jv jw cz dr jz cd ka kb kc kd ke ba kf kg kh ki kj kk paragraph-image">
+                <div class="figure js jt ju jv jw cz dr jz cd ka kb kc kd ke ba kf kg kh ki kj kk paragraph-image">
 
                   <p><img src="https://lupyuen.github.io/images/legacy/o7.png" /></p>
 
              
                   <figcaption><p><em>Removing nRF52 flash ROM protection with
                     Raspberry Pi</em></p></figcaption>
-                </figure>
+                </div>
                 <p id="0328" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">If your nRF52 flash ROM is
                   protected (and ST-Link refuses to flash your device), you may use a Raspberry Pi to remove the
                   protection.</p>
@@ -427,7 +427,7 @@
           <hr class="is dy it iu iv dv iw ix iy iz ja" />
           <section class="cu cv cw cx cy">
             <div class="cz ak">
-              <figure class="js jt ju jv jw cz ak paragraph-image">
+              <div class="figure js jt ju jv jw cz ak paragraph-image">
 
                 <p><img src="https://lupyuen.github.io/images/legacy/o8.png" /></p>
 
@@ -437,7 +437,7 @@
                     class="at cg hd he hf hg" target="_blank"
                     rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/nrf52</a>
                 </em></p></figcaption>
-              </figure>
+              </div>
             </div>
             <div class="n p">
               <div class="ac ae af ag ah dz aj ak">
@@ -450,11 +450,11 @@
                 <p id="e060" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">1️⃣ <code
                     class="dm hj hk hl hm b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/nrf52/apps" class="at cg hd he hf hg" target="_blank" rel="noopener nofollow">apps</a></code>:
                   <strong class="gr hh">C Source Code for Bootloader and Application</strong></p>
-                <figure class="js jt ju jv jw cz dr jz cd ka kb kc kd ke ba kf kg kh ki kj kk paragraph-image">
+                <div class="figure js jt ju jv jw cz dr jz cd ka kb kc kd ke ba kf kg kh ki kj kk paragraph-image">
 
                   <p><img src="https://lupyuen.github.io/images/legacy/o9.png" /></p>
 
-                </figure>
+                </div>
                 <p id="9ed4" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">This is where we put our
                   Bootloader and Application source code in C. The Mynewt build script will compile the code here into
                   the Bootloader and Application Firmware Images.</p>
@@ -470,12 +470,12 @@
                 <p id="1f86" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">2️⃣ <code
                     class="dm hj hk hl hm b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/nrf52/rust" class="at cg hd he hf hg" target="_blank" rel="noopener nofollow">rust</a></code>:
                   <strong class="gr hh">Rust Source Code</strong></p>
-                <figure class="js jt ju jv jw cz dr jz cd ka kb kc kd ke ba kf kg kh ki kj kk paragraph-image">
+                <div class="figure js jt ju jv jw cz dr jz cd ka kb kc kd ke ba kf kg kh ki kj kk paragraph-image">
 
                   <p><img src="https://lupyuen.github.io/images/legacy/o10.png" /></p>
 
             
-                </figure>
+                </div>
                 <p id="8303" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">All Rust code is placed in this
                   folder. Mynewt doesn’t support Rust officially (yet), so I created a custom Application Build Script
                   for Mynewt that injects Rust Application code into the Mynewt Application Build. (We’ll soon discover
@@ -510,12 +510,12 @@
                 <p id="5e56" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">3️⃣ <code
                     class="dm hj hk hl hm b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/nrf52/libs" class="at cg hd he hf hg" target="_blank" rel="noopener nofollow">libs</a></code>:
                   <strong class="gr hh">Custom Mynewt Libraries used by our Application</strong></p>
-                <figure class="js jt ju jv jw cz dr jz cd ka kb kc kd ke ba kf kg kh ki kj kk paragraph-image">
+                <div class="figure js jt ju jv jw cz dr jz cd ka kb kc kd ke ba kf kg kh ki kj kk paragraph-image">
 
                   <p><img src="https://lupyuen.github.io/images/legacy/o11.png" /></p>
 
            
-                </figure>
+                </div>
                 <p id="80ff" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">These are C libraries that I have
                   created to make Mynewt more friendly for embedded developers. <code
                     class="dm hj hk hl hm b">semihosting_console</code> allows debugging messages to be displayed in the
@@ -536,12 +536,12 @@
                 <p id="aaf3" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">4️⃣ <code
                     class="dm hj hk hl hm b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/nrf52/hw/bsp" class="at cg hd he hf hg" target="_blank" rel="noopener nofollow">hw/bsp</a></code>:
                   <strong class="gr hh">Board Support Packages for Mynewt</strong></p>
-                <figure class="js jt ju jv jw cz dr jz cd ka kb kc kd ke ba kf kg kh ki kj kk paragraph-image">
+                <div class="figure js jt ju jv jw cz dr jz cd ka kb kc kd ke ba kf kg kh ki kj kk paragraph-image">
 
                   <p><img src="https://lupyuen.github.io/images/legacy/o12.png" /></p>
 
             
-                </figure>
+                </div>
                 <p id="04a8" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">A Board Support Package contains
                   information, scripts and drivers necessary to build Mynewt for our microcontroller (nRF52832) and the
                   associated peripherals on our microcontroller board: flash memory, LEDs, UART ports, …</p>
@@ -557,13 +557,13 @@
                 <p id="80d7" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">5️⃣ <code
                     class="dm hj hk hl hm b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/nrf52/targets" class="at cg hd he hf hg" target="_blank" rel="noopener nofollow">targets</a></code>:
                   <strong class="gr hh">Bootloader and Application Targets for Mynewt</strong></p>
-                <figure class="js jt ju jv jw cz dr jz cd ka kb kc kd ke ba kf kg kh ki kj kk paragraph-image">
+                <div class="figure js jt ju jv jw cz dr jz cd ka kb kc kd ke ba kf kg kh ki kj kk paragraph-image">
 
 
                   <p><img src="https://lupyuen.github.io/images/legacy/o13.png" /></p>
 
                
-                </figure>
+                </div>
                 <p id="dac8" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">Mynewt Applications are designed
                   to be portable across microcontrollers… An application like <code
                     class="dm hj hk hl hm b">my_sensor_app</code> may be recompiled to run on STM32 Blue Pill F103,
@@ -587,7 +587,7 @@
                   Application Settings are configured at <code
                     class="dm hj hk hl hm b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/targets/nrf52_my_sensor/syscfg.yml" class="at cg hd he hf hg" target="_blank" rel="noopener nofollow">targets/nrf52_my_sensor/syscfg.yml</a></code>
                 </p>
-                <figure class="js jt ju jv jw cz">
+                <div class="figure js jt ju jv jw cz">
                   
                   <p><script src="https://gist.github.com/lupyuen/0d232faf505ea8987a864b39c1f7517c.js"></script></p>
 
@@ -597,17 +597,17 @@
                       class="at cg hd he hf hg" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/targets/nrf52_my_sensor/syscfg.yml</a>
                   </em></p></figcaption>
-                </figure>
+                </div>
                 <p id="ab9a" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">6️⃣ <code
                     class="dm hj hk hl hm b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/tree/nrf52/scripts" class="at cg hd he hf hg" target="_blank" rel="noopener nofollow">scripts</a></code>:
                   <strong class="gr hh">Build, Flash and Debug Scripts</strong></p>
-                <figure class="js jt ju jv jw cz dr jz cd ka kb kc kd ke ba kf kg kh ki kj kk paragraph-image">
+                <div class="figure js jt ju jv jw cz dr jz cd ka kb kc kd ke ba kf kg kh ki kj kk paragraph-image">
                   
                   <p><img src="https://lupyuen.github.io/images/legacy/o14.png" /></p>
 
                   
                 
-                </figure>
+                </div>
                 <p id="1a26" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc"><code
                     class="dm hj hk hl hm b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/scripts/build-app.cmd" class="at cg hd he hf hg" target="_blank" rel="noopener nofollow">scripts/build-app.cmd</a>, <a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/scripts/build-app.sh" class="at cg hd he hf hg" target="_blank" rel="noopener nofollow">.sh</a></code>:
                   This shell script <a
@@ -661,13 +661,13 @@
                 <p id="e459" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">7️⃣ <code
                     class="dm hj hk hl hm b">repos</code>: <strong class="gr hh">Apache Mynewt and NimBLE Source
                     Code</strong></p>
-                <figure class="js jt ju jv jw cz dr jz cd ka kb kc kd ke ba kf kg kh ki kj kk paragraph-image">
+                <div class="figure js jt ju jv jw cz dr jz cd ka kb kc kd ke ba kf kg kh ki kj kk paragraph-image">
                   
                   <p><img src="https://lupyuen.github.io/images/legacy/o15.png" /></p>
 
                   
          
-                </figure>
+                </div>
                 <p id="b0ac" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">This folder contains the official
                   Mynewt and NimBLE source code in C. We shouldn’t change anything here.</p>
                 <p id="f9b5" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">8️⃣ <code
@@ -716,12 +716,12 @@
                   code that calls the NimBLE API to create an iBeacon Transmitter: <code
                     class="dm hj hk hl hm b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/apps/my_sensor_app/src/ble.c" class="at cg hd he hf hg" target="_blank" rel="noopener nofollow">apps/my_sensor_app/src/ble.c</a></code>.
                   Why did we code this in C and not Rust? We’ll discuss this in a while.</p>
-                <figure class="js jt ju jv jw cz">
+                <div class="figure js jt ju jv jw cz">
                   
                   <p><script src="https://gist.github.com/lupyuen/36aad6f0453ef7dd7f61d2c1c20bce82.js"></script></p>
 
 
-                </figure>
+                </div>
                 <p id="be55" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc"><code
                     class="dm hj hk hl hm b">start_ble()</code> is called by the Rust <code
                     class="dm hj hk hl hm b">main()</code> function to start the iBeacon broadcasts in our application.
@@ -734,12 +734,12 @@
                   call our function <code class="dm hj hk hl hm b">ble_app_on_sync()</code> as soon as the Host and
                   Controller are in sync. (Which happens very quickly upon startup… Just set a breakpoint in <code
                     class="dm hj hk hl hm b">ble_app_on_sync()</code> and watch!)</p>
-                <figure class="js jt ju jv jw cz">
+                <div class="figure js jt ju jv jw cz">
                   
                   <p><script src="https://gist.github.com/lupyuen/ee65281b1e160c054fa896d40ee52901.js"></script></p>
 
 
-                </figure>
+                </div>
                 <p id="acb7" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">When the Host and Controller are
                   in sync, <code class="dm hj hk hl hm b">ble_app_on_sync()</code> calls two functions to set up the
                   iBeacon Transmitter…</p>
@@ -754,12 +754,12 @@
                   Bluetooth LE we need to identify ourselves with a network address. Since we’re creating an iBeacon
                   Transmitter with no receive capability, it’s OK to use a temporary random address, i.e. Non-Resolvable
                   Private Address.</p>
-                <figure class="js jt ju jv jw cz">
+                <div class="figure js jt ju jv jw cz">
                   
                   <p><script src="https://gist.github.com/lupyuen/1ab29d101c4bd579821e8942cb0d282f.js"></script></p>
 
 
-                </figure>
+                </div>
                 <p id="e5dd" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">Here’s how we call the NimBLE API
                   <code class="dm hj hk hl hm b">ble_hs_id_gen_rnd()</code> to generate that random 6-byte
                   Non-Resolvable Private Address.</p>
@@ -767,7 +767,7 @@
                   address, we tell NimBLE to use it by calling <code
                     class="dm hj hk hl hm b">ble_hs_id_set_rnd()</code>. If you’re curious to see the random address,
                   just set a Debugger Breakpoint by clicking the gutter to add a red dot like this…</p>
-                <figure class="js jt ju jv jw cz cl cm paragraph-image">
+                <div class="figure js jt ju jv jw cz cl cm paragraph-image">
                   
                   <p><img src="https://lupyuen.github.io/images/legacy/o16.png" /></p>
 
@@ -775,7 +775,7 @@
             
                   <figcaption><p><em>Setting a breakpoint to observe the
                     randomly-generated 6-byte Non-Resolvable Private Address</em></p></figcaption>
-                </figure>
+                </div>
                 <p id="5ec4" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">Now let’s find out what our nRF52
                   shall be broadcasting…</p>
               </div>
@@ -786,13 +786,13 @@
             <div class="n p">
               <div class="ac ae af ag ah dz aj ak">
                 <h1 id="6779" class="jb jc ec bk bj io ee jd eg je jf jg jh ji jj jk jl">Set iBeacon Parameters</h1>
-                <figure class="js jt ju jv jw cz cl cm paragraph-image">
+                <div class="figure js jt ju jv jw cz cl cm paragraph-image">
                   
                   <p><img src="https://lupyuen.github.io/images/legacy/o17.png" /></p>
 
                   <figcaption><p><em>iBeacon ID links the iBeacon Transmitter to
                     the Mobile App</em></p></figcaption>
-                </figure>
+                </div>
                 <p id="e87a" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">Remember our iBeacon sketch?
                   Every iBeacon Transmitter needs to broadcast the following…</p>
                 <ol class="">
@@ -819,12 +819,12 @@
                     which part of the store the customer is at?</em> Sure! Just assign a unique Minor ID for each
                   iBeacon Transmitter in the store. Here’s how we broadcast the iBeacon ID, Major ID and Minor ID in
                   NimBLE…</p>
-                <figure class="js jt ju jv jw cz">
+                <div class="figure js jt ju jv jw cz">
                   
                   <p><script src="https://gist.github.com/lupyuen/8da46373649da93dd313b5ae1a8c777d.js"></script></p>
 
 
-                </figure>
+                </div>
                 <p id="9a20" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">In our code we used an arbitrary
                   iBeacon ID <code class="dm hj hk hl hm b">uuid128</code> that’s defined as <code
                     class="dm hj hk hl hm b">11111111–1111–1111–1111–111111111111</code> (in hexadecimal). We pass the
@@ -855,14 +855,14 @@
                     class="dm hj hk hl hm b">-60</code>).</p>
                 <p id="14ec" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc"><em class="hi">Why do iBeacons
                     broadcast their RSSI values?</em> So that we may estimate how near they are!</p>
-                <figure class="js jt ju jv jw cz dr jz cd ka kb kc kd ke ba kf kg kh ki kj kk paragraph-image">
+                <div class="figure js jt ju jv jw cz dr jz cd ka kb kc kd ke ba kf kg kh ki kj kk paragraph-image">
                   
                   <p><img src="https://lupyuen.github.io/images/legacy/o18.png" /></p>
 
                
                   <figcaption><p><em>Estimated Proximity for our nRF52 iBeacon in
                     the Locate Beacon app: 0.7 metres</em></p></figcaption>
-                </figure>
+                </div>
                 <p id="4946" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">Recall that we set our iBeacon
                   Transmitter’s Measured Power as <code class="dm hj hk hl hm b">-60</code>. According to the definition
                   of Measured Power, if we placed our mobile phone 1 metre away from our iBeacon Transmitter, the phone
@@ -891,7 +891,7 @@
             <div class="cz">
               <div class="n p">
                 <div class="ky kz la lb lc ld ag le ah lf aj ak">
-                  <figure class="js jt ju jv jw cz lh li paragraph-image">
+                  <div class="figure js jt ju jv jw cz lh li paragraph-image">
                   
                     <p><img src="https://lupyuen.github.io/images/legacy/o19.png" /></p>
   
@@ -899,7 +899,7 @@
               
                     <figcaption><p><em>Testing our nRF52 iBeacon with the “Locate
                       Beacon” mobile app</em></p></figcaption>
-                  </figure>
+                  </div>
                 </div>
               </div>
             </div>
@@ -937,54 +937,54 @@
                       </div>
                     </section>
                   </a></div>
-                <figure class="js jt ju jv jw cz dr jz cd ka kb kc kd ke ba kf kg kh ki kj kk paragraph-image">
+                <div class="figure js jt ju jv jw cz dr jz cd ka kb kc kd ke ba kf kg kh ki kj kk paragraph-image">
                   
                   <p><img src="https://lupyuen.github.io/images/legacy/o20.png" /></p>
 
                   
            
-                </figure>
+                </div>
                 <p id="6840" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">1️⃣ Launch the “Locate Beacon”
                   app on your iPhone.</p>
                 <p id="1df7" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">Tap the Gear icon at top right
                 </p>
                 <p id="0d42" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">Tap <code
                     class="dm hj hk hl hm b">Add New UUID</code></p>
-                <figure class="js jt ju jv jw cz cl cm paragraph-image">
+                <div class="figure js jt ju jv jw cz cl cm paragraph-image">
                   
                   <p><img src="https://lupyuen.github.io/images/legacy/o0.png" /></p>
 
                   
            
-                </figure>
-                <figure class="du cz dr jz cd ka kb kc kd ke ba kf kg kh ki kj kk paragraph-image">
+                </div>
+                <div class="figure du cz dr jz cd ka kb kc kd ke ba kf kg kh ki kj kk paragraph-image">
                   
                   <p><img src="https://lupyuen.github.io/images/legacy/o21.png" /></p>
 
                   
                
-                </figure>
+                </div>
                 <p id="da8b" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">2️⃣ Tap the <code
                     class="dm hj hk hl hm b">+</code> button at top right</p>
-                <figure class="js jt ju jv jw cz cl cm paragraph-image">
+                <div class="figure js jt ju jv jw cz cl cm paragraph-image">
                   
                   <p><img src="https://lupyuen.github.io/images/legacy/o0.png" /></p>
 
                   
              
-                </figure>
-                <figure class="js jt ju jv jw cz cl cm paragraph-image">
+                </div>
+                <div class="figure js jt ju jv jw cz cl cm paragraph-image">
                   
                   <p><img src="https://lupyuen.github.io/images/legacy/o0.png" /></p>
 
                   
             
-                </figure>
-                <figure class="du cz dr jz cd ka kb kc kd ke ba kf kg kh ki kj kk paragraph-image">
+                </div>
+                <div class="figure du cz dr jz cd ka kb kc kd ke ba kf kg kh ki kj kk paragraph-image">
                   
                   <p><img src="https://lupyuen.github.io/images/legacy/o22.png" /></p>
 
-                </figure>
+                </div>
                 <p id="c6cf" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">3️⃣ Enter <code
                     class="dm hj hk hl hm b">My iBeacon</code> as the name</p>
                 <p id="e19a" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">For the UUID, enter<br /><code
@@ -993,34 +993,34 @@
                   fields empty</p>
                 <p id="3d7f" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">Tap <code
                     class="dm hj hk hl hm b">Save</code></p>
-                <figure class="js jt ju jv jw cz cl cm paragraph-image">
+                <div class="figure js jt ju jv jw cz cl cm paragraph-image">
                   
                   <p><img src="https://lupyuen.github.io/images/legacy/o0.png" /></p>
 
              
-                </figure>
-                <figure class="du cz dr jz cd ka kb kc kd ke ba kf kg kh ki kj kk paragraph-image">
+                </div>
+                <div class="figure du cz dr jz cd ka kb kc kd ke ba kf kg kh ki kj kk paragraph-image">
                   
                   <p><img src="https://lupyuen.github.io/images/legacy/o23.png" /></p>
 
            
-                </figure>
+                </div>
                 <p id="b2d7" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">4️⃣ Our nRF52 should appear in
                   the list of detected iBeacons as <code class="dm hj hk hl hm b">My iBeacon</code></p>
                 <p id="386d" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">Tap <code
                     class="dm hj hk hl hm b">My iBeacon</code></p>
-                <figure class="js jt ju jv jw cz cl cm paragraph-image">
+                <div class="figure js jt ju jv jw cz cl cm paragraph-image">
                   
                   <p><img src="https://lupyuen.github.io/images/legacy/o0.png" /></p>
 
             
-                </figure>
-                <figure class="du cz dr jz cd ka kb kc kd ke ba kf kg kh ki kj kk paragraph-image">
+                </div>
+                <div class="figure du cz dr jz cd ka kb kc kd ke ba kf kg kh ki kj kk paragraph-image">
                   
                   <p><img src="https://lupyuen.github.io/images/legacy/o24.png" /></p>
 
               
-                </figure>
+                </div>
                 <p id="928d" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">5️⃣ Details of our iBeacon
                   appear, including the RSSI and estimated proximity.</p>
                 <p id="dfe2" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc"><em class="hi">How did I figure
@@ -1047,7 +1047,7 @@
                     properly on our nRF52?</em></p>
                 <p id="ecb3" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">We’ll prove that by <strong
                     class="gr hh">polling a Simulated Mynewt Sensor with Rust</strong>! Here how we do that…</p>
-                <figure class="js jt ju jv jw cz">
+                <div class="figure js jt ju jv jw cz">
                   
                   <p><script src="https://gist.github.com/lupyuen/abc8db30b03f4aef9ea0bbc7f7554f31.js"></script></p>
 
@@ -1058,7 +1058,7 @@
                       class="at cg hd he hf hg" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/rust/app/src/lib.rs</a>
                   </em></p></figcaption>
-                </figure>
+                </div>
                 <p id="8e2f" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">Our <code
                     class="dm hj hk hl hm b">main()</code> function is defined in the Rust module <code
                     class="dm hj hk hl hm b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/rust/app/src/lib.rs" class="at cg hd he hf hg" target="_blank" rel="noopener nofollow">rust/app/src/lib.rs</a></code>.
@@ -1068,7 +1068,7 @@
                 <p id="fd37" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">On the nRF52, <code
                     class="dm hj hk hl hm b">sysinit()</code> initialises the 2.4 GHz Radio Transceiver and the Stub
                   Temperature Sensor. We’ll talk about this simulated temperature sensor in a while.</p>
-                <figure class="js jt ju jv jw cz">
+                <div class="figure js jt ju jv jw cz">
                   
                   <p><script src="https://gist.github.com/lupyuen/48c7069c26672cfcc7310e85b6b1ea76.js"></script></p>
 
@@ -1079,7 +1079,7 @@
                       class="at cg hd he hf hg" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/rust/app/src/lib.rs</a>
                   </em></p></figcaption>
-                </figure>
+                </div>
                 <p id="b467" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">Remember we said that Mynewt
                   programs are designed to be portable across microcontrollers? The Rust-Mynewt application we’re
                   studying now actually runs fine on STM32 F103 (Blue Pill) and L476 microcontrollers… But they run a
@@ -1094,7 +1094,7 @@
                     class="dm hj hk hl hm b">start_sensor_listener()</code> (defined in our application module <code
                     class="dm hj hk hl hm b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/rust/app/src/app_sensor.rs" class="at cg hd he hf hg" target="_blank" rel="noopener nofollow">app_sensor.rs</a></code>)
                   to begin polling the simulated temperature sensor every 10 seconds.</p>
-                <figure class="js jt ju jv jw cz">
+                <div class="figure js jt ju jv jw cz">
                   
                   <p><script src="https://gist.github.com/lupyuen/40d6de45a1e55ef1b447f1030d5b1d71.js"></script></p>
 
@@ -1104,7 +1104,7 @@
                       class="at cg hd he hf hg" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/rust/app/src/lib.rs</a>
                   </em></p></figcaption>
-                </figure>
+                </div>
                 <p id="7105" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">Remember our C function <code
                     class="dm hj hk hl hm b">start_ble()</code> that initiates the iBeacon broadcasting? This is how we
                   call <code class="dm hj hk hl hm b">start_ble()</code> from <code
@@ -1113,7 +1113,7 @@
                   could potentially cause problems (memory corruption, crashing, …) The <code
                     class="dm hj hk hl hm b">unsafe</code> tag will be removed once we create a safe and proper Rust
                   Wrapper for NimBLE.</p>
-                <figure class="js jt ju jv jw cz">
+                <div class="figure js jt ju jv jw cz">
                   
                   <p><script src="https://gist.github.com/lupyuen/060053e8c27a4e063cc0cb4f739d51a5.js"></script></p>
 
@@ -1123,7 +1123,7 @@
                       class="at cg hd he hf hg" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/rust/app/src/lib.rs</a>
                   </em></p></figcaption>
-                </figure>
+                </div>
                 <p id="69f0" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">At the end of the <code
                     class="dm hj hk hl hm b">main()</code> function we have a standard Mynewt Event Loop to handle
                   Mynewt system events. (Mynewt programs in C also have this Mynewt Event Loop). Without this Event
@@ -1141,7 +1141,7 @@
                     class="dm hj hk hl hm b">start_sensor_listener()</code>, defined in our application module <code
                     class="dm hj hk hl hm b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/rust/app/src/app_sensor.rs" class="at cg hd he hf hg" target="_blank" rel="noopener nofollow">app_sensor.rs</a></code>...
                 </p>
-                <figure class="js jt ju jv jw cz">
+                <div class="figure js jt ju jv jw cz">
                   
                   <p><script src="https://gist.github.com/lupyuen/3fcd274796c5a5c3b4fec674ab091f88.js"></script></p>
 
@@ -1152,7 +1152,7 @@
                       class="at cg hd he hf hg" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/rust/app/src/app_sensor.rs</a>
                   </em></p></figcaption>
-                </figure>
+                </div>
                 <p id="275e" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">At the top of <code
                     class="dm hj hk hl hm b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/rust/app/src/app_sensor.rs" class="at cg hd he hf hg" target="_blank" rel="noopener nofollow">app_sensor.rs</a></code>
                   we define some constants for polling the sensor.</p>
@@ -1175,7 +1175,7 @@
                   without terminating nulls. Or worse… Mynewt could crash because some Rust code has incorrectly passed
                   in a string that’s not null-terminated. So I have wrapped the Mynewt APIs to accept the safer,
                   efficient <code class="dm hj hk hl hm b">Strn</code> type that’s always null-terminated.</p>
-                <figure class="js jt ju jv jw cz">
+                <div class="figure js jt ju jv jw cz">
                   
                   <p><script src="https://gist.github.com/lupyuen/fbe6082436e81f82222e483581751657.js"></script></p>
 
@@ -1186,13 +1186,13 @@
                       class="at cg hd he hf hg" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/rust/app/src/app_sensor.rs</a>
                   </em></p></figcaption>
-                </figure>
+                </div>
                 <p id="4a3a" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">Here’s the first clue that Mynewt
                   has an awesome <strong class="gr hh">Sensor Framework</strong>… Mynewt keeps track of all installed
                   sensors by name. <code class="dm hj hk hl hm b">sensor_mgr::find_bydevname()</code> is the Mynewt API
                   that returns a list of sensors (i.e. a Sensor Iterator) that match a name (<code
                     class="dm hj hk hl hm b">temp_stub_0</code>).</p>
-                <figure class="js jt ju jv jw cz">
+                <div class="figure js jt ju jv jw cz">
                   
                   <p><script src="https://gist.github.com/lupyuen/b385670a3ba141e0ce9d29acad18c749.js"></script></p>
 
@@ -1203,14 +1203,14 @@
                       class="at cg hd he hf hg" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/rust/app/src/app_sensor.rs</a>
                   </em></p></figcaption>
-                </figure>
+                </div>
                 <p id="3168" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">Mynewt recognises every sensor
                   and the type of data that the sensor produces. So let’s ask Mynewt to poll the sensor on our behalf!
                 </p>
                 <p id="d548" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">By calling <code
                     class="dm hj hk hl hm b">sensor::set_poll_rate_ms()</code> we’re kindly asking Mynewt to poll our
                   simulated temperature sensor every 10 seconds. <em class="hi">Truly awesome!</em></p>
-                <figure class="js jt ju jv jw cz">
+                <div class="figure js jt ju jv jw cz">
                   
                   <p><script src="https://gist.github.com/lupyuen/7ce991cc8791de3a88c84fb5945d74b7.js"></script></p>
 
@@ -1220,7 +1220,7 @@
                       class="at cg hd he hf hg" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/rust/app/src/app_sensor.rs</a>
                   </em></p></figcaption>
-                </figure>
+                </div>
                 <p id="1fbd" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">Now we fill in the nitty-gritty
                   polling details…<em class="hi"> What shall we do with the temperature sensor data after Mynewt has
                     obtained it?</em> Here we ask Mynewt to call our Rust function <code
@@ -1228,7 +1228,7 @@
                 <p id="2fb5" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc"><code
                     class="dm hj hk hl hm b">aggregate_sensor_data()</code> is known as a Sensor Listener Function… It’s
                   a function that listens for updated sensor data and acts on the data.</p>
-                <figure class="js jt ju jv jw cz">
+                <div class="figure js jt ju jv jw cz">
                   
                   <p><script src="https://gist.github.com/lupyuen/80245e18b0bcb4c24eaac6a47ae4dc6f.js"></script></p>
 
@@ -1239,7 +1239,7 @@
                       class="at cg hd he hf hg" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/rust/app/src/app_sensor.rs</a>
                   </em></p></figcaption>
-                </figure>
+                </div>
                 <p id="f399" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">To activate the Sensor Listener
                   Function, we call the Mynewt API <code class="dm hj hk hl hm b">sensor::register_listener()</code>.
                   Mynewt will begin polling the simulated temperature sensor every 10 seconds and call <code
@@ -1264,7 +1264,7 @@
                   <code class="dm hj hk hl hm b">aggregate_sensor_data()</code> whenever it has polled our simulated
                   temperature sensor. Let’s see what happens inside <code
                     class="dm hj hk hl hm b">aggregate_sensor_data()</code>…</p>
-                <figure class="js jt ju jv jw cz">
+                <div class="figure js jt ju jv jw cz">
                    
                   <p><script src="https://gist.github.com/lupyuen/32744126701f2048ed9c4a38c77ac972.js"></script></p>
 
@@ -1274,7 +1274,7 @@
                       class="at cg hd he hf hg" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/rust/app/src/app_network.rs</a>
                   </em></p></figcaption>
-                </figure>
+                </div>
                 <p id="ae4a" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">On the STM32 L476 microcontroller
                   our Rust application not only handles temperature sensor data… It handles <em class="hi">GPS latitude
                     / longitude coordinates as well!</em> The application polls the GPS module for the current
@@ -1284,7 +1284,7 @@
                   <code class="dm hj hk hl hm b">aggregate_sensor_data()</code> will simply transmit the temperature
                   data without attaching any GPS coordinates. It calls <code
                     class="dm hj hk hl hm b">send_sensor_data()</code> to transmit the temperature data…</p>
-                <figure class="js jt ju jv jw cz">
+                <div class="figure js jt ju jv jw cz">
                   
                   <p><script src="https://gist.github.com/lupyuen/9fa6bd52409db33dfaa09f8cb84b35a3.js"></script></p>
 
@@ -1294,7 +1294,7 @@
                       class="at cg hd he hf hg" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/rust/app/src/app_network.rs</a>
                   </em></p></figcaption>
-                </figure>
+                </div>
                 <p id="790b" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">This sounds incredulous… But
                   <code class="dm hj hk hl hm b">send_sensor_data()</code> was designed to transmit <em class="hi">any
                     sensor data</em> in <em class="hi">any format</em> that will be understood by our server!</p>
@@ -1305,7 +1305,7 @@
                     class="dm hj hk hl hm b">send_sensor_data()</code> doesn’t contain any code that’s specific to
                   thethings.io…<em class="hi"> The sensor data appears to transform itself magically for
                     thethings.io</em>. How is this possible? We’ll learn in a while…</p>
-                <figure class="js jt ju jv jw cz">
+                <div class="figure js jt ju jv jw cz">
                   
                   <p><script src="https://gist.github.com/lupyuen/3b35e2b4b4af26ca615323396f05fdd7.js"></script></p>
 
@@ -1315,13 +1315,13 @@
                       class="at cg hd he hf hg" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/rust/app/src/app_network.rs</a>
                   </em></p></figcaption>
-                </figure>
+                </div>
                 <p id="e72b" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">This is the end of the road for
                   nRF52… We haven’t started a Network Transport (like NB-IoT) that will deliver the sensor data to a
                   server, so nRF52 silently drops the sensor data here.</p>
                 <p id="ece0" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">For STM32, the Rusty trail
                   continues…</p>
-                <figure class="js jt ju jv jw cz">
+                <div class="figure js jt ju jv jw cz">
                   
                   <p><script src="https://gist.github.com/lupyuen/469382be873bbc49acf5bab0c820cc36.js"></script></p>
 
@@ -1332,7 +1332,7 @@
                       class="at cg hd he hf hg" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/rust/app/src/app_network.rs</a>
                   </em></p></figcaption>
-                </figure>
+                </div>
                 <p id="973e" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">Believe it (or not)… <em
                     class="hi">That’s all the code we need</em> to transform our geolocated sensor data into this
                   complicated nested CoAP + JSON format mandated by thethings.io…</p>
@@ -1371,7 +1371,7 @@
                     the instructions in this article</a> to flash and debug your nRF52.</p>
                 <p id="9c62" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">The Output Log in Visual Studio
                   Code should look like this…</p>
-                <figure class="js jt ju jv jw cz">
+                <div class="figure js jt ju jv jw cz">
                   
                   <p><script src="https://gist.github.com/lupyuen/90ac1dca567c53b00b0877cc47c5ae5e.js"></script></p>
 
@@ -1381,7 +1381,7 @@
                       class="at cg hd he hf hg" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/logs/standalone-node.log</a>
                   </em></p></figcaption>
-                </figure>
+                </div>
                 <p id="a646" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">Here’s a video demo of the
                   Application Build and Debug on nRF52…</p>
               </div>
@@ -1389,7 +1389,7 @@
             <div class="cz">
               <div class="n p">
                 <div class="ky kz la lb lc ld ag le ah lf aj ak">
-                  <figure class="js jt ju jv jw cz">
+                  <div class="figure js jt ju jv jw cz">
                     <div class="dl r dd">
                       <div class="nm r"><iframe
                           src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FwqimbvJeGMo%3Ffeature%3Doembed&amp;url=http%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DwqimbvJeGMo&amp;image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FwqimbvJeGMo%2Fhqdefault.jpg&amp;key=a19fcc184b9711e1b4764040d3dc5c07&amp;type=text%2Fhtml&amp;schema=youtube"
@@ -1399,7 +1399,7 @@
                     </div>
                     <figcaption><p><em>Video demo of the Application Build and
                       Debug on nRF52</em></p></figcaption>
-                  </figure>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1409,7 +1409,7 @@
             <div class="cz">
               <div class="n p">
                 <div class="ky kz la lb lc ld ag le ah lf aj ak">
-                  <figure class="js jt ju jv jw cz lh li paragraph-image">
+                  <div class="figure js jt ju jv jw cz lh li paragraph-image">
                   
                     <p><img src="https://lupyuen.github.io/images/legacy/o25.png" /></p>
   
@@ -1417,7 +1417,7 @@
                  
                     <figcaption><p><em>Polling sensors in Mynewt: Rust vs C
                     </em></p></figcaption>
-                  </figure>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1579,14 +1579,14 @@
             <div class="cz">
               <div class="n p">
                 <div class="ky kz la lb lc ld ag le ah lf aj ak">
-                  <figure class="js jt ju jv jw cz lh li paragraph-image">
+                  <div class="figure js jt ju jv jw cz lh li paragraph-image">
                   
                     <p><img src="https://lupyuen.github.io/images/legacy/o26.png" /></p>
   
                
                     <figcaption><p><em>nRF52 connected to Raspberry Pi 4
                     </em></p></figcaption>
-                  </figure>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1594,7 +1594,7 @@
               <div class="ac ae af ag ah dz aj ak">
                 <h1 id="1285" class="jb jc ec bk bj io ee ln eg lo jf lp jh lq jj lr jl">Advanced Topic: Remove nRF52
                   Flash Protection With Raspberry Pi</h1>
-                <figure class="js jt ju jv jw cz dr jz cd ka kb kc kd ke ba kf kg kh ki kj kk paragraph-image">
+                <div class="figure js jt ju jv jw cz dr jz cd ka kb kc kd ke ba kf kg kh ki kj kk paragraph-image">
                   
                   <p><img src="https://lupyuen.github.io/images/legacy/o27.png" /></p>
 
@@ -1605,7 +1605,7 @@
                       class="at cg hd he hf hg" target="_blank"
                       rel="noopener nofollow">https://infocenter.nordicsemi.com/pdf/nRF52832_PS_v1.0.pdf</a>
                   </em></p></figcaption>
-                </figure>
+                </div>
                 <p id="5fdf" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">Do you have problems flashing or
                   debugging your nRF52? Here’s how you can fix it…</p>
                 <p id="9861" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">nRF52 has an <strong
@@ -1620,7 +1620,7 @@
                 </p>
                 <p id="2744" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">Connect your nRF52 board to a
                   Raspberry Pi 1 / 2 / 3 / 4 (powered off) as follows (refer to the photo above)…</p>
-                <figure class="js jt ju jv jw cz">
+                <div class="figure js jt ju jv jw cz">
                   
                   <p><script src="https://gist.github.com/lupyuen/8bda3c3fed0abfb96c5556b1b81ad598.js"></script></p>
 
@@ -1630,8 +1630,8 @@
                       class="at cg hd he hf hg" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/scripts/nrf52/swd-pi.ocd</a>
                   </em></p></figcaption>
-                </figure>
-                <figure class="js jt ju jv jw cz cl cm paragraph-image">
+                </div>
+                <div class="figure js jt ju jv jw cz cl cm paragraph-image">
                   
                   <p><img src="https://lupyuen.github.io/images/legacy/o28.png" /></p>
 
@@ -1640,7 +1640,7 @@
                   <figcaption><p><em>Connecting nRF52 to Raspberry Pi. Based on <a
                       href="https://pinout.xyz/" class="at cg hd he hf hg"
                       target="_blank" rel="noopener nofollow">https://pinout.xyz/</a></em></p></figcaption>
-                </figure>
+                </div>
                 <p id="e388" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">Power on the Raspberry Pi. Open a
                   common prompt on the Raspberry Pi. Enter into the command prompt…</p>
                 <pre
@@ -1658,7 +1658,7 @@
                     class="dm hj hk hl hm b">bcm2835gpio_peripheral_base</code> and <code
                     class="dm hj hk hl hm b">bcm2835gpio_speed_coeffs</code> for your model of Raspberry Pi: <code
                     class="dm hj hk hl hm b">Pi 1 / 2 / 3 / 4</code></p>
-                <figure class="js jt ju jv jw cz">
+                <div class="figure js jt ju jv jw cz">
                   
                   <p><script src="https://gist.github.com/lupyuen/31b53018d50208003a6f4994b68ed22f.js"></script></p>
 
@@ -1668,14 +1668,14 @@
                       class="at cg hd he hf hg" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/scripts/nrf52/swd-pi.ocd</a>
                   </em></p></figcaption>
-                </figure>
+                </div>
                 <p id="d9eb" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">Enter into the command prompt…
                 </p>
                 <pre
                   class="js jt ju jv jw mf mg mh"><span id="8ddb" class="mi jc ec bk hm b ds mj mk r ml"># Start OpenOCD<br/>sudo /home/pi/openocd/src/openocd \<br/>   -s /home/pi/openocd/tcl \<br/>   -d4 \<br/>   -f swd-pi.ocd</span></pre>
                 <p id="3b5d" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">We should see the following log…
                 </p>
-                <figure class="js jt ju jv jw cz">
+                <div class="figure js jt ju jv jw cz">
                   
                   <p><script src="https://gist.github.com/lupyuen/4ced61f3a28a4295971e7ce5ba37f409.js"></script></p>
 
@@ -1685,12 +1685,12 @@
                       class="at cg hd he hf hg" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/nrf52/scripts/nrf52/swd-pi.log</a>
                   </em></p></figcaption>
-                </figure>
+                </div>
                 <p id="66e2" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">While OpenOCD is running, open a
                   second command prompt and enter…</p>
                 <pre
                   class="js jt ju jv jw mf mg mh"><span id="2b37" class="mi jc ec bk hm b ds mj mk r ml">telnet localhost 4444<br/>nrf52.dap apreg 1 0x0c</span></pre>
-                <figure class="js jt ju jv jw cz dr jz cd ka kb kc kd ke ba kf kg kh ki kj kk paragraph-image">
+                <div class="figure js jt ju jv jw cz dr jz cd ka kb kc kd ke ba kf kg kh ki kj kk paragraph-image">
                   
                   <p><img src="https://lupyuen.github.io/images/legacy/o29.png" /></p>
 
@@ -1698,7 +1698,7 @@
                   <figcaption><p><em>Checking the <code
                       class="dm hj hk hl hm b">APPROTECTSTATUS</code> status register for Access Port Protection
                   </em></p></figcaption>
-                </figure>
+                </div>
                 <p id="9d74" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">This queries the <code
                     class="dm hj hk hl hm b">APPROTECTSTATUS</code> status register for Access Port Protection.</p>
                 <p id="b852" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">It should show <code
@@ -1724,7 +1724,7 @@
                   another command prompt and enter…</p>
                 <pre
                   class="js jt ju jv jw mf mg mh"><span id="e4cc" class="mi jc ec bk hm b ds mj mk r ml">telnet localhost 4444<br/>targets<br/>halt<br/>nrf52.dap apreg 1 0x0c</span></pre>
-                <figure class="js jt ju jv jw cz dr jz cd ka kb kc kd ke ba kf kg kh ki kj kk paragraph-image">
+                <div class="figure js jt ju jv jw cz dr jz cd ka kb kc kd ke ba kf kg kh ki kj kk paragraph-image">
                   
                   <p><img src="https://lupyuen.github.io/images/legacy/o30.png" /></p>
 
@@ -1732,7 +1732,7 @@
                 
                   <figcaption><p><em>Checking APPROTECTSTATUS status register for
                     Access Port Protection.</em></p></figcaption>
-                </figure>
+                </div>
                 <p id="ffae" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">This queries the <code
                     class="dm hj hk hl hm b">APPROTECTSTATUS</code> status register for access port protection.</p>
                 <p id="eb8c" class="gp gq ec bk gr b gs gt gu gv gw gx gy gz ha hb hc">It should now show <code

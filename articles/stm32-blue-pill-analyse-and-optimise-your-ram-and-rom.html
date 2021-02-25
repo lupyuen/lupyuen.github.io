@@ -68,14 +68,14 @@
           <div class="de u df dg dh di"></div>
           <section class="dj dk dl dm dn">
             <div class="do ak">
-              <figure class="dp do ak paragraph-image">
+              <div class="figure dp do ak paragraph-image">
 
                 
                 <p><img src="https://lupyuen.github.io/images/legacy2/n1.png" /></p>
 
 
        
-              </figure>
+              </div>
             </div>
             <div class="n p">
               <div class="ac ae af ag ah eg aj ak">
@@ -187,7 +187,7 @@
               </div>
             </div>
             <div class="do ak">
-              <figure class="iy iz ja jb jc do">
+              <div class="figure iy iz ja jb jc do">
                 <div class="dz r ds">
                   <div class="jd r"><iframe
                       src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FcmHQxd_qGl8%3Ffeature%3Doembed&amp;url=http%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DcmHQxd_qGl8&amp;image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FcmHQxd_qGl8%2Fhqdefault.jpg&amp;key=a19fcc184b9711e1b4764040d3dc5c07&amp;type=text%2Fhtml&amp;schema=youtube"
@@ -195,7 +195,7 @@
                       title="Installing PlatformIO and creating a sample program for STM32 Blue Pill"
                       class="de t u dw ak" scrolling="auto"></iframe></div>
                 </div>
-              </figure>
+              </div>
             </div>
           </section>
           <hr class="hr fj hs ht hu hv hw hx hy hz ia" />
@@ -228,14 +228,14 @@
           <hr class="hr fj hs ht hu hv hw hx hy hz ia" />
           <section class="dj dk dl dm dn">
             <div class="do ak">
-              <figure class="iy iz ja jb jc do ak paragraph-image">
+              <div class="figure iy iz ja jb jc do ak paragraph-image">
                                 
                 <p><img src="https://lupyuen.github.io/images/legacy2/n2.png" /></p>
 
 
              
                 <figcaption><p><em>Blue Pill Memory Layout</em></p></figcaption>
-              </figure>
+              </div>
             </div>
             <div class="n p">
               <div class="ac ae af ag ah eg aj ak">
@@ -271,14 +271,14 @@
                 <pre
                   class="iy iz ja jb jc je jf jg"><span id="ea92" class="jh ic ar bz hd b fk ji jj r jk">SECTIONS  /*  Define sections.  */<br/>{<br/>  .<strong class="hd hh">text</strong> : {<br/>    ...      /*  <strong class="hd hh">Vector table</strong>    */<br/>    ...      /*  <strong class="hd hh">Program code</strong>    */<br/>    ...      /*  <strong class="hd hh">Read-only data</strong>  */<br/>  } &gt;<strong class="hd hh">rom</strong></span><span id="8ec6" class="jh ic ar bz hd b fk jv jw jx jy jz jj r jk">  .<strong class="hd hh">data</strong> : {  /*  Read-write initialised data      */<br/>    ...<br/>  } &gt;<strong class="hd hh">ram</strong> AT &gt;<strong class="hd hh">rom</strong></span><span id="e65b" class="jh ic ar bz hd b fk jv jw jx jy jz jj r jk">  .<strong class="hd hh">bss</strong> : {   /*  Read-write zero initialised data  */<br/>    ...<br/>  } &gt;<strong class="hd hh">ram</strong></span></pre>
                 <h1 id="5e09" class="ib ic ar bz by id ie jq ig jr ii js ik jt im ju io">Text Section</h1>
-                <figure class="iy iz ja jb jc do da db paragraph-image">
+                <div class="figure iy iz ja jb jc do da db paragraph-image">
                 
                   <p><img src="https://lupyuen.github.io/images/legacy2/n3.png" /></p>
 
                 
                   <figcaption><p><em>Blue Pill ROM, containing the Text Section and
                     the Data Section</em></p></figcaption>
-                </figure>
+                </div>
                 <p id="627d" class="gm gn ar bz go b gp gq gr gs gt gu gv gw gx gy gz">The <strong class="go hh">Text
                     Section</strong> is stored in ROM (read only) and contains:</p>
                 <ol class="">
@@ -292,7 +292,7 @@
                     changed</li>
                 </ol>
                 <h1 id="1f09" class="ib ic ar bz by id ie jq ig jr ii js ik jt im ju io">Data and BSS Sections</h1>
-                <figure class="iy iz ja jb jc do da db paragraph-image">  
+                <div class="figure iy iz ja jb jc do da db paragraph-image">  
 
                   
                   <p><img src="https://lupyuen.github.io/images/legacy2/n4.png" /></p>
@@ -300,7 +300,7 @@
                 
                   <figcaption><p><em>Blue Pill RAM, containing the Data Section,
                     BSS Section, Heap and Stack</em></p></figcaption>
-                </figure>
+                </div>
                 <p id="4cd0" class="gm gn ar bz go b gp gq gr gs gt gu gv gw gx gy gz">Global Variables in the Blue Pill
                   program will be allocated in the <strong class="go hh">Data Section</strong> or <strong
                     class="go hh">BSS Section </strong>(both are in RAM). What’s the difference?</p>
@@ -342,13 +342,13 @@
                 <h1 id="ce00" class="ib ic ar bz by id ie jq ig jr ii js ik jt im ju io">Stack</h1>
                 <pre
                   class="iy iz ja jb jc je jf jg"><span id="6af7" class="jh ic ar bz hd b fk ji jj r jk">PROVIDE(<br/>    <strong class="hd hh">_stack</strong> = <strong class="hd hh">ORIGIN</strong>(ram) + <strong class="hd hh">LENGTH</strong>(ram)<br/>);</span></pre>
-                <figure class="iy iz ja jb jc do ef kf cs kg kh ki kj kk bp kl km kn ko kp kq paragraph-image">
+                <div class="figure iy iz ja jb jc do ef kf cs kg kh ki kj kk bp kl km kn ko kp kq paragraph-image">
                   
                   <p><img src="https://lupyuen.github.io/images/legacy2/n5.png" /></p>
     
 
              
-                </figure>
+                </div>
                 <p id="d850" class="gm gn ar bz go b gp gq gr gs gt gu gv gw gx gy gz">The <strong
                     class="go hh">Stack</strong> keeps track of the local variables within each function call. It starts
                   at the <strong class="go hh">top of RAM (</strong><code
@@ -420,14 +420,14 @@
               </div>
             </div>
             <div class="do ak">
-              <figure class="iy iz ja jb jc do ak paragraph-image">
+              <div class="figure iy iz ja jb jc do ak paragraph-image">
                   
                 <p><img src="https://lupyuen.github.io/images/legacy2/n6.png" /></p>
   
 
                 <figcaption><p><em>Quick peek at the Linker Map firmware.map
                 </em></p></figcaption>
-              </figure>
+              </div>
             </div>
             <div class="n p">
               <div class="ac ae af ag ah eg aj ak">
@@ -442,7 +442,7 @@
               </div>
             </div>
             <div class="do ak">
-              <figure class="iy iz ja jb jc do ak paragraph-image">
+              <div class="figure iy iz ja jb jc do ak paragraph-image">
                   
                 <p><img src="https://lupyuen.github.io/images/legacy2/n7.png" /></p>
   
@@ -450,7 +450,7 @@
                 
                 <figcaption><p><em>Verify that data_var and bss_var are allocated
                   in the Data / BSS Sections according to the Linker Map firmware.map</em></p></figcaption>
-              </figure>
+              </div>
             </div>
           </section>
           <hr class="hr fj hs ht hu hv hw hx hy hz ia" />
@@ -492,13 +492,13 @@
               </div>
             </div>
             <div class="do ak">
-              <figure class="iy iz ja jb jc do ak paragraph-image">
+              <div class="figure iy iz ja jb jc do ak paragraph-image">
                   
                 <p><img src="https://lupyuen.github.io/images/legacy2/n8.png" /></p>
   
 
            
-              </figure>
+              </div>
             </div>
             <div class="n p">
               <div class="ac ae af ag ah eg aj ak">
@@ -522,7 +522,7 @@
               </div>
             </div>
             <div class="do ak">
-              <figure class="iy iz ja jb jc do ak paragraph-image">
+              <div class="figure iy iz ja jb jc do ak paragraph-image">
                   
                 <p><img src="https://lupyuen.github.io/images/legacy2/n9.png" /></p>
   
@@ -530,7 +530,7 @@
            
                 <figcaption><p><em>Disassembly of Blue Pill ROM at 0x0800 0000
                 </em></p></figcaption>
-              </figure>
+              </div>
             </div>
             <div class="n p">
               <div class="ac ae af ag ah eg aj ak">
@@ -587,13 +587,13 @@
                     Linux</strong>: <code
                     class="ea ha hb hc hd b">~/.platformio/packages/framework-libopencm3/lib/stm32/f1/vector_nvic.c</code>
                 </p>
-                <figure class="iy iz ja jb jc do">
+                <div class="figure iy iz ja jb jc do">
                  
                   <p><script src="https://gist.github.com/lupyuen/414ba9585203cf2392448f06bf5df2c5.js"></script></p>
 
 
                   <figcaption><p><em>Arm Vector Table Definition</em></p></figcaption>
-                </figure>
+                </div>
                 <p id="12cb" class="gm gn ar bz go b gp gq gr gs gt gu gv gw gx gy gz">The Vector Table is defined by
                   Arm (not STM). The Vector Table also includes a complete list of <strong class="go hh">Interrupt
                     Service Routines</strong> that will be called when an interrupt is triggered. For example, <code
@@ -615,7 +615,7 @@
                     critical exceptions that will prevent Blue Pill from operating correctly. Hard Fault is a serious
                     exception that uses the <code class="ea ha hb hc hd b">blocking_handler()</code> by default.</li>
                 </ul>
-                <figure class="iy iz ja jb jc do">
+                <div class="figure iy iz ja jb jc do">
                 
                   <p><script src="https://gist.github.com/lupyuen/29e705123797b69ae2bb32165e53c8b6.js"></script></p>
 
@@ -626,7 +626,7 @@
                       class="bi cv iu iv iw ix" target="_blank"
                       rel="noopener nofollow">https://github.com/libopencm3/libopencm3/blob/master/lib/cm3/vector.c</a>
                   </em></p></figcaption>
-                </figure>
+                </div>
               </div>
             </div>
           </section>
@@ -634,7 +634,7 @@
           <section class="dj dk dl dm dn">
             <div class="n p">
               <div class="ac ae af ag ah eg aj ak">
-                <figure class="iy iz ja jb jc do">
+                <div class="figure iy iz ja jb jc do">
            
                   <p><script src="https://gist.github.com/lupyuen/235dd135317e14ab8c42f892d65a5404.js"></script></p>
 
@@ -645,7 +645,7 @@
                       class="bi cv iu iv iw ix" target="_blank"
                       rel="noopener nofollow">https://github.com/libopencm3/libopencm3/blob/master/lib/cm3/vector.c</a>
                   </em></p></figcaption>
-                </figure>
+                </div>
                 <h1 id="bf1b" class="ib ic ar bz by id ie jq ig jr ii js ik jt im ju io">reset_handler() Function</h1>
                 <p id="f399" class="gm gn ar bz go b gp ip gr iq gt ir gv is gx it gz"><code
                     class="ea ha hb hc hd b">reset_handler()</code> is the function that’s executed when the Blue Pill
@@ -737,7 +737,7 @@
               </div>
             </div>
             <div class="do ak">
-              <figure class="iy iz ja jb jc do ak paragraph-image">
+              <div class="figure iy iz ja jb jc do ak paragraph-image">
                   
                 <p><img src="https://lupyuen.github.io/images/legacy2/n10.png" /></p>
   
@@ -745,7 +745,7 @@
              
                 <figcaption><p><em>Sample Google Sheets spreadsheet that analyses
                   the Linker Map file firmware.map</em></p></figcaption>
-              </figure>
+              </div>
             </div>
             <div class="n p">
               <div class="ac ae af ag ah eg aj ak">
@@ -783,7 +783,7 @@
               </div>
             </div>
             <div class="do ak">
-              <figure class="iy iz ja jb jc do">
+              <div class="figure iy iz ja jb jc do">
                 <div class="dz r ds">
                   <div class="jd r"><iframe
                       src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FOMXwJREgm5Y%3Ffeature%3Doembed&amp;url=http%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DOMXwJREgm5Y&amp;image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FOMXwJREgm5Y%2Fhqdefault.jpg&amp;key=a19fcc184b9711e1b4764040d3dc5c07&amp;type=text%2Fhtml&amp;schema=youtube"
@@ -793,7 +793,7 @@
                 </div>
                 <figcaption><p><em>Using Google Sheets to analyse the Linker Map
                   firmware.map</em></p></figcaption>
-              </figure>
+              </div>
             </div>
           </section>
           <hr class="hr fj hs ht hu hv hw hx hy hz ia" />
@@ -811,12 +811,12 @@
                 <p id="2d89" class="gm gn ar bz go b gp gq gr gs gt gu gv gw gx gy gz">1️⃣ Edit <code
                     class="ea ha hb hc hd b">main.c</code>. Insert the lines below marked <code
                     class="ea ha hb hc hd b">// Added line</code></p>
-                <figure class="iy iz ja jb jc do">
+                <div class="figure iy iz ja jb jc do">
                 
                   <p><script src="https://gist.github.com/lupyuen/fe2d133517042db6040eba210ecd06cd.js"></script></p>
 
 
-                </figure>
+                </div>
                 <p id="ec3c" class="gm gn ar bz go b gp gq gr gs gt gu gv gw gx gy gz">2️⃣ Build the project in Visual
                   Studio Code</p>
                 <p id="5d0c" class="gm gn ar bz go b gp gq gr gs gt gu gv gw gx gy gz">3️⃣ Copy the contents of <code
@@ -855,14 +855,14 @@
               </div>
             </div>
             <div class="do ak">
-              <figure class="iy iz ja jb jc do ak paragraph-image">
+              <div class="figure iy iz ja jb jc do ak paragraph-image">
                   
                 <p><img src="https://lupyuen.github.io/images/legacy2/n11.png" /></p>
   
 
              
                 <figcaption><p><em>Memory Map after adding sprintf()</em></p></figcaption>
-              </figure>
+              </div>
             </div>
             <div class="n p">
               <div class="ac ae af ag ah eg aj ak">
@@ -882,7 +882,7 @@
           <hr class="hr fj hs ht hu hv hw hx hy hz ia" />
           <section class="dj dk dl dm dn">
             <div class="do ak">
-              <figure class="iy iz ja jb jc do ak paragraph-image">
+              <div class="figure iy iz ja jb jc do ak paragraph-image">
                   
                 <p><img src="https://lupyuen.github.io/images/legacy2/n12.png" /></p>
   
@@ -890,7 +890,7 @@
              
                 <figcaption><p><em>Memory Map from the port of MakeCode to Blue
                   Pill</em></p></figcaption>
-              </figure>
+              </div>
             </div>
             <div class="n p">
               <div class="ac ae af ag ah eg aj ak">
@@ -925,7 +925,7 @@
               </div>
             </div>
             <div class="do ak">
-              <figure class="iy iz ja jb jc do ak paragraph-image">
+              <div class="figure iy iz ja jb jc do ak paragraph-image">
                   
                 <p><img src="https://lupyuen.github.io/images/legacy2/n13.png" /></p>
   
@@ -933,7 +933,7 @@
             
                 <figcaption><p><em>Memory Map from the port of MakeCode to Blue
                   Pill, after optimisation</em></p></figcaption>
-              </figure>
+              </div>
             </div>
             <div class="n p">
               <div class="ac ae af ag ah eg aj ak">
@@ -963,7 +963,7 @@
           <hr class="hr fj hs ht hu hv hw hx hy hz ia" />
           <section class="dj dk dl dm dn">
             <div class="do ak">
-              <figure class="iy iz ja jb jc do">
+              <div class="figure iy iz ja jb jc do">
                 <div class="dz r ds">
                   <div class="jd r"><iframe
                       src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FDSNDvrVOJns%3Ffeature%3Doembed&amp;url=http%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DDSNDvrVOJns&amp;image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FDSNDvrVOJns%2Fhqdefault.jpg&amp;key=a19fcc184b9711e1b4764040d3dc5c07&amp;type=text%2Fhtml&amp;schema=youtube"
@@ -973,7 +973,7 @@
                 </div>
                 <figcaption><p><em>Work In Progress: Porting MakeCode to Blue Pill
                 </em></p></figcaption>
-              </figure>
+              </div>
             </div>
             <div class="n p">
               <div class="ac ae af ag ah eg aj ak">

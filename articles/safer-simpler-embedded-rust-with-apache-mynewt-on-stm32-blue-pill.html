@@ -73,7 +73,7 @@
           <div class="cp u cq cr cs ct"></div>
           <section class="cu cv cw cx cy">
             <div class="cz ak">
-              <figure class="da cz ak paragraph-image">
+              <div class="figure da cz ak paragraph-image">
                 
                 
                 <p><img src="https://lupyuen.github.io/images/legacy2/d1.png" /></p>
@@ -82,7 +82,7 @@
 
                 <figcaption><p><em>Article Roadmap: From JSON parsing to bindgen to
                   Declarative and Procedural Macros and how to debug them</em></p></figcaption>
-              </figure>
+              </div>
             </div>
             <div class="n p">
               <div class="ac ae af ag ah dz aj ak">
@@ -129,12 +129,12 @@
                     Procedural Macros (plus </em><code class="dm gw gx gy gz b"><em class="gv">bindgen</em></code><em
                     class="gv"> and tips for Visual Studio Code) to protect Embedded Rust coders from stumbling into
                     embedded traps</em></p>
-                <figure class="hb hc hd he hf cz cl cm paragraph-image">
+                <div class="figure hb hc hd he hf cz cl cm paragraph-image">
                 
                   <p><img src="https://lupyuen.github.io/images/legacy2/d2.png" /></p>
 
           
-                </figure>
+                </div>
                 <blockquote class="hh hi hj">
                   <p id="c2f6" class="gh gi ec gv gj b gk gl gm gn go gp gq gr gs gt gu">I’m named <strong
                       class="gj hk">MyNewt</strong> not <strong class="gj hk">Mynewt</strong> because my handler is a
@@ -168,12 +168,12 @@
                     class="at cg hl hm hn ho" target="_blank" rel="noopener nofollow">CBOR</a>, …).</p>
                 <p id="9636" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu">But Mynewt was <strong
                     class="gj hk">built with C</strong>, which has its problems…</p>
-                <figure class="hb hc hd he hf cz cl cm paragraph-image">
+                <div class="figure hb hc hd he hf cz cl cm paragraph-image">
                 
                   <p><img src="https://lupyuen.github.io/images/legacy2/d3.png" /></p>
 
          
-                </figure>
+                </div>
                 <blockquote class="hh hi hj">
                   <p id="b02e" class="gh gi ec gv gj b gk gl gm gn go gp gq gr gs gt gu">The C code appeared in an <a
                       class="at cg hl hm hn ho" target="_blank" rel="noopener"
@@ -187,12 +187,12 @@
           <section class="cu cv cw cx cy">
             <div class="n p">
               <div class="ac ae af ag ah dz aj ak">
-                <figure class="hb hc hd he hf cz cl cm paragraph-image">
+                <div class="figure hb hc hd he hf cz cl cm paragraph-image">
                 
                   <p><img src="https://lupyuen.github.io/images/legacy2/d4.png" /></p>
 
              
-                </figure>
+                </div>
                 <blockquote class="hh hi hj">
                   <p id="9726" class="gh gi ec gv gj b gk gl gm gn go gp gq gr gs gt gu"><a
                       href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/rust-safe/src/send_coap.rs#L319-L376"
@@ -227,7 +227,7 @@
                   have the form <code class="dm gw gx gy gz b">( pattern ) =&gt; { substitution }</code></p>
                 <p id="2a48" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu">Here’s a simple Declarative Macro
                   <code class="dm gw gx gy gz b">add_88!()</code> that returns its argument plus 88…</p>
-                <figure class="hb hc hd he hf cz">
+                <div class="figure hb hc hd he hf cz">
                  
                   <p><script src="https://gist.github.com/lupyuen/32af6445eb258339fe2363b770b7d099.js"></script></p>
 
@@ -237,7 +237,7 @@
                       class="at cg hl hm hn ho" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/test-rust-macros/blob/master/src/main.rs#L4-L14</a>
                   </em></p></figcaption>
-                </figure>
+                </div>
                 <p id="ff99" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu">The Rust macro accepts a single
                   parameter <code class="dm gw gx gy gz b">$e</code>, which should be a valid Rust Expression (denoted
                   by <code class="dm gw gx gy gz b">expr</code>). In C we would code the macro as…</p>
@@ -252,7 +252,7 @@
                     class="at cg hl hm hn ho" target="_blank" rel="noopener nofollow">Here’s the whole list</a>)</p>
                 <p id="0b0d" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu">We may provide multiple patterns
                   like this to create an “overloaded function”…</p>
-                <figure class="hb hc hd he hf cz">
+                <div class="figure hb hc hd he hf cz">
              
                   <p><script src="https://gist.github.com/lupyuen/321477fd84b6e1fd0a52dea2c8253fe6.js"></script></p>
 
@@ -262,7 +262,7 @@
                       class="at cg hl hm hn ho" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/test-rust-macros/blob/master/src/main.rs#L4-L25</a>
                   </em></p></figcaption>
-                </figure>
+                </div>
               </div>
             </div>
           </section>
@@ -277,7 +277,7 @@
                   (adapted from the <code
                     class="dm gw gx gy gz b"><a href="https://crates.io/crates/serde_json" class="at cg hl hm hn ho" target="_blank" rel="noopener nofollow">serde_json</a></code>
                   library)…</p>
-                <figure class="hb hc hd he hf cz">
+                <div class="figure hb hc hd he hf cz">
                   
                   <p><script src="https://gist.github.com/lupyuen/ef92789353dc883c4da72f950e577fb4.js"></script></p>
 
@@ -287,7 +287,7 @@
                       class="at cg hl hm hn ho" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/rust-safe/src/mynewt/macros.rs#L105-L120</a>
                   </em></p></figcaption>
-                </figure>
+                </div>
                 <p id="5ddc" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu">The pattern looks complicated…
                 </p>
                 <pre
@@ -304,14 +304,14 @@
               </div>
             </div>
             <div class="cz ak">
-              <figure class="hb hc hd he hf cz ak paragraph-image">
+              <div class="figure hb hc hd he hf cz ak paragraph-image">
                 
                 <p><img src="https://lupyuen.github.io/images/legacy2/d5.png" /></p>
 
               
                 <figcaption><p><em>Matching the parse!() macro parameters with the
                   macro pattern</em></p></figcaption>
-              </figure>
+              </div>
             </div>
             <div class="n p">
               <div class="ac ae af ag ah dz aj ak">
@@ -380,11 +380,11 @@
             <div class="n p">
               <div class="ac ae af ag ah dz aj ak">
                 <h1 id="27e2" class="jo jp ec bk bj jc jq jr js jt ju jv jw jx jy jz ka">Two Legged Problems</h1>
-                <figure class="hb hc hd he hf cz cl cm paragraph-image">
+                <div class="figure hb hc hd he hf cz cl cm paragraph-image">
                 
                   <p><img src="https://lupyuen.github.io/images/legacy2/d6.png" /></p>
 
-                </figure>
+                </div>
               </div>
             </div>
           </section>
@@ -392,12 +392,12 @@
           <section class="cu cv cw cx cy">
             <div class="n p">
               <div class="ac ae af ag ah dz aj ak">
-                <figure class="hb hc hd he hf cz cl cm paragraph-image">
+                <div class="figure hb hc hd he hf cz cl cm paragraph-image">
                 
                   <p><img src="https://lupyuen.github.io/images/legacy2/d7.png" /></p>
 
                 
-                </figure>
+                </div>
               </div>
             </div>
           </section>
@@ -417,20 +417,20 @@
                   tool: It reads a Mynewt C function declaration like this (<code
                     class="dm gw gx gy gz b"><a href="https://mynewt.apache.org/latest/os/core_os/task/task.html#c.os_task_init" class="at cg hl hm hn ho" target="_blank" rel="noopener nofollow">os_task_init</a>()</code>
                   is the Mynewt function for creating background tasks)…</p>
-                <figure class="hb hc hd he hf cz">
+                <div class="figure hb hc hd he hf cz">
                
                   <p><script src="https://gist.github.com/lupyuen/2dbcecf3062522ef3c5e182b36a31713.js"></script></p>
 
 
-                </figure>
+                </div>
                 <p id="d8db" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu">And produces the Rust binding
                   like this…</p>
-                <figure class="hb hc hd he hf cz">
+                <div class="figure hb hc hd he hf cz">
                   
                   <p><script src="https://gist.github.com/lupyuen/450476c651ca7bd65aa534508527e6cc.js"></script></p>
 
 
-                </figure>
+                </div>
                 <p id="83cd" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu">We have a <a
                     href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/rust-safe/scripts/gen-bindings.sh"
                     class="at cg hl hm hn ho" target="_blank" rel="noopener nofollow">script that generates Rust
@@ -476,12 +476,12 @@
             <div class="n p">
               <div class="ac ae af ag ah dz aj ak">
                 <h1 id="2344" class="jo jp ec bk bj jc jq jr js jt ju jv jw jx jy jz ka">The Restless bindgen Horde</h1>
-                <figure class="hb hc hd he hf cz cl cm paragraph-image">
+                <div class="figure hb hc hd he hf cz cl cm paragraph-image">
                 
                   <p><img src="https://lupyuen.github.io/images/legacy2/d8.png" /></p>
 
        
-                </figure>
+                </div>
               </div>
             </div>
           </section>
@@ -489,12 +489,12 @@
           <section class="cu cv cw cx cy">
             <div class="n p">
               <div class="ac ae af ag ah dz aj ak">
-                <figure class="hb hc hd he hf cz cl cm paragraph-image">
+                <div class="figure hb hc hd he hf cz cl cm paragraph-image">
                 
                   <p><img src="https://lupyuen.github.io/images/legacy2/d9.png" /></p>
 
                
-                </figure>
+                </div>
               </div>
             </div>
           </section>
@@ -502,12 +502,12 @@
           <section class="cu cv cw cx cy">
             <div class="n p">
               <div class="ac ae af ag ah dz aj ak">
-                <figure class="hb hc hd he hf cz cl cm paragraph-image">
+                <div class="figure hb hc hd he hf cz cl cm paragraph-image">
                 
                   <p><img src="https://lupyuen.github.io/images/legacy2/d10.png" /></p>
 
                
-                </figure>
+                </div>
                 <p id="f0b4" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu">Creating the safe wrapper in Rust
                   doesn’t need a lot of manual coding… <strong class="gj hk">Procedural Macros</strong> in Rust can do
                   the job for us automatically! First let’s understand what a Procedural Macro can do…</p>
@@ -531,7 +531,7 @@
                   Rust coding, <code class="dm gw gx gy gz b">unsafe &amp;mut</code> looks doubly intimidating, so we
                   use a macro to declare that <code class="dm gw gx gy gz b">NETWORK_TASK</code> will be modified by the
                   external function, like this: <code class="dm gw gx gy gz b">out!(NETWORK_TASK)</code></p>
-                <figure class="hb hc hd he hf cz">
+                <div class="figure hb hc hd he hf cz">
                 
                   <p><script src="https://gist.github.com/lupyuen/500da7dd734d7dd9edfd1985675ea110.js"></script></p>
 
@@ -541,7 +541,7 @@
                       class="at cg hl hm hn ho" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/rust-safe/macros/src/lib.rs#L279-L292</a>
                   </em></p></figcaption>
-                </figure>
+                </div>
                 <p id="505b" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu">Unlike Declarative Macros,
                   Procedural Macros are coded like a real Rust function. A Procedural Macro simply transforms a stream
                   of Rust source code tokens (<code class="dm gw gx gy gz b">TokenStream</code>) into the expanded
@@ -558,7 +558,7 @@
                 <p id="3fb8" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu">We use <code
                     class="dm gw gx gy gz b">format!()</code> to create the desired code. Then we parse the code into a
                   <code class="dm gw gx gy gz b">TokenStream</code> and pass it back to the compiler.</p>
-                <figure class="hb hc hd he hf cz">
+                <div class="figure hb hc hd he hf cz">
             
                   <p><script src="https://gist.github.com/lupyuen/891a0a0e64d335a3ec33592de4378f06.js"></script></p>
 
@@ -568,7 +568,7 @@
                       class="at cg hl hm hn ho" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/rust-safe/macros/src/lib.rs#L293-L306</a>
                   </em></p></figcaption>
-                </figure>
+                </div>
                 <p id="a831" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu">This <code
                     class="dm gw gx gy gz b">strn!()</code> macro is similar… It expands</p>
                 <pre
@@ -608,12 +608,12 @@
                   <strong class="gj hk">null-terminated string that will never be modified</strong>. It contains a fixed
                   slice (array) of bytes that always ends with null. <code class="dm gw gx gy gz b">Strn</code> verifies
                   this when setting and getting the string.</p>
-                <figure class="hb hc hd he hf cz dr kv cd kw kx ky kz la ba lb lc ld le lf lg">
+                <div class="figure hb hc hd he hf cz dr kv cd kw kx ky kz la ba lb lc ld le lf lg">
                  
                   <p><script src="https://gist.github.com/lupyuen/0332e48554c2f98a2137285015b2d761.js"></script></p>
 
 
-                </figure>
+                </div>
                 <p id="13ed" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu">The wrappers for Mynewt APIs only
                   accept <code class="dm gw gx gy gz b">Strn</code> for incoming strings, instead of the default <code
                     class="dm gw gx gy gz b">*const char</code>.</p>
@@ -648,35 +648,35 @@
                   C functions can be very tedious and we forget to check them sometimes. Let’s look at this macro <code
                     class="dm gw gx gy gz b">run!()</code> that was used in our sample code to transform a bunch of C
                   function calls (for encoding CoAP CBOR messages)…</p>
-                <figure class="hb hc hd he hf cz">
+                <div class="figure hb hc hd he hf cz">
                  
                   <p><script src="https://gist.github.com/lupyuen/a5fae5ccb212acb1299697fd0e3eea63.js"></script></p>
 
 
-                </figure>
+                </div>
                 <p id="ce29" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu">…into this code with proper error
                   checking, via <code class="dm gw gx gy gz b">check_result()</code>…</p>
-                <figure class="hb hc hd he hf cz">
+                <div class="figure hb hc hd he hf cz">
        
                   <p><script src="https://gist.github.com/lupyuen/37f368a9fce66dfc6ad27aab89782e01.js"></script></p>
 
 
-                </figure>
+                </div>
                 <p id="8ad7" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu">How should we generate the
                   expanded code in the <code class="dm gw gx gy gz b">run!()</code> macro? We could have used the <code
                     class="dm gw gx gy gz b">format!()</code> method shown earlier…</p>
-                <figure class="hb hc hd he hf cz">
+                <div class="figure hb hc hd he hf cz">
             
                   <p><script src="https://gist.github.com/lupyuen/1c7d6e0c96603dec358d747fceb01f2a.js"></script></p>
 
 
-                </figure>
+                </div>
                 <p id="4ded" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu">But for generating a block of
                   code, calling the <code class="dm gw gx gy gz b">quote!{}</code> macro (from the <code
                     class="dm gw gx gy gz b"><a href="https://docs.rs/quote/0.6.12/quote/" class="at cg hl hm hn ho" target="_blank" rel="noopener nofollow">quote</a></code><a
                     href="https://docs.rs/quote/0.6.12/quote/"
                     class="at cg hl hm hn ho" target="_blank" rel="noopener nofollow"> library</a>) looks cleaner…</p>
-                <figure class="hb hc hd he hf cz">
+                <div class="figure hb hc hd he hf cz">
                
                   <p><script src="https://gist.github.com/lupyuen/5c12260327f91e03223522c80c786e32.js"></script></p>
 
@@ -686,13 +686,13 @@
                       class="at cg hl hm hn ho" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/rust-safe/macros/src/lib.rs#L395-L402</a>
                   </em></p></figcaption>
-                </figure>
+                </div>
                 <p id="70f4" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu">Note that we use <code
                     class="dm gw gx gy gz b">#stmts</code> as a placeholder to tell the macro to substitute the value of
                   <code class="dm gw gx gy gz b">stmts</code> into actual expanded tokens.</p>
                 <p id="2f21" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu">We also used <code
                     class="dm gw gx gy gz b">quote!{}</code> in our macro like this…</p>
-                <figure class="hb hc hd he hf cz">
+                <div class="figure hb hc hd he hf cz">
                 
                   <p><script src="https://gist.github.com/lupyuen/31c698537437d781441fa64b3dc09d7c.js"></script></p>
 
@@ -702,7 +702,7 @@
                       class="at cg hl hm hn ho" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/rust-safe/macros/src/lib.rs#L371-L377</a>
                   </em></p></figcaption>
-                </figure>
+                </div>
                 <p id="dac1" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu"><code
                     class="dm gw gx gy gz b">quote!{}</code> is used here like a template, injecting <code
                     class="dm gw gx gy gz b">stmt_tokens</code> into a chunk of Rust code. Super useful for generating
@@ -735,7 +735,7 @@
                     class="dm gw gx gy gz b">cbor_encode_...</code></p>
                 <p id="dbbd" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu">That’s easy to do with the <code
                     class="dm gw gx gy gz b">syn</code> parser and Rust pattern matching…</p>
-                <figure class="hb hc hd he hf cz">
+                <div class="figure hb hc hd he hf cz">
                 
                   <p><script src="https://gist.github.com/lupyuen/611e83b8fa4389d56a465e43b44a1564.js"></script></p>
 
@@ -745,7 +745,7 @@
                       class="at cg hl hm hn ho" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/rust-safe/macros/src/lib.rs#L358-L371</a>
                   </em></p></figcaption>
-                </figure>
+                </div>
                 <p id="3d1b" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu">Rust has incredibly powerful
                   <code class="dm gw gx gy gz b">enums</code> that will let us match against patterns like <code
                     class="dm gw gx gy gz b">Semi(expr, ...)</code> and <code
@@ -757,7 +757,7 @@
                     class="dm gw gx gy gz b">run</code> macro is meant for calling Embedded C functions, the macro
                   applies a layer of error checking on top of the function calls, in a way that feels natural to the
                   Rust coder. Safer coding, made possible with Rust’s Procedural Macros!</p>
-                <figure class="hb hc hd he hf cz">
+                <div class="figure hb hc hd he hf cz">
                  
                   <p><script src="https://gist.github.com/lupyuen/cd673b0355e82e1279c8c97b54c80986.js"></script></p>
 
@@ -767,20 +767,20 @@
                       class="at cg hl hm hn ho" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/rust-safe/macros/src/lib.rs#L326-L404</a>
                   </em></p></figcaption>
-                </figure>
+                </div>
               </div>
             </div>
           </section>
           <hr class="hr dy hs ht hu dv hv hw hx hy hz" />
           <section class="cu cv cw cx cy">
             <div class="cz ak">
-              <figure class="hb hc hd he hf cz ak paragraph-image">
+              <div class="figure hb hc hd he hf cz ak paragraph-image">
                 
                 <p><img src="https://lupyuen.github.io/images/legacy2/d11.png" /></p>
 
               
                 <figcaption><p><em>Evolving the #[safe_wrap] macro</em></p></figcaption>
-              </figure>
+              </div>
             </div>
             <div class="n p">
               <div class="ac ae af ag ah dz aj ak">
@@ -792,17 +792,17 @@
                 <p id="c70c" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu">To create the wrapper, we apply
                   the <code class="dm gw gx gy gz b">#[safe_wrap]</code> attribute to the Rust binding created by <code
                     class="dm gw gx gy gz b">bindgen</code>…</p>
-                <figure class="hb hc hd he hf cz">
+                <div class="figure hb hc hd he hf cz">
               
                   <p><script src="https://gist.github.com/lupyuen/86ee23381b5f9ff9182cc20ca90022dd.js"></script></p>
 
 
-                </figure>
+                </div>
                 <p id="adcb" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu"><code
                     class="dm gw gx gy gz b">#[safe_wrap]</code> is a Procedural Macro <a
                     href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/rust-safe/macros/src/lib.rs#L24-L107"
                     class="at cg hl hm hn ho" target="_blank" rel="noopener nofollow">defined here</a>…</p>
-                <figure class="hb hc hd he hf cz">
+                <div class="figure hb hc hd he hf cz">
                 
                   <p><script src="https://gist.github.com/lupyuen/13f5b12c2ceda4b81b88e5ca77a64fa6.js"></script></p>
 
@@ -812,7 +812,7 @@
                       class="at cg hl hm hn ho" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/rust-safe/macros/src/lib.rs#L24-L107</a>
                   </em></p></figcaption>
-                </figure>
+                </div>
                 <p id="5ede" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu">The macro calls <code
                     class="dm gw gx gy gz b"><a href="https://docs.rs/syn/0.15.38/syn/macro.parse_macro_input.html" class="at cg hl hm hn ho" target="_blank" rel="noopener nofollow">parse_macro_input</a>!()</code>
                   from the <a
@@ -820,7 +820,7 @@
                     class="at cg hl hm hn ho" target="_blank" rel="noopener nofollow">syn library</a>. The input to the
                   macro is parsed as an <code class="dm gw gx gy gz b">extern</code> function declaration (denoted by
                   <code class="dm gw gx gy gz b">ItemForeignMod</code>).</p>
-                <figure class="hb hc hd he hf cz">
+                <div class="figure hb hc hd he hf cz">
                
                   <p><script src="https://gist.github.com/lupyuen/f91332310b2d9246bccc15f7287ad222.js"></script></p>
 
@@ -830,17 +830,17 @@
                       class="at cg hl hm hn ho" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/rust-safe/macros/src/lib.rs#L24-L107</a>
                   </em></p></figcaption>
-                </figure>
+                </div>
                 <p id="c46f" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu">Next, we inspect each parameter
                   of the <code class="dm gw gx gy gz b">extern</code> function and call <code
                     class="dm gw gx gy gz b"><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/rust-safe/macros/src/lib.rs#L185-L278" class="at cg hl hm hn ho" target="_blank" rel="noopener nofollow">transform_arg_list</a>()</code>
                   to transform each parameter into three forms…</p>
-                <figure class="hb hc hd he hf cz">
+                <div class="figure hb hc hd he hf cz">
               
                   <p><script src="https://gist.github.com/lupyuen/4d48314165ba804987d32f48b1ac0f4a.js"></script></p>
 
 
-                </figure>
+                </div>
                 <p id="e7da" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu">1️⃣ <strong class="gj hk">Wrapper
                     Declaration</strong>: How the parameter type is exposed via the wrapped function.</p>
                 <p id="b8a0" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu">For example, <code
@@ -860,7 +860,7 @@
                   is stricter than C about types, so we use type casting to handle tiny discrepancies like <code
                     class="dm gw gx gy gz b">i32</code> vs <code class="dm gw gx gy gz b">u32</code> (signed vs unsigned
                   integers).</p>
-                <figure class="hb hc hd he hf cz">
+                <div class="figure hb hc hd he hf cz">
               
                   <p><script src="https://gist.github.com/lupyuen/b510571b9385cb5ca189ff770789e7c2.js"></script></p>
 
@@ -870,7 +870,7 @@
                       class="at cg hl hm hn ho" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/rust-safe/macros/src/lib.rs#L24-L107</a>
                   </em></p></figcaption>
-                </figure>
+                </div>
                 <p id="f9f0" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu">Finally we use <code
                     class="dm gw gx gy gz b"><a href="https://docs.rs/quote/0.6.12/quote/macro.quote.html" class="at cg hl hm hn ho" target="_blank" rel="noopener nofollow">quote!</a></code>
                   macro to combine the three forms into the expanded output below. The <code
@@ -878,21 +878,21 @@
                   <strong class="gj hk">highly recommend </strong><code
                     class="dm gw gx gy gz b"><strong class="gj hk">quote!</strong></code><strong class="gj hk"> for
                     composing Procedural Macros</strong>.</p>
-                <figure class="hb hc hd he hf cz">
+                <div class="figure hb hc hd he hf cz">
               
                   <p><script src="https://gist.github.com/lupyuen/11af7179183a66de9fcfc7ac0d124101.js"></script></p>
 
 
-                </figure>
+                </div>
                 <p id="fb27" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu">We use <code
                     class="dm gw gx gy gz b">quote_spanned!</code> instead of <code
                     class="dm gw gx gy gz b">quote!</code> in some spots…</p>
-                <figure class="hb hc hd he hf cz">
+                <div class="figure hb hc hd he hf cz">
            
                   <p><script src="https://gist.github.com/lupyuen/731a7140a8cca00edaf1cc95b4ce7bd6.js"></script></p>
 
 
-                </figure>
+                </div>
                 <p id="91b6" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu">What’s a <strong
                     class="gj hk">Span</strong>? When the Rust Compiler sends a stream of tokens to our macro, it also
                   transmits the <strong class="gj hk">byte location of each token</strong> in the source file. So when
@@ -910,20 +910,20 @@
               </div>
             </div>
             <div class="cz ak">
-              <figure class="hb hc hd he hf cz ak paragraph-image">
+              <div class="figure hb hc hd he hf cz ak paragraph-image">
                 
                 <p><img src="https://lupyuen.github.io/images/legacy2/d12.png" /></p>
 
              
                 <figcaption><p><em>Overview of the #[safe_wrap] attribute
                 </em></p></figcaption>
-              </figure>
+              </div>
             </div>
           </section>
           <hr class="hr dy hs ht hu dv hv hw hx hy hz" />
           <section class="cu cv cw cx cy">
             <div class="cz ak">
-              <figure class="hb hc hd he hf cz">
+              <div class="figure hb hc hd he hf cz">
                 <div class="dl r dd">
                   <div class="lo r"><iframe
                       src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2F9aJqXl7TTkc%3Ffeature%3Doembed&amp;url=http%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D9aJqXl7TTkc&amp;image=https%3A%2F%2Fi.ytimg.com%2Fvi%2F9aJqXl7TTkc%2Fhqdefault.jpg&amp;key=a19fcc184b9711e1b4764040d3dc5c07&amp;type=text%2Fhtml&amp;schema=youtube"
@@ -931,7 +931,7 @@
                       title="Result, Ok and Err in Embedded Rust" class="cp t u dh ak" scrolling="auto"></iframe></div>
                 </div>
                 <figcaption><p><em>Result, Ok and Err in Embedded Rust</em></p></figcaption>
-              </figure>
+              </div>
             </div>
             <div class="n p">
               <div class="ac ae af ag ah dz aj ak">
@@ -940,12 +940,12 @@
                 <p id="ade5" class="gh gi ec bk gj b gk kb gm kc go kd gq ke gs kf gu">In Rust, it’s customary for
                   functions to return <code class="dm gw gx gy gz b">Result&lt;…&gt;</code> instead of an error code
                   like C. That’s why our Safe Wrapper is declared as…</p>
-                <figure class="hb hc hd he hf cz">
+                <div class="figure hb hc hd he hf cz">
                  
                   <p><script src="https://gist.github.com/lupyuen/026adbd9e9b97f6cd063e376ddf69c47.js"></script></p>
 
 
-                </figure>
+                </div>
                 <p id="e4bb" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu"><code
                     class="dm gw gx gy gz b"><a href="https://lupyuen.github.io/stm32bluepill-mynewt-sensor/rust/mylib/mynewt/result/type.MynewtResult.html" class="at cg hl hm hn ho" target="_blank" rel="noopener nofollow">MynewtResult</a>&lt;…&gt;</code>
                   (derived from <code
@@ -978,12 +978,12 @@
                     class="dm gw gx gy gz b">Err(MynewtError::SYS_EAGAIN)</code></p>
                 <p id="7e1f" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu">What happens when we call a
                   function that returns an error? For example…</p>
-                <figure class="hb hc hd he hf cz">
+                <div class="figure hb hc hd he hf cz">
               
                   <p><script src="https://gist.github.com/lupyuen/f26a458aca6cb7f259e7658fe08842f5.js"></script></p>
 
 
-                </figure>
+                </div>
                 <p id="9a34" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu">See the strange <code
                     class="dm gw gx gy gz b">?</code> dangling at the end of the <code
                     class="dm gw gx gy gz b">task_init()</code> function call?</p>
@@ -1055,7 +1055,7 @@
             <div class="cz">
               <div class="n p">
                 <div class="lp lq lr ls lt lu ag lv ah lw aj ak">
-                  <figure class="hb hc hd he hf cz">
+                  <div class="figure hb hc hd he hf cz">
                     <div class="dl r dd">
                       <div class="kq r"><iframe
                           src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2F5wh-iiEbtmA%3Ffeature%3Doembed&amp;url=http%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D5wh-iiEbtmA&amp;image=https%3A%2F%2Fi.ytimg.com%2Fvi%2F5wh-iiEbtmA%2Fhqdefault.jpg&amp;key=a19fcc184b9711e1b4764040d3dc5c07&amp;type=text%2Fhtml&amp;schema=youtube"
@@ -1063,7 +1063,7 @@
                           title="Expand Rust Macros in Visual Studio Code" class="cp t u dh ak"
                           scrolling="auto"></iframe></div>
                     </div>
-                  </figure>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1076,7 +1076,7 @@
                   Studio Code</h1>
                 <p id="511e" class="gh gi ec bk gj b gk kb gm kc go kd gq ke gs kf gu">To see how simple macros are
                   expanded, use <code class="dm gw gx gy gz b">trace_macros!()</code> like this…</p>
-                <figure class="hb hc hd he hf cz">
+                <div class="figure hb hc hd he hf cz">
                 
                   <p><script src="https://gist.github.com/lupyuen/2cf4428a85f8ac27bbcb9518eaf1a039.js"></script></p>
 
@@ -1086,19 +1086,19 @@
                       class="at cg hl hm hn ho" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/test-rust-macros/blob/master/src/main.rs#L170-L176</a>
                   </em></p></figcaption>
-                </figure>
-                <figure class="hb hc hd he hf cz cl cm paragraph-image">
+                </div>
+                <div class="figure hb hc hd he hf cz cl cm paragraph-image">
                 
                   <p><img src="https://lupyuen.github.io/images/legacy2/h0.png" /></p>
 
                 
-                </figure>
-                <figure class="du cz dr kv cd kw kx ky kz la ba lb ma mb mc md lg paragraph-image">
+                </div>
+                <div class="figure du cz dr kv cd kw kx ky kz la ba lb ma mb mc md lg paragraph-image">
                 
                   <p><img src="https://lupyuen.github.io/images/legacy2/d13.png" /></p>
 
                 
-                </figure>
+                </div>
                 <p id="9e20" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu">Mouse over the macro name, like
                   <code class="dm gw gx gy gz b">add_88</code> (located in the <code
                     class="dm gw gx gy gz b">main()</code> function)</p>
@@ -1113,12 +1113,12 @@
                   the <code class="dm gw gx gy gz b">Workspace</code> and open the file <code
                     class="dm gw gx gy gz b"><a href="https://github.com/lupyuen/test-rust-macros/blob/master/.cargo/config" class="at cg hl hm hn ho" target="_blank" rel="noopener nofollow"><strong class="gj hk">.cargo/config</strong></a></code>
                 </p>
-                <figure class="hb hc hd he hf cz">
+                <div class="figure hb hc hd he hf cz">
               
                   <p><script src="https://gist.github.com/lupyuen/dfa6e9d64fbc0c29ed9f7795108ef8d8.js"></script></p>
 
 
-                </figure>
+                </div>
                 <p id="644f" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu">2️⃣ Uncomment the first option…
                 </p>
                 <pre
@@ -1127,14 +1127,14 @@
                     class="dm gw gx gy gz b"><strong class="gj hk">Terminal → Run Task → cargo build</strong></code></p>
                 <p id="df12" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu">The expanded macro appears in the
                   <code class="dm gw gx gy gz b">cargo build</code> log…</p>
-                <figure class="hb hc hd he hf cz cl cm paragraph-image">
+                <div class="figure hb hc hd he hf cz cl cm paragraph-image">
                 
                   <p><img src="https://lupyuen.github.io/images/legacy2/d14.png" /></p>
 
                 
                   <figcaption><p><em>Expanded macro in the cargo build log
                   </em></p></figcaption>
-                </figure>
+                </div>
                 <p id="2f36" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu">4️⃣ With the Task Runner
                   Extension, we may also click <code class="dm gw gx gy gz b">cargo build</code> in the <code
                     class="dm gw gx gy gz b">Task Runner</code> pane at lower left</p>
@@ -1145,7 +1145,7 @@
             <div class="cz">
               <div class="n p">
                 <div class="lp lq lr ls lt lu ag lv ah lw aj ak">
-                  <figure class="hb hc hd he hf cz">
+                  <div class="figure hb hc hd he hf cz">
                     <div class="dl r dd">
                       <div class="kq r"><iframe
                           src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2F5wh-iiEbtmA%3Fstart%3D91%26feature%3Doembed%26start%3D91&amp;url=http%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D5wh-iiEbtmA&amp;image=https%3A%2F%2Fi.ytimg.com%2Fvi%2F5wh-iiEbtmA%2Fhqdefault.jpg&amp;key=a19fcc184b9711e1b4764040d3dc5c07&amp;type=text%2Fhtml&amp;schema=youtube"
@@ -1153,7 +1153,7 @@
                           title="Expand Rust Macros in Visual Studio Code" class="cp t u dh ak"
                           scrolling="auto"></iframe></div>
                     </div>
-                  </figure>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1171,12 +1171,12 @@
             <div class="n p">
               <div class="ac ae af ag ah dz aj ak">
                 <h1 id="9f0b" class="jo jp ec bk bj jc jq jr js jt ju jv jw jx jy jz ka">Macro Hygiene in Rust</h1>
-                <figure class="hb hc hd he hf cz cl cm paragraph-image">
+                <div class="figure hb hc hd he hf cz cl cm paragraph-image">
                 
                   <p><img src="https://lupyuen.github.io/images/legacy2/d15.png" /></p>
 
              
-                </figure>
+                </div>
               </div>
             </div>
           </section>
@@ -1184,12 +1184,12 @@
           <section class="cu cv cw cx cy">
             <div class="n p">
               <div class="ac ae af ag ah dz aj ak">
-                <figure class="hb hc hd he hf cz cl cm paragraph-image">
+                <div class="figure hb hc hd he hf cz cl cm paragraph-image">
                 
                   <p><img src="https://lupyuen.github.io/images/legacy2/d16.png" /></p>
 
                
-                </figure>
+                </div>
               </div>
             </div>
           </section>
@@ -1197,12 +1197,12 @@
           <section class="cu cv cw cx cy">
             <div class="n p">
               <div class="ac ae af ag ah dz aj ak">
-                <figure class="hb hc hd he hf cz cl cm paragraph-image">
+                <div class="figure hb hc hd he hf cz cl cm paragraph-image">
                 
                   <p><img src="https://lupyuen.github.io/images/legacy2/d17.png" /></p>
 
                 
-                </figure>
+                </div>
                 <blockquote class="hh hi hj">
                   <p id="598e" class="gh gi ec gv gj b gk gl gm gn go gp gq gr gs gt gu">More about <a
                       href="https://danielkeep.github.io/tlborm/book/mbe-min-hygiene.html"
@@ -1224,12 +1224,12 @@
                   the <code class="dm gw gx gy gz b">Workspace</code> and open the file <code
                     class="dm gw gx gy gz b"><a href="https://github.com/lupyuen/test-rust-macros/blob/master/.cargo/config" class="at cg hl hm hn ho" target="_blank" rel="noopener nofollow"><strong class="gj hk">.cargo/config</strong></a></code>
                 </p>
-                <figure class="hb hc hd he hf cz">
+                <div class="figure hb hc hd he hf cz">
                  
                   <p><script src="https://gist.github.com/lupyuen/dfa6e9d64fbc0c29ed9f7795108ef8d8.js"></script></p>
 
 
-                </figure>
+                </div>
                 <p id="aae1" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu">2️⃣ Uncomment the second option…
                 </p>
                 <pre
@@ -1246,14 +1246,14 @@
             <div class="cz">
               <div class="n p">
                 <div class="lp lq lr ls lt lu ag lv ah lw aj ak">
-                  <figure class="hb hc hd he hf cz mi mj paragraph-image">
+                  <div class="figure hb hc hd he hf cz mi mj paragraph-image">
                 
                     <p><img src="https://lupyuen.github.io/images/legacy2/d18.png" /></p>
 
                 
                     <figcaption><p><em>Rust Compiler displaying the context of
                       every variable</em></p></figcaption>
-                  </figure>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1266,7 +1266,7 @@
             <div class="cz">
               <div class="n p">
                 <div class="lp lq lr ls lt lu ag lv ah lw aj ak">
-                  <figure class="hb hc hd he hf cz">
+                  <div class="figure hb hc hd he hf cz">
                     <div class="dl r dd">
                       <div class="kq r"><iframe
                           src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FUuPab1kXVQo%3Ffeature%3Doembed&amp;url=http%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DUuPab1kXVQo&amp;image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FUuPab1kXVQo%2Fhqdefault.jpg&amp;key=a19fcc184b9711e1b4764040d3dc5c07&amp;type=text%2Fhtml&amp;schema=youtube"
@@ -1274,7 +1274,7 @@
                           title="Rust Macro Hygiene in Visual Studio Code" class="cp t u dh ak"
                           scrolling="auto"></iframe></div>
                     </div>
-                  </figure>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1316,12 +1316,12 @@
                     class="at cg hl hm hn ho" target="_blank" rel="noopener nofollow"> is located here</a>.</p>
                 <p id="a7b2" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu">They run on different contexts…
                 </p>
-                <figure class="hb hc hd he hf cz">
+                <div class="figure hb hc hd he hf cz">
               
                   <p><script src="https://gist.github.com/lupyuen/8c3e54f64e1252b8a5dcf3fa8c9d697b.js"></script></p>
 
 
-                </figure>
+                </div>
                 <p id="bfb3" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu">So we may make the mistake of
                   adding <a href="https://doc.rust-lang.org/std/index.html"
                     class="at cg hl hm hn ho" target="_blank" rel="noopener nofollow">Rust Standard Library</a> features
@@ -1352,12 +1352,12 @@
             <div class="n p">
               <div class="ac ae af ag ah dz aj ak">
                 <h1 id="5217" class="jo jp ec bk bj jc jq jr js jt ju jv jw jx jy jz ka">The Lizard Rests</h1>
-                <figure class="hb hc hd he hf cz cl cm paragraph-image">
+                <div class="figure hb hc hd he hf cz cl cm paragraph-image">
                 
                   <p><img src="https://lupyuen.github.io/images/legacy2/d19.png" /></p>
 
                 
-                </figure>
+                </div>
                 <p id="7da3" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu">Check out the latest article on
                   Visual Embedded Rust…</p>
                 <div class="ib ic id ie if ig"><a rel="noopener"
@@ -1385,12 +1385,12 @@
                   <p id="c700" class="gh gi ec gv gj b gk gl gm gn go gp gq gr gs gt gu">This section is not meant for
                     humans; it’s for web crawlers to index the text content of the images</p>
                 </blockquote>
-                <figure class="hb hc hd he hf cz dr kv cd kw kx ky kz la ba lb ma mb mc md lg paragraph-image">
+                <div class="figure hb hc hd he hf cz dr kv cd kw kx ky kz la ba lb ma mb mc md lg paragraph-image">
                 
                   <p><img src="https://lupyuen.github.io/images/legacy2/d20.png" /></p>
 
                
-                </figure>
+                </div>
                 <p id="1abc" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu"><em class="gv">“Hello I’m MyNewt.
                     I’m an Embedded OS that runs on Bare Metal”</em></p>
                 <p id="c113" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu"><em class="gv">“Yep I’m open
@@ -1408,12 +1408,12 @@
           <section class="cu cv cw cx cy">
             <div class="n p">
               <div class="ac ae af ag ah dz aj ak">
-                <figure class="hb hc hd mm mn cz dr kv cd kw kx ky kz la ba lb ma mb mc md lg paragraph-image">
+                <div class="figure hb hc hd mm mn cz dr kv cd kw kx ky kz la ba lb ma mb mc md lg paragraph-image">
                 
                   <p><img src="https://lupyuen.github.io/images/legacy2/d21.png" /></p>
 
                 
-                </figure>
+                </div>
                 <p id="0de1" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu"><em class="gv">“What’s wrong with
                     C? The code gets messy when we do something simple… Like sending a JSON message over CoAP, using
                     macros…”</em></p>
@@ -1426,12 +1426,12 @@
           <section class="cu cv cw cx cy">
             <div class="n p">
               <div class="ac ae af ag ah dz aj ak">
-                <figure class="hb hc hd mm mn cz dr kv cd kw kx ky kz la ba lb ma mb mc md lg paragraph-image">
+                <div class="figure hb hc hd mm mn cz dr kv cd kw kx ky kz la ba lb ma mb mc md lg paragraph-image">
                 
                   <p><img src="https://lupyuen.github.io/images/legacy2/d22.png" /></p>
 
                 
-                </figure>
+                </div>
                 <p id="1c5d" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu"><em class="gv">“Here’s the
                     solution in Rust… Simple Clean Rust Code”</em></p>
                 <p id="559f" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu"><em class="gv">“Just that the
@@ -1447,12 +1447,12 @@
           <section class="cu cv cw cx cy">
             <div class="n p">
               <div class="ac ae af ag ah dz aj ak">
-                <figure class="hb hc hd mm mn cz dr kv cd kw kx ky kz la ba lb ma mb mc md lg paragraph-image">
+                <div class="figure hb hc hd mm mn cz dr kv cd kw kx ky kz la ba lb ma mb mc md lg paragraph-image">
                 
                   <p><img src="https://lupyuen.github.io/images/legacy2/d23.png" /></p>
 
                
-                </figure>
+                </div>
                 <p id="7619" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu"><em class="gv">Encoding Format:
                     @json or @cbor</em></p>
                 <p id="2c4d" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu"><em class="gv">Parser State:
@@ -1467,12 +1467,12 @@
           <section class="cu cv cw cx cy">
             <div class="n p">
               <div class="ac ae af ag ah dz aj ak">
-                <figure class="hb hc hd mm mn cz dr kv cd kw kx ky kz la ba lb ma mb mc md lg paragraph-image">
+                <div class="figure hb hc hd mm mn cz dr kv cd kw kx ky kz la ba lb ma mb mc md lg paragraph-image">
                 
                   <p><img src="https://lupyuen.github.io/images/legacy2/d24.png" /></p>
 
                
-                </figure>
+                </div>
                 <p id="04eb" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu"><em class="gv">“My two-legged
                     friends are now thinking…”</em></p>
                 <p id="63d3" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu"><em class="gv">“What if I need to
@@ -1488,12 +1488,12 @@
           <section class="cu cv cw cx cy">
             <div class="n p">
               <div class="ac ae af ag ah dz aj ak">
-                <figure class="hb hc hd mm mn cz dr kv cd kw kx ky kz la ba lb ma mb mc md lg paragraph-image">
+                <div class="figure hb hc hd mm mn cz dr kv cd kw kx ky kz la ba lb ma mb mc md lg paragraph-image">
                 
                   <p><img src="https://lupyuen.github.io/images/legacy2/d25.png" /></p>
 
                
-                </figure>
+                </div>
                 <p id="c18d" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu"><em class="gv">“Rust will let you
                     call any C function, even C functions defined in Mynewt!”</em></p>
                 <p id="08fe" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu"><em class="gv">“All you need to
@@ -1509,12 +1509,12 @@
           <section class="cu cv cw cx cy">
             <div class="n p">
               <div class="ac ae af ag ah dz aj ak">
-                <figure class="hb hc hd mm mn cz dr kv cd kw kx ky kz la ba lb ma mb mc md lg paragraph-image">
+                <div class="figure hb hc hd mm mn cz dr kv cd kw kx ky kz la ba lb ma mb mc md lg paragraph-image">
                 
                   <p><img src="https://lupyuen.github.io/images/legacy2/d26.png" /></p>
 
               
-                </figure>
+                </div>
                 <p id="7903" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu"><em class="gv">“With bindgen we
                     can import all the C functions from Mynewt into Rust… In a single click!”</em></p>
                 <p id="1faa" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu"><em class="gv">“But is the
@@ -1526,12 +1526,12 @@
           <section class="cu cv cw cx cy">
             <div class="n p">
               <div class="ac ae af ag ah dz aj ak">
-                <figure class="hb hc hd mm mn cz dr kv cd kw kx ky kz la ba lb ma mb mc md lg paragraph-image">
+                <div class="figure hb hc hd mm mn cz dr kv cd kw kx ky kz la ba lb ma mb mc md lg paragraph-image">
                 
                   <p><img src="https://lupyuen.github.io/images/legacy2/d27.png" /></p>
 
                
-                </figure>
+                </div>
                 <p id="a315" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu"><em class="gv">“See how we are
                     rolling on top of Bare Metal? This is highly UNSAFE!”</em></p>
                 <p id="6a69" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu"><em class="gv">“We could tumble
@@ -1547,12 +1547,12 @@
           <section class="cu cv cw cx cy">
             <div class="n p">
               <div class="ac ae af ag ah dz aj ak">
-                <figure class="hb hc hd mm mn cz dr kv cd kw kx ky kz la ba lb ma mb mc md lg paragraph-image">
+                <div class="figure hb hc hd mm mn cz dr kv cd kw kx ky kz la ba lb ma mb mc md lg paragraph-image">
                 
                   <p><img src="https://lupyuen.github.io/images/legacy2/d28.png" /></p>
 
               
-                </figure>
+                </div>
                 <p id="2ed7" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu"><em class="gv">“We should call
                     the Mynewt function thru a SAFE wrapper…”</em></p>
                 <p id="7c98" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu"><em class="gv">“Wrapper checks
@@ -1568,12 +1568,12 @@
           <section class="cu cv cw cx cy">
             <div class="n p">
               <div class="ac ae af ag ah dz aj ak">
-                <figure class="hb hc hd mm mn cz dr kv cd kw kx ky kz la ba lb ma mb mc md lg paragraph-image">
+                <div class="figure hb hc hd mm mn cz dr kv cd kw kx ky kz la ba lb ma mb mc md lg paragraph-image">
                 
                   <p><img src="https://lupyuen.github.io/images/legacy2/d29.png" /></p>
 
                  
-                </figure>
+                </div>
                 <p id="6160" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu"><em class="gv">“Sometimes working
                     with Rust feels like meeting a Food Safety Inspector…”</em></p>
                 <p id="7e02" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu"><strong class="gj hk"><em
@@ -1602,12 +1602,12 @@
           <section class="cu cv cw cx cy">
             <div class="n p">
               <div class="ac ae af ag ah dz aj ak">
-                <figure class="hb hc hd mm mn cz dr kv cd kw kx ky kz la ba lb ma mb mc md lg paragraph-image">
+                <div class="figure hb hc hd mm mn cz dr kv cd kw kx ky kz la ba lb ma mb mc md lg paragraph-image">
                 
                   <p><img src="https://lupyuen.github.io/images/legacy2/d30.png" /></p>
 
              
-                </figure>
+                </div>
                 <p id="51e6" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu"><em class="gv">“Pretend you’re
                     running a Restaurant Business (for humans, not lizards). A Food Safety Inspector walks into your
                     restaurant and orders the soup. The Inspector makes a complaint…”</em></p>
@@ -1640,12 +1640,12 @@
           <section class="cu cv cw cx cy">
             <div class="n p">
               <div class="ac ae af ag ah dz aj ak">
-                <figure class="hb hc hd mm mn cz dr kv cd kw kx ky kz la ba lb ma mb mc md lg paragraph-image">
+                <div class="figure hb hc hd mm mn cz dr kv cd kw kx ky kz la ba lb ma mb mc md lg paragraph-image">
                 
                   <p><img src="https://lupyuen.github.io/images/legacy2/d31.png" /></p>
 
                
-                </figure>
+                </div>
                 <p id="f011" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu"><em class="gv">“Unfortunately for
                     Rust macro coders, this Hygiene problem is very real… The </em><code
                     class="dm gw gx gy gz b"><em class="gv">salt</em></code><em class="gv"> that’s inside the macro
@@ -1665,12 +1665,12 @@
           <section class="cu cv cw cx cy">
             <div class="n p">
               <div class="ac ae af ag ah dz aj ak">
-                <figure class="hb hc hd mm mn cz dr kv cd kw kx ky kz la ba lb ma mb mc md lg paragraph-image">
+                <div class="figure hb hc hd mm mn cz dr kv cd kw kx ky kz la ba lb ma mb mc md lg paragraph-image">
                 
                   <p><img src="https://lupyuen.github.io/images/legacy2/d32.png" /></p>
 
           
-                </figure>
+                </div>
                 <p id="ab5a" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu"><em class="gv">“In </em><code
                     class="dm gw gx gy gz b"><em class="gv">make_bad_soup()</em></code><em class="gv">: Contexts don’t
                     match. Rust Compiler fails with Hygiene Error”</em></p>
@@ -1684,12 +1684,12 @@
           <section class="cu cv cw cx cy">
             <div class="n p">
               <div class="ac ae af ag ah dz aj ak">
-                <figure class="hb hc hd mm mn cz dr kv cd kw kx ky kz la ba lb ma mb mc md lg paragraph-image">
+                <div class="figure hb hc hd mm mn cz dr kv cd kw kx ky kz la ba lb ma mb mc md lg paragraph-image">
                                   
                 <p><img src="https://lupyuen.github.io/images/legacy2/d33.png" /></p>
 
           
-                </figure>
+                </div>
                 <p id="60ba" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu"><em class="gv">“Rust has so many
                     goodies for Embedded Coders…”</em></p>
                 <p id="ccca" class="gh gi ec bk gj b gk gl gm gn go gp gq gr gs gt gu"><em class="gv">“Do we really want

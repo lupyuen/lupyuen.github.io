@@ -71,14 +71,14 @@
           <div class="cp u cq cr cs ct"></div>
           <section class="cu cv cw cx cy">
             <div class="cz ak">
-              <figure class="da cz ak paragraph-image">
+              <div class="figure da cz ak paragraph-image">
 
                 
                 <p><img src="https://lupyuen.github.io/images/legacy2/j1.gif" /></p>
 
 
               
-              </figure>
+              </div>
             </div>
             <div class="n p">
               <div class="ac ae af ag ah dp aj ak">
@@ -211,7 +211,7 @@
                     href="https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/baseloader/baseloader.c#L256-L362"
                     class="at cg gr gs gt gu" target="_blank" rel="noopener nofollow">this code that we use for flashing
                     the Blue Pill WebUSB Bootloader</a>…</p>
-                <figure class="ii ij ik il im cz cl cm paragraph-image">
+                <div class="figure ii ij ik il im cz cl cm paragraph-image">
                 
                   <p><img src="https://lupyuen.github.io/images/legacy2/j2.png" /></p>
   
@@ -223,14 +223,14 @@
                       class="at cg gr gs gt gu" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/baseloader/baseloader.c#L256-L362</a>
                   </em></p></figcaption>
-                </figure>
+                </div>
                 <p id="48f9" class="gc gd ds bk gf b gg gh gi gj gk gl gm gn go gp gq">Looks like typical Blue Pill
                   code… <code class="dj iv iw ix iy b">baseloader_start()</code> calls some functions to <strong
                     class="gf gv">lock, unlock, erase and update</strong> Blue Pill’s flash memory. Now look at the <a
                     href="https://github.com/lupyuen/codal-libopencm3/blob/master/logs/firmware.dump#L875-L1650"
                     class="at cg gr gs gt gu" target="_blank" rel="noopener nofollow">Arm Cortex-M3 assembly code</a>
                   that the C compiler generated for <code class="dj iv iw ix iy b">baseloader_start()</code>…</p>
-                <figure class="ii ij ik il im cz cl cm paragraph-image">
+                <div class="figure ii ij ik il im cz cl cm paragraph-image">
                 
                   <p><img src="https://lupyuen.github.io/images/legacy2/j3.png" /></p>
   
@@ -241,7 +241,7 @@
                       class="at cg gr gs gt gu" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/codal-libopencm3/blob/master/logs/firmware.dump#L875-L1650</a>
                   </em></p></figcaption>
-                </figure>
+                </div>
                 <p id="b3d7" class="gc gd ds bk gf b gg gh gi gj gk gl gm gn go gp gq">Do you see the magic here?
                   <strong class="gf gv">There are no calls to other functions!</strong> It’s as though all the <strong
                     class="gf gv">lock / unlock / erase / update</strong> functions are done within this <code
@@ -301,13 +301,13 @@
               </div>
             </div>
             <div class="cz ak">
-              <figure class="ii ij ik il im cz ak paragraph-image">
+              <div class="figure ii ij ik il im cz ak paragraph-image">
                 
                 <p><img src="https://lupyuen.github.io/images/legacy2/j4.gif" /></p>
 
 
            
-              </figure>
+              </div>
             </div>
             <div class="n p">
               <div class="ac ae af ag ah dp aj ak">
@@ -319,13 +319,13 @@
               </div>
             </div>
             <div class="cz ak">
-              <figure class="ii ij ik il im cz ak paragraph-image">
+              <div class="figure ii ij ik il im cz ak paragraph-image">
                 
                 <p><img src="https://lupyuen.github.io/images/legacy2/j5.gif" /></p>
 
 
              
-              </figure>
+              </div>
             </div>
             <div class="n p">
               <div class="ac ae af ag ah dp aj ak">
@@ -344,13 +344,13 @@
               </div>
             </div>
             <div class="cz ak">
-              <figure class="ii ij ik il im cz ak paragraph-image">
+              <div class="figure ii ij ik il im cz ak paragraph-image">
                 
                 <p><img src="https://lupyuen.github.io/images/legacy2/j6.gif" /></p>
 
 
             
-              </figure>
+              </div>
             </div>
             <div class="n p">
               <div class="ac ae af ag ah dp aj ak">
@@ -362,13 +362,13 @@
               </div>
             </div>
             <div class="cz ak">
-              <figure class="ii ij ik il im cz ak paragraph-image">
+              <div class="figure ii ij ik il im cz ak paragraph-image">
                 
                 <p><img src="https://lupyuen.github.io/images/legacy2/j7.gif" /></p>
 
 
            
-              </figure>
+              </div>
             </div>
             <div class="n p">
               <div class="ac ae af ag ah dp aj ak">
@@ -386,12 +386,12 @@
               </div>
             </div>
             <div class="cz ak">
-              <figure class="ii ij ik il im cz ak paragraph-image">
+              <div class="figure ii ij ik il im cz ak paragraph-image">
                 
                 <p><img src="https://lupyuen.github.io/images/legacy2/j8.gif" /></p>
 
 
-              </figure>
+              </div>
             </div>
             <div class="n p">
               <div class="ac ae af ag ah dp aj ak">
@@ -416,13 +416,13 @@
               </div>
             </div>
             <div class="cz ak">
-              <figure class="ii ij ik il im cz ak paragraph-image">
+              <div class="figure ii ij ik il im cz ak paragraph-image">
                 
                 <p><img src="https://lupyuen.github.io/images/legacy2/j9.gif" /></p>
 
 
              
-              </figure>
+              </div>
             </div>
             <div class="n p">
               <div class="ac ae af ag ah dp aj ak">
@@ -445,7 +445,7 @@
             <div class="cz">
               <div class="n p">
                 <div class="jh ji jj jk jl jm ag jn ah jo aj ak">
-                  <figure class="ii ij ik il im cz">
+                  <div class="figure ii ij ik il im cz">
                     <div class="dh r di">
                       <div class="jp r"><iframe
                           src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FAU0aQ9Vro1g%3Ffeature%3Doembed&amp;url=http%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DAU0aQ9Vro1g&amp;image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FAU0aQ9Vro1g%2Fhqdefault.jpg&amp;key=a19fcc184b9711e1b4764040d3dc5c07&amp;type=text%2Fhtml&amp;schema=youtube"
@@ -454,7 +454,7 @@
                           scrolling="auto"></iframe></div>
                     </div>
                     <figcaption><p><em>Upgrading the WebUSB Bootloader</em></p></figcaption>
-                  </figure>
+                  </div>
                 </div>
               </div>
             </div>
@@ -480,7 +480,7 @@
                   are ten 16-bit registers that we may use to store 20 bytes of data. The contents of the registers will
                   be preserved across restarts,<strong class="gf gv"> as long as there is power supplied to Blue
                     Pill</strong>.</p>
-                <figure class="ii ij ik il im cz">
+                <div class="figure ii ij ik il im cz">
               
                   <p><script src="https://gist.github.com/lupyuen/ebe183a495201248127da64f50a28e89.js"></script></p>
 
@@ -490,7 +490,7 @@
                       class="at cg gr gs gt gu" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/bootloader/stm32f103/backup.c</a>
                   </em></p></figcaption>
-                </figure>
+                </div>
                 <p id="5eef" class="gc gd ds bk gf b gg gh gi gj gk gl gm gn go gp gq">In the <a
                     href="https://github.com/lupyuen/codal-libopencm3/blob/master/stm32/bootloader/stm32f103/backup.c"
                     class="at cg gr gs gt gu" target="_blank" rel="noopener nofollow">Bootloader code above</a> we use
