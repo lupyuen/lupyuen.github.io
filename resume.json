@@ -535,7 +535,7 @@
       "name": "Connect STM32 Blue Pill to NB-IoT with Quectel BC95-G and Apache Mynewt",
       "publisher": "Medium",
       "releaseDate": "2019-07-25",
-      "website": "https://web.archive.org/https://medium.com/@ly.lee/connect-stm32-blue-pill-to-nb-iot-with-quectel-bc95-g-and-apache-mynewt-c99a9d8417a9?source=friends_link&sk=34fb9befbea42e98cb5942d66f594027",
+      "website": "https://lupyuen.github.io/articles/connect-stm32-blue-pill-to-nb-iot-with-quectel-bc95-g-and-apache-mynewt",
       "summary": "Let’s build an IoT sensor with a real microcontroller — STM32 Blue Pill — and a real NB-IoT module — Quectel BC95-G!"
     },
     {
@@ -584,14 +584,14 @@
       "name": "Connect STM32 Blue Pill to ESP8266 with Apache Mynewt",
       "publisher": "Medium",
       "releaseDate": "2019-04-20",
-      "website": "https://web.archive.org/https://medium.com/@ly.lee/connect-stm32-blue-pill-to-esp8266-with-apache-mynewt-7edceb9e3b8d?source=friends_link&sk=df729a82533d817ec6b2d9b626b6f66b",
+      "website": "https://lupyuen.github.io/articles/connect-stm32-blue-pill-to-esp8266-with-apache-mynewt",
       "summary": "And WiFi Geolocation with ESP8266"
     },
     {
       "name": "Create your IoT gadget with Apache Mynewt and STM32 Blue Pill",
       "publisher": "Medium",
       "releaseDate": "2019-03-26",
-      "website": "https://web.archive.org/web/20191130001232/https://medium.com/@ly.lee/create-your-iot-gadget-with-apache-mynewt-and-stm32-blue-pill-d689b3ca725",
+      "website": "https://lupyuen.github.io/articles/create-your-iot-gadget-with-apache-mynewt-and-stm32-blue-pill",
       "summary": "Apache Mynewt is a free, open-source realtime operating system for microcontrollers"
     },
     {
