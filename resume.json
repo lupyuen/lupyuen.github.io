@@ -493,7 +493,7 @@
       "name": "Build an NB-IoT GPS Tracker on STM32 L476 with Apache Mynewt and Embedded Rust",
       "publisher": "Medium",
       "releaseDate": "2019-09-22",
-      "website": "https://web.archive.org/https://medium.com/@ly.lee/build-an-nb-iot-gps-tracker-on-stm32-l476-with-apache-mynewt-and-embedded-rust-8c095a925546?source=friends_link&sk=f3e802795d4fd7d569f0d67679e8c9e6",
+      "website": "https://lupyuen.github.io/articles/build-an-nb-iot-gps-tracker-on-stm32-l476-with-apache-mynewt-and-embedded-rust",
       "summary": "Let’s build a simple gadget that determines its current location based on received GPS signals… And transmits the location to a server via NB-IoT"
     },
     {
@@ -570,7 +570,7 @@
       "name": "Build Your IoT Sensor Network — STM32 Blue Pill + nRF24L01 + ESP8266 + Apache Mynewt + thethings.io",
       "publisher": "Medium",
       "releaseDate": "2019-05-27",
-      "website": "https://web.archive.org/https://medium.com/@ly.lee/build-your-iot-sensor-network-stm32-blue-pill-nrf24l01-esp8266-apache-mynewt-thethings-io-ca7486523f5d?source=friends_link&sk=e49514a7e616d4ff931dd24329a82ce0",
+      "website": "https://lupyuen.github.io/articles/build-your-iot-sensor-network-stm32-blue-pill-nrf24l01-esp8266-apache-mynewt-thethings-io",
       "summary": "Let's build a Sensor Network running on two Blue Pills with nRF24L01 and ESP8266"
     },
     {
