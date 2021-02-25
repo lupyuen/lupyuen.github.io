@@ -770,9 +770,14 @@ objsize
 <p><em>Why did we load our Mynewt Firmware (and Rust Firmware) to Cache Memory instead of Flash Memory?</em></p>
 <p>Because OpenOCD couldn't load our Mynewt Firmware (and Rust Firmware) into Flash Memory. </p>
 <p>(Probably because of Flash Protection. Or because writing to BL602 Flash Memory hasn't been implemented in OpenOCD.)</p>
-<p><a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_Openocd&amp;GDB/en">BL602 JTAG doesn't support loading firmware into Flash Memory. See the BL602 JTAG Docs</a></p>
+<p><a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_Openocd&amp;GDB/en">BL602 OpenOCD with JTAG doesn't support loading firmware into Flash Memory. See the BL602 OpenOCD Docs</a></p>
+<p><em>What happens when we use <code>blflash</code> to load our firmware to Flash Memory?</em></p>
+<p>We're not sure if the Mynewt (or Rust) Firmware will run... But it's worth trying!</p>
+<p>Make sure that we update the Memory Map to load our code into the XIP Flash Memory at <code>0x2300 0000</code>.</p>
+<p>Note that the <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602/evb/src/boot/gcc/start.S">Start Code from BL602 IoT SDK <code>start.S</code></a> references the Boot2 Bootloader.</p>
+<p>We're not sure why. Our Start Code from Mynewt (and Rust) doesn't use the Boot2 Bootloader.</p>
 <p><img src="https://lupyuen.github.io/images/mynewt-flash.png" alt="Loading Mynewt Firmware to Flash Memory" /></p>
-<p><em>What happens when we load our firmware to Flash Memory?</em></p>
+<p><em>What happens when we use OpenOCD + JTAG to load our firmware to Flash Memory?</em></p>
 <p>The screen above shows the first version of the Mynewt Firmware, that loads into Flash Memory.</p>
 <p>We used this GDB command to dump out the first 10 words of PineCone's Flash Memory...</p>
 <pre><code class="language-text">x/10x _reset_handler
@@ -781,7 +786,7 @@ objsize
 <p>When we compare the dumped data with our Firmware Disassembly, we see that the bytes don't match.</p>
 <p>Hence we deduce that our Mynewt Firmware wasn't loaded correctly into Flash Memory.</p>
 <p><img src="https://lupyuen.github.io/images/mynewt-ram.png" alt="Loading Mynewt Firmware to Cache Memory" /></p>
-<p><em>What happens when we load our firmware to Cache Memory?</em></p>
+<p><em>What happens when we use OpenOCD + JTAG to load our firmware to Cache Memory?</em></p>
 <p>Here's the second try, loading our Mynewt Firmware to Cache Memory. (The same way that we loaded Rust Firmware in our previous article)</p>
 <p>Entering the same GDB Command...</p>
 <pre><code class="language-text">x/10x _reset_handler
