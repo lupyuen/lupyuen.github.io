@@ -109,7 +109,7 @@
 <li>
 <p><strong>CPU is based on RISC-V, not Arm</strong>: Yep this scares most people, because BL602 will NOT run code compiled for Arm processors. Instead we need to use the <a href="https://xpack.github.io/riscv-none-embed-gcc/">32-bit RISC-V version of the GCC compiler</a> to recompile our programs.</p>
 <p><a href="https://github.com/alibaba/AliOS-Things">FreeRTOS + AliOS</a> has been ported to BL602. (<a href="https://github.com/pine64/bl_iot_sdk/tree/master/components/bl602">More details</a>) But other Real Time Operating Systems (like <a href="https://www.zephyrproject.org/">Zephyr</a>, <a href="https://www.riot-os.org/">RIOT</a> and <a href="https://mynewt.apache.org/">Mynewt</a>) have been slow to adopt RISC-V. (We'll learn why in a while)</p>
-<p>Rust runs perfectly fine on RISC-V microcontrollers. (<a href="https://web.archive.org/web/20191126100556/https://medium.com/swlh/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v-4054a5922493?source=friends_link&amp;sk=215cd06186d912277d0469224666d60d">Here's the proof</a>)</p>
+<p>Rust runs perfectly fine on RISC-V microcontrollers. (<a href="https://lupyuen.github.io/articles/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v">Here's the proof</a>)</p>
 </li>
 </ol>
 <p>It's great that Pine64 is reaching out to the Open Source Community through the <a href="https://www.pine64.org/2020/10/28/nutcracker-challenge-blob-free-wifi-ble/">PineCone Nutcracker initiative</a>... Because it takes A Humongous Village to get BL602 ready for real-world gadgets.</p>
@@ -156,7 +156,7 @@
 </ul>
 </li>
 <li>
-<p><a href="https://web.archive.org/web/20191126100556/https://medium.com/swlh/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v-4054a5922493?source=friends_link&amp;sk=215cd06186d912277d0469224666d60d"><strong>GigaDevice GD32 VF103</strong></a> (Released 2019)</p>
+<p><a href="https://lupyuen.github.io/articles/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v"><strong>GigaDevice GD32 VF103</strong></a> (Released 2019)</p>
 <ul>
 <li>Used in Pinecil soldering iron and <a href="https://www.seeedstudio.com/catalogsearch/result/?q=Gd32">various dev boards</a></li>
 <li>Supported by PlatformIO development tool</li>
@@ -521,7 +521,7 @@ make
 <p><a href="https://pine64.github.io/bl602-docs/Developer_Environment/eclipse/eclipse.html"><strong>Eclipse</strong></a></p>
 </li>
 </ol>
-<p><em>(For the BL602 port of Mynewt: I'll be using VSCode as the development tool. Firmware build will be supported on plain old Windows (without MSYS2 / WSL), macOS, Linux, GitHub Actions and GitLab CI. More about <a href="https://web.archive.org/web/20191104074306/https://medium.com/swlh/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v-4054a5922493">porting Mynewt to RISC-V</a> and <a href="https://lupyuen.github.io/articles/hey-gd32-vf103-on-risc-v-i-surrender-for-now">how it got stuck</a>)</em></p>
+<p><em>(For the BL602 port of Mynewt: I'll be using VSCode as the development tool. Firmware build will be supported on plain old Windows (without MSYS2 / WSL), macOS, Linux, GitHub Actions and GitLab CI. More about <a href="https://lupyuen.github.io/articles/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v">porting Mynewt to RISC-V</a> and <a href="https://lupyuen.github.io/articles/hey-gd32-vf103-on-risc-v-i-surrender-for-now">how it got stuck</a>)</em></p>
 <h2 id="debugging-firmware" class="section-header"><a href="#debugging-firmware">4.5 Debugging Firmware</a></h2>
 <p>There's an entire article about debugging PineCone Firmware with OpenOCD and JTAG...</p>
 <p><a href="https://lupyuen.github.io/articles/openocd">&quot;Connect PineCone BL602 to OpenOCD&quot;</a></p>
