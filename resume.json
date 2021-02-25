@@ -479,7 +479,7 @@
       "name": "Bluetooth Mesh with nRF52 and Apache Mynewt",
       "publisher": "Medium",
       "releaseDate": "2019-10-15",
-      "website": "https://web.archive.org/https://medium.com/@ly.lee/bluetooth-mesh-with-nrf52-and-apache-mynewt-44823407c471?source=friends_link&sk=ac433fa04e13f75985927c37db1e2b10",
+      "website": "https://lupyuen.github.io/articles/bluetooth-mesh-with-nrf52-and-apache-mynewt",
       "summary": "Set up an nRF52 mesh network, step by step, without any coding"
     },
     {
@@ -521,7 +521,7 @@
       "name": "Advanced Topics for Visual Embedded Rust Programming",
       "publisher": "Medium",
       "releaseDate": "2019-08-17",
-      "website": "https://web.archive.org/https://medium.com/@ly.lee/advanced-topics-for-visual-embedded-rust-programming-ebf1627fe397?sk=01f0ae0e1b82efa9fd6b8e5616c736af",
+      "website": "https://lupyuen.github.io/articles/advanced-topics-for-visual-embedded-rust-programming",
       "summary": "Watch what happens behind the scenes when you create a Visual Embedded Rust program"
     },
     {
