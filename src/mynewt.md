@@ -827,11 +827,21 @@ Because OpenOCD couldn't load our Mynewt Firmware (and Rust Firmware) into Flash
 
 (Probably because of Flash Protection. Or because writing to BL602 Flash Memory hasn't been implemented in OpenOCD.)
 
-[BL602 JTAG doesn't support loading firmware into Flash Memory. See the BL602 JTAG Docs](https://github.com/bouffalolab/bl_docs/tree/main/BL602_Openocd&GDB/en)
+[BL602 OpenOCD with JTAG doesn't support loading firmware into Flash Memory. See the BL602 OpenOCD Docs](https://github.com/bouffalolab/bl_docs/tree/main/BL602_Openocd&GDB/en)
+
+_What happens when we use `blflash` to load our firmware to Flash Memory?_
+
+We're not sure if the Mynewt (or Rust) Firmware will run... But it's worth trying!
+
+Make sure that we update the Memory Map to load our code into the XIP Flash Memory at `0x2300 0000`.
+
+Note that the [Start Code from BL602 IoT SDK `start.S`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602/evb/src/boot/gcc/start.S) references the Boot2 Bootloader.
+
+We're not sure why. Our Start Code from Mynewt (and Rust) doesn't use the Boot2 Bootloader.
 
 ![Loading Mynewt Firmware to Flash Memory](https://lupyuen.github.io/images/mynewt-flash.png)
 
-_What happens when we load our firmware to Flash Memory?_
+_What happens when we use OpenOCD + JTAG to load our firmware to Flash Memory?_
 
 The screen above shows the first version of the Mynewt Firmware, that loads into Flash Memory.
 
@@ -849,7 +859,7 @@ Hence we deduce that our Mynewt Firmware wasn't loaded correctly into Flash Memo
 
 ![Loading Mynewt Firmware to Cache Memory](https://lupyuen.github.io/images/mynewt-ram.png)
 
-_What happens when we load our firmware to Cache Memory?_
+_What happens when we use OpenOCD + JTAG to load our firmware to Cache Memory?_
 
 Here's the second try, loading our Mynewt Firmware to Cache Memory. (The same way that we loaded Rust Firmware in our previous article)
 
