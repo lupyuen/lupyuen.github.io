@@ -82,8 +82,8 @@
 
 
                
-                <figcaption class="bo dp dq dr ds cn cl cm dt du bj dv">Blue Pill Bootloader connected to Windows
-                </figcaption>
+                <figcaption><p><em>Blue Pill Bootloader connected to Windows
+                </em></p></figcaption>
               </figure>
             </div>
             <div class="n p">
@@ -219,8 +219,8 @@
   
   
                 
-                  <figcaption class="bo dp dq dr ds cn cl cm dt du bj dv">Common sight during my USB development…
-                    “Drivers not installed” due to USB descriptor errors or USB request processing errors</figcaption>
+                  <figcaption><p><em>Common sight during my USB development…
+                    “Drivers not installed” due to USB descriptor errors or USB request processing errors</em></p></figcaption>
                 </figure>
                 <h1 id="62ce" class="is it dz bk bj hx iu jt iw ju iy jv ja jw jc jx je">The Original Bootloader</h1>
                 <p id="3134" class="ge gf dz bk gg b gh jf gj jg gl jh gn ji gp jj gr">I started with this bootloader
@@ -276,12 +276,12 @@
   
   
                 
-                  <figcaption class="bo dp dq dr ds cn cl cm dt du bj dv">USB Mass Storage Class (MSC) request to fetch
+                  <figcaption><p><em>USB Mass Storage Class (MSC) request to fetch
                     the maximum logical unit number (i.e. drive number). From the Wireshark log <a
                       href="https://github.com/lupyuen/bluepill-bootloader/blob/master/logs/usb-windows.pcapng.gz"
                       class="at cg gs gt gu gv" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/bluepill-bootloader/blob/master/logs/usb-windows.pcapng.gz</a>
-                  </figcaption>
+                  </em></p></figcaption>
                 </figure>
                 <h1 id="2619" class="is it dz bk bj hx iu jt iw ju iy jv ja jw jc jx je">USB Storage</h1>
                 <p id="353c" class="ge gf dz bk gg b gh jf gj jg gl jh gn ji gp jj gr">The fixed code for supporting USB
@@ -294,9 +294,9 @@
   
   
                
-                  <figcaption class="bo dp dq dr ds cn cl cm dt du bj dv">Blue Pill appears on Windows as a USB Mass
+                  <figcaption><p><em>Blue Pill appears on Windows as a USB Mass
                     Storage Device. At the lower left are the files emulated by Blue Pill (done by ghostfat.c)
-                  </figcaption>
+                  </em></p></figcaption>
                 </figure>
                 <p id="b519" class="ge gf dz bk gg b gh gi gj gk gl gm gn go gp gq gr">To implement USB storage in any
                   USB device, we need to implement the <a
@@ -367,8 +367,8 @@
                   <p><script src="https://gist.github.com/lupyuen/2f05e5a1875c279023bf92c952683e49.js"></script></p>
 
 
-                  <figcaption class="bo dp dq dr ds cn cl cm dt du bj dv">Windows sending SET_ADDRESS 5… 6… 5… 6…
-                  </figcaption>
+                  <figcaption><p><em>Windows sending SET_ADDRESS 5… 6… 5… 6…
+                  </em></p></figcaption>
                 </figure>
                 <p id="e9dc" class="ge gf dz bk gg b gh gi gj gk gl gm gn go gp gq gr">I soon discovered that’s a sign
                   that Windows is resetting our Blue Pill because it didn’t like the response to one of the previous
@@ -395,8 +395,8 @@
   
   
                 
-                  <figcaption class="bo dp dq dr ds cn cl cm dt du bj dv">ghostfat.c emulates a 4 MB flash drive and
-                    exposes the 3 files above</figcaption>
+                  <figcaption><p><em>ghostfat.c emulates a 4 MB flash drive and
+                    exposes the 3 files above</em></p></figcaption>
                 </figure>
                 <p id="e6fe" class="ge gf dz bk gg b gh gi gj gk gl gm gn go gp gq gr">For our bootloader, we expect
                   MakeCode users to copy <a
@@ -442,9 +442,9 @@
                   <p><img src="https://lupyuen.github.io/images/legacy2/o6.png" /></p>
   
   
-                  <figcaption class="bo dp dq dr ds cn cl cm dt du bj dv">Blue Pill appears as a USB Serial Device on
+                  <figcaption><p><em>Blue Pill appears as a USB Serial Device on
                     COM3. We may use putty to connect to COM3 and Blue Pill will echo everything that we type
-                  </figcaption>
+                  </em></p></figcaption>
                 </figure>
                 <p id="aead" class="ge gf dz bk gg b gh gi gj gk gl gm gn go gp gq gr">When you connect the Blue Pill to
                   your computer, the bootloader code exposes a USB serial port to the computer, which is useful for
@@ -511,11 +511,11 @@
   
   
                
-                  <figcaption class="bo dp dq dr ds cn cl cm dt du bj dv">Hierarchy of USB Descriptors. From <a
+                  <figcaption><p><em>Hierarchy of USB Descriptors. From <a
                       href="https://docs.microsoft.com/en-us/windows-hardware/drivers/usbcon/standard-usb-descriptors"
                       class="at cg gs gt gu gv" target="_blank"
                       rel="noopener nofollow">https://docs.microsoft.com/en-us/windows-hardware/drivers/usbcon/standard-usb-descriptors</a>
-                  </figcaption>
+                  </em></p></figcaption>
                 </figure>
                 <p id="872f" class="ge gf dz bk gg b gh gi gj gk gl gm gn go gp gq gr">Our Blue Pill USB Descriptors <a
                     href="https://github.com/lupyuen/bluepill-bootloader/blob/master/src/usb_conf.c#L51-L336"
@@ -526,7 +526,7 @@
                   <p><script src="https://gist.github.com/lupyuen/ac26b8a2148a20de9c367c0b7b745560.js"></script></p>
 
 
-                  <figcaption class="bo dp dq dr ds cn cl cm dt du bj dv">USB Device Descriptor</figcaption>
+                  <figcaption><p><em>USB Device Descriptor</em></p></figcaption>
                 </figure>
                 <p id="14fc" class="ge gf dz bk gg b gh gi gj gk gl gm gn go gp gq gr"><strong class="gg kt">1️⃣ Device
                     Descriptor</strong>: At the top level we define the USB Device.</p>
@@ -538,7 +538,7 @@
                   <p><script src="https://gist.github.com/lupyuen/43b7b4e2f0d50d39c2fb891da96292d7.js"></script></p>
 
 
-                  <figcaption class="bo dp dq dr ds cn cl cm dt du bj dv">USB Configuration Descriptor</figcaption>
+                  <figcaption><p><em>USB Configuration Descriptor</em></p></figcaption>
                 </figure>
                 <p id="e025" class="ge gf dz bk gg b gh gi gj gk gl gm gn go gp gq gr">2️⃣ <strong
                     class="gg kt">Configuration Descriptor</strong>: At the next level we define the device
@@ -549,8 +549,8 @@
                   <p><script src="https://gist.github.com/lupyuen/b55577706b3fdc84d03075118f6006cf.js"></script></p>
 
 
-                  <figcaption class="bo dp dq dr ds cn cl cm dt du bj dv">USB Interface Descriptor for USB Storage (MSC)
-                    interface</figcaption>
+                  <figcaption><p><em>USB Interface Descriptor for USB Storage (MSC)
+                    interface</em></p></figcaption>
                 </figure>
                 <p id="08e0" class="ge gf dz bk gg b gh gi gj gk gl gm gn go gp gq gr">3️⃣ <strong
                     class="gg kt">Interface Descriptor</strong>: Defines the interfaces implemented by the device, like
@@ -562,8 +562,8 @@
                   <p><script src="https://gist.github.com/lupyuen/d05e224595516b2773840302a29fe1f6.js"></script></p>
 
 
-                  <figcaption class="bo dp dq dr ds cn cl cm dt du bj dv">USB Endpoint Descriptors for USB Storage (MSC)
-                    interface</figcaption>
+                  <figcaption><p><em>USB Endpoint Descriptors for USB Storage (MSC)
+                    interface</em></p></figcaption>
                 </figure>
                 <p id="d8dc" class="ge gf dz bk gg b gh gi gj gk gl gm gn go gp gq gr">4️⃣ <strong
                     class="gg kt">Endpoint Descriptor</strong>: What’s a USB endpoint? It works like a TCP socket. When
@@ -585,8 +585,8 @@
                   <p><script src="https://gist.github.com/lupyuen/073984471bc064216995d0a6b18c0b95.js"></script></p>
 
 
-                  <figcaption class="bo dp dq dr ds cn cl cm dt du bj dv">USB Interface Association Descriptor for USB
-                    Serial (CDC) interface</figcaption>
+                  <figcaption><p><em>USB Interface Association Descriptor for USB
+                    Serial (CDC) interface</em></p></figcaption>
                 </figure>
                 <p id="1b5d" class="ge gf dz bk gg b gh gi gj gk gl gm gn go gp gq gr">5️⃣ <strong
                     class="gg kt">Interface Association Descriptor</strong>: Remember that the USB Serial CDC interface
@@ -606,7 +606,7 @@
                   <p><script src="https://gist.github.com/lupyuen/b80d5c0a647bed6bc67f8d2f9570d68a.js"></script></p>
 
 
-                  <figcaption class="bo dp dq dr ds cn cl cm dt du bj dv">USB String Descriptor</figcaption>
+                  <figcaption><p><em>USB String Descriptor</em></p></figcaption>
                 </figure>
                 <p id="b06a" class="ge gf dz bk gg b gh gi gj gk gl gm gn go gp gq gr">6️⃣ <strong class="gg kt">String
                     Descriptor</strong>: The last descriptor defines all the text strings referenced by the other
@@ -617,12 +617,12 @@
                   <p><img src="https://lupyuen.github.io/images/legacy2/o8.png" /></p>
   
   
-                  <figcaption class="bo dp dq dr ds cn cl cm dt du bj dv">String Descriptor 0 returns the supported
+                  <figcaption><p><em>String Descriptor 0 returns the supported
                     Language ID (0x0409). From the Wireshark log <a
                       href="https://github.com/lupyuen/bluepill-bootloader/blob/master/logs/usb-windows.pcapng.gz"
                       class="at cg gs gt gu gv" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/bluepill-bootloader/blob/master/logs/usb-windows.pcapng.gz</a>
-                  </figcaption>
+                  </em></p></figcaption>
                 </figure>
                 <p id="edbe" class="ge gf dz bk gg b gh gi gj gk gl gm gn go gp gq gr">In the Wireshark capture logs we
                   may see the computer requesting for String Descriptor with index 0.</p>
@@ -643,12 +643,12 @@
     
     
                   
-                    <figcaption class="bo dp dq dr ds cn cl cm dt du bj dv">Long list of USB Descriptors used by our
+                    <figcaption><p><em>Long list of USB Descriptors used by our
                       Blue Pill bootloader. From <a
                         href="https://github.com/lupyuen/bluepill-bootloader/blob/master/src/usb_conf.c"
                         class="at cg gs gt gu gv" target="_blank"
                         rel="noopener nofollow">https://github.com/lupyuen/bluepill-bootloader/blob/master/src/usb_conf.c</a>
-                    </figcaption>
+                    </em></p></figcaption>
                   </figure>
                 </div>
               </div>
@@ -695,8 +695,8 @@
   
   
                   
-                  <figcaption class="bo dp dq dr ds cn cl cm dt du bj dv">On macOS, the landing page URL is displayed as
-                    a Chrome notification. On Windows the notification seems to be disabled.</figcaption>
+                  <figcaption><p><em>On macOS, the landing page URL is displayed as
+                    a Chrome notification. On Windows the notification seems to be disabled.</em></p></figcaption>
                 </figure>
                 <p id="5139" class="ge gf dz bk gg b gh gi gj gk gl gm gn go gp gq gr">This WebUSB request is <a
                     href="https://github.com/lupyuen/bluepill-bootloader/blob/master/src/webusb.c#L74-L118"
@@ -727,12 +727,12 @@
   
   
                  
-                  <figcaption class="bo dp dq dr ds cn cl cm dt du bj dv">Windows requesting the BOS Descriptor from
+                  <figcaption><p><em>Windows requesting the BOS Descriptor from
                     Blue Pill. From the Wireshark log <a
                       href="https://github.com/lupyuen/bluepill-bootloader/blob/master/logs/usb-windows.pcapng.gz"
                       class="at cg gs gt gu gv" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/bluepill-bootloader/blob/master/logs/usb-windows.pcapng.gz</a>
-                  </figcaption>
+                  </em></p></figcaption>
                 </figure>
                 <p id="e432" class="ge gf dz bk gg b gh gi gj gk gl gm gn go gp gq gr">The Microsoft OS 2.0 Descriptor
                   implementation is not part of the original bootloader source code. I added this code as a replacement
@@ -781,14 +781,14 @@
                   <p><script src="https://gist.github.com/lupyuen/ee03e3593aaecb4b01abbeb35783e006.js"></script></p>
 
 
-                  <figcaption class="bo dp dq dr ds cn cl cm dt du bj dv">Compatible ID Descriptor</figcaption>
+                  <figcaption><p><em>Compatible ID Descriptor</em></p></figcaption>
                 </figure>
                 <figure class="da cz do kg cd kh ki kj kk kl ba km lq lr ls lt kr">
              
                   <p><script src="https://gist.github.com/lupyuen/361240afd2ed9b902ed0881c0360808b.js"></script></p>
 
 
-                  <figcaption class="bo dp dq dr ds cn cl cm dt du bj dv">Registry Property Descriptor</figcaption>
+                  <figcaption><p><em>Registry Property Descriptor</em></p></figcaption>
                 </figure>
                 <p id="d533" class="ge gf dz bk gg b gh gi gj gk gl gm gn go gp gq gr">1️⃣ <strong
                     class="gg kt">Compatible ID Descriptor</strong>: This declares to Windows that the first USB
@@ -993,11 +993,11 @@
                   <p><script src="https://gist.github.com/lupyuen/aa2a674563793789f5bb25165a4bdf5276aaa.js"></script></p>
 
 
-                  <figcaption class="bo dp dq dr ds cn cl cm dt du bj dv">Sample USB code from <a
+                  <figcaption><p><em>Sample USB code from <a
                       href="https://github.com/libopencm3/libopencm3-examples/blob/master/examples/stm32/f3/stm32f3-discovery/usb_cdcacm/cdcacm.c"
                       class="at cg gs gt gu gv" target="_blank"
                       rel="noopener nofollow">https://github.com/libopencm3/libopencm3-examples/blob/master/examples/stm32/f3/stm32f3-discovery/usb_cdcacm/cdcacm.c</a>
-                  </figcaption>
+                  </em></p></figcaption>
                 </figure>
                 <p id="b377" class="ge gf dz bk gg b gh gi gj gk gl gm gn go gp gq gr">There are 2 functions used to
                   register callbacks in USB programs…</p>
@@ -1032,11 +1032,11 @@
                   <p><script src="https://gist.github.com/lupyuen/7bf824d65ad4c065f41fa96352fdcdae.js"></script></p>
 
 
-                  <figcaption class="bo dp dq dr ds cn cl cm dt du bj dv">Aggregating USB callbacks, from <a
+                  <figcaption><p><em>Aggregating USB callbacks, from <a
                       href="https://github.com/lupyuen/bluepill-bootloader/blob/master/src/cdc.c"
                       class="at cg gs gt gu gv" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/bluepill-bootloader/blob/master/src/cdc.c</a>
-                  </figcaption>
+                  </em></p></figcaption>
                 </figure>
               </div>
             </div>

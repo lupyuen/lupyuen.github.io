@@ -184,8 +184,8 @@
                 
                   <p><img src="https://lupyuen.github.io/images/legacy2/i2.jpeg" /></p>
 
-                  <figcaption class="bo ex ic id hd cn cl cm ie if bj ew">Hardware needed for this tutorial: (1) Blue
-                    Pill (2) ST-Link (3) SparkFun BME280 (optional)</figcaption>
+                  <figcaption><p><em>Hardware needed for this tutorial: (1) Blue
+                    Pill (2) ST-Link (3) SparkFun BME280 (optional)</em></p></figcaption>
                 </figure>
                 <p id="602f" class="gf gg dv bk gi b gj gk gl gm gn go gp gq gr gs gt">Mynewt runs on various
                   microcontrollers like MIPS32, Microchip PIC32, RISC-V. In this article we’ll learn about programming
@@ -217,7 +217,7 @@
                   <p><img src="https://lupyuen.github.io/images/legacy2/i3.png" /></p>
 
             
-                  <figcaption class="bo ex ic id hd cn cl cm ie if bj ew">Roadmap of the tutorial</figcaption>
+                  <figcaption><p><em>Roadmap of the tutorial</em></p></figcaption>
                 </figure>
                 <p id="59d1" class="gf gg dv bk gi b gj gk gl gm gn go gp gq gr gs gt">This tutorial is packed full of
                   Mynewt goodies but Blue Pill newbies should have no problem following the steps since we’re using
@@ -983,8 +983,8 @@
   
   
               
-                  <figcaption class="bo ex ic id hd cn cl cm ie if bj ew">Memory Sections in the Application. From
-                    bin/targets/bluepill_my_sensor/app/apps/my_sensor_app/my_sensor_app.elf.lst</figcaption>
+                  <figcaption><p><em>Memory Sections in the Application. From
+                    bin/targets/bluepill_my_sensor/app/apps/my_sensor_app/my_sensor_app.elf.lst</em></p></figcaption>
                 </figure>
                 <p id="ffdc" class="gf gg dv bk gi b gj gk gl gm gn go gp gq gr gs gt">Remember that Mynewt requires
                   <strong class="gi gy">two programs</strong> to be flashed into the Blue Pill ROM: the <strong
@@ -1024,8 +1024,8 @@
   
   
                   
-                  <figcaption class="bo ex ic id hd cn cl cm ie if bj ew">Connecting Blue Pill to ST-Link USB Debugger
-                  </figcaption>
+                  <figcaption><p><em>Connecting Blue Pill to ST-Link USB Debugger
+                  </em></p></figcaption>
                 </figure>
                 <p id="063d" class="gf gg dv bk gi b gj gk gl gm gn go gp gq gr gs gt">1️⃣ Connect the Blue Pill and ST
                   Link to the USB port of your computer.</p>
@@ -1050,8 +1050,8 @@
                   <p><img src="https://lupyuen.github.io/images/legacy2/i26.png" /></p>
   
   
-                  <figcaption class="bo ex ic id hd cn cl cm ie if bj ew">Both jumpers should be set to the “0”
-                    positions</figcaption>
+                  <figcaption><p><em>Both jumpers should be set to the “0”
+                    positions</em></p></figcaption>
                 </figure>
                 <p id="0c43" class="gf gg dv bk gi b gj gk gl gm gn go gp gq gr gs gt">2️⃣ Set both yellow jumpers on
                   the Blue Pill (<code class="dm jp jq jr js b"><strong class="gi gy">BOOT0</strong></code><strong
@@ -1176,8 +1176,8 @@
                     <p><img src="https://lupyuen.github.io/images/legacy2/i29.png" /></p>
     
     
-                    <figcaption class="bo ex ic id hd cn cl cm ie if bj ew">Debugging Mynewt Application on Blue Pill
-                    </figcaption>
+                    <figcaption><p><em>Debugging Mynewt Application on Blue Pill
+                    </em></p></figcaption>
                   </figure>
                 </div>
               </div>
@@ -1216,11 +1216,11 @@
                   <p><script src="https://gist.github.com/lupyuen/639cff8965b12dfa40a7fc7117e809a9.js"></script></p>
 
 
-                  <figcaption class="bo ex ic id hd cn cl cm ie if bj ew">From <a
+                  <figcaption><p><em>From <a
                       href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/listen_sensor.c#L26-L50"
                       class="at cg gu gv gw gx" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/apps/my_sensor_app/src/listen_sensor.c#L26-L50</a>
-                  </figcaption>
+                  </em></p></figcaption>
                 </figure>
                 <p id="946a" class="gf gg dv bk gi b gj gk gl gm gn go gp gq gr gs gt">2️⃣ <code
                     class="dm jp jq jr js b"><a href="https://mynewt.apache.org/latest/os/modules/sensor_framework/sensor_mgr_api.html#c.sensor_set_poll_rate_ms" class="at cg gu gv gw gx" target="_blank" rel="noopener nofollow"><strong class="gi gy">sensor_set_poll_rate_ms</strong></a><strong class="gi gy">()</strong></code>:
@@ -1353,11 +1353,11 @@
   
   
                
-                  <figcaption class="bo ex ic id hd cn cl cm ie if bj ew">Connecting BME280 to Blue Pill. From <a
+                  <figcaption><p><em>Connecting BME280 to Blue Pill. From <a
                       href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/bme280spi.fzz"
                       class="at cg gu gv gw gx" target="_blank"
                       rel="noopener nofollow">https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/bme280spi.fzz</a>
-                  </figcaption>
+                  </em></p></figcaption>
                 </figure>
                 <pre
                   class="hk hl hm hn ho kd ke kf"><span id="7c2d" class="kg ij dv bk js b ex kh ki r kj"><strong class="js gy">Blue Pill Pin PA4  (SS1)   → BME280 Pin !CS</strong><br/>Blue Pill Pin PA5  (SCK1)  → BME280 Pin SCK<br/>Blue Pill Pin PA6  (MISO1) → BME280 Pin SDO<br/>Blue Pill Pin PA7  (MOSI1) → BME280 Pin SDI<br/>Blue Pill Pin 3V3          → BME280 Pin 3.3V<br/>Blue Pill Pin GND          → BME280 Pin GND</span></pre>
@@ -1380,7 +1380,7 @@
                   <p><img src="https://lupyuen.github.io/images/legacy2/i34.png" /></p>
   
   
-                  <figcaption class="bo ex ic id hd cn cl cm ie if bj ew">BME280 connected to Blue Pill</figcaption>
+                  <figcaption><p><em>BME280 connected to Blue Pill</em></p></figcaption>
                 </figure>
                 <p id="d326" class="gf gg dv bk gi b gj gk gl gm gn go gp gq gr gs gt"><em class="gh">Tip for
                     Experienced Coders: You might think it’s not proper to modify the Mynewt OS files directly like this
@@ -1487,12 +1487,12 @@
   
   
                 
-                  <figcaption class="bo ex ic id hd cn cl cm ie if bj ew">Arm Semihosting for displaying debug messages.
+                  <figcaption><p><em>Arm Semihosting for displaying debug messages.
                     SVC refers to the BKPT instruction. From <a
                       href="https://developer.arm.com/docs/dui0471/k/what-is-semihosting/what-is-semihosting"
                       class="at cg gu gv gw gx" target="_blank"
                       rel="noopener nofollow">https://developer.arm.com/docs/dui0471/k/what-is-semihosting/what-is-semihosting</a>
-                  </figcaption>
+                  </em></p></figcaption>
                 </figure>
                 <p id="3543" class="gf gg dv bk gi b gj gk gl gm gn go gp gq gr gs gt"><a
                     href="https://developer.arm.com/docs/dui0471/k/what-is-semihosting/what-is-semihosting"
@@ -1632,7 +1632,7 @@
                     <p><img src="https://lupyuen.github.io/images/legacy2/i39.png" /></p>
     
     
-                    <figcaption class="bo ex ic id hd cn cl cm ie if bj ew">Mynewt project folder structure</figcaption>
+                    <figcaption><p><em>Mynewt project folder structure</em></p></figcaption>
                   </figure>
                 </div>
               </div>
