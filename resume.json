@@ -556,7 +556,7 @@
       "name": "Safer, Simpler Embedded Rust with Apache Mynewt on STM32 Blue Pill",
       "publisher": "Medium",
       "releaseDate": "2019-07-07",
-      "website": "https://web.archive.org/https://medium.com/@ly.lee/safer-simpler-embedded-rust-with-apache-mynewt-on-stm32-blue-pill-d8fcb41969ac?source=friends_link&sk=16a27a4b9910aadcfcb9881c02d84adc",
+      "website": "https://lupyuen.github.io/articles/safer-simpler-embedded-rust-with-apache-mynewt-on-stm32-blue-pill",
       "summary": "Declarative and Procedural Macros (plus bindgen and tips for Visual Studio Code) to protect Embedded Rust coders from stumbling into embedded traps"
     },
     {
