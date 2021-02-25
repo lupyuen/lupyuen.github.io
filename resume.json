@@ -472,7 +472,7 @@
       "name": "Porting Apache Mynewt OS to GigaDevice GD32 VF103 on RISC-V",
       "publisher": "Medium",
       "releaseDate": "2019-10-30",
-      "website": "https://web.archive.org/web/20191126100556/https://medium.com/swlh/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v-4054a5922493?source=friends_link&sk=215cd06186d912277d0469224666d60d",
+      "website": "https://lupyuen.github.io/articles/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v",
       "summary": "Many GD32 VF103 RISC-V developer boards are coming real soon... And Mynewt OS would be perfect for them"
     },
     {

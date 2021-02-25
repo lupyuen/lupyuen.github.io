@@ -30,7 +30,7 @@ PineCone is based on the BL602 combo chipset made by [Nanjing-based Bouffalo Lab
 
     [FreeRTOS + AliOS](https://github.com/alibaba/AliOS-Things) has been ported to BL602. ([More details](https://github.com/pine64/bl_iot_sdk/tree/master/components/bl602)) But other Real Time Operating Systems (like [Zephyr](https://www.zephyrproject.org/), [RIOT](https://www.riot-os.org/) and [Mynewt](https://mynewt.apache.org/)) have been slow to adopt RISC-V. (We'll learn why in a while)
 
-    Rust runs perfectly fine on RISC-V microcontrollers. ([Here's the proof](https://web.archive.org/web/20191126100556/https://medium.com/swlh/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v-4054a5922493?source=friends_link&sk=215cd06186d912277d0469224666d60d))
+    Rust runs perfectly fine on RISC-V microcontrollers. ([Here's the proof](https://lupyuen.github.io/articles/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v))
 
 It's great that Pine64 is reaching out to the Open Source Community through the [PineCone Nutcracker initiative](https://www.pine64.org/2020/10/28/nutcracker-challenge-blob-free-wifi-ble/)... Because it takes A Humongous Village to get BL602 ready for real-world gadgets.
 
@@ -82,7 +82,7 @@ Let's compare BL602 with the two most popular models of 32-bit RISC-V microcontr
     -   Used in HiFive1 dev board
     -   Supported by major Real Time Operating Systems (including Mynewt, RIOT and Zephyr)
 
-1.  [__GigaDevice GD32 VF103__](https://web.archive.org/web/20191126100556/https://medium.com/swlh/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v-4054a5922493?source=friends_link&sk=215cd06186d912277d0469224666d60d) (Released 2019)
+1.  [__GigaDevice GD32 VF103__](https://lupyuen.github.io/articles/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v) (Released 2019)
     -   Used in Pinecil soldering iron and [various dev boards](https://www.seeedstudio.com/catalogsearch/result/?q=Gd32)
     -   Supported by PlatformIO development tool
     -   __Not Supported by Mynewt, RIOT and Zephyr__
@@ -495,7 +495,7 @@ The development tools supported for BL602 are...
 
 1.  [__Eclipse__](https://pine64.github.io/bl602-docs/Developer_Environment/eclipse/eclipse.html)
 
-_(For the BL602 port of Mynewt: I'll be using VSCode as the development tool. Firmware build will be supported on plain old Windows (without MSYS2 / WSL), macOS, Linux, GitHub Actions and GitLab CI. More about [porting Mynewt to RISC-V](https://web.archive.org/web/20191104074306/https://medium.com/swlh/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v-4054a5922493) and [how it got stuck](https://lupyuen.github.io/articles/hey-gd32-vf103-on-risc-v-i-surrender-for-now))_
+_(For the BL602 port of Mynewt: I'll be using VSCode as the development tool. Firmware build will be supported on plain old Windows (without MSYS2 / WSL), macOS, Linux, GitHub Actions and GitLab CI. More about [porting Mynewt to RISC-V](https://lupyuen.github.io/articles/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v) and [how it got stuck](https://lupyuen.github.io/articles/hey-gd32-vf103-on-risc-v-i-surrender-for-now))_
 
 ## Debugging Firmware
 
