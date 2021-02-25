@@ -500,7 +500,7 @@
       "name": "Quick Peek of Huawei LiteOS with NB-IoT on Ghostyu NB-EK-L476 Developer Kit (STM32L476RCT6)",
       "publisher": "Medium",
       "releaseDate": "2019-09-04",
-      "website": "https://web.archive.org/https://medium.com/@ly.lee/quick-peek-of-huawei-liteos-with-nb-iot-on-ghostyu-nb-ek-l476-developer-kit-2bbfb7f2fbcc?source=friends_link&sk=37f71270cd52f497fb6fb8139917031c",
+      "website": "https://lupyuen.github.io/articles/quick-peek-of-huawei-liteos-with-nb-iot-on-ghostyu-nb-ek-l476-developer-kit",
       "summary": "Peek into the LiteOS + Application source code that was bundled with the NB-IoT Developer Kit"
     },
     {
@@ -528,7 +528,7 @@
       "name": "Rust Rocks NB-IoT! STM32 Blue Pill with Quectel BC95-G on Apache Mynewt",
       "publisher": "Medium",
       "releaseDate": "2019-08-04",
-      "website": "https://web.archive.org/https://medium.com/@ly.lee/rust-rocks-nb-iot-stm32-blue-pill-with-quectel-bc95-g-on-apache-mynewt-ef62a7e28f7e?sk=aaa21371f68a07c543066b6b89a760f0",
+      "website": "https://lupyuen.github.io/articles/rust-rocks-nb-iot-stm32-blue-pill-with-quectel-bc95-g-on-apache-mynewt",
       "summary": "Hardly anyone writes embedded programs in Rust for microcontrollers (like STM32 Blue Pill), we all use C. But we really should switch to Rust!"
     },
     {
