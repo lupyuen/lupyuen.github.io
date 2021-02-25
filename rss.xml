@@ -209,7 +209,7 @@
         </item>
         <item>
             <title>My First Week As Embedded FOSS Advocate</title>
-            <link>https://web.archive.org/web/20200204112337/https://medium.com/@ly.lee/my-first-week-as-embedded-foss-advocate-106d625deae</link>
+            <link>https://lupyuen.github.io/articles/my-first-week-as-embedded-foss-advocate</link>
             <description><![CDATA[Have humans become so greedy for profit… That we have forgotten how to teach one another and advance our species?]]></description>
             <pubDate>Tue, 04 Feb 2020 00:00:00 +0000</pubDate>
         </item>
@@ -257,13 +257,13 @@
         </item>
         <item>
             <title>My 5-Year IoT Mission</title>
-            <link>https://web.archive.org/https://medium.com/@ly.lee/my-5-year-iot-mission-5f2f28348780?source=friends_link&amp;sk=8c9ab6f607d4b6af4a2b233e4096d623</link>
+            <link>https://lupyuen.github.io/articles/my-5-year-iot-mission</link>
             <description><![CDATA[5 years ago I decided to fix every link in the IoT Chain so that we can create really useful and affordable IoT gadgets, the Lean and Agile Way]]></description>
             <pubDate>Wed, 04 Dec 2019 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Hey GD32 VF103 on RISC-V: I surrender… For now</title>
-            <link>https://web.archive.org/web/20191123160606/https://medium.com/@ly.lee/hey-gd32-vf103-on-risc-v-i-surrender-for-now-d39d0c7b0001</link>
+            <link>https://lupyuen.github.io/articles/hey-gd32-vf103-on-risc-v-i-surrender-for-now</link>
             <description><![CDATA[Porting Mynewt OS to GD32 VF103 on RISC-V was a nightmare]]></description>
             <pubDate>Sat, 23 Nov 2019 00:00:00 +0000</pubDate>
         </item>
@@ -281,67 +281,67 @@
         </item>
         <item>
             <title>Porting Apache Mynewt OS to GigaDevice GD32 VF103 on RISC-V</title>
-            <link>https://web.archive.org/web/20191126100556/https://medium.com/swlh/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v-4054a5922493?source=friends_link&amp;sk=215cd06186d912277d0469224666d60d</link>
+            <link>https://lupyuen.github.io/articles/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v</link>
             <description><![CDATA[Many GD32 VF103 RISC-V developer boards are coming real soon... And Mynewt OS would be perfect for them]]></description>
             <pubDate>Wed, 30 Oct 2019 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Bluetooth Mesh with nRF52 and Apache Mynewt</title>
-            <link>https://web.archive.org/https://medium.com/@ly.lee/bluetooth-mesh-with-nrf52-and-apache-mynewt-44823407c471?source=friends_link&amp;sk=ac433fa04e13f75985927c37db1e2b10</link>
+            <link>https://lupyuen.github.io/articles/bluetooth-mesh-with-nrf52-and-apache-mynewt</link>
             <description><![CDATA[Set up an nRF52 mesh network, step by step, without any coding]]></description>
             <pubDate>Tue, 15 Oct 2019 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Coding nRF52 with Rust and Apache Mynewt on Visual Studio Code</title>
-            <link>https://web.archive.org/web/20191204234923/https://medium.com/@ly.lee/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code-9521bcba6004?source=friends_link&amp;sk=bb4e2523b922d0870259ab3fa696c7da</link>
+            <link>https://lupyuen.github.io/articles/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code</link>
             <description><![CDATA[nRF52 works with popular open-source tools on Windows and macOS like VSCode, OpenOCD, Rust and ST-Link]]></description>
             <pubDate>Thu, 03 Oct 2019 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Build an NB-IoT GPS Tracker on STM32 L476 with Apache Mynewt and Embedded Rust</title>
-            <link>https://web.archive.org/https://medium.com/@ly.lee/build-an-nb-iot-gps-tracker-on-stm32-l476-with-apache-mynewt-and-embedded-rust-8c095a925546?source=friends_link&amp;sk=f3e802795d4fd7d569f0d67679e8c9e6</link>
+            <link>https://lupyuen.github.io/articles/build-an-nb-iot-gps-tracker-on-stm32-l476-with-apache-mynewt-and-embedded-rust</link>
             <description><![CDATA[Let’s build a simple gadget that determines its current location based on received GPS signals… And transmits the location to a server via NB-IoT]]></description>
             <pubDate>Sun, 22 Sep 2019 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Quick Peek of Huawei LiteOS with NB-IoT on Ghostyu NB-EK-L476 Developer Kit (STM32L476RCT6)</title>
-            <link>https://web.archive.org/https://medium.com/@ly.lee/quick-peek-of-huawei-liteos-with-nb-iot-on-ghostyu-nb-ek-l476-developer-kit-2bbfb7f2fbcc?source=friends_link&amp;sk=37f71270cd52f497fb6fb8139917031c</link>
+            <link>https://lupyuen.github.io/articles/quick-peek-of-huawei-liteos-with-nb-iot-on-ghostyu-nb-ek-l476-developer-kit</link>
             <description><![CDATA[Peek into the LiteOS + Application source code that was bundled with the NB-IoT Developer Kit]]></description>
             <pubDate>Wed, 04 Sep 2019 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Low Power NB-IoT on STM32 Blue Pill with Apache Mynewt and Embedded Rust</title>
-            <link>https://web.archive.org/https://medium.com/@ly.lee/low-power-nb-iot-on-stm32-blue-pill-with-apache-mynewt-and-embedded-rust-cef5a3ecdd90?source=friends_link&amp;sk=e232e68dc7c91dd4397e96d7dbde543a</link>
+            <link>https://lupyuen.github.io/articles/low-power-nb-iot-on-stm32-blue-pill-with-apache-mynewt-and-embedded-rust</link>
             <description><![CDATA[Learn to optimise the power consumption of the NB-IoT Sensor Application in the previous tutorial]]></description>
             <pubDate>Fri, 30 Aug 2019 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Visual Embedded Rust Programming with Visual Studio Code</title>
-            <link>https://web.archive.org/https://medium.com/@ly.lee/visual-embedded-rust-programming-with-visual-studio-code-1bc1262e398c?sk=222de63e45993aacd0db5a2e4b1f33c7</link>
+            <link>https://lupyuen.github.io/articles/visual-embedded-rust-programming-with-visual-studio-code</link>
             <description><![CDATA[Create and edit Embedded Rust programs for STM32 Blue Pill and Apache Mynewt… By dragging and dropping blocks!]]></description>
             <pubDate>Sat, 17 Aug 2019 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Advanced Topics for Visual Embedded Rust Programming</title>
-            <link>https://web.archive.org/https://medium.com/@ly.lee/advanced-topics-for-visual-embedded-rust-programming-ebf1627fe397?sk=01f0ae0e1b82efa9fd6b8e5616c736af</link>
+            <link>https://lupyuen.github.io/articles/advanced-topics-for-visual-embedded-rust-programming</link>
             <description><![CDATA[Watch what happens behind the scenes when you create a Visual Embedded Rust program]]></description>
             <pubDate>Sat, 17 Aug 2019 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Rust Rocks NB-IoT! STM32 Blue Pill with Quectel BC95-G on Apache Mynewt</title>
-            <link>https://web.archive.org/https://medium.com/@ly.lee/rust-rocks-nb-iot-stm32-blue-pill-with-quectel-bc95-g-on-apache-mynewt-ef62a7e28f7e?sk=aaa21371f68a07c543066b6b89a760f0</link>
+            <link>https://lupyuen.github.io/articles/rust-rocks-nb-iot-stm32-blue-pill-with-quectel-bc95-g-on-apache-mynewt</link>
             <description><![CDATA[Hardly anyone writes embedded programs in Rust for microcontrollers (like STM32 Blue Pill), we all use C. But we really should switch to Rust!]]></description>
             <pubDate>Sun, 04 Aug 2019 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Connect STM32 Blue Pill to NB-IoT with Quectel BC95-G and Apache Mynewt</title>
-            <link>https://web.archive.org/https://medium.com/@ly.lee/connect-stm32-blue-pill-to-nb-iot-with-quectel-bc95-g-and-apache-mynewt-c99a9d8417a9?source=friends_link&amp;sk=34fb9befbea42e98cb5942d66f594027</link>
+            <link>https://lupyuen.github.io/articles/connect-stm32-blue-pill-to-nb-iot-with-quectel-bc95-g-and-apache-mynewt</link>
             <description><![CDATA[Let’s build an IoT sensor with a real microcontroller — STM32 Blue Pill — and a real NB-IoT module — Quectel BC95-G!]]></description>
             <pubDate>Thu, 25 Jul 2019 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Get Started with NB-IoT and Quectel modules</title>
-            <link>https://web.archive.org/https://medium.com/@ly.lee/get-started-with-nb-iot-and-quectel-modules-6e7c581e0d61?sk=40ece196fc51f7a2903c9981f46efa46</link>
+            <link>https://lupyuen.github.io/articles/get-started-with-nb-iot-and-quectel-modules</link>
             <description><![CDATA[How to use a Quectel evaluation board to send a CoAP message to the CoAP server hosted at thethings.io]]></description>
             <pubDate>Mon, 15 Jul 2019 00:00:00 +0000</pubDate>
         </item>
@@ -353,37 +353,37 @@
         </item>
         <item>
             <title>Safer, Simpler Embedded Rust with Apache Mynewt on STM32 Blue Pill</title>
-            <link>https://web.archive.org/https://medium.com/@ly.lee/safer-simpler-embedded-rust-with-apache-mynewt-on-stm32-blue-pill-d8fcb41969ac?source=friends_link&amp;sk=16a27a4b9910aadcfcb9881c02d84adc</link>
+            <link>https://lupyuen.github.io/articles/safer-simpler-embedded-rust-with-apache-mynewt-on-stm32-blue-pill</link>
             <description><![CDATA[Declarative and Procedural Macros (plus bindgen and tips for Visual Studio Code) to protect Embedded Rust coders from stumbling into embedded traps]]></description>
             <pubDate>Sun, 07 Jul 2019 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Hosting Embedded Rust apps on Apache Mynewt with STM32 Blue Pill</title>
-            <link>https://web.archive.org/https://medium.com/@ly.lee/hosting-embedded-rust-apps-on-apache-mynewt-with-stm32-blue-pill-c86b119fe5f?source=friends_link&amp;sk=f58f4cf6c608fded4b354063e474a93b</link>
+            <link>https://lupyuen.github.io/articles/hosting-embedded-rust-apps-on-apache-mynewt-with-stm32-blue-pill</link>
             <description><![CDATA[It’s time to drop our legacy programming practices and adopt smarter, safer ways to exploit these microcontrollers… starting with Apache Mynewt and Rust.]]></description>
             <pubDate>Sun, 09 Jun 2019 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Build Your IoT Sensor Network — STM32 Blue Pill + nRF24L01 + ESP8266 + Apache Mynewt + thethings.io</title>
-            <link>https://web.archive.org/https://medium.com/@ly.lee/build-your-iot-sensor-network-stm32-blue-pill-nrf24l01-esp8266-apache-mynewt-thethings-io-ca7486523f5d?source=friends_link&amp;sk=e49514a7e616d4ff931dd24329a82ce0</link>
+            <link>https://lupyuen.github.io/articles/build-your-iot-sensor-network-stm32-blue-pill-nrf24l01-esp8266-apache-mynewt-thethings-io</link>
             <description><![CDATA[Let's build a Sensor Network running on two Blue Pills with nRF24L01 and ESP8266]]></description>
             <pubDate>Mon, 27 May 2019 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Super Blue Pill — Like STM32 Blue Pill, But Better!</title>
-            <link>https://web.archive.org/https://medium.com/swlh/super-blue-pill-like-stm32-blue-pill-but-better-6d341d9347da?source=friends_link&amp;sk=956087171b9b9efcc484ea60b9c78c16</link>
+            <link>https://lupyuen.github.io/articles/super-blue-pill-like-stm32-blue-pill-but-better</link>
             <description><![CDATA[Friendlier for newbies, supports ESP8266 WiFi and nRF24L01]]></description>
             <pubDate>Tue, 21 May 2019 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Connect STM32 Blue Pill to ESP8266 with Apache Mynewt</title>
-            <link>https://web.archive.org/https://medium.com/@ly.lee/connect-stm32-blue-pill-to-esp8266-with-apache-mynewt-7edceb9e3b8d?source=friends_link&amp;sk=df729a82533d817ec6b2d9b626b6f66b</link>
+            <link>https://lupyuen.github.io/articles/connect-stm32-blue-pill-to-esp8266-with-apache-mynewt</link>
             <description><![CDATA[And WiFi Geolocation with ESP8266]]></description>
             <pubDate>Sat, 20 Apr 2019 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>Create your IoT gadget with Apache Mynewt and STM32 Blue Pill</title>
-            <link>https://web.archive.org/web/20191130001232/https://medium.com/@ly.lee/create-your-iot-gadget-with-apache-mynewt-and-stm32-blue-pill-d689b3ca725</link>
+            <link>https://lupyuen.github.io/articles/create-your-iot-gadget-with-apache-mynewt-and-stm32-blue-pill</link>
             <description><![CDATA[Apache Mynewt is a free, open-source realtime operating system for microcontrollers]]></description>
             <pubDate>Tue, 26 Mar 2019 00:00:00 +0000</pubDate>
         </item>
@@ -407,37 +407,37 @@
         </item>
         <item>
             <title>STM32 Blue Pill — Bootloading the WebUSB Bootloader</title>
-            <link>https://web.archive.org/https://medium.com/@ly.lee/stm32-blue-pill-bootloading-the-webusb-bootloader-63398ef5eb76?source=friends_link&amp;sk=8b43b83310910e64752a61cf630e0b78</link>
+            <link>https://lupyuen.github.io/articles/stm32-blue-pill-bootloading-the-webusb-bootloader</link>
             <description><![CDATA[How do we upgrade the Bootloader when it’s always running in the background, waiting for flashing requests? This article explains a special technique I used to upgrade the MakeCode Bootloader over WebUSB… I call it “Baseloading”]]></description>
             <pubDate>Mon, 25 Feb 2019 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>STM32 Blue Pill — Dissecting the WebUSB Bootloader for MakeCode</title>
-            <link>https://web.archive.org/https://medium.com/@ly.lee/stm32-blue-pill-dissecting-the-webusb-bootloader-for-makecode-b7f1a1508e89?source=friends_link&amp;sk=661984e9775f991a97e5747a67214b60</link>
+            <link>https://lupyuen.github.io/articles/stm32-blue-pill-dissecting-the-webusb-bootloader-for-makecode</link>
             <description><![CDATA[Explore the innards of the MakeCode Bootloader that I have ported to Blue Pill]]></description>
             <pubDate>Sat, 16 Feb 2019 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>STM32 Blue Pill — Unit Testing with Qemu Blue Pill Emulator</title>
-            <link>https://web.archive.org/https://medium.com/@ly.lee/stm32-blue-pill-unit-testing-with-qemu-blue-pill-emulator-9d88002a68b2?source=friends_link&amp;sk=9a9389cdea5828cb48713f963c8f7615</link>
+            <link>https://lupyuen.github.io/articles/stm32-blue-pill-unit-testing-with-qemu-blue-pill-emulator</link>
             <description><![CDATA[Computing sensor values in IoT devices can be prone to bugs… And Unit Testing can help to stop the bugs before they pollute the entire IoT chain]]></description>
             <pubDate>Thu, 07 Feb 2019 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>STM32 Blue Pill – Shrink your math libraries with Qfplib</title>
-            <link>https://web.archive.org/https://medium.com/@ly.lee/stm32-blue-pill-shrink-your-math-libraries-with-qfplib-55093aab163a?source=friends_link&amp;sk=d7cd162dabcc45f96490e5e1f5f4c534</link>
+            <link>https://lupyuen.github.io/articles/stm32-blue-pill-shrink-your-math-libraries-with-qfplib</link>
             <description><![CDATA[Filling in tiny math functions with nano-float]]></description>
             <pubDate>Wed, 30 Jan 2019 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>STM32 Blue Pill — Analyse and Optimise Your RAM and ROM</title>
-            <link>https://web.archive.org/https://medium.com/@ly.lee/stm32-blue-pill-analyse-and-optimise-your-ram-and-rom-9fc805e16ed7?source=friends_link&amp;sk=54719084d640bb1d92ac1097d623bba2</link>
+            <link>https://lupyuen.github.io/articles/stm32-blue-pill-analyse-and-optimise-your-ram-and-rom</link>
             <description><![CDATA[Learn the tips and tools to prevent Blue Pill Bloat]]></description>
             <pubDate>Thu, 24 Jan 2019 00:00:00 +0000</pubDate>
         </item>
         <item>
             <title>STM32 Blue Pill USB Bootloader — How I fixed the USB Storage, Serial, DFU and WebUSB interfaces</title>
-            <link>https://web.archive.org/https://medium.com/@ly.lee/stm32-blue-pill-usb-bootloader-how-i-fixed-the-usb-storage-serial-dfu-and-webusb-interfaces-36d7fe245b5c?source=friends_link&amp;sk=70a29cd31425ec4d03144bce14a1c922</link>
+            <link>https://lupyuen.github.io/articles/stm32-blue-pill-usb-bootloader-how-i-fixed-the-usb-storage-serial-dfu-and-webusb-interfaces</link>
             <description><![CDATA[STM32 Blue Pill is a remarkable microcontroller for US$ 2. I proved it by running the USB Storage, USB Serial, USB DFU (Direct Firmware Upgrade) and WebUSB interfaces all on the same Blue Pill concurrently, without any additional hardware!]]></description>
             <pubDate>Tue, 18 Dec 2018 00:00:00 +0000</pubDate>
         </item>
