@@ -495,7 +495,7 @@ The development tools supported for BL602 are...
 
 1.  [__Eclipse__](https://pine64.github.io/bl602-docs/Developer_Environment/eclipse/eclipse.html)
 
-_(For the BL602 port of Mynewt: I'll be using VSCode as the development tool. Firmware build will be supported on plain old Windows (without MSYS2 / WSL), macOS, Linux, GitHub Actions and GitLab CI. More about [porting Mynewt to RISC-V](https://web.archive.org/web/20191104074306/https://medium.com/swlh/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v-4054a5922493) and [how it got stuck](https://web.archive.org/web/20191204194133/https://medium.com/@ly.lee/hey-gd32-vf103-on-risc-v-i-surrender-for-now-d39d0c7b0001?source=friends_link&sk=c0504ac574bf571219fabe174eef4de5))_
+_(For the BL602 port of Mynewt: I'll be using VSCode as the development tool. Firmware build will be supported on plain old Windows (without MSYS2 / WSL), macOS, Linux, GitHub Actions and GitLab CI. More about [porting Mynewt to RISC-V](https://web.archive.org/web/20191104074306/https://medium.com/swlh/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v-4054a5922493) and [how it got stuck](https://lupyuen.github.io/articles/hey-gd32-vf103-on-risc-v-i-surrender-for-now))_
 
 ## Debugging Firmware
 

@@ -451,7 +451,7 @@
       "name": "Hey GD32 VF103 on RISC-V: I surrender… For now",
       "publisher": "Medium",
       "releaseDate": "2019-11-23",
-      "website": "https://web.archive.org/web/20191123160606/https://medium.com/@ly.lee/hey-gd32-vf103-on-risc-v-i-surrender-for-now-d39d0c7b0001",
+      "website": "https://lupyuen.github.io/articles/hey-gd32-vf103-on-risc-v-i-surrender-for-now",
       "summary": "Porting Mynewt OS to GD32 VF103 on RISC-V was a nightmare"
     },
     {
@@ -542,7 +542,7 @@
       "name": "Get Started with NB-IoT and Quectel modules",
       "publisher": "Medium",
       "releaseDate": "2019-07-15",
-      "website": "https://web.archive.org/https://medium.com/@ly.lee/get-started-with-nb-iot-and-quectel-modules-6e7c581e0d61?sk=40ece196fc51f7a2903c9981f46efa46",
+      "website": "https://lupyuen.github.io/articles/get-started-with-nb-iot-and-quectel-modules",
       "summary": "How to use a Quectel evaluation board to send a CoAP message to the CoAP server hosted at thethings.io"
     },
     {
