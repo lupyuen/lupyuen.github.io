@@ -619,14 +619,14 @@
       "name": "STM32 Blue Pill — Bootloading the WebUSB Bootloader",
       "publisher": "Medium",
       "releaseDate": "2019-02-25",
-      "website": "https://web.archive.org/https://medium.com/@ly.lee/stm32-blue-pill-bootloading-the-webusb-bootloader-63398ef5eb76?source=friends_link&sk=8b43b83310910e64752a61cf630e0b78",
+      "website": "https://lupyuen.github.io/articles/stm32-blue-pill-bootloading-the-webusb-bootloader",
       "summary": "How do we upgrade the Bootloader when it’s always running in the background, waiting for flashing requests? This article explains a special technique I used to upgrade the MakeCode Bootloader over WebUSB… I call it “Baseloading”"
     },
     {
       "name": "STM32 Blue Pill — Dissecting the WebUSB Bootloader for MakeCode",
       "publisher": "Medium",
       "releaseDate": "2019-02-16",
-      "website": "https://web.archive.org/https://medium.com/@ly.lee/stm32-blue-pill-dissecting-the-webusb-bootloader-for-makecode-b7f1a1508e89?source=friends_link&sk=661984e9775f991a97e5747a67214b60",
+      "website": "https://lupyuen.github.io/articles/stm32-blue-pill-dissecting-the-webusb-bootloader-for-makecode",
       "summary": "Explore the innards of the MakeCode Bootloader that I have ported to Blue Pill"
     },
     {
@@ -640,7 +640,7 @@
       "name": "STM32 Blue Pill – Shrink your math libraries with Qfplib",
       "publisher": "Medium",
       "releaseDate": "2019-01-30",
-      "website": "https://web.archive.org/https://medium.com/@ly.lee/stm32-blue-pill-shrink-your-math-libraries-with-qfplib-55093aab163a?source=friends_link&sk=d7cd162dabcc45f96490e5e1f5f4c534",
+      "website": "https://lupyuen.github.io/articles/stm32-blue-pill-shrink-your-math-libraries-with-qfplib",
       "summary": "Filling in tiny math functions with nano-float"
     },
     {

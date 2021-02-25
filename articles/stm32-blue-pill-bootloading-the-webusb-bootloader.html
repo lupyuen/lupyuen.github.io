@@ -32,16 +32,7 @@
     content="How does the WebUSB Bootloader upgrade itself? With a special Baseloader" />
   <meta data-rh="true" property="twitter:description"
     content="How does the WebUSB Bootloader upgrade itself? With a special Baseloader" />
-  <meta data-rh="true" property="og:url"
-    content="https://web.archive.org/web/20191204194111/https://medium.com/@ly.lee/stm32-blue-pill-bootloading-the-webusb-bootloader-63398ef5eb76" />
-  <meta data-rh="true" property="al:web:url"
-    content="https://medium.com/@ly.lee/stm32-blue-pill-bootloading-the-webusb-bootloader-63398ef5eb76" />
-  <meta data-rh="true" property="og:image"
-    content="https://web.archive.org/web/20191204194111im_/https://miro.medium.com/freeze/max/1200/1*0EWymp7F8ROU0pUX-vyC7A.gif" />
-  <meta data-rh="true" name="twitter:image:src"
-    content="https://miro.medium.com/freeze/max/1200/1*0EWymp7F8ROU0pUX-vyC7A.gif" />
   <meta data-rh="true" name="twitter:card" content="summary_large_image" />
-  <meta data-rh="true" property="article:author" content="https://medium.com/@ly.lee" />
   <meta data-rh="true" name="twitter:creator" content="@MisterTechBlog" />
   <meta data-rh="true" name="author" content="Lup Yuen Lee 李立源" />
   <meta data-rh="true" name="robots" content="index,follow" />
@@ -118,7 +109,7 @@
                               </span></div>
                           </div><span class="bj b bk bl bm bn r bo bp"><span class="bj et eu bl de ev ew ex ey ez bo">
                               <div><a class="at au av aw ax ay az ba bb bc fa bf bg bh bi" rel="noopener"
-                                  href="/web/20191204194111/https://medium.com/@ly.lee/stm32-blue-pill-bootloading-the-webusb-bootloader-63398ef5eb76?source=post_page-----63398ef5eb76----------------------">Feb
+                                  href="https://lupyuen.github.io/articles/stm32-blue-pill-bootloading-the-webusb-bootloader">Feb
                                   25</a> <!-- -->·
                                 <!-- -->
                                 <!-- -->9
@@ -144,13 +135,13 @@
                     Unit Testing?</p>
                   <p id="bf3c" class="gc gd ds ge gf b gg gh gi gj gk gl gm gn go gp gq">Operator 2: Yes! Lemme launch
                     <a class="at cg gr gs gt gu" target="_blank" rel="noopener"
-                      href="/web/20191204194111/https://medium.com/@ly.lee/stm32-blue-pill-dissecting-the-webusb-bootloader-for-makecode-b7f1a1508e89?source=friends_link&amp;sk=661984e9775f991a97e5747a67214b60"><strong
+                      href="https://lupyuen.github.io/articles/stm32-blue-pill-dissecting-the-webusb-bootloader-for-makecode"><strong
                         class="gf gv">MakeCode</strong></a><strong class="gf gv"> version 2029</strong>… Hitting the
                     DOWNLOAD button… Now regenerating the new <a
                       href="https://github.com/Microsoft/uf2"
                       class="at cg gr gs gt gu" target="_blank" rel="noopener nofollow">UF2 firmware image</a>…
                     Transmitting firmware image to all <a class="at cg gr gs gt gu" target="_blank" rel="noopener"
-                      href="/web/20191204194111/https://medium.com/@ly.lee/stm32-blue-pill-dissecting-the-webusb-bootloader-for-makecode-b7f1a1508e89?source=friends_link&amp;sk=661984e9775f991a97e5747a67214b60">STM32-BLUEST-PILL
+                      href="https://lupyuen.github.io/articles/stm32-blue-pill-dissecting-the-webusb-bootloader-for-makecode">STM32-BLUEST-PILL
                       Bootloaders</a>… And <strong class="gf gv">Firmware version 2029</strong> has been flashed to all
                     1,000 devices! Wait we got 1,000 errors… “<strong class="gf gv">Critical system library </strong><a
                       href="https://github.com/libopencm3/libopencm3/wiki"
@@ -185,7 +176,7 @@
                   to flash the Blue Pill!</p>
                 <p id="1352" class="gc gd ds bk gf b gg gh gi gj gk gl gm gn go gp gq"><a class="at cg gr gs gt gu"
                     target="_blank" rel="noopener"
-                    href="/web/20191204194111/https://medium.com/@ly.lee/stm32-blue-pill-dissecting-the-webusb-bootloader-for-makecode-b7f1a1508e89?source=friends_link&amp;sk=661984e9775f991a97e5747a67214b60">In
+                    href="https://lupyuen.github.io/articles/stm32-blue-pill-dissecting-the-webusb-bootloader-for-makecode">In
                     the previous article</a> we learned how our <a
                     href="https://makecode.com/about"
                     class="at cg gr gs gt gu" target="_blank" rel="noopener nofollow">MakeCode</a> Bootloader flashed
@@ -322,7 +313,7 @@
               <div class="ac ae af ag ah dp aj ak">
                 <p id="8bc4" class="gc gd ds bk gf b gg gh gi gj gk gl gm gn go gp gq">1️⃣ We have partitioned Blue
                   Pill’s ROM with this layout: <a class="at cg gr gs gt gu" target="_blank" rel="noopener"
-                    href="/web/20191204194111/https://medium.com/@ly.lee/stm32-blue-pill-dissecting-the-webusb-bootloader-for-makecode-b7f1a1508e89?source=friends_link&amp;sk=661984e9775f991a97e5747a67214b60"><strong
+                    href="https://lupyuen.github.io/articles/stm32-blue-pill-dissecting-the-webusb-bootloader-for-makecode"><strong
                       class="gf gv">Bootloader in the lower ROM region, Application in the upper ROM region</strong></a>
                 </p>
               </div>
@@ -599,7 +590,7 @@
                 <p id="38d8" class="gc gd ds bk gf b gg gh gi gj gk gl gm gn go gp gq">3️⃣ We created nano-float, an
                   optimised version of the standard math library…</p>
                 <div class="jy jz ka kb kc kd"><a rel="noopener"
-                    href="/web/20191204194111/https://medium.com/@ly.lee/stm32-blue-pill-shrink-your-math-libraries-with-qfplib-55093aab163a?source=post_page-----63398ef5eb76----------------------">
+                    href="https://lupyuen.github.io/articles/stm32-blue-pill-shrink-your-math-libraries-with-qfplib">
                     <section class="kg cl cm ak ce n ar kh ki kj kk kl km kn ko kp kq kr ks kt ku kv">
                       <div class="kw n co p kx ky">
                         <h2 class="bj hq kz bl ds">
@@ -652,7 +643,7 @@
                 <p id="1c37" class="gc gd ds bk gf b gg gh gi gj gk gl gm gn go gp gq">5️⃣ Finally we combined all the
                   topics from the above articles into a complex Bootloader…</p>
                 <div class="jy jz ka kb kc kd"><a rel="noopener"
-                    href="/web/20191204194111/https://medium.com/@ly.lee/stm32-blue-pill-dissecting-the-webusb-bootloader-for-makecode-b7f1a1508e89?source=post_page-----63398ef5eb76----------------------">
+                    href="https://lupyuen.github.io/articles/stm32-blue-pill-dissecting-the-webusb-bootloader-for-makecode">
                     <section class="kg cl cm ak ce n ar kh ki kj kk kl km kn ko kp kq kr ks kt ku kv">
                       <div class="kw n co p kx ky">
                         <h2 class="bj hq kz bl ds">
@@ -692,7 +683,7 @@
                   Works with USB. Flashing works only with Arduino IDE client.</p>
                 <p id="d648" class="gc gd ds bk gf b gg gh gi gj gk gl gm gn go gp gq">3️⃣ <a class="at cg gr gs gt gu"
                     target="_blank" rel="noopener"
-                    href="/web/20191204194111/https://medium.com/@ly.lee/stm32-blue-pill-dissecting-the-webusb-bootloader-for-makecode-b7f1a1508e89?source=friends_link&amp;sk=661984e9775f991a97e5747a67214b60">Blue
+                    href="https://lupyuen.github.io/articles/stm32-blue-pill-dissecting-the-webusb-bootloader-for-makecode">Blue
                     Pill MakeCode Bootloader</a>: Works with Chrome and other WebUSB-compatible web browsers. Allows
                   Bootloader to be reflashed via WebUSB. Probably the best Blue Pill Bootloader to date!</p>
                 <p id="24cb" class="gc gd ds bk gf b gg gh gi gj gk gl gm gn go gp gq">It’s been a long journey —
