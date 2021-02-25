@@ -386,7 +386,7 @@
     },
     {
       "name": "My First Week As Embedded FOSS Advocate",
-      "publisher": "Medium",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2020-02-04",
       "website": "https://web.archive.org/web/20200204112337/https://medium.com/@ly.lee/my-first-week-as-embedded-foss-advocate-106d625deae",
       "summary": "Have humans become so greedy for profit… That we have forgotten how to teach one another and advance our species?"
@@ -407,140 +407,140 @@
     },
     {
       "name": "Debug Rust+Mynewt Firmware for PineTime on Raspberry Pi",
-      "publisher": "Medium",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2020-01-23",
       "website": "https://lupyuen.github.io/articles/debug-rust-mynewt-firmware-for-pinetime-on-raspberry-pi",
       "summary": "Using only a Raspberry Pi, we can debug the firmware on PineTime Smart Watch: Step into the flashed program line by line, set a breakpoint to pause execution at a line, inspect variables at runtime, … Just like the Embedded Pros!"
     },
     {
       "name": "OpenOCD on Raspberry Pi: Better with SWD on SPI",
-      "publisher": "Medium",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2020-01-18",
       "website": "https://lupyuen.github.io/articles/openocd-on-raspberry-pi-better-with-swd-on-spi",
       "summary": "Instead of sending SWD data over GPIO one bit at a time, what if we could blast out the data over Raspberry Pi’s SPI interface?"
     },
     {
       "name": "Build and Flash Rust+Mynewt Firmware for PineTime Smart Watch",
-      "publisher": "Medium",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2020-01-08",
       "website": "https://lupyuen.github.io/articles/build-and-flash-rust-mynewt-firmware-for-pinetime-smart-watch",
       "summary": "Programming a PineTime is not that hard… All you need is a Raspberry Pi, some wires and a little creativity!"
     },
     {
       "name": "Optimising PineTime’s Display Driver with Rust and Mynewt",
-      "publisher": "Medium",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2019-12-29",
       "website": "https://lupyuen.github.io/articles/optimising-pinetimes-display-driver-with-rust-and-mynewt",
       "summary": "Simple tweaks like Batched Updates and Non-Blocking SPI can have a huge impact on rendering performance"
     },
     {
       "name": "Porting [druid] Rust Widgets to PineTime Smart Watch",
-      "publisher": "Medium",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2019-12-14",
       "website": "https://lupyuen.github.io/articles/porting-druid-rust-widgets-to-pinetime-smart-watch",
       "summary": "Code Watch Apps in Rust the Declarative Way"
     },
     {
       "name": "My 5-Year IoT Mission",
-      "publisher": "Medium",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2019-12-04",
       "website": "https://lupyuen.github.io/articles/my-5-year-iot-mission",
       "summary": "5 years ago I decided to fix every link in the IoT Chain so that we can create really useful and affordable IoT gadgets, the Lean and Agile Way"
     },
     {
       "name": "Hey GD32 VF103 on RISC-V: I surrender… For now",
-      "publisher": "Medium",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2019-11-23",
       "website": "https://lupyuen.github.io/articles/hey-gd32-vf103-on-risc-v-i-surrender-for-now",
       "summary": "Porting Mynewt OS to GD32 VF103 on RISC-V was a nightmare"
     },
     {
       "name": "Building a Rust Driver for PineTime’s Touch Controller",
-      "publisher": "Medium",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2019-11-22",
       "website": "https://lupyuen.github.io/articles/building-a-rust-driver-for-pinetimes-touch-controller",
       "summary": "Programming the Hynitron CST816S Capacitive Touch Controller"
     },
     {
       "name": "Sneak Peek of PineTime Smart Watch… And why it’s perfect for teaching IoT",
-      "publisher": "Medium",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2019-11-15",
       "website": "https://lupyuen.github.io/articles/sneak-peek-of-pinetime-smart-watch-and-why-its-perfect-for-teaching-iot",
       "summary": "PineTime is the spiritual successor to BBC micro:bit"
     },
     {
       "name": "Porting Apache Mynewt OS to GigaDevice GD32 VF103 on RISC-V",
-      "publisher": "Medium",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2019-10-30",
       "website": "https://lupyuen.github.io/articles/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v",
       "summary": "Many GD32 VF103 RISC-V developer boards are coming real soon... And Mynewt OS would be perfect for them"
     },
     {
       "name": "Bluetooth Mesh with nRF52 and Apache Mynewt",
-      "publisher": "Medium",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2019-10-15",
       "website": "https://lupyuen.github.io/articles/bluetooth-mesh-with-nrf52-and-apache-mynewt",
       "summary": "Set up an nRF52 mesh network, step by step, without any coding"
     },
     {
       "name": "Coding nRF52 with Rust and Apache Mynewt on Visual Studio Code",
-      "publisher": "Medium",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2019-10-03",
       "website": "https://lupyuen.github.io/articles/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code",
       "summary": "nRF52 works with popular open-source tools on Windows and macOS like VSCode, OpenOCD, Rust and ST-Link"
     },
     {
       "name": "Build an NB-IoT GPS Tracker on STM32 L476 with Apache Mynewt and Embedded Rust",
-      "publisher": "Medium",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2019-09-22",
       "website": "https://lupyuen.github.io/articles/build-an-nb-iot-gps-tracker-on-stm32-l476-with-apache-mynewt-and-embedded-rust",
       "summary": "Let’s build a simple gadget that determines its current location based on received GPS signals… And transmits the location to a server via NB-IoT"
     },
     {
       "name": "Quick Peek of Huawei LiteOS with NB-IoT on Ghostyu NB-EK-L476 Developer Kit (STM32L476RCT6)",
-      "publisher": "Medium",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2019-09-04",
       "website": "https://lupyuen.github.io/articles/quick-peek-of-huawei-liteos-with-nb-iot-on-ghostyu-nb-ek-l476-developer-kit",
       "summary": "Peek into the LiteOS + Application source code that was bundled with the NB-IoT Developer Kit"
     },
     {
       "name": "Low Power NB-IoT on STM32 Blue Pill with Apache Mynewt and Embedded Rust",
-      "publisher": "Medium",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2019-08-30",
       "website": "https://lupyuen.github.io/articles/low-power-nb-iot-on-stm32-blue-pill-with-apache-mynewt-and-embedded-rust",
       "summary": "Learn to optimise the power consumption of the NB-IoT Sensor Application in the previous tutorial"
     },
     {
       "name": "Visual Embedded Rust Programming with Visual Studio Code",
-      "publisher": "Medium",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2019-08-17",
       "website": "https://lupyuen.github.io/articles/visual-embedded-rust-programming-with-visual-studio-code",
       "summary": "Create and edit Embedded Rust programs for STM32 Blue Pill and Apache Mynewt… By dragging and dropping blocks!"
     },
     {
       "name": "Advanced Topics for Visual Embedded Rust Programming",
-      "publisher": "Medium",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2019-08-17",
       "website": "https://lupyuen.github.io/articles/advanced-topics-for-visual-embedded-rust-programming",
       "summary": "Watch what happens behind the scenes when you create a Visual Embedded Rust program"
     },
     {
       "name": "Rust Rocks NB-IoT! STM32 Blue Pill with Quectel BC95-G on Apache Mynewt",
-      "publisher": "Medium",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2019-08-04",
       "website": "https://lupyuen.github.io/articles/rust-rocks-nb-iot-stm32-blue-pill-with-quectel-bc95-g-on-apache-mynewt",
       "summary": "Hardly anyone writes embedded programs in Rust for microcontrollers (like STM32 Blue Pill), we all use C. But we really should switch to Rust!"
     },
     {
       "name": "Connect STM32 Blue Pill to NB-IoT with Quectel BC95-G and Apache Mynewt",
-      "publisher": "Medium",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2019-07-25",
       "website": "https://lupyuen.github.io/articles/connect-stm32-blue-pill-to-nb-iot-with-quectel-bc95-g-and-apache-mynewt",
       "summary": "Let’s build an IoT sensor with a real microcontroller — STM32 Blue Pill — and a real NB-IoT module — Quectel BC95-G!"
     },
     {
       "name": "Get Started with NB-IoT and Quectel modules",
-      "publisher": "Medium",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2019-07-15",
       "website": "https://lupyuen.github.io/articles/get-started-with-nb-iot-and-quectel-modules",
       "summary": "How to use a Quectel evaluation board to send a CoAP message to the CoAP server hosted at thethings.io"
@@ -554,42 +554,42 @@
     },
     {
       "name": "Safer, Simpler Embedded Rust with Apache Mynewt on STM32 Blue Pill",
-      "publisher": "Medium",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2019-07-07",
       "website": "https://lupyuen.github.io/articles/safer-simpler-embedded-rust-with-apache-mynewt-on-stm32-blue-pill",
       "summary": "Declarative and Procedural Macros (plus bindgen and tips for Visual Studio Code) to protect Embedded Rust coders from stumbling into embedded traps"
     },
     {
       "name": "Hosting Embedded Rust apps on Apache Mynewt with STM32 Blue Pill",
-      "publisher": "Medium",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2019-06-09",
       "website": "https://lupyuen.github.io/articles/hosting-embedded-rust-apps-on-apache-mynewt-with-stm32-blue-pill",
       "summary": "It’s time to drop our legacy programming practices and adopt smarter, safer ways to exploit these microcontrollers… starting with Apache Mynewt and Rust."
     },
     {
       "name": "Build Your IoT Sensor Network — STM32 Blue Pill + nRF24L01 + ESP8266 + Apache Mynewt + thethings.io",
-      "publisher": "Medium",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2019-05-27",
       "website": "https://lupyuen.github.io/articles/build-your-iot-sensor-network-stm32-blue-pill-nrf24l01-esp8266-apache-mynewt-thethings-io",
       "summary": "Let's build a Sensor Network running on two Blue Pills with nRF24L01 and ESP8266"
     },
     {
       "name": "Super Blue Pill — Like STM32 Blue Pill, But Better!",
-      "publisher": "Medium",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2019-05-21",
       "website": "https://lupyuen.github.io/articles/super-blue-pill-like-stm32-blue-pill-but-better",
       "summary": "Friendlier for newbies, supports ESP8266 WiFi and nRF24L01"
     },
     {
       "name": "Connect STM32 Blue Pill to ESP8266 with Apache Mynewt",
-      "publisher": "Medium",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2019-04-20",
       "website": "https://lupyuen.github.io/articles/connect-stm32-blue-pill-to-esp8266-with-apache-mynewt",
       "summary": "And WiFi Geolocation with ESP8266"
     },
     {
       "name": "Create your IoT gadget with Apache Mynewt and STM32 Blue Pill",
-      "publisher": "Medium",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2019-03-26",
       "website": "https://lupyuen.github.io/articles/create-your-iot-gadget-with-apache-mynewt-and-stm32-blue-pill",
       "summary": "Apache Mynewt is a free, open-source realtime operating system for microcontrollers"
@@ -617,42 +617,42 @@
     },
     {
       "name": "STM32 Blue Pill — Bootloading the WebUSB Bootloader",
-      "publisher": "Medium",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2019-02-25",
       "website": "https://lupyuen.github.io/articles/stm32-blue-pill-bootloading-the-webusb-bootloader",
       "summary": "How do we upgrade the Bootloader when it’s always running in the background, waiting for flashing requests? This article explains a special technique I used to upgrade the MakeCode Bootloader over WebUSB… I call it “Baseloading”"
     },
     {
       "name": "STM32 Blue Pill — Dissecting the WebUSB Bootloader for MakeCode",
-      "publisher": "Medium",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2019-02-16",
       "website": "https://lupyuen.github.io/articles/stm32-blue-pill-dissecting-the-webusb-bootloader-for-makecode",
       "summary": "Explore the innards of the MakeCode Bootloader that I have ported to Blue Pill"
     },
     {
       "name": "STM32 Blue Pill — Unit Testing with Qemu Blue Pill Emulator",
-      "publisher": "Medium",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2019-02-07",
       "website": "https://lupyuen.github.io/articles/stm32-blue-pill-unit-testing-with-qemu-blue-pill-emulator",
       "summary": "Computing sensor values in IoT devices can be prone to bugs… And Unit Testing can help to stop the bugs before they pollute the entire IoT chain"
     },
     {
       "name": "STM32 Blue Pill – Shrink your math libraries with Qfplib",
-      "publisher": "Medium",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2019-01-30",
       "website": "https://lupyuen.github.io/articles/stm32-blue-pill-shrink-your-math-libraries-with-qfplib",
       "summary": "Filling in tiny math functions with nano-float"
     },
     {
       "name": "STM32 Blue Pill — Analyse and Optimise Your RAM and ROM",
-      "publisher": "Medium",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2019-01-24",
       "website": "https://lupyuen.github.io/articles/stm32-blue-pill-analyse-and-optimise-your-ram-and-rom",
       "summary": "Learn the tips and tools to prevent Blue Pill Bloat"
     },
     {
       "name": "STM32 Blue Pill USB Bootloader — How I fixed the USB Storage, Serial, DFU and WebUSB interfaces",
-      "publisher": "Medium",
+      "publisher": "lupyuen.github.io",
       "releaseDate": "2018-12-18",
       "website": "https://lupyuen.github.io/articles/stm32-blue-pill-usb-bootloader-how-i-fixed-the-usb-storage-serial-dfu-and-webusb-interfaces",
       "summary": "STM32 Blue Pill is a remarkable microcontroller for US$ 2. I proved it by running the USB Storage, USB Serial, USB DFU (Direct Firmware Upgrade) and WebUSB interfaces all on the same Blue Pill concurrently, without any additional hardware!"
