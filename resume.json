@@ -266,10 +266,17 @@
       "summary": "Converting Embedded C to Rust is not that hard... Here's how we convert a PineTime Watch Face with LVGL from C to Rust on RIOT"
     },
     {
-      "name": "Safer, Simpler Embedded Programs with Rust on RIOT",
+      "name": "Safer, Simpler Embedded Programs with Rust on RIOT (Presentation)",
       "publisher": "RIOT Summit",
       "releaseDate": "2020-09-11",
-      "website": "https://web.archive.org/https://medium.com/@ly.lee/safer-simpler-embedded-programs-with-rust-on-riot-4ae11226ef2b",
+      "website": "https://summit.riot-os.org/2020/wp-content/uploads/sites/15/2020/09/s4-2-Lup-Yuen-Lee.pdf",
+      "summary": "Tired of pointer problems on Embedded C? It’s time to switch over to a safer, simpler way of coding: Embedded Rust. We’ll look at Rust hosted on RIOT and how it’s used to create LVGL watch apps for PineTime Smart Watch."
+    },
+    {
+      "name": "Safer, Simpler Embedded Programs with Rust on RIOT (Video)",
+      "publisher": "RIOT Summit",
+      "releaseDate": "2020-09-11",
+      "website": "https://www.youtube.com/watch?v=LvfCSnOM1Hs",
       "summary": "Tired of pointer problems on Embedded C? It’s time to switch over to a safer, simpler way of coding: Embedded Rust. We’ll look at Rust hosted on RIOT and how it’s used to create LVGL watch apps for PineTime Smart Watch."
     },
     {
