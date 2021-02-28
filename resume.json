@@ -605,21 +605,21 @@
       "name": "Push AWS IoT sensor data to Redshift with Kinesis Firehose",
       "publisher": "Medium",
       "releaseDate": "2019-03-10",
-      "website": "https://web.archive.org/https://medium.com/@ly.lee/push-aws-iot-sensor-data-to-redshift-with-kinesis-firehose-385506264a00",
+      "website": "https://web.archive.org/web/20191204194129/https://medium.com/@ly.lee/push-aws-iot-sensor-data-to-redshift-with-kinesis-firehose-385506264a00?source=friends_link&sk=bd45be8b48fbb328ed1d65d10a8d7c38",
       "summary": "AWS IoT Rules Engine and Kinesis Firehose were designed to stream live sensor data into Redshift for storage and analysis"
     },
     {
       "name": "Transform and Import a JSON file into Amazon Redshift with AWS Glue",
       "publisher": "Medium",
       "releaseDate": "2019-03-08",
-      "website": "https://web.archive.org/https://medium.com/@ly.lee/transform-and-import-a-json-file-into-amazon-redshift-with-aws-glue-3371006e03ca",
+      "website": "https://web.archive.org/web/20191204194022/https://medium.com/@ly.lee/transform-and-import-a-json-file-into-amazon-redshift-with-aws-glue-3371006e03ca?source=friends_link&sk=a57bcec30f5b6b1c978dc4f35d8d6427",
       "summary": "With AWS Glue it’s now possible to keep our Redshift data warehouses in sync with JSON-based data stores… So we may exploit the full potential of business analytics and machine learning in AWS!"
     },
     {
       "name": "Connecting AWS Lambda Node.JS to Redshift or PostgreSQL? Try AWS Lambda Layers!",
       "publisher": "Medium",
       "releaseDate": "2019-03-06",
-      "website": "https://web.archive.org/https://medium.com/@ly.lee/connecting-aws-lambda-node-js-to-redshift-or-postgresql-try-aws-lambda-layers-78e60c27f39b",
+      "website": "https://web.archive.org/web/20191204194031/https://medium.com/@ly.lee/connecting-aws-lambda-node-js-to-redshift-or-postgresql-try-aws-lambda-layers-78e60c27f39b?source=friends_link&sk=84d0f78bddfece6049c2395741824e58",
       "summary": "With Lambda Layers it’s really easy to connect our Node.js Lambda Function to Redshift or PostgreSQL"
     },
     {
@@ -668,14 +668,14 @@
       "name": "STM32 Blue Pill Visual Programming with MakeCode, CODAL and libopencm3",
       "publisher": "Medium",
       "releaseDate": "2018-12-09",
-      "website": "https://web.archive.org/https://medium.com/@ly.lee/work-in-progress-stm32-blue-pill-visual-programming-with-makecode-codal-and-libopencm3-422d308f252e",
+      "website": "https://web.archive.org/web/20191204194221/https://medium.com/@ly.lee/work-in-progress-stm32-blue-pill-visual-programming-with-makecode-codal-and-libopencm3-422d308f252e?source=friends_link&sk=b39519335652415d5f4aa17c9e4af1d2",
       "summary": "This work-in-progress document describes an incomplete implementation of STM32 Blue Pill visual programming"
     },
     {
       "name": "Sigfox Teacher Answers Your Questions",
       "publisher": "Medium",
       "releaseDate": "2018-12-07",
-      "website": "https://web.archive.org/https://medium.com/@ly.lee/sigfox-teacher-answers-your-questions-7e47122716dc",
+      "website": "https://web.archive.org/web/20191204194157/https://medium.com/@ly.lee/sigfox-teacher-answers-your-questions-7e47122716dc?source=friends_link&sk=7668c0b2ecc6333cd60ff8e536501ebd",
       "summary": "I teach Sigfox to working professionals. Here are their questions…"
     },
     {
@@ -683,14 +683,14 @@
       "publisher": "Medium",
       "releaseDate": "2018-11-29",
       "website": "https://web.archive.org/https://medium.com/@ly.lee/%E4%BB%A5-thethings-io-%E4%BE%86%E5%B0%87-bbc-micro-bit-%E6%84%9F%E6%B8%AC%E5%99%A8%E5%9C%96%E5%BD%A2%E5%8C%96-4258b04dea6c",
-      "summary": " "
+      "summary": "如果您可以將您以電池供應電力的BBC micro:bit設置在城市裡的任何一個角落來收集感測資料 … 或者是隨時查看從家裡、學校、工作場所即時更新的感測資料 … 不是很酷嗎？"
     },
     {
       "name": "Visualising BBC micro:bit sensors with thethings.iO",
       "publisher": "Medium",
       "releaseDate": "2018-11-17",
-      "website": "https://web.archive.org/https://medium.com/@ly.lee/visualising-bbc-micro-bit-sensors-with-thethings-io-5689fb613531",
-      "summary": "如果您可以將您以電池供應電力的BBC micro:bit設置在城市裡的任何一個角落來收集感測資料 … 或者是隨時查看從家裡、學校、工作場所即時更新的感測資料 … 不是很酷嗎？"
+      "website": "https://web.archive.org/web/20191204194120/https://medium.com/@ly.lee/visualising-bbc-micro-bit-sensors-with-thethings-io-5689fb613531?source=friends_link&sk=a8cfc404362ecbe3a26823f6a70fa5cb",
+      "summary": "Wouldn’t it be cool if you could plant your BBC micro:bit anywhere in the city (powered by batteries) to collect sensor data… And watch live updates of the sensor data from your home, school, workplace, … Even on the go?"
     },
     {
       "name": "連接 BBC micro:bit 與 Sigfox 物聯網",
@@ -787,7 +787,7 @@
       "name": "First Impressions of Alibaba Cloud (Aliyun)",
       "publisher": "Medium",
       "releaseDate": "2018-05-21",
-      "website": "https://web.archive.org/https://medium.com/@ly.lee/first-impressions-of-alibaba-cloud-aliyun-688dc46fa9b8",
+      "website": "https://web.archive.org/web/20191204194108/https://medium.com/@ly.lee/first-impressions-of-alibaba-cloud-aliyun-688dc46fa9b8?source=friends_link&sk=0685f5028f4ce9575dfae9cc9515143d",
       "summary": "Could Alibaba Cloud be the economical cloud for high volume IoT?"
     },
     {
@@ -822,7 +822,7 @@
       "name": "How To Build Your Sigfox Server (Version 1.0)",
       "publisher": "Medium",
       "releaseDate": "2017-10-14",
-      "website": "https://web.archive.org/https://medium.com/@ly.lee/how-to-build-your-sigfox-server-version-1-0-6763732692fd",
+      "website": "https://web.archive.org/web/20191204194035/https://medium.com/@ly.lee/how-to-build-your-sigfox-server-version-1-0-6763732692fd?source=friends_link&sk=641f65c458ec59fa27dddbe7735b118a",
       "summary": "Building highly reliable, robust and scalable systems for processing Sigfox messages"
     },
     {
@@ -836,7 +836,7 @@
       "name": "IoT is a Bad Word",
       "publisher": "Medium",
       "releaseDate": "2017-05-26",
-      "website": "https://web.archive.org/https://medium.com/@ly.lee/iot-is-a-bad-word-9003d9fab638",
+      "website": "https://web.archive.org/web/20191204194240/https://medium.com/@ly.lee/iot-is-a-bad-word-9003d9fab638?source=friends_link&sk=f7d58ebca338f326b6be8dcb79c7d6f5",
       "summary": "IoT is about solving real problems (not imaginary ones) in a sustainable way"
     },
     {
