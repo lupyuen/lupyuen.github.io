@@ -680,9 +680,9 @@
     },
     {
       "name": "以 thethings.iO 來將 BBC micro:bit 感測器圖形化",
-      "publisher": "Medium",
+      "publisher": "少儿编程教程网",
       "releaseDate": "2018-11-29",
-      "website": "https://web.archive.org/https://medium.com/@ly.lee/%E4%BB%A5-thethings-io-%E4%BE%86%E5%B0%87-bbc-micro-bit-%E6%84%9F%E6%B8%AC%E5%99%A8%E5%9C%96%E5%BD%A2%E5%8C%96-4258b04dea6c",
+      "website": "https://www.kidscoding8.com/98097.html",
       "summary": "如果您可以將您以電池供應電力的BBC micro:bit設置在城市裡的任何一個角落來收集感測資料 … 或者是隨時查看從家裡、學校、工作場所即時更新的感測資料 … 不是很酷嗎？"
     },
     {
@@ -694,9 +694,9 @@
     },
     {
       "name": "連接 BBC micro:bit 與 Sigfox 物聯網",
-      "publisher": "Medium",
+      "publisher": "MakerPRO",
       "releaseDate": "2018-11-13",
-      "website": "https://web.archive.org/https://medium.com/@ly.lee/%E9%80%A3%E6%8E%A5-bbc-micro-bit-%E8%88%87-sigfox-%E7%89%A9%E8%81%AF%E7%B6%B2-36b0d453151e",
+      "website": "https://makerpro.cc/2018/11/connect-bbc-microbit-and-sigfox-iot/",
       "summary": "使用 BBC micro:bit 連接 Sigfox 物聯網網路會是一個很好幫助孩子們理解感測器與感測網路如何運作的理想方式。micro:bit 是新式以電池提供電力的感測器裝置典範，具備充足的處理能力並支援大多數的感測器類型。在教育用途上，Sigfox 可能是今日用於城市規模測試的感測網路之中，最為便宜的方案。"
     },
     {
@@ -708,9 +708,9 @@
     },
     {
       "name": "連接 STM32F103C8T6 Blue Pill 開發板與 Sigfox 物聯網",
-      "publisher": "Medium",
+      "publisher": "MakerPRO",
       "releaseDate": "2018-10-17",
-      "website": "https://web.archive.org/https://medium.com/@ly.lee/%E9%80%A3%E6%8E%A5-stm32f103c8t6-blue-pill-%E9%96%8B%E7%99%BC%E6%9D%BF%E8%88%87-sigfox-%E7%89%A9%E8%81%AF%E7%B6%B2-9fc6b01e616a",
+      "website": "https://makerpro.cc/2018/11/connect-blue-pill-with-sigfox-part-one/",
       "summary": "以 STM32 微處理器為核心的 STM32F103C8T6 Blue Pill 開發板連接 Sigfox 收發器模組來接取 Sigfox 物聯網網路可能會是設計一款低功率物聯網裝置的最佳組合。"
     },
     {
