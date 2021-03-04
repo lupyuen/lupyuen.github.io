@@ -28,7 +28,7 @@ Connect BL602 to SX1276 or RF96 as follows...
 
 ![PineCone BL602 RISC-V Board connected to Hope RF96 LoRa Transceiver](https://lupyuen.github.io/images/lora-connect2.jpg)
 
-| BL602 Pin     | LoRa Pin            | Wire Colour 
+| BL602 Pin     | SX1276 / RF96 Pin   | Wire Colour 
 |:--------------|:--------------------|:-------------------
 | __`GPIO 1`__  | `ISO` _(MISO)_      | Green
 | __`GPIO 2`__  | Do Not Connect      | 
@@ -53,9 +53,13 @@ According to the last article, we won't be using this pin because we'll be contr
 
 ![PineCone BL602 RISC-V Board connected to Hope RF96 LoRa Transceiver](https://lupyuen.github.io/images/lora-connect4.jpg)
 
-_Why are so many SX1276 (or RF96) Pins unused?_
+_Why are so many pins on SX1276 (or RF96) unused?_
 
 TODO
+
+Unlike WiFi, LoRa networks can be really simple.
+Send no receive!
+Great for battery powered devices
 
 Transmit only
 Unreliable
@@ -63,79 +67,6 @@ Unreliable
 Check that the LoRa Transceiver is using the right LoRa Frequency for your region.
 
 [(I bought the LoRa Transceiver from M2M Shop on Tindie)](https://www.tindie.com/products/m2m/lora-module-for-breadboard-with-antenna/)
-
-# Configure LoRa
-
-From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L41-L56)
-
-```c
-/// TODO: We are using LoRa Frequency 923 MHz for Singapore. Change this for your region.
-#define USE_BAND_923
-
-#if defined(USE_BAND_433)
-    #define RF_FREQUENCY               434000000 /* Hz */
-#elif defined(USE_BAND_780)
-    #define RF_FREQUENCY               780000000 /* Hz */
-#elif defined(USE_BAND_868)
-    #define RF_FREQUENCY               868000000 /* Hz */
-#elif defined(USE_BAND_915)
-    #define RF_FREQUENCY               915000000 /* Hz */
-#elif defined(USE_BAND_923)
-    #define RF_FREQUENCY               923000000 /* Hz */
-#else
-    #error "Please define a frequency band in the compiler options."
-#endif
-```
-
-TODO
-
-From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L58-L77)
-
-```c
-/// LoRa Parameters
-#define LORAPING_TX_OUTPUT_POWER            14        /* dBm */
-
-#define LORAPING_BANDWIDTH                  0         /* [0: 125 kHz, */
-                                                      /*  1: 250 kHz, */
-                                                      /*  2: 500 kHz, */
-                                                      /*  3: Reserved] */
-#define LORAPING_SPREADING_FACTOR           7         /* [SF7..SF12] */
-#define LORAPING_CODINGRATE                 1         /* [1: 4/5, */
-                                                      /*  2: 4/6, */
-                                                      /*  3: 4/7, */
-                                                      /*  4: 4/8] */
-#define LORAPING_PREAMBLE_LENGTH            8         /* Same for Tx and Rx */
-#define LORAPING_SYMBOL_TIMEOUT             5         /* Symbols */
-#define LORAPING_FIX_LENGTH_PAYLOAD_ON      false
-#define LORAPING_IQ_INVERSION_ON            false
-
-#define LORAPING_TX_TIMEOUT_MS              3000    /* ms */
-#define LORAPING_RX_TIMEOUT_MS              1000    /* ms */
-#define LORAPING_BUFFER_SIZE                64      /* LoRa message size */
-```
-
-TODO
-
-From [`sx1276.h`](https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/sx1276.h#L41-L56)
-
-```c
-#define SX1276_SPI_IDX      0  //  SPI Port 0
-#define SX1276_SPI_SDI_PIN  1  //  SPI Serial Data In Pin  (formerly MISO)
-#define SX1276_SPI_SDO_PIN  4  //  SPI Serial Data Out Pin (formerly MOSI)
-#define SX1276_SPI_CLK_PIN  3  //  SPI Clock Pin
-#define SX1276_SPI_CS_PIN  14  //  SPI Chip Select Pin
-#define SX1276_SPI_CS_OLD   2  //  Unused SPI Chip Select Pin
-#define SX1276_NRESET      17  //  Reset Pin
-#define SX1276_DIO0        12  //  DIO0 Pin
-#define SX1276_DIO1        11  //  DIO1 Pin
-#define SX1276_DIO2         5  //  DIO2 Pin
-#define SX1276_DIO3         8  //  DIO3 Pin
-#define SX1276_DIO4         0  //  TODO: DIO4 Pin
-#define SX1276_DIO5         0  //  TODO: DIO5 Pin
-#define SX1276_SPI_BAUDRATE  (200 * 1000)  //  SPI Frequency (200 kHz)
-#define SX1276_LF_USE_PA_BOOST  1  //  Enable Power Amplifier Boost for LoRa Frequency below 525 MHz
-#define SX1276_HF_USE_PA_BOOST  1  //  Enable Power Amplifier Boost for LoRa Frequency 525 MHz and above
-```
 
 # Initialise LoRa Transceiver
 
@@ -424,7 +355,7 @@ Let's enter some commands to transmit a LoRa Packet!
 
     [__Check out the complete log__](https://gist.github.com/lupyuen/9f26626d7c8081ae64d58eba70e07a80)
 
-# Troubleshooting LoRa
+# Troubleshoot LoRa
 
 TODO
 
@@ -494,15 +425,45 @@ By transmitting packets in this unique chirping pattern, LoRa ensures that packe
 
 TODO
 
-![](https://lupyuen.github.io/images/lora-airspy2.jpg)
+![Airspy R2 SDR](https://lupyuen.github.io/images/lora-airspy2.jpg)
+
+_Airspy R2 SDR_ 
 
 TODO
 
-![](https://lupyuen.github.io/images/lora-sdr4.png)
+![CubicSDR Software with Airspy R2 SDR](https://lupyuen.github.io/images/lora-sdr4.png)
+
+_CubicSDR Software with Airspy R2 SDR_
 
 TODO
 
-![](https://lupyuen.github.io/images/lora-airspy3.jpg)
+![Improvised Faraday Cage](https://lupyuen.github.io/images/lora-airspy3.jpg)
+
+_Improvised Faraday Cage_
+
+[(I bought my Airspy R2 here)](https://www.itead.cc/airspy.html)
+
+# LoRa vs LoRaWAN
+
+_What's the difference between LoRa, LoRaWAN and The Things Network?_
+
+1.  LoRa = The wireless network protocol
+
+    WiFi is also a wireless network protocol.
+
+1.  LoRaWAN = A managed LoRa network
+
+    It's like going to Starbucks and connecting to their WiFi.
+
+1.  The Things Network = The free LoRaWAN network that's operated by volunteers around the world. 
+
+    People actually set up base stations and allow free access.
+
+TODO
+
+![RAKwireless WisBlock](https://lupyuen.github.io/images/lora-wisblock.jpg)
+
+_RAKwireless WisBlock_
 
 # What's Next
 
@@ -532,6 +493,81 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1363672058920542210?s=20)
 
-# Porting LoRa Driver from Mynewt to BL602
+# Appendix: LoRa Configuration
+
+TODO
+
+From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L41-L56)
+
+```c
+/// TODO: We are using LoRa Frequency 923 MHz for Singapore. Change this for your region.
+#define USE_BAND_923
+
+#if defined(USE_BAND_433)
+    #define RF_FREQUENCY               434000000 /* Hz */
+#elif defined(USE_BAND_780)
+    #define RF_FREQUENCY               780000000 /* Hz */
+#elif defined(USE_BAND_868)
+    #define RF_FREQUENCY               868000000 /* Hz */
+#elif defined(USE_BAND_915)
+    #define RF_FREQUENCY               915000000 /* Hz */
+#elif defined(USE_BAND_923)
+    #define RF_FREQUENCY               923000000 /* Hz */
+#else
+    #error "Please define a frequency band in the compiler options."
+#endif
+```
+
+TODO
+
+From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L58-L77)
+
+```c
+/// LoRa Parameters
+#define LORAPING_TX_OUTPUT_POWER            14        /* dBm */
+
+#define LORAPING_BANDWIDTH                  0         /* [0: 125 kHz, */
+                                                      /*  1: 250 kHz, */
+                                                      /*  2: 500 kHz, */
+                                                      /*  3: Reserved] */
+#define LORAPING_SPREADING_FACTOR           7         /* [SF7..SF12] */
+#define LORAPING_CODINGRATE                 1         /* [1: 4/5, */
+                                                      /*  2: 4/6, */
+                                                      /*  3: 4/7, */
+                                                      /*  4: 4/8] */
+#define LORAPING_PREAMBLE_LENGTH            8         /* Same for Tx and Rx */
+#define LORAPING_SYMBOL_TIMEOUT             5         /* Symbols */
+#define LORAPING_FIX_LENGTH_PAYLOAD_ON      false
+#define LORAPING_IQ_INVERSION_ON            false
+
+#define LORAPING_TX_TIMEOUT_MS              3000    /* ms */
+#define LORAPING_RX_TIMEOUT_MS              1000    /* ms */
+#define LORAPING_BUFFER_SIZE                64      /* LoRa message size */
+```
+
+TODO
+
+From [`sx1276.h`](https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/sx1276.h#L41-L56)
+
+```c
+#define SX1276_SPI_IDX      0  //  SPI Port 0
+#define SX1276_SPI_SDI_PIN  1  //  SPI Serial Data In Pin  (formerly MISO)
+#define SX1276_SPI_SDO_PIN  4  //  SPI Serial Data Out Pin (formerly MOSI)
+#define SX1276_SPI_CLK_PIN  3  //  SPI Clock Pin
+#define SX1276_SPI_CS_PIN  14  //  SPI Chip Select Pin
+#define SX1276_SPI_CS_OLD   2  //  Unused SPI Chip Select Pin
+#define SX1276_NRESET      17  //  Reset Pin
+#define SX1276_DIO0        12  //  DIO0 Pin
+#define SX1276_DIO1        11  //  DIO1 Pin
+#define SX1276_DIO2         5  //  DIO2 Pin
+#define SX1276_DIO3         8  //  DIO3 Pin
+#define SX1276_DIO4         0  //  TODO: DIO4 Pin
+#define SX1276_DIO5         0  //  TODO: DIO5 Pin
+#define SX1276_SPI_BAUDRATE  (200 * 1000)  //  SPI Frequency (200 kHz)
+#define SX1276_LF_USE_PA_BOOST  1  //  Enable Power Amplifier Boost for LoRa Frequency below 525 MHz
+#define SX1276_HF_USE_PA_BOOST  1  //  Enable Power Amplifier Boost for LoRa Frequency 525 MHz and above
+```
+
+# Appendix: Porting LoRa Driver from Mynewt to BL602
 
 TODO
