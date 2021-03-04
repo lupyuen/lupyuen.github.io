@@ -39,6 +39,8 @@ Connect BL602 to SX1276 or RF96 as follows...
 | __`3V3`__     | `3.3V`              | Red
 | __`GND`__     | `GND`               | Black
 
+[__CAUTION: Always connect the Antenna before Powering On... Or the LoRa Transceiver may get damaged! See this__](https://electronics.stackexchange.com/questions/335912/can-i-break-a-radio-tranceiving-device-by-operating-it-with-no-antenna-connected)
+
 TODO
 
 ![PineCone BL602 RISC-V Board connected to Hope RF96 LoRa Transceiver](https://lupyuen.github.io/images/lora-connect3.jpg)
@@ -337,3 +339,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1363672058920542210?s=20)
+
+# Porting LoRa Driver from Mynewt to BL602
+
+TODO
