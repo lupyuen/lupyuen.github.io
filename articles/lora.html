@@ -77,17 +77,18 @@
 <li><a href="#capture-lora-packets-with-airspy-sdr">6.1 Capture LoRa packets with Airspy SDR</a><ul></ul></li></ul></li>
 <li><a href="#whats-next">7 What's Next</a><ul></ul></li>
 <li><a href="#notes">8 Notes</a><ul></ul></li></ul></nav><p>📝 <em>9 Mar 2021</em></p>
-<p>Semtech SX1276 / Hope RF96
-Indoor WiFi is fine
-Outdoor need long range low power
-Transmit only
-Unreliable
-Test with RAKwireless in next article
-But use Airspy R2 SDR to verify </p>
-<p>Outdoor sensor to monitor health of my plants
-Rooftop garden</p>
-<p>Glowing helix
-Magical seahorse</p>
+<p>Suppose we have a garden in our home (or rooftop).</p>
+<p>Is there an affordable way to monitor our garden with Environmental Sensors (and Soil Sensors)...</p>
+<ul>
+<li>
+<p>That <strong>doesn't require WiFi</strong>... (Think rooftop)</p>
+</li>
+<li>
+<p>And consumes <strong>very little power?</strong> (Think batteries)</p>
+</li>
+</ul>
+<p>Here's a solution: <strong>PineCone BL602 RISC-V Board</strong> with a <strong>LoRa Transceiver!</strong></p>
+<p>Today we shall connect PineCone BL602 to a LoRa Transceiver: <strong>Semtech SX1276</strong> or <strong>Hope RF96</strong></p>
 <p>The Demo Firmware in this article will run on <strong>PineCone, Pinenut and Any BL602 Board</strong>.</p>
 <p><img src="https://lupyuen.github.io/images/lora-title.jpg" alt="PineCone BL602 RISC-V Board connected to Hope RF96 LoRa Transceiver" /></p>
 <p><em>PineCone BL602 RISC-V Board connected to Hope RF96 LoRa Transceiver</em></p>
@@ -113,6 +114,8 @@ Magical seahorse</p>
 <p><img src="https://lupyuen.github.io/images/lora-connect4.jpg" alt="PineCone BL602 RISC-V Board connected to Hope RF96 LoRa Transceiver" /></p>
 <p><em>Why are so many SX1276 (or RF96) Pins unused?</em></p>
 <p>TODO</p>
+<p>Transmit only
+Unreliable</p>
 <h1 id="initialise-lora-transceiver" class="section-header"><a href="#initialise-lora-transceiver">2 Initialise LoRa Transceiver</a></h1>
 <p>TODO</p>
 <h1 id="transmit-lora-packet" class="section-header"><a href="#transmit-lora-packet">3 Transmit LoRa Packet</a></h1>
@@ -316,6 +319,7 @@ TODO
 <p><img src="https://lupyuen.github.io/images/lora-airspy3.jpg" alt="" /></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">7 What's Next</a></h1>
 <p>TODO</p>
+<p>Test with RAKwireless in next article</p>
 <p>Meanwhile there's plenty more code in the <a href="https://github.com/bouffalolab/bl_iot_sdk"><strong>BL602 IoT SDK</strong></a> to be deciphered and documented: <strong>ADC, DAC, WiFi, Bluetooth LE,</strong> ...</p>
 <p><a href="https://wiki.pine64.org/wiki/Nutcracker"><strong>Come Join Us... Make BL602 Better!</strong></a></p>
 <p>🙏 👍 😀</p>
