@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <title>PineCone BL602 Blasting Pixels to ST7789 Display with LVGL Library</title>
+
+    
+    <!-- Begin scripts/articles/*-header.html: Article Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<meta property="og:title" 
+    content="Connect PineCone BL602 to LoRa Transceiver" 
+    data-rh="true">
+<meta property="og:description" 
+    content="How we transmit LoRa packets on PineCone BL602 RISC-V Board ... With Semtech 1276 or Hope RF96"
+    data-rh="true">
+<meta property="og:image" 
+    content="https://lupyuen.github.io/images/lora-title.jpg">
+<meta property="og:type" 
+    content="article" data-rh="true">
+<!-- End scripts/articles/*-header.html -->
+<!-- Begin scripts/rustdoc-header.html: Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<link rel="alternate" type="application/rss+xml" title="RSS Feed for lupyuen" href="/rss.xml" />
+<link rel="stylesheet" type="text/css" href="../normalize.css">
+<link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle">
+<link rel="stylesheet" type="text/css" href="../dark.css">
+<link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle">
+<link rel="stylesheet" type="text/css" href="../prism.css">
+<script src="../storage.js"></script><noscript>
+<link rel="stylesheet" href="../noscript.css"></noscript>
+<link rel="shortcut icon" href="../favicon.ico">
+<style type="text/css">
+    #crate-search {
+        background-image: url("../down-arrow.svg");
+    }
+    a {
+        color: #77d;
+    }
+</style>
+<!-- End scripts/rustdoc-header.html -->
+
+
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+        <!-- Begin scripts/rustdoc-before.html: Pre-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
+
+    <!-- Begin Theme Picker -->
+    <div class="theme-picker" style="left: 0"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg"
+        width="18" alt="Pick another theme!"></button>
+        <div id="theme-choices"></div>
+    </div>
+    <script src="../theme.js"></script>
+    <script src="../prism.js"></script>
+    <!-- Theme Picker -->
+
+    <!-- End scripts/rustdoc-before.html -->
+    
+
+    <h1 class="title">PineCone BL602 Blasting Pixels to ST7789 Display with LVGL Library</h1>
+    <nav id="TOC"><ul>
+<li><a href="#connect-bl602-to-lora-transceiver">1 Connect BL602 to LoRa Transceiver</a><ul></ul></li>
+<li><a href="#initialise-lora-transceiver">2 Initialise LoRa Transceiver</a><ul></ul></li>
+<li><a href="#transmit-lora-packet">3 Transmit LoRa Packet</a><ul></ul></li>
+<li><a href="#build-and-run-the-lora-firmware">4 Build and Run the LoRa Firmware</a><ul>
+<li><a href="#flash-the-firmware">4.1 Flash the firmware</a><ul></ul></li>
+<li><a href="#run-the-firmware">4.2 Run the firmware</a><ul></ul></li>
+<li><a href="#enter-lora-commands">4.3 Enter LoRa commands</a><ul></ul></li></ul></li>
+<li><a href="#troubleshooting-lora">5 Troubleshooting LoRa</a><ul></ul></li>
+<li><a href="#visualise-lora-with-a-software-defined-radio">6 Visualise LoRa with a Software Defined Radio</a><ul></ul></li>
+<li><a href="#whats-next">7 What's Next</a><ul></ul></li>
+<li><a href="#notes">8 Notes</a><ul></ul></li></ul></nav><p>📝 <em>9 Mar 2021</em></p>
+<p>Semtech SX1276 / Hope RF96
+Indoor WiFi is fine
+Outdoor need long range low power
+Transmit only
+Unreliable
+Test with RAKwireless in next article
+But use Airspy R2 SDR to verify </p>
+<p>Outdoor sensor to monitor health of my plants
+Rooftop garden</p>
+<p>Glowing helix
+Magical seahorse</p>
+<p>The Demo Firmware in this article will run on <strong>PineCone, Pinenut and Any BL602 Board</strong>.</p>
+<p><img src="https://lupyuen.github.io/images/lora-title.jpg" alt="PineCone BL602 RISC-V Board connected to Hope RF96 LoRa Transceiver" /></p>
+<p><em>PineCone BL602 RISC-V Board connected to Hope RF96 LoRa Transceiver</em></p>
+<h1 id="connect-bl602-to-lora-transceiver" class="section-header"><a href="#connect-bl602-to-lora-transceiver">1 Connect BL602 to LoRa Transceiver</a></h1>
+<p>TODO</p>
+<p>Connect BL602 to SX1276 or RF96 as follows...</p>
+<p><img src="https://lupyuen.github.io/images/lora-connect2.jpg" alt="PineCone BL602 RISC-V Board connected to Hope RF96 LoRa Transceiver" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/lora-connect3.jpg" alt="PineCone BL602 RISC-V Board connected to Hope RF96 LoRa Transceiver" /></p>
+<p><em>Why is BL602 Pin 2 unused?</em></p>
+<p><strong><code>GPIO 2</code></strong> is the <strong>Unused SPI Chip Select</strong> on BL602.</p>
+<p>According to the last article, we won't be using this pin because we'll be controlling Chip Select ourselves on <code>GPIO 14</code>.</p>
+<p><img src="https://lupyuen.github.io/images/lora-connect4.jpg" alt="PineCone BL602 RISC-V Board connected to Hope RF96 LoRa Transceiver" /></p>
+<p><em>Why are so many SX1276 (or RF96) Pins unused?</em></p>
+<p>TODO</p>
+<h1 id="initialise-lora-transceiver" class="section-header"><a href="#initialise-lora-transceiver">2 Initialise LoRa Transceiver</a></h1>
+<p>TODO</p>
+<h1 id="transmit-lora-packet" class="section-header"><a href="#transmit-lora-packet">3 Transmit LoRa Packet</a></h1>
+<p>TODO</p>
+<h1 id="build-and-run-the-lora-firmware" class="section-header"><a href="#build-and-run-the-lora-firmware">4 Build and Run the LoRa Firmware</a></h1>
+<p>TODO</p>
+<p>Let's run the LoRa Demo Firmware for BL602.</p>
+<p>Download the Firmware Binary File <strong><code>sdk_app_lora.bin</code></strong> from...</p>
+<ul>
+<li><a href="https://github.com/lupyuen/bl_iot_sdk/releases/tag/v???">TODO: <strong><code>sdk_app_lora</code> Binary Release</strong></a></li>
+</ul>
+<p>Alternatively, we may build the Firmware Binary File <code>sdk_app_lora.bin</code> from the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/lora/customer_app/sdk_app_lora">source code</a>...</p>
+<pre><code class="language-bash"># Download the lora branch of lupyuen's bl_iot_sdk
+git clone --recursive --branch st7789 https://github.com/lupyuen/bl_iot_sdk
+cd bl_iot_sdk/customer_app/sdk_app_lora
+
+# TODO: Change this to the full path of bl_iot_sdk
+export BL60X_SDK_PATH=$HOME/bl_iot_sdk
+export CONFIG_CHIP_NAME=BL602
+make
+
+# TODO: Change ~/blflash to the full path of blflash
+cp build_out/sdk_app_lora.bin ~/blflash
+</code></pre>
+<p><a href="https://lupyuen.github.io/articles/pinecone#building-firmware">More details on building bl_iot_sdk</a></p>
+<p>(Remember to use the <strong><code>lora</code></strong> branch, not the default <strong><code>master</code></strong> branch)</p>
+<h2 id="flash-the-firmware" class="section-header"><a href="#flash-the-firmware">4.1 Flash the firmware</a></h2>
+<p>Follow these steps to install <code>blflash</code>...</p>
+<ol>
+<li>
+<p><a href="https://lupyuen.github.io/articles/flash#install-rustup"><strong>&quot;Install rustup&quot;</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/flash#download-and-build-blflash"><strong>&quot;Download and build blflash&quot;</strong></a></p>
+</li>
+</ol>
+<p>We assume that our Firmware Binary File <code>sdk_app_lora.bin</code> has been copied to the <code>blflash</code> folder.</p>
+<p>Set BL602 to <strong>Flashing Mode</strong> and restart the board...</p>
+<p><strong>For PineCone:</strong></p>
+<ol>
+<li>
+<p>Set the <strong>PineCone Jumper (IO 8)</strong> to the <strong><code>H</code> Position</strong> <a href="https://lupyuen.github.io/images/pinecone-jumperh.jpg">(Like this)</a></p>
+</li>
+<li>
+<p>Press the Reset Button</p>
+</li>
+</ol>
+<p><strong>For BL10:</strong></p>
+<ol>
+<li>
+<p>Connect BL10 to the USB port</p>
+</li>
+<li>
+<p>Press and hold the <strong>D8 Button (GPIO 8)</strong></p>
+</li>
+<li>
+<p>Press and release the <strong>EN Button (Reset)</strong></p>
+</li>
+<li>
+<p>Release the D8 Button</p>
+</li>
+</ol>
+<p><strong>For Pinenut and MagicHome BL602:</strong></p>
+<ol>
+<li>
+<p>Disconnect the board from the USB Port</p>
+</li>
+<li>
+<p>Connect <strong>GPIO 8</strong> to <strong>3.3V</strong></p>
+</li>
+<li>
+<p>Reconnect the board to the USB port</p>
+</li>
+</ol>
+<p>Enter these commands to flash <code>sdk_app_lora.bin</code> to BL602 over UART...</p>
+<pre><code class="language-bash"># TODO: Change ~/blflash to the full path of blflash
+cd ~/blflash
+
+# For Linux:
+sudo cargo run flash sdk_app_lora.bin \
+    --port /dev/ttyUSB0
+
+# For macOS:
+cargo run flash sdk_app_lora.bin \
+    --port /dev/tty.usbserial-1420 \
+    --initial-baud-rate 230400 \
+    --baud-rate 230400
+
+# For Windows: Change COM5 to the BL602 Serial Port
+cargo run flash sdk_app_lora.bin --port COM5
+</code></pre>
+<p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">More details on flashing firmware</a></p>
+<h2 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">4.2 Run the firmware</a></h2>
+<p>Set BL602 to <strong>Normal Mode</strong> (Non-Flashing) and restart the board...</p>
+<p><strong>For PineCone:</strong></p>
+<ol>
+<li>
+<p>Set the <strong>PineCone Jumper (IO 8)</strong> to the <strong><code>L</code> Position</strong> <a href="https://lupyuen.github.io/images/pinecone-jumperl.jpg">(Like this)</a></p>
+</li>
+<li>
+<p>Press the Reset Button</p>
+</li>
+</ol>
+<p><strong>For BL10:</strong></p>
+<ol>
+<li>Press and release the <strong>EN Button (Reset)</strong></li>
+</ol>
+<p><strong>For Pinenut and MagicHome BL602:</strong></p>
+<ol>
+<li>
+<p>Disconnect the board from the USB Port</p>
+</li>
+<li>
+<p>Connect <strong>GPIO 8</strong> to <strong>GND</strong></p>
+</li>
+<li>
+<p>Reconnect the board to the USB port</p>
+</li>
+</ol>
+<p>After restarting, connect to BL602's UART Port at 2 Mbps like so...</p>
+<p><strong>For Linux:</strong></p>
+<pre><code class="language-bash">sudo screen /dev/ttyUSB0 2000000
+</code></pre>
+<p><strong>For macOS:</strong> Use CoolTerm (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
+<p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
+<p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">More details on connecting to BL602</a></p>
+<h2 id="enter-lora-commands" class="section-header"><a href="#enter-lora-commands">4.3 Enter LoRa commands</a></h2>
+<p>TODO</p>
+<p>Let's enter some commands to transmit a LoRa Packet!</p>
+<ol>
+<li>
+<p>Press Enter to reveal the command prompt.</p>
+</li>
+<li>
+<p>Enter <code>help</code> to see the available commands...</p>
+<pre><code class="language-text"># help
+</code></pre>
+</li>
+<li>
+<p>First we <strong>initialise our LoRa Transceiver</strong>. </p>
+<p>Enter this command...</p>
+<pre><code class="language-text"># init_driver
+</code></pre>
+<p>This command calls the function <code>init_driver</code>, which we have seen earlier.</p>
+</li>
+<li>
+<p>We should see this...</p>
+<pre><code class="language-text"># init_driver
+TODO
+</code></pre>
+<p>The above messages say that our SPI Port has been configured by the BL602 SPI HAL.</p>
+<pre><code class="language-text">TODO
+</code></pre>
+<p><code>init_driver</code> has just configured the GPIO Pins and switched on the backlight.</p>
+<pre><code class="language-text">TODO
+</code></pre>
+<p>Followed by the eight ST7789 Init Commands sent by <code>init_driver</code>.</p>
+</li>
+<li>
+<p>Next we <strong>display the image on ST7789</strong>...</p>
+<pre><code class="language-text"># send_message
+</code></pre>
+<p>This command calls the function <code>send_message</code>, which we have seen earlier.</p>
+</li>
+<li>
+<p>We should see this...</p>
+<pre><code class="language-text"># send_message
+TODO
+</code></pre>
+<p>That's <code>send_message</code> blasting the ST7789 Commands to set the Display Window, then blasting the pixel data for 10 rows.</p>
+<p><a href="https://gist.github.com/lupyuen/9f26626d7c8081ae64d58eba70e07a80"><strong>Check out the complete log</strong></a></p>
+</li>
+</ol>
+<h1 id="troubleshooting-lora" class="section-header"><a href="#troubleshooting-lora">5 Troubleshooting LoRa</a></h1>
+<p>TODO</p>
+<h1 id="visualise-lora-with-a-software-defined-radio" class="section-header"><a href="#visualise-lora-with-a-software-defined-radio">6 Visualise LoRa with a Software Defined Radio</a></h1>
+<p>TODO</p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">7 What's Next</a></h1>
+<p>TODO</p>
+<p>Meanwhile there's plenty more code in the <a href="https://github.com/bouffalolab/bl_iot_sdk"><strong>BL602 IoT SDK</strong></a> to be deciphered and documented: <strong>ADC, DAC, WiFi, Bluetooth LE,</strong> ...</p>
+<p><a href="https://wiki.pine64.org/wiki/Nutcracker"><strong>Come Join Us... Make BL602 Better!</strong></a></p>
+<p>🙏 👍 😀</p>
+<ul>
+<li>
+<p><a href="https://github.com/sponsors/lupyuen">Sponsor me a coffee</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/book">Read &quot;The RISC-V BL602 Book&quot;</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io">Check out my articles</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/rss.xml">RSS Feed</a></p>
+</li>
+</ul>
+<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
+<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lora.md"><code>lupyuen.github.io/src/lora.md</code></a></p>
+<h1 id="notes" class="section-header"><a href="#notes">8 Notes</a></h1>
+<ol>
+<li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1363672058920542210?s=20">this Twitter Thread</a></li>
+</ol>
+
+    
+</body>
+</html>
