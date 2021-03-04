@@ -488,6 +488,8 @@ The ISM Band is used by many types of wireless gadgets. (It's like 2.4 GHz WiFi,
 
 By transmitting packets in this unique chirping pattern, LoRa ensures that packets will be delivered over long distances in spite of the noise and interference.
 
+(LoRa doesn't guarantee 100% reliable delivery, of course)
+
 ## Capture LoRa packets with Airspy SDR
 
 TODO
