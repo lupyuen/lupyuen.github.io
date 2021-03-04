@@ -2,15 +2,15 @@
 
 📝 _9 Mar 2021_
 
-Suppose we have a garden in our home (or rooftop).
+Suppose we have a garden in our home. (Or rooftop)
 
-Is there an affordable way to monitor our garden with Environmental Sensors (and Soil Sensors)...
+Is there an __affordable way to monitor our garden__ with Environmental Sensors (and Soil Sensors)...
 
 -   That __doesn't require WiFi__... (Think rooftop)
 
 -   And consumes __very little power?__ (Think batteries)
 
-Here's a solution: __PineCone BL602 RISC-V Board__ with a __LoRa Transceiver!__
+Here's a solution: [__PineCone BL602 RISC-V Board__](https://lupyuen.github.io/articles/pinecone) with a __LoRa Transceiver!__
 
 Today we shall connect PineCone BL602 to a LoRa Transceiver: __Semtech SX1276__ or __Hope RF96__
 
