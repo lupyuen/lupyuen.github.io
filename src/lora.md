@@ -1,4 +1,4 @@
-# PineCone BL602 Blasting Pixels to ST7789 Display with LVGL Library
+# Connect PineCone BL602 to LoRa Transceiver
 
 📝 _9 Mar 2021_
 
@@ -29,6 +29,17 @@ TODO
 Connect BL602 to SX1276 or RF96 as follows...
 
 ![PineCone BL602 RISC-V Board connected to Hope RF96 LoRa Transceiver](https://lupyuen.github.io/images/lora-connect2.jpg)
+
+| BL602 Pin     | LoRa Pin            | Wire Colour 
+|:--------------|:--------------------|:-------------------
+| __`GPIO 1`__  | `ISO` _(MISO)_      | Green
+| __`GPIO 2`__  | Do Not Connect      | 
+| __`GPIO 3`__  | `SCK`               | Yellow 
+| __`GPIO 4`__  | `OSI` _(MOSI)_      | Blue
+| __`GPIO 14`__ | `NSS`               | Orange
+| __`GPIO 17`__ | `RST`               | White
+| __`3V3`__     | `3.3V`              | Red
+| __`GND`__     | `GND`               | Black
 
 TODO
 
@@ -246,7 +257,7 @@ Let's enter some commands to transmit a LoRa Packet!
 
 TODO
 
-# Visualise LoRa with a Software Defined Radio
+# Visualise LoRa with Software Defined Radio
 
 TODO
 

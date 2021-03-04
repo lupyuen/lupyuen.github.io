@@ -92,6 +92,14 @@ UART is used by E-Ink Displays, GPS Receivers and LoRa Transceivers. To talk to 
 
 -   ["PineCone BL602 Talks UART to Grove E-Ink Display"](https://lupyuen.github.io/articles/uart)
 
+![](https://lupyuen.github.io/images/book-adc.jpg)
+
+# ADC on BL602
+
+Here's the sample code that reads BL602's __onboard temperature sensor__ via ADC...
+
+-   [Read BL602 Temperature via ADC](https://github.com/bouffalolab/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_adc.c#L173-L216)
+
 ![](https://lupyuen.github.io/images/book-display.jpg)
 
 # Graphics on BL602
@@ -102,13 +110,15 @@ Render text and graphics with the open-source __LVGL Library__.
 
 -   ["PineCone BL602 Talks UART to Grove E-Ink Display"](https://lupyuen.github.io/articles/uart)
 
-![](https://lupyuen.github.io/images/book-openocd.jpg)
+![](https://lupyuen.github.io/images/book-lora.jpg)
 
 # LoRa on BL602
 
-Let's turn BL602 into a real IoT gadget that transmits long range, low power LoRa packets...
+Let's turn BL602 into a real IoT gadget that transmits __long range, low power LoRa packets__...
 
 -   ["Connect PineCone BL602 to LoRa Transceiver"](https://lupyuen.github.io/articles/lora)
+
+![](https://lupyuen.github.io/images/book-openocd.jpg)
 
 # OpenOCD on BL602
 
