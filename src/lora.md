@@ -85,13 +85,25 @@ static void init_driver(char *buf, int len, int argc, char **argv)
     radio_events.TxTimeout = on_tx_timeout;
     radio_events.RxTimeout = on_rx_timeout;
     radio_events.RxError   = on_rx_error;
+```
 
+TODO
+
+```c
     //  Init the SPI Port and the LoRa Transceiver
     Radio.Init(&radio_events);
+```
 
+TODO
+
+```c
     //  Set the LoRa Frequency
     Radio.SetChannel(RF_FREQUENCY);
+```
 
+TODO
+
+```c
     //  Configure the LoRa Transceiver for transmitting messages
     Radio.SetTxConfig(
         MODEM_LORA,
@@ -108,7 +120,11 @@ static void init_driver(char *buf, int len, int argc, char **argv)
         LORAPING_IQ_INVERSION_ON,
         LORAPING_TX_TIMEOUT_MS
     );
+```
 
+TODO
+
+```c
     //  Configure the LoRa Transceiver for receiving messages
     Radio.SetRxConfig(
         MODEM_LORA,
@@ -124,8 +140,8 @@ static void init_driver(char *buf, int len, int argc, char **argv)
         0,        /* Frequency hopping disabled. */
         0,        /* Hop period; N/A. */
         LORAPING_IQ_INVERSION_ON,
-        true
-    );    /* Continuous receive mode. */
+        true      /* Continuous receive mode. */
+    );    
 }
 ```
 
@@ -144,7 +160,11 @@ static void send_message(char *buf, int len, int argc, char **argv)
     //  Send the "PING" message
     send_once(1);
 }
+```
 
+TODO
+
+```c
 /// Send a LoRa message. If is_ping is 0, send "PONG". Otherwise send "PING".
 static void send_once(int is_ping)
 {
@@ -154,12 +174,20 @@ static void send_once(int is_ping)
     } else {
         memcpy(loraping_buffer, loraping_pong_msg, 4);
     }
+```
 
+TODO
+
+```c
     //  Fill up the remaining space in the transmit buffer (64 bytes) with values 0, 1, 2, ...
     for (int i = 4; i < sizeof loraping_buffer; i++) {
         loraping_buffer[i] = i - 4;
     }
+```
 
+TODO
+
+```c
     //  Send the transmit buffer (64 bytes)
     Radio.Send(loraping_buffer, sizeof loraping_buffer);
 }
