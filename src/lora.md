@@ -60,6 +60,10 @@ TODO
 Transmit only
 Unreliable
 
+Check that the LoRa Transceiver is using the right LoRa Frequency for your region.
+
+[(I bought the LoRa Transceiver from M2M Shop on Tindie)](https://www.tindie.com/products/m2m/lora-module-for-breadboard-with-antenna/)
+
 # Initialise LoRa Transceiver
 
 TODO
