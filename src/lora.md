@@ -261,6 +261,10 @@ TODO
 
 TODO
 
+https://www.linkedin.com/feed/update/urn:li:activity:6772707414933430272?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A6772707414933430272%2C6772744850791124992%29
+
+https://pubs.gnuradio.org/index.php/grcon/article/download/8/7/
+
 # What's Next
 
 TODO
