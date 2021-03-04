@@ -64,11 +64,175 @@ Check that the LoRa Transceiver is using the right LoRa Frequency for your regio
 
 [(I bought the LoRa Transceiver from M2M Shop on Tindie)](https://www.tindie.com/products/m2m/lora-module-for-breadboard-with-antenna/)
 
+# Configure LoRa
+
+From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L41-L56)
+
+```c
+/// TODO: We are using LoRa Frequency 923 MHz for Singapore. Change this for your region.
+#define USE_BAND_923
+
+#if defined(USE_BAND_433)
+    #define RF_FREQUENCY               434000000 /* Hz */
+#elif defined(USE_BAND_780)
+    #define RF_FREQUENCY               780000000 /* Hz */
+#elif defined(USE_BAND_868)
+    #define RF_FREQUENCY               868000000 /* Hz */
+#elif defined(USE_BAND_915)
+    #define RF_FREQUENCY               915000000 /* Hz */
+#elif defined(USE_BAND_923)
+    #define RF_FREQUENCY               923000000 /* Hz */
+#else
+    #error "Please define a frequency band in the compiler options."
+#endif
+```
+
+TODO
+
+From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L58-L77)
+
+```c
+/// LoRa Parameters
+#define LORAPING_TX_OUTPUT_POWER            14        /* dBm */
+
+#define LORAPING_BANDWIDTH                  0         /* [0: 125 kHz, */
+                                                      /*  1: 250 kHz, */
+                                                      /*  2: 500 kHz, */
+                                                      /*  3: Reserved] */
+#define LORAPING_SPREADING_FACTOR           7         /* [SF7..SF12] */
+#define LORAPING_CODINGRATE                 1         /* [1: 4/5, */
+                                                      /*  2: 4/6, */
+                                                      /*  3: 4/7, */
+                                                      /*  4: 4/8] */
+#define LORAPING_PREAMBLE_LENGTH            8         /* Same for Tx and Rx */
+#define LORAPING_SYMBOL_TIMEOUT             5         /* Symbols */
+#define LORAPING_FIX_LENGTH_PAYLOAD_ON      false
+#define LORAPING_IQ_INVERSION_ON            false
+
+#define LORAPING_TX_TIMEOUT_MS              3000    /* ms */
+#define LORAPING_RX_TIMEOUT_MS              1000    /* ms */
+#define LORAPING_BUFFER_SIZE                64      /* LoRa message size */
+```
+
+TODO
+
+From [`sx1276.h`](https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/sx1276.h#L41-L56)
+
+```c
+#define SX1276_SPI_IDX      0  //  SPI Port 0
+#define SX1276_SPI_SDI_PIN  1  //  SPI Serial Data In Pin  (formerly MISO)
+#define SX1276_SPI_SDO_PIN  4  //  SPI Serial Data Out Pin (formerly MOSI)
+#define SX1276_SPI_CLK_PIN  3  //  SPI Clock Pin
+#define SX1276_SPI_CS_PIN  14  //  SPI Chip Select Pin
+#define SX1276_SPI_CS_OLD   2  //  Unused SPI Chip Select Pin
+#define SX1276_NRESET      17  //  Reset Pin
+#define SX1276_DIO0        12  //  DIO0 Pin
+#define SX1276_DIO1        11  //  DIO1 Pin
+#define SX1276_DIO2         5  //  DIO2 Pin
+#define SX1276_DIO3         8  //  DIO3 Pin
+#define SX1276_DIO4         0  //  TODO: DIO4 Pin
+#define SX1276_DIO5         0  //  TODO: DIO5 Pin
+#define SX1276_SPI_BAUDRATE  (200 * 1000)  //  SPI Frequency (200 kHz)
+#define SX1276_LF_USE_PA_BOOST  1  //  Enable Power Amplifier Boost for LoRa Frequency below 525 MHz
+#define SX1276_HF_USE_PA_BOOST  1  //  Enable Power Amplifier Boost for LoRa Frequency 525 MHz and above
+```
+
 # Initialise LoRa Transceiver
 
 TODO
 
+From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L122-L173)
+
+```c
+/// Command to initialise the SX1276 / RF96 driver
+static void init_driver(char *buf, int len, int argc, char **argv)
+{
+    //  Set the LoRa Callback Functions
+    RadioEvents_t radio_events;
+    radio_events.TxDone    = on_tx_done;
+    radio_events.RxDone    = on_rx_done;
+    radio_events.TxTimeout = on_tx_timeout;
+    radio_events.RxTimeout = on_rx_timeout;
+    radio_events.RxError   = on_rx_error;
+
+    //  Init the SPI Port and the LoRa Transceiver
+    Radio.Init(&radio_events);
+
+    //  Set the LoRa Frequency
+    Radio.SetChannel(RF_FREQUENCY);
+
+    //  Configure the LoRa Transceiver for transmitting messages
+    Radio.SetTxConfig(
+        MODEM_LORA,
+        LORAPING_TX_OUTPUT_POWER,
+        0,        /* Frequency deviation; unused with LoRa. */
+        LORAPING_BANDWIDTH,
+        LORAPING_SPREADING_FACTOR,
+        LORAPING_CODINGRATE,
+        LORAPING_PREAMBLE_LENGTH,
+        LORAPING_FIX_LENGTH_PAYLOAD_ON,
+        true,     /* CRC enabled. */
+        0,        /* Frequency hopping disabled. */
+        0,        /* Hop period; N/A. */
+        LORAPING_IQ_INVERSION_ON,
+        LORAPING_TX_TIMEOUT_MS
+    );
+
+    //  Configure the LoRa Transceiver for receiving messages
+    Radio.SetRxConfig(
+        MODEM_LORA,
+        LORAPING_BANDWIDTH,
+        LORAPING_SPREADING_FACTOR,
+        LORAPING_CODINGRATE,
+        0,        /* AFC bandwisth; unused with LoRa. */
+        LORAPING_PREAMBLE_LENGTH,
+        LORAPING_SYMBOL_TIMEOUT,
+        LORAPING_FIX_LENGTH_PAYLOAD_ON,
+        0,        /* Fixed payload length; N/A. */
+        true,     /* CRC enabled. */
+        0,        /* Frequency hopping disabled. */
+        0,        /* Hop period; N/A. */
+        LORAPING_IQ_INVERSION_ON,
+        true
+    );    /* Continuous receive mode. */
+}
+```
+
+TODO
+
 # Transmit LoRa Packet
+
+TODO
+
+From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L175-L199)
+
+```c
+/// Command to send a LoRa message. Assume that SX1276 / RF96 driver has been initialised.
+static void send_message(char *buf, int len, int argc, char **argv)
+{
+    //  Send the "PING" message
+    send_once(1);
+}
+
+/// Send a LoRa message. If is_ping is 0, send "PONG". Otherwise send "PING".
+static void send_once(int is_ping)
+{
+    //  Copy the "PING" or "PONG" message to the transmit buffer
+    if (is_ping) {
+        memcpy(loraping_buffer, loraping_ping_msg, 4);
+    } else {
+        memcpy(loraping_buffer, loraping_pong_msg, 4);
+    }
+
+    //  Fill up the remaining space in the transmit buffer (64 bytes) with values 0, 1, 2, ...
+    for (int i = 4; i < sizeof loraping_buffer; i++) {
+        loraping_buffer[i] = i - 4;
+    }
+
+    //  Send the transmit buffer (64 bytes)
+    Radio.Send(loraping_buffer, sizeof loraping_buffer);
+}
+```
 
 TODO
 
@@ -261,6 +425,28 @@ Let's enter some commands to transmit a LoRa Packet!
     [__Check out the complete log__](https://gist.github.com/lupyuen/9f26626d7c8081ae64d58eba70e07a80)
 
 # Troubleshooting LoRa
+
+TODO
+
+From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L106-L120)
+
+```c
+/// Read SX1276 / RF96 registers
+static void read_registers(char *buf, int len, int argc, char **argv)
+{
+    //  Init the SPI port
+    SX1276IoInit();
+
+    //  Read and print the first 16 registers: 0 to 15
+    for (uint16_t addr = 0; addr < 0x10; addr++) {
+        //  Read the register
+        uint8_t val = SX1276Read(addr);
+
+        //  Print the register value
+        printf("Register 0x%02x = 0x%02x\r\n", addr, val);
+    }
+}
+```
 
 TODO
 
