@@ -257,13 +257,57 @@ Let's enter some commands to transmit a LoRa Packet!
 
 TODO
 
-# Visualise LoRa with Software Defined Radio
+![](https://lupyuen.github.io/images/lora-registers.png)
 
 TODO
 
-https://www.linkedin.com/feed/update/urn:li:activity:6772707414933430272?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A6772707414933430272%2C6772744850791124992%29
+![](https://lupyuen.github.io/images/lora-freq.jpg)
 
-https://pubs.gnuradio.org/index.php/grcon/article/download/8/7/
+TODO
+
+![](https://lupyuen.github.io/images/lora-sdr5.png)
+
+# Visualise LoRa with Software Defined Radio
+
+_What's this? A glowing helix? Magic seahorse?_
+
+That's how our __64-byte LoRa Packet__ appears when captured with a __Software Defined Radio__!
+
+LoRa Packets look like a column of diagonal strokes. Here's a clearer example...
+
+![](https://lupyuen.github.io/images/lora-chirp2.jpg)
+
+[Source](https://www.linkedin.com/feed/update/urn:li:activity:6772707414933430272?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A6772707414933430272%2C6772744850791124992%29)
+
+This is called a __LoRa Chirp__... A clever way to transmit packets over great distances (with little power) by shifting the pitch (frequency) up or down during transmission...
+
+![](https://lupyuen.github.io/images/lora-chirp3.png)
+
+[Source](https://pubs.gnuradio.org/index.php/grcon/article/download/8/7/)
+
+[(Yep it's inspired by chirping birds)](https://en.wikipedia.org/wiki/Bird_vocalization#Mirror_neurons_and_vocal_learning)
+
+_Why is this important for LoRa?_
+
+LoRa operates on the Radio Frequency band known as the __ISM Band__ (for Industrial, Scientific and Medical purpose).
+
+The ISM Band is used by many types of wireless gadgets. (It's like 2.4 GHz WiFi, but at a lower frequency: 434, 868, 915 or 923 MHz) And it's prone to noise and interference caused by other gadgets.
+
+By transmitting packets in this unique chirping pattern, LoRa ensures that packets will be delivered over long distances in spite of the noise and interference.
+
+## Capture LoRa packets with Airspy SDR
+
+TODO
+
+![](https://lupyuen.github.io/images/lora-airspy2.jpg)
+
+TODO
+
+![](https://lupyuen.github.io/images/lora-sdr4.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/lora-airspy3.jpg)
 
 # What's Next
 
