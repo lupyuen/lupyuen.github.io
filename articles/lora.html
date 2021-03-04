@@ -73,7 +73,8 @@
 <li><a href="#run-the-firmware">4.2 Run the firmware</a><ul></ul></li>
 <li><a href="#enter-lora-commands">4.3 Enter LoRa commands</a><ul></ul></li></ul></li>
 <li><a href="#troubleshooting-lora">5 Troubleshooting LoRa</a><ul></ul></li>
-<li><a href="#visualise-lora-with-software-defined-radio">6 Visualise LoRa with Software Defined Radio</a><ul></ul></li>
+<li><a href="#visualise-lora-with-software-defined-radio">6 Visualise LoRa with Software Defined Radio</a><ul>
+<li><a href="#capture-lora-packets-with-airspy-sdr">6.1 Capture LoRa packets with Airspy SDR</a><ul></ul></li></ul></li>
 <li><a href="#whats-next">7 What's Next</a><ul></ul></li>
 <li><a href="#notes">8 Notes</a><ul></ul></li></ul></nav><p>📝 <em>9 Mar 2021</em></p>
 <p>Semtech SX1276 / Hope RF96
@@ -287,10 +288,32 @@ TODO
 </ol>
 <h1 id="troubleshooting-lora" class="section-header"><a href="#troubleshooting-lora">5 Troubleshooting LoRa</a></h1>
 <p>TODO</p>
-<h1 id="visualise-lora-with-software-defined-radio" class="section-header"><a href="#visualise-lora-with-software-defined-radio">6 Visualise LoRa with Software Defined Radio</a></h1>
+<p><img src="https://lupyuen.github.io/images/lora-registers.png" alt="" /></p>
 <p>TODO</p>
-<p>https://www.linkedin.com/feed/update/urn:li:activity:6772707414933430272?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A6772707414933430272%2C6772744850791124992%29</p>
-<p>https://pubs.gnuradio.org/index.php/grcon/article/download/8/7/</p>
+<p><img src="https://lupyuen.github.io/images/lora-freq.jpg" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/lora-sdr5.png" alt="" /></p>
+<h1 id="visualise-lora-with-software-defined-radio" class="section-header"><a href="#visualise-lora-with-software-defined-radio">6 Visualise LoRa with Software Defined Radio</a></h1>
+<p><em>What's this? A glowing helix? Magic seahorse?</em></p>
+<p>That's how our <strong>64-byte LoRa Packet</strong> appears when captured with a <strong>Software Defined Radio</strong>!</p>
+<p>LoRa Packets look like a column of diagonal strokes. Here's a clearer example...</p>
+<p><img src="https://lupyuen.github.io/images/lora-chirp2.jpg" alt="" /></p>
+<p><a href="https://www.linkedin.com/feed/update/urn:li:activity:6772707414933430272?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A6772707414933430272%2C6772744850791124992%29">Source</a></p>
+<p>This is called a <strong>LoRa Chirp</strong>... A clever way to transmit packets over great distances (with little power) by shifting the pitch (frequency) up or down during transmission...</p>
+<p><img src="https://lupyuen.github.io/images/lora-chirp3.png" alt="" /></p>
+<p><a href="https://pubs.gnuradio.org/index.php/grcon/article/download/8/7/">Source</a></p>
+<p><a href="https://en.wikipedia.org/wiki/Bird_vocalization#Mirror_neurons_and_vocal_learning">(Yep it's inspired by chirping birds)</a></p>
+<p><em>Why is this important for LoRa?</em></p>
+<p>LoRa operates on the Radio Frequency band known as the <strong>ISM Band</strong> (for Industrial, Scientific and Medical purpose).</p>
+<p>The ISM Band is used by many types of wireless gadgets. (It's like 2.4 GHz WiFi, but at a lower frequency: 434, 868, 915 or 923 MHz) And it's prone to noise and interference caused by other gadgets.</p>
+<p>By transmitting packets in this unique chirping pattern, LoRa ensures that packets will be delivered over long distances in spite of the noise and interference.</p>
+<h2 id="capture-lora-packets-with-airspy-sdr" class="section-header"><a href="#capture-lora-packets-with-airspy-sdr">6.1 Capture LoRa packets with Airspy SDR</a></h2>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/lora-airspy2.jpg" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/lora-sdr4.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/lora-airspy3.jpg" alt="" /></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">7 What's Next</a></h1>
 <p>TODO</p>
 <p>Meanwhile there's plenty more code in the <a href="https://github.com/bouffalolab/bl_iot_sdk"><strong>BL602 IoT SDK</strong></a> to be deciphered and documented: <strong>ADC, DAC, WiFi, Bluetooth LE,</strong> ...</p>
