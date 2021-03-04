@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <title>PineCone BL602 Blasting Pixels to ST7789 Display with LVGL Library</title>
+    <title>Connect PineCone BL602 to LoRa Transceiver</title>
 
     
     <!-- Begin scripts/articles/*-header.html: Article Header for Custom Markdown files processed by rustdoc, like chip8.md -->
@@ -63,7 +63,7 @@
     <!-- End scripts/rustdoc-before.html -->
     
 
-    <h1 class="title">PineCone BL602 Blasting Pixels to ST7789 Display with LVGL Library</h1>
+    <h1 class="title">Connect PineCone BL602 to LoRa Transceiver</h1>
     <nav id="TOC"><ul>
 <li><a href="#connect-bl602-to-lora-transceiver">1 Connect BL602 to LoRa Transceiver</a><ul></ul></li>
 <li><a href="#initialise-lora-transceiver">2 Initialise LoRa Transceiver</a><ul></ul></li>
@@ -73,7 +73,7 @@
 <li><a href="#run-the-firmware">4.2 Run the firmware</a><ul></ul></li>
 <li><a href="#enter-lora-commands">4.3 Enter LoRa commands</a><ul></ul></li></ul></li>
 <li><a href="#troubleshooting-lora">5 Troubleshooting LoRa</a><ul></ul></li>
-<li><a href="#visualise-lora-with-a-software-defined-radio">6 Visualise LoRa with a Software Defined Radio</a><ul></ul></li>
+<li><a href="#visualise-lora-with-software-defined-radio">6 Visualise LoRa with Software Defined Radio</a><ul></ul></li>
 <li><a href="#whats-next">7 What's Next</a><ul></ul></li>
 <li><a href="#notes">8 Notes</a><ul></ul></li></ul></nav><p>📝 <em>9 Mar 2021</em></p>
 <p>Semtech SX1276 / Hope RF96
@@ -94,6 +94,16 @@ Magical seahorse</p>
 <p>TODO</p>
 <p>Connect BL602 to SX1276 or RF96 as follows...</p>
 <p><img src="https://lupyuen.github.io/images/lora-connect2.jpg" alt="PineCone BL602 RISC-V Board connected to Hope RF96 LoRa Transceiver" /></p>
+<table><thead><tr><th align="left">BL602 Pin</th><th align="left">LoRa Pin</th><th align="left">Wire Colour</th></tr></thead><tbody>
+<tr><td align="left"><strong><code>GPIO 1</code></strong></td><td align="left"><code>ISO</code> <em>(MISO)</em></td><td align="left">Green</td></tr>
+<tr><td align="left"><strong><code>GPIO 2</code></strong></td><td align="left">Do Not Connect</td><td align="left"></td></tr>
+<tr><td align="left"><strong><code>GPIO 3</code></strong></td><td align="left"><code>SCK</code></td><td align="left">Yellow</td></tr>
+<tr><td align="left"><strong><code>GPIO 4</code></strong></td><td align="left"><code>OSI</code> <em>(MOSI)</em></td><td align="left">Blue</td></tr>
+<tr><td align="left"><strong><code>GPIO 14</code></strong></td><td align="left"><code>NSS</code></td><td align="left">Orange</td></tr>
+<tr><td align="left"><strong><code>GPIO 17</code></strong></td><td align="left"><code>RST</code></td><td align="left">White</td></tr>
+<tr><td align="left"><strong><code>3V3</code></strong></td><td align="left"><code>3.3V</code></td><td align="left">Red</td></tr>
+<tr><td align="left"><strong><code>GND</code></strong></td><td align="left"><code>GND</code></td><td align="left">Black</td></tr>
+</tbody></table>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lora-connect3.jpg" alt="PineCone BL602 RISC-V Board connected to Hope RF96 LoRa Transceiver" /></p>
 <p><em>Why is BL602 Pin 2 unused?</em></p>
@@ -277,7 +287,7 @@ TODO
 </ol>
 <h1 id="troubleshooting-lora" class="section-header"><a href="#troubleshooting-lora">5 Troubleshooting LoRa</a></h1>
 <p>TODO</p>
-<h1 id="visualise-lora-with-a-software-defined-radio" class="section-header"><a href="#visualise-lora-with-a-software-defined-radio">6 Visualise LoRa with a Software Defined Radio</a></h1>
+<h1 id="visualise-lora-with-software-defined-radio" class="section-header"><a href="#visualise-lora-with-software-defined-radio">6 Visualise LoRa with Software Defined Radio</a></h1>
 <p>TODO</p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">7 What's Next</a></h1>
 <p>TODO</p>
