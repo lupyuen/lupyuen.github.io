@@ -209,7 +209,7 @@ Alternatively, we may build the Firmware Binary File `sdk_app_lora.bin` from the
 
 ```bash
 # Download the lora branch of lupyuen's bl_iot_sdk
-git clone --recursive --branch st7789 https://github.com/lupyuen/bl_iot_sdk
+git clone --recursive --branch lora https://github.com/lupyuen/bl_iot_sdk
 cd bl_iot_sdk/customer_app/sdk_app_lora
 
 # TODO: Change this to the full path of bl_iot_sdk
