@@ -2,19 +2,17 @@
 
 📝 _9 Mar 2021_
 
-Semtech SX1276 / Hope RF96
-Indoor WiFi is fine
-Outdoor need long range low power
-Transmit only
-Unreliable
-Test with RAKwireless in next article
-But use Airspy R2 SDR to verify 
+Suppose we have a garden in our home (or rooftop).
 
-Outdoor sensor to monitor health of my plants
-Rooftop garden
+Is there an affordable way to monitor our garden with Environmental Sensors (and Soil Sensors)...
 
-Glowing helix
-Magical seahorse
+-   That __doesn't require WiFi__... (Think rooftop)
+
+-   And consumes __very little power?__ (Think batteries)
+
+Here's a solution: __PineCone BL602 RISC-V Board__ with a __LoRa Transceiver!__
+
+Today we shall connect PineCone BL602 to a LoRa Transceiver: __Semtech SX1276__ or __Hope RF96__
 
 The Demo Firmware in this article will run on __PineCone, Pinenut and Any BL602 Board__.
 
@@ -56,6 +54,9 @@ According to the last article, we won't be using this pin because we'll be contr
 _Why are so many SX1276 (or RF96) Pins unused?_
 
 TODO
+
+Transmit only
+Unreliable
 
 # Initialise LoRa Transceiver
 
@@ -312,6 +313,8 @@ TODO
 # What's Next
 
 TODO
+
+Test with RAKwireless in next article
 
 Meanwhile there's plenty more code in the [__BL602 IoT SDK__](https://github.com/bouffalolab/bl_iot_sdk) to be deciphered and documented: __ADC, DAC, WiFi, Bluetooth LE,__ ...
 
