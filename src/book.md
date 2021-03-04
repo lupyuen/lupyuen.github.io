@@ -104,6 +104,12 @@ Render text and graphics with the open-source __LVGL Library__.
 
 ![](https://lupyuen.github.io/images/book-openocd.jpg)
 
+# LoRa on BL602
+
+Let's turn BL602 into a real IoT gadget that transmits long range, low power LoRa packets...
+
+-   ["Connect PineCone BL602 to LoRa Transceiver"](https://lupyuen.github.io/articles/lora)
+
 # OpenOCD on BL602
 
 Before debugging BL602, we install __OpenOCD__ to connect a __JTAG Debugger__ to BL602.
@@ -146,7 +152,7 @@ Will BL602 run without FreeRTOS? Study the ongoing port of __Apache Mynewt opera
 
 Check this book again for future updates...
 
-1. __LoRa, WiFi and Bluetooth LE__
+1. __WiFi and Bluetooth LE__
 
 1. __More Mynewt and Rust__
 
