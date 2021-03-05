@@ -253,13 +253,23 @@ We shouldn't broadcast sensitive messages in the clear. But we'll allow it for o
 
 # Build and Run the LoRa Firmware
 
-TODO
-
 Let's run the LoRa Demo Firmware for BL602.
 
-Download the Firmware Binary File __`sdk_app_lora.bin`__ from...
+Check this list to find out which LoRa Frequency we should use for your region...
 
--  [TODO: __`sdk_app_lora` Binary Release__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v6.0.0)
+-  [__LoRa Frequencies by Country__](https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html)
+
+Download the Firmware Binary File __`sdk_app_lora.bin`__ for your LoRa Frequency...
+
+-  [__434 MHz `sdk_app_lora` Binary__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v6.0.1)
+
+-  [__780 MHz `sdk_app_lora` Binary__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v6.0.2)
+
+-  [__868 MHz `sdk_app_lora` Binary__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v6.0.3)
+
+-  [__915 MHz `sdk_app_lora` Binary__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v6.0.4)
+
+-  [__923 MHz `sdk_app_lora` Binary__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v6.0.0)
 
 Alternatively, we may build the Firmware Binary File `sdk_app_lora.bin` from the [source code](https://github.com/lupyuen/bl_iot_sdk/tree/lora/customer_app/sdk_app_lora)...
 
