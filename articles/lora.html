@@ -211,16 +211,27 @@ static void init_driver(char *buf, int len, int argc, char **argv) {
 <p>Since we're not receiving LoRa Packets, this code won't be used.</p>
 <p>(The code in this article is based on the <a href="https://github.com/apache/mynewt-core/blob/master/apps/loraping/src/main.c">LoRa Ping</a> program from Mynewt OS. More about this in the Appendix.)</p>
 <h1 id="transmit-lora-packet" class="section-header"><a href="#transmit-lora-packet">3 Transmit LoRa Packet</a></h1>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L175-L199"><code>demo.c</code></a></p>
-<pre><code class="language-c">/// Command to send a LoRa message. Assume that SX1276 / RF96 driver has been initialised.
+<p>Now that we have initialised our LoRa Transceiver, let's send a LoRa Packet!</p>
+<p>We'll send a <code>PING</code> message like so: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L175-L199"><code>demo.c</code></a></p>
+<pre><code class="language-c">/// Command to send a LoRa message. Assume that 
+/// SX1276 / RF96 driver has been initialised.
 static void send_message(char *buf, int len, int argc, char **argv) {
     //  Send the &quot;PING&quot; message
     send_once(1);
 }
 </code></pre>
-<p>TODO</p>
-<pre><code class="language-c">/// Send a LoRa message. If is_ping is 0, 
+<p><code>send_message</code> calls <code>send_once</code> to send the <code>PING</code> message.</p>
+<p><code>send_once</code> is defined here...</p>
+<pre><code class="language-c">/// We send a &quot;PING&quot; message
+const uint8_t loraping_ping_msg[] = &quot;PING&quot;;
+
+/// We expect a &quot;PONG&quot; response (in future)
+const uint8_t loraping_pong_msg[] = &quot;PONG&quot;;
+
+/// 64-byte buffer for our LoRa message
+static uint8_t loraping_buffer[LORAPING_BUFFER_SIZE];  
+
+/// Send a LoRa message. If is_ping is 0, 
 /// send &quot;PONG&quot;. Otherwise send &quot;PING&quot;.
 static void send_once(int is_ping) {
     //  Copy the &quot;PING&quot; or &quot;PONG&quot; message to the transmit buffer
@@ -230,14 +241,15 @@ static void send_once(int is_ping) {
         memcpy(loraping_buffer, loraping_pong_msg, 4);
     }
 </code></pre>
-<p>TODO</p>
-<pre><code class="language-c">    //  Fill up the remaining space in the transmit buffer
-    //  (64 bytes) with values 0, 1, 2, ...
+<p>Here we copy <code>PING</code> into our 64-byte Transmit Buffer.</p>
+<p>We fill up the remaining space in the Transmit Buffer with the values <code>0</code>, <code>1</code>, <code>2</code>, ...</p>
+<pre><code class="language-c">    //  Fill up the remaining space in the transmit 
+    //  buffer (64 bytes) with values 0, 1, 2, ...
     for (int i = 4; i &lt; sizeof loraping_buffer; i++) {
         loraping_buffer[i] = i - 4;
     }
 </code></pre>
-<p>TODO</p>
+<p>Then we call <code>Radio.Send</code> to transmit the 64-byte buffer as a LoRa Packet...</p>
 <pre><code class="language-c">    //  Send the transmit buffer (64 bytes)
     Radio.Send(
         loraping_buffer,        //  Transmit buffer
@@ -245,7 +257,10 @@ static void send_once(int is_ping) {
     );
 }
 </code></pre>
-<p>TODO</p>
+<p><em>Did we forget to specify the receipient for the LoRa message...?</em></p>
+<p>That's the simplicity of the LoRa &quot;Fire And Forget&quot; Mode... It <strong>broadcasts our message</strong> over the airwaves!</p>
+<p>We shouldn't broadcast sensitive messages in the clear. But we'll allow it for our simple garden sensors. (LoRaWAN supports encrypted messages, as we'll learn in a while)</p>
+<p>(The <code>Radio</code> functions belong to the LoRa SX1276 Driver that was ported from Mynewt OS to BL602. More about this in the Appendix)</p>
 <h1 id="build-and-run-the-lora-firmware" class="section-header"><a href="#build-and-run-the-lora-firmware">4 Build and Run the LoRa Firmware</a></h1>
 <p>TODO</p>
 <p>Let's run the LoRa Demo Firmware for BL602.</p>
@@ -483,7 +498,7 @@ static void read_registers(char *buf, int len, int argc, char **argv)
 <p>WiFi is also a wireless network protocol.</p>
 </li>
 <li>
-<p>LoRaWAN = A managed LoRa network</p>
+<p>LoRaWAN = A managed, secure LoRa network</p>
 <p>It's like going to Starbucks and connecting to their WiFi.</p>
 </li>
 <li>
