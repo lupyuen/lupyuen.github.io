@@ -182,21 +182,33 @@ Since we're not receiving LoRa Packets, this code won't be used.
 
 # Transmit LoRa Packet
 
-TODO
+Now that we have initialised our LoRa Transceiver, let's send a LoRa Packet!
 
-From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L175-L199)
+We'll send a `PING` message like so: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L175-L199)
 
 ```c
-/// Command to send a LoRa message. Assume that SX1276 / RF96 driver has been initialised.
+/// Command to send a LoRa message. Assume that 
+/// SX1276 / RF96 driver has been initialised.
 static void send_message(char *buf, int len, int argc, char **argv) {
     //  Send the "PING" message
     send_once(1);
 }
 ```
 
-TODO
+`send_message` calls `send_once` to send the `PING` message.
+
+`send_once` is defined here...
 
 ```c
+/// We send a "PING" message
+const uint8_t loraping_ping_msg[] = "PING";
+
+/// We expect a "PONG" response (in future)
+const uint8_t loraping_pong_msg[] = "PONG";
+
+/// 64-byte buffer for our LoRa message
+static uint8_t loraping_buffer[LORAPING_BUFFER_SIZE];  
+
 /// Send a LoRa message. If is_ping is 0, 
 /// send "PONG". Otherwise send "PING".
 static void send_once(int is_ping) {
@@ -208,17 +220,19 @@ static void send_once(int is_ping) {
     }
 ```
 
-TODO
+Here we copy `PING` into our 64-byte Transmit Buffer.
+
+We fill up the remaining space in the Transmit Buffer with the values `0`, `1`, `2`, ...
 
 ```c
-    //  Fill up the remaining space in the transmit buffer
-    //  (64 bytes) with values 0, 1, 2, ...
+    //  Fill up the remaining space in the transmit 
+    //  buffer (64 bytes) with values 0, 1, 2, ...
     for (int i = 4; i < sizeof loraping_buffer; i++) {
         loraping_buffer[i] = i - 4;
     }
 ```
 
-TODO
+Then we call `Radio.Send` to transmit the 64-byte buffer as a LoRa Packet...
 
 ```c
     //  Send the transmit buffer (64 bytes)
@@ -229,7 +243,13 @@ TODO
 }
 ```
 
-TODO
+_Did we forget to specify the receipient for the LoRa message...?_
+
+That's the simplicity of the LoRa "Fire And Forget" Mode... It __broadcasts our message__ over the airwaves!
+
+We shouldn't broadcast sensitive messages in the clear. But we'll allow it for our simple garden sensors. (LoRaWAN supports encrypted messages, as we'll learn in a while)
+
+(The `Radio` functions belong to the LoRa SX1276 Driver that was ported from Mynewt OS to BL602. More about this in the Appendix)
 
 # Build and Run the LoRa Firmware
 
@@ -526,7 +546,7 @@ _What's the difference between LoRa, LoRaWAN and The Things Network?_
 
     WiFi is also a wireless network protocol.
 
-1.  LoRaWAN = A managed LoRa network
+1.  LoRaWAN = A managed, secure LoRa network
 
     It's like going to Starbucks and connecting to their WiFi.
 
