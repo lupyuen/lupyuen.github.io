@@ -385,6 +385,8 @@ Let's enter some commands to transmit a LoRa Packet!
 
     That's `send_message` blasting the ST7789 Commands to set the Display Window, then blasting the pixel data for 10 rows.
 
+    [__Watch the video on YouTube__](https://youtu.be/9F30uEY-nIk)
+
     [__Check out the complete log__](https://gist.github.com/lupyuen/9f26626d7c8081ae64d58eba70e07a80)
 
 # Troubleshoot LoRa
@@ -428,6 +430,8 @@ TODO
 _What's this? A glowing helix? Magic seahorse?_
 
 That's how our __64-byte LoRa Packet__ appears when captured with a __Software Defined Radio__!
+
+[Watch the video on YouTube](https://youtu.be/9F30uEY-nIk)
 
 LoRa Packets look like a column of diagonal strokes. Here's a clearer example...
 
