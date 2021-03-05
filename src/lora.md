@@ -538,6 +538,14 @@ _Improvised Faraday Cage_
 
 [(I bought my Airspy R2 here)](https://www.itead.cc/airspy.html)
 
+TODO
+
+Or use RF Explorer...
+
+![RF Explorer featured in WandaVision (at right)](https://lupyuen.github.io/images/lora-rfexplorer.png)
+
+_RF Explorer featured in WandaVision (at right)_
+
 # LoRa vs LoRaWAN
 
 _What's the difference between LoRa, LoRaWAN and The Things Network?_
@@ -665,22 +673,22 @@ From [`sx1276.h`](https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/s
 
 # Appendix: Porting LoRa Driver from Mynewt to BL602
 
-TODO
+The LoRa SX1276 Driver was ported from Mynewt OS to BL602 IoT SDK...
+
+-   [__Mynewt Driver for LoRa SX1276__](https://github.com/apache/mynewt-core/blob/master/hw/drivers/lora/sx1276)
+
+Here's how we ported the SX1276 driver code from Mynewt to BL602.
 
 ## GPIO
 
-TODO
-
-From Mynewt [`sx1276-board.c`](https://github.com/apache/mynewt-core/blob/master/hw/drivers/lora/sx1276/src/sx1276-board.c#L73-L74)
+In Mynewt we call `hal_gpio_init_out` to configure a GPIO Output Pin and set the output to High: [`sx1276-board.c`](https://github.com/apache/mynewt-core/blob/master/hw/drivers/lora/sx1276/src/sx1276-board.c#L73-L74)
 
 ```c
 rc = hal_gpio_init_out(RADIO_NSS, 1);
 assert(rc == 0);
 ```
 
-TODO
-
-From BL602 [`sx1276-board.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L94-L110)
+Here's the equivalent code in BL602: [`sx1276-board.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L94-L110)
 
 ```c
 //  Configure Chip Select pin as a GPIO Pin
@@ -704,28 +712,26 @@ assert(rc == 0);
 
 ## SPI
 
-TODO
-
-From Mynewt [`sx1276-board.c`](https://github.com/apache/mynewt-core/blob/master/hw/drivers/lora/sx1276/src/sx1276-board.c#L76-L87)
+In Mynewt we configure the SPI Port like so: [`sx1276-board.c`](https://github.com/apache/mynewt-core/blob/master/hw/drivers/lora/sx1276/src/sx1276-board.c#L76-L87)
 
 ```c
+//  Disable the SPI port
 hal_spi_disable(RADIO_SPI_IDX);
 
+//  Configure the SPI port
 spi_settings.data_order = HAL_SPI_MSB_FIRST;
-spi_settings.data_mode = HAL_SPI_MODE0;
-spi_settings.baudrate = MYNEWT_VAL(SX1276_SPI_BAUDRATE);
-spi_settings.word_size = HAL_SPI_WORD_SIZE_8BIT;
-
+spi_settings.data_mode  = HAL_SPI_MODE0;
+spi_settings.baudrate   = MYNEWT_VAL(SX1276_SPI_BAUDRATE);
+spi_settings.word_size  = HAL_SPI_WORD_SIZE_8BIT;
 rc = hal_spi_config(RADIO_SPI_IDX, &spi_settings);
 assert(rc == 0);
 
+//  Enable the SPI port
 rc = hal_spi_enable(RADIO_SPI_IDX);
 assert(rc == 0);
 ```
 
-TODO
-
-From BL602 [`sx1276-board.c`](https://github.com/lupyuen/bl_iot_sdk/blob/ec9b5be676f520ffcda0651aac1e353d8f07bded/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L112-L129)
+In BL602, we configure the SPI Port like this: [`sx1276-board.c`](https://github.com/lupyuen/bl_iot_sdk/blob/ec9b5be676f520ffcda0651aac1e353d8f07bded/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L112-L129)
 
 ```c
 //  Configure the SPI Port
@@ -748,6 +754,12 @@ rc = spi_init(
 assert(rc == 0);
 ```
 
+Note that SPI Mode 0 in Mynewt (CPOL=0, CPHA=0) becomes SPI Polarity-Phase 1 in BL602 (CPOL=0, CPHA=1). [(More about this)](https://lupyuen.github.io/articles/spi#spi-phase-looks-sus)
+
+In Mynewt we call `hal_spi_tx_val` to read and write a byte over SPI.
+
+Here's the implementation of `hal_spi_tx_val` in BL602: [`sx1276.c`](https://github.com/lupyuen/bl_iot_sdk/blob/9dd1bdf8df19e39c6ace81eb17bfff377cc50ae4/customer_app/sdk_app_lora/sdk_app_lora/sx1276.c#L245-L286)
+
 ## Interrupts
 
 TODO
@@ -762,3 +774,9 @@ hal_gpio_irq_enable(SX1276_DIO0);
 ```
 
 For BL602: See [`sx1276-board.c`](https://github.com/lupyuen/bl_iot_sdk/blob/ec9b5be676f520ffcda0651aac1e353d8f07bded/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L304-L359)
+
+## Timers
+
+TODO
+
+See BL602 [`sx1276.c`](https://github.com/lupyuen/bl_iot_sdk/blob/9dd1bdf8df19e39c6ace81eb17bfff377cc50ae4/customer_app/sdk_app_lora/sdk_app_lora/sx1276.c#L224-L243)
