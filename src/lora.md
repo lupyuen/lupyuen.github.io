@@ -207,7 +207,7 @@ Let's run the LoRa Demo Firmware for BL602.
 
 Download the Firmware Binary File __`sdk_app_lora.bin`__ from...
 
--  [TODO: __`sdk_app_lora` Binary Release__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v???)
+-  [__`sdk_app_lora` Binary Release__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v6.0.0)
 
 Alternatively, we may build the Firmware Binary File `sdk_app_lora.bin` from the [source code](https://github.com/lupyuen/bl_iot_sdk/tree/lora/customer_app/sdk_app_lora)...
 
