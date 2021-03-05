@@ -438,13 +438,10 @@ TODO
 <p>The above messages say that our SPI Port has been configured by the BL602 SPI HAL.</p>
 <pre><code class="language-text">TODO
 </code></pre>
-<p><code>init_driver</code> has just configured the GPIO Pins and switched on the backlight.</p>
-<pre><code class="language-text">TODO
-</code></pre>
-<p>Followed by the eight ST7789 Init Commands sent by <code>init_driver</code>.</p>
+<p><code>init_driver</code> has just configured our SPI Transceiver by setting the registers over SPI.</p>
 </li>
 <li>
-<p>Next we <strong>display the image on ST7789</strong>...</p>
+<p>Next we <strong>transmit a LoRa Packet</strong>...</p>
 <pre><code class="language-text"># send_message
 </code></pre>
 <p>This command calls the function <code>send_message</code>, which we have seen earlier.</p>
@@ -454,9 +451,10 @@ TODO
 <pre><code class="language-text"># send_message
 TODO
 </code></pre>
-<p>That's <code>send_message</code> blasting the ST7789 Commands to set the Display Window, then blasting the pixel data for 10 rows.</p>
+<p>That's <code>send_message</code> blasting the 64-byte LoRa Packet to the airwave, in the simple &quot;Fire And Forget&quot; Mode.</p>
+<p>(The LoRa Driver copies the 64-byte Transmit Buffer to our LoRa Transceiver over SPI, byte by byte. Hence the numerous SPI requests.)</p>
 <p><a href="https://youtu.be/9F30uEY-nIk"><strong>Watch the video on YouTube</strong></a></p>
-<p><a href="https://gist.github.com/lupyuen/9f26626d7c8081ae64d58eba70e07a80"><strong>Check out the complete log</strong></a></p>
+<p><a href=""><strong>TODO: Check out the complete log</strong></a></p>
 </li>
 </ol>
 <h1 id="troubleshoot-lora" class="section-header"><a href="#troubleshoot-lora">5 Troubleshoot LoRa</a></h1>
