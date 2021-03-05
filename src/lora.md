@@ -666,3 +666,99 @@ From [`sx1276.h`](https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/s
 # Appendix: Porting LoRa Driver from Mynewt to BL602
 
 TODO
+
+## GPIO
+
+TODO
+
+From Mynewt [`sx1276-board.c`](https://github.com/apache/mynewt-core/blob/master/hw/drivers/lora/sx1276/src/sx1276-board.c#L73-L74)
+
+```c
+rc = hal_gpio_init_out(RADIO_NSS, 1);
+assert(rc == 0);
+```
+
+TODO
+
+From BL602 [`sx1276-board.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L94-L110)
+
+```c
+//  Configure Chip Select pin as a GPIO Pin
+GLB_GPIO_Type pins[1];
+pins[0] = RADIO_NSS;
+BL_Err_Type rc2 = GLB_GPIO_Func_Init(
+    GPIO_FUN_SWGPIO,  //  Configure as GPIO 
+    pins,             //  Pins to be configured
+    sizeof(pins) / sizeof(pins[0])  //  Number of pins (1)
+);
+assert(rc2 == SUCCESS);    
+
+//  Configure Chip Select pin as a GPIO Output Pin (instead of GPIO Input)
+rc = bl_gpio_enable_output(RADIO_NSS, 0, 0);
+assert(rc == 0);
+
+//  Set Chip Select pin to High, to deactivate SX1276
+rc = bl_gpio_output_set(RADIO_NSS, 1);
+assert(rc == 0);
+```
+
+## SPI
+
+TODO
+
+From Mynewt [`sx1276-board.c`](https://github.com/apache/mynewt-core/blob/master/hw/drivers/lora/sx1276/src/sx1276-board.c#L76-L87)
+
+```c
+hal_spi_disable(RADIO_SPI_IDX);
+
+spi_settings.data_order = HAL_SPI_MSB_FIRST;
+spi_settings.data_mode = HAL_SPI_MODE0;
+spi_settings.baudrate = MYNEWT_VAL(SX1276_SPI_BAUDRATE);
+spi_settings.word_size = HAL_SPI_WORD_SIZE_8BIT;
+
+rc = hal_spi_config(RADIO_SPI_IDX, &spi_settings);
+assert(rc == 0);
+
+rc = hal_spi_enable(RADIO_SPI_IDX);
+assert(rc == 0);
+```
+
+TODO
+
+From BL602 [`sx1276-board.c`](https://github.com/lupyuen/bl_iot_sdk/blob/ec9b5be676f520ffcda0651aac1e353d8f07bded/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L112-L129)
+
+```c
+//  Configure the SPI Port
+rc = spi_init(
+    &spi_device,    //  SPI Device
+    RADIO_SPI_IDX,  //  SPI Port
+    0,              //  SPI Mode: 0 for Controller
+    //  TODO: Due to a quirk in BL602 SPI, we must set
+    //  SPI Polarity-Phase to 1 (CPOL=0, CPHA=1).
+    //  But actually Polarity-Phase for SX1276 should be 0 (CPOL=0, CPHA=0). 
+    1,                    //  SPI Polarity-Phase
+    SX1276_SPI_BAUDRATE,  //  SPI Frequency
+    2,                    //  Transmit DMA Channel
+    3,                    //  Receive DMA Channel
+    SX1276_SPI_CLK_PIN,   //  SPI Clock Pin 
+    SX1276_SPI_CS_OLD,    //  Unused SPI Chip Select Pin
+    SX1276_SPI_SDI_PIN,   //  SPI Serial Data In Pin  (formerly MISO)
+    SX1276_SPI_SDO_PIN    //  SPI Serial Data Out Pin (formerly MOSI)
+);
+assert(rc == 0);
+```
+
+## Interrupts
+
+TODO
+
+From Mynewt [`sx1276-board.c`](https://github.com/apache/mynewt-core/blob/master/hw/drivers/lora/sx1276/src/sx1276-board.c#L96-L99)
+
+```c
+rc = hal_gpio_irq_init(SX1276_DIO0, irqHandlers[0], NULL,
+    HAL_GPIO_TRIG_RISING, HAL_GPIO_PULL_NONE);
+assert(rc == 0);
+hal_gpio_irq_enable(SX1276_DIO0);
+```
+
+For BL602: See [`sx1276-board.c`](https://github.com/lupyuen/bl_iot_sdk/blob/ec9b5be676f520ffcda0651aac1e353d8f07bded/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L304-L359)
