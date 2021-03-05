@@ -266,11 +266,28 @@ static void send_once(int is_ping) {
 <p>We shouldn't broadcast sensitive messages in the clear. But we'll allow it for our simple garden sensors. (LoRaWAN supports encrypted messages, as we'll learn in a while)</p>
 <p>(The <code>Radio</code> functions belong to the LoRa SX1276 Driver that was ported from Mynewt OS to BL602. More about this in the Appendix)</p>
 <h1 id="build-and-run-the-lora-firmware" class="section-header"><a href="#build-and-run-the-lora-firmware">4 Build and Run the LoRa Firmware</a></h1>
-<p>TODO</p>
 <p>Let's run the LoRa Demo Firmware for BL602.</p>
-<p>Download the Firmware Binary File <strong><code>sdk_app_lora.bin</code></strong> from...</p>
+<p>Check this list to find out which LoRa Frequency we should use for your region...</p>
 <ul>
-<li><a href="https://github.com/lupyuen/bl_iot_sdk/releases/tag/v6.0.0">TODO: <strong><code>sdk_app_lora</code> Binary Release</strong></a></li>
+<li><a href="https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html"><strong>LoRa Frequencies by Country</strong></a></li>
+</ul>
+<p>Download the Firmware Binary File <strong><code>sdk_app_lora.bin</code></strong> for your LoRa Frequency...</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/releases/tag/v6.0.1"><strong>434 MHz <code>sdk_app_lora</code> Binary</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/releases/tag/v6.0.2"><strong>780 MHz <code>sdk_app_lora</code> Binary</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/releases/tag/v6.0.3"><strong>868 MHz <code>sdk_app_lora</code> Binary</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/releases/tag/v6.0.4"><strong>915 MHz <code>sdk_app_lora</code> Binary</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/releases/tag/v6.0.0"><strong>923 MHz <code>sdk_app_lora</code> Binary</strong></a></p>
+</li>
 </ul>
 <p>Alternatively, we may build the Firmware Binary File <code>sdk_app_lora.bin</code> from the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/lora/customer_app/sdk_app_lora">source code</a>...</p>
 <pre><code class="language-bash"># Download the lora branch of lupyuen's bl_iot_sdk
