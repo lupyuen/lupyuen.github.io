@@ -12,9 +12,9 @@ Is there an __affordable way to monitor our garden__ with Environmental Sensors 
 
 Here's a solution: [__PineCone BL602 RISC-V Board__](https://lupyuen.github.io/articles/pinecone) with a __LoRa Transceiver!__
 
-Today we shall connect PineCone BL602 to a LoRa Transceiver: __Semtech SX1276__ or __Hope RF96__
+Today we shall __transmit some LoRa packets__ by connecting PineCone BL602 to a LoRa Transceiver: __Semtech SX1276__ or __Hope RF96__
 
-The Demo Firmware in this article will run on __PineCone, Pinenut and Any BL602 Board__.
+The LoRa Firmware in this article will run on __PineCone, Pinenut and Any BL602 Board__.
 
 ![PineCone BL602 RISC-V Board connected to Hope RF96 LoRa Transceiver](https://lupyuen.github.io/images/lora-title.jpg)
 
