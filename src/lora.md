@@ -178,6 +178,8 @@ At the end of the function we call __`Radio.SetRxConfig`__ to get ready for rece
 
 Since we're not receiving LoRa Packets, this code won't be used.
 
+(The code in this article is based on the [LoRa Ping](https://github.com/apache/mynewt-core/blob/master/apps/loraping/src/main.c) program from Mynewt OS. More about this in the Appendix.)
+
 # Transmit LoRa Packet
 
 TODO
@@ -195,7 +197,8 @@ static void send_message(char *buf, int len, int argc, char **argv) {
 TODO
 
 ```c
-/// Send a LoRa message. If is_ping is 0, send "PONG". Otherwise send "PING".
+/// Send a LoRa message. If is_ping is 0, 
+/// send "PONG". Otherwise send "PING".
 static void send_once(int is_ping) {
     //  Copy the "PING" or "PONG" message to the transmit buffer
     if (is_ping) {
@@ -208,7 +211,8 @@ static void send_once(int is_ping) {
 TODO
 
 ```c
-    //  Fill up the remaining space in the transmit buffer (64 bytes) with values 0, 1, 2, ...
+    //  Fill up the remaining space in the transmit buffer
+    //  (64 bytes) with values 0, 1, 2, ...
     for (int i = 4; i < sizeof loraping_buffer; i++) {
         loraping_buffer[i] = i - 4;
     }
@@ -218,7 +222,10 @@ TODO
 
 ```c
     //  Send the transmit buffer (64 bytes)
-    Radio.Send(loraping_buffer, sizeof loraping_buffer);
+    Radio.Send(
+        loraping_buffer,        //  Transmit buffer
+        sizeof loraping_buffer  //  Buffer size: 64 bytes
+    );
 }
 ```
 
