@@ -429,15 +429,9 @@ Let's enter some commands to transmit a LoRa Packet!
     TODO
     ```
 
-    `init_driver` has just configured the GPIO Pins and switched on the backlight.
+    `init_driver` has just configured our SPI Transceiver by setting the registers over SPI.
 
-    ```text
-    TODO
-    ```
-
-    Followed by the eight ST7789 Init Commands sent by `init_driver`.
-
-1.  Next we __display the image on ST7789__...
+1.  Next we __transmit a LoRa Packet__...
 
     ```text
     # send_message
@@ -452,11 +446,13 @@ Let's enter some commands to transmit a LoRa Packet!
     TODO
     ```
 
-    That's `send_message` blasting the ST7789 Commands to set the Display Window, then blasting the pixel data for 10 rows.
+    That's `send_message` blasting the 64-byte LoRa Packet to the airwave, in the simple "Fire And Forget" Mode.
+
+    (The LoRa Driver copies the 64-byte Transmit Buffer to our LoRa Transceiver over SPI, byte by byte. Hence the numerous SPI requests.)
 
     [__Watch the video on YouTube__](https://youtu.be/9F30uEY-nIk)
 
-    [__Check out the complete log__](https://gist.github.com/lupyuen/9f26626d7c8081ae64d58eba70e07a80)
+    [__TODO: Check out the complete log__]()
 
 # Troubleshoot LoRa
 
