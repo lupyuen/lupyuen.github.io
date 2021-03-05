@@ -82,7 +82,8 @@
 <li><a href="#appendix-porting-lora-driver-from-mynewt-to-bl602">11 Appendix: Porting LoRa Driver from Mynewt to BL602</a><ul>
 <li><a href="#gpio">11.1 GPIO</a><ul></ul></li>
 <li><a href="#spi">11.2 SPI</a><ul></ul></li>
-<li><a href="#interrupts">11.3 Interrupts</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>9 Mar 2021</em></p>
+<li><a href="#interrupts">11.3 Interrupts</a><ul></ul></li>
+<li><a href="#timers">11.4 Timers</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>9 Mar 2021</em></p>
 <p>Suppose we have a garden in our home. (Or rooftop)</p>
 <p>Is there an <strong>affordable way to monitor our garden</strong> with Environmental Sensors (and Soil Sensors)...</p>
 <ul>
@@ -493,6 +494,10 @@ static void read_registers(char *buf, int len, int argc, char **argv)
 <p><img src="https://lupyuen.github.io/images/lora-airspy3.jpg" alt="Improvised Faraday Cage" /></p>
 <p><em>Improvised Faraday Cage</em></p>
 <p><a href="https://www.itead.cc/airspy.html">(I bought my Airspy R2 here)</a></p>
+<p>TODO</p>
+<p>Or use RF Explorer...</p>
+<p><img src="https://lupyuen.github.io/images/lora-rfexplorer.png" alt="RF Explorer featured in WandaVision (at right)" /></p>
+<p><em>RF Explorer featured in WandaVision (at right)</em></p>
 <h1 id="lora-vs-lorawan" class="section-header"><a href="#lora-vs-lorawan">7 LoRa vs LoRaWAN</a></h1>
 <p><em>What's the difference between LoRa, LoRaWAN and The Things Network?</em></p>
 <ol>
@@ -601,15 +606,17 @@ static void read_registers(char *buf, int len, int argc, char **argv)
 #define SX1276_HF_USE_PA_BOOST  1  //  Enable Power Amplifier Boost for LoRa Frequency 525 MHz and above
 </code></pre>
 <h1 id="appendix-porting-lora-driver-from-mynewt-to-bl602" class="section-header"><a href="#appendix-porting-lora-driver-from-mynewt-to-bl602">11 Appendix: Porting LoRa Driver from Mynewt to BL602</a></h1>
-<p>TODO</p>
+<p>The LoRa SX1276 Driver was ported from Mynewt OS to BL602 IoT SDK...</p>
+<ul>
+<li><a href="https://github.com/apache/mynewt-core/blob/master/hw/drivers/lora/sx1276"><strong>Mynewt Driver for LoRa SX1276</strong></a></li>
+</ul>
+<p>Here's how we ported the SX1276 driver code from Mynewt to BL602.</p>
 <h2 id="gpio" class="section-header"><a href="#gpio">11.1 GPIO</a></h2>
-<p>TODO</p>
-<p>From Mynewt <a href="https://github.com/apache/mynewt-core/blob/master/hw/drivers/lora/sx1276/src/sx1276-board.c#L73-L74"><code>sx1276-board.c</code></a></p>
+<p>In Mynewt we call <code>hal_gpio_init_out</code> to configure a GPIO Output Pin and set the output to High: <a href="https://github.com/apache/mynewt-core/blob/master/hw/drivers/lora/sx1276/src/sx1276-board.c#L73-L74"><code>sx1276-board.c</code></a></p>
 <pre><code class="language-c">rc = hal_gpio_init_out(RADIO_NSS, 1);
 assert(rc == 0);
 </code></pre>
-<p>TODO</p>
-<p>From BL602 <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L94-L110"><code>sx1276-board.c</code></a></p>
+<p>Here's the equivalent code in BL602: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L94-L110"><code>sx1276-board.c</code></a></p>
 <pre><code class="language-c">//  Configure Chip Select pin as a GPIO Pin
 GLB_GPIO_Type pins[1];
 pins[0] = RADIO_NSS;
@@ -629,23 +636,23 @@ rc = bl_gpio_output_set(RADIO_NSS, 1);
 assert(rc == 0);
 </code></pre>
 <h2 id="spi" class="section-header"><a href="#spi">11.2 SPI</a></h2>
-<p>TODO</p>
-<p>From Mynewt <a href="https://github.com/apache/mynewt-core/blob/master/hw/drivers/lora/sx1276/src/sx1276-board.c#L76-L87"><code>sx1276-board.c</code></a></p>
-<pre><code class="language-c">hal_spi_disable(RADIO_SPI_IDX);
+<p>In Mynewt we configure the SPI Port like so: <a href="https://github.com/apache/mynewt-core/blob/master/hw/drivers/lora/sx1276/src/sx1276-board.c#L76-L87"><code>sx1276-board.c</code></a></p>
+<pre><code class="language-c">//  Disable the SPI port
+hal_spi_disable(RADIO_SPI_IDX);
 
+//  Configure the SPI port
 spi_settings.data_order = HAL_SPI_MSB_FIRST;
-spi_settings.data_mode = HAL_SPI_MODE0;
-spi_settings.baudrate = MYNEWT_VAL(SX1276_SPI_BAUDRATE);
-spi_settings.word_size = HAL_SPI_WORD_SIZE_8BIT;
-
+spi_settings.data_mode  = HAL_SPI_MODE0;
+spi_settings.baudrate   = MYNEWT_VAL(SX1276_SPI_BAUDRATE);
+spi_settings.word_size  = HAL_SPI_WORD_SIZE_8BIT;
 rc = hal_spi_config(RADIO_SPI_IDX, &amp;spi_settings);
 assert(rc == 0);
 
+//  Enable the SPI port
 rc = hal_spi_enable(RADIO_SPI_IDX);
 assert(rc == 0);
 </code></pre>
-<p>TODO</p>
-<p>From BL602 <a href="https://github.com/lupyuen/bl_iot_sdk/blob/ec9b5be676f520ffcda0651aac1e353d8f07bded/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L112-L129"><code>sx1276-board.c</code></a></p>
+<p>In BL602, we configure the SPI Port like this: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/ec9b5be676f520ffcda0651aac1e353d8f07bded/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L112-L129"><code>sx1276-board.c</code></a></p>
 <pre><code class="language-c">//  Configure the SPI Port
 rc = spi_init(
     &amp;spi_device,    //  SPI Device
@@ -665,6 +672,9 @@ rc = spi_init(
 );
 assert(rc == 0);
 </code></pre>
+<p>Note that SPI Mode 0 in Mynewt (CPOL=0, CPHA=0) becomes SPI Polarity-Phase 1 in BL602 (CPOL=0, CPHA=1). <a href="https://lupyuen.github.io/articles/spi#spi-phase-looks-sus">(More about this)</a></p>
+<p>In Mynewt we call <code>hal_spi_tx_val</code> to read and write a byte over SPI.</p>
+<p>Here's the implementation of <code>hal_spi_tx_val</code> in BL602: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/9dd1bdf8df19e39c6ace81eb17bfff377cc50ae4/customer_app/sdk_app_lora/sdk_app_lora/sx1276.c#L245-L286"><code>sx1276.c</code></a></p>
 <h2 id="interrupts" class="section-header"><a href="#interrupts">11.3 Interrupts</a></h2>
 <p>TODO</p>
 <p>From Mynewt <a href="https://github.com/apache/mynewt-core/blob/master/hw/drivers/lora/sx1276/src/sx1276-board.c#L96-L99"><code>sx1276-board.c</code></a></p>
@@ -674,6 +684,9 @@ assert(rc == 0);
 hal_gpio_irq_enable(SX1276_DIO0);
 </code></pre>
 <p>For BL602: See <a href="https://github.com/lupyuen/bl_iot_sdk/blob/ec9b5be676f520ffcda0651aac1e353d8f07bded/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L304-L359"><code>sx1276-board.c</code></a></p>
+<h2 id="timers" class="section-header"><a href="#timers">11.4 Timers</a></h2>
+<p>TODO</p>
+<p>See BL602 <a href="https://github.com/lupyuen/bl_iot_sdk/blob/9dd1bdf8df19e39c6ace81eb17bfff377cc50ae4/customer_app/sdk_app_lora/sdk_app_lora/sx1276.c#L224-L243"><code>sx1276.c</code></a></p>
 
     
 </body>
