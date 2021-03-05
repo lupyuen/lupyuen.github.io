@@ -61,7 +61,7 @@ _Why are Pins 1, 2 and 14 unused?_
 
 -   __`GPIO 2`__ is the __Unused SPI Chip Select__ on BL602.
 
-    According to the last article, we won't be using this pin because we'll be controlling Chip Select ourselves on `GPIO 14`.
+    We won't use this pin because we'll control Chip Select ourselves on `GPIO 14`. [(See this)](https://lupyuen.github.io/articles/spi#control-our-own-chip-select-pin)
 
 -   __`GPIO 14`__ is the __Actual SPI Chip Select__ on BL602.
 
