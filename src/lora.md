@@ -67,11 +67,11 @@ Unlike WiFi, LoRa networks can be really simple. Today we shall configure our Lo
 
 This is ideal for __simple sensors__ (like our garden sensors) that are powered by batteries and can tolerate a few lost packets. (Because we'll send the sensor data periodically anyway)
 
-_So this means we won't be using all the pins on SX1276 (or RF96)?_
+_So this means we won't use all the pins on SX1276 (or RF96)?_
 
 Yep we may leave pins __`D0`__ to __`D5`__ disconnected. (Otherwise we'll run out of pins on BL602!)
 
-Verify that the LoRa Transceiver supports the __right LoRa Frequency__ for your region: 434, 868, 915 or 923 MHz. [(See this)](https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html)
+Check that the LoRa Transceiver supports the __right LoRa Frequency__ for your region: 434, 868, 915 or 923 MHz. [(See this)](https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html)
 
 [(I bought the LoRa Transceiver from M2M Shop on Tindie)](https://www.tindie.com/products/m2m/lora-module-for-breadboard-with-antenna/)
 
