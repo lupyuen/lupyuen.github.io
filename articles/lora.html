@@ -93,6 +93,7 @@
 <p>Here's a solution: <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602 RISC-V Board</strong></a> with a <strong>LoRa Transceiver!</strong></p>
 <p>Today we shall <strong>transmit some LoRa packets</strong> by connecting PineCone BL602 to a LoRa Transceiver: <strong>Semtech SX1276</strong> or <strong>Hope RF96</strong></p>
 <p>The LoRa Firmware in this article will run on <strong>PineCone, Pinenut and Any BL602 Board</strong>.</p>
+<p><a href="https://youtu.be/9F30uEY-nIk"><strong>Watch the demo video on YouTube</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/lora-title.jpg" alt="PineCone BL602 RISC-V Board connected to Hope RF96 LoRa Transceiver" /></p>
 <p><em>PineCone BL602 RISC-V Board connected to Hope RF96 LoRa Transceiver</em></p>
 <h1 id="connect-bl602-to-lora-transceiver" class="section-header"><a href="#connect-bl602-to-lora-transceiver">1 Connect BL602 to LoRa Transceiver</a></h1>
@@ -133,11 +134,17 @@
 <p>This is ideal for <strong>simple sensors</strong> (like our garden sensors) that are powered by batteries and can tolerate a few lost packets. (Because we'll send the sensor data periodically anyway)</p>
 <p><em>So this means we won't use all the pins on SX1276 (or RF96)?</em></p>
 <p>Yep we may leave pins <strong><code>D0</code></strong> to <strong><code>D5</code></strong> disconnected. (Otherwise we'll run out of pins on BL602!)</p>
-<p>Check that the LoRa Transceiver supports the <strong>right LoRa Frequency</strong> for your region: 434, 868, 915 or 923 MHz. <a href="https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html">(See this)</a></p>
+<p>Check that the LoRa Transceiver supports the <strong>right LoRa Frequency</strong> for your region: 434, 780, 868, 915 or 923 MHz. <a href="https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html">(See this list)</a></p>
 <p><a href="https://www.tindie.com/products/m2m/lora-module-for-breadboard-with-antenna/">(I bought the LoRa Transceiver from M2M Shop on Tindie)</a></p>
 <h1 id="initialise-lora-transceiver" class="section-header"><a href="#initialise-lora-transceiver">2 Initialise LoRa Transceiver</a></h1>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L122-L173"><code>demo.c</code></a></p>
+<p>Let's look at the code inside our LoRa Firmware for BL602: <code>sdk_app_lora</code></p>
+<p><strong>Super Important:</strong> We should set the LoRa Frequency in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L41-L56"><code>demo.c</code></a> like so...</p>
+<pre><code class="language-c">/// TODO: We are using LoRa Frequency 923 MHz 
+/// for Singapore. Change this for your region.
+#define USE_BAND_923
+</code></pre>
+<p>In a while we shall change <code>923</code> to the LoRa Frequency for our region: <code>434</code>, <code>780</code>, <code>868</code>, <code>915</code> or <code>923</code> MHz. <a href="https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html">(Check this list)</a></p>
+<p>For now we'll study this function <strong><code>init_driver</code></strong> that initialises the LoRa Driver for SX1276 (and RF96) in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L122-L173"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// Command to initialise the SX1276 / RF96 driver
 static void init_driver(char *buf, int len, int argc, char **argv) {
     //  Set the LoRa Callback Functions
@@ -148,15 +155,21 @@ static void init_driver(char *buf, int len, int argc, char **argv) {
     radio_events.RxTimeout = on_rx_timeout;
     radio_events.RxError   = on_rx_error;
 </code></pre>
-<p>TODO</p>
+<p><code>init_driver</code> begins by defining the <strong>Callback Functions</strong> that will be called when we have transmitted or received a LoRa Packet (successfully or unsuccessfully).</p>
+<p><em>But we're doing LoRa &quot;Fire And Forget&quot; Mode... We're not checking for errors and we're not receiving LoRa Packets, remember?</em></p>
+<p>Yep so these Callback Functions are not used today. They will be used in future when we receive LoRa Packets and check for errors.</p>
+<p>Next we call <strong><code>Radio.Init</code> to initialise BL602's SPI Port and the LoRa Transceiver</strong>...</p>
 <pre><code class="language-c">    //  Init the SPI Port and the LoRa Transceiver
     Radio.Init(&amp;radio_events);
 </code></pre>
-<p>TODO</p>
-<pre><code class="language-c">    //  Set the LoRa Frequency
+<p><code>Radio.Init</code> will set some registers on our LoRa Transceiver (over SPI).</p>
+<p>Then we call <strong><code>Radio.SetChannel</code> to set the LoRa Frequency</strong>...</p>
+<pre><code class="language-c">    //  Set the LoRa Frequency, which is specific to our region.
+    //  For USE_BAND_923: RF_FREQUENCY is set to 923000000.
     Radio.SetChannel(RF_FREQUENCY);
 </code></pre>
-<p>TODO</p>
+<p><code>Radio.SetChannel</code> configures the LoRa Frequency by writing to the <strong>Frequency Registers</strong> in our LoRa Transceiver.</p>
+<p>We get ready to transmit by calling <strong><code>Radio.SetTxConfig</code></strong>...</p>
 <pre><code class="language-c">    //  Configure the LoRa Transceiver for transmitting messages
     Radio.SetTxConfig(
         MODEM_LORA,
@@ -174,7 +187,8 @@ static void init_driver(char *buf, int len, int argc, char **argv) {
         LORAPING_TX_TIMEOUT_MS
     );
 </code></pre>
-<p>TODO</p>
+<p>These <strong>LoRa Parameters</strong> should match the settings in the LoRa Receiver. For details, check the Appendix.</p>
+<p>At the end of the function we call <strong><code>Radio.SetRxConfig</code></strong> to get ready for receiving LoRa Packets...</p>
 <pre><code class="language-c">    //  Configure the LoRa Transceiver for receiving messages
     Radio.SetRxConfig(
         MODEM_LORA,
@@ -194,7 +208,7 @@ static void init_driver(char *buf, int len, int argc, char **argv) {
     );    
 }
 </code></pre>
-<p>TODO</p>
+<p>Since we're not receiving LoRa Packets, this code won't be used.</p>
 <h1 id="transmit-lora-packet" class="section-header"><a href="#transmit-lora-packet">3 Transmit LoRa Packet</a></h1>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L175-L199"><code>demo.c</code></a></p>
@@ -231,12 +245,19 @@ static void send_once(int is_ping) {
 <p>Let's run the LoRa Demo Firmware for BL602.</p>
 <p>Download the Firmware Binary File <strong><code>sdk_app_lora.bin</code></strong> from...</p>
 <ul>
-<li><a href="https://github.com/lupyuen/bl_iot_sdk/releases/tag/v6.0.0"><strong><code>sdk_app_lora</code> Binary Release</strong></a></li>
+<li><a href="https://github.com/lupyuen/bl_iot_sdk/releases/tag/v6.0.0">TODO: <strong><code>sdk_app_lora</code> Binary Release</strong></a></li>
 </ul>
 <p>Alternatively, we may build the Firmware Binary File <code>sdk_app_lora.bin</code> from the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/lora/customer_app/sdk_app_lora">source code</a>...</p>
 <pre><code class="language-bash"># Download the lora branch of lupyuen's bl_iot_sdk
 git clone --recursive --branch lora https://github.com/lupyuen/bl_iot_sdk
 cd bl_iot_sdk/customer_app/sdk_app_lora
+
+# TODO: Set the LoRa Frequency in sdk_app_lora/demo.c. 
+# Edit the file and look for the line...
+#   #define USE_BAND_923
+# Change 923 to the LoRa Frequency for your region: 
+#   434, 780, 868, 915 or 923 MHz
+# See https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html
 
 # TODO: Change this to the full path of bl_iot_sdk
 export BL60X_SDK_PATH=$HOME/bl_iot_sdk
