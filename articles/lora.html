@@ -96,7 +96,6 @@
 <p><img src="https://lupyuen.github.io/images/lora-title.jpg" alt="PineCone BL602 RISC-V Board connected to Hope RF96 LoRa Transceiver" /></p>
 <p><em>PineCone BL602 RISC-V Board connected to Hope RF96 LoRa Transceiver</em></p>
 <h1 id="connect-bl602-to-lora-transceiver" class="section-header"><a href="#connect-bl602-to-lora-transceiver">1 Connect BL602 to LoRa Transceiver</a></h1>
-<p>TODO</p>
 <p>Connect BL602 to SX1276 or RF96 as follows...</p>
 <p><img src="https://lupyuen.github.io/images/lora-connect2.jpg" alt="PineCone BL602 RISC-V Board connected to Hope RF96 LoRa Transceiver" /></p>
 <table><thead><tr><th align="left">BL602 Pin</th><th align="left">SX1276 / RF96 Pin</th><th align="left">Wire Colour</th></tr></thead><tbody>
@@ -110,27 +109,37 @@
 <tr><td align="left"><strong><code>GND</code></strong></td><td align="left"><code>GND</code></td><td align="left">Black</td></tr>
 </tbody></table>
 <p><a href="https://electronics.stackexchange.com/questions/335912/can-i-break-a-radio-tranceiving-device-by-operating-it-with-no-antenna-connected"><strong>CAUTION: Always connect the Antenna before Powering On... Or the LoRa Transceiver may get damaged! See this</strong></a></p>
-<p>TODO</p>
+<p>Here's a closer look at the pins connected on BL602...</p>
 <p><img src="https://lupyuen.github.io/images/lora-connect3.jpg" alt="PineCone BL602 RISC-V Board connected to Hope RF96 LoRa Transceiver" /></p>
 <p><em>Why is BL602 Pin 2 unused?</em></p>
 <p><strong><code>GPIO 2</code></strong> is the <strong>Unused SPI Chip Select</strong> on BL602.</p>
-<p>According to the last article, we won't be using this pin because we'll be controlling Chip Select ourselves on <code>GPIO 14</code>.</p>
+<p>We won't use this pin because we'll control Chip Select ourselves on <code>GPIO 14</code>. <a href="https://lupyuen.github.io/articles/spi#control-our-own-chip-select-pin">(See this)</a></p>
+<p>Here are the pins connected on our LoRa Transceiver: SX1276 or RF96...</p>
+<p>(<code>ISO</code> and <code>OSI</code> appear flipped in this pic... Rotate your phone / computer screen 180 degrees for the proper perspective)</p>
 <p><img src="https://lupyuen.github.io/images/lora-connect4.jpg" alt="PineCone BL602 RISC-V Board connected to Hope RF96 LoRa Transceiver" /></p>
 <p><em>Why are so many pins on SX1276 (or RF96) unused?</em></p>
-<p>TODO</p>
-<p>Unlike WiFi, LoRa networks can be really simple.
-Send no receive!
-Great for battery powered devices</p>
-<p>Transmit only
-Unreliable</p>
-<p>Check that the LoRa Transceiver is using the right LoRa Frequency for your region.</p>
+<p>Unlike WiFi, LoRa networks can be really simple. Today we shall configure our LoRa Transceiver for the simplest <strong>&quot;Fire And Forget&quot;</strong> Mode...</p>
+<ol>
+<li>
+<p><strong>Blast out a packet of 64 bytes</strong> over the airwaves</p>
+</li>
+<li>
+<p><strong>Don't verify</strong> whether our packet has been received</p>
+</li>
+<li>
+<p><strong>Don't receive</strong> any packets</p>
+</li>
+</ol>
+<p>This is ideal for <strong>simple sensors</strong> (like our garden sensors) that are powered by batteries and can tolerate a few lost packets. (Because we'll send the sensor data periodically anyway)</p>
+<p><em>So this means we won't be using all the pins on SX1276 (or RF96)?</em></p>
+<p>Yep we may leave pins <strong><code>D0</code></strong> to <strong><code>D5</code></strong> disconnected. (Otherwise we'll run out of pins on BL602!)</p>
+<p>Verify that the LoRa Transceiver supports the <strong>right LoRa Frequency</strong> for your region: 434, 868, 915 or 923 MHz. <a href="https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html">(See this)</a></p>
 <p><a href="https://www.tindie.com/products/m2m/lora-module-for-breadboard-with-antenna/">(I bought the LoRa Transceiver from M2M Shop on Tindie)</a></p>
 <h1 id="initialise-lora-transceiver" class="section-header"><a href="#initialise-lora-transceiver">2 Initialise LoRa Transceiver</a></h1>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L122-L173"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// Command to initialise the SX1276 / RF96 driver
-static void init_driver(char *buf, int len, int argc, char **argv)
-{
+static void init_driver(char *buf, int len, int argc, char **argv) {
     //  Set the LoRa Callback Functions
     RadioEvents_t radio_events;
     radio_events.TxDone    = on_tx_done;
@@ -152,15 +161,15 @@ static void init_driver(char *buf, int len, int argc, char **argv)
     Radio.SetTxConfig(
         MODEM_LORA,
         LORAPING_TX_OUTPUT_POWER,
-        0,        /* Frequency deviation; unused with LoRa. */
+        0,        //  Frequency deviation: Unused with LoRa
         LORAPING_BANDWIDTH,
         LORAPING_SPREADING_FACTOR,
         LORAPING_CODINGRATE,
         LORAPING_PREAMBLE_LENGTH,
         LORAPING_FIX_LENGTH_PAYLOAD_ON,
-        true,     /* CRC enabled. */
-        0,        /* Frequency hopping disabled. */
-        0,        /* Hop period; N/A. */
+        true,     //  CRC enabled
+        0,        //  Frequency hopping disabled
+        0,        //  Hop period: N/A
         LORAPING_IQ_INVERSION_ON,
         LORAPING_TX_TIMEOUT_MS
     );
@@ -172,16 +181,16 @@ static void init_driver(char *buf, int len, int argc, char **argv)
         LORAPING_BANDWIDTH,
         LORAPING_SPREADING_FACTOR,
         LORAPING_CODINGRATE,
-        0,        /* AFC bandwisth; unused with LoRa. */
+        0,        //  AFC bandwidth: Unused with LoRa
         LORAPING_PREAMBLE_LENGTH,
         LORAPING_SYMBOL_TIMEOUT,
         LORAPING_FIX_LENGTH_PAYLOAD_ON,
-        0,        /* Fixed payload length; N/A. */
-        true,     /* CRC enabled. */
-        0,        /* Frequency hopping disabled. */
-        0,        /* Hop period; N/A. */
+        0,        //  Fixed payload length: N/A
+        true,     //  CRC enabled
+        0,        //  Frequency hopping disabled
+        0,        //  Hop period: N/A
         LORAPING_IQ_INVERSION_ON,
-        true      /* Continuous receive mode. */
+        true      //  Continuous receive mode
     );    
 }
 </code></pre>
@@ -190,16 +199,14 @@ static void init_driver(char *buf, int len, int argc, char **argv)
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L175-L199"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// Command to send a LoRa message. Assume that SX1276 / RF96 driver has been initialised.
-static void send_message(char *buf, int len, int argc, char **argv)
-{
+static void send_message(char *buf, int len, int argc, char **argv) {
     //  Send the &quot;PING&quot; message
     send_once(1);
 }
 </code></pre>
 <p>TODO</p>
 <pre><code class="language-c">/// Send a LoRa message. If is_ping is 0, send &quot;PONG&quot;. Otherwise send &quot;PING&quot;.
-static void send_once(int is_ping)
-{
+static void send_once(int is_ping) {
     //  Copy the &quot;PING&quot; or &quot;PONG&quot; message to the transmit buffer
     if (is_ping) {
         memcpy(loraping_buffer, loraping_ping_msg, 4);
