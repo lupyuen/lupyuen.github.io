@@ -476,23 +476,43 @@ Let's enter some commands to transmit a LoRa Packet!
 
 # Troubleshoot LoRa
 
-TODO
+_How will we know whether BL602 is connected correctly to the LoRa Transceiver?_
+
+Enter this command to read the first 16 registers from our LoRa Transceiver over SPI...
 
 ```text
 # read_registers
-Register 0x00 = 0x00
-Register 0x01 = 0x09
+```
+
+We should see...
+
+```text
+...
 Register 0x02 = 0x1a
 Register 0x03 = 0x0b
 Register 0x04 = 0x00
 Register 0x05 = 0x52
+...
 ```
 
-TODO
+Take the values of __Registers 2, 3, 4 and 5.__ 
 
-![](https://lupyuen.github.io/images/lora-registers.png)
+Compare them with the __Register Table__ in the SX1276 (or RF96) Datasheet.
 
-TODO
+The values should be identical: __`0x1a`, `0x0b`, `0x00`, `0x52`__
+
+![Reading registers from our LoRa transceiver](https://lupyuen.github.io/images/lora-registers.png)
+
+_Can we find out the frequency that's used by our LoRa Transceiver?_
+
+Enter these commands...
+
+```text
+# init_driver
+# read_registers
+```
+
+Look for the values of __Registers 6, 7 and 8__...
 
 ```text
 Register 0x06 = 0x6c
@@ -500,32 +520,31 @@ Register 0x07 = 0x80
 Register 0x08 = 0x00
 ```
 
-TODO
+Put the values together and multiply by the __Frequency Step__...
 
-![](https://lupyuen.github.io/images/lora-freq.jpg)
-
-TODO
-
-From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L106-L120)
-
-```c
-/// Read SX1276 / RF96 registers
-static void read_registers(char *buf, int len, int argc, char **argv) {
-    //  Init the SPI port
-    SX1276IoInit();
-
-    //  Read and print the first 16 registers: 0 to 15
-    for (uint16_t addr = 0; addr < 0x10; addr++) {
-        //  Read the register
-        uint8_t val = SX1276Read(addr);
-
-        //  Print the register value
-        printf("Register 0x%02x = 0x%02x\r\n", addr, val);
-    }
-}
+```text
+0x6c8000 * 61.03515625
 ```
 
-![](https://lupyuen.github.io/images/lora-sdr5.png)
+This produces 434,000,000... Which means that our LoRa Transceiver is transmitting at __434 MHz.__
+
+![Computing the LoRa frequency](https://lupyuen.github.io/images/lora-freq.jpg)
+
+_What about the ACTUAL frequency that our LoRa Transceiver is transmitting on?_
+
+Use a __Spectrum Analyser__ like [__RF Explorer__](http://j3.rf-explorer.com/).
+
+In the next section we'll use a more advanced tool for spectrum analysis: __Software Defined Radio__.
+
+![RF Explorer (at right) featured in WandaVision season 1 episode 4](https://lupyuen.github.io/images/lora-rfexplorer.png)
+
+_RF Explorer (at right) featured in WandaVision season 1 episode 4_
+
+[See the source code for `read_registers`](https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L106-L120)
+
+[See the output from `read_registers`](https://gist.github.com/lupyuen/31ac29aa776601ba6a610a93f3190c72)
+
+![Our LoRa packet](https://lupyuen.github.io/images/lora-sdr5.png)
 
 # Visualise LoRa with Software Defined Radio
 
@@ -580,14 +599,6 @@ TODO
 _Improvised Faraday Cage_
 
 [(I bought my Airspy R2 here)](https://www.itead.cc/airspy.html)
-
-TODO
-
-Or use RF Explorer...
-
-![RF Explorer featured in WandaVision (at right)](https://lupyuen.github.io/images/lora-rfexplorer.png)
-
-_RF Explorer featured in WandaVision (at right)_
 
 # LoRa vs LoRaWAN
 
