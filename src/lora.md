@@ -625,23 +625,33 @@ _Improvised Faraday Cage_
 
 _What's the difference between LoRa, LoRaWAN and The Things Network?_
 
-1.  LoRa = The wireless network protocol
+1.  __LoRa__ = The wireless network protocol
 
     WiFi is also a wireless network protocol.
 
-1.  LoRaWAN = A managed, secure LoRa network
+1.  __LoRaWAN__ = A managed, secure LoRa network
 
     It's like going to Starbucks and connecting to their WiFi.
 
-1.  The Things Network = The free LoRaWAN network that's operated by volunteers around the world. 
+1.  __The Things Network__ = The free LoRaWAN network that's operated by volunteers around the world. 
 
     People actually set up base stations and allow free access.
 
-TODO
+    Our garden sensors could connect to The Things Network... So that we may browse the sensor data conveniently.
 
-![RAKwireless WisBlock](https://lupyuen.github.io/images/lora-wisblock.jpg)
+_3 Levels of LoRa! Where are we right now?_
 
-_RAKwireless WisBlock_
+Our BL602 implementation of LoRa is at __Level 1__. Well actually, half of Level 1. (Since we only transmit packets)
+
+To complete Level 1 of our Wireless IoT Endeavour, we need to __receive LoRa Packets.__
+
+In the next article, we shall use [__RAKwireless WisBlock__](https://store.rakwireless.com/pages/wisblock) as a LoRa Node for receiving the LoRa Packets from BL602.
+
+[(Many thanks to RAKwireless for sponsoring the WisBlock Connected Box!)](https://store.rakwireless.com/products/wisblock-connected-box)
+
+![RAKwireless WisBlock Connected Box](https://lupyuen.github.io/images/lora-wisblock.jpg)
+
+_RAKwireless WisBlock Connected Box_
 
 # What's Next
 
