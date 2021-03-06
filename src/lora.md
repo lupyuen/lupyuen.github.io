@@ -1,6 +1,6 @@
 # Connect PineCone BL602 to LoRa Transceiver
 
-📝 _9 Mar 2021_
+📝 _7 Mar 2021_
 
 Suppose we have a garden in our home. (Or rooftop)
 
