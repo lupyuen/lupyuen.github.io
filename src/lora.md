@@ -394,8 +394,6 @@ __For Windows:__ Use `putty` ([See this](https://lupyuen.github.io/articles/flas
 
 ## Enter LoRa commands
 
-TODO
-
 Let's enter some commands to transmit a LoRa Packet!
 
 1.  Press Enter to reveal the command prompt.
@@ -404,6 +402,10 @@ Let's enter some commands to transmit a LoRa Packet!
 
     ```text
     # help
+    ====User Commands====
+    read_registers           : Read registers
+    send_message             : Send LoRa message
+    spi_result               : Show SPI counters
     ```
 
 1.  First we __initialise our LoRa Transceiver__. 
@@ -420,13 +422,24 @@ Let's enter some commands to transmit a LoRa Packet!
 
     ```text
     # init_driver
-    TODO
+    port0 eventloop init = 42010760
+    [HAL] [SPI] Init :
+    port=0, mode=0, polar_phase = 1, freq=200000, tx_dma_ch=2, rx_dma_ch=3, pin_clk=3, pin_cs=2, pin_mosi=1, pin_miso=4
+    set rwspeed = 200000
+    hal_gpio_init: cs:2, clk:3, mosi:1, miso: 4
+    hal_gpio_init: SPI controller mode
+    hal_spi_init.
     ```
 
     The above messages say that our SPI Port has been configured by the BL602 SPI HAL.
 
     ```text
-    TODO
+    hal_spi_transfer = 1
+    transfer xfer[0].len = 1
+    Tx DMA src=0x4200cc58, dest=0x4000a288, size=1, si=1, di=0, i=1
+    Rx DMA src=0x4000a28c, dest=0x4200cc54, size=1, si=0, di=1, i=1
+    recv all event group.
+    ...
     ```
 
     `init_driver` has just configured our SPI Transceiver by setting the registers over SPI.
@@ -458,12 +471,39 @@ Let's enter some commands to transmit a LoRa Packet!
 
 TODO
 
+```text
+# read_registers
+Register 0x00 = 0x00
+Register 0x01 = 0x09
+Register 0x02 = 0x1a
+Register 0x03 = 0x0b
+Register 0x04 = 0x00
+Register 0x05 = 0x52
+```
+
+TODO
+
+```text
+Register 0x06 = 0x6c
+Register 0x07 = 0x80
+Register 0x08 = 0x00
+```
+
+TODO
+
+![](https://lupyuen.github.io/images/lora-registers.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/lora-freq.jpg)
+
+TODO
+
 From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L106-L120)
 
 ```c
 /// Read SX1276 / RF96 registers
-static void read_registers(char *buf, int len, int argc, char **argv)
-{
+static void read_registers(char *buf, int len, int argc, char **argv) {
     //  Init the SPI port
     SX1276IoInit();
 
@@ -477,16 +517,6 @@ static void read_registers(char *buf, int len, int argc, char **argv)
     }
 }
 ```
-
-TODO
-
-![](https://lupyuen.github.io/images/lora-registers.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/lora-freq.jpg)
-
-TODO
 
 ![](https://lupyuen.github.io/images/lora-sdr5.png)
 
