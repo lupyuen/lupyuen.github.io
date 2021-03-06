@@ -632,8 +632,7 @@ Register 0x08 = 0x00
 </li>
 </ol>
 <h1 id="appendix-lora-configuration" class="section-header"><a href="#appendix-lora-configuration">10 Appendix: LoRa Configuration</a></h1>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L41-L56"><code>demo.c</code></a></p>
+<p>We configure the <strong>LoRa Frequency</strong> here: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L41-L56"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// TODO: We are using LoRa Frequency 923 MHz for Singapore. Change this for your region.
 #define USE_BAND_923
 
@@ -651,8 +650,7 @@ Register 0x08 = 0x00
     #error &quot;Please define a frequency band in the compiler options.&quot;
 #endif
 </code></pre>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L58-L77"><code>demo.c</code></a></p>
+<p>Here are the <strong>LoRa Parameters</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L58-L77"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// LoRa Parameters
 #define LORAPING_TX_OUTPUT_POWER            14        /* dBm */
 
@@ -674,8 +672,7 @@ Register 0x08 = 0x00
 #define LORAPING_RX_TIMEOUT_MS              1000    /* ms */
 #define LORAPING_BUFFER_SIZE                64      /* LoRa message size */
 </code></pre>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/sx1276.h#L41-L56"><code>sx1276.h</code></a></p>
+<p>Below are the <strong>LoRa Transceiver Settings</strong> for SX1276 and RF96: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/sx1276.h#L41-L56"><code>sx1276.h</code></a></p>
 <pre><code class="language-c">#define SX1276_SPI_IDX      0  //  SPI Port 0
 #define SX1276_SPI_SDI_PIN  1  //  SPI Serial Data In Pin  (formerly MISO)
 #define SX1276_SPI_SDO_PIN  4  //  SPI Serial Data Out Pin (formerly MOSI)
