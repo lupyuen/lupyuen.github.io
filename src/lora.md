@@ -655,9 +655,19 @@ _RAKwireless WisBlock Connected Box_
 
 # What's Next
 
-TODO
+We have come a loooong way since I first [__experimented with LoRa in 2016__](https://github.com/lupyuen/LoRaArduino)...
 
-Test with RAKwireless in next article
+- __Cheaper Transceivers__: Shipped overnight from Thailand!
+
+- __Mature Networks__: LoRaWAN, The Things Network
+
+- __Better Drivers__: Thanks to Apache Mynewt OS!
+
+- __Powerful Microcontrollers__: Arduino Uno vs RISC-V BL602
+
+- __Awesome Tools__: RAKwireless WisBlock, Airspy SDR, RF Explorer
+
+Now is the __right time to build LoRa gadgets.__ Stay tuned for more LoRa Adventures!
 
 Meanwhile there's plenty more code in the [__BL602 IoT SDK__](https://github.com/bouffalolab/bl_iot_sdk) to be deciphered and documented: __ADC, DAC, WiFi, Bluetooth LE,__ ...
 
