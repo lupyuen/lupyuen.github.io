@@ -499,6 +499,7 @@ Register 0x05 = 0x52
 <p><em>Can we find out the frequency that's used by our LoRa Transceiver?</em></p>
 <p>Enter these commands...</p>
 <pre><code class="language-text"># init_driver
+
 # read_registers
 </code></pre>
 <p>Look for the values of <strong>Registers 6, 7 and 8</strong>...</p>
@@ -535,14 +536,41 @@ Register 0x08 = 0x00
 <p>The ISM Band is used by many types of wireless gadgets. (It's like 2.4 GHz WiFi, but at a lower frequency: 434, 868, 915 or 923 MHz) And it's prone to noise and interference caused by other gadgets.</p>
 <p>By transmitting packets in this unique chirping pattern, LoRa ensures that packets will be delivered over long distances in spite of the noise and interference.</p>
 <p>(LoRa doesn't guarantee 100% reliable delivery, of course)</p>
-<h2 id="capture-lora-packets-with-airspy-sdr" class="section-header"><a href="#capture-lora-packets-with-airspy-sdr">6.1 Capture LoRa packets with Airspy SDR</a></h2>
-<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lora-airspy2.jpg" alt="Airspy R2 SDR" /></p>
 <p><em>Airspy R2 SDR</em> </p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/lora-sdr4.png" alt="CubicSDR Software with Airspy R2 SDR" /></p>
-<p><em>CubicSDR Software with Airspy R2 SDR</em></p>
-<p>TODO</p>
+<h2 id="capture-lora-packets-with-airspy-sdr" class="section-header"><a href="#capture-lora-packets-with-airspy-sdr">6.1 Capture LoRa packets with Airspy SDR</a></h2>
+<p>Let's capture and visualise our LoRa Packet with <a href="https://www.itead.cc/airspy.html"><strong>Airspy R2 SDR</strong></a> (Software Defined Radio)...</p>
+<ol>
+<li>
+<p><strong>Place the Airspy R2 SDR</strong> close to our LoRa Antenna (See pic above)</p>
+</li>
+<li>
+<p>Download and install <a href="https://cubicsdr.com/"><strong>CubicSDR</strong></a></p>
+</li>
+<li>
+<p>Launch CubicSDR. Set the Airspy SDR <strong>Sample Rate to 10 MHz</strong></p>
+</li>
+<li>
+<p>Set the <strong>Center Frequency</strong> to our LoRa Frequency</p>
+</li>
+<li>
+<p>Click and drag the <strong>Speed Bar</strong> (at right) to the maximum speed</p>
+</li>
+<li>
+<p>Run the <strong>LoRa Firmware for BL602</strong> and enter the commands...</p>
+<pre><code class="language-text"># init_driver
+
+# send_message
+</code></pre>
+</li>
+<li>
+<p>Our <strong>LoRa Packet should scroll down</strong> like so...</p>
+</li>
+</ol>
+<p><img src="https://lupyuen.github.io/images/lora-sdr4.png" alt="CubicSDR software with Airspy R2 SDR" /></p>
+<p><em>CubicSDR software with Airspy R2 SDR</em></p>
+<p><a href="https://youtu.be/9F30uEY-nIk"><strong>Watch the video on YouTube</strong></a></p>
+<p>If there is a lot of background noise, cover the LoRa Transceiver and Airspy SDR with a Metal Pot (as an improvised <a href="https://en.wikipedia.org/wiki/Faraday_cage"><strong>Faraday Cage</strong></a>)...</p>
 <p><img src="https://lupyuen.github.io/images/lora-airspy3.jpg" alt="Improvised Faraday Cage" /></p>
 <p><em>Improvised Faraday Cage</em></p>
 <p><a href="https://www.itead.cc/airspy.html">(I bought my Airspy R2 here)</a></p>
