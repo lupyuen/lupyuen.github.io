@@ -693,11 +693,15 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1363672058920542210?s=20)
 
-1.  How much power would our BL602 + LoRa sensor actually consume?
+1.  How much power would our BL602 + LoRa sensor actually consume? How long would our battery-powered sensor last?
 
     We would need to do a thorough Power Profiling. [(See this)](https://lupyuen.github.io/articles/low-power-nb-iot-on-stm32-blue-pill-with-apache-mynewt-and-embedded-rust)
 
     Excellent project for schools and universities!
+
+1.  LoRa is a proprietary protocol, but it has been reverse engineered.
+
+    There is an open-source implementation of LoRa with SDR. [(See this)](https://gitlab.com/martynvandijke/gr-lora_sdr)
 
 # Appendix: LoRa Configuration
 
