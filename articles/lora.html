@@ -694,6 +694,25 @@ Register 0x08 = 0x00
 #define SX1276_HF_USE_PA_BOOST  1  //  Enable Power Amplifier Boost for LoRa Frequency 525 MHz and above
 </code></pre>
 <h1 id="appendix-porting-lora-driver-from-mynewt-to-bl602" class="section-header"><a href="#appendix-porting-lora-driver-from-mynewt-to-bl602">11 Appendix: Porting LoRa Driver from Mynewt to BL602</a></h1>
+<p>In this article, we called some <code>Radio</code> Functions that belong to the LoRa SX1276 Driver.</p>
+<p>Here's where the <code>Radio</code> Functions are defined...</p>
+<ul>
+<li>
+<p><strong><code>Radio.Init</code></strong> calls <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/sx1276.c#L358-L387"><code>SX1276Init</code></a></p>
+</li>
+<li>
+<p><strong><code>Radio.SetChannel</code></strong> calls <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/sx1276.c#L395-L403"><code>SX1276SetChannel</code></a></p>
+</li>
+<li>
+<p><strong><code>Radio.SetTxConfig</code></strong> calls <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/sx1276.c#L674-L835"><code>SX1276SetTxConfig</code></a></p>
+</li>
+<li>
+<p><strong><code>Radio.SetRxConfig</code></strong> calls <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/sx1276.c#L532-L672"><code>SX1276SetRxConfig</code></a></p>
+</li>
+<li>
+<p><strong><code>Radio.Send</code></strong> calls <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/sx1276.c#L917-L975"><code>SX1276Send</code></a></p>
+</li>
+</ul>
 <p>The LoRa SX1276 Driver was ported from Mynewt OS to BL602 IoT SDK...</p>
 <ul>
 <li><a href="https://github.com/apache/mynewt-core/blob/master/hw/drivers/lora/sx1276"><strong>Mynewt Driver for LoRa SX1276</strong></a></li>
@@ -701,13 +720,17 @@ Register 0x08 = 0x00
 <p>Here's how we ported the SX1276 driver code from Mynewt to BL602.</p>
 <h2 id="gpio" class="section-header"><a href="#gpio">11.1 GPIO</a></h2>
 <p>In Mynewt we call <code>hal_gpio_init_out</code> to configure a GPIO Output Pin and set the output to High: <a href="https://github.com/apache/mynewt-core/blob/master/hw/drivers/lora/sx1276/src/sx1276-board.c#L73-L74"><code>sx1276-board.c</code></a></p>
-<pre><code class="language-c">rc = hal_gpio_init_out(RADIO_NSS, 1);
+<pre><code class="language-c">//  Configure Chip Select pin as a GPIO Output Pin and set to High
+int rc = hal_gpio_init_out(
+    RADIO_NSS,  //  Pin number
+    1           //  Set to High
+);
 assert(rc == 0);
 </code></pre>
 <p>Here's the equivalent code in BL602: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L94-L110"><code>sx1276-board.c</code></a></p>
 <pre><code class="language-c">//  Configure Chip Select pin as a GPIO Pin
 GLB_GPIO_Type pins[1];
-pins[0] = RADIO_NSS;
+pins[0] = RADIO_NSS;  //  Pin number
 BL_Err_Type rc2 = GLB_GPIO_Func_Init(
     GPIO_FUN_SWGPIO,  //  Configure as GPIO 
     pins,             //  Pins to be configured
@@ -716,7 +739,7 @@ BL_Err_Type rc2 = GLB_GPIO_Func_Init(
 assert(rc2 == SUCCESS);    
 
 //  Configure Chip Select pin as a GPIO Output Pin (instead of GPIO Input)
-rc = bl_gpio_enable_output(RADIO_NSS, 0, 0);
+int rc = bl_gpio_enable_output(RADIO_NSS, 0, 0);
 assert(rc == 0);
 
 //  Set Chip Select pin to High, to deactivate SX1276
@@ -733,16 +756,16 @@ spi_settings.data_order = HAL_SPI_MSB_FIRST;
 spi_settings.data_mode  = HAL_SPI_MODE0;
 spi_settings.baudrate   = MYNEWT_VAL(SX1276_SPI_BAUDRATE);
 spi_settings.word_size  = HAL_SPI_WORD_SIZE_8BIT;
-rc = hal_spi_config(RADIO_SPI_IDX, &amp;spi_settings);
+int rc = hal_spi_config(RADIO_SPI_IDX, &amp;spi_settings);
 assert(rc == 0);
 
 //  Enable the SPI port
 rc = hal_spi_enable(RADIO_SPI_IDX);
 assert(rc == 0);
 </code></pre>
-<p>In BL602, we configure the SPI Port like this: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/ec9b5be676f520ffcda0651aac1e353d8f07bded/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L112-L129"><code>sx1276-board.c</code></a></p>
+<p>Here's how we do the same on BL602: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/ec9b5be676f520ffcda0651aac1e353d8f07bded/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L112-L129"><code>sx1276-board.c</code></a></p>
 <pre><code class="language-c">//  Configure the SPI Port
-rc = spi_init(
+int rc = spi_init(
     &amp;spi_device,    //  SPI Device
     RADIO_SPI_IDX,  //  SPI Port
     0,              //  SPI Mode: 0 for Controller
@@ -760,21 +783,29 @@ rc = spi_init(
 );
 assert(rc == 0);
 </code></pre>
-<p>Note that SPI Mode 0 in Mynewt (CPOL=0, CPHA=0) becomes SPI Polarity-Phase 1 in BL602 (CPOL=0, CPHA=1). <a href="https://lupyuen.github.io/articles/spi#spi-phase-looks-sus">(More about this)</a></p>
-<p>In Mynewt we call <code>hal_spi_tx_val</code> to read and write a byte over SPI.</p>
-<p>Here's the implementation of <code>hal_spi_tx_val</code> in BL602: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/9dd1bdf8df19e39c6ace81eb17bfff377cc50ae4/customer_app/sdk_app_lora/sdk_app_lora/sx1276.c#L245-L286"><code>sx1276.c</code></a></p>
+<p>Note: <strong>SPI Mode 0</strong> in Mynewt (CPOL=0, CPHA=0) becomes <strong>SPI Polarity-Phase 1</strong> in BL602 (CPOL=0, CPHA=1).</p>
+<p><a href="https://lupyuen.github.io/articles/spi#spi-phase-looks-sus">More about this</a></p>
+<p>In Mynewt, we call <code>hal_spi_tx_val</code> to read and write a byte over SPI.</p>
+<p>On BL602, we implement <code>hal_spi_tx_val</code> like so: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/sx1276.c#L245-L286"><code>sx1276.c</code></a></p>
 <h2 id="interrupts" class="section-header"><a href="#interrupts">11.3 Interrupts</a></h2>
-<p>TODO</p>
-<p>From Mynewt <a href="https://github.com/apache/mynewt-core/blob/master/hw/drivers/lora/sx1276/src/sx1276-board.c#L96-L99"><code>sx1276-board.c</code></a></p>
-<pre><code class="language-c">rc = hal_gpio_irq_init(SX1276_DIO0, irqHandlers[0], NULL,
-    HAL_GPIO_TRIG_RISING, HAL_GPIO_PULL_NONE);
+<p>In Mynewt we configure pins D0 to D5 to trigger an interrupt when the input changes: <a href="https://github.com/apache/mynewt-core/blob/master/hw/drivers/lora/sx1276/src/sx1276-board.c#L96-L99"><code>sx1276-board.c</code></a></p>
+<pre><code class="language-c">//  Configure GPIO Input Pin for Interrupt
+int rc = hal_gpio_irq_init(
+    SX1276_DIO0,            //  Pin number
+    irqHandlers[0],         //  Interrupt handler
+    NULL,                   //  Argument
+    HAL_GPIO_TRIG_RISING,   //  Trigger interrupt when input goes from Low to High
+    HAL_GPIO_PULL_NONE      //  No pullup and no pulldown
+);
 assert(rc == 0);
+//  Enable the GPIO Input interrupt
 hal_gpio_irq_enable(SX1276_DIO0);
 </code></pre>
-<p>For BL602: See <a href="https://github.com/lupyuen/bl_iot_sdk/blob/ec9b5be676f520ffcda0651aac1e353d8f07bded/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L304-L359"><code>sx1276-board.c</code></a></p>
+<p>For BL602 we don't configure the pins to trigger interrupts because we don't receive LoRa Packets.</p>
+<p>The code to configure the pins for interrupts would look like this: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/ec9b5be676f520ffcda0651aac1e353d8f07bded/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L304-L359"><code>sx1276-board.c</code></a></p>
 <h2 id="timers" class="section-header"><a href="#timers">11.4 Timers</a></h2>
-<p>TODO</p>
-<p>See BL602 <a href="https://github.com/lupyuen/bl_iot_sdk/blob/9dd1bdf8df19e39c6ace81eb17bfff377cc50ae4/customer_app/sdk_app_lora/sdk_app_lora/sx1276.c#L224-L243"><code>sx1276.c</code></a></p>
+<p>For BL602 we don't use timers because we don't receive LoRa Packets.</p>
+<p>In future, these Mynewt Timer Functions should be implemented on BL602: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/sx1276.c#L224-L243"><code>sx1276.c</code></a></p>
 
     
 </body>
