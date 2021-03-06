@@ -645,7 +645,7 @@ Our BL602 implementation of LoRa is at __Level 1__. Well actually, half of Level
 
 To complete Level 1 of our Wireless IoT Endeavour, we need to __receive LoRa Packets.__
 
-In the next article, we shall use [__RAKwireless WisBlock__](https://store.rakwireless.com/pages/wisblock) as a LoRa Node for receiving the LoRa Packets from BL602.
+In the next article, we shall use [__RAKwireless WisBlock__](https://docs.rakwireless.com/Product-Categories/WisBlock/Quickstart/) as a LoRa Node for receiving the LoRa Packets from BL602.
 
 [(Many thanks to RAKwireless for sponsoring the WisBlock Connected Box!)](https://store.rakwireless.com/products/wisblock-connected-box)
 
