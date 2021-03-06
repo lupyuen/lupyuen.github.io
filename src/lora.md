@@ -73,7 +73,9 @@ _So this means we won't use all the pins on SX1276 (or RF96)?_
 
 Yep we may leave pins __`D0`__ to __`D5`__ disconnected. (Otherwise we'll run out of pins on BL602!)
 
-Check that the LoRa Transceiver supports the __right LoRa Frequency__ for your region: 434, 780, 868, 915 or 923 MHz. [(See this list)](https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html)
+Check that the LoRa Transceiver supports the __right LoRa Frequency__ for your region: 434, 780, 868, 915 or 923 MHz...
+
+-  [__LoRa Frequencies by Country__](https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html)
 
 [(I bought the LoRa Transceiver from M2M Shop on Tindie)](https://www.tindie.com/products/m2m/lora-module-for-breadboard-with-antenna/)
 
@@ -255,7 +257,7 @@ We shouldn't broadcast sensitive messages in the clear. But we'll allow it for o
 
 Let's run the LoRa Demo Firmware for BL602.
 
-Check this list to find out which LoRa Frequency we should use for your region...
+Find out which __LoRa Frequency__ we should use for your region...
 
 -  [__LoRa Frequencies by Country__](https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html)
 
@@ -456,7 +458,12 @@ Let's enter some commands to transmit a LoRa Packet!
 
     ```text
     # send_message
-    TODO
+    hal_spi_transfer = 1
+    transfer xfer[0].len = 1
+    Tx DMA src=0x4200cc58, dest=0x4000a288, size=1, si=1, di=0, i=1
+    Rx DMA src=0x4000a28c, dest=0x4200cc54, size=1, si=0, di=1, i=1
+    recv all event group.
+    ...
     ```
 
     That's `send_message` blasting the 64-byte LoRa Packet to the airwave, in the simple "Fire And Forget" Mode.
@@ -465,7 +472,7 @@ Let's enter some commands to transmit a LoRa Packet!
 
     [__Watch the video on YouTube__](https://youtu.be/9F30uEY-nIk)
 
-    [__TODO: Check out the complete log__]()
+    [__Check out the complete log__](https://gist.github.com/lupyuen/31ac29aa776601ba6a610a93f3190c72)
 
 # Troubleshoot LoRa
 
@@ -483,15 +490,15 @@ Register 0x05 = 0x52
 
 TODO
 
+![](https://lupyuen.github.io/images/lora-registers.png)
+
+TODO
+
 ```text
 Register 0x06 = 0x6c
 Register 0x07 = 0x80
 Register 0x08 = 0x00
 ```
-
-TODO
-
-![](https://lupyuen.github.io/images/lora-registers.png)
 
 TODO
 
