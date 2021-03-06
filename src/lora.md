@@ -689,9 +689,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: LoRa Configuration
 
-TODO
-
-From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L41-L56)
+We configure the __LoRa Frequency__ here: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L41-L56)
 
 ```c
 /// TODO: We are using LoRa Frequency 923 MHz for Singapore. Change this for your region.
@@ -712,9 +710,7 @@ From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk
 #endif
 ```
 
-TODO
-
-From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L58-L77)
+Here are the __LoRa Parameters__: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L58-L77)
 
 ```c
 /// LoRa Parameters
@@ -739,9 +735,7 @@ From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk
 #define LORAPING_BUFFER_SIZE                64      /* LoRa message size */
 ```
 
-TODO
-
-From [`sx1276.h`](https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/sx1276.h#L41-L56)
+Below are the __LoRa Transceiver Settings__ for SX1276 and RF96: [`sx1276.h`](https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/sx1276.h#L41-L56)
 
 ```c
 #define SX1276_SPI_IDX      0  //  SPI Port 0
