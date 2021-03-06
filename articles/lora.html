@@ -480,42 +480,45 @@ recv all event group.
 </li>
 </ol>
 <h1 id="troubleshoot-lora" class="section-header"><a href="#troubleshoot-lora">5 Troubleshoot LoRa</a></h1>
-<p>TODO</p>
+<p><em>How will we know whether BL602 is connected correctly to the LoRa Transceiver?</em></p>
+<p>Enter this command to read the first 16 registers from our LoRa Transceiver over SPI...</p>
 <pre><code class="language-text"># read_registers
-Register 0x00 = 0x00
-Register 0x01 = 0x09
+</code></pre>
+<p>We should see...</p>
+<pre><code class="language-text">...
 Register 0x02 = 0x1a
 Register 0x03 = 0x0b
 Register 0x04 = 0x00
 Register 0x05 = 0x52
+...
 </code></pre>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/lora-registers.png" alt="" /></p>
-<p>TODO</p>
+<p>Take the values of <strong>Registers 2, 3, 4 and 5.</strong> </p>
+<p>Compare them with the <strong>Register Table</strong> in the SX1276 (or RF96) Datasheet.</p>
+<p>The values should be identical: <strong><code>0x1a</code>, <code>0x0b</code>, <code>0x00</code>, <code>0x52</code></strong></p>
+<p><img src="https://lupyuen.github.io/images/lora-registers.png" alt="Reading registers from our LoRa transceiver" /></p>
+<p><em>Can we find out the frequency that's used by our LoRa Transceiver?</em></p>
+<p>Enter these commands...</p>
+<pre><code class="language-text"># init_driver
+# read_registers
+</code></pre>
+<p>Look for the values of <strong>Registers 6, 7 and 8</strong>...</p>
 <pre><code class="language-text">Register 0x06 = 0x6c
 Register 0x07 = 0x80
 Register 0x08 = 0x00
 </code></pre>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/lora-freq.jpg" alt="" /></p>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L106-L120"><code>demo.c</code></a></p>
-<pre><code class="language-c">/// Read SX1276 / RF96 registers
-static void read_registers(char *buf, int len, int argc, char **argv) {
-    //  Init the SPI port
-    SX1276IoInit();
-
-    //  Read and print the first 16 registers: 0 to 15
-    for (uint16_t addr = 0; addr &lt; 0x10; addr++) {
-        //  Read the register
-        uint8_t val = SX1276Read(addr);
-
-        //  Print the register value
-        printf(&quot;Register 0x%02x = 0x%02x\r\n&quot;, addr, val);
-    }
-}
+<p>Put the values together and multiply by the <strong>Frequency Step</strong>...</p>
+<pre><code class="language-text">0x6c8000 * 61.03515625
 </code></pre>
-<p><img src="https://lupyuen.github.io/images/lora-sdr5.png" alt="" /></p>
+<p>This produces 434,000,000... Which means that our LoRa Transceiver is transmitting at <strong>434 MHz.</strong></p>
+<p><img src="https://lupyuen.github.io/images/lora-freq.jpg" alt="Computing the LoRa frequency" /></p>
+<p><em>What about the ACTUAL frequency that our LoRa Transceiver is transmitting on?</em></p>
+<p>Use a <strong>Spectrum Analyser</strong> like <a href="http://j3.rf-explorer.com/"><strong>RF Explorer</strong></a>.</p>
+<p>In the next section we'll use a more advanced tool for spectrum analysis: <strong>Software Defined Radio</strong>.</p>
+<p><img src="https://lupyuen.github.io/images/lora-rfexplorer.png" alt="RF Explorer (at right) featured in WandaVision season 1 episode 4" /></p>
+<p><em>RF Explorer (at right) featured in WandaVision season 1 episode 4</em></p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L106-L120">See the source code for <code>read_registers</code></a></p>
+<p><a href="https://gist.github.com/lupyuen/31ac29aa776601ba6a610a93f3190c72">See the output from <code>read_registers</code></a></p>
+<p><img src="https://lupyuen.github.io/images/lora-sdr5.png" alt="Our LoRa packet" /></p>
 <h1 id="visualise-lora-with-software-defined-radio" class="section-header"><a href="#visualise-lora-with-software-defined-radio">6 Visualise LoRa with Software Defined Radio</a></h1>
 <p><em>What's this? A glowing helix? Magic seahorse?</em></p>
 <p>That's how our <strong>64-byte LoRa Packet</strong> appears when captured with a <strong>Software Defined Radio</strong>!</p>
@@ -543,10 +546,6 @@ static void read_registers(char *buf, int len, int argc, char **argv) {
 <p><img src="https://lupyuen.github.io/images/lora-airspy3.jpg" alt="Improvised Faraday Cage" /></p>
 <p><em>Improvised Faraday Cage</em></p>
 <p><a href="https://www.itead.cc/airspy.html">(I bought my Airspy R2 here)</a></p>
-<p>TODO</p>
-<p>Or use RF Explorer...</p>
-<p><img src="https://lupyuen.github.io/images/lora-rfexplorer.png" alt="RF Explorer featured in WandaVision (at right)" /></p>
-<p><em>RF Explorer featured in WandaVision (at right)</em></p>
 <h1 id="lora-vs-lorawan" class="section-header"><a href="#lora-vs-lorawan">7 LoRa vs LoRaWAN</a></h1>
 <p><em>What's the difference between LoRa, LoRaWAN and The Things Network?</em></p>
 <ol>
