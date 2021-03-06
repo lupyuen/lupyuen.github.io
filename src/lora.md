@@ -509,6 +509,7 @@ Enter these commands...
 
 ```text
 # init_driver
+
 # read_registers
 ```
 
@@ -578,21 +579,41 @@ By transmitting packets in this unique chirping pattern, LoRa ensures that packe
 
 (LoRa doesn't guarantee 100% reliable delivery, of course)
 
-## Capture LoRa packets with Airspy SDR
-
-TODO
-
 ![Airspy R2 SDR](https://lupyuen.github.io/images/lora-airspy2.jpg)
 
 _Airspy R2 SDR_ 
 
-TODO
+## Capture LoRa packets with Airspy SDR
 
-![CubicSDR Software with Airspy R2 SDR](https://lupyuen.github.io/images/lora-sdr4.png)
+Let's capture and visualise our LoRa Packet with [__Airspy R2 SDR__](https://www.itead.cc/airspy.html) (Software Defined Radio)...
 
-_CubicSDR Software with Airspy R2 SDR_
+1.  __Place the Airspy R2 SDR__ close to our LoRa Antenna (See pic above)
 
-TODO
+1.  Download and install [__CubicSDR__](https://cubicsdr.com/)
+
+1.  Launch CubicSDR. Set the Airspy SDR __Sample Rate to 10 MHz__
+
+1.  Set the __Center Frequency__ to our LoRa Frequency
+
+1.  Click and drag the __Speed Bar__ (at right) to the maximum speed
+
+1.  Run the __LoRa Firmware for BL602__ and enter the commands...
+
+    ```text
+    # init_driver
+
+    # send_message
+    ```
+
+1.  Our __LoRa Packet should scroll down__ like so...
+
+![CubicSDR software with Airspy R2 SDR](https://lupyuen.github.io/images/lora-sdr4.png)
+
+_CubicSDR software with Airspy R2 SDR_
+
+[__Watch the video on YouTube__](https://youtu.be/9F30uEY-nIk)
+
+If there is a lot of background noise, cover the LoRa Transceiver and Airspy SDR with a Metal Pot (as an improvised [__Faraday Cage__](https://en.wikipedia.org/wiki/Faraday_cage))...
 
 ![Improvised Faraday Cage](https://lupyuen.github.io/images/lora-airspy3.jpg)
 
