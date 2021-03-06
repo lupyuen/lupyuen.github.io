@@ -639,6 +639,12 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1363672058920542210?s=20)
 
+1.  How much power would our BL602 + LoRa sensor actually consume?
+
+    We would need to do a thorough Power Profiling. [(See this)](https://lupyuen.github.io/articles/low-power-nb-iot-on-stm32-blue-pill-with-apache-mynewt-and-embedded-rust)
+
+    Excellent project for schools and universities!
+
 # Appendix: LoRa Configuration
 
 TODO
