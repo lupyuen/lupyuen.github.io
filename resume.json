@@ -147,6 +147,13 @@
   ],
   "publications": [
     {
+      "name": "Connect PineCone BL602 to LoRa Transceiver",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2021-03-07",
+      "website": "https://lupyuen.github.io/articles/lora",
+      "summary": "How we transmit LoRa packets on PineCone BL602 RISC-V Board ... With Semtech 1276 or Hope RF96"
+    },
+    {
       "name": "The RISC-V BL602 Book",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-02-20",
