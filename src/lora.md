@@ -73,11 +73,17 @@ _So this means we won't use all the pins on SX1276 (or RF96)?_
 
 Yep we may leave pins __`D0`__ to __`D5`__ disconnected. (Otherwise we'll run out of pins on BL602!)
 
-Check that the LoRa Transceiver supports the __right LoRa Frequency__ for your region: 434, 780, 868, 915 or 923 MHz...
+## Getting the LoRa Transceiver and Antenna
+
+The LoRa Transceiver should support the __right LoRa Frequency__ for your region: 434, 780, 868, 915 or 923 MHz...
 
 -  [__LoRa Frequencies by Country__](https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html)
 
-[(I bought the LoRa Transceiver from M2M Shop on Tindie)](https://www.tindie.com/products/m2m/lora-module-for-breadboard-with-antenna/)
+To find a LoRa Transceiver for your region, go to the [__Tindie Maker Marketplace__](https://www.tindie.com) and search for __SX1276__ or __RF96__. Look for a transceiver that matches your frequency.
+
+The length of the antenna depends on the frequency. They are standard parts and should be easy to find.
+
+I bought the Hope RF96 Breakout Board (923 MHz) and Antenna (923 MHz) from M2M Shop on Tindie. [(See this)](https://www.tindie.com/products/m2m/lora-module-for-breadboard-with-antenna/)
 
 # Initialise LoRa Transceiver
 
