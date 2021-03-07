@@ -661,6 +661,8 @@ To complete Level 1 of our Wireless IoT Endeavour, we need to __receive LoRa Pac
 
 In the next article, we shall use [__RAKwireless WisBlock__](https://docs.rakwireless.com/Product-Categories/WisBlock/Quickstart/) as a LoRa Node for receiving the LoRa Packets from BL602.
 
+[__Watch this Twitter Thread for updates__](https://twitter.com/MisterTechBlog/status/1368378621719584768?s=20)
+
 [(Many thanks to RAKwireless for sponsoring the WisBlock Connected Box!)](https://store.rakwireless.com/products/wisblock-connected-box)
 
 ![RAKwireless WisBlock Connected Box](https://lupyuen.github.io/images/lora-wisblock.jpg)
