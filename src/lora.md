@@ -85,6 +85,14 @@ The length of the antenna depends on the frequency. They are standard parts and 
 
 I bought the Hope RF96 Breakout Board (923 MHz) and Antenna (923 MHz) from M2M Shop on Tindie. [(See this)](https://www.tindie.com/products/m2m/lora-module-for-breadboard-with-antenna/)
 
+_What if my region allows multiple LoRa Frequencies?_
+
+Choose the LoRa Frequency that's most popular in your region for __The Things Network__. (That's the free, public LoRaWAN network)
+
+Because one day we will probably connect our LoRa Transceiver to The Things Network for collecting sensor data.
+
+[Here are the base stations worldwide for The Things Network](https://www.thethingsnetwork.org/map)
+
 # Initialise LoRa Transceiver
 
 Let's look at the code inside our LoRa Firmware for BL602: `sdk_app_lora`
