@@ -147,6 +147,10 @@
 <p>To find a LoRa Transceiver for your region, go to the <a href="https://www.tindie.com"><strong>Tindie Maker Marketplace</strong></a> and search for <strong>SX1276</strong> or <strong>RF96</strong>. Look for a transceiver that matches your frequency.</p>
 <p>The length of the antenna depends on the frequency. They are standard parts and should be easy to find.</p>
 <p>I bought the Hope RF96 Breakout Board (923 MHz) and Antenna (923 MHz) from M2M Shop on Tindie. <a href="https://www.tindie.com/products/m2m/lora-module-for-breadboard-with-antenna/">(See this)</a></p>
+<p><em>What if my region allows multiple LoRa Frequencies?</em></p>
+<p>Choose the LoRa Frequency that's most popular in your region for <strong>The Things Network</strong>. (That's the free, public LoRaWAN network)</p>
+<p>Because one day we will probably connect our LoRa Transceiver to The Things Network for collecting sensor data.</p>
+<p><a href="https://www.thethingsnetwork.org/map">Here are the base stations worldwide for The Things Network</a></p>
 <h1 id="initialise-lora-transceiver" class="section-header"><a href="#initialise-lora-transceiver">2 Initialise LoRa Transceiver</a></h1>
 <p>Let's look at the code inside our LoRa Firmware for BL602: <code>sdk_app_lora</code></p>
 <p><strong>Super Important:</strong> We should set the LoRa Frequency in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L41-L56"><code>demo.c</code></a> like so...</p>
