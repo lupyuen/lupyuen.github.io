@@ -65,7 +65,8 @@
 
     <h1 class="title">Connect PineCone BL602 to LoRa Transceiver</h1>
     <nav id="TOC"><ul>
-<li><a href="#connect-bl602-to-lora-transceiver">1 Connect BL602 to LoRa Transceiver</a><ul></ul></li>
+<li><a href="#connect-bl602-to-lora-transceiver">1 Connect BL602 to LoRa Transceiver</a><ul>
+<li><a href="#getting-the-lora-transceiver-and-antenna">1.1 Getting the LoRa Transceiver and Antenna</a><ul></ul></li></ul></li>
 <li><a href="#initialise-lora-transceiver">2 Initialise LoRa Transceiver</a><ul></ul></li>
 <li><a href="#transmit-lora-packet">3 Transmit LoRa Packet</a><ul></ul></li>
 <li><a href="#build-and-run-the-lora-firmware">4 Build and Run the LoRa Firmware</a><ul>
@@ -138,11 +139,14 @@
 <p>This is ideal for <strong>simple sensors</strong> (like our garden sensors) that are powered by batteries and can tolerate a few lost packets. (Because we'll send the sensor data periodically anyway)</p>
 <p><em>So this means we won't use all the pins on SX1276 (or RF96)?</em></p>
 <p>Yep we may leave pins <strong><code>D0</code></strong> to <strong><code>D5</code></strong> disconnected. (Otherwise we'll run out of pins on BL602!)</p>
-<p>Check that the LoRa Transceiver supports the <strong>right LoRa Frequency</strong> for your region: 434, 780, 868, 915 or 923 MHz...</p>
+<h2 id="getting-the-lora-transceiver-and-antenna" class="section-header"><a href="#getting-the-lora-transceiver-and-antenna">1.1 Getting the LoRa Transceiver and Antenna</a></h2>
+<p>The LoRa Transceiver should support the <strong>right LoRa Frequency</strong> for your region: 434, 780, 868, 915 or 923 MHz...</p>
 <ul>
 <li><a href="https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html"><strong>LoRa Frequencies by Country</strong></a></li>
 </ul>
-<p><a href="https://www.tindie.com/products/m2m/lora-module-for-breadboard-with-antenna/">(I bought the LoRa Transceiver from M2M Shop on Tindie)</a></p>
+<p>To find a LoRa Transceiver for your region, go to the <a href="https://www.tindie.com"><strong>Tindie Maker Marketplace</strong></a> and search for <strong>SX1276</strong> or <strong>RF96</strong>. Look for a transceiver that matches your frequency.</p>
+<p>The length of the antenna depends on the frequency. They are standard parts and should be easy to find.</p>
+<p>I bought the Hope RF96 Breakout Board (923 MHz) and Antenna (923 MHz) from M2M Shop on Tindie. <a href="https://www.tindie.com/products/m2m/lora-module-for-breadboard-with-antenna/">(See this)</a></p>
 <h1 id="initialise-lora-transceiver" class="section-header"><a href="#initialise-lora-transceiver">2 Initialise LoRa Transceiver</a></h1>
 <p>Let's look at the code inside our LoRa Firmware for BL602: <code>sdk_app_lora</code></p>
 <p><strong>Super Important:</strong> We should set the LoRa Frequency in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L41-L56"><code>demo.c</code></a> like so...</p>
