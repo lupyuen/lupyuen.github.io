@@ -54,9 +54,213 @@ For the LPWAN Module, be sure to choose the right __LoRa Frequency__ for your re
 
 TODO
 
-# Receive LoRa Packet
+## Setup Function
 
 TODO
+
+From [`main.cpp`](https://github.com/lupyuen/wisblock-lora-receiver/blob/ba2ec8e2268540fc3af1229517545ea9dc2b3719/src/main.cpp#L55-L106)
+
+```c
+static RadioEvents_t RadioEvents;
+
+static uint8_t RcvBuffer[64];
+
+void setup() {
+
+    // Initialize LoRa chip.
+    lora_rak4630_init();
+
+    // Initialize Serial for debug output
+    Serial.begin(115200);
+    while (!Serial) { delay(10); }
+```
+
+TODO
+
+```c
+    // Initialize the Radio callbacks
+    RadioEvents.TxDone = NULL;
+    RadioEvents.RxDone = OnRxDone;
+    RadioEvents.TxTimeout = NULL;
+    RadioEvents.RxTimeout = OnRxTimeout;
+    RadioEvents.RxError = OnRxError;
+    RadioEvents.CadDone = NULL;
+```
+
+TODO
+
+```c
+    // Initialize the Radio
+    Radio.Init(&RadioEvents);
+```
+
+TODO
+
+```c
+    // Set Radio channel
+    Radio.SetChannel(RF_FREQUENCY);
+```
+
+TODO
+
+```c
+    // Set Radio RX configuration
+    Radio.SetRxConfig(
+        MODEM_LORA, 
+        LORA_BANDWIDTH, 
+        LORA_SPREADING_FACTOR,
+        LORA_CODINGRATE, 
+        0, 
+        LORA_PREAMBLE_LENGTH,
+        LORA_SYMBOL_TIMEOUT, 
+        LORA_FIX_LENGTH_PAYLOAD_ON,
+        0, 
+        true, 
+        0, 
+        0, 
+        LORA_IQ_INVERSION_ON, 
+        true
+    );
+```
+
+TODO
+
+```c
+    // Start LoRa
+    Radio.Rx(RX_TIMEOUT_VALUE);
+}
+```
+
+## Loop Function
+
+TODO
+
+From [`main.cpp`](https://github.com/lupyuen/wisblock-lora-receiver/blob/ba2ec8e2268540fc3af1229517545ea9dc2b3719/src/main.cpp#L108-L116)
+
+```c
+void loop() {
+    // Handle Radio events
+    Radio.IrqProcess();
+
+    // We are on FreeRTOS, give other tasks a chance to run
+    delay(100);
+    yield();
+}
+```
+
+TODO
+
+# Receive LoRa Packets
+
+TODO
+
+## Receive Callback Function
+
+TODO
+
+From [`main.cpp`](https://github.com/lupyuen/wisblock-lora-receiver/blob/ba2ec8e2268540fc3af1229517545ea9dc2b3719/src/main.cpp#L118-L139)
+
+```c
+//  Callback Function to be executed on Packet Received event
+void OnRxDone(uint8_t *payload, uint16_t size, int16_t rssi, int8_t snr) {
+    //  We have received a valid packet. Show the timestamp in milliseconds.
+    Serial.printf("OnRxDone: Timestamp=%d, ", millis() / 1000);
+
+    //  Show the signal strength, signal to noise ratio
+    Serial.printf("RssiValue=%d dBm, SnrValue=%d, Data=", rssi, snr);
+```
+
+TODO
+
+```c
+    delay(10);
+    memcpy(RcvBuffer, payload, size);
+```
+
+TODO
+
+```c
+    //  Show the packet received
+    for (int idx = 0; idx < size; idx++) {
+        Serial.printf("%02X ", RcvBuffer[idx]);
+    }
+    Serial.println("");
+```
+
+TODO
+
+```c
+    //  Receive the next packet
+    Radio.Rx(RX_TIMEOUT_VALUE);
+}
+```
+
+## Timeout Callback Function
+
+TODO
+
+From [`main.cpp`](https://github.com/lupyuen/wisblock-lora-receiver/blob/abc363ef1bacb9e607ad519a587fe9581659e1ec/src/main.cpp#L141-L151)
+
+```c
+//  Callback Function to be executed on Receive Timeout event
+void OnRxTimeout(void) {
+    //  We haven't received a packet during the timeout period.
+    //  We disable the timeout message because it makes the log much longer.
+    //  Serial.println("OnRxTimeout");
+```
+
+TODO
+
+```c
+    //  Receive the next packet
+    Radio.Rx(RX_TIMEOUT_VALUE);
+}
+```
+
+## Error Callback Function
+
+TODO
+
+From [`main.cpp`](https://github.com/lupyuen/wisblock-lora-receiver/blob/abc363ef1bacb9e607ad519a587fe9581659e1ec/src/main.cpp#L153-L163)
+
+```c
+//  Callback Function to be executed on Receive Error event
+void OnRxError(void) {
+    //  We have received a corrupted packet, probably due to weak signal.
+    //  Show the timestamp in milliseconds.
+    Serial.printf("OnRxError: Timestamp=%d\n", millis() / 1000);
+```
+
+TODO
+
+```c
+    //  Receive the next packet
+    Radio.Rx(RX_TIMEOUT_VALUE);
+}
+```
+
+# LoRa Configuration
+
+TODO
+
+From [`main.cpp`](https://github.com/lupyuen/wisblock-lora-receiver/blob/ba2ec8e2268540fc3af1229517545ea9dc2b3719/src/main.cpp#L36-L49)
+
+```c
+// Define LoRa parameters. To receive LoRa packets from BL602, sync the parameters with
+// https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L41-L77
+// TODO: Change RF_FREQUENCY for your region
+#define RF_FREQUENCY          923000000	// Hz
+#define TX_OUTPUT_POWER       22		// dBm
+#define LORA_BANDWIDTH        0		    // [0: 125 kHz, 1: 250 kHz, 2: 500 kHz, 3: Reserved]
+#define LORA_SPREADING_FACTOR 7         // [SF7..SF12]
+#define LORA_CODINGRATE       1		    // [1: 4/5, 2: 4/6,  3: 4/7,  4: 4/8]
+#define LORA_PREAMBLE_LENGTH  8	        // Same for Tx and Rx
+#define LORA_SYMBOL_TIMEOUT   0	        // Symbols
+#define LORA_FIX_LENGTH_PAYLOAD_ON false
+#define LORA_IQ_INVERSION_ON       false
+#define RX_TIMEOUT_VALUE      3000
+#define TX_TIMEOUT_VALUE      3000
+```
 
 # Build and Run the LoRa Firmware
 
@@ -68,21 +272,81 @@ Find out which __LoRa Frequency__ we should use for your region...
 
 -  [__LoRa Frequencies by Country__](https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html)
 
+## Build the firmware
+
+TODO
+
+![](https://lupyuen.github.io/images/wisblock-bar.png)
+
 ## Flash the firmware
 
 TODO
+
+![](https://lupyuen.github.io/images/wisblock-flash.png)
+
+TODO
+
+Reconnect USB and flash again
+
+![](https://lupyuen.github.io/images/wisblock-flash2.png)
 
 ## Run the firmware
 
 TODO
 
+![](https://lupyuen.github.io/images/wisblock-log.png
+
+TODO
+
+![](https://lupyuen.github.io/images/wisblock-receiver.jpg
+
 # LoRa Field Test
 
 TODO
 
+![](https://lupyuen.github.io/images/wisblock-kit.jpg)
+
+TODO
+
+![](https://lupyuen.github.io/images/wisblock-backpack.jpg)
+
+TODO
+
+![](https://lupyuen.github.io/images/wisblock-field.jpg)
+
+This is a Geocoded, Timestamped photo.
+
+TODO
+
+![](https://lupyuen.github.io/images/wisblock-chicken.jpg)
+
+Geocoded, Timestamped chickens.
+
+TODO
+
+![](https://lupyuen.github.io/images/wisblock-chickenrice.jpg)
+
+Geocoded, Timestamped chicken rice.
+
+## Streaming the packets
+
+TODO
+
+![](https://lupyuen.github.io/images/wisblock-stream.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/wisblock-stream2.png)
+
 # Analyse the LoRa Coverage
 
 TODO
+
+![](https://lupyuen.github.io/images/wisblock-chart.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/wisblock-chart2.png)
 
 ![RAKwireless WisBlock Connected Box](https://lupyuen.github.io/images/lora-wisblock.jpg)
 
@@ -123,5 +387,13 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1368378621719584768?s=20)
 
 # Appendix: LoRa Ping Firmware for BL602
+
+TODO
+
+![](https://lupyuen.github.io/images/wisblock-parameters2.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/wisblock-ping.png)
 
 TODO
