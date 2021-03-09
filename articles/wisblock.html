@@ -218,6 +218,7 @@ static RadioEvents_t RadioEvents;
     Radio.Rx(RX_TIMEOUT_VALUE);
 }
 </code></pre>
+<p>The timeout value <strong><code>RX_TIMEOUT_VALUE</code></strong> is set to <strong>3 seconds</strong>.</p>
 <h2 id="loop-function" class="section-header"><a href="#loop-function">2.2 Loop Function</a></h2>
 <p>After calling the Setup Function, the Arduino Framework calls the <strong>Loop Function</strong> repeatedly to handle events.</p>
 <p>At the start of the Loop Function, we handle the Callback Functions triggered by the LoRa Transceiver: <a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp#L108-L116"><code>main.cpp</code></a></p>
@@ -234,15 +235,14 @@ void loop() {
 </code></pre>
 <p>The code in this article is based on the WisBlock LoRa Receiver Example: <a href="https://github.com/RAKWireless/WisBlock/blob/master/examples/communications/LoRa/LoRaP2P/LoRaP2P_RX/LoRaP2P_RX.ino"><code>LoRaP2P_RX.ino</code></a></p>
 <p><a href="https://lupyuen.github.io/articles/lora#initialise-lora-transceiver">(And it bears a striking resemblence to the code for PineCone BL602 LoRa)</a></p>
+<p><img src="https://lupyuen.github.io/images/wisblock-cartoon.png" alt="LoRa pushing 64-byte packets from BL602 to WisBlock" /></p>
+<p><em>LoRa pushing 64-byte packets from BL602 to WisBlock</em></p>
 <h1 id="receive-lora-packets" class="section-header"><a href="#receive-lora-packets">3 Receive LoRa Packets</a></h1>
-<p>TODO</p>
+<p>We have prepped our WisBlock LoRa Transceiver to receive packets... Let's watch how we handle the received LoRa Packets.</p>
 <h2 id="receive-callback-function" class="section-header"><a href="#receive-callback-function">3.1 Receive Callback Function</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp#L118-L139"><code>main.cpp</code></a></p>
-<pre><code class="language-c">//  Buffer for received LoRa Packet
-static uint8_t RcvBuffer[64];
-
-//  Callback Function to be executed on Packet Received event
+<p>The Callback Function <strong><code>OnRxDone</code></strong> is triggered by the LoRa Driver whenever a <strong>LoRa Packet has been received successfully</strong>.</p>
+<p>First we show the <strong>Timestamp (in seconds), Signal Strength and Signal To Noise Ratio:</strong> <a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp#L118-L139"><code>main.cpp</code></a></p>
+<pre><code class="language-c">//  Callback Function to be executed on Packet Received event
 void OnRxDone(uint8_t *payload, uint16_t size, int16_t rssi, int8_t snr) {
     //  We have received a valid packet. Show the timestamp in milliseconds.
     Serial.printf(&quot;OnRxDone: Timestamp=%d, &quot;, millis() / 1000);
@@ -250,22 +250,30 @@ void OnRxDone(uint8_t *payload, uint16_t size, int16_t rssi, int8_t snr) {
     //  Show the signal strength, signal to noise ratio
     Serial.printf(&quot;RssiValue=%d dBm, SnrValue=%d, Data=&quot;, rssi, snr);
 </code></pre>
-<p>TODO</p>
+<p>We pause a short while and copy the received packet into our 64-byte buffer <code>RcvBuffer</code>...</p>
 <pre><code class="language-c">    delay(10);
     memcpy(RcvBuffer, payload, size);
 </code></pre>
-<p>TODO</p>
+<p><strong><code>RcvBuffer</code></strong> is defined as a 64-byte buffer...</p>
+<pre><code class="language-c">    //  Buffer for received LoRa Packet
+    static uint8_t RcvBuffer[64];
+</code></pre>
+<p>Then we display the 64 bytes received...</p>
 <pre><code class="language-c">    //  Show the packet received
     for (int idx = 0; idx &lt; size; idx++) {
         Serial.printf(&quot;%02X &quot;, RcvBuffer[idx]);
     }
     Serial.println(&quot;&quot;);
 </code></pre>
-<p>TODO</p>
+<p>Finally we ask the LoRa Driver to receive the next packet...</p>
 <pre><code class="language-c">    //  Receive the next packet
     Radio.Rx(RX_TIMEOUT_VALUE);
 }
 </code></pre>
+<p>The timeout value <strong><code>RX_TIMEOUT_VALUE</code></strong> is set to <strong>3 seconds</strong>.</p>
+<p><em>Looks kinda crowded... We show everything in a single line?</em></p>
+<p>Yes because we'll be copying and pasting the lines into a spreadsheet for analysis.</p>
+<p>This way it's easier to scrub the data.</p>
 <h2 id="timeout-callback-function" class="section-header"><a href="#timeout-callback-function">3.2 Timeout Callback Function</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/abc363ef1bacb9e607ad519a587fe9581659e1ec/src/main.cpp#L141-L151"><code>main.cpp</code></a></p>
@@ -276,7 +284,7 @@ void OnRxTimeout(void) {
     //  Serial.println(&quot;OnRxTimeout&quot;);
 </code></pre>
 <p>TODO</p>
-<pre><code class="language-c">    //  Receive the next packet
+<pre><code class="language-c">    //  Receive the next packet. Timeout in 3 seconds.
     Radio.Rx(RX_TIMEOUT_VALUE);
 }
 </code></pre>
@@ -290,7 +298,7 @@ void OnRxError(void) {
     Serial.printf(&quot;OnRxError: Timestamp=%d\n&quot;, millis() / 1000);
 </code></pre>
 <p>TODO</p>
-<pre><code class="language-c">    //  Receive the next packet
+<pre><code class="language-c">    //  Receive the next packet. Timeout in 3 seconds.
     Radio.Rx(RX_TIMEOUT_VALUE);
 }
 </code></pre>
