@@ -130,7 +130,7 @@
 <p>TODO</p>
 <h2 id="setup-function" class="section-header"><a href="#setup-function">2.1 Setup Function</a></h2>
 <p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/ba2ec8e2268540fc3af1229517545ea9dc2b3719/src/main.cpp#L55-L106"><code>main.cpp</code></a></p>
+<p>From <a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp#L55-L106"><code>main.cpp</code></a></p>
 <pre><code class="language-c">static RadioEvents_t RadioEvents;
 
 static uint8_t RcvBuffer[64];
@@ -187,7 +187,7 @@ void setup() {
 </code></pre>
 <h2 id="loop-function" class="section-header"><a href="#loop-function">2.2 Loop Function</a></h2>
 <p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/ba2ec8e2268540fc3af1229517545ea9dc2b3719/src/main.cpp#L108-L116"><code>main.cpp</code></a></p>
+<p>From <a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp#L108-L116"><code>main.cpp</code></a></p>
 <pre><code class="language-c">void loop() {
     // Handle Radio events
     Radio.IrqProcess();
@@ -202,7 +202,7 @@ void setup() {
 <p>TODO</p>
 <h2 id="receive-callback-function" class="section-header"><a href="#receive-callback-function">3.1 Receive Callback Function</a></h2>
 <p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/ba2ec8e2268540fc3af1229517545ea9dc2b3719/src/main.cpp#L118-L139"><code>main.cpp</code></a></p>
+<p>From <a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp#L118-L139"><code>main.cpp</code></a></p>
 <pre><code class="language-c">//  Callback Function to be executed on Packet Received event
 void OnRxDone(uint8_t *payload, uint16_t size, int16_t rssi, int8_t snr) {
     //  We have received a valid packet. Show the timestamp in milliseconds.
@@ -257,7 +257,7 @@ void OnRxError(void) {
 </code></pre>
 <h1 id="lora-configuration" class="section-header"><a href="#lora-configuration">4 LoRa Configuration</a></h1>
 <p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/ba2ec8e2268540fc3af1229517545ea9dc2b3719/src/main.cpp#L36-L49"><code>main.cpp</code></a></p>
+<p>From <a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp#L36-L49"><code>main.cpp</code></a></p>
 <pre><code class="language-c">// Define LoRa parameters. To receive LoRa packets from BL602, sync the parameters with
 // https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L41-L77
 // TODO: Change RF_FREQUENCY for your region
