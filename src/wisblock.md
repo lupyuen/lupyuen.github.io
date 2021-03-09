@@ -2,6 +2,14 @@
 
 📝 _12 Mar 2021_
 
+Suppose we've created a __LoRa Sensor__. (Maybe a sensor that monitors the soil moisture in our home garden)
+
+Is there a simple way to check...
+
+1.  Whether our LoRa Sensor is __transmitting data correctly__...
+
+1.  And what's the __Wireless Range__ of our LoRa Sensor?
+
 TODO
 
 ![RAKwireless WisBlock LPWAN Module mounted on WisBlock Base Board](https://lupyuen.github.io/images/wisblock-title.jpg)
