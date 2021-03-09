@@ -76,20 +76,41 @@
 <li><a href="#whats-next">7 What's Next</a><ul></ul></li>
 <li><a href="#notes">8 Notes</a><ul></ul></li>
 <li><a href="#appendix-lora-ping-firmware-for-bl602">9 Appendix: LoRa Ping Firmware for BL602</a><ul></ul></li></ul></nav><p>📝 <em>12 Mar 2021</em></p>
-<p>Suppose we've created a <strong>LoRa Sensor</strong>. (Maybe a sensor that monitors the soil moisture in our home garden)</p>
+<p>Suppose we've created a wireless <strong>LoRa Sensor</strong>.</p>
+<p>(Maybe a sensor that monitors the soil moisture in our home garden)</p>
 <p>Is there a simple way to check...</p>
 <ol>
 <li>
-<p>Whether our LoRa Sensor is <strong>transmitting data correctly</strong>...</p>
+<p>Whether our LoRa Sensor is <strong>transmitting packets correctly</strong>...</p>
 </li>
 <li>
 <p>And what's the <strong>Wireless Range</strong> of our LoRa Sensor?</p>
 </li>
 </ol>
-<p>TODO</p>
+<p>Today we shall install <a href="https://docs.rakwireless.com/Product-Categories/WisBlock/Quickstart/"><strong>RAKwireless WisBlock</strong></a> to check the packets transmitted by our LoRa Sensor.</p>
+<p>We'll be testing WisBlock with a LoRa Sensor based on the <strong>PineCone BL602 RISC-V Board</strong>. <a href="https://lupyuen.github.io/articles/lora">(See this)</a></p>
+<p><a href="https://store.rakwireless.com/products/wisblock-connected-box">(Many thanks to RAKwireless for sponsoring the WisBlock Connected Box!)</a></p>
 <p><img src="https://lupyuen.github.io/images/wisblock-title.jpg" alt="RAKwireless WisBlock LPWAN Module mounted on WisBlock Base Board" /></p>
 <p><em>RAKwireless WisBlock LPWAN Module mounted on WisBlock Base Board</em></p>
 <h1 id="connect-wisblock" class="section-header"><a href="#connect-wisblock">1 Connect WisBlock</a></h1>
+<p>Connect the following components according to the pic above...</p>
+<ol>
+<li>
+<p><strong>WisBlock LPWAN Module</strong>: This is the <strong>nRF52840 Microcontroller</strong> with <strong>LoRa Transceiver</strong>. <a href="https://docs.rakwireless.com/Product-Categories/WisBlock/RAK4631/Datasheet/">(More about this)</a></p>
+<p>Mount the LPWAN Module onto the WisBlock Base Board.</p>
+</li>
+<li>
+<p><strong>WisBlock Base Board</strong>: This provides power to the LPWAN Module and exposes the USB and I/O ports. <a href="https://docs.rakwireless.com/Product-Categories/WisBlock/RAK5005-O/Datasheet/">(More about this)</a></p>
+<p>The LPWAN Module should be mounted on the Base Board.</p>
+</li>
+<li>
+<p><strong>LoRa Antenna</strong>: Connect the LoRa Antenna to the LPWAN Module.</p>
+</li>
+<li>
+<p><strong>Bluetooth LE Antenna</strong>: Connect the Bluetooth LE Antenna to the LPWAN Module.</p>
+</li>
+</ol>
+<p><a href="https://electronics.stackexchange.com/questions/335912/can-i-break-a-radio-tranceiving-device-by-operating-it-with-no-antenna-connected"><strong>CAUTION: Always connect the LoRa Antenna and Bluetooth LE Antenna before Powering On... Or the LoRa and Bluetooth Transceivers may get damaged! See this</strong></a></p>
 <p>TODO</p>
 <h1 id="initialise-lora-transceiver" class="section-header"><a href="#initialise-lora-transceiver">2 Initialise LoRa Transceiver</a></h1>
 <p>TODO</p>
@@ -110,7 +131,6 @@
 <p>TODO</p>
 <h1 id="analyse-the-lora-coverage" class="section-header"><a href="#analyse-the-lora-coverage">6 Analyse the LoRa Coverage</a></h1>
 <p>TODO</p>
-<p><a href="https://store.rakwireless.com/products/wisblock-connected-box">(Many thanks to RAKwireless for sponsoring the WisBlock Connected Box!)</a></p>
 <p><img src="https://lupyuen.github.io/images/lora-wisblock.jpg" alt="RAKwireless WisBlock Connected Box" /></p>
 <p><em>RAKwireless WisBlock Connected Box</em></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">7 What's Next</a></h1>
