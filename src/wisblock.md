@@ -199,9 +199,9 @@ The code in this article is based on the WisBlock LoRa Receiver Example: [`LoRaP
 
 [(And it bears a striking resemblance to the code for PineCone BL602 LoRa)](https://lupyuen.github.io/articles/lora#initialise-lora-transceiver)
 
-![LoRa pushing 64-byte packets from BL602 to WisBlock](https://lupyuen.github.io/images/wisblock-cartoon.png)
+![LoRa pushing 64-byte packets from BL602 to WisBlock *pant pant*](https://lupyuen.github.io/images/wisblock-cartoon.png)
 
-_LoRa pushing 64-byte packets from BL602 to WisBlock_
+_LoRa pushing 64-byte packets from BL602 to WisBlock *pant pant*_
 
 # Receive LoRa Packets
 
