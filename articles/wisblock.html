@@ -135,7 +135,7 @@
 <p>Here's another surprisingly thing about WisBlock... <strong>WisBlock Arduino is based on FreeRTOS!</strong></p>
 <p>(Technically: WisBlock is based on the <strong>Adafruit nRF52 Arduino Framework</strong>, which is based on FreeRTOS. <a href="https://github.com/adafruit/Adafruit_nRF52_Arduino">See this</a>)</p>
 <p>So Multitasking Firmware coded in FreeRTOS will run fine on WisBlock.</p>
-<p>Arduino programs will generally have two functions...</p>
+<p>Arduino programs will generally expose these two functions...</p>
 <ol>
 <li>
 <p><strong>Setup Function</strong> that's run when the micrcontroller starts up</p>
@@ -146,39 +146,54 @@
 </ol>
 <p>Let's see what happens inside the Setup and Loop Functions for our WisBlock LoRa Receiver.</p>
 <h2 id="setup-function" class="section-header"><a href="#setup-function">2.1 Setup Function</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp#L55-L106"><code>main.cpp</code></a></p>
-<pre><code class="language-c">static RadioEvents_t RadioEvents;
-
-static uint8_t RcvBuffer[64];
-
+<p>In the <strong>Setup Function</strong>, we start by initialising the LoRa Module and the Serial Port:  <a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp#L55-L106"><code>main.cpp</code></a></p>
+<pre><code class="language-c">//  Setup Function is called upon startup
 void setup() {
 
-    // Initialize LoRa chip.
+    //  Initialize the LoRa Module
     lora_rak4630_init();
 
-    // Initialize Serial for debug output
+    //  Initialize the Serial Port for debug output
     Serial.begin(115200);
     while (!Serial) { delay(10); }
 </code></pre>
-<p>TODO</p>
-<pre><code class="language-c">    // Initialize the Radio callbacks
-    RadioEvents.TxDone = NULL;
-    RadioEvents.RxDone = OnRxDone;
+<p>Next we set the <strong>Callback Functions</strong> that will be triggered by the LoRa Driver...</p>
+<pre><code class="language-c">    //  Set the LoRa Callback Functions
+    RadioEvents.TxDone    = NULL;
+    RadioEvents.RxDone    = OnRxDone;
     RadioEvents.TxTimeout = NULL;
     RadioEvents.RxTimeout = OnRxTimeout;
-    RadioEvents.RxError = OnRxError;
-    RadioEvents.CadDone = NULL;
+    RadioEvents.RxError   = OnRxError;
+    RadioEvents.CadDone   = NULL;
 </code></pre>
-<p>TODO</p>
-<pre><code class="language-c">    // Initialize the Radio
+<p>The Callback Functions are...</p>
+<ul>
+<li>
+<p><strong><code>OnRxDone</code></strong>: Called by the LoRa Driver when it receives a LoRa Packet</p>
+<p>(We shall print the contents of the LoRa Packet)</p>
+</li>
+<li>
+<p><strong><code>OnRxTimeout</code></strong>: Called by the LoRa Driver when it hasn't received a LoRa Packet within a timeout duration.</p>
+<p>(<code>RX_TIMEOUT_VALUE</code>, which is 3 seconds)</p>
+</li>
+<li>
+<p><strong><code>OnRxError</code></strong>: Called by the LoRa Driver when it has received a corrupted packet.</p>
+<p>(Probably due to interference or weak signal)</p>
+</li>
+</ul>
+<p><strong><code>RadioEvents</code></strong> has been defined earlier like so...</p>
+<pre><code class="language-c">//  Callback Functions for LoRa Events
+static RadioEvents_t RadioEvents;
+</code></pre>
+<p>We initialise the LoRa Transceiver and <strong>register the Callback Functions</strong> with the LoRa Driver...</p>
+<pre><code class="language-c">    //  Initialize the LoRa Transceiver
     Radio.Init(&amp;RadioEvents);
 </code></pre>
-<p>TODO</p>
-<pre><code class="language-c">    // Set the LoRa Frequency
+<p>We set the <strong>LoRa Frequency</strong> (434, 780, 868, 915 or 923 MHz) which depends on your region. (More about this in a while)</p>
+<pre><code class="language-c">    //  Set the LoRa Frequency
     Radio.SetChannel(RF_FREQUENCY);
 </code></pre>
-<p>TODO</p>
+<p>Then we set the <strong>LoRa Parameters</strong> for receiving the packets...</p>
 <pre><code class="language-c">    //  Configure the LoRa Transceiver for receiving messages
     Radio.SetRxConfig(
         MODEM_LORA, 
@@ -197,30 +212,37 @@ void setup() {
         true      //  Continuous receive mode
     );
 </code></pre>
-<p>TODO</p>
-<pre><code class="language-c">    // Start receiving LoRa packets
+<p>These must match the LoRa Parameters used in our LoRa Transmitter. (More about this later)</p>
+<p>Finally we ask the LoRa Driver to start receiving LoRa Packets...</p>
+<pre><code class="language-c">    //  Start receiving LoRa packets
     Radio.Rx(RX_TIMEOUT_VALUE);
 }
 </code></pre>
 <h2 id="loop-function" class="section-header"><a href="#loop-function">2.2 Loop Function</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp#L108-L116"><code>main.cpp</code></a></p>
-<pre><code class="language-c">void loop() {
-    // Handle Radio events
+<p>After calling the Setup Function, the Arduino Framework calls the <strong>Loop Function</strong> repeatedly to handle events.</p>
+<p>At the start of the Loop Function, we handle the Callback Functions triggered by the LoRa Transceiver: <a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp#L108-L116"><code>main.cpp</code></a></p>
+<pre><code class="language-c">//  Loop Function is called repeatedly to handle events
+void loop() {
+    //  Handle Radio events
     Radio.IrqProcess();
-
-    // We are on FreeRTOS, give other tasks a chance to run
+</code></pre>
+<p>Finally we yield control to FreeRTOS, to allow other tasks to run...</p>
+<pre><code class="language-c">    //  We are on FreeRTOS, give other tasks a chance to run
     delay(100);
     yield();
 }
 </code></pre>
-<p>TODO</p>
+<p>The code in this article is based on the WisBlock LoRa Receiver Example: <a href="https://github.com/RAKWireless/WisBlock/blob/master/examples/communications/LoRa/LoRaP2P/LoRaP2P_RX/LoRaP2P_RX.ino"><code>LoRaP2P_RX.ino</code></a></p>
+<p><a href="https://lupyuen.github.io/articles/lora#initialise-lora-transceiver">(And it bears a striking resemblence to the code for PineCone BL602 LoRa)</a></p>
 <h1 id="receive-lora-packets" class="section-header"><a href="#receive-lora-packets">3 Receive LoRa Packets</a></h1>
 <p>TODO</p>
 <h2 id="receive-callback-function" class="section-header"><a href="#receive-callback-function">3.1 Receive Callback Function</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp#L118-L139"><code>main.cpp</code></a></p>
-<pre><code class="language-c">//  Callback Function to be executed on Packet Received event
+<pre><code class="language-c">//  Buffer for received LoRa Packet
+static uint8_t RcvBuffer[64];
+
+//  Callback Function to be executed on Packet Received event
 void OnRxDone(uint8_t *payload, uint16_t size, int16_t rssi, int8_t snr) {
     //  We have received a valid packet. Show the timestamp in milliseconds.
     Serial.printf(&quot;OnRxDone: Timestamp=%d, &quot;, millis() / 1000);
