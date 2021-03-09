@@ -52,7 +52,29 @@ For the LPWAN Module, be sure to choose the right __LoRa Frequency__ for your re
 
 # Initialise LoRa Transceiver
 
-TODO
+_WisBlock is based on the powerful nRF52840 Microcontroller... Do we program it with FreeRTOS, Zephyr, Mynewt, ...?_
+
+Here's the surprisingly thing about WisBlock... __We program WisBlock with Arduino!__ (C++)
+
+The Arduino Drivers for Semtech SX1262 will work fine with WisBlock.
+
+(Most other Arduino Drivers will run fine too!)
+
+_But Arduino doesn't support Multitasking... No?_
+
+Here's another surprisingly thing about WisBlock... __WisBlock Arduino is based on FreeRTOS!__
+
+(Technically: WisBlock is based on the __Adafruit nRF52 Arduino Framework__, which is based on FreeRTOS. [See this](https://github.com/adafruit/Adafruit_nRF52_Arduino))
+
+So Multitasking Firmware coded in FreeRTOS will run fine on WisBlock.
+
+Arduino programs will generally have two functions...
+
+1.  __Setup Function__ that's run when the micrcontroller starts up
+
+1.  __Loop Function__ that's called repeatedly to handle events
+
+Let's see what happens inside the Setup and Loop Functions for our WisBlock LoRa Receiver.
 
 ## Setup Function
 
@@ -97,36 +119,36 @@ TODO
 TODO
 
 ```c
-    // Set Radio channel
+    // Set the LoRa Frequency
     Radio.SetChannel(RF_FREQUENCY);
 ```
 
 TODO
 
 ```c
-    // Set Radio RX configuration
+    //  Configure the LoRa Transceiver for receiving messages
     Radio.SetRxConfig(
         MODEM_LORA, 
         LORA_BANDWIDTH, 
         LORA_SPREADING_FACTOR,
         LORA_CODINGRATE, 
-        0, 
+        0,        //  AFC bandwidth: Unused with LoRa
         LORA_PREAMBLE_LENGTH,
         LORA_SYMBOL_TIMEOUT, 
         LORA_FIX_LENGTH_PAYLOAD_ON,
-        0, 
-        true, 
-        0, 
-        0, 
+        0,        //  Fixed payload length: N/A
+        true,     //  CRC enabled
+        0,        //  Frequency hopping disabled
+        0,        //  Hop period: N/A
         LORA_IQ_INVERSION_ON, 
-        true
+        true      //  Continuous receive mode
     );
 ```
 
 TODO
 
 ```c
-    // Start LoRa
+    // Start receiving LoRa packets
     Radio.Rx(RX_TIMEOUT_VALUE);
 }
 ```
