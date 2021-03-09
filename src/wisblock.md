@@ -38,7 +38,7 @@ Connect the following components according to the pic above...
 
 1.  __LoRa Antenna__: Connect the LoRa Antenna to the LPWAN Module.
 
-    (Use the Antenna Adapter Cable)
+    (That's the black rod. Use the Antenna Adapter Cable)
 
 1.  __Bluetooth LE Antenna__: Connect the Bluetooth LE Antenna to the LPWAN Module.
 
@@ -49,6 +49,10 @@ The above components are shipped in the [__WisBlock Connected Box__](https://sto
 For the LPWAN Module, be sure to choose the right __LoRa Frequency__ for your region...
 
 -  [__LoRa Frequencies by Country__](https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html)
+
+![RAKwireless WisBlock Connected Box](https://lupyuen.github.io/images/lora-wisblock.jpg)
+
+_RAKwireless WisBlock Connected Box_
 
 # Initialise LoRa Transceiver
 
@@ -416,9 +420,9 @@ TODO
 
 ![](https://lupyuen.github.io/images/wisblock-chart2.png)
 
-![RAKwireless WisBlock Connected Box](https://lupyuen.github.io/images/lora-wisblock.jpg)
+TODO
 
-_RAKwireless WisBlock Connected Box_
+![](https://lupyuen.github.io/images/wisblock-night.jpg)
 
 # What's Next
 
