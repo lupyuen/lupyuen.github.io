@@ -58,7 +58,7 @@ TODO
 
 TODO
 
-From [`main.cpp`](https://github.com/lupyuen/wisblock-lora-receiver/blob/ba2ec8e2268540fc3af1229517545ea9dc2b3719/src/main.cpp#L55-L106)
+From [`main.cpp`](https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp#L55-L106)
 
 ```c
 static RadioEvents_t RadioEvents;
@@ -135,7 +135,7 @@ TODO
 
 TODO
 
-From [`main.cpp`](https://github.com/lupyuen/wisblock-lora-receiver/blob/ba2ec8e2268540fc3af1229517545ea9dc2b3719/src/main.cpp#L108-L116)
+From [`main.cpp`](https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp#L108-L116)
 
 ```c
 void loop() {
@@ -158,7 +158,7 @@ TODO
 
 TODO
 
-From [`main.cpp`](https://github.com/lupyuen/wisblock-lora-receiver/blob/ba2ec8e2268540fc3af1229517545ea9dc2b3719/src/main.cpp#L118-L139)
+From [`main.cpp`](https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp#L118-L139)
 
 ```c
 //  Callback Function to be executed on Packet Received event
@@ -243,7 +243,7 @@ TODO
 
 TODO
 
-From [`main.cpp`](https://github.com/lupyuen/wisblock-lora-receiver/blob/ba2ec8e2268540fc3af1229517545ea9dc2b3719/src/main.cpp#L36-L49)
+From [`main.cpp`](https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp#L36-L49)
 
 ```c
 // Define LoRa parameters. To receive LoRa packets from BL602, sync the parameters with
