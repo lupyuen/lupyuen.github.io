@@ -68,7 +68,7 @@ Here's another surprisingly thing about WisBlock... __WisBlock Arduino is based 
 
 So Multitasking Firmware coded in FreeRTOS will run fine on WisBlock.
 
-Arduino programs will generally have two functions...
+Arduino programs will generally expose these two functions...
 
 1.  __Setup Function__ that's run when the micrcontroller starts up
 
@@ -78,52 +78,68 @@ Let's see what happens inside the Setup and Loop Functions for our WisBlock LoRa
 
 ## Setup Function
 
-TODO
-
-From [`main.cpp`](https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp#L55-L106)
+In the __Setup Function__, we start by initialising the LoRa Module and the Serial Port:  [`main.cpp`](https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp#L55-L106)
 
 ```c
-static RadioEvents_t RadioEvents;
-
-static uint8_t RcvBuffer[64];
-
+//  Setup Function is called upon startup
 void setup() {
 
-    // Initialize LoRa chip.
+    //  Initialize the LoRa Module
     lora_rak4630_init();
 
-    // Initialize Serial for debug output
+    //  Initialize the Serial Port for debug output
     Serial.begin(115200);
     while (!Serial) { delay(10); }
 ```
 
-TODO
+Next we set the __Callback Functions__ that will be triggered by the LoRa Driver...
 
 ```c
-    // Initialize the Radio callbacks
-    RadioEvents.TxDone = NULL;
-    RadioEvents.RxDone = OnRxDone;
+    //  Set the LoRa Callback Functions
+    RadioEvents.TxDone    = NULL;
+    RadioEvents.RxDone    = OnRxDone;
     RadioEvents.TxTimeout = NULL;
     RadioEvents.RxTimeout = OnRxTimeout;
-    RadioEvents.RxError = OnRxError;
-    RadioEvents.CadDone = NULL;
+    RadioEvents.RxError   = OnRxError;
+    RadioEvents.CadDone   = NULL;
 ```
 
-TODO
+The Callback Functions are...
+
+-   __`OnRxDone`__: Called by the LoRa Driver when it receives a LoRa Packet
+
+    (We shall print the contents of the LoRa Packet)
+
+-   __`OnRxTimeout`__: Called by the LoRa Driver when it hasn't received a LoRa Packet within a timeout duration.
+
+    (`RX_TIMEOUT_VALUE`, which is 3 seconds)
+
+-   __`OnRxError`__: Called by the LoRa Driver when it has received a corrupted packet.
+
+    (Probably due to interference or weak signal)
+
+__`RadioEvents`__ has been defined earlier like so...
 
 ```c
-    // Initialize the Radio
+//  Callback Functions for LoRa Events
+static RadioEvents_t RadioEvents;
+```
+
+We initialise the LoRa Transceiver and __register the Callback Functions__ with the LoRa Driver...
+
+```c
+    //  Initialize the LoRa Transceiver
     Radio.Init(&RadioEvents);
 ```
 
-TODO
+We set the __LoRa Frequency__ (434, 780, 868, 915 or 923 MHz) which depends on your region. (More about this in a while)
 
 ```c
-    // Set the LoRa Frequency
+    //  Set the LoRa Frequency
     Radio.SetChannel(RF_FREQUENCY);
 ```
 
-TODO
+Then we set the __LoRa Parameters__ for receiving the packets...
 
 ```c
     //  Configure the LoRa Transceiver for receiving messages
@@ -145,32 +161,41 @@ TODO
     );
 ```
 
-TODO
+These must match the LoRa Parameters used in our LoRa Transmitter. (More about this later)
+
+Finally we ask the LoRa Driver to start receiving LoRa Packets...
 
 ```c
-    // Start receiving LoRa packets
+    //  Start receiving LoRa packets
     Radio.Rx(RX_TIMEOUT_VALUE);
 }
 ```
 
 ## Loop Function
 
-TODO
+After calling the Setup Function, the Arduino Framework calls the __Loop Function__ repeatedly to handle events.
 
-From [`main.cpp`](https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp#L108-L116)
+At the start of the Loop Function, we handle the Callback Functions triggered by the LoRa Transceiver: [`main.cpp`](https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp#L108-L116)
 
 ```c
+//  Loop Function is called repeatedly to handle events
 void loop() {
-    // Handle Radio events
+    //  Handle Radio events
     Radio.IrqProcess();
+```
 
-    // We are on FreeRTOS, give other tasks a chance to run
+Finally we yield control to FreeRTOS, to allow other tasks to run...
+
+```c
+    //  We are on FreeRTOS, give other tasks a chance to run
     delay(100);
     yield();
 }
 ```
 
-TODO
+The code in this article is based on the WisBlock LoRa Receiver Example: [`LoRaP2P_RX.ino`](https://github.com/RAKWireless/WisBlock/blob/master/examples/communications/LoRa/LoRaP2P/LoRaP2P_RX/LoRaP2P_RX.ino)
+
+[(And it bears a striking resemblence to the code for PineCone BL602 LoRa)](https://lupyuen.github.io/articles/lora#initialise-lora-transceiver)
 
 # Receive LoRa Packets
 
@@ -183,6 +208,9 @@ TODO
 From [`main.cpp`](https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp#L118-L139)
 
 ```c
+//  Buffer for received LoRa Packet
+static uint8_t RcvBuffer[64];
+
 //  Callback Function to be executed on Packet Received event
 void OnRxDone(uint8_t *payload, uint16_t size, int16_t rssi, int8_t snr) {
     //  We have received a valid packet. Show the timestamp in milliseconds.
