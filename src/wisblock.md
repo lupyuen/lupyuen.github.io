@@ -171,6 +171,8 @@ Finally we ask the LoRa Driver to start receiving LoRa Packets...
 }
 ```
 
+The timeout value __`RX_TIMEOUT_VALUE`__ is set to __3 seconds__.
+
 ## Loop Function
 
 After calling the Setup Function, the Arduino Framework calls the __Loop Function__ repeatedly to handle events.
@@ -197,20 +199,21 @@ The code in this article is based on the WisBlock LoRa Receiver Example: [`LoRaP
 
 [(And it bears a striking resemblence to the code for PineCone BL602 LoRa)](https://lupyuen.github.io/articles/lora#initialise-lora-transceiver)
 
+![LoRa pushing 64-byte packets from BL602 to WisBlock](https://lupyuen.github.io/images/wisblock-cartoon.png)
+
+_LoRa pushing 64-byte packets from BL602 to WisBlock_
+
 # Receive LoRa Packets
 
-TODO
+We have prepped our WisBlock LoRa Transceiver to receive packets... Let's watch how we handle the received LoRa Packets.
 
 ## Receive Callback Function
 
-TODO
+The Callback Function __`OnRxDone`__ is triggered by the LoRa Driver whenever a __LoRa Packet has been received successfully__.
 
-From [`main.cpp`](https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp#L118-L139)
+First we show the __Timestamp (in seconds), Signal Strength and Signal To Noise Ratio:__ [`main.cpp`](https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp#L118-L139)
 
 ```c
-//  Buffer for received LoRa Packet
-static uint8_t RcvBuffer[64];
-
 //  Callback Function to be executed on Packet Received event
 void OnRxDone(uint8_t *payload, uint16_t size, int16_t rssi, int8_t snr) {
     //  We have received a valid packet. Show the timestamp in milliseconds.
@@ -220,14 +223,21 @@ void OnRxDone(uint8_t *payload, uint16_t size, int16_t rssi, int8_t snr) {
     Serial.printf("RssiValue=%d dBm, SnrValue=%d, Data=", rssi, snr);
 ```
 
-TODO
+We pause a short while and copy the received packet into our 64-byte buffer `RcvBuffer`...
 
 ```c
     delay(10);
     memcpy(RcvBuffer, payload, size);
 ```
 
-TODO
+__`RcvBuffer`__ is defined as a 64-byte buffer...
+
+```c
+    //  Buffer for received LoRa Packet
+    static uint8_t RcvBuffer[64];
+```
+
+Then we display the 64 bytes received...
 
 ```c
     //  Show the packet received
@@ -237,13 +247,21 @@ TODO
     Serial.println("");
 ```
 
-TODO
+Finally we ask the LoRa Driver to receive the next packet...
 
 ```c
     //  Receive the next packet
     Radio.Rx(RX_TIMEOUT_VALUE);
 }
 ```
+
+The timeout value __`RX_TIMEOUT_VALUE`__ is set to __3 seconds__.
+
+_Looks kinda crowded... We show everything in a single line?_
+
+Yes because we'll be copying and pasting the lines into a spreadsheet for analysis.
+
+This way it's easier to scrub the data.
 
 ## Timeout Callback Function
 
@@ -262,7 +280,7 @@ void OnRxTimeout(void) {
 TODO
 
 ```c
-    //  Receive the next packet
+    //  Receive the next packet. Timeout in 3 seconds.
     Radio.Rx(RX_TIMEOUT_VALUE);
 }
 ```
@@ -284,7 +302,7 @@ void OnRxError(void) {
 TODO
 
 ```c
-    //  Receive the next packet
+    //  Receive the next packet. Timeout in 3 seconds.
     Radio.Rx(RX_TIMEOUT_VALUE);
 }
 ```
