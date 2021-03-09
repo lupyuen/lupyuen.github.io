@@ -2,21 +2,43 @@
 
 📝 _12 Mar 2021_
 
-Suppose we've created a __LoRa Sensor__. (Maybe a sensor that monitors the soil moisture in our home garden)
+Suppose we've created a wireless __LoRa Sensor__.
+
+(Maybe a sensor that monitors the soil moisture in our home garden)
 
 Is there a simple way to check...
 
-1.  Whether our LoRa Sensor is __transmitting data correctly__...
+1.  Whether our LoRa Sensor is __transmitting packets correctly__...
 
 1.  And what's the __Wireless Range__ of our LoRa Sensor?
 
-TODO
+Today we shall install [__RAKwireless WisBlock__](https://docs.rakwireless.com/Product-Categories/WisBlock/Quickstart/) to check the packets transmitted by our LoRa Sensor.
+
+We'll be testing WisBlock with a LoRa Sensor based on the __PineCone BL602 RISC-V Board__. [(See this)](https://lupyuen.github.io/articles/lora)
+
+[(Many thanks to RAKwireless for sponsoring the WisBlock Connected Box!)](https://store.rakwireless.com/products/wisblock-connected-box)
 
 ![RAKwireless WisBlock LPWAN Module mounted on WisBlock Base Board](https://lupyuen.github.io/images/wisblock-title.jpg)
 
 _RAKwireless WisBlock LPWAN Module mounted on WisBlock Base Board_
 
 # Connect WisBlock
+
+Connect the following components according to the pic above...
+
+1.  __WisBlock LPWAN Module__: This is the __nRF52840 Microcontroller__ with __LoRa Transceiver__. [(More about this)](https://docs.rakwireless.com/Product-Categories/WisBlock/RAK4631/Datasheet/)
+
+    Mount the LPWAN Module onto the WisBlock Base Board.
+
+1.  __WisBlock Base Board__: This provides power to the LPWAN Module and exposes the USB and I/O ports. [(More about this)](https://docs.rakwireless.com/Product-Categories/WisBlock/RAK5005-O/Datasheet/)
+
+    The LPWAN Module should be mounted on the Base Board.
+
+1.  __LoRa Antenna__: Connect the LoRa Antenna to the LPWAN Module.
+
+1.  __Bluetooth LE Antenna__: Connect the Bluetooth LE Antenna to the LPWAN Module.
+
+[__CAUTION: Always connect the LoRa Antenna and Bluetooth LE Antenna before Powering On... Or the LoRa and Bluetooth Transceivers may get damaged! See this__](https://electronics.stackexchange.com/questions/335912/can-i-break-a-radio-tranceiving-device-by-operating-it-with-no-antenna-connected)
 
 TODO
 
@@ -53,8 +75,6 @@ TODO
 # Analyse the LoRa Coverage
 
 TODO
-
-[(Many thanks to RAKwireless for sponsoring the WisBlock Connected Box!)](https://store.rakwireless.com/products/wisblock-connected-box)
 
 ![RAKwireless WisBlock Connected Box](https://lupyuen.github.io/images/lora-wisblock.jpg)
 
