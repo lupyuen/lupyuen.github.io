@@ -127,7 +127,24 @@
 <li><a href="https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html"><strong>LoRa Frequencies by Country</strong></a></li>
 </ul>
 <h1 id="initialise-lora-transceiver" class="section-header"><a href="#initialise-lora-transceiver">2 Initialise LoRa Transceiver</a></h1>
-<p>TODO</p>
+<p><em>WisBlock is based on the powerful nRF52840 Microcontroller... Do we program it with FreeRTOS, Zephyr, Mynewt, ...?</em></p>
+<p>Here's the surprisingly thing about WisBlock... <strong>We program WisBlock with Arduino!</strong> (C++)</p>
+<p>The Arduino Drivers for Semtech SX1262 will work fine with WisBlock.</p>
+<p>(Most other Arduino Drivers will run fine too!)</p>
+<p><em>But Arduino doesn't support Multitasking... No?</em></p>
+<p>Here's another surprisingly thing about WisBlock... <strong>WisBlock Arduino is based on FreeRTOS!</strong></p>
+<p>(Technically: WisBlock is based on the <strong>Adafruit nRF52 Arduino Framework</strong>, which is based on FreeRTOS. <a href="https://github.com/adafruit/Adafruit_nRF52_Arduino">See this</a>)</p>
+<p>So Multitasking Firmware coded in FreeRTOS will run fine on WisBlock.</p>
+<p>Arduino programs will generally have two functions...</p>
+<ol>
+<li>
+<p><strong>Setup Function</strong> that's run when the micrcontroller starts up</p>
+</li>
+<li>
+<p><strong>Loop Function</strong> that's called repeatedly to handle events</p>
+</li>
+</ol>
+<p>Let's see what happens inside the Setup and Loop Functions for our WisBlock LoRa Receiver.</p>
 <h2 id="setup-function" class="section-header"><a href="#setup-function">2.1 Setup Function</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp#L55-L106"><code>main.cpp</code></a></p>
@@ -158,30 +175,30 @@ void setup() {
     Radio.Init(&amp;RadioEvents);
 </code></pre>
 <p>TODO</p>
-<pre><code class="language-c">    // Set Radio channel
+<pre><code class="language-c">    // Set the LoRa Frequency
     Radio.SetChannel(RF_FREQUENCY);
 </code></pre>
 <p>TODO</p>
-<pre><code class="language-c">    // Set Radio RX configuration
+<pre><code class="language-c">    //  Configure the LoRa Transceiver for receiving messages
     Radio.SetRxConfig(
         MODEM_LORA, 
         LORA_BANDWIDTH, 
         LORA_SPREADING_FACTOR,
         LORA_CODINGRATE, 
-        0, 
+        0,        //  AFC bandwidth: Unused with LoRa
         LORA_PREAMBLE_LENGTH,
         LORA_SYMBOL_TIMEOUT, 
         LORA_FIX_LENGTH_PAYLOAD_ON,
-        0, 
-        true, 
-        0, 
-        0, 
+        0,        //  Fixed payload length: N/A
+        true,     //  CRC enabled
+        0,        //  Frequency hopping disabled
+        0,        //  Hop period: N/A
         LORA_IQ_INVERSION_ON, 
-        true
+        true      //  Continuous receive mode
     );
 </code></pre>
 <p>TODO</p>
-<pre><code class="language-c">    // Start LoRa
+<pre><code class="language-c">    // Start receiving LoRa packets
     Radio.Rx(RX_TIMEOUT_VALUE);
 }
 </code></pre>
