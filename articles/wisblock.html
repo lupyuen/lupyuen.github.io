@@ -96,22 +96,28 @@
 <p>Connect the following components according to the pic above...</p>
 <ol>
 <li>
-<p><strong>WisBlock LPWAN Module</strong>: This is the <strong>nRF52840 Microcontroller</strong> with <strong>LoRa Transceiver</strong>. <a href="https://docs.rakwireless.com/Product-Categories/WisBlock/RAK4631/Datasheet/">(More about this)</a></p>
+<p><strong>WisBlock LPWAN Module</strong>: This is the <strong>Nordic nRF52840 Microcontroller</strong> with <strong>Semtech SX1262 LoRa Transceiver</strong>. <a href="https://docs.rakwireless.com/Product-Categories/WisBlock/RAK4631/Overview/">(More about this)</a></p>
 <p>Mount the LPWAN Module onto the WisBlock Base Board.</p>
+<p>(The LPWAN Module is already mounted when get the WisBlock Connected Box)</p>
 </li>
 <li>
-<p><strong>WisBlock Base Board</strong>: This provides power to the LPWAN Module and exposes the USB and I/O ports. <a href="https://docs.rakwireless.com/Product-Categories/WisBlock/RAK5005-O/Datasheet/">(More about this)</a></p>
+<p><strong>WisBlock Base Board</strong>: This provides power to the LPWAN Module and exposes the USB and I/O ports. <a href="https://docs.rakwireless.com/Product-Categories/WisBlock/RAK5005-O/Overview/">(More about this)</a></p>
 <p>The LPWAN Module should be mounted on the Base Board.</p>
 </li>
 <li>
 <p><strong>LoRa Antenna</strong>: Connect the LoRa Antenna to the LPWAN Module.</p>
+<p>(Use the Antenna Adapter Cable)</p>
 </li>
 <li>
 <p><strong>Bluetooth LE Antenna</strong>: Connect the Bluetooth LE Antenna to the LPWAN Module.</p>
 </li>
 </ol>
 <p><a href="https://electronics.stackexchange.com/questions/335912/can-i-break-a-radio-tranceiving-device-by-operating-it-with-no-antenna-connected"><strong>CAUTION: Always connect the LoRa Antenna and Bluetooth LE Antenna before Powering On... Or the LoRa and Bluetooth Transceivers may get damaged! See this</strong></a></p>
-<p>TODO</p>
+<p>The above components are shipped in the <a href="https://store.rakwireless.com/products/wisblock-connected-box"><strong>WisBlock Connected Box</strong></a>. (Which includes many more goodies!)</p>
+<p>For the LPWAN Module, be sure to choose the right <strong>LoRa Frequency</strong> for your region...</p>
+<ul>
+<li><a href="https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html"><strong>LoRa Frequencies by Country</strong></a></li>
+</ul>
 <h1 id="initialise-lora-transceiver" class="section-header"><a href="#initialise-lora-transceiver">2 Initialise LoRa Transceiver</a></h1>
 <p>TODO</p>
 <h1 id="receive-lora-packet" class="section-header"><a href="#receive-lora-packet">3 Receive LoRa Packet</a></h1>
