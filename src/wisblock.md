@@ -366,11 +366,11 @@ Reconnect USB and flash again
 
 TODO
 
-![](https://lupyuen.github.io/images/wisblock-log.png
+![](https://lupyuen.github.io/images/wisblock-log.png)
 
 TODO
 
-![](https://lupyuen.github.io/images/wisblock-receiver.jpg
+![](https://lupyuen.github.io/images/wisblock-receiver.jpg)
 
 # LoRa Field Test
 
