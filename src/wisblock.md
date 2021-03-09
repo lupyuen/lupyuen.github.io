@@ -26,21 +26,29 @@ _RAKwireless WisBlock LPWAN Module mounted on WisBlock Base Board_
 
 Connect the following components according to the pic above...
 
-1.  __WisBlock LPWAN Module__: This is the __nRF52840 Microcontroller__ with __LoRa Transceiver__. [(More about this)](https://docs.rakwireless.com/Product-Categories/WisBlock/RAK4631/Datasheet/)
+1.  __WisBlock LPWAN Module__: This is the __Nordic nRF52840 Microcontroller__ with __Semtech SX1262 LoRa Transceiver__. [(More about this)](https://docs.rakwireless.com/Product-Categories/WisBlock/RAK4631/Overview/)
 
     Mount the LPWAN Module onto the WisBlock Base Board.
 
-1.  __WisBlock Base Board__: This provides power to the LPWAN Module and exposes the USB and I/O ports. [(More about this)](https://docs.rakwireless.com/Product-Categories/WisBlock/RAK5005-O/Datasheet/)
+    (The LPWAN Module is already mounted when get the WisBlock Connected Box)
+
+1.  __WisBlock Base Board__: This provides power to the LPWAN Module and exposes the USB and I/O ports. [(More about this)](https://docs.rakwireless.com/Product-Categories/WisBlock/RAK5005-O/Overview/)
 
     The LPWAN Module should be mounted on the Base Board.
 
 1.  __LoRa Antenna__: Connect the LoRa Antenna to the LPWAN Module.
 
+    (Use the Antenna Adapter Cable)
+
 1.  __Bluetooth LE Antenna__: Connect the Bluetooth LE Antenna to the LPWAN Module.
 
 [__CAUTION: Always connect the LoRa Antenna and Bluetooth LE Antenna before Powering On... Or the LoRa and Bluetooth Transceivers may get damaged! See this__](https://electronics.stackexchange.com/questions/335912/can-i-break-a-radio-tranceiving-device-by-operating-it-with-no-antenna-connected)
 
-TODO
+The above components are shipped in the [__WisBlock Connected Box__](https://store.rakwireless.com/products/wisblock-connected-box). (Which includes many more goodies!)
+
+For the LPWAN Module, be sure to choose the right __LoRa Frequency__ for your region...
+
+-  [__LoRa Frequencies by Country__](https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html)
 
 # Initialise LoRa Transceiver
 
