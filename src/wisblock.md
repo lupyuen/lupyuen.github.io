@@ -431,17 +431,25 @@ Let's run the LoRa Firmware for WisBlock and receive some LoRa Packets!
 
 ## Flash the firmware
 
+1.  Connect WisBlock to our computer's USB port
+
 1.  __Flash the firmware__ to WisBlock by clicking the __`Upload`__ icon...
 
     ![Upload Icon](https://lupyuen.github.io/images/wisblock-bar2.png)
 
-    ![](https://lupyuen.github.io/images/wisblock-flash.png)
+1.  We should see this...
 
-    TODO
+    ![Firmware flashed successfully](https://lupyuen.github.io/images/wisblock-flash.png)
 
-    Reconnect USB and flash again
+1.  If we see the message...
 
-    ![](https://lupyuen.github.io/images/wisblock-flash2.png)
+    ```text
+    Timed out waiting for acknowledgement from device
+    ```
+
+    Then disconnect WisBlock from the USB port, reconnect and flash again.
+
+    ![Firmware flashing failed](https://lupyuen.github.io/images/wisblock-flash2.png)
 
 ## Run the firmware
 
@@ -449,29 +457,44 @@ Let's run the LoRa Firmware for WisBlock and receive some LoRa Packets!
 
     ![Monitor Icon](https://lupyuen.github.io/images/wisblock-bar3.png)
 
+1.  We should see this...
+
     ```text
     > Executing task: platformio device monitor <
-
-    --- Available filters and text transformations: colorize, debug, default, direct, hexlify, log2file, nocontrol, printable, send_on_enter, time
-    --- More details at http://bit.ly/pio-monitor-filters
     --- Miniterm on /dev/cu.usbmodem14201  9600,8,N,1 ---
     --- Quit: Ctrl+C | Menu: Ctrl+T | Help: Ctrl+T followed by Ctrl+H ---
     Starting Radio.Rx
     ```
 
-    TODO
+1.  Power on our LoRa Transmitter (PineCone BL602) and __start transmitting LoRa Packets.__
+
+1.  In the WisBlock Log we will see the LoRa Packet received...
 
     ```text
     OnRxDone: Timestamp=23, RssiValue=-48 dBm, SnrValue=13, Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 
     ```
 
-    TODO
+    -   __`Timestamp`__ is the __timestamp in seconds__ (which we'll use for analysis in a while)
+
+        (We don't have a real time clock so that's the best timestamp we can get)
+
+    -   __`RssiValue`__ is the __Signal Strength__ of the received LoRa Packet (in dBm, decibel-milliwatts).
+
+        This number roughly varies from -50 (very strong signal) to -110 (very weak signal).
+
+        (Why is the number negative? Because it's an exponent. [See this](https://en.wikipedia.org/wiki/DBm))
+
+    -   __`SnrValue`__ is the __Signal To Noise Ratio__.
+
+        This number roughly varies from -9 (very noisy signal) to 13 (very clear signal).
+
+1.  TODO
 
     ```text
     OnRxDone: Timestamp=196, RssiValue=-63 dBm, SnrValue=13, Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 
     ```
 
-    TODO
+1.  TODO
 
     ```text
     OnRxError: Timestamp=619
