@@ -203,9 +203,9 @@ The code in this article is based on the WisBlock LoRa Receiver Example: [`LoRaP
 
 [(And it bears a striking resemblance to the code for PineCone BL602 LoRa)](https://lupyuen.github.io/articles/lora#initialise-lora-transceiver)
 
-![LoRa pushing 64-byte packets from BL602 to WisBlock *pant pant*](https://lupyuen.github.io/images/wisblock-cartoon.png)
+![LoRa pushing 64-byte packets from BL602 to WisBlock](https://lupyuen.github.io/images/wisblock-cartoon.png)
 
-_LoRa pushing 64-byte packets from BL602 to WisBlock *pant pant*_
+_LoRa pushing 64-byte packets from BL602 to WisBlock_
 
 # Receive LoRa Packets
 
@@ -317,11 +317,15 @@ And we ask the LoRa Driver to receive the next packet...
 }
 ```
 
+![LoRa Parameters in WisBlock LoRa Receiver must match those in the LoRa Transmitter (PineCone BL602)](https://lupyuen.github.io/images/wisblock-parameters2.png)
+
+_LoRa Parameters in WisBlock LoRa Receiver must match those in the LoRa Transmitter (PineCone BL602)_
+
 # LoRa Configuration
 
-TODO
+Our WisBlock LoRa Receiver must be configured with the same settings as the LoRa Transmitter... Or we won't receive any LoRa Packets!
 
-From [`main.cpp`](https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp#L36-L49)
+Here's the __LoRa Configuration__ for our WisBlock LoRa Receiver: [`main.cpp`](https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp#L36-L49)
 
 ```c
 // Define LoRa parameters. To receive LoRa packets from BL602, sync the parameters with
@@ -339,6 +343,25 @@ From [`main.cpp`](https://github.com/lupyuen/wisblock-lora-receiver/blob/main/sr
 #define RX_TIMEOUT_VALUE      3000
 #define TX_TIMEOUT_VALUE      3000
 ```
+
+For __`RF_FREQUENCY`__, be sure to specify the right __LoRa Frequency__ for your region: 434, 780, 868, 915 or 923 MHz...
+
+-  [__LoRa Frequencies by Country__](https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html)
+
+Check also the __LoRa Packet Size__. Our WisBlock Receiver handles LoRa Packets that are 64 bytes or smaller...
+
+```c
+//  Buffer for received LoRa Packet
+static uint8_t RcvBuffer[64];
+```
+
+Fortunately the LoRa Configuration matches perfectly across our WisBlock Receiver and PineCone BL602 Transmitter... So nothing needs to be changed! (See pic above)
+
+(Except for the LoRa Frequency)
+
+![PineCone BL602 sending LoRa packets to WisBlock](https://lupyuen.github.io/images/wisblock-send.png)
+
+_PineCone BL602 (left) sending LoRa packets to WisBlock (right)_
 
 # Build and Run the LoRa Firmware
 
