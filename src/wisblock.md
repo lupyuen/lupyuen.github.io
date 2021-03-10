@@ -524,37 +524,53 @@ _WisBlock LoRa Receiver right by the coconut trees_
 
 # LoRa Field Test
 
+Here comes the #1 Question when deciding where to install our LoRa Sensor and LoRa Receiver...
+
 _What's the Maximum Distance between the LoRa Transmitter and LoRa Receiver? 100 metres? 200 metres? Or more?!_
 
 LoRa was designed to send packets over great distances with little power. Let's find out how far!
 
-TODO
+1.  We'll put our __WisBlock LoRa Receiver__ on the balcony, right by the coconut trees. (See pic above)
 
-Leave it temporarily inside the padded WisBlock Connected Box, antenna sticking out and upwards.
+    (It's OK to run WisBlock temporarily inside the padded WisBlock Connected Box, antenna sticking out and upwards)
 
-![](https://lupyuen.github.io/images/wisblock-kit.jpg)
+1.  Prepare the __LoRa Transmitter Kit__. We'll use...
 
-TODO
+    -   __PineCone BL602 RISC-V Board__, running the __LoRa Ping Firmware__ (See the appendix)
 
-![](https://lupyuen.github.io/images/wisblock-backpack.jpg)
+    -   __Semtech SX1276 or Hope RF96__ LoRa Transceiver
 
-TODO
+    -   __Battery__ (Portable Charger)
 
-![](https://lupyuen.github.io/images/wisblock-field.jpg)
+    -   __Permeable Paper Box__ (So that LoRa Packets will penetrate the box easily)
 
-This is a Geocoded, Timestamped photo.
+    -   __Pinebook Pro__ (In case we need to patch the PineCone Firmware)
 
-TODO
+    ![LoRa Transmitter Kit with PineCone BL602](https://lupyuen.github.io/images/wisblock-kit.jpg)
 
-![](https://lupyuen.github.io/images/wisblock-chicken.jpg)
+1.  Pack the LoRa Transmitter Kit into a backpack, __antenna pointing up__
 
-Geocoded, Timestamped chickens.
+    ![LoRa Transmitter Kit in a backpack](https://lupyuen.github.io/images/wisblock-backpack.jpg)
 
-TODO
+1.  __Go hiking__ with the backpack!
 
-![](https://lupyuen.github.io/images/wisblock-chickenrice.jpg)
+    TODO
 
-Geocoded, Timestamped chicken rice.
+    ![Geocoded, Timestamped photo](https://lupyuen.github.io/images/wisblock-field.jpg)
+
+1.  This is a Geocoded, Timestamped photo.
+
+    TODO
+
+    ![Geocoded, Timestamped chickens](https://lupyuen.github.io/images/wisblock-chicken.jpg)
+
+1.  Geocoded, Timestamped chickens.
+
+    TODO
+
+![Geocoded, Timestamped chicken rice](https://lupyuen.github.io/images/wisblock-chickenrice.jpg)
+
+_Geocoded, Timestamped chicken rice_
 
 # Analyse the LoRa Coverage
 
