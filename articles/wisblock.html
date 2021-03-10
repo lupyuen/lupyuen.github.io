@@ -75,15 +75,16 @@
 <li><a href="#error-callback-function">3.3 Error Callback Function</a><ul></ul></li></ul></li>
 <li><a href="#lora-configuration">4 LoRa Configuration</a><ul></ul></li>
 <li><a href="#build-and-run-the-lora-firmware">5 Build and Run the LoRa Firmware</a><ul>
-<li><a href="#build-the-firmware">5.1 Build the firmware</a><ul></ul></li>
-<li><a href="#flash-the-firmware">5.2 Flash the firmware</a><ul></ul></li>
-<li><a href="#run-the-firmware">5.3 Run the firmware</a><ul></ul></li></ul></li>
-<li><a href="#lora-field-test">6 LoRa Field Test</a><ul>
-<li><a href="#streaming-the-packets">6.1 Streaming the packets</a><ul></ul></li></ul></li>
+<li><a href="#install-vscode-and-platformio">5.1 Install VSCode and PlatformIO</a><ul></ul></li>
+<li><a href="#build-the-firmware">5.2 Build the firmware</a><ul></ul></li>
+<li><a href="#flash-the-firmware">5.3 Flash the firmware</a><ul></ul></li>
+<li><a href="#run-the-firmware">5.4 Run the firmware</a><ul></ul></li></ul></li>
+<li><a href="#lora-field-test">6 LoRa Field Test</a><ul></ul></li>
 <li><a href="#analyse-the-lora-coverage">7 Analyse the LoRa Coverage</a><ul></ul></li>
 <li><a href="#whats-next">8 What's Next</a><ul></ul></li>
 <li><a href="#notes">9 Notes</a><ul></ul></li>
-<li><a href="#appendix-lora-ping-firmware-for-bl602">10 Appendix: LoRa Ping Firmware for BL602</a><ul></ul></li></ul></nav><p>📝 <em>12 Mar 2021</em></p>
+<li><a href="#appendix-lora-ping-firmware-for-bl602">10 Appendix: LoRa Ping Firmware for BL602</a><ul></ul></li>
+<li><a href="#appendix-stream-lora-packets-to-youtube">11 Appendix: Stream LoRa Packets to YouTube</a><ul></ul></li></ul></nav><p>📝 <em>12 Mar 2021</em></p>
 <p>Suppose we've created a wireless <strong>LoRa Sensor</strong>.</p>
 <p>(Maybe a sensor that monitors the soil moisture in our home garden)</p>
 <p>Is there a simple way to check...</p>
@@ -118,6 +119,7 @@
 </li>
 <li>
 <p><strong>Bluetooth LE Antenna</strong>: Connect the Bluetooth LE Antenna to the LPWAN Module.</p>
+<p>(That's the stringy flappy antenna)</p>
 </li>
 </ol>
 <p><a href="https://electronics.stackexchange.com/questions/335912/can-i-break-a-radio-tranceiving-device-by-operating-it-with-no-antenna-connected"><strong>CAUTION: Always connect the LoRa Antenna and Bluetooth LE Antenna before Powering On... Or the LoRa and Bluetooth Transceivers may get damaged! See this</strong></a></p>
@@ -340,22 +342,60 @@ static uint8_t RcvBuffer[64];
 <p><img src="https://lupyuen.github.io/images/wisblock-send.png" alt="PineCone BL602 sending LoRa packets to WisBlock" /></p>
 <p><em>PineCone BL602 (left) sending LoRa packets to WisBlock (right)</em></p>
 <h1 id="build-and-run-the-lora-firmware" class="section-header"><a href="#build-and-run-the-lora-firmware">5 Build and Run the LoRa Firmware</a></h1>
-<p>TODO</p>
-<p>Let's run the LoRa Firmware for WisBlock.</p>
+<p>Let's run the LoRa Firmware for WisBlock and receive some LoRa Packets!</p>
+<h2 id="install-vscode-and-platformio" class="section-header"><a href="#install-vscode-and-platformio">5.1 Install VSCode and PlatformIO</a></h2>
+<ol>
+<li>
+<p>Follow the instructions in this excellent article to install <strong>VSCode and PlatformIO</strong>...</p>
+<ul>
+<li><a href="https://docs.rakwireless.com/Knowledge-Hub/Learn/Board-Support-Package-Installation-in-PlatformIO/"><strong>Installation of Board Support Package in PlatformIO</strong></a></li>
+</ul>
+</li>
+<li>
+<p>Remember to install the <strong>LoRa Library <code>SX126x-Arduino</code></strong> according to the steps above.</p>
+<p>(We may skip the LoRaWAN OTAA Example)</p>
+</li>
+<li>
 <p>Find out which <strong>LoRa Frequency</strong> we should use for your region...</p>
 <ul>
 <li><a href="https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html"><strong>LoRa Frequencies by Country</strong></a></li>
 </ul>
-<h2 id="build-the-firmware" class="section-header"><a href="#build-the-firmware">5.1 Build the firmware</a></h2>
-<p>TODO</p>
+<p>We'll set the LoRa Frequency in a while.</p>
+</li>
+</ol>
+<h2 id="build-the-firmware" class="section-header"><a href="#build-the-firmware">5.2 Build the firmware</a></h2>
+<ol>
+<li>
+<p>Enter this at the command line...</p>
+<pre><code class="language-bash"># Download the wisblock-lora-receiver source code
+git clone --recursive https://github.com/lupyuen/wisblock-lora-receiver
+</code></pre>
+</li>
+<li>
+<p>In VSCode, click <strong><code>File -&gt; Open Folder</code></strong></p>
+<p>Select the folder that we have just downloaded: <strong><code>wisblock-lora-receiver</code></strong></p>
+</li>
+<li>
+<p>Edit the file <a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp"><strong><code>src/main.cpp</code></strong></a></p>
+<p>Look for this code...</p>
+<pre><code class="language-c">// Define LoRa parameters.
+// TODO: Change RF_FREQUENCY for your region
+#define RF_FREQUENCY          923000000	// Hz
+</code></pre>
+<p>Change <strong><code>923</code></strong> to the LoRa Frequency for your region: <code>434</code>, <code>780</code>, <code>868</code>, <code>915</code> or <code>923</code></p>
+</li>
+<li>
+<p>Build the firmware by clicking the <strong><code>Build</code></strong> icon at the lower left...</p>
 <p><img src="https://lupyuen.github.io/images/wisblock-bar.png" alt="" /></p>
-<h2 id="flash-the-firmware" class="section-header"><a href="#flash-the-firmware">5.2 Flash the firmware</a></h2>
+</li>
+</ol>
+<h2 id="flash-the-firmware" class="section-header"><a href="#flash-the-firmware">5.3 Flash the firmware</a></h2>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wisblock-flash.png" alt="" /></p>
 <p>TODO</p>
 <p>Reconnect USB and flash again</p>
 <p><img src="https://lupyuen.github.io/images/wisblock-flash2.png" alt="" /></p>
-<h2 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">5.3 Run the firmware</a></h2>
+<h2 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">5.4 Run the firmware</a></h2>
 <p>TODO</p>
 <pre><code class="language-text">&gt; Executing task: platformio device monitor &lt;
 
@@ -369,7 +409,8 @@ OnRxDone: Timestamp=196, RssiValue=-63 dBm, SnrValue=13, Data=50 49 4E 47 00 01 
 OnRxError: Timestamp=619
 </code></pre>
 <p>TODO</p>
-<p><a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/main/logs/2105-2156.log">Check out the log of received packets</a></p>
+<p><a href="https://youtu.be/7nZR_LhPL-A?t=1040"><strong>Watch the video on YouTube</strong></a></p>
+<p><a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/main/logs/2105-2156.log"><strong>Log of received LoRa Packets</strong></a></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wisblock-log.png" alt="" /></p>
 <p>TODO</p>
@@ -388,11 +429,6 @@ OnRxError: Timestamp=619
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wisblock-chickenrice.jpg" alt="" /></p>
 <p>Geocoded, Timestamped chicken rice.</p>
-<h2 id="streaming-the-packets" class="section-header"><a href="#streaming-the-packets">6.1 Streaming the packets</a></h2>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/wisblock-stream.png" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/wisblock-stream2.png" alt="" /></p>
 <h1 id="analyse-the-lora-coverage" class="section-header"><a href="#analyse-the-lora-coverage">7 Analyse the LoRa Coverage</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wisblock-chart.png" alt="" /></p>
@@ -446,6 +482,15 @@ OnRxError: Timestamp=619
 <p><img src="https://lupyuen.github.io/images/wisblock-parameters2.png" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wisblock-ping.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wisblock-send.png" alt="PineCone BL602 sending LoRa packets to WisBlock" /></p>
+<p><em>PineCone BL602 (left) sending LoRa packets to WisBlock (right)</em></p>
+<h1 id="appendix-stream-lora-packets-to-youtube" class="section-header"><a href="#appendix-stream-lora-packets-to-youtube">11 Appendix: Stream LoRa Packets to YouTube</a></h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wisblock-stream.png" alt="" /></p>
+<p>TODO</p>
+<p><a href="https://youtu.be/7nZR_LhPL-A?t=1040"><strong>Watch the video on YouTube</strong></a></p>
+<p><img src="https://lupyuen.github.io/images/wisblock-stream2.png" alt="" /></p>
 <p>TODO</p>
 
     
