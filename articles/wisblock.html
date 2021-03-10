@@ -407,12 +407,22 @@ Flash: [=         ]   7.3% (used 59800 bytes from 815104 bytes)
 <h2 id="flash-the-firmware" class="section-header"><a href="#flash-the-firmware">5.3 Flash the firmware</a></h2>
 <ol>
 <li>
+<p>Connect WisBlock to our computer's USB port</p>
+</li>
+<li>
 <p><strong>Flash the firmware</strong> to WisBlock by clicking the <strong><code>Upload</code></strong> icon...</p>
 <p><img src="https://lupyuen.github.io/images/wisblock-bar2.png" alt="Upload Icon" /></p>
-<p><img src="https://lupyuen.github.io/images/wisblock-flash.png" alt="" /></p>
-<p>TODO</p>
-<p>Reconnect USB and flash again</p>
-<p><img src="https://lupyuen.github.io/images/wisblock-flash2.png" alt="" /></p>
+</li>
+<li>
+<p>We should see this...</p>
+<p><img src="https://lupyuen.github.io/images/wisblock-flash.png" alt="Firmware flashed successfully" /></p>
+</li>
+<li>
+<p>If we see the message...</p>
+<pre><code class="language-text">Timed out waiting for acknowledgement from device
+</code></pre>
+<p>Then disconnect WisBlock from the USB port, reconnect and flash again.</p>
+<p><img src="https://lupyuen.github.io/images/wisblock-flash2.png" alt="Firmware flashing failed" /></p>
 </li>
 </ol>
 <h2 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">5.4 Run the firmware</a></h2>
@@ -420,20 +430,44 @@ Flash: [=         ]   7.3% (used 59800 bytes from 815104 bytes)
 <li>
 <p><strong>Run the firmware</strong> by clicking the <strong><code>Monitor</code></strong> icon...</p>
 <p><img src="https://lupyuen.github.io/images/wisblock-bar3.png" alt="Monitor Icon" /></p>
+</li>
+<li>
+<p>We should see this...</p>
 <pre><code class="language-text">&gt; Executing task: platformio device monitor &lt;
-
---- Available filters and text transformations: colorize, debug, default, direct, hexlify, log2file, nocontrol, printable, send_on_enter, time
---- More details at http://bit.ly/pio-monitor-filters
 --- Miniterm on /dev/cu.usbmodem14201  9600,8,N,1 ---
 --- Quit: Ctrl+C | Menu: Ctrl+T | Help: Ctrl+T followed by Ctrl+H ---
 Starting Radio.Rx
 </code></pre>
-<p>TODO</p>
+</li>
+<li>
+<p>Power on our LoRa Transmitter (PineCone BL602) and <strong>start transmitting LoRa Packets.</strong></p>
+</li>
+<li>
+<p>In the WisBlock Log we will see the LoRa Packet received...</p>
 <pre><code class="language-text">OnRxDone: Timestamp=23, RssiValue=-48 dBm, SnrValue=13, Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 
 </code></pre>
+<ul>
+<li>
+<p><strong><code>Timestamp</code></strong> is the <strong>timestamp in seconds</strong> (which we'll use for analysis in a while)</p>
+<p>(We don't have a real time clock so that's the best timestamp we can get)</p>
+</li>
+<li>
+<p><strong><code>RssiValue</code></strong> is the <strong>Signal Strength</strong> of the received LoRa Packet (in dBm, decibel-milliwatts).</p>
+<p>This number roughly varies from -50 (very strong signal) to -110 (very weak signal).</p>
+<p>(Why is the number negative? Because it's an exponent. <a href="https://en.wikipedia.org/wiki/DBm">See this</a>)</p>
+</li>
+<li>
+<p><strong><code>SnrValue</code></strong> is the <strong>Signal To Noise Ratio</strong>.</p>
+<p>This number roughly varies from -9 (very noisy signal) to 13 (very clear signal).</p>
+</li>
+</ul>
+</li>
+<li>
 <p>TODO</p>
 <pre><code class="language-text">OnRxDone: Timestamp=196, RssiValue=-63 dBm, SnrValue=13, Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 
 </code></pre>
+</li>
+<li>
 <p>TODO</p>
 <pre><code class="language-text">OnRxError: Timestamp=619
 </code></pre>
