@@ -638,15 +638,33 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: LoRa Ping Firmware for BL602
 
-TODO
+For the LoRa Field Test we installed the [__BL602 LoRa Ping Firmware `sdk_app_loraping`__](https://github.com/lupyuen/bl_iot_sdk/tree/loraping/customer_app/sdk_app_loraping)
 
-![](https://lupyuen.github.io/images/wisblock-parameters2.png)
+This is a modified version of [`sdk_app_lora`](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_lora) that does the following...
 
-TODO
+1.  At startup, we initialise the LoRa Transceiver
 
-![](https://lupyuen.github.io/images/wisblock-ping.png)
+1.  Then we transmit a 64-byte `PING` LoRa Message every 10 seconds
 
-TODO
+1.  We flash the Blue LED on PineCone every 10 seconds
+
+    [__Watch the demo video on YouTube__](https://youtu.be/wCEx-nvDiuQ)
+
+The changes are made in the function __`cli_init`__ in [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/loraping/customer_app/sdk_app_loraping/sdk_app_loraping/demo.c#L228-L275)
+
+![Modified cli_init function](https://lupyuen.github.io/images/wisblock-ping.png)
+
+_Modified cli_init function_
+
+Remember to check that the BL602 LoRa Parameters in LoRa Ping match those in the WisBlock Receiver.
+
+From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/loraping/customer_app/sdk_app_loraping/sdk_app_loraping/demo.c#L44-L80)
+
+![BL602 LoRa Parameters](https://lupyuen.github.io/images/wisblock-parameters2.png)
+
+_BL602 LoRa Parameters_
+
+Here's how it looks when BL602 LoRa Ping sends LoRa Packets to WisBlock...
 
 ![PineCone BL602 sending LoRa packets to WisBlock](https://lupyuen.github.io/images/wisblock-send.png)
 
@@ -656,11 +674,17 @@ _PineCone BL602 (left) sending LoRa packets to WisBlock (right)_
 
 TODO
 
+_As we're walking, how far shall we walk?_
+
 ![](https://lupyuen.github.io/images/wisblock-stream.png)
+
+[__Watch the video on YouTube__](https://youtu.be/7nZR_LhPL-A?t=1040)
 
 TODO
 
-[__Watch the video on YouTube__](https://youtu.be/7nZR_LhPL-A?t=1040)
+Use [__OBS Studio__](https://obsproject.com/)
+
+TODO
 
 ![](https://lupyuen.github.io/images/wisblock-stream2.png)
 
