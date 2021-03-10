@@ -412,7 +412,20 @@ Let's run the LoRa Firmware for WisBlock and receive some LoRa Packets!
 
 1.  Build the firmware by clicking the __`Build`__ icon at the lower left...
 
-    ![](https://lupyuen.github.io/images/wisblock-bar.png)
+    ![Build Icon](https://lupyuen.github.io/images/wisblock-bar1.png)
+
+1.  We should see this...
+
+    ```text
+    Processing wiscore_rak4631 (platform: nordicnrf52; board: wiscore_rak4631; framework: arduino)
+    ...
+    Building in release mode
+    Checking size .pio/build/wiscore_rak4631/firmware.elf
+    Advanced Memory Usage is available via "PlatformIO Home > Project Inspect"
+    RAM:   [          ]   3.1% (used 7668 bytes from 248832 bytes)
+    Flash: [=         ]   7.3% (used 59800 bytes from 815104 bytes)
+    =========================== [SUCCESS] Took 4.49 seconds ===========================
+    ```
 
 ## Flash the firmware
 
