@@ -220,7 +220,7 @@ First we show the __Timestamp (in seconds), Signal Strength and Signal To Noise 
 ```c
 //  Callback Function to be executed on Packet Received event
 void OnRxDone(uint8_t *payload, uint16_t size, int16_t rssi, int8_t snr) {
-    //  We have received a valid packet. Show the timestamp in milliseconds.
+    //  We have received a valid packet. Show the timestamp in seconds.
     Serial.printf("OnRxDone: Timestamp=%d, ", millis() / 1000);
 
     //  Show the signal strength, signal to noise ratio
@@ -261,6 +261,8 @@ Finally we ask the LoRa Driver to receive the next packet...
 
 The timeout value __`RX_TIMEOUT_VALUE`__ is set to __3 seconds__.
 
+[Check out the log of received packets](https://github.com/lupyuen/wisblock-lora-receiver/blob/main/logs/2105-2156.log)
+
 _Looks kinda crowded... We show everything in a single line?_
 
 Yes because we'll be copying and pasting the lines into a spreadsheet for analysis.
@@ -269,9 +271,9 @@ This way it's easier to scrub the data.
 
 ## Timeout Callback Function
 
-TODO
+_We've set the Receive Timeout to 3 seconds. What happens if we don't receive a LoRa Packet in 3 seconds?_
 
-From [`main.cpp`](https://github.com/lupyuen/wisblock-lora-receiver/blob/abc363ef1bacb9e607ad519a587fe9581659e1ec/src/main.cpp#L141-L151)
+The LoRa Driver will trigger our __`OnRxTimeout`__ Callback Function: [`main.cpp`](https://github.com/lupyuen/wisblock-lora-receiver/blob/abc363ef1bacb9e607ad519a587fe9581659e1ec/src/main.cpp#L141-L151)
 
 ```c
 //  Callback Function to be executed on Receive Timeout event
@@ -281,7 +283,9 @@ void OnRxTimeout(void) {
     //  Serial.println("OnRxTimeout");
 ```
 
-TODO
+We don't do much in `OnRxTimeout` because it's perfectly OK to time out... We don't expect a LoRa Packet every 3 seconds.
+
+All we do in `OnRxTimeout` is to ask the LoRa Driver to receive the next packet...
 
 ```c
     //  Receive the next packet. Timeout in 3 seconds.
@@ -291,19 +295,21 @@ TODO
 
 ## Error Callback Function
 
-TODO
+The LoRa Driver triggers our Callback Function __`OnRxError`__ whenever it receives a __corrupted LoRa Packet__.
 
-From [`main.cpp`](https://github.com/lupyuen/wisblock-lora-receiver/blob/abc363ef1bacb9e607ad519a587fe9581659e1ec/src/main.cpp#L153-L163)
+(Likely due to interference or weak signal. Or an itchy finger powered off the LoRa Transceiver during transmission)
+
+We show the __Timestamp (in seconds)__ for troubleshooting and analysis: [`main.cpp`](https://github.com/lupyuen/wisblock-lora-receiver/blob/abc363ef1bacb9e607ad519a587fe9581659e1ec/src/main.cpp#L153-L163)
 
 ```c
 //  Callback Function to be executed on Receive Error event
 void OnRxError(void) {
     //  We have received a corrupted packet, probably due to weak signal.
-    //  Show the timestamp in milliseconds.
+    //  Show the timestamp in seconds.
     Serial.printf("OnRxError: Timestamp=%d\n", millis() / 1000);
 ```
 
-TODO
+And we ask the LoRa Driver to receive the next packet...
 
 ```c
     //  Receive the next packet. Timeout in 3 seconds.
@@ -363,6 +369,25 @@ Reconnect USB and flash again
 ![](https://lupyuen.github.io/images/wisblock-flash2.png)
 
 ## Run the firmware
+
+TODO
+
+```text
+> Executing task: platformio device monitor <
+
+--- Available filters and text transformations: colorize, debug, default, direct, hexlify, log2file, nocontrol, printable, send_on_enter, time
+--- More details at http://bit.ly/pio-monitor-filters
+--- Miniterm on /dev/cu.usbmodem14201  9600,8,N,1 ---
+--- Quit: Ctrl+C | Menu: Ctrl+T | Help: Ctrl+T followed by Ctrl+H ---
+Starting Radio.Rx
+OnRxDone: Timestamp=23, RssiValue=-48 dBm, SnrValue=13, Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 
+OnRxDone: Timestamp=196, RssiValue=-63 dBm, SnrValue=13, Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 
+OnRxError: Timestamp=619
+```
+
+TODO
+
+[Check out the log of received packets](https://github.com/lupyuen/wisblock-lora-receiver/blob/main/logs/2105-2156.log)
 
 TODO
 
