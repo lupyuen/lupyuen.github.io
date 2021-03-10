@@ -394,7 +394,7 @@ Let's run the LoRa Firmware for WisBlock and receive some LoRa Packets!
     git clone --recursive https://github.com/lupyuen/wisblock-lora-receiver
     ```
 
-1.  In VSCode, click __`File -> Open Folder`__
+1.  In VSCode, click __`File → Open Folder`__
 
     Select the folder that we have just downloaded: __`wisblock-lora-receiver`__
 
@@ -410,7 +410,9 @@ Let's run the LoRa Firmware for WisBlock and receive some LoRa Packets!
 
     Change __`923`__ to the LoRa Frequency for your region: `434`, `780`, `868`, `915` or `923`
 
-1.  Build the firmware by clicking the __`Build`__ icon at the lower left...
+1.  Modify the __LoRa Parameters__ in [__`src/main.cpp`__](https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp) so that they match those in the LoRa Transmitter (PineCone BL602)
+
+1.  __Build the firmware__ by clicking the __`Build`__ icon at the lower left...
 
     ![Build Icon](https://lupyuen.github.io/images/wisblock-bar1.png)
 
@@ -429,7 +431,7 @@ Let's run the LoRa Firmware for WisBlock and receive some LoRa Packets!
 
 ## Flash the firmware
 
-1.  Flash the firmware to WisBlock by clicking the __`Upload`__ icon...
+1.  __Flash the firmware__ to WisBlock by clicking the __`Upload`__ icon...
 
     ![Upload Icon](https://lupyuen.github.io/images/wisblock-bar2.png)
 
@@ -443,7 +445,7 @@ Let's run the LoRa Firmware for WisBlock and receive some LoRa Packets!
 
 ## Run the firmware
 
-1.  Run the firmware by clicking the __`Monitor`__ icon...
+1.  __Run the firmware__ by clicking the __`Monitor`__ icon...
 
     ![Monitor Icon](https://lupyuen.github.io/images/wisblock-bar3.png)
 
