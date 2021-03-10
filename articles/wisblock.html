@@ -596,18 +596,38 @@ Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1368378621719584768?s=20">this Twitter Thread</a></li>
 </ol>
 <h1 id="appendix-lora-ping-firmware-for-bl602" class="section-header"><a href="#appendix-lora-ping-firmware-for-bl602">10 Appendix: LoRa Ping Firmware for BL602</a></h1>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/wisblock-parameters2.png" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/wisblock-ping.png" alt="" /></p>
-<p>TODO</p>
+<p>For the LoRa Field Test we installed the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/loraping/customer_app/sdk_app_loraping"><strong>BL602 LoRa Ping Firmware <code>sdk_app_loraping</code></strong></a></p>
+<p>This is a modified version of <a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_lora"><code>sdk_app_lora</code></a> that does the following...</p>
+<ol>
+<li>
+<p>At startup, we initialise the LoRa Transceiver</p>
+</li>
+<li>
+<p>Then we transmit a 64-byte <code>PING</code> LoRa Message every 10 seconds</p>
+</li>
+<li>
+<p>We flash the Blue LED on PineCone every 10 seconds</p>
+<p><a href="https://youtu.be/wCEx-nvDiuQ"><strong>Watch the demo video on YouTube</strong></a></p>
+</li>
+</ol>
+<p>The changes are made in the function <strong><code>cli_init</code></strong> in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/loraping/customer_app/sdk_app_loraping/sdk_app_loraping/demo.c#L228-L275"><code>demo.c</code></a></p>
+<p><img src="https://lupyuen.github.io/images/wisblock-ping.png" alt="Modified cli_init function" /></p>
+<p><em>Modified cli_init function</em></p>
+<p>Remember to check that the BL602 LoRa Parameters in LoRa Ping match those in the WisBlock Receiver.</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/loraping/customer_app/sdk_app_loraping/sdk_app_loraping/demo.c#L44-L80"><code>demo.c</code></a></p>
+<p><img src="https://lupyuen.github.io/images/wisblock-parameters2.png" alt="BL602 LoRa Parameters" /></p>
+<p><em>BL602 LoRa Parameters</em></p>
+<p>Here's how it looks when BL602 LoRa Ping sends LoRa Packets to WisBlock...</p>
 <p><img src="https://lupyuen.github.io/images/wisblock-send.png" alt="PineCone BL602 sending LoRa packets to WisBlock" /></p>
 <p><em>PineCone BL602 (left) sending LoRa packets to WisBlock (right)</em></p>
 <h1 id="appendix-stream-lora-packets-to-youtube" class="section-header"><a href="#appendix-stream-lora-packets-to-youtube">11 Appendix: Stream LoRa Packets to YouTube</a></h1>
 <p>TODO</p>
+<p><em>As we're walking, how far shall we walk?</em></p>
 <p><img src="https://lupyuen.github.io/images/wisblock-stream.png" alt="" /></p>
-<p>TODO</p>
 <p><a href="https://youtu.be/7nZR_LhPL-A?t=1040"><strong>Watch the video on YouTube</strong></a></p>
+<p>TODO</p>
+<p>Use <a href="https://obsproject.com/"><strong>OBS Studio</strong></a></p>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wisblock-stream2.png" alt="" /></p>
 <p>TODO</p>
 
