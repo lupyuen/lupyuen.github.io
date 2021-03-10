@@ -412,7 +412,7 @@ Let's run the LoRa Firmware for WisBlock and receive some LoRa Packets!
 
 1.  Modify the __LoRa Parameters__ in [__`src/main.cpp`__](https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp) so that they match those in the LoRa Transmitter (PineCone BL602)
 
-1.  __Build the firmware__ by clicking the __`Build`__ icon at the lower left...
+1.  __Build the LoRa Firmware__ by clicking the __`Build`__ icon at the lower left...
 
     ![Build Icon](https://lupyuen.github.io/images/wisblock-bar1.png)
 
@@ -431,9 +431,9 @@ Let's run the LoRa Firmware for WisBlock and receive some LoRa Packets!
 
 ## Flash the firmware
 
-1.  Connect WisBlock to our computer's USB port
+1.  __Connect WisBlock__ to our computer's USB port
 
-1.  __Flash the firmware__ to WisBlock by clicking the __`Upload`__ icon...
+1.  __Flash the LoRa Firmware__ to WisBlock by clicking the __`Upload`__ icon...
 
     ![Upload Icon](https://lupyuen.github.io/images/wisblock-bar2.png)
 
@@ -453,7 +453,7 @@ Let's run the LoRa Firmware for WisBlock and receive some LoRa Packets!
 
 ## Run the firmware
 
-1.  __Run the firmware__ by clicking the __`Monitor`__ icon...
+1.  __Run the LoRa Firmware__ by clicking the __`Monitor`__ icon...
 
     ![Monitor Icon](https://lupyuen.github.io/images/wisblock-bar3.png)
 
@@ -471,10 +471,14 @@ Let's run the LoRa Firmware for WisBlock and receive some LoRa Packets!
 1.  In the WisBlock Log we will see the LoRa Packet received...
 
     ```text
-    OnRxDone: Timestamp=23, RssiValue=-48 dBm, SnrValue=13, Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 
+    OnRxDone: 
+    Timestamp=23, 
+    RssiValue=-48 dBm, 
+    SnrValue=13, 
+    Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 
     ```
 
-    -   __`Timestamp`__ is the __timestamp in seconds__ (which we'll use for analysis in a while)
+    -   __`Timestamp`__ is the __Timestamp in Seconds__ (which we'll use for analysis in a while)
 
         (We don't have a real time clock so that's the best timestamp we can get)
 
@@ -488,31 +492,33 @@ Let's run the LoRa Firmware for WisBlock and receive some LoRa Packets!
 
         This number roughly varies from -9 (very noisy signal) to 13 (very clear signal).
 
-1.  TODO
+1.  As we move the LoRa Transmitter (PineCone BL602) around, the Signal Strength and Signal To Noise Ratio will change...
 
     ```text
-    OnRxDone: Timestamp=196, RssiValue=-63 dBm, SnrValue=13, Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 
+    OnRxDone: 
+    Timestamp=196, 
+    RssiValue=-63 dBm, 
+    SnrValue=13, 
+    Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 
     ```
 
-1.  TODO
+1.  When we move the LoRa Transmitter too far from the WisBlock Receiver, we will see this...
 
     ```text
     OnRxError: Timestamp=619
     ```
 
-    TODO
+    This means that our WisBlock Receiver couldn't receive the LoRa Packet because the signal was too weak.
 
-[__Watch the video on YouTube__](https://youtu.be/7nZR_LhPL-A?t=1040)
+    [__Watch the demo video on YouTube__](https://youtu.be/7nZR_LhPL-A?t=1040)
 
-[__See the received LoRa Packets__](https://github.com/lupyuen/wisblock-lora-receiver/blob/main/logs/2105-2156.log)
+    [__See the received LoRa Packets__](https://github.com/lupyuen/wisblock-lora-receiver/blob/main/logs/2105-2156.log)
 
-TODO
+Now that we understand LoRa Packets and their Signal Strength, let's measure the __LoRa Network Coverage__!
 
-![](https://lupyuen.github.io/images/wisblock-log.png)
+![WisBlock LoRa Receiver right by the coconut trees](https://lupyuen.github.io/images/wisblock-receiver.jpg)
 
-TODO
-
-![](https://lupyuen.github.io/images/wisblock-receiver.jpg)
+_WisBlock LoRa Receiver right by the coconut trees_
 
 # LoRa Field Test
 
@@ -543,6 +549,12 @@ TODO
 Geocoded, Timestamped chicken rice.
 
 # Analyse the LoRa Coverage
+
+TODO
+
+TODO
+
+![](https://lupyuen.github.io/images/wisblock-log.png)
 
 TODO
 
