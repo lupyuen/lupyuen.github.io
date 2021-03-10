@@ -237,8 +237,8 @@ void loop() {
 </code></pre>
 <p>The code in this article is based on the WisBlock LoRa Receiver Example: <a href="https://github.com/RAKWireless/WisBlock/blob/master/examples/communications/LoRa/LoRaP2P/LoRaP2P_RX/LoRaP2P_RX.ino"><code>LoRaP2P_RX.ino</code></a></p>
 <p><a href="https://lupyuen.github.io/articles/lora#initialise-lora-transceiver">(And it bears a striking resemblance to the code for PineCone BL602 LoRa)</a></p>
-<p><img src="https://lupyuen.github.io/images/wisblock-cartoon.png" alt="LoRa pushing 64-byte packets from BL602 to WisBlock pant pant" /></p>
-<p><em>LoRa pushing 64-byte packets from BL602 to WisBlock <em>pant pant</em></em></p>
+<p><img src="https://lupyuen.github.io/images/wisblock-cartoon.png" alt="LoRa pushing 64-byte packets from BL602 to WisBlock" /></p>
+<p><em>LoRa pushing 64-byte packets from BL602 to WisBlock</em></p>
 <h1 id="receive-lora-packets" class="section-header"><a href="#receive-lora-packets">3 Receive LoRa Packets</a></h1>
 <p>We have prepped our WisBlock LoRa Transceiver to receive packets... Let's watch how we handle the received LoRa Packets.</p>
 <h2 id="receive-callback-function" class="section-header"><a href="#receive-callback-function">3.1 Receive Callback Function</a></h2>
@@ -307,9 +307,11 @@ void OnRxError(void) {
     Radio.Rx(RX_TIMEOUT_VALUE);
 }
 </code></pre>
+<p><img src="https://lupyuen.github.io/images/wisblock-parameters2.png" alt="LoRa Parameters in WisBlock LoRa Receiver must match those in the LoRa Transmitter (PineCone BL602)" /></p>
+<p><em>LoRa Parameters in WisBlock LoRa Receiver must match those in the LoRa Transmitter (PineCone BL602)</em></p>
 <h1 id="lora-configuration" class="section-header"><a href="#lora-configuration">4 LoRa Configuration</a></h1>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp#L36-L49"><code>main.cpp</code></a></p>
+<p>Our WisBlock LoRa Receiver must be configured with the same settings as the LoRa Transmitter... Or we won't receive any LoRa Packets!</p>
+<p>Here's the <strong>LoRa Configuration</strong> for our WisBlock LoRa Receiver: <a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp#L36-L49"><code>main.cpp</code></a></p>
 <pre><code class="language-c">// Define LoRa parameters. To receive LoRa packets from BL602, sync the parameters with
 // https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L41-L77
 // TODO: Change RF_FREQUENCY for your region
@@ -325,6 +327,18 @@ void OnRxError(void) {
 #define RX_TIMEOUT_VALUE      3000
 #define TX_TIMEOUT_VALUE      3000
 </code></pre>
+<p>For <strong><code>RF_FREQUENCY</code></strong>, be sure to specify the right <strong>LoRa Frequency</strong> for your region: 434, 780, 868, 915 or 923 MHz...</p>
+<ul>
+<li><a href="https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html"><strong>LoRa Frequencies by Country</strong></a></li>
+</ul>
+<p>Check also the <strong>LoRa Packet Size</strong>. Our WisBlock Receiver handles LoRa Packets that are 64 bytes or smaller...</p>
+<pre><code class="language-c">//  Buffer for received LoRa Packet
+static uint8_t RcvBuffer[64];
+</code></pre>
+<p>Fortunately the LoRa Configuration matches perfectly across our WisBlock Receiver and PineCone BL602 Transmitter... So nothing needs to be changed! (See pic above)</p>
+<p>(Except for the LoRa Frequency)</p>
+<p><img src="https://lupyuen.github.io/images/wisblock-send.png" alt="PineCone BL602 sending LoRa packets to WisBlock" /></p>
+<p><em>PineCone BL602 (left) sending LoRa packets to WisBlock (right)</em></p>
 <h1 id="build-and-run-the-lora-firmware" class="section-header"><a href="#build-and-run-the-lora-firmware">5 Build and Run the LoRa Firmware</a></h1>
 <p>TODO</p>
 <p>Let's run the LoRa Firmware for WisBlock.</p>
