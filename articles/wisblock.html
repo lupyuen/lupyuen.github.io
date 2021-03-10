@@ -380,7 +380,7 @@ git clone --recursive https://github.com/lupyuen/wisblock-lora-receiver
 <p>Look for this code...</p>
 <pre><code class="language-c">// Define LoRa parameters.
 // TODO: Change RF_FREQUENCY for your region
-#define RF_FREQUENCY          923000000	// Hz
+#define RF_FREQUENCY 923000000  // Hz
 </code></pre>
 <p>Change <strong><code>923</code></strong> to the LoRa Frequency for your region: <code>434</code>, <code>780</code>, <code>868</code>, <code>915</code> or <code>923</code></p>
 </li>
@@ -402,13 +402,21 @@ Flash: [=         ]   7.3% (used 59800 bytes from 815104 bytes)
 </li>
 </ol>
 <h2 id="flash-the-firmware" class="section-header"><a href="#flash-the-firmware">5.3 Flash the firmware</a></h2>
-<p>TODO</p>
+<ol>
+<li>
+<p>Flash the firmware to WisBlock by clicking the <strong><code>Upload</code></strong> icon...</p>
+<p><img src="https://lupyuen.github.io/images/wisblock-bar2.png" alt="Upload Icon" /></p>
 <p><img src="https://lupyuen.github.io/images/wisblock-flash.png" alt="" /></p>
 <p>TODO</p>
 <p>Reconnect USB and flash again</p>
 <p><img src="https://lupyuen.github.io/images/wisblock-flash2.png" alt="" /></p>
+</li>
+</ol>
 <h2 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">5.4 Run the firmware</a></h2>
-<p>TODO</p>
+<ol>
+<li>
+<p>Run the firmware by clicking the <strong><code>Monitor</code></strong> icon...</p>
+<p><img src="https://lupyuen.github.io/images/wisblock-bar3.png" alt="Monitor Icon" /></p>
 <pre><code class="language-text">&gt; Executing task: platformio device monitor &lt;
 
 --- Available filters and text transformations: colorize, debug, default, direct, hexlify, log2file, nocontrol, printable, send_on_enter, time
@@ -416,13 +424,21 @@ Flash: [=         ]   7.3% (used 59800 bytes from 815104 bytes)
 --- Miniterm on /dev/cu.usbmodem14201  9600,8,N,1 ---
 --- Quit: Ctrl+C | Menu: Ctrl+T | Help: Ctrl+T followed by Ctrl+H ---
 Starting Radio.Rx
-OnRxDone: Timestamp=23, RssiValue=-48 dBm, SnrValue=13, Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 
-OnRxDone: Timestamp=196, RssiValue=-63 dBm, SnrValue=13, Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 
-OnRxError: Timestamp=619
 </code></pre>
 <p>TODO</p>
+<pre><code class="language-text">OnRxDone: Timestamp=23, RssiValue=-48 dBm, SnrValue=13, Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-text">OnRxDone: Timestamp=196, RssiValue=-63 dBm, SnrValue=13, Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-text">OnRxError: Timestamp=619
+</code></pre>
+<p>TODO</p>
+</li>
+</ol>
 <p><a href="https://youtu.be/7nZR_LhPL-A?t=1040"><strong>Watch the video on YouTube</strong></a></p>
-<p><a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/main/logs/2105-2156.log"><strong>Log of received LoRa Packets</strong></a></p>
+<p><a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/main/logs/2105-2156.log"><strong>See the received LoRa Packets</strong></a></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wisblock-log.png" alt="" /></p>
 <p>TODO</p>
@@ -442,6 +458,10 @@ OnRxError: Timestamp=619
 <p><img src="https://lupyuen.github.io/images/wisblock-chickenrice.jpg" alt="" /></p>
 <p>Geocoded, Timestamped chicken rice.</p>
 <h1 id="analyse-the-lora-coverage" class="section-header"><a href="#analyse-the-lora-coverage">7 Analyse the LoRa Coverage</a></h1>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/main/logs/0922-1024.log">See the log received LoRa Packets</a></p>
+<p>TODO</p>
+<p><a href="https://docs.google.com/spreadsheets/d/15Qdcso1GDD1Ltue67cn5Y-3r1bpO6brvn8AbDM5Tqik/edit?usp=sharing">See the Google Sheets spreadsheet for received LoRa Packets</a></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wisblock-chart.png" alt="" /></p>
 <p>TODO</p>
