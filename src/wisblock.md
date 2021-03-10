@@ -526,9 +526,11 @@ _WisBlock LoRa Receiver right by the coconut trees_
 
 _What's the Maximum Distance between the LoRa Transmitter and LoRa Receiver? 100 metres? 200 metres? Or more?!_
 
-LoRa is designed to was packets over great distances with little power. Let's find out how far!
+LoRa was designed to send packets over great distances with little power. Let's find out how far!
 
 TODO
+
+Leave it temporarily inside the padded WisBlock Connected Box, antenna sticking out and upwards.
 
 ![](https://lupyuen.github.io/images/wisblock-kit.jpg)
 
