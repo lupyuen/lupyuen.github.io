@@ -560,8 +560,6 @@ Geocoded, Timestamped chicken rice.
 
 TODO
 
-TODO
-
 ![](https://lupyuen.github.io/images/wisblock-log.png)
 
 TODO
@@ -570,11 +568,15 @@ TODO
 
 TODO
 
+![](https://lupyuen.github.io/images/wisblock-chart.png)
+
+TODO
+
 [See the Google Sheets spreadsheet for received LoRa Packets](https://docs.google.com/spreadsheets/d/15Qdcso1GDD1Ltue67cn5Y-3r1bpO6brvn8AbDM5Tqik/edit?usp=sharing)
 
 TODO
 
-![](https://lupyuen.github.io/images/wisblock-chart.png)
+![](https://lupyuen.github.io/images/wisblock-geocode.png)
 
 TODO
 
