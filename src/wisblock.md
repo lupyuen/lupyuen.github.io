@@ -42,6 +42,8 @@ Connect the following components according to the pic above...
 
 1.  __Bluetooth LE Antenna__: Connect the Bluetooth LE Antenna to the LPWAN Module.
 
+    (That's the stringy flappy antenna)
+
 [__CAUTION: Always connect the LoRa Antenna and Bluetooth LE Antenna before Powering On... Or the LoRa and Bluetooth Transceivers may get damaged! See this__](https://electronics.stackexchange.com/questions/335912/can-i-break-a-radio-tranceiving-device-by-operating-it-with-no-antenna-connected)
 
 The above components are shipped in the [__WisBlock Connected Box__](https://store.rakwireless.com/products/wisblock-connected-box). (Which includes many more goodies!)
@@ -365,19 +367,52 @@ _PineCone BL602 (left) sending LoRa packets to WisBlock (right)_
 
 # Build and Run the LoRa Firmware
 
-TODO
+Let's run the LoRa Firmware for WisBlock and receive some LoRa Packets!
 
-Let's run the LoRa Firmware for WisBlock.
+## Install VSCode and PlatformIO
 
-Find out which __LoRa Frequency__ we should use for your region...
+1.  Follow the instructions in this excellent article to install __VSCode and PlatformIO__...
 
--  [__LoRa Frequencies by Country__](https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html)
+    -   [__Installation of Board Support Package in PlatformIO__](https://docs.rakwireless.com/Knowledge-Hub/Learn/Board-Support-Package-Installation-in-PlatformIO/)
+
+1.  Remember to install the __LoRa Library `SX126x-Arduino`__ according to the steps above.
+
+    (We may skip the LoRaWAN OTAA Example)
+
+1.  Find out which __LoRa Frequency__ we should use for your region...
+
+    -  [__LoRa Frequencies by Country__](https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html)
+
+    We'll set the LoRa Frequency in a while.
 
 ## Build the firmware
 
-TODO
+1.  Enter this at the command line...
 
-![](https://lupyuen.github.io/images/wisblock-bar.png)
+    ```bash
+    # Download the wisblock-lora-receiver source code
+    git clone --recursive https://github.com/lupyuen/wisblock-lora-receiver
+    ```
+
+1.  In VSCode, click __`File -> Open Folder`__
+
+    Select the folder that we have just downloaded: __`wisblock-lora-receiver`__
+
+1.  Edit the file [__`src/main.cpp`__](https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp)
+
+    Look for this code...
+
+    ```c
+    // Define LoRa parameters.
+    // TODO: Change RF_FREQUENCY for your region
+    #define RF_FREQUENCY          923000000	// Hz
+    ```
+
+    Change __`923`__ to the LoRa Frequency for your region: `434`, `780`, `868`, `915` or `923`
+
+1.  Build the firmware by clicking the __`Build`__ icon at the lower left...
+
+    ![](https://lupyuen.github.io/images/wisblock-bar.png)
 
 ## Flash the firmware
 
@@ -410,7 +445,9 @@ OnRxError: Timestamp=619
 
 TODO
 
-[Check out the log of received packets](https://github.com/lupyuen/wisblock-lora-receiver/blob/main/logs/2105-2156.log)
+[__Watch the video on YouTube__](https://youtu.be/7nZR_LhPL-A?t=1040)
+
+[__Log of received LoRa Packets__](https://github.com/lupyuen/wisblock-lora-receiver/blob/main/logs/2105-2156.log)
 
 TODO
 
@@ -447,16 +484,6 @@ TODO
 ![](https://lupyuen.github.io/images/wisblock-chickenrice.jpg)
 
 Geocoded, Timestamped chicken rice.
-
-## Streaming the packets
-
-TODO
-
-![](https://lupyuen.github.io/images/wisblock-stream.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/wisblock-stream2.png)
 
 # Analyse the LoRa Coverage
 
@@ -515,5 +542,23 @@ TODO
 TODO
 
 ![](https://lupyuen.github.io/images/wisblock-ping.png)
+
+TODO
+
+![PineCone BL602 sending LoRa packets to WisBlock](https://lupyuen.github.io/images/wisblock-send.png)
+
+_PineCone BL602 (left) sending LoRa packets to WisBlock (right)_
+
+# Appendix: Stream LoRa Packets to YouTube
+
+TODO
+
+![](https://lupyuen.github.io/images/wisblock-stream.png)
+
+TODO
+
+[__Watch the video on YouTube__](https://youtu.be/7nZR_LhPL-A?t=1040)
+
+![](https://lupyuen.github.io/images/wisblock-stream2.png)
 
 TODO
