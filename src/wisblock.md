@@ -14,9 +14,11 @@ Is there a simple way to check...
 
 Today we shall install [__RAKwireless WisBlock__](https://docs.rakwireless.com/Product-Categories/WisBlock/Quickstart/) to check the packets transmitted by our LoRa Sensor.
 
-We'll be testing WisBlock with a LoRa Sensor based on the __PineCone BL602 RISC-V Board__. [(See this)](https://lupyuen.github.io/articles/lora)
+We'll be testing WisBlock with a LoRa Sensor built with the __PineCone BL602 RISC-V Board__... 
 
-[(Many thanks to RAKwireless for sponsoring the WisBlock Connected Box!)](https://store.rakwireless.com/products/wisblock-connected-box)
+-   [__"Connect PineCone BL602 to LoRa Transceiver"__](https://lupyuen.github.io/articles/lora)
+
+Many thanks to [__RAKwireless__](https://www.rakwireless.com) for sponsoring the [__WisBlock Connected Box!__](https://store.rakwireless.com/products/wisblock-connected-box)
 
 ![RAKwireless WisBlock LPWAN Module mounted on WisBlock Base Board](https://lupyuen.github.io/images/wisblock-title.jpg)
 
@@ -522,6 +524,10 @@ _WisBlock LoRa Receiver right by the coconut trees_
 
 # LoRa Field Test
 
+_What's the Maximum Distance between the LoRa Transmitter and LoRa Receiver? 100 metres? 200 metres? Or more?!_
+
+LoRa is designed to was packets over great distances with little power. Let's find out how far!
+
 TODO
 
 ![](https://lupyuen.github.io/images/wisblock-kit.jpg)
@@ -580,15 +586,15 @@ TODO
 
 TODO
 
+The other direction: Transmit LoRa Packets from WisBlock to PineCone BL602
+
 We have come a loooong way since I first [__experimented with LoRa in 2016__](https://github.com/lupyuen/LoRaArduino)...
 
 - __Cheaper Transceivers__: Shipped overnight from Thailand!
 
 - __Mature Networks__: LoRaWAN, The Things Network
 
-- __Better Drivers__: Thanks to Apache Mynewt OS!
-
-- __Powerful Microcontrollers__: Arduino Uno vs RISC-V BL602
+- __Better Gateways__: RAKwireless WisGate
 
 - __Awesome Tools__: RAKwireless WisBlock, Airspy SDR, RF Explorer
 
