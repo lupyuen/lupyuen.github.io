@@ -405,7 +405,7 @@ Let's run the LoRa Firmware for WisBlock and receive some LoRa Packets!
     ```c
     // Define LoRa parameters.
     // TODO: Change RF_FREQUENCY for your region
-    #define RF_FREQUENCY          923000000	// Hz
+    #define RF_FREQUENCY 923000000  // Hz
     ```
 
     Change __`923`__ to the LoRa Frequency for your region: `434`, `780`, `868`, `915` or `923`
@@ -429,38 +429,57 @@ Let's run the LoRa Firmware for WisBlock and receive some LoRa Packets!
 
 ## Flash the firmware
 
-TODO
+1.  Flash the firmware to WisBlock by clicking the __`Upload`__ icon...
 
-![](https://lupyuen.github.io/images/wisblock-flash.png)
+    ![Upload Icon](https://lupyuen.github.io/images/wisblock-bar2.png)
 
-TODO
+    ![](https://lupyuen.github.io/images/wisblock-flash.png)
 
-Reconnect USB and flash again
+    TODO
 
-![](https://lupyuen.github.io/images/wisblock-flash2.png)
+    Reconnect USB and flash again
+
+    ![](https://lupyuen.github.io/images/wisblock-flash2.png)
 
 ## Run the firmware
 
-TODO
+1.  Run the firmware by clicking the __`Monitor`__ icon...
 
-```text
-> Executing task: platformio device monitor <
+    ![Monitor Icon](https://lupyuen.github.io/images/wisblock-bar3.png)
 
---- Available filters and text transformations: colorize, debug, default, direct, hexlify, log2file, nocontrol, printable, send_on_enter, time
---- More details at http://bit.ly/pio-monitor-filters
---- Miniterm on /dev/cu.usbmodem14201  9600,8,N,1 ---
---- Quit: Ctrl+C | Menu: Ctrl+T | Help: Ctrl+T followed by Ctrl+H ---
-Starting Radio.Rx
-OnRxDone: Timestamp=23, RssiValue=-48 dBm, SnrValue=13, Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 
-OnRxDone: Timestamp=196, RssiValue=-63 dBm, SnrValue=13, Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 
-OnRxError: Timestamp=619
-```
+    ```text
+    > Executing task: platformio device monitor <
 
-TODO
+    --- Available filters and text transformations: colorize, debug, default, direct, hexlify, log2file, nocontrol, printable, send_on_enter, time
+    --- More details at http://bit.ly/pio-monitor-filters
+    --- Miniterm on /dev/cu.usbmodem14201  9600,8,N,1 ---
+    --- Quit: Ctrl+C | Menu: Ctrl+T | Help: Ctrl+T followed by Ctrl+H ---
+    Starting Radio.Rx
+    ```
+
+    TODO
+
+    ```text
+    OnRxDone: Timestamp=23, RssiValue=-48 dBm, SnrValue=13, Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 
+    ```
+
+    TODO
+
+    ```text
+    OnRxDone: Timestamp=196, RssiValue=-63 dBm, SnrValue=13, Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F 20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 
+    ```
+
+    TODO
+
+    ```text
+    OnRxError: Timestamp=619
+    ```
+
+    TODO
 
 [__Watch the video on YouTube__](https://youtu.be/7nZR_LhPL-A?t=1040)
 
-[__Log of received LoRa Packets__](https://github.com/lupyuen/wisblock-lora-receiver/blob/main/logs/2105-2156.log)
+[__See the received LoRa Packets__](https://github.com/lupyuen/wisblock-lora-receiver/blob/main/logs/2105-2156.log)
 
 TODO
 
@@ -499,6 +518,14 @@ TODO
 Geocoded, Timestamped chicken rice.
 
 # Analyse the LoRa Coverage
+
+TODO
+
+[See the log received LoRa Packets](https://github.com/lupyuen/wisblock-lora-receiver/blob/main/logs/0922-1024.log)
+
+TODO
+
+[See the Google Sheets spreadsheet for received LoRa Packets](https://docs.google.com/spreadsheets/d/15Qdcso1GDD1Ltue67cn5Y-3r1bpO6brvn8AbDM5Tqik/edit?usp=sharing)
 
 TODO
 
