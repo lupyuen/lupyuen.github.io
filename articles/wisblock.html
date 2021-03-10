@@ -372,7 +372,7 @@ git clone --recursive https://github.com/lupyuen/wisblock-lora-receiver
 </code></pre>
 </li>
 <li>
-<p>In VSCode, click <strong><code>File -&gt; Open Folder</code></strong></p>
+<p>In VSCode, click <strong><code>File → Open Folder</code></strong></p>
 <p>Select the folder that we have just downloaded: <strong><code>wisblock-lora-receiver</code></strong></p>
 </li>
 <li>
@@ -385,7 +385,10 @@ git clone --recursive https://github.com/lupyuen/wisblock-lora-receiver
 <p>Change <strong><code>923</code></strong> to the LoRa Frequency for your region: <code>434</code>, <code>780</code>, <code>868</code>, <code>915</code> or <code>923</code></p>
 </li>
 <li>
-<p>Build the firmware by clicking the <strong><code>Build</code></strong> icon at the lower left...</p>
+<p>Modify the <strong>LoRa Parameters</strong> in <a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp"><strong><code>src/main.cpp</code></strong></a> so that they match those in the LoRa Transmitter (PineCone BL602)</p>
+</li>
+<li>
+<p><strong>Build the firmware</strong> by clicking the <strong><code>Build</code></strong> icon at the lower left...</p>
 <p><img src="https://lupyuen.github.io/images/wisblock-bar1.png" alt="Build Icon" /></p>
 </li>
 <li>
@@ -404,7 +407,7 @@ Flash: [=         ]   7.3% (used 59800 bytes from 815104 bytes)
 <h2 id="flash-the-firmware" class="section-header"><a href="#flash-the-firmware">5.3 Flash the firmware</a></h2>
 <ol>
 <li>
-<p>Flash the firmware to WisBlock by clicking the <strong><code>Upload</code></strong> icon...</p>
+<p><strong>Flash the firmware</strong> to WisBlock by clicking the <strong><code>Upload</code></strong> icon...</p>
 <p><img src="https://lupyuen.github.io/images/wisblock-bar2.png" alt="Upload Icon" /></p>
 <p><img src="https://lupyuen.github.io/images/wisblock-flash.png" alt="" /></p>
 <p>TODO</p>
@@ -415,7 +418,7 @@ Flash: [=         ]   7.3% (used 59800 bytes from 815104 bytes)
 <h2 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">5.4 Run the firmware</a></h2>
 <ol>
 <li>
-<p>Run the firmware by clicking the <strong><code>Monitor</code></strong> icon...</p>
+<p><strong>Run the firmware</strong> by clicking the <strong><code>Monitor</code></strong> icon...</p>
 <p><img src="https://lupyuen.github.io/images/wisblock-bar3.png" alt="Monitor Icon" /></p>
 <pre><code class="language-text">&gt; Executing task: platformio device monitor &lt;
 
