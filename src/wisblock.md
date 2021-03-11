@@ -598,51 +598,49 @@ Here's what we'll do...
 
     Split the data neatly into columns.
 
-1.  Based on the __Timestamp__ (in seconds), compute the __Actual Time Of Day__
+1.  Based on the __Timestamp__ (in seconds), we compute the __Actual Time Of Day__.
 
-    The spreadsheet should look like this...
+    Our spreadsheet should look like this...
 
     ![Spreadsheet with received LoRa Packets](https://lupyuen.github.io/images/wisblock-chart.png)
 
-    [See the Google Sheets spreadsheet for received LoRa Packets](https://docs.google.com/spreadsheets/d/15Qdcso1GDD1Ltue67cn5Y-3r1bpO6brvn8AbDM5Tqik/edit?usp=sharing)
+    [See the Google Sheets spreadsheet](https://docs.google.com/spreadsheets/d/15Qdcso1GDD1Ltue67cn5Y-3r1bpO6brvn8AbDM5Tqik/edit?usp=sharing)
 
 1.  Plot a chart of __Signal Strength vs Actual Time__ (See pic above)
 
     This shows us the Signal Strength of the LoRa Packets received by WisBlock as we walked about.
 
-1.  TODO 
+1.  Look for the __dips and valleys__ in the chart.
 
-    Look for the dips and valleys
+    These are the places with __poor LoRa Coverage__.
 
-    These are places with poor LoRa coverage
+    When we see missing dots in the chart，these are the places with __zero LoRa Coverage__.
 
-    When we see missing dot，zero coverage
+    (Don't place our LoRa Sensor here!)
 
-    (Don't place our lora sensor here!)
+1.  To find these places with poor LoRa Coverage, __match the Actual Time against the photos__ that we have collected...
 
-1.  TODO
+    ![Geocoded Timestamped Chickens](https://lupyuen.github.io/images/wisblock-geocode.png)
 
-    ![](https://lupyuen.github.io/images/wisblock-geocode.png)
+1.  Each photo is __Geocoded__, so we can identify the places. Voila!
 
-1.  TODO
+    ![Places with poor LoRa Coverage](https://lupyuen.github.io/images/wisblock-chart2.png)
 
-    ![](https://lupyuen.github.io/images/wisblock-chart2.png)
+1.  For this test, we were able to receive LoRa Packets up to __300 metres away__.
 
-1.  TODO
+    Not bad for this __dense, blocky neighborhood!__
 
-    Not bad for a dense, blocky neighborhood!
+    ![Dense blocky neighbourhood](https://lupyuen.github.io/images/wisblock-map.png)
 
-    No line of sight
+1.  How is this possible when there's __No Line Of Sight__ between the LoRa Transmitter and the LoRa Receiver?
 
-    Reflection
+    -   LoRa Packets can get __reflected on building surfaces__... And the reflected packets will be received OK. 
+    
+        (Assuming little signal distortion)
 
-    Penetrate light vegetation (like our paper box)
-
-    Unfortunately drops at 400 metres
-
-    ![](https://lupyuen.github.io/images/wisblock-map.png)
-
-    TODO
+    -   LoRa Packets can __penetrate light vegetation__. 
+    
+        (Like our paper box)
 
 ![WisBlock receiving LoRa packets in the night](https://lupyuen.github.io/images/wisblock-night.jpg)
 
