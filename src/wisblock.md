@@ -564,21 +564,21 @@ LoRa was designed to send packets over __great distances__ with little power. Le
 
     Later we shall use this photo to tell us where we were __located at a specific time.__
 
-    Keep snapping more photos as we walk. Like these __Geocoded, Timestamped Chickens__...
+    Keep snapping more photos as we walk. Like these Geocoded, Timestamped Chickens...
 
     ![Geocoded, Timestamped Chickens](https://lupyuen.github.io/images/wisblock-chicken.jpg)
 
 1.  At the end of our hike, we'll have a collection of __Geocoded Timestamped Photos.__
 
-    In the next section we'll __match the photos__ with the log of LoRa Packets received by WisBlock.
+    In the next section we'll match the photos with the log of LoRa Packets received by WisBlock.
 
-![Geocoded, Timestamped Chicken Rice (not from the earlier chickens)](https://lupyuen.github.io/images/wisblock-chickenrice.jpg)
+![Geocoded, Timestamped Chicken Rice (no relation with the earlier chickens)](https://lupyuen.github.io/images/wisblock-chickenrice.jpg)
 
-_Geocoded, Timestamped Chicken Rice (not from the earlier chickens)_
+_Geocoded, Timestamped Chicken Rice (no relation with the earlier chickens)_
 
 # Analyse the LoRa Coverage
 
-Back to our __#1 Question__...
+Back to our #1 Question...
 
 _What's the __Maximum Distance__ between the LoRa Transmitter and LoRa Receiver? 100 metres? 200 metres? Or more?!_
 
@@ -594,7 +594,7 @@ To answer that, we have two helpful things...
 
 Here's what we'll do...
 
-1.  We __copy and paste the log of received LoRa Packets__ into a spreadsheet.
+1.  We copy and paste the log of __received LoRa Packets into a spreadsheet__.
 
     Split the data neatly into columns.
 
@@ -622,7 +622,7 @@ Here's what we'll do...
 
     ![Geocoded Timestamped Chickens](https://lupyuen.github.io/images/wisblock-geocode.jpg)
 
-1.  Each photo is __Geocoded__, so we can identify the places. _Voila!_
+1.  Each photo is Geocoded, so we can identify the places. _Voila!_
 
     ![Places with poor LoRa Coverage](https://lupyuen.github.io/images/wisblock-chart2.png)
 
@@ -644,7 +644,7 @@ Here's what we'll do...
 
 1.  __Exercise For The Reader...__
 
-    How would you conduct this __LoRa Field Test__ and analyse the __LoRa Network Coverage__ more efficiently?
+    How would you conduct this LoRa Field Test and analyse the LoRa Network Coverage more efficiently?
 
     [(Check out the solution by @Kongduino on Twitter)](https://twitter.com/Kongduino/status/1369917401270161414?s=20)
 
