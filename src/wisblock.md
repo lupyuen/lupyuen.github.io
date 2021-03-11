@@ -678,6 +678,8 @@ Now is the __right time to build LoRa gadgets.__ Stay tuned for more LoRa Advent
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
+-   [Discuss this article on Reddit](https://www.reddit.com/r/embedded_oc/comments/m2m5mx/rakwireless_wisblock_talks_lora_with_pinecone/?utm_source=share&utm_medium=web2x&context=3)
+
 -   [Read "The RISC-V BL602 Book"](https://lupyuen.github.io/articles/book)
 
 -   [Check out my articles](https://lupyuen.github.io)
