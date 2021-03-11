@@ -663,7 +663,7 @@ In the next article, we shall use [__RAKwireless WisBlock__](https://docs.rakwir
 
 [__Watch this Twitter Thread for updates__](https://twitter.com/MisterTechBlog/status/1368378621719584768?s=20)
 
-[(Many thanks to RAKwireless for sponsoring the WisBlock Connected Box!)](https://store.rakwireless.com/products/wisblock-connected-box)
+[(Many thanks to RAKwireless for providing the WisBlock Connected Box!)](https://store.rakwireless.com/products/wisblock-connected-box)
 
 ![RAKwireless WisBlock Connected Box](https://lupyuen.github.io/images/lora-wisblock.jpg)
 

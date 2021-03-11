@@ -18,7 +18,7 @@ We'll be testing WisBlock with a LoRa Sensor built with the __PineCone BL602 RIS
 
 -   [__"Connect PineCone BL602 to LoRa Transceiver"__](https://lupyuen.github.io/articles/lora)
 
-Many thanks to [__RAKwireless__](https://www.rakwireless.com) for sponsoring the [__WisBlock Connected Box!__](https://store.rakwireless.com/products/wisblock-connected-box)
+Many thanks to [__RAKwireless__](https://www.rakwireless.com) for providing the [__WisBlock Connected Box!__](https://store.rakwireless.com/products/wisblock-connected-box)
 
 ![RAKwireless WisBlock LPWAN Module mounted on WisBlock Base Board](https://lupyuen.github.io/images/wisblock-title.jpg)
 
