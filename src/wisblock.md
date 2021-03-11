@@ -524,21 +524,21 @@ _WisBlock LoRa Receiver right by the coconut trees_
 
 # LoRa Field Test
 
-Here comes the #1 Question when deciding where to install our LoRa Sensor and LoRa Receiver...
+Here comes the __#1 Question__ when deciding __where to install__ our LoRa Sensor and LoRa Receiver...
 
-_What's the Maximum Distance between the LoRa Transmitter and LoRa Receiver? 100 metres? 200 metres? Or more?!_
+_What's the __Maximum Distance__ between the LoRa Transmitter and LoRa Receiver? 100 metres? 200 metres? Or more?!_
 
-LoRa was designed to send packets over great distances with little power. Let's find out how far!
+LoRa was designed to send packets over __great distances__ with little power. Let's find out how far!
 
 1.  We'll put our __WisBlock LoRa Receiver__ on the balcony, right by the coconut trees. (See pic above)
 
     (It's OK to run WisBlock temporarily inside the padded WisBlock Connected Box, antenna sticking out and upwards)
 
-1.  Prepare the __LoRa Transmitter Kit__. We'll use...
+1.  Prepare the __LoRa Transmitter Kit__. We'll pack the following...
 
     -   __PineCone BL602 RISC-V Board__, running the __LoRa Ping Firmware__ (See the appendix)
 
-    -   __Semtech SX1276 or Hope RF96__ LoRa Transceiver
+    -   __LoRa Transceiver__ (Semtech SX1276 or Hope RF96)
 
     -   __Battery__ (Portable Charger)
 
@@ -554,23 +554,27 @@ LoRa was designed to send packets over great distances with little power. Let's 
 
 1.  __Go hiking__ with the backpack!
 
-    TODO
+    We'll do it like Pokemon Snap... Everywhere we go, we __snap a photo on our phone__.
+
+    Like this...
 
     ![Geocoded, Timestamped photo](https://lupyuen.github.io/images/wisblock-field.jpg)
 
-1.  This is a Geocoded, Timestamped photo.
+1.  This photo is __Geocoded and Timestamped__ by our phone.
 
-    TODO
+    Later we shall use this photo to tell us where we were __located at a specific time.__
 
-    ![Geocoded, Timestamped chickens](https://lupyuen.github.io/images/wisblock-chicken.jpg)
+    Keep snapping more photos as we walk. Like these __Geocoded, Timestamped Chickens__...
 
-1.  Geocoded, Timestamped chickens.
+    ![Geocoded, Timestamped Chickens](https://lupyuen.github.io/images/wisblock-chicken.jpg)
 
-    TODO
+1.  At the end of our hike, we'll have a collection of __Geocoded Timestamped photos.__
 
-![Geocoded, Timestamped chicken rice](https://lupyuen.github.io/images/wisblock-chickenrice.jpg)
+    In the next section we'll __match the photos__ with the log of LoRa Packets received by WisBlock.
 
-_Geocoded, Timestamped chicken rice_
+![Geocoded, Timestamped Chicken Rice (not from the earlier chickens)](https://lupyuen.github.io/images/wisblock-chickenrice.jpg)
+
+_Geocoded, Timestamped Chicken Rice (not from the earlier chickens)_
 
 # Analyse the LoRa Coverage
 
@@ -580,7 +584,7 @@ TODO
 
 TODO
 
-[See the log received LoRa Packets](https://github.com/lupyuen/wisblock-lora-receiver/blob/main/logs/0922-1024.log)
+[See the log of received LoRa Packets](https://github.com/lupyuen/wisblock-lora-receiver/blob/main/logs/0922-1024.log)
 
 TODO
 
@@ -640,7 +644,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 For the LoRa Field Test we installed the [__BL602 LoRa Ping Firmware `sdk_app_loraping`__](https://github.com/lupyuen/bl_iot_sdk/tree/loraping/customer_app/sdk_app_loraping)
 
-This is a modified version of [`sdk_app_lora`](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_lora) that does the following...
+This is a modified version of [`sdk_app_lora`](https://lupyuen.github.io/articles/lora#initialise-lora-transceiver) that does the following...
 
 1.  At startup, we initialise the LoRa Transceiver
 
