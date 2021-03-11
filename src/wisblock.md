@@ -620,9 +620,9 @@ Here's what we'll do...
 
 1.  To find these places with poor LoRa Coverage, __match the Actual Time against the photos__ that we have collected...
 
-    ![Geocoded Timestamped Chickens](https://lupyuen.github.io/images/wisblock-geocode.png)
+    ![Geocoded Timestamped Chickens](https://lupyuen.github.io/images/wisblock-geocode.jpg)
 
-1.  Each photo is __Geocoded__, so we can identify the places. Voila!
+1.  Each photo is __Geocoded__, so we can identify the places. _Voila!_
 
     ![Places with poor LoRa Coverage](https://lupyuen.github.io/images/wisblock-chart2.png)
 
