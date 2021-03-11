@@ -642,6 +642,10 @@ Here's what we'll do...
     
         (Like our paper box)
 
+1.  __Exercise For The Reader...__
+
+    How would you conduct this __LoRa Field Test__ and analyse the __LoRa Network Coverage__ more efficiently?
+
 ![WisBlock receiving LoRa packets in the night](https://lupyuen.github.io/images/wisblock-night.jpg)
 
 _WisBlock receiving LoRa packets in the night_
