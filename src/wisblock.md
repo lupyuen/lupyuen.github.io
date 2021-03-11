@@ -656,9 +656,13 @@ _WisBlock receiving LoRa packets in the night_
 
 # What's Next
 
-TODO
+In the next article we shall head back to PineCone BL602 and finish Level 1 of our LoRa Stack...
 
-The other direction: Transmit LoRa Packets from WisBlock to PineCone BL602
+-   Today __BL602 can transmit__ LoRa Packets to WisBlock
+
+-   Tomorrow __BL602 shall receive__ LoRa Packets transmitted by WisBlock
+
+And then we can progress to LoRa Levels 2 and 3: __LoRaWAN and The Things Network.__
 
 We have come a loooong way since I first [__experimented with LoRa in 2016__](https://github.com/lupyuen/LoRaArduino)...
 
