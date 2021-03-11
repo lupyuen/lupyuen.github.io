@@ -84,7 +84,7 @@
 <li><a href="#whats-next">8 What's Next</a><ul></ul></li>
 <li><a href="#notes">9 Notes</a><ul></ul></li>
 <li><a href="#appendix-lora-ping-firmware-for-bl602">10 Appendix: LoRa Ping Firmware for BL602</a><ul></ul></li>
-<li><a href="#appendix-stream-lora-packets-to-youtube">11 Appendix: Stream LoRa Packets to YouTube</a><ul></ul></li></ul></nav><p>📝 <em>12 Mar 2021</em></p>
+<li><a href="#appendix-stream-lora-packets-to-youtube">11 Appendix: Stream LoRa Packets to YouTube</a><ul></ul></li></ul></nav><p>📝 <em>11 Mar 2021</em></p>
 <p>Suppose we've created a wireless <strong>LoRa Sensor</strong>.</p>
 <p>(Maybe a sensor that monitors the soil moisture in our home garden)</p>
 <p>Is there a simple way to check...</p>
@@ -552,7 +552,7 @@ Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 
 <p>A bunch of <strong>Geocoded, Timestamped Photos</strong> that we have collected during our LoRa Field Test</p>
 </li>
 <li>
-<p>A log of LoRa Packets received by WisBlock...</p>
+<p>A log of <strong>LoRa Packets received by WisBlock</strong>...</p>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/wisblock-log.png" alt="WisBlock Arduino Log of Received LoRa Packets" /></p>
@@ -648,7 +648,11 @@ Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1368378621719584768?s=20">this Twitter Thread</a></li>
 </ol>
 <h1 id="appendix-lora-ping-firmware-for-bl602" class="section-header"><a href="#appendix-lora-ping-firmware-for-bl602">10 Appendix: LoRa Ping Firmware for BL602</a></h1>
-<p>For the LoRa Field Test we installed the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/loraping/customer_app/sdk_app_loraping"><strong>BL602 LoRa Ping Firmware <code>sdk_app_loraping</code></strong></a></p>
+<p>In the previous article we've created a LoRa Transmitter with PineCone BL602...</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/lora"><strong>&quot;Connect PineCone BL602 to LoRa Transceiver&quot;</strong></a></li>
+</ul>
+<p>For the LoRa Field Test we installed the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/loraping/customer_app/sdk_app_loraping"><strong>BL602 LoRa Ping Firmware: <code>sdk_app_loraping</code></strong></a></p>
 <p>This is a modified version of <a href="https://lupyuen.github.io/articles/lora#initialise-lora-transceiver"><code>sdk_app_lora</code></a> that does the following...</p>
 <ol>
 <li>
@@ -672,6 +676,8 @@ Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 
 <p>Here's how it looks when BL602 LoRa Ping sends LoRa Packets to WisBlock...</p>
 <p><img src="https://lupyuen.github.io/images/wisblock-send.png" alt="PineCone BL602 sending LoRa packets to WisBlock" /></p>
 <p><em>PineCone BL602 (left) sending LoRa packets to WisBlock (right)</em></p>
+<p>There seems to be an intermittent problem with my LoRa Transmitter (hardware or firmware?)... WisBlock receives the first LoRa Packet transmitted but doesn't receive subsequent packets.</p>
+<p>My workaround for now: As I walk, I disconnect and reconnect the USB power to my LoRa Transmitter (every 20 seconds).</p>
 <h1 id="appendix-stream-lora-packets-to-youtube" class="section-header"><a href="#appendix-stream-lora-packets-to-youtube">11 Appendix: Stream LoRa Packets to YouTube</a></h1>
 <p>TODO</p>
 <p><em>As we're walking, how far shall we walk?</em></p>
