@@ -93,6 +93,8 @@ Let's compare BL602 with the two most popular models of 32-bit RISC-V microcontr
     -   Supported by [FreeRTOS + AliOS](https://github.com/alibaba/AliOS-Things)
     -   __Not Supported by PlatformIO, Mynewt, RIOT and Zephyr__
 
+[__UPDATE: Check out Apache NuttX operating system for BL602__](https://github.com/apache/incubator-nuttx/tree/master/boards/risc-v/bl602/bl602evb)
+
 As we can see, firmware support is not so great for newer RISC-V microcontrollers.
 
 Firmware created for Pinecil will NOT run on PineCone... Even the simplest firmware for blinking the LED!
