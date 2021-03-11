@@ -491,22 +491,22 @@ Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 
 <p><img src="https://lupyuen.github.io/images/wisblock-receiver.jpg" alt="WisBlock LoRa Receiver right by the coconut trees" /></p>
 <p><em>WisBlock LoRa Receiver right by the coconut trees</em></p>
 <h1 id="lora-field-test" class="section-header"><a href="#lora-field-test">6 LoRa Field Test</a></h1>
-<p>Here comes the #1 Question when deciding where to install our LoRa Sensor and LoRa Receiver...</p>
-<p><em>What's the Maximum Distance between the LoRa Transmitter and LoRa Receiver? 100 metres? 200 metres? Or more?!</em></p>
-<p>LoRa was designed to send packets over great distances with little power. Let's find out how far!</p>
+<p>Here comes the <strong>#1 Question</strong> when deciding <strong>where to install</strong> our LoRa Sensor and LoRa Receiver...</p>
+<p><em>What's the <strong>Maximum Distance</strong> between the LoRa Transmitter and LoRa Receiver? 100 metres? 200 metres? Or more?!</em></p>
+<p>LoRa was designed to send packets over <strong>great distances</strong> with little power. Let's find out how far!</p>
 <ol>
 <li>
 <p>We'll put our <strong>WisBlock LoRa Receiver</strong> on the balcony, right by the coconut trees. (See pic above)</p>
 <p>(It's OK to run WisBlock temporarily inside the padded WisBlock Connected Box, antenna sticking out and upwards)</p>
 </li>
 <li>
-<p>Prepare the <strong>LoRa Transmitter Kit</strong>. We'll use...</p>
+<p>Prepare the <strong>LoRa Transmitter Kit</strong>. We'll pack the following...</p>
 <ul>
 <li>
 <p><strong>PineCone BL602 RISC-V Board</strong>, running the <strong>LoRa Ping Firmware</strong> (See the appendix)</p>
 </li>
 <li>
-<p><strong>Semtech SX1276 or Hope RF96</strong> LoRa Transceiver</p>
+<p><strong>LoRa Transceiver</strong> (Semtech SX1276 or Hope RF96)</p>
 </li>
 <li>
 <p><strong>Battery</strong> (Portable Charger)</p>
@@ -526,26 +526,28 @@ Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 
 </li>
 <li>
 <p><strong>Go hiking</strong> with the backpack!</p>
-<p>TODO</p>
+<p>We'll do it like Pokemon Snap... Everywhere we go, we <strong>snap a photo on our phone</strong>.</p>
+<p>Like this...</p>
 <p><img src="https://lupyuen.github.io/images/wisblock-field.jpg" alt="Geocoded, Timestamped photo" /></p>
 </li>
 <li>
-<p>This is a Geocoded, Timestamped photo.</p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/wisblock-chicken.jpg" alt="Geocoded, Timestamped chickens" /></p>
+<p>This photo is <strong>Geocoded and Timestamped</strong> by our phone.</p>
+<p>Later we shall use this photo to tell us where we were <strong>located at a specific time.</strong></p>
+<p>Keep snapping more photos as we walk. Like these <strong>Geocoded, Timestamped Chickens</strong>...</p>
+<p><img src="https://lupyuen.github.io/images/wisblock-chicken.jpg" alt="Geocoded, Timestamped Chickens" /></p>
 </li>
 <li>
-<p>Geocoded, Timestamped chickens.</p>
-<p>TODO</p>
+<p>At the end of our hike, we'll have a collection of <strong>Geocoded Timestamped photos.</strong></p>
+<p>In the next section we'll <strong>match the photos</strong> with the log of LoRa Packets received by WisBlock.</p>
 </li>
 </ol>
-<p><img src="https://lupyuen.github.io/images/wisblock-chickenrice.jpg" alt="Geocoded, Timestamped chicken rice" /></p>
-<p><em>Geocoded, Timestamped chicken rice</em></p>
+<p><img src="https://lupyuen.github.io/images/wisblock-chickenrice.jpg" alt="Geocoded, Timestamped Chicken Rice (not from the earlier chickens)" /></p>
+<p><em>Geocoded, Timestamped Chicken Rice (not from the earlier chickens)</em></p>
 <h1 id="analyse-the-lora-coverage" class="section-header"><a href="#analyse-the-lora-coverage">7 Analyse the LoRa Coverage</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wisblock-log.png" alt="" /></p>
 <p>TODO</p>
-<p><a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/main/logs/0922-1024.log">See the log received LoRa Packets</a></p>
+<p><a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/main/logs/0922-1024.log">See the log of received LoRa Packets</a></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wisblock-chart.png" alt="" /></p>
 <p>TODO</p>
@@ -597,7 +599,7 @@ Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 
 </ol>
 <h1 id="appendix-lora-ping-firmware-for-bl602" class="section-header"><a href="#appendix-lora-ping-firmware-for-bl602">10 Appendix: LoRa Ping Firmware for BL602</a></h1>
 <p>For the LoRa Field Test we installed the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/loraping/customer_app/sdk_app_loraping"><strong>BL602 LoRa Ping Firmware <code>sdk_app_loraping</code></strong></a></p>
-<p>This is a modified version of <a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_lora"><code>sdk_app_lora</code></a> that does the following...</p>
+<p>This is a modified version of <a href="https://lupyuen.github.io/articles/lora#initialise-lora-transceiver"><code>sdk_app_lora</code></a> that does the following...</p>
 <ol>
 <li>
 <p>At startup, we initialise the LoRa Transceiver</p>
