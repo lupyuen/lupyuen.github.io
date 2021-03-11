@@ -4,6 +4,12 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>RAKwireless WisBlock talks LoRa with PineCone BL602 RISC-V Board</title>
+            <link>https://lupyuen.github.io/articles/wisblock</link>
+            <description><![CDATA[How we receive LoRa packets transmitted by PineCone BL602 RISC-V Board ... With RAKwireless WisBlock in Arduino]]></description>
+            <pubDate>Thu, 11 Mar 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Connect PineCone BL602 to LoRa Transceiver</title>
             <link>https://lupyuen.github.io/articles/lora</link>
             <description><![CDATA[How we transmit LoRa packets on PineCone BL602 RISC-V Board ... With Semtech 1276 or Hope RF96]]></description>
