@@ -649,9 +649,11 @@ _What's the difference between LoRa, LoRaWAN and The Things Network?_
 
 1.  __The Things Network__ = The free LoRaWAN network that's operated by volunteers around the world. 
 
-    People actually set up base stations and allow free access.
+    People actually set up base stations and allow free access. [(See this)](https://www.thethingsnetwork.org/)
 
     Our garden sensors could connect to The Things Network... So that we may browse the sensor data conveniently.
+
+    (There are commercial LoRaWAN networks, like [Helium](https://www.helium.com/lorawan))
 
 _3 Levels of LoRa! Where are we right now?_
 
