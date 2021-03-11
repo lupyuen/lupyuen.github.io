@@ -646,6 +646,10 @@ Here's what we'll do...
 
     How would you conduct this __LoRa Field Test__ and analyse the __LoRa Network Coverage__ more efficiently?
 
+    [(Check out the solution by @Kongduino on Twitter)](https://twitter.com/Kongduino/status/1369917401270161414?s=20)
+
+    [(Check the Appendix for another solution)](https://lupyuen.github.io/articles/wisblock#appendix-stream-lora-packets-to-youtube)
+
 ![WisBlock receiving LoRa packets in the night](https://lupyuen.github.io/images/wisblock-night.jpg)
 
 _WisBlock receiving LoRa packets in the night_
@@ -728,20 +732,22 @@ My workaround for now: As I walk, I disconnect and reconnect the USB power to my
 
 # Appendix: Stream LoRa Packets to YouTube
 
-TODO
+_When we're out doing the LoRa Field Test, how far shall we walk?_
 
-_As we're walking, how far shall we walk?_
+_Is there some way to watch the log of packets received by WisBlock... As we walk?_
 
-![](https://lupyuen.github.io/images/wisblock-stream.png)
+Here's a solution: We stream the WisBlock Arduino Log live to YouTube!
 
-[__Watch the video on YouTube__](https://youtu.be/7nZR_LhPL-A?t=1040)
+![Livestream of WisBlock Arduino Log on YouTube](https://lupyuen.github.io/images/wisblock-stream.png)
 
-TODO
+_Livestream of WisBlock Arduino Log on YouTube_
 
-Use [__OBS Studio__](https://obsproject.com/)
+[__Watch the recoded video on YouTube__](https://youtu.be/7nZR_LhPL-A?t=1040)
 
-TODO
+We do this by running [__OBS Studio__](https://obsproject.com/) on our computer.
 
-![](https://lupyuen.github.io/images/wisblock-stream2.png)
+OBS Studio streams our desktop to YouTube as a live video stream, so that we may watch the WisBlock Arduino Log on the go.
 
-TODO
+![OBS Studio streaming WisBlock Arduino Log to YouTube](https://lupyuen.github.io/images/wisblock-stream2.png)
+
+_OBS Studio streaming WisBlock Arduino Log to YouTube_
