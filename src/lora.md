@@ -653,7 +653,7 @@ _What's the difference between LoRa, LoRaWAN and The Things Network?_
 
     Our garden sensors could connect to The Things Network... So that we may browse the sensor data conveniently.
 
-    (There are commercial LoRaWAN networks, like [Helium](https://www.helium.com/lorawan))
+    (There are commercial LoRaWAN networks, like [Helium](https://www.helium.com/lorawan) and [Amazon Sidewalk](https://enterpriseiotinsights.com/20201208/channels/news/lora-alliance-semtech-in-talks-with-amazon-to-switch-sidewalk-over-to-lorawan))
 
 _3 Levels of LoRa! Where are we right now?_
 
