@@ -1,6 +1,6 @@
 # RAKwireless WisBlock talks LoRa with PineCone BL602 RISC-V Board
 
-📝 _12 Mar 2021_
+📝 _11 Mar 2021_
 
 Suppose we've created a wireless __LoRa Sensor__.
 
@@ -586,7 +586,7 @@ To answer that, we have two helpful things...
 
 1.  A bunch of __Geocoded, Timestamped Photos__ that we have collected during our LoRa Field Test
 
-1.  A log of LoRa Packets received by WisBlock...
+1.  A log of __LoRa Packets received by WisBlock__...
 
 ![WisBlock Arduino Log of Received LoRa Packets](https://lupyuen.github.io/images/wisblock-log.png)
 
@@ -682,7 +682,11 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: LoRa Ping Firmware for BL602
 
-For the LoRa Field Test we installed the [__BL602 LoRa Ping Firmware `sdk_app_loraping`__](https://github.com/lupyuen/bl_iot_sdk/tree/loraping/customer_app/sdk_app_loraping)
+In the previous article we've created a LoRa Transmitter with PineCone BL602...
+
+-   [__"Connect PineCone BL602 to LoRa Transceiver"__](https://lupyuen.github.io/articles/lora)
+
+For the LoRa Field Test we installed the [__BL602 LoRa Ping Firmware: `sdk_app_loraping`__](https://github.com/lupyuen/bl_iot_sdk/tree/loraping/customer_app/sdk_app_loraping)
 
 This is a modified version of [`sdk_app_lora`](https://lupyuen.github.io/articles/lora#initialise-lora-transceiver) that does the following...
 
@@ -713,6 +717,10 @@ Here's how it looks when BL602 LoRa Ping sends LoRa Packets to WisBlock...
 ![PineCone BL602 sending LoRa packets to WisBlock](https://lupyuen.github.io/images/wisblock-send.png)
 
 _PineCone BL602 (left) sending LoRa packets to WisBlock (right)_
+
+There seems to be an intermittent problem with my LoRa Transmitter (hardware or firmware?)... WisBlock receives the first LoRa Packet transmitted but doesn't receive subsequent packets.
+
+My workaround for now: As I walk, I disconnect and reconnect the USB power to my LoRa Transmitter (every 20 seconds).
 
 # Appendix: Stream LoRa Packets to YouTube
 
