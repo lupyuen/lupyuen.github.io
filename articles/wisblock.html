@@ -537,27 +537,70 @@ Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 
 <p><img src="https://lupyuen.github.io/images/wisblock-chicken.jpg" alt="Geocoded, Timestamped Chickens" /></p>
 </li>
 <li>
-<p>At the end of our hike, we'll have a collection of <strong>Geocoded Timestamped photos.</strong></p>
+<p>At the end of our hike, we'll have a collection of <strong>Geocoded Timestamped Photos.</strong></p>
 <p>In the next section we'll <strong>match the photos</strong> with the log of LoRa Packets received by WisBlock.</p>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/wisblock-chickenrice.jpg" alt="Geocoded, Timestamped Chicken Rice (not from the earlier chickens)" /></p>
 <p><em>Geocoded, Timestamped Chicken Rice (not from the earlier chickens)</em></p>
 <h1 id="analyse-the-lora-coverage" class="section-header"><a href="#analyse-the-lora-coverage">7 Analyse the LoRa Coverage</a></h1>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/wisblock-log.png" alt="" /></p>
-<p>TODO</p>
+<p>Back to our <strong>#1 Question</strong>...</p>
+<p><em>What's the <strong>Maximum Distance</strong> between the LoRa Transmitter and LoRa Receiver? 100 metres? 200 metres? Or more?!</em></p>
+<p>To answer that, we have two helpful things...</p>
+<ol>
+<li>
+<p>A bunch of <strong>Geocoded, Timestamped Photos</strong> that we have collected during our LoRa Field Test</p>
+</li>
+<li>
+<p>A log of LoRa Packets received by WisBlock...</p>
+</li>
+</ol>
+<p><img src="https://lupyuen.github.io/images/wisblock-log.png" alt="WisBlock Arduino Log of Received LoRa Packets" /></p>
 <p><a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/main/logs/0922-1024.log">See the log of received LoRa Packets</a></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/wisblock-chart.png" alt="" /></p>
-<p>TODO</p>
+<p>Here's what we'll do...</p>
+<ol>
+<li>
+<p>We <strong>copy and paste the log of received LoRa Packets</strong> into a spreadsheet.</p>
+<p>Split the data neatly into columns.</p>
+</li>
+<li>
+<p>Based on the <strong>Timestamp</strong> (in seconds), compute the <strong>Actual Time Of Day</strong></p>
+<p>The spreadsheet should look like this...</p>
+<p><img src="https://lupyuen.github.io/images/wisblock-chart.png" alt="Spreadsheet with received LoRa Packets" /></p>
 <p><a href="https://docs.google.com/spreadsheets/d/15Qdcso1GDD1Ltue67cn5Y-3r1bpO6brvn8AbDM5Tqik/edit?usp=sharing">See the Google Sheets spreadsheet for received LoRa Packets</a></p>
+</li>
+<li>
+<p>Plot a chart of <strong>Signal Strength vs Actual Time</strong> (See pic above)</p>
+<p>This shows us the Signal Strength of the LoRa Packets received by WisBlock as we walked about.</p>
+</li>
+<li>
+<p>TODO </p>
+<p>Look for the dips and valleys</p>
+<p>These are places with poor LoRa coverage</p>
+<p>When we see missing dot，zero coverage</p>
+<p>(Don't place our lora sensor here!)</p>
+</li>
+<li>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wisblock-geocode.png" alt="" /></p>
+</li>
+<li>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wisblock-chart2.png" alt="" /></p>
+</li>
+<li>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/wisblock-night.jpg" alt="" /></p>
+<p>Not bad for a dense, blocky neighborhood!</p>
+<p>No line of sight</p>
+<p>Reflection</p>
+<p>Penetrate light vegetation (like our paper box)</p>
+<p>Unfortunately drops at 400 metres</p>
+<p><img src="https://lupyuen.github.io/images/wisblock-map.png" alt="" /></p>
+<p>TODO</p>
+</li>
+</ol>
+<p><img src="https://lupyuen.github.io/images/wisblock-night.jpg" alt="WisBlock receiving LoRa packets in the night" /></p>
+<p><em>WisBlock receiving LoRa packets in the night</em></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">8 What's Next</a></h1>
 <p>TODO</p>
 <p>The other direction: Transmit LoRa Packets from WisBlock to PineCone BL602</p>
