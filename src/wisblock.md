@@ -44,7 +44,7 @@ Connect the following components according to the pic above...
 
 1.  __Bluetooth LE Antenna__: Connect the Bluetooth LE Antenna to the LPWAN Module.
 
-    (That's the stringy flappy antenna)
+    (That's the stringy flappy thingy)
 
 [__CAUTION: Always connect the LoRa Antenna and Bluetooth LE Antenna before Powering On... Or the LoRa and Bluetooth Transceivers may get damaged! See this__](https://electronics.stackexchange.com/questions/335912/can-i-break-a-radio-tranceiving-device-by-operating-it-with-no-antenna-connected)
 
@@ -60,7 +60,7 @@ _RAKwireless WisBlock Connected Box_
 
 # Initialise LoRa Transceiver
 
-_WisBlock is based on the powerful nRF52840 Microcontroller... Do we program it with FreeRTOS, Zephyr, Mynewt, ...?_
+_WisBlock is based on the powerful nRF52840 Microcontroller. Do we program it with FreeRTOS, Zephyr, Mynewt, ...?_
 
 Here's the surprisingly thing about WisBlock... __We program WisBlock with Arduino!__ (C++)
 
