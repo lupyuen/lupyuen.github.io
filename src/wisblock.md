@@ -710,7 +710,7 @@ This is a modified version of [`sdk_app_lora`](https://lupyuen.github.io/article
 
 1.  We flash the Blue LED on PineCone every 10 seconds
 
-    [__Watch the demo video on YouTube__](https://youtu.be/wCEx-nvDiuQ)
+    [__Watch the BlinkenLED demo video on YouTube__](https://youtu.be/wCEx-nvDiuQ)
 
 The changes are made in the function __`cli_init`__ in [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/loraping/customer_app/sdk_app_loraping/sdk_app_loraping/demo.c#L228-L275)
 
