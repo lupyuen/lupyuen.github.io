@@ -996,6 +996,10 @@ Here's the article...
 
 -   [__"PineCone BL602 Blasting Pixels to ST7789 Display with LVGL Library"__](https://lupyuen.github.io/articles/display)
 
+BL602 SPI HAL is also used by the __Semtech SX1276 / Hope RF96 LoRa Transceiver__. Here's how...
+
+-   [__"Connect PineCone BL602 to LoRa Transceiver"__](https://lupyuen.github.io/articles/lora)
+
 Eventually I'll be porting BL602 SPI HAL to [__Apache Mynewt operating system__](https://lupyuen.github.io/articles/gpio)... So that we can build BL602 SPI applications in Rust!
 
 There's plenty more code in the [__BL602 IoT SDK__](https://github.com/bouffalolab/bl_iot_sdk) to be deciphered and documented: __ADC, DAC, WiFi, Bluetooth LE,__ ...
