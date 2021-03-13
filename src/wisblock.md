@@ -556,7 +556,7 @@ LoRa was designed to send packets over __great distances__ with little power. Le
 
     We'll do it like Pokemon Snap... Everywhere we go, we __snap a photo on our phone__.
 
-    Like this...
+    Like this Grassy Field...
 
     ![Geocoded, Timestamped photo](https://lupyuen.github.io/images/wisblock-field.jpg)
 
