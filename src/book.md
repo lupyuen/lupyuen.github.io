@@ -50,6 +50,8 @@ Learn to call the BL602 __GPIO Hardware Abstraction Layer (HAL)__ to blink an LE
 
 -   ["Control PineCone BL602 RGB LED with GPIO and PWM"](https://lupyuen.github.io/articles/led)
 
+-   ["Porting LoRa Driver from Mynewt to BL602: GPIO"](https://lupyuen.github.io/articles/lora#gpio)
+
 ![](https://lupyuen.github.io/images/book-pwm.jpg)
 
 # PWM on BL602
@@ -70,11 +72,13 @@ Read an I2C Sensor by calling the __BL602 I2C HAL__.
 
 # SPI on BL602
 
-How we call the __BL602 SPI HAL__ to access SPI Sensors and Displays.
+How we call the __BL602 SPI HAL__ to access SPI Sensors, Displays and Network Transceivers.
 
 -   ["PineCone BL602 talks SPI too!"](https://lupyuen.github.io/articles/spi)
 
 -   ["PineCone BL602 Blasting Pixels to ST7789 Display with LVGL Library"](https://lupyuen.github.io/articles/display)
+
+-   ["Porting LoRa Driver from Mynewt to BL602: SPI"](https://lupyuen.github.io/articles/lora#spi)
 
 ![](https://lupyuen.github.io/images/book-dma.jpg)
 
