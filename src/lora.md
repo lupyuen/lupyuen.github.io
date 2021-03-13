@@ -16,7 +16,9 @@ Today we shall __transmit some LoRa packets__ by connecting PineCone BL602 to a 
 
 The LoRa Firmware in this article will run on __PineCone, Pinenut and Any BL602 Board__.
 
-[__Watch the demo video on YouTube__](https://youtu.be/9F30uEY-nIk)
+-   [__Watch the demo video on YouTube__](https://youtu.be/9F30uEY-nIk)
+
+-   [__More about LoRa__](https://en.wikipedia.org/wiki/LoRa)
 
 ![PineCone BL602 RISC-V Board connected to Hope RF96 LoRa Transceiver](https://lupyuen.github.io/images/lora-title.jpg)
 
@@ -643,15 +645,21 @@ _What's the difference between LoRa, LoRaWAN and The Things Network?_
 
     WiFi is also a wireless network protocol.
 
+    [(More about LoRa)](https://en.wikipedia.org/wiki/LoRa)
+
 1.  __LoRaWAN__ = A managed, secure LoRa network
 
     It's like going to Starbucks and connecting to their WiFi.
 
+    [(More about LoRaWAN)](https://en.wikipedia.org/wiki/LoRa#LoRaWAN)
+
 1.  __The Things Network__ = The free LoRaWAN network that's operated by volunteers around the world. 
 
-    People actually set up base stations and allow free access. [(See this)](https://www.thethingsnetwork.org/)
+    People actually set up base stations and allow free access.
 
     Our garden sensors could connect to The Things Network... So that we may browse the sensor data conveniently.
+
+    [(More about The Things Network)](https://www.thethingsnetwork.org/)
 
     (There are commercial LoRaWAN networks, like [Helium](https://www.helium.com/lorawan) and [Amazon Sidewalk](https://enterpriseiotinsights.com/20201208/channels/news/lora-alliance-semtech-in-talks-with-amazon-to-switch-sidewalk-over-to-lorawan))
 
