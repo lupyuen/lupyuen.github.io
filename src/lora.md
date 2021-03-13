@@ -719,15 +719,25 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1363672058920542210?s=20)
 
-1.  How much power would our BL602 + LoRa sensor actually consume? How long would our battery-powered sensor last?
+1.  __How much power__ would our BL602 + LoRa sensor actually consume? How long would our battery-powered sensor last?
 
     We would need to do a thorough Power Profiling. [(See this)](https://lupyuen.github.io/articles/low-power-nb-iot-on-stm32-blue-pill-with-apache-mynewt-and-embedded-rust)
 
     Excellent project for schools and universities!
 
-1.  LoRa is a proprietary protocol, but it has been reverse engineered.
+1.  LoRa is a proprietary protocol, but it has been __reverse engineered.__
 
-    There is an open-source implementation of LoRa with SDR. [(See this)](https://gitlab.com/martynvandijke/gr-lora_sdr)
+    There is an __open-source implementation__ of LoRa with SDR. [(See this)](https://gitlab.com/martynvandijke/gr-lora_sdr)
+
+1.  What's the __Maximum LoRa Packet Size__?
+
+    A LoRa Packet can have up to __222 bytes__ of data. [(See this)](https://lora-developers.semtech.com/library/tech-papers-and-guides/the-book/packet-size-considerations/)
+
+    So LoRa is good for sending sensor data (like our garden sensors) and short messages... But not graphical images.
+
+1.  Thanks to Pine64 for featuring this article on their podcast!
+
+    [Watch the Pine64 Podcast on YouTube](https://www.youtube.com/watch?v=saVzV8A4uSo&t=593s)
 
 # Appendix: LoRa Configuration
 
