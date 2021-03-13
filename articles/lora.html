@@ -668,13 +668,22 @@ Register 0x08 = 0x00
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1363672058920542210?s=20">this Twitter Thread</a></p>
 </li>
 <li>
-<p>How much power would our BL602 + LoRa sensor actually consume? How long would our battery-powered sensor last?</p>
+<p><strong>How much power</strong> would our BL602 + LoRa sensor actually consume? How long would our battery-powered sensor last?</p>
 <p>We would need to do a thorough Power Profiling. <a href="https://lupyuen.github.io/articles/low-power-nb-iot-on-stm32-blue-pill-with-apache-mynewt-and-embedded-rust">(See this)</a></p>
 <p>Excellent project for schools and universities!</p>
 </li>
 <li>
-<p>LoRa is a proprietary protocol, but it has been reverse engineered.</p>
-<p>There is an open-source implementation of LoRa with SDR. <a href="https://gitlab.com/martynvandijke/gr-lora_sdr">(See this)</a></p>
+<p>LoRa is a proprietary protocol, but it has been <strong>reverse engineered.</strong></p>
+<p>There is an <strong>open-source implementation</strong> of LoRa with SDR. <a href="https://gitlab.com/martynvandijke/gr-lora_sdr">(See this)</a></p>
+</li>
+<li>
+<p>What's the <strong>Maximum LoRa Packet Size</strong>?</p>
+<p>A LoRa Packet can have up to <strong>222 bytes</strong> of data. <a href="https://lora-developers.semtech.com/library/tech-papers-and-guides/the-book/packet-size-considerations/">(See this)</a></p>
+<p>So LoRa is good for sending sensor data (like our garden sensors) and short messages... But not graphical images.</p>
+</li>
+<li>
+<p>Thanks to Pine64 for featuring this article on their podcast!</p>
+<p><a href="https://www.youtube.com/watch?v=saVzV8A4uSo&amp;t=593s">Watch the Pine64 Podcast on YouTube</a></p>
 </li>
 </ol>
 <h1 id="appendix-lora-configuration" class="section-header"><a href="#appendix-lora-configuration">10 Appendix: LoRa Configuration</a></h1>
