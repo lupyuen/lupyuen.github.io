@@ -664,7 +664,11 @@ In the next article we shall head back to PineCone BL602 and finish Level 1 of o
 
 And then we can progress to LoRa Levels 2 and 3: __LoRaWAN and The Things Network.__
 
-[(More about the 3 Levels of LoRa)](https://lupyuen.github.io/articles/lora#lora-vs-lorawan)
+-   [__Follow the BL602 LoRa updates on this Twitter Thread__](https://twitter.com/MisterTechBlog/status/1370708936739885056?s=20)
+
+-   [__And the LoRaWAN Specifications on this Twitter Thread__](https://twitter.com/MisterTechBlog/status/1370224529222500352?s=20)
+
+-   [__More about the 3 Levels of LoRa__](https://lupyuen.github.io/articles/lora#lora-vs-lorawan)
 
 We have come a loooong way since I first [__experimented with LoRa in 2016__](https://github.com/lupyuen/LoRaArduino)...
 
