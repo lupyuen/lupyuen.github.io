@@ -490,6 +490,10 @@ Let's enter some commands to transmit a LoRa Packet!
 
     [__Check out the complete log__](https://gist.github.com/lupyuen/31ac29aa776601ba6a610a93f3190c72)
 
+1.  If we wish to __transmit LoRa Packets automatically on startup__ (without entering any commands), check out the LoRa Ping Firmware...
+
+    [__LoRa Ping Firmware for BL602__](https://lupyuen.github.io/articles/wisblock#appendix-lora-ping-firmware-for-bl602)
+
 # Troubleshoot LoRa
 
 _How will we know whether BL602 is connected correctly to the LoRa Transceiver?_
