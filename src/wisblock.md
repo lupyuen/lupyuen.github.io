@@ -532,7 +532,7 @@ LoRa was designed to send packets over __great distances__ with little power. Le
 
 1.  We'll put our __WisBlock LoRa Receiver__ on the balcony, right by the coconut trees. (See pic above)
 
-    (It's OK to run WisBlock temporarily inside the padded WisBlock Connected Box, antenna sticking out and upwards)
+    (It's OK to run WisBlock temporarily inside the padded WisBlock Connected Box, antenna sticking out and upwards... Just make sure the metal parts of the LoRa Antenna and the Bluetooth Antenna don't touch any metal parts on WisBlock)
 
 1.  Prepare the __LoRa Transmitter Kit__. We'll pack the following...
 
