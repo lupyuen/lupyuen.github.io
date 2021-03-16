@@ -162,6 +162,10 @@ int bl_gpio_enable_input( uint8_t pin, uint8_t pullup, uint8_t pulldown);
 
 -   `pulldown` is set to 1 if the pin should be pulled down electrically, 0 otherwise.
 
+Check out this sample code for GPIO Output...
+
+-   [__"Configure GPIO Output Pin"__](https://lupyuen.github.io/articles/spi#configure-chip-select-pin-as-gpio-output-pin)
+
 ## Read and Write GPIO
 
 To read or write a GPIO Pin, we call these GPIO HAL Functions: [`bl_gpio.h`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_gpio.h)
@@ -178,6 +182,12 @@ int bl_gpio_input_get_value(uint8_t pin);
 -   `value` is the value to be read or written (0=Low, 1=High).
 
 -   `bl_gpio_input_get` stores the value read at the pointer passed in.
+
+Check out this sample code for writing to GPIO...
+
+-   [__"Set GPIO To Low"__](https://lupyuen.github.io/articles/spi#set-chip-select-to-low)
+
+-   [__"Set GPIO To High"__](https://lupyuen.github.io/articles/spi#set-chip-select-to-high)
 
 ## GPIO Interrupts
 
