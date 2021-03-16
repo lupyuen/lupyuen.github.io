@@ -565,9 +565,9 @@ _RF Explorer (at right) featured in WandaVision season 1 episode 4_
 
 [See the output from `read_registers`](https://gist.github.com/lupyuen/31ac29aa776601ba6a610a93f3190c72)
 
-![Our LoRa packet](https://lupyuen.github.io/images/lora-sdr5.png)
-
 # Visualise LoRa with Software Defined Radio
+
+![Our LoRa packet](https://lupyuen.github.io/images/lora-sdr5.png)
 
 _What's this? A glowing helix? Magic seahorse?_
 
