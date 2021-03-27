@@ -80,8 +80,32 @@
 <li><a href="#enter-lora-commands">8.3 Enter LoRa commands</a><ul></ul></li></ul></li>
 <li><a href="#troubleshoot-lora">9 Troubleshoot LoRa</a><ul></ul></li>
 <li><a href="#whats-next">10 What's Next</a><ul></ul></li>
-<li><a href="#notes">11 Notes</a><ul></ul></li></ul></nav><p>📝 <em>1 Apr 2021</em></p>
-<p>TODO</p>
+<li><a href="#notes">11 Notes</a><ul></ul></li></ul></nav><p>📝 <em>31 Mar 2021</em></p>
+<p>Not too long ago (and not so far away) we embarked on a quest to create a low-power, long-range <a href="https://en.wikipedia.org/wiki/LoRa"><strong>LoRa IoT Sensor</strong></a> with <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602 RISC-V Board</strong></a></p>
+<ol>
+<li>
+<p>We created a <strong>LoRa Transmitter</strong> with BL602...</p>
+<p><a href="https://lupyuen.github.io/articles/lora"><strong>&quot;Connect PineCone BL602 to LoRa Transceiver&quot;</strong></a></p>
+</li>
+<li>
+<p>Then we tested it with a <strong>LoRa Receiver</strong>: RAKwireless WisBlock...</p>
+<p><a href="https://lupyuen.github.io/articles/wisblock"><strong>&quot;RAKwireless WisBlock talks LoRa with PineCone BL602 RISC-V Board&quot;</strong></a></p>
+</li>
+</ol>
+<p>Today we shall create the LoRa Firmware for BL602 that will <strong>Receive LoRa Packets</strong>. And test it with RAKwireless WisBlock as the LoRa Transmitter.</p>
+<p><em>Why do we need to receive LoRa Packets... If our BL602 LoRa Sensor will only transmit sensor data?</em></p>
+<p>Because we'll soon connect our BL602 LoRa Sensor to a <strong>secure, managed LoRaWAN Network</strong> like <a href="https://www.thethingsnetwork.org/"><strong>The Things Network</strong></a>. (Or maybe <a href="https://www.helium.com/lorawan"><strong>Helium</strong></a>)</p>
+<p>Our BL602 gadget can't join these networks unless it can receive packets and respond to the networks.</p>
+<p>Let's make it so! (And do... Or do not... There is no try!)</p>
+<p>The LoRa Firmware in this article will run on <strong>PineCone, Pinenut and Any BL602 Board</strong>.</p>
+<ul>
+<li>
+<p><a href="https://youtu.be/3TSvo0dwwnQ"><strong>Watch the demo video on YouTube</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lora#lora-vs-lorawan"><strong>More about the 3 Levels of LoRa and LoRaWAN</strong></a></p>
+</li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/lora2-title.jpg" alt="PineCone BL602 RISC-V Board with Hope RF96 LoRa Transceiver (top) receives LoRa packets from RAKwireless WisBlock (bottom)" /></p>
 <p><em>PineCone BL602 RISC-V Board with Hope RF96 LoRa Transceiver (top) receives LoRa packets from RAKwireless WisBlock (bottom)</em></p>
 <h1 id="connect-bl602-to-lora-transceiver" class="section-header"><a href="#connect-bl602-to-lora-transceiver">1 Connect BL602 to LoRa Transceiver</a></h1>
