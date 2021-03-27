@@ -65,7 +65,35 @@ Yep we may leave pins __`D0`__ to __`D5`__ disconnected. (Otherwise we'll run ou
 
 TODO
 
-# Build and Run the LoRa Firmware
+# NimBLE Porting Layer
+
+TODO
+
+## Event Queues
+
+TODO
+
+## Timers
+
+TODO
+
+# BL602 GPIO Interrupts
+
+TODO
+
+# BL602 Stack Trace
+
+TODO
+
+# Always Initialise Stack Variables!
+
+TODO
+
+# Start the RAKwireless WisBlock Transmitter
+
+TODO
+
+# Build and Run the BL602 LoRa Firmware
 
 TODO
 
@@ -90,8 +118,8 @@ Download the Firmware Binary File __`sdk_app_lora.bin`__ for your LoRa Frequency
 Alternatively, we may build the Firmware Binary File `sdk_app_lora.bin` from the [source code](https://github.com/lupyuen/bl_iot_sdk/tree/lora/customer_app/sdk_app_lora)...
 
 ```bash
-# Download the lora branch of lupyuen's bl_iot_sdk
-git clone --recursive --branch lora https://github.com/lupyuen/bl_iot_sdk
+# Download the lorarecv branch of lupyuen's bl_iot_sdk
+git clone --recursive --branch lorarecv https://github.com/lupyuen/bl_iot_sdk
 cd bl_iot_sdk/customer_app/sdk_app_lora
 
 # TODO: Set the LoRa Frequency in sdk_app_lora/demo.c. 
@@ -112,7 +140,7 @@ cp build_out/sdk_app_lora.bin ~/blflash
 
 [More details on building bl_iot_sdk](https://lupyuen.github.io/articles/pinecone#building-firmware)
 
-(Remember to use the __`lora`__ branch, not the default __`master`__ branch)
+(Remember to use the __`lorarecv`__ branch, not the default __`master`__ branch)
 
 ## Flash the firmware
 
