@@ -124,6 +124,8 @@ Let's turn BL602 into a real IoT gadget that transmits __long range, low power L
 
 -   ["RAKwireless WisBlock talks LoRa with PineCone BL602 RISC-V Board"](https://lupyuen.github.io/articles/wisblock)
 
+-   ["PineCone BL602 RISC-V Board Receives LoRa Packets"](https://lupyuen.github.io/articles/lora2)
+
 ![](https://lupyuen.github.io/images/book-openocd.jpg)
 
 # OpenOCD on BL602
