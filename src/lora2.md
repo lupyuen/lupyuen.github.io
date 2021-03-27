@@ -4,9 +4,9 @@
 
 TODO
 
-![PineCone BL602 RISC-V Board with Hope RF96 LoRa Transceiver (right) receives LoRa packets from RAKwireless WisBlock (left)](https://lupyuen.github.io/images/lora2-title.jpg)
+![PineCone BL602 RISC-V Board with Hope RF96 LoRa Transceiver (top) receives LoRa packets from RAKwireless WisBlock (bottom)](https://lupyuen.github.io/images/lora2-title.jpg)
 
-_PineCone BL602 RISC-V Board with Hope RF96 LoRa Transceiver (right) receives LoRa packets from RAKwireless WisBlock (left)_
+_PineCone BL602 RISC-V Board with Hope RF96 LoRa Transceiver (top) receives LoRa packets from RAKwireless WisBlock (bottom)_
 
 # Connect BL602 to LoRa Transceiver
 
@@ -18,12 +18,16 @@ Connect BL602 to SX1276 or RF96 as follows...
 
 | BL602 Pin     | SX1276 / RF96 Pin   | Wire Colour 
 |:--------------|:--------------------|:-------------------
-| __`GPIO 1`__  | `ISO` _(MISO)_      | Green
-| __`GPIO 2`__  | Do Not Connect      | 
-| __`GPIO 3`__  | `SCK`               | Yellow 
-| __`GPIO 4`__  | `OSI` _(MOSI)_      | Blue
-| __`GPIO 14`__ | `NSS`               | Orange
-| __`GPIO 17`__ | `RST`               | White
+| __`GPIO 0`__  | `DIO1`              | Dark Green
+| __`GPIO 1`__  | `ISO` _(MISO)_      | Light Green (Top)
+| __`GPIO 2`__  | Do Not Connect      | (Unused Chip Select)
+| __`GPIO 3`__  | `SCK`               | Yellow (Top)
+| __`GPIO 4`__  | `OSI` _(MOSI)_      | Blue (Top)
+| __`GPIO 5`__  | `DIO2`              | Blue (Bottom)
+| __`GPIO 11`__ | `DIO0`              | Yellow (Bottom)
+| __`GPIO 12`__ | `DIO3`              | Light Green (Bottom)
+| __`GPIO 14`__ | `NSS`               | Orange 2
+| __`GPIO 17`__ | `RST`               | White 2
 | __`3V3`__     | `3.3V`              | Red
 | __`GND`__     | `GND`               | Black
 
@@ -45,21 +49,9 @@ Here are the pins connected on our LoRa Transceiver: SX1276 or RF96...
 
 ![PineCone BL602 RISC-V Board connected to Hope RF96 LoRa Transceiver](https://lupyuen.github.io/images/lora2-connect5.jpg)
 
-_Why are so many pins on SX1276 (or RF96) unused?_
+_Do we need to connect so many pins on SX1276 (or RF96)?_
 
-Unlike WiFi, LoRa networks can be really simple. Today we shall configure our LoRa Transceiver for the simplest __"Fire And Forget"__ Mode...
-
-1.  __Blast out a packet of 64 bytes__ over the airwaves
-
-1.  __Don't verify__ whether our packet has been received
-
-1.  __Don't receive__ any packets
-
-This is ideal for __simple sensors__ (like our garden sensors) that are powered by batteries and can tolerate a few lost packets. (Because we'll send the sensor data periodically anyway)
-
-_So this means we won't use all the pins on SX1276 (or RF96)?_
-
-Yep we may leave pins __`D0`__ to __`D5`__ disconnected. (Otherwise we'll run out of pins on BL602!)
+TODO
 
 # Receive LoRa Packet
 
