@@ -82,19 +82,23 @@
 <li><a href="#whats-next">10 What's Next</a><ul></ul></li>
 <li><a href="#notes">11 Notes</a><ul></ul></li></ul></nav><p>📝 <em>1 Apr 2021</em></p>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/lora2-title.jpg" alt="PineCone BL602 RISC-V Board with Hope RF96 LoRa Transceiver (right) receives LoRa packets from RAKwireless WisBlock (left)" /></p>
-<p><em>PineCone BL602 RISC-V Board with Hope RF96 LoRa Transceiver (right) receives LoRa packets from RAKwireless WisBlock (left)</em></p>
+<p><img src="https://lupyuen.github.io/images/lora2-title.jpg" alt="PineCone BL602 RISC-V Board with Hope RF96 LoRa Transceiver (top) receives LoRa packets from RAKwireless WisBlock (bottom)" /></p>
+<p><em>PineCone BL602 RISC-V Board with Hope RF96 LoRa Transceiver (top) receives LoRa packets from RAKwireless WisBlock (bottom)</em></p>
 <h1 id="connect-bl602-to-lora-transceiver" class="section-header"><a href="#connect-bl602-to-lora-transceiver">1 Connect BL602 to LoRa Transceiver</a></h1>
 <p>TODO</p>
 <p>Connect BL602 to SX1276 or RF96 as follows...</p>
 <p><img src="https://lupyuen.github.io/images/lora2-connect3.jpg" alt="PineCone BL602 RISC-V Board connected to Hope RF96 LoRa Transceiver" /></p>
 <table><thead><tr><th align="left">BL602 Pin</th><th align="left">SX1276 / RF96 Pin</th><th align="left">Wire Colour</th></tr></thead><tbody>
-<tr><td align="left"><strong><code>GPIO 1</code></strong></td><td align="left"><code>ISO</code> <em>(MISO)</em></td><td align="left">Green</td></tr>
-<tr><td align="left"><strong><code>GPIO 2</code></strong></td><td align="left">Do Not Connect</td><td align="left"></td></tr>
-<tr><td align="left"><strong><code>GPIO 3</code></strong></td><td align="left"><code>SCK</code></td><td align="left">Yellow</td></tr>
-<tr><td align="left"><strong><code>GPIO 4</code></strong></td><td align="left"><code>OSI</code> <em>(MOSI)</em></td><td align="left">Blue</td></tr>
-<tr><td align="left"><strong><code>GPIO 14</code></strong></td><td align="left"><code>NSS</code></td><td align="left">Orange</td></tr>
-<tr><td align="left"><strong><code>GPIO 17</code></strong></td><td align="left"><code>RST</code></td><td align="left">White</td></tr>
+<tr><td align="left"><strong><code>GPIO 0</code></strong></td><td align="left"><code>DIO1</code></td><td align="left">Dark Green</td></tr>
+<tr><td align="left"><strong><code>GPIO 1</code></strong></td><td align="left"><code>ISO</code> <em>(MISO)</em></td><td align="left">Light Green (Top)</td></tr>
+<tr><td align="left"><strong><code>GPIO 2</code></strong></td><td align="left">Do Not Connect</td><td align="left">(Unused Chip Select)</td></tr>
+<tr><td align="left"><strong><code>GPIO 3</code></strong></td><td align="left"><code>SCK</code></td><td align="left">Yellow (Top)</td></tr>
+<tr><td align="left"><strong><code>GPIO 4</code></strong></td><td align="left"><code>OSI</code> <em>(MOSI)</em></td><td align="left">Blue (Top)</td></tr>
+<tr><td align="left"><strong><code>GPIO 5</code></strong></td><td align="left"><code>DIO2</code></td><td align="left">Blue (Bottom)</td></tr>
+<tr><td align="left"><strong><code>GPIO 11</code></strong></td><td align="left"><code>DIO0</code></td><td align="left">Yellow (Bottom)</td></tr>
+<tr><td align="left"><strong><code>GPIO 12</code></strong></td><td align="left"><code>DIO3</code></td><td align="left">Light Green (Bottom)</td></tr>
+<tr><td align="left"><strong><code>GPIO 14</code></strong></td><td align="left"><code>NSS</code></td><td align="left">Orange 2</td></tr>
+<tr><td align="left"><strong><code>GPIO 17</code></strong></td><td align="left"><code>RST</code></td><td align="left">White 2</td></tr>
 <tr><td align="left"><strong><code>3V3</code></strong></td><td align="left"><code>3.3V</code></td><td align="left">Red</td></tr>
 <tr><td align="left"><strong><code>GND</code></strong></td><td align="left"><code>GND</code></td><td align="left">Black</td></tr>
 </tbody></table>
@@ -107,22 +111,8 @@
 <p>Here are the pins connected on our LoRa Transceiver: SX1276 or RF96...</p>
 <p>(<code>ISO</code> and <code>OSI</code> appear flipped in this pic... Rotate your phone / computer screen 180 degrees for the proper perspective)</p>
 <p><img src="https://lupyuen.github.io/images/lora2-connect5.jpg" alt="PineCone BL602 RISC-V Board connected to Hope RF96 LoRa Transceiver" /></p>
-<p><em>Why are so many pins on SX1276 (or RF96) unused?</em></p>
-<p>Unlike WiFi, LoRa networks can be really simple. Today we shall configure our LoRa Transceiver for the simplest <strong>&quot;Fire And Forget&quot;</strong> Mode...</p>
-<ol>
-<li>
-<p><strong>Blast out a packet of 64 bytes</strong> over the airwaves</p>
-</li>
-<li>
-<p><strong>Don't verify</strong> whether our packet has been received</p>
-</li>
-<li>
-<p><strong>Don't receive</strong> any packets</p>
-</li>
-</ol>
-<p>This is ideal for <strong>simple sensors</strong> (like our garden sensors) that are powered by batteries and can tolerate a few lost packets. (Because we'll send the sensor data periodically anyway)</p>
-<p><em>So this means we won't use all the pins on SX1276 (or RF96)?</em></p>
-<p>Yep we may leave pins <strong><code>D0</code></strong> to <strong><code>D5</code></strong> disconnected. (Otherwise we'll run out of pins on BL602!)</p>
+<p><em>Do we need to connect so many pins on SX1276 (or RF96)?</em></p>
+<p>TODO</p>
 <h1 id="receive-lora-packet" class="section-header"><a href="#receive-lora-packet">2 Receive LoRa Packet</a></h1>
 <p>TODO</p>
 <h1 id="nimble-porting-layer" class="section-header"><a href="#nimble-porting-layer">3 NimBLE Porting Layer</a></h1>
