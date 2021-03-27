@@ -18,9 +18,9 @@ _Why do we need to receive LoRa Packets... If our BL602 LoRa Sensor will only tr
 
 Because we'll soon connect our BL602 LoRa Sensor to a __secure, managed LoRaWAN Network__ like [__The Things Network__](https://www.thethingsnetwork.org/). (Or maybe [__Helium__](https://www.helium.com/lorawan))
 
-Our BL602 gadget can't join these networks unless it can receive packets and respond to the networks.
+Our BL602 gadget can't join these networks unless it can receive packets and respond to the network.
 
-Let's make it so! (And do... Or do not... There is no try!)
+Let's make it so! (Because we do... Or do not... There is no try!)
 
 The LoRa Firmware in this article will run on __PineCone, Pinenut and Any BL602 Board__.
 
