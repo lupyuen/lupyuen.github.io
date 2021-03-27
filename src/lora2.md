@@ -34,8 +34,6 @@ _PineCone BL602 RISC-V Board with Hope RF96 LoRa Transceiver (top) receives LoRa
 
 # Connect BL602 to LoRa Transceiver
 
-TODO
-
 Connect BL602 to SX1276 or RF96 as follows...
 
 ![PineCone BL602 RISC-V Board connected to Hope RF96 LoRa Transceiver](https://lupyuen.github.io/images/lora2-connect3.jpg)
@@ -50,8 +48,8 @@ Connect BL602 to SX1276 or RF96 as follows...
 | __`GPIO 5`__  | `DIO2`              | Blue (Bottom)
 | __`GPIO 11`__ | `DIO0`              | Yellow (Bottom)
 | __`GPIO 12`__ | `DIO3`              | Light Green (Bottom)
-| __`GPIO 14`__ | `NSS`               | Orange 2
-| __`GPIO 17`__ | `RST`               | White 2
+| __`GPIO 14`__ | `NSS`               | Orange
+| __`GPIO 17`__ | `RST`               | White
 | __`3V3`__     | `3.3V`              | Red
 | __`GND`__     | `GND`               | Black
 
@@ -73,7 +71,7 @@ Here are the pins connected on our LoRa Transceiver: SX1276 or RF96...
 
 ![PineCone BL602 RISC-V Board connected to Hope RF96 LoRa Transceiver](https://lupyuen.github.io/images/lora2-connect5.jpg)
 
-_Do we need to connect so many pins on SX1276 (or RF96)?_
+_Why do we connect so many pins on SX1276 (or RF96)?_
 
 TODO
 
