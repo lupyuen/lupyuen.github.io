@@ -2,7 +2,7 @@
 
 📝 _31 Mar 2021_
 
-Not too long ago (and not so far away) we embarked on a quest to create a low-power, long-range [__LoRa IoT Sensor__](https://en.wikipedia.org/wiki/LoRa) with [__PineCone BL602 RISC-V Board__](https://lupyuen.github.io/articles/pinecone)
+Not too long ago (and not so far away) we embarked on an epic quest to create a low-power, long-range [__LoRa IoT Sensor__](https://en.wikipedia.org/wiki/LoRa) with [__PineCone BL602 RISC-V Board__](https://lupyuen.github.io/articles/pinecone)
 
 1.  We created a __LoRa Transmitter__ with BL602...
 
