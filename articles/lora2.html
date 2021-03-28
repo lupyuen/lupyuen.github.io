@@ -138,24 +138,29 @@
 <p>TODO</p>
 <ul>
 <li>
-<p><strong>DIO0</strong>:</p>
+<p><strong><code>DIO0</code> Packet Received</strong>: This is triggered when the transceiver receives a LoRa Packet.</p>
+<p>(<code>DIO</code> is also triggered after the transceiver has transmitted a LoRa Packet, but it's not so useful)</p>
 </li>
 <li>
-<p><strong>DIO1</strong>:</p>
+<p><strong><code>DIO1</code> Sync Timeout</strong>: TODO</p>
 </li>
 <li>
-<p><strong>DIO2</strong>:</p>
+<p><strong><code>DIO2</code> Change Channel</strong>: This is used for Spread Spectrum (Frequency Hopping). </p>
+<p>When we transmit / receive LoRa Packets over multiple frequencies, we reduce the likelihood of packet collisions over the airwaves.</p>
 </li>
 <li>
-<p><strong>DIO3</strong>:</p>
+<p><strong><code>DIO3</code> Channel Activity Detection</strong>: The transceiver supports allows us to </p>
+<p>TODO</p>
 </li>
 <li>
-<p><strong>DIO4</strong> (Unused):</p>
+<p><strong><code>DIO4</code></strong> (Not connected): For FSK Modulation only. (We're using LoRa Modulation)</p>
 </li>
 <li>
-<p><strong>DIO5</strong> (Unused):</p>
+<p><strong><code>DIO5</code></strong> (Not connected): For FSK Modulation only. (We're using LoRa Modulation)</p>
 </li>
 </ul>
+<p>Only <code>DIO0</code> required for receiving simple LoRa Packets, without the frills.</p>
+<p>But for now we shall connect pins <code>DIO0</code> to <code>DIO3</code>, just in case they will be needed for LoRaWAN later.</p>
 <p><a href="https://lupyuen.github.io/articles/lora#getting-the-lora-transceiver-and-antenna">(More about Semtech SX1276 and Hope RF96)</a></p>
 <h1 id="receive-lora-packet" class="section-header"><a href="#receive-lora-packet">2 Receive LoRa Packet</a></h1>
 <p>TODO</p>
