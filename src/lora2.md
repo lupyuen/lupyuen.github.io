@@ -73,31 +73,43 @@ Here are the pins connected on our LoRa Transceiver: SX1276 or RF96...
 
 _Why do we connect so many pins on SX1276 (or RF96)?_
 
-TODO
+The SX1276 and RF96 transceivers have __6 (!) Digital Input / Output pins: `DIO0` to `DIO5`__
 
--   __`DIO0` Packet Received__: This is triggered when the transceiver receives a LoRa Packet.
+The transceiver shifts the Logic Levels of these pins from __Low to High__ when specific conditions occur...
 
-    (`DIO` is also triggered after the transceiver has transmitted a LoRa Packet, but it's not so useful)
+-   __`DIO0` Packet Received__: This pin is triggered when the transceiver __receives a LoRa Packet.__
 
--   __`DIO1` Sync Timeout__: TODO
+    `DIO0` is also triggered after the transceiver has transmitted a LoRa Packet, but that's not so useful.
 
--   __`DIO2` Change Channel__: This is used for Spread Spectrum (Frequency Hopping). 
+-   __`DIO1` Receive Timeout__: This pin is triggered when the transceiver __doesn't receive any LoRa Packets__ within a timeout window.
+
+    This works only when the transceiver is configured for __Single Receive Mode__.
+
+    However today we're configuring our transceiver for __Continuous Receive Mode__ so we won't be using `DIO1`. We shall trigger receive timeouts with a BL602 Timer.
+
+-   __`DIO2` Change Channel__: This is used for __Spread Spectrum Transmission__ (Frequency Hopping). 
 
     When we transmit / receive LoRa Packets over multiple frequencies, we reduce the likelihood of packet collisions over the airwaves.
 
--   __`DIO3` Channel Activity Detection__: The transceiver supports allows us to 
+    We won't be using Spread Spectrum Transmission today, so `DIO2` shall stay idle.
 
-    TODO
+-   __`DIO3` Channel Activity Detection__: The transceiver lets us __detect whether there's any ongoing transmission__ in a LoRa Radio Channel, in a power-efficient way.
 
--   __`DIO4`__ (Not connected): For FSK Modulation only. (We're using LoRa Modulation)
+    We won't be using Channel Activity Detection today.
 
--   __`DIO5`__ (Not connected): For FSK Modulation only. (We're using LoRa Modulation)
+-   __`DIO4`__ and __`DIO5`__ are not connected to BL602.  They are used for __FSK Radio Modulation__ only.
 
-Only `DIO0` required for receiving simple LoRa Packets, without the frills.
+    (We're using LoRa Radio Modulation)
 
-But for now we shall connect pins `DIO0` to `DIO3`, just in case they will be needed for LoRaWAN later.
+Only __1 pin `DIO0`__ is required for receiving simple LoRa Packets, without the frills (like Spread Spectrum Transmission).
 
-[(More about Semtech SX1276 and Hope RF96)](https://lupyuen.github.io/articles/lora#getting-the-lora-transceiver-and-antenna)
+But for now we shall connect __4 pins `DIO0` to `DIO3`__, just in case they will be needed later for LoRaWAN. (Which will probably use Spread Spectrum Transmission)
+
+We shall configure BL602 to trigger __GPIO Interrupts__ when the 4 pins shift from Low to High.
+
+-   [__More about Semtech SX1276 and Hope RF96__](https://lupyuen.github.io/articles/lora#getting-the-lora-transceiver-and-antenna)
+
+-   [__Semtech SX1276 Datasheet__](https://semtech.my.salesforce.com/sfc/p/E0000000JelG/a/2R0000001Rbr/6EfVZUorrpoKFfvaF_Fkpgp5kzjiNyiAbqcpqh9qSjE?__hstc=212684107.81023fceb80b3e55c1c4e19a916804ba.1616925682449.1616925682449.1616925682449.1&__hssc=212684107.1.1616925682449&__hsfp=1469659345)
 
 # Receive LoRa Packet
 
