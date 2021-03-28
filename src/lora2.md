@@ -75,17 +75,27 @@ _Why do we connect so many pins on SX1276 (or RF96)?_
 
 TODO
 
--   __DIO0__:
+-   __`DIO0` Packet Received__: This is triggered when the transceiver receives a LoRa Packet.
 
--   __DIO1__:
+    (`DIO` is also triggered after the transceiver has transmitted a LoRa Packet, but it's not so useful)
 
--   __DIO2__:
+-   __`DIO1` Sync Timeout__: TODO
 
--   __DIO3__:
+-   __`DIO2` Change Channel__: This is used for Spread Spectrum (Frequency Hopping). 
 
--   __DIO4__ (Unused):
+    When we transmit / receive LoRa Packets over multiple frequencies, we reduce the likelihood of packet collisions over the airwaves.
 
--   __DIO5__ (Unused):
+-   __`DIO3` Channel Activity Detection__: The transceiver supports allows us to 
+
+    TODO
+
+-   __`DIO4`__ (Not connected): For FSK Modulation only. (We're using LoRa Modulation)
+
+-   __`DIO5`__ (Not connected): For FSK Modulation only. (We're using LoRa Modulation)
+
+Only `DIO0` required for receiving simple LoRa Packets, without the frills.
+
+But for now we shall connect pins `DIO0` to `DIO3`, just in case they will be needed for LoRaWAN later.
 
 [(More about Semtech SX1276 and Hope RF96)](https://lupyuen.github.io/articles/lora#getting-the-lora-transceiver-and-antenna)
 
