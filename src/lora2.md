@@ -395,14 +395,15 @@ __`handle_gpio_interrupt`__ is the low-level __Interrupt Handler__ that will be 
 
 We'll look inside `handle_gpio_interrupt` in a while.
 
-## Register GPIO Handler
+## Register Handler Function
 
 TODO
 
 From [`sx1276-board.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L341-L403)
 
 ```c
-/// Register Interrupt Handler for GPIO. Return 0 if successful.
+/// Register Handler Function for GPIO. Return 0 if successful.
+/// GPIO Handler Function will run in the context of the Application Task, not the Interrupt Handler.
 /// Based on bl_gpio_register in https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_gpio.c
 static int register_gpio_handler(
     uint8_t gpioPin,         //  GPIO Pin Number
