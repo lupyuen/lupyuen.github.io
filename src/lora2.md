@@ -349,7 +349,7 @@ Let's talk about __handling GPIO Interrupts__ on BL602...
 
 1.  We shall configure BL602 to detect this shift in the connected GPIO Pin and trigger a __GPIO Interrupt__
 
-1.  The __GPIO Interrupt Handler__ in our firmware code will then process the received LoRa Packet
+1.  The __GPIO Interrupt Handler__ in our firmware code will then process the received LoRa Packet. (And reset `DIO0` back to Low)
 
 TODO
 
