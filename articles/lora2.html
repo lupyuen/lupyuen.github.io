@@ -324,8 +324,7 @@ static void on_rx_done(
 <p>(This differs from the original <a href="https://github.com/apache/mynewt-core/blob/master/apps/loraping/src/main.c">LoRa Ping</a> program... On Mynewt OS, <code>on_rx_done</code> and other Callback Functions will run in the context of the Interrupt Handler)</p>
 <h2 id="timeout-and-error-callbacks" class="section-header"><a href="#timeout-and-error-callbacks">3.2 Timeout and Error Callbacks</a></h2>
 <p><em>What happens when we don't receive a LoRa Packet in 5 seconds?</em></p>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L398-L412"><code>demo.c</code></a></p>
+<p>The SX1276 Driver calls our Callback Function <strong><code>on_rx_timeout</code></strong> that's defined in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L398-L412"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// Callback Function that is called when no LoRa messages could be received due to timeout
 static void on_rx_timeout(void) {
     //  Switch the LoRa Transceiver to low power, sleep mode
@@ -336,8 +335,8 @@ static void on_rx_timeout(void) {
     loraping_rxinfo_timeout();
 }
 </code></pre>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L414-L427"><code>demo.c</code></a></p>
+<p>Here we power down the LoRa Transceiver to conserve battery life.</p>
+<p>We do the same in the Callback Function <strong><code>on_rx_error</code></strong>, which the SX1276 Driver calls when it hits an error receiving LoRa Packets: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L414-L427"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// Callback Function that is called when we couldn't receive a LoRa message due to error
 static void on_rx_error(void) {
     //  Log the error
@@ -347,8 +346,8 @@ static void on_rx_error(void) {
     Radio.Sleep();
 }
 </code></pre>
-<p>TODO</p>
 <h1 id="bl602-gpio-interrupts" class="section-header"><a href="#bl602-gpio-interrupts">4 BL602 GPIO Interrupts</a></h1>
+<p>Let's talk about <strong>handling GPIO Interrupts</strong> on BL602.</p>
 <p>TODO</p>
 <h1 id="multitask-with-nimble-porting-layer" class="section-header"><a href="#multitask-with-nimble-porting-layer">5 Multitask with NimBLE Porting Layer</a></h1>
 <p>TODO</p>
