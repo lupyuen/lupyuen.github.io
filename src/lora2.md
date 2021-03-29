@@ -310,9 +310,7 @@ Yes because this code runs in the context of the __FreeRTOS Application Task__, 
 
 _What happens when we don't receive a LoRa Packet in 5 seconds?_
 
-TODO
-
-From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L398-L412)
+The SX1276 Driver calls our Callback Function __`on_rx_timeout`__ that's defined in [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L398-L412)
 
 ```c
 /// Callback Function that is called when no LoRa messages could be received due to timeout
@@ -326,9 +324,9 @@ static void on_rx_timeout(void) {
 }
 ```
 
-TODO
+Here we power down the LoRa Transceiver to conserve battery life.
 
-From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L414-L427)
+We do the same in the Callback Function __`on_rx_error`__, which the SX1276 Driver calls when it hits an error receiving LoRa Packets: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L414-L427)
 
 ```c
 /// Callback Function that is called when we couldn't receive a LoRa message due to error
@@ -341,9 +339,9 @@ static void on_rx_error(void) {
 }
 ```
 
-TODO
-
 # BL602 GPIO Interrupts
+
+Let's talk about __handling GPIO Interrupts__ on BL602.
 
 TODO
 
