@@ -67,7 +67,9 @@
     <nav id="TOC"><ul>
 <li><a href="#connect-bl602-to-lora-transceiver">1 Connect BL602 to LoRa Transceiver</a><ul></ul></li>
 <li><a href="#initialise-lora-transceiver">2 Initialise LoRa Transceiver</a><ul></ul></li>
-<li><a href="#receive-lora-packet">3 Receive LoRa Packet</a><ul></ul></li>
+<li><a href="#receive-lora-packet">3 Receive LoRa Packet</a><ul>
+<li><a href="#receive-callback">3.1 Receive Callback</a><ul></ul></li>
+<li><a href="#timeout-and-error-callbacks">3.2 Timeout and Error Callbacks</a><ul></ul></li></ul></li>
 <li><a href="#bl602-gpio-interrupts">4 BL602 GPIO Interrupts</a><ul></ul></li>
 <li><a href="#multitask-with-nimble-porting-layer">5 Multitask with NimBLE Porting Layer</a><ul>
 <li><a href="#event-queues">5.1 Event Queues</a><ul></ul></li>
@@ -271,39 +273,57 @@ static void init_driver(char *buf, int len, int argc, char **argv) {
 <p>But before that, we need to tell the transceiver to begin receiving packets. That's coming up next...</p>
 <p>(The code in this article is based on the <a href="https://github.com/apache/mynewt-core/blob/master/apps/loraping/src/main.c">LoRa Ping</a> program from Mynewt OS. <a href="https://lupyuen.github.io/articles/lora#appendix-porting-lora-driver-from-mynewt-to-bl602">More about this</a>)</p>
 <h1 id="receive-lora-packet" class="section-header"><a href="#receive-lora-packet">3 Receive LoRa Packet</a></h1>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L207-L213"><code>demo.c</code></a></p>
-<pre><code class="language-c">/// Command to receive a LoRa message. Assume that SX1276 / RF96 driver has been initialised.
+<p>We're creating a <strong>battery-powered</strong> IoT Sensor with LoRa.</p>
+<p>To conserve battery power, we don't listen for incoming LoRa Packets all the time... We <strong>listen for 5 seconds</strong> then go to sleep.</p>
+<p>This is how we do it: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L207-L213"><code>demo.c</code></a></p>
+<pre><code class="language-c">/// LoRa Receive Timeout in 5 seconds
+#define LORAPING_RX_TIMEOUT_MS 5000  //  Milliseconds
+
+/// Command to receive a LoRa message. Assume that SX1276 / RF96 driver has been initialised.
 /// Assume that create_task has been called to init the Event Queue.
 static void receive_message(char *buf, int len, int argc, char **argv) {
-    //  Receive a LoRa message within the timeout period
+    //  Receive a LoRa message within 5 seconds
     Radio.Rx(LORAPING_RX_TIMEOUT_MS);
 }
 </code></pre>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L355-L381"><code>demo.c</code></a></p>
+<p>The <strong><code>receive_message</code></strong> command calls <strong><code>Radio.Rx</code></strong> (from the SX1276 Driver) to receive a LoRa Packet within 5 seconds.</p>
+<h2 id="receive-callback" class="section-header"><a href="#receive-callback">3.1 Receive Callback</a></h2>
+<p>Upon receiving the LoRa Packet, the SX1276 Driver calls the Callback Function <strong><code>on_rx_done</code></strong> in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L355-L381"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// Callback Function that is called when a LoRa message has been received
-static void on_rx_done(uint8_t *payload, uint16_t size, int16_t rssi, int8_t snr) {
+static void on_rx_done(
+    uint8_t *payload,  //  Buffer containing received LoRa message
+    uint16_t size,     //  Size of the LoRa message
+    int16_t rssi,      //  Signal strength
+    int8_t snr) {      //  Signal To Noise ratio
+
     //  Switch the LoRa Transceiver to low power, sleep mode
     Radio.Sleep();
-
-    //  Copy the received packet
+</code></pre>
+<p>At the start of <code>on_rx_done</code>, we <strong>power down the LoRa Transceiver</strong> to conserve battery power.</p>
+<p>Next we <strong>copy the received packet</strong> into our 64-byte buffer <strong><code>loraping_buffer</code></strong>...</p>
+<pre><code class="language-c">    //  Copy the received packet (up to 64 bytes)
     if (size &gt; sizeof loraping_buffer) {
         size = sizeof loraping_buffer;
     }
     loraping_rx_size = size;
     memcpy(loraping_buffer, payload, size);
-
-    //  Log the signal strength, signal to noise ratio
-    loraping_rxinfo_rxed(rssi, snr);
-
-    //  Dump the contents of the received packet
+</code></pre>
+<p>At the end of the callback, we <strong>display the contents</strong> of the copied packet...</p>
+<pre><code class="language-c">    //  Dump the contents of the received packet
     for (int i = 0; i &lt; loraping_rx_size; i++) {
         printf(&quot;%02x &quot;, loraping_buffer[i]);
     }
     printf(&quot;\r\n&quot;);
+
+    //  Log the signal strength, signal to noise ratio
+    loraping_rxinfo_rxed(rssi, snr);
 }
 </code></pre>
+<p><em>Is it really OK to call <code>printf</code> here?</em></p>
+<p>Yes because this code runs in the context of the <strong>FreeRTOS Application Task</strong>, not in the context of the Interrupt Handler. We'll learn why in a while.</p>
+<p>(This differs from the original <a href="https://github.com/apache/mynewt-core/blob/master/apps/loraping/src/main.c">LoRa Ping</a> program... On Mynewt OS, <code>on_rx_done</code> and other Callback Functions will run in the context of the Interrupt Handler)</p>
+<h2 id="timeout-and-error-callbacks" class="section-header"><a href="#timeout-and-error-callbacks">3.2 Timeout and Error Callbacks</a></h2>
+<p><em>What happens when we don't receive a LoRa Packet in 5 seconds?</em></p>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L398-L412"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// Callback Function that is called when no LoRa messages could be received due to timeout
