@@ -69,7 +69,7 @@
 <li><a href="#initialise-lora-transceiver">2 Initialise LoRa Transceiver</a><ul></ul></li>
 <li><a href="#receive-lora-packet">3 Receive LoRa Packet</a><ul></ul></li>
 <li><a href="#bl602-gpio-interrupts">4 BL602 GPIO Interrupts</a><ul></ul></li>
-<li><a href="#nimble-porting-layer">5 NimBLE Porting Layer</a><ul>
+<li><a href="#multitask-with-nimble-porting-layer">5 Multitask with NimBLE Porting Layer</a><ul>
 <li><a href="#event-queues">5.1 Event Queues</a><ul></ul></li>
 <li><a href="#timers">5.2 Timers</a><ul></ul></li></ul></li>
 <li><a href="#bl602-stack-trace">6 BL602 Stack Trace</a><ul></ul></li>
@@ -150,7 +150,7 @@
 </li>
 <li>
 <p><strong><code>DIO2</code> Change Channel</strong>: This is used for <strong>Spread Spectrum Transmission</strong> (Frequency Hopping). </p>
-<p>When we transmit / receive LoRa Packets over multiple frequencies, we reduce the likelihood of packet collisions over the airwaves.</p>
+<p>When we transmit / receive LoRa Packets over multiple frequencies (spread spectrum), we reduce the likelihood of packet collisions over the airwaves.</p>
 <p>We won't be using Spread Spectrum Transmission today, so <code>DIO2</code> shall stay idle.</p>
 </li>
 <li>
@@ -193,13 +193,89 @@ static void init_driver(char *buf, int len, int argc, char **argv) {
     radio_events.RxTimeout = on_rx_timeout;
     radio_events.RxError   = on_rx_error;
 </code></pre>
-<p><code>init_driver</code> begins by defining the <strong>Callback Functions</strong> that will be called when we have transmitted or received a LoRa Packet (successfully or unsuccessfully).</p>
-<p>TODO</p>
+<p><code>init_driver</code> begins by defining the <strong>Callback Functions</strong> that will be called when we have transmitted or received a LoRa Packet (successfully or unsuccessfully)...</p>
+<ul>
+<li>
+<p><strong>Packet Transmitted: <code>on_tx_done</code></strong></p>
+<p>Called when the transceiver has successfully transmitted a LoRa Packet.</p>
+</li>
+<li>
+<p><strong>Packet Received: <code>on_rx_done</code></strong></p>
+<p>Called when the tranceiver has received a LoRa Packet. (More about this in a while)</p>
+</li>
+<li>
+<p><strong>Transmit Timeout: <code>on_tx_timeout</code></strong></p>
+<p>Called if the transceiver is unable to transmit a LoRa Packet.</p>
+</li>
+<li>
+<p><strong>Receive Timeout: <code>on_rx_timeout</code></strong>:</p>
+<p>Called if the transceiver doesn't receive any LoRa Packets within a timeout window. (More about this in a while)</p>
+</li>
+<li>
+<p><strong>Receive Error: <code>on_rx_error</code></strong>:</p>
+<p>Called if the transceiver encounters an error when receiving a LoRa Packet. (More about this in a while)</p>
+</li>
+</ul>
+<p>Next we call <strong><code>Radio.Init</code> to initialise BL602's SPI Port and the LoRa Transceiver</strong>...</p>
+<pre><code class="language-c">    //  Init the SPI Port and the LoRa Transceiver
+    Radio.Init(&amp;radio_events);
+</code></pre>
+<p><code>Radio.Init</code> will set some registers on our LoRa Transceiver (over SPI).</p>
+<p>Then we call <strong><code>Radio.SetChannel</code> to set the LoRa Frequency</strong>...</p>
+<pre><code class="language-c">    //  Set the LoRa Frequency, which is specific to our region.
+    //  For USE_BAND_923: RF_FREQUENCY is set to 923000000.
+    Radio.SetChannel(RF_FREQUENCY);
+</code></pre>
+<p><code>Radio.SetChannel</code> configures the LoRa Frequency by writing to the <strong>Frequency Registers</strong> in our LoRa Transceiver.</p>
+<p>We get ready to transmit by calling <strong><code>Radio.SetTxConfig</code></strong>...</p>
+<pre><code class="language-c">    //  Configure the LoRa Transceiver for transmitting messages
+    Radio.SetTxConfig(
+        MODEM_LORA,
+        LORAPING_TX_OUTPUT_POWER,
+        0,        //  Frequency deviation: Unused with LoRa
+        LORAPING_BANDWIDTH,
+        LORAPING_SPREADING_FACTOR,
+        LORAPING_CODINGRATE,
+        LORAPING_PREAMBLE_LENGTH,
+        LORAPING_FIX_LENGTH_PAYLOAD_ON,
+        true,     //  CRC enabled
+        0,        //  Frequency hopping disabled
+        0,        //  Hop period: N/A
+        LORAPING_IQ_INVERSION_ON,
+        LORAPING_TX_TIMEOUT_MS
+    );
+</code></pre>
+<p>These <strong>LoRa Parameters</strong> should match the settings in the LoRa Receiver. <a href="https://lupyuen.github.io/articles/lora#appendix-lora-configuration">(See this)</a></p>
+<p>At the end of the function we call <strong><code>Radio.SetRxConfig</code></strong> to configure the transceiver for receiving LoRa Packets...</p>
+<pre><code class="language-c">    //  Configure the LoRa Transceiver for receiving messages
+    Radio.SetRxConfig(
+        MODEM_LORA,
+        LORAPING_BANDWIDTH,
+        LORAPING_SPREADING_FACTOR,
+        LORAPING_CODINGRATE,
+        0,        //  AFC bandwidth: Unused with LoRa
+        LORAPING_PREAMBLE_LENGTH,
+        LORAPING_SYMBOL_TIMEOUT,
+        LORAPING_FIX_LENGTH_PAYLOAD_ON,
+        0,        //  Fixed payload length: N/A
+        true,     //  CRC enabled
+        0,        //  Frequency hopping disabled
+        0,        //  Hop period: N/A
+        LORAPING_IQ_INVERSION_ON,
+        true      //  Continuous receive mode
+    );    
+}
+</code></pre>
+<p><em>What's Continuous Receive Mode?</em></p>
+<p><strong>Continuous Receive Mode</strong> means that the transceiver will wait forever for incoming packets... Until we tell it to stop.</p>
+<p>(We'll stop the transceiver with a BL602 Timer)</p>
+<p>But before that, we need to tell the transceiver to begin receiving packets. That's coming up next...</p>
+<p>(The code in this article is based on the <a href="https://github.com/apache/mynewt-core/blob/master/apps/loraping/src/main.c">LoRa Ping</a> program from Mynewt OS. <a href="https://lupyuen.github.io/articles/lora#appendix-porting-lora-driver-from-mynewt-to-bl602">More about this</a>)</p>
 <h1 id="receive-lora-packet" class="section-header"><a href="#receive-lora-packet">3 Receive LoRa Packet</a></h1>
 <p>TODO</p>
 <h1 id="bl602-gpio-interrupts" class="section-header"><a href="#bl602-gpio-interrupts">4 BL602 GPIO Interrupts</a></h1>
 <p>TODO</p>
-<h1 id="nimble-porting-layer" class="section-header"><a href="#nimble-porting-layer">5 NimBLE Porting Layer</a></h1>
+<h1 id="multitask-with-nimble-porting-layer" class="section-header"><a href="#multitask-with-nimble-porting-layer">5 Multitask with NimBLE Porting Layer</a></h1>
 <p>TODO</p>
 <h2 id="event-queues" class="section-header"><a href="#event-queues">5.1 Event Queues</a></h2>
 <p>TODO</p>
