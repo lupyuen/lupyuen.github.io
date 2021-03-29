@@ -89,7 +89,7 @@ The transceiver shifts the Logic Levels of these pins from __Low to High__ when 
 
 -   __`DIO2` Change Channel__: This is used for __Spread Spectrum Transmission__ (Frequency Hopping). 
 
-    When we transmit / receive LoRa Packets over multiple frequencies, we reduce the likelihood of packet collisions over the airwaves.
+    When we transmit / receive LoRa Packets over multiple frequencies (spread spectrum), we reduce the likelihood of packet collisions over the airwaves.
 
     We won't be using Spread Spectrum Transmission today, so `DIO2` shall stay idle.
 
@@ -140,9 +140,102 @@ static void init_driver(char *buf, int len, int argc, char **argv) {
     radio_events.RxError   = on_rx_error;
 ```
 
-`init_driver` begins by defining the __Callback Functions__ that will be called when we have transmitted or received a LoRa Packet (successfully or unsuccessfully).
+`init_driver` begins by defining the __Callback Functions__ that will be called when we have transmitted or received a LoRa Packet (successfully or unsuccessfully)...
 
-TODO
+-   __Packet Transmitted: `on_tx_done`__
+
+    Called when the transceiver has successfully transmitted a LoRa Packet.
+
+-   __Packet Received: `on_rx_done`__
+
+    Called when the tranceiver has received a LoRa Packet. (More about this in a while)
+
+-   __Transmit Timeout: `on_tx_timeout`__
+
+    Called if the transceiver is unable to transmit a LoRa Packet.
+
+-   __Receive Timeout: `on_rx_timeout`__:
+
+    Called if the transceiver doesn't receive any LoRa Packets within a timeout window. (More about this in a while)
+
+-   __Receive Error: `on_rx_error`__:
+
+    Called if the transceiver encounters an error when receiving a LoRa Packet. (More about this in a while)
+
+Next we call __`Radio.Init` to initialise BL602's SPI Port and the LoRa Transceiver__...
+
+```c
+    //  Init the SPI Port and the LoRa Transceiver
+    Radio.Init(&radio_events);
+```
+
+`Radio.Init` will set some registers on our LoRa Transceiver (over SPI).
+
+Then we call __`Radio.SetChannel` to set the LoRa Frequency__...
+
+```c
+    //  Set the LoRa Frequency, which is specific to our region.
+    //  For USE_BAND_923: RF_FREQUENCY is set to 923000000.
+    Radio.SetChannel(RF_FREQUENCY);
+```
+
+`Radio.SetChannel` configures the LoRa Frequency by writing to the __Frequency Registers__ in our LoRa Transceiver.
+
+We get ready to transmit by calling __`Radio.SetTxConfig`__...
+
+```c
+    //  Configure the LoRa Transceiver for transmitting messages
+    Radio.SetTxConfig(
+        MODEM_LORA,
+        LORAPING_TX_OUTPUT_POWER,
+        0,        //  Frequency deviation: Unused with LoRa
+        LORAPING_BANDWIDTH,
+        LORAPING_SPREADING_FACTOR,
+        LORAPING_CODINGRATE,
+        LORAPING_PREAMBLE_LENGTH,
+        LORAPING_FIX_LENGTH_PAYLOAD_ON,
+        true,     //  CRC enabled
+        0,        //  Frequency hopping disabled
+        0,        //  Hop period: N/A
+        LORAPING_IQ_INVERSION_ON,
+        LORAPING_TX_TIMEOUT_MS
+    );
+```
+
+These __LoRa Parameters__ should match the settings in the LoRa Receiver. [(See this)](https://lupyuen.github.io/articles/lora#appendix-lora-configuration)
+
+At the end of the function we call __`Radio.SetRxConfig`__ to configure the transceiver for receiving LoRa Packets...
+
+```c
+    //  Configure the LoRa Transceiver for receiving messages
+    Radio.SetRxConfig(
+        MODEM_LORA,
+        LORAPING_BANDWIDTH,
+        LORAPING_SPREADING_FACTOR,
+        LORAPING_CODINGRATE,
+        0,        //  AFC bandwidth: Unused with LoRa
+        LORAPING_PREAMBLE_LENGTH,
+        LORAPING_SYMBOL_TIMEOUT,
+        LORAPING_FIX_LENGTH_PAYLOAD_ON,
+        0,        //  Fixed payload length: N/A
+        true,     //  CRC enabled
+        0,        //  Frequency hopping disabled
+        0,        //  Hop period: N/A
+        LORAPING_IQ_INVERSION_ON,
+        true      //  Continuous receive mode
+    );    
+}
+```
+
+_What's Continuous Receive Mode?_
+
+__Continuous Receive Mode__ means that the transceiver will wait forever for incoming packets... Until we tell it to stop.
+
+(We'll stop the transceiver with a BL602 Timer)
+
+But before that, we need to tell the transceiver to begin receiving packets. That's coming up next...
+
+(The code in this article is based on the [LoRa Ping](https://github.com/apache/mynewt-core/blob/master/apps/loraping/src/main.c) program from Mynewt OS. [More about this](https://lupyuen.github.io/articles/lora#appendix-porting-lora-driver-from-mynewt-to-bl602))
 
 # Receive LoRa Packet
 
@@ -152,7 +245,7 @@ TODO
 
 TODO
 
-# NimBLE Porting Layer
+# Multitask with NimBLE Porting Layer
 
 TODO
 
