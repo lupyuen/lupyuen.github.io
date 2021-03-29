@@ -71,7 +71,7 @@
 <li><a href="#receive-callback">3.1 Receive Callback</a><ul></ul></li>
 <li><a href="#timeout-and-error-callbacks">3.2 Timeout and Error Callbacks</a><ul></ul></li></ul></li>
 <li><a href="#bl602-gpio-interrupts">4 BL602 GPIO Interrupts</a><ul>
-<li><a href="#register-gpio-handler">4.1 Register GPIO Handler</a><ul></ul></li>
+<li><a href="#register-handler-function">4.1 Register Handler Function</a><ul></ul></li>
 <li><a href="#gpio-interrupt-handler">4.2 GPIO Interrupt Handler</a><ul></ul></li>
 <li><a href="#handling-dio0-to-dio5">4.3 Handling DIO0 to DIO5</a><ul></ul></li></ul></li>
 <li><a href="#multitask-with-nimble-porting-layer">5 Multitask with NimBLE Porting Layer</a><ul>
@@ -403,10 +403,11 @@ bl_irq_enable(GPIO_INT0_IRQn);
 </code></pre>
 <p><strong><code>handle_gpio_interrupt</code></strong> is the low-level <strong>Interrupt Handler</strong> that will be called by the BL602 GPIO HAL when the GPIO Interrupt is triggered.</p>
 <p>We'll look inside <code>handle_gpio_interrupt</code> in a while.</p>
-<h2 id="register-gpio-handler" class="section-header"><a href="#register-gpio-handler">4.1 Register GPIO Handler</a></h2>
+<h2 id="register-handler-function" class="section-header"><a href="#register-handler-function">4.1 Register Handler Function</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L341-L403"><code>sx1276-board.c</code></a></p>
-<pre><code class="language-c">/// Register Interrupt Handler for GPIO. Return 0 if successful.
+<pre><code class="language-c">/// Register Handler Function for GPIO. Return 0 if successful.
+/// GPIO Handler Function will run in the context of the Application Task, not the Interrupt Handler.
 /// Based on bl_gpio_register in https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_gpio.c
 static int register_gpio_handler(
     uint8_t gpioPin,         //  GPIO Pin Number
