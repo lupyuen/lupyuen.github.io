@@ -237,46 +237,78 @@ But before that, we need to tell the transceiver to begin receiving packets. Tha
 
 # Receive LoRa Packet
 
-TODO
+We're creating a __battery-powered__ IoT Sensor with LoRa.
 
-From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L207-L213)
+To conserve battery power, we don't listen for incoming LoRa Packets all the time... We __listen for 5 seconds__ then go to sleep.
+
+This is how we do it: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L207-L213)
 
 ```c
+/// LoRa Receive Timeout in 5 seconds
+#define LORAPING_RX_TIMEOUT_MS 5000  //  Milliseconds
+
 /// Command to receive a LoRa message. Assume that SX1276 / RF96 driver has been initialised.
 /// Assume that create_task has been called to init the Event Queue.
 static void receive_message(char *buf, int len, int argc, char **argv) {
-    //  Receive a LoRa message within the timeout period
+    //  Receive a LoRa message within 5 seconds
     Radio.Rx(LORAPING_RX_TIMEOUT_MS);
 }
 ```
 
-TODO
+The __`receive_message`__ command calls __`Radio.Rx`__ (from the SX1276 Driver) to receive a LoRa Packet within 5 seconds.
 
-From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L355-L381)
+## Receive Callback
+
+Upon receiving the LoRa Packet, the SX1276 Driver calls the Callback Function __`on_rx_done`__ in [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L355-L381)
 
 ```c
 /// Callback Function that is called when a LoRa message has been received
-static void on_rx_done(uint8_t *payload, uint16_t size, int16_t rssi, int8_t snr) {
+static void on_rx_done(
+    uint8_t *payload,  //  Buffer containing received LoRa message
+    uint16_t size,     //  Size of the LoRa message
+    int16_t rssi,      //  Signal strength
+    int8_t snr) {      //  Signal To Noise ratio
+
     //  Switch the LoRa Transceiver to low power, sleep mode
     Radio.Sleep();
+```
 
-    //  Copy the received packet
+At the start of `on_rx_done`, we __power down the LoRa Transceiver__ to conserve battery power.
+
+Next we __copy the received packet__ into our 64-byte buffer __`loraping_buffer`__...
+
+```c
+    //  Copy the received packet (up to 64 bytes)
     if (size > sizeof loraping_buffer) {
         size = sizeof loraping_buffer;
     }
     loraping_rx_size = size;
     memcpy(loraping_buffer, payload, size);
+```
 
-    //  Log the signal strength, signal to noise ratio
-    loraping_rxinfo_rxed(rssi, snr);
+At the end of the callback, we __display the contents__ of the copied packet...
 
+```c
     //  Dump the contents of the received packet
     for (int i = 0; i < loraping_rx_size; i++) {
         printf("%02x ", loraping_buffer[i]);
     }
     printf("\r\n");
+
+    //  Log the signal strength, signal to noise ratio
+    loraping_rxinfo_rxed(rssi, snr);
 }
 ```
+
+_Is it really OK to call `printf` here?_
+
+Yes because this code runs in the context of the __FreeRTOS Application Task__, not in the context of the Interrupt Handler. We'll learn why in a while.
+
+(This differs from the original [LoRa Ping](https://github.com/apache/mynewt-core/blob/master/apps/loraping/src/main.c) program... On Mynewt OS, `on_rx_done` and other Callback Functions will run in the context of the Interrupt Handler)
+
+## Timeout and Error Callbacks
+
+_What happens when we don't receive a LoRa Packet in 5 seconds?_
 
 TODO
 
