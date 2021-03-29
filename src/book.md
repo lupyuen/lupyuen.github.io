@@ -16,7 +16,7 @@ Is there a book about the __BL602 SoC__ (RISC-V, WiFi and Bluetooth LE) that...
 
 _You're reading the book right now!_
 
-Use this book to navigate the numerous BL602 articles that have been published on this site. (13 articles and still growing!)
+Use this book to navigate the numerous BL602 articles that have been published on this site. (14 articles and still growing!)
 
 The programs in these articles have been tested on __PineCone__, but they should work on other BL602 Boards: __Pinenut, DT-BL10, MagicHome BL602__.
 
@@ -51,6 +51,8 @@ Learn to call the BL602 __GPIO Hardware Abstraction Layer (HAL)__ to blink an LE
 -   ["Control PineCone BL602 RGB LED with GPIO and PWM"](https://lupyuen.github.io/articles/led)
 
 -   ["Porting LoRa Driver from Mynewt to BL602: GPIO"](https://lupyuen.github.io/articles/lora#gpio)
+
+-   ["BL602 GPIO Interrupts"](https://lupyuen.github.io/articles/lora2#bl602-gpio-interrupts)
 
 ![](https://lupyuen.github.io/images/book-pwm.jpg)
 

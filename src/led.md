@@ -200,7 +200,9 @@ void bl_set_gpio_intmod(uint8_t gpioPin, uint8_t intCtrlMod, uint8_t intTrgMod);
 void bl_gpio_register(gpio_ctx_t *pstnode);
 ```
 
-Check the GPIO HAL Source Code for details...
+Check the following for details on GPIO Interrupts...
+
+-   [__"BL602 GPIO Interrupts"__](https://lupyuen.github.io/articles/lora2#bl602-gpio-interrupts)
 
 -   [__GPIO HAL Source Code: `bl_gpio.c`__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_gpio.c)
 
