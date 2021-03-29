@@ -116,6 +116,7 @@ For now we'll study this function __`init_driver`__ that initialises the LoRa Dr
 static void init_driver(char *buf, int len, int argc, char **argv) {
     //  Set the LoRa Callback Functions
     RadioEvents_t radio_events;
+    memset(&radio_events, 0, sizeof(radio_events));  //  Must init radio_events to null, because radio_events lives on stack!
     radio_events.TxDone    = on_tx_done;
     radio_events.RxDone    = on_rx_done;
     radio_events.TxTimeout = on_tx_timeout;

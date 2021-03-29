@@ -111,7 +111,44 @@ We shall configure BL602 to trigger __GPIO Interrupts__ when the 4 pins shift fr
 
 -   [__Semtech SX1276 Datasheet__](https://semtech.my.salesforce.com/sfc/p/E0000000JelG/a/2R0000001Rbr/6EfVZUorrpoKFfvaF_Fkpgp5kzjiNyiAbqcpqh9qSjE?__hstc=212684107.81023fceb80b3e55c1c4e19a916804ba.1616925682449.1616925682449.1616925682449.1&__hssc=212684107.1.1616925682449&__hsfp=1469659345)
 
+# Initialise LoRa Transceiver
+
+Let's look at the code inside our LoRa Firmware for BL602: `sdk_app_lora`
+
+__Super Important:__ We should set the LoRa Frequency in [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L43-L58) like so...
+
+```c
+/// TODO: We are using LoRa Frequency 923 MHz 
+/// for Singapore. Change this for your region.
+#define USE_BAND_923
+```
+
+In a while we shall change `923` to the LoRa Frequency for our region: `434`, `780`, `868`, `915` or `923` MHz. [(Check this list)](https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html)
+
+For now we'll study this function __`init_driver`__ that initialises the LoRa Driver for SX1276 (and RF96) in [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L126-L179)
+
+```c
+/// Command to initialise the SX1276 / RF96 driver
+static void init_driver(char *buf, int len, int argc, char **argv) {
+    //  Set the LoRa Callback Functions
+    RadioEvents_t radio_events;
+    memset(&radio_events, 0, sizeof(radio_events));  //  Must init radio_events to null, because radio_events lives on stack!
+    radio_events.TxDone    = on_tx_done;
+    radio_events.RxDone    = on_rx_done;
+    radio_events.TxTimeout = on_tx_timeout;
+    radio_events.RxTimeout = on_rx_timeout;
+    radio_events.RxError   = on_rx_error;
+```
+
+`init_driver` begins by defining the __Callback Functions__ that will be called when we have transmitted or received a LoRa Packet (successfully or unsuccessfully).
+
+TODO
+
 # Receive LoRa Packet
+
+TODO
+
+# BL602 GPIO Interrupts
 
 TODO
 
@@ -124,10 +161,6 @@ TODO
 TODO
 
 ## Timers
-
-TODO
-
-# BL602 GPIO Interrupts
 
 TODO
 
