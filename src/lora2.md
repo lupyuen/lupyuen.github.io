@@ -202,8 +202,6 @@ We get ready to transmit by calling __`Radio.SetTxConfig`__...
     );
 ```
 
-These __LoRa Parameters__ should match the settings in the LoRa Receiver. [(See this)](https://lupyuen.github.io/articles/lora#appendix-lora-configuration)
-
 At the end of the function we call __`Radio.SetRxConfig`__ to configure the transceiver for receiving LoRa Packets...
 
 ```c
@@ -238,6 +236,78 @@ But before that, we need to tell the transceiver to begin receiving packets. Tha
 (The code in this article is based on the [LoRa Ping](https://github.com/apache/mynewt-core/blob/master/apps/loraping/src/main.c) program from Mynewt OS. [More about this](https://lupyuen.github.io/articles/lora#appendix-porting-lora-driver-from-mynewt-to-bl602))
 
 # Receive LoRa Packet
+
+TODO
+
+From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L207-L213)
+
+```c
+/// Command to receive a LoRa message. Assume that SX1276 / RF96 driver has been initialised.
+/// Assume that create_task has been called to init the Event Queue.
+static void receive_message(char *buf, int len, int argc, char **argv) {
+    //  Receive a LoRa message within the timeout period
+    Radio.Rx(LORAPING_RX_TIMEOUT_MS);
+}
+```
+
+TODO
+
+From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L355-L381)
+
+```c
+/// Callback Function that is called when a LoRa message has been received
+static void on_rx_done(uint8_t *payload, uint16_t size, int16_t rssi, int8_t snr) {
+    //  Switch the LoRa Transceiver to low power, sleep mode
+    Radio.Sleep();
+
+    //  Copy the received packet
+    if (size > sizeof loraping_buffer) {
+        size = sizeof loraping_buffer;
+    }
+    loraping_rx_size = size;
+    memcpy(loraping_buffer, payload, size);
+
+    //  Log the signal strength, signal to noise ratio
+    loraping_rxinfo_rxed(rssi, snr);
+
+    //  Dump the contents of the received packet
+    for (int i = 0; i < loraping_rx_size; i++) {
+        printf("%02x ", loraping_buffer[i]);
+    }
+    printf("\r\n");
+}
+```
+
+TODO
+
+From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L398-L412)
+
+```c
+/// Callback Function that is called when no LoRa messages could be received due to timeout
+static void on_rx_timeout(void) {
+    //  Switch the LoRa Transceiver to low power, sleep mode
+    Radio.Sleep();
+
+    //  Log the timeout
+    loraping_stats.rx_timeout++;
+    loraping_rxinfo_timeout();
+}
+```
+
+TODO
+
+From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L414-L427)
+
+```c
+/// Callback Function that is called when we couldn't receive a LoRa message due to error
+static void on_rx_error(void) {
+    //  Log the error
+    loraping_stats.rx_error++;
+
+    //  Switch the LoRa Transceiver to low power, sleep mode
+    Radio.Sleep();
+}
+```
 
 TODO
 
