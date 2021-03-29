@@ -359,7 +359,7 @@ static void on_rx_error(void) {
 <p>We shall configure BL602 to detect this shift in the connected GPIO Pin and trigger a <strong>GPIO Interrupt</strong></p>
 </li>
 <li>
-<p>The <strong>GPIO Interrupt Handler</strong> in our firmware code will then process the received LoRa Packet</p>
+<p>The <strong>GPIO Interrupt Handler</strong> in our firmware code will then process the received LoRa Packet. (And reset <code>DIO0</code> back to Low)</p>
 </li>
 </ol>
 <p>TODO</p>
