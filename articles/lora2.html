@@ -338,7 +338,7 @@ static void on_rx_timeout(void) {
     loraping_rxinfo_timeout();
 }
 </code></pre>
-<p>Here we power down the LoRa Transceiver to conserve battery life.</p>
+<p>Here we power down the LoRa Transceiver to conserve battery power.</p>
 <p>We do the same in the Callback Function <strong><code>on_rx_error</code></strong>, which the SX1276 Driver calls when it hits an error receiving LoRa Packets: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L414-L427"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// Callback Function that is called when we couldn't receive a LoRa message due to error
 static void on_rx_error(void) {
@@ -351,6 +351,7 @@ static void on_rx_error(void) {
 </code></pre>
 <h1 id="bl602-gpio-interrupts" class="section-header"><a href="#bl602-gpio-interrupts">4 BL602 GPIO Interrupts</a></h1>
 <p>Let's talk about <strong>handling GPIO Interrupts</strong> on BL602...</p>
+<p><img src="https://lupyuen.github.io/images/lora2-interrupt.png" alt="BL602 handling GPIO interrupts" /></p>
 <ol>
 <li>
 <p>When our LoRa Transceiver (SX1276) <strong>receives a LoRa Packet</strong>...</p>
@@ -390,7 +391,7 @@ assert(rc == 0);
 </li>
 </ol>
 <p>We'll cover <code>register_gpio_handler</code> in the next section.</p>
-<p>Then to enable GPIO Interrupts we call these functions from the <strong>BL602 GPIO Hardware Abstraction Layer (HAL)</strong>...</p>
+<p>Then to enable GPIO Interrupts we call these functions from the <strong>BL602 Interrupt Hardware Abstraction Layer (HAL)</strong>...</p>
 <pre><code class="language-c">//  Register Common Interrupt Handler for GPIO Interrupt
 bl_irq_register_with_ctx(
     GPIO_INT0_IRQn,         //  GPIO Interrupt
