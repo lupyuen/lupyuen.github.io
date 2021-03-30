@@ -538,11 +538,11 @@ _GPIO Interrupt Handler vs GPIO Handler Function... Are these different things?_
 
 I'm sorry to muddle my dearest readers, they are indeed different things and they work at different levels...
 
-1.  __GPIO Interrupt Handler__ is the low-level __Interrupt Service Routine__ that handles the GPIO Interrupt.
+1.  __GPIO Interrupt Handler__ (`handle_gpio_interrupt`) is the low-level __Interrupt Service Routine__ that handles the GPIO Interrupt.
 
     This Interrupt Handler (called by BL602 Interrupt HAL) services the GPIO Interrupt that's triggered when SX1276 receives a LoRa Packet.
 
-1.  __GPIO Handler Function__ is the high-level __Application Function__ (running in a FreeRTOS Task) that processes the received LoRa Packet.
+1.  __GPIO Handler Function__ (like `SX1276OnDio0Irq`) is the high-level __Application Function__ (running in a FreeRTOS Task) that processes the received LoRa Packet.
 
     This Handler Function is invoked (indirectly) by the Interrupt Handler (via an Event from NimBLE Porting Layer).
 
