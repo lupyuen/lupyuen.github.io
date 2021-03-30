@@ -780,7 +780,7 @@ assert(rc2 == SUCCESS);
 
 We call __`GLB_GPIO_Func_Init`__ to configure Pin 14 as a plain GPIO Pin: `GPIO_FUN_SWGPIO`.
 
-(`GLB_GPIO_Func_Init` comes from the __BL602 Standard Driver__: [`bl602_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c))
+(`GLB_GPIO_Func_Init` comes from the __BL602 Standard Driver__: [`bl602_glb.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c))
 
 Now that Pin 14 is configured as a GPIO Pin, let's configure it for __GPIO Output__ (instead of GPIO Input)...
 
@@ -1536,7 +1536,7 @@ We call `GLB_GPIO_Func_Init` to assign the four SPI Pins to the SPI Port...
 
 The sequence of the SPI Pins doesn't matter, because each pin has a fixed SPI Function (like Serial Data In, Serial Data Out) within the SPI Port.
 
-(`GLB_GPIO_Func_Init` comes from the __BL602 Standard Driver__: [`bl602_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c))
+(`GLB_GPIO_Func_Init` comes from the __BL602 Standard Driver__: [`bl602_glb.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c))
 
 Finally we configure the SPI Port as SPI Controller or Peripheral...
 
