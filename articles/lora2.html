@@ -73,7 +73,8 @@
 <li><a href="#bl602-gpio-interrupts">4 BL602 GPIO Interrupts</a><ul>
 <li><a href="#register-handler-function">4.1 Register Handler Function</a><ul></ul></li>
 <li><a href="#gpio-interrupt-handler">4.2 GPIO Interrupt Handler</a><ul></ul></li>
-<li><a href="#handling-dio0-to-dio5">4.3 Handling DIO0 to DIO5</a><ul></ul></li></ul></li>
+<li><a href="#enqueue-interrupt-event">4.3 Enqueue Interrupt Event</a><ul></ul></li>
+<li><a href="#handle-dio0-to-dio5">4.4 Handle DIO0 to DIO5</a><ul></ul></li></ul></li>
 <li><a href="#multitask-with-nimble-porting-layer">5 Multitask with NimBLE Porting Layer</a><ul>
 <li><a href="#background-task">5.1 Background Task</a><ul></ul></li>
 <li><a href="#event-queue">5.2 Event Queue</a><ul></ul></li>
@@ -522,7 +523,7 @@ bl_gpio_intmask(gpioPin, 0);
 <li>
 <p><strong>GPIO Handler Function</strong> (like <code>SX1276OnDio0Irq</code>) is the high-level <strong>Application Function</strong> (running in a FreeRTOS Task) that processes the received LoRa Packet.</p>
 <p>This Handler Function is invoked (indirectly) by the Interrupt Handler (via an Event from NimBLE Porting Layer).</p>
-<p>(What's an Event and why are we using it? We'll learn about the NimBLE Porting Layer in a while)</p>
+<p>(What's an Event and why are we using it? We'll learn about the NimBLE Porting Layer in the next chapter)</p>
 </li>
 </ol>
 <p>Let's study the low-level <strong>GPIO Interrupt Handler <code>handle_gpio_interrupt</code></strong> that services all GPIO Interrupts: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L405-L433"><code>sx1276-board.c</code></a></p>
@@ -537,20 +538,25 @@ static uint8_t gpio_interrupts[MAX_GPIO_INTERRUPTS];
 
 /// Interrupt Handler for GPIO Pins DIO0 to DIO5
 static void handle_gpio_interrupt(void *arg) {
+
     //  Check all GPIO Interrupt Events
     for (int i = 0; i &lt; MAX_GPIO_INTERRUPTS; i++) {
+
+        //  Get the GPIO Pin Number for the Event
+        GLB_GPIO_Type gpioPin = gpio_interrupts[i];
+
         //  Get the GPIO Interrupt Event
         struct ble_npl_event *ev = &amp;gpio_events[i];
 </code></pre>
+<p>We start the GPIO Interrupt Handler <code>handle_gpio_interrupt</code> by <strong>iterating through the GPIO Interrupts</strong> that we have configured (for <code>DIO0</code> to <code>DIO5</code>).</p>
+<p>The configured GPIO Interrupts are stored in arrays <strong><code>gpio_interrupts</code> and <code>gpio_events</code></strong> like so...</p>
 <p>TODO</p>
+<p>(More about <code>gpio_interrupts</code> and <code>gpio_events</code> in a while)</p>
 <pre><code class="language-c">        //  If the Event is unused, skip it
         if (ev-&gt;fn == NULL) { continue; }
 </code></pre>
 <p>TODO</p>
-<pre><code class="language-c">        //  Get the GPIO Pin Number for the Event
-        GLB_GPIO_Type gpioPin = gpio_interrupts[i];
-
-        //  Get the Interrupt Status of the GPIO Pin
+<pre><code class="language-c">        //  Get the Interrupt Status of the GPIO Pin
         BL_Sts_Type status = GLB_Get_GPIO_IntStatus(gpioPin);
 </code></pre>
 <p>TODO</p>
@@ -565,6 +571,7 @@ static void handle_gpio_interrupt(void *arg) {
     }
 }
 </code></pre>
+<h2 id="enqueue-interrupt-event" class="section-header"><a href="#enqueue-interrupt-event">4.3 Enqueue Interrupt Event</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L435-L469"><code>sx1276-board.c</code></a></p>
 <pre><code class="language-c">/// Interrupt Counters
@@ -577,33 +584,38 @@ static int enqueue_interrupt_event(
 
     //  Disable GPIO Interrupt for the pin
     bl_gpio_intmask(gpioPin, 1);
-
-    //  Note: DO NOT Clear the GPIO Interrupt Status for the pin!
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-c">    //  Note: DO NOT Clear the GPIO Interrupt Status for the pin!
     //  This will suppress subsequent GPIO Interrupts!
     //  bl_gpio_int_clear(gpioPin, SET);
-
-    //  Increment the Interrupt Counters
+</code></pre>
+<p>TODO</p>
+<p>Here's a helpful tip.</p>
+<pre><code class="language-c">    //  Increment the Interrupt Counters
     if (SX1276_DIO0 &gt;= 0 &amp;&amp; gpioPin == (uint8_t) SX1276_DIO0) { g_dio0_counter++; }
     //  Omitted: Increment Interrupt Counters
     //  for DIO1 to DIO4
     ...
     else if (SX1276_DIO5 &gt;= 0 &amp;&amp; gpioPin == (uint8_t) SX1276_DIO5) { g_dio5_counter++; }
     else { g_nodio_counter++; }
-
-    //  Use Event Queue to invoke Event Handler in the Application Task, 
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-c">    //  Use Event Queue to invoke Event Handler in the Application Task, 
     //  not in the Interrupt Context
     if (event != NULL &amp;&amp; event-&gt;fn != NULL) {
         extern struct ble_npl_eventq event_queue;  //  TODO: Move Event Queue to header file
         ble_npl_eventq_put(&amp;event_queue, event);
     }
-
-    //  Enable GPIO Interrupt for the pin
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-c">    //  Enable GPIO Interrupt for the pin
     bl_gpio_intmask(gpioPin, 0);
     return 0;
 }
 </code></pre>
 <p>TODO</p>
-<h2 id="handling-dio0-to-dio5" class="section-header"><a href="#handling-dio0-to-dio5">4.3 Handling DIO0 to DIO5</a></h2>
+<h2 id="handle-dio0-to-dio5" class="section-header"><a href="#handle-dio0-to-dio5">4.4 Handle DIO0 to DIO5</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276.h#L48-L53"><code>sx1276.h</code></a></p>
 <pre><code class="language-c">#define SX1276_DIO0        11  //  DIO0: Trigger for Packet Received
