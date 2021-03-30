@@ -556,11 +556,11 @@ Let's study the low-level __GPIO Interrupt Handler `handle_gpio_interrupt`__ tha
 /// Maximum number of GPIO Pins that can be configured for interrupts
 #define MAX_GPIO_INTERRUPTS 6  //  DIO0 to DIO5
 
-/// Array of Events for the GPIO Interrupts
-static struct ble_npl_event gpio_events[MAX_GPIO_INTERRUPTS];
-
 /// Array of GPIO Pin Numbers that have been configured for interrupts
 static uint8_t gpio_interrupts[MAX_GPIO_INTERRUPTS];
+
+/// Array of Events for the GPIO Interrupts
+static struct ble_npl_event gpio_events[MAX_GPIO_INTERRUPTS];
 
 /// Interrupt Handler for GPIO Pins DIO0 to DIO5
 static void handle_gpio_interrupt(void *arg) {
