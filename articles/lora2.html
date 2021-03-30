@@ -600,8 +600,7 @@ static void handle_gpio_interrupt(void *arg) {
 </ol>
 <p>Let's look at <code>enqueue_interrupt_event</code>...</p>
 <h2 id="enqueue-interrupt-event" class="section-header"><a href="#enqueue-interrupt-event">4.3 Enqueue Interrupt Event</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L435-L469"><code>sx1276-board.c</code></a></p>
+<p>The time has come to reveal the final piece of code that handles GPIO Interrupts: <strong><code>enqueue_interrupt_event</code></strong> from <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L435-L469"><code>sx1276-board.c</code></a></p>
 <pre><code class="language-c">/// Interrupt Counters
 int g_dio0_counter, g_dio1_counter, g_dio2_counter, g_dio3_counter, g_dio4_counter, g_dio5_counter, g_nodio_counter;
 
@@ -613,13 +612,14 @@ static int enqueue_interrupt_event(
     //  Disable GPIO Interrupt for the pin
     bl_gpio_intmask(gpioPin, 1);
 </code></pre>
-<p>TODO</p>
-<p>Here's a helpful tip:</p>
+<p>We start by disabling the GPIO Interrupt for the pin.</p>
+<p>Here's a helpful tip: Never clear the GPIO Interrupt Status by calling <code>bl_gpio_int_clear</code>...</p>
 <pre><code class="language-c">    //  Note: DO NOT Clear the GPIO Interrupt Status for the pin!
     //  This will suppress subsequent GPIO Interrupts!
     //  bl_gpio_int_clear(gpioPin, SET);
 </code></pre>
-<p>TODO</p>
+<p><code>bl_gpio_int_clear</code> causes <strong>subsequent GPIO Interrupts to be suppressed</strong>. So we should never call it!</p>
+<p>We can't <code>printf</code> in an Interrupt Handler (for troubleshooting), but we can <strong>increment some Interrupt Counters</strong> that will be displayed by the <strong><code>spi_result</code></strong> command...</p>
 <pre><code class="language-c">    //  Increment the Interrupt Counters
     if (SX1276_DIO0 &gt;= 0 &amp;&amp; gpioPin == (uint8_t) SX1276_DIO0) { g_dio0_counter++; }
     //  Omitted: Increment Interrupt Counters
@@ -628,21 +628,22 @@ static int enqueue_interrupt_event(
     else if (SX1276_DIO5 &gt;= 0 &amp;&amp; gpioPin == (uint8_t) SX1276_DIO5) { g_dio5_counter++; }
     else { g_nodio_counter++; }
 </code></pre>
-<p>TODO</p>
+<p>Next we add the Interrupt Event (with the Handler Function inside) to the <strong>Event Queue</strong> (from the NimBLE Porting Layer)...</p>
 <pre><code class="language-c">    //  Use Event Queue to invoke Event Handler in the Application Task, 
     //  not in the Interrupt Context
     if (event != NULL &amp;&amp; event-&gt;fn != NULL) {
-        extern struct ble_npl_eventq event_queue;  //  TODO: Move Event Queue to header file
+        extern struct ble_npl_eventq event_queue;
         ble_npl_eventq_put(&amp;event_queue, event);
     }
 </code></pre>
-<p>TODO</p>
+<p>(In the next chapter we shall see the <strong>Background Task</strong> that will receive the Event and process the received LoRa Packet)</p>
+<p>We finish up by enabling the GPIO Interrupt for the pin...</p>
 <pre><code class="language-c">    //  Enable GPIO Interrupt for the pin
     bl_gpio_intmask(gpioPin, 0);
     return 0;
 }
 </code></pre>
-<p>TODO</p>
+<p>And that's how we handle GPIO Interrupts on BL602!</p>
 <h2 id="register-handlers-for-dio0-to-dio5" class="section-header"><a href="#register-handlers-for-dio0-to-dio5">4.4 Register Handlers for DIO0 to DIO5</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276.h#L48-L53"><code>sx1276.h</code></a></p>
@@ -666,11 +667,10 @@ DioIrqHandler *DioIrq[] = {
 <pre><code class="language-c">/// Register GPIO Interrupt Handlers for DIO0 to DIO5.
 /// Based on hal_button_register_handler_with_dts in https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_button.c
 void SX1276IoIrqInit(DioIrqHandler **irqHandlers) {
-    int rc;
 
     //  DIO0: Trigger for Packet Received and Packet Transmitted
     if (SX1276_DIO0 &gt;= 0 &amp;&amp; irqHandlers[0] != NULL) {
-        rc = register_gpio_handler(       //  Register GPIO Handler...
+        int rc = register_gpio_handler(       //  Register GPIO Handler...
             SX1276_DIO0,                  //  GPIO Pin Number
             irqHandlers[0],               //  GPIO Handler Function
             GLB_GPIO_INT_CONTROL_ASYNC,   //  Async Control Mode
@@ -687,7 +687,7 @@ void SX1276IoIrqInit(DioIrqHandler **irqHandlers) {
 
     //  DIO5: Unused (FSK only)
     if (SX1276_DIO5 &gt;= 0 &amp;&amp; irqHandlers[5] != NULL) {
-        rc = register_gpio_handler(       //  Register GPIO Handler...
+        int rc = register_gpio_handler(       //  Register GPIO Handler...
             SX1276_DIO5,                  //  GPIO Pin Number
             irqHandlers[5],               //  GPIO Handler Function
             GLB_GPIO_INT_CONTROL_ASYNC,   //  Async Control Mode
