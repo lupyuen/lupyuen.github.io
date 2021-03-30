@@ -555,23 +555,6 @@ static void handle_gpio_interrupt(void *arg) {
 }
 </code></pre>
 <p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276.h#L48-L53"><code>sx1276.h</code></a></p>
-<pre><code class="language-c">#define SX1276_DIO0        11  //  DIO0: Trigger for Packet Received
-#define SX1276_DIO1         0  //  DIO1: Trigger for Sync Timeout
-#define SX1276_DIO2         5  //  DIO2: Trigger for Change Channel (Spread Spectrum / Frequency Hopping)
-#define SX1276_DIO3        12  //  DIO3: Trigger for CAD Done
-#define SX1276_DIO4        -1  //  DIO4: Unused (FSK only)
-#define SX1276_DIO5        -1  //  DIO5: Unused (FSK only)
-</code></pre>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276.c#L208-L213"><code>sx1276.c</code></a></p>
-<pre><code class="language-c">//  DIO Handler Functions
-DioIrqHandler *DioIrq[] = { 
-    SX1276OnDio0Irq, SX1276OnDio1Irq,
-    SX1276OnDio2Irq, SX1276OnDio3Irq,
-    SX1276OnDio4Irq, NULL };
-</code></pre>
-<p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L435-L469"><code>sx1276-board.c</code></a></p>
 <pre><code class="language-c">/// Interrupt Counters
 int g_dio0_counter, g_dio1_counter, g_dio2_counter, g_dio3_counter, g_dio4_counter, g_dio5_counter, g_nodio_counter;
@@ -590,10 +573,9 @@ static int enqueue_interrupt_event(
 
     //  Increment the Interrupt Counters
     if (SX1276_DIO0 &gt;= 0 &amp;&amp; gpioPin == (uint8_t) SX1276_DIO0) { g_dio0_counter++; }
-    else if (SX1276_DIO1 &gt;= 0 &amp;&amp; gpioPin == (uint8_t) SX1276_DIO1) { g_dio1_counter++; }
-    else if (SX1276_DIO2 &gt;= 0 &amp;&amp; gpioPin == (uint8_t) SX1276_DIO2) { g_dio2_counter++; }
-    else if (SX1276_DIO3 &gt;= 0 &amp;&amp; gpioPin == (uint8_t) SX1276_DIO3) { g_dio3_counter++; }
-    else if (SX1276_DIO4 &gt;= 0 &amp;&amp; gpioPin == (uint8_t) SX1276_DIO4) { g_dio4_counter++; }
+    //  Omitted: Increment Interrupt Counters
+    //  for DIO1 to DIO4
+    ...
     else if (SX1276_DIO5 &gt;= 0 &amp;&amp; gpioPin == (uint8_t) SX1276_DIO5) { g_dio5_counter++; }
     else { g_nodio_counter++; }
 
@@ -611,6 +593,23 @@ static int enqueue_interrupt_event(
 </code></pre>
 <p>TODO</p>
 <h2 id="handling-dio0-to-dio5" class="section-header"><a href="#handling-dio0-to-dio5">4.3 Handling DIO0 to DIO5</a></h2>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276.h#L48-L53"><code>sx1276.h</code></a></p>
+<pre><code class="language-c">#define SX1276_DIO0        11  //  DIO0: Trigger for Packet Received
+#define SX1276_DIO1         0  //  DIO1: Trigger for Sync Timeout
+#define SX1276_DIO2         5  //  DIO2: Trigger for Change Channel (Spread Spectrum / Frequency Hopping)
+#define SX1276_DIO3        12  //  DIO3: Trigger for CAD Done
+#define SX1276_DIO4        -1  //  DIO4: Unused (FSK only)
+#define SX1276_DIO5        -1  //  DIO5: Unused (FSK only)
+</code></pre>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276.c#L208-L213"><code>sx1276.c</code></a></p>
+<pre><code class="language-c">//  DIO Handler Functions
+DioIrqHandler *DioIrq[] = { 
+    SX1276OnDio0Irq, SX1276OnDio1Irq,
+    SX1276OnDio2Irq, SX1276OnDio3Irq,
+    SX1276OnDio4Irq, NULL };
+</code></pre>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L144-L240"><code>sx1276-board.c</code></a></p>
 <pre><code class="language-c">/// Register GPIO Interrupt Handlers for DIO0 to DIO5.
