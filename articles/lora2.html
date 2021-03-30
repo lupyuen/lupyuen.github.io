@@ -513,6 +513,7 @@ bl_gpio_intmask(gpioPin, 0);
 <h2 id="gpio-interrupt-handler" class="section-header"><a href="#gpio-interrupt-handler">4.2 GPIO Interrupt Handler</a></h2>
 <p><em>GPIO Interrupt Handler vs GPIO Handler Function... Are these different things?</em></p>
 <p>I'm sorry to muddle my dearest readers, they are indeed different things and they work at different levels...</p>
+<p><img src="https://lupyuen.github.io/images/lora2-handler.png" alt="GPIO Interrupt Handler vs GPIO Handler Function" /></p>
 <ol>
 <li>
 <p><strong>GPIO Interrupt Handler</strong> (<code>handle_gpio_interrupt</code>) is the low-level <strong>Interrupt Service Routine</strong> that handles the GPIO Interrupt.</p>
