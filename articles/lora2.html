@@ -74,7 +74,7 @@
 <li><a href="#register-handler-function">4.1 Register Handler Function</a><ul></ul></li>
 <li><a href="#gpio-interrupt-handler">4.2 GPIO Interrupt Handler</a><ul></ul></li>
 <li><a href="#enqueue-interrupt-event">4.3 Enqueue Interrupt Event</a><ul></ul></li>
-<li><a href="#handle-dio0-to-dio5">4.4 Handle DIO0 to DIO5</a><ul></ul></li></ul></li>
+<li><a href="#register-handlers-for-dio0-to-dio5">4.4 Register Handlers for DIO0 to DIO5</a><ul></ul></li></ul></li>
 <li><a href="#multitask-with-nimble-porting-layer">5 Multitask with NimBLE Porting Layer</a><ul>
 <li><a href="#background-task">5.1 Background Task</a><ul></ul></li>
 <li><a href="#event-queue">5.2 Event Queue</a><ul></ul></li>
@@ -554,12 +554,14 @@ static void handle_gpio_interrupt(void *arg) {
 <p>For the first iteration...</p>
 <ul>
 <li>
-<p>Since <code>DIO0</code> is connected to <strong>GPIO Pin 11</strong> (via <code>gpio_interrupts</code>)...</p>
+<p>Since <code>DIO0</code> is connected to <strong>GPIO Pin 11</strong>...</p>
 <p><strong><code>gpioPin</code></strong> shall be set to <strong><code>11</code></strong></p>
+<p>(Via <code>gpio_interrupts[0]</code>)</p>
 </li>
 <li>
-<p>Since <code>DIO0</code> is handled by the <strong>GPIO Handler Function <code>SX1276OnDio0Irq</code></strong> (via <code>gpio_events</code>)...</p>
+<p>Since <code>DIO0</code> is handled by the <strong>GPIO Handler Function <code>SX1276OnDio0Irq</code></strong>...</p>
 <p><strong><code>ev</code></strong> shall be set to the Event that points to <strong><code>SX1276OnDio0Irq</code></strong></p>
+<p>(Via <code>gpio_events[0]</code>)</p>
 <p>(More about <code>gpio_interrupts</code> and <code>gpio_events</code> in the next chapter)</p>
 </li>
 </ul>
@@ -612,12 +614,12 @@ static int enqueue_interrupt_event(
     bl_gpio_intmask(gpioPin, 1);
 </code></pre>
 <p>TODO</p>
+<p>Here's a helpful tip:</p>
 <pre><code class="language-c">    //  Note: DO NOT Clear the GPIO Interrupt Status for the pin!
     //  This will suppress subsequent GPIO Interrupts!
     //  bl_gpio_int_clear(gpioPin, SET);
 </code></pre>
 <p>TODO</p>
-<p>Here's a helpful tip.</p>
 <pre><code class="language-c">    //  Increment the Interrupt Counters
     if (SX1276_DIO0 &gt;= 0 &amp;&amp; gpioPin == (uint8_t) SX1276_DIO0) { g_dio0_counter++; }
     //  Omitted: Increment Interrupt Counters
@@ -641,7 +643,7 @@ static int enqueue_interrupt_event(
 }
 </code></pre>
 <p>TODO</p>
-<h2 id="handle-dio0-to-dio5" class="section-header"><a href="#handle-dio0-to-dio5">4.4 Handle DIO0 to DIO5</a></h2>
+<h2 id="register-handlers-for-dio0-to-dio5" class="section-header"><a href="#register-handlers-for-dio0-to-dio5">4.4 Register Handlers for DIO0 to DIO5</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276.h#L48-L53"><code>sx1276.h</code></a></p>
 <pre><code class="language-c">#define SX1276_DIO0        11  //  DIO0: Trigger for Packet Received
