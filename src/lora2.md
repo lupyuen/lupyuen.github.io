@@ -532,8 +532,6 @@ This enables the GPIO Interrupt for __ONE Specific GPIO Pin__ (by calling the BL
 
 We need both to make GPIO Interrupts work.
 
-(The BL602 GPIO HAL seems to be multiplexing the GPIO Pin Interrupts)
-
 ## GPIO Interrupt Handler
 
 TODO
