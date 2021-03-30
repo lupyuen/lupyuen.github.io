@@ -75,8 +75,9 @@
 <li><a href="#gpio-interrupt-handler">4.2 GPIO Interrupt Handler</a><ul></ul></li>
 <li><a href="#handling-dio0-to-dio5">4.3 Handling DIO0 to DIO5</a><ul></ul></li></ul></li>
 <li><a href="#multitask-with-nimble-porting-layer">5 Multitask with NimBLE Porting Layer</a><ul>
-<li><a href="#event-queues">5.1 Event Queues</a><ul></ul></li>
-<li><a href="#timers">5.2 Timers</a><ul></ul></li></ul></li>
+<li><a href="#background-task">5.1 Background Task</a><ul></ul></li>
+<li><a href="#event-queue">5.2 Event Queue</a><ul></ul></li>
+<li><a href="#timer">5.3 Timer</a><ul></ul></li></ul></li>
 <li><a href="#bl602-stack-trace">6 BL602 Stack Trace</a><ul></ul></li>
 <li><a href="#always-initialise-stack-variables">7 Always Initialise Stack Variables!</a><ul></ul></li>
 <li><a href="#start-the-rakwireless-wisblock-transmitter">8 Start the RAKwireless WisBlock Transmitter</a><ul></ul></li>
@@ -405,8 +406,7 @@ bl_irq_enable(GPIO_INT0_IRQn);
 <p><strong><code>handle_gpio_interrupt</code></strong> is the low-level <strong>Interrupt Handler</strong> that will be called by the BL602 GPIO HAL when the GPIO Interrupt is triggered.</p>
 <p>We'll look inside <code>handle_gpio_interrupt</code> in a while.</p>
 <h2 id="register-handler-function" class="section-header"><a href="#register-handler-function">4.1 Register Handler Function</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L341-L403"><code>sx1276-board.c</code></a></p>
+<p>Let's look inside our function <strong><code>register_gpio_handler</code></strong> and learn how it <strong>registers a Handler Function for GPIO</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L341-L403"><code>sx1276-board.c</code></a></p>
 <pre><code class="language-c">/// Register Handler Function for GPIO. Return 0 if successful.
 /// GPIO Handler Function will run in the context of the Application Task, not the Interrupt Handler.
 /// Based on bl_gpio_register in https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_gpio.c
@@ -417,15 +417,51 @@ static int register_gpio_handler(
     uint8_t intTrgMod,       //  GPIO Interrupt Trigger Mode (see below)
     uint8_t pullup,          //  1 for pullup, 0 for no pullup
     uint8_t pulldown) {      //  1 for pulldown, 0 for no pulldown
-
-    //  Init the Event that will invoke the handler for the GPIO Interrupt
+</code></pre>
+<p>Above are the parameters for <code>register_gpio_handler</code>.</p>
+<p>The <strong>GPIO Interrupt Control Modes</strong> are...</p>
+<ul>
+<li>
+<p><strong><code>GLB_GPIO_INT_CONTROL_SYNC</code></strong>:  Synchronous Mode</p>
+<p>(We never use sync mode)</p>
+</li>
+<li>
+<p><strong><code>GLB_GPIO_INT_CONTROL_ASYNC</code></strong>: Asynchronous Mode</p>
+<p>(We ALWAYS use async mode)</p>
+</li>
+</ul>
+<p>The BL602 Reference Manual doesn't mention GPIO Interrupt Control modes. But according to the BL602 HAL code, only <strong>Async Mode</strong> should be used. <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_button.c#L309">(See this)</a></p>
+<p>The <strong>GPIO Interrupt Trigger Mode</strong> specifies how the GPIO should trigger the interrupt...</p>
+<ul>
+<li>
+<p><strong><code>GLB_GPIO_INT_TRIG_NEG_PULSE</code></strong>: Negative Edge Pulse Trigger</p>
+<p>Trigger the interrupt when the GPIO Logic Level shifts from <strong>High to Low</strong></p>
+</li>
+<li>
+<p><strong><code>GLB_GPIO_INT_TRIG_POS_PULSE</code></strong>: Positive Edge Pulse Trigger</p>
+<p>Trigger the interrupt when the GPIO Logic Level shifts from <strong>Low to High</strong></p>
+<p>(We use this for SX1276)</p>
+</li>
+<li>
+<p><strong><code>GLB_GPIO_INT_TRIG_NEG_LEVEL</code></strong>: Negative Edge Level Trigger (32k 3T)</p>
+<p>Trigger the interrupt when the GPIO Logic Level stays <strong>Low</strong></p>
+</li>
+<li>
+<p><strong><code>GLB_GPIO_INT_TRIG_POS_LEVEL</code></strong>: Positive Edge Level Trigger (32k 3T)</p>
+<p>Trigger the interrupt when the GPIO Logic Level stays <strong>High</strong></p>
+</li>
+</ul>
+<p>The GPIO Interrupt Trigger Mode is (partially) documented in the <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en">BL602 Reference Manual</a> (Section 3.2.12: &quot;GPIO Interrupt&quot;). <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_button.c#L270-L312">(This BL602 HAL code offers more hints)</a></p>
+<p>Our GPIO Handler Function <code>handler</code> shall be triggered through an Event (from the NimBLE Porting Layer). We'll learn why later...</p>
+<pre><code class="language-c">    //  Init the Event that will invoke the handler for the GPIO Interrupt
     int rc = init_interrupt_event(
         gpioPin,  //  GPIO Pin Number
         handler   //  GPIO Handler Function that will be triggered by the Event
     );
     assert(rc == 0);
-
-    //  Configure pin as a GPIO Pin
+</code></pre>
+<p>Next we call <code>GLB_GPIO_Func_Init</code> to configure the pin as a <strong>GPIO Pin</strong>...</p>
+<pre><code class="language-c">    //  Configure pin as a GPIO Pin
     GLB_GPIO_Type pins[1];
     pins[0] = gpioPin;
     BL_Err_Type rc2 = GLB_GPIO_Func_Init(
@@ -434,16 +470,19 @@ static int register_gpio_handler(
         sizeof(pins) / sizeof(pins[0])  //  Number of pins (1)
     );
     assert(rc2 == SUCCESS);    
-
-    //  Configure pin as a GPIO Input Pin
+</code></pre>
+<p><code>GLB_GPIO_Func_Init</code> comes from the BL602 Standard Driver: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c"><code>bl602_glb.c</code></a></p>
+<p>We configure the pin as a <strong>GPIO Input Pin</strong> (instead of GPIO Output)...</p>
+<pre><code class="language-c">    //  Configure pin as a GPIO Input Pin
     rc = bl_gpio_enable_input(
         gpioPin,  //  GPIO Pin Number
         pullup,   //  1 for pullup, 0 for no pullup
         pulldown  //  1 for pulldown, 0 for no pulldown
     );
     assert(rc == 0);
-
-    //  Disable GPIO Interrupt for the pin
+</code></pre>
+<p>Finally we disable the GPIO Pin Interrupt, configure the <strong>GPIO Interrupt Control and Trigger Modes</strong>, and enable the GPIO Pin Interrupt...</p>
+<pre><code class="language-c">    //  Disable GPIO Interrupt for the pin
     bl_gpio_intmask(gpioPin, 1);
 
     //  Configure GPIO Pin for GPIO Interrupt
@@ -457,19 +496,21 @@ static int register_gpio_handler(
     bl_gpio_intmask(gpioPin, 0);
     return 0;
 }
-
-//  GPIO Interrupt Control Modes:
-//  GLB_GPIO_INT_CONTROL_SYNC:  GPIO interrupt sync mode
-//  GLB_GPIO_INT_CONTROL_ASYNC: GPIO interrupt async mode
-//  See hal_button_register_handler_with_dts in https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_button.c
-
-//  GPIO Interrupt Trigger Modes:
-//  GLB_GPIO_INT_TRIG_NEG_PULSE: GPIO negative edge pulse trigger
-//  GLB_GPIO_INT_TRIG_POS_PULSE: GPIO positive edge pulse trigger
-//  GLB_GPIO_INT_TRIG_NEG_LEVEL: GPIO negative edge level trigger (32k 3T)
-//  GLB_GPIO_INT_TRIG_POS_LEVEL: GPIO positive edge level trigger (32k 3T)
-//  See hal_button_register_handler_with_dts in https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_button.c
 </code></pre>
+<p>We're ready to handle GPIO Interrupts triggered by our LoRa Transceiver!</p>
+<p><em>There seems to be 2 types of GPIO Interrupts?</em></p>
+<p>Yep, earlier we saw this...</p>
+<pre><code class="language-c">//  Enable GPIO Interrupt
+bl_irq_enable(GPIO_INT0_IRQn);
+</code></pre>
+<p>This enables the GPIO Interrupt for <strong>ALL GPIO Pins</strong> (by calling the BL602 Interrupt HAL).</p>
+<p>Then we saw this...</p>
+<pre><code class="language-c">//  Enable GPIO Interrupt for the pin
+bl_gpio_intmask(gpioPin, 0);
+</code></pre>
+<p>This enables the GPIO Interrupt for <strong>ONE Specific GPIO Pin</strong> (by calling the BL602 GPIO HAL).</p>
+<p>We need both to make GPIO Interrupts work.</p>
+<p>(The BL602 GPIO HAL seems to be multiplexing the GPIO Pin Interrupts)</p>
 <h2 id="gpio-interrupt-handler" class="section-header"><a href="#gpio-interrupt-handler">4.2 GPIO Interrupt Handler</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L405-L433"><code>sx1276-board.c</code></a></p>
@@ -562,59 +603,9 @@ void SX1276IoIrqInit(DioIrqHandler **irqHandlers) {
         assert(rc == 0);
     }
 
-    //  DIO1: Trigger for Receive Timeout (Single Receive Mode only)
-    if (SX1276_DIO1 &gt;= 0 &amp;&amp; irqHandlers[1] != NULL) {
-        rc = register_gpio_handler(       //  Register GPIO Handler...
-            SX1276_DIO1,                  //  GPIO Pin Number
-            irqHandlers[1],               //  GPIO Handler Function
-            GLB_GPIO_INT_CONTROL_ASYNC,   //  Async Control Mode
-            GLB_GPIO_INT_TRIG_POS_PULSE,  //  Trigger when GPIO level shifts from Low to High 
-            0,                            //  No pullup
-            0                             //  No pulldown
-        );
-        assert(rc == 0);
-    }
-
-    //  DIO2: Trigger for Change Channel (Spread Spectrum / Frequency Hopping)
-    if (SX1276_DIO2 &gt;= 0 &amp;&amp; irqHandlers[2] != NULL) {
-        rc = register_gpio_handler(       //  Register GPIO Handler...
-            SX1276_DIO2,                  //  GPIO Pin Number
-            irqHandlers[2],               //  GPIO Handler Function
-            GLB_GPIO_INT_CONTROL_ASYNC,   //  Async Control Mode
-            GLB_GPIO_INT_TRIG_POS_PULSE,  //  Trigger when GPIO level shifts from Low to High
-            0,                            //  No pullup
-            0                             //  No pulldown
-        );
-        assert(rc == 0);
-    }
-
-    //  DIO3: Trigger for CAD Done.
-    //  CAD = Channel Activity Detection. We detect whether a Radio Channel 
-    //  is in use, by scanning very quickly for the LoRa Packet Preamble.
-    if (SX1276_DIO3 &gt;= 0 &amp;&amp; irqHandlers[3] != NULL) {
-        rc = register_gpio_handler(       //  Register GPIO Handler...
-            SX1276_DIO3,                  //  GPIO Pin Number
-            irqHandlers[3],               //  GPIO Handler Function
-            GLB_GPIO_INT_CONTROL_ASYNC,   //  Async Control Mode
-            GLB_GPIO_INT_TRIG_POS_PULSE,  //  Trigger when GPIO level shifts from Low to High
-            0,                            //  No pullup
-            0                             //  No pulldown
-        );
-        assert(rc == 0);
-    }
-
-    //  DIO4: Unused (FSK only)
-    if (SX1276_DIO4 &gt;= 0 &amp;&amp; irqHandlers[4] != NULL) {
-        rc = register_gpio_handler(       //  Register GPIO Handler...
-            SX1276_DIO4,                  //  GPIO Pin Number
-            irqHandlers[4],               //  GPIO Handler Function
-            GLB_GPIO_INT_CONTROL_ASYNC,   //  Async Control Mode
-            GLB_GPIO_INT_TRIG_POS_PULSE,  //  Trigger when GPIO level shifts from Low to High
-            0,                            //  No pullup
-            0                             //  No pulldown
-        );
-        assert(rc == 0);
-    }
+    //  Omitted: Register GPIO Handler Functions
+    //  for DIO1 to DIO4
+    ...
 
     //  DIO5: Unused (FSK only)
     if (SX1276_DIO5 &gt;= 0 &amp;&amp; irqHandlers[5] != NULL) {
@@ -643,7 +634,9 @@ void SX1276IoIrqInit(DioIrqHandler **irqHandlers) {
 <p>TODO</p>
 <h1 id="multitask-with-nimble-porting-layer" class="section-header"><a href="#multitask-with-nimble-porting-layer">5 Multitask with NimBLE Porting Layer</a></h1>
 <p>TODO</p>
-<h2 id="event-queues" class="section-header"><a href="#event-queues">5.1 Event Queues</a></h2>
+<h2 id="background-task" class="section-header"><a href="#background-task">5.1 Background Task</a></h2>
+<p>TODO</p>
+<h2 id="event-queue" class="section-header"><a href="#event-queue">5.2 Event Queue</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L471-L498"><code>sx1276-board.c</code></a></p>
 <pre><code class="language-c">//  Init the Event that will the Interrupt Handler will invoke to process the GPIO Interrupt
@@ -676,7 +669,7 @@ static int init_interrupt_event(
 }
 </code></pre>
 <p>TODO</p>
-<h2 id="timers" class="section-header"><a href="#timers">5.2 Timers</a></h2>
+<h2 id="timer" class="section-header"><a href="#timer">5.3 Timer</a></h2>
 <p>TODO</p>
 <h1 id="bl602-stack-trace" class="section-header"><a href="#bl602-stack-trace">6 BL602 Stack Trace</a></h1>
 <p>TODO</p>

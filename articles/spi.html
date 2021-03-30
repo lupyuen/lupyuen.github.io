@@ -786,7 +786,7 @@ BL_Err_Type rc2 = GLB_GPIO_Func_Init(
 assert(rc2 == SUCCESS);
 </code></pre>
 <p>We call <strong><code>GLB_GPIO_Func_Init</code></strong> to configure Pin 14 as a plain GPIO Pin: <code>GPIO_FUN_SWGPIO</code>.</p>
-<p>(<code>GLB_GPIO_Func_Init</code> comes from the <strong>BL602 Standard Driver</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c"><code>bl602_i2c.c</code></a>)</p>
+<p>(<code>GLB_GPIO_Func_Init</code> comes from the <strong>BL602 Standard Driver</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c"><code>bl602_glb.c</code></a>)</p>
 <p>Now that Pin 14 is configured as a GPIO Pin, let's configure it for <strong>GPIO Output</strong> (instead of GPIO Input)...</p>
 <pre><code class="language-c">//  Configure Chip Select pin as a GPIO Output Pin (instead of GPIO Input)
 rc = bl_gpio_enable_output(SPI_CS_PIN, 0, 0);
@@ -1400,7 +1400,7 @@ int spi_init(spi_dev_t *spi, uint8_t port,
     GLB_GPIO_Func_Init(GPIO_FUN_SPI,gpiopins,sizeof(gpiopins)/sizeof(gpiopins[0]));
 </code></pre>
 <p>The sequence of the SPI Pins doesn't matter, because each pin has a fixed SPI Function (like Serial Data In, Serial Data Out) within the SPI Port.</p>
-<p>(<code>GLB_GPIO_Func_Init</code> comes from the <strong>BL602 Standard Driver</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c"><code>bl602_i2c.c</code></a>)</p>
+<p>(<code>GLB_GPIO_Func_Init</code> comes from the <strong>BL602 Standard Driver</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c"><code>bl602_glb.c</code></a>)</p>
 <p>Finally we configure the SPI Port as SPI Controller or Peripheral...</p>
 <pre><code class="language-c">    if (arg-&gt;mode == 0) {
         blog_info(&quot;hal_gpio_init: SPI controller mode\r\n&quot;);
