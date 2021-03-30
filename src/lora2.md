@@ -548,7 +548,7 @@ I'm sorry to muddle my dearest readers, they are indeed different things and the
 
     This Handler Function is invoked (indirectly) by the Interrupt Handler (via an Event from NimBLE Porting Layer).
 
-    (What's an Event and why are we using it? We'll learn about the NimBLE Porting Layer in a while)
+    (What's an Event and why are we using it? We'll learn about the NimBLE Porting Layer in the next chapter)
 
 Let's study the low-level __GPIO Interrupt Handler `handle_gpio_interrupt`__ that services all GPIO Interrupts: [`sx1276-board.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L405-L433)
 
@@ -564,13 +564,24 @@ static uint8_t gpio_interrupts[MAX_GPIO_INTERRUPTS];
 
 /// Interrupt Handler for GPIO Pins DIO0 to DIO5
 static void handle_gpio_interrupt(void *arg) {
+
     //  Check all GPIO Interrupt Events
     for (int i = 0; i < MAX_GPIO_INTERRUPTS; i++) {
+
+        //  Get the GPIO Pin Number for the Event
+        GLB_GPIO_Type gpioPin = gpio_interrupts[i];
+
         //  Get the GPIO Interrupt Event
         struct ble_npl_event *ev = &gpio_events[i];
 ```
 
+We start the GPIO Interrupt Handler `handle_gpio_interrupt` by __iterating through the GPIO Interrupts__ that we have configured (for `DIO0` to `DIO5`).
+
+The configured GPIO Interrupts are stored in arrays __`gpio_interrupts` and `gpio_events`__ like so...
+
 TODO
+
+(More about `gpio_interrupts` and `gpio_events` in a while)
 
 ```c
         //  If the Event is unused, skip it
@@ -580,9 +591,6 @@ TODO
 TODO
 
 ```c
-        //  Get the GPIO Pin Number for the Event
-        GLB_GPIO_Type gpioPin = gpio_interrupts[i];
-
         //  Get the Interrupt Status of the GPIO Pin
         BL_Sts_Type status = GLB_Get_GPIO_IntStatus(gpioPin);
 ```
@@ -602,6 +610,8 @@ TODO
 }
 ```
 
+## Enqueue Interrupt Event
+
 TODO
 
 From [`sx1276-board.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L435-L469)
@@ -617,11 +627,21 @@ static int enqueue_interrupt_event(
 
     //  Disable GPIO Interrupt for the pin
     bl_gpio_intmask(gpioPin, 1);
+```
 
+TODO
+
+```c
     //  Note: DO NOT Clear the GPIO Interrupt Status for the pin!
     //  This will suppress subsequent GPIO Interrupts!
     //  bl_gpio_int_clear(gpioPin, SET);
+```
 
+TODO
+
+Here's a helpful tip.
+
+```c
     //  Increment the Interrupt Counters
     if (SX1276_DIO0 >= 0 && gpioPin == (uint8_t) SX1276_DIO0) { g_dio0_counter++; }
     //  Omitted: Increment Interrupt Counters
@@ -629,14 +649,22 @@ static int enqueue_interrupt_event(
     ...
     else if (SX1276_DIO5 >= 0 && gpioPin == (uint8_t) SX1276_DIO5) { g_dio5_counter++; }
     else { g_nodio_counter++; }
+```
 
+TODO
+
+```c
     //  Use Event Queue to invoke Event Handler in the Application Task, 
     //  not in the Interrupt Context
     if (event != NULL && event->fn != NULL) {
         extern struct ble_npl_eventq event_queue;  //  TODO: Move Event Queue to header file
         ble_npl_eventq_put(&event_queue, event);
     }
+```
 
+TODO
+
+```c
     //  Enable GPIO Interrupt for the pin
     bl_gpio_intmask(gpioPin, 0);
     return 0;
@@ -645,7 +673,7 @@ static int enqueue_interrupt_event(
 
 TODO
 
-## Handling DIO0 to DIO5
+## Handle DIO0 to DIO5
 
 TODO
 
