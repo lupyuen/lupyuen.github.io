@@ -645,8 +645,9 @@ static int enqueue_interrupt_event(
 </code></pre>
 <p>And that's how we handle GPIO Interrupts on BL602!</p>
 <h2 id="register-handlers-for-dio0-to-dio5" class="section-header"><a href="#register-handlers-for-dio0-to-dio5">4.4 Register Handlers for DIO0 to DIO5</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276.h#L48-L53"><code>sx1276.h</code></a></p>
+<p><em>Earlier we registered the GPIO Handler Function for <code>DIO0</code>. What about <code>DIO1</code> to <code>DIO5</code>?</em></p>
+<p>Here's how we actually register the GPIO Handler Functions for <code>DIO0</code> to <code>DIO5</code>, in a single shot...</p>
+<p>First we define the GPIO Pins for <code>DIO0</code> to <code>DIO5</code>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276.h#L48-L53"><code>sx1276.h</code></a></p>
 <pre><code class="language-c">#define SX1276_DIO0        11  //  DIO0: Trigger for Packet Received
 #define SX1276_DIO1         0  //  DIO1: Trigger for Sync Timeout
 #define SX1276_DIO2         5  //  DIO2: Trigger for Change Channel (Spread Spectrum / Frequency Hopping)
@@ -654,16 +655,14 @@ static int enqueue_interrupt_event(
 #define SX1276_DIO4        -1  //  DIO4: Unused (FSK only)
 #define SX1276_DIO5        -1  //  DIO5: Unused (FSK only)
 </code></pre>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276.c#L208-L213"><code>sx1276.c</code></a></p>
+<p>Next we define the GPIO Handler Functions for <code>DIO0</code> to <code>DIO5</code>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276.c#L208-L213"><code>sx1276.c</code></a></p>
 <pre><code class="language-c">//  DIO Handler Functions
 DioIrqHandler *DioIrq[] = { 
     SX1276OnDio0Irq, SX1276OnDio1Irq,
     SX1276OnDio2Irq, SX1276OnDio3Irq,
-    SX1276OnDio4Irq, NULL };
+    SX1276OnDio4Irq, NULL };  //  DIO5 not used for LoRa Modulation
 </code></pre>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L144-L240"><code>sx1276-board.c</code></a></p>
+<p>Then we pass the DIO Handler Functions <code>DioIrq</code> to the function <code>SX1276IoIrqInit</code> defined in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L144-L240"><code>sx1276-board.c</code></a></p>
 <pre><code class="language-c">/// Register GPIO Interrupt Handlers for DIO0 to DIO5.
 /// Based on hal_button_register_handler_with_dts in https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_button.c
 void SX1276IoIrqInit(DioIrqHandler **irqHandlers) {
@@ -680,8 +679,10 @@ void SX1276IoIrqInit(DioIrqHandler **irqHandlers) {
         );
         assert(rc == 0);
     }
-
-    //  Omitted: Register GPIO Handler Functions
+</code></pre>
+<p>This is similar to the code we've seen earlier for registering the GPIO Handler Function for <code>DIO0</code>.</p>
+<p>The code for <code>DIO1</code> to <code>DIO5</code> looks highly similar...</p>
+<pre><code class="language-c">    //  Omitted: Register GPIO Handler Functions
     //  for DIO1 to DIO4
     ...
 
@@ -697,8 +698,9 @@ void SX1276IoIrqInit(DioIrqHandler **irqHandlers) {
         );
         assert(rc == 0);
     }
-
-    //  Register Common Interrupt Handler for GPIO Interrupt
+</code></pre>
+<p>To wrap up, we register the GPIO Interrupt Handler and enable GPIO Interrupts (as explained earlier)...</p>
+<pre><code class="language-c">    //  Register Common Interrupt Handler for GPIO Interrupt
     bl_irq_register_with_ctx(
         GPIO_INT0_IRQn,         //  GPIO Interrupt
         handle_gpio_interrupt,  //  Interrupt Handler
@@ -709,7 +711,8 @@ void SX1276IoIrqInit(DioIrqHandler **irqHandlers) {
     bl_irq_enable(GPIO_INT0_IRQn);
 }
 </code></pre>
-<p>TODO</p>
+<p>That is all... We register the GPIO Handler Functions for <code>DIO0</code> to <code>DIO5</code> with a single call to <code>SX1276IoIrqInit</code>.</p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276.c#L421-L458">(Our SX1276 Driver calls <code>SX1276IoIrqInit</code> here)</a></p>
 <h1 id="multitask-with-nimble-porting-layer" class="section-header"><a href="#multitask-with-nimble-porting-layer">5 Multitask with NimBLE Porting Layer</a></h1>
 <p><em>Move Fast OR Break Things... Choose ONE!</em></p>
 <p>TODO</p>
