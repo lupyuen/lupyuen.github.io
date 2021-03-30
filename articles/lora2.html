@@ -515,11 +515,11 @@ bl_gpio_intmask(gpioPin, 0);
 <p>I'm sorry to muddle my dearest readers, they are indeed different things and they work at different levels...</p>
 <ol>
 <li>
-<p><strong>GPIO Interrupt Handler</strong> is the low-level <strong>Interrupt Service Routine</strong> that handles the GPIO Interrupt.</p>
+<p><strong>GPIO Interrupt Handler</strong> (<code>handle_gpio_interrupt</code>) is the low-level <strong>Interrupt Service Routine</strong> that handles the GPIO Interrupt.</p>
 <p>This Interrupt Handler (called by BL602 Interrupt HAL) services the GPIO Interrupt that's triggered when SX1276 receives a LoRa Packet.</p>
 </li>
 <li>
-<p><strong>GPIO Handler Function</strong> is the high-level <strong>Application Function</strong> (running in a FreeRTOS Task) that processes the received LoRa Packet.</p>
+<p><strong>GPIO Handler Function</strong> (like <code>SX1276OnDio0Irq</code>) is the high-level <strong>Application Function</strong> (running in a FreeRTOS Task) that processes the received LoRa Packet.</p>
 <p>This Handler Function is invoked (indirectly) by the Interrupt Handler (via an Event from NimBLE Porting Layer).</p>
 <p>(What's an Event and why are we using it? We'll learn about the NimBLE Porting Layer in a while)</p>
 </li>
