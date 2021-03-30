@@ -516,15 +516,15 @@ bl_gpio_intmask(gpioPin, 0);
 <ol>
 <li>
 <p><strong>GPIO Interrupt Handler</strong> is the low-level <strong>Interrupt Service Routine</strong> that handles the GPIO Interrupt.</p>
-<p>This Interrupt Handler services the GPIO Interrupt that's triggered when SX1276 receives a LoRa Packet.</p>
+<p>This Interrupt Handler (called by BL602 Interrupt HAL) services the GPIO Interrupt that's triggered when SX1276 receives a LoRa Packet.</p>
 </li>
 <li>
 <p><strong>GPIO Handler Function</strong> is the high-level <strong>Application Function</strong> (running in a FreeRTOS Task) that processes the received LoRa Packet.</p>
 <p>This Handler Function is invoked (indirectly) by the Interrupt Handler (via an Event from NimBLE Porting Layer).</p>
+<p>(What's an Event and why are we using it? We'll learn about the NimBLE Porting Layer in a while)</p>
 </li>
 </ol>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L405-L433"><code>sx1276-board.c</code></a></p>
+<p>Let's study the low-level <strong>GPIO Interrupt Handler <code>handle_gpio_interrupt</code></strong> that services all GPIO Interrupts: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L405-L433"><code>sx1276-board.c</code></a></p>
 <pre><code class="language-c">/// Interrupt Handler for GPIO Pins DIO0 to DIO5. Triggered by SX1276 when LoRa Packet is received 
 /// and for other conditions.  Based on gpio_interrupt_entry in
 /// https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_gpio.c#L151-L164
