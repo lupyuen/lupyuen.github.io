@@ -540,15 +540,15 @@ I'm sorry to muddle my dearest readers, they are indeed different things and the
 
 1.  __GPIO Interrupt Handler__ is the low-level __Interrupt Service Routine__ that handles the GPIO Interrupt.
 
-    This Interrupt Handler services the GPIO Interrupt that's triggered when SX1276 receives a LoRa Packet.
+    This Interrupt Handler (called by BL602 Interrupt HAL) services the GPIO Interrupt that's triggered when SX1276 receives a LoRa Packet.
 
 1.  __GPIO Handler Function__ is the high-level __Application Function__ (running in a FreeRTOS Task) that processes the received LoRa Packet.
 
     This Handler Function is invoked (indirectly) by the Interrupt Handler (via an Event from NimBLE Porting Layer).
 
-TODO
+    (What's an Event and why are we using it? We'll learn about the NimBLE Porting Layer in a while)
 
-From [`sx1276-board.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L405-L433)
+Let's study the low-level __GPIO Interrupt Handler `handle_gpio_interrupt`__ that services all GPIO Interrupts: [`sx1276-board.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L405-L433)
 
 ```c
 /// Interrupt Handler for GPIO Pins DIO0 to DIO5. Triggered by SX1276 when LoRa Packet is received 
