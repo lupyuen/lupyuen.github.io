@@ -550,16 +550,29 @@ static void handle_gpio_interrupt(void *arg) {
 </code></pre>
 <p>We start the GPIO Interrupt Handler <code>handle_gpio_interrupt</code> by <strong>iterating through the GPIO Interrupts</strong> that we have configured (for <code>DIO0</code> to <code>DIO5</code>).</p>
 <p>The configured GPIO Interrupts are stored in arrays <strong><code>gpio_interrupts</code> and <code>gpio_events</code></strong> like so...</p>
-<p>TODO</p>
-<p>(More about <code>gpio_interrupts</code> and <code>gpio_events</code> in a while)</p>
+<p><img src="https://lupyuen.github.io/images/lora2-events.png" alt="GPIO Interrupts and Events" /></p>
+<p>For the first iteration...</p>
+<ul>
+<li>
+<p>Since <code>DIO0</code> is connected to <strong>GPIO Pin 11</strong> (via <code>gpio_interrupts</code>)...</p>
+<p><strong><code>gpioPin</code></strong> shall be set to <strong><code>11</code></strong></p>
+</li>
+<li>
+<p>Since <code>DIO0</code> is handled by the <strong>GPIO Handler Function <code>SX1276OnDio0Irq</code></strong> (via <code>gpio_events</code>)...</p>
+<p><strong><code>ev</code></strong> shall be set to the Event that points to <strong><code>SX1276OnDio0Irq</code></strong></p>
+<p>(More about <code>gpio_interrupts</code> and <code>gpio_events</code> in the next chapter)</p>
+</li>
+</ul>
+<p>We allow unused GPIO Pins, and we skip them like so...</p>
 <pre><code class="language-c">        //  If the Event is unused, skip it
         if (ev-&gt;fn == NULL) { continue; }
 </code></pre>
-<p>TODO</p>
+<p>Next we fetch the <strong>Interrupt Status</strong> of the GPIO Pin, to determine whether this GPIO Pin has triggered the interrupt...</p>
 <pre><code class="language-c">        //  Get the Interrupt Status of the GPIO Pin
         BL_Sts_Type status = GLB_Get_GPIO_IntStatus(gpioPin);
 </code></pre>
-<p>TODO</p>
+<p><code>GLB_Get_GPIO_IntStatus</code> comes from the BL602 Standard Driver: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c"><code>bl602_glb.c</code></a></p>
+<p>If this GPIO Pin has indeed triggered the interrupt, we <strong>enqueue the Event</strong> (containing our GPIO Handler Function) for the Application Task to handle...</p>
 <pre><code class="language-c">        //  If the GPIO Pin has triggered an interrupt...
         if (status == SET) {
             //  Forward the GPIO Interrupt to the Application Task to process
@@ -571,6 +584,19 @@ static void handle_gpio_interrupt(void *arg) {
     }
 }
 </code></pre>
+<p>In summary: Our GPIO Interrupt Handler...</p>
+<ol>
+<li>
+<p>Iterates through all configured GPIO Interrupts (<code>DIO0</code> to <code>DIO5</code>)</p>
+</li>
+<li>
+<p>Hunts for the GPIO Interrupts that have been triggered</p>
+</li>
+<li>
+<p>Enqueues the GPIO Event (and Handler Function) for processing by the Application Task</p>
+</li>
+</ol>
+<p>Let's look at <code>enqueue_interrupt_event</code>...</p>
 <h2 id="enqueue-interrupt-event" class="section-header"><a href="#enqueue-interrupt-event">4.3 Enqueue Interrupt Event</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L435-L469"><code>sx1276-board.c</code></a></p>
