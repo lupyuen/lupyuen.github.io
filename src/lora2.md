@@ -538,6 +538,8 @@ _GPIO Interrupt Handler vs GPIO Handler Function... Are these different things?_
 
 I'm sorry to muddle my dearest readers, they are indeed different things and they work at different levels...
 
+![GPIO Interrupt Handler vs GPIO Handler Function](https://lupyuen.github.io/images/lora2-handler.png)
+
 1.  __GPIO Interrupt Handler__ (`handle_gpio_interrupt`) is the low-level __Interrupt Service Routine__ that handles the GPIO Interrupt.
 
     This Interrupt Handler (called by BL602 Interrupt HAL) services the GPIO Interrupt that's triggered when SX1276 receives a LoRa Packet.
