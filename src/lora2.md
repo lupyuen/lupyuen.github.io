@@ -583,13 +583,17 @@ The configured GPIO Interrupts are stored in arrays __`gpio_interrupts` and `gpi
 
 For the first iteration...
 
--   Since `DIO0` is connected to __GPIO Pin 11__ (via `gpio_interrupts`)...
+-   Since `DIO0` is connected to __GPIO Pin 11__...
 
     __`gpioPin`__ shall be set to __`11`__
 
--   Since `DIO0` is handled by the __GPIO Handler Function `SX1276OnDio0Irq`__ (via `gpio_events`)...
+    (Via `gpio_interrupts[0]`)
+
+-   Since `DIO0` is handled by the __GPIO Handler Function `SX1276OnDio0Irq`__...
 
     __`ev`__ shall be set to the Event that points to __`SX1276OnDio0Irq`__
+
+    (Via `gpio_events[0]`)
 
     (More about `gpio_interrupts` and `gpio_events` in the next chapter)
 
@@ -655,6 +659,8 @@ static int enqueue_interrupt_event(
 
 TODO
 
+Here's a helpful tip:
+
 ```c
     //  Note: DO NOT Clear the GPIO Interrupt Status for the pin!
     //  This will suppress subsequent GPIO Interrupts!
@@ -662,8 +668,6 @@ TODO
 ```
 
 TODO
-
-Here's a helpful tip.
 
 ```c
     //  Increment the Interrupt Counters
@@ -697,7 +701,7 @@ TODO
 
 TODO
 
-## Handle DIO0 to DIO5
+## Register Handlers for DIO0 to DIO5
 
 TODO
 
