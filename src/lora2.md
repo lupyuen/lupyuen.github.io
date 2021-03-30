@@ -1,6 +1,6 @@
 # PineCone BL602 RISC-V Board Receives LoRa Packets
 
-📝 _31 Mar 2021_
+📝 _2 Apr 2021_
 
 Not too long ago (and not so far away) we embarked on an epic quest to create a low-power, long-range [__LoRa IoT Sensor__](https://en.wikipedia.org/wiki/LoRa) with [__PineCone BL602 RISC-V Board__](https://lupyuen.github.io/articles/pinecone)
 
@@ -553,24 +553,43 @@ I'm sorry to muddle my dearest readers, they are indeed different things and the
 Let's study the low-level __GPIO Interrupt Handler `handle_gpio_interrupt`__ that services all GPIO Interrupts: [`sx1276-board.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L405-L433)
 
 ```c
-/// Interrupt Handler for GPIO Pins DIO0 to DIO5. Triggered by SX1276 when LoRa Packet is received 
-/// and for other conditions.  Based on gpio_interrupt_entry in
-/// https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_gpio.c#L151-L164
+/// Maximum number of GPIO Pins that can be configured for interrupts
+#define MAX_GPIO_INTERRUPTS 6  //  DIO0 to DIO5
+
+/// Array of Events for the GPIO Interrupts
+static struct ble_npl_event gpio_events[MAX_GPIO_INTERRUPTS];
+
+/// Array of GPIO Pin Numbers that have been configured for interrupts
+static uint8_t gpio_interrupts[MAX_GPIO_INTERRUPTS];
+
+/// Interrupt Handler for GPIO Pins DIO0 to DIO5
 static void handle_gpio_interrupt(void *arg) {
     //  Check all GPIO Interrupt Events
     for (int i = 0; i < MAX_GPIO_INTERRUPTS; i++) {
         //  Get the GPIO Interrupt Event
         struct ble_npl_event *ev = &gpio_events[i];
+```
 
+TODO
+
+```c
         //  If the Event is unused, skip it
         if (ev->fn == NULL) { continue; }
+```
 
+TODO
+
+```c
         //  Get the GPIO Pin Number for the Event
         GLB_GPIO_Type gpioPin = gpio_interrupts[i];
 
         //  Get the Interrupt Status of the GPIO Pin
         BL_Sts_Type status = GLB_Get_GPIO_IntStatus(gpioPin);
+```
 
+TODO
+
+```c
         //  If the GPIO Pin has triggered an interrupt...
         if (status == SET) {
             //  Forward the GPIO Interrupt to the Application Task to process
