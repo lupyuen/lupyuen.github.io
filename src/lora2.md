@@ -534,6 +534,18 @@ We need both to make GPIO Interrupts work.
 
 ## GPIO Interrupt Handler
 
+_GPIO Interrupt Handler vs GPIO Handler Function... Are these different things?_
+
+I'm sorry to muddle my dearest readers, they are indeed different things and they work at different levels...
+
+1.  __GPIO Interrupt Handler__ is the low-level __Interrupt Service Routine__ that handles the GPIO Interrupt.
+
+    This Interrupt Handler services the GPIO Interrupt that's triggered when SX1276 receives a LoRa Packet.
+
+1.  __GPIO Handler Function__ is the high-level __Application Function__ (running in a FreeRTOS Task) that processes the received LoRa Packet.
+
+    This Handler Function is invoked (indirectly) by the Interrupt Handler (via an Event from NimBLE Porting Layer).
+
 TODO
 
 From [`sx1276-board.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L405-L433)
@@ -567,6 +579,31 @@ static void handle_gpio_interrupt(void *arg) {
         }
     }
 }
+```
+
+TODO
+
+From [`sx1276.h`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276.h#L48-L53)
+
+```c
+#define SX1276_DIO0        11  //  DIO0: Trigger for Packet Received
+#define SX1276_DIO1         0  //  DIO1: Trigger for Sync Timeout
+#define SX1276_DIO2         5  //  DIO2: Trigger for Change Channel (Spread Spectrum / Frequency Hopping)
+#define SX1276_DIO3        12  //  DIO3: Trigger for CAD Done
+#define SX1276_DIO4        -1  //  DIO4: Unused (FSK only)
+#define SX1276_DIO5        -1  //  DIO5: Unused (FSK only)
+```
+
+TODO
+
+From [`sx1276.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276.c#L208-L213)
+
+```c
+//  DIO Handler Functions
+DioIrqHandler *DioIrq[] = { 
+    SX1276OnDio0Irq, SX1276OnDio1Irq,
+    SX1276OnDio2Irq, SX1276OnDio3Irq,
+    SX1276OnDio4Irq, NULL };
 ```
 
 TODO
