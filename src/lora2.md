@@ -583,6 +583,51 @@ static void handle_gpio_interrupt(void *arg) {
 
 TODO
 
+From [`sx1276-board.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L435-L469)
+
+```c
+/// Interrupt Counters
+int g_dio0_counter, g_dio1_counter, g_dio2_counter, g_dio3_counter, g_dio4_counter, g_dio5_counter, g_nodio_counter;
+
+/// Enqueue the GPIO Interrupt to an Event Queue for the Application Task to process
+static int enqueue_interrupt_event(
+    uint8_t gpioPin,                //  GPIO Pin Number
+    struct ble_npl_event *event) {  //  Event that will be enqueued for the Application Task
+
+    //  Disable GPIO Interrupt for the pin
+    bl_gpio_intmask(gpioPin, 1);
+
+    //  Note: DO NOT Clear the GPIO Interrupt Status for the pin!
+    //  This will suppress subsequent GPIO Interrupts!
+    //  bl_gpio_int_clear(gpioPin, SET);
+
+    //  Increment the Interrupt Counters
+    if (SX1276_DIO0 >= 0 && gpioPin == (uint8_t) SX1276_DIO0) { g_dio0_counter++; }
+    //  Omitted: Increment Interrupt Counters
+    //  for DIO1 to DIO4
+    ...
+    else if (SX1276_DIO5 >= 0 && gpioPin == (uint8_t) SX1276_DIO5) { g_dio5_counter++; }
+    else { g_nodio_counter++; }
+
+    //  Use Event Queue to invoke Event Handler in the Application Task, 
+    //  not in the Interrupt Context
+    if (event != NULL && event->fn != NULL) {
+        extern struct ble_npl_eventq event_queue;  //  TODO: Move Event Queue to header file
+        ble_npl_eventq_put(&event_queue, event);
+    }
+
+    //  Enable GPIO Interrupt for the pin
+    bl_gpio_intmask(gpioPin, 0);
+    return 0;
+}
+```
+
+TODO
+
+## Handling DIO0 to DIO5
+
+TODO
+
 From [`sx1276.h`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276.h#L48-L53)
 
 ```c
@@ -605,52 +650,6 @@ DioIrqHandler *DioIrq[] = {
     SX1276OnDio2Irq, SX1276OnDio3Irq,
     SX1276OnDio4Irq, NULL };
 ```
-
-TODO
-
-From [`sx1276-board.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L435-L469)
-
-```c
-/// Interrupt Counters
-int g_dio0_counter, g_dio1_counter, g_dio2_counter, g_dio3_counter, g_dio4_counter, g_dio5_counter, g_nodio_counter;
-
-/// Enqueue the GPIO Interrupt to an Event Queue for the Application Task to process
-static int enqueue_interrupt_event(
-    uint8_t gpioPin,                //  GPIO Pin Number
-    struct ble_npl_event *event) {  //  Event that will be enqueued for the Application Task
-
-    //  Disable GPIO Interrupt for the pin
-    bl_gpio_intmask(gpioPin, 1);
-
-    //  Note: DO NOT Clear the GPIO Interrupt Status for the pin!
-    //  This will suppress subsequent GPIO Interrupts!
-    //  bl_gpio_int_clear(gpioPin, SET);
-
-    //  Increment the Interrupt Counters
-    if (SX1276_DIO0 >= 0 && gpioPin == (uint8_t) SX1276_DIO0) { g_dio0_counter++; }
-    else if (SX1276_DIO1 >= 0 && gpioPin == (uint8_t) SX1276_DIO1) { g_dio1_counter++; }
-    else if (SX1276_DIO2 >= 0 && gpioPin == (uint8_t) SX1276_DIO2) { g_dio2_counter++; }
-    else if (SX1276_DIO3 >= 0 && gpioPin == (uint8_t) SX1276_DIO3) { g_dio3_counter++; }
-    else if (SX1276_DIO4 >= 0 && gpioPin == (uint8_t) SX1276_DIO4) { g_dio4_counter++; }
-    else if (SX1276_DIO5 >= 0 && gpioPin == (uint8_t) SX1276_DIO5) { g_dio5_counter++; }
-    else { g_nodio_counter++; }
-
-    //  Use Event Queue to invoke Event Handler in the Application Task, 
-    //  not in the Interrupt Context
-    if (event != NULL && event->fn != NULL) {
-        extern struct ble_npl_eventq event_queue;  //  TODO: Move Event Queue to header file
-        ble_npl_eventq_put(&event_queue, event);
-    }
-
-    //  Enable GPIO Interrupt for the pin
-    bl_gpio_intmask(gpioPin, 0);
-    return 0;
-}
-```
-
-TODO
-
-## Handling DIO0 to DIO5
 
 TODO
 
