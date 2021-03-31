@@ -42,6 +42,8 @@ How we __flash firmware__ to BL602 with __command-line tools__ on Linux, macOS a
 
 -   ["How to Troubleshoot RISC-V Exceptions"](https://lupyuen.github.io/articles/i2c#appendix-how-to-troubleshoot-risc-v-exceptions)
 
+-   ["Multitask with NimBLE Porting Layer"](https://lupyuen.github.io/articles/lora2#multitask-with-nimble-porting-layer)
+
 ![](https://lupyuen.github.io/images/book-led.jpg)
 
 # GPIO on BL602
