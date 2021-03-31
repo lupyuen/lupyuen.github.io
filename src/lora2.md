@@ -825,7 +825,34 @@ Let's do this with [__NimBLE Porting Layer__](https://lupyuen.github.io/pinetime
 
 ## Background Task
 
-We start by creating the Background Task (right side of above pic) that will process the received LoRa Packets...
+We start by creating the Background Task (right side of above pic) that will process the received LoRa Packets: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L253-L267)
+
+```c
+//  Create a FreeRTOS Task that runs task_callback
+nimble_port_freertos_init(
+    task_callback  //  Callback Function for the Task
+);
+```
+
+We call __`nimble_port_freertos_init`__ (from the NimBLE Porting Layer) to start a FreeRTOS Background Task that runs the function `task_callback`.
+
+The function __`task_callback`__ loops forever, doing work in the background...
+
+```c
+/// Task Function that works in the background
+static void task_callback(void *arg) {
+    //  Loop forever doing work
+    for (;;) {
+        ...
+    }
+}
+```
+
+Let's give it some work to do, by sending an Event...
+
+## Event Queue
+
+TODO
 
 From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L253-L267)
 
@@ -875,8 +902,6 @@ static void task_callback(void *arg) {
 ```
 
 TODO
-
-## Event Queue
 
 From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L269-L273)
 
