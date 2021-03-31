@@ -956,7 +956,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     Hopefully somebody will create a smarter way to flash BL602 boards and reduce the build-flash-test cycle time. 
     
-    (Maybe toggle GPIO 8 in our firmware?)
+    [(Maybe toggle GPIO 8 in our firmware? Check out this idea)](https://twitter.com/GPSBabel/status/1377151421938692097?s=20)
 
 # Appendix: BL602 Flashing Screenshots
 
