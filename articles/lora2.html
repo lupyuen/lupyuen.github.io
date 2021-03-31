@@ -755,8 +755,15 @@ static void task_callback(void *arg) {
 </code></pre>
 <p>Let's give it some work to do, by sending an Event...</p>
 <h2 id="event-queue" class="section-header"><a href="#event-queue">5.2 Event Queue</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L253-L267"><code>demo.c</code></a></p>
+<p>Our Background Task shall receive <strong>Events</strong> from an <strong>Event Queue</strong> and process them.</p>
+<p>We define our Event and Event Queue like so: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L244-L248"><code>demo.c</code></a></p>
+<pre><code class="language-c">/// Event Queue containing Events to be processed
+struct ble_npl_eventq event_queue;
+
+/// Event to be added to the Event Queue
+struct ble_npl_event event;
+</code></pre>
+<p>To initialise the Event and Event Queue, we call <strong><code>ble_npl_event_init</code> and <code>ble_npl_eventq_init</code></strong> like this: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L253-L267"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// Command to create a FreeRTOS Task with NimBLE Porting Layer
 static void create_task(char *buf, int len, int argc, char **argv) {
     //  Init the Event Queue
@@ -773,6 +780,15 @@ static void create_task(char *buf, int len, int argc, char **argv) {
     nimble_port_freertos_init(task_callback);
 }
 </code></pre>
+<p>This call to <strong><code>ble_npl_event_init</code></strong> says...</p>
+<ol>
+<li>
+<p>When our Background Task <strong>receives the Event</strong>...</p>
+</li>
+<li>
+<p><strong>Execute the function <code>handle_event</code></strong> to process the Event</p>
+</li>
+</ol>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L275-L294"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// Task Function that dequeues Events from the Event Queue and processes the Events
