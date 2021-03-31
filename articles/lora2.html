@@ -715,6 +715,26 @@ void SX1276IoIrqInit(DioIrqHandler **irqHandlers) {
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276.c#L421-L458">(Our SX1276 Driver calls <code>SX1276IoIrqInit</code> here)</a></p>
 <h1 id="multitask-with-nimble-porting-layer" class="section-header"><a href="#multitask-with-nimble-porting-layer">5 Multitask with NimBLE Porting Layer</a></h1>
 <p><em>Move Fast OR Break Things... Choose ONE!</em></p>
+<p><strong>Handling an interrupt</strong> gets tricky for any Embedded Program...</p>
+<ol>
+<li>
+<p><strong>Interrupts are Time-Sensitive</strong>: We can't take too long to handle an interrupt... Other interrupts may be waiting on us! </p>
+<p>(Lag ensues)</p>
+</li>
+<li>
+<p><strong>No Blocking Input / Output</strong>: Suppose our SX1276 Interrupt Handler needs to send an SPI Command to reset <code>DIO0</code>.</p>
+<p>That's no-no because our Interrupt Handler would block waiting for the SPI operation to complete. And hold up other interrupts.</p>
+</li>
+<li>
+<p><strong>No Console Output</strong>: Troubleshooting an Interrupt Handler gets challenging because we can't show anything on the console (due to (1) and (2) above).</p>
+<p>(Also challenging: Handling errors in an Interrupt Handler)</p>
+</li>
+</ol>
+<p>Hence some chunks of our Interrupt Handling Logic would need to run inside a <strong>higher-level, lower-priority Application Task</strong>. Like this...</p>
+<p>Our Interrupt Handler (left) would need to signal the Application Task (right) to do some work.</p>
+<p><em>We'll do this with FreeRTOS, no?</em></p>
+<p>Let's do this with <a href="https://lupyuen.github.io/pinetime-rust-mynewt/articles/dfu#nimble-stack-for-bluetooth-le-on-pinetime"><strong>NimBLE Porting Layer</strong></a> instead.  It's a library of multitasking functions that's <strong>portable to multiple operating systems</strong>: FreeRTOS, Mynewt, NuttX, RIOT.</p>
+<p>(And it looks simpler for folks who are new to FreeRTOS)</p>
 <p>TODO</p>
 <h2 id="background-task" class="section-header"><a href="#background-task">5.1 Background Task</a></h2>
 <p>TODO</p>
