@@ -948,6 +948,16 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [`lupyuen.github.io/src/flash.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/flash.md)
 
+# Notes
+
+1.  Do all BL602 boards use a jumper or switch for flashing the firmware?
+
+    Yep because all BL602 boards run on the same Boot ROM... Which uses GPIO 8 to decide whether it should go into Flashing Mode.
+
+    Hopefully somebody will create a smarter way to flash BL602 boards and reduce the build-flash-test cycle time. 
+    
+    (Maybe toggle GPIO 8 in our firmware?)
+
 # Appendix: BL602 Flashing Screenshots
 
 ## Linux Arm64
