@@ -731,6 +731,7 @@ void SX1276IoIrqInit(DioIrqHandler **irqHandlers) {
 </li>
 </ol>
 <p>Hence some chunks of our Interrupt Handling Logic would need to run inside a <strong>higher-level, lower-priority Application Task</strong>. Like this...</p>
+<p><img src="https://lupyuen.github.io/images/lora2-handler2.png" alt="Interrupt Handler vs Application Task" /></p>
 <p>Our Interrupt Handler (left) would need to signal the Application Task (right) to do some work.</p>
 <p><em>We'll do this with FreeRTOS, no?</em></p>
 <p>Let's do this with <a href="https://lupyuen.github.io/pinetime-rust-mynewt/articles/dfu#nimble-stack-for-bluetooth-le-on-pinetime"><strong>NimBLE Porting Layer</strong></a> instead.  It's a library of multitasking functions that's <strong>portable to multiple operating systems</strong>: FreeRTOS, Mynewt, NuttX, RIOT.</p>
@@ -787,6 +788,7 @@ static int init_interrupt_event(
 <li><a href="https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html"><strong>LoRa Frequencies by Country</strong></a></li>
 </ul>
 <p>Download the Firmware Binary File <strong><code>sdk_app_lora.bin</code></strong> for your LoRa Frequency...</p>
+<p>TODO</p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/releases/tag/v6.0.1"><strong>434 MHz <code>sdk_app_lora</code> Binary</strong></a></p>
@@ -1041,6 +1043,7 @@ recv all event group.
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1370708936739885056?s=20">this Twitter Thread</a></li>
 </ol>
+<p><img src="https://lupyuen.github.io/images/lora2-sketch.jpg" alt="" /></p>
 
     
 </body>
