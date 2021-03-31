@@ -93,14 +93,15 @@
 <li><a href="#flashing-stage-2">8.2 Flashing Stage 2</a><ul></ul></li></ul></li>
 <li><a href="#blflash-vs-blopenflasher">9 blflash vs BLOpenFlasher</a><ul></ul></li>
 <li><a href="#whats-next">10 What's Next</a><ul></ul></li>
-<li><a href="#appendix-bl602-flashing-screenshots">11 Appendix: BL602 Flashing Screenshots</a><ul>
-<li><a href="#linux-arm64">11.1 Linux Arm64</a><ul></ul></li>
-<li><a href="#macos-catalina">11.2 macOS Catalina</a><ul></ul></li>
-<li><a href="#windows-10">11.3 Windows 10</a><ul></ul></li></ul></li>
-<li><a href="#appendix-bl602-partition-table">12 Appendix: BL602 Partition Table</a><ul></ul></li>
-<li><a href="#appendix-bl602-device-tree">13 Appendix: BL602 Device Tree</a><ul></ul></li>
-<li><a href="#appendix-bl602-efuse-configuration">14 Appendix: BL602 EFuse Configuration</a><ul></ul></li>
-<li><a href="#appendix-bldevcube-flashing-log">15 Appendix: BLDevCube Flashing Log</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/flash-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board" /></p>
+<li><a href="#notes">11 Notes</a><ul></ul></li>
+<li><a href="#appendix-bl602-flashing-screenshots">12 Appendix: BL602 Flashing Screenshots</a><ul>
+<li><a href="#linux-arm64">12.1 Linux Arm64</a><ul></ul></li>
+<li><a href="#macos-catalina">12.2 macOS Catalina</a><ul></ul></li>
+<li><a href="#windows-10">12.3 Windows 10</a><ul></ul></li></ul></li>
+<li><a href="#appendix-bl602-partition-table">13 Appendix: BL602 Partition Table</a><ul></ul></li>
+<li><a href="#appendix-bl602-device-tree">14 Appendix: BL602 Device Tree</a><ul></ul></li>
+<li><a href="#appendix-bl602-efuse-configuration">15 Appendix: BL602 EFuse Configuration</a><ul></ul></li>
+<li><a href="#appendix-bldevcube-flashing-log">16 Appendix: BLDevCube Flashing Log</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/flash-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board" /></p>
 <p><em>PineCone BL602 RISC-V Evaluation Board</em></p>
 <p>📝 <em>1 Jan 2021</em></p>
 <p>2020 has been an awesome year for PineCone BL602!</p>
@@ -887,16 +888,25 @@ blk64k_erase_cmd = 0xd8
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/flash.md"><code>lupyuen.github.io/src/flash.md</code></a></p>
-<h1 id="appendix-bl602-flashing-screenshots" class="section-header"><a href="#appendix-bl602-flashing-screenshots">11 Appendix: BL602 Flashing Screenshots</a></h1><h2 id="linux-arm64" class="section-header"><a href="#linux-arm64">11.1 Linux Arm64</a></h2>
+<h1 id="notes" class="section-header"><a href="#notes">11 Notes</a></h1>
+<ol>
+<li>
+<p>Do all BL602 boards use a jumper or switch for flashing the firmware?</p>
+<p>Yep because all BL602 boards run on the same Boot ROM... Which uses GPIO 8 to decide whether it should go into Flashing Mode.</p>
+<p>Hopefully somebody will create a smarter way to flash BL602 boards and reduce the build-flash-test cycle time. </p>
+<p>(Maybe toggle GPIO 8 in our firmware?)</p>
+</li>
+</ol>
+<h1 id="appendix-bl602-flashing-screenshots" class="section-header"><a href="#appendix-bl602-flashing-screenshots">12 Appendix: BL602 Flashing Screenshots</a></h1><h2 id="linux-arm64" class="section-header"><a href="#linux-arm64">12.1 Linux Arm64</a></h2>
 <p><img src="https://lupyuen.github.io/images/flash-linux.png" alt="Manjaro Linux Arm64 on Pinebook Pro" /></p>
 <p><em>Manjaro Linux Arm64 on Pinebook Pro</em></p>
-<h2 id="macos-catalina" class="section-header"><a href="#macos-catalina">11.2 macOS Catalina</a></h2>
+<h2 id="macos-catalina" class="section-header"><a href="#macos-catalina">12.2 macOS Catalina</a></h2>
 <p><img src="https://lupyuen.github.io/images/flash-macos.png" alt="macOS Catalina" /></p>
 <p><em>macOS Catalina</em></p>
-<h2 id="windows-10" class="section-header"><a href="#windows-10">11.3 Windows 10</a></h2>
+<h2 id="windows-10" class="section-header"><a href="#windows-10">12.3 Windows 10</a></h2>
 <p><img src="https://lupyuen.github.io/images/flash-windows.png" alt="Windows 10" /></p>
 <p><em>Windows 10</em></p>
-<h1 id="appendix-bl602-partition-table" class="section-header"><a href="#appendix-bl602-partition-table">12 Appendix: BL602 Partition Table</a></h1>
+<h1 id="appendix-bl602-partition-table" class="section-header"><a href="#appendix-bl602-partition-table">13 Appendix: BL602 Partition Table</a></h1>
 <ul>
 <li>
 <p>From <a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/partition/partition_cfg_2M.toml"><code>BLOpenFlasher/bl602/ partition/partition_cfg_2M.toml</code></a></p>
@@ -1002,7 +1012,7 @@ len = 0
 ## compressed image must set len,normal image can left it to 0
 #len = 0
 </code></pre>
-<h1 id="appendix-bl602-device-tree" class="section-header"><a href="#appendix-bl602-device-tree">13 Appendix: BL602 Device Tree</a></h1>
+<h1 id="appendix-bl602-device-tree" class="section-header"><a href="#appendix-bl602-device-tree">14 Appendix: BL602 Device Tree</a></h1>
 <ul>
 <li>
 <p>From <a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/device_tree/bl_factory_params_IoTKitA_40M.dts"><code>BLOpenFlasher/bl602/device_tree/ bl_factory_params_IoTKitA_40M.dts</code></a></p>
@@ -1355,7 +1365,7 @@ len = 0
     };
 };
 </code></pre>
-<h1 id="appendix-bl602-efuse-configuration" class="section-header"><a href="#appendix-bl602-efuse-configuration">14 Appendix: BL602 EFuse Configuration</a></h1>
+<h1 id="appendix-bl602-efuse-configuration" class="section-header"><a href="#appendix-bl602-efuse-configuration">15 Appendix: BL602 EFuse Configuration</a></h1>
 <ul>
 <li>
 <p>From <a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/efuse_bootheader/efuse_bootheader_cfg.conf"><code>BLOpenFlasher/bl602/ efuse_bootheader/ efuse_bootheader_cfg.conf</code></a></p>
@@ -1564,7 +1574,7 @@ hash_7 = 0
 
 crc32 = 0xdeadbeef
 </code></pre>
-<h1 id="appendix-bldevcube-flashing-log" class="section-header"><a href="#appendix-bldevcube-flashing-log">15 Appendix: BLDevCube Flashing Log</a></h1>
+<h1 id="appendix-bldevcube-flashing-log" class="section-header"><a href="#appendix-bldevcube-flashing-log">16 Appendix: BLDevCube Flashing Log</a></h1>
 <p>Sample flashing log emitted by <code>bl_iot_sdk/tools/ flash_tool/BLDevCube.exe</code> on Windows...</p>
 <pre><code class="language-text">[23:01:59.398] - [param]
 interface_type = &quot;Uart&quot;
