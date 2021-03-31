@@ -80,7 +80,8 @@
 <li><a href="#event-queue">5.2 Event Queue</a><ul></ul></li>
 <li><a href="#send-event">5.3 Send Event</a><ul></ul></li>
 <li><a href="#receive-event">5.4 Receive Event</a><ul></ul></li>
-<li><a href="#timer">5.5 Timer</a><ul></ul></li></ul></li>
+<li><a href="#lora-events">5.5 LoRa Events</a><ul></ul></li>
+<li><a href="#timer">5.6 Timer</a><ul></ul></li></ul></li>
 <li><a href="#bl602-stack-trace">6 BL602 Stack Trace</a><ul></ul></li>
 <li><a href="#always-initialise-stack-variables">7 Always Initialise Stack Variables!</a><ul></ul></li>
 <li><a href="#start-the-rakwireless-wisblock-transmitter">8 Start the RAKwireless WisBlock Transmitter</a><ul></ul></li>
@@ -801,7 +802,33 @@ static void handle_event(struct ble_npl_event *ev) {
 <p><strong><code>handle_event</code></strong> processes an Event by printing a message.</p>
 <p>Later we'll see a more sophisticated Event Handler for processing received LoRa Packets.</p>
 <h2 id="send-event" class="section-header"><a href="#send-event">5.3 Send Event</a></h2>
-<p>TODO</p>
+<p>To <strong>send an Event</strong> into an Event Queue, we call <strong><code>ble_npl_eventq_put</code></strong> like so: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L269-L273"><code>demo.c</code></a></p>
+<pre><code class="language-c">/// Command to enqueue an Event into the Event Queue with NimBLE Porting Layer
+static void put_event(char *buf, int len, int argc, char **argv) {
+    //  Add the Event to the Event Queue
+    ble_npl_eventq_put(
+        &amp;event_queue,  //  Event Queue
+        &amp;event         //  Event to be added to Event Queue
+    );
+}
+</code></pre>
+<p>Our Background Task will..</p>
+<ol>
+<li>
+<p>Wake up</p>
+</li>
+<li>
+<p>Receive the Event</p>
+</li>
+<li>
+<p>Execute the Event Handler (<code>handle_event</code>)</p>
+</li>
+</ol>
+<p>We'll learn how in the next section.</p>
+<p><em>Is it OK to call this from an Interrupt Handler?</em></p>
+<p>Yep it's perfectly OK to call <code>ble_npl_eventq_put</code> from an Interrupt Handler.</p>
+<p>In fact the implementation of <code>ble_npl_eventq_put</code> <strong>differs slightly for Interupt Handlers vs Application Tasks</strong>. <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/npl_os_freertos.c#L59-L79">(See this)</a></p>
+<p>This is another reason for calling NimBLE Porting Layer instead of FreeRTOS... NimBLE Porting Layer <strong>handles the nitty-gritty</strong> on our behalf.</p>
 <h2 id="receive-event" class="section-header"><a href="#receive-event">5.4 Receive Event</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L275-L294"><code>demo.c</code></a></p>
@@ -826,14 +853,7 @@ static void task_callback(void *arg) {
     }
 }
 </code></pre>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L269-L273"><code>demo.c</code></a></p>
-<pre><code class="language-c">/// Command to enqueue an Event into the Event Queue with NimBLE Porting Layer
-static void put_event(char *buf, int len, int argc, char **argv) {
-    //  Add the Event to the Event Queue
-    ble_npl_eventq_put(&amp;event_queue, &amp;event);
-}
-</code></pre>
+<h2 id="lora-events" class="section-header"><a href="#lora-events">5.5 LoRa Events</a></h2>
 <p>TODO</p>
 <p><strong><code>enqueue_interrupt_event</code></strong> from <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L435-L469"><code>sx1276-board.c</code></a></p>
 <pre><code class="language-c">/// Interrupt Counters
@@ -882,7 +902,7 @@ static int init_interrupt_event(
 }
 </code></pre>
 <p>TODO</p>
-<h2 id="timer" class="section-header"><a href="#timer">5.5 Timer</a></h2>
+<h2 id="timer" class="section-header"><a href="#timer">5.6 Timer</a></h2>
 <p>TODO</p>
 <h1 id="bl602-stack-trace" class="section-header"><a href="#bl602-stack-trace">6 BL602 Stack Trace</a></h1>
 <p>TODO</p>
