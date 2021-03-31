@@ -850,6 +850,8 @@ static void task_callback(void *arg) {
 
 Let's give it some work to do, by sending an Event...
 
+![Event Queue](https://lupyuen.github.io/images/lora2-handler3.png)
+
 ## Event Queue
 
 Our Background Task shall receive __Events__ from an __Event Queue__ and process them.
