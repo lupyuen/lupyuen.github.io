@@ -78,7 +78,9 @@
 <li><a href="#multitask-with-nimble-porting-layer">5 Multitask with NimBLE Porting Layer</a><ul>
 <li><a href="#background-task">5.1 Background Task</a><ul></ul></li>
 <li><a href="#event-queue">5.2 Event Queue</a><ul></ul></li>
-<li><a href="#timer">5.3 Timer</a><ul></ul></li></ul></li>
+<li><a href="#send-event">5.3 Send Event</a><ul></ul></li>
+<li><a href="#receive-event">5.4 Receive Event</a><ul></ul></li>
+<li><a href="#timer">5.5 Timer</a><ul></ul></li></ul></li>
 <li><a href="#bl602-stack-trace">6 BL602 Stack Trace</a><ul></ul></li>
 <li><a href="#always-initialise-stack-variables">7 Always Initialise Stack Variables!</a><ul></ul></li>
 <li><a href="#start-the-rakwireless-wisblock-transmitter">8 Start the RAKwireless WisBlock Transmitter</a><ul></ul></li>
@@ -789,6 +791,17 @@ static void create_task(char *buf, int len, int argc, char **argv) {
 <p><strong>Execute the function <code>handle_event</code></strong> to process the Event</p>
 </li>
 </ol>
+<p>Here's a bare-bones Event Handler: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L296-L299"><code>demo.c</code></a></p>
+<pre><code class="language-c">/// Handle an Event
+static void handle_event(struct ble_npl_event *ev) {
+    printf(&quot;\r\nHandle an event\r\n&quot;);
+}
+</code></pre>
+<p><strong><code>handle_event</code></strong> processes an Event by printing a message.</p>
+<p>Later we'll see a more sophisticated Event Handler for processing received LoRa Packets.</p>
+<h2 id="send-event" class="section-header"><a href="#send-event">5.3 Send Event</a></h2>
+<p>TODO</p>
+<h2 id="receive-event" class="section-header"><a href="#receive-event">5.4 Receive Event</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L275-L294"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// Task Function that dequeues Events from the Event Queue and processes the Events
@@ -818,13 +831,6 @@ static void task_callback(void *arg) {
 static void put_event(char *buf, int len, int argc, char **argv) {
     //  Add the Event to the Event Queue
     ble_npl_eventq_put(&amp;event_queue, &amp;event);
-}
-</code></pre>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L296-L299"><code>demo.c</code></a></p>
-<pre><code class="language-c">/// Handle an Event
-static void handle_event(struct ble_npl_event *ev) {
-    printf(&quot;\r\nHandle an event\r\n&quot;);
 }
 </code></pre>
 <p>TODO</p>
@@ -875,7 +881,7 @@ static int init_interrupt_event(
 }
 </code></pre>
 <p>TODO</p>
-<h2 id="timer" class="section-header"><a href="#timer">5.3 Timer</a></h2>
+<h2 id="timer" class="section-header"><a href="#timer">5.5 Timer</a></h2>
 <p>TODO</p>
 <h1 id="bl602-stack-trace" class="section-header"><a href="#bl602-stack-trace">6 BL602 Stack Trace</a></h1>
 <p>TODO</p>
