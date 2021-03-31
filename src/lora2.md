@@ -852,9 +852,19 @@ Let's give it some work to do, by sending an Event...
 
 ## Event Queue
 
-TODO
+Our Background Task shall receive __Events__ from an __Event Queue__ and process them.
 
-From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L253-L267)
+We define our Event and Event Queue like so: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L244-L248)
+
+```c
+/// Event Queue containing Events to be processed
+struct ble_npl_eventq event_queue;
+
+/// Event to be added to the Event Queue
+struct ble_npl_event event;
+```
+
+To initialise the Event and Event Queue, we call __`ble_npl_event_init` and `ble_npl_eventq_init`__ like this: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L253-L267)
 
 ```c
 /// Command to create a FreeRTOS Task with NimBLE Porting Layer
@@ -873,6 +883,12 @@ static void create_task(char *buf, int len, int argc, char **argv) {
     nimble_port_freertos_init(task_callback);
 }
 ```
+
+This call to __`ble_npl_event_init`__ says...
+
+1.  When our Background Task __receives the Event__...
+
+1.  __Execute the function `handle_event`__ to process the Event
 
 TODO
 
