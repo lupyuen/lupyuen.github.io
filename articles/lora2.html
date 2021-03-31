@@ -737,7 +737,25 @@ void SX1276IoIrqInit(DioIrqHandler **irqHandlers) {
 <p>Let's do this with <a href="https://lupyuen.github.io/pinetime-rust-mynewt/articles/dfu#nimble-stack-for-bluetooth-le-on-pinetime"><strong>NimBLE Porting Layer</strong></a> instead.  It's a library of multitasking functions that's <strong>portable to multiple operating systems</strong>: FreeRTOS, Mynewt, NuttX, RIOT.</p>
 <p>(And it looks simpler for folks who are new to FreeRTOS)</p>
 <h2 id="background-task" class="section-header"><a href="#background-task">5.1 Background Task</a></h2>
-<p>We start by creating the Background Task (right side of above pic) that will process the received LoRa Packets...</p>
+<p>We start by creating the Background Task (right side of above pic) that will process the received LoRa Packets: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L253-L267"><code>demo.c</code></a></p>
+<pre><code class="language-c">//  Create a FreeRTOS Task that runs task_callback
+nimble_port_freertos_init(
+    task_callback  //  Callback Function for the Task
+);
+</code></pre>
+<p>We call <strong><code>nimble_port_freertos_init</code></strong> (from the NimBLE Porting Layer) to start a FreeRTOS Background Task that runs the function <code>task_callback</code>.</p>
+<p>The function <strong><code>task_callback</code></strong> loops forever, doing work in the background...</p>
+<pre><code class="language-c">/// Task Function that works in the background
+static void task_callback(void *arg) {
+    //  Loop forever doing work
+    for (;;) {
+        ...
+    }
+}
+</code></pre>
+<p>Let's give it some work to do, by sending an Event...</p>
+<h2 id="event-queue" class="section-header"><a href="#event-queue">5.2 Event Queue</a></h2>
+<p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L253-L267"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// Command to create a FreeRTOS Task with NimBLE Porting Layer
 static void create_task(char *buf, int len, int argc, char **argv) {
@@ -779,7 +797,6 @@ static void task_callback(void *arg) {
 }
 </code></pre>
 <p>TODO</p>
-<h2 id="event-queue" class="section-header"><a href="#event-queue">5.2 Event Queue</a></h2>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L269-L273"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// Command to enqueue an Event into the Event Queue with NimBLE Porting Layer
 static void put_event(char *buf, int len, int argc, char **argv) {
