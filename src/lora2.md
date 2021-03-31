@@ -813,6 +813,8 @@ __Handling an interrupt__ gets tricky for any Embedded Program...
 
 Hence some chunks of our Interrupt Handling Logic would need to run inside a __higher-level, lower-priority Application Task__. Like this...
 
+![Interrupt Handler vs Application Task](https://lupyuen.github.io/images/lora2-handler2.png)
+
 Our Interrupt Handler (left) would need to signal the Application Task (right) to do some work.
 
 _We'll do this with FreeRTOS, no?_
@@ -893,6 +895,8 @@ Find out which __LoRa Frequency__ we should use for your region...
 -  [__LoRa Frequencies by Country__](https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html)
 
 Download the Firmware Binary File __`sdk_app_lora.bin`__ for your LoRa Frequency...
+
+TODO
 
 -  [__434 MHz `sdk_app_lora` Binary__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v6.0.1)
 
@@ -1152,3 +1156,5 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1370708936739885056?s=20)
+
+![](https://lupyuen.github.io/images/lora2-sketch.jpg)
