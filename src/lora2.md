@@ -890,6 +890,25 @@ This call to __`ble_npl_event_init`__ says...
 
 1.  __Execute the function `handle_event`__ to process the Event
 
+Here's a bare-bones Event Handler: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L296-L299)
+
+```c
+/// Handle an Event
+static void handle_event(struct ble_npl_event *ev) {
+    printf("\r\nHandle an event\r\n");
+}
+```
+
+__`handle_event`__ processes an Event by printing a message.
+
+Later we'll see a more sophisticated Event Handler for processing received LoRa Packets.
+
+## Send Event
+
+TODO
+
+## Receive Event
+
 TODO
 
 From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L275-L294)
@@ -926,17 +945,6 @@ From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app
 static void put_event(char *buf, int len, int argc, char **argv) {
     //  Add the Event to the Event Queue
     ble_npl_eventq_put(&event_queue, &event);
-}
-```
-
-TODO
-
-From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L296-L299)
-
-```c
-/// Handle an Event
-static void handle_event(struct ble_npl_event *ev) {
-    printf("\r\nHandle an event\r\n");
 }
 ```
 
