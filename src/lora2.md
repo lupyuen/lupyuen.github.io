@@ -797,6 +797,30 @@ That is all... We register the GPIO Handler Functions for `DIO0` to `DIO5` with 
 
 _Move Fast OR Break Things... Choose ONE!_
 
+__Handling an interrupt__ gets tricky for any Embedded Program...
+
+1.  __Interrupts are Time-Sensitive__: We can't take too long to handle an interrupt... Other interrupts may be waiting on us! 
+
+    (Lag ensues)
+
+1.  __No Blocking Input / Output__: Suppose our SX1276 Interrupt Handler needs to send an SPI Command to reset `DIO0`.
+
+    That's no-no because our Interrupt Handler would block waiting for the SPI operation to complete. And hold up other interrupts.
+
+1.  __No Console Output__: Troubleshooting an Interrupt Handler gets challenging because we can't show anything on the console (due to (1) and (2) above).
+
+    (Also challenging: Handling errors in an Interrupt Handler)
+
+Hence some chunks of our Interrupt Handling Logic would need to run inside a __higher-level, lower-priority Application Task__. Like this...
+
+Our Interrupt Handler (left) would need to signal the Application Task (right) to do some work.
+
+_We'll do this with FreeRTOS, no?_
+
+Let's do this with [__NimBLE Porting Layer__](https://lupyuen.github.io/pinetime-rust-mynewt/articles/dfu#nimble-stack-for-bluetooth-le-on-pinetime) instead.  It's a library of multitasking functions that's __portable to multiple operating systems__: FreeRTOS, Mynewt, NuttX, RIOT.
+
+(And it looks simpler for folks who are new to FreeRTOS)
+
 TODO
 
 ## Background Task
