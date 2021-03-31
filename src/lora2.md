@@ -907,7 +907,36 @@ Later we'll see a more sophisticated Event Handler for processing received LoRa 
 
 ## Send Event
 
-TODO
+To __send an Event__ into an Event Queue, we call __`ble_npl_eventq_put`__ like so: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L269-L273)
+
+```c
+/// Command to enqueue an Event into the Event Queue with NimBLE Porting Layer
+static void put_event(char *buf, int len, int argc, char **argv) {
+    //  Add the Event to the Event Queue
+    ble_npl_eventq_put(
+        &event_queue,  //  Event Queue
+        &event         //  Event to be added to Event Queue
+    );
+}
+```
+
+Our Background Task will..
+
+1.  Wake up
+
+1.  Receive the Event
+
+1.  Execute the Event Handler (`handle_event`)
+
+We'll learn how in the next section.
+
+_Is it OK to call this from an Interrupt Handler?_
+
+Yep it's perfectly OK to call `ble_npl_eventq_put` from an Interrupt Handler.
+
+In fact the implementation of `ble_npl_eventq_put` __differs slightly for Interupt Handlers vs Application Tasks__. [(See this)](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/npl_os_freertos.c#L59-L79)
+
+This is another reason for calling NimBLE Porting Layer instead of FreeRTOS... NimBLE Porting Layer __handles the nitty-gritty__ on our behalf.
 
 ## Receive Event
 
@@ -938,17 +967,7 @@ static void task_callback(void *arg) {
 }
 ```
 
-TODO
-
-From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L269-L273)
-
-```c
-/// Command to enqueue an Event into the Event Queue with NimBLE Porting Layer
-static void put_event(char *buf, int len, int argc, char **argv) {
-    //  Add the Event to the Event Queue
-    ble_npl_eventq_put(&event_queue, &event);
-}
-```
+## LoRa Events
 
 TODO
 
