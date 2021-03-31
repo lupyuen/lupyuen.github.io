@@ -736,10 +736,80 @@ void SX1276IoIrqInit(DioIrqHandler **irqHandlers) {
 <p><em>We'll do this with FreeRTOS, no?</em></p>
 <p>Let's do this with <a href="https://lupyuen.github.io/pinetime-rust-mynewt/articles/dfu#nimble-stack-for-bluetooth-le-on-pinetime"><strong>NimBLE Porting Layer</strong></a> instead.  It's a library of multitasking functions that's <strong>portable to multiple operating systems</strong>: FreeRTOS, Mynewt, NuttX, RIOT.</p>
 <p>(And it looks simpler for folks who are new to FreeRTOS)</p>
-<p>TODO</p>
 <h2 id="background-task" class="section-header"><a href="#background-task">5.1 Background Task</a></h2>
+<p>We start by creating the Background Task (right side of above pic) that will process the received LoRa Packets...</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L253-L267"><code>demo.c</code></a></p>
+<pre><code class="language-c">/// Command to create a FreeRTOS Task with NimBLE Porting Layer
+static void create_task(char *buf, int len, int argc, char **argv) {
+    //  Init the Event Queue
+    ble_npl_eventq_init(&amp;event_queue);
+
+    //  Init the Event
+    ble_npl_event_init(
+        &amp;event,        //  Event
+        handle_event,  //  Event Handler Function
+        NULL           //  Argument to be passed to Event Handler
+    );
+
+    //  Create a FreeRTOS Task to process the Event Queue
+    nimble_port_freertos_init(task_callback);
+}
+</code></pre>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L275-L294"><code>demo.c</code></a></p>
+<pre><code class="language-c">/// Task Function that dequeues Events from the Event Queue and processes the Events
+static void task_callback(void *arg) {
+    //  Loop forever handling Events from the Event Queue
+    for (;;) {
+        //  Get the next Event from the Event Queue
+        struct ble_npl_event *ev = ble_npl_eventq_get(
+            &amp;event_queue,  //  Event Queue
+            1000           //  Timeout in 1,000 ticks
+        );
+
+        //  If no Event due to timeout, wait for next Event
+        if (ev == NULL) { continue; }
+
+        //  Remove the Event from the Event Queue
+        ble_npl_eventq_remove(&amp;event_queue, ev);
+
+        //  Trigger the Event Handler Function (handle_event)
+        ble_npl_event_run(ev);
+    }
+}
+</code></pre>
 <p>TODO</p>
 <h2 id="event-queue" class="section-header"><a href="#event-queue">5.2 Event Queue</a></h2>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L269-L273"><code>demo.c</code></a></p>
+<pre><code class="language-c">/// Command to enqueue an Event into the Event Queue with NimBLE Porting Layer
+static void put_event(char *buf, int len, int argc, char **argv) {
+    //  Add the Event to the Event Queue
+    ble_npl_eventq_put(&amp;event_queue, &amp;event);
+}
+</code></pre>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L296-L299"><code>demo.c</code></a></p>
+<pre><code class="language-c">/// Handle an Event
+static void handle_event(struct ble_npl_event *ev) {
+    printf(&quot;\r\nHandle an event\r\n&quot;);
+}
+</code></pre>
+<p>TODO</p>
+<p><strong><code>enqueue_interrupt_event</code></strong> from <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L435-L469"><code>sx1276-board.c</code></a></p>
+<pre><code class="language-c">/// Interrupt Counters
+int g_dio0_counter, g_dio1_counter, g_dio2_counter, g_dio3_counter, g_dio4_counter, g_dio5_counter, g_nodio_counter;
+
+/// Enqueue the GPIO Interrupt to an Event Queue for the Application Task to process
+static int enqueue_interrupt_event(
+    uint8_t gpioPin,                //  GPIO Pin Number
+    struct ble_npl_event *event) {  //  Event that will be enqueued for the Application Task
+    ...
+
+    //  Use Event Queue to invoke Event Handler in the Application Task, 
+    //  not in the Interrupt Context
+    extern struct ble_npl_eventq event_queue;
+    ble_npl_eventq_put(&amp;event_queue, event);
+</code></pre>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L471-L498"><code>sx1276-board.c</code></a></p>
 <pre><code class="language-c">//  Init the Event that will the Interrupt Handler will invoke to process the GPIO Interrupt
