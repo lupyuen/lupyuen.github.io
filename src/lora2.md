@@ -920,7 +920,7 @@ static void put_event(char *buf, int len, int argc, char **argv) {
 }
 ```
 
-Our Background Task will..
+Our Background Task will...
 
 1.  Wake up
 
