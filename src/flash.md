@@ -327,6 +327,8 @@ Connect at 2 Mbps. When we enter __`help`__, it will respond with a list of comm
 
 -   [__Discuss MagicHome BL602 on Reddit__](https://www.reddit.com/r/RISCV/comments/knsju9/flashing_firmware_to_pinecone_bl602/gn7rw3i?utm_source=share&utm_medium=web2x&context=3)
 
+-   [__ESPHome Feature Request for MagicHome BL602__](https://github.com/esphome/feature-requests/issues/1049)
+
 ## For macOS: CH340 USB Serial Driver
 
 We should use __CoolTerm__ on macOS, not `screen`. See [__"Fix BL602 Demo Firmware for macOS"__](https://lupyuen.github.io/articles/led#appendix-fix-bl602-demo-firmware-for-macos)
