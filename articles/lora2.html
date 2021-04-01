@@ -81,7 +81,8 @@
 <li><a href="#send-event">5.3 Send Event</a><ul></ul></li>
 <li><a href="#receive-event">5.4 Receive Event</a><ul></ul></li>
 <li><a href="#lora-events">5.5 LoRa Events</a><ul></ul></li>
-<li><a href="#timer">5.6 Timer</a><ul></ul></li></ul></li>
+<li><a href="#timer">5.6 Timer</a><ul></ul></li>
+<li><a href="#source-files">5.7 Source Files</a><ul></ul></li></ul></li>
 <li><a href="#bl602-stack-trace">6 BL602 Stack Trace</a><ul></ul></li>
 <li><a href="#always-initialise-stack-variables">7 Always Initialise Stack Variables!</a><ul></ul></li>
 <li><a href="#start-the-rakwireless-wisblock-transmitter">8 Start the RAKwireless WisBlock Transmitter</a><ul></ul></li>
@@ -899,79 +900,91 @@ static struct ble_npl_event gpio_events[MAX_GPIO_INTERRUPTS];
 <p><em>How are the arrays <code>gpio_interrupts</code> and <code>gpio_events</code> populated?</em></p>
 <p>We call <strong><code>init_interrupt_event</code></strong> to initialise the <code>gpio_interrupts</code> and <code>gpio_events</code> arrays. <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L471-L498">(See this)</a></p>
 <h2 id="timer" class="section-header"><a href="#timer">5.6 Timer</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276.c#L227-L307"><code>sx1276.c</code></a></p>
-<pre><code class="language-c">/// Initialise a timer. Based on https://mynewt.apache.org/latest/os/core_os/cputime/os_cputime.html#c.os_cputime_timer_init
-void os_cputime_timer_init(
-    struct ble_npl_callout *timer,  //  The timer to initialize. Cannot be NULL.
-    ble_npl_event_fn *f,            //  The timer callback function. Cannot be NULL.
-    void *arg) {                    //  Pointer to data object to pass to timer.
-    ...
-    //  Init the Callout Timer with the Callback Function
-    ble_npl_callout_init(
-        timer,         //  Callout Timer
-        &amp;event_queue,  //  Event Queue that will handle the Callout upon timeout
-        f,             //  Callback Function
-        arg            //  Argument to be passed to Callback Function
-    );
+<p>Remember that our LoRa SX1276 Transceiver will listen 5 seconds for incoming packets... Then we stop it to conserve battery power?</p>
+<p>We do that with a <strong>Callout Timer</strong> from the NimBLE Porting Layer. Here's how we <strong>initialise a Callout Timer</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276.c#L227-L247"><code>sx1276.c</code></a></p>
+<pre><code class="language-c">//  Define the Callout Timer
+struct ble_npl_callout timer;
+
+//  Init the Callout Timer with the Callback Function
+ble_npl_callout_init(
+    &amp;timer,        //  Callout Timer
+    &amp;event_queue,  //  Event Queue that will handle the Callout upon timeout
+    f,             //  Callback Function
+    arg            //  Argument to be passed to Callback Function
+);
+</code></pre>
+<p>When the Callout Timer expires, the Callback Function <strong><code>f</code></strong> will be called by our Background Task (via the Event Queue).</p>
+<p>Here's how we <strong>set the Callout Timer</strong> to expire in <code>microsecs</code> microseconds: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276.c#L264-L289"><code>sx1276.c</code></a></p>
+<pre><code class="language-c">//  Assume that Callout Timer has been stopped.
+//  Convert microseconds to ticks.
+ble_npl_time_t ticks = ble_npl_time_ms_to_ticks32(
+    microsecs / 1000  //  Duration in milliseconds
+);
+
+//  Wait at least 1 tick
+if (ticks == 0) { ticks = 1; }
+
+//  Trigger the Callout Timer after the elapsed ticks
+ble_npl_error_t rc = ble_npl_callout_reset(
+    &amp;timer,  //  Callout Timer
+    ticks    //  Number of ticks
+);
+assert(rc == 0);
+</code></pre>
+<p>To <strong>stop a Callout Timer</strong> (and cancel the pending callback), we do this: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276.c#L249-L262"><code>sx1276.c</code></a></p>
+<pre><code class="language-c">//  If Callout Timer is still running...
+if (ble_npl_callout_is_active(&amp;timer)) {
+    //  Stop the Callout Timer
+    ble_npl_callout_stop(&amp;timer);
 }
 </code></pre>
-<p>TODO</p>
-<pre><code class="language-c">/// Sets a timer that will expire ‘usecs’ microseconds from the current time.
-/// NOTE: This must be called when the timer is stopped.
-/// Based on https://mynewt.apache.org/latest/os/core_os/cputime/os_cputime.html#c.os_cputime_timer_relative
-void os_cputime_timer_relative(
-    struct ble_npl_callout *timer,  //  Pointer to timer. Cannot be NULL.
-    uint32_t microsecs) {           //  The number of microseconds from now at which the timer will expire.
-    ...
-    //  Assume that Callout Timer has been stopped.
-    //  Convert microseconds to ticks
-    ble_npl_time_t ticks = ble_npl_time_ms_to_ticks32(
-        microsecs / 1000  //  Duration in milliseconds
-    );
+<p>Sometimes we need to suspend the current task and <strong>wait a short while</strong>. (Maybe to ponder our life choices) Here's how: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276.c#L291-L307"><code>sx1276.c</code></a></p>
+<pre><code class="language-c">//  Convert microseconds to ticks
+ble_npl_time_t ticks = ble_npl_time_ms_to_ticks32(
+    microsecs / 1000  //  Duration in milliseconds
+);
 
-    //  Wait at least 1 tick
-    if (ticks == 0) { ticks = 1; }
+//  Wait at least 1 tick
+if (ticks == 0) { ticks = 1; }
 
-    //  Trigger the Callout Timer after the elapsed ticks
-    ble_npl_error_t rc = ble_npl_callout_reset(
-        timer,  //  Callout Timer
-        ticks   //  Number of ticks
-    );
-    assert(rc == 0);
-}
+//  Wait for the ticks
+ble_npl_time_delay(ticks);
 </code></pre>
-<p>TODO</p>
-<pre><code class="language-c">/// Stops a timer from running.  Can be called even if timer is not running.
-/// Based on https://mynewt.apache.org/latest/os/core_os/cputime/os_cputime.html#c.os_cputime_timer_stop
-void os_cputime_timer_stop(
-    struct ble_npl_callout *timer) {  //  Pointer to timer to stop. Cannot be NULL.
-    ...
-    //  If Callout Timer is still running...
-    if (ble_npl_callout_is_active(timer)) {
-        //  Stop the Callout Timer
-        ble_npl_callout_stop(timer);
-    }
-}
-</code></pre>
-<p>TODO</p>
-<pre><code class="language-c">/// Wait until ‘usecs’ microseconds has elapsed. This is a blocking delay.
-/// Based on https://mynewt.apache.org/latest/os/core_os/cputime/os_cputime.html#c.os_cputime_delay_usecs
-void os_cputime_delay_usecs(
-    uint32_t microsecs) {  //  The number of microseconds to wait.
-
-    //  Convert microseconds to ticks.
-    ble_npl_time_t ticks = ble_npl_time_ms_to_ticks32(
-        microsecs / 1000  //  Duration in milliseconds
-    );
-
-    //  Wait at least 1 tick
-    if (ticks == 0) { ticks = 1; }
-
-    //  Wait for the ticks
-    ble_npl_time_delay(ticks);
-}
-</code></pre>
+<h2 id="source-files" class="section-header"><a href="#source-files">5.7 Source Files</a></h2>
+<p><em>How do we add the NimBLE Porting Library to our own BL602 programs?</em></p>
+<p>Copy these source files from the BL602 LoRa Firmware to your program...</p>
+<ol>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/nimble_npl.h"><strong><code>nimble_npl.h</code></strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/nimble_npl_os.h"><strong><code>nimble_npl_os.h</code></strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/nimble_port.h"><strong><code>nimble_port.h</code></strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/nimble_port_freertos.c"><strong><code>nimble_port_freertos.c</code></strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/nimble_port_freertos.h"><strong><code>nimble_port_freertos.h</code></strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/npl_freertos.h"><strong><code>npl_freertos.h</code></strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/npl_os_freertos.c"><strong><code>npl_os_freertos.h</code></strong></a></p>
+</li>
+</ol>
+<p>The above source files were ported from the <a href="https://github.com/apache/mynewt-nimble"><strong>Apache NimBLE project</strong></a> with minor changes...</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/commit/72e2cb44a40f9faf91c87ee8d421ed8eb4adb571#diff-c13b2cc976e41c4bc4d3fd967aefc40cccfb76bc14c7210001f675f371a14818">Detect Interrupt Service Routine</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/commit/41a07867dceb5541439ff3f05129941647b9341f#diff-c13b2cc976e41c4bc4d3fd967aefc40cccfb76bc14c7210001f675f371a14818">Rename <code>vPortEnterCritical</code> and <code>vPortExitCritical</code> to <code>taskENTER_CRITICAL</code> and <code>taskEXIT_CRITICAL</code></a></p>
+</li>
+</ul>
 <h1 id="bl602-stack-trace" class="section-header"><a href="#bl602-stack-trace">6 BL602 Stack Trace</a></h1>
 <p>TODO</p>
 <h1 id="always-initialise-stack-variables" class="section-header"><a href="#always-initialise-stack-variables">7 Always Initialise Stack Variables!</a></h1>
