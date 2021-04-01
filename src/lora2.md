@@ -1,6 +1,6 @@
 # PineCone BL602 RISC-V Board Receives LoRa Packets
 
-📝 _2 Apr 2021_
+📝 _4 Apr 2021_
 
 Not too long ago (and not so far away) we embarked on an epic quest to create a low-power, long-range [__LoRa IoT Sensor__](https://en.wikipedia.org/wiki/LoRa) with [__PineCone BL602 RISC-V Board__](https://lupyuen.github.io/articles/pinecone)
 
@@ -1099,7 +1099,7 @@ ble_npl_time_delay(ticks);
 
 ## Source Files
 
-_How do we add the NimBLE Porting Library to our own BL602 programs?_
+_How do we add the NimBLE Porting Layer to our own BL602 programs?_
 
 Copy these source files from the BL602 LoRa Firmware to your program...
 
@@ -1122,14 +1122,6 @@ The above source files were ported from the [__Apache NimBLE project__](https://
 -   [Detect Interrupt Service Routine](https://github.com/lupyuen/bl_iot_sdk/commit/72e2cb44a40f9faf91c87ee8d421ed8eb4adb571#diff-c13b2cc976e41c4bc4d3fd967aefc40cccfb76bc14c7210001f675f371a14818)
 
 -   [Rename `vPortEnterCritical` and `vPortExitCritical` to `taskENTER_CRITICAL` and `taskEXIT_CRITICAL`](https://github.com/lupyuen/bl_iot_sdk/commit/41a07867dceb5541439ff3f05129941647b9341f#diff-c13b2cc976e41c4bc4d3fd967aefc40cccfb76bc14c7210001f675f371a14818)
-
-# BL602 Stack Trace
-
-TODO
-
-# Always Initialise Stack Variables!
-
-TODO
 
 # Start the RAKwireless WisBlock Transmitter
 
@@ -1365,6 +1357,14 @@ Let's enter some commands to transmit a LoRa Packet!
     [__LoRa Ping Firmware for BL602__](https://lupyuen.github.io/articles/wisblock#appendix-lora-ping-firmware-for-bl602)
 
 # Troubleshoot LoRa
+
+TODO
+
+# BL602 Stack Trace
+
+TODO
+
+# Always Initialise Stack Variables!
 
 TODO
 
