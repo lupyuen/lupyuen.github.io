@@ -996,7 +996,7 @@ In the next section we'll learn to use __multiple Events__ (with different Event
 
 ## LoRa Events
 
-TODO
+Earlier we have defined the __GPIO Handler Functions__ for `DIO0` to `DIO5`...
 
 ```c
 //  DIO Handler Functions
@@ -1006,7 +1006,22 @@ DioIrqHandler *DioIrq[] = {
     SX1276OnDio4Irq, NULL };  //  DIO5 not used for LoRa Modulation
 ```
 
-The configured GPIO Interrupts are stored in arrays __`gpio_interrupts` and `gpio_events`__ like so...
+_How shall we trigger these GPIO Handler Functions... From our GPIO Interrupt Handler?_
+
+Easy: We use an __Array of Events__! From [`sx1276-board.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L405-L433)
+
+```c
+/// Maximum number of GPIO Pins that can be configured for interrupts
+#define MAX_GPIO_INTERRUPTS 6  //  DIO0 to DIO5
+
+/// Array of GPIO Pin Numbers that have been configured for interrupts
+static uint8_t gpio_interrupts[MAX_GPIO_INTERRUPTS];
+
+/// Array of Events for the GPIO Interrupts
+static struct ble_npl_event gpio_events[MAX_GPIO_INTERRUPTS];
+```
+
+Our Event Array __`gpio_events`__ points to the GPIO Handler Functions (as Event Handlers) like so...
 
 ![GPIO Interrupts and Events](https://lupyuen.github.io/images/lora2-events.png)
 
