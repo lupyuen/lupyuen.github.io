@@ -876,6 +876,12 @@ ble_npl_event_init(   //  Init the Event for...
 <p>In the next section we'll learn to use <strong>multiple Events</strong> (with different Event Handlers) to process LoRa Packets.</p>
 <h2 id="lora-events" class="section-header"><a href="#lora-events">5.5 LoRa Events</a></h2>
 <p>TODO</p>
+<pre><code class="language-c">//  DIO Handler Functions
+DioIrqHandler *DioIrq[] = { 
+    SX1276OnDio0Irq, SX1276OnDio1Irq,
+    SX1276OnDio2Irq, SX1276OnDio3Irq,
+    SX1276OnDio4Irq, NULL };  //  DIO5 not used for LoRa Modulation
+</code></pre>
 <p>The configured GPIO Interrupts are stored in arrays <strong><code>gpio_interrupts</code> and <code>gpio_events</code></strong> like so...</p>
 <p><img src="https://lupyuen.github.io/images/lora2-events.png" alt="GPIO Interrupts and Events" /></p>
 <p>TODO</p>
