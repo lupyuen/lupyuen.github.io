@@ -875,14 +875,25 @@ ble_npl_event_init(   //  Init the Event for...
 </code></pre>
 <p>In the next section we'll learn to use <strong>multiple Events</strong> (with different Event Handlers) to process LoRa Packets.</p>
 <h2 id="lora-events" class="section-header"><a href="#lora-events">5.5 LoRa Events</a></h2>
-<p>TODO</p>
+<p>Earlier we have defined the <strong>GPIO Handler Functions</strong> for <code>DIO0</code> to <code>DIO5</code>...</p>
 <pre><code class="language-c">//  DIO Handler Functions
 DioIrqHandler *DioIrq[] = { 
     SX1276OnDio0Irq, SX1276OnDio1Irq,
     SX1276OnDio2Irq, SX1276OnDio3Irq,
     SX1276OnDio4Irq, NULL };  //  DIO5 not used for LoRa Modulation
 </code></pre>
-<p>The configured GPIO Interrupts are stored in arrays <strong><code>gpio_interrupts</code> and <code>gpio_events</code></strong> like so...</p>
+<p><em>How shall we trigger these GPIO Handler Functions... From our GPIO Interrupt Handler?</em></p>
+<p>Easy: We use an <strong>Array of Events</strong>! From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L405-L433"><code>sx1276-board.c</code></a></p>
+<pre><code class="language-c">/// Maximum number of GPIO Pins that can be configured for interrupts
+#define MAX_GPIO_INTERRUPTS 6  //  DIO0 to DIO5
+
+/// Array of GPIO Pin Numbers that have been configured for interrupts
+static uint8_t gpio_interrupts[MAX_GPIO_INTERRUPTS];
+
+/// Array of Events for the GPIO Interrupts
+static struct ble_npl_event gpio_events[MAX_GPIO_INTERRUPTS];
+</code></pre>
+<p>Our Event Array <strong><code>gpio_events</code></strong> points to the GPIO Handler Functions (as Event Handlers) like so...</p>
 <p><img src="https://lupyuen.github.io/images/lora2-events.png" alt="GPIO Interrupts and Events" /></p>
 <p>TODO</p>
 <p><strong><code>enqueue_interrupt_event</code></strong> from <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L435-L469"><code>sx1276-board.c</code></a></p>
