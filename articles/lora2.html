@@ -1005,7 +1005,7 @@ void __assert_func(const char *file, int line, const char *func, const char *fai
 </li>
 </ul>
 <h1 id="start-the-rakwireless-wisblock-transmitter" class="section-header"><a href="#start-the-rakwireless-wisblock-transmitter">6 Start the RAKwireless WisBlock Transmitter</a></h1>
-<p>Today we shall use <strong>RAKwireless WisBlock</strong> to transmit LoRa Packets to BL602 for testing.</p>
+<p>Today we shall install <strong>RAKwireless WisBlock</strong> to transmit LoRa Packets to BL602 for testing.</p>
 <p><img src="https://lupyuen.github.io/images/wisblock-title.jpg" alt="RAKwireless WisBlock LPWAN Module mounted on WisBlock Base Board" /></p>
 <p><em>RAKwireless WisBlock LPWAN Module mounted on WisBlock Base Board</em></p>
 <h2 id="connect-wisblock" class="section-header"><a href="#connect-wisblock">6.1 Connect WisBlock</a></h2>
@@ -1124,11 +1124,22 @@ Flash: [=         ]   7.3% (used 59800 bytes from 815104 bytes)
 <pre><code class="language-text">&gt; Executing task: platformio device monitor &lt;
 --- Miniterm on /dev/cu.usbmodem14201  9600,8,N,1 ---
 --- Quit: Ctrl+C | Menu: Ctrl+T | Help: Ctrl+T followed by Ctrl+H ---
-Starting Radio.Tx
+...
+OnTxDone
+OnTxDone
+OnTxDone
 </code></pre>
 </li>
+<li>
+<p>WisBlock is now transmitting a LoRa Packet (<code>&quot;Hello&quot;</code>) every 5 seconds. <a href="https://github.com/lupyuen/wisblock-lora-transmitter/blob/main/src/main.cpp#L104-L128">(See this)</a></p>
+</li>
+<li>
+<p>If we sniff the airwaves with a <strong>Software Defined Radio</strong>, we will see the distinctive <a href="https://lupyuen.github.io/articles/lora#visualise-lora-with-software-defined-radio"><strong>LoRa Chirp</strong></a>...</p>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=USqStub3KC0"><strong>RAKwireless WisBlock​ LoRa​ Transmitter Sniffed by Airspy R2 SDR</strong></a></li>
+</ul>
+</li>
 </ol>
-<p>TODO</p>
 <h1 id="build-and-run-the-bl602-lora-firmware" class="section-header"><a href="#build-and-run-the-bl602-lora-firmware">7 Build and Run the BL602 LoRa Firmware</a></h1>
 <p>TODO</p>
 <p>Let's run the LoRa Demo Firmware for BL602.</p>
@@ -1278,6 +1289,7 @@ cargo run flash sdk_app_lora.bin --port COM5
 <p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">More details on connecting to BL602</a></p>
 <h2 id="enter-lora-commands" class="section-header"><a href="#enter-lora-commands">7.3 Enter LoRa commands</a></h2>
+<p>TODO</p>
 <p>Let's enter some commands to transmit a LoRa Packet!</p>
 <ol>
 <li>
@@ -1338,12 +1350,9 @@ recv all event group.
 </code></pre>
 <p>That's <code>send_message</code> blasting the 64-byte LoRa Packet to the airwave, in the simple &quot;Fire And Forget&quot; Mode.</p>
 <p>(The LoRa Driver copies the 64-byte Transmit Buffer to our LoRa Transceiver over SPI, byte by byte. Hence the numerous SPI requests.)</p>
-<p><a href="https://youtu.be/9F30uEY-nIk"><strong>Watch the video on YouTube</strong></a></p>
-<p><a href="https://gist.github.com/lupyuen/31ac29aa776601ba6a610a93f3190c72"><strong>Check out the complete log</strong></a></p>
-</li>
-<li>
-<p>If we wish to <strong>transmit LoRa Packets automatically on startup</strong> (without entering any commands), check out the LoRa Ping Firmware...</p>
-<p><a href="https://lupyuen.github.io/articles/wisblock#appendix-lora-ping-firmware-for-bl602"><strong>LoRa Ping Firmware for BL602</strong></a></p>
+<p><a href="https://youtu.be/3TSvo0dwwnQ"><strong>Watch the demo video on YouTube</strong></a></p>
+<p><a href="https://www.youtube.com/watch?v=6qqZVcqN_rg"><strong>With timeout</strong></a></p>
+<p><a href="https://gist.github.com/lupyuen/31ac29aa776601ba6a610a93f3190c72"><strong>TODO: Check out the complete log</strong></a></p>
 </li>
 </ol>
 <h1 id="troubleshoot-lora" class="section-header"><a href="#troubleshoot-lora">8 Troubleshoot LoRa</a></h1>
