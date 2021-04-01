@@ -1142,7 +1142,7 @@ The above source files were ported from the [__Apache NimBLE project__](https://
 
 # Start the RAKwireless WisBlock Transmitter
 
-Today we shall use __RAKwireless WisBlock__ to transmit LoRa Packets to BL602 for testing.
+Today we shall install __RAKwireless WisBlock__ to transmit LoRa Packets to BL602 for testing.
 
 ![RAKwireless WisBlock LPWAN Module mounted on WisBlock Base Board](https://lupyuen.github.io/images/wisblock-title.jpg)
 
@@ -1268,10 +1268,17 @@ The above components are shipped in the [__WisBlock Connected Box__](https://sto
     > Executing task: platformio device monitor <
     --- Miniterm on /dev/cu.usbmodem14201  9600,8,N,1 ---
     --- Quit: Ctrl+C | Menu: Ctrl+T | Help: Ctrl+T followed by Ctrl+H ---
-    Starting Radio.Tx
+    ...
+    OnTxDone
+    OnTxDone
+    OnTxDone
     ```
 
-TODO
+1.  WisBlock is now transmitting a LoRa Packet (`"Hello"`) every 5 seconds. [(See this)](https://github.com/lupyuen/wisblock-lora-transmitter/blob/main/src/main.cpp#L104-L128)
+
+1.  If we sniff the airwaves with a __Software Defined Radio__, we will see the distinctive [__LoRa Chirp__](https://lupyuen.github.io/articles/lora#visualise-lora-with-software-defined-radio)...
+
+    -   [__RAKwireless WisBlock​ LoRa​ Transmitter Sniffed by Airspy R2 SDR__](https://www.youtube.com/watch?v=USqStub3KC0)
 
 # Build and Run the BL602 LoRa Firmware
 
@@ -1420,6 +1427,8 @@ __For Windows:__ Use `putty` ([See this](https://lupyuen.github.io/articles/flas
 
 ## Enter LoRa commands
 
+TODO
+
 Let's enter some commands to transmit a LoRa Packet!
 
 1.  Press Enter to reveal the command prompt.
@@ -1494,13 +1503,11 @@ Let's enter some commands to transmit a LoRa Packet!
 
     (The LoRa Driver copies the 64-byte Transmit Buffer to our LoRa Transceiver over SPI, byte by byte. Hence the numerous SPI requests.)
 
-    [__Watch the video on YouTube__](https://youtu.be/9F30uEY-nIk)
+    [__Watch the demo video on YouTube__](https://youtu.be/3TSvo0dwwnQ)
 
-    [__Check out the complete log__](https://gist.github.com/lupyuen/31ac29aa776601ba6a610a93f3190c72)
+    [__With timeout__](https://www.youtube.com/watch?v=6qqZVcqN_rg)
 
-1.  If we wish to __transmit LoRa Packets automatically on startup__ (without entering any commands), check out the LoRa Ping Firmware...
-
-    [__LoRa Ping Firmware for BL602__](https://lupyuen.github.io/articles/wisblock#appendix-lora-ping-firmware-for-bl602)
+    [__TODO: Check out the complete log__](https://gist.github.com/lupyuen/31ac29aa776601ba6a610a93f3190c72)
 
 # Troubleshoot LoRa
 
