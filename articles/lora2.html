@@ -875,7 +875,7 @@ ble_npl_event_init(   //  Init the Event for...
 </code></pre>
 <p>In the next section we'll learn to use <strong>multiple Events</strong> (with different Event Handlers) to process LoRa Packets.</p>
 <h2 id="lora-events" class="section-header"><a href="#lora-events">5.5 LoRa Events</a></h2>
-<p>Earlier we have defined the <strong>GPIO Handler Functions</strong> for <code>DIO0</code> to <code>DIO5</code>...</p>
+<p>Earlier we have defined the <strong>GPIO Handler Functions</strong> that will process the interrupts from our LoRa Transceiver (<code>DIO0</code> to <code>DIO5</code>)...</p>
 <pre><code class="language-c">//  DIO Handler Functions
 DioIrqHandler *DioIrq[] = { 
     SX1276OnDio0Irq, SX1276OnDio1Irq,
@@ -893,48 +893,11 @@ static uint8_t gpio_interrupts[MAX_GPIO_INTERRUPTS];
 /// Array of Events for the GPIO Interrupts
 static struct ble_npl_event gpio_events[MAX_GPIO_INTERRUPTS];
 </code></pre>
-<p>Our Event Array <strong><code>gpio_events</code></strong> points to the GPIO Handler Functions (as Event Handlers) like so...</p>
+<p>Our Event Array <strong><code>gpio_events</code></strong> points to the GPIO Handler Functions (via the Event Handler)...</p>
 <p><img src="https://lupyuen.github.io/images/lora2-events.png" alt="GPIO Interrupts and Events" /></p>
-<p>TODO</p>
-<p><strong><code>enqueue_interrupt_event</code></strong> from <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L435-L469"><code>sx1276-board.c</code></a></p>
-<pre><code class="language-c">/// Enqueue the GPIO Interrupt to an Event Queue for the Application Task to process
-static int enqueue_interrupt_event(
-    uint8_t gpioPin,                //  GPIO Pin Number
-    struct ble_npl_event *event) {  //  Event that will be enqueued for the Application Task
-    ...
-
-    //  Use Event Queue to invoke Event Handler in the Application Task, 
-    //  not in the Interrupt Context
-    extern struct ble_npl_eventq event_queue;
-    ble_npl_eventq_put(&amp;event_queue, event);
-</code></pre>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L471-L498"><code>sx1276-board.c</code></a></p>
-<pre><code class="language-c">//  Init the Event that will the Interrupt Handler will invoke to process the GPIO Interrupt
-static int init_interrupt_event(
-    uint8_t gpioPin,           //  GPIO Pin Number
-    DioIrqHandler *handler) {  //  GPIO Handler Function
-
-    //  Find an unused Event with null handler and set it
-    for (int i = 0; i &lt; MAX_GPIO_INTERRUPTS; i++) {
-        struct ble_npl_event *ev = &amp;gpio_events[i];
-
-        //  If the Event is used, skip it
-        if (ev-&gt;fn != NULL) { continue; }
-
-        //  Set the Event handler
-        ble_npl_event_init(   //  Init the Event for...
-            ev,               //  Event
-            handler,          //  Event Handler Function
-            NULL              //  Argument to be passed to Event Handler
-        );
-
-        //  Set the GPIO Pin Number for the Event
-        gpio_interrupts[i] = gpioPin;
-        return 0;
-    }
-</code></pre>
-<p>TODO</p>
+<p>As explained earlier, our GPIO Interrupt Handler calls <strong><code>enqueue_interrupt_event</code></strong> to enqueue the Events from <code>gpio_events</code> into the Event Queue. <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L435-L469">(See this)</a></p>
+<p><em>How are the arrays <code>gpio_interrupts</code> and <code>gpio_events</code> populated?</em></p>
+<p>We call <strong><code>init_interrupt_event</code></strong> to initialise the <code>gpio_interrupts</code> and <code>gpio_events</code> arrays. <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L471-L498">(See this)</a></p>
 <h2 id="timer" class="section-header"><a href="#timer">5.6 Timer</a></h2>
 <p>TODO</p>
 <h1 id="bl602-stack-trace" class="section-header"><a href="#bl602-stack-trace">6 BL602 Stack Trace</a></h1>
