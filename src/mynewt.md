@@ -823,6 +823,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Load Firmware to Cache Memory, not Flash Memory
 
+[__UPDATE: Check out this Rust Firmware that runs in XIP Flash Memory instead of Cache Memory__](https://github.com/9names/bl602-rust-example)
+
 _Why did we load our Mynewt Firmware (and Rust Firmware) to Cache Memory instead of Flash Memory?_
 
 Because OpenOCD couldn't load our Mynewt Firmware (and Rust Firmware) into Flash Memory. 

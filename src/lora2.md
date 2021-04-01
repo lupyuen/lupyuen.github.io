@@ -998,6 +998,14 @@ In the next section we'll learn to use __multiple Events__ (with different Event
 
 TODO
 
+```c
+//  DIO Handler Functions
+DioIrqHandler *DioIrq[] = { 
+    SX1276OnDio0Irq, SX1276OnDio1Irq,
+    SX1276OnDio2Irq, SX1276OnDio3Irq,
+    SX1276OnDio4Irq, NULL };  //  DIO5 not used for LoRa Modulation
+```
+
 The configured GPIO Interrupts are stored in arrays __`gpio_interrupts` and `gpio_events`__ like so...
 
 ![GPIO Interrupts and Events](https://lupyuen.github.io/images/lora2-events.png)

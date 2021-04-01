@@ -740,6 +740,8 @@ _If there are any Brave Souls out there... Please rebuild the firmware with thes
 
 ## We need more Rust Demos on PineCone
 
+[__UPDATE: Check out this Rust Firmware that runs in XIP Flash Memory instead of Cache Memory__](https://github.com/9names/bl602-rust-example)
+
 The Sipeed BL602 Community has provided two more Rust Demos...
 
 - GPIO Blinky Demo: [`examples/bl602-gpio-blinky.rs`](https://github.com/lupyuen/pinecone-rust/blob/main/examples/bl602-gpio-blinky.rs)
