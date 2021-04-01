@@ -1035,6 +1035,90 @@ We call __`init_interrupt_event`__ to initialise the `gpio_interrupts` and `gpio
 
 TODO
 
+From [`sx1276.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276.c#L227-L307)
+
+```c
+/// Initialise a timer. Based on https://mynewt.apache.org/latest/os/core_os/cputime/os_cputime.html#c.os_cputime_timer_init
+void os_cputime_timer_init(
+    struct ble_npl_callout *timer,  //  The timer to initialize. Cannot be NULL.
+    ble_npl_event_fn *f,            //  The timer callback function. Cannot be NULL.
+    void *arg) {                    //  Pointer to data object to pass to timer.
+    ...
+    //  Init the Callout Timer with the Callback Function
+    ble_npl_callout_init(
+        timer,         //  Callout Timer
+        &event_queue,  //  Event Queue that will handle the Callout upon timeout
+        f,             //  Callback Function
+        arg            //  Argument to be passed to Callback Function
+    );
+}
+```
+
+TODO
+
+```c
+/// Sets a timer that will expire ‘usecs’ microseconds from the current time.
+/// NOTE: This must be called when the timer is stopped.
+/// Based on https://mynewt.apache.org/latest/os/core_os/cputime/os_cputime.html#c.os_cputime_timer_relative
+void os_cputime_timer_relative(
+    struct ble_npl_callout *timer,  //  Pointer to timer. Cannot be NULL.
+    uint32_t microsecs) {           //  The number of microseconds from now at which the timer will expire.
+    ...
+    //  Assume that Callout Timer has been stopped.
+    //  Convert microseconds to ticks
+    ble_npl_time_t ticks = ble_npl_time_ms_to_ticks32(
+        microsecs / 1000  //  Duration in milliseconds
+    );
+
+    //  Wait at least 1 tick
+    if (ticks == 0) { ticks = 1; }
+
+    //  Trigger the Callout Timer after the elapsed ticks
+    ble_npl_error_t rc = ble_npl_callout_reset(
+        timer,  //  Callout Timer
+        ticks   //  Number of ticks
+    );
+    assert(rc == 0);
+}
+```
+
+TODO
+
+```c
+/// Stops a timer from running.  Can be called even if timer is not running.
+/// Based on https://mynewt.apache.org/latest/os/core_os/cputime/os_cputime.html#c.os_cputime_timer_stop
+void os_cputime_timer_stop(
+    struct ble_npl_callout *timer) {  //  Pointer to timer to stop. Cannot be NULL.
+    ...
+    //  If Callout Timer is still running...
+    if (ble_npl_callout_is_active(timer)) {
+        //  Stop the Callout Timer
+        ble_npl_callout_stop(timer);
+    }
+}
+```
+
+TODO
+
+```c
+/// Wait until ‘usecs’ microseconds has elapsed. This is a blocking delay.
+/// Based on https://mynewt.apache.org/latest/os/core_os/cputime/os_cputime.html#c.os_cputime_delay_usecs
+void os_cputime_delay_usecs(
+    uint32_t microsecs) {  //  The number of microseconds to wait.
+
+    //  Convert microseconds to ticks.
+    ble_npl_time_t ticks = ble_npl_time_ms_to_ticks32(
+        microsecs / 1000  //  Duration in milliseconds
+    );
+
+    //  Wait at least 1 tick
+    if (ticks == 0) { ticks = 1; }
+
+    //  Wait for the ticks
+    ble_npl_time_delay(ticks);
+}
+```
+
 # BL602 Stack Trace
 
 TODO
