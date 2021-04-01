@@ -830,8 +830,7 @@ static void put_event(char *buf, int len, int argc, char **argv) {
 <p>In fact the implementation of <code>ble_npl_eventq_put</code> <strong>differs slightly for Interupt Handlers vs Application Tasks</strong>. <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/npl_os_freertos.c#L59-L79">(See this)</a></p>
 <p>This is another reason for calling NimBLE Porting Layer instead of FreeRTOS... NimBLE Porting Layer <strong>handles the nitty-gritty</strong> on our behalf.</p>
 <h2 id="receive-event" class="section-header"><a href="#receive-event">5.4 Receive Event</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L275-L294"><code>demo.c</code></a></p>
+<p>Here's the code inside our Background Task that receives Events and executes the Event Handlers: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L275-L294"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// Task Function that dequeues Events from the Event Queue and processes the Events
 static void task_callback(void *arg) {
     //  Loop forever handling Events from the Event Queue
@@ -844,8 +843,19 @@ static void task_callback(void *arg) {
 
         //  If no Event due to timeout, wait for next Event
         if (ev == NULL) { continue; }
-
-        //  Remove the Event from the Event Queue
+</code></pre>
+<p><strong><code>task_callback</code></strong> loops forever, calling <strong><code>ble_npl_eventq_get</code></strong> to receive Events from our Event Queue.</p>
+<p>We've set a <strong>timeout of 1,000 ticks</strong>. (Yes it sounds arbitrary) If we don't receive an Event in 1,000 ticks, we loop and retry.</p>
+<p>When we receive an Event...</p>
+<ol>
+<li>
+<p>We call <strong><code>ble_npl_eventq_remove</code></strong> to <strong>remove the Event</strong> from the Event Queue</p>
+</li>
+<li>
+<p>Then we call <strong><code>ble_npl_event_run</code></strong> to <strong>execute the Event Handler</strong> (like <code>handle_event</code>)</p>
+</li>
+</ol>
+<pre><code class="language-c">        //  Remove the Event from the Event Queue
         ble_npl_eventq_remove(&amp;event_queue, ev);
 
         //  Trigger the Event Handler Function (handle_event)
@@ -853,13 +863,24 @@ static void task_callback(void *arg) {
     }
 }
 </code></pre>
+<p>And that's how we process an Event Queue with a Background Task!</p>
+<p><em>This Background Task looks so simple and generic... Will it work for all types of Events?</em></p>
+<p>Yes! Remember that we can <strong>configure the Event Handler</strong> for our Event...</p>
+<pre><code class="language-c">//  Set the Event handler for the Event
+ble_npl_event_init(   //  Init the Event for...
+    ev,               //  Event
+    handler,          //  Event Handler Function
+    NULL              //  Argument to be passed to Event Handler
+);
+</code></pre>
+<p>In the next section we'll learn to use <strong>multiple Events</strong> (with different Event Handlers) to process LoRa Packets.</p>
 <h2 id="lora-events" class="section-header"><a href="#lora-events">5.5 LoRa Events</a></h2>
 <p>TODO</p>
+<p>The configured GPIO Interrupts are stored in arrays <strong><code>gpio_interrupts</code> and <code>gpio_events</code></strong> like so...</p>
+<p><img src="https://lupyuen.github.io/images/lora2-events.png" alt="GPIO Interrupts and Events" /></p>
+<p>TODO</p>
 <p><strong><code>enqueue_interrupt_event</code></strong> from <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L435-L469"><code>sx1276-board.c</code></a></p>
-<pre><code class="language-c">/// Interrupt Counters
-int g_dio0_counter, g_dio1_counter, g_dio2_counter, g_dio3_counter, g_dio4_counter, g_dio5_counter, g_nodio_counter;
-
-/// Enqueue the GPIO Interrupt to an Event Queue for the Application Task to process
+<pre><code class="language-c">/// Enqueue the GPIO Interrupt to an Event Queue for the Application Task to process
 static int enqueue_interrupt_event(
     uint8_t gpioPin,                //  GPIO Pin Number
     struct ble_npl_event *event) {  //  Event that will be enqueued for the Application Task
@@ -895,11 +916,6 @@ static int init_interrupt_event(
         gpio_interrupts[i] = gpioPin;
         return 0;
     }
-
-    //  No unused Events found, should increase MAX_GPIO_INTERRUPTS
-    assert(false);
-    return -1;
-}
 </code></pre>
 <p>TODO</p>
 <h2 id="timer" class="section-header"><a href="#timer">5.6 Timer</a></h2>
