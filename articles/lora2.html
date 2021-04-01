@@ -83,16 +83,16 @@
 <li><a href="#lora-events">5.5 LoRa Events</a><ul></ul></li>
 <li><a href="#timer">5.6 Timer</a><ul></ul></li>
 <li><a href="#source-files">5.7 Source Files</a><ul></ul></li></ul></li>
-<li><a href="#bl602-stack-trace">6 BL602 Stack Trace</a><ul></ul></li>
-<li><a href="#always-initialise-stack-variables">7 Always Initialise Stack Variables!</a><ul></ul></li>
-<li><a href="#start-the-rakwireless-wisblock-transmitter">8 Start the RAKwireless WisBlock Transmitter</a><ul></ul></li>
-<li><a href="#build-and-run-the-bl602-lora-firmware">9 Build and Run the BL602 LoRa Firmware</a><ul>
-<li><a href="#flash-the-firmware">9.1 Flash the firmware</a><ul></ul></li>
-<li><a href="#run-the-firmware">9.2 Run the firmware</a><ul></ul></li>
-<li><a href="#enter-lora-commands">9.3 Enter LoRa commands</a><ul></ul></li></ul></li>
-<li><a href="#troubleshoot-lora">10 Troubleshoot LoRa</a><ul></ul></li>
+<li><a href="#start-the-rakwireless-wisblock-transmitter">6 Start the RAKwireless WisBlock Transmitter</a><ul></ul></li>
+<li><a href="#build-and-run-the-bl602-lora-firmware">7 Build and Run the BL602 LoRa Firmware</a><ul>
+<li><a href="#flash-the-firmware">7.1 Flash the firmware</a><ul></ul></li>
+<li><a href="#run-the-firmware">7.2 Run the firmware</a><ul></ul></li>
+<li><a href="#enter-lora-commands">7.3 Enter LoRa commands</a><ul></ul></li></ul></li>
+<li><a href="#troubleshoot-lora">8 Troubleshoot LoRa</a><ul></ul></li>
+<li><a href="#bl602-stack-trace">9 BL602 Stack Trace</a><ul></ul></li>
+<li><a href="#always-initialise-stack-variables">10 Always Initialise Stack Variables!</a><ul></ul></li>
 <li><a href="#whats-next">11 What's Next</a><ul></ul></li>
-<li><a href="#notes">12 Notes</a><ul></ul></li></ul></nav><p>📝 <em>2 Apr 2021</em></p>
+<li><a href="#notes">12 Notes</a><ul></ul></li></ul></nav><p>📝 <em>4 Apr 2021</em></p>
 <p>Not too long ago (and not so far away) we embarked on an epic quest to create a low-power, long-range <a href="https://en.wikipedia.org/wiki/LoRa"><strong>LoRa IoT Sensor</strong></a> with <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602 RISC-V Board</strong></a></p>
 <ol>
 <li>
@@ -951,7 +951,7 @@ if (ticks == 0) { ticks = 1; }
 ble_npl_time_delay(ticks);
 </code></pre>
 <h2 id="source-files" class="section-header"><a href="#source-files">5.7 Source Files</a></h2>
-<p><em>How do we add the NimBLE Porting Library to our own BL602 programs?</em></p>
+<p><em>How do we add the NimBLE Porting Layer to our own BL602 programs?</em></p>
 <p>Copy these source files from the BL602 LoRa Firmware to your program...</p>
 <ol>
 <li>
@@ -985,13 +985,9 @@ ble_npl_time_delay(ticks);
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/commit/41a07867dceb5541439ff3f05129941647b9341f#diff-c13b2cc976e41c4bc4d3fd967aefc40cccfb76bc14c7210001f675f371a14818">Rename <code>vPortEnterCritical</code> and <code>vPortExitCritical</code> to <code>taskENTER_CRITICAL</code> and <code>taskEXIT_CRITICAL</code></a></p>
 </li>
 </ul>
-<h1 id="bl602-stack-trace" class="section-header"><a href="#bl602-stack-trace">6 BL602 Stack Trace</a></h1>
+<h1 id="start-the-rakwireless-wisblock-transmitter" class="section-header"><a href="#start-the-rakwireless-wisblock-transmitter">6 Start the RAKwireless WisBlock Transmitter</a></h1>
 <p>TODO</p>
-<h1 id="always-initialise-stack-variables" class="section-header"><a href="#always-initialise-stack-variables">7 Always Initialise Stack Variables!</a></h1>
-<p>TODO</p>
-<h1 id="start-the-rakwireless-wisblock-transmitter" class="section-header"><a href="#start-the-rakwireless-wisblock-transmitter">8 Start the RAKwireless WisBlock Transmitter</a></h1>
-<p>TODO</p>
-<h1 id="build-and-run-the-bl602-lora-firmware" class="section-header"><a href="#build-and-run-the-bl602-lora-firmware">9 Build and Run the BL602 LoRa Firmware</a></h1>
+<h1 id="build-and-run-the-bl602-lora-firmware" class="section-header"><a href="#build-and-run-the-bl602-lora-firmware">7 Build and Run the BL602 LoRa Firmware</a></h1>
 <p>TODO</p>
 <p>Let's run the LoRa Demo Firmware for BL602.</p>
 <p>Find out which <strong>LoRa Frequency</strong> we should use for your region...</p>
@@ -1039,7 +1035,7 @@ cp build_out/sdk_app_lora.bin ~/blflash
 </code></pre>
 <p><a href="https://lupyuen.github.io/articles/pinecone#building-firmware">More details on building bl_iot_sdk</a></p>
 <p>(Remember to use the <strong><code>lorarecv</code></strong> branch, not the default <strong><code>master</code></strong> branch)</p>
-<h2 id="flash-the-firmware" class="section-header"><a href="#flash-the-firmware">9.1 Flash the firmware</a></h2>
+<h2 id="flash-the-firmware" class="section-header"><a href="#flash-the-firmware">7.1 Flash the firmware</a></h2>
 <p>Follow these steps to install <code>blflash</code>...</p>
 <ol>
 <li>
@@ -1105,7 +1101,7 @@ cargo run flash sdk_app_lora.bin \
 cargo run flash sdk_app_lora.bin --port COM5
 </code></pre>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">More details on flashing firmware</a></p>
-<h2 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">9.2 Run the firmware</a></h2>
+<h2 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">7.2 Run the firmware</a></h2>
 <p>Set BL602 to <strong>Normal Mode</strong> (Non-Flashing) and restart the board...</p>
 <p><strong>For PineCone:</strong></p>
 <ol>
@@ -1139,7 +1135,7 @@ cargo run flash sdk_app_lora.bin --port COM5
 <p><strong>For macOS:</strong> Use CoolTerm (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">More details on connecting to BL602</a></p>
-<h2 id="enter-lora-commands" class="section-header"><a href="#enter-lora-commands">9.3 Enter LoRa commands</a></h2>
+<h2 id="enter-lora-commands" class="section-header"><a href="#enter-lora-commands">7.3 Enter LoRa commands</a></h2>
 <p>Let's enter some commands to transmit a LoRa Packet!</p>
 <ol>
 <li>
@@ -1208,7 +1204,11 @@ recv all event group.
 <p><a href="https://lupyuen.github.io/articles/wisblock#appendix-lora-ping-firmware-for-bl602"><strong>LoRa Ping Firmware for BL602</strong></a></p>
 </li>
 </ol>
-<h1 id="troubleshoot-lora" class="section-header"><a href="#troubleshoot-lora">10 Troubleshoot LoRa</a></h1>
+<h1 id="troubleshoot-lora" class="section-header"><a href="#troubleshoot-lora">8 Troubleshoot LoRa</a></h1>
+<p>TODO</p>
+<h1 id="bl602-stack-trace" class="section-header"><a href="#bl602-stack-trace">9 BL602 Stack Trace</a></h1>
+<p>TODO</p>
+<h1 id="always-initialise-stack-variables" class="section-header"><a href="#always-initialise-stack-variables">10 Always Initialise Stack Variables!</a></h1>
 <p>TODO</p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">11 What's Next</a></h1>
 <p>TODO</p>
