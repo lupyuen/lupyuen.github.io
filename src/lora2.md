@@ -1117,6 +1117,23 @@ Copy these source files from the BL602 LoRa Firmware to your program...
 
 1.  [__`npl_os_freertos.h`__](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/npl_os_freertos.c)
 
+Be sure to __Enable Assertion Failure Messages__ by adding this function to `main.c` (or [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L324-L335))...
+
+```c
+/// TODO: We now show assertion failures in development.
+/// For production, comment out this function to use the system default,
+/// which loops forever without messages.
+void __assert_func(const char *file, int line, const char *func, const char *failedexpr)
+{
+    //  Show the assertion failure, file, line, function name
+	printf("Assertion Failed \"%s\": file \"%s\", line %d%s%s\r\n",
+        failedexpr, file, line, func ? ", function: " : "",
+        func ? func : "");
+	//  Loop forever, do not pass go, do not collect $200
+	for (;;) {}
+}
+```
+
 The above source files were ported from the [__Apache NimBLE project__](https://github.com/apache/mynewt-nimble) with minor changes...
 
 -   [Detect Interrupt Service Routine](https://github.com/lupyuen/bl_iot_sdk/commit/72e2cb44a40f9faf91c87ee8d421ed8eb4adb571#diff-c13b2cc976e41c4bc4d3fd967aefc40cccfb76bc14c7210001f675f371a14818)
