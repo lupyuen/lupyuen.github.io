@@ -83,10 +83,15 @@
 <li><a href="#lora-events">5.5 LoRa Events</a><ul></ul></li>
 <li><a href="#timer">5.6 Timer</a><ul></ul></li>
 <li><a href="#source-files">5.7 Source Files</a><ul></ul></li></ul></li>
-<li><a href="#start-the-rakwireless-wisblock-transmitter">6 Start the RAKwireless WisBlock Transmitter</a><ul></ul></li>
+<li><a href="#start-the-rakwireless-wisblock-transmitter">6 Start the RAKwireless WisBlock Transmitter</a><ul>
+<li><a href="#connect-wisblock">6.1 Connect WisBlock</a><ul></ul></li>
+<li><a href="#install-vscode-and-platformio">6.2 Install VSCode and PlatformIO</a><ul></ul></li>
+<li><a href="#build-the-firmware">6.3 Build the firmware</a><ul></ul></li>
+<li><a href="#flash-the-firmware">6.4 Flash the firmware</a><ul></ul></li>
+<li><a href="#run-the-firmware">6.5 Run the firmware</a><ul></ul></li></ul></li>
 <li><a href="#build-and-run-the-bl602-lora-firmware">7 Build and Run the BL602 LoRa Firmware</a><ul>
-<li><a href="#flash-the-firmware">7.1 Flash the firmware</a><ul></ul></li>
-<li><a href="#run-the-firmware">7.2 Run the firmware</a><ul></ul></li>
+<li><a href="#flash-the-firmware-1">7.1 Flash the firmware</a><ul></ul></li>
+<li><a href="#run-the-firmware-1">7.2 Run the firmware</a><ul></ul></li>
 <li><a href="#enter-lora-commands">7.3 Enter LoRa commands</a><ul></ul></li></ul></li>
 <li><a href="#troubleshoot-lora">8 Troubleshoot LoRa</a><ul></ul></li>
 <li><a href="#bl602-stack-trace">9 BL602 Stack Trace</a><ul></ul></li>
@@ -1000,6 +1005,129 @@ void __assert_func(const char *file, int line, const char *func, const char *fai
 </li>
 </ul>
 <h1 id="start-the-rakwireless-wisblock-transmitter" class="section-header"><a href="#start-the-rakwireless-wisblock-transmitter">6 Start the RAKwireless WisBlock Transmitter</a></h1>
+<p>Today we shall use <strong>RAKwireless WisBlock</strong> to transmit LoRa Packets to BL602 for testing.</p>
+<p><img src="https://lupyuen.github.io/images/wisblock-title.jpg" alt="RAKwireless WisBlock LPWAN Module mounted on WisBlock Base Board" /></p>
+<p><em>RAKwireless WisBlock LPWAN Module mounted on WisBlock Base Board</em></p>
+<h2 id="connect-wisblock" class="section-header"><a href="#connect-wisblock">6.1 Connect WisBlock</a></h2>
+<p>Connect the following components according to the pic above...</p>
+<ol>
+<li>
+<p><strong>WisBlock LPWAN Module</strong>: This is the <strong>Nordic nRF52840 Microcontroller</strong> with <strong>Semtech SX1262 LoRa Transceiver</strong>. <a href="https://docs.rakwireless.com/Product-Categories/WisBlock/RAK4631/Overview/">(More about this)</a></p>
+<p>Mount the LPWAN Module onto the WisBlock Base Board.</p>
+<p>(The LPWAN Module is already mounted when get the WisBlock Connected Box)</p>
+</li>
+<li>
+<p><strong>WisBlock Base Board</strong>: This provides power to the LPWAN Module and exposes the USB and I/O ports. <a href="https://docs.rakwireless.com/Product-Categories/WisBlock/RAK5005-O/Overview/">(More about this)</a></p>
+<p>The LPWAN Module should be mounted on the Base Board.</p>
+</li>
+<li>
+<p><strong>LoRa Antenna</strong>: Connect the LoRa Antenna to the LPWAN Module.</p>
+<p>(That's the black rod. Use the Antenna Adapter Cable)</p>
+</li>
+<li>
+<p><strong>Bluetooth LE Antenna</strong>: Connect the Bluetooth LE Antenna to the LPWAN Module.</p>
+<p>(The stringy flappy thingy)</p>
+</li>
+</ol>
+<p><a href="https://electronics.stackexchange.com/questions/335912/can-i-break-a-radio-tranceiving-device-by-operating-it-with-no-antenna-connected"><strong>CAUTION: Always connect the LoRa Antenna and Bluetooth LE Antenna before Powering On... Or the LoRa and Bluetooth Transceivers may get damaged! See this</strong></a></p>
+<p>The above components are shipped in the <a href="https://store.rakwireless.com/products/wisblock-connected-box"><strong>WisBlock Connected Box</strong></a>. (Which includes many more goodies!)</p>
+<h2 id="install-vscode-and-platformio" class="section-header"><a href="#install-vscode-and-platformio">6.2 Install VSCode and PlatformIO</a></h2>
+<ol>
+<li>
+<p>Follow the instructions in this excellent article to install <strong>VSCode and PlatformIO</strong>...</p>
+<ul>
+<li><a href="https://docs.rakwireless.com/Knowledge-Hub/Learn/Board-Support-Package-Installation-in-PlatformIO/"><strong>Installation of Board Support Package in PlatformIO</strong></a></li>
+</ul>
+</li>
+<li>
+<p>Remember to install the <strong>LoRa Library <code>SX126x-Arduino</code></strong> according to the steps above.</p>
+<p>(We may skip the LoRaWAN OTAA Example)</p>
+</li>
+<li>
+<p>Find out which <strong>LoRa Frequency</strong> we should use for your region...</p>
+<ul>
+<li><a href="https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html"><strong>LoRa Frequencies by Country</strong></a></li>
+</ul>
+<p>We'll set the LoRa Frequency in a while.</p>
+</li>
+</ol>
+<h2 id="build-the-firmware" class="section-header"><a href="#build-the-firmware">6.3 Build the firmware</a></h2>
+<ol>
+<li>
+<p>Enter this at the command line...</p>
+<pre><code class="language-bash"># Download the wisblock-lora-transmitter source code
+git clone --recursive https://github.com/lupyuen/wisblock-lora-transmitter
+</code></pre>
+</li>
+<li>
+<p>In VSCode, click <strong><code>File → Open Folder</code></strong></p>
+<p>Select the folder that we have just downloaded: <strong><code>wisblock-lora-transmitter</code></strong></p>
+</li>
+<li>
+<p>Edit the file <a href="https://github.com/lupyuen/wisblock-lora-transmitter/blob/main/src/main.cpp"><strong><code>src/main.cpp</code></strong></a></p>
+<p>Look for this code...</p>
+<pre><code class="language-c">// Define LoRa parameters.
+// TODO: Change RF_FREQUENCY for your region
+#define RF_FREQUENCY 923000000  // Hz
+</code></pre>
+<p>Change <strong><code>923</code></strong> to the LoRa Frequency for your region: <code>434</code>, <code>780</code>, <code>868</code>, <code>915</code> or <code>923</code></p>
+</li>
+<li>
+<p>Modify the <strong>LoRa Parameters</strong> in <a href="https://github.com/lupyuen/wisblock-lora-transmitter/blob/main/src/main.cpp"><strong><code>src/main.cpp</code></strong></a> so that they match those in our BL602 LoRa Firmware</p>
+</li>
+<li>
+<p><strong>Build the LoRa Firmware</strong> by clicking the <strong><code>Build</code></strong> icon at the lower left...</p>
+<p><img src="https://lupyuen.github.io/images/wisblock-bar1.png" alt="Build Icon" /></p>
+</li>
+<li>
+<p>We should see this...</p>
+<pre><code class="language-text">Processing wiscore_rak4631 (platform: nordicnrf52; board: wiscore_rak4631; framework: arduino)
+...
+Building in release mode
+Checking size .pio/build/wiscore_rak4631/firmware.elf
+Advanced Memory Usage is available via &quot;PlatformIO Home &gt; Project Inspect&quot;
+RAM:   [          ]   3.1% (used 7668 bytes from 248832 bytes)
+Flash: [=         ]   7.3% (used 59800 bytes from 815104 bytes)
+=========================== [SUCCESS] Took 4.49 seconds ===========================
+</code></pre>
+</li>
+</ol>
+<h2 id="flash-the-firmware" class="section-header"><a href="#flash-the-firmware">6.4 Flash the firmware</a></h2>
+<ol>
+<li>
+<p><strong>Connect WisBlock</strong> to our computer's USB port</p>
+</li>
+<li>
+<p><strong>Flash the LoRa Firmware</strong> to WisBlock by clicking the <strong><code>Upload</code></strong> icon...</p>
+<p><img src="https://lupyuen.github.io/images/wisblock-bar2.png" alt="Upload Icon" /></p>
+</li>
+<li>
+<p>We should see this...</p>
+<p><img src="https://lupyuen.github.io/images/wisblock-flash.png" alt="Firmware flashed successfully" /></p>
+</li>
+<li>
+<p>If we see the message...</p>
+<pre><code class="language-text">Timed out waiting for acknowledgement from device
+</code></pre>
+<p>Then disconnect WisBlock from the USB port, reconnect and flash again.</p>
+<p><img src="https://lupyuen.github.io/images/wisblock-flash2.png" alt="Firmware flashing failed" /></p>
+</li>
+</ol>
+<h2 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">6.5 Run the firmware</a></h2>
+<ol>
+<li>
+<p><strong>Run the LoRa Firmware</strong> by clicking the <strong><code>Monitor</code></strong> icon...</p>
+<p><img src="https://lupyuen.github.io/images/wisblock-bar3.png" alt="Monitor Icon" /></p>
+</li>
+<li>
+<p>We should see this...</p>
+<pre><code class="language-text">&gt; Executing task: platformio device monitor &lt;
+--- Miniterm on /dev/cu.usbmodem14201  9600,8,N,1 ---
+--- Quit: Ctrl+C | Menu: Ctrl+T | Help: Ctrl+T followed by Ctrl+H ---
+Starting Radio.Tx
+</code></pre>
+</li>
+</ol>
 <p>TODO</p>
 <h1 id="build-and-run-the-bl602-lora-firmware" class="section-header"><a href="#build-and-run-the-bl602-lora-firmware">7 Build and Run the BL602 LoRa Firmware</a></h1>
 <p>TODO</p>
@@ -1049,7 +1177,7 @@ cp build_out/sdk_app_lora.bin ~/blflash
 </code></pre>
 <p><a href="https://lupyuen.github.io/articles/pinecone#building-firmware">More details on building bl_iot_sdk</a></p>
 <p>(Remember to use the <strong><code>lorarecv</code></strong> branch, not the default <strong><code>master</code></strong> branch)</p>
-<h2 id="flash-the-firmware" class="section-header"><a href="#flash-the-firmware">7.1 Flash the firmware</a></h2>
+<h2 id="flash-the-firmware-1" class="section-header"><a href="#flash-the-firmware-1">7.1 Flash the firmware</a></h2>
 <p>Follow these steps to install <code>blflash</code>...</p>
 <ol>
 <li>
@@ -1115,7 +1243,7 @@ cargo run flash sdk_app_lora.bin \
 cargo run flash sdk_app_lora.bin --port COM5
 </code></pre>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">More details on flashing firmware</a></p>
-<h2 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">7.2 Run the firmware</a></h2>
+<h2 id="run-the-firmware-1" class="section-header"><a href="#run-the-firmware-1">7.2 Run the firmware</a></h2>
 <p>Set BL602 to <strong>Normal Mode</strong> (Non-Flashing) and restart the board...</p>
 <p><strong>For PineCone:</strong></p>
 <ol>
