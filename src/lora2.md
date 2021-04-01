@@ -940,9 +940,7 @@ This is another reason for calling NimBLE Porting Layer instead of FreeRTOS... N
 
 ## Receive Event
 
-TODO
-
-From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L275-L294)
+Here's the code inside our Background Task that receives Events and executes the Event Handlers: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L275-L294)
 
 ```c
 /// Task Function that dequeues Events from the Event Queue and processes the Events
@@ -957,7 +955,19 @@ static void task_callback(void *arg) {
 
         //  If no Event due to timeout, wait for next Event
         if (ev == NULL) { continue; }
+```
 
+__`task_callback`__ loops forever, calling __`ble_npl_eventq_get`__ to receive Events from our Event Queue.
+
+We've set a __timeout of 1,000 ticks__. (Yes it sounds arbitrary) If we don't receive an Event in 1,000 ticks, we loop and retry.
+
+When we receive an Event...
+
+1.  We call __`ble_npl_eventq_remove`__ to __remove the Event__ from the Event Queue
+
+1.  Then we call __`ble_npl_event_run`__ to __execute the Event Handler__ (like `handle_event`)
+
+```c
         //  Remove the Event from the Event Queue
         ble_npl_eventq_remove(&event_queue, ev);
 
@@ -967,16 +977,36 @@ static void task_callback(void *arg) {
 }
 ```
 
+And that's how we process an Event Queue with a Background Task!
+
+_This Background Task looks so simple and generic... Will it work for all types of Events?_
+
+Yes! Remember that we can __configure the Event Handler__ for our Event...
+
+```c
+//  Set the Event handler for the Event
+ble_npl_event_init(   //  Init the Event for...
+    ev,               //  Event
+    handler,          //  Event Handler Function
+    NULL              //  Argument to be passed to Event Handler
+);
+```
+
+In the next section we'll learn to use __multiple Events__ (with different Event Handlers) to process LoRa Packets.
+
 ## LoRa Events
+
+TODO
+
+The configured GPIO Interrupts are stored in arrays __`gpio_interrupts` and `gpio_events`__ like so...
+
+![GPIO Interrupts and Events](https://lupyuen.github.io/images/lora2-events.png)
 
 TODO
 
 __`enqueue_interrupt_event`__ from [`sx1276-board.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L435-L469)
 
 ```c
-/// Interrupt Counters
-int g_dio0_counter, g_dio1_counter, g_dio2_counter, g_dio3_counter, g_dio4_counter, g_dio5_counter, g_nodio_counter;
-
 /// Enqueue the GPIO Interrupt to an Event Queue for the Application Task to process
 static int enqueue_interrupt_event(
     uint8_t gpioPin,                //  GPIO Pin Number
@@ -1017,11 +1047,6 @@ static int init_interrupt_event(
         gpio_interrupts[i] = gpioPin;
         return 0;
     }
-
-    //  No unused Events found, should increase MAX_GPIO_INTERRUPTS
-    assert(false);
-    return -1;
-}
 ```
 
 TODO
