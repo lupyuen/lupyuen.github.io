@@ -976,6 +976,20 @@ ble_npl_time_delay(ticks);
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/npl_os_freertos.c"><strong><code>npl_os_freertos.h</code></strong></a></p>
 </li>
 </ol>
+<p>Be sure to <strong>Enable Assertion Failure Messages</strong> by adding this function to <code>main.c</code> (or <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L324-L335"><code>demo.c</code></a>)...</p>
+<pre><code class="language-c">/// TODO: We now show assertion failures in development.
+/// For production, comment out this function to use the system default,
+/// which loops forever without messages.
+void __assert_func(const char *file, int line, const char *func, const char *failedexpr)
+{
+    //  Show the assertion failure, file, line, function name
+	printf(&quot;Assertion Failed \&quot;%s\&quot;: file \&quot;%s\&quot;, line %d%s%s\r\n&quot;,
+        failedexpr, file, line, func ? &quot;, function: &quot; : &quot;&quot;,
+        func ? func : &quot;&quot;);
+	//  Loop forever, do not pass go, do not collect $200
+	for (;;) {}
+}
+</code></pre>
 <p>The above source files were ported from the <a href="https://github.com/apache/mynewt-nimble"><strong>Apache NimBLE project</strong></a> with minor changes...</p>
 <ul>
 <li>
