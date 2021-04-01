@@ -996,7 +996,7 @@ In the next section we'll learn to use __multiple Events__ (with different Event
 
 ## LoRa Events
 
-Earlier we have defined the __GPIO Handler Functions__ for `DIO0` to `DIO5`...
+Earlier we have defined the __GPIO Handler Functions__ that will process the interrupts from our LoRa Transceiver (`DIO0` to `DIO5`)...
 
 ```c
 //  DIO Handler Functions
@@ -1021,58 +1021,15 @@ static uint8_t gpio_interrupts[MAX_GPIO_INTERRUPTS];
 static struct ble_npl_event gpio_events[MAX_GPIO_INTERRUPTS];
 ```
 
-Our Event Array __`gpio_events`__ points to the GPIO Handler Functions (as Event Handlers) like so...
+Our Event Array __`gpio_events`__ points to the GPIO Handler Functions (via the Event Handler)...
 
 ![GPIO Interrupts and Events](https://lupyuen.github.io/images/lora2-events.png)
 
-TODO
+As explained earlier, our GPIO Interrupt Handler calls __`enqueue_interrupt_event`__ to enqueue the Events from `gpio_events` into the Event Queue. [(See this)](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L435-L469)
 
-__`enqueue_interrupt_event`__ from [`sx1276-board.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L435-L469)
+_How are the arrays `gpio_interrupts` and `gpio_events` populated?_
 
-```c
-/// Enqueue the GPIO Interrupt to an Event Queue for the Application Task to process
-static int enqueue_interrupt_event(
-    uint8_t gpioPin,                //  GPIO Pin Number
-    struct ble_npl_event *event) {  //  Event that will be enqueued for the Application Task
-    ...
-
-    //  Use Event Queue to invoke Event Handler in the Application Task, 
-    //  not in the Interrupt Context
-    extern struct ble_npl_eventq event_queue;
-    ble_npl_eventq_put(&event_queue, event);
-```
-
-TODO
-
-From [`sx1276-board.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L471-L498)
-
-```c
-//  Init the Event that will the Interrupt Handler will invoke to process the GPIO Interrupt
-static int init_interrupt_event(
-    uint8_t gpioPin,           //  GPIO Pin Number
-    DioIrqHandler *handler) {  //  GPIO Handler Function
-
-    //  Find an unused Event with null handler and set it
-    for (int i = 0; i < MAX_GPIO_INTERRUPTS; i++) {
-        struct ble_npl_event *ev = &gpio_events[i];
-
-        //  If the Event is used, skip it
-        if (ev->fn != NULL) { continue; }
-
-        //  Set the Event handler
-        ble_npl_event_init(   //  Init the Event for...
-            ev,               //  Event
-            handler,          //  Event Handler Function
-            NULL              //  Argument to be passed to Event Handler
-        );
-
-        //  Set the GPIO Pin Number for the Event
-        gpio_interrupts[i] = gpioPin;
-        return 0;
-    }
-```
-
-TODO
+We call __`init_interrupt_event`__ to initialise the `gpio_interrupts` and `gpio_events` arrays. [(See this)](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L471-L498)
 
 ## Timer
 
