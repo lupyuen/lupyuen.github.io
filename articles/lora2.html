@@ -1331,7 +1331,13 @@ SX1276 register handler: GPIO 11
 SX1276 register handler: GPIO 0
 SX1276 register handler: GPIO 5
 SX1276 register handler: GPIO 12
-SX1276 DIO3: Channel activity detection    
+</code></pre>
+<p>This says that <code>register_gpio_handler</code> has registered the GPIO Handler Functions for <code>DIO0</code> to <code>DIO3</code>. (<code>DIO4</code> and <code>DIO5</code> are unused)</p>
+<p>Our SX1276 Driver is now listening for GPIO Interrupts and handling them.</p>
+</li>
+<li>
+<p>Then <code>DIO3</code> gets triggered.</p>
+<pre><code class="language-text">SX1276 DIO3: Channel activity detection    
 </code></pre>
 <p>TODO</p>
 </li>
