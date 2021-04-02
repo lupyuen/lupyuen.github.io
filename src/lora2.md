@@ -1522,6 +1522,10 @@ read_registers
 
 spi_result
 
+SPI Tracing
+
+Spectrum Analyser
+
 stack trace
 
 # BL602 Stack Trace
