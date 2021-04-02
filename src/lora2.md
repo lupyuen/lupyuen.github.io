@@ -1300,7 +1300,7 @@ Download the Firmware Binary File __`sdk_app_lora.bin`__ for your LoRa Frequency
 
 -  [__923 MHz `sdk_app_lora` Binary__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v7.0.3)
 
-Alternatively, we may build the Firmware Binary File `sdk_app_lora.bin` from the [source code](https://github.com/lupyuen/bl_iot_sdk/tree/lora/customer_app/sdk_app_lora)...
+Alternatively, we may build the Firmware Binary File `sdk_app_lora.bin` from the [source code](https://github.com/lupyuen/bl_iot_sdk/tree/lorarecv/customer_app/sdk_app_lora)...
 
 ```bash
 # Download the lorarecv branch of lupyuen's bl_iot_sdk
