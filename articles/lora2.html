@@ -95,9 +95,8 @@
 <li><a href="#enter-lora-commands">7.3 Enter LoRa commands</a><ul></ul></li></ul></li>
 <li><a href="#troubleshoot-lora">8 Troubleshoot LoRa</a><ul></ul></li>
 <li><a href="#bl602-stack-trace">9 BL602 Stack Trace</a><ul></ul></li>
-<li><a href="#always-initialise-stack-variables">10 Always Initialise Stack Variables!</a><ul></ul></li>
-<li><a href="#whats-next">11 What's Next</a><ul></ul></li>
-<li><a href="#notes">12 Notes</a><ul></ul></li></ul></nav><p>📝 <em>4 Apr 2021</em></p>
+<li><a href="#whats-next">10 What's Next</a><ul></ul></li>
+<li><a href="#notes">11 Notes</a><ul></ul></li></ul></nav><p>📝 <em>4 Apr 2021</em></p>
 <p>Not too long ago (and not so far away) we embarked on an epic quest to create a low-power, long-range <a href="https://en.wikipedia.org/wiki/LoRa"><strong>LoRa IoT Sensor</strong></a> with <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602 RISC-V Board</strong></a></p>
 <ol>
 <li>
@@ -1297,13 +1296,27 @@ cargo run flash sdk_app_lora.bin --port COM5
 <p>Enter <code>help</code> to see the available commands...</p>
 <pre><code class="language-text"># help
 ====User Commands====
-read_registers           : Read registers
+create_task              : Create a task
+put_event                : Add an event
+init_driver              : Init LoRa driver
 send_message             : Send LoRa message
+receive_message          : Receive LoRa message
+read_registers           : Read registers
 spi_result               : Show SPI counters
+blogset                  : blog pri set level
+blogdump                 : blog info dump
+bl_sys_time_now          : sys time now
 </code></pre>
 </li>
 <li>
-<p>First we <strong>initialise our LoRa Transceiver</strong>. </p>
+<p>First we <strong>create the Background Task</strong> that will process received LoRa Packets.</p>
+<p>Enter this command...</p>
+<pre><code class="language-text"># create_task
+</code></pre>
+<p>This command calls the function <code>create_task</code>, which we have seen earlier.</p>
+</li>
+<li>
+<p>Then we <strong>initialise our LoRa Transceiver</strong>. </p>
 <p>Enter this command...</p>
 <pre><code class="language-text"># init_driver
 </code></pre>
@@ -1312,55 +1325,51 @@ spi_result               : Show SPI counters
 <li>
 <p>We should see this...</p>
 <pre><code class="language-text"># init_driver
-port0 eventloop init = 42010760
-[HAL] [SPI] Init :
-port=0, mode=0, polar_phase = 1, freq=200000, tx_dma_ch=2, rx_dma_ch=3, pin_clk=3, pin_cs=2, pin_mosi=1, pin_miso=4
-set rwspeed = 200000
-hal_gpio_init: cs:2, clk:3, mosi:1, miso: 4
-hal_gpio_init: SPI controller mode
-hal_spi_init.
+SX1276 init
+SX1276 interrupt init
+SX1276 register handler: GPIO 11
+SX1276 register handler: GPIO 0
+SX1276 register handler: GPIO 5
+SX1276 register handler: GPIO 12
+SX1276 DIO3: Channel activity detection    
 </code></pre>
-<p>The above messages say that our SPI Port has been configured by the BL602 SPI HAL.</p>
-<pre><code class="language-text">hal_spi_transfer = 1
-transfer xfer[0].len = 1
-Tx DMA src=0x4200cc58, dest=0x4000a288, size=1, si=1, di=0, i=1
-Rx DMA src=0x4000a28c, dest=0x4200cc54, size=1, si=0, di=1, i=1
-recv all event group.
-...
-</code></pre>
-<p><code>init_driver</code> has just configured our SPI Transceiver by setting the registers over SPI.</p>
+<p>TODO</p>
 </li>
 <li>
-<p>Next we <strong>transmit a LoRa Packet</strong>...</p>
-<pre><code class="language-text"># send_message
+<p>Next we <strong>receive a LoRa Packet</strong>...</p>
+<pre><code class="language-text"># receive_message
 </code></pre>
-<p>This command calls the function <code>send_message</code>, which we have seen earlier.</p>
+<p>This command calls the function <code>receive_message</code>, which we have seen earlier.</p>
 </li>
 <li>
 <p>We should see this...</p>
-<pre><code class="language-text"># send_message
-hal_spi_transfer = 1
-transfer xfer[0].len = 1
-Tx DMA src=0x4200cc58, dest=0x4000a288, size=1, si=1, di=0, i=1
-Rx DMA src=0x4000a28c, dest=0x4200cc54, size=1, si=0, di=1, i=1
-recv all event group.
-...
+<pre><code class="language-text"># receive_message
+SX1276 DIO0: Packet received
+Rx done: RadioEvents.RxDone
+Rx done: 48 65 6c 6c 6f 
 </code></pre>
-<p>That's <code>send_message</code> blasting the 64-byte LoRa Packet to the airwave, in the simple &quot;Fire And Forget&quot; Mode.</p>
-<p>(The LoRa Driver copies the 64-byte Transmit Buffer to our LoRa Transceiver over SPI, byte by byte. Hence the numerous SPI requests.)</p>
-<p><a href="https://youtu.be/3TSvo0dwwnQ"><strong>Watch the demo video on YouTube</strong></a></p>
-<p><a href="https://www.youtube.com/watch?v=6qqZVcqN_rg"><strong>With timeout</strong></a></p>
-<p><a href="https://gist.github.com/lupyuen/31ac29aa776601ba6a610a93f3190c72"><strong>TODO: Check out the complete log</strong></a></p>
+<p>TODO</p>
+<p><a href="https://youtu.be/3TSvo0dwwnQ"><strong>Watch the receive video on YouTube</strong></a></p>
+<p><a href="https://gist.github.com/lupyuen/9bd7e7daa2497e8352d2cffec4be444d"><strong>Check out the receive log</strong></a></p>
+</li>
+<li>
+<p>Receive Timeout</p>
+<p>TODO</p>
+<p><a href="https://www.youtube.com/watch?v=6qqZVcqN_rg"><strong>Watch the receive timeout video on YouTube</strong></a></p>
+<p><a href="https://gist.github.com/lupyuen/ce578fd561ca050d4680c1750984ffd4"><strong>Check out the receive timeout log</strong></a></p>
 </li>
 </ol>
 <h1 id="troubleshoot-lora" class="section-header"><a href="#troubleshoot-lora">8 Troubleshoot LoRa</a></h1>
 <p>TODO</p>
+<p>put_event</p>
+<p>read_registers</p>
+<p>spi_result</p>
+<p>stack trace</p>
 <h1 id="bl602-stack-trace" class="section-header"><a href="#bl602-stack-trace">9 BL602 Stack Trace</a></h1>
 <p>TODO</p>
-<h1 id="always-initialise-stack-variables" class="section-header"><a href="#always-initialise-stack-variables">10 Always Initialise Stack Variables!</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">10 What's Next</a></h1>
 <p>TODO</p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">11 What's Next</a></h1>
-<p>TODO</p>
+<p>LoRaWAN Gateway</p>
 <p>We have come a loooong way since I first <a href="https://github.com/lupyuen/LoRaArduino"><strong>experimented with LoRa in 2016</strong></a>...</p>
 <ul>
 <li>
@@ -1399,7 +1408,7 @@ recv all event group.
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lora2.md"><code>lupyuen.github.io/src/lora2.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">12 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">11 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1370708936739885056?s=20">this Twitter Thread</a></li>
 </ol>
