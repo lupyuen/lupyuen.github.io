@@ -1434,12 +1434,29 @@ Let's enter some commands to transmit a LoRa Packet!
     ```text
     # help
     ====User Commands====
-    read_registers           : Read registers
+    create_task              : Create a task
+    put_event                : Add an event
+    init_driver              : Init LoRa driver
     send_message             : Send LoRa message
+    receive_message          : Receive LoRa message
+    read_registers           : Read registers
     spi_result               : Show SPI counters
+    blogset                  : blog pri set level
+    blogdump                 : blog info dump
+    bl_sys_time_now          : sys time now
     ```
 
-1.  First we __initialise our LoRa Transceiver__. 
+1.  First we __create the Background Task__ that will process received LoRa Packets.
+
+    Enter this command...
+
+    ```text
+    # create_task
+    ```
+
+    This command calls the function `create_task`, which we have seen earlier.
+
+1.  Then we __initialise our LoRa Transceiver__. 
 
     Enter this command...
 
@@ -1453,73 +1470,69 @@ Let's enter some commands to transmit a LoRa Packet!
 
     ```text
     # init_driver
-    port0 eventloop init = 42010760
-    [HAL] [SPI] Init :
-    port=0, mode=0, polar_phase = 1, freq=200000, tx_dma_ch=2, rx_dma_ch=3, pin_clk=3, pin_cs=2, pin_mosi=1, pin_miso=4
-    set rwspeed = 200000
-    hal_gpio_init: cs:2, clk:3, mosi:1, miso: 4
-    hal_gpio_init: SPI controller mode
-    hal_spi_init.
+    SX1276 init
+    SX1276 interrupt init
+    SX1276 register handler: GPIO 11
+    SX1276 register handler: GPIO 0
+    SX1276 register handler: GPIO 5
+    SX1276 register handler: GPIO 12
+    SX1276 DIO3: Channel activity detection    
     ```
 
-    The above messages say that our SPI Port has been configured by the BL602 SPI HAL.
+    TODO
+
+1.  Next we __receive a LoRa Packet__...
 
     ```text
-    hal_spi_transfer = 1
-    transfer xfer[0].len = 1
-    Tx DMA src=0x4200cc58, dest=0x4000a288, size=1, si=1, di=0, i=1
-    Rx DMA src=0x4000a28c, dest=0x4200cc54, size=1, si=0, di=1, i=1
-    recv all event group.
-    ...
+    # receive_message
     ```
 
-    `init_driver` has just configured our SPI Transceiver by setting the registers over SPI.
-
-1.  Next we __transmit a LoRa Packet__...
-
-    ```text
-    # send_message
-    ```
-
-    This command calls the function `send_message`, which we have seen earlier.
+    This command calls the function `receive_message`, which we have seen earlier.
 
 1.  We should see this...
 
     ```text
-    # send_message
-    hal_spi_transfer = 1
-    transfer xfer[0].len = 1
-    Tx DMA src=0x4200cc58, dest=0x4000a288, size=1, si=1, di=0, i=1
-    Rx DMA src=0x4000a28c, dest=0x4200cc54, size=1, si=0, di=1, i=1
-    recv all event group.
-    ...
+    # receive_message
+    SX1276 DIO0: Packet received
+    Rx done: RadioEvents.RxDone
+    Rx done: 48 65 6c 6c 6f 
     ```
 
-    That's `send_message` blasting the 64-byte LoRa Packet to the airwave, in the simple "Fire And Forget" Mode.
+    TODO
 
-    (The LoRa Driver copies the 64-byte Transmit Buffer to our LoRa Transceiver over SPI, byte by byte. Hence the numerous SPI requests.)
+    [__Watch the receive video on YouTube__](https://youtu.be/3TSvo0dwwnQ)
 
-    [__Watch the demo video on YouTube__](https://youtu.be/3TSvo0dwwnQ)
+    [__Check out the receive log__](https://gist.github.com/lupyuen/9bd7e7daa2497e8352d2cffec4be444d)
 
-    [__With timeout__](https://www.youtube.com/watch?v=6qqZVcqN_rg)
+1.  Receive Timeout
 
-    [__TODO: Check out the complete log__](https://gist.github.com/lupyuen/31ac29aa776601ba6a610a93f3190c72)
+    TODO
+
+    [__Watch the receive timeout video on YouTube__](https://www.youtube.com/watch?v=6qqZVcqN_rg)
+
+    [__Check out the receive timeout log__](https://gist.github.com/lupyuen/ce578fd561ca050d4680c1750984ffd4)
 
 # Troubleshoot LoRa
 
 TODO
 
+put_event
+
+read_registers
+
+spi_result
+
+stack trace
+
 # BL602 Stack Trace
-
-TODO
-
-# Always Initialise Stack Variables!
 
 TODO
 
 # What's Next
 
 TODO
+
+LoRaWAN Gateway
 
 We have come a loooong way since I first [__experimented with LoRa in 2016__](https://github.com/lupyuen/LoRaArduino)...
 
