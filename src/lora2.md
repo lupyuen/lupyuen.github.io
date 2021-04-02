@@ -1476,6 +1476,15 @@ Let's enter some commands to transmit a LoRa Packet!
     SX1276 register handler: GPIO 0
     SX1276 register handler: GPIO 5
     SX1276 register handler: GPIO 12
+    ```
+
+    This says that `register_gpio_handler` has registered the GPIO Handler Functions for `DIO0` to `DIO3`. (`DIO4` and `DIO5` are unused)
+
+    Our SX1276 Driver is now listening for GPIO Interrupts and handling them.
+
+1.  Then `DIO3` gets triggered.
+
+    ```text
     SX1276 DIO3: Channel activity detection    
     ```
 
