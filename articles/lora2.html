@@ -92,7 +92,8 @@
 <li><a href="#build-and-run-the-bl602-lora-firmware">7 Build and Run the BL602 LoRa Firmware</a><ul>
 <li><a href="#flash-the-firmware-1">7.1 Flash the firmware</a><ul></ul></li>
 <li><a href="#run-the-firmware-1">7.2 Run the firmware</a><ul></ul></li>
-<li><a href="#enter-lora-commands">7.3 Enter LoRa commands</a><ul></ul></li></ul></li>
+<li><a href="#enter-lora-commands">7.3 Enter LoRa commands</a><ul></ul></li>
+<li><a href="#receive-timeout">7.4 Receive Timeout</a><ul></ul></li></ul></li>
 <li><a href="#troubleshoot-lora">8 Troubleshoot LoRa</a><ul></ul></li>
 <li><a href="#bl602-stack-trace">9 BL602 Stack Trace</a><ul></ul></li>
 <li><a href="#whats-next">10 What's Next</a><ul></ul></li>
@@ -904,7 +905,7 @@ static struct ble_npl_event gpio_events[MAX_GPIO_INTERRUPTS];
 <p><em>How are the arrays <code>gpio_interrupts</code> and <code>gpio_events</code> populated?</em></p>
 <p>We call <strong><code>init_interrupt_event</code></strong> to initialise the <code>gpio_interrupts</code> and <code>gpio_events</code> arrays. <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L471-L498">(See this)</a></p>
 <h2 id="timer" class="section-header"><a href="#timer">5.6 Timer</a></h2>
-<p>Remember that our LoRa SX1276 Transceiver will listen 5 seconds for incoming packets... Then we stop it to conserve battery power?</p>
+<p>Remember that our LoRa SX1276 Transceiver will <strong>listen 5 seconds for incoming packets</strong>... Then we stop it to conserve battery power?</p>
 <p>We do that with a <strong>Callout Timer</strong> from the NimBLE Porting Layer. Here's how we <strong>initialise a Callout Timer</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276.c#L227-L247"><code>sx1276.c</code></a></p>
 <pre><code class="language-c">//  Define the Callout Timer
 struct ble_npl_callout timer;
@@ -1286,7 +1287,6 @@ cargo run flash sdk_app_lora.bin --port COM5
 <p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">More details on connecting to BL602</a></p>
 <h2 id="enter-lora-commands" class="section-header"><a href="#enter-lora-commands">7.3 Enter LoRa commands</a></h2>
-<p>TODO</p>
 <p>Let's enter some commands to transmit a LoRa Packet!</p>
 <ol>
 <li>
@@ -1332,14 +1332,14 @@ SX1276 register handler: GPIO 0
 SX1276 register handler: GPIO 5
 SX1276 register handler: GPIO 12
 </code></pre>
-<p>This says that <code>register_gpio_handler</code> has registered the GPIO Handler Functions for <code>DIO0</code> to <code>DIO3</code>. (<code>DIO4</code> and <code>DIO5</code> are unused)</p>
-<p>Our SX1276 Driver is now listening for GPIO Interrupts and handling them.</p>
+<p>This says that <code>register_gpio_handler</code> has <strong>registered the GPIO Handler Functions</strong> for <code>DIO0</code> to <code>DIO3</code>. (<code>DIO4</code> and <code>DIO5</code> are unused)</p>
+<p>Our SX1276 Driver is now <strong>listening for GPIO Interrupts</strong> and handling them.</p>
 </li>
 <li>
-<p>Then <code>DIO3</code> gets triggered.</p>
+<p>Then the <strong>GPIO Interrupt for <code>DIO3</code></strong> gets triggered automatically...</p>
 <pre><code class="language-text">SX1276 DIO3: Channel activity detection    
 </code></pre>
-<p>TODO</p>
+<p>We're not sure why this always happens when we initialise the driver. But it's harmless.</p>
 </li>
 <li>
 <p>Next we <strong>receive a LoRa Packet</strong>...</p>
@@ -1350,21 +1350,29 @@ SX1276 register handler: GPIO 12
 <li>
 <p>We should see this...</p>
 <pre><code class="language-text"># receive_message
+...
 SX1276 DIO0: Packet received
 Rx done: RadioEvents.RxDone
-Rx done: 48 65 6c 6c 6f 
 </code></pre>
-<p>TODO</p>
+<p>This says that the SX1276 Driver has <strong>received a LoRa Packet.</strong></p>
+<p>And the packet contains <code>&quot;Hello&quot;</code>...</p>
+<pre><code class="language-text">Rx done: 48 65 6c 6c 6f 
+</code></pre>
 <p><a href="https://youtu.be/3TSvo0dwwnQ"><strong>Watch the receive video on YouTube</strong></a></p>
 <p><a href="https://gist.github.com/lupyuen/9bd7e7daa2497e8352d2cffec4be444d"><strong>Check out the receive log</strong></a></p>
 </li>
-<li>
-<p>Receive Timeout</p>
-<p>TODO</p>
+</ol>
+<h2 id="receive-timeout" class="section-header"><a href="#receive-timeout">7.4 Receive Timeout</a></h2>
+<p>Remember that our SX1276 Transceiver will <strong>listen 5 seconds for incoming packets</strong>... Then it goes to sleep to conserve battery power?</p>
+<p>Here's what happens when then SX1276 Driver doesn't receive any LoRa Packets within 5 seconds...</p>
+<pre><code class="language-text"># receive_message
+...
+SX1276 receive timeout
+Rx timeout
+</code></pre>
+<p>Our <strong>BL602 Timer is triggered automatically</strong> after 5 seconds to put the SX1276 Transceiver to sleep.</p>
 <p><a href="https://www.youtube.com/watch?v=6qqZVcqN_rg"><strong>Watch the receive timeout video on YouTube</strong></a></p>
 <p><a href="https://gist.github.com/lupyuen/ce578fd561ca050d4680c1750984ffd4"><strong>Check out the receive timeout log</strong></a></p>
-</li>
-</ol>
 <h1 id="troubleshoot-lora" class="section-header"><a href="#troubleshoot-lora">8 Troubleshoot LoRa</a></h1>
 <p>TODO</p>
 <p>put_event</p>
