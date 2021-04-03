@@ -1033,7 +1033,7 @@ We call __`init_interrupt_event`__ to initialise the `gpio_interrupts` and `gpio
 
 ## Timer
 
-Remember that our LoRa SX1276 Transceiver will listen 5 seconds for incoming packets... Then we stop it to conserve battery power?
+Remember that our LoRa SX1276 Transceiver will __listen 5 seconds for incoming packets__... Then we stop it to conserve battery power?
 
 We do that with a __Callout Timer__ from the NimBLE Porting Layer. Here's how we __initialise a Callout Timer__: [`sx1276.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276.c#L227-L247)
 
@@ -1423,8 +1423,6 @@ __For Windows:__ Use `putty` ([See this](https://lupyuen.github.io/articles/flas
 
 ## Enter LoRa commands
 
-TODO
-
 Let's enter some commands to transmit a LoRa Packet!
 
 1.  Press Enter to reveal the command prompt.
@@ -1478,17 +1476,17 @@ Let's enter some commands to transmit a LoRa Packet!
     SX1276 register handler: GPIO 12
     ```
 
-    This says that `register_gpio_handler` has registered the GPIO Handler Functions for `DIO0` to `DIO3`. (`DIO4` and `DIO5` are unused)
+    This says that `register_gpio_handler` has __registered the GPIO Handler Functions__ for `DIO0` to `DIO3`. (`DIO4` and `DIO5` are unused)
 
-    Our SX1276 Driver is now listening for GPIO Interrupts and handling them.
+    Our SX1276 Driver is now __listening for GPIO Interrupts__ and handling them.
 
-1.  Then `DIO3` gets triggered.
+1.  Then the __GPIO Interrupt for `DIO3`__ gets triggered automatically...
 
     ```text
     SX1276 DIO3: Channel activity detection    
     ```
 
-    TODO
+    We're not sure why this always happens when we initialise the driver. But it's harmless.
 
 1.  Next we __receive a LoRa Packet__...
 
@@ -1502,24 +1500,41 @@ Let's enter some commands to transmit a LoRa Packet!
 
     ```text
     # receive_message
+    ...
     SX1276 DIO0: Packet received
     Rx done: RadioEvents.RxDone
-    Rx done: 48 65 6c 6c 6f 
     ```
 
-    TODO
+    This says that the SX1276 Driver has __received a LoRa Packet.__
+
+    And the packet contains `"Hello"`...
+
+    ```text
+    Rx done: 48 65 6c 6c 6f 
+    ```
 
     [__Watch the receive video on YouTube__](https://youtu.be/3TSvo0dwwnQ)
 
     [__Check out the receive log__](https://gist.github.com/lupyuen/9bd7e7daa2497e8352d2cffec4be444d)
 
-1.  Receive Timeout
+##  Receive Timeout
 
-    TODO
+Remember that our SX1276 Transceiver will __listen 5 seconds for incoming packets__... Then it goes to sleep to conserve battery power?
 
-    [__Watch the receive timeout video on YouTube__](https://www.youtube.com/watch?v=6qqZVcqN_rg)
+Here's what happens when then SX1276 Driver doesn't receive any LoRa Packets within 5 seconds...
 
-    [__Check out the receive timeout log__](https://gist.github.com/lupyuen/ce578fd561ca050d4680c1750984ffd4)
+```text
+# receive_message
+...
+SX1276 receive timeout
+Rx timeout
+```
+
+Our __BL602 Timer is triggered automatically__ after 5 seconds to put the SX1276 Transceiver to sleep.
+
+[__Watch the receive timeout video on YouTube__](https://www.youtube.com/watch?v=6qqZVcqN_rg)
+
+[__Check out the receive timeout log__](https://gist.github.com/lupyuen/ce578fd561ca050d4680c1750984ffd4)
 
 # Troubleshoot LoRa
 
