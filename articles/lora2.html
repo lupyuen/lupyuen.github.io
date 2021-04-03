@@ -97,9 +97,9 @@
 <li><a href="#troubleshoot-lora">8 Troubleshoot LoRa</a><ul>
 <li><a href="#spectrum-analyser">8.1 Spectrum Analyser</a><ul></ul></li>
 <li><a href="#read-registers">8.2 Read Registers</a><ul></ul></li>
-<li><a href="#interrupt-counters">8.3 Interrupt Counters</a><ul></ul></li>
-<li><a href="#spi-tracing">8.4 SPI Tracing</a><ul></ul></li>
-<li><a href="#put-event">8.5 Put Event</a><ul></ul></li>
+<li><a href="#spi-tracing">8.3 SPI Tracing</a><ul></ul></li>
+<li><a href="#interrupt-counters">8.4 Interrupt Counters</a><ul></ul></li>
+<li><a href="#event-queue-1">8.5 Event Queue</a><ul></ul></li>
 <li><a href="#stack-trace">8.6 Stack Trace</a><ul></ul></li>
 <li><a href="#stack-dump">8.7 Stack Dump</a><ul></ul></li></ul></li>
 <li><a href="#whats-next">9 What's Next</a><ul></ul></li>
@@ -1393,11 +1393,27 @@ Rx timeout
 <p>Verify the SPI Connection by <strong>Reading the SX1276 Registers</strong>. (See below)</p>
 </li>
 <li>
+<p>SX1276 <strong>still not receiving</strong> LoRa Packets?</p>
+<p>Turn on <strong>SPI Tracing</strong> and check the SPI Commands. (See below)</p>
+</li>
+<li>
 <p>SX1276 <strong>not triggering interrupts</strong> when LoRa Packets are received?</p>
 <p>Check the <strong>SX1276 Interrupt Counters</strong>. (See below)</p>
 </li>
+<li>
+<p>Background Task <strong>not processing the interrupts</strong>?</p>
+<p>Test the <strong>Event Queue</strong> by sending an Event. (See below)</p>
+</li>
+<li>
+<p>BL602 <strong>hitting a RISC-V Exception</strong>?</p>
+<p>Turn on <strong>Stack Trace</strong>. (See below)</p>
+</li>
+<li>
+<p>BL602 <strong>Stack Trace not helpful</strong>?</p>
+<p>Do a <strong>Stack Dump</strong>. (See below)</p>
+</li>
 </ol>
-<p>TODO</p>
+<p>Let's go into the details.</p>
 <h2 id="spectrum-analyser" class="section-header"><a href="#spectrum-analyser">8.1 Spectrum Analyser</a></h2>
 <p>It helps to validate that the LoRa Packets that we're about to receive... Are <strong>actually in the airwaves</strong>!</p>
 <p>Sniff the airwaves with a <strong>Spectrum Analyser or Software Defined Radio</strong>. Check that the LoRa Packets are centered at the right LoRa Frequency.</p>
@@ -1425,7 +1441,16 @@ Register 0x05 = 0x52
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lora#troubleshoot-lora"><strong>&quot;Troubleshoot LoRa with read_registers&quot;</strong></a></li>
 </ul>
-<h2 id="interrupt-counters" class="section-header"><a href="#interrupt-counters">8.3 Interrupt Counters</a></h2>
+<h2 id="spi-tracing" class="section-header"><a href="#spi-tracing">8.3 SPI Tracing</a></h2>
+<p>TODO</p>
+<pre><code class="language-text">hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200cc58, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200cc54, size=1, si=0, di=1, i=1
+recv all event group.
+...
+</code></pre>
+<h2 id="interrupt-counters" class="section-header"><a href="#interrupt-counters">8.4 Interrupt Counters</a></h2>
 <p>TODO</p>
 <pre><code class="language-text"># spi_result
 DIO0 Interrupts: 1
@@ -1435,16 +1460,7 @@ Rx Interrupts:   302
 </code></pre>
 <p><a href="https://youtu.be/3TSvo0dwwnQ"><strong>Watch the receive video on YouTube</strong></a></p>
 <p><a href="https://gist.github.com/lupyuen/9bd7e7daa2497e8352d2cffec4be444d"><strong>Check out the receive log</strong></a></p>
-<h2 id="spi-tracing" class="section-header"><a href="#spi-tracing">8.4 SPI Tracing</a></h2>
-<p>TODO</p>
-<pre><code class="language-text">hal_spi_transfer = 1
-transfer xfer[0].len = 1
-Tx DMA src=0x4200cc58, dest=0x4000a288, size=1, si=1, di=0, i=1
-Rx DMA src=0x4000a28c, dest=0x4200cc54, size=1, si=0, di=1, i=1
-recv all event group.
-...
-</code></pre>
-<h2 id="put-event" class="section-header"><a href="#put-event">8.5 Put Event</a></h2>
+<h2 id="event-queue-1" class="section-header"><a href="#event-queue-1">8.5 Event Queue</a></h2>
 <p>TODO</p>
 <h2 id="stack-trace" class="section-header"><a href="#stack-trace">8.6 Stack Trace</a></h2>
 <p>TODO</p>
