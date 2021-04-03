@@ -1486,7 +1486,7 @@ Let's enter some commands to transmit a LoRa Packet!
     SX1276 DIO3: Channel activity detection    
     ```
 
-    We're not sure why this always happens when we initialise the driver. But it's harmless.
+    (We're not sure why this always happens when we initialise the driver... But it's harmless)
 
 1.  Next we __receive a LoRa Packet__...
 
@@ -1538,23 +1538,168 @@ Our __BL602 Timer is triggered automatically__ after 5 seconds to put the SX1276
 
 # Troubleshoot LoRa
 
+_What could go wrong with our BL602 LoRa Receiver?_
+
+Sorry to sound so down... But many things can go wrong with our BL602 LoRa Receiver!
+
+Here's a __BL602 LoRa troubleshooting guide__...
+
+1.  BL602 __not receiving__ any LoRa Packets?
+
+    Sniff the airwaves with a __Spectrum Analyser or Software Defined Radio__. (See below)
+
+1.  SX1276 __not responding__, or returning strange data?
+
+    Verify the SPI Connection by __Reading the SX1276 Registers__. (See below)
+
+1.  SX1276 __not triggering interrupts__ when LoRa Packets are received?
+
+    Check the __SX1276 Interrupt Counters__. (See below)
+
 TODO
 
-put_event
+## Spectrum Analyser
 
-read_registers
+It helps to validate that the LoRa Packets that we're about to receive... Are __actually in the airwaves__!
 
-spi_result
+Sniff the airwaves with a __Spectrum Analyser or Software Defined Radio__. Check that the LoRa Packets are centered at the right LoRa Frequency.
 
-SPI Tracing
+LoRa Packets have this distinctive shape, called a __LoRa Chirp__...
 
-Spectrum Analyser
+![LoRa Packet](https://lupyuen.github.io/images/lora-sdr5.png)
 
-stack trace
+[__Watch the video on YouTube__](https://www.youtube.com/watch?v=USqStub3KC0)
 
-# BL602 Stack Trace
+More about sniffing LoRa Packets...
+
+-   [__"Troubleshoot LoRa with Spectrum Analyser"__](https://lupyuen.github.io/articles/lora#troubleshoot-lora)
+
+-   [__"Visualise LoRa with Software Defined Radio"__](https://lupyuen.github.io/articles/lora#visualise-lora-with-software-defined-radio)
+
+## Read Registers
 
 TODO
+
+```text
+# read_registers
+Register 0x02 = 0x1a
+Register 0x03 = 0x0b
+Register 0x04 = 0x00
+Register 0x05 = 0x52
+```
+
+More about `read_registers`...
+
+-   [__"Troubleshoot LoRa with read_registers"__](https://lupyuen.github.io/articles/lora#troubleshoot-lora)
+
+## Interrupt Counters
+
+TODO
+
+```text
+# spi_result
+DIO0 Interrupts: 1
+DIO3 Interrupts: 1
+Tx Interrupts:   302
+Rx Interrupts:   302
+```
+
+[__Watch the receive video on YouTube__](https://youtu.be/3TSvo0dwwnQ)
+
+[__Check out the receive log__](https://gist.github.com/lupyuen/9bd7e7daa2497e8352d2cffec4be444d)
+
+## SPI Tracing
+
+TODO
+
+```text
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200cc58, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200cc54, size=1, si=0, di=1, i=1
+recv all event group.
+...
+```
+
+## Put Event
+
+TODO
+
+## Stack Trace
+
+TODO
+
+From [`sdk_app_lora/proj_config.mk`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/proj_config.mk#L40-L43)
+
+```text
+# Show Stack Trace when we hit a RISC-V Exception, 
+# by enabling the Stack Frame Pointer.
+# After setting this flag, do "make clean ; make"
+CONFIG_ENABLE_FP:=1
+```
+
+TODO
+
+From https://gist.github.com/lupyuen/5ddbcdd1054c775521291c3d114f6cee
+
+```text
+Exception Entry--->>>
+mcause 38000001, mepc 00000000, mtval 00000000
+Exception code: 1
+  msg: Instruction access fault
+=== backtrace start ===
+backtrace_stack: frame pointer=0x42011e70
+backtrace: 0x2300ba88 (@ 0x42011e6c)
+backtrace: 0x2300a852 (@ 0x42011e9c)
+backtrace: 0x00000004   <--- TRAP
+backtrace: INVALID!!!
+=== backtrace end ===
+```
+
+## Stack Dump
+
+TODO
+
+From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L471-L490)
+
+```c
+/// Dump the current stack
+void dump_stack(void)
+{
+    //  For getting the Stack Frame Pointer. Must be first line of function.
+    uintptr_t *fp;
+
+    //  Fetch the Stack Frame Pointer. Based on backtrace_riscv from
+    //  https://github.com/bouffalolab/bl_iot_sdk/blob/master/components/bl602/freertos_riscv_ram/panic/panic_c.c#L76-L99
+    __asm__("add %0, x0, fp" : "=r"(fp));
+    printf("dump_stack: frame pointer=%p\r\n", fp);
+
+    //  Dump the stack, starting at Stack Frame Pointer - 1
+    printf("=== stack start ===\r\n");
+    for (int i = 0; i < 128; i++) {
+        uintptr_t *ra = (uintptr_t *)*(unsigned long *)(fp - 1);
+        printf("@ %p: %p\r\n", fp - 1, ra);
+        fp++;
+    }
+    printf("=== stack end ===\r\n\r\n");
+}
+```
+
+TODO
+
+```text
+Exception Handler Stack:
+dump_stack: frame pointer=0x42011e70
+=== stack start ===
+...
+@ 0x42011f20: 0x00000000
+@ 0x42011f24: 0x00000000
+@ 0x42011f28: 0x42011f50
+@ 0x42011f2c: 0x23000cd2
+@ 0x42011f30: 0x04000000
+@ 0x42011f34: 0x00000001
+@ 0x42011f38: 0x4000a28c
+```
 
 # What's Next
 
