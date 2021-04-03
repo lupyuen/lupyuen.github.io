@@ -1552,11 +1552,27 @@ Here's a __BL602 LoRa troubleshooting guide__...
 
     Verify the SPI Connection by __Reading the SX1276 Registers__. (See below)
 
+1.  SX1276 __still not receiving__ LoRa Packets?
+
+    Turn on __SPI Tracing__ and check the SPI Commands. (See below)
+
 1.  SX1276 __not triggering interrupts__ when LoRa Packets are received?
 
     Check the __SX1276 Interrupt Counters__. (See below)
 
-TODO
+1.  Background Task __not processing the interrupts__?
+
+    Test the __Event Queue__ by sending an Event. (See below)
+
+1.  BL602 __hitting a RISC-V Exception__?
+
+    Turn on __Stack Trace__. (See below)
+
+1.  BL602 __Stack Trace not helpful__?
+
+    Do a __Stack Dump__. (See below)
+
+Let's go into the details.
 
 ## Spectrum Analyser
 
@@ -1592,6 +1608,19 @@ More about `read_registers`...
 
 -   [__"Troubleshoot LoRa with read_registers"__](https://lupyuen.github.io/articles/lora#troubleshoot-lora)
 
+## SPI Tracing
+
+TODO
+
+```text
+hal_spi_transfer = 1
+transfer xfer[0].len = 1
+Tx DMA src=0x4200cc58, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200cc54, size=1, si=0, di=1, i=1
+recv all event group.
+...
+```
+
 ## Interrupt Counters
 
 TODO
@@ -1608,20 +1637,7 @@ Rx Interrupts:   302
 
 [__Check out the receive log__](https://gist.github.com/lupyuen/9bd7e7daa2497e8352d2cffec4be444d)
 
-## SPI Tracing
-
-TODO
-
-```text
-hal_spi_transfer = 1
-transfer xfer[0].len = 1
-Tx DMA src=0x4200cc58, dest=0x4000a288, size=1, si=1, di=0, i=1
-Rx DMA src=0x4000a28c, dest=0x4200cc54, size=1, si=0, di=1, i=1
-recv all event group.
-...
-```
-
-## Put Event
+## Event Queue
 
 TODO
 
