@@ -1445,10 +1445,22 @@ Register 0x05 = 0x52
 <li><a href="https://lupyuen.github.io/articles/lora#troubleshoot-lora"><strong>&quot;Troubleshoot LoRa with read_registers&quot;</strong></a></li>
 </ul>
 <h2 id="trace-spi-requests" class="section-header"><a href="#trace-spi-requests">8.3 Trace SPI Requests</a></h2>
-<p>Edit <a href="https://github.com/lupyuen/bl_iot_sdk/blob/fe9bbabdddb05fc4961b8f52784305046a413505/components/hal_drv/bl602_hal/hal_spi.c#L57"><code>components/hal_drv/ bl602_hal/hal_spi.c</code></a>. Set <strong><code>HAL_SPI_DEBUG</code></strong> to <strong><code>(1)</code></strong> to enable SPI Tracing...</p>
-<pre><code class="language-c">#define HAL_SPI_DEBUG (1)  //  Enable SPI Tracing
+<p>To enable SPI Tracing:</p>
+<ol>
+<li>
+<p>Edit <a href="https://github.com/lupyuen/bl_iot_sdk/blob/fe9bbabdddb05fc4961b8f52784305046a413505/components/hal_drv/bl602_hal/hal_spi.c#L57"><code>components/hal_drv/ bl602_hal/hal_spi.c</code></a></p>
+</li>
+<li>
+<p>Set <strong><code>HAL_SPI_DEBUG</code></strong> to <strong><code>(1)</code></strong> like so...</p>
+<pre><code class="language-c">//  Enable SPI Tracing
+#define HAL_SPI_DEBUG (1)
 </code></pre>
-<p>We will see all SPI DMA Requests sent to SX1276...</p>
+</li>
+<li>
+<p>Rebuild the firmware: <code>make clean</code> then <code>make</code></p>
+</li>
+</ol>
+<p>We will see all SPI DMA Requests sent by BL602 to SX1276...</p>
 <pre><code class="language-text">hal_spi_transfer = 1
 transfer xfer[0].len = 1
 Tx DMA src=0x4200cc58, dest=0x4000a288, size=1, si=1, di=0, i=1
@@ -1460,25 +1472,43 @@ recv all event group.
 <li><a href="https://lupyuen.github.io/articles/lora#enter-lora-commands"><strong>&quot;Run LoRa Firmware with SPI Tracing&quot;</strong></a></li>
 </ul>
 <h2 id="show-interrupt-counters" class="section-header"><a href="#show-interrupt-counters">8.4 Show Interrupt Counters</a></h2>
-<p>TODO</p>
+<p>We may check the number of GPIO and SPI Interrupts triggered by SX1276 by entering the <strong><code>spi_result</code></strong> command...</p>
 <pre><code class="language-text"># spi_result
 DIO0 Interrupts: 1
 DIO3 Interrupts: 1
 Tx Interrupts:   302
 Rx Interrupts:   302
 </code></pre>
+<p>This demo video explains the Interrupt Counters...</p>
+<ul>
+<li>
 <p><a href="https://youtu.be/3TSvo0dwwnQ"><strong>Watch the receive video on YouTube</strong></a></p>
+</li>
+<li>
 <p><a href="https://gist.github.com/lupyuen/9bd7e7daa2497e8352d2cffec4be444d"><strong>Check out the receive log</strong></a></p>
+</li>
+</ul>
 <h2 id="test-event-queue" class="section-header"><a href="#test-event-queue">8.5 Test Event Queue</a></h2>
-<p>TODO</p>
+<p>To check whether our Event Queue and Background Task (from the NimBLE Porting Layer) are OK, do this...</p>
+<ol>
+<li>
+<p>If the Background Task has NOT been started, enter this command...</p>
 <pre><code class="language-text"># create_task
-
-# put_event
 </code></pre>
 <p>(<code>create_task</code> should only be run once)</p>
-<p>TODO</p>
+</li>
+<li>
+<p>Then enter this command to enqueue an Event into our Event Queue...</p>
+<pre><code class="language-text"># put_event
+</code></pre>
+</li>
+<li>
+<p>We should see this...</p>
 <pre><code class="language-text">Handle an event
 </code></pre>
+<p>This means that our Event Queue and Background Task are ready to handle Interrupt Events triggered by SX1276.</p>
+</li>
+</ol>
 <h2 id="bl602-stack-trace" class="section-header"><a href="#bl602-stack-trace">8.6 BL602 Stack Trace</a></h2>
 <p>TODO</p>
 <pre><code class="language-text">Exception Entry---&gt;&gt;&gt;
@@ -1494,6 +1524,9 @@ Exception code: 1
 CONFIG_ENABLE_FP:=1
 </code></pre>
 <p>TODO</p>
+<ol>
+<li>Rebuild the firmware: <code>make clean</code> then <code>make</code></li>
+</ol>
 <pre><code class="language-text">make clean
 make
 </code></pre>
