@@ -1594,7 +1594,7 @@ More about sniffing LoRa Packets...
 
 ## Read Registers
 
-TODO
+Verify the SPI Connection between BL602 and SX1276 by entering the command __`read_registers`__...
 
 ```text
 # read_registers
@@ -1604,13 +1604,23 @@ Register 0x04 = 0x00
 Register 0x05 = 0x52
 ```
 
+This command reads the SX1276 Registers over the SPI Connections.
+
+If there's a fault in the SPI wiring, we will see incorrect register values.
+
 More about `read_registers`...
 
 -   [__"Troubleshoot LoRa with read_registers"__](https://lupyuen.github.io/articles/lora#troubleshoot-lora)
 
 ## SPI Tracing
 
-TODO
+Edit [`components/hal_drv/ bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/fe9bbabdddb05fc4961b8f52784305046a413505/components/hal_drv/bl602_hal/hal_spi.c#L57). Set __`HAL_SPI_DEBUG`__ to __`(1)`__ to enable SPI Tracing...
+
+```c
+#define HAL_SPI_DEBUG (1)  //  Enable SPI Tracing
+```
+
+We will see all SPI DMA Requests sent to SX1276...
 
 ```text
 hal_spi_transfer = 1
@@ -1618,8 +1628,11 @@ transfer xfer[0].len = 1
 Tx DMA src=0x4200cc58, dest=0x4000a288, size=1, si=1, di=0, i=1
 Rx DMA src=0x4000a28c, dest=0x4200cc54, size=1, si=0, di=1, i=1
 recv all event group.
-...
 ```
+
+More about SPI Tracing messages...
+
+-   [__"Run LoRa Firmware with SPI Tracing"__](https://lupyuen.github.io/articles/lora#enter-lora-commands)
 
 ## Interrupt Counters
 
