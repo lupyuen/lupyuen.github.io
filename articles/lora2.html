@@ -1535,13 +1535,14 @@ backtrace: INVALID!!!
 </code></pre>
 <p><a href="https://gist.github.com/lupyuen/5ddbcdd1054c775521291c3d114f6cee">(View the complete log)</a></p>
 <p>This shows the function calls leading to the Exception, so it's more helpful for troubleshooting.</p>
-<p>To find the source code that corresponds to the program addresses (like <code>0x2300ba88</code>), follow the instructions here to generate the RISC-V Disassembly File...</p>
+<p>To find the source code that corresponds to the program address (like <code>0x2300ba88</code>), follow the instructions here to generate the RISC-V Disassembly File...</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/i2c#appendix-how-to-troubleshoot-risc-v-exceptions"><strong>&quot;How to Troubleshoot RISC-V Exceptions&quot;</strong></a></li>
 </ul>
 <h2 id="bl602-stack-dump" class="section-header"><a href="#bl602-stack-dump">8.7 BL602 Stack Dump</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L471-L490"><code>demo.c</code></a></p>
+<p>For some types of BL602 Exceptions, the Stack Trace doesn't seem to be helpful. (The Stack Trace points to the Exception Handler, not to the code that caused the Exception)</p>
+<p>For such Exceptions, we need to dump the stack ourselves and analyse the trail of calls.</p>
+<p>Here's the function that dumps the stack: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L471-L490"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// Dump the current stack
 void dump_stack(void)
 {
@@ -1563,7 +1564,7 @@ void dump_stack(void)
     printf(&quot;=== stack end ===\r\n\r\n&quot;);
 }
 </code></pre>
-<p>TODO</p>
+<p>When we call <strong><code>dump_stack</code></strong>, we'll see this...</p>
 <pre><code class="language-text">Exception Handler Stack:
 dump_stack: frame pointer=0x42011e70
 === stack start ===
@@ -1576,8 +1577,17 @@ dump_stack: frame pointer=0x42011e70
 @ 0x42011f34: 0x00000001
 @ 0x42011f38: 0x4000a28c
 </code></pre>
+<p><a href="https://gist.github.com/lupyuen/5ddbcdd1054c775521291c3d114f6cee">(View the complete log)</a></p>
+<p>Right after a big chunk of nulls (omitted from above) we see a meaningful address...</p>
+<pre><code class="language-text">0x23000cd2
+</code></pre>
+<p>This address points to code that actually caused the Exception.</p>
+<p><a href="https://twitter.com/MisterTechBlog/status/1374577517214851077">(We forgot to initialise the stack variable <code>radio_events</code>... ALWAYS INITIALISE STACK VARIABLES!!!)</a></p>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/lora2-sketch.jpg" alt="" /></p>
+<p>fix the stack trace</p>
+<p>stack frame</p>
+<p>how to dump stack</p>
+<p><img src="https://lupyuen.github.io/images/lora2-sketch.jpg" alt="Sketching LoRa" /></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">9 What's Next</a></h1>
 <p>TODO</p>
 <p>LoRaWAN Gateway</p>
