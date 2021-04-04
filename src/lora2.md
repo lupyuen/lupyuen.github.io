@@ -1824,9 +1824,21 @@ Perhaps someday we shall fix the BL602 Stack Trace so that it displays the right
 
 # What's Next
 
-TODO
+We have completed __Level One__ of our epic quest for the [__Three Levels of LoRa__](https://lupyuen.github.io/articles/lora#lora-vs-lorawan)!
 
-LoRaWAN Gateway
+Let's move on to __LoRa Levels Two and Three__...
+
+1.  We shall install a __LoRaWAN Gateway__ and join BL602 to __The Things Network__
+
+    [(Probably RAKwireless WisGate)](https://store.rakwireless.com/collections/wisgate-developer)
+
+1.  But before that, we shall port the __LoRaWAN Driver from Apache Mynewt OS to BL602__
+
+    [(See this)](https://github.com/apache/mynewt-core/tree/master/net/lora/node)
+
+1.  But before that, we shall clean up and reorganise the __library files for NimBLE and SX1276__
+
+    [(Move them into `components/3rdparty`)](https://github.com/lupyuen/bl_iot_sdk/tree/master/components/3rdparty)
 
 We have come a loooong way since I first [__experimented with LoRa in 2016__](https://github.com/lupyuen/LoRaArduino)...
 
@@ -1840,7 +1852,7 @@ We have come a loooong way since I first [__experimented with LoRa in 2016__](ht
 
 - __Awesome Tools__: RAKwireless WisBlock, Airspy SDR, RF Explorer
 
-Now is the __right time to build LoRa gadgets.__ Stay tuned for more LoRa Adventures!
+Now is the __right time to build LoRa gadgets.__ Stay tuned for more LoRa and LoRaWAN Adventures!
 
 Meanwhile there's plenty more code in the [__BL602 IoT SDK__](https://github.com/bouffalolab/bl_iot_sdk) to be deciphered and documented: __ADC, DAC, WiFi, Bluetooth LE,__ ...
 
