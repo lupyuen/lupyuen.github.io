@@ -1616,13 +1616,20 @@ More about `read_registers`...
 
 ## Trace SPI Requests
 
-Edit [`components/hal_drv/ bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/fe9bbabdddb05fc4961b8f52784305046a413505/components/hal_drv/bl602_hal/hal_spi.c#L57). Set __`HAL_SPI_DEBUG`__ to __`(1)`__ to enable SPI Tracing...
+To enable SPI Tracing:
 
-```c
-#define HAL_SPI_DEBUG (1)  //  Enable SPI Tracing
-```
+1.  Edit [`components/hal_drv/ bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/fe9bbabdddb05fc4961b8f52784305046a413505/components/hal_drv/bl602_hal/hal_spi.c#L57)
 
-We will see all SPI DMA Requests sent to SX1276...
+1.  Set __`HAL_SPI_DEBUG`__ to __`(1)`__ like so...
+
+    ```c
+    //  Enable SPI Tracing
+    #define HAL_SPI_DEBUG (1)
+    ```
+
+1.  Rebuild the firmware: `make clean` then `make`
+
+We will see all SPI DMA Requests sent by BL602 to SX1276...
 
 ```text
 hal_spi_transfer = 1
@@ -1638,7 +1645,7 @@ More about SPI Tracing messages...
 
 ## Show Interrupt Counters
 
-TODO
+We may check the number of GPIO and SPI Interrupts triggered by SX1276 by entering the __`spi_result`__ command...
 
 ```text
 # spi_result
@@ -1648,27 +1655,37 @@ Tx Interrupts:   302
 Rx Interrupts:   302
 ```
 
-[__Watch the receive video on YouTube__](https://youtu.be/3TSvo0dwwnQ)
+This demo video explains the Interrupt Counters...
 
-[__Check out the receive log__](https://gist.github.com/lupyuen/9bd7e7daa2497e8352d2cffec4be444d)
+-   [__Watch the receive video on YouTube__](https://youtu.be/3TSvo0dwwnQ)
+
+-   [__Check out the receive log__](https://gist.github.com/lupyuen/9bd7e7daa2497e8352d2cffec4be444d)
 
 ## Test Event Queue
 
-TODO
+To check whether our Event Queue and Background Task (from the NimBLE Porting Layer) are OK, do this...
 
-```text
-# create_task
+1.  If the Background Task has NOT been started, enter this command...
 
-# put_event
-```
+    ```text
+    # create_task
+    ```
 
-(`create_task` should only be run once)
+    (`create_task` should only be run once)
 
-TODO
+1.  Then enter this command to enqueue an Event into our Event Queue...
 
-```text
-Handle an event
-```
+    ```text
+    # put_event
+    ```
+
+1.  We should see this...
+
+    ```text
+    Handle an event
+    ```
+
+    This means that our Event Queue and Background Task are ready to handle Interrupt Events triggered by SX1276.
 
 ## BL602 Stack Trace
 
@@ -1693,6 +1710,8 @@ CONFIG_ENABLE_FP:=1
 ```
 
 TODO
+
+1.  Rebuild the firmware: `make clean` then `make`
 
 ```text
 make clean
