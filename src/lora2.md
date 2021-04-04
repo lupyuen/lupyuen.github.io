@@ -1544,6 +1544,8 @@ Sorry to sound so down... But many things can go wrong with our BL602 LoRa Recei
 
 Here's a __BL602 LoRa troubleshooting guide__...
 
+![LoRa troubleshooting](https://lupyuen.github.io/images/lora2-troubleshoot.png)
+
 1.  BL602 __not receiving__ any LoRa Packets?
 
     Sniff the airwaves with a __Spectrum Analyser or Software Defined Radio__. (See below)
@@ -1730,6 +1732,8 @@ dump_stack: frame pointer=0x42011e70
 @ 0x42011f38: 0x4000a28c
 ```
 
+![](https://lupyuen.github.io/images/lora2-sketch.jpg)
+
 # What's Next
 
 TODO
@@ -1772,4 +1776,4 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1370708936739885056?s=20)
 
-![](https://lupyuen.github.io/images/lora2-sketch.jpg)
+![](https://lupyuen.github.io/images/lora2-vaccine.jpg)
