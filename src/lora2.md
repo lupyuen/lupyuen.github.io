@@ -1709,9 +1709,9 @@ To show the Stack Trace, edit the Makefile `proj_config.mk` (like  [`sdk_app_lor
 CONFIG_ENABLE_FP:=1
 ```
 
-Rebuild the firmware: `make clean` then `make`.
+Rebuild the firmware: __`make clean`__ then __`make`__.
 
-When BL602 hits an Exception, we'll now see this Stack Trace:
+When BL602 hits an Exception, we'll see this Stack Trace:
 
 ```text
 === backtrace start ===
@@ -1727,15 +1727,17 @@ backtrace: INVALID!!!
 
 This shows the function calls leading to the Exception, so it's more helpful for troubleshooting.
 
-To find the source code that corresponds to the program address (like `0x2300ba88`), follow the instructions here to generate the RISC-V Disassembly File...
+To find the source code that corresponds to the program address (like `0x2300ba88`), follow the instructions here to generate the __RISC-V Disassembly File__...
 
 -   [__"How to Troubleshoot RISC-V Exceptions"__](https://lupyuen.github.io/articles/i2c#appendix-how-to-troubleshoot-risc-v-exceptions)
 
 ## BL602 Stack Dump
 
-For some types of BL602 Exceptions, the Stack Trace doesn't seem to be helpful. (The Stack Trace points to the Exception Handler, not to the code that caused the Exception)
+For some types of BL602 Exceptions, the Stack Trace doesn't appear to be meaningful.
 
-For such Exceptions, we need to dump the stack ourselves and analyse the trail of calls.
+(The Stack Trace points to the BL602 Exception Handler, not to the code that caused the Exception)
+
+For such Exceptions, we need to __dump the stack ourselves__ and analyse the trail of calls.
 
 Here's the function that dumps the stack: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L471-L490)
 
@@ -1762,7 +1764,27 @@ void dump_stack(void)
 }
 ```
 
-When we call __`dump_stack`__, we'll see this...
+We call __`dump_stack`__ in the BL602 Exception Handler like this: [`bl_irq.c`](https://github.com/lupyuen/bl_iot_sdk/blob/ee4a10b1a1e3609243bd5e7b3a45f02d768f6c14/components/hal_drv/bl602_hal/bl_irq.c#L316-L341)
+
+```c
+//  Declare dump_stack
+void dump_stack(void);
+
+//  BL602 Exception Handler
+void exception_entry(uint32_t mcause, uint32_t mepc, uint32_t mtval, uintptr_t *regs) {
+        ...
+        //  Show exception and stack trace
+        __dump_exception_code_str(mcause & 0xFFFF);
+        backtrace_now((int (*)(const char *fmt, ...))printf, regs);
+
+        //  Dump the stack here
+        printf("Exception Handler Stack:\r\n"); 
+        dump_stack();
+
+        while (1) { /*Deap loop now*/ }
+```
+
+When BL602 hits an Exception, we'll see this Stack Dump...
 
 ```text
 Exception Handler Stack:
@@ -1772,7 +1794,7 @@ dump_stack: frame pointer=0x42011e70
 @ 0x42011f20: 0x00000000
 @ 0x42011f24: 0x00000000
 @ 0x42011f28: 0x42011f50
-@ 0x42011f2c: 0x23000cd2
+@ 0x42011f2c: 0x23000cd2 <--
 @ 0x42011f30: 0x04000000
 @ 0x42011f34: 0x00000001
 @ 0x42011f38: 0x4000a28c
@@ -1780,7 +1802,7 @@ dump_stack: frame pointer=0x42011e70
 
 [(View the complete log)](https://gist.github.com/lupyuen/5ddbcdd1054c775521291c3d114f6cee)
 
-Right after a big chunk of nulls (omitted from above) we see a meaningful address...
+After a big chunk of nulls (omitted from above) we see a meaningful address...
 
 ```text
 0x23000cd2
@@ -1788,15 +1810,15 @@ Right after a big chunk of nulls (omitted from above) we see a meaningful addres
 
 This address points to code that actually caused the Exception.
 
-[(We forgot to initialise the stack variable `radio_events`... ALWAYS INITIALISE STACK VARIABLES!!!)](https://twitter.com/MisterTechBlog/status/1374577517214851077)
+[(We forgot to initialise the stack variable `radio_events`... ALWAYS INITIALISE STACK VARIABLES!)](https://twitter.com/MisterTechBlog/status/1374577517214851077)
 
-TODO
+[(Analysis of the Stack Dump)](https://twitter.com/MisterTechBlog/status/1374545090731855872)
 
-fix the stack trace
+Perhaps someday we shall fix the BL602 Stack Trace so that it displays the right program addresses...
 
-stack frame
+-   [__Source Code for BL602 Stack Trace: `backtrace_riscv`__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/freertos_riscv_ram/panic/panic_c.c#L75-L99)
 
-how to dump stack
+-   [__How we use GCC Stack Frame Pointers to navigate the BL602 Stack__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/freertos_riscv_ram/panic/panic_c.c#L8-L49)
 
 ![Sketching LoRa](https://lupyuen.github.io/images/lora2-sketch.jpg)
 
