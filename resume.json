@@ -147,6 +147,13 @@
   ],
   "publications": [
     {
+      "name": "PineCone BL602 RISC-V Board Receives LoRa Packets",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2021-04-04",
+      "website": "https://lupyuen.github.io/articles/lora2",
+      "summary": "How PineCone BL602 RISC-V Board with SX1276 receives LoRa packets... Transmitted by RAKwireless WisBlock"
+    },
+    {
       "name": "RAKwireless WisBlock talks LoRa with PineCone BL602 RISC-V Board",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-03-11",
