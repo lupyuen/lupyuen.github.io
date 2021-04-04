@@ -1727,15 +1727,17 @@ backtrace: INVALID!!!
 
 This shows the function calls leading to the Exception, so it's more helpful for troubleshooting.
 
-To find the source code that corresponds to the program addresses (like `0x2300ba88`), follow the instructions here to generate the RISC-V Disassembly File...
+To find the source code that corresponds to the program address (like `0x2300ba88`), follow the instructions here to generate the RISC-V Disassembly File...
 
 -   [__"How to Troubleshoot RISC-V Exceptions"__](https://lupyuen.github.io/articles/i2c#appendix-how-to-troubleshoot-risc-v-exceptions)
 
 ## BL602 Stack Dump
 
-TODO
+For some types of BL602 Exceptions, the Stack Trace doesn't seem to be helpful. (The Stack Trace points to the Exception Handler, not to the code that caused the Exception)
 
-From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L471-L490)
+For such Exceptions, we need to dump the stack ourselves and analyse the trail of calls.
+
+Here's the function that dumps the stack: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L471-L490)
 
 ```c
 /// Dump the current stack
@@ -1760,7 +1762,7 @@ void dump_stack(void)
 }
 ```
 
-TODO
+When we call __`dump_stack`__, we'll see this...
 
 ```text
 Exception Handler Stack:
@@ -1776,9 +1778,27 @@ dump_stack: frame pointer=0x42011e70
 @ 0x42011f38: 0x4000a28c
 ```
 
+[(View the complete log)](https://gist.github.com/lupyuen/5ddbcdd1054c775521291c3d114f6cee)
+
+Right after a big chunk of nulls (omitted from above) we see a meaningful address...
+
+```text
+0x23000cd2
+```
+
+This address points to code that actually caused the Exception.
+
+[(We forgot to initialise the stack variable `radio_events`... ALWAYS INITIALISE STACK VARIABLES!!!)](https://twitter.com/MisterTechBlog/status/1374577517214851077)
+
 TODO
 
-![](https://lupyuen.github.io/images/lora2-sketch.jpg)
+fix the stack trace
+
+stack frame
+
+how to dump stack
+
+![Sketching LoRa](https://lupyuen.github.io/images/lora2-sketch.jpg)
 
 # What's Next
 
