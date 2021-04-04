@@ -1689,7 +1689,7 @@ To check whether our Event Queue and Background Task (from the NimBLE Porting La
 
 ## BL602 Stack Trace
 
-TODO
+When our BL602 Firmware hits an Exception, we'll see a message like this...
 
 ```text
 Exception Entry--->>>
@@ -1698,9 +1698,9 @@ Exception code: 1
   msg: Instruction access fault
 ```
 
-TODO
+This is not really helpful because it doesn't show the Stack Trace: The function calls leading to the Exception.
 
-From [`sdk_app_lora/proj_config.mk`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/proj_config.mk#L40-L43)
+To show the Stack Trace, edit the Makefile `proj_config.mk` (like  [`sdk_app_lora/proj_config.mk`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/proj_config.mk#L40-L43)) and add this...
 
 ```text
 # Show Stack Trace when we hit a RISC-V Exception, 
@@ -1709,18 +1709,9 @@ From [`sdk_app_lora/proj_config.mk`](https://github.com/lupyuen/bl_iot_sdk/blob/
 CONFIG_ENABLE_FP:=1
 ```
 
-TODO
+Rebuild the firmware: `make clean` then `make`.
 
-1.  Rebuild the firmware: `make clean` then `make`
-
-```text
-make clean
-make
-```
-
-TODO
-
-From https://gist.github.com/lupyuen/5ddbcdd1054c775521291c3d114f6cee
+When BL602 hits an Exception, we'll now see this Stack Trace:
 
 ```text
 === backtrace start ===
@@ -1731,6 +1722,14 @@ backtrace: 0x00000004   <--- TRAP
 backtrace: INVALID!!!
 === backtrace end ===
 ```
+
+[(View the complete log)](https://gist.github.com/lupyuen/5ddbcdd1054c775521291c3d114f6cee)
+
+This shows the function calls leading to the Exception, so it's a more helpful for troubleshooting.
+
+To find the source code that corresponds to the program addresses (like `0x2300ba88`), follow the instructions here to generate the RISC-V Disassembly File...
+
+-   [__"How to Troubleshoot RISC-V Exceptions"__](https://lupyuen.github.io/articles/i2c#appendix-how-to-troubleshoot-risc-v-exceptions)
 
 ## BL602 Stack Dump
 
