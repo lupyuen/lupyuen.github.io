@@ -1083,6 +1083,12 @@ After commenting out `hal_i2c_init`, the program no longer uses `i2c_interrupt_e
 
 And no more crashing!
 
+For more RISC-V Exception troubleshooting tips, check out __BL602 Stack Trace and BL602 Stack Dump__...
+
+-   [__"BL602 Stack Trace"__](https://lupyuen.github.io/articles/lora2#bl602-stack-trace)
+
+-   [__"BL602 Stack Dump"__](https://lupyuen.github.io/articles/lora2#bl602-stack-dump)
+
 _How did we get the RISC-V Disassembly?_
 
 We generate RISC-V Disassembly `sdk_app_i2c.S` from ELF Executable `sdk_app_i2c.elf` with this command...
