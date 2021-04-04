@@ -1510,28 +1510,21 @@ Rx Interrupts:   302
 </li>
 </ol>
 <h2 id="bl602-stack-trace" class="section-header"><a href="#bl602-stack-trace">8.6 BL602 Stack Trace</a></h2>
-<p>TODO</p>
+<p>When our BL602 Firmware hits an Exception, we'll see a message like this...</p>
 <pre><code class="language-text">Exception Entry---&gt;&gt;&gt;
 mcause 38000001, mepc 00000000, mtval 00000000
 Exception code: 1
   msg: Instruction access fault
 </code></pre>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/proj_config.mk#L40-L43"><code>sdk_app_lora/proj_config.mk</code></a></p>
+<p>This is not really helpful because it doesn't show the Stack Trace: The function calls leading to the Exception.</p>
+<p>To show the Stack Trace, edit the Makefile <code>proj_config.mk</code> (like  <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/proj_config.mk#L40-L43"><code>sdk_app_lora/proj_config.mk</code></a>) and add this...</p>
 <pre><code class="language-text"># Show Stack Trace when we hit a RISC-V Exception, 
 # by enabling the Stack Frame Pointer.
 # After setting this flag, do &quot;make clean ; make&quot;
 CONFIG_ENABLE_FP:=1
 </code></pre>
-<p>TODO</p>
-<ol>
-<li>Rebuild the firmware: <code>make clean</code> then <code>make</code></li>
-</ol>
-<pre><code class="language-text">make clean
-make
-</code></pre>
-<p>TODO</p>
-<p>From https://gist.github.com/lupyuen/5ddbcdd1054c775521291c3d114f6cee</p>
+<p>Rebuild the firmware: <code>make clean</code> then <code>make</code>.</p>
+<p>When BL602 hits an Exception, we'll now see this Stack Trace:</p>
 <pre><code class="language-text">=== backtrace start ===
 backtrace_stack: frame pointer=0x42011e70
 backtrace: 0x2300ba88 (@ 0x42011e6c)
@@ -1540,6 +1533,12 @@ backtrace: 0x00000004   &lt;--- TRAP
 backtrace: INVALID!!!
 === backtrace end ===
 </code></pre>
+<p><a href="https://gist.github.com/lupyuen/5ddbcdd1054c775521291c3d114f6cee">(View the complete log)</a></p>
+<p>This shows the function calls leading to the Exception, so it's a more helpful for troubleshooting.</p>
+<p>To find the source code that corresponds to the program addresses (like <code>0x2300ba88</code>), follow the instructions here to generate the RISC-V Disassembly File...</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/i2c#appendix-how-to-troubleshoot-risc-v-exceptions"><strong>&quot;How to Troubleshoot RISC-V Exceptions&quot;</strong></a></li>
+</ul>
 <h2 id="bl602-stack-dump" class="section-header"><a href="#bl602-stack-dump">8.7 BL602 Stack Dump</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L471-L490"><code>demo.c</code></a></p>
