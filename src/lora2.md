@@ -1834,9 +1834,11 @@ Let's move on to __LoRa Levels Two and Three__...
 
 1.  But before that, we shall port the __LoRaWAN Driver from Apache Mynewt OS to BL602__
 
-    [(See this)](https://github.com/apache/mynewt-core/tree/master/net/lora/node)
+    [(Mynewt Driver for LoRaWAN)](https://github.com/apache/mynewt-core/tree/master/net/lora/node)
 
-1.  But before that, we shall clean up and reorganise the __library files for NimBLE and SX1276__
+    [(Twitter Thread on LoRaWAN Specifications)](https://twitter.com/MisterTechBlog/status/1370224529222500352?s=20)
+
+1.  And before that, we shall clean up and reorganise the __library files for NimBLE and SX1276__
 
     [(Move them into `components/3rdparty`)](https://github.com/lupyuen/bl_iot_sdk/tree/master/components/3rdparty)
 
