@@ -935,6 +935,15 @@ msg: Store/AMO access fault
 <p><img src="https://lupyuen.github.io/images/i2c-inithal.png" alt="I2C Init HAL" /></p>
 <p>After commenting out <code>hal_i2c_init</code>, the program no longer uses <code>i2c_interrupt_entry</code> as the I2C Interrupt Handler.</p>
 <p>And no more crashing!</p>
+<p>For more RISC-V Exception troubleshooting tips, check out <strong>BL602 Stack Trace and BL602 Stack Dump</strong>...</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lora2#bl602-stack-trace"><strong>&quot;BL602 Stack Trace&quot;</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lora2#bl602-stack-dump"><strong>&quot;BL602 Stack Dump&quot;</strong></a></p>
+</li>
+</ul>
 <p><em>How did we get the RISC-V Disassembly?</em></p>
 <p>We generate RISC-V Disassembly <code>sdk_app_i2c.S</code> from ELF Executable <code>sdk_app_i2c.elf</code> with this command...</p>
 <pre><code class="language-bash">riscv-none-embed-objdump \
