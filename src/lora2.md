@@ -1725,7 +1725,7 @@ backtrace: INVALID!!!
 
 [(View the complete log)](https://gist.github.com/lupyuen/5ddbcdd1054c775521291c3d114f6cee)
 
-This shows the function calls leading to the Exception, so it's a more helpful for troubleshooting.
+This shows the function calls leading to the Exception, so it's more helpful for troubleshooting.
 
 To find the source code that corresponds to the program addresses (like `0x2300ba88`), follow the instructions here to generate the RISC-V Disassembly File...
 
