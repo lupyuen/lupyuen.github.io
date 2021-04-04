@@ -1576,7 +1576,7 @@ Here's a __BL602 LoRa troubleshooting guide__...
 
 Let's go into the details.
 
-## Spectrum Analyser
+## Sniff LoRa Packets
 
 It helps to validate that the LoRa Packets that we're about to receive... Are __actually in the airwaves__!
 
@@ -1614,7 +1614,7 @@ More about `read_registers`...
 
 -   [__"Troubleshoot LoRa with read_registers"__](https://lupyuen.github.io/articles/lora#troubleshoot-lora)
 
-## SPI Tracing
+## Trace SPI Requests
 
 Edit [`components/hal_drv/ bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/fe9bbabdddb05fc4961b8f52784305046a413505/components/hal_drv/bl602_hal/hal_spi.c#L57). Set __`HAL_SPI_DEBUG`__ to __`(1)`__ to enable SPI Tracing...
 
@@ -1636,7 +1636,7 @@ More about SPI Tracing messages...
 
 -   [__"Run LoRa Firmware with SPI Tracing"__](https://lupyuen.github.io/articles/lora#enter-lora-commands)
 
-## Interrupt Counters
+## Show Interrupt Counters
 
 TODO
 
@@ -1652,11 +1652,34 @@ Rx Interrupts:   302
 
 [__Check out the receive log__](https://gist.github.com/lupyuen/9bd7e7daa2497e8352d2cffec4be444d)
 
-## Event Queue
+## Test Event Queue
 
 TODO
 
-## Stack Trace
+```text
+# create_task
+
+# put_event
+```
+
+(`create_task` should only be run once)
+
+TODO
+
+```text
+Handle an event
+```
+
+## BL602 Stack Trace
+
+TODO
+
+```text
+Exception Entry--->>>
+mcause 38000001, mepc 00000000, mtval 00000000
+Exception code: 1
+  msg: Instruction access fault
+```
 
 TODO
 
@@ -1671,13 +1694,16 @@ CONFIG_ENABLE_FP:=1
 
 TODO
 
+```text
+make clean
+make
+```
+
+TODO
+
 From https://gist.github.com/lupyuen/5ddbcdd1054c775521291c3d114f6cee
 
 ```text
-Exception Entry--->>>
-mcause 38000001, mepc 00000000, mtval 00000000
-Exception code: 1
-  msg: Instruction access fault
 === backtrace start ===
 backtrace_stack: frame pointer=0x42011e70
 backtrace: 0x2300ba88 (@ 0x42011e6c)
@@ -1687,7 +1713,7 @@ backtrace: INVALID!!!
 === backtrace end ===
 ```
 
-## Stack Dump
+## BL602 Stack Dump
 
 TODO
 
@@ -1731,6 +1757,8 @@ dump_stack: frame pointer=0x42011e70
 @ 0x42011f34: 0x00000001
 @ 0x42011f38: 0x4000a28c
 ```
+
+TODO
 
 ![](https://lupyuen.github.io/images/lora2-sketch.jpg)
 
@@ -1776,4 +1804,6 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1370708936739885056?s=20)
 
-![](https://lupyuen.github.io/images/lora2-vaccine.jpg)
+![Pinebook Pro keeping me company during vaccination (Moderna)... Because bringing a PineCone would look so odd 👍](https://lupyuen.github.io/images/lora2-vaccine.jpg)
+
+_Pinebook Pro keeping me company during vaccination (Moderna)... Because bringing a PineCone would look so odd 👍_
