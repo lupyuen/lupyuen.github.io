@@ -95,13 +95,13 @@
 <li><a href="#enter-lora-commands">7.3 Enter LoRa commands</a><ul></ul></li>
 <li><a href="#receive-timeout">7.4 Receive Timeout</a><ul></ul></li></ul></li>
 <li><a href="#troubleshoot-lora">8 Troubleshoot LoRa</a><ul>
-<li><a href="#spectrum-analyser">8.1 Spectrum Analyser</a><ul></ul></li>
+<li><a href="#sniff-lora-packets">8.1 Sniff LoRa Packets</a><ul></ul></li>
 <li><a href="#read-registers">8.2 Read Registers</a><ul></ul></li>
-<li><a href="#spi-tracing">8.3 SPI Tracing</a><ul></ul></li>
-<li><a href="#interrupt-counters">8.4 Interrupt Counters</a><ul></ul></li>
-<li><a href="#event-queue-1">8.5 Event Queue</a><ul></ul></li>
-<li><a href="#stack-trace">8.6 Stack Trace</a><ul></ul></li>
-<li><a href="#stack-dump">8.7 Stack Dump</a><ul></ul></li></ul></li>
+<li><a href="#trace-spi-requests">8.3 Trace SPI Requests</a><ul></ul></li>
+<li><a href="#show-interrupt-counters">8.4 Show Interrupt Counters</a><ul></ul></li>
+<li><a href="#test-event-queue">8.5 Test Event Queue</a><ul></ul></li>
+<li><a href="#bl602-stack-trace">8.6 BL602 Stack Trace</a><ul></ul></li>
+<li><a href="#bl602-stack-dump">8.7 BL602 Stack Dump</a><ul></ul></li></ul></li>
 <li><a href="#whats-next">9 What's Next</a><ul></ul></li>
 <li><a href="#notes">10 Notes</a><ul></ul></li></ul></nav><p>📝 <em>4 Apr 2021</em></p>
 <p>Not too long ago (and not so far away) we embarked on an epic quest to create a low-power, long-range <a href="https://en.wikipedia.org/wiki/LoRa"><strong>LoRa IoT Sensor</strong></a> with <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602 RISC-V Board</strong></a></p>
@@ -1415,7 +1415,7 @@ Rx timeout
 </li>
 </ol>
 <p>Let's go into the details.</p>
-<h2 id="spectrum-analyser" class="section-header"><a href="#spectrum-analyser">8.1 Spectrum Analyser</a></h2>
+<h2 id="sniff-lora-packets" class="section-header"><a href="#sniff-lora-packets">8.1 Sniff LoRa Packets</a></h2>
 <p>It helps to validate that the LoRa Packets that we're about to receive... Are <strong>actually in the airwaves</strong>!</p>
 <p>Sniff the airwaves with a <strong>Spectrum Analyser or Software Defined Radio</strong>. Check that the LoRa Packets are centered at the right LoRa Frequency.</p>
 <p>LoRa Packets have this distinctive shape, called a <strong>LoRa Chirp</strong>...</p>
@@ -1444,7 +1444,7 @@ Register 0x05 = 0x52
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lora#troubleshoot-lora"><strong>&quot;Troubleshoot LoRa with read_registers&quot;</strong></a></li>
 </ul>
-<h2 id="spi-tracing" class="section-header"><a href="#spi-tracing">8.3 SPI Tracing</a></h2>
+<h2 id="trace-spi-requests" class="section-header"><a href="#trace-spi-requests">8.3 Trace SPI Requests</a></h2>
 <p>Edit <a href="https://github.com/lupyuen/bl_iot_sdk/blob/fe9bbabdddb05fc4961b8f52784305046a413505/components/hal_drv/bl602_hal/hal_spi.c#L57"><code>components/hal_drv/ bl602_hal/hal_spi.c</code></a>. Set <strong><code>HAL_SPI_DEBUG</code></strong> to <strong><code>(1)</code></strong> to enable SPI Tracing...</p>
 <pre><code class="language-c">#define HAL_SPI_DEBUG (1)  //  Enable SPI Tracing
 </code></pre>
@@ -1459,7 +1459,7 @@ recv all event group.
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lora#enter-lora-commands"><strong>&quot;Run LoRa Firmware with SPI Tracing&quot;</strong></a></li>
 </ul>
-<h2 id="interrupt-counters" class="section-header"><a href="#interrupt-counters">8.4 Interrupt Counters</a></h2>
+<h2 id="show-interrupt-counters" class="section-header"><a href="#show-interrupt-counters">8.4 Show Interrupt Counters</a></h2>
 <p>TODO</p>
 <pre><code class="language-text"># spi_result
 DIO0 Interrupts: 1
@@ -1469,9 +1469,23 @@ Rx Interrupts:   302
 </code></pre>
 <p><a href="https://youtu.be/3TSvo0dwwnQ"><strong>Watch the receive video on YouTube</strong></a></p>
 <p><a href="https://gist.github.com/lupyuen/9bd7e7daa2497e8352d2cffec4be444d"><strong>Check out the receive log</strong></a></p>
-<h2 id="event-queue-1" class="section-header"><a href="#event-queue-1">8.5 Event Queue</a></h2>
+<h2 id="test-event-queue" class="section-header"><a href="#test-event-queue">8.5 Test Event Queue</a></h2>
 <p>TODO</p>
-<h2 id="stack-trace" class="section-header"><a href="#stack-trace">8.6 Stack Trace</a></h2>
+<pre><code class="language-text"># create_task
+
+# put_event
+</code></pre>
+<p>(<code>create_task</code> should only be run once)</p>
+<p>TODO</p>
+<pre><code class="language-text">Handle an event
+</code></pre>
+<h2 id="bl602-stack-trace" class="section-header"><a href="#bl602-stack-trace">8.6 BL602 Stack Trace</a></h2>
+<p>TODO</p>
+<pre><code class="language-text">Exception Entry---&gt;&gt;&gt;
+mcause 38000001, mepc 00000000, mtval 00000000
+Exception code: 1
+  msg: Instruction access fault
+</code></pre>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/proj_config.mk#L40-L43"><code>sdk_app_lora/proj_config.mk</code></a></p>
 <pre><code class="language-text"># Show Stack Trace when we hit a RISC-V Exception, 
@@ -1480,12 +1494,12 @@ Rx Interrupts:   302
 CONFIG_ENABLE_FP:=1
 </code></pre>
 <p>TODO</p>
+<pre><code class="language-text">make clean
+make
+</code></pre>
+<p>TODO</p>
 <p>From https://gist.github.com/lupyuen/5ddbcdd1054c775521291c3d114f6cee</p>
-<pre><code class="language-text">Exception Entry---&gt;&gt;&gt;
-mcause 38000001, mepc 00000000, mtval 00000000
-Exception code: 1
-  msg: Instruction access fault
-=== backtrace start ===
+<pre><code class="language-text">=== backtrace start ===
 backtrace_stack: frame pointer=0x42011e70
 backtrace: 0x2300ba88 (@ 0x42011e6c)
 backtrace: 0x2300a852 (@ 0x42011e9c)
@@ -1493,7 +1507,7 @@ backtrace: 0x00000004   &lt;--- TRAP
 backtrace: INVALID!!!
 === backtrace end ===
 </code></pre>
-<h2 id="stack-dump" class="section-header"><a href="#stack-dump">8.7 Stack Dump</a></h2>
+<h2 id="bl602-stack-dump" class="section-header"><a href="#bl602-stack-dump">8.7 BL602 Stack Dump</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L471-L490"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// Dump the current stack
@@ -1530,6 +1544,7 @@ dump_stack: frame pointer=0x42011e70
 @ 0x42011f34: 0x00000001
 @ 0x42011f38: 0x4000a28c
 </code></pre>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lora2-sketch.jpg" alt="" /></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">9 What's Next</a></h1>
 <p>TODO</p>
@@ -1576,7 +1591,8 @@ dump_stack: frame pointer=0x42011e70
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1370708936739885056?s=20">this Twitter Thread</a></li>
 </ol>
-<p><img src="https://lupyuen.github.io/images/lora2-vaccine.jpg" alt="" /></p>
+<p><img src="https://lupyuen.github.io/images/lora2-vaccine.jpg" alt="Pinebook Pro keeping me company during vaccination (Moderna)... Because bringing a PineCone would look so odd 👍" /></p>
+<p><em>Pinebook Pro keeping me company during vaccination (Moderna)... Because bringing a PineCone would look so odd 👍</em></p>
 
     
 </body>
