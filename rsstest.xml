@@ -1,0 +1,14 @@
+<rss version="2.0">
+    <channel>
+        <title>lupyuen</title>
+        <link>https://lupyuen.github.io</link>
+        <description>IoT Techie and Educator</description>
+        <item>
+            <guid>https://lupyuen.github.io/articles/lora2</guid>
+            <title>PineCone BL602 RISC-V Board Receives LoRa Packets</title>
+            <link>https://lupyuen.github.io/articles/lora2</link>
+            <description><![CDATA[How PineCone BL602 RISC-V Board with SX1276 receives LoRa packets... Transmitted by RAKwireless WisBlock]]></description>
+            <pubDate>Sun, 04 Apr 2021 00:00:00 +0000</pubDate>
+        </item>
+    </channel>
+</rss>
