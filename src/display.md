@@ -1608,7 +1608,9 @@ COMPONENT_SRCDIRS += \
 	./lvgl/src/lv_widgets
 ```
 
-Hopefully somebody will find a better way to add LVGL to BL602 Firmware.
+Hopefully someday we shall create a proper BL602 Library for LVGL...
+
+-   ["How To Create BL602 Libraries"](https://lupyuen.github.io/articles/lora2#appendix-how-to-create-bl602-libraries)
 
 The GitHub Actions Workflow was updated to do Recursive Checkout to populate the LVGL folder. [(See this)](https://github.com/lupyuen/bl_iot_sdk/commit/16f733d96391ab07aa01ceb0d6d3fdbca7044a10#diff-bdcc6a2a85f645f62724fe8dafbf0581cb0c1d65f6a76cb2985a9172e31a473c)
 
