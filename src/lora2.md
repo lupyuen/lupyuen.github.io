@@ -1830,7 +1830,7 @@ Let's move on to __LoRa Levels Two and Three__...
 
 1.  We shall install a __LoRaWAN Gateway__ and join BL602 to __The Things Network__
 
-    [(Probably RAKwireless WisGate)](https://store.rakwireless.com/collections/wisgate-developer)
+    [(I have ordered a RAKwireless WisGate Developer D4H RAK7248)](https://docs.rakwireless.com/Product-Categories/WisGate/RAK7248/Datasheet/)
 
 1.  But before that, we shall port the __LoRaWAN Driver from Apache Mynewt OS to BL602__
 

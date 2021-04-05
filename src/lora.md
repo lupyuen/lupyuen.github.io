@@ -944,12 +944,14 @@ assert(rc == 0);
 hal_gpio_irq_enable(SX1276_DIO0);
 ```
 
-For BL602 we don't configure the pins to trigger interrupts because we don't receive LoRa Packets.
+For receiving LoRa Packets, we handle GPIO Interrupts with the BL602 Interrupt HAL and the NimBLE Porting Library...
 
-The code to configure the pins for interrupts would look like this: [`sx1276-board.c`](https://github.com/lupyuen/bl_iot_sdk/blob/ec9b5be676f520ffcda0651aac1e353d8f07bded/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L304-L359)
+-   [__"BL602 GPIO Interrupts"__](https://lupyuen.github.io/articles/lora2#bl602-gpio-interrupts)
+
+-   [__"Multitask with NimBLE Porting Layer"__](https://lupyuen.github.io/articles/lora2#multitask-with-nimble-porting-layer)
 
 ## Timers
 
-For BL602 we don't use timers because we don't receive LoRa Packets.
+For receiving LoRa Packets with Timeout, we use Timers from the NimBLE Porting Library...
 
-In future, these Mynewt Timer Functions should be implemented on BL602: [`sx1276.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/sx1276.c#L224-L243)
+-   [__"Multitask with NimBLE Porting Layer: Timer"__](https://lupyuen.github.io/articles/lora2#timer)
