@@ -1865,7 +1865,7 @@ Let's move on to __LoRa Levels Two and Three__...
 
 1.  And before that, we shall clean up and reorganise the __library files for NimBLE and SX1276__
 
-    [(Move them into `components/3rdparty`)](https://github.com/lupyuen/bl_iot_sdk/tree/master/components/3rdparty)
+    [(See this)](https://lupyuen.github.io/articles/lora2#appendix-how-to-create-bl602-libraries)
 
 We have come a loooong way since I first [__experimented with LoRa in 2016__](https://github.com/lupyuen/LoRaArduino)...
 
