@@ -47,7 +47,7 @@ fn main() {
 
         //  Set GUID to URL.
         let mut guid = rss::Guid::default();
-        guid.set_value(article.website.clone());
+        guid.set_value(article.website.clone().replace("&", "&amp;"));
 
         /*
         <item>
