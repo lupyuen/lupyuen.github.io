@@ -1089,6 +1089,8 @@ For more RISC-V Exception troubleshooting tips, check out __BL602 Stack Trace an
 
 -   [__"BL602 Stack Dump"__](https://lupyuen.github.io/articles/lora2#bl602-stack-dump)
 
+-   [__"BL602 Assertion Failures"__](https://lupyuen.github.io/articles/lora2#bl602-assertion-failures)
+
 _How did we get the RISC-V Disassembly?_
 
 We generate RISC-V Disassembly `sdk_app_i2c.S` from ELF Executable `sdk_app_i2c.elf` with this command...

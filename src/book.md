@@ -36,11 +36,13 @@ Find out what's inside the __BL602 System-on-a-Chip (SoC)__... And why it's uniq
 
 # Flashing Firmware to BL602
 
-How we __flash firmware__ to BL602 with __command-line tools__ on Linux, macOS and Windows.
+How we __flash firmware__ to BL602 with __command-line tools__ on Linux, macOS and Windows. Plus tips for __developing and troubleshooting__ firmware.
 
 -   ["Flashing Firmware to PineCone BL602"](https://lupyuen.github.io/articles/flash)
 
 -   ["How to Troubleshoot RISC-V Exceptions"](https://lupyuen.github.io/articles/i2c#appendix-how-to-troubleshoot-risc-v-exceptions)
+
+-   ["BL602 Assertion Failures"](https://lupyuen.github.io/articles/lora2#bl602-assertion-failures)
 
 -   ["BL602 Stack Trace"](https://lupyuen.github.io/articles/lora2#bl602-stack-trace)
 
