@@ -1880,6 +1880,101 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1370708936739885056?s=20)
 
+# Appendix: How To Create BL602 Libraries
+
+We're now refactoring the LoRa Firmware Source Code from this article to create __reusable BL602 Libraries__...
+
+1.  [__BL602 Library for LoRa SX1276 Driver__](https://github.com/lupyuen/bl_iot_sdk/tree/master/components/3rdparty/lora-sx1276)
+
+1.  [__BL602 Library for NimBLE Porting Layer__](https://github.com/lupyuen/bl_iot_sdk/tree/master/components/3rdparty/nimble-porting-layer)
+
+To create your own BL602 Library...
+
+1.  Place the source files into a new folder under [__`bl_iot_sdk/components/3rdparty`__](https://github.com/lupyuen/bl_iot_sdk/tree/master/components/3rdparty)
+
+    Here's where we created the folder for NimBLE Porting Layer...
+
+    ![BL602 Library](https://lupyuen.github.io/images/lora2-library.png)
+
+1.  In the folder, create two subfolders...
+
+    - __`include`__: For the include files (`*.h`)
+
+    - __`src`__: For the source files (`*.c`)
+
+1.  In the same folder, create the file [__`bouffalo.mk`__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/3rdparty/nimble-porting-layer/bouffalo.mk) containing...
+
+    ```text
+
+    # Component Makefile
+    #
+
+    # Include Folders
+    COMPONENT_ADD_INCLUDEDIRS := include
+
+    # Object Files (*.o)
+    COMPONENT_OBJS := $(patsubst %.c,%.o, $(COMPONENT_SRCS))
+
+    # Source Folders
+    COMPONENT_SRCDIRS := src
+    ```
+
+1.  In the same folder, create the file [__`component.mk`__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/3rdparty/nimble-porting-layer/component.mk) containing...
+
+    ```text
+    #
+    # Component Makefile
+    #
+
+    # Include Folders
+    COMPONENT_ADD_INCLUDEDIRS := include
+
+    # Source Folders
+    COMPONENT_SRCDIRS := src
+
+    # Check the submodule is initialised
+    COMPONENT_SUBMODULES := 
+    ```
+
+1.  If there are multiple Include Folders or Source Folders, add them to __`COMPONENT_ADD_INCLUDEDIRS` and `COMPONENT_SRCDIRS`__ in the above two files. Like so...
+
+    -   [__AWS IoT `bouffalo.mk`__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/3rdparty/aws-iot/bouffalo.mk)
+
+    -   [__AWS IoT `component.mk`__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/3rdparty/aws-iot/component.mk)
+
+How do we reference the BL602 Library in our BL602 Project?
+
+1.  Edit the __`Makefile`__ for our BL602 Project (like `sdk_app_lora/Makefile`)
+
+1.  Look for the __`INCLUDE_COMPONENTS`__ section.
+
+    Insert a new `INCLUDE_COMPONENTS` line that specifies the names of the BL602 Libraries to be used.
+
+    So to use the BL602 Libraries `lora-sx1276` and `nimble-porting-layer`, we would insert this line...
+
+    ```text
+    INCLUDE_COMPONENTS += lora-sx1276 nimble-porting-layer
+    ```
+
+1.  To look neater, the `Makefile` for our LoRa Firmware defines a variable `COMPONENTS_LORA` like so: [`sdk_app_lora/Makefile`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lora/Makefile)
+
+    ```text
+    # Added this line to define COMPONENTS_LORA...
+    COMPONENTS_LORA    := lora-sx1276 nimble-porting-layer
+    COMPONENTS_BLSYS   := bltime blfdt blmtd bloop loopadc looprt loopset
+    COMPONENTS_VFS     := romfs
+    COMPONENTS_BLE     := 
+
+    INCLUDE_COMPONENTS += freertos_riscv_ram bl602 bl602_std hal_drv vfs yloop utils cli blog blog_testc
+    INCLUDE_COMPONENTS += easyflash4
+    INCLUDE_COMPONENTS += $(COMPONENTS_NETWORK)
+    INCLUDE_COMPONENTS += $(COMPONENTS_BLSYS)
+    INCLUDE_COMPONENTS += $(COMPONENTS_VFS)
+    # Added this line to reference COMPONENTS_LORA...
+    INCLUDE_COMPONENTS += $(COMPONENTS_LORA)
+    INCLUDE_COMPONENTS += $(PROJECT_NAME)
+    ```
+
 ![Pinebook Pro keeping me company during vaccination (Moderna)... Because bringing a PineCone would look so odd 👍](https://lupyuen.github.io/images/lora2-vaccine.jpg)
 
 _Pinebook Pro keeping me company during vaccination (Moderna)... Because bringing a PineCone would look so odd 👍_
