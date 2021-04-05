@@ -1101,7 +1101,11 @@ ble_npl_time_delay(ticks);
 
 _How do we add the NimBLE Porting Layer to our own BL602 programs?_
 
-Copy these source files from the BL602 LoRa Firmware to your program...
+Add the BL602 Library __`nimble-porting-layer`__ to the BL602 project as described here...
+
+-   [__"How To Create BL602 Libraries"__](https://lupyuen.github.io/articles/lora2#appendix-how-to-create-bl602-libraries)
+
+Alternatively, copy these source files from the BL602 LoRa Firmware to your program...
 
 1.  [__`nimble_npl.h`__](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/nimble_npl.h)
 
@@ -1819,6 +1823,27 @@ Perhaps someday we shall fix the BL602 Stack Trace so that it displays the right
 -   [__Source Code for BL602 Stack Trace: `backtrace_riscv`__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/freertos_riscv_ram/panic/panic_c.c#L75-L99)
 
 -   [__How we use GCC Stack Frame Pointers to navigate the BL602 Stack__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/freertos_riscv_ram/panic/panic_c.c#L8-L49)
+
+## BL602 Assertion Failures
+
+Be sure to __Enable Assertion Failure Messages__ by adding this function to `main.c` (or [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L324-L335))...
+
+```c
+/// TODO: We now show assertion failures in development.
+/// For production, comment out this function to use the system default,
+/// which loops forever without messages.
+void __assert_func(const char *file, int line, const char *func, const char *failedexpr)
+{
+    //  Show the assertion failure, file, line, function name
+	printf("Assertion Failed \"%s\": file \"%s\", line %d%s%s\r\n",
+        failedexpr, file, line, func ? ", function: " : "",
+        func ? func : "");
+	//  Loop forever, do not pass go, do not collect $200
+	for (;;) {}
+}
+```
+
+Comment out this function when building the production firmware.
 
 ![Sketching LoRa](https://lupyuen.github.io/images/lora2-sketch.jpg)
 
