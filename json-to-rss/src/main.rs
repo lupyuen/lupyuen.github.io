@@ -45,8 +45,13 @@ fn main() {
         ).unwrap();  //  "2018-03-20"
         //  println!("{}", date);
 
+        //  Set GUID to URL.
+        let mut guid = rss::Guid::default();
+        guid.set_value(article.website.clone());
+
         /*
         <item>
+        <guid>http://www.example.com/blog/post/1</guid>
         <title>Example entry</title>
         <description>Here is some text containing an interesting description.</description>
         <link>http://www.example.com/blog/post/1</link>
@@ -56,6 +61,7 @@ fn main() {
         */
         //  Compose the item.
         let item = ItemBuilder::default()
+            .guid(Some(guid))
             .title(Some(article.name))
             .description(Some(article.summary))
             .link(Some(article.website))
