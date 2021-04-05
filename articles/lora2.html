@@ -103,7 +103,8 @@
 <li><a href="#bl602-stack-trace">8.6 BL602 Stack Trace</a><ul></ul></li>
 <li><a href="#bl602-stack-dump">8.7 BL602 Stack Dump</a><ul></ul></li></ul></li>
 <li><a href="#whats-next">9 What's Next</a><ul></ul></li>
-<li><a href="#notes">10 Notes</a><ul></ul></li></ul></nav><p>📝 <em>4 Apr 2021</em></p>
+<li><a href="#notes">10 Notes</a><ul></ul></li>
+<li><a href="#appendix-how-to-create-bl602-libraries">11 Appendix: How To Create BL602 Libraries</a><ul></ul></li></ul></nav><p>📝 <em>4 Apr 2021</em></p>
 <p>Not too long ago (and not so far away) we embarked on an epic quest to create a low-power, long-range <a href="https://en.wikipedia.org/wiki/LoRa"><strong>LoRa IoT Sensor</strong></a> with <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602 RISC-V Board</strong></a></p>
 <ol>
 <li>
@@ -1674,6 +1675,109 @@ dump_stack: frame pointer=0x42011e70
 <h1 id="notes" class="section-header"><a href="#notes">10 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1370708936739885056?s=20">this Twitter Thread</a></li>
+</ol>
+<h1 id="appendix-how-to-create-bl602-libraries" class="section-header"><a href="#appendix-how-to-create-bl602-libraries">11 Appendix: How To Create BL602 Libraries</a></h1>
+<p>We're now refactoring the LoRa Firmware Source Code from this article to create <strong>reusable BL602 Libraries</strong>...</p>
+<ol>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/components/3rdparty/lora-sx1276"><strong>BL602 Library for LoRa SX1276 Driver</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/components/3rdparty/nimble-porting-layer"><strong>BL602 Library for NimBLE Porting Layer</strong></a></p>
+</li>
+</ol>
+<p>To create your own BL602 Library...</p>
+<ol>
+<li>
+<p>Place the source files into a new folder under <a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/components/3rdparty"><strong><code>bl_iot_sdk/components/3rdparty</code></strong></a></p>
+<p>Here's where we created the folder for NimBLE Porting Layer...</p>
+<p><img src="https://lupyuen.github.io/images/lora2-library.png" alt="BL602 Library" /></p>
+</li>
+<li>
+<p>In the folder, create two subfolders...</p>
+<ul>
+<li>
+<p><strong><code>include</code></strong>: For the include files (<code>*.h</code>)</p>
+</li>
+<li>
+<p><strong><code>src</code></strong>: For the source files (<code>*.c</code>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>In the same folder, create the file <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/3rdparty/nimble-porting-layer/bouffalo.mk"><strong><code>bouffalo.mk</code></strong></a> containing...</p>
+<pre><code class="language-text">
+# Component Makefile
+#
+
+# Include Folders
+COMPONENT_ADD_INCLUDEDIRS := include
+
+# Object Files (*.o)
+COMPONENT_OBJS := $(patsubst %.c,%.o, $(COMPONENT_SRCS))
+
+# Source Folders
+COMPONENT_SRCDIRS := src
+</code></pre>
+</li>
+<li>
+<p>In the same folder, create the file <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/3rdparty/nimble-porting-layer/component.mk"><strong><code>component.mk</code></strong></a> containing...</p>
+<pre><code class="language-text">#
+# Component Makefile
+#
+
+# Include Folders
+COMPONENT_ADD_INCLUDEDIRS := include
+
+# Source Folders
+COMPONENT_SRCDIRS := src
+
+# Check the submodule is initialised
+COMPONENT_SUBMODULES := 
+</code></pre>
+</li>
+<li>
+<p>If there are multiple Include Folders or Source Folders, add them to <strong><code>COMPONENT_ADD_INCLUDEDIRS</code> and <code>COMPONENT_SRCDIRS</code></strong> in the above two files. Like so...</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/3rdparty/aws-iot/bouffalo.mk"><strong>AWS IoT <code>bouffalo.mk</code></strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/3rdparty/aws-iot/component.mk"><strong>AWS IoT <code>component.mk</code></strong></a></p>
+</li>
+</ul>
+</li>
+</ol>
+<p>How do we reference the BL602 Library in our BL602 Project?</p>
+<ol>
+<li>
+<p>Edit the <strong><code>Makefile</code></strong> for our BL602 Project (like <code>sdk_app_lora/Makefile</code>)</p>
+</li>
+<li>
+<p>Look for the <strong><code>INCLUDE_COMPONENTS</code></strong> section.</p>
+<p>Insert a new <code>INCLUDE_COMPONENTS</code> line that specifies the names of the BL602 Libraries to be used.</p>
+<p>So to use the BL602 Libraries <code>lora-sx1276</code> and <code>nimble-porting-layer</code>, we would insert this line...</p>
+<pre><code class="language-text">INCLUDE_COMPONENTS += lora-sx1276 nimble-porting-layer
+</code></pre>
+</li>
+<li>
+<p>To look neater, the <code>Makefile</code> for our LoRa Firmware defines a variable <code>COMPONENTS_LORA</code> like so: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lora/Makefile"><code>sdk_app_lora/Makefile</code></a></p>
+<pre><code class="language-text"># Added this line to define COMPONENTS_LORA...
+COMPONENTS_LORA    := lora-sx1276 nimble-porting-layer
+COMPONENTS_BLSYS   := bltime blfdt blmtd bloop loopadc looprt loopset
+COMPONENTS_VFS     := romfs
+COMPONENTS_BLE     := 
+
+INCLUDE_COMPONENTS += freertos_riscv_ram bl602 bl602_std hal_drv vfs yloop utils cli blog blog_testc
+INCLUDE_COMPONENTS += easyflash4
+INCLUDE_COMPONENTS += $(COMPONENTS_NETWORK)
+INCLUDE_COMPONENTS += $(COMPONENTS_BLSYS)
+INCLUDE_COMPONENTS += $(COMPONENTS_VFS)
+# Added this line to reference COMPONENTS_LORA...
+INCLUDE_COMPONENTS += $(COMPONENTS_LORA)
+INCLUDE_COMPONENTS += $(PROJECT_NAME)
+</code></pre>
+</li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/lora2-vaccine.jpg" alt="Pinebook Pro keeping me company during vaccination (Moderna)... Because bringing a PineCone would look so odd 👍" /></p>
 <p><em>Pinebook Pro keeping me company during vaccination (Moderna)... Because bringing a PineCone would look so odd 👍</em></p>
