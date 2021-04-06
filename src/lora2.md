@@ -1905,6 +1905,64 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1370708936739885056?s=20)
 
+# Appendix: How To Create BL602 Projects
+
+Follow these steps to create a new BL602 Project (like `sdk_app_lorawan`)...
+
+1.  __Copy the Project Folder__ for an existing Project, like `sdk_app_lora`...
+
+    -   [__Project Folder for `sdk_app_lora`__](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lora)
+
+1.  __Paste the Project Folder__ into __`bl_iot_sdk/customer_app`__ and rename it (like `sdk_app_lorawan`)...
+
+    ![BL602 Project](https://lupyuen.github.io/images/lora2-app.png)
+
+    Be sure to __rename the Sub Folder__ too. (The `sdk_app_lorawan` inside `sdk_app_lorawan`)
+
+    __Delete the `build_out` folder__ if it exists.
+
+1.  __Edit the `Makefile`__ in the new folder and set the Project Name: [`sdk_app_lorawan/Makefile`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/Makefile)
+
+    ```text
+    #  Set the project name
+    PROJECT_NAME := sdk_app_lorawan
+    ```
+
+1.  __For macOS Only__: Edit the __`run.sh` script__ in the new folder and set the Project Name: [`sdk_app_lorawan/run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/run.sh)
+
+    ```bash
+    #  Set the project name
+    export APP_NAME=sdk_app_lorawan
+    ```
+
+1.  __Build the project__ by entering these commands...
+
+    ```bash
+    # TODO: Change this to the full path of bl_iot_sdk
+    export BL60X_SDK_PATH=$HOME/bl_iot_sdk
+    export CONFIG_CHIP_NAME=BL602
+
+    # TODO: Change sdk_app_lorawan to the project name
+    cd bl_iot_sdk/customer_app/sdk_app_lorawan
+    make
+    ```
+
+1.  __For macOS Only__: We may build, flash and run the new firmware with the `run.sh` script instead...
+
+    ```bash
+    # TODO: Change sdk_app_lorawan to the project name
+    cd bl_iot_sdk/customer_app/sdk_app_lorawan
+
+    # TODO Before Flashing: Switch GPIO 8 to Flashing Mode. Restart the BL602 board.
+
+    # Build, flash and run the firmware (with CoolTerm)
+    ./run.sh
+
+    # TODO After Flashing: Switch GPIO 8 to Normal Mode. Restart the BL602 board.
+    ```
+
+1.  Remember to edit the __README.md file__ and fill in the project details
+
 # Appendix: How To Create BL602 Libraries
 
 We're now refactoring the LoRa Firmware Source Code from this article to create __reusable BL602 Libraries__...
