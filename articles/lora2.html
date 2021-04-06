@@ -105,7 +105,8 @@
 <li><a href="#bl602-assertion-failures">8.8 BL602 Assertion Failures</a><ul></ul></li></ul></li>
 <li><a href="#whats-next">9 What's Next</a><ul></ul></li>
 <li><a href="#notes">10 Notes</a><ul></ul></li>
-<li><a href="#appendix-how-to-create-bl602-libraries">11 Appendix: How To Create BL602 Libraries</a><ul></ul></li></ul></nav><p>📝 <em>4 Apr 2021</em></p>
+<li><a href="#appendix-how-to-create-bl602-projects">11 Appendix: How To Create BL602 Projects</a><ul></ul></li>
+<li><a href="#appendix-how-to-create-bl602-libraries">12 Appendix: How To Create BL602 Libraries</a><ul></ul></li></ul></nav><p>📝 <em>4 Apr 2021</em></p>
 <p>Not too long ago (and not so far away) we embarked on an epic quest to create a low-power, long-range <a href="https://en.wikipedia.org/wiki/LoRa"><strong>LoRa IoT Sensor</strong></a> with <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602 RISC-V Board</strong></a></p>
 <ol>
 <li>
@@ -1697,7 +1698,62 @@ void __assert_func(const char *file, int line, const char *func, const char *fai
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1370708936739885056?s=20">this Twitter Thread</a></li>
 </ol>
-<h1 id="appendix-how-to-create-bl602-libraries" class="section-header"><a href="#appendix-how-to-create-bl602-libraries">11 Appendix: How To Create BL602 Libraries</a></h1>
+<h1 id="appendix-how-to-create-bl602-projects" class="section-header"><a href="#appendix-how-to-create-bl602-projects">11 Appendix: How To Create BL602 Projects</a></h1>
+<p>Follow these steps to create a new BL602 Project (like <code>sdk_app_lorawan</code>)...</p>
+<ol>
+<li>
+<p><strong>Copy the Project Folder</strong> for an existing Project, like <code>sdk_app_lora</code>...</p>
+<ul>
+<li><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lora"><strong>Project Folder for <code>sdk_app_lora</code></strong></a></li>
+</ul>
+</li>
+<li>
+<p><strong>Paste the Project Folder</strong> into <strong><code>bl_iot_sdk/customer_app</code></strong> and rename it (like <code>sdk_app_lorawan</code>)...</p>
+<p><img src="https://lupyuen.github.io/images/lora2-app.png" alt="BL602 Project" /></p>
+<p>Be sure to <strong>rename the Sub Folder</strong> too. (The <code>sdk_app_lorawan</code> inside <code>sdk_app_lorawan</code>)</p>
+<p><strong>Delete the <code>build_out</code> folder</strong> if it exists.</p>
+</li>
+<li>
+<p><strong>Edit the <code>Makefile</code></strong> in the new folder and set the Project Name: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/Makefile"><code>sdk_app_lorawan/Makefile</code></a></p>
+<pre><code class="language-text">#  Set the project name
+PROJECT_NAME := sdk_app_lorawan
+</code></pre>
+</li>
+<li>
+<p><strong>For macOS Only</strong>: Edit the <strong><code>run.sh</code> script</strong> in the new folder and set the Project Name: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/run.sh"><code>sdk_app_lorawan/run.sh</code></a></p>
+<pre><code class="language-bash">#  Set the project name
+export APP_NAME=sdk_app_lorawan
+</code></pre>
+</li>
+<li>
+<p><strong>Build the project</strong> by entering these commands...</p>
+<pre><code class="language-bash"># TODO: Change this to the full path of bl_iot_sdk
+export BL60X_SDK_PATH=$HOME/bl_iot_sdk
+export CONFIG_CHIP_NAME=BL602
+
+# TODO: Change sdk_app_lorawan to the project name
+cd bl_iot_sdk/customer_app/sdk_app_lorawan
+make
+</code></pre>
+</li>
+<li>
+<p><strong>For macOS Only</strong>: We may build, flash and run the new firmware with the <code>run.sh</code> script instead...</p>
+<pre><code class="language-bash"># TODO: Change sdk_app_lorawan to the project name
+cd bl_iot_sdk/customer_app/sdk_app_lorawan
+
+# TODO Before Flashing: Switch GPIO 8 to Flashing Mode. Restart the BL602 board.
+
+# Build, flash and run the firmware (with CoolTerm)
+./run.sh
+
+# TODO After Flashing: Switch GPIO 8 to Normal Mode. Restart the BL602 board.
+</code></pre>
+</li>
+<li>
+<p>Remember to edit the <strong>README.md file</strong> and fill in the project details</p>
+</li>
+</ol>
+<h1 id="appendix-how-to-create-bl602-libraries" class="section-header"><a href="#appendix-how-to-create-bl602-libraries">12 Appendix: How To Create BL602 Libraries</a></h1>
 <p>We're now refactoring the LoRa Firmware Source Code from this article to create <strong>reusable BL602 Libraries</strong>...</p>
 <ol>
 <li>
