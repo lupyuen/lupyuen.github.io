@@ -1720,6 +1720,17 @@ PROJECT_NAME := sdk_app_lorawan
 </code></pre>
 </li>
 <li>
+<p>Set the <strong>GCC Compiler Options</strong> in the <code>Makefile</code> (if any): <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/Makefile"><code>sdk_app_lorawan/Makefile</code></a></p>
+<pre><code class="language-text"># Define the GCC compiler options
+
+# Set LoRa Region to 1 (AS923). See components/3rdparty/lorawan/include/node/lora_band.h
+CFLAGS += -DCONFIG_LORA_NODE_REGION=1
+
+# Do not auto-join the LoRaWAN Network
+CFLAGS += -DLORA_APP_AUTO_JOIN=0
+</code></pre>
+</li>
+<li>
 <p><strong>For macOS Only</strong>: Edit the <strong><code>run.sh</code> script</strong> in the new folder and set the Project Name: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/run.sh"><code>sdk_app_lorawan/run.sh</code></a></p>
 <pre><code class="language-bash">#  Set the project name
 export APP_NAME=sdk_app_lorawan
