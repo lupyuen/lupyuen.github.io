@@ -50,6 +50,8 @@ How we __flash firmware__ to BL602 with __command-line tools__ on Linux, macOS a
 
 -   ["Multitask with NimBLE Porting Layer"](https://lupyuen.github.io/articles/lora2#multitask-with-nimble-porting-layer)
 
+-   ["How To Create BL602 Projects"](https://lupyuen.github.io/articles/lora2#appendix-how-to-create-bl602-projects)
+
 -   ["How To Create BL602 Libraries"](https://lupyuen.github.io/articles/lora2#appendix-how-to-create-bl602-libraries)
 
 ![GPIO on BL602](https://lupyuen.github.io/images/book-led.jpg)
