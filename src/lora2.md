@@ -1928,6 +1928,18 @@ Follow these steps to create a new BL602 Project (like `sdk_app_lorawan`)...
     PROJECT_NAME := sdk_app_lorawan
     ```
 
+1.  Set the __GCC Compiler Options__ in the `Makefile` (if any): [`sdk_app_lorawan/Makefile`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/Makefile)
+
+    ```text
+    # Define the GCC compiler options
+
+    # Set LoRa Region to 1 (AS923). See components/3rdparty/lorawan/include/node/lora_band.h
+    CFLAGS += -DCONFIG_LORA_NODE_REGION=1
+
+    # Do not auto-join the LoRaWAN Network
+    CFLAGS += -DLORA_APP_AUTO_JOIN=0
+    ```
+
 1.  __For macOS Only__: Edit the __`run.sh` script__ in the new folder and set the Project Name: [`sdk_app_lorawan/run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/run.sh)
 
     ```bash
