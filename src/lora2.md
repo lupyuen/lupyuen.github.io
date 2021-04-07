@@ -1144,6 +1144,10 @@ The above source files were ported from the [__Apache NimBLE project__](https://
 
 -   [Rename `vPortEnterCritical` and `vPortExitCritical` to `taskENTER_CRITICAL` and `taskEXIT_CRITICAL`](https://github.com/lupyuen/bl_iot_sdk/commit/41a07867dceb5541439ff3f05129941647b9341f#diff-c13b2cc976e41c4bc4d3fd967aefc40cccfb76bc14c7210001f675f371a14818)
 
+[(More about NimBLE Porting Layer)](https://lupyuen.github.io/pinetime-rust-mynewt/articles/dfu#nimble-stack-for-bluetooth-le-on-pinetime)
+
+[(Why NimBLE Porting Layer feels right)](https://www.reddit.com/r/PINE64official/comments/mjt9vz/pinecone_bl602_riscv_board_receives_lora_packets/gtmk8tg?utm_source=share&utm_medium=web2x&context=3)
+
 # Start the RAKwireless WisBlock Transmitter
 
 Today we shall install __RAKwireless WisBlock__ to transmit LoRa Packets to BL602 for testing.
