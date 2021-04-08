@@ -994,6 +994,12 @@ ble_npl_event_init(   //  Init the Event for...
 
 In the next section we'll learn to use __multiple Events__ (with different Event Handlers) to process LoRa Packets.
 
+_Is there a way to test our Event Queue and Background Task?_
+
+Yes, by sending a test Event. See this...
+
+-   [__"Test Event Queue"__](https://lupyuen.github.io/articles/lora2#test-event-queue)
+
 ## LoRa Events
 
 Earlier we have defined the __GPIO Handler Functions__ that will process the interrupts from our LoRa Transceiver (`DIO0` to `DIO5`)...
@@ -1521,6 +1527,8 @@ Let's enter some commands to transmit a LoRa Packet!
     Rx done: 48 65 6c 6c 6f 
     ```
 
+    (That's the ASCII code for `"Hello"`)
+
     [__Watch the receive video on YouTube__](https://youtu.be/3TSvo0dwwnQ)
 
     [__Check out the receive log__](https://gist.github.com/lupyuen/9bd7e7daa2497e8352d2cffec4be444d)
@@ -1868,7 +1876,7 @@ Let's move on to __LoRa Levels Two and Three__...
     [(Twitter Thread on LoRaWAN Specifications)](https://twitter.com/MisterTechBlog/status/1370224529222500352?s=20)
 
     [(Mynewt Driver for LoRaWAN)](https://github.com/apache/mynewt-core/tree/master/net/lora/node)
-    
+
 1.  And before that, we shall clean up and reorganise the __library files for NimBLE and SX1276__
 
     [(See this)](https://lupyuen.github.io/articles/lora2#appendix-how-to-create-bl602-libraries)
