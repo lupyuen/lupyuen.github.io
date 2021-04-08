@@ -889,6 +889,11 @@ ble_npl_event_init(   //  Init the Event for...
 );
 </code></pre>
 <p>In the next section we'll learn to use <strong>multiple Events</strong> (with different Event Handlers) to process LoRa Packets.</p>
+<p><em>Is there a way to test our Event Queue and Background Task?</em></p>
+<p>Yes, by sending a test Event. See this...</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/lora2#test-event-queue"><strong>&quot;Test Event Queue&quot;</strong></a></li>
+</ul>
 <h2 id="lora-events" class="section-header"><a href="#lora-events">5.5 LoRa Events</a></h2>
 <p>Earlier we have defined the <strong>GPIO Handler Functions</strong> that will process the interrupts from our LoRa Transceiver (<code>DIO0</code> to <code>DIO5</code>)...</p>
 <pre><code class="language-c">//  DIO Handler Functions
@@ -1373,6 +1378,7 @@ Rx done: RadioEvents.RxDone
 <p>And the packet contains <code>&quot;Hello&quot;</code>...</p>
 <pre><code class="language-text">Rx done: 48 65 6c 6c 6f 
 </code></pre>
+<p>(That's the ASCII code for <code>&quot;Hello&quot;</code>)</p>
 <p><a href="https://youtu.be/3TSvo0dwwnQ"><strong>Watch the receive video on YouTube</strong></a></p>
 <p><a href="https://gist.github.com/lupyuen/9bd7e7daa2497e8352d2cffec4be444d"><strong>Check out the receive log</strong></a></p>
 </li>
