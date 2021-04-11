@@ -1000,6 +1000,10 @@ Yes, by sending a test Event. See this...
 
 -   [__"Test Event Queue"__](https://lupyuen.github.io/articles/lora2#test-event-queue)
 
+_Can we create multiple Background Tasks?_
+
+Sorry we can't. Perhaps by modding NimBLE Porting Layer we can create multiple Background Tasks. [(See this)](https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/nimble_port_freertos.c)
+
 ## LoRa Events
 
 Earlier we have defined the __GPIO Handler Functions__ that will process the interrupts from our LoRa Transceiver (`DIO0` to `DIO5`)...
