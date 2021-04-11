@@ -894,6 +894,8 @@ ble_npl_event_init(   //  Init the Event for...
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lora2#test-event-queue"><strong>&quot;Test Event Queue&quot;</strong></a></li>
 </ul>
+<p><em>Can we create multiple Background Tasks?</em></p>
+<p>Sorry we can't. Perhaps by modding NimBLE Porting Layer we can create multiple Background Tasks. <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/nimble_port_freertos.c">(See this)</a></p>
 <h2 id="lora-events" class="section-header"><a href="#lora-events">5.5 LoRa Events</a></h2>
 <p>Earlier we have defined the <strong>GPIO Handler Functions</strong> that will process the interrupts from our LoRa Transceiver (<code>DIO0</code> to <code>DIO5</code>)...</p>
 <pre><code class="language-c">//  DIO Handler Functions
