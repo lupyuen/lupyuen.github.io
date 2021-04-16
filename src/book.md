@@ -134,11 +134,13 @@ Render text and graphics with the open-source __LVGL Library__.
 
 Let's turn BL602 into a real IoT gadget that transmits __long range, low power LoRa packets__...
 
--   ["Connect PineCone BL602 to LoRa Transceiver"](https://lupyuen.github.io/articles/lora)
+-   ["Connect PineCone BL602 to LoRa Transceiver (SX1276)"](https://lupyuen.github.io/articles/lora)
 
 -   ["RAKwireless WisBlock talks LoRa with PineCone BL602 RISC-V Board"](https://lupyuen.github.io/articles/wisblock)
 
--   ["PineCone BL602 RISC-V Board Receives LoRa Packets"](https://lupyuen.github.io/articles/lora2)
+-   ["PineCone BL602 RISC-V Board Receives LoRa Packets (SX1276)"](https://lupyuen.github.io/articles/lora2)
+
+-   ["LoRa Driver for SX1262 (Pine64 RFM90 LoRa Module)"](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/3rdparty/lora-sx1262)
 
 ![OpenOCD on BL602](https://lupyuen.github.io/images/book-openocd.jpg)
 
