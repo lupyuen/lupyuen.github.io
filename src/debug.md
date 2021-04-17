@@ -18,6 +18,8 @@ Today we'll learn to build and debug [__Rust Firmware for PineCone__](https://gi
 
 The instructions here should work on Linux, macOS and Windows.
 
+[__UPDATE:__ We're now experimenting with a new way to build Rust firmware for BL602... See this](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_rust)
+
 [Watch the Sneak Peek on YouTube](https://youtu.be/b9f2vxYahHY)
 
 [Note: There's a new doc on BL602, OpenOCD and GDB. Check it out here](https://github.com/bouffalolab/bl_docs/tree/main/BL602_Openocd&GDB/en)
