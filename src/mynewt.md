@@ -536,6 +536,8 @@ This code will have to be inserted into Mynewt's Start Code, when our firmware i
 
 [(Here's the whole list)](https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions)
 
+__UPDATE:__ BL602 actually supports __`rv32acfimx`__ [(See this)](https://lupyuen.github.io/articles/uart#enter-the-commands)
+
 However Mynewt today supports only __`rv32imac`__...
 
 | Designation | Meaning |
