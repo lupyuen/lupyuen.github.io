@@ -425,12 +425,9 @@ on:
   # Run this Workflow when files are updated (Pushed) in this Branch
   push:
     branches: [ main ]    
-  # Also run this Workflow when a Pull Request is created or updated in this Branch
-  pull_request:
-    branches: [ main ]
 ```
 
-This says that the Automated Build will be triggered whenever we commit code to the `main` branch. Or when we create a Pull Request for the `main` branch.
+This says that the Automated Build will be triggered whenever we commit code to the `main` branch.
 
 ## Build Environment
 
