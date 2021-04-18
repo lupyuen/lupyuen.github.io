@@ -469,11 +469,8 @@ on:
   # Run this Workflow when files are updated (Pushed) in this Branch
   push:
     branches: [ main ]    
-  # Also run this Workflow when a Pull Request is created or updated in this Branch
-  pull_request:
-    branches: [ main ]
 </code></pre>
-<p>This says that the Automated Build will be triggered whenever we commit code to the <code>main</code> branch. Or when we create a Pull Request for the <code>main</code> branch.</p>
+<p>This says that the Automated Build will be triggered whenever we commit code to the <code>main</code> branch.</p>
 <h2 id="build-environment" class="section-header"><a href="#build-environment">8.2 Build Environment</a></h2>
 <p>We'll use an Ubuntu x64 virtual machine (hosted at GitHub) to compile our code...</p>
 <pre><code class="language-yaml"># Steps to run for the Workflow
