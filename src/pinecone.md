@@ -151,6 +151,8 @@ Then reimplement the wireless functions the open source way. Perhaps by adapting
 
 Let's walk through one possible approach for Reverse Engineering the WiFi Driver. (I'm sure there are many other ways to do this, [like this](https://github.com/pine64/bl602-docs/tree/main/hardware_notes))
 
+[__UPDATE:__ There is indeed a blob for the BL602 WiFi / Bluetooth LE Controller that we need help to reverse-engineer and verify. See this](https://github.com/pine64/bl602-docs/tree/main/hardware_notes#rf-ip)
+
 ## How does our WiFi Driver talk to the WiFi Controller?
 
 From the [BL602 Reference Manual](https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en) (Page 17), we see that our RISC-V CPU talks to the WiFi Controller via the __`WRAM` Wireless RAM__ at address `0x4203 0000` onwards.
@@ -233,6 +235,8 @@ What's really inside the WiFi Controller?
 Could there be some low-level chunk of executable code (non RISC-V) that runs __inside__ the WiFi Controller to control the WiFi operations?
 
 By studying the WiFi Buffers and the associated WiFi Functions, we may uncover the Code Blob that runs inside the WiFi Controller.
+
+[__UPDATE:__ There is indeed a blob for the BL602 WiFi / Bluetooth LE Controller that we need help to reverse-engineer and verify. See this](https://github.com/pine64/bl602-docs/tree/main/hardware_notes#rf-ip)
 
 [More about the BL602 WiFi Controller](https://github.com/pine64/bl602-docs/tree/main/hardware_notes)
 
