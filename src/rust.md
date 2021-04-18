@@ -16,6 +16,8 @@ _PineCone BL602 RISC-V Board_
 
 TODO
 
+![Rust on BL602 IoT SDK](https://lupyuen.github.io/images/rust-arch.png)
+
 From [`rust/src/lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L1-L8)
 
 ```rust
