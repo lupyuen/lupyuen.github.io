@@ -16,8 +16,6 @@ _PineCone BL602 RISC-V Board_
 
 TODO
 
-![Rust on BL602 IoT SDK](https://lupyuen.github.io/images/rust-arch.png)
-
 From [`rust/src/lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L1-L8)
 
 ```rust
@@ -156,10 +154,19 @@ From [`rust/src/lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/custome
 type String = heapless::String::<heapless::consts::U64>;
 ```
 
-```rust
-```
+# Rust on BL602 IoT SDK
 
-# BL602 Firmware Build Script
+TODO
+
+![Rust on BL602 IoT SDK](https://lupyuen.github.io/images/rust-arch.png)
+
+Strictly speaking this isn't Embedded Rust, because we're not running Rust directly on Bare Metal (BL602 Hardware). 
+
+Instead we're running Rust on top of an Embedded Operating System (BL602 IoT SDK + FreeRTOS). It's similar to running Rust on Linux / macOS / Windows.
+
+We'll talk later about Embedded Rust on Bare Metal BL602.
+
+# Build the BL602 Rust Firmware
 
 TODO
 
@@ -305,6 +312,14 @@ Hello from Rust!
 # rust_main
 Hello from Rust!
 ```
+
+# Rust On BL602: Two More Ways
+
+TODO
+
+bl602 hal
+
+rust boot wrappers
 
 # TODO
 
