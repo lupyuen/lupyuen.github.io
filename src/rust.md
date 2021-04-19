@@ -20,7 +20,7 @@ _PineCone BL602 RISC-V Board_
 
 # BL602 Blinky in C
 
-Before we do Rust, let's look at the C code that blinks the LED on BL602 (by toggling the GPIO output): [`sdk_app_blinky/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_blinky/sdk_app_blinky/demo.c)
+Before we do Rust, let's look at the C code that blinks the LED on BL602 (by toggling the GPIO output): [`sdk_app_blinky/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_blinky/sdk_app_blinky/demo.c)
 
 ```c
 #include <bl_gpio.h>     //  For BL602 GPIO Hardware Abstraction Layer
@@ -98,7 +98,7 @@ First we tell the Rust Compiler to use the __Rust Core Library__.
 
 We import `PanicInfo` and `FromStr` to handle Errors and String Conversion. (We'll see later)
 
-Our Rust Blinky Function looks similar to the C version: [`rust/src/lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L10-L44)
+Our Rust Blinky Function looks similar to the C version: [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L10-L44)
 
 ```rust
 /// `rust_main` will be called by the BL602 command-line interface
@@ -152,7 +152,7 @@ The rest of the Rust function looks similar to C...
 
 (Yep the `for` loop looks a little different in Rust)
 
-For Embedded Rust we need to include a __Panic Handler__ that will handle errors (like Expect / Assertion Failures): [`rust/src/lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L46-L57)
+For Embedded Rust we need to include a __Panic Handler__ that will handle errors (like Expect / Assertion Failures): [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L46-L57)
 
 ```rust
 /// This function is called on panic, like an assertion failure
@@ -177,19 +177,29 @@ Here's our code switching from C to Rust so far...
 
 # Import BL602 IoT SDK into Rust
 
-TODO
+As we import the functions from BL602 IoT SDK into Rust, let's create __Wrapper Functions__ that will expose a cleaner, neater interface to our Rust callers.
 
-From [`rust/src/lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L118-L141)
+We start with __`bl_gpio_output_set`__, the function from BL602 GPIO HAL (Hardware Abstraction Layer) that sets the GPIO Pin output: [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L118-L141)
 
 ```rust
 /// Set the GPIO pin output to high or low.
-/// TODO: Auto-generate this wrapper with `bindgen` from the C declaration:
-/// `int bl_gpio_output_set(uint8_t pin, uint8_t value)`
 fn bl_gpio_output_set(
     pin:   u8,  //  GPIO pin number (uint8_t)
     value: u8   //  0 for low, 1 to high
 ) -> Result<(), i32> {  //  Returns an error code (int)
 ```
+
+_The C version of `bl_gpio_output_set` returns an `int` result code (0 for success, non-zero for error)..._
+
+_Why does the Rust version return `Result<(),i32>`?_
+
+Because __`Result<...>`__ lets us return a meaningful result to our Rust caller...
+
+-   __`Ok`:__ For success
+
+-   __`Err`:__ For error code
+
+This makes the error handling easier (with `expect`). We'll see the returned result in a while.
 
 TODO
 
@@ -220,9 +230,11 @@ TODO
 }
 ```
 
+## Pass Strings from Rust to C
+
 TODO
 
-From [`rust/src/lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L64-L90)
+From [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L64-L90)
 
 ```rust
 /// Print a message to the serial console.
@@ -263,6 +275,10 @@ From [`rust/src/lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/custome
 /// Limit Strings to 64 chars, similar to `char[64]` in C
 type String = heapless::String::<heapless::consts::U64>;
 ```
+
+TODO
+
+Autogenerate
 
 # Rust on BL602 IoT SDK
 
