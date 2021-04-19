@@ -20,7 +20,7 @@ _PineCone BL602 RISC-V Board_
 
 # BL602 Blinky in C
 
-Before we do Rust, let's look at this C code that blinks the LED on BL602 (by toggling the GPIO output): [`sdk_app_blinky/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_blinky/sdk_app_blinky/demo.c)
+Before we do Rust, let's look at the C code that blinks the LED on BL602 (by toggling the GPIO output): [`sdk_app_blinky/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_blinky/sdk_app_blinky/demo.c)
 
 ```c
 #include <bl_gpio.h>     //  For BL602 GPIO Hardware Abstraction Layer
@@ -63,7 +63,19 @@ void blinky(char *buf, int len, int argc, char **argv) {
 }
 ```
 
-TODO
+Here we call two __GPIO Functions__ from the BL602 IoT SDK (specifically, the BL602 __GPIO Hardware Abstraction Layer__)...
+
+-   __`bl_gpio_enable_output`__: Configure a GPIO Pin for output (instead of input)
+
+-   __`bl_gpio_output_set`__: Set the GPIO Pin output to high or low
+
+Instead of calling the __Multitasking Functions__ in FreeRTOS, we call the __NimBLE Porting Layer__ (which wraps FreeRTOS into a simpler API)...
+
+-   __`time_delay`__: Put the current FreeRTOS task to sleep (for a number of system ticks)
+
+-   __`time_ms_to_ticks32`__: Convert milliseconds to FreeRTOS system ticks
+
+Now let's code-switch to Rust.
 
 # BL602 Blinky in Rust
 
