@@ -65,9 +65,9 @@
 
     <h1 class="title">Run Rust RISC-V Firmware with BL602 IoT SDK</h1>
     <nav id="TOC"><ul>
-<li><a href="#todo">1 TODO</a><ul></ul></li>
-<li><a href="#bl602-blinky-in-c">2 BL602 Blinky in C</a><ul></ul></li>
-<li><a href="#bl602-blinky-in-rust">3 BL602 Blinky in Rust</a><ul></ul></li>
+<li><a href="#bl602-blinky-in-c">1 BL602 Blinky in C</a><ul></ul></li>
+<li><a href="#bl602-blinky-in-rust">2 BL602 Blinky in Rust</a><ul></ul></li>
+<li><a href="#import-bl602-iot-sdk-into-rust">3 Import BL602 IoT SDK into Rust</a><ul></ul></li>
 <li><a href="#rust-on-bl602-iot-sdk">4 Rust on BL602 IoT SDK</a><ul></ul></li>
 <li><a href="#build-the-bl602-rust-firmware">5 Build the BL602 Rust Firmware</a><ul></ul></li>
 <li><a href="#run-the-bl602-rust-firmware">6 Run the BL602 Rust Firmware</a><ul></ul></li>
@@ -75,27 +75,17 @@
 <li><a href="#custom-rust-target-for-bl602">8 Custom Rust Target for BL602</a><ul></ul></li>
 <li><a href="#rust-on-bl602-two-more-ways">9 Rust On BL602: Two More Ways</a><ul></ul></li>
 <li><a href="#apache-nuttx-on-bl602">10 Apache NuttX on BL602</a><ul></ul></li>
-<li><a href="#whats-next">11 What's Next</a><ul></ul></li>
-<li><a href="#notes">12 Notes</a><ul></ul></li></ul></nav><p>📝 <em>22 Apr 2021</em></p>
+<li><a href="#todo">11 TODO</a><ul></ul></li>
+<li><a href="#whats-next">12 What's Next</a><ul></ul></li>
+<li><a href="#notes">13 Notes</a><ul></ul></li></ul></nav><p>📝 <em>22 Apr 2021</em></p>
 <p>TODO</p>
 <p>Today we won't be talking about the merits (and demerits) of Embedded Rust, we'll save that for the future.</p>
 <p>But if you have the tiniest interest in coding Rust firmware for BL602... Then read on!</p>
 <p><img src="https://lupyuen.github.io/images/rust-title.jpg" alt="PineCone BL602 RISC-V Board" /></p>
 <p><em>PineCone BL602 RISC-V Board</em></p>
-<h1 id="todo" class="section-header"><a href="#todo">1 TODO</a></h1>
-<p>NuttX also</p>
-<p>The Flash Problem</p>
-<p>The HAL Problem</p>
-<p>Magical Unicorns inside</p>
-<p>Battle tested
-Lora
-Ported in a few days
-MagicHome
-It works
-Including multitasking and Interrupts, dma</p>
-<h1 id="bl602-blinky-in-c" class="section-header"><a href="#bl602-blinky-in-c">2 BL602 Blinky in C</a></h1>
+<h1 id="bl602-blinky-in-c" class="section-header"><a href="#bl602-blinky-in-c">1 BL602 Blinky in C</a></h1>
 <p>TODO</p>
-<h1 id="bl602-blinky-in-rust" class="section-header"><a href="#bl602-blinky-in-rust">3 BL602 Blinky in Rust</a></h1>
+<h1 id="bl602-blinky-in-rust" class="section-header"><a href="#bl602-blinky-in-rust">2 BL602 Blinky in Rust</a></h1>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L1-L8"><code>rust/src/lib.rs</code></a></p>
 
@@ -161,6 +151,8 @@ Including multitasking and Interrupts, dma</p>
 	<span class="comment">//  Loop forever, do not pass go, do not collect $200</span>
     <span class="kw">loop</span> {}
 }</pre></div>
+<h1 id="import-bl602-iot-sdk-into-rust" class="section-header"><a href="#import-bl602-iot-sdk-into-rust">3 Import BL602 IoT SDK into Rust</a></h1>
+<p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L64-L90"><code>rust/src/lib.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
@@ -191,6 +183,11 @@ Including multitasking and Interrupts, dma</p>
 
     <span class="comment">//  No semicolon `;` here, so the value returned by the C function will be passed to our caller</span>
 }</pre></div>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L179-L180"><code>rust/src/lib.rs</code></a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="doccomment">/// Limit Strings to 64 chars, similar to `char[64]` in C</span>
+<span class="kw">type</span> <span class="ident">String</span> <span class="op">=</span> <span class="ident">heapless</span>::<span class="ident">String</span>::<span class="op">&lt;</span><span class="ident">heapless</span>::<span class="ident">consts</span>::<span class="ident">U64</span><span class="op">&gt;</span>;</pre></div>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L118-L141"><code>rust/src/lib.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
@@ -218,11 +215,6 @@ Including multitasking and Interrupts, dma</p>
         <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">res</span>)  <span class="comment">//  Else return the result code as an error</span>
     }
 }</pre></div>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L179-L180"><code>rust/src/lib.rs</code></a></p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="doccomment">/// Limit Strings to 64 chars, similar to `char[64]` in C</span>
-<span class="kw">type</span> <span class="ident">String</span> <span class="op">=</span> <span class="ident">heapless</span>::<span class="ident">String</span>::<span class="op">&lt;</span><span class="ident">heapless</span>::<span class="ident">consts</span>::<span class="ident">U64</span><span class="op">&gt;</span>;</pre></div>
 <h1 id="rust-on-bl602-iot-sdk" class="section-header"><a href="#rust-on-bl602-iot-sdk">4 Rust on BL602 IoT SDK</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/rust-arch.png" alt="Rust on BL602 IoT SDK" /></p>
@@ -356,6 +348,7 @@ Hello from Rust!
 <p>TODO</p>
 <pre><code class="language-bash">rustc --print target-list
 </code></pre>
+<p><a href="https://docs.rust-embedded.org/embedonomicon/compiler-support.html#built-in-target">Built-In Rust Target</a></p>
 <p>TODO</p>
 <pre><code class="language-text">riscv32gc-unknown-linux-gnu
 riscv32gc-unknown-linux-musl
@@ -375,27 +368,28 @@ riscv64imac-unknown-none-elf
 <p>riscv32-imacfx</p>
 <pre><code class="language-bash">gcc -march=rv32imfc -mabi=ilp32f ...
 </code></pre>
-<p>https://docs.rust-embedded.org/embedonomicon/compiler-support.html#built-in-target</p>
-<p>https://docs.rust-embedded.org/embedonomicon/custom-target.html</p>
 <h1 id="custom-rust-target-for-bl602" class="section-header"><a href="#custom-rust-target-for-bl602">8 Custom Rust Target for BL602</a></h1>
 <p>TODO</p>
+<p><a href="https://docs.rust-embedded.org/embedonomicon/custom-target.html">Custom Rust Target</a></p>
+<p>Building with our Custom Rust Target...</p>
 <pre><code class="language-bash">cargo build \
     --target riscv32imacf-unknown-none-elf.json \
     -Z build-std=core
 </code></pre>
-<p>TODO</p>
+<p>Changes to the Built-In Rust Target...</p>
 <pre><code class="language-text">&quot;features&quot;: &quot;+m,+a,+c,+f&quot;,
 </code></pre>
-<p>TODO</p>
+<p>And</p>
 <pre><code class="language-text">&quot;llvm-abiname&quot;: &quot;ilp32f&quot;,
 </code></pre>
-<p>TODO</p>
+<p>Dumping the Built-In Rust Target...</p>
 <pre><code class="language-bash">rustc +nightly \
     -Z unstable-options \
     --print target-spec-json \
     --target riscv32imac-unknown-none-elf
 </code></pre>
-<p>https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/riscv32imac-unknown-none-elf.json</p>
+<p>This produces <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/riscv32imac-unknown-none-elf.json">riscv32imac-unknown-none-elf.json</a></p>
+<p>Here's our Custom Rust Target:</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/riscv32imacf-unknown-none-elf.json">From <code>riscv32imacf-unknown-none-elf.json</code></a></p>
 <pre><code class="language-json">{
   &quot;arch&quot;: &quot;riscv32&quot;,
@@ -438,12 +432,22 @@ riscv64imac-unknown-none-elf
 <p>rust boot wrappers</p>
 <h1 id="apache-nuttx-on-bl602" class="section-header"><a href="#apache-nuttx-on-bl602">10 Apache NuttX on BL602</a></h1>
 <p>TODO</p>
-<p>NuttX</p>
-<p>https://github.com/bouffalolab/incubator-nuttx/tree/master/arch/risc-v/src/bl602</p>
-<p>Rust on NuttX</p>
-<p>Mynewt</p>
-<p>Our Rust Program</p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">11 What's Next</a></h1>
+<p><a href="https://github.com/bouffalolab/incubator-nuttx/tree/master/arch/risc-v/src/bl602">NuttX on BL602</a></p>
+<p><a href="https://www.reddit.com/r/rust/comments/mbgujl/rust_integration_on_nuttx/">Rust on NuttX</a></p>
+<p><em>What about Rust on Apache Mynewt?</em></p>
+<p>TODO</p>
+<h1 id="todo" class="section-header"><a href="#todo">11 TODO</a></h1>
+<p>NuttX also</p>
+<p>The Flash Problem</p>
+<p>The HAL Problem</p>
+<p>Magical Unicorns inside</p>
+<p>Battle tested
+Lora
+Ported in a few days
+MagicHome
+It works
+Including multitasking and Interrupts, dma</p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">12 What's Next</a></h1>
 <p>TODO</p>
 <ul>
 <li>
@@ -461,7 +465,7 @@ riscv64imac-unknown-none-elf
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/rust.md"><code>lupyuen.github.io/src/rust.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">12 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">13 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1383219945308184578">this Twitter Thread</a></li>
 </ol>
