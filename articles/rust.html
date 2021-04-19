@@ -86,7 +86,7 @@
 <p><img src="https://lupyuen.github.io/images/rust-title.jpg" alt="PineCone BL602 RISC-V Board" /></p>
 <p><em>PineCone BL602 RISC-V Board</em></p>
 <h1 id="bl602-blinky-in-c" class="section-header"><a href="#bl602-blinky-in-c">1 BL602 Blinky in C</a></h1>
-<p>Before we do Rust, let's look at this C code that blinks the LED on BL602 (by toggling the GPIO output): <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_blinky/sdk_app_blinky/demo.c"><code>sdk_app_blinky/demo.c</code></a></p>
+<p>Before we do Rust, let's look at the C code that blinks the LED on BL602 (by toggling the GPIO output): <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_blinky/sdk_app_blinky/demo.c"><code>sdk_app_blinky/demo.c</code></a></p>
 <pre><code class="language-c">#include &lt;bl_gpio.h&gt;     //  For BL602 GPIO Hardware Abstraction Layer
 #include &quot;nimble_npl.h&quot;  //  For NimBLE Porting Layer (mulitasking functions)
 
@@ -126,7 +126,25 @@ void blinky(char *buf, int len, int argc, char **argv) {
     //  Return to the BL602 command-line interface
 }
 </code></pre>
-<p>TODO</p>
+<p>Here we call two <strong>GPIO Functions</strong> from the BL602 IoT SDK (specifically, the BL602 <strong>GPIO Hardware Abstraction Layer</strong>)...</p>
+<ul>
+<li>
+<p><strong><code>bl_gpio_enable_output</code></strong>: Configure a GPIO Pin for output (instead of input)</p>
+</li>
+<li>
+<p><strong><code>bl_gpio_output_set</code></strong>: Set the GPIO Pin output to high or low</p>
+</li>
+</ul>
+<p>Instead of calling the <strong>Multitasking Functions</strong> in FreeRTOS, we call the <strong>NimBLE Porting Layer</strong> (which wraps FreeRTOS into a simpler API)...</p>
+<ul>
+<li>
+<p><strong><code>time_delay</code></strong>: Put the current FreeRTOS task to sleep (for a number of system ticks)</p>
+</li>
+<li>
+<p><strong><code>time_ms_to_ticks32</code></strong>: Convert milliseconds to FreeRTOS system ticks</p>
+</li>
+</ul>
+<p>Now let's code-switch to Rust.</p>
 <h1 id="bl602-blinky-in-rust" class="section-header"><a href="#bl602-blinky-in-rust">2 BL602 Blinky in Rust</a></h1>
 <p>TODO</p>
 <p>Here's our BL602 Blinky Program, coded in Rust...</p>
