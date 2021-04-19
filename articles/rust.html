@@ -146,9 +146,7 @@ void blinky(char *buf, int len, int argc, char **argv) {
 </ul>
 <p>Now let's code-switch to Rust.</p>
 <h1 id="bl602-blinky-in-rust" class="section-header"><a href="#bl602-blinky-in-rust">2 BL602 Blinky in Rust</a></h1>
-<p>TODO</p>
-<p>Here's our BL602 Blinky Program, coded in Rust...</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L1-L8"><code>rust/src/lib.rs</code></a></p>
+<p>Here's our BL602 Blinky Firmware, coded in Rust: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L1-L8"><code>rust/src/lib.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="doccomment">//!  Main Rust Application for BL602 Firmware</span>
@@ -159,8 +157,10 @@ void blinky(char *buf, int len, int argc, char **argv) {
     <span class="ident">panic</span>::<span class="ident">PanicInfo</span>,  <span class="comment">//  For `PanicInfo` type used by `panic` function</span>
     <span class="ident">str</span>::<span class="ident">FromStr</span>,      <span class="comment">//  For converting `str` to `String`</span>
 };</pre></div>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L10-L44"><code>rust/src/lib.rs</code></a></p>
+<p>First we tell the Rust Compiler to use the <strong>Rust Core Library</strong>.</p>
+<p>(Instead of the Rust Standard Library, which is too heavy for microcontrollers)</p>
+<p>We import <code>PanicInfo</code> and <code>FromStr</code> to handle Errors and String Conversion. (We'll see later)</p>
+<p>Our Rust Blinky Function looks similar to the C version: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L10-L44"><code>rust/src/lib.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="doccomment">/// `rust_main` will be called by the BL602 command-line interface</span>
@@ -179,8 +179,22 @@ void blinky(char *buf, int len, int argc, char **argv) {
 
     <span class="comment">//  Configure the LED GPIO for output (instead of input)</span>
     <span class="ident">bl_gpio_enable_output</span>(<span class="ident">LED_GPIO</span>, <span class="number">0</span>, <span class="number">0</span>)      <span class="comment">//  No pullup, no pulldown</span>
-        .<span class="ident">expect</span>(<span class="string">&quot;GPIO enable output failed&quot;</span>);  <span class="comment">//  Halt on error</span>
+        .<span class="ident">expect</span>(<span class="string">&quot;GPIO enable output failed&quot;</span>);  <span class="comment">//  Halt on error</span></pre></div>
+<p>When <strong>code-switching from C to Rust</strong> we consciously...</p>
+<ol>
+<li>
+<p><strong>Rename the Types:</strong> &quot;<code>int</code>&quot; in C becomes &quot;<code>i32</code>&quot; in Rust (32-bit signed integer)</p>
+</li>
+<li>
+<p><strong>Flip the Declarations:</strong> &quot;<code>typename varname</code>&quot; in C becomes &quot;<code>varname: typename</code>&quot; in Rust</p>
+</li>
+<li>
+<p><strong>Change Assertions to Expect:</strong> &quot;<code>assert</code>&quot; in C becomes &quot;<code>expect</code>&quot; in Rust. (More about this later)</p>
+</li>
+</ol>
+<p>The rest of the Rust function looks similar to C...</p>
 
+<div class="example-wrap"><pre class="rust rust-example-rendered">
     <span class="comment">//  Blink the LED 5 times</span>
     <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="number">10</span> {  <span class="comment">//  Iterates 10 times from 0 to 9 (`..` excludes 10)</span>
 
@@ -198,8 +212,8 @@ void blinky(char *buf, int len, int argc, char **argv) {
 
     <span class="comment">//  Return to the BL602 command-line interface</span>
 }</pre></div>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L46-L57"><code>rust/src/lib.rs</code></a></p>
+<p>(Yep the <code>for</code> loop looks a little different in Rust)</p>
+<p>For Embedded Rust we need to include a <strong>Panic Handler</strong> that will handle errors (like Expect / Assertion Failures): <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L46-L57"><code>rust/src/lib.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="doccomment">/// This function is called on panic, like an assertion failure</span>
@@ -214,7 +228,9 @@ void blinky(char *buf, int len, int argc, char **argv) {
 	<span class="comment">//  Loop forever, do not pass go, do not collect $200</span>
     <span class="kw">loop</span> {}
 }</pre></div>
-<p>TODO</p>
+<p>We're not done with Rust yet! Let's find out how we import the BL602 IoT SDK (and NimBLE Porting Library) into Rust.</p>
+<p>Here's our code switching from C to Rust so far...</p>
+<p><img src="https://lupyuen.github.io/images/rust-codeswitch.png" alt="Code Switching from C to Rust" /></p>
 <h1 id="import-bl602-iot-sdk-into-rust" class="section-header"><a href="#import-bl602-iot-sdk-into-rust">3 Import BL602 IoT SDK into Rust</a></h1>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L64-L90"><code>rust/src/lib.rs</code></a></p>
