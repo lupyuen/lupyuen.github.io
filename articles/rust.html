@@ -233,6 +233,40 @@ void blinky(char *buf, int len, int argc, char **argv) {
 <p><img src="https://lupyuen.github.io/images/rust-codeswitch.png" alt="Code Switching from C to Rust" /></p>
 <h1 id="import-bl602-iot-sdk-into-rust" class="section-header"><a href="#import-bl602-iot-sdk-into-rust">3 Import BL602 IoT SDK into Rust</a></h1>
 <p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L118-L141"><code>rust/src/lib.rs</code></a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="doccomment">/// Set the GPIO pin output to high or low.</span>
+<span class="doccomment">/// TODO: Auto-generate this wrapper with `bindgen` from the C declaration:</span>
+<span class="doccomment">/// `int bl_gpio_output_set(uint8_t pin, uint8_t value)`</span>
+<span class="kw">fn</span> <span class="ident">bl_gpio_output_set</span>(
+    <span class="ident">pin</span>:   <span class="ident">u8</span>,  <span class="comment">//  GPIO pin number (uint8_t)</span>
+    <span class="ident">value</span>: <span class="ident">u8</span>   <span class="comment">//  0 for low, 1 to high</span>
+) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">i32</span><span class="op">&gt;</span> {  <span class="comment">//  Returns an error code (int)</span></pre></div>
+<p>TODO</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+    <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {        <span class="comment">//  Import C Function</span>
+        <span class="doccomment">/// Set the GPIO pin output to high or low (from BL602 GPIO HAL)</span>
+        <span class="kw">fn</span> <span class="ident">bl_gpio_output_set</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">value</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span>;
+    }</pre></div>
+<p>TODO</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+    <span class="comment">//  Call the C function</span>
+    <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="kw">unsafe</span> {  <span class="comment">//  Flag this code as unsafe because we&#39;re calling a C function</span>
+        <span class="ident">bl_gpio_output_set</span>(<span class="ident">pin</span>, <span class="ident">value</span>)
+    };</pre></div>
+<p>TODO</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+    <span class="comment">//  Check the result code</span>
+    <span class="kw">match</span> <span class="ident">res</span> {
+        <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(()),   <span class="comment">//  If no error, return OK</span>
+        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">res</span>)  <span class="comment">//  Else return the result code as an error</span>
+    }
+}</pre></div>
+<p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L64-L90"><code>rust/src/lib.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
@@ -269,33 +303,6 @@ void blinky(char *buf, int len, int argc, char **argv) {
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="doccomment">/// Limit Strings to 64 chars, similar to `char[64]` in C</span>
 <span class="kw">type</span> <span class="ident">String</span> <span class="op">=</span> <span class="ident">heapless</span>::<span class="ident">String</span>::<span class="op">&lt;</span><span class="ident">heapless</span>::<span class="ident">consts</span>::<span class="ident">U64</span><span class="op">&gt;</span>;</pre></div>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L118-L141"><code>rust/src/lib.rs</code></a></p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="doccomment">/// Set the GPIO pin output to high or low.</span>
-<span class="doccomment">/// TODO: Auto-generate this wrapper with `bindgen` from the C declaration:</span>
-<span class="doccomment">/// `int bl_gpio_output_set(uint8_t pin, uint8_t value)`</span>
-<span class="kw">fn</span> <span class="ident">bl_gpio_output_set</span>(
-    <span class="ident">pin</span>:   <span class="ident">u8</span>,  <span class="comment">//  GPIO pin number (uint8_t)</span>
-    <span class="ident">value</span>: <span class="ident">u8</span>   <span class="comment">//  0 for low, 1 to high</span>
-) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">i32</span><span class="op">&gt;</span> {  <span class="comment">//  Returns an error code (int)</span>
-
-    <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {        <span class="comment">//  Import C Function</span>
-        <span class="doccomment">/// Set the GPIO pin output to high or low (from BL602 GPIO HAL)</span>
-        <span class="kw">fn</span> <span class="ident">bl_gpio_output_set</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">value</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span>;
-    }
-
-    <span class="comment">//  Call the C function</span>
-    <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="kw">unsafe</span> {  <span class="comment">//  Flag this code as unsafe because we&#39;re calling a C function</span>
-        <span class="ident">bl_gpio_output_set</span>(<span class="ident">pin</span>, <span class="ident">value</span>)
-    };
-
-    <span class="comment">//  Check the result code</span>
-    <span class="kw">match</span> <span class="ident">res</span> {
-        <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(()),   <span class="comment">//  If no error, return OK</span>
-        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">res</span>)  <span class="comment">//  Else return the result code as an error</span>
-    }
-}</pre></div>
 <h1 id="rust-on-bl602-iot-sdk" class="section-header"><a href="#rust-on-bl602-iot-sdk">4 Rust on BL602 IoT SDK</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/rust-arch.png" alt="Rust on BL602 IoT SDK" /></p>
