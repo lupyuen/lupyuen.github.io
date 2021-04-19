@@ -12,23 +12,6 @@ But if you have the tiniest interest in coding Rust firmware for BL602... Then r
 
 _PineCone BL602 RISC-V Board_
 
-# TODO
-
-NuttX also
-
-The Flash Problem
-
-The HAL Problem
-
-Magical Unicorns inside
-
-Battle tested
-Lora
-Ported in a few days
-MagicHome
-It works
-Including multitasking and Interrupts, dma
-
 # BL602 Blinky in C
 
 TODO
@@ -107,6 +90,10 @@ fn panic(_info: &PanicInfo) -> ! {  //  `!` means that panic handler will never 
 }
 ````
 
+# Import BL602 IoT SDK into Rust
+
+TODO
+
 From [`rust/src/lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L64-L90)
 
 ```rust
@@ -139,6 +126,13 @@ fn puts(s: &str) -> i32 {  //  `&str` is a reference to a string slice, similar 
 }
 ```
 
+From [`rust/src/lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L179-L180)
+
+```rust
+/// Limit Strings to 64 chars, similar to `char[64]` in C
+type String = heapless::String::<heapless::consts::U64>;
+```
+
 From [`rust/src/lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L118-L141)
 
 ```rust
@@ -166,13 +160,6 @@ fn bl_gpio_output_set(
         _ => Err(res)  //  Else return the result code as an error
     }
 }
-```
-
-From [`rust/src/lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L179-L180)
-
-```rust
-/// Limit Strings to 64 chars, similar to `char[64]` in C
-type String = heapless::String::<heapless::consts::U64>;
 ```
 
 # Rust on BL602 IoT SDK
@@ -357,6 +344,8 @@ TODO
 rustc --print target-list
 ```
 
+[Built-In Rust Target](https://docs.rust-embedded.org/embedonomicon/compiler-support.html#built-in-target)
+
 TODO
 
 ```text
@@ -387,13 +376,14 @@ riscv32-imacfx
 gcc -march=rv32imfc -mabi=ilp32f ...
 ```
 
-https://docs.rust-embedded.org/embedonomicon/compiler-support.html#built-in-target
-
-https://docs.rust-embedded.org/embedonomicon/custom-target.html
-
 # Custom Rust Target for BL602
 
 TODO
+
+[Custom Rust Target](https://docs.rust-embedded.org/embedonomicon/custom-target.html)
+
+
+Building with our Custom Rust Target...
 
 ```bash
 cargo build \
@@ -401,19 +391,19 @@ cargo build \
     -Z build-std=core
 ```
 
-TODO
+Changes to the Built-In Rust Target...
 
 ```text
 "features": "+m,+a,+c,+f",
 ```
 
-TODO
+And
 
 ```text
 "llvm-abiname": "ilp32f",
 ```
 
-TODO
+Dumping the Built-In Rust Target...
 
 ```bash
 rustc +nightly \
@@ -422,7 +412,9 @@ rustc +nightly \
     --target riscv32imac-unknown-none-elf
 ```
 
-https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/riscv32imac-unknown-none-elf.json
+This produces [riscv32imac-unknown-none-elf.json](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/riscv32imac-unknown-none-elf.json)
+
+Here's our Custom Rust Target:
 
 [From `riscv32imacf-unknown-none-elf.json`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/riscv32imacf-unknown-none-elf.json)
 
@@ -475,15 +467,30 @@ rust boot wrappers
 
 TODO
 
-NuttX
+[NuttX on BL602](https://github.com/bouffalolab/incubator-nuttx/tree/master/arch/risc-v/src/bl602)
 
-https://github.com/bouffalolab/incubator-nuttx/tree/master/arch/risc-v/src/bl602
+[Rust on NuttX](https://www.reddit.com/r/rust/comments/mbgujl/rust_integration_on_nuttx/)
 
-Rust on NuttX
+_What about Rust on Apache Mynewt?_
 
-Mynewt
+TODO
 
-Our Rust Program
+# TODO
+
+NuttX also
+
+The Flash Problem
+
+The HAL Problem
+
+Magical Unicorns inside
+
+Battle tested
+Lora
+Ported in a few days
+MagicHome
+It works
+Including multitasking and Interrupts, dma
 
 # What's Next
 
