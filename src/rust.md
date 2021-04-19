@@ -79,11 +79,7 @@ Now let's code-switch to Rust.
 
 # BL602 Blinky in Rust
 
-TODO
-
-Here's our BL602 Blinky Program, coded in Rust...
-
-From [`rust/src/lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L1-L8)
+Here's our BL602 Blinky Firmware, coded in Rust: [`rust/src/lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L1-L8)
 
 ```rust
 //!  Main Rust Application for BL602 Firmware
@@ -96,9 +92,13 @@ use core::{
 };
 ```
 
-TODO
+First we tell the Rust Compiler to use the __Rust Core Library__.
 
-From [`rust/src/lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L10-L44)
+(Instead of the Rust Standard Library, which is too heavy for microcontrollers)
+
+We import `PanicInfo` and `FromStr` to handle Errors and String Conversion. (We'll see later)
+
+Our Rust Blinky Function looks similar to the C version: [`rust/src/lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L10-L44)
 
 ```rust
 /// `rust_main` will be called by the BL602 command-line interface
@@ -118,7 +118,19 @@ extern "C" fn rust_main(  //  Declare `extern "C"` because it will be called by 
     //  Configure the LED GPIO for output (instead of input)
     bl_gpio_enable_output(LED_GPIO, 0, 0)      //  No pullup, no pulldown
         .expect("GPIO enable output failed");  //  Halt on error
+```
 
+When __code-switching from C to Rust__ we consciously...
+
+1.  __Rename the Types:__ "`int`" in C becomes "`i32`" in Rust (32-bit signed integer)
+
+1.  __Flip the Declarations:__ "`typename varname`" in C becomes "`varname: typename`" in Rust
+
+1.  __Change Assertions to Expect:__ "`assert`" in C becomes "`expect`" in Rust. (More about this later)
+
+The rest of the Rust function looks similar to C...
+
+```rust
     //  Blink the LED 5 times
     for i in 0..10 {  //  Iterates 10 times from 0 to 9 (`..` excludes 10)
 
@@ -138,9 +150,9 @@ extern "C" fn rust_main(  //  Declare `extern "C"` because it will be called by 
 }
 ```
 
-TODO
+(Yep the `for` loop looks a little different in Rust)
 
-From [`rust/src/lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L46-L57)
+For Embedded Rust we need to include a __Panic Handler__ that will handle errors (like Expect / Assertion Failures): [`rust/src/lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L46-L57)
 
 ```rust
 /// This function is called on panic, like an assertion failure
@@ -155,9 +167,13 @@ fn panic(_info: &PanicInfo) -> ! {  //  `!` means that panic handler will never 
 	//  Loop forever, do not pass go, do not collect $200
     loop {}
 }
-````
+```
 
-TODO
+We're not done with Rust yet! Let's find out how we import the BL602 IoT SDK (and NimBLE Porting Library) into Rust.
+
+Here's our code switching from C to Rust so far...
+
+![Code Switching from C to Rust](https://lupyuen.github.io/images/rust-codeswitch.png)
 
 # Import BL602 IoT SDK into Rust
 
