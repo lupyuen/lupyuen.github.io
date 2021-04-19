@@ -8,7 +8,7 @@ _Can we do this in Rust? (Instead of C)_
 
 _And flash our Rust firmware to BL602 over UART? (Instead of JTAG)_
 
-Let's run some Rust code on top of BL602 IoT SDK, and understand why that's possible.
+Let's run some Rust code on top of BL602 IoT SDK, and understand how that's possible.
 
 Today we won't be talking about the merits (and demerits) of Embedded Rust, we'll save that for the future.
 
@@ -26,6 +26,8 @@ TODO
 
 TODO
 
+Here's our BL602 Blinky Program, coded in Rust...
+
 From [`rust/src/lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L1-L8)
 
 ```rust
@@ -38,6 +40,8 @@ use core::{
     str::FromStr,      //  For converting `str` to `String`
 };
 ```
+
+TODO
 
 From [`rust/src/lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L10-L44)
 
@@ -79,6 +83,8 @@ extern "C" fn rust_main(  //  Declare `extern "C"` because it will be called by 
 }
 ```
 
+TODO
+
 From [`rust/src/lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L46-L57)
 
 ```rust
@@ -95,6 +101,8 @@ fn panic(_info: &PanicInfo) -> ! {  //  `!` means that panic handler will never 
     loop {}
 }
 ````
+
+TODO
 
 # Import BL602 IoT SDK into Rust
 
@@ -131,6 +139,9 @@ fn puts(s: &str) -> i32 {  //  `&str` is a reference to a string slice, similar 
     //  No semicolon `;` here, so the value returned by the C function will be passed to our caller
 }
 ```
+
+TODO
+
 
 From [`rust/src/lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L179-L180)
 
@@ -213,6 +224,8 @@ rust_build_target=$PWD/riscv32imacf-unknown-none-elf.json
 rust_build_target_folder=riscv32imacf-unknown-none-elf
 ```
 
+TODO
+
 From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L61-L71)
 
 ```bash
@@ -229,12 +242,17 @@ if [ -e $rust_app_build ]; then
 fi
 ```
 
+TODO
+
 From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L77-L78)
 
 ```bash
 #  Build the firmware with the Stub Library
 make
 ```
+
+TODO
+
 
 From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L84-L88)
 
@@ -254,6 +272,8 @@ cargo build \
     -Z build-std=core
 ```
 
+TODO
+
 From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L90-L94)
 
 ```bash
@@ -264,12 +284,18 @@ ls -l $rust_app_build
 cp $rust_app_build $rust_app_dest
 ```
 
+TODO
+
+
 From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L100-L101)
 
 ```bash
 #  Link the Rust Library to the firmware
 make
 ```
+
+TODO
+
 
 From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L110-L124)
 
@@ -286,6 +312,8 @@ cargo run flash $APP_NAME.bin \
 sleep 5
 popd
 ```
+
+TODO
 
 From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L130-L131)
 
@@ -465,9 +493,11 @@ Here's our Custom Rust Target:
 
 TODO
 
-bl602 hal
+[`sipeed/bl602-rust-guide`](https://github.com/sipeed/bl602-rust-guide)
 
-rust boot wrappers
+[`9names/bl602-rust-example`](https://github.com/9names/bl602-rust-example)
+
+[`9names/bl602-rom-wrapper`](https://github.com/9names/bl602-rom-wrapper)
 
 # Apache NuttX on BL602
 
@@ -480,23 +510,6 @@ TODO
 _What about Rust on Apache Mynewt?_
 
 TODO
-
-# TODO
-
-NuttX also
-
-The Flash Problem
-
-The HAL Problem
-
-Magical Unicorns inside
-
-Battle tested
-Lora
-Ported in a few days
-MagicHome
-It works
-Including multitasking and Interrupts, dma
 
 # What's Next
 
