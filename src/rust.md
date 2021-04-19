@@ -2,7 +2,13 @@
 
 📝 _22 Apr 2021_
 
-TODO
+In the past 14 articles we've done so much with BL602 IoT SDK: LoRa wireless transceivers, SPI LCD displays, UART e-ink displays, I2C sensors, ...
+
+_Can we do this in Rust? (Instead of C)_
+
+_And flash our Rust firmware to BL602 over UART? (Instead of JTAG)_
+
+Let's run some Rust code on top of BL602 IoT SDK, and understand why that's possible.
 
 Today we won't be talking about the merits (and demerits) of Embedded Rust, we'll save that for the future.
 
