@@ -20,6 +20,49 @@ _PineCone BL602 RISC-V Board_
 
 # BL602 Blinky in C
 
+Before we do Rust, let's look at this C code that blinks the LED on BL602 (by toggling the GPIO output): [`sdk_app_blinky/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_blinky/sdk_app_blinky/demo.c)
+
+```c
+#include <bl_gpio.h>     //  For BL602 GPIO Hardware Abstraction Layer
+#include "nimble_npl.h"  //  For NimBLE Porting Layer (mulitasking functions)
+
+/// PineCone Blue LED is connected on BL602 GPIO 11
+/// TODO: Change the LED GPIO Pin Number for your BL602 board
+#define LED_GPIO 11
+
+/// Blink the BL602 LED
+void blinky(char *buf, int len, int argc, char **argv) {
+    //  Show a message on the serial console
+    puts("Hello from Blinky!");
+
+    //  Configure the LED GPIO for output (instead of input)
+    int rc = bl_gpio_enable_output(
+        LED_GPIO,  //  GPIO pin number
+        0,         //  No GPIO pullup
+        0          //  No GPIO pulldown
+    );
+    assert(rc == 0);  //  Halt on error
+
+    //  Blink the LED 5 times
+    for (int i = 0; i < 10; i++) {
+
+        //  Toggle the LED GPIO between 0 (on) and 1 (off)
+        rc = bl_gpio_output_set(  //  Set the GPIO output (from BL602 GPIO HAL)
+            LED_GPIO,             //  GPIO pin number
+            i % 2                 //  0 for low, 1 for high
+        );
+        assert(rc == 0);  //  Halt on error
+
+        //  Sleep 1 second
+        time_delay(                   //  Sleep by number of ticks (from NimBLE Porting Layer)
+            time_ms_to_ticks32(1000)  //  Convert 1,000 milliseconds to ticks (from NimBLE Porting Layer)
+        );
+    }
+
+    //  Return to the BL602 command-line interface
+}
+```
+
 TODO
 
 # BL602 Blinky in Rust
