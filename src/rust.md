@@ -12,6 +12,27 @@ But if you have the tiniest interest in coding Rust firmware for BL602... Then r
 
 _PineCone BL602 RISC-V Board_
 
+# TODO
+
+NuttX also
+
+The Flash Problem
+
+The HAL Problem
+
+Magical Unicorns inside
+
+Battle tested
+Lora
+Ported in a few days
+MagicHome
+It works
+Including multitasking and Interrupts, dma
+
+# BL602 Blinky in C
+
+TODO
+
 # BL602 Blinky in Rust
 
 TODO
@@ -232,6 +253,14 @@ cargo build $rust_build_options
 popd
 ```
 
+TODO
+
+```bash
+cargo build \
+    --target riscv32imacf-unknown-none-elf.json \
+    -Z build-std=core
+```
+
 From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L90-L94)
 
 ```bash
@@ -313,6 +342,76 @@ Hello from Rust!
 Hello from Rust!
 ```
 
+# Custom Rust Target for BL602
+
+TODO
+
+```bash
+cargo build
+    --target riscv32imac-unknown-none-elf
+```
+
+TODO
+
+```bash
+cargo build \
+    --target riscv32imacf-unknown-none-elf.json \
+    -Z build-std=core
+```
+
+TODO
+
+```text
+"features": "+m,+a,+c,+f",
+```
+
+TODO
+
+```text
+"llvm-abiname": "ilp32f",
+```
+
+TODO
+
+[From `riscv32imacf-unknown-none-elf.json`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/riscv32imacf-unknown-none-elf.json)
+
+```json
+{
+  "arch": "riscv32",
+  "cpu": "generic-rv32",
+  "data-layout": "e-m:e-p:32:32-i64:64-n32-S128",
+  "eh-frame-header": false,
+  "emit-debug-gdb-scripts": false,
+  "executables": true,
+  "features": "+m,+a,+c,+f",
+  "is-builtin": true,
+  "linker": "rust-lld",
+  "linker-flavor": "ld.lld",
+  "llvm-abiname": "ilp32f",
+  "llvm-target": "riscv32",
+  "max-atomic-width": 32,
+  "panic-strategy": "abort",
+  "relocation-model": "static",
+  "target-pointer-width": "32",
+  "unsupported-abis": [
+    "cdecl",
+    "stdcall",
+    "stdcall-unwind",
+    "fastcall",
+    "vectorcall",
+    "thiscall",
+    "thiscall-unwind",
+    "aapcs",
+    "win64",
+    "sysv64",
+    "ptx-kernel",
+    "msp430-interrupt",
+    "x86-interrupt",
+    "amdgpu-kernel"
+  ]
+}
+```
+
 # Rust On BL602: Two More Ways
 
 TODO
@@ -321,22 +420,9 @@ bl602 hal
 
 rust boot wrappers
 
-# TODO
+# Apache NuttX on BL602
 
-NuttX also
-
-The Flash Problem
-
-The HAL Problem
-
-Magical Unicorns inside
-
-Battle tested
-Lora
-Ported in a few days
-MagicHome
-It works
-Including multitasking and Interrupts, dma
+TODO
 
 NuttX
 
