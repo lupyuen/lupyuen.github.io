@@ -179,6 +179,49 @@ Here's our code switching from C to Rust so far...
 
 TODO
 
+From [`rust/src/lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L118-L141)
+
+```rust
+/// Set the GPIO pin output to high or low.
+/// TODO: Auto-generate this wrapper with `bindgen` from the C declaration:
+/// `int bl_gpio_output_set(uint8_t pin, uint8_t value)`
+fn bl_gpio_output_set(
+    pin:   u8,  //  GPIO pin number (uint8_t)
+    value: u8   //  0 for low, 1 to high
+) -> Result<(), i32> {  //  Returns an error code (int)
+```
+
+TODO
+
+```rust
+    extern "C" {        //  Import C Function
+        /// Set the GPIO pin output to high or low (from BL602 GPIO HAL)
+        fn bl_gpio_output_set(pin: u8, value: u8) -> i32;
+    }
+```
+
+TODO
+
+```rust
+    //  Call the C function
+    let res = unsafe {  //  Flag this code as unsafe because we're calling a C function
+        bl_gpio_output_set(pin, value)
+    };
+```
+
+TODO
+
+```rust
+    //  Check the result code
+    match res {
+        0 => Ok(()),   //  If no error, return OK
+        _ => Err(res)  //  Else return the result code as an error
+    }
+}
+```
+
+TODO
+
 From [`rust/src/lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L64-L90)
 
 ```rust
@@ -219,35 +262,6 @@ From [`rust/src/lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/custome
 ```rust
 /// Limit Strings to 64 chars, similar to `char[64]` in C
 type String = heapless::String::<heapless::consts::U64>;
-```
-
-From [`rust/src/lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L118-L141)
-
-```rust
-/// Set the GPIO pin output to high or low.
-/// TODO: Auto-generate this wrapper with `bindgen` from the C declaration:
-/// `int bl_gpio_output_set(uint8_t pin, uint8_t value)`
-fn bl_gpio_output_set(
-    pin:   u8,  //  GPIO pin number (uint8_t)
-    value: u8   //  0 for low, 1 to high
-) -> Result<(), i32> {  //  Returns an error code (int)
-
-    extern "C" {        //  Import C Function
-        /// Set the GPIO pin output to high or low (from BL602 GPIO HAL)
-        fn bl_gpio_output_set(pin: u8, value: u8) -> i32;
-    }
-
-    //  Call the C function
-    let res = unsafe {  //  Flag this code as unsafe because we're calling a C function
-        bl_gpio_output_set(pin, value)
-    };
-
-    //  Check the result code
-    match res {
-        0 => Ok(()),   //  If no error, return OK
-        _ => Err(res)  //  Else return the result code as an error
-    }
-}
 ```
 
 # Rust on BL602 IoT SDK
