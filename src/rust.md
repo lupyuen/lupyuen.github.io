@@ -201,16 +201,16 @@ Because __`Result<...>`__ lets us return a meaningful result to our Rust caller.
 
 This makes the error handling easier (with `expect`). We'll see the returned result in a while.
 
-TODO
+Inside the wrapper, we __import the C function__ like so...
 
 ```rust
-    extern "C" {        //  Import C Function
+    extern "C" {  //  Import C Function
         /// Set the GPIO pin output to high or low (from BL602 GPIO HAL)
         fn bl_gpio_output_set(pin: u8, value: u8) -> i32;
     }
 ```
 
-TODO
+Next our wrapper __calls the imported C function__...
 
 ```rust
     //  Call the C function
@@ -219,7 +219,9 @@ TODO
     };
 ```
 
-TODO
+Rust requires us to flag this code as __`unsafe`__ because we're calling a C function.
+
+Finally we __match the result__ returned by the C function: 0 for success, non-zero for error...
 
 ```rust
     //  Check the result code
@@ -229,6 +231,12 @@ TODO
     }
 }
 ```
+
+"`match`" works like "`switch...case`" in C. ("`_`" matches anything, similar to "`default`" in C)
+
+Here we return `Ok` for success, or `Err` with an error code inside.
+
+When our Rust caller receives `Err`, the `expect` error checking will fail with a panic.
 
 ## Pass Strings from Rust to C
 
@@ -278,7 +286,7 @@ type String = heapless::String::<heapless::consts::U64>;
 
 TODO
 
-Autogenerate
+Autogenerate the wrappers with `bindgen` and a Rust Procedural Macro
 
 # Rust on BL602 IoT SDK
 
