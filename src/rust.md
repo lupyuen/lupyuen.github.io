@@ -342,14 +342,56 @@ Hello from Rust!
 Hello from Rust!
 ```
 
-# Custom Rust Target for BL602
+# Rust Targets
 
 TODO
 
 ```bash
-cargo build
+cargo build \
     --target riscv32imac-unknown-none-elf
 ```
+
+TODO
+
+```bash
+rustc --print target-list
+```
+
+TODO
+
+```text
+riscv32gc-unknown-linux-gnu
+riscv32gc-unknown-linux-musl
+riscv32i-unknown-none-elf
+riscv32imac-unknown-none-elf
+riscv32imc-unknown-none-elf
+riscv64gc-unknown-linux-gnu
+riscv64gc-unknown-linux-musl
+riscv64gc-unknown-none-elf
+riscv64imac-unknown-none-elf
+```
+
+TODO
+
+```text
+can't link soft-float modules with single-float modules
+```
+
+TODO
+
+![BL602 Target is riscv32-imacfx](https://lupyuen.github.io/images/rust-target.png)
+
+riscv32-imacfx
+
+```bash
+gcc -march=rv32imfc -mabi=ilp32f ...
+```
+
+https://docs.rust-embedded.org/embedonomicon/compiler-support.html#built-in-target
+
+https://docs.rust-embedded.org/embedonomicon/custom-target.html
+
+# Custom Rust Target for BL602
 
 TODO
 
@@ -372,6 +414,15 @@ TODO
 ```
 
 TODO
+
+```bash
+rustc +nightly \
+    -Z unstable-options \
+    --print target-spec-json \
+    --target riscv32imac-unknown-none-elf
+```
+
+https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/riscv32imac-unknown-none-elf.json
 
 [From `riscv32imacf-unknown-none-elf.json`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/riscv32imacf-unknown-none-elf.json)
 
