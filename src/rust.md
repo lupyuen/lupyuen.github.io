@@ -728,15 +728,13 @@ Hence we have a __Software vs Hardware Floating-Point conflict__ between the com
 
 ## Selecting another Rust Target
 
-_Is there another Rust Target that we can use?_
+_Is there another Rust Target that we can use for BL602?_
 
-TODO
+Let's hunt for a Rust Target for 32-bit RISC-V that supports Hardware Floating Point...
 
 ```bash
 rustc --print target-list
 ```
-
-[Built-In Rust Target](https://docs.rust-embedded.org/embedonomicon/compiler-support.html#built-in-target)
 
 TODO
 
@@ -754,6 +752,7 @@ riscv64imac-unknown-none-elf
 
 TODO
 
+[Built-In Rust Target](https://docs.rust-embedded.org/embedonomicon/compiler-support.html#built-in-target)
 
 # Custom Rust Target for BL602
 
