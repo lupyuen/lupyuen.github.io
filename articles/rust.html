@@ -357,18 +357,21 @@ heapless = &quot;0.6.1&quot;
 <li><a href="https://lupyuen.github.io/pinetime-rust-mynewt/articles/watchface#advanced-topic-rust-bindings-for-lvgl"><strong>&quot;Rust Bindings for LVGL&quot;</strong></a></li>
 </ul>
 <h1 id="rust-on-bl602-iot-sdk" class="section-header"><a href="#rust-on-bl602-iot-sdk">4 Rust on BL602 IoT SDK</a></h1>
-<p>TODO</p>
+<p>Our Rust Firmware accesses the BL602 serial port, GPIO pin and system timer by calling the <strong>BL602 IoT SDK</strong>. (Imported from C into Rust)</p>
 <p><img src="https://lupyuen.github.io/images/rust-arch.png" alt="Rust on BL602 IoT SDK" /></p>
-<p>Strictly speaking this isn't Embedded Rust, because we're not running Rust directly on Bare Metal (BL602 Hardware). </p>
-<p>Instead we're running Rust on top of an Embedded Operating System (BL602 IoT SDK + FreeRTOS). It's similar to running Rust on Linux / macOS / Windows.</p>
-<p>We'll talk later about Embedded Rust on Bare Metal BL602.</p>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/Cargo.toml#L14-L18"><code>rust/Cargo.toml</code></a></p>
-<pre><code class="language-text"># Build this module as a Rust library, not a Rust application.  We will link this library with the BL602 firmware.
+<p>Strictly speaking this isn't <a href="https://docs.rust-embedded.org/book/"><strong>Embedded Rust</strong></a>, because we're not running Rust directly on Bare Metal (BL602 Hardware). </p>
+<p>Instead we're running <strong>Rust on top of an Embedded Operating System</strong> (BL602 IoT SDK + FreeRTOS). It's similar to running Rust on Linux / macOS / Windows.</p>
+<p>That's why we compile our Rust code into a <strong>static library</strong> that will be linked into the BL602 Firmware. See <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/Cargo.toml#L14-L18"><code>rust/Cargo.toml</code></a>...</p>
+<pre><code class="language-text"># Build this module as a Rust library, 
+# not a Rust application.  We will link 
+# this library with the BL602 firmware.
 [lib]
-name       = &quot;app&quot;  # Output will be named `libapp.a`
+# Output will be named `libapp.a`
+name       = &quot;app&quot;
 crate-type = [&quot;staticlib&quot;]
 </code></pre>
+<p>This produces a BL602 Rust Firmware file that we may <strong>flash to BL602 the conventional way</strong>: Over the BL602 Serial / UART Port.</p>
+<p>(We'll talk later about Embedded Rust on Bare Metal BL602)</p>
 <h1 id="build-the-bl602-rust-firmware" class="section-header"><a href="#build-the-bl602-rust-firmware">5 Build the BL602 Rust Firmware</a></h1>
 <p>Here are the steps to build the BL602 Rust Firmware <code>sdk_app_rust.bin</code>...</p>
 <ol>
