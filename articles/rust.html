@@ -667,7 +667,7 @@ Hello from Rust!
     --target ../riscv32imacf-unknown-none-elf.json \
     -Z build-std=core
 </code></pre>
-<p>Let's try compiling our Rust Firmware the usual way for 32-bit RISC-V microcontrollers <a href="https://lupyuen.github.io/articles/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v">(like GD32VF103)</a>...</p>
+<p>Watch what happens when we compile our Rust Firmware the conventional way for 32-bit RISC-V microcontrollers <a href="https://lupyuen.github.io/articles/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v">(like GD32VF103)</a>...</p>
 <pre><code class="language-bash">cargo build \
     --target riscv32imac-unknown-none-elf
 </code></pre>
@@ -697,10 +697,10 @@ Hello from Rust!
 <p>Hence we have a <strong>Software vs Hardware Floating-Point conflict</strong> between the compiled Rust code and the compiled BL602 IoT SDK.</p>
 <h2 id="selecting-another-rust-target" class="section-header"><a href="#selecting-another-rust-target">8.2 Selecting another Rust Target</a></h2>
 <p><em>Is there another Rust Target that we can use for BL602?</em></p>
-<p>Let's hunt for a Rust Target for 32-bit RISC-V that supports Hardware Floating Point...</p>
+<p>Let's hunt for a Rust Target for <strong>32-bit RISC-V that supports Hardware Floating Point</strong>...</p>
 <pre><code class="language-bash">rustc --print target-list
 </code></pre>
-<p>TODO</p>
+<p>Here are the Rust Targets for RISC-V...</p>
 <pre><code class="language-text">riscv32gc-unknown-linux-gnu
 riscv32gc-unknown-linux-musl
 riscv32i-unknown-none-elf
@@ -711,9 +711,31 @@ riscv64gc-unknown-linux-musl
 riscv64gc-unknown-none-elf
 riscv64imac-unknown-none-elf
 </code></pre>
+<p>Strike off the 64-bit RISC-V targets, and we get...</p>
+<pre><code class="language-text">riscv32gc-unknown-linux-gnu
+riscv32gc-unknown-linux-musl
+riscv32i-unknown-none-elf
+riscv32imac-unknown-none-elf
+riscv32imc-unknown-none-elf
+</code></pre>
+<p>For embedded platforms we need to pick the targets that support <code>ELF</code>...</p>
+<pre><code class="language-text">riscv32i-unknown-none-elf
+riscv32imac-unknown-none-elf
+riscv32imc-unknown-none-elf
+</code></pre>
+<p>Bummer... None of these Rust Targets support Hardware Floating-Point!</p>
 <p>TODO</p>
-<p><a href="https://docs.rust-embedded.org/embedonomicon/compiler-support.html#built-in-target">Built-In Rust Target</a></p>
+<p><a href="https://docs.rust-embedded.org/embedonomicon/compiler-support.html#built-in-target">More about Built-In Rust Targets</a></p>
 <h1 id="custom-rust-target-for-bl602" class="section-header"><a href="#custom-rust-target-for-bl602">9 Custom Rust Target for BL602</a></h1>
+<p>To recap: We're creating a Custom Rust Target for BL602 because...</p>
+<ol>
+<li>
+<p>We can't link Rust code (compiled for Software Floating-Point) with BL602 IoT SDK (compiled for Hardware Floating-Point)</p>
+</li>
+<li>
+<p>Existing 32-bit RISC-V Rust Targets don't support Hardware Floating-Point</p>
+</li>
+</ol>
 <p>TODO</p>
 <p><a href="https://docs.rust-embedded.org/embedonomicon/custom-target.html">Custom Rust Target</a></p>
 <p>Building with our Custom Rust Target...</p>
