@@ -347,7 +347,7 @@ heapless = &quot;0.6.1&quot;
 <p><em>We're copying the string just to pad it with null. Not so efficient no?</em></p>
 <p>In future we might switch to <code>cstr</code> and eliminate the copying of strings. <a href="https://crates.io/crates/cstr">(See this)</a></p>
 <h2 id="autogenerate-wrapper-functions" class="section-header"><a href="#autogenerate-wrapper-functions">3.2 Autogenerate Wrapper Functions</a></h2>
-<p><em>Sure looks like a lot of work to create the Wrapper Functions... When we import the entire BL602 IoT SDK?</em></p>
+<p><em>Sure looks like a lot of repetitive work to create the Wrapper Functions... When we import the entire BL602 IoT SDK?</em></p>
 <p>Someday we shall <strong>automatically generate the Wrapper Functions</strong> for the entire BL602 IoT SDK.</p>
 <p>We'll do that with the <strong><code>binden</code></strong> tool, helped by a <strong>Rust Procedural Macro</strong>.</p>
 <p>We've previously done this to import the LVGL graphics library and Apache Mynewt OS functions into Rust...</p>
