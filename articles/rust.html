@@ -283,32 +283,42 @@ void blinky(char *buf, int len, int argc, char **argv) {
 <p>Here we return <code>Ok</code> for success, or <code>Err</code> with an error code inside.</p>
 <p>When our Rust caller receives <code>Err</code>, the <code>expect</code> error checking will fail with a panic.</p>
 <h2 id="pass-strings-from-rust-to-c" class="section-header"><a href="#pass-strings-from-rust-to-c">3.1 Pass Strings from Rust to C</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L64-L90"><code>lib.rs</code></a></p>
+<p>Strings are terminated by null in C, but not in Rust.</p>
+<p>(Rust strings have an internal field that remembers the string length)</p>
+<p>To pass strings from C to Rust, our wrapper needs to <strong>copy the string and pad it with null</strong>.  Here's how: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L64-L90"><code>lib.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="doccomment">/// Print a message to the serial console.</span>
-<span class="kw">fn</span> <span class="ident">puts</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {  <span class="comment">//  `&amp;str` is a reference to a string slice, similar to `char *` in C</span></pre></div>
-<p>TODO</p>
+<span class="doccomment">/// `&amp;str` is a reference to a string slice, similar to `const char *` in C</span>
+<span class="kw">fn</span> <span class="ident">puts</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {</pre></div>
+<p>Our wrapper for <code>puts</code> accepts a string and returns an <code>int</code>.</p>
+<p>&quot;<code>&amp;str</code>&quot; is a <strong>Reference to a String Slice</strong>. It's similar to &quot;<code>const char *</code>&quot; in C.</p>
+<p>We <strong>import the <code>puts</code> function</strong> from BL602 IoT SDK (<code>stdio</code> library)...</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
     <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {  <span class="comment">//  Import C Function</span>
         <span class="doccomment">/// Print a message to the serial console (from C stdio library)</span>
         <span class="kw">fn</span> <span class="ident">puts</span>(<span class="ident">s</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span>;
     }</pre></div>
-<p>TODO</p>
+<p>When importing &quot;<code>const char *</code>&quot; from C, we rewrite it as &quot;<code>*const u8</code>&quot; (const pointer to unsigned byte).</p>
+<p>Next we make a <strong>copy of the input string</strong>...</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
     <span class="comment">//  Convert `str` to `String`, which similar to `char [64]` in C</span>
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">s_with_null</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">from_str</span>(<span class="ident">s</span>)  <span class="comment">//  `mut` because we will modify it</span>
         .<span class="ident">expect</span>(<span class="string">&quot;puts conversion failed&quot;</span>);     <span class="comment">//  If it exceeds 64 chars, halt with an error</span></pre></div>
-<p>TODO</p>
+<p>&quot;<code>String</code>&quot; is similar to &quot;<code>char[64]</code>&quot; in C.</p>
+<p>Here we create a &quot;<code>String</code>&quot; (instead of &quot;<code>&amp;str</code>&quot;) because &quot;<code>String</code>&quot; will allocate storage (on the stack) to hold the copied string.</p>
+<p>If our input string exceeds 64 characters, the copying fails with an error.</p>
+<p>(More about &quot;<code>String</code>&quot; in a while)</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
     <span class="comment">//  Terminate the string with null, since we will be passing to C</span>
     <span class="ident">s_with_null</span>.<span class="ident">push</span>(<span class="string">&#39;\0&#39;</span>)
         .<span class="ident">expect</span>(<span class="string">&quot;puts overflow&quot;</span>);  <span class="comment">//  If we exceed 64 chars, halt with an error</span></pre></div>
-<p>TODO</p>
+<p>Here we <strong>pad the copied string with null</strong>.</p>
+<p>This also fails with an error if the padded string exceeds 64 characters.</p>
+<p>Finally we <strong>fetch the pointer</strong> to our null-terminated string, and pass it to the C function...</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
     <span class="comment">//  Convert the null-terminated string to a pointer</span>
@@ -321,25 +331,21 @@ void blinky(char *buf, int len, int argc, char **argv) {
 
     <span class="comment">//  No semicolon `;` here, so the value returned by the C function will be passed to our caller</span>
 }</pre></div>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L179-L180"><code>lib.rs</code></a></p>
+<p><strong><code>String</code></strong> is a custom <strong>heapless string</strong> type that's allocated on the stack or static memory. (Instead of heap memory)</p>
+<p>We define <code>String</code> in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L179-L180"><code>lib.rs</code></a>...</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="doccomment">/// Limit Strings to 64 chars, similar to `char[64]` in C</span>
 <span class="kw">type</span> <span class="ident">String</span> <span class="op">=</span> <span class="ident">heapless</span>::<span class="ident">String</span>::<span class="op">&lt;</span><span class="ident">heapless</span>::<span class="ident">consts</span>::<span class="ident">U64</span><span class="op">&gt;</span>;</pre></div>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/Cargo.toml#L9-L11"><code>rust/Cargo.toml</code></a></p>
+<p>For safety, we limit our strings to <strong>64 characters</strong>.</p>
+<p><code>String</code> uses the <strong>heapless library</strong>, as specified in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/Cargo.toml#L9-L11"><code>rust/Cargo.toml</code></a>...</p>
 <pre><code class="language-text"># External Rust libraries used by this module.  See crates.io.
 [dependencies]
-heapless = &quot;0.6.1&quot; # `static` friendly data structures that don't require dynamic memory allocation: https://crates.io/crates/heapless
+# `static` friendly data structures that don't require dynamic memory allocation: https://crates.io/crates/heapless
+heapless = &quot;0.6.1&quot;
 </code></pre>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/Cargo.toml#L14-L18"><code>rust/Cargo.toml</code></a></p>
-<pre><code class="language-text"># Build this module as a Rust library, not a Rust application.  We will link this library with the BL602 firmware.
-[lib]
-name       = &quot;app&quot;  # Output will be named `libapp.a`
-crate-type = [&quot;staticlib&quot;]
-</code></pre>
+<p><em>We're copying the string just to pad it with null. Not so efficient no?</em></p>
+<p>In future we might switch to <code>cstr</code> and eliminate the copying of strings. <a href="https://crates.io/crates/cstr">(See this)</a></p>
 <h2 id="autogenerate-wrapper-functions" class="section-header"><a href="#autogenerate-wrapper-functions">3.2 Autogenerate Wrapper Functions</a></h2>
 <p><em>Sure looks like a lot of work to create the Wrapper Functions... When we import the entire BL602 IoT SDK?</em></p>
 <p>Someday we shall <strong>automatically generate the Wrapper Functions</strong> for the entire BL602 IoT SDK.</p>
@@ -354,6 +360,13 @@ crate-type = [&quot;staticlib&quot;]
 <p>Strictly speaking this isn't Embedded Rust, because we're not running Rust directly on Bare Metal (BL602 Hardware). </p>
 <p>Instead we're running Rust on top of an Embedded Operating System (BL602 IoT SDK + FreeRTOS). It's similar to running Rust on Linux / macOS / Windows.</p>
 <p>We'll talk later about Embedded Rust on Bare Metal BL602.</p>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/Cargo.toml#L14-L18"><code>rust/Cargo.toml</code></a></p>
+<pre><code class="language-text"># Build this module as a Rust library, not a Rust application.  We will link this library with the BL602 firmware.
+[lib]
+name       = &quot;app&quot;  # Output will be named `libapp.a`
+crate-type = [&quot;staticlib&quot;]
+</code></pre>
 <h1 id="build-the-bl602-rust-firmware" class="section-header"><a href="#build-the-bl602-rust-firmware">5 Build the BL602 Rust Firmware</a></h1>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L10-L23"><code>run.sh</code></a></p>
