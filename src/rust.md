@@ -346,26 +346,29 @@ We've previously done this to import the LVGL graphics library and Apache Mynewt
 
 # Rust on BL602 IoT SDK
 
-TODO
+Our Rust Firmware accesses the BL602 serial port, GPIO pin and system timer by calling the __BL602 IoT SDK__. (Imported from C into Rust)
 
 ![Rust on BL602 IoT SDK](https://lupyuen.github.io/images/rust-arch.png)
 
-Strictly speaking this isn't Embedded Rust, because we're not running Rust directly on Bare Metal (BL602 Hardware). 
+Strictly speaking this isn't [__Embedded Rust__](https://docs.rust-embedded.org/book/), because we're not running Rust directly on Bare Metal (BL602 Hardware). 
 
-Instead we're running Rust on top of an Embedded Operating System (BL602 IoT SDK + FreeRTOS). It's similar to running Rust on Linux / macOS / Windows.
+Instead we're running __Rust on top of an Embedded Operating System__ (BL602 IoT SDK + FreeRTOS). It's similar to running Rust on Linux / macOS / Windows.
 
-We'll talk later about Embedded Rust on Bare Metal BL602.
-
-TODO
-
-From [`rust/Cargo.toml`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/Cargo.toml#L14-L18)
+That's why we compile our Rust code into a __static library__ that will be linked into the BL602 Firmware. See [`rust/Cargo.toml`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/Cargo.toml#L14-L18)...
 
 ```text
-# Build this module as a Rust library, not a Rust application.  We will link this library with the BL602 firmware.
+# Build this module as a Rust library, 
+# not a Rust application.  We will link 
+# this library with the BL602 firmware.
 [lib]
-name       = "app"  # Output will be named `libapp.a`
+# Output will be named `libapp.a`
+name       = "app"
 crate-type = ["staticlib"]
 ```
+
+This produces a BL602 Rust Firmware file that we may __flash to BL602 the conventional way__: Over the BL602 Serial / UART Port.
+
+(We'll talk later about Embedded Rust on Bare Metal BL602)
 
 # Build the BL602 Rust Firmware
 
