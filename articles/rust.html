@@ -392,7 +392,7 @@ crate-type = [&quot;staticlib&quot;]
 <li>
 <p>Download the <strong>source code</strong> for the BL602 Rust Firmware...</p>
 <pre><code class="language-bash"># Download the rust branch of lupyuen's bl_iot_sdk
-git clone --recursive --branch branch https://github.com/lupyuen/bl_iot_sdk
+git clone --recursive --branch rust https://github.com/lupyuen/bl_iot_sdk
 cd bl_iot_sdk/customer_app/sdk_app_rust
 </code></pre>
 </li>
@@ -401,7 +401,7 @@ cd bl_iot_sdk/customer_app/sdk_app_rust
 <p>This build script was created for macOS, but can be modified to run on Linux and Windows (with WSL).</p>
 </li>
 <li>
-<p>In <code>run.sh</code>, modify the following variables to the paths of <code>blflash</code> and <code>xpack-riscv-none-embed-gcc</code>...</p>
+<p>In <code>run.sh</code>, set the following variables to the downloaded folders for <code>blflash</code> and <code>xpack-riscv-none-embed-gcc</code>...</p>
 <pre><code class="language-bash">#  Where blflash is located
 export BLFLASH_PATH=$PWD/../../../blflash
 
@@ -477,10 +477,14 @@ Building Finish. To flash build output.
 <li>
 <p>TODO</p>
 <pre><code class="language-text">----- Flash BL602 Firmware
-~/pinecone/blflash ~/pinecone/bl_iot_sdk/customer_app/sdk_app_rust
-+ cargo run flash sdk_app_rust.bin --port /dev/tty.usbserial-1410 --initial-baud-rate 230400 --baud-rate 230400
-    Finished dev [unoptimized + debuginfo] target(s) in 0.97s
-    Running `target/debug/blflash flash sdk_app_rust.bin --port /dev/tty.usbserial-1410 --initial-baud-rate 230400 --baud-rate 230400`
+
++ cargo run flash sdk_app_rust.bin \
+    --port /dev/tty.usbserial-1410 \
+    --initial-baud-rate 230400 \
+    --baud-rate 230400
+
+Finished dev [unoptimized + debuginfo] target(s) in 0.97s
+Running `target/debug/blflash flash sdk_app_rust.bin --port /dev/tty.usbserial-1410 --initial-baud-rate 230400 --baud-rate 230400`
 [INFO  blflash::flasher] Start connection...
 [TRACE blflash::flasher] 5ms send count 115
 [TRACE blflash::flasher] handshake sent elapsed 145.949µs
