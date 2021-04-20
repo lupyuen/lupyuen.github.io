@@ -240,16 +240,23 @@ When our Rust caller receives `Err`, the `expect` error checking will fail with 
 
 ## Pass Strings from Rust to C
 
-TODO
+Strings are terminated by null in C, but not in Rust.
 
-From [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L64-L90)
+(Rust strings have an internal field that remembers the string length)
+
+To pass strings from C to Rust, our wrapper needs to __copy the string and pad it with null__.  Here's how: [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L64-L90)
 
 ```rust
 /// Print a message to the serial console.
-fn puts(s: &str) -> i32 {  //  `&str` is a reference to a string slice, similar to `char *` in C
+/// `&str` is a reference to a string slice, similar to `const char *` in C
+fn puts(s: &str) -> i32 {
 ```
 
-TODO
+Our wrapper for `puts` accepts a string and returns an `int`.
+
+"`&str`" is a __Reference to a String Slice__. It's similar to "`const char *`" in C.
+
+We __import the `puts` function__ from BL602 IoT SDK (`stdio` library)...
 
 ```rust
     extern "C" {  //  Import C Function
@@ -258,7 +265,9 @@ TODO
     }
 ```
 
-TODO
+When importing "`const char *`" from C, we rewrite it as "`*const u8`" (const pointer to unsigned byte).
+
+Next we make a __copy of the input string__...
 
 ```rust
     //  Convert `str` to `String`, which similar to `char [64]` in C
@@ -266,7 +275,13 @@ TODO
         .expect("puts conversion failed");     //  If it exceeds 64 chars, halt with an error
 ```
 
-TODO
+"`String`" is similar to "`char[64]`" in C.
+
+Here we create a "`String`" (instead of "`&str`") because "`String`" will allocate storage (on the stack) to hold the copied string.
+
+If our input string exceeds 64 characters, the copying fails with an error.
+
+(More about "`String`" in a while)
 
 ```rust    
     //  Terminate the string with null, since we will be passing to C
@@ -274,7 +289,11 @@ TODO
         .expect("puts overflow");  //  If we exceed 64 chars, halt with an error
 ```
 
-TODO
+Here we __pad the copied string with null__.
+
+This also fails with an error if the padded string exceeds 64 characters.
+
+Finally we __fetch the pointer__ to our null-terminated string, and pass it to the C function...
 
 ```rust
     //  Convert the null-terminated string to a pointer
@@ -289,36 +308,29 @@ TODO
 }
 ```
 
-TODO
+__`String`__ is a custom __heapless string__ type that's allocated on the stack or static memory. (Instead of heap memory)
 
-
-From [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L179-L180)
+We define `String` in [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L179-L180)...
 
 ```rust
 /// Limit Strings to 64 chars, similar to `char[64]` in C
 type String = heapless::String::<heapless::consts::U64>;
 ```
 
-TODO
+For safety, we limit our strings to __64 characters__.
 
-From [`rust/Cargo.toml`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/Cargo.toml#L9-L11)
+`String` uses the __heapless library__, as specified in [`rust/Cargo.toml`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/Cargo.toml#L9-L11)...
 
 ```text
 # External Rust libraries used by this module.  See crates.io.
 [dependencies]
-heapless = "0.6.1" # `static` friendly data structures that don't require dynamic memory allocation: https://crates.io/crates/heapless
+# `static` friendly data structures that don't require dynamic memory allocation: https://crates.io/crates/heapless
+heapless = "0.6.1"
 ```
 
-TODO
+_We're copying the string just to pad it with null. Not so efficient no?_
 
-From [`rust/Cargo.toml`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/Cargo.toml#L14-L18)
-
-```text
-# Build this module as a Rust library, not a Rust application.  We will link this library with the BL602 firmware.
-[lib]
-name       = "app"  # Output will be named `libapp.a`
-crate-type = ["staticlib"]
-```
+In future we might switch to `cstr` and eliminate the copying of strings. [(See this)](https://crates.io/crates/cstr)
 
 ## Autogenerate Wrapper Functions
 
@@ -343,6 +355,17 @@ Strictly speaking this isn't Embedded Rust, because we're not running Rust direc
 Instead we're running Rust on top of an Embedded Operating System (BL602 IoT SDK + FreeRTOS). It's similar to running Rust on Linux / macOS / Windows.
 
 We'll talk later about Embedded Rust on Bare Metal BL602.
+
+TODO
+
+From [`rust/Cargo.toml`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/Cargo.toml#L14-L18)
+
+```text
+# Build this module as a Rust library, not a Rust application.  We will link this library with the BL602 firmware.
+[lib]
+name       = "app"  # Output will be named `libapp.a`
+crate-type = ["staticlib"]
+```
 
 # Build the BL602 Rust Firmware
 
