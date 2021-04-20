@@ -428,7 +428,7 @@ Here are the steps to build the BL602 Rust Firmware `sdk_app_rust.bin`...
 
     The script has built our firmware... C only, no Rust yet.
 
-1.  Next the script __compiles our Rust code__ into a static library: `librust-app.a`
+1.  Next the script __compiles our Rust code__ into a static library: `libapp.a`
 
     ```text
     ----- Build Rust Library
@@ -450,7 +450,7 @@ Here are the steps to build the BL602 Rust Firmware `sdk_app_rust.bin`...
 
     We'll learn why in a while.
 
-1.  The script __overwrites the Stub Library__ in our firmware (`libapp.a`) by the Rust static library (`librust-app.a`)
+1.  The script __overwrites the Stub Library__ in our firmware build (`librust-app.a`) by the Rust static library (`libapp.a`)
 
     ```text
     + cp rust/target/riscv32imacf-unknown-none-elf/debug/libapp.a \
