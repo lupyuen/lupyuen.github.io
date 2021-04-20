@@ -696,11 +696,10 @@ Hello from Rust!
 <p>Which are not compatible with our Rust binaries, which use <strong>Software Floating-Point</strong>.</p>
 <p>Hence we have a <strong>Software vs Hardware Floating-Point conflict</strong> between the compiled Rust code and the compiled BL602 IoT SDK.</p>
 <h2 id="selecting-another-rust-target" class="section-header"><a href="#selecting-another-rust-target">8.2 Selecting another Rust Target</a></h2>
-<p><em>Is there another Rust Target that we can use?</em></p>
-<p>TODO</p>
+<p><em>Is there another Rust Target that we can use for BL602?</em></p>
+<p>Let's hunt for a Rust Target for 32-bit RISC-V that supports Hardware Floating Point...</p>
 <pre><code class="language-bash">rustc --print target-list
 </code></pre>
-<p><a href="https://docs.rust-embedded.org/embedonomicon/compiler-support.html#built-in-target">Built-In Rust Target</a></p>
 <p>TODO</p>
 <pre><code class="language-text">riscv32gc-unknown-linux-gnu
 riscv32gc-unknown-linux-musl
@@ -713,6 +712,7 @@ riscv64gc-unknown-none-elf
 riscv64imac-unknown-none-elf
 </code></pre>
 <p>TODO</p>
+<p><a href="https://docs.rust-embedded.org/embedonomicon/compiler-support.html#built-in-target">Built-In Rust Target</a></p>
 <h1 id="custom-rust-target-for-bl602" class="section-header"><a href="#custom-rust-target-for-bl602">9 Custom Rust Target for BL602</a></h1>
 <p>TODO</p>
 <p><a href="https://docs.rust-embedded.org/embedonomicon/custom-target.html">Custom Rust Target</a></p>
