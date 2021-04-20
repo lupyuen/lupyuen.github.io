@@ -474,10 +474,53 @@ Building Finish. To flash build output.
 </li>
 </ol>
 <h1 id="flash-the-bl602-rust-firmware" class="section-header"><a href="#flash-the-bl602-rust-firmware">6 Flash the BL602 Rust Firmware</a></h1>
-<p>TODO</p>
+<p>Here's how we flash the Rust Firmware file <code>sdk_app_rust.bin</code> to BL602...</p>
 <ol>
 <li>
-<p>TODO</p>
+<p>Set BL602 to <strong>Flashing Mode</strong> and restart the board...</p>
+<p><strong>For PineCone:</strong></p>
+<ul>
+<li>
+<p>Set the <strong>PineCone Jumper (IO 8)</strong> to the <strong><code>H</code> Position</strong> <a href="https://lupyuen.github.io/images/pinecone-jumperh.jpg">(Like this)</a></p>
+</li>
+<li>
+<p>Press the Reset Button</p>
+</li>
+</ul>
+<p><strong>For BL10:</strong></p>
+<ul>
+<li>
+<p>Connect BL10 to the USB port</p>
+</li>
+<li>
+<p>Press and hold the <strong>D8 Button (GPIO 8)</strong></p>
+</li>
+<li>
+<p>Press and release the <strong>EN Button (Reset)</strong></p>
+</li>
+<li>
+<p>Release the D8 Button</p>
+</li>
+</ul>
+<p><strong>For Pinenut and MagicHome BL602:</strong></p>
+<ul>
+<li>
+<p>Disconnect the board from the USB Port</p>
+</li>
+<li>
+<p>Connect <strong>GPIO 8</strong> to <strong>3.3V</strong></p>
+</li>
+<li>
+<p>Reconnect the board to the USB port</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>For macOS:</strong></p>
+<p>Enter this at the command prompt...</p>
+<pre><code class="language-bash">./run.sh
+</code></pre>
+<p>The script should automatically flash the firmware after building...</p>
 <pre><code class="language-text">----- Flash BL602 Firmware
 
 + cargo run flash sdk_app_rust.bin \
@@ -507,10 +550,27 @@ Running `target/debug/blflash flash sdk_app_rust.bin --port /dev/tty.usbserial-1
 [INFO  blflash::flasher] Skip segment addr: 1f8000 size: 5671 sha256 matches
 [INFO  blflash] Success
 </code></pre>
+<p>(We might need to edit the script to use the right serial port)</p>
+</li>
+<li>
+<p><strong>For Linux and Windows:</strong></p>
+<p>Copy <code>build_out/sdk_app_rust.bin</code> to the <code>blflash</code> folder.</p>
+<p>Then enter this at the command prompt...</p>
+<pre><code class="language-bash"># TODO: Change this to the downloaded blflash folder
+cd blflash
+
+# For Linux:
+sudo cargo run flash sdk_app_lora.bin \
+    --port /dev/ttyUSB0
+
+# For Windows: Change COM5 to the BL602 Serial Port
+cargo run flash sdk_app_lora.bin --port COM5
+</code></pre>
+<p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">More details on flashing firmware</a></p>
 </li>
 </ol>
 <h1 id="run-the-bl602-rust-firmware" class="section-header"><a href="#run-the-bl602-rust-firmware">7 Run the BL602 Rust Firmware</a></h1>
-<p>TODO</p>
+<p>Finally we run the BL602 Rust Firmware...</p>
 <ol>
 <li>
 <p>TODO</p>
