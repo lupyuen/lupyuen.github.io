@@ -445,6 +445,8 @@ Compiling core v0.0.0
 Compiling app v0.0.1
 Finished dev [unoptimized + debuginfo] target(s) in 29.47s
 </code></pre>
+<p>Yep this command looks odd... It's compiling our Rust code with a JSON target file! (<code>riscv32imacf-unknown-none-elf.json</code>)</p>
+<p>We'll learn why in a while.</p>
 </li>
 <li>
 <p>The script <strong>overwrites the Stub Library</strong> in our firmware (<code>libapp.a</code>) by the Rust static library (<code>librust-app.a</code>)</p>
