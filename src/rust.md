@@ -760,7 +760,7 @@ riscv32imac-unknown-none-elf
 riscv32imc-unknown-none-elf
 ```
 
-For embedded platforms we need to pick the targets that support `ELF`...
+For embedded platforms we pick the targets that support `ELF`...
 
 ```text
 riscv32i-unknown-none-elf
@@ -768,24 +768,21 @@ riscv32imac-unknown-none-elf
 riscv32imc-unknown-none-elf
 ```
 
-Bummer... None of these Rust Targets support Hardware Floating-Point!
+Bummer... None of these Built-In Rust Targets support Hardware Floating-Point!
 
-TODO
+Fortunately Rust lets us create __Custom Rust Targets__. Let's create one for BL602!
 
 [More about Built-In Rust Targets](https://docs.rust-embedded.org/embedonomicon/compiler-support.html#built-in-target)
 
 # Custom Rust Target for BL602
 
-To recap: We're creating a Custom Rust Target for BL602 because...
+To recap: We're creating a __Custom Rust Target__ for BL602 because...
 
-1.  We can't link Rust code (compiled for Software Floating-Point) with BL602 IoT SDK (compiled for Hardware Floating-Point)
+1.  We can't link Rust code (compiled for __Software Floating-Point__) with BL602 IoT SDK (compiled for __Hardware Floating-Point__)
 
-1.  Existing 32-bit RISC-V Rust Targets don't support Hardware Floating-Point
+1.  Existing 32-bit RISC-V Rust Targets __don't support Hardware Floating-Point__
 
 TODO
-
-[Custom Rust Target](https://docs.rust-embedded.org/embedonomicon/custom-target.html)
-
 
 Building with our Custom Rust Target...
 
@@ -858,6 +855,8 @@ Here's our Custom Rust Target:
   ]
 }
 ```
+
+[More about Custom Rust Targets](https://docs.rust-embedded.org/embedonomicon/custom-target.html)
 
 # Rust On BL602: Two More Ways
 
