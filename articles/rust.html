@@ -718,26 +718,25 @@ riscv32i-unknown-none-elf
 riscv32imac-unknown-none-elf
 riscv32imc-unknown-none-elf
 </code></pre>
-<p>For embedded platforms we need to pick the targets that support <code>ELF</code>...</p>
+<p>For embedded platforms we pick the targets that support <code>ELF</code>...</p>
 <pre><code class="language-text">riscv32i-unknown-none-elf
 riscv32imac-unknown-none-elf
 riscv32imc-unknown-none-elf
 </code></pre>
-<p>Bummer... None of these Rust Targets support Hardware Floating-Point!</p>
-<p>TODO</p>
+<p>Bummer... None of these Built-In Rust Targets support Hardware Floating-Point!</p>
+<p>Fortunately Rust lets us create <strong>Custom Rust Targets</strong>. Let's create one for BL602!</p>
 <p><a href="https://docs.rust-embedded.org/embedonomicon/compiler-support.html#built-in-target">More about Built-In Rust Targets</a></p>
 <h1 id="custom-rust-target-for-bl602" class="section-header"><a href="#custom-rust-target-for-bl602">9 Custom Rust Target for BL602</a></h1>
-<p>To recap: We're creating a Custom Rust Target for BL602 because...</p>
+<p>To recap: We're creating a <strong>Custom Rust Target</strong> for BL602 because...</p>
 <ol>
 <li>
-<p>We can't link Rust code (compiled for Software Floating-Point) with BL602 IoT SDK (compiled for Hardware Floating-Point)</p>
+<p>We can't link Rust code (compiled for <strong>Software Floating-Point</strong>) with BL602 IoT SDK (compiled for <strong>Hardware Floating-Point</strong>)</p>
 </li>
 <li>
-<p>Existing 32-bit RISC-V Rust Targets don't support Hardware Floating-Point</p>
+<p>Existing 32-bit RISC-V Rust Targets <strong>don't support Hardware Floating-Point</strong></p>
 </li>
 </ol>
 <p>TODO</p>
-<p><a href="https://docs.rust-embedded.org/embedonomicon/custom-target.html">Custom Rust Target</a></p>
 <p>Building with our Custom Rust Target...</p>
 <pre><code class="language-bash">cargo build \
     --target riscv32imacf-unknown-none-elf.json \
@@ -793,6 +792,7 @@ riscv32imc-unknown-none-elf
   ]
 }
 </code></pre>
+<p><a href="https://docs.rust-embedded.org/embedonomicon/custom-target.html">More about Custom Rust Targets</a></p>
 <h1 id="rust-on-bl602-two-more-ways" class="section-header"><a href="#rust-on-bl602-two-more-ways">10 Rust On BL602: Two More Ways</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/sipeed/bl602-rust-guide"><code>sipeed/bl602-rust-guide</code></a></p>
