@@ -334,7 +334,7 @@ In future we might switch to `cstr` and eliminate the copying of strings. [(See 
 
 ## Autogenerate Wrapper Functions
 
-_Sure looks like a lot of work to create the Wrapper Functions... When we import the entire BL602 IoT SDK?_
+_Sure looks like a lot of repetitive work to create the Wrapper Functions... When we import the entire BL602 IoT SDK?_
 
 Someday we shall __automatically generate the Wrapper Functions__ for the entire BL602 IoT SDK.
 
