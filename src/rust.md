@@ -676,7 +676,7 @@ cargo build \
     -Z build-std=core
 ```
 
-Let's try compiling our Rust Firmware the usual way for 32-bit RISC-V microcontrollers [(like GD32VF103)](https://lupyuen.github.io/articles/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v)...
+Watch what happens when we compile our Rust Firmware the conventional way for 32-bit RISC-V microcontrollers [(like GD32VF103)](https://lupyuen.github.io/articles/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v)...
 
 ```bash
 cargo build \
@@ -730,13 +730,13 @@ Hence we have a __Software vs Hardware Floating-Point conflict__ between the com
 
 _Is there another Rust Target that we can use for BL602?_
 
-Let's hunt for a Rust Target for 32-bit RISC-V that supports Hardware Floating Point...
+Let's hunt for a Rust Target for __32-bit RISC-V that supports Hardware Floating Point__...
 
 ```bash
 rustc --print target-list
 ```
 
-TODO
+Here are the Rust Targets for RISC-V...
 
 ```text
 riscv32gc-unknown-linux-gnu
@@ -750,11 +750,37 @@ riscv64gc-unknown-none-elf
 riscv64imac-unknown-none-elf
 ```
 
+Strike off the 64-bit RISC-V targets, and we get...
+
+```text
+riscv32gc-unknown-linux-gnu
+riscv32gc-unknown-linux-musl
+riscv32i-unknown-none-elf
+riscv32imac-unknown-none-elf
+riscv32imc-unknown-none-elf
+```
+
+For embedded platforms we need to pick the targets that support `ELF`...
+
+```text
+riscv32i-unknown-none-elf
+riscv32imac-unknown-none-elf
+riscv32imc-unknown-none-elf
+```
+
+Bummer... None of these Rust Targets support Hardware Floating-Point!
+
 TODO
 
-[Built-In Rust Target](https://docs.rust-embedded.org/embedonomicon/compiler-support.html#built-in-target)
+[More about Built-In Rust Targets](https://docs.rust-embedded.org/embedonomicon/compiler-support.html#built-in-target)
 
 # Custom Rust Target for BL602
+
+To recap: We're creating a Custom Rust Target for BL602 because...
+
+1.  We can't link Rust code (compiled for Software Floating-Point) with BL602 IoT SDK (compiled for Hardware Floating-Point)
+
+1.  Existing 32-bit RISC-V Rust Targets don't support Hardware Floating-Point
 
 TODO
 
