@@ -464,6 +464,7 @@ Generating BIN File to build_out/sdk_app_rust.bin
 ...
 Building Finish. To flash build output.
 </code></pre>
+<p>Ignore the error from <code>blflash</code>, we'll fix this in a while.</p>
 </li>
 <li>
 <p>Our <strong>BL602 Rust Firmware file</strong> has been generated at...</p>
@@ -573,13 +574,55 @@ cargo run flash sdk_app_lora.bin --port COM5
 <p>Finally we run the BL602 Rust Firmware...</p>
 <ol>
 <li>
-<p>TODO</p>
+<p>Set BL602 to <strong>Normal Mode</strong> (Non-Flashing) and restart the board...</p>
+<p><strong>For PineCone:</strong></p>
+<ul>
+<li>
+<p>Set the <strong>PineCone Jumper (IO 8)</strong> to the <strong><code>L</code> Position</strong> <a href="https://lupyuen.github.io/images/pinecone-jumperl.jpg">(Like this)</a></p>
+</li>
+<li>
+<p>Press the Reset Button</p>
+</li>
+</ul>
+<p><strong>For BL10:</strong></p>
+<ul>
+<li>Press and release the <strong>EN Button (Reset)</strong></li>
+</ul>
+<p><strong>For Pinenut and MagicHome BL602:</strong></p>
+<ul>
+<li>
+<p>Disconnect the board from the USB Port</p>
+</li>
+<li>
+<p>Connect <strong>GPIO 8</strong> to <strong>GND</strong></p>
+</li>
+<li>
+<p>Reconnect the board to the USB port</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>For macOS:</strong></p>
+<p>The <code>run.sh</code> script should automatically launch CoolTerm after flashing...</p>
 <pre><code class="language-text">----- Run BL602 Firmware
 + open -a CoolTerm
 </code></pre>
+<p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">More about CoolTerm</a></p>
 </li>
 <li>
-<p>TODO</p>
+<p><strong>For Linux:</strong></p>
+<p>Connect to BL602's UART Port at 2 Mbps like so...</p>
+<pre><code class="language-bash">sudo screen /dev/ttyUSB0 2000000
+</code></pre>
+</li>
+<li>
+<p><strong>For Windows:</strong> </p>
+<p>Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
+<p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">More details on connecting to BL602</a></p>
+</li>
+<li>
+<p>In the serial console, press Enter to reveal the command prompt.</p>
+<p>Enter <code>help</code> to show the commands...</p>
 <pre><code class="language-text"># help
 ====Build-in Commands====
 ====Support 4 cmds once, seperate by ; ====
@@ -605,10 +648,15 @@ rust_main                : Run Rust code
 blogset                  : blog pri set level
 blogdump                 : blog info dump
 bl_sys_time_now          : sys time now
-
-# rust_main
+</code></pre>
+</li>
+<li>
+<p>Enter <code>rust_main</code> to run our Rust code...</p>
+<pre><code class="language-text"># rust_main
 Hello from Rust!
 </code></pre>
+<p>The LED on our BL602 board should blink 5 times.</p>
+<p>That's how we build, flash and run Rust Firmware with BL602 IoT SDK!</p>
 </li>
 </ol>
 <h1 id="rust-targets" class="section-header"><a href="#rust-targets">8 Rust Targets</a></h1>
