@@ -277,7 +277,7 @@ fn puts(s: &str) -> i32 {  //  `&str` is a reference to a string slice, similar 
 TODO
 
 
-From [`rust/src/lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L179-L180)
+From [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L179-L180)
 
 ```rust
 /// Limit Strings to 64 chars, similar to `char[64]` in C
@@ -286,7 +286,36 @@ type String = heapless::String::<heapless::consts::U64>;
 
 TODO
 
-Autogenerate the wrappers with `bindgen` and a Rust Procedural Macro
+From [`rust/Cargo.toml`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/Cargo.toml#L9-L11)
+
+```text
+# External Rust libraries used by this module.  See crates.io.
+[dependencies]
+heapless = "0.6.1" # `static` friendly data structures that don't require dynamic memory allocation: https://crates.io/crates/heapless
+```
+
+TODO
+
+From [`rust/Cargo.toml`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/Cargo.toml#L14-L18)
+
+```text
+# Build this module as a Rust library, not a Rust application.  We will link this library with the BL602 firmware.
+[lib]
+name       = "app"  # Output will be named `libapp.a`
+crate-type = ["staticlib"]
+```
+
+## Autogenerate Wrapper Functions
+
+_Sure looks like a lot of work to create the Wrapper Functions... When we import the entire BL602 IoT SDK?_
+
+Someday we shall __automatically generate the Wrapper Functions__ for the entire BL602 IoT SDK.
+
+We'll do that with the __`binden`__ tool, helped by a __Rust Procedural Macro__.
+
+We've previously done this to import the LVGL graphics library and Apache Mynewt OS functions into Rust...
+
+-   [__"Rust Bindings for LVGL"__](https://lupyuen.github.io/pinetime-rust-mynewt/articles/watchface#advanced-topic-rust-bindings-for-lvgl)
 
 # Rust on BL602 IoT SDK
 
