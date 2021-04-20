@@ -246,22 +246,37 @@ From [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk
 
 ```rust
 /// Print a message to the serial console.
-/// TODO: Auto-generate this wrapper with `bindgen` from the C declaration
 fn puts(s: &str) -> i32 {  //  `&str` is a reference to a string slice, similar to `char *` in C
+```
 
+TODO
+
+```rust
     extern "C" {  //  Import C Function
         /// Print a message to the serial console (from C stdio library)
         fn puts(s: *const u8) -> i32;
     }
+```
 
+TODO
+
+```rust
     //  Convert `str` to `String`, which similar to `char [64]` in C
     let mut s_with_null = String::from_str(s)  //  `mut` because we will modify it
         .expect("puts conversion failed");     //  If it exceeds 64 chars, halt with an error
-    
+```
+
+TODO
+
+```rust    
     //  Terminate the string with null, since we will be passing to C
     s_with_null.push('\0')
         .expect("puts overflow");  //  If we exceed 64 chars, halt with an error
+```
 
+TODO
+
+```rust
     //  Convert the null-terminated string to a pointer
     let p = s_with_null.as_str().as_ptr();
 
