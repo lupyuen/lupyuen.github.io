@@ -446,6 +446,10 @@ Here are the steps to build the BL602 Rust Firmware `sdk_app_rust.bin`...
     Finished dev [unoptimized + debuginfo] target(s) in 29.47s
     ```
 
+    Yep this command looks odd... It's compiling our Rust code with a JSON target file! (`riscv32imacf-unknown-none-elf.json`)
+
+    We'll learn why in a while.
+
 1.  The script __overwrites the Stub Library__ in our firmware (`libapp.a`) by the Rust static library (`librust-app.a`)
 
     ```text
