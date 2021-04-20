@@ -74,7 +74,9 @@
 <li><a href="#build-the-bl602-rust-firmware">5 Build the BL602 Rust Firmware</a><ul></ul></li>
 <li><a href="#flash-the-bl602-rust-firmware">6 Flash the BL602 Rust Firmware</a><ul></ul></li>
 <li><a href="#run-the-bl602-rust-firmware">7 Run the BL602 Rust Firmware</a><ul></ul></li>
-<li><a href="#rust-targets">8 Rust Targets</a><ul></ul></li>
+<li><a href="#rust-targets">8 Rust Targets</a><ul>
+<li><a href="#bl602-supports-hardware-floating-point">8.1 BL602 supports Hardware Floating-Point</a><ul></ul></li>
+<li><a href="#selecting-another-rust-target">8.2 Selecting another Rust Target</a><ul></ul></li></ul></li>
 <li><a href="#custom-rust-target-for-bl602">9 Custom Rust Target for BL602</a><ul></ul></li>
 <li><a href="#rust-on-bl602-two-more-ways">10 Rust On BL602: Two More Ways</a><ul></ul></li>
 <li><a href="#apache-nuttx-on-bl602">11 Apache NuttX on BL602</a><ul></ul></li>
@@ -660,10 +662,41 @@ Hello from Rust!
 </li>
 </ol>
 <h1 id="rust-targets" class="section-header"><a href="#rust-targets">8 Rust Targets</a></h1>
-<p>TODO</p>
+<p><em>Why did we compile our Rust Firmware with this unusual JSON target?</em></p>
+<pre><code class="language-bash">cargo build \
+    --target ../riscv32imacf-unknown-none-elf.json \
+    -Z build-std=core
+</code></pre>
+<p>Let's try compiling our Rust Firmware the usual way for 32-bit RISC-V microcontrollers <a href="https://lupyuen.github.io/articles/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v">(like GD32VF103)</a>...</p>
 <pre><code class="language-bash">cargo build \
     --target riscv32imac-unknown-none-elf
 </code></pre>
+<p><a href="https://lupyuen.github.io/articles/debug#install-rust">(We've previously used this for BL602)</a></p>
+<p><strong><code>riscv32imac</code></strong> describes the capabilities of our RISC-V CPU...</p>
+<table><thead><tr><th align="center">Designation</th><th align="left">Meaning</th></tr></thead><tbody>
+<tr><td align="center"><strong><code>rv32i</code></strong></td><td align="left">32-bit RISC-V with 32 registers</td></tr>
+<tr><td align="center"><strong><code>m</code></strong></td><td align="left">Multiplication + Division</td></tr>
+<tr><td align="center"><strong><code>a</code></strong></td><td align="left">Atomic Instructions</td></tr>
+<tr><td align="center"><strong><code>c</code></strong></td><td align="left">Compressed Instructions</td></tr>
+</tbody></table>
+<p><a href="https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions">(Here's the whole list)</a></p>
+<p>When we link the compiled Rust code with BL602 IoT SDK, the GCC Linker fails with this error...</p>
+<pre><code class="language-text">Can't link soft-float modules with single-float modules
+</code></pre>
+<p><em>Why?</em></p>
+<h2 id="bl602-supports-hardware-floating-point" class="section-header"><a href="#bl602-supports-hardware-floating-point">8.1 BL602 supports Hardware Floating-Point</a></h2>
+<p>That's because the full designation of BL602 is actually <strong><code>riscv32-imacfx</code></strong>...</p>
+<p><img src="https://lupyuen.github.io/images/rust-target.png" alt="BL602 Target is riscv32-imacfx" /></p>
+<p>Which means that BL602 supports <strong>Hardware Floating-Point</strong> (Single Precision)...</p>
+<p><img src="https://lupyuen.github.io/images/rust-riscv.png" alt="RISC-V ISA Base and Extensions" /></p>
+<p>The BL602 IoT SDK was compiled with this GCC command...</p>
+<pre><code class="language-bash">gcc -march=rv32imfc -mabi=ilp32f ...
+</code></pre>
+<p>This produces binaries that contain RISC-V <strong>Floating-Point Instructions</strong>.</p>
+<p>Which are not compatible with our Rust binaries, which use <strong>Software Floating-Point</strong>.</p>
+<p>Hence we have a <strong>Software vs Hardware Floating-Point conflict</strong> between the compiled Rust code and the compiled BL602 IoT SDK.</p>
+<h2 id="selecting-another-rust-target" class="section-header"><a href="#selecting-another-rust-target">8.2 Selecting another Rust Target</a></h2>
+<p><em>Is there another Rust Target that we can use?</em></p>
 <p>TODO</p>
 <pre><code class="language-bash">rustc --print target-list
 </code></pre>
@@ -680,15 +713,6 @@ riscv64gc-unknown-none-elf
 riscv64imac-unknown-none-elf
 </code></pre>
 <p>TODO</p>
-<pre><code class="language-text">can't link soft-float modules with single-float modules
-</code></pre>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/rust-target.png" alt="BL602 Target is riscv32-imacfx" /></p>
-<p>riscv32-imacfx</p>
-<p><a href="https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions">RISC-V ISA Base and Extensions</a></p>
-<p><img src="https://lupyuen.github.io/images/rust-riscv.png" alt="RISC-V ISA Base and Extensions" /></p>
-<pre><code class="language-bash">gcc -march=rv32imfc -mabi=ilp32f ...
-</code></pre>
 <h1 id="custom-rust-target-for-bl602" class="section-header"><a href="#custom-rust-target-for-bl602">9 Custom Rust Target for BL602</a></h1>
 <p>TODO</p>
 <p><a href="https://docs.rust-embedded.org/embedonomicon/custom-target.html">Custom Rust Target</a></p>
