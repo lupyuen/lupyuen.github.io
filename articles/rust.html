@@ -430,7 +430,7 @@ Building Finish. To flash build output.
 <p>The script has built our firmware... C only, no Rust yet.</p>
 </li>
 <li>
-<p>Next the script <strong>compiles our Rust code</strong> into a static library: <code>librust-app.a</code></p>
+<p>Next the script <strong>compiles our Rust code</strong> into a static library: <code>libapp.a</code></p>
 <pre><code class="language-text">----- Build Rust Library
 + rustup default nightly
 
@@ -449,7 +449,7 @@ Finished dev [unoptimized + debuginfo] target(s) in 29.47s
 <p>We'll learn why in a while.</p>
 </li>
 <li>
-<p>The script <strong>overwrites the Stub Library</strong> in our firmware (<code>libapp.a</code>) by the Rust static library (<code>librust-app.a</code>)</p>
+<p>The script <strong>overwrites the Stub Library</strong> in our firmware build (<code>librust-app.a</code>) by the Rust static library (<code>libapp.a</code>)</p>
 <pre><code class="language-text">+ cp rust/target/riscv32imacf-unknown-none-elf/debug/libapp.a \
     build_out/rust-app/librust-app.a
 </code></pre>
