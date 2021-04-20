@@ -770,6 +770,8 @@ riscv32imc-unknown-none-elf
 
 Bummer... None of these Built-In Rust Targets support Hardware Floating-Point!
 
+(They're missing the __"`f`"__ designation for Hardware Floating-Point)
+
 Fortunately Rust lets us create __Custom Rust Targets__. Let's create one for BL602!
 
 [More about Built-In Rust Targets](https://docs.rust-embedded.org/embedonomicon/compiler-support.html#built-in-target)
