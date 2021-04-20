@@ -68,7 +68,8 @@
 <li><a href="#bl602-blinky-in-c">1 BL602 Blinky in C</a><ul></ul></li>
 <li><a href="#bl602-blinky-in-rust">2 BL602 Blinky in Rust</a><ul></ul></li>
 <li><a href="#import-bl602-iot-sdk-into-rust">3 Import BL602 IoT SDK into Rust</a><ul>
-<li><a href="#pass-strings-from-rust-to-c">3.1 Pass Strings from Rust to C</a><ul></ul></li></ul></li>
+<li><a href="#pass-strings-from-rust-to-c">3.1 Pass Strings from Rust to C</a><ul></ul></li>
+<li><a href="#autogenerate-wrapper-functions">3.2 Autogenerate Wrapper Functions</a><ul></ul></li></ul></li>
 <li><a href="#rust-on-bl602-iot-sdk">4 Rust on BL602 IoT SDK</a><ul></ul></li>
 <li><a href="#build-the-bl602-rust-firmware">5 Build the BL602 Rust Firmware</a><ul></ul></li>
 <li><a href="#run-the-bl602-rust-firmware">6 Run the BL602 Rust Firmware</a><ul></ul></li>
@@ -314,13 +315,32 @@ void blinky(char *buf, int len, int argc, char **argv) {
     <span class="comment">//  No semicolon `;` here, so the value returned by the C function will be passed to our caller</span>
 }</pre></div>
 <p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L179-L180"><code>rust/src/lib.rs</code></a></p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L179-L180"><code>lib.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="doccomment">/// Limit Strings to 64 chars, similar to `char[64]` in C</span>
 <span class="kw">type</span> <span class="ident">String</span> <span class="op">=</span> <span class="ident">heapless</span>::<span class="ident">String</span>::<span class="op">&lt;</span><span class="ident">heapless</span>::<span class="ident">consts</span>::<span class="ident">U64</span><span class="op">&gt;</span>;</pre></div>
 <p>TODO</p>
-<p>Autogenerate the wrappers with <code>bindgen</code> and a Rust Procedural Macro</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/Cargo.toml#L9-L11"><code>rust/Cargo.toml</code></a></p>
+<pre><code class="language-text"># External Rust libraries used by this module.  See crates.io.
+[dependencies]
+heapless = &quot;0.6.1&quot; # `static` friendly data structures that don't require dynamic memory allocation: https://crates.io/crates/heapless
+</code></pre>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/Cargo.toml#L14-L18"><code>rust/Cargo.toml</code></a></p>
+<pre><code class="language-text"># Build this module as a Rust library, not a Rust application.  We will link this library with the BL602 firmware.
+[lib]
+name       = &quot;app&quot;  # Output will be named `libapp.a`
+crate-type = [&quot;staticlib&quot;]
+</code></pre>
+<h2 id="autogenerate-wrapper-functions" class="section-header"><a href="#autogenerate-wrapper-functions">3.2 Autogenerate Wrapper Functions</a></h2>
+<p><em>Sure looks like a lot of work to create the Wrapper Functions... When we import the entire BL602 IoT SDK?</em></p>
+<p>Someday we shall <strong>automatically generate the Wrapper Functions</strong> for the entire BL602 IoT SDK.</p>
+<p>We'll do that with the <strong><code>binden</code></strong> tool, helped by a <strong>Rust Procedural Macro</strong>.</p>
+<p>We've previously done this to import the LVGL graphics library and Apache Mynewt OS functions into Rust...</p>
+<ul>
+<li><a href="https://lupyuen.github.io/pinetime-rust-mynewt/articles/watchface#advanced-topic-rust-bindings-for-lvgl"><strong>&quot;Rust Bindings for LVGL&quot;</strong></a></li>
+</ul>
 <h1 id="rust-on-bl602-iot-sdk" class="section-header"><a href="#rust-on-bl602-iot-sdk">4 Rust on BL602 IoT SDK</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/rust-arch.png" alt="Rust on BL602 IoT SDK" /></p>
