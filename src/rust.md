@@ -469,6 +469,8 @@ Here are the steps to build the BL602 Rust Firmware `sdk_app_rust.bin`...
     Building Finish. To flash build output.
     ```
 
+    Ignore the error from `blflash`, we'll fix this in a while.
+
 1.  Our __BL602 Rust Firmware file__ has been generated at...
 
     ```text
@@ -576,14 +578,54 @@ Here's how we flash the Rust Firmware file `sdk_app_rust.bin` to BL602...
 
 Finally we run the BL602 Rust Firmware...
 
-1.  TODO
+1.  Set BL602 to __Normal Mode__ (Non-Flashing) and restart the board...
+
+    __For PineCone:__
+
+    -   Set the __PineCone Jumper (IO 8)__ to the __`L` Position__ [(Like this)](https://lupyuen.github.io/images/pinecone-jumperl.jpg)
+
+    -   Press the Reset Button
+
+    __For BL10:__
+
+    -   Press and release the __EN Button (Reset)__
+
+    __For Pinenut and MagicHome BL602:__
+
+    -   Disconnect the board from the USB Port
+
+    -   Connect __GPIO 8__ to __GND__
+
+    -   Reconnect the board to the USB port
+
+1.  __For macOS:__
+
+    The `run.sh` script should automatically launch CoolTerm after flashing...
 
     ```text
     ----- Run BL602 Firmware
     + open -a CoolTerm
     ```
 
-1.  TODO
+    [More about CoolTerm](https://lupyuen.github.io/articles/flash#watch-the-firmware-run)
+
+1.  __For Linux:__
+
+    Connect to BL602's UART Port at 2 Mbps like so...
+
+    ```bash
+    sudo screen /dev/ttyUSB0 2000000
+    ```
+
+1.  __For Windows:__ 
+
+    Use `putty` ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
+
+    [More details on connecting to BL602](https://lupyuen.github.io/articles/flash#watch-the-firmware-run)
+
+1.  In the serial console, press Enter to reveal the command prompt.
+
+    Enter `help` to show the commands...
 
     ```text
     # help
@@ -605,16 +647,24 @@ Finally we run the BL602 Rust Firmware...
     ls                       : file list
     hexdump                  : dump file
     cat                      : cat file
-
+    
     ====User Commands====
     rust_main                : Run Rust code
     blogset                  : blog pri set level
     blogdump                 : blog info dump
     bl_sys_time_now          : sys time now
+    ```
 
+1.  Enter `rust_main` to run our Rust code...
+
+    ```text
     # rust_main
     Hello from Rust!
     ```
+
+    The LED on our BL602 board should blink 5 times.
+
+    That's how we build, flash and run Rust Firmware with BL602 IoT SDK!
 
 # Rust Targets
 
