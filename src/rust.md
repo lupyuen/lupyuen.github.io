@@ -481,9 +481,43 @@ Here are the steps to build the BL602 Rust Firmware `sdk_app_rust.bin`...
 
 # Flash the BL602 Rust Firmware
 
-TODO
+Here's how we flash the Rust Firmware file `sdk_app_rust.bin` to BL602...
 
-1.  TODO
+1.  Set BL602 to __Flashing Mode__ and restart the board...
+
+    __For PineCone:__
+
+    -   Set the __PineCone Jumper (IO 8)__ to the __`H` Position__ [(Like this)](https://lupyuen.github.io/images/pinecone-jumperh.jpg)
+
+    -   Press the Reset Button
+
+    __For BL10:__
+
+    -   Connect BL10 to the USB port
+
+    -   Press and hold the __D8 Button (GPIO 8)__
+
+    -   Press and release the __EN Button (Reset)__
+
+    -   Release the D8 Button
+
+    __For Pinenut and MagicHome BL602:__
+
+    -   Disconnect the board from the USB Port
+
+    -   Connect __GPIO 8__ to __3.3V__
+
+    -   Reconnect the board to the USB port
+
+1.  __For macOS:__
+
+    Enter this at the command prompt...
+
+    ```bash
+    ./run.sh
+    ```
+
+    The script should automatically flash the firmware after building...
 
     ```text
     ----- Flash BL602 Firmware
@@ -516,9 +550,31 @@ TODO
     [INFO  blflash] Success
     ```
 
+    (We might need to edit the script to use the right serial port)
+
+1.  __For Linux and Windows:__
+
+    Copy `build_out/sdk_app_rust.bin` to the `blflash` folder.
+
+    Then enter this at the command prompt...
+
+    ```bash
+    # TODO: Change this to the downloaded blflash folder
+    cd blflash
+
+    # For Linux:
+    sudo cargo run flash sdk_app_lora.bin \
+        --port /dev/ttyUSB0
+
+    # For Windows: Change COM5 to the BL602 Serial Port
+    cargo run flash sdk_app_lora.bin --port COM5
+    ```
+
+    [More details on flashing firmware](https://lupyuen.github.io/articles/flash#flash-the-firmware)
+
 # Run the BL602 Rust Firmware
 
-TODO
+Finally we run the BL602 Rust Firmware...
 
 1.  TODO
 
