@@ -1131,7 +1131,7 @@ Let's look inside the script that builds, flashes and runs our Rust Firmware for
 
 The build script [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh) links the compiled Rust code into the BL602 firmware by overwriting the compiled `rust_app` Stub Library...
 
-- [`rust-app`: BL602 Stub Library for Rust Application](../../components/3rdparty/rust-app)
+- [`rust-app`: BL602 Stub Library for Rust Application](https://github.com/lupyuen/bl_iot_sdk/blob/rust/components/3rdparty/rust-app)
 
 This library contains a stub function for `rust_main`...
 
