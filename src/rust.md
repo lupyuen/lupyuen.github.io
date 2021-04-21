@@ -374,7 +374,7 @@ This produces a BL602 Rust Firmware file that we may __flash to BL602 the conven
 
 Here are the steps to build the BL602 Rust Firmware `sdk_app_rust.bin`...
 
-1.  Install __`blflash` and `xpack-riscv-none-embed-gcc`__...
+1.  Install __`rustup`, `blflash` and `xpack-riscv-none-embed-gcc`__...
 
     -   [__"Install rustup"__](https://lupyuen.github.io/articles/flash#install-rustup)
 
@@ -427,6 +427,8 @@ Here are the steps to build the BL602 Rust Firmware `sdk_app_rust.bin`...
     ```
 
     The script has built our firmware... C only, no Rust yet.
+
+    [More details on building BL602 firmware](https://lupyuen.github.io/articles/pinecone#building-firmware)
 
 1.  Next the script __compiles our Rust code__ into a static library: `libapp.a`
 
@@ -770,7 +772,7 @@ riscv32imc-unknown-none-elf
 
 Bummer... None of these Built-In Rust Targets support Hardware Floating-Point!
 
-(They're missing the __"`f`"__ designation for Hardware Floating-Point)
+(They're missing the __"`f`"__ designator for Hardware Floating-Point)
 
 Fortunately Rust lets us create __Custom Rust Targets__. Let's create one for BL602!
 
@@ -778,48 +780,68 @@ Fortunately Rust lets us create __Custom Rust Targets__. Let's create one for BL
 
 # Custom Rust Target for BL602
 
-To recap: We're creating a __Custom Rust Target__ for BL602 because...
+We're creating a __Custom Rust Target__ for BL602 because...
 
-1.  We can't link Rust code (compiled for __Software Floating-Point__) with BL602 IoT SDK (compiled for __Hardware Floating-Point__)
+-   We can't link Rust code (compiled for __Software Floating-Point__) with BL602 IoT SDK (compiled for __Hardware Floating-Point__)
 
-1.  Existing 32-bit RISC-V Rust Targets __don't support Hardware Floating-Point__
+-   Existing 32-bit RISC-V Rust Targets __don't support Hardware Floating-Point__
 
-TODO
+Here's how we create the Custom Rust Target for BL602: [`riscv32imacf-unknown-none-elf.json`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/riscv32imacf-unknown-none-elf.json)
 
-Building with our Custom Rust Target...
+1.  We __export an existing Rust Target__ `riscv32imac-unknown-none-elf`...
 
-```bash
-cargo build \
-    --target riscv32imacf-unknown-none-elf.json \
-    -Z build-std=core
-```
+    ```bash
+    rustc +nightly \
+        -Z unstable-options \
+        --print target-spec-json \
+        --target riscv32imac-unknown-none-elf \
+        >riscv32imac-unknown-none-elf.json
+    ```
 
-Changes to the Built-In Rust Target...
+    Here's the JSON Target File for `riscv32imac-unknown-none-elf`...
 
-```text
-"features": "+m,+a,+c,+f",
-```
+    -   [riscv32imac-unknown-none-elf.json: Software Floating-Point](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/riscv32imac-unknown-none-elf.json)
 
-And
 
-```text
-"llvm-abiname": "ilp32f",
-```
+1.  We __modify the JSON Target File__ to support Hardware Floating-Point.
 
-Dumping the Built-In Rust Target...
+    First we add "`+f`" to "`features`"...
 
-```bash
-rustc +nightly \
-    -Z unstable-options \
-    --print target-spec-json \
-    --target riscv32imac-unknown-none-elf
-```
+    ```text
+    "features": "+m,+a,+c,+f",
+    ```
 
-This produces [riscv32imac-unknown-none-elf.json](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/riscv32imac-unknown-none-elf.json)
+1.  We set the __Application Binary Interface__ so that the Rust Compiler will produce binaries for Hardware Floating-Point...
 
-Here's our Custom Rust Target:
+    ```text
+    "llvm-abiname": "ilp32f",
+    ```
 
-[From `riscv32imacf-unknown-none-elf.json`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/riscv32imacf-unknown-none-elf.json)
+    We discovered this from the GCC command that compiles the BL602 IoT SDK...
+
+    ```bash
+    gcc -march=rv32imfc -mabi=ilp32f ...
+    ```
+
+1.  Save the modified JSON Target File as...
+
+    ```text
+    riscv32imacf-unknown-none-elf.json
+    ```
+
+    (Which has the "`f`" designator for Hardware Floating-Point)
+
+1.  Now we may __compile our Rust code__ with the Custom Rust Target...
+
+    ```bash
+    cargo build \
+        --target riscv32imacf-unknown-none-elf.json \
+        -Z build-std=core
+    ```
+
+    We specify "`-Z build-std=core`" so that the Rust Compiler will __rebuild the Rust Core Library__ for our Custom Rust Target.
+
+Here's our Custom Rust Target for Hardware Floating-Point: [`riscv32imacf-unknown-none-elf.json`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/riscv32imacf-unknown-none-elf.json)
 
 ```json
 {
@@ -857,6 +879,10 @@ Here's our Custom Rust Target:
   ]
 }
 ```
+
+_How did we figure out the changes for "`features`" and "`llvm-abiname`"?_
+
+By exporting and comparing the Rust Targets for `riscv32imac` (32-bit Software Floating-Point) and `riscv64gc-unknown-none-elf` (64-bit Hardware Floating-Point).
 
 [More about Custom Rust Targets](https://docs.rust-embedded.org/embedonomicon/custom-target.html)
 
