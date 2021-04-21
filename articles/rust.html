@@ -479,9 +479,13 @@ Building Finish. To flash build output.
 <pre><code class="language-text">build_out/sdk_app_rust.bin
 </code></pre>
 <p>Let’s flash this to BL602 and run it!</p>
-<p>(See the Appendix for more about <code>run.sh</code>)</p>
 </li>
 </ol>
+<p>Check out the complete build log here…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L135-L523"><strong>Build Log for BL602 Rust Firmware</strong></a></li>
+</ul>
+<p>(See the Appendix for more about <code>run.sh</code>)</p>
 <h1 id="flash-the-bl602-rust-firmware" class="section-header"><a href="#flash-the-bl602-rust-firmware">6 Flash the BL602 Rust Firmware</a></h1>
 <p>Here’s how we flash the Rust Firmware file <code>sdk_app_rust.bin</code> to BL602…</p>
 <ol>
@@ -1018,6 +1022,10 @@ open -a CoolTerm
 <p>This needs to be modified for Linux and WSL.</p>
 </li>
 </ol>
+<p>Check out the complete build log here…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L135-L523"><strong>Build Log for BL602 Rust Firmware</strong></a></li>
+</ul>
 <h1 id="appendix-stub-library-for-bl602-rust" class="section-header"><a href="#appendix-stub-library-for-bl602-rust">15 Appendix: Stub Library for BL602 Rust</a></h1>
 <p>The build script <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh"><code>run.sh</code></a> links the compiled Rust code into the BL602 firmware by overwriting the compiled <code>rust_app</code> Stub Library…</p>
 <ul>

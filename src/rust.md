@@ -483,7 +483,11 @@ Here are the steps to build the BL602 Rust Firmware `sdk_app_rust.bin`...
 
     Let's flash this to BL602 and run it!
 
-    (See the Appendix for more about `run.sh`)
+Check out the complete build log here...
+
+-   [__Build Log for BL602 Rust Firmware__](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L135-L523)
+
+(See the Appendix for more about `run.sh`)
 
 # Flash the BL602 Rust Firmware
 
@@ -1126,6 +1130,10 @@ Let's look inside the script that builds, flashes and runs our Rust Firmware for
     ```
 
     This needs to be modified for Linux and WSL.
+
+Check out the complete build log here...
+
+-   [__Build Log for BL602 Rust Firmware__](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L135-L523)
 
 # Appendix: Stub Library for BL602 Rust
 
