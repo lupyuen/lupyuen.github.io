@@ -2,17 +2,17 @@
 
 📝 _22 Apr 2021_
 
-In the past 14 articles we've done so much with BL602 IoT SDK: LoRa wireless transceivers, SPI LCD displays, UART e-ink displays, I2C sensors, ...
+In the past 14 articles we've done so much with [__BL602 IoT SDK__](https://lupyuen.github.io/articles/pinecone): [LoRa wireless transceivers](https://lupyuen.github.io/articles/lora2), [SPI LCD displays](https://lupyuen.github.io/articles/display), [UART e-ink displays](https://lupyuen.github.io/articles/uart), [I2C sensors](https://lupyuen.github.io/articles/i2c), ...
 
 _Can we do this in Rust? (Instead of C)_
 
 _And flash our Rust firmware to BL602 over UART? (Instead of JTAG)_
 
-Let's run some Rust code on top of BL602 IoT SDK, and understand how that's possible.
+Let's run some __Rust code on top of BL602 IoT SDK__, and understand how that's possible.
 
 Today we won't be talking about the merits (and demerits) of Embedded Rust, we'll save that for the future.
 
-But if you have the tiniest interest in coding Rust firmware for BL602... Then read on!
+But if you have the tiniest interest in coding __Rust firmware for BL602__... Please read on!
 
 ![PineCone BL602 RISC-V Board](https://lupyuen.github.io/images/rust-title.jpg)
 
@@ -76,6 +76,8 @@ Instead of calling the __Multitasking Functions__ in FreeRTOS, we call the __Nim
 -   __`time_ms_to_ticks32`__: Convert milliseconds to FreeRTOS system ticks
 
 Now let's code-switch to Rust.
+
+[More about NimBLE Porting Layer](https://lupyuen.github.io/articles/lora2#multitask-with-nimble-porting-layer)
 
 # BL602 Blinky in Rust
 
@@ -716,11 +718,13 @@ Which means that BL602 supports __Hardware Floating-Point__ (Single Precision)..
 
 ![RISC-V ISA Base and Extensions](https://lupyuen.github.io/images/rust-riscv.png)
 
-The BL602 IoT SDK was compiled with this GCC command...
+BL602 IoT SDK was compiled with this GCC command...
 
 ```bash
 gcc -march=rv32imfc -mabi=ilp32f ...
 ```
+
+[(See this)](https://github.com/lupyuen/bl_iot_sdk/blob/rust/make_scripts_riscv/project.mk#L223-L224)
 
 This produces binaries that contain RISC-V __Floating-Point Instructions__.
 
@@ -823,6 +827,8 @@ Here's how we create the Custom Rust Target for BL602: [`riscv32imacf-unknown-no
     gcc -march=rv32imfc -mabi=ilp32f ...
     ```
 
+    [(See this)](https://github.com/lupyuen/bl_iot_sdk/blob/rust/make_scripts_riscv/project.mk#L223-L224)
+
 1.  Save the modified JSON Target File as...
 
     ```text
@@ -888,29 +894,75 @@ By exporting and comparing the Rust Targets for `riscv32imac` (32-bit Software F
 
 # Rust On BL602: Two More Ways
 
-TODO
+Since Oct 2020 the Sipeed BL602 Community has started porting __Embedded Rust to Bare Metal BL602__ (without BL602 IoT SDK)...
 
-[`sipeed/bl602-rust-guide`](https://github.com/sipeed/bl602-rust-guide)
+-   [__`sipeed/bl602-rust-guide`__](https://github.com/sipeed/bl602-rust-guide)
 
-[`9names/bl602-rust-example`](https://github.com/9names/bl602-rust-example)
+Embedded Rust on BL602 has its own __Hardware Abstraction Layer__, which is in [active development](https://github.com/sipeed/bl602-hal/commits/main)...
 
-[`9names/bl602-rom-wrapper`](https://github.com/9names/bl602-rom-wrapper)
+-   [__`sipeed/bl602-hal`__](https://github.com/sipeed/bl602-hal)
+
+This version of Embedded Rust doesn't run in XIP Flash Memory, instead it runs in __Cache Memory__ (ITCM / DTCM, similar to RAM). [(See this)](https://github.com/sipeed/bl602-rust-guide/blob/main/memory.x)
+
+Here's how we use a __JTAG Adapter__ (instead of flashing over UART) to run Embedded Rust on BL602 (from Dec 2020)...
+
+-   [__"Debug Rust on PineCone BL602 with VSCode and GDB"__](https://lupyuen.github.io/articles/debug)
+
+In Feb 2021 [`9names`](https://github.com/9names) created a new project that runs the Embedded Rust HAL in __XIP Flash Memory__ and works with UART flashing...
+
+-   [__`9names/bl602-rust-example`__](https://github.com/9names/bl602-rust-example)
+
+`9names` has also created an interesting Rust library that wraps the BL602 ROM functions...
+
+-   [__`9names/bl602-rom-wrapper`__](https://github.com/9names/bl602-rom-wrapper)
 
 # Apache NuttX on BL602
 
-TODO
+__Apache NuttX__ OS has been ported recently to BL602 (March 2021)...
 
-[NuttX on BL602](https://github.com/bouffalolab/incubator-nuttx/tree/master/arch/risc-v/src/bl602)
+-   [__NuttX on BL602__](https://github.com/bouffalolab/incubator-nuttx/tree/master/arch/risc-v/src/bl602)
 
-[Rust on NuttX](https://www.reddit.com/r/rust/comments/mbgujl/rust_integration_on_nuttx/)
+NuttX runs on Bare Metal BL602 in __XIP Flash Memory__ (flashed over UART), without BL602 IoT SDK.
 
-_What about Rust on Apache Mynewt?_
+We might be seeing __Rust on NuttX__...
 
-TODO
+-   [__Rust on NuttX__](https://www.reddit.com/r/rust/comments/mbgujl/rust_integration_on_nuttx/)
+
+If you're keen to contribute, please sign up above!
+
+## Rust on Apache Mynewt
+
+_What about Rust on Apache Mynewt for BL602?_
+
+We talked about Rust on Mynewt back in Jan 2021...
+
+-   [__"But Why Mynewt?"__](https://lupyuen.github.io/articles/gpio#but-why-mynewt)
+
+We planned to port Mynewt to BL602 by __reusing a subset of the BL602 IoT SDK__. (Specifically, the BL602 HALs.) We have integrated the BL602 GPIO HAL with Mynewt. [(See this)](https://lupyuen.github.io/articles/gpio)
+
+Sadly there's little interest in supporting Mynewt on BL602. (And we might have problems running Mynewt in XIP Flash)
+
+That's why today we're running Rust on BL602 IoT SDK (with FreeRTOS inside).
+
+## Graphical Flow Programming
+
+When we have a stable implementation of Rust on BL602, perhaps we can do __Graphical Flow Programming__ on BL602...
+
+[Check out this Twitter Thread](https://twitter.com/MisterTechBlog/status/1380926479094059011?s=20)
+
+![Graphical Flow Programming with Rete.js](https://lupyuen.github.io/images/rust-flow.png)
 
 # What's Next
 
-TODO
+In our next BL602 article we shall head back to __LoRaWAN, the low-power, long range IoT network__. [(See this)](https://lupyuen.github.io/articles/lora2#whats-next)
+
+We'll keep Rust on standby until we start building __complex firmware__ for BL602. 
+
+(And then we shall talk about the merits and demerits of Rust on BL602)
+
+Please drop me a note if you would like to see more __Rust on BL602 IoT SDK__!
+
+(Which includes auto-generating the Rust wrappers for the entire BL602 IoT SDK)
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
@@ -930,133 +982,241 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Build Script for BL602 Rust Firmware
 
-TODO
+Let's look inside the script that builds, flashes and runs our Rust Firmware for BL602: [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L10-L23)
 
-From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L10-L23)
+1.  The script begins with the build and flash settings...
 
-```bash
-#  Name of app
-export APP_NAME=sdk_app_rust
+    ```bash
+    #  Name of app
+    export APP_NAME=sdk_app_rust
 
-#  Build for BL602
-export CONFIG_CHIP_NAME=BL602
+    #  Build for BL602
+    export CONFIG_CHIP_NAME=BL602
 
-#  Where BL602 IoT SDK is located
-export BL60X_SDK_PATH=$PWD/../..
+    #  Where BL602 IoT SDK is located
+    export BL60X_SDK_PATH=$PWD/../..
 
-#  Where blflash is located
-export BLFLASH_PATH=$PWD/../../../blflash
+    #  Where blflash is located
+    export BLFLASH_PATH=$PWD/../../../blflash
 
-#  Where GCC is located
-export GCC_PATH=$PWD/../../../xpack-riscv-none-embed-gcc
+    #  Where GCC is located
+    export GCC_PATH=$PWD/../../../xpack-riscv-none-embed-gcc
+    ```
+
+    (Change BLFLASH_PATH and GCC_PATH for your machine)
+
+    The script was created for macOS, but should run on Linux and Windows (WSL) with minor tweaks.
+
+1.  Next we define the Custom Rust Target that supports Hardware Floating-Point...
+
+    From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L29-L33)
+
+    ```bash
+    #  Rust target: Custom target for llvm-abiname=ilp32f
+    #  https://docs.rust-embedded.org/embedonomicon/compiler-support.html#built-in-target
+    #  https://docs.rust-embedded.org/embedonomicon/custom-target.html
+    rust_build_target=$PWD/riscv32imacf-unknown-none-elf.json
+    rust_build_target_folder=riscv32imacf-unknown-none-elf
+    ```
+
+1.  We remove the Stub Library and the Rust Library is they exist...
+
+    From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L61-L71)
+
+    ```bash
+    #  Remove the Stub Library if it exists:
+    #  build_out/rust-app/librust-app.a
+    if [ -e $rust_app_dest ]; then
+        rm $rust_app_dest
+    fi
+
+    #  Remove the Rust Library if it exists:
+    #  rust/target/riscv32imacf-unknown-none-elf/debug/libapp.a
+    if [ -e $rust_app_build ]; then
+        rm $rust_app_build
+    fi
+    ```
+
+    (More about Stub Library in the next section)
+
+1.  We build the BL602 firmware with the Stub Library...
+
+    From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L77-L78)
+
+    ```bash
+    #  Build the firmware with the Stub Library
+    make
+    ```
+
+    This build contains only C code, no Rust code.
+
+1.  We compile the Rust Library with our Custom Rust Target that supports Hardware Floating-Point...
+
+    From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L84-L88)
+
+    ```bash
+    #  Build the Rust Library
+    pushd rust
+    rustup default nightly
+    cargo build $rust_build_options
+    popd
+    ```
+
+    The Rust Compiler command looks like this...
+
+    ```bash
+    cargo build \
+        --target ../riscv32imacf-unknown-none-elf.json \
+        -Z build-std=core
+    ```
+
+1.  We overwrite the Stub Library by the compiled Rust Library...
+
+    From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L90-L94)
+
+    ```bash
+    #  Replace the Stub Library by the compiled Rust Library
+    #  Stub Library: build_out/rust-app/librust-app.a
+    #  Rust Library: rust/target/riscv32imacf-unknown-none-elf/debug/libapp.a
+    cp $rust_app_build $rust_app_dest
+    ```
+
+1.  We link the compiled Rust Library into the BL602 Firmware...
+
+    From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L100-L101)
+
+    ```bash
+    #  Link the Rust Library to the firmware
+    make
+    ```
+
+    This creates the BL602 Rust Firmware file...
+
+    ```text
+    build_out/sdk_app_rust.bin
+    ```
+
+1.  We copy the BL602 Rust Firmware file to the `blflash` folder and flash to BL602...
+
+    From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L110-L124)
+
+    ```bash
+    #  Copy firmware to blflash
+    cp build_out/$APP_NAME.bin $BLFLASH_PATH
+
+    #  Flash the firmware
+    pushd $BLFLASH_PATH
+    cargo run flash $APP_NAME.bin \
+        --port /dev/tty.usbserial-14* \
+        --initial-baud-rate 230400 \
+        --baud-rate 230400
+    sleep 5
+    popd
+    ```
+
+    The `cargo run flash` command needs to be modified for Linux and WSL.
+
+1.  Finally we launch CoolTerm to run the BL602 Rust Firmware...
+
+    From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L130-L131)
+
+    ```bash
+    #  Run the firmware
+    open -a CoolTerm
+    ```
+
+    This needs to be modified for Linux and WSL.
+
+# Appendix: Stub Library for BL602 Rust
+
+The build script [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh) links the compiled Rust code into the BL602 firmware by overwriting the compiled `rust_app` Stub Library...
+
+- [`rust-app`: BL602 Stub Library for Rust Application](../../components/3rdparty/rust-app)
+
+This library contains a stub function for `rust_main`...
+
+From [`rust-app.c`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/components/3rdparty/rust-app/src/rust-app.c)
+
+```c
+/// Main function in Rust.
+/// TODO: Sync with customer_app/sdk_app_rust/sdk_app_rust/demo.c
+void rust_main(char *buf, int len, int argc, char **argv) {
+    printf("Build Error: components/3rdparty/rust-app not replaced by Rust compiled code\r\n");
+}
 ```
 
-From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L29-L33)
+_Why do we need the stub function `rust_main`?_
 
-```bash
-#  Rust target: Custom target for llvm-abiname=ilp32f
-#  https://docs.rust-embedded.org/embedonomicon/compiler-support.html#built-in-target
-#  https://docs.rust-embedded.org/embedonomicon/custom-target.html
-rust_build_target=$PWD/riscv32imacf-unknown-none-elf.json
-rust_build_target_folder=riscv32imacf-unknown-none-elf
+Because `rust_main` is referenced by our C code when defining the commands for our Command-Line Interface...
+
+From [`sdk_app_rust/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/sdk_app_rust/demo.c#L7-L16)
+
+```c
+//  TODO: Sync with components/3rdparty/rust-app/src/rust-app.c
+void rust_main(char *buf, int len, int argc, char **argv);
+
+/// List of commands
+const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
+    {
+        "rust_main",    
+        "Run Rust code",
+        rust_main
+    }
+};
 ```
 
-TODO
+If we omit `rust_main` from our Stub Library, our GitHub Actions build will fail. [(See this)](https://github.com/lupyuen/bl_iot_sdk/blob/master/.github/workflows/build.yml)
 
-From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L61-L71)
+# Appendix: Expose Inline Functions to Rust
 
-```bash
-#  Remove the Stub Library if it exists:
-#  build_out/rust-app/librust-app.a
-if [ -e $rust_app_dest ]; then
-    rm $rust_app_dest
-fi
+Many functions from the [NimBLE Porting Layer](https://lupyuen.github.io/articles/lora2#multitask-with-nimble-porting-layer) are declared as "`static inline`"...
 
-#  Remove the Rust Library if it exists:
-#  rust/target/riscv32imacf-unknown-none-elf/debug/libapp.a
-if [ -e $rust_app_build ]; then
-    rm $rust_app_build
-fi
+From [`nimble_npl.h`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/components/3rdparty/nimble-porting-layer/include/nimble_npl.h#L153)
+
+```c
+//  static inline function
+static inline void ble_npl_time_delay(ble_npl_time_t ticks) { ... }
 ```
 
-TODO
+This becomes a problem when we import `ble_npl_time_delay` into Rust... `ble_npl_time_delay` isn't really a C function, it has been inlined into the calling C function!
 
-From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L77-L78)
+To work around this we disable the `static` and `inline` keyworks...
 
-```bash
-#  Build the firmware with the Stub Library
-make
+```c
+//  Disable static inline
+#define static
+#define inline
 ```
 
-TODO
+So the GCC Compiler compiles our static inline function as regular non-inline function...
 
-
-From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L84-L88)
-
-```bash
-#  Build the Rust Library
-pushd rust
-rustup default nightly
-cargo build $rust_build_options
-popd
+```c
+void ble_npl_time_delay(ble_npl_time_t ticks) { ... }
 ```
 
-TODO
+(Yeah it's sneaky)
 
-```bash
-cargo build \
-    --target riscv32imacf-unknown-none-elf.json \
-    -Z build-std=core
-```
+Here's how we implement this for our BL602 Rust Firmware...
 
-TODO
+[From `sdk_app_rust/nimble.c`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/sdk_app_rust/nimble.c)
 
-From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L90-L94)
+```c
+//  Export the inline functions for NimBLE Porting Layer to Rust
+//  TODO: Move this to nimble-porting-layer library
 
-```bash
-#  Replace the Stub Library by the compiled Rust Library
-#  Stub Library: build_out/rust-app/librust-app.a
-#  Rust Library: rust/target/riscv32imacf-unknown-none-elf/debug/libapp.a
-ls -l $rust_app_build
-cp $rust_app_build $rust_app_dest
-```
+//  Include FreeRTOS before NPL, so that FreeRTOS will be inlined
+#include "FreeRTOS.h"
 
-TODO
+//  Disable static inline so:
+//    static inline void ble_npl_time_delay(ble_npl_time_t ticks) { ... }
+//  Becomes:
+//    void ble_npl_time_delay(ble_npl_time_t ticks) { ... }
+#define static
+#define inline
 
-
-From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L100-L101)
-
-```bash
-#  Link the Rust Library to the firmware
-make
-```
-
-TODO
-
-
-From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L110-L124)
-
-```bash
-#  Copy firmware to blflash
-cp build_out/$APP_NAME.bin $BLFLASH_PATH
-
-#  Flash the firmware
-pushd $BLFLASH_PATH
-cargo run flash $APP_NAME.bin \
-    --port /dev/tty.usbserial-14* \
-    --initial-baud-rate 230400 \
-    --baud-rate 230400
-sleep 5
-popd
-```
-
-TODO
-
-From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L130-L131)
-
-```bash
-#  Run the firmware
-open -a CoolTerm
+//  Define the functions like:
+//    void ble_npl_time_delay(ble_npl_time_t ticks) { ... }
+#include "nimble_npl.h"
 ```
 
 ![PineCone BL602 RISC-V Board](https://lupyuen.github.io/images/rust-crab.jpg)
