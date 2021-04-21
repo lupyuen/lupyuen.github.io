@@ -147,6 +147,13 @@
   ],
   "publications": [
     {
+      "name": "Run Rust RISC-V Firmware with BL602 IoT SDK",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2021-04-21",
+      "website": "https://lupyuen.github.io/articles/rust",
+      "summary": "How we build, flash and run Rust firmware on BL602 RISC-V SoC... With the BL602 IoT SDK"
+    },
+    {
       "name": "PineCone BL602 RISC-V Board Receives LoRa Packets",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-04-04",

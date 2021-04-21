@@ -1,6 +1,6 @@
 # Run Rust RISC-V Firmware with BL602 IoT SDK
 
-📝 _22 Apr 2021_
+📝 _21 Apr 2021_
 
 In the past 14 articles we've done so much with [__BL602 IoT SDK__](https://lupyuen.github.io/articles/pinecone): [LoRa wireless transceivers](https://lupyuen.github.io/articles/lora2), [SPI LCD displays](https://lupyuen.github.io/articles/display), [UART e-ink displays](https://lupyuen.github.io/articles/uart), [I2C sensors](https://lupyuen.github.io/articles/i2c), ...
 

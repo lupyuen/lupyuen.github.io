@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Run Rust RISC-V Firmware with BL602 IoT SDK</title>
+            <link>https://lupyuen.github.io/articles/rust</link>
+            <description><![CDATA[How we build, flash and run Rust firmware on BL602 RISC-V SoC... With the BL602 IoT SDK]]></description>
+            <guid>https://lupyuen.github.io/articles/rust</guid>
+            <pubDate>Wed, 21 Apr 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>PineCone BL602 RISC-V Board Receives LoRa Packets</title>
             <link>https://lupyuen.github.io/articles/lora2</link>
             <description><![CDATA[How PineCone BL602 RISC-V Board with SX1276 receives LoRa packets... Transmitted by RAKwireless WisBlock]]></description>
