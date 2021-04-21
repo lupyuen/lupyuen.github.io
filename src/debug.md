@@ -18,7 +18,7 @@ Today we'll learn to build and debug [__Rust Firmware for PineCone__](https://gi
 
 The instructions here should work on Linux, macOS and Windows.
 
-[__UPDATE:__ We're now experimenting with a new way to build Rust firmware for BL602... See this](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_rust)
+[__UPDATE:__ We have a new way to create Rust Firmware with BL602 IoT SDK, check this out](https://lupyuen.github.io/articles/rust)
 
 [Watch the Sneak Peek on YouTube](https://youtu.be/b9f2vxYahHY)
 

@@ -825,7 +825,9 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Load Firmware to Cache Memory, not Flash Memory
 
-[__UPDATE: Check out this Rust Firmware that runs in XIP Flash Memory instead of Cache Memory__](https://github.com/9names/bl602-rust-example)
+[__UPDATE:__ We have a new way to create Rust Firmware with BL602 IoT SDK and flash to BL602 Flash Memory over UART, check this out](https://lupyuen.github.io/articles/rust)
+
+[__UPDATE:__ Check out this Rust Firmware that runs in Flash Memory instead of Cache Memory](https://github.com/9names/bl602-rust-example)
 
 _Why did we load our Mynewt Firmware (and Rust Firmware) to Cache Memory instead of Flash Memory?_
 

@@ -340,11 +340,13 @@ _Sure looks like a lot of repetitive work to create the Wrapper Functions... Whe
 
 Someday we shall __automatically generate the Wrapper Functions__ for the entire BL602 IoT SDK.
 
-We'll do that with the __`binden`__ tool, helped by a __Rust Procedural Macro__.
+We'll do that with the __`bindgen`__ tool, helped by a __Rust Procedural Macro__.
 
 We've previously done this to import the LVGL graphics library and Apache Mynewt OS functions into Rust...
 
 -   [__"Rust Bindings for LVGL"__](https://lupyuen.github.io/pinetime-rust-mynewt/articles/watchface#advanced-topic-rust-bindings-for-lvgl)
+
+In short: We shall run a script that will scan the `*.h` header files from the BL602 IoT SDK and create the wrapper functions we've seen earlier. Yes it's possible!
 
 # Rust on BL602 IoT SDK
 

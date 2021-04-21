@@ -172,10 +172,6 @@ How we code BL602 firmware the __safer, simpler way with Rust.__
 
 -   ["Debug Rust on PineCone BL602 with VSCode and GDB"](https://lupyuen.github.io/articles/debug)
 
--   ["Rust Firmware runs in BL602 Cache Memory, not Flash Memory"](https://lupyuen.github.io/articles/mynewt#appendix-load-firmware-to-cache-memory-not-flash-memory)
-
--   ["BL602 Rust Firmware"](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_rust)
-
 ![Mynewt on BL602](https://lupyuen.github.io/images/book-mynewt.jpg)
 
 # Mynewt on BL602
