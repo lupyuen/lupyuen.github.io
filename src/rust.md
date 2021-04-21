@@ -1171,7 +1171,7 @@ If we omit `rust_main` from our Stub Library, our GitHub Actions build will fail
 
 Many functions from the [NimBLE Porting Layer](https://lupyuen.github.io/articles/lora2#multitask-with-nimble-porting-layer) are declared as "`static inline`"...
 
-From [`nimble_npl.h`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/components/3rdparty/nimble-porting-layer/include/nimble_npl.h#L153)
+From [`nimble_npl_os.h`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/components/3rdparty/nimble-porting-layer/include/nimble_npl_os.h#L270-L274)
 
 ```c
 //  static inline function

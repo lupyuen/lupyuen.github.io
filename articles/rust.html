@@ -1049,7 +1049,7 @@ const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
 <p>If we omit <code>rust_main</code> from our Stub Library, our GitHub Actions build will fail. <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/.github/workflows/build.yml">(See this)</a></p>
 <h1 id="appendix-expose-inline-functions-to-rust" class="section-header"><a href="#appendix-expose-inline-functions-to-rust">16 Appendix: Expose Inline Functions to Rust</a></h1>
 <p>Many functions from the <a href="https://lupyuen.github.io/articles/lora2#multitask-with-nimble-porting-layer">NimBLE Porting Layer</a> are declared as “<code>static inline</code>”…</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/components/3rdparty/nimble-porting-layer/include/nimble_npl.h#L153"><code>nimble_npl.h</code></a></p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/components/3rdparty/nimble-porting-layer/include/nimble_npl_os.h#L270-L274"><code>nimble_npl_os.h</code></a></p>
 <pre><code class="language-c">//  static inline function
 static inline void ble_npl_time_delay(ble_npl_time_t ticks) { ... }
 </code></pre>
