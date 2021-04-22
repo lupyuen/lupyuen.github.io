@@ -769,7 +769,8 @@ objsize
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/mynewt.md"><code>lupyuen.github.io/src/mynewt.md</code></a></p>
 <h1 id="appendix-load-firmware-to-cache-memory-not-flash-memory" class="section-header"><a href="#appendix-load-firmware-to-cache-memory-not-flash-memory">17 Appendix: Load Firmware to Cache Memory, not Flash Memory</a></h1>
-<p><a href="https://github.com/9names/bl602-rust-example"><strong>UPDATE: Check out this Rust Firmware that runs in XIP Flash Memory instead of Cache Memory</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/rust"><strong>UPDATE:</strong> We have a new way to create Rust Firmware with BL602 IoT SDK and flash to BL602 Flash Memory over UART, check this out</a></p>
+<p><a href="https://github.com/9names/bl602-rust-example"><strong>UPDATE:</strong> Check out this Rust Firmware that runs in Flash Memory instead of Cache Memory</a></p>
 <p><em>Why did we load our Mynewt Firmware (and Rust Firmware) to Cache Memory instead of Flash Memory?</em></p>
 <p>Because OpenOCD couldn't load our Mynewt Firmware (and Rust Firmware) into Flash Memory. </p>
 <p>(Probably because of Flash Protection. Or because writing to BL602 Flash Memory hasn't been implemented in OpenOCD.)</p>
