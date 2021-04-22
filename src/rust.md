@@ -1004,6 +1004,10 @@ _Auto-generating Rust Wrappers for BL602 IoT SDK with `bl602-rust-wrapper`_
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1383219945308184578)
 
+1.  We're using the demo-friendly command-line interface for our BL602 firmware, and `rust_main` looks like some kind of script... But `rust_main` is actually compiled Rust code!
+
+    Our Rust firmware runs exactly the same way as C firmware, compiled into efficient RISC-V machine code. [(More about this)](https://www.reddit.com/r/PINE64official/comments/mv858f/run_rust_riscv_firmware_with_bl602_iot_sdk/gvem3zy?utm_source=share&utm_medium=web2x&context=3)
+
 # Appendix: Build Script for BL602 Rust Firmware
 
 Let's look inside the script that builds, flashes and runs our Rust Firmware for BL602: [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L10-L23)
