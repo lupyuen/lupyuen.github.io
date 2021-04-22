@@ -680,6 +680,10 @@ Finally we run the BL602 Rust Firmware...
 
     That's how we build, flash and run Rust Firmware with BL602 IoT SDK!
 
+![Our BL602 Rust Firmware running with CoolTerm](https://lupyuen.github.io/images/rust-coolterm.png)
+
+_Our BL602 Rust Firmware running with CoolTerm_
+
 # Rust Targets
 
 _Why did we compile our Rust Firmware with this unusual JSON target?_
