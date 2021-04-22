@@ -348,7 +348,7 @@ We've previously done this to import the LVGL graphics library and Apache Mynewt
 
 In short: We shall run a script that will scan the `*.h` header files from the BL602 IoT SDK and create the wrapper functions we've seen earlier. Yes it's possible!
 
-[(Here's a sneak peek)](https://twitter.com/MisterTechBlog/status/1385029020799045634)
+[(Here's a sneak peek)](https://github.com/lupyuen/bl602-rust-wrapper)
 
 # Rust on BL602 IoT SDK
 
@@ -972,7 +972,7 @@ We'll keep Rust on standby until we start building __complex firmware__ for BL60
 
 Please drop me a note if you would like to see more __Rust on BL602 IoT SDK__!
 
-(Which includes auto-generating the Rust wrappers for the entire BL602 IoT SDK... [Here's a sneak peek](https://twitter.com/MisterTechBlog/status/1385029020799045634))
+(Which includes auto-generating the Rust wrappers for the entire BL602 IoT SDK... [Here's a sneak peek](https://github.com/lupyuen/bl602-rust-wrapper))
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
