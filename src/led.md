@@ -164,6 +164,8 @@ int bl_gpio_enable_input( uint8_t pin, uint8_t pullup, uint8_t pulldown);
 
 Check out this sample code for GPIO Output...
 
+-   [__"BL602 Blinky in C"__](https://lupyuen.github.io/articles/rust#bl602-blinky-in-c)
+
 -   [__"Configure GPIO Output Pin"__](https://lupyuen.github.io/articles/spi#configure-chip-select-pin-as-gpio-output-pin)
 
 ## Read and Write GPIO
