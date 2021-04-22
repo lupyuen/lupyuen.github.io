@@ -77,6 +77,8 @@ Instead of calling the __Multitasking Functions__ in FreeRTOS, we call the __Nim
 
 Now let's code-switch to Rust.
 
+[More about BL602 GPIO HAL](https://lupyuen.github.io/articles/led#how-it-works-bl602-gpio)
+
 [More about NimBLE Porting Layer](https://lupyuen.github.io/articles/lora2#multitask-with-nimble-porting-layer)
 
 # BL602 Blinky in Rust
