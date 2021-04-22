@@ -708,7 +708,7 @@ __`riscv32imac`__ describes the capabilities of our RISC-V CPU...
 | Designation | Meaning |
 |:---:|:---|
 | __`rv32i`__ | 32-bit RISC-V with 32 registers
-| __`m`__ | Multiplication + Division
+| __`m`__ | Integer Multiplication + Division
 | __`a`__ | Atomic Instructions
 | __`c`__ | Compressed Instructions
 
