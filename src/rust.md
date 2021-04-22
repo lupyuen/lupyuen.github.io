@@ -716,6 +716,8 @@ When we link the compiled Rust code with BL602 IoT SDK, the GCC Linker fails wit
 Can't link soft-float modules with single-float modules
 ```
 
+[(See this)](https://twitter.com/MisterTechBlog/status/1383075111431938051)
+
 _Why?_
 
 ## BL602 supports Hardware Floating-Point
