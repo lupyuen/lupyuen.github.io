@@ -203,7 +203,7 @@ Finally we yield control to FreeRTOS, to allow other tasks to run...
 }
 ```
 
-The code in this article is based on the WisBlock LoRa Receiver Example: [`LoRaP2P_RX.ino`](https://github.com/RAKWireless/WisBlock/blob/master/examples/communications/LoRa/LoRaP2P/LoRaP2P_RX/LoRaP2P_RX.ino)
+The code in this article is based on the (now obsolete) WisBlock LoRa Receiver Example: [`LoRaP2P_RX.ino`](https://github.com/RAKWireless/WisBlock/blob/5082329327d723556e3613dc0eabcf399600a258/examples/communications/LoRa/LoRaP2P/LoRaP2P_RX/LoRaP2P_RX.ino)
 
 [(And it bears a striking resemblance to the code for PineCone BL602 LoRa)](https://lupyuen.github.io/articles/lora#initialise-lora-transceiver)
 

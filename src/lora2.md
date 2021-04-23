@@ -1254,6 +1254,8 @@ The above components are shipped in the [__WisBlock Connected Box__](https://sto
     =========================== [SUCCESS] Took 4.49 seconds ===========================
     ```
 
+    This WisBlock code is based on the (now obsolete) WisBlock LoRa Transmitter Example: [`LoRaP2P_TX.ino`](https://github.com/RAKWireless/WisBlock/blob/5082329327d723556e3613dc0eabcf399600a258/examples/communications/LoRa/LoRaP2P/LoRaP2P_TX/LoRaP2P_TX.ino)
+
 ## Flash the firmware
 
 1.  __Connect WisBlock__ to our computer's USB port
