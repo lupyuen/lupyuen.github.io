@@ -172,6 +172,10 @@ How we code BL602 firmware the __safer, simpler way with Rust.__
 
 -   ["Debug Rust on PineCone BL602 with VSCode and GDB"](https://lupyuen.github.io/articles/debug)
 
+-   ["Rust in XIP Flash Memory by 9names"](https://lupyuen.github.io/articles/rust#rust-on-bl602-two-more-ways)
+
+-   ["Rust on Apache NuttX?"](https://lupyuen.github.io/articles/rust#apache-nuttx-on-bl602)
+
 ![Mynewt on BL602](https://lupyuen.github.io/images/book-mynewt.jpg)
 
 # Mynewt on BL602
@@ -181,6 +185,8 @@ Will BL602 run without FreeRTOS? Study the ongoing port of __Apache Mynewt opera
 -   ["Porting Mynewt to PineCone BL602"](https://lupyuen.github.io/articles/mynewt)
 
 -   ["Mynewt GPIO ported to PineCone BL602 RISC-V Board"](https://lupyuen.github.io/articles/gpio)
+
+-   ["Apache NuttX on BL602"](https://lupyuen.github.io/articles/rust#apache-nuttx-on-bl602)
 
 ![What's Next](https://lupyuen.github.io/images/book-next.jpg)
 
