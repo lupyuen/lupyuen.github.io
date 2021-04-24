@@ -970,6 +970,16 @@ When we have a stable implementation of Rust on BL602, perhaps we can do __Graph
 
 ![Graphical Flow Programming with Rete.js](https://lupyuen.github.io/images/rust-flow.png)
 
+## But Why C?
+
+_But seriously... Why are we still coding BL602 Firmware in C? Why not code everything in Rust?_
+
+Because __some BL602 features work better in C__ than in Rust. 
+
+Like __SPI with DMA__, which is useful for SPI displays that require high-bandwidth data transfer.
+
+[More about BL602 SPI with DMA](https://lupyuen.github.io/articles/spi#spi-with-direct-memory-access)
+
 # What's Next
 
 In our next BL602 article we shall head back to __LoRaWAN, the low-power, long range IoT network__. [(See this)](https://lupyuen.github.io/articles/lora2#whats-next)
