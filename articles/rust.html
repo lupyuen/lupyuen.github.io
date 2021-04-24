@@ -81,7 +81,8 @@
 <li><a href="#rust-on-bl602-two-more-ways">10 Rust On BL602: Two More Ways</a><ul></ul></li>
 <li><a href="#apache-nuttx-on-bl602">11 Apache NuttX on BL602</a><ul>
 <li><a href="#rust-on-apache-mynewt">11.1 Rust on Apache Mynewt</a><ul></ul></li>
-<li><a href="#graphical-flow-programming">11.2 Graphical Flow Programming</a><ul></ul></li></ul></li>
+<li><a href="#graphical-flow-programming">11.2 Graphical Flow Programming</a><ul></ul></li>
+<li><a href="#but-why-c">11.3 But Why C?</a><ul></ul></li></ul></li>
 <li><a href="#whats-next">12 What's Next</a><ul></ul></li>
 <li><a href="#notes">13 Notes</a><ul></ul></li>
 <li><a href="#appendix-build-script-for-bl602-rust-firmware">14 Appendix: Build Script for BL602 Rust Firmware</a><ul></ul></li>
@@ -889,6 +890,11 @@ riscv32imc-unknown-none-elf
 <p>When we have a stable implementation of Rust on BL602, perhaps we can do <strong>Graphical Flow Programming</strong> on BL602...</p>
 <p><a href="https://twitter.com/MisterTechBlog/status/1380926479094059011?s=20">Check out this Twitter Thread</a></p>
 <p><img src="https://lupyuen.github.io/images/rust-flow.png" alt="Graphical Flow Programming with Rete.js" /></p>
+<h2 id="but-why-c" class="section-header"><a href="#but-why-c">11.3 But Why C?</a></h2>
+<p><em>But seriously... Why are we still coding BL602 Firmware in C? Why not code everything in Rust?</em></p>
+<p>Because <strong>some BL602 features work better in C</strong> than in Rust. </p>
+<p>Like <strong>SPI with DMA</strong>, which is useful for SPI displays that require high-bandwidth data transfer.</p>
+<p><a href="https://lupyuen.github.io/articles/spi#spi-with-direct-memory-access">More about BL602 SPI with DMA</a></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">12 What's Next</a></h1>
 <p>In our next BL602 article we shall head back to <strong>LoRaWAN, the low-power, long range IoT network</strong>. <a href="https://lupyuen.github.io/articles/lora2#whats-next">(See this)</a></p>
 <p>We'll keep Rust on standby until we start building <strong>complex firmware</strong> for BL602. </p>
