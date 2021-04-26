@@ -236,6 +236,8 @@ Could there be some low-level chunk of executable code (non RISC-V) that runs __
 
 By studying the WiFi Buffers and the associated WiFi Functions, we may uncover the Code Blob that runs inside the WiFi Controller.
 
+[__UPDATE:__ Check out the C code that has been reverse-engineered from `libbl602_wifi` by `BraveHeartFLOSSDev`](https://github.com/BraveHeartFLOSSDev/bl602nutcracker1)
+
 [__UPDATE:__ There is indeed a blob for the BL602 WiFi / Bluetooth LE Controller that we need help to reverse-engineer and verify. See this](https://github.com/pine64/bl602-docs/tree/main/hardware_notes#rf-ip)
 
 [More about the BL602 WiFi Controller](https://github.com/pine64/bl602-docs/tree/main/hardware_notes)
