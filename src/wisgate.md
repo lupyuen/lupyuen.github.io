@@ -284,6 +284,10 @@ static void lorawan_join_failed_handler(void) {
 }
 ```
 
+In case you're curious: WisBlock transmits this LoRaWAN Packet to WisGate when requesting to join the LoRaWAN network...
+
+![Join LoRaWAN Network Request](https://lupyuen.github.io/images/wisgate-join.png)
+
 # Send LoRaWAN Packets in Arduino
 
 TODO
