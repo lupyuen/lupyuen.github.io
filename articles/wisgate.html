@@ -216,9 +216,7 @@ uint8_t nodeNwsKey[16] = { 0x7E, 0xAC, 0xE2, 0x55, 0xB8, 0xA5, 0xE2, 0x69, 0x91,
 uint8_t nodeAppsKey[16] = { 0xFB, 0xAC, 0xB6, 0x47, 0xF3, 0x58, 0x45, 0xC7, 0x50, 0x7D, 0xBF, 0x16, 0x8B, 0xA8, 0xC1, 0x7C };
 </code></pre>
 <h2 id="initialise-lorawan-client" class="section-header"><a href="#initialise-lorawan-client">4.2 Initialise LoRaWAN Client</a></h2>
-<p>Following the Arduino convention, our <code>setup</code> function shall we executed at startup...</p>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L110-L213"><code>From main.cpp</code></a></p>
+<p>Following the Arduino convention, our <strong><code>setup</code></strong> function shall be executed at startup: <a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L110-L213"><code>main.cpp</code></a></p>
 <pre><code class="language-c">// At startup, we join the LoRaWAN network, in either OTAA or ABP mode
 void setup() {
   ...
@@ -228,11 +226,13 @@ void setup() {
   //  Omitted: Initialize Serial for debug output
   ...
   
-  //  Create a timer to send data to server periodically
+  //  Create a timer to send data to server every 20 seconds
   uint32_t err_code err_code = timers_init();
   if (err_code != 0) { return; }
 </code></pre>
-<p>TODO</p>
+<p>Here we <strong>initialise the LoRa Transceiver</strong> (SX1262) and create a timer that will send a LoRaWAN Packet every 20 seconds.</p>
+<p>(More about <code>timers_init</code> in a while)</p>
+<p>Next we set the <strong>Device EUI, Application EUI and Application Key</strong> that will be used for joining the LoRaWAN Network...</p>
 <pre><code class="language-c">  //  Setup the EUIs and Keys
   if (doOTAA) {
     //  Set the EUIs and Keys for OTAA
@@ -244,8 +244,8 @@ void setup() {
     ...
   }
 </code></pre>
-<p>TODO</p>
-<pre><code class="language-c">  //  Initialize LoRaWaN
+<p>Then we <strong>initialise the LoRaWAN Client</strong>...</p>
+<pre><code class="language-c">  //  Initialise LoRaWAN
   err_code = lmh_init(  //  lmh_init now takes 3 parameters instead of 5
     &amp;g_lora_callbacks,  //  Callbacks 
     g_lora_param_init,  //  Functions
@@ -255,14 +255,15 @@ void setup() {
   );
   if (err_code != 0) { return; }
 </code></pre>
-<p>TODO</p>
+<p>(More about <code>g_lora_callbacks</code> in a while)</p>
+<p>Finally we send the <strong>Join LoRaWAN Network Request</strong> to WisGate...</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
   <span class="comment">// Start Join procedure</span>
   <span class="ident">lmh_join</span>();
 }</pre></div>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L87-L97"><code>From main.cpp</code></a></p>
+<p><em>What's in <code>g_lora_callbacks</code>?</em></p>
+<p><code>g_lora_callbacks</code> contains a list of Callback Functions that will be called by the LoRaWAN Client: <a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L87-L97"><code>main.cpp</code></a></p>
 <pre><code class="language-c">//  Structure containing LoRaWan callback functions, 
 //  needed for lmh_init()
 static lmh_callback_t g_lora_callbacks = {
@@ -275,8 +276,10 @@ static lmh_callback_t g_lora_callbacks = {
     lorawan_join_failed_handler
 };
 </code></pre>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L215-L220"><code>From main.cpp</code></a></p>
+<p>We shall see the Callback Functions in action soon.</p>
+<p><em>What about <code>loop</code>, the Arduino function that will be called to do work?</em></p>
+<p>Our program uses the Callback Functions to trigger actions, so we won't be <code>loop</code>ing today.</p>
+<p>Here's our <code>loop</code> function in <a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L215-L220"><code>main.cpp</code></a></p>
 <pre><code class="language-c">//  Nothing here for now
 void loop() {
   //  Put your application tasks here, like reading of sensors,
