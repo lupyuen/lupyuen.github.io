@@ -68,20 +68,20 @@
 <li><a href="#wisgate-d4h-hardware">1 WisGate D4H Hardware</a><ul></ul></li>
 <li><a href="#chirpstack-lorawan-stack">2 ChirpStack LoRaWAN Stack</a><ul></ul></li>
 <li><a href="#lorawan-application">3 LoRaWAN Application</a><ul></ul></li>
-<li><a href="#lorawan-arduino-client">4 LoRaWAN Arduino Client</a><ul></ul></li>
-<li><a href="#initialise-lorawan-client-in-arduino">5 Initialise LoRaWAN Client in Arduino</a><ul></ul></li>
-<li><a href="#join-lorawan-network-in-arduino">6 Join LoRaWAN Network in Arduino</a><ul></ul></li>
-<li><a href="#send-lorawan-packets-in-arduino">7 Send LoRaWAN Packets in Arduino</a><ul></ul></li>
-<li><a href="#output-log">8 Output Log</a><ul></ul></li>
-<li><a href="#view-received-lorawan-packets">9 View Received LoRaWAN Packets</a><ul></ul></li>
-<li><a href="#troubleshoot-lorawan">10 Troubleshoot LoRaWAN</a><ul></ul></li>
-<li><a href="#visualise-lorawan-with-software-defined-radio">11 Visualise LoRaWAN with Software Defined Radio</a><ul></ul></li>
-<li><a href="#lorawan-join-request">12 LoRaWAN Join Request</a><ul></ul></li>
-<li><a href="#lorawan-message-integrity-code">13 LoRaWAN Message Integrity Code</a><ul></ul></li>
-<li><a href="#lorawan-nonce">14 LoRaWAN Nonce</a><ul></ul></li>
-<li><a href="#log-transmitted-packets">15 Log Transmitted Packets</a><ul></ul></li>
-<li><a href="#whats-next">16 What's Next</a><ul></ul></li>
-<li><a href="#notes">17 Notes</a><ul></ul></li></ul></nav><p>📝 <em>3 May 2021</em></p>
+<li><a href="#lorawan-arduino-client">4 LoRaWAN Arduino Client</a><ul>
+<li><a href="#initialise-lorawan-client">4.1 Initialise LoRaWAN Client</a><ul></ul></li>
+<li><a href="#join-lorawan-network">4.2 Join LoRaWAN Network</a><ul></ul></li>
+<li><a href="#send-lorawan-packet">4.3 Send LoRaWAN Packet</a><ul></ul></li></ul></li>
+<li><a href="#output-log">5 Output Log</a><ul></ul></li>
+<li><a href="#view-received-lorawan-packets">6 View Received LoRaWAN Packets</a><ul></ul></li>
+<li><a href="#troubleshoot-lorawan">7 Troubleshoot LoRaWAN</a><ul></ul></li>
+<li><a href="#visualise-lorawan-with-software-defined-radio">8 Visualise LoRaWAN with Software Defined Radio</a><ul></ul></li>
+<li><a href="#lorawan-join-request">9 LoRaWAN Join Request</a><ul></ul></li>
+<li><a href="#lorawan-message-integrity-code">10 LoRaWAN Message Integrity Code</a><ul></ul></li>
+<li><a href="#lorawan-nonce">11 LoRaWAN Nonce</a><ul></ul></li>
+<li><a href="#log-transmitted-packets">12 Log Transmitted Packets</a><ul></ul></li>
+<li><a href="#whats-next">13 What's Next</a><ul></ul></li>
+<li><a href="#notes">14 Notes</a><ul></ul></li></ul></nav><p>📝 <em>3 May 2021</em></p>
 <p>While testing a new LoRaWAN gadget (<a href="https://lupyuen.github.io/articles/lora2">PineCone BL602</a>), I bought a LoRaWAN Gateway from RAKwireless: <a href="https://docs.rakwireless.com/Product-Categories/WisGate/RAK7248/Datasheet/"><strong>RAK7248 WisGate Developer D4H Gateway</strong></a>.</p>
 <p>Here's what I learnt about <strong>settting up a LoRaWAN Network</strong> with WisGate Developer D4H... And testing it with the <strong>RAKwireless WisBlock dev kit in Arduino</strong>.</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-title.jpg" alt="RAKwireless RAK7248 WisGate Developer D4H LoRaWAN Gateway" /></p>
@@ -153,23 +153,25 @@
 <p>Click <strong><code>Set Device-Keys</code></strong></p>
 <p>We're all set to connect our Arduino LoRaWAN Device to WisGate!</p>
 <h1 id="lorawan-arduino-client" class="section-header"><a href="#lorawan-arduino-client">4 LoRaWAN Arduino Client</a></h1>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/wisblock-title.jpg" alt="RAKwireless RAK4630 WisBlock LPWAN Module mounted on WisBlock Base Board" /></p>
-<p><em>RAKwireless RAK4630 WisBlock LPWAN Module mounted on WisBlock Base Board</em></p>
-<p>Source code...</p>
+<p>I tested WisGate with an Arduino LoRaWAN Device: <a href="https://docs.rakwireless.com/Product-Categories/WisBlock/RAK4631/Overview/"><strong>RAKwireless RAK4631 WisBlock</strong></a>, based on Nordic nRF52840 with Semtech SX1262...</p>
+<p><img src="https://lupyuen.github.io/images/wisblock-title.jpg" alt="RAKwireless RAK4631 WisBlock LPWAN Module mounted on WisBlock Base Board" /></p>
+<p><em>RAKwireless RAK4631 WisBlock LPWAN Module mounted on WisBlock Base Board</em></p>
+<p>The Arduino source code is here...</p>
+<ul>
+<li>
 <p><a href="https://github.com/lupyuen/wisblock-lorawan"><code>github.com/lupyuen/wisblock-lorawan</code></a></p>
-<p>Arduino LoRaWAN client for <a href="https://docs.rakwireless.com/Product-Categories/WisBlock/Quickstart/">RAKwireless WisBlock RAK4630</a>.</p>
-<p>See...</p>
-<p><a href="https://github.com/RAKWireless/WisBlock/tree/master/examples/RAK4630/communications/LoRa/LoRaWAN">LoRaWAN Examples for WisBlock RAK4630</a></p>
-<p>Based on...</p>
-<p><a href="https://github.com/RAKWireless/WisBlock/blob/master/examples/RAK4630/communications/LoRa/LoRaWAN/LoRaWAN_OTAA_ABP/LoRaWAN_OTAA_ABP.ino"><code>LoRaWAN_OTAA_ABP.ino</code></a></p>
-<p>Note: This program needs SX126x-Arduino Library version 2.0.0 or later. </p>
-<p>In <a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/platformio.ini"><code>platformio.ini</code></a> set...</p>
+</li>
+<li>
+<p><a href="https://youtu.be/xdyi6XCo8Z8"><strong>Watch the demo video on YouTube</strong></a></p>
+</li>
+</ul>
+<p>Note that the program requires the <a href="https://github.com/beegee-tokyo/SX126x-Arduino"><strong><code>SX126x-Arduino</code></strong></a> Library version <strong>2.0.0 or later</strong>. </p>
+<p>With PlatformIO, we set the <code>SX126x-Arduino</code> version in <a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/platformio.ini"><code>platformio.ini</code></a> like so...</p>
 <pre><code class="language-text">lib_deps = beegee-tokyo/SX126x-Arduino@^2.0.0
 </code></pre>
-<h1 id="initialise-lorawan-client-in-arduino" class="section-header"><a href="#initialise-lorawan-client-in-arduino">5 Initialise LoRaWAN Client in Arduino</a></h1>
-<p>TODO</p>
-<p><a href="https://youtu.be/xdyi6XCo8Z8"><strong>Watch the video on YouTube</strong></a></p>
+<p>The Arduino program in this article is based on the RAKwireless LoRaWAN sample <a href="https://github.com/RAKWireless/WisBlock/blob/master/examples/RAK4630/communications/LoRa/LoRaWAN/LoRaWAN_OTAA_ABP/LoRaWAN_OTAA_ABP.ino"><code>LoRaWAN_OTAA_ABP.ino</code></a></p>
+<p><a href="https://github.com/RAKWireless/WisBlock/tree/master/examples/RAK4630/communications/LoRa/LoRaWAN">(More about LoRaWAN on WisBlock RAK4631)</a></p>
+<h2 id="initialise-lorawan-client" class="section-header"><a href="#initialise-lorawan-client">4.1 Initialise LoRaWAN Client</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L38-L58"><code>From main.cpp</code></a></p>
 <pre><code class="language-c">//  TODO: Set this to your LoRaWAN Region
@@ -269,7 +271,7 @@ void loop() {
   //  Controlling actuators and/or other functions. 
 }
 </code></pre>
-<h1 id="join-lorawan-network-in-arduino" class="section-header"><a href="#join-lorawan-network-in-arduino">6 Join LoRaWAN Network in Arduino</a></h1>
+<h2 id="join-lorawan-network" class="section-header"><a href="#join-lorawan-network">4.2 Join LoRaWAN Network</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L222-L236"><code>From main.cpp</code></a></p>
 <pre><code class="language-c">//  LoRa function for handling HasJoined event
@@ -294,7 +296,7 @@ static void lorawan_join_failed_handler(void) {
 </code></pre>
 <p>In case you're curious: WisBlock transmits this LoRaWAN Packet to WisGate when requesting to join the LoRaWAN network...</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-join.png" alt="Join LoRaWAN Network Request" /></p>
-<h1 id="send-lorawan-packets-in-arduino" class="section-header"><a href="#send-lorawan-packets-in-arduino">7 Send LoRaWAN Packets in Arduino</a></h1>
+<h2 id="send-lorawan-packet" class="section-header"><a href="#send-lorawan-packet">4.3 Send LoRaWAN Packet</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L269-L300"><code>From main.cpp</code></a></p>
 <pre><code class="language-c">//  This is called when the 20-second timer expires. 
@@ -362,7 +364,7 @@ void lorawan_rx_handler(lmh_app_data_t *app_data) {
     app_data-&gt;port, app_data-&gt;buffsize, app_data-&gt;rssi, app_data-&gt;snr, app_data-&gt;buffer);
 }
 </code></pre>
-<h1 id="output-log" class="section-header"><a href="#output-log">8 Output Log</a></h1>
+<h1 id="output-log" class="section-header"><a href="#output-log">5 Output Log</a></h1>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/README.md#output-log"><code>wisblock-lorawan</code></a></p>
 <pre><code class="language-text">&lt;LMH&gt; OTAA 
@@ -412,16 +414,16 @@ lmh_send ok count 1
 <span class="op">&lt;</span><span class="ident">LM</span><span class="op">&gt;</span> <span class="ident">OnRadioTxDone</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">RX</span> <span class="ident">Windows</span> #<span class="number">1</span> <span class="number">1002</span> #<span class="number">2</span> <span class="number">2002</span>
 <span class="op">&lt;</span><span class="ident">RADIO</span><span class="op">&gt;</span> <span class="ident">RadioIrqProcess</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">IRQ_RX_TX_TIMEOUT</span>
 <span class="op">&lt;</span><span class="ident">LM</span><span class="op">&gt;</span> <span class="ident">OnRadioRxTimeout</span></pre></div>
-<h1 id="view-received-lorawan-packets" class="section-header"><a href="#view-received-lorawan-packets">9 View Received LoRaWAN Packets</a></h1>
+<h1 id="view-received-lorawan-packets" class="section-header"><a href="#view-received-lorawan-packets">6 View Received LoRaWAN Packets</a></h1>
 <p>TODO</p>
-<h1 id="troubleshoot-lorawan" class="section-header"><a href="#troubleshoot-lorawan">10 Troubleshoot LoRaWAN</a></h1>
+<h1 id="troubleshoot-lorawan" class="section-header"><a href="#troubleshoot-lorawan">7 Troubleshoot LoRaWAN</a></h1>
 <p>TODO</p>
-<h1 id="visualise-lorawan-with-software-defined-radio" class="section-header"><a href="#visualise-lorawan-with-software-defined-radio">11 Visualise LoRaWAN with Software Defined Radio</a></h1>
+<h1 id="visualise-lorawan-with-software-defined-radio" class="section-header"><a href="#visualise-lorawan-with-software-defined-radio">8 Visualise LoRaWAN with Software Defined Radio</a></h1>
 <p>TODO</p>
 <p><a href="https://youtu.be/xdyi6XCo8Z8"><strong>Watch the video on YouTube</strong></a></p>
-<h1 id="lorawan-join-request" class="section-header"><a href="#lorawan-join-request">12 LoRaWAN Join Request</a></h1>
+<h1 id="lorawan-join-request" class="section-header"><a href="#lorawan-join-request">9 LoRaWAN Join Request</a></h1>
 <p>TODO</p>
-<h1 id="lorawan-message-integrity-code" class="section-header"><a href="#lorawan-message-integrity-code">13 LoRaWAN Message Integrity Code</a></h1>
+<h1 id="lorawan-message-integrity-code" class="section-header"><a href="#lorawan-message-integrity-code">10 LoRaWAN Message Integrity Code</a></h1>
 <p>TODO</p>
 <p>To search for Message Integrity Code errors in LoRaWAN Packets received by WisGate, SSH to WisGate and search for...</p>
 <pre><code class="language-bash"># grep MIC /var/log/syslog
@@ -442,7 +444,7 @@ msg=&quot;uplink: processing uplink frame error&quot;
 ctx_id=0ccd1478-3b79-4ded-9e26-a28e4c143edc 
 error=&quot;get device-session error: invalid MIC&quot;
 </code></pre>
-<h1 id="lorawan-nonce" class="section-header"><a href="#lorawan-nonce">14 LoRaWAN Nonce</a></h1>
+<h1 id="lorawan-nonce" class="section-header"><a href="#lorawan-nonce">11 LoRaWAN Nonce</a></h1>
 <p>TODO</p>
 <p>The error above occurs when we replay a repeated Join Network Request to our LoRaWAN Gateway (with same Nonce, same Message Integrity Code).</p>
 <p>This replay also logs a Nonce Error in WisGate...</p>
@@ -463,7 +465,7 @@ error=&quot;validate dev-nonce error: object already exists&quot;
 </code></pre>
 <p>Because the Nonce should not be reused.</p>
 <p><a href="https://lora-alliance.org/resource_hub/lorawan-is-secure-but-implementation-matters/">&quot;LoRaWAN® Is Secure (but Implementation Matters)&quot;</a></p>
-<h1 id="log-transmitted-packets" class="section-header"><a href="#log-transmitted-packets">15 Log Transmitted Packets</a></h1>
+<h1 id="log-transmitted-packets" class="section-header"><a href="#log-transmitted-packets">12 Log Transmitted Packets</a></h1>
 <p>To log transmitted packets, modify</p>
 <p><code>.pio/libdeps/wiscore_rak4631/SX126x-Arduino/src/mac/LoRaMac.cpp</code></p>
 <pre><code class="language-c">LoRaMacStatus_t SendFrameOnChannel(uint8_t channel)
@@ -530,7 +532,7 @@ error=&quot;validate dev-nonce error: object already exists&quot;
     return LORAMAC_STATUS_OK;
 }
 </code></pre>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">16 What's Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">13 What's Next</a></h1>
 <p>TODO</p>
 <ul>
 <li>
@@ -548,7 +550,7 @@ error=&quot;validate dev-nonce error: object already exists&quot;
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/wisgate.md"><code>lupyuen.github.io/src/wisgate.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">17 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">14 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1379926160377851910">this Twitter Thread</a></li>
 </ol>
