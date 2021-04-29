@@ -82,7 +82,20 @@ TODO
 
 TODO
 
+```c
+uint8_t nodeDeviceEUI[8] = { 0x4b, 0xc1, 0x5e, 0xe7, 0x37, 0x7b, 0xb1, 0x5b };
+```
+
+(EUI sounds like we stepped on something unpleasant... But it actually means [__Extended Unique Identifier__](https://lora-developers.semtech.com/library/tech-papers-and-guides/the-book/deveui/
+))
+
 ![ChirpStack Application](https://lupyuen.github.io/images/wisgate-app3.png)
+
+TODO
+
+```c
+uint8_t nodeAppKey[16] = { 0xaa, 0xff, 0xad, 0x5c, 0x7e, 0x87, 0xf6, 0x4d, 0xe3, 0xf0, 0x87, 0x32, 0xfc, 0x1d, 0xd2, 0x5d };
+```
 
 # LoRaWAN Arduino Client
 
