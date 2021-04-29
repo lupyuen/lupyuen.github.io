@@ -72,13 +72,19 @@ WisGate won't do anything with the received LoRaWAN Packets since it's not confi
 
 # LoRaWAN Application
 
-TODO
+When we allow a LoRaWAN Device to talk to our LoRaWAN Gateway, we need to set 2 things in the device...
+
+1.  __Device EUI__: An 64-bit number that uniquely identifies our LoRaWAN Device
+
+1.  __Application Key__: A 128-bit secret key that will authenticate that specific LoRaWAN Device
+
+Here's how we get the Device EUI and Application Key from ChirpStack...
 
 Click __`Applications`__ then __`app`__...
 
 ![ChirpStack Application](https://lupyuen.github.io/images/wisgate-app.png)
 
-Take note of the second __Device EUI__...
+Take note of the second __Device EUI__ (for the OTAA Device Profile)...
 
 ![ChirpStack Application](https://lupyuen.github.io/images/wisgate-app2.png)
 
@@ -106,6 +112,8 @@ uint8_t nodeAppKey[16] = { 0xaa, 0xff, 0xad, 0x5c, 0x7e, 0x87, 0xf6, 0x4d, 0xe3,
 ```
 
 Click __`Set Device-Keys`__
+
+We're all set to connect our Arduino LoRaWAN Device to WisGate!
 
 # LoRaWAN Arduino Client
 
