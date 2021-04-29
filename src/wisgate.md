@@ -48,7 +48,19 @@ Follow the instructions here to start the WisGate box and to connect to the prei
 
 (RAK7244C is quite similar to our RAK7248 gateway)
 
+I connected an Ethernet cable to WisGate and used SSH to configure the WiFi and LAN settings (via `sudo gateway-config`).
+
+Here's the ChirpStack web admin page that we will see...
+
+![ChirpStack web admin on WisGate](https://lupyuen.github.io/images/wisgate-chirpstack.png)
+
 TODO
+
+![ChirpStack web admin on WisGate](https://lupyuen.github.io/images/wisgate-chirpstack2.png)
+
+TODO
+
+![ChirpStack web admin on WisGate](https://lupyuen.github.io/images/wisgate-chirpstack3.png)
 
 # LoRaWAN Application
 
