@@ -117,39 +117,31 @@ We're all set to connect our Arduino LoRaWAN Device to WisGate!
 
 # LoRaWAN Arduino Client
 
-TODO
+I tested WisGate with an Arduino LoRaWAN Device: [__RAKwireless RAK4631 WisBlock__](https://docs.rakwireless.com/Product-Categories/WisBlock/RAK4631/Overview/), based on Nordic nRF52840 with Semtech SX1262...
 
-![RAKwireless RAK4630 WisBlock LPWAN Module mounted on WisBlock Base Board](https://lupyuen.github.io/images/wisblock-title.jpg)
+![RAKwireless RAK4631 WisBlock LPWAN Module mounted on WisBlock Base Board](https://lupyuen.github.io/images/wisblock-title.jpg)
 
-_RAKwireless RAK4630 WisBlock LPWAN Module mounted on WisBlock Base Board_
+_RAKwireless RAK4631 WisBlock LPWAN Module mounted on WisBlock Base Board_
 
-Source code...
+The Arduino source code is here...
 
-[`github.com/lupyuen/wisblock-lorawan`](https://github.com/lupyuen/wisblock-lorawan)
+-   [`github.com/lupyuen/wisblock-lorawan`](https://github.com/lupyuen/wisblock-lorawan)
 
-Arduino LoRaWAN client for [RAKwireless WisBlock RAK4630](https://docs.rakwireless.com/Product-Categories/WisBlock/Quickstart/).
+-   [__Watch the demo video on YouTube__](https://youtu.be/xdyi6XCo8Z8)
 
-See...
+Note that the program requires the [__`SX126x-Arduino`__](https://github.com/beegee-tokyo/SX126x-Arduino) Library version __2.0.0 or later__. 
 
-[LoRaWAN Examples for WisBlock RAK4630](https://github.com/RAKWireless/WisBlock/tree/master/examples/RAK4630/communications/LoRa/LoRaWAN)
-
-Based on...
-
-[`LoRaWAN_OTAA_ABP.ino`](https://github.com/RAKWireless/WisBlock/blob/master/examples/RAK4630/communications/LoRa/LoRaWAN/LoRaWAN_OTAA_ABP/LoRaWAN_OTAA_ABP.ino)
-
-Note: This program needs SX126x-Arduino Library version 2.0.0 or later. 
-
-In [`platformio.ini`](https://github.com/lupyuen/wisblock-lorawan/blob/master/platformio.ini) set...
+With PlatformIO, we set the `SX126x-Arduino` version in [`platformio.ini`](https://github.com/lupyuen/wisblock-lorawan/blob/master/platformio.ini) like so...
 
 ```text
 lib_deps = beegee-tokyo/SX126x-Arduino@^2.0.0
 ```
 
-# Initialise LoRaWAN Client in Arduino
+The Arduino program in this article is based on the RAKwireless LoRaWAN sample [`LoRaWAN_OTAA_ABP.ino`](https://github.com/RAKWireless/WisBlock/blob/master/examples/RAK4630/communications/LoRa/LoRaWAN/LoRaWAN_OTAA_ABP/LoRaWAN_OTAA_ABP.ino)
 
-TODO
+[(More about LoRaWAN on WisBlock RAK4631)](https://github.com/RAKWireless/WisBlock/tree/master/examples/RAK4630/communications/LoRa/LoRaWAN)
 
-[__Watch the video on YouTube__](https://youtu.be/xdyi6XCo8Z8)
+## Initialise LoRaWAN Client
 
 TODO
 
@@ -283,7 +275,7 @@ void loop() {
 }
 ```
 
-# Join LoRaWAN Network in Arduino
+## Join LoRaWAN Network
 
 TODO
 
@@ -319,7 +311,7 @@ In case you're curious: WisBlock transmits this LoRaWAN Packet to WisGate when r
 
 ![Join LoRaWAN Network Request](https://lupyuen.github.io/images/wisgate-join.png)
 
-# Send LoRaWAN Packets in Arduino
+## Send LoRaWAN Packet
 
 TODO
 
