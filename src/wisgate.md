@@ -10,6 +10,44 @@ Here's what I learnt about settting up a LoRaWAN Network with WisGate Developer 
 
 _RAKwireless RAK7248 WisGate Developer D4H LoRaWAN Gateway_
 
+# WisGate D4H Hardware
+
+TODO
+
+# ChirpStack LoRaWAN Stack
+
+TODO
+
+# LoRaWAN Application
+
+TODO
+
+# Join LoRaWAN Network
+
+TODO
+
+# Troubleshoot LoRaWAN
+
+TODO
+
+# Visualise LoRaWAN with Software Defined Radio
+
+TODO
+
+# LoRaWAN Join Request
+
+TODO
+
+# LoRaWAN Message Integrity Code
+
+TODO
+
+# LoRaWAN Nonce
+
+TODO
+
+["LoRaWAN® Is Secure (but Implementation Matters)"](https://lora-alliance.org/resource_hub/lorawan-is-secure-but-implementation-matters/)
+
 # What's Next
 
 TODO
