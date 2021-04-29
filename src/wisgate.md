@@ -16,7 +16,7 @@ WisGate D4H is essentially a Raspberry Pi 4 + LoRaWAN Concentrator in a sturdy I
 
 It exposes the same ports and connectors as a Raspberry Pi 4: Ethernet port, USB 2 and 3 ports, USB-C power, microSD Card.
 
-But the HDMI and GPIO ports are no longer accessible.
+But the HDMI and GPIO ports are no longer accessible. (We control the box over HTTP and SSH)
 
 ![RAKwireless RAK7248 WisGate Developer D4H LoRaWAN Gateway](https://lupyuen.github.io/images/wisgate-hw.jpg)
 
