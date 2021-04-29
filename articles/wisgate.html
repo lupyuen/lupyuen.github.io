@@ -69,9 +69,10 @@
 <li><a href="#chirpstack-lorawan-stack">2 ChirpStack LoRaWAN Stack</a><ul></ul></li>
 <li><a href="#lorawan-application">3 LoRaWAN Application</a><ul></ul></li>
 <li><a href="#lorawan-arduino-client">4 LoRaWAN Arduino Client</a><ul>
-<li><a href="#initialise-lorawan-client">4.1 Initialise LoRaWAN Client</a><ul></ul></li>
-<li><a href="#join-lorawan-network">4.2 Join LoRaWAN Network</a><ul></ul></li>
-<li><a href="#send-lorawan-packet">4.3 Send LoRaWAN Packet</a><ul></ul></li></ul></li>
+<li><a href="#configure-lorawan-client">4.1 Configure LoRaWAN Client</a><ul></ul></li>
+<li><a href="#initialise-lorawan-client">4.2 Initialise LoRaWAN Client</a><ul></ul></li>
+<li><a href="#join-lorawan-network">4.3 Join LoRaWAN Network</a><ul></ul></li>
+<li><a href="#send-lorawan-packet">4.4 Send LoRaWAN Packet</a><ul></ul></li></ul></li>
 <li><a href="#output-log">5 Output Log</a><ul></ul></li>
 <li><a href="#view-received-lorawan-packets">6 View Received LoRaWAN Packets</a><ul></ul></li>
 <li><a href="#troubleshoot-lorawan">7 Troubleshoot LoRaWAN</a><ul></ul></li>
@@ -165,24 +166,32 @@
 <p><a href="https://youtu.be/xdyi6XCo8Z8"><strong>Watch the demo video on YouTube</strong></a></p>
 </li>
 </ul>
+<p>To download the source code, enter this at the command prompt...</p>
+<pre><code class="language-bash">git clone --recursive https://github.com/lupyuen/wisblock-lorawan
+</code></pre>
 <p>Note that the program requires the <a href="https://github.com/beegee-tokyo/SX126x-Arduino"><strong><code>SX126x-Arduino</code></strong></a> Library version <strong>2.0.0 or later</strong>. </p>
 <p>With PlatformIO, we set the <code>SX126x-Arduino</code> version in <a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/platformio.ini"><code>platformio.ini</code></a> like so...</p>
 <pre><code class="language-text">lib_deps = beegee-tokyo/SX126x-Arduino@^2.0.0
 </code></pre>
 <p>The Arduino program in this article is based on the RAKwireless LoRaWAN sample <a href="https://github.com/RAKWireless/WisBlock/blob/master/examples/RAK4630/communications/LoRa/LoRaWAN/LoRaWAN_OTAA_ABP/LoRaWAN_OTAA_ABP.ino"><code>LoRaWAN_OTAA_ABP.ino</code></a></p>
 <p><a href="https://github.com/RAKWireless/WisBlock/tree/master/examples/RAK4630/communications/LoRa/LoRaWAN">(More about LoRaWAN on WisBlock RAK4631)</a></p>
-<h2 id="initialise-lorawan-client" class="section-header"><a href="#initialise-lorawan-client">4.1 Initialise LoRaWAN Client</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L38-L58"><code>From main.cpp</code></a></p>
+<h2 id="configure-lorawan-client" class="section-header"><a href="#configure-lorawan-client">4.1 Configure LoRaWAN Client</a></h2>
+<p>Let's look at the Arduino code in our LoRaWAN Client...</p>
+<p><a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L38-L58"><code>wisblock-lorawan/src/main.cpp</code></a></p>
+<p><strong>Important:</strong> Set your <strong>LoRaWAN Region</strong> in <a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L38-L58"><code>main.cpp</code></a></p>
 <pre><code class="language-c">//  TODO: Set this to your LoRaWAN Region
 LoRaMacRegion_t g_CurrentRegion = LORAMAC_REGION_AS923;
 </code></pre>
-<p>TODO</p>
+<p>Before sending a LoRaWAN Packet to WisGate, we shall join our LoRaWAN Device to the LoRaWAN Network with <strong>Over-The-Air Activation (OTAA)</strong>...</p>
 <pre><code class="language-c">//  Set to true to select Over-The-Air Activation 
 //  (OTAA), false for Activation By Personalisation (ABP)
 bool doOTAA = true;
 </code></pre>
-<p>TODO</p>
+<p>We won't be using Activation By Personalisation (ABP) today.</p>
+<p><a href="https://www.thethingsnetwork.org/docs/lorawan/addressing/index.html">(More about OTAA vs ABP)</a></p>
+<p>Remember the <strong>Device EUI and Application Key</strong> from ChirpStack?</p>
+<p>(Did we step on something?)</p>
+<p>We paste the Device EUI and Application Key here...</p>
 <pre><code class="language-c">//  TODO: (For OTAA Only) Set the OTAA keys. KEYS ARE MSB !!!!
 
 //  Device EUI: Copy from ChirpStack: 
@@ -199,41 +208,44 @@ uint8_t nodeAppEUI[8] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 //  Application Key
 uint8_t nodeAppKey[16] = { 0xaa, 0xff, 0xad, 0x5c, 0x7e, 0x87, 0xf6, 0x4d, 0xe3, 0xf0, 0x87, 0x32, 0xfc, 0x1d, 0xd2, 0x5d };
 </code></pre>
-<p>TODO</p>
+<p>The <strong>Application EUI</strong> is not used by ChirpStack, so we may set it to <code>0000000000000000</code></p>
+<p>Since we're not Activating By Personalisation, we may ignore this section...</p>
 <pre><code class="language-c">//  TODO: (For ABP Only) Set the ABP keys
 uint32_t nodeDevAddr = 0x260116F8;
 uint8_t nodeNwsKey[16] = { 0x7E, 0xAC, 0xE2, 0x55, 0xB8, 0xA5, 0xE2, 0x69, 0x91, 0x51, 0x96, 0x06, 0x47, 0x56, 0x9D, 0x23 };
 uint8_t nodeAppsKey[16] = { 0xFB, 0xAC, 0xB6, 0x47, 0xF3, 0x58, 0x45, 0xC7, 0x50, 0x7D, 0xBF, 0x16, 0x8B, 0xA8, 0xC1, 0x7C };
 </code></pre>
+<h2 id="initialise-lorawan-client" class="section-header"><a href="#initialise-lorawan-client">4.2 Initialise LoRaWAN Client</a></h2>
+<p>Following the Arduino convention, our <code>setup</code> function shall we executed at startup...</p>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L110-L213"><code>From main.cpp</code></a></p>
 <pre><code class="language-c">// At startup, we join the LoRaWAN network, in either OTAA or ABP mode
 void setup() {
   ...
-  // Initialize LoRa chip.
+  //  Initialize LoRa chip
   lora_rak4630_init();
 
-  // Omitted: Initialize Serial for debug output
+  //  Omitted: Initialize Serial for debug output
   ...
   
-  // Create a timer to send data to server periodically
+  //  Create a timer to send data to server periodically
   uint32_t err_code err_code = timers_init();
   if (err_code != 0) { return; }
 </code></pre>
 <p>TODO</p>
-<pre><code class="language-c">  // Setup the EUIs and Keys
+<pre><code class="language-c">  //  Setup the EUIs and Keys
   if (doOTAA) {
-    // Set the keys for OTAA
+    //  Set the EUIs and Keys for OTAA
     lmh_setDevEui(nodeDeviceEUI);
     lmh_setAppEui(nodeAppEUI);
     lmh_setAppKey(nodeAppKey);
   } else {
-    // Omitted: Set the keys for ABP
+    //  Omitted: Set the EUIs and Keys for ABP
     ...
   }
 </code></pre>
 <p>TODO</p>
-<pre><code class="language-c">  // Initialize LoRaWaN
+<pre><code class="language-c">  //  Initialize LoRaWaN
   err_code = lmh_init(  //  lmh_init now takes 3 parameters instead of 5
     &amp;g_lora_callbacks,  //  Callbacks 
     g_lora_param_init,  //  Functions
@@ -268,10 +280,10 @@ static lmh_callback_t g_lora_callbacks = {
 <pre><code class="language-c">//  Nothing here for now
 void loop() {
   //  Put your application tasks here, like reading of sensors,
-  //  Controlling actuators and/or other functions. 
+  //  controlling actuators and other functions.
 }
 </code></pre>
-<h2 id="join-lorawan-network" class="section-header"><a href="#join-lorawan-network">4.2 Join LoRaWAN Network</a></h2>
+<h2 id="join-lorawan-network" class="section-header"><a href="#join-lorawan-network">4.3 Join LoRaWAN Network</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L222-L236"><code>From main.cpp</code></a></p>
 <pre><code class="language-c">//  LoRa function for handling HasJoined event
@@ -296,7 +308,7 @@ static void lorawan_join_failed_handler(void) {
 </code></pre>
 <p>In case you're curious: WisBlock transmits this LoRaWAN Packet to WisGate when requesting to join the LoRaWAN network...</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-join.png" alt="Join LoRaWAN Network Request" /></p>
-<h2 id="send-lorawan-packet" class="section-header"><a href="#send-lorawan-packet">4.3 Send LoRaWAN Packet</a></h2>
+<h2 id="send-lorawan-packet" class="section-header"><a href="#send-lorawan-packet">4.4 Send LoRaWAN Packet</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L269-L300"><code>From main.cpp</code></a></p>
 <pre><code class="language-c">//  This is called when the 20-second timer expires. 
