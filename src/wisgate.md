@@ -12,7 +12,7 @@ _RAKwireless RAK7248 WisGate Developer D4H LoRaWAN Gateway_
 
 # WisGate D4H Hardware
 
-WisGate D4H is essentially a Raspberry Pi 4 + LoRaWAN Concentrator inside a sturdy IP30 box.
+WisGate D4H is essentially a Raspberry Pi 4 + LoRaWAN Concentrator in a sturdy IP30 box.
 
 It exposes the same ports and connectors as a Raspberry Pi 4: Ethernet port, USB 2 and 3 ports, USB-C power, microSD Card.
 
@@ -27,6 +27,8 @@ But the HDMI and GPIO ports are no longer accessible.
 1.  __GPS Antenna__ (right)
 
 (The two connectors are slightly different, so we won't connect the wrong antenna)
+
+The GPS Antenna will be used when we connect WisGate to The Things Network (the worldwide free-access LoRaWAN network).
 
 WisGate D4H is shipped with the open-source ChirpStack LoRaWAN stack, preinstalled in the microSD card. 
 
