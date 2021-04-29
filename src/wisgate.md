@@ -129,6 +129,12 @@ The Arduino source code is here...
 
 -   [__Watch the demo video on YouTube__](https://youtu.be/xdyi6XCo8Z8)
 
+To download the source code, enter this at the command prompt...
+
+```bash
+git clone --recursive https://github.com/lupyuen/wisblock-lorawan
+```
+
 Note that the program requires the [__`SX126x-Arduino`__](https://github.com/beegee-tokyo/SX126x-Arduino) Library version __2.0.0 or later__. 
 
 With PlatformIO, we set the `SX126x-Arduino` version in [`platformio.ini`](https://github.com/lupyuen/wisblock-lorawan/blob/master/platformio.ini) like so...
@@ -141,18 +147,20 @@ The Arduino program in this article is based on the RAKwireless LoRaWAN sample [
 
 [(More about LoRaWAN on WisBlock RAK4631)](https://github.com/RAKWireless/WisBlock/tree/master/examples/RAK4630/communications/LoRa/LoRaWAN)
 
-## Initialise LoRaWAN Client
+## Configure LoRaWAN Client
 
-TODO
+Let's look at the Arduino code in our LoRaWAN Client...
 
-[`From main.cpp`](https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L38-L58)
+[`wisblock-lorawan/src/main.cpp`](https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L38-L58)
+
+__Important:__ Set your __LoRaWAN Region__ in [`main.cpp`](https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L38-L58)
 
 ```c
 //  TODO: Set this to your LoRaWAN Region
 LoRaMacRegion_t g_CurrentRegion = LORAMAC_REGION_AS923;
 ```
 
-TODO
+Before sending a LoRaWAN Packet to WisGate, we shall join our LoRaWAN Device to the LoRaWAN Network with __Over-The-Air Activation (OTAA)__...
 
 ```c
 //  Set to true to select Over-The-Air Activation 
@@ -160,7 +168,15 @@ TODO
 bool doOTAA = true;
 ```
 
-TODO
+We won't be using Activation By Personalisation (ABP) today.
+
+[(More about OTAA vs ABP)](https://www.thethingsnetwork.org/docs/lorawan/addressing/index.html)
+
+Remember the __Device EUI and Application Key__ from ChirpStack?
+
+(Did we step on something?)
+
+We paste the Device EUI and Application Key here...
 
 ```c
 //  TODO: (For OTAA Only) Set the OTAA keys. KEYS ARE MSB !!!!
@@ -180,7 +196,9 @@ uint8_t nodeAppEUI[8] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 uint8_t nodeAppKey[16] = { 0xaa, 0xff, 0xad, 0x5c, 0x7e, 0x87, 0xf6, 0x4d, 0xe3, 0xf0, 0x87, 0x32, 0xfc, 0x1d, 0xd2, 0x5d };
 ```
 
-TODO
+The __Application EUI__ is not used by ChirpStack, so we may set it to `0000000000000000`
+
+Since we're not Activating By Personalisation, we may ignore this section...
 
 ```c
 //  TODO: (For ABP Only) Set the ABP keys
@@ -188,6 +206,10 @@ uint32_t nodeDevAddr = 0x260116F8;
 uint8_t nodeNwsKey[16] = { 0x7E, 0xAC, 0xE2, 0x55, 0xB8, 0xA5, 0xE2, 0x69, 0x91, 0x51, 0x96, 0x06, 0x47, 0x56, 0x9D, 0x23 };
 uint8_t nodeAppsKey[16] = { 0xFB, 0xAC, 0xB6, 0x47, 0xF3, 0x58, 0x45, 0xC7, 0x50, 0x7D, 0xBF, 0x16, 0x8B, 0xA8, 0xC1, 0x7C };
 ```
+
+## Initialise LoRaWAN Client
+
+Following the Arduino convention, our `setup` function shall we executed at startup...
 
 TODO
 
@@ -197,13 +219,13 @@ TODO
 // At startup, we join the LoRaWAN network, in either OTAA or ABP mode
 void setup() {
   ...
-  // Initialize LoRa chip.
+  //  Initialize LoRa chip
   lora_rak4630_init();
 
-  // Omitted: Initialize Serial for debug output
+  //  Omitted: Initialize Serial for debug output
   ...
   
-  // Create a timer to send data to server periodically
+  //  Create a timer to send data to server periodically
   uint32_t err_code err_code = timers_init();
   if (err_code != 0) { return; }
 ```
@@ -211,14 +233,14 @@ void setup() {
 TODO
 
 ```c
-  // Setup the EUIs and Keys
+  //  Setup the EUIs and Keys
   if (doOTAA) {
-    // Set the keys for OTAA
+    //  Set the EUIs and Keys for OTAA
     lmh_setDevEui(nodeDeviceEUI);
     lmh_setAppEui(nodeAppEUI);
     lmh_setAppKey(nodeAppKey);
   } else {
-    // Omitted: Set the keys for ABP
+    //  Omitted: Set the EUIs and Keys for ABP
     ...
   }
 ```
@@ -226,7 +248,7 @@ TODO
 TODO
 
 ```c
-  // Initialize LoRaWaN
+  //  Initialize LoRaWaN
   err_code = lmh_init(  //  lmh_init now takes 3 parameters instead of 5
     &g_lora_callbacks,  //  Callbacks 
     g_lora_param_init,  //  Functions
@@ -271,7 +293,7 @@ TODO
 //  Nothing here for now
 void loop() {
   //  Put your application tasks here, like reading of sensors,
-  //  Controlling actuators and/or other functions. 
+  //  controlling actuators and other functions.
 }
 ```
 
