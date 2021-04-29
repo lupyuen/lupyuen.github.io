@@ -126,17 +126,22 @@
 <p>(But we may click <strong><code>Live LoRaWAN Frames</code></strong> at top right to see the encrypted contents of the received LoRaWAN Packets)</p>
 <h1 id="lorawan-application" class="section-header"><a href="#lorawan-application">3 LoRaWAN Application</a></h1>
 <p>TODO</p>
+<p>Click <strong><code>Applications</code></strong> then <strong><code>app</code></strong>...</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-app.png" alt="ChirpStack Application" /></p>
-<p>TODO</p>
+<p>Take note of the second <strong>Device EUI</strong>...</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-app2.png" alt="ChirpStack Application" /></p>
-<p>TODO</p>
+<p>(EUI sounds like we stepped on something unpleasant... But it actually means <a href="https://lora-developers.semtech.com/library/tech-papers-and-guides/the-book/deveui/"><strong>Extended Unique Identifier</strong></a>)</p>
+<p>We shall set this Device EUI in our Arduino program in a while...</p>
 <pre><code class="language-c">uint8_t nodeDeviceEUI[8] = { 0x4b, 0xc1, 0x5e, 0xe7, 0x37, 0x7b, 0xb1, 0x5b };
 </code></pre>
-<p>(EUI sounds like we stepped on something unpleasant... But it actually means <a href="https://lora-developers.semtech.com/library/tech-papers-and-guides/the-book/deveui/"><strong>Extended Unique Identifier</strong></a>)</p>
+<p>Click <strong><code>device_ptaa_class_a</code></strong> because we'll be doing <strong>Over-The-Air Activation (OTAA)</strong> for our Arduino device</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-app3.png" alt="ChirpStack Application" /></p>
-<p>TODO</p>
+<p>Click <strong><code>Keys (OTAA)</code></strong></p>
+<p>Under <code>Application Key</code>, click the circular arrow to generate a random key.</p>
+<p>Take note of the generated <strong>Application Key</strong>, we shall set this in our Arduino program...</p>
 <pre><code class="language-c">uint8_t nodeAppKey[16] = { 0xaa, 0xff, 0xad, 0x5c, 0x7e, 0x87, 0xf6, 0x4d, 0xe3, 0xf0, 0x87, 0x32, 0xfc, 0x1d, 0xd2, 0x5d };
 </code></pre>
+<p>Click <strong><code>Set Device-Keys</code></strong></p>
 <h1 id="lorawan-arduino-client" class="section-header"><a href="#lorawan-arduino-client">4 LoRaWAN Arduino Client</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wisblock-title.jpg" alt="RAKwireless RAK4630 WisBlock LPWAN Module mounted on WisBlock Base Board" /></p>
