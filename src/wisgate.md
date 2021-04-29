@@ -40,6 +40,14 @@ _microSD Slot on WisGate D4H_
 
 # ChirpStack LoRaWAN Stack
 
+Connect the LoRa Antenna to GPS Antenna to WisGate before powering on. (To prevent damage to the RF modules)
+
+Follow the instructions here to start the WisGate box and to connect to the preinstalled ChirpStack LoRaWAN stack...
+
+-   [__"RAK7244C Quick Start Guide"__](https://docs.rakwireless.com/Product-Categories/WisGate/RAK7244C/Quickstart/)
+
+(RAK7244C is quite similar to our RAK7248 gateway)
+
 TODO
 
 # LoRaWAN Application
