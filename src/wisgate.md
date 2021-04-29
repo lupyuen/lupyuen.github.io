@@ -4,7 +4,7 @@
 
 While testing a new LoRaWAN gadget ([PineCone BL602](https://lupyuen.github.io/articles/lora2)), I bought a LoRaWAN Gateway from RAKwireless: [__RAK7248 WisGate Developer D4H Gateway__](https://docs.rakwireless.com/Product-Categories/WisGate/RAK7248/Datasheet/).
 
-Here's what I learnt about settting up a LoRaWAN Network with WisGate Developer D4H... And testing it with the RAKwireless WisBlock dev kit.
+Here's what I learnt about __settting up a LoRaWAN Network__ with WisGate Developer D4H... And testing it with the __RAKwireless WisBlock dev kit in Arduino__.
 
 ![RAKwireless RAK7248 WisGate Developer D4H LoRaWAN Gateway](https://lupyuen.github.io/images/wisgate-title.jpg)
 
@@ -104,15 +104,263 @@ In [`platformio.ini`](https://github.com/lupyuen/wisblock-lorawan/blob/master/pl
 lib_deps = beegee-tokyo/SX126x-Arduino@^2.0.0
 ```
 
-# Join LoRaWAN Network from Arduino
+# Initialise LoRaWAN Client in Arduino
 
 TODO
 
 [__Watch the video on YouTube__](https://youtu.be/xdyi6XCo8Z8)
 
-# Send LoRaWAN Packets from Arduino
+TODO
+
+[`From main.cpp`](https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L38-L58)
+
+```c
+//  TODO: Set this to your LoRaWAN Region
+LoRaMacRegion_t g_CurrentRegion = LORAMAC_REGION_AS923;
+```
 
 TODO
+
+```c
+//  Set to true to select Over-The-Air Activation 
+//  (OTAA), false for Activation By Personalisation (ABP)
+bool doOTAA = true;
+```
+
+TODO
+
+```c
+//  TODO: (For OTAA Only) Set the OTAA keys. KEYS ARE MSB !!!!
+
+//  Device EUI: Copy from ChirpStack: 
+//  Applications -> app -> Device EUI
+uint8_t nodeDeviceEUI[8] = { 0x4b, 0xc1, 0x5e, 0xe7, 0x37, 0x7b, 0xb1, 0x5b };
+
+//  App EUI: Not needed for ChirpStack, 
+//  set to default 0000000000000000
+uint8_t nodeAppEUI[8] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+
+//  App Key: Copy from ChirpStack: 
+//  Applications -> app -> Devices -> 
+//  device_otaa_class_a -> Keys (OTAA) -> 
+//  Application Key
+uint8_t nodeAppKey[16] = { 0xaa, 0xff, 0xad, 0x5c, 0x7e, 0x87, 0xf6, 0x4d, 0xe3, 0xf0, 0x87, 0x32, 0xfc, 0x1d, 0xd2, 0x5d };
+```
+
+TODO
+
+```c
+//  TODO: (For ABP Only) Set the ABP keys
+uint32_t nodeDevAddr = 0x260116F8;
+uint8_t nodeNwsKey[16] = { 0x7E, 0xAC, 0xE2, 0x55, 0xB8, 0xA5, 0xE2, 0x69, 0x91, 0x51, 0x96, 0x06, 0x47, 0x56, 0x9D, 0x23 };
+uint8_t nodeAppsKey[16] = { 0xFB, 0xAC, 0xB6, 0x47, 0xF3, 0x58, 0x45, 0xC7, 0x50, 0x7D, 0xBF, 0x16, 0x8B, 0xA8, 0xC1, 0x7C };
+```
+
+TODO
+
+[`From main.cpp`](https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L110-L213)
+
+```c
+// At startup, we join the LoRaWAN network, in either OTAA or ABP mode
+void setup() {
+  ...
+  // Initialize LoRa chip.
+  lora_rak4630_init();
+
+  // Omitted: Initialize Serial for debug output
+  ...
+  
+  // Create a timer to send data to server periodically
+  uint32_t err_code err_code = timers_init();
+  if (err_code != 0) { return; }
+```
+
+TODO
+
+```c
+  // Setup the EUIs and Keys
+  if (doOTAA) {
+    // Set the keys for OTAA
+    lmh_setDevEui(nodeDeviceEUI);
+    lmh_setAppEui(nodeAppEUI);
+    lmh_setAppKey(nodeAppKey);
+  } else {
+    // Omitted: Set the keys for ABP
+    ...
+  }
+```
+
+TODO
+
+```c
+  // Initialize LoRaWaN
+  err_code = lmh_init(  //  lmh_init now takes 3 parameters instead of 5
+    &g_lora_callbacks,  //  Callbacks 
+    g_lora_param_init,  //  Functions
+    doOTAA,             //  Set to true for OTAA
+    g_CurrentClass,     //  Class 
+    g_CurrentRegion     //  Region
+  );
+  if (err_code != 0) { return; }
+```
+
+TODO
+
+```
+  // Start Join procedure
+  lmh_join();
+}
+```
+
+TODO
+
+[`From main.cpp`](https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L87-L97)
+
+```c
+//  Structure containing LoRaWan callback functions, 
+//  needed for lmh_init()
+static lmh_callback_t g_lora_callbacks = {
+    BoardGetBatteryLevel, 
+    BoardGetUniqueId, 
+    BoardGetRandomSeed,
+    lorawan_rx_handler, 
+    lorawan_has_joined_handler, 
+    lorawan_confirm_class_handler, 
+    lorawan_join_failed_handler
+};
+```
+
+TODO
+
+[`From main.cpp`](https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L215-L220)
+
+```c
+//  Nothing here for now
+void loop() {
+  //  Put your application tasks here, like reading of sensors,
+  //  Controlling actuators and/or other functions. 
+}
+```
+
+# Join LoRaWAN Network in Arduino
+
+TODO
+
+[`From main.cpp`](https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L222-L236)
+
+```c
+//  LoRa function for handling HasJoined event
+void lorawan_has_joined_handler(void) {
+  //  When we have joined the LoRaWAN network, 
+  //  start a 20-second timer
+  lmh_error_status ret = lmh_class_request(g_CurrentClass);
+  if (ret == LMH_SUCCESS) {
+    delay(1000);
+    TimerSetValue(&appTimer, LORAWAN_APP_INTERVAL);
+    TimerStart(&appTimer);
+  }
+}
+```
+
+TODO
+
+[`From main.cpp`](https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L238-L246)
+
+```c
+//  LoRa function for handling OTAA join failed
+static void lorawan_join_failed_handler(void) {
+  //  If we can't join the LoRaWAN network, show the error
+  Serial.println("OTAA join failed!");
+}
+```
+
+# Send LoRaWAN Packets in Arduino
+
+TODO
+
+[`From main.cpp`](https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L269-L300)
+
+```c
+//  This is called when the 20-second timer expires. 
+//  We send a LoRaWAN Packet.
+void send_lora_frame(void) {
+  if (lmh_join_status_get() != LMH_SET) {
+    //  Not joined, try again later
+    return;
+  }
+
+  uint32_t i = 0;
+  memset(m_lora_app_data.buffer, 0, LORAWAN_APP_DATA_BUFF_SIZE);
+  m_lora_app_data.port = gAppPort;
+  m_lora_app_data.buffer[i++] = 'H';
+  m_lora_app_data.buffer[i++] = 'e';
+  m_lora_app_data.buffer[i++] = 'l';
+  m_lora_app_data.buffer[i++] = 'l';
+  m_lora_app_data.buffer[i++] = 'o';
+  m_lora_app_data.buffer[i++] = '!';
+  m_lora_app_data.buffsize = i;
+
+  lmh_error_status error = lmh_send(
+    &m_lora_app_data, 
+    g_CurrentConfirm
+  );
+  if (error == LMH_SUCCESS) { count++; } 
+  else { count_fail++; }
+}
+```
+
+TODO
+
+[`From main.cpp`](https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L302-L311)
+
+```c
+//  Function for handling timerout event
+void tx_lora_periodic_handler(void) {
+  //  When the 20-second timer has expired, 
+  //  send a LoRaWAN Packet and restart the timer
+  TimerSetValue(&appTimer, LORAWAN_APP_INTERVAL);
+  TimerStart(&appTimer);
+  send_lora_frame();
+}
+```
+
+TODO
+
+[`From main.cpp`](https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L313-L321)
+
+```c
+//  Initialise the timer
+uint32_t timers_init(void) {
+  TimerInit(&appTimer, tx_lora_periodic_handler);
+  return 0;
+}
+```
+
+[`From main.cpp`](https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L259-L267)
+
+```c
+//  Callback Function that is called when we have joined the LoRaWAN network with a LoRaWAN Class
+void lorawan_confirm_class_handler(DeviceClass_t Class) {
+  //  Informs the server that switch has occurred ASAP
+  m_lora_app_data.buffsize = 0;
+  m_lora_app_data.port = gAppPort;
+  lmh_send(&m_lora_app_data, g_CurrentConfirm);
+}
+```
+
+TODO
+
+[`From main.cpp`](https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L248-L257)
+
+```c
+//  Function for handling LoRaWan received data from Gateway
+void lorawan_rx_handler(lmh_app_data_t *app_data) {
+  //  When we receive a LoRaWAN Packet from the 
+  //  LoRaWAN Gateway, display it
+  Serial.printf("LoRa Packet received on port %d, size:%d, rssi:%d, snr:%d, data:%s\n",
+    app_data->port, app_data->buffsize, app_data->rssi, app_data->snr, app_data->buffer);
+}
+```
 
 # Output Log
 
@@ -121,17 +369,6 @@ TODO
 From [`wisblock-lorawan`](https://github.com/lupyuen/wisblock-lorawan/blob/master/README.md#output-log)
 
 ```text
-> Executing task: platformio device monitor <
-
---- Available filters and text transformations: colorize, debug, default, direct, hexlify, log2file, nocontrol, printable, send_on_enter, time
---- More details at http://bit.ly/pio-monitor-filters
---- Miniterm on /dev/cu.usbmodem14201  9600,8,N,1 ---
---- Quit: Ctrl+C | Menu: Ctrl+T | Help: Ctrl+T followed by Ctrl+H ---
-=====================================
-Welcome to RAK4630 LoRaWan!!!
-Type: OTAA
-Region: AS923
-=====================================
 <LMH> OTAA 
 DevEui=4B-C1-5E-E7-37-7B-B1-5B
 DevAdd=00000000
@@ -153,6 +390,11 @@ RadioSend: size=23, channel=1, datarate=2, txpower=0, maxeirp=16, antennagain=2
 <LM> OnRadioRxDone
 <LM> OnRadioRxDone => FRAME_TYPE_JOIN_ACCEPT
 OTAA Mode, Network Joined!
+```
+
+TODO
+
+```text
 Sending frame now...
 SX126xSetTxParams: power=13, rampTime=2
 SX126xSetPaConfig: paDutyCycle=4, hpMax=7, deviceSel=0, paLut=1 
@@ -163,22 +405,17 @@ lmh_send ok count 1
 <LM> OnRadioTxDone => RX Windows #1 1002 #2 2002
 <RADIO> RadioIrqProcess => IRQ_RX_TX_TIMEOUT
 <LM> OnRadioRxTimeout
+```
+
+TODO
+
+```
 Sending frame now...
 SX126xSetTxParams: power=13, rampTime=2
 SX126xSetPaConfig: paDutyCycle=4, hpMax=7, deviceSel=0, paLut=1 
 RadioSend: size=19, channel=5, datarate=2, txpower=0, maxeirp=16, antennagain=2
 40 3c 59 7a 00 80 01 00 02 0b 1f 7e 4d e1 94 c9 16 fa ea 
 lmh_send ok count 2
-<LM> OnRadioTxDone
-<LM> OnRadioTxDone => RX Windows #1 1002 #2 2002
-<RADIO> RadioIrqProcess => IRQ_RX_TX_TIMEOUT
-<LM> OnRadioRxTimeout
-Sending frame now...
-SX126xSetTxParams: power=13, rampTime=2
-SX126xSetPaConfig: paDutyCycle=4, hpMax=7, deviceSel=0, paLut=1 
-RadioSend: size=19, channel=5, datarate=2, txpower=0, maxeirp=16, antennagain=2
-40 3c 59 7a 00 80 02 00 02 96 be 8d c8 67 36 1b 89 81 3b 
-lmh_send ok count 3
 <LM> OnRadioTxDone
 <LM> OnRadioTxDone => RX Windows #1 1002 #2 2002
 <RADIO> RadioIrqProcess => IRQ_RX_TX_TIMEOUT
