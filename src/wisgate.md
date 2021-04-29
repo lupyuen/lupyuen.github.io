@@ -491,11 +491,35 @@ lmh_send ok count 2
 
 TODO
 
+![LoRaWAN Device Data](https://lupyuen.github.io/images/wisgate-devicedata1.png)
+
+TODO
+
+![LoRaWAN Device Data](https://lupyuen.github.io/images/wisgate-devicedata2.png)
+
+TODO
+
 # Troubleshoot LoRaWAN
 
 TODO
 
+![LoRaWAN Packet](https://lupyuen.github.io/images/wisgate-frame1.png)
+
+TODO
+
+![LoRaWAN Packet](https://lupyuen.github.io/images/wisgate-frame2.png)
+
+TODO
+
 # Visualise LoRaWAN with Software Defined Radio
+
+TODO
+
+![LoRaWAN Chirp: Device to Gateway](https://lupyuen.github.io/images/wisgate-chirp1.png)
+
+TODO
+
+![LoRaWAN Chirp: Gateway to Device](https://lupyuen.github.io/images/wisgate-chirp2.png)
 
 TODO
 
