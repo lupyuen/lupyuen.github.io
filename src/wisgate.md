@@ -74,28 +74,38 @@ WisGate won't do anything with the received LoRaWAN Packets since it's not confi
 
 TODO
 
+Click __`Applications`__ then __`app`__...
+
 ![ChirpStack Application](https://lupyuen.github.io/images/wisgate-app.png)
 
-TODO
+Take note of the second __Device EUI__...
 
 ![ChirpStack Application](https://lupyuen.github.io/images/wisgate-app2.png)
 
-TODO
+(EUI sounds like we stepped on something unpleasant... But it actually means [__Extended Unique Identifier__](https://lora-developers.semtech.com/library/tech-papers-and-guides/the-book/deveui/
+))
+
+We shall set this Device EUI in our Arduino program in a while...
 
 ```c
 uint8_t nodeDeviceEUI[8] = { 0x4b, 0xc1, 0x5e, 0xe7, 0x37, 0x7b, 0xb1, 0x5b };
 ```
 
-(EUI sounds like we stepped on something unpleasant... But it actually means [__Extended Unique Identifier__](https://lora-developers.semtech.com/library/tech-papers-and-guides/the-book/deveui/
-))
+Click __`device_ptaa_class_a`__ because we'll be doing __Over-The-Air Activation (OTAA)__ for our Arduino device
 
 ![ChirpStack Application](https://lupyuen.github.io/images/wisgate-app3.png)
 
-TODO
+Click __`Keys (OTAA)`__
+
+Under `Application Key`, click the circular arrow to generate a random key.
+
+Take note of the generated __Application Key__, we shall set this in our Arduino program...
 
 ```c
 uint8_t nodeAppKey[16] = { 0xaa, 0xff, 0xad, 0x5c, 0x7e, 0x87, 0xf6, 0x4d, 0xe3, 0xf0, 0x87, 0x32, 0xfc, 0x1d, 0xd2, 0x5d };
 ```
+
+Click __`Set Device-Keys`__
 
 # LoRaWAN Arduino Client
 
