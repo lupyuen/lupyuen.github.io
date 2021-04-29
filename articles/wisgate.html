@@ -125,10 +125,19 @@
 <p>WisGate won't do anything with the received LoRaWAN Packets since it's not configured to process packets with mysterious origins.</p>
 <p>(But we may click <strong><code>Live LoRaWAN Frames</code></strong> at top right to see the encrypted contents of the received LoRaWAN Packets)</p>
 <h1 id="lorawan-application" class="section-header"><a href="#lorawan-application">3 LoRaWAN Application</a></h1>
-<p>TODO</p>
+<p>When we allow a LoRaWAN Device to talk to our LoRaWAN Gateway, we need to set 2 things in the device...</p>
+<ol>
+<li>
+<p><strong>Device EUI</strong>: An 64-bit number that uniquely identifies our LoRaWAN Device</p>
+</li>
+<li>
+<p><strong>Application Key</strong>: A 128-bit secret key that will authenticate that specific LoRaWAN Device</p>
+</li>
+</ol>
+<p>Here's how we get the Device EUI and Application Key from ChirpStack...</p>
 <p>Click <strong><code>Applications</code></strong> then <strong><code>app</code></strong>...</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-app.png" alt="ChirpStack Application" /></p>
-<p>Take note of the second <strong>Device EUI</strong>...</p>
+<p>Take note of the second <strong>Device EUI</strong> (for the OTAA Device Profile)...</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-app2.png" alt="ChirpStack Application" /></p>
 <p>(EUI sounds like we stepped on something unpleasant... But it actually means <a href="https://lora-developers.semtech.com/library/tech-papers-and-guides/the-book/deveui/"><strong>Extended Unique Identifier</strong></a>)</p>
 <p>We shall set this Device EUI in our Arduino program in a while...</p>
@@ -142,6 +151,7 @@
 <pre><code class="language-c">uint8_t nodeAppKey[16] = { 0xaa, 0xff, 0xad, 0x5c, 0x7e, 0x87, 0xf6, 0x4d, 0xe3, 0xf0, 0x87, 0x32, 0xfc, 0x1d, 0xd2, 0x5d };
 </code></pre>
 <p>Click <strong><code>Set Device-Keys</code></strong></p>
+<p>We're all set to connect our Arduino LoRaWAN Device to WisGate!</p>
 <h1 id="lorawan-arduino-client" class="section-header"><a href="#lorawan-arduino-client">4 LoRaWAN Arduino Client</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wisblock-title.jpg" alt="RAKwireless RAK4630 WisBlock LPWAN Module mounted on WisBlock Base Board" /></p>
