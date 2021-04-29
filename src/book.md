@@ -144,6 +144,8 @@ Let's turn BL602 into a real IoT gadget that transmits __long range, low power L
 
 -   ["LoRa Driver for SX1262 (Pine64 RFM90 LoRa Module)"](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/3rdparty/lora-sx1262)
 
+-   ["Build a LoRaWAN Network with RAKwireless WisGate Developer Gateway"](https://lupyuen.github.io/articles/wisgate)
+
 ![OpenOCD on BL602](https://lupyuen.github.io/images/book-openocd.jpg)
 
 # OpenOCD on BL602
