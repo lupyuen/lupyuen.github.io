@@ -54,13 +54,17 @@ Here's the ChirpStack web admin page that we will see...
 
 ![ChirpStack web admin on WisGate](https://lupyuen.github.io/images/wisgate-chirpstack.png)
 
-TODO
+(Nope I'm nowhere near Jervois Road)
+
+In the left bar, click __`Gateways`__ to see our pre-configured LoRaWAN Gateway...
 
 ![ChirpStack web admin on WisGate](https://lupyuen.github.io/images/wisgate-chirpstack2.png)
 
-TODO
+Click __`rak-gateway`__ to see the Gateway Details...
 
 ![ChirpStack web admin on WisGate](https://lupyuen.github.io/images/wisgate-chirpstack3.png)
+
+TODO
 
 # LoRaWAN Application
 
