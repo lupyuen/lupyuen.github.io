@@ -87,9 +87,9 @@
 <p><img src="https://lupyuen.github.io/images/wisgate-title.jpg" alt="RAKwireless RAK7248 WisGate Developer D4H LoRaWAN Gateway" /></p>
 <p><em>RAKwireless RAK7248 WisGate Developer D4H LoRaWAN Gateway</em></p>
 <h1 id="wisgate-d4h-hardware" class="section-header"><a href="#wisgate-d4h-hardware">1 WisGate D4H Hardware</a></h1>
-<p>WisGate D4H is essentially a Raspberry Pi 4 + LoRa Network Concentrator in a sturdy IP30 box.</p>
-<p>It exposes the same ports and connectors as a Raspberry Pi 4: Ethernet port, USB 2 and 3 ports, USB-C power, microSD Card.</p>
-<p>But the HDMI and GPIO ports are no longer accessible. (We control the box over HTTP and SSH)</p>
+<p>WisGate D4H is essentially a <strong>Raspberry Pi 4 + LoRa Network Concentrator (Semtech SX1302)</strong> in a sturdy IP30 box.</p>
+<p>It exposes the same ports and connectors as a Raspberry Pi 4: <strong>Ethernet port, USB 2 and 3 ports, USB-C power, microSD Card.</strong></p>
+<p>But the <strong>HDMI and GPIO ports</strong> are no longer accessible. (We control the box over HTTP and SSH)</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-hw.jpg" alt="RAKwireless RAK7248 WisGate Developer D4H LoRaWAN Gateway" /></p>
 <p>2 new connectors have been added...</p>
 <ol>
@@ -102,19 +102,19 @@
 </ol>
 <p>(The two connectors are slightly different, so we won't connect the wrong antenna)</p>
 <p>The GPS Antenna will be used when we connect WisGate to The Things Network (the worldwide free-access LoRaWAN network).</p>
-<p>WisGate D4H is shipped with the open-source ChirpStack LoRaWAN stack, preinstalled in the microSD card. </p>
+<p>WisGate D4H is shipped with the open-source <strong>ChirpStack LoRaWAN stack</strong>, preinstalled in the microSD card. </p>
 <p>(Yep please don't peel off the sticky tape and insert your own microSD card)</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-hw2.jpg" alt="microSD Slot on WisGate D4H" /></p>
 <p><em>microSD Slot on WisGate D4H</em></p>
 <h1 id="chirpstack-lorawan-stack" class="section-header"><a href="#chirpstack-lorawan-stack">2 ChirpStack LoRaWAN Stack</a></h1>
-<p>Connect the LoRa Antenna to GPS Antenna to WisGate before powering on. (To prevent damage to the RF modules)</p>
+<p>Connect the <strong>LoRa Antenna and GPS Antenna</strong> to WisGate before powering on. (To prevent damage to the RF modules)</p>
 <p>Follow the instructions here to start the WisGate box and to connect to the preinstalled ChirpStack LoRaWAN stack...</p>
 <ul>
 <li><a href="https://docs.rakwireless.com/Product-Categories/WisGate/RAK7244C/Quickstart/"><strong>&quot;RAK7244C Quick Start Guide&quot;</strong></a></li>
 </ul>
 <p>(RAK7244C is quite similar to our RAK7248 gateway)</p>
 <p>I connected an Ethernet cable to WisGate and used SSH to configure the WiFi and LAN settings (via <code>sudo gateway-config</code>).</p>
-<p>Here's the ChirpStack web admin page that we will see...</p>
+<p>Here's the <strong>ChirpStack web admin</strong> page that we will see...</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-chirpstack.png" alt="ChirpStack web admin on WisGate" /></p>
 <p>(Nope I'm nowhere near Jervois Road)</p>
 <p>In the left bar, click <strong><code>Gateways</code></strong> to see our pre-configured LoRaWAN Gateway...</p>
