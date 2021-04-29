@@ -74,7 +74,21 @@ WisGate won't do anything with the received LoRaWAN Packets since it's not confi
 
 TODO
 
-# Join LoRaWAN Network
+# LoRaWAN Arduino Client
+
+TODO
+
+# Join LoRaWAN Network from Arduino
+
+TODO
+
+[__Watch the video on YouTube__](https://youtu.be/xdyi6XCo8Z8)
+
+# Send LoRaWAN Packets from Arduino
+
+TODO
+
+# View Received LoRaWAN Packets
 
 TODO
 
@@ -85,6 +99,8 @@ TODO
 # Visualise LoRaWAN with Software Defined Radio
 
 TODO
+
+[__Watch the video on YouTube__](https://youtu.be/xdyi6XCo8Z8)
 
 # LoRaWAN Join Request
 
