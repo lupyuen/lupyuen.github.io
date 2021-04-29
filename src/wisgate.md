@@ -209,11 +209,7 @@ uint8_t nodeAppsKey[16] = { 0xFB, 0xAC, 0xB6, 0x47, 0xF3, 0x58, 0x45, 0xC7, 0x50
 
 ## Initialise LoRaWAN Client
 
-Following the Arduino convention, our `setup` function shall we executed at startup...
-
-TODO
-
-[`From main.cpp`](https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L110-L213)
+Following the Arduino convention, our __`setup`__ function shall be executed at startup: [`main.cpp`](https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L110-L213)
 
 ```c
 // At startup, we join the LoRaWAN network, in either OTAA or ABP mode
@@ -225,12 +221,16 @@ void setup() {
   //  Omitted: Initialize Serial for debug output
   ...
   
-  //  Create a timer to send data to server periodically
+  //  Create a timer to send data to server every 20 seconds
   uint32_t err_code err_code = timers_init();
   if (err_code != 0) { return; }
 ```
 
-TODO
+Here we __initialise the LoRa Transceiver__ (SX1262) and create a timer that will send a LoRaWAN Packet every 20 seconds.
+
+(More about `timers_init` in a while)
+
+Next we set the __Device EUI, Application EUI and Application Key__ that will be used for joining the LoRaWAN Network...
 
 ```c
   //  Setup the EUIs and Keys
@@ -245,10 +245,10 @@ TODO
   }
 ```
 
-TODO
+Then we __initialise the LoRaWAN Client__...
 
 ```c
-  //  Initialize LoRaWaN
+  //  Initialise LoRaWAN
   err_code = lmh_init(  //  lmh_init now takes 3 parameters instead of 5
     &g_lora_callbacks,  //  Callbacks 
     g_lora_param_init,  //  Functions
@@ -259,7 +259,9 @@ TODO
   if (err_code != 0) { return; }
 ```
 
-TODO
+(More about `g_lora_callbacks` in a while)
+
+Finally we send the __Join LoRaWAN Network Request__ to WisGate...
 
 ```
   // Start Join procedure
@@ -267,9 +269,9 @@ TODO
 }
 ```
 
-TODO
+_What's in `g_lora_callbacks`?_
 
-[`From main.cpp`](https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L87-L97)
+`g_lora_callbacks` contains a list of Callback Functions that will be called by the LoRaWAN Client: [`main.cpp`](https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L87-L97)
 
 ```c
 //  Structure containing LoRaWan callback functions, 
@@ -285,9 +287,13 @@ static lmh_callback_t g_lora_callbacks = {
 };
 ```
 
-TODO
+We shall see the Callback Functions in action soon.
 
-[`From main.cpp`](https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L215-L220)
+_What about `loop`, the Arduino function that will be called to do work?_
+
+Our program uses the Callback Functions to trigger actions, so we won't be `loop`ing today.
+
+Here's our `loop` function in [`main.cpp`](https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L215-L220)
 
 ```c
 //  Nothing here for now
