@@ -12,7 +12,7 @@ _RAKwireless RAK7248 WisGate Developer D4H LoRaWAN Gateway_
 
 # WisGate D4H Hardware
 
-WisGate D4H is essentially a Raspberry Pi 4 + LoRaWAN Concentrator in a sturdy IP30 box.
+WisGate D4H is essentially a Raspberry Pi 4 + LoRa Network Concentrator in a sturdy IP30 box.
 
 It exposes the same ports and connectors as a Raspberry Pi 4: Ethernet port, USB 2 and 3 ports, USB-C power, microSD Card.
 
@@ -64,7 +64,11 @@ Click __`rak-gateway`__ to see the Gateway Details...
 
 ![ChirpStack web admin on WisGate](https://lupyuen.github.io/images/wisgate-chirpstack3.png)
 
-TODO
+This shows that my WisGate gateway receives __1,200 LoRaWAN Packets a day__ from unknown LoRaWAN Devices nearby.
+
+WisGate won't do anything with the received LoRaWAN Packets since it's not configured to process packets with mysterious origins.
+
+(But we may click __`Live LoRaWAN Frames`__ at top right to see the encrypted contents of the received LoRaWAN Packets)
 
 # LoRaWAN Application
 
