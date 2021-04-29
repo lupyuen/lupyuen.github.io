@@ -12,11 +12,11 @@ _RAKwireless RAK7248 WisGate Developer D4H LoRaWAN Gateway_
 
 # WisGate D4H Hardware
 
-WisGate D4H is essentially a Raspberry Pi 4 + LoRa Network Concentrator in a sturdy IP30 box.
+WisGate D4H is essentially a __Raspberry Pi 4 + LoRa Network Concentrator (Semtech SX1302)__ in a sturdy IP30 box.
 
-It exposes the same ports and connectors as a Raspberry Pi 4: Ethernet port, USB 2 and 3 ports, USB-C power, microSD Card.
+It exposes the same ports and connectors as a Raspberry Pi 4: __Ethernet port, USB 2 and 3 ports, USB-C power, microSD Card.__
 
-But the HDMI and GPIO ports are no longer accessible. (We control the box over HTTP and SSH)
+But the __HDMI and GPIO ports__ are no longer accessible. (We control the box over HTTP and SSH)
 
 ![RAKwireless RAK7248 WisGate Developer D4H LoRaWAN Gateway](https://lupyuen.github.io/images/wisgate-hw.jpg)
 
@@ -30,7 +30,7 @@ But the HDMI and GPIO ports are no longer accessible. (We control the box over H
 
 The GPS Antenna will be used when we connect WisGate to The Things Network (the worldwide free-access LoRaWAN network).
 
-WisGate D4H is shipped with the open-source ChirpStack LoRaWAN stack, preinstalled in the microSD card. 
+WisGate D4H is shipped with the open-source __ChirpStack LoRaWAN stack__, preinstalled in the microSD card. 
 
 (Yep please don't peel off the sticky tape and insert your own microSD card)
 
@@ -40,7 +40,7 @@ _microSD Slot on WisGate D4H_
 
 # ChirpStack LoRaWAN Stack
 
-Connect the LoRa Antenna to GPS Antenna to WisGate before powering on. (To prevent damage to the RF modules)
+Connect the __LoRa Antenna and GPS Antenna__ to WisGate before powering on. (To prevent damage to the RF modules)
 
 Follow the instructions here to start the WisGate box and to connect to the preinstalled ChirpStack LoRaWAN stack...
 
@@ -50,7 +50,7 @@ Follow the instructions here to start the WisGate box and to connect to the prei
 
 I connected an Ethernet cable to WisGate and used SSH to configure the WiFi and LAN settings (via `sudo gateway-config`).
 
-Here's the ChirpStack web admin page that we will see...
+Here's the __ChirpStack web admin__ page that we will see...
 
 ![ChirpStack web admin on WisGate](https://lupyuen.github.io/images/wisgate-chirpstack.png)
 
