@@ -329,7 +329,8 @@ static void lorawan_join_failed_handler(void) {
 <p>We'll learn about the Nonce and the Message Integrity Code later.</p>
 <h2 id="send-lorawan-data-packet" class="section-header"><a href="#send-lorawan-data-packet">4.4 Send LoRaWAN Data Packet</a></h2>
 <p>Now that we've joined the LoRaWAN Network, let's <strong>send a LoRaWAN Data Packet</strong> to WisGate!</p>
-<p><a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L302-L311"><code>From main.cpp</code></a></p>
+<p>Remember that when our Join Request succeeds, it starts a 20-second timer.</p>
+<p>Here's what happens 20 seconds later: <a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L302-L311"><code>main.cpp</code></a></p>
 <pre><code class="language-c">//  Function for handling timeout event
 void tx_lora_periodic_handler(void) {
   //  When the 20-second timer has expired, 
@@ -339,8 +340,8 @@ void tx_lora_periodic_handler(void) {
   send_lora_frame();
 }
 </code></pre>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L269-L300"><code>From main.cpp</code></a></p>
+<p>We restart the 20-second timer and call <code>send_lora_frame</code> to send a LoRaWAN Data Packet to WisGate.</p>
+<p><code>send_lora_frame</code> is defined in <a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L269-L300"><code>main.cpp</code></a></p>
 <pre><code class="language-c">//  This is called when the 20-second timer expires. 
 //  We send a LoRaWAN Data Packet.
 void send_lora_frame(void) {
@@ -349,34 +350,40 @@ void send_lora_frame(void) {
     return;
   }
 </code></pre>
-<p>TODO</p>
+<p>First we verify that we have joined the LoRaWAN Network. (Because WisGate won't process our data packet unless we're in the network)</p>
+<p>Then we set the packet port and populate the packet with 6 bytes: &quot;<code>Hello!</code>&quot;...</p>
 <pre><code class="language-c">  //  Copy &quot;Hello!&quot; into the transmit buffer
-  m_lora_app_data.port = gAppPort;
+  m_lora_app_data.port = gAppPort;  //  Set to LORAWAN_APP_PORT
   memset(m_lora_app_data.buffer, 0, LORAWAN_APP_DATA_BUFF_SIZE);
   memcpy(m_lora_app_data.buffer, &quot;Hello!&quot;, 6);
   m_lora_app_data.buffsize = 6;
 </code></pre>
-<p>TODO</p>
+<p>Finally we transmit the data packet to WisGate...</p>
 <pre><code class="language-c">  //  Transmit the LoRaWAN Data Packet
   lmh_error_status error = lmh_send(
-    &amp;m_lora_app_data, 
-    g_CurrentConfirm
+    &amp;m_lora_app_data,  //  Data Packet
+    g_CurrentConfirm   //  LMH_UNCONFIRMED_MSG: Unconfirmed Message
   );
   if (error == LMH_SUCCESS) { count++; } 
   else { count_fail++; }
 }
 </code></pre>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L248-L257"><code>From main.cpp</code></a></p>
+<p>Here we're sending an <strong>Unconfirmed LoRaWAN Message</strong> to WisGate. Which means that we don't expect an acknowledgement from WisGate.</p>
+<p>This is the preferred way for a low-power LoRaWAN device to transmit sensor data, since it <strong>doesn't need to wait for the acknowledgement</strong> (and consume additional power).</p>
+<p>(It's OK if a LoRaWAN Data Packet gets lost due to noise or inteference... LoRaWAN sensor devices are supposed to transmit data packets periodically anyway)</p>
+<p><em>What about receiving data from our LoRaWAN Gateway (WisGate)?</em></p>
+<p>We haven't configured WisGate to transmit data to our LoRaWAN Device.</p>
+<p>But the Callback Function to <strong>handle received packets</strong> is here: <a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L248-L257"><code>main.cpp</code></a></p>
 <pre><code class="language-c">//  Function for handling LoRaWan received data from Gateway
 void lorawan_rx_handler(lmh_app_data_t *app_data) {
   //  When we receive a LoRaWAN Packet from the 
-  //  LoRaWAN Gateway, display it
+  //  LoRaWAN Gateway, display it.
+  //  TODO: Ensure that app_data-&gt;buffer is null-terminated.
   Serial.printf(&quot;LoRa Packet received on port %d, size:%d, rssi:%d, snr:%d, data:%s\n&quot;,
     app_data-&gt;port, app_data-&gt;buffsize, app_data-&gt;rssi, app_data-&gt;snr, app_data-&gt;buffer);
 }
 </code></pre>
-<p><a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L259-L267"><code>From main.cpp</code></a></p>
+<p>There's one more Callback Function (that we're not using) for <strong>switching the LoRaWAN Device Class</strong>: <a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L259-L267"><code>main.cpp</code></a></p>
 <pre><code class="language-c">//  Callback Function that is called when we have joined the LoRaWAN network with a LoRaWAN Class
 void lorawan_confirm_class_handler(DeviceClass_t Class) {
   //  Informs the server that switch has occurred ASAP
@@ -385,8 +392,8 @@ void lorawan_confirm_class_handler(DeviceClass_t Class) {
   lmh_send(&amp;m_lora_app_data, g_CurrentConfirm);
 }
 </code></pre>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L313-L321"><code>From main.cpp</code></a></p>
+<p><em>How did we initialise the 20-second timer?</em></p>
+<p>During startup, the <code>setup</code> function calls <code>timers_init</code> to initialise the timer: <a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L313-L321"><code>main.cpp</code></a></p>
 <pre><code class="language-c">//  Initialise the timer
 uint32_t timers_init(void) {
   TimerInit(&amp;appTimer, tx_lora_periodic_handler);
