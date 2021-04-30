@@ -625,6 +625,7 @@ type=OTAA
 <p><strong>Nonce</strong> (We'll explain in the next section)</p>
 </li>
 </ol>
+<p><em>What happens when we transmit an invalid Message Integrity Code?</em></p>
 <p>Our LoRaWAN Gateway (ChirpStack on WisGate) will <strong>reject LoRaWAN Packets with invalid Message Integrity Codes</strong>.</p>
 <p>To see Message Integrity Code errors, SSH to our LoRaWAN Gateway and search for...</p>
 <pre><code class="language-bash"># grep MIC /var/log/syslog
@@ -645,12 +646,14 @@ msg=&quot;uplink: processing uplink frame error&quot;
 ctx_id=0ccd1478-3b79-4ded-9e26-a28e4c143edc 
 error=&quot;get device-session error: invalid MIC&quot;
 </code></pre>
-<p>Let's talk about the Nonce...</p>
 <h2 id="nonce" class="section-header"><a href="#nonce">9.3 Nonce</a></h2>
 <p><em>There isn't a Timestamp in the request. Could someone record and replay the Join Network Request?</em></p>
-<p>TODO</p>
-<p>The error above occurs when we replay a repeated Join Network Request to our LoRaWAN Gateway (with same Nonce, same Message Integrity Code).</p>
-<p>This replay also logs a Nonce Error in WisGate...</p>
+<p>That's why we have the <strong>Nonce</strong>: A 16-bit number that's only <strong>used once and never reused</strong> by our LoRaWAN Device.</p>
+<p>The Nonce appears in the Join Network Request, and it's also used for computing the Message Integrity Code.</p>
+<p><em>What happens when we replay a Join Network Request?</em></p>
+<p>Our LoRaWAN Gateway (ChirpStack on WisGate) will <strong>reject Join Network Requests that have a reused Nonce</strong>.</p>
+<p>(Yep the gateway will remember the Nonces from previous requests)</p>
+<p>To see Nonce errors, SSH to our LoRaWAN Gateway and search for...</p>
 <pre><code class="language-bash"># grep nonce /var/log/syslog
 
 Apr 28 04:02:41 rak-gateway chirpstack-application-server[568]:
@@ -666,13 +669,15 @@ level=error
 msg=&quot;uplink: processing uplink frame error&quot; ctx_id=01ae296e-8ce1-449a-83cc-fb0771059d89 
 error=&quot;validate dev-nonce error: object already exists&quot;
 </code></pre>
-<p>Because the Nonce should not be reused.</p>
+<p>Here's the LoRaWAN Spec for the Nonce and Message Integrity Code...</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-join2.png" alt="Join LoRaWAN Network Request" /></p>
 <p>For other LoRaWAN Packets (besides the Join Network Request), the Message Integrity Code is computed differently...</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-mic.png" alt="LoRaWAN Message Integrity Code" /></p>
 <h2 id="more-about-security" class="section-header"><a href="#more-about-security">9.4 More About Security</a></h2>
-<p><a href="https://lora-alliance.org/resource_hub/lorawan-is-secure-but-implementation-matters/">&quot;LoRaWAN® Is Secure (but Implementation Matters)&quot;</a></p>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-encrypt.png" alt="LoRaWAN Encryption" /></p>
+<p>TODO</p>
+<p><a href="https://lora-alliance.org/resource_hub/lorawan-is-secure-but-implementation-matters/">&quot;LoRaWAN® Is Secure (but Implementation Matters)&quot;</a></p>
 <p>TODO</p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">10 What's Next</a></h1>
 <p>TODO</p>
