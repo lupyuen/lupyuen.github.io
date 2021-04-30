@@ -612,6 +612,8 @@ In ChirpStack there are two ways do this...
 
     This shows ALL LoRaWAN Packets received, even from unknown devices.
 
+    (The packet data is encrypted, so we won't be able to read other people's messages)
+
 1.  Or click __`Applications → app → device_otaa_class_a → LoRaWAN Frames`__
 
     This only shows LoRaWAN Packets from identified devices.
