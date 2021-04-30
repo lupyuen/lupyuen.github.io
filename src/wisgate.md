@@ -160,7 +160,7 @@ __Important:__ Set your __LoRaWAN Region__ in [`main.cpp`](https://github.com/lu
 LoRaMacRegion_t g_CurrentRegion = LORAMAC_REGION_AS923;
 ```
 
-Before sending a LoRaWAN Packet to WisGate, we shall join our LoRaWAN Device to the LoRaWAN Network with __Over-The-Air Activation (OTAA)__...
+Before sending a LoRaWAN Data Packet to WisGate, we shall join our LoRaWAN Device to the LoRaWAN Network with __Over-The-Air Activation (OTAA)__...
 
 ```c
 //  Set to true to select Over-The-Air Activation 
@@ -347,7 +347,7 @@ Our Callback Function then starts a __timer that expires in 20 seconds__...
 }
 ```
 
-We'll learn more about the timer in a while. (Hint: It triggers the sending of a LoRaWAN Packet)
+We'll learn more about the timer in a while. (Hint: It triggers the sending of a LoRaWAN Data Packet)
 
 We have another Callback Function that's called when our __Join Request is rejected__ by WisGate: [`main.cpp`](https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L238-L246)
 
@@ -367,9 +367,9 @@ In case you're curious: WisBlock transmits this LoRaWAN Packet to WisGate when r
 
 We'll learn about the Nonce and the Message Integrity Code later.
 
-## Send LoRaWAN Packet
+## Send LoRaWAN Data Packet
 
-TODO
+Now that we've joined the LoRaWAN Network, let's __send a LoRaWAN Data Packet__ to WisGate!
 
 [`From main.cpp`](https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L302-L311)
 
@@ -390,7 +390,7 @@ TODO
 
 ```c
 //  This is called when the 20-second timer expires. 
-//  We send a LoRaWAN Packet.
+//  We send a LoRaWAN Data Packet.
 void send_lora_frame(void) {
   if (lmh_join_status_get() != LMH_SET) {
     //  Not joined, try again later
@@ -411,25 +411,13 @@ TODO
 TODO
 
 ```c
-  //  Transmit the LoRaWAN Packet
+  //  Transmit the LoRaWAN Data Packet
   lmh_error_status error = lmh_send(
     &m_lora_app_data, 
     g_CurrentConfirm
   );
   if (error == LMH_SUCCESS) { count++; } 
   else { count_fail++; }
-}
-```
-
-TODO
-
-[`From main.cpp`](https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L313-L321)
-
-```c
-//  Initialise the timer
-uint32_t timers_init(void) {
-  TimerInit(&appTimer, tx_lora_periodic_handler);
-  return 0;
 }
 ```
 
@@ -459,7 +447,19 @@ void lorawan_confirm_class_handler(DeviceClass_t Class) {
 }
 ```
 
-# Output Log
+TODO
+
+[`From main.cpp`](https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L313-L321)
+
+```c
+//  Initialise the timer
+uint32_t timers_init(void) {
+  TimerInit(&appTimer, tx_lora_periodic_handler);
+  return 0;
+}
+```
+
+# WisBlock Talks To WisGate
 
 TODO
 
