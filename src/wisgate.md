@@ -671,7 +671,7 @@ type=OTAA
 
 We'll talk about Message Integrity Code and Nonce in a while.
 
-## Snoop with a Software Defined Radio
+## Snoop with Software Defined Radio
 
 To verify the actual frequency that our LoRaWAN Device is transmitting on, we may sniff the airwaves with a __Software Defined Radio__.
 
@@ -681,17 +681,27 @@ Let's talk about Software Defined Radio...
 
 # Visualise LoRaWAN with Software Defined Radio
 
-TODO
+A __Software Defined Radio (SDR)__ is a USB gadget that scans the airwaves (for a range of frequencies) and feeds the data to our computer for processing.
 
-__From WisBlock to WisGate:__ Join Network Request
+I use the [__Airspy R2 SDR__](https://www.itead.cc/airspy.html) to sniff the airwaves and verify that our LoRaWAN Device is transmitting at the __right frequency with sufficient power__...
+
+![Airspy R2 SDR](https://lupyuen.github.io/images/wisgate-airspy.jpg)
+
+Here's the __Join Network Request__ transmitted by WisBlock to WisGate, captured by Airspy SDR and visualised with [__Cubic SDR__](https://cubicsdr.com/)...
 
 ![LoRaWAN Chirp: Device to Gateway](https://lupyuen.github.io/images/wisgate-chirp1.png)
 
-__From WisGate to WisBlock:__ Join Network Response
+And here's the __Join Network Response__ returned by WisGate to WisBlock...
 
 ![LoRaWAN Chirp: Gateway to Device](https://lupyuen.github.io/images/wisgate-chirp2.png)
 
-[__Watch the video on YouTube__](https://youtu.be/xdyi6XCo8Z8)
+(Our SDR is located near WisBlock, hence the WisGate signal looks slightly weaker)
+
+LoRaWAN Packets have a distinct cross-hatch pattern known as the __LoRa Chirp__. By transmitting packets in this unique chirping pattern, LoRa ensures that packets will be delivered over long distances in spite of the noise and interference.
+
+-   [__Watch the video on YouTube__](https://youtu.be/xdyi6XCo8Z8)
+
+-   [__More about LoRa Chirps and Software Defined Radio__](https://lupyuen.github.io/articles/lora#visualise-lora-with-software-defined-radio)
 
 # LoRaWAN Security
 
