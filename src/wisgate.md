@@ -577,35 +577,44 @@ Let's __run the Arduino program on WisBlock__ and watch what happens in the Ardu
 
 # View Received LoRaWAN Packets
 
-TODO
+Let's head back to __ChirpStack on our WisGate LoRaWAN Gateway__, to observe the LoRaWAN Packets received from our Arduino Device (WisBlock)...
 
-Join Network Request:
+1.  In ChirpStack, click __`Applications → app → device_otaa_class_a → Device Data`__
 
-![LoRaWAN Device Data](https://lupyuen.github.io/images/wisgate-devicedata1.png)
+1.  Restart our Arduino LoRaWAN Device (WisBlock)
 
-TODO
+1.  The __Join Network Request__ appears...
 
-Send Data Packet:
+    ![LoRaWAN Device Data](https://lupyuen.github.io/images/wisgate-devicedata1.png)
 
-![LoRaWAN Device Data](https://lupyuen.github.io/images/wisgate-devicedata2.png)
 
-TODO
+1.  20 seconds later the __Data Packet__ appears...
+
+    ![LoRaWAN Device Data](https://lupyuen.github.io/images/wisgate-devicedata2.png)
+
+    `DecodedDataString` says "`Hello!`"
 
 # Troubleshoot LoRaWAN
 
-TODO
+To troubleshoot LoRaWAN problems, 
 
-Join Network Request:
+In ChirpStack there are two ways to observe the __Raw LoRaWAN Packets__ received by our LoRaWAN Gateway (WisGate)...
+
+1.  Click __`Gateways → rak-gateway → Live LoRaWAN Frames`__
+
+    This shows ALL LoRaWAN Packets received, even from unknown devices.
+
+1.  Or click __`Applications → app → device_otaa_class_a → LoRaWAN Frames`__
+
+    This only shows LoRaWAN Packets from identified devices.
+
+Here's the __Join Network Request__...
 
 ![LoRaWAN Packet](https://lupyuen.github.io/images/wisgate-frame1.png)
 
-TODO
-
-Send Data Packet:
+Here's the __Data Packet__...
 
 ![LoRaWAN Packet](https://lupyuen.github.io/images/wisgate-frame2.png)
-
-TODO
 
 # Visualise LoRaWAN with Software Defined Radio
 
