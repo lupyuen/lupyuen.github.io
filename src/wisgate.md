@@ -533,7 +533,7 @@ Let's __run the Arduino program on WisBlock__ and watch what happens in the Ardu
 
     So... We're good! 
 
-1.  TODO
+1.  20 seconds later we __transmit our first data packet__ ("`Hello!`")...
 
     ```text
     Sending frame now...
@@ -542,7 +542,7 @@ Let's __run the Arduino program on WisBlock__ and watch what happens in the Ardu
     OnRadioTxDone
     ```
 
-1.  TODO
+1.  Once again we open the __Two Receive Windows__...
 
     ```text
     OnRadioTxDone => RX Windows #1 1002 #2 2002
@@ -550,7 +550,11 @@ Let's __run the Arduino program on WisBlock__ and watch what happens in the Ardu
     OnRadioRxTimeout
     ```
 
-1.  TODO
+    We haven't configured WisGate to respond to our data packet. (Remember that we're sending Unconfirmed LoRaWAN Messages... No ack needed)
+
+    So we get a __Receive Timeout__. Which is expected.
+
+1.  20 seconds later we __transmit our second data packet__...
 
     ```text
     Sending frame now...
@@ -559,13 +563,13 @@ Let's __run the Arduino program on WisBlock__ and watch what happens in the Ardu
     OnRadioTxDone
     ```
 
+    We open the __Two Receive Windows__ and we get a __Receive Timeout__, which is OK...
+
     ```text
     OnRadioTxDone => RX Windows #1 1002 #2 2002
     RadioIrqProcess => IRQ_RX_TX_TIMEOUT
     OnRadioRxTimeout
     ```
-
-    TODO
 
     [__Watch the demo video on YouTube__](https://youtu.be/xdyi6XCo8Z8)
 
