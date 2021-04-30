@@ -814,15 +814,15 @@ For other LoRaWAN Packets (besides the Join Network Request), the Message Integr
 
 ## More About Security
 
-TODO
+LoRaWAN Payloads are __encrypted with AES-128__, says the LoRaWAN Spec...
 
 ![LoRaWAN Encryption](https://lupyuen.github.io/images/wisgate-encrypt.png)
 
-TODO
+And that's the limit of my security know-how 🙁
 
-["LoRaWAN® Is Secure (but Implementation Matters)"](https://lora-alliance.org/resource_hub/lorawan-is-secure-but-implementation-matters/)
+To learn more about LoRaWAN Security, I recommend this article...
 
-TODO
+-   [__"LoRaWAN® Is Secure (but Implementation Matters)"__](https://lora-alliance.org/resource_hub/lorawan-is-secure-but-implementation-matters/)
 
 # What's Next
 
@@ -846,9 +846,13 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Log Transmitted Packets
 
-To log transmitted packets, modify
+To log transmitted packets in our Arduino program, modify this source file...
 
-`.pio/libdeps/wiscore_rak4631/SX126x-Arduino/src/mac/LoRaMac.cpp`
+```text
+.pio/libdeps/wiscore_rak4631/SX126x-Arduino/src/mac/LoRaMac.cpp
+```
+
+Insert the section marked below...
 
 ```c
 LoRaMacStatus_t SendFrameOnChannel(uint8_t channel)
