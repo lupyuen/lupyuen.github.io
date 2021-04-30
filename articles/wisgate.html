@@ -479,21 +479,41 @@ OnRadioRxTimeout
 </li>
 </ol>
 <h1 id="view-received-lorawan-packets" class="section-header"><a href="#view-received-lorawan-packets">6 View Received LoRaWAN Packets</a></h1>
-<p>TODO</p>
-<p>Join Network Request:</p>
+<p>Let's head back to <strong>ChirpStack on our WisGate LoRaWAN Gateway</strong>, to observe the LoRaWAN Packets received from our Arduino Device (WisBlock)...</p>
+<ol>
+<li>
+<p>In ChirpStack, click <strong><code>Applications → app → device_otaa_class_a → Device Data</code></strong></p>
+</li>
+<li>
+<p>Restart our Arduino LoRaWAN Device (WisBlock)</p>
+</li>
+<li>
+<p>The <strong>Join Network Request</strong> appears...</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-devicedata1.png" alt="LoRaWAN Device Data" /></p>
-<p>TODO</p>
-<p>Send Data Packet:</p>
+</li>
+<li>
+<p>20 seconds later the <strong>Data Packet</strong> appears...</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-devicedata2.png" alt="LoRaWAN Device Data" /></p>
-<p>TODO</p>
+<p><code>DecodedDataString</code> says &quot;<code>Hello!</code>&quot;</p>
+</li>
+</ol>
 <h1 id="troubleshoot-lorawan" class="section-header"><a href="#troubleshoot-lorawan">7 Troubleshoot LoRaWAN</a></h1>
-<p>TODO</p>
-<p>Join Network Request:</p>
+<p>To troubleshoot LoRaWAN problems, </p>
+<p>In ChirpStack there are two ways to observe the <strong>Raw LoRaWAN Packets</strong> received by our LoRaWAN Gateway (WisGate)...</p>
+<ol>
+<li>
+<p>Click <strong><code>Gateways → rak-gateway → Live LoRaWAN Frames</code></strong></p>
+<p>This shows ALL LoRaWAN Packets received, even from unknown devices.</p>
+</li>
+<li>
+<p>Or click <strong><code>Applications → app → device_otaa_class_a → LoRaWAN Frames</code></strong></p>
+<p>This only shows LoRaWAN Packets from identified devices.</p>
+</li>
+</ol>
+<p>Here's the <strong>Join Network Request</strong>...</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-frame1.png" alt="LoRaWAN Packet" /></p>
-<p>TODO</p>
-<p>Send Data Packet:</p>
+<p>Here's the <strong>Data Packet</strong>...</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-frame2.png" alt="LoRaWAN Packet" /></p>
-<p>TODO</p>
 <h1 id="visualise-lorawan-with-software-defined-radio" class="section-header"><a href="#visualise-lorawan-with-software-defined-radio">8 Visualise LoRaWAN with Software Defined Radio</a></h1>
 <p>TODO</p>
 <p><strong>From WisBlock to WisGate:</strong> Join Network Request</p>
