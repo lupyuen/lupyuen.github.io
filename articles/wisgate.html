@@ -402,12 +402,11 @@ uint32_t timers_init(void) {
 }
 </code></pre>
 <h1 id="wisblock-talks-to-wisgate" class="section-header"><a href="#wisblock-talks-to-wisgate">5 WisBlock Talks To WisGate</a></h1>
-<p>Let's run the Arduino program on WisBlock and watch what happens!</p>
+<p>Let's <strong>run the Arduino program on WisBlock</strong> and watch what happens in the Arduino Log!</p>
 <ol>
 <li>
 <p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/README.md#output-log"><code>wisblock-lorawan</code></a></p>
-<pre><code class="language-text">&lt;LMH&gt; OTAA 
+<pre><code class="language-text">OTAA 
 DevEui=4B-C1-5E-E7-37-7B-B1-5B
 DevAdd=00000000
 AppEui=00-00-00-00-00-00-00-00
@@ -416,18 +415,26 @@ AppKey=AA-FF-AD-5C-7E-87-F6-4D-E3-F0-87-32-FC-1D-D2-5D
 </li>
 <li>
 <p>TODO</p>
-<pre><code class="language-text">&lt;LMH&gt; Selected subband 1
+<pre><code class="language-text">Selected subband 1
 Joining LoRaWAN network...
-RadioSend: 00 00 00 00 00 00 00 00 00 5b b1 7b 37 e7 5e c1 4b 0d 42 dd b9 22 aa 
-&lt;LM&gt; OnRadioTxDone
+RadioSend: 00 00 00 00 00 00 00 00 00 5b b1 7b 37 e7 5e c1 4b 55 ed 7e 9b d6 af
+OnRadioTxDone
 </code></pre>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wisgate-join.png" alt="Join LoRaWAN Network Request" /></p>
 </li>
 <li>
 <p>TODO</p>
-<pre><code class="language-text">&lt;LM&gt; OnRadioTxDone =&gt; RX Windows #1 5002 #2 6002
-&lt;LM&gt; OnRadioTxDone =&gt; TX was Join Request
-&lt;LM&gt; OnRadioRxDone
-&lt;LM&gt; OnRadioRxDone =&gt; FRAME_TYPE_JOIN_ACCEPT
+<pre><code class="language-text">OnRadioTxDone =&gt; RX Windows #1 5002 #2 6002
+OnRadioTxDone =&gt; TX was Join Request
+</code></pre>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wisgate-window.png" alt="LoRaWAN Receive Window" /></p>
+</li>
+<li>
+<p>TODO</p>
+<pre><code class="language-text">OnRadioRxDone
+OnRadioRxDone =&gt; FRAME_TYPE_JOIN_ACCEPT
 OTAA Mode, Network Joined!
 </code></pre>
 </li>
@@ -436,32 +443,32 @@ OTAA Mode, Network Joined!
 <pre><code class="language-text">Sending frame now...
 RadioSend: 40 3c 59 7a 00 80 00 00 02 17 77 31 fd 99 86 8f 4f cc ef 
 lmh_send ok count 1
-&lt;LM&gt; OnRadioTxDone
+OnRadioTxDone
 </code></pre>
 </li>
 <li>
 <p>TODO</p>
-<pre><code class="language-text">&lt;LM&gt; OnRadioTxDone =&gt; RX Windows #1 1002 #2 2002
-&lt;RADIO&gt; RadioIrqProcess =&gt; IRQ_RX_TX_TIMEOUT
-&lt;LM&gt; OnRadioRxTimeout
+<pre><code class="language-text">OnRadioTxDone =&gt; RX Windows #1 1002 #2 2002
+RadioIrqProcess =&gt; IRQ_RX_TX_TIMEOUT
+OnRadioRxTimeout
 </code></pre>
 </li>
 <li>
 <p>TODO</p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="ident">Sending</span> <span class="ident">frame</span> <span class="ident">now</span>...
-<span class="ident">RadioSend</span>: <span class="number">40</span> <span class="number">3c</span> <span class="number">59</span> <span class="number">7a</span> <span class="number">00</span> <span class="number">80</span> <span class="number">01</span> <span class="number">00</span> <span class="number">02</span> <span class="number">0b</span> <span class="number">1f</span> <span class="number">7e</span> <span class="number">4d</span> <span class="ident">e1</span> <span class="number">94</span> <span class="ident">c9</span> <span class="number">16</span> <span class="ident">fa</span> <span class="ident">ea</span> 
-<span class="ident">lmh_send</span> <span class="ident">ok</span> <span class="ident">count</span> <span class="number">2</span>
-<span class="op">&lt;</span><span class="ident">LM</span><span class="op">&gt;</span> <span class="ident">OnRadioTxDone</span>
-<span class="op">&lt;</span><span class="ident">LM</span><span class="op">&gt;</span> <span class="ident">OnRadioTxDone</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">RX</span> <span class="ident">Windows</span> #<span class="number">1</span> <span class="number">1002</span> #<span class="number">2</span> <span class="number">2002</span>
-<span class="op">&lt;</span><span class="ident">RADIO</span><span class="op">&gt;</span> <span class="ident">RadioIrqProcess</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">IRQ_RX_TX_TIMEOUT</span>
-<span class="op">&lt;</span><span class="ident">LM</span><span class="op">&gt;</span> <span class="ident">OnRadioRxTimeout</span></pre></div>
+<pre><code class="language-text">Sending frame now...
+RadioSend: 40 3c 59 7a 00 80 01 00 02 0b 1f 7e 4d e1 94 c9 16 fa ea 
+lmh_send ok count 2
+OnRadioTxDone
+</code></pre>
+<pre><code class="language-text">OnRadioTxDone =&gt; RX Windows #1 1002 #2 2002
+RadioIrqProcess =&gt; IRQ_RX_TX_TIMEOUT
+OnRadioRxTimeout
+</code></pre>
 <p>TODO</p>
 <p><a href="https://youtu.be/xdyi6XCo8Z8"><strong>Watch the demo video on YouTube</strong></a></p>
+<p><a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/README.md#output-log"><strong>See the complete Arduino log</strong></a></p>
 </li>
 </ol>
-<p><img src="https://lupyuen.github.io/images/wisgate-window.png" alt="LoRaWAN Receive Window" /></p>
 <h1 id="view-received-lorawan-packets" class="section-header"><a href="#view-received-lorawan-packets">6 View Received LoRaWAN Packets</a></h1>
 <p>TODO</p>
 <p>Join Network Request:</p>
