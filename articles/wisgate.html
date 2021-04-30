@@ -405,40 +405,45 @@ uint32_t timers_init(void) {
 <p>Let's <strong>run the Arduino program on WisBlock</strong> and watch what happens in the Arduino Log!</p>
 <ol>
 <li>
-<p>TODO</p>
+<p>Our Arduino program starts by reminding us of the Over-The-Air Activation (OTAA) configuration: <strong>Device EUI, Application EUI (unused) and Application Key</strong>...</p>
 <pre><code class="language-text">OTAA 
 DevEui=4B-C1-5E-E7-37-7B-B1-5B
 DevAdd=00000000
 AppEui=00-00-00-00-00-00-00-00
 AppKey=AA-FF-AD-5C-7E-87-F6-4D-E3-F0-87-32-FC-1D-D2-5D
 </code></pre>
+<p>(Device Address will be assigned by WisGate when we join the LoRaWAN Network)</p>
 </li>
 <li>
-<p>TODO</p>
+<p>We <strong>transmit the Join Network Request</strong> to WisGate...</p>
 <pre><code class="language-text">Selected subband 1
 Joining LoRaWAN network...
 RadioSend: 00 00 00 00 00 00 00 00 00 5b b1 7b 37 e7 5e c1 4b 55 ed 7e 9b d6 af
 OnRadioTxDone
 </code></pre>
-<p>TODO</p>
+<p>The Join Network Request contains these fields...</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-join.png" alt="Join LoRaWAN Network Request" /></p>
 <p><em>But the Application Key is missing from the Join Network Request!?</em></p>
 <p>Yep! We'll learn why in a while.</p>
 </li>
 <li>
-<p>TODO</p>
+<p>To conserve power, LoRaWAN Devices (Class A) don't receive packets all the time.</p>
+<p>We listen for incoming packets (for a brief moment) <strong>only after we transmit a packet</strong>...</p>
 <pre><code class="language-text">OnRadioTxDone =&gt; RX Windows #1 5002 #2 6002
 OnRadioTxDone =&gt; TX was Join Request
 </code></pre>
-<p>TODO</p>
+<p>We've just transmitted a packet (Join Network Request), so <strong>we listen for an incoming packet</strong>. (Hopefully, the Join Network Response from WisGate)</p>
+<p>The LoRaWAN Specification actually defines <strong>Two Receive Windows</strong>. Which means that <strong>we listen twice (very briefly) for incoming packets</strong>, after sending every packet...</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-window.png" alt="LoRaWAN Receive Window" /></p>
 </li>
 <li>
-<p>TODO</p>
+<p>And indeed, we <strong>receive the Join Network Accepted Response</strong> from WisGate...</p>
 <pre><code class="language-text">OnRadioRxDone
 OnRadioRxDone =&gt; FRAME_TYPE_JOIN_ACCEPT
 OTAA Mode, Network Joined!
 </code></pre>
+<p>The LoRaWAN Spec says we don't open the Second Receive Window if we receive a packet in the First Receive Window.</p>
+<p>So... We're good! </p>
 </li>
 <li>
 <p>TODO</p>
