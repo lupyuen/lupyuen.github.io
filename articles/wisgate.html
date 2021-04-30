@@ -75,14 +75,18 @@
 <li><a href="#send-lorawan-data-packet">4.4 Send LoRaWAN Data Packet</a><ul></ul></li></ul></li>
 <li><a href="#wisblock-talks-to-wisgate">5 WisBlock Talks To WisGate</a><ul></ul></li>
 <li><a href="#view-received-lorawan-packets">6 View Received LoRaWAN Packets</a><ul></ul></li>
-<li><a href="#troubleshoot-lorawan">7 Troubleshoot LoRaWAN</a><ul></ul></li>
+<li><a href="#troubleshoot-lorawan">7 Troubleshoot LoRaWAN</a><ul>
+<li><a href="#inspect-the-raw-packets">7.1 Inspect the raw packets</a><ul></ul></li>
+<li><a href="#check-the-log">7.2 Check the log</a><ul></ul></li>
+<li><a href="#snoop-with-a-software-defined-radio">7.3 Snoop with a Software Defined Radio</a><ul></ul></li></ul></li>
 <li><a href="#visualise-lorawan-with-software-defined-radio">8 Visualise LoRaWAN with Software Defined Radio</a><ul></ul></li>
-<li><a href="#lorawan-join-network-request">9 LoRaWAN Join Network Request</a><ul></ul></li>
-<li><a href="#lorawan-message-integrity-code">10 LoRaWAN Message Integrity Code</a><ul></ul></li>
-<li><a href="#lorawan-nonce">11 LoRaWAN Nonce</a><ul></ul></li>
-<li><a href="#whats-next">12 What's Next</a><ul></ul></li>
-<li><a href="#notes">13 Notes</a><ul></ul></li>
-<li><a href="#appendix-log-transmitted-packets">14 Appendix: Log Transmitted Packets</a><ul></ul></li></ul></nav><p>📝 <em>3 May 2021</em></p>
+<li><a href="#lorawan-security">9 LoRaWAN Security</a><ul>
+<li><a href="#join-network-request">9.1 Join Network Request</a><ul></ul></li>
+<li><a href="#message-integrity-code">9.2 Message Integrity Code</a><ul></ul></li>
+<li><a href="#nonce">9.3 Nonce</a><ul></ul></li></ul></li>
+<li><a href="#whats-next">10 What's Next</a><ul></ul></li>
+<li><a href="#notes">11 Notes</a><ul></ul></li>
+<li><a href="#appendix-log-transmitted-packets">12 Appendix: Log Transmitted Packets</a><ul></ul></li></ul></nav><p>📝 <em>3 May 2021</em></p>
 <p>While testing a new LoRaWAN gadget (<a href="https://lupyuen.github.io/articles/lora2">PineCone BL602</a>), I bought a LoRaWAN Gateway from RAKwireless: <a href="https://docs.rakwireless.com/Product-Categories/WisGate/RAK7248/Datasheet/"><strong>RAK7248 WisGate Developer D4H Gateway</strong></a>.</p>
 <p>Here's what I learnt about <strong>settting up a LoRaWAN Network</strong> with WisGate Developer D4H... And testing it with the <strong>RAKwireless WisBlock dev kit in Arduino</strong>.</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-title.jpg" alt="RAKwireless RAK7248 WisGate Developer D4H LoRaWAN Gateway" /></p>
@@ -506,6 +510,8 @@ OnRadioRxTimeout
 </li>
 </ol>
 <h1 id="troubleshoot-lorawan" class="section-header"><a href="#troubleshoot-lorawan">7 Troubleshoot LoRaWAN</a></h1>
+<p>If our packets don't appear in ChirpStack, here are a couple of things to check...</p>
+<h2 id="inspect-the-raw-packets" class="section-header"><a href="#inspect-the-raw-packets">7.1 Inspect the raw packets</a></h2>
 <p>To troubleshoot LoRaWAN problems, we may inspect the <strong>Raw LoRaWAN Packets</strong> received by our LoRaWAN Gateway (WisGate).</p>
 <p>In ChirpStack there are two ways do this...</p>
 <ol>
@@ -519,10 +525,42 @@ OnRadioRxTimeout
 <p>This only shows LoRaWAN Packets from identified devices.</p>
 </li>
 </ol>
-<p>Here's the <strong>Join Network Request</strong>...</p>
-<p><img src="https://lupyuen.github.io/images/wisgate-frame1.png" alt="LoRaWAN Packet" /></p>
-<p>Here's the <strong>Data Packet</strong>...</p>
-<p><img src="https://lupyuen.github.io/images/wisgate-frame2.png" alt="LoRaWAN Packet" /></p>
+<p>Here's the <strong>Raw Packet for Join Network Request</strong>...</p>
+<p><img src="https://lupyuen.github.io/images/wisgate-frame1.png" alt="Raw LoRaWAN Join Network Request Packet" /></p>
+<p>And here's the <strong>Raw Data Packet</strong>...</p>
+<p><img src="https://lupyuen.github.io/images/wisgate-frame2.png" alt="Raw LoRaWAN Data Packet" /></p>
+<p>This is the mystery LoRaWAN Packet that my LoRaWAN Gateway (WisGate) receives every minute (with encrypted contents)...</p>
+<p><img src="https://lupyuen.github.io/images/wisgate-frame3.png" alt="Raw LoRaWAN Data Packet from unknown device" /></p>
+<h2 id="check-the-log" class="section-header"><a href="#check-the-log">7.2 Check the log</a></h2>
+<p>SSH to WisGate and look at the <strong>Linux System Log</strong> while our LoRaWAN Device is transmitting packets...</p>
+<pre><code class="language-bash">tail -f /var/log/syslog
+</code></pre>
+<p>Sometimes it's helpful to scan the log for <strong>Message Integrity Code</strong> errors...</p>
+<pre><code class="language-bash"># grep MIC /var/log/syslog
+
+Apr 28 04:02:05 rak-gateway 
+chirpstack-application-server[568]: 
+time=&quot;2021-04-28T04:02:05+01:00&quot; 
+level=error 
+msg=&quot;invalid MIC&quot; 
+dev_eui=4bc15ee7377bb15b 
+type=DATA_UP_MIC
+</code></pre>
+<p>Also for <strong>Nonce Errors</strong>...</p>
+<pre><code class="language-bash"># grep nonce /var/log/syslog
+
+Apr 28 04:02:41 rak-gateway chirpstack-application-server[568]:
+time=&quot;2021-04-28T04:02:41+01:00&quot; 
+level=error 
+msg=&quot;validate dev-nonce error&quot; 
+dev_eui=4bc15ee7377bb15b 
+type=OTAA
+</code></pre>
+<p>We'll talk about Message Integrity Code and Nonce in a while.</p>
+<h2 id="snoop-with-a-software-defined-radio" class="section-header"><a href="#snoop-with-a-software-defined-radio">7.3 Snoop with a Software Defined Radio</a></h2>
+<p>To verify the actual frequency that our LoRaWAN Device is transmitting on, we may sniff the airwaves with a <strong>Software Defined Radio</strong>.</p>
+<p>Or use a Spectrum Analyser like <strong>RF Explorer</strong>. <a href="https://lupyuen.github.io/articles/lora#troubleshoot-lora">(See this)</a></p>
+<p>Let's talk about Software Defined Radio...</p>
 <h1 id="visualise-lorawan-with-software-defined-radio" class="section-header"><a href="#visualise-lorawan-with-software-defined-radio">8 Visualise LoRaWAN with Software Defined Radio</a></h1>
 <p>TODO</p>
 <p><strong>From WisBlock to WisGate:</strong> Join Network Request</p>
@@ -530,13 +568,16 @@ OnRadioRxTimeout
 <p><strong>From WisGate to WisBlock:</strong> Join Network Response</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-chirp2.png" alt="LoRaWAN Chirp: Gateway to Device" /></p>
 <p><a href="https://youtu.be/xdyi6XCo8Z8"><strong>Watch the video on YouTube</strong></a></p>
-<h1 id="lorawan-join-network-request" class="section-header"><a href="#lorawan-join-network-request">9 LoRaWAN Join Network Request</a></h1>
+<h1 id="lorawan-security" class="section-header"><a href="#lorawan-security">9 LoRaWAN Security</a></h1>
+<p>I'm no Security Expert... But lemme attempt to explain the high-level bits of LoRaWAN Security to the best of my understanding 🙏</p>
+<h2 id="join-network-request" class="section-header"><a href="#join-network-request">9.1 Join Network Request</a></h2>
 <p>TODO</p>
+<p>Let's start by looking at the <strong>Join Network Request</strong> transmitted by our LoRaWAN Device (WisBlock) to our LoRaWAN Gateway (WisGate). And understand why it's secure.</p>
 <p>WisBlock transmits this LoRaWAN Packet to WisGate when requesting to join the LoRaWAN network...</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-join.png" alt="Join LoRaWAN Network Request" /></p>
 <p>We'll learn about the Nonce and the Message Integrity Code now.</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-join2.png" alt="Join LoRaWAN Network Request" /></p>
-<h1 id="lorawan-message-integrity-code" class="section-header"><a href="#lorawan-message-integrity-code">10 LoRaWAN Message Integrity Code</a></h1>
+<h2 id="message-integrity-code" class="section-header"><a href="#message-integrity-code">9.2 Message Integrity Code</a></h2>
 <p>TODO</p>
 <p>To search for Message Integrity Code errors in LoRaWAN Packets received by WisGate, SSH to WisGate and search for...</p>
 <pre><code class="language-bash"># grep MIC /var/log/syslog
@@ -559,7 +600,7 @@ error=&quot;get device-session error: invalid MIC&quot;
 </code></pre>
 <p><img src="https://lupyuen.github.io/images/wisgate-mic.png" alt="LoRaWAN Message Integrity Code" /></p>
 <p>TODO</p>
-<h1 id="lorawan-nonce" class="section-header"><a href="#lorawan-nonce">11 LoRaWAN Nonce</a></h1>
+<h2 id="nonce" class="section-header"><a href="#nonce">9.3 Nonce</a></h2>
 <p>TODO</p>
 <p>The error above occurs when we replay a repeated Join Network Request to our LoRaWAN Gateway (with same Nonce, same Message Integrity Code).</p>
 <p>This replay also logs a Nonce Error in WisGate...</p>
@@ -582,7 +623,7 @@ error=&quot;validate dev-nonce error: object already exists&quot;
 <p><a href="https://lora-alliance.org/resource_hub/lorawan-is-secure-but-implementation-matters/">&quot;LoRaWAN® Is Secure (but Implementation Matters)&quot;</a></p>
 <p><img src="https://lupyuen.github.io/images/wisgate-encrypt.png" alt="LoRaWAN Encryption" /></p>
 <p>TODO</p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">12 What's Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">10 What's Next</a></h1>
 <p>TODO</p>
 <ul>
 <li>
@@ -600,11 +641,11 @@ error=&quot;validate dev-nonce error: object already exists&quot;
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/wisgate.md"><code>lupyuen.github.io/src/wisgate.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">13 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">11 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1379926160377851910">this Twitter Thread</a></li>
 </ol>
-<h1 id="appendix-log-transmitted-packets" class="section-header"><a href="#appendix-log-transmitted-packets">14 Appendix: Log Transmitted Packets</a></h1>
+<h1 id="appendix-log-transmitted-packets" class="section-header"><a href="#appendix-log-transmitted-packets">12 Appendix: Log Transmitted Packets</a></h1>
 <p>To log transmitted packets, modify</p>
 <p><code>.pio/libdeps/wiscore_rak4631/SX126x-Arduino/src/mac/LoRaMac.cpp</code></p>
 <pre><code class="language-c">LoRaMacStatus_t SendFrameOnChannel(uint8_t channel)
