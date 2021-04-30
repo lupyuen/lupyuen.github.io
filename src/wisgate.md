@@ -699,23 +699,45 @@ I'm no Security Expert... But lemme attempt to explain the high-level bits of Lo
 
 ## Join Network Request
 
-TODO
-
-Let's start by looking at the __Join Network Request__ transmitted by our LoRaWAN Device (WisBlock) to our LoRaWAN Gateway (WisGate). And understand why it's secure.
-
-WisBlock transmits this LoRaWAN Packet to WisGate when requesting to join the LoRaWAN network...
+Let's start by looking at the __Join Network Request__ transmitted by our LoRaWAN Device (WisBlock) to our LoRaWAN Gateway (WisGate). And understand why it's secure...
 
 ![Join LoRaWAN Network Request](https://lupyuen.github.io/images/wisgate-join.png)
 
-We'll learn about the Nonce and the Message Integrity Code now.
+There are 5 parts in the request...
 
-![Join LoRaWAN Network Request](https://lupyuen.github.io/images/wisgate-join2.png)
+1.  __Header__ (1 byte): Identifies this LoRaWAN Packet as a Join Network Request
+
+1.  __Application EUI__ (8 bytes): Unused
+
+1.  __Device EUI__ (8 bytes): Uniquely identifies our LoRaWAN Device. (The bytes are flipped)
+
+1.  __Nonce__ (2 bytes): We'll explain in a while
+
+1.  __Message Integrity Code__ (4 bytes): We'll explain now
 
 ## Message Integrity Code
 
-TODO
+_Why isn't the Application Key inside the Join Network Request?_
 
-To search for Message Integrity Code errors in LoRaWAN Packets received by WisGate, SSH to WisGate and search for...
+Because the __Application Key is a Secret Key__. It should never be revealed to others, otherwise our gateway will accept Join Network Requests from unauthorised devices.
+
+Instead we use the Application Key to compute a __[Message Authentication Code](https://en.wikipedia.org/wiki/Message_authentication_code) (AES-128 CMAC)__. And we transmit the first 4 bytes of the authentication code as the __Message Integrity Code__.
+
+According to the LoRaWAN Spec, the Message Authentication Code (for the Join Network Request) is computed with these input values...
+
+1.  __Application Key__
+
+1.  __Header__
+
+1.  __Application EUI__
+
+1.  __Device EUI__
+
+1.  __Nonce__ (We'll explain in the next section)
+
+Our LoRaWAN Gateway (ChirpStack on WisGate) will __reject LoRaWAN Packets with invalid Message Integrity Codes__.
+
+To see Message Integrity Code errors, SSH to our LoRaWAN Gateway and search for...
 
 ```bash
 # grep MIC /var/log/syslog
@@ -737,11 +759,11 @@ ctx_id=0ccd1478-3b79-4ded-9e26-a28e4c143edc
 error="get device-session error: invalid MIC"
 ```
 
-![LoRaWAN Message Integrity Code](https://lupyuen.github.io/images/wisgate-mic.png)
-
-TODO
+Let's talk about the Nonce...
 
 ## Nonce
+
+_There isn't a Timestamp in the request. Could someone record and replay the Join Network Request?_
 
 TODO
 
@@ -767,6 +789,14 @@ error="validate dev-nonce error: object already exists"
 ```
 
 Because the Nonce should not be reused.
+
+![Join LoRaWAN Network Request](https://lupyuen.github.io/images/wisgate-join2.png)
+
+For other LoRaWAN Packets (besides the Join Network Request), the Message Integrity Code is computed differently...
+
+![LoRaWAN Message Integrity Code](https://lupyuen.github.io/images/wisgate-mic.png)
+
+## More About Security
 
 ["LoRaWAN® Is Secure (but Implementation Matters)"](https://lora-alliance.org/resource_hub/lorawan-is-secure-but-implementation-matters/)
 
