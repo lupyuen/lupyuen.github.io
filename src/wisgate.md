@@ -745,6 +745,8 @@ According to the LoRaWAN Spec, the Message Authentication Code (for the Join Net
 
 1.  __Nonce__ (We'll explain in the next section)
 
+_What happens when we transmit an invalid Message Integrity Code?_
+
 Our LoRaWAN Gateway (ChirpStack on WisGate) will __reject LoRaWAN Packets with invalid Message Integrity Codes__.
 
 To see Message Integrity Code errors, SSH to our LoRaWAN Gateway and search for...
@@ -769,17 +771,21 @@ ctx_id=0ccd1478-3b79-4ded-9e26-a28e4c143edc
 error="get device-session error: invalid MIC"
 ```
 
-Let's talk about the Nonce...
-
 ## Nonce
 
 _There isn't a Timestamp in the request. Could someone record and replay the Join Network Request?_
 
-TODO
+That's why we have the __Nonce__: A 16-bit number that's only __used once and never reused__ by our LoRaWAN Device.
 
-The error above occurs when we replay a repeated Join Network Request to our LoRaWAN Gateway (with same Nonce, same Message Integrity Code).
+The Nonce appears in the Join Network Request, and it's also used for computing the Message Integrity Code.
 
-This replay also logs a Nonce Error in WisGate...
+_What happens when we replay a Join Network Request?_
+
+Our LoRaWAN Gateway (ChirpStack on WisGate) will __reject Join Network Requests that have a reused Nonce__.
+
+(Yep the gateway will remember the Nonces from previous requests)
+
+To see Nonce errors, SSH to our LoRaWAN Gateway and search for...
 
 ```bash
 # grep nonce /var/log/syslog
@@ -798,7 +804,7 @@ msg="uplink: processing uplink frame error" ctx_id=01ae296e-8ce1-449a-83cc-fb077
 error="validate dev-nonce error: object already exists"
 ```
 
-Because the Nonce should not be reused.
+Here's the LoRaWAN Spec for the Nonce and Message Integrity Code...
 
 ![Join LoRaWAN Network Request](https://lupyuen.github.io/images/wisgate-join2.png)
 
@@ -808,9 +814,13 @@ For other LoRaWAN Packets (besides the Join Network Request), the Message Integr
 
 ## More About Security
 
-["LoRaWAN® Is Secure (but Implementation Matters)"](https://lora-alliance.org/resource_hub/lorawan-is-secure-but-implementation-matters/)
+TODO
 
 ![LoRaWAN Encryption](https://lupyuen.github.io/images/wisgate-encrypt.png)
+
+TODO
+
+["LoRaWAN® Is Secure (but Implementation Matters)"](https://lora-alliance.org/resource_hub/lorawan-is-secure-but-implementation-matters/)
 
 TODO
 
