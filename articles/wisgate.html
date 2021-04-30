@@ -78,7 +78,7 @@
 <li><a href="#troubleshoot-lorawan">7 Troubleshoot LoRaWAN</a><ul>
 <li><a href="#inspect-the-raw-packets">7.1 Inspect the raw packets</a><ul></ul></li>
 <li><a href="#check-the-log">7.2 Check the log</a><ul></ul></li>
-<li><a href="#snoop-with-a-software-defined-radio">7.3 Snoop with a Software Defined Radio</a><ul></ul></li></ul></li>
+<li><a href="#snoop-with-software-defined-radio">7.3 Snoop with Software Defined Radio</a><ul></ul></li></ul></li>
 <li><a href="#visualise-lorawan-with-software-defined-radio">8 Visualise LoRaWAN with Software Defined Radio</a><ul></ul></li>
 <li><a href="#lorawan-security">9 LoRaWAN Security</a><ul>
 <li><a href="#join-network-request">9.1 Join Network Request</a><ul></ul></li>
@@ -558,17 +558,28 @@ dev_eui=4bc15ee7377bb15b
 type=OTAA
 </code></pre>
 <p>We'll talk about Message Integrity Code and Nonce in a while.</p>
-<h2 id="snoop-with-a-software-defined-radio" class="section-header"><a href="#snoop-with-a-software-defined-radio">7.3 Snoop with a Software Defined Radio</a></h2>
+<h2 id="snoop-with-software-defined-radio" class="section-header"><a href="#snoop-with-software-defined-radio">7.3 Snoop with Software Defined Radio</a></h2>
 <p>To verify the actual frequency that our LoRaWAN Device is transmitting on, we may sniff the airwaves with a <strong>Software Defined Radio</strong>.</p>
 <p>Or use a Spectrum Analyser like <strong>RF Explorer</strong>. <a href="https://lupyuen.github.io/articles/lora#troubleshoot-lora">(See this)</a></p>
 <p>Let's talk about Software Defined Radio...</p>
 <h1 id="visualise-lorawan-with-software-defined-radio" class="section-header"><a href="#visualise-lorawan-with-software-defined-radio">8 Visualise LoRaWAN with Software Defined Radio</a></h1>
-<p>TODO</p>
-<p><strong>From WisBlock to WisGate:</strong> Join Network Request</p>
+<p>A <strong>Software Defined Radio (SDR)</strong> is a USB gadget that scans the airwaves (for a range of frequencies) and feeds the data to our computer for processing.</p>
+<p>I use the <a href="https://www.itead.cc/airspy.html"><strong>Airspy R2 SDR</strong></a> to sniff the airwaves and verify that our LoRaWAN Device is transmitting at the <strong>right frequency with sufficient power</strong>...</p>
+<p><img src="https://lupyuen.github.io/images/wisgate-airspy.jpg" alt="Airspy R2 SDR" /></p>
+<p>Here's the <strong>Join Network Request</strong> transmitted by WisBlock to WisGate, captured by Airspy SDR and visualised with <a href="https://cubicsdr.com/"><strong>Cubic SDR</strong></a>...</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-chirp1.png" alt="LoRaWAN Chirp: Device to Gateway" /></p>
-<p><strong>From WisGate to WisBlock:</strong> Join Network Response</p>
+<p>And here's the <strong>Join Network Response</strong> returned by WisGate to WisBlock...</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-chirp2.png" alt="LoRaWAN Chirp: Gateway to Device" /></p>
+<p>(Our SDR is located near WisBlock, hence the WisGate signal looks slightly weaker)</p>
+<p>LoRaWAN Packets have a distinct cross-hatch pattern known as the <strong>LoRa Chirp</strong>. By transmitting packets in this unique chirping pattern, LoRa ensures that packets will be delivered over long distances in spite of the noise and interference.</p>
+<ul>
+<li>
 <p><a href="https://youtu.be/xdyi6XCo8Z8"><strong>Watch the video on YouTube</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lora#visualise-lora-with-software-defined-radio"><strong>More about LoRa Chirps and Software Defined Radio</strong></a></p>
+</li>
+</ul>
 <h1 id="lorawan-security" class="section-header"><a href="#lorawan-security">9 LoRaWAN Security</a></h1>
 <p>I'm no Security Expert... But lemme attempt to explain the high-level bits of LoRaWAN Security to the best of my understanding 🙏</p>
 <h2 id="join-network-request" class="section-header"><a href="#join-network-request">9.1 Join Network Request</a></h2>
