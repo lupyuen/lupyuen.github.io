@@ -826,7 +826,9 @@ To learn more about LoRaWAN Security, I recommend this article...
 
 # What's Next
 
-TODO
+This has been a fun experience for me, diving deep into LoRaWAN with the RAKwireless WisGate LoRaWAN Gateway... __My first time using LoRaWAN!__
+
+I hope you find this article useful. Now that I know some LoRaWAN, I'm heading back to [__PineCone BL602__](https://lupyuen.github.io/articles/lora2) to finish what I started: [__Porting the LoRaWAN Client Stack to RISC-V BL602__](https://twitter.com/MisterTechBlog/status/1379926160377851910).
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
