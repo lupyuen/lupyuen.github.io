@@ -80,9 +80,9 @@
 <li><a href="#lorawan-join-request">9 LoRaWAN Join Request</a><ul></ul></li>
 <li><a href="#lorawan-message-integrity-code">10 LoRaWAN Message Integrity Code</a><ul></ul></li>
 <li><a href="#lorawan-nonce">11 LoRaWAN Nonce</a><ul></ul></li>
-<li><a href="#log-transmitted-packets">12 Log Transmitted Packets</a><ul></ul></li>
-<li><a href="#whats-next">13 What's Next</a><ul></ul></li>
-<li><a href="#notes">14 Notes</a><ul></ul></li></ul></nav><p>📝 <em>3 May 2021</em></p>
+<li><a href="#whats-next">12 What's Next</a><ul></ul></li>
+<li><a href="#notes">13 Notes</a><ul></ul></li>
+<li><a href="#appendix-log-transmitted-packets">14 Appendix: Log Transmitted Packets</a><ul></ul></li></ul></nav><p>📝 <em>3 May 2021</em></p>
 <p>While testing a new LoRaWAN gadget (<a href="https://lupyuen.github.io/articles/lora2">PineCone BL602</a>), I bought a LoRaWAN Gateway from RAKwireless: <a href="https://docs.rakwireless.com/Product-Categories/WisGate/RAK7248/Datasheet/"><strong>RAK7248 WisGate Developer D4H Gateway</strong></a>.</p>
 <p>Here's what I learnt about <strong>settting up a LoRaWAN Network</strong> with WisGate Developer D4H... And testing it with the <strong>RAKwireless WisBlock dev kit in Arduino</strong>.</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-title.jpg" alt="RAKwireless RAK7248 WisGate Developer D4H LoRaWAN Gateway" /></p>
@@ -401,16 +401,9 @@ DevEui=4B-C1-5E-E7-37-7B-B1-5B
 DevAdd=00000000
 AppEui=00-00-00-00-00-00-00-00
 AppKey=AA-FF-AD-5C-7E-87-F6-4D-E3-F0-87-32-FC-1D-D2-5D
-SX126xSetTxParams: power=0, rampTime=4
-SX126xSetPaConfig: paDutyCycle=4, hpMax=7, deviceSel=0, paLut=1 
-SX126xSetTxParams: power=13, rampTime=2
-SX126xSetPaConfig: paDutyCycle=4, hpMax=7, deviceSel=0, paLut=1 
 &lt;LMH&gt; Selected subband 1
 Joining LoRaWAN network...
-SX126xSetTxParams: power=13, rampTime=2
-SX126xSetPaConfig: paDutyCycle=4, hpMax=7, deviceSel=0, paLut=1 
-RadioSend: size=23, channel=1, datarate=2, txpower=0, maxeirp=16, antennagain=2
-00 00 00 00 00 00 00 00 00 5b b1 7b 37 e7 5e c1 4b 0d 42 dd b9 22 aa 
+RadioSend: 00 00 00 00 00 00 00 00 00 5b b1 7b 37 e7 5e c1 4b 0d 42 dd b9 22 aa 
 &lt;LM&gt; OnRadioTxDone
 &lt;LM&gt; OnRadioTxDone =&gt; RX Windows #1 5002 #2 6002
 &lt;LM&gt; OnRadioTxDone =&gt; TX was Join Request
@@ -420,10 +413,7 @@ OTAA Mode, Network Joined!
 </code></pre>
 <p>TODO</p>
 <pre><code class="language-text">Sending frame now...
-SX126xSetTxParams: power=13, rampTime=2
-SX126xSetPaConfig: paDutyCycle=4, hpMax=7, deviceSel=0, paLut=1 
-RadioSend: size=19, channel=0, datarate=2, txpower=0, maxeirp=16, antennagain=2
-40 3c 59 7a 00 80 00 00 02 17 77 31 fd 99 86 8f 4f cc ef 
+RadioSend: 40 3c 59 7a 00 80 00 00 02 17 77 31 fd 99 86 8f 4f cc ef 
 lmh_send ok count 1
 &lt;LM&gt; OnRadioTxDone
 &lt;LM&gt; OnRadioTxDone =&gt; RX Windows #1 1002 #2 2002
@@ -434,36 +424,44 @@ lmh_send ok count 1
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="ident">Sending</span> <span class="ident">frame</span> <span class="ident">now</span>...
-<span class="ident">SX126xSetTxParams</span>: <span class="ident">power</span><span class="op">=</span><span class="number">13</span>, <span class="ident">rampTime</span><span class="op">=</span><span class="number">2</span>
-<span class="ident">SX126xSetPaConfig</span>: <span class="ident">paDutyCycle</span><span class="op">=</span><span class="number">4</span>, <span class="ident">hpMax</span><span class="op">=</span><span class="number">7</span>, <span class="ident">deviceSel</span><span class="op">=</span><span class="number">0</span>, <span class="ident">paLut</span><span class="op">=</span><span class="number">1</span> 
-<span class="ident">RadioSend</span>: <span class="ident">size</span><span class="op">=</span><span class="number">19</span>, <span class="ident">channel</span><span class="op">=</span><span class="number">5</span>, <span class="ident">datarate</span><span class="op">=</span><span class="number">2</span>, <span class="ident">txpower</span><span class="op">=</span><span class="number">0</span>, <span class="ident">maxeirp</span><span class="op">=</span><span class="number">16</span>, <span class="ident">antennagain</span><span class="op">=</span><span class="number">2</span>
-<span class="number">40</span> <span class="number">3c</span> <span class="number">59</span> <span class="number">7a</span> <span class="number">00</span> <span class="number">80</span> <span class="number">01</span> <span class="number">00</span> <span class="number">02</span> <span class="number">0b</span> <span class="number">1f</span> <span class="number">7e</span> <span class="number">4d</span> <span class="ident">e1</span> <span class="number">94</span> <span class="ident">c9</span> <span class="number">16</span> <span class="ident">fa</span> <span class="ident">ea</span> 
+<span class="ident">RadioSend</span>: <span class="number">40</span> <span class="number">3c</span> <span class="number">59</span> <span class="number">7a</span> <span class="number">00</span> <span class="number">80</span> <span class="number">01</span> <span class="number">00</span> <span class="number">02</span> <span class="number">0b</span> <span class="number">1f</span> <span class="number">7e</span> <span class="number">4d</span> <span class="ident">e1</span> <span class="number">94</span> <span class="ident">c9</span> <span class="number">16</span> <span class="ident">fa</span> <span class="ident">ea</span> 
 <span class="ident">lmh_send</span> <span class="ident">ok</span> <span class="ident">count</span> <span class="number">2</span>
 <span class="op">&lt;</span><span class="ident">LM</span><span class="op">&gt;</span> <span class="ident">OnRadioTxDone</span>
 <span class="op">&lt;</span><span class="ident">LM</span><span class="op">&gt;</span> <span class="ident">OnRadioTxDone</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">RX</span> <span class="ident">Windows</span> #<span class="number">1</span> <span class="number">1002</span> #<span class="number">2</span> <span class="number">2002</span>
 <span class="op">&lt;</span><span class="ident">RADIO</span><span class="op">&gt;</span> <span class="ident">RadioIrqProcess</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">IRQ_RX_TX_TIMEOUT</span>
 <span class="op">&lt;</span><span class="ident">LM</span><span class="op">&gt;</span> <span class="ident">OnRadioRxTimeout</span></pre></div>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wisgate-window.png" alt="LoRaWAN Receive Window" /></p>
 <h1 id="view-received-lorawan-packets" class="section-header"><a href="#view-received-lorawan-packets">6 View Received LoRaWAN Packets</a></h1>
 <p>TODO</p>
+<p>Join Network Request:</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-devicedata1.png" alt="LoRaWAN Device Data" /></p>
 <p>TODO</p>
+<p>Send Data Packet:</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-devicedata2.png" alt="LoRaWAN Device Data" /></p>
 <p>TODO</p>
 <h1 id="troubleshoot-lorawan" class="section-header"><a href="#troubleshoot-lorawan">7 Troubleshoot LoRaWAN</a></h1>
 <p>TODO</p>
+<p>Join Network Request:</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-frame1.png" alt="LoRaWAN Packet" /></p>
 <p>TODO</p>
+<p>Send Data Packet:</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-frame2.png" alt="LoRaWAN Packet" /></p>
 <p>TODO</p>
 <h1 id="visualise-lorawan-with-software-defined-radio" class="section-header"><a href="#visualise-lorawan-with-software-defined-radio">8 Visualise LoRaWAN with Software Defined Radio</a></h1>
 <p>TODO</p>
+<p>From WisBlock to WisGate: Join Network Request</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-chirp1.png" alt="LoRaWAN Chirp: Device to Gateway" /></p>
 <p>TODO</p>
+<p>From WisGate to WisBlock: Join Network Response</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-chirp2.png" alt="LoRaWAN Chirp: Gateway to Device" /></p>
 <p>TODO</p>
 <p><a href="https://youtu.be/xdyi6XCo8Z8"><strong>Watch the video on YouTube</strong></a></p>
 <h1 id="lorawan-join-request" class="section-header"><a href="#lorawan-join-request">9 LoRaWAN Join Request</a></h1>
 <p>TODO</p>
+<p>WisBlock transmits this LoRaWAN Packet to WisGate when requesting to join the LoRaWAN network...</p>
+<p><img src="https://lupyuen.github.io/images/wisgate-join.png" alt="Join LoRaWAN Network Request" /></p>
+<p>We'll learn about the Nonce and the Message Integrity Code now.</p>
 <h1 id="lorawan-message-integrity-code" class="section-header"><a href="#lorawan-message-integrity-code">10 LoRaWAN Message Integrity Code</a></h1>
 <p>TODO</p>
 <p>To search for Message Integrity Code errors in LoRaWAN Packets received by WisGate, SSH to WisGate and search for...</p>
@@ -485,6 +483,8 @@ msg=&quot;uplink: processing uplink frame error&quot;
 ctx_id=0ccd1478-3b79-4ded-9e26-a28e4c143edc 
 error=&quot;get device-session error: invalid MIC&quot;
 </code></pre>
+<p><img src="https://lupyuen.github.io/images/wisgate-mic.png" alt="LoRaWAN Message Integrity Code" /></p>
+<p>TODO</p>
 <h1 id="lorawan-nonce" class="section-header"><a href="#lorawan-nonce">11 LoRaWAN Nonce</a></h1>
 <p>TODO</p>
 <p>The error above occurs when we replay a repeated Join Network Request to our LoRaWAN Gateway (with same Nonce, same Message Integrity Code).</p>
@@ -506,7 +506,31 @@ error=&quot;validate dev-nonce error: object already exists&quot;
 </code></pre>
 <p>Because the Nonce should not be reused.</p>
 <p><a href="https://lora-alliance.org/resource_hub/lorawan-is-secure-but-implementation-matters/">&quot;LoRaWAN® Is Secure (but Implementation Matters)&quot;</a></p>
-<h1 id="log-transmitted-packets" class="section-header"><a href="#log-transmitted-packets">12 Log Transmitted Packets</a></h1>
+<p><img src="https://lupyuen.github.io/images/wisgate-encrypt.png" alt="LoRaWAN Encryption" /></p>
+<p>TODO</p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">12 What's Next</a></h1>
+<p>TODO</p>
+<ul>
+<li>
+<p><a href="https://github.com/sponsors/lupyuen">Sponsor me a coffee</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/book">Read &quot;The RISC-V BL602 Book&quot;</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io">Check out my articles</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/rss.xml">RSS Feed</a></p>
+</li>
+</ul>
+<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
+<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/wisgate.md"><code>lupyuen.github.io/src/wisgate.md</code></a></p>
+<h1 id="notes" class="section-header"><a href="#notes">13 Notes</a></h1>
+<ol>
+<li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1379926160377851910">this Twitter Thread</a></li>
+</ol>
+<h1 id="appendix-log-transmitted-packets" class="section-header"><a href="#appendix-log-transmitted-packets">14 Appendix: Log Transmitted Packets</a></h1>
 <p>To log transmitted packets, modify</p>
 <p><code>.pio/libdeps/wiscore_rak4631/SX126x-Arduino/src/mac/LoRaMac.cpp</code></p>
 <pre><code class="language-c">LoRaMacStatus_t SendFrameOnChannel(uint8_t channel)
@@ -573,28 +597,6 @@ error=&quot;validate dev-nonce error: object already exists&quot;
     return LORAMAC_STATUS_OK;
 }
 </code></pre>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">13 What's Next</a></h1>
-<p>TODO</p>
-<ul>
-<li>
-<p><a href="https://github.com/sponsors/lupyuen">Sponsor me a coffee</a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.github.io/articles/book">Read &quot;The RISC-V BL602 Book&quot;</a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.github.io">Check out my articles</a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.github.io/rss.xml">RSS Feed</a></p>
-</li>
-</ul>
-<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
-<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/wisgate.md"><code>lupyuen.github.io/src/wisgate.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">14 Notes</a></h1>
-<ol>
-<li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1379926160377851910">this Twitter Thread</a></li>
-</ol>
 
     
 </body>
