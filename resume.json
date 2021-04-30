@@ -147,6 +147,13 @@
   ],
   "publications": [
     {
+      "name": "Build a LoRaWAN Network with RAKwireless WisGate Developer Gateway",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2021-04-30",
+      "website": "https://lupyuen.github.io/articles/wisgate",
+      "summary": "How we set up our own LoRaWAN Network with RAKwireless RAK7248 WisGate Developer D4H Gateway... And test it with RAKwireless WisBlock in Arduino"
+    },
+    {
       "name": "Run Rust RISC-V Firmware with BL602 IoT SDK",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-04-21",

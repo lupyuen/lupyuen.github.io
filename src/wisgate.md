@@ -1,6 +1,6 @@
 # Build a LoRaWAN Network with RAKwireless WisGate Developer Gateway
 
-📝 _3 May 2021_
+📝 _30 Apr 2021_
 
 While testing a new LoRaWAN gadget ([PineCone BL602](https://lupyuen.github.io/articles/lora2)), I bought a LoRaWAN Gateway from RAKwireless: [__RAK7248 WisGate Developer D4H Gateway__](https://docs.rakwireless.com/Product-Categories/WisGate/RAK7248/Datasheet/).
 
