@@ -674,11 +674,13 @@ error=&quot;validate dev-nonce error: object already exists&quot;
 <p>For other LoRaWAN Packets (besides the Join Network Request), the Message Integrity Code is computed differently...</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-mic.png" alt="LoRaWAN Message Integrity Code" /></p>
 <h2 id="more-about-security" class="section-header"><a href="#more-about-security">9.4 More About Security</a></h2>
-<p>TODO</p>
+<p>LoRaWAN Payloads are <strong>encrypted with AES-128</strong>, says the LoRaWAN Spec...</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-encrypt.png" alt="LoRaWAN Encryption" /></p>
-<p>TODO</p>
-<p><a href="https://lora-alliance.org/resource_hub/lorawan-is-secure-but-implementation-matters/">&quot;LoRaWAN® Is Secure (but Implementation Matters)&quot;</a></p>
-<p>TODO</p>
+<p>And that's the limit of my security know-how 🙁</p>
+<p>To learn more about LoRaWAN Security, I recommend this article...</p>
+<ul>
+<li><a href="https://lora-alliance.org/resource_hub/lorawan-is-secure-but-implementation-matters/"><strong>&quot;LoRaWAN® Is Secure (but Implementation Matters)&quot;</strong></a></li>
+</ul>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">10 What's Next</a></h1>
 <p>TODO</p>
 <ul>
@@ -702,8 +704,10 @@ error=&quot;validate dev-nonce error: object already exists&quot;
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1379926160377851910">this Twitter Thread</a></li>
 </ol>
 <h1 id="appendix-log-transmitted-packets" class="section-header"><a href="#appendix-log-transmitted-packets">12 Appendix: Log Transmitted Packets</a></h1>
-<p>To log transmitted packets, modify</p>
-<p><code>.pio/libdeps/wiscore_rak4631/SX126x-Arduino/src/mac/LoRaMac.cpp</code></p>
+<p>To log transmitted packets in our Arduino program, modify this source file...</p>
+<pre><code class="language-text">.pio/libdeps/wiscore_rak4631/SX126x-Arduino/src/mac/LoRaMac.cpp
+</code></pre>
+<p>Insert the section marked below...</p>
 <pre><code class="language-c">LoRaMacStatus_t SendFrameOnChannel(uint8_t channel)
 {
     TxConfigParams_t txConfig;
