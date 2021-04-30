@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Build a LoRaWAN Network with RAKwireless WisGate Developer Gateway</title>
+            <link>https://lupyuen.github.io/articles/wisgate</link>
+            <description><![CDATA[How we set up our own LoRaWAN Network with RAKwireless RAK7248 WisGate Developer D4H Gateway... And test it with RAKwireless WisBlock in Arduino]]></description>
+            <guid>https://lupyuen.github.io/articles/wisgate</guid>
+            <pubDate>Fri, 30 Apr 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Run Rust RISC-V Firmware with BL602 IoT SDK</title>
             <link>https://lupyuen.github.io/articles/rust</link>
             <description><![CDATA[How we build, flash and run Rust firmware on BL602 RISC-V SoC... With the BL602 IoT SDK]]></description>
