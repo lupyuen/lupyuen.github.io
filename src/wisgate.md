@@ -594,11 +594,19 @@ Let's head back to __ChirpStack on our WisGate LoRaWAN Gateway__, to observe the
 
     `DecodedDataString` says "`Hello!`"
 
+1.  We may now configure ChirpStack to do something useful with the received packets, like publish them over MQTT, HTTP, ...
+
+    Click this link...
+
+    -   [__ChirpStack Application Server__](https://www.chirpstack.io/application-server/)
+
+    Then click the __Menu__ (top left) and __Integrations__
+
 # Troubleshoot LoRaWAN
 
-To troubleshoot LoRaWAN problems, 
+To troubleshoot LoRaWAN problems, we may inspect the __Raw LoRaWAN Packets__ received by our LoRaWAN Gateway (WisGate).
 
-In ChirpStack there are two ways to observe the __Raw LoRaWAN Packets__ received by our LoRaWAN Gateway (WisGate)...
+In ChirpStack there are two ways do this...
 
 1.  Click __`Gateways → rak-gateway → Live LoRaWAN Frames`__
 
