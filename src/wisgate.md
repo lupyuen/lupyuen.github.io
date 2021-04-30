@@ -546,17 +546,13 @@ TODO
 
 TODO
 
-From WisBlock to WisGate: Join Network Request
+__From WisBlock to WisGate:__ Join Network Request
 
 ![LoRaWAN Chirp: Device to Gateway](https://lupyuen.github.io/images/wisgate-chirp1.png)
 
-TODO
-
-From WisGate to WisBlock: Join Network Response
+__From WisGate to WisBlock:__ Join Network Response
 
 ![LoRaWAN Chirp: Gateway to Device](https://lupyuen.github.io/images/wisgate-chirp2.png)
-
-TODO
 
 [__Watch the video on YouTube__](https://youtu.be/xdyi6XCo8Z8)
 
