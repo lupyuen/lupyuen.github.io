@@ -500,6 +500,10 @@ Let's __run the Arduino program on WisBlock__ and watch what happens in the Ardu
 
     ![Join LoRaWAN Network Request](https://lupyuen.github.io/images/wisgate-join.png)
 
+    _But the Application Key is missing from the Join Network Request!?_
+
+    Yep! We'll learn why in a while.
+
 1.  TODO
 
     ```text
@@ -603,7 +607,7 @@ __From WisGate to WisBlock:__ Join Network Response
 
 [__Watch the video on YouTube__](https://youtu.be/xdyi6XCo8Z8)
 
-# LoRaWAN Join Request
+# LoRaWAN Join Network Request
 
 TODO
 
@@ -612,6 +616,8 @@ WisBlock transmits this LoRaWAN Packet to WisGate when requesting to join the Lo
 ![Join LoRaWAN Network Request](https://lupyuen.github.io/images/wisgate-join.png)
 
 We'll learn about the Nonce and the Message Integrity Code now.
+
+![Join LoRaWAN Network Request](https://lupyuen.github.io/images/wisgate-join2.png)
 
 # LoRaWAN Message Integrity Code
 
