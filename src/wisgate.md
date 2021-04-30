@@ -475,14 +475,12 @@ uint32_t timers_init(void) {
 
 # WisBlock Talks To WisGate
 
-Let's run the Arduino program on WisBlock and watch what happens!
+Let's __run the Arduino program on WisBlock__ and watch what happens in the Arduino Log!
 
 1.  TODO
 
-    From [`wisblock-lorawan`](https://github.com/lupyuen/wisblock-lorawan/blob/master/README.md#output-log)
-
     ```text
-    <LMH> OTAA 
+    OTAA 
     DevEui=4B-C1-5E-E7-37-7B-B1-5B
     DevAdd=00000000
     AppEui=00-00-00-00-00-00-00-00
@@ -492,19 +490,32 @@ Let's run the Arduino program on WisBlock and watch what happens!
 1.  TODO
 
     ```text
-    <LMH> Selected subband 1
+    Selected subband 1
     Joining LoRaWAN network...
-    RadioSend: 00 00 00 00 00 00 00 00 00 5b b1 7b 37 e7 5e c1 4b 0d 42 dd b9 22 aa 
-    <LM> OnRadioTxDone
+    RadioSend: 00 00 00 00 00 00 00 00 00 5b b1 7b 37 e7 5e c1 4b 55 ed 7e 9b d6 af
+    OnRadioTxDone
     ```
+
+    TODO
+
+    ![Join LoRaWAN Network Request](https://lupyuen.github.io/images/wisgate-join.png)
 
 1.  TODO
 
     ```text
-    <LM> OnRadioTxDone => RX Windows #1 5002 #2 6002
-    <LM> OnRadioTxDone => TX was Join Request
-    <LM> OnRadioRxDone
-    <LM> OnRadioRxDone => FRAME_TYPE_JOIN_ACCEPT
+    OnRadioTxDone => RX Windows #1 5002 #2 6002
+    OnRadioTxDone => TX was Join Request
+    ```
+
+    TODO
+
+    ![LoRaWAN Receive Window](https://lupyuen.github.io/images/wisgate-window.png)
+
+1.  TODO
+
+    ```text
+    OnRadioRxDone
+    OnRadioRxDone => FRAME_TYPE_JOIN_ACCEPT
     OTAA Mode, Network Joined!
     ```
 
@@ -514,34 +525,37 @@ Let's run the Arduino program on WisBlock and watch what happens!
     Sending frame now...
     RadioSend: 40 3c 59 7a 00 80 00 00 02 17 77 31 fd 99 86 8f 4f cc ef 
     lmh_send ok count 1
-    <LM> OnRadioTxDone
+    OnRadioTxDone
     ```
 
 1.  TODO
 
     ```text
-    <LM> OnRadioTxDone => RX Windows #1 1002 #2 2002
-    <RADIO> RadioIrqProcess => IRQ_RX_TX_TIMEOUT
-    <LM> OnRadioRxTimeout
+    OnRadioTxDone => RX Windows #1 1002 #2 2002
+    RadioIrqProcess => IRQ_RX_TX_TIMEOUT
+    OnRadioRxTimeout
     ```
 
 1.  TODO
 
-    ```
+    ```text
     Sending frame now...
     RadioSend: 40 3c 59 7a 00 80 01 00 02 0b 1f 7e 4d e1 94 c9 16 fa ea 
     lmh_send ok count 2
-    <LM> OnRadioTxDone
-    <LM> OnRadioTxDone => RX Windows #1 1002 #2 2002
-    <RADIO> RadioIrqProcess => IRQ_RX_TX_TIMEOUT
-    <LM> OnRadioRxTimeout
+    OnRadioTxDone
+    ```
+
+    ```text
+    OnRadioTxDone => RX Windows #1 1002 #2 2002
+    RadioIrqProcess => IRQ_RX_TX_TIMEOUT
+    OnRadioRxTimeout
     ```
 
     TODO
 
     [__Watch the demo video on YouTube__](https://youtu.be/xdyi6XCo8Z8)
 
-![LoRaWAN Receive Window](https://lupyuen.github.io/images/wisgate-window.png)
+    [__See the complete Arduino log__](https://github.com/lupyuen/wisblock-lorawan/blob/master/README.md#output-log)
 
 # View Received LoRaWAN Packets
 
