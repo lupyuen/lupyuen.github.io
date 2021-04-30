@@ -384,7 +384,8 @@ void lorawan_rx_handler(lmh_app_data_t *app_data) {
 }
 </code></pre>
 <p>There's one more Callback Function (that we're not using) for <strong>switching the LoRaWAN Device Class</strong>: <a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L259-L267"><code>main.cpp</code></a></p>
-<pre><code class="language-c">//  Callback Function that is called when we have joined the LoRaWAN network with a LoRaWAN Class
+<pre><code class="language-c">//  Callback Function that is called when the
+//  LoRaWAN Class has been changed
 void lorawan_confirm_class_handler(DeviceClass_t Class) {
   //  Informs the server that switch has occurred ASAP
   m_lora_app_data.buffsize = 0;
@@ -401,18 +402,22 @@ uint32_t timers_init(void) {
 }
 </code></pre>
 <h1 id="wisblock-talks-to-wisgate" class="section-header"><a href="#wisblock-talks-to-wisgate">5 WisBlock Talks To WisGate</a></h1>
-<p>TODO</p>
+<p>Let's run the Arduino program on WisBlock and watch what happens!</p>
 <p>From <a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/README.md#output-log"><code>wisblock-lorawan</code></a></p>
 <pre><code class="language-text">&lt;LMH&gt; OTAA 
 DevEui=4B-C1-5E-E7-37-7B-B1-5B
 DevAdd=00000000
 AppEui=00-00-00-00-00-00-00-00
 AppKey=AA-FF-AD-5C-7E-87-F6-4D-E3-F0-87-32-FC-1D-D2-5D
-&lt;LMH&gt; Selected subband 1
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-text">&lt;LMH&gt; Selected subband 1
 Joining LoRaWAN network...
 RadioSend: 00 00 00 00 00 00 00 00 00 5b b1 7b 37 e7 5e c1 4b 0d 42 dd b9 22 aa 
 &lt;LM&gt; OnRadioTxDone
-&lt;LM&gt; OnRadioTxDone =&gt; RX Windows #1 5002 #2 6002
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-text">&lt;LM&gt; OnRadioTxDone =&gt; RX Windows #1 5002 #2 6002
 &lt;LM&gt; OnRadioTxDone =&gt; TX was Join Request
 &lt;LM&gt; OnRadioRxDone
 &lt;LM&gt; OnRadioRxDone =&gt; FRAME_TYPE_JOIN_ACCEPT
@@ -423,7 +428,9 @@ OTAA Mode, Network Joined!
 RadioSend: 40 3c 59 7a 00 80 00 00 02 17 77 31 fd 99 86 8f 4f cc ef 
 lmh_send ok count 1
 &lt;LM&gt; OnRadioTxDone
-&lt;LM&gt; OnRadioTxDone =&gt; RX Windows #1 1002 #2 2002
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-text">&lt;LM&gt; OnRadioTxDone =&gt; RX Windows #1 1002 #2 2002
 &lt;RADIO&gt; RadioIrqProcess =&gt; IRQ_RX_TX_TIMEOUT
 &lt;LM&gt; OnRadioRxTimeout
 </code></pre>
