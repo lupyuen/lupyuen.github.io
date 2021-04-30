@@ -371,7 +371,9 @@ We'll learn about the Nonce and the Message Integrity Code later.
 
 Now that we've joined the LoRaWAN Network, let's __send a LoRaWAN Data Packet__ to WisGate!
 
-[`From main.cpp`](https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L302-L311)
+Remember that when our Join Request succeeds, it starts a 20-second timer.
+
+Here's what happens 20 seconds later: [`main.cpp`](https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L302-L311)
 
 ```c
 //  Function for handling timeout event
@@ -384,9 +386,9 @@ void tx_lora_periodic_handler(void) {
 }
 ```
 
-TODO
+We restart the 20-second timer and call `send_lora_frame` to send a LoRaWAN Data Packet to WisGate.
 
-[`From main.cpp`](https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L269-L300)
+`send_lora_frame` is defined in [`main.cpp`](https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L269-L300)
 
 ```c
 //  This is called when the 20-second timer expires. 
@@ -398,44 +400,55 @@ void send_lora_frame(void) {
   }
 ```
 
-TODO
+First we verify that we have joined the LoRaWAN Network. (Because WisGate won't process our data packet unless we're in the network)
+
+Then we set the packet port and populate the packet with 6 bytes: "`Hello!`"...
 
 ```c
   //  Copy "Hello!" into the transmit buffer
-  m_lora_app_data.port = gAppPort;
+  m_lora_app_data.port = gAppPort;  //  Set to LORAWAN_APP_PORT
   memset(m_lora_app_data.buffer, 0, LORAWAN_APP_DATA_BUFF_SIZE);
   memcpy(m_lora_app_data.buffer, "Hello!", 6);
   m_lora_app_data.buffsize = 6;
 ```
 
-TODO
+Finally we transmit the data packet to WisGate...
 
 ```c
   //  Transmit the LoRaWAN Data Packet
   lmh_error_status error = lmh_send(
-    &m_lora_app_data, 
-    g_CurrentConfirm
+    &m_lora_app_data,  //  Data Packet
+    g_CurrentConfirm   //  LMH_UNCONFIRMED_MSG: Unconfirmed Message
   );
   if (error == LMH_SUCCESS) { count++; } 
   else { count_fail++; }
 }
 ```
 
-TODO
+Here we're sending an __Unconfirmed LoRaWAN Message__ to WisGate. Which means that we don't expect an acknowledgement from WisGate.
 
-[`From main.cpp`](https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L248-L257)
+This is the preferred way for a low-power LoRaWAN device to transmit sensor data, since it __doesn't need to wait for the acknowledgement__ (and consume additional power).
+
+(It's OK if a LoRaWAN Data Packet gets lost due to noise or inteference... LoRaWAN sensor devices are supposed to transmit data packets periodically anyway)
+
+_What about receiving data from our LoRaWAN Gateway (WisGate)?_
+
+We haven't configured WisGate to transmit data to our LoRaWAN Device.
+
+But the Callback Function to __handle received packets__ is here: [`main.cpp`](https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L248-L257)
 
 ```c
 //  Function for handling LoRaWan received data from Gateway
 void lorawan_rx_handler(lmh_app_data_t *app_data) {
   //  When we receive a LoRaWAN Packet from the 
-  //  LoRaWAN Gateway, display it
+  //  LoRaWAN Gateway, display it.
+  //  TODO: Ensure that app_data->buffer is null-terminated.
   Serial.printf("LoRa Packet received on port %d, size:%d, rssi:%d, snr:%d, data:%s\n",
     app_data->port, app_data->buffsize, app_data->rssi, app_data->snr, app_data->buffer);
 }
 ```
 
-[`From main.cpp`](https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L259-L267)
+There's one more Callback Function (that we're not using) for __switching the LoRaWAN Device Class__: [`main.cpp`](https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L259-L267)
 
 ```c
 //  Callback Function that is called when we have joined the LoRaWAN network with a LoRaWAN Class
@@ -447,9 +460,9 @@ void lorawan_confirm_class_handler(DeviceClass_t Class) {
 }
 ```
 
-TODO
+_How did we initialise the 20-second timer?_
 
-[`From main.cpp`](https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L313-L321)
+During startup, the `setup` function calls `timers_init` to initialise the timer: [`main.cpp`](https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L313-L321)
 
 ```c
 //  Initialise the timer
