@@ -264,7 +264,7 @@ Then we __initialise the LoRaWAN Client__...
 Finally we send the __Join LoRaWAN Network Request__ to WisGate...
 
 ```
-  // Start Join procedure
+  //  Start Join procedure
   lmh_join();
 }
 ```
@@ -305,16 +305,40 @@ void loop() {
 
 ## Join LoRaWAN Network
 
-TODO
+During startup we called `lmh_join` to send the __Join LoRaWAN Network Request__ to WisGate...
 
-[`From main.cpp`](https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L222-L236)
+```
+//  Start Join procedure
+lmh_join();
+```
+
+When __WisGate accepts the Join Request__ and returns an acknowledgement packet, this Callback Function will be called: [`main.cpp`](https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L222-L236)
 
 ```c
-//  LoRa function for handling HasJoined event
+//  Function that is called when we have joined the LoRaWAN network
 void lorawan_has_joined_handler(void) {
+
+  //  Request for a different LoRaWAN Device Class, if necessary
+  lmh_error_status ret = lmh_class_request(g_CurrentClass);
+```
+
+Here we switch to the desired __LoRaWAN Device Class__ (A, B or C) if necessary. 
+
+__Class A__ is the most basic Device Class (for simple LoRaWAN sensors). __Classes B and C__ are more sophisticated.
+
+We have configured our LoRaWAN Client for __Class A__...
+
+```c
+DeviceClass_t g_CurrentClass = CLASS_A;
+```
+
+So `lmh_class_request` won't switch our Device Class.
+
+Our Callback Function then starts a __timer that expires in 20 seconds__...
+
+```c
   //  When we have joined the LoRaWAN network, 
   //  start a 20-second timer
-  lmh_error_status ret = lmh_class_request(g_CurrentClass);
   if (ret == LMH_SUCCESS) {
     delay(1000);
     TimerSetValue(&appTimer, LORAWAN_APP_INTERVAL);
@@ -323,9 +347,9 @@ void lorawan_has_joined_handler(void) {
 }
 ```
 
-TODO
+We'll learn more about the timer in a while. (Hint: It triggers the sending of a LoRaWAN Packet)
 
-[`From main.cpp`](https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L238-L246)
+We have another Callback Function that's called when our __Join Request is rejected__ by WisGate: [`main.cpp`](https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L238-L246)
 
 ```c
 //  LoRa function for handling OTAA join failed
@@ -335,11 +359,30 @@ static void lorawan_join_failed_handler(void) {
 }
 ```
 
+The LoRaWAN Gateway (WisGate) rejects our Join Request if the Device EUI and/or Application Key are incorrect.
+
 In case you're curious: WisBlock transmits this LoRaWAN Packet to WisGate when requesting to join the LoRaWAN network...
 
 ![Join LoRaWAN Network Request](https://lupyuen.github.io/images/wisgate-join.png)
 
+We'll learn about the Nonce and the Message Integrity Code later.
+
 ## Send LoRaWAN Packet
+
+TODO
+
+[`From main.cpp`](https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L302-L311)
+
+```c
+//  Function for handling timeout event
+void tx_lora_periodic_handler(void) {
+  //  When the 20-second timer has expired, 
+  //  send a LoRaWAN Packet and restart the timer
+  TimerSetValue(&appTimer, LORAWAN_APP_INTERVAL);
+  TimerStart(&appTimer);
+  send_lora_frame();
+}
+```
 
 TODO
 
@@ -380,21 +423,6 @@ TODO
 
 TODO
 
-[`From main.cpp`](https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L302-L311)
-
-```c
-//  Function for handling timerout event
-void tx_lora_periodic_handler(void) {
-  //  When the 20-second timer has expired, 
-  //  send a LoRaWAN Packet and restart the timer
-  TimerSetValue(&appTimer, LORAWAN_APP_INTERVAL);
-  TimerStart(&appTimer);
-  send_lora_frame();
-}
-```
-
-TODO
-
 [`From main.cpp`](https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L313-L321)
 
 ```c
@@ -402,18 +430,6 @@ TODO
 uint32_t timers_init(void) {
   TimerInit(&appTimer, tx_lora_periodic_handler);
   return 0;
-}
-```
-
-[`From main.cpp`](https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L259-L267)
-
-```c
-//  Callback Function that is called when we have joined the LoRaWAN network with a LoRaWAN Class
-void lorawan_confirm_class_handler(DeviceClass_t Class) {
-  //  Informs the server that switch has occurred ASAP
-  m_lora_app_data.buffsize = 0;
-  m_lora_app_data.port = gAppPort;
-  lmh_send(&m_lora_app_data, g_CurrentConfirm);
 }
 ```
 
@@ -428,6 +444,18 @@ void lorawan_rx_handler(lmh_app_data_t *app_data) {
   //  LoRaWAN Gateway, display it
   Serial.printf("LoRa Packet received on port %d, size:%d, rssi:%d, snr:%d, data:%s\n",
     app_data->port, app_data->buffsize, app_data->rssi, app_data->snr, app_data->buffer);
+}
+```
+
+[`From main.cpp`](https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L259-L267)
+
+```c
+//  Callback Function that is called when we have joined the LoRaWAN network with a LoRaWAN Class
+void lorawan_confirm_class_handler(DeviceClass_t Class) {
+  //  Informs the server that switch has occurred ASAP
+  m_lora_app_data.buffsize = 0;
+  m_lora_app_data.port = gAppPort;
+  lmh_send(&m_lora_app_data, g_CurrentConfirm);
 }
 ```
 
