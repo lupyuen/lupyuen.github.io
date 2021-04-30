@@ -604,6 +604,10 @@ Let's head back to __ChirpStack on our WisGate LoRaWAN Gateway__, to observe the
 
 # Troubleshoot LoRaWAN
 
+If our packets don't appear in ChirpStack, here are a couple of things to check...
+
+## Inspect the raw packets
+
 To troubleshoot LoRaWAN problems, we may inspect the __Raw LoRaWAN Packets__ received by our LoRaWAN Gateway (WisGate).
 
 In ChirpStack there are two ways do this...
@@ -618,13 +622,62 @@ In ChirpStack there are two ways do this...
 
     This only shows LoRaWAN Packets from identified devices.
 
-Here's the __Join Network Request__...
+Here's the __Raw Packet for Join Network Request__...
 
-![LoRaWAN Packet](https://lupyuen.github.io/images/wisgate-frame1.png)
+![Raw LoRaWAN Join Network Request Packet](https://lupyuen.github.io/images/wisgate-frame1.png)
 
-Here's the __Data Packet__...
+And here's the __Raw Data Packet__...
 
-![LoRaWAN Packet](https://lupyuen.github.io/images/wisgate-frame2.png)
+![Raw LoRaWAN Data Packet](https://lupyuen.github.io/images/wisgate-frame2.png)
+
+This is the mystery LoRaWAN Packet that my LoRaWAN Gateway (WisGate) receives every minute (with encrypted contents)...
+
+![Raw LoRaWAN Data Packet from unknown device](https://lupyuen.github.io/images/wisgate-frame3.png)
+
+## Check the log
+
+SSH to WisGate and look at the __Linux System Log__ while our LoRaWAN Device is transmitting packets...
+
+```bash
+tail -f /var/log/syslog
+```
+
+Sometimes it's helpful to scan the log for __Message Integrity Code__ errors...
+
+```bash
+# grep MIC /var/log/syslog
+
+Apr 28 04:02:05 rak-gateway 
+chirpstack-application-server[568]: 
+time="2021-04-28T04:02:05+01:00" 
+level=error 
+msg="invalid MIC" 
+dev_eui=4bc15ee7377bb15b 
+type=DATA_UP_MIC
+```
+
+Also for __Nonce Errors__...
+
+```bash
+# grep nonce /var/log/syslog
+
+Apr 28 04:02:41 rak-gateway chirpstack-application-server[568]:
+time="2021-04-28T04:02:41+01:00" 
+level=error 
+msg="validate dev-nonce error" 
+dev_eui=4bc15ee7377bb15b 
+type=OTAA
+```
+
+We'll talk about Message Integrity Code and Nonce in a while.
+
+## Snoop with a Software Defined Radio
+
+To verify the actual frequency that our LoRaWAN Device is transmitting on, we may sniff the airwaves with a __Software Defined Radio__.
+
+Or use a Spectrum Analyser like __RF Explorer__. [(See this)](https://lupyuen.github.io/articles/lora#troubleshoot-lora)
+
+Let's talk about Software Defined Radio...
 
 # Visualise LoRaWAN with Software Defined Radio
 
@@ -640,9 +693,15 @@ __From WisGate to WisBlock:__ Join Network Response
 
 [__Watch the video on YouTube__](https://youtu.be/xdyi6XCo8Z8)
 
-# LoRaWAN Join Network Request
+# LoRaWAN Security
+
+I'm no Security Expert... But lemme attempt to explain the high-level bits of LoRaWAN Security to the best of my understanding 🙏
+
+## Join Network Request
 
 TODO
+
+Let's start by looking at the __Join Network Request__ transmitted by our LoRaWAN Device (WisBlock) to our LoRaWAN Gateway (WisGate). And understand why it's secure.
 
 WisBlock transmits this LoRaWAN Packet to WisGate when requesting to join the LoRaWAN network...
 
@@ -652,7 +711,7 @@ We'll learn about the Nonce and the Message Integrity Code now.
 
 ![Join LoRaWAN Network Request](https://lupyuen.github.io/images/wisgate-join2.png)
 
-# LoRaWAN Message Integrity Code
+## Message Integrity Code
 
 TODO
 
@@ -682,7 +741,7 @@ error="get device-session error: invalid MIC"
 
 TODO
 
-# LoRaWAN Nonce
+## Nonce
 
 TODO
 
