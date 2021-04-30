@@ -83,7 +83,8 @@
 <li><a href="#lorawan-security">9 LoRaWAN Security</a><ul>
 <li><a href="#join-network-request">9.1 Join Network Request</a><ul></ul></li>
 <li><a href="#message-integrity-code">9.2 Message Integrity Code</a><ul></ul></li>
-<li><a href="#nonce">9.3 Nonce</a><ul></ul></li></ul></li>
+<li><a href="#nonce">9.3 Nonce</a><ul></ul></li>
+<li><a href="#more-about-security">9.4 More About Security</a><ul></ul></li></ul></li>
 <li><a href="#whats-next">10 What's Next</a><ul></ul></li>
 <li><a href="#notes">11 Notes</a><ul></ul></li>
 <li><a href="#appendix-log-transmitted-packets">12 Appendix: Log Transmitted Packets</a><ul></ul></li></ul></nav><p>📝 <em>3 May 2021</em></p>
@@ -571,15 +572,50 @@ type=OTAA
 <h1 id="lorawan-security" class="section-header"><a href="#lorawan-security">9 LoRaWAN Security</a></h1>
 <p>I'm no Security Expert... But lemme attempt to explain the high-level bits of LoRaWAN Security to the best of my understanding 🙏</p>
 <h2 id="join-network-request" class="section-header"><a href="#join-network-request">9.1 Join Network Request</a></h2>
-<p>TODO</p>
-<p>Let's start by looking at the <strong>Join Network Request</strong> transmitted by our LoRaWAN Device (WisBlock) to our LoRaWAN Gateway (WisGate). And understand why it's secure.</p>
-<p>WisBlock transmits this LoRaWAN Packet to WisGate when requesting to join the LoRaWAN network...</p>
+<p>Let's start by looking at the <strong>Join Network Request</strong> transmitted by our LoRaWAN Device (WisBlock) to our LoRaWAN Gateway (WisGate). And understand why it's secure...</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-join.png" alt="Join LoRaWAN Network Request" /></p>
-<p>We'll learn about the Nonce and the Message Integrity Code now.</p>
-<p><img src="https://lupyuen.github.io/images/wisgate-join2.png" alt="Join LoRaWAN Network Request" /></p>
+<p>There are 5 parts in the request...</p>
+<ol>
+<li>
+<p><strong>Header</strong> (1 byte): Identifies this LoRaWAN Packet as a Join Network Request</p>
+</li>
+<li>
+<p><strong>Application EUI</strong> (8 bytes): Unused</p>
+</li>
+<li>
+<p><strong>Device EUI</strong> (8 bytes): Uniquely identifies our LoRaWAN Device. (The bytes are flipped)</p>
+</li>
+<li>
+<p><strong>Nonce</strong> (2 bytes): We'll explain in a while</p>
+</li>
+<li>
+<p><strong>Message Integrity Code</strong> (4 bytes): We'll explain now</p>
+</li>
+</ol>
 <h2 id="message-integrity-code" class="section-header"><a href="#message-integrity-code">9.2 Message Integrity Code</a></h2>
-<p>TODO</p>
-<p>To search for Message Integrity Code errors in LoRaWAN Packets received by WisGate, SSH to WisGate and search for...</p>
+<p><em>Why isn't the Application Key inside the Join Network Request?</em></p>
+<p>Because the <strong>Application Key is a Secret Key</strong>. It should never be revealed to others, otherwise our gateway will accept Join Network Requests from unauthorised devices.</p>
+<p>Instead we use the Application Key to compute a <strong><a href="https://en.wikipedia.org/wiki/Message_authentication_code">Message Authentication Code</a> (AES-128 CMAC)</strong>. And we transmit the first 4 bytes of the authentication code as the <strong>Message Integrity Code</strong>.</p>
+<p>According to the LoRaWAN Spec, the Message Authentication Code (for the Join Network Request) is computed with these input values...</p>
+<ol>
+<li>
+<p><strong>Application Key</strong></p>
+</li>
+<li>
+<p><strong>Header</strong></p>
+</li>
+<li>
+<p><strong>Application EUI</strong></p>
+</li>
+<li>
+<p><strong>Device EUI</strong></p>
+</li>
+<li>
+<p><strong>Nonce</strong> (We'll explain in the next section)</p>
+</li>
+</ol>
+<p>Our LoRaWAN Gateway (ChirpStack on WisGate) will <strong>reject LoRaWAN Packets with invalid Message Integrity Codes</strong>.</p>
+<p>To see Message Integrity Code errors, SSH to our LoRaWAN Gateway and search for...</p>
 <pre><code class="language-bash"># grep MIC /var/log/syslog
 
 Apr 28 04:02:05 rak-gateway 
@@ -598,9 +634,9 @@ msg=&quot;uplink: processing uplink frame error&quot;
 ctx_id=0ccd1478-3b79-4ded-9e26-a28e4c143edc 
 error=&quot;get device-session error: invalid MIC&quot;
 </code></pre>
-<p><img src="https://lupyuen.github.io/images/wisgate-mic.png" alt="LoRaWAN Message Integrity Code" /></p>
-<p>TODO</p>
+<p>Let's talk about the Nonce...</p>
 <h2 id="nonce" class="section-header"><a href="#nonce">9.3 Nonce</a></h2>
+<p><em>There isn't a Timestamp in the request. Could someone record and replay the Join Network Request?</em></p>
 <p>TODO</p>
 <p>The error above occurs when we replay a repeated Join Network Request to our LoRaWAN Gateway (with same Nonce, same Message Integrity Code).</p>
 <p>This replay also logs a Nonce Error in WisGate...</p>
@@ -620,6 +656,10 @@ msg=&quot;uplink: processing uplink frame error&quot; ctx_id=01ae296e-8ce1-449a-
 error=&quot;validate dev-nonce error: object already exists&quot;
 </code></pre>
 <p>Because the Nonce should not be reused.</p>
+<p><img src="https://lupyuen.github.io/images/wisgate-join2.png" alt="Join LoRaWAN Network Request" /></p>
+<p>For other LoRaWAN Packets (besides the Join Network Request), the Message Integrity Code is computed differently...</p>
+<p><img src="https://lupyuen.github.io/images/wisgate-mic.png" alt="LoRaWAN Message Integrity Code" /></p>
+<h2 id="more-about-security" class="section-header"><a href="#more-about-security">9.4 More About Security</a></h2>
 <p><a href="https://lora-alliance.org/resource_hub/lorawan-is-secure-but-implementation-matters/">&quot;LoRaWAN® Is Secure (but Implementation Matters)&quot;</a></p>
 <p><img src="https://lupyuen.github.io/images/wisgate-encrypt.png" alt="LoRaWAN Encryption" /></p>
 <p>TODO</p>
