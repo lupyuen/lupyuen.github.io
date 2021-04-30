@@ -72,8 +72,8 @@
 <li><a href="#configure-lorawan-client">4.1 Configure LoRaWAN Client</a><ul></ul></li>
 <li><a href="#initialise-lorawan-client">4.2 Initialise LoRaWAN Client</a><ul></ul></li>
 <li><a href="#join-lorawan-network">4.3 Join LoRaWAN Network</a><ul></ul></li>
-<li><a href="#send-lorawan-packet">4.4 Send LoRaWAN Packet</a><ul></ul></li></ul></li>
-<li><a href="#output-log">5 Output Log</a><ul></ul></li>
+<li><a href="#send-lorawan-data-packet">4.4 Send LoRaWAN Data Packet</a><ul></ul></li></ul></li>
+<li><a href="#wisblock-talks-to-wisgate">5 WisBlock Talks To WisGate</a><ul></ul></li>
 <li><a href="#view-received-lorawan-packets">6 View Received LoRaWAN Packets</a><ul></ul></li>
 <li><a href="#troubleshoot-lorawan">7 Troubleshoot LoRaWAN</a><ul></ul></li>
 <li><a href="#visualise-lorawan-with-software-defined-radio">8 Visualise LoRaWAN with Software Defined Radio</a><ul></ul></li>
@@ -182,7 +182,7 @@
 <pre><code class="language-c">//  TODO: Set this to your LoRaWAN Region
 LoRaMacRegion_t g_CurrentRegion = LORAMAC_REGION_AS923;
 </code></pre>
-<p>Before sending a LoRaWAN Packet to WisGate, we shall join our LoRaWAN Device to the LoRaWAN Network with <strong>Over-The-Air Activation (OTAA)</strong>...</p>
+<p>Before sending a LoRaWAN Data Packet to WisGate, we shall join our LoRaWAN Device to the LoRaWAN Network with <strong>Over-The-Air Activation (OTAA)</strong>...</p>
 <pre><code class="language-c">//  Set to true to select Over-The-Air Activation 
 //  (OTAA), false for Activation By Personalisation (ABP)
 bool doOTAA = true;
@@ -315,7 +315,7 @@ void lorawan_has_joined_handler(void) {
   }
 }
 </code></pre>
-<p>We'll learn more about the timer in a while. (Hint: It triggers the sending of a LoRaWAN Packet)</p>
+<p>We'll learn more about the timer in a while. (Hint: It triggers the sending of a LoRaWAN Data Packet)</p>
 <p>We have another Callback Function that's called when our <strong>Join Request is rejected</strong> by WisGate: <a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L238-L246"><code>main.cpp</code></a></p>
 <pre><code class="language-c">//  LoRa function for handling OTAA join failed
 static void lorawan_join_failed_handler(void) {
@@ -327,8 +327,8 @@ static void lorawan_join_failed_handler(void) {
 <p>In case you're curious: WisBlock transmits this LoRaWAN Packet to WisGate when requesting to join the LoRaWAN network...</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-join.png" alt="Join LoRaWAN Network Request" /></p>
 <p>We'll learn about the Nonce and the Message Integrity Code later.</p>
-<h2 id="send-lorawan-packet" class="section-header"><a href="#send-lorawan-packet">4.4 Send LoRaWAN Packet</a></h2>
-<p>TODO</p>
+<h2 id="send-lorawan-data-packet" class="section-header"><a href="#send-lorawan-data-packet">4.4 Send LoRaWAN Data Packet</a></h2>
+<p>Now that we've joined the LoRaWAN Network, let's <strong>send a LoRaWAN Data Packet</strong> to WisGate!</p>
 <p><a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L302-L311"><code>From main.cpp</code></a></p>
 <pre><code class="language-c">//  Function for handling timeout event
 void tx_lora_periodic_handler(void) {
@@ -342,7 +342,7 @@ void tx_lora_periodic_handler(void) {
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L269-L300"><code>From main.cpp</code></a></p>
 <pre><code class="language-c">//  This is called when the 20-second timer expires. 
-//  We send a LoRaWAN Packet.
+//  We send a LoRaWAN Data Packet.
 void send_lora_frame(void) {
   if (lmh_join_status_get() != LMH_SET) {
     //  Not joined, try again later
@@ -357,21 +357,13 @@ void send_lora_frame(void) {
   m_lora_app_data.buffsize = 6;
 </code></pre>
 <p>TODO</p>
-<pre><code class="language-c">  //  Transmit the LoRaWAN Packet
+<pre><code class="language-c">  //  Transmit the LoRaWAN Data Packet
   lmh_error_status error = lmh_send(
     &amp;m_lora_app_data, 
     g_CurrentConfirm
   );
   if (error == LMH_SUCCESS) { count++; } 
   else { count_fail++; }
-}
-</code></pre>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L313-L321"><code>From main.cpp</code></a></p>
-<pre><code class="language-c">//  Initialise the timer
-uint32_t timers_init(void) {
-  TimerInit(&amp;appTimer, tx_lora_periodic_handler);
-  return 0;
 }
 </code></pre>
 <p>TODO</p>
@@ -393,7 +385,15 @@ void lorawan_confirm_class_handler(DeviceClass_t Class) {
   lmh_send(&amp;m_lora_app_data, g_CurrentConfirm);
 }
 </code></pre>
-<h1 id="output-log" class="section-header"><a href="#output-log">5 Output Log</a></h1>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L313-L321"><code>From main.cpp</code></a></p>
+<pre><code class="language-c">//  Initialise the timer
+uint32_t timers_init(void) {
+  TimerInit(&amp;appTimer, tx_lora_periodic_handler);
+  return 0;
+}
+</code></pre>
+<h1 id="wisblock-talks-to-wisgate" class="section-header"><a href="#wisblock-talks-to-wisgate">5 WisBlock Talks To WisGate</a></h1>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/README.md#output-log"><code>wisblock-lorawan</code></a></p>
 <pre><code class="language-text">&lt;LMH&gt; OTAA 
