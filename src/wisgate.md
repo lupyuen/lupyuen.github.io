@@ -471,16 +471,9 @@ DevEui=4B-C1-5E-E7-37-7B-B1-5B
 DevAdd=00000000
 AppEui=00-00-00-00-00-00-00-00
 AppKey=AA-FF-AD-5C-7E-87-F6-4D-E3-F0-87-32-FC-1D-D2-5D
-SX126xSetTxParams: power=0, rampTime=4
-SX126xSetPaConfig: paDutyCycle=4, hpMax=7, deviceSel=0, paLut=1 
-SX126xSetTxParams: power=13, rampTime=2
-SX126xSetPaConfig: paDutyCycle=4, hpMax=7, deviceSel=0, paLut=1 
 <LMH> Selected subband 1
 Joining LoRaWAN network...
-SX126xSetTxParams: power=13, rampTime=2
-SX126xSetPaConfig: paDutyCycle=4, hpMax=7, deviceSel=0, paLut=1 
-RadioSend: size=23, channel=1, datarate=2, txpower=0, maxeirp=16, antennagain=2
-00 00 00 00 00 00 00 00 00 5b b1 7b 37 e7 5e c1 4b 0d 42 dd b9 22 aa 
+RadioSend: 00 00 00 00 00 00 00 00 00 5b b1 7b 37 e7 5e c1 4b 0d 42 dd b9 22 aa 
 <LM> OnRadioTxDone
 <LM> OnRadioTxDone => RX Windows #1 5002 #2 6002
 <LM> OnRadioTxDone => TX was Join Request
@@ -493,10 +486,7 @@ TODO
 
 ```text
 Sending frame now...
-SX126xSetTxParams: power=13, rampTime=2
-SX126xSetPaConfig: paDutyCycle=4, hpMax=7, deviceSel=0, paLut=1 
-RadioSend: size=19, channel=0, datarate=2, txpower=0, maxeirp=16, antennagain=2
-40 3c 59 7a 00 80 00 00 02 17 77 31 fd 99 86 8f 4f cc ef 
+RadioSend: 40 3c 59 7a 00 80 00 00 02 17 77 31 fd 99 86 8f 4f cc ef 
 lmh_send ok count 1
 <LM> OnRadioTxDone
 <LM> OnRadioTxDone => RX Windows #1 1002 #2 2002
@@ -508,10 +498,7 @@ TODO
 
 ```
 Sending frame now...
-SX126xSetTxParams: power=13, rampTime=2
-SX126xSetPaConfig: paDutyCycle=4, hpMax=7, deviceSel=0, paLut=1 
-RadioSend: size=19, channel=5, datarate=2, txpower=0, maxeirp=16, antennagain=2
-40 3c 59 7a 00 80 01 00 02 0b 1f 7e 4d e1 94 c9 16 fa ea 
+RadioSend: 40 3c 59 7a 00 80 01 00 02 0b 1f 7e 4d e1 94 c9 16 fa ea 
 lmh_send ok count 2
 <LM> OnRadioTxDone
 <LM> OnRadioTxDone => RX Windows #1 1002 #2 2002
@@ -519,13 +506,21 @@ lmh_send ok count 2
 <LM> OnRadioRxTimeout
 ```
 
+TODO
+
+![LoRaWAN Receive Window](https://lupyuen.github.io/images/wisgate-window.png)
+
 # View Received LoRaWAN Packets
 
 TODO
 
+Join Network Request:
+
 ![LoRaWAN Device Data](https://lupyuen.github.io/images/wisgate-devicedata1.png)
 
 TODO
+
+Send Data Packet:
 
 ![LoRaWAN Device Data](https://lupyuen.github.io/images/wisgate-devicedata2.png)
 
@@ -535,9 +530,13 @@ TODO
 
 TODO
 
+Join Network Request:
+
 ![LoRaWAN Packet](https://lupyuen.github.io/images/wisgate-frame1.png)
 
 TODO
+
+Send Data Packet:
 
 ![LoRaWAN Packet](https://lupyuen.github.io/images/wisgate-frame2.png)
 
@@ -547,9 +546,13 @@ TODO
 
 TODO
 
+From WisBlock to WisGate: Join Network Request
+
 ![LoRaWAN Chirp: Device to Gateway](https://lupyuen.github.io/images/wisgate-chirp1.png)
 
 TODO
+
+From WisGate to WisBlock: Join Network Response
 
 ![LoRaWAN Chirp: Gateway to Device](https://lupyuen.github.io/images/wisgate-chirp2.png)
 
@@ -560,6 +563,12 @@ TODO
 # LoRaWAN Join Request
 
 TODO
+
+WisBlock transmits this LoRaWAN Packet to WisGate when requesting to join the LoRaWAN network...
+
+![Join LoRaWAN Network Request](https://lupyuen.github.io/images/wisgate-join.png)
+
+We'll learn about the Nonce and the Message Integrity Code now.
 
 # LoRaWAN Message Integrity Code
 
@@ -586,6 +595,10 @@ msg="uplink: processing uplink frame error"
 ctx_id=0ccd1478-3b79-4ded-9e26-a28e4c143edc 
 error="get device-session error: invalid MIC"
 ```
+
+![LoRaWAN Message Integrity Code](https://lupyuen.github.io/images/wisgate-mic.png)
+
+TODO
 
 # LoRaWAN Nonce
 
@@ -616,7 +629,31 @@ Because the Nonce should not be reused.
 
 ["LoRaWAN® Is Secure (but Implementation Matters)"](https://lora-alliance.org/resource_hub/lorawan-is-secure-but-implementation-matters/)
 
-# Log Transmitted Packets
+![LoRaWAN Encryption](https://lupyuen.github.io/images/wisgate-encrypt.png)
+
+TODO
+
+# What's Next
+
+TODO
+
+-   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+
+-   [Read "The RISC-V BL602 Book"](https://lupyuen.github.io/articles/book)
+
+-   [Check out my articles](https://lupyuen.github.io)
+
+-   [RSS Feed](https://lupyuen.github.io/rss.xml)
+
+_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
+
+[`lupyuen.github.io/src/wisgate.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/wisgate.md)
+
+# Notes
+
+1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1379926160377851910)
+
+# Appendix: Log Transmitted Packets
 
 To log transmitted packets, modify
 
@@ -687,24 +724,3 @@ LoRaMacStatus_t SendFrameOnChannel(uint8_t channel)
     return LORAMAC_STATUS_OK;
 }
 ```
-
-# What's Next
-
-TODO
-
--   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
-
--   [Read "The RISC-V BL602 Book"](https://lupyuen.github.io/articles/book)
-
--   [Check out my articles](https://lupyuen.github.io)
-
--   [RSS Feed](https://lupyuen.github.io/rss.xml)
-
-_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
-
-[`lupyuen.github.io/src/wisgate.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/wisgate.md)
-
-# Notes
-
-1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1379926160377851910)
-
