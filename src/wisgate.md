@@ -477,7 +477,7 @@ uint32_t timers_init(void) {
 
 Let's __run the Arduino program on WisBlock__ and watch what happens in the Arduino Log!
 
-1.  TODO
+1.  Our Arduino program starts by reminding us of the Over-The-Air Activation (OTAA) configuration: __Device EUI, Application EUI (unused) and Application Key__...
 
     ```text
     OTAA 
@@ -487,7 +487,9 @@ Let's __run the Arduino program on WisBlock__ and watch what happens in the Ardu
     AppKey=AA-FF-AD-5C-7E-87-F6-4D-E3-F0-87-32-FC-1D-D2-5D
     ```
 
-1.  TODO
+    (Device Address will be assigned by WisGate when we join the LoRaWAN Network)
+
+1.  We __transmit the Join Network Request__ to WisGate...
 
     ```text
     Selected subband 1
@@ -496,7 +498,7 @@ Let's __run the Arduino program on WisBlock__ and watch what happens in the Ardu
     OnRadioTxDone
     ```
 
-    TODO
+    The Join Network Request contains these fields...
 
     ![Join LoRaWAN Network Request](https://lupyuen.github.io/images/wisgate-join.png)
 
@@ -504,24 +506,32 @@ Let's __run the Arduino program on WisBlock__ and watch what happens in the Ardu
 
     Yep! We'll learn why in a while.
 
-1.  TODO
+1.  To conserve power, LoRaWAN Devices (Class A) don't receive packets all the time.
+
+    We listen for incoming packets (for a brief moment) __only after we transmit a packet__...
 
     ```text
     OnRadioTxDone => RX Windows #1 5002 #2 6002
     OnRadioTxDone => TX was Join Request
     ```
 
-    TODO
+    We've just transmitted a packet (Join Network Request), so __we listen for an incoming packet__. (Hopefully, the Join Network Response from WisGate)
+
+    The LoRaWAN Specification actually defines __Two Receive Windows__. Which means that __we listen twice (very briefly) for incoming packets__, after sending every packet...
 
     ![LoRaWAN Receive Window](https://lupyuen.github.io/images/wisgate-window.png)
 
-1.  TODO
+1.  And indeed, we __receive the Join Network Accepted Response__ from WisGate...
 
     ```text
     OnRadioRxDone
     OnRadioRxDone => FRAME_TYPE_JOIN_ACCEPT
     OTAA Mode, Network Joined!
     ```
+
+    The LoRaWAN Spec says we don't open the Second Receive Window if we receive a packet in the First Receive Window.
+
+    So... We're good! 
 
 1.  TODO
 
