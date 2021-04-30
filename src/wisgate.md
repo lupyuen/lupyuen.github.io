@@ -451,7 +451,8 @@ void lorawan_rx_handler(lmh_app_data_t *app_data) {
 There's one more Callback Function (that we're not using) for __switching the LoRaWAN Device Class__: [`main.cpp`](https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L259-L267)
 
 ```c
-//  Callback Function that is called when we have joined the LoRaWAN network with a LoRaWAN Class
+//  Callback Function that is called when the
+//  LoRaWAN Class has been changed
 void lorawan_confirm_class_handler(DeviceClass_t Class) {
   //  Informs the server that switch has occurred ASAP
   m_lora_app_data.buffsize = 0;
@@ -474,7 +475,7 @@ uint32_t timers_init(void) {
 
 # WisBlock Talks To WisGate
 
-TODO
+Let's run the Arduino program on WisBlock and watch what happens!
 
 From [`wisblock-lorawan`](https://github.com/lupyuen/wisblock-lorawan/blob/master/README.md#output-log)
 
@@ -484,10 +485,20 @@ DevEui=4B-C1-5E-E7-37-7B-B1-5B
 DevAdd=00000000
 AppEui=00-00-00-00-00-00-00-00
 AppKey=AA-FF-AD-5C-7E-87-F6-4D-E3-F0-87-32-FC-1D-D2-5D
+```
+
+TODO
+
+```text
 <LMH> Selected subband 1
 Joining LoRaWAN network...
 RadioSend: 00 00 00 00 00 00 00 00 00 5b b1 7b 37 e7 5e c1 4b 0d 42 dd b9 22 aa 
 <LM> OnRadioTxDone
+```
+
+TODO
+
+```text
 <LM> OnRadioTxDone => RX Windows #1 5002 #2 6002
 <LM> OnRadioTxDone => TX was Join Request
 <LM> OnRadioRxDone
@@ -502,6 +513,11 @@ Sending frame now...
 RadioSend: 40 3c 59 7a 00 80 00 00 02 17 77 31 fd 99 86 8f 4f cc ef 
 lmh_send ok count 1
 <LM> OnRadioTxDone
+```
+
+TODO
+
+```text
 <LM> OnRadioTxDone => RX Windows #1 1002 #2 2002
 <RADIO> RadioIrqProcess => IRQ_RX_TX_TIMEOUT
 <LM> OnRadioRxTimeout
