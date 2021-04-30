@@ -77,7 +77,7 @@
 <li><a href="#view-received-lorawan-packets">6 View Received LoRaWAN Packets</a><ul></ul></li>
 <li><a href="#troubleshoot-lorawan">7 Troubleshoot LoRaWAN</a><ul></ul></li>
 <li><a href="#visualise-lorawan-with-software-defined-radio">8 Visualise LoRaWAN with Software Defined Radio</a><ul></ul></li>
-<li><a href="#lorawan-join-request">9 LoRaWAN Join Request</a><ul></ul></li>
+<li><a href="#lorawan-join-network-request">9 LoRaWAN Join Network Request</a><ul></ul></li>
 <li><a href="#lorawan-message-integrity-code">10 LoRaWAN Message Integrity Code</a><ul></ul></li>
 <li><a href="#lorawan-nonce">11 LoRaWAN Nonce</a><ul></ul></li>
 <li><a href="#whats-next">12 What's Next</a><ul></ul></li>
@@ -422,6 +422,8 @@ OnRadioTxDone
 </code></pre>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-join.png" alt="Join LoRaWAN Network Request" /></p>
+<p><em>But the Application Key is missing from the Join Network Request!?</em></p>
+<p>Yep! We'll learn why in a while.</p>
 </li>
 <li>
 <p>TODO</p>
@@ -492,11 +494,12 @@ OnRadioRxTimeout
 <p><strong>From WisGate to WisBlock:</strong> Join Network Response</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-chirp2.png" alt="LoRaWAN Chirp: Gateway to Device" /></p>
 <p><a href="https://youtu.be/xdyi6XCo8Z8"><strong>Watch the video on YouTube</strong></a></p>
-<h1 id="lorawan-join-request" class="section-header"><a href="#lorawan-join-request">9 LoRaWAN Join Request</a></h1>
+<h1 id="lorawan-join-network-request" class="section-header"><a href="#lorawan-join-network-request">9 LoRaWAN Join Network Request</a></h1>
 <p>TODO</p>
 <p>WisBlock transmits this LoRaWAN Packet to WisGate when requesting to join the LoRaWAN network...</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-join.png" alt="Join LoRaWAN Network Request" /></p>
 <p>We'll learn about the Nonce and the Message Integrity Code now.</p>
+<p><img src="https://lupyuen.github.io/images/wisgate-join2.png" alt="Join LoRaWAN Network Request" /></p>
 <h1 id="lorawan-message-integrity-code" class="section-header"><a href="#lorawan-message-integrity-code">10 LoRaWAN Message Integrity Code</a></h1>
 <p>TODO</p>
 <p>To search for Message Integrity Code errors in LoRaWAN Packets received by WisGate, SSH to WisGate and search for...</p>
