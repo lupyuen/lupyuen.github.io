@@ -832,6 +832,8 @@ I hope you find this article useful. Now that I know some LoRaWAN, I'm heading b
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
+-   [Discuss this article on Reddit](https://www.reddit.com/r/Lora/comments/n1qv3l/build_a_lorawan_network_with_rakwireless_wisgate/?utm_source=share&utm_medium=web2x&context=3)
+
 -   [Read "The RISC-V BL602 Book"](https://lupyuen.github.io/articles/book)
 
 -   [Check out my articles](https://lupyuen.github.io)
