@@ -1889,6 +1889,8 @@ Let's move on to __LoRa Levels Two and Three__...
 
     [(See this)](https://lupyuen.github.io/articles/lora2#appendix-how-to-create-bl602-libraries)
 
+So eventually we shall build __LoRaWAN Sensor Devices with BL602__!
+
 We have come a loooong way since I first [__experimented with LoRa in 2016__](https://github.com/lupyuen/LoRaArduino)...
 
 - __Cheaper Transceivers__: Shipped overnight from Thailand!
