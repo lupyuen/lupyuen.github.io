@@ -146,6 +146,8 @@ Let's turn BL602 into a real IoT gadget that transmits __long range, low power L
 
 -   ["Build a LoRaWAN Network with RAKwireless WisGate Developer Gateway"](https://lupyuen.github.io/articles/wisgate)
 
+-   ["Connect PineCone BL602 to LoRaWAN"](https://lupyuen.github.io/articles/lorawan)
+
 ![OpenOCD on BL602](https://lupyuen.github.io/images/book-openocd.jpg)
 
 # OpenOCD on BL602
