@@ -10,13 +10,11 @@ _PineCone BL602 RISC-V Board with Pine64 RFM90 LoRa Module_
 
 # Connect BL602 to LoRa Module
 
-TODO
-
-Connect BL602 to Semtech SX1262 or Pine64 / HopeRF RFM90 as follows...
+Connect BL602 to Pine64 (HopeRF) RFM90 or Semtech SX1262 as follows...
 
 ![PineCone BL602 RISC-V Board connected to Pine64 RFM90 LoRa Module](https://lupyuen.github.io/images/lorawan-connect.jpg)
 
-| BL602 Pin     | SX1262 / RFM90 Pin  | Wire Colour 
+| BL602 Pin     | RFM90 / SX1262 Pin  | Wire Colour 
 |:--------------|:--------------------|:-------------------
 | __`GPIO 0`__  | `BUSY`              | Dark Green
 | __`GPIO 1`__  | `ISO` _(MISO)_      | Light Green (Top)
@@ -41,15 +39,15 @@ __`GPIO 2`__ is the __Unused SPI Chip Select__ on BL602.
 
 We won't use this pin because we'll control Chip Select ourselves on `GPIO 14`. [(See this)](https://lupyuen.github.io/articles/spi#control-our-own-chip-select-pin)
 
-Here are the pins connected on our LoRa Transceiver: SX1262 or RFM90...
+Here are the pins connected on our LoRa Transceiver: RFM90 or SX1262...
 
 ![PineCone BL602 RISC-V Board connected to Pine64 RFM90 LoRa Module](https://lupyuen.github.io/images/lorawan-connect3.jpg)
 
 TODO
 
-Only __1 pin `DIO0`__ is required for receiving simple LoRa Packets, without the frills (like Spread Spectrum Transmission).
+Only __1 pin `DIO1`__ is required.
 
-We shall configure BL602 to trigger __GPIO Interrupts__ when the 4 pins shift from Low to High.
+We shall configure BL602 to trigger a __GPIO Interrupt__ when the `DIO1` Pin shifts from Low to High.
 
 -   [__Semtech SX1262 Datasheet__](https://semtech.my.salesforce.com/sfc/p/#E0000000JelG/a/2R000000HT76/7Nka9W5WgugoZe.xwIHJy6ebj1hW8UJ.USO_Pt2CLLo)
 
