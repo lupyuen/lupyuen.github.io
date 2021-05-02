@@ -19,6 +19,8 @@ Connect BL602 to Semtech SX1276 or Hope RF96 as follows...
 | BL602 Pin     | SX1276 / RF96 Pin   | Wire Colour 
 |:--------------|:--------------------|:-------------------
 
+TODO
+
 [__CAUTION: Always connect the Antenna before Powering On... Or the LoRa Module may get damaged! See this__](https://electronics.stackexchange.com/questions/335912/can-i-break-a-radio-tranceiving-device-by-operating-it-with-no-antenna-connected)
 
 Here's a closer look at the pins connected on BL602...
