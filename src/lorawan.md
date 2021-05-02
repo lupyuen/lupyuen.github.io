@@ -2,7 +2,7 @@
 
 📝 _10 May 2021_
 
-TODO
+Today we shall connect __PineCone BL602 RISC-V Board__ to __LoRaWAN__... With the __Pine64 RFM90 LoRa Module__.
 
 ![PineCone BL602 RISC-V Board with Pine64 RFM90 LoRa Module](https://lupyuen.github.io/images/lorawan-title.jpg)
 
@@ -12,14 +12,22 @@ _PineCone BL602 RISC-V Board with Pine64 RFM90 LoRa Module_
 
 TODO
 
-Connect BL602 to Semtech SX1276 or Hope RF96 as follows...
+Connect BL602 to Semtech SX1262 or Pine64 / HopeRF RFM90 as follows...
 
 ![PineCone BL602 RISC-V Board connected to Pine64 RFM90 LoRa Module](https://lupyuen.github.io/images/lorawan-connect.jpg)
 
-| BL602 Pin     | SX1262 / RFM90 Pin   | Wire Colour 
+| BL602 Pin     | SX1262 / RFM90 Pin  | Wire Colour 
 |:--------------|:--------------------|:-------------------
-
-TODO
+| __`GPIO 0`__  | `BUSY`              | Dark Green
+| __`GPIO 1`__  | `ISO` _(MISO)_      | Light Green (Top)
+| __`GPIO 2`__  | Do Not Connect      | (Unused Chip Select)
+| __`GPIO 3`__  | `SCK`               | Yellow (Top)
+| __`GPIO 4`__  | `OSI` _(MOSI)_      | Blue (Top)
+| __`GPIO 11`__ | `DIO1`              | Yellow (Bottom)
+| __`GPIO 14`__ | `NSS`               | Orange
+| __`GPIO 17`__ | `RST`               | White
+| __`3V3`__     | `3.3V`              | Red
+| __`GND`__     | `GND`               | Black
 
 [__CAUTION: Always connect the Antenna before Powering On... Or the LoRa Module may get damaged! See this__](https://electronics.stackexchange.com/questions/335912/can-i-break-a-radio-tranceiving-device-by-operating-it-with-no-antenna-connected)
 
@@ -33,7 +41,7 @@ __`GPIO 2`__ is the __Unused SPI Chip Select__ on BL602.
 
 We won't use this pin because we'll control Chip Select ourselves on `GPIO 14`. [(See this)](https://lupyuen.github.io/articles/spi#control-our-own-chip-select-pin)
 
-Here are the pins connected on our LoRa Transceiver: SX1276 or RF96...
+Here are the pins connected on our LoRa Transceiver: SX1262 or RFM90...
 
 ![PineCone BL602 RISC-V Board connected to Pine64 RFM90 LoRa Module](https://lupyuen.github.io/images/lorawan-connect3.jpg)
 
@@ -43,9 +51,10 @@ Only __1 pin `DIO0`__ is required for receiving simple LoRa Packets, without the
 
 We shall configure BL602 to trigger __GPIO Interrupts__ when the 4 pins shift from Low to High.
 
--   [__More about Semtech SX1276 and Hope RF96__](https://lupyuen.github.io/articles/lora#getting-the-lora-transceiver-and-antenna)
+-   [__Semtech SX1262 Datasheet__](https://semtech.my.salesforce.com/sfc/p/#E0000000JelG/a/2R000000HT76/7Nka9W5WgugoZe.xwIHJy6ebj1hW8UJ.USO_Pt2CLLo)
 
--   [__Semtech SX1276 Datasheet__](https://semtech.my.salesforce.com/sfc/p/E0000000JelG/a/2R0000001Rbr/6EfVZUorrpoKFfvaF_Fkpgp5kzjiNyiAbqcpqh9qSjE?__hstc=212684107.81023fceb80b3e55c1c4e19a916804ba.1616925682449.1616925682449.1616925682449.1&__hssc=212684107.1.1616925682449&__hsfp=1469659345)
+-   [__HopeRF RFM90 Datasheet (Chinese)__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v9.0.0)
+
 
 # Initialise LoRa Module
 
@@ -73,26 +82,28 @@ Find out which __LoRa Frequency__ we should use for your region...
 
 -  [__LoRa Frequencies by Country__](https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html)
 
-Download the Firmware Binary File __`sdk_app_lora.bin`__ for your LoRa Frequency...
+Download the Firmware Binary File __`sdk_app_lorawan.bin`__ for your LoRa Frequency...
 
--  [__434 MHz `sdk_app_lora` Binary__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v7.0.4)
+TODO
 
--  [__780 MHz `sdk_app_lora` Binary__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v7.0.5)
+-  [__434 MHz `sdk_app_lorawan` Binary__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v7.0.4)
 
--  [__868 MHz `sdk_app_lora` Binary__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v7.0.6)
+-  [__780 MHz `sdk_app_lorawan` Binary__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v7.0.5)
 
--  [__915 MHz `sdk_app_lora` Binary__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v7.0.7)
+-  [__868 MHz `sdk_app_lorawan` Binary__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v7.0.6)
 
--  [__923 MHz `sdk_app_lora` Binary__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v7.0.3)
+-  [__915 MHz `sdk_app_lorawan` Binary__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v7.0.7)
 
-Alternatively, we may build the Firmware Binary File `sdk_app_lora.bin` from the [source code](https://github.com/lupyuen/bl_iot_sdk/tree/lorarecv/customer_app/sdk_app_lora)...
+-  [__923 MHz `sdk_app_lorawan` Binary__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v7.0.3)
+
+Alternatively, we may build the Firmware Binary File `sdk_app_lorawan.bin` from the [source code](https://github.com/lupyuen/bl_iot_sdk/tree/lorawan/customer_app/sdk_app_lorawan)...
 
 ```bash
-# Download the lorarecv branch of lupyuen's bl_iot_sdk
-git clone --recursive --branch lorarecv https://github.com/lupyuen/bl_iot_sdk
-cd bl_iot_sdk/customer_app/sdk_app_lora
+# Download the lorawan branch of lupyuen's bl_iot_sdk
+git clone --recursive --branch lorawan https://github.com/lupyuen/bl_iot_sdk
+cd bl_iot_sdk/customer_app/sdk_app_lorawan
 
-# TODO: Set the LoRa Frequency in sdk_app_lora/demo.c. 
+# TODO: Set the LoRa Frequency in sdk_app_lorawan/demo.c. 
 # Edit the file and look for the line...
 #   #define USE_BAND_923
 # Change 923 to the LoRa Frequency for your region: 
@@ -105,14 +116,16 @@ export CONFIG_CHIP_NAME=BL602
 make
 
 # TODO: Change ~/blflash to the full path of blflash
-cp build_out/sdk_app_lora.bin ~/blflash
+cp build_out/sdk_app_lorawan.bin ~/blflash
 ```
 
 [More details on building bl_iot_sdk](https://lupyuen.github.io/articles/pinecone#building-firmware)
 
-(Remember to use the __`lorarecv`__ branch, not the default __`master`__ branch)
+(Remember to use the __`lorawan`__ branch, not the default __`master`__ branch)
 
 ## Flash the firmware
+
+TODO
 
 Follow these steps to install `blflash`...
 
@@ -120,7 +133,7 @@ Follow these steps to install `blflash`...
 
 1.  [__"Download and build blflash"__](https://lupyuen.github.io/articles/flash#download-and-build-blflash)
 
-We assume that our Firmware Binary File `sdk_app_lora.bin` has been copied to the `blflash` folder.
+We assume that our Firmware Binary File `sdk_app_lorawan.bin` has been copied to the `blflash` folder.
 
 Set BL602 to __Flashing Mode__ and restart the board...
 
@@ -148,29 +161,31 @@ __For Pinenut and MagicHome BL602:__
 
 1.  Reconnect the board to the USB port
 
-Enter these commands to flash `sdk_app_lora.bin` to BL602 over UART...
+Enter these commands to flash `sdk_app_lorawan.bin` to BL602 over UART...
 
 ```bash
 # TODO: Change ~/blflash to the full path of blflash
 cd ~/blflash
 
 # For Linux:
-sudo cargo run flash sdk_app_lora.bin \
+sudo cargo run flash sdk_app_lorawan.bin \
     --port /dev/ttyUSB0
 
 # For macOS:
-cargo run flash sdk_app_lora.bin \
+cargo run flash sdk_app_lorawan.bin \
     --port /dev/tty.usbserial-1420 \
     --initial-baud-rate 230400 \
     --baud-rate 230400
 
 # For Windows: Change COM5 to the BL602 Serial Port
-cargo run flash sdk_app_lora.bin --port COM5
+cargo run flash sdk_app_lorawan.bin --port COM5
 ```
 
 [More details on flashing firmware](https://lupyuen.github.io/articles/flash#flash-the-firmware)
 
 ## Run the firmware
+
+TODO
 
 Set BL602 to __Normal Mode__ (Non-Flashing) and restart the board...
 
@@ -206,9 +221,11 @@ __For Windows:__ Use `putty` ([See this](https://lupyuen.github.io/articles/flas
 
 [More details on connecting to BL602](https://lupyuen.github.io/articles/flash#watch-the-firmware-run)
 
-## Enter LoRa commands
+## Enter LoRaWAN commands
 
-Let's enter some commands to transmit a LoRa Packet!
+TODO
+
+Let's enter some commands to join the LoRaWAN Network and transmit a LoRaWAN Data Packet!
 
 1.  Press Enter to reveal the command prompt.
 
@@ -304,25 +321,6 @@ Let's enter some commands to transmit a LoRa Packet!
 
     [__Check out the receive log__](https://gist.github.com/lupyuen/9bd7e7daa2497e8352d2cffec4be444d)
 
-##  Receive Timeout
-
-Remember that our SX1276 Transceiver will __listen 5 seconds for incoming packets__... Then it goes to sleep to conserve battery power?
-
-Here's what happens when then SX1276 Driver doesn't receive any LoRa Packets within 5 seconds...
-
-```text
-# receive_message
-...
-SX1276 receive timeout
-Rx timeout
-```
-
-Our __BL602 Timer is triggered automatically__ after 5 seconds to put the SX1276 Transceiver to sleep.
-
-[__Watch the receive timeout video on YouTube__](https://www.youtube.com/watch?v=6qqZVcqN_rg)
-
-[__Check out the receive timeout log__](https://gist.github.com/lupyuen/ce578fd561ca050d4680c1750984ffd4)
-
 # Troubleshoot LoRaWAN
 
 TODO
@@ -386,3 +384,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1379926160377851910)
 
     [(And this Twitter Thread on LoRaWAN Specifications)](https://twitter.com/MisterTechBlog/status/1370224529222500352?s=20)
+
+# Appendix: Packet Buffer and Queue
+
+TODO
+
