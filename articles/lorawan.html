@@ -75,10 +75,15 @@
 <li><a href="#run-the-firmware">6.2 Run the firmware</a><ul></ul></li>
 <li><a href="#enter-lorawan-commands">6.3 Enter LoRaWAN commands</a><ul></ul></li></ul></li>
 <li><a href="#troubleshoot-lorawan">7 Troubleshoot LoRaWAN</a><ul></ul></li>
-<li><a href="#whats-next">8 What's Next</a><ul></ul></li>
-<li><a href="#notes">9 Notes</a><ul></ul></li>
-<li><a href="#appendix-packet-buffer-and-queue">10 Appendix: Packet Buffer and Queue</a><ul></ul></li></ul></nav><p>📝 <em>10 May 2021</em></p>
+<li><a href="#visualise-lorawan-with-software-defined-radio">8 Visualise LoRaWAN with Software Defined Radio</a><ul></ul></li>
+<li><a href="#whats-next">9 What's Next</a><ul></ul></li>
+<li><a href="#notes">10 Notes</a><ul></ul></li>
+<li><a href="#appendix-packet-buffer-and-queue">11 Appendix: Packet Buffer and Queue</a><ul></ul></li></ul></nav><p>📝 <em>10 May 2021</em></p>
 <p>Today we shall connect <strong>PineCone BL602 RISC-V Board</strong> to <strong>LoRaWAN</strong>... With the <strong>Pine64 RFM90 LoRa Module</strong>.</p>
+<p>The LoRa Firmware in this article will run on <strong>PineCone, Pinenut and Any BL602 Board</strong>.</p>
+<ul>
+<li><a href="https://youtu.be/BMMIIiZG6G0"><strong>Watch the demo video on YouTube</strong></a></li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/lorawan-title.jpg" alt="PineCone BL602 RISC-V Board with Pine64 RFM90 LoRa Module" /></p>
 <p><em>PineCone BL602 RISC-V Board with Pine64 RFM90 LoRa Module</em></p>
 <h1 id="connect-bl602-to-lora-module" class="section-header"><a href="#connect-bl602-to-lora-module">1 Connect BL602 to LoRa Module</a></h1>
@@ -102,11 +107,11 @@
 <p><em>Why is BL602 Pin 2 unused?</em></p>
 <p><strong><code>GPIO 2</code></strong> is the <strong>Unused SPI Chip Select</strong> on BL602.</p>
 <p>We won't use this pin because we'll control Chip Select ourselves on <code>GPIO 14</code>. <a href="https://lupyuen.github.io/articles/spi#control-our-own-chip-select-pin">(See this)</a></p>
-<p>Here are the pins connected on our LoRa Transceiver: RFM90 or SX1262...</p>
+<p>Here are the pins connected on our LoRa Module: RFM90 or SX1262...</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-connect3.jpg" alt="PineCone BL602 RISC-V Board connected to Pine64 RFM90 LoRa Module" /></p>
-<p>TODO</p>
-<p>Only <strong>1 pin <code>DIO1</code></strong> is required.</p>
-<p>We shall configure BL602 to trigger a <strong>GPIO Interrupt</strong> when the <code>DIO1</code> Pin shifts from Low to High.</p>
+<p><em>What's Pin <code>DIO1</code>?</em></p>
+<p>Our LoRa Module shifts <strong>Pin <code>DIO1</code></strong> from Low to High to signal that a <strong>LoRa Packet has been transmitted or received</strong>.</p>
+<p>We shall configure BL602 to trigger a <strong>GPIO Interrupt</strong> when Pin <code>DIO1</code> shifts from Low to High.</p>
 <ul>
 <li>
 <p><a href="https://semtech.my.salesforce.com/sfc/p/#E0000000JelG/a/2R000000HT76/7Nka9W5WgugoZe.xwIHJy6ebj1hW8UJ.USO_Pt2CLLo"><strong>Semtech SX1262 Datasheet</strong></a></p>
@@ -347,13 +352,24 @@ Rx done: RadioEvents.RxDone
 <pre><code class="language-text">Rx done: 48 65 6c 6c 6f 
 </code></pre>
 <p>(That's the ASCII code for <code>&quot;Hello&quot;</code>)</p>
-<p><a href="https://youtu.be/3TSvo0dwwnQ"><strong>Watch the receive video on YouTube</strong></a></p>
+<p><a href="https://youtu.be/BMMIIiZG6G0"><strong>Watch the demo video on YouTube</strong></a></p>
 <p><a href="https://gist.github.com/lupyuen/9bd7e7daa2497e8352d2cffec4be444d"><strong>Check out the receive log</strong></a></p>
 </li>
 </ol>
 <h1 id="troubleshoot-lorawan" class="section-header"><a href="#troubleshoot-lorawan">7 Troubleshoot LoRaWAN</a></h1>
 <p>TODO</p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">8 What's Next</a></h1>
+<h1 id="visualise-lorawan-with-software-defined-radio" class="section-header"><a href="#visualise-lorawan-with-software-defined-radio">8 Visualise LoRaWAN with Software Defined Radio</a></h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/lorawan-sdr1.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/lorawan-sdr2.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/lorawan-sdr3.jpg" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/lorawan-sdr4.jpg" alt="" /></p>
+<p>TODO</p>
+<p><a href="https://youtu.be/BMMIIiZG6G0"><strong>Watch the demo video on YouTube</strong></a></p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">9 What's Next</a></h1>
 <p>TODO</p>
 <p>We have completed <strong>Level One</strong> of our epic quest for the <a href="https://lupyuen.github.io/articles/lora#lora-vs-lorawan"><strong>Three Levels of LoRa</strong></a>!</p>
 <p>Let's move on to <strong>LoRa Levels Two and Three</strong>...</p>
@@ -412,14 +428,14 @@ Rx done: RadioEvents.RxDone
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lorawan.md"><code>lupyuen.github.io/src/lorawan.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">9 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">10 Notes</a></h1>
 <ol>
 <li>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1379926160377851910">this Twitter Thread</a></p>
 <p><a href="https://twitter.com/MisterTechBlog/status/1370224529222500352?s=20">(And this Twitter Thread on LoRaWAN Specifications)</a></p>
 </li>
 </ol>
-<h1 id="appendix-packet-buffer-and-queue" class="section-header"><a href="#appendix-packet-buffer-and-queue">10 Appendix: Packet Buffer and Queue</a></h1>
+<h1 id="appendix-packet-buffer-and-queue" class="section-header"><a href="#appendix-packet-buffer-and-queue">11 Appendix: Packet Buffer and Queue</a></h1>
 <p>TODO</p>
 
     
