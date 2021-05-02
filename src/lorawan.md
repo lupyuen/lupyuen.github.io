@@ -74,6 +74,30 @@ TODO
 
 TODO
 
+![](https://lupyuen.github.io/images/lorawan-driver.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/lorawan-driver2.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/lorawan-driver3.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/lorawan-driver4.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/lorawan-driver5.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/lorawan-driver6.png)
+
+TODO
+
 # Build and Run the BL602 LoRaWAN Firmware
 
 TODO
@@ -339,14 +363,6 @@ TODO
 
 TODO
 
-![](https://lupyuen.github.io/images/lorawan-sdr3.jpg)
-
-TODO
-
-![](https://lupyuen.github.io/images/lorawan-sdr4.jpg)
-
-TODO
-
 [__Watch the demo video on YouTube__](https://youtu.be/BMMIIiZG6G0)
 
 # What's Next
@@ -409,7 +425,103 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     [(And this Twitter Thread on LoRaWAN Specifications)](https://twitter.com/MisterTechBlog/status/1370224529222500352?s=20)
 
+# Appendix: LoRa Transmit Power
+
+TODO
+
+![](https://lupyuen.github.io/images/lorawan-sdr3.jpg)
+
+TODO
+
+![](https://lupyuen.github.io/images/lorawan-sdr4.jpg)
+
+TODO
+
+![](https://lupyuen.github.io/images/lorawan-ldo.png)
+
+TODO
+
+# Appendix: LoRa Sync Word
+
+TODO
+
+![](https://lupyuen.github.io/images/lorawan-syncword.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/lorawan-syncword2.jpg)
+
+TODO
+
+# Appendix: Carrier Sensing
+
+TODO
+
+![](https://lupyuen.github.io/images/lorawan-carrier.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/lorawan-carrier2.png)
+
+TODO
+
 # Appendix: Packet Buffer and Queue
+
+TODO
+
+![](https://lupyuen.github.io/images/lorawan-commands.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/lorawan-gpio.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/lorawan-hal.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/lorawan-join.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/lorawan-joinfail.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/lorawan-joinsend.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/lorawan-nullpointer.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/lorawan-para.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/lorawan-receive.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/lorawan-regions.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/lorawan-send.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/lorawan-spi.jpg)
+
+TODO
+
+![](https://lupyuen.github.io/images/lorawan-stack.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/lorawan-transmit.png)
 
 TODO
 
