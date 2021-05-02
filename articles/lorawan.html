@@ -82,10 +82,9 @@
 <p><img src="https://lupyuen.github.io/images/lorawan-title.jpg" alt="PineCone BL602 RISC-V Board with Pine64 RFM90 LoRa Module" /></p>
 <p><em>PineCone BL602 RISC-V Board with Pine64 RFM90 LoRa Module</em></p>
 <h1 id="connect-bl602-to-lora-module" class="section-header"><a href="#connect-bl602-to-lora-module">1 Connect BL602 to LoRa Module</a></h1>
-<p>TODO</p>
-<p>Connect BL602 to Semtech SX1262 or Pine64 / HopeRF RFM90 as follows...</p>
+<p>Connect BL602 to Pine64 (HopeRF) RFM90 or Semtech SX1262 as follows...</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-connect.jpg" alt="PineCone BL602 RISC-V Board connected to Pine64 RFM90 LoRa Module" /></p>
-<table><thead><tr><th align="left">BL602 Pin</th><th align="left">SX1262 / RFM90 Pin</th><th align="left">Wire Colour</th></tr></thead><tbody>
+<table><thead><tr><th align="left">BL602 Pin</th><th align="left">RFM90 / SX1262 Pin</th><th align="left">Wire Colour</th></tr></thead><tbody>
 <tr><td align="left"><strong><code>GPIO 0</code></strong></td><td align="left"><code>BUSY</code></td><td align="left">Dark Green</td></tr>
 <tr><td align="left"><strong><code>GPIO 1</code></strong></td><td align="left"><code>ISO</code> <em>(MISO)</em></td><td align="left">Light Green (Top)</td></tr>
 <tr><td align="left"><strong><code>GPIO 2</code></strong></td><td align="left">Do Not Connect</td><td align="left">(Unused Chip Select)</td></tr>
@@ -103,11 +102,11 @@
 <p><em>Why is BL602 Pin 2 unused?</em></p>
 <p><strong><code>GPIO 2</code></strong> is the <strong>Unused SPI Chip Select</strong> on BL602.</p>
 <p>We won't use this pin because we'll control Chip Select ourselves on <code>GPIO 14</code>. <a href="https://lupyuen.github.io/articles/spi#control-our-own-chip-select-pin">(See this)</a></p>
-<p>Here are the pins connected on our LoRa Transceiver: SX1262 or RFM90...</p>
+<p>Here are the pins connected on our LoRa Transceiver: RFM90 or SX1262...</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-connect3.jpg" alt="PineCone BL602 RISC-V Board connected to Pine64 RFM90 LoRa Module" /></p>
 <p>TODO</p>
-<p>Only <strong>1 pin <code>DIO0</code></strong> is required for receiving simple LoRa Packets, without the frills (like Spread Spectrum Transmission).</p>
-<p>We shall configure BL602 to trigger <strong>GPIO Interrupts</strong> when the 4 pins shift from Low to High.</p>
+<p>Only <strong>1 pin <code>DIO1</code></strong> is required.</p>
+<p>We shall configure BL602 to trigger a <strong>GPIO Interrupt</strong> when the <code>DIO1</code> Pin shifts from Low to High.</p>
 <ul>
 <li>
 <p><a href="https://semtech.my.salesforce.com/sfc/p/#E0000000JelG/a/2R000000HT76/7Nka9W5WgugoZe.xwIHJy6ebj1hW8UJ.USO_Pt2CLLo"><strong>Semtech SX1262 Datasheet</strong></a></p>
