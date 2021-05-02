@@ -14,9 +14,9 @@ TODO
 
 Connect BL602 to Semtech SX1276 or Hope RF96 as follows...
 
-![PineCone BL602 RISC-V Board connected to Hope RF96 LoRa Transceiver](https://lupyuen.github.io/images/lora2-connect3.jpg)
+![PineCone BL602 RISC-V Board connected to Pine64 RFM90 LoRa Module](https://lupyuen.github.io/images/lorawan-connect.jpg)
 
-| BL602 Pin     | SX1276 / RF96 Pin   | Wire Colour 
+| BL602 Pin     | SX1262 / RFM90 Pin   | Wire Colour 
 |:--------------|:--------------------|:-------------------
 
 TODO
@@ -25,7 +25,7 @@ TODO
 
 Here's a closer look at the pins connected on BL602...
 
-![PineCone BL602 RISC-V Board connected to Hope RF96 LoRa Transceiver](https://lupyuen.github.io/images/lora2-connect4.jpg)
+![PineCone BL602 RISC-V Board connected to Pine64 RFM90 LoRa Module](https://lupyuen.github.io/images/lorawan-connect2.jpg)
 
 _Why is BL602 Pin 2 unused?_
 
@@ -35,13 +35,11 @@ We won't use this pin because we'll control Chip Select ourselves on `GPIO 14`. 
 
 Here are the pins connected on our LoRa Transceiver: SX1276 or RF96...
 
-(`ISO` and `OSI` appear flipped in this pic... Rotate your phone / computer screen 180 degrees for the proper perspective)
+![PineCone BL602 RISC-V Board connected to Pine64 RFM90 LoRa Module](https://lupyuen.github.io/images/lorawan-connect3.jpg)
 
-![PineCone BL602 RISC-V Board connected to Hope RF96 LoRa Transceiver](https://lupyuen.github.io/images/lora2-connect5.jpg)
+TODO
 
 Only __1 pin `DIO0`__ is required for receiving simple LoRa Packets, without the frills (like Spread Spectrum Transmission).
-
-But for now we shall connect __4 pins `DIO0` to `DIO3`__, just in case they will be needed later for LoRaWAN. (Which will probably use Spread Spectrum Transmission)
 
 We shall configure BL602 to trigger __GPIO Interrupts__ when the 4 pins shift from Low to High.
 
