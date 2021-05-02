@@ -4,6 +4,10 @@
 
 Today we shall connect __PineCone BL602 RISC-V Board__ to __LoRaWAN__... With the __Pine64 RFM90 LoRa Module__.
 
+The LoRa Firmware in this article will run on __PineCone, Pinenut and Any BL602 Board__.
+
+-   [__Watch the demo video on YouTube__](https://youtu.be/BMMIIiZG6G0)
+
 ![PineCone BL602 RISC-V Board with Pine64 RFM90 LoRa Module](https://lupyuen.github.io/images/lorawan-title.jpg)
 
 _PineCone BL602 RISC-V Board with Pine64 RFM90 LoRa Module_
@@ -39,15 +43,15 @@ __`GPIO 2`__ is the __Unused SPI Chip Select__ on BL602.
 
 We won't use this pin because we'll control Chip Select ourselves on `GPIO 14`. [(See this)](https://lupyuen.github.io/articles/spi#control-our-own-chip-select-pin)
 
-Here are the pins connected on our LoRa Transceiver: RFM90 or SX1262...
+Here are the pins connected on our LoRa Module: RFM90 or SX1262...
 
 ![PineCone BL602 RISC-V Board connected to Pine64 RFM90 LoRa Module](https://lupyuen.github.io/images/lorawan-connect3.jpg)
 
-TODO
+_What's Pin `DIO1`?_
 
-Only __1 pin `DIO1`__ is required.
+Our LoRa Module shifts __Pin `DIO1`__ from Low to High to signal that a __LoRa Packet has been transmitted or received__.
 
-We shall configure BL602 to trigger a __GPIO Interrupt__ when the `DIO1` Pin shifts from Low to High.
+We shall configure BL602 to trigger a __GPIO Interrupt__ when Pin `DIO1` shifts from Low to High.
 
 -   [__Semtech SX1262 Datasheet__](https://semtech.my.salesforce.com/sfc/p/#E0000000JelG/a/2R000000HT76/7Nka9W5WgugoZe.xwIHJy6ebj1hW8UJ.USO_Pt2CLLo)
 
@@ -315,13 +319,35 @@ Let's enter some commands to join the LoRaWAN Network and transmit a LoRaWAN Dat
 
     (That's the ASCII code for `"Hello"`)
 
-    [__Watch the receive video on YouTube__](https://youtu.be/3TSvo0dwwnQ)
+    [__Watch the demo video on YouTube__](https://youtu.be/BMMIIiZG6G0)
 
     [__Check out the receive log__](https://gist.github.com/lupyuen/9bd7e7daa2497e8352d2cffec4be444d)
 
 # Troubleshoot LoRaWAN
 
 TODO
+
+# Visualise LoRaWAN with Software Defined Radio
+
+TODO
+
+![](https://lupyuen.github.io/images/lorawan-sdr1.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/lorawan-sdr2.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/lorawan-sdr3.jpg)
+
+TODO
+
+![](https://lupyuen.github.io/images/lorawan-sdr4.jpg)
+
+TODO
+
+[__Watch the demo video on YouTube__](https://youtu.be/BMMIIiZG6G0)
 
 # What's Next
 
