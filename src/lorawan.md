@@ -472,7 +472,13 @@ TODO
 
 TODO
 
+-   [__Semtech SX1262 Datasheet__](https://semtech.my.salesforce.com/sfc/p/#E0000000JelG/a/2R000000HT76/7Nka9W5WgugoZe.xwIHJy6ebj1hW8UJ.USO_Pt2CLLo)
+
 ![](https://lupyuen.github.io/images/lorawan-ldo.png)
+
+TODO
+
+-   [__Application Note: Reference Design Explanation__](https://semtech.my.salesforce.com/sfc/p/#E0000000JelG/a/2R000000HSSf/GT2IXjK2nH8bw6JdEXfFBd.HmFATeLOpL402mZwpSho)
 
 TODO
 
@@ -488,7 +494,7 @@ TODO
 
 TODO
 
-# Appendix: Carrier Sensing
+# Appendix: LoRa Carrier Sensing
 
 TODO
 
