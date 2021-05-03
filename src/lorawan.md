@@ -8,9 +8,9 @@ The LoRa Firmware in this article will run on __PineCone, Pinenut and Any BL602 
 
 -   [__Watch the demo video on YouTube__](https://youtu.be/BMMIIiZG6G0)
 
-![PineCone BL602 RISC-V Board with Pine64 RFM90 LoRa Module](https://lupyuen.github.io/images/lorawan-title.jpg)
+![PineCone BL602 RISC-V Board with Pine64 RFM90 LoRa Module (centre), PineBook Pro (left) and RAKwireless WisGate D4H LoRaWAN Gateway (right)](https://lupyuen.github.io/images/lorawan-title.jpg)
 
-_PineCone BL602 RISC-V Board with Pine64 RFM90 LoRa Module_
+_PineCone BL602 RISC-V Board with Pine64 RFM90 LoRa Module (centre), PineBook Pro (left) and RAKwireless WisGate D4H LoRaWAN Gateway (right)_
 
 # Connect BL602 to LoRa Module
 
@@ -69,13 +69,232 @@ Let's study the source code.
 
 TODO
 
+From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L44-L80)
+
+```c
+/// TODO: We are using LoRa Frequency 923 MHz for Singapore. Change this for your region.
+#define USE_BAND_923
+
+#if defined(USE_BAND_433)
+    #define RF_FREQUENCY               434000000 /* Hz */
+#elif defined(USE_BAND_780)
+    #define RF_FREQUENCY               780000000 /* Hz */
+#elif defined(USE_BAND_868)
+    #define RF_FREQUENCY               868000000 /* Hz */
+#elif defined(USE_BAND_915)
+    #define RF_FREQUENCY               915000000 /* Hz */
+#elif defined(USE_BAND_923)
+    #define RF_FREQUENCY               923000000 /* Hz */
+#else
+    #error "Please define a frequency band in the compiler options."
+#endif
+
+/// LoRa Parameters
+#define LORAPING_TX_OUTPUT_POWER            14        /* dBm */
+
+#define LORAPING_BANDWIDTH                  0         /* [0: 125 kHz, */
+                                                      /*  1: 250 kHz, */
+                                                      /*  2: 500 kHz, */
+                                                      /*  3: Reserved] */
+#define LORAPING_SPREADING_FACTOR           7         /* [SF7..SF12] */
+#define LORAPING_CODINGRATE                 1         /* [1: 4/5, */
+                                                      /*  2: 4/6, */
+                                                      /*  3: 4/7, */
+                                                      /*  4: 4/8] */
+#define LORAPING_PREAMBLE_LENGTH            8         /* Same for Tx and Rx */
+#define LORAPING_SYMBOL_TIMEOUT             5         /* Symbols */
+#define LORAPING_FIX_LENGTH_PAYLOAD_ON      false
+#define LORAPING_IQ_INVERSION_ON            false
+
+#define LORAPING_TX_TIMEOUT_MS              3000    /* ms */
+#define LORAPING_RX_TIMEOUT_MS              5000    /* ms */
+#define LORAPING_BUFFER_SIZE                64      /* LoRa message size */
+```
+
+TODO
+
+From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L159-L212)
+
+```c
+/// Command to initialise the SX1276 / RF96 driver.
+/// Assume that create_task has been called to init the Event Queue.
+static void init_driver(char *buf, int len, int argc, char **argv)
+{
+    //  Set the LoRa Callback Functions
+    RadioEvents_t radio_events;
+    memset(&radio_events, 0, sizeof(radio_events));  //  Must init radio_events to null, because radio_events lives on stack!
+    radio_events.TxDone    = on_tx_done;
+    radio_events.RxDone    = on_rx_done;
+    radio_events.TxTimeout = on_tx_timeout;
+    radio_events.RxTimeout = on_rx_timeout;
+    radio_events.RxError   = on_rx_error;
+
+    //  Init the SPI Port and the LoRa Transceiver
+    Radio.Init(&radio_events);
+
+    //  Set the LoRa Frequency
+    Radio.SetChannel(RF_FREQUENCY);
+
+    //  Configure the LoRa Transceiver for transmitting messages
+    Radio.SetTxConfig(
+        MODEM_LORA,
+        LORAPING_TX_OUTPUT_POWER,
+        0,        //  Frequency deviation: Unused with LoRa
+        LORAPING_BANDWIDTH,
+        LORAPING_SPREADING_FACTOR,
+        LORAPING_CODINGRATE,
+        LORAPING_PREAMBLE_LENGTH,
+        LORAPING_FIX_LENGTH_PAYLOAD_ON,
+        true,     //  CRC enabled
+        0,        //  Frequency hopping disabled
+        0,        //  Hop period: N/A
+        LORAPING_IQ_INVERSION_ON,
+        LORAPING_TX_TIMEOUT_MS
+    );
+
+    //  Configure the LoRa Transceiver for receiving messages
+    Radio.SetRxConfig(
+        MODEM_LORA,
+        LORAPING_BANDWIDTH,
+        LORAPING_SPREADING_FACTOR,
+        LORAPING_CODINGRATE,
+        0,        //  AFC bandwidth: Unused with LoRa
+        LORAPING_PREAMBLE_LENGTH,
+        LORAPING_SYMBOL_TIMEOUT,
+        LORAPING_FIX_LENGTH_PAYLOAD_ON,
+        0,        //  Fixed payload length: N/A
+        true,     //  CRC enabled
+        0,        //  Frequency hopping disabled
+        0,        //  Hop period: N/A
+        LORAPING_IQ_INVERSION_ON,
+        true      //  Continuous receive mode
+    );    
+}
+```
+
 ## Transmit LoRa Packet
 
 TODO
 
+From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L221-L244)
+
+```c
+/// Send a LoRa message. If is_ping is 0, send "PONG". Otherwise send "PING".
+static void send_once(int is_ping)
+{
+    //  Copy the "PING" or "PONG" message to the transmit buffer
+    if (is_ping) {
+        memcpy(loraping_buffer, loraping_ping_msg, 4);
+    } else {
+        memcpy(loraping_buffer, loraping_pong_msg, 4);
+    }
+
+    //  Fill up the remaining space in the transmit buffer (64 bytes) with values 0, 1, 2, ...
+    for (int i = 4; i < sizeof loraping_buffer; i++) {
+        loraping_buffer[i] = i - 4;
+    }
+
+#ifndef SEND_LORAWAN_MESSAGE
+    //  Send the transmit buffer (64 bytes)
+    Radio.Send(loraping_buffer, sizeof loraping_buffer);
+#else
+    //  Replay a LoRaWAN Join Network Request
+    static uint8_t replay[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x5b, 0xb1, 0x7b, 0x37, 0xe7, 0x5e, 0xc1, 0x4b, 0xb4, 0xb1, 0xb8, 0x30, 0xe9, 0x8c};
+    Radio.Send(replay, sizeof replay);
+#endif  //  !SEND_LORAWAN_MESSAGE
+}
+```
+
+From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L399-L412)
+
+```c
+/// Callback Function that is called when our LoRa message has been transmitted
+static void on_tx_done(void)
+{
+    printf("Tx done\r\n");
+
+    //  Log the success status
+    loraping_stats.tx_success++;
+
+    //  Switch the LoRa Transceiver to low power, sleep mode
+    Radio.Sleep();
+    
+    //  TODO: Receive a "PING" or "PONG" LoRa message
+    //  os_eventq_put(os_eventq_dflt_get(), &loraping_ev_rx);
+}
+```
+
 ## Receive LoRa Packet
 
 TODO
+
+From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L246-L252)
+
+```c
+/// Command to receive a LoRa message. Assume that SX1276 / RF96 driver has been initialised.
+/// Assume that create_task has been called to init the Event Queue.
+static void receive_message(char *buf, int len, int argc, char **argv)
+{
+    //  Receive a LoRa message within the timeout period
+    Radio.Rx(LORAPING_RX_TIMEOUT_MS);
+}
+```
+
+From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L414-L444)
+
+```c
+/// Callback Function that is called when a LoRa message has been received
+static void on_rx_done(
+    uint8_t *payload,  //  Buffer containing received LoRa message
+    uint16_t size,     //  Size of the LoRa message
+    int16_t rssi,      //  Signal strength
+    int8_t snr)        //  Signal To Noise ratio
+{
+    printf("Rx done: \r\n");
+
+    //  Switch the LoRa Transceiver to low power, sleep mode
+    Radio.Sleep();
+
+    //  Copy the received packet
+    if (size > sizeof loraping_buffer) {
+        size = sizeof loraping_buffer;
+    }
+    loraping_rx_size = size;
+    memcpy(loraping_buffer, payload, size);
+
+    //  Log the signal strength, signal to noise ratio
+    loraping_rxinfo_rxed(rssi, snr);
+
+    //  Dump the contents of the received packet
+    for (int i = 0; i < loraping_rx_size; i++) {
+        printf("%02x ", loraping_buffer[i]);
+    }
+    printf("\r\n");
+
+    //  TODO: Send a "PING" or "PONG" LoRa message
+    //  os_eventq_put(os_eventq_dflt_get(), &loraping_ev_tx);
+}
+```
+
+From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L461-L475)
+
+```c
+/// Callback Function that is called when no LoRa messages could be received due to timeout
+static void on_rx_timeout(void)
+{
+    printf("Rx timeout\r\n");
+
+    //  Switch the LoRa Transceiver to low power, sleep mode
+    Radio.Sleep();
+
+    //  Log the timeout
+    loraping_stats.rx_timeout++;
+    loraping_rxinfo_timeout();
+
+    //  TODO: Send a "PING" or "PONG" LoRa message
+    //  os_eventq_put(os_eventq_dflt_get(), &loraping_ev_tx);
+}
+```
 
 ## BL602 GPIO Interrupts
 
