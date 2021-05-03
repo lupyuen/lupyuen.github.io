@@ -57,16 +57,25 @@ We shall configure BL602 to trigger a __GPIO Interrupt__ when Pin `DIO1` shifts 
 
 -   [__HopeRF RFM90 Datasheet (Chinese)__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v9.0.0)
 
+# LoRa Transceiver Driver
 
-# Initialise LoRa Module
-
-TODO
-
-# BL602 GPIO Interrupts
+## Initialise LoRa Transceiver
 
 TODO
 
-# Multitask with NimBLE Porting Layer
+## Transmit LoRa Packet
+
+TODO
+
+## Receive LoRa Packet
+
+TODO
+
+## BL602 GPIO Interrupts
+
+TODO
+
+## Multitask with NimBLE Porting Layer
 
 TODO
 
@@ -75,6 +84,18 @@ TODO
 TODO
 
 ![](https://lupyuen.github.io/images/lorawan-driver.png)
+
+TODO
+
+## Initialise LoRaWAN Driver
+
+TODO
+
+## Join LoRaWAN Network
+
+TODO
+
+## Transmit LoRaWAN Packet
 
 TODO
 
