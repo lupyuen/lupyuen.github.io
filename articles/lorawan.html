@@ -66,22 +66,28 @@
     <h1 class="title">PineCone BL602 Talks LoRaWAN</h1>
     <nav id="TOC"><ul>
 <li><a href="#connect-bl602-to-lora-module">1 Connect BL602 to LoRa Module</a><ul></ul></li>
-<li><a href="#initialise-lora-module">2 Initialise LoRa Module</a><ul></ul></li>
-<li><a href="#bl602-gpio-interrupts">3 BL602 GPIO Interrupts</a><ul></ul></li>
-<li><a href="#multitask-with-nimble-porting-layer">4 Multitask with NimBLE Porting Layer</a><ul></ul></li>
-<li><a href="#lorawan-driver">5 LoRaWAN Driver</a><ul></ul></li>
-<li><a href="#build-and-run-the-bl602-lorawan-firmware">6 Build and Run the BL602 LoRaWAN Firmware</a><ul>
-<li><a href="#flash-the-firmware">6.1 Flash the firmware</a><ul></ul></li>
-<li><a href="#run-the-firmware">6.2 Run the firmware</a><ul></ul></li>
-<li><a href="#enter-lorawan-commands">6.3 Enter LoRaWAN commands</a><ul></ul></li></ul></li>
-<li><a href="#troubleshoot-lorawan">7 Troubleshoot LoRaWAN</a><ul></ul></li>
-<li><a href="#visualise-lorawan-with-software-defined-radio">8 Visualise LoRaWAN with Software Defined Radio</a><ul></ul></li>
-<li><a href="#whats-next">9 What's Next</a><ul></ul></li>
-<li><a href="#notes">10 Notes</a><ul></ul></li>
-<li><a href="#appendix-lora-transmit-power">11 Appendix: LoRa Transmit Power</a><ul></ul></li>
-<li><a href="#appendix-lora-sync-word">12 Appendix: LoRa Sync Word</a><ul></ul></li>
-<li><a href="#appendix-carrier-sensing">13 Appendix: Carrier Sensing</a><ul></ul></li>
-<li><a href="#appendix-packet-buffer-and-queue">14 Appendix: Packet Buffer and Queue</a><ul></ul></li></ul></nav><p>📝 <em>10 May 2021</em></p>
+<li><a href="#lora-transceiver-driver">2 LoRa Transceiver Driver</a><ul>
+<li><a href="#initialise-lora-transceiver">2.1 Initialise LoRa Transceiver</a><ul></ul></li>
+<li><a href="#transmit-lora-packet">2.2 Transmit LoRa Packet</a><ul></ul></li>
+<li><a href="#receive-lora-packet">2.3 Receive LoRa Packet</a><ul></ul></li>
+<li><a href="#bl602-gpio-interrupts">2.4 BL602 GPIO Interrupts</a><ul></ul></li>
+<li><a href="#multitask-with-nimble-porting-layer">2.5 Multitask with NimBLE Porting Layer</a><ul></ul></li></ul></li>
+<li><a href="#lorawan-driver">3 LoRaWAN Driver</a><ul>
+<li><a href="#initialise-lorawan-driver">3.1 Initialise LoRaWAN Driver</a><ul></ul></li>
+<li><a href="#join-lorawan-network">3.2 Join LoRaWAN Network</a><ul></ul></li>
+<li><a href="#transmit-lorawan-packet">3.3 Transmit LoRaWAN Packet</a><ul></ul></li></ul></li>
+<li><a href="#build-and-run-the-bl602-lorawan-firmware">4 Build and Run the BL602 LoRaWAN Firmware</a><ul>
+<li><a href="#flash-the-firmware">4.1 Flash the firmware</a><ul></ul></li>
+<li><a href="#run-the-firmware">4.2 Run the firmware</a><ul></ul></li>
+<li><a href="#enter-lorawan-commands">4.3 Enter LoRaWAN commands</a><ul></ul></li></ul></li>
+<li><a href="#troubleshoot-lorawan">5 Troubleshoot LoRaWAN</a><ul></ul></li>
+<li><a href="#visualise-lorawan-with-software-defined-radio">6 Visualise LoRaWAN with Software Defined Radio</a><ul></ul></li>
+<li><a href="#whats-next">7 What's Next</a><ul></ul></li>
+<li><a href="#notes">8 Notes</a><ul></ul></li>
+<li><a href="#appendix-lora-transmit-power">9 Appendix: LoRa Transmit Power</a><ul></ul></li>
+<li><a href="#appendix-lora-sync-word">10 Appendix: LoRa Sync Word</a><ul></ul></li>
+<li><a href="#appendix-carrier-sensing">11 Appendix: Carrier Sensing</a><ul></ul></li>
+<li><a href="#appendix-packet-buffer-and-queue">12 Appendix: Packet Buffer and Queue</a><ul></ul></li></ul></nav><p>📝 <em>10 May 2021</em></p>
 <p>Today we shall connect <strong>PineCone BL602 RISC-V Board</strong> to <strong>LoRaWAN</strong>... With the <strong>Pine64 RFM90 LoRa Module</strong>.</p>
 <p>The LoRa Firmware in this article will run on <strong>PineCone, Pinenut and Any BL602 Board</strong>.</p>
 <ul>
@@ -123,15 +129,25 @@
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/releases/tag/v9.0.0"><strong>HopeRF RFM90 Datasheet (Chinese)</strong></a></p>
 </li>
 </ul>
-<h1 id="initialise-lora-module" class="section-header"><a href="#initialise-lora-module">2 Initialise LoRa Module</a></h1>
+<h1 id="lora-transceiver-driver" class="section-header"><a href="#lora-transceiver-driver">2 LoRa Transceiver Driver</a></h1><h2 id="initialise-lora-transceiver" class="section-header"><a href="#initialise-lora-transceiver">2.1 Initialise LoRa Transceiver</a></h2>
 <p>TODO</p>
-<h1 id="bl602-gpio-interrupts" class="section-header"><a href="#bl602-gpio-interrupts">3 BL602 GPIO Interrupts</a></h1>
+<h2 id="transmit-lora-packet" class="section-header"><a href="#transmit-lora-packet">2.2 Transmit LoRa Packet</a></h2>
 <p>TODO</p>
-<h1 id="multitask-with-nimble-porting-layer" class="section-header"><a href="#multitask-with-nimble-porting-layer">4 Multitask with NimBLE Porting Layer</a></h1>
+<h2 id="receive-lora-packet" class="section-header"><a href="#receive-lora-packet">2.3 Receive LoRa Packet</a></h2>
 <p>TODO</p>
-<h1 id="lorawan-driver" class="section-header"><a href="#lorawan-driver">5 LoRaWAN Driver</a></h1>
+<h2 id="bl602-gpio-interrupts" class="section-header"><a href="#bl602-gpio-interrupts">2.4 BL602 GPIO Interrupts</a></h2>
+<p>TODO</p>
+<h2 id="multitask-with-nimble-porting-layer" class="section-header"><a href="#multitask-with-nimble-porting-layer">2.5 Multitask with NimBLE Porting Layer</a></h2>
+<p>TODO</p>
+<h1 id="lorawan-driver" class="section-header"><a href="#lorawan-driver">3 LoRaWAN Driver</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-driver.png" alt="" /></p>
+<p>TODO</p>
+<h2 id="initialise-lorawan-driver" class="section-header"><a href="#initialise-lorawan-driver">3.1 Initialise LoRaWAN Driver</a></h2>
+<p>TODO</p>
+<h2 id="join-lorawan-network" class="section-header"><a href="#join-lorawan-network">3.2 Join LoRaWAN Network</a></h2>
+<p>TODO</p>
+<h2 id="transmit-lorawan-packet" class="section-header"><a href="#transmit-lorawan-packet">3.3 Transmit LoRaWAN Packet</a></h2>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-driver2.png" alt="" /></p>
 <p>TODO</p>
@@ -143,7 +159,7 @@
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-driver6.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="build-and-run-the-bl602-lorawan-firmware" class="section-header"><a href="#build-and-run-the-bl602-lorawan-firmware">6 Build and Run the BL602 LoRaWAN Firmware</a></h1>
+<h1 id="build-and-run-the-bl602-lorawan-firmware" class="section-header"><a href="#build-and-run-the-bl602-lorawan-firmware">4 Build and Run the BL602 LoRaWAN Firmware</a></h1>
 <p>TODO</p>
 <p>Let's run the LoRa Demo Firmware for BL602 to receive the LoRa Packets transmitted by RAKwireless WisBlock.</p>
 <p>Find out which <strong>LoRa Frequency</strong> we should use for your region...</p>
@@ -191,7 +207,7 @@ cp build_out/sdk_app_lorawan.bin ~/blflash
 </code></pre>
 <p><a href="https://lupyuen.github.io/articles/pinecone#building-firmware">More details on building bl_iot_sdk</a></p>
 <p>(Remember to use the <strong><code>lorawan</code></strong> branch, not the default <strong><code>master</code></strong> branch)</p>
-<h2 id="flash-the-firmware" class="section-header"><a href="#flash-the-firmware">6.1 Flash the firmware</a></h2>
+<h2 id="flash-the-firmware" class="section-header"><a href="#flash-the-firmware">4.1 Flash the firmware</a></h2>
 <p>TODO</p>
 <p>Follow these steps to install <code>blflash</code>...</p>
 <ol>
@@ -258,7 +274,7 @@ cargo run flash sdk_app_lorawan.bin \
 cargo run flash sdk_app_lorawan.bin --port COM5
 </code></pre>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">More details on flashing firmware</a></p>
-<h2 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">6.2 Run the firmware</a></h2>
+<h2 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">4.2 Run the firmware</a></h2>
 <p>TODO</p>
 <p>Set BL602 to <strong>Normal Mode</strong> (Non-Flashing) and restart the board...</p>
 <p><strong>For PineCone:</strong></p>
@@ -293,7 +309,7 @@ cargo run flash sdk_app_lorawan.bin --port COM5
 <p><strong>For macOS:</strong> Use CoolTerm (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">More details on connecting to BL602</a></p>
-<h2 id="enter-lorawan-commands" class="section-header"><a href="#enter-lorawan-commands">6.3 Enter LoRaWAN commands</a></h2>
+<h2 id="enter-lorawan-commands" class="section-header"><a href="#enter-lorawan-commands">4.3 Enter LoRaWAN commands</a></h2>
 <p>TODO</p>
 <p>Let's enter some commands to join the LoRaWAN Network and transmit a LoRaWAN Data Packet!</p>
 <ol>
@@ -371,16 +387,16 @@ Rx done: RadioEvents.RxDone
 <p><a href="https://gist.github.com/lupyuen/9bd7e7daa2497e8352d2cffec4be444d"><strong>Check out the receive log</strong></a></p>
 </li>
 </ol>
-<h1 id="troubleshoot-lorawan" class="section-header"><a href="#troubleshoot-lorawan">7 Troubleshoot LoRaWAN</a></h1>
+<h1 id="troubleshoot-lorawan" class="section-header"><a href="#troubleshoot-lorawan">5 Troubleshoot LoRaWAN</a></h1>
 <p>TODO</p>
-<h1 id="visualise-lorawan-with-software-defined-radio" class="section-header"><a href="#visualise-lorawan-with-software-defined-radio">8 Visualise LoRaWAN with Software Defined Radio</a></h1>
+<h1 id="visualise-lorawan-with-software-defined-radio" class="section-header"><a href="#visualise-lorawan-with-software-defined-radio">6 Visualise LoRaWAN with Software Defined Radio</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-sdr1.png" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-sdr2.png" alt="" /></p>
 <p>TODO</p>
 <p><a href="https://youtu.be/BMMIIiZG6G0"><strong>Watch the demo video on YouTube</strong></a></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">9 What's Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">7 What's Next</a></h1>
 <p>TODO</p>
 <p>We have completed <strong>Level One</strong> of our epic quest for the <a href="https://lupyuen.github.io/articles/lora#lora-vs-lorawan"><strong>Three Levels of LoRa</strong></a>!</p>
 <p>Let's move on to <strong>LoRa Levels Two and Three</strong>...</p>
@@ -439,14 +455,14 @@ Rx done: RadioEvents.RxDone
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lorawan.md"><code>lupyuen.github.io/src/lorawan.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">10 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">8 Notes</a></h1>
 <ol>
 <li>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1379926160377851910">this Twitter Thread</a></p>
 <p><a href="https://twitter.com/MisterTechBlog/status/1370224529222500352?s=20">(And this Twitter Thread on LoRaWAN Specifications)</a></p>
 </li>
 </ol>
-<h1 id="appendix-lora-transmit-power" class="section-header"><a href="#appendix-lora-transmit-power">11 Appendix: LoRa Transmit Power</a></h1>
+<h1 id="appendix-lora-transmit-power" class="section-header"><a href="#appendix-lora-transmit-power">9 Appendix: LoRa Transmit Power</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-sdr3.jpg" alt="" /></p>
 <p>TODO</p>
@@ -454,19 +470,19 @@ Rx done: RadioEvents.RxDone
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-ldo.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="appendix-lora-sync-word" class="section-header"><a href="#appendix-lora-sync-word">12 Appendix: LoRa Sync Word</a></h1>
+<h1 id="appendix-lora-sync-word" class="section-header"><a href="#appendix-lora-sync-word">10 Appendix: LoRa Sync Word</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-syncword.png" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-syncword2.jpg" alt="" /></p>
 <p>TODO</p>
-<h1 id="appendix-carrier-sensing" class="section-header"><a href="#appendix-carrier-sensing">13 Appendix: Carrier Sensing</a></h1>
+<h1 id="appendix-carrier-sensing" class="section-header"><a href="#appendix-carrier-sensing">11 Appendix: Carrier Sensing</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-carrier.png" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-carrier2.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="appendix-packet-buffer-and-queue" class="section-header"><a href="#appendix-packet-buffer-and-queue">14 Appendix: Packet Buffer and Queue</a></h1>
+<h1 id="appendix-packet-buffer-and-queue" class="section-header"><a href="#appendix-packet-buffer-and-queue">12 Appendix: Packet Buffer and Queue</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-commands.png" alt="" /></p>
 <p>TODO</p>
