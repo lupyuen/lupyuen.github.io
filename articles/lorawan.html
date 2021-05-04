@@ -147,18 +147,18 @@
 <p><img src="https://lupyuen.github.io/images/lorawan-transceiver.png" alt="BL602 Driver for RFM90 / SX1262" /></p>
 <ol>
 <li>
-<p><strong>Radio Interface: <code>radio.c</code></strong> </p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c"><strong>Radio Interface: <code>radio.c</code></strong></a></p>
 <p>Exposes the LoRa Radio Functions that will initialise the transceiver (<code>RadioInit</code>), send a LoRa Packet (<code>RadioSend</code>) and receive a LoRa Packet (<code>RadioRx</code>).</p>
 <p>Our Demo Firmware calls the Radio Interface to send and receive LoRa Packets. (Our LoRaWAN Driver calls the Radio Interface too)</p>
 <p>The Radio Interface is generic and works for various LoRa Transceivers (like SX1276).</p>
 </li>
 <li>
-<p><strong>Transceiver Interface: <code>sx126x.c</code></strong></p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/sx126x.c"><strong>Transceiver Interface: <code>sx126x.c</code></strong></a></p>
 <p>Provides the functions specific to the SX1262 Transceiver: <code>SX126xInit</code>, <code>SX126xSendPayload</code>, <code>SX126xSetRx</code>, ...</p>
 <p>Called by the Radio Interface.</p>
 </li>
 <li>
-<p><strong>Board Interface: <code>sx126x-board.c</code></strong></p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/sx126x-board.c"><strong>Board Interface: <code>sx126x-board.c</code></strong></a></p>
 <p>Exposes the functions specific to our BL602 Board: <strong>SPI, GPIO, Events and Timers.</strong></p>
 <p>SPI and GPIO Functions are implemented with the <strong>SPI and GPIO Hardware Abstraction Layers</strong> (HALs) from the BL602 IoT SDK.</p>
 <p>Events and Timers are implemented with the <strong>NimBLE Porting Layer</strong>, a library that simplifies the FreeRTOS multitasking functions from the BL602 IoT SDK.</p>
