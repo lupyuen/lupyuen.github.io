@@ -142,22 +142,24 @@
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/lorawan/customer_app/sdk_app_lorawan"><code>customer_app/sdk_app_lorawan</code></a></li>
 </ul>
 <h2 id="how-it-works" class="section-header"><a href="#how-it-works">2.1 How It Works</a></h2>
-<p>The LoRa Driver consists of 3 layers...</p>
+<p>Our LoRa Driver has 3 layers: <strong>Radio Interface, Transceiver Interface and Board Interface</strong>...</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-transceiver.png" alt="BL602 Driver for RFM90 / SX1262" /></p>
 <ol>
 <li>
-<p><strong>Radio Interface:</strong> Exposes the LoRa Radio Functions that will initialise the transceiver, send a LoRa Packet and receive a LoRa Packet.</p>
+<p><strong>Radio Interface: <code>radio.c</code></strong> </p>
+<p>Exposes the LoRa Radio Functions that will initialise the transceiver (<code>RadioInit</code>), send a LoRa Packet (<code>RadioSend</code>) and receive a LoRa Packet (<code>RadioRx</code>).</p>
 <p>Our Demo Firmware calls the Radio Interface to send and receive LoRa Packets. (Our LoRaWAN Driver calls the Radio Interface too)</p>
-<p>The Radio Interface is generic and works for various LoRa Transceivers, like SX1276.</p>
+<p>The Radio Interface is generic and works for various LoRa Transceivers (like SX1276).</p>
 </li>
 <li>
-<p><strong>Transceiver Interface:</strong> TODO</p>
+<p><strong>Transceiver Interface: <code>sx126x.c</code></strong></p>
+<p>TODO</p>
 </li>
 <li>
-<p><strong>Board Interface:</strong> TODO</p>
+<p><strong>Board Interface: <code>sx126x-board.c</code></strong></p>
+<p>TODO</p>
 </li>
 </ol>
-<p>TODO</p>
 <h2 id="initialise-lora-transceiver" class="section-header"><a href="#initialise-lora-transceiver">2.2 Initialise LoRa Transceiver</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L44-L80"><code>demo.c</code></a></p>
