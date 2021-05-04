@@ -82,12 +82,20 @@ Our LoRa Driver has 3 layers: __Radio Interface, Transceiver Interface and Board
     The Radio Interface is generic and works for various LoRa Transceivers (like SX1276).
 
 1.  __Transceiver Interface: `sx126x.c`__
-    
-    TODO
+
+    Provides the functions specific to the SX1262 Transceiver: `SX126xInit`, `SX126xSendPayload`, `SX126xSetRx`, ...
+
+    Called by the Radio Interface.
 
 1.  __Board Interface: `sx126x-board.c`__
 
-    TODO
+    Exposes the functions specific to our BL602 Board: __SPI, GPIO, Events and Timers.__
+
+    SPI and GPIO Functions are implemented with the __SPI and GPIO Hardware Abstraction Layers__ (HALs) from the BL602 IoT SDK.
+
+    Events and Timers are implemented with the __NimBLE Porting Layer__, a library that simplifies the FreeRTOS multitasking functions from the BL602 IoT SDK.
+
+    Called by the Transceiver Interface.
 
 ## Initialise LoRa Transceiver
 
