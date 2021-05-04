@@ -99,9 +99,9 @@ Our LoRa Driver has 3 layers: __Radio Interface, Transceiver Interface and Board
 
 ## Configure LoRa Transceiver
 
-TODO
+(__Note on LoRa vs LoRaWAN:__ We configure LoRaWAN via `Makefile`, not `#define`. Skip this section if we're using LoRaWAN.)
 
-__Super Important:__ We should set the LoRa Frequency in [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L44-L80) like so...
+We set the __LoRa Frequency__ in [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L44-L80) like so...
 
 ```c
 /// TODO: We are using LoRa Frequency 923 MHz 
@@ -127,7 +127,7 @@ Change `USE_BAND_923` to `USE_BAND_433`, `780`, `868` or `915`. Here's the compl
 #endif
 ```
 
-TODO
+The __LoRa Parameters__ are also defined in [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L44-L80)
 
 ```c
 /// LoRa Parameters
@@ -152,9 +152,15 @@ TODO
 #define LORAPING_BUFFER_SIZE                64      /* LoRa message size */
 ```
 
-TODO
+These should match the LoRa Parameters used by the LoRa Receiver.
+
+I used this LoRa Receiver (based on RAKwireless WisBlock) for testing our LoRa Driver...
+
+-   [__"RAKwireless WisBlock talks LoRa with PineCone BL602 RISC-V Board"__](https://lupyuen.github.io/articles/wisblock)
 
 ## Initialise LoRa Transceiver
+
+(__Note on LoRa vs LoRaWAN:__ Our LoRaWAN Driver initialises the LoRa Transceiver for us. Skip this section if we're using LoRaWAN.)
 
 TODO
 
