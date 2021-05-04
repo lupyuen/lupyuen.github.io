@@ -63,7 +63,13 @@ The __BL602 Driver for RFM90 / SX1262__ is located here...
 
 -   [`components/3rdparty/lora-sx1262`](https://github.com/lupyuen/bl_iot_sdk/tree/lorawan/components/3rdparty/lora-sx1262)
 
-Let's study the source code.
+Let's study the source code and learn how the driver is called by our demo firmware to __transmit and receive LoRa Packets__...
+
+-   [`customer_app/sdk_app_lorawan`](https://github.com/lupyuen/bl_iot_sdk/tree/lorawan/customer_app/sdk_app_lorawan)
+
+## Architecture
+
+TODO
 
 ## Initialise LoRa Transceiver
 
@@ -310,7 +316,13 @@ The __BL602 Driver for LoRaWAN__ is located here...
 
 -   [`components/3rdparty/lorawan`](https://github.com/lupyuen/bl_iot_sdk/tree/lorawan/components/3rdparty/lorawan)
 
-Let's study the source code.
+Let's study the source code and learn how the LoRaWAN Driver is called by our demo firmware to __join the LoRaWAN Network and transmit data packets__...
+
+-   [`customer_app/sdk_app_lorawan`](https://github.com/lupyuen/bl_iot_sdk/tree/lorawan/customer_app/sdk_app_lorawan)
+
+## Architecture
+
+TODO
 
 ![](https://lupyuen.github.io/images/lorawan-driver.png)
 
