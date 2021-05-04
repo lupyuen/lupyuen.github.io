@@ -68,11 +68,12 @@
 <li><a href="#connect-bl602-to-lora-module">1 Connect BL602 to LoRa Module</a><ul></ul></li>
 <li><a href="#lora-transceiver-driver">2 LoRa Transceiver Driver</a><ul>
 <li><a href="#how-it-works">2.1 How It Works</a><ul></ul></li>
-<li><a href="#initialise-lora-transceiver">2.2 Initialise LoRa Transceiver</a><ul></ul></li>
-<li><a href="#transmit-lora-packet">2.3 Transmit LoRa Packet</a><ul></ul></li>
-<li><a href="#receive-lora-packet">2.4 Receive LoRa Packet</a><ul></ul></li>
-<li><a href="#bl602-gpio-interrupts">2.5 BL602 GPIO Interrupts</a><ul></ul></li>
-<li><a href="#multitask-with-nimble-porting-layer">2.6 Multitask with NimBLE Porting Layer</a><ul></ul></li></ul></li>
+<li><a href="#configure-transceiver">2.2 Configure Transceiver</a><ul></ul></li>
+<li><a href="#initialise-transceiver">2.3 Initialise Transceiver</a><ul></ul></li>
+<li><a href="#transmit-lora-packet">2.4 Transmit LoRa Packet</a><ul></ul></li>
+<li><a href="#receive-lora-packet">2.5 Receive LoRa Packet</a><ul></ul></li>
+<li><a href="#bl602-gpio-interrupts">2.6 BL602 GPIO Interrupts</a><ul></ul></li>
+<li><a href="#multitask-with-nimble-porting-layer">2.7 Multitask with NimBLE Porting Layer</a><ul></ul></li></ul></li>
 <li><a href="#lorawan-driver">3 LoRaWAN Driver</a><ul>
 <li><a href="#whats-inside">3.1 What's Inside</a><ul></ul></li>
 <li><a href="#application-layer">3.2 Application Layer</a><ul></ul></li>
@@ -164,13 +165,15 @@
 <p>Called by the Transceiver Interface.</p>
 </li>
 </ol>
-<h2 id="initialise-lora-transceiver" class="section-header"><a href="#initialise-lora-transceiver">2.2 Initialise LoRa Transceiver</a></h2>
+<h2 id="configure-transceiver" class="section-header"><a href="#configure-transceiver">2.2 Configure Transceiver</a></h2>
 <p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L44-L80"><code>demo.c</code></a></p>
-<pre><code class="language-c">/// TODO: We are using LoRa Frequency 923 MHz for Singapore. Change this for your region.
+<p><strong>Super Important:</strong> We should set the LoRa Frequency in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L44-L80"><code>demo.c</code></a> like so...</p>
+<pre><code class="language-c">/// TODO: We are using LoRa Frequency 923 MHz 
+/// for Singapore. Change this for your region.
 #define USE_BAND_923
-
-#if defined(USE_BAND_433)
+</code></pre>
+<p>Change <code>USE_BAND_923</code> to <code>USE_BAND_433</code>, <code>780</code>, <code>868</code> or <code>915</code>. Here's the complete list...</p>
+<pre><code class="language-c">#if defined(USE_BAND_433)
     #define RF_FREQUENCY               434000000 /* Hz */
 #elif defined(USE_BAND_780)
     #define RF_FREQUENCY               780000000 /* Hz */
@@ -183,8 +186,9 @@
 #else
     #error &quot;Please define a frequency band in the compiler options.&quot;
 #endif
-
-/// LoRa Parameters
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-c">/// LoRa Parameters
 #define LORAPING_TX_OUTPUT_POWER            14        /* dBm */
 
 #define LORAPING_BANDWIDTH                  0         /* [0: 125 kHz, */
@@ -205,6 +209,8 @@
 #define LORAPING_RX_TIMEOUT_MS              5000    /* ms */
 #define LORAPING_BUFFER_SIZE                64      /* LoRa message size */
 </code></pre>
+<p>TODO</p>
+<h2 id="initialise-transceiver" class="section-header"><a href="#initialise-transceiver">2.3 Initialise Transceiver</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L159-L212"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// Command to initialise the SX1276 / RF96 driver.
@@ -262,7 +268,7 @@ static void init_driver(char *buf, int len, int argc, char **argv)
     );    
 }
 </code></pre>
-<h2 id="transmit-lora-packet" class="section-header"><a href="#transmit-lora-packet">2.3 Transmit LoRa Packet</a></h2>
+<h2 id="transmit-lora-packet" class="section-header"><a href="#transmit-lora-packet">2.4 Transmit LoRa Packet</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L221-L244"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// Send a LoRa message. If is_ping is 0, send &quot;PONG&quot;. Otherwise send &quot;PING&quot;.
@@ -306,7 +312,7 @@ static void on_tx_done(void)
     //  os_eventq_put(os_eventq_dflt_get(), &amp;loraping_ev_rx);
 }
 </code></pre>
-<h2 id="receive-lora-packet" class="section-header"><a href="#receive-lora-packet">2.4 Receive LoRa Packet</a></h2>
+<h2 id="receive-lora-packet" class="section-header"><a href="#receive-lora-packet">2.5 Receive LoRa Packet</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L246-L252"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// Command to receive a LoRa message. Assume that SX1276 / RF96 driver has been initialised.
@@ -367,9 +373,9 @@ static void on_rx_timeout(void)
     //  os_eventq_put(os_eventq_dflt_get(), &amp;loraping_ev_tx);
 }
 </code></pre>
-<h2 id="bl602-gpio-interrupts" class="section-header"><a href="#bl602-gpio-interrupts">2.5 BL602 GPIO Interrupts</a></h2>
+<h2 id="bl602-gpio-interrupts" class="section-header"><a href="#bl602-gpio-interrupts">2.6 BL602 GPIO Interrupts</a></h2>
 <p>TODO</p>
-<h2 id="multitask-with-nimble-porting-layer" class="section-header"><a href="#multitask-with-nimble-porting-layer">2.6 Multitask with NimBLE Porting Layer</a></h2>
+<h2 id="multitask-with-nimble-porting-layer" class="section-header"><a href="#multitask-with-nimble-porting-layer">2.7 Multitask with NimBLE Porting Layer</a></h2>
 <p>TODO</p>
 <h1 id="lorawan-driver" class="section-header"><a href="#lorawan-driver">3 LoRaWAN Driver</a></h1>
 <p>The <strong>BL602 Driver for LoRaWAN</strong> is located here...</p>
