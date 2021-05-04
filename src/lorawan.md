@@ -63,7 +63,7 @@ The __BL602 Driver for RFM90 / SX1262__ is located here...
 
 -   [`components/3rdparty/lora-sx1262`](https://github.com/lupyuen/bl_iot_sdk/tree/lorawan/components/3rdparty/lora-sx1262)
 
-Let's study the source code and learn how the driver is called by our demo firmware to __transmit and receive LoRa Packets__...
+Let's study the source code and learn how the driver is called by our Demo Firmware to __transmit and receive LoRa Packets__...
 
 -   [`customer_app/sdk_app_lorawan`](https://github.com/lupyuen/bl_iot_sdk/tree/lorawan/customer_app/sdk_app_lorawan)
 
@@ -75,7 +75,7 @@ The LoRa Driver consists of 3 layers...
 
 1.  __Radio Interface:__ Exposes the LoRa Radio Functions that will initialise the transceiver, send a LoRa Packet and receive a LoRa Packet.
 
-    The Radio Interface is called by our demo firmware to send andreceive LoRa Packets. And also by the LoRaWAN Driver.
+    Our Demo Firmware calls the Radio Interface to send and receive LoRa Packets. (Our LoRaWAN Driver calls the Radio Interface too)
 
     The Radio Interface is generic and works for various LoRa Transceivers, like SX1276.
 
