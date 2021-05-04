@@ -69,9 +69,19 @@ Let's study the source code and learn how the driver is called by our demo firmw
 
 ## How It Works
 
-TODO
+The LoRa Driver consists of 3 layers...
 
 ![BL602 Driver for RFM90 / SX1262](https://lupyuen.github.io/images/lorawan-transceiver.png)
+
+1.  __Radio Interface:__ Exposes the LoRa Radio Functions that will initialise the transceiver, send a LoRa Packet and receive a LoRa Packet.
+
+    The Radio Interface is called by our demo firmware to send andreceive LoRa Packets. And also by the LoRaWAN Driver.
+
+    The Radio Interface is generic and works for various LoRa Transceivers, like SX1276.
+
+1.  __Transceiver Interface:__ TODO
+
+1.  __Board Interface:__ TODO
 
 TODO
 
