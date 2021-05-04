@@ -166,8 +166,8 @@
 </li>
 </ol>
 <h2 id="configure-lora-transceiver" class="section-header"><a href="#configure-lora-transceiver">2.2 Configure LoRa Transceiver</a></h2>
-<p>TODO</p>
-<p><strong>Super Important:</strong> We should set the LoRa Frequency in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L44-L80"><code>demo.c</code></a> like so...</p>
+<p>(<strong>Note on LoRa vs LoRaWAN:</strong> We configure LoRaWAN via <code>Makefile</code>, not <code>#define</code>. Skip this section if we're using LoRaWAN.)</p>
+<p>We set the <strong>LoRa Frequency</strong> in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L44-L80"><code>demo.c</code></a> like so...</p>
 <pre><code class="language-c">/// TODO: We are using LoRa Frequency 923 MHz 
 /// for Singapore. Change this for your region.
 #define USE_BAND_923
@@ -187,7 +187,7 @@
     #error &quot;Please define a frequency band in the compiler options.&quot;
 #endif
 </code></pre>
-<p>TODO</p>
+<p>The <strong>LoRa Parameters</strong> are also defined in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L44-L80"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// LoRa Parameters
 #define LORAPING_TX_OUTPUT_POWER            14        /* dBm */
 
@@ -209,8 +209,13 @@
 #define LORAPING_RX_TIMEOUT_MS              5000    /* ms */
 #define LORAPING_BUFFER_SIZE                64      /* LoRa message size */
 </code></pre>
-<p>TODO</p>
+<p>These should match the LoRa Parameters used by the LoRa Receiver.</p>
+<p>I used this LoRa Receiver (based on RAKwireless WisBlock) for testing our LoRa Driver...</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/wisblock"><strong>&quot;RAKwireless WisBlock talks LoRa with PineCone BL602 RISC-V Board&quot;</strong></a></li>
+</ul>
 <h2 id="initialise-lora-transceiver" class="section-header"><a href="#initialise-lora-transceiver">2.3 Initialise LoRa Transceiver</a></h2>
+<p>(<strong>Note on LoRa vs LoRaWAN:</strong> Our LoRaWAN Driver initialises the LoRa Transceiver for us. Skip this section if we're using LoRaWAN.)</p>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L159-L212"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// Command to initialise the SX1276 / RF96 driver.
