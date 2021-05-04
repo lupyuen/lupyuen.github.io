@@ -97,16 +97,21 @@ Our LoRa Driver has 3 layers: __Radio Interface, Transceiver Interface and Board
 
     Called by the Transceiver Interface.
 
-## Initialise LoRa Transceiver
+## Configure Transceiver
 
 TODO
 
-From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L44-L80)
+__Super Important:__ We should set the LoRa Frequency in [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L44-L80) like so...
 
 ```c
-/// TODO: We are using LoRa Frequency 923 MHz for Singapore. Change this for your region.
+/// TODO: We are using LoRa Frequency 923 MHz 
+/// for Singapore. Change this for your region.
 #define USE_BAND_923
+```
 
+Change `USE_BAND_923` to `USE_BAND_433`, `780`, `868` or `915`. Here's the complete list...
+
+```c
 #if defined(USE_BAND_433)
     #define RF_FREQUENCY               434000000 /* Hz */
 #elif defined(USE_BAND_780)
@@ -120,7 +125,11 @@ From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/
 #else
     #error "Please define a frequency band in the compiler options."
 #endif
+```
 
+TODO
+
+```c
 /// LoRa Parameters
 #define LORAPING_TX_OUTPUT_POWER            14        /* dBm */
 
@@ -142,6 +151,10 @@ From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/
 #define LORAPING_RX_TIMEOUT_MS              5000    /* ms */
 #define LORAPING_BUFFER_SIZE                64      /* LoRa message size */
 ```
+
+TODO
+
+## Initialise Transceiver
 
 TODO
 
