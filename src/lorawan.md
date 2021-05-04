@@ -67,7 +67,7 @@ Let's study the source code and learn how the driver is called by our demo firmw
 
 -   [`customer_app/sdk_app_lorawan`](https://github.com/lupyuen/bl_iot_sdk/tree/lorawan/customer_app/sdk_app_lorawan)
 
-## Architecture
+## How It Works
 
 TODO
 
@@ -324,7 +324,7 @@ Let's study the source code and learn how the LoRaWAN Driver is called by our de
 
 -   [`customer_app/sdk_app_lorawan`](https://github.com/lupyuen/bl_iot_sdk/tree/lorawan/customer_app/sdk_app_lorawan)
 
-## Architecture
+## What's Inside
 
 TODO
 
