@@ -97,7 +97,7 @@ Our LoRa Driver has 3 layers: __Radio Interface, Transceiver Interface and Board
 
     Called by the Transceiver Interface.
 
-## Configure Transceiver
+## Configure LoRa Transceiver
 
 TODO
 
@@ -154,7 +154,7 @@ TODO
 
 TODO
 
-## Initialise Transceiver
+## Initialise LoRa Transceiver
 
 TODO
 
