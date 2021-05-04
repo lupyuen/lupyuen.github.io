@@ -73,7 +73,7 @@ Our LoRa Driver has 3 layers: __Radio Interface, Transceiver Interface and Board
 
 ![BL602 Driver for RFM90 / SX1262](https://lupyuen.github.io/images/lorawan-transceiver.png)
 
-1.  __Radio Interface: `radio.c`__ 
+1.  [__Radio Interface: `radio.c`__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c)
 
     Exposes the LoRa Radio Functions that will initialise the transceiver (`RadioInit`), send a LoRa Packet (`RadioSend`) and receive a LoRa Packet (`RadioRx`).
 
@@ -81,13 +81,13 @@ Our LoRa Driver has 3 layers: __Radio Interface, Transceiver Interface and Board
 
     The Radio Interface is generic and works for various LoRa Transceivers (like SX1276).
 
-1.  __Transceiver Interface: `sx126x.c`__
+1.  [__Transceiver Interface: `sx126x.c`__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/sx126x.c)
 
     Provides the functions specific to the SX1262 Transceiver: `SX126xInit`, `SX126xSendPayload`, `SX126xSetRx`, ...
 
     Called by the Radio Interface.
 
-1.  __Board Interface: `sx126x-board.c`__
+1.  [__Board Interface: `sx126x-board.c`__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/sx126x-board.c)
 
     Exposes the functions specific to our BL602 Board: __SPI, GPIO, Events and Timers.__
 
