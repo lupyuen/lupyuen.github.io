@@ -71,6 +71,10 @@ Let's study the source code and learn how the driver is called by our demo firmw
 
 TODO
 
+![BL602 Driver for RFM90 / SX1262](https://lupyuen.github.io/images/lorawan-transceiver.png)
+
+TODO
+
 ## Initialise LoRa Transceiver
 
 TODO
