@@ -68,8 +68,8 @@
 <li><a href="#connect-bl602-to-lora-module">1 Connect BL602 to LoRa Module</a><ul></ul></li>
 <li><a href="#lora-transceiver-driver">2 LoRa Transceiver Driver</a><ul>
 <li><a href="#how-it-works">2.1 How It Works</a><ul></ul></li>
-<li><a href="#configure-transceiver">2.2 Configure Transceiver</a><ul></ul></li>
-<li><a href="#initialise-transceiver">2.3 Initialise Transceiver</a><ul></ul></li>
+<li><a href="#configure-lora-transceiver">2.2 Configure LoRa Transceiver</a><ul></ul></li>
+<li><a href="#initialise-lora-transceiver">2.3 Initialise LoRa Transceiver</a><ul></ul></li>
 <li><a href="#transmit-lora-packet">2.4 Transmit LoRa Packet</a><ul></ul></li>
 <li><a href="#receive-lora-packet">2.5 Receive LoRa Packet</a><ul></ul></li>
 <li><a href="#bl602-gpio-interrupts">2.6 BL602 GPIO Interrupts</a><ul></ul></li>
@@ -165,7 +165,7 @@
 <p>Called by the Transceiver Interface.</p>
 </li>
 </ol>
-<h2 id="configure-transceiver" class="section-header"><a href="#configure-transceiver">2.2 Configure Transceiver</a></h2>
+<h2 id="configure-lora-transceiver" class="section-header"><a href="#configure-lora-transceiver">2.2 Configure LoRa Transceiver</a></h2>
 <p>TODO</p>
 <p><strong>Super Important:</strong> We should set the LoRa Frequency in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L44-L80"><code>demo.c</code></a> like so...</p>
 <pre><code class="language-c">/// TODO: We are using LoRa Frequency 923 MHz 
@@ -210,7 +210,7 @@
 #define LORAPING_BUFFER_SIZE                64      /* LoRa message size */
 </code></pre>
 <p>TODO</p>
-<h2 id="initialise-transceiver" class="section-header"><a href="#initialise-transceiver">2.3 Initialise Transceiver</a></h2>
+<h2 id="initialise-lora-transceiver" class="section-header"><a href="#initialise-lora-transceiver">2.3 Initialise LoRa Transceiver</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L159-L212"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// Command to initialise the SX1276 / RF96 driver.
