@@ -304,7 +304,14 @@ static void send_message(char *buf, int len, int argc, char **argv) {
 </code></pre>
 <p><strong><code>send_once</code></strong> prepares a LoRa Packet containing the string &quot;<code>PING</code>&quot;...</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L221-L244"><code>demo.c</code></a> :</p>
-<pre><code class="language-c">/// Send a LoRa message. If is_ping is 0, send &quot;PONG&quot;. Otherwise send &quot;PING&quot;.
+<pre><code class="language-c">/// We send a &quot;PING&quot; message and expect a &quot;PONG&quot; response
+const uint8_t loraping_ping_msg[] = &quot;PING&quot;;
+const uint8_t loraping_pong_msg[] = &quot;PONG&quot;;
+
+/// 64-byte buffer for our LoRa message
+static uint8_t loraping_buffer[LORAPING_BUFFER_SIZE];
+
+/// Send a LoRa message. If is_ping is 0, send &quot;PONG&quot;. Otherwise send &quot;PING&quot;.
 static void send_once(int is_ping) {
     //  Copy the &quot;PING&quot; or &quot;PONG&quot; message 
     //  to the transmit buffer
@@ -344,16 +351,17 @@ static void on_tx_done(void) {
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L1100-L1109">(<code>RadioSleep</code> is defined here)</a></p>
 <h2 id="receive-lora-packet" class="section-header"><a href="#receive-lora-packet">2.5 Receive LoRa Packet</a></h2>
 <p>(<strong>Note on LoRa vs LoRaWAN:</strong> Our LoRaWAN Driver calls the LoRa Driver to receive LoRa Packets, when we run the <code>las_join</code> and <code>las_app_tx</code> commands. Skip this section if we're using LoRaWAN to receive data.)</p>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L246-L252"><code>demo.c</code></a></p>
+<p>Here's how the <code>receive_message</code> command in our Demo Firmware receives a LoRa Packet: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L246-L252"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// Command to receive a LoRa message. Assume that LoRa Transceiver driver has been initialised.
 /// Assume that create_task has been called to init the Event Queue.
 static void receive_message(char *buf, int len, int argc, char **argv) {
     //  Receive a LoRa message within the timeout period
-    Radio.Rx(LORAPING_RX_TIMEOUT_MS);
+    Radio.Rx(LORAPING_RX_TIMEOUT_MS);  //  Timeout in 5 seconds
 }
 </code></pre>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L414-L444"><code>demo.c</code></a></p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L1117-L1138">(<code>RadioRx</code> is defined here)</a></p>
+<p>When the LoRa Driver receives a LoRa Packet, it calls our Callback Function <code>on_rx_done</code> ...</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L414-L444"><code>demo.c</code></a> :</p>
 <pre><code class="language-c">/// Callback Function that is called when a LoRa message has been received
 static void on_rx_done(
     uint8_t *payload,  //  Buffer containing received LoRa message
@@ -364,24 +372,29 @@ static void on_rx_done(
     //  Switch the LoRa Transceiver to low power, sleep mode
     Radio.Sleep();
 
-    //  Copy the received packet
+    //  Log the signal strength, signal to noise ratio
+    loraping_rxinfo_rxed(rssi, snr);
+</code></pre>
+<p><strong><code>on_rx_done</code></strong> switches the LoRa Transceiver to low power, sleep mode and logs the received packet.</p>
+<p>Next it <strong>copies the received packet</strong> into a buffer...</p>
+<pre><code class="language-c">    //  Copy the received packet
     if (size &gt; sizeof loraping_buffer) {
         size = sizeof loraping_buffer;
     }
     loraping_rx_size = size;
     memcpy(loraping_buffer, payload, size);
-
-    //  Log the signal strength, signal to noise ratio
-    loraping_rxinfo_rxed(rssi, snr);
-
-    //  Dump the contents of the received packet
+</code></pre>
+<p>Finally it <strong>dumps the buffer</strong> containing the received packet...</p>
+<pre><code class="language-c">    //  Dump the contents of the received packet
     for (int i = 0; i &lt; loraping_rx_size; i++) {
         printf(&quot;%02x &quot;, loraping_buffer[i]);
     }
     printf(&quot;\r\n&quot;);
 }
 </code></pre>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L461-L475"><code>demo.c</code></a></p>
+<p><em>What happens when we don't receive a packet in 5 seconds?</em></p>
+<p>The LoRa Driver calls our Callback Function <code>on_rx_timeout</code> ...</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L461-L475"><code>demo.c</code></a> :</p>
 <pre><code class="language-c">/// Callback Function that is called when no LoRa messages could be received due to timeout
 static void on_rx_timeout(void) {
     //  Switch the LoRa Transceiver to low power, sleep mode
@@ -392,6 +405,7 @@ static void on_rx_timeout(void) {
     loraping_rxinfo_timeout();
 }
 </code></pre>
+<p>We switch the LoRa Transceiver into sleep mode and log the timeout.</p>
 <h2 id="bl602-spi-function" class="section-header"><a href="#bl602-spi-function">2.6 BL602 SPI Function</a></h2>
 <p>TODO</p>
 <h2 id="bl602-gpio-interrupts" class="section-header"><a href="#bl602-gpio-interrupts">2.7 BL602 GPIO Interrupts</a></h2>
