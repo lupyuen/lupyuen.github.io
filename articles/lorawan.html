@@ -547,7 +547,211 @@ LoRaMacStatus_t Send(LoRaMacHeader_t *macHdr, uint8_t fPort, struct pbuf *om) {
 <p>LoRaWAN Firmware → Application Layer → Node Layer → Medium Access Control Layer → LoRa Transceiver Driver!</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-driver5.png" alt="Medium Access Control Layer" /></p>
 <h2 id="join-network-response" class="section-header"><a href="#join-network-response">3.3 Join Network Response</a></h2>
+<p>But wait... We're not done yet!</p>
 <p>TODO</p>
+<pre><code class="language-text">RadioRx
+RadioOnDioIrq
+RadioIrqProcess
+SX126xReadCommand
+IRQ_PREAMBLE_DETECTED
+RadioOnDioIrq
+RadioIrqProcess
+SX126xReadCommand
+IRQ_HEADER_VALID
+RadioOnDioIrq
+RadioIrqProcess
+SX126xReadCommand
+IRQ_RX_DONE
+SX126xReadCommand
+SX126xReadCommand
+OnRadioRxDone
+lora_mac_process_radio_rx
+RadioSleep
+lora_mac_rx_win2_stop
+</code></pre>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/0f4b14ea00051dd689237319052fd9729929c655/components/3rdparty/lorawan/src/mac/LoRaMac.c#L906-L988"><code>LoRaMac.c</code></a> :</p>
+<pre><code class="language-c">/**
+ * Process the radio receive event.
+ *
+ * Context: MAC task
+ *
+ * @param ev
+ */
+static void
+lora_mac_process_radio_rx(struct ble_npl_event *ev)
+{
+    printf(&quot;lora_mac_process_radio_rx\r\n&quot;);
+    LoRaMacHeader_t macHdr;
+    LoRaMacFrameCtrl_t fCtrl;
+    LoRaMacRxSlot_t entry_rx_slot;
+    struct lora_pkt_info *rxi;
+    bool skipIndication = false;
+    bool send_indicate = false;
+    GetPhyParams_t getPhy;
+    PhyParam_t phyParam;
+    uint8_t *payload;
+    uint16_t size;
+    int8_t snr;
+    uint8_t hdrlen;
+    uint32_t address = 0;
+    uint8_t appPayloadStartIndex = 0;
+    uint8_t port = 0xFF;
+    uint8_t frameLen;
+    uint32_t mic = 0;
+    uint32_t micRx;
+
+    uint16_t sequenceCounter = 0;
+    uint16_t sequenceCounterPrev = 0;
+    uint16_t sequenceCounterDiff = 0;
+    uint32_t downLinkCounter = 0;
+
+    MulticastParams_t *curMulticastParams = NULL;
+    uint8_t *nwkSKey = LoRaMacNwkSKey;
+    uint8_t *appSKey = LoRaMacAppSKey;
+
+    uint8_t multicast = 0;
+
+    /*
+     * XXX: what if window 2 timeout event already enqueued? If we
+     * receive a frame with a valid MIC we are supposed to not receive
+     * on window 2. We stop the timer below but what if event has been
+     * processed?
+     */
+
+    /* Put radio to sleep if not class C */
+    if (LoRaMacDeviceClass != CLASS_C) {
+        Radio.Sleep( );
+    }
+
+    STATS_INC(lora_mac_stats, rx_frames);
+
+    /* Payload, size and snr are filled in by radio rx ISR */
+    payload = g_lora_mac_data.rxbuf;
+    size = g_lora_mac_data.rxbufsize;
+
+    rxi = &amp;g_lora_mac_data.rxpkt;
+    snr = rxi-&gt;rxdinfo.snr;
+
+    /* Reset rest of global indication element */
+    rxi-&gt;port = 0;
+    entry_rx_slot = g_lora_mac_data.rx_slot;
+    rxi-&gt;rxdinfo.rxslot = entry_rx_slot;
+    rxi-&gt;rxdinfo.multicast = 0;
+    rxi-&gt;rxdinfo.frame_pending = 0;
+    rxi-&gt;rxdinfo.rxdata = false;
+    rxi-&gt;rxdinfo.ack_rxd = false;
+    rxi-&gt;rxdinfo.downlink_cntr = 0;
+
+    /* Get the MHDR from the received frame */
+    macHdr.Value = payload[0];
+    hdrlen = 1;
+
+    lora_node_log(LORA_NODE_LOG_RX_DONE, g_lora_mac_data.cur_chan, size,
+                  (entry_rx_slot &lt;&lt; 8) | macHdr.Value);
+
+    switch (macHdr.Bits.MType) {
+        case FRAME_TYPE_JOIN_ACCEPT:
+            lora_mac_join_accept_rxd(payload, size);
+            break;
+</code></pre>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/0f4b14ea00051dd689237319052fd9729929c655/components/3rdparty/lorawan/src/mac/LoRaMac.c#L574-L667"><code>LoRaMac.c</code></a> :</p>
+<pre><code class="language-c">static void
+lora_mac_join_accept_rxd(uint8_t *payload, uint16_t size)
+{
+    uint32_t temp;
+    uint32_t mic;
+    uint32_t micRx;
+    ApplyCFListParams_t apply_cf_list;
+
+    STATS_INC(lora_mac_stats, join_accept_rx);
+
+    if (LM_F_IS_JOINED()) {
+        STATS_INC(lora_mac_stats, already_joined);
+        return;
+    }
+
+    /*
+     * XXX: This is odd, but if we receive a join accept and we are not
+     * joined but have not started the join process not sure what to
+     * do. Guess we will just ignore this packet.
+     */
+    if (!LM_F_IS_JOINING()) {
+        return;
+    }
+
+    /* XXX: check for too small frame! */
+
+    LoRaMacJoinDecrypt(payload + 1, size - 1, LoRaMacAppKey,
+                       LoRaMacRxPayload + 1);
+
+    LoRaMacRxPayload[0] = payload[0];
+
+    LoRaMacJoinComputeMic(LoRaMacRxPayload, size - LORAMAC_MFR_LEN,
+                          LoRaMacAppKey, &amp;mic);
+
+    micRx = ( uint32_t )LoRaMacRxPayload[size - LORAMAC_MFR_LEN];
+    micRx |= ( ( uint32_t )LoRaMacRxPayload[size - LORAMAC_MFR_LEN + 1] &lt;&lt; 8 );
+    micRx |= ( ( uint32_t )LoRaMacRxPayload[size - LORAMAC_MFR_LEN + 2] &lt;&lt; 16 );
+    micRx |= ( ( uint32_t )LoRaMacRxPayload[size - LORAMAC_MFR_LEN + 3] &lt;&lt; 24 );
+
+    if (micRx == mic) {
+        LoRaMacJoinComputeSKeys(LoRaMacAppKey, LoRaMacRxPayload + 1,
+                                g_lora_mac_data.dev_nonce, LoRaMacNwkSKey,
+                                LoRaMacAppSKey);
+
+        temp = ( uint32_t )LoRaMacRxPayload[4];
+        temp |= ( ( uint32_t )LoRaMacRxPayload[5] &lt;&lt; 8 );
+        temp |= ( ( uint32_t )LoRaMacRxPayload[6] &lt;&lt; 16 );
+        g_lora_mac_data.netid = temp;
+
+        temp = ( uint32_t )LoRaMacRxPayload[7];
+        temp |= ( ( uint32_t )LoRaMacRxPayload[8] &lt;&lt; 8 );
+        temp |= ( ( uint32_t )LoRaMacRxPayload[9] &lt;&lt; 16 );
+        temp |= ( ( uint32_t )LoRaMacRxPayload[10] &lt;&lt; 24 );
+        g_lora_mac_data.dev_addr = temp;
+
+        // DLSettings
+        LoRaMacParams.Rx1DrOffset = ( LoRaMacRxPayload[11] &gt;&gt; 4 ) &amp; 0x07;
+        LoRaMacParams.Rx2Channel.Datarate = LoRaMacRxPayload[11] &amp; 0x0F;
+
+        // RxDelay
+        LoRaMacParams.ReceiveDelay1 = ( LoRaMacRxPayload[12] &amp; 0x0F );
+        if (LoRaMacParams.ReceiveDelay1 == 0) {
+            LoRaMacParams.ReceiveDelay1 = 1;
+        }
+        LoRaMacParams.ReceiveDelay1 *= 1000;
+        LoRaMacParams.ReceiveDelay2 = LoRaMacParams.ReceiveDelay1 + 1000;
+
+        // Apply CF list
+        apply_cf_list.Payload = &amp;LoRaMacRxPayload[13];
+
+        // Size of the regular payload is 12. Plus 1 byte MHDR and 4 bytes MIC
+        apply_cf_list.Size = size - 17;
+
+        RegionApplyCFList(LoRaMacRegion, &amp;apply_cf_list);
+
+        /* We are now joined */
+        STATS_INC(lora_mac_stats, joins);
+
+        /* Stop window 2 if class A device */
+        lora_mac_rx_win2_stop();
+
+        LM_F_IS_JOINED() = 1;
+        g_lora_mac_data.uplink_cntr = 0;
+        g_lora_mac_data.nb_rep_cntr = 0;
+
+        /* XXX: why not increment this when sending it? Now
+           it is done on both success and fail */
+        ++g_lora_mac_data.cur_join_attempt;
+        lora_mac_send_join_confirm(LORAMAC_EVENT_INFO_STATUS_OK,
+                                   g_lora_mac_data.cur_join_attempt);
+    } else {
+        STATS_INC(lora_mac_stats, rx_mic_failures);
+    }
+}
+</code></pre>
 <h2 id="open-lorawan-port" class="section-header"><a href="#open-lorawan-port">3.4 Open LoRaWAN Port</a></h2>
 <p>TODO</p>
 <h2 id="transmit-data-packet" class="section-header"><a href="#transmit-data-packet">3.5 Transmit Data Packet</a></h2>
