@@ -412,11 +412,13 @@ TODO
 
 # LoRaWAN Driver
 
+We've seen the LoRa Transceiver Driver (for RFM90 / SX1262)... Now let's watch how the LoRaWAN Driver wraps around the LoRa Transceiver Driver to do __secure, managed LoRaWAN Networking__.
+
 The __BL602 Driver for LoRaWAN__ is located here...
 
 -   [`components/3rdparty/lorawan`](https://github.com/lupyuen/bl_iot_sdk/tree/lorawan/components/3rdparty/lorawan)
 
-Let's study the source code and learn how the LoRaWAN Driver is called by our demo firmware to __join the LoRaWAN Network and transmit data packets__...
+We shall study the source code and learn how the LoRaWAN Driver is called by our demo firmware to __join the LoRaWAN Network and transmit data packets__...
 
 -   [`customer_app/sdk_app_lorawan`](https://github.com/lupyuen/bl_iot_sdk/tree/lorawan/customer_app/sdk_app_lorawan)
 
@@ -426,21 +428,35 @@ Our BL602 Driver for LoRaWAN has these layers: __Application Layer, Node Layer a
 
 ![](https://lupyuen.github.io/images/lorawan-driver.png)
 
--   [__Application Layer: `lora_app.c`__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_app.c)
+1.  [__Application Layer: `lora_app.c`__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_app.c)
 
-    TODO
+    The __Application Layer__ exposes functions for our Demo Firmware to...
+    
+    -   Join the LoRaWAN Network: [__`lora_app_join`__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_app.c#L408-L437)
+    
+    -   Open a LoRaWAN Application Port: [__`lora_app_port_open`__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_app.c#L148-L205)
+    
+    -   Transmit a LoRaWAN Data Packet: [__`lora_app_port_send`__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_app.c#L262-L304)
 
--   [__Node Layer: `lora_node.c`__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_node.c)
+1.  [__Node Layer: `lora_node.c`__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_node.c)
 
-    TODO
+    The __Node Layer__ is called by the Application Layer to handle LoRaWAN Networking requests.
 
--   [__Medium Access Control Layer: `LoRaMac.c`__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c)
+    The Node Layer channels the networking requests to the Medium Access Control Layer via an __Event Queue__.
 
-    TODO
+1.  [__Medium Access Control Layer: `LoRaMac.c`__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c)
+
+    The __Medium Access Control Layer__ implements the LoRaWAN Networking functions by calling the LoRa Transceiver Driver (for RFM90 / SX1262).
+
+    It runs as a Background Task, communicating with the Node Layer in a queued, asynchronous way via an Event Queue.
+
+1.  We're not using the __Command-Line Interface__ [`lora_cli.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_cli.c) that's bundled with our LoRaWAN Driver.
+
+    Instead we're using the Command-Line Interface that's coded inside our Demo Firmware.
 
 The LoRaWAN Driver was ported to BL602 from __Apache Mynewt OS__. [(See this)](https://github.com/apache/mynewt-core/tree/master/net/lora/node)
 
-(We're not using the __Command-Line Interface__ [`lora_cli.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_cli.c) that's bundled with our LoRaWAN Driver. Instead we're using the Command-Line Interface that's coded inside our Demo Firmware.)
+(This implementation of the LoRaWAN Driver seems outdated. There is a newer reference implementation by Semtech. [See this](https://github.com/Lora-net/LoRaMac-node/tree/master/src/mac))
 
 ## Join LoRaWAN Network
 
