@@ -267,6 +267,13 @@ __`send_once`__ prepares a LoRa Packet containing the string "`PING`"...
 From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L221-L244) :
 
 ```c
+/// We send a "PING" message and expect a "PONG" response
+const uint8_t loraping_ping_msg[] = "PING";
+const uint8_t loraping_pong_msg[] = "PONG";
+
+/// 64-byte buffer for our LoRa message
+static uint8_t loraping_buffer[LORAPING_BUFFER_SIZE];
+
 /// Send a LoRa message. If is_ping is 0, send "PONG". Otherwise send "PING".
 static void send_once(int is_ping) {
     //  Copy the "PING" or "PONG" message 
@@ -323,20 +330,22 @@ Here we log the number of packets transmitted, and put the LoRa Transceiver to l
 
 (__Note on LoRa vs LoRaWAN:__ Our LoRaWAN Driver calls the LoRa Driver to receive LoRa Packets, when we run the `las_join` and `las_app_tx` commands. Skip this section if we're using LoRaWAN to receive data.)
 
-TODO
-
-From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L246-L252)
+Here's how the `receive_message` command in our Demo Firmware receives a LoRa Packet: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L246-L252)
 
 ```c
 /// Command to receive a LoRa message. Assume that LoRa Transceiver driver has been initialised.
 /// Assume that create_task has been called to init the Event Queue.
 static void receive_message(char *buf, int len, int argc, char **argv) {
     //  Receive a LoRa message within the timeout period
-    Radio.Rx(LORAPING_RX_TIMEOUT_MS);
+    Radio.Rx(LORAPING_RX_TIMEOUT_MS);  //  Timeout in 5 seconds
 }
 ```
 
-From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L414-L444)
+[(`RadioRx` is defined here)](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L1117-L1138)
+
+When the LoRa Driver receives a LoRa Packet, it calls our Callback Function `on_rx_done` ...
+
+From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L414-L444) :
 
 ```c
 /// Callback Function that is called when a LoRa message has been received
@@ -349,16 +358,26 @@ static void on_rx_done(
     //  Switch the LoRa Transceiver to low power, sleep mode
     Radio.Sleep();
 
+    //  Log the signal strength, signal to noise ratio
+    loraping_rxinfo_rxed(rssi, snr);
+```
+
+__`on_rx_done`__ switches the LoRa Transceiver to low power, sleep mode and logs the received packet.
+
+Next it __copies the received packet__ into a buffer...
+
+```c
     //  Copy the received packet
     if (size > sizeof loraping_buffer) {
         size = sizeof loraping_buffer;
     }
     loraping_rx_size = size;
     memcpy(loraping_buffer, payload, size);
+```
 
-    //  Log the signal strength, signal to noise ratio
-    loraping_rxinfo_rxed(rssi, snr);
+Finally it __dumps the buffer__ containing the received packet...
 
+```c
     //  Dump the contents of the received packet
     for (int i = 0; i < loraping_rx_size; i++) {
         printf("%02x ", loraping_buffer[i]);
@@ -367,7 +386,11 @@ static void on_rx_done(
 }
 ```
 
-From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L461-L475)
+_What happens when we don't receive a packet in 5 seconds?_
+
+The LoRa Driver calls our Callback Function `on_rx_timeout` ...
+
+From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L461-L475) :
 
 ```c
 /// Callback Function that is called when no LoRa messages could be received due to timeout
@@ -380,6 +403,8 @@ static void on_rx_timeout(void) {
     loraping_rxinfo_timeout();
 }
 ```
+
+We switch the LoRa Transceiver into sleep mode and log the timeout.
 
 ## BL602 SPI Function
 
