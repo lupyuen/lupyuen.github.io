@@ -586,226 +586,111 @@ LoRaWAN Firmware → Application Layer → Node Layer → Medium Access Control 
 
 But wait... We're not done yet!
 
-TODO
+We've sent a Join Network Request to the LoRaWAN Gateway... Now we need to __wait for the response from the LoRaWAN Gateway__.
 
-```text
-RadioRx
-RadioOnDioIrq
-RadioIrqProcess
-SX126xReadCommand
-IRQ_PREAMBLE_DETECTED
-RadioOnDioIrq
-RadioIrqProcess
-SX126xReadCommand
-IRQ_HEADER_VALID
-RadioOnDioIrq
-RadioIrqProcess
-SX126xReadCommand
-IRQ_RX_DONE
-SX126xReadCommand
-SX126xReadCommand
-OnRadioRxDone
-lora_mac_process_radio_rx
-RadioSleep
-lora_mac_rx_win2_stop
-```
+The Medium Access Control Layer calls [__`RadioRx`__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L1117-L1138) (from the LoRa Transceiver Driver) to receive the response packet.
 
-TODO
-
-From [`LoRaMac.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L906-L988) :
+When the packet is received, the LoRa Transceiver Driver calls this Callback Function: __`OnRadioRxDone`__ in [`LoRaMac.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L299-L323)
 
 ```c
-/**
- * Process the radio receive event.
- *
- * Context: MAC task
- *
- * @param ev
- */
-static void
-lora_mac_process_radio_rx(struct ble_npl_event *ev)
-{
-    printf("lora_mac_process_radio_rx\r\n");
-    LoRaMacHeader_t macHdr;
-    LoRaMacFrameCtrl_t fCtrl;
-    LoRaMacRxSlot_t entry_rx_slot;
-    struct lora_pkt_info *rxi;
-    bool skipIndication = false;
-    bool send_indicate = false;
-    GetPhyParams_t getPhy;
-    PhyParam_t phyParam;
-    uint8_t *payload;
-    uint16_t size;
-    int8_t snr;
-    uint8_t hdrlen;
-    uint32_t address = 0;
-    uint8_t appPayloadStartIndex = 0;
-    uint8_t port = 0xFF;
-    uint8_t frameLen;
-    uint32_t mic = 0;
-    uint32_t micRx;
+/// Callback Function that's called when we receive a LoRa Packet
+static void OnRadioRxDone(uint8_t *payload, uint16_t size, int16_t rssi, int8_t snr) {
+    //  Put the Receive Event into the Event Queue  
+    ble_npl_eventq_put(
+        lora_node_mac_evq_get(),    //  Event Queue
+        &g_lora_mac_radio_rx_event  //  Receive Event
+    );
 
-    uint16_t sequenceCounter = 0;
-    uint16_t sequenceCounterPrev = 0;
-    uint16_t sequenceCounterDiff = 0;
-    uint32_t downLinkCounter = 0;
+    //  Remember the received data
+    g_lora_mac_data.rxbuf     = payload;
+    g_lora_mac_data.rxbufsize = size;
+```
 
-    MulticastParams_t *curMulticastParams = NULL;
-    uint8_t *nwkSKey = LoRaMacNwkSKey;
-    uint8_t *appSKey = LoRaMacAppSKey;
+__`OnRadioRxDone`__ adds the __Receive Event__ to the Event Queue for background processing.
 
-    uint8_t multicast = 0;
+Our __Background Task__ receives the Receive Event from the Event Queue and processes the event: [`LoRaMac.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L906-L988)
 
-    /*
-     * XXX: what if window 2 timeout event already enqueued? If we
-     * receive a frame with a valid MIC we are supposed to not receive
-     * on window 2. We stop the timer below but what if event has been
-     * processed?
-     */
+```c
+/// Process the Receive Event
+static void lora_mac_process_radio_rx(struct ble_npl_event *ev) {
+    ...
+    //  Put radio to sleep
+    Radio.Sleep();
 
-    /* Put radio to sleep if not class C */
-    if (LoRaMacDeviceClass != CLASS_C) {
-        Radio.Sleep( );
-    }
-
-    STATS_INC(lora_mac_stats, rx_frames);
-
-    /* Payload, size and snr are filled in by radio rx ISR */
+    //  Get the payload and size
     payload = g_lora_mac_data.rxbuf;
-    size = g_lora_mac_data.rxbufsize;
+    size    = g_lora_mac_data.rxbufsize;
 
-    rxi = &g_lora_mac_data.rxpkt;
-    snr = rxi->rxdinfo.snr;
-
-    /* Reset rest of global indication element */
-    rxi->port = 0;
-    entry_rx_slot = g_lora_mac_data.rx_slot;
-    rxi->rxdinfo.rxslot = entry_rx_slot;
-    rxi->rxdinfo.multicast = 0;
-    rxi->rxdinfo.frame_pending = 0;
-    rxi->rxdinfo.rxdata = false;
-    rxi->rxdinfo.ack_rxd = false;
-    rxi->rxdinfo.downlink_cntr = 0;
-
-    /* Get the MHDR from the received frame */
+    //  Get the header from the received frame
     macHdr.Value = payload[0];
-    hdrlen = 1;
 
-    lora_node_log(LORA_NODE_LOG_RX_DONE, g_lora_mac_data.cur_chan, size,
-                  (entry_rx_slot << 8) | macHdr.Value);
-
+    //  Check the header type
     switch (macHdr.Bits.MType) {
+        //  If this is a Join Accept Response...
         case FRAME_TYPE_JOIN_ACCEPT:
+            //  Process the Join Accept Response
             lora_mac_join_accept_rxd(payload, size);
             break;
 ```
 
-TODO
+(We assume that the Join Request was accepted by the LoRaWAN Gateway)
+
+__`lora_mac_process_radio_rx`__ handles the Join Accept Response by calling __`lora_mac_join_accept_rxd`__ ...
 
 From [`LoRaMac.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L574-L667) :
 
 ```c
-static void
-lora_mac_join_accept_rxd(uint8_t *payload, uint16_t size)
-{
-    uint32_t temp;
-    uint32_t mic;
-    uint32_t micRx;
-    ApplyCFListParams_t apply_cf_list;
+/// Process the Join Accept Response
+static void lora_mac_join_accept_rxd(uint8_t *payload, uint16_t size) {
+    ...
+    //  Decrypt the response
+    LoRaMacJoinDecrypt(payload + 1, size - 1, LoRaMacAppKey, LoRaMacRxPayload + 1);
+    ...
 
-    STATS_INC(lora_mac_stats, join_accept_rx);
+    //  Verify the Message Integrity Code
+    LoRaMacJoinComputeMic(LoRaMacRxPayload, size - LORAMAC_MFR_LEN, LoRaMacAppKey, &mic);
+    ...
 
-    if (LM_F_IS_JOINED()) {
-        STATS_INC(lora_mac_stats, already_joined);
-        return;
-    }
+    //  Omitted: Update the Join Network Status
+    ...
 
-    /*
-     * XXX: This is odd, but if we receive a join accept and we are not
-     * joined but have not started the join process not sure what to
-     * do. Guess we will just ignore this packet.
-     */
-    if (!LM_F_IS_JOINING()) {
-        return;
-    }
-
-    /* XXX: check for too small frame! */
-
-    LoRaMacJoinDecrypt(payload + 1, size - 1, LoRaMacAppKey,
-                       LoRaMacRxPayload + 1);
-
-    LoRaMacRxPayload[0] = payload[0];
-
-    LoRaMacJoinComputeMic(LoRaMacRxPayload, size - LORAMAC_MFR_LEN,
-                          LoRaMacAppKey, &mic);
-
-    micRx = ( uint32_t )LoRaMacRxPayload[size - LORAMAC_MFR_LEN];
-    micRx |= ( ( uint32_t )LoRaMacRxPayload[size - LORAMAC_MFR_LEN + 1] << 8 );
-    micRx |= ( ( uint32_t )LoRaMacRxPayload[size - LORAMAC_MFR_LEN + 2] << 16 );
-    micRx |= ( ( uint32_t )LoRaMacRxPayload[size - LORAMAC_MFR_LEN + 3] << 24 );
-
-    if (micRx == mic) {
-        LoRaMacJoinComputeSKeys(LoRaMacAppKey, LoRaMacRxPayload + 1,
-                                g_lora_mac_data.dev_nonce, LoRaMacNwkSKey,
-                                LoRaMacAppSKey);
-
-        temp = ( uint32_t )LoRaMacRxPayload[4];
-        temp |= ( ( uint32_t )LoRaMacRxPayload[5] << 8 );
-        temp |= ( ( uint32_t )LoRaMacRxPayload[6] << 16 );
-        g_lora_mac_data.netid = temp;
-
-        temp = ( uint32_t )LoRaMacRxPayload[7];
-        temp |= ( ( uint32_t )LoRaMacRxPayload[8] << 8 );
-        temp |= ( ( uint32_t )LoRaMacRxPayload[9] << 16 );
-        temp |= ( ( uint32_t )LoRaMacRxPayload[10] << 24 );
-        g_lora_mac_data.dev_addr = temp;
-
-        // DLSettings
-        LoRaMacParams.Rx1DrOffset = ( LoRaMacRxPayload[11] >> 4 ) & 0x07;
-        LoRaMacParams.Rx2Channel.Datarate = LoRaMacRxPayload[11] & 0x0F;
-
-        // RxDelay
-        LoRaMacParams.ReceiveDelay1 = ( LoRaMacRxPayload[12] & 0x0F );
-        if (LoRaMacParams.ReceiveDelay1 == 0) {
-            LoRaMacParams.ReceiveDelay1 = 1;
-        }
-        LoRaMacParams.ReceiveDelay1 *= 1000;
-        LoRaMacParams.ReceiveDelay2 = LoRaMacParams.ReceiveDelay1 + 1000;
-
-        // Apply CF list
-        apply_cf_list.Payload = &LoRaMacRxPayload[13];
-
-        // Size of the regular payload is 12. Plus 1 byte MHDR and 4 bytes MIC
-        apply_cf_list.Size = size - 17;
-
-        RegionApplyCFList(LoRaMacRegion, &apply_cf_list);
-
-        /* We are now joined */
-        STATS_INC(lora_mac_stats, joins);
-
-        /* Stop window 2 if class A device */
-        lora_mac_rx_win2_stop();
-
-        LM_F_IS_JOINED() = 1;
-        g_lora_mac_data.uplink_cntr = 0;
-        g_lora_mac_data.nb_rep_cntr = 0;
-
-        /* XXX: why not increment this when sending it? Now
-           it is done on both success and fail */
-        ++g_lora_mac_data.cur_join_attempt;
-        lora_mac_send_join_confirm(LORAMAC_EVENT_INFO_STATUS_OK,
-                                   g_lora_mac_data.cur_join_attempt);
-    } else {
-        STATS_INC(lora_mac_stats, rx_mic_failures);
-    }
-}
+    //  Stop Second Receive Window
+    lora_mac_rx_win2_stop();
 ```
 
-TODO
+__`lora_mac_join_accept_rxd`__ handles the Join Accept Response by...
 
-_What's `lora_mac_rx_win2_stop`?_
+1.  Decrypting the response
 
-TODO
+1.  Verifying the Message Integrity Code
+
+1.  Updating the Join Network Status
+
+1.  Stopping the Second Receive Window
+
+[(More about LoRaWAN Encryption and Message Integrity Code)](https://lupyuen.github.io/articles/wisgate#join-network-request)
+
+_What's a Receive Window?_
+
+Here's what the LoRaWAN Specification says...
+
+LoRaWAN Devices (Class A, like our BL602 gadget) don't receive packets all the time.
+
+We listen for incoming packets (for a brief moment) __only after we transmit a packet__. This is called a __Receive Window__.
+
+We've just transmitted a packet (Join Network Request), so __we listen for an incoming packet__ (Join Accept Reponse).
+
+_Why do we stop the Second Receive Window?_
+
+Now the LoRaWAN Specification actually defines __Two Receive Windows__...
+
+If we don't receive a packet in the First Receive Window, we shall listen again (very briefly) in the __Second Receive Window__.
+
+But since we have received a Join Accept Response in the First Receive Window, we may __cancel the Second Receive Window__.
+
+And that's how we handle the __Join Network Response__ from the LoRaWAN Gateway!
+
+[(More about LoRaWAN Receive Windows)](https://lupyuen.github.io/articles/wisgate#wisblock-talks-to-wisgate)
 
 ## Open LoRaWAN Port
 
