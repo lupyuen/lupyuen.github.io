@@ -348,8 +348,7 @@ static void on_tx_done(void) {
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L246-L252"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// Command to receive a LoRa message. Assume that LoRa Transceiver driver has been initialised.
 /// Assume that create_task has been called to init the Event Queue.
-static void receive_message(char *buf, int len, int argc, char **argv)
-{
+static void receive_message(char *buf, int len, int argc, char **argv) {
     //  Receive a LoRa message within the timeout period
     Radio.Rx(LORAPING_RX_TIMEOUT_MS);
 }
@@ -360,9 +359,7 @@ static void on_rx_done(
     uint8_t *payload,  //  Buffer containing received LoRa message
     uint16_t size,     //  Size of the LoRa message
     int16_t rssi,      //  Signal strength
-    int8_t snr)        //  Signal To Noise ratio
-{
-    printf(&quot;Rx done: \r\n&quot;);
+    int8_t snr) {      //  Signal To Noise ratio
 
     //  Switch the LoRa Transceiver to low power, sleep mode
     Radio.Sleep();
@@ -382,26 +379,17 @@ static void on_rx_done(
         printf(&quot;%02x &quot;, loraping_buffer[i]);
     }
     printf(&quot;\r\n&quot;);
-
-    //  TODO: Send a &quot;PING&quot; or &quot;PONG&quot; LoRa message
-    //  os_eventq_put(os_eventq_dflt_get(), &amp;loraping_ev_tx);
 }
 </code></pre>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L461-L475"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// Callback Function that is called when no LoRa messages could be received due to timeout
-static void on_rx_timeout(void)
-{
-    printf(&quot;Rx timeout\r\n&quot;);
-
+static void on_rx_timeout(void) {
     //  Switch the LoRa Transceiver to low power, sleep mode
     Radio.Sleep();
 
     //  Log the timeout
     loraping_stats.rx_timeout++;
     loraping_rxinfo_timeout();
-
-    //  TODO: Send a &quot;PING&quot; or &quot;PONG&quot; LoRa message
-    //  os_eventq_put(os_eventq_dflt_get(), &amp;loraping_ev_tx);
 }
 </code></pre>
 <h2 id="bl602-spi-function" class="section-header"><a href="#bl602-spi-function">2.6 BL602 SPI Function</a></h2>
