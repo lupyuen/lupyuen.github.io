@@ -570,6 +570,8 @@ LoRaMacStatus_t Send(LoRaMacHeader_t *macHdr, uint8_t fPort, struct pbuf *om) {
 
 Eventually the Medium Access Control Layer calls __`RadioSend`__ (from our LoRa Transceiver Driver) to transmit the Join Request.
 
+[(What's inside the Join Request? Check this out)](https://lupyuen.github.io/articles/wisgate#join-network-request)
+
 And that's how our LoRaWAN Driver sends a __Join Network Request__...
 
 LoRaWAN Firmware → Application Layer → Node Layer → Medium Access Control Layer → LoRa Transceiver Driver!
