@@ -542,6 +542,7 @@ LoRaMacStatus_t Send(LoRaMacHeader_t *macHdr, uint8_t fPort, struct pbuf *om) {
     status = ScheduleTx();
 </code></pre>
 <p>Eventually the Medium Access Control Layer calls <strong><code>RadioSend</code></strong> (from our LoRa Transceiver Driver) to transmit the Join Request.</p>
+<p><a href="https://lupyuen.github.io/articles/wisgate#join-network-request">(What's inside the Join Request? Check this out)</a></p>
 <p>And that's how our LoRaWAN Driver sends a <strong>Join Network Request</strong>...</p>
 <p>LoRaWAN Firmware → Application Layer → Node Layer → Medium Access Control Layer → LoRa Transceiver Driver!</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-driver5.png" alt="Medium Access Control Layer" /></p>
