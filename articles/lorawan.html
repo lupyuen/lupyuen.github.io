@@ -78,10 +78,7 @@
 <li><a href="#join-network-request">3.2 Join Network Request</a><ul></ul></li>
 <li><a href="#join-network-response">3.3 Join Network Response</a><ul></ul></li>
 <li><a href="#open-lorawan-port">3.4 Open LoRaWAN Port</a><ul></ul></li>
-<li><a href="#transmit-data-packet">3.5 Transmit Data Packet</a><ul></ul></li>
-<li><a href="#application-layer">3.6 Application Layer</a><ul></ul></li>
-<li><a href="#node-layer">3.7 Node Layer</a><ul></ul></li>
-<li><a href="#medium-access-control-layer">3.8 Medium Access Control Layer</a><ul></ul></li></ul></li>
+<li><a href="#transmit-data-packet">3.5 Transmit Data Packet</a><ul></ul></li></ul></li>
 <li><a href="#build-and-run-the-bl602-lorawan-firmware">4 Build and Run the BL602 LoRaWAN Firmware</a><ul>
 <li><a href="#flash-the-firmware">4.1 Flash the firmware</a><ul></ul></li>
 <li><a href="#run-the-firmware">4.2 Run the firmware</a><ul></ul></li>
@@ -426,7 +423,7 @@ static void on_rx_timeout(void) {
 </ul>
 <h2 id="whats-inside" class="section-header"><a href="#whats-inside">3.1 What's Inside</a></h2>
 <p>Our BL602 Driver for LoRaWAN has layers (like Onions, Shrek and Kueh Lapis): <strong>Application Layer, Node Layer and Medium Access Control Layer</strong>...</p>
-<p><img src="https://lupyuen.github.io/images/lorawan-driver.png" alt="" /></p>
+<p><img src="https://lupyuen.github.io/images/lorawan-driver.png" alt="BL602 LoRaWAN Driver" /></p>
 <ol>
 <li>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_app.c"><strong>Application Layer: <code>lora_app.c</code></strong></a></p>
@@ -545,28 +542,20 @@ LoRaMacStatus_t Send(LoRaMacHeader_t *macHdr, uint8_t fPort, struct pbuf *om) {
     status = ScheduleTx();
 </code></pre>
 <p>Eventually the Medium Access Control Layer calls <strong><code>RadioSend</code></strong> (from our LoRa Transceiver Driver) to transmit the Join Request.</p>
-<p>And that's how our LoRaWAN Driver sends a Join Network Request!</p>
+<p>And that's how our LoRaWAN Driver sends a <strong>Join Network Request</strong>...</p>
+<p>LoRaWAN Firmware → Application Layer → Node Layer → Medium Access Control Layer → LoRa Transceiver Driver!</p>
+<p><img src="https://lupyuen.github.io/images/lorawan-driver5.png" alt="Medium Access Control Layer" /></p>
 <h2 id="join-network-response" class="section-header"><a href="#join-network-response">3.3 Join Network Response</a></h2>
 <p>TODO</p>
 <h2 id="open-lorawan-port" class="section-header"><a href="#open-lorawan-port">3.4 Open LoRaWAN Port</a></h2>
 <p>TODO</p>
 <h2 id="transmit-data-packet" class="section-header"><a href="#transmit-data-packet">3.5 Transmit Data Packet</a></h2>
 <p>TODO</p>
-<h2 id="application-layer" class="section-header"><a href="#application-layer">3.6 Application Layer</a></h2>
+<p><img src="https://lupyuen.github.io/images/lorawan-driver3.png" alt="Application Layer" /></p>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/lorawan-driver3.png" alt="" /></p>
+<p><img src="https://lupyuen.github.io/images/lorawan-driver4.png" alt="Node Layer" /></p>
 <p>TODO</p>
-<h2 id="node-layer" class="section-header"><a href="#node-layer">3.7 Node Layer</a></h2>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/lorawan-driver4.png" alt="" /></p>
-<p>TODO</p>
-<h2 id="medium-access-control-layer" class="section-header"><a href="#medium-access-control-layer">3.8 Medium Access Control Layer</a></h2>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/lorawan-driver5.png" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/lorawan-driver6.png" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/lorawan-driver2.png" alt="" /></p>
+<p><img src="https://lupyuen.github.io/images/lorawan-driver2.png" alt="LoRaWAN Driver Layers" /></p>
 <p>TODO</p>
 <h1 id="build-and-run-the-bl602-lorawan-firmware" class="section-header"><a href="#build-and-run-the-bl602-lorawan-firmware">4 Build and Run the BL602 LoRaWAN Firmware</a></h1>
 <p>TODO</p>
