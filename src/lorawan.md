@@ -551,37 +551,26 @@ LoRaMacStatus_t LoRaMacMlmeRequest(MlmeReq_t *mlmeRequest) {
             status = Send(&macHdr, 0, NULL);
 ```
 
-__`LoRaMacMlmeRequest`__ runs as a __Background Task__, processing the Events that have been enqueued in the Event Queue. (That's how the Node Layer and the Medium Access Control Layer collaborate)
+__`LoRaMacMlmeRequest`__ runs as a __FreeRTOS Background Task__, processing the Events that have been enqueued in the Event Queue.
 
-TODO
+(That's how the Node Layer and the Medium Access Control Layer collaborate asynchronously)
 
-From [`LoRaMac.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L1932-L1954) :
+`LoRaMacMlmeRequest` calls __`Send`__ to compose and transmit the Join Request as a LoRa Packet: [`LoRaMac.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L1932-L1954)
 
 ```c
-LoRaMacStatus_t
-Send(LoRaMacHeader_t *macHdr, uint8_t fPort, struct pbuf *om)
-{
-    printf("Send\r\n");
-    LoRaMacFrameCtrl_t fCtrl;
-    LoRaMacStatus_t status = LORAMAC_STATUS_PARAMETER_INVALID;
-
-    fCtrl.Value = 0;
-    fCtrl.Bits.FOptsLen      = 0;
-    fCtrl.Bits.FPending      = 0;
-    fCtrl.Bits.Ack           = false;
-    fCtrl.Bits.AdrAckReq     = false;
-    fCtrl.Bits.Adr           = AdrCtrlOn;
-
-    // Prepare the frame
+//  Compose and send a packet
+LoRaMacStatus_t Send(LoRaMacHeader_t *macHdr, uint8_t fPort, struct pbuf *om) {
+    ...
+    //  Prepare the LoRa Packet
     status = PrepareFrame(macHdr, &fCtrl, fPort, om);
 
-    // Validate status
-    if (status == LORAMAC_STATUS_OK) {
-        status = ScheduleTx();
-    }
-    return status;
-}
+    //  Send the LoRa Packet
+    status = ScheduleTx();
 ```
+
+Eventually the Medium Access Control Layer calls __`RadioSend`__ (from our LoRa Transceiver Driver) to transmit the Join Request.
+
+And that's how our LoRaWAN Driver sends a Join Network Request!
 
 ## Join Network Response
 
