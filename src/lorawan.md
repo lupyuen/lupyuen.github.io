@@ -428,7 +428,7 @@ We shall study the source code and learn how the LoRaWAN Driver is called by our
 
 Our BL602 Driver for LoRaWAN has layers (like Onions, Shrek and Kueh Lapis): __Application Layer, Node Layer and Medium Access Control Layer__...
 
-![](https://lupyuen.github.io/images/lorawan-driver.png)
+![BL602 LoRaWAN Driver](https://lupyuen.github.io/images/lorawan-driver.png)
 
 1.  [__Application Layer: `lora_app.c`__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_app.c)
 
@@ -570,7 +570,11 @@ LoRaMacStatus_t Send(LoRaMacHeader_t *macHdr, uint8_t fPort, struct pbuf *om) {
 
 Eventually the Medium Access Control Layer calls __`RadioSend`__ (from our LoRa Transceiver Driver) to transmit the Join Request.
 
-And that's how our LoRaWAN Driver sends a Join Network Request!
+And that's how our LoRaWAN Driver sends a __Join Network Request__...
+
+LoRaWAN Firmware → Application Layer → Node Layer → Medium Access Control Layer → LoRa Transceiver Driver!
+
+![Medium Access Control Layer](https://lupyuen.github.io/images/lorawan-driver5.png)
 
 ## Join Network Response
 
@@ -584,35 +588,15 @@ TODO
 
 TODO
 
-## Application Layer
+![Application Layer](https://lupyuen.github.io/images/lorawan-driver3.png)
 
 TODO
 
-![](https://lupyuen.github.io/images/lorawan-driver3.png)
+![Node Layer](https://lupyuen.github.io/images/lorawan-driver4.png)
 
 TODO
 
-## Node Layer
-
-TODO
-
-![](https://lupyuen.github.io/images/lorawan-driver4.png)
-
-TODO
-
-## Medium Access Control Layer
-
-TODO
-
-![](https://lupyuen.github.io/images/lorawan-driver5.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/lorawan-driver6.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/lorawan-driver2.png)
+![LoRaWAN Driver Layers](https://lupyuen.github.io/images/lorawan-driver2.png)
 
 TODO
 
