@@ -450,7 +450,9 @@ Our BL602 Driver for LoRaWAN has layers (like Onions, Shrek and Kueh Lapis): __A
 
     (Yep the Medium Access Control Layer calls the "`Radio`" functions we've seen in the previous chapter)
 
-    It runs as a Background Task, communicating with the Node Layer in a queued, asynchronous way via an Event Queue.
+    This layer is fully aware of the __LoRa Frequencies__ and the Encoding Schemes that should be used in each world region. And it enforces __LoRaWAN Security__ (like encryption and authentication of messages).
+
+    The Medium Access Control Layer runs as a __Background Task__, communicating with the Node Layer in a queued, asynchronous way via an Event Queue.
 
 1.  We're not using the __Command-Line Interface__ [`lora_cli.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_cli.c) that's bundled with our LoRaWAN Driver.
 
