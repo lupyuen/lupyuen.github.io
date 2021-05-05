@@ -330,8 +330,7 @@ From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/
 ```c
 /// Command to receive a LoRa message. Assume that LoRa Transceiver driver has been initialised.
 /// Assume that create_task has been called to init the Event Queue.
-static void receive_message(char *buf, int len, int argc, char **argv)
-{
+static void receive_message(char *buf, int len, int argc, char **argv) {
     //  Receive a LoRa message within the timeout period
     Radio.Rx(LORAPING_RX_TIMEOUT_MS);
 }
@@ -345,9 +344,7 @@ static void on_rx_done(
     uint8_t *payload,  //  Buffer containing received LoRa message
     uint16_t size,     //  Size of the LoRa message
     int16_t rssi,      //  Signal strength
-    int8_t snr)        //  Signal To Noise ratio
-{
-    printf("Rx done: \r\n");
+    int8_t snr) {      //  Signal To Noise ratio
 
     //  Switch the LoRa Transceiver to low power, sleep mode
     Radio.Sleep();
@@ -367,9 +364,6 @@ static void on_rx_done(
         printf("%02x ", loraping_buffer[i]);
     }
     printf("\r\n");
-
-    //  TODO: Send a "PING" or "PONG" LoRa message
-    //  os_eventq_put(os_eventq_dflt_get(), &loraping_ev_tx);
 }
 ```
 
@@ -377,19 +371,13 @@ From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/
 
 ```c
 /// Callback Function that is called when no LoRa messages could be received due to timeout
-static void on_rx_timeout(void)
-{
-    printf("Rx timeout\r\n");
-
+static void on_rx_timeout(void) {
     //  Switch the LoRa Transceiver to low power, sleep mode
     Radio.Sleep();
 
     //  Log the timeout
     loraping_stats.rx_timeout++;
     loraping_rxinfo_timeout();
-
-    //  TODO: Send a "PING" or "PONG" LoRa message
-    //  os_eventq_put(os_eventq_dflt_get(), &loraping_ev_tx);
 }
 ```
 
