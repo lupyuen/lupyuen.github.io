@@ -568,7 +568,11 @@ LoRaMacStatus_t Send(LoRaMacHeader_t *macHdr, uint8_t fPort, struct pbuf *om) {
     status = ScheduleTx();
 ```
 
-Eventually the Medium Access Control Layer calls __`RadioSend`__ (from our LoRa Transceiver Driver) to transmit the Join Request.
+The call chain goes...
+
+[`Send`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L1932-L1954) → [`ScheduleTx`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L1956-L2062) → [`SendFrameOnChannel`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L2379-L2426) → [`RadioSend`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L1069-L1098)
+
+Eventually the Medium Access Control Layer calls [__`RadioSend`__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L1069-L1098) (from our LoRa Transceiver Driver) to transmit the Join Request.
 
 [(What's inside the Join Request? Check this out)](https://lupyuen.github.io/articles/wisgate#join-network-request)
 
@@ -608,7 +612,7 @@ lora_mac_rx_win2_stop
 
 TODO
 
-From [`LoRaMac.c`](https://github.com/lupyuen/bl_iot_sdk/blob/0f4b14ea00051dd689237319052fd9729929c655/components/3rdparty/lorawan/src/mac/LoRaMac.c#L906-L988) :
+From [`LoRaMac.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L906-L988) :
 
 ```c
 /**
@@ -698,7 +702,7 @@ lora_mac_process_radio_rx(struct ble_npl_event *ev)
 
 TODO
 
-From [`LoRaMac.c`](https://github.com/lupyuen/bl_iot_sdk/blob/0f4b14ea00051dd689237319052fd9729929c655/components/3rdparty/lorawan/src/mac/LoRaMac.c#L574-L667) :
+From [`LoRaMac.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L574-L667) :
 
 ```c
 static void
@@ -796,6 +800,12 @@ lora_mac_join_accept_rxd(uint8_t *payload, uint16_t size)
     }
 }
 ```
+
+TODO
+
+_What's `lora_mac_rx_win2_stop`?_
+
+TODO
 
 ## Open LoRaWAN Port
 
