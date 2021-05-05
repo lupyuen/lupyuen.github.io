@@ -463,7 +463,7 @@ static void on_rx_timeout(void) {
 <p>The LoRaWAN Driver was ported to BL602 from <strong>Apache Mynewt OS</strong>. <a href="https://github.com/apache/mynewt-core/tree/master/net/lora/node">(See this)</a></p>
 <p>(This implementation of the LoRaWAN Driver seems outdated. There is a newer reference implementation by Semtech. <a href="https://github.com/Lora-net/LoRaMac-node/tree/master/src/mac">See this</a>)</p>
 <h2 id="join-network-request" class="section-header"><a href="#join-network-request">3.2 Join Network Request</a></h2>
-<p>Before transmitting a LoRaWAN Data Packet, our BL602 Device needs to <strong>join the LoRaWAN Network</strong>.</p>
+<p>Before transmitting a LoRaWAN Data Packet, our BL602 gadget needs to <strong>join the LoRaWAN Network</strong>.</p>
 <p>(It's like connecting to a WiFi Network, authenticated by a security key)</p>
 <p>Let's study what happens when we enter the <strong><code>las_join</code></strong> command in our Demo Firmware to join a LoRaWAN Network...</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/lorawan.c#L901-L935"><code>lorawan.c</code></a> :</p>
@@ -478,6 +478,20 @@ void las_cmd_join(char *buf0, int len0, int argc, char **argv) {
         attempts         //  Number of attempts
     );
 </code></pre>
+<p>To join a LoRaWAN Network we need to have 3 things in our BL602 firmware...</p>
+<ol>
+<li>
+<p><strong>Device EUI</strong>: A 64-bit number that uniquely identifies our LoRaWAN Device (BL602)</p>
+</li>
+<li>
+<p><strong>Application EUI</strong>: A 64-bit number that uniquely identifies the LoRaWAN Server Application that will receive our LoRaWAN Data Packets</p>
+</li>
+<li>
+<p><strong>Application Key</strong>: A 128-bit secret key that will authenticate our LoRaWAN Device for that LoRaWAN Server Application</p>
+</li>
+</ol>
+<p>(EUI sounds like a Pungent Durian... But it actually means <a href="https://lora-developers.semtech.com/library/tech-papers-and-guides/the-book/deveui/"><strong>Extended Unique Identifier</strong></a>)</p>
+<p>How do we get the Device EUI, Application EUI and Application Key? We'll find out in a while.</p>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/a7ea4403ab39003bd7c1c71280e7ffb78426c3e0/components/3rdparty/lorawan/src/lora_app.c#L408-L437"><code>lora_app.c</code></a> :</p>
 <pre><code class="language-c">/* XXX: personalization? */
