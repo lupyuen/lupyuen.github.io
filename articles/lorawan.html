@@ -280,7 +280,7 @@ static void init_driver(char *buf, int len, int argc, char **argv) {
     );    
 }
 </code></pre>
-<p>The <code>Radio</code> functions are defined in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c"><code>radio.c</code></a> ...</p>
+<p>The &quot;<code>Radio</code>&quot; functions are defined in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c"><code>radio.c</code></a> ...</p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L523-L559"><strong><code>RadioInit</code></strong> - Init LoRa Transceiver</a></p>
@@ -447,6 +447,7 @@ static void on_rx_timeout(void) {
 <li>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c"><strong>Medium Access Control Layer: <code>LoRaMac.c</code></strong></a></p>
 <p>The <strong>Medium Access Control Layer</strong> implements the LoRaWAN Networking functions by calling the LoRa Transceiver Driver (for RFM90 / SX1262).</p>
+<p>(Yep the Medium Access Control Layer calls the &quot;<code>Radio</code>&quot; functions we've seen in the previous chapter)</p>
 <p>It runs as a Background Task, communicating with the Node Layer in a queued, asynchronous way via an Event Queue.</p>
 </li>
 <li>
