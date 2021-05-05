@@ -483,7 +483,7 @@ void las_cmd_join(char *buf0, int len0, int argc, char **argv) {
         g_lora_dev_eui,  //  Device EUI
         g_lora_app_eui,  //  Application EUI
         g_lora_app_key,  //  Application Key
-        attempts         //  Number of attempts
+        attempts         //  Number of join attempts
     );
 ```
 
@@ -500,79 +500,39 @@ To join a LoRaWAN Network we need to have 3 things in our BL602 firmware...
 
 How do we get the Device EUI, Application EUI and Application Key? We'll find out in a while.
 
-TODO
-
-From [`lora_app.c`](https://github.com/lupyuen/bl_iot_sdk/blob/a7ea4403ab39003bd7c1c71280e7ffb78426c3e0/components/3rdparty/lorawan/src/lora_app.c#L408-L437) :
+__`lora_app_join`__ is defined in the __Application Layer__ of our LoRaWAN Driver: [`lora_app.c`](https://github.com/lupyuen/bl_iot_sdk/blob/a7ea4403ab39003bd7c1c71280e7ffb78426c3e0/components/3rdparty/lorawan/src/lora_app.c#L408-L437)
 
 ```c
-/* XXX: personalization? */
-/**
- *  Join a lora network. When called this function will attempt to join
- *  if the end device is not already joined. Join status (success, failure)
- *  will be reported through the callback. If this function returns an error
- *  no callback will occur.
- *
- * @param dev_eui   Pointer to device EUI
- * @param app_eui   Pointer to Application EUI
- * @param app_key   Pointer to application key
- * @param trials    Number of join attempts before failure
- *
- * @return int Lora app return code
- */
-int
-lora_app_join(uint8_t *dev_eui, uint8_t *app_eui, uint8_t *app_key,
-              uint8_t trials)
-{
-    int rc;
+/// Send a Join Network Request
+int lora_app_join(uint8_t *dev_eui, uint8_t *app_eui, uint8_t *app_key, uint8_t trials) {
+    //  Omitted: Validate the parameters
+    ...
 
-    /* Make sure parameters are valid */
-    if ((dev_eui == NULL) || (app_eui == NULL) || (app_key == NULL) ||
-        (trials == 0)) {
-        return LORA_APP_STATUS_INVALID_PARAM;
-    }
-
-    /* Tell device to start join procedure */
-    rc = lora_node_join(dev_eui, app_eui, app_key, trials);
-    return rc;
-}
+    //  Tell device to start join procedure
+    int rc = lora_node_join(dev_eui, app_eui, app_key, trials);
 ```
 
-TODO
+Here we validate the parameters and call `lora_node_join`.
 
-From [`lora_node.c`](https://github.com/lupyuen/bl_iot_sdk/blob/b2e1635091fd539c11d56b125e36f8987c4c38e3/components/3rdparty/lorawan/src/lora_node.c#L473-L503) :
+Now we cross over from the Application Layer to the __Node Layer__: [`lora_node.c`](https://github.com/lupyuen/bl_iot_sdk/blob/b2e1635091fd539c11d56b125e36f8987c4c38e3/components/3rdparty/lorawan/src/lora_node.c#L473-L503)
 
 ```c
-/**
- * Called when the application wants to perform the join process.
- *
- * @return int A lora app return code
- */
-int
-lora_node_join(uint8_t *dev_eui, uint8_t *app_eui, uint8_t *app_key,
-               uint8_t trials)
-{
-    int rc;
+/// Perform the join process
+int lora_node_join(uint8_t *dev_eui, uint8_t *app_eui, uint8_t *app_key, uint8_t trials) {
+    //  Omitted: Check if we have joined the network
+    ...
 
-    rc = lora_node_chk_if_joined();
-    printf("lora_node_join: joined=%d\r\n", rc);
-    if (rc != LORA_APP_STATUS_ALREADY_JOINED) {
-        printf("lora_node_join: joining network\r\n");
-        /* Send event to MAC */
-        g_lm_join_ev_arg.dev_eui = dev_eui;
-        g_lm_join_ev_arg.app_eui = app_eui;
-        g_lm_join_ev_arg.app_key = app_key;
-        g_lm_join_ev_arg.trials = trials;
+    //  Set the Event parameters
+    g_lm_join_ev_arg.dev_eui = dev_eui;
+    g_lm_join_ev_arg.app_eui = app_eui;
+    g_lm_join_ev_arg.app_key = app_key;
+    g_lm_join_ev_arg.trials  = trials;
 
-        assert(g_lora_mac_data.lm_evq != NULL);
-
-        ble_npl_eventq_put(g_lora_mac_data.lm_evq, &g_lora_mac_data.lm_join_ev);
-        rc = LORA_APP_STATUS_OK;
-    } else {
-        printf("lora_node_join: already joined network\r\n");
-    }
-
-    return rc;
-}
+    //  Send Event to Medium Access Control Layer via Event Queue
+    ble_npl_eventq_put(
+        g_lora_mac_data.lm_evq,      //  Event Queue
+        &g_lora_mac_data.lm_join_ev  //  Event
+    );
 ```
 
 TODO
@@ -580,60 +540,14 @@ TODO
 From [`LoRaMac.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L3086-L3139) :
 
 ```c
-LoRaMacStatus_t
-LoRaMacMlmeRequest(MlmeReq_t *mlmeRequest)
-{
-    printf("LoRaMacMlmeRequest\r\n");
-    LoRaMacStatus_t status = LORAMAC_STATUS_SERVICE_UNKNOWN;
-    LoRaMacHeader_t macHdr;
-
-    assert(mlmeRequest != NULL);
-
-    /* If currently running return busy */
-    if ((LoRaMacState & LORAMAC_TX_RUNNING) == LORAMAC_TX_RUNNING) {
-        return LORAMAC_STATUS_BUSY;
-    }
-
-    /* If we are joining do not allow another MLME request */
-    if (LM_F_IS_JOINING()) {
-        return LORAMAC_STATUS_BUSY;
-    }
-
-    /* XXX: do these need to be set? */
-    g_lora_mac_data.txpkt.port = 0;
-    g_lora_mac_data.txpkt.status = LORAMAC_EVENT_INFO_STATUS_ERROR;
-    g_lora_mac_data.txpkt.pkt_type = mlmeRequest->Type;
-
+LoRaMacStatus_t LoRaMacMlmeRequest(MlmeReq_t *mlmeRequest) {
+    ...
+    //  Check the request type
     switch (mlmeRequest->Type) {
+        //  If this is a join request...
         case MLME_JOIN:
-            if ((mlmeRequest->Req.Join.DevEui == NULL) ||
-                (mlmeRequest->Req.Join.AppEui == NULL) ||
-                (mlmeRequest->Req.Join.AppKey == NULL) ||
-                (mlmeRequest->Req.Join.NbTrials == 0)) {
-                return LORAMAC_STATUS_PARAMETER_INVALID;
-            }
-
-            ResetMacParameters();
-
-            g_lora_mac_data.cur_join_attempt = 0;
-            g_lora_mac_data.max_join_attempt = mlmeRequest->Req.Join.NbTrials;
-
-            LoRaMacDevEui = mlmeRequest->Req.Join.DevEui;
-            LoRaMacAppEui = mlmeRequest->Req.Join.AppEui;
-            LoRaMacAppKey = mlmeRequest->Req.Join.AppKey;
-            LoRaMacParams.ChannelsDatarate =
-                RegionAlternateDr(LoRaMacRegion,LoRaMacParams.ChannelsDatarate);
-
-            /* Set flag to denote we are trying to join */
-            LM_F_IS_JOINING() = 1;
-
-            macHdr.Value = 0;
-            macHdr.Bits.MType  = FRAME_TYPE_JOIN_REQ;
+            //  Compose and send the join request
             status = Send(&macHdr, 0, NULL);
-            if (status != LORAMAC_STATUS_OK) {
-                LM_F_IS_JOINING() = 0;
-            }
-            break;
 ```
 
 TODO
