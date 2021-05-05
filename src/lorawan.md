@@ -406,14 +406,6 @@ static void on_rx_timeout(void) {
 
 We switch the LoRa Transceiver into sleep mode and log the timeout.
 
-## BL602 SPI Function
-
-TODO
-
-## BL602 GPIO Interrupts
-
-TODO
-
 ## Multitask with NimBLE Porting Layer
 
 TODO
@@ -849,6 +841,138 @@ TODO
 # Appendix: Packet Buffer and Queue
 
 TODO
+
+# Appendix: BL602 SPI Functions
+
+TODO
+
+From [`sx126x-board.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/sx126x-board.c#L120-L164)
+
+```c
+///////////////////////////////////////////////////////////////////////////////
+//  SPI Functions
+
+/// SPI Device Instance
+spi_dev_t spi_device;
+
+/// SPI Transmit Buffer (1 byte)
+static uint8_t spi_tx_buf[1];
+
+/// SPI Receive Buffer (1 byte)
+static uint8_t spi_rx_buf[1];
+
+/// Blocking call to send a value on the SPI. Returns the value received from the SPI Peripheral.
+/// Assume that we are sending and receiving 8-bit values on SPI.
+/// Assume Chip Select Pin has already been set to Low by caller.
+/// TODO: We should combine multiple SPI DMA Requests, instead of handling one byte at a time
+uint16_t SpiInOut(int spi_num, uint16_t val) {
+    //  Populate the transmit buffer
+    spi_tx_buf[0] = val;
+
+    //  Clear the receive buffer
+    memset(&spi_rx_buf, 0, sizeof(spi_rx_buf));
+
+    //  Prepare SPI Transfer
+    static spi_ioc_transfer_t transfer;
+    memset(&transfer, 0, sizeof(transfer));    
+    transfer.tx_buf = (uint32_t) spi_tx_buf;  //  Transmit Buffer
+    transfer.rx_buf = (uint32_t) spi_rx_buf;  //  Receive Buffer
+    transfer.len    = 1;                      //  How many bytes
+
+    //  Assume Chip Select Pin has already been set to Low by caller
+
+    //  Execute the SPI Transfer with the DMA Controller
+    int rc = hal_spi_transfer(
+        &spi_device,  //  SPI Device
+        &transfer,    //  SPI Transfers
+        1             //  How many transfers (Number of requests, not bytes)
+    );
+    assert(rc == 0);
+
+    //  Assume Chip Select Pin will be set to High by caller
+
+    //  Return the received byte
+    return spi_rx_buf[0];
+}
+```
+
+TODO
+
+From [`sx126x-board.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/sx126x-board.c#L166-L197)
+
+```c
+///////////////////////////////////////////////////////////////////////////////
+
+/// Initialise GPIO Pins and SPI Port. Called by SX126xIoIrqInit.
+/// Note: This is different from the Reference Implementation,
+/// which initialises the GPIO Pins and SPI Port at startup.
+void SX126xIoInit( void )
+{
+    GpioInitOutput( SX126X_SPI_CS_PIN, 1 );
+    GpioInitInput( SX126X_BUSY_PIN, 0, 0 );
+    GpioInitInput( SX126X_DIO1, 0, 0 );
+
+    //  Configure the SPI Port
+    int rc = spi_init(
+        &spi_device,     //  SPI Device
+        SX126X_SPI_IDX,  //  SPI Port
+        0,               //  SPI Mode: 0 for Controller
+        //  TODO: Due to a quirk in BL602 SPI, we must set
+        //  SPI Polarity-Phase to 1 (CPOL=0, CPHA=1).
+        //  But actually Polarity-Phase for SX126X should be 0 (CPOL=0, CPHA=0). 
+        1,                    //  SPI Polarity-Phase
+        SX126X_SPI_BAUDRATE,  //  SPI Frequency
+        2,                    //  Transmit DMA Channel
+        3,                    //  Receive DMA Channel
+        SX126X_SPI_CLK_PIN,   //  SPI Clock Pin 
+        SX126X_SPI_CS_OLD,    //  Unused SPI Chip Select Pin
+        SX126X_SPI_SDI_PIN,   //  SPI Serial Data In Pin  (formerly MISO)
+        SX126X_SPI_SDO_PIN    //  SPI Serial Data Out Pin (formerly MOSI)
+    );
+    assert(rc == 0);
+}
+```
+
+# Appendix: BL602 GPIO Interrupts
+
+TODO
+
+From [`sx126x-board.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/sx126x-board.c#L199-L232)
+
+```c
+/// Initialise GPIO Pins and SPI Port. Register GPIO Interrupt Handler for DIO1.
+/// Based on hal_button_register_handler_with_dts in https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_button.c
+/// Note: This is different from the Reference Implementation,
+/// which initialises the GPIO Pins and SPI Port at startup.
+void SX126xIoIrqInit( DioIrqHandler dioIrq ) {
+    //  Initialise GPIO Pins and SPI Port.
+    //  Note: This is different from the Reference Implementation,
+    //  which initialises the GPIO Pins and SPI Port at startup.
+    SX126xIoInit();
+
+    assert(SX126X_DIO1 >= 0);
+    assert(dioIrq != NULL);
+    int rc = register_gpio_handler(   //  Register GPIO Handler...
+        SX126X_DIO1,                  //  GPIO Pin Number
+        dioIrq,                       //  GPIO Handler Function
+        GLB_GPIO_INT_CONTROL_ASYNC,   //  Async Control Mode
+        GLB_GPIO_INT_TRIG_POS_PULSE,  //  Trigger when GPIO level shifts from Low to High 
+        0,                            //  No pullup
+        0                             //  No pulldown
+    );
+    assert(rc == 0);
+
+    //  Register Common Interrupt Handler for GPIO Interrupt
+    bl_irq_register_with_ctx(
+        GPIO_INT0_IRQn,         //  GPIO Interrupt
+        handle_gpio_interrupt,  //  Interrupt Handler
+        NULL                    //  Argument for Interrupt Handler
+    );
+
+    //  Enable GPIO Interrupt
+    bl_irq_enable(GPIO_INT0_IRQn);
+}
+```
 
 ![](https://lupyuen.github.io/images/lorawan-commands.png)
 
