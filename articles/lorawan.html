@@ -411,33 +411,51 @@ static void on_rx_timeout(void) {
 <h2 id="multitask-with-nimble-porting-layer" class="section-header"><a href="#multitask-with-nimble-porting-layer">2.6 Multitask with NimBLE Porting Layer</a></h2>
 <p>TODO</p>
 <h1 id="lorawan-driver" class="section-header"><a href="#lorawan-driver">3 LoRaWAN Driver</a></h1>
+<p>We've seen the LoRa Transceiver Driver (for RFM90 / SX1262)... Now let's watch how the LoRaWAN Driver wraps around the LoRa Transceiver Driver to do <strong>secure, managed LoRaWAN Networking</strong>.</p>
 <p>The <strong>BL602 Driver for LoRaWAN</strong> is located here...</p>
 <ul>
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/lorawan/components/3rdparty/lorawan"><code>components/3rdparty/lorawan</code></a></li>
 </ul>
-<p>Let's study the source code and learn how the LoRaWAN Driver is called by our demo firmware to <strong>join the LoRaWAN Network and transmit data packets</strong>...</p>
+<p>We shall study the source code and learn how the LoRaWAN Driver is called by our demo firmware to <strong>join the LoRaWAN Network and transmit data packets</strong>...</p>
 <ul>
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/lorawan/customer_app/sdk_app_lorawan"><code>customer_app/sdk_app_lorawan</code></a></li>
 </ul>
 <h2 id="whats-inside" class="section-header"><a href="#whats-inside">3.1 What's Inside</a></h2>
 <p>Our BL602 Driver for LoRaWAN has these layers: <strong>Application Layer, Node Layer and Medium Access Control Layer</strong>...</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-driver.png" alt="" /></p>
-<ul>
+<ol>
 <li>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_app.c"><strong>Application Layer: <code>lora_app.c</code></strong></a></p>
-<p>TODO</p>
+<p>The <strong>Application Layer</strong> exposes functions for our Demo Firmware to...</p>
+<ul>
+<li>
+<p>Join the LoRaWAN Network: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_app.c#L408-L437"><strong><code>lora_app_join</code></strong></a></p>
+</li>
+<li>
+<p>Open a LoRaWAN Application Port: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_app.c#L148-L205"><strong><code>lora_app_port_open</code></strong></a></p>
+</li>
+<li>
+<p>Transmit a LoRaWAN Data Packet: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_app.c#L262-L304"><strong><code>lora_app_port_send</code></strong></a></p>
+</li>
+</ul>
 </li>
 <li>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_node.c"><strong>Node Layer: <code>lora_node.c</code></strong></a></p>
-<p>TODO</p>
+<p>The <strong>Node Layer</strong> is called by the Application Layer to handle LoRaWAN Networking requests.</p>
+<p>The Node Layer channels the networking requests to the Medium Access Control Layer via an <strong>Event Queue</strong>.</p>
 </li>
 <li>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c"><strong>Medium Access Control Layer: <code>LoRaMac.c</code></strong></a></p>
-<p>TODO</p>
+<p>The <strong>Medium Access Control Layer</strong> implements the LoRaWAN Networking functions by calling the LoRa Transceiver Driver (for RFM90 / SX1262).</p>
+<p>It runs as a Background Task, communicating with the Node Layer in a queued, asynchronous way via an Event Queue.</p>
 </li>
-</ul>
+<li>
+<p>We're not using the <strong>Command-Line Interface</strong> <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_cli.c"><code>lora_cli.c</code></a> that's bundled with our LoRaWAN Driver.</p>
+<p>Instead we're using the Command-Line Interface that's coded inside our Demo Firmware.</p>
+</li>
+</ol>
 <p>The LoRaWAN Driver was ported to BL602 from <strong>Apache Mynewt OS</strong>. <a href="https://github.com/apache/mynewt-core/tree/master/net/lora/node">(See this)</a></p>
-<p>(We're not using the <strong>Command-Line Interface</strong> <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_cli.c"><code>lora_cli.c</code></a> that's bundled with our LoRaWAN Driver. Instead we're using the Command-Line Interface that's coded inside our Demo Firmware.)</p>
+<p>(This implementation of the LoRaWAN Driver seems outdated. There is a newer reference implementation by Semtech. <a href="https://github.com/Lora-net/LoRaMac-node/tree/master/src/mac">See this</a>)</p>
 <h2 id="join-lorawan-network" class="section-header"><a href="#join-lorawan-network">3.2 Join LoRaWAN Network</a></h2>
 <p>TODO</p>
 <h2 id="open-lorawan-port" class="section-header"><a href="#open-lorawan-port">3.3 Open LoRaWAN Port</a></h2>
