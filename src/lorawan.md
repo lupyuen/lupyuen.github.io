@@ -160,32 +160,41 @@ I used this LoRa Receiver (based on RAKwireless WisBlock) for testing our LoRa D
 
 ## Initialise LoRa Transceiver
 
-(__Note on LoRa vs LoRaWAN:__ Our LoRaWAN Driver initialises the LoRa Transceiver for us. Skip this section if we're using LoRaWAN.)
+(__Note on LoRa vs LoRaWAN:__ Our LoRaWAN Driver initialises the LoRa Transceiver for us, when we run the `init_lorawan` command. Skip this section if we're using LoRaWAN.)
 
-TODO
-
-From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L159-L212)
+The `init_driver` command in our Demo Firmware initialises the LoRa Transceiver like so: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L159-L212)
 
 ```c
-/// Command to initialise the SX1276 / RF96 driver.
+/// Command to initialise the LoRa Driver.
 /// Assume that create_task has been called to init the Event Queue.
-static void init_driver(char *buf, int len, int argc, char **argv)
-{
+static void init_driver(char *buf, int len, int argc, char **argv) {
     //  Set the LoRa Callback Functions
     RadioEvents_t radio_events;
     memset(&radio_events, 0, sizeof(radio_events));  //  Must init radio_events to null, because radio_events lives on stack!
-    radio_events.TxDone    = on_tx_done;
-    radio_events.RxDone    = on_rx_done;
-    radio_events.TxTimeout = on_tx_timeout;
-    radio_events.RxTimeout = on_rx_timeout;
-    radio_events.RxError   = on_rx_error;
+    radio_events.TxDone    = on_tx_done;     //  Packet has been transmitted
+    radio_events.RxDone    = on_rx_done;     //  Packet has been received
+    radio_events.TxTimeout = on_tx_timeout;  //  Transmit Timeout
+    radio_events.RxTimeout = on_rx_timeout;  //  Receive Timeout
+    radio_events.RxError   = on_rx_error;    //  Receive Error
+```
 
+Here we set the __Callback Functions__ that will be called when a LoRa Packet has been transmitted or received, also when we encounter a transmit / receive timeout or error.
+
+(We'll see the Callback Functions in a while)
+
+Next we initialise the LoRa Transceiver and set the __LoRa Frequency__...
+
+```c
     //  Init the SPI Port and the LoRa Transceiver
     Radio.Init(&radio_events);
 
     //  Set the LoRa Frequency
     Radio.SetChannel(RF_FREQUENCY);
+```
 
+We set the __LoRa Transmit Parameters__...
+
+```c
     //  Configure the LoRa Transceiver for transmitting messages
     Radio.SetTxConfig(
         MODEM_LORA,
@@ -202,7 +211,11 @@ static void init_driver(char *buf, int len, int argc, char **argv)
         LORAPING_IQ_INVERSION_ON,
         LORAPING_TX_TIMEOUT_MS
     );
+```
 
+Finally we set the __LoRa Receive Parameters__...
+
+```c
     //  Configure the LoRa Transceiver for receiving messages
     Radio.SetRxConfig(
         MODEM_LORA,
@@ -223,7 +236,19 @@ static void init_driver(char *buf, int len, int argc, char **argv)
 }
 ```
 
+The `Radio.*` functions are defined in [`radio.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c)
+
+-   [__`RadioInit`__: Init LoRa Transceiver](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L523-L559)
+
+-   [__`RadioSetChannel`__: Set LoRa Frequency](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L600-L604)
+
+-   [__`RadioSetTxConfig`__: Set LoRa Transmit Configuration](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L788-L908)
+
+-   [__`RadioSetRxConfig`__: Set LoRa Receive Configuration](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L661-L786)
+
 ## Transmit LoRa Packet
+
+(__Note on LoRa vs LoRaWAN:__ Our LoRaWAN Driver calls the LoRa Driver to transmit LoRa Packets, when we run the `las_join` and `las_app_tx` commands. Skip this section if we're using LoRaWAN.)
 
 TODO
 
@@ -277,12 +302,14 @@ static void on_tx_done(void)
 
 ## Receive LoRa Packet
 
+(__Note on LoRa vs LoRaWAN:__ Our LoRaWAN Driver calls the LoRa Driver to receive LoRa Packets, when we run the `las_join` and `las_app_tx` commands. Skip this section if we're using LoRaWAN.)
+
 TODO
 
 From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L246-L252)
 
 ```c
-/// Command to receive a LoRa message. Assume that SX1276 / RF96 driver has been initialised.
+/// Command to receive a LoRa message. Assume that LoRa Transceiver driver has been initialised.
 /// Assume that create_task has been called to init the Event Queue.
 static void receive_message(char *buf, int len, int argc, char **argv)
 {
@@ -346,6 +373,10 @@ static void on_rx_timeout(void)
     //  os_eventq_put(os_eventq_dflt_get(), &loraping_ev_tx);
 }
 ```
+
+## BL602 SPI Function
+
+TODO
 
 ## BL602 GPIO Interrupts
 
@@ -419,21 +450,7 @@ Find out which __LoRa Frequency__ we should use for your region...
 
 -  [__LoRa Frequencies by Country__](https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html)
 
-Download the Firmware Binary File __`sdk_app_lorawan.bin`__ for your LoRa Frequency...
-
-TODO
-
--  [__434 MHz `sdk_app_lorawan` Binary__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v7.0.4)
-
--  [__780 MHz `sdk_app_lorawan` Binary__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v7.0.5)
-
--  [__868 MHz `sdk_app_lorawan` Binary__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v7.0.6)
-
--  [__915 MHz `sdk_app_lorawan` Binary__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v7.0.7)
-
--  [__923 MHz `sdk_app_lorawan` Binary__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v7.0.3)
-
-Alternatively, we may build the Firmware Binary File `sdk_app_lorawan.bin` from the [source code](https://github.com/lupyuen/bl_iot_sdk/tree/lorawan/customer_app/sdk_app_lorawan)...
+Build the Firmware Binary File `sdk_app_lorawan.bin` from the [source code](https://github.com/lupyuen/bl_iot_sdk/tree/lorawan/customer_app/sdk_app_lorawan)...
 
 ```bash
 # Download the lorawan branch of lupyuen's bl_iot_sdk
@@ -769,6 +786,21 @@ TODO
 ![](https://lupyuen.github.io/images/lorawan-syncword2.jpg)
 
 TODO
+
+From [`LoRaMac.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L2581-L2587)
+
+```c
+LoRaMacStatus_t
+LoRaMacInitialization(LoRaMacCallback_t *callbacks, LoRaMacRegion_t region) {
+    ...
+#if (LORA_NODE_PUBLIC_NWK)
+    LM_F_IS_PUBLIC_NWK() = 1;
+    Radio.SetPublicNetwork(true);
+#else
+    LM_F_IS_PUBLIC_NWK() = 0;
+    Radio.SetPublicNetwork(false);
+#endif
+```
 
 # Appendix: LoRa Carrier Sensing
 
