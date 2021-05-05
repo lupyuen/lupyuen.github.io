@@ -97,6 +97,8 @@ Our LoRa Driver has 3 layers: __Radio Interface, Transceiver Interface and Board
 
     Called by the Transceiver Interface.
 
+The LoRa Driver was ported to BL602 from __Semtech's Reference Implementation of the SX1262 Driver__. [(See this)](https://github.com/Lora-net/LoRaMac-node/tree/master/src/radio/sx126x)
+
 ## Configure LoRa Transceiver
 
 (__Note on LoRa vs LoRaWAN:__ We configure LoRaWAN via `Makefile`, not `#define`. Skip this section if we're using LoRaWAN.)
@@ -236,73 +238,90 @@ Finally we set the __LoRa Receive Parameters__...
 }
 ```
 
-The `Radio.*` functions are defined in [`radio.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c)
+The `Radio` functions are defined in [`radio.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c) ...
 
--   [__`RadioInit`__: Init LoRa Transceiver](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L523-L559)
+-   [__`RadioInit`__ - Init LoRa Transceiver](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L523-L559)
 
--   [__`RadioSetChannel`__: Set LoRa Frequency](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L600-L604)
+-   [__`RadioSetChannel`__ - Set LoRa Frequency](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L600-L604)
 
--   [__`RadioSetTxConfig`__: Set LoRa Transmit Configuration](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L788-L908)
+-   [__`RadioSetTxConfig`__ - Set LoRa Transmit Configuration](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L788-L908)
 
--   [__`RadioSetRxConfig`__: Set LoRa Receive Configuration](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L661-L786)
+-   [__`RadioSetRxConfig`__ - Set LoRa Receive Configuration](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L661-L786)
 
 ## Transmit LoRa Packet
 
-(__Note on LoRa vs LoRaWAN:__ Our LoRaWAN Driver calls the LoRa Driver to transmit LoRa Packets, when we run the `las_join` and `las_app_tx` commands. Skip this section if we're using LoRaWAN.)
+(__Note on LoRa vs LoRaWAN:__ Our LoRaWAN Driver calls the LoRa Driver to transmit LoRa Packets, when we run the `las_join` and `las_app_tx` commands. Skip this section if we're using LoRaWAN to transmit data.)
 
-TODO
+To transmit a LoRa Packet, the `send_message` command in our Demo Firmware calls `send_once` in [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L214-L219) ... 
 
-From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L221-L244)
+```c
+/// Command to send a LoRa message. Assume that the LoRa Transceiver driver has been initialised.
+static void send_message(char *buf, int len, int argc, char **argv) {
+    //  Send the "PING" message
+    send_once(1);
+}
+```
+
+__`send_once`__ prepares a LoRa Packet containing the string "`PING`"...
+
+From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L221-L244) :
 
 ```c
 /// Send a LoRa message. If is_ping is 0, send "PONG". Otherwise send "PING".
-static void send_once(int is_ping)
-{
-    //  Copy the "PING" or "PONG" message to the transmit buffer
+static void send_once(int is_ping) {
+    //  Copy the "PING" or "PONG" message 
+    //  to the transmit buffer
     if (is_ping) {
         memcpy(loraping_buffer, loraping_ping_msg, 4);
     } else {
         memcpy(loraping_buffer, loraping_pong_msg, 4);
     }
+```
 
-    //  Fill up the remaining space in the transmit buffer (64 bytes) with values 0, 1, 2, ...
+Then pads the packet with values 0, 1, 2, ...
+
+```c
+    //  Fill up the remaining space in the 
+    //  transmit buffer (64 bytes) with values 
+    //  0, 1, 2, ...
     for (int i = 4; i < sizeof loraping_buffer; i++) {
         loraping_buffer[i] = i - 4;
     }
+```
 
-#ifndef SEND_LORAWAN_MESSAGE
+And transmits the LoRa Packet...
+
+```c
     //  Send the transmit buffer (64 bytes)
     Radio.Send(loraping_buffer, sizeof loraping_buffer);
-#else
-    //  Replay a LoRaWAN Join Network Request
-    static uint8_t replay[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x5b, 0xb1, 0x7b, 0x37, 0xe7, 0x5e, 0xc1, 0x4b, 0xb4, 0xb1, 0xb8, 0x30, 0xe9, 0x8c};
-    Radio.Send(replay, sizeof replay);
-#endif  //  !SEND_LORAWAN_MESSAGE
 }
 ```
 
-From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L399-L412)
+[(`RadioSend` is defined here)](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L1069-L1098)
+
+When the LoRa Packet is transmitted, the LoRa Driver calls our Callback Function __`on_tx_done`__ ...
+
+From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L399-L412) :
 
 ```c
 /// Callback Function that is called when our LoRa message has been transmitted
-static void on_tx_done(void)
-{
-    printf("Tx done\r\n");
-
+static void on_tx_done(void) {
     //  Log the success status
     loraping_stats.tx_success++;
 
-    //  Switch the LoRa Transceiver to low power, sleep mode
+    //  Switch the LoRa Transceiver to 
+    //  low power, sleep mode
     Radio.Sleep();
-    
-    //  TODO: Receive a "PING" or "PONG" LoRa message
-    //  os_eventq_put(os_eventq_dflt_get(), &loraping_ev_rx);
 }
 ```
 
+Here we log the number of packets transmitted, and put the LoRa Transceiver to low power, sleep mode.
+
+[(`RadioSleep` is defined here)](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L1100-L1109)
+
 ## Receive LoRa Packet
 
-(__Note on LoRa vs LoRaWAN:__ Our LoRaWAN Driver calls the LoRa Driver to receive LoRa Packets, when we run the `las_join` and `las_app_tx` commands. Skip this section if we're using LoRaWAN.)
+(__Note on LoRa vs LoRaWAN:__ Our LoRaWAN Driver calls the LoRa Driver to receive LoRa Packets, when we run the `las_join` and `las_app_tx` commands. Skip this section if we're using LoRaWAN to receive data.)
 
 TODO
 
