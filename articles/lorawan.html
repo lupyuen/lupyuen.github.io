@@ -532,33 +532,20 @@ LoRaMacStatus_t LoRaMacMlmeRequest(MlmeReq_t *mlmeRequest) {
             //  Compose and send the join request
             status = Send(&amp;macHdr, 0, NULL);
 </code></pre>
-<p><strong><code>LoRaMacMlmeRequest</code></strong> runs as a <strong>Background Task</strong>, processing the Events that have been enqueued in the Event Queue. (That's how the Node Layer and the Medium Access Control Layer collaborate)</p>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L1932-L1954"><code>LoRaMac.c</code></a> :</p>
-<pre><code class="language-c">LoRaMacStatus_t
-Send(LoRaMacHeader_t *macHdr, uint8_t fPort, struct pbuf *om)
-{
-    printf(&quot;Send\r\n&quot;);
-    LoRaMacFrameCtrl_t fCtrl;
-    LoRaMacStatus_t status = LORAMAC_STATUS_PARAMETER_INVALID;
-
-    fCtrl.Value = 0;
-    fCtrl.Bits.FOptsLen      = 0;
-    fCtrl.Bits.FPending      = 0;
-    fCtrl.Bits.Ack           = false;
-    fCtrl.Bits.AdrAckReq     = false;
-    fCtrl.Bits.Adr           = AdrCtrlOn;
-
-    // Prepare the frame
+<p><strong><code>LoRaMacMlmeRequest</code></strong> runs as a <strong>FreeRTOS Background Task</strong>, processing the Events that have been enqueued in the Event Queue.</p>
+<p>(That's how the Node Layer and the Medium Access Control Layer collaborate asynchronously)</p>
+<p><code>LoRaMacMlmeRequest</code> calls <strong><code>Send</code></strong> to compose and transmit the Join Request as a LoRa Packet: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L1932-L1954"><code>LoRaMac.c</code></a></p>
+<pre><code class="language-c">//  Compose and send a packet
+LoRaMacStatus_t Send(LoRaMacHeader_t *macHdr, uint8_t fPort, struct pbuf *om) {
+    ...
+    //  Prepare the LoRa Packet
     status = PrepareFrame(macHdr, &amp;fCtrl, fPort, om);
 
-    // Validate status
-    if (status == LORAMAC_STATUS_OK) {
-        status = ScheduleTx();
-    }
-    return status;
-}
+    //  Send the LoRa Packet
+    status = ScheduleTx();
 </code></pre>
+<p>Eventually the Medium Access Control Layer calls <strong><code>RadioSend</code></strong> (from our LoRa Transceiver Driver) to transmit the Join Request.</p>
+<p>And that's how our LoRaWAN Driver sends a Join Network Request!</p>
 <h2 id="join-network-response" class="section-header"><a href="#join-network-response">3.3 Join Network Response</a></h2>
 <p>TODO</p>
 <h2 id="open-lorawan-port" class="section-header"><a href="#open-lorawan-port">3.4 Open LoRaWAN Port</a></h2>
