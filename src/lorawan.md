@@ -466,7 +466,7 @@ The LoRaWAN Driver was ported to BL602 from __Apache Mynewt OS__. [(See this)](h
 
 ## Join Network Request
 
-Before transmitting a LoRaWAN Data Packet, our BL602 Device needs to __join the LoRaWAN Network__.
+Before transmitting a LoRaWAN Data Packet, our BL602 gadget needs to __join the LoRaWAN Network__.
 
 (It's like connecting to a WiFi Network, authenticated by a security key)
 
@@ -486,6 +486,19 @@ void las_cmd_join(char *buf0, int len0, int argc, char **argv) {
         attempts         //  Number of attempts
     );
 ```
+
+To join a LoRaWAN Network we need to have 3 things in our BL602 firmware...
+
+1.  __Device EUI__: A 64-bit number that uniquely identifies our LoRaWAN Device (BL602)
+
+1.  __Application EUI__: A 64-bit number that uniquely identifies the LoRaWAN Server Application that will receive our LoRaWAN Data Packets
+
+1.  __Application Key__: A 128-bit secret key that will authenticate our LoRaWAN Device for that LoRaWAN Server Application
+
+(EUI sounds like a Pungent Durian... But it actually means [__Extended Unique Identifier__](https://lora-developers.semtech.com/library/tech-papers-and-guides/the-book/deveui/
+))
+
+How do we get the Device EUI, Application EUI and Application Key? We'll find out in a while.
 
 TODO
 

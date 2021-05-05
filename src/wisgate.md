@@ -74,7 +74,7 @@ WisGate won't do anything with the received LoRaWAN Packets since it's not confi
 
 When we allow a LoRaWAN Device to talk to our LoRaWAN Gateway, we need to set 2 things in the device...
 
-1.  __Device EUI__: An 64-bit number that uniquely identifies our LoRaWAN Device
+1.  __Device EUI__: A 64-bit number that uniquely identifies our LoRaWAN Device
 
 1.  __Application Key__: A 128-bit secret key that will authenticate that specific LoRaWAN Device
 
