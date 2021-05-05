@@ -424,7 +424,7 @@ We shall study the source code and learn how the LoRaWAN Driver is called by our
 
 ## What's Inside
 
-Our BL602 Driver for LoRaWAN has these layers: __Application Layer, Node Layer and Medium Access Control Layer__...
+Our BL602 Driver for LoRaWAN has layers (like Shrek): __Application Layer, Node Layer and Medium Access Control Layer__...
 
 ![](https://lupyuen.github.io/images/lorawan-driver.png)
 
