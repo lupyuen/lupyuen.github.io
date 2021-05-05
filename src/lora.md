@@ -668,7 +668,7 @@ _What's the difference between LoRa, LoRaWAN and The Things Network?_
 
     [(More about The Things Network)](https://www.thethingsnetwork.org/)
 
-    (There are commercial LoRaWAN networks, like [Helium](https://www.helium.com/lorawan) and [Amazon Sidewalk](https://enterpriseiotinsights.com/20201208/channels/news/lora-alliance-semtech-in-talks-with-amazon-to-switch-sidewalk-over-to-lorawan))
+    (There are commercial LoRaWAN networks, like [Helium](https://www.helium.com/lorawan) and potentially [Amazon Sidewalk](https://enterpriseiotinsights.com/20201208/channels/news/lora-alliance-semtech-in-talks-with-amazon-to-switch-sidewalk-over-to-lorawan))
 
 _3 Levels of LoRa! Where are we right now?_
 
