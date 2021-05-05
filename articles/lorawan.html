@@ -72,9 +72,7 @@
 <li><a href="#initialise-lora-transceiver">2.3 Initialise LoRa Transceiver</a><ul></ul></li>
 <li><a href="#transmit-lora-packet">2.4 Transmit LoRa Packet</a><ul></ul></li>
 <li><a href="#receive-lora-packet">2.5 Receive LoRa Packet</a><ul></ul></li>
-<li><a href="#bl602-spi-function">2.6 BL602 SPI Function</a><ul></ul></li>
-<li><a href="#bl602-gpio-interrupts">2.7 BL602 GPIO Interrupts</a><ul></ul></li>
-<li><a href="#multitask-with-nimble-porting-layer">2.8 Multitask with NimBLE Porting Layer</a><ul></ul></li></ul></li>
+<li><a href="#multitask-with-nimble-porting-layer">2.6 Multitask with NimBLE Porting Layer</a><ul></ul></li></ul></li>
 <li><a href="#lorawan-driver">3 LoRaWAN Driver</a><ul>
 <li><a href="#whats-inside">3.1 What's Inside</a><ul></ul></li>
 <li><a href="#application-layer">3.2 Application Layer</a><ul></ul></li>
@@ -92,7 +90,9 @@
 <li><a href="#appendix-lora-transmit-power">9 Appendix: LoRa Transmit Power</a><ul></ul></li>
 <li><a href="#appendix-lora-sync-word">10 Appendix: LoRa Sync Word</a><ul></ul></li>
 <li><a href="#appendix-lora-carrier-sensing">11 Appendix: LoRa Carrier Sensing</a><ul></ul></li>
-<li><a href="#appendix-packet-buffer-and-queue">12 Appendix: Packet Buffer and Queue</a><ul></ul></li></ul></nav><p>📝 <em>10 May 2021</em></p>
+<li><a href="#appendix-packet-buffer-and-queue">12 Appendix: Packet Buffer and Queue</a><ul></ul></li>
+<li><a href="#appendix-bl602-spi-functions">13 Appendix: BL602 SPI Functions</a><ul></ul></li>
+<li><a href="#appendix-bl602-gpio-interrupts">14 Appendix: BL602 GPIO Interrupts</a><ul></ul></li></ul></nav><p>📝 <em>10 May 2021</em></p>
 <p>Today we shall connect <strong>PineCone BL602 RISC-V Board</strong> to <strong>LoRaWAN</strong>... With the <strong>Pine64 RFM90 LoRa Module</strong>.</p>
 <p>The LoRa Firmware in this article will run on <strong>PineCone, Pinenut and Any BL602 Board</strong>.</p>
 <ul>
@@ -406,11 +406,7 @@ static void on_rx_timeout(void) {
 }
 </code></pre>
 <p>We switch the LoRa Transceiver into sleep mode and log the timeout.</p>
-<h2 id="bl602-spi-function" class="section-header"><a href="#bl602-spi-function">2.6 BL602 SPI Function</a></h2>
-<p>TODO</p>
-<h2 id="bl602-gpio-interrupts" class="section-header"><a href="#bl602-gpio-interrupts">2.7 BL602 GPIO Interrupts</a></h2>
-<p>TODO</p>
-<h2 id="multitask-with-nimble-porting-layer" class="section-header"><a href="#multitask-with-nimble-porting-layer">2.8 Multitask with NimBLE Porting Layer</a></h2>
+<h2 id="multitask-with-nimble-porting-layer" class="section-header"><a href="#multitask-with-nimble-porting-layer">2.6 Multitask with NimBLE Porting Layer</a></h2>
 <p>TODO</p>
 <h1 id="lorawan-driver" class="section-header"><a href="#lorawan-driver">3 LoRaWAN Driver</a></h1>
 <p>The <strong>BL602 Driver for LoRaWAN</strong> is located here...</p>
@@ -768,6 +764,124 @@ LoRaMacInitialization(LoRaMacCallback_t *callbacks, LoRaMacRegion_t region) {
 <p>TODO</p>
 <h1 id="appendix-packet-buffer-and-queue" class="section-header"><a href="#appendix-packet-buffer-and-queue">12 Appendix: Packet Buffer and Queue</a></h1>
 <p>TODO</p>
+<h1 id="appendix-bl602-spi-functions" class="section-header"><a href="#appendix-bl602-spi-functions">13 Appendix: BL602 SPI Functions</a></h1>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/sx126x-board.c#L120-L164"><code>sx126x-board.c</code></a></p>
+<pre><code class="language-c">///////////////////////////////////////////////////////////////////////////////
+//  SPI Functions
+
+/// SPI Device Instance
+spi_dev_t spi_device;
+
+/// SPI Transmit Buffer (1 byte)
+static uint8_t spi_tx_buf[1];
+
+/// SPI Receive Buffer (1 byte)
+static uint8_t spi_rx_buf[1];
+
+/// Blocking call to send a value on the SPI. Returns the value received from the SPI Peripheral.
+/// Assume that we are sending and receiving 8-bit values on SPI.
+/// Assume Chip Select Pin has already been set to Low by caller.
+/// TODO: We should combine multiple SPI DMA Requests, instead of handling one byte at a time
+uint16_t SpiInOut(int spi_num, uint16_t val) {
+    //  Populate the transmit buffer
+    spi_tx_buf[0] = val;
+
+    //  Clear the receive buffer
+    memset(&amp;spi_rx_buf, 0, sizeof(spi_rx_buf));
+
+    //  Prepare SPI Transfer
+    static spi_ioc_transfer_t transfer;
+    memset(&amp;transfer, 0, sizeof(transfer));    
+    transfer.tx_buf = (uint32_t) spi_tx_buf;  //  Transmit Buffer
+    transfer.rx_buf = (uint32_t) spi_rx_buf;  //  Receive Buffer
+    transfer.len    = 1;                      //  How many bytes
+
+    //  Assume Chip Select Pin has already been set to Low by caller
+
+    //  Execute the SPI Transfer with the DMA Controller
+    int rc = hal_spi_transfer(
+        &amp;spi_device,  //  SPI Device
+        &amp;transfer,    //  SPI Transfers
+        1             //  How many transfers (Number of requests, not bytes)
+    );
+    assert(rc == 0);
+
+    //  Assume Chip Select Pin will be set to High by caller
+
+    //  Return the received byte
+    return spi_rx_buf[0];
+}
+</code></pre>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/sx126x-board.c#L166-L197"><code>sx126x-board.c</code></a></p>
+<pre><code class="language-c">///////////////////////////////////////////////////////////////////////////////
+
+/// Initialise GPIO Pins and SPI Port. Called by SX126xIoIrqInit.
+/// Note: This is different from the Reference Implementation,
+/// which initialises the GPIO Pins and SPI Port at startup.
+void SX126xIoInit( void )
+{
+    GpioInitOutput( SX126X_SPI_CS_PIN, 1 );
+    GpioInitInput( SX126X_BUSY_PIN, 0, 0 );
+    GpioInitInput( SX126X_DIO1, 0, 0 );
+
+    //  Configure the SPI Port
+    int rc = spi_init(
+        &amp;spi_device,     //  SPI Device
+        SX126X_SPI_IDX,  //  SPI Port
+        0,               //  SPI Mode: 0 for Controller
+        //  TODO: Due to a quirk in BL602 SPI, we must set
+        //  SPI Polarity-Phase to 1 (CPOL=0, CPHA=1).
+        //  But actually Polarity-Phase for SX126X should be 0 (CPOL=0, CPHA=0). 
+        1,                    //  SPI Polarity-Phase
+        SX126X_SPI_BAUDRATE,  //  SPI Frequency
+        2,                    //  Transmit DMA Channel
+        3,                    //  Receive DMA Channel
+        SX126X_SPI_CLK_PIN,   //  SPI Clock Pin 
+        SX126X_SPI_CS_OLD,    //  Unused SPI Chip Select Pin
+        SX126X_SPI_SDI_PIN,   //  SPI Serial Data In Pin  (formerly MISO)
+        SX126X_SPI_SDO_PIN    //  SPI Serial Data Out Pin (formerly MOSI)
+    );
+    assert(rc == 0);
+}
+</code></pre>
+<h1 id="appendix-bl602-gpio-interrupts" class="section-header"><a href="#appendix-bl602-gpio-interrupts">14 Appendix: BL602 GPIO Interrupts</a></h1>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/sx126x-board.c#L199-L232"><code>sx126x-board.c</code></a></p>
+<pre><code class="language-c">/// Initialise GPIO Pins and SPI Port. Register GPIO Interrupt Handler for DIO1.
+/// Based on hal_button_register_handler_with_dts in https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_button.c
+/// Note: This is different from the Reference Implementation,
+/// which initialises the GPIO Pins and SPI Port at startup.
+void SX126xIoIrqInit( DioIrqHandler dioIrq ) {
+    //  Initialise GPIO Pins and SPI Port.
+    //  Note: This is different from the Reference Implementation,
+    //  which initialises the GPIO Pins and SPI Port at startup.
+    SX126xIoInit();
+
+    assert(SX126X_DIO1 &gt;= 0);
+    assert(dioIrq != NULL);
+    int rc = register_gpio_handler(   //  Register GPIO Handler...
+        SX126X_DIO1,                  //  GPIO Pin Number
+        dioIrq,                       //  GPIO Handler Function
+        GLB_GPIO_INT_CONTROL_ASYNC,   //  Async Control Mode
+        GLB_GPIO_INT_TRIG_POS_PULSE,  //  Trigger when GPIO level shifts from Low to High 
+        0,                            //  No pullup
+        0                             //  No pulldown
+    );
+    assert(rc == 0);
+
+    //  Register Common Interrupt Handler for GPIO Interrupt
+    bl_irq_register_with_ctx(
+        GPIO_INT0_IRQn,         //  GPIO Interrupt
+        handle_gpio_interrupt,  //  Interrupt Handler
+        NULL                    //  Argument for Interrupt Handler
+    );
+
+    //  Enable GPIO Interrupt
+    bl_irq_enable(GPIO_INT0_IRQn);
+}
+</code></pre>
 <p><img src="https://lupyuen.github.io/images/lorawan-commands.png" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-gpio.png" alt="" /></p>
