@@ -541,7 +541,9 @@ LoRaMacStatus_t Send(LoRaMacHeader_t *macHdr, uint8_t fPort, struct pbuf *om) {
     //  Send the LoRa Packet
     status = ScheduleTx();
 </code></pre>
-<p>Eventually the Medium Access Control Layer calls <strong><code>RadioSend</code></strong> (from our LoRa Transceiver Driver) to transmit the Join Request.</p>
+<p>The call chain goes...</p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L1932-L1954"><code>Send</code></a> → <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L1956-L2062"><code>ScheduleTx</code></a> → <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L2379-L2426"><code>SendFrameOnChannel</code></a> → <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L1069-L1098"><code>RadioSend</code></a></p>
+<p>Eventually the Medium Access Control Layer calls <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L1069-L1098"><strong><code>RadioSend</code></strong></a> (from our LoRa Transceiver Driver) to transmit the Join Request.</p>
 <p><a href="https://lupyuen.github.io/articles/wisgate#join-network-request">(What's inside the Join Request? Check this out)</a></p>
 <p>And that's how our LoRaWAN Driver sends a <strong>Join Network Request</strong>...</p>
 <p>LoRaWAN Firmware → Application Layer → Node Layer → Medium Access Control Layer → LoRa Transceiver Driver!</p>
@@ -570,7 +572,7 @@ RadioSleep
 lora_mac_rx_win2_stop
 </code></pre>
 <p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/0f4b14ea00051dd689237319052fd9729929c655/components/3rdparty/lorawan/src/mac/LoRaMac.c#L906-L988"><code>LoRaMac.c</code></a> :</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L906-L988"><code>LoRaMac.c</code></a> :</p>
 <pre><code class="language-c">/**
  * Process the radio receive event.
  *
@@ -656,7 +658,7 @@ lora_mac_process_radio_rx(struct ble_npl_event *ev)
             break;
 </code></pre>
 <p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/0f4b14ea00051dd689237319052fd9729929c655/components/3rdparty/lorawan/src/mac/LoRaMac.c#L574-L667"><code>LoRaMac.c</code></a> :</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L574-L667"><code>LoRaMac.c</code></a> :</p>
 <pre><code class="language-c">static void
 lora_mac_join_accept_rxd(uint8_t *payload, uint16_t size)
 {
@@ -752,6 +754,9 @@ lora_mac_join_accept_rxd(uint8_t *payload, uint16_t size)
     }
 }
 </code></pre>
+<p>TODO</p>
+<p><em>What's <code>lora_mac_rx_win2_stop</code>?</em></p>
+<p>TODO</p>
 <h2 id="open-lorawan-port" class="section-header"><a href="#open-lorawan-port">3.4 Open LoRaWAN Port</a></h2>
 <p>TODO</p>
 <h2 id="transmit-data-packet" class="section-header"><a href="#transmit-data-packet">3.5 Transmit Data Packet</a></h2>
