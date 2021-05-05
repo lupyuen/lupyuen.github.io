@@ -678,11 +678,15 @@ To complete Level 1 of our Wireless IoT Endeavour, we need to __receive LoRa Pac
 
 In the next two articles, we shall use [__RAKwireless WisBlock__](https://docs.rakwireless.com/Product-Categories/WisBlock/Quickstart/) as a LoRa Node for receiving the LoRa Packets from BL602 (and the other way around).
 
-Read the next 2 articles here...
+Read the followup articles here...
 
 -   [__"RAKwireless WisBlock talks LoRa with PineCone BL602 RISC-V Board"__](https://lupyuen.github.io/articles/wisblock)
 
 -   [__"PineCone BL602 RISC-V Board Receives LoRa Packets"__](https://lupyuen.github.io/articles/lora2)
+
+-   [__"Build a LoRaWAN Network with RAKwireless WisGate Developer Gateway"__](https://lupyuen.github.io/articles/wisgate)
+
+-   [__"PineCone BL602 Talks LoRaWAN"__](https://lupyuen.github.io/articles/lorawan)
 
 [(Many thanks to RAKwireless for providing the WisBlock Connected Box!)](https://store.rakwireless.com/products/wisblock-connected-box)
 

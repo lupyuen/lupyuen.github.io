@@ -422,9 +422,35 @@ Let's study the source code and learn how the LoRaWAN Driver is called by our de
 
 ## What's Inside
 
-TODO
+Our BL602 Driver for LoRaWAN has these layers: __Application Layer, Node Layer and Medium Access Control Layer__...
 
 ![](https://lupyuen.github.io/images/lorawan-driver.png)
+
+-   [__Application Layer: `lora_app.c`__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_app.c)
+
+    TODO
+
+-   [__Node Layer: `lora_node.c`__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_node.c)
+
+    TODO
+
+-   [__Medium Access Control Layer: `LoRaMac.c`__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c)
+
+    TODO
+
+The LoRaWAN Driver was ported to BL602 from __Apache Mynewt OS__. [(See this)](https://github.com/apache/mynewt-core/tree/master/net/lora/node)
+
+(We're not using the __Command-Line Interface__ [`lora_cli.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_cli.c) that's bundled with our LoRaWAN Driver. Instead we're using the Command-Line Interface that's coded inside our Demo Firmware.)
+
+## Join LoRaWAN Network
+
+TODO
+
+## Open LoRaWAN Port
+
+TODO
+
+## Transmit Data Packet
 
 TODO
 
@@ -449,10 +475,6 @@ TODO
 TODO
 
 ![](https://lupyuen.github.io/images/lorawan-driver5.png)
-
-TODO
-
-## Command Line Interface (Unused)
 
 TODO
 
