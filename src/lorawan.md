@@ -410,6 +410,8 @@ We switch the LoRa Transceiver into sleep mode and log the timeout.
 
 TODO
 
+-   [__"Multitask with NimBLE Porting Layer"__](https://lupyuen.github.io/articles/lora2#multitask-with-nimble-porting-layer)
+
 # LoRaWAN Driver
 
 We've seen the LoRa Transceiver Driver (for RFM90 / SX1262)... Now let's watch how the LoRaWAN Driver wraps around the LoRa Transceiver Driver to do __secure, managed LoRaWAN Networking__.
@@ -442,7 +444,7 @@ Our BL602 Driver for LoRaWAN has layers (like Onions, Shrek and Kueh Lapis): __A
 
     The __Node Layer__ is called by the Application Layer to handle LoRaWAN Networking requests.
 
-    The Node Layer channels the networking requests to the Medium Access Control Layer via an __Event Queue__.
+    The Node Layer channels the networking requests to the Medium Access Control Layer via an __Event Queue__ (provided by the NimBLE Porting Layer).
 
 1.  [__Medium Access Control Layer: `LoRaMac.c`__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c)
 
@@ -462,7 +464,196 @@ The LoRaWAN Driver was ported to BL602 from __Apache Mynewt OS__. [(See this)](h
 
 (This implementation of the LoRaWAN Driver seems outdated. There is a newer reference implementation by Semtech. [See this](https://github.com/Lora-net/LoRaMac-node/tree/master/src/mac))
 
-## Join LoRaWAN Network
+## Join Network Request
+
+Before transmitting a LoRaWAN Data Packet, our BL602 Device needs to __join the LoRaWAN Network__.
+
+(It's like connecting to a WiFi Network, authenticated by a security key)
+
+Let's study what happens when we enter the __`las_join`__ command in our Demo Firmware to join a LoRaWAN Network...
+
+From [`lorawan.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/lorawan.c#L901-L935) :
+
+```c
+/// `las_join` command will send a Join Network Request
+void las_cmd_join(char *buf0, int len0, int argc, char **argv) {
+    ...
+    //  Send a Join Network Request
+    int rc = lora_app_join(
+        g_lora_dev_eui,  //  Device EUI
+        g_lora_app_eui,  //  Application EUI
+        g_lora_app_key,  //  Application Key
+        attempts         //  Number of attempts
+    );
+```
+
+TODO
+
+From [`lora_app.c`](https://github.com/lupyuen/bl_iot_sdk/blob/a7ea4403ab39003bd7c1c71280e7ffb78426c3e0/components/3rdparty/lorawan/src/lora_app.c#L408-L437) :
+
+```c
+/* XXX: personalization? */
+/**
+ *  Join a lora network. When called this function will attempt to join
+ *  if the end device is not already joined. Join status (success, failure)
+ *  will be reported through the callback. If this function returns an error
+ *  no callback will occur.
+ *
+ * @param dev_eui   Pointer to device EUI
+ * @param app_eui   Pointer to Application EUI
+ * @param app_key   Pointer to application key
+ * @param trials    Number of join attempts before failure
+ *
+ * @return int Lora app return code
+ */
+int
+lora_app_join(uint8_t *dev_eui, uint8_t *app_eui, uint8_t *app_key,
+              uint8_t trials)
+{
+    int rc;
+
+    /* Make sure parameters are valid */
+    if ((dev_eui == NULL) || (app_eui == NULL) || (app_key == NULL) ||
+        (trials == 0)) {
+        return LORA_APP_STATUS_INVALID_PARAM;
+    }
+
+    /* Tell device to start join procedure */
+    rc = lora_node_join(dev_eui, app_eui, app_key, trials);
+    return rc;
+}
+```
+
+TODO
+
+From [`lora_node.c`](https://github.com/lupyuen/bl_iot_sdk/blob/b2e1635091fd539c11d56b125e36f8987c4c38e3/components/3rdparty/lorawan/src/lora_node.c#L473-L503) :
+
+```c
+/**
+ * Called when the application wants to perform the join process.
+ *
+ * @return int A lora app return code
+ */
+int
+lora_node_join(uint8_t *dev_eui, uint8_t *app_eui, uint8_t *app_key,
+               uint8_t trials)
+{
+    int rc;
+
+    rc = lora_node_chk_if_joined();
+    printf("lora_node_join: joined=%d\r\n", rc);
+    if (rc != LORA_APP_STATUS_ALREADY_JOINED) {
+        printf("lora_node_join: joining network\r\n");
+        /* Send event to MAC */
+        g_lm_join_ev_arg.dev_eui = dev_eui;
+        g_lm_join_ev_arg.app_eui = app_eui;
+        g_lm_join_ev_arg.app_key = app_key;
+        g_lm_join_ev_arg.trials = trials;
+
+        assert(g_lora_mac_data.lm_evq != NULL);
+
+        ble_npl_eventq_put(g_lora_mac_data.lm_evq, &g_lora_mac_data.lm_join_ev);
+        rc = LORA_APP_STATUS_OK;
+    } else {
+        printf("lora_node_join: already joined network\r\n");
+    }
+
+    return rc;
+}
+```
+
+TODO
+
+From [`LoRaMac.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L3086-L3139) :
+
+```c
+LoRaMacStatus_t
+LoRaMacMlmeRequest(MlmeReq_t *mlmeRequest)
+{
+    printf("LoRaMacMlmeRequest\r\n");
+    LoRaMacStatus_t status = LORAMAC_STATUS_SERVICE_UNKNOWN;
+    LoRaMacHeader_t macHdr;
+
+    assert(mlmeRequest != NULL);
+
+    /* If currently running return busy */
+    if ((LoRaMacState & LORAMAC_TX_RUNNING) == LORAMAC_TX_RUNNING) {
+        return LORAMAC_STATUS_BUSY;
+    }
+
+    /* If we are joining do not allow another MLME request */
+    if (LM_F_IS_JOINING()) {
+        return LORAMAC_STATUS_BUSY;
+    }
+
+    /* XXX: do these need to be set? */
+    g_lora_mac_data.txpkt.port = 0;
+    g_lora_mac_data.txpkt.status = LORAMAC_EVENT_INFO_STATUS_ERROR;
+    g_lora_mac_data.txpkt.pkt_type = mlmeRequest->Type;
+
+    switch (mlmeRequest->Type) {
+        case MLME_JOIN:
+            if ((mlmeRequest->Req.Join.DevEui == NULL) ||
+                (mlmeRequest->Req.Join.AppEui == NULL) ||
+                (mlmeRequest->Req.Join.AppKey == NULL) ||
+                (mlmeRequest->Req.Join.NbTrials == 0)) {
+                return LORAMAC_STATUS_PARAMETER_INVALID;
+            }
+
+            ResetMacParameters();
+
+            g_lora_mac_data.cur_join_attempt = 0;
+            g_lora_mac_data.max_join_attempt = mlmeRequest->Req.Join.NbTrials;
+
+            LoRaMacDevEui = mlmeRequest->Req.Join.DevEui;
+            LoRaMacAppEui = mlmeRequest->Req.Join.AppEui;
+            LoRaMacAppKey = mlmeRequest->Req.Join.AppKey;
+            LoRaMacParams.ChannelsDatarate =
+                RegionAlternateDr(LoRaMacRegion,LoRaMacParams.ChannelsDatarate);
+
+            /* Set flag to denote we are trying to join */
+            LM_F_IS_JOINING() = 1;
+
+            macHdr.Value = 0;
+            macHdr.Bits.MType  = FRAME_TYPE_JOIN_REQ;
+            status = Send(&macHdr, 0, NULL);
+            if (status != LORAMAC_STATUS_OK) {
+                LM_F_IS_JOINING() = 0;
+            }
+            break;
+```
+
+TODO
+
+From [`LoRaMac.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L1932-L1954) :
+
+```c
+LoRaMacStatus_t
+Send(LoRaMacHeader_t *macHdr, uint8_t fPort, struct pbuf *om)
+{
+    printf("Send\r\n");
+    LoRaMacFrameCtrl_t fCtrl;
+    LoRaMacStatus_t status = LORAMAC_STATUS_PARAMETER_INVALID;
+
+    fCtrl.Value = 0;
+    fCtrl.Bits.FOptsLen      = 0;
+    fCtrl.Bits.FPending      = 0;
+    fCtrl.Bits.Ack           = false;
+    fCtrl.Bits.AdrAckReq     = false;
+    fCtrl.Bits.Adr           = AdrCtrlOn;
+
+    // Prepare the frame
+    status = PrepareFrame(macHdr, &fCtrl, fPort, om);
+
+    // Validate status
+    if (status == LORAMAC_STATUS_OK) {
+        status = ScheduleTx();
+    }
+    return status;
+}
+```
+
+## Join Network Response
 
 TODO
 
