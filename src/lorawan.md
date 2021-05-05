@@ -514,7 +514,7 @@ int lora_app_join(uint8_t *dev_eui, uint8_t *app_eui, uint8_t *app_key, uint8_t 
 
 Here we validate the parameters and call `lora_node_join`.
 
-Now we cross over from the Application Layer to the __Node Layer__: [`lora_node.c`](https://github.com/lupyuen/bl_iot_sdk/blob/b2e1635091fd539c11d56b125e36f8987c4c38e3/components/3rdparty/lorawan/src/lora_node.c#L473-L503)
+Now we hop over from the Application Layer to the __Node Layer__: [`lora_node.c`](https://github.com/lupyuen/bl_iot_sdk/blob/b2e1635091fd539c11d56b125e36f8987c4c38e3/components/3rdparty/lorawan/src/lora_node.c#L473-L503)
 
 ```c
 /// Perform the join process
@@ -535,11 +535,12 @@ int lora_node_join(uint8_t *dev_eui, uint8_t *app_eui, uint8_t *app_key, uint8_t
     );
 ```
 
-TODO
+Here we're passing a Join Event to the __Event Queue__ that's provided by the NimBLE Porting Layer.
 
-From [`LoRaMac.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L3086-L3139) :
+Again we hop, from the Node Layer to the __Medium Access Control Layer__: [`LoRaMac.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L3086-L3139)
 
 ```c
+/// Background Task that handles the Event Queue
 LoRaMacStatus_t LoRaMacMlmeRequest(MlmeReq_t *mlmeRequest) {
     ...
     //  Check the request type
@@ -549,6 +550,8 @@ LoRaMacStatus_t LoRaMacMlmeRequest(MlmeReq_t *mlmeRequest) {
             //  Compose and send the join request
             status = Send(&macHdr, 0, NULL);
 ```
+
+__`LoRaMacMlmeRequest`__ runs as a __Background Task__, processing the Events that have been enqueued in the Event Queue. (That's how the Node Layer and the Medium Access Control Layer collaborate)
 
 TODO
 
