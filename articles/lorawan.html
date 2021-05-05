@@ -75,10 +75,12 @@
 <li><a href="#multitask-with-nimble-porting-layer">2.6 Multitask with NimBLE Porting Layer</a><ul></ul></li></ul></li>
 <li><a href="#lorawan-driver">3 LoRaWAN Driver</a><ul>
 <li><a href="#whats-inside">3.1 What's Inside</a><ul></ul></li>
-<li><a href="#application-layer">3.2 Application Layer</a><ul></ul></li>
-<li><a href="#node-layer">3.3 Node Layer</a><ul></ul></li>
-<li><a href="#medium-access-control-layer">3.4 Medium Access Control Layer</a><ul></ul></li>
-<li><a href="#command-line-interface-unused">3.5 Command Line Interface (Unused)</a><ul></ul></li></ul></li>
+<li><a href="#join-lorawan-network">3.2 Join LoRaWAN Network</a><ul></ul></li>
+<li><a href="#open-lorawan-port">3.3 Open LoRaWAN Port</a><ul></ul></li>
+<li><a href="#transmit-data-packet">3.4 Transmit Data Packet</a><ul></ul></li>
+<li><a href="#application-layer">3.5 Application Layer</a><ul></ul></li>
+<li><a href="#node-layer">3.6 Node Layer</a><ul></ul></li>
+<li><a href="#medium-access-control-layer">3.7 Medium Access Control Layer</a><ul></ul></li></ul></li>
 <li><a href="#build-and-run-the-bl602-lorawan-firmware">4 Build and Run the BL602 LoRaWAN Firmware</a><ul>
 <li><a href="#flash-the-firmware">4.1 Flash the firmware</a><ul></ul></li>
 <li><a href="#run-the-firmware">4.2 Run the firmware</a><ul></ul></li>
@@ -418,22 +420,41 @@ static void on_rx_timeout(void) {
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/lorawan/customer_app/sdk_app_lorawan"><code>customer_app/sdk_app_lorawan</code></a></li>
 </ul>
 <h2 id="whats-inside" class="section-header"><a href="#whats-inside">3.1 What's Inside</a></h2>
-<p>TODO</p>
+<p>Our BL602 Driver for LoRaWAN has these layers: <strong>Application Layer, Node Layer and Medium Access Control Layer</strong>...</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-driver.png" alt="" /></p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_app.c"><strong>Application Layer: <code>lora_app.c</code></strong></a></p>
 <p>TODO</p>
-<h2 id="application-layer" class="section-header"><a href="#application-layer">3.2 Application Layer</a></h2>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_node.c"><strong>Node Layer: <code>lora_node.c</code></strong></a></p>
+<p>TODO</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c"><strong>Medium Access Control Layer: <code>LoRaMac.c</code></strong></a></p>
+<p>TODO</p>
+</li>
+</ul>
+<p>The LoRaWAN Driver was ported to BL602 from <strong>Apache Mynewt OS</strong>. <a href="https://github.com/apache/mynewt-core/tree/master/net/lora/node">(See this)</a></p>
+<p>(We're not using the <strong>Command-Line Interface</strong> <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_cli.c"><code>lora_cli.c</code></a> that's bundled with our LoRaWAN Driver. Instead we're using the Command-Line Interface that's coded inside our Demo Firmware.)</p>
+<h2 id="join-lorawan-network" class="section-header"><a href="#join-lorawan-network">3.2 Join LoRaWAN Network</a></h2>
+<p>TODO</p>
+<h2 id="open-lorawan-port" class="section-header"><a href="#open-lorawan-port">3.3 Open LoRaWAN Port</a></h2>
+<p>TODO</p>
+<h2 id="transmit-data-packet" class="section-header"><a href="#transmit-data-packet">3.4 Transmit Data Packet</a></h2>
+<p>TODO</p>
+<h2 id="application-layer" class="section-header"><a href="#application-layer">3.5 Application Layer</a></h2>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-driver3.png" alt="" /></p>
 <p>TODO</p>
-<h2 id="node-layer" class="section-header"><a href="#node-layer">3.3 Node Layer</a></h2>
+<h2 id="node-layer" class="section-header"><a href="#node-layer">3.6 Node Layer</a></h2>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-driver4.png" alt="" /></p>
 <p>TODO</p>
-<h2 id="medium-access-control-layer" class="section-header"><a href="#medium-access-control-layer">3.4 Medium Access Control Layer</a></h2>
+<h2 id="medium-access-control-layer" class="section-header"><a href="#medium-access-control-layer">3.7 Medium Access Control Layer</a></h2>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-driver5.png" alt="" /></p>
-<p>TODO</p>
-<h2 id="command-line-interface-unused" class="section-header"><a href="#command-line-interface-unused">3.5 Command Line Interface (Unused)</a></h2>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-driver6.png" alt="" /></p>
 <p>TODO</p>
