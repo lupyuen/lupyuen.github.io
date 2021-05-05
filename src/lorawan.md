@@ -238,7 +238,7 @@ Finally we set the __LoRa Receive Parameters__...
 }
 ```
 
-The `Radio` functions are defined in [`radio.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c) ...
+The "`Radio`" functions are defined in [`radio.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c) ...
 
 -   [__`RadioInit`__ - Init LoRa Transceiver](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L523-L559)
 
@@ -447,6 +447,8 @@ Our BL602 Driver for LoRaWAN has layers (like Onions, Shrek and Kueh Lapis): __A
 1.  [__Medium Access Control Layer: `LoRaMac.c`__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c)
 
     The __Medium Access Control Layer__ implements the LoRaWAN Networking functions by calling the LoRa Transceiver Driver (for RFM90 / SX1262).
+
+    (Yep the Medium Access Control Layer calls the "`Radio`" functions we've seen in the previous chapter)
 
     It runs as a Background Task, communicating with the Node Layer in a queued, asynchronous way via an Event Queue.
 
