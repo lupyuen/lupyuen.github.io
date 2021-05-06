@@ -633,7 +633,12 @@ static void lora_mac_join_accept_rxd(uint8_t *payload, uint16_t size) {
 <p>And that's how we handle the <strong>Join Network Response</strong> from the LoRaWAN Gateway!</p>
 <p><a href="https://lupyuen.github.io/articles/wisgate#wisblock-talks-to-wisgate">(More about LoRaWAN Receive Windows)</a></p>
 <h2 id="open-lorawan-port" class="section-header"><a href="#open-lorawan-port">3.4 Open LoRaWAN Port</a></h2>
-<p>TODO</p>
+<p>Our BL602 gadget has joined the LoRaWAN Network... We're almost ready to send data packets to the LoRaWAN Gateway! But before that, we need to <strong>open a LoRaWAN Application Port</strong>.</p>
+<p>(It's like opening a TCP or UDP socket)</p>
+<p>In our Demo Firmware we enter this command to open LoRaWAN Application Port Number 2...</p>
+<pre><code class="language-text"># las_app_port open 2
+</code></pre>
+<p>(Port #2 seems to be a common port used by LoRaWAN Applications)</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/lorawan.c#L735-L808"><code>lorawan.c</code></a> :</p>
 <pre><code class="language-c">/// `las_app_port open 2` command opens LoRaWAN Application Port 2
 void las_cmd_app_port(char *buf0, int len0, int argc, char **argv) {
