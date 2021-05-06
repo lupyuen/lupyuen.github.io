@@ -703,87 +703,29 @@ In our Demo Firmware we enter this command to open LoRaWAN Application Port Numb
 
 (Port #2 seems to be a common port used by LoRaWAN Applications)
 
-From [`lorawan.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/lorawan.c#L735-L808) :
+The __`las_app_port`__ command calls this function in [`lorawan.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/lorawan.c#L735-L808) ...
 
 ```c
 /// `las_app_port open 2` command opens LoRaWAN Application Port 2
 void las_cmd_app_port(char *buf0, int len0, int argc, char **argv) {
-    int rc;
-    uint8_t port;
-    uint8_t retries;
-
-    if (argc < 3) {
-        printf("Invalid # of arguments.\r\n");
-        goto cmd_app_port_err;
-    }
-
-    port = parse_ull_bounds(argv[2], 1, 255, &rc);
-    if (rc != 0) {
-        printf("Invalid port %s. Must be 1 - 255\r\n", argv[2]);
-        return;
-    }
-
+    ...
+    //  If this is an `open` command...
     if (!strcmp(argv[1], "open")) {
-        rc = lora_app_port_open(port, lora_app_shell_txd_func,
-                                lora_app_shell_rxd_func);
-        if (rc == LORA_APP_STATUS_OK) {
-            printf("Opened app port %u\r\n", port);
-        } else {
-            printf("Failed to open app port %u err=%d\r\n", port, rc);
-        }
-    } else if (!strcmp(argv[1], "close")) {
-        rc = lora_app_port_close(port);
-        if (rc == LORA_APP_STATUS_OK) {
-            printf("Closed app port %u\r\n", port);
-        } else {
-            printf("Failed to close app port %u err=%d\r\n", port, rc);
-        }
-    } else if (!strcmp(argv[1], "cfg")) {
-        if (argc != 4) {
-            printf("Invalid # of arguments.\r\n");
-            goto cmd_app_port_err;
-        }
-        retries = parse_ull_bounds(argv[3], 1, MAX_ACK_RETRIES, &rc);
-        if (rc) {
-            printf("Invalid # of retries. Must be between 1 and "
-                           "%d (inclusve)\r\n", MAX_ACK_RETRIES);
-            return;
-        }
-
-        rc = lora_app_port_cfg(port, retries);
-        if (rc == LORA_APP_STATUS_OK) {
-            printf("App port %u configured w/retries=%u\r\n",
-                           port, retries);
-        } else {
-            printf("Cannot configure port %u err=%d\r\n", port, rc);
-        }
-    } else if (!strcmp(argv[1], "show")) {
-        if (rc == LORA_APP_STATUS_OK) {
-            printf("app port %u\r\n", port);
-            /* XXX: implement */
-        } else {
-            printf("Cannot show app port %u err=%d\r\n", port, rc);
-        }
-    } else {
-        printf("Invalid port command.\r\n");
-        goto cmd_app_port_err;
-    }
-
-    return;
-
-cmd_app_port_err:
-    printf("Usage:\r\n");
-    printf("\tlas_app_port open <port num>\r\n");
-    printf("\tlas_app_port close <port num>\r\n");
-    printf("\tlas_app_port cfg <port num> <retries>\r\n");
-    printf("\r\not implemented! las_app_port show <port num | all>\r\n");
-    return;
-}
+        //  Call the LoRaWAN Driver to open the LoRaWAN Application Port
+        rc = lora_app_port_open(
+            port,                     //  Port Number (2)
+            lora_app_shell_txd_func,  //  Callback Function for Transmit
+            lora_app_shell_rxd_func   //  Callback Function for Receive
+        );
 ```
 
-__`lora_app_port_open`__
+__`las_cmd_app_port`__ calls our LoRaWAN Driver to open the LoRaWAN Port and provides two __Callback Functions__...
 
-From [`lora_app.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_app.c#L148-L205) :
+-   __`lora_app_shell_txd_func`__: Called when a LoRaWAN Packet has been transmitted
+
+-   __`lora_app_shell_rxd_func`__: Called when a LoRaWAN Packet has been received
+
+Here's how our LoRaWAN Driver opens the LoRaWAN Port: [`lora_app.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_app.c#L148-L205)
 
 ```c
 /// Open a LoRaWAN Application Port. This function will 
@@ -791,7 +733,6 @@ From [`lora_app.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/component
 /// datarate and retries, set the transmit done and
 /// received data callbacks, and add port to list of open ports.
 int lora_app_port_open(uint8_t port, lora_txd_func txd_cb, lora_rxd_func rxd_cb) {
-    //  Omitted: Valid parameters
     ...
     //  Make sure port is not opened
     avail = -1;
@@ -806,7 +747,9 @@ int lora_app_port_open(uint8_t port, lora_txd_func txd_cb, lora_rxd_func rxd_cb)
     }
 ```
 
-TODO
+__`lora_app_port_open`__ allocates a port object for the requested port number.
+
+Then it sets the port number, receive callback and transmit callback in the port object...
 
 ```c
     //  Open port if available
@@ -823,6 +766,8 @@ TODO
     return rc;
 }
 ```
+
+We're now ready to transmit data packets to LoRaWAN Port #2!
 
 ## Transmit Data Packet
 
