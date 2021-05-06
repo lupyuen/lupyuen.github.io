@@ -693,12 +693,136 @@ And that's how we handle the __Join Network Response__ from the LoRaWAN Gateway!
 
 TODO
 
+From [`lorawan.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/lorawan.c#L735-L808) :
+
+```c
+/// `las_app_port open 2` command opens LoRaWAN Application Port 2
+void las_cmd_app_port(char *buf0, int len0, int argc, char **argv) {
+    int rc;
+    uint8_t port;
+    uint8_t retries;
+
+    if (argc < 3) {
+        printf("Invalid # of arguments.\r\n");
+        goto cmd_app_port_err;
+    }
+
+    port = parse_ull_bounds(argv[2], 1, 255, &rc);
+    if (rc != 0) {
+        printf("Invalid port %s. Must be 1 - 255\r\n", argv[2]);
+        return;
+    }
+
+    if (!strcmp(argv[1], "open")) {
+        rc = lora_app_port_open(port, lora_app_shell_txd_func,
+                                lora_app_shell_rxd_func);
+        if (rc == LORA_APP_STATUS_OK) {
+            printf("Opened app port %u\r\n", port);
+        } else {
+            printf("Failed to open app port %u err=%d\r\n", port, rc);
+        }
+    } else if (!strcmp(argv[1], "close")) {
+        rc = lora_app_port_close(port);
+        if (rc == LORA_APP_STATUS_OK) {
+            printf("Closed app port %u\r\n", port);
+        } else {
+            printf("Failed to close app port %u err=%d\r\n", port, rc);
+        }
+    } else if (!strcmp(argv[1], "cfg")) {
+        if (argc != 4) {
+            printf("Invalid # of arguments.\r\n");
+            goto cmd_app_port_err;
+        }
+        retries = parse_ull_bounds(argv[3], 1, MAX_ACK_RETRIES, &rc);
+        if (rc) {
+            printf("Invalid # of retries. Must be between 1 and "
+                           "%d (inclusve)\r\n", MAX_ACK_RETRIES);
+            return;
+        }
+
+        rc = lora_app_port_cfg(port, retries);
+        if (rc == LORA_APP_STATUS_OK) {
+            printf("App port %u configured w/retries=%u\r\n",
+                           port, retries);
+        } else {
+            printf("Cannot configure port %u err=%d\r\n", port, rc);
+        }
+    } else if (!strcmp(argv[1], "show")) {
+        if (rc == LORA_APP_STATUS_OK) {
+            printf("app port %u\r\n", port);
+            /* XXX: implement */
+        } else {
+            printf("Cannot show app port %u err=%d\r\n", port, rc);
+        }
+    } else {
+        printf("Invalid port command.\r\n");
+        goto cmd_app_port_err;
+    }
+
+    return;
+
+cmd_app_port_err:
+    printf("Usage:\r\n");
+    printf("\tlas_app_port open <port num>\r\n");
+    printf("\tlas_app_port close <port num>\r\n");
+    printf("\tlas_app_port cfg <port num> <retries>\r\n");
+    printf("\r\not implemented! las_app_port show <port num | all>\r\n");
+    return;
+}
+```
+
+__`lora_app_port_open`__
+
+From [`lora_app.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_app.c#L148-L205) :
+
+```c
+/// Open a LoRaWAN Application Port. This function will 
+/// allocate a LoRaWAN port, set port default values for 
+/// datarate and retries, set the transmit done and
+/// received data callbacks, and add port to list of open ports.
+int lora_app_port_open(uint8_t port, lora_txd_func txd_cb, lora_rxd_func rxd_cb) {
+    //  Omitted: Valid parameters
+    ...
+    //  Make sure port is not opened
+    avail = -1;
+    for (i = 0; i < LORA_APP_NUM_PORTS; ++i) {
+        //  If port not opened, remember first available
+        if (lora_app_ports[i].opened == 0) {
+            if (avail < 0) { avail = i; }
+        } else {
+            //  Make sure port is not already opened
+            if (lora_app_ports[i].port_num == port) { return LORA_APP_STATUS_ALREADY_OPEN; }
+        }
+    }
+```
+
+TODO
+
+```c
+    //  Open port if available
+    if (avail >= 0) {
+        lora_app_ports[avail].port_num = port;  //  Port Number
+        lora_app_ports[avail].rxd_cb = rxd_cb;  //  Receive Callback
+        lora_app_ports[avail].txd_cb = txd_cb;  //  Transmit Callback
+        lora_app_ports[avail].retries = 8;
+        lora_app_ports[avail].opened = 1;
+        rc = LORA_APP_STATUS_OK;
+    } else {
+        rc = LORA_APP_STATUS_ENOMEM;
+    }
+    return rc;
+}
+```
+
+## Transmit Data Packet
+
+TODO
+
 From [`lorawan.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/lorawan.c#L810-L885) :
 
 ```c
 void
-las_cmd_app_tx(char *buf0, int len0, int argc, char **argv)
-{
+las_cmd_app_tx(char *buf0, int len0, int argc, char **argv) {
     int rc;
     uint8_t port;
     uint8_t len;
@@ -774,51 +898,6 @@ cmd_app_tx_err:
 }
 ```
 
-__`lora_app_port_open`__
-
-From [`lora_app.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_app.c#L148-L205) :
-
-```c
-/// Open a LoRaWAN Application Port. This function will 
-/// allocate a LoRaWAN port, set port default values for 
-/// datarate and retries, set the transmit done and
-/// received data callbacks, and add port to list of open ports.
-int lora_app_port_open(uint8_t port, lora_txd_func txd_cb, lora_rxd_func rxd_cb) {
-    //  Omitted: Valid parameters
-    ...
-    //  Make sure port is not opened
-    avail = -1;
-    for (i = 0; i < LORA_APP_NUM_PORTS; ++i) {
-        //  If port not opened, remember first available
-        if (lora_app_ports[i].opened == 0) {
-            if (avail < 0) { avail = i; }
-        } else {
-            //  Make sure port is not already opened
-            if (lora_app_ports[i].port_num == port) { return LORA_APP_STATUS_ALREADY_OPEN; }
-        }
-    }
-```
-
-TODO
-
-```c
-    //  Open port if available
-    if (avail >= 0) {
-        lora_app_ports[avail].port_num = port;  //  Port Number
-        lora_app_ports[avail].rxd_cb = rxd_cb;  //  Receive Callback
-        lora_app_ports[avail].txd_cb = txd_cb;  //  Transmit Callback
-        lora_app_ports[avail].retries = 8;
-        lora_app_ports[avail].opened = 1;
-        rc = LORA_APP_STATUS_OK;
-    } else {
-        rc = LORA_APP_STATUS_ENOMEM;
-    }
-    return rc;
-}
-```
-
-## Transmit Data Packet
-
 TODO
 
 ![Application Layer](https://lupyuen.github.io/images/lorawan-driver3.png)
@@ -871,8 +950,6 @@ cp build_out/sdk_app_lorawan.bin ~/blflash
 (Remember to use the __`lorawan`__ branch, not the default __`master`__ branch)
 
 ## Flash the firmware
-
-TODO
 
 Follow these steps to install `blflash`...
 
@@ -932,8 +1009,6 @@ cargo run flash sdk_app_lorawan.bin --port COM5
 
 ## Run the firmware
 
-TODO
-
 Set BL602 to __Normal Mode__ (Non-Flashing) and restart the board...
 
 __For PineCone:__
@@ -981,16 +1056,7 @@ Let's enter some commands to join the LoRaWAN Network and transmit a LoRaWAN Dat
     ```text
     # help
     ====User Commands====
-    create_task              : Create a task
-    put_event                : Add an event
-    init_driver              : Init LoRa driver
-    send_message             : Send LoRa message
-    receive_message          : Receive LoRa message
-    read_registers           : Read registers
-    spi_result               : Show SPI counters
-    blogset                  : blog pri set level
-    blogdump                 : blog info dump
-    bl_sys_time_now          : sys time now
+    TODO
     ```
 
 1.  First we __create the Background Task__ that will process received LoRa Packets.
@@ -1003,70 +1069,65 @@ Let's enter some commands to join the LoRaWAN Network and transmit a LoRaWAN Dat
 
     This command calls the function `create_task`, which we have seen earlier.
 
-1.  Then we __initialise our LoRa Transceiver__. 
+1.  Then we __initialise our LoRaWAN Driver__. 
 
     Enter this command...
 
     ```text
-    # init_driver
+    # init_lorawan
     ```
 
-    This command calls the function `init_driver`, which we have seen earlier.
+1.  TODO
 
-1.  We should see this...
+    Device EUI: Copy from ChirpStack: Applications -> app -> Device EUI
+
+    ```text    
+    # las_wr_dev_eui 0x4b:0xc1:0x5e:0xe7:0x37:0x7b:0xb1:0x5b
+    ```
+
+1.  TODO
+
+    App EUI: Not needed for ChirpStack, set to default 0000000000000000
 
     ```text
-    # init_driver
-    SX1276 init
-    SX1276 interrupt init
-    SX1276 register handler: GPIO 11
-    SX1276 register handler: GPIO 0
-    SX1276 register handler: GPIO 5
-    SX1276 register handler: GPIO 12
+    # las_wr_app_eui 0x00:0x00:0x00:0x00:0x00:0x00:0x00:0x00
     ```
 
-    This says that `register_gpio_handler` has __registered the GPIO Handler Functions__ for `DIO0` to `DIO3`. (`DIO4` and `DIO5` are unused)
+1.  TODO
 
-    Our SX1276 Driver is now __listening for GPIO Interrupts__ and handling them.
-
-1.  Then the __GPIO Interrupt for `DIO3`__ gets triggered automatically...
+    App Key: Copy from ChirpStack: Applications -> app -> Devices -> device_otaa_class_a -> Keys (OTAA) -> Application Key
 
     ```text
-    SX1276 DIO3: Channel activity detection    
+    # las_wr_app_key 0xaa:0xff:0xad:0x5c:0x7e:0x87:0xf6:0x4d:0xe3:0xf0:0x87:0x32:0xfc:0x1d:0xd2:0x5d
     ```
 
-    (We're not sure why this always happens when we initialise the driver... But it's harmless)
+1.  TODO
 
-1.  Next we __receive a LoRa Packet__...
+    Join LoRaWAN network, try 3 times
 
     ```text
-    # receive_message
+    # las_join 3
     ```
 
-    This command calls the function `receive_message`, which we have seen earlier.
+1.  TODO
 
-1.  We should see this...
+    Open LoRaWAN Application Port 2
 
     ```text
-    # receive_message
-    ...
-    SX1276 DIO0: Packet received
-    Rx done: RadioEvents.RxDone
+    # las_app_port open 2
     ```
 
-    This says that the SX1276 Driver has __received a LoRa Packet.__
+1.  TODO
 
-    And the packet contains `"Hello"`...
+    Send data to LoRaWAN port 2, 5 bytes, unconfirmed (0)
 
     ```text
-    Rx done: 48 65 6c 6c 6f 
+    # las_app_tx 2 5 0
     ```
-
-    (That's the ASCII code for `"Hello"`)
 
     [__Watch the demo video on YouTube__](https://youtu.be/BMMIIiZG6G0)
 
-    [__Check out the receive log__](https://gist.github.com/lupyuen/9bd7e7daa2497e8352d2cffec4be444d)
+    [__Read the output log__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/README.md#output-log)
 
 # Troubleshoot LoRaWAN
 
