@@ -691,7 +691,17 @@ And that's how we handle the __Join Network Response__ from the LoRaWAN Gateway!
 
 ## Open LoRaWAN Port
 
-TODO
+Our BL602 gadget has joined the LoRaWAN Network... We're almost ready to send data packets to the LoRaWAN Gateway! But before that, we need to __open a LoRaWAN Application Port__.
+
+(It's like opening a TCP or UDP socket)
+
+In our Demo Firmware we enter this command to open LoRaWAN Application Port Number 2...
+
+```text
+# las_app_port open 2
+```
+
+(Port #2 seems to be a common port used by LoRaWAN Applications)
 
 From [`lorawan.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/lorawan.c#L735-L808) :
 
