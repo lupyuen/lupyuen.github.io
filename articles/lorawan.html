@@ -639,89 +639,34 @@ static void lora_mac_join_accept_rxd(uint8_t *payload, uint16_t size) {
 <pre><code class="language-text"># las_app_port open 2
 </code></pre>
 <p>(Port #2 seems to be a common port used by LoRaWAN Applications)</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/lorawan.c#L735-L808"><code>lorawan.c</code></a> :</p>
+<p>The <strong><code>las_app_port</code></strong> command calls this function in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/lorawan.c#L735-L808"><code>lorawan.c</code></a> ...</p>
 <pre><code class="language-c">/// `las_app_port open 2` command opens LoRaWAN Application Port 2
 void las_cmd_app_port(char *buf0, int len0, int argc, char **argv) {
-    int rc;
-    uint8_t port;
-    uint8_t retries;
-
-    if (argc &lt; 3) {
-        printf(&quot;Invalid # of arguments.\r\n&quot;);
-        goto cmd_app_port_err;
-    }
-
-    port = parse_ull_bounds(argv[2], 1, 255, &amp;rc);
-    if (rc != 0) {
-        printf(&quot;Invalid port %s. Must be 1 - 255\r\n&quot;, argv[2]);
-        return;
-    }
-
+    ...
+    //  If this is an `open` command...
     if (!strcmp(argv[1], &quot;open&quot;)) {
-        rc = lora_app_port_open(port, lora_app_shell_txd_func,
-                                lora_app_shell_rxd_func);
-        if (rc == LORA_APP_STATUS_OK) {
-            printf(&quot;Opened app port %u\r\n&quot;, port);
-        } else {
-            printf(&quot;Failed to open app port %u err=%d\r\n&quot;, port, rc);
-        }
-    } else if (!strcmp(argv[1], &quot;close&quot;)) {
-        rc = lora_app_port_close(port);
-        if (rc == LORA_APP_STATUS_OK) {
-            printf(&quot;Closed app port %u\r\n&quot;, port);
-        } else {
-            printf(&quot;Failed to close app port %u err=%d\r\n&quot;, port, rc);
-        }
-    } else if (!strcmp(argv[1], &quot;cfg&quot;)) {
-        if (argc != 4) {
-            printf(&quot;Invalid # of arguments.\r\n&quot;);
-            goto cmd_app_port_err;
-        }
-        retries = parse_ull_bounds(argv[3], 1, MAX_ACK_RETRIES, &amp;rc);
-        if (rc) {
-            printf(&quot;Invalid # of retries. Must be between 1 and &quot;
-                           &quot;%d (inclusve)\r\n&quot;, MAX_ACK_RETRIES);
-            return;
-        }
-
-        rc = lora_app_port_cfg(port, retries);
-        if (rc == LORA_APP_STATUS_OK) {
-            printf(&quot;App port %u configured w/retries=%u\r\n&quot;,
-                           port, retries);
-        } else {
-            printf(&quot;Cannot configure port %u err=%d\r\n&quot;, port, rc);
-        }
-    } else if (!strcmp(argv[1], &quot;show&quot;)) {
-        if (rc == LORA_APP_STATUS_OK) {
-            printf(&quot;app port %u\r\n&quot;, port);
-            /* XXX: implement */
-        } else {
-            printf(&quot;Cannot show app port %u err=%d\r\n&quot;, port, rc);
-        }
-    } else {
-        printf(&quot;Invalid port command.\r\n&quot;);
-        goto cmd_app_port_err;
-    }
-
-    return;
-
-cmd_app_port_err:
-    printf(&quot;Usage:\r\n&quot;);
-    printf(&quot;\tlas_app_port open &lt;port num&gt;\r\n&quot;);
-    printf(&quot;\tlas_app_port close &lt;port num&gt;\r\n&quot;);
-    printf(&quot;\tlas_app_port cfg &lt;port num&gt; &lt;retries&gt;\r\n&quot;);
-    printf(&quot;\r\not implemented! las_app_port show &lt;port num | all&gt;\r\n&quot;);
-    return;
-}
+        //  Call the LoRaWAN Driver to open the LoRaWAN Application Port
+        rc = lora_app_port_open(
+            port,                     //  Port Number (2)
+            lora_app_shell_txd_func,  //  Callback Function for Transmit
+            lora_app_shell_rxd_func   //  Callback Function for Receive
+        );
 </code></pre>
-<p><strong><code>lora_app_port_open</code></strong></p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_app.c#L148-L205"><code>lora_app.c</code></a> :</p>
+<p><strong><code>las_cmd_app_port</code></strong> calls our LoRaWAN Driver to open the LoRaWAN Port and provides two <strong>Callback Functions</strong>...</p>
+<ul>
+<li>
+<p><strong><code>lora_app_shell_txd_func</code></strong>: Called when a LoRaWAN Packet has been transmitted</p>
+</li>
+<li>
+<p><strong><code>lora_app_shell_rxd_func</code></strong>: Called when a LoRaWAN Packet has been received</p>
+</li>
+</ul>
+<p>Here's how our LoRaWAN Driver opens the LoRaWAN Port: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_app.c#L148-L205"><code>lora_app.c</code></a></p>
 <pre><code class="language-c">/// Open a LoRaWAN Application Port. This function will 
 /// allocate a LoRaWAN port, set port default values for 
 /// datarate and retries, set the transmit done and
 /// received data callbacks, and add port to list of open ports.
 int lora_app_port_open(uint8_t port, lora_txd_func txd_cb, lora_rxd_func rxd_cb) {
-    //  Omitted: Valid parameters
     ...
     //  Make sure port is not opened
     avail = -1;
@@ -735,7 +680,8 @@ int lora_app_port_open(uint8_t port, lora_txd_func txd_cb, lora_rxd_func rxd_cb)
         }
     }
 </code></pre>
-<p>TODO</p>
+<p><strong><code>lora_app_port_open</code></strong> allocates a port object for the requested port number.</p>
+<p>Then it sets the port number, receive callback and transmit callback in the port object...</p>
 <pre><code class="language-c">    //  Open port if available
     if (avail &gt;= 0) {
         lora_app_ports[avail].port_num = port;  //  Port Number
@@ -750,6 +696,7 @@ int lora_app_port_open(uint8_t port, lora_txd_func txd_cb, lora_rxd_func rxd_cb)
     return rc;
 }
 </code></pre>
+<p>We're now ready to transmit data packets to LoRaWAN Port #2!</p>
 <h2 id="transmit-data-packet" class="section-header"><a href="#transmit-data-packet">3.5 Transmit Data Packet</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/lorawan.c#L810-L885"><code>lorawan.c</code></a> :</p>
