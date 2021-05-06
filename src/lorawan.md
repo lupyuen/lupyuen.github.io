@@ -646,27 +646,24 @@ static void lora_mac_join_accept_rxd(uint8_t *payload, uint16_t size) {
     //  Decrypt the response
     LoRaMacJoinDecrypt(payload + 1, size - 1, LoRaMacAppKey, LoRaMacRxPayload + 1);
     ...
-
     //  Verify the Message Integrity Code
     LoRaMacJoinComputeMic(LoRaMacRxPayload, size - LORAMAC_MFR_LEN, LoRaMacAppKey, &mic);
     ...
-
     //  Omitted: Update the Join Network Status
     ...
-
     //  Stop Second Receive Window
     lora_mac_rx_win2_stop();
 ```
 
-__`lora_mac_join_accept_rxd`__ handles the Join Accept Response by...
+__`lora_mac_join_accept_rxd`__ handles the Join Accept Response...
 
-1.  Decrypting the response
+1.  Decrypt the response
 
-1.  Verifying the Message Integrity Code
+1.  Verify the Message Integrity Code
 
-1.  Updating the Join Network Status
+1.  Update the Join Network Status
 
-1.  Stopping the Second Receive Window
+1.  Stop the Second Receive Window
 
 [(More about LoRaWAN Encryption and Message Integrity Code)](https://lupyuen.github.io/articles/wisgate#join-network-request)
 
@@ -695,6 +692,130 @@ And that's how we handle the __Join Network Response__ from the LoRaWAN Gateway!
 ## Open LoRaWAN Port
 
 TODO
+
+From [`lorawan.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/lorawan.c#L810-L885) :
+
+```c
+void
+las_cmd_app_tx(char *buf0, int len0, int argc, char **argv)
+{
+    int rc;
+    uint8_t port;
+    uint8_t len;
+    uint8_t pkt_type;
+    struct pbuf *om;
+    Mcps_t mcps_type;
+
+    if (argc < 4) {
+        printf("Invalid # of arguments\r\n");
+        goto cmd_app_tx_err;
+    }
+
+    port = parse_ull_bounds(argv[1], 1, 255, &rc);
+    if (rc != 0) {
+        printf("Invalid port %s. Must be 1 - 255\r\n", argv[2]);
+        return;
+    }
+    len = parse_ull_bounds(argv[2], 1, LORA_APP_SHELL_MAX_APP_PAYLOAD, &rc);
+    if (rc != 0) {
+        printf("Invalid length. Must be 1 - %u\r\n",
+                       LORA_APP_SHELL_MAX_APP_PAYLOAD);
+        return;
+    }
+    pkt_type = parse_ull_bounds(argv[3], 0, 1, &rc);
+    if (rc != 0) {
+        printf("Invalid type. Must be 0 (unconfirmed) or 1 (confirmed)"
+                       "\r\n");
+        return;
+    }
+
+    if (lora_app_mtu() < len) {
+        printf("Can send at max %d bytes\r\n", lora_app_mtu());
+        return;
+    }
+
+    /* Attempt to allocate a mbuf */
+    om = lora_pkt_alloc(len);
+    if (!om) {
+        printf("Unable to allocate mbuf\r\n");
+        return;
+    }
+
+    /* Get correct packet type. */
+    if (pkt_type == 0) {
+        mcps_type = MCPS_UNCONFIRMED;
+    } else {
+        mcps_type = MCPS_CONFIRMED;
+    }
+
+    rc = pbuf_copyinto(om, 0, las_cmd_app_tx_buf, len);
+    assert(rc == 0);
+
+    rc = lora_app_port_send(port, mcps_type, om);
+    if (rc) {
+        printf("Failed to send to port %u err=%d\r\n", port, rc);
+        pbuf_free(om);
+    } else {
+        printf("Packet sent on port %u\r\n", port);
+    }
+
+    return;
+
+cmd_app_tx_err:
+    printf("Usage:\r\n");
+    printf("\tlas_app_tx <port> <len> <type>\r\n");
+    printf("Where:\r\n");
+    printf("\tport = port number on which to send\r\n");
+    printf("\tlen = size n bytes of app data\r\n");
+    printf("\ttype = 0 for unconfirmed, 1 for confirmed\r\n");
+    printf("\tex: las_app_tx 10 20 1\r\n");
+
+    return;
+}
+```
+
+__`lora_app_port_open`__
+
+From [`lora_app.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_app.c#L148-L205) :
+
+```c
+/// Open a LoRaWAN Application Port. This function will 
+/// allocate a LoRaWAN port, set port default values for 
+/// datarate and retries, set the transmit done and
+/// received data callbacks, and add port to list of open ports.
+int lora_app_port_open(uint8_t port, lora_txd_func txd_cb, lora_rxd_func rxd_cb) {
+    //  Omitted: Valid parameters
+    ...
+    //  Make sure port is not opened
+    avail = -1;
+    for (i = 0; i < LORA_APP_NUM_PORTS; ++i) {
+        //  If port not opened, remember first available
+        if (lora_app_ports[i].opened == 0) {
+            if (avail < 0) { avail = i; }
+        } else {
+            //  Make sure port is not already opened
+            if (lora_app_ports[i].port_num == port) { return LORA_APP_STATUS_ALREADY_OPEN; }
+        }
+    }
+```
+
+TODO
+
+```c
+    //  Open port if available
+    if (avail >= 0) {
+        lora_app_ports[avail].port_num = port;  //  Port Number
+        lora_app_ports[avail].rxd_cb = rxd_cb;  //  Receive Callback
+        lora_app_ports[avail].txd_cb = txd_cb;  //  Transmit Callback
+        lora_app_ports[avail].retries = 8;
+        lora_app_ports[avail].opened = 1;
+        rc = LORA_APP_STATUS_OK;
+    } else {
+        rc = LORA_APP_STATUS_ENOMEM;
+    }
+    return rc;
+}
+```
 
 ## Transmit Data Packet
 
