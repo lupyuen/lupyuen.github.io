@@ -777,15 +777,19 @@ We're now ready to transmit data packets to LoRaWAN Port #2!
 
 ## Transmit Data Packet
 
-TODO
-
-Send data to LoRaWAN port 2, 5 bytes, unconfirmed (0)
+Here's the command that we enter into our Demo Firmware to __transmit a LoRaWAN Data Packet to port 2, containing 5 bytes__...
 
 ```text
 # las_app_tx 2 5 0
 ```
 
-From [`lorawan.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/lorawan.c#L810-L885) :
+The "`0`" at the end indicates that this is an __Unconfirmed Message__: We don't expect any acknowledgement from the LoRaWAN Gateway.
+
+This is the preferred way for a low-power LoRaWAN device to transmit sensor data, since it __doesn't need to wait for the acknowledgement__ (and consume additional power).
+
+(It's OK if a LoRaWAN Data Packet gets lost due to noise or inteference... LoRaWAN sensor devices are supposed to transmit data packets periodically anyway)
+
+The __`las_app_tx`__ command is implemented here: [`lorawan.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/lorawan.c#L810-L885)
 
 ```c
 /// `las_app_tx 2 5 0` command transmits to LoRaWAN Port 2
@@ -811,6 +815,8 @@ void las_cmd_app_tx(char *buf0, int len0, int argc, char **argv) {
         om          //  Packet Buffer
     );
 ```
+
+__`las_cmd_app_tx`__
 
 TODO
 
@@ -880,87 +886,11 @@ LoRaMacStatus_t LoRaMacMcpsRequest(struct pbuf *om, struct lora_pkt_info *txi) {
     status = Send(&macHdr, txi->port, om);
 ```
 
-TODO
+We've seen the __`Send`__ function earlier, it...
 
-```text
-# lora_mac_proc_tx_q_event
-lora_mac_proc_tx_q_event: send from txq
-pbuf_queue_get
-Send
-ScheduleTx
-CalculateBackOff
-RegionNextChannel
-RegionAS923NextChannel
-RegionAS923NextChannel: channel=1
-RegionComputeRxWindowParameters
-RegionComputeRxWindowParameters
-lora_mac_rx_disable
-TODO: Radio.RxDisable
-SendFrameOnChannel: channel=1
-RegionTxConfig
-RegionAS923TxConfig
-RadioSetChannel: freq=923400000
-SX126xWakeup
-RadioSetTxConfig: modem=1, power=13, fdev=0, bandwidth=0, datarate=10, coderate=1, preambleLen=8, fixLen=0, crcOn=1, freqHopOn=0, hopPeriod=0, iqInverted=0, timeout=3000
-RadioSetTxConfig: SpreadingFactor=10, Bandwidth=4, CodingRate=1, LowDatarateOptimize=0, PreambleLength=8, HeaderType=0, PayloadLength=64, CrcMode=1, InvertIQ=0
-RadioStandby
-RadioSetModem
-SX126xSetRfTxPower
-SX126xSetTxParams: power=13, rampTime=7
-SX126xGetDeviceId: SX1262
-SX126xSetPaConfig: paDutyCycle=4, hpMax=7, deviceSel=0, paLut=1 
-SendFrameOnChannel: channel=1, datarate=2, txpower=0, maxeirp=16, antennagain=2
-RadioSend: size=18
-40 9b 0a 6b 01 00 00 00 02 a8 09 cf 2d 0e 5e 65 8b 9b 
-RadioSend: PreambleLength=8, HeaderType=0, PayloadLength=18, CrcMode=1, InvertIQ=0
-RadioOnDioIrq
-RadioIrqProcess
-SX126xReadCommand
-IRQ_TX_DONE
-OnRadioTxDone
-RadioSleep
-OnRxWindow1TimerEvent
-RadioSetChannel: freq=923400000
-SX126xWakeup
-RadioSetRxConfig
-RadioStandby
-RadioSetModem
-RadioSetRxConfig done
-RadioRx
-RadioOnDioIrq
-RadioIrqProcess
-SX126xReadCommand
-IRQ_RX_TX_TIMEOUT
-OnRadioRxTimeout
-RadioSleep
-OnRxWindow2TimerEvent
-RadioSetChannel: freq=923200000
-SX126xWakeup
-RadioSetRxConfig
-RadioStandby
-RadioSetModem
-RadioSetRxConfig done
-RadioRx
-RadioOnDioIrq
-RadioIrqProcess
-SX126xReadCommand
-IRQ_RX_TX_TIMEOUT
-OnRadioRxTimeout
-RadioSleep
-pbuf_queue_put
-lora_node_chk_txq
-pbuf_queue_get
-Txd on port 2 type=unconf status=0 len=5
-	dr:2
-	txpower (dbm):0
-	tries:1
-	ack_rxd:0
-	tx_time_on_air:330
-	uplink_cntr:0
-	uplink_chan:1
-pbuf_queue_get
-lora_mac_proc_tx_q_event
-```
+1.  __Transmits the packet__ by calling the LoRa Transceiver Driver
+
+1.  __Opens two Receive Windows__ and listens briefly (twice) for incoming packets
 
 TODO
 
