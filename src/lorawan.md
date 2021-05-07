@@ -773,84 +773,37 @@ We're now ready to transmit data packets to LoRaWAN Port #2!
 
 TODO
 
+Send data to LoRaWAN port 2, 5 bytes, unconfirmed (0)
+
+```text
+las_app_tx 2 5 0
+```
+
 From [`lorawan.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/lorawan.c#L810-L885) :
 
 ```c
-void
-las_cmd_app_tx(char *buf0, int len0, int argc, char **argv) {
-    int rc;
-    uint8_t port;
-    uint8_t len;
-    uint8_t pkt_type;
-    struct pbuf *om;
-    Mcps_t mcps_type;
-
-    if (argc < 4) {
-        printf("Invalid # of arguments\r\n");
-        goto cmd_app_tx_err;
-    }
-
-    port = parse_ull_bounds(argv[1], 1, 255, &rc);
-    if (rc != 0) {
-        printf("Invalid port %s. Must be 1 - 255\r\n", argv[2]);
-        return;
-    }
-    len = parse_ull_bounds(argv[2], 1, LORA_APP_SHELL_MAX_APP_PAYLOAD, &rc);
-    if (rc != 0) {
-        printf("Invalid length. Must be 1 - %u\r\n",
-                       LORA_APP_SHELL_MAX_APP_PAYLOAD);
-        return;
-    }
-    pkt_type = parse_ull_bounds(argv[3], 0, 1, &rc);
-    if (rc != 0) {
-        printf("Invalid type. Must be 0 (unconfirmed) or 1 (confirmed)"
-                       "\r\n");
-        return;
-    }
-
-    if (lora_app_mtu() < len) {
-        printf("Can send at max %d bytes\r\n", lora_app_mtu());
-        return;
-    }
-
-    /* Attempt to allocate a mbuf */
+/// `las_app_tx 2 5 0` command transmits to LoRaWAN Port 2
+/// a data packet of 5 bytes, as an Unconfirmed Message (0)
+void las_cmd_app_tx(char *buf0, int len0, int argc, char **argv) {
+    ...
+    //  Allocate a Packet Buffer
     om = lora_pkt_alloc(len);
-    if (!om) {
-        printf("Unable to allocate mbuf\r\n");
-        return;
-    }
-
-    /* Get correct packet type. */
-    if (pkt_type == 0) {
-        mcps_type = MCPS_UNCONFIRMED;
-    } else {
-        mcps_type = MCPS_CONFIRMED;
-    }
-
-    rc = pbuf_copyinto(om, 0, las_cmd_app_tx_buf, len);
+    ...
+    //  Copy the data into the Packet Buffer
+    int rc = pbuf_copyinto(
+        om,  //  Packet Buffer
+        0,   //  Offset into the Packet Buffer
+        las_cmd_app_tx_buf,  //  Data to be copied
+        len                  //  Data length
+    );
     assert(rc == 0);
 
-    rc = lora_app_port_send(port, mcps_type, om);
-    if (rc) {
-        printf("Failed to send to port %u err=%d\r\n", port, rc);
-        pbuf_free(om);
-    } else {
-        printf("Packet sent on port %u\r\n", port);
-    }
-
-    return;
-
-cmd_app_tx_err:
-    printf("Usage:\r\n");
-    printf("\tlas_app_tx <port> <len> <type>\r\n");
-    printf("Where:\r\n");
-    printf("\tport = port number on which to send\r\n");
-    printf("\tlen = size n bytes of app data\r\n");
-    printf("\ttype = 0 for unconfirmed, 1 for confirmed\r\n");
-    printf("\tex: las_app_tx 10 20 1\r\n");
-
-    return;
-}
+    //  Transmit the Packet Buffer
+    rc = lora_app_port_send(
+        port,       //  Port Number
+        mcps_type,  //  Message Type: Unconfirmed
+        om          //  Packet Buffer
+    );
 ```
 
 TODO
