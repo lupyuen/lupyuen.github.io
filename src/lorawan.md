@@ -819,48 +819,44 @@ __`lora_app_port_send`__
 From [`lora_app.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_app.c#L262-L304) :
 
 ```c
-/**
- * Send a packet on a port. If this routine returns an error the "transmitted"
- * callback will NOT be called; it is the callers responsibility to handle the
- * packet appropriately (including freeing any memory if needed).
- *
- * @param port Port number
- * @param pkt_type Type of packet
- * @param om Pointer to packet
- *
- * @return int A return code from set of lora return codes
- */
-int
-lora_app_port_send(uint8_t port, Mcps_t pkt_type, struct pbuf *om)
-{
-    int rc;
-    struct lora_app_port *lap;
-    struct lora_pkt_info *lpkt;
-
-    /* If no buffer to send, fine. */
-    if ((om == NULL) || (om->len == 0)) {
-        return LORA_APP_STATUS_INVALID_PARAM;
-    }
-
-    /* Check valid packet type. Only confirmed and unconfirmed for now. */
-    if ((pkt_type != MCPS_UNCONFIRMED) && (pkt_type != MCPS_CONFIRMED)) {
-        return LORA_APP_STATUS_INVALID_PARAM;
-    }
-
+/// Send a LoRaWAN Packet on a LoRaWAN Port
+int lora_app_port_send(uint8_t port, Mcps_t pkt_type, struct pbuf *om) {
+    ...
+    //  Find the LoRaWAN port
     lap = lora_app_port_find_open(port);
-    if (lap) {
-        /* Set packet information required by MAC */
-        lpkt = (struct lora_pkt_info *) get_pbuf_header(om, sizeof(struct lora_pkt_info));
-        lpkt->port = port;
-        lpkt->pkt_type = pkt_type;
-        lpkt->txdinfo.retries = lap->retries;
-        lora_node_mcps_request(om);
-        rc = LORA_APP_STATUS_OK;
-    } else {
-        rc = LORA_APP_STATUS_NO_PORT;
-    }
 
-    return rc;
+    //  Set the header in the Packet Buffer
+    lpkt = (struct lora_pkt_info *) get_pbuf_header(om, sizeof(struct lora_pkt_info));
+    lpkt->port = port;
+    lpkt->pkt_type = pkt_type;
+    lpkt->txdinfo.retries = lap->retries;
+
+    //  Call the Node Layer to transmit the packet
+    lora_node_mcps_request(om);
+```
+
+TODO
+
+From [`lora_node.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_node.c#L142-L159) :
+
+```c
+/**
+ * This is the application to mac layer transmit interface.
+ *
+ * @param om Pointer to transmit packet
+ */
+void
+lora_node_mcps_request(struct pbuf *om)
+{
+    printf("lora_node_mcps_request\r\n");
+    assert(om != NULL);
+    int rc;
+
+    lora_node_log(LORA_NODE_LOG_APP_TX, 0, om->len, (uint32_t)om);
+
+    assert(g_lora_mac_data.lm_evq != NULL);
+    rc = pbuf_queue_put(&g_lora_mac_data.lm_txq, g_lora_mac_data.lm_evq, om);
+    assert(rc == 0);
 }
 ```
 
