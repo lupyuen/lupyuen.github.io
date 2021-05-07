@@ -749,52 +749,21 @@ int lora_app_port_send(uint8_t port, Mcps_t pkt_type, struct pbuf *om) {
 </code></pre>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_node.c#L142-L159"><code>lora_node.c</code></a> :</p>
-<pre><code class="language-c">/**
- * This is the application to mac layer transmit interface.
- *
- * @param om Pointer to transmit packet
- */
-void
-lora_node_mcps_request(struct pbuf *om)
-{
-    printf(&quot;lora_node_mcps_request\r\n&quot;);
-    assert(om != NULL);
-    int rc;
-
-    lora_node_log(LORA_NODE_LOG_APP_TX, 0, om-&gt;len, (uint32_t)om);
-
-    assert(g_lora_mac_data.lm_evq != NULL);
-    rc = pbuf_queue_put(&amp;g_lora_mac_data.lm_txq, g_lora_mac_data.lm_evq, om);
-    assert(rc == 0);
-}
+<pre><code class="language-c">/// Transmit a LoRaWAN Packet by adding it to the Transmit Queue
+void lora_node_mcps_request(struct pbuf *om) {
+    ...
+    //  Add the Packet Buffer to the Transmit Queue
+    rc = pbuf_queue_put(
+        &amp;g_lora_mac_data.lm_txq,  //  Transmit Queue
+        g_lora_mac_data.lm_evq,   //  Event Queue
+        om                        //  Packet Buffer
+    );
 </code></pre>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_node.c#L265-L413"><code>lora_node.c</code></a></p>
-<pre><code class="language-c">/**
- * Process transmit enqueued event
- *
- * @param ev Pointer to transmit enqueue event
- */
-static void
-lora_mac_proc_tx_q_event(struct ble_npl_event *ev)
-{
-    printf(&quot;lora_mac_proc_tx_q_event\r\n&quot;);
-    LoRaMacStatus_t rc;
-    LoRaMacEventInfoStatus_t evstatus;
-    LoRaMacTxInfo_t txinfo;
-    struct lora_pkt_info *lpkt;
-    struct pbuf *om;
-    struct pbuf_list *mp;
-
-    /* Stop the transmit callback because something was just queued */
-    ble_npl_callout_stop(&amp;g_lora_mac_data.lm_txq_timer);
-
-    /* If busy just leave */
-    if (lora_mac_tx_state() == LORAMAC_STATUS_BUSY) {
-        /* XXX: this should not be needed */
-        lora_node_reset_txq_timer();
-        return;
-    }
+<pre><code class="language-c">/// Process a LoRaWAN Packet from the Transmit Queue
+static void lora_mac_proc_tx_q_event(struct ble_npl_event *ev) {
+    ...
 
     /*
      * Check if possible to send frame. If a MAC command length error we
@@ -918,6 +887,90 @@ proc_txq_om_done:
         lpkt-&gt;status = evstatus;
         lora_app_mcps_confirm(om);
     }
+}
+</code></pre>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L3159-L3239"><code>LoRaMac.c</code></a> :</p>
+<pre><code class="language-c">LoRaMacStatus_t
+LoRaMacMcpsRequest(struct pbuf *om, struct lora_pkt_info *txi)
+{
+    LoRaMacStatus_t status;
+    GetPhyParams_t getPhy;
+    PhyParam_t phyParam;
+    LoRaMacHeader_t macHdr;
+    VerifyParams_t verify;
+
+    assert(txi != NULL);
+
+    if (LM_F_IS_JOINING() || (lora_mac_tx_state() == LORAMAC_STATUS_BUSY)) {
+        return LORAMAC_STATUS_BUSY;
+    }
+
+    macHdr.Value = 0;
+
+    /*
+     * ack timeout retries counter must be reset every time a new request
+     * (unconfirmed or confirmed) is performed.
+     */
+    g_lora_mac_data.ack_timeout_retries_cntr = 1;
+
+    switch (txi-&gt;pkt_type) {
+        case MCPS_UNCONFIRMED:
+            g_lora_mac_data.ack_timeout_retries = 1;
+            macHdr.Bits.MType = FRAME_TYPE_DATA_UNCONFIRMED_UP;
+            break;
+        case MCPS_CONFIRMED:
+            /* The retries field is seeded with trials, then cleared */
+            g_lora_mac_data.ack_timeout_retries = txi-&gt;txdinfo.retries;
+            if (g_lora_mac_data.ack_timeout_retries &gt; MAX_ACK_RETRIES) {
+                g_lora_mac_data.ack_timeout_retries = MAX_ACK_RETRIES;
+            }
+
+            macHdr.Bits.MType = FRAME_TYPE_DATA_CONFIRMED_UP;
+            break;
+        case MCPS_PROPRIETARY:
+            g_lora_mac_data.ack_timeout_retries = 1;
+            macHdr.Bits.MType = FRAME_TYPE_PROPRIETARY;
+            break;
+        default:
+            assert(0);
+            break;
+    }
+
+    /* Default packet status to error; will get set if ok later */
+    txi-&gt;status = LORAMAC_EVENT_INFO_STATUS_ERROR;
+
+    if (AdrCtrlOn == false) {
+        /* Verify data rate valid */
+        getPhy.Attribute = PHY_MIN_TX_DR;
+        getPhy.UplinkDwellTime = LoRaMacParams.UplinkDwellTime;
+        phyParam = RegionGetPhyParam(LoRaMacRegion, &amp;getPhy);
+        verify.DatarateParams.Datarate =
+            MAX(LoRaMacParams.ChannelsDatarate, phyParam.Value);
+        verify.DatarateParams.UplinkDwellTime = LoRaMacParams.UplinkDwellTime;
+
+        if (RegionVerify(LoRaMacRegion, &amp;verify, PHY_TX_DR) == true) {
+            LoRaMacParams.ChannelsDatarate = verify.DatarateParams.Datarate;
+        } else {
+            return LORAMAC_STATUS_PARAMETER_INVALID;
+        }
+    }
+
+    /* Clear out all transmitted information. */
+    memset(&amp;txi-&gt;txdinfo, 0, sizeof(struct lora_txd_info));
+    txi-&gt;txdinfo.uplink_cntr = g_lora_mac_data.uplink_cntr;
+
+    /* Set flag denoting we are sending a MCPS data packet */
+    LM_F_IS_MCPS_REQ() = 1;
+
+    /* Attempt to send. If failed clear flags */
+    status = Send(&amp;macHdr, txi-&gt;port, om);
+    if (status != LORAMAC_STATUS_OK) {
+        LM_F_NODE_ACK_REQ() = 0;
+        LM_F_IS_MCPS_REQ() = 0;
+    }
+
+    return status;
 }
 </code></pre>
 <p>TODO</p>
