@@ -732,7 +732,7 @@ void las_cmd_app_tx(char *buf0, int len0, int argc, char **argv) {
 <p>TODO</p>
 <p><strong><code>lora_app_port_send</code></strong></p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_app.c#L262-L304"><code>lora_app.c</code></a> :</p>
-<pre><code class="language-c">/// Send a LoRaWAN Packet on a LoRaWAN Port
+<pre><code class="language-c">/// Send a LoRaWAN Packet to a LoRaWAN Port
 int lora_app_port_send(uint8_t port, Mcps_t pkt_type, struct pbuf *om) {
     ...
     //  Find the LoRaWAN port
@@ -767,6 +767,237 @@ lora_node_mcps_request(struct pbuf *om)
     rc = pbuf_queue_put(&amp;g_lora_mac_data.lm_txq, g_lora_mac_data.lm_evq, om);
     assert(rc == 0);
 }
+</code></pre>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_node.c#L265-L413"><code>lora_node.c</code></a></p>
+<pre><code class="language-c">/**
+ * Process transmit enqueued event
+ *
+ * @param ev Pointer to transmit enqueue event
+ */
+static void
+lora_mac_proc_tx_q_event(struct ble_npl_event *ev)
+{
+    printf(&quot;lora_mac_proc_tx_q_event\r\n&quot;);
+    LoRaMacStatus_t rc;
+    LoRaMacEventInfoStatus_t evstatus;
+    LoRaMacTxInfo_t txinfo;
+    struct lora_pkt_info *lpkt;
+    struct pbuf *om;
+    struct pbuf_list *mp;
+
+    /* Stop the transmit callback because something was just queued */
+    ble_npl_callout_stop(&amp;g_lora_mac_data.lm_txq_timer);
+
+    /* If busy just leave */
+    if (lora_mac_tx_state() == LORAMAC_STATUS_BUSY) {
+        /* XXX: this should not be needed */
+        lora_node_reset_txq_timer();
+        return;
+    }
+
+    /*
+     * Check if possible to send frame. If a MAC command length error we
+     * need to send an empty, unconfirmed frame to flush mac commands.
+     */
+    lpkt = NULL;
+    while (1) {
+        mp = STAILQ_FIRST(&amp;g_lora_mac_data.lm_txq.mq_head);
+        if (mp == NULL) {
+            /* If an ack has been requested, send one */
+            if (lora_mac_srv_ack_requested()) {
+                g_lora_node_last_tx_mac_cmd = 0;
+                goto send_empty_msg;
+            } else {
+                /* Check for any mac commands */
+                if (lora_mac_cmd_buffer_len() != 0) {
+                    g_lora_node_last_tx_mac_cmd = 1;
+                    goto send_empty_msg;
+                }
+            }
+            break;
+        }
+
+        rc = LoRaMacQueryTxPossible(mp-&gt;payload_len, &amp;txinfo);
+        if (rc == LORAMAC_STATUS_MAC_CMD_LENGTH_ERROR) {
+            /*
+             * XXX: an ugly hack for now. If the server decides to send MAC
+             * commands all the time, it could be that we never send the
+             * data packet enqueued as we cannot add more data to it. For now,
+             * just alternate between sending the packet on the queue and
+             * a mac command. Yes, ugly.
+             */
+            if (g_lora_node_last_tx_mac_cmd) {
+                rc = LORAMAC_STATUS_OK;
+                goto send_from_txq;
+            }
+
+            g_lora_node_last_tx_mac_cmd = 1;
+
+            /* Need to flush MAC commands. Send empty unconfirmed frame */
+            STATS_INC(lora_mac_stats, tx_mac_flush);
+            /* NOTE: no need to get a mbuf. */
+send_empty_msg:
+            printf(&quot;lora_mac_proc_tx_q_event: send empty msg\r\n&quot;);
+            lpkt = &amp;g_lora_mac_data.txpkt;
+            g_lora_mac_data.curtx = lpkt;
+            om = NULL;
+            memset(lpkt, 0, sizeof(struct lora_pkt_info));
+            lpkt-&gt;pkt_type = MCPS_UNCONFIRMED;
+            rc = LORAMAC_STATUS_OK;
+        } else {
+send_from_txq:
+            printf(&quot;lora_mac_proc_tx_q_event: send from txq\r\n&quot;);
+            om = pbuf_queue_get(&amp;g_lora_mac_data.lm_txq);
+            assert(om != NULL);
+            lpkt = (struct lora_pkt_info *) get_pbuf_header(om, sizeof(struct lora_pkt_info));
+            g_lora_mac_data.curtx = lpkt;
+            g_lora_node_last_tx_mac_cmd = 0;
+        }
+
+        g_lora_mac_data.cur_tx_mbuf = om;
+
+        if (rc != LORAMAC_STATUS_OK) {
+            /* Check if length error or mac command error */
+            if (rc == LORAMAC_STATUS_LENGTH_ERROR) {
+                evstatus = LORAMAC_EVENT_INFO_STATUS_TX_DR_PAYLOAD_SIZE_ERROR;
+            } else {
+                evstatus = LORAMAC_EVENT_INFO_STATUS_ERROR;
+            }
+            goto proc_txq_om_done;
+        }
+
+        /* Form MCPS request */
+        switch (lpkt-&gt;pkt_type) {
+        case MCPS_UNCONFIRMED:
+            evstatus = LORAMAC_EVENT_INFO_STATUS_OK;
+            break;
+        case MCPS_CONFIRMED:
+            evstatus = LORAMAC_EVENT_INFO_STATUS_OK;
+            break;
+        case MCPS_PROPRIETARY:
+            /* XXX: not allowed */
+            evstatus = LORAMAC_EVENT_INFO_STATUS_ERROR;
+            break;
+        default:
+            /* XXX: this is an error */
+            evstatus = LORAMAC_EVENT_INFO_STATUS_ERROR;
+            break;
+        }
+
+        if (evstatus == LORAMAC_EVENT_INFO_STATUS_OK) {
+            rc = LoRaMacMcpsRequest(om, lpkt);
+            switch (rc) {
+            case LORAMAC_STATUS_OK:
+                /* Transmission started. */
+                evstatus = LORAMAC_EVENT_INFO_STATUS_OK;
+                break;
+            case LORAMAC_STATUS_NO_NETWORK_JOINED:
+                evstatus = LORAMAC_EVENT_INFO_STATUS_NO_NETWORK_JOINED;
+                break;
+            case LORAMAC_STATUS_LENGTH_ERROR:
+                evstatus = LORAMAC_EVENT_INFO_STATUS_TX_DR_PAYLOAD_SIZE_ERROR;
+                break;
+            /* XXX: handle BUSY differently here I think. Need to requeue
+               at head */
+            default:
+                evstatus = LORAMAC_EVENT_INFO_STATUS_ERROR;
+                break;
+            }
+
+            if (evstatus == LORAMAC_EVENT_INFO_STATUS_OK) {
+                return;
+            }
+        }
+
+        /*
+         * If we get here there was an error sending. Send confirm and
+         * continue processing transmit queue.
+         */
+proc_txq_om_done:
+        lpkt-&gt;status = evstatus;
+        lora_app_mcps_confirm(om);
+    }
+}
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-text"># lora_mac_proc_tx_q_event
+lora_mac_proc_tx_q_event: send from txq
+pbuf_queue_get
+Send
+ScheduleTx
+CalculateBackOff
+RegionNextChannel
+RegionAS923NextChannel
+RegionAS923NextChannel: channel=1
+RegionComputeRxWindowParameters
+RegionComputeRxWindowParameters
+lora_mac_rx_disable
+TODO: Radio.RxDisable
+SendFrameOnChannel: channel=1
+RegionTxConfig
+RegionAS923TxConfig
+RadioSetChannel: freq=923400000
+SX126xWakeup
+RadioSetTxConfig: modem=1, power=13, fdev=0, bandwidth=0, datarate=10, coderate=1, preambleLen=8, fixLen=0, crcOn=1, freqHopOn=0, hopPeriod=0, iqInverted=0, timeout=3000
+RadioSetTxConfig: SpreadingFactor=10, Bandwidth=4, CodingRate=1, LowDatarateOptimize=0, PreambleLength=8, HeaderType=0, PayloadLength=64, CrcMode=1, InvertIQ=0
+RadioStandby
+RadioSetModem
+SX126xSetRfTxPower
+SX126xSetTxParams: power=13, rampTime=7
+SX126xGetDeviceId: SX1262
+SX126xSetPaConfig: paDutyCycle=4, hpMax=7, deviceSel=0, paLut=1 
+SendFrameOnChannel: channel=1, datarate=2, txpower=0, maxeirp=16, antennagain=2
+RadioSend: size=18
+40 9b 0a 6b 01 00 00 00 02 a8 09 cf 2d 0e 5e 65 8b 9b 
+RadioSend: PreambleLength=8, HeaderType=0, PayloadLength=18, CrcMode=1, InvertIQ=0
+RadioOnDioIrq
+RadioIrqProcess
+SX126xReadCommand
+IRQ_TX_DONE
+OnRadioTxDone
+RadioSleep
+OnRxWindow1TimerEvent
+RadioSetChannel: freq=923400000
+SX126xWakeup
+RadioSetRxConfig
+RadioStandby
+RadioSetModem
+RadioSetRxConfig done
+RadioRx
+RadioOnDioIrq
+RadioIrqProcess
+SX126xReadCommand
+IRQ_RX_TX_TIMEOUT
+OnRadioRxTimeout
+RadioSleep
+OnRxWindow2TimerEvent
+RadioSetChannel: freq=923200000
+SX126xWakeup
+RadioSetRxConfig
+RadioStandby
+RadioSetModem
+RadioSetRxConfig done
+RadioRx
+RadioOnDioIrq
+RadioIrqProcess
+SX126xReadCommand
+IRQ_RX_TX_TIMEOUT
+OnRadioRxTimeout
+RadioSleep
+pbuf_queue_put
+lora_node_chk_txq
+pbuf_queue_get
+Txd on port 2 type=unconf status=0 len=5
+	dr:2
+	txpower (dbm):0
+	tries:1
+	ack_rxd:0
+	tx_time_on_air:330
+	uplink_cntr:0
+	uplink_chan:1
+pbuf_queue_get
+lora_mac_proc_tx_q_event
 </code></pre>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-driver3.png" alt="Application Layer" /></p>
