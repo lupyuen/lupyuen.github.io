@@ -859,130 +859,11 @@ From [`lora_node.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/componen
 /// Process a LoRaWAN Packet from the Transmit Queue
 static void lora_mac_proc_tx_q_event(struct ble_npl_event *ev) {
     ...
-
-    /*
-     * Check if possible to send frame. If a MAC command length error we
-     * need to send an empty, unconfirmed frame to flush mac commands.
-     */
-    lpkt = NULL;
-    while (1) {
-        mp = STAILQ_FIRST(&g_lora_mac_data.lm_txq.mq_head);
-        if (mp == NULL) {
-            /* If an ack has been requested, send one */
-            if (lora_mac_srv_ack_requested()) {
-                g_lora_node_last_tx_mac_cmd = 0;
-                goto send_empty_msg;
-            } else {
-                /* Check for any mac commands */
-                if (lora_mac_cmd_buffer_len() != 0) {
-                    g_lora_node_last_tx_mac_cmd = 1;
-                    goto send_empty_msg;
-                }
-            }
-            break;
-        }
-
-        rc = LoRaMacQueryTxPossible(mp->payload_len, &txinfo);
-        if (rc == LORAMAC_STATUS_MAC_CMD_LENGTH_ERROR) {
-            /*
-             * XXX: an ugly hack for now. If the server decides to send MAC
-             * commands all the time, it could be that we never send the
-             * data packet enqueued as we cannot add more data to it. For now,
-             * just alternate between sending the packet on the queue and
-             * a mac command. Yes, ugly.
-             */
-            if (g_lora_node_last_tx_mac_cmd) {
-                rc = LORAMAC_STATUS_OK;
-                goto send_from_txq;
-            }
-
-            g_lora_node_last_tx_mac_cmd = 1;
-
-            /* Need to flush MAC commands. Send empty unconfirmed frame */
-            STATS_INC(lora_mac_stats, tx_mac_flush);
-            /* NOTE: no need to get a mbuf. */
-send_empty_msg:
-            printf("lora_mac_proc_tx_q_event: send empty msg\r\n");
-            lpkt = &g_lora_mac_data.txpkt;
-            g_lora_mac_data.curtx = lpkt;
-            om = NULL;
-            memset(lpkt, 0, sizeof(struct lora_pkt_info));
-            lpkt->pkt_type = MCPS_UNCONFIRMED;
-            rc = LORAMAC_STATUS_OK;
-        } else {
-send_from_txq:
-            printf("lora_mac_proc_tx_q_event: send from txq\r\n");
-            om = pbuf_queue_get(&g_lora_mac_data.lm_txq);
-            assert(om != NULL);
-            lpkt = (struct lora_pkt_info *) get_pbuf_header(om, sizeof(struct lora_pkt_info));
-            g_lora_mac_data.curtx = lpkt;
-            g_lora_node_last_tx_mac_cmd = 0;
-        }
-
-        g_lora_mac_data.cur_tx_mbuf = om;
-
-        if (rc != LORAMAC_STATUS_OK) {
-            /* Check if length error or mac command error */
-            if (rc == LORAMAC_STATUS_LENGTH_ERROR) {
-                evstatus = LORAMAC_EVENT_INFO_STATUS_TX_DR_PAYLOAD_SIZE_ERROR;
-            } else {
-                evstatus = LORAMAC_EVENT_INFO_STATUS_ERROR;
-            }
-            goto proc_txq_om_done;
-        }
-
-        /* Form MCPS request */
-        switch (lpkt->pkt_type) {
-        case MCPS_UNCONFIRMED:
-            evstatus = LORAMAC_EVENT_INFO_STATUS_OK;
-            break;
-        case MCPS_CONFIRMED:
-            evstatus = LORAMAC_EVENT_INFO_STATUS_OK;
-            break;
-        case MCPS_PROPRIETARY:
-            /* XXX: not allowed */
-            evstatus = LORAMAC_EVENT_INFO_STATUS_ERROR;
-            break;
-        default:
-            /* XXX: this is an error */
-            evstatus = LORAMAC_EVENT_INFO_STATUS_ERROR;
-            break;
-        }
-
-        if (evstatus == LORAMAC_EVENT_INFO_STATUS_OK) {
-            rc = LoRaMacMcpsRequest(om, lpkt);
-            switch (rc) {
-            case LORAMAC_STATUS_OK:
-                /* Transmission started. */
-                evstatus = LORAMAC_EVENT_INFO_STATUS_OK;
-                break;
-            case LORAMAC_STATUS_NO_NETWORK_JOINED:
-                evstatus = LORAMAC_EVENT_INFO_STATUS_NO_NETWORK_JOINED;
-                break;
-            case LORAMAC_STATUS_LENGTH_ERROR:
-                evstatus = LORAMAC_EVENT_INFO_STATUS_TX_DR_PAYLOAD_SIZE_ERROR;
-                break;
-            /* XXX: handle BUSY differently here I think. Need to requeue
-               at head */
-            default:
-                evstatus = LORAMAC_EVENT_INFO_STATUS_ERROR;
-                break;
-            }
-
-            if (evstatus == LORAMAC_EVENT_INFO_STATUS_OK) {
-                return;
-            }
-        }
-
-        /*
-         * If we get here there was an error sending. Send confirm and
-         * continue processing transmit queue.
-         */
-proc_txq_om_done:
-        lpkt->status = evstatus;
-        lora_app_mcps_confirm(om);
-    }
-}
+    //  Get the next Packet Buffer from the Transmit Queue
+    mp = STAILQ_FIRST(&g_lora_mac_data.lm_txq.mq_head);
+    ...
+    //  Call the Medium Access Layer to transmit the Packet Buffer
+    rc = LoRaMacMcpsRequest(om, lpkt);
 ```
 
 TODO
@@ -990,87 +871,11 @@ TODO
 From [`LoRaMac.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L3159-L3239) :
 
 ```c
-LoRaMacStatus_t
-LoRaMacMcpsRequest(struct pbuf *om, struct lora_pkt_info *txi)
-{
-    LoRaMacStatus_t status;
-    GetPhyParams_t getPhy;
-    PhyParam_t phyParam;
-    LoRaMacHeader_t macHdr;
-    VerifyParams_t verify;
-
-    assert(txi != NULL);
-
-    if (LM_F_IS_JOINING() || (lora_mac_tx_state() == LORAMAC_STATUS_BUSY)) {
-        return LORAMAC_STATUS_BUSY;
-    }
-
-    macHdr.Value = 0;
-
-    /*
-     * ack timeout retries counter must be reset every time a new request
-     * (unconfirmed or confirmed) is performed.
-     */
-    g_lora_mac_data.ack_timeout_retries_cntr = 1;
-
-    switch (txi->pkt_type) {
-        case MCPS_UNCONFIRMED:
-            g_lora_mac_data.ack_timeout_retries = 1;
-            macHdr.Bits.MType = FRAME_TYPE_DATA_UNCONFIRMED_UP;
-            break;
-        case MCPS_CONFIRMED:
-            /* The retries field is seeded with trials, then cleared */
-            g_lora_mac_data.ack_timeout_retries = txi->txdinfo.retries;
-            if (g_lora_mac_data.ack_timeout_retries > MAX_ACK_RETRIES) {
-                g_lora_mac_data.ack_timeout_retries = MAX_ACK_RETRIES;
-            }
-
-            macHdr.Bits.MType = FRAME_TYPE_DATA_CONFIRMED_UP;
-            break;
-        case MCPS_PROPRIETARY:
-            g_lora_mac_data.ack_timeout_retries = 1;
-            macHdr.Bits.MType = FRAME_TYPE_PROPRIETARY;
-            break;
-        default:
-            assert(0);
-            break;
-    }
-
-    /* Default packet status to error; will get set if ok later */
-    txi->status = LORAMAC_EVENT_INFO_STATUS_ERROR;
-
-    if (AdrCtrlOn == false) {
-        /* Verify data rate valid */
-        getPhy.Attribute = PHY_MIN_TX_DR;
-        getPhy.UplinkDwellTime = LoRaMacParams.UplinkDwellTime;
-        phyParam = RegionGetPhyParam(LoRaMacRegion, &getPhy);
-        verify.DatarateParams.Datarate =
-            MAX(LoRaMacParams.ChannelsDatarate, phyParam.Value);
-        verify.DatarateParams.UplinkDwellTime = LoRaMacParams.UplinkDwellTime;
-
-        if (RegionVerify(LoRaMacRegion, &verify, PHY_TX_DR) == true) {
-            LoRaMacParams.ChannelsDatarate = verify.DatarateParams.Datarate;
-        } else {
-            return LORAMAC_STATUS_PARAMETER_INVALID;
-        }
-    }
-
-    /* Clear out all transmitted information. */
-    memset(&txi->txdinfo, 0, sizeof(struct lora_txd_info));
-    txi->txdinfo.uplink_cntr = g_lora_mac_data.uplink_cntr;
-
-    /* Set flag denoting we are sending a MCPS data packet */
-    LM_F_IS_MCPS_REQ() = 1;
-
-    /* Attempt to send. If failed clear flags */
+/// Transmit the Packet Buffer
+LoRaMacStatus_t LoRaMacMcpsRequest(struct pbuf *om, struct lora_pkt_info *txi) {
+    ...
+    //  Send the Packet Buffer
     status = Send(&macHdr, txi->port, om);
-    if (status != LORAMAC_STATUS_OK) {
-        LM_F_NODE_ACK_REQ() = 0;
-        LM_F_IS_MCPS_REQ() = 0;
-    }
-
-    return status;
-}
 ```
 
 TODO
