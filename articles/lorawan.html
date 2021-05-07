@@ -701,7 +701,7 @@ int lora_app_port_open(uint8_t port, lora_txd_func txd_cb, lora_rxd_func rxd_cb)
 </code></pre>
 <p>We're now ready to transmit data packets to LoRaWAN Port #2!</p>
 <h2 id="transmit-data-packet" class="section-header"><a href="#transmit-data-packet">3.5 Transmit Data Packet</a></h2>
-<p>Here's the command that we enter into our Demo Firmware to <strong>transmit a LoRaWAN Data Packet to port 2, containing 5 bytes</strong>...</p>
+<p>We enter this command into our Demo Firmware to <strong>transmit a LoRaWAN Data Packet to port 2, containing 5 bytes (of null)</strong>...</p>
 <pre><code class="language-text"># las_app_tx 2 5 0
 </code></pre>
 <p>The &quot;<code>0</code>&quot; at the end indicates that this is an <strong>Unconfirmed Message</strong>: We don't expect any acknowledgement from the LoRaWAN Gateway.</p>
@@ -731,10 +731,20 @@ void las_cmd_app_tx(char *buf0, int len0, int argc, char **argv) {
         om          //  Packet Buffer
     );
 </code></pre>
-<p><strong><code>las_cmd_app_tx</code></strong></p>
-<p>TODO</p>
-<p><strong><code>lora_app_port_send</code></strong></p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_app.c#L262-L304"><code>lora_app.c</code></a> :</p>
+<p><strong><code>las_cmd_app_tx</code></strong> does the following...</p>
+<ol>
+<li>
+<p>Allocate a Packet Buffer</p>
+</li>
+<li>
+<p>Copy the transmit data into the Packet Buffer</p>
+</li>
+<li>
+<p>Transmit the Packet Buffer by calling <code>lora_app_port_send</code></p>
+</li>
+</ol>
+<p>We use <strong>Packet Buffers</strong> in the LoRaWAN Driver because they are more efficient for passing packets around. (More about Packet Buffers in the Appendix)</p>
+<p>Now we hop from the Demo Firmware into the <strong>Application Layer</strong> of the LoRaWAN Driver: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_app.c#L262-L304"><code>lora_app.c</code></a></p>
 <pre><code class="language-c">/// Send a LoRaWAN Packet to a LoRaWAN Port
 int lora_app_port_send(uint8_t port, Mcps_t pkt_type, struct pbuf *om) {
     ...
@@ -743,15 +753,15 @@ int lora_app_port_send(uint8_t port, Mcps_t pkt_type, struct pbuf *om) {
 
     //  Set the header in the Packet Buffer
     lpkt = (struct lora_pkt_info *) get_pbuf_header(om, sizeof(struct lora_pkt_info));
-    lpkt-&gt;port = port;
+    lpkt-&gt;port     = port;
     lpkt-&gt;pkt_type = pkt_type;
     lpkt-&gt;txdinfo.retries = lap-&gt;retries;
 
-    //  Call the Node Layer to transmit the packet
+    //  Call the Node Layer to transmit the Packet Buffer
     lora_node_mcps_request(om);
 </code></pre>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_node.c#L142-L159"><code>lora_node.c</code></a> :</p>
+<p><strong><code>lora_app_port_send</code></strong> transmits the Packet Buffer by calling <code>lora_node_mcps_request</code>.</p>
+<p>Again we hop, from the Application Layer to the <strong>Node Layer</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_node.c#L142-L159"><code>lora_node.c</code></a></p>
 <pre><code class="language-c">/// Transmit a LoRaWAN Packet by adding it to the Transmit Queue
 void lora_node_mcps_request(struct pbuf *om) {
     ...
@@ -762,8 +772,9 @@ void lora_node_mcps_request(struct pbuf *om) {
         om                        //  Packet Buffer
     );
 </code></pre>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_node.c#L265-L413"><code>lora_node.c</code></a></p>
+<p><strong><code>lora_node_mcps_request</code></strong> adds the Packet Buffer to the <strong>Transmit Queue</strong>, the queue for outgoing packets.</p>
+<p>(Our Transmit Queue is implemented as a <strong>Packet Buffer Queue</strong>. More about Packet Buffer Queues in the Appendix.)</p>
+<p>The <strong>Background Process</strong> receives the Packet Buffer from the Transmit Queue: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_node.c#L265-L413"><code>lora_node.c</code></a></p>
 <pre><code class="language-c">/// Process a LoRaWAN Packet from the Transmit Queue
 static void lora_mac_proc_tx_q_event(struct ble_npl_event *ev) {
     ...
@@ -775,14 +786,15 @@ static void lora_mac_proc_tx_q_event(struct ble_npl_event *ev) {
     //  Call the Medium Access Layer to transmit the Packet Buffer
     rc = LoRaMacMcpsRequest(om, lpkt);
 </code></pre>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L3159-L3239"><code>LoRaMac.c</code></a> :</p>
+<p>(Hang in there... We're almost done!)</p>
+<p><strong><code>lora_mac_proc_tx_q_event</code></strong> passes the Packet Buffer to the <strong>Medium Access Control Layer</strong> (yep another hop): <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L3159-L3239"><code>LoRaMac.c</code></a></p>
 <pre><code class="language-c">/// Transmit the Packet Buffer
 LoRaMacStatus_t LoRaMacMcpsRequest(struct pbuf *om, struct lora_pkt_info *txi) {
     ...
     //  Send the Packet Buffer
     status = Send(&amp;macHdr, txi-&gt;port, om);
 </code></pre>
+<p><strong><code>LoRaMacMcpsRequest</code></strong> calls <code>Send</code> to transmit the packet.</p>
 <p>We've seen the <strong><code>Send</code></strong> function earlier, it...</p>
 <ol>
 <li>
@@ -792,13 +804,12 @@ LoRaMacStatus_t LoRaMacMcpsRequest(struct pbuf *om, struct lora_pkt_info *txi) {
 <p><strong>Opens two Receive Windows</strong> and listens briefly (twice) for incoming packets</p>
 </li>
 </ol>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/lorawan-driver3.png" alt="Application Layer" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/lorawan-driver4.png" alt="Node Layer" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/lorawan-driver2.png" alt="LoRaWAN Driver Layers" /></p>
-<p>TODO</p>
+<p>Since this is an <strong>Unconfirmed Message</strong>, we don't expect an acknowledgement from the LoRaWAN Gateway.</p>
+<p>Both Receive Windows will time out, and that's perfectly fine.</p>
+<p><em>Aha! So we use a Background Task because of the Receive Windows?</em></p>
+<p>Yes, the Medium Access Control Layer might be <strong>busy waiting for a Receive Window</strong> to time out before transmitting the next packet.</p>
+<p>Our LoRaWAN Driver uses the Background Task and the Transmit Queue to handle the deferred transmission of packets.</p>
+<p>(This deferred processing of packets is known as <strong>MCPS: MAC Common Part Sublayer</strong>. <a href="https://stackforce.github.io/LoRaMac-doc/LoRaMac-doc-v4.4.7/index.html">More about this</a>)</p>
 <h1 id="build-and-run-the-bl602-lorawan-firmware" class="section-header"><a href="#build-and-run-the-bl602-lorawan-firmware">4 Build and Run the BL602 LoRaWAN Firmware</a></h1>
 <p>TODO</p>
 <p>Let's run the LoRa Demo Firmware for BL602 to receive the LoRa Packets transmitted by RAKwireless WisBlock.</p>
