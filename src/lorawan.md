@@ -470,7 +470,13 @@ Before transmitting a LoRaWAN Data Packet, our BL602 gadget needs to __join the 
 
 (It's like connecting to a WiFi Network, authenticated by a security key)
 
-Let's study what happens when we enter the __`las_join`__ command in our Demo Firmware to join a LoRaWAN Network...
+In the Demo Firmware, we enter this command to join the LoRaWAN Network (up to 3 attempts)...
+
+```text
+# las_join 3
+```
+
+Let's study what happens inside the __`las_join`__ command...
 
 From [`lorawan.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/lorawan.c#L901-L935) :
 
@@ -776,7 +782,7 @@ TODO
 Send data to LoRaWAN port 2, 5 bytes, unconfirmed (0)
 
 ```text
-las_app_tx 2 5 0
+# las_app_tx 2 5 0
 ```
 
 From [`lorawan.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/lorawan.c#L810-L885) :
@@ -804,6 +810,58 @@ void las_cmd_app_tx(char *buf0, int len0, int argc, char **argv) {
         mcps_type,  //  Message Type: Unconfirmed
         om          //  Packet Buffer
     );
+```
+
+TODO
+
+__`lora_app_port_send`__
+
+From [`lora_app.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_app.c#L262-L304) :
+
+```c
+/**
+ * Send a packet on a port. If this routine returns an error the "transmitted"
+ * callback will NOT be called; it is the callers responsibility to handle the
+ * packet appropriately (including freeing any memory if needed).
+ *
+ * @param port Port number
+ * @param pkt_type Type of packet
+ * @param om Pointer to packet
+ *
+ * @return int A return code from set of lora return codes
+ */
+int
+lora_app_port_send(uint8_t port, Mcps_t pkt_type, struct pbuf *om)
+{
+    int rc;
+    struct lora_app_port *lap;
+    struct lora_pkt_info *lpkt;
+
+    /* If no buffer to send, fine. */
+    if ((om == NULL) || (om->len == 0)) {
+        return LORA_APP_STATUS_INVALID_PARAM;
+    }
+
+    /* Check valid packet type. Only confirmed and unconfirmed for now. */
+    if ((pkt_type != MCPS_UNCONFIRMED) && (pkt_type != MCPS_CONFIRMED)) {
+        return LORA_APP_STATUS_INVALID_PARAM;
+    }
+
+    lap = lora_app_port_find_open(port);
+    if (lap) {
+        /* Set packet information required by MAC */
+        lpkt = (struct lora_pkt_info *) get_pbuf_header(om, sizeof(struct lora_pkt_info));
+        lpkt->port = port;
+        lpkt->pkt_type = pkt_type;
+        lpkt->txdinfo.retries = lap->retries;
+        lora_node_mcps_request(om);
+        rc = LORA_APP_STATUS_OK;
+    } else {
+        rc = LORA_APP_STATUS_NO_PORT;
+    }
+
+    return rc;
+}
 ```
 
 TODO
