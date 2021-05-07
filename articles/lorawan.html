@@ -764,7 +764,9 @@ void lora_node_mcps_request(struct pbuf *om) {
 <pre><code class="language-c">/// Process a LoRaWAN Packet from the Transmit Queue
 static void lora_mac_proc_tx_q_event(struct ble_npl_event *ev) {
     ...
-    //  Get the next Packet Buffer from the Transmit Queue
+    //  Get the next Packet Buffer from the Transmit Queue.
+    //  STAILQ_FIRST returns the first node of the linked list
+    //  See https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/include/node/bsd_queue.h
     mp = STAILQ_FIRST(&amp;g_lora_mac_data.lm_txq.mq_head);
     ...
     //  Call the Medium Access Layer to transmit the Packet Buffer
