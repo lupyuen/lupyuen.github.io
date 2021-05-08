@@ -66,6 +66,10 @@ Let's flash the __GPIO Demo__ from the BL602 IoT SDK and interact with the above
 
     __For Windows:__ Use `putty` ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
 
+    __Alternatively:__ Use the Web Serial Terminal ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
+
+    [More details on connecting to BL602](https://lupyuen.github.io/articles/flash#watch-the-firmware-run)
+
 1.  Press the __RST Button__ on PineCone to restart the firmware.
 
     We should see this...
@@ -320,6 +324,10 @@ Now we'll switch PineCone to the __Modified PWM Demo__ from the BL602 IoT SDK.
     __For macOS:__ Use CoolTerm ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
 
     __For Windows:__ Use `putty` ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
+
+    __Alternatively:__ Use the Web Serial Terminal ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
+
+    [More details on connecting to BL602](https://lupyuen.github.io/articles/flash#watch-the-firmware-run)
 
 1.  Press the __RST Button__ on PineCone to restart the firmware. Ignore the errors.
 

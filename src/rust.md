@@ -635,6 +635,10 @@ Finally we run the BL602 Rust Firmware...
 
     Use `putty` ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
 
+1.  __Alternatively:__ 
+
+    Use the Web Serial Terminal ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
+
     [More details on connecting to BL602](https://lupyuen.github.io/articles/flash#watch-the-firmware-run)
 
 1.  In the serial console, press Enter to reveal the command prompt.

@@ -784,6 +784,8 @@ __For macOS:__ Use CoolTerm ([See this](https://lupyuen.github.io/articles/flash
 
 __For Windows:__ Use `putty` ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
 
+__Alternatively:__ Use the Web Serial Terminal ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
+
 [More details on connecting to BL602](https://lupyuen.github.io/articles/flash#watch-the-firmware-run)
 
 ## Enter I2C commands
