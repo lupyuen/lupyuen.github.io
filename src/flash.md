@@ -289,6 +289,14 @@ _Firmware running on PineCone_
 
     ![Connect putty to COM Port at speed 2000000](https://lupyuen.github.io/images/flash-putty.png)
 
+    __Web Serial Terminal:__ Newer versions of the Chrome Web Browser support the Web Serial API, which also works with BL602...
+
+    -   [Web Serial Terminal](https://googlechromelabs.github.io/serial-terminal/)
+
+    -   [How it looks](https://twitter.com/MisterTechBlog/status/1390908514088878080)
+
+    Under `Baud Rate`, select `Custom` and enter `2000000` (2 Mbps)
+
 1.  Press the __`RST` Button__ on PineCone to restart the board.  As PineCone boots, we shall see the console output from our firmware: [`sdk_app_helloworld.bin`](https://github.com/lupyuen/bl_iot_sdk/releases/download/v1.0.0/sdk_app_helloworld.bin)
 
     ```text
