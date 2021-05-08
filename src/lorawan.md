@@ -1148,6 +1148,35 @@ Let's enter some commands to join the LoRaWAN Network and transmit a LoRaWAN Dat
 
 ![LoRaWAN Firmware Commands](https://lupyuen.github.io/images/lorawan-help.png)
 
+# View Received LoRaWAN Packets
+
+TODO
+
+Let's head back to __ChirpStack on our WisGate LoRaWAN Gateway__, to observe the LoRaWAN Packets received from our Arduino Device (WisBlock)...
+
+1.  In ChirpStack, click __`Applications → app → device_otaa_class_a → Device Data`__
+
+1.  Restart our LoRaWAN Device
+
+1.  The __Join Network Request__ appears...
+
+    ![LoRaWAN Device Data](https://lupyuen.github.io/images/wisgate-devicedata1.png)
+
+
+1.  20 seconds later the __Data Packet__ appears...
+
+    ![LoRaWAN Device Data](https://lupyuen.github.io/images/wisgate-devicedata2.png)
+
+    `DecodedDataString` says "`Hello!`"
+
+1.  We may now configure ChirpStack to do something useful with the received packets, like publish them over MQTT, HTTP, ...
+
+    Click this link...
+
+    -   [__ChirpStack Application Server__](https://www.chirpstack.io/application-server/)
+
+    Then click the __Menu__ (top left) and __Integrations__
+
 # Troubleshoot LoRaWAN
 
 TODO
