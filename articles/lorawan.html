@@ -970,17 +970,18 @@ cargo run flash sdk_app_lorawan.bin --port COM5
 <p>Press Enter to reveal the command prompt.</p>
 </li>
 <li>
-<p>First we <strong>create the Background Task</strong> that will process received LoRa Packets.</p>
+<p>First we <strong>create the Background Task</strong> that will process outgoing and incoming LoRa Packets.</p>
 <p>Enter this command...</p>
 <pre><code class="language-text"># create_task
 </code></pre>
-<p>This command calls the function <code>create_task</code>, which we have seen earlier.</p>
+<p><a href="https://lupyuen.github.io/articles/lora2#event-queue">(<code>create_task</code> is explained here)</a></p>
 </li>
 <li>
 <p>Then we <strong>initialise our LoRaWAN Driver</strong>. </p>
 <p>Enter this command...</p>
 <pre><code class="language-text"># init_lorawan
 </code></pre>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/lorawan.c#L166-L168">(<code>init_lorawan</code> is defined here)</a></p>
 </li>
 <li>
 <p>TODO</p>
