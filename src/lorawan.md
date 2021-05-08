@@ -914,31 +914,55 @@ Our LoRaWAN Driver uses the Background Task and the Transmit Queue to handle the
 
 # Build and Run the BL602 LoRaWAN Firmware
 
-TODO
+Let's run the LoRaWAN Demo Firmware for BL602 to...
 
-Let's run the LoRa Demo Firmware for BL602 to receive the LoRa Packets transmitted by RAKwireless WisBlock.
+1.  Join a LoRaWAN Network
+
+1.  Open a LoRaWAN Application Port
+
+1.  Send a LoRaWAN Data Packet
 
 Find out which __LoRa Frequency__ we should use for your region...
 
 -  [__LoRa Frequencies by Country__](https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html)
 
-Build the Firmware Binary File `sdk_app_lorawan.bin` from the [source code](https://github.com/lupyuen/bl_iot_sdk/tree/lorawan/customer_app/sdk_app_lorawan)...
+Download the [LoRaWAN firmware and driver source code](https://github.com/lupyuen/bl_iot_sdk/tree/lorawan/customer_app/sdk_app_lorawan)...
 
 ```bash
 # Download the lorawan branch of lupyuen's bl_iot_sdk
 git clone --recursive --branch lorawan https://github.com/lupyuen/bl_iot_sdk
-cd bl_iot_sdk/customer_app/sdk_app_lorawan
+```
 
-# TODO: Set the LoRa Frequency in sdk_app_lorawan/demo.c. 
-# Edit the file and look for the line...
-#   #define USE_BAND_923
-# Change 923 to the LoRa Frequency for your region: 
-#   434, 780, 868, 915 or 923 MHz
-# See https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html
+In the `customer_app/sdk_app_lorawan` folder, edit [`Makefile`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/Makefile) and find this setting...
 
+```text
+CFLAGS += -DCONFIG_LORA_NODE_REGION=1
+```
+
+Change "`1`" to your LoRa Region...
+
+| Value | Region 
+| :---  | :---
+| 0 | No region
+| 1 | AS band on 923MHz
+| 2 | Australian band on 915MHz
+| 3 | Chinese band on 470MHz
+| 4 | Chinese band on 779MHz
+| 5 | European band on 433MHz
+| 6 | European band on 868MHz
+| 7 | South Korean band on 920MHz
+| 8 | India band on 865MHz
+| 9 | North American band on 915MHz
+| 10 | North American band on 915MHz with a maximum of 16 channels
+
+Build the Firmware Binary File `sdk_app_lorawan.bin`...
+
+```bash
 # TODO: Change this to the full path of bl_iot_sdk
 export BL60X_SDK_PATH=$HOME/bl_iot_sdk
 export CONFIG_CHIP_NAME=BL602
+
+cd bl_iot_sdk/customer_app/sdk_app_lorawan
 make
 
 # TODO: Change ~/blflash to the full path of blflash
@@ -1230,6 +1254,17 @@ TODO
 TODO
 
 # Appendix: LoRa Sync Word
+
+TODO
+
+From [`Makefile`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/Makefile#L66-L69)
+
+```text
+# Sets public or private lora network. A value of 1 means
+# the network is public; private otherwise.
+# Must be set to 1 so that ChirpStack will detect our Public Sync Word (0x3444)
+CFLAGS += -DLORA_NODE_PUBLIC_NWK=1
+```
 
 TODO
 
