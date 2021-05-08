@@ -1075,7 +1075,7 @@ Let's enter some commands to join the LoRaWAN Network and transmit a LoRaWAN Dat
 
 1.  Press Enter to reveal the command prompt.
 
-1.  First we __create the Background Task__ that will process received LoRa Packets.
+1.  First we __create the Background Task__ that will process outgoing and incoming LoRa Packets.
 
     Enter this command...
 
@@ -1083,7 +1083,7 @@ Let's enter some commands to join the LoRaWAN Network and transmit a LoRaWAN Dat
     # create_task
     ```
 
-    This command calls the function `create_task`, which we have seen earlier.
+    [(`create_task` is explained here)](https://lupyuen.github.io/articles/lora2#event-queue)
 
 1.  Then we __initialise our LoRaWAN Driver__. 
 
@@ -1092,6 +1092,8 @@ Let's enter some commands to join the LoRaWAN Network and transmit a LoRaWAN Dat
     ```text
     # init_lorawan
     ```
+
+    [(`init_lorawan` is defined here)](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/lorawan.c#L166-L168)
 
 1.  TODO
 
