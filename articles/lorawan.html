@@ -83,16 +83,17 @@
 <li><a href="#flash-the-firmware">4.1 Flash the firmware</a><ul></ul></li>
 <li><a href="#run-the-firmware">4.2 Run the firmware</a><ul></ul></li>
 <li><a href="#enter-lorawan-commands">4.3 Enter LoRaWAN commands</a><ul></ul></li></ul></li>
-<li><a href="#troubleshoot-lorawan">5 Troubleshoot LoRaWAN</a><ul></ul></li>
-<li><a href="#visualise-lorawan-with-software-defined-radio">6 Visualise LoRaWAN with Software Defined Radio</a><ul></ul></li>
-<li><a href="#whats-next">7 What's Next</a><ul></ul></li>
-<li><a href="#notes">8 Notes</a><ul></ul></li>
-<li><a href="#appendix-lora-transmit-power">9 Appendix: LoRa Transmit Power</a><ul></ul></li>
-<li><a href="#appendix-lora-sync-word">10 Appendix: LoRa Sync Word</a><ul></ul></li>
-<li><a href="#appendix-lora-carrier-sensing">11 Appendix: LoRa Carrier Sensing</a><ul></ul></li>
-<li><a href="#appendix-packet-buffer-and-queue">12 Appendix: Packet Buffer and Queue</a><ul></ul></li>
-<li><a href="#appendix-bl602-spi-functions">13 Appendix: BL602 SPI Functions</a><ul></ul></li>
-<li><a href="#appendix-bl602-gpio-interrupts">14 Appendix: BL602 GPIO Interrupts</a><ul></ul></li></ul></nav><p>📝 <em>10 May 2021</em></p>
+<li><a href="#view-received-lorawan-packets">5 View Received LoRaWAN Packets</a><ul></ul></li>
+<li><a href="#troubleshoot-lorawan">6 Troubleshoot LoRaWAN</a><ul></ul></li>
+<li><a href="#visualise-lorawan-with-software-defined-radio">7 Visualise LoRaWAN with Software Defined Radio</a><ul></ul></li>
+<li><a href="#whats-next">8 What's Next</a><ul></ul></li>
+<li><a href="#notes">9 Notes</a><ul></ul></li>
+<li><a href="#appendix-lora-transmit-power">10 Appendix: LoRa Transmit Power</a><ul></ul></li>
+<li><a href="#appendix-lora-sync-word">11 Appendix: LoRa Sync Word</a><ul></ul></li>
+<li><a href="#appendix-lora-carrier-sensing">12 Appendix: LoRa Carrier Sensing</a><ul></ul></li>
+<li><a href="#appendix-packet-buffer-and-queue">13 Appendix: Packet Buffer and Queue</a><ul></ul></li>
+<li><a href="#appendix-bl602-spi-functions">14 Appendix: BL602 SPI Functions</a><ul></ul></li>
+<li><a href="#appendix-bl602-gpio-interrupts">15 Appendix: BL602 GPIO Interrupts</a><ul></ul></li></ul></nav><p>📝 <em>10 May 2021</em></p>
 <p>Today we shall connect <strong>PineCone BL602 RISC-V Board</strong> to <strong>LoRaWAN</strong>... With the <strong>Pine64 RFM90 LoRa Module</strong>.</p>
 <p>The LoRa Firmware in this article will run on <strong>PineCone, Pinenut and Any BL602 Board</strong>.</p>
 <ul>
@@ -1021,16 +1022,44 @@ cargo run flash sdk_app_lorawan.bin --port COM5
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/lorawan-help.png" alt="LoRaWAN Firmware Commands" /></p>
-<h1 id="troubleshoot-lorawan" class="section-header"><a href="#troubleshoot-lorawan">5 Troubleshoot LoRaWAN</a></h1>
+<h1 id="view-received-lorawan-packets" class="section-header"><a href="#view-received-lorawan-packets">5 View Received LoRaWAN Packets</a></h1>
 <p>TODO</p>
-<h1 id="visualise-lorawan-with-software-defined-radio" class="section-header"><a href="#visualise-lorawan-with-software-defined-radio">6 Visualise LoRaWAN with Software Defined Radio</a></h1>
+<p>Let's head back to <strong>ChirpStack on our WisGate LoRaWAN Gateway</strong>, to observe the LoRaWAN Packets received from our Arduino Device (WisBlock)...</p>
+<ol>
+<li>
+<p>In ChirpStack, click <strong><code>Applications → app → device_otaa_class_a → Device Data</code></strong></p>
+</li>
+<li>
+<p>Restart our LoRaWAN Device</p>
+</li>
+<li>
+<p>The <strong>Join Network Request</strong> appears...</p>
+<p><img src="https://lupyuen.github.io/images/wisgate-devicedata1.png" alt="LoRaWAN Device Data" /></p>
+</li>
+<li>
+<p>20 seconds later the <strong>Data Packet</strong> appears...</p>
+<p><img src="https://lupyuen.github.io/images/wisgate-devicedata2.png" alt="LoRaWAN Device Data" /></p>
+<p><code>DecodedDataString</code> says &quot;<code>Hello!</code>&quot;</p>
+</li>
+<li>
+<p>We may now configure ChirpStack to do something useful with the received packets, like publish them over MQTT, HTTP, ...</p>
+<p>Click this link...</p>
+<ul>
+<li><a href="https://www.chirpstack.io/application-server/"><strong>ChirpStack Application Server</strong></a></li>
+</ul>
+<p>Then click the <strong>Menu</strong> (top left) and <strong>Integrations</strong></p>
+</li>
+</ol>
+<h1 id="troubleshoot-lorawan" class="section-header"><a href="#troubleshoot-lorawan">6 Troubleshoot LoRaWAN</a></h1>
+<p>TODO</p>
+<h1 id="visualise-lorawan-with-software-defined-radio" class="section-header"><a href="#visualise-lorawan-with-software-defined-radio">7 Visualise LoRaWAN with Software Defined Radio</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-sdr1.png" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-sdr2.png" alt="" /></p>
 <p>TODO</p>
 <p><a href="https://youtu.be/BMMIIiZG6G0"><strong>Watch the demo video on YouTube</strong></a></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">7 What's Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">8 What's Next</a></h1>
 <p>TODO</p>
 <p>We have completed <strong>Level One</strong> of our epic quest for the <a href="https://lupyuen.github.io/articles/lora#lora-vs-lorawan"><strong>Three Levels of LoRa</strong></a>!</p>
 <p>Let's move on to <strong>LoRa Levels Two and Three</strong>...</p>
@@ -1089,14 +1118,14 @@ cargo run flash sdk_app_lorawan.bin --port COM5
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lorawan.md"><code>lupyuen.github.io/src/lorawan.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">8 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">9 Notes</a></h1>
 <ol>
 <li>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1379926160377851910">this Twitter Thread</a></p>
 <p><a href="https://twitter.com/MisterTechBlog/status/1370224529222500352?s=20">(And this Twitter Thread on LoRaWAN Specifications)</a></p>
 </li>
 </ol>
-<h1 id="appendix-lora-transmit-power" class="section-header"><a href="#appendix-lora-transmit-power">9 Appendix: LoRa Transmit Power</a></h1>
+<h1 id="appendix-lora-transmit-power" class="section-header"><a href="#appendix-lora-transmit-power">10 Appendix: LoRa Transmit Power</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-sdr3.jpg" alt="" /></p>
 <p>TODO</p>
@@ -1111,7 +1140,7 @@ cargo run flash sdk_app_lorawan.bin --port COM5
 <li><a href="https://semtech.my.salesforce.com/sfc/p/#E0000000JelG/a/2R000000HSSf/GT2IXjK2nH8bw6JdEXfFBd.HmFATeLOpL402mZwpSho"><strong>Application Note: Reference Design Explanation</strong></a></li>
 </ul>
 <p>TODO</p>
-<h1 id="appendix-lora-sync-word" class="section-header"><a href="#appendix-lora-sync-word">10 Appendix: LoRa Sync Word</a></h1>
+<h1 id="appendix-lora-sync-word" class="section-header"><a href="#appendix-lora-sync-word">11 Appendix: LoRa Sync Word</a></h1>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/Makefile#L66-L69"><code>Makefile</code></a></p>
 <pre><code class="language-text"># Sets public or private lora network. A value of 1 means
@@ -1136,15 +1165,15 @@ LoRaMacInitialization(LoRaMacCallback_t *callbacks, LoRaMacRegion_t region) {
     Radio.SetPublicNetwork(false);
 #endif
 </code></pre>
-<h1 id="appendix-lora-carrier-sensing" class="section-header"><a href="#appendix-lora-carrier-sensing">11 Appendix: LoRa Carrier Sensing</a></h1>
+<h1 id="appendix-lora-carrier-sensing" class="section-header"><a href="#appendix-lora-carrier-sensing">12 Appendix: LoRa Carrier Sensing</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-carrier.png" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-carrier2.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="appendix-packet-buffer-and-queue" class="section-header"><a href="#appendix-packet-buffer-and-queue">12 Appendix: Packet Buffer and Queue</a></h1>
+<h1 id="appendix-packet-buffer-and-queue" class="section-header"><a href="#appendix-packet-buffer-and-queue">13 Appendix: Packet Buffer and Queue</a></h1>
 <p>TODO</p>
-<h1 id="appendix-bl602-spi-functions" class="section-header"><a href="#appendix-bl602-spi-functions">13 Appendix: BL602 SPI Functions</a></h1>
+<h1 id="appendix-bl602-spi-functions" class="section-header"><a href="#appendix-bl602-spi-functions">14 Appendix: BL602 SPI Functions</a></h1>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/sx126x-board.c#L120-L164"><code>sx126x-board.c</code></a></p>
 <pre><code class="language-c">///////////////////////////////////////////////////////////////////////////////
@@ -1226,7 +1255,7 @@ void SX126xIoInit( void )
     assert(rc == 0);
 }
 </code></pre>
-<h1 id="appendix-bl602-gpio-interrupts" class="section-header"><a href="#appendix-bl602-gpio-interrupts">14 Appendix: BL602 GPIO Interrupts</a></h1>
+<h1 id="appendix-bl602-gpio-interrupts" class="section-header"><a href="#appendix-bl602-gpio-interrupts">15 Appendix: BL602 GPIO Interrupts</a></h1>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/sx126x-board.c#L199-L232"><code>sx126x-board.c</code></a></p>
 <pre><code class="language-c">/// Initialise GPIO Pins and SPI Port. Register GPIO Interrupt Handler for DIO1.
