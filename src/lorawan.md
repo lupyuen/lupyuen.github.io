@@ -1069,19 +1069,9 @@ __For Windows:__ Use `putty` ([See this](https://lupyuen.github.io/articles/flas
 
 ## Enter LoRaWAN commands
 
-TODO
-
 Let's enter some commands to join the LoRaWAN Network and transmit a LoRaWAN Data Packet!
 
 1.  Press Enter to reveal the command prompt.
-
-1.  Enter `help` to see the available commands...
-
-    ```text
-    # help
-    ====User Commands====
-    TODO
-    ```
 
 1.  First we __create the Background Task__ that will process received LoRa Packets.
 
@@ -1152,6 +1142,9 @@ Let's enter some commands to join the LoRaWAN Network and transmit a LoRaWAN Dat
     [__Watch the demo video on YouTube__](https://youtu.be/BMMIIiZG6G0)
 
     [__Read the output log__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/README.md#output-log)
+
+
+![LoRaWAN Firmware Commands](https://lupyuen.github.io/images/lorawan-help.png)
 
 # Troubleshoot LoRaWAN
 
