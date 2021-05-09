@@ -1,6 +1,6 @@
 # PineCone BL602 Talks LoRaWAN
 
-📝 _10 May 2021_
+📝 _12 May 2021_
 
 Today we shall connect __PineCone BL602 RISC-V Board__ to __LoRaWAN__... With the __Pine64 RFM90 LoRa Module__.
 
@@ -1158,6 +1158,8 @@ To see the available commands, enter `help`...
 ![LoRaWAN Firmware Commands](https://lupyuen.github.io/images/lorawan-help.png)
 
 [(The commands are defined in `demo.c`)](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L343-L372)
+
+[(The LoRaWAN commands were ported to BL602 from Apache Mynewt OS)](https://mynewt.apache.org/latest/tutorials/lora/lorawanapp.html)
 
 # View Received LoRaWAN Packets
 
