@@ -1123,7 +1123,7 @@ Let's enter some commands to join the LoRaWAN Network and transmit a LoRaWAN Dat
     # las_wr_app_key 0xaa:0xff:0xad:0x5c:0x7e:0x87:0xf6:0x4d:0xe3:0xf0:0x87:0x32:0xfc:0x1d:0xd2:0x5d
     ```
 
-    In ChipStack: Copy the Application Key from `Applications → app → Devices → device_otaa_class_a → Keys (OTAA) → Application Key`
+    In ChirpStack: Copy the Application Key from `Applications → app → Devices → device_otaa_class_a → Keys (OTAA) → Application Key`
 
 1.  Now we __join the LoRaWAN network__, try up to 3 times...
 
