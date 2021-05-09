@@ -93,7 +93,7 @@
 <li><a href="#appendix-lora-carrier-sensing">12 Appendix: LoRa Carrier Sensing</a><ul></ul></li>
 <li><a href="#appendix-packet-buffer-and-queue">13 Appendix: Packet Buffer and Queue</a><ul></ul></li>
 <li><a href="#appendix-bl602-spi-functions">14 Appendix: BL602 SPI Functions</a><ul></ul></li>
-<li><a href="#appendix-bl602-gpio-interrupts">15 Appendix: BL602 GPIO Interrupts</a><ul></ul></li></ul></nav><p>📝 <em>10 May 2021</em></p>
+<li><a href="#appendix-bl602-gpio-interrupts">15 Appendix: BL602 GPIO Interrupts</a><ul></ul></li></ul></nav><p>📝 <em>12 May 2021</em></p>
 <p>Today we shall connect <strong>PineCone BL602 RISC-V Board</strong> to <strong>LoRaWAN</strong>... With the <strong>Pine64 RFM90 LoRa Module</strong>.</p>
 <p>The LoRa Firmware in this article will run on <strong>PineCone, Pinenut and Any BL602 Board</strong>.</p>
 <ul>
@@ -1032,6 +1032,7 @@ cargo run flash sdk_app_lorawan.bin --port COM5
 <p>To see the available commands, enter <code>help</code>...</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-help.png" alt="LoRaWAN Firmware Commands" /></p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L343-L372">(The commands are defined in <code>demo.c</code>)</a></p>
+<p><a href="https://mynewt.apache.org/latest/tutorials/lora/lorawanapp.html">(The LoRaWAN commands were ported to BL602 from Apache Mynewt OS)</a></p>
 <h1 id="view-received-lorawan-packets" class="section-header"><a href="#view-received-lorawan-packets">5 View Received LoRaWAN Packets</a></h1>
 <p>TODO</p>
 <p>Let's head back to <strong>ChirpStack on our WisGate LoRaWAN Gateway</strong>, to observe the LoRaWAN Packets received from our Arduino Device (WisBlock)...</p>
