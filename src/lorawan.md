@@ -1073,7 +1073,13 @@ __Alternatively:__ Use the Web Serial Terminal ([See this](https://lupyuen.githu
 
 Let's enter some commands to join the LoRaWAN Network and transmit a LoRaWAN Data Packet!
 
-1.  Press Enter to reveal the command prompt.
+1.  Get the following from the LoRaWAN Gateway: __Device EUI, Application EUI and Application Key__...
+
+    -   [__"LoRaWAN Application (ChirpStack)"__](https://lupyuen.github.io/articles/wisgate#lorawan-application)
+
+    We shall use them in a while to join the LoRaWAN Network.
+
+1.  In the BL602 terminal, press Enter to reveal the command prompt.
 
 1.  First we __create the Background Task__ that will process outgoing and incoming LoRa Packets.
 
@@ -1095,60 +1101,63 @@ Let's enter some commands to join the LoRaWAN Network and transmit a LoRaWAN Dat
 
     [(`init_lorawan` is defined here)](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/lorawan.c#L166-L168)
 
-1.  TODO
-
-    Device EUI: Copy from ChirpStack: Applications -> app -> Device EUI
+1.  Let's get ready to join the LoRaWAN Network. Enter the __Device EUI__...
 
     ```text    
     # las_wr_dev_eui 0x4b:0xc1:0x5e:0xe7:0x37:0x7b:0xb1:0x5b
     ```
 
-1.  TODO
+    In ChirpStack: Copy the Device EUI from `Applications → app → Device EUI`
 
-    App EUI: Not needed for ChirpStack, set to default 0000000000000000
+1.  Enter the __Application EUI__...
 
     ```text
     # las_wr_app_eui 0x00:0x00:0x00:0x00:0x00:0x00:0x00:0x00
     ```
 
-1.  TODO
+    ChirpStack doesn't require an Application EUI, so we set it to zeros.
 
-    App Key: Copy from ChirpStack: Applications -> app -> Devices -> device_otaa_class_a -> Keys (OTAA) -> Application Key
+1.  Enter the __Application Key__...
 
     ```text
     # las_wr_app_key 0xaa:0xff:0xad:0x5c:0x7e:0x87:0xf6:0x4d:0xe3:0xf0:0x87:0x32:0xfc:0x1d:0xd2:0x5d
     ```
 
-1.  TODO
+    In ChipStack: Copy the Application Key from `Applications → app → Devices → device_otaa_class_a → Keys (OTAA) → Application Key`
 
-    Join LoRaWAN network, try 3 times
+1.  Now we __join the LoRaWAN network__, try up to 3 times...
 
     ```text
     # las_join 3
     ```
 
-1.  TODO
+    This calls the `las_cmd_join` function that we've seen earlier.    
 
-    Open LoRaWAN Application Port 2
+1.  We __open LoRaWAN Application Port 2__...
 
     ```text
     # las_app_port open 2
     ```
 
-1.  TODO
+    This calls the `las_cmd_app_port` function that we've seen earlier.    
 
-    Send data to LoRaWAN port 2, 5 bytes, unconfirmed (0)
+1.  Finally we __send a data packet to LoRaWAN port 2__: 5 bytes of zeros, unconfirmed (with no acknowledgement)...
 
     ```text
     # las_app_tx 2 5 0
     ```
 
+    This calls the `las_cmd_app_tx` function that we've seen earlier.    
+
     [__Watch the demo video on YouTube__](https://youtu.be/BMMIIiZG6G0)
 
-    [__Read the output log__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/README.md#output-log)
+    [__See the output log__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/README.md#output-log)
 
+To see the available commands, enter `help`...
 
 ![LoRaWAN Firmware Commands](https://lupyuen.github.io/images/lorawan-help.png)
+
+[(The commands are defined in `demo.c`)](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L343-L372)
 
 # View Received LoRaWAN Packets
 
