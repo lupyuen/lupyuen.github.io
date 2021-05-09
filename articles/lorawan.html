@@ -1081,6 +1081,14 @@ cargo run flash sdk_app_lorawan.bin --port COM5
 </ul>
 </li>
 <li>
+<p><strong>Check the LoRa Sync Word</strong></p>
+<p>Typical LoRaWAN Networks will use the <strong>Public LoRa Sync Word <code>0x3444</code></strong>. This is defined in the Makefile as...</p>
+<pre><code class="language-text">CFLAGS += -DLORA_NODE_PUBLIC_NWK=1
+</code></pre>
+<p>The LoRaWAN Gateway will not respond to our packets if we transmit the wrong Sync Word.</p>
+<p>See the Appendix for details.</p>
+</li>
+<li>
 <p><strong>Sniff the packets with Software Defined Radio</strong></p>
 <p>A <strong>Software Defined Radio</strong> may be helpful for sniffing the LoRaWAN packets to make sure that they look right and are centered at the right frequency...</p>
 <ul>
