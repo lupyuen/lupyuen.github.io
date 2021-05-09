@@ -1193,21 +1193,41 @@ If we're running __ChirpStack on our LoRaWAN Gateway__, here's how we check...
 
 # Troubleshoot LoRaWAN
 
-TODO
+If our LoRaWAN Gateway didn't receive the data packet from BL602, here's what we can check...
 
-## Visualise LoRaWAN with Software Defined Radio
+1.  __Check the LoRa Transceiver__
 
-TODO
+    Follow the steps here to check our LoRa Transceiver...
 
-![](https://lupyuen.github.io/images/lorawan-sdr1.png)
+    -   [__"Troubleshoot LoRa"__](https://lupyuen.github.io/articles/lora2#troubleshoot-lora)
 
-TODO
+    For RFM90 / SX1262, the SPI registers should looks like this...
 
-![](https://lupyuen.github.io/images/lorawan-sdr2.png)
+    ![SPI Registers for RFM90 / SX1262](https://lupyuen.github.io/images/lorawan-spi.jpg)
 
-TODO
+1.  __Check the LoRaWAN Gateway logs__
 
-[__Watch the demo video on YouTube__](https://youtu.be/BMMIIiZG6G0)
+    For ChirpStack, follow the steps here to see the LoRaWAN Gateway logs, also to inspect the raw packets...
+
+    -   [__"Troubleshoot LoRaWAN"__](https://lupyuen.github.io/articles/wisgate#troubleshoot-lorawan)
+
+1.  __Sniff the packets with Software Defined Radio__
+
+    A __Software Defined Radio__ may be helpful for sniffing the LoRaWAN packets to make sure that they look right and are centered at the right frequency.
+
+    -   [__"Visualise LoRaWAN with Software Defined Radio"__](https://lupyuen.github.io/articles/wisgate#visualise-lorawan-with-software-defined-radio)
+
+    Here's the __Join Network Request__ transmitted by BL602 with RFM90...
+
+    ![Join Request](https://lupyuen.github.io/images/lorawan-sdr1.png)
+
+    And here's the __Join Network Response__ returned by our WisGate LoRaWAN Gateway...
+
+    ![Join Response](https://lupyuen.github.io/images/lorawan-sdr2.png)
+
+    [__Watch the demo video on YouTube__](https://youtu.be/BMMIIiZG6G0)
+
+    (Yep BL602 + RFM90 seems to be transmitting packets at a lower Signal Strength than our WisGate LoRaWAN Gateway. More about this in the Appendix.)
 
 # What's Next
 
@@ -1477,16 +1497,6 @@ void SX126xIoIrqInit( DioIrqHandler dioIrq ) {
 }
 ```
 
-![](https://lupyuen.github.io/images/lorawan-commands.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/lorawan-gpio.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/lorawan-hal.png)
-
 TODO
 
 ![](https://lupyuen.github.io/images/lorawan-joinfail.png)
@@ -1510,10 +1520,6 @@ TODO
 TODO
 
 ![](https://lupyuen.github.io/images/lorawan-regions.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/lorawan-spi.jpg)
 
 TODO
 
