@@ -84,8 +84,7 @@
 <li><a href="#run-the-firmware">4.2 Run the firmware</a><ul></ul></li>
 <li><a href="#enter-lorawan-commands">4.3 Enter LoRaWAN commands</a><ul></ul></li></ul></li>
 <li><a href="#view-received-lorawan-packets">5 View Received LoRaWAN Packets</a><ul></ul></li>
-<li><a href="#troubleshoot-lorawan">6 Troubleshoot LoRaWAN</a><ul>
-<li><a href="#visualise-lorawan-with-software-defined-radio">6.1 Visualise LoRaWAN with Software Defined Radio</a><ul></ul></li></ul></li>
+<li><a href="#troubleshoot-lorawan">6 Troubleshoot LoRaWAN</a><ul></ul></li>
 <li><a href="#whats-next">7 What's Next</a><ul></ul></li>
 <li><a href="#notes">8 Notes</a><ul></ul></li>
 <li><a href="#appendix-lora-transmit-power">9 Appendix: LoRa Transmit Power</a><ul></ul></li>
@@ -1063,14 +1062,38 @@ cargo run flash sdk_app_lorawan.bin --port COM5
 </li>
 </ol>
 <h1 id="troubleshoot-lorawan" class="section-header"><a href="#troubleshoot-lorawan">6 Troubleshoot LoRaWAN</a></h1>
-<p>TODO</p>
-<h2 id="visualise-lorawan-with-software-defined-radio" class="section-header"><a href="#visualise-lorawan-with-software-defined-radio">6.1 Visualise LoRaWAN with Software Defined Radio</a></h2>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/lorawan-sdr1.png" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/lorawan-sdr2.png" alt="" /></p>
-<p>TODO</p>
+<p>If our LoRaWAN Gateway didn't receive the data packet from BL602, here's what we can check...</p>
+<ol>
+<li>
+<p><strong>Check the LoRa Transceiver</strong></p>
+<p>Follow the steps here to check our LoRa Transceiver...</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/lora2#troubleshoot-lora"><strong>&quot;Troubleshoot LoRa&quot;</strong></a></li>
+</ul>
+<p>For RFM90 / SX1262, the SPI registers should looks like this...</p>
+<p><img src="https://lupyuen.github.io/images/lorawan-spi.jpg" alt="SPI Registers for RFM90 / SX1262" /></p>
+</li>
+<li>
+<p><strong>Check the LoRaWAN Gateway logs</strong></p>
+<p>For ChirpStack, follow the steps here to see the LoRaWAN Gateway logs, also to inspect the raw packets...</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/wisgate#troubleshoot-lorawan"><strong>&quot;Troubleshoot LoRaWAN&quot;</strong></a></li>
+</ul>
+</li>
+<li>
+<p><strong>Sniff the packets with Software Defined Radio</strong></p>
+<p>A <strong>Software Defined Radio</strong> may be helpful for sniffing the LoRaWAN packets to make sure that they look right and are centered at the right frequency.</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/wisgate#visualise-lorawan-with-software-defined-radio"><strong>&quot;Visualise LoRaWAN with Software Defined Radio&quot;</strong></a></li>
+</ul>
+<p>Here's the <strong>Join Network Request</strong> transmitted by BL602 with RFM90...</p>
+<p><img src="https://lupyuen.github.io/images/lorawan-sdr1.png" alt="Join Request" /></p>
+<p>And here's the <strong>Join Network Response</strong> returned by our WisGate LoRaWAN Gateway...</p>
+<p><img src="https://lupyuen.github.io/images/lorawan-sdr2.png" alt="Join Response" /></p>
 <p><a href="https://youtu.be/BMMIIiZG6G0"><strong>Watch the demo video on YouTube</strong></a></p>
+<p>(Yep BL602 + RFM90 seems to be transmitting packets at a lower Signal Strength than our WisGate LoRaWAN Gateway. More about this in the Appendix.)</p>
+</li>
+</ol>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">7 What's Next</a></h1>
 <p>TODO</p>
 <p>We have completed <strong>Level One</strong> of our epic quest for the <a href="https://lupyuen.github.io/articles/lora#lora-vs-lorawan"><strong>Three Levels of LoRa</strong></a>!</p>
@@ -1303,11 +1326,6 @@ void SX126xIoIrqInit( DioIrqHandler dioIrq ) {
     bl_irq_enable(GPIO_INT0_IRQn);
 }
 </code></pre>
-<p><img src="https://lupyuen.github.io/images/lorawan-commands.png" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/lorawan-gpio.png" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/lorawan-hal.png" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-joinfail.png" alt="" /></p>
 <p>TODO</p>
@@ -1320,8 +1338,6 @@ void SX126xIoIrqInit( DioIrqHandler dioIrq ) {
 <p><img src="https://lupyuen.github.io/images/lorawan-receive.png" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-regions.png" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/lorawan-spi.jpg" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-stack.png" alt="" /></p>
 <p>TODO</p>
