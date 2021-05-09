@@ -1163,24 +1163,25 @@ To see the available commands, enter `help`...
 
 # View Received LoRaWAN Packets
 
-TODO
+_How will we know if our LoRaWAN Gateway has received the data packet from BL602?_
 
-Let's head back to __ChirpStack on our WisGate LoRaWAN Gateway__, to observe the LoRaWAN Packets received from our Arduino Device (WisBlock)...
+If we're running __ChirpStack on our LoRaWAN Gateway__, here's how we check...
 
 1.  In ChirpStack, click __`Applications → app → device_otaa_class_a → Device Data`__
 
-1.  Restart our LoRaWAN Device
+1.  Restart BL602.
 
-1.  The __Join Network Request__ appears...
+    Run the LoRaWAN Commands from the previous section.
 
-    ![LoRaWAN Device Data](https://lupyuen.github.io/images/wisgate-devicedata1.png)
+1.  The __Join Network Request__ appears in ChirpStack...
 
+    ![Join Network Request](https://lupyuen.github.io/images/lorawan-join.png)
 
-1.  20 seconds later the __Data Packet__ appears...
+1.  Followed by the __Data Packet__...
 
-    ![LoRaWAN Device Data](https://lupyuen.github.io/images/wisgate-devicedata2.png)
+    ![Send Data Packet](https://lupyuen.github.io/images/lorawan-send.png)
 
-    `DecodedDataString` says "`Hello!`"
+    __`DecodedDataHex`__ shows 5 bytes of zero, which is what we sent.
 
 1.  We may now configure ChirpStack to do something useful with the received packets, like publish them over MQTT, HTTP, ...
 
@@ -1194,7 +1195,7 @@ Let's head back to __ChirpStack on our WisGate LoRaWAN Gateway__, to observe the
 
 TODO
 
-# Visualise LoRaWAN with Software Defined Radio
+## Visualise LoRaWAN with Software Defined Radio
 
 TODO
 
@@ -1488,10 +1489,6 @@ TODO
 
 TODO
 
-![](https://lupyuen.github.io/images/lorawan-join.png)
-
-TODO
-
 ![](https://lupyuen.github.io/images/lorawan-joinfail.png)
 
 TODO
@@ -1513,10 +1510,6 @@ TODO
 TODO
 
 ![](https://lupyuen.github.io/images/lorawan-regions.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/lorawan-send.png)
 
 TODO
 
