@@ -1193,7 +1193,7 @@ If we're running __ChirpStack on our LoRaWAN Gateway__, here's how we check...
 
 # Troubleshoot LoRaWAN
 
-If our LoRaWAN Gateway didn't receive the data packet from BL602, here's what we can check...
+If our LoRaWAN Gateway didn't receive the data packet from BL602, here are some troubleshooting tips...
 
 1.  __Check the LoRa Transceiver__
 
@@ -1201,19 +1201,19 @@ If our LoRaWAN Gateway didn't receive the data packet from BL602, here's what we
 
     -   [__"Troubleshoot LoRa"__](https://lupyuen.github.io/articles/lora2#troubleshoot-lora)
 
-    For RFM90 / SX1262, the SPI registers should looks like this...
+    For RFM90 / SX1262, the SPI registers should look like this...
 
     ![SPI Registers for RFM90 / SX1262](https://lupyuen.github.io/images/lorawan-spi.jpg)
 
 1.  __Check the LoRaWAN Gateway logs__
 
-    For ChirpStack, follow the steps here to see the LoRaWAN Gateway logs, also to inspect the raw packets...
+    For ChirpStack, follow the steps here to check the LoRaWAN Gateway logs, also to inspect the raw packets...
 
     -   [__"Troubleshoot LoRaWAN"__](https://lupyuen.github.io/articles/wisgate#troubleshoot-lorawan)
 
 1.  __Sniff the packets with Software Defined Radio__
 
-    A __Software Defined Radio__ may be helpful for sniffing the LoRaWAN packets to make sure that they look right and are centered at the right frequency.
+    A __Software Defined Radio__ may be helpful for sniffing the LoRaWAN packets to make sure that they look right and are centered at the right frequency...
 
     -   [__"Visualise LoRaWAN with Software Defined Radio"__](https://lupyuen.github.io/articles/wisgate#visualise-lorawan-with-software-defined-radio)
 
