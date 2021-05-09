@@ -967,7 +967,14 @@ cargo run flash sdk_app_lorawan.bin --port COM5
 <p>Let's enter some commands to join the LoRaWAN Network and transmit a LoRaWAN Data Packet!</p>
 <ol>
 <li>
-<p>Press Enter to reveal the command prompt.</p>
+<p>Get the following from the LoRaWAN Gateway: <strong>Device EUI, Application EUI and Application Key</strong>...</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/wisgate#lorawan-application"><strong>&quot;LoRaWAN Application (ChirpStack)&quot;</strong></a></li>
+</ul>
+<p>We shall use them in a while to join the LoRaWAN Network.</p>
+</li>
+<li>
+<p>In the BL602 terminal, press Enter to reveal the command prompt.</p>
 </li>
 <li>
 <p>First we <strong>create the Background Task</strong> that will process outgoing and incoming LoRa Packets.</p>
@@ -984,45 +991,47 @@ cargo run flash sdk_app_lorawan.bin --port COM5
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/lorawan.c#L166-L168">(<code>init_lorawan</code> is defined here)</a></p>
 </li>
 <li>
-<p>TODO</p>
-<p>Device EUI: Copy from ChirpStack: Applications -&gt; app -&gt; Device EUI</p>
+<p>Let's get ready to join the LoRaWAN Network. Enter the <strong>Device EUI</strong>...</p>
 <pre><code class="language-text"># las_wr_dev_eui 0x4b:0xc1:0x5e:0xe7:0x37:0x7b:0xb1:0x5b
 </code></pre>
+<p>In ChirpStack: Copy the Device EUI from <code>Applications → app → Device EUI</code></p>
 </li>
 <li>
-<p>TODO</p>
-<p>App EUI: Not needed for ChirpStack, set to default 0000000000000000</p>
+<p>Enter the <strong>Application EUI</strong>...</p>
 <pre><code class="language-text"># las_wr_app_eui 0x00:0x00:0x00:0x00:0x00:0x00:0x00:0x00
 </code></pre>
+<p>ChirpStack doesn't require an Application EUI, so we set it to zeros.</p>
 </li>
 <li>
-<p>TODO</p>
-<p>App Key: Copy from ChirpStack: Applications -&gt; app -&gt; Devices -&gt; device_otaa_class_a -&gt; Keys (OTAA) -&gt; Application Key</p>
+<p>Enter the <strong>Application Key</strong>...</p>
 <pre><code class="language-text"># las_wr_app_key 0xaa:0xff:0xad:0x5c:0x7e:0x87:0xf6:0x4d:0xe3:0xf0:0x87:0x32:0xfc:0x1d:0xd2:0x5d
 </code></pre>
+<p>In ChipStack: Copy the Application Key from <code>Applications → app → Devices → device_otaa_class_a → Keys (OTAA) → Application Key</code></p>
 </li>
 <li>
-<p>TODO</p>
-<p>Join LoRaWAN network, try 3 times</p>
+<p>Now we <strong>join the LoRaWAN network</strong>, try up to 3 times...</p>
 <pre><code class="language-text"># las_join 3
 </code></pre>
+<p>This calls the <code>las_cmd_join</code> function that we've seen earlier.</p>
 </li>
 <li>
-<p>TODO</p>
-<p>Open LoRaWAN Application Port 2</p>
+<p>We <strong>open LoRaWAN Application Port 2</strong>...</p>
 <pre><code class="language-text"># las_app_port open 2
 </code></pre>
+<p>This calls the <code>las_cmd_app_port</code> function that we've seen earlier.</p>
 </li>
 <li>
-<p>TODO</p>
-<p>Send data to LoRaWAN port 2, 5 bytes, unconfirmed (0)</p>
+<p>Finally we <strong>send a data packet to LoRaWAN port 2</strong>: 5 bytes of zeros, unconfirmed (with no acknowledgement)...</p>
 <pre><code class="language-text"># las_app_tx 2 5 0
 </code></pre>
+<p>This calls the <code>las_cmd_app_tx</code> function that we've seen earlier.</p>
 <p><a href="https://youtu.be/BMMIIiZG6G0"><strong>Watch the demo video on YouTube</strong></a></p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/README.md#output-log"><strong>Read the output log</strong></a></p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/README.md#output-log"><strong>See the output log</strong></a></p>
 </li>
 </ol>
+<p>To see the available commands, enter <code>help</code>...</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-help.png" alt="LoRaWAN Firmware Commands" /></p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L343-L372">(The commands are defined in <code>demo.c</code>)</a></p>
 <h1 id="view-received-lorawan-packets" class="section-header"><a href="#view-received-lorawan-packets">5 View Received LoRaWAN Packets</a></h1>
 <p>TODO</p>
 <p>Let's head back to <strong>ChirpStack on our WisGate LoRaWAN Gateway</strong>, to observe the LoRaWAN Packets received from our Arduino Device (WisBlock)...</p>
