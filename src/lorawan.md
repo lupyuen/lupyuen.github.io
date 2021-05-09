@@ -1211,6 +1211,18 @@ If our LoRaWAN Gateway didn't receive the data packet from BL602, here are some 
 
     -   [__"Troubleshoot LoRaWAN"__](https://lupyuen.github.io/articles/wisgate#troubleshoot-lorawan)
 
+1.  __Check the LoRa Sync Word__
+
+    Typical LoRaWAN Networks will use the __Public LoRa Sync Word `0x3444`__. This is defined in the Makefile as...
+
+    ```text
+    CFLAGS += -DLORA_NODE_PUBLIC_NWK=1
+    ```
+
+    The LoRaWAN Gateway will not respond to our packets if we transmit the wrong Sync Word.
+
+    See the Appendix for details.
+
 1.  __Sniff the packets with Software Defined Radio__
 
     A __Software Defined Radio__ may be helpful for sniffing the LoRaWAN packets to make sure that they look right and are centered at the right frequency...
