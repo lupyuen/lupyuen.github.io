@@ -1390,7 +1390,7 @@ get_pbuf_header(
 }
 </code></pre>
 <p><strong><code>pbuf_add_header</code></strong> comes from the Lightweight IP Library. It slides the <code>payload</code> pointer backwards to point at the requested header.</p>
-<p>(It returns null if there's isn't sufficient space for the header)</p>
+<p>(It returns an error if there's isn't sufficient space for the header)</p>
 <p>Because this code mutates the Payload Pointer, we need to be extra careful when extracting the header.</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/pbuf_queue.c#L27-L30">(Note: Critical Sections have not been implemented yet)</a></p>
 <h2 id="packet-buffer-queue" class="section-header"><a href="#packet-buffer-queue">12.2 Packet Buffer Queue</a></h2>
