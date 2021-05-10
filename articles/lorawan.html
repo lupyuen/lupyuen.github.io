@@ -1308,6 +1308,7 @@ LoRaMacStatus_t LoRaMacInitialization(LoRaMacCallback_t *callbacks, LoRaMacRegio
 <p>Here's the logic from the Mynewt LoRaWAN Stack: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/region/RegionAS923.c#L978-L1095"><code>RegionAS923.c</code></a></p>
 <p><img src="https://lupyuen.github.io/images/lorawan-carrier2.png" alt="LoRa Carrier Sensing" /></p>
 <p><a href="https://github.com/Lora-net/LoRaMac-node/blob/master/src/mac/region/RegionAS923.c#L911-L935">(Compare this with Semtech's Reference Implementation)</a></p>
+<p><a href="https://github.com/beegee-tokyo/SX126x-Arduino/blob/master/src/mac/region/RegionAS923.cpp#L979-L996">(SX126x-Arduino skips Carrier Sensing for Japan)</a></p>
 <p><em>But you're in Sunny Singapore, no?</em></p>
 <p>Yes, but Mynewt's version of the LoRaWAN Stack (from 2017) applies Carrier Sensing across the <strong>entire LoRa AS923 Region</strong>, which includes Singapore...</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-carrier.png" alt="LoRa Carrier Sensing" /></p>
@@ -1325,7 +1326,7 @@ LoRaMacStatus_t LoRaMacInitialization(LoRaMacCallback_t *callbacks, LoRaMacRegio
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/region/RegionAS923.h"><strong>BL602 LoRaWAN Stack: AS923</strong></a></p>
 </li>
 <li>
-<p><a href="https://github.com/Lora-net/LoRaMac-node/blob/master/src/mac/region/RegionAS923.h"><strong>SX126x-Arduino: AS923</strong></a></p>
+<p><a href="https://github.com/beegee-tokyo/SX126x-Arduino/blob/master/src/mac/region/RegionAS923.h"><strong>SX126x-Arduino: AS923</strong></a></p>
 </li>
 <li>
 <p><a href="https://github.com/Lora-net/LoRaMac-node/blob/master/src/mac/region/RegionAS923.h"><strong>Semtech Reference Implementation: AS923</strong></a></p>
