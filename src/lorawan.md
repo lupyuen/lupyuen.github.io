@@ -1538,7 +1538,7 @@ struct pbuf_list {
     struct pbuf *payload;
     //  Pointer to next node in the pbuf_list
     STAILQ_ENTRY(pbuf_list) next;
-    //  STAILQ_ENTRY is deinfed in https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/include/node/bsd_queue.h
+    //  STAILQ_ENTRY is defined in https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/include/node/bsd_queue.h
 };
 ```
 
