@@ -1526,12 +1526,12 @@ Stored inside a `pbuf` Packet Buffer are...
 
 1.  __Packet Payload__: Fixed size
 
-Here's how we get the Packet Header from a Packet Buffer...
+Here's how we fetch the LoRaWAN Packet Header from a LoRaWAN Packet...
 
 ```c
-//  Get the Packet Header
+//  Get the LoRaWAN Packet Header
 header = get_pbuf_header(
-    pbuf,                         //  Packet Buffer
+    pb,                           //  LoRaWAN Packet Buffer
     sizeof(struct lora_pkt_info)  //  Size of LoRaWAN Packet Header
 );
 ```
@@ -1578,9 +1578,9 @@ get_pbuf_header(
 
 __`pbuf_add_header`__ comes from the Lightweight IP Library. It slides the `payload` pointer backwards to point at the requested header.
 
-(It returns an error if there's isn't sufficient space for the header)
+(It returns an error code if there's isn't sufficient space for the header)
 
-Because this code mutates the Payload Pointer, we need to be extra careful when extracting the header.
+Because this code __mutates the Payload Pointer__, we need to be extra careful when extracting the header.
 
 [(Note: Critical Sections have not been implemented yet)](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/pbuf_queue.c#L27-L30)
 
