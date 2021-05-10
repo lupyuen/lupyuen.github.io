@@ -1446,25 +1446,67 @@ Till I got inspired by this quote from the [Semtech SX1302 LoRa Concentrator HAL
 
 # Appendix: LoRa Carrier Sensing
 
-TODO
+While troubleshooting the BL602 LoRaWAN Driver I compared __3 implementations of the LoRaWAN Stack__...
 
-Carrier Sensing has been disabled
+1.  [__Apache Mynewt LoRaWAN Stack__](https://github.com/apache/mynewt-core/tree/master/net/lora/node)
 
-![LoRa Carrier Sensing](https://lupyuen.github.io/images/lorawan-carrier.png)
+    __(Dated 2017)__ This is the version that I ported to BL602.
 
-TODO
+1.  [__SX126x-Arduino LoRaWAN Stack__](https://github.com/beegee-tokyo/SX126x-Arduino/tree/master/src/mac)
+
+    __(Dated 2013)__ This is the Arduino version used by RAKwireless WisBlock RAK4631.
+
+    It looks similar to the Mynewt version.
+
+1.  [__Semtech Reference Implementation of LoRaWAN Stack__](https://github.com/Lora-net/LoRaMac-node/tree/master/src/mac)
+
+    __(Dated 2021)__ This is official, latest version of the LoRaWAN Stack.
+
+    However it looks totally different from the other two stacks.
+
+    (Why didn't I port this stack to BL602? Because I wasn't sure if it would run on FreeRTOS without Event Queues and Background Tasks.)
+
+When comparing the 3 stacks I discovered that they implement __LoRa Carrier Sensing__ differently.
+
+_What is LoRa Carrier Sensing?_
+
+In some LoRa Regions (Japan and South Korea), devices are required (by local regulation) to __sense whether the Radio Channel is in use before transmitting__.
+
+Here's the logic from the Mynewt LoRaWAN Stack: [`RegionAS923.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/region/RegionAS923.c#L978-L1095)
 
 ![LoRa Carrier Sensing](https://lupyuen.github.io/images/lorawan-carrier2.png)
 
-TODO
+[(Compare this with Semtech's Reference Implementation)](https://github.com/Lora-net/LoRaMac-node/blob/master/src/mac/region/RegionAS923.c#L911-L935)
+
+_But you're in Sunny Singapore, no?_
+
+Yes, but Mynewt's version of the LoRaWAN Stack (from 2017) applies Carrier Sensing across the __entire LoRa AS923 Region__, which includes Singapore...
+
+![LoRa Carrier Sensing](https://lupyuen.github.io/images/lorawan-carrier.png)
+
+Unfortunately the Carrier Sensing code doesn't work, so __Carrier Sensing has been disabled in the BL602 LoRaWAN Driver__.
+
+(My apologies to folks in Japan and South Korea, we will have to fix this 🙏)
+
+After disabling the Carrier Sensing I hit a RISC-V Exception...
 
 ![Carrier Sensing Stack Trace](https://lupyuen.github.io/images/lorawan-stack.png)
 
-TODO
+Which I traced (via the RISC-V Disassembly) to a Null Pointer problem in [`LoRaMac.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L2379-L2426) ...
 
 ![Null pointer exception](https://lupyuen.github.io/images/lorawan-nullpointer.png)
 
-TODO
+_Anything else we should note?_
+
+The __LoRa Region Settings seem to have major differences__ across the 3 LoRaWAN Stacks. We will have to patch Semtech's latest version into BL602.
+
+Check out the __LoRa Region Settings for AS923__ across the 3 LoRaWAN Stacks...
+
+1.  [__BL602 LoRaWAN Stack: AS923__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/region/RegionAS923.h)
+
+1.  [__SX126x-Arduino: AS923__](https://github.com/Lora-net/LoRaMac-node/blob/master/src/mac/region/RegionAS923.h)
+
+1.  [__Semtech Reference Implementation: AS923__](https://github.com/Lora-net/LoRaMac-node/blob/master/src/mac/region/RegionAS923.h)
 
 # Appendix: Packet Buffer and Queue
 
