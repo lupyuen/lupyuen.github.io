@@ -1182,8 +1182,18 @@ cargo run flash sdk_app_lorawan.bin --port COM5
 <h1 id="notes" class="section-header"><a href="#notes">8 Notes</a></h1>
 <ol>
 <li>
-<p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1379926160377851910">this Twitter Thread</a></p>
-<p><a href="https://twitter.com/MisterTechBlog/status/1370224529222500352?s=20">(And this Twitter Thread on LoRaWAN Specifications)</a></p>
+<p>This article is the expanded version of the Twitter Threads...</p>
+<ul>
+<li>
+<p><a href="https://twitter.com/MisterTechBlog/status/1381870711124369413"><strong>RFM90 LoRa Driver for BL602</strong></a></p>
+</li>
+<li>
+<p><a href="https://twitter.com/MisterTechBlog/status/1379926160377851910"><strong>LoRaWAN Driver for BL602</strong></a></p>
+</li>
+<li>
+<p><a href="https://twitter.com/MisterTechBlog/status/1370224529222500352?s=20"><strong>LoRaWAN Specifications</strong></a></p>
+</li>
+</ul>
 </li>
 </ol>
 <h1 id="appendix-lora-transmit-power" class="section-header"><a href="#appendix-lora-transmit-power">9 Appendix: LoRa Transmit Power</a></h1>
@@ -1216,6 +1226,7 @@ cargo run flash sdk_app_lorawan.bin --port COM5
 #warning SX126x is set to DC-DC power regulator mode (instead of LDO)
 SX126xSetRegulatorMode( USE_DCDC );  //  Use DC-DC
 </code></pre>
+<p><a href="https://twitter.com/MisterTechBlog/status/1382510807116746753">(Check out this discussion on Twitter)</a></p>
 <h2 id="transmit-power" class="section-header"><a href="#transmit-power">9.2 Transmit Power</a></h2>
 <p>I have increased the <strong>Transmit Power to max 22 dBm</strong>. Also I have increased the <strong>Power Amplifier Ramp Up Time</strong> from 200 to the max 3,400 microseconds: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L546-L547"><code>radio.c</code></a></p>
 <pre><code class="language-c">//  Previously: SX126xSetTxParams( 0, RADIO_RAMP_200_US );
