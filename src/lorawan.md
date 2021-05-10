@@ -1633,6 +1633,12 @@ struct pbuf_list {
 };
 ```
 
+![pbuf Packet Buffer with pbuf_list header](https://lupyuen.github.io/images/lorawan-pbuf3.png)
+
+TODO
+
+![pbuf Packet Buffer linked via pbuf_list header](https://lupyuen.github.io/images/lorawan-pbuf4.png)
+
 From [`pbuf_queue.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/pbuf_queue.c#L38-L98)
 
 ```c
