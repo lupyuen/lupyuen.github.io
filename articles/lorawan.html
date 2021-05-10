@@ -1431,6 +1431,9 @@ struct pbuf_list {
     //  STAILQ_ENTRY is defined in https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/include/node/bsd_queue.h
 };
 </code></pre>
+<p><img src="https://lupyuen.github.io/images/lorawan-pbuf3.png" alt="pbuf Packet Buffer with pbuf_list header" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/lorawan-pbuf4.png" alt="pbuf Packet Buffer linked via pbuf_list header" /></p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/pbuf_queue.c#L38-L98"><code>pbuf_queue.c</code></a></p>
 <pre><code class="language-c">/// Allocate a pbuf for LoRaWAN transmission. This returns a pbuf with 
 /// pbuf_list Header, LoRaWAN Header and LoRaWAN Payload.
