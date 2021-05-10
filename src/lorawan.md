@@ -1512,7 +1512,7 @@ Check out the __LoRa Region Settings for AS923__ across the 3 LoRaWAN Stacks...
 
 # Appendix: Packet Buffer and Queue
 
-The LoRaWAN Driver from Apache Mynewt OS uses __Mbufs and Mbuf Queues__ to manage packets efficiently. [(Here's why)](https://mynewt.apache.org/latest/os/core_os/mbuf/mbuf.html)
+The LoRaWAN Driver from Apache Mynewt OS uses __Mbufs and Mbuf Queues__ to manage packets efficiently. [(More about this)](https://mynewt.apache.org/latest/os/core_os/mbuf/mbuf.html)
 
 Here's how we ported Mbufs and Mbuf Queues to BL602.
 
@@ -1590,9 +1590,13 @@ Because this code __mutates the Payload Pointer__, we need to be extra careful w
 
 ## Packet Buffer Queue
 
-TODO
+Mynewt's LoRaWAN Driver uses [__Mqueues__](https://mynewt.apache.org/latest/os/core_os/mbuf/mbuf.html#mqueue) to enqueue packets for processing.
 
-From [`pbuf_queue.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/pbuf_queue.c#L210-L322)
+The Lightweight IP Stack doesn't have the equivalent of Mqueues, so we build our own __Packet Buffer Queues__.
+
+A __`pbuf_queue`__ Packet Buffer Queue is a __First-In First-Out List of Packet Buffers__. It supports these operations...
+
+From [`pbuf_queue.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/pbuf_queue.c#L210-L322) 
 
 ```c
 //  Initializes a pbuf_queue.  A pbuf_queue is a queue of pbufs that ties to a
@@ -1609,7 +1613,13 @@ struct pbuf *pbuf_queue_get(struct pbuf_queue *mq);
 int pbuf_queue_put(struct pbuf_queue *mq, struct ble_npl_eventq *evq, struct pbuf *m);
 ```
 
-TODO
+To build a __Linked List__ of Packet Buffers, we insert a __`pbuf_list` Header__ just before the LoRaWAN Header in the LoRaWAN Packet...
+
+![pbuf Packet Buffer with pbuf_list header](https://lupyuen.github.io/images/lorawan-pbuf3.png)
+
+(Yes the Lightweight IP Stack allows multiple headers per Packet Buffer, because of the Sliding Payload Pointer)
+
+The `pbuf_list` Header points to the next Packet Buffer in the __Singly-Linked List__...
 
 From [`pbuf_queue.h`](https://github.com/lupyuen/bl_iot_sdk/blob/8f7109be292c1dbfd56ec27077d0ae83190e8376/components/3rdparty/lorawan/include/node/pbuf_queue.h#L29-L58)
 
@@ -1633,11 +1643,11 @@ struct pbuf_list {
 };
 ```
 
-![pbuf Packet Buffer with pbuf_list header](https://lupyuen.github.io/images/lorawan-pbuf3.png)
-
-TODO
+The __`next`__ field lets us link up the Packet Buffers like so...
 
 ![pbuf Packet Buffer linked via pbuf_list header](https://lupyuen.github.io/images/lorawan-pbuf4.png)
+
+Here's how we __allocate a Packet Buffer__ and initialise both headers: `pbuf_list` Header and LoRaWAN Header...
 
 From [`pbuf_queue.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/pbuf_queue.c#L38-L98)
 
