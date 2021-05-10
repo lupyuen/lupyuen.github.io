@@ -1312,7 +1312,7 @@ LoRaMacStatus_t LoRaMacInitialization(LoRaMacCallback_t *callbacks, LoRaMacRegio
 <p>Yes, but Mynewt's version of the LoRaWAN Stack (from 2017) applies Carrier Sensing across the <strong>entire LoRa AS923 Region</strong>, which includes Singapore...</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-carrier.png" alt="LoRa Carrier Sensing" /></p>
 <p>Unfortunately the Carrier Sensing code doesn't work, so <strong>Carrier Sensing has been disabled in the BL602 LoRaWAN Driver</strong>.</p>
-<p>(My apologies to folks in Japan and South Korea, we will have to fix this 🙏)</p>
+<p>(My apologies to BL602 Fans in Japan and South Korea, we will have to fix this 🙏)</p>
 <p>After disabling the Carrier Sensing I hit a RISC-V Exception...</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-stack.png" alt="Carrier Sensing Stack Trace" /></p>
 <p>Which I traced (via the RISC-V Disassembly) to a Null Pointer problem in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L2379-L2426"><code>LoRaMac.c</code></a> ...</p>
