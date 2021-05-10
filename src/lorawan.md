@@ -1526,6 +1526,8 @@ Stored inside a `pbuf` Packet Buffer are...
 
 1.  __Packet Payload__: Fixed size
 
+![pbuf Packet Buffer](https://lupyuen.github.io/images/lorawan-pbuf1.png)
+
 Here's how we fetch the LoRaWAN Packet Header from a LoRaWAN Packet...
 
 ```c
@@ -1576,9 +1578,11 @@ get_pbuf_header(
 }
 ```
 
-__`pbuf_add_header`__ comes from the Lightweight IP Library. It slides the `payload` pointer backwards to point at the requested header.
+__`pbuf_add_header`__ comes from the Lightweight IP Library. It slides the `payload` pointer backwards to point at the requested header...
 
-(It returns an error code if there's isn't sufficient space for the header)
+![pbuf Packet Buffer after sliding the payload pointer](https://lupyuen.github.io/images/lorawan-pbuf2.png)
+
+(`pbuf_add_header` returns a non-zero error code if there's isn't sufficient space for the header)
 
 Because this code __mutates the Payload Pointer__, we need to be extra careful when extracting the header.
 
