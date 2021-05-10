@@ -1520,7 +1520,11 @@ Here's how we ported Mbufs and Mbuf Queues to BL602.
 
 Mbufs are not available on BL602, but we have something similar: [__`pbuf` Packet Buffer__ from Lightweight IP Stack (LWIP)](https://www.nongnu.org/lwip/2_0_x/group__pbuf.html)
 
-Stored inside a `pbuf` Packet Buffer are the __Packet Header and Packet Payload__.
+Stored inside a `pbuf` Packet Buffer are...
+
+1.  __Packet Header__: Variable size, up to a limit (max 182 bytes)
+
+1.  __Packet Payload__: Fixed size
 
 Here's how we get the Packet Header from a Packet Buffer...
 
@@ -1550,14 +1554,14 @@ get_pbuf_header(
     //  Enter critical section
     OS_ENTER_CRITICAL(pbuf_header_mutex);
 
-    //  Shift the pbuf payload pointer BACKWARD
+    //  Slide the pbuf payload pointer BACKWARD
     //  to locate the header.
     u8_t rc1 = pbuf_add_header(buf, header_size);
 
     //  Payload now points to the header
     void *header = buf->payload;
 
-    //  Shift the pbuf payload pointer FORWARD
+    //  Slide the pbuf payload pointer FORWARD
     //  to locate the payload.
     u8_t rc2 = pbuf_remove_header(buf, header_size);
 
@@ -1572,7 +1576,11 @@ get_pbuf_header(
 }
 ```
 
-Because this mutates the Payload Pointer, we need to be extra careful when extracting the header.
+__`pbuf_add_header`__ comes from the Lightweight IP Library. It slides the `payload` pointer backwards to point at the requested header.
+
+(It returns null if there's isn't sufficient space for the header)
+
+Because this code mutates the Payload Pointer, we need to be extra careful when extracting the header.
 
 [(Note: Critical Sections have not been implemented yet)](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/pbuf_queue.c#L27-L30)
 
