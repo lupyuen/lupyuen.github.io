@@ -93,7 +93,9 @@
 <li><a href="#over-current-protection">9.3 Over Current Protection</a><ul></ul></li></ul></li>
 <li><a href="#appendix-lora-sync-word">10 Appendix: LoRa Sync Word</a><ul></ul></li>
 <li><a href="#appendix-lora-carrier-sensing">11 Appendix: LoRa Carrier Sensing</a><ul></ul></li>
-<li><a href="#appendix-packet-buffer-and-queue">12 Appendix: Packet Buffer and Queue</a><ul></ul></li>
+<li><a href="#appendix-packet-buffer-and-queue">12 Appendix: Packet Buffer and Queue</a><ul>
+<li><a href="#packet-buffer">12.1 Packet Buffer</a><ul></ul></li>
+<li><a href="#packet-buffer-queue">12.2 Packet Buffer Queue</a><ul></ul></li></ul></li>
 <li><a href="#appendix-bl602-spi-functions">13 Appendix: BL602 SPI Functions</a><ul></ul></li>
 <li><a href="#appendix-bl602-gpio-interrupts">14 Appendix: BL602 GPIO Interrupts</a><ul></ul></li></ul></nav><p>📝 <em>12 May 2021</em></p>
 <p>Today we shall connect <strong>PineCone BL602 RISC-V Board</strong> to <strong>LoRaWAN</strong>... With the <strong>Pine64 RFM90 LoRa Module</strong>.</p>
@@ -1118,6 +1120,17 @@ cargo run flash sdk_app_lorawan.bin --port COM5
 <p><img src="https://lupyuen.github.io/images/lorawan-gateway.jpg" alt="Pine64 LoRa Gateway (the white box) and RAKwireless WisGate D4H LoRaWAN Gateway (the black box)" /></p>
 <p><em>Pine64 LoRa Gateway (the white box) and RAKwireless WisGate D4H LoRaWAN Gateway (the black box)</em></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">7 What's Next</a></h1>
+<p>Today we have completed <strong>Levels One and Two</strong> of our epic quest for the <a href="https://lupyuen.github.io/articles/lora#lora-vs-lorawan"><strong>Three Levels of LoRa</strong></a>!</p>
+<ol>
+<li>
+<p>We have a <strong>BL602 LoRa Transceiver Driver</strong> (RFM90 / SX1262) that can transmit and receive LoRa Packets</p>
+</li>
+<li>
+<p>We have a <strong>BL602 LoRaWAN Driver</strong> that can join a LoRaWAN Network and transmit LoRaWAN Data Packets</p>
+</li>
+</ol>
+<p>Let's move on to <strong>LoRa Three</strong>: Join BL602 to <strong>The Things Network</strong>!</p>
+<p>So eventually we shall build <strong>LoRaWAN Sensor Devices with BL602</strong>!</p>
 <p>TODO</p>
 <ol>
 <li>
@@ -1130,25 +1143,6 @@ cargo run flash sdk_app_lorawan.bin --port COM5
 <p>Lisp</p>
 </li>
 </ol>
-<p>We have completed <strong>Level One</strong> of our epic quest for the <a href="https://lupyuen.github.io/articles/lora#lora-vs-lorawan"><strong>Three Levels of LoRa</strong></a>!</p>
-<p>Let's move on to <strong>LoRa Levels Two and Three</strong>...</p>
-<ol>
-<li>
-<p>We shall install a <strong>LoRaWAN Gateway</strong> and join BL602 to <strong>The Things Network</strong></p>
-<ul>
-<li><a href="https://lupyuen.github.io/articles/wisgate"><strong>&quot;Build a LoRaWAN Network with RAKwireless WisGate Developer Gateway&quot;</strong></a></li>
-</ul>
-</li>
-<li>
-<p>But before that, we shall port the <strong>LoRaWAN Driver from Apache Mynewt OS to BL602</strong></p>
-<p><a href="https://github.com/apache/mynewt-core/tree/master/net/lora/node">(Mynewt Driver for LoRaWAN)</a></p>
-</li>
-<li>
-<p>And before that, we shall clean up and reorganise the <strong>library files for NimBLE and SX1276</strong></p>
-<p><a href="https://lupyuen.github.io/articles/lora2#appendix-how-to-create-bl602-libraries">(See this)</a></p>
-</li>
-</ol>
-<p>So eventually we shall build <strong>LoRaWAN Sensor Devices with BL602</strong>!</p>
 <p>We have come a loooong way since I first <a href="https://github.com/lupyuen/LoRaArduino"><strong>experimented with LoRa in 2016</strong></a>...</p>
 <ul>
 <li>
@@ -1301,7 +1295,10 @@ LoRaMacStatus_t LoRaMacInitialization(LoRaMacCallback_t *callbacks, LoRaMacRegio
 <p><img src="https://lupyuen.github.io/images/lorawan-nullpointer.png" alt="Null pointer exception" /></p>
 <p>TODO</p>
 <h1 id="appendix-packet-buffer-and-queue" class="section-header"><a href="#appendix-packet-buffer-and-queue">12 Appendix: Packet Buffer and Queue</a></h1>
-<p>TODO</p>
+<p>The LoRaWAN Driver from Apache Mynewt OS uses <strong>Mbufs and Mbuf Queues</strong> to manage packets efficiently. <a href="https://mynewt.apache.org/latest/os/core_os/mbuf/mbuf.html">(Here's why)</a></p>
+<p>Here's how we ported Mbufs and Mbuf Queues to BL602.</p>
+<h2 id="packet-buffer" class="section-header"><a href="#packet-buffer">12.1 Packet Buffer</a></h2>
+<p><a href="https://www.nongnu.org/lwip/2_0_x/group__pbuf.html"><code>pbuf</code> from Lightweight IP stack</a></p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/pbuf_queue.c#L165-L197"><code>pbuf_queue.c</code></a></p>
 <pre><code class="language-c">/// Return the pbuf Packet Buffer header
 void *
@@ -1336,6 +1333,26 @@ get_pbuf_header(
     assert(header != NULL);
     return header;
 }
+</code></pre>
+<h2 id="packet-buffer-queue" class="section-header"><a href="#packet-buffer-queue">12.2 Packet Buffer Queue</a></h2>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/8f7109be292c1dbfd56ec27077d0ae83190e8376/components/3rdparty/lorawan/include/node/pbuf_queue.h#L29-L58"><code>pbuf_queue.h</code></a></p>
+<pre><code class="language-c">//  Structure representing a list of pbufs inside a pbuf_queue.
+//  pbuf_list is stored in the header of the pbuf, before the LoRaWAN Header.
+struct pbuf_list {
+    //  Header length
+    u16_t header_len;
+    //  Payload length
+    u16_t payload_len;
+    //  Pointer to pbuf
+    struct pbuf *pb;
+    //  Pointer to header in pbuf
+    struct pbuf *header;
+    //  Pointer to payload in pbuf
+    struct pbuf *payload;
+    //  Pointer to next node in the pbuf_list
+    STAILQ_ENTRY(pbuf_list) next;
+    //  STAILQ_ENTRY is deinfed in https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/include/node/bsd_queue.h
+};
 </code></pre>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/pbuf_queue.c#L38-L98"><code>pbuf_queue.c</code></a></p>
 <pre><code class="language-c">/// Allocate a pbuf for LoRaWAN transmission. This returns a pbuf with 
