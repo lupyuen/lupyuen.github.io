@@ -1450,17 +1450,17 @@ While troubleshooting the BL602 LoRaWAN Driver I compared __3 implementations of
 
 1.  [__Apache Mynewt LoRaWAN Stack__](https://github.com/apache/mynewt-core/tree/master/net/lora/node)
 
-    __(Dated 2017)__ This is the version that I ported to BL602.
+    [__(Dated 2017)__](https://github.com/apache/mynewt-core/blob/master/net/lora/node/src/mac/LoRaMac.c#L15) This is the version that I ported to BL602.
 
 1.  [__SX126x-Arduino LoRaWAN Stack__](https://github.com/beegee-tokyo/SX126x-Arduino/tree/master/src/mac)
 
-    __(Dated 2013)__ This is the Arduino version used by RAKwireless WisBlock RAK4631.
+    [__(Dated 2013)__](https://github.com/beegee-tokyo/SX126x-Arduino/blob/master/src/mac/LoRaMac.cpp#L7) This is the Arduino version used by RAKwireless WisBlock RAK4631.
 
     It looks similar to the Mynewt version.
 
 1.  [__Semtech Reference Implementation of LoRaWAN Stack__](https://github.com/Lora-net/LoRaMac-node/tree/master/src/mac)
 
-    __(Dated 2021)__ This is official, latest version of the LoRaWAN Stack.
+    [__(Dated 2021)__](https://github.com/Lora-net/LoRaMac-node/commits/master/src/mac/LoRaMac.c) This is official, latest version of the LoRaWAN Stack.
 
     However it looks totally different from the other two stacks.
 
@@ -1472,7 +1472,7 @@ _What is LoRa Carrier Sensing?_
 
 In some LoRa Regions (Japan and South Korea), devices are required (by local regulation) to __sense whether the Radio Channel is in use before transmitting__.
 
-Here's the logic from the Mynewt LoRaWAN Stack: [`RegionAS923.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/region/RegionAS923.c#L978-L1095)
+Here's the Carrier Sensing logic from the Mynewt LoRaWAN Stack: [`RegionAS923.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/region/RegionAS923.c#L978-L1095)
 
 ![LoRa Carrier Sensing](https://lupyuen.github.io/images/lorawan-carrier2.png)
 
@@ -1486,7 +1486,7 @@ Yes, but Mynewt's version of the LoRaWAN Stack (from 2017) applies Carrier Sensi
 
 ![LoRa Carrier Sensing](https://lupyuen.github.io/images/lorawan-carrier.png)
 
-Unfortunately the Carrier Sensing code doesn't work, so __Carrier Sensing has been disabled in the BL602 LoRaWAN Driver__.
+Unfortunately the Carrier Sensing code doesn't work, so __Carrier Sensing has been disabled in the BL602 LoRaWAN Driver__. [(See this)](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/region/RegionAS923.c#L1026-L1029)
 
 (My apologies to BL602 Fans in Japan and South Korea, we will have to fix this 🙏)
 
