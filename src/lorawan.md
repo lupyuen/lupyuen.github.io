@@ -1486,7 +1486,7 @@ Yes, but Mynewt's version of the LoRaWAN Stack (from 2017) applies Carrier Sensi
 
 Unfortunately the Carrier Sensing code doesn't work, so __Carrier Sensing has been disabled in the BL602 LoRaWAN Driver__.
 
-(My apologies to folks in Japan and South Korea, we will have to fix this 🙏)
+(My apologies to BL602 Fans in Japan and South Korea, we will have to fix this 🙏)
 
 After disabling the Carrier Sensing I hit a RISC-V Exception...
 
