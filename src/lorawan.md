@@ -1518,9 +1518,9 @@ Here's how we ported Mbufs and Mbuf Queues to BL602.
 
 ## Packet Buffer
 
-Mbufs are not available on BL602, but we have something similar: [__pbuf Packet Buffer__ from Lightweight IP Stack (LWIP)](https://www.nongnu.org/lwip/2_0_x/group__pbuf.html)
+Mbufs are not available on BL602, but we have something similar: [__`pbuf` Packet Buffer__ from Lightweight IP Stack (LWIP)](https://www.nongnu.org/lwip/2_0_x/group__pbuf.html)
 
-Stored inside a pbuf Packet Buffer are the __Packet Header and Packet Payload__.
+Stored inside a `pbuf` Packet Buffer are the __Packet Header and Packet Payload__.
 
 Here's how we get the Packet Header from a Packet Buffer...
 
@@ -1532,11 +1532,9 @@ header = get_pbuf_header(
 );
 ```
 
-TODO
+`pbuf` Packet Buffers have an unusual __Sliding Payload Pointer__ for extracting the header. 
 
-pbuf Packet Buffers 
-
-From [`pbuf_queue.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/pbuf_queue.c#L165-L197)
+Here's how we implement `get_pbuf_header` in [`pbuf_queue.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/pbuf_queue.c#L165-L197) ...
 
 ```c
 /// Return the pbuf Packet Buffer header
@@ -1573,6 +1571,8 @@ get_pbuf_header(
     return header;
 }
 ```
+
+Because this mutates the Payload Pointer, we need to be extra careful when extracting the header.
 
 [(Note: Critical Sections have not been implemented yet)](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/pbuf_queue.c#L27-L30)
 
