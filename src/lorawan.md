@@ -1448,7 +1448,7 @@ Till I got inspired by this quote from the [Semtech SX1302 LoRa Concentrator HAL
 
 TODO
 
-Carier Sensing has been disabled
+Carrier Sensing has been disabled
 
 ![LoRa Carrier Sensing](https://lupyuen.github.io/images/lorawan-carrier.png)
 
