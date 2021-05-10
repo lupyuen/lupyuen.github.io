@@ -1245,9 +1245,19 @@ If our LoRaWAN Gateway didn't receive the data packet from BL602, here are some 
 
     (Yep BL602 + RFM90 seems to be transmitting packets with lower power than our WisGate LoRaWAN Gateway. More about this in the Appendix.)
 
+![Pine64 LoRa Gateway (the white box) and RAKwireless WisGate D4H LoRaWAN Gateway (the black box)](https://lupyuen.github.io/images/lorawan-gateway.jpg)
+
+_Pine64 LoRa Gateway (the white box) and RAKwireless WisGate D4H LoRaWAN Gateway (the black box)_
+
 # What's Next
 
 TODO
+
+1.  Benchmark
+
+1.  Take a short break
+
+1.  Lisp
 
 We have completed __Level One__ of our epic quest for the [__Three Levels of LoRa__](https://lupyuen.github.io/articles/lora#lora-vs-lorawan)!
 
