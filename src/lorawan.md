@@ -1474,6 +1474,8 @@ Here's how we ported Mbufs and Mbuf Queues to BL602.
 
 ## Packet Buffer
 
+TODO
+
 [`pbuf` from Lightweight IP stack](https://www.nongnu.org/lwip/2_0_x/group__pbuf.html)
 
 From [`pbuf_queue.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/pbuf_queue.c#L165-L197)
@@ -1515,6 +1517,8 @@ get_pbuf_header(
 ```
 
 ## Packet Buffer Queue
+
+TODO
 
 From [`pbuf_queue.h`](https://github.com/lupyuen/bl_iot_sdk/blob/8f7109be292c1dbfd56ec27077d0ae83190e8376/components/3rdparty/lorawan/include/node/pbuf_queue.h#L29-L58)
 
