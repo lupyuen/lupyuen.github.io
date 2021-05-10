@@ -1298,6 +1298,7 @@ LoRaMacStatus_t LoRaMacInitialization(LoRaMacCallback_t *callbacks, LoRaMacRegio
 <p>The LoRaWAN Driver from Apache Mynewt OS uses <strong>Mbufs and Mbuf Queues</strong> to manage packets efficiently. <a href="https://mynewt.apache.org/latest/os/core_os/mbuf/mbuf.html">(Here's why)</a></p>
 <p>Here's how we ported Mbufs and Mbuf Queues to BL602.</p>
 <h2 id="packet-buffer" class="section-header"><a href="#packet-buffer">12.1 Packet Buffer</a></h2>
+<p>TODO</p>
 <p><a href="https://www.nongnu.org/lwip/2_0_x/group__pbuf.html"><code>pbuf</code> from Lightweight IP stack</a></p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/pbuf_queue.c#L165-L197"><code>pbuf_queue.c</code></a></p>
 <pre><code class="language-c">/// Return the pbuf Packet Buffer header
@@ -1335,6 +1336,7 @@ get_pbuf_header(
 }
 </code></pre>
 <h2 id="packet-buffer-queue" class="section-header"><a href="#packet-buffer-queue">12.2 Packet Buffer Queue</a></h2>
+<p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/8f7109be292c1dbfd56ec27077d0ae83190e8376/components/3rdparty/lorawan/include/node/pbuf_queue.h#L29-L58"><code>pbuf_queue.h</code></a></p>
 <pre><code class="language-c">//  Structure representing a list of pbufs inside a pbuf_queue.
 //  pbuf_list is stored in the header of the pbuf, before the LoRaWAN Header.
