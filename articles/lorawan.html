@@ -87,7 +87,10 @@
 <li><a href="#troubleshoot-lorawan">6 Troubleshoot LoRaWAN</a><ul></ul></li>
 <li><a href="#whats-next">7 What's Next</a><ul></ul></li>
 <li><a href="#notes">8 Notes</a><ul></ul></li>
-<li><a href="#appendix-lora-transmit-power">9 Appendix: LoRa Transmit Power</a><ul></ul></li>
+<li><a href="#appendix-lora-transmit-power">9 Appendix: LoRa Transmit Power</a><ul>
+<li><a href="#dc-dc-vs-ldo">9.1 DC-DC vs LDO</a><ul></ul></li>
+<li><a href="#transmit-power">9.2 Transmit Power</a><ul></ul></li>
+<li><a href="#over-current-protection">9.3 Over Current Protection</a><ul></ul></li></ul></li>
 <li><a href="#appendix-lora-sync-word">10 Appendix: LoRa Sync Word</a><ul></ul></li>
 <li><a href="#appendix-lora-carrier-sensing">11 Appendix: LoRa Carrier Sensing</a><ul></ul></li>
 <li><a href="#appendix-packet-buffer-and-queue">12 Appendix: Packet Buffer and Queue</a><ul></ul></li>
@@ -1096,10 +1099,10 @@ cargo run flash sdk_app_lorawan.bin --port COM5
 </ul>
 <p>Here's the <strong>Join Network Request</strong> transmitted by BL602 with RFM90...</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-sdr1.png" alt="Join Request" /></p>
-<p>And here's the <strong>Join Network Response</strong> returned by our WisGate LoRaWAN Gateway...</p>
+<p>And here's the <strong>Join Network Response</strong> returned by our WisGate D4H LoRaWAN Gateway...</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-sdr2.png" alt="Join Response" /></p>
 <p><a href="https://youtu.be/BMMIIiZG6G0"><strong>Watch the demo video on YouTube</strong></a></p>
-<p>(Yep BL602 + RFM90 seems to be transmitting packets at a lower Signal Strength than our WisGate LoRaWAN Gateway. More about this in the Appendix.)</p>
+<p>(Yep BL602 + RFM90 seems to be transmitting packets with lower power than our WisGate LoRaWAN Gateway. More about this in the Appendix.)</p>
 </li>
 </ol>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">7 What's Next</a></h1>
@@ -1169,20 +1172,56 @@ cargo run flash sdk_app_lorawan.bin --port COM5
 </li>
 </ol>
 <h1 id="appendix-lora-transmit-power" class="section-header"><a href="#appendix-lora-transmit-power">9 Appendix: LoRa Transmit Power</a></h1>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/lorawan-sdr3.jpg" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/lorawan-sdr4.jpg" alt="" /></p>
-<p>TODO</p>
+<p>Our PineCone BL602 connected to Pine64 RFM90 LoRa Module seems to be <strong>transmitting with lower power</strong> compared with other devices... Perhaps someone could help to fix this issue. (Hardware or Firmware?)</p>
+<p>Here's <strong>RFM90 (left)</strong> compared with <strong>WisGate D4H LoRaWAN Gateway (right)</strong>...</p>
+<p><img src="https://lupyuen.github.io/images/lorawan-sdr3.jpg" alt="RFM90 vs WisGate" /></p>
+<p><a href="https://youtu.be/BMMIIiZG6G0"><strong>Watch the demo video on YouTube</strong></a></p>
+<p>(Recorded by Airspy R2 SDR with CubicSDR. The SDR was placed near RFM90.)</p>
+<p>And here's <strong>RFM90 (left)</strong> compared with <strong>WisBlock RAK4631</strong> (which is also based on Semtech SX1262)...</p>
+<p><img src="https://lupyuen.github.io/images/lorawan-sdr4.jpg" alt="RFM90 vs WisBlock" /></p>
+<h2 id="dc-dc-vs-ldo" class="section-header"><a href="#dc-dc-vs-ldo">9.1 DC-DC vs LDO</a></h2>
+<p>I might have connected the RFM90 pins incorrectly. The Semtech docs refer to <strong>DC-DC vs LDO Regulator Options</strong>, which I don't quite understand...</p>
 <ul>
-<li><a href="https://semtech.my.salesforce.com/sfc/p/#E0000000JelG/a/2R000000HT76/7Nka9W5WgugoZe.xwIHJy6ebj1hW8UJ.USO_Pt2CLLo"><strong>Semtech SX1262 Datasheet</strong></a></li>
+<li>
+<p><a href="https://semtech.my.salesforce.com/sfc/p/#E0000000JelG/a/2R000000HT76/7Nka9W5WgugoZe.xwIHJy6ebj1hW8UJ.USO_Pt2CLLo"><strong>Semtech SX1262 Datasheet</strong></a></p>
+</li>
+<li>
+<p><a href="https://semtech.my.salesforce.com/sfc/p/#E0000000JelG/a/2R000000HSSf/GT2IXjK2nH8bw6JdEXfFBd.HmFATeLOpL402mZwpSho"><strong>Application Note: Reference Design Explanation</strong></a></p>
+</li>
 </ul>
-<p><img src="https://lupyuen.github.io/images/lorawan-ldo.png" alt="" /></p>
-<p>TODO</p>
-<ul>
-<li><a href="https://semtech.my.salesforce.com/sfc/p/#E0000000JelG/a/2R000000HSSf/GT2IXjK2nH8bw6JdEXfFBd.HmFATeLOpL402mZwpSho"><strong>Application Note: Reference Design Explanation</strong></a></li>
-</ul>
-<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/lorawan-ldo.png" alt="SX1262: DC-DC vs LDO" /></p>
+<p>Our RFM90 / SX1262 LoRa Transceiver Driver is currently set to <strong>DC-DC Power Regulator Mode</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L535-L543"><code>radio.c</code></a></p>
+<pre><code class="language-c">//  TODO: Declare the power regulation used to power the device
+//  This command allows the user to specify if DC-DC or LDO is used for power regulation.
+//  Using only LDO implies that the Rx or Tx current is doubled
+
+// #warning SX126x is set to LDO power regulator mode (instead of DC-DC)
+// SX126xSetRegulatorMode( USE_LDO );   //  Use LDO
+
+#warning SX126x is set to DC-DC power regulator mode (instead of LDO)
+SX126xSetRegulatorMode( USE_DCDC );  //  Use DC-DC
+</code></pre>
+<h2 id="transmit-power" class="section-header"><a href="#transmit-power">9.2 Transmit Power</a></h2>
+<p>I have increased the <strong>Transmit Power to max 22 dBm</strong>. Also I have increased the <strong>Power Amplifier Ramp Up Time</strong> from 200 to the max 3,400 microseconds: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L546-L547"><code>radio.c</code></a></p>
+<pre><code class="language-c">//  Previously: SX126xSetTxParams( 0, RADIO_RAMP_200_US );
+SX126xSetTxParams( 22, RADIO_RAMP_3400_US );
+</code></pre>
+<p>According to the log, the Power Amplifier seems to be enabled at the max settings: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/README.md#output-log"><code>README.md</code></a></p>
+<pre><code class="language-text">SX126xSetPaConfig: 
+paDutyCycle=4, 
+hpMax=7, 
+deviceSel=0, 
+paLut=1 
+</code></pre>
+<h2 id="over-current-protection" class="section-header"><a href="#over-current-protection">9.3 Over Current Protection</a></h2>
+<p>I copied this <strong>Over Current Protection</strong> setting from WisBlock RAK4631 (which is also based on Semtech SX1262): <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/sx126x.c#L570-L571"><code>sx126x.c</code></a></p>
+<pre><code class="language-c">//  TODO: Set the current max value in the over current protection.
+//  From SX126x-Arduino/src/radio/sx126x/sx126x.cpp
+SX126xWriteRegister(REG_OCP, 0x38); // current max 160mA for the whole device
+</code></pre>
+<p>None of these changes seem to increase the RFM90 Transmit Power.</p>
+<p>Would be great if you could suggest a fix for this 🙏</p>
+<p>(Or perhaps the Transmit Power isn't an issue?)</p>
 <h1 id="appendix-lora-sync-word" class="section-header"><a href="#appendix-lora-sync-word">10 Appendix: LoRa Sync Word</a></h1>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/Makefile#L66-L69"><code>Makefile</code></a></p>
