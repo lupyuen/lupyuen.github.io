@@ -1285,12 +1285,13 @@ LoRaMacStatus_t LoRaMacInitialization(LoRaMacCallback_t *callbacks, LoRaMacRegio
     Radio.SetPublicNetwork(false);
 #endif
 </code></pre>
-<p>This took me a while to troubleshoot this problem: &quot;Why is the LoRaWAN Gateway ignoring my packets?&quot;</p>
+<p>It took me a while to troubleshoot this problem: &quot;Why is the LoRaWAN Gateway ignoring my packets?&quot;</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-joinfail.png" alt="Join Request Fail" /></p>
 <p>Till I got inspired by this quote from the <a href="https://github.com/Lora-net/sx1302_hal/tree/master/libloragw#61-spreading-factor-sf5--sf6">Semtech SX1302 LoRa Concentrator HAL User Manual</a></p>
 <p><img src="https://lupyuen.github.io/images/lorawan-syncword2.jpg" alt="LoRa Concentrator HAL User Manual" /></p>
 <h1 id="appendix-lora-carrier-sensing" class="section-header"><a href="#appendix-lora-carrier-sensing">11 Appendix: LoRa Carrier Sensing</a></h1>
 <p>TODO</p>
+<p>Carier Sensing has been disabled</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-carrier.png" alt="LoRa Carrier Sensing" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-carrier2.png" alt="LoRa Carrier Sensing" /></p>
@@ -1344,13 +1345,9 @@ alloc_pbuf(
     uint16_t header_len,   //  Header length of packet (LoRaWAN Header only, excluding pbuf_list header)
     uint16_t payload_len)  //  Payload length of packet, excluding header
 {
-    assert(header_len &gt; 0);
-    assert(payload_len &gt; 0);
-
     //  Init LWIP Buffer Pool
     static bool lwip_started = false;
     if (!lwip_started) {
-        printf(&quot;lwip_init\r\n&quot;);
         lwip_started = true;
         lwip_init();
     }
@@ -1375,11 +1372,6 @@ alloc_pbuf(
     assert(combined_header != NULL);
     assert(header != NULL);
 
-    //  Verify integrity of headers: pbuf_list Header is followed by LoRaWAN Header and LoRaWAN Payload
-    assert((uint32_t) combined_header + combined_header_len      == (uint32_t) buf-&gt;payload);
-    assert((uint32_t) combined_header + sizeof(struct pbuf_list) == (uint32_t) header);
-    assert((uint32_t) header + header_len == (uint32_t) buf-&gt;payload);
-
     //  Erase pbuf_list Header and LoRaWAN Header
     memset(combined_header, 0, combined_header_len);
 
@@ -1398,6 +1390,20 @@ alloc_pbuf(
 
     return buf;
 }
+</code></pre>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/pbuf_queue.c#L210-L322"><code>pbuf_queue.c</code></a></p>
+<pre><code class="language-c">//  Initializes a pbuf_queue.  A pbuf_queue is a queue of pbufs that ties to a
+//  particular task's event queue.  pbuf_queues form a helper API around a common
+//  paradigm: wait on an event queue until at least one packet is available,
+//  then process a queue of packets.
+int pbuf_queue_init(struct pbuf_queue *mq, ble_npl_event_fn *ev_cb, void *arg, uint16_t header_len);
+
+//  Remove and return a single pbuf from the pbuf queue.  Does not block.
+struct pbuf *pbuf_queue_get(struct pbuf_queue *mq);
+
+//  Adds a packet (i.e. packet header pbuf) to a pbuf_queue. The event associated
+//  with the pbuf_queue gets posted to the specified eventq.
+int pbuf_queue_put(struct pbuf_queue *mq, struct ble_npl_eventq *evq, struct pbuf *m);
 </code></pre>
 <h1 id="appendix-bl602-spi-functions" class="section-header"><a href="#appendix-bl602-spi-functions">13 Appendix: BL602 SPI Functions</a></h1>
 <p>TODO</p>
