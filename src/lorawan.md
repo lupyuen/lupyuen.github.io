@@ -1311,9 +1311,13 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Notes
 
-1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1379926160377851910)
+1.  This article is the expanded version of the Twitter Threads...
 
-    [(And this Twitter Thread on LoRaWAN Specifications)](https://twitter.com/MisterTechBlog/status/1370224529222500352?s=20)
+    -   [__RFM90 LoRa Driver for BL602__](https://twitter.com/MisterTechBlog/status/1381870711124369413)
+
+    -   [__LoRaWAN Driver for BL602__](https://twitter.com/MisterTechBlog/status/1379926160377851910)
+
+    -   [__LoRaWAN Specifications__](https://twitter.com/MisterTechBlog/status/1370224529222500352?s=20)
 
 # Appendix: LoRa Transmit Power
 
@@ -1354,6 +1358,8 @@ Our RFM90 / SX1262 LoRa Transceiver Driver is currently set to __DC-DC Power Reg
 #warning SX126x is set to DC-DC power regulator mode (instead of LDO)
 SX126xSetRegulatorMode( USE_DCDC );  //  Use DC-DC
 ```
+
+[(Check out this discussion on Twitter)](https://twitter.com/MisterTechBlog/status/1382510807116746753)
 
 ## Transmit Power
 
