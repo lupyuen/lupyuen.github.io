@@ -1444,7 +1444,7 @@ LoRaMacStatus_t LoRaMacInitialization(LoRaMacCallback_t *callbacks, LoRaMacRegio
 #endif
 ```
 
-This took me a while to troubleshoot this problem: "Why is the LoRaWAN Gateway ignoring my packets?"
+It took me a while to troubleshoot this problem: "Why is the LoRaWAN Gateway ignoring my packets?"
 
 ![Join Request Fail](https://lupyuen.github.io/images/lorawan-joinfail.png)
 
@@ -1455,6 +1455,8 @@ Till I got inspired by this quote from the [Semtech SX1302 LoRa Concentrator HAL
 # Appendix: LoRa Carrier Sensing
 
 TODO
+
+Carier Sensing has been disabled
 
 ![LoRa Carrier Sensing](https://lupyuen.github.io/images/lorawan-carrier.png)
 
@@ -1524,13 +1526,9 @@ alloc_pbuf(
     uint16_t header_len,   //  Header length of packet (LoRaWAN Header only, excluding pbuf_list header)
     uint16_t payload_len)  //  Payload length of packet, excluding header
 {
-    assert(header_len > 0);
-    assert(payload_len > 0);
-
     //  Init LWIP Buffer Pool
     static bool lwip_started = false;
     if (!lwip_started) {
-        printf("lwip_init\r\n");
         lwip_started = true;
         lwip_init();
     }
@@ -1555,11 +1553,6 @@ alloc_pbuf(
     assert(combined_header != NULL);
     assert(header != NULL);
 
-    //  Verify integrity of headers: pbuf_list Header is followed by LoRaWAN Header and LoRaWAN Payload
-    assert((uint32_t) combined_header + combined_header_len      == (uint32_t) buf->payload);
-    assert((uint32_t) combined_header + sizeof(struct pbuf_list) == (uint32_t) header);
-    assert((uint32_t) header + header_len == (uint32_t) buf->payload);
-
     //  Erase pbuf_list Header and LoRaWAN Header
     memset(combined_header, 0, combined_header_len);
 
@@ -1578,6 +1571,23 @@ alloc_pbuf(
 
     return buf;
 }
+```
+
+From [`pbuf_queue.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/pbuf_queue.c#L210-L322)
+
+```c
+//  Initializes a pbuf_queue.  A pbuf_queue is a queue of pbufs that ties to a
+//  particular task's event queue.  pbuf_queues form a helper API around a common
+//  paradigm: wait on an event queue until at least one packet is available,
+//  then process a queue of packets.
+int pbuf_queue_init(struct pbuf_queue *mq, ble_npl_event_fn *ev_cb, void *arg, uint16_t header_len);
+
+//  Remove and return a single pbuf from the pbuf queue.  Does not block.
+struct pbuf *pbuf_queue_get(struct pbuf_queue *mq);
+
+//  Adds a packet (i.e. packet header pbuf) to a pbuf_queue. The event associated
+//  with the pbuf_queue gets posted to the specified eventq.
+int pbuf_queue_put(struct pbuf_queue *mq, struct ble_npl_eventq *evq, struct pbuf *m);
 ```
 
 # Appendix: BL602 SPI Functions
