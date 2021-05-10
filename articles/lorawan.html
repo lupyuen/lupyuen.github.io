@@ -1346,6 +1346,7 @@ LoRaMacStatus_t LoRaMacInitialization(LoRaMacCallback_t *callbacks, LoRaMacRegio
 <p><strong>Packet Payload</strong>: Fixed size</p>
 </li>
 </ol>
+<p><img src="https://lupyuen.github.io/images/lorawan-pbuf1.png" alt="pbuf Packet Buffer" /></p>
 <p>Here's how we fetch the LoRaWAN Packet Header from a LoRaWAN Packet...</p>
 <pre><code class="language-c">//  Get the LoRaWAN Packet Header
 header = get_pbuf_header(
@@ -1389,8 +1390,9 @@ get_pbuf_header(
     return header;
 }
 </code></pre>
-<p><strong><code>pbuf_add_header</code></strong> comes from the Lightweight IP Library. It slides the <code>payload</code> pointer backwards to point at the requested header.</p>
-<p>(It returns an error code if there's isn't sufficient space for the header)</p>
+<p><strong><code>pbuf_add_header</code></strong> comes from the Lightweight IP Library. It slides the <code>payload</code> pointer backwards to point at the requested header...</p>
+<p><img src="https://lupyuen.github.io/images/lorawan-pbuf2.png" alt="pbuf Packet Buffer after sliding the payload pointer" /></p>
+<p>(<code>pbuf_add_header</code> returns a non-zero error code if there's isn't sufficient space for the header)</p>
 <p>Because this code <strong>mutates the Payload Pointer</strong>, we need to be extra careful when extracting the header.</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/pbuf_queue.c#L27-L30">(Note: Critical Sections have not been implemented yet)</a></p>
 <h2 id="packet-buffer-queue" class="section-header"><a href="#packet-buffer-queue">12.2 Packet Buffer Queue</a></h2>
