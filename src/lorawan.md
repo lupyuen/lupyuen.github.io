@@ -1213,7 +1213,11 @@ If our LoRaWAN Gateway didn't receive the data packet from BL602, here are some 
 
 1.  __Check the LoRa Sync Word__
 
-    Typical LoRaWAN Networks will use the __Public LoRa Sync Word `0x3444`__. This is defined in the Makefile as...
+    Typical LoRaWAN Networks will use the __Public LoRa Sync Word `0x3444`__.
+    
+    (Instead of the Private Sync Word `0x1424`)
+    
+    This is defined in the [`Makefile`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/Makefile#L66-L69) as...
 
     ```text
     CFLAGS += -DLORA_NODE_PUBLIC_NWK=1
@@ -1378,9 +1382,13 @@ Would be great if you could suggest a fix for this 🙏
 
 # Appendix: LoRa Sync Word
 
-TODO
+Typical LoRaWAN Networks will use the __Public LoRa Sync Word `0x3444`__.
 
-From [`Makefile`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/Makefile#L66-L69)
+(Instead of the Private Sync Word `0x1424`)
+
+The LoRaWAN Gateway will __not respond to our packets if we transmit the wrong Sync Word__.
+
+__`LORA_NODE_PUBLIC_NWK`__ should be set to __`1`__ in the [`Makefile`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/Makefile#L66-L69) ...
 
 ```text
 # Sets public or private lora network. A value of 1 means
@@ -1389,21 +1397,19 @@ From [`Makefile`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_ap
 CFLAGS += -DLORA_NODE_PUBLIC_NWK=1
 ```
 
-TODO
+![LORA_NODE_PUBLIC_NWK in Makefile](https://lupyuen.github.io/images/lorawan-syncword.png)
 
-![](https://lupyuen.github.io/images/lorawan-syncword.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/lorawan-syncword2.jpg)
-
-TODO
-
-From [`LoRaMac.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L2581-L2587)
+`LORA_NODE_PUBLIC_NWK` sets the Sync Word in [`LoRaMac.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L2581-L2587) ...
 
 ```c
-LoRaMacStatus_t
-LoRaMacInitialization(LoRaMacCallback_t *callbacks, LoRaMacRegion_t region) {
+//  Syncword for Private LoRa networks
+#define LORA_MAC_PRIVATE_SYNCWORD                   0x1424
+
+//  Syncword for Public LoRa networks
+#define LORA_MAC_PUBLIC_SYNCWORD                    0x3444
+
+//  Init the LoRaWAN Medium Access Control Layer
+LoRaMacStatus_t LoRaMacInitialization(LoRaMacCallback_t *callbacks, LoRaMacRegion_t region) {
     ...
 #if (LORA_NODE_PUBLIC_NWK)
     LM_F_IS_PUBLIC_NWK() = 1;
@@ -1413,6 +1419,10 @@ LoRaMacInitialization(LoRaMacCallback_t *callbacks, LoRaMacRegion_t region) {
     Radio.SetPublicNetwork(false);
 #endif
 ```
+
+This took me a while to troubleshoot ("Why is the gateway ignoring my packets?")... Till I got inspired by this quote from the [Semtech SX1302 LoRa Concentrator HAL User Manual](https://github.com/Lora-net/sx1302_hal/tree/master/libloragw#61-spreading-factor-sf5--sf6)
+
+![LoRa Concentrator HAL User Manual](https://lupyuen.github.io/images/lorawan-syncword2.jpg)
 
 # Appendix: LoRa Carrier Sensing
 
