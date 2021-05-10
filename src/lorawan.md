@@ -1518,9 +1518,23 @@ Here's how we ported Mbufs and Mbuf Queues to BL602.
 
 ## Packet Buffer
 
+Mbufs are not available on BL602, but we have something similar: [__pbuf Packet Buffer__ from Lightweight IP Stack (LWIP)](https://www.nongnu.org/lwip/2_0_x/group__pbuf.html)
+
+Stored inside a pbuf Packet Buffer are the __Packet Header and Packet Payload__.
+
+Here's how we get the Packet Header from a Packet Buffer...
+
+```c
+//  Get the Packet Header
+header = get_pbuf_header(
+    pbuf,                         //  Packet Buffer
+    sizeof(struct lora_pkt_info)  //  Size of LoRaWAN Packet Header
+);
+```
+
 TODO
 
-[`pbuf` from Lightweight IP stack](https://www.nongnu.org/lwip/2_0_x/group__pbuf.html)
+pbuf Packet Buffers 
 
 From [`pbuf_queue.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/pbuf_queue.c#L165-L197)
 
@@ -1559,6 +1573,8 @@ get_pbuf_header(
     return header;
 }
 ```
+
+[(Note: Critical Sections have not been implemented yet)](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/pbuf_queue.c#L27-L30)
 
 ## Packet Buffer Queue
 
