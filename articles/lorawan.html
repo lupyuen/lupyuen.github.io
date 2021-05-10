@@ -1085,7 +1085,9 @@ cargo run flash sdk_app_lorawan.bin --port COM5
 </li>
 <li>
 <p><strong>Check the LoRa Sync Word</strong></p>
-<p>Typical LoRaWAN Networks will use the <strong>Public LoRa Sync Word <code>0x3444</code></strong>. This is defined in the Makefile as...</p>
+<p>Typical LoRaWAN Networks will use the <strong>Public LoRa Sync Word <code>0x3444</code></strong>.</p>
+<p>(Instead of the Private Sync Word <code>0x1424</code>)</p>
+<p>This is defined in the <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/Makefile#L66-L69"><code>Makefile</code></a> as...</p>
 <pre><code class="language-text">CFLAGS += -DLORA_NODE_PUBLIC_NWK=1
 </code></pre>
 <p>The LoRaWAN Gateway will not respond to our packets if we transmit the wrong Sync Word.</p>
@@ -1223,21 +1225,25 @@ SX126xWriteRegister(REG_OCP, 0x38); // current max 160mA for the whole device
 <p>Would be great if you could suggest a fix for this 🙏</p>
 <p>(Or perhaps the Transmit Power isn't an issue?)</p>
 <h1 id="appendix-lora-sync-word" class="section-header"><a href="#appendix-lora-sync-word">10 Appendix: LoRa Sync Word</a></h1>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/Makefile#L66-L69"><code>Makefile</code></a></p>
+<p>Typical LoRaWAN Networks will use the <strong>Public LoRa Sync Word <code>0x3444</code></strong>.</p>
+<p>(Instead of the Private Sync Word <code>0x1424</code>)</p>
+<p>The LoRaWAN Gateway will <strong>not respond to our packets if we transmit the wrong Sync Word</strong>.</p>
+<p><strong><code>LORA_NODE_PUBLIC_NWK</code></strong> should be set to <strong><code>1</code></strong> in the <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/Makefile#L66-L69"><code>Makefile</code></a> ...</p>
 <pre><code class="language-text"># Sets public or private lora network. A value of 1 means
 # the network is public; private otherwise.
 # Must be set to 1 so that ChirpStack will detect our Public Sync Word (0x3444)
 CFLAGS += -DLORA_NODE_PUBLIC_NWK=1
 </code></pre>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/lorawan-syncword.png" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/lorawan-syncword2.jpg" alt="" /></p>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L2581-L2587"><code>LoRaMac.c</code></a></p>
-<pre><code class="language-c">LoRaMacStatus_t
-LoRaMacInitialization(LoRaMacCallback_t *callbacks, LoRaMacRegion_t region) {
+<p><img src="https://lupyuen.github.io/images/lorawan-syncword.png" alt="LORA_NODE_PUBLIC_NWK in Makefile" /></p>
+<p><code>LORA_NODE_PUBLIC_NWK</code> sets the Sync Word in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L2581-L2587"><code>LoRaMac.c</code></a> ...</p>
+<pre><code class="language-c">//  Syncword for Private LoRa networks
+#define LORA_MAC_PRIVATE_SYNCWORD                   0x1424
+
+//  Syncword for Public LoRa networks
+#define LORA_MAC_PUBLIC_SYNCWORD                    0x3444
+
+//  Init the LoRaWAN Medium Access Control Layer
+LoRaMacStatus_t LoRaMacInitialization(LoRaMacCallback_t *callbacks, LoRaMacRegion_t region) {
     ...
 #if (LORA_NODE_PUBLIC_NWK)
     LM_F_IS_PUBLIC_NWK() = 1;
@@ -1247,6 +1253,8 @@ LoRaMacInitialization(LoRaMacCallback_t *callbacks, LoRaMacRegion_t region) {
     Radio.SetPublicNetwork(false);
 #endif
 </code></pre>
+<p>This took me a while to troubleshoot (&quot;Why is the gateway ignoring my packets?&quot;)... Till I got inspired by this quote from the <a href="https://github.com/Lora-net/sx1302_hal/tree/master/libloragw#61-spreading-factor-sf5--sf6">Semtech SX1302 LoRa Concentrator HAL User Manual</a></p>
+<p><img src="https://lupyuen.github.io/images/lorawan-syncword2.jpg" alt="LoRa Concentrator HAL User Manual" /></p>
 <h1 id="appendix-lora-carrier-sensing" class="section-header"><a href="#appendix-lora-carrier-sensing">11 Appendix: LoRa Carrier Sensing</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-carrier.png" alt="" /></p>
