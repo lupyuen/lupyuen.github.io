@@ -154,11 +154,17 @@ The __LoRa Parameters__ are also defined in [`demo.c`](https://github.com/lupyue
 #define LORAPING_BUFFER_SIZE                64      /* LoRa message size */
 ```
 
-These should match the LoRa Parameters used by the LoRa Receiver.
+These should match the LoRa Parameters used by the LoRa Transmitter / Receiver.
 
-I used this LoRa Receiver (based on RAKwireless WisBlock) for testing our LoRa Driver...
+I used this LoRa Transmitter and Receiver (based on RAKwireless WisBlock) for testing our LoRa Driver...
 
 -   [__"RAKwireless WisBlock talks LoRa with PineCone BL602 RISC-V Board"__](https://lupyuen.github.io/articles/wisblock)
+
+    ![WisBlock receives LoRa packet from BL602](https://lupyuen.github.io/images/lorawan-transmit.png)
+
+-   [__"RAKwireless WisBlock Transmitter"__](https://lupyuen.github.io/articles/lora2#start-the-rakwireless-wisblock-transmitter)
+
+    ![BL602 receives LoRa packet from WisBlock](https://lupyuen.github.io/images/lorawan-receive.png)
 
 ## Initialise LoRa Transceiver
 
@@ -1181,7 +1187,9 @@ If we're running __ChirpStack on our LoRaWAN Gateway__, here's how we check...
 
     ![Send Data Packet](https://lupyuen.github.io/images/lorawan-send.png)
 
-    __`DecodedDataHex`__ shows 5 bytes of zero, which is what we sent.
+    __`DecodedDataHex`__ shows 5 bytes of zero, which is what we sent...
+
+    ![WisGate receives LoRaWAN Data Packet from BL602](https://lupyuen.github.io/images/lorawan-joinsend.png)
 
 1.  We may now configure ChirpStack to do something useful with the received packets, like publish them over MQTT, HTTP, ...
 
@@ -1436,7 +1444,11 @@ LoRaMacStatus_t LoRaMacInitialization(LoRaMacCallback_t *callbacks, LoRaMacRegio
 #endif
 ```
 
-This took me a while to troubleshoot ("Why is the gateway ignoring my packets?")... Till I got inspired by this quote from the [Semtech SX1302 LoRa Concentrator HAL User Manual](https://github.com/Lora-net/sx1302_hal/tree/master/libloragw#61-spreading-factor-sf5--sf6)
+This took me a while to troubleshoot this problem: "Why is the LoRaWAN Gateway ignoring my packets?"
+
+![Join Request Fail](https://lupyuen.github.io/images/lorawan-joinfail.png)
+
+Till I got inspired by this quote from the [Semtech SX1302 LoRa Concentrator HAL User Manual](https://github.com/Lora-net/sx1302_hal/tree/master/libloragw#61-spreading-factor-sf5--sf6)
 
 ![LoRa Concentrator HAL User Manual](https://lupyuen.github.io/images/lorawan-syncword2.jpg)
 
@@ -1444,17 +1456,129 @@ This took me a while to troubleshoot ("Why is the gateway ignoring my packets?")
 
 TODO
 
-![](https://lupyuen.github.io/images/lorawan-carrier.png)
+![LoRa Carrier Sensing](https://lupyuen.github.io/images/lorawan-carrier.png)
 
 TODO
 
-![](https://lupyuen.github.io/images/lorawan-carrier2.png)
+![LoRa Carrier Sensing](https://lupyuen.github.io/images/lorawan-carrier2.png)
+
+TODO
+
+![Carrier Sensing Stack Trace](https://lupyuen.github.io/images/lorawan-stack.png)
+
+TODO
+
+![Null pointer exception](https://lupyuen.github.io/images/lorawan-nullpointer.png)
 
 TODO
 
 # Appendix: Packet Buffer and Queue
 
 TODO
+
+From [`pbuf_queue.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/pbuf_queue.c#L165-L197)
+
+```c
+/// Return the pbuf Packet Buffer header
+void *
+get_pbuf_header(
+    struct pbuf *buf,    //  pbuf Packet Buffer
+    size_t header_size)  //  Size of header
+{
+    assert(buf != NULL);
+    assert(header_size > 0);
+
+    //  Warning: This code mutates the pbuf payload pointer, so we need a critical section
+    //  Enter critical section
+    OS_ENTER_CRITICAL(pbuf_header_mutex);
+
+    //  Shift the pbuf payload pointer BACKWARD
+    //  to locate the header.
+    u8_t rc1 = pbuf_add_header(buf, header_size);
+
+    //  Payload now points to the header
+    void *header = buf->payload;
+
+    //  Shift the pbuf payload pointer FORWARD
+    //  to locate the payload.
+    u8_t rc2 = pbuf_remove_header(buf, header_size);
+
+    //  Exit critical section
+    OS_EXIT_CRITICAL(pbuf_header_mutex);
+
+    //  Check for errors
+    assert(rc1 == 0);
+    assert(rc2 == 0);
+    assert(header != NULL);
+    return header;
+}
+```
+
+From [`pbuf_queue.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/pbuf_queue.c#L38-L98)
+
+```c
+/// Allocate a pbuf for LoRaWAN transmission. This returns a pbuf with 
+/// pbuf_list Header, LoRaWAN Header and LoRaWAN Payload.
+struct pbuf *
+alloc_pbuf(
+    uint16_t header_len,   //  Header length of packet (LoRaWAN Header only, excluding pbuf_list header)
+    uint16_t payload_len)  //  Payload length of packet, excluding header
+{
+    assert(header_len > 0);
+    assert(payload_len > 0);
+
+    //  Init LWIP Buffer Pool
+    static bool lwip_started = false;
+    if (!lwip_started) {
+        printf("lwip_init\r\n");
+        lwip_started = true;
+        lwip_init();
+    }
+    
+    //  Allocate a pbuf Packet Buffer with sufficient header space for pbuf_list header and LoRaWAN header
+    struct pbuf *buf = pbuf_alloc(
+        PBUF_TRANSPORT,   //  Buffer will include 182-byte transport header
+        payload_len,      //  Payload size
+        PBUF_RAM          //  Allocate as a single block of RAM
+    );                    //  TODO: Switch to pooled memory (PBUF_POOL), which is more efficient
+    assert(buf != NULL);
+
+    //  Erase packet
+    memset(buf->payload, 0, payload_len);
+
+    //  Packet Header will contain two structs: pbuf_list Header, followed by LoRaWAN Header
+    size_t combined_header_len = sizeof(struct pbuf_list) + header_len;
+
+    //  Get pointer to pbuf_list Header and LoRaWAN Header
+    void *combined_header = get_pbuf_header(buf, combined_header_len);
+    void *header          = get_pbuf_header(buf, header_len);
+    assert(combined_header != NULL);
+    assert(header != NULL);
+
+    //  Verify integrity of headers: pbuf_list Header is followed by LoRaWAN Header and LoRaWAN Payload
+    assert((uint32_t) combined_header + combined_header_len      == (uint32_t) buf->payload);
+    assert((uint32_t) combined_header + sizeof(struct pbuf_list) == (uint32_t) header);
+    assert((uint32_t) header + header_len == (uint32_t) buf->payload);
+
+    //  Erase pbuf_list Header and LoRaWAN Header
+    memset(combined_header, 0, combined_header_len);
+
+    //  Init pbuf_list header at the start of the combined header
+    struct pbuf_list *list = combined_header;
+    list->header_len  = header_len;
+    list->payload_len = payload_len;
+    list->header      = header;
+    list->payload     = buf->payload;
+    list->pb          = buf;
+
+    //  Verify integrity of pbuf_list: pbuf_list Header is followed by LoRaWAN Header and LoRaWAN Payload
+    assert((uint32_t) list + sizeof(struct pbuf_list) + list->header_len == (uint32_t) list->payload);
+    assert((uint32_t) list + sizeof(struct pbuf_list) == (uint32_t) list->header);
+    assert((uint32_t) list->header + list->header_len == (uint32_t) list->payload);
+
+    return buf;
+}
+```
 
 # Appendix: BL602 SPI Functions
 
@@ -1589,36 +1713,3 @@ void SX126xIoIrqInit( DioIrqHandler dioIrq ) {
 ```
 
 TODO
-
-![](https://lupyuen.github.io/images/lorawan-joinfail.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/lorawan-joinsend.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/lorawan-nullpointer.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/lorawan-para.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/lorawan-receive.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/lorawan-regions.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/lorawan-stack.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/lorawan-transmit.png)
-
-TODO
-
