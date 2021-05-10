@@ -1578,7 +1578,7 @@ get_pbuf_header(
 
 __`pbuf_add_header`__ comes from the Lightweight IP Library. It slides the `payload` pointer backwards to point at the requested header.
 
-(It returns null if there's isn't sufficient space for the header)
+(It returns an error if there's isn't sufficient space for the header)
 
 Because this code mutates the Payload Pointer, we need to be extra careful when extracting the header.
 
