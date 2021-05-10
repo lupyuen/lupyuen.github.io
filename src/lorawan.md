@@ -1592,6 +1592,25 @@ Because this code __mutates the Payload Pointer__, we need to be extra careful w
 
 TODO
 
+From [`pbuf_queue.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/pbuf_queue.c#L210-L322)
+
+```c
+//  Initializes a pbuf_queue.  A pbuf_queue is a queue of pbufs that ties to a
+//  particular task's event queue.  pbuf_queues form a helper API around a common
+//  paradigm: wait on an event queue until at least one packet is available,
+//  then process a queue of packets.
+int pbuf_queue_init(struct pbuf_queue *mq, ble_npl_event_fn *ev_cb, void *arg, uint16_t header_len);
+
+//  Remove and return a single pbuf from the pbuf queue.  Does not block.
+struct pbuf *pbuf_queue_get(struct pbuf_queue *mq);
+
+//  Adds a packet (i.e. packet header pbuf) to a pbuf_queue. The event associated
+//  with the pbuf_queue gets posted to the specified eventq.
+int pbuf_queue_put(struct pbuf_queue *mq, struct ble_npl_eventq *evq, struct pbuf *m);
+```
+
+TODO
+
 From [`pbuf_queue.h`](https://github.com/lupyuen/bl_iot_sdk/blob/8f7109be292c1dbfd56ec27077d0ae83190e8376/components/3rdparty/lorawan/include/node/pbuf_queue.h#L29-L58)
 
 ```c
@@ -1669,23 +1688,6 @@ alloc_pbuf(
 
     return buf;
 }
-```
-
-From [`pbuf_queue.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/pbuf_queue.c#L210-L322)
-
-```c
-//  Initializes a pbuf_queue.  A pbuf_queue is a queue of pbufs that ties to a
-//  particular task's event queue.  pbuf_queues form a helper API around a common
-//  paradigm: wait on an event queue until at least one packet is available,
-//  then process a queue of packets.
-int pbuf_queue_init(struct pbuf_queue *mq, ble_npl_event_fn *ev_cb, void *arg, uint16_t header_len);
-
-//  Remove and return a single pbuf from the pbuf queue.  Does not block.
-struct pbuf *pbuf_queue_get(struct pbuf_queue *mq);
-
-//  Adds a packet (i.e. packet header pbuf) to a pbuf_queue. The event associated
-//  with the pbuf_queue gets posted to the specified eventq.
-int pbuf_queue_put(struct pbuf_queue *mq, struct ble_npl_eventq *evq, struct pbuf *m);
 ```
 
 # Appendix: BL602 SPI Functions
