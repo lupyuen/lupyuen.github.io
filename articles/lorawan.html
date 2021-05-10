@@ -1337,7 +1337,15 @@ LoRaMacStatus_t LoRaMacInitialization(LoRaMacCallback_t *callbacks, LoRaMacRegio
 <p>Here's how we ported Mbufs and Mbuf Queues to BL602.</p>
 <h2 id="packet-buffer" class="section-header"><a href="#packet-buffer">12.1 Packet Buffer</a></h2>
 <p>Mbufs are not available on BL602, but we have something similar: <a href="https://www.nongnu.org/lwip/2_0_x/group__pbuf.html"><strong><code>pbuf</code> Packet Buffer</strong> from Lightweight IP Stack (LWIP)</a></p>
-<p>Stored inside a <code>pbuf</code> Packet Buffer are the <strong>Packet Header and Packet Payload</strong>.</p>
+<p>Stored inside a <code>pbuf</code> Packet Buffer are...</p>
+<ol>
+<li>
+<p><strong>Packet Header</strong>: Variable size, up to a limit (max 182 bytes)</p>
+</li>
+<li>
+<p><strong>Packet Payload</strong>: Fixed size</p>
+</li>
+</ol>
 <p>Here's how we get the Packet Header from a Packet Buffer...</p>
 <pre><code class="language-c">//  Get the Packet Header
 header = get_pbuf_header(
@@ -1360,14 +1368,14 @@ get_pbuf_header(
     //  Enter critical section
     OS_ENTER_CRITICAL(pbuf_header_mutex);
 
-    //  Shift the pbuf payload pointer BACKWARD
+    //  Slide the pbuf payload pointer BACKWARD
     //  to locate the header.
     u8_t rc1 = pbuf_add_header(buf, header_size);
 
     //  Payload now points to the header
     void *header = buf-&gt;payload;
 
-    //  Shift the pbuf payload pointer FORWARD
+    //  Slide the pbuf payload pointer FORWARD
     //  to locate the payload.
     u8_t rc2 = pbuf_remove_header(buf, header_size);
 
@@ -1381,7 +1389,9 @@ get_pbuf_header(
     return header;
 }
 </code></pre>
-<p>Because this mutates the Payload Pointer, we need to be extra careful when extracting the header.</p>
+<p><strong><code>pbuf_add_header</code></strong> comes from the Lightweight IP Library. It slides the <code>payload</code> pointer backwards to point at the requested header.</p>
+<p>(It returns null if there's isn't sufficient space for the header)</p>
+<p>Because this code mutates the Payload Pointer, we need to be extra careful when extracting the header.</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/pbuf_queue.c#L27-L30">(Note: Critical Sections have not been implemented yet)</a></p>
 <h2 id="packet-buffer-queue" class="section-header"><a href="#packet-buffer-queue">12.2 Packet Buffer Queue</a></h2>
 <p>TODO</p>
