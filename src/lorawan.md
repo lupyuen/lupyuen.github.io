@@ -1279,21 +1279,33 @@ Today we have completed __Levels One and Two__ of our epic quest for the [__Thre
 
 1.  We have a __BL602 LoRaWAN Driver__ that can join a LoRaWAN Network and transmit LoRaWAN Data Packets
 
-Let's move on to __LoRa Three__: Join BL602 to __The Things Network__!
+1.  Soon we shall progress to __LoRa Level Three__...
 
-So eventually we shall build __LoRaWAN Sensor Devices with BL602__!
+    Join BL602 to __The Things Network__!
 
-TODO
+1.  And eventually we shall build __BL602 Sensor Devices for The Things Network__!
 
-1.  Benchmark
+But first we shall...
 
-1.  Take a short break
+1.  Install ChirpStack on our pre-production __Pine64 LoRa Gateway__...
 
-1.  Lisp
+    -   [__"Let’s make MiRAKles happen"__](https://www.pine64.org/2021/05/06/lets-make-mirakles-happen/)
+
+    And test it with our BL602 LoRaWAN Driver.
+
+    (Maybe we'll quickly benchmark Pine64 LoRa Gateway with [RAKwireless WisGate D4H](https://docs.rakwireless.com/Product-Categories/WisGate/RAK7248/Datasheet/)... Both are based on LoRa Concentators by RAKwireless!)
+
+1.  Take a short diversion to explore __Lisp and Blockly (Scratch)__ on BL602...
+
+    -   [__Twitter Thread on uLisp and Blockly on BL602__](https://twitter.com/MisterTechBlog/status/1389783215347429382)
+
+    Because it shows lots of potential for __IoT Education__.
+
+    (My #1 passion)
 
 We have come a loooong way since I first [__experimented with LoRa in 2016__](https://github.com/lupyuen/LoRaArduino)...
 
-- __Cheaper Transceivers__: Shipped overnight from Thailand!
+- __Modern Transceivers and Gateways__: Pine64 RFM90, Pine64 LoRa Gateway
 
 - __Mature Networks__: LoRaWAN, The Things Network
 
