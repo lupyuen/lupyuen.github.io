@@ -10,7 +10,7 @@ Today we shall explore __uLisp and Blockly__ as an interesting new way to create
 
 (And someday this could become really helpful for __IoT Education__)
 
-The LoRaWAN Firmware in this article will run on __PineCone, Pinenut and Any BL602 Board__.
+The uLisp Firmware in this article will run on __PineCone, Pinenut and Any BL602 Board__.
 
 -   [__Watch the demo on YouTube__](https://youtu.be/LNkmUIv7ZZc)
 
