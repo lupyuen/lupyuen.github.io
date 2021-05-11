@@ -419,11 +419,16 @@ static void on_rx_timeout(void) {
 </code></pre>
 <p>We switch the LoRa Transceiver into sleep mode and log the timeout.</p>
 <h2 id="multitask-with-nimble-porting-layer" class="section-header"><a href="#multitask-with-nimble-porting-layer">2.6 Multitask with NimBLE Porting Layer</a></h2>
-<p>TODO</p>
+<p>The LoRa Transceiver (RFM90 / SX1262) triggers a <strong>GPIO Interrupt</strong> on BL602 when it receives a LoRa Packet...</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-interrupt.png" alt="GPIO Interrupt Handler" /></p>
-<p>TODO</p>
+<p>For safety we forward the GPIO Interrupt to a <strong>Background Task</strong> via an <strong>Event Queue</strong>...</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-handler.png" alt="Handling LoRa Receive Event" /></p>
-<p>TODO</p>
+<p>So that the GPIO Interrupt is handled in the <strong>Application Context</strong>, where it's safe to call SPI Functions, <code>printf</code> and other nice things.</p>
+<p>The <strong>GPIO Interrupt Handling</strong> is explained in the Appendix...</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/lorawan#appendix-bl602-gpio-interrupts"><strong>&quot;BL602 GPIO Interrupts&quot;</strong></a></li>
+</ul>
+<p>The Multitasking Functions (Event Queue and Background Task) are provided by the <strong>NimBLE Porting Layer</strong> library...</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lora2#multitask-with-nimble-porting-layer"><strong>&quot;Multitask with NimBLE Porting Layer&quot;</strong></a></li>
 </ul>
