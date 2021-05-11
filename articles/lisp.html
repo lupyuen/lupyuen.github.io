@@ -98,7 +98,25 @@
 <p><em>uLisp and Blockly on PineCone BL602 RISC-V Board</em></p>
 <h1 id="start-with-ulisp" class="section-header"><a href="#start-with-ulisp">1 Start with uLisp</a></h1>
 <p>TODO</p>
+<p><a href="https://github.com/technoblogy/ulisp-esp"><code>ulisp-esp</code></a></p>
+<p>Natural fit because</p>
+<ol>
+<li>
+<p>ESP32</p>
+</li>
+<li>
+<p>Console</p>
+</li>
+<li>
+<p>Scripting</p>
+</li>
+<li>
+<p>Arduino</p>
+</li>
+</ol>
 <p><a href="http://www.ulisp.com/show?21T5">More about uLisp</a></p>
+<p><img src="https://lupyuen.github.io/images/lisp-source.jpg" alt="" /></p>
+<p>From <a href="https://github.com/technoblogy/ulisp-esp/blob/master/ulisp-esp.ino"><code>ulisp-esp.ino</code></a></p>
 <h1 id="build-the-bl602-ulisp-firmware" class="section-header"><a href="#build-the-bl602-ulisp-firmware">2 Build the BL602 uLisp Firmware</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/ulisp/customer_app/sdk_app_ulisp"><code>sdk_app_ulisp</code></a></p>
@@ -174,6 +192,12 @@
 <p>TODO</p>
 <h1 id="porting-ulisp-to-bl602" class="section-header"><a href="#porting-ulisp-to-bl602">6 Porting uLisp to BL602</a></h1>
 <p>TODO</p>
+<p>uLisp was ported to BL602 from ESP32 Arduino…</p>
+<p><a href="https://github.com/technoblogy/ulisp-esp"><code>ulisp-esp</code></a></p>
+<p>This firmware calls the BL602 uLisp Library <code>components/3rdparty/ulisp-bl602</code>…</p>
+<p><a href="https://github.com/lupyuen/ulisp-bl602"><code>ulisp-bl602</code></a></p>
+<p>This firmware works with <code>blockly-ulisp</code>, which allows embedded apps to be dragged-and-dropped from Web Browser to BL602…</p>
+<p><a href="https://github.com/AppKaki/blockly-ulisp"><code>blockly-ulisp</code></a></p>
 <h1 id="lisp-code-generator-for-blockly" class="section-header"><a href="#lisp-code-generator-for-blockly">7 Lisp Code Generator for Blockly</a></h1>
 <p>The following have been added into the existing <a href="https://github.com/AppKaki/blockly-ulisp/blob/master/generators"><code>generators</code></a> folder to generate Lisp code and to add blocks specific to uLisp…</p>
 <ul>
