@@ -1708,17 +1708,56 @@ alloc_pbuf(
 
 # Appendix: BL602 SPI Functions
 
-TODO
+Here's how our LoRa Transceiver Driver __initialises the BL602 SPI Port__ by calling the __BL602 SPI Hardware Abstraction Layer (HAL)__...
+
+From [`sx126x-board.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/sx126x-board.c#L166-L197)
+
+```c
+/// SPI Device Instance
+spi_dev_t spi_device;
+
+/// Initialise GPIO Pins and SPI Port. Called by SX126xIoIrqInit.
+/// Note: This is different from the Reference Implementation,
+/// which initialises the GPIO Pins and SPI Port at startup.
+void SX126xIoInit( void ) {
+    GpioInitOutput( SX126X_SPI_CS_PIN, 1 );
+    GpioInitInput( SX126X_BUSY_PIN, 0, 0 );
+    GpioInitInput( SX126X_DIO1, 0, 0 );
+
+    //  Configure the SPI Port
+    int rc = spi_init(
+        &spi_device,     //  SPI Device
+        SX126X_SPI_IDX,  //  SPI Port
+        0,               //  SPI Mode: 0 for Controller
+        //  TODO: Due to a quirk in BL602 SPI, we must set
+        //  SPI Polarity-Phase to 1 (CPOL=0, CPHA=1).
+        //  But actually Polarity-Phase for SX126X should be 0 (CPOL=0, CPHA=0). 
+        1,                    //  SPI Polarity-Phase
+        SX126X_SPI_BAUDRATE,  //  SPI Frequency
+        2,                    //  Transmit DMA Channel
+        3,                    //  Receive DMA Channel
+        SX126X_SPI_CLK_PIN,   //  SPI Clock Pin 
+        SX126X_SPI_CS_OLD,    //  Unused SPI Chip Select Pin
+        SX126X_SPI_SDI_PIN,   //  SPI Serial Data In Pin  (formerly MISO)
+        SX126X_SPI_SDO_PIN    //  SPI Serial Data Out Pin (formerly MOSI)
+    );
+    assert(rc == 0);
+}
+```
+
+[(The pins are defined in `sx126x-board.h`)](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/include/sx126x-board.h#L36-L61)
+
+The BL602 SPI HAL is explained in the article...
+
+-   [__"PineCone BL602 talks SPI too!"__](https://lupyuen.github.io/articles/spi)
+
+Note that the __SPI Polarity-Phase__ has been modified. [(More about this)](https://lupyuen.github.io/articles/spi#spi-phase-looks-sus)
+
+Here's how our LoRa Transceiver Driver calls the BL602 SPI HAL to __transmit and receive a single byte__ to RFM90 / SX1262...
 
 From [`sx126x-board.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/sx126x-board.c#L120-L164)
 
 ```c
-///////////////////////////////////////////////////////////////////////////////
-//  SPI Functions
-
-/// SPI Device Instance
-spi_dev_t spi_device;
-
 /// SPI Transmit Buffer (1 byte)
 static uint8_t spi_tx_buf[1];
 
@@ -1757,43 +1796,6 @@ uint16_t SpiInOut(int spi_num, uint16_t val) {
 
     //  Return the received byte
     return spi_rx_buf[0];
-}
-```
-
-TODO
-
-From [`sx126x-board.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/sx126x-board.c#L166-L197)
-
-```c
-///////////////////////////////////////////////////////////////////////////////
-
-/// Initialise GPIO Pins and SPI Port. Called by SX126xIoIrqInit.
-/// Note: This is different from the Reference Implementation,
-/// which initialises the GPIO Pins and SPI Port at startup.
-void SX126xIoInit( void )
-{
-    GpioInitOutput( SX126X_SPI_CS_PIN, 1 );
-    GpioInitInput( SX126X_BUSY_PIN, 0, 0 );
-    GpioInitInput( SX126X_DIO1, 0, 0 );
-
-    //  Configure the SPI Port
-    int rc = spi_init(
-        &spi_device,     //  SPI Device
-        SX126X_SPI_IDX,  //  SPI Port
-        0,               //  SPI Mode: 0 for Controller
-        //  TODO: Due to a quirk in BL602 SPI, we must set
-        //  SPI Polarity-Phase to 1 (CPOL=0, CPHA=1).
-        //  But actually Polarity-Phase for SX126X should be 0 (CPOL=0, CPHA=0). 
-        1,                    //  SPI Polarity-Phase
-        SX126X_SPI_BAUDRATE,  //  SPI Frequency
-        2,                    //  Transmit DMA Channel
-        3,                    //  Receive DMA Channel
-        SX126X_SPI_CLK_PIN,   //  SPI Clock Pin 
-        SX126X_SPI_CS_OLD,    //  Unused SPI Chip Select Pin
-        SX126X_SPI_SDI_PIN,   //  SPI Serial Data In Pin  (formerly MISO)
-        SX126X_SPI_SDO_PIN    //  SPI Serial Data Out Pin (formerly MOSI)
-    );
-    assert(rc == 0);
 }
 ```
 
