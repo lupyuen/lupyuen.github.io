@@ -4,7 +4,20 @@
 
 What if we could run __Lisp programs__ on the [__PineCone BL602 RISC-V Board__](https://lupyuen.github.io/articles/pinecone)?
 
+```text
+( loop
+  ( pinmode 11 :output )
+  ( digitalwrite 11 :high )
+  ( delay 1000 )
+  ( pinmode 11 :output )
+  ( digitalwrite 11 :low )
+  ( delay 1000 )
+)
+```
+
 And create these programs with a __drag-and-drop Web Editor__... Without typing a single Lisp parenthesis / bracket?
+
+![Blockly for uLisp](https://lupyuen.github.io/images/lisp-web.jpg)
 
 Today we shall explore __uLisp and Blockly__ as an interesting new way to create embedded programs for the __BL602 RISC-V + WiFi SoC__.
 
@@ -14,7 +27,7 @@ The uLisp Firmware in this article will run on __PineCone, Pinenut and Any BL602
 
 -   [__Watch the demo on YouTube__](https://youtu.be/LNkmUIv7ZZc)
 
-![uLisp and Blockly on PineCone BL602 RISC-V Board](https://lupyuen.github.io/images/lisp-title.jpg)
+![uLisp and Blockly on PineCone BL602 RISC-V Board](https://lupyuen.github.io/images/lisp-cover.jpg)
 
 _uLisp and Blockly on PineCone BL602 RISC-V Board_
 
