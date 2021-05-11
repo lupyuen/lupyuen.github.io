@@ -147,6 +147,13 @@
   ],
   "publications": [
     {
+      "name": "PineCone BL602 Talks LoRaWAN",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2021-05-11",
+      "website": "https://lupyuen.github.io/articles/lorawan",
+      "summary": "How we connect PineCone BL602 RISC-V Board to LoRaWAN... With the Pine64 RFM90 LoRa Module"
+    },
+    {
       "name": "Build a LoRaWAN Network with RAKwireless WisGate Developer Gateway",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-04-30",
