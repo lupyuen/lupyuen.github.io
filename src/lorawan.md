@@ -1618,7 +1618,7 @@ __`pbuf_add_header`__ comes from the Lightweight IP Library. It slides the `payl
 
 Because this code __mutates the Payload Pointer__, we need to be extra careful when extracting the header.
 
-[(Note: Critical Sections have not been implemented yet)](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/pbuf_queue.c#L27-L30)
+[(Note: Critical Sections are needed for `pbuf_add_header` to work correctly during multitasking... But Critical Sections have not been implemented yet)](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/pbuf_queue.c#L27-L30)
 
 ## Packet Buffer Queue
 
@@ -1737,6 +1737,8 @@ alloc_pbuf(
     return buf;
 }
 ```
+
+[(Note: Critical Sections are needed for `pbuf_queue_get` and `pbuf_queue_put` to work correctly during multitasking... But Critical Sections have not been implemented yet)](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/pbuf_queue.c#L27-L30)
 
 # Appendix: BL602 SPI Functions
 
