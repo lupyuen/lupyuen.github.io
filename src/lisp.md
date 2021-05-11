@@ -35,15 +35,15 @@ _uLisp and Blockly on PineCone BL602 RISC-V Board_
 
 TODO
 
-http://www.ulisp.com/show?21T5
+[More about uLisp](http://www.ulisp.com/show?21T5)
 
 # Build the BL602 uLisp Firmware
 
 TODO
 
-https://github.com/lupyuen/bl_iot_sdk/tree/ulisp/customer_app/sdk_app_ulisp
+[`sdk_app_ulisp`](https://github.com/lupyuen/bl_iot_sdk/tree/ulisp/customer_app/sdk_app_ulisp)
 
-https://github.com/lupyuen/ulisp-bl602
+[`ulisp-bl602`](https://github.com/lupyuen/ulisp-bl602)
 
 # Run the BL602 uLisp Firmware
 
@@ -51,7 +51,7 @@ TODO
 
 We need a space before the first `(` because `(` is parsed as a command keyword...
 
-List Commands from http://www.ulisp.com/show?1AC5
+[List Commands from uLisp](http://www.ulisp.com/show?1AC5)
 
 ```text
 # Create a list (1 2 3)
@@ -64,7 +64,9 @@ List Commands from http://www.ulisp.com/show?1AC5
 ( cdr ( list 1 2 3 ) )
 ```
 
-GPIO Commands from http://www.ulisp.com/show?1AEK
+TODO
+
+[GPIO Commands from uLisp](http://www.ulisp.com/show?1AEK)
 
 ```text
 # Configure GPIO Pin 11 (Blue LED) for output (instead of input) 
@@ -80,11 +82,11 @@ GPIO Commands from http://www.ulisp.com/show?1AEK
 ( delay 1000 )
 ```
 
-![](https://lupyuen.github.io/images/lisp-led.png)
-
 TODO
 
-Blinky Commands from http://www.ulisp.com/show?1AEK
+![](https://lupyuen.github.io/images/lisp-led.png)
+
+[Blinky Commands from uLisp](http://www.ulisp.com/show?1AEK)
 
 ```text
 # Define the blinky function
@@ -134,9 +136,9 @@ TODO
 
 TODO
 
-https://appkaki.github.io/blockly-ulisp/demos/code/
+[`blockly-ulisp/demos/code`](https://appkaki.github.io/blockly-ulisp/demos/code/)
 
-https://github.com/AppKaki/blockly-ulisp
+[`blockly-ulisp` Web Editor](https://github.com/AppKaki/blockly-ulisp)
 
 ![](https://lupyuen.github.io/images/lisp-mobile.png)
 
@@ -148,13 +150,13 @@ TODO
 
 # Lisp Code Generator for Blockly
 
-The following have been added into the existing [`generators`](generators) folder to generate Lisp code and to add blocks specific to uLisp...
+The following have been added into the existing [`generators`](https://github.com/AppKaki/blockly-ulisp/blob/master/generators) folder to generate Lisp code and to add blocks specific to uLisp...
 
--   [`generators/lisp.js`](generators/lisp.js): Main interface for Lisp Code Generator
+-   [`generators/lisp.js`](https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp.js): Main interface for Lisp Code Generator
 
--   [`generators/lisp`](generators/lisp): Lisp Code Generator for various blocks
+-   [`generators/lisp`](https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp): Lisp Code Generator for various blocks
 
--   [`generators/lisp/lisp_library.xml`](generators/lisp/lisp_library.xml): Blocks XML file used by Block Exporter to generate the custom blocks
+-   [`generators/lisp/lisp_library.xml`](https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/lisp_library.xml): Blocks XML file used by Block Exporter to generate the custom blocks
 
 The Lisp Code Generator is __incomplete__. The only blocks supported are...
 
@@ -192,29 +194,29 @@ Watch the demo on YouTube...
 
 Try it here...
 
-https://appkaki.github.io/blockly-ulisp/demos/code/
+[`blockly-ulisp` Web Editor](https://appkaki.github.io/blockly-ulisp/demos/code/)
 
-The Blockly demo at [`demos/code`](demos/code) has been customised to include the Lisp Code Generator...
+The Blockly demo at [`demos/code`](https://github.com/AppKaki/blockly-ulisp/blob/master/demos/code) has been customised to include the Lisp Code Generator...
 
--   [`demos/code/index.html`](demos/code/index.html): Customised to load the Lisp Code Generator and Lisp Blocks
+-   [`demos/code/index.html`](https://github.com/AppKaki/blockly-ulisp/blob/master/demos/code/index.html): Customised to load the Lisp Code Generator and Lisp Blocks
 
--   [`demos/code/code.js`](demos/code/code.js): Customised to load the Lisp Code Generator and Lisp Blocks
-
-The Blockly demo calls the [__Web Serial API__](https://web.dev/serial/) to transfer the generated uLisp Script to BL602...
-
-https://github.com/AppKaki/blockly-ulisp/blob/master/demos/code/code.js#L641-L738
-
-We assume that BL602 is running the uLisp Firmware and connected to our computer via USB...
-
-https://github.com/lupyuen/bl_iot_sdk/tree/ulisp/customer_app/sdk_app_ulisp
+-   [`demos/code/code.js`](https://github.com/AppKaki/blockly-ulisp/blob/master/demos/code/code.js): Customised to load the Lisp Code Generator and Lisp Blocks
 
 Inspired by MakeCode for BBC micro:bit...
 
-https://makecode.microbit.org/
+[`MakeCode`](https://makecode.microbit.org/)
 
 # Web Serial API
 
 TODO
+
+The Blockly demo calls the [__Web Serial API__](https://web.dev/serial/) to transfer the generated uLisp Script to BL602...
+
+[`code.js`](https://github.com/AppKaki/blockly-ulisp/blob/master/demos/code/code.js#L641-L738)
+
+We assume that BL602 is running the uLisp Firmware and connected to our computer via USB...
+
+[`sdk_app_ulisp`](https://github.com/lupyuen/bl_iot_sdk/tree/ulisp/customer_app/sdk_app_ulisp)
 
 ![](https://lupyuen.github.io/images/lisp-terminal.png)
 
