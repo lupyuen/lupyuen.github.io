@@ -414,15 +414,21 @@ We switch the LoRa Transceiver into sleep mode and log the timeout.
 
 ## Multitask with NimBLE Porting Layer
 
-TODO
+The LoRa Transceiver (RFM90 / SX1262) triggers a __GPIO Interrupt__ on BL602 when it receives a LoRa Packet...
 
 ![GPIO Interrupt Handler](https://lupyuen.github.io/images/lorawan-interrupt.png)
 
-TODO
+For safety we forward the GPIO Interrupt to a __Background Task__ via an __Event Queue__...
 
 ![Handling LoRa Receive Event](https://lupyuen.github.io/images/lorawan-handler.png)
 
-TODO
+So that the GPIO Interrupt is handled in the __Application Context__, where it's safe to call SPI Functions, `printf` and other nice things.
+
+The __GPIO Interrupt Handling__ is explained in the Appendix...
+
+-   [__"BL602 GPIO Interrupts"__](https://lupyuen.github.io/articles/lorawan#appendix-bl602-gpio-interrupts)
+
+The Multitasking Functions (Event Queue and Background Task) are provided by the __NimBLE Porting Layer__ library...
 
 -   [__"Multitask with NimBLE Porting Layer"__](https://lupyuen.github.io/articles/lora2#multitask-with-nimble-porting-layer)
 
