@@ -15,7 +15,7 @@ What if we could run __Lisp programs__ on the [__PineCone BL602 RISC-V Board__](
 )
 ```
 
-And create these programs with a __drag-and-drop Web Editor__... Without typing a single Lisp parenthesis / bracket?
+And create the programs with a __drag-and-drop Web Editor__... Without typing a single Lisp parenthesis / bracket?
 
 ![Blockly for uLisp](https://lupyuen.github.io/images/lisp-web.png)
 
