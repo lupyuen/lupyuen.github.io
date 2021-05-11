@@ -35,7 +35,23 @@ _uLisp and Blockly on PineCone BL602 RISC-V Board_
 
 TODO
 
+[`ulisp-esp`](https://github.com/technoblogy/ulisp-esp)
+
+Natural fit because
+
+1.  ESP32
+
+1.  Console
+
+1.  Scripting
+
+1.  Arduino
+
 [More about uLisp](http://www.ulisp.com/show?21T5)
+
+![](https://lupyuen.github.io/images/lisp-source.jpg)
+
+From [`ulisp-esp.ino`](https://github.com/technoblogy/ulisp-esp/blob/master/ulisp-esp.ino)
 
 # Build the BL602 uLisp Firmware
 
@@ -147,6 +163,18 @@ TODO
 # Porting uLisp to BL602
 
 TODO
+
+uLisp was ported to BL602 from ESP32 Arduino...
+
+[`ulisp-esp`](https://github.com/technoblogy/ulisp-esp)
+
+This firmware calls the BL602 uLisp Library `components/3rdparty/ulisp-bl602`...
+
+[`ulisp-bl602`](https://github.com/lupyuen/ulisp-bl602)
+
+This firmware works with `blockly-ulisp`, which allows embedded apps to be dragged-and-dropped from Web Browser to BL602...
+
+[`blockly-ulisp`](https://github.com/AppKaki/blockly-ulisp)
 
 # Lisp Code Generator for Blockly
 
