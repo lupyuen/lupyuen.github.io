@@ -416,6 +416,14 @@ We switch the LoRa Transceiver into sleep mode and log the timeout.
 
 TODO
 
+![GPIO Interrupt Handler](https://lupyuen.github.io/images/lorawan-interrupt.png)
+
+TODO
+
+![Handling LoRa Receive Event](https://lupyuen.github.io/images/lorawan-handler.png)
+
+TODO
+
 -   [__"Multitask with NimBLE Porting Layer"__](https://lupyuen.github.io/articles/lora2#multitask-with-nimble-porting-layer)
 
 # LoRaWAN Driver
@@ -1801,9 +1809,32 @@ uint16_t SpiInOut(int spi_num, uint16_t val) {
 
 # Appendix: BL602 GPIO Interrupts
 
-TODO
+The LoRa Transceiver (RFM90 / SX1262) triggers a __GPIO Interrupt__ on BL602 when it receives a LoRa Packet...
 
-From [`sx126x-board.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/sx126x-board.c#L199-L232)
+![GPIO Interrupt Handler](https://lupyuen.github.io/images/lorawan-interrupt.png)
+
+Our LoRa Transceiver Driver handles this GPIO Interrupt by registering a __GPIO Interrupt Handler__ like so: [`radio.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L523-L532)
+
+```c
+/// Init the LoRa Transceiver
+void RadioInit( RadioEvents_t *events ) {
+    ...
+    SX126xInit( RadioOnDioIrq );
+```
+
+__`RadioOnDioIrq`__ is the function that will handle the GPIO Interrupt. [(See this)](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L1300-L1312)
+
+__`SX126xInit`__ is defined in [`sx126x.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/sx126x.c#L112-L131) ...
+
+```c
+/// Init the SX1262 LoRa Transceiver
+void SX126xInit( DioIrqHandler dioIrq ) {
+    ...
+    //  dioIrq is the GPIO Handler Function RadioOnDioIrq
+    SX126xIoIrqInit( dioIrq );
+```
+
+We call __`SX126xIoIrqInit`__ to set `RadioOnDioIrq` as the GPIO Handler Function: [`sx126x-board.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/sx126x-board.c#L199-L232)
 
 ```c
 /// Initialise GPIO Pins and SPI Port. Register GPIO Interrupt Handler for DIO1.
@@ -1820,7 +1851,7 @@ void SX126xIoIrqInit( DioIrqHandler dioIrq ) {
     assert(dioIrq != NULL);
     int rc = register_gpio_handler(   //  Register GPIO Handler...
         SX126X_DIO1,                  //  GPIO Pin Number
-        dioIrq,                       //  GPIO Handler Function
+        dioIrq,                       //  GPIO Handler Function: RadioOnDioIrq
         GLB_GPIO_INT_CONTROL_ASYNC,   //  Async Control Mode
         GLB_GPIO_INT_TRIG_POS_PULSE,  //  Trigger when GPIO level shifts from Low to High 
         0,                            //  No pullup
@@ -1840,4 +1871,19 @@ void SX126xIoIrqInit( DioIrqHandler dioIrq ) {
 }
 ```
 
-TODO
+This code is explained here...
+
+-   [__"BL602 GPIO Interrupts"__](https://lupyuen.github.io/articles/lora2#bl602-gpio-interrupts)
+
+For safety we don't call `RadioOnDioIrq` directly from the Interrupt Context.
+
+Instead we __forward the GPIO Interrupt to an Event Queue__...
+
+![Handling LoRa Receive Event](https://lupyuen.github.io/images/lorawan-handler.png)
+
+A __FreeRTOS Background Task__ will execute `RadioOnDioIrq` in the Application Context, where it's safe to call SPI Functions, `printf` and other nice things.
+
+This is explained here...
+
+-   [__"GPIO Interrupt Handler"__](https://lupyuen.github.io/articles/lora2#gpio-interrupt-handler)
+
