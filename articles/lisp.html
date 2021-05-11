@@ -65,14 +65,139 @@
 
     <h1 class="title">uLisp and Blockly on PineCone BL602 RISC-V Board</h1>
     <nav id="TOC"><ul>
-<li><a href="#whats-next">1 What's Next</a><ul></ul></li>
-<li><a href="#notes">2 Notes</a><ul></ul></li></ul></nav><p>📝 <em>16 May 2021</em></p>
+<li><a href="#start-with-ulisp">1 Start with uLisp</a><ul></ul></li>
+<li><a href="#build-the-bl602-ulisp-firmware">2 Build the BL602 uLisp Firmware</a><ul></ul></li>
+<li><a href="#run-the-bl602-ulisp-firmware">3 Run the BL602 uLisp Firmware</a><ul></ul></li>
+<li><a href="#now-add-blockly">4 Now add Blockly</a><ul></ul></li>
+<li><a href="#run-the-blockly-web-editor">5 Run the Blockly Web Editor</a><ul></ul></li>
+<li><a href="#lisp-code-generator-for-blockly">6 Lisp Code Generator for Blockly</a><ul></ul></li>
+<li><a href="#blockly-web-editor-for-ulisp">7 Blockly Web Editor for uLisp</a><ul></ul></li>
+<li><a href="#whats-next">8 What's Next</a><ul></ul></li>
+<li><a href="#notes">9 Notes</a><ul></ul></li></ul></nav><p>📝 <em>16 May 2021</em></p>
 <p>TODO</p>
 <ul>
 <li><a href="https://youtu.be/LNkmUIv7ZZc"><strong>Watch the demo on YouTube</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/lisp-title.jpg" alt="uLisp and Blockly on PineCone BL602 RISC-V Board" /></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">1 What's Next</a></h1>
+<h1 id="start-with-ulisp" class="section-header"><a href="#start-with-ulisp">1 Start with uLisp</a></h1>
+<p>TODO</p>
+<p>http://www.ulisp.com/show?21T5</p>
+<h1 id="build-the-bl602-ulisp-firmware" class="section-header"><a href="#build-the-bl602-ulisp-firmware">2 Build the BL602 uLisp Firmware</a></h1>
+<p>TODO</p>
+<p>https://github.com/lupyuen/bl_iot_sdk/tree/ulisp/customer_app/sdk_app_ulisp</p>
+<p>https://github.com/lupyuen/ulisp-bl602</p>
+<h1 id="run-the-bl602-ulisp-firmware" class="section-header"><a href="#run-the-bl602-ulisp-firmware">3 Run the BL602 uLisp Firmware</a></h1>
+<p>TODO</p>
+<p>We need a space before the first <code>(</code> because <code>(</code> is parsed as a command keyword...</p>
+<p>List Commands from http://www.ulisp.com/show?1AC5</p>
+<pre><code class="language-text"># Create a list (1 2 3)
+( list 1 2 3 )
+
+# Returns 1
+( car ( list 1 2 3 ) )
+
+# Returns (2 3)
+( cdr ( list 1 2 3 ) )
+</code></pre>
+<p>GPIO Commands from http://www.ulisp.com/show?1AEK</p>
+<pre><code class="language-text"># Configure GPIO Pin 11 (Blue LED) for output (instead of input) 
+( pinmode 11 :output )
+
+# Set GPIO Pin 11 to High (LED Off)
+( digitalwrite 11 :high )
+
+# Set GPIO Pin 11 to Low (LED On)
+( digitalwrite 11 :low )
+
+# Sleep 1,000 milliseconds (1 second)
+( delay 1000 )
+</code></pre>
+<p>Blinky Commands from http://www.ulisp.com/show?1AEK</p>
+<pre><code class="language-text"># Define the blinky function
+( defun blinky ()             \
+  ( pinmode 11 :output )      \
+  ( loop                      \
+   ( digitalwrite 11 :high )  \
+   ( delay 1000 )             \
+   ( digitalwrite 11 :low  )  \
+   ( delay 1000 )))
+
+# Run the blinky function
+( blinky )
+</code></pre>
+<p>Watch the demo on YouTube...</p>
+<ul>
+<li>
+<p><a href="https://youtu.be/RRhzW4j8BtI"><strong>LED Demo</strong></a></p>
+</li>
+<li>
+<p><a href="https://youtu.be/LNkmUIv7ZZc"><strong>Blinky Demo</strong></a></p>
+</li>
+</ul>
+<h1 id="now-add-blockly" class="section-header"><a href="#now-add-blockly">4 Now add Blockly</a></h1>
+<p>TODO</p>
+<h1 id="run-the-blockly-web-editor" class="section-header"><a href="#run-the-blockly-web-editor">5 Run the Blockly Web Editor</a></h1>
+<p>TODO</p>
+<p>https://appkaki.github.io/blockly-ulisp/demos/code/</p>
+<p>https://github.com/AppKaki/blockly-ulisp</p>
+<h1 id="lisp-code-generator-for-blockly" class="section-header"><a href="#lisp-code-generator-for-blockly">6 Lisp Code Generator for Blockly</a></h1>
+<p>The following have been added into the existing <a href="generators"><code>generators</code></a> folder to generate Lisp code and to add blocks specific to uLisp...</p>
+<ul>
+<li>
+<p><a href="generators/lisp.js"><code>generators/lisp.js</code></a>: Main interface for Lisp Code Generator</p>
+</li>
+<li>
+<p><a href="generators/lisp"><code>generators/lisp</code></a>: Lisp Code Generator for various blocks</p>
+</li>
+<li>
+<p><a href="generators/lisp/lisp_library.xml"><code>generators/lisp/lisp_library.xml</code></a>: Blocks XML file used by Block Exporter to generate the custom blocks</p>
+</li>
+</ul>
+<p>The Lisp Code Generator is <strong>incomplete</strong>. The only blocks supported are...</p>
+<ol>
+<li>
+<p>Forever</p>
+</li>
+<li>
+<p>On Start</p>
+</li>
+<li>
+<p>Wait</p>
+</li>
+<li>
+<p>GPIO Digital Write</p>
+</li>
+</ol>
+<p>The Lisp Code Generator is based on Visual Embedded Rust...</p>
+<p>https://lupyuen.github.io/articles/advanced-topics-for-visual-embedded-rust-programming</p>
+<h1 id="blockly-web-editor-for-ulisp" class="section-header"><a href="#blockly-web-editor-for-ulisp">7 Blockly Web Editor for uLisp</a></h1>
+<p>Watch the demo on YouTube...</p>
+<ul>
+<li>
+<p><a href="https://youtu.be/RRhzW4j8BtI"><strong>LED Demo</strong></a></p>
+</li>
+<li>
+<p><a href="https://youtu.be/LNkmUIv7ZZc"><strong>Blinky Demo</strong></a></p>
+</li>
+</ul>
+<p>Try it here...</p>
+<p>https://appkaki.github.io/blockly-ulisp/demos/code/</p>
+<p>The Blockly demo at <a href="demos/code"><code>demos/code</code></a> has been customised to include the Lisp Code Generator...</p>
+<ul>
+<li>
+<p><a href="demos/code/index.html"><code>demos/code/index.html</code></a>: Customised to load the Lisp Code Generator and Lisp Blocks</p>
+</li>
+<li>
+<p><a href="demos/code/code.js"><code>demos/code/code.js</code></a>: Customised to load the Lisp Code Generator and Lisp Blocks</p>
+</li>
+</ul>
+<p>The Blockly demo calls the <a href="https://web.dev/serial/"><strong>Web Serial API</strong></a> to transfer the generated uLisp Script to BL602...</p>
+<p>https://github.com/AppKaki/blockly-ulisp/blob/master/demos/code/code.js#L641-L738</p>
+<p>We assume that BL602 is running the uLisp Firmware and connected to our computer via USB...</p>
+<p>https://github.com/lupyuen/bl_iot_sdk/tree/ulisp/customer_app/sdk_app_ulisp</p>
+<p>Inspired by MakeCode for BBC micro:bit...</p>
+<p>https://makecode.microbit.org/</p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">8 What's Next</a></h1>
 <p>TODO</p>
 <ul>
 <li>
@@ -90,7 +215,7 @@
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lisp.md"><code>lupyuen.github.io/src/lisp.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">2 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">9 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1389783215347429382">this Twitter Thread</a></li>
 </ol>
