@@ -16,7 +16,7 @@ Is there a book about the __BL602 SoC__ (RISC-V, WiFi and Bluetooth LE) that...
 
 _You're reading the book right now!_
 
-Use this book to navigate the numerous BL602 articles that have been published on this site. (17 articles and still growing!)
+Use this book to navigate the numerous BL602 articles that have been published on this site. (18 articles and still growing!)
 
 The programs in these articles have been tested on __PineCone__, but they should work on other BL602 Boards: __Pinenut, DT-BL10, MagicHome BL602__.
 
@@ -179,6 +179,14 @@ How we code BL602 firmware the __safer, simpler way with Rust.__
 -   ["Rust in XIP Flash Memory by 9names"](https://lupyuen.github.io/articles/rust#rust-on-bl602-two-more-ways)
 
 -   ["Rust on Apache NuttX?"](https://lupyuen.github.io/articles/rust#apache-nuttx-on-bl602)
+
+![Lisp on BL602](https://lupyuen.github.io/images/book-lisp.jpg)
+
+# Lisp on BL602
+
+Porting the __uLisp Interpreter__ to BL602... And writing graphical programs with __Blockly (Scratch)__.
+
+-   ["uLisp and Blockly on PineCone BL602 RISC-V Board"](https://lupyuen.github.io/articles/lisp)
 
 ![Mynewt on BL602](https://lupyuen.github.io/images/book-mynewt.jpg)
 
