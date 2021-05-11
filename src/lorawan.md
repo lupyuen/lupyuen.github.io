@@ -1299,7 +1299,9 @@ But first we shall...
 
 1.  Take a short diversion to explore __Lisp and Blockly (Scratch)__ on BL602...
 
-    -   [__Twitter Thread on uLisp and Blockly on BL602__](https://twitter.com/MisterTechBlog/status/1389783215347429382)
+    -   [__Watch the demo on YouTube__](https://youtu.be/LNkmUIv7ZZc)
+
+    -   [__Follow the Twitter Thread__](https://twitter.com/MisterTechBlog/status/1389783215347429382)
 
     Because it shows lots of potential for __IoT Education__.
 
