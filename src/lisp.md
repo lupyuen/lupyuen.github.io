@@ -4,6 +4,10 @@
 
 TODO
 
+[__PineCone BL602 RISC-V Board__](https://lupyuen.github.io/articles/pinecone)
+
+The LoRaWAN Firmware in this article will run on __PineCone, Pinenut and Any BL602 Board__.
+
 -   [__Watch the demo on YouTube__](https://youtu.be/LNkmUIv7ZZc)
 
 ![uLisp and Blockly on PineCone BL602 RISC-V Board](https://lupyuen.github.io/images/lisp-title.jpg)
@@ -90,6 +94,10 @@ TODO
 https://appkaki.github.io/blockly-ulisp/demos/code/
 
 https://github.com/AppKaki/blockly-ulisp
+
+# Porting uLisp to BL602
+
+TODO
 
 # Lisp Code Generator for Blockly
 
