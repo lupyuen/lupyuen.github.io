@@ -1494,15 +1494,48 @@ alloc_pbuf(
 }
 </code></pre>
 <h1 id="appendix-bl602-spi-functions" class="section-header"><a href="#appendix-bl602-spi-functions">13 Appendix: BL602 SPI Functions</a></h1>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/sx126x-board.c#L120-L164"><code>sx126x-board.c</code></a></p>
-<pre><code class="language-c">///////////////////////////////////////////////////////////////////////////////
-//  SPI Functions
-
-/// SPI Device Instance
+<p>Here's how our LoRa Transceiver Driver <strong>initialises the BL602 SPI Port</strong> by calling the <strong>BL602 SPI Hardware Abstraction Layer (HAL)</strong>...</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/sx126x-board.c#L166-L197"><code>sx126x-board.c</code></a></p>
+<pre><code class="language-c">/// SPI Device Instance
 spi_dev_t spi_device;
 
-/// SPI Transmit Buffer (1 byte)
+/// Initialise GPIO Pins and SPI Port. Called by SX126xIoIrqInit.
+/// Note: This is different from the Reference Implementation,
+/// which initialises the GPIO Pins and SPI Port at startup.
+void SX126xIoInit( void ) {
+    GpioInitOutput( SX126X_SPI_CS_PIN, 1 );
+    GpioInitInput( SX126X_BUSY_PIN, 0, 0 );
+    GpioInitInput( SX126X_DIO1, 0, 0 );
+
+    //  Configure the SPI Port
+    int rc = spi_init(
+        &amp;spi_device,     //  SPI Device
+        SX126X_SPI_IDX,  //  SPI Port
+        0,               //  SPI Mode: 0 for Controller
+        //  TODO: Due to a quirk in BL602 SPI, we must set
+        //  SPI Polarity-Phase to 1 (CPOL=0, CPHA=1).
+        //  But actually Polarity-Phase for SX126X should be 0 (CPOL=0, CPHA=0). 
+        1,                    //  SPI Polarity-Phase
+        SX126X_SPI_BAUDRATE,  //  SPI Frequency
+        2,                    //  Transmit DMA Channel
+        3,                    //  Receive DMA Channel
+        SX126X_SPI_CLK_PIN,   //  SPI Clock Pin 
+        SX126X_SPI_CS_OLD,    //  Unused SPI Chip Select Pin
+        SX126X_SPI_SDI_PIN,   //  SPI Serial Data In Pin  (formerly MISO)
+        SX126X_SPI_SDO_PIN    //  SPI Serial Data Out Pin (formerly MOSI)
+    );
+    assert(rc == 0);
+}
+</code></pre>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/include/sx126x-board.h#L36-L61">(The pins are defined in <code>sx126x-board.h</code>)</a></p>
+<p>The BL602 SPI HAL is explained in the article...</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/spi"><strong>&quot;PineCone BL602 talks SPI too!&quot;</strong></a></li>
+</ul>
+<p>Note that the <strong>SPI Polarity-Phase</strong> has been modified. <a href="https://lupyuen.github.io/articles/spi#spi-phase-looks-sus">(More about this)</a></p>
+<p>Here's how our LoRa Transceiver Driver calls the BL602 SPI HAL to <strong>transmit and receive a single byte</strong> to RFM90 / SX1262...</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/sx126x-board.c#L120-L164"><code>sx126x-board.c</code></a></p>
+<pre><code class="language-c">/// SPI Transmit Buffer (1 byte)
 static uint8_t spi_tx_buf[1];
 
 /// SPI Receive Buffer (1 byte)
@@ -1540,39 +1573,6 @@ uint16_t SpiInOut(int spi_num, uint16_t val) {
 
     //  Return the received byte
     return spi_rx_buf[0];
-}
-</code></pre>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/sx126x-board.c#L166-L197"><code>sx126x-board.c</code></a></p>
-<pre><code class="language-c">///////////////////////////////////////////////////////////////////////////////
-
-/// Initialise GPIO Pins and SPI Port. Called by SX126xIoIrqInit.
-/// Note: This is different from the Reference Implementation,
-/// which initialises the GPIO Pins and SPI Port at startup.
-void SX126xIoInit( void )
-{
-    GpioInitOutput( SX126X_SPI_CS_PIN, 1 );
-    GpioInitInput( SX126X_BUSY_PIN, 0, 0 );
-    GpioInitInput( SX126X_DIO1, 0, 0 );
-
-    //  Configure the SPI Port
-    int rc = spi_init(
-        &amp;spi_device,     //  SPI Device
-        SX126X_SPI_IDX,  //  SPI Port
-        0,               //  SPI Mode: 0 for Controller
-        //  TODO: Due to a quirk in BL602 SPI, we must set
-        //  SPI Polarity-Phase to 1 (CPOL=0, CPHA=1).
-        //  But actually Polarity-Phase for SX126X should be 0 (CPOL=0, CPHA=0). 
-        1,                    //  SPI Polarity-Phase
-        SX126X_SPI_BAUDRATE,  //  SPI Frequency
-        2,                    //  Transmit DMA Channel
-        3,                    //  Receive DMA Channel
-        SX126X_SPI_CLK_PIN,   //  SPI Clock Pin 
-        SX126X_SPI_CS_OLD,    //  Unused SPI Chip Select Pin
-        SX126X_SPI_SDI_PIN,   //  SPI Serial Data In Pin  (formerly MISO)
-        SX126X_SPI_SDO_PIN    //  SPI Serial Data Out Pin (formerly MOSI)
-    );
-    assert(rc == 0);
 }
 </code></pre>
 <h1 id="appendix-bl602-gpio-interrupts" class="section-header"><a href="#appendix-bl602-gpio-interrupts">14 Appendix: BL602 GPIO Interrupts</a></h1>
