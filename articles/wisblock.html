@@ -81,31 +81,31 @@
 <li><a href="#run-the-firmware">5.4 Run the firmware</a><ul></ul></li></ul></li>
 <li><a href="#lora-field-test">6 LoRa Field Test</a><ul></ul></li>
 <li><a href="#analyse-the-lora-coverage">7 Analyse the LoRa Coverage</a><ul></ul></li>
-<li><a href="#whats-next">8 What's Next</a><ul></ul></li>
+<li><a href="#whats-next">8 What’s Next</a><ul></ul></li>
 <li><a href="#notes">9 Notes</a><ul></ul></li>
 <li><a href="#appendix-lora-ping-firmware-for-bl602">10 Appendix: LoRa Ping Firmware for BL602</a><ul></ul></li>
 <li><a href="#appendix-stream-lora-packets-to-youtube">11 Appendix: Stream LoRa Packets to YouTube</a><ul></ul></li></ul></nav><p>📝 <em>11 Mar 2021</em></p>
-<p>Suppose we've created a wireless <strong>LoRa Sensor</strong>.</p>
+<p>Suppose we’ve created a wireless <strong>LoRa Sensor</strong>.</p>
 <p>(Maybe a sensor that monitors the soil moisture in our home garden)</p>
-<p>Is there a simple way to check...</p>
+<p>Is there a simple way to check…</p>
 <ol>
 <li>
-<p>Whether our LoRa Sensor is <strong>transmitting packets correctly</strong>...</p>
+<p>Whether our LoRa Sensor is <strong>transmitting packets correctly</strong>…</p>
 </li>
 <li>
-<p>And what's the <strong>Wireless Range</strong> of our LoRa Sensor?</p>
+<p>And what’s the <strong>Wireless Range</strong> of our LoRa Sensor?</p>
 </li>
 </ol>
 <p>Today we shall install <a href="https://docs.rakwireless.com/Product-Categories/WisBlock/Quickstart/"><strong>RAKwireless WisBlock</strong></a> to check the packets transmitted by our LoRa Sensor.</p>
-<p>We'll be testing WisBlock with a LoRa Sensor built with the <strong>PineCone BL602 RISC-V Board</strong>... </p>
+<p>We’ll be testing WisBlock with a LoRa Sensor built with the <strong>PineCone BL602 RISC-V Board</strong>… </p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/lora"><strong>&quot;Connect PineCone BL602 to LoRa Transceiver&quot;</strong></a></li>
+<li><a href="https://lupyuen.github.io/articles/lora"><strong>“Connect PineCone BL602 to LoRa Transceiver”</strong></a></li>
 </ul>
 <p>Many thanks to <a href="https://www.rakwireless.com"><strong>RAKwireless</strong></a> for providing the <a href="https://store.rakwireless.com/products/wisblock-connected-box"><strong>WisBlock Connected Box!</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/wisblock-title.jpg" alt="RAKwireless WisBlock LPWAN Module mounted on WisBlock Base Board" /></p>
 <p><em>RAKwireless WisBlock LPWAN Module mounted on WisBlock Base Board</em></p>
 <h1 id="connect-wisblock" class="section-header"><a href="#connect-wisblock">1 Connect WisBlock</a></h1>
-<p>Connect the following components according to the pic above...</p>
+<p>Connect the following components according to the pic above…</p>
 <ol>
 <li>
 <p><strong>WisBlock LPWAN Module</strong>: This is the <strong>Nordic nRF52840 Microcontroller</strong> with <strong>Semtech SX1262 LoRa Transceiver</strong>. <a href="https://docs.rakwireless.com/Product-Categories/WisBlock/RAK4631/Overview/">(More about this)</a></p>
@@ -118,40 +118,40 @@
 </li>
 <li>
 <p><strong>LoRa Antenna</strong>: Connect the LoRa Antenna to the LPWAN Module.</p>
-<p>(That's the black rod. Use the Antenna Adapter Cable)</p>
+<p>(That’s the black rod. Use the Antenna Adapter Cable)</p>
 </li>
 <li>
 <p><strong>Bluetooth LE Antenna</strong>: Connect the Bluetooth LE Antenna to the LPWAN Module.</p>
 <p>(The stringy flappy thingy)</p>
 </li>
 </ol>
-<p><a href="https://electronics.stackexchange.com/questions/335912/can-i-break-a-radio-tranceiving-device-by-operating-it-with-no-antenna-connected"><strong>CAUTION: Always connect the LoRa Antenna and Bluetooth LE Antenna before Powering On... Or the LoRa and Bluetooth Transceivers may get damaged! See this</strong></a></p>
+<p><a href="https://electronics.stackexchange.com/questions/335912/can-i-break-a-radio-tranceiving-device-by-operating-it-with-no-antenna-connected"><strong>CAUTION: Always connect the LoRa Antenna and Bluetooth LE Antenna before Powering On… Or the LoRa and Bluetooth Transceivers may get damaged! See this</strong></a></p>
 <p>The above components are shipped in the <a href="https://store.rakwireless.com/products/wisblock-connected-box"><strong>WisBlock Connected Box</strong></a>. (Which includes many more goodies!)</p>
-<p>For the LPWAN Module, be sure to choose the right <strong>LoRa Frequency</strong> for your region...</p>
+<p>For the LPWAN Module, be sure to choose the right <strong>LoRa Frequency</strong> for your region…</p>
 <ul>
 <li><a href="https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html"><strong>LoRa Frequencies by Country</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/lora-wisblock.jpg" alt="RAKwireless WisBlock Connected Box" /></p>
 <p><em>RAKwireless WisBlock Connected Box</em></p>
 <h1 id="initialise-lora-transceiver" class="section-header"><a href="#initialise-lora-transceiver">2 Initialise LoRa Transceiver</a></h1>
-<p><em>WisBlock is based on the powerful nRF52840 Microcontroller. Do we program it with FreeRTOS, Zephyr, Mynewt, ...?</em></p>
-<p>Here's the surprisingly thing about WisBlock... <strong>We program WisBlock with Arduino!</strong> (C++)</p>
+<p><em>WisBlock is based on the powerful nRF52840 Microcontroller. Do we program it with FreeRTOS, Zephyr, Mynewt, …?</em></p>
+<p>Here’s the surprisingly thing about WisBlock… <strong>We program WisBlock with Arduino!</strong> (C++)</p>
 <p>The Arduino Drivers for Semtech SX1262 will work fine with WisBlock.</p>
 <p>(Most other Arduino Drivers will run fine too!)</p>
-<p><em>But Arduino doesn't support Multitasking... No?</em></p>
-<p>Here's another surprisingly thing about WisBlock... <strong>WisBlock Arduino is based on FreeRTOS!</strong></p>
+<p><em>But Arduino doesn’t support Multitasking… No?</em></p>
+<p>Here’s another surprisingly thing about WisBlock… <strong>WisBlock Arduino is based on FreeRTOS!</strong></p>
 <p>(Technically: WisBlock is based on the <strong>Adafruit nRF52 Arduino Framework</strong>, which is based on FreeRTOS. <a href="https://github.com/adafruit/Adafruit_nRF52_Arduino">See this</a>)</p>
 <p>So Multitasking Firmware coded in FreeRTOS will run fine on WisBlock.</p>
-<p>Arduino programs will generally expose these two functions...</p>
+<p>Arduino programs will generally expose these two functions…</p>
 <ol>
 <li>
-<p><strong>Setup Function</strong> that's run when the micrcontroller starts up</p>
+<p><strong>Setup Function</strong> that’s run when the micrcontroller starts up</p>
 </li>
 <li>
-<p><strong>Loop Function</strong> that's called repeatedly to handle events</p>
+<p><strong>Loop Function</strong> that’s called repeatedly to handle events</p>
 </li>
 </ol>
-<p>Let's see what happens inside the Setup and Loop Functions for our WisBlock LoRa Receiver.</p>
+<p>Let’s see what happens inside the Setup and Loop Functions for our WisBlock LoRa Receiver.</p>
 <h2 id="setup-function" class="section-header"><a href="#setup-function">2.1 Setup Function</a></h2>
 <p>In the <strong>Setup Function</strong>, we start by initialising the LoRa Module and the Serial Port:  <a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp#L55-L106"><code>main.cpp</code></a></p>
 <pre><code class="language-c">//  Setup Function is called upon startup
@@ -164,7 +164,7 @@ void setup() {
     Serial.begin(115200);
     while (!Serial) { delay(10); }
 </code></pre>
-<p>Next we set the <strong>Callback Functions</strong> that will be triggered by the LoRa Driver...</p>
+<p>Next we set the <strong>Callback Functions</strong> that will be triggered by the LoRa Driver…</p>
 <pre><code class="language-c">    //  Set the LoRa Callback Functions
     RadioEvents.TxDone    = NULL;
     RadioEvents.RxDone    = OnRxDone;
@@ -173,14 +173,14 @@ void setup() {
     RadioEvents.RxError   = OnRxError;
     RadioEvents.CadDone   = NULL;
 </code></pre>
-<p>The Callback Functions are...</p>
+<p>The Callback Functions are…</p>
 <ul>
 <li>
 <p><strong><code>OnRxDone</code></strong>: Called by the LoRa Driver when it receives a LoRa Packet</p>
 <p>(We shall print the contents of the LoRa Packet)</p>
 </li>
 <li>
-<p><strong><code>OnRxTimeout</code></strong>: Called by the LoRa Driver when it hasn't received a LoRa Packet within a timeout duration.</p>
+<p><strong><code>OnRxTimeout</code></strong>: Called by the LoRa Driver when it hasn’t received a LoRa Packet within a timeout duration.</p>
 <p>(<code>RX_TIMEOUT_VALUE</code>, which is 3 seconds)</p>
 </li>
 <li>
@@ -188,11 +188,11 @@ void setup() {
 <p>(Probably due to interference or weak signal)</p>
 </li>
 </ul>
-<p><strong><code>RadioEvents</code></strong> has been defined earlier like so...</p>
+<p><strong><code>RadioEvents</code></strong> has been defined earlier like so…</p>
 <pre><code class="language-c">//  Callback Functions for LoRa Events
 static RadioEvents_t RadioEvents;
 </code></pre>
-<p>We initialise the LoRa Transceiver and <strong>register the Callback Functions</strong> with the LoRa Driver...</p>
+<p>We initialise the LoRa Transceiver and <strong>register the Callback Functions</strong> with the LoRa Driver…</p>
 <pre><code class="language-c">    //  Initialize the LoRa Transceiver
     Radio.Init(&amp;RadioEvents);
 </code></pre>
@@ -200,7 +200,7 @@ static RadioEvents_t RadioEvents;
 <pre><code class="language-c">    //  Set the LoRa Frequency
     Radio.SetChannel(RF_FREQUENCY);
 </code></pre>
-<p>Then we set the <strong>LoRa Parameters</strong> for receiving the packets...</p>
+<p>Then we set the <strong>LoRa Parameters</strong> for receiving the packets…</p>
 <pre><code class="language-c">    //  Configure the LoRa Transceiver for receiving messages
     Radio.SetRxConfig(
         MODEM_LORA, 
@@ -220,7 +220,7 @@ static RadioEvents_t RadioEvents;
     );
 </code></pre>
 <p>These must match the LoRa Parameters used in our LoRa Transmitter. (More about this later)</p>
-<p>Finally we ask the LoRa Driver to start receiving LoRa Packets...</p>
+<p>Finally we ask the LoRa Driver to start receiving LoRa Packets…</p>
 <pre><code class="language-c">    //  Start receiving LoRa packets
     Radio.Rx(RX_TIMEOUT_VALUE);
 }
@@ -234,7 +234,7 @@ void loop() {
     //  Handle Radio events
     Radio.IrqProcess();
 </code></pre>
-<p>Finally we yield control to FreeRTOS, to allow other tasks to run...</p>
+<p>Finally we yield control to FreeRTOS, to allow other tasks to run…</p>
 <pre><code class="language-c">    //  We are on FreeRTOS, give other tasks a chance to run
     delay(100);
     yield();
@@ -245,7 +245,7 @@ void loop() {
 <p><img src="https://lupyuen.github.io/images/wisblock-cartoon.png" alt="LoRa pushing 64-byte packets from BL602 to WisBlock" /></p>
 <p><em>LoRa pushing 64-byte packets from BL602 to WisBlock</em></p>
 <h1 id="receive-lora-packets" class="section-header"><a href="#receive-lora-packets">3 Receive LoRa Packets</a></h1>
-<p>We have prepped our WisBlock LoRa Transceiver to receive packets... Let's watch how we handle the received LoRa Packets.</p>
+<p>We have prepped our WisBlock LoRa Transceiver to receive packets… Let’s watch how we handle the received LoRa Packets.</p>
 <h2 id="receive-callback-function" class="section-header"><a href="#receive-callback-function">3.1 Receive Callback Function</a></h2>
 <p>The Callback Function <strong><code>OnRxDone</code></strong> is triggered by the LoRa Driver whenever a <strong>LoRa Packet has been received successfully</strong>.</p>
 <p>First we show the <strong>Timestamp (in seconds), Signal Strength and Signal To Noise Ratio:</strong> <a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp#L118-L139"><code>main.cpp</code></a></p>
@@ -257,33 +257,33 @@ void OnRxDone(uint8_t *payload, uint16_t size, int16_t rssi, int8_t snr) {
     //  Show the signal strength, signal to noise ratio
     Serial.printf(&quot;RssiValue=%d dBm, SnrValue=%d, Data=&quot;, rssi, snr);
 </code></pre>
-<p>We pause a short while and copy the received packet into our 64-byte buffer <code>RcvBuffer</code>...</p>
+<p>We pause a short while and copy the received packet into our 64-byte buffer <code>RcvBuffer</code>…</p>
 <pre><code class="language-c">    delay(10);
     memcpy(RcvBuffer, payload, size);
 </code></pre>
-<p><strong><code>RcvBuffer</code></strong> is defined as a 64-byte buffer...</p>
+<p><strong><code>RcvBuffer</code></strong> is defined as a 64-byte buffer…</p>
 <pre><code class="language-c">    //  Buffer for received LoRa Packet
     static uint8_t RcvBuffer[64];
 </code></pre>
-<p>Then we display the 64 bytes received...</p>
+<p>Then we display the 64 bytes received…</p>
 <pre><code class="language-c">    //  Show the packet received
     for (int idx = 0; idx &lt; size; idx++) {
         Serial.printf(&quot;%02X &quot;, RcvBuffer[idx]);
     }
     Serial.println(&quot;&quot;);
 </code></pre>
-<p>Finally we ask the LoRa Driver to receive the next packet...</p>
+<p>Finally we ask the LoRa Driver to receive the next packet…</p>
 <pre><code class="language-c">    //  Receive the next packet
     Radio.Rx(RX_TIMEOUT_VALUE);
 }
 </code></pre>
 <p>The timeout value <strong><code>RX_TIMEOUT_VALUE</code></strong> is set to <strong>3 seconds</strong>.</p>
 <p><a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/main/logs/2105-2156.log">Check out the log of received packets</a></p>
-<p><em>Looks kinda crowded... We show everything in a single line?</em></p>
-<p>Yes because we'll be copying and pasting the lines into a spreadsheet for analysis.</p>
-<p>This way it's easier to scrub the data.</p>
+<p><em>Looks kinda crowded… We show everything in a single line?</em></p>
+<p>Yes because we’ll be copying and pasting the lines into a spreadsheet for analysis.</p>
+<p>This way it’s easier to scrub the data.</p>
 <h2 id="timeout-callback-function" class="section-header"><a href="#timeout-callback-function">3.2 Timeout Callback Function</a></h2>
-<p><em>We've set the Receive Timeout to 3 seconds. What happens if we don't receive a LoRa Packet in 3 seconds?</em></p>
+<p><em>We’ve set the Receive Timeout to 3 seconds. What happens if we don’t receive a LoRa Packet in 3 seconds?</em></p>
 <p>The LoRa Driver will trigger our <strong><code>OnRxTimeout</code></strong> Callback Function: <a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/abc363ef1bacb9e607ad519a587fe9581659e1ec/src/main.cpp#L141-L151"><code>main.cpp</code></a></p>
 <pre><code class="language-c">//  Callback Function to be executed on Receive Timeout event
 void OnRxTimeout(void) {
@@ -291,8 +291,8 @@ void OnRxTimeout(void) {
     //  We disable the timeout message because it makes the log much longer.
     //  Serial.println(&quot;OnRxTimeout&quot;);
 </code></pre>
-<p>We don't do much in <code>OnRxTimeout</code> because it's perfectly OK to time out... We don't expect a LoRa Packet every 3 seconds.</p>
-<p>All we do in <code>OnRxTimeout</code> is to ask the LoRa Driver to receive the next packet...</p>
+<p>We don’t do much in <code>OnRxTimeout</code> because it’s perfectly OK to time out… We don’t expect a LoRa Packet every 3 seconds.</p>
+<p>All we do in <code>OnRxTimeout</code> is to ask the LoRa Driver to receive the next packet…</p>
 <pre><code class="language-c">    //  Receive the next packet. Timeout in 3 seconds.
     Radio.Rx(RX_TIMEOUT_VALUE);
 }
@@ -307,7 +307,7 @@ void OnRxError(void) {
     //  Show the timestamp in seconds.
     Serial.printf(&quot;OnRxError: Timestamp=%d\n&quot;, millis() / 1000);
 </code></pre>
-<p>And we ask the LoRa Driver to receive the next packet...</p>
+<p>And we ask the LoRa Driver to receive the next packet…</p>
 <pre><code class="language-c">    //  Receive the next packet. Timeout in 3 seconds.
     Radio.Rx(RX_TIMEOUT_VALUE);
 }
@@ -315,8 +315,8 @@ void OnRxError(void) {
 <p><img src="https://lupyuen.github.io/images/wisblock-parameters2.png" alt="LoRa Parameters in WisBlock LoRa Receiver must match those in the LoRa Transmitter (PineCone BL602)" /></p>
 <p><em>LoRa Parameters in WisBlock LoRa Receiver must match those in the LoRa Transmitter (PineCone BL602)</em></p>
 <h1 id="lora-configuration" class="section-header"><a href="#lora-configuration">4 LoRa Configuration</a></h1>
-<p>Our WisBlock LoRa Receiver must be configured with the same settings as the LoRa Transmitter... Or we won't receive any LoRa Packets!</p>
-<p>Here's the <strong>LoRa Configuration</strong> for our WisBlock LoRa Receiver: <a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp#L36-L49"><code>main.cpp</code></a></p>
+<p>Our WisBlock LoRa Receiver must be configured with the same settings as the LoRa Transmitter… Or we won’t receive any LoRa Packets!</p>
+<p>Here’s the <strong>LoRa Configuration</strong> for our WisBlock LoRa Receiver: <a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp#L36-L49"><code>main.cpp</code></a></p>
 <pre><code class="language-c">// Define LoRa parameters. To receive LoRa packets from BL602, sync the parameters with
 // https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L41-L77
 // TODO: Change RF_FREQUENCY for your region
@@ -332,24 +332,24 @@ void OnRxError(void) {
 #define RX_TIMEOUT_VALUE      3000
 #define TX_TIMEOUT_VALUE      3000
 </code></pre>
-<p>For <strong><code>RF_FREQUENCY</code></strong>, be sure to specify the right <strong>LoRa Frequency</strong> for your region: 434, 780, 868, 915 or 923 MHz...</p>
+<p>For <strong><code>RF_FREQUENCY</code></strong>, be sure to specify the right <strong>LoRa Frequency</strong> for your region: 434, 780, 868, 915 or 923 MHz…</p>
 <ul>
 <li><a href="https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html"><strong>LoRa Frequencies by Country</strong></a></li>
 </ul>
-<p>Check also the <strong>LoRa Packet Size</strong>. Our WisBlock Receiver handles LoRa Packets that are 64 bytes or smaller...</p>
+<p>Check also the <strong>LoRa Packet Size</strong>. Our WisBlock Receiver handles LoRa Packets that are 64 bytes or smaller…</p>
 <pre><code class="language-c">//  Buffer for received LoRa Packet
 static uint8_t RcvBuffer[64];
 </code></pre>
-<p>Fortunately the LoRa Configuration matches perfectly across our WisBlock Receiver and PineCone BL602 Transmitter... So nothing needs to be changed! (See pic above)</p>
+<p>Fortunately the LoRa Configuration matches perfectly across our WisBlock Receiver and PineCone BL602 Transmitter… So nothing needs to be changed! (See pic above)</p>
 <p>(Except for the LoRa Frequency)</p>
 <p><img src="https://lupyuen.github.io/images/wisblock-send.png" alt="PineCone BL602 sending LoRa packets to WisBlock" /></p>
 <p><em>PineCone BL602 (left) sending LoRa packets to WisBlock (right)</em></p>
 <h1 id="build-and-run-the-lora-firmware" class="section-header"><a href="#build-and-run-the-lora-firmware">5 Build and Run the LoRa Firmware</a></h1>
-<p>Let's run the LoRa Firmware for WisBlock and receive some LoRa Packets!</p>
+<p>Let’s run the LoRa Firmware for WisBlock and receive some LoRa Packets!</p>
 <h2 id="install-vscode-and-platformio" class="section-header"><a href="#install-vscode-and-platformio">5.1 Install VSCode and PlatformIO</a></h2>
 <ol>
 <li>
-<p>Follow the instructions in this excellent article to install <strong>VSCode and PlatformIO</strong>...</p>
+<p>Follow the instructions in this excellent article to install <strong>VSCode and PlatformIO</strong>…</p>
 <ul>
 <li><a href="https://docs.rakwireless.com/Knowledge-Hub/Learn/Board-Support-Package-Installation-in-PlatformIO/"><strong>Installation of Board Support Package in PlatformIO</strong></a></li>
 </ul>
@@ -359,17 +359,17 @@ static uint8_t RcvBuffer[64];
 <p>(We may skip the LoRaWAN OTAA Example)</p>
 </li>
 <li>
-<p>Find out which <strong>LoRa Frequency</strong> we should use for your region...</p>
+<p>Find out which <strong>LoRa Frequency</strong> we should use for your region…</p>
 <ul>
 <li><a href="https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html"><strong>LoRa Frequencies by Country</strong></a></li>
 </ul>
-<p>We'll set the LoRa Frequency in a while.</p>
+<p>We’ll set the LoRa Frequency in a while.</p>
 </li>
 </ol>
 <h2 id="build-the-firmware" class="section-header"><a href="#build-the-firmware">5.2 Build the firmware</a></h2>
 <ol>
 <li>
-<p>Enter this at the command line...</p>
+<p>Enter this at the command line…</p>
 <pre><code class="language-bash"># Download the wisblock-lora-receiver source code
 git clone --recursive https://github.com/lupyuen/wisblock-lora-receiver
 </code></pre>
@@ -380,7 +380,7 @@ git clone --recursive https://github.com/lupyuen/wisblock-lora-receiver
 </li>
 <li>
 <p>Edit the file <a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp"><strong><code>src/main.cpp</code></strong></a></p>
-<p>Look for this code...</p>
+<p>Look for this code…</p>
 <pre><code class="language-c">// Define LoRa parameters.
 // TODO: Change RF_FREQUENCY for your region
 #define RF_FREQUENCY 923000000  // Hz
@@ -391,11 +391,11 @@ git clone --recursive https://github.com/lupyuen/wisblock-lora-receiver
 <p>Modify the <strong>LoRa Parameters</strong> in <a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp"><strong><code>src/main.cpp</code></strong></a> so that they match those in the LoRa Transmitter (PineCone BL602)</p>
 </li>
 <li>
-<p><strong>Build the LoRa Firmware</strong> by clicking the <strong><code>Build</code></strong> icon at the lower left...</p>
+<p><strong>Build the LoRa Firmware</strong> by clicking the <strong><code>Build</code></strong> icon at the lower left…</p>
 <p><img src="https://lupyuen.github.io/images/wisblock-bar1.png" alt="Build Icon" /></p>
 </li>
 <li>
-<p>We should see this...</p>
+<p>We should see this…</p>
 <pre><code class="language-text">Processing wiscore_rak4631 (platform: nordicnrf52; board: wiscore_rak4631; framework: arduino)
 ...
 Building in release mode
@@ -410,18 +410,18 @@ Flash: [=         ]   7.3% (used 59800 bytes from 815104 bytes)
 <h2 id="flash-the-firmware" class="section-header"><a href="#flash-the-firmware">5.3 Flash the firmware</a></h2>
 <ol>
 <li>
-<p><strong>Connect WisBlock</strong> to our computer's USB port</p>
+<p><strong>Connect WisBlock</strong> to our computer’s USB port</p>
 </li>
 <li>
-<p><strong>Flash the LoRa Firmware</strong> to WisBlock by clicking the <strong><code>Upload</code></strong> icon...</p>
+<p><strong>Flash the LoRa Firmware</strong> to WisBlock by clicking the <strong><code>Upload</code></strong> icon…</p>
 <p><img src="https://lupyuen.github.io/images/wisblock-bar2.png" alt="Upload Icon" /></p>
 </li>
 <li>
-<p>We should see this...</p>
+<p>We should see this…</p>
 <p><img src="https://lupyuen.github.io/images/wisblock-flash.png" alt="Firmware flashed successfully" /></p>
 </li>
 <li>
-<p>If we see the message...</p>
+<p>If we see the message…</p>
 <pre><code class="language-text">Timed out waiting for acknowledgement from device
 </code></pre>
 <p>Then disconnect WisBlock from the USB port, reconnect and flash again.</p>
@@ -431,11 +431,11 @@ Flash: [=         ]   7.3% (used 59800 bytes from 815104 bytes)
 <h2 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">5.4 Run the firmware</a></h2>
 <ol>
 <li>
-<p><strong>Run the LoRa Firmware</strong> by clicking the <strong><code>Monitor</code></strong> icon...</p>
+<p><strong>Run the LoRa Firmware</strong> by clicking the <strong><code>Monitor</code></strong> icon…</p>
 <p><img src="https://lupyuen.github.io/images/wisblock-bar3.png" alt="Monitor Icon" /></p>
 </li>
 <li>
-<p>We should see this...</p>
+<p>We should see this…</p>
 <pre><code class="language-text">&gt; Executing task: platformio device monitor &lt;
 --- Miniterm on /dev/cu.usbmodem14201  9600,8,N,1 ---
 --- Quit: Ctrl+C | Menu: Ctrl+T | Help: Ctrl+T followed by Ctrl+H ---
@@ -446,7 +446,7 @@ Starting Radio.Rx
 <p>Power on our LoRa Transmitter (PineCone BL602) and <strong>start transmitting LoRa Packets.</strong></p>
 </li>
 <li>
-<p>In the WisBlock Log we will see the LoRa Packet received...</p>
+<p>In the WisBlock Log we will see the LoRa Packet received…</p>
 <pre><code class="language-text">OnRxDone: 
 Timestamp=23, 
 RssiValue=-48 dBm, 
@@ -455,13 +455,13 @@ Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 
 </code></pre>
 <ul>
 <li>
-<p><strong><code>Timestamp</code></strong> is the <strong>Timestamp in Seconds</strong> (which we'll use for analysis in a while)</p>
-<p>(We don't have a real time clock so that's the best timestamp we can get)</p>
+<p><strong><code>Timestamp</code></strong> is the <strong>Timestamp in Seconds</strong> (which we’ll use for analysis in a while)</p>
+<p>(We don’t have a real time clock so that’s the best timestamp we can get)</p>
 </li>
 <li>
 <p><strong><code>RssiValue</code></strong> is the <strong>Signal Strength</strong> of the received LoRa Packet (in dBm, decibel-milliwatts).</p>
 <p>This number roughly varies from -50 (very strong signal) to -110 (very weak signal).</p>
-<p>(Why is the number negative? Because it's an exponent. <a href="https://en.wikipedia.org/wiki/DBm">See this</a>)</p>
+<p>(Why is the number negative? Because it’s an exponent. <a href="https://en.wikipedia.org/wiki/DBm">See this</a>)</p>
 </li>
 <li>
 <p><strong><code>SnrValue</code></strong> is the <strong>Signal To Noise Ratio</strong>.</p>
@@ -470,7 +470,7 @@ Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 
 </ul>
 </li>
 <li>
-<p>As we move the LoRa Transmitter (PineCone BL602) around, the Signal Strength and Signal To Noise Ratio will change...</p>
+<p>As we move the LoRa Transmitter (PineCone BL602) around, the Signal Strength and Signal To Noise Ratio will change…</p>
 <pre><code class="language-text">OnRxDone: 
 Timestamp=196, 
 RssiValue=-63 dBm, 
@@ -479,28 +479,28 @@ Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 
 </code></pre>
 </li>
 <li>
-<p>When we move the LoRa Transmitter too far from the WisBlock Receiver, we will see this...</p>
+<p>When we move the LoRa Transmitter too far from the WisBlock Receiver, we will see this…</p>
 <pre><code class="language-text">OnRxError: Timestamp=619
 </code></pre>
-<p>This means that our WisBlock Receiver couldn't receive the LoRa Packet because the signal was too weak.</p>
+<p>This means that our WisBlock Receiver couldn’t receive the LoRa Packet because the signal was too weak.</p>
 <p><a href="https://youtu.be/7nZR_LhPL-A?t=1040"><strong>Watch the demo video on YouTube</strong></a></p>
 <p><a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/main/logs/2105-2156.log"><strong>See the received LoRa Packets</strong></a></p>
 </li>
 </ol>
-<p>Now that we understand LoRa Packets and their Signal Strength, let's measure the <strong>LoRa Network Coverage</strong>!</p>
+<p>Now that we understand LoRa Packets and their Signal Strength, let’s measure the <strong>LoRa Network Coverage</strong>!</p>
 <p><img src="https://lupyuen.github.io/images/wisblock-receiver.jpg" alt="WisBlock LoRa Receiver right by the coconut trees" /></p>
 <p><em>WisBlock LoRa Receiver right by the coconut trees</em></p>
 <h1 id="lora-field-test" class="section-header"><a href="#lora-field-test">6 LoRa Field Test</a></h1>
-<p>Here comes the <strong>#1 Question</strong> when deciding <strong>where to install</strong> our LoRa Sensor and LoRa Receiver...</p>
-<p><em>What's the <strong>Maximum Distance</strong> between the LoRa Transmitter and LoRa Receiver? 100 metres? 200 metres? Or more?!</em></p>
-<p>LoRa was designed to send packets over <strong>great distances</strong> with little power. Let's find out how far!</p>
+<p>Here comes the <strong>#1 Question</strong> when deciding <strong>where to install</strong> our LoRa Sensor and LoRa Receiver…</p>
+<p><em>What’s the <strong>Maximum Distance</strong> between the LoRa Transmitter and LoRa Receiver? 100 metres? 200 metres? Or more?!</em></p>
+<p>LoRa was designed to send packets over <strong>great distances</strong> with little power. Let’s find out how far!</p>
 <ol>
 <li>
-<p>We'll put our <strong>WisBlock LoRa Receiver</strong> on the balcony, right by the coconut trees. (See pic above)</p>
-<p>(It's OK to run WisBlock temporarily inside the padded WisBlock Connected Box, antenna sticking out and upwards... Just make sure the metal parts of the LoRa Antenna and the Bluetooth Antenna don't touch any metal parts on WisBlock)</p>
+<p>We’ll put our <strong>WisBlock LoRa Receiver</strong> on the balcony, right by the coconut trees. (See pic above)</p>
+<p>(It’s OK to run WisBlock temporarily inside the padded WisBlock Connected Box, antenna sticking out and upwards… Just make sure the metal parts of the LoRa Antenna and the Bluetooth Antenna don’t touch any metal parts on WisBlock)</p>
 </li>
 <li>
-<p>Prepare the <strong>LoRa Transmitter Kit</strong>. We'll pack the following...</p>
+<p>Prepare the <strong>LoRa Transmitter Kit</strong>. We’ll pack the following…</p>
 <ul>
 <li>
 <p><strong>PineCone BL602 RISC-V Board</strong>, running the <strong>LoRa Ping Firmware</strong> (See the appendix)</p>
@@ -526,38 +526,38 @@ Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 
 </li>
 <li>
 <p><strong>Go hiking</strong> with the backpack!</p>
-<p>We'll do it like Pokemon Snap... Everywhere we go, we <strong>snap a photo on our phone</strong>.</p>
-<p>Like this Grassy Field...</p>
+<p>We’ll do it like Pokemon Snap… Everywhere we go, we <strong>snap a photo on our phone</strong>.</p>
+<p>Like this Grassy Field…</p>
 <p><img src="https://lupyuen.github.io/images/wisblock-field.jpg" alt="Geocoded, Timestamped photo" /></p>
 </li>
 <li>
 <p>This photo is <strong>Geocoded and Timestamped</strong> by our phone.</p>
 <p>Later we shall use this photo to tell us where we were <strong>located at a specific time.</strong></p>
-<p>Keep snapping more photos as we walk. Like these Geocoded, Timestamped Chickens...</p>
+<p>Keep snapping more photos as we walk. Like these Geocoded, Timestamped Chickens…</p>
 <p><img src="https://lupyuen.github.io/images/wisblock-chicken.jpg" alt="Geocoded, Timestamped Chickens" /></p>
 </li>
 <li>
-<p>At the end of our hike, we'll have a collection of <strong>Geocoded Timestamped Photos.</strong></p>
-<p>In the next section we'll match the photos with the log of LoRa Packets received by WisBlock.</p>
+<p>At the end of our hike, we’ll have a collection of <strong>Geocoded Timestamped Photos.</strong></p>
+<p>In the next section we’ll match the photos with the log of LoRa Packets received by WisBlock.</p>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/wisblock-chickenrice.jpg" alt="Geocoded, Timestamped Chicken Rice (no relation with the earlier chickens)" /></p>
 <p><em>Geocoded, Timestamped Chicken Rice (no relation with the earlier chickens)</em></p>
 <h1 id="analyse-the-lora-coverage" class="section-header"><a href="#analyse-the-lora-coverage">7 Analyse the LoRa Coverage</a></h1>
-<p>Back to our #1 Question...</p>
-<p><em>What's the <strong>Maximum Distance</strong> between the LoRa Transmitter and LoRa Receiver? 100 metres? 200 metres? Or more?!</em></p>
-<p>To answer that, we have two helpful things...</p>
+<p>Back to our #1 Question…</p>
+<p><em>What’s the <strong>Maximum Distance</strong> between the LoRa Transmitter and LoRa Receiver? 100 metres? 200 metres? Or more?!</em></p>
+<p>To answer that, we have two helpful things…</p>
 <ol>
 <li>
 <p>A bunch of <strong>Geocoded, Timestamped Photos</strong> that we have collected during our LoRa Field Test</p>
 </li>
 <li>
-<p>A log of <strong>LoRa Packets received by WisBlock</strong>...</p>
+<p>A log of <strong>LoRa Packets received by WisBlock</strong>…</p>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/wisblock-log.png" alt="WisBlock Arduino Log of Received LoRa Packets" /></p>
 <p><a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/main/logs/0922-1024.log">See the log of received LoRa Packets</a></p>
-<p>Here's what we'll do...</p>
+<p>Here’s what we’ll do…</p>
 <ol>
 <li>
 <p>We copy and paste the log of <strong>received LoRa Packets into a spreadsheet</strong>.</p>
@@ -565,7 +565,7 @@ Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 
 </li>
 <li>
 <p>Based on the <strong>Timestamp</strong> (in seconds), we compute the <strong>Actual Time Of Day</strong>.</p>
-<p>Our spreadsheet should look like this...</p>
+<p>Our spreadsheet should look like this…</p>
 <p><img src="https://lupyuen.github.io/images/wisblock-chart.png" alt="Spreadsheet with received LoRa Packets" /></p>
 <p><a href="https://docs.google.com/spreadsheets/d/15Qdcso1GDD1Ltue67cn5Y-3r1bpO6brvn8AbDM5Tqik/edit?usp=sharing">See the Google Sheets spreadsheet</a></p>
 </li>
@@ -577,10 +577,10 @@ Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 
 <p>Look for the <strong>dips and valleys</strong> in the chart.</p>
 <p>These are the places with <strong>poor LoRa Coverage</strong>.</p>
 <p>When we see missing dots in the chart，these are the places with <strong>zero LoRa Coverage</strong>.</p>
-<p>(Don't place our LoRa Sensor here!)</p>
+<p>(Don’t place our LoRa Sensor here!)</p>
 </li>
 <li>
-<p>To find these places with poor LoRa Coverage, <strong>match the Actual Time against the photos</strong> that we have collected...</p>
+<p>To find these places with poor LoRa Coverage, <strong>match the Actual Time against the photos</strong> that we have collected…</p>
 <p><img src="https://lupyuen.github.io/images/wisblock-geocode.jpg" alt="Geocoded Timestamped Chickens" /></p>
 </li>
 <li>
@@ -593,10 +593,10 @@ Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 
 <p><img src="https://lupyuen.github.io/images/wisblock-map.png" alt="Dense blocky neighbourhood" /></p>
 </li>
 <li>
-<p>How is this possible when there's <strong>No Line Of Sight</strong> between the LoRa Transmitter and the LoRa Receiver?</p>
+<p>How is this possible when there’s <strong>No Line Of Sight</strong> between the LoRa Transmitter and the LoRa Receiver?</p>
 <ul>
 <li>
-<p>LoRa Packets can get <strong>reflected on building surfaces</strong>... And the reflected packets will be received OK. </p>
+<p>LoRa Packets can get <strong>reflected on building surfaces</strong>… And the reflected packets will be received OK. </p>
 <p>(Assuming little signal distortion)</p>
 </li>
 <li>
@@ -606,7 +606,7 @@ Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 
 </ul>
 </li>
 <li>
-<p><strong>Exercise For The Reader...</strong></p>
+<p><strong>Exercise For The Reader…</strong></p>
 <p>How would you conduct this LoRa Field Test and analyse the LoRa Network Coverage more efficiently?</p>
 <p><a href="https://twitter.com/Kongduino/status/1369917401270161414?s=20">(Check out the solution by @Kongduino on Twitter)</a></p>
 <p><a href="https://lupyuen.github.io/articles/wisblock#appendix-stream-lora-packets-to-youtube">(Check the Appendix for another solution)</a></p>
@@ -614,8 +614,8 @@ Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 
 </ol>
 <p><img src="https://lupyuen.github.io/images/wisblock-night.jpg" alt="WisBlock receiving LoRa packets in the night" /></p>
 <p><em>WisBlock receiving LoRa packets in the night</em></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">8 What's Next</a></h1>
-<p>In the next article we shall head back to PineCone BL602 and finish Level 1 of our LoRa Stack...</p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">8 What’s Next</a></h1>
+<p>In the next article we shall head back to PineCone BL602 and finish Level 1 of our LoRa Stack…</p>
 <ul>
 <li>
 <p>Today <strong>BL602 can transmit</strong> LoRa Packets to WisBlock</p>
@@ -625,10 +625,10 @@ Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 
 </li>
 </ul>
 <p>And then we can progress to LoRa Levels 2 and 3: <strong>LoRaWAN and The Things Network.</strong></p>
-<p>Read the next article here...</p>
+<p>Read the next article here…</p>
 <ul>
 <li>
-<p><a href="https://lupyuen.github.io/articles/lora2"><strong>&quot;PineCone BL602 RISC-V Board Receives LoRa Packets&quot;</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/lora2"><strong>“PineCone BL602 RISC-V Board Receives LoRa Packets”</strong></a></p>
 </li>
 <li>
 <p><a href="https://lupyuen.github.io/articles/lora#lora-vs-lorawan"><strong>More about the 3 Levels of LoRa</strong></a></p>
@@ -637,7 +637,7 @@ Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 
 <p><a href="https://twitter.com/MisterTechBlog/status/1370224529222500352?s=20"><strong>More about the LoRaWAN Specifications on this Twitter Thread</strong></a></p>
 </li>
 </ul>
-<p>We have come a loooong way since I first <a href="https://github.com/lupyuen/LoRaArduino"><strong>experimented with LoRa in 2016</strong></a>...</p>
+<p>We have come a loooong way since I first <a href="https://github.com/lupyuen/LoRaArduino"><strong>experimented with LoRa in 2016</strong></a>…</p>
 <ul>
 <li>
 <p><strong>Cheaper Transceivers</strong>: Shipped overnight from Thailand!</p>
@@ -661,7 +661,7 @@ Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 
 <p><a href="https://www.reddit.com/r/embedded_oc/comments/m2m5mx/rakwireless_wisblock_talks_lora_with_pinecone/?utm_source=share&amp;utm_medium=web2x&amp;context=3">Discuss this article on Reddit</a></p>
 </li>
 <li>
-<p><a href="https://lupyuen.github.io/articles/book">Read &quot;The RISC-V BL602 Book&quot;</a></p>
+<p><a href="https://lupyuen.github.io/articles/book">Read “The RISC-V BL602 Book”</a></p>
 </li>
 <li>
 <p><a href="https://lupyuen.github.io">Check out my articles</a></p>
@@ -670,19 +670,19 @@ Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 
 <p><a href="https://lupyuen.github.io/rss.xml">RSS Feed</a></p>
 </li>
 </ul>
-<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
+<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/wisblock.md"><code>lupyuen.github.io/src/wisblock.md</code></a></p>
 <h1 id="notes" class="section-header"><a href="#notes">9 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1368378621719584768?s=20">this Twitter Thread</a></li>
 </ol>
 <h1 id="appendix-lora-ping-firmware-for-bl602" class="section-header"><a href="#appendix-lora-ping-firmware-for-bl602">10 Appendix: LoRa Ping Firmware for BL602</a></h1>
-<p>In the previous article we've created a LoRa Transmitter with PineCone BL602...</p>
+<p>In the previous article we’ve created a LoRa Transmitter with PineCone BL602…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/lora"><strong>&quot;Connect PineCone BL602 to LoRa Transceiver&quot;</strong></a></li>
+<li><a href="https://lupyuen.github.io/articles/lora"><strong>“Connect PineCone BL602 to LoRa Transceiver”</strong></a></li>
 </ul>
 <p>For the LoRa Field Test we installed the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/loraping/customer_app/sdk_app_loraping"><strong>BL602 LoRa Ping Firmware: <code>sdk_app_loraping</code></strong></a></p>
-<p>This is a modified version of <a href="https://lupyuen.github.io/articles/lora#initialise-lora-transceiver"><code>sdk_app_lora</code></a> that does the following...</p>
+<p>This is a modified version of <a href="https://lupyuen.github.io/articles/lora#initialise-lora-transceiver"><code>sdk_app_lora</code></a> that does the following…</p>
 <ol>
 <li>
 <p>At startup, we initialise the LoRa Transceiver</p>
@@ -702,15 +702,15 @@ Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/loraping/customer_app/sdk_app_loraping/sdk_app_loraping/demo.c#L44-L80"><code>demo.c</code></a></p>
 <p><img src="https://lupyuen.github.io/images/wisblock-parameters2.png" alt="BL602 LoRa Parameters" /></p>
 <p><em>BL602 LoRa Parameters</em></p>
-<p>Here's how it looks when BL602 LoRa Ping sends LoRa Packets to WisBlock...</p>
+<p>Here’s how it looks when BL602 LoRa Ping sends LoRa Packets to WisBlock…</p>
 <p><img src="https://lupyuen.github.io/images/wisblock-send.png" alt="PineCone BL602 sending LoRa packets to WisBlock" /></p>
 <p><em>PineCone BL602 (left) sending LoRa packets to WisBlock (right)</em></p>
-<p>There seems to be an intermittent problem with my LoRa Transmitter (hardware or firmware?)... WisBlock receives the first LoRa Packet transmitted but doesn't receive subsequent packets.</p>
+<p>There seems to be an intermittent problem with my LoRa Transmitter (hardware or firmware?)… WisBlock receives the first LoRa Packet transmitted but doesn’t receive subsequent packets.</p>
 <p>My workaround for now: As I walk, I disconnect and reconnect the USB power to my LoRa Transmitter (every 20 seconds).</p>
 <h1 id="appendix-stream-lora-packets-to-youtube" class="section-header"><a href="#appendix-stream-lora-packets-to-youtube">11 Appendix: Stream LoRa Packets to YouTube</a></h1>
-<p><em>When we're out doing the LoRa Field Test, how far shall we walk?</em></p>
-<p><em>Is there some way to watch the log of packets received by WisBlock... As we walk?</em></p>
-<p>Here's a solution: We stream the WisBlock Arduino Log live to YouTube!</p>
+<p><em>When we’re out doing the LoRa Field Test, how far shall we walk?</em></p>
+<p><em>Is there some way to watch the log of packets received by WisBlock… As we walk?</em></p>
+<p>Here’s a solution: We stream the WisBlock Arduino Log live to YouTube!</p>
 <p><img src="https://lupyuen.github.io/images/wisblock-stream.png" alt="Livestream of WisBlock Arduino Log on YouTube" /></p>
 <p><em>Livestream of WisBlock Arduino Log on YouTube</em></p>
 <p><a href="https://youtu.be/7nZR_LhPL-A?t=1040"><strong>Watch the recoded video on YouTube</strong></a></p>

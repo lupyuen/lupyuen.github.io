@@ -88,7 +88,7 @@
 <li><a href="#testing-the-led">15.1 Testing the LED</a><ul></ul></li>
 <li><a href="#testing-the-jumper">15.2 Testing the Jumper</a><ul></ul></li>
 <li><a href="#testing-the-uart-port">15.3 Testing the UART Port</a><ul></ul></li></ul></li>
-<li><a href="#whats-next">16 What's Next</a><ul></ul></li>
+<li><a href="#whats-next">16 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-load-firmware-to-cache-memory-not-flash-memory">17 Appendix: Load Firmware to Cache Memory, not Flash Memory</a><ul></ul></li>
 <li><a href="#appendix-install-newt">18 Appendix: Install newt</a><ul>
 <li><a href="#linux-and-macos">18.1 Linux and macOS</a><ul></ul></li>
@@ -99,61 +99,61 @@
 <li><a href="#task-settings">20.2 Task Settings</a><ul></ul></li></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/mynewt-title.png" alt="Debugging Mynewt Firmware with VSCode" /></p>
 <p><em>Debugging Mynewt Firmware with VSCode</em></p>
 <p>📝 <em>21 Dec 2020</em></p>
-<p>Our journey so far... </p>
+<p>Our journey so far… </p>
 <ol>
 <li>
-<p>We took a quick peek at <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602 RISC-V Evaluation Board</strong></a>...</p>
+<p>We took a quick peek at <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602 RISC-V Evaluation Board</strong></a>…</p>
 </li>
 <li>
-<p>Then we <a href="https://lupyuen.github.io/articles/openocd"><strong>connected PineCone to OpenOCD</strong></a> with a JTAG Debugger...</p>
+<p>Then we <a href="https://lupyuen.github.io/articles/openocd"><strong>connected PineCone to OpenOCD</strong></a> with a JTAG Debugger…</p>
 </li>
 <li>
 <p>And we <a href="https://lupyuen.github.io/articles/debug"><strong>debugged Rust on PineCone</strong></a> with VSCode and GDB</p>
 </li>
 </ol>
-<p>Today we'll learn about our port of <a href="https://mynewt.apache.org/"><strong>Apache Mynewt</strong></a> embedded operating system to PineCone.</p>
+<p>Today we’ll learn about our port of <a href="https://mynewt.apache.org/"><strong>Apache Mynewt</strong></a> embedded operating system to PineCone.</p>
 <p><a href="https://youtu.be/iDS8CBplSw8">Watch the Sneak Peek on YouTube</a></p>
 <p><em>Why port Mynewt to BL602?</em></p>
-<p>Since FreeRTOS is already supported on BL602 (for multitasking Bluetooth LE and WiFi in the background), let's port a modern embedded operating system like Mynewt.</p>
-<p>It's a great way to learn the internals of BL602.  And this article will be a valuable resource for porting to BL602 other embedded operating systems, like Zephyr and RIOT.</p>
+<p>Since FreeRTOS is already supported on BL602 (for multitasking Bluetooth LE and WiFi in the background), let’s port a modern embedded operating system like Mynewt.</p>
+<p>It’s a great way to learn the internals of BL602.  And this article will be a valuable resource for porting to BL602 other embedded operating systems, like Zephyr and RIOT.</p>
 <p><a href="https://github.com/apache/incubator-nuttx/tree/master/boards/risc-v/bl602/bl602evb"><strong>UPDATE: Check out Apache NuttX operating system for BL602</strong></a></p>
 <h1 id="adapt-from-existing-risc-v-port" class="section-header"><a href="#adapt-from-existing-risc-v-port">1 Adapt from Existing RISC-V Port</a></h1>
-<p><em>What's the quickest way to port Mynewt to PineCone BL602?</em></p>
-<p>There's one (and only one) RISC-V Board supported today on Mynewt: <strong>SiFive's HiFive1 Board</strong>, based on the <strong>SiFive FE310 Microcontroller</strong>.</p>
+<p><em>What’s the quickest way to port Mynewt to PineCone BL602?</em></p>
+<p>There’s one (and only one) RISC-V Board supported today on Mynewt: <strong>SiFive’s HiFive1 Board</strong>, based on the <strong>SiFive FE310 Microcontroller</strong>.</p>
 <p>We shall copy and adapt the necessary files from the HiFive1 FE310 port to our PineCone BL602 port.</p>
 <p><em>How different is BL602 from SiFive FE310?</em></p>
-<p>The Memory Maps for BL602 and SiFive FE310 look totally different...</p>
+<p>The Memory Maps for BL602 and SiFive FE310 look totally different…</p>
 <p><img src="https://lupyuen.github.io/images/pinecone-compare.jpg" alt="BL602 Memory Map vs SiFive FE310: Totally different" /></p>
 <p><em>BL602 Memory Map (left) vs SiFive FE310 (right): Totally different</em></p>
-<p>But <strong>BL602's RISC-V Core is highly similar to SiFive FE310</strong>. Compare these two files...</p>
+<p>But <strong>BL602’s RISC-V Core is highly similar to SiFive FE310</strong>. Compare these two files…</p>
 <ol>
 <li>
 <p><a href="https://github.com/pine64/bl_iot_sdk/blob/master/components/bl602/freertos_riscv/config/platform.h"><code>platform.h</code> from <strong>BL602 IoT SDK</strong></a></p>
 </li>
 <li>
-<p><a href="https://github.com/apache/mynewt-core/blob/master/hw/mcu/sifive/src/ext/freedom-e-sdk_3235929/bsp/env/freedom-e300-hifive1/platform.h"><code>platform.h</code> from <strong>Mynewt's FE310 Port</strong></a></p>
+<p><a href="https://github.com/apache/mynewt-core/blob/master/hw/mcu/sifive/src/ext/freedom-e-sdk_3235929/bsp/env/freedom-e300-hifive1/platform.h"><code>platform.h</code> from <strong>Mynewt’s FE310 Port</strong></a></p>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/mynewt-platform.png" alt="platform.h: BL602 (left) vs SiFive FE310 (right)" /></p>
 <p><em>platform.h: BL602 (left) vs SiFive FE310 (right)</em></p>
-<p>Since BL602's RISC-V Core is so similar to FE310, it makes porting simpler.</p>
+<p>Since BL602’s RISC-V Core is so similar to FE310, it makes porting simpler.</p>
 <p><img src="https://lupyuen.github.io/images/mynewt-e21.png" alt="BL602 is based on SiFive E21 RISC-V Core" /></p>
 <p><em>BL602 is based on which SiFive RISC-V Core?</em></p>
-<p>From the screenshot above, the name &quot;E21&quot; appears (over a hundred times) in the BL602 IoT SDK.</p>
-<p>Thus we assume that BL602 is based on the <strong>SiFive E21 RISC-V Core</strong> (and not E24)...</p>
+<p>From the screenshot above, the name “E21” appears (over a hundred times) in the BL602 IoT SDK.</p>
+<p>Thus we assume that BL602 is based on the <strong>SiFive E21 RISC-V Core</strong> (and not E24)…</p>
 <ul>
 <li><a href="https://sifive.cdn.prismic.io/sifive/39d336f7-7dba-43f2-a453-8d55227976cc_sifive_E21_rtl_full_20G1.03.00_manual.pdf">SiFive E21 Manual</a></li>
 </ul>
-<p>While doing the porting, we shall compare the above E21 doc with the FE310 doc so that we can identify the differences (e.g. FE310 supports PLIC, E21 doesn't)</p>
+<p>While doing the porting, we shall compare the above E21 doc with the FE310 doc so that we can identify the differences (e.g. FE310 supports PLIC, E21 doesn’t)</p>
 <ul>
 <li><a href="https://sifive.cdn.prismic.io/sifive/4d063bf8-3ae6-4db6-9843-ee9076ebadf7_fe310-g000.pdf">SiFive FE310 Manual</a></li>
 </ul>
-<p><img src="https://lupyuen.github.io/images/mynewt-gcc.png" alt="Mynewt's default GCC Compiler is riscv64-unknown-elf-gcc" /></p>
-<p><em>Mynewt's default GCC Compiler is <code>riscv64-unknown-elf-gcc</code></em></p>
+<p><img src="https://lupyuen.github.io/images/mynewt-gcc.png" alt="Mynewt’s default GCC Compiler is riscv64-unknown-elf-gcc" /></p>
+<p><em>Mynewt’s default GCC Compiler is <code>riscv64-unknown-elf-gcc</code></em></p>
 <h1 id="set-gcc-compiler-for-risc-v" class="section-header"><a href="#set-gcc-compiler-for-risc-v">2 Set GCC Compiler for RISC-V</a></h1>
 <p>When building RISC-V Firmware, Mynewt uses the RISC-V GCC Compiler <code>riscv64-unknown-elf-gcc</code> <a href="https://github.com/apache/mynewt-core/blob/master/compiler/riscv64/compiler.yml">(See this)</a></p>
-<p>But that's not the same as our compiler from xPack RISC-V GCC: <code>riscv-none-embed-gcc</code></p>
-<p><em>(See <a href="https://lupyuen.github.io/articles/debug">&quot;Debug Rust on PineCone BL602 with VSCode and GDB&quot;</a>, Section 1.3, <a href="https://lupyuen.github.io/articles/debug#install-gdb">&quot;Install GDB&quot;</a>)</em></p>
+<p>But that’s not the same as our compiler from xPack RISC-V GCC: <code>riscv-none-embed-gcc</code></p>
+<p><em>(See <a href="https://lupyuen.github.io/articles/debug">“Debug Rust on PineCone BL602 with VSCode and GDB”</a>, Section 1.3, <a href="https://lupyuen.github.io/articles/debug#install-gdb">“Install GDB”</a>)</em></p>
 <p>Hence we copy and modify the GCC settings like so: <a href="https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/compiler/riscv-none-embed/compiler.yml"><code>compiler/riscv-none-embed/compiler.yml</code></a></p>
 <pre><code class="language-yaml">compiler.path.cc:      &quot;riscv-none-embed-gcc&quot;
 compiler.path.as:      &quot;riscv-none-embed-gcc&quot;
@@ -165,13 +165,13 @@ compiler.path.objcopy: &quot;riscv-none-embed-objcopy&quot;
 <p>Mynewt will now compile our firmware with <code>riscv-none-embed-gcc</code></p>
 <h2 id="mynewt-project-and-firmware" class="section-header"><a href="#mynewt-project-and-firmware">2.1 Mynewt Project and Firmware</a></h2>
 <p><em>In the screen above, how did we create the Mynewt Project <code>pinecone-rust-mynewt</code> and the Mynewt Firmware <code>pinecone_app</code>?</em></p>
-<p>I created <code>pinecone-rust-mynewt</code> and <code>pinecone_app</code> using Mynewt's <code>newt</code> tool.</p>
-<p>We'll download them in a while, so you don't need to create them.</p>
-<p><em>(FYI: I created <code>pinecone-rust-mynewt</code> and <code>pinecone_app</code> using the steps explained in the sections &quot;Appendix: Install newt&quot; and &quot;Appendix: Create the Mynewt Firmware&quot; below)</em></p>
+<p>I created <code>pinecone-rust-mynewt</code> and <code>pinecone_app</code> using Mynewt’s <code>newt</code> tool.</p>
+<p>We’ll download them in a while, so you don’t need to create them.</p>
+<p><em>(FYI: I created <code>pinecone-rust-mynewt</code> and <code>pinecone_app</code> using the steps explained in the sections “Appendix: Install newt” and “Appendix: Create the Mynewt Firmware” below)</em></p>
 <p><img src="https://lupyuen.github.io/images/mynewt-mcu.png" alt="Mynewt Microcontroller Definition for BL602" /></p>
 <p><em>Mynewt Microcontroller Definition for BL602</em></p>
 <h1 id="add-microcontroller-definition" class="section-header"><a href="#add-microcontroller-definition">3 Add Microcontroller Definition</a></h1>
-<p>We create a <strong>Microcontroller Definition</strong> to tell Mynewt all about BL602...</p>
+<p>We create a <strong>Microcontroller Definition</strong> to tell Mynewt all about BL602…</p>
 <ul>
 <li>
 <p><strong>BL602 Microcontroller Definition</strong>: <a href="https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/hw/mcu/bl/bl602"><code>hw/mcu/bl/bl602</code></a></p>
@@ -183,11 +183,11 @@ compiler.path.objcopy: &quot;riscv-none-embed-objcopy&quot;
 <p><strong>BL602 Configuration</strong>: <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/mcu/bl/bl602/syscfg.yml"><code>syscfg.yml</code></a></p>
 </li>
 </ul>
-<p>This contains the code for the <a href="https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/hw/mcu/bl/bl602/src"><strong>Hardware Adaptaion Layer</strong></a> that's specific to BL602 and its built-in Periperal Functions (like Flash Memory, GPIO, I2C, SPI, ...)</p>
+<p>This contains the code for the <a href="https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/hw/mcu/bl/bl602/src"><strong>Hardware Adaptaion Layer</strong></a> that’s specific to BL602 and its built-in Periperal Functions (like Flash Memory, GPIO, I2C, SPI, …)</p>
 <p>The code here was derived from SiFive FE310: <a href="https://github.com/apache/mynewt-core/tree/master/hw/mcu/sifive/fe310"><code>hw/mcu/sifive/fe310</code></a></p>
 <h1 id="add-board-support-package" class="section-header"><a href="#add-board-support-package">4 Add Board Support Package</a></h1>
-<p>BL602 is present on various boards, PineCone is one of them. The BL602 boards have different features: LEDs, buttons, JTAG debugger, ...</p>
-<p>In Mynewt we handle the board differences by creating a <strong>Board Support Package</strong> for PineCone...</p>
+<p>BL602 is present on various boards, PineCone is one of them. The BL602 boards have different features: LEDs, buttons, JTAG debugger, …</p>
+<p>In Mynewt we handle the board differences by creating a <strong>Board Support Package</strong> for PineCone…</p>
 <ul>
 <li>
 <p><strong>PineCone Board Support Package</strong>: <a href="https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/hw/bsp/pinecone"><code>hw/bsp/pinecone</code></a></p>
@@ -202,10 +202,10 @@ compiler.path.objcopy: &quot;riscv-none-embed-objcopy&quot;
 <p><strong>PineCone Configuration</strong>: <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/bsp/pinecone/syscfg.yml"><code>syscfg.yml</code></a></p>
 </li>
 </ul>
-<p>The Board Support Package for PineCone contains code that's specific to PineCone. <a href="https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/hw/bsp/pinecone/src">More details</a></p>
+<p>The Board Support Package for PineCone contains code that’s specific to PineCone. <a href="https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/hw/bsp/pinecone/src">More details</a></p>
 <p>The code here was derived from SiFive HiFive1 Board: <a href="https://github.com/apache/mynewt-core/tree/master/hw/bsp/hifive1"><code>hw/bsp/hifive1</code></a></p>
 <h1 id="define-linker-script" class="section-header"><a href="#define-linker-script">5 Define Linker Script</a></h1>
-<p>The Linker Script tells GCC Compiler about the Memory Layout for executing our firmware...</p>
+<p>The Linker Script tells GCC Compiler about the Memory Layout for executing our firmware…</p>
 <ol>
 <li>
 <p><strong>Flash Memory Area</strong>: For firmware code and read-only data</p>
@@ -214,7 +214,7 @@ compiler.path.objcopy: &quot;riscv-none-embed-objcopy&quot;
 <p><strong>RAM Memory Area</strong>: For read/write data</p>
 </li>
 </ol>
-<p>Here's our Linker Script for PineCone...</p>
+<p>Here’s our Linker Script for PineCone…</p>
 <ul>
 <li><strong>PineCone Linker Script</strong>: <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/bsp/pinecone/bsp_app.ld"><code>hw/bsp/pinecone/bsp_app.ld</code></a></li>
 </ul>
@@ -226,8 +226,8 @@ compiler.path.objcopy: &quot;riscv-none-embed-objcopy&quot;
   ram   (wxa!ri) : ORIGIN = 0x22014000, LENGTH = 48K /* Data Cache Memory */
 }
 </code></pre>
-<p>Note that we're loading the firmware code and read-only data into BL602's Instruction Cache Memory (similar to RAM), not into Flash Memory. (We'll learn why in a while)</p>
-<p>In future when we're ready to load our firmware into Flash Memory, we'll use this memory layout instead...</p>
+<p>Note that we’re loading the firmware code and read-only data into BL602’s Instruction Cache Memory (similar to RAM), not into Flash Memory. (We’ll learn why in a while)</p>
+<p>In future when we’re ready to load our firmware into Flash Memory, we’ll use this memory layout instead…</p>
 <pre><code class="language-text">  /* TODO: Use this memory layout when firmware is loaded into Flash Memory 
      Based on Based on https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602/evb/ld/flash_rom.ld */
   flash (rxai!w) : ORIGIN = 0x23000000, LENGTH = 4M   /* Flash Memory */
@@ -235,18 +235,18 @@ compiler.path.objcopy: &quot;riscv-none-embed-objcopy&quot;
 </code></pre>
 <p>(This is commented out in <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/bsp/pinecone/bsp_app.ld"><code>bsp_app.ld</code></a>)</p>
 <h2 id="bootloader-image-header" class="section-header"><a href="#bootloader-image-header">5.1 Bootloader Image Header</a></h2>
-<p>We're presently not using a Bootloader on PineCone...</p>
+<p>We’re presently not using a Bootloader on PineCone…</p>
 <pre><code class="language-text">/* Bootloader not in use. */
 _imghdr_size = 0x0;
 </code></pre>
-<p>In future when we use the Mynewt Bootloader, we need to reserve some space for the Bootloader Image Header, which is located at the start of the firmware code...</p>
+<p>In future when we use the Mynewt Bootloader, we need to reserve some space for the Bootloader Image Header, which is located at the start of the firmware code…</p>
 <pre><code class="language-text">/* This linker script is used for images and thus contains an image header */
 /* TODO: Uncomment the next line when Bootloader is in use */
 _imghdr_size = 0x20;
 </code></pre>
 <h1 id="define-flash-map" class="section-header"><a href="#define-flash-map">6 Define Flash Map</a></h1>
-<p>Mynewt's MCUBoot Bootloader will roll back the Active Firmware to the Standby Firmware in case the Active Firmware can't be started.</p>
-<p>We define the <strong>Flash Map</strong> to tell Mynewt where in Flash Memory the Bootloader, Active Firmware Image and Standby Firmware Image will be located...</p>
+<p>Mynewt’s MCUBoot Bootloader will roll back the Active Firmware to the Standby Firmware in case the Active Firmware can’t be started.</p>
+<p>We define the <strong>Flash Map</strong> to tell Mynewt where in Flash Memory the Bootloader, Active Firmware Image and Standby Firmware Image will be located…</p>
 <ul>
 <li><strong>PineCone Flash Map</strong>: <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/bsp/pinecone/bsp.yml"><code>hw/bsp/pinecone/bsp.yml</code></a></li>
 </ul>
@@ -276,8 +276,8 @@ bsp.flash_map:
             offset:  0x22013000
             size:    1kB    # 0x400
 </code></pre>
-<p>Remember that we're loading our firmware into Cache Memory (instead of Flash Memory) and we're not using the Bootloader. </p>
-<p>That's why we allocate most of the Cache Memory to the Active Firmware Image (located at the start of Cache Memory).</p>
+<p>Remember that we’re loading our firmware into Cache Memory (instead of Flash Memory) and we’re not using the Bootloader. </p>
+<p>That’s why we allocate most of the Cache Memory to the Active Firmware Image (located at the start of Cache Memory).</p>
 <pre><code class="language-yaml">        # User areas.
         # (Not Used) Reboot Log
         FLASH_AREA_REBOOT_LOG:
@@ -292,10 +292,10 @@ bsp.flash_map:
             offset:  0x22013800
             size:    1kB    # 0x400
 </code></pre>
-<p>Since we have very little Cache Memory, we'll cut down on the Reboot Log and User File Systems.</p>
+<p>Since we have very little Cache Memory, we’ll cut down on the Reboot Log and User File Systems.</p>
 <h2 id="future-flash-map" class="section-header"><a href="#future-flash-map">6.1 Future Flash Map</a></h2>
-<p>The Flash Map looks more meaningful when we're ready to load our firmware into Flash Memory and turn on the Bootloader.</p>
-<p>Here is our Flash Map for the future...</p>
+<p>The Flash Map looks more meaningful when we’re ready to load our firmware into Flash Memory and turn on the Bootloader.</p>
+<p>Here is our Flash Map for the future…</p>
 <pre><code class="language-yaml"># TODO: Use this memory layout when firmware is loaded into Flash Memory
 # BL602 Flash starts at 0x2300 0000, size 4 MB
 # Based on https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602/evb/ld/flash_rom.ld
@@ -324,7 +324,7 @@ bsp.flash_map:
             size:    4kB       # 0x1000
 </code></pre>
 <p>(This is commented out in <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/bsp/pinecone/bsp.yml"><code>bsp.yml</code></a>)</p>
-<p>In future we'll have a proper Reboot Log and a User File System for saving files and data that will be retained across reboots...</p>
+<p>In future we’ll have a proper Reboot Log and a User File System for saving files and data that will be retained across reboots…</p>
 <pre><code class="language-yaml">        # User areas.
         # Reboot Log
         FLASH_AREA_REBOOT_LOG:
@@ -340,7 +340,7 @@ bsp.flash_map:
             size:    1024kB    # 0x100 000
 </code></pre>
 <h1 id="set-firmware-target" class="section-header"><a href="#set-firmware-target">7 Set Firmware Target</a></h1>
-<p>We select the Mynewt Firmware to be built by creating a Firmware Target...</p>
+<p>We select the Mynewt Firmware to be built by creating a Firmware Target…</p>
 <ul>
 <li><strong>PineCone Firmware Target</strong>: <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/targets/pinecone_app/target.yml"><code>targets/pinecone_app/target.yml</code></a></li>
 </ul>
@@ -351,24 +351,24 @@ target.build_profile: debug
 <p>Here we specify that our firmware code comes from the <a href="https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/apps/blinky">Blinky Sample App</a>. And our firmware will be compiled for the PineCone BL602 Board.</p>
 <p>Also check out the <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/targets/pinecone_app/pkg.yml"><strong>Target Package</strong></a> and the <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/targets/pinecone_app/syscfg.yml"><strong>Target Configuration</strong></a>.</p>
 <h1 id="build-the-firmware" class="section-header"><a href="#build-the-firmware">8 Build the Firmware</a></h1>
-<p>We have created a minimal port of Mynewt to PineCone. Here's how we build the firmware on Linux, macOS and Windows (plain old CMD, without WSL and MSYS2)...</p>
+<p>We have created a minimal port of Mynewt to PineCone. Here’s how we build the firmware on Linux, macOS and Windows (plain old CMD, without WSL and MSYS2)…</p>
 <ol>
 <li>
-<p>Install Mynewt's <code>newt</code> tool according to the instructions here...</p>
+<p>Install Mynewt’s <code>newt</code> tool according to the instructions here…</p>
 <ul>
 <li><a href="https://mynewt.apache.org/latest/newt/install/index.html">Installing <code>newt</code></a></li>
 </ul>
-<p>To build <code>newt</code> from the source code, check the section &quot;Appendix: Install newt&quot; below</p>
+<p>To build <code>newt</code> from the source code, check the section “Appendix: Install newt” below</p>
 </li>
 <li>
-<p>At the command prompt, enter...</p>
+<p>At the command prompt, enter…</p>
 <pre><code class="language-bash">#  Download source files
 git clone --recursive https://github.com/lupyuen/pinecone-rust-mynewt
 cd pinecone-rust-mynewt
 </code></pre>
 </li>
 <li>
-<p>Download GCC from the <a href="https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases/tag/v8.3.0-2.3">xPack GCC for RISC-V site</a>...</p>
+<p>Download GCC from the <a href="https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases/tag/v8.3.0-2.3">xPack GCC for RISC-V site</a>…</p>
 <ul>
 <li>
 <p><a href="https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases/download/v8.3.0-2.3/xpack-riscv-none-embed-gcc-8.3.0-2.3-linux-x64.tar.gz">xPack GCC RISC-V for Linux x64</a></p>
@@ -390,15 +390,15 @@ cd pinecone-rust-mynewt
 </li>
 <li>
 <p>Copy the extracted xPack GCC RISC-V folder to the <code>pinecone-rust-mynewt</code> folder.</p>
-<p>Rename the copied folder as...</p>
+<p>Rename the copied folder as…</p>
 <pre><code class="language-text">pinecone-rust-mynewt/xpack-riscv-none-embed-gcc
 </code></pre>
-<p><strong>For Windows:</strong> Add the full path of <code>xpack-riscv-none-embed-gcc/bin</code> to the PATH. For example...</p>
+<p><strong>For Windows:</strong> Add the full path of <code>xpack-riscv-none-embed-gcc/bin</code> to the PATH. For example…</p>
 <pre><code class="language-text">c:\pinecone-rust-mynewt\xpack-riscv-none-embed-gcc\bin
 </code></pre>
 </li>
 <li>
-<p>Download OpenOCD from the <a href="https://github.com/xpack-dev-tools/openocd-xpack/releases/tag/v0.10.0-15/">xPack OpenOCD site</a>... (Other variants of OpenOCD may not work with PineCone)</p>
+<p>Download OpenOCD from the <a href="https://github.com/xpack-dev-tools/openocd-xpack/releases/tag/v0.10.0-15/">xPack OpenOCD site</a>… (Other variants of OpenOCD may not work with PineCone)</p>
 <ul>
 <li>
 <p><a href="https://github.com/xpack-dev-tools/openocd-xpack/releases/download/v0.10.0-15/xpack-openocd-0.10.0-15-linux-x64.tar.gz">xPack OpenOCD for Linux x64</a></p>
@@ -420,15 +420,15 @@ cd pinecone-rust-mynewt
 </li>
 <li>
 <p>Copy the extracted xPack OpenOCD folder to the <code>pinecone-rust-mynewt</code> folder.</p>
-<p>Rename the copied folder as...</p>
+<p>Rename the copied folder as…</p>
 <pre><code class="language-text">pinecone-rust-mynewt/xpack-openocd
 </code></pre>
-<p><strong>For Windows:</strong> Add the full path of <code>xpack-openocd/bin</code> to the PATH. For example...</p>
+<p><strong>For Windows:</strong> Add the full path of <code>xpack-openocd/bin</code> to the PATH. For example…</p>
 <pre><code class="language-text">c:\pinecone-rust-mynewt\pinecone-rust-mynewt\xpack-openocd\bin
 </code></pre>
 </li>
 <li>
-<p><strong>For Linux and macOS:</strong> Enter at the command prompt...</p>
+<p><strong>For Linux and macOS:</strong> Enter at the command prompt…</p>
 <pre><code class="language-bash">#  Build the firmware
 export PATH=&quot;$PWD/xpack-riscv-none-embed-gcc/bin:$PATH&quot;
 newt build pinecone_app
@@ -436,7 +436,7 @@ newt build pinecone_app
 #  Display the firmware size
 newt size -v pinecone_app
 </code></pre>
-<p><strong>For Windows:</strong> Enter at the command prompt...</p>
+<p><strong>For Windows:</strong> Enter at the command prompt…</p>
 <pre><code class="language-cmd">::  Build the firmware
 newt\newt.exe build pinecone_app
 
@@ -445,11 +445,11 @@ newt\newt.exe size -v pinecone_app
 </code></pre>
 </li>
 </ol>
-<p>We should see this...</p>
+<p>We should see this…</p>
 <pre><code class="language-text">Linking /Users/Luppy/pinecone/pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky/blinky.elf
 Target successfully built: targets/pinecone_app
 </code></pre>
-<p>Followed by the size of the firmware (8,488 bytes) and its library components...</p>
+<p>Followed by the size of the firmware (8,488 bytes) and its library components…</p>
 <pre><code class="language-text">+ newt size -v pinecone_app
 Size of Application Image: app
 Mem flash: 0x22008000-0x22014000
@@ -475,80 +475,80 @@ objsize
    text    data     bss     dec     hex filename
    8488      28    9104   17620    44d4 pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky/blinky.elf
 </code></pre>
-<p>The compiled ELF firmware is located at...</p>
+<p>The compiled ELF firmware is located at…</p>
 <pre><code class="language-text">pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky/blinky.elf
 </code></pre>
 <h1 id="implement-hardware-abstraction-layer" class="section-header"><a href="#implement-hardware-abstraction-layer">9 Implement Hardware Abstraction Layer</a></h1>
 <p>The above steps will build successfully a minimal port of Mynewt for PineCone.</p>
-<p>That's because I have fixed many missing functions in Mynewt's Hardware Abstraction Layer (HAL), like these...</p>
+<p>That’s because I have fixed many missing functions in Mynewt’s Hardware Abstraction Layer (HAL), like these…</p>
 <p><img src="https://lupyuen.github.io/images/mynewt-hal.png" alt="Missing Functions in Mynewt HAL" /></p>
 <p><em>Missing Functions in Mynewt HAL</em></p>
-<p>We can see that Mynewt's HAL consists of low-level functions that control BL602's hardware functions: Flash Memory, Interrupts, Watchdog, GPIO, ...</p>
-<p>We'll be filling in these missing HAL functions someday... But for now I have inserted Stub Functions.</p>
-<p>Which means that the firmware will build OK... Just that GPIO and other features won't actually work when we run the firmware.</p>
+<p>We can see that Mynewt’s HAL consists of low-level functions that control BL602’s hardware functions: Flash Memory, Interrupts, Watchdog, GPIO, …</p>
+<p>We’ll be filling in these missing HAL functions someday… But for now I have inserted Stub Functions.</p>
+<p>Which means that the firmware will build OK… Just that GPIO and other features won’t actually work when we run the firmware.</p>
 <p><em>How shall we fill in the HAL Functions for PineCone?</em></p>
-<p>The BL602 HAL functions (GPIO, I2C, SPI, ...) are already implemented here...</p>
+<p>The BL602 HAL functions (GPIO, I2C, SPI, …) are already implemented here…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/components"><strong>BL602 IoT SDK Firmware Components</strong></a></li>
 </ul>
-<p>We shall copy the source files from above and embed them here...</p>
+<p>We shall copy the source files from above and embed them here…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/hw/mcu/bl/bl602/ext"><strong>Mynewt External Source Files for BL602</strong></a></li>
 </ul>
-<p>The BL602 SDK Functions look different from the Mynewt HAL API. Thus we'll have to create some adapter code in C to make the BL602 Functions look like the Mynewt HAL.</p>
-<p>The code that adapts the BL602 SDK to Mynewt HAL shall be placed here...</p>
+<p>The BL602 SDK Functions look different from the Mynewt HAL API. Thus we’ll have to create some adapter code in C to make the BL602 Functions look like the Mynewt HAL.</p>
+<p>The code that adapts the BL602 SDK to Mynewt HAL shall be placed here…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/hw/mcu/bl/bl602/src"><strong>Mynewt HAL for BL602</strong></a></li>
 </ul>
 <p>As we can see from the GPIO pic below, our job now is to <strong>adapt the BL602 SDK</strong> (left) <strong>to the Mynewt HAL</strong> (right).</p>
-<p>(For reference: Here's how the <a href="https://github.com/apache/mynewt-core/tree/master/hw/mcu/sifive/fe310/src">Mynewt HAL for SiFive FE310</a> is adapted from the <a href="https://github.com/apache/mynewt-core/tree/master/hw/mcu/sifive/src/ext/freedom-e-sdk_3235929">FE310 SDK</a>)</p>
+<p>(For reference: Here’s how the <a href="https://github.com/apache/mynewt-core/tree/master/hw/mcu/sifive/fe310/src">Mynewt HAL for SiFive FE310</a> is adapted from the <a href="https://github.com/apache/mynewt-core/tree/master/hw/mcu/sifive/src/ext/freedom-e-sdk_3235929">FE310 SDK</a>)</p>
 <p><img src="https://lupyuen.github.io/images/mynewt-hal2.png" alt="BL602 GPIO SDK (left) vs Mynewt GPIO HAL (right)" /></p>
 <p><em>BL602 GPIO SDK (left) vs Mynewt GPIO HAL (right)</em></p>
 <h1 id="implement-start-code" class="section-header"><a href="#implement-start-code">10 Implement Start Code</a></h1>
 <p>Most firmware will have some Start Code (written in Assembly Code) that will be executed when the firmware starts.</p>
-<p>For the BL602 IoT SDK, this is the Start Code (in RISC-V Assembly)...</p>
+<p>For the BL602 IoT SDK, this is the Start Code (in RISC-V Assembly)…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602/evb/src/boot/gcc/start.S"><strong>Start Code from BL602 IoT SDK: <code>start.S</code></strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/mynewt-start.png" alt="Start Code from BL602 IoT SDK: start.S" /></p>
 <p><em>Start Code from BL602 IoT SDK: start.S</em></p>
-<p>For Mynewt we're using this Start Code instead...</p>
+<p>For Mynewt we’re using this Start Code instead…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/mcu/bl/bl602/src/arch/rv32imac/start.s"><strong>Start Code for Mynewt BL602: <code>start.s</code></strong></a></li>
 </ul>
 <p>(Adapted from <a href="https://github.com/apache/mynewt-core/blob/master/hw/mcu/sifive/fe310/src/arch/rv32imac/start.s">FE310 Start Code</a>)</p>
-<p>Mynewt's Start Code initialises the RAM before calling the <code>main</code> function.</p>
-<p><em>Is Mynewt's Start Code any different from the BL602 SDK?</em></p>
-<p>When we compare Mynewt's Start Code with the BL602 SDK, we see that the BL602 SDK Start Code uses the Boot Partition and Flash Configuration. <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602/evb/src/boot/gcc/start.S#L27-L54">More details</a></p>
-<p>This code will have to be inserted into Mynewt's Start Code, when our firmware is ready to be loaded into Flash Memory.</p>
+<p>Mynewt’s Start Code initialises the RAM before calling the <code>main</code> function.</p>
+<p><em>Is Mynewt’s Start Code any different from the BL602 SDK?</em></p>
+<p>When we compare Mynewt’s Start Code with the BL602 SDK, we see that the BL602 SDK Start Code uses the Boot Partition and Flash Configuration. <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602/evb/src/boot/gcc/start.S#L27-L54">More details</a></p>
+<p>This code will have to be inserted into Mynewt’s Start Code, when our firmware is ready to be loaded into Flash Memory.</p>
 <h1 id="risc-v-rv32imfc-vs-rv32imac" class="section-header"><a href="#risc-v-rv32imfc-vs-rv32imac">11 RISC-V rv32imfc vs rv32imac</a></h1>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/make_scripts_riscv/project.mk#L223">According to the SDK</a>, BL602 uses a RISC-V Core (SiFive E21) that's designated <strong><code>rv32imfc</code></strong> based on its capabilities...</p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/make_scripts_riscv/project.mk#L223">According to the SDK</a>, BL602 uses a RISC-V Core (SiFive E21) that’s designated <strong><code>rv32imfc</code></strong> based on its capabilities…</p>
 <table><thead><tr><th align="center">Designation</th><th align="left">Meaning</th></tr></thead><tbody>
 <tr><td align="center"><strong><code>rv32i</code></strong></td><td align="left">32-bit RISC-V with 32 registers</td></tr>
 <tr><td align="center"><strong><code>m</code></strong></td><td align="left">Multiplication + Division</td></tr>
 <tr><td align="center"><strong><code>f</code></strong></td><td align="left"><strong>Single-Precision Hardware Floating Point</strong></td></tr>
 <tr><td align="center"><strong><code>c</code></strong></td><td align="left">Compressed Instructions</td></tr>
 </tbody></table>
-<p><a href="https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions">(Here's the whole list)</a></p>
+<p><a href="https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions">(Here’s the whole list)</a></p>
 <p><strong>UPDATE:</strong> BL602 actually supports <strong><code>rv32acfimx</code></strong> <a href="https://lupyuen.github.io/articles/uart#enter-the-commands">(See this)</a></p>
-<p>However Mynewt today supports only <strong><code>rv32imac</code></strong>...</p>
+<p>However Mynewt today supports only <strong><code>rv32imac</code></strong>…</p>
 <table><thead><tr><th align="center">Designation</th><th align="left">Meaning</th></tr></thead><tbody>
 <tr><td align="center"><strong><code>rv32i</code></strong></td><td align="left">32-bit RISC-V with 32 registers</td></tr>
 <tr><td align="center"><strong><code>m</code></strong></td><td align="left">Multiplication + Division</td></tr>
 <tr><td align="center"><strong><code>a</code></strong></td><td align="left"><strong>Atomic Instructions</strong></td></tr>
 <tr><td align="center"><strong><code>c</code></strong></td><td align="left">Compressed Instructions</td></tr>
 </tbody></table>
-<p><em>What's the difference?</em></p>
-<p>Mynewt doesn't support RISC-V <strong>Hardware Floating Point</strong> yet... But it supports <strong>Atomic Instructions</strong> (for data synchronisation).</p>
-<p>Thus for now we'll compile our Mynewt Firmware for <code>rv32imac</code> (without Hardware Floating Point)...</p>
+<p><em>What’s the difference?</em></p>
+<p>Mynewt doesn’t support RISC-V <strong>Hardware Floating Point</strong> yet… But it supports <strong>Atomic Instructions</strong> (for data synchronisation).</p>
+<p>Thus for now we’ll compile our Mynewt Firmware for <code>rv32imac</code> (without Hardware Floating Point)…</p>
 <ul>
 <li><a href="https://github.com/apache/mynewt-core/tree/master/kernel/os/src/arch/rv32imac"><strong>Mynewt Support for <code>rv32imac</code></strong></a></li>
 </ul>
-<p>In future we'll have to implement <code>rv32imfc</code> (with Hardware Floating Point) in Mynewt.</p>
+<p>In future we’ll have to implement <code>rv32imfc</code> (with Hardware Floating Point) in Mynewt.</p>
 <p><img src="https://lupyuen.github.io/images/mynewt-fe310.png" alt="SiFive FE310 Reference in Mynewt rv32imac" /></p>
 <p><em>SiFive FE310 Reference in Mynewt rv32imac</em></p>
 <h1 id="decouple-sifive-fe310-from-rv32imac" class="section-header"><a href="#decouple-sifive-fe310-from-rv32imac">12 Decouple SiFive FE310 from rv32imac</a></h1>
-<p>There's a peculiar problem compiling RISC-V Firmware on Mynewt...</p>
+<p>There’s a peculiar problem compiling RISC-V Firmware on Mynewt…</p>
 <pre><code class="language-text">Error: In file included from ...
 repos/apache-mynewt-core/kernel/os/include/os/arch/rv32imac/os/os_arch.h:24:10:
 fatal error: mcu/fe310.h: No such file or directory
@@ -556,7 +556,7 @@ fatal error: mcu/fe310.h: No such file or directory
 </code></pre>
 <p>This error shows that <code>rv32imac</code>, the RISC-V support in Mynewt, is dependent on SiFive FE310. Which looks really odd. </p>
 <p>(Probably done that way because FE310 is the only RISC-V Microcontroller supported by Mynewt)</p>
-<p>We work around this problem by creating Stub Files like these...</p>
+<p>We work around this problem by creating Stub Files like these…</p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/mcu/bl/bl602/include/mcu/fe310.h"><code>mcu/fe310.h</code></a></p>
@@ -567,7 +567,7 @@ fatal error: mcu/fe310.h: No such file or directory
 </ul>
 <p>These Stub Files point to the correct Header Files for BL602, so that our BL602 Firmware can be compiled successfully.</p>
 <h1 id="inspect-the-firmware" class="section-header"><a href="#inspect-the-firmware">13 Inspect the Firmware</a></h1>
-<p>We're almost ready to run Mynewt on PineCone! Let's do one final check before running our firmware...</p>
+<p>We’re almost ready to run Mynewt on PineCone! Let’s do one final check before running our firmware…</p>
 <pre><code class="language-bash">#  Build the firmware
 export PATH=&quot;$PWD/xpack-riscv-none-embed-gcc/bin:$PATH&quot;
 newt build pinecone_app
@@ -575,7 +575,7 @@ newt build pinecone_app
 #  Display the firmware size
 newt size -v pinecone_app
 </code></pre>
-<p>We should see...</p>
+<p>We should see…</p>
 <pre><code class="language-text">Linking pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky/blinky.elf
 Target successfully built: targets/pinecone_app
 + newt size -v pinecone_app
@@ -600,13 +600,13 @@ Mem ram:   0x22014000-0x22020000
      92       0 pinecone_app-sysinit-app.a
     292    1064 libg.a
 </code></pre>
-<p>Here are all the code modules linked into our Mynewt Firmware. Note that...</p>
+<p>Here are all the code modules linked into our Mynewt Firmware. Note that…</p>
 <ul>
 <li>
 <p>Mynewt Kernel takes the most memory</p>
 </li>
 <li>
-<p>Our BL602 HAL <code>hw_mcu_bl_bl602</code> is tiny because it's mostly Stub Functions</p>
+<p>Our BL602 HAL <code>hw_mcu_bl_bl602</code> is tiny because it’s mostly Stub Functions</p>
 </li>
 </ul>
 <pre><code class="language-text">Loading compiler pinecone-rust-mynewt/compiler/riscv-none-embed, buildProfile debug
@@ -615,7 +615,7 @@ objsize
    8488      28    9104   17620    44d4 pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky/blinky.elf
 </code></pre>
 <p>Our Mynewt Firmware contains 8,488 bytes of code and data. It runs with 9,104 bytes of RAM (BSS).</p>
-<p>The firmware build produces the following files in...</p>
+<p>The firmware build produces the following files in…</p>
 <pre><code class="language-text">pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky
 </code></pre>
 <ul>
@@ -633,13 +633,13 @@ objsize
 <p><em>RISC-V Disassembly of Mynewt Firmware</em></p>
 <p>Inspect the RISC-V Disassembly: <a href="https://github.com/lupyuen/pinecone-rust-mynewt/releases/download/v1.0.0/blinky.elf.lst"><code>blinky.elf.lst</code></a></p>
 <p>It should look similar to our <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/mcu/bl/bl602/src/arch/rv32imac/start.s">Start Code</a>. And it should be located at the Start Address of our firmware: <code>0x2200 8000</code>.</p>
-<p>We're ready to run our Mynewt Firmware on PineCone!</p>
+<p>We’re ready to run our Mynewt Firmware on PineCone!</p>
 <h1 id="debug-firmware-with-vscode" class="section-header"><a href="#debug-firmware-with-vscode">14 Debug Firmware with VSCode</a></h1>
-<p>Now we run and debug our Mynewt Firmware with <a href="https://code.visualstudio.com/"><strong>VSCode</strong></a> on Linux, macOS and Windows...</p>
+<p>Now we run and debug our Mynewt Firmware with <a href="https://code.visualstudio.com/"><strong>VSCode</strong></a> on Linux, macOS and Windows…</p>
 <ol>
 <li>
-<p>Connect PineCone and the JTAG Debugger to our computer. See the article...</p>
-<p><a href="https://lupyuen.github.io/articles/openocd">&quot;Connect PineCone BL602 to OpenOCD&quot;</a>, Section 4, <a href="https://lupyuen.github.io/articles/openocd#connect-jtag-debugger-to-pinecone">&quot;Connect JTAG Debugger to PineCone&quot;</a></p>
+<p>Connect PineCone and the JTAG Debugger to our computer. See the article…</p>
+<p><a href="https://lupyuen.github.io/articles/openocd">“Connect PineCone BL602 to OpenOCD”</a>, Section 4, <a href="https://lupyuen.github.io/articles/openocd#connect-jtag-debugger-to-pinecone">“Connect JTAG Debugger to PineCone”</a></p>
 </li>
 <li>
 <p>Launch VSCode</p>
@@ -650,26 +650,26 @@ objsize
 </li>
 <li>
 <p>Click <strong><code>Terminal → Run Build Task</code></strong></p>
-<p>This builds the Mynewt Firmware. The RISC-V ELF Firmware image is generated here...</p>
+<p>This builds the Mynewt Firmware. The RISC-V ELF Firmware image is generated here…</p>
 <pre><code class="language-text">pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky/blinky.elf
 </code></pre>
 <p>This step also terminates any OpenOCD processes that are running. (Linux and macOS only)</p>
 </li>
 <li>
 <p>Click <strong><code>Run → Start Debugging</code></strong></p>
-<p>The debugger loads our Mynewt Firmware to PineCone's Cache Memory and begins execution.</p>
+<p>The debugger loads our Mynewt Firmware to PineCone’s Cache Memory and begins execution.</p>
 <p>Click <strong><code>View → Debug Console</code></strong> to view the Debug Console. GDB messages will be shown here.</p>
 </li>
 <li>
 <p>The debugger pauses execution at the first line of the <code>main</code> function</p>
-<p>We should see the screen below...</p>
+<p>We should see the screen below…</p>
 <p><a href="https://youtu.be/iDS8CBplSw8">Watch on YouTube</a></p>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/mynewt-debug.png" alt="Debug Firmware with VSCode" /></p>
 <p><em>Debug Firmware with VSCode</em></p>
 <h2 id="debugging-features" class="section-header"><a href="#debugging-features">14.1 Debugging Features</a></h2>
-<p>We may use these features for debugging our Mynewt Firmware...</p>
+<p>We may use these features for debugging our Mynewt Firmware…</p>
 <ol>
 <li>
 <p><strong>Variables</strong> (Left Top Pane): Inspect global and local variables</p>
@@ -690,49 +690,49 @@ objsize
 <p>To set a <strong>Breakpoint</strong>, click the Gutter Column at the left of the source code</p>
 </li>
 <li>
-<p>When we're done with debugging, click the Stop button in the Debug Toolbar at top right</p>
+<p>When we’re done with debugging, click the Stop button in the Debug Toolbar at top right</p>
 </li>
 </ol>
 <p><a href="https://youtu.be/iDS8CBplSw8">Watch on YouTube</a></p>
 <p><a href="https://code.visualstudio.com/docs/editor/debugging">More about VSCode Debugger</a></p>
 <h2 id="terminating-openocd" class="section-header"><a href="#terminating-openocd">14.2 Terminating OpenOCD</a></h2>
-<p>Before we start a new debugging session with <strong><code>Run → Start Debugging</code></strong>...</p>
+<p>Before we start a new debugging session with <strong><code>Run → Start Debugging</code></strong>…</p>
 <p><em>We must always click <strong><code>Terminal → Run Build Task</code></strong> first!</em></p>
-<p>That's because stopping the debugger will leave OpenOCD running (and locking up the connection to PineCone). </p>
+<p>That’s because stopping the debugger will leave OpenOCD running (and locking up the connection to PineCone). </p>
 <p>Clicking <strong><code>Run Build Task</code></strong> will terminate the OpenOCD task, so that the next debugging session can restart OpenOCD successfully.</p>
 <p>For Windows: Sorry we need to terminate the OpenOCD task manually with the Task Manager.</p>
-<p>In case of OpenOCD problems, check the OpenOCD log file...</p>
+<p>In case of OpenOCD problems, check the OpenOCD log file…</p>
 <pre><code class="language-text">pinecone-rust-mynewt/openocd.log
 </code></pre>
-<p>For details on the VSCode settings, check the section &quot;Appendix: VSCode Settings&quot; below.</p>
+<p>For details on the VSCode settings, check the section “Appendix: VSCode Settings” below.</p>
 <h1 id="how-to-test" class="section-header"><a href="#how-to-test">15 How To Test</a></h1>
 <p><em>How shall we test Mynewt on PineCone? Or any other RTOS ported to PineCone?</em></p>
-<p>We have an interesting problem here... PineCone is a barebones board that doesn't have any sensors or actuators connected on interfaces like I2C and SPI.</p>
+<p>We have an interesting problem here… PineCone is a barebones board that doesn’t have any sensors or actuators connected on interfaces like I2C and SPI.</p>
 <p>It will be challenging to test the various interfaces ported to Mynewt. (I might test with the <a href="http://dangerousprototypes.com/docs/Bus_Pirate"><strong>Bus Pirate Probe</strong></a>)</p>
-<p>For now I'll do <strong>&quot;Opportunistic Porting and Testing&quot;</strong>... I'll port to Mynewt only those PineCone Interfaces that I can test.</p>
+<p>For now I’ll do <strong>“Opportunistic Porting and Testing”</strong>… I’ll port to Mynewt only those PineCone Interfaces that I can test.</p>
 <p><strong>Do you have ideas for testing an RTOS on PineCone? Let us know!</strong></p>
 <h2 id="testing-the-led" class="section-header"><a href="#testing-the-led">15.1 Testing the LED</a></h2>
-<p>Testing PineCone's onboard RGB LED over GPIO seems easy... Except that the LED is connected to the JTAG Port. So the debugger will fail.</p>
+<p>Testing PineCone’s onboard RGB LED over GPIO seems easy… Except that the LED is connected to the JTAG Port. So the debugger will fail.</p>
 <p>In the earlier articles we learnt about remapping the JTAG port. This could be a (complicated) solution to test and debug the GPIO Port.</p>
-<p>Meanwhile I'll proceed to port the GPIO HAL from the BL602 IoT SDK to Mynewt, as discussed earlier.</p>
+<p>Meanwhile I’ll proceed to port the GPIO HAL from the BL602 IoT SDK to Mynewt, as discussed earlier.</p>
 <h2 id="testing-the-jumper" class="section-header"><a href="#testing-the-jumper">15.2 Testing the Jumper</a></h2>
-<p>We could test GPIO Input with PineCone's onboard jumper.</p>
+<p>We could test GPIO Input with PineCone’s onboard jumper.</p>
 <p>This should be straightforward, right after we port over the GPIO HAL to Mynewt.</p>
 <h2 id="testing-the-uart-port" class="section-header"><a href="#testing-the-uart-port">15.3 Testing the UART Port</a></h2>
-<p>PineCone's UART Port is wired to the USB Connector. We could test PineCone's UART Port over USB.</p>
-<p>We'll need to port the UART HAL from the BL602 IoT SDK to Mynewt.</p>
+<p>PineCone’s UART Port is wired to the USB Connector. We could test PineCone’s UART Port over USB.</p>
+<p>We’ll need to port the UART HAL from the BL602 IoT SDK to Mynewt.</p>
 <p><img src="https://lupyuen.github.io/images/mynewt-furry.jpg" alt="Furry PineCone" /></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">16 What's Next</a></h1>
-<p>There's more work to be done porting Mynewt to PineCone...</p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">16 What’s Next</a></h1>
+<p>There’s more work to be done porting Mynewt to PineCone…</p>
 <ol>
 <li>
-<p><strong>Port the Hardware Abstraction Layer</strong> from BL602 IoT SDK to Mynewt: GPIO, UART, PWM, I2C, SPI...</p>
+<p><strong>Port the Hardware Abstraction Layer</strong> from BL602 IoT SDK to Mynewt: GPIO, UART, PWM, I2C, SPI…</p>
 </li>
 <li>
 <p><strong>Bluetooth LE</strong>: We shall reverse engineer the Bluetooth LE Stack on PineCone. Then replace it by the open source <a href="https://github.com/apache/mynewt-nimble"><strong>NimBLE Stack</strong></a>.</p>
 </li>
 <li>
-<p><strong>WiFi</strong>: Also needs to be reverse engineered. We might be able to port this Mynewt WiFi Driver to PineCone...</p>
+<p><strong>WiFi</strong>: Also needs to be reverse engineered. We might be able to port this Mynewt WiFi Driver to PineCone…</p>
 <ul>
 <li>
 <p><a href="https://github.com/runtimeco/mynewt_arduino_zero/tree/master/libs/winc1500"><code>mynewt_arduino_zero/ libs/winc1500</code></a></p>
@@ -749,12 +749,12 @@ objsize
 <p>Then we shall have a fully <strong>Open Source Operating System for PineCone!</strong></p>
 <p><em>How confident are we of porting Mynewt to PineCone BL602?</em></p>
 <p>One year ago I <a href="https://lupyuen.github.io/articles/hey-gd32-vf103-on-risc-v-i-surrender-for-now">failed to port Mynewt</a> to an earlier RISC-V Microcontroller (GD32 VF103)</p>
-<p><em>But Second Time's The Charm!</em></p>
-<p>PineCone's BL602 Microcontroller runs on a RISC-V Core that's similar to SiFive FE310. And porting Mynewt from FE310 to BL602 seems quick and easy. <a href="https://twitter.com/MisterTechBlog/status/1338759961526951937?s=19">(As seen on Twitter)</a></p>
-<p>The port of Mynewt to PineCone BL602 continues here...</p>
+<p><em>But Second Time’s The Charm!</em></p>
+<p>PineCone’s BL602 Microcontroller runs on a RISC-V Core that’s similar to SiFive FE310. And porting Mynewt from FE310 to BL602 seems quick and easy. <a href="https://twitter.com/MisterTechBlog/status/1338759961526951937?s=19">(As seen on Twitter)</a></p>
+<p>The port of Mynewt to PineCone BL602 continues here…</p>
 <ul>
 <li>
-<p><a href="https://lupyuen.github.io/articles/book">Read &quot;The RISC-V BL602 Book&quot;</a></p>
+<p><a href="https://lupyuen.github.io/articles/book">Read “The RISC-V BL602 Book”</a></p>
 </li>
 <li>
 <p><a href="https://github.com/sponsors/lupyuen">Sponsor me a coffee</a></p>
@@ -766,56 +766,56 @@ objsize
 <p><a href="https://lupyuen.github.io/rss.xml">RSS Feed</a></p>
 </li>
 </ul>
-<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
+<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/mynewt.md"><code>lupyuen.github.io/src/mynewt.md</code></a></p>
 <h1 id="appendix-load-firmware-to-cache-memory-not-flash-memory" class="section-header"><a href="#appendix-load-firmware-to-cache-memory-not-flash-memory">17 Appendix: Load Firmware to Cache Memory, not Flash Memory</a></h1>
 <p><a href="https://lupyuen.github.io/articles/rust"><strong>UPDATE:</strong> We have a new way to create Rust Firmware with BL602 IoT SDK and flash to BL602 Flash Memory over UART, check this out</a></p>
 <p><a href="https://github.com/9names/bl602-rust-example"><strong>UPDATE:</strong> Check out this Rust Firmware that runs in Flash Memory instead of Cache Memory</a></p>
 <p><em>Why did we load our Mynewt Firmware (and Rust Firmware) to Cache Memory instead of Flash Memory?</em></p>
-<p>Because OpenOCD couldn't load our Mynewt Firmware (and Rust Firmware) into Flash Memory. </p>
-<p>(Probably because of Flash Protection. Or because writing to BL602 Flash Memory hasn't been implemented in OpenOCD.)</p>
-<p><a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_Openocd&amp;GDB/en">BL602 OpenOCD with JTAG doesn't support loading firmware into Flash Memory. See the BL602 OpenOCD Docs</a></p>
+<p>Because OpenOCD couldn’t load our Mynewt Firmware (and Rust Firmware) into Flash Memory. </p>
+<p>(Probably because of Flash Protection. Or because writing to BL602 Flash Memory hasn’t been implemented in OpenOCD.)</p>
+<p><a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_Openocd&amp;GDB/en">BL602 OpenOCD with JTAG doesn’t support loading firmware into Flash Memory. See the BL602 OpenOCD Docs</a></p>
 <p><em>What happens when we use <code>blflash</code> to load our firmware to Flash Memory?</em></p>
-<p>We're not sure if the Mynewt (or Rust) Firmware will run... But it's worth trying!</p>
+<p>We’re not sure if the Mynewt (or Rust) Firmware will run… But it’s worth trying!</p>
 <p>Make sure that we update the Memory Map to load our code into the XIP Flash Memory at <code>0x2300 0000</code>.</p>
 <p>Note that the <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602/evb/src/boot/gcc/start.S">Start Code from BL602 IoT SDK <code>start.S</code></a> references the Boot2 Bootloader.</p>
-<p>We're not sure why. Our Start Code from Mynewt (and Rust) doesn't use the Boot2 Bootloader.</p>
+<p>We’re not sure why. Our Start Code from Mynewt (and Rust) doesn’t use the Boot2 Bootloader.</p>
 <p><img src="https://lupyuen.github.io/images/mynewt-flash.png" alt="Loading Mynewt Firmware to Flash Memory" /></p>
 <p><em>What happens when we use OpenOCD + JTAG to load our firmware to Flash Memory?</em></p>
 <p>The screen above shows the first version of the Mynewt Firmware, that loads into Flash Memory.</p>
-<p>We used this GDB command to dump out the first 10 words of PineCone's Flash Memory...</p>
+<p>We used this GDB command to dump out the first 10 words of PineCone’s Flash Memory…</p>
 <pre><code class="language-text">x/10x _reset_handler
 </code></pre>
-<p>(<code>_reset_handler</code> is the function name of Mynewt's Start Code, located at the start of our firmware)</p>
-<p>When we compare the dumped data with our Firmware Disassembly, we see that the bytes don't match.</p>
-<p>Hence we deduce that our Mynewt Firmware wasn't loaded correctly into Flash Memory.</p>
+<p>(<code>_reset_handler</code> is the function name of Mynewt’s Start Code, located at the start of our firmware)</p>
+<p>When we compare the dumped data with our Firmware Disassembly, we see that the bytes don’t match.</p>
+<p>Hence we deduce that our Mynewt Firmware wasn’t loaded correctly into Flash Memory.</p>
 <p><img src="https://lupyuen.github.io/images/mynewt-ram.png" alt="Loading Mynewt Firmware to Cache Memory" /></p>
 <p><em>What happens when we use OpenOCD + JTAG to load our firmware to Cache Memory?</em></p>
-<p>Here's the second try, loading our Mynewt Firmware to Cache Memory. (The same way that we loaded Rust Firmware in our previous article)</p>
-<p>Entering the same GDB Command...</p>
+<p>Here’s the second try, loading our Mynewt Firmware to Cache Memory. (The same way that we loaded Rust Firmware in our previous article)</p>
+<p>Entering the same GDB Command…</p>
 <pre><code class="language-text">x/10x _reset_handler
 </code></pre>
 <p>We see that the data is identical. Our Mynewt Firmware is loaded correctly to Cache Memory indeed!</p>
-<p><em>But we can't run Mynewt Firmware in Cache Memory forever right?</em></p>
+<p><em>But we can’t run Mynewt Firmware in Cache Memory forever right?</em></p>
 <p>The solution is to load our firmware to PineCone over USB (UART). (And flipping the jumper)</p>
 <p>We may integrate with VSCode the command-line scripts for loading our firmware to PineCone.</p>
-<p>Check out the article...</p>
+<p>Check out the article…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/flash">&quot;Flashing Firmware to PineCone BL602&quot;</a></li>
+<li><a href="https://lupyuen.github.io/articles/flash">“Flashing Firmware to PineCone BL602”</a></li>
 </ul>
 <h1 id="appendix-install-newt" class="section-header"><a href="#appendix-install-newt">18 Appendix: Install newt</a></h1>
-<p>We may install Mynewt's <code>newt</code> tool according to the instructions here...</p>
+<p>We may install Mynewt’s <code>newt</code> tool according to the instructions here…</p>
 <ul>
 <li><a href="https://mynewt.apache.org/latest/newt/install/index.html">Installing <code>newt</code></a></li>
 </ul>
-<p>Or we may build from the source code...</p>
+<p>Or we may build from the source code…</p>
 <h2 id="linux-and-macos" class="section-header"><a href="#linux-and-macos">18.1 Linux and macOS</a></h2>
 <ol>
 <li>
 <p>Install the <a href="https://golang.org/dl/">latest version of Go</a></p>
 </li>
 <li>
-<p>At a command prompt, enter...</p>
+<p>At a command prompt, enter…</p>
 <pre><code class="language-bash">cd /tmp
 export mynewt_version=mynewt_1_8_0_tag
 git clone --branch $mynewt_version https://github.com/apache/mynewt-newt/
@@ -826,24 +826,24 @@ newt version
 </code></pre>
 </li>
 <li>
-<p>We should see...</p>
+<p>We should see…</p>
 <pre><code class="language-text">Apache Newt 1.8.0
 </code></pre>
 </li>
 </ol>
 <h2 id="windows" class="section-header"><a href="#windows">18.2 Windows</a></h2>
-<p>The Windows version of <code>newt</code> is already bundled at...</p>
+<p>The Windows version of <code>newt</code> is already bundled at…</p>
 <pre><code class="language-text">pinecone-rust-mynewt\newt\newt.exe
 </code></pre>
 <p>The build script <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/scripts/build-app.cmd"><code>build-app.cmd</code></a> uses the above <code>newt</code> executable.</p>
-<p>However, the <code>newt</code> executable triggers a Windows Defender warning (because it wasn't built as a certified executable). We need to <strong>update the Windows Security settings</strong> to allow the <code>newt</code> executable to run.</p>
-<p>To build <code>newt</code> from the source code, follow these steps...</p>
+<p>However, the <code>newt</code> executable triggers a Windows Defender warning (because it wasn’t built as a certified executable). We need to <strong>update the Windows Security settings</strong> to allow the <code>newt</code> executable to run.</p>
+<p>To build <code>newt</code> from the source code, follow these steps…</p>
 <ol>
 <li>
 <p>Install the <a href="https://golang.org/dl/">latest version of Go</a></p>
 </li>
 <li>
-<p>At a command prompt, enter...</p>
+<p>At a command prompt, enter…</p>
 <pre><code class="language-cmd">git clone --branch mynewt_1_8_0_tag https://github.com/apache/mynewt-newt/
 cd mynewt-newt\newt
 go build
@@ -851,15 +851,15 @@ newt.exe version
 </code></pre>
 </li>
 <li>
-<p>We should see...</p>
+<p>We should see…</p>
 <pre><code class="language-text">Apache Newt 1.8.0
 </code></pre>
 </li>
 <li>
-<p>Copy the <code>newt</code> executable from...</p>
+<p>Copy the <code>newt</code> executable from…</p>
 <pre><code class="language-text">mynewt-newt\newt\newt.exe
 </code></pre>
-<p>To...</p>
+<p>To…</p>
 <pre><code class="language-text">pinecone-rust-mynewt\newt\newt.exe
 </code></pre>
 </li>
@@ -867,7 +867,7 @@ newt.exe version
 <p><img src="https://lupyuen.github.io/images/mynewt-windows.png" alt="Mynewt BL602 built with Windows CMD" /></p>
 <p><em>Mynewt BL602 built with Windows CMD</em></p>
 <h1 id="appendix-create-the-mynewt-firmware" class="section-header"><a href="#appendix-create-the-mynewt-firmware">19 Appendix: Create the Mynewt Firmware</a></h1>
-<p>Mynewt Project <code>pinecone-rust-mynewt</code> and Mynewt Firmware <code>pinecone_app</code> were originally created using these steps...</p>
+<p>Mynewt Project <code>pinecone-rust-mynewt</code> and Mynewt Firmware <code>pinecone_app</code> were originally created using these steps…</p>
 <pre><code class="language-bash">newt new pinecone-rust-mynewt
 cd pinecone-rust-mynewt
 newt upgrade
@@ -877,18 +877,18 @@ newt target set pinecone_app app=apps/blinky
 newt target set pinecone_app bsp=@apache-mynewt-core/hw/bsp/hifive1
 newt target set pinecone_app build_profile=debug
 </code></pre>
-<p>We don't need to create them again, just download from...</p>
+<p>We don’t need to create them again, just download from…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinecone-rust-mynewt"><code>github.com/lupyuen/pinecone-rust-mynewt</code></a></li>
 </ul>
 <p>The steps above were based on the <a href="https://mynewt.apache.org/latest/tutorials/blinky/blinky_stm32f4disc.html">Blinky Tutorial for STM32F4-Discovery</a>.</p>
-<p>I added this Git Modules file so that the Mynewt source files will be downloaded together with the repo...</p>
+<p>I added this Git Modules file so that the Mynewt source files will be downloaded together with the repo…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/.gitmodules"><code>.gitmodules</code></a></li>
 </ul>
 <h1 id="appendix-vscode-settings" class="section-header"><a href="#appendix-vscode-settings">20 Appendix: VSCode Settings</a></h1><h2 id="debugger-settings" class="section-header"><a href="#debugger-settings">20.1 Debugger Settings</a></h2>
 <p>The VSCode Debugger Settings may be found in <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/.vscode/launch.json"><code>.vscode/launch.json</code></a></p>
-<p>This file defines... </p>
+<p>This file defines… </p>
 <ul>
 <li>
 <p>Firmware Path (<code>target</code>)</p>
@@ -949,7 +949,7 @@ newt target set pinecone_app build_profile=debug
 </code></pre>
 <h2 id="task-settings" class="section-header"><a href="#task-settings">20.2 Task Settings</a></h2>
 <p>The VSCode Task Settings may be found in <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/.vscode/tasks.json"><code>.vscode/tasks.json</code></a></p>
-<p>This file defines the VSCode Task for building the Mynewt Firmware...</p>
+<p>This file defines the VSCode Task for building the Mynewt Firmware…</p>
 <pre><code class="language-json">{
     // See https://go.microsoft.com/fwlink/?LinkId=733558
     // for the documentation about the tasks.json format
@@ -1004,7 +1004,7 @@ newt target set pinecone_app build_profile=debug
         },
         ...
 </code></pre>
-<p><a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/scripts/build-app.sh"><code>scripts/build-app.sh</code></a> does the following...</p>
+<p><a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/scripts/build-app.sh"><code>scripts/build-app.sh</code></a> does the following…</p>
 <ol>
 <li>
 <p>Terminate the OpenOCD process</p>

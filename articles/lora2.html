@@ -103,26 +103,26 @@
 <li><a href="#bl602-stack-trace">8.6 BL602 Stack Trace</a><ul></ul></li>
 <li><a href="#bl602-stack-dump">8.7 BL602 Stack Dump</a><ul></ul></li>
 <li><a href="#bl602-assertion-failures">8.8 BL602 Assertion Failures</a><ul></ul></li></ul></li>
-<li><a href="#whats-next">9 What's Next</a><ul></ul></li>
+<li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
 <li><a href="#notes">10 Notes</a><ul></ul></li>
 <li><a href="#appendix-how-to-create-bl602-projects">11 Appendix: How To Create BL602 Projects</a><ul></ul></li>
 <li><a href="#appendix-how-to-create-bl602-libraries">12 Appendix: How To Create BL602 Libraries</a><ul></ul></li></ul></nav><p>📝 <em>4 Apr 2021</em></p>
 <p>Not too long ago (and not so far away) we embarked on an epic quest to create a low-power, long-range <a href="https://en.wikipedia.org/wiki/LoRa"><strong>LoRa IoT Sensor</strong></a> with <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602 RISC-V Board</strong></a></p>
 <ol>
 <li>
-<p>We created a <strong>LoRa Transmitter</strong> with BL602...</p>
-<p><a href="https://lupyuen.github.io/articles/lora"><strong>&quot;Connect PineCone BL602 to LoRa Transceiver&quot;</strong></a></p>
+<p>We created a <strong>LoRa Transmitter</strong> with BL602…</p>
+<p><a href="https://lupyuen.github.io/articles/lora"><strong>“Connect PineCone BL602 to LoRa Transceiver”</strong></a></p>
 </li>
 <li>
-<p>Then we tested it with a <strong>LoRa Receiver</strong>: RAKwireless WisBlock...</p>
-<p><a href="https://lupyuen.github.io/articles/wisblock"><strong>&quot;RAKwireless WisBlock talks LoRa with PineCone BL602 RISC-V Board&quot;</strong></a></p>
+<p>Then we tested it with a <strong>LoRa Receiver</strong>: RAKwireless WisBlock…</p>
+<p><a href="https://lupyuen.github.io/articles/wisblock"><strong>“RAKwireless WisBlock talks LoRa with PineCone BL602 RISC-V Board”</strong></a></p>
 </li>
 </ol>
 <p>Today we shall create the LoRa Firmware for BL602 that will <strong>Receive LoRa Packets</strong>. And test it with RAKwireless WisBlock as the LoRa Transmitter.</p>
-<p><em>Why do we need to receive LoRa Packets... If our BL602 LoRa Sensor will only transmit sensor data?</em></p>
-<p>Because we'll soon connect our BL602 LoRa Sensor to a <strong>secure, managed LoRaWAN Network</strong> like <a href="https://www.thethingsnetwork.org/"><strong>The Things Network</strong></a>. (Or maybe <a href="https://www.helium.com/lorawan"><strong>Helium</strong></a>)</p>
-<p>Our BL602 gadget can't join these networks unless it can receive packets and respond to the network.</p>
-<p>Let's make it so! (Because we do... Or do not... There is no try!)</p>
+<p><em>Why do we need to receive LoRa Packets… If our BL602 LoRa Sensor will only transmit sensor data?</em></p>
+<p>Because we’ll soon connect our BL602 LoRa Sensor to a <strong>secure, managed LoRaWAN Network</strong> like <a href="https://www.thethingsnetwork.org/"><strong>The Things Network</strong></a>. (Or maybe <a href="https://www.helium.com/lorawan"><strong>Helium</strong></a>)</p>
+<p>Our BL602 gadget can’t join these networks unless it can receive packets and respond to the network.</p>
+<p>Let’s make it so! (Because we do… Or do not… There is no try!)</p>
 <p>The LoRa Firmware in this article will run on <strong>PineCone, Pinenut and Any BL602 Board</strong>.</p>
 <ul>
 <li>
@@ -132,11 +132,11 @@
 <p><a href="https://lupyuen.github.io/articles/lora#lora-vs-lorawan"><strong>More about the 3 Levels of LoRa and LoRaWAN</strong></a></p>
 </li>
 </ul>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/3rdparty/lora-sx1262"><strong>UPDATE: We have a new LoRa Driver for SX1262 (Pine64 RFM90 LoRa Module)... Check this out</strong></a></p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/3rdparty/lora-sx1262"><strong>UPDATE: We have a new LoRa Driver for SX1262 (Pine64 RFM90 LoRa Module)… Check this out</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/lora2-title.jpg" alt="PineCone BL602 RISC-V Board with Hope RF96 LoRa Transceiver (top) receives LoRa packets from RAKwireless WisBlock (bottom)" /></p>
 <p><em>PineCone BL602 RISC-V Board with Hope RF96 LoRa Transceiver (top) receives LoRa packets from RAKwireless WisBlock (bottom)</em></p>
 <h1 id="connect-bl602-to-lora-transceiver" class="section-header"><a href="#connect-bl602-to-lora-transceiver">1 Connect BL602 to LoRa Transceiver</a></h1>
-<p>Connect BL602 to Semtech SX1276 or Hope RF96 as follows...</p>
+<p>Connect BL602 to Semtech SX1276 or Hope RF96 as follows…</p>
 <p><img src="https://lupyuen.github.io/images/lora2-connect3.jpg" alt="PineCone BL602 RISC-V Board connected to Hope RF96 LoRa Transceiver" /></p>
 <table><thead><tr><th align="left">BL602 Pin</th><th align="left">SX1276 / RF96 Pin</th><th align="left">Wire Colour</th></tr></thead><tbody>
 <tr><td align="left"><strong><code>GPIO 0</code></strong></td><td align="left"><code>DIO1</code></td><td align="left">Dark Green</td></tr>
@@ -152,40 +152,40 @@
 <tr><td align="left"><strong><code>3V3</code></strong></td><td align="left"><code>3.3V</code></td><td align="left">Red</td></tr>
 <tr><td align="left"><strong><code>GND</code></strong></td><td align="left"><code>GND</code></td><td align="left">Black</td></tr>
 </tbody></table>
-<p><a href="https://electronics.stackexchange.com/questions/335912/can-i-break-a-radio-tranceiving-device-by-operating-it-with-no-antenna-connected"><strong>CAUTION: Always connect the Antenna before Powering On... Or the LoRa Transceiver may get damaged! See this</strong></a></p>
-<p>Here's a closer look at the pins connected on BL602...</p>
+<p><a href="https://electronics.stackexchange.com/questions/335912/can-i-break-a-radio-tranceiving-device-by-operating-it-with-no-antenna-connected"><strong>CAUTION: Always connect the Antenna before Powering On… Or the LoRa Transceiver may get damaged! See this</strong></a></p>
+<p>Here’s a closer look at the pins connected on BL602…</p>
 <p><img src="https://lupyuen.github.io/images/lora2-connect4.jpg" alt="PineCone BL602 RISC-V Board connected to Hope RF96 LoRa Transceiver" /></p>
 <p><em>Why is BL602 Pin 2 unused?</em></p>
 <p><strong><code>GPIO 2</code></strong> is the <strong>Unused SPI Chip Select</strong> on BL602.</p>
-<p>We won't use this pin because we'll control Chip Select ourselves on <code>GPIO 14</code>. <a href="https://lupyuen.github.io/articles/spi#control-our-own-chip-select-pin">(See this)</a></p>
-<p>Here are the pins connected on our LoRa Transceiver: SX1276 or RF96...</p>
-<p>(<code>ISO</code> and <code>OSI</code> appear flipped in this pic... Rotate your phone / computer screen 180 degrees for the proper perspective)</p>
+<p>We won’t use this pin because we’ll control Chip Select ourselves on <code>GPIO 14</code>. <a href="https://lupyuen.github.io/articles/spi#control-our-own-chip-select-pin">(See this)</a></p>
+<p>Here are the pins connected on our LoRa Transceiver: SX1276 or RF96…</p>
+<p>(<code>ISO</code> and <code>OSI</code> appear flipped in this pic… Rotate your phone / computer screen 180 degrees for the proper perspective)</p>
 <p><img src="https://lupyuen.github.io/images/lora2-connect5.jpg" alt="PineCone BL602 RISC-V Board connected to Hope RF96 LoRa Transceiver" /></p>
 <p><em>Why do we connect so many pins on SX1276 (or RF96)?</em></p>
 <p>The SX1276 and RF96 transceivers have <strong>6 (!) Digital Input / Output pins: <code>DIO0</code> to <code>DIO5</code></strong></p>
-<p>The transceiver shifts the Logic Levels of these pins from <strong>Low to High</strong> when specific conditions occur...</p>
+<p>The transceiver shifts the Logic Levels of these pins from <strong>Low to High</strong> when specific conditions occur…</p>
 <ul>
 <li>
 <p><strong><code>DIO0</code> Packet Received</strong>: This pin is triggered when the transceiver <strong>receives a LoRa Packet.</strong></p>
-<p><code>DIO0</code> is also triggered after the transceiver has transmitted a LoRa Packet, but that's not so useful.</p>
+<p><code>DIO0</code> is also triggered after the transceiver has transmitted a LoRa Packet, but that’s not so useful.</p>
 </li>
 <li>
-<p><strong><code>DIO1</code> Receive Timeout</strong>: This pin is triggered when the transceiver <strong>doesn't receive any LoRa Packets</strong> within a timeout window.</p>
+<p><strong><code>DIO1</code> Receive Timeout</strong>: This pin is triggered when the transceiver <strong>doesn’t receive any LoRa Packets</strong> within a timeout window.</p>
 <p>This works only when the transceiver is configured for <strong>Single Receive Mode</strong>.</p>
-<p>However today we're configuring our transceiver for <strong>Continuous Receive Mode</strong> so we won't be using <code>DIO1</code>. We shall trigger receive timeouts with a BL602 Timer.</p>
+<p>However today we’re configuring our transceiver for <strong>Continuous Receive Mode</strong> so we won’t be using <code>DIO1</code>. We shall trigger receive timeouts with a BL602 Timer.</p>
 </li>
 <li>
 <p><strong><code>DIO2</code> Change Channel</strong>: This is used for <strong>Spread Spectrum Transmission</strong> (Frequency Hopping). </p>
 <p>When we transmit / receive LoRa Packets over multiple frequencies (spread spectrum), we reduce the likelihood of packet collisions over the airwaves.</p>
-<p>We won't be using Spread Spectrum Transmission today, so <code>DIO2</code> shall stay idle.</p>
+<p>We won’t be using Spread Spectrum Transmission today, so <code>DIO2</code> shall stay idle.</p>
 </li>
 <li>
-<p><strong><code>DIO3</code> Channel Activity Detection</strong>: The transceiver lets us <strong>detect whether there's any ongoing transmission</strong> in a LoRa Radio Channel, in a power-efficient way.</p>
-<p>We won't be using Channel Activity Detection today.</p>
+<p><strong><code>DIO3</code> Channel Activity Detection</strong>: The transceiver lets us <strong>detect whether there’s any ongoing transmission</strong> in a LoRa Radio Channel, in a power-efficient way.</p>
+<p>We won’t be using Channel Activity Detection today.</p>
 </li>
 <li>
 <p><strong><code>DIO4</code></strong> and <strong><code>DIO5</code></strong> are not connected to BL602.  They are used for <strong>FSK Radio Modulation</strong> only.</p>
-<p>(We're using LoRa Radio Modulation)</p>
+<p>(We’re using LoRa Radio Modulation)</p>
 </li>
 </ul>
 <p>Only <strong>1 pin <code>DIO0</code></strong> is required for receiving simple LoRa Packets, without the frills (like Spread Spectrum Transmission).</p>
@@ -200,14 +200,14 @@
 </li>
 </ul>
 <h1 id="initialise-lora-transceiver" class="section-header"><a href="#initialise-lora-transceiver">2 Initialise LoRa Transceiver</a></h1>
-<p>Let's look at the code inside our LoRa Firmware for BL602: <code>sdk_app_lora</code></p>
-<p><strong>Super Important:</strong> We should set the LoRa Frequency in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L43-L58"><code>demo.c</code></a> like so...</p>
+<p>Let’s look at the code inside our LoRa Firmware for BL602: <code>sdk_app_lora</code></p>
+<p><strong>Super Important:</strong> We should set the LoRa Frequency in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L43-L58"><code>demo.c</code></a> like so…</p>
 <pre><code class="language-c">/// TODO: We are using LoRa Frequency 923 MHz 
 /// for Singapore. Change this for your region.
 #define USE_BAND_923
 </code></pre>
 <p>In a while we shall change <code>923</code> to the LoRa Frequency for our region: <code>434</code>, <code>780</code>, <code>868</code>, <code>915</code> or <code>923</code> MHz. <a href="https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html">(Check this list)</a></p>
-<p>For now we'll study this function <strong><code>init_driver</code></strong> that initialises the LoRa Driver for SX1276 (and RF96) in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L126-L179"><code>demo.c</code></a></p>
+<p>For now we’ll study this function <strong><code>init_driver</code></strong> that initialises the LoRa Driver for SX1276 (and RF96) in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L126-L179"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// Command to initialise the SX1276 / RF96 driver
 static void init_driver(char *buf, int len, int argc, char **argv) {
     //  Set the LoRa Callback Functions
@@ -219,7 +219,7 @@ static void init_driver(char *buf, int len, int argc, char **argv) {
     radio_events.RxTimeout = on_rx_timeout;
     radio_events.RxError   = on_rx_error;
 </code></pre>
-<p><code>init_driver</code> begins by defining the <strong>Callback Functions</strong> that will be called when we have transmitted or received a LoRa Packet (successfully or unsuccessfully)...</p>
+<p><code>init_driver</code> begins by defining the <strong>Callback Functions</strong> that will be called when we have transmitted or received a LoRa Packet (successfully or unsuccessfully)…</p>
 <ul>
 <li>
 <p><strong>Packet Transmitted: <code>on_tx_done</code></strong></p>
@@ -235,25 +235,25 @@ static void init_driver(char *buf, int len, int argc, char **argv) {
 </li>
 <li>
 <p><strong>Receive Timeout: <code>on_rx_timeout</code></strong>:</p>
-<p>Called if the transceiver doesn't receive any LoRa Packets within a timeout window. (More about this in a while)</p>
+<p>Called if the transceiver doesn’t receive any LoRa Packets within a timeout window. (More about this in a while)</p>
 </li>
 <li>
 <p><strong>Receive Error: <code>on_rx_error</code></strong>:</p>
 <p>Called if the transceiver encounters an error when receiving a LoRa Packet. (More about this in a while)</p>
 </li>
 </ul>
-<p>Next we call <strong><code>Radio.Init</code> to initialise BL602's SPI Port and the LoRa Transceiver</strong>...</p>
+<p>Next we call <strong><code>Radio.Init</code> to initialise BL602’s SPI Port and the LoRa Transceiver</strong>…</p>
 <pre><code class="language-c">    //  Init the SPI Port and the LoRa Transceiver
     Radio.Init(&amp;radio_events);
 </code></pre>
 <p><code>Radio.Init</code> will set some registers on our LoRa Transceiver (over SPI).</p>
-<p>Then we call <strong><code>Radio.SetChannel</code> to set the LoRa Frequency</strong>...</p>
+<p>Then we call <strong><code>Radio.SetChannel</code> to set the LoRa Frequency</strong>…</p>
 <pre><code class="language-c">    //  Set the LoRa Frequency, which is specific to our region.
     //  For USE_BAND_923: RF_FREQUENCY is set to 923000000.
     Radio.SetChannel(RF_FREQUENCY);
 </code></pre>
 <p><code>Radio.SetChannel</code> configures the LoRa Frequency by writing to the <strong>Frequency Registers</strong> in our LoRa Transceiver.</p>
-<p>We get ready to transmit by calling <strong><code>Radio.SetTxConfig</code></strong>...</p>
+<p>We get ready to transmit by calling <strong><code>Radio.SetTxConfig</code></strong>…</p>
 <pre><code class="language-c">    //  Configure the LoRa Transceiver for transmitting messages
     Radio.SetTxConfig(
         MODEM_LORA,
@@ -271,7 +271,7 @@ static void init_driver(char *buf, int len, int argc, char **argv) {
         LORAPING_TX_TIMEOUT_MS
     );
 </code></pre>
-<p>At the end of the function we call <strong><code>Radio.SetRxConfig</code></strong> to configure the transceiver for receiving LoRa Packets...</p>
+<p>At the end of the function we call <strong><code>Radio.SetRxConfig</code></strong> to configure the transceiver for receiving LoRa Packets…</p>
 <pre><code class="language-c">    //  Configure the LoRa Transceiver for receiving messages
     Radio.SetRxConfig(
         MODEM_LORA,
@@ -291,14 +291,14 @@ static void init_driver(char *buf, int len, int argc, char **argv) {
     );    
 }
 </code></pre>
-<p><em>What's Continuous Receive Mode?</em></p>
-<p><strong>Continuous Receive Mode</strong> means that the transceiver will wait forever for incoming packets... Until we tell it to stop.</p>
-<p>(We'll stop the transceiver with a BL602 Timer)</p>
-<p>But before that, we need to tell the transceiver to begin receiving packets. That's coming up next...</p>
+<p><em>What’s Continuous Receive Mode?</em></p>
+<p><strong>Continuous Receive Mode</strong> means that the transceiver will wait forever for incoming packets… Until we tell it to stop.</p>
+<p>(We’ll stop the transceiver with a BL602 Timer)</p>
+<p>But before that, we need to tell the transceiver to begin receiving packets. That’s coming up next…</p>
 <p>(The code in this article is based on the <a href="https://github.com/apache/mynewt-core/blob/master/apps/loraping/src/main.c">LoRa Ping</a> program from Mynewt OS. <a href="https://lupyuen.github.io/articles/lora#appendix-porting-lora-driver-from-mynewt-to-bl602">More about this</a>)</p>
 <h1 id="receive-lora-packet" class="section-header"><a href="#receive-lora-packet">3 Receive LoRa Packet</a></h1>
-<p>We're creating a <strong>battery-powered</strong> IoT Sensor with LoRa.</p>
-<p>To conserve battery power, we don't listen for incoming LoRa Packets all the time... We <strong>listen for 5 seconds</strong> then go to sleep.</p>
+<p>We’re creating a <strong>battery-powered</strong> IoT Sensor with LoRa.</p>
+<p>To conserve battery power, we don’t listen for incoming LoRa Packets all the time… We <strong>listen for 5 seconds</strong> then go to sleep.</p>
 <p>This is how we do it: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L207-L213"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// LoRa Receive Timeout in 5 seconds
 #define LORAPING_RX_TIMEOUT_MS 5000  //  Milliseconds
@@ -324,7 +324,7 @@ static void on_rx_done(
     Radio.Sleep();
 </code></pre>
 <p>At the start of <code>on_rx_done</code>, we <strong>power down the LoRa Transceiver</strong> to conserve battery power.</p>
-<p>Next we <strong>copy the received packet</strong> into our 64-byte buffer <strong><code>loraping_buffer</code></strong>...</p>
+<p>Next we <strong>copy the received packet</strong> into our 64-byte buffer <strong><code>loraping_buffer</code></strong>…</p>
 <pre><code class="language-c">    //  Copy the received packet (up to 64 bytes)
     if (size &gt; sizeof loraping_buffer) {
         size = sizeof loraping_buffer;
@@ -332,7 +332,7 @@ static void on_rx_done(
     loraping_rx_size = size;
     memcpy(loraping_buffer, payload, size);
 </code></pre>
-<p>At the end of the callback, we <strong>display the contents</strong> of the copied packet...</p>
+<p>At the end of the callback, we <strong>display the contents</strong> of the copied packet…</p>
 <pre><code class="language-c">    //  Dump the contents of the received packet
     for (int i = 0; i &lt; loraping_rx_size; i++) {
         printf(&quot;%02x &quot;, loraping_buffer[i]);
@@ -344,11 +344,11 @@ static void on_rx_done(
 }
 </code></pre>
 <p><em>Is it really OK to call <code>printf</code> here?</em></p>
-<p>Yes because this code runs in the context of the <strong>FreeRTOS Application Task</strong>, not in the context of the Interrupt Handler. We'll learn why in a while.</p>
-<p>(This differs from the original <a href="https://github.com/apache/mynewt-core/blob/master/apps/loraping/src/main.c">LoRa Ping</a> program... On Mynewt OS, <code>on_rx_done</code> and other Callback Functions will run in the context of the Interrupt Handler)</p>
+<p>Yes because this code runs in the context of the <strong>FreeRTOS Application Task</strong>, not in the context of the Interrupt Handler. We’ll learn why in a while.</p>
+<p>(This differs from the original <a href="https://github.com/apache/mynewt-core/blob/master/apps/loraping/src/main.c">LoRa Ping</a> program… On Mynewt OS, <code>on_rx_done</code> and other Callback Functions will run in the context of the Interrupt Handler)</p>
 <h2 id="timeout-and-error-callbacks" class="section-header"><a href="#timeout-and-error-callbacks">3.2 Timeout and Error Callbacks</a></h2>
-<p><em>What happens when we don't receive a LoRa Packet in 5 seconds?</em></p>
-<p>The SX1276 Driver calls our Callback Function <strong><code>on_rx_timeout</code></strong> that's defined in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L398-L412"><code>demo.c</code></a></p>
+<p><em>What happens when we don’t receive a LoRa Packet in 5 seconds?</em></p>
+<p>The SX1276 Driver calls our Callback Function <strong><code>on_rx_timeout</code></strong> that’s defined in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L398-L412"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// Callback Function that is called when no LoRa messages could be received due to timeout
 static void on_rx_timeout(void) {
     //  Switch the LoRa Transceiver to low power, sleep mode
@@ -371,11 +371,11 @@ static void on_rx_error(void) {
 }
 </code></pre>
 <h1 id="bl602-gpio-interrupts" class="section-header"><a href="#bl602-gpio-interrupts">4 BL602 GPIO Interrupts</a></h1>
-<p>Let's talk about <strong>handling GPIO Interrupts</strong> on BL602...</p>
+<p>Let’s talk about <strong>handling GPIO Interrupts</strong> on BL602…</p>
 <p><img src="https://lupyuen.github.io/images/lora2-interrupt.png" alt="BL602 handling GPIO interrupts" /></p>
 <ol>
 <li>
-<p>When our LoRa Transceiver (SX1276) <strong>receives a LoRa Packet</strong>...</p>
+<p>When our LoRa Transceiver (SX1276) <strong>receives a LoRa Packet</strong>…</p>
 </li>
 <li>
 <p>It shifts the Logic Level of <strong>Pin <code>DIO0</code> from Low to High</strong></p>
@@ -387,7 +387,7 @@ static void on_rx_error(void) {
 <p>The <strong>GPIO Interrupt Handler</strong> in our firmware code will then process the received LoRa Packet. (And reset <code>DIO0</code> back to Low)</p>
 </li>
 </ol>
-<p>Here's how we configure a GPIO Interrupt Handler on BL602: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L144-L240"><code>sx1276-board.c</code></a></p>
+<p>Here’s how we configure a GPIO Interrupt Handler on BL602: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L144-L240"><code>sx1276-board.c</code></a></p>
 <pre><code class="language-c">//  SX1276 DIO0 is connected to BL602 at GPIO 11
 #define SX1276_DIO0 11
 
@@ -402,17 +402,17 @@ int rc = register_gpio_handler(   //  Register GPIO Handler...
 );
 assert(rc == 0);
 </code></pre>
-<p>This call to <strong><code>register_gpio_handler</code></strong> says...</p>
+<p>This call to <strong><code>register_gpio_handler</code></strong> says…</p>
 <ol>
 <li>
-<p>When BL602 detects <strong>GPIO Pin 11</strong> (connected to <code>DIO0</code>) shifting from <strong>Low to High</strong> (Positive Edge)...</p>
+<p>When BL602 detects <strong>GPIO Pin 11</strong> (connected to <code>DIO0</code>) shifting from <strong>Low to High</strong> (Positive Edge)…</p>
 </li>
 <li>
 <p>BL602 will call our GPIO Handler Function <strong><code>SX1276OnDio0Irq</code></strong></p>
 </li>
 </ol>
-<p>We'll cover <code>register_gpio_handler</code> in the next section.</p>
-<p>Then to enable GPIO Interrupts we call these functions from the <strong>BL602 Interrupt Hardware Abstraction Layer (HAL)</strong>...</p>
+<p>We’ll cover <code>register_gpio_handler</code> in the next section.</p>
+<p>Then to enable GPIO Interrupts we call these functions from the <strong>BL602 Interrupt Hardware Abstraction Layer (HAL)</strong>…</p>
 <pre><code class="language-c">//  Register Common Interrupt Handler for GPIO Interrupt
 bl_irq_register_with_ctx(
     GPIO_INT0_IRQn,         //  GPIO Interrupt
@@ -424,9 +424,9 @@ bl_irq_register_with_ctx(
 bl_irq_enable(GPIO_INT0_IRQn);
 </code></pre>
 <p><strong><code>handle_gpio_interrupt</code></strong> is the low-level <strong>Interrupt Handler</strong> that will be called by the BL602 GPIO HAL when the GPIO Interrupt is triggered.</p>
-<p>We'll look inside <code>handle_gpio_interrupt</code> in a while.</p>
+<p>We’ll look inside <code>handle_gpio_interrupt</code> in a while.</p>
 <h2 id="register-handler-function" class="section-header"><a href="#register-handler-function">4.1 Register Handler Function</a></h2>
-<p>Let's look inside our function <strong><code>register_gpio_handler</code></strong> and learn how it <strong>registers a Handler Function for GPIO</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L341-L403"><code>sx1276-board.c</code></a></p>
+<p>Let’s look inside our function <strong><code>register_gpio_handler</code></strong> and learn how it <strong>registers a Handler Function for GPIO</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L341-L403"><code>sx1276-board.c</code></a></p>
 <pre><code class="language-c">/// Register Handler Function for GPIO. Return 0 if successful.
 /// GPIO Handler Function will run in the context of the Application Task, not the Interrupt Handler.
 /// Based on bl_gpio_register in https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_gpio.c
@@ -439,7 +439,7 @@ static int register_gpio_handler(
     uint8_t pulldown) {      //  1 for pulldown, 0 for no pulldown
 </code></pre>
 <p>Above are the parameters for <code>register_gpio_handler</code>.</p>
-<p>The <strong>GPIO Interrupt Control Modes</strong> are...</p>
+<p>The <strong>GPIO Interrupt Control Modes</strong> are…</p>
 <ul>
 <li>
 <p><strong><code>GLB_GPIO_INT_CONTROL_SYNC</code></strong>:  Synchronous Mode</p>
@@ -450,8 +450,8 @@ static int register_gpio_handler(
 <p>(We ALWAYS use async mode)</p>
 </li>
 </ul>
-<p>The BL602 Reference Manual doesn't mention GPIO Interrupt Control modes. But according to the BL602 HAL code, only <strong>Async Mode</strong> should be used. <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_button.c#L309">(See this)</a></p>
-<p>The <strong>GPIO Interrupt Trigger Mode</strong> specifies how the GPIO should trigger the interrupt...</p>
+<p>The BL602 Reference Manual doesn’t mention GPIO Interrupt Control modes. But according to the BL602 HAL code, only <strong>Async Mode</strong> should be used. <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_button.c#L309">(See this)</a></p>
+<p>The <strong>GPIO Interrupt Trigger Mode</strong> specifies how the GPIO should trigger the interrupt…</p>
 <ul>
 <li>
 <p><strong><code>GLB_GPIO_INT_TRIG_NEG_PULSE</code></strong>: Negative Edge Pulse Trigger</p>
@@ -471,8 +471,8 @@ static int register_gpio_handler(
 <p>Trigger the interrupt when the GPIO Logic Level stays <strong>High</strong></p>
 </li>
 </ul>
-<p>The GPIO Interrupt Trigger Mode is (partially) documented in the <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en">BL602 Reference Manual</a> (Section 3.2.12: &quot;GPIO Interrupt&quot;). <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_button.c#L270-L312">(This BL602 HAL code offers more hints)</a></p>
-<p>Our GPIO Handler Function <code>handler</code> shall be triggered through an Event (from the NimBLE Porting Layer). We'll learn why later...</p>
+<p>The GPIO Interrupt Trigger Mode is (partially) documented in the <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en">BL602 Reference Manual</a> (Section 3.2.12: “GPIO Interrupt”). <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_button.c#L270-L312">(This BL602 HAL code offers more hints)</a></p>
+<p>Our GPIO Handler Function <code>handler</code> shall be triggered through an Event (from the NimBLE Porting Layer). We’ll learn why later…</p>
 <pre><code class="language-c">    //  Init the Event that will invoke the handler for the GPIO Interrupt
     int rc = init_interrupt_event(
         gpioPin,  //  GPIO Pin Number
@@ -480,7 +480,7 @@ static int register_gpio_handler(
     );
     assert(rc == 0);
 </code></pre>
-<p>Next we call <code>GLB_GPIO_Func_Init</code> to configure the pin as a <strong>GPIO Pin</strong>...</p>
+<p>Next we call <code>GLB_GPIO_Func_Init</code> to configure the pin as a <strong>GPIO Pin</strong>…</p>
 <pre><code class="language-c">    //  Configure pin as a GPIO Pin
     GLB_GPIO_Type pins[1];
     pins[0] = gpioPin;
@@ -492,7 +492,7 @@ static int register_gpio_handler(
     assert(rc2 == SUCCESS);    
 </code></pre>
 <p><code>GLB_GPIO_Func_Init</code> comes from the BL602 Standard Driver: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c"><code>bl602_glb.c</code></a></p>
-<p>We configure the pin as a <strong>GPIO Input Pin</strong> (instead of GPIO Output)...</p>
+<p>We configure the pin as a <strong>GPIO Input Pin</strong> (instead of GPIO Output)…</p>
 <pre><code class="language-c">    //  Configure pin as a GPIO Input Pin
     rc = bl_gpio_enable_input(
         gpioPin,  //  GPIO Pin Number
@@ -501,7 +501,7 @@ static int register_gpio_handler(
     );
     assert(rc == 0);
 </code></pre>
-<p>Finally we disable the GPIO Pin Interrupt, configure the <strong>GPIO Interrupt Control and Trigger Modes</strong>, and enable the GPIO Pin Interrupt...</p>
+<p>Finally we disable the GPIO Pin Interrupt, configure the <strong>GPIO Interrupt Control and Trigger Modes</strong>, and enable the GPIO Pin Interrupt…</p>
 <pre><code class="language-c">    //  Disable GPIO Interrupt for the pin
     bl_gpio_intmask(gpioPin, 1);
 
@@ -517,35 +517,35 @@ static int register_gpio_handler(
     return 0;
 }
 </code></pre>
-<p>We're ready to handle GPIO Interrupts triggered by our LoRa Transceiver!</p>
+<p>We’re ready to handle GPIO Interrupts triggered by our LoRa Transceiver!</p>
 <p><em>There seems to be 2 types of GPIO Interrupts?</em></p>
-<p>Yep, earlier we saw this...</p>
+<p>Yep, earlier we saw this…</p>
 <pre><code class="language-c">//  Enable GPIO Interrupt
 bl_irq_enable(GPIO_INT0_IRQn);
 </code></pre>
 <p>This enables the GPIO Interrupt for <strong>ALL GPIO Pins</strong> (by calling the BL602 Interrupt HAL).</p>
-<p>Then we saw this...</p>
+<p>Then we saw this…</p>
 <pre><code class="language-c">//  Enable GPIO Interrupt for the pin
 bl_gpio_intmask(gpioPin, 0);
 </code></pre>
 <p>This enables the GPIO Interrupt for <strong>ONE Specific GPIO Pin</strong> (by calling the BL602 GPIO HAL).</p>
 <p>We need both to make GPIO Interrupts work.</p>
 <h2 id="gpio-interrupt-handler" class="section-header"><a href="#gpio-interrupt-handler">4.2 GPIO Interrupt Handler</a></h2>
-<p><em>GPIO Interrupt Handler vs GPIO Handler Function... Are these different things?</em></p>
-<p>I'm sorry to muddle my dearest readers, they are indeed different things and they work at different levels...</p>
+<p><em>GPIO Interrupt Handler vs GPIO Handler Function… Are these different things?</em></p>
+<p>I’m sorry to muddle my dearest readers, they are indeed different things and they work at different levels…</p>
 <p><img src="https://lupyuen.github.io/images/lora2-handler.png" alt="GPIO Interrupt Handler vs GPIO Handler Function" /></p>
 <ol>
 <li>
 <p><strong>GPIO Interrupt Handler</strong> (<code>handle_gpio_interrupt</code>) is the low-level <strong>Interrupt Service Routine</strong> that handles the GPIO Interrupt.</p>
-<p>This Interrupt Handler (called by BL602 Interrupt HAL) services the GPIO Interrupt that's triggered when SX1276 receives a LoRa Packet.</p>
+<p>This Interrupt Handler (called by BL602 Interrupt HAL) services the GPIO Interrupt that’s triggered when SX1276 receives a LoRa Packet.</p>
 </li>
 <li>
 <p><strong>GPIO Handler Function</strong> (like <code>SX1276OnDio0Irq</code>) is the high-level <strong>Application Function</strong> (running in a FreeRTOS Task) that processes the received LoRa Packet.</p>
 <p>This Handler Function is invoked (indirectly) by the Interrupt Handler (via an Event from NimBLE Porting Layer).</p>
-<p>(What's an Event and why are we using it? We'll learn about the NimBLE Porting Layer in the next chapter)</p>
+<p>(What’s an Event and why are we using it? We’ll learn about the NimBLE Porting Layer in the next chapter)</p>
 </li>
 </ol>
-<p>Let's study the low-level <strong>GPIO Interrupt Handler <code>handle_gpio_interrupt</code></strong> that services all GPIO Interrupts: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L405-L433"><code>sx1276-board.c</code></a></p>
+<p>Let’s study the low-level <strong>GPIO Interrupt Handler <code>handle_gpio_interrupt</code></strong> that services all GPIO Interrupts: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L405-L433"><code>sx1276-board.c</code></a></p>
 <pre><code class="language-c">/// Maximum number of GPIO Pins that can be configured for interrupts
 #define MAX_GPIO_INTERRUPTS 6  //  DIO0 to DIO5
 
@@ -568,32 +568,32 @@ static void handle_gpio_interrupt(void *arg) {
         struct ble_npl_event *ev = &amp;gpio_events[i];
 </code></pre>
 <p>We start the GPIO Interrupt Handler <code>handle_gpio_interrupt</code> by <strong>iterating through the GPIO Interrupts</strong> that we have configured (for <code>DIO0</code> to <code>DIO5</code>).</p>
-<p>The configured GPIO Interrupts are stored in arrays <strong><code>gpio_interrupts</code> and <code>gpio_events</code></strong> like so...</p>
+<p>The configured GPIO Interrupts are stored in arrays <strong><code>gpio_interrupts</code> and <code>gpio_events</code></strong> like so…</p>
 <p><img src="https://lupyuen.github.io/images/lora2-events.png" alt="GPIO Interrupts and Events" /></p>
-<p>For the first iteration...</p>
+<p>For the first iteration…</p>
 <ul>
 <li>
-<p>Since <code>DIO0</code> is connected to <strong>GPIO Pin 11</strong>...</p>
+<p>Since <code>DIO0</code> is connected to <strong>GPIO Pin 11</strong>…</p>
 <p><strong><code>gpioPin</code></strong> shall be set to <strong><code>11</code></strong></p>
 <p>(Via <code>gpio_interrupts[0]</code>)</p>
 </li>
 <li>
-<p>Since <code>DIO0</code> is handled by the <strong>GPIO Handler Function <code>SX1276OnDio0Irq</code></strong>...</p>
+<p>Since <code>DIO0</code> is handled by the <strong>GPIO Handler Function <code>SX1276OnDio0Irq</code></strong>…</p>
 <p><strong><code>ev</code></strong> shall be set to the Event that points to <strong><code>SX1276OnDio0Irq</code></strong></p>
 <p>(Via <code>gpio_events[0]</code>)</p>
 <p>(More about <code>gpio_interrupts</code> and <code>gpio_events</code> in the next chapter)</p>
 </li>
 </ul>
-<p>We allow unused GPIO Pins, and we skip them like so...</p>
+<p>We allow unused GPIO Pins, and we skip them like so…</p>
 <pre><code class="language-c">        //  If the Event is unused, skip it
         if (ev-&gt;fn == NULL) { continue; }
 </code></pre>
-<p>Next we fetch the <strong>Interrupt Status</strong> of the GPIO Pin, to determine whether this GPIO Pin has triggered the interrupt...</p>
+<p>Next we fetch the <strong>Interrupt Status</strong> of the GPIO Pin, to determine whether this GPIO Pin has triggered the interrupt…</p>
 <pre><code class="language-c">        //  Get the Interrupt Status of the GPIO Pin
         BL_Sts_Type status = GLB_Get_GPIO_IntStatus(gpioPin);
 </code></pre>
 <p><code>GLB_Get_GPIO_IntStatus</code> comes from the BL602 Standard Driver: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c"><code>bl602_glb.c</code></a></p>
-<p>If this GPIO Pin has indeed triggered the interrupt, we <strong>enqueue the Event</strong> (containing our GPIO Handler Function) for the Application Task to handle...</p>
+<p>If this GPIO Pin has indeed triggered the interrupt, we <strong>enqueue the Event</strong> (containing our GPIO Handler Function) for the Application Task to handle…</p>
 <pre><code class="language-c">        //  If the GPIO Pin has triggered an interrupt...
         if (status == SET) {
             //  Forward the GPIO Interrupt to the Application Task to process
@@ -605,7 +605,7 @@ static void handle_gpio_interrupt(void *arg) {
     }
 }
 </code></pre>
-<p>In summary: Our GPIO Interrupt Handler...</p>
+<p>In summary: Our GPIO Interrupt Handler…</p>
 <ol>
 <li>
 <p>Iterates through all configured GPIO Interrupts (<code>DIO0</code> to <code>DIO5</code>)</p>
@@ -617,7 +617,7 @@ static void handle_gpio_interrupt(void *arg) {
 <p>Enqueues the GPIO Event (and Handler Function) for processing by the Application Task</p>
 </li>
 </ol>
-<p>Let's look at <code>enqueue_interrupt_event</code>...</p>
+<p>Let’s look at <code>enqueue_interrupt_event</code>…</p>
 <h2 id="enqueue-interrupt-event" class="section-header"><a href="#enqueue-interrupt-event">4.3 Enqueue Interrupt Event</a></h2>
 <p>The time has come to reveal the final piece of code that handles GPIO Interrupts: <strong><code>enqueue_interrupt_event</code></strong> from <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L435-L469"><code>sx1276-board.c</code></a></p>
 <pre><code class="language-c">/// Interrupt Counters
@@ -632,13 +632,13 @@ static int enqueue_interrupt_event(
     bl_gpio_intmask(gpioPin, 1);
 </code></pre>
 <p>We start by disabling the GPIO Interrupt for the pin.</p>
-<p>Here's a helpful tip: Never clear the GPIO Interrupt Status by calling <code>bl_gpio_int_clear</code>...</p>
+<p>Here’s a helpful tip: Never clear the GPIO Interrupt Status by calling <code>bl_gpio_int_clear</code>…</p>
 <pre><code class="language-c">    //  Note: DO NOT Clear the GPIO Interrupt Status for the pin!
     //  This will suppress subsequent GPIO Interrupts!
     //  bl_gpio_int_clear(gpioPin, SET);
 </code></pre>
 <p><code>bl_gpio_int_clear</code> causes <strong>subsequent GPIO Interrupts to be suppressed</strong>. So we should never call it!</p>
-<p>We can't <code>printf</code> in an Interrupt Handler (for troubleshooting), but we can <strong>increment some Interrupt Counters</strong> that will be displayed by the <strong><code>spi_result</code></strong> command...</p>
+<p>We can’t <code>printf</code> in an Interrupt Handler (for troubleshooting), but we can <strong>increment some Interrupt Counters</strong> that will be displayed by the <strong><code>spi_result</code></strong> command…</p>
 <pre><code class="language-c">    //  Increment the Interrupt Counters
     if (SX1276_DIO0 &gt;= 0 &amp;&amp; gpioPin == (uint8_t) SX1276_DIO0) { g_dio0_counter++; }
     //  Omitted: Increment Interrupt Counters
@@ -647,7 +647,7 @@ static int enqueue_interrupt_event(
     else if (SX1276_DIO5 &gt;= 0 &amp;&amp; gpioPin == (uint8_t) SX1276_DIO5) { g_dio5_counter++; }
     else { g_nodio_counter++; }
 </code></pre>
-<p>Next we add the Interrupt Event (with the Handler Function inside) to the <strong>Event Queue</strong> (from the NimBLE Porting Layer)...</p>
+<p>Next we add the Interrupt Event (with the Handler Function inside) to the <strong>Event Queue</strong> (from the NimBLE Porting Layer)…</p>
 <pre><code class="language-c">    //  Use Event Queue to invoke Event Handler in the Application Task, 
     //  not in the Interrupt Context
     if (event != NULL &amp;&amp; event-&gt;fn != NULL) {
@@ -656,16 +656,16 @@ static int enqueue_interrupt_event(
     }
 </code></pre>
 <p>(In the next chapter we shall see the <strong>Background Task</strong> that will receive the Event and process the received LoRa Packet)</p>
-<p>We finish up by enabling the GPIO Interrupt for the pin...</p>
+<p>We finish up by enabling the GPIO Interrupt for the pin…</p>
 <pre><code class="language-c">    //  Enable GPIO Interrupt for the pin
     bl_gpio_intmask(gpioPin, 0);
     return 0;
 }
 </code></pre>
-<p>And that's how we handle GPIO Interrupts on BL602!</p>
+<p>And that’s how we handle GPIO Interrupts on BL602!</p>
 <h2 id="register-handlers-for-dio0-to-dio5" class="section-header"><a href="#register-handlers-for-dio0-to-dio5">4.4 Register Handlers for DIO0 to DIO5</a></h2>
 <p><em>Earlier we registered the GPIO Handler Function for <code>DIO0</code>. What about <code>DIO1</code> to <code>DIO5</code>?</em></p>
-<p>Here's how we actually register the GPIO Handler Functions for <code>DIO0</code> to <code>DIO5</code>, in a single shot...</p>
+<p>Here’s how we actually register the GPIO Handler Functions for <code>DIO0</code> to <code>DIO5</code>, in a single shot…</p>
 <p>First we define the GPIO Pins for <code>DIO0</code> to <code>DIO5</code>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276.h#L48-L53"><code>sx1276.h</code></a></p>
 <pre><code class="language-c">#define SX1276_DIO0        11  //  DIO0: Trigger for Packet Received
 #define SX1276_DIO1         0  //  DIO1: Trigger for Sync Timeout
@@ -699,8 +699,8 @@ void SX1276IoIrqInit(DioIrqHandler **irqHandlers) {
         assert(rc == 0);
     }
 </code></pre>
-<p>This is similar to the code we've seen earlier for registering the GPIO Handler Function for <code>DIO0</code>.</p>
-<p>The code for <code>DIO1</code> to <code>DIO5</code> looks highly similar...</p>
+<p>This is similar to the code we’ve seen earlier for registering the GPIO Handler Function for <code>DIO0</code>.</p>
+<p>The code for <code>DIO1</code> to <code>DIO5</code> looks highly similar…</p>
 <pre><code class="language-c">    //  Omitted: Register GPIO Handler Functions
     //  for DIO1 to DIO4
     ...
@@ -718,7 +718,7 @@ void SX1276IoIrqInit(DioIrqHandler **irqHandlers) {
         assert(rc == 0);
     }
 </code></pre>
-<p>To wrap up, we register the GPIO Interrupt Handler and enable GPIO Interrupts (as explained earlier)...</p>
+<p>To wrap up, we register the GPIO Interrupt Handler and enable GPIO Interrupts (as explained earlier)…</p>
 <pre><code class="language-c">    //  Register Common Interrupt Handler for GPIO Interrupt
     bl_irq_register_with_ctx(
         GPIO_INT0_IRQn,         //  GPIO Interrupt
@@ -730,30 +730,30 @@ void SX1276IoIrqInit(DioIrqHandler **irqHandlers) {
     bl_irq_enable(GPIO_INT0_IRQn);
 }
 </code></pre>
-<p>That is all... We register the GPIO Handler Functions for <code>DIO0</code> to <code>DIO5</code> with a single call to <code>SX1276IoIrqInit</code>.</p>
+<p>That is all… We register the GPIO Handler Functions for <code>DIO0</code> to <code>DIO5</code> with a single call to <code>SX1276IoIrqInit</code>.</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276.c#L421-L458">(Our SX1276 Driver calls <code>SX1276IoIrqInit</code> here)</a></p>
 <h1 id="multitask-with-nimble-porting-layer" class="section-header"><a href="#multitask-with-nimble-porting-layer">5 Multitask with NimBLE Porting Layer</a></h1>
-<p><em>Move Fast OR Break Things... Choose ONE!</em></p>
-<p><strong>Handling an interrupt</strong> gets tricky for any Embedded Program...</p>
+<p><em>Move Fast OR Break Things… Choose ONE!</em></p>
+<p><strong>Handling an interrupt</strong> gets tricky for any Embedded Program…</p>
 <ol>
 <li>
-<p><strong>Interrupts are Time-Sensitive</strong>: We can't take too long to handle an interrupt... Other interrupts may be waiting on us! </p>
+<p><strong>Interrupts are Time-Sensitive</strong>: We can’t take too long to handle an interrupt… Other interrupts may be waiting on us! </p>
 <p>(Lag ensues)</p>
 </li>
 <li>
 <p><strong>No Blocking Input / Output</strong>: Suppose our SX1276 Interrupt Handler needs to send an SPI Command to reset <code>DIO0</code>.</p>
-<p>That's no-no because our Interrupt Handler would block waiting for the SPI operation to complete. And hold up other interrupts.</p>
+<p>That’s no-no because our Interrupt Handler would block waiting for the SPI operation to complete. And hold up other interrupts.</p>
 </li>
 <li>
-<p><strong>No Console Output</strong>: Troubleshooting an Interrupt Handler gets challenging because we can't show anything on the console (due to (1) and (2) above).</p>
+<p><strong>No Console Output</strong>: Troubleshooting an Interrupt Handler gets challenging because we can’t show anything on the console (due to (1) and (2) above).</p>
 <p>(Also challenging: Handling errors in an Interrupt Handler)</p>
 </li>
 </ol>
-<p>Hence some chunks of our Interrupt Handling Logic would need to run inside a <strong>higher-level, lower-priority Application Task</strong>. Like this...</p>
+<p>Hence some chunks of our Interrupt Handling Logic would need to run inside a <strong>higher-level, lower-priority Application Task</strong>. Like this…</p>
 <p><img src="https://lupyuen.github.io/images/lora2-handler2.png" alt="Interrupt Handler vs Application Task" /></p>
 <p>Our Interrupt Handler (left) would need to signal the Application Task (right) to do some work.</p>
-<p><em>We'll do this with FreeRTOS, no?</em></p>
-<p>Let's do this with <a href="https://lupyuen.github.io/pinetime-rust-mynewt/articles/dfu#nimble-stack-for-bluetooth-le-on-pinetime"><strong>NimBLE Porting Layer</strong></a> instead.  It's a library of multitasking functions that's <strong>portable to multiple operating systems</strong>: FreeRTOS, Mynewt, NuttX, RIOT.</p>
+<p><em>We’ll do this with FreeRTOS, no?</em></p>
+<p>Let’s do this with <a href="https://lupyuen.github.io/pinetime-rust-mynewt/articles/dfu#nimble-stack-for-bluetooth-le-on-pinetime"><strong>NimBLE Porting Layer</strong></a> instead.  It’s a library of multitasking functions that’s <strong>portable to multiple operating systems</strong>: FreeRTOS, Mynewt, NuttX, RIOT.</p>
 <p>(And it looks simpler for folks who are new to FreeRTOS)</p>
 <h2 id="background-task" class="section-header"><a href="#background-task">5.1 Background Task</a></h2>
 <p>We start by creating the Background Task (right side of above pic) that will process the received LoRa Packets: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L253-L267"><code>demo.c</code></a></p>
@@ -763,7 +763,7 @@ nimble_port_freertos_init(
 );
 </code></pre>
 <p>We call <strong><code>nimble_port_freertos_init</code></strong> (from the NimBLE Porting Layer) to start a FreeRTOS Background Task that runs the function <code>task_callback</code>.</p>
-<p>The function <strong><code>task_callback</code></strong> loops forever, doing work in the background...</p>
+<p>The function <strong><code>task_callback</code></strong> loops forever, doing work in the background…</p>
 <pre><code class="language-c">/// Task Function that works in the background
 static void task_callback(void *arg) {
     //  Loop forever doing work
@@ -772,7 +772,7 @@ static void task_callback(void *arg) {
     }
 }
 </code></pre>
-<p>Let's give it some work to do, by sending an Event...</p>
+<p>Let’s give it some work to do, by sending an Event…</p>
 <p><img src="https://lupyuen.github.io/images/lora2-handler3.png" alt="Event Queue" /></p>
 <h2 id="event-queue" class="section-header"><a href="#event-queue">5.2 Event Queue</a></h2>
 <p>Our Background Task shall receive <strong>Events</strong> from an <strong>Event Queue</strong> and process them.</p>
@@ -800,23 +800,23 @@ static void create_task(char *buf, int len, int argc, char **argv) {
     nimble_port_freertos_init(task_callback);
 }
 </code></pre>
-<p>This call to <strong><code>ble_npl_event_init</code></strong> says...</p>
+<p>This call to <strong><code>ble_npl_event_init</code></strong> says…</p>
 <ol>
 <li>
-<p>When our Background Task <strong>receives the Event</strong>...</p>
+<p>When our Background Task <strong>receives the Event</strong>…</p>
 </li>
 <li>
 <p><strong>Execute the function <code>handle_event</code></strong> to process the Event</p>
 </li>
 </ol>
-<p>Here's a bare-bones Event Handler: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L296-L299"><code>demo.c</code></a></p>
+<p>Here’s a bare-bones Event Handler: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L296-L299"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// Handle an Event
 static void handle_event(struct ble_npl_event *ev) {
     printf(&quot;\r\nHandle an event\r\n&quot;);
 }
 </code></pre>
 <p><strong><code>handle_event</code></strong> processes an Event by printing a message.</p>
-<p>Later we'll see a more sophisticated Event Handler for processing received LoRa Packets.</p>
+<p>Later we’ll see a more sophisticated Event Handler for processing received LoRa Packets.</p>
 <h2 id="send-event" class="section-header"><a href="#send-event">5.3 Send Event</a></h2>
 <p>To <strong>send an Event</strong> into an Event Queue, we call <strong><code>ble_npl_eventq_put</code></strong> like so: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L269-L273"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// Command to enqueue an Event into the Event Queue with NimBLE Porting Layer
@@ -828,7 +828,7 @@ static void put_event(char *buf, int len, int argc, char **argv) {
     );
 }
 </code></pre>
-<p>Our Background Task will...</p>
+<p>Our Background Task will…</p>
 <ol>
 <li>
 <p>Wake up</p>
@@ -840,13 +840,13 @@ static void put_event(char *buf, int len, int argc, char **argv) {
 <p>Execute the Event Handler (<code>handle_event</code>)</p>
 </li>
 </ol>
-<p>We'll learn how in the next section.</p>
+<p>We’ll learn how in the next section.</p>
 <p><em>Is it OK to call this from an Interrupt Handler?</em></p>
-<p>Yep it's perfectly OK to call <code>ble_npl_eventq_put</code> from an Interrupt Handler.</p>
+<p>Yep it’s perfectly OK to call <code>ble_npl_eventq_put</code> from an Interrupt Handler.</p>
 <p>In fact the implementation of <code>ble_npl_eventq_put</code> <strong>differs slightly for Interupt Handlers vs Application Tasks</strong>. <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/npl_os_freertos.c#L59-L79">(See this)</a></p>
-<p>This is another reason for calling NimBLE Porting Layer instead of FreeRTOS... NimBLE Porting Layer <strong>handles the nitty-gritty</strong> on our behalf.</p>
+<p>This is another reason for calling NimBLE Porting Layer instead of FreeRTOS… NimBLE Porting Layer <strong>handles the nitty-gritty</strong> on our behalf.</p>
 <h2 id="receive-event" class="section-header"><a href="#receive-event">5.4 Receive Event</a></h2>
-<p>Here's the code inside our Background Task that receives Events and executes the Event Handlers: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L275-L294"><code>demo.c</code></a></p>
+<p>Here’s the code inside our Background Task that receives Events and executes the Event Handlers: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L275-L294"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// Task Function that dequeues Events from the Event Queue and processes the Events
 static void task_callback(void *arg) {
     //  Loop forever handling Events from the Event Queue
@@ -861,8 +861,8 @@ static void task_callback(void *arg) {
         if (ev == NULL) { continue; }
 </code></pre>
 <p><strong><code>task_callback</code></strong> loops forever, calling <strong><code>ble_npl_eventq_get</code></strong> to receive Events from our Event Queue.</p>
-<p>We've set a <strong>timeout of 1,000 ticks</strong>. (Yes it sounds arbitrary) If we don't receive an Event in 1,000 ticks, we loop and retry.</p>
-<p>When we receive an Event...</p>
+<p>We’ve set a <strong>timeout of 1,000 ticks</strong>. (Yes it sounds arbitrary) If we don’t receive an Event in 1,000 ticks, we loop and retry.</p>
+<p>When we receive an Event…</p>
 <ol>
 <li>
 <p>We call <strong><code>ble_npl_eventq_remove</code></strong> to <strong>remove the Event</strong> from the Event Queue</p>
@@ -879,9 +879,9 @@ static void task_callback(void *arg) {
     }
 }
 </code></pre>
-<p>And that's how we process an Event Queue with a Background Task!</p>
-<p><em>This Background Task looks so simple and generic... Will it work for all types of Events?</em></p>
-<p>Yes! Remember that we can <strong>configure the Event Handler</strong> for our Event...</p>
+<p>And that’s how we process an Event Queue with a Background Task!</p>
+<p><em>This Background Task looks so simple and generic… Will it work for all types of Events?</em></p>
+<p>Yes! Remember that we can <strong>configure the Event Handler</strong> for our Event…</p>
 <pre><code class="language-c">//  Set the Event handler for the Event
 ble_npl_event_init(   //  Init the Event for...
     ev,               //  Event
@@ -889,23 +889,23 @@ ble_npl_event_init(   //  Init the Event for...
     NULL              //  Argument to be passed to Event Handler
 );
 </code></pre>
-<p>In the next section we'll learn to use <strong>multiple Events</strong> (with different Event Handlers) to process LoRa Packets.</p>
+<p>In the next section we’ll learn to use <strong>multiple Events</strong> (with different Event Handlers) to process LoRa Packets.</p>
 <p><em>Is there a way to test our Event Queue and Background Task?</em></p>
-<p>Yes, by sending a test Event. See this...</p>
+<p>Yes, by sending a test Event. See this…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/lora2#test-event-queue"><strong>&quot;Test Event Queue&quot;</strong></a></li>
+<li><a href="https://lupyuen.github.io/articles/lora2#test-event-queue"><strong>“Test Event Queue”</strong></a></li>
 </ul>
 <p><em>Can we create multiple Background Tasks?</em></p>
-<p>Sorry we can't. Perhaps by modding NimBLE Porting Layer we can create multiple Background Tasks. <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/nimble_port_freertos.c">(See this)</a></p>
+<p>Sorry we can’t. Perhaps by modding NimBLE Porting Layer we can create multiple Background Tasks. <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/nimble_port_freertos.c">(See this)</a></p>
 <h2 id="lora-events" class="section-header"><a href="#lora-events">5.5 LoRa Events</a></h2>
-<p>Earlier we have defined the <strong>GPIO Handler Functions</strong> that will process the interrupts from our LoRa Transceiver (<code>DIO0</code> to <code>DIO5</code>)...</p>
+<p>Earlier we have defined the <strong>GPIO Handler Functions</strong> that will process the interrupts from our LoRa Transceiver (<code>DIO0</code> to <code>DIO5</code>)…</p>
 <pre><code class="language-c">//  DIO Handler Functions
 DioIrqHandler *DioIrq[] = { 
     SX1276OnDio0Irq, SX1276OnDio1Irq,
     SX1276OnDio2Irq, SX1276OnDio3Irq,
     SX1276OnDio4Irq, NULL };  //  DIO5 not used for LoRa Modulation
 </code></pre>
-<p><em>How shall we trigger these GPIO Handler Functions... From our GPIO Interrupt Handler?</em></p>
+<p><em>How shall we trigger these GPIO Handler Functions… From our GPIO Interrupt Handler?</em></p>
 <p>Easy: We use an <strong>Array of Events</strong>! From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L405-L433"><code>sx1276-board.c</code></a></p>
 <pre><code class="language-c">/// Maximum number of GPIO Pins that can be configured for interrupts
 #define MAX_GPIO_INTERRUPTS 6  //  DIO0 to DIO5
@@ -916,14 +916,14 @@ static uint8_t gpio_interrupts[MAX_GPIO_INTERRUPTS];
 /// Array of Events for the GPIO Interrupts
 static struct ble_npl_event gpio_events[MAX_GPIO_INTERRUPTS];
 </code></pre>
-<p>Our Event Array <strong><code>gpio_events</code></strong> points to the GPIO Handler Functions (via the Event Handler)...</p>
+<p>Our Event Array <strong><code>gpio_events</code></strong> points to the GPIO Handler Functions (via the Event Handler)…</p>
 <p><img src="https://lupyuen.github.io/images/lora2-events.png" alt="GPIO Interrupts and Events" /></p>
 <p>As explained earlier, our GPIO Interrupt Handler calls <strong><code>enqueue_interrupt_event</code></strong> to enqueue the Events from <code>gpio_events</code> into the Event Queue. <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L435-L469">(See this)</a></p>
 <p><em>How are the arrays <code>gpio_interrupts</code> and <code>gpio_events</code> populated?</em></p>
 <p>We call <strong><code>init_interrupt_event</code></strong> to initialise the <code>gpio_interrupts</code> and <code>gpio_events</code> arrays. <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276-board.c#L471-L498">(See this)</a></p>
 <h2 id="timer" class="section-header"><a href="#timer">5.6 Timer</a></h2>
-<p>Remember that our LoRa SX1276 Transceiver will <strong>listen 5 seconds for incoming packets</strong>... Then we stop it to conserve battery power?</p>
-<p>We do that with a <strong>Callout Timer</strong> from the NimBLE Porting Layer. Here's how we <strong>initialise a Callout Timer</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276.c#L227-L247"><code>sx1276.c</code></a></p>
+<p>Remember that our LoRa SX1276 Transceiver will <strong>listen 5 seconds for incoming packets</strong>… Then we stop it to conserve battery power?</p>
+<p>We do that with a <strong>Callout Timer</strong> from the NimBLE Porting Layer. Here’s how we <strong>initialise a Callout Timer</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276.c#L227-L247"><code>sx1276.c</code></a></p>
 <pre><code class="language-c">//  Define the Callout Timer
 struct ble_npl_callout timer;
 
@@ -936,7 +936,7 @@ ble_npl_callout_init(
 );
 </code></pre>
 <p>When the Callout Timer expires, the Callback Function <strong><code>f</code></strong> will be called by our Background Task (via the Event Queue).</p>
-<p>Here's how we <strong>set the Callout Timer</strong> to expire in <code>microsecs</code> microseconds: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276.c#L264-L289"><code>sx1276.c</code></a></p>
+<p>Here’s how we <strong>set the Callout Timer</strong> to expire in <code>microsecs</code> microseconds: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276.c#L264-L289"><code>sx1276.c</code></a></p>
 <pre><code class="language-c">//  Assume that Callout Timer has been stopped.
 //  Convert microseconds to ticks.
 ble_npl_time_t ticks = ble_npl_time_ms_to_ticks32(
@@ -960,7 +960,7 @@ if (ble_npl_callout_is_active(&amp;timer)) {
     ble_npl_callout_stop(&amp;timer);
 }
 </code></pre>
-<p>Sometimes we need to suspend the current task and <strong>wait a short while</strong>. (Maybe to ponder our life choices) Here's how: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276.c#L291-L307"><code>sx1276.c</code></a></p>
+<p>Sometimes we need to suspend the current task and <strong>wait a short while</strong>. (Maybe to ponder our life choices) Here’s how: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/sx1276.c#L291-L307"><code>sx1276.c</code></a></p>
 <pre><code class="language-c">//  Convert microseconds to ticks
 ble_npl_time_t ticks = ble_npl_time_ms_to_ticks32(
     microsecs / 1000  //  Duration in milliseconds
@@ -974,11 +974,11 @@ ble_npl_time_delay(ticks);
 </code></pre>
 <h2 id="source-files" class="section-header"><a href="#source-files">5.7 Source Files</a></h2>
 <p><em>How do we add the NimBLE Porting Layer to our own BL602 programs?</em></p>
-<p>Add the BL602 Library <strong><code>nimble-porting-layer</code></strong> to the BL602 project as described here...</p>
+<p>Add the BL602 Library <strong><code>nimble-porting-layer</code></strong> to the BL602 project as described here…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/lora2#appendix-how-to-create-bl602-libraries"><strong>&quot;How To Create BL602 Libraries&quot;</strong></a></li>
+<li><a href="https://lupyuen.github.io/articles/lora2#appendix-how-to-create-bl602-libraries"><strong>“How To Create BL602 Libraries”</strong></a></li>
 </ul>
-<p>Alternatively, copy these source files from the BL602 LoRa Firmware to your program...</p>
+<p>Alternatively, copy these source files from the BL602 LoRa Firmware to your program…</p>
 <ol>
 <li>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/nimble_npl.h"><strong><code>nimble_npl.h</code></strong></a></p>
@@ -1002,7 +1002,7 @@ ble_npl_time_delay(ticks);
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/npl_os_freertos.c"><strong><code>npl_os_freertos.h</code></strong></a></p>
 </li>
 </ol>
-<p>Be sure to <strong>Enable Assertion Failure Messages</strong> by adding this function to <code>main.c</code> (or <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L324-L335"><code>demo.c</code></a>)...</p>
+<p>Be sure to <strong>Enable Assertion Failure Messages</strong> by adding this function to <code>main.c</code> (or <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L324-L335"><code>demo.c</code></a>)…</p>
 <pre><code class="language-c">/// TODO: We now show assertion failures in development.
 /// For production, comment out this function to use the system default,
 /// which loops forever without messages.
@@ -1016,7 +1016,7 @@ void __assert_func(const char *file, int line, const char *func, const char *fai
 	for (;;) {}
 }
 </code></pre>
-<p>The above source files were ported from the <a href="https://github.com/apache/mynewt-nimble"><strong>Apache NimBLE project</strong></a> with minor changes...</p>
+<p>The above source files were ported from the <a href="https://github.com/apache/mynewt-nimble"><strong>Apache NimBLE project</strong></a> with minor changes…</p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/commit/72e2cb44a40f9faf91c87ee8d421ed8eb4adb571#diff-c13b2cc976e41c4bc4d3fd967aefc40cccfb76bc14c7210001f675f371a14818">Detect Interrupt Service Routine</a></p>
@@ -1032,7 +1032,7 @@ void __assert_func(const char *file, int line, const char *func, const char *fai
 <p><img src="https://lupyuen.github.io/images/wisblock-title.jpg" alt="RAKwireless WisBlock LPWAN Module mounted on WisBlock Base Board" /></p>
 <p><em>RAKwireless WisBlock LPWAN Module mounted on WisBlock Base Board</em></p>
 <h2 id="connect-wisblock" class="section-header"><a href="#connect-wisblock">6.1 Connect WisBlock</a></h2>
-<p>Connect the following components according to the pic above...</p>
+<p>Connect the following components according to the pic above…</p>
 <ol>
 <li>
 <p><strong>WisBlock LPWAN Module</strong>: This is the <strong>Nordic nRF52840 Microcontroller</strong> with <strong>Semtech SX1262 LoRa Transceiver</strong>. <a href="https://docs.rakwireless.com/Product-Categories/WisBlock/RAK4631/Overview/">(More about this)</a></p>
@@ -1045,19 +1045,19 @@ void __assert_func(const char *file, int line, const char *func, const char *fai
 </li>
 <li>
 <p><strong>LoRa Antenna</strong>: Connect the LoRa Antenna to the LPWAN Module.</p>
-<p>(That's the black rod. Use the Antenna Adapter Cable)</p>
+<p>(That’s the black rod. Use the Antenna Adapter Cable)</p>
 </li>
 <li>
 <p><strong>Bluetooth LE Antenna</strong>: Connect the Bluetooth LE Antenna to the LPWAN Module.</p>
 <p>(The stringy flappy thingy)</p>
 </li>
 </ol>
-<p><a href="https://electronics.stackexchange.com/questions/335912/can-i-break-a-radio-tranceiving-device-by-operating-it-with-no-antenna-connected"><strong>CAUTION: Always connect the LoRa Antenna and Bluetooth LE Antenna before Powering On... Or the LoRa and Bluetooth Transceivers may get damaged! See this</strong></a></p>
+<p><a href="https://electronics.stackexchange.com/questions/335912/can-i-break-a-radio-tranceiving-device-by-operating-it-with-no-antenna-connected"><strong>CAUTION: Always connect the LoRa Antenna and Bluetooth LE Antenna before Powering On… Or the LoRa and Bluetooth Transceivers may get damaged! See this</strong></a></p>
 <p>The above components are shipped in the <a href="https://store.rakwireless.com/products/wisblock-connected-box"><strong>WisBlock Connected Box</strong></a>. (Which includes many more goodies!)</p>
 <h2 id="install-vscode-and-platformio" class="section-header"><a href="#install-vscode-and-platformio">6.2 Install VSCode and PlatformIO</a></h2>
 <ol>
 <li>
-<p>Follow the instructions in this excellent article to install <strong>VSCode and PlatformIO</strong>...</p>
+<p>Follow the instructions in this excellent article to install <strong>VSCode and PlatformIO</strong>…</p>
 <ul>
 <li><a href="https://docs.rakwireless.com/Knowledge-Hub/Learn/Board-Support-Package-Installation-in-PlatformIO/"><strong>Installation of Board Support Package in PlatformIO</strong></a></li>
 </ul>
@@ -1067,17 +1067,17 @@ void __assert_func(const char *file, int line, const char *func, const char *fai
 <p>(We may skip the LoRaWAN OTAA Example)</p>
 </li>
 <li>
-<p>Find out which <strong>LoRa Frequency</strong> we should use for your region...</p>
+<p>Find out which <strong>LoRa Frequency</strong> we should use for your region…</p>
 <ul>
 <li><a href="https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html"><strong>LoRa Frequencies by Country</strong></a></li>
 </ul>
-<p>We'll set the LoRa Frequency in a while.</p>
+<p>We’ll set the LoRa Frequency in a while.</p>
 </li>
 </ol>
 <h2 id="build-the-firmware" class="section-header"><a href="#build-the-firmware">6.3 Build the firmware</a></h2>
 <ol>
 <li>
-<p>Enter this at the command line...</p>
+<p>Enter this at the command line…</p>
 <pre><code class="language-bash"># Download the wisblock-lora-transmitter source code
 git clone --recursive https://github.com/lupyuen/wisblock-lora-transmitter
 </code></pre>
@@ -1088,7 +1088,7 @@ git clone --recursive https://github.com/lupyuen/wisblock-lora-transmitter
 </li>
 <li>
 <p>Edit the file <a href="https://github.com/lupyuen/wisblock-lora-transmitter/blob/main/src/main.cpp"><strong><code>src/main.cpp</code></strong></a></p>
-<p>Look for this code...</p>
+<p>Look for this code…</p>
 <pre><code class="language-c">// Define LoRa parameters.
 // TODO: Change RF_FREQUENCY for your region
 #define RF_FREQUENCY 923000000  // Hz
@@ -1099,11 +1099,11 @@ git clone --recursive https://github.com/lupyuen/wisblock-lora-transmitter
 <p>Modify the <strong>LoRa Parameters</strong> in <a href="https://github.com/lupyuen/wisblock-lora-transmitter/blob/main/src/main.cpp"><strong><code>src/main.cpp</code></strong></a> so that they match those in our BL602 LoRa Firmware</p>
 </li>
 <li>
-<p><strong>Build the LoRa Firmware</strong> by clicking the <strong><code>Build</code></strong> icon at the lower left...</p>
+<p><strong>Build the LoRa Firmware</strong> by clicking the <strong><code>Build</code></strong> icon at the lower left…</p>
 <p><img src="https://lupyuen.github.io/images/wisblock-bar1.png" alt="Build Icon" /></p>
 </li>
 <li>
-<p>We should see this...</p>
+<p>We should see this…</p>
 <pre><code class="language-text">Processing wiscore_rak4631 (platform: nordicnrf52; board: wiscore_rak4631; framework: arduino)
 ...
 Building in release mode
@@ -1119,18 +1119,18 @@ Flash: [=         ]   7.3% (used 59800 bytes from 815104 bytes)
 <h2 id="flash-the-firmware" class="section-header"><a href="#flash-the-firmware">6.4 Flash the firmware</a></h2>
 <ol>
 <li>
-<p><strong>Connect WisBlock</strong> to our computer's USB port</p>
+<p><strong>Connect WisBlock</strong> to our computer’s USB port</p>
 </li>
 <li>
-<p><strong>Flash the LoRa Firmware</strong> to WisBlock by clicking the <strong><code>Upload</code></strong> icon...</p>
+<p><strong>Flash the LoRa Firmware</strong> to WisBlock by clicking the <strong><code>Upload</code></strong> icon…</p>
 <p><img src="https://lupyuen.github.io/images/wisblock-bar2.png" alt="Upload Icon" /></p>
 </li>
 <li>
-<p>We should see this...</p>
+<p>We should see this…</p>
 <p><img src="https://lupyuen.github.io/images/wisblock-flash.png" alt="Firmware flashed successfully" /></p>
 </li>
 <li>
-<p>If we see the message...</p>
+<p>If we see the message…</p>
 <pre><code class="language-text">Timed out waiting for acknowledgement from device
 </code></pre>
 <p>Then disconnect WisBlock from the USB port, reconnect and flash again.</p>
@@ -1140,11 +1140,11 @@ Flash: [=         ]   7.3% (used 59800 bytes from 815104 bytes)
 <h2 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">6.5 Run the firmware</a></h2>
 <ol>
 <li>
-<p><strong>Run the LoRa Firmware</strong> by clicking the <strong><code>Monitor</code></strong> icon...</p>
+<p><strong>Run the LoRa Firmware</strong> by clicking the <strong><code>Monitor</code></strong> icon…</p>
 <p><img src="https://lupyuen.github.io/images/wisblock-bar3.png" alt="Monitor Icon" /></p>
 </li>
 <li>
-<p>We should see this...</p>
+<p>We should see this…</p>
 <pre><code class="language-text">&gt; Executing task: platformio device monitor &lt;
 --- Miniterm on /dev/cu.usbmodem14201  9600,8,N,1 ---
 --- Quit: Ctrl+C | Menu: Ctrl+T | Help: Ctrl+T followed by Ctrl+H ---
@@ -1158,19 +1158,19 @@ OnTxDone
 <p>WisBlock is now transmitting a LoRa Packet (<code>&quot;Hello&quot;</code>) every 5 seconds. <a href="https://github.com/lupyuen/wisblock-lora-transmitter/blob/main/src/main.cpp#L104-L128">(See this)</a></p>
 </li>
 <li>
-<p>If we sniff the airwaves with a <strong>Software Defined Radio</strong>, we will see the distinctive <a href="https://lupyuen.github.io/articles/lora#visualise-lora-with-software-defined-radio"><strong>LoRa Chirp</strong></a>...</p>
+<p>If we sniff the airwaves with a <strong>Software Defined Radio</strong>, we will see the distinctive <a href="https://lupyuen.github.io/articles/lora#visualise-lora-with-software-defined-radio"><strong>LoRa Chirp</strong></a>…</p>
 <ul>
 <li><a href="https://www.youtube.com/watch?v=USqStub3KC0"><strong>RAKwireless WisBlock​ LoRa​ Transmitter Sniffed by Airspy R2 SDR</strong></a></li>
 </ul>
 </li>
 </ol>
 <h1 id="build-and-run-the-bl602-lora-firmware" class="section-header"><a href="#build-and-run-the-bl602-lora-firmware">7 Build and Run the BL602 LoRa Firmware</a></h1>
-<p>Let's run the LoRa Demo Firmware for BL602 to receive the LoRa Packets transmitted by RAKwireless WisBlock.</p>
-<p>Find out which <strong>LoRa Frequency</strong> we should use for your region...</p>
+<p>Let’s run the LoRa Demo Firmware for BL602 to receive the LoRa Packets transmitted by RAKwireless WisBlock.</p>
+<p>Find out which <strong>LoRa Frequency</strong> we should use for your region…</p>
 <ul>
 <li><a href="https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html"><strong>LoRa Frequencies by Country</strong></a></li>
 </ul>
-<p>Download the Firmware Binary File <strong><code>sdk_app_lora.bin</code></strong> for your LoRa Frequency...</p>
+<p>Download the Firmware Binary File <strong><code>sdk_app_lora.bin</code></strong> for your LoRa Frequency…</p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/releases/tag/v7.0.4"><strong>434 MHz <code>sdk_app_lora</code> Binary</strong></a></p>
@@ -1188,7 +1188,7 @@ OnTxDone
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/releases/tag/v7.0.3"><strong>923 MHz <code>sdk_app_lora</code> Binary</strong></a></p>
 </li>
 </ul>
-<p>Alternatively, we may build the Firmware Binary File <code>sdk_app_lora.bin</code> from the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/lorarecv/customer_app/sdk_app_lora">source code</a>...</p>
+<p>Alternatively, we may build the Firmware Binary File <code>sdk_app_lora.bin</code> from the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/lorarecv/customer_app/sdk_app_lora">source code</a>…</p>
 <pre><code class="language-bash"># Download the lorarecv branch of lupyuen's bl_iot_sdk
 git clone --recursive --branch lorarecv https://github.com/lupyuen/bl_iot_sdk
 cd bl_iot_sdk/customer_app/sdk_app_lora
@@ -1211,17 +1211,17 @@ cp build_out/sdk_app_lora.bin ~/blflash
 <p><a href="https://lupyuen.github.io/articles/pinecone#building-firmware">More details on building bl_iot_sdk</a></p>
 <p>(Remember to use the <strong><code>lorarecv</code></strong> branch, not the default <strong><code>master</code></strong> branch)</p>
 <h2 id="flash-the-firmware-1" class="section-header"><a href="#flash-the-firmware-1">7.1 Flash the firmware</a></h2>
-<p>Follow these steps to install <code>blflash</code>...</p>
+<p>Follow these steps to install <code>blflash</code>…</p>
 <ol>
 <li>
-<p><a href="https://lupyuen.github.io/articles/flash#install-rustup"><strong>&quot;Install rustup&quot;</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/flash#install-rustup"><strong>“Install rustup”</strong></a></p>
 </li>
 <li>
-<p><a href="https://lupyuen.github.io/articles/flash#download-and-build-blflash"><strong>&quot;Download and build blflash&quot;</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/flash#download-and-build-blflash"><strong>“Download and build blflash”</strong></a></p>
 </li>
 </ol>
 <p>We assume that our Firmware Binary File <code>sdk_app_lora.bin</code> has been copied to the <code>blflash</code> folder.</p>
-<p>Set BL602 to <strong>Flashing Mode</strong> and restart the board...</p>
+<p>Set BL602 to <strong>Flashing Mode</strong> and restart the board…</p>
 <p><strong>For PineCone:</strong></p>
 <ol>
 <li>
@@ -1258,7 +1258,7 @@ cp build_out/sdk_app_lora.bin ~/blflash
 <p>Reconnect the board to the USB port</p>
 </li>
 </ol>
-<p>Enter these commands to flash <code>sdk_app_lora.bin</code> to BL602 over UART...</p>
+<p>Enter these commands to flash <code>sdk_app_lora.bin</code> to BL602 over UART…</p>
 <pre><code class="language-bash"># TODO: Change ~/blflash to the full path of blflash
 cd ~/blflash
 
@@ -1277,7 +1277,7 @@ cargo run flash sdk_app_lora.bin --port COM5
 </code></pre>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">More details on flashing firmware</a></p>
 <h2 id="run-the-firmware-1" class="section-header"><a href="#run-the-firmware-1">7.2 Run the firmware</a></h2>
-<p>Set BL602 to <strong>Normal Mode</strong> (Non-Flashing) and restart the board...</p>
+<p>Set BL602 to <strong>Normal Mode</strong> (Non-Flashing) and restart the board…</p>
 <p><strong>For PineCone:</strong></p>
 <ol>
 <li>
@@ -1303,7 +1303,7 @@ cargo run flash sdk_app_lora.bin --port COM5
 <p>Reconnect the board to the USB port</p>
 </li>
 </ol>
-<p>After restarting, connect to BL602's UART Port at 2 Mbps like so...</p>
+<p>After restarting, connect to BL602’s UART Port at 2 Mbps like so…</p>
 <p><strong>For Linux:</strong></p>
 <pre><code class="language-bash">sudo screen /dev/ttyUSB0 2000000
 </code></pre>
@@ -1312,13 +1312,13 @@ cargo run flash sdk_app_lora.bin --port COM5
 <p><strong>Alternatively:</strong> Use the Web Serial Terminal (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">More details on connecting to BL602</a></p>
 <h2 id="enter-lora-commands" class="section-header"><a href="#enter-lora-commands">7.3 Enter LoRa commands</a></h2>
-<p>Let's enter some commands to transmit a LoRa Packet!</p>
+<p>Let’s enter some commands to transmit a LoRa Packet!</p>
 <ol>
 <li>
 <p>Press Enter to reveal the command prompt.</p>
 </li>
 <li>
-<p>Enter <code>help</code> to see the available commands...</p>
+<p>Enter <code>help</code> to see the available commands…</p>
 <pre><code class="language-text"># help
 ====User Commands====
 create_task              : Create a task
@@ -1335,20 +1335,20 @@ bl_sys_time_now          : sys time now
 </li>
 <li>
 <p>First we <strong>create the Background Task</strong> that will process received LoRa Packets.</p>
-<p>Enter this command...</p>
+<p>Enter this command…</p>
 <pre><code class="language-text"># create_task
 </code></pre>
 <p>This command calls the function <code>create_task</code>, which we have seen earlier.</p>
 </li>
 <li>
 <p>Then we <strong>initialise our LoRa Transceiver</strong>. </p>
-<p>Enter this command...</p>
+<p>Enter this command…</p>
 <pre><code class="language-text"># init_driver
 </code></pre>
 <p>This command calls the function <code>init_driver</code>, which we have seen earlier.</p>
 </li>
 <li>
-<p>We should see this...</p>
+<p>We should see this…</p>
 <pre><code class="language-text"># init_driver
 SX1276 init
 SX1276 interrupt init
@@ -1361,36 +1361,36 @@ SX1276 register handler: GPIO 12
 <p>Our SX1276 Driver is now <strong>listening for GPIO Interrupts</strong> and handling them.</p>
 </li>
 <li>
-<p>Then the <strong>GPIO Interrupt for <code>DIO3</code></strong> gets triggered automatically...</p>
+<p>Then the <strong>GPIO Interrupt for <code>DIO3</code></strong> gets triggered automatically…</p>
 <pre><code class="language-text">SX1276 DIO3: Channel activity detection    
 </code></pre>
-<p>(We're not sure why this always happens when we initialise the driver... But it's harmless)</p>
+<p>(We’re not sure why this always happens when we initialise the driver… But it’s harmless)</p>
 </li>
 <li>
-<p>Next we <strong>receive a LoRa Packet</strong>...</p>
+<p>Next we <strong>receive a LoRa Packet</strong>…</p>
 <pre><code class="language-text"># receive_message
 </code></pre>
 <p>This command calls the function <code>receive_message</code>, which we have seen earlier.</p>
 </li>
 <li>
-<p>We should see this...</p>
+<p>We should see this…</p>
 <pre><code class="language-text"># receive_message
 ...
 SX1276 DIO0: Packet received
 Rx done: RadioEvents.RxDone
 </code></pre>
 <p>This says that the SX1276 Driver has <strong>received a LoRa Packet.</strong></p>
-<p>And the packet contains <code>&quot;Hello&quot;</code>...</p>
+<p>And the packet contains <code>&quot;Hello&quot;</code>…</p>
 <pre><code class="language-text">Rx done: 48 65 6c 6c 6f 
 </code></pre>
-<p>(That's the ASCII code for <code>&quot;Hello&quot;</code>)</p>
+<p>(That’s the ASCII code for <code>&quot;Hello&quot;</code>)</p>
 <p><a href="https://youtu.be/3TSvo0dwwnQ"><strong>Watch the receive video on YouTube</strong></a></p>
 <p><a href="https://gist.github.com/lupyuen/9bd7e7daa2497e8352d2cffec4be444d"><strong>Check out the receive log</strong></a></p>
 </li>
 </ol>
 <h2 id="receive-timeout" class="section-header"><a href="#receive-timeout">7.4 Receive Timeout</a></h2>
-<p>Remember that our SX1276 Transceiver will <strong>listen 5 seconds for incoming packets</strong>... Then it goes to sleep to conserve battery power?</p>
-<p>Here's what happens when then SX1276 Driver doesn't receive any LoRa Packets within 5 seconds...</p>
+<p>Remember that our SX1276 Transceiver will <strong>listen 5 seconds for incoming packets</strong>… Then it goes to sleep to conserve battery power?</p>
+<p>Here’s what happens when then SX1276 Driver doesn’t receive any LoRa Packets within 5 seconds…</p>
 <pre><code class="language-text"># receive_message
 ...
 SX1276 receive timeout
@@ -1401,8 +1401,8 @@ Rx timeout
 <p><a href="https://gist.github.com/lupyuen/ce578fd561ca050d4680c1750984ffd4"><strong>Check out the receive timeout log</strong></a></p>
 <h1 id="troubleshoot-lora" class="section-header"><a href="#troubleshoot-lora">8 Troubleshoot LoRa</a></h1>
 <p><em>What could go wrong with our BL602 LoRa Receiver?</em></p>
-<p>Sorry to sound so down... But many things can go wrong with our BL602 LoRa Receiver!</p>
-<p>Here's a <strong>BL602 LoRa troubleshooting guide</strong>...</p>
+<p>Sorry to sound so down… But many things can go wrong with our BL602 LoRa Receiver!</p>
+<p>Here’s a <strong>BL602 LoRa troubleshooting guide</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/lora2-troubleshoot.png" alt="LoRa troubleshooting" /></p>
 <ol>
 <li>
@@ -1434,24 +1434,24 @@ Rx timeout
 <p>Do a <strong>Stack Dump</strong>. (See below)</p>
 </li>
 </ol>
-<p>Let's go into the details.</p>
+<p>Let’s go into the details.</p>
 <h2 id="sniff-lora-packets" class="section-header"><a href="#sniff-lora-packets">8.1 Sniff LoRa Packets</a></h2>
-<p>It helps to validate that the LoRa Packets that we're about to receive... Are <strong>actually in the airwaves</strong>!</p>
+<p>It helps to validate that the LoRa Packets that we’re about to receive… Are <strong>actually in the airwaves</strong>!</p>
 <p>Sniff the airwaves with a <strong>Spectrum Analyser or Software Defined Radio</strong>. Check that the LoRa Packets are centered at the right LoRa Frequency.</p>
-<p>LoRa Packets have this distinctive shape, called a <strong>LoRa Chirp</strong>...</p>
+<p>LoRa Packets have this distinctive shape, called a <strong>LoRa Chirp</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/lora-sdr5.png" alt="LoRa Packet" /></p>
 <p><a href="https://www.youtube.com/watch?v=USqStub3KC0"><strong>Watch the video on YouTube</strong></a></p>
-<p>More about sniffing LoRa Packets...</p>
+<p>More about sniffing LoRa Packets…</p>
 <ul>
 <li>
-<p><a href="https://lupyuen.github.io/articles/lora#troubleshoot-lora"><strong>&quot;Troubleshoot LoRa with Spectrum Analyser&quot;</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/lora#troubleshoot-lora"><strong>“Troubleshoot LoRa with Spectrum Analyser”</strong></a></p>
 </li>
 <li>
-<p><a href="https://lupyuen.github.io/articles/lora#visualise-lora-with-software-defined-radio"><strong>&quot;Visualise LoRa with Software Defined Radio&quot;</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/lora#visualise-lora-with-software-defined-radio"><strong>“Visualise LoRa with Software Defined Radio”</strong></a></p>
 </li>
 </ul>
 <h2 id="read-registers" class="section-header"><a href="#read-registers">8.2 Read Registers</a></h2>
-<p>Verify the SPI Connection between BL602 and SX1276 by entering the command <strong><code>read_registers</code></strong>...</p>
+<p>Verify the SPI Connection between BL602 and SX1276 by entering the command <strong><code>read_registers</code></strong>…</p>
 <pre><code class="language-text"># read_registers
 Register 0x02 = 0x1a
 Register 0x03 = 0x0b
@@ -1459,10 +1459,10 @@ Register 0x04 = 0x00
 Register 0x05 = 0x52
 </code></pre>
 <p>This command reads the SX1276 Registers over the SPI Connections.</p>
-<p>If there's a fault in the SPI wiring, we will see incorrect register values.</p>
-<p>More about <code>read_registers</code>...</p>
+<p>If there’s a fault in the SPI wiring, we will see incorrect register values.</p>
+<p>More about <code>read_registers</code>…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/lora#troubleshoot-lora"><strong>&quot;Troubleshoot LoRa with read_registers&quot;</strong></a></li>
+<li><a href="https://lupyuen.github.io/articles/lora#troubleshoot-lora"><strong>“Troubleshoot LoRa with read_registers”</strong></a></li>
 </ul>
 <h2 id="trace-spi-requests" class="section-header"><a href="#trace-spi-requests">8.3 Trace SPI Requests</a></h2>
 <p>To enable SPI Tracing:</p>
@@ -1471,7 +1471,7 @@ Register 0x05 = 0x52
 <p>Edit <a href="https://github.com/lupyuen/bl_iot_sdk/blob/fe9bbabdddb05fc4961b8f52784305046a413505/components/hal_drv/bl602_hal/hal_spi.c#L57"><code>components/hal_drv/ bl602_hal/hal_spi.c</code></a></p>
 </li>
 <li>
-<p>Set <strong><code>HAL_SPI_DEBUG</code></strong> to <strong><code>(1)</code></strong> like so...</p>
+<p>Set <strong><code>HAL_SPI_DEBUG</code></strong> to <strong><code>(1)</code></strong> like so…</p>
 <pre><code class="language-c">//  Enable SPI Tracing
 #define HAL_SPI_DEBUG (1)
 </code></pre>
@@ -1480,26 +1480,26 @@ Register 0x05 = 0x52
 <p>Rebuild the firmware: <code>make clean</code> then <code>make</code></p>
 </li>
 </ol>
-<p>We will see all SPI DMA Requests sent by BL602 to SX1276...</p>
+<p>We will see all SPI DMA Requests sent by BL602 to SX1276…</p>
 <pre><code class="language-text">hal_spi_transfer = 1
 transfer xfer[0].len = 1
 Tx DMA src=0x4200cc58, dest=0x4000a288, size=1, si=1, di=0, i=1
 Rx DMA src=0x4000a28c, dest=0x4200cc54, size=1, si=0, di=1, i=1
 recv all event group.
 </code></pre>
-<p>More about SPI Tracing messages...</p>
+<p>More about SPI Tracing messages…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/lora#enter-lora-commands"><strong>&quot;Run LoRa Firmware with SPI Tracing&quot;</strong></a></li>
+<li><a href="https://lupyuen.github.io/articles/lora#enter-lora-commands"><strong>“Run LoRa Firmware with SPI Tracing”</strong></a></li>
 </ul>
 <h2 id="show-interrupt-counters" class="section-header"><a href="#show-interrupt-counters">8.4 Show Interrupt Counters</a></h2>
-<p>We may check the number of GPIO and SPI Interrupts triggered by SX1276 by entering the <strong><code>spi_result</code></strong> command...</p>
+<p>We may check the number of GPIO and SPI Interrupts triggered by SX1276 by entering the <strong><code>spi_result</code></strong> command…</p>
 <pre><code class="language-text"># spi_result
 DIO0 Interrupts: 1
 DIO3 Interrupts: 1
 Tx Interrupts:   302
 Rx Interrupts:   302
 </code></pre>
-<p>This demo video explains the Interrupt Counters...</p>
+<p>This demo video explains the Interrupt Counters…</p>
 <ul>
 <li>
 <p><a href="https://youtu.be/3TSvo0dwwnQ"><strong>Watch the receive video on YouTube</strong></a></p>
@@ -1509,42 +1509,42 @@ Rx Interrupts:   302
 </li>
 </ul>
 <h2 id="test-event-queue" class="section-header"><a href="#test-event-queue">8.5 Test Event Queue</a></h2>
-<p>To check whether our Event Queue and Background Task (from the NimBLE Porting Layer) are OK, do this...</p>
+<p>To check whether our Event Queue and Background Task (from the NimBLE Porting Layer) are OK, do this…</p>
 <ol>
 <li>
-<p>If the Background Task has NOT been started, enter this command...</p>
+<p>If the Background Task has NOT been started, enter this command…</p>
 <pre><code class="language-text"># create_task
 </code></pre>
 <p>(<code>create_task</code> should only be run once)</p>
 </li>
 <li>
-<p>Then enter this command to enqueue an Event into our Event Queue...</p>
+<p>Then enter this command to enqueue an Event into our Event Queue…</p>
 <pre><code class="language-text"># put_event
 </code></pre>
 </li>
 <li>
-<p>We should see this...</p>
+<p>We should see this…</p>
 <pre><code class="language-text">Handle an event
 </code></pre>
 <p>This means that our Event Queue and Background Task are ready to handle Interrupt Events triggered by SX1276.</p>
 </li>
 </ol>
 <h2 id="bl602-stack-trace" class="section-header"><a href="#bl602-stack-trace">8.6 BL602 Stack Trace</a></h2>
-<p>When our BL602 Firmware hits an Exception, we'll see a message like this...</p>
+<p>When our BL602 Firmware hits an Exception, we’ll see a message like this…</p>
 <pre><code class="language-text">Exception Entry---&gt;&gt;&gt;
 mcause 38000001, mepc 00000000, mtval 00000000
 Exception code: 1
   msg: Instruction access fault
 </code></pre>
-<p>This is not really helpful because it doesn't show the Stack Trace: The function calls leading to the Exception.</p>
-<p>To show the Stack Trace, edit the Makefile <code>proj_config.mk</code> (like  <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/proj_config.mk#L40-L43"><code>sdk_app_lora/proj_config.mk</code></a>) and add this...</p>
+<p>This is not really helpful because it doesn’t show the Stack Trace: The function calls leading to the Exception.</p>
+<p>To show the Stack Trace, edit the Makefile <code>proj_config.mk</code> (like  <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/proj_config.mk#L40-L43"><code>sdk_app_lora/proj_config.mk</code></a>) and add this…</p>
 <pre><code class="language-text"># Show Stack Trace when we hit a RISC-V Exception, 
 # by enabling the Stack Frame Pointer.
 # After setting this flag, do &quot;make clean ; make&quot;
 CONFIG_ENABLE_FP:=1
 </code></pre>
 <p>Rebuild the firmware: <strong><code>make clean</code></strong> then <strong><code>make</code></strong>.</p>
-<p>When BL602 hits an Exception, we'll see this Stack Trace:</p>
+<p>When BL602 hits an Exception, we’ll see this Stack Trace:</p>
 <pre><code class="language-text">=== backtrace start ===
 backtrace_stack: frame pointer=0x42011e70
 backtrace: 0x2300ba88 (@ 0x42011e6c)
@@ -1554,16 +1554,16 @@ backtrace: INVALID!!!
 === backtrace end ===
 </code></pre>
 <p><a href="https://gist.github.com/lupyuen/5ddbcdd1054c775521291c3d114f6cee">(View the complete log)</a></p>
-<p>This shows the function calls leading to the Exception, so it's more helpful for troubleshooting.</p>
-<p>To find the source code that corresponds to the program address (like <code>0x2300ba88</code>), follow the instructions here to generate the <strong>RISC-V Disassembly File</strong>...</p>
+<p>This shows the function calls leading to the Exception, so it’s more helpful for troubleshooting.</p>
+<p>To find the source code that corresponds to the program address (like <code>0x2300ba88</code>), follow the instructions here to generate the <strong>RISC-V Disassembly File</strong>…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/i2c#appendix-how-to-troubleshoot-risc-v-exceptions"><strong>&quot;How to Troubleshoot RISC-V Exceptions&quot;</strong></a></li>
+<li><a href="https://lupyuen.github.io/articles/i2c#appendix-how-to-troubleshoot-risc-v-exceptions"><strong>“How to Troubleshoot RISC-V Exceptions”</strong></a></li>
 </ul>
 <h2 id="bl602-stack-dump" class="section-header"><a href="#bl602-stack-dump">8.7 BL602 Stack Dump</a></h2>
-<p>For some types of BL602 Exceptions, the Stack Trace doesn't appear to be meaningful.</p>
+<p>For some types of BL602 Exceptions, the Stack Trace doesn’t appear to be meaningful.</p>
 <p>(The Stack Trace points to the BL602 Exception Handler, not to the code that caused the Exception)</p>
 <p>For such Exceptions, we need to <strong>dump the stack ourselves</strong> and analyse the trail of calls.</p>
-<p>Here's the function that dumps the stack: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L471-L490"><code>demo.c</code></a></p>
+<p>Here’s the function that dumps the stack: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L471-L490"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// Dump the current stack
 void dump_stack(void)
 {
@@ -1602,7 +1602,7 @@ void exception_entry(uint32_t mcause, uint32_t mepc, uint32_t mtval, uintptr_t *
 
         while (1) { /*Deap loop now*/ }
 </code></pre>
-<p>When BL602 hits an Exception, we'll see this Stack Dump...</p>
+<p>When BL602 hits an Exception, we’ll see this Stack Dump…</p>
 <pre><code class="language-text">Exception Handler Stack:
 dump_stack: frame pointer=0x42011e70
 === stack start ===
@@ -1616,13 +1616,13 @@ dump_stack: frame pointer=0x42011e70
 @ 0x42011f38: 0x4000a28c
 </code></pre>
 <p><a href="https://gist.github.com/lupyuen/5ddbcdd1054c775521291c3d114f6cee">(View the complete log)</a></p>
-<p>After a big chunk of nulls (omitted from above) we see a meaningful address...</p>
+<p>After a big chunk of nulls (omitted from above) we see a meaningful address…</p>
 <pre><code class="language-text">0x23000cd2
 </code></pre>
 <p>This address points to code that actually caused the Exception.</p>
-<p><a href="https://twitter.com/MisterTechBlog/status/1374577517214851077">(We forgot to initialise the stack variable <code>radio_events</code>... ALWAYS INITIALISE STACK VARIABLES!)</a></p>
+<p><a href="https://twitter.com/MisterTechBlog/status/1374577517214851077">(We forgot to initialise the stack variable <code>radio_events</code>… ALWAYS INITIALISE STACK VARIABLES!)</a></p>
 <p><a href="https://twitter.com/MisterTechBlog/status/1374545090731855872">(Analysis of the Stack Dump)</a></p>
-<p>Perhaps someday we shall fix the BL602 Stack Trace so that it displays the right program addresses...</p>
+<p>Perhaps someday we shall fix the BL602 Stack Trace so that it displays the right program addresses…</p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/freertos_riscv_ram/panic/panic_c.c#L75-L99"><strong>Source Code for BL602 Stack Trace: <code>backtrace_riscv</code></strong></a></p>
@@ -1632,7 +1632,7 @@ dump_stack: frame pointer=0x42011e70
 </li>
 </ul>
 <h2 id="bl602-assertion-failures" class="section-header"><a href="#bl602-assertion-failures">8.8 BL602 Assertion Failures</a></h2>
-<p>Be sure to <strong>Enable Assertion Failure Messages</strong> by adding this function to <code>main.c</code> (or <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L324-L335"><code>demo.c</code></a>)...</p>
+<p>Be sure to <strong>Enable Assertion Failure Messages</strong> by adding this function to <code>main.c</code> (or <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorarecv/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L324-L335"><code>demo.c</code></a>)…</p>
 <pre><code class="language-c">/// TODO: We now show assertion failures in development.
 /// For production, comment out this function to use the system default,
 /// which loops forever without messages.
@@ -1648,31 +1648,31 @@ void __assert_func(const char *file, int line, const char *func, const char *fai
 </code></pre>
 <p>Comment out this function when building the production firmware.</p>
 <p><img src="https://lupyuen.github.io/images/lora2-sketch.jpg" alt="Sketching LoRa" /></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">9 What's Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">9 What’s Next</a></h1>
 <p>We have completed <strong>Level One</strong> of our epic quest for the <a href="https://lupyuen.github.io/articles/lora#lora-vs-lorawan"><strong>Three Levels of LoRa</strong></a>!</p>
-<p>Let's move on to <strong>LoRa Levels Two and Three</strong>...</p>
+<p>Let’s move on to <strong>LoRa Levels Two and Three</strong>…</p>
 <ol>
 <li>
 <p>We shall install a <strong>LoRaWAN Gateway</strong> and join BL602 to <strong>The Things Network</strong></p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/wisgate"><strong>&quot;Build a LoRaWAN Network with RAKwireless WisGate Developer Gateway&quot;</strong></a></li>
+<li><a href="https://lupyuen.github.io/articles/wisgate"><strong>“Build a LoRaWAN Network with RAKwireless WisGate Developer Gateway”</strong></a></li>
 </ul>
 </li>
 <li>
 <p>But before that, we shall port the <strong>LoRaWAN Driver from Apache Mynewt OS to BL602</strong></p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/lorawan"><strong>&quot;PineCone BL602 Talks LoRaWAN&quot;</strong></a></li>
+<li><a href="https://lupyuen.github.io/articles/lorawan"><strong>“PineCone BL602 Talks LoRaWAN”</strong></a></li>
 </ul>
 </li>
 <li>
 <p>And before that, we shall clean up and reorganise the <strong>library files for NimBLE and SX1276</strong></p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/lora2#appendix-how-to-create-bl602-libraries"><strong>&quot;How To Create BL602 Libraries&quot;</strong></a></li>
+<li><a href="https://lupyuen.github.io/articles/lora2#appendix-how-to-create-bl602-libraries"><strong>“How To Create BL602 Libraries”</strong></a></li>
 </ul>
 </li>
 </ol>
 <p>So eventually we shall build <strong>LoRaWAN Sensor Devices with BL602</strong>!</p>
-<p>We have come a loooong way since I first <a href="https://github.com/lupyuen/LoRaArduino"><strong>experimented with LoRa in 2016</strong></a>...</p>
+<p>We have come a loooong way since I first <a href="https://github.com/lupyuen/LoRaArduino"><strong>experimented with LoRa in 2016</strong></a>…</p>
 <ul>
 <li>
 <p><strong>Cheaper Transceivers</strong>: Shipped overnight from Thailand!</p>
@@ -1691,8 +1691,8 @@ void __assert_func(const char *file, int line, const char *func, const char *fai
 </li>
 </ul>
 <p>Now is the <strong>right time to build LoRa gadgets.</strong> Stay tuned for more LoRa and LoRaWAN Adventures!</p>
-<p>Meanwhile there's plenty more code in the <a href="https://github.com/bouffalolab/bl_iot_sdk"><strong>BL602 IoT SDK</strong></a> to be deciphered and documented: <strong>ADC, DAC, WiFi, Bluetooth LE,</strong> ...</p>
-<p><a href="https://wiki.pine64.org/wiki/Nutcracker"><strong>Come Join Us... Make BL602 Better!</strong></a></p>
+<p>Meanwhile there’s plenty more code in the <a href="https://github.com/bouffalolab/bl_iot_sdk"><strong>BL602 IoT SDK</strong></a> to be deciphered and documented: <strong>ADC, DAC, WiFi, Bluetooth LE,</strong> …</p>
+<p><a href="https://wiki.pine64.org/wiki/Nutcracker"><strong>Come Join Us… Make BL602 Better!</strong></a></p>
 <p>🙏 👍 😀</p>
 <ul>
 <li>
@@ -1702,7 +1702,7 @@ void __assert_func(const char *file, int line, const char *func, const char *fai
 <p><a href="https://www.reddit.com/r/RISCV/comments/mjt99m/pinecone_bl602_riscv_board_receives_lora_packets/?utm_source=share&amp;utm_medium=web2x&amp;context=3">Discuss this article on Reddit</a></p>
 </li>
 <li>
-<p><a href="https://lupyuen.github.io/articles/book">Read &quot;The RISC-V BL602 Book&quot;</a></p>
+<p><a href="https://lupyuen.github.io/articles/book">Read “The RISC-V BL602 Book”</a></p>
 </li>
 <li>
 <p><a href="https://lupyuen.github.io">Check out my articles</a></p>
@@ -1711,23 +1711,23 @@ void __assert_func(const char *file, int line, const char *func, const char *fai
 <p><a href="https://lupyuen.github.io/rss.xml">RSS Feed</a></p>
 </li>
 </ul>
-<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
+<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lora2.md"><code>lupyuen.github.io/src/lora2.md</code></a></p>
 <h1 id="notes" class="section-header"><a href="#notes">10 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1370708936739885056?s=20">this Twitter Thread</a></li>
 </ol>
 <h1 id="appendix-how-to-create-bl602-projects" class="section-header"><a href="#appendix-how-to-create-bl602-projects">11 Appendix: How To Create BL602 Projects</a></h1>
-<p>Follow these steps to create a new BL602 Project (like <code>sdk_app_lorawan</code>)...</p>
+<p>Follow these steps to create a new BL602 Project (like <code>sdk_app_lorawan</code>)…</p>
 <ol>
 <li>
-<p><strong>Copy the Project Folder</strong> for an existing Project, like <code>sdk_app_lora</code>...</p>
+<p><strong>Copy the Project Folder</strong> for an existing Project, like <code>sdk_app_lora</code>…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lora"><strong>Project Folder for <code>sdk_app_lora</code></strong></a></li>
 </ul>
 </li>
 <li>
-<p><strong>Paste the Project Folder</strong> into <strong><code>bl_iot_sdk/customer_app</code></strong> and rename it (like <code>sdk_app_lorawan</code>)...</p>
+<p><strong>Paste the Project Folder</strong> into <strong><code>bl_iot_sdk/customer_app</code></strong> and rename it (like <code>sdk_app_lorawan</code>)…</p>
 <p><img src="https://lupyuen.github.io/images/lora2-app.png" alt="BL602 Project" /></p>
 <p>Be sure to <strong>rename the Sub Folder</strong> too. (The <code>sdk_app_lorawan</code> inside <code>sdk_app_lorawan</code>)</p>
 <p><strong>Delete the <code>build_out</code> folder</strong> if it exists.</p>
@@ -1756,7 +1756,7 @@ export APP_NAME=sdk_app_lorawan
 </code></pre>
 </li>
 <li>
-<p><strong>Build the project</strong> by entering these commands...</p>
+<p><strong>Build the project</strong> by entering these commands…</p>
 <pre><code class="language-bash"># TODO: Change this to the full path of bl_iot_sdk
 export BL60X_SDK_PATH=$HOME/bl_iot_sdk
 export CONFIG_CHIP_NAME=BL602
@@ -1767,7 +1767,7 @@ make
 </code></pre>
 </li>
 <li>
-<p><strong>For macOS Only</strong>: We may build, flash and run the new firmware with the <code>run.sh</code> script instead...</p>
+<p><strong>For macOS Only</strong>: We may build, flash and run the new firmware with the <code>run.sh</code> script instead…</p>
 <pre><code class="language-bash"># TODO: Change sdk_app_lorawan to the project name
 cd bl_iot_sdk/customer_app/sdk_app_lorawan
 
@@ -1784,7 +1784,7 @@ cd bl_iot_sdk/customer_app/sdk_app_lorawan
 </li>
 </ol>
 <h1 id="appendix-how-to-create-bl602-libraries" class="section-header"><a href="#appendix-how-to-create-bl602-libraries">12 Appendix: How To Create BL602 Libraries</a></h1>
-<p>We're now refactoring the LoRa Firmware Source Code from this article to create <strong>reusable BL602 Libraries</strong>...</p>
+<p>We’re now refactoring the LoRa Firmware Source Code from this article to create <strong>reusable BL602 Libraries</strong>…</p>
 <ol>
 <li>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/components/3rdparty/lora-sx1276"><strong>BL602 Library for LoRa SX1276 Driver</strong></a></p>
@@ -1793,15 +1793,15 @@ cd bl_iot_sdk/customer_app/sdk_app_lorawan
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/components/3rdparty/nimble-porting-layer"><strong>BL602 Library for NimBLE Porting Layer</strong></a></p>
 </li>
 </ol>
-<p>To create your own BL602 Library...</p>
+<p>To create your own BL602 Library…</p>
 <ol>
 <li>
 <p>Place the source files into a new folder under <a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/components/3rdparty"><strong><code>bl_iot_sdk/components/3rdparty</code></strong></a></p>
-<p>Here's where we created the folder for NimBLE Porting Layer...</p>
+<p>Here’s where we created the folder for NimBLE Porting Layer…</p>
 <p><img src="https://lupyuen.github.io/images/lora2-library.png" alt="BL602 Library" /></p>
 </li>
 <li>
-<p>In the folder, create two subfolders...</p>
+<p>In the folder, create two subfolders…</p>
 <ul>
 <li>
 <p><strong><code>include</code></strong>: For the include files (<code>*.h</code>)</p>
@@ -1812,7 +1812,7 @@ cd bl_iot_sdk/customer_app/sdk_app_lorawan
 </ul>
 </li>
 <li>
-<p>In the same folder, create the file <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/3rdparty/nimble-porting-layer/bouffalo.mk"><strong><code>bouffalo.mk</code></strong></a> containing...</p>
+<p>In the same folder, create the file <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/3rdparty/nimble-porting-layer/bouffalo.mk"><strong><code>bouffalo.mk</code></strong></a> containing…</p>
 <pre><code class="language-text">
 # Component Makefile
 #
@@ -1828,7 +1828,7 @@ COMPONENT_SRCDIRS := src
 </code></pre>
 </li>
 <li>
-<p>In the same folder, create the file <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/3rdparty/nimble-porting-layer/component.mk"><strong><code>component.mk</code></strong></a> containing...</p>
+<p>In the same folder, create the file <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/3rdparty/nimble-porting-layer/component.mk"><strong><code>component.mk</code></strong></a> containing…</p>
 <pre><code class="language-text">#
 # Component Makefile
 #
@@ -1844,7 +1844,7 @@ COMPONENT_SUBMODULES :=
 </code></pre>
 </li>
 <li>
-<p>If there are multiple Include Folders or Source Folders, add them to <strong><code>COMPONENT_ADD_INCLUDEDIRS</code> and <code>COMPONENT_SRCDIRS</code></strong> in the above two files. Like so...</p>
+<p>If there are multiple Include Folders or Source Folders, add them to <strong><code>COMPONENT_ADD_INCLUDEDIRS</code> and <code>COMPONENT_SRCDIRS</code></strong> in the above two files. Like so…</p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/3rdparty/aws-iot/bouffalo.mk"><strong>AWS IoT <code>bouffalo.mk</code></strong></a></p>
@@ -1863,7 +1863,7 @@ COMPONENT_SUBMODULES :=
 <li>
 <p>Look for the <strong><code>INCLUDE_COMPONENTS</code></strong> section.</p>
 <p>Insert a new <code>INCLUDE_COMPONENTS</code> line that specifies the names of the BL602 Libraries to be used.</p>
-<p>So to use the BL602 Libraries <code>lora-sx1276</code> and <code>nimble-porting-layer</code>, we would insert this line...</p>
+<p>So to use the BL602 Libraries <code>lora-sx1276</code> and <code>nimble-porting-layer</code>, we would insert this line…</p>
 <pre><code class="language-text">INCLUDE_COMPONENTS += lora-sx1276 nimble-porting-layer
 </code></pre>
 </li>
@@ -1886,8 +1886,8 @@ INCLUDE_COMPONENTS += $(PROJECT_NAME)
 </code></pre>
 </li>
 </ol>
-<p><img src="https://lupyuen.github.io/images/lora2-vaccine.jpg" alt="Pinebook Pro keeping me company during vaccination (Moderna)... Because bringing a PineCone would look so odd 👍" /></p>
-<p><em>Pinebook Pro keeping me company during vaccination (Moderna)... Because bringing a PineCone would look so odd 👍</em></p>
+<p><img src="https://lupyuen.github.io/images/lora2-vaccine.jpg" alt="Pinebook Pro keeping me company during vaccination (Moderna)… Because bringing a PineCone would look so odd 👍" /></p>
+<p><em>Pinebook Pro keeping me company during vaccination (Moderna)… Because bringing a PineCone would look so odd 👍</em></p>
 
     
 </body>

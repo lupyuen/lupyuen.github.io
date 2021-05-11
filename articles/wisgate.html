@@ -85,11 +85,11 @@
 <li><a href="#message-integrity-code">9.2 Message Integrity Code</a><ul></ul></li>
 <li><a href="#nonce">9.3 Nonce</a><ul></ul></li>
 <li><a href="#more-about-security">9.4 More About Security</a><ul></ul></li></ul></li>
-<li><a href="#whats-next">10 What's Next</a><ul></ul></li>
+<li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
 <li><a href="#notes">11 Notes</a><ul></ul></li>
 <li><a href="#appendix-log-transmitted-packets">12 Appendix: Log Transmitted Packets</a><ul></ul></li></ul></nav><p>📝 <em>30 Apr 2021</em></p>
 <p>While testing a new LoRaWAN gadget (<a href="https://lupyuen.github.io/articles/lora2">PineCone BL602</a>), I bought a LoRaWAN Gateway from RAKwireless: <a href="https://docs.rakwireless.com/Product-Categories/WisGate/RAK7248/Datasheet/"><strong>RAK7248 WisGate Developer D4H Gateway</strong></a>.</p>
-<p>Here's what I learnt about <strong>settting up a LoRaWAN Network</strong> with WisGate Developer D4H... And testing it with the <strong>RAKwireless WisBlock dev kit in Arduino</strong>.</p>
+<p>Here’s what I learnt about <strong>settting up a LoRaWAN Network</strong> with WisGate Developer D4H… And testing it with the <strong>RAKwireless WisBlock dev kit in Arduino</strong>.</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-title.jpg" alt="RAKwireless RAK7248 WisGate Developer D4H LoRaWAN Gateway" /></p>
 <p><em>RAKwireless RAK7248 WisGate Developer D4H LoRaWAN Gateway</em></p>
 <h1 id="wisgate-d4h-hardware" class="section-header"><a href="#wisgate-d4h-hardware">1 WisGate D4H Hardware</a></h1>
@@ -97,7 +97,7 @@
 <p>It exposes the same ports and connectors as a Raspberry Pi 4: <strong>Ethernet port, USB 2 and 3 ports, USB-C power, microSD Card.</strong></p>
 <p>But the <strong>HDMI and GPIO ports</strong> are no longer accessible. (We control the box over HTTP and SSH)</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-hw.jpg" alt="RAKwireless RAK7248 WisGate Developer D4H LoRaWAN Gateway" /></p>
-<p>2 new connectors have been added...</p>
+<p>2 new connectors have been added…</p>
 <ol>
 <li>
 <p><strong>LoRa Antenna</strong> (left)</p>
@@ -106,32 +106,32 @@
 <p><strong>GPS Antenna</strong> (right)</p>
 </li>
 </ol>
-<p>(The two connectors are slightly different, so we won't connect the wrong antenna)</p>
+<p>(The two connectors are slightly different, so we won’t connect the wrong antenna)</p>
 <p>The GPS Antenna will be used when we connect WisGate to The Things Network (the worldwide free-access LoRaWAN network).</p>
 <p>WisGate D4H is shipped with the open-source <strong>ChirpStack LoRaWAN stack</strong>, preinstalled in the microSD card. </p>
-<p>(Yep please don't peel off the sticky tape and insert your own microSD card)</p>
+<p>(Yep please don’t peel off the sticky tape and insert your own microSD card)</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-hw2.jpg" alt="microSD Slot on WisGate D4H" /></p>
 <p><em>microSD Slot on WisGate D4H</em></p>
 <h1 id="chirpstack-lorawan-stack" class="section-header"><a href="#chirpstack-lorawan-stack">2 ChirpStack LoRaWAN Stack</a></h1>
 <p>Connect the <strong>LoRa Antenna and GPS Antenna</strong> to WisGate before powering on. (To prevent damage to the RF modules)</p>
-<p>Follow the instructions here to start the WisGate box and to connect to the preinstalled ChirpStack LoRaWAN stack...</p>
+<p>Follow the instructions here to start the WisGate box and to connect to the preinstalled ChirpStack LoRaWAN stack…</p>
 <ul>
-<li><a href="https://docs.rakwireless.com/Product-Categories/WisGate/RAK7244C/Quickstart/"><strong>&quot;RAK7244C Quick Start Guide&quot;</strong></a></li>
+<li><a href="https://docs.rakwireless.com/Product-Categories/WisGate/RAK7244C/Quickstart/"><strong>“RAK7244C Quick Start Guide”</strong></a></li>
 </ul>
 <p>(RAK7244C is quite similar to our RAK7248 gateway)</p>
 <p>I connected an Ethernet cable to WisGate and used SSH to configure the WiFi and LAN settings (via <code>sudo gateway-config</code>).</p>
-<p>Here's the <strong>ChirpStack web admin</strong> page that we will see...</p>
+<p>Here’s the <strong>ChirpStack web admin</strong> page that we will see…</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-chirpstack.png" alt="ChirpStack web admin on WisGate" /></p>
-<p>(Nope I'm nowhere near Jervois Road)</p>
-<p>In the left bar, click <strong><code>Gateways</code></strong> to see our pre-configured LoRaWAN Gateway...</p>
+<p>(Nope I’m nowhere near Jervois Road)</p>
+<p>In the left bar, click <strong><code>Gateways</code></strong> to see our pre-configured LoRaWAN Gateway…</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-chirpstack2.png" alt="ChirpStack web admin on WisGate" /></p>
-<p>Click <strong><code>rak-gateway</code></strong> to see the Gateway Details...</p>
+<p>Click <strong><code>rak-gateway</code></strong> to see the Gateway Details…</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-chirpstack3.png" alt="ChirpStack web admin on WisGate" /></p>
 <p>This shows that my WisGate gateway receives <strong>1,200 LoRaWAN Packets a day</strong> from unknown LoRaWAN Devices nearby.</p>
-<p>WisGate won't do anything with the received LoRaWAN Packets since it's not configured to process packets with mysterious origins.</p>
+<p>WisGate won’t do anything with the received LoRaWAN Packets since it’s not configured to process packets with mysterious origins.</p>
 <p>(But we may click <strong><code>Live LoRaWAN Frames</code></strong> at top right to see the encrypted contents of the received LoRaWAN Packets)</p>
 <h1 id="lorawan-application" class="section-header"><a href="#lorawan-application">3 LoRaWAN Application</a></h1>
-<p>When we allow a LoRaWAN Device to talk to our LoRaWAN Gateway, we need to set 2 things in the device...</p>
+<p>When we allow a LoRaWAN Device to talk to our LoRaWAN Gateway, we need to set 2 things in the device…</p>
 <ol>
 <li>
 <p><strong>Device EUI</strong>: A 64-bit number that uniquely identifies our LoRaWAN Device</p>
@@ -140,29 +140,29 @@
 <p><strong>Application Key</strong>: A 128-bit secret key that will authenticate that specific LoRaWAN Device</p>
 </li>
 </ol>
-<p>Here's how we get the Device EUI and Application Key from ChirpStack...</p>
-<p>Click <strong><code>Applications</code></strong> then <strong><code>app</code></strong>...</p>
+<p>Here’s how we get the Device EUI and Application Key from ChirpStack…</p>
+<p>Click <strong><code>Applications</code></strong> then <strong><code>app</code></strong>…</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-app.png" alt="ChirpStack Application" /></p>
-<p>Take note of the second <strong>Device EUI</strong> (for the OTAA Device Profile)...</p>
+<p>Take note of the second <strong>Device EUI</strong> (for the OTAA Device Profile)…</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-app2.png" alt="ChirpStack Application" /></p>
-<p>(EUI sounds like we stepped on something unpleasant... But it actually means <a href="https://lora-developers.semtech.com/library/tech-papers-and-guides/the-book/deveui/"><strong>Extended Unique Identifier</strong></a>)</p>
-<p>We shall set this Device EUI in our Arduino program in a while...</p>
+<p>(EUI sounds like we stepped on something unpleasant… But it actually means <a href="https://lora-developers.semtech.com/library/tech-papers-and-guides/the-book/deveui/"><strong>Extended Unique Identifier</strong></a>)</p>
+<p>We shall set this Device EUI in our Arduino program in a while…</p>
 <pre><code class="language-c">uint8_t nodeDeviceEUI[8] = { 0x4b, 0xc1, 0x5e, 0xe7, 0x37, 0x7b, 0xb1, 0x5b };
 </code></pre>
-<p>Click <strong><code>device_ptaa_class_a</code></strong> because we'll be doing <strong>Over-The-Air Activation (OTAA)</strong> for our Arduino device</p>
+<p>Click <strong><code>device_ptaa_class_a</code></strong> because we’ll be doing <strong>Over-The-Air Activation (OTAA)</strong> for our Arduino device</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-app3.png" alt="ChirpStack Application" /></p>
 <p>Click <strong><code>Keys (OTAA)</code></strong></p>
 <p>Under <code>Application Key</code>, click the circular arrow to generate a random key.</p>
-<p>Take note of the generated <strong>Application Key</strong>, we shall set this in our Arduino program...</p>
+<p>Take note of the generated <strong>Application Key</strong>, we shall set this in our Arduino program…</p>
 <pre><code class="language-c">uint8_t nodeAppKey[16] = { 0xaa, 0xff, 0xad, 0x5c, 0x7e, 0x87, 0xf6, 0x4d, 0xe3, 0xf0, 0x87, 0x32, 0xfc, 0x1d, 0xd2, 0x5d };
 </code></pre>
 <p>Click <strong><code>Set Device-Keys</code></strong></p>
-<p>We're all set to connect our Arduino LoRaWAN Device to WisGate!</p>
+<p>We’re all set to connect our Arduino LoRaWAN Device to WisGate!</p>
 <h1 id="lorawan-arduino-client" class="section-header"><a href="#lorawan-arduino-client">4 LoRaWAN Arduino Client</a></h1>
-<p>I tested WisGate with an Arduino LoRaWAN Device: <a href="https://docs.rakwireless.com/Product-Categories/WisBlock/RAK4631/Overview/"><strong>RAKwireless RAK4631 WisBlock</strong></a>, based on Nordic nRF52840 with Semtech SX1262...</p>
+<p>I tested WisGate with an Arduino LoRaWAN Device: <a href="https://docs.rakwireless.com/Product-Categories/WisBlock/RAK4631/Overview/"><strong>RAKwireless RAK4631 WisBlock</strong></a>, based on Nordic nRF52840 with Semtech SX1262…</p>
 <p><img src="https://lupyuen.github.io/images/wisblock-title.jpg" alt="RAKwireless RAK4631 WisBlock LPWAN Module mounted on WisBlock Base Board" /></p>
 <p><em>RAKwireless RAK4631 WisBlock LPWAN Module mounted on WisBlock Base Board</em></p>
-<p>The Arduino source code is here...</p>
+<p>The Arduino source code is here…</p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/wisblock-lorawan"><code>github.com/lupyuen/wisblock-lorawan</code></a></p>
@@ -171,32 +171,32 @@
 <p><a href="https://youtu.be/xdyi6XCo8Z8"><strong>Watch the demo video on YouTube</strong></a></p>
 </li>
 </ul>
-<p>To download the source code, enter this at the command prompt...</p>
+<p>To download the source code, enter this at the command prompt…</p>
 <pre><code class="language-bash">git clone --recursive https://github.com/lupyuen/wisblock-lorawan
 </code></pre>
 <p>Note that the program requires the <a href="https://github.com/beegee-tokyo/SX126x-Arduino"><strong><code>SX126x-Arduino</code></strong></a> Library version <strong>2.0.0 or later</strong>. </p>
-<p>With PlatformIO, we set the <code>SX126x-Arduino</code> version in <a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/platformio.ini"><code>platformio.ini</code></a> like so...</p>
+<p>With PlatformIO, we set the <code>SX126x-Arduino</code> version in <a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/platformio.ini"><code>platformio.ini</code></a> like so…</p>
 <pre><code class="language-text">lib_deps = beegee-tokyo/SX126x-Arduino@^2.0.0
 </code></pre>
 <p>The Arduino program in this article is based on the RAKwireless LoRaWAN sample <a href="https://github.com/RAKWireless/WisBlock/blob/master/examples/RAK4630/communications/LoRa/LoRaWAN/LoRaWAN_OTAA_ABP/LoRaWAN_OTAA_ABP.ino"><code>LoRaWAN_OTAA_ABP.ino</code></a></p>
 <p><a href="https://github.com/RAKWireless/WisBlock/tree/master/examples/RAK4630/communications/LoRa/LoRaWAN">(More about LoRaWAN on WisBlock RAK4631)</a></p>
 <h2 id="configure-lorawan-client" class="section-header"><a href="#configure-lorawan-client">4.1 Configure LoRaWAN Client</a></h2>
-<p>Let's look at the Arduino code in our LoRaWAN Client...</p>
+<p>Let’s look at the Arduino code in our LoRaWAN Client…</p>
 <p><a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L38-L58"><code>wisblock-lorawan/src/main.cpp</code></a></p>
 <p><strong>Important:</strong> Set your <strong>LoRaWAN Region</strong> in <a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L38-L58"><code>main.cpp</code></a></p>
 <pre><code class="language-c">//  TODO: Set this to your LoRaWAN Region
 LoRaMacRegion_t g_CurrentRegion = LORAMAC_REGION_AS923;
 </code></pre>
-<p>Before sending a LoRaWAN Data Packet to WisGate, we shall join our LoRaWAN Device to the LoRaWAN Network with <strong>Over-The-Air Activation (OTAA)</strong>...</p>
+<p>Before sending a LoRaWAN Data Packet to WisGate, we shall join our LoRaWAN Device to the LoRaWAN Network with <strong>Over-The-Air Activation (OTAA)</strong>…</p>
 <pre><code class="language-c">//  Set to true to select Over-The-Air Activation 
 //  (OTAA), false for Activation By Personalisation (ABP)
 bool doOTAA = true;
 </code></pre>
-<p>We won't be using Activation By Personalisation (ABP) today.</p>
+<p>We won’t be using Activation By Personalisation (ABP) today.</p>
 <p><a href="https://www.thethingsnetwork.org/docs/lorawan/addressing/index.html">(More about OTAA vs ABP)</a></p>
 <p>Remember the <strong>Device EUI and Application Key</strong> from ChirpStack?</p>
 <p>(Did we step on something?)</p>
-<p>We paste the Device EUI and Application Key here...</p>
+<p>We paste the Device EUI and Application Key here…</p>
 <pre><code class="language-c">//  TODO: (For OTAA Only) Set the OTAA keys. KEYS ARE MSB !!!!
 
 //  Device EUI: Copy from ChirpStack: 
@@ -214,7 +214,7 @@ uint8_t nodeAppEUI[8] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 uint8_t nodeAppKey[16] = { 0xaa, 0xff, 0xad, 0x5c, 0x7e, 0x87, 0xf6, 0x4d, 0xe3, 0xf0, 0x87, 0x32, 0xfc, 0x1d, 0xd2, 0x5d };
 </code></pre>
 <p>The <strong>Application EUI</strong> is not used by ChirpStack, so we may set it to <code>0000000000000000</code></p>
-<p>Since we're not Activating By Personalisation, we may ignore this section...</p>
+<p>Since we’re not Activating By Personalisation, we may ignore this section…</p>
 <pre><code class="language-c">//  TODO: (For ABP Only) Set the ABP keys
 uint32_t nodeDevAddr = 0x260116F8;
 uint8_t nodeNwsKey[16] = { 0x7E, 0xAC, 0xE2, 0x55, 0xB8, 0xA5, 0xE2, 0x69, 0x91, 0x51, 0x96, 0x06, 0x47, 0x56, 0x9D, 0x23 };
@@ -237,7 +237,7 @@ void setup() {
 </code></pre>
 <p>Here we <strong>initialise the LoRa Transceiver</strong> (SX1262) and create a timer that will send a LoRaWAN Packet every 20 seconds.</p>
 <p>(More about <code>timers_init</code> in a while)</p>
-<p>Next we set the <strong>Device EUI, Application EUI and Application Key</strong> that will be used for joining the LoRaWAN Network...</p>
+<p>Next we set the <strong>Device EUI, Application EUI and Application Key</strong> that will be used for joining the LoRaWAN Network…</p>
 <pre><code class="language-c">  //  Setup the EUIs and Keys
   if (doOTAA) {
     //  Set the EUIs and Keys for OTAA
@@ -249,7 +249,7 @@ void setup() {
     ...
   }
 </code></pre>
-<p>Then we <strong>initialise the LoRaWAN Client</strong>...</p>
+<p>Then we <strong>initialise the LoRaWAN Client</strong>…</p>
 <pre><code class="language-c">  //  Initialise LoRaWAN
   err_code = lmh_init(  //  lmh_init now takes 3 parameters instead of 5
     &amp;g_lora_callbacks,  //  Callbacks 
@@ -261,13 +261,13 @@ void setup() {
   if (err_code != 0) { return; }
 </code></pre>
 <p>(More about <code>g_lora_callbacks</code> in a while)</p>
-<p>Finally we send the <strong>Join LoRaWAN Network Request</strong> to WisGate...</p>
+<p>Finally we send the <strong>Join LoRaWAN Network Request</strong> to WisGate…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
   <span class="comment">//  Start Join procedure</span>
   <span class="ident">lmh_join</span>();
 }</pre></div>
-<p><em>What's in <code>g_lora_callbacks</code>?</em></p>
+<p><em>What’s in <code>g_lora_callbacks</code>?</em></p>
 <p><code>g_lora_callbacks</code> contains a list of Callback Functions that will be called by the LoRaWAN Client: <a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L87-L97"><code>main.cpp</code></a></p>
 <pre><code class="language-c">//  Structure containing LoRaWan callback functions, 
 //  needed for lmh_init()
@@ -283,8 +283,8 @@ static lmh_callback_t g_lora_callbacks = {
 </code></pre>
 <p>We shall see the Callback Functions in action soon.</p>
 <p><em>What about <code>loop</code>, the Arduino function that will be called to do work?</em></p>
-<p>Our program uses the Callback Functions to trigger actions, so we won't be <code>loop</code>ing today.</p>
-<p>Here's our <code>loop</code> function in <a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L215-L220"><code>main.cpp</code></a></p>
+<p>Our program uses the Callback Functions to trigger actions, so we won’t be <code>loop</code>ing today.</p>
+<p>Here’s our <code>loop</code> function in <a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L215-L220"><code>main.cpp</code></a></p>
 <pre><code class="language-c">//  Nothing here for now
 void loop() {
   //  Put your application tasks here, like reading of sensors,
@@ -292,7 +292,7 @@ void loop() {
 }
 </code></pre>
 <h2 id="join-lorawan-network" class="section-header"><a href="#join-lorawan-network">4.3 Join LoRaWAN Network</a></h2>
-<p>During startup we called <code>lmh_join</code> to send the <strong>Join LoRaWAN Network Request</strong> to WisGate...</p>
+<p>During startup we called <code>lmh_join</code> to send the <strong>Join LoRaWAN Network Request</strong> to WisGate…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="comment">//  Start Join procedure</span>
@@ -306,11 +306,11 @@ void lorawan_has_joined_handler(void) {
 </code></pre>
 <p>Here we switch to the desired <strong>LoRaWAN Device Class</strong> (A, B or C) if necessary. </p>
 <p><strong>Class A</strong> is the most basic Device Class (for simple LoRaWAN sensors). <strong>Classes B and C</strong> are more sophisticated.</p>
-<p>We have configured our LoRaWAN Client for <strong>Class A</strong>...</p>
+<p>We have configured our LoRaWAN Client for <strong>Class A</strong>…</p>
 <pre><code class="language-c">DeviceClass_t g_CurrentClass = CLASS_A;
 </code></pre>
-<p>So <code>lmh_class_request</code> won't switch our Device Class.</p>
-<p>Our Callback Function then starts a <strong>timer that expires in 20 seconds</strong>...</p>
+<p>So <code>lmh_class_request</code> won’t switch our Device Class.</p>
+<p>Our Callback Function then starts a <strong>timer that expires in 20 seconds</strong>…</p>
 <pre><code class="language-c">  //  When we have joined the LoRaWAN network, 
   //  start a 20-second timer
   if (ret == LMH_SUCCESS) {
@@ -320,8 +320,8 @@ void lorawan_has_joined_handler(void) {
   }
 }
 </code></pre>
-<p>We'll learn more about the timer in a while. (Hint: It triggers the sending of a LoRaWAN Data Packet)</p>
-<p>We have another Callback Function that's called when our <strong>Join Request is rejected</strong> by WisGate: <a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L238-L246"><code>main.cpp</code></a></p>
+<p>We’ll learn more about the timer in a while. (Hint: It triggers the sending of a LoRaWAN Data Packet)</p>
+<p>We have another Callback Function that’s called when our <strong>Join Request is rejected</strong> by WisGate: <a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L238-L246"><code>main.cpp</code></a></p>
 <pre><code class="language-c">//  LoRa function for handling OTAA join failed
 static void lorawan_join_failed_handler(void) {
   //  If we can't join the LoRaWAN network, show the error
@@ -329,13 +329,13 @@ static void lorawan_join_failed_handler(void) {
 }
 </code></pre>
 <p>The LoRaWAN Gateway (WisGate) rejects our Join Request if the Device EUI and/or Application Key are incorrect.</p>
-<p>In case you're curious: WisBlock transmits this LoRaWAN Packet to WisGate when requesting to join the LoRaWAN network...</p>
+<p>In case you’re curious: WisBlock transmits this LoRaWAN Packet to WisGate when requesting to join the LoRaWAN network…</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-join.png" alt="Join LoRaWAN Network Request" /></p>
-<p>We'll learn about the Nonce and the Message Integrity Code later.</p>
+<p>We’ll learn about the Nonce and the Message Integrity Code later.</p>
 <h2 id="send-lorawan-data-packet" class="section-header"><a href="#send-lorawan-data-packet">4.4 Send LoRaWAN Data Packet</a></h2>
-<p>Now that we've joined the LoRaWAN Network, let's <strong>send a LoRaWAN Data Packet</strong> to WisGate!</p>
+<p>Now that we’ve joined the LoRaWAN Network, let’s <strong>send a LoRaWAN Data Packet</strong> to WisGate!</p>
 <p>Remember that when our Join Request succeeds, it starts a 20-second timer.</p>
-<p>Here's what happens 20 seconds later: <a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L302-L311"><code>main.cpp</code></a></p>
+<p>Here’s what happens 20 seconds later: <a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L302-L311"><code>main.cpp</code></a></p>
 <pre><code class="language-c">//  Function for handling timeout event
 void tx_lora_periodic_handler(void) {
   //  When the 20-second timer has expired, 
@@ -355,15 +355,15 @@ void send_lora_frame(void) {
     return;
   }
 </code></pre>
-<p>First we verify that we have joined the LoRaWAN Network. (Because WisGate won't process our data packet unless we're in the network)</p>
-<p>Then we set the packet port and populate the packet with 6 bytes: &quot;<code>Hello!</code>&quot;...</p>
+<p>First we verify that we have joined the LoRaWAN Network. (Because WisGate won’t process our data packet unless we’re in the network)</p>
+<p>Then we set the packet port and populate the packet with 6 bytes: “<code>Hello!</code>”…</p>
 <pre><code class="language-c">  //  Copy &quot;Hello!&quot; into the transmit buffer
   m_lora_app_data.port = gAppPort;  //  Set to LORAWAN_APP_PORT
   memset(m_lora_app_data.buffer, 0, LORAWAN_APP_DATA_BUFF_SIZE);
   memcpy(m_lora_app_data.buffer, &quot;Hello!&quot;, 6);
   m_lora_app_data.buffsize = 6;
 </code></pre>
-<p>Finally we transmit the data packet to WisGate...</p>
+<p>Finally we transmit the data packet to WisGate…</p>
 <pre><code class="language-c">  //  Transmit the LoRaWAN Data Packet
   lmh_error_status error = lmh_send(
     &amp;m_lora_app_data,  //  Data Packet
@@ -373,11 +373,11 @@ void send_lora_frame(void) {
   else { count_fail++; }
 }
 </code></pre>
-<p>Here we're sending an <strong>Unconfirmed LoRaWAN Message</strong> to WisGate. Which means that we don't expect an acknowledgement from WisGate.</p>
-<p>This is the preferred way for a low-power LoRaWAN device to transmit sensor data, since it <strong>doesn't need to wait for the acknowledgement</strong> (and consume additional power).</p>
-<p>(It's OK if a LoRaWAN Data Packet gets lost due to noise or inteference... LoRaWAN sensor devices are supposed to transmit data packets periodically anyway)</p>
+<p>Here we’re sending an <strong>Unconfirmed LoRaWAN Message</strong> to WisGate. Which means that we don’t expect an acknowledgement from WisGate.</p>
+<p>This is the preferred way for a low-power LoRaWAN device to transmit sensor data, since it <strong>doesn’t need to wait for the acknowledgement</strong> (and consume additional power).</p>
+<p>(It’s OK if a LoRaWAN Data Packet gets lost due to noise or inteference… LoRaWAN sensor devices are supposed to transmit data packets periodically anyway)</p>
 <p><em>What about receiving data from our LoRaWAN Gateway (WisGate)?</em></p>
-<p>We haven't configured WisGate to transmit data to our LoRaWAN Device.</p>
+<p>We haven’t configured WisGate to transmit data to our LoRaWAN Device.</p>
 <p>But the Callback Function to <strong>handle received packets</strong> is here: <a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L248-L257"><code>main.cpp</code></a></p>
 <pre><code class="language-c">//  Function for handling LoRaWan received data from Gateway
 void lorawan_rx_handler(lmh_app_data_t *app_data) {
@@ -388,7 +388,7 @@ void lorawan_rx_handler(lmh_app_data_t *app_data) {
     app_data-&gt;port, app_data-&gt;buffsize, app_data-&gt;rssi, app_data-&gt;snr, app_data-&gt;buffer);
 }
 </code></pre>
-<p>There's one more Callback Function (that we're not using) for <strong>switching the LoRaWAN Device Class</strong>: <a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L259-L267"><code>main.cpp</code></a></p>
+<p>There’s one more Callback Function (that we’re not using) for <strong>switching the LoRaWAN Device Class</strong>: <a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L259-L267"><code>main.cpp</code></a></p>
 <pre><code class="language-c">//  Callback Function that is called when the
 //  LoRaWAN Class has been changed
 void lorawan_confirm_class_handler(DeviceClass_t Class) {
@@ -407,10 +407,10 @@ uint32_t timers_init(void) {
 }
 </code></pre>
 <h1 id="wisblock-talks-to-wisgate" class="section-header"><a href="#wisblock-talks-to-wisgate">5 WisBlock Talks To WisGate</a></h1>
-<p>Let's <strong>run the Arduino program on WisBlock</strong> and watch what happens in the Arduino Log!</p>
+<p>Let’s <strong>run the Arduino program on WisBlock</strong> and watch what happens in the Arduino Log!</p>
 <ol>
 <li>
-<p>Our Arduino program starts by reminding us of the Over-The-Air Activation (OTAA) configuration: <strong>Device EUI, Application EUI (unused) and Application Key</strong>...</p>
+<p>Our Arduino program starts by reminding us of the Over-The-Air Activation (OTAA) configuration: <strong>Device EUI, Application EUI (unused) and Application Key</strong>…</p>
 <pre><code class="language-text">OTAA 
 DevEui=4B-C1-5E-E7-37-7B-B1-5B
 DevAdd=00000000
@@ -420,38 +420,38 @@ AppKey=AA-FF-AD-5C-7E-87-F6-4D-E3-F0-87-32-FC-1D-D2-5D
 <p>(Device Address will be assigned by WisGate when we join the LoRaWAN Network)</p>
 </li>
 <li>
-<p>We <strong>transmit the Join Network Request</strong> to WisGate...</p>
+<p>We <strong>transmit the Join Network Request</strong> to WisGate…</p>
 <pre><code class="language-text">Selected subband 1
 Joining LoRaWAN network...
 RadioSend: 00 00 00 00 00 00 00 00 00 5b b1 7b 37 e7 5e c1 4b 55 ed 7e 9b d6 af
 OnRadioTxDone
 </code></pre>
-<p>The Join Network Request contains these fields...</p>
+<p>The Join Network Request contains these fields…</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-join.png" alt="Join LoRaWAN Network Request" /></p>
 <p><em>But the Application Key is missing from the Join Network Request!?</em></p>
-<p>Yep! We'll learn why in a while.</p>
+<p>Yep! We’ll learn why in a while.</p>
 </li>
 <li>
-<p>To conserve power, LoRaWAN Devices (Class A) don't receive packets all the time.</p>
-<p>We listen for incoming packets (for a brief moment) <strong>only after we transmit a packet</strong>...</p>
+<p>To conserve power, LoRaWAN Devices (Class A) don’t receive packets all the time.</p>
+<p>We listen for incoming packets (for a brief moment) <strong>only after we transmit a packet</strong>…</p>
 <pre><code class="language-text">OnRadioTxDone =&gt; RX Windows #1 5002 #2 6002
 OnRadioTxDone =&gt; TX was Join Request
 </code></pre>
-<p>We've just transmitted a packet (Join Network Request), so <strong>we listen for an incoming packet</strong>. (Hopefully, the Join Network Response from WisGate)</p>
-<p>The LoRaWAN Specification actually defines <strong>Two Receive Windows</strong>. Which means that <strong>we listen twice (very briefly) for incoming packets</strong>, after sending every packet...</p>
+<p>We’ve just transmitted a packet (Join Network Request), so <strong>we listen for an incoming packet</strong>. (Hopefully, the Join Network Response from WisGate)</p>
+<p>The LoRaWAN Specification actually defines <strong>Two Receive Windows</strong>. Which means that <strong>we listen twice (very briefly) for incoming packets</strong>, after sending every packet…</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-window.png" alt="LoRaWAN Receive Window" /></p>
 </li>
 <li>
-<p>And indeed, we <strong>receive the Join Network Accepted Response</strong> from WisGate...</p>
+<p>And indeed, we <strong>receive the Join Network Accepted Response</strong> from WisGate…</p>
 <pre><code class="language-text">OnRadioRxDone
 OnRadioRxDone =&gt; FRAME_TYPE_JOIN_ACCEPT
 OTAA Mode, Network Joined!
 </code></pre>
-<p>The LoRaWAN Spec says we don't open the Second Receive Window if we receive a packet in the First Receive Window.</p>
-<p>So... We're good! </p>
+<p>The LoRaWAN Spec says we don’t open the Second Receive Window if we receive a packet in the First Receive Window.</p>
+<p>So… We’re good! </p>
 </li>
 <li>
-<p>20 seconds later we <strong>transmit our first data packet</strong> (&quot;<code>Hello!</code>&quot;)...</p>
+<p>20 seconds later we <strong>transmit our first data packet</strong> (“<code>Hello!</code>”)…</p>
 <pre><code class="language-text">Sending frame now...
 RadioSend: 40 3c 59 7a 00 80 00 00 02 17 77 31 fd 99 86 8f 4f cc ef 
 lmh_send ok count 1
@@ -459,22 +459,22 @@ OnRadioTxDone
 </code></pre>
 </li>
 <li>
-<p>Once again we open the <strong>Two Receive Windows</strong>...</p>
+<p>Once again we open the <strong>Two Receive Windows</strong>…</p>
 <pre><code class="language-text">OnRadioTxDone =&gt; RX Windows #1 1002 #2 2002
 RadioIrqProcess =&gt; IRQ_RX_TX_TIMEOUT
 OnRadioRxTimeout
 </code></pre>
-<p>We haven't configured WisGate to respond to our data packet. (Remember that we're sending Unconfirmed LoRaWAN Messages... No ack needed)</p>
+<p>We haven’t configured WisGate to respond to our data packet. (Remember that we’re sending Unconfirmed LoRaWAN Messages… No ack needed)</p>
 <p>So we get a <strong>Receive Timeout</strong>. Which is expected.</p>
 </li>
 <li>
-<p>20 seconds later we <strong>transmit our second data packet</strong>...</p>
+<p>20 seconds later we <strong>transmit our second data packet</strong>…</p>
 <pre><code class="language-text">Sending frame now...
 RadioSend: 40 3c 59 7a 00 80 01 00 02 0b 1f 7e 4d e1 94 c9 16 fa ea 
 lmh_send ok count 2
 OnRadioTxDone
 </code></pre>
-<p>We open the <strong>Two Receive Windows</strong> and we get a <strong>Receive Timeout</strong>, which is OK...</p>
+<p>We open the <strong>Two Receive Windows</strong> and we get a <strong>Receive Timeout</strong>, which is OK…</p>
 <pre><code class="language-text">OnRadioTxDone =&gt; RX Windows #1 1002 #2 2002
 RadioIrqProcess =&gt; IRQ_RX_TX_TIMEOUT
 OnRadioRxTimeout
@@ -484,7 +484,7 @@ OnRadioRxTimeout
 </li>
 </ol>
 <h1 id="view-received-lorawan-packets" class="section-header"><a href="#view-received-lorawan-packets">6 View Received LoRaWAN Packets</a></h1>
-<p>Let's head back to <strong>ChirpStack on our WisGate LoRaWAN Gateway</strong>, to observe the LoRaWAN Packets received from our Arduino Device (WisBlock)...</p>
+<p>Let’s head back to <strong>ChirpStack on our WisGate LoRaWAN Gateway</strong>, to observe the LoRaWAN Packets received from our Arduino Device (WisBlock)…</p>
 <ol>
 <li>
 <p>In ChirpStack, click <strong><code>Applications → app → device_otaa_class_a → Device Data</code></strong></p>
@@ -493,17 +493,17 @@ OnRadioRxTimeout
 <p>Restart our Arduino LoRaWAN Device (WisBlock)</p>
 </li>
 <li>
-<p>The <strong>Join Network Request</strong> appears...</p>
+<p>The <strong>Join Network Request</strong> appears…</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-devicedata1.png" alt="LoRaWAN Device Data" /></p>
 </li>
 <li>
-<p>20 seconds later the <strong>Data Packet</strong> appears...</p>
+<p>20 seconds later the <strong>Data Packet</strong> appears…</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-devicedata2.png" alt="LoRaWAN Device Data" /></p>
-<p><code>DecodedDataString</code> says &quot;<code>Hello!</code>&quot;</p>
+<p><code>DecodedDataString</code> says “<code>Hello!</code>”</p>
 </li>
 <li>
-<p>We may now configure ChirpStack to do something useful with the received packets, like publish them over MQTT, HTTP, ...</p>
-<p>Click this link...</p>
+<p>We may now configure ChirpStack to do something useful with the received packets, like publish them over MQTT, HTTP, …</p>
+<p>Click this link…</p>
 <ul>
 <li><a href="https://www.chirpstack.io/application-server/"><strong>ChirpStack Application Server</strong></a></li>
 </ul>
@@ -511,32 +511,32 @@ OnRadioRxTimeout
 </li>
 </ol>
 <h1 id="troubleshoot-lorawan" class="section-header"><a href="#troubleshoot-lorawan">7 Troubleshoot LoRaWAN</a></h1>
-<p>If our packets don't appear in ChirpStack, here are a couple of things to check...</p>
+<p>If our packets don’t appear in ChirpStack, here are a couple of things to check…</p>
 <h2 id="inspect-the-raw-packets" class="section-header"><a href="#inspect-the-raw-packets">7.1 Inspect the raw packets</a></h2>
 <p>To troubleshoot LoRaWAN problems, we may inspect the <strong>Raw LoRaWAN Packets</strong> received by our LoRaWAN Gateway (WisGate).</p>
-<p>In ChirpStack there are two ways do this...</p>
+<p>In ChirpStack there are two ways do this…</p>
 <ol>
 <li>
 <p>Click <strong><code>Gateways → rak-gateway → Live LoRaWAN Frames</code></strong></p>
 <p>This shows ALL LoRaWAN Packets received, even from unknown devices.</p>
-<p>(The packet data is encrypted, so we won't be able to read other people's messages)</p>
+<p>(The packet data is encrypted, so we won’t be able to read other people’s messages)</p>
 </li>
 <li>
 <p>Or click <strong><code>Applications → app → device_otaa_class_a → LoRaWAN Frames</code></strong></p>
 <p>This only shows LoRaWAN Packets from identified devices.</p>
 </li>
 </ol>
-<p>Here's the <strong>Raw Packet for Join Network Request</strong>...</p>
+<p>Here’s the <strong>Raw Packet for Join Network Request</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-frame1.png" alt="Raw LoRaWAN Join Network Request Packet" /></p>
-<p>And here's the <strong>Raw Data Packet</strong>...</p>
+<p>And here’s the <strong>Raw Data Packet</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-frame2.png" alt="Raw LoRaWAN Data Packet" /></p>
-<p>This is the mystery LoRaWAN Packet that my LoRaWAN Gateway (WisGate) receives every minute (with encrypted contents)...</p>
+<p>This is the mystery LoRaWAN Packet that my LoRaWAN Gateway (WisGate) receives every minute (with encrypted contents)…</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-frame3.png" alt="Raw LoRaWAN Data Packet from unknown device" /></p>
 <h2 id="check-the-log" class="section-header"><a href="#check-the-log">7.2 Check the log</a></h2>
-<p>SSH to WisGate and look at the <strong>Linux System Log</strong> while our LoRaWAN Device is transmitting packets...</p>
+<p>SSH to WisGate and look at the <strong>Linux System Log</strong> while our LoRaWAN Device is transmitting packets…</p>
 <pre><code class="language-bash">tail -f /var/log/syslog
 </code></pre>
-<p>Sometimes it's helpful to scan the log for <strong>Message Integrity Code</strong> errors...</p>
+<p>Sometimes it’s helpful to scan the log for <strong>Message Integrity Code</strong> errors…</p>
 <pre><code class="language-bash"># grep MIC /var/log/syslog
 
 Apr 28 04:02:05 rak-gateway 
@@ -547,7 +547,7 @@ msg=&quot;invalid MIC&quot;
 dev_eui=4bc15ee7377bb15b 
 type=DATA_UP_MIC
 </code></pre>
-<p>Also for <strong>Nonce Errors</strong>...</p>
+<p>Also for <strong>Nonce Errors</strong>…</p>
 <pre><code class="language-bash"># grep nonce /var/log/syslog
 
 Apr 28 04:02:41 rak-gateway chirpstack-application-server[568]:
@@ -557,18 +557,18 @@ msg=&quot;validate dev-nonce error&quot;
 dev_eui=4bc15ee7377bb15b 
 type=OTAA
 </code></pre>
-<p>We'll talk about Message Integrity Code and Nonce in a while.</p>
+<p>We’ll talk about Message Integrity Code and Nonce in a while.</p>
 <h2 id="snoop-with-software-defined-radio" class="section-header"><a href="#snoop-with-software-defined-radio">7.3 Snoop with Software Defined Radio</a></h2>
 <p>To verify the actual frequency that our LoRaWAN Device is transmitting on, we may sniff the airwaves with a <strong>Software Defined Radio</strong>.</p>
 <p>Or use a Spectrum Analyser like <strong>RF Explorer</strong>. <a href="https://lupyuen.github.io/articles/lora#troubleshoot-lora">(See this)</a></p>
-<p>Let's talk about Software Defined Radio...</p>
+<p>Let’s talk about Software Defined Radio…</p>
 <h1 id="visualise-lorawan-with-software-defined-radio" class="section-header"><a href="#visualise-lorawan-with-software-defined-radio">8 Visualise LoRaWAN with Software Defined Radio</a></h1>
 <p>A <strong>Software Defined Radio (SDR)</strong> is a USB gadget that scans the airwaves (for a range of frequencies) and feeds the data to our computer for processing.</p>
-<p>I use the <a href="https://www.itead.cc/airspy.html"><strong>Airspy R2 SDR</strong></a> to sniff the airwaves and verify that our LoRaWAN Device is transmitting at the <strong>right frequency with sufficient power</strong>...</p>
+<p>I use the <a href="https://www.itead.cc/airspy.html"><strong>Airspy R2 SDR</strong></a> to sniff the airwaves and verify that our LoRaWAN Device is transmitting at the <strong>right frequency with sufficient power</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-airspy.jpg" alt="Airspy R2 SDR" /></p>
-<p>Here's the <strong>Join Network Request</strong> transmitted by WisBlock to WisGate, captured by Airspy SDR and visualised with <a href="https://cubicsdr.com/"><strong>Cubic SDR</strong></a>...</p>
+<p>Here’s the <strong>Join Network Request</strong> transmitted by WisBlock to WisGate, captured by Airspy SDR and visualised with <a href="https://cubicsdr.com/"><strong>Cubic SDR</strong></a>…</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-chirp1.png" alt="LoRaWAN Chirp: Device to Gateway" /></p>
-<p>And here's the <strong>Join Network Response</strong> returned by WisGate to WisBlock...</p>
+<p>And here’s the <strong>Join Network Response</strong> returned by WisGate to WisBlock…</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-chirp2.png" alt="LoRaWAN Chirp: Gateway to Device" /></p>
 <p>(Our SDR is located near WisBlock, hence the WisGate signal looks slightly weaker)</p>
 <p>LoRaWAN Packets have a distinct cross-hatch pattern known as the <strong>LoRa Chirp</strong>. By transmitting packets in this unique chirping pattern, LoRa ensures that packets will be delivered over long distances in spite of the noise and interference.</p>
@@ -581,11 +581,11 @@ type=OTAA
 </li>
 </ul>
 <h1 id="lorawan-security" class="section-header"><a href="#lorawan-security">9 LoRaWAN Security</a></h1>
-<p>I'm no Security Expert... But lemme attempt to explain the high-level bits of LoRaWAN Security to the best of my understanding 🙏</p>
+<p>I’m no Security Expert… But lemme attempt to explain the high-level bits of LoRaWAN Security to the best of my understanding 🙏</p>
 <h2 id="join-network-request" class="section-header"><a href="#join-network-request">9.1 Join Network Request</a></h2>
-<p>Let's start by looking at the <strong>Join Network Request</strong> transmitted by our LoRaWAN Device (WisBlock) to our LoRaWAN Gateway (WisGate). And understand why it's secure...</p>
+<p>Let’s start by looking at the <strong>Join Network Request</strong> transmitted by our LoRaWAN Device (WisBlock) to our LoRaWAN Gateway (WisGate). And understand why it’s secure…</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-join.png" alt="Join LoRaWAN Network Request" /></p>
-<p>There are 5 parts in the request...</p>
+<p>There are 5 parts in the request…</p>
 <ol>
 <li>
 <p><strong>Header</strong> (1 byte): Identifies this LoRaWAN Packet as a Join Network Request</p>
@@ -597,17 +597,17 @@ type=OTAA
 <p><strong>Device EUI</strong> (8 bytes): Uniquely identifies our LoRaWAN Device. (The bytes are flipped)</p>
 </li>
 <li>
-<p><strong>Nonce</strong> (2 bytes): We'll explain in a while</p>
+<p><strong>Nonce</strong> (2 bytes): We’ll explain in a while</p>
 </li>
 <li>
-<p><strong>Message Integrity Code</strong> (4 bytes): We'll explain now</p>
+<p><strong>Message Integrity Code</strong> (4 bytes): We’ll explain now</p>
 </li>
 </ol>
 <h2 id="message-integrity-code" class="section-header"><a href="#message-integrity-code">9.2 Message Integrity Code</a></h2>
-<p><em>Why isn't the Application Key inside the Join Network Request?</em></p>
+<p><em>Why isn’t the Application Key inside the Join Network Request?</em></p>
 <p>Because the <strong>Application Key is a Secret Key</strong>. It should never be revealed to others, otherwise our gateway will accept Join Network Requests from unauthorised devices.</p>
 <p>Instead we use the Application Key to compute a <strong><a href="https://en.wikipedia.org/wiki/Message_authentication_code">Message Authentication Code</a> (AES-128 CMAC)</strong>. And we transmit the first 4 bytes of the authentication code as the <strong>Message Integrity Code</strong>.</p>
-<p>According to the LoRaWAN Spec, the Message Authentication Code (for the Join Network Request) is computed with these input values...</p>
+<p>According to the LoRaWAN Spec, the Message Authentication Code (for the Join Network Request) is computed with these input values…</p>
 <ol>
 <li>
 <p><strong>Application Key</strong></p>
@@ -622,12 +622,12 @@ type=OTAA
 <p><strong>Device EUI</strong></p>
 </li>
 <li>
-<p><strong>Nonce</strong> (We'll explain in the next section)</p>
+<p><strong>Nonce</strong> (We’ll explain in the next section)</p>
 </li>
 </ol>
 <p><em>What happens when we transmit an invalid Message Integrity Code?</em></p>
 <p>Our LoRaWAN Gateway (ChirpStack on WisGate) will <strong>reject LoRaWAN Packets with invalid Message Integrity Codes</strong>.</p>
-<p>To see Message Integrity Code errors, SSH to our LoRaWAN Gateway and search for...</p>
+<p>To see Message Integrity Code errors, SSH to our LoRaWAN Gateway and search for…</p>
 <pre><code class="language-bash"># grep MIC /var/log/syslog
 
 Apr 28 04:02:05 rak-gateway 
@@ -647,13 +647,13 @@ ctx_id=0ccd1478-3b79-4ded-9e26-a28e4c143edc
 error=&quot;get device-session error: invalid MIC&quot;
 </code></pre>
 <h2 id="nonce" class="section-header"><a href="#nonce">9.3 Nonce</a></h2>
-<p><em>There isn't a Timestamp in the request. Could someone record and replay the Join Network Request?</em></p>
-<p>That's why we have the <strong>Nonce</strong>: A 16-bit number that's only <strong>used once and never reused</strong> by our LoRaWAN Device.</p>
-<p>The Nonce appears in the Join Network Request, and it's also used for computing the Message Integrity Code.</p>
+<p><em>There isn’t a Timestamp in the request. Could someone record and replay the Join Network Request?</em></p>
+<p>That’s why we have the <strong>Nonce</strong>: A 16-bit number that’s only <strong>used once and never reused</strong> by our LoRaWAN Device.</p>
+<p>The Nonce appears in the Join Network Request, and it’s also used for computing the Message Integrity Code.</p>
 <p><em>What happens when we replay a Join Network Request?</em></p>
 <p>Our LoRaWAN Gateway (ChirpStack on WisGate) will <strong>reject Join Network Requests that have a reused Nonce</strong>.</p>
 <p>(Yep the gateway will remember the Nonces from previous requests)</p>
-<p>To see Nonce errors, SSH to our LoRaWAN Gateway and search for...</p>
+<p>To see Nonce errors, SSH to our LoRaWAN Gateway and search for…</p>
 <pre><code class="language-bash"># grep nonce /var/log/syslog
 
 Apr 28 04:02:41 rak-gateway chirpstack-application-server[568]:
@@ -669,22 +669,22 @@ level=error
 msg=&quot;uplink: processing uplink frame error&quot; ctx_id=01ae296e-8ce1-449a-83cc-fb0771059d89 
 error=&quot;validate dev-nonce error: object already exists&quot;
 </code></pre>
-<p>Here's the LoRaWAN Spec for the Nonce and Message Integrity Code...</p>
+<p>Here’s the LoRaWAN Spec for the Nonce and Message Integrity Code…</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-join2.png" alt="Join LoRaWAN Network Request" /></p>
-<p>For other LoRaWAN Packets (besides the Join Network Request), the Message Integrity Code is computed differently...</p>
+<p>For other LoRaWAN Packets (besides the Join Network Request), the Message Integrity Code is computed differently…</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-mic.png" alt="LoRaWAN Message Integrity Code" /></p>
 <h2 id="more-about-security" class="section-header"><a href="#more-about-security">9.4 More About Security</a></h2>
-<p>LoRaWAN Payloads are <strong>encrypted with AES-128</strong>, says the LoRaWAN Spec...</p>
+<p>LoRaWAN Payloads are <strong>encrypted with AES-128</strong>, says the LoRaWAN Spec…</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-encrypt.png" alt="LoRaWAN Encryption" /></p>
-<p>And that's the limit of my security know-how 🙁</p>
-<p>To learn more about LoRaWAN Security, I recommend this article...</p>
+<p>And that’s the limit of my security know-how 🙁</p>
+<p>To learn more about LoRaWAN Security, I recommend this article…</p>
 <ul>
-<li><a href="https://lora-alliance.org/resource_hub/lorawan-is-secure-but-implementation-matters/"><strong>&quot;LoRaWAN® Is Secure (but Implementation Matters)&quot;</strong></a></li>
+<li><a href="https://lora-alliance.org/resource_hub/lorawan-is-secure-but-implementation-matters/"><strong>“LoRaWAN® Is Secure (but Implementation Matters)”</strong></a></li>
 </ul>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">10 What's Next</a></h1>
-<p>This has been a fun experience for me, diving deep into LoRaWAN with the RAKwireless WisGate LoRaWAN Gateway... <strong>My first time using LoRaWAN!</strong></p>
-<p>I hope you find this article useful. Now that I know some LoRaWAN, I'm heading back to <a href="https://lupyuen.github.io/articles/lora2"><strong>PineCone BL602</strong></a> to finish what I started...</p>
-<p><a href="https://lupyuen.github.io/articles/lorawan"><strong>&quot;PineCone BL602 Talks LoRaWAN&quot;</strong></a></p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">10 What’s Next</a></h1>
+<p>This has been a fun experience for me, diving deep into LoRaWAN with the RAKwireless WisGate LoRaWAN Gateway… <strong>My first time using LoRaWAN!</strong></p>
+<p>I hope you find this article useful. Now that I know some LoRaWAN, I’m heading back to <a href="https://lupyuen.github.io/articles/lora2"><strong>PineCone BL602</strong></a> to finish what I started…</p>
+<p><a href="https://lupyuen.github.io/articles/lorawan"><strong>“PineCone BL602 Talks LoRaWAN”</strong></a></p>
 <ul>
 <li>
 <p><a href="https://github.com/sponsors/lupyuen">Sponsor me a coffee</a></p>
@@ -693,7 +693,7 @@ error=&quot;validate dev-nonce error: object already exists&quot;
 <p><a href="https://www.reddit.com/r/Lora/comments/n1qv3l/build_a_lorawan_network_with_rakwireless_wisgate/?utm_source=share&amp;utm_medium=web2x&amp;context=3">Discuss this article on Reddit</a></p>
 </li>
 <li>
-<p><a href="https://lupyuen.github.io/articles/book">Read &quot;The RISC-V BL602 Book&quot;</a></p>
+<p><a href="https://lupyuen.github.io/articles/book">Read “The RISC-V BL602 Book”</a></p>
 </li>
 <li>
 <p><a href="https://lupyuen.github.io">Check out my articles</a></p>
@@ -702,17 +702,17 @@ error=&quot;validate dev-nonce error: object already exists&quot;
 <p><a href="https://lupyuen.github.io/rss.xml">RSS Feed</a></p>
 </li>
 </ul>
-<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
+<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/wisgate.md"><code>lupyuen.github.io/src/wisgate.md</code></a></p>
 <h1 id="notes" class="section-header"><a href="#notes">11 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1379926160377851910">this Twitter Thread</a></li>
 </ol>
 <h1 id="appendix-log-transmitted-packets" class="section-header"><a href="#appendix-log-transmitted-packets">12 Appendix: Log Transmitted Packets</a></h1>
-<p>To log transmitted packets in our Arduino program, modify this source file...</p>
+<p>To log transmitted packets in our Arduino program, modify this source file…</p>
 <pre><code class="language-text">.pio/libdeps/wiscore_rak4631/SX126x-Arduino/src/mac/LoRaMac.cpp
 </code></pre>
-<p>Insert the section marked below...</p>
+<p>Insert the section marked below…</p>
 <pre><code class="language-c">LoRaMacStatus_t SendFrameOnChannel(uint8_t channel)
 {
     TxConfigParams_t txConfig;

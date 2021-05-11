@@ -91,7 +91,7 @@
 <li><a href="#caching-considerations">8.12 Caching Considerations</a><ul></ul></li></ul></li>
 <li><a href="#run-mynewt-on-pinecone">9 Run Mynewt on PineCone</a><ul>
 <li><a href="#jtag-foiled-by-gpio">9.1 JTAG Foiled By GPIO</a><ul></ul></li></ul></li>
-<li><a href="#whats-next">10 What's Next</a><ul></ul></li>
+<li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
 <li><a href="#notes">11 Notes</a><ul></ul></li>
 <li><a href="#appendix-inventory-of-sensors-and-actuators">12 Appendix: Inventory of Sensors and Actuators</a><ul>
 <li><a href="#sensors">12.1 Sensors</a><ul></ul></li>
@@ -100,34 +100,34 @@
 <li><a href="#appendix-github-actions-environment">13 Appendix: GitHub Actions Environment</a><ul>
 <li><a href="#environment-variables">13.1 Environment Variables</a><ul></ul></li>
 <li><a href="#file-system">13.2 File System</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>15 Jan 2021</em></p>
-<p>A month ago we started porting <a href="https://mynewt.apache.org/"><strong>Apache Mynewt</strong></a>, a modern embedded operating system, to PineCone BL602...</p>
+<p>A month ago we started porting <a href="https://mynewt.apache.org/"><strong>Apache Mynewt</strong></a>, a modern embedded operating system, to PineCone BL602…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/mynewt"><strong>&quot;Porting Mynewt to PineCone BL602&quot;</strong></a></li>
+<li><a href="https://lupyuen.github.io/articles/mynewt"><strong>“Porting Mynewt to PineCone BL602”</strong></a></li>
 </ul>
-<p>Then last week we learnt about the <strong>Hardware Abstraction Layer</strong> provided by the <strong>BL602 IoT SDK</strong> for controlling GPIO...</p>
+<p>Then last week we learnt about the <strong>Hardware Abstraction Layer</strong> provided by the <strong>BL602 IoT SDK</strong> for controlling GPIO…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/led"><strong>&quot;Control PineCone BL602 RGB LED with GPIO and PWM&quot;</strong></a></li>
+<li><a href="https://lupyuen.github.io/articles/led"><strong>“Control PineCone BL602 RGB LED with GPIO and PWM”</strong></a></li>
 </ul>
-<p>Today we shall...</p>
+<p>Today we shall…</p>
 <ol>
 <li>
-<p><strong>Embed BL602's Hardware Abstraction Layer</strong> inside Mynewt</p>
+<p><strong>Embed BL602’s Hardware Abstraction Layer</strong> inside Mynewt</p>
 </li>
 <li>
-<p><strong>Map Mynewt's GPIO Functions</strong> to BL602's Hardware Abstraction Layer</p>
+<p><strong>Map Mynewt’s GPIO Functions</strong> to BL602’s Hardware Abstraction Layer</p>
 </li>
 <li>
 <p><strong>Build Mynewt BL602 automatically</strong> with GitHub Actions</p>
 </li>
 </ol>
-<p>If you're new to PineCone BL602, check out my article...</p>
+<p>If you’re new to PineCone BL602, check out my article…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/pinecone"><strong>&quot;Quick Peek of PineCone BL602 RISC-V Evaluation Board&quot;</strong></a></li>
+<li><a href="https://lupyuen.github.io/articles/pinecone"><strong>“Quick Peek of PineCone BL602 RISC-V Evaluation Board”</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/gpio-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board with LED controlled by Apache Mynewt" /></p>
 <p><em>PineCone BL602 RISC-V Evaluation Board with LED controlled by Apache Mynewt</em></p>
 <h1 id="our-mynewt-gpio-program" class="section-header"><a href="#our-mynewt-gpio-program">1 Our Mynewt GPIO Program</a></h1>
-<p>Here's the Mynewt Program that actually runs on our PineCone BL602 Board and switches on the Blue LED: <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/apps/blinky/src/main.c"><code>main.c</code></a></p>
+<p>Here’s the Mynewt Program that actually runs on our PineCone BL602 Board and switches on the Blue LED: <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/apps/blinky/src/main.c"><code>main.c</code></a></p>
 <pre><code class="language-c">#include &lt;sysinit/sysinit.h&gt;  //  Init Functions
 #include &lt;os/os.h&gt;            //  Mynewt Functions
 #include &lt;bsp/bsp.h&gt;          //  Board Support Package
@@ -150,30 +150,30 @@ int main(int argc, char **argv) {
     for(;;) {}
 }
 </code></pre>
-<p>We're looking at the beauty of Mynewt... Minimal fuss, easy to read, perfect for <strong>learning embedded programming!</strong></p>
-<p>Mynewt Programs are <strong>Portable</strong> too... <code>hal_gpio_init_out</code> and <code>hal_gpio_write</code> will work on many microcontrollers: STM32 Blue Pill (Arm), Nordic Semi nRF52 (Arm too), SiFive HiFive1 (RISC-V)... And now PineCone BL602 (RISC-V yay!)</p>
+<p>We’re looking at the beauty of Mynewt… Minimal fuss, easy to read, perfect for <strong>learning embedded programming!</strong></p>
+<p>Mynewt Programs are <strong>Portable</strong> too… <code>hal_gpio_init_out</code> and <code>hal_gpio_write</code> will work on many microcontrollers: STM32 Blue Pill (Arm), Nordic Semi nRF52 (Arm too), SiFive HiFive1 (RISC-V)… And now PineCone BL602 (RISC-V yay!)</p>
 <p>The GPIO Pin Numbers will differ. But on PineCone, this Mynewt Program lights up the Blue LED, exactly like the pic above.</p>
-<p>The LED GPIOs are defined in <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/bsp/pinecone/include/bsp/bsp.h"><code>bsp/bsp.h</code></a>...</p>
+<p>The LED GPIOs are defined in <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/bsp/pinecone/include/bsp/bsp.h"><code>bsp/bsp.h</code></a>…</p>
 <pre><code class="language-c">//  Define the LED GPIOs: 11 (Blue), 14 (Green), 17 (Red)
 #define LED_BLUE_PIN  11
 #define LED_GREEN_PIN 14
 #define LED_RED_PIN   17
 </code></pre>
-<p>Let's find out how we made this work.</p>
+<p>Let’s find out how we made this work.</p>
 <h1 id="but-why-mynewt" class="section-header"><a href="#but-why-mynewt">2 But Why Mynewt?</a></h1>
 <blockquote>
-<p><em>We have many options for learning Embedded Programming on PineCone BL602... Why Mynewt?</em></p>
+<p><em>We have many options for learning Embedded Programming on PineCone BL602… Why Mynewt?</em></p>
 </blockquote>
 <ul>
-<li>Let's review the options available today for learning Embedded Programming on PineCone BL602...</li>
+<li>Let’s review the options available today for learning Embedded Programming on PineCone BL602…</li>
 </ul>
 <blockquote>
-<p><em>BL602's native IoT SDK looks easy for coding BL602 in C... Supports Multitasking through FreeRTOS (like reading sensor data and sending to network concurrently)</em></p>
+<p><em>BL602’s native IoT SDK looks easy for coding BL602 in C… Supports Multitasking through FreeRTOS (like reading sensor data and sending to network concurrently)</em></p>
 </blockquote>
 <ul>
 <li>
-<p>But with <strong>BL602 IoT SDK</strong> we'll be locked in to BL602. Our programs won't run on other microcontrollers. </p>
-<p>And we can't easily port programs from other devices to BL602 either.</p>
+<p>But with <strong>BL602 IoT SDK</strong> we’ll be locked in to BL602. Our programs won’t run on other microcontrollers. </p>
+<p>And we can’t easily port programs from other devices to BL602 either.</p>
 </li>
 </ul>
 <blockquote>
@@ -182,7 +182,7 @@ int main(int argc, char **argv) {
 <ul>
 <li>
 <p><strong>Arduino</strong> is kinda ancient for embedded coding. (And the Bit Banging looks disturbing) </p>
-<p>Could there be a modern alternative that works better with today's multitasking microcontrollers?</p>
+<p>Could there be a modern alternative that works better with today’s multitasking microcontrollers?</p>
 <p><a href="https://github.com/pine64/ArduinoCore-bouffalo">More about Arduino on BL602</a></p>
 </li>
 </ul>
@@ -192,26 +192,26 @@ int main(int argc, char **argv) {
 <ul>
 <li>
 <p><strong>Mbed OS</strong> looks complex for learners. (Based on C++)</p>
-<p>And Mbed OS was created by Arm so...</p>
+<p>And Mbed OS was created by Arm so…</p>
 </li>
 </ul>
 <blockquote>
-<p><em>Zephyr? It's well supported by Linux Foundation and many microcontroller manufacturers</em></p>
+<p><em>Zephyr? It’s well supported by Linux Foundation and many microcontroller manufacturers</em></p>
 </blockquote>
 <ul>
 <li>
 <p>Maybe something simpler than <strong>Zephyr</strong>? As simple as the program above? </p>
-<p>Something that compiles easily on Linux, macOS and Windows... Without WSL and Docker?</p>
-<p>(We'll save Zephyr for the bravest embedded professionals)</p>
+<p>Something that compiles easily on Linux, macOS and Windows… Without WSL and Docker?</p>
+<p>(We’ll save Zephyr for the bravest embedded professionals)</p>
 </li>
 </ul>
 <blockquote>
-<p><em>Alrighty Nitpicky... We're left with Mynewt. But it's not as popular as Zephyr</em></p>
+<p><em>Alrighty Nitpicky… We’re left with Mynewt. But it’s not as popular as Zephyr</em></p>
 </blockquote>
 <ul>
 <li>
-<p><strong>Mynewt</strong> was designed as a simple tiny OS... And that's OK!</p>
-<p>(Mynewt is named after &quot;minute&quot; i.e. &quot;small&quot;, not the lizard)</p>
+<p><strong>Mynewt</strong> was designed as a simple tiny OS… And that’s OK!</p>
+<p>(Mynewt is named after “minute” i.e. “small”, not the lizard)</p>
 <p>Mynewt is easy to port to BL602. And our porting work will benefit Zephyr later.</p>
 </li>
 </ul>
@@ -220,13 +220,13 @@ int main(int argc, char **argv) {
 </blockquote>
 <ul>
 <li>
-<p><strong>Embedded Rust</strong> looks very promising... Clean and safe embedded coding.</p>
-<p>There's ongoing work on Embedded Rust for BL602 so let's wait for it. <a href="https://github.com/sipeed/bl602-hal">More details</a></p>
-<p>Meanwhile I'll do Rust the shortcut way... Run it on top of Mynewt. (Instead of Bare Metal)</p>
+<p><strong>Embedded Rust</strong> looks very promising… Clean and safe embedded coding.</p>
+<p>There’s ongoing work on Embedded Rust for BL602 so let’s wait for it. <a href="https://github.com/sipeed/bl602-hal">More details</a></p>
+<p>Meanwhile I’ll do Rust the shortcut way… Run it on top of Mynewt. (Instead of Bare Metal)</p>
 </li>
 </ul>
 <blockquote>
-<p><em>So we'll have Rust on Mynewt?</em></p>
+<p><em>So we’ll have Rust on Mynewt?</em></p>
 </blockquote>
 <ul>
 <li>Yep! Very soon we shall write embedded programs for PineCone BL602 the simpler safer way in <strong>Rust and Mynewt</strong>. (Without the headaches of C Pointers!)</li>
@@ -235,21 +235,21 @@ int main(int argc, char **argv) {
 <h1 id="mynewt-and-bl602-layers" class="section-header"><a href="#mynewt-and-bl602-layers">3 Mynewt and BL602 Layers</a></h1>
 <p><em>How does Mynewt create programs that are portable to other microcontrollers?</em></p>
 <p>By using layers of code that isolate the differences between microcontrollers (like BL602) and boards (like PineCone).</p>
-<p>(Dressing in layers is a very good thing... Especially in Winter!)</p>
-<p>Here's how we layer the code in Mynewt...</p>
+<p>(Dressing in layers is a very good thing… Especially in Winter!)</p>
+<p>Here’s how we layer the code in Mynewt…</p>
 <p><img src="https://lupyuen.github.io/images/gpio-stack.png" alt="Mynewt and BL602 IoT SDK Layers" /></p>
 <ol>
 <li>
-<p><strong>Main Function</strong>: We've seen the Main Function at the top of the article... It lights up the Blue LED.</p>
+<p><strong>Main Function</strong>: We’ve seen the Main Function at the top of the article… It lights up the Blue LED.</p>
 <p>Assuming that the GPIO Pin Number is defined correctly, the same Main Function will light up the LED <strong>on any microcontroller</strong>.</p>
-<p>That's why this is portable, <strong>Hardware Independent</strong> code. A key feature of modern embedded operating systems.</p>
+<p>That’s why this is portable, <strong>Hardware Independent</strong> code. A key feature of modern embedded operating systems.</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/apps/blinky/src/main.c"><strong>Main Function: <code>main.c</code></strong></a></li>
 </ul>
 </li>
 <li>
-<p><strong>Board Support Package</strong>: This layer contains code that's specific to the Hardware Board, like PineCone.</p>
-<p>The Blue LED is connected at GPIO 11 on PineCone... And these details will vary depending on the BL602 Board that we use (say PineCone vs Pinenut).</p>
+<p><strong>Board Support Package</strong>: This layer contains code that’s specific to the Hardware Board, like PineCone.</p>
+<p>The Blue LED is connected at GPIO 11 on PineCone… And these details will vary depending on the BL602 Board that we use (say PineCone vs Pinenut).</p>
 <p>So it makes sense to capture such <strong>Board Specific</strong> details inside the Board Support Package layer.</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/bsp/pinecone"><strong>PineCone Board Support Package: <code>hw/bsp/pinecone</code></strong></a></li>
@@ -263,7 +263,7 @@ int main(int argc, char **argv) {
 </li>
 <li>
 <p><strong>Hardware Abstraction Layer</strong>: This layer is lifted directly from the <strong>BL602 IoT SDK</strong> (with minimal changes).</p>
-<p>Here we find the functions that control the BL602 hardware: GPIO, PWM, UART, I2C, SPI, ...</p>
+<p>Here we find the functions that control the BL602 hardware: GPIO, PWM, UART, I2C, SPI, …</p>
 <ul>
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal"><strong>BL602 Hardware Abstraction Layer: <code>components/hal_drv/bl602_hal</code></strong></a></li>
 </ul>
@@ -277,9 +277,9 @@ int main(int argc, char **argv) {
 </ol>
 <p><em>What about the rest of the BL602 IoT SDK?</em></p>
 <p>We have integrated the smallest subset of functions from the BL602 SDK that are needed for Mynewt. The rest are not needed (yet).</p>
-<p>In particular, we don't compile under Mynewt the FreeRTOS driver code from the BL602 SDK. Because running two operating systems side by side would be a disaster!</p>
+<p>In particular, we don’t compile under Mynewt the FreeRTOS driver code from the BL602 SDK. Because running two operating systems side by side would be a disaster!</p>
 <h1 id="calling-the-mynewt-and-bl602-layers" class="section-header"><a href="#calling-the-mynewt-and-bl602-layers">4 Calling the Mynewt and BL602 Layers</a></h1>
-<p>To better understand the Mynewt and BL602 Layers, let's walk through the chain of function calls for a GPIO operation...</p>
+<p>To better understand the Mynewt and BL602 Layers, let’s walk through the chain of function calls for a GPIO operation…</p>
 <p><img src="https://lupyuen.github.io/images/gpio-stack2.png" alt="Mynewt and BL602 IoT SDK Layers" /></p>
 <ol>
 <li>
@@ -299,7 +299,7 @@ int main(int argc, char **argv) {
 </li>
 <li>
 <p><strong><code>hal_gpio_init_out</code></strong> is a standard Mynewt GPIO Function that works on any microcontroller. But its implementation is specific to the microcontroller.</p>
-<p>Here's the implementation of <code>hal_gpio_init_out</code> in our <strong>Microcontroller Package for BL602</strong>: <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/mcu/bl/bl602/src/hal_gpio.c"><code>bl602/hal_gpio.c</code></a></p>
+<p>Here’s the implementation of <code>hal_gpio_init_out</code> in our <strong>Microcontroller Package for BL602</strong>: <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/mcu/bl/bl602/src/hal_gpio.c"><code>bl602/hal_gpio.c</code></a></p>
 <pre><code class="language-c">int hal_gpio_init_out(int pin, int val) {
     int rc = bl_gpio_enable_output(pin, 0, 0);
 </code></pre>
@@ -313,13 +313,13 @@ int main(int argc, char **argv) {
 </li>
 <li>
 <p>And finally we call <strong><code>GLB_GPIO_Init</code></strong>, which is defined in the <strong>Standard Driver from BL602 IoT SDK</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c"><code>StdDriver/bl602_glb.c</code></a></p>
-<p>GLB refers to <strong>BL602's Global Register</strong>.</p>
+<p>GLB refers to <strong>BL602’s Global Register</strong>.</p>
 <p><code>GLB_GPIO_Init</code> manipulates the GLB Hardware Register to control the GPIO Hardware and switch GPIO 11 to output mode.</p>
 </li>
 </ol>
 <h1 id="compile-bl602-sdk-under-mynewt" class="section-header"><a href="#compile-bl602-sdk-under-mynewt">5 Compile BL602 SDK under Mynewt</a></h1>
 <p><em>How do we specify which folders of BL602 IoT SDK to compile under Mynewt?</em></p>
-<p>Remember that we're compiling the smallest subset of functions from the BL602 IoT SDK that are needed for Mynewt...</p>
+<p>Remember that we’re compiling the smallest subset of functions from the BL602 IoT SDK that are needed for Mynewt…</p>
 <ol>
 <li>
 <p><strong>BL602 Hardware Abstraction Layer</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/components/hal_drv/bl602_hal"><code>hal_drv/bl602_hal</code></a></p>
@@ -328,7 +328,7 @@ int main(int argc, char **argv) {
 <p><strong>BL602 Standard Driver</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/components/bl602/bl602_std/bl602_std/StdDriver"><code>bl602/bl602_std/ bl602_std/StdDriver</code></a></p>
 </li>
 </ol>
-<p>We specify these folders in Mynewt's Microcontroller Package for BL602: <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/mcu/bl/bl602/pkg.yml"><code>hw/mcu/bl/ bl602/pkg.yml</code></a></p>
+<p>We specify these folders in Mynewt’s Microcontroller Package for BL602: <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/mcu/bl/bl602/pkg.yml"><code>hw/mcu/bl/ bl602/pkg.yml</code></a></p>
 <pre><code class="language-yaml">pkg.src_dirs:
     - src
     # Select the BL602 IoT SDK folders to be included for the build
@@ -353,43 +353,43 @@ int main(int argc, char **argv) {
     - -Ihw/mcu/bl/bl602/ext/bl_iot_sdk/components/bl602/bl602_std/bl602_std/Common/soft_crc
     ...
 </code></pre>
-<p>The above options were obtained by running <code>make</code> in Trace Mode when building the BL602 IoT SDK...</p>
+<p>The above options were obtained by running <code>make</code> in Trace Mode when building the BL602 IoT SDK…</p>
 <pre><code class="language-bash">make --trace
 </code></pre>
-<p>To preserve the integrity of the BL602 IoT SDK, the entire SDK is mounted under the Mynewt Project as a Git Submodule at...</p>
+<p>To preserve the integrity of the BL602 IoT SDK, the entire SDK is mounted under the Mynewt Project as a Git Submodule at…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/hw/mcu/bl/bl602/ext"><code>hw/mcu/bl/bl602/ext</code></a></li>
 </ul>
 <h1 id="freertos-references-in-bl602-sdk" class="section-header"><a href="#freertos-references-in-bl602-sdk">6 FreeRTOS References in BL602 SDK</a></h1>
 <p><em>Does the BL602 IoT SDK depend on any External Library?</em></p>
-<p>Unfortunately yes... The BL602 IoT SDK (Hardware Abstraction Layer) depends on FreeRTOS. And this complicates the porting to Mynewt.</p>
-<p>Let's look at this code from the BL602 Security (Crypto) HAL: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_sec.c"><code>bl602_hal/bl_sec.c</code></a></p>
+<p>Unfortunately yes… The BL602 IoT SDK (Hardware Abstraction Layer) depends on FreeRTOS. And this complicates the porting to Mynewt.</p>
+<p>Let’s look at this code from the BL602 Security (Crypto) HAL: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_sec.c"><code>bl602_hal/bl_sec.c</code></a></p>
 <pre><code class="language-c">int bl_sec_init(void) {
     g_bl_sec_sha_mutex = xSemaphoreCreateMutexStatic(&amp;sha_mutex_buf);
 </code></pre>
 <p>This code calls FreeRTOS to create a Mutex (Mutually Exclusive Lock) to prevent tasks from accessing some shared data concurrently.</p>
-<p>Mynewt fails to compile this because <code>xSemaphoreCreateMutexStatic</code> isn't defined. To work around this, we gave Mynewt a Mock Declaration for the undefined function: <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/mcu/bl/bl602/include/semphr.h"><code>semphr.h</code></a></p>
+<p>Mynewt fails to compile this because <code>xSemaphoreCreateMutexStatic</code> isn’t defined. To work around this, we gave Mynewt a Mock Declaration for the undefined function: <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/mcu/bl/bl602/include/semphr.h"><code>semphr.h</code></a></p>
 <p>It compiles OK under Mynewt for now. But eventually we need to implement <code>xSemaphoreCreateMutexStatic</code> with a Mynewt Semaphore.</p>
-<p>Here are the other Mock Declarations for FreeRTOS on Mynewt...</p>
+<p>Here are the other Mock Declarations for FreeRTOS on Mynewt…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/hw/mcu/bl/bl602/include"><code>hw/mcu/bl/bl602/include</code></a></li>
 </ul>
 <p><em>Should the BL602 Hardware Abstraction Layer call FreeRTOS?</em></p>
-<p>This is highly unusual... The Hardware Abstraction Layer (HAL) is Low-Level Code that's meant to called by various Operating Systems. So we don't expect BL602 HAL to call FreeRTOS directly.</p>
-<p>(STM32 Blue Pill HAL and nRF52 HAL don't call any Operating Systems either)</p>
+<p>This is highly unusual… The Hardware Abstraction Layer (HAL) is Low-Level Code that’s meant to called by various Operating Systems. So we don’t expect BL602 HAL to call FreeRTOS directly.</p>
+<p>(STM32 Blue Pill HAL and nRF52 HAL don’t call any Operating Systems either)</p>
 <p>This unusual structure seems similar to ESP32, where FreeRTOS is embedded into the ESP32 HAL.</p>
 <p>We can still go ahead and port Mynewt (and other Operating Systems) to BL602. Just that we need to emulate the FreeRTOS functions in Mynewt (and other Operating Systems).</p>
 <h1 id="fix-bl602-sdk-for-mynewt" class="section-header"><a href="#fix-bl602-sdk-for-mynewt">7 Fix BL602 SDK for Mynewt</a></h1>
-<p>Mynewt is strict and uptight when compiling C code with GCC... Any warnings emitted by GCC will fail the Mynewt build.</p>
-<p>We made the following fixes to the BL602 IoT SDK to resolve the warnings...</p>
+<p>Mynewt is strict and uptight when compiling C code with GCC… Any warnings emitted by GCC will fail the Mynewt build.</p>
+<p>We made the following fixes to the BL602 IoT SDK to resolve the warnings…</p>
 <h2 id="mismatched-types" class="section-header"><a href="#mismatched-types">7.1 Mismatched Types</a></h2>
-<p>Here we're passing <code>adc_pin</code> as a number: <a href="https://github.com/pine64/bl_iot_sdk/compare/master...lupyuen:fix-gcc-warnings#diff-50c41592b050878713231111ff6302905f1f2aa7bedff6b250ff6fd6d219cc33"><code>components/hal_drv/ bl602_hal/bl_adc.c</code></a></p>
+<p>Here we’re passing <code>adc_pin</code> as a number: <a href="https://github.com/pine64/bl_iot_sdk/compare/master...lupyuen:fix-gcc-warnings#diff-50c41592b050878713231111ff6302905f1f2aa7bedff6b250ff6fd6d219cc33"><code>components/hal_drv/ bl602_hal/bl_adc.c</code></a></p>
 <pre><code class="language-c">uint8_t adc_pin = gpio_num;
 GLB_GPIO_Func_Init(GPIO_FUN_ANALOG, &amp;adc_pin, 1);
 //  Fails because GCC expects adc_pin to be an enum, not a number
 </code></pre>
 <p>Which displeases the GCC Compiler because the function <code>GLB_GPIO_Func_Init</code> expects an enum <code>GLB_GPIO_Type</code>, not a number.</p>
-<p>The fix is simple...</p>
+<p>The fix is simple…</p>
 <pre><code class="language-c">//  Declare as enum instead of number
 GLB_GPIO_Type adc_pin = gpio_num;
 </code></pre>
@@ -400,28 +400,28 @@ char gpio_node[10] = &quot;gpio&quot;;
 sprintf(gpio_node, &quot;gpio%d&quot;, i);
 //  Fails because gpio_node may overflow
 </code></pre>
-<p>GCC thinks that <code>i</code> may exceed 5 digits (because it's a 32-bit integer), causing <code>gpio_node</code> to overflow.</p>
-<p>For our safety (and to placate GCC), we switch <code>sprintf</code> to <code>snprintf</code>, which limits the output size...</p>
+<p>GCC thinks that <code>i</code> may exceed 5 digits (because it’s a 32-bit integer), causing <code>gpio_node</code> to overflow.</p>
+<p>For our safety (and to placate GCC), we switch <code>sprintf</code> to <code>snprintf</code>, which limits the output size…</p>
 <pre><code class="language-c">//  Limit formatting to size of gpio_node
 snprintf(gpio_node, sizeof(gpio_node), &quot;gpio%d&quot;, i);
 </code></pre>
 <h2 id="external-pointer-reference" class="section-header"><a href="#external-pointer-reference">7.3 External Pointer Reference</a></h2>
-<p>Here we use a pointer that's defined in a GCC Linker Script: <a href="https://github.com/pine64/bl_iot_sdk/compare/master...lupyuen:fix-gcc-warnings#diff-29ee70160cf58784272419fe4769f988b944038e2d68800b3f51aa179feea412"><code>components/hal_drv/ bl602_hal/hal_sys.c</code></a></p>
+<p>Here we use a pointer that’s defined in a GCC Linker Script: <a href="https://github.com/pine64/bl_iot_sdk/compare/master...lupyuen:fix-gcc-warnings#diff-29ee70160cf58784272419fe4769f988b944038e2d68800b3f51aa179feea412"><code>components/hal_drv/ bl602_hal/hal_sys.c</code></a></p>
 <pre><code class="language-c">extern uint8_t __global_pointer_head$;
 memset(&amp;__global_pointer_head$, 0, 0x498);
 //  Fails because the pointer references a single byte, not 0x498 bytes
 </code></pre>
-<p>GCC thinks that the pointer references a single byte... Copying <code>0x498</code> bytes to the pointer would surely cause an overflow!</p>
-<p>Thus we do the right thing and tell GCC that it's really a pointer to an array of <code>0x498</code> bytes...</p>
+<p>GCC thinks that the pointer references a single byte… Copying <code>0x498</code> bytes to the pointer would surely cause an overflow!</p>
+<p>Thus we do the right thing and tell GCC that it’s really a pointer to an array of <code>0x498</code> bytes…</p>
 <pre><code class="language-c">//  Pointer to an array of 0x498 bytes
 extern uint8_t __global_pointer_head$[0x498];
 </code></pre>
 <h2 id="pull-request-and-pending-analysis" class="section-header"><a href="#pull-request-and-pending-analysis">7.4 Pull Request and Pending Analysis</a></h2>
-<p>The above fixes (plus a few minor ones) have been submitted upstream as a Pull Request...</p>
+<p>The above fixes (plus a few minor ones) have been submitted upstream as a Pull Request…</p>
 <ul>
 <li><a href="https://github.com/pine64/bl_iot_sdk/pull/84"><strong>Fix GCC Warning for BL602 SDK on Mynewt</strong></a></li>
 </ul>
-<p>4 fixes have not been pushed upstream yet, because they need more Impact Analysis...</p>
+<p>4 fixes have not been pushed upstream yet, because they need more Impact Analysis…</p>
 <ol>
 <li>
 <p>Variable set but not used</p>
@@ -449,18 +449,18 @@ extern uint8_t __global_pointer_head$[0x498];
 </li>
 </ol>
 <h1 id="automated-build-with-github-actions" class="section-header"><a href="#automated-build-with-github-actions">8 Automated Build with GitHub Actions</a></h1>
-<p>When porting Mynewt to BL602, it's good to make sure that we don't <strong>break any existing code by accident</strong>. (Especially the BL602 IoT SDK, which we have tweaked slightly for Mynewt)</p>
-<p>That's why we use <strong>GitHub Actions to compile automatically</strong> the Mynewt code (plus the core parts of BL602 IoT SDK) whenever we <strong>commit any changes</strong>.</p>
+<p>When porting Mynewt to BL602, it’s good to make sure that we don’t <strong>break any existing code by accident</strong>. (Especially the BL602 IoT SDK, which we have tweaked slightly for Mynewt)</p>
+<p>That’s why we use <strong>GitHub Actions to compile automatically</strong> the Mynewt code (plus the core parts of BL602 IoT SDK) whenever we <strong>commit any changes</strong>.</p>
 <p><em>How long does GitHub take to compile our Mynewt + BL602 SDK Code?</em></p>
-<p><strong>TWO MINUTES</strong>. Thus if we ever commit some bad code (that can't be compiled) into the repo, GitHub will alert us in TWO MINUTES (via email) that something has gone terribly wrong in our repo.</p>
-<p>We'll see the results of the Automated Build here (please log in to GitHub first)...</p>
+<p><strong>TWO MINUTES</strong>. Thus if we ever commit some bad code (that can’t be compiled) into the repo, GitHub will alert us in TWO MINUTES (via email) that something has gone terribly wrong in our repo.</p>
+<p>We’ll see the results of the Automated Build here (please log in to GitHub first)…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinecone-rust-mynewt/actions"><strong>GitHub Actions for <code>pinecone-rust-mynewt</code></strong></a></li>
 </ul>
 <p>To complete the build in TWO MINUTES, we use some caching magic inside our GitHub Actions Workflow.</p>
-<p>Let's learn how it works: <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/.github/workflows/main.yml"><code>.github/workflows/main.yml</code></a></p>
+<p>Let’s learn how it works: <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/.github/workflows/main.yml"><code>.github/workflows/main.yml</code></a></p>
 <h2 id="trigger-conditions" class="section-header"><a href="#trigger-conditions">8.1 Trigger Conditions</a></h2>
-<p>At the top of the GitHub Actions Workflow, we state the conditions that will trigger the Automated Build...</p>
+<p>At the top of the GitHub Actions Workflow, we state the conditions that will trigger the Automated Build…</p>
 <pre><code class="language-yaml"># Name of this Workflow
 name: Build Firmware
 
@@ -472,7 +472,7 @@ on:
 </code></pre>
 <p>This says that the Automated Build will be triggered whenever we commit code to the <code>main</code> branch.</p>
 <h2 id="build-environment" class="section-header"><a href="#build-environment">8.2 Build Environment</a></h2>
-<p>We'll use an Ubuntu x64 virtual machine (hosted at GitHub) to compile our code...</p>
+<p>We’ll use an Ubuntu x64 virtual machine (hosted at GitHub) to compile our code…</p>
 <pre><code class="language-yaml"># Steps to run for the Workflow
 jobs:
   build:
@@ -481,7 +481,7 @@ jobs:
 </code></pre>
 <h2 id="checkout-source-files" class="section-header"><a href="#checkout-source-files">8.3 Checkout Source Files</a></h2>
 <p>Here begins the steps for our Mynewt + BL602 SDK Automated Build with GitHub Actions.</p>
-<p>First we check out the source files from the repo recursively, including the following submodules...</p>
+<p>First we check out the source files from the repo recursively, including the following submodules…</p>
 <ol>
 <li>
 <p>BL602 IoT SDK at <a href="https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/hw/mcu/bl/bl602/ext"><code>hw/mcu/bl/bl602/ext</code></a></p>
@@ -497,9 +497,9 @@ jobs:
         submodules: 'recursive'
 </code></pre>
 <h2 id="check-cache-for-newt" class="section-header"><a href="#check-cache-for-newt">8.4 Check Cache for newt</a></h2>
-<p>Mynewt doesn't use <code>make</code> to build... It uses its own <a href="https://github.com/apache/mynewt-newt/">build tool named <code>newt</code></a>.</p>
+<p>Mynewt doesn’t use <code>make</code> to build… It uses its own <a href="https://github.com/apache/mynewt-newt/">build tool named <code>newt</code></a>.</p>
 <p>Developed in Go, <code>newt</code> runs on Linux, macOS and Windows CMD.</p>
-<p>We fetch the <code>newt</code> executable from our GitHub Actions Cache, if it exists...</p>
+<p>We fetch the <code>newt</code> executable from our GitHub Actions Cache, if it exists…</p>
 <pre><code class="language-yaml">    - name: Check cache for newt
       id:   cache-newt
       uses: actions/cache@v2
@@ -510,35 +510,35 @@ jobs:
         key:  ${{ runner.os }}-build-${{ env.cache-name }}
         restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}
 </code></pre>
-<p>(If <code>newt</code> isn't found in our cache, we build <code>newt</code> and cache it in the next step)</p>
-<p>Each cache has a name, ours is <code>cache-newt</code>...</p>
+<p>(If <code>newt</code> isn’t found in our cache, we build <code>newt</code> and cache it in the next step)</p>
+<p>Each cache has a name, ours is <code>cache-newt</code>…</p>
 <pre><code class="language-yaml">      env:
         cache-name: cache-newt
 </code></pre>
-<p>The Cache Action <code>actions/cache</code> requires 3 parameters: <code>path</code>, <code>key</code> and <code>restore-keys</code>...</p>
+<p>The Cache Action <code>actions/cache</code> requires 3 parameters: <code>path</code>, <code>key</code> and <code>restore-keys</code>…</p>
 <pre><code class="language-yaml">      with:
         path: ${{ runner.temp }}/mynewt-newt
         key:  ${{ runner.os }}-build-${{ env.cache-name }}
         restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}
 </code></pre>
-<p>Given that our GitHub Actions Environment is defined as...</p>
+<p>Given that our GitHub Actions Environment is defined as…</p>
 <pre><code class="language-text">runner.temp    = /home/runner/work/_temp
 runner.os      = Linux
 env.cache-name = cache-newt
 </code></pre>
-<p>Our parameters will get expanded to...</p>
+<p>Our parameters will get expanded to…</p>
 <pre><code class="language-yaml">path:         /home/runner/work/_temp/mynewt-newt
 key:          Linux-build-cache-newt
 restore-keys: Linux-build-cache-newt
 </code></pre>
-<p>Thus the Cache Action will cache and restore the <code>newt</code> folder at this temporary folder...</p>
+<p>Thus the Cache Action will cache and restore the <code>newt</code> folder at this temporary folder…</p>
 <pre><code class="language-text">path: /home/runner/work/_temp/mynewt-newt
 </code></pre>
-<p>And to avoid confusion with other caches in the same workflow, we give it a unique key...</p>
+<p>And to avoid confusion with other caches in the same workflow, we give it a unique key…</p>
 <pre><code class="language-text">key: Linux-build-cache-newt
 </code></pre>
 <h2 id="download-and-build-newt" class="section-header"><a href="#download-and-build-newt">8.5 Download and Build newt</a></h2>
-<p>Here's how we download and build <code>newt</code> if it doesn't exist in our cache...</p>
+<p>Here’s how we download and build <code>newt</code> if it doesn’t exist in our cache…</p>
 <pre><code class="language-yaml">    - name: Install newt
       # Install newt if not found in cache
       if:   steps.cache-newt.outputs.cache-hit != 'true'  
@@ -553,29 +553,29 @@ restore-keys: Linux-build-cache-newt
         newt version
 </code></pre>
 <p>(We set <code>mynewt_version</code> to <code>mynewt_1_8_0_tag</code> in <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/scripts/install-version.sh"><code>scripts/install-version.sh</code></a>)</p>
-<p>Note the condition: We execute this step only when <code>newt</code> doesn't exist in our cache...</p>
+<p>Note the condition: We execute this step only when <code>newt</code> doesn’t exist in our cache…</p>
 <pre><code class="language-yaml">      # Install newt if not found in cache
       if:   steps.cache-newt.outputs.cache-hit != 'true'
 </code></pre>
 <p>(<code>steps.cache-newt</code> refers to the cache checking from the previous step)</p>
-<p>After building <code>newt</code>, the Cache Action <code>actions/cache</code> (from the previous step) caches our <code>newt</code> folder...</p>
+<p>After building <code>newt</code>, the Cache Action <code>actions/cache</code> (from the previous step) caches our <code>newt</code> folder…</p>
 <pre><code class="language-text">path:  /home/runner/work/_temp/mynewt-newt
 </code></pre>
 <p>And restores the <code>newt</code> folder whenever we run the Automated Build.</p>
-<p>This caching enables us to complete the Automated Build in two minutes. We'll use caching again for the GCC Compiler.</p>
+<p>This caching enables us to complete the Automated Build in two minutes. We’ll use caching again for the GCC Compiler.</p>
 <h2 id="show-files" class="section-header"><a href="#show-files">8.6 Show Files</a></h2>
-<p>For troubleshooting our Automated Build, we dump the GitHub Actions Environmment Variables and the File System like so...</p>
+<p>For troubleshooting our Automated Build, we dump the GitHub Actions Environmment Variables and the File System like so…</p>
 <pre><code class="language-yaml">    - name: Show files
       run:  set ; pwd ; ls -l
 </code></pre>
-<p>And here's the output...</p>
+<p>And here’s the output…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/gpio#appendix-github-actions-environment"><strong>GitHub Actions Environmment</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/gpio-action.png" alt="Mynewt Automated Build completed in 2 minutes" /></p>
 <p><em>Mynewt Automated Build completed in 2 minutes</em></p>
 <h2 id="check-cache-for-gcc-compiler" class="section-header"><a href="#check-cache-for-gcc-compiler">8.7 Check Cache for GCC Compiler</a></h2>
-<p>Remember how we cached the <code>newt</code> tool to cut down on the build time? We'll do the same for our GCC Compiler...</p>
+<p>Remember how we cached the <code>newt</code> tool to cut down on the build time? We’ll do the same for our GCC Compiler…</p>
 <pre><code class="language-yaml">    - name: Check cache for xPack RISC-V Toolchain xpack-riscv-none-embed-gcc
       id:   cache-toolchain
       uses: actions/cache@v2
@@ -586,14 +586,14 @@ restore-keys: Linux-build-cache-newt
         key:  ${{ runner.os }}-build-${{ env.cache-name }}
         restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}
 </code></pre>
-<p>First we try to load the GCC Compiler from the cache with these settings...</p>
+<p>First we try to load the GCC Compiler from the cache with these settings…</p>
 <pre><code class="language-text">path:         xpack-riscv-none-embed-gcc
 key:          Linux-build-cache-toolchain
 restore-keys: Linux-build-cache-toolchain
 </code></pre>
 <p>If the GCC Compiler exists in our cache, the Cache Action will restore the GCC folder <code>xpack-riscv-none-embed-gcc</code> into the current directory (which is the root of our repo).</p>
 <h2 id="download-gcc-compiler" class="section-header"><a href="#download-gcc-compiler">8.8 Download GCC Compiler</a></h2>
-<p>If the GCC Compiler doesn't exist in our cache, we download the <a href="https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases"><strong>xPack RISC-V Toolchain: <code>xpack-riscv-none-embed-gcc</code></strong></a></p>
+<p>If the GCC Compiler doesn’t exist in our cache, we download the <a href="https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases"><strong>xPack RISC-V Toolchain: <code>xpack-riscv-none-embed-gcc</code></strong></a></p>
 <pre><code class="language-yaml">    - name: Install xPack RISC-V Toolchain xpack-riscv-none-embed-gcc
       # Install toolchain if not found in cache
       if:   steps.cache-toolchain.outputs.cache-hit != 'true'  
@@ -602,12 +602,12 @@ restore-keys: Linux-build-cache-toolchain
         mv xpack-riscv-none-embed-gcc-* xpack-riscv-none-embed-gcc
 </code></pre>
 <p>(Remember: We check <code>steps.cache-toolchain</code> and skip this step if the GCC Compiler is already in our cache)</p>
-<p>After downloading the GCC Compiler, the Cache Action <code>actions/cache</code> (from the previous step) caches our GCC folder...</p>
+<p>After downloading the GCC Compiler, the Cache Action <code>actions/cache</code> (from the previous step) caches our GCC folder…</p>
 <pre><code class="language-text">path:  xpack-riscv-none-embed-gcc
 </code></pre>
-<p>Caching the GCC Compiler is essential for reducing the Automated Build time to 2 minutes... Because each download of the xPack RISC-V Toolchain takes a whopping <strong>400 MB!</strong> (Zipped!)</p>
+<p>Caching the GCC Compiler is essential for reducing the Automated Build time to 2 minutes… Because each download of the xPack RISC-V Toolchain takes a whopping <strong>400 MB!</strong> (Zipped!)</p>
 <h2 id="build-mynewt-firmware" class="section-header"><a href="#build-mynewt-firmware">8.9 Build Mynewt Firmware</a></h2>
-<p>Now that we have the build tools ready (<code>newt</code> and GCC Compiler), let's build Mynewt with GitHub Actions...</p>
+<p>Now that we have the build tools ready (<code>newt</code> and GCC Compiler), let’s build Mynewt with GitHub Actions…</p>
 <pre><code class="language-yaml">    - name: Build Application Firmware
       run:  |
         export PATH=$PATH:${{ runner.temp }}/mynewt-newt/newt
@@ -623,11 +623,11 @@ newt build pinecone_app
 #  Display the firmware size
 newt size -v pinecone_app
 </code></pre>
-<p>We can see the results of the Automated Build here (please log in to GitHub first)...</p>
+<p>We can see the results of the Automated Build here (please log in to GitHub first)…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinecone-rust-mynewt/actions"><strong>GitHub Actions for <code>pinecone-rust-mynewt</code></strong></a></li>
 </ul>
-<p>Here's a peek at the Automated Build log at GitHub Actions...</p>
+<p>Here’s a peek at the Automated Build log at GitHub Actions…</p>
 <pre><code class="language-text">Linking /home/runner/work/pinecone-rust-mynewt/pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky/blinky.elf
 Target successfully built: targets/pinecone_app
 + newt size -v pinecone_app
@@ -635,7 +635,7 @@ Size of Application Image: app
 Mem flash: 0x22008000-0x22014000
 Mem ram: 0x22014000-0x22020000
 </code></pre>
-<p>Note that the &quot;Flash Memory&quot; actually points to the Cache Memory at <code>0x2200 8000</code>.</p>
+<p>Note that the “Flash Memory” actually points to the Cache Memory at <code>0x2200 8000</code>.</p>
 <p>This means that our firmware is meant to be tested and debugged with OpenOCD and GDB (or VSCode). (Instead of being flashed to Flash Memory)</p>
 <pre><code class="language-text">  flash     ram 
       6     529 *fill*
@@ -662,7 +662,7 @@ objsize
 </code></pre>
 <p>The build creates a Firmware ELF File <code>blinky.elf</code> that contains 11 KB of code and read-only data.</p>
 <h2 id="upload-mynewt-firmware" class="section-header"><a href="#upload-mynewt-firmware">8.10 Upload Mynewt Firmware</a></h2>
-<p>To save the firmware files generated by the Automated Build (and allow anyone to download), we call <code>actions/upload-artifact</code>...</p>
+<p>To save the firmware files generated by the Automated Build (and allow anyone to download), we call <code>actions/upload-artifact</code>…</p>
 <pre><code class="language-yaml">    - name: Upload Application Firmware
       uses: actions/upload-artifact@v2
       with:
@@ -676,7 +676,7 @@ objsize
         name: blinky.zip
         path: bin/targets/pinecone_app/app/apps/blinky/blinky.*
 </code></pre>
-<p>Next we upload another Artifact named <code>blinky.zip</code> that contains some useful files from the Mynewt Automated Build...</p>
+<p>Next we upload another Artifact named <code>blinky.zip</code> that contains some useful files from the Mynewt Automated Build…</p>
 <ol>
 <li>
 <p><code>blinky.elf.bin</code>: Mynewt Firmware Binary.</p>
@@ -701,13 +701,13 @@ objsize
 </li>
 </ol>
 <h2 id="show-output" class="section-header"><a href="#show-output">8.11 Show Output</a></h2>
-<p>It's good to keep a record of the files created from the build: pathname, timestamp, file size, ...</p>
-<p>Here's how we capture the build output info with GitHub Actions...</p>
+<p>It’s good to keep a record of the files created from the build: pathname, timestamp, file size, …</p>
+<p>Here’s how we capture the build output info with GitHub Actions…</p>
 <pre><code class="language-yaml">    - name: Find output
       run:  |
         find bin/targets/pinecone_app/app/apps/blinky -name &quot;blinky.*&quot; -ls
 </code></pre>
-<p>And here's the captured info...</p>
+<p>And here’s the captured info…</p>
 <pre><code class="language-text">5439531     12 -rwxr-xr-x   1 runner   docker      11348 Jan 10 02:26 bin/targets/pinecone_app/app/apps/blinky/blinky.elf.bin
 5439528    348 -rw-r--r--   1 runner   docker     354281 Jan 10 02:26 bin/targets/pinecone_app/app/apps/blinky/blinky.elf.map
 5439529    392 -rwxr-xr-x   1 runner   docker     401104 Jan 10 02:26 bin/targets/pinecone_app/app/apps/blinky/blinky.elf
@@ -720,24 +720,24 @@ objsize
 <p>When creating a new GitHub Actions Workflow, we should first comment out the build steps (to let the build succeed), let the caching happen, then uncomment the build steps.</p>
 <p>With caching in effect, we save a lot of time testing and troubleshooting our Automated Build.</p>
 <h1 id="run-mynewt-on-pinecone" class="section-header"><a href="#run-mynewt-on-pinecone">9 Run Mynewt on PineCone</a></h1>
-<p>To test and debug the updated Mynewt on PineCone with our Linux / macOS / Windows computer...</p>
+<p>To test and debug the updated Mynewt on PineCone with our Linux / macOS / Windows computer…</p>
 <ol>
 <li>
-<p>Download and install <code>newt</code>, GCC, OpenOCD, VSCode and <code>pinecone-rust-mynewt</code>...</p>
-<p><a href="https://lupyuen.github.io/articles/mynewt#build-the-firmware">&quot;Build the Firmware&quot;</a></p>
+<p>Download and install <code>newt</code>, GCC, OpenOCD, VSCode and <code>pinecone-rust-mynewt</code>…</p>
+<p><a href="https://lupyuen.github.io/articles/mynewt#build-the-firmware">“Build the Firmware”</a></p>
 </li>
 <li>
 <p>Build the Mynewt firmware on our computer using the instructions above.</p>
-<p>Alternatively, <a href="https://github.com/lupyuen/pinecone-rust-mynewt/releases/download/v2.0.0/blinky.elf">download <code>blinky.elf</code> from here</a> and copy it to...</p>
+<p>Alternatively, <a href="https://github.com/lupyuen/pinecone-rust-mynewt/releases/download/v2.0.0/blinky.elf">download <code>blinky.elf</code> from here</a> and copy it to…</p>
 <pre><code class="language-text">pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky
 </code></pre>
 </li>
 <li>
-<p>Connect PineCone to our computer with a JTAG Debugger and start the VSCode Debugger...</p>
-<p><a href="https://lupyuen.github.io/articles/mynewt#debug-firmware-with-vscode">&quot;Debug Firmware with VSCode&quot;</a></p>
+<p>Connect PineCone to our computer with a JTAG Debugger and start the VSCode Debugger…</p>
+<p><a href="https://lupyuen.github.io/articles/mynewt#debug-firmware-with-vscode">“Debug Firmware with VSCode”</a></p>
 </li>
 </ol>
-<p>In the GDB Debug Console we'll see this...</p>
+<p>In the GDB Debug Console we’ll see this…</p>
 <pre><code class="language-text">Breakpoint 1 at 0x220092ba: file apps/blinky/src/main.c, line 30.
 Breakpoint 2 at 0x22008242: file repos/apache-mynewt-core/kernel/os/src/arch/rv32imac/os_fault.c, line 30.
 Remote debugging using | xpack-openocd/bin/openocd -c &quot;gdb_port pipe; log_output openocd.log&quot; -f openocd.cfg
@@ -749,7 +749,7 @@ xPack OpenOCD, x86_64 Open On-Chip Debugger 0.10.0+dev-00378-ge5be992df (2020-06
 Not implemented stop reason (assuming exception): undefined
 </code></pre>
 <p>OpenOCD has taken control of BL602 and has halted the execution at address <code>0x2100 0000</code></p>
-<p>Which is really interesting because <code>0x2100 0000</code> is the address of <strong>BL602's Boot ROM</strong>.  Thus we have evidence that BL602 starts running the Boot ROM code at <code>0x2100 0000</code> whenever it reboots.</p>
+<p>Which is really interesting because <code>0x2100 0000</code> is the address of <strong>BL602’s Boot ROM</strong>.  Thus we have evidence that BL602 starts running the Boot ROM code at <code>0x2100 0000</code> whenever it reboots.</p>
 <pre><code class="language-text">Loading section .init, size 0xa2 lma 0x22008000
 Loading section .text, size 0x1c1c lma 0x220080a4
 Loading section .tcm_code, size 0xaa0 lma 0x22009cc0
@@ -762,56 +762,56 @@ Start address 0x22008000, load size 11346
 Transfer rate: 2 KB/sec, 1418 bytes/write.
 </code></pre>
 <p>Our GDB Script (<a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/.vscode/launch.json#L15-L39">see this</a>) has loaded our firmware to BL602 at address <code>0x2200 8000</code>, which is in Cache Memory.</p>
-<p>(BL602 doesn't support flashing firmware to Flash Memory with OpenOCD. <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_Openocd%26GDB/en">More details</a>)</p>
+<p>(BL602 doesn’t support flashing firmware to Flash Memory with OpenOCD. <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_Openocd%26GDB/en">More details</a>)</p>
 <pre><code class="language-text">Breakpoint 1, main (argc=0, argv=0x0) at apps/blinky/src/main.c:30
 30	int main(int argc, char **argv) {
 </code></pre>
 <p>When the debugger code hits the first breakpoint (in the <code>main</code> function), click the Continue button in the Debug Toolbar. (Or press F5)</p>
 <h2 id="jtag-foiled-by-gpio" class="section-header"><a href="#jtag-foiled-by-gpio">9.1 JTAG Foiled By GPIO</a></h2>
 <p>Calamity strikes as our Mynewt GPIO Firmware runs.</p>
-<p>Yes the Blue LED lights up, but we see this error in GDB...</p>
+<p>Yes the Blue LED lights up, but we see this error in GDB…</p>
 <pre><code class="language-text">Debugger is not authenticated to target Debug Module. (dmstatus=0x0).
 Use `riscv authdata_read` and `riscv authdata_write` commands to authenticate.
 </code></pre>
-<p>That's because PineCone's RGB LED is <strong>connected to the same pins as the JTAG port!</strong></p>
+<p>That’s because PineCone’s RGB LED is <strong>connected to the same pins as the JTAG port!</strong></p>
 <table><thead><tr><th align="left">PineCone Pin</th><th align="left">LED Pin</th><th align="left">JTAG Pin</th></tr></thead><tbody>
 <tr><td align="left"><strong><code>GPIO 11</code></strong></td><td align="left"><code>Blue</code></td><td align="left"><code>TDO</code></td></tr>
 <tr><td align="left"><strong><code>GPIO 14</code></strong></td><td align="left"><code>Green</code></td><td align="left"><code>TCK</code></td></tr>
 <tr><td align="left"><strong><code>GPIO 17</code></strong></td><td align="left"><code>Red</code></td><td align="left"><code>TDI</code></td></tr>
 </tbody></table>
-<p>(See <a href="https://lupyuen.github.io/articles/openocd#if-you-love-the-led-set-it-free">&quot;If you love the LED... Set it free!&quot;</a>)</p>
+<p>(See <a href="https://lupyuen.github.io/articles/openocd#if-you-love-the-led-set-it-free">“If you love the LED… Set it free!”</a>)</p>
 <p>When we flip the LEDs on and off, the <strong>JTAG Debugger connection drops.</strong></p>
-<p>But our firmware is indeed flipping the LEDs correctly, so we're done with GPIO testing on Mynewt!</p>
+<p>But our firmware is indeed flipping the LEDs correctly, so we’re done with GPIO testing on Mynewt!</p>
 <p><img src="https://lupyuen.github.io/images/gpio-sensors.jpg" alt="Sensors and actuators to be tested with PineCone BL602" /></p>
 <p><em>Sensors and actuators to be tested with PineCone BL602</em></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">10 What's Next</a></h1>
-<p>We'll be testing Mynewt on PineCone BL602 with an interesting mix of Sensors and Actuators shown above. <a href="https://lupyuen.github.io/articles/gpio#appendix-inventory-of-sensors-and-actuators">Here's the list</a></p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">10 What’s Next</a></h1>
+<p>We’ll be testing Mynewt on PineCone BL602 with an interesting mix of Sensors and Actuators shown above. <a href="https://lupyuen.github.io/articles/gpio#appendix-inventory-of-sensors-and-actuators">Here’s the list</a></p>
 <p>Most of the Sensors and Actuators will work fine with GPIO on Mynewt. But some require additional support from Mynewt: <strong>Pulse Width Modulation</strong> and <strong>Analog to Digital Converter</strong>. </p>
 <p>We shall integrate with Mynewt the respective Hardware Abstraction Layers from the BL602 IoT SDK.</p>
 <blockquote>
 <p><em>What about DHT11, the Temperature and Humidity Sensor? (Lower right corner)</em></p>
 </blockquote>
-<p>DHT11 will be a problem because it transmits Serial Data in an unusual way <strong>(bidirectional single wire)</strong> that's incompatible with UART, I2C and SPI. <a href="https://www.mouser.com/datasheet/2/758/DHT11-Technical-Data-Sheet-Translated-Version-1143054.pdf">See DHT11 Datasheet</a></p>
+<p>DHT11 will be a problem because it transmits Serial Data in an unusual way <strong>(bidirectional single wire)</strong> that’s incompatible with UART, I2C and SPI. <a href="https://www.mouser.com/datasheet/2/758/DHT11-Technical-Data-Sheet-Translated-Version-1143054.pdf">See DHT11 Datasheet</a></p>
 <p>We would have to read the data from DHT11 via <strong>Bit Banging</strong>. Which is hard to do reliably on a multitasking operating system like Mynewt. <a href="https://lupyuen.github.io/articles/openocd-on-raspberry-pi-better-with-swd-on-spi">More about the evils of Bit Banging</a></p>
 <blockquote>
-<p><em>Is there a better Temperature and Humidity Sensor that connects with standard interfaces... And works well with mutitasking?</em></p>
+<p><em>Is there a better Temperature and Humidity Sensor that connects with standard interfaces… And works well with mutitasking?</em></p>
 </blockquote>
 <p>Yes BME280 senses Temperature, Humidity and Altitude (Air Pressure). BME280 supports <strong>both I2C and SPI</strong> interfaces. <a href="https://lupyuen.github.io/articles/create-your-iot-gadget-with-apache-mynewt-and-stm32-blue-pill">More about BME280</a></p>
 <p>We shall we using BME280 for testing the implementation of I2C and SPI on Mynewt BL602.</p>
 <blockquote>
 <p><em>How do we find Software Drivers for BME280 and other Sensors and Actuators?</em></p>
 </blockquote>
-<p>This will be a problem for all operating systems running on BL602: Getting the <strong>Sensor / Actuator Drivers for Mynewt, FreeRTOS, Zephyr, RIOT, ...</strong></p>
-<p>Each operating system has its own Hardware Abstraction Layer (HAL) for talking to hardware interfaces (like I2C, SPI and Timers). Thus we'll never find drivers that will work across all operaing system.</p>
+<p>This will be a problem for all operating systems running on BL602: Getting the <strong>Sensor / Actuator Drivers for Mynewt, FreeRTOS, Zephyr, RIOT, …</strong></p>
+<p>Each operating system has its own Hardware Abstraction Layer (HAL) for talking to hardware interfaces (like I2C, SPI and Timers). Thus we’ll never find drivers that will work across all operaing system.</p>
 <blockquote>
 <p><em>What if we could standardise the HAL across all operating systems?</em></p>
 </blockquote>
-<p>There's one possibility: <strong>Adopt the Rust Embedded HAL.</strong> I have previously ported the Rust Embedded HAL to Mynewt (for PineTime). <a href="https://lupyuen.github.io/articles/optimising-pinetimes-display-driver-with-rust-and-mynewt">More details</a></p>
-<p>Once we have the Rust Embedded HAL ported to Mynewt (and other operating systems), we'll be able to use the <strong>Rust Embedded Drivers</strong>. <a href="https://github.com/rust-embedded/awesome-embedded-rust/blob/master/README.md#driver-crates">List of Rust Embedded Drivers</a></p>
-<p>(And we'll code our firmware in Rust of course)</p>
+<p>There’s one possibility: <strong>Adopt the Rust Embedded HAL.</strong> I have previously ported the Rust Embedded HAL to Mynewt (for PineTime). <a href="https://lupyuen.github.io/articles/optimising-pinetimes-display-driver-with-rust-and-mynewt">More details</a></p>
+<p>Once we have the Rust Embedded HAL ported to Mynewt (and other operating systems), we’ll be able to use the <strong>Rust Embedded Drivers</strong>. <a href="https://github.com/rust-embedded/awesome-embedded-rust/blob/master/README.md#driver-crates">List of Rust Embedded Drivers</a></p>
+<p>(And we’ll code our firmware in Rust of course)</p>
 <p>We shall experiment with the <a href="https://crates.io/crates/bme280">BME280 Rust Driver</a> on Mynewt BL602.</p>
 <blockquote>
-<p><em>Anything else we'll be supporting in Mynewt BL602?</em></p>
+<p><em>Anything else we’ll be supporting in Mynewt BL602?</em></p>
 </blockquote>
 <p>Yes we shall be adding support for <strong>UART</strong> on Mynewt BL602, so that we can view debugging messages.</p>
 <p>And <strong>Timers</strong> so that we can poll for GPIO Inputs.</p>
@@ -824,7 +824,7 @@ Use `riscv authdata_read` and `riscv authdata_write` commands to authenticate.
 <p><a href="https://www.reddit.com/r/embedded_oc/comments/kxhlg0/mynewt_gpio_ported_to_pinecone_bl602_riscv_board/?utm_source=share&amp;utm_medium=web2x&amp;context=3">Discuss this article on Reddit</a></p>
 </li>
 <li>
-<p><a href="https://lupyuen.github.io/articles/book">Read &quot;The RISC-V BL602 Book&quot;</a></p>
+<p><a href="https://lupyuen.github.io/articles/book">Read “The RISC-V BL602 Book”</a></p>
 </li>
 <li>
 <p><a href="https://lupyuen.github.io">Check out my articles</a></p>
@@ -833,17 +833,17 @@ Use `riscv authdata_read` and `riscv authdata_write` commands to authenticate.
 <p><a href="https://lupyuen.github.io/rss.xml">RSS Feed</a></p>
 </li>
 </ul>
-<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here...</em></p>
+<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/gpio.md"><code>lupyuen.github.io/src/gpio.md</code></a></p>
 <h1 id="notes" class="section-header"><a href="#notes">11 Notes</a></h1>
 <ol>
 <li>
 <p>My thoughts on <strong>Teaching IoT and Embedded Programming</strong> with Sensors and Actuators?</p>
-<p>Let's move away from boring old GPIO-based Sensors and Actuators... And teach <strong>modern ones based on I2C and SPI!</strong></p>
+<p>Let’s move away from boring old GPIO-based Sensors and Actuators… And teach <strong>modern ones based on I2C and SPI!</strong></p>
 <p>(<a href="https://lupyuen.github.io/articles/create-your-iot-gadget-with-apache-mynewt-and-stm32-blue-pill">Like BME280</a>)</p>
 </li>
 <li>
-<p>To teach IoT with PineCone or Pinenut BL602, we need to add on...</p>
+<p>To teach IoT with PineCone or Pinenut BL602, we need to add on…</p>
 <ul>
 <li>
 <p><strong>SPI Display Controller with LED / OLED / EPaper display</strong> (like ST7789 on PineTime)</p>
@@ -859,13 +859,13 @@ Use `riscv authdata_read` and `riscv authdata_write` commands to authenticate.
 <li>
 <p>Will newbies find it difficult to code firmware for an SPI Display?</p>
 <p>Not if we adopt a <strong>Common Graphics Library like LVGL</strong> that will work on all BL602 operating systems. <a href="https://docs.lvgl.io/latest/en/html/intro/index.html">More about LVGL</a></p>
-<p>On PineTime we have proven that LVGL (and the ST7789 driver) works perfectly fine on <a href="https://lupyuen.github.io/pinetime-rust-mynewt/articles/cloud">FreeRTOS</a>, <a href="https://lupyuen.github.io/pinetime-rust-mynewt/articles/timesync">Mynewt</a>, <a href="https://lupyuen.github.io/pinetime-rust-riot/articles/watch_face">RIOT</a>, <a href="https://github.com/endian-albin/pinetime-hypnos">Zephyr</a>, ...</p>
+<p>On PineTime we have proven that LVGL (and the ST7789 driver) works perfectly fine on <a href="https://lupyuen.github.io/pinetime-rust-mynewt/articles/cloud">FreeRTOS</a>, <a href="https://lupyuen.github.io/pinetime-rust-mynewt/articles/timesync">Mynewt</a>, <a href="https://lupyuen.github.io/pinetime-rust-riot/articles/watch_face">RIOT</a>, <a href="https://github.com/endian-albin/pinetime-hypnos">Zephyr</a>, …</p>
 <p>We have even created Web Simulators for PineTime based on LVGL + WebAssembly. <a href="https://lupyuen.github.io/pinetime-rust-mynewt/articles/simulator">See this</a></p>
 <p>LVGL is a great way for newbies to <strong>create Graphical Embedded Apps in C and Rust</strong>, our PineTime experience has shown. <a href="https://lupyuen.github.io/pinetime-rust-mynewt/articles/watchface">LVGL on Rust</a></p>
 <p>(Especially when BL602 has more RAM and Flash Memory than PineTime)</p>
 </li>
 <li>
-<p>There is a GPIO feature that hasn't been implemented on Mynewt BL602: Trigger an interrupt when a GPIO Input changes. <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/mcu/bl/bl602/src/hal_gpio.c#L142-L283">See this</a></p>
+<p>There is a GPIO feature that hasn’t been implemented on Mynewt BL602: Trigger an interrupt when a GPIO Input changes. <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/mcu/bl/bl602/src/hal_gpio.c#L142-L283">See this</a></p>
 <p>This requires CLNT Interrupts to be supported on Mynewt BL602.</p>
 </li>
 </ol>
@@ -897,11 +897,11 @@ Use `riscv authdata_read` and `riscv authdata_write` commands to authenticate.
 <tr><td align="left">Infrared Transmitter &amp; Receiver</td><td align="left">Digital</td></tr>
 </tbody></table>
 <h1 id="appendix-github-actions-environment" class="section-header"><a href="#appendix-github-actions-environment">13 Appendix: GitHub Actions Environment</a></h1>
-<p>Here's how we dump the GitHub Actions Environmment Variables and the File System...</p>
+<p>Here’s how we dump the GitHub Actions Environmment Variables and the File System…</p>
 <pre><code class="language-yaml">    - name: Show files
       run:  set ; pwd ; ls -l
 </code></pre>
-<p>And here's the output...</p>
+<p>And here’s the output…</p>
 <h2 id="environment-variables" class="section-header"><a href="#environment-variables">13.1 Environment Variables</a></h2>
 <pre><code class="language-text">AGENT_TOOLSDIRECTORY=/opt/hostedtoolcache
 ANDROID_HOME=/usr/local/lib/android/sdk
