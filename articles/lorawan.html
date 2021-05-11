@@ -1424,7 +1424,7 @@ get_pbuf_header(
 <p><img src="https://lupyuen.github.io/images/lorawan-pbuf2.png" alt="pbuf Packet Buffer after sliding the payload pointer" /></p>
 <p>(<code>pbuf_add_header</code> returns a non-zero error code if there's isn't sufficient space for the header)</p>
 <p>Because this code <strong>mutates the Payload Pointer</strong>, we need to be extra careful when extracting the header.</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/pbuf_queue.c#L27-L30">(Note: Critical Sections have not been implemented yet)</a></p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/pbuf_queue.c#L27-L30">(Note: Critical Sections are needed for <code>pbuf_add_header</code> to work correctly during multitasking... But Critical Sections have not been implemented yet)</a></p>
 <h2 id="packet-buffer-queue" class="section-header"><a href="#packet-buffer-queue">12.2 Packet Buffer Queue</a></h2>
 <p>Mynewt's LoRaWAN Driver uses <a href="https://mynewt.apache.org/latest/os/core_os/mbuf/mbuf.html#mqueue"><strong>Mqueues</strong></a> to enqueue packets for processing.</p>
 <p>The Lightweight IP Stack doesn't have the equivalent of Mqueues, so we build our own <strong>Packet Buffer Queues</strong>.</p>
@@ -1523,6 +1523,7 @@ alloc_pbuf(
     return buf;
 }
 </code></pre>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/pbuf_queue.c#L27-L30">(Note: Critical Sections are needed for <code>pbuf_queue_get</code> and <code>pbuf_queue_put</code> to work correctly during multitasking... But Critical Sections have not been implemented yet)</a></p>
 <h1 id="appendix-bl602-spi-functions" class="section-header"><a href="#appendix-bl602-spi-functions">13 Appendix: BL602 SPI Functions</a></h1>
 <p>Here's how our LoRa Transceiver Driver <strong>initialises the BL602 SPI Port</strong> by calling the <strong>BL602 SPI Hardware Abstraction Layer (HAL)</strong>...</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/sx126x-board.c#L166-L197"><code>sx126x-board.c</code></a></p>
