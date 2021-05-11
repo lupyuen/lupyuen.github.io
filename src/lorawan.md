@@ -1,6 +1,6 @@
 # PineCone BL602 Talks LoRaWAN
 
-📝 _12 May 2021_
+📝 _11 May 2021_
 
 Today we shall connect [__PineCone BL602 RISC-V Board__](https://lupyuen.github.io/articles/pinecone) to the [__LoRaWAN Network__](https://www.thethingsnetwork.org/docs/lorawan/)... With the __Pine64 RFM90 LoRa Module__ based on [__Semtech SX1262__](https://semtech.my.salesforce.com/sfc/p/#E0000000JelG/a/2R000000HT76/7Nka9W5WgugoZe.xwIHJy6ebj1hW8UJ.USO_Pt2CLLo).
 
