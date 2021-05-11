@@ -77,14 +77,24 @@
 <li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
 <li><a href="#notes">11 Notes</a><ul></ul></li></ul></nav><p>📝 <em>16 May 2021</em></p>
 <p>What if we could run <strong>Lisp programs</strong> on the <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602 RISC-V Board</strong></a>?</p>
+<pre><code class="language-text">( loop
+  ( pinmode 11 :output )
+  ( digitalwrite 11 :high )
+  ( delay 1000 )
+  ( pinmode 11 :output )
+  ( digitalwrite 11 :low )
+  ( delay 1000 )
+)
+</code></pre>
 <p>And create these programs with a <strong>drag-and-drop Web Editor</strong>… Without typing a single Lisp parenthesis / bracket?</p>
+<p><img src="https://lupyuen.github.io/images/lisp-web.jpg" alt="Blockly for uLisp" /></p>
 <p>Today we shall explore <strong>uLisp and Blockly</strong> as an interesting new way to create embedded programs for the <strong>BL602 RISC-V + WiFi SoC</strong>.</p>
 <p>(And someday this could become really helpful for <strong>IoT Education</strong>)</p>
 <p>The uLisp Firmware in this article will run on <strong>PineCone, Pinenut and Any BL602 Board</strong>.</p>
 <ul>
 <li><a href="https://youtu.be/LNkmUIv7ZZc"><strong>Watch the demo on YouTube</strong></a></li>
 </ul>
-<p><img src="https://lupyuen.github.io/images/lisp-title.jpg" alt="uLisp and Blockly on PineCone BL602 RISC-V Board" /></p>
+<p><img src="https://lupyuen.github.io/images/lisp-cover.jpg" alt="uLisp and Blockly on PineCone BL602 RISC-V Board" /></p>
 <p><em>uLisp and Blockly on PineCone BL602 RISC-V Board</em></p>
 <h1 id="start-with-ulisp" class="section-header"><a href="#start-with-ulisp">1 Start with uLisp</a></h1>
 <p>TODO</p>
