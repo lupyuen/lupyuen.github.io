@@ -17,7 +17,7 @@ What if we could run __Lisp programs__ on the [__PineCone BL602 RISC-V Board__](
 
 And create these programs with a __drag-and-drop Web Editor__... Without typing a single Lisp parenthesis / bracket?
 
-![Blockly for uLisp](https://lupyuen.github.io/images/lisp-web.jpg)
+![Blockly for uLisp](https://lupyuen.github.io/images/lisp-web.png)
 
 Today we shall explore __uLisp and Blockly__ as an interesting new way to create embedded programs for the __BL602 RISC-V + WiFi SoC__.
 
