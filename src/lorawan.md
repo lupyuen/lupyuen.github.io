@@ -2,9 +2,11 @@
 
 📝 _12 May 2021_
 
-Today we shall connect __PineCone BL602 RISC-V Board__ to __LoRaWAN__... With the __Pine64 RFM90 LoRa Module__.
+Today we shall connect [__PineCone BL602 RISC-V Board__](https://lupyuen.github.io/articles/pinecone) to the [__LoRaWAN Network__](https://www.thethingsnetwork.org/docs/lorawan/)... With the __Pine64 RFM90 LoRa Module__ based on [__Semtech SX1262__](https://semtech.my.salesforce.com/sfc/p/#E0000000JelG/a/2R000000HT76/7Nka9W5WgugoZe.xwIHJy6ebj1hW8UJ.USO_Pt2CLLo).
 
-The LoRa Firmware in this article will run on __PineCone, Pinenut and Any BL602 Board__.
+This will bring us one step closer to building __low-power, long-range LoRaWAN IoT Devices with BL602__.
+
+The LoRaWAN Firmware in this article will run on __PineCone, Pinenut and Any BL602 Board__.
 
 -   [__Watch the demo video on YouTube__](https://youtu.be/BMMIIiZG6G0)
 
