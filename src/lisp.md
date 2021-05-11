@@ -61,6 +61,10 @@ GPIO Commands from http://www.ulisp.com/show?1AEK
 ( delay 1000 )
 ```
 
+![](https://lupyuen.github.io/images/lisp-led.png)
+
+TODO
+
 Blinky Commands from http://www.ulisp.com/show?1AEK
 
 ```text
@@ -83,7 +87,27 @@ Watch the demo on YouTube...
 
 - [__Blinky Demo__](https://youtu.be/LNkmUIv7ZZc)
 
+TODO
+
+![](https://lupyuen.github.io/images/lisp-interpreter.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/lisp-blinky.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/lisp-blinky2.png)
+
 # Now add Blockly
+
+TODO
+
+![](https://lupyuen.github.io/images/lisp-blockly.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/lisp-blockly2.png)
 
 TODO
 
@@ -94,6 +118,10 @@ TODO
 https://appkaki.github.io/blockly-ulisp/demos/code/
 
 https://github.com/AppKaki/blockly-ulisp
+
+![](https://lupyuen.github.io/images/lisp-mobile.png)
+
+TODO
 
 # Porting uLisp to BL602
 
@@ -122,6 +150,18 @@ The Lisp Code Generator is __incomplete__. The only blocks supported are...
 The Lisp Code Generator is based on Visual Embedded Rust...
 
 https://lupyuen.github.io/articles/advanced-topics-for-visual-embedded-rust-programming
+
+![](https://lupyuen.github.io/images/lisp-dart.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/lisp-generate.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/lisp-rust.png)
+
+TODO
 
 # Blockly Web Editor for uLisp
 
@@ -153,6 +193,22 @@ Inspired by MakeCode for BBC micro:bit...
 
 https://makecode.microbit.org/
 
+# Web Serial API
+
+TODO
+
+![](https://lupyuen.github.io/images/lisp-terminal.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/lisp-reboot.jpg)
+
+TODO
+
+![](https://lupyuen.github.io/images/lisp-reboot2.png)
+
+TODO
+
 # What's Next
 
 TODO
@@ -175,22 +231,6 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 TODO
 
-![](https://lupyuen.github.io/images/lisp-blinky.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/lisp-blinky2.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/lisp-blockly.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/lisp-blockly2.png)
-
-TODO
-
 ![](https://lupyuen.github.io/images/lisp-build.png)
 
 TODO
@@ -198,38 +238,3 @@ TODO
 ![](https://lupyuen.github.io/images/lisp-build2.png)
 
 TODO
-
-![](https://lupyuen.github.io/images/lisp-dart.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/lisp-generate.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/lisp-interpreter.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/lisp-led.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/lisp-mobile.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/lisp-reboot.jpg)
-
-TODO
-
-![](https://lupyuen.github.io/images/lisp-reboot2.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/lisp-rust.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/lisp-terminal.png)
-
