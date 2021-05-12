@@ -88,6 +88,8 @@ Natural fit because
 
 From [`ulisp-esp.ino`](https://github.com/technoblogy/ulisp-esp/blob/master/ulisp-esp.ino)
 
+uLisp is still [actively maintained](https://github.com/technoblogy?tab=repositories). It has an [active online community](http://forum.ulisp.com/).
+
 # Build the BL602 uLisp Firmware
 
 TODO
