@@ -33,6 +33,41 @@ _uLisp and Blockly on PineCone BL602 RISC-V Board_
 
 # Start with uLisp
 
+_What is uLisp?_
+
+From the [uLisp Website](http://www.ulisp.com)...
+
+> uLisp® is a version of the Lisp programming language specifically designed to run on microcontrollers with a limited amount of RAM, from the Arduino Uno based on the ATmega328 up to the Teensy 4.0/4.1. You can use exactly the same uLisp program, irrespective of the platform.
+
+> Because uLisp is an interpreter you can type commands in, and see the effect immediately, without having to compile and upload your program. This makes it an ideal environment for learning to program, or for setting up simple electronic devices.
+
+_Why is uLisp special?_
+
+Compared with other embedded programming languages, uLisp looks particularly interesting because it has __built-in Arduino-like functions__ for GPIO, I2C, SPI, ADC, DAC, ... Even WiFi!
+
+So this runs perfectly fine on uLisp...
+
+```text
+( loop
+  ( pinmode 11 :output )
+  ( digitalwrite 11 :high )
+  ( delay 1000 )
+  ( pinmode 11 :output )
+  ( digitalwrite 11 :low )
+  ( delay 1000 )
+)
+```
+
+Because `pinmode` and `digitalwrite` are Arduino-like GPIO functions predefined in uLisp.
+
+(`delay` is another Arduino-like Timer function predefined in uLisp)
+
+uLisp makes it possible to write __high-level scripts__ with GPIO, I2C, SPI, ADC, DAC and WiFi functions.
+
+And for learners familiar with Arduino, this might be a helpful way to __adapt to modern microcontrollers__ like BL602.
+
+_Why port uLisp to BL602?_
+
 TODO
 
 [`ulisp-esp`](https://github.com/technoblogy/ulisp-esp)
@@ -47,7 +82,7 @@ Natural fit because
 
 1.  Arduino
 
-[More about uLisp](http://www.ulisp.com/show?21T5)
+[More about uLisp](http://www.ulisp.com)
 
 ![](https://lupyuen.github.io/images/lisp-source.jpg)
 
