@@ -73,7 +73,9 @@
 <li><a href="#flip-the-led">3.2 Flip the LED</a><ul></ul></li>
 <li><a href="#blinky-function">3.3 Blinky Function</a><ul></ul></li></ul></li>
 <li><a href="#now-add-blockly">4 Now add Blockly</a><ul></ul></li>
-<li><a href="#run-the-blockly-web-editor">5 Run the Blockly Web Editor</a><ul></ul></li>
+<li><a href="#run-the-blockly-web-editor">5 Run the Blockly Web Editor</a><ul>
+<li><a href="#flip-the-led-1">5.1 Flip the LED</a><ul></ul></li>
+<li><a href="#blinky">5.2 Blinky</a><ul></ul></li></ul></li>
 <li><a href="#web-browser-controls-bl602-with-web-serial-api">6 Web Browser controls BL602 with Web Serial API</a><ul></ul></li>
 <li><a href="#porting-ulisp-to-bl602">7 Porting uLisp to BL602</a><ul></ul></li>
 <li><a href="#customise-blockly-for-ulisp">8 Customise Blockly for uLisp</a><ul></ul></li>
@@ -388,22 +390,39 @@ cargo run flash sdk_app_ulisp.bin --port COM5
 <p>Pressing it will <strong>automatically transfer the uLisp Code from Blockly to BL602</strong>… Thanks to the <a href="https://web.dev/serial/"><strong>Web Serial API</strong></a>!</p>
 <p>Let’s try it now.</p>
 <h1 id="run-the-blockly-web-editor" class="section-header"><a href="#run-the-blockly-web-editor">5 Run the Blockly Web Editor</a></h1>
-<p>TODO</p>
-<p>Disconnect screen / CoolTerm / putty / Web Serial Terminal (close the web browser)</p>
+<p>We shall do two things with Blockly and uLisp…</p>
+<h2 id="flip-the-led-1" class="section-header"><a href="#flip-the-led-1">5.1 Flip the LED</a></h2>
+<ol>
+<li>
+<p><strong>Close the BL602 serial connection</strong> from <code>screen</code> / CoolTerm / <code>putty</code> / Web Serial Terminal (close the web browser)</p>
+</li>
+<li>
+<p><strong>Disconnect BL602</strong> from our computer, and <strong>reconnect</strong> it to the USB Port.</p>
+</li>
+<li>
+<p>Click this link to run the <strong>Blockly Web Editor for uLisp</strong>…</p>
 <ul>
 <li><a href="https://appkaki.github.io/blockly-ulisp/demos/code/"><strong><code>blockly-ulisp</code> Web Editor</strong></a></li>
 </ul>
-<p>(This website contains plain HTML and JavaScript, no server-side code is used)</p>
-<p><a href="https://github.com/AppKaki/blockly-ulisp"><code>blockly-ulisp</code></a></p>
+<p>(This website contains plain HTML and JavaScript, no server-side code. See <a href="https://github.com/AppKaki/blockly-ulisp"><code>blockly-ulisp</code></a>)</p>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/lisp-edit1.png" alt="Blockly Web Editor" /></p>
+<p><img src="https://lupyuen.github.io/images/lisp-edit1.png" alt="Blockly Web Editor: Digital Write" /></p>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/lisp-edit2.png" alt="Blockly Web Editor" /></p>
+<p><img src="https://lupyuen.github.io/images/lisp-edit2.png" alt="Blockly Web Editor: uLisp code for Digital Write" /></p>
+<p><a href="https://youtu.be/RRhzW4j8BtI"><strong>Watch the demo on YouTube</strong></a></p>
+</li>
+</ol>
+<h2 id="blinky" class="section-header"><a href="#blinky">5.2 Blinky</a></h2>
+<ol>
+<li>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/lisp-edit3.png" alt="Blockly Web Editor" /></p>
+<p><img src="https://lupyuen.github.io/images/lisp-edit3.png" alt="Blockly Web Editor: Blinky" /></p>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/lisp-edit4.png" alt="Blockly Web Editor" /></p>
+<p><img src="https://lupyuen.github.io/images/lisp-edit4.png" alt="Blockly Web Editor: uLisp code for Blinky" /></p>
 <p>TODO</p>
+<p><a href="https://youtu.be/LNkmUIv7ZZc"><strong>Watch the demo on YouTube</strong></a></p>
+</li>
+</ol>
 <h1 id="web-browser-controls-bl602-with-web-serial-api" class="section-header"><a href="#web-browser-controls-bl602-with-web-serial-api">6 Web Browser controls BL602 with Web Serial API</a></h1>
 <p>TODO</p>
 <p>The Blockly demo calls the <a href="https://web.dev/serial/"><strong>Web Serial API</strong></a> to transfer the generated uLisp Script to BL602…</p>
@@ -466,14 +485,6 @@ cargo run flash sdk_app_ulisp.bin --port COM5
 <p><img src="https://lupyuen.github.io/images/lisp-mobile.png" alt="" /></p>
 <h1 id="blockly-web-editor-for-ulisp" class="section-header"><a href="#blockly-web-editor-for-ulisp">9 Blockly Web Editor for uLisp</a></h1>
 <p>Watch the demo on YouTube…</p>
-<ul>
-<li>
-<p><a href="https://youtu.be/RRhzW4j8BtI"><strong>LED Demo</strong></a></p>
-</li>
-<li>
-<p><a href="https://youtu.be/LNkmUIv7ZZc"><strong>Blinky Demo</strong></a></p>
-</li>
-</ul>
 <p>Try it here…</p>
 <p><a href="https://appkaki.github.io/blockly-ulisp/demos/code/"><code>blockly-ulisp</code> Web Editor</a></p>
 <p>The Blockly demo at <a href="https://github.com/AppKaki/blockly-ulisp/blob/master/demos/code"><code>demos/code</code></a> has been customised to include the Lisp Code Generator…</p>
