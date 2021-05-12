@@ -316,9 +316,7 @@ On PineCone BL602 the Blue LED is connected to __GPIO Pin 11__.
 
 ## Blinky Function
 
-TODO
-
-Define the blinky function...
+Now the show gets exciting: With uLisp we can define __functions and loops__ at the command line... Just like `bash`!
 
 ```text
 ( defun blinky ()             \
@@ -334,19 +332,31 @@ Here's what it means...
 
 ![Blinky Function](https://lupyuen.github.io/images/lisp-blinky.png)
 
-Run the blinky function...
+Enter the lines above into the BL602 command line. Note that...
+
+1.  Each line __starts with a bracket "`(`" followed by a space " "__
+
+    (Because "`(`" is a Command Keyword that will select the uLisp Interpreter)
+
+1.  Each line (except the last line) __ends with backslash "`\`"__
+
+    (Because each line is a continuation of the previous line)
+
+1.  Alternatively, we may merge the lines into a single loooong line, remove the backslashes "`\`", and paste the loooong line into the BL602 command line.
+
+We run the `blinky` function like so...
 
 ```text
 ( blinky )
 ```
 
--   [__Watch the demo on YouTube__](https://youtu.be/TN4OaZNGjOA)
+And the LED blinks every second! 
 
-TODO
+(Reboot the board to stop it, sorry)
 
-Based on...
+[__Watch the demo on YouTube__](https://youtu.be/TN4OaZNGjOA)
 
-[(Based on this Blinky function from uLisp)](http://www.ulisp.com/show?1AEK)
+[(Based on the Blinky function from uLisp)](http://www.ulisp.com/show?1AEK)
 
 # Now add Blockly
 
