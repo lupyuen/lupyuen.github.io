@@ -360,19 +360,47 @@ And the __LED blinks every second!__
 
 # Now add Blockly
 
-TODO
+According to the [Blockly Overview](https://developers.google.com/blockly/guides/overview)...
+
+> Blockly is a library that adds a __visual code editor__ to web and mobile apps. 
+
+> The Blockly editor uses __interlocking, graphical blocks__ to represent code concepts like variables, logical expressions, loops, and more. 
+
+> It allows users to apply programming principles __without having to worry about syntax__ or the intimidation of a blinking cursor on the command line.
+
+In short, Blockly will let us __create uLisp programs through a Web Browser__ (with some customisation)...
 
 ![](https://lupyuen.github.io/images/lisp-blockly2.png)
 
-TODO
+[(Yep it looks a lot like Scratch)](https://scratch.mit.edu/developers)
+
+_Does Blockly require any server-side code?_
+
+Nope, everything is done in __plain old HTML and JavaScript__, without any server-side code. It runs locally on our computer too.
+
+(Which is great for developers)
+
+_So we copy and paste the generated uLisp code from Blockly to BL602?_
+
+Nope we're in 2021, everything can be automated!
+
+See the __Run Button [ ▶ ]__ at top right?
+
+Pressing it will __automatically transfer the uLisp Code from Blockly to BL602__... Thanks to the [__Web Serial API__](https://web.dev/serial/)!
+
+Let's try it now.
 
 # Run the Blockly Web Editor
 
 TODO
 
-[`blockly-ulisp/demos/code`](https://appkaki.github.io/blockly-ulisp/demos/code/)
+Disconnect screen / CoolTerm / putty / Web Serial Terminal (close the web browser)
 
-[`blockly-ulisp` Web Editor](https://github.com/AppKaki/blockly-ulisp)
+-  [__`blockly-ulisp` Web Editor__](https://appkaki.github.io/blockly-ulisp/demos/code/)
+
+(This website contains plain HTML and JavaScript, no server-side code is used)
+
+[`blockly-ulisp`](https://github.com/AppKaki/blockly-ulisp)
 
 ![](https://lupyuen.github.io/images/lisp-mobile.png)
 
