@@ -268,43 +268,47 @@ That's because we programmed the BL602 Command Line to recognise "`(`" as a __Co
 
     [(Everything except the head... like Ebifurai No Shippo)](https://sumikko-gurashi.fandom.com/wiki/Ebifurai_No_Shippo)
 
-    ![uLisp Interpreter](https://lupyuen.github.io/images/lisp-interpreter.png)
+![uLisp Interpreter](https://lupyuen.github.io/images/lisp-interpreter.png)
 
-    [(Based on the List Commands from uLisp)](http://www.ulisp.com/show?1AC5)
+[(Based on the List Commands from uLisp)](http://www.ulisp.com/show?1AC5)
 
 ## Flip the LED
 
-TODO
+Now let's __flip the BL602 LED on and off__!
 
-Now let's flip the LED on and off...
+On PineCone BL602 the Blue LED is connected to __GPIO Pin 11__.
 
-Configure GPIO Pin 11 (Blue LED) for output (instead of input)...
+(If you're using a different BL602 board, please change the GPIO Pin Number accordingly)
 
-```text
-( pinmode 11 :output )
-```
+1.  We configure __GPIO Pin 11 (Blue LED) for output__ (instead of input)...
 
-Set GPIO Pin 11 to High (LED Off)...
+    ```text
+    ( pinmode 11 :output )
+    ```
 
-```text
-( digitalwrite 11 :high )
-```
+1.  Set __GPIO Pin 11 to High__...
 
-Set GPIO Pin 11 to Low (LED On)...
+    ```text
+    ( digitalwrite 11 :high )
+    ```
 
-```text
-( digitalwrite 11 :low )
-```
+    The Blue LED switches off.
 
-Sleep 1,000 milliseconds (1 second)...
+1.  Set __GPIO Pin 11 to Low__...
 
-```text
-( delay 1000 )
-```
+    ```text
+    ( digitalwrite 11 :low )
+    ```
 
--   [__Watch the demo on YouTube__](https://youtu.be/9oLheWjzPcA)
+    The Blue LED switches on.
 
-We should see this...
+1.  And we __sleep 1,000 milliseconds__ (1 second)...
+
+    ```text
+    ( delay 1000 )
+    ```
+
+    [__Watch the demo on YouTube__](https://youtu.be/9oLheWjzPcA)
 
 ![Flip the LED with uLisp](https://lupyuen.github.io/images/lisp-led.png)
 
