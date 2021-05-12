@@ -45,7 +45,7 @@ _Why is uLisp special?_
 
 Compared with other embedded programming languages, uLisp looks particularly interesting because it has __built-in Arduino-like functions__ for GPIO, I2C, SPI, ADC, DAC, ... Even WiFi!
 
-So this runs perfectly fine on uLisp...
+So this Blinky program runs perfectly fine on uLisp...
 
 ```text
 ( loop
@@ -58,9 +58,9 @@ So this runs perfectly fine on uLisp...
 )
 ```
 
-Because `pinmode` and `digitalwrite` are Arduino-like GPIO functions predefined in uLisp.
+Because `pinmode` (set the GPIO pin mode) and `digitalwrite` (set the GPIO pin output) are Arduino-like GPIO functions predefined in uLisp.
 
-(`delay` is another Arduino-like Timer function predefined in uLisp)
+(`delay` is another Arduino-like Timer function predefined in uLisp. It waits for the specified number of milliseconds.)
 
 uLisp makes it possible to write __high-level scripts__ with GPIO, I2C, SPI, ADC, DAC and WiFi functions.
 
