@@ -100,10 +100,10 @@
 <p><em>What is uLisp?</em></p>
 <p>From the <a href="http://www.ulisp.com">uLisp Website</a>…</p>
 <blockquote>
-<p>uLisp® is a version of the Lisp programming language specifically designed to run on microcontrollers with a limited amount of RAM, from the Arduino Uno based on the ATmega328 up to the Teensy 4.0/4.1. You can use exactly the same uLisp program, irrespective of the platform.</p>
+<p>uLisp® is a version of the Lisp programming language specifically designed to run on <strong>microcontrollers with a limited amount of RAM</strong>, from the Arduino Uno based on the ATmega328 up to the Teensy 4.0/4.1. You can use exactly the same uLisp program, irrespective of the platform.</p>
 </blockquote>
 <blockquote>
-<p>Because uLisp is an interpreter you can type commands in, and see the effect immediately, without having to compile and upload your program. This makes it an ideal environment for learning to program, or for setting up simple electronic devices.</p>
+<p>Because <strong>uLisp is an interpreter</strong> you can type commands in, and see the effect immediately, without having to compile and upload your program. This makes it an ideal environment for <strong>learning to program</strong>, or for setting up simple electronic devices.</p>
 </blockquote>
 <p><em>Why is uLisp special?</em></p>
 <p>Compared with other embedded programming languages, uLisp looks particularly interesting because it has <strong>built-in Arduino-like functions</strong> for GPIO, I2C, SPI, ADC, DAC, … Even WiFi!</p>
@@ -122,23 +122,25 @@
 <p>uLisp makes it possible to write <strong>high-level scripts</strong> with GPIO, I2C, SPI, ADC, DAC and WiFi functions.</p>
 <p>And for learners familiar with Arduino, this might be a helpful way to <strong>adapt to modern microcontrollers</strong> like BL602.</p>
 <p><em>Why port uLisp to BL602?</em></p>
-<p>TODO</p>
-<p><a href="https://github.com/technoblogy/ulisp-esp"><code>ulisp-esp</code></a></p>
-<p>Natural fit because</p>
+<p>uLisp is a natural fit for the BL602 RISC-V + WiFi SoC because…</p>
 <ol>
 <li>
-<p>ESP32</p>
+<p>BL602 has a <strong>Command-Line Interface</strong> (and so does uLisp)</p>
+<p>Unlike most 32-bit microcontrollers, BL602 was designed to be accessed by embedded developers via a simple Command-Line Interface (over the USB Serial Port).</p>
+<p>BL602 doesn’t have a fancy shell like <code>bash</code>. But uLisp on BL602 could offer some helpful <strong>scripting capability</strong>  for GPIO, I2C, SPI, WiFi, …</p>
 </li>
 <li>
-<p>Console</p>
-</li>
-<li>
-<p>Scripting</p>
-</li>
-<li>
-<p>Arduino</p>
+<p>uLisp already works on <strong>ESP32</strong> <a href="https://github.com/technoblogy/ulisp-esp">(See this)</a></p>
+<p>Since BL602 is a WiFi + Bluetooth LE SoC like ESP32, it might be easy to port the ESP32 version of uLisp to BL602. Including the WiFi functions.</p>
 </li>
 </ol>
+<p><em>I’m new to Lisp… Too many brackets, no?</em></p>
+<p>In a while we’ll talk about <strong>Blockly for uLisp</strong>… Drag-and-drop a uLisp program, without typing a single bracket / parenthesis!</p>
+<p>(Works just like Scratch, the graphical programming tool)</p>
+<p>And we may even upload and run a uLisp program on BL602 through a <strong>Web Browser</strong>… Thanks to the <strong>Web Serial API</strong>!</p>
+<p><em>Porting uLisp from ESP32 to BL602 sounds difficult?</em></p>
+<p>Not at all!</p>
+<p>TODO</p>
 <p><a href="http://www.ulisp.com">More about uLisp</a></p>
 <p><img src="https://lupyuen.github.io/images/lisp-source.jpg" alt="" /></p>
 <p>From <a href="https://github.com/technoblogy/ulisp-esp/blob/master/ulisp-esp.ino"><code>ulisp-esp.ino</code></a></p>
