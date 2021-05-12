@@ -366,13 +366,35 @@ cargo run flash sdk_app_ulisp.bin --port COM5
 <p><a href="https://youtu.be/TN4OaZNGjOA"><strong>Watch the demo on YouTube</strong></a></p>
 <p><a href="http://www.ulisp.com/show?1AEK">(Based on the Blinky function from uLisp)</a></p>
 <h1 id="now-add-blockly" class="section-header"><a href="#now-add-blockly">4 Now add Blockly</a></h1>
-<p>TODO</p>
+<p>According to the <a href="https://developers.google.com/blockly/guides/overview">Blockly Overview</a>…</p>
+<blockquote>
+<p>Blockly is a library that adds a <strong>visual code editor</strong> to web and mobile apps. </p>
+</blockquote>
+<blockquote>
+<p>The Blockly editor uses <strong>interlocking, graphical blocks</strong> to represent code concepts like variables, logical expressions, loops, and more. </p>
+</blockquote>
+<blockquote>
+<p>It allows users to apply programming principles <strong>without having to worry about syntax</strong> or the intimidation of a blinking cursor on the command line.</p>
+</blockquote>
+<p>In short, Blockly will let us <strong>create uLisp programs through a Web Browser</strong> (with some customisation)…</p>
 <p><img src="https://lupyuen.github.io/images/lisp-blockly2.png" alt="" /></p>
-<p>TODO</p>
+<p><a href="https://scratch.mit.edu/developers">(Yep it looks a lot like Scratch)</a></p>
+<p><em>Does Blockly require any server-side code?</em></p>
+<p>Nope, everything is done in <strong>plain old HTML and JavaScript</strong>, without any server-side code. It runs locally on our computer too.</p>
+<p>(Which is great for developers)</p>
+<p><em>So we copy and paste the generated uLisp code from Blockly to BL602?</em></p>
+<p>Nope we’re in 2021, everything can be automated!</p>
+<p>See the <strong>Run Button [ ▶ ]</strong> at top right?</p>
+<p>Pressing it will <strong>automatically transfer the uLisp Code from Blockly to BL602</strong>… Thanks to the <a href="https://web.dev/serial/"><strong>Web Serial API</strong></a>!</p>
+<p>Let’s try it now.</p>
 <h1 id="run-the-blockly-web-editor" class="section-header"><a href="#run-the-blockly-web-editor">5 Run the Blockly Web Editor</a></h1>
 <p>TODO</p>
-<p><a href="https://appkaki.github.io/blockly-ulisp/demos/code/"><code>blockly-ulisp/demos/code</code></a></p>
-<p><a href="https://github.com/AppKaki/blockly-ulisp"><code>blockly-ulisp</code> Web Editor</a></p>
+<p>Disconnect screen / CoolTerm / putty / Web Serial Terminal (close the web browser)</p>
+<ul>
+<li><a href="https://appkaki.github.io/blockly-ulisp/demos/code/"><strong><code>blockly-ulisp</code> Web Editor</strong></a></li>
+</ul>
+<p>(This website contains plain HTML and JavaScript, no server-side code is used)</p>
+<p><a href="https://github.com/AppKaki/blockly-ulisp"><code>blockly-ulisp</code></a></p>
 <p><img src="https://lupyuen.github.io/images/lisp-mobile.png" alt="" /></p>
 <p>TODO</p>
 <h1 id="web-browser-controls-bl602-with-web-serial-api" class="section-header"><a href="#web-browser-controls-bl602-with-web-serial-api">6 Web Browser controls BL602 with Web Serial API</a></h1>
