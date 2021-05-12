@@ -297,29 +297,39 @@ cargo run flash sdk_app_ulisp.bin --port COM5
 </code></pre>
 <p>This returns <strong><code>(2 3)</code></strong></p>
 <p><a href="https://sumikko-gurashi.fandom.com/wiki/Ebifurai_No_Shippo">(Everything except the head… like Ebifurai No Shippo)</a></p>
-<p><img src="https://lupyuen.github.io/images/lisp-interpreter.png" alt="uLisp Interpreter" /></p>
-<p><a href="http://www.ulisp.com/show?1AC5">(Based on the List Commands from uLisp)</a></p>
 </li>
 </ol>
+<p><img src="https://lupyuen.github.io/images/lisp-interpreter.png" alt="uLisp Interpreter" /></p>
+<p><a href="http://www.ulisp.com/show?1AC5">(Based on the List Commands from uLisp)</a></p>
 <h2 id="flip-the-led" class="section-header"><a href="#flip-the-led">3.2 Flip the LED</a></h2>
-<p>TODO</p>
-<p>Now let’s flip the LED on and off…</p>
-<p>Configure GPIO Pin 11 (Blue LED) for output (instead of input)…</p>
+<p>Now let’s <strong>flip the BL602 LED on and off</strong>!</p>
+<p>On PineCone BL602 the Blue LED is connected to <strong>GPIO Pin 11</strong>.</p>
+<p>(If you’re using a different BL602 board, please change the GPIO Pin Number accordingly)</p>
+<ol>
+<li>
+<p>We configure <strong>GPIO Pin 11 (Blue LED) for output</strong> (instead of input)…</p>
 <pre><code class="language-text">( pinmode 11 :output )
 </code></pre>
-<p>Set GPIO Pin 11 to High (LED Off)…</p>
+</li>
+<li>
+<p>Set <strong>GPIO Pin 11 to High</strong>…</p>
 <pre><code class="language-text">( digitalwrite 11 :high )
 </code></pre>
-<p>Set GPIO Pin 11 to Low (LED On)…</p>
+<p>The Blue LED switches off.</p>
+</li>
+<li>
+<p>Set <strong>GPIO Pin 11 to Low</strong>…</p>
 <pre><code class="language-text">( digitalwrite 11 :low )
 </code></pre>
-<p>Sleep 1,000 milliseconds (1 second)…</p>
+<p>The Blue LED switches on.</p>
+</li>
+<li>
+<p>And we <strong>sleep 1,000 milliseconds</strong> (1 second)…</p>
 <pre><code class="language-text">( delay 1000 )
 </code></pre>
-<ul>
-<li><a href="https://youtu.be/9oLheWjzPcA"><strong>Watch the demo on YouTube</strong></a></li>
-</ul>
-<p>We should see this…</p>
+<p><a href="https://youtu.be/9oLheWjzPcA"><strong>Watch the demo on YouTube</strong></a></p>
+</li>
+</ol>
 <p><img src="https://lupyuen.github.io/images/lisp-led.png" alt="Flip the LED with uLisp" /></p>
 <p><a href="http://www.ulisp.com/show?1AEK">(Based on the GPIO Commands from uLisp)</a></p>
 <h2 id="blinky-function" class="section-header"><a href="#blinky-function">3.3 Blinky Function</a></h2>
