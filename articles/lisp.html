@@ -274,21 +274,33 @@ cargo run flash sdk_app_ulisp.bin --port COM5
 <p><strong>Alternatively:</strong> Use the Web Serial Terminal (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">More details on connecting to BL602</a></p>
 <h2 id="enter-ulisp-commands" class="section-header"><a href="#enter-ulisp-commands">3.1 Enter uLisp commands</a></h2>
-<p>TODO</p>
-<p>We need a space before the first <code>(</code> because <code>(</code> is parsed as a command keyword…</p>
-<p>Create a list <code>(1 2 3)</code>…</p>
+<p>Let’s enter some uLisp commands and test the <strong>BL602 uLisp Interpreter</strong>!</p>
+<p><strong>Please Note:</strong> For each uLisp command line we <strong>insert a space “ “ after the first bracket “<code>(</code>”</strong>.</p>
+<p>That’s because we programmed the BL602 Command Line to recognise “<code>(</code>” as a <strong>Command Keyword</strong> that will call the uLisp Interpreter.</p>
+<ol>
+<li>
+<p>Enter this to create a <strong>list of numbers</strong>…</p>
 <pre><code class="language-text">( list 1 2 3 )
 </code></pre>
-<p>This returns <code>1</code>…</p>
+<p>This returns <strong><code>(1 2 3)</code></strong></p>
+</li>
+<li>
+<p>In Lisp, to <strong><code>car</code></strong> a list is to take the <strong>head of the list</strong>…</p>
 <pre><code class="language-text">( car ( list 1 2 3 ) )
 </code></pre>
-<p>This returns <code>(2 3)</code>…</p>
+<p>This returns <strong><code>1</code></strong></p>
+<p>(It’s like deshelling a prawn)</p>
+</li>
+<li>
+<p>And to <strong><code>cdr</code></strong> a list is to take the <strong>tail of the list</strong>…</p>
 <pre><code class="language-text">( cdr ( list 1 2 3 ) )
 </code></pre>
-<p>We should see this…</p>
+<p>This returns <strong><code>(2 3)</code></strong></p>
+<p><a href="https://sumikko-gurashi.fandom.com/wiki/Ebifurai_No_Shippo">(Everything except the head… like Ebifurai No Shippo)</a></p>
 <p><img src="https://lupyuen.github.io/images/lisp-interpreter.png" alt="uLisp Interpreter" /></p>
-<p>Based on…</p>
-<p><a href="http://www.ulisp.com/show?1AC5">List Commands from uLisp</a></p>
+<p><a href="http://www.ulisp.com/show?1AC5">(Based on the List Commands from uLisp)</a></p>
+</li>
+</ol>
 <h2 id="flip-the-led" class="section-header"><a href="#flip-the-led">3.2 Flip the LED</a></h2>
 <p>TODO</p>
 <p>Now let’s flip the LED on and off…</p>
@@ -309,8 +321,7 @@ cargo run flash sdk_app_ulisp.bin --port COM5
 </ul>
 <p>We should see this…</p>
 <p><img src="https://lupyuen.github.io/images/lisp-led.png" alt="Flip the LED with uLisp" /></p>
-<p>Based on…</p>
-<p><a href="http://www.ulisp.com/show?1AEK">GPIO Commands from uLisp</a></p>
+<p><a href="http://www.ulisp.com/show?1AEK">(Based on the GPIO Commands from uLisp)</a></p>
 <h2 id="blinky-function" class="section-header"><a href="#blinky-function">3.3 Blinky Function</a></h2>
 <p>TODO</p>
 <p>Define the blinky function…</p>
@@ -332,7 +343,7 @@ cargo run flash sdk_app_ulisp.bin --port COM5
 </ul>
 <p>TODO</p>
 <p>Based on…</p>
-<p><a href="http://www.ulisp.com/show?1AEK">Blinky Commands from uLisp</a></p>
+<p><a href="http://www.ulisp.com/show?1AEK">(Based on this Blinky function from uLisp)</a></p>
 <h1 id="now-add-blockly" class="section-header"><a href="#now-add-blockly">4 Now add Blockly</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lisp-blockly.png" alt="" /></p>
