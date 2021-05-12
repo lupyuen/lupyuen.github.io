@@ -234,35 +234,43 @@ __Alternatively:__ Use the Web Serial Terminal ([See this](https://lupyuen.githu
 
 ## Enter uLisp commands
 
-TODO
+Let's enter some uLisp commands and test the __BL602 uLisp Interpreter__!
 
-We need a space before the first `(` because `(` is parsed as a command keyword...
+__Please Note:__ For each uLisp command line we __insert a space " " after the first bracket "`(`"__.
 
-Create a list `(1 2 3)`...
+That's because we programmed the BL602 Command Line to recognise "`(`" as a __Command Keyword__ that will call the uLisp Interpreter.
 
-```text
-( list 1 2 3 )
-```
+1.  Enter this to create a __list of numbers__...
 
-This returns `1`...
+    ```text
+    ( list 1 2 3 )
+    ```
 
-```text
-( car ( list 1 2 3 ) )
-```
+    This returns __`(1 2 3)`__
 
-This returns `(2 3)`...
+1.  In Lisp, to __`car`__ a list is to take the __head of the list__...
 
-```text
-( cdr ( list 1 2 3 ) )
-```
+    ```text
+    ( car ( list 1 2 3 ) )
+    ```
 
-We should see this...
+    This returns __`1`__
 
-![uLisp Interpreter](https://lupyuen.github.io/images/lisp-interpreter.png)
+    (It's like deshelling a prawn)
 
-Based on...
+1.  And to __`cdr`__ a list is to take the __tail of the list__...
 
-[List Commands from uLisp](http://www.ulisp.com/show?1AC5)
+    ```text
+    ( cdr ( list 1 2 3 ) )
+    ```
+
+    This returns __`(2 3)`__
+
+    [(Everything except the head... like Ebifurai No Shippo)](https://sumikko-gurashi.fandom.com/wiki/Ebifurai_No_Shippo)
+
+    ![uLisp Interpreter](https://lupyuen.github.io/images/lisp-interpreter.png)
+
+    [(Based on the List Commands from uLisp)](http://www.ulisp.com/show?1AC5)
 
 ## Flip the LED
 
@@ -300,9 +308,7 @@ We should see this...
 
 ![Flip the LED with uLisp](https://lupyuen.github.io/images/lisp-led.png)
 
-Based on...
-
-[GPIO Commands from uLisp](http://www.ulisp.com/show?1AEK)
+[(Based on the GPIO Commands from uLisp)](http://www.ulisp.com/show?1AEK)
 
 ## Blinky Function
 
@@ -336,7 +342,7 @@ TODO
 
 Based on...
 
-[Blinky Commands from uLisp](http://www.ulisp.com/show?1AEK)
+[(Based on this Blinky function from uLisp)](http://www.ulisp.com/show?1AEK)
 
 # Now add Blockly
 
