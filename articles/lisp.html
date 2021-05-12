@@ -66,8 +66,12 @@
     <h1 class="title">uLisp and Blockly on PineCone BL602 RISC-V Board</h1>
     <nav id="TOC"><ul>
 <li><a href="#start-with-ulisp">1 Start with uLisp</a><ul></ul></li>
-<li><a href="#build-the-bl602-ulisp-firmware">2 Build the BL602 uLisp Firmware</a><ul></ul></li>
-<li><a href="#run-the-bl602-ulisp-firmware">3 Run the BL602 uLisp Firmware</a><ul></ul></li>
+<li><a href="#build-the-bl602-ulisp-firmware">2 Build the BL602 uLisp Firmware</a><ul>
+<li><a href="#flash-the-firmware">2.1 Flash the firmware</a><ul></ul></li></ul></li>
+<li><a href="#run-the-bl602-ulisp-firmware">3 Run the BL602 uLisp Firmware</a><ul>
+<li><a href="#enter-ulisp-commands">3.1 Enter uLisp commands</a><ul></ul></li>
+<li><a href="#flip-the-led">3.2 Flip the LED</a><ul></ul></li>
+<li><a href="#blinky-function">3.3 Blinky Function</a><ul></ul></li></ul></li>
 <li><a href="#now-add-blockly">4 Now add Blockly</a><ul></ul></li>
 <li><a href="#run-the-blockly-web-editor">5 Run the Blockly Web Editor</a><ul></ul></li>
 <li><a href="#porting-ulisp-to-bl602">6 Porting uLisp to BL602</a><ul></ul></li>
@@ -151,66 +155,184 @@
 <p><em>Anything else we should know about uLisp?</em></p>
 <p>uLisp is still <a href="https://github.com/technoblogy?tab=repositories">actively maintained</a>. It has an <a href="http://forum.ulisp.com/">active online community</a>.</p>
 <h1 id="build-the-bl602-ulisp-firmware" class="section-header"><a href="#build-the-bl602-ulisp-firmware">2 Build the BL602 uLisp Firmware</a></h1>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/ulisp/customer_app/sdk_app_ulisp"><code>sdk_app_ulisp</code></a></p>
-<p><a href="https://github.com/lupyuen/ulisp-bl602"><code>ulisp-bl602</code></a></p>
+<p>Download and build the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/ulisp/customer_app/sdk_app_ulisp">uLisp Firmware for BL602</a>…</p>
+<pre><code class="language-bash"># Download the ulisp branch of lupyuen's bl_iot_sdk
+git clone --recursive --branch ulisp https://github.com/lupyuen/bl_iot_sdk
+
+# TODO: Change this to the full path of bl_iot_sdk
+export BL60X_SDK_PATH=$HOME/bl_iot_sdk
+export CONFIG_CHIP_NAME=BL602
+
+# Build the sdk_app_ulisp firmware
+cd bl_iot_sdk/customer_app/sdk_app_ulisp
+make
+
+# TODO: Change ~/blflash to the full path of blflash
+cp build_out/sdk_app_ulisp.bin ~/blflash
+</code></pre>
+<p><a href="https://lupyuen.github.io/articles/pinecone#building-firmware">More details on building bl_iot_sdk</a></p>
+<p>(Remember to use the <strong><code>ulisp</code></strong> branch, not the default <strong><code>master</code></strong> branch)</p>
+<h2 id="flash-the-firmware" class="section-header"><a href="#flash-the-firmware">2.1 Flash the firmware</a></h2>
+<p>Follow these steps to install <code>blflash</code>…</p>
+<ol>
+<li>
+<p><a href="https://lupyuen.github.io/articles/flash#install-rustup"><strong>“Install rustup”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/flash#download-and-build-blflash"><strong>“Download and build blflash”</strong></a></p>
+</li>
+</ol>
+<p>We assume that our Firmware Binary File <code>sdk_app_ulisp.bin</code> has been copied to the <code>blflash</code> folder.</p>
+<p>Set BL602 to <strong>Flashing Mode</strong> and restart the board…</p>
+<p><strong>For PineCone:</strong></p>
+<ol>
+<li>
+<p>Set the <strong>PineCone Jumper (IO 8)</strong> to the <strong><code>H</code> Position</strong> <a href="https://lupyuen.github.io/images/pinecone-jumperh.jpg">(Like this)</a></p>
+</li>
+<li>
+<p>Press the Reset Button</p>
+</li>
+</ol>
+<p><strong>For BL10:</strong></p>
+<ol>
+<li>
+<p>Connect BL10 to the USB port</p>
+</li>
+<li>
+<p>Press and hold the <strong>D8 Button (GPIO 8)</strong></p>
+</li>
+<li>
+<p>Press and release the <strong>EN Button (Reset)</strong></p>
+</li>
+<li>
+<p>Release the D8 Button</p>
+</li>
+</ol>
+<p><strong>For Pinenut and MagicHome BL602:</strong></p>
+<ol>
+<li>
+<p>Disconnect the board from the USB Port</p>
+</li>
+<li>
+<p>Connect <strong>GPIO 8</strong> to <strong>3.3V</strong></p>
+</li>
+<li>
+<p>Reconnect the board to the USB port</p>
+</li>
+</ol>
+<p>Enter these commands to flash <code>sdk_app_ulisp.bin</code> to BL602 over UART…</p>
+<pre><code class="language-bash"># TODO: Change ~/blflash to the full path of blflash
+cd ~/blflash
+
+# For Linux:
+sudo cargo run flash sdk_app_ulisp.bin \
+    --port /dev/ttyUSB0
+
+# For macOS:
+cargo run flash sdk_app_ulisp.bin \
+    --port /dev/tty.usbserial-1420 \
+    --initial-baud-rate 230400 \
+    --baud-rate 230400
+
+# For Windows: Change COM5 to the BL602 Serial Port
+cargo run flash sdk_app_ulisp.bin --port COM5
+</code></pre>
+<p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">More details on flashing firmware</a></p>
 <h1 id="run-the-bl602-ulisp-firmware" class="section-header"><a href="#run-the-bl602-ulisp-firmware">3 Run the BL602 uLisp Firmware</a></h1>
+<p>Set BL602 to <strong>Normal Mode</strong> (Non-Flashing) and restart the board…</p>
+<p><strong>For PineCone:</strong></p>
+<ol>
+<li>
+<p>Set the <strong>PineCone Jumper (IO 8)</strong> to the <strong><code>L</code> Position</strong> <a href="https://lupyuen.github.io/images/pinecone-jumperl.jpg">(Like this)</a></p>
+</li>
+<li>
+<p>Press the Reset Button</p>
+</li>
+</ol>
+<p><strong>For BL10:</strong></p>
+<ol>
+<li>Press and release the <strong>EN Button (Reset)</strong></li>
+</ol>
+<p><strong>For Pinenut and MagicHome BL602:</strong></p>
+<ol>
+<li>
+<p>Disconnect the board from the USB Port</p>
+</li>
+<li>
+<p>Connect <strong>GPIO 8</strong> to <strong>GND</strong></p>
+</li>
+<li>
+<p>Reconnect the board to the USB port</p>
+</li>
+</ol>
+<p>After restarting, connect to BL602’s UART Port at 2 Mbps like so…</p>
+<p><strong>For Linux:</strong></p>
+<pre><code class="language-bash">sudo screen /dev/ttyUSB0 2000000
+</code></pre>
+<p><strong>For macOS:</strong> Use CoolTerm (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
+<p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
+<p><strong>Alternatively:</strong> Use the Web Serial Terminal (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
+<p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">More details on connecting to BL602</a></p>
+<h2 id="enter-ulisp-commands" class="section-header"><a href="#enter-ulisp-commands">3.1 Enter uLisp commands</a></h2>
 <p>TODO</p>
 <p>We need a space before the first <code>(</code> because <code>(</code> is parsed as a command keyword…</p>
+<p>Create a list <code>(1 2 3)</code>…</p>
+<pre><code class="language-text">( list 1 2 3 )
+</code></pre>
+<p>This returns <code>1</code>…</p>
+<pre><code class="language-text">( car ( list 1 2 3 ) )
+</code></pre>
+<p>This returns <code>(2 3)</code>…</p>
+<pre><code class="language-text">( cdr ( list 1 2 3 ) )
+</code></pre>
+<p>We should see this…</p>
+<p><img src="https://lupyuen.github.io/images/lisp-interpreter.png" alt="uLisp Interpreter" /></p>
+<p>Based on…</p>
 <p><a href="http://www.ulisp.com/show?1AC5">List Commands from uLisp</a></p>
-<pre><code class="language-text"># Create a list (1 2 3)
-( list 1 2 3 )
-
-# Returns 1
-( car ( list 1 2 3 ) )
-
-# Returns (2 3)
-( cdr ( list 1 2 3 ) )
-</code></pre>
+<h2 id="flip-the-led" class="section-header"><a href="#flip-the-led">3.2 Flip the LED</a></h2>
 <p>TODO</p>
+<p>Now let’s flip the LED on and off…</p>
+<p>Configure GPIO Pin 11 (Blue LED) for output (instead of input)…</p>
+<pre><code class="language-text">( pinmode 11 :output )
+</code></pre>
+<p>Set GPIO Pin 11 to High (LED Off)…</p>
+<pre><code class="language-text">( digitalwrite 11 :high )
+</code></pre>
+<p>Set GPIO Pin 11 to Low (LED On)…</p>
+<pre><code class="language-text">( digitalwrite 11 :low )
+</code></pre>
+<p>Sleep 1,000 milliseconds (1 second)…</p>
+<pre><code class="language-text">( delay 1000 )
+</code></pre>
+<ul>
+<li><a href="https://youtu.be/9oLheWjzPcA"><strong>Watch the demo on YouTube</strong></a></li>
+</ul>
+<p>We should see this…</p>
+<p><img src="https://lupyuen.github.io/images/lisp-led.png" alt="Flip the LED with uLisp" /></p>
+<p>Based on…</p>
 <p><a href="http://www.ulisp.com/show?1AEK">GPIO Commands from uLisp</a></p>
-<pre><code class="language-text"># Configure GPIO Pin 11 (Blue LED) for output (instead of input) 
-( pinmode 11 :output )
-
-# Set GPIO Pin 11 to High (LED Off)
-( digitalwrite 11 :high )
-
-# Set GPIO Pin 11 to Low (LED On)
-( digitalwrite 11 :low )
-
-# Sleep 1,000 milliseconds (1 second)
-( delay 1000 )
-</code></pre>
+<h2 id="blinky-function" class="section-header"><a href="#blinky-function">3.3 Blinky Function</a></h2>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/lisp-led.png" alt="" /></p>
-<p><a href="http://www.ulisp.com/show?1AEK">Blinky Commands from uLisp</a></p>
-<pre><code class="language-text"># Define the blinky function
-( defun blinky ()             \
+<p>Define the blinky function…</p>
+<pre><code class="language-text">( defun blinky ()             \
   ( pinmode 11 :output )      \
   ( loop                      \
    ( digitalwrite 11 :high )  \
    ( delay 1000 )             \
    ( digitalwrite 11 :low  )  \
    ( delay 1000 )))
-
-# Run the blinky function
-( blinky )
 </code></pre>
-<p>Watch the demo on YouTube…</p>
+<p>Here’s what it means…</p>
+<p><img src="https://lupyuen.github.io/images/lisp-blinky.png" alt="Blinky Function" /></p>
+<p>Run the blinky function…</p>
+<pre><code class="language-text">( blinky )
+</code></pre>
 <ul>
-<li>
-<p><a href="https://youtu.be/RRhzW4j8BtI"><strong>LED Demo</strong></a></p>
-</li>
-<li>
-<p><a href="https://youtu.be/LNkmUIv7ZZc"><strong>Blinky Demo</strong></a></p>
-</li>
+<li><a href="https://youtu.be/TN4OaZNGjOA"><strong>Watch the demo on YouTube</strong></a></li>
 </ul>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/lisp-interpreter.png" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/lisp-blinky.png" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/lisp-blinky2.png" alt="" /></p>
+<p>Based on…</p>
+<p><a href="http://www.ulisp.com/show?1AEK">Blinky Commands from uLisp</a></p>
 <h1 id="now-add-blockly" class="section-header"><a href="#now-add-blockly">4 Now add Blockly</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lisp-blockly.png" alt="" /></p>
@@ -231,6 +353,7 @@
 <p><a href="https://github.com/lupyuen/ulisp-bl602"><code>ulisp-bl602</code></a></p>
 <p>This firmware works with <code>blockly-ulisp</code>, which allows embedded apps to be dragged-and-dropped from Web Browser to BL602…</p>
 <p><a href="https://github.com/AppKaki/blockly-ulisp"><code>blockly-ulisp</code></a></p>
+<p><img src="https://lupyuen.github.io/images/lisp-blinky2.png" alt="uLisp Blinky" /></p>
 <h1 id="lisp-code-generator-for-blockly" class="section-header"><a href="#lisp-code-generator-for-blockly">7 Lisp Code Generator for Blockly</a></h1>
 <p>The following have been added into the existing <a href="https://github.com/AppKaki/blockly-ulisp/blob/master/generators"><code>generators</code></a> folder to generate Lisp code and to add blocks specific to uLisp…</p>
 <ul>
