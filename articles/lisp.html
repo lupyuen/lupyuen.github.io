@@ -76,7 +76,8 @@
 <li><a href="#run-the-blockly-web-editor">5 Run the Blockly Web Editor</a><ul>
 <li><a href="#flip-the-led-1">5.1 Flip the LED</a><ul></ul></li>
 <li><a href="#blinky">5.2 Blinky</a><ul></ul></li></ul></li>
-<li><a href="#web-browser-controls-bl602-with-web-serial-api">6 Web Browser controls BL602 with Web Serial API</a><ul></ul></li>
+<li><a href="#web-browser-controls-bl602-with-web-serial-api">6 Web Browser controls BL602 with Web Serial API</a><ul>
+<li><a href="#calling-the-web-serial-api">6.1 Calling the Web Serial API</a><ul></ul></li></ul></li>
 <li><a href="#porting-ulisp-to-bl602">7 Porting uLisp to BL602</a><ul></ul></li>
 <li><a href="#customise-blockly-for-ulisp">8 Customise Blockly for uLisp</a><ul></ul></li>
 <li><a href="#blockly-web-editor-for-ulisp">9 Blockly Web Editor for uLisp</a><ul></ul></li>
@@ -486,17 +487,125 @@ cargo run flash sdk_app_ulisp.bin --port COM5
 </ol>
 <h1 id="web-browser-controls-bl602-with-web-serial-api" class="section-header"><a href="#web-browser-controls-bl602-with-web-serial-api">6 Web Browser controls BL602 with Web Serial API</a></h1>
 <p><em>What is this magic that teleports the uLisp code from Web Browser to BL602?</em></p>
-<p>The Blockly Web Editor calls the <a href="https://web.dev/serial/"><strong>Web Serial API</strong></a> to transfer the generated uLisp Script to BL602…</p>
+<p>The Blockly Web Editor calls the <a href="https://web.dev/serial/"><strong>Web Serial API</strong></a> (in JavaScript) to transfer the generated uLisp code to BL602 (via the USB Serial Port).</p>
+<p>Web Serial API is supported on the newer web browsers. To check whether our web browser supports the Web Serial API, click this link…</p>
+<ul>
+<li><a href="https://googlechromelabs.github.io/serial-terminal/"><strong>Web Serial Terminal</strong></a></li>
+</ul>
+<p>We should be able to connect to BL602 via the USB Serial Port…</p>
+<p><img src="https://lupyuen.github.io/images/lisp-terminal.png" alt="Web Serial Terminal" /></p>
+<p>(Remember to set the <strong><code>Baud Rate</code></strong> to <strong><code>Custom</code></strong> with value <strong><code>2000000</code></strong>)</p>
+<p><em>So the Web Serial API lets us send commands to BL602?</em></p>
+<p>Yep it does! Here we send the <strong><code>reboot</code></strong> command to BL602 via a Web Browser with the Web Serial API…</p>
+<p><img src="https://lupyuen.github.io/images/lisp-reboot.jpg" alt="Reboot with Web Serial API" /></p>
+<p>But there were two interesting challenges…</p>
+<ol>
+<li>
+<p><strong>When do we stop?</strong></p>
+<p>Our JavaScript code might get stuck <strong>waiting forever for a response</strong> from the BL602 command.</p>
+<p>For the <code>reboot</code> command we tweaked our JavaScript code to <strong>stop when it detects the special keywords</strong>…</p>
+<pre><code class="language-text">Init CLI
+</code></pre>
+<p>(Which means that BL602 has finished rebooting)</p>
+</li>
+<li>
+<p><strong>How do we clean up?</strong></p>
+<p>We use <strong>Async Streams</strong> to transmit and receive BL602 serial data.</p>
+<p>Async Streams don’t close immediately… We need to <strong><code>await</code> for them to close</strong>.</p>
+<p>(Or our serial port will be locked from further access)</p>
+</li>
+</ol>
+<p>The proper way to send a <code>reboot</code> command to BL602 looks like this…</p>
+<p><img src="https://lupyuen.github.io/images/lisp-reboot2.png" alt="Fixed reboot with Web Serial API" /></p>
+<p>Let’s look at the fixed code in Blockly (our bespoke version) that <strong>sends uLisp Commands to BL602</strong>.</p>
+<h2 id="calling-the-web-serial-api" class="section-header"><a href="#calling-the-web-serial-api">6.1 Calling the Web Serial API</a></h2>
 <p>TODO</p>
-<p><a href="https://github.com/AppKaki/blockly-ulisp/blob/master/demos/code/code.js#L641-L738"><code>code.js</code></a></p>
-<p>We assume that BL602 is running the uLisp Firmware and connected to our computer via USB…</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/ulisp/customer_app/sdk_app_ulisp"><code>sdk_app_ulisp</code></a></p>
-<p><img src="https://lupyuen.github.io/images/lisp-terminal.png" alt="" /></p>
+<p>From <a href="https://github.com/AppKaki/blockly-ulisp/blob/master/demos/code/code.js#L644-L673"><code>code.js</code></a></p>
+<pre><code class="language-javascript">//  Send an empty command and check that BL602 responds with &quot;#&quot;
+await runWebSerialCommand(
+    &quot;&quot;,  //  Command
+    &quot;#&quot;  //  Expected Response
+);
+
+//  Send the actual command but don't wait for response
+await runWebSerialCommand(
+    command,  //  Command
+    null      //  Don't wait for response
+);
+
+//  Test the reboot command
+await runWebSerialCommand(
+    &quot;reboot&quot;,   //  Command
+    &quot;Init CLI&quot;  //  Expected Response
+);
+</code></pre>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/lisp-reboot.jpg" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/lisp-reboot2.png" alt="" /></p>
-<p>TODO</p>
+<p>From <a href="https://github.com/AppKaki/blockly-ulisp/blob/master/demos/code/code.js#L675-L738"><code>code.js</code></a></p>
+<pre><code class="language-javascript">//  Web Serial Port
+var serialPort;
+
+//  Run a command on BL602 via Web Serial API and wait for the expectedResponse (if not null)
+//  Based on https://web.dev/serial/
+async function runWebSerialCommand(command, expectedResponse) {
+  //  Check if Web Serial API is supported
+  if (!(&quot;serial&quot; in navigator)) { alert(&quot;Web Serial API is not supported&quot;); return; }
+
+  //  Prompt user to select any serial port
+  if (!serialPort) { serialPort = await navigator.serial.requestPort(); }
+  if (!serialPort) { return; }
+
+  //  Wait for the serial port to open at 2 Mbps
+  await serialPort.open({ baudRate: 2000000 });
+
+  //  Capture the events for closing the read and write streams
+  var writableStreamClosed = null;
+  var readableStreamClosed = null;
+
+  //  Send command to BL602
+  {
+    //  Open a write stream
+    console.log(&quot;Writing to BL602: &quot; + command + &quot;...&quot;);
+    const textEncoder = new TextEncoderStream();
+    writableStreamClosed = textEncoder.readable.pipeTo(serialPort.writable);
+    const writer = textEncoder.writable.getWriter();
+
+    //  Write the command
+    await writer.write(command + &quot;\r&quot;); 
+
+    //  Close the write stream
+    writer.close();
+  }
+
+  //  Read response from BL602
+  if (expectedResponse) {
+    //  Open a read stream
+    console.log(&quot;Reading from BL602...&quot;);
+    const textDecoder = new TextDecoderStream();
+    readableStreamClosed = serialPort.readable.pipeTo(textDecoder.writable);
+    const reader = textDecoder.readable.getReader();
+    
+    //  Listen to data coming from the serial device
+    while (true) {
+      const { value, done } = await reader.read();
+      if (!done) { console.log(value); }
+
+      //  If the stream has ended, or the data contains expected response, we stop
+      if (done || value.indexOf(expectedResponse) &gt;= 0) { break; }
+    }
+
+    //  Close the read stream
+    reader.cancel();
+  }
+
+  //  Wait for read and write streams to be closed
+  if (readableStreamClosed) { await readableStreamClosed.catch(() =&gt; { /* Ignore the error */ }); }
+  if (writableStreamClosed) { await writableStreamClosed; }
+
+  //  Close the port
+  await serialPort.close();
+  console.log(&quot;runWebSerial: OK&quot;);
+}
+</code></pre>
 <h1 id="porting-ulisp-to-bl602" class="section-header"><a href="#porting-ulisp-to-bl602">7 Porting uLisp to BL602</a></h1>
 <p>TODO</p>
 <p>uLisp was ported to BL602 from ESP32 Arduino…</p>
