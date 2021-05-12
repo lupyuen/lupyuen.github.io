@@ -350,7 +350,7 @@ We run the `blinky` function like so...
 ( blinky )
 ```
 
-And the LED blinks every second! 
+And the __LED blinks every second!__ 
 
 (Reboot the board to stop it, sorry)
 
