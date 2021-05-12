@@ -392,33 +392,43 @@ Let's try it now.
 
 # Run the Blockly Web Editor
 
-TODO
+We shall do two things with Blockly and uLisp...
 
-Disconnect screen / CoolTerm / putty / Web Serial Terminal (close the web browser)
+## Flip the LED
 
--  [__`blockly-ulisp` Web Editor__](https://appkaki.github.io/blockly-ulisp/demos/code/)
+1.  __Close the BL602 serial connection__ from `screen` / CoolTerm / `putty` / Web Serial Terminal (close the web browser)
 
-(This website contains plain HTML and JavaScript, no server-side code is used)
+1.  __Disconnect BL602__ from our computer, and __reconnect__ it to the USB Port.
 
-[`blockly-ulisp`](https://github.com/AppKaki/blockly-ulisp)
+1.  Click this link to run the __Blockly Web Editor for uLisp__...
 
-TODO
+    -  [__`blockly-ulisp` Web Editor__](https://appkaki.github.io/blockly-ulisp/demos/code/)
 
-![Blockly Web Editor](https://lupyuen.github.io/images/lisp-edit1.png)
+    (This website contains plain HTML and JavaScript, no server-side code. See [`blockly-ulisp`](https://github.com/AppKaki/blockly-ulisp))
 
-TODO
+    TODO
 
-![Blockly Web Editor](https://lupyuen.github.io/images/lisp-edit2.png)
+    ![Blockly Web Editor: Digital Write](https://lupyuen.github.io/images/lisp-edit1.png)
 
-TODO
+    TODO
 
-![Blockly Web Editor](https://lupyuen.github.io/images/lisp-edit3.png)
+    ![Blockly Web Editor: uLisp code for Digital Write](https://lupyuen.github.io/images/lisp-edit2.png)
 
-TODO
+    [__Watch the demo on YouTube__](https://youtu.be/RRhzW4j8BtI)
 
-![Blockly Web Editor](https://lupyuen.github.io/images/lisp-edit4.png)
+## Blinky
 
-TODO
+1.  TODO
+
+    ![Blockly Web Editor: Blinky](https://lupyuen.github.io/images/lisp-edit3.png)
+
+    TODO
+
+    ![Blockly Web Editor: uLisp code for Blinky](https://lupyuen.github.io/images/lisp-edit4.png)
+
+    TODO
+
+    [__Watch the demo on YouTube__](https://youtu.be/LNkmUIv7ZZc)
 
 # Web Browser controls BL602 with Web Serial API
 
@@ -508,9 +518,6 @@ TODO
 
 Watch the demo on YouTube...
 
-- [__LED Demo__](https://youtu.be/RRhzW4j8BtI)
-
-- [__Blinky Demo__](https://youtu.be/LNkmUIv7ZZc)
 
 Try it here...
 
