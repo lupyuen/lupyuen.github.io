@@ -362,10 +362,6 @@ And the __LED blinks every second!__
 
 TODO
 
-![](https://lupyuen.github.io/images/lisp-blockly.png)
-
-TODO
-
 ![](https://lupyuen.github.io/images/lisp-blockly2.png)
 
 TODO
@@ -379,6 +375,30 @@ TODO
 [`blockly-ulisp` Web Editor](https://github.com/AppKaki/blockly-ulisp)
 
 ![](https://lupyuen.github.io/images/lisp-mobile.png)
+
+TODO
+
+# Web Browser controls BL602 with Web Serial API
+
+TODO
+
+The Blockly demo calls the [__Web Serial API__](https://web.dev/serial/) to transfer the generated uLisp Script to BL602...
+
+[`code.js`](https://github.com/AppKaki/blockly-ulisp/blob/master/demos/code/code.js#L641-L738)
+
+We assume that BL602 is running the uLisp Firmware and connected to our computer via USB...
+
+[`sdk_app_ulisp`](https://github.com/lupyuen/bl_iot_sdk/tree/ulisp/customer_app/sdk_app_ulisp)
+
+![](https://lupyuen.github.io/images/lisp-terminal.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/lisp-reboot.jpg)
+
+TODO
+
+![](https://lupyuen.github.io/images/lisp-reboot2.png)
 
 TODO
 
@@ -400,7 +420,7 @@ This firmware works with `blockly-ulisp`, which allows embedded apps to be dragg
 
 ![uLisp Blinky](https://lupyuen.github.io/images/lisp-blinky2.png)
 
-# Lisp Code Generator for Blockly
+# Customise Blockly for uLisp
 
 The following have been added into the existing [`generators`](https://github.com/AppKaki/blockly-ulisp/blob/master/generators) folder to generate Lisp code and to add blocks specific to uLisp...
 
@@ -423,6 +443,10 @@ The Lisp Code Generator is __incomplete__. The only blocks supported are...
 The Lisp Code Generator is based on Visual Embedded Rust...
 
 https://lupyuen.github.io/articles/advanced-topics-for-visual-embedded-rust-programming
+
+![](https://lupyuen.github.io/images/lisp-blockly.png)
+
+TODO
 
 ![](https://lupyuen.github.io/images/lisp-dart.png)
 
@@ -457,30 +481,6 @@ The Blockly demo at [`demos/code`](https://github.com/AppKaki/blockly-ulisp/blob
 Inspired by MakeCode for BBC micro:bit...
 
 [`MakeCode`](https://makecode.microbit.org/)
-
-# Web Serial API
-
-TODO
-
-The Blockly demo calls the [__Web Serial API__](https://web.dev/serial/) to transfer the generated uLisp Script to BL602...
-
-[`code.js`](https://github.com/AppKaki/blockly-ulisp/blob/master/demos/code/code.js#L641-L738)
-
-We assume that BL602 is running the uLisp Firmware and connected to our computer via USB...
-
-[`sdk_app_ulisp`](https://github.com/lupyuen/bl_iot_sdk/tree/ulisp/customer_app/sdk_app_ulisp)
-
-![](https://lupyuen.github.io/images/lisp-terminal.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/lisp-reboot.jpg)
-
-TODO
-
-![](https://lupyuen.github.io/images/lisp-reboot2.png)
-
-TODO
 
 # What's Next
 
