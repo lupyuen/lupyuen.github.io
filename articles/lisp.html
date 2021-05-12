@@ -139,11 +139,16 @@
 <p>(Works just like Scratch, the graphical programming tool)</p>
 <p>And we may even upload and run a uLisp program on BL602 through a <strong>Web Browser</strong>… Thanks to the <strong>Web Serial API</strong>!</p>
 <p><em>Porting uLisp from ESP32 to BL602 sounds difficult?</em></p>
-<p>Not at all!</p>
-<p>TODO</p>
-<p><a href="http://www.ulisp.com">More about uLisp</a></p>
-<p><img src="https://lupyuen.github.io/images/lisp-source.jpg" alt="" /></p>
-<p>From <a href="https://github.com/technoblogy/ulisp-esp/blob/master/ulisp-esp.ino"><code>ulisp-esp.ino</code></a></p>
+<p>Not at all! <a href="https://github.com/technoblogy/ulisp-esp">uLisp for ESP32</a> lives in a single C source file: <a href="https://github.com/technoblogy/ulisp-esp/blob/master/ulisp-esp.ino"><code>ulisp-esp.ino</code></a> …</p>
+<p><img src="https://lupyuen.github.io/images/lisp-source.jpg" alt="uLisp for ESP32" /></p>
+<p>(With a few Arduino bits in C++)</p>
+<p>Porting uLisp to BL602 (as a C library <a href="https://github.com/lupyuen/ulisp-bl602"><code>ulisp-bl602</code></a>) was quick and easy.</p>
+<p>(More about this in a while.)</p>
+<p><em>What about porting the Arduino functions like <code>pinmode</code> and <code>digitalwrite</code>?</em></p>
+<p>The <a href="https://github.com/lupyuen/bl_iot_sdk/tree/ulisp"><strong>BL602 IoT SDK</strong></a> doesn’t have these GPIO functions. </p>
+<p>So in BL602 uLisp we reimplemented these functions with the <strong>BL602 Hardware Abstraction Layer for GPIO</strong>.</p>
+<p>(While exposing the same old names to uLisp programs: <code>pinmode</code> and <code>digitalwrite</code>)</p>
+<p><em>Anything else we should know about uLisp?</em></p>
 <p>uLisp is still <a href="https://github.com/technoblogy?tab=repositories">actively maintained</a>. It has an <a href="http://forum.ulisp.com/">active online community</a>.</p>
 <h1 id="build-the-bl602-ulisp-firmware" class="section-header"><a href="#build-the-bl602-ulisp-firmware">2 Build the BL602 uLisp Firmware</a></h1>
 <p>TODO</p>
