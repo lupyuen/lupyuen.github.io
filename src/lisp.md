@@ -37,9 +37,9 @@ _What is uLisp?_
 
 From the [uLisp Website](http://www.ulisp.com)...
 
-> uLisp® is a version of the Lisp programming language specifically designed to run on microcontrollers with a limited amount of RAM, from the Arduino Uno based on the ATmega328 up to the Teensy 4.0/4.1. You can use exactly the same uLisp program, irrespective of the platform.
+> uLisp® is a version of the Lisp programming language specifically designed to run on __microcontrollers with a limited amount of RAM__, from the Arduino Uno based on the ATmega328 up to the Teensy 4.0/4.1. You can use exactly the same uLisp program, irrespective of the platform.
 
-> Because uLisp is an interpreter you can type commands in, and see the effect immediately, without having to compile and upload your program. This makes it an ideal environment for learning to program, or for setting up simple electronic devices.
+> Because __uLisp is an interpreter__ you can type commands in, and see the effect immediately, without having to compile and upload your program. This makes it an ideal environment for __learning to program__, or for setting up simple electronic devices.
 
 _Why is uLisp special?_
 
@@ -68,19 +68,31 @@ And for learners familiar with Arduino, this might be a helpful way to __adapt t
 
 _Why port uLisp to BL602?_
 
+uLisp is a natural fit for the BL602 RISC-V + WiFi SoC because...
+
+1.  BL602 has a __Command-Line Interface__ (and so does uLisp)
+
+    Unlike most 32-bit microcontrollers, BL602 was designed to be accessed by embedded developers via a simple Command-Line Interface (over the USB Serial Port).
+
+    BL602 doesn't have a fancy shell like `bash`. But uLisp on BL602 could offer some helpful __scripting capability__  for GPIO, I2C, SPI, WiFi, ...
+
+1.  uLisp already works on __ESP32__ [(See this)](https://github.com/technoblogy/ulisp-esp)
+
+    Since BL602 is a WiFi + Bluetooth LE SoC like ESP32, it might be easy to port the ESP32 version of uLisp to BL602. Including the WiFi functions.
+
+_I'm new to Lisp... Too many brackets, no?_
+
+In a while we'll talk about __Blockly for uLisp__... Drag-and-drop a uLisp program, without typing a single bracket / parenthesis!
+
+(Works just like Scratch, the graphical programming tool)
+
+And we may even upload and run a uLisp program on BL602 through a __Web Browser__... Thanks to the __Web Serial API__!
+
+_Porting uLisp from ESP32 to BL602 sounds difficult?_
+
+Not at all!
+
 TODO
-
-[`ulisp-esp`](https://github.com/technoblogy/ulisp-esp)
-
-Natural fit because
-
-1.  ESP32
-
-1.  Console
-
-1.  Scripting
-
-1.  Arduino
 
 [More about uLisp](http://www.ulisp.com)
 
