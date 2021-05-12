@@ -90,15 +90,25 @@ And we may even upload and run a uLisp program on BL602 through a __Web Browser_
 
 _Porting uLisp from ESP32 to BL602 sounds difficult?_
 
-Not at all!
+Not at all! [uLisp for ESP32](https://github.com/technoblogy/ulisp-esp) lives in a single C source file: [`ulisp-esp.ino`](https://github.com/technoblogy/ulisp-esp/blob/master/ulisp-esp.ino) ...
 
-TODO
+![uLisp for ESP32](https://lupyuen.github.io/images/lisp-source.jpg)
 
-[More about uLisp](http://www.ulisp.com)
+(With a few Arduino bits in C++)
 
-![](https://lupyuen.github.io/images/lisp-source.jpg)
+Porting uLisp to BL602 (as a C library [`ulisp-bl602`](https://github.com/lupyuen/ulisp-bl602)) was quick and easy.
 
-From [`ulisp-esp.ino`](https://github.com/technoblogy/ulisp-esp/blob/master/ulisp-esp.ino)
+(More about this in a while.)
+
+_What about porting the Arduino functions like `pinmode` and `digitalwrite`?_
+
+The [__BL602 IoT SDK__](https://github.com/lupyuen/bl_iot_sdk/tree/ulisp) doesn't have these GPIO functions. 
+
+So in BL602 uLisp we reimplemented these functions with the __BL602 Hardware Abstraction Layer for GPIO__.
+
+(While exposing the same old names to uLisp programs: `pinmode` and `digitalwrite`)
+
+_Anything else we should know about uLisp?_
 
 uLisp is still [actively maintained](https://github.com/technoblogy?tab=repositories). It has an [active online community](http://forum.ulisp.com/).
 
