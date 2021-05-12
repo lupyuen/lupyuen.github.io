@@ -333,8 +333,7 @@ cargo run flash sdk_app_ulisp.bin --port COM5
 <p><img src="https://lupyuen.github.io/images/lisp-led.png" alt="Flip the LED with uLisp" /></p>
 <p><a href="http://www.ulisp.com/show?1AEK">(Based on the GPIO Commands from uLisp)</a></p>
 <h2 id="blinky-function" class="section-header"><a href="#blinky-function">3.3 Blinky Function</a></h2>
-<p>TODO</p>
-<p>Define the blinky function…</p>
+<p>Now the show gets exciting: With uLisp we can define <strong>functions and loops</strong> at the command line… Just like <code>bash</code>!</p>
 <pre><code class="language-text">( defun blinky ()             \
   ( pinmode 11 :output )      \
   ( loop                      \
@@ -345,15 +344,27 @@ cargo run flash sdk_app_ulisp.bin --port COM5
 </code></pre>
 <p>Here’s what it means…</p>
 <p><img src="https://lupyuen.github.io/images/lisp-blinky.png" alt="Blinky Function" /></p>
-<p>Run the blinky function…</p>
+<p>Enter the lines above into the BL602 command line. Note that…</p>
+<ol>
+<li>
+<p>Each line <strong>starts with a bracket “<code>(</code>” followed by a space “ “</strong></p>
+<p>(Because “<code>(</code>” is a Command Keyword that will select the uLisp Interpreter)</p>
+</li>
+<li>
+<p>Each line (except the last line) <strong>ends with backslash “<code>\</code>”</strong></p>
+<p>(Because each line is a continuation of the previous line)</p>
+</li>
+<li>
+<p>Alternatively, we may merge the lines into a single loooong line, remove the backslashes “<code>\</code>”, and paste the loooong line into the BL602 command line.</p>
+</li>
+</ol>
+<p>We run the <code>blinky</code> function like so…</p>
 <pre><code class="language-text">( blinky )
 </code></pre>
-<ul>
-<li><a href="https://youtu.be/TN4OaZNGjOA"><strong>Watch the demo on YouTube</strong></a></li>
-</ul>
-<p>TODO</p>
-<p>Based on…</p>
-<p><a href="http://www.ulisp.com/show?1AEK">(Based on this Blinky function from uLisp)</a></p>
+<p>And the LED blinks every second! </p>
+<p>(Reboot the board to stop it, sorry)</p>
+<p><a href="https://youtu.be/TN4OaZNGjOA"><strong>Watch the demo on YouTube</strong></a></p>
+<p><a href="http://www.ulisp.com/show?1AEK">(Based on the Blinky function from uLisp)</a></p>
 <h1 id="now-add-blockly" class="section-header"><a href="#now-add-blockly">4 Now add Blockly</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lisp-blockly.png" alt="" /></p>
