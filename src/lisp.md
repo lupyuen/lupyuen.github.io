@@ -490,7 +490,7 @@ Now we do the __Blinky Program__ the drag-and-drop way with Blockly...
 
 # Web Browser controls BL602 with Web Serial API
 
-_What is this magic that transfers the uLisp code from Web Browser to BL602?_
+_What is this magic that teleports the uLisp code from Web Browser to BL602?_
 
 The Blockly Web Editor calls the [__Web Serial API__](https://web.dev/serial/) to transfer the generated uLisp Script to BL602...
 
