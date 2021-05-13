@@ -600,6 +600,8 @@ __`runWebSerialCommand`__ accepts 2 parameters...
   ( pinmode 11 :output )
   ```
 
+  The function sends a Carriage Return after the command.
+
 - __`expectedResponse`__: The expected response from BL602, like "`#`".
 
   The function will __wait for the expected response__ to be received from BL602 before returning.
@@ -634,7 +636,7 @@ We __open the Serial Port at 2 Mbps__, which is the standard Baud Rate for BL602
   await serialPort.open({ baudRate: 2000000 });
 ```
 
-TODO
+In a while we shall set these to __defer the closing of the Read / Write Streams__ for the Serial Port...
 
 ```javascript
   //  Capture the events for closing the read and write streams
@@ -642,7 +644,15 @@ TODO
   var readableStreamClosed = null;
 ```
 
-TODO
+Now we're ready to send the Command String to the Serial Port...
+
+1.  We __create a [TextEncoderStream](https://developer.mozilla.org/en-US/docs/Web/API/TextEncoderStream)__ that will convert our Command String into UTF-8 Bytes
+
+1.  We __pipe the `TextEncoderStream` to Serial Port Output__
+
+1.  We __fetch the `writableStreamClosed` Promise__ that we'll call to close the Serial Port
+
+1.  We __get the `writer` Stream__ for writing our Command String to the Serial Port Output
 
 ```javascript
   //  Send command to BL602
@@ -654,7 +664,7 @@ TODO
     const writer = textEncoder.writable.getWriter();
 ```
 
-TODO
+We __write the Command String to the `writer` Stream__ (including the Carriage Return)...
 
 ```javascript
     //  Write the command
@@ -665,7 +675,17 @@ TODO
   }
 ```
 
-TODO
+And we __close the `writer` Stream__ (Serial Port Output).
+
+If we're expected to wait for the response from the Serial Port...
+
+1.  We __create a [TextDecoderStream](https://developer.mozilla.org/en-US/docs/Web/API/TextDecoderStream)__ that will convert the Serial Port input from UTF-8 Bytes into Text Strings
+
+1.  We __pipe the Serial Port Input to `TextDecoderStream`__
+
+1.  We __fetch the `readableStreamClosed` Promise__ that we'll call to close the Serial Port
+
+1.  We __get the `reader` Stream__ for reading response strings from the Serial Port Input
 
 ```javascript
   //  Read response from BL602
@@ -677,7 +697,7 @@ TODO
     const reader = textDecoder.readable.getReader();
 ```
 
-TODO
+We loop forever __reading strings from the `reader` Stream__ (Serial Port Input)...
 
 ```javascript    
     //  Listen to data coming from the serial device
@@ -686,7 +706,7 @@ TODO
       if (!done) { console.log(value); }
 ```
 
-TODO
+Until __we find the expected response__...
 
 ```javascript
       //  If the stream has ended, or the data contains expected response, we stop
@@ -694,7 +714,7 @@ TODO
     }
 ```
 
-TODO
+And we __close the `reader` Stream__ (Serial Port Input)...
 
 ```javascript
     //  Close the read stream
@@ -702,7 +722,9 @@ TODO
   }
 ```
 
-TODO
+Here's the catch (literally)... Our __`reader` and `writer` Streams are not actually closed yet!__
+
+We need to __wait for the `reader` and `writer` Streams to close__...
 
 ```javascript
   //  Wait for read and write streams to be closed
@@ -710,7 +732,7 @@ TODO
   if (writableStreamClosed) { await writableStreamClosed; }
 ```
 
-TODO
+Finally it's safe to __close the Serial Port__...
 
 ```javascript
   //  Close the port
@@ -718,6 +740,8 @@ TODO
   console.log("runWebSerial: OK");
 }
 ```
+
+And that's how Blockly sends a uLisp command to BL602 with the Web Serial API!
 
 # Porting uLisp to BL602
 
