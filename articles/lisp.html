@@ -685,29 +685,58 @@ async function runWebSerialCommand(command, expectedResponse) {
 <p><a href="https://github.com/AppKaki/blockly-ulisp"><code>blockly-ulisp</code></a></p>
 <p><img src="https://lupyuen.github.io/images/lisp-blinky2.png" alt="uLisp Blinky" /></p>
 <h1 id="customise-blockly-for-ulisp" class="section-header"><a href="#customise-blockly-for-ulisp">8 Customise Blockly for uLisp</a></h1>
+<p>We <strong>customised Blockly for uLisp and BL602</strong>…</p>
+<ol>
+<li>
+<p>We added <strong>Custom Blocks</strong></p>
 <p>TODO</p>
-<p>Try it here…</p>
-<p><a href="https://appkaki.github.io/blockly-ulisp/demos/code/"><code>blockly-ulisp</code> Web Editor</a></p>
-<p>The Blockly demo at <a href="https://github.com/AppKaki/blockly-ulisp/blob/master/demos/code"><code>demos/code</code></a> has been customised to load the Lisp Code Generator and Lisp Blocks…</p>
+</li>
+<li>
+<p>We created a <strong>Code Generator</strong> that generates uLisp code</p>
+</li>
+<li>
+<p>We integrated Blockly with <strong>Web Serial API</strong> to transfer the generated uLisp code to BL602</p>
+</li>
+</ol>
+<p><img src="https://lupyuen.github.io/images/lisp-blockly2.png" alt="Blockly Web Editor" /></p>
+<p>Here are the Blockly source files that were modified…</p>
 <ul>
 <li>
 <p><a href="https://github.com/AppKaki/blockly-ulisp/blob/master/demos/code/index.html"><code>demos/code/index.html</code></a> </p>
+<p>TODO</p>
 <p><a href="https://github.com/AppKaki/blockly-ulisp/pull/1/files#diff-dcf2ffe98d7d8b4a0dd7b9f769557dbe8c9e0e726236ef229def25c956a43d8f">(See changes)</a></p>
 </li>
 <li>
 <p><a href="https://github.com/AppKaki/blockly-ulisp/blob/master/demos/code/code.js"><code>demos/code/code.js</code></a></p>
+<p>TODO</p>
 <p><a href="https://github.com/AppKaki/blockly-ulisp/pull/1/files#diff-d72873b861dee958e5d443c919726dd856de594bd56b1e73d8948a7719163553">(See changes)</a></p>
 </li>
 <li>
 <p><a href="https://github.com/AppKaki/blockly-ulisp/blob/master/core/workspace_svg.js"><code>core/workspace_svg.js</code></a></p>
+<p>TODO</p>
 <p><a href="https://github.com/AppKaki/blockly-ulisp/pull/1/files#diff-068435ae2521855e9cdbfdf36bea7f06978c9401acede52042702667bb14d49c">(See changes)</a></p>
 </li>
-<li>
-<p><a href="https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/lisp_library.xml"><code>generators/lisp/lisp_library.xml</code></a>: Blocks XML file used by Block Exporter to generate the custom blocks</p>
-</li>
+</ul>
+<p>TODO</p>
+<ul>
+<li><a href="https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/lisp_library.xml"><code>generators/lisp/lisp_library.xml</code></a>: Blocks XML file used by Block Exporter to generate the custom blocks</li>
 </ul>
 <p>Inspired by MakeCode for BBC micro:bit…</p>
 <p><a href="https://makecode.microbit.org/"><code>MakeCode</code></a></p>
+<ul>
+<li>
+<p><a href="https://developers.google.com/blockly/guides/create-custom-blocks/overview"><strong>“Custom Blocks”</strong></a></p>
+</li>
+<li>
+<p><a href="https://developers.google.com/blockly/guides/create-custom-blocks/blockly-developer-tools"><strong>“Blockly Developer Tools”</strong></a></p>
+</li>
+<li>
+<p><a href="https://developers.google.com/blockly/guides/create-custom-blocks/define-blocks"><strong>“Define Blocks”</strong></a></p>
+</li>
+<li>
+<p><a href="https://developers.google.com/blockly/guides/create-custom-blocks/generating-code"><strong>“Generating Code”</strong></a></p>
+</li>
+</ul>
 <h1 id="code-generator-for-ulisp" class="section-header"><a href="#code-generator-for-ulisp">9 Code Generator for uLisp</a></h1>
 <p>TODO</p>
 <p>The following have been added into the existing <a href="https://github.com/AppKaki/blockly-ulisp/blob/master/generators"><code>generators</code></a> folder to generate Lisp code and to add blocks specific to uLisp…</p>
