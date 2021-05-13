@@ -538,7 +538,7 @@ await runWebSerialCommand(
   &quot;#&quot;  //  Expected Response
 );
 </code></pre>
-<p>This is equivalent to <strong>hitting the Enter key</strong> and checking whether BL602 <strong>responds with the Command Prompt <code>#</code></strong></p>
+<p>This is equivalent to <strong>hitting the Enter key</strong> and checking whether BL602 <strong>responds with the Command Prompt “<code>#</code>”</strong></p>
 <p>We do this <strong>before sending each command to BL602</strong>. (Just to be sure that BL602 is responsive)</p>
 <p>Now to send an actual command like “<code>( pinmode 11 :output )</code>”, we do this…</p>
 <pre><code class="language-javascript">//  Send the actual command but 
@@ -552,9 +552,21 @@ await runWebSerialCommand(
 <p>That’s why we send the Empty Command before the next command, to <strong>check whether the previous command has completed.</strong></p>
 <p>(In future we should make this more robust by adding a timeout)</p>
 <h2 id="calling-the-web-serial-api" class="section-header"><a href="#calling-the-web-serial-api">6.2 Calling the Web Serial API</a></h2>
-<p>Let’s look inside the <strong><code>runWebSerialCommand</code></strong> function and understand how it calls the Web Serial API…</p>
-<p>TODO</p>
-<p>From <a href="https://github.com/AppKaki/blockly-ulisp/blob/master/demos/code/code.js#L675-L738"><code>code.js</code></a></p>
+<p>Let’s look inside the <strong><code>runWebSerialCommand</code></strong> function and learn how it sends commands from Web Browser to BL602 via the Web Serial API.</p>
+<p><strong><code>runWebSerialCommand</code></strong> accepts 2 parameters…</p>
+<ul>
+<li>
+<p><strong><code>command</code></strong>: The command that will be sent to from the Web Browser to BL602, like…</p>
+<pre><code class="language-text">( pinmode 11 :output )
+</code></pre>
+</li>
+<li>
+<p><strong><code>expectedResponse</code></strong>: The expected response from BL602, like “<code>#</code>”.</p>
+<p>The function will <strong>wait for the expected response</strong> to be received from BL602 before returning.</p>
+<p>If the expected response is null, the function <strong>returns without waiting</strong>.</p>
+</li>
+</ul>
+<p>We start by checking whether the Web Serial API is supported by the web browser: <a href="https://github.com/AppKaki/blockly-ulisp/blob/master/demos/code/code.js#L675-L738"><code>code.js</code></a></p>
 <pre><code class="language-javascript">//  Web Serial Port
 var serialPort;
 
@@ -564,12 +576,12 @@ async function runWebSerialCommand(command, expectedResponse) {
   //  Check if Web Serial API is supported
   if (!(&quot;serial&quot; in navigator)) { alert(&quot;Web Serial API is not supported&quot;); return; }
 </code></pre>
-<p>TODO</p>
+<p>Next we prompt the user to <strong>select the Serial Port</strong>, and we remember the selection…</p>
 <pre><code class="language-javascript">  //  Prompt user to select any serial port
   if (!serialPort) { serialPort = await navigator.serial.requestPort(); }
   if (!serialPort) { return; }
 </code></pre>
-<p>TODO</p>
+<p>We <strong>open the Serial Port at 2 Mbps</strong>, which is the standard Baud Rate for BL602 Firmware…</p>
 <pre><code class="language-javascript">  //  Wait for the serial port to open at 2 Mbps
   await serialPort.open({ baudRate: 2000000 });
 </code></pre>
