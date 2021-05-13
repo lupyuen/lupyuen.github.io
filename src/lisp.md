@@ -538,49 +538,59 @@ The proper way to send a `reboot` command to BL602 looks like this...
 
 Let's look at the fixed code in Blockly (our bespoke version) that __sends uLisp Commands to BL602__.
 
-## Calling the Web Serial API
+## Sending a command to BL602
 
-For convenience, we wrap up the Web Serial API in a high-level JavaScript Async Function: __`runWebSerialCommand`__
+For convenience, we wrap the Web Serial API in a high-level JavaScript Async Function: __`runWebSerialCommand`__
 
-Here's how we call `runWebSerialCommand` to send the __`reboot` Command__ to BL602 and wait for the response __`Init CLI`__...
+Here's how we call `runWebSerialCommand` to send the __`reboot` Command__ to BL602 and wait for the response __"`Init CLI`"__...
 
 ```javascript
 //  Send the reboot command
 await runWebSerialCommand(
-    "reboot",   //  Command
-    "Init CLI"  //  Expected Response
+  "reboot",   //  Command
+  "Init CLI"  //  Expected Response
 );
 ```
 
-(This also sends the Enter / Carriage Return after the `reboot` Command)
+(This also sends Enter / Carriage Return after the `reboot` Command)
 
 We don't actually send the `reboot` Command in Blockly (because it's too disruptive).
 
 Instead we send to BL602 an __Empty Command__ like so: [`code.js`](https://github.com/AppKaki/blockly-ulisp/blob/master/demos/code/code.js#L644-L673)
 
 ```javascript
-//  Send an empty command and check that BL602 responds with "#"
+//  Send an empty command and 
+//  check that BL602 responds with "#"
 await runWebSerialCommand(
-    "",  //  Command
-    "#"  //  Expected Response
+  "",  //  Command
+  "#"  //  Expected Response
 );
 ```
 
 This is equivalent to __hitting the Enter key__ and checking whether BL602 __responds with the Command Prompt `#`__
 
-We do this before sending each command to BL602. (Just to be sure that BL602 is responsive)
+We do this __before sending each command to BL602__. (Just to be sure that BL602 is responsive)
 
 Now to send an actual command like "`( pinmode 11 :output )`", we do this...
 
 ```javascript
-//  Send the actual command but don't wait for response
+//  Send the actual command but 
+//  don't wait for response
 await runWebSerialCommand(
-    command,  //  Command
-    null      //  Don't wait for response
+  command,  //  Command
+  null      //  Don't wait for response
 );
 ```
 
-We don't wait for the response from BL602.
+__We don't wait for the response__ from BL602, because some uLisp commands don't return a response (`loop`) or they return a delayed response (`delay`).
+
+That's why we send the Empty Command before the next command, to __check whether the previous command has completed.__
+
+(In future we should make this more robust by adding a timeout)
+
+## Calling the Web Serial API
+
+Let's look inside the __`runWebSerialCommand`__ function and understand how it calls the Web Serial API...
 
 TODO
 
