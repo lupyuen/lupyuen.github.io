@@ -567,7 +567,7 @@ await runWebSerialCommand(
 );
 ```
 
-This is equivalent to __hitting the Enter key__ and checking whether BL602 __responds with the Command Prompt `#`__
+This is equivalent to __hitting the Enter key__ and checking whether BL602 __responds with the Command Prompt "`#`"__
 
 We do this __before sending each command to BL602__. (Just to be sure that BL602 is responsive)
 
@@ -590,11 +590,23 @@ That's why we send the Empty Command before the next command, to __check whether
 
 ## Calling the Web Serial API
 
-Let's look inside the __`runWebSerialCommand`__ function and understand how it calls the Web Serial API...
+Let's look inside the __`runWebSerialCommand`__ function and learn how it sends commands from Web Browser to BL602 via the Web Serial API.
 
-TODO
+__`runWebSerialCommand`__ accepts 2 parameters...
 
-From [`code.js`](https://github.com/AppKaki/blockly-ulisp/blob/master/demos/code/code.js#L675-L738)
+- __`command`__: The command that will be sent to from the Web Browser to BL602, like...
+
+  ```text
+  ( pinmode 11 :output )
+  ```
+
+- __`expectedResponse`__: The expected response from BL602, like "`#`".
+
+  The function will __wait for the expected response__ to be received from BL602 before returning.
+
+  If the expected response is null, the function __returns without waiting__.
+
+We start by checking whether the Web Serial API is supported by the web browser: [`code.js`](https://github.com/AppKaki/blockly-ulisp/blob/master/demos/code/code.js#L675-L738)
 
 ```javascript
 //  Web Serial Port
@@ -607,7 +619,7 @@ async function runWebSerialCommand(command, expectedResponse) {
   if (!("serial" in navigator)) { alert("Web Serial API is not supported"); return; }
 ```
 
-TODO
+Next we prompt the user to __select the Serial Port__, and we remember the selection...
 
 ```javascript
   //  Prompt user to select any serial port
@@ -615,7 +627,7 @@ TODO
   if (!serialPort) { return; }
 ```
 
-TODO
+We __open the Serial Port at 2 Mbps__, which is the standard Baud Rate for BL602 Firmware...
 
 ```javascript
   //  Wait for the serial port to open at 2 Mbps
