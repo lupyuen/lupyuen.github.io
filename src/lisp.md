@@ -763,6 +763,36 @@ This firmware works with `blockly-ulisp`, which allows embedded apps to be dragg
 
 # Customise Blockly for uLisp
 
+TODO
+
+Try it here...
+
+[`blockly-ulisp` Web Editor](https://appkaki.github.io/blockly-ulisp/demos/code/)
+
+The Blockly demo at [`demos/code`](https://github.com/AppKaki/blockly-ulisp/blob/master/demos/code) has been customised to load the Lisp Code Generator and Lisp Blocks...
+
+-   [`demos/code/index.html`](https://github.com/AppKaki/blockly-ulisp/blob/master/demos/code/index.html) 
+
+    [(See changes)](https://github.com/AppKaki/blockly-ulisp/pull/1/files#diff-dcf2ffe98d7d8b4a0dd7b9f769557dbe8c9e0e726236ef229def25c956a43d8f)
+
+-   [`demos/code/code.js`](https://github.com/AppKaki/blockly-ulisp/blob/master/demos/code/code.js)
+
+    [(See changes)](https://github.com/AppKaki/blockly-ulisp/pull/1/files#diff-d72873b861dee958e5d443c919726dd856de594bd56b1e73d8948a7719163553)
+
+-   [`core/workspace_svg.js`](https://github.com/AppKaki/blockly-ulisp/blob/master/core/workspace_svg.js)
+
+    [(See changes)](https://github.com/AppKaki/blockly-ulisp/pull/1/files#diff-068435ae2521855e9cdbfdf36bea7f06978c9401acede52042702667bb14d49c)
+
+-   [`generators/lisp/lisp_library.xml`](https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/lisp_library.xml): Blocks XML file used by Block Exporter to generate the custom blocks
+
+Inspired by MakeCode for BBC micro:bit...
+
+[`MakeCode`](https://makecode.microbit.org/)
+
+# Code Generator for uLisp
+
+TODO
+
 The following have been added into the existing [`generators`](https://github.com/AppKaki/blockly-ulisp/blob/master/generators) folder to generate Lisp code and to add blocks specific to uLisp...
 
 -   [`generators/lisp.js`](https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp.js): Main interface for Lisp Code Generator
@@ -802,25 +832,6 @@ TODO
 TODO
 
 ![](https://lupyuen.github.io/images/lisp-mobile.png)
-
-# Blockly Web Editor for uLisp
-
-Watch the demo on YouTube...
-
-
-Try it here...
-
-[`blockly-ulisp` Web Editor](https://appkaki.github.io/blockly-ulisp/demos/code/)
-
-The Blockly demo at [`demos/code`](https://github.com/AppKaki/blockly-ulisp/blob/master/demos/code) has been customised to include the Lisp Code Generator...
-
--   [`demos/code/index.html`](https://github.com/AppKaki/blockly-ulisp/blob/master/demos/code/index.html): Customised to load the Lisp Code Generator and Lisp Blocks
-
--   [`demos/code/code.js`](https://github.com/AppKaki/blockly-ulisp/blob/master/demos/code/code.js): Customised to load the Lisp Code Generator and Lisp Blocks
-
-Inspired by MakeCode for BBC micro:bit...
-
-[`MakeCode`](https://makecode.microbit.org/)
 
 # What's Next
 
