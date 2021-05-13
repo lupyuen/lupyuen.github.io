@@ -605,18 +605,34 @@ var serialPort;
 async function runWebSerialCommand(command, expectedResponse) {
   //  Check if Web Serial API is supported
   if (!("serial" in navigator)) { alert("Web Serial API is not supported"); return; }
+```
 
+TODO
+
+```javascript
   //  Prompt user to select any serial port
   if (!serialPort) { serialPort = await navigator.serial.requestPort(); }
   if (!serialPort) { return; }
+```
 
+TODO
+
+```javascript
   //  Wait for the serial port to open at 2 Mbps
   await serialPort.open({ baudRate: 2000000 });
+```
 
+TODO
+
+```javascript
   //  Capture the events for closing the read and write streams
   var writableStreamClosed = null;
   var readableStreamClosed = null;
+```
 
+TODO
+
+```javascript
   //  Send command to BL602
   {
     //  Open a write stream
@@ -624,14 +640,22 @@ async function runWebSerialCommand(command, expectedResponse) {
     const textEncoder = new TextEncoderStream();
     writableStreamClosed = textEncoder.readable.pipeTo(serialPort.writable);
     const writer = textEncoder.writable.getWriter();
+```
 
+TODO
+
+```javascript
     //  Write the command
     await writer.write(command + "\r"); 
 
     //  Close the write stream
     writer.close();
   }
+```
 
+TODO
+
+```javascript
   //  Read response from BL602
   if (expectedResponse) {
     //  Open a read stream
@@ -639,24 +663,44 @@ async function runWebSerialCommand(command, expectedResponse) {
     const textDecoder = new TextDecoderStream();
     readableStreamClosed = serialPort.readable.pipeTo(textDecoder.writable);
     const reader = textDecoder.readable.getReader();
-    
+```
+
+TODO
+
+```javascript    
     //  Listen to data coming from the serial device
     while (true) {
       const { value, done } = await reader.read();
       if (!done) { console.log(value); }
+```
 
+TODO
+
+```javascript
       //  If the stream has ended, or the data contains expected response, we stop
       if (done || value.indexOf(expectedResponse) >= 0) { break; }
     }
+```
 
+TODO
+
+```javascript
     //  Close the read stream
     reader.cancel();
   }
+```
 
+TODO
+
+```javascript
   //  Wait for read and write streams to be closed
   if (readableStreamClosed) { await readableStreamClosed.catch(() => { /* Ignore the error */ }); }
   if (writableStreamClosed) { await writableStreamClosed; }
+```
 
+TODO
+
+```javascript
   //  Close the port
   await serialPort.close();
   console.log("runWebSerial: OK");
