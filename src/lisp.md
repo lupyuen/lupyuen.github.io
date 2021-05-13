@@ -763,31 +763,53 @@ This firmware works with `blockly-ulisp`, which allows embedded apps to be dragg
 
 # Customise Blockly for uLisp
 
-TODO
+We __customised Blockly for uLisp and BL602__...
 
-Try it here...
+1.  We added __Custom Blocks__
 
-[`blockly-ulisp` Web Editor](https://appkaki.github.io/blockly-ulisp/demos/code/)
+    TODO
 
-The Blockly demo at [`demos/code`](https://github.com/AppKaki/blockly-ulisp/blob/master/demos/code) has been customised to load the Lisp Code Generator and Lisp Blocks...
+1.  We created a __Code Generator__ that generates uLisp code
+
+1.  We integrated Blockly with __Web Serial API__ to transfer the generated uLisp code to BL602
+
+![Blockly Web Editor](https://lupyuen.github.io/images/lisp-blockly2.png)
+
+Here are the Blockly source files that were modified...
 
 -   [`demos/code/index.html`](https://github.com/AppKaki/blockly-ulisp/blob/master/demos/code/index.html) 
+
+    TODO
 
     [(See changes)](https://github.com/AppKaki/blockly-ulisp/pull/1/files#diff-dcf2ffe98d7d8b4a0dd7b9f769557dbe8c9e0e726236ef229def25c956a43d8f)
 
 -   [`demos/code/code.js`](https://github.com/AppKaki/blockly-ulisp/blob/master/demos/code/code.js)
 
+    TODO
+
     [(See changes)](https://github.com/AppKaki/blockly-ulisp/pull/1/files#diff-d72873b861dee958e5d443c919726dd856de594bd56b1e73d8948a7719163553)
 
 -   [`core/workspace_svg.js`](https://github.com/AppKaki/blockly-ulisp/blob/master/core/workspace_svg.js)
 
+    TODO
+
     [(See changes)](https://github.com/AppKaki/blockly-ulisp/pull/1/files#diff-068435ae2521855e9cdbfdf36bea7f06978c9401acede52042702667bb14d49c)
+
+TODO
 
 -   [`generators/lisp/lisp_library.xml`](https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/lisp_library.xml): Blocks XML file used by Block Exporter to generate the custom blocks
 
 Inspired by MakeCode for BBC micro:bit...
 
 [`MakeCode`](https://makecode.microbit.org/)
+
+-   [__"Custom Blocks"__](https://developers.google.com/blockly/guides/create-custom-blocks/overview)
+
+-   [__"Blockly Developer Tools"__](https://developers.google.com/blockly/guides/create-custom-blocks/blockly-developer-tools)
+
+-   [__"Define Blocks"__](https://developers.google.com/blockly/guides/create-custom-blocks/define-blocks)
+
+-   [__"Generating Code"__](https://developers.google.com/blockly/guides/create-custom-blocks/generating-code)
 
 # Code Generator for uLisp
 
