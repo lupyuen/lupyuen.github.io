@@ -77,7 +77,8 @@
 <li><a href="#flip-the-led-1">5.1 Flip the LED</a><ul></ul></li>
 <li><a href="#blinky">5.2 Blinky</a><ul></ul></li></ul></li>
 <li><a href="#web-browser-controls-bl602-with-web-serial-api">6 Web Browser controls BL602 with Web Serial API</a><ul>
-<li><a href="#calling-the-web-serial-api">6.1 Calling the Web Serial API</a><ul></ul></li></ul></li>
+<li><a href="#sending-a-command-to-bl602">6.1 Sending a command to BL602</a><ul></ul></li>
+<li><a href="#calling-the-web-serial-api">6.2 Calling the Web Serial API</a><ul></ul></li></ul></li>
 <li><a href="#porting-ulisp-to-bl602">7 Porting uLisp to BL602</a><ul></ul></li>
 <li><a href="#customise-blockly-for-ulisp">8 Customise Blockly for uLisp</a><ul></ul></li>
 <li><a href="#blockly-web-editor-for-ulisp">9 Blockly Web Editor for uLisp</a><ul></ul></li>
@@ -518,34 +519,40 @@ cargo run flash sdk_app_ulisp.bin --port COM5
 <p>The proper way to send a <code>reboot</code> command to BL602 looks like this…</p>
 <p><img src="https://lupyuen.github.io/images/lisp-reboot2.png" alt="Fixed reboot with Web Serial API" /></p>
 <p>Let’s look at the fixed code in Blockly (our bespoke version) that <strong>sends uLisp Commands to BL602</strong>.</p>
-<h2 id="calling-the-web-serial-api" class="section-header"><a href="#calling-the-web-serial-api">6.1 Calling the Web Serial API</a></h2>
-<p>For convenience, we wrap up the Web Serial API in a high-level JavaScript Async Function: <strong><code>runWebSerialCommand</code></strong></p>
-<p>Here’s how we call <code>runWebSerialCommand</code> to send the <strong><code>reboot</code> Command</strong> to BL602 and wait for the response <strong><code>Init CLI</code></strong>…</p>
+<h2 id="sending-a-command-to-bl602" class="section-header"><a href="#sending-a-command-to-bl602">6.1 Sending a command to BL602</a></h2>
+<p>For convenience, we wrap the Web Serial API in a high-level JavaScript Async Function: <strong><code>runWebSerialCommand</code></strong></p>
+<p>Here’s how we call <code>runWebSerialCommand</code> to send the <strong><code>reboot</code> Command</strong> to BL602 and wait for the response <strong>“<code>Init CLI</code>”</strong>…</p>
 <pre><code class="language-javascript">//  Send the reboot command
 await runWebSerialCommand(
-    &quot;reboot&quot;,   //  Command
-    &quot;Init CLI&quot;  //  Expected Response
+  &quot;reboot&quot;,   //  Command
+  &quot;Init CLI&quot;  //  Expected Response
 );
 </code></pre>
-<p>(This also sends the Enter / Carriage Return after the <code>reboot</code> Command)</p>
+<p>(This also sends Enter / Carriage Return after the <code>reboot</code> Command)</p>
 <p>We don’t actually send the <code>reboot</code> Command in Blockly (because it’s too disruptive).</p>
 <p>Instead we send to BL602 an <strong>Empty Command</strong> like so: <a href="https://github.com/AppKaki/blockly-ulisp/blob/master/demos/code/code.js#L644-L673"><code>code.js</code></a></p>
-<pre><code class="language-javascript">//  Send an empty command and check that BL602 responds with &quot;#&quot;
+<pre><code class="language-javascript">//  Send an empty command and 
+//  check that BL602 responds with &quot;#&quot;
 await runWebSerialCommand(
-    &quot;&quot;,  //  Command
-    &quot;#&quot;  //  Expected Response
+  &quot;&quot;,  //  Command
+  &quot;#&quot;  //  Expected Response
 );
 </code></pre>
 <p>This is equivalent to <strong>hitting the Enter key</strong> and checking whether BL602 <strong>responds with the Command Prompt <code>#</code></strong></p>
-<p>We do this before sending each command to BL602. (Just to be sure that BL602 is responsive)</p>
+<p>We do this <strong>before sending each command to BL602</strong>. (Just to be sure that BL602 is responsive)</p>
 <p>Now to send an actual command like “<code>( pinmode 11 :output )</code>”, we do this…</p>
-<pre><code class="language-javascript">//  Send the actual command but don't wait for response
+<pre><code class="language-javascript">//  Send the actual command but 
+//  don't wait for response
 await runWebSerialCommand(
-    command,  //  Command
-    null      //  Don't wait for response
+  command,  //  Command
+  null      //  Don't wait for response
 );
 </code></pre>
-<p>We don’t wait for the response from BL602.</p>
+<p><strong>We don’t wait for the response</strong> from BL602, because some uLisp commands don’t return a response (<code>loop</code>) or they return a delayed response (<code>delay</code>).</p>
+<p>That’s why we send the Empty Command before the next command, to <strong>check whether the previous command has completed.</strong></p>
+<p>(In future we should make this more robust by adding a timeout)</p>
+<h2 id="calling-the-web-serial-api" class="section-header"><a href="#calling-the-web-serial-api">6.2 Calling the Web Serial API</a></h2>
+<p>Let’s look inside the <strong><code>runWebSerialCommand</code></strong> function and understand how it calls the Web Serial API…</p>
 <p>TODO</p>
 <p>From <a href="https://github.com/AppKaki/blockly-ulisp/blob/master/demos/code/code.js#L675-L738"><code>code.js</code></a></p>
 <pre><code class="language-javascript">//  Web Serial Port
