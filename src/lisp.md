@@ -821,12 +821,6 @@ Block Exporter and Custom Blocks are explained here...
 
 -   [__"Define Blocks"__](https://developers.google.com/blockly/guides/create-custom-blocks/define-blocks)
 
-_What were we thinking when we designed the Custom Blocks: `forever`, `on_start`, `digital write`, `wait`, ..._
-
-The custom blocks were inspired by __MakeCode for BBC micro:bit__...
-
--   [__MakeCode__](https://makecode.microbit.org/)
-
 _Does Blockly work on Mobile Web Browsers?_
 
 Yes but the Web Serial API won't work for transferring the generated uLisp code to BL602. (Because we can't connect BL602 as a USB Serial device)
@@ -836,6 +830,14 @@ In future we could use the [__Web Bluetooth API__](https://web.dev/bluetooth/) i
 Here's how it looks on a Mobile Web Browser...
 
 ![Blockly on Mobile](https://lupyuen.github.io/images/lisp-mobile.png)
+
+_What were we thinking when we designed the Custom Blocks: `forever`, `on_start`, `digital write`, `wait`, ..._
+
+The custom blocks were inspired by __MakeCode for BBC micro:bit__...
+
+-   [__MakeCode__](https://makecode.microbit.org/)
+
+![uLisp Code Generator](https://lupyuen.github.io/images/lisp-generate.png)
 
 # Code Generator for uLisp
 
@@ -852,8 +854,6 @@ The following have been added into the existing [`generators`](https://github.co
 -   [`generators/lisp.js`](https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp.js): Main interface for Lisp Code Generator
 
 -   [`generators/lisp`](https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp): Lisp Code Generator for various blocks
-
-![uLisp Code Generator](https://lupyuen.github.io/images/lisp-generate.png)
 
 The Lisp Code Generator is __incomplete__. The only blocks supported are...
 
