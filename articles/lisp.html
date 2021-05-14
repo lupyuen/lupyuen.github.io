@@ -782,14 +782,70 @@ object *sp_loop (object *args, object *env) {
 <p><strong>BL602 cares about the Command Line</strong></p>
 <p>On Arduino we read and parse the Serial Input, byte by byte.</p>
 <p>Whereas on BL602, the <strong>BL602 IoT SDK parses the Command Line</strong> for us.</p>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L5085-L5124"><code>ulisp.c</code></a></p>
+<p>Here’s how we <strong>define “<code>(</code>” as a Command Keyword</strong> in BL602: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/ulisp/customer_app/sdk_app_ulisp/sdk_app_ulisp/demo.c#L45-L48"><code>demo.c</code></a></p>
+<pre><code class="language-c">/// List of commands. STATIC_CLI_CMD_ATTRIBUTE makes this(these) command(s) static
+const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
+    {
+        &quot;(&quot;,
+        &quot;Run the uLisp command&quot;,
+        run_ulisp
+    },
+};          
+</code></pre>
+<p>When we enter a command like <strong>“<code>( delay 1000 )</code>”</strong>, the command-line interface calls our function <code>run_ulisp</code> defined in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/ulisp/customer_app/sdk_app_ulisp/sdk_app_ulisp/demo.c#L9-L40"><code>demo.c</code></a></p>
+<pre><code class="language-c">/// Command-Line Buffer that will be passed to uLisp
+static char cmd_buf[1024] = { 0 };
+
+/// Run a uLisp command
+void run_ulisp(char *buf, int len, int argc, char **argv) {
+    //  If the last command line arg is `\`, we expect a continuation
+    bool to_continue = false;
+    if (strcmp(argv[argc - 1], &quot;\\&quot;) == 0) {
+        to_continue = true;
+        argc--;   //  Skip the `\`
+    }
+
+    //  Concatenate the command line, separated by spaces
+    for (int i = 0; i &lt; argc; i++) {
+        assert(argv[i] != NULL);
+        strncat(cmd_buf, argv[i], sizeof(cmd_buf) - strlen(cmd_buf) - 1);
+        strncat(cmd_buf, &quot; &quot;,     sizeof(cmd_buf) - strlen(cmd_buf) - 1);
+    }
+    cmd_buf[sizeof(cmd_buf) - 1] = 0;
+
+    //  If this the end of the command line...
+    if (!to_continue) {
+        //  Execute the command line
+        execute_ulisp(cmd_buf);
+
+        //  Erase the buffer
+        cmd_buf[0] = 0;
+    }
+}
+</code></pre>
+<p>The command-line interface splits the command line into multiple arguments (delimited by space), so we need to <strong>merge the arguments back into a single command line</strong>.</p>
+<p>(Yeah, not so efficient)</p>
+<p>We support <strong>continuation of command lines</strong> when the command line ends with <strong>“<code>\</code>”</strong></p>
+<p>We pass the merged command line to <strong><code>execute_ulisp</code></strong> defined in <a href="https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L5363-L5370"><code>ulisp.c</code></a></p>
 <pre><code class="language-c">/// Console input buffer, position and length
 const char *input_buf = NULL;
 int input_pos = 0;
 int input_len = 0;
 
-/// Return the next char from the console input buffer
+/// Execute the command line
+void execute_ulisp(const char *line) {
+    //  Set the console input buffer
+    input_buf = line;
+    input_pos = 0;
+    input_len = strlen(line);
+
+    //  Start the uLisp Interpreter
+    loop_ulisp();
+}
+</code></pre>
+<p>Here we <strong>save the merged command line into a buffer</strong> and start the uLisp Interpreter.</p>
+<p>Lastly we modified the <strong><code>gserial</code></strong> function in uLisp to read the command line from the buffer (instead of Serial Input): <a href="https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L5085-L5124"><code>ulisp.c</code></a></p>
+<pre><code class="language-c">/// Return the next char from the console input buffer
 int gserial() {
     if (LastChar) {
         //  Return the previous char
