@@ -1099,15 +1099,19 @@ If the __Community could help__ to fill in the __missing uLisp Code Generators__
 
     -   [__`withclient`__](http://www.ulisp.com/show?2B27#withclient)
 
-1.  Storage
+1.  __Storage__
 
-    TODO
+    Blockly __doesn't save our program__... Refresh the Web Browser and our program disappears.
 
-    https://github.com/AppKaki/blockly-ulisp/blob/master/appengine/storage.js
+    We could enhance Blockly to __save our program locally with JavaScript Local Storage__...
 
-1.  XML code
+    -   [__`appengine/storage.js`__](https://github.com/AppKaki/blockly-ulisp/blob/master/appengine/storage.js)
 
-    TODO
+    This script is not used in our version of Blockly. But it's referenced by our HTML code here: [`index.html`](https://github.com/AppKaki/blockly-ulisp/blob/master/demos/code/index.html#L11)
+
+1.  __Copy and paste the XML Code__
+
+    But in the meantime, we can manually save and restore the program by copying and pasting the contents of the __`XML`__ tab in Blockly.
 
 _You sound strangely familiar with Blockly Code Generators?_
 
