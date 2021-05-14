@@ -984,17 +984,15 @@ _What else needs to be ported to BL602?_
 
 If the __Community could help__ to port the __missing uLisp Features__... That would be super awesome! 🙏 👍
 
-1.  GPIO
+1.  __GPIO__
 
-    These uLisp GPIO Functions should be ported with the BL602 GPIO HAL...
-
-    TODO
+    Port these uLisp GPIO Functions to BL602 with the [__BL602 GPIO HAL__](https://lupyuen.github.io/articles/led#how-it-works-bl602-gpio)...
 
     -   [__`fn_digitalread`__](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L3527-L3534)
 
-1.  I2C
+1.  __I2C__
 
-    TODO
+    Port these uLisp I2C Functions to BL602 with the [__BL602 I2C HAL__](https://lupyuen.github.io/articles/i2c#initialise-i2c-port)...
 
     -   [__`I2Cinit`__](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L1323-L1329)
 
@@ -1008,9 +1006,9 @@ If the __Community could help__ to port the __missing uLisp Features__... That w
 
     -   [__`I2Cstop`__](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L1369-L1374)
 
-1.  SPI
+1.  __SPI__
 
-    TODO
+    Port these uLisp SPI Functions to BL602 with the [__BL602 SPI HAL__](https://lupyuen.github.io/articles/spi#bl602-hardware-abstraction-layer-for-spi)...
 
     -   [__`spiread`__](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L1378-L1383)
 
@@ -1018,23 +1016,23 @@ If the __Community could help__ to port the __missing uLisp Features__... That w
 
     -   [__`sp_withspi`__](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L2003-L2040)
 
-1.  ADC
+1.  __ADC__
 
-    TODO
+    Port these uLisp ADC Functions to BL602 with the [__BL602 ADC HAL__](https://github.com/bouffalolab/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_adc.c#L173-L216)...
 
     -   [__`fn_analogread`__](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L3556-L3569)
 
     -   [__`fn_analogreadresolution`__](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L3571-L3579)
 
-1.  DAC
+1.  __DAC__
 
-    TODO
+    Port these uLisp DAC Functions to BL602 with the __BL602 DAC HAL__...
 
     -   [__`fn_analogwrite`__](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L3581-L3591)
 
-1.  WiFi
+1.  __WiFi__
 
-    TODO
+    Port these uLisp WiFi Functions to BL602 with the __BL602 WiFi HAL__...
 
     -   [__`WiFiwrite`__](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L1472-L1477)
     
@@ -1052,10 +1050,17 @@ If the __Community could help__ to port the __missing uLisp Features__... That w
 
     -   [__`fn_wificonnect`__](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L3899-L3914)
 
-    
-1.  EPROM
+    More about BL602 WiFi HAL...
 
-    TODO
+    -  [__WiFi Docs__](https://pine64.github.io/bl602-docs/Examples/demo_at/AT.html#wi-fi-at-commands)
+
+    -  [__WiFi Demo__](https://pine64.github.io/bl602-docs/Examples/demo_wifi/wifi.html)
+
+    -  [__WiFi Source Code__](https://github.com/pine64/bl_iot_sdk/tree/master/customer_app/bl602_demo_wifi)
+
+1.  __EPROM__
+
+    Port these uLisp EPROM Functions to BL602 with the __BL602 Flash Memory HAL__...
 
     -   [__`EpromWriteInt`__](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L509-L515)
 
@@ -1067,29 +1072,7 @@ If the __Community could help__ to port the __missing uLisp Features__... That w
 
     -   [__`autorunimage`__](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L637-L660)
 
-1.  setjmp
-
-    TODO
-
-    From [`ulisp.c`](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L5338-L5361)
-
-    ```c
-    static void loop_ulisp () {
-        if (!setjmp(exception)) {
-            #if defined(resetautorun)
-            volatile int autorun = 12; // Fudge to keep code size the same
-            #else
-            volatile int autorun = 13;
-            #endif
-            if (autorun == 12) autorunimage();
-        } else {
-            printf("Error\r\n");
-        }
-        clrflag(NOESC); BreakLevel = 0;
-        for (int i=0; i<TRACEMAX; i++) TraceDepth[i] = 0;
-        repl(NULL);
-    }
-    ```
+    Porting the EPROM functions to BL602 will allow us to __save and load uLisp images to / from Flash Memory__.
 
 ![uLisp builds OK on BL602](https://lupyuen.github.io/images/lisp-build2.png)
 
@@ -1460,3 +1443,25 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1389783215347429382)
+
+1.  This `setjmp` code hangs when there's an error. Needs fixing...
+
+    From [`ulisp.c`](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L5338-L5361)
+
+    ```c
+    static void loop_ulisp () {
+        if (!setjmp(exception)) {
+            #if defined(resetautorun)
+            volatile int autorun = 12; // Fudge to keep code size the same
+            #else
+            volatile int autorun = 13;
+            #endif
+            if (autorun == 12) autorunimage();
+        } else {
+            printf("Error\r\n");
+        }
+        clrflag(NOESC); BreakLevel = 0;
+        for (int i=0; i<TRACEMAX; i++) TraceDepth[i] = 0;
+        repl(NULL);
+    }
+    ```
