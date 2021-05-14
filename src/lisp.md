@@ -1055,18 +1055,14 @@ If the __Community could help__ to fill in the __missing uLisp Code Generators__
 
 1.  __GPIO__
 
-    digital_toggle_pin
+    The Code Generators for __[`digital read`](https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/lisp_functions.js#L71-L77)__ and __[`digital toggle`](https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/lisp_functions.js#L60-L69)__ should emit uLisp Code for...    
 
-    https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/lisp_functions.js#L60-L69
+    -   [__`pinmode`__](http://www.ulisp.com/show?3L#pinmode)
 
-    http://www.ulisp.com/show?3L#digitalwrite
+    -   [__`digitalread`__](http://www.ulisp.com/show?3L#digitalread)
 
-    digital_read_pin
-
-    https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/lisp_functions.js#L71-L77
-
-    http://www.ulisp.com/show?3L#digitalread
-
+    -   [__`digitalwrite`__](http://www.ulisp.com/show?3L#digitalwrite)
+    
 1.  __I2C, SPI, ADC, DAC__
 
     We need to create __Custom Blocks and Code Generators for I2C, SPI, ADC and DAC__ that will emit uLisp Code for...
@@ -1106,6 +1102,8 @@ If the __Community could help__ to fill in the __missing uLisp Code Generators__
 1.  Storage
 
     TODO
+
+    https://github.com/AppKaki/blockly-ulisp/blob/master/appengine/storage.js
 
 1.  XML code
 
