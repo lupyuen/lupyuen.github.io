@@ -843,13 +843,17 @@ _How did we geneate uLisp code in Blockly?_
 
 TODO
 
+![Copy code generators from Dart to Lisp](https://lupyuen.github.io/images/lisp-dart.png)
+
+TODO
+
 The following have been added into the existing [`generators`](https://github.com/AppKaki/blockly-ulisp/blob/master/generators) folder to generate Lisp code and to add blocks specific to uLisp...
 
 -   [`generators/lisp.js`](https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp.js): Main interface for Lisp Code Generator
 
 -   [`generators/lisp`](https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp): Lisp Code Generator for various blocks
 
--   [`generators/lisp/lisp_library.xml`](https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/lisp_library.xml): Blocks XML file used by Block Exporter to generate the custom blocks
+![uLisp Code Generator](https://lupyuen.github.io/images/lisp-generate.png)
 
 The Lisp Code Generator is __incomplete__. The only blocks supported are...
 
@@ -861,27 +865,13 @@ The Lisp Code Generator is __incomplete__. The only blocks supported are...
 
 1.  GPIO Digital Write
 
-The Lisp Code Generator is based on Visual Embedded Rust...
-
-https://lupyuen.github.io/articles/advanced-topics-for-visual-embedded-rust-programming
-
 -   [__"Generating Code"__](https://developers.google.com/blockly/guides/create-custom-blocks/generating-code)
 
-![](https://lupyuen.github.io/images/lisp-blockly.png)
+The Lisp Code Generator is based on Visual Embedded Rust...
 
-TODO
+-   [__"Advanced Topics for Visual Embedded Rust"__](https://lupyuen.github.io/articles/advanced-topics-for-visual-embedded-rust-programming)
 
-![](https://lupyuen.github.io/images/lisp-dart.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/lisp-generate.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/lisp-rust.png)
-
-TODO
+![Visual Embedded Rust](https://lupyuen.github.io/images/lisp-rust.png)
 
 # What's Next
 
