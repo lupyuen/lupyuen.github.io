@@ -763,45 +763,57 @@ This firmware works with `blockly-ulisp`, which allows embedded apps to be dragg
 
 # Customise Blockly for uLisp
 
-We __customised Blockly for uLisp and BL602__...
+_How did we customise Blockly for uLisp and BL602?_
 
-1.  We added __Custom Blocks__
+1.  We added __Custom Blocks__ like `forever`, `digital write` and `wait`
 
-    TODO
+    All blocks under __GPIO, I2C and SPI__ are Custom Blocks. (See pic below)
 
-1.  We created a __Code Generator__ that generates uLisp code
+1.  We created a __Code Generator__ that generates uLisp code.
+
+    (More about this in the next section)
 
 1.  We integrated Blockly with __Web Serial API__ to transfer the generated uLisp code to BL602
 
+    (The Web Serial API code we saw earlier)
+
 ![Blockly Web Editor](https://lupyuen.github.io/images/lisp-blockly2.png)
 
-Here are the Blockly source files that were modified...
+_Which Blockly source files were modified?_
+
+We modified these Blockly source files to load the Custom Blocks and generate uLisp code...
 
 -   [`demos/code/index.html`](https://github.com/AppKaki/blockly-ulisp/blob/master/demos/code/index.html) 
 
-    TODO
+    This is the __HTML source file__ for the Blockly Web Editor. (See pic above)
 
     [(See changes)](https://github.com/AppKaki/blockly-ulisp/pull/1/files#diff-dcf2ffe98d7d8b4a0dd7b9f769557dbe8c9e0e726236ef229def25c956a43d8f)
 
 -   [`demos/code/code.js`](https://github.com/AppKaki/blockly-ulisp/blob/master/demos/code/code.js)
 
-    TODO
+    This is the main __JavaScript source file__ for the Blockly Web Editor.
+
+    This file contains the JavaScript function `runWebSerialCommand` that transfers the generated uLisp code to BL602 via Web Serial API.
 
     [(See changes)](https://github.com/AppKaki/blockly-ulisp/pull/1/files#diff-d72873b861dee958e5d443c919726dd856de594bd56b1e73d8948a7719163553)
 
 -   [`core/workspace_svg.js`](https://github.com/AppKaki/blockly-ulisp/blob/master/core/workspace_svg.js)
 
-    TODO
+    This JavaScript file __renders the Blockly Workspace as SVG__, including the Toolbox Bar at left.
 
     [(See changes)](https://github.com/AppKaki/blockly-ulisp/pull/1/files#diff-068435ae2521855e9cdbfdf36bea7f06978c9401acede52042702667bb14d49c)
 
-TODO
+_How did we create the Custom Blocks?_
 
--   [`generators/lisp/lisp_library.xml`](https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/lisp_library.xml): Blocks XML file used by Block Exporter to generate the custom blocks
+We used the __Block Exporter__ from Blockly to create the Custom Blocks...
 
-Inspired by MakeCode for BBC micro:bit...
+-   [`generators/lisp/ lisp_library.xml`](https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/lisp_library.xml): XML for Custom Blocks
 
-[`MakeCode`](https://makecode.microbit.org/)
+With Block Explorer and the Custom Blocks XML file, we generated this JavaScript file containing our Custom Blocks...
+
+-   [`generators/lisp/ lisp_blocks.js`](https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/lisp_blocks.js): JavaScript for Custom Blocks
+
+Block Exporter and Custom Blocks are explained here...
 
 -   [__"Custom Blocks"__](https://developers.google.com/blockly/guides/create-custom-blocks/overview)
 
@@ -809,9 +821,25 @@ Inspired by MakeCode for BBC micro:bit...
 
 -   [__"Define Blocks"__](https://developers.google.com/blockly/guides/create-custom-blocks/define-blocks)
 
--   [__"Generating Code"__](https://developers.google.com/blockly/guides/create-custom-blocks/generating-code)
+_What were we thinking when we designed the Custom Blocks: `forever`, `on_start`, `digital write`, `wait`, ..._
+
+The custom blocks were inspired by __MakeCode for BBC micro:bit__...
+
+-   [__MakeCode__](https://makecode.microbit.org/)
+
+_Does Blockly work on Mobile Web Browsers?_
+
+Yes but the Web Serial API won't work for transferring the generated uLisp code to BL602. (Because we can't connect BL602 as a USB Serial device)
+
+In future we could use the [__Web Bluetooth API__](https://web.dev/bluetooth/) instead to transfer the uLisp code to BL602. (Since BL602 supports Bluetooth LE)
+
+Here's how it looks on a Mobile Web Browser...
+
+![Blockly on Mobile](https://lupyuen.github.io/images/lisp-mobile.png)
 
 # Code Generator for uLisp
+
+_How did we geneate uLisp code in Blockly?_
 
 TODO
 
@@ -837,6 +865,8 @@ The Lisp Code Generator is based on Visual Embedded Rust...
 
 https://lupyuen.github.io/articles/advanced-topics-for-visual-embedded-rust-programming
 
+-   [__"Generating Code"__](https://developers.google.com/blockly/guides/create-custom-blocks/generating-code)
+
 ![](https://lupyuen.github.io/images/lisp-blockly.png)
 
 TODO
@@ -852,8 +882,6 @@ TODO
 ![](https://lupyuen.github.io/images/lisp-rust.png)
 
 TODO
-
-![](https://lupyuen.github.io/images/lisp-mobile.png)
 
 # What's Next
 
