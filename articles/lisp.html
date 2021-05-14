@@ -854,9 +854,151 @@ Blockly.Lisp['digital_write_pin'] = function(block) {
 <h2 id="missing-code-generators" class="section-header"><a href="#missing-code-generators">9.1 Missing Code Generators</a></h2>
 <p><em>What about the missing uLisp Code Generators?</em></p>
 <p>If the <strong>Community could help</strong> to fill in the <strong>missing uLisp Code Generators</strong>… That would be incredibly awesome! 🙏 👍 😀</p>
+<ol>
+<li>
+<p><strong>Expressions</strong></p>
+<p>This <a href=""><strong>Expression Code Generator</strong></a> should emit this uLisp Code…</p>
+<pre><code class="language-text">( / ( - 7 1 ) ( - 4 2 ) )
+</code></pre>
+<p><a href="http://www.ulisp.com/show?1ACY">(From uLisp)</a></p>
+</li>
+<li>
+<p><strong>Strings</strong></p>
+<p>This <a href=""><strong>String Code Generator</strong></a> should emit this uLisp Code…</p>
+<pre><code class="language-text">&quot;This is a string&quot;
+</code></pre>
+<p><a href="http://www.ulisp.com/show?1LRV">(From uLisp)</a></p>
+</li>
+<li>
+<p><strong>Lists</strong></p>
+<p>This <a href=""><strong>List Code Generator</strong></a> should emit this uLisp Code…</p>
+<pre><code class="language-text">( first '( 1 2 3 ) )
+</code></pre>
+<p><a href="http://www.ulisp.com/show?1AHT">(From uLisp)</a></p>
+</li>
+<li>
+<p><strong>If</strong></p>
+<p>This <a href=""><strong>If Code Generator</strong></a> should emit this uLisp Code…</p>
+<pre><code class="language-text">( if ( &lt; ( analogread 0 ) 512 )
+    ( digitalwrite 2 t )
+    ( digitalwrite 3 t )
+)
+</code></pre>
+<p><a href="http://www.ulisp.com/show?1AJM">(From uLisp)</a></p>
+</li>
+<li>
+<p><strong>For Loops</strong></p>
+<p>This <a href=""><strong>For Loop Code Generator</strong></a> should emit this uLisp Code…</p>
+<pre><code class="language-text">( dotimes ( pin 3 )
+    ( digitalwrite pin :high ) 
+)
+</code></pre>
+<p><a href="http://www.ulisp.com/show?2I01">(From uLisp)</a></p>
+</li>
+<li>
+<p><strong>While Loops</strong></p>
+<p>This <a href=""><strong>While Loop Code Generator</strong></a> should emit this uLisp Code…</p>
+<pre><code class="language-text">( loop
+    ( unless ( digitalread 8 ) ( return ) )
+)
+</code></pre>
+<p><a href="http://www.ulisp.com/show?2I01">(From uLisp)</a></p>
+</li>
+<li>
+<p><strong>Variables</strong></p>
+<p>This <a href=""><strong>Variable Code Generator</strong></a> should emit this uLisp Code…</p>
+<pre><code class="language-text">( defvar led 11 )
+
+( setq led 11 )
+
+( let* (
+    ( led 11 )
+    ...
+    )
+    body
+)
+</code></pre>
+<p><a href="http://www.ulisp.com/show?1AEK">(From uLisp)</a></p>
+</li>
+<li>
+<p><strong>Functions</strong></p>
+<p>This <a href=""><strong>Function Code Generator</strong></a> should emit this uLisp Code…</p>
+<pre><code class="language-text">( defun function_name ( ... ) ( ... ) )
+</code></pre>
+<p><a href="http://www.ulisp.com/show?1AGL">(From uLisp)</a></p>
+</li>
+<li>
+<p><strong>GPIO</strong></p>
+<p>digital_toggle_pin</p>
+<p>https://github.com/AppKaki/blockly-ulisp/blob/e5431f79bfad225563715ee0fce4e8101901e283/generators/lisp/lisp_functions.js#L60-L69</p>
+<p>http://www.ulisp.com/show?3L#digitalwrite</p>
+<p>digital_read_pin</p>
+<p>https://github.com/AppKaki/blockly-ulisp/blob/e5431f79bfad225563715ee0fce4e8101901e283/generators/lisp/lisp_functions.js#L71-L77</p>
+<p>http://www.ulisp.com/show?3L#digitalread</p>
+</li>
+<li>
+<p><strong>I2C, SPI, ADC, DAC</strong></p>
+<p>We need to create <strong>Custom Blocks and Code Generators for I2C, SPI, ADC and DAC</strong> that will emit uLisp Code for…</p>
+<ul>
+<li>
+<p><a href="http://www.ulisp.com/show?3L#withi2c"><strong><code>withi2c</code></strong></a></p>
+</li>
+<li>
+<p><a href="http://www.ulisp.com/show?3L#restarti2c"><strong><code>restarti2c</code></strong></a></p>
+</li>
+<li>
+<p><a href="http://www.ulisp.com/show?3L#withspi"><strong><code>withspi</code></strong></a></p>
+</li>
+<li>
+<p><a href="http://www.ulisp.com/show?3L#analogread"><strong><code>analogread</code></strong></a></p>
+</li>
+<li>
+<p><a href="http://www.ulisp.com/show?3L#analogreference"><strong><code>analogreference</code></strong></a></p>
+</li>
+<li>
+<p><a href="http://www.ulisp.com/show?3L#analogreadresolution"><strong><code>analogreadresolution</code></strong></a></p>
+</li>
+<li>
+<p><a href="http://www.ulisp.com/show?3L#analogwrite"><strong><code>analogwrite</code></strong></a></p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>WiFi</strong></p>
+<p>We need to create <strong>WiFi Custom Blocks and Code Generators</strong> that will emit uLisp Code for…</p>
+<ul>
+<li>
+<p><a href="http://www.ulisp.com/show?2B27#available"><strong><code>available</code></strong></a></p>
+</li>
+<li>
+<p><a href="http://www.ulisp.com/show?2B27#connected"><strong><code>connected</code></strong></a></p>
+</li>
+<li>
+<p><a href="http://www.ulisp.com/show?2B27#wifilocalip"><strong><code>wifilocalip</code></strong></a></p>
+</li>
+<li>
+<p><a href="http://www.ulisp.com/show?2B27#wificonnect"><strong><code>wificonnect</code></strong></a></p>
+</li>
+<li>
+<p><a href="http://www.ulisp.com/show?2B27#wifiserver"><strong><code>wifiserver</code></strong></a></p>
+</li>
+<li>
+<p><a href="http://www.ulisp.com/show?2B27#wifisoftap"><strong><code>wifisoftap</code></strong></a></p>
+</li>
+<li>
+<p><a href="http://www.ulisp.com/show?2B27#withclient"><strong><code>withclient</code></strong></a></p>
+</li>
+</ul>
+</li>
+<li>
+<p>Storage</p>
 <p>TODO</p>
+</li>
+<li>
 <p>XML code</p>
-<p>storage</p>
+<p>TODO</p>
+</li>
+</ol>
 <p><em>You sound strangely familiar with Blockly Code Generators?</em></p>
 <p>Yes the uLisp Code Generator is based on my earlier project on <strong>Visual Embedded Rust</strong>…</p>
 <ul>
