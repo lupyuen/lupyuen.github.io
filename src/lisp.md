@@ -769,7 +769,7 @@ Not at all!
 
 _What else needs to be ported to BL602?_
 
-If the Community could help...
+If the Community could help to port the __missing uLisp Features__... That would be super awesome! 🙏 👍
 
 TODO
 
@@ -861,38 +861,93 @@ The custom blocks were inspired by __MakeCode for BBC micro:bit__...
 
 _How did we geneate uLisp code in Blockly?_
 
-TODO
-
-![Copy code generators from Dart to Lisp](https://lupyuen.github.io/images/lisp-dart.png)
-
-TODO
+We created __Code Generators__ for uLisp. Our Code Generators are JavaScript Functions that emit uLisp code for each type of Block...
 
 -   [__"Generating Code"__](https://developers.google.com/blockly/guides/create-custom-blocks/generating-code)
 
+We started by __copying the Code Generators__ from Dart to Lisp into this Blockly folder...
 
-The following have been added into the existing [`generators`](https://github.com/AppKaki/blockly-ulisp/blob/master/generators) folder to generate Lisp code and to add blocks specific to uLisp...
+-   [__`generators/lisp`__](https://github.com/AppKaki/blockly-ulisp/tree/master/generators/lisp): Code Generators for uLisp
 
--   [`generators/lisp.js`](https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp.js): Main interface for Lisp Code Generator
+![Copy code generators from Dart to Lisp](https://lupyuen.github.io/images/lisp-dart.png)
 
--   [`generators/lisp`](https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp): Lisp Code Generator for various blocks
+Then we added this __Code Generator Interface__ for uLisp...
 
-The Lisp Code Generator is __incomplete__. The only blocks supported are...
+-   [`generators/lisp.js`](https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp.js): Interface for uLisp Code Generator
 
-1.  Forever
+_Which Blocks are supported by the uLisp Code Generator?_
 
-1.  On Start
+The uLisp Code Generator is __incomplete__.
 
-1.  Wait
+The only Blocks supported are...
 
-1.  GPIO Digital Write
+1.  __`forever`__ [(See this)](https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/lisp_functions.js#L40-L49)
+
+1.  __`on_start`__ [(See this)](https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/app_code.js#L3-L12)
+
+1.  __`wait`__ [(See this)](https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/lisp_functions.js#L51-L58)
+
+1.  __`digital write`__ [(See this)](https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/lisp_functions.js#L79-L89)
+
+_How do we define a uLisp Code Generator?_
+
+Here's how we define the __`forever` Code Generator__: [`lisp_functions.js`](https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/lisp_functions.js#L40-L49)
+
+```c
+Blockly.Lisp['forever'] = function(block) {
+  //  Run this code at forever in a loop. Inspired by MakeCode "forever" and Arduino "loop".
+  var statements_stmts = Blockly.Lisp.statementToCode(block, 'STMTS');
+  var code = statements_stmts;
+  code = [
+    '( loop  ',
+    code + ')',
+  ].join('\n');
+  return code;
+};
+```
+
+This JavaScript function emits a __uLisp loop__ that wraps the code inside the `loop` block like so...
+
+```text
+( loop
+    ...Code inside the loop block...
+)
+```
+
+And here's the __`digital write` Code Generator__: [`lisp_functions.js`](https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/lisp_functions.js#L79-L89)
+
+```c
+Blockly.Lisp['digital_write_pin'] = function(block) {
+  var dropdown_pin = block.getFieldValue('PIN');
+  var dropdown_value = block.getFieldValue('VALUE');
+  //  TODO: Call init_out only once,
+  var code = [
+    '( pinmode ' + dropdown_pin + ' :output )',
+    '( digitalwrite ' + dropdown_pin + ' ' + dropdown_value + ' )',
+    ''
+  ].join('\n');  
+  return code;
+};
+```
+
+This JavaScript function emits uLisp code that __sets the GPIO Pin mode and output__ like so...
+
+```text
+( pinmode 11 :output )
+( digitalwrite 11 :high )
+```
 
 ## Missing Code Generators
 
+_What about the missing uLisp Code Generators?_
+
+If the Community could help to fill in the __missing uLisp Code Generators__... That would be incredibly awesome! 🙏 👍 😀
+
 TODO
 
-If the Community could help...
+XML code
 
-TODO
+storage
 
 _You sound strangely familiar with Blockly Code Generators?_
 
@@ -903,6 +958,8 @@ Yes the uLisp Code Generator is based on my earlier project on __Visual Embedded
 Generating Rust code in Blockly was highly challenging because we had to do __Type Inference with Procedural Macros__.
 
 __uLisp is not Statically Typed__ like Rust, so generating uLisp code in Blockly looks a lot simpler.
+
+(Blockly for Visual Embedded Rust is wrapped inside a [VSCode Extension](https://marketplace.visualstudio.com/items?itemName=LeeLupYuen.visual-embedded-rust) that allows __local, offline development__. We could do the same for Blockly and uLisp)
 
 ![Visual Embedded Rust](https://lupyuen.github.io/images/lisp-rust.png)
 
