@@ -717,8 +717,30 @@ char SymbolTable[SYMBOLTABLESIZE];
 <p>Because the Arduino C++ bits (like <code>Serial.write</code>) have been converted to C (like <code>printf</code>).</p>
 </li>
 <li>
-<p>GPIO</p>
-<p>TODO</p>
+<p><strong>GPIO Functions</strong></p>
+<p>This GPIO code from the ESP32 Arduino version of uLisp: <a href="https://github.com/technoblogy/ulisp-esp/blob/master/ulisp-esp.ino#L3415-L3425"><code>ulisp-esp.ino</code></a></p>
+<pre><code class="language-c">object *fn_digitalwrite (object *args, object *env) {
+    //  Omitted: Parse the GPIO pin number and High / Low
+    ...
+
+    //  Set the GPIO output (from Arduino)
+    digitalWrite(pin, mode);
+</code></pre>
+<p>Was ported to BL602 by calling the <strong>BL602 GPIO Hardware Abstraction Layer</strong>: <a href="https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L3536-L3554"><code>ulisp.c</code></a></p>
+<pre><code class="language-c">/// Set the GPIO Output to High or Low
+object *fn_digitalwrite (object *args, object *env) {
+    //  Omitted: Parse the GPIO pin number and High / Low
+    //  (Same as before)
+    ...
+
+    //  Set the GPIO output (from BL602 GPIO HAL)
+    int rc = bl_gpio_output_set(
+        pin,  //  GPIO pin number
+        mode  //  0 for low, 1 for high
+    );
+    assert(rc == 0);  //  Halt on error
+</code></pre>
+<p><a href="https://lupyuen.github.io/articles/led#how-it-works-bl602-gpio">(More about BL602 GPIO HAL)</a></p>
 </li>
 <li>
 <p>Delay</p>
