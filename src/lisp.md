@@ -763,23 +763,49 @@ Not at all!
 
 (Wait... We've said this before)
 
-1.  No heap, just static
+1.  __No Heap Memory, just Static Memory__
 
-    TODO
+    uLisp needs only Static Memory, no Heap Memory. 
+    
+    This makes uLisp highly portable across microcontrollers: [`ulisp.c`](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L193-L194)
 
-1.  Reading from flash memory is easier
+    ```c
+    #define WORKSPACESIZE     8000  //  Cells (8*bytes)
+    #define SYMBOLTABLESIZE   1024  //  Bytes
 
-    TODO
+    object Workspace[WORKSPACESIZE];
+    char SymbolTable[SYMBOLTABLESIZE];
+    ```
+
+1.  __Reading from BL602 Flash Memory is simpler__
+
+    On Arduino we access Flash Memory by calling `PSTR`. 
+    
+    That's not necessary on BL602, so we stub out the Flash Memory functions: [`ulisp.c`](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L9-L11)
+
+    ```c
+    #define PGM_P     const char *
+    #define PROGMEM
+    #define PSTR(s)   s
+    ```
+
+1.  __`printf` works on BL602__
+
+    (Nice!)
 
 1.  Serial Input
 
     TODO
 
-1.  printf works
+1.  GPIO
 
     TODO
 
-1.  GPIO
+1.  Delay
+
+    TODO
+
+1.  Yield
 
     TODO
 
