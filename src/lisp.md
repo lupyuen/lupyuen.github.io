@@ -797,9 +797,37 @@ Not at all!
 
     Because the Arduino C++ bits (like `Serial.write`) have been converted to C (like `printf`).
 
-1.  GPIO
+1.  __GPIO Functions__
 
-    TODO
+    This GPIO code from the ESP32 Arduino version of uLisp: [`ulisp-esp.ino`](https://github.com/technoblogy/ulisp-esp/blob/master/ulisp-esp.ino#L3415-L3425)
+
+    ```c
+    object *fn_digitalwrite (object *args, object *env) {
+        //  Omitted: Parse the GPIO pin number and High / Low
+        ...
+
+        //  Set the GPIO output (from Arduino)
+        digitalWrite(pin, mode);
+    ```
+
+    Was ported to BL602 by calling the __BL602 GPIO Hardware Abstraction Layer__: [`ulisp.c`](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L3536-L3554)
+
+    ```c
+    /// Set the GPIO Output to High or Low
+    object *fn_digitalwrite (object *args, object *env) {
+        //  Omitted: Parse the GPIO pin number and High / Low
+        //  (Same as before)
+        ...
+
+        //  Set the GPIO output (from BL602 GPIO HAL)
+        int rc = bl_gpio_output_set(
+            pin,  //  GPIO pin number
+            mode  //  0 for low, 1 for high
+        );
+        assert(rc == 0);  //  Halt on error
+    ```
+
+    [(More about BL602 GPIO HAL)](https://lupyuen.github.io/articles/led#how-it-works-bl602-gpio)
 
 1.  Delay
 
