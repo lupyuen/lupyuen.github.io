@@ -857,28 +857,28 @@ Blockly.Lisp['digital_write_pin'] = function(block) {
 <ol>
 <li>
 <p><strong>Expressions</strong></p>
-<p>This <a href=""><strong>Expression Code Generator</strong></a> should emit this uLisp Code…</p>
+<p>This <a href="https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/math.js#L18-L485"><strong>Expression Code Generator</strong></a> should emit this uLisp Code…</p>
 <pre><code class="language-text">( / ( - 7 1 ) ( - 4 2 ) )
 </code></pre>
 <p><a href="http://www.ulisp.com/show?1ACY">(From uLisp)</a></p>
 </li>
 <li>
 <p><strong>Strings</strong></p>
-<p>This <a href=""><strong>String Code Generator</strong></a> should emit this uLisp Code…</p>
+<p>This <a href="https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/text.js#L18-L343"><strong>String Code Generator</strong></a> should emit this uLisp Code…</p>
 <pre><code class="language-text">&quot;This is a string&quot;
 </code></pre>
 <p><a href="http://www.ulisp.com/show?1LRV">(From uLisp)</a></p>
 </li>
 <li>
 <p><strong>Lists</strong></p>
-<p>This <a href=""><strong>List Code Generator</strong></a> should emit this uLisp Code…</p>
+<p>This <a href="https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/lists.js#L18-L447"><strong>List Code Generator</strong></a> should emit this uLisp Code…</p>
 <pre><code class="language-text">( first '( 1 2 3 ) )
 </code></pre>
 <p><a href="http://www.ulisp.com/show?1AHT">(From uLisp)</a></p>
 </li>
 <li>
 <p><strong>If</strong></p>
-<p>This <a href=""><strong>If Code Generator</strong></a> should emit this uLisp Code…</p>
+<p>This <a href="https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/logic.js#L18-L127"><strong>If Code Generator</strong></a> should emit this uLisp Code…</p>
 <pre><code class="language-text">( if ( &lt; ( analogread 0 ) 512 )
     ( digitalwrite 2 t )
     ( digitalwrite 3 t )
@@ -888,7 +888,7 @@ Blockly.Lisp['digital_write_pin'] = function(block) {
 </li>
 <li>
 <p><strong>For Loops</strong></p>
-<p>This <a href=""><strong>For Loop Code Generator</strong></a> should emit this uLisp Code…</p>
+<p>This <a href="https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/loops.js#L62-L169"><strong>For Loop Code Generator</strong></a> should emit this uLisp Code…</p>
 <pre><code class="language-text">( dotimes ( pin 3 )
     ( digitalwrite pin :high ) 
 )
@@ -897,7 +897,7 @@ Blockly.Lisp['digital_write_pin'] = function(block) {
 </li>
 <li>
 <p><strong>While Loops</strong></p>
-<p>This <a href=""><strong>While Loop Code Generator</strong></a> should emit this uLisp Code…</p>
+<p>This <a href="https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/loops.js#L18-L60"><strong>While Loop Code Generator</strong></a> should emit this uLisp Code…</p>
 <pre><code class="language-text">( loop
     ( unless ( digitalread 8 ) ( return ) )
 )
@@ -906,7 +906,7 @@ Blockly.Lisp['digital_write_pin'] = function(block) {
 </li>
 <li>
 <p><strong>Variables</strong></p>
-<p>This <a href=""><strong>Variable Code Generator</strong></a> should emit this uLisp Code…</p>
+<p>This <a href="https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/variables.js#L18-L32"><strong>Variable Code Generator</strong></a> should emit this uLisp Code…</p>
 <pre><code class="language-text">( defvar led 11 )
 
 ( setq led 11 )
@@ -922,7 +922,7 @@ Blockly.Lisp['digital_write_pin'] = function(block) {
 </li>
 <li>
 <p><strong>Functions</strong></p>
-<p>This <a href=""><strong>Function Code Generator</strong></a> should emit this uLisp Code…</p>
+<p>This <a href="https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/procedures.js#L18-L111"><strong>Function Code Generator</strong></a> should emit this uLisp Code…</p>
 <pre><code class="language-text">( defun function_name ( ... ) ( ... ) )
 </code></pre>
 <p><a href="http://www.ulisp.com/show?1AGL">(From uLisp)</a></p>
@@ -930,10 +930,10 @@ Blockly.Lisp['digital_write_pin'] = function(block) {
 <li>
 <p><strong>GPIO</strong></p>
 <p>digital_toggle_pin</p>
-<p>https://github.com/AppKaki/blockly-ulisp/blob/e5431f79bfad225563715ee0fce4e8101901e283/generators/lisp/lisp_functions.js#L60-L69</p>
+<p>https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/lisp_functions.js#L60-L69</p>
 <p>http://www.ulisp.com/show?3L#digitalwrite</p>
 <p>digital_read_pin</p>
-<p>https://github.com/AppKaki/blockly-ulisp/blob/e5431f79bfad225563715ee0fce4e8101901e283/generators/lisp/lisp_functions.js#L71-L77</p>
+<p>https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/lisp_functions.js#L71-L77</p>
 <p>http://www.ulisp.com/show?3L#digitalread</p>
 </li>
 <li>
