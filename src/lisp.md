@@ -832,9 +832,11 @@ Not at all!
 
 1.  __Delay Function__
 
-    TODO
+    BL602 runs on a __multitasking operating system (FreeRTOS)__.
 
-    From [`ulisp.c`](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L3593-L3605)
+    Thus we need to be respectful of other Background Tasks that may be running.
+
+    Here's how we implement the __uLisp `delay` function__ on BL602: [`ulisp.c`](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L3593-L3605)
 
     ```c
     /// Delay for specified number of milliseconds
@@ -852,11 +854,15 @@ Not at all!
     }
     ```
 
+    __`time_ms_to_ticks32` and `time_delay`__ are multitasking functions provided by the __NimBLE Porting Layer__, implemented with FreeRTOS.
+
+    [(More about NimBLE Porting Layer)](https://lupyuen.github.io/articles/lora2#multitask-with-nimble-porting-layer)
+
 1.  __Loop and Yield__
 
-    TODO
+    The BL602 implementation of the __uLisp `loop` function__ is aware of multitasking too.
 
-    From [`ulisp.c`](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L1691-L1705)
+    We preempt the current task at every iteration of the loop: [`ulisp.c`](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L1691-L1705)
 
     ```c
     /// "loop" implementation in uLisp
@@ -867,13 +873,40 @@ Not at all!
             time_delay(100);  //  TODO: Tune this
     ```
 
+    (This is probably no good for time-sensitive uLisp functions... We will have to rethink this)
+
 1.  __BL602 cares about the Command Line__
 
     On Arduino we read and parse the Serial Input, byte by byte.
 
-    The BL602 IoT SDK parses the Command Line for us.
+    Whereas on BL602, the __BL602 IoT SDK parses the Command Line__ for us.
 
     TODO
+
+    From [`ulisp.c`](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L5085-L5124)
+
+    ```c
+    /// Console input buffer, position and length
+    const char *input_buf = NULL;
+    int input_pos = 0;
+    int input_len = 0;
+
+    /// Return the next char from the console input buffer
+    int gserial() {
+        if (LastChar) {
+            //  Return the previous char
+            char temp = LastChar;
+            LastChar = 0;
+            return temp;
+        }  
+        if (input_pos >= input_len) {
+            //  No more chars to read
+            return '\n';
+        }
+        //  Return next char from the buffer
+        return input_buf[input_pos++];
+    }
+    ```
 
 ![Porting uLisp to BL602](https://lupyuen.github.io/images/lisp-build.png)
 
