@@ -791,7 +791,11 @@ Not at all!
 
 1.  __`printf` works on BL602__
 
-    (Nice!)
+    No more `Serial.write`. (Nice!)
+
+1.  __Compiles in C, no C++ needed__
+
+    Because the Arduino C++ bits (like `Serial.write`) have been converted to C (like `printf`).
 
 1.  GPIO
 
