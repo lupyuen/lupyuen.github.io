@@ -769,7 +769,7 @@ Not at all!
 
 _What else needs to be ported to BL602?_
 
-If the Community could help to port the __missing uLisp Features__... That would be super awesome! 🙏 👍
+If the __Community could help__ to port the __missing uLisp Features__... That would be super awesome! 🙏 👍
 
 TODO
 
@@ -955,7 +955,7 @@ This JavaScript function emits uLisp code that __sets the GPIO Pin mode and outp
 
 _What about the missing uLisp Code Generators?_
 
-If the Community could help to fill in the __missing uLisp Code Generators__... That would be incredibly awesome! 🙏 👍 😀
+If the __Community could help__ to fill in the __missing uLisp Code Generators__... That would be incredibly awesome! 🙏 👍 😀
 
 TODO
 
