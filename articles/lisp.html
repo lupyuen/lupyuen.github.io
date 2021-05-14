@@ -685,44 +685,52 @@ async function runWebSerialCommand(command, expectedResponse) {
 <p><a href="https://github.com/AppKaki/blockly-ulisp"><code>blockly-ulisp</code></a></p>
 <p><img src="https://lupyuen.github.io/images/lisp-blinky2.png" alt="uLisp Blinky" /></p>
 <h1 id="customise-blockly-for-ulisp" class="section-header"><a href="#customise-blockly-for-ulisp">8 Customise Blockly for uLisp</a></h1>
-<p>We <strong>customised Blockly for uLisp and BL602</strong>…</p>
+<p><em>How did we customise Blockly for uLisp and BL602?</em></p>
 <ol>
 <li>
-<p>We added <strong>Custom Blocks</strong></p>
-<p>TODO</p>
+<p>We added <strong>Custom Blocks</strong> like <code>forever</code>, <code>digital write</code> and <code>wait</code></p>
+<p>All blocks under <strong>GPIO, I2C and SPI</strong> are Custom Blocks. (See pic below)</p>
 </li>
 <li>
-<p>We created a <strong>Code Generator</strong> that generates uLisp code</p>
+<p>We created a <strong>Code Generator</strong> that generates uLisp code.</p>
+<p>(More about this in the next section)</p>
 </li>
 <li>
 <p>We integrated Blockly with <strong>Web Serial API</strong> to transfer the generated uLisp code to BL602</p>
+<p>(The Web Serial API code we saw earlier)</p>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/lisp-blockly2.png" alt="Blockly Web Editor" /></p>
-<p>Here are the Blockly source files that were modified…</p>
+<p><em>Which Blockly source files were modified?</em></p>
+<p>We modified these Blockly source files to load the Custom Blocks and generate uLisp code…</p>
 <ul>
 <li>
 <p><a href="https://github.com/AppKaki/blockly-ulisp/blob/master/demos/code/index.html"><code>demos/code/index.html</code></a> </p>
-<p>TODO</p>
+<p>This is the <strong>HTML source file</strong> for the Blockly Web Editor. (See pic above)</p>
 <p><a href="https://github.com/AppKaki/blockly-ulisp/pull/1/files#diff-dcf2ffe98d7d8b4a0dd7b9f769557dbe8c9e0e726236ef229def25c956a43d8f">(See changes)</a></p>
 </li>
 <li>
 <p><a href="https://github.com/AppKaki/blockly-ulisp/blob/master/demos/code/code.js"><code>demos/code/code.js</code></a></p>
-<p>TODO</p>
+<p>This is the main <strong>JavaScript source file</strong> for the Blockly Web Editor.</p>
+<p>This file contains the JavaScript function <code>runWebSerialCommand</code> that transfers the generated uLisp code to BL602 via Web Serial API.</p>
 <p><a href="https://github.com/AppKaki/blockly-ulisp/pull/1/files#diff-d72873b861dee958e5d443c919726dd856de594bd56b1e73d8948a7719163553">(See changes)</a></p>
 </li>
 <li>
 <p><a href="https://github.com/AppKaki/blockly-ulisp/blob/master/core/workspace_svg.js"><code>core/workspace_svg.js</code></a></p>
-<p>TODO</p>
+<p>This JavaScript file <strong>renders the Blockly Workspace as SVG</strong>, including the Toolbox Bar at left.</p>
 <p><a href="https://github.com/AppKaki/blockly-ulisp/pull/1/files#diff-068435ae2521855e9cdbfdf36bea7f06978c9401acede52042702667bb14d49c">(See changes)</a></p>
 </li>
 </ul>
-<p>TODO</p>
+<p><em>How did we create the Custom Blocks?</em></p>
+<p>We used the <strong>Block Exporter</strong> from Blockly to create the Custom Blocks…</p>
 <ul>
-<li><a href="https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/lisp_library.xml"><code>generators/lisp/lisp_library.xml</code></a>: Blocks XML file used by Block Exporter to generate the custom blocks</li>
+<li><a href="https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/lisp_library.xml"><code>generators/lisp/ lisp_library.xml</code></a>: XML for Custom Blocks</li>
 </ul>
-<p>Inspired by MakeCode for BBC micro:bit…</p>
-<p><a href="https://makecode.microbit.org/"><code>MakeCode</code></a></p>
+<p>With Block Explorer and the Custom Blocks XML file, we generated this JavaScript file containing our Custom Blocks…</p>
+<ul>
+<li><a href="https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/lisp_blocks.js"><code>generators/lisp/ lisp_blocks.js</code></a>: JavaScript for Custom Blocks</li>
+</ul>
+<p>Block Exporter and Custom Blocks are explained here…</p>
 <ul>
 <li>
 <p><a href="https://developers.google.com/blockly/guides/create-custom-blocks/overview"><strong>“Custom Blocks”</strong></a></p>
@@ -733,11 +741,19 @@ async function runWebSerialCommand(command, expectedResponse) {
 <li>
 <p><a href="https://developers.google.com/blockly/guides/create-custom-blocks/define-blocks"><strong>“Define Blocks”</strong></a></p>
 </li>
-<li>
-<p><a href="https://developers.google.com/blockly/guides/create-custom-blocks/generating-code"><strong>“Generating Code”</strong></a></p>
-</li>
 </ul>
+<p><em>What were we thinking when we designed the Custom Blocks: <code>forever</code>, <code>on_start</code>, <code>digital write</code>, <code>wait</code>, …</em></p>
+<p>The custom blocks were inspired by <strong>MakeCode for BBC micro:bit</strong>…</p>
+<ul>
+<li><a href="https://makecode.microbit.org/"><strong>MakeCode</strong></a></li>
+</ul>
+<p><em>Does Blockly work on Mobile Web Browsers?</em></p>
+<p>Yes but the Web Serial API won’t work for transferring the generated uLisp code to BL602. (Because we can’t connect BL602 as a USB Serial device)</p>
+<p>In future we could use the <a href="https://web.dev/bluetooth/"><strong>Web Bluetooth API</strong></a> instead to transfer the uLisp code to BL602. (Since BL602 supports Bluetooth LE)</p>
+<p>Here’s how it looks on a Mobile Web Browser…</p>
+<p><img src="https://lupyuen.github.io/images/lisp-mobile.png" alt="Blockly on Mobile" /></p>
 <h1 id="code-generator-for-ulisp" class="section-header"><a href="#code-generator-for-ulisp">9 Code Generator for uLisp</a></h1>
+<p><em>How did we geneate uLisp code in Blockly?</em></p>
 <p>TODO</p>
 <p>The following have been added into the existing <a href="https://github.com/AppKaki/blockly-ulisp/blob/master/generators"><code>generators</code></a> folder to generate Lisp code and to add blocks specific to uLisp…</p>
 <ul>
@@ -768,6 +784,9 @@ async function runWebSerialCommand(command, expectedResponse) {
 </ol>
 <p>The Lisp Code Generator is based on Visual Embedded Rust…</p>
 <p>https://lupyuen.github.io/articles/advanced-topics-for-visual-embedded-rust-programming</p>
+<ul>
+<li><a href="https://developers.google.com/blockly/guides/create-custom-blocks/generating-code"><strong>“Generating Code”</strong></a></li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/lisp-blockly.png" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lisp-dart.png" alt="" /></p>
@@ -776,7 +795,6 @@ async function runWebSerialCommand(command, expectedResponse) {
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lisp-rust.png" alt="" /></p>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/lisp-mobile.png" alt="" /></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">10 What’s Next</a></h1>
 <p>TODO</p>
 <ul>
