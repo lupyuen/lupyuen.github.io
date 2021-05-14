@@ -769,6 +769,8 @@ Not at all!
 
 _What else needs to be ported to BL602?_
 
+If the Community could help...
+
 TODO
 
 setjmp
