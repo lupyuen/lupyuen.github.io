@@ -869,16 +869,15 @@ int gserial() {
 <p>If the <strong>Community could help</strong> to port the <strong>missing uLisp Features</strong>… That would be super awesome! 🙏 👍</p>
 <ol>
 <li>
-<p>GPIO</p>
-<p>These uLisp GPIO Functions should be ported with the BL602 GPIO HAL…</p>
-<p>TODO</p>
+<p><strong>GPIO</strong></p>
+<p>Port these uLisp GPIO Functions to BL602 with the <a href="https://lupyuen.github.io/articles/led#how-it-works-bl602-gpio"><strong>BL602 GPIO HAL</strong></a>…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L3527-L3534"><strong><code>fn_digitalread</code></strong></a></li>
 </ul>
 </li>
 <li>
-<p>I2C</p>
-<p>TODO</p>
+<p><strong>I2C</strong></p>
+<p>Port these uLisp I2C Functions to BL602 with the <a href="https://lupyuen.github.io/articles/i2c#initialise-i2c-port"><strong>BL602 I2C HAL</strong></a>…</p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L1323-L1329"><strong><code>I2Cinit</code></strong></a></p>
@@ -901,8 +900,8 @@ int gserial() {
 </ul>
 </li>
 <li>
-<p>SPI</p>
-<p>TODO</p>
+<p><strong>SPI</strong></p>
+<p>Port these uLisp SPI Functions to BL602 with the <a href="https://lupyuen.github.io/articles/spi#bl602-hardware-abstraction-layer-for-spi"><strong>BL602 SPI HAL</strong></a>…</p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L1378-L1383"><strong><code>spiread</code></strong></a></p>
@@ -916,8 +915,8 @@ int gserial() {
 </ul>
 </li>
 <li>
-<p>ADC</p>
-<p>TODO</p>
+<p><strong>ADC</strong></p>
+<p>Port these uLisp ADC Functions to BL602 with the <a href="https://github.com/bouffalolab/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_adc.c#L173-L216"><strong>BL602 ADC HAL</strong></a>…</p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L3556-L3569"><strong><code>fn_analogread</code></strong></a></p>
@@ -928,15 +927,15 @@ int gserial() {
 </ul>
 </li>
 <li>
-<p>DAC</p>
-<p>TODO</p>
+<p><strong>DAC</strong></p>
+<p>Port these uLisp DAC Functions to BL602 with the <strong>BL602 DAC HAL</strong>…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L3581-L3591"><strong><code>fn_analogwrite</code></strong></a></li>
 </ul>
 </li>
 <li>
-<p>WiFi</p>
-<p>TODO</p>
+<p><strong>WiFi</strong></p>
+<p>Port these uLisp WiFi Functions to BL602 with the <strong>BL602 WiFi HAL</strong>…</p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L1472-L1477"><strong><code>WiFiwrite</code></strong></a></p>
@@ -963,10 +962,22 @@ int gserial() {
 <p><a href="https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L3899-L3914"><strong><code>fn_wificonnect</code></strong></a></p>
 </li>
 </ul>
+<p>More about BL602 WiFi HAL…</p>
+<ul>
+<li>
+<p><a href="https://pine64.github.io/bl602-docs/Examples/demo_at/AT.html#wi-fi-at-commands"><strong>WiFi Docs</strong></a></p>
 </li>
 <li>
-<p>EPROM</p>
-<p>TODO</p>
+<p><a href="https://pine64.github.io/bl602-docs/Examples/demo_wifi/wifi.html"><strong>WiFi Demo</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/pine64/bl_iot_sdk/tree/master/customer_app/bl602_demo_wifi"><strong>WiFi Source Code</strong></a></p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>EPROM</strong></p>
+<p>Port these uLisp EPROM Functions to BL602 with the <strong>BL602 Flash Memory HAL</strong>…</p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L509-L515"><strong><code>EpromWriteInt</code></strong></a></p>
@@ -984,27 +995,7 @@ int gserial() {
 <p><a href="https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L637-L660"><strong><code>autorunimage</code></strong></a></p>
 </li>
 </ul>
-</li>
-<li>
-<p>setjmp</p>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L5338-L5361"><code>ulisp.c</code></a></p>
-<pre><code class="language-c">static void loop_ulisp () {
-    if (!setjmp(exception)) {
-        #if defined(resetautorun)
-        volatile int autorun = 12; // Fudge to keep code size the same
-        #else
-        volatile int autorun = 13;
-        #endif
-        if (autorun == 12) autorunimage();
-    } else {
-        printf(&quot;Error\r\n&quot;);
-    }
-    clrflag(NOESC); BreakLevel = 0;
-    for (int i=0; i&lt;TRACEMAX; i++) TraceDepth[i] = 0;
-    repl(NULL);
-}
-</code></pre>
+<p>Porting the EPROM functions to BL602 will allow us to <strong>save and load uLisp images to / from Flash Memory</strong>.</p>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/lisp-build2.png" alt="uLisp builds OK on BL602" /></p>
@@ -1346,7 +1337,29 @@ Blockly.Lisp['digital_write_pin'] = function(block) {
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lisp.md"><code>lupyuen.github.io/src/lisp.md</code></a></p>
 <h1 id="notes" class="section-header"><a href="#notes">11 Notes</a></h1>
 <ol>
-<li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1389783215347429382">this Twitter Thread</a></li>
+<li>
+<p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1389783215347429382">this Twitter Thread</a></p>
+</li>
+<li>
+<p>This <code>setjmp</code> code hangs when there’s an error. Needs fixing…</p>
+<p>From <a href="https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L5338-L5361"><code>ulisp.c</code></a></p>
+<pre><code class="language-c">static void loop_ulisp () {
+    if (!setjmp(exception)) {
+        #if defined(resetautorun)
+        volatile int autorun = 12; // Fudge to keep code size the same
+        #else
+        volatile int autorun = 13;
+        #endif
+        if (autorun == 12) autorunimage();
+    } else {
+        printf(&quot;Error\r\n&quot;);
+    }
+    clrflag(NOESC); BreakLevel = 0;
+    for (int i=0; i&lt;TRACEMAX; i++) TraceDepth[i] = 0;
+    repl(NULL);
+}
+</code></pre>
+</li>
 </ol>
 
     
