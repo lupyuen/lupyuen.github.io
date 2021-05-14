@@ -689,23 +689,43 @@ async function runWebSerialCommand(command, expectedResponse) {
 <p>(Wait… We’ve said this before)</p>
 <ol>
 <li>
-<p>No heap, just static</p>
-<p>TODO</p>
+<p><strong>No Heap Memory, just Static Memory</strong></p>
+<p>uLisp needs only Static Memory, no Heap Memory. </p>
+<p>This makes uLisp highly portable across microcontrollers: <a href="https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L193-L194"><code>ulisp.c</code></a></p>
+<pre><code class="language-c">#define WORKSPACESIZE     8000  //  Cells (8*bytes)
+#define SYMBOLTABLESIZE   1024  //  Bytes
+
+object Workspace[WORKSPACESIZE];
+char SymbolTable[SYMBOLTABLESIZE];
+</code></pre>
 </li>
 <li>
-<p>Reading from flash memory is easier</p>
-<p>TODO</p>
+<p><strong>Reading from BL602 Flash Memory is simpler</strong></p>
+<p>On Arduino we access Flash Memory by calling <code>PSTR</code>. </p>
+<p>That’s not necessary on BL602, so we stub out the Flash Memory functions: <a href="https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L9-L11"><code>ulisp.c</code></a></p>
+<pre><code class="language-c">#define PGM_P     const char *
+#define PROGMEM
+#define PSTR(s)   s
+</code></pre>
+</li>
+<li>
+<p><strong><code>printf</code> works on BL602</strong></p>
+<p>(Nice!)</p>
 </li>
 <li>
 <p>Serial Input</p>
 <p>TODO</p>
 </li>
 <li>
-<p>printf works</p>
+<p>GPIO</p>
 <p>TODO</p>
 </li>
 <li>
-<p>GPIO</p>
+<p>Delay</p>
+<p>TODO</p>
+</li>
+<li>
+<p>Yield</p>
 <p>TODO</p>
 </li>
 </ol>
