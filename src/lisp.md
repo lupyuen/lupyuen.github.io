@@ -112,6 +112,14 @@ _Anything else we should know about uLisp?_
 
 uLisp is still [actively maintained](https://github.com/technoblogy?tab=repositories). It has an [active online community](http://forum.ulisp.com/).
 
+_It's 2021... Why are we still learning Lisp?_
+
+Lisp is __Not Dead Yet__! (Apologies to Monty Python)
+
+We still see bits of Lisp today in __WebAssembly__... Like the __Stack Machine and S-Expressions__. [(See this)](https://developer.mozilla.org/en-US/docs/WebAssembly/Understanding_the_text_format)
+
+In fact the uLisp Interpreter looks a little like __Wasm3__, the WebAssembly Interpreter for Microcontrollers. [(See this)](https://github.com/wasm3/wasm3)
+
 # Build the BL602 uLisp Firmware
 
 Download and build the [uLisp Firmware for BL602](https://github.com/lupyuen/bl_iot_sdk/tree/ulisp/customer_app/sdk_app_ulisp)...
