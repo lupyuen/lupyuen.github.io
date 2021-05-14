@@ -719,7 +719,8 @@ char SymbolTable[SYMBOLTABLESIZE];
 <li>
 <p><strong>GPIO Functions</strong></p>
 <p>This GPIO code from the ESP32 Arduino version of uLisp: <a href="https://github.com/technoblogy/ulisp-esp/blob/master/ulisp-esp.ino#L3415-L3425"><code>ulisp-esp.ino</code></a></p>
-<pre><code class="language-c">object *fn_digitalwrite (object *args, object *env) {
+<pre><code class="language-c">/// Set the GPIO Output to High or Low
+object *fn_digitalwrite (object *args, object *env) {
     //  Omitted: Parse the GPIO pin number and High / Low
     ...
 
