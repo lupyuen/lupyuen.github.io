@@ -984,11 +984,39 @@ _What else needs to be ported to BL602?_
 
 If the __Community could help__ to port the __missing uLisp Features__... That would be super awesome! 🙏 👍
 
-TODO
+1.  GPIO
 
-setjmp
+    These uLisp GPIO Functions should be ported with the BL602 GPIO HAL...
 
-EEPROM
+    TODO
+
+1.  I2C
+
+    TODO
+
+1.  SPI
+
+    TODO
+
+1.  ADC
+
+    TODO
+
+1.  DAC
+
+    TODO
+
+1.  WiFi
+
+    TODO
+
+1.  EPROM
+
+    TODO
+
+1.  setjmp
+
+    TODO
 
 ![uLisp builds OK on BL602](https://lupyuen.github.io/images/lisp-build2.png)
 
