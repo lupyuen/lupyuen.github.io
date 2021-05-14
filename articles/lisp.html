@@ -804,32 +804,46 @@ async function runWebSerialCommand(command, expectedResponse) {
 </ol>
 <p><em>How do we define a uLisp Code Generator?</em></p>
 <p>Here’s how we define the <strong><code>forever</code> Code Generator</strong>: <a href="https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/lisp_functions.js#L40-L49"><code>lisp_functions.js</code></a></p>
-<pre><code class="language-c">Blockly.Lisp['forever'] = function(block) {
-  //  Run this code at forever in a loop. Inspired by MakeCode &quot;forever&quot; and Arduino &quot;loop&quot;.
+<pre><code class="language-c">//  Emit uLisp code for the &quot;forever&quot; block. 
+//  Inspired by MakeCode &quot;forever&quot; and Arduino &quot;loop&quot;.
+Blockly.Lisp['forever'] = function(block) {
+  //  Convert the code inside the &quot;forever&quot; block into uLisp
   var statements_stmts = Blockly.Lisp.statementToCode(block, 'STMTS');
   var code = statements_stmts;
+
+  //  Wrap the converted uLisp code with &quot;loop&quot;
   code = [
     '( loop  ',
     code + ')',
   ].join('\n');
+
+  //  Return the wrapped code
   return code;
 };
 </code></pre>
-<p>This JavaScript function emits a <strong>uLisp loop</strong> that wraps the code inside the <code>loop</code> block like so…</p>
+<p>This JavaScript function emits a <strong>uLisp loop</strong> that wraps the code inside the <code>forever</code> block like so…</p>
 <pre><code class="language-text">( loop
     ...Code inside the loop block...
 )
 </code></pre>
 <p>And here’s the <strong><code>digital write</code> Code Generator</strong>: <a href="https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/lisp_functions.js#L79-L89"><code>lisp_functions.js</code></a></p>
-<pre><code class="language-c">Blockly.Lisp['digital_write_pin'] = function(block) {
+<pre><code class="language-c">//  Emit uLisp code for the &quot;digtial write&quot; block. 
+Blockly.Lisp['digital_write_pin'] = function(block) {
+  //  Fetch the GPIO Pin Number (e.g. 11)
   var dropdown_pin = block.getFieldValue('PIN');
+
+  //  Fetch the GPIO Output: &quot;:high&quot; or &quot;low&quot;
   var dropdown_value = block.getFieldValue('VALUE');
+
+  //  Compose the uLisp code to set the GPIO Pin mode and output.
   //  TODO: Call init_out only once,
   var code = [
     '( pinmode ' + dropdown_pin + ' :output )',
     '( digitalwrite ' + dropdown_pin + ' ' + dropdown_value + ' )',
     ''
   ].join('\n');  
+
+  //  Return the uLisp code
   return code;
 };
 </code></pre>
