@@ -743,6 +743,8 @@ Finally it's safe to __close the Serial Port__...
 
 And that's how Blockly sends a uLisp command to BL602 with the Web Serial API!
 
+![uLisp Blinky](https://lupyuen.github.io/images/lisp-blinky2.png)
+
 # Porting uLisp to BL602
 
 TODO
@@ -757,9 +759,19 @@ This firmware calls the BL602 uLisp Library `components/3rdparty/ulisp-bl602`...
 
 This firmware works with `blockly-ulisp`, which allows embedded apps to be dragged-and-dropped from Web Browser to BL602...
 
-[`blockly-ulisp`](https://github.com/AppKaki/blockly-ulisp)
+setjmp
 
-![uLisp Blinky](https://lupyuen.github.io/images/lisp-blinky2.png)
+EEPROM
+
+![Porting uLisp to BL602](https://lupyuen.github.io/images/lisp-build.png)
+
+TODO
+
+![uLisp builds OK on BL602](https://lupyuen.github.io/images/lisp-build2.png)
+
+TODO
+
+[`blockly-ulisp`](https://github.com/AppKaki/blockly-ulisp)
 
 # Customise Blockly for uLisp
 
@@ -892,13 +904,3 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1389783215347429382)
-
-TODO
-
-![](https://lupyuen.github.io/images/lisp-build.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/lisp-build2.png)
-
-TODO
