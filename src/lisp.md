@@ -747,31 +747,35 @@ And that's how Blockly sends a uLisp command to BL602 with the Web Serial API!
 
 # Porting uLisp to BL602
 
+Today we've seen uLisp on BL602, ported from the [ESP32 Arduino version of uLisp](https://github.com/technoblogy/ulisp-esp/blob/master/ulisp-esp.ino).
+
+_Porting uLisp from ESP32 Arduino to BL602 sounds difficult?_
+
+Not at all!
+
+(Wait... We've said this before)
+
+1.  No heap, just static
+
+    TODO
+
+1.  Reading from flash memory is easier
+
+    TODO
+
+![Porting uLisp to BL602](https://lupyuen.github.io/images/lisp-build.png)
+
+## Missing uLisp Features
+
+_What else needs to be ported to BL602?_
+
 TODO
-
-uLisp was ported to BL602 from ESP32 Arduino...
-
-[`ulisp-esp`](https://github.com/technoblogy/ulisp-esp)
-
-This firmware calls the BL602 uLisp Library `components/3rdparty/ulisp-bl602`...
-
-[`ulisp-bl602`](https://github.com/lupyuen/ulisp-bl602)
-
-This firmware works with `blockly-ulisp`, which allows embedded apps to be dragged-and-dropped from Web Browser to BL602...
 
 setjmp
 
 EEPROM
 
-![Porting uLisp to BL602](https://lupyuen.github.io/images/lisp-build.png)
-
-TODO
-
 ![uLisp builds OK on BL602](https://lupyuen.github.io/images/lisp-build2.png)
-
-TODO
-
-[`blockly-ulisp`](https://github.com/AppKaki/blockly-ulisp)
 
 # Customise Blockly for uLisp
 
@@ -861,6 +865,9 @@ TODO
 
 TODO
 
+-   [__"Generating Code"__](https://developers.google.com/blockly/guides/create-custom-blocks/generating-code)
+
+
 The following have been added into the existing [`generators`](https://github.com/AppKaki/blockly-ulisp/blob/master/generators) folder to generate Lisp code and to add blocks specific to uLisp...
 
 -   [`generators/lisp.js`](https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp.js): Main interface for Lisp Code Generator
@@ -877,11 +884,23 @@ The Lisp Code Generator is __incomplete__. The only blocks supported are...
 
 1.  GPIO Digital Write
 
--   [__"Generating Code"__](https://developers.google.com/blockly/guides/create-custom-blocks/generating-code)
+## Missing Code Generators
 
-The Lisp Code Generator is based on Visual Embedded Rust...
+TODO
+
+If the Community could help...
+
+TODO
+
+_You sound strangely familiar with Blockly Code Generators?_
+
+Yes the uLisp Code Generator is based on my earlier project on __Visual Embedded Rust__...
 
 -   [__"Advanced Topics for Visual Embedded Rust"__](https://lupyuen.github.io/articles/advanced-topics-for-visual-embedded-rust-programming)
+
+Generating Rust code in Blockly was highly challenging because we had to do __Type Inference with Procedural Macros__.
+
+__uLisp is not Statically Typed__ like Rust, so generating uLisp code in Blockly looks a lot simpler.
 
 ![Visual Embedded Rust](https://lupyuen.github.io/images/lisp-rust.png)
 
