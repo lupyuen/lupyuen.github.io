@@ -959,7 +959,7 @@ If the __Community could help__ to fill in the __missing uLisp Code Generators__
 
 1.  __Expressions__
 
-    This [__Expression Code Generator__]() should emit this uLisp Code...
+    This [__Expression Code Generator__](https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/math.js#L18-L485) should emit this uLisp Code...
 
     ```text
     ( / ( - 7 1 ) ( - 4 2 ) )
@@ -969,7 +969,8 @@ If the __Community could help__ to fill in the __missing uLisp Code Generators__
 
 1.  __Strings__
 
-    This [__String Code Generator__]() should emit this uLisp Code...
+    This [__String Code Generator__](https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/text.js#L18-L343) should emit this uLisp Code...
+
     ```text
     "This is a string"
     ```
@@ -978,7 +979,7 @@ If the __Community could help__ to fill in the __missing uLisp Code Generators__
 
 1.  __Lists__
 
-    This [__List Code Generator__]() should emit this uLisp Code...
+    This [__List Code Generator__](https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/lists.js#L18-L447) should emit this uLisp Code...
     
     ```text
     ( first '( 1 2 3 ) )
@@ -988,7 +989,7 @@ If the __Community could help__ to fill in the __missing uLisp Code Generators__
 
 1.  __If__
 
-    This [__If Code Generator__]() should emit this uLisp Code...    
+    This [__If Code Generator__](https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/logic.js#L18-L127) should emit this uLisp Code...    
 
     ```text
     ( if ( < ( analogread 0 ) 512 )
@@ -1001,7 +1002,7 @@ If the __Community could help__ to fill in the __missing uLisp Code Generators__
 
 1.  __For Loops__
 
-    This [__For Loop Code Generator__]() should emit this uLisp Code...    
+    This [__For Loop Code Generator__](https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/loops.js#L62-L169) should emit this uLisp Code...    
 
     ```text
     ( dotimes ( pin 3 )
@@ -1013,7 +1014,7 @@ If the __Community could help__ to fill in the __missing uLisp Code Generators__
 
 1.  __While Loops__
 
-    This [__While Loop Code Generator__]() should emit this uLisp Code...    
+    This [__While Loop Code Generator__](https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/loops.js#L18-L60) should emit this uLisp Code...    
 
     ```text
     ( loop
@@ -1025,7 +1026,7 @@ If the __Community could help__ to fill in the __missing uLisp Code Generators__
 
 1.  __Variables__
 
-    This [__Variable Code Generator__]() should emit this uLisp Code...   
+    This [__Variable Code Generator__](https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/variables.js#L18-L32) should emit this uLisp Code...   
 
     ```text
     ( defvar led 11 )
@@ -1044,7 +1045,7 @@ If the __Community could help__ to fill in the __missing uLisp Code Generators__
 
 1.  __Functions__
 
-    This [__Function Code Generator__]() should emit this uLisp Code...   
+    This [__Function Code Generator__](https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/procedures.js#L18-L111) should emit this uLisp Code...   
 
     ```text
     ( defun function_name ( ... ) ( ... ) )
@@ -1056,13 +1057,13 @@ If the __Community could help__ to fill in the __missing uLisp Code Generators__
 
     digital_toggle_pin
 
-    https://github.com/AppKaki/blockly-ulisp/blob/e5431f79bfad225563715ee0fce4e8101901e283/generators/lisp/lisp_functions.js#L60-L69
+    https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/lisp_functions.js#L60-L69
 
     http://www.ulisp.com/show?3L#digitalwrite
 
     digital_read_pin
 
-    https://github.com/AppKaki/blockly-ulisp/blob/e5431f79bfad225563715ee0fce4e8101901e283/generators/lisp/lisp_functions.js#L71-L77
+    https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/lisp_functions.js#L71-L77
 
     http://www.ulisp.com/show?3L#digitalread
 
