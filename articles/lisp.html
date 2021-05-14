@@ -744,12 +744,35 @@ object *fn_digitalwrite (object *args, object *env) {
 <p><a href="https://lupyuen.github.io/articles/led#how-it-works-bl602-gpio">(More about BL602 GPIO HAL)</a></p>
 </li>
 <li>
-<p>Delay</p>
+<p><strong>Delay Function</strong></p>
 <p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L3593-L3605"><code>ulisp.c</code></a></p>
+<pre><code class="language-c">/// Delay for specified number of milliseconds
+object *fn_delay (object *args, object *env) {
+    (void) env;
+    object *arg1 = first(args);
+
+    //  Convert milliseconds to ticks
+    int millisec   = checkinteger(DELAY, arg1);
+    uint32_t ticks = time_ms_to_ticks32(millisec);
+
+    //  Sleep for the number of ticks
+    time_delay(ticks);
+    return arg1;
+}
+</code></pre>
 </li>
 <li>
-<p>Yield</p>
+<p><strong>Loop and Yield</strong></p>
 <p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L1691-L1705"><code>ulisp.c</code></a></p>
+<pre><code class="language-c">/// &quot;loop&quot; implementation in uLisp
+object *sp_loop (object *args, object *env) {
+    object *start = args;
+    for (;;) {
+        //  Sleep 100 ticks in each iteration
+        time_delay(100);  //  TODO: Tune this
+</code></pre>
 </li>
 <li>
 <p><strong>BL602 cares about the Command Line</strong></p>
