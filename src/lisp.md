@@ -1,6 +1,6 @@
 # uLisp and Blockly on PineCone BL602 RISC-V Board
 
-📝 _16 May 2021_
+📝 _14 May 2021_
 
 What if we could run __Lisp programs__ on the [__PineCone BL602 RISC-V Board__](https://lupyuen.github.io/articles/pinecone)?
 

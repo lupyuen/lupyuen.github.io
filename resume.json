@@ -147,6 +147,13 @@
   ],
   "publications": [
     {
+      "name": "uLisp and Blockly on PineCone BL602 RISC-V Board",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2021-05-14",
+      "website": "https://lupyuen.github.io/articles/lisp",
+      "summary": "Porting the uLisp Interpreter to PineCone BL602 RISC-V Board... And writing graphical programs with Blockly (Scratch)"
+    },
+    {
       "name": "PineCone BL602 Talks LoRaWAN",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-05-11",
