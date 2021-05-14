@@ -990,33 +990,106 @@ If the __Community could help__ to port the __missing uLisp Features__... That w
 
     TODO
 
+    -   [__`fn_digitalread`__](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L3527-L3534)
+
 1.  I2C
 
     TODO
+
+    -   [__`I2Cinit`__](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L1323-L1329)
+
+    -   [__`I2Cread`__](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L1331-L1336)
+
+    -   [__`I2Cwrite`__](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L1338-L1343)
+
+    -   [__`I2Cstart`__](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L1345-L1357)
+
+    -   [__`I2Crestart`__](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L1359-L1367)
+
+    -   [__`I2Cstop`__](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L1369-L1374)
 
 1.  SPI
 
     TODO
 
+    -   [__`spiread`__](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L1378-L1383)
+
+    -   [__`spiwrite`__](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L1458-L1463)
+
+    -   [__`sp_withspi`__](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L2003-L2040)
+
 1.  ADC
 
     TODO
+
+    -   [__`fn_analogread`__](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L3556-L3569)
+
+    -   [__`fn_analogreadresolution`__](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L3571-L3579)
 
 1.  DAC
 
     TODO
 
+    -   [__`fn_analogwrite`__](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L3581-L3591)
+
 1.  WiFi
 
     TODO
 
+    -   [__`WiFiwrite`__](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L1472-L1477)
+    
+    -   [__`sp_withclient`__](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L2089-L2117)
+
+    -   [__`fn_available`__](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L3840-L3847)
+
+    -   [__`fn_wifiserver`__](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L3849-L3856)
+
+    -   [__`fn_wifisoftap`__](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L3858-L3880)
+
+    -   [__`fn_connected`__](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L3882-L3889)
+
+    -   [__`fn_wifilocalip`__](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L3891-L3897)
+
+    -   [__`fn_wificonnect`__](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L3899-L3914)
+
+    
 1.  EPROM
 
     TODO
 
+    -   [__`EpromWriteInt`__](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L509-L515)
+
+    -   [__`saveimage`__](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L518-L569)
+
+    -   [__`EpromReadInt`__](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L578-L585)
+
+    -   [__`loadimage`__](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L588-L635)
+
+    -   [__`autorunimage`__](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L637-L660)
+
 1.  setjmp
 
     TODO
+
+    From [`ulisp.c`](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L5338-L5361)
+
+    ```c
+    static void loop_ulisp () {
+        if (!setjmp(exception)) {
+            #if defined(resetautorun)
+            volatile int autorun = 12; // Fudge to keep code size the same
+            #else
+            volatile int autorun = 13;
+            #endif
+            if (autorun == 12) autorunimage();
+        } else {
+            printf("Error\r\n");
+        }
+        clrflag(NOESC); BreakLevel = 0;
+        for (int i=0; i<TRACEMAX; i++) TraceDepth[i] = 0;
+        repl(NULL);
+    }
+    ```
 
 ![uLisp builds OK on BL602](https://lupyuen.github.io/images/lisp-build2.png)
 
