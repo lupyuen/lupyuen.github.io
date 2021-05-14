@@ -830,13 +830,42 @@ Not at all!
 
     [(More about BL602 GPIO HAL)](https://lupyuen.github.io/articles/led#how-it-works-bl602-gpio)
 
-1.  Delay
+1.  __Delay Function__
 
     TODO
 
-1.  Yield
+    From [`ulisp.c`](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L3593-L3605)
+
+    ```c
+    /// Delay for specified number of milliseconds
+    object *fn_delay (object *args, object *env) {
+        (void) env;
+        object *arg1 = first(args);
+
+        //  Convert milliseconds to ticks
+        int millisec   = checkinteger(DELAY, arg1);
+        uint32_t ticks = time_ms_to_ticks32(millisec);
+
+        //  Sleep for the number of ticks
+        time_delay(ticks);
+        return arg1;
+    }
+    ```
+
+1.  __Loop and Yield__
 
     TODO
+
+    From [`ulisp.c`](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L1691-L1705)
+
+    ```c
+    /// "loop" implementation in uLisp
+    object *sp_loop (object *args, object *env) {
+        object *start = args;
+        for (;;) {
+            //  Sleep 100 ticks in each iteration
+            time_delay(100);  //  TODO: Tune this
+    ```
 
 1.  __BL602 cares about the Command Line__
 
