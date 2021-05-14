@@ -1426,7 +1426,13 @@ __uLisp is not Statically Typed__ like Rust, so generating uLisp code in Blockly
 
 # What's Next
 
-TODO
+Porting uLisp and Blockly to BL602 has been a fun experience.
+
+But more work needs to be done, I hope the Community can help.
+
+Could this be the better way to learn Embedded Programming on modern microcontrollers?
+
+Let's build it and find out! 🙏 👍 😀
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
