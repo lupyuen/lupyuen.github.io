@@ -710,7 +710,11 @@ char SymbolTable[SYMBOLTABLESIZE];
 </li>
 <li>
 <p><strong><code>printf</code> works on BL602</strong></p>
-<p>(Nice!)</p>
+<p>No more <code>Serial.write</code>. (Nice!)</p>
+</li>
+<li>
+<p><strong>Compiles in C, no C++ needed</strong></p>
+<p>Because the Arduino C++ bits (like <code>Serial.write</code>) have been converted to C (like <code>printf</code>).</p>
 </li>
 <li>
 <p>GPIO</p>
