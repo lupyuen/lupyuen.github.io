@@ -793,10 +793,6 @@ Not at all!
 
     (Nice!)
 
-1.  Serial Input
-
-    TODO
-
 1.  GPIO
 
     TODO
@@ -806,6 +802,14 @@ Not at all!
     TODO
 
 1.  Yield
+
+    TODO
+
+1.  __BL602 cares about the Command Line__
+
+    On Arduino we read and parse the Serial Input, byte by byte.
+
+    The BL602 IoT SDK parses the Command Line for us.
 
     TODO
 
