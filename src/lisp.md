@@ -957,11 +957,158 @@ _What about the missing uLisp Code Generators?_
 
 If the __Community could help__ to fill in the __missing uLisp Code Generators__... That would be incredibly awesome! 🙏 👍 😀
 
-TODO
+1.  __Expressions__
 
-XML code
+    This [__Expression Code Generator__]() should emit this uLisp Code...
 
-storage
+    ```text
+    ( / ( - 7 1 ) ( - 4 2 ) )
+    ```
+
+    [(From uLisp)](http://www.ulisp.com/show?1ACY)
+
+1.  __Strings__
+
+    This [__String Code Generator__]() should emit this uLisp Code...
+    ```text
+    "This is a string"
+    ```
+
+    [(From uLisp)](http://www.ulisp.com/show?1LRV)
+
+1.  __Lists__
+
+    This [__List Code Generator__]() should emit this uLisp Code...
+    
+    ```text
+    ( first '( 1 2 3 ) )
+    ```
+
+    [(From uLisp)](http://www.ulisp.com/show?1AHT)
+
+1.  __If__
+
+    This [__If Code Generator__]() should emit this uLisp Code...    
+
+    ```text
+    ( if ( < ( analogread 0 ) 512 )
+        ( digitalwrite 2 t )
+        ( digitalwrite 3 t )
+    )
+    ```
+
+    [(From uLisp)](http://www.ulisp.com/show?1AJM)
+
+1.  __For Loops__
+
+    This [__For Loop Code Generator__]() should emit this uLisp Code...    
+
+    ```text
+    ( dotimes ( pin 3 )
+        ( digitalwrite pin :high ) 
+    )
+    ```
+
+    [(From uLisp)](http://www.ulisp.com/show?2I01)
+
+1.  __While Loops__
+
+    This [__While Loop Code Generator__]() should emit this uLisp Code...    
+
+    ```text
+    ( loop
+        ( unless ( digitalread 8 ) ( return ) )
+    )
+    ```
+
+    [(From uLisp)](http://www.ulisp.com/show?2I01)
+
+1.  __Variables__
+
+    This [__Variable Code Generator__]() should emit this uLisp Code...   
+
+    ```text
+    ( defvar led 11 )
+
+    ( setq led 11 )
+
+    ( let* (
+        ( led 11 )
+        ...
+        )
+        body
+    )
+    ```
+
+    [(From uLisp)](http://www.ulisp.com/show?1AEK)
+
+1.  __Functions__
+
+    This [__Function Code Generator__]() should emit this uLisp Code...   
+
+    ```text
+    ( defun function_name ( ... ) ( ... ) )
+    ```
+
+    [(From uLisp)](http://www.ulisp.com/show?1AGL)
+
+1.  __GPIO__
+
+    digital_toggle_pin
+
+    https://github.com/AppKaki/blockly-ulisp/blob/e5431f79bfad225563715ee0fce4e8101901e283/generators/lisp/lisp_functions.js#L60-L69
+
+    http://www.ulisp.com/show?3L#digitalwrite
+
+    digital_read_pin
+
+    https://github.com/AppKaki/blockly-ulisp/blob/e5431f79bfad225563715ee0fce4e8101901e283/generators/lisp/lisp_functions.js#L71-L77
+
+    http://www.ulisp.com/show?3L#digitalread
+
+1.  __I2C, SPI, ADC, DAC__
+
+    We need to create __Custom Blocks and Code Generators for I2C, SPI, ADC and DAC__ that will emit uLisp Code for...
+
+    -   [__`withi2c`__](http://www.ulisp.com/show?3L#withi2c)
+
+    -   [__`restarti2c`__](http://www.ulisp.com/show?3L#restarti2c)
+
+    -   [__`withspi`__](http://www.ulisp.com/show?3L#withspi)
+
+    -   [__`analogread`__](http://www.ulisp.com/show?3L#analogread)
+
+    -   [__`analogreference`__](http://www.ulisp.com/show?3L#analogreference)
+
+    -   [__`analogreadresolution`__](http://www.ulisp.com/show?3L#analogreadresolution)
+
+    -   [__`analogwrite`__](http://www.ulisp.com/show?3L#analogwrite)
+
+1.  __WiFi__
+
+    We need to create __WiFi Custom Blocks and Code Generators__ that will emit uLisp Code for...
+
+    -   [__`available`__](http://www.ulisp.com/show?2B27#available)
+
+    -   [__`connected`__](http://www.ulisp.com/show?2B27#connected)
+
+    -   [__`wifilocalip`__](http://www.ulisp.com/show?2B27#wifilocalip)
+
+    -   [__`wificonnect`__](http://www.ulisp.com/show?2B27#wificonnect)
+
+    -   [__`wifiserver`__](http://www.ulisp.com/show?2B27#wifiserver)
+
+    -   [__`wifisoftap`__](http://www.ulisp.com/show?2B27#wifisoftap)
+
+    -   [__`withclient`__](http://www.ulisp.com/show?2B27#withclient)
+
+1.  Storage
+
+    TODO
+
+1.  XML code
+
+    TODO
 
 _You sound strangely familiar with Blockly Code Generators?_
 
