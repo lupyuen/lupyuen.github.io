@@ -763,6 +763,18 @@ Not at all!
 
     TODO
 
+1.  Serial Input
+
+    TODO
+
+1.  printf works
+
+    TODO
+
+1.  GPIO
+
+    TODO
+
 ![Porting uLisp to BL602](https://lupyuen.github.io/images/lisp-build.png)
 
 ## Missing uLisp Features
