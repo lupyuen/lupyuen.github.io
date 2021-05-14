@@ -802,6 +802,7 @@ Not at all!
     This GPIO code from the ESP32 Arduino version of uLisp: [`ulisp-esp.ino`](https://github.com/technoblogy/ulisp-esp/blob/master/ulisp-esp.ino#L3415-L3425)
 
     ```c
+    /// Set the GPIO Output to High or Low
     object *fn_digitalwrite (object *args, object *env) {
         //  Omitted: Parse the GPIO pin number and High / Low
         ...
