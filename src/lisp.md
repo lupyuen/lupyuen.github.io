@@ -881,9 +881,60 @@ Not at all!
 
     Whereas on BL602, the __BL602 IoT SDK parses the Command Line__ for us.
 
-    TODO
+    Here's how we __define "`(`" as a Command Keyword__ in BL602: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/ulisp/customer_app/sdk_app_ulisp/sdk_app_ulisp/demo.c#L45-L48)
 
-    From [`ulisp.c`](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L5085-L5124)
+    ```c
+    /// List of commands. STATIC_CLI_CMD_ATTRIBUTE makes this(these) command(s) static
+    const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
+        {
+            "(",
+            "Run the uLisp command",
+            run_ulisp
+        },
+    };          
+    ```
+
+    When we enter a command like __"`( delay 1000 )`"__, the command-line interface calls our function `run_ulisp` defined in [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/ulisp/customer_app/sdk_app_ulisp/sdk_app_ulisp/demo.c#L9-L40)
+
+    ```c
+    /// Command-Line Buffer that will be passed to uLisp
+    static char cmd_buf[1024] = { 0 };
+
+    /// Run a uLisp command
+    void run_ulisp(char *buf, int len, int argc, char **argv) {
+        //  If the last command line arg is `\`, we expect a continuation
+        bool to_continue = false;
+        if (strcmp(argv[argc - 1], "\\") == 0) {
+            to_continue = true;
+            argc--;   //  Skip the `\`
+        }
+
+        //  Concatenate the command line, separated by spaces
+        for (int i = 0; i < argc; i++) {
+            assert(argv[i] != NULL);
+            strncat(cmd_buf, argv[i], sizeof(cmd_buf) - strlen(cmd_buf) - 1);
+            strncat(cmd_buf, " ",     sizeof(cmd_buf) - strlen(cmd_buf) - 1);
+        }
+        cmd_buf[sizeof(cmd_buf) - 1] = 0;
+
+        //  If this the end of the command line...
+        if (!to_continue) {
+            //  Execute the command line
+            execute_ulisp(cmd_buf);
+
+            //  Erase the buffer
+            cmd_buf[0] = 0;
+        }
+    }
+    ```
+
+    The command-line interface splits the command line into multiple arguments (delimited by space), so we need to __merge the arguments back into a single command line__.
+
+    (Yeah, not so efficient)
+
+    We support __continuation of command lines__ when the command line ends with __"`\`"__
+
+    We pass the merged command line to __`execute_ulisp`__ defined in [`ulisp.c`](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L5363-L5370)
 
     ```c
     /// Console input buffer, position and length
@@ -891,6 +942,23 @@ Not at all!
     int input_pos = 0;
     int input_len = 0;
 
+    /// Execute the command line
+    void execute_ulisp(const char *line) {
+        //  Set the console input buffer
+        input_buf = line;
+        input_pos = 0;
+        input_len = strlen(line);
+
+        //  Start the uLisp Interpreter
+        loop_ulisp();
+    }
+    ```
+
+    Here we __save the merged command line into a buffer__ and start the uLisp Interpreter.
+
+    Lastly we modified the __`gserial`__ function in uLisp to read the command line from the buffer (instead of Serial Input): [`ulisp.c`](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L5085-L5124)
+
+    ```c
     /// Return the next char from the console input buffer
     int gserial() {
         if (LastChar) {
