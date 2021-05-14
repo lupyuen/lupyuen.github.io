@@ -742,16 +742,17 @@ async function runWebSerialCommand(command, expectedResponse) {
 <p><a href="https://developers.google.com/blockly/guides/create-custom-blocks/define-blocks"><strong>“Define Blocks”</strong></a></p>
 </li>
 </ul>
-<p><em>What were we thinking when we designed the Custom Blocks: <code>forever</code>, <code>on_start</code>, <code>digital write</code>, <code>wait</code>, …</em></p>
-<p>The custom blocks were inspired by <strong>MakeCode for BBC micro:bit</strong>…</p>
-<ul>
-<li><a href="https://makecode.microbit.org/"><strong>MakeCode</strong></a></li>
-</ul>
 <p><em>Does Blockly work on Mobile Web Browsers?</em></p>
 <p>Yes but the Web Serial API won’t work for transferring the generated uLisp code to BL602. (Because we can’t connect BL602 as a USB Serial device)</p>
 <p>In future we could use the <a href="https://web.dev/bluetooth/"><strong>Web Bluetooth API</strong></a> instead to transfer the uLisp code to BL602. (Since BL602 supports Bluetooth LE)</p>
 <p>Here’s how it looks on a Mobile Web Browser…</p>
 <p><img src="https://lupyuen.github.io/images/lisp-mobile.png" alt="Blockly on Mobile" /></p>
+<p><em>What were we thinking when we designed the Custom Blocks: <code>forever</code>, <code>on_start</code>, <code>digital write</code>, <code>wait</code>, …</em></p>
+<p>The custom blocks were inspired by <strong>MakeCode for BBC micro:bit</strong>…</p>
+<ul>
+<li><a href="https://makecode.microbit.org/"><strong>MakeCode</strong></a></li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/lisp-generate.png" alt="uLisp Code Generator" /></p>
 <h1 id="code-generator-for-ulisp" class="section-header"><a href="#code-generator-for-ulisp">9 Code Generator for uLisp</a></h1>
 <p><em>How did we geneate uLisp code in Blockly?</em></p>
 <p>TODO</p>
@@ -766,7 +767,6 @@ async function runWebSerialCommand(command, expectedResponse) {
 <p><a href="https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp"><code>generators/lisp</code></a>: Lisp Code Generator for various blocks</p>
 </li>
 </ul>
-<p><img src="https://lupyuen.github.io/images/lisp-generate.png" alt="uLisp Code Generator" /></p>
 <p>The Lisp Code Generator is <strong>incomplete</strong>. The only blocks supported are…</p>
 <ol>
 <li>
