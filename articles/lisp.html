@@ -745,8 +745,9 @@ object *fn_digitalwrite (object *args, object *env) {
 </li>
 <li>
 <p><strong>Delay Function</strong></p>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L3593-L3605"><code>ulisp.c</code></a></p>
+<p>BL602 runs on a <strong>multitasking operating system (FreeRTOS)</strong>.</p>
+<p>Thus we need to be respectful of other Background Tasks that may be running.</p>
+<p>Here’s how we implement the <strong>uLisp <code>delay</code> function</strong> on BL602: <a href="https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L3593-L3605"><code>ulisp.c</code></a></p>
 <pre><code class="language-c">/// Delay for specified number of milliseconds
 object *fn_delay (object *args, object *env) {
     (void) env;
@@ -761,11 +762,13 @@ object *fn_delay (object *args, object *env) {
     return arg1;
 }
 </code></pre>
+<p><strong><code>time_ms_to_ticks32</code> and <code>time_delay</code></strong> are multitasking functions provided by the <strong>NimBLE Porting Layer</strong>, implemented with FreeRTOS.</p>
+<p><a href="https://lupyuen.github.io/articles/lora2#multitask-with-nimble-porting-layer">(More about NimBLE Porting Layer)</a></p>
 </li>
 <li>
 <p><strong>Loop and Yield</strong></p>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L1691-L1705"><code>ulisp.c</code></a></p>
+<p>The BL602 implementation of the <strong>uLisp <code>loop</code> function</strong> is aware of multitasking too.</p>
+<p>We preempt the current task at every iteration of the loop: <a href="https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L1691-L1705"><code>ulisp.c</code></a></p>
 <pre><code class="language-c">/// &quot;loop&quot; implementation in uLisp
 object *sp_loop (object *args, object *env) {
     object *start = args;
@@ -773,12 +776,35 @@ object *sp_loop (object *args, object *env) {
         //  Sleep 100 ticks in each iteration
         time_delay(100);  //  TODO: Tune this
 </code></pre>
+<p>(This is probably no good for time-sensitive uLisp functions… We will have to rethink this)</p>
 </li>
 <li>
 <p><strong>BL602 cares about the Command Line</strong></p>
 <p>On Arduino we read and parse the Serial Input, byte by byte.</p>
-<p>The BL602 IoT SDK parses the Command Line for us.</p>
+<p>Whereas on BL602, the <strong>BL602 IoT SDK parses the Command Line</strong> for us.</p>
 <p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L5085-L5124"><code>ulisp.c</code></a></p>
+<pre><code class="language-c">/// Console input buffer, position and length
+const char *input_buf = NULL;
+int input_pos = 0;
+int input_len = 0;
+
+/// Return the next char from the console input buffer
+int gserial() {
+    if (LastChar) {
+        //  Return the previous char
+        char temp = LastChar;
+        LastChar = 0;
+        return temp;
+    }  
+    if (input_pos &gt;= input_len) {
+        //  No more chars to read
+        return '\n';
+    }
+    //  Return next char from the buffer
+    return input_buf[input_pos++];
+}
+</code></pre>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/lisp-build.png" alt="Porting uLisp to BL602" /></p>
