@@ -1436,6 +1436,8 @@ Let's build it and find out! 🙏 👍 😀
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
+-   [Discuss this article on Reddit](https://www.reddit.com/r/RISCV/comments/nc7gce/ulisp_and_blockly_on_pinecone_bl602_riscv_board/)
+
 -   [Read "The RISC-V BL602 Book"](https://lupyuen.github.io/articles/book)
 
 -   [Check out my articles](https://lupyuen.github.io)
