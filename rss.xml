@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>uLisp and Blockly on PineCone BL602 RISC-V Board</title>
+            <link>https://lupyuen.github.io/articles/lisp</link>
+            <description><![CDATA[Porting the uLisp Interpreter to PineCone BL602 RISC-V Board... And writing graphical programs with Blockly (Scratch)]]></description>
+            <guid>https://lupyuen.github.io/articles/lisp</guid>
+            <pubDate>Fri, 14 May 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>PineCone BL602 Talks LoRaWAN</title>
             <link>https://lupyuen.github.io/articles/lorawan</link>
             <description><![CDATA[How we connect PineCone BL602 RISC-V Board to LoRaWAN... With the Pine64 RFM90 LoRa Module]]></description>
