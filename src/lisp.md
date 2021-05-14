@@ -859,7 +859,7 @@ The custom blocks were inspired by __MakeCode for BBC micro:bit__...
 
 # Code Generator for uLisp
 
-_How did we geneate uLisp code in Blockly?_
+_How did we generate uLisp code in Blockly?_
 
 We created __Code Generators__ for uLisp. Our Code Generators are JavaScript Functions that emit uLisp code for each type of Block...
 
