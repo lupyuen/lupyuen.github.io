@@ -894,19 +894,25 @@ _How do we define a uLisp Code Generator?_
 Here's how we define the __`forever` Code Generator__: [`lisp_functions.js`](https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/lisp_functions.js#L40-L49)
 
 ```c
+//  Emit uLisp code for the "forever" block. 
+//  Inspired by MakeCode "forever" and Arduino "loop".
 Blockly.Lisp['forever'] = function(block) {
-  //  Run this code at forever in a loop. Inspired by MakeCode "forever" and Arduino "loop".
+  //  Convert the code inside the "forever" block into uLisp
   var statements_stmts = Blockly.Lisp.statementToCode(block, 'STMTS');
   var code = statements_stmts;
+
+  //  Wrap the converted uLisp code with "loop"
   code = [
     '( loop  ',
     code + ')',
   ].join('\n');
+
+  //  Return the wrapped code
   return code;
 };
 ```
 
-This JavaScript function emits a __uLisp loop__ that wraps the code inside the `loop` block like so...
+This JavaScript function emits a __uLisp loop__ that wraps the code inside the `forever` block like so...
 
 ```text
 ( loop
@@ -917,15 +923,23 @@ This JavaScript function emits a __uLisp loop__ that wraps the code inside the `
 And here's the __`digital write` Code Generator__: [`lisp_functions.js`](https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/lisp_functions.js#L79-L89)
 
 ```c
+//  Emit uLisp code for the "digtial write" block. 
 Blockly.Lisp['digital_write_pin'] = function(block) {
+  //  Fetch the GPIO Pin Number (e.g. 11)
   var dropdown_pin = block.getFieldValue('PIN');
+
+  //  Fetch the GPIO Output: ":high" or "low"
   var dropdown_value = block.getFieldValue('VALUE');
+
+  //  Compose the uLisp code to set the GPIO Pin mode and output.
   //  TODO: Call init_out only once,
   var code = [
     '( pinmode ' + dropdown_pin + ' :output )',
     '( digitalwrite ' + dropdown_pin + ' ' + dropdown_value + ' )',
     ''
   ].join('\n');  
+
+  //  Return the uLisp code
   return code;
 };
 ```
