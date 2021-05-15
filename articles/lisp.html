@@ -84,8 +84,9 @@
 <li><a href="#customise-blockly-for-ulisp">8 Customise Blockly for uLisp</a><ul></ul></li>
 <li><a href="#code-generator-for-ulisp">9 Code Generator for uLisp</a><ul>
 <li><a href="#missing-code-generators">9.1 Missing Code Generators</a><ul></ul></li></ul></li>
-<li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
-<li><a href="#notes">11 Notes</a><ul></ul></li></ul></nav><p>📝 <em>14 May 2021</em></p>
+<li><a href="#simulate-bl602-with-ulisp-webassembly">10 Simulate BL602 with uLisp WebAssembly</a><ul></ul></li>
+<li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
+<li><a href="#notes">12 Notes</a><ul></ul></li></ul></nav><p>📝 <em>14 May 2021</em></p>
 <p>What if we could run <strong>Lisp programs</strong> on the <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602 RISC-V Board</strong></a>?</p>
 <pre><code class="language-text">( loop
   ( pinmode 11 :output )
@@ -1317,7 +1318,25 @@ Blockly.Lisp['digital_write_pin'] = function(block) {
 <p><strong>uLisp is not Statically Typed</strong> like Rust, so generating uLisp code in Blockly looks a lot simpler.</p>
 <p>(Blockly for Visual Embedded Rust is wrapped inside a <a href="https://marketplace.visualstudio.com/items?itemName=LeeLupYuen.visual-embedded-rust">VSCode Extension</a> that allows <strong>local, offline development</strong>. We could do the same for Blockly and uLisp)</p>
 <p><img src="https://lupyuen.github.io/images/lisp-rust.png" alt="Visual Embedded Rust" /></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">10 What’s Next</a></h1>
+<h1 id="simulate-bl602-with-ulisp-webassembly" class="section-header"><a href="#simulate-bl602-with-ulisp-webassembly">10 Simulate BL602 with uLisp WebAssembly</a></h1>
+<p>What if we…</p>
+<ol>
+<li>
+<p>Compile the <strong>uLisp Interpreter to WebAssembly</strong>…</p>
+</li>
+<li>
+<p>Use the WebAssembly version of uLisp to <strong>simulate BL602 in a Web Browser</strong>…</p>
+<p>(Including GPIO, I2C, SPI, Display Controller, Touch Controller, LoRaWAN)</p>
+</li>
+<li>
+<p>Integrate the <strong>BL602 Emulator with Blockly</strong>…</p>
+</li>
+<li>
+<p>To allow embedded developers to <strong>preview their BL602 Blockly Apps in the Web Browser</strong>?</p>
+</li>
+</ol>
+<p>Let’s try this out with the <a href="https://github.com/lupyuen/ulisp-bl602/tree/wasm"><strong><code>wasm</code> branch of <code>ulisp-bl602</code></strong></a> … Stay tuned!</p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">11 What’s Next</a></h1>
 <p>Porting uLisp and Blockly to BL602 has been a fun experience.</p>
 <p>But more work needs to be done, I hope the Community can help.</p>
 <p>Could this be the better way to learn Embedded Programming on modern microcontrollers?</p>
@@ -1341,28 +1360,10 @@ Blockly.Lisp['digital_write_pin'] = function(block) {
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lisp.md"><code>lupyuen.github.io/src/lisp.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">11 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">12 Notes</a></h1>
 <ol>
 <li>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1389783215347429382">this Twitter Thread</a></p>
-</li>
-<li>
-<p>What if we…</p>
-<ul>
-<li>
-<p>Compile the <strong>uLisp Interpreter to WebAssembly</strong>…</p>
-</li>
-<li>
-<p>Use the WebAssembly version of uLisp to <strong>simulate BL602 in a Web Browser</strong> (including GPIO, I2C, SPI, …)</p>
-</li>
-<li>
-<p>Integrate the <strong>BL602 Emulator with Blockly</strong>…</p>
-</li>
-<li>
-<p>To allow embedded developers to <strong>preview their BL602 Blockly Apps in the Web Browser</strong>?</p>
-</li>
-</ul>
-<p>🤔</p>
 </li>
 <li>
 <p>This <code>setjmp</code> code hangs when there’s an error. Needs fixing…</p>
