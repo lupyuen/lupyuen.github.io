@@ -1452,6 +1452,18 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1389783215347429382)
 
+1.  What if we...
+
+    -   Compile the __uLisp Interpreter to WebAssembly__...
+
+    -   Use the WebAssembly version of uLisp to __emulate BL602 in a Web Browser__ (including GPIO, I2C, SPI, ...)
+
+    -   Integrate the __BL602 Emulator with Blockly__...
+
+    -   To allow embedded developers to __preview their BL602 Blockly Apps in the Web Browser__?
+
+    🤔
+
 1.  This `setjmp` code hangs when there's an error. Needs fixing...
 
     From [`ulisp.c`](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L5338-L5361)
