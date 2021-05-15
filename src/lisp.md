@@ -1456,7 +1456,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     -   Compile the __uLisp Interpreter to WebAssembly__...
 
-    -   Use the WebAssembly version of uLisp to __emulate BL602 in a Web Browser__ (including GPIO, I2C, SPI, ...)
+    -   Use the WebAssembly version of uLisp to __simulate BL602 in a Web Browser__ (including GPIO, I2C, SPI, ...)
 
     -   Integrate the __BL602 Emulator with Blockly__...
 
