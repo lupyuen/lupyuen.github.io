@@ -1424,6 +1424,22 @@ __uLisp is not Statically Typed__ like Rust, so generating uLisp code in Blockly
 
 ![Visual Embedded Rust](https://lupyuen.github.io/images/lisp-rust.png)
 
+# Simulate BL602 with uLisp WebAssembly
+
+What if we...
+
+1.  Compile the __uLisp Interpreter to WebAssembly__...
+
+1.  Use the WebAssembly version of uLisp to __simulate BL602 in a Web Browser__...
+
+    (Including GPIO, I2C, SPI, Display Controller, Touch Controller, LoRaWAN)
+
+1.  Integrate the __BL602 Emulator with Blockly__...
+
+1.  To allow embedded developers to __preview their BL602 Blockly Apps in the Web Browser__?
+
+Let's try this out with the [__`wasm` branch of `ulisp-bl602`__](https://github.com/lupyuen/ulisp-bl602/tree/wasm) ... Stay tuned!
+
 # What's Next
 
 Porting uLisp and Blockly to BL602 has been a fun experience.
@@ -1451,18 +1467,6 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1389783215347429382)
-
-1.  What if we...
-
-    -   Compile the __uLisp Interpreter to WebAssembly__...
-
-    -   Use the WebAssembly version of uLisp to __simulate BL602 in a Web Browser__ (including GPIO, I2C, SPI, ...)
-
-    -   Integrate the __BL602 Emulator with Blockly__...
-
-    -   To allow embedded developers to __preview their BL602 Blockly Apps in the Web Browser__?
-
-    🤔
 
 1.  This `setjmp` code hangs when there's an error. Needs fixing...
 
