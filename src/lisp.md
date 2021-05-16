@@ -1440,7 +1440,11 @@ What if we...
 
 Let's try this out with the [__`wasm` branch of `ulisp-bl602`__](https://github.com/lupyuen/ulisp-bl602/tree/wasm) ... Stay tuned!
 
-[(Follow the Twitter Thread for updates)](https://twitter.com/MisterTechBlog/status/1393554618924212224)
+- [__Watch the uLisp WebAssembly demo on YouTube__](https://youtu.be/9uegWNcokxY)
+
+- [__Try uLisp WebAssembly here__](https://lupyuen.github.io/ulisp-bl602/ulisp.html)
+
+- [__Follow the Twitter Thread__](https://twitter.com/MisterTechBlog/status/1393554618924212224)
 
 ![uLisp in WebAssembly](https://lupyuen.github.io/images/lisp-wasm.png)
 
