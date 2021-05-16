@@ -1336,7 +1336,17 @@ Blockly.Lisp['digital_write_pin'] = function(block) {
 </li>
 </ol>
 <p>Let’s try this out with the <a href="https://github.com/lupyuen/ulisp-bl602/tree/wasm"><strong><code>wasm</code> branch of <code>ulisp-bl602</code></strong></a> … Stay tuned!</p>
-<p><a href="https://twitter.com/MisterTechBlog/status/1393554618924212224">(Follow the Twitter Thread for updates)</a></p>
+<ul>
+<li>
+<p><a href="https://youtu.be/9uegWNcokxY"><strong>Watch the uLisp WebAssembly demo on YouTube</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/ulisp-bl602/ulisp.html"><strong>Try uLisp WebAssembly here</strong></a></p>
+</li>
+<li>
+<p><a href="https://twitter.com/MisterTechBlog/status/1393554618924212224"><strong>Follow the Twitter Thread</strong></a></p>
+</li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/lisp-wasm.png" alt="uLisp in WebAssembly" /></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">11 What’s Next</a></h1>
 <p>Porting uLisp and Blockly to BL602 has been a fun experience.</p>
@@ -1365,29 +1375,7 @@ Blockly.Lisp['digital_write_pin'] = function(block) {
 <p><img src="https://lupyuen.github.io/images/lisp-wasm2.png" alt="uLisp in WebAssembly" /></p>
 <h1 id="notes" class="section-header"><a href="#notes">12 Notes</a></h1>
 <ol>
-<li>
-<p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1389783215347429382">this Twitter Thread</a></p>
-</li>
-<li>
-<p>This <code>setjmp</code> code hangs when there’s an error. Needs fixing…</p>
-<p>From <a href="https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L5338-L5361"><code>ulisp.c</code></a></p>
-<pre><code class="language-c">static void loop_ulisp () {
-    if (!setjmp(exception)) {
-        #if defined(resetautorun)
-        volatile int autorun = 12; // Fudge to keep code size the same
-        #else
-        volatile int autorun = 13;
-        #endif
-        if (autorun == 12) autorunimage();
-    } else {
-        printf(&quot;Error\r\n&quot;);
-    }
-    clrflag(NOESC); BreakLevel = 0;
-    for (int i=0; i&lt;TRACEMAX; i++) TraceDepth[i] = 0;
-    repl(NULL);
-}
-</code></pre>
-</li>
+<li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1389783215347429382">this Twitter Thread</a></li>
 </ol>
 
     
