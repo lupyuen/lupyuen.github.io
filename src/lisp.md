@@ -1477,25 +1477,3 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1389783215347429382)
-
-1.  This `setjmp` code hangs when there's an error. Needs fixing...
-
-    From [`ulisp.c`](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L5338-L5361)
-
-    ```c
-    static void loop_ulisp () {
-        if (!setjmp(exception)) {
-            #if defined(resetautorun)
-            volatile int autorun = 12; // Fudge to keep code size the same
-            #else
-            volatile int autorun = 13;
-            #endif
-            if (autorun == 12) autorunimage();
-        } else {
-            printf("Error\r\n");
-        }
-        clrflag(NOESC); BreakLevel = 0;
-        for (int i=0; i<TRACEMAX; i++) TraceDepth[i] = 0;
-        repl(NULL);
-    }
-    ```
