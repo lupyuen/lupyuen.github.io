@@ -1442,6 +1442,8 @@ Let's try this out with the [__`wasm` branch of `ulisp-bl602`__](https://github.
 
 [(Follow the Twitter Thread for updates)](https://twitter.com/MisterTechBlog/status/1393554618924212224)
 
+![uLisp in WebAssembly](https://lupyuen.github.io/images/lisp-wasm.png)
+
 # What's Next
 
 Porting uLisp and Blockly to BL602 has been a fun experience.
