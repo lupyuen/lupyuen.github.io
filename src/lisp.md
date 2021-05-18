@@ -1438,6 +1438,8 @@ What if we...
 
 1.  To allow embedded developers to __preview their BL602 Blockly Apps in the Web Browser__?
 
+![BL602 Simulator with uLisp WebAssembly](https://lupyuen.github.io/images/lisp-simulator.png)
+
 Let's try this out with the [__`wasm` branch of `ulisp-bl602`__](https://github.com/lupyuen/ulisp-bl602/tree/wasm) ... Stay tuned!
 
 - [__Watch the uLisp WebAssembly demo on YouTube__](https://youtu.be/9uegWNcokxY)
