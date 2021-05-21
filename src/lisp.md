@@ -1440,11 +1440,15 @@ What if we...
 
 ![BL602 Simulator with uLisp WebAssembly](https://lupyuen.github.io/images/lisp-simulator.png)
 
-Let's try this out with the [__`wasm` branch of `ulisp-bl602`__](https://github.com/lupyuen/ulisp-bl602/tree/wasm) ... Stay tuned!
+Read the article...
+
+- [__"Simulate RISC-V BL602 with WebAssembly, uLisp and Blockly"__](https://lupyuen.github.io/articles/wasm)
 
 - [__Watch the uLisp WebAssembly demo on YouTube__](https://youtu.be/9uegWNcokxY)
 
 - [__Try uLisp WebAssembly here__](https://lupyuen.github.io/ulisp-bl602/ulisp.html)
+
+- [__Watch the BL602 Simulator with Blockly and uLisp WebAssembly demo on YouTube__](https://youtu.be/Ag2CERd1OzQ)
 
 - [__Try BL602 Simulator with Blockly and uLisp WebAssembly here__](https://appkaki.github.io/blockly-ulisp/demos/simulator/)
 

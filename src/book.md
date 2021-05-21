@@ -16,7 +16,7 @@ Is there a book about the __BL602 SoC__ (RISC-V, WiFi and Bluetooth LE) that...
 
 _You're reading the book right now!_
 
-Use this book to navigate the numerous BL602 articles that have been published on this site. (18 articles and still growing!)
+Use this book to navigate the numerous BL602 articles that have been published on this site. (19 articles and still growing!)
 
 The programs in these articles have been tested on __PineCone__, but they should work on other BL602 Boards: __Pinenut, DT-BL10, MagicHome BL602__.
 
@@ -187,6 +187,8 @@ How we code BL602 firmware the __safer, simpler way with Rust.__
 Porting the __uLisp Interpreter__ to BL602... And writing graphical programs with __Blockly (Scratch)__.
 
 -   ["uLisp and Blockly on PineCone BL602 RISC-V Board"](https://lupyuen.github.io/articles/lisp)
+
+-   ["Simulate RISC-V BL602 with WebAssembly, uLisp and Blockly"](https://lupyuen.github.io/articles/wasm)
 
 ![Mynewt on BL602](https://lupyuen.github.io/images/book-mynewt.jpg)
 
