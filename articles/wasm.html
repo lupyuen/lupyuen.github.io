@@ -67,11 +67,15 @@
     <nav id="TOC"><ul>
 <li><a href="#emscripten-and-webassembly">1 Emscripten and WebAssembly</a><ul></ul></li>
 <li><a href="#bl602-simulator">2 BL602 Simulator</a><ul></ul></li>
-<li><a href="#add-a-simulation-event">3 Add a Simulation Event</a><ul></ul></li>
-<li><a href="#add-a-delay">4 Add a Delay</a><ul></ul></li>
-<li><a href="#handling-loops">5 Handling Loops</a><ul></ul></li>
-<li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
-<li><a href="#notes">7 Notes</a><ul></ul></li></ul></nav><p>📝 <em>26 May 2021</em></p>
+<li><a href="#json-stream-of-simulation-events">3 JSON Stream of Simulation Events</a><ul></ul></li>
+<li><a href="#add-a-simulation-event">4 Add a Simulation Event</a><ul></ul></li>
+<li><a href="#add-a-delay">5 Add a Delay</a><ul></ul></li>
+<li><a href="#handling-loops">6 Handling Loops</a><ul></ul></li>
+<li><a href="#html-canvas-and-javascript">7 HTML Canvas and JavaScript</a><ul></ul></li>
+<li><a href="#pass-data-between-javascript-and-webassembly">8 Pass data between JavaScript and WebAssembly</a><ul></ul></li>
+<li><a href="#add-simulator-to-blockly">9 Add Simulator to Blockly</a><ul></ul></li>
+<li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
+<li><a href="#notes">11 Notes</a><ul></ul></li></ul></nav><p>📝 <em>26 May 2021</em></p>
 <p>What if we…</p>
 <ol>
 <li>
@@ -109,24 +113,52 @@
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lisp-wasm.png" alt="Compiling uLisp to WebAssembly with Emscripten" /></p>
 <p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wasm-stub.png" alt="" /></p>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lisp-wasm2.png" alt="Testing uLisp compiled with Emscripten" /></p>
 <h1 id="bl602-simulator" class="section-header"><a href="#bl602-simulator">2 BL602 Simulator</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lisp-simulator.png" alt="BL602 Simulator with uLisp WebAssembly" /></p>
 <p>TODO</p>
-<h1 id="add-a-simulation-event" class="section-header"><a href="#add-a-simulation-event">3 Add a Simulation Event</a></h1>
+<h1 id="json-stream-of-simulation-events" class="section-header"><a href="#json-stream-of-simulation-events">3 JSON Stream of Simulation Events</a></h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wasm-stream2.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wasm-ulisp.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wasm-stream.png" alt="" /></p>
+<p>TODO</p>
+<h1 id="add-a-simulation-event" class="section-header"><a href="#add-a-simulation-event">4 Add a Simulation Event</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wasm-add.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="add-a-delay" class="section-header"><a href="#add-a-delay">4 Add a Delay</a></h1>
+<h1 id="add-a-delay" class="section-header"><a href="#add-a-delay">5 Add a Delay</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wasm-delay.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="handling-loops" class="section-header"><a href="#handling-loops">5 Handling Loops</a></h1>
+<h1 id="handling-loops" class="section-header"><a href="#handling-loops">6 Handling Loops</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wasm-loop.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">6 What’s Next</a></h1>
+<h1 id="html-canvas-and-javascript" class="section-header"><a href="#html-canvas-and-javascript">7 HTML Canvas and JavaScript</a></h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wasm-photoshop.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wasm-led.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wasm-event.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wasm-image.png" alt="" /></p>
+<p>TODO</p>
+<h1 id="pass-data-between-javascript-and-webassembly" class="section-header"><a href="#pass-data-between-javascript-and-webassembly">8 Pass data between JavaScript and WebAssembly</a></h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wasm-string.png" alt="" /></p>
+<p>TODO</p>
+<h1 id="add-simulator-to-blockly" class="section-header"><a href="#add-simulator-to-blockly">9 Add Simulator to Blockly</a></h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wasm-blockly.png" alt="" /></p>
+<p>TODO</p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">10 What’s Next</a></h1>
 <p>Porting uLisp and Blockly to BL602 has been a fun experience.</p>
 <p>But more work needs to be done, I hope the Community can help.</p>
 <p>Could this be the better way to learn Embedded Programming on modern microcontrollers?</p>
@@ -147,33 +179,11 @@
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/wasm.md"><code>lupyuen.github.io/src/wasm.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">7 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">11 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1393554618924212224">this Twitter Thread</a></li>
 </ol>
-<p>TODO1</p>
-<p><img src="https://lupyuen.github.io/images/wasm-blockly.png" alt="" /></p>
-<p>TODO4</p>
 <p><img src="https://lupyuen.github.io/images/wasm-error.png" alt="" /></p>
-<p>TODO5</p>
-<p><img src="https://lupyuen.github.io/images/wasm-event.png" alt="" /></p>
-<p>TODO6</p>
-<p><img src="https://lupyuen.github.io/images/wasm-image.png" alt="" /></p>
-<p>TODO7</p>
-<p><img src="https://lupyuen.github.io/images/wasm-led.png" alt="" /></p>
-<p>TODO9</p>
-<p><img src="https://lupyuen.github.io/images/wasm-photoshop.png" alt="" /></p>
-<p>TODO11</p>
-<p><img src="https://lupyuen.github.io/images/wasm-stream.png" alt="" /></p>
-<p>TODO12</p>
-<p><img src="https://lupyuen.github.io/images/wasm-stream2.png" alt="" /></p>
-<p>TODO13</p>
-<p><img src="https://lupyuen.github.io/images/wasm-string.png" alt="" /></p>
-<p>TODO14</p>
-<p><img src="https://lupyuen.github.io/images/wasm-stub.png" alt="" /></p>
-<p>TODO15</p>
-<p><img src="https://lupyuen.github.io/images/wasm-ulisp.png" alt="" /></p>
-<p>TODO</p>
 
     
 </body>
