@@ -67,8 +67,11 @@
     <nav id="TOC"><ul>
 <li><a href="#emscripten-and-webassembly">1 Emscripten and WebAssembly</a><ul></ul></li>
 <li><a href="#bl602-simulator">2 BL602 Simulator</a><ul></ul></li>
-<li><a href="#whats-next">3 What’s Next</a><ul></ul></li>
-<li><a href="#notes">4 Notes</a><ul></ul></li></ul></nav><p>📝 <em>26 May 2021</em></p>
+<li><a href="#add-a-simulation-event">3 Add a Simulation Event</a><ul></ul></li>
+<li><a href="#add-a-delay">4 Add a Delay</a><ul></ul></li>
+<li><a href="#handling-loops">5 Handling Loops</a><ul></ul></li>
+<li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
+<li><a href="#notes">7 Notes</a><ul></ul></li></ul></nav><p>📝 <em>26 May 2021</em></p>
 <p>What if we…</p>
 <ol>
 <li>
@@ -79,7 +82,7 @@
 <p>(Including GPIO, I2C, SPI, Display Controller, Touch Controller, LoRaWAN… <a href="https://lupyuen.github.io/pinetime-rust-mynewt/articles/simulator">Similar to this</a>)</p>
 </li>
 <li>
-<p>Integrate the <strong>BL602 Emulator with Blockly</strong>…</p>
+<p>Integrate the <strong>BL602 Simulator with Blockly</strong>…</p>
 </li>
 <li>
 <p>To allow embedded developers to <strong>preview their BL602 Blockly Apps in the Web Browser</strong>?</p>
@@ -111,7 +114,19 @@
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lisp-simulator.png" alt="BL602 Simulator with uLisp WebAssembly" /></p>
 <p>TODO</p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">3 What’s Next</a></h1>
+<h1 id="add-a-simulation-event" class="section-header"><a href="#add-a-simulation-event">3 Add a Simulation Event</a></h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wasm-add.png" alt="" /></p>
+<p>TODO</p>
+<h1 id="add-a-delay" class="section-header"><a href="#add-a-delay">4 Add a Delay</a></h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wasm-delay.png" alt="" /></p>
+<p>TODO</p>
+<h1 id="handling-loops" class="section-header"><a href="#handling-loops">5 Handling Loops</a></h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wasm-loop.png" alt="" /></p>
+<p>TODO</p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">6 What’s Next</a></h1>
 <p>Porting uLisp and Blockly to BL602 has been a fun experience.</p>
 <p>But more work needs to be done, I hope the Community can help.</p>
 <p>Could this be the better way to learn Embedded Programming on modern microcontrollers?</p>
@@ -132,40 +147,31 @@
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/wasm.md"><code>lupyuen.github.io/src/wasm.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">4 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">7 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1393554618924212224">this Twitter Thread</a></li>
 </ol>
-<p><img src="https://lupyuen.github.io/images/wasm-add.png" alt="" /></p>
-<p>TODO</p>
+<p>TODO1</p>
 <p><img src="https://lupyuen.github.io/images/wasm-blockly.png" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/wasm-delay.png" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/wasm-emcc.png" alt="" /></p>
-<p>TODO</p>
+<p>TODO4</p>
 <p><img src="https://lupyuen.github.io/images/wasm-error.png" alt="" /></p>
-<p>TODO</p>
+<p>TODO5</p>
 <p><img src="https://lupyuen.github.io/images/wasm-event.png" alt="" /></p>
-<p>TODO</p>
+<p>TODO6</p>
 <p><img src="https://lupyuen.github.io/images/wasm-image.png" alt="" /></p>
-<p>TODO</p>
+<p>TODO7</p>
 <p><img src="https://lupyuen.github.io/images/wasm-led.png" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/wasm-loop.png" alt="" /></p>
-<p>TODO</p>
+<p>TODO9</p>
 <p><img src="https://lupyuen.github.io/images/wasm-photoshop.png" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/wasm-run.png" alt="" /></p>
-<p>TODO</p>
+<p>TODO11</p>
 <p><img src="https://lupyuen.github.io/images/wasm-stream.png" alt="" /></p>
-<p>TODO</p>
+<p>TODO12</p>
 <p><img src="https://lupyuen.github.io/images/wasm-stream2.png" alt="" /></p>
-<p>TODO</p>
+<p>TODO13</p>
 <p><img src="https://lupyuen.github.io/images/wasm-string.png" alt="" /></p>
-<p>TODO</p>
+<p>TODO14</p>
 <p><img src="https://lupyuen.github.io/images/wasm-stub.png" alt="" /></p>
-<p>TODO</p>
+<p>TODO15</p>
 <p><img src="https://lupyuen.github.io/images/wasm-ulisp.png" alt="" /></p>
 <p>TODO</p>
 
