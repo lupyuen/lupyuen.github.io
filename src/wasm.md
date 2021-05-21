@@ -14,7 +14,7 @@ What if we...
 
 1.  To allow embedded developers to __preview their BL602 Blockly Apps in the Web Browser__?
 
-TODO
+Today we shall build a Simulator for the BL602 RISC-V SoC that runs in a Web Browser. And we'll use it to preview Blockly uLisp Apps in the browser!
 
 - [__Watch the uLisp WebAssembly demo on YouTube__](https://youtu.be/9uegWNcokxY)
 
