@@ -10,7 +10,7 @@ What if we...
 
     (Including GPIO, I2C, SPI, Display Controller, Touch Controller, LoRaWAN... [Similar to this](https://lupyuen.github.io/pinetime-rust-mynewt/articles/simulator))
 
-1.  Integrate the __BL602 Emulator with Blockly__...
+1.  Integrate the __BL602 Simulator with Blockly__...
 
 1.  To allow embedded developers to __preview their BL602 Blockly Apps in the Web Browser__?
 
@@ -46,6 +46,30 @@ TODO
 
 TODO
 
+# Add a Simulation Event
+
+TODO
+
+![](https://lupyuen.github.io/images/wasm-add.png)
+
+TODO
+
+# Add a Delay
+
+TODO
+
+![](https://lupyuen.github.io/images/wasm-delay.png)
+
+TODO
+
+# Handling Loops
+
+TODO
+
+![](https://lupyuen.github.io/images/wasm-loop.png)
+
+TODO
+
 # What's Next
 
 Porting uLisp and Blockly to BL602 has been a fun experience.
@@ -72,67 +96,48 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1393554618924212224)
 
-![](https://lupyuen.github.io/images/wasm-add.png)
-
-TODO
+TODO1
 
 ![](https://lupyuen.github.io/images/wasm-blockly.png)
 
-TODO
-
-![](https://lupyuen.github.io/images/wasm-delay.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/wasm-emcc.png)
-
-TODO
+TODO4
 
 ![](https://lupyuen.github.io/images/wasm-error.png)
 
-TODO
+TODO5
 
 ![](https://lupyuen.github.io/images/wasm-event.png)
 
-TODO
+TODO6
 
 ![](https://lupyuen.github.io/images/wasm-image.png)
 
-TODO
+TODO7
 
 ![](https://lupyuen.github.io/images/wasm-led.png)
 
-TODO
-
-![](https://lupyuen.github.io/images/wasm-loop.png)
-
-TODO
+TODO9
 
 ![](https://lupyuen.github.io/images/wasm-photoshop.png)
 
-TODO
-
-![](https://lupyuen.github.io/images/wasm-run.png)
-
-TODO
+TODO11
 
 ![](https://lupyuen.github.io/images/wasm-stream.png)
 
-TODO
+TODO12
 
 ![](https://lupyuen.github.io/images/wasm-stream2.png)
 
-TODO
+TODO13
 
 ![](https://lupyuen.github.io/images/wasm-string.png)
 
-TODO
+TODO14
 
 ![](https://lupyuen.github.io/images/wasm-stub.png)
 
-TODO
+TODO15
 
 ![](https://lupyuen.github.io/images/wasm-ulisp.png)
 
 TODO
-
