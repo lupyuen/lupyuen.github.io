@@ -36,6 +36,10 @@ TODO
 
 TODO
 
+![](https://lupyuen.github.io/images/wasm-stub.png)
+
+TODO
+
 ![Testing uLisp compiled with Emscripten](https://lupyuen.github.io/images/lisp-wasm2.png)
 
 # BL602 Simulator
@@ -43,6 +47,22 @@ TODO
 TODO
 
 ![BL602 Simulator with uLisp WebAssembly](https://lupyuen.github.io/images/lisp-simulator.png)
+
+TODO
+
+# JSON Stream of Simulation Events
+
+TODO
+
+![](https://lupyuen.github.io/images/wasm-stream2.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/wasm-ulisp.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/wasm-stream.png)
 
 TODO
 
@@ -67,6 +87,42 @@ TODO
 TODO
 
 ![](https://lupyuen.github.io/images/wasm-loop.png)
+
+TODO
+
+# HTML Canvas and JavaScript
+
+TODO
+
+![](https://lupyuen.github.io/images/wasm-photoshop.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/wasm-led.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/wasm-event.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/wasm-image.png)
+
+TODO
+
+# Pass data between JavaScript and WebAssembly
+
+TODO
+
+![](https://lupyuen.github.io/images/wasm-string.png)
+
+TODO
+
+# Add Simulator to Blockly
+
+TODO
+
+![](https://lupyuen.github.io/images/wasm-blockly.png)
 
 TODO
 
@@ -96,48 +152,6 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1393554618924212224)
 
-TODO1
-
-![](https://lupyuen.github.io/images/wasm-blockly.png)
-
-TODO4
 
 ![](https://lupyuen.github.io/images/wasm-error.png)
 
-TODO5
-
-![](https://lupyuen.github.io/images/wasm-event.png)
-
-TODO6
-
-![](https://lupyuen.github.io/images/wasm-image.png)
-
-TODO7
-
-![](https://lupyuen.github.io/images/wasm-led.png)
-
-TODO9
-
-![](https://lupyuen.github.io/images/wasm-photoshop.png)
-
-TODO11
-
-![](https://lupyuen.github.io/images/wasm-stream.png)
-
-TODO12
-
-![](https://lupyuen.github.io/images/wasm-stream2.png)
-
-TODO13
-
-![](https://lupyuen.github.io/images/wasm-string.png)
-
-TODO14
-
-![](https://lupyuen.github.io/images/wasm-stub.png)
-
-TODO15
-
-![](https://lupyuen.github.io/images/wasm-ulisp.png)
-
-TODO
