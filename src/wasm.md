@@ -2,6 +2,18 @@
 
 📝 _26 May 2021_
 
+What if we...
+
+1.  Compile the __uLisp Interpreter to WebAssembly__...
+
+1.  Use the WebAssembly version of uLisp to __simulate BL602 in a Web Browser__...
+
+    (Including GPIO, I2C, SPI, Display Controller, Touch Controller, LoRaWAN... [Similar to this](https://lupyuen.github.io/pinetime-rust-mynewt/articles/simulator))
+
+1.  Integrate the __BL602 Emulator with Blockly__...
+
+1.  To allow embedded developers to __preview their BL602 Blockly Apps in the Web Browser__?
+
 TODO
 
 - [__Watch the uLisp WebAssembly demo on YouTube__](https://youtu.be/9uegWNcokxY)
@@ -16,6 +28,16 @@ TODO
 
 _BL602 Simulator with uLisp and Blockly in WebAssembly_
 
+# Emscripten and WebAssembly
+
+TODO
+
+![Compiling uLisp to WebAssembly with Emscripten](https://lupyuen.github.io/images/lisp-wasm.png)
+
+TODO
+
+![Testing uLisp compiled with Emscripten](https://lupyuen.github.io/images/lisp-wasm2.png)
+
 # BL602 Simulator
 
 TODO
@@ -23,12 +45,6 @@ TODO
 ![BL602 Simulator with uLisp WebAssembly](https://lupyuen.github.io/images/lisp-simulator.png)
 
 TODO
-
-![uLisp in WebAssembly](https://lupyuen.github.io/images/lisp-wasm.png)
-
-TODO
-
-![uLisp in WebAssembly](https://lupyuen.github.io/images/lisp-wasm2.png)
 
 # What's Next
 
