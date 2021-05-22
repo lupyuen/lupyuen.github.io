@@ -16,10 +16,6 @@ What if we...
 
 Today we shall build a Simulator for the BL602 RISC-V SoC that runs in a Web Browser. And we'll use it to preview Blockly uLisp Apps in the browser!
 
-- [__Watch the uLisp WebAssembly demo on YouTube__](https://youtu.be/9uegWNcokxY)
-
-- [__Try uLisp WebAssembly here__](https://lupyuen.github.io/ulisp-bl602/ulisp.html)
-
 - [__Watch the BL602 Simulator with Blockly and uLisp WebAssembly demo on YouTube__](https://youtu.be/Ag2CERd1OzQ)
 
 - [__Try BL602 Simulator with Blockly and uLisp WebAssembly here__](https://appkaki.github.io/blockly-ulisp/demos/simulator/)
@@ -142,6 +138,67 @@ The symbol `__EMSCRIPTEN__` is defined when we use the Emscripten compiler.
 (Yep it's possible to reuse the same [`ulisp.c`](https://github.com/lupyuen/ulisp-bl602/blob/wasm/src/ulisp.c) for BL602 and WebAssembly!)
 
 ![BL602 IoT SDK stubbed out](https://lupyuen.github.io/images/wasm-stub.png)
+
+# REPL in a Web Browser
+
+_uLisp in WebAssembly looks underwhelming. Where's the REPL (Read-Evaluate-Print Loop)?_
+
+As we've seen, __`printf` works perfectly fine__ in WebAssembly... The output appears automagically in the HTML Text Box provided by Emscripten.
+
+Console Input is a little more tricky. Let's...
+
+1.  __Add a HTML Text Box__ for input
+
+1.  __Execute the input text__ with uLisp
+
+Here's how we add the HTML Text Box: [`ulisp.html`](https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.html#L1242-L1248)
+
+```html
+<!-- HTML Text Box for input -->
+<textarea id="input"></textarea>
+
+<!-- HTML Button that runs the uLisp script -->
+<input id="run" type="button" value="Run" onclick="runScript()"></input>
+```
+
+Also we add a __"`Run`" Button__ that will execute the uLisp Script entered into the Text Box.
+
+Let's refactor our JavaScript to separate the initialisation and the execution.
+
+Here's how we initialise the uLisp Interpreter: [`ulisp.html`](https://github.com/lupyuen/ulisp-bl602/blob/88e4fb6fad8025ceb7a88ff7154db053cc2ab861/docs/ulisp.html#L1324-L1350)
+
+```javascript
+/// Wait for emscripten to be initialised
+Module.onRuntimeInitialized = function() {
+    //  Init uLisp interpreter
+    Module._setup_ulisp();
+};
+```
+
+In the __`runScript`__ function (called by the "`Run`" Button), we grab the uLisp Script from the text box and execute it...
+
+```javascript
+/// Run the script in the input box
+function runScript() {
+    //  Get the uLisp script from the input text box
+    var scr = document.getElementById("input").value;
+
+    //  Allocate WebAssembly memory for the script
+    var ptr = Module.allocate(intArrayFromString(scr), ALLOC_NORMAL);
+
+    //  Execute the uLisp script
+    Module._execute_ulisp(ptr);
+
+    //  Free the WebAssembly memory allocated for the script
+    Module._free(ptr);
+}
+```
+
+And our uLisp WebAssembly REPL is done!
+
+- [__Watch the uLisp WebAssembly demo on YouTube__](https://youtu.be/9uegWNcokxY)
+
+- [__Try uLisp WebAssembly here__](https://lupyuen.github.io/ulisp-bl602/ulisp.html)
 
 # BL602 Simulator
 
