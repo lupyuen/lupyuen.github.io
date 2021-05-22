@@ -61,9 +61,61 @@ The Emscripten Compiler generates 3 output files...
 
 ![Compiling uLisp to WebAssembly with Emscripten](https://lupyuen.github.io/images/lisp-wasm.png)
 
-_But `ulisp.c` contains references to the BL602 IoT SDK?_
+_What are the `EXPORTED_FUNCTIONS`?_
 
-For now, we replace the hardware-specific functions for BL602 by Stub Functions (which will be fixed in a while)...
+```text
+-s "EXPORTED_FUNCTIONS=[ '_setup_ulisp', '_execute_ulisp', '_clear_simulation_events', '_get_simulation_events' ]"
+```
+
+These are the C functions from our uLisp Interpreter [`ulisp.c`](https://github.com/lupyuen/ulisp-bl602/blob/wasm/src/ulisp.c#L5312-L5384) that will be __exported to JavaScript__. 
+
+Our uLisp Interpreter won't do anything meaningful in a Web Browser unless these 2 functions are called...
+
+1.  [__`_setup_ulisp`__](https://github.com/lupyuen/ulisp-bl602/blob/wasm/src/ulisp.c#L5312-L5319): Initialise the uLisp Interpreter
+
+1.  [__`_execute_ulisp`__](https://github.com/lupyuen/ulisp-bl602/blob/wasm/src/ulisp.c#L5377-L5384): Execute a uLisp script
+
+(We'll see the other 2 functions later)
+
+_How do we call the `EXPORTED_FUNCTIONS` from JavaScript?_
+
+Here's how we call the WebAssembly functions `_setup_ulisp` and `_execute_ulisp` from JavaScript: [`ulisp.html`](https://github.com/lupyuen/ulisp-bl602/blob/f520d0d8bb1583828a0ab456c90df187cd1eef68/docs/ulisp.html#L1300-L1321)
+
+```javascript
+/// Wait for emscripten to be initialised
+Module.onRuntimeInitialized = function() {
+    //  Init uLisp interpreter
+    Module._setup_ulisp();
+
+    //  Set the uLisp script 
+    var scr = "( list 1 2 3 )";
+
+    //  Allocate WebAssembly memory for the script
+    var ptr = Module.allocate(intArrayFromString(scr), ALLOC_NORMAL);
+
+    //  Execute the uLisp script in WebAssembly
+    Module._execute_ulisp(ptr);
+
+    //  Free the WebAssembly memory allocated for the script
+    Module._free(ptr);
+};
+```
+
+[(More about `allocate` and `free`)](https://emscripten.org/docs/porting/connecting_cpp_and_javascript/Interacting-with-code.html)
+
+To run this in a Web Browser, we browse to `ulisp.html` in a Local Web Server. (Sorry, WebAssembly won't run from a Local Filesystem)
+
+Our uLisp Interpreter in WebAssembly shows the result...
+
+```text
+(1 2 3)
+```
+
+![Testing uLisp compiled with Emscripten](https://lupyuen.github.io/images/lisp-wasm2.png)
+
+_But [`ulisp.c`](https://github.com/lupyuen/ulisp-bl602/blob/wasm/src/ulisp.c) contains references to the BL602 IoT SDK, so it won't compile for WebAssembly?_
+
+For now, we replace the __hardware-specific functions for BL602__ by Stub Functions (which will be fixed in a while)...
 
 ```c
 #ifdef __EMSCRIPTEN__  //  If building for WebAssembly...
@@ -87,23 +139,9 @@ void time_delay(uint32_t millisec)
 
 The symbol `__EMSCRIPTEN__` is defined when we use the Emscripten compiler.
 
+(Yep it's possible to reuse the same [`ulisp.c`](https://github.com/lupyuen/ulisp-bl602/blob/wasm/src/ulisp.c) for BL602 and WebAssembly!)
+
 ![BL602 IoT SDK stubbed out](https://lupyuen.github.io/images/wasm-stub.png)
-
-TODO
-
-_What are the `EXPORTED_FUNCTIONS`?_
-
-TODO
-
-_What about the `EXTRA_EXPORTED_RUNTIME_METHODS`?_
-
-TODO
-
-_How do we call the `EXPORTED_FUNCTIONS` from JavaScript?_
-
-TODO
-
-![Testing uLisp compiled with Emscripten](https://lupyuen.github.io/images/lisp-wasm2.png)
 
 # BL602 Simulator
 
