@@ -202,11 +202,11 @@ And our __uLisp REPL in WebAssembly__ is done!
 
 ![uLisp REPL in WebAssembly](https://lupyuen.github.io/images/wasm-repl.png)
 
-# BL602 Simulator
+# Simulate BL602 Hardware
 
 TODO
 
-![BL602 Simulator with uLisp WebAssembly](https://lupyuen.github.io/images/lisp-simulator.png)
+![BL602 Simulator Design](https://lupyuen.github.io/images/lisp-simulator.png)
 
 TODO
 
