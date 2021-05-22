@@ -4,7 +4,7 @@
 
 What if we...
 
-1.  Compile the __uLisp Interpreter to WebAssembly__...
+1.  Compile the __uLisp Interpreter [(from the last article)](https://lupyuen.github.io/articles/lisp) to WebAssembly__...
 
 1.  Use the WebAssembly version of uLisp to __simulate BL602 in a Web Browser__...
 
@@ -30,31 +30,76 @@ _BL602 Simulator with uLisp and Blockly in WebAssembly_
 
 # Emscripten and WebAssembly
 
-TODO
+_What is Emscripten?_
+
+__Emscripten compiles C programs into WebAssembly__ so that we can run them in a Web Browser.
+
+(Think of WebAssembly as a kind of Machine Code that runs natively in any Web Browser)
+
+Here's how we compile our uLisp Interpreter `ulisp.c` [(from the last article)](https://lupyuen.github.io/articles/lisp) with the __Emscripten Compiler `emcc`__...
 
 ```bash
-emcc -g -I include -s WASM=1 \
+emcc -g -s WASM=1 \
     src/ulisp.c wasm/wasm.c \
     -o ulisp.html \
-    -s "EXPORTED_FUNCTIONS=[ '_setup_ulisp', '_execute_ulisp', '_clear_simulation_events', '_get_simulation_events' ]" \
-    -s "EXTRA_EXPORTED_RUNTIME_METHODS=[ 'cwrap', 'allocate', 'intArrayFromString', 'UTF8ToString' ]"
-
-emcc -c -o wasm/wasm.o wasm/wasm.c -g -I include -s WASM=1 \
-    -s "EXPORTED_FUNCTIONS=[ '_setup_ulisp', '_execute_ulisp', '_clear_simulation_events', '_get_simulation_events' ]" \
-    -s "EXTRA_EXPORTED_RUNTIME_METHODS=[ 'cwrap', 'allocate', 'intArrayFromString', 'UTF8ToString' ]"
-
-emcc -o wasm/ulisp.html \
-    src/ulisp.o wasm/wasm.o wasm/ulisp.o \
-    -g -I include -s WASM=1 \
+    -I include \
     -s "EXPORTED_FUNCTIONS=[ '_setup_ulisp', '_execute_ulisp', '_clear_simulation_events', '_get_simulation_events' ]" \
     -s "EXTRA_EXPORTED_RUNTIME_METHODS=[ 'cwrap', 'allocate', 'intArrayFromString', 'UTF8ToString' ]"
 ```
 
+(More about `wasm.c` in a while)
+
+C programs that call the __Standard C Libraries__ should build OK with Emscripten: `printf`, `<stdio.h>`, `<stdlib.h>`, `<string.h>`, ... 
+
+The Emscripten Compiler generates 3 output files...
+
+-   __`ulisp.wasm`__: Contains the __WebAssembly Code__ generated for our C program. 
+
+-   __`ulisp.js`__: JavaScript module that __loads the WebAssembly Code__ into a Web Browser and runs it
+
+-   __`ulisp.html`__: HTML file that we may open in a Web Browser to __load the JavaScript module__ and run the WebAssembly Code
+
 ![Compiling uLisp to WebAssembly with Emscripten](https://lupyuen.github.io/images/lisp-wasm.png)
+
+_But `ulisp.c` contains references to the BL602 IoT SDK?_
+
+For now, we replace the hardware-specific functions for BL602 by Stub Functions (which will be fixed in a while)...
+
+```c
+#ifdef __EMSCRIPTEN__  //  If building for WebAssembly...
+//  Use stubs for BL602 functions, will fix later.
+int bl_gpio_enable_input(uint8_t pin, uint8_t pullup, uint8_t pulldown) 
+    { return 0; }
+int bl_gpio_enable_output(uint8_t pin, uint8_t pullup, uint8_t pulldown) 
+    { return 0; }
+int bl_gpio_output_set(uint8_t pin, uint8_t value) 
+    { return 0; }
+uint32_t time_ms_to_ticks32(uint32_t millisec) 
+    { return millisec; }
+void time_delay(uint32_t millisec)
+    {}
+
+#else                    //  If building for BL602...
+#include <bl_gpio.h>     //  For BL602 GPIO Hardware Abstraction Layer
+#include "nimble_npl.h"  //  For NimBLE Porting Layer (mulitasking functions)
+#endif  //  __EMSCRIPTEN__
+```
+
+The symbol `__EMSCRIPTEN__` is defined when we use the Emscripten compiler.
+
+![BL602 IoT SDK stubbed out](https://lupyuen.github.io/images/wasm-stub.png)
 
 TODO
 
-![](https://lupyuen.github.io/images/wasm-stub.png)
+_What are the `EXPORTED_FUNCTIONS`?_
+
+TODO
+
+_What about the `EXTRA_EXPORTED_RUNTIME_METHODS`?_
+
+TODO
+
+_How do we call the `EXPORTED_FUNCTIONS` from JavaScript?_
 
 TODO
 
