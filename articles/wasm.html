@@ -214,7 +214,7 @@ void time_delay(uint32_t millisec)
 &lt;input id=&quot;run&quot; type=&quot;button&quot; value=&quot;Run&quot; onclick=&quot;runScript()&quot;&gt;&lt;/input&gt;
 </code></pre>
 <p>Also we add a <strong>“<code>Run</code>” Button</strong> that will execute the uLisp Script entered into the Text Box.</p>
-<p>Let’s refactor our JavaScript to separate the initialisation and the execution.</p>
+<p>Let’s refactor our JavaScript to <strong>separate the uLisp Initialisation and Execution</strong>.</p>
 <p>Here’s how we initialise the uLisp Interpreter: <a href="https://github.com/lupyuen/ulisp-bl602/blob/88e4fb6fad8025ceb7a88ff7154db053cc2ab861/docs/ulisp.html#L1324-L1350"><code>ulisp.html</code></a></p>
 <pre><code class="language-javascript">/// Wait for emscripten to be initialised
 Module.onRuntimeInitialized = function() {
@@ -238,15 +238,16 @@ function runScript() {
     Module._free(ptr);
 }
 </code></pre>
-<p>And our uLisp WebAssembly REPL is done!</p>
+<p>And our <strong>uLisp REPL in WebAssembly</strong> is done!</p>
 <ul>
 <li>
-<p><a href="https://youtu.be/9uegWNcokxY"><strong>Watch the uLisp WebAssembly demo on YouTube</strong></a></p>
+<p><a href="https://youtu.be/9uegWNcokxY"><strong>Watch the uLisp WebAssembly REPL demo on YouTube</strong></a></p>
 </li>
 <li>
-<p><a href="https://lupyuen.github.io/ulisp-bl602/ulisp.html"><strong>Try uLisp WebAssembly here</strong></a></p>
+<p><a href="https://lupyuen.github.io/ulisp-bl602/ulisp.html"><strong>Try the uLisp WebAssembly REPL</strong></a></p>
 </li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/wasm-repl.png" alt="uLisp REPL in WebAssembly" /></p>
 <h1 id="bl602-simulator" class="section-header"><a href="#bl602-simulator">3 BL602 Simulator</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lisp-simulator.png" alt="BL602 Simulator with uLisp WebAssembly" /></p>
