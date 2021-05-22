@@ -175,7 +175,7 @@ Module.onRuntimeInitialized = function() {
 };
 ```
 
-In the __`runScript`__ function (called by the "`Run`" Button), we grab the uLisp Script from the text box and execute it...
+In the __`runScript`__ function (called by the "`Run`" Button), we grab the uLisp Script from the text box and run it...
 
 ```javascript
 /// Run the script in the input box
