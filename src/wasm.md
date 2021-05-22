@@ -32,6 +32,24 @@ _BL602 Simulator with uLisp and Blockly in WebAssembly_
 
 TODO
 
+```bash
+emcc -g -I include -s WASM=1 \
+    src/ulisp.c wasm/wasm.c \
+    -o ulisp.html \
+    -s "EXPORTED_FUNCTIONS=[ '_setup_ulisp', '_execute_ulisp', '_clear_simulation_events', '_get_simulation_events' ]" \
+    -s "EXTRA_EXPORTED_RUNTIME_METHODS=[ 'cwrap', 'allocate', 'intArrayFromString', 'UTF8ToString' ]"
+
+emcc -c -o wasm/wasm.o wasm/wasm.c -g -I include -s WASM=1 \
+    -s "EXPORTED_FUNCTIONS=[ '_setup_ulisp', '_execute_ulisp', '_clear_simulation_events', '_get_simulation_events' ]" \
+    -s "EXTRA_EXPORTED_RUNTIME_METHODS=[ 'cwrap', 'allocate', 'intArrayFromString', 'UTF8ToString' ]"
+
+emcc -o wasm/ulisp.html \
+    src/ulisp.o wasm/wasm.o wasm/ulisp.o \
+    -g -I include -s WASM=1 \
+    -s "EXPORTED_FUNCTIONS=[ '_setup_ulisp', '_execute_ulisp', '_clear_simulation_events', '_get_simulation_events' ]" \
+    -s "EXTRA_EXPORTED_RUNTIME_METHODS=[ 'cwrap', 'allocate', 'intArrayFromString', 'UTF8ToString' ]"
+```
+
 ![Compiling uLisp to WebAssembly with Emscripten](https://lupyuen.github.io/images/lisp-wasm.png)
 
 TODO
