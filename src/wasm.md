@@ -163,7 +163,7 @@ Here's how we add the HTML Text Box: [`ulisp.html`](https://github.com/lupyuen/u
 
 Also we add a __"`Run`" Button__ that will execute the uLisp Script entered into the Text Box.
 
-Let's refactor our JavaScript to separate the initialisation and the execution.
+Let's refactor our JavaScript to __separate the uLisp Initialisation and Execution__.
 
 Here's how we initialise the uLisp Interpreter: [`ulisp.html`](https://github.com/lupyuen/ulisp-bl602/blob/88e4fb6fad8025ceb7a88ff7154db053cc2ab861/docs/ulisp.html#L1324-L1350)
 
@@ -194,11 +194,13 @@ function runScript() {
 }
 ```
 
-And our uLisp WebAssembly REPL is done!
+And our __uLisp REPL in WebAssembly__ is done!
 
-- [__Watch the uLisp WebAssembly demo on YouTube__](https://youtu.be/9uegWNcokxY)
+- [__Watch the uLisp WebAssembly REPL demo on YouTube__](https://youtu.be/9uegWNcokxY)
 
-- [__Try uLisp WebAssembly here__](https://lupyuen.github.io/ulisp-bl602/ulisp.html)
+- [__Try the uLisp WebAssembly REPL__](https://lupyuen.github.io/ulisp-bl602/ulisp.html)
+
+![uLisp REPL in WebAssembly](https://lupyuen.github.io/images/wasm-repl.png)
 
 # BL602 Simulator
 
