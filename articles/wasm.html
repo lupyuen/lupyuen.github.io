@@ -66,16 +66,17 @@
     <h1 class="title">Simulate RISC-V BL602 with WebAssembly, uLisp and Blockly</h1>
     <nav id="TOC"><ul>
 <li><a href="#emscripten-and-webassembly">1 Emscripten and WebAssembly</a><ul></ul></li>
-<li><a href="#bl602-simulator">2 BL602 Simulator</a><ul></ul></li>
-<li><a href="#json-stream-of-simulation-events">3 JSON Stream of Simulation Events</a><ul></ul></li>
-<li><a href="#add-a-simulation-event">4 Add a Simulation Event</a><ul></ul></li>
-<li><a href="#add-a-delay">5 Add a Delay</a><ul></ul></li>
-<li><a href="#handling-loops">6 Handling Loops</a><ul></ul></li>
-<li><a href="#html-canvas-and-javascript">7 HTML Canvas and JavaScript</a><ul></ul></li>
-<li><a href="#pass-data-between-javascript-and-webassembly">8 Pass data between JavaScript and WebAssembly</a><ul></ul></li>
-<li><a href="#add-simulator-to-blockly">9 Add Simulator to Blockly</a><ul></ul></li>
-<li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
-<li><a href="#notes">11 Notes</a><ul></ul></li></ul></nav><p>📝 <em>26 May 2021</em></p>
+<li><a href="#repl-in-a-web-browser">2 REPL in a Web Browser</a><ul></ul></li>
+<li><a href="#bl602-simulator">3 BL602 Simulator</a><ul></ul></li>
+<li><a href="#json-stream-of-simulation-events">4 JSON Stream of Simulation Events</a><ul></ul></li>
+<li><a href="#add-a-simulation-event">5 Add a Simulation Event</a><ul></ul></li>
+<li><a href="#add-a-delay">6 Add a Delay</a><ul></ul></li>
+<li><a href="#handling-loops">7 Handling Loops</a><ul></ul></li>
+<li><a href="#html-canvas-and-javascript">8 HTML Canvas and JavaScript</a><ul></ul></li>
+<li><a href="#pass-data-between-javascript-and-webassembly">9 Pass data between JavaScript and WebAssembly</a><ul></ul></li>
+<li><a href="#add-simulator-to-blockly">10 Add Simulator to Blockly</a><ul></ul></li>
+<li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
+<li><a href="#notes">12 Notes</a><ul></ul></li></ul></nav><p>📝 <em>26 May 2021</em></p>
 <p>What if we…</p>
 <ol>
 <li>
@@ -94,12 +95,6 @@
 </ol>
 <p>Today we shall build a Simulator for the BL602 RISC-V SoC that runs in a Web Browser. And we’ll use it to preview Blockly uLisp Apps in the browser!</p>
 <ul>
-<li>
-<p><a href="https://youtu.be/9uegWNcokxY"><strong>Watch the uLisp WebAssembly demo on YouTube</strong></a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.github.io/ulisp-bl602/ulisp.html"><strong>Try uLisp WebAssembly here</strong></a></p>
-</li>
 <li>
 <p><a href="https://youtu.be/Ag2CERd1OzQ"><strong>Watch the BL602 Simulator with Blockly and uLisp WebAssembly demo on YouTube</strong></a></p>
 </li>
@@ -199,11 +194,64 @@ void time_delay(uint32_t millisec)
 <p>The symbol <code>__EMSCRIPTEN__</code> is defined when we use the Emscripten compiler.</p>
 <p>(Yep it’s possible to reuse the same <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/src/ulisp.c"><code>ulisp.c</code></a> for BL602 and WebAssembly!)</p>
 <p><img src="https://lupyuen.github.io/images/wasm-stub.png" alt="BL602 IoT SDK stubbed out" /></p>
-<h1 id="bl602-simulator" class="section-header"><a href="#bl602-simulator">2 BL602 Simulator</a></h1>
+<h1 id="repl-in-a-web-browser" class="section-header"><a href="#repl-in-a-web-browser">2 REPL in a Web Browser</a></h1>
+<p><em>uLisp in WebAssembly looks underwhelming. Where’s the REPL (Read-Evaluate-Print Loop)?</em></p>
+<p>As we’ve seen, <strong><code>printf</code> works perfectly fine</strong> in WebAssembly… The output appears automagically in the HTML Text Box provided by Emscripten.</p>
+<p>Console Input is a little more tricky. Let’s…</p>
+<ol>
+<li>
+<p><strong>Add a HTML Text Box</strong> for input</p>
+</li>
+<li>
+<p><strong>Execute the input text</strong> with uLisp</p>
+</li>
+</ol>
+<p>Here’s how we add the HTML Text Box: <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.html#L1242-L1248"><code>ulisp.html</code></a></p>
+<pre><code class="language-html">&lt;!-- HTML Text Box for input --&gt;
+&lt;textarea id=&quot;input&quot;&gt;&lt;/textarea&gt;
+
+&lt;!-- HTML Button that runs the uLisp script --&gt;
+&lt;input id=&quot;run&quot; type=&quot;button&quot; value=&quot;Run&quot; onclick=&quot;runScript()&quot;&gt;&lt;/input&gt;
+</code></pre>
+<p>Also we add a <strong>“<code>Run</code>” Button</strong> that will execute the uLisp Script entered into the Text Box.</p>
+<p>Let’s refactor our JavaScript to separate the initialisation and the execution.</p>
+<p>Here’s how we initialise the uLisp Interpreter: <a href="https://github.com/lupyuen/ulisp-bl602/blob/88e4fb6fad8025ceb7a88ff7154db053cc2ab861/docs/ulisp.html#L1324-L1350"><code>ulisp.html</code></a></p>
+<pre><code class="language-javascript">/// Wait for emscripten to be initialised
+Module.onRuntimeInitialized = function() {
+    //  Init uLisp interpreter
+    Module._setup_ulisp();
+};
+</code></pre>
+<p>In the <strong><code>runScript</code></strong> function (called by the “<code>Run</code>” Button), we grab the uLisp Script from the text box and execute it…</p>
+<pre><code class="language-javascript">/// Run the script in the input box
+function runScript() {
+    //  Get the uLisp script from the input text box
+    var scr = document.getElementById(&quot;input&quot;).value;
+
+    //  Allocate WebAssembly memory for the script
+    var ptr = Module.allocate(intArrayFromString(scr), ALLOC_NORMAL);
+
+    //  Execute the uLisp script
+    Module._execute_ulisp(ptr);
+
+    //  Free the WebAssembly memory allocated for the script
+    Module._free(ptr);
+}
+</code></pre>
+<p>And our uLisp WebAssembly REPL is done!</p>
+<ul>
+<li>
+<p><a href="https://youtu.be/9uegWNcokxY"><strong>Watch the uLisp WebAssembly demo on YouTube</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/ulisp-bl602/ulisp.html"><strong>Try uLisp WebAssembly here</strong></a></p>
+</li>
+</ul>
+<h1 id="bl602-simulator" class="section-header"><a href="#bl602-simulator">3 BL602 Simulator</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lisp-simulator.png" alt="BL602 Simulator with uLisp WebAssembly" /></p>
 <p>TODO</p>
-<h1 id="json-stream-of-simulation-events" class="section-header"><a href="#json-stream-of-simulation-events">3 JSON Stream of Simulation Events</a></h1>
+<h1 id="json-stream-of-simulation-events" class="section-header"><a href="#json-stream-of-simulation-events">4 JSON Stream of Simulation Events</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wasm-stream2.png" alt="" /></p>
 <p>TODO</p>
@@ -211,19 +259,19 @@ void time_delay(uint32_t millisec)
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wasm-stream.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="add-a-simulation-event" class="section-header"><a href="#add-a-simulation-event">4 Add a Simulation Event</a></h1>
+<h1 id="add-a-simulation-event" class="section-header"><a href="#add-a-simulation-event">5 Add a Simulation Event</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wasm-add.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="add-a-delay" class="section-header"><a href="#add-a-delay">5 Add a Delay</a></h1>
+<h1 id="add-a-delay" class="section-header"><a href="#add-a-delay">6 Add a Delay</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wasm-delay.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="handling-loops" class="section-header"><a href="#handling-loops">6 Handling Loops</a></h1>
+<h1 id="handling-loops" class="section-header"><a href="#handling-loops">7 Handling Loops</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wasm-loop.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="html-canvas-and-javascript" class="section-header"><a href="#html-canvas-and-javascript">7 HTML Canvas and JavaScript</a></h1>
+<h1 id="html-canvas-and-javascript" class="section-header"><a href="#html-canvas-and-javascript">8 HTML Canvas and JavaScript</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wasm-photoshop.png" alt="" /></p>
 <p>TODO</p>
@@ -233,15 +281,15 @@ void time_delay(uint32_t millisec)
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wasm-image.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="pass-data-between-javascript-and-webassembly" class="section-header"><a href="#pass-data-between-javascript-and-webassembly">8 Pass data between JavaScript and WebAssembly</a></h1>
+<h1 id="pass-data-between-javascript-and-webassembly" class="section-header"><a href="#pass-data-between-javascript-and-webassembly">9 Pass data between JavaScript and WebAssembly</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wasm-string.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="add-simulator-to-blockly" class="section-header"><a href="#add-simulator-to-blockly">9 Add Simulator to Blockly</a></h1>
+<h1 id="add-simulator-to-blockly" class="section-header"><a href="#add-simulator-to-blockly">10 Add Simulator to Blockly</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wasm-blockly.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">10 What’s Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">11 What’s Next</a></h1>
 <p>Porting uLisp and Blockly to BL602 has been a fun experience.</p>
 <p>But more work needs to be done, I hope the Community can help.</p>
 <p>Could this be the better way to learn Embedded Programming on modern microcontrollers?</p>
@@ -262,7 +310,7 @@ void time_delay(uint32_t millisec)
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/wasm.md"><code>lupyuen.github.io/src/wasm.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">11 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">12 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1393554618924212224">this Twitter Thread</a></li>
 </ol>
