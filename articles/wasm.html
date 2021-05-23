@@ -324,16 +324,28 @@ ctx.fillRect(315, 116, 35, 74);
 <p>Here’s one way: A <strong>JSON Stream of BL602 Simulation Events</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/lisp-simulator.png" alt="BL602 Simulator Design" /></p>
 <p><em>What’s a BL602 Simulation Event?</em></p>
-<p>TODO</p>
-<p>/// JSON Stream of Simulation Events:
-/// This uLisp script…
-///   ( digitalwrite 11 :high )
-///   ( delay 1000 )
-/// Will generate this JSON Stream of Simulation Events…
-/// [ { “gpio_output_set”: { “pin”: 11, “value”: 1 } }, 
-///   { “time_delay”: { “ticks”: 1000 } }, 
-///   … 
-/// ]</p>
+<p>When uLisp needs to <strong>set the GPIO Output</strong> to High or Low (to flip an LED On/Off)…</p>
+<pre><code class="language-text">( digitalwrite 11 :high )
+</code></pre>
+<p>It sends a <strong>Simulation Event</strong> to the BL602 Simulator (in JSON format)…</p>
+<pre><code class="language-json">{ &quot;gpio_output_set&quot;: { 
+  &quot;pin&quot;: 11, 
+  &quot;value&quot;: 1 
+} }
+</code></pre>
+<p>Which is handled by the BL602 Simulator to <strong>flip the Simulated LED</strong> on and off.</p>
+<p><em>Is uLisp directly controlling the BL602 Simulator?</em></p>
+<p>Not quite. uLisp is <strong>indirectly controlling the BL602 Simulator</strong> by sending Simulation Events.</p>
+<p>(There are good reasons for doing this <a href="https://en.wikipedia.org/wiki/Inversion_of_control"><strong>Inversion of Control</strong></a>, as well shall learn in a while)</p>
+<p><em>What about simulating time delays?</em></p>
+<p>uLisp generates <strong>Simulation Events for time delays</strong>, which get simulated by the BL602 Simulator. Our simulator pauses for the specified duration.</p>
+<p>(It’s like playing a MIDI Stream)</p>
+<p>Hence this uLisp script…</p>
+<pre><code class="language-text">( delay 1000 )
+</code></pre>
+<p>Will generate this Simulation Event…</p>
+<pre><code class="language-json">{ &quot;time_delay&quot;: { &quot;ticks&quot;: 1000 } }
+</code></pre>
 <h1 id="json-stream-of-simulation-events" class="section-header"><a href="#json-stream-of-simulation-events">5 JSON Stream of Simulation Events</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wasm-stream2.png" alt="" /></p>
