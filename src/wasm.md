@@ -350,6 +350,29 @@ Will generate this Simulation Event...
 { "time_delay": { "ticks": 1000 } }
 ```
 
+_What's the JSON Stream of Simulation Events?_
+
+To simulate a uLisp program on the BL602 Simulator, we shall pass an __array of Simulation Events__ (in JSON format) from uLisp to the BL602 Simulator.
+
+This (partial) uLisp program that sets the GPIO Output and waits 1 second...
+
+```text
+( list
+  ( digitalwrite 11 :high )
+  ( delay 1000 )
+  ...
+)
+```
+
+Will generate this __JSON Stream of Simulation Events__...
+
+```json
+[ { "gpio_output_set": { "pin": 11, "value": 1 } }, 
+  { "time_delay": { "ticks": 1000 } }, 
+  ... 
+]
+```
+
 # JSON Stream of Simulation Events
 
 TODO
