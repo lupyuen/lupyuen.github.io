@@ -80,20 +80,20 @@ Here's how we call the WebAssembly functions `_setup_ulisp` and `_execute_ulisp`
 ```javascript
 /// Wait for emscripten to be initialised
 Module.onRuntimeInitialized = function() {
-    //  Init uLisp interpreter
-    Module._setup_ulisp();
+  //  Init uLisp interpreter
+  Module._setup_ulisp();
 
-    //  Set the uLisp script 
-    var scr = "( list 1 2 3 )";
+  //  Set the uLisp script 
+  var scr = "( list 1 2 3 )";
 
-    //  Allocate WebAssembly memory for the script
-    var ptr = Module.allocate(intArrayFromString(scr), ALLOC_NORMAL);
+  //  Allocate WebAssembly memory for the script
+  var ptr = Module.allocate(intArrayFromString(scr), ALLOC_NORMAL);
 
-    //  Execute the uLisp script in WebAssembly
-    Module._execute_ulisp(ptr);
+  //  Execute the uLisp script in WebAssembly
+  Module._execute_ulisp(ptr);
 
-    //  Free the WebAssembly memory allocated for the script
-    Module._free(ptr);
+  //  Free the WebAssembly memory allocated for the script
+  Module._free(ptr);
 };
 ```
 
@@ -170,8 +170,8 @@ Here's how we initialise the uLisp Interpreter: [`ulisp.html`](https://github.co
 ```javascript
 /// Wait for emscripten to be initialised
 Module.onRuntimeInitialized = function() {
-    //  Init uLisp interpreter
-    Module._setup_ulisp();
+  //  Init uLisp interpreter
+  Module._setup_ulisp();
 };
 ```
 
@@ -180,17 +180,17 @@ In the __`runScript`__ function (called by the "`Run`" Button), we grab the uLis
 ```javascript
 /// Run the script in the input box
 function runScript() {
-    //  Get the uLisp script from the input text box
-    var scr = document.getElementById("input").value;
+  //  Get the uLisp script from the input text box
+  var scr = document.getElementById("input").value;
 
-    //  Allocate WebAssembly memory for the script
-    var ptr = Module.allocate(intArrayFromString(scr), ALLOC_NORMAL);
+  //  Allocate WebAssembly memory for the script
+  var ptr = Module.allocate(intArrayFromString(scr), ALLOC_NORMAL);
 
-    //  Execute the uLisp script
-    Module._execute_ulisp(ptr);
+  //  Execute the uLisp script
+  Module._execute_ulisp(ptr);
 
-    //  Free the WebAssembly memory allocated for the script
-    Module._free(ptr);
+  //  Free the WebAssembly memory allocated for the script
+  Module._free(ptr);
 }
 ```
 
@@ -202,21 +202,96 @@ And our __uLisp REPL in WebAssembly__ is done!
 
 ![uLisp REPL in WebAssembly](https://lupyuen.github.io/images/wasm-repl.png)
 
-# Simulate BL602 Hardware
+# Render the BL602 Simulator
 
-_How shall we create a Simulated BL602 that blinks?_
+_How shall we render the Simulated BL602 Board?_
 
-TODO
+Remember how we built the uLisp REPL with __HTML and JavaScript__?
+
+Let's do the same for the __BL602 Simulator__...
+
+![BL602 Simulator in HTML and JavaScript](https://lupyuen.github.io/images/lisp-simulator2.png)
+
+First we save this sketchy image of a PineCone BL602 Board as a __PNG file__...
 
 ![Creating the BL602 simulator image](https://lupyuen.github.io/images/wasm-photoshop.png)
 
-TODO
+We __load the PNG file__ in our web page: [`ulisp.html`](https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.html#L1336-L1360)
+
+```javascript
+/// Wait for emscripten to be initialised
+Module.onRuntimeInitialized = function() {
+  //  Omitted: Init uLisp interpreter
+  ...
+  // Load the simulator pic and render it
+  const image = new Image();
+  image.onload = renderSimulator;  //  Draw when image has loaded
+  image.src = 'pinecone.png';      //  Image to be loaded
+};
+```
+
+This code calls the __`renderSimulator`__ function when our BL602 image has been loaded into memory.
+
+Emscripten has helpfully generated a __HTML Canvas__ in [`ulisp.html`](https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.html#L1238-L1240) ...
+
+```html
+<canvas id="canvas" class="emscripten" oncontextmenu="event.preventDefault()" tabindex=-1></canvas>
+```
+
+In the __`renderSimulator`__ function, let's __render our BL602 image__ onto the HTML Canvas: [`ulisp.html`](https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.html#L1348-L1360)
+
+```javascript
+/// Render the simulator pic. Based on https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage
+function renderSimulator() {
+  //  Get the HTML canvas and context
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+
+  //  Resize the canvas
+  canvas.width  = 400;
+  canvas.height = 300;
+
+  //  Draw the image to fill the canvas
+  ctx.drawImage(this, 0, 0, canvas.width, canvas.height);
+}
+```
+
+Our __rendered BL602 Simulator__ looks like this...
 
 ![Rendering the BL602 simulator image](https://lupyuen.github.io/images/wasm-image.png)
 
-TODO
+_What about the LED?_
+
+To simulate the LED switching on, let's draw a __blue rectangle__ onto the HTML Canvas: [`ulisp.html`](https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.html#L1447-L1470)
+
+```javascript
+//  Get the HTML Canvas Context
+const ctx = document.getElementById('canvas').getContext('2d');
+
+//  LED On: Set the fill colour to Blue
+ctx.fillStyle = '#B0B0FF';  //  Blue
+
+//  Draw the LED colour
+ctx.fillRect(315, 116, 35, 74);
+```
+
+Our __rendered BL602 LED__ looks good...
 
 ![Rendering the LED](https://lupyuen.github.io/images/wasm-led.png)
+
+And to simulate the LED switching off, we draw a __grey rectangle__: [`ulisp.html`](https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.html#L1447-L1470)
+
+```javascript
+//  LED Off: Set the fill colour to Grey
+ctx.fillStyle = '#CCCCCC';  //  Grey
+
+//  Draw the LED colour
+ctx.fillRect(315, 116, 35, 74);
+```
+
+Now we wire up the Simulated BL602 LED to uLisp!
+
+# Simulate BL602 Hardware
 
 TODO
 
