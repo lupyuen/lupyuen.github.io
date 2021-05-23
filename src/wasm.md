@@ -293,6 +293,14 @@ Now we wire up the Simulated BL602 LED to uLisp!
 
 # Simulate BL602 Hardware
 
+Our story so far...
+
+1.  Our __uLisp Interpreter lives in WebAssembly__ (compiled from C with Emscripten)
+
+1.  Our __BL602 Simulator lives in JavaScript__ (rendered onto a HTML Canvas)
+
+_How shall we connect uLisp to the BL602 Simulator... And blink the Simulated LED?_
+
 TODO
 
 ![BL602 Simulator Design](https://lupyuen.github.io/images/lisp-simulator.png)
