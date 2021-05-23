@@ -441,6 +441,10 @@ TODO
 
 TODO
 
+![GPIO Simulation Events](https://lupyuen.github.io/images/wasm-stream.png)
+
+TODO
+
 # JSON Stream of Simulation Events
 
 TODO
@@ -450,10 +454,6 @@ TODO
 TODO
 
 ![](https://lupyuen.github.io/images/wasm-ulisp.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/wasm-stream.png)
 
 TODO
 
