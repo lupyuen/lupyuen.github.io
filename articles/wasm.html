@@ -76,8 +76,9 @@
 <li><a href="#html-canvas-and-javascript">9 HTML Canvas and JavaScript</a><ul></ul></li>
 <li><a href="#pass-data-between-javascript-and-webassembly">10 Pass data between JavaScript and WebAssembly</a><ul></ul></li>
 <li><a href="#add-simulator-to-blockly">11 Add Simulator to Blockly</a><ul></ul></li>
-<li><a href="#whats-next">12 What’s Next</a><ul></ul></li>
-<li><a href="#notes">13 Notes</a><ul></ul></li></ul></nav><p>📝 <em>26 May 2021</em></p>
+<li><a href="#can-we-simulate-any-bl602-firmware">12 Can We Simulate Any BL602 Firmware?</a><ul></ul></li>
+<li><a href="#whats-next">13 What’s Next</a><ul></ul></li>
+<li><a href="#notes">14 Notes</a><ul></ul></li></ul></nav><p>📝 <em>26 May 2021</em></p>
 <p>What if we…</p>
 <ol>
 <li>
@@ -398,7 +399,7 @@ int bl_gpio_output_set(uint8_t pin, uint8_t value) {
     return 0; 
 }
 </code></pre>
-<p>Was ported to BL602 by calling the <strong>BL602 GPIO Hardware Abstraction Layer</strong>: <a href="https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L3536-L3554"><code>ulisp.c</code></a></p>
+<p>Was ported to BL602 by calling the <strong>BL602 GPIO Hardware Abstraction Layer</strong>: <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/src/ulisp.c#L3544-L3562"><code>ulisp.c</code></a></p>
 <pre><code class="language-c">/// Set the GPIO Output to High or Low
 object *fn_digitalwrite (object *args, object *env) {
     //  Omitted: Parse the GPIO pin number and High / Low
@@ -442,7 +443,9 @@ object *fn_digitalwrite (object *args, object *env) {
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wasm-blockly.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">12 What’s Next</a></h1>
+<h1 id="can-we-simulate-any-bl602-firmware" class="section-header"><a href="#can-we-simulate-any-bl602-firmware">12 Can We Simulate Any BL602 Firmware?</a></h1>
+<p>TODO</p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">13 What’s Next</a></h1>
 <p>Porting uLisp and Blockly to BL602 has been a fun experience.</p>
 <p>But more work needs to be done, I hope the Community can help.</p>
 <p>Could this be the better way to learn Embedded Programming on modern microcontrollers?</p>
@@ -463,7 +466,7 @@ object *fn_digitalwrite (object *args, object *env) {
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/wasm.md"><code>lupyuen.github.io/src/wasm.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">13 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">14 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1393554618924212224">this Twitter Thread</a></li>
 </ol>
