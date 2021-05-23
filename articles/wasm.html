@@ -321,9 +321,19 @@ ctx.fillRect(315, 116, 35, 74);
 </ol>
 <p><em>How shall we connect uLisp to the BL602 Simulator… And blink the Simulated LED?</em></p>
 <p>Oh yes we have ways of <strong>making uLisp talk to BL602 Simulator</strong>… From WebAssembly to JavaScript!</p>
-<p>TODO</p>
+<p>Here’s one way: A <strong>JSON Stream of BL602 Simulation Events</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/lisp-simulator.png" alt="BL602 Simulator Design" /></p>
+<p><em>What’s a BL602 Simulation Event?</em></p>
 <p>TODO</p>
+<p>/// JSON Stream of Simulation Events:
+/// This uLisp script…
+///   ( digitalwrite 11 :high )
+///   ( delay 1000 )
+/// Will generate this JSON Stream of Simulation Events…
+/// [ { “gpio_output_set”: { “pin”: 11, “value”: 1 } }, 
+///   { “time_delay”: { “ticks”: 1000 } }, 
+///   … 
+/// ]</p>
 <h1 id="json-stream-of-simulation-events" class="section-header"><a href="#json-stream-of-simulation-events">5 JSON Stream of Simulation Events</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wasm-stream2.png" alt="" /></p>
