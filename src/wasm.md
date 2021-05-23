@@ -324,7 +324,9 @@ It sends a __Simulation Event__ to the BL602 Simulator (in JSON format)...
 } }
 ```
 
-Which is handled by the BL602 Simulator to __flip the Simulated LED__ on and off.
+Which is handled by the BL602 Simulator to __flip the Simulated LED__ on or off.
+
+(Yes the blue LED we've seen earlier)
 
 _Is uLisp directly controlling the BL602 Simulator?_
 
@@ -332,9 +334,9 @@ Not quite. uLisp is __indirectly controlling the BL602 Simulator__ by sending Si
 
 (There are good reasons for doing this [__Inversion of Control__](https://en.wikipedia.org/wiki/Inversion_of_control), as well shall learn in a while)
 
-_What about simulating time delays?_
+_What about time delays like `( delay 1000 )`?_
 
-uLisp generates __Simulation Events for time delays__, which get simulated by the BL602 Simulator. Our simulator pauses for the specified duration.
+uLisp generates __Simulation Events for time delays__. To handle such events, our BL602 Simulator pauses for the specified duration.
 
 (It's like playing a MIDI Stream)
 
@@ -350,7 +352,7 @@ Will generate this Simulation Event...
 { "time_delay": { "ticks": 1000 } }
 ```
 
-_What's the JSON Stream of Simulation Events?_
+_What's a JSON Stream of Simulation Events?_
 
 To simulate a uLisp program on the BL602 Simulator, we shall pass an __array of Simulation Events__ (in JSON format) from uLisp to the BL602 Simulator.
 
@@ -372,6 +374,10 @@ Will generate this __JSON Stream of Simulation Events__...
   ... 
 ]
 ```
+
+That will simulate a blinking BL602 LED (eventually).
+
+Let's watch how uLisp adds an event to the JSON Stream of Simulation Events.
 
 # JSON Stream of Simulation Events
 
