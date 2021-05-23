@@ -204,6 +204,20 @@ And our __uLisp REPL in WebAssembly__ is done!
 
 # Simulate BL602 Hardware
 
+_How shall we create a Simulated BL602 that blinks?_
+
+TODO
+
+![Creating the BL602 simulator image](https://lupyuen.github.io/images/wasm-photoshop.png)
+
+TODO
+
+![Rendering the BL602 simulator image](https://lupyuen.github.io/images/wasm-image.png)
+
+TODO
+
+![Rendering the LED](https://lupyuen.github.io/images/wasm-led.png)
+
 TODO
 
 ![BL602 Simulator Design](https://lupyuen.github.io/images/lisp-simulator.png)
@@ -254,19 +268,11 @@ TODO
 
 TODO
 
-![](https://lupyuen.github.io/images/wasm-photoshop.png)
-
-TODO
-
 ![](https://lupyuen.github.io/images/wasm-led.png)
 
 TODO
 
 ![](https://lupyuen.github.io/images/wasm-event.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/wasm-image.png)
 
 TODO
 
