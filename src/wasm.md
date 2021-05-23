@@ -303,11 +303,23 @@ _How shall we connect uLisp to the BL602 Simulator... And blink the Simulated LE
 
 Oh yes we have ways of __making uLisp talk to BL602 Simulator__... From WebAssembly to JavaScript!
 
-TODO
+Here's one way: A __JSON Stream of BL602 Simulation Events__...
 
 ![BL602 Simulator Design](https://lupyuen.github.io/images/lisp-simulator.png)
 
+_What's a BL602 Simulation Event?_
+
 TODO
+
+/// JSON Stream of Simulation Events:
+/// This uLisp script...
+///   ( digitalwrite 11 :high )
+///   ( delay 1000 )
+/// Will generate this JSON Stream of Simulation Events...
+/// [ { "gpio_output_set": { "pin": 11, "value": 1 } }, 
+///   { "time_delay": { "ticks": 1000 } }, 
+///   ... 
+/// ]
 
 # JSON Stream of Simulation Events
 
