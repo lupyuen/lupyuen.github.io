@@ -379,6 +379,68 @@ That will simulate a blinking BL602 LED (eventually).
 
 Let's watch how uLisp adds an event to the JSON Stream of Simulation Events.
 
+# Add a Simulation Event
+
+TODO
+
+From [`wasm.c`](https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm/wasm.c#L8-L17)
+
+```c
+/// JSON Stream of Simulation Events:
+/// This uLisp script...
+///   ( digitalwrite 11 :high )
+///   ( delay 1000 )
+/// Will generate this JSON Stream of Simulation Events...
+/// [ { "gpio_output_set": { "pin": 11, "value": 1 } }, 
+///   { "time_delay": { "ticks": 1000 } }, 
+///   ... 
+/// ]
+static char events[1024] = "[]";
+```
+
+From [`wasm.c`](https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm/wasm.c#L60-L77)
+
+```c
+/// Add a GPIO event to set output (0 for low, 1 for high)
+int bl_gpio_output_set(uint8_t pin, uint8_t value) {
+    //  How many chars in the Simulation Events buffer to keep
+    int keep = 
+        strlen(events)  //  Keep the existing events
+        - 1;            //  Skip the trailing "]"
+    snprintf(
+        events + keep,
+        sizeof(events) - keep,
+        ", { \"gpio_output_set\": { "
+            "\"pin\": %d, "
+            "\"value\": %d "
+        "} } ]",
+        pin,
+        value
+    );
+    return 0; 
+}
+```
+
+Was ported to BL602 by calling the __BL602 GPIO Hardware Abstraction Layer__: [`ulisp.c`](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L3536-L3554)
+
+```c
+/// Set the GPIO Output to High or Low
+object *fn_digitalwrite (object *args, object *env) {
+    //  Omitted: Parse the GPIO pin number and High / Low
+    ...
+    //  Set the GPIO output (from BL602 GPIO HAL)
+    int rc = bl_gpio_output_set(
+        pin,  //  GPIO pin number
+        mode  //  0 for low, 1 for high
+    );
+```
+
+TODO
+
+![](https://lupyuen.github.io/images/wasm-add.png)
+
+TODO
+
 # JSON Stream of Simulation Events
 
 TODO
@@ -392,14 +454,6 @@ TODO
 TODO
 
 ![](https://lupyuen.github.io/images/wasm-stream.png)
-
-TODO
-
-# Add a Simulation Event
-
-TODO
-
-![](https://lupyuen.github.io/images/wasm-add.png)
 
 TODO
 
