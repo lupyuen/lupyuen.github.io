@@ -333,12 +333,13 @@ ctx.fillRect(315, 116, 35, 74);
   &quot;value&quot;: 1 
 } }
 </code></pre>
-<p>Which is handled by the BL602 Simulator to <strong>flip the Simulated LED</strong> on and off.</p>
+<p>Which is handled by the BL602 Simulator to <strong>flip the Simulated LED</strong> on or off.</p>
+<p>(Yes the blue LED we’ve seen earlier)</p>
 <p><em>Is uLisp directly controlling the BL602 Simulator?</em></p>
 <p>Not quite. uLisp is <strong>indirectly controlling the BL602 Simulator</strong> by sending Simulation Events.</p>
 <p>(There are good reasons for doing this <a href="https://en.wikipedia.org/wiki/Inversion_of_control"><strong>Inversion of Control</strong></a>, as well shall learn in a while)</p>
-<p><em>What about simulating time delays?</em></p>
-<p>uLisp generates <strong>Simulation Events for time delays</strong>, which get simulated by the BL602 Simulator. Our simulator pauses for the specified duration.</p>
+<p><em>What about time delays like <code>( delay 1000 )</code>?</em></p>
+<p>uLisp generates <strong>Simulation Events for time delays</strong>. To handle such events, our BL602 Simulator pauses for the specified duration.</p>
 <p>(It’s like playing a MIDI Stream)</p>
 <p>Hence this uLisp script…</p>
 <pre><code class="language-text">( delay 1000 )
@@ -346,7 +347,7 @@ ctx.fillRect(315, 116, 35, 74);
 <p>Will generate this Simulation Event…</p>
 <pre><code class="language-json">{ &quot;time_delay&quot;: { &quot;ticks&quot;: 1000 } }
 </code></pre>
-<p><em>What’s the JSON Stream of Simulation Events?</em></p>
+<p><em>What’s a JSON Stream of Simulation Events?</em></p>
 <p>To simulate a uLisp program on the BL602 Simulator, we shall pass an <strong>array of Simulation Events</strong> (in JSON format) from uLisp to the BL602 Simulator.</p>
 <p>This (partial) uLisp program that sets the GPIO Output and waits 1 second…</p>
 <pre><code class="language-text">( list
@@ -361,6 +362,8 @@ ctx.fillRect(315, 116, 35, 74);
   ... 
 ]
 </code></pre>
+<p>That will simulate a blinking BL602 LED (eventually).</p>
+<p>Let’s watch how uLisp adds an event to the JSON Stream of Simulation Events.</p>
 <h1 id="json-stream-of-simulation-events" class="section-header"><a href="#json-stream-of-simulation-events">5 JSON Stream of Simulation Events</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wasm-stream2.png" alt="" /></p>
