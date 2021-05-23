@@ -67,16 +67,17 @@
     <nav id="TOC"><ul>
 <li><a href="#emscripten-and-webassembly">1 Emscripten and WebAssembly</a><ul></ul></li>
 <li><a href="#repl-in-a-web-browser">2 REPL in a Web Browser</a><ul></ul></li>
-<li><a href="#simulate-bl602-hardware">3 Simulate BL602 Hardware</a><ul></ul></li>
-<li><a href="#json-stream-of-simulation-events">4 JSON Stream of Simulation Events</a><ul></ul></li>
-<li><a href="#add-a-simulation-event">5 Add a Simulation Event</a><ul></ul></li>
-<li><a href="#add-a-delay">6 Add a Delay</a><ul></ul></li>
-<li><a href="#handling-loops">7 Handling Loops</a><ul></ul></li>
-<li><a href="#html-canvas-and-javascript">8 HTML Canvas and JavaScript</a><ul></ul></li>
-<li><a href="#pass-data-between-javascript-and-webassembly">9 Pass data between JavaScript and WebAssembly</a><ul></ul></li>
-<li><a href="#add-simulator-to-blockly">10 Add Simulator to Blockly</a><ul></ul></li>
-<li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
-<li><a href="#notes">12 Notes</a><ul></ul></li></ul></nav><p>📝 <em>26 May 2021</em></p>
+<li><a href="#render-the-bl602-simulator">3 Render the BL602 Simulator</a><ul></ul></li>
+<li><a href="#simulate-bl602-hardware">4 Simulate BL602 Hardware</a><ul></ul></li>
+<li><a href="#json-stream-of-simulation-events">5 JSON Stream of Simulation Events</a><ul></ul></li>
+<li><a href="#add-a-simulation-event">6 Add a Simulation Event</a><ul></ul></li>
+<li><a href="#add-a-delay">7 Add a Delay</a><ul></ul></li>
+<li><a href="#handling-loops">8 Handling Loops</a><ul></ul></li>
+<li><a href="#html-canvas-and-javascript">9 HTML Canvas and JavaScript</a><ul></ul></li>
+<li><a href="#pass-data-between-javascript-and-webassembly">10 Pass data between JavaScript and WebAssembly</a><ul></ul></li>
+<li><a href="#add-simulator-to-blockly">11 Add Simulator to Blockly</a><ul></ul></li>
+<li><a href="#whats-next">12 What’s Next</a><ul></ul></li>
+<li><a href="#notes">13 Notes</a><ul></ul></li></ul></nav><p>📝 <em>26 May 2021</em></p>
 <p>What if we…</p>
 <ol>
 <li>
@@ -149,20 +150,20 @@
 <p>Here’s how we call the WebAssembly functions <code>_setup_ulisp</code> and <code>_execute_ulisp</code> from JavaScript: <a href="https://github.com/lupyuen/ulisp-bl602/blob/f520d0d8bb1583828a0ab456c90df187cd1eef68/docs/ulisp.html#L1300-L1321"><code>ulisp.html</code></a></p>
 <pre><code class="language-javascript">/// Wait for emscripten to be initialised
 Module.onRuntimeInitialized = function() {
-    //  Init uLisp interpreter
-    Module._setup_ulisp();
+  //  Init uLisp interpreter
+  Module._setup_ulisp();
 
-    //  Set the uLisp script 
-    var scr = &quot;( list 1 2 3 )&quot;;
+  //  Set the uLisp script 
+  var scr = &quot;( list 1 2 3 )&quot;;
 
-    //  Allocate WebAssembly memory for the script
-    var ptr = Module.allocate(intArrayFromString(scr), ALLOC_NORMAL);
+  //  Allocate WebAssembly memory for the script
+  var ptr = Module.allocate(intArrayFromString(scr), ALLOC_NORMAL);
 
-    //  Execute the uLisp script in WebAssembly
-    Module._execute_ulisp(ptr);
+  //  Execute the uLisp script in WebAssembly
+  Module._execute_ulisp(ptr);
 
-    //  Free the WebAssembly memory allocated for the script
-    Module._free(ptr);
+  //  Free the WebAssembly memory allocated for the script
+  Module._free(ptr);
 };
 </code></pre>
 <p><a href="https://emscripten.org/docs/porting/connecting_cpp_and_javascript/Interacting-with-code.html">(More about <code>allocate</code> and <code>free</code>)</a></p>
@@ -218,24 +219,24 @@ void time_delay(uint32_t millisec)
 <p>Here’s how we initialise the uLisp Interpreter: <a href="https://github.com/lupyuen/ulisp-bl602/blob/88e4fb6fad8025ceb7a88ff7154db053cc2ab861/docs/ulisp.html#L1324-L1350"><code>ulisp.html</code></a></p>
 <pre><code class="language-javascript">/// Wait for emscripten to be initialised
 Module.onRuntimeInitialized = function() {
-    //  Init uLisp interpreter
-    Module._setup_ulisp();
+  //  Init uLisp interpreter
+  Module._setup_ulisp();
 };
 </code></pre>
 <p>In the <strong><code>runScript</code></strong> function (called by the “<code>Run</code>” Button), we grab the uLisp Script from the text box and run it…</p>
 <pre><code class="language-javascript">/// Run the script in the input box
 function runScript() {
-    //  Get the uLisp script from the input text box
-    var scr = document.getElementById(&quot;input&quot;).value;
+  //  Get the uLisp script from the input text box
+  var scr = document.getElementById(&quot;input&quot;).value;
 
-    //  Allocate WebAssembly memory for the script
-    var ptr = Module.allocate(intArrayFromString(scr), ALLOC_NORMAL);
+  //  Allocate WebAssembly memory for the script
+  var ptr = Module.allocate(intArrayFromString(scr), ALLOC_NORMAL);
 
-    //  Execute the uLisp script
-    Module._execute_ulisp(ptr);
+  //  Execute the uLisp script
+  Module._execute_ulisp(ptr);
 
-    //  Free the WebAssembly memory allocated for the script
-    Module._free(ptr);
+  //  Free the WebAssembly memory allocated for the script
+  Module._free(ptr);
 }
 </code></pre>
 <p>And our <strong>uLisp REPL in WebAssembly</strong> is done!</p>
@@ -248,18 +249,71 @@ function runScript() {
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/wasm-repl.png" alt="uLisp REPL in WebAssembly" /></p>
-<h1 id="simulate-bl602-hardware" class="section-header"><a href="#simulate-bl602-hardware">3 Simulate BL602 Hardware</a></h1>
-<p><em>How shall we create a Simulated BL602 that blinks?</em></p>
-<p>TODO</p>
+<h1 id="render-the-bl602-simulator" class="section-header"><a href="#render-the-bl602-simulator">3 Render the BL602 Simulator</a></h1>
+<p><em>How shall we render the Simulated BL602 Board?</em></p>
+<p>Remember how we built the uLisp REPL with <strong>HTML and JavaScript</strong>?</p>
+<p>Let’s do the same for the <strong>BL602 Simulator</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/lisp-simulator2.png" alt="BL602 Simulator in HTML and JavaScript" /></p>
+<p>First we save this sketchy image of a PineCone BL602 Board as a <strong>PNG file</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/wasm-photoshop.png" alt="Creating the BL602 simulator image" /></p>
-<p>TODO</p>
+<p>We <strong>load the PNG file</strong> in our web page: <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.html#L1336-L1360"><code>ulisp.html</code></a></p>
+<pre><code class="language-javascript">/// Wait for emscripten to be initialised
+Module.onRuntimeInitialized = function() {
+  //  Omitted: Init uLisp interpreter
+  ...
+  // Load the simulator pic and render it
+  const image = new Image();
+  image.onload = renderSimulator;  //  Draw when image has loaded
+  image.src = 'pinecone.png';      //  Image to be loaded
+};
+</code></pre>
+<p>This code calls the <strong><code>renderSimulator</code></strong> function when our BL602 image has been loaded into memory.</p>
+<p>Emscripten has helpfully generated a <strong>HTML Canvas</strong> in <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.html#L1238-L1240"><code>ulisp.html</code></a> …</p>
+<pre><code class="language-html">&lt;canvas id=&quot;canvas&quot; class=&quot;emscripten&quot; oncontextmenu=&quot;event.preventDefault()&quot; tabindex=-1&gt;&lt;/canvas&gt;
+</code></pre>
+<p>In the <strong><code>renderSimulator</code></strong> function, let’s <strong>render our BL602 image</strong> onto the HTML Canvas: <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.html#L1348-L1360"><code>ulisp.html</code></a></p>
+<pre><code class="language-javascript">/// Render the simulator pic. Based on https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage
+function renderSimulator() {
+  //  Get the HTML canvas and context
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+
+  //  Resize the canvas
+  canvas.width  = 400;
+  canvas.height = 300;
+
+  //  Draw the image to fill the canvas
+  ctx.drawImage(this, 0, 0, canvas.width, canvas.height);
+}
+</code></pre>
+<p>Our <strong>rendered BL602 Simulator</strong> looks like this…</p>
 <p><img src="https://lupyuen.github.io/images/wasm-image.png" alt="Rendering the BL602 simulator image" /></p>
-<p>TODO</p>
+<p><em>What about the LED?</em></p>
+<p>To simulate the LED switching on, let’s draw a <strong>blue rectangle</strong> onto the HTML Canvas: <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.html#L1447-L1470"><code>ulisp.html</code></a></p>
+<pre><code class="language-javascript">//  Get the HTML Canvas Context
+const ctx = document.getElementById('canvas').getContext('2d');
+
+//  LED On: Set the fill colour to Blue
+ctx.fillStyle = '#B0B0FF';  //  Blue
+
+//  Draw the LED colour
+ctx.fillRect(315, 116, 35, 74);
+</code></pre>
+<p>Our <strong>rendered BL602 LED</strong> looks good…</p>
 <p><img src="https://lupyuen.github.io/images/wasm-led.png" alt="Rendering the LED" /></p>
+<p>And to simulate the LED switching off, we draw a <strong>grey rectangle</strong>: <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.html#L1447-L1470"><code>ulisp.html</code></a></p>
+<pre><code class="language-javascript">//  LED Off: Set the fill colour to Grey
+ctx.fillStyle = '#CCCCCC';  //  Grey
+
+//  Draw the LED colour
+ctx.fillRect(315, 116, 35, 74);
+</code></pre>
+<p>Now we wire up the Simulated BL602 LED to uLisp!</p>
+<h1 id="simulate-bl602-hardware" class="section-header"><a href="#simulate-bl602-hardware">4 Simulate BL602 Hardware</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lisp-simulator.png" alt="BL602 Simulator Design" /></p>
 <p>TODO</p>
-<h1 id="json-stream-of-simulation-events" class="section-header"><a href="#json-stream-of-simulation-events">4 JSON Stream of Simulation Events</a></h1>
+<h1 id="json-stream-of-simulation-events" class="section-header"><a href="#json-stream-of-simulation-events">5 JSON Stream of Simulation Events</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wasm-stream2.png" alt="" /></p>
 <p>TODO</p>
@@ -267,33 +321,33 @@ function runScript() {
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wasm-stream.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="add-a-simulation-event" class="section-header"><a href="#add-a-simulation-event">5 Add a Simulation Event</a></h1>
+<h1 id="add-a-simulation-event" class="section-header"><a href="#add-a-simulation-event">6 Add a Simulation Event</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wasm-add.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="add-a-delay" class="section-header"><a href="#add-a-delay">6 Add a Delay</a></h1>
+<h1 id="add-a-delay" class="section-header"><a href="#add-a-delay">7 Add a Delay</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wasm-delay.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="handling-loops" class="section-header"><a href="#handling-loops">7 Handling Loops</a></h1>
+<h1 id="handling-loops" class="section-header"><a href="#handling-loops">8 Handling Loops</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wasm-loop.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="html-canvas-and-javascript" class="section-header"><a href="#html-canvas-and-javascript">8 HTML Canvas and JavaScript</a></h1>
+<h1 id="html-canvas-and-javascript" class="section-header"><a href="#html-canvas-and-javascript">9 HTML Canvas and JavaScript</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wasm-led.png" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wasm-event.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="pass-data-between-javascript-and-webassembly" class="section-header"><a href="#pass-data-between-javascript-and-webassembly">9 Pass data between JavaScript and WebAssembly</a></h1>
+<h1 id="pass-data-between-javascript-and-webassembly" class="section-header"><a href="#pass-data-between-javascript-and-webassembly">10 Pass data between JavaScript and WebAssembly</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wasm-string.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="add-simulator-to-blockly" class="section-header"><a href="#add-simulator-to-blockly">10 Add Simulator to Blockly</a></h1>
+<h1 id="add-simulator-to-blockly" class="section-header"><a href="#add-simulator-to-blockly">11 Add Simulator to Blockly</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wasm-blockly.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">11 What’s Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">12 What’s Next</a></h1>
 <p>Porting uLisp and Blockly to BL602 has been a fun experience.</p>
 <p>But more work needs to be done, I hope the Community can help.</p>
 <p>Could this be the better way to learn Embedded Programming on modern microcontrollers?</p>
@@ -314,7 +368,7 @@ function runScript() {
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/wasm.md"><code>lupyuen.github.io/src/wasm.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">12 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">13 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1393554618924212224">this Twitter Thread</a></li>
 </ol>
