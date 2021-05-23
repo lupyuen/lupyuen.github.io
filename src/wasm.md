@@ -301,6 +301,8 @@ Our story so far...
 
 _How shall we connect uLisp to the BL602 Simulator... And blink the Simulated LED?_
 
+Oh yes we have ways of __making uLisp talk to BL602 Simulator__... From WebAssembly to JavaScript!
+
 TODO
 
 ![BL602 Simulator Design](https://lupyuen.github.io/images/lisp-simulator.png)
