@@ -309,17 +309,46 @@ Here's one way: A __JSON Stream of BL602 Simulation Events__...
 
 _What's a BL602 Simulation Event?_
 
-TODO
+When uLisp needs to __set the GPIO Output__ to High or Low (to flip an LED On/Off)...
 
-/// JSON Stream of Simulation Events:
-/// This uLisp script...
-///   ( digitalwrite 11 :high )
-///   ( delay 1000 )
-/// Will generate this JSON Stream of Simulation Events...
-/// [ { "gpio_output_set": { "pin": 11, "value": 1 } }, 
-///   { "time_delay": { "ticks": 1000 } }, 
-///   ... 
-/// ]
+```text
+( digitalwrite 11 :high )
+```
+
+It sends a __Simulation Event__ to the BL602 Simulator (in JSON format)...
+
+```json
+{ "gpio_output_set": { 
+  "pin": 11, 
+  "value": 1 
+} }
+```
+
+Which is handled by the BL602 Simulator to __flip the Simulated LED__ on and off.
+
+_Is uLisp directly controlling the BL602 Simulator?_
+
+Not quite. uLisp is __indirectly controlling the BL602 Simulator__ by sending Simulation Events.
+
+(There are good reasons for doing this [__Inversion of Control__](https://en.wikipedia.org/wiki/Inversion_of_control), as well shall learn in a while)
+
+_What about simulating time delays?_
+
+uLisp generates __Simulation Events for time delays__, which get simulated by the BL602 Simulator. Our simulator pauses for the specified duration.
+
+(It's like playing a MIDI Stream)
+
+Hence this uLisp script...
+
+```text
+( delay 1000 )
+```
+
+Will generate this Simulation Event...
+
+```json
+{ "time_delay": { "ticks": 1000 } }
+```
 
 # JSON Stream of Simulation Events
 
