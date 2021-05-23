@@ -69,8 +69,8 @@
 <li><a href="#repl-in-a-web-browser">2 REPL in a Web Browser</a><ul></ul></li>
 <li><a href="#render-the-bl602-simulator">3 Render the BL602 Simulator</a><ul></ul></li>
 <li><a href="#simulate-bl602-hardware">4 Simulate BL602 Hardware</a><ul></ul></li>
-<li><a href="#json-stream-of-simulation-events">5 JSON Stream of Simulation Events</a><ul></ul></li>
-<li><a href="#add-a-simulation-event">6 Add a Simulation Event</a><ul></ul></li>
+<li><a href="#add-a-simulation-event">5 Add a Simulation Event</a><ul></ul></li>
+<li><a href="#json-stream-of-simulation-events">6 JSON Stream of Simulation Events</a><ul></ul></li>
 <li><a href="#add-a-delay">7 Add a Delay</a><ul></ul></li>
 <li><a href="#handling-loops">8 Handling Loops</a><ul></ul></li>
 <li><a href="#html-canvas-and-javascript">9 HTML Canvas and JavaScript</a><ul></ul></li>
@@ -364,17 +364,61 @@ ctx.fillRect(315, 116, 35, 74);
 </code></pre>
 <p>That will simulate a blinking BL602 LED (eventually).</p>
 <p>Let’s watch how uLisp adds an event to the JSON Stream of Simulation Events.</p>
-<h1 id="json-stream-of-simulation-events" class="section-header"><a href="#json-stream-of-simulation-events">5 JSON Stream of Simulation Events</a></h1>
+<h1 id="add-a-simulation-event" class="section-header"><a href="#add-a-simulation-event">5 Add a Simulation Event</a></h1>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm/wasm.c#L8-L17"><code>wasm.c</code></a></p>
+<pre><code class="language-c">/// JSON Stream of Simulation Events:
+/// This uLisp script...
+///   ( digitalwrite 11 :high )
+///   ( delay 1000 )
+/// Will generate this JSON Stream of Simulation Events...
+/// [ { &quot;gpio_output_set&quot;: { &quot;pin&quot;: 11, &quot;value&quot;: 1 } }, 
+///   { &quot;time_delay&quot;: { &quot;ticks&quot;: 1000 } }, 
+///   ... 
+/// ]
+static char events[1024] = &quot;[]&quot;;
+</code></pre>
+<p>From <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm/wasm.c#L60-L77"><code>wasm.c</code></a></p>
+<pre><code class="language-c">/// Add a GPIO event to set output (0 for low, 1 for high)
+int bl_gpio_output_set(uint8_t pin, uint8_t value) {
+    //  How many chars in the Simulation Events buffer to keep
+    int keep = 
+        strlen(events)  //  Keep the existing events
+        - 1;            //  Skip the trailing &quot;]&quot;
+    snprintf(
+        events + keep,
+        sizeof(events) - keep,
+        &quot;, { \&quot;gpio_output_set\&quot;: { &quot;
+            &quot;\&quot;pin\&quot;: %d, &quot;
+            &quot;\&quot;value\&quot;: %d &quot;
+        &quot;} } ]&quot;,
+        pin,
+        value
+    );
+    return 0; 
+}
+</code></pre>
+<p>Was ported to BL602 by calling the <strong>BL602 GPIO Hardware Abstraction Layer</strong>: <a href="https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L3536-L3554"><code>ulisp.c</code></a></p>
+<pre><code class="language-c">/// Set the GPIO Output to High or Low
+object *fn_digitalwrite (object *args, object *env) {
+    //  Omitted: Parse the GPIO pin number and High / Low
+    ...
+    //  Set the GPIO output (from BL602 GPIO HAL)
+    int rc = bl_gpio_output_set(
+        pin,  //  GPIO pin number
+        mode  //  0 for low, 1 for high
+    );
+</code></pre>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wasm-add.png" alt="" /></p>
+<p>TODO</p>
+<h1 id="json-stream-of-simulation-events" class="section-header"><a href="#json-stream-of-simulation-events">6 JSON Stream of Simulation Events</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wasm-stream2.png" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wasm-ulisp.png" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wasm-stream.png" alt="" /></p>
-<p>TODO</p>
-<h1 id="add-a-simulation-event" class="section-header"><a href="#add-a-simulation-event">6 Add a Simulation Event</a></h1>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/wasm-add.png" alt="" /></p>
 <p>TODO</p>
 <h1 id="add-a-delay" class="section-header"><a href="#add-a-delay">7 Add a Delay</a></h1>
 <p>TODO</p>
