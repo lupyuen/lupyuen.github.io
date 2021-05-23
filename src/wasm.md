@@ -421,7 +421,7 @@ int bl_gpio_output_set(uint8_t pin, uint8_t value) {
 }
 ```
 
-Was ported to BL602 by calling the __BL602 GPIO Hardware Abstraction Layer__: [`ulisp.c`](https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L3536-L3554)
+Was ported to BL602 by calling the __BL602 GPIO Hardware Abstraction Layer__: [`ulisp.c`](https://github.com/lupyuen/ulisp-bl602/blob/wasm/src/ulisp.c#L3544-L3562)
 
 ```c
 /// Set the GPIO Output to High or Low
@@ -498,6 +498,10 @@ TODO
 TODO
 
 ![](https://lupyuen.github.io/images/wasm-blockly.png)
+
+TODO
+
+# Can We Simulate Any BL602 Firmware?
 
 TODO
 
