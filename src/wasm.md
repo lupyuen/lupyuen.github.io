@@ -457,6 +457,80 @@ Thus `fn_digitalwrite` (and the rest of uLisp) works fine on __Real BL602 (hardw
 
 TODO
 
+From [`wasm.c`](https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm/wasm.c#L24-L32)
+
+```c
+/// Return the JSON Stream of Simulation Events
+const char *get_simulation_events(void) {
+    assert(events[0] == '[');
+    assert(events[strlen(events) - 1] == ']');
+
+    //  Erase the leading comma: "[,...]" becomes "[ ...]"
+    if (events[1] == ',') { events[1] = ' '; }
+    return events;
+}
+```
+
+TODO
+
+From [`ulisp.html`](https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.html#L1362-L1407)
+
+```javascript
+/// Run the script in the input box
+function runScript() {
+    //  Get the uLisp script 
+    //  var scr = "( list 1 2 3 )";
+    const scr = document.getElementById("input").value;
+
+    //  Allocate WebAssembly memory for the script
+    const scr_ptr = Module.allocate(intArrayFromString(scr), ALLOC_NORMAL);
+
+    //  Catch any errors so that we can free the allocated memory
+    try {
+        //  Clear the JSON Stream of Simulation Events in WebAssembly
+        Module._clear_simulation_events();
+
+        //  Execute the uLisp script in WebAssembly
+        Module.print("\nExecute uLisp: " + scr + "\n");
+        Module._execute_ulisp(scr_ptr);
+
+        //  Get the JSON string of Simulation Events from WebAssembly. Looks like...
+        //  [ { "gpio_output_set": { "pin": 11, "value": 1 } }, 
+        //    { "time_delay": { "ticks": 1000 } }, ... ]
+        const json_ptr = Module._get_simulation_events();
+
+        //  Convert the JSON string from WebAssembly to JavaScript
+        const json = Module.UTF8ToString(json_ptr);
+
+        //  Parse the JSON Stream of Simulation Events
+        simulation_events = JSON.parse(json);
+        Module.print("Events: " + JSON.stringify(simulation_events, null, 2) + "\n");
+    } catch(err) {
+        //  Catch and show any errors
+        console.error(err);
+    } finally {
+        //  Free the WebAssembly memory allocated for the script
+        Module._free(scr_ptr);
+    }
+
+    //  Start a timer to simulate the returned events
+    if (simulation_events.length > 0) {
+        window.setTimeout("simulateEvents()", 1);
+    }
+}
+```
+
+TODO
+
+From [`wasm.c`](https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm/wasm.c#L19-L22)
+
+```c
+/// Clear the JSON Stream of Simulation Events
+void clear_simulation_events(void) {
+    strcpy(events, "[]");
+}
+```
+
 ![](https://lupyuen.github.io/images/wasm-stream2.png)
 
 TODO
