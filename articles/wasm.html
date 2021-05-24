@@ -366,11 +366,11 @@ ctx.fillRect(315, 116, 35, 74);
 <p>That will simulate a blinking BL602 LED (eventually).</p>
 <h1 id="add-a-simulation-event" class="section-header"><a href="#add-a-simulation-event">5 Add a Simulation Event</a></h1>
 <p>Let’s watch how uLisp <strong>adds an event</strong> to the JSON Stream of Simulation Events.</p>
-<p>We start by <strong>defining a string buffer</strong> for the JSON array of events: <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm/wasm.c#L8-L17"><code>wasm.c</code></a></p>
+<p>We <strong>define a string buffer</strong> for the JSON array of events: <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm/wasm.c#L8-L17"><code>wasm.c</code></a></p>
 <pre><code class="language-c">/// Buffer for JSON Stream of Simulation Events
 static char events[1024] = &quot;[]&quot;;
 </code></pre>
-<p>uLisp calls this function to <strong>append a GPIO Set Output Event</strong> to the buffer: <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm/wasm.c#L60-L77"><code>wasm.c</code></a></p>
+<p>To <strong>append a GPIO Output Event</strong> to the buffer, uLisp calls the function <strong><code>bl_gpio_output_set</code></strong> from <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm/wasm.c#L60-L77"><code>wasm.c</code></a></p>
 <pre><code class="language-c">/// Add a GPIO event to set output (0 for low, 1 for high)
 int bl_gpio_output_set(uint8_t pin, uint8_t value) {
     //  How many chars in the Simulation Events buffer to keep
@@ -392,14 +392,16 @@ int bl_gpio_output_set(uint8_t pin, uint8_t value) {
     return 0; 
 }
 </code></pre>
-<p><strong><code>bl_gpio_output_set</code></strong> appends a JSON event the string buffer, which will look like this…</p>
+<p>This code appends a JSON event to the string buffer, which will look like this…</p>
 <pre><code class="language-json">[, { &quot;gpio_output_set&quot;: { &quot;pin&quot;: 11, &quot;value&quot;: 1 } } ]
 </code></pre>
 <p>We’ll fix the leading comma “<code>,</code>” in a while.</p>
 <p><img src="https://lupyuen.github.io/images/wasm-add.png" alt="Add an event to the JSON Stream of Simulation Events" /></p>
 <p><em>How is <code>bl_gpio_output_set</code> called by uLisp?</em></p>
-<p>TODO</p>
-<p>Was ported to BL602 by calling the <strong>BL602 GPIO Hardware Abstraction Layer</strong>: <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/src/ulisp.c#L3544-L3562"><code>ulisp.c</code></a></p>
+<p>When we enter this uLisp script to set the GPIO Output…</p>
+<pre><code class="language-text">( digitalwrite 11 :high )
+</code></pre>
+<p>The uLisp Interpreter calls <code>fn_digitalwrite</code> defined in <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/src/ulisp.c#L3544-L3562"><code>ulisp.c</code></a> …</p>
 <pre><code class="language-c">/// Set the GPIO Output to High or Low
 object *fn_digitalwrite (object *args, object *env) {
     //  Omitted: Parse the GPIO pin number and High / Low
@@ -410,12 +412,13 @@ object *fn_digitalwrite (object *args, object *env) {
         mode  //  0 for low, 1 for high
     );
 </code></pre>
-<p>TODO</p>
+<p>Which calls our function <code>bl_gpio_output_set</code> to add the GPIO Output Event.</p>
+<p><em>Will this work when running on real BL602 hardware?</em></p>
+<p>Yep it does! <code>bl_gpio_output_set</code> is a real function defined in the <strong>BL602 IoT SDK</strong> for setting the GPIO Output.</p>
+<p>Thus <code>fn_digitalwrite</code> (and the rest of uLisp) works fine on <strong>Real BL602 (hardware) and Simulated BL602 (WebAssembly)</strong>.</p>
 <h1 id="get-the-simulation-events" class="section-header"><a href="#get-the-simulation-events">6 Get the Simulation Events</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wasm-stream2.png" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/wasm-ulisp.png" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wasm-stream.png" alt="GPIO Simulation Events" /></p>
 <h1 id="add-a-delay" class="section-header"><a href="#add-a-delay">7 Add a Delay</a></h1>
@@ -439,6 +442,8 @@ object *fn_digitalwrite (object *args, object *env) {
 <h1 id="add-simulator-to-blockly" class="section-header"><a href="#add-simulator-to-blockly">11 Add Simulator to Blockly</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wasm-blockly.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wasm-ulisp.png" alt="" /></p>
 <p>TODO</p>
 <h1 id="can-we-simulate-any-bl602-firmware" class="section-header"><a href="#can-we-simulate-any-bl602-firmware">12 Can We Simulate Any BL602 Firmware?</a></h1>
 <p>TODO</p>
