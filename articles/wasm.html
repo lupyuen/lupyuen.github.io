@@ -417,8 +417,8 @@ object *fn_digitalwrite (object *args, object *env) {
 <p>Yep it does! <code>bl_gpio_output_set</code> is a real function defined in the <strong>BL602 IoT SDK</strong> for setting the GPIO Output.</p>
 <p>Thus <code>fn_digitalwrite</code> (and the rest of uLisp) works fine on <strong>Real BL602 (hardware) and Simulated BL602 (WebAssembly)</strong>.</p>
 <h1 id="get-the-simulation-events" class="section-header"><a href="#get-the-simulation-events">6 Get the Simulation Events</a></h1>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm/wasm.c#L24-L32"><code>wasm.c</code></a></p>
+<p><em>uLisp (in WebAssembly) has generated the JSON Stream of BL602 Simulation Events. How will our BL602 Simulator (in JavaScript) fetch the Simulation Events?</em></p>
+<p>To <strong>fetch the Simulation Events</strong>, we expose a getter function in WebAssembly like so: <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm/wasm.c#L24-L32"><code>wasm.c</code></a></p>
 <pre><code class="language-c">/// Return the JSON Stream of Simulation Events
 const char *get_simulation_events(void) {
   assert(events[0] == '[');
@@ -429,8 +429,11 @@ const char *get_simulation_events(void) {
   return events;
 }
 </code></pre>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.html#L1362-L1407"><code>ulisp.html</code></a></p>
+<p><strong><code>get_simulation_events</code></strong> returns the WebAssembly string buffer that contains the Simulation Events (in JSON format).</p>
+<p><img src="https://lupyuen.github.io/images/wasm-stream2.png" alt="Clearing and getting Simulation Events" /></p>
+<p>Switching over from uLisp WebAssembly to our <strong>BL602 Simulator in JavaScript</strong>…</p>
+<p>Remember the <strong><code>runScript</code></strong> function we wrote for our uLisp REPL?</p>
+<p>Let’s rewrite <code>runScript</code> to <strong>fetch the Simulation Events</strong> by calling <code>get_simulation_events</code>. From <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.html#L1362-L1407"><code>ulisp.html</code></a> …</p>
 <pre><code class="language-javascript">/// JSON Stream of Simulation Events emitted by uLisp Interpreter. Looks like...
 ///  [ { &quot;gpio_output_set&quot;: { &quot;pin&quot;: 11, &quot;value&quot;: 1 } }, 
 ///    { &quot;time_delay&quot;: { &quot;ticks&quot;: 1000 } }, ... ]
@@ -453,42 +456,64 @@ function runScript() {
     //  Execute the uLisp script in WebAssembly
     Module.print(&quot;\nExecute uLisp: &quot; + scr + &quot;\n&quot;);
     Module._execute_ulisp(scr_ptr);
-
-    //  Get the JSON string of Simulation Events from WebAssembly. Looks like...
+</code></pre>
+<p>This is similar to the earlier version of <code>runScript</code> except…</p>
+<ol>
+<li>
+<p>We now have a static variable <strong><code>simulation_events</code></strong> that will store the Simulation Events</p>
+</li>
+<li>
+<p>We use a <strong><code>try...catch...finally</code></strong> block to deallocate the WebAssembly memory. </p>
+<p>(In case we hit errors in the JSON parsing)</p>
+</li>
+<li>
+<p>We call <strong><code>_clear_simulation_events</code></strong> to erase the buffer of Simulation Events (in WebAssembly).</p>
+<p>(More about this later)</p>
+</li>
+</ol>
+<p>After calling <code>_execute_ulisp</code> to execute the uLisp Script, we <strong>fetch the generated Simulation Events</strong> by calling <code>_get_simulation_events</code> (which we’ve seen earlier)…</p>
+<pre><code class="language-javascript">    //  Get the JSON string of Simulation Events from WebAssembly. Looks like...
     //  [ { &quot;gpio_output_set&quot;: { &quot;pin&quot;: 11, &quot;value&quot;: 1 } }, 
     //    { &quot;time_delay&quot;: { &quot;ticks&quot;: 1000 } }, ... ]
     const json_ptr = Module._get_simulation_events();
 
     //  Convert the JSON string from WebAssembly to JavaScript
     const json = Module.UTF8ToString(json_ptr);
-
-    //  Parse the JSON Stream of Simulation Events
+</code></pre>
+<p><code>_get_simulation_events</code> returns a <strong>pointer to a WebAssembly String</strong>.</p>
+<p>Here we call <strong><code>UTF8ToString</code></strong> (from Emscripten) to convert the pointer to a <strong>JavaScript String</strong>.</p>
+<p>We <strong>parse the returned string</strong> as a JSON array of Simulation Events…</p>
+<pre><code class="language-javascript">    //  Parse the JSON Stream of Simulation Events
     simulation_events = JSON.parse(json);
     Module.print(&quot;Events: &quot; + JSON.stringify(simulation_events, null, 2) + &quot;\n&quot;);
-  } catch(err) {
+</code></pre>
+<p>And we store the parsed array of events into the static variable <strong><code>simulation_events</code></strong></p>
+<p>In case the JSON Parsing fails, we have a <strong><code>try...catch...finally</code></strong> block to ensure that the WebAssembly memory is properly deallocated…</p>
+<pre><code class="language-javascript">  } catch(err) {
     //  Catch and show any errors
     console.error(err);
   } finally {
     //  Free the WebAssembly memory allocated for the script
     Module._free(scr_ptr);
   }
-
-  //  Start a timer to simulate the returned events
+</code></pre>
+<p>Now we’re ready to <strong>run the Simulated BL602 Events</strong> and blink the Simulated BL602 LED!</p>
+<pre><code class="language-javascript">  //  Start a timer to simulate the returned events
   if (simulation_events.length &gt; 0) {
     window.setTimeout(&quot;simulateEvents()&quot;, 1);
   }
 }
 </code></pre>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm/wasm.c#L19-L22"><code>wasm.c</code></a></p>
+<p>We call a JavaScript Timer to trigger the function <strong><code>simulateEvents</code></strong>.</p>
+<p>This simulates the events in <code>simulation_events</code> (like flipping the Simulated LED), one event at a time.</p>
+<p><img src="https://lupyuen.github.io/images/wasm-stream.png" alt="GPIO Simulation Events" /></p>
+<p><em>What’s inside the WebAssembly function <code>clear_simulation_events</code>?</em></p>
+<p>Before running a uLisp Script, our BL602 Simulator calls <strong><code>clear_simulation_events</code></strong> to erase the buffer of Simulation Events: <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm/wasm.c#L19-L22"><code>wasm.c</code></a></p>
 <pre><code class="language-c">/// Clear the JSON Stream of Simulation Events
 void clear_simulation_events(void) {
   strcpy(events, &quot;[]&quot;);
 }
 </code></pre>
-<p><img src="https://lupyuen.github.io/images/wasm-stream2.png" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/wasm-stream.png" alt="GPIO Simulation Events" /></p>
 <h1 id="add-a-delay" class="section-header"><a href="#add-a-delay">7 Add a Delay</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wasm-delay.png" alt="" /></p>
