@@ -381,14 +381,14 @@ That will simulate a blinking BL602 LED (eventually).
 
 Let's watch how uLisp __adds an event__ to the JSON Stream of Simulation Events.
 
-We start by __defining a string buffer__ for the JSON array of events: [`wasm.c`](https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm/wasm.c#L8-L17)
+We __define a string buffer__ for the JSON array of events: [`wasm.c`](https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm/wasm.c#L8-L17)
 
 ```c
 /// Buffer for JSON Stream of Simulation Events
 static char events[1024] = "[]";
 ```
 
-uLisp calls this function to __append a GPIO Set Output Event__ to the buffer: [`wasm.c`](https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm/wasm.c#L60-L77)
+To __append a GPIO Output Event__ to the buffer, uLisp calls the function __`bl_gpio_output_set`__ from [`wasm.c`](https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm/wasm.c#L60-L77)
 
 ```c
 /// Add a GPIO event to set output (0 for low, 1 for high)
@@ -413,7 +413,7 @@ int bl_gpio_output_set(uint8_t pin, uint8_t value) {
 }
 ```
 
-__`bl_gpio_output_set`__ appends a JSON event the string buffer, which will look like this...
+This code appends a JSON event to the string buffer, which will look like this...
 
 ```json
 [, { "gpio_output_set": { "pin": 11, "value": 1 } } ]
@@ -425,9 +425,13 @@ We'll fix the leading comma "`,`" in a while.
 
 _How is `bl_gpio_output_set` called by uLisp?_
 
-TODO
+When we enter this uLisp script to set the GPIO Output...
 
-Was ported to BL602 by calling the __BL602 GPIO Hardware Abstraction Layer__: [`ulisp.c`](https://github.com/lupyuen/ulisp-bl602/blob/wasm/src/ulisp.c#L3544-L3562)
+```text
+( digitalwrite 11 :high )
+```
+
+The uLisp Interpreter calls `fn_digitalwrite` defined in [`ulisp.c`](https://github.com/lupyuen/ulisp-bl602/blob/wasm/src/ulisp.c#L3544-L3562) ...
 
 ```c
 /// Set the GPIO Output to High or Low
@@ -441,17 +445,19 @@ object *fn_digitalwrite (object *args, object *env) {
     );
 ```
 
-TODO
+Which calls our function `bl_gpio_output_set` to add the GPIO Output Event.
+
+_Will this work when running on real BL602 hardware?_
+
+Yep it does! `bl_gpio_output_set` is a real function defined in the __BL602 IoT SDK__ for setting the GPIO Output.
+
+Thus `fn_digitalwrite` (and the rest of uLisp) works fine on __Real BL602 (hardware) and Simulated BL602 (WebAssembly)__.
 
 # Get the Simulation Events
 
 TODO
 
 ![](https://lupyuen.github.io/images/wasm-stream2.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/wasm-ulisp.png)
 
 TODO
 
@@ -498,6 +504,10 @@ TODO
 TODO
 
 ![](https://lupyuen.github.io/images/wasm-blockly.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/wasm-ulisp.png)
 
 TODO
 
