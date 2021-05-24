@@ -377,28 +377,18 @@ Will generate this __JSON Stream of Simulation Events__...
 
 That will simulate a blinking BL602 LED (eventually).
 
-Let's watch how uLisp adds an event to the JSON Stream of Simulation Events.
-
 # Add a Simulation Event
 
-TODO
+Let's watch how uLisp __adds an event__ to the JSON Stream of Simulation Events.
 
-From [`wasm.c`](https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm/wasm.c#L8-L17)
+We start by __defining a string buffer__ for the JSON array of events: [`wasm.c`](https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm/wasm.c#L8-L17)
 
 ```c
-/// JSON Stream of Simulation Events:
-/// This uLisp script...
-///   ( digitalwrite 11 :high )
-///   ( delay 1000 )
-/// Will generate this JSON Stream of Simulation Events...
-/// [ { "gpio_output_set": { "pin": 11, "value": 1 } }, 
-///   { "time_delay": { "ticks": 1000 } }, 
-///   ... 
-/// ]
+/// Buffer for JSON Stream of Simulation Events
 static char events[1024] = "[]";
 ```
 
-From [`wasm.c`](https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm/wasm.c#L60-L77)
+uLisp calls this function to __append a GPIO Set Output Event__ to the buffer: [`wasm.c`](https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm/wasm.c#L60-L77)
 
 ```c
 /// Add a GPIO event to set output (0 for low, 1 for high)
@@ -407,6 +397,8 @@ int bl_gpio_output_set(uint8_t pin, uint8_t value) {
     int keep = 
         strlen(events)  //  Keep the existing events
         - 1;            //  Skip the trailing "]"
+
+    //  Append the GPIO Set Output Event to the buffer
     snprintf(
         events + keep,
         sizeof(events) - keep,
@@ -420,6 +412,20 @@ int bl_gpio_output_set(uint8_t pin, uint8_t value) {
     return 0; 
 }
 ```
+
+__`bl_gpio_output_set`__ appends a JSON event the string buffer, which will look like this...
+
+```json
+[, { "gpio_output_set": { "pin": 11, "value": 1 } } ]
+```
+
+We'll fix the leading comma "`,`" in a while.
+
+![Add an event to the JSON Stream of Simulation Events](https://lupyuen.github.io/images/wasm-add.png)
+
+_How is `bl_gpio_output_set` called by uLisp?_
+
+TODO
 
 Was ported to BL602 by calling the __BL602 GPIO Hardware Abstraction Layer__: [`ulisp.c`](https://github.com/lupyuen/ulisp-bl602/blob/wasm/src/ulisp.c#L3544-L3562)
 
@@ -437,15 +443,7 @@ object *fn_digitalwrite (object *args, object *env) {
 
 TODO
 
-![](https://lupyuen.github.io/images/wasm-add.png)
-
-TODO
-
-![GPIO Simulation Events](https://lupyuen.github.io/images/wasm-stream.png)
-
-TODO
-
-# JSON Stream of Simulation Events
+# Get the Simulation Events
 
 TODO
 
@@ -456,6 +454,8 @@ TODO
 ![](https://lupyuen.github.io/images/wasm-ulisp.png)
 
 TODO
+
+![GPIO Simulation Events](https://lupyuen.github.io/images/wasm-stream.png)
 
 # Add a Delay
 
