@@ -849,14 +849,15 @@ object *eval (object *form, object *env) {
 <p>TODO</p>
 <ol>
 <li>
+<p>We <strong>create a Blockly folder</strong> for our new web page (based on the Blockly folder from the previous article)…</p>
 <p>Copy the folder <a href="https://github.com/AppKaki/blockly-ulisp/tree/wasm/demos/code"><code>demos/code</code></a> to <a href="https://github.com/AppKaki/blockly-ulisp/blob/wasm/demos/simulator"><code>demos/simulator</code></a></p>
 </li>
 <li>
+<p>We <strong>copy the WebAssembly files</strong> to the Blockly folder…</p>
 <p>Copy <code>ulisp.js</code> and <code>ulisp.wasm</code> from <a href="https://github.com/lupyuen/ulisp-bl602/tree/wasm/docs"><code>ulisp-bl602/docs</code></a> to <a href="https://github.com/AppKaki/blockly-ulisp/blob/wasm/demos/simulator"><code>demos/simulator</code></a></p>
 </li>
 <li>
-<p>Insert HTML Canvas</p>
-<p>From <a href="https://github.com/AppKaki/blockly-ulisp/blob/wasm/demos/simulator/index.html#L110-L120"><code>index.html</code></a></p>
+<p>Insert the <strong>HTML Canvas and the Output Box</strong> (for the uLisp log): <a href="https://github.com/AppKaki/blockly-ulisp/blob/wasm/demos/simulator/index.html#L110-L120"><code>index.html</code></a></p>
 <pre><code class="language-html">&lt;!-- Canvas for Simulator --&gt;
 &lt;tr&gt;
   &lt;td colspan=2 align=&quot;center&quot;&gt;
@@ -869,10 +870,10 @@ object *eval (object *form, object *env) {
 &lt;/tr&gt;
 &lt;!-- End --&gt;
 </code></pre>
+<p>(<code>spinner</code>, <code>status</code> and <code>progress</code> are needed by the Emscripten JavaScript)</p>
 </li>
 <li>
-<p>Add Emscripten JavaScript</p>
-<p>From <a href="https://github.com/AppKaki/blockly-ulisp/blob/wasm/demos/simulator/index.html#L482-L562"><code>index.html</code></a></p>
+<p>Copy the <strong>Emscripten JavaScript</strong> from <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.html#L1250-L1326"><code>ulisp.html</code></a> to <a href="https://github.com/AppKaki/blockly-ulisp/blob/wasm/demos/simulator/index.html#L482-L562"><code>index.html</code></a></p>
 <pre><code class="language-html">&lt;!--  Emscripten Script: From ulisp.html  --&gt;
 &lt;script type='text/javascript'&gt;
   var statusElement   = ...
@@ -895,8 +896,7 @@ object *eval (object *form, object *env) {
 </code></pre>
 </li>
 <li>
-<p>Add Custom Script</p>
-<p>From <a href="https://github.com/AppKaki/blockly-ulisp/blob/wasm/demos/simulator/index.html#L564-L716"><code>index.html</code></a></p>
+<p>Copy the <strong>BL602 Simulator JavaScript</strong> from <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.html#L1328-L1480"><code>ulisp.html</code></a> to <a href="https://github.com/AppKaki/blockly-ulisp/blob/wasm/demos/simulator/index.html#L564-L716"><code>index.html</code></a></p>
 <pre><code class="language-html">&lt;!--  Custom Script: TODO Sync with ulisp.html  --&gt;
 &lt;script type=&quot;text/javascript&quot;&gt;
 
@@ -926,7 +926,7 @@ object *eval (object *form, object *env) {
 </code></pre>
 </li>
 <li>
-<p>Modify runScript</p>
+<p>Modify the <code>runScript</code> function above…</p>
 <pre><code class="language-javascript">/// Run the uLisp script from Input Box
 function runScript() {
   //  Get the uLisp script from Input Box
@@ -935,7 +935,7 @@ function runScript() {
   //  Allocate WebAssembly memory for the script
   const scr_ptr = Module.allocate(intArrayFromString(scr), ALLOC_NORMAL);
 </code></pre>
-<p>From <a href="https://github.com/AppKaki/blockly-ulisp/blob/wasm/demos/simulator/index.html#L598-L643"><code>index.html</code></a></p>
+<p>So that it runs the <strong>script from the provided parameter</strong> (instead of the REPL Input Box): <a href="https://github.com/AppKaki/blockly-ulisp/blob/wasm/demos/simulator/index.html#L598-L643"><code>index.html</code></a></p>
 <pre><code class="language-javascript">/// Run the provided uLisp script
 function runScript(scr) {
   //  Allocate WebAssembly memory for the script
@@ -943,16 +943,15 @@ function runScript(scr) {
 </code></pre>
 </li>
 <li>
-<p>Load Emscripten WebAssembly</p>
-<p>From [<code>index.html</code>](https://github.com/AppKaki/blockly-ulisp/blob/wasm/demos/simulator/index.html#L718-L722</p>
+<p>Load our <strong>Emscripten WebAssembly</strong> into Blockly: <a href="https://github.com/AppKaki/blockly-ulisp/blob/wasm/demos/simulator/index.html#L718-L722"><code>index.html</code></a></p>
 <pre><code class="language-html">&lt;!--  Load Emscripten WebAssembly: From ulisp.html  --&gt;
 &lt;script async type=&quot;text/javascript&quot; src=&quot;ulisp.js&quot;&gt;&lt;/script&gt;
 &lt;!--  End of Emscripten WebAssembly  --&gt;
 </code></pre>
 </li>
 <li>
-<p>Run the uLisp code on BL602 Simulator</p>
-<p>From <a href="https://github.com/AppKaki/blockly-ulisp/blob/wasm/demos/simulator/code.js#L575-L582"><code>code.js</code></a></p>
+<p>Previously we ran the uLisp code on a real BL602 with the Web Serial API.</p>
+<p>Now we <strong>run the uLisp code on BL602 Simulator</strong>: <a href="https://github.com/AppKaki/blockly-ulisp/blob/wasm/demos/simulator/code.js#L575-L582"><code>code.js</code></a></p>
 <pre><code class="language-javascript">///  Run the uLisp code on BL602 Simulator
 Code.runJS = function() {
   //  Generate the uLisp code by calling the Blockly Code Generator for uLisp
@@ -964,6 +963,7 @@ Code.runJS = function() {
 </code></pre>
 </li>
 </ol>
+<p>And that’s how we added uLisp WebAssembly and BL602 Simulator to Blockly!</p>
 <h1 id="why-simulate-a-stream-of-events" class="section-header"><a href="#why-simulate-a-stream-of-events">12 Why Simulate A Stream Of Events?</a></h1>
 <p>TODO</p>
 <p>Inversion of control</p>
