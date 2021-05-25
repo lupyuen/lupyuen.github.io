@@ -843,11 +843,78 @@ Let's watch __Time Delay Events__ in action! Guess what happens when we run this
 
 # Simulate Loops
 
-TODO
+Let's ponder this uLisp Script that __blinks the LED in a loop__...
 
-![](https://lupyuen.github.io/images/wasm-loop.png)
+```text
+( loop
+  ( digitalwrite 11 :low )
+  ( delay 1000 )
+  ( digitalwrite 11 :high )
+  ( delay 1000 )
+)
+```
 
-TODO
+_Wait a minute... Won't this uLisp Script generate an Infinite Stream of Simulation Events? And overflow our 1024-byte event buffer?_
+
+Righto! We __can't allow uLisp Loops and Recursion to run forever__ in our simulator. We must stop them! (Eventually)
+
+We __stop runaway Loops and Recursion__ here: [`wasm.c`](https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm/wasm.c#L34-L46)
+
+```c
+/// Preempt the uLisp task and allow background tasks to run.
+/// Called by eval() and sp_loop() in src/ulisp.c
+void yield_ulisp(void) {
+  //  If uLisp is running a loop or recursion,
+  //  the Simulation Events buffer may overflow.
+  //  We stop before the buffer overflows.
+  if (strlen(events) + 100 >= sizeof(events)) {  //  Assume 100 bytes of leeway
+
+    //  Cancel the loop or recursion by jumping to loop_ulisp() in src/ulisp.c
+    puts("Too many iterations, stopping the loop");
+    extern jmp_buf exception;  //  Defined in src/ulisp.c
+    longjmp(exception, 1);
+  }
+}
+```
+
+uLisp calls __`yield_ulisp`__ when it __iterates through a loop__ or evaluates a recursive expression.
+
+If `yield_ulisp` detects that the buffer for Simulation Events is about to overflow, it stops the uLisp Loop / Recursion by jumping out (`longjmp`) and reporting an exception.
+
+(Which will return a __truncated stream of Simulation Events__ to the BL602 Simulator)
+
+_Looks kinda simplistic?_
+
+Yes this solution might not work for some kinds of uLisp Loops and Recursion. But it's sufficient to __simulate a blinking LED__ (for a short while).
+
+_How does uLisp call `yield_ulisp`?_
+
+uLisp calls `yield_ulisp` when __iterating through a loop__ in [`ulisp.c`](https://github.com/lupyuen/ulisp-bl602/blob/wasm/src/ulisp.c#L1698-L1702) ...
+
+```c
+///  Execute uLisp Loop
+object *sp_loop (object *args, object *env) {
+  ...
+  for (;;) {
+    //  Preempt the uLisp task and allow background tasks to run
+    yield_ulisp();
+```
+
+And when it __evaluates a (potentially) recursive expression__: [`ulisp.c`](https://github.com/lupyuen/ulisp-bl602/blob/wasm/src/ulisp.c#L4658-L4664)
+
+```c
+///  Main uLisp Evaluator
+object *eval (object *form, object *env) {
+  ...
+  // Preempt the uLisp task and allow background tasks to run
+  yield_ulisp();
+```
+
+Here's our BL602 Simulator running the __LED Blinky Loop__. Watch how the __Simulated LED stops blinking__ after a while...
+
+-   [__Watch the demo on YouTube__](https://youtu.be/IUmVa3vNpRs)
+
+![Simulating loops](https://lupyuen.github.io/images/wasm-loop.png)
 
 # HTML Canvas and JavaScript
 
@@ -872,6 +939,14 @@ TODO
 # Why Simulate A Stream Of Events?
 
 TODO
+
+Inversion of control
+
+Less coupling
+
+Time compression
+
+Time reversal
 
 # Can We Simulate Any BL602 Firmware?
 
