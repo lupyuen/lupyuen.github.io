@@ -999,6 +999,133 @@ Read on to find out how we connected Blockly to uLisp REPL (in WebAssembly) and 
 
 TODO
 
+1.  Copy the folder [`demos/code`](https://github.com/AppKaki/blockly-ulisp/tree/wasm/demos/code) to [`demos/simulator`](https://github.com/AppKaki/blockly-ulisp/blob/wasm/demos/simulator)
+
+1.  Copy `ulisp.js` and `ulisp.wasm` from [`ulisp-bl602/docs`](https://github.com/lupyuen/ulisp-bl602/tree/wasm/docs) to [`demos/simulator`](https://github.com/AppKaki/blockly-ulisp/blob/wasm/demos/simulator)
+
+1.  Insert HTML Canvas
+
+    From [`index.html`](https://github.com/AppKaki/blockly-ulisp/blob/wasm/demos/simulator/index.html#L110-L120)
+
+    ```html
+    <!-- Canvas for Simulator -->
+    <tr>
+      <td colspan=2 align="center">
+        <canvas id="canvas" width="400" height="300"></canvas>
+        <textarea id="output" style="width: 300px; height: 300px;"></textarea>
+        <div class="spinner" id='spinner'></div>
+        <div class="emscripten" id="status"></div>    
+        <progress value="0" max="100" id="progress" hidden=1></progress>
+      </td>
+    </tr>
+    <!-- End -->
+    ```
+
+1.  Add Emscripten JavaScript
+
+    From [`index.html`](https://github.com/AppKaki/blockly-ulisp/blob/wasm/demos/simulator/index.html#L482-L562)
+
+    ```html
+    <!--  Emscripten Script: From ulisp.html  -->
+    <script type='text/javascript'>
+      var statusElement   = ...
+      var progressElement = ...
+      var spinnerElement  = ...
+
+      var Module = {
+        preRun:  [],
+        postRun: [],
+        print:     ... ,
+        printErr:  ... ,
+        canvas:    ... ,
+        setStatus: ... ,
+        monitorRunDependencies: ...
+      };
+      Module.setStatus( ... );
+      window.onerror = ...
+    </script>
+    <!--  End of Emscripten Script  -->
+    ```
+
+1.  Add Custom Script
+
+    From [`index.html`](https://github.com/AppKaki/blockly-ulisp/blob/wasm/demos/simulator/index.html#L564-L716)
+
+    ```html
+    <!--  Custom Script: TODO Sync with ulisp.html  -->
+    <script type="text/javascript">
+
+      /// JSON Stream of Simulation Events emitted by uLisp Interpreter
+      let simulation_events = [];
+
+      /// Wait for emscripten to be initialised
+      Module.onRuntimeInitialized = ...
+
+      /// Render the simulator pic
+      function renderSimulator() { ... }
+
+      /// Run the provided script
+      function runScript(scr) { /* See changes below */ }
+
+      /// Simulate the BL602 Simulation Events recorded in simulate_events
+      function simulateEvents() { ... }
+
+      /// Simulate setting GPIO pin output to value 0 (Low) or 1 (High)
+      function gpio_output_set(pin, value) { ... }
+
+      /// Simulate a delay for the specified number of ticks
+      function time_delay(ticks) { ... }
+
+    </script>    
+    <!--  End of Custom Script  -->
+    ```
+
+1.  Modify runScript
+
+    ```javascript
+    /// Run the uLisp script from Input Box
+    function runScript() {
+      //  Get the uLisp script from Input Box
+      const scr = document.getElementById("input").value;
+
+      //  Allocate WebAssembly memory for the script
+      const scr_ptr = Module.allocate(intArrayFromString(scr), ALLOC_NORMAL);
+    ```
+
+    From [`index.html`](https://github.com/AppKaki/blockly-ulisp/blob/wasm/demos/simulator/index.html#L598-L643)
+
+    ```javascript
+    /// Run the provided uLisp script
+    function runScript(scr) {
+      //  Allocate WebAssembly memory for the script
+      const scr_ptr = Module.allocate(intArrayFromString(scr), ALLOC_NORMAL);
+    ```
+
+1.  Load Emscripten WebAssembly
+
+    From [`index.html`](https://github.com/AppKaki/blockly-ulisp/blob/wasm/demos/simulator/index.html#L718-L722
+
+    ```html
+    <!--  Load Emscripten WebAssembly: From ulisp.html  -->
+    <script async type="text/javascript" src="ulisp.js"></script>
+    <!--  End of Emscripten WebAssembly  -->
+    ```
+
+1.  Run the uLisp code on BL602 Simulator
+
+    From [`code.js`](https://github.com/AppKaki/blockly-ulisp/blob/wasm/demos/simulator/code.js#L575-L582)
+
+    ```javascript
+    ///  Run the uLisp code on BL602 Simulator
+    Code.runJS = function() {
+      //  Generate the uLisp code by calling the Blockly Code Generator for uLisp
+      var code = Blockly.Lisp.workspaceToCode(Code.workspace);
+
+      //  Run the uLisp code on BL602 Simulator
+      runScript(code);   //  Defined in index.html
+    }    
+    ```
+
 # Why Simulate A Stream Of Events?
 
 TODO
