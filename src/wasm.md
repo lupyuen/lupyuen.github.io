@@ -583,6 +583,10 @@ void clear_simulation_events(void) {
 }
 ```
 
+# Flip the Simulated LED
+
+TODO
+
 # Add a Delay
 
 TODO
@@ -608,14 +612,6 @@ TODO
 TODO
 
 ![](https://lupyuen.github.io/images/wasm-event.png)
-
-TODO
-
-# Pass data between JavaScript and WebAssembly
-
-TODO
-
-![](https://lupyuen.github.io/images/wasm-string.png)
 
 TODO
 
@@ -664,3 +660,4 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 ![](https://lupyuen.github.io/images/wasm-error.png)
 
+![Passing simulation events from WebAssembly to WebAssembly](https://lupyuen.github.io/images/wasm-string.png)
