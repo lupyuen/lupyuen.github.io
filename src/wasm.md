@@ -756,6 +756,10 @@ TODO
 
 TODO
 
+# Why Simulate A Stream Of Events?
+
+TODO
+
 # Can We Simulate Any BL602 Firmware?
 
 TODO
