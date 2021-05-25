@@ -716,6 +716,8 @@ Here's what we see in the BL602 Simulator when we set the __GPIO Output to Low__
 
 -   [__Watch the demo on YouTube__](https://youtu.be/KpvqCmFtPgc)
 
+-   [__Try it here__](https://lupyuen.github.io/ulisp-bl602/ulisp.html)
+
 ![Flip the simulated LED](https://lupyuen.github.io/images/wasm-led.png)
 
 # Simulate Delays
@@ -839,6 +841,8 @@ Let's watch __Time Delay Events__ in action! Guess what happens when we run this
 
 -   [__Watch the demo on YouTube__](https://youtu.be/piRLuBYSjTw)
 
+-   [__Try it here__](https://lupyuen.github.io/ulisp-bl602/ulisp.html)
+
 ![Simulating delays](https://lupyuen.github.io/images/wasm-delay.png)
 
 # Simulate Loops
@@ -913,6 +917,8 @@ object *eval (object *form, object *env) {
 Here's our BL602 Simulator running the __LED Blinky Loop__. Watch how the __Simulated LED stops blinking__ after a while...
 
 -   [__Watch the demo on YouTube__](https://youtu.be/IUmVa3vNpRs)
+
+-   [__Try it here__](https://lupyuen.github.io/ulisp-bl602/ulisp.html)
 
 ![Simulating loops](https://lupyuen.github.io/images/wasm-loop.png)
 
