@@ -1126,7 +1126,9 @@ Here's what we did...
     }    
     ```
 
-And that's how we __added uLisp WebAssembly and BL602 Simulator to Blockly__!
+And that's how we __added uLisp WebAssembly and BL602 Simulator to Blockly__...
+
+_Dragging-and-dropping uLisp programs for microcontrollers... And running them WITHOUT a microcontroller!_
 
 # Why Simulate A Stream Of Events?
 
