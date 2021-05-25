@@ -2,6 +2,8 @@
 
 📝 _26 May 2021_
 
+_Drag-and-drop uLisp programs for microcontrollers... And run them WITHOUT a microcontroller!_
+
 What if we...
 
 1.  Compile the __uLisp Interpreter [(from the last article)](https://lupyuen.github.io/articles/lisp) to WebAssembly__...
@@ -14,15 +16,13 @@ What if we...
 
 1.  To allow embedded developers to __preview their BL602 Blockly Apps in the Web Browser__?
 
-Today we shall build a Simulator for the BL602 RISC-V SoC that runs in a Web Browser. And we'll use it to preview Blockly uLisp Apps in the browser!
+Today we shall build a __Simulator for the BL602 RISC-V SoC__ that runs in a Web Browser. And we'll use it to __preview Blockly uLisp Apps in the browser__!
 
-- [__Watch the BL602 Simulator with Blockly and uLisp WebAssembly demo on YouTube__](https://youtu.be/Ag2CERd1OzQ)
+- [__Watch the BL602 Simulator demo on YouTube__](https://youtu.be/Ag2CERd1OzQ)
 
-- [__Try BL602 Simulator with Blockly and uLisp WebAssembly here__](https://appkaki.github.io/blockly-ulisp/demos/simulator/)
+![BL602 Simulator with Blockly and uLisp in WebAssembly](https://lupyuen.github.io/images/wasm-title.png)
 
-![BL602 Simulator with uLisp and Blockly in WebAssembly](https://lupyuen.github.io/images/wasm-title.png)
-
-_BL602 Simulator with uLisp and Blockly in WebAssembly_
+_BL602 Simulator with Blockly and uLisp in WebAssembly_
 
 # Emscripten and WebAssembly
 
