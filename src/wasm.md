@@ -985,7 +985,7 @@ Yes we can! Just do this...
 
     The __Simulated LED blinks every second!__
 
-    (And stops after a while, because we don't support infinite loops)
+    (And stops after a while, because we don't simulate infinite loops)
 
     [__Watch the demo on YouTube__](https://youtu.be/Ag2CERd1OzQ)
 
