@@ -999,13 +999,15 @@ Read on to find out how we connected Blockly to uLisp REPL (in WebAssembly) and 
 
 TODO
 
-1.  Copy the folder [`demos/code`](https://github.com/AppKaki/blockly-ulisp/tree/wasm/demos/code) to [`demos/simulator`](https://github.com/AppKaki/blockly-ulisp/blob/wasm/demos/simulator)
+1.  We __create a Blockly folder__ for our new web page (based on the Blockly folder from the previous article)...
 
-1.  Copy `ulisp.js` and `ulisp.wasm` from [`ulisp-bl602/docs`](https://github.com/lupyuen/ulisp-bl602/tree/wasm/docs) to [`demos/simulator`](https://github.com/AppKaki/blockly-ulisp/blob/wasm/demos/simulator)
+    Copy the folder [`demos/code`](https://github.com/AppKaki/blockly-ulisp/tree/wasm/demos/code) to [`demos/simulator`](https://github.com/AppKaki/blockly-ulisp/blob/wasm/demos/simulator)
 
-1.  Insert HTML Canvas
+1.  We __copy the WebAssembly files__ to the Blockly folder...
 
-    From [`index.html`](https://github.com/AppKaki/blockly-ulisp/blob/wasm/demos/simulator/index.html#L110-L120)
+    Copy `ulisp.js` and `ulisp.wasm` from [`ulisp-bl602/docs`](https://github.com/lupyuen/ulisp-bl602/tree/wasm/docs) to [`demos/simulator`](https://github.com/AppKaki/blockly-ulisp/blob/wasm/demos/simulator)
+
+1.  Insert the __HTML Canvas and the Output Box__ (for the uLisp log): [`index.html`](https://github.com/AppKaki/blockly-ulisp/blob/wasm/demos/simulator/index.html#L110-L120)
 
     ```html
     <!-- Canvas for Simulator -->
@@ -1021,9 +1023,9 @@ TODO
     <!-- End -->
     ```
 
-1.  Add Emscripten JavaScript
+    (`spinner`, `status` and `progress` are needed by the Emscripten JavaScript)
 
-    From [`index.html`](https://github.com/AppKaki/blockly-ulisp/blob/wasm/demos/simulator/index.html#L482-L562)
+1.  Copy the __Emscripten JavaScript__ from [`ulisp.html`](https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.html#L1250-L1326) to [`index.html`](https://github.com/AppKaki/blockly-ulisp/blob/wasm/demos/simulator/index.html#L482-L562)
 
     ```html
     <!--  Emscripten Script: From ulisp.html  -->
@@ -1047,9 +1049,7 @@ TODO
     <!--  End of Emscripten Script  -->
     ```
 
-1.  Add Custom Script
-
-    From [`index.html`](https://github.com/AppKaki/blockly-ulisp/blob/wasm/demos/simulator/index.html#L564-L716)
+1.  Copy the __BL602 Simulator JavaScript__ from [`ulisp.html`](https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.html#L1328-L1480) to [`index.html`](https://github.com/AppKaki/blockly-ulisp/blob/wasm/demos/simulator/index.html#L564-L716)
 
     ```html
     <!--  Custom Script: TODO Sync with ulisp.html  -->
@@ -1080,7 +1080,7 @@ TODO
     <!--  End of Custom Script  -->
     ```
 
-1.  Modify runScript
+1.  Modify the `runScript` function above...
 
     ```javascript
     /// Run the uLisp script from Input Box
@@ -1092,7 +1092,7 @@ TODO
       const scr_ptr = Module.allocate(intArrayFromString(scr), ALLOC_NORMAL);
     ```
 
-    From [`index.html`](https://github.com/AppKaki/blockly-ulisp/blob/wasm/demos/simulator/index.html#L598-L643)
+    So that it runs the __script from the provided parameter__ (instead of the REPL Input Box): [`index.html`](https://github.com/AppKaki/blockly-ulisp/blob/wasm/demos/simulator/index.html#L598-L643)
 
     ```javascript
     /// Run the provided uLisp script
@@ -1101,9 +1101,7 @@ TODO
       const scr_ptr = Module.allocate(intArrayFromString(scr), ALLOC_NORMAL);
     ```
 
-1.  Load Emscripten WebAssembly
-
-    From [`index.html`](https://github.com/AppKaki/blockly-ulisp/blob/wasm/demos/simulator/index.html#L718-L722
+1.  Load our __Emscripten WebAssembly__ into Blockly: [`index.html`](https://github.com/AppKaki/blockly-ulisp/blob/wasm/demos/simulator/index.html#L718-L722)
 
     ```html
     <!--  Load Emscripten WebAssembly: From ulisp.html  -->
@@ -1111,9 +1109,9 @@ TODO
     <!--  End of Emscripten WebAssembly  -->
     ```
 
-1.  Run the uLisp code on BL602 Simulator
+1.  Previously we ran the uLisp code on a real BL602 with the Web Serial API.
 
-    From [`code.js`](https://github.com/AppKaki/blockly-ulisp/blob/wasm/demos/simulator/code.js#L575-L582)
+    Now we __run the uLisp code on BL602 Simulator__: [`code.js`](https://github.com/AppKaki/blockly-ulisp/blob/wasm/demos/simulator/code.js#L575-L582)
 
     ```javascript
     ///  Run the uLisp code on BL602 Simulator
@@ -1125,6 +1123,8 @@ TODO
       runScript(code);   //  Defined in index.html
     }    
     ```
+
+And that's how we added uLisp WebAssembly and BL602 Simulator to Blockly!
 
 # Why Simulate A Stream Of Events?
 
