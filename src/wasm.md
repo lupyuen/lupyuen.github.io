@@ -883,7 +883,7 @@ void yield_ulisp(void) {
 
 uLisp calls __`yield_ulisp`__ when it __iterates through a loop__ or evaluates a recursive expression.
 
-If `yield_ulisp` detects that the buffer for Simulation Events is about to overflow, it stops the uLisp Loop / Recursion by jumping out (`longjmp`) and reporting an exception.
+If `yield_ulisp` detects that the __buffer for Simulation Events is about to overflow__, it stops the uLisp Loop / Recursion by jumping out (`longjmp`) and reporting an exception.
 
 (Which will return a __truncated stream of Simulation Events__ to the BL602 Simulator)
 
