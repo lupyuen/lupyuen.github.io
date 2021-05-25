@@ -709,9 +709,58 @@ function time_delay(ticks) {
 </ul>
 <p><img src="https://lupyuen.github.io/images/wasm-delay.png" alt="Simulating delays" /></p>
 <h1 id="simulate-loops" class="section-header"><a href="#simulate-loops">9 Simulate Loops</a></h1>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/wasm-loop.png" alt="" /></p>
-<p>TODO</p>
+<p>Let’s ponder this uLisp Script that <strong>blinks the LED in a loop</strong>…</p>
+<pre><code class="language-text">( loop
+  ( digitalwrite 11 :low )
+  ( delay 1000 )
+  ( digitalwrite 11 :high )
+  ( delay 1000 )
+)
+</code></pre>
+<p><em>Wait a minute… Won’t this uLisp Script generate an Infinite Stream of Simulation Events? And overflow our 1024-byte event buffer?</em></p>
+<p>Righto! We <strong>can’t allow uLisp Loops and Recursion to run forever</strong> in our simulator. We must stop them! (Eventually)</p>
+<p>We <strong>stop runaway Loops and Recursion</strong> here: <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm/wasm.c#L34-L46"><code>wasm.c</code></a></p>
+<pre><code class="language-c">/// Preempt the uLisp task and allow background tasks to run.
+/// Called by eval() and sp_loop() in src/ulisp.c
+void yield_ulisp(void) {
+  //  If uLisp is running a loop or recursion,
+  //  the Simulation Events buffer may overflow.
+  //  We stop before the buffer overflows.
+  if (strlen(events) + 100 &gt;= sizeof(events)) {  //  Assume 100 bytes of leeway
+
+    //  Cancel the loop or recursion by jumping to loop_ulisp() in src/ulisp.c
+    puts(&quot;Too many iterations, stopping the loop&quot;);
+    extern jmp_buf exception;  //  Defined in src/ulisp.c
+    longjmp(exception, 1);
+  }
+}
+</code></pre>
+<p>uLisp calls <strong><code>yield_ulisp</code></strong> when it <strong>iterates through a loop</strong> or evaluates a recursive expression.</p>
+<p>If <code>yield_ulisp</code> detects that the buffer for Simulation Events is about to overflow, it stops the uLisp Loop / Recursion by jumping out (<code>longjmp</code>) and reporting an exception.</p>
+<p>(Which will return a <strong>truncated stream of Simulation Events</strong> to the BL602 Simulator)</p>
+<p><em>Looks kinda simplistic?</em></p>
+<p>Yes this solution might not work for some kinds of uLisp Loops and Recursion. But it’s sufficient to <strong>simulate a blinking LED</strong> (for a short while).</p>
+<p><em>How does uLisp call <code>yield_ulisp</code>?</em></p>
+<p>uLisp calls <code>yield_ulisp</code> when <strong>iterating through a loop</strong> in <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/src/ulisp.c#L1698-L1702"><code>ulisp.c</code></a> …</p>
+<pre><code class="language-c">///  Execute uLisp Loop
+object *sp_loop (object *args, object *env) {
+  ...
+  for (;;) {
+    //  Preempt the uLisp task and allow background tasks to run
+    yield_ulisp();
+</code></pre>
+<p>And when it <strong>evaluates a (potentially) recursive expression</strong>: <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/src/ulisp.c#L4658-L4664"><code>ulisp.c</code></a></p>
+<pre><code class="language-c">///  Main uLisp Evaluator
+object *eval (object *form, object *env) {
+  ...
+  // Preempt the uLisp task and allow background tasks to run
+  yield_ulisp();
+</code></pre>
+<p>Here’s our BL602 Simulator running the <strong>LED Blinky Loop</strong>. Watch how the <strong>Simulated LED stops blinking</strong> after a while…</p>
+<ul>
+<li><a href="https://youtu.be/IUmVa3vNpRs"><strong>Watch the demo on YouTube</strong></a></li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/wasm-loop.png" alt="Simulating loops" /></p>
 <h1 id="html-canvas-and-javascript" class="section-header"><a href="#html-canvas-and-javascript">10 HTML Canvas and JavaScript</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wasm-event.png" alt="" /></p>
@@ -724,6 +773,10 @@ function time_delay(ticks) {
 <p>TODO</p>
 <h1 id="why-simulate-a-stream-of-events" class="section-header"><a href="#why-simulate-a-stream-of-events">12 Why Simulate A Stream Of Events?</a></h1>
 <p>TODO</p>
+<p>Inversion of control</p>
+<p>Less coupling</p>
+<p>Time compression</p>
+<p>Time reversal</p>
 <h1 id="can-we-simulate-any-bl602-firmware" class="section-header"><a href="#can-we-simulate-any-bl602-firmware">13 Can We Simulate Any BL602 Firmware?</a></h1>
 <p>TODO</p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">14 What’s Next</a></h1>
