@@ -516,6 +516,86 @@ void clear_simulation_events(void) {
 </code></pre>
 <h1 id="flip-the-simulated-led" class="section-header"><a href="#flip-the-simulated-led">7 Flip the Simulated LED</a></h1>
 <p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.html#L1409-L1445"><code>ulisp.html</code></a></p>
+<pre><code class="language-javascript">/// Simulate the BL602 Simulation Events recorded in simulate_events, which contains...
+///  [ { &quot;gpio_output_set&quot;: { &quot;pin&quot;: 11, &quot;value&quot;: 1 } }, 
+///    { &quot;time_delay&quot;: { &quot;ticks&quot;: 1000 } }, ... ]
+function simulateEvents() {
+  //  Take the first event and update the queue
+  if (simulation_events.length == 0) { return; }
+  const event = simulation_events.shift();
+  //  event looks like:
+  //  { &quot;gpio_output_set&quot;: { &quot;pin&quot;: 11, &quot;value&quot;: 1 } }
+
+  //  Get the event type (gpio_output_set)
+  //  and parameters ({ &quot;pin&quot;: 11, &quot;value&quot;: 1 })
+  const event_type = Object.keys(event)[0];
+  const args = event[event_type];
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-javascript">  //  Timeout in milliseconds to the next event
+  let timeout = 1;
+
+  //  Handle each event type
+  switch (event_type) {
+
+    //  Set GPIO output
+    //  { &quot;gpio_output_set&quot;: { &quot;pin&quot;: 11, &quot;value&quot;: 1 } }
+    case &quot;gpio_output_set&quot;: 
+        timeout += gpio_output_set(args.pin, args.value); 
+        break;
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-javascript">    //  Delay
+    //  { &quot;time_delay&quot;: { &quot;ticks&quot;: 1000 } }
+    case &quot;time_delay&quot;: 
+        timeout += time_delay(args.ticks); 
+        break;
+
+    //  Unknown event type
+    default: 
+        throw new Error(&quot;Unknown event type: &quot; + event_type);
+  }
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-javascript">  //  Simulate the next event
+  if (simulation_events.length &gt; 0) {
+    window.setTimeout(&quot;simulateEvents()&quot;, timeout);
+  }
+}
+</code></pre>
+<p><em>What’s inside the function <code>gpio_output_set</code>?</em></p>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.html#L1447-L1470"><code>ulisp.html</code></a></p>
+<pre><code class="language-javascript">/// Simulate setting GPIO pin output to value 0 (Low) or 1 (High):
+/// { &quot;gpio_output_set&quot;: { &quot;pin&quot;: 11, &quot;value&quot;: 1 } }
+function gpio_output_set(pin, value) {
+  //  Get the HTML Canvas Context
+  const ctx = document.getElementById('canvas').getContext('2d');
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-javascript">  //  Set the simulated LED colour depending on value
+  switch (value) {
+    //  Set GPIO to Low (LED on)
+    case 0: ctx.fillStyle = '#B0B0FF'; break;  //  Blue
+
+    //  Set GPIO to High (LED off)
+    case 1: ctx.fillStyle = '#CCCCCC'; break;  //  Grey
+
+    //  Unknown value
+    default: throw new Error(&quot;Unknown gpio_output_set value: &quot; + args.value);
+  }
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-javascript">  //  Draw the LED colour
+  ctx.fillRect(315, 116, 35, 74);
+
+  //  Simulate next event in 0 milliseconds
+  return 0;
+}
+</code></pre>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wasm-led.png" alt="Flip the simulated LED" /></p>
 <h1 id="add-a-delay" class="section-header"><a href="#add-a-delay">8 Add a Delay</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wasm-delay.png" alt="" /></p>
@@ -525,8 +605,6 @@ void clear_simulation_events(void) {
 <p><img src="https://lupyuen.github.io/images/wasm-loop.png" alt="" /></p>
 <p>TODO</p>
 <h1 id="html-canvas-and-javascript" class="section-header"><a href="#html-canvas-and-javascript">10 HTML Canvas and JavaScript</a></h1>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/wasm-led.png" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wasm-event.png" alt="" /></p>
 <p>TODO</p>
