@@ -1005,7 +1005,7 @@ TODO
 
 Inversion of control
 
-Less coupling
+Loose coupling
 
 Time compression
 
