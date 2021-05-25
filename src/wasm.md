@@ -708,17 +708,21 @@ Finally we __draw the Simulated LED__ with the Fill Colour (Blue or Grey)...
 }
 ```
 
-Here's how it looks when set the __GPIO Output to Low__ (LED on)...
+Here's what we see in the BL602 Simulator when we set the __GPIO Output to Low__ (LED on)...
 
 ```
 ( digitalwrite 11 :low )
 ```
 
+-   [__Watch the demo on YouTube__](https://youtu.be/KpvqCmFtPgc)
+
 ![Flip the simulated LED](https://lupyuen.github.io/images/wasm-led.png)
 
-# Add a Delay
+# Simulate Delay
 
 TODO
+
+-   [__Watch the demo on YouTube__](https://youtu.be/piRLuBYSjTw)
 
 ![](https://lupyuen.github.io/images/wasm-delay.png)
 
