@@ -914,7 +914,18 @@ object *eval (object *form, object *env) {
   yield_ulisp();
 ```
 
-Here's our BL602 Simulator running the __LED Blinky Loop__. Watch how the __Simulated LED stops blinking__ after a while...
+_So now we're all set to run this uLisp loop?_
+
+```text
+( loop
+  ( digitalwrite 11 :low )
+  ( delay 1000 )
+  ( digitalwrite 11 :high )
+  ( delay 1000 )
+)
+```
+
+Yes! Here's our BL602 Simulator running the __LED Blinky Loop__. Watch how the __Simulated LED stops blinking__ after a while...
 
 -   [__Watch the demo on YouTube__](https://youtu.be/IUmVa3vNpRs)
 
