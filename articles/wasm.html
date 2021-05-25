@@ -766,7 +766,15 @@ object *eval (object *form, object *env) {
   // Preempt the uLisp task and allow background tasks to run
   yield_ulisp();
 </code></pre>
-<p>Here’s our BL602 Simulator running the <strong>LED Blinky Loop</strong>. Watch how the <strong>Simulated LED stops blinking</strong> after a while…</p>
+<p><em>So now we’re all set to run this uLisp loop?</em></p>
+<pre><code class="language-text">( loop
+  ( digitalwrite 11 :low )
+  ( delay 1000 )
+  ( digitalwrite 11 :high )
+  ( delay 1000 )
+)
+</code></pre>
+<p>Yes! Here’s our BL602 Simulator running the <strong>LED Blinky Loop</strong>. Watch how the <strong>Simulated LED stops blinking</strong> after a while…</p>
 <ul>
 <li>
 <p><a href="https://youtu.be/IUmVa3vNpRs"><strong>Watch the demo on YouTube</strong></a></p>
