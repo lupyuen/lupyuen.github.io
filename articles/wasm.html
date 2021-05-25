@@ -72,8 +72,8 @@
 <li><a href="#add-a-simulation-event">5 Add a Simulation Event</a><ul></ul></li>
 <li><a href="#get-the-simulation-events">6 Get the Simulation Events</a><ul></ul></li>
 <li><a href="#flip-the-simulated-led">7 Flip the Simulated LED</a><ul></ul></li>
-<li><a href="#simulate-delay">8 Simulate Delay</a><ul></ul></li>
-<li><a href="#handling-loops">9 Handling Loops</a><ul></ul></li>
+<li><a href="#simulate-delays">8 Simulate Delays</a><ul></ul></li>
+<li><a href="#simulate-loops">9 Simulate Loops</a><ul></ul></li>
 <li><a href="#html-canvas-and-javascript">10 HTML Canvas and JavaScript</a><ul></ul></li>
 <li><a href="#add-simulator-to-blockly">11 Add Simulator to Blockly</a><ul></ul></li>
 <li><a href="#why-simulate-a-stream-of-events">12 Why Simulate A Stream Of Events?</a><ul></ul></li>
@@ -379,7 +379,7 @@ int bl_gpio_output_set(uint8_t pin, uint8_t value) {
         strlen(events)  //  Keep the existing events
         - 1;            //  Skip the trailing &quot;]&quot;
 
-    //  Append the GPIO Set Output Event to the buffer
+    //  Append the GPIO Output Event to the buffer
     snprintf(
         events + keep,
         sizeof(events) - keep,
@@ -619,14 +619,96 @@ function gpio_output_set(pin, value) {
 <li><a href="https://youtu.be/KpvqCmFtPgc"><strong>Watch the demo on YouTube</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/wasm-led.png" alt="Flip the simulated LED" /></p>
-<h1 id="simulate-delay" class="section-header"><a href="#simulate-delay">8 Simulate Delay</a></h1>
-<p>TODO</p>
+<h1 id="simulate-delays" class="section-header"><a href="#simulate-delays">8 Simulate Delays</a></h1>
+<p><em>Now our BL602 Simulator flips the Simulated LED on and off. We’re ready to blink the Simulated LED right?</em></p>
+<p>Not quite. We need to <strong>simulate Time Delays</strong> too!</p>
+<p><em>Can’t we implement Time Delays by sleeping inside uLisp?</em></p>
+<p>Not really. From what we’ve seen, uLisp <strong>doesn’t run our script in real time</strong>.</p>
+<p>uLisp merely generates a bunch of Simulation Events. The events need to be <strong>simulated in the correct time sequence</strong> by our BL602 Simulator.</p>
+<p>Hence we also need to <strong>simulate Time Delays</strong> with a Simulation Event.</p>
+<p><em>How does uLisp generate a Simulation Event for Time Delay?</em></p>
+<p>When we run this uLisp Script…</p>
+<pre><code class="language-text">( delay 1000 )
+</code></pre>
+<p>Our uLisp Intepreter in WebAssembly <strong>generates a Time Delay Event</strong> like so: <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm/wasm.c#L79-L93"><code>wasm.c</code></a></p>
+<pre><code class="language-c">/// Add a delay event. 1 tick is 1 millisecond
+void time_delay(uint32_t ticks) { 
+  //  How many chars in the Simulation Events buffer to keep
+  int keep = 
+    strlen(events)  //  Keep the existing events
+    - 1;            //  Skip the trailing &quot;]&quot;
+
+  //  Append the Time Delay Event to the buffer
+  snprintf(
+    events + keep,
+    sizeof(events) - keep,
+    &quot;, { \&quot;time_delay\&quot;: { &quot;
+      &quot;\&quot;ticks\&quot;: %d &quot;
+    &quot;} } ]&quot;,
+    ticks
+  );
+}
+</code></pre>
+<p>This code adds a <strong>Time Delay Event</strong> that looks like…</p>
+<pre><code class="language-text">{ &quot;time_delay&quot;: { &quot;ticks&quot;: 1000 } }
+</code></pre>
+<p>(We define <strong>1 tick as 1 millisecond</strong>, so this event sleeps for 1 second)</p>
+<p><em>How does our BL602 Simulator handle a Time Delay Event in JavaScript?</em></p>
+<p>Earlier we’ve seen <strong><code>simulateEvents</code></strong>, the Event Loop for our BL602 Simulator: <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.html#L1409-L1445"><code>ulisp.html</code></a></p>
+<pre><code class="language-javascript">function simulateEvents() {
+  //  Take the first event
+  const event = simulation_events.shift();
+  ...
+  //  Get the event type and parameters
+  const event_type = Object.keys(event)[0];
+  const args = event[event_type];
+  ...
+  //  Handle each event type
+  switch (event_type) {
+    ...
+    //  Delay
+    //  { &quot;time_delay&quot;: { &quot;ticks&quot;: 1000 } }
+    case &quot;time_delay&quot;: 
+      timeout += time_delay(args.ticks); 
+      break;
+</code></pre>
+<p><code>simulateEvents</code> handles the Time Delay Event by calling <strong><code>time_delay</code></strong> with the number of ticks (milliseconds) to delay: <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.html#L1472-L1477"><code>ulisp.html</code></a></p>
+<pre><code class="language-javascript">/// Simulate a delay for the specified number of ticks (1 tick = 1 millisecond)
+/// { &quot;time_delay&quot;: { &quot;ticks&quot;: 1000 } }
+function time_delay(ticks) {
+  //  Simulate the next event in &quot;ticks&quot; milliseconds
+  return ticks;
+}
+</code></pre>
+<p><strong><code>time_delay</code></strong> doesn’t do much… It returns the <strong>number of ticks (milliseconds) to delay</strong>.</p>
+<p>The magic actually happens in the calling function <code>simulateEvents</code>. From <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.html#L1409-L1445"><code>ulisp.html</code></a> …</p>
+<pre><code class="language-javascript">function simulateEvents() {
+  ...
+  //  Get the delay in ticks / milliseconds
+  timeout += time_delay(args.ticks);
+  ...
+  //  Simulate the next event
+  if (simulation_events.length &gt; 0) {
+    //  Timer expires in timeout milliseconds
+    window.setTimeout(&quot;simulateEvents()&quot;, timeout);
+  }
+}
+</code></pre>
+<p><code>simulateEvents</code> takes the returned value (number of ticks to wait) and <strong>sets the timeout of the JavaScript Timer</strong>.</p>
+<p>(When the timer expires, it calls <code>simulateEvents</code> to handle the next Simulation Event)</p>
+<p>Let’s watch <strong>Time Delay Events</strong> in action! Guess what happens when we run this uLisp Script with our BL602 Simulator…</p>
+<pre><code class="language-text">( list
+  ( digitalwrite 11 :low )
+  ( delay 1000 )
+  ( digitalwrite 11 :high )
+  ( delay 1000 )
+)
+</code></pre>
 <ul>
 <li><a href="https://youtu.be/piRLuBYSjTw"><strong>Watch the demo on YouTube</strong></a></li>
 </ul>
-<p><img src="https://lupyuen.github.io/images/wasm-delay.png" alt="" /></p>
-<p>TODO</p>
-<h1 id="handling-loops" class="section-header"><a href="#handling-loops">9 Handling Loops</a></h1>
+<p><img src="https://lupyuen.github.io/images/wasm-delay.png" alt="Simulating delays" /></p>
+<h1 id="simulate-loops" class="section-header"><a href="#simulate-loops">9 Simulate Loops</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wasm-loop.png" alt="" /></p>
 <p>TODO</p>
