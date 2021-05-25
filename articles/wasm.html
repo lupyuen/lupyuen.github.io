@@ -746,7 +746,7 @@ void yield_ulisp(void) {
 }
 </code></pre>
 <p>uLisp calls <strong><code>yield_ulisp</code></strong> when it <strong>iterates through a loop</strong> or evaluates a recursive expression.</p>
-<p>If <code>yield_ulisp</code> detects that the buffer for Simulation Events is about to overflow, it stops the uLisp Loop / Recursion by jumping out (<code>longjmp</code>) and reporting an exception.</p>
+<p>If <code>yield_ulisp</code> detects that the <strong>buffer for Simulation Events is about to overflow</strong>, it stops the uLisp Loop / Recursion by jumping out (<code>longjmp</code>) and reporting an exception.</p>
 <p>(Which will return a <strong>truncated stream of Simulation Events</strong> to the BL602 Simulator)</p>
 <p><em>Looks kinda simplistic?</em></p>
 <p>Yes this solution might not work for some kinds of uLisp Loops and Recursion. But it’s sufficient to <strong>simulate a blinking LED</strong> (for a short while).</p>
