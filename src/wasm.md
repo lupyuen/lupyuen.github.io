@@ -997,7 +997,9 @@ Read on to find out how we connected Blockly to uLisp REPL (in WebAssembly) and 
 
 # Simulate Blockly Programs
 
-TODO
+__Adding the BL602 Simulator to Blockly__ (from the previous article) was surprisingly painless.
+
+Here's what we did...
 
 1.  We __create a Blockly folder__ for our new web page (based on the Blockly folder from the previous article)...
 
@@ -1124,7 +1126,7 @@ TODO
     }    
     ```
 
-And that's how we added uLisp WebAssembly and BL602 Simulator to Blockly!
+And that's how we __added uLisp WebAssembly and BL602 Simulator to Blockly__!
 
 # Why Simulate A Stream Of Events?
 
