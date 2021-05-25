@@ -587,6 +587,111 @@ void clear_simulation_events(void) {
 
 TODO
 
+From [`ulisp.html`](https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.html#L1409-L1445)
+
+```javascript
+/// Simulate the BL602 Simulation Events recorded in simulate_events, which contains...
+///  [ { "gpio_output_set": { "pin": 11, "value": 1 } }, 
+///    { "time_delay": { "ticks": 1000 } }, ... ]
+function simulateEvents() {
+  //  Take the first event and update the queue
+  if (simulation_events.length == 0) { return; }
+  const event = simulation_events.shift();
+  //  event looks like:
+  //  { "gpio_output_set": { "pin": 11, "value": 1 } }
+
+  //  Get the event type (gpio_output_set)
+  //  and parameters ({ "pin": 11, "value": 1 })
+  const event_type = Object.keys(event)[0];
+  const args = event[event_type];
+```
+
+TODO
+
+```javascript
+  //  Timeout in milliseconds to the next event
+  let timeout = 1;
+
+  //  Handle each event type
+  switch (event_type) {
+
+    //  Set GPIO output
+    //  { "gpio_output_set": { "pin": 11, "value": 1 } }
+    case "gpio_output_set": 
+        timeout += gpio_output_set(args.pin, args.value); 
+        break;
+```
+
+TODO
+
+```javascript
+    //  Delay
+    //  { "time_delay": { "ticks": 1000 } }
+    case "time_delay": 
+        timeout += time_delay(args.ticks); 
+        break;
+
+    //  Unknown event type
+    default: 
+        throw new Error("Unknown event type: " + event_type);
+  }
+```
+
+TODO
+
+```javascript
+  //  Simulate the next event
+  if (simulation_events.length > 0) {
+    window.setTimeout("simulateEvents()", timeout);
+  }
+}
+```
+
+_What's inside the function `gpio_output_set`?_
+
+TODO
+
+From [`ulisp.html`](https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.html#L1447-L1470)
+
+```javascript
+/// Simulate setting GPIO pin output to value 0 (Low) or 1 (High):
+/// { "gpio_output_set": { "pin": 11, "value": 1 } }
+function gpio_output_set(pin, value) {
+  //  Get the HTML Canvas Context
+  const ctx = document.getElementById('canvas').getContext('2d');
+```
+
+TODO
+
+```javascript
+  //  Set the simulated LED colour depending on value
+  switch (value) {
+    //  Set GPIO to Low (LED on)
+    case 0: ctx.fillStyle = '#B0B0FF'; break;  //  Blue
+
+    //  Set GPIO to High (LED off)
+    case 1: ctx.fillStyle = '#CCCCCC'; break;  //  Grey
+
+    //  Unknown value
+    default: throw new Error("Unknown gpio_output_set value: " + args.value);
+  }
+```
+
+TODO
+
+```javascript
+  //  Draw the LED colour
+  ctx.fillRect(315, 116, 35, 74);
+
+  //  Simulate next event in 0 milliseconds
+  return 0;
+}
+```
+
+TODO
+
+![Flip the simulated LED](https://lupyuen.github.io/images/wasm-led.png)
+
 # Add a Delay
 
 TODO
@@ -604,10 +709,6 @@ TODO
 TODO
 
 # HTML Canvas and JavaScript
-
-TODO
-
-![](https://lupyuen.github.io/images/wasm-led.png)
 
 TODO
 
