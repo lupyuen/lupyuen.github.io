@@ -398,7 +398,7 @@ int bl_gpio_output_set(uint8_t pin, uint8_t value) {
         strlen(events)  //  Keep the existing events
         - 1;            //  Skip the trailing "]"
 
-    //  Append the GPIO Set Output Event to the buffer
+    //  Append the GPIO Output Event to the buffer
     snprintf(
         events + keep,
         sizeof(events) - keep,
@@ -718,17 +718,130 @@ Here's what we see in the BL602 Simulator when we set the __GPIO Output to Low__
 
 ![Flip the simulated LED](https://lupyuen.github.io/images/wasm-led.png)
 
-# Simulate Delay
+# Simulate Delays
 
-TODO
+_Now our BL602 Simulator flips the Simulated LED on and off. We're ready to blink the Simulated LED right?_
+
+Not quite. We need to __simulate Time Delays__ too!
+
+_Can't we implement Time Delays by sleeping inside uLisp?_
+
+Not really. From what we've seen, uLisp __doesn't run our script in real time__.
+
+uLisp merely generates a bunch of Simulation Events. The events need to be __simulated in the correct time sequence__ by our BL602 Simulator.
+
+Hence we also need to __simulate Time Delays__ with a Simulation Event.
+
+_How does uLisp generate a Simulation Event for Time Delay?_
+
+When we run this uLisp Script...
+
+```text
+( delay 1000 )
+```
+
+Our uLisp Intepreter in WebAssembly __generates a Time Delay Event__ like so: [`wasm.c`](https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm/wasm.c#L79-L93)
+
+```c
+/// Add a delay event. 1 tick is 1 millisecond
+void time_delay(uint32_t ticks) { 
+  //  How many chars in the Simulation Events buffer to keep
+  int keep = 
+    strlen(events)  //  Keep the existing events
+    - 1;            //  Skip the trailing "]"
+
+  //  Append the Time Delay Event to the buffer
+  snprintf(
+    events + keep,
+    sizeof(events) - keep,
+    ", { \"time_delay\": { "
+      "\"ticks\": %d "
+    "} } ]",
+    ticks
+  );
+}
+```
+
+This code adds a __Time Delay Event__ that looks like...
+
+```text
+{ "time_delay": { "ticks": 1000 } }
+```
+
+(We define __1 tick as 1 millisecond__, so this event sleeps for 1 second)
+
+_How does our BL602 Simulator handle a Time Delay Event in JavaScript?_
+
+Earlier we've seen __`simulateEvents`__, the Event Loop for our BL602 Simulator: [`ulisp.html`](https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.html#L1409-L1445)
+
+```javascript
+function simulateEvents() {
+  //  Take the first event
+  const event = simulation_events.shift();
+  ...
+  //  Get the event type and parameters
+  const event_type = Object.keys(event)[0];
+  const args = event[event_type];
+  ...
+  //  Handle each event type
+  switch (event_type) {
+    ...
+    //  Delay
+    //  { "time_delay": { "ticks": 1000 } }
+    case "time_delay": 
+      timeout += time_delay(args.ticks); 
+      break;
+```
+
+`simulateEvents` handles the Time Delay Event by calling __`time_delay`__ with the number of ticks (milliseconds) to delay: [`ulisp.html`](https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.html#L1472-L1477)
+
+```javascript
+/// Simulate a delay for the specified number of ticks (1 tick = 1 millisecond)
+/// { "time_delay": { "ticks": 1000 } }
+function time_delay(ticks) {
+  //  Simulate the next event in "ticks" milliseconds
+  return ticks;
+}
+```
+
+__`time_delay`__ doesn't do much... It returns the __number of ticks (milliseconds) to delay__.
+
+The magic actually happens in the calling function `simulateEvents`. From [`ulisp.html`](https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.html#L1409-L1445) ...
+
+```javascript
+function simulateEvents() {
+  ...
+  //  Get the delay in ticks / milliseconds
+  timeout += time_delay(args.ticks);
+  ...
+  //  Simulate the next event
+  if (simulation_events.length > 0) {
+    //  Timer expires in timeout milliseconds
+    window.setTimeout("simulateEvents()", timeout);
+  }
+}
+```
+
+`simulateEvents` takes the returned value (number of ticks to wait) and __sets the timeout of the JavaScript Timer__.
+
+(When the timer expires, it calls `simulateEvents` to handle the next Simulation Event)
+
+Let's watch __Time Delay Events__ in action! Guess what happens when we run this uLisp Script with our BL602 Simulator...
+
+```text
+( list
+  ( digitalwrite 11 :low )
+  ( delay 1000 )
+  ( digitalwrite 11 :high )
+  ( delay 1000 )
+)
+```
 
 -   [__Watch the demo on YouTube__](https://youtu.be/piRLuBYSjTw)
 
-![](https://lupyuen.github.io/images/wasm-delay.png)
+![Simulating delays](https://lupyuen.github.io/images/wasm-delay.png)
 
-TODO
-
-# Handling Loops
+# Simulate Loops
 
 TODO
 
