@@ -1130,6 +1130,79 @@ And that's how we __added uLisp WebAssembly and BL602 Simulator to Blockly__...
 
 _Dragging-and-dropping uLisp programs for microcontrollers... And running them WITHOUT a microcontroller!_
 
+# Can We Simulate Any BL602 Firmware?
+
+_Our BL602 Simulator works OK for simulating a uLisp Program. Will it work for simulating BL602 Firmware coded in C?_
+
+Our BL602 Simulator __might work for BL602 Firmware coded in C__! 
+
+Let's look at this __BL602 Blinky Firmware__ in C: [`sdk_app_blinky/demo.c`](https://lupyuen.github.io/articles/rust#bl602-blinky-in-c)
+
+```c
+/// Blink the BL602 LED
+void blinky(char *buf, int len, int argc, char **argv) {
+  //  Configure the LED GPIO for output (instead of input)
+  int rc = bl_gpio_enable_output(
+    LED_GPIO,  //  GPIO pin number (11)
+    0,         //  No GPIO pullup
+    0          //  No GPIO pulldown
+  );
+  assert(rc == 0);  //  Halt on error
+
+  //  Blink the LED 5 times
+  for (int i = 0; i < 10; i++) {
+
+    //  Toggle the LED GPIO between 0 (on) and 1 (off)
+    rc = bl_gpio_output_set(  //  Set the GPIO output (from BL602 GPIO HAL)
+      LED_GPIO,               //  GPIO pin number (11)
+      i % 2                   //  0 for low, 1 for high
+    );
+    assert(rc == 0);  //  Halt on error
+
+    //  Sleep 1 second
+    time_delay(                 //  Sleep by number of ticks (from NimBLE Porting Layer)
+      time_ms_to_ticks32(1000)  //  Convert 1,000 milliseconds to ticks (from NimBLE Porting Layer)
+    );
+  }
+}
+```
+
+To get this C code running on our BL602 Simulator, we need to __compile the code to WebAssembly__.
+
+_Will this C code compile to WebAssembly?_
+
+Remember earlier we created these __C Functions for our WebAssembly Interface__...
+
+```c
+/// Add a GPIO event to set output (0 for low, 1 for high)
+int bl_gpio_output_set(uint8_t pin, uint8_t value) { ... }
+
+/// Configure the GPIO pin for output
+int bl_gpio_enable_output(uint8_t pin, uint8_t pullup, uint8_t pulldown) { return 0; }
+
+/// Add a delay event. 1 tick is 1 millisecond
+void time_delay(uint32_t ticks) { ... }
+
+/// Convert milliseconds to ticks
+uint32_t time_ms_to_ticks32(uint32_t millisec) { return millisec; }
+```
+
+These __C Function Signatures are 100% identical__ to the BL602 Functions from the BL602 IoT SDK: `bl_gpio_output_set`, `bl_gpio_enable_output`, ...
+
+So yep, the above __BL602 Firmware Code will compile to WebAssembly__!
+
+Similar to a uLisp Program, the BL602 Firmware Code (running in WebAssebly) will generate a __JSON Stream of Simulation Events__. 
+
+(Which we'll feed to our __BL602 Simulator__ in JavaScript)
+
+_But can we simulate ALL functions from the BL602 IoT SDK: GPIO, I2C, SPI, ADC, DAC, LVGL, LoRa, ...?_
+
+This needs work of course. 
+
+To simulate any uLisp Program or BL602 Firmware we need to __code the necessary Simulation Functions in JavaScript__ (like `gpio_output_set` and `time_delay`) for GPIO, I2C, SPI, ADC, DAC, LVGL, LoRa, ...
+
+(Sounds like an interesting challenge!)
+
 # Why Simulate A Stream Of Events?
 
 TODO
@@ -1141,10 +1214,6 @@ Loose coupling
 Time compression
 
 Time reversal
-
-# Can We Simulate Any BL602 Firmware?
-
-TODO
 
 # What's Next
 
