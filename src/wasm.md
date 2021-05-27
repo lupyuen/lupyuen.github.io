@@ -218,7 +218,7 @@ Let's do the same for the __BL602 Simulator__...
 
 ![BL602 Simulator in HTML and JavaScript](https://lupyuen.github.io/images/lisp-simulator2.png)
 
-First we save this sketchy image of a PineCone BL602 Board as a __PNG file__...
+First we save this sketchy image of a PineCone BL602 Board as a __PNG file: [`pinecone.png`](https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/pinecone.png)__
 
 ![Creating the BL602 simulator image](https://lupyuen.github.io/images/wasm-photoshop.png)
 
