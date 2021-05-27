@@ -147,6 +147,13 @@
   ],
   "publications": [
     {
+      "name": "Simulate RISC-V BL602 with WebAssembly, uLisp and Blockly",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2021-05-27",
+      "website": "https://lupyuen.github.io/articles/wasm",
+      "summary": "How we simulate the BL602 RISC-V SoC with uLisp in WebAssembly... And preview Blockly uLisp Apps in the Web Browser"
+    },
+    {
       "name": "uLisp and Blockly on PineCone BL602 RISC-V Board",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-05-14",
