@@ -16,7 +16,7 @@ What if we...
 
 1.  So that Embedded Developers may __preview their Blockly uLisp Apps in the Web Browser__?
 
-Today we shall build a simulator for the [__BL602 RISC-V + WiFi SoC__](https://lupyuen.github.io/articles/pinecone) that will run Blockly uLisp Apps in a Web Browser. 
+Today we shall build a simple simulator for the [__BL602 RISC-V + WiFi SoC__](https://lupyuen.github.io/articles/pinecone) that will run Blockly uLisp Apps in a Web Browser. 
 
 (No BL602 hardware needed!)
 
