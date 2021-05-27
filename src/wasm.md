@@ -1289,6 +1289,8 @@ Let's build it and find out! 🙏 👍 😀
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
+-   [Discuss this article on Reddit](https://www.reddit.com/r/RISCV/comments/nm6zd1/simulate_riscv_bl602_with_webassembly_ulisp_and/)
+
 -   [Read "The RISC-V BL602 Book"](https://lupyuen.github.io/articles/book)
 
 -   [Check out my articles](https://lupyuen.github.io)
