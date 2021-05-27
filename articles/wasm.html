@@ -92,6 +92,7 @@
 </li>
 <li>
 <p>Integrate the <strong>BL602 Simulator with Blockly</strong>…</p>
+<p><a href="https://lupyuen.github.io/articles/lisp">(Also from the previous article)</a></p>
 </li>
 <li>
 <p>So that Embedded Developers may <strong>preview their Blockly uLisp Apps in the Web Browser</strong>?</p>
@@ -106,7 +107,7 @@
 <p><em>BL602 Simulator with Blockly and uLisp in WebAssembly</em></p>
 <h1 id="emscripten-and-webassembly" class="section-header"><a href="#emscripten-and-webassembly">1 Emscripten and WebAssembly</a></h1>
 <p><em>What is Emscripten?</em></p>
-<p><strong>Emscripten compiles C programs into WebAssembly</strong> so that we can run them in a Web Browser.</p>
+<p><a href="https://emscripten.org/"><strong>Emscripten compiles C programs into WebAssembly</strong></a> so that we can run them in a Web Browser.</p>
 <p>(Think of WebAssembly as a kind of Machine Code that runs natively in any Web Browser)</p>
 <p>Here’s how we compile our uLisp Interpreter <code>ulisp.c</code> <a href="https://lupyuen.github.io/articles/lisp">(from the last article)</a> with the <strong>Emscripten Compiler <code>emcc</code></strong>…</p>
 <pre><code class="language-bash">emcc -g -s WASM=1 \
@@ -116,18 +117,18 @@
     -s &quot;EXPORTED_FUNCTIONS=[ '_setup_ulisp', '_execute_ulisp', '_clear_simulation_events', '_get_simulation_events' ]&quot; \
     -s &quot;EXTRA_EXPORTED_RUNTIME_METHODS=[ 'cwrap', 'allocate', 'intArrayFromString', 'UTF8ToString' ]&quot;
 </code></pre>
-<p>(See the Makefile <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm.mk"><strong><code>wasm.mk</code></strong></a>. More about <code>wasm.c</code> in a while)</p>
+<p>(See the Makefile <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm.mk"><strong><code>wasm.mk</code></strong></a>. More about <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm/wasm.c"><strong><code>wasm.c</code></strong></a> in a while)</p>
 <p>C programs that call the <strong>Standard C Libraries</strong> should build OK with Emscripten: <code>printf</code>, <code>&lt;stdio.h&gt;</code>, <code>&lt;stdlib.h&gt;</code>, <code>&lt;string.h&gt;</code>, … </p>
 <p>The Emscripten Compiler generates 3 output files…</p>
 <ul>
 <li>
-<p><strong><code>ulisp.wasm</code></strong>: Contains the <strong>WebAssembly Code</strong> generated for our C program. </p>
+<p><a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.wasm"><strong><code>ulisp.wasm</code></strong></a>: Contains the <strong>WebAssembly Code</strong> generated for our C program. </p>
 </li>
 <li>
-<p><strong><code>ulisp.js</code></strong>: JavaScript module that <strong>loads the WebAssembly Code</strong> into a Web Browser and runs it</p>
+<p><a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.js"><strong><code>ulisp.js</code></strong></a>: JavaScript module that <strong>loads the WebAssembly Code</strong> into a Web Browser and runs it</p>
 </li>
 <li>
-<p><strong><code>ulisp.html</code></strong>: HTML file that we may open in a Web Browser to <strong>load the JavaScript module</strong> and run the WebAssembly Code</p>
+<p><a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.html"><strong><code>ulisp.html</code></strong></a>: HTML file that we may open in a Web Browser to <strong>load the JavaScript module</strong> and run the WebAssembly Code</p>
 </li>
 </ul>
 <p><a href="https://emscripten.org/docs/getting_started/downloads.html">(Instructions for installing Emscripten)</a></p>
@@ -792,6 +793,7 @@ object *eval (object *form, object *env) {
 <p><strong>BL602 Simulator</strong> (based on JavaScript)</p>
 </li>
 </ol>
+<p>In the previous article we’ve created a <strong>Blockly Web Editor</strong> that lets us <strong>drag-and-drop uLisp Programs</strong> in a Web Browser (much like Scratch). <a href="https://lupyuen.github.io/articles/lisp">(See this)</a></p>
 <p><em>Can we drag-and-drop Blockly Programs in a Web Browser… And run them with uLisp REPL and BL602 Simulator?</em></p>
 <p><img src="https://lupyuen.github.io/images/wasm-blockly.png" alt="Blockly Web Editor for uLisp WebAssembly and BL602 Simulator" /></p>
 <p>Yes we can! Just do this…</p>
@@ -848,7 +850,7 @@ object *eval (object *form, object *env) {
 <p>Read on to find out how we connected Blockly to uLisp REPL (in WebAssembly) and BL602 Simulator (in JavaScript).</p>
 <p><img src="https://lupyuen.github.io/images/wasm-title.png" alt="BL602 Simulator with uLisp and Blockly in WebAssembly" /></p>
 <h1 id="simulate-blockly-programs" class="section-header"><a href="#simulate-blockly-programs">11 Simulate Blockly Programs</a></h1>
-<p><strong>Adding the BL602 Simulator to Blockly</strong> (from the previous article) was surprisingly painless.</p>
+<p><strong>Adding the BL602 Simulator to Blockly</strong> <a href="https://lupyuen.github.io/articles/lisp">(from the previous article)</a> was surprisingly painless.</p>
 <p>Here’s what we did…</p>
 <ol>
 <li>
