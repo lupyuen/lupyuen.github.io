@@ -84,20 +84,21 @@
 <p>What if we…</p>
 <ol>
 <li>
-<p>Compile the <strong>uLisp Interpreter <a href="https://lupyuen.github.io/articles/lisp">(from the last article)</a> to WebAssembly</strong>…</p>
+<p>Compile the <strong>uLisp Interpreter <a href="https://lupyuen.github.io/articles/lisp">(from the previous article)</a> to WebAssembly</strong>…</p>
 </li>
 <li>
 <p>Use the WebAssembly version of uLisp to <strong>simulate BL602 in a Web Browser</strong>…</p>
-<p>(Including GPIO, I2C, SPI, Display Controller, Touch Controller, LoRaWAN… <a href="https://lupyuen.github.io/pinetime-rust-mynewt/articles/simulator">Similar to this</a>)</p>
+<p>(Including GPIO, I2C, SPI, Display Controller, Touch Controller, LVGL, LoRa… <a href="https://lupyuen.github.io/pinetime-rust-mynewt/articles/simulator">Similar to this</a>)</p>
 </li>
 <li>
 <p>Integrate the <strong>BL602 Simulator with Blockly</strong>…</p>
 </li>
 <li>
-<p>To allow embedded developers to <strong>preview their BL602 Blockly Apps in the Web Browser</strong>?</p>
+<p>So that Embedded Developers may <strong>preview their Blockly uLisp Apps in the Web Browser</strong>?</p>
 </li>
 </ol>
-<p>Today we shall build a <strong>Simulator for the BL602 RISC-V SoC</strong> that runs in a Web Browser. And we’ll use it to <strong>preview Blockly uLisp Apps in the browser</strong>!</p>
+<p>Today we shall build a simulator for the <a href="https://lupyuen.github.io/articles/pinecone"><strong>BL602 RISC-V + WiFi SoC</strong></a> that will run Blockly uLisp Apps in a Web Browser. </p>
+<p>(No BL602 hardware needed!)</p>
 <ul>
 <li><a href="https://youtu.be/Ag2CERd1OzQ"><strong>Watch the BL602 Simulator demo on YouTube</strong></a></li>
 </ul>
@@ -115,7 +116,7 @@
     -s &quot;EXPORTED_FUNCTIONS=[ '_setup_ulisp', '_execute_ulisp', '_clear_simulation_events', '_get_simulation_events' ]&quot; \
     -s &quot;EXTRA_EXPORTED_RUNTIME_METHODS=[ 'cwrap', 'allocate', 'intArrayFromString', 'UTF8ToString' ]&quot;
 </code></pre>
-<p>(More about <code>wasm.c</code> in a while)</p>
+<p>(See the Makefile <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm.mk"><strong><code>wasm.mk</code></strong></a>. More about <code>wasm.c</code> in a while)</p>
 <p>C programs that call the <strong>Standard C Libraries</strong> should build OK with Emscripten: <code>printf</code>, <code>&lt;stdio.h&gt;</code>, <code>&lt;stdlib.h&gt;</code>, <code>&lt;string.h&gt;</code>, … </p>
 <p>The Emscripten Compiler generates 3 output files…</p>
 <ul>
@@ -129,6 +130,7 @@
 <p><strong><code>ulisp.html</code></strong>: HTML file that we may open in a Web Browser to <strong>load the JavaScript module</strong> and run the WebAssembly Code</p>
 </li>
 </ul>
+<p><a href="https://emscripten.org/docs/getting_started/downloads.html">(Instructions for installing Emscripten)</a></p>
 <p><img src="https://lupyuen.github.io/images/lisp-wasm.png" alt="Compiling uLisp to WebAssembly with Emscripten" /></p>
 <p><em>What are the <code>EXPORTED_FUNCTIONS</code>?</em></p>
 <pre><code class="language-text">-s &quot;EXPORTED_FUNCTIONS=[ '_setup_ulisp', '_execute_ulisp', '_clear_simulation_events', '_get_simulation_events' ]&quot;
@@ -1084,9 +1086,8 @@ uint32_t time_ms_to_ticks32(uint32_t millisec) { return millisec; }
 </li>
 </ol>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">14 What’s Next</a></h1>
-<p>TODO</p>
-<p>Porting uLisp and Blockly to BL602 has been a fun experience.</p>
-<p>But more work needs to be done, I hope the Community can help.</p>
+<p>Creating a BL602 Simulator for uLisp and Blockly has been a fun experience.</p>
+<p>But more work needs to be done… Please lemme know if you’re keen to help!</p>
 <p>Could this be the better way to learn Embedded Programming on modern microcontrollers?</p>
 <p>Let’s build it and find out! 🙏 👍 😀</p>
 <ul>
@@ -1109,8 +1110,6 @@ uint32_t time_ms_to_ticks32(uint32_t millisec) { return millisec; }
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1393554618924212224">this Twitter Thread</a></li>
 </ol>
-<p><img src="https://lupyuen.github.io/images/wasm-error.png" alt="" /></p>
-<p><img src="https://lupyuen.github.io/images/wasm-string.png" alt="Passing simulation events from WebAssembly to WebAssembly" /></p>
 
     
 </body>
