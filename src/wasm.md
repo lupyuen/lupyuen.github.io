@@ -14,6 +14,8 @@ What if we...
 
 1.  Integrate the __BL602 Simulator with Blockly__...
 
+    [(Also from the previous article)](https://lupyuen.github.io/articles/lisp)
+
 1.  So that Embedded Developers may __preview their Blockly uLisp Apps in the Web Browser__?
 
 Today we shall build a simple simulator for the [__BL602 RISC-V + WiFi SoC__](https://lupyuen.github.io/articles/pinecone) that will run Blockly uLisp Apps in a Web Browser. 
@@ -30,7 +32,7 @@ _BL602 Simulator with Blockly and uLisp in WebAssembly_
 
 _What is Emscripten?_
 
-__Emscripten compiles C programs into WebAssembly__ so that we can run them in a Web Browser.
+[__Emscripten compiles C programs into WebAssembly__](https://emscripten.org/) so that we can run them in a Web Browser.
 
 (Think of WebAssembly as a kind of Machine Code that runs natively in any Web Browser)
 
@@ -45,17 +47,17 @@ emcc -g -s WASM=1 \
     -s "EXTRA_EXPORTED_RUNTIME_METHODS=[ 'cwrap', 'allocate', 'intArrayFromString', 'UTF8ToString' ]"
 ```
 
-(See the Makefile [__`wasm.mk`__](https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm.mk). More about `wasm.c` in a while)
+(See the Makefile [__`wasm.mk`__](https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm.mk). More about [__`wasm.c`__](https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm/wasm.c) in a while)
 
 C programs that call the __Standard C Libraries__ should build OK with Emscripten: `printf`, `<stdio.h>`, `<stdlib.h>`, `<string.h>`, ... 
 
 The Emscripten Compiler generates 3 output files...
 
--   __`ulisp.wasm`__: Contains the __WebAssembly Code__ generated for our C program. 
+-   [__`ulisp.wasm`__](https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.wasm): Contains the __WebAssembly Code__ generated for our C program. 
 
--   __`ulisp.js`__: JavaScript module that __loads the WebAssembly Code__ into a Web Browser and runs it
+-   [__`ulisp.js`__](https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.js): JavaScript module that __loads the WebAssembly Code__ into a Web Browser and runs it
 
--   __`ulisp.html`__: HTML file that we may open in a Web Browser to __load the JavaScript module__ and run the WebAssembly Code
+-   [__`ulisp.html`__](https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.html): HTML file that we may open in a Web Browser to __load the JavaScript module__ and run the WebAssembly Code
 
 [(Instructions for installing Emscripten)](https://emscripten.org/docs/getting_started/downloads.html)
 
@@ -945,6 +947,8 @@ Today we've created two things that run in a Web Browser...
 
 1.  __BL602 Simulator__ (based on JavaScript)
 
+In the previous article we've created a __Blockly Web Editor__ that lets us __drag-and-drop uLisp Programs__ in a Web Browser (much like Scratch). [(See this)](https://lupyuen.github.io/articles/lisp)
+
 _Can we drag-and-drop Blockly Programs in a Web Browser... And run them with uLisp REPL and BL602 Simulator?_
 
 ![Blockly Web Editor for uLisp WebAssembly and BL602 Simulator](https://lupyuen.github.io/images/wasm-blockly.png)
@@ -1001,7 +1005,7 @@ Read on to find out how we connected Blockly to uLisp REPL (in WebAssembly) and 
 
 # Simulate Blockly Programs
 
-__Adding the BL602 Simulator to Blockly__ (from the previous article) was surprisingly painless.
+__Adding the BL602 Simulator to Blockly__ [(from the previous article)](https://lupyuen.github.io/articles/lisp) was surprisingly painless.
 
 Here's what we did...
 
