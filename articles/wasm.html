@@ -1021,11 +1021,68 @@ uint32_t time_ms_to_ticks32(uint32_t millisec) { return millisec; }
 <p>To simulate any uLisp Program or BL602 Firmware we need to <strong>code the necessary Simulation Functions in JavaScript</strong> (like <code>gpio_output_set</code> and <code>time_delay</code>) for GPIO, I2C, SPI, ADC, DAC, LVGL, LoRa, …</p>
 <p>(Sounds like an interesting challenge!)</p>
 <h1 id="why-simulate-a-stream-of-events" class="section-header"><a href="#why-simulate-a-stream-of-events">13 Why Simulate A Stream Of Events?</a></h1>
-<p>TODO</p>
-<p>Inversion of control</p>
-<p>Loose coupling</p>
-<p>Time compression</p>
-<p>Time reversal</p>
+<p><em>Why did we choose to simulate a JSON Stream of Simulation Events? Is there a simpler way?</em></p>
+<p>Let’s look at this uLisp Program…</p>
+<pre><code class="language-text">( loop
+  ( digitalwrite 11 :low )
+  ( delay 1000 )
+  ( digitalwrite 11 :high )
+)
+</code></pre>
+<p>The obvious way to simulate this uLisp Program (with WebAssembly) would be to let <strong>uLisp control the simulator directly</strong>…</p>
+<ol>
+<li>
+<p>uLisp <strong>evaluates the first expression</strong>…</p>
+<pre><code class="language-text">( digitalwrite 11 :low )
+</code></pre>
+</li>
+<li>
+<p>uLisp <strong>renders the Simulated LED</strong> flipped on.</p>
+<p>(Probably with SDL, which is supported by Emscripten)</p>
+</li>
+<li>
+<p>uLisp <strong>evaluates the next expression</strong>…</p>
+<pre><code class="language-text">( delay 1000 )
+</code></pre>
+</li>
+<li>
+<p>uLisp <strong>pauses for 1 second</strong></p>
+</li>
+<li>
+<p>uLisp <strong>evaluates the next expression</strong>…</p>
+<pre><code class="language-text">( digitalwrite 11 :high )
+</code></pre>
+</li>
+<li>
+<p>uLisp <strong>renders the Simulated LED</strong> flipped off</p>
+</li>
+<li>
+<p>uLisp <strong>repeats the above steps forever</strong></p>
+</li>
+</ol>
+<p>This <strong>Synchronous Simulation</strong> of uLisp Programs is <a href="https://en.wikipedia.org/wiki/Coupling_(computer_programming)#Disadvantages_of_tight_coupling"><strong>Tightly Coupled</strong></a>.</p>
+<p>It’s heavily <strong>dependent on the implementation</strong> of the uLisp Interpreter. And the way we render the simulator (like SDL).</p>
+<p>Which makes this design <strong>harder to reuse</strong> for other kinds of BL602 Firmware (like our BL602 Blinky Firmware in C) and other ways of rendering the simulator (like JavaScript).</p>
+<p>To fix this, we apply <a href="https://en.wikipedia.org/wiki/Inversion_of_control"><strong>Inversion of Control</strong></a> and flip the design, so that <strong>uLisp no longer controls the simulator directly</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/lisp-simulator.png" alt="BL602 Simulator Design" /></p>
+<p>And we get the <strong>chosen design of our BL602 Simulator</strong>.</p>
+<p>Some Higher Entity (the Simulator JavaScript) takes the Simulation Events emitted by uLisp, and feeds them to the BL602 Simulator.</p>
+<p>With this simulator design we get…</p>
+<ol>
+<li>
+<p><strong>Loose Coupling</strong>: We can reuse this design for other kinds of BL602 Firmware, like our BL602 Blinky Firmware in C. (As explained in the previous chapter)</p>
+</li>
+<li>
+<p><strong>Unit Testing</strong>: We might someday feed the JSON Stream of Simulation Events to a Unit Testing Engine, for running Automated Unit Tests on our uLisp Programs and BL602 Firmware. (Without actual BL602 hardware!)</p>
+</li>
+<li>
+<p><strong>Time Compression</strong>: Time Delay Events are encoded inside the stream of Simulation Events. Which means that the simulation runs in Deferred Time, not in Real Time.</p>
+<p>This gets interesting because we no longer need to wait say, 1 hour of real time to simulate a BL602 program… We could <strong>speed up the simulator</strong> 10 times and see the outcome in 6 minutes!</p>
+</li>
+<li>
+<p><strong>Time Reversal</strong>: With a stream of Simulation Events, we could reverse time too! Rewinding to a specific point in the stream could be really helpful for troubleshooting BL602 Firmware.</p>
+</li>
+</ol>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">14 What’s Next</a></h1>
 <p>TODO</p>
 <p>Porting uLisp and Blockly to BL602 has been a fun experience.</p>
