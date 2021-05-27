@@ -1205,15 +1205,73 @@ To simulate any uLisp Program or BL602 Firmware we need to __code the necessary 
 
 # Why Simulate A Stream Of Events?
 
-TODO
+_Why did we choose to simulate a JSON Stream of Simulation Events? Is there a simpler way?_
 
-Inversion of control
+Let's look at this uLisp Program...
 
-Loose coupling
+```text
+( loop
+  ( digitalwrite 11 :low )
+  ( delay 1000 )
+  ( digitalwrite 11 :high )
+)
+```
 
-Time compression
+The obvious way to simulate this uLisp Program (with WebAssembly) would be to let __uLisp control the simulator directly__...
 
-Time reversal
+1.  uLisp __evaluates the first expression__...
+
+    ```text
+    ( digitalwrite 11 :low )
+    ```
+
+1.  uLisp __renders the Simulated LED__ flipped on.
+
+    (Probably with SDL, which is supported by Emscripten)
+
+1.  uLisp __evaluates the next expression__...
+
+    ```text
+    ( delay 1000 )
+    ```
+
+1.  uLisp __pauses for 1 second__
+
+1.  uLisp __evaluates the next expression__...
+
+    ```text
+    ( digitalwrite 11 :high )
+    ```
+
+1.  uLisp __renders the Simulated LED__ flipped off
+
+1.  uLisp __repeats the above steps forever__
+
+This __Synchronous Simulation__ of uLisp Programs is [__Tightly Coupled__](https://en.wikipedia.org/wiki/Coupling_(computer_programming)#Disadvantages_of_tight_coupling).
+
+It's heavily __dependent on the implementation__ of the uLisp Interpreter. And the way we render the simulator (like SDL).
+
+Which makes this design __harder to reuse__ for other kinds of BL602 Firmware (like our BL602 Blinky Firmware in C) and other ways of rendering the simulator (like JavaScript).
+
+To fix this, we apply [__Inversion of Control__](https://en.wikipedia.org/wiki/Inversion_of_control) and flip the design, so that __uLisp no longer controls the simulator directly__...
+
+![BL602 Simulator Design](https://lupyuen.github.io/images/lisp-simulator.png)
+
+And we get the __chosen design of our BL602 Simulator__.
+
+Some Higher Entity (the Simulator JavaScript) takes the Simulation Events emitted by uLisp, and feeds them to the BL602 Simulator.
+
+With this simulator design we get...
+
+1.  __Loose Coupling__: We can reuse this design for other kinds of BL602 Firmware, like our BL602 Blinky Firmware in C. (As explained in the previous chapter)
+
+1.  __Unit Testing__: We might someday feed the JSON Stream of Simulation Events to a Unit Testing Engine, for running Automated Unit Tests on our uLisp Programs and BL602 Firmware. (Without actual BL602 hardware!)
+
+1.  __Time Compression__: Time Delay Events are encoded inside the stream of Simulation Events. Which means that the simulation runs in Deferred Time, not in Real Time.
+
+    This gets interesting because we no longer need to wait say, 1 hour of real time to simulate a BL602 program... We could __speed up the simulator__ 10 times and see the outcome in 6 minutes!
+
+1.  __Time Reversal__: With a stream of Simulation Events, we could reverse time too! Rewinding to a specific point in the stream could be really helpful for troubleshooting BL602 Firmware.
 
 # What's Next
 
