@@ -18,13 +18,23 @@ We caught a fleeting glimpse of the __BL602 Boot2 Bootloader__ in the article...
 
 -   [__"Flashing Firmware to PineCone BL602"__](https://lupyuen.github.io/articles/flash)
 
-Whenever we flash firmware to BL602, the Boot2 Bootloader (`blsp_boot2.bin` and `boot2image.bin` in the pic above) gets transferred to BL602 together with our firmware (`bl602.bin` and `fwimage.bin` in the pic above).
+Whenever we flash our Application Firmware to BL602, the Boot2 Bootloader (`blsp_boot2.bin` and `boot2image.bin` in the pic above) gets transferred to BL602 together with our firmware (`bl602.bin` and `fwimage.bin` in the pic above).
 
 During flashing, our firmware isn't written directly to BL602's __XIP Flash Memory__. 
 
 Instead, the __Boot2 Bootloader reads our firmware__ from the transferred Flashing Image and __writes our firmware__ to XIP Flash Memory at __`0x2300 0000`__.
 
 (XIP means "Execute In Place", it refers to the BL602 Flash Memory that will store our executable firmware code).
+
+_Where is the Boot2 Bootloader located?_
+
+TODO
+
+_So the Bootloader overwrites itself by our Application Firmware?_
+
+TODO
+
+_Is Boot2 really a Bootloader?_
 
 TODO
 
@@ -44,7 +54,7 @@ TODO
 
 TODO
 
-# Install Firmware
+# Install Application Firmware
 
 TODO
 
