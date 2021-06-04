@@ -16,7 +16,7 @@ Is there a book about the __BL602 SoC__ (RISC-V, WiFi and Bluetooth LE) that...
 
 _You're reading the book right now!_
 
-Use this book to navigate the numerous BL602 articles that have been published on this site. (19 articles and still growing!)
+Use this book to navigate the numerous BL602 articles that have been published on this site. (20 articles and still growing!)
 
 The programs in these articles have been tested on __PineCone__, but they should work on other BL602 Boards: __Pinenut, DT-BL10, MagicHome BL602__.
 
@@ -53,6 +53,8 @@ How we __flash firmware__ to BL602 with __command-line tools__ on Linux, macOS a
 -   ["How To Create BL602 Projects"](https://lupyuen.github.io/articles/lora2#appendix-how-to-create-bl602-projects)
 
 -   ["How To Create BL602 Libraries"](https://lupyuen.github.io/articles/lora2#appendix-how-to-create-bl602-libraries)
+
+-   ["BL602 Bootloader"](https://lupyuen.github.io/articles/boot)
 
 ![GPIO on BL602](https://lupyuen.github.io/images/book-led.jpg)
 
