@@ -79,15 +79,34 @@
 <p><em>How is our firmware loaded into BL602’s flash memory?</em></p>
 <p><em>How does BL602 prevent tampering of firmware?</em></p>
 <p>All this and much, much more shall be explained as we learn about the <strong>BL602 Boot2 Bootloader</strong>.</p>
-<p><img src="https://lupyuen.github.io/images/boot-title.jpg" alt="BL602 Boot2 Bootloader used in flashing BL602 firmware" /></p>
-<p><em>BL602 Boot2 Bootloader used in flashing BL602 firmware</em></p>
 <h1 id="bl602-boot2-bootloader" class="section-header"><a href="#bl602-boot2-bootloader">1 BL602 Boot2 Bootloader</a></h1>
-<p>We caught a fleeting glimpse of the <strong>BL602 Boot2 Bootloader</strong> in the article…</p>
+<p>Let’s ponder what happens when we flash to BL602 the firmware that we have built.</p>
+<p>(Let’s call it the <strong>Application Firmware</strong>)</p>
+<p><em>Sounds easy! We transfer the Application Firmware from our computer to BL602 (over USB)…</em></p>
+<p><em>Then BL602 writes the Application Firmware to flash memory. Right?</em></p>
+<p>Not quite. We talked about flashing Application Firmware in the article…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/flash"><strong>“Flashing Firmware to PineCone BL602”</strong></a></li>
 </ul>
-<p>Whenever we flash our Application Firmware to BL602, the Boot2 Bootloader (<code>blsp_boot2.bin</code> and <code>boot2image.bin</code> in the pic above) gets transferred to BL602 together with our firmware (<code>bl602.bin</code> and <code>fwimage.bin</code> in the pic above).</p>
-<p>During flashing, our firmware isn’t written directly to BL602’s <strong>XIP Flash Memory</strong>. </p>
+<p>During flashing, we transfer a <strong>Flashing Image</strong> from our computer to BL602 over USB.</p>
+<p>The Flashing Image contains…</p>
+<ol>
+<li>
+<p><strong>Boot2 Bootloader <code>boot2image.bin</code></strong></p>
+<p>(Derived from the Bootloader Binary <code>blsp_boot2.bin</code>)</p>
+</li>
+<li>
+<p><strong>Application Firmware <code>fwimage.bin</code></strong></p>
+<p>(Derived from our compiled firmware <code>bl602.bin</code>)</p>
+</li>
+<li>
+<p><strong>Partition Table <code>partition.bin</code></strong> and <strong>Device Tree <code>ro_params.dtb</code></strong></p>
+</li>
+</ol>
+<p>Here’s how the Flashing Image is constructed…</p>
+<p><img src="https://lupyuen.github.io/images/boot-title.jpg" alt="Flashing BL602 firmware" /></p>
+<p><em>Why is the Boot2 Bootloader transferred to BL602 during flashing?</em></p>
+<p>During flashing, our Application Firmware isn’t written directly to BL602’s <strong>XIP Flash Memory</strong>. </p>
 <p>Instead, the <strong>Boot2 Bootloader reads our firmware</strong> from the transferred Flashing Image and <strong>writes our firmware</strong> to XIP Flash Memory at <strong><code>0x2300 0000</code></strong>.</p>
 <p>(XIP means “Execute In Place”, it refers to the BL602 Flash Memory that will store our executable firmware code).</p>
 <p><em>Where is the Boot2 Bootloader located?</em></p>
