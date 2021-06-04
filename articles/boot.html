@@ -67,7 +67,7 @@
     <nav id="TOC"><ul>
 <li><a href="#bl602-boot2-bootloader">1 BL602 Boot2 Bootloader</a><ul></ul></li>
 <li><a href="#inside-the-bootloader">2 Inside the Bootloader</a><ul></ul></li>
-<li><a href="#install-application-firmware">3 Install Application Firmware</a><ul></ul></li>
+<li><a href="#install-firmware">3 Install Firmware</a><ul></ul></li>
 <li><a href="#write-firmware-to-xip-flash">4 Write Firmware to XIP Flash</a><ul></ul></li>
 <li><a href="#efuse-security">5 EFuse Security</a><ul></ul></li>
 <li><a href="#bl602-rom-driver-api">6 BL602 ROM Driver API</a><ul></ul></li>
@@ -79,12 +79,19 @@
 <p><em>How is our firmware loaded into BL602’s flash memory?</em></p>
 <p><em>How does BL602 prevent tampering of firmware?</em></p>
 <p>All this and much, much more shall be explained as we learn about the <strong>BL602 Boot2 Bootloader</strong>.</p>
-<p><img src="https://lupyuen.github.io/images/boot-title.jpg" alt="" /></p>
+<p><img src="https://lupyuen.github.io/images/boot-title.jpg" alt="BL602 Boot2 Bootloader used in flashing BL602 firmware" /></p>
+<p><em>BL602 Boot2 Bootloader used in flashing BL602 firmware</em></p>
 <h1 id="bl602-boot2-bootloader" class="section-header"><a href="#bl602-boot2-bootloader">1 BL602 Boot2 Bootloader</a></h1>
+<p>We caught a fleeting glimpse of the <strong>BL602 Boot2 Bootloader</strong> in the article…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/flash"><strong>“Flashing Firmware to PineCone BL602”</strong></a></li>
+</ul>
+<p>Whenever we flash firmware to BL602, the Boot2 Bootloader (<code>blsp_boot2.bin</code> and <code>boot2image.bin</code> in the pic above) gets transferred to BL602 together with our firmware (<code>bl602.bin</code> and <code>fwimage.bin</code> in the pic above).</p>
+<p>During flashing, our firmware isn’t written directly to BL602’s <strong>XIP Flash Memory</strong>. </p>
+<p>Instead, the <strong>Boot2 Bootloader reads our firmware</strong> from the transferred Flashing Image and <strong>writes our firmware</strong> to XIP Flash Memory at <strong><code>0x2300 0000</code></strong>.</p>
+<p>(XIP means “Execute In Place”, it refers to the BL602 Flash Memory that will store our executable firmware code).</p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/boot-loader.png" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/boot-compare.png" alt="" /></p>
 <p>TODO</p>
 <h1 id="inside-the-bootloader" class="section-header"><a href="#inside-the-bootloader">2 Inside the Bootloader</a></h1>
 <p>TODO</p>
@@ -92,7 +99,7 @@
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/boot-main2.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="install-application-firmware" class="section-header"><a href="#install-application-firmware">3 Install Application Firmware</a></h1>
+<h1 id="install-firmware" class="section-header"><a href="#install-firmware">3 Install Firmware</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/boot-install.png" alt="" /></p>
 <p>TODO</p>
@@ -148,7 +155,15 @@
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/boot.md"><code>lupyuen.github.io/src/boot.md</code></a></p>
 <h1 id="notes" class="section-header"><a href="#notes">11 Notes</a></h1>
 <ol>
-<li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1398855867030593538">this Twitter Thread</a></li>
+<li>
+<p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1398855867030593538">this Twitter Thread</a></p>
+</li>
+<li>
+<p>Checking the bootloader</p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/boot-compare.png" alt="" /></p>
+<p>TODO</p>
+</li>
 </ol>
 
     
