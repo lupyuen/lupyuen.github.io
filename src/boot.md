@@ -8,19 +8,41 @@ _How does BL602 prevent tampering of firmware?_
 
 All this and much, much more shall be explained as we learn about the __BL602 Boot2 Bootloader__.
 
-![BL602 Boot2 Bootloader used in flashing BL602 firmware](https://lupyuen.github.io/images/boot-title.jpg)
-
-_BL602 Boot2 Bootloader used in flashing BL602 firmware_
-
 # BL602 Boot2 Bootloader
 
-We caught a fleeting glimpse of the __BL602 Boot2 Bootloader__ in the article...
+Let's ponder what happens when we flash to BL602 the firmware that we have built.
+
+(Let's call it the __Application Firmware__)
+
+_Sounds easy! We transfer the Application Firmware from our computer to BL602 (over USB)..._
+
+_Then BL602 writes the Application Firmware to flash memory. Right?_
+
+Not quite. We talked about flashing Application Firmware in the article...
 
 -   [__"Flashing Firmware to PineCone BL602"__](https://lupyuen.github.io/articles/flash)
 
-Whenever we flash our Application Firmware to BL602, the Boot2 Bootloader (`blsp_boot2.bin` and `boot2image.bin` in the pic above) gets transferred to BL602 together with our firmware (`bl602.bin` and `fwimage.bin` in the pic above).
+During flashing, we transfer a __Flashing Image__ from our computer to BL602 over USB.
 
-During flashing, our firmware isn't written directly to BL602's __XIP Flash Memory__. 
+The Flashing Image contains...
+
+1.  __Boot2 Bootloader `boot2image.bin`__
+
+    (Derived from the Bootloader Binary `blsp_boot2.bin`)
+
+1.  __Application Firmware `fwimage.bin`__
+
+    (Derived from our compiled firmware `bl602.bin`)
+
+1.  __Partition Table `partition.bin`__ and __Device Tree `ro_params.dtb`__
+
+Here's how the Flashing Image is constructed...
+
+![Flashing BL602 firmware](https://lupyuen.github.io/images/boot-title.jpg)
+
+_Why is the Boot2 Bootloader transferred to BL602 during flashing?_
+
+During flashing, our Application Firmware isn't written directly to BL602's __XIP Flash Memory__. 
 
 Instead, the __Boot2 Bootloader reads our firmware__ from the transferred Flashing Image and __writes our firmware__ to XIP Flash Memory at __`0x2300 0000`__.
 
