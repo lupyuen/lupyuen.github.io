@@ -67,7 +67,7 @@
     <nav id="TOC"><ul>
 <li><a href="#bl602-boot2-bootloader">1 BL602 Boot2 Bootloader</a><ul></ul></li>
 <li><a href="#inside-the-bootloader">2 Inside the Bootloader</a><ul></ul></li>
-<li><a href="#install-firmware">3 Install Firmware</a><ul></ul></li>
+<li><a href="#install-application-firmware">3 Install Application Firmware</a><ul></ul></li>
 <li><a href="#write-firmware-to-xip-flash">4 Write Firmware to XIP Flash</a><ul></ul></li>
 <li><a href="#efuse-security">5 EFuse Security</a><ul></ul></li>
 <li><a href="#bl602-rom-driver-api">6 BL602 ROM Driver API</a><ul></ul></li>
@@ -86,10 +86,15 @@
 <ul>
 <li><a href="https://lupyuen.github.io/articles/flash"><strong>“Flashing Firmware to PineCone BL602”</strong></a></li>
 </ul>
-<p>Whenever we flash firmware to BL602, the Boot2 Bootloader (<code>blsp_boot2.bin</code> and <code>boot2image.bin</code> in the pic above) gets transferred to BL602 together with our firmware (<code>bl602.bin</code> and <code>fwimage.bin</code> in the pic above).</p>
+<p>Whenever we flash our Application Firmware to BL602, the Boot2 Bootloader (<code>blsp_boot2.bin</code> and <code>boot2image.bin</code> in the pic above) gets transferred to BL602 together with our firmware (<code>bl602.bin</code> and <code>fwimage.bin</code> in the pic above).</p>
 <p>During flashing, our firmware isn’t written directly to BL602’s <strong>XIP Flash Memory</strong>. </p>
 <p>Instead, the <strong>Boot2 Bootloader reads our firmware</strong> from the transferred Flashing Image and <strong>writes our firmware</strong> to XIP Flash Memory at <strong><code>0x2300 0000</code></strong>.</p>
 <p>(XIP means “Execute In Place”, it refers to the BL602 Flash Memory that will store our executable firmware code).</p>
+<p><em>Where is the Boot2 Bootloader located?</em></p>
+<p>TODO</p>
+<p><em>So the Bootloader overwrites itself by our Application Firmware?</em></p>
+<p>TODO</p>
+<p><em>Is Boot2 really a Bootloader?</em></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/boot-loader.png" alt="" /></p>
 <p>TODO</p>
@@ -99,7 +104,7 @@
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/boot-main2.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="install-firmware" class="section-header"><a href="#install-firmware">3 Install Firmware</a></h1>
+<h1 id="install-application-firmware" class="section-header"><a href="#install-application-firmware">3 Install Application Firmware</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/boot-install.png" alt="" /></p>
 <p>TODO</p>
