@@ -2,7 +2,11 @@
 
 📝 _10 Jun 2021_
 
-TODO
+_How is our firmware loaded into BL602's flash memory?_
+
+_How does BL602 prevent tampering of firmware?_
+
+All this and much, much more shall be explained as we learn about the __BL602 Boot2 Bootloader__.
 
 ![](https://lupyuen.github.io/images/boot-title.jpg)
 
