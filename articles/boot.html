@@ -219,7 +219,7 @@ int main(void) {
 </code></pre>
 </li>
 <li>
-<p>TODO</p>
+<p>We register the functions that will be called to <strong>Erase, Write and Read the Partition Table</strong>…</p>
 <pre><code class="language-c">    if (BLSP_Boot2_8M_Support_Flag()) {
         //  Set flash operation function, read via sbus
         PtTable_Set_Flash_Operation(PtTable_Flash_Erase,
@@ -230,6 +230,7 @@ int main(void) {
             PtTable_Flash_Write, PtTable_Flash_Read);
     }
 </code></pre>
+<p>(Yes the parameters for both calls of <code>PtTable_Set_Flash_Operation</code> are identical)</p>
 </li>
 <li>
 <p>TODO</p>
