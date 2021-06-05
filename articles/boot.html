@@ -397,8 +397,16 @@ int main(void) {
 <p>That’s how the Bootloader installs our Application Firmware and starts the firmware!</p>
 <p><img src="https://lupyuen.github.io/images/boot-main2.png" alt="Bootloader Main Function" /></p>
 <h1 id="install-application-firmware" class="section-header"><a href="#install-application-firmware">3 Install Application Firmware</a></h1>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_boot2.c#L271-L313"><code>blsp_boot2.c</code></a></p>
+<p>As we’ve seen, the Bootloader calls <strong><code>BLSP_Boot2_Deal_One_FW</code></strong> to…</p>
+<ol>
+<li>
+<p><strong>Extract the Application Firmware</strong> from the Flashing Image</p>
+</li>
+<li>
+<p><strong>Write the Application Firmware to XIP Flash Memory</strong> at <code>0x2300 0000</code></p>
+</li>
+</ol>
+<p>Here’s how it works: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_boot2.c#L271-L313"><code>blsp_boot2.c</code></a></p>
 <pre><code class="language-c">//  Boot2 deal with one firmware.
 //  Return 0 for partition table changed, need re-parse.
 //  Return 1 for partition table or entry parsed successfully.
@@ -418,7 +426,8 @@ static int BLSP_Boot2_Deal_One_FW(
     ret = PtTable_Get_Active_Entries_By_ID(ptStuff, type, ptEntry);
   }
 </code></pre>
-<p>TODO</p>
+<p><strong><code>BLSP_Boot2_Deal_One_FW</code></strong> starts by fetching the <strong>Partition Table Entry</strong> for our Application Firmware named “<code>FW</code>”.</p>
+<p>Then it <strong>extracts the Application Firmware</strong> from the Flashing Image…</p>
 <pre><code class="language-c">  if (PT_ERROR_SUCCESS != ret) {
     MSG_ERR(&quot;Entry not found\r\n&quot;);
   } else {
@@ -428,7 +437,8 @@ static int BLSP_Boot2_Deal_One_FW(
       return 0;
     }
 </code></pre>
-<p>TODO</p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_boot2.c#L190-L224"><strong><code>BLSP_Boot2_Check_XZ_FW</code></strong></a> extracts and decompresses the Application Firmware. <a href="https://en.wikipedia.org/wiki/XZ_Utils">(XZ Compression)</a></p>
+<p>Now that we have the decompressed Application Firmware, we <strong>write the firmware to XIP Flash Memory</strong> at <code>0x2300 0000</code>…</p>
 <pre><code class="language-c">    //  Check if this partition need copy
     if (ptEntry-&gt;activeIndex &gt;= 2) {
       if (BFLB_BOOT2_SUCCESS == BLSP_Boot2_Do_FW_Copy(
@@ -442,6 +452,7 @@ static int BLSP_Boot2_Deal_One_FW(
   return 1;
 }
 </code></pre>
+<p>In the next chapter we study <strong><code>BLSP_Boot2_Do_FW_Copy</code></strong>.</p>
 <p><img src="https://lupyuen.github.io/images/boot-install.png" alt="Bootloader installing Application Firmware" /></p>
 <h1 id="write-firmware-to-xip-flash" class="section-header"><a href="#write-firmware-to-xip-flash">4 Write Firmware to XIP Flash</a></h1>
 <p>TODO</p>
