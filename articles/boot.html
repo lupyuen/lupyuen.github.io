@@ -80,8 +80,8 @@
 <p><em>How does BL602 prevent tampering of firmware?</em></p>
 <p>All this and much, much more shall be explained as we learn about the <strong>BL602 Boot2 Bootloader</strong>.</p>
 <h1 id="bl602-boot2-bootloader" class="section-header"><a href="#bl602-boot2-bootloader">1 BL602 Boot2 Bootloader</a></h1>
-<p>Let’s ponder what happens when we flash to BL602 the firmware that we have built.</p>
-<p>(Let’s call it the <strong>Application Firmware</strong>)</p>
+<p>Let’s ponder what happens when we flash to BL602 the firmware that we have built…</p>
+<p>(We’ll call it the <strong>Application Firmware</strong>)</p>
 <p><em>Sounds easy! We transfer the Application Firmware from our computer to BL602 (over USB)…</em></p>
 <p><em>Then BL602 writes the Application Firmware to flash memory. Right?</em></p>
 <p>Not quite. We talked about flashing Application Firmware in the article…</p>
@@ -92,12 +92,12 @@
 <p>The Flashing Image contains…</p>
 <ol>
 <li>
-<p><strong>Boot2 Bootloader <code>boot2image.bin</code></strong></p>
-<p>(Derived from the Bootloader Binary <code>blsp_boot2.bin</code>)</p>
+<p><strong>Boot2 Bootloader <code>blsp_boot2.bin</code></strong></p>
+<p>(Written to the Flashing Image as <code>boot2image.bin</code>)</p>
 </li>
 <li>
-<p><strong>Application Firmware <code>fwimage.bin</code></strong></p>
-<p>(Derived from our compiled firmware <code>bl602.bin</code>)</p>
+<p><strong>Application Firmware <code>bl602.bin</code></strong></p>
+<p>(Written to the Flashing Image as <code>fwimage.bin</code>)</p>
 </li>
 <li>
 <p><strong>Partition Table <code>partition.bin</code></strong> and <strong>Device Tree <code>ro_params.dtb</code></strong></p>
@@ -106,17 +106,41 @@
 <p>Here’s how the Flashing Image is constructed…</p>
 <p><img src="https://lupyuen.github.io/images/boot-title.jpg" alt="Flashing BL602 firmware" /></p>
 <p><em>Why is the Boot2 Bootloader transferred to BL602 during flashing?</em></p>
-<p>During flashing, our Application Firmware isn’t written directly to BL602’s <strong>XIP Flash Memory</strong>. </p>
-<p>Instead, the <strong>Boot2 Bootloader reads our firmware</strong> from the transferred Flashing Image and <strong>writes our firmware</strong> to XIP Flash Memory at <strong><code>0x2300 0000</code></strong>.</p>
-<p>(XIP means “Execute In Place”, it refers to the BL602 Flash Memory that will store our executable firmware code).</p>
+<p>During flashing, our Application Firmware isn’t written directly to BL602’s <strong>XIP Flash Memory</strong>.</p>
+<p>Instead, <strong>BL602 runs the Boot2 Bootloader</strong> which…</p>
+<ol>
+<li>
+<p><strong>Extracts our Application Firmware</strong> from the transferred Flashing Image</p>
+</li>
+<li>
+<p><strong>Writes our Application Firmware</strong> to XIP Flash Memory at address <strong><code>0x2300 0000</code></strong>.</p>
+</li>
+</ol>
+<p>(XIP means “Execute In Place”, it refers to the BL602 Flash Memory that will store our executable firmware code)</p>
 <p><em>Where is the Boot2 Bootloader located?</em></p>
-<p>TODO</p>
+<p>BL602 runs the Boot2 Bootloader from XIP Flash Memory at address <strong><code>0x2300 0000</code></strong>.</p>
+<p>Yep it’s the <strong>same address as our Application Firmware</strong>!</p>
 <p><em>So the Bootloader overwrites itself by our Application Firmware?</em></p>
-<p>TODO</p>
+<p>Yes indeed. We’ll learn later how the <strong>Boot2 Bootloader overwrites itself</strong> by the Application Firmware.</p>
 <p><em>Is Boot2 really a Bootloader?</em></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/boot-loader.png" alt="" /></p>
-<p>TODO</p>
+<p>On other microcontrollers, the Bootloader is the first thing that runs when powered on. (Before jumping to the Application Firmware)</p>
+<p>On BL602, the Boot2 Bootloader <strong>runs only when we flash new Application Firmware</strong>. (So that the Application Firmware may be loaded into XIP Flash Memory)</p>
+<p>So the Bootloader concept is a little different for BL602… It’s more like an <strong>“Application Firmware Loader”</strong></p>
+<p><em>Why so complicated?</em></p>
+<p>BL602’s Boot2 Bootloader allows Application Firmware to be <strong>flashed securely</strong> to XIP Flash Memory…</p>
+<ol>
+<li>
+<p>Boot2 Bootloader supports <strong>flashing of AES-Encrypted Application Firmware</strong></p>
+<p>(So it’s possible to push encrypted firmware updates over-the-air)</p>
+</li>
+<li>
+<p>Boot2 Bootloader can use <strong>Digital Signatures</strong> to verify that the Application Firmware is authentic</p>
+<p>(Prevents tampering of firmware updates)</p>
+</li>
+</ol>
+<p>We’ll learn more about firmware security.</p>
+<p><img src="https://lupyuen.github.io/images/boot-loader.png" alt="BL602 Boot2 Bootloader runs at address 0x2300 0000" /></p>
+<p><em>BL602 Boot2 Bootloader runs at address <code>0x2300 0000</code></em></p>
 <h1 id="inside-the-bootloader" class="section-header"><a href="#inside-the-bootloader">2 Inside the Bootloader</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/boot-main.png" alt="" /></p>
