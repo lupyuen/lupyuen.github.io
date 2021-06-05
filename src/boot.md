@@ -118,7 +118,9 @@ From [`bl602_boot2/blsp_boot2.c`](https://github.com/lupyuen/bl_iot_sdk/blob/mas
 
     ```c
         bflb_platform_print_set(BLSP_Boot2_Get_Log_Disable_Flag());
+
         bflb_platform_init(BLSP_Boot2_Get_Baudrate());
+
         bflb_platform_deinit_time();
     ```
 
@@ -139,11 +141,11 @@ From [`bl602_boot2/blsp_boot2.c`](https://github.com/lupyuen/bl_iot_sdk/blob/mas
 1.  TODO
 
     ```c
-        if(BLSP_Boot2_Get_Feature_Flag()!=BLSP_BOOT2_SP_FLAG){
+        if (BLSP_Boot2_Get_Feature_Flag() != BLSP_BOOT2_SP_FLAG) {
             //  Get CPU count info
-            cpuCount=BLSP_Boot2_Get_CPU_Count();
+            cpuCount = BLSP_Boot2_Get_CPU_Count();
         } else {
-            cpuCount=1;
+            cpuCount = 1;
         }
     ```
 
@@ -151,14 +153,17 @@ From [`bl602_boot2/blsp_boot2.c`](https://github.com/lupyuen/bl_iot_sdk/blob/mas
 
     ```c
         //  Get power save mode
-        psMode=BLSP_Read_Power_Save_Mode();
+        psMode = BLSP_Read_Power_Save_Mode();
     ```
 
 1.  TODO
 
     ```c
         //  Get User specified FW
-        ARCH_MemCpy_Fast(userFwName,BLSP_Get_User_Specified_Fw(),4);
+        ARCH_MemCpy_Fast(
+            userFwName,
+            BLSP_Get_User_Specified_Fw(),
+            4);
     ```
 
 1.  TODO
@@ -178,13 +183,11 @@ From [`bl602_boot2/blsp_boot2.c`](https://github.com/lupyuen/bl_iot_sdk/blob/mas
 1.  TODO
 
     ```c
-        while(1) {
-            tempMode=0;
+        while (1) {
+            tempMode = 0;
             do {
                 activeID = PtTable_Get_Active_Partition_Need_Lock(ptTableStuff);
-                if (PT_TABLE_ID_INVALID==activeID){
-                    BLSP_Boot2_On_Error("No valid PT\r\n");
-                }
+                if (PT_TABLE_ID_INVALID==activeID){ BLSP_Boot2_On_Error("No valid PT\r\n"); }
 
                 BLSP_Boot2_Get_MFG_StartReq(
                     activeID,
@@ -250,23 +253,34 @@ From [`bl602_boot2/blsp_boot2.c`](https://github.com/lupyuen/bl_iot_sdk/blob/mas
 1.  TODO
 
     ```c
-            /* Pass data to App*/
-            BLSP_Boot2_Pass_Parameter(NULL,0);
-            /* Pass active partition table ID */
-            BLSP_Boot2_Pass_Parameter(&activeID,4);
-            /* Pass active partition table content: table header+ entries +crc32 */
-            BLSP_Boot2_Pass_Parameter(&ptTableStuff[activeID],sizeof(PtTable_Config)+4+
-                                        ptTableStuff[activeID].ptTable.entryCnt*sizeof(PtTable_Entry_Config));
+            //  Pass data to App
+            BLSP_Boot2_Pass_Parameter(NULL, 0);
+
+            //  Pass active partition table ID
+            BLSP_Boot2_Pass_Parameter(&activeID, 4);
+
+            //  Pass active partition table content: table header + entries + crc32
+            BLSP_Boot2_Pass_Parameter(
+                &ptTableStuff[activeID],
+                sizeof(PtTable_Config) + 4
+                    + ptTableStuff[activeID].ptTable.entryCnt
+                        * sizeof(PtTable_Entry_Config));
     ```
 
 1.  TODO
 
     ```c
-            /* Pass flash config */
-            if(ptEntry[0].Address[ptEntry[0].activeIndex]!=0){
-                XIP_SFlash_Read_Via_Cache_Need_Lock(BLSP_BOOT2_XIP_BASE+ptEntry[0].Address[ptEntry[0].activeIndex]+8,flashCfgBuf,sizeof(flashCfgBuf));
-                /* Include magic and CRC32 */
-                BLSP_Boot2_Pass_Parameter(flashCfgBuf,sizeof(flashCfgBuf));
+            //  Pass flash config
+            if (ptEntry[0].Address[ptEntry[0].activeIndex] != 0) {
+                XIP_SFlash_Read_Via_Cache_Need_Lock(
+                    BLSP_BOOT2_XIP_BASE+ptEntry[0].Address[ptEntry[0].activeIndex] + 8,
+                    flashCfgBuf,
+                    sizeof(flashCfgBuf));
+
+                //  Include magic and CRC32
+                BLSP_Boot2_Pass_Parameter(
+                    flashCfgBuf,
+                    sizeof(flashCfgBuf));
             }
     ```
 
@@ -274,8 +288,8 @@ From [`bl602_boot2/blsp_boot2.c`](https://github.com/lupyuen/bl_iot_sdk/blob/mas
 
     ```c
             MSG_DBG("Boot start\r\n");
-            for(i=0;i<cpuCount;i++){
-                bootHeaderAddr[i]=ptEntry[i].Address[ptEntry[i].activeIndex];
+            for (i = 0; i < cpuCount; i++) {
+                bootHeaderAddr[i] = ptEntry[i].Address[ptEntry[i].activeIndex];
             }
     ```
 
@@ -284,47 +298,42 @@ From [`bl602_boot2/blsp_boot2.c`](https://github.com/lupyuen/bl_iot_sdk/blob/mas
     ```c
     #ifdef BLSP_BOOT2_ROLLBACK
             /* Test mode is not need roll back */
-            if(rollBacked==0 && tempMode==0){
-                ret=BLSP_MediaBoot_Main(bootHeaderAddr,bootRollback,1);
-            }else{
-                ret=BLSP_MediaBoot_Main(bootHeaderAddr,bootRollback,0);
+            if (rollBacked == 0 && tempMode == 0) {
+                ret = BLSP_MediaBoot_Main(bootHeaderAddr, bootRollback, 1);
+            } else {
+                ret = BLSP_MediaBoot_Main(bootHeaderAddr, bootRollback, 0);
             }
     #else
-            ret=BLSP_MediaBoot_Main(bootHeaderAddr,bootRollback,0);
+            ret = BLSP_MediaBoot_Main(bootHeaderAddr, bootRollback, 0);
     #endif
     ```
 
 1.  TODO
 
     ```c
-            /* Fail in temp mode,continue to boot normal image */
-            if(tempMode==1){
-                continue;
-            }
+            //  Fail in temp mode, continue to boot normal image
+            if (tempMode == 1) { continue; }
     ```
 
 1.  TODO
 
     ```c
     #ifdef BLSP_BOOT2_ROLLBACK
-            /* If rollback is done, we still fail, break */
-            if(rollBacked){
-                break;
-            }
+            //  If rollback is done, we still fail, break
+            if (rollBacked) { break; }
             MSG_DBG("Boot return %d\r\n",ret);
             MSG_WAR("Check Rollback\r\n");
-            for(i=0;i<cpuCount;i++){
-                if(bootRollback[i]!=0){
+            for (i = 0; i < cpuCount; i++) {
+                if (bootRollback[i] != 0){
                     MSG_WAR("Rollback %d\r\n",i);
-                    if(BFLB_BOOT2_SUCCESS==BLSP_Boot2_Rollback_PtEntry(activeID,&ptTableStuff[activeID],&ptEntry[i])){
-                        rollBacked=1;
+                    if (BFLB_BOOT2_SUCCESS == BLSP_Boot2_Rollback_PtEntry(
+                        activeID, &ptTableStuff[activeID], &ptEntry[i])) {
+                        rollBacked = 1;
                     }
                 }
             }
-            /* If need no rollback, boot fail due to other reseaon instead of imgae issue,break */
-            if(rollBacked==0){
-                break;
-            }
+            //  If need no rollback, boot fail due to other reseaon instead of imgae issue, break
+            if (rollBacked == 0) { break; }
     #else
             break;
     #endif
@@ -334,9 +343,9 @@ From [`bl602_boot2/blsp_boot2.c`](https://github.com/lupyuen/bl_iot_sdk/blob/mas
 1.  TODO
 
     ```c
-        /* We should never get here unless boot fail */
+        //  We should never get here unless boot fail
         MSG_ERR("Media boot return %d\r\n",ret);
-        while(1){
+        while (1) {
             MSG_ERR("BLSP boot2 fail\r\n");
             ARCH_Delay_MS(500);
         }
