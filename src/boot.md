@@ -538,12 +538,13 @@ TODO
 From [`blsp_boot2.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_boot2.c#L226-L269)
 
 ```c
-//  Fetch the Partition Table Entry for the Application Firmware
-uint8_t activeIndex = ptEntry->activeIndex;
-uint32_t srcAddress = ptEntry->Address[activeIndex&0x01];
-uint32_t destAddress = ptEntry->Address[!(activeIndex&0x01)];
-uint32_t destMaxSize = ptEntry->maxLen[!(activeIndex&0x01)];
-uint32_t totalLen = ptEntry->len;
+static int BLSP_Boot2_Do_FW_Copy( ... ) {
+  //  Fetch the Partition Table Entry for the Application Firmware
+  uint8_t activeIndex = ptEntry->activeIndex;
+  uint32_t srcAddress = ptEntry->Address[activeIndex&0x01];
+  uint32_t destAddress = ptEntry->Address[!(activeIndex&0x01)];
+  uint32_t destMaxSize = ptEntry->maxLen[!(activeIndex&0x01)];
+  uint32_t totalLen = ptEntry->len;
 ```
 
 From [BL602 Partition Table](https://lupyuen.github.io/articles/flash#appendix-bl602-partition-table)
@@ -560,6 +561,8 @@ size1 = 0x88000
 # compressed image must set len,normal image can left it to 0
 len = 0
 ```
+
+__Exercise for the Reader:__ Match the code above (`BLSP_Boot2_Do_FW_Copy`) with the actual values in the BL602 Partition Table (`pt_entry`)... To verify that the code makes sense!
 
 ![BL602 Partition Table](https://lupyuen.github.io/images/boot-partition.png)
 
