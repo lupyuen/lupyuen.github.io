@@ -535,11 +535,33 @@ Finally we repeat the steps with the __next 4 KB chunk__, until the entire decom
 
 TODO
 
-[BL602 Partition Table](https://lupyuen.github.io/articles/flash#appendix-bl602-partition-table)
+From [`blsp_boot2.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_boot2.c#L226-L269)
 
-![](https://lupyuen.github.io/images/boot-partition.png)
+```c
+//  Fetch the Partition Table Entry for the Application Firmware
+uint8_t activeIndex = ptEntry->activeIndex;
+uint32_t srcAddress = ptEntry->Address[activeIndex&0x01];
+uint32_t destAddress = ptEntry->Address[!(activeIndex&0x01)];
+uint32_t destMaxSize = ptEntry->maxLen[!(activeIndex&0x01)];
+uint32_t totalLen = ptEntry->len;
+```
 
-TODO
+From [BL602 Partition Table](https://lupyuen.github.io/articles/flash#appendix-bl602-partition-table)
+
+```text
+[[pt_entry]]
+type = 0
+name = "FW"
+device = 0
+address0 = 0x10000
+size0 = 0xC8000
+address1 = 0xD8000
+size1 = 0x88000
+# compressed image must set len,normal image can left it to 0
+len = 0
+```
+
+![BL602 Partition Table](https://lupyuen.github.io/images/boot-partition.png)
 
 # BL602 ROM Driver API
 
