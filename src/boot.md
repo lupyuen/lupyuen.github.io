@@ -147,7 +147,9 @@ From [`bl602_boot2/blsp_boot2.c`](https://github.com/lupyuen/bl_iot_sdk/blob/mas
         BLSP_Boot2_Reset_Sec_Eng();
     ```
 
-1.  TODO
+1.  The Bootloader supports __multicore CPUs__.  (Each core will start the Application Firmware with different parameters)
+
+    BL602 is a single-core CPU, so the __CPU Count__ will be set to 1...
 
     ```c
         if (BLSP_Boot2_Get_Feature_Flag() != BLSP_BOOT2_SP_FLAG) {
@@ -158,17 +160,16 @@ From [`bl602_boot2/blsp_boot2.c`](https://github.com/lupyuen/bl_iot_sdk/blob/mas
         }
     ```
 
-1.  TODO
+1.  We __fetch the Application Firmware Name__ from the Flashing Image.
+
+    Our Application Firmware is always named __`"FW"`__ [(See this)](https://lupyuen.github.io/articles/flash#appendix-bl602-partition-table)
 
     ```c
         //  Get power save mode
         psMode = BLSP_Read_Power_Save_Mode();
-    ```
 
-1.  TODO
-
-    ```c
         //  Get User specified FW
+        uint8_t userFwName[9] = {0};  //  Firmware Name
         ARCH_MemCpy_Fast(
             userFwName,
             BLSP_Get_User_Specified_Fw(),
