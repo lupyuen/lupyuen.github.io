@@ -24,7 +24,7 @@ Today we shall learn to...
 
     -   __Partition Table__
     -   __EFuse Configuration__
-    -   __Boot Image__
+    -   __Boot2 Bootloader__
     -   __Firmware Image__
     -   __Device Tree__
 
@@ -367,7 +367,7 @@ Whenever we flash the firmware of BL602, `blflash` transmits to BL602 a __Flash 
 
 | Offset | Contents |
 |:---|:---|
-| __Boot Image__ <br> `0x0000 0000`      | Code and data for <br>Boot Firmware		
+| __Boot2 Bootloader__ <br> `0x0000 0000`      | Code and data for <br>Boot2 Bootloader		
 | __Partition Table__ <br> `0x0000 E000` | Partition Table for <br>Flash Image
 | __Partition Table__ <br> `0x0000 F000` | Partition Table for <br> Flash Image <br>(For second core?)
 | __Firmware Image__ <br> `0x0001 0000`	 | Code and data for <br> Application Firmware
@@ -514,7 +514,7 @@ ef_dbg_pwd_high    = 0
 
 ## Boot Header Configuration
 
-The EFuse Configuration also includes a __Boot Header Configuration__ that specifies how the Boot Image and Firmware Image should be flashed to ROM.
+The EFuse Configuration also includes a __Boot Header Configuration__ that specifies how the Boot2 Bootloader and Firmware Image should be flashed to ROM.
 
 Here's a snippet from [`efuse_bootheader_cfg.conf`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/efuse_bootheader/efuse_bootheader_cfg.conf)...
 
@@ -557,15 +557,15 @@ Here we see that the Boot Header (in binary form) is located at the base of XIP 
 
 [More about BL602 EFuse Configuration](https://lupyuen.github.io/articles/flash#appendix-bl602-efuse-configuration)
 
-![Transforming BL602 Boot Image](https://lupyuen.github.io/images/pinecone-flash-steps2a.png)
+![Transforming BL602 Boot2 Bootloader](https://lupyuen.github.io/images/pinecone-flash-steps2a.png)
 
-_Transforming the BL602 Boot Image_
+_Transforming the BL602 Boot2 Bootloader_
 
-# Boot Image
+# Boot2 Bootloader
 
-Located at offset `0x0`, the __Boot Image__ contains the firmware code that is run first upon booting BL602....
+Located at offset `0x0`, the __Boot2 Bootloader__ contains the firmware code that is run first upon booting BL602....
 
-1.  __Boot Image Binary__ is at...
+1.  __Boot2 Bootloader Binary__ is at...
 
     -   [`blsp_boot2.bin`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/builtin_imgs/blsp_boot2.bin)
                             
@@ -577,21 +577,13 @@ Located at offset `0x0`, the __Boot Image__ contains the firmware code that is r
                                     
 1.  Which is flashed to BL602 Flash ROM whenever we update the firmware
 
-The BL602 Boot Firmware Source Code is located here...
+The BL602 Boot2 Bootloader Source Code is located here...
 
 -   [`bl_iot_sdk/customer_app/bl602_boot2`](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/bl602_boot2)
 
-The BL602 Boot Firmware seems to be doing... stuff.
+The BL602 Boot2 Bootloader is explained in the article...
 
-![Robot Chicken in Boot Image](https://lupyuen.github.io/images/flash-chicken.png)
-
-Would you like me to...
-
-1.  Study the BL602 Boot Firmware Source Code
-
-1.  And explain how it works, in an article?
-
-Please support my work by becoming my [GitHub Sponsor](https://github.com/sponsors/lupyuen)! 🙏
+-   [__"BL602 Bootloader"__](https://lupyuen.github.io/articles/boot)
 
 ![Transforming BL602 Firmware Image](https://lupyuen.github.io/images/pinecone-flash-steps2b.png)
 
@@ -599,7 +591,7 @@ _Transforming the BL602 Firmware Image_
 
 # Firmware Image
 
-Located at offset `0x10000`, the __Firmware Image__ contains our application firmware code that is run after the boot firmware.
+Located at offset `0x10000`, the __Firmware Image__ contains our application firmware code that is run after the boot2 bootloader.
 
 Our firmware binary (`sdk_app_helloworld.bin`) gets transformed with the __EFuse Configuration__ (and Boot Header Configuration) to create (with firmware offset `0x1000`)...
 
@@ -609,7 +601,13 @@ Our firmware binary (`sdk_app_helloworld.bin`) gets transformed with the __EFuse
 
 The transformed binary is then flashed to BL602 Flash ROM.
 
-_(TODO: Both the Boot Image and Firmware Image are compiled to execute at XIP Flash Address `0x2300 0000`... How can two programs coexist at the same address? Does Boot Image contain the code to move Firmware Image to address `0x2300 0000`, overwriting the Boot Image?)_
+_Both the Boot2 Bootloader and Firmware Image are compiled to execute at XIP Flash Address `0x2300 0000`... How can two programs coexist at the same address?_
+
+_Does Boot2 Bootloader contain the code to move Firmware Image to address `0x2300 0000`, overwriting the Boot2 Bootloader?_
+
+Yes indeed! This is explained in the article...
+
+-   [__"BL602 Bootloader"__](https://lupyuen.github.io/articles/boot)
 
 ![Compiling the BL602 Device Tree](https://lupyuen.github.io/images/pinecone-flash-steps2d.png)
 
@@ -827,7 +825,7 @@ bluetooth {
 
 [More about Linux Device Trees](https://www.kernel.org/doc/html/latest/devicetree/usage-model.html)
 
-_(TODO: Where is the Device Tree stored in XIP Flash ROM? Is this Device Tree used by EFlash Loader or Boot Image?)_
+_(TODO: Where is the Device Tree stored in XIP Flash ROM? Is this Device Tree used by EFlash Loader or Boot2 Bootloader?)_
 
 # Flash Firmware in 2 Stages
 
@@ -859,7 +857,7 @@ Next we compose the __Flash Image__ that contains 5 sections of data...
 
 | Offset | Contents |
 |:---|:---|
-| `0x0000 0000` | __Boot Image__ <br>(transformed)
+| `0x0000 0000` | __Boot2 Bootloader__ <br>(transformed)
 | `0x0000 E000` | __Partition Table__ <br>(binary format)
 | `0x0000 F000` | __Partition Table__ <br>(binary format)
 | `0x0001 0000`	| __Firmware Image__ <br>(transformed)
@@ -930,7 +928,7 @@ _How different is `blflash` from BLOpenFlasher?_
 
     -   __EFuse Configuration__: [`efuse_bootheader_cfg.conf`](https://github.com/spacemeowx2/blflash/blob/main/blflash/src/chip/bl602/cfg/efuse_bootheader_cfg.conf)
 
-    -   __Boot Image__: [`blsp_boot2.bin`](https://github.com/spacemeowx2/blflash/blob/main/blflash/src/chip/bl602/image/blsp_boot2.bin)
+    -   __Boot2 Bootloader__: [`blsp_boot2.bin`](https://github.com/spacemeowx2/blflash/blob/main/blflash/src/chip/bl602/image/blsp_boot2.bin)
 
     -   __EFlash Loader__: [`eflash_loader_40m.bin`](https://github.com/spacemeowx2/blflash/blob/main/blflash/src/chip/bl602/image/eflash_loader_40m.bin)
 
@@ -1453,7 +1451,7 @@ _Compiling the BL602 Device Tree_
 
 -   From [`BLOpenFlasher/bl602/ efuse_bootheader/ efuse_bootheader_cfg.conf`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/efuse_bootheader/efuse_bootheader_cfg.conf)
 
--   Will be used for transforming Boot Image and Firmware Image
+-   Will be used for transforming Boot2 Bootloader and Firmware Image
 
 -   Also includes the Boot Header Configuration
 
