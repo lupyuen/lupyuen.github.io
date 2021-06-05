@@ -176,7 +176,7 @@ From [`bl602_boot2/blsp_boot2.c`](https://github.com/lupyuen/bl_iot_sdk/blob/mas
             4);
     ```
 
-1.  TODO
+1.  We register the functions that will be called to __Erase, Write and Read the Partition Table__...
 
     ```c
         if (BLSP_Boot2_8M_Support_Flag()) {
@@ -189,6 +189,8 @@ From [`bl602_boot2/blsp_boot2.c`](https://github.com/lupyuen/bl_iot_sdk/blob/mas
                 PtTable_Flash_Write, PtTable_Flash_Read);
         }
     ```
+
+    (Yes the parameters for both calls of `PtTable_Set_Flash_Operation` are identical)
 
 1.  TODO
 
