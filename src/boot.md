@@ -445,9 +445,13 @@ In the next chapter we study __`BLSP_Boot2_Do_FW_Copy`__.
 
 Previously on "Days Of Our Lives"... The Bootloader decompresses the Application Firmware and calls __`BLSP_Boot2_Do_FW_Copy`__ to write the firmware to XIP Flash Memory.
 
-Watch what happens: [`blsp_boot2.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_boot2.c#L226-L269)
+Watch what happens next: [`blsp_boot2.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_boot2.c#L226-L269)
 
 ```c
+//  Buffer for writing to XIP Flash Memory
+#define BFLB_BOOT2_READBUF_SIZE 4*1024
+uint8_t boot2ReadBuf[BFLB_BOOT2_READBUF_SIZE] __attribute__((section(".system_ram")));
+
 //  Boot2 copy firmware from OTA region to normal region
 static int BLSP_Boot2_Do_FW_Copy(
   PtTable_ID_Type activeID,         //  Active partition table ID
@@ -461,7 +465,11 @@ static int BLSP_Boot2_Do_FW_Copy(
   uint32_t totalLen = ptEntry->len;
   uint32_t dealLen = 0;
   uint32_t curLen = 0;
+```
 
+TODO
+
+```c
   if (SUCCESS != XIP_SFlash_Erase_Need_Lock(
     &flashCfg,
     destAddress,
@@ -469,12 +477,21 @@ static int BLSP_Boot2_Do_FW_Copy(
     MSG_ERR("Erase flash fail");
     return BFLB_BOOT2_FLASH_ERASE_ERROR;
   }
+```
 
+TODO
+
+```c
   while (dealLen < totalLen) {
     curLen = totalLen - dealLen;
     if (curLen > sizeof(boot2ReadBuf)) {
       curLen = sizeof(boot2ReadBuf);
     }
+```
+
+TODO
+
+```c
     if (BFLB_BOOT2_SUCCESS != BLSP_MediaBoot_Read(
       srcAddress,
       boot2ReadBuf,
@@ -482,6 +499,11 @@ static int BLSP_Boot2_Do_FW_Copy(
       MSG_ERR("Read FW fail when copy\r\n");
       return BFLB_BOOT2_FLASH_READ_ERROR;
     }
+```
+
+TODO
+
+```c
     if (SUCCESS != XIP_SFlash_Write_Need_Lock(
       &flashCfg,
       destAddress,
@@ -490,6 +512,11 @@ static int BLSP_Boot2_Do_FW_Copy(
       MSG_ERR("Write flash fail");
       return BFLB_BOOT2_FLASH_WRITE_ERROR;
     }
+```
+
+TODO
+
+```c
     srcAddress += curLen;
     destAddress += curLen;
     dealLen += curLen;
@@ -502,7 +529,7 @@ TODO
 
 ![Bootloader writing firmware to XIP flash](https://lupyuen.github.io/images/boot-write.png)
 
-## BL602 Partition Table
+# BL602 Partition Table
 
 TODO
 
