@@ -523,9 +523,27 @@ static int BLSP_Boot2_Do_FW_Copy(
 <p><img src="https://lupyuen.github.io/images/boot-write.png" alt="Bootloader writing firmware to XIP flash" /></p>
 <h1 id="bl602-partition-table" class="section-header"><a href="#bl602-partition-table">5 BL602 Partition Table</a></h1>
 <p>TODO</p>
-<p><a href="https://lupyuen.github.io/articles/flash#appendix-bl602-partition-table">BL602 Partition Table</a></p>
-<p><img src="https://lupyuen.github.io/images/boot-partition.png" alt="" /></p>
-<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_boot2.c#L226-L269"><code>blsp_boot2.c</code></a></p>
+<pre><code class="language-c">//  Fetch the Partition Table Entry for the Application Firmware
+uint8_t activeIndex = ptEntry-&gt;activeIndex;
+uint32_t srcAddress = ptEntry-&gt;Address[activeIndex&amp;0x01];
+uint32_t destAddress = ptEntry-&gt;Address[!(activeIndex&amp;0x01)];
+uint32_t destMaxSize = ptEntry-&gt;maxLen[!(activeIndex&amp;0x01)];
+uint32_t totalLen = ptEntry-&gt;len;
+</code></pre>
+<p>From <a href="https://lupyuen.github.io/articles/flash#appendix-bl602-partition-table">BL602 Partition Table</a></p>
+<pre><code class="language-text">[[pt_entry]]
+type = 0
+name = &quot;FW&quot;
+device = 0
+address0 = 0x10000
+size0 = 0xC8000
+address1 = 0xD8000
+size1 = 0x88000
+# compressed image must set len,normal image can left it to 0
+len = 0
+</code></pre>
+<p><img src="https://lupyuen.github.io/images/boot-partition.png" alt="BL602 Partition Table" /></p>
 <h1 id="bl602-rom-driver-api" class="section-header"><a href="#bl602-rom-driver-api">6 BL602 ROM Driver API</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/boot-driver.png" alt="" /></p>
