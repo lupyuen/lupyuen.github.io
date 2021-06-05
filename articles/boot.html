@@ -147,8 +147,14 @@
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_boot2.c#L389-L571"><code>bl602_boot2/blsp_boot2.c</code></a></p>
 <ol>
 <li>
-<p>TODO</p>
-<pre><code class="language-c">int main(void) {
+<p>The Bootloader starts by fetching the <strong>Clock Configuration and SPI Flash Configuration</strong> from the Flashing Image <a href="https://lupyuen.github.io/articles/flash#appendix-bl602-efuse-configuration">(See this)</a></p>
+<pre><code class="language-c">//  SPI Flash Configuration
+SPI_Flash_Cfg_Type flashCfg;
+
+//  EFuse Hardware Configuration
+Boot_Efuse_HW_Config efuseCfg;
+
+int main(void) {
     ...
     //  It's better not enable interrupt
     //  BLSP_Boot2_Init_Timer();
@@ -158,13 +164,16 @@
 
     //  Flush cache to get parameter
     BLSP_Boot2_Flush_XIP_Cache();
+
+    Boot_Clk_Config clkCfg;  //  Clock Configuration
     ret = BLSP_Boot2_Get_Clk_Cfg(&amp;clkCfg);
-    ret |= SF_Cfg_Get_Flash_Cfg_Need_Lock(0,&amp;flashCfg);
+
+    ret |= SF_Cfg_Get_Flash_Cfg_Need_Lock(0, &amp;flashCfg);
     BLSP_Boot2_Flush_XIP_Cache();
 </code></pre>
 </li>
 <li>
-<p>TODO</p>
+<p>Next the Bootloader <strong>initialises the Hardware Platform</strong>…</p>
 <pre><code class="language-c">    bflb_platform_print_set(BLSP_Boot2_Get_Log_Disable_Flag());
 
     bflb_platform_init(BLSP_Boot2_Get_Baudrate());
@@ -173,13 +182,13 @@
 </code></pre>
 </li>
 <li>
-<p>TODO</p>
+<p>We fetch the <strong>EFuse Configuration</strong> (for decrypting the Application Firmware and for verifying the firmware signature)</p>
 <pre><code class="language-c">    MSG_DBG(&quot;Get efuse config\r\n&quot;);
     BLSP_Boot2_Get_Efuse_Cfg(&amp;efuseCfg);
 </code></pre>
 </li>
 <li>
-<p>TODO</p>
+<p>We <strong>reset the Security Engine</strong> (for AES Encryption operations)</p>
 <pre><code class="language-c">    //  Reset Sec_Eng for using
     BLSP_Boot2_Reset_Sec_Eng();
 </code></pre>
