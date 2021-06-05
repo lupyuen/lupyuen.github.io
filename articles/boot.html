@@ -565,17 +565,44 @@ len      = 0
 <p>Earlier we’ve seen these functions called by the Bootloader to <strong>access XIP Flash Memory</strong>…</p>
 <ul>
 <li>
-<p><strong><code>XIP_SFlash_Erase_Need_Lock</code></strong>: Erase XIP Flash Memory</p>
+<p><strong>XIP_SFlash_Erase_Need_Lock</strong>: Erase XIP Flash Memory</p>
 </li>
 <li>
-<p><strong><code>XIP_SFlash_Read_Via_Cache_Need_Lock</code></strong>: Read XIP Flash Memory</p>
+<p><strong>XIP_SFlash_Read_Via_Cache_Need_Lock</strong>: Read XIP Flash Memory</p>
 </li>
 <li>
-<p><strong><code>XIP_SFlash_Write_Need_Lock</code></strong>: Write XIP Flash Memory</p>
+<p><strong>XIP_SFlash_Write_Need_Lock</strong>: Write XIP Flash Memory</p>
 </li>
 </ul>
 <p><em>These XIP Flash Memory Functions are defined in the Bootloader right?</em></p>
-<p>Not quite!</p>
+<p>Not quite… The XIP Flash Memory Functions are located in the <strong>BL602 Boot ROM</strong>!</p>
+<p><em>Shiver me timbers and call me Shirley! What’s the BL602 Boot ROM?</em></p>
+<p><strong>BL602 Boot ROM</strong> is the region of <strong>Read-Only Memory at <code>0x2100 0000</code></strong> that contains…</p>
+<ol>
+<li>
+<p><strong>Boot Code</strong> that’s run whenever we power on (or reset) BL602</p>
+<p>(The Boot Code runs just before the Bootloader)</p>
+</li>
+<li>
+<p><strong>ROM Driver Functions</strong> called by the Bootloader</p>
+<p>(Like the XIP Flash Memory Functions above)</p>
+</li>
+</ol>
+<p><em>Why put the ROM Driver Functions in the Boot ROM?</em></p>
+<ul>
+<li>
+<p>We <strong>reduce the Bootloader size</strong> by placing the low-level functions in Boot ROM</p>
+</li>
+<li>
+<p>Some ROM Driver Functions need to run <strong>in a secure, tamper-proof environment</strong> in the Boot ROM.</p>
+<p>(Like the functions for decrypting and verifying Application Firmware)</p>
+</li>
+</ul>
+<p><em>Wait this sounds familiar…?</em></p>
+<p>Our computers have a similar Boot ROM… It’s called the <a href="https://en.wikipedia.org/wiki/Unified_Extensible_Firmware_Interface"><strong>Unified Extensible Firmware Interface (UEFI)</strong></a></p>
+<p>It contains secure boot code that’s run whenever we power on our computer.</p>
+<p><img src="https://lupyuen.github.io/images/boot-driver5.png" alt="ROM Driver API in Boot ROM" /></p>
+<p><em>How did we discover the Boot ROM?</em></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/boot-driver.png" alt="" /></p>
 <p>TODO</p>
@@ -585,11 +612,8 @@ len      = 0
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/boot-driver4.png" alt="" /></p>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/boot-driver5.png" alt="" /></p>
-<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/boot-rust.png" alt="" /></p>
 <p>TODO</p>
-<p><a href="https://en.wikipedia.org/wiki/Unified_Extensible_Firmware_Interface">Unified Extensible Firmware Interface</a></p>
 <p><code>BLSP_Boot2_Deal_One_FW</code></p>
 <p><code>BLSP_Boot2_Check_XZ_FW</code></p>
 <p><code>BLSP_Boot2_Do_FW_Copy</code></p>
