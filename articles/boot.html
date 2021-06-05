@@ -522,8 +522,23 @@ static int BLSP_Boot2_Do_FW_Copy(
 </code></pre>
 <p><img src="https://lupyuen.github.io/images/boot-write.png" alt="Bootloader writing firmware to XIP flash" /></p>
 <h1 id="bl602-partition-table" class="section-header"><a href="#bl602-partition-table">5 BL602 Partition Table</a></h1>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_boot2.c#L226-L269"><code>blsp_boot2.c</code></a></p>
+<p><em>The Bootloader appears to be driven by the Partition Table (from the Flashing Image). What’s inside the Partition Table?</em></p>
+<p>Each entry of the <strong>Partition Table</strong> describes a <strong>section of the Flashing Image</strong>.</p>
+<p>Here’s the <strong>Partition Table Entry</strong> that describes our <strong>Application Firmware</strong>…</p>
+<pre><code class="language-text">[[pt_entry]]
+type     = 0
+name     = &quot;FW&quot;
+device   = 0
+address0 = 0x10000
+size0    = 0xC8000
+address1 = 0xD8000
+size1    = 0x88000
+len      = 0
+</code></pre>
+<p><a href="https://lupyuen.github.io/articles/flash#appendix-bl602-partition-table">(From this BL602 Partition Table)</a></p>
+<p>This Partition Table Entry says that our Application Firmware (compressed) is located in the Flash Image at <strong>offset <code>0x10000</code> with size <code>0xC8000</code></strong> (compressed).</p>
+<p>(But why are there two firmware sections <code>0x10000</code> and <code>0xD8000</code>?)</p>
+<p>With this information, our Bootloader will be able to decompress the Application Firmware and write to XIP Flash Memory… </p>
 <pre><code class="language-c">static int BLSP_Boot2_Do_FW_Copy( ... ) {
   //  Fetch the Partition Table Entry for the Application Firmware
   uint8_t activeIndex = ptEntry-&gt;activeIndex;
@@ -532,20 +547,20 @@ static int BLSP_Boot2_Do_FW_Copy(
   uint32_t destMaxSize = ptEntry-&gt;maxLen[!(activeIndex&amp;0x01)];
   uint32_t totalLen = ptEntry-&gt;len;
 </code></pre>
-<p>From <a href="https://lupyuen.github.io/articles/flash#appendix-bl602-partition-table">BL602 Partition Table</a></p>
-<pre><code class="language-text">[[pt_entry]]
-type = 0
-name = &quot;FW&quot;
-device = 0
-address0 = 0x10000
-size0 = 0xC8000
-address1 = 0xD8000
-size1 = 0x88000
-# compressed image must set len,normal image can left it to 0
-len = 0
-</code></pre>
-<p><strong>Exercise for the Reader:</strong> Match the code above (<code>BLSP_Boot2_Do_FW_Copy</code>) with the actual values in the BL602 Partition Table (<code>pt_entry</code>)… To verify that the code makes sense!</p>
-<p><img src="https://lupyuen.github.io/images/boot-partition.png" alt="BL602 Partition Table" /></p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_boot2.c#L226-L269">(We’ve seen this earlier in <code>blsp_boot2.c</code>)</a></p>
+<p><strong>Exercise for the Reader:</strong> Please take these two things…</p>
+<ol>
+<li>
+<p><strong><code>pt_entry</code></strong> Partition Table Entry above</p>
+</li>
+<li>
+<p><strong><code>BLSP_Boot2_Do_FW_Copy</code></strong> code above</p>
+</li>
+</ol>
+<p>Match them and verify that the code makes sense!</p>
+<p>(Maybe we’ll figure out why there are two firmware sections <code>0x10000</code> and <code>0xD8000</code>)</p>
+<p><a href="https://lupyuen.github.io/articles/flash#partition-table">More about BL602 Partition Table</a></p>
+<p><img src="https://lupyuen.github.io/images/boot-partition.png" alt="Matching the BL602 Partition Table" /></p>
 <h1 id="bl602-rom-driver-api" class="section-header"><a href="#bl602-rom-driver-api">6 BL602 ROM Driver API</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/boot-driver.png" alt="" /></p>
