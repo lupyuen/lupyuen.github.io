@@ -443,17 +443,70 @@ In the next chapter we study __`BLSP_Boot2_Do_FW_Copy`__.
 
 # Write Firmware to XIP Flash
 
+Previously on "Days Of Our Lives"... The Bootloader decompresses the Application Firmware and calls __`BLSP_Boot2_Do_FW_Copy`__ to write the firmware to XIP Flash Memory.
+
+Watch what happens: [`blsp_boot2.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_boot2.c#L226-L269)
+
+```c
+//  Boot2 copy firmware from OTA region to normal region
+static int BLSP_Boot2_Do_FW_Copy(
+  PtTable_ID_Type activeID,         //  Active partition table ID
+  PtTable_Stuff_Config *ptStuff,    //  Pointer of partition table stuff
+  PtTable_Entry_Config *ptEntry) {  //  Pointer of active entry
+
+  uint8_t activeIndex = ptEntry->activeIndex;
+  uint32_t srcAddress = ptEntry->Address[activeIndex&0x01];
+  uint32_t destAddress = ptEntry->Address[!(activeIndex&0x01)];
+  uint32_t destMaxSize = ptEntry->maxLen[!(activeIndex&0x01)];
+  uint32_t totalLen = ptEntry->len;
+  uint32_t dealLen = 0;
+  uint32_t curLen = 0;
+
+  if (SUCCESS != XIP_SFlash_Erase_Need_Lock(
+    &flashCfg,
+    destAddress,
+    destAddress+destMaxSize - 1)) {
+    MSG_ERR("Erase flash fail");
+    return BFLB_BOOT2_FLASH_ERASE_ERROR;
+  }
+
+  while (dealLen < totalLen) {
+    curLen = totalLen - dealLen;
+    if (curLen > sizeof(boot2ReadBuf)) {
+      curLen = sizeof(boot2ReadBuf);
+    }
+    if (BFLB_BOOT2_SUCCESS != BLSP_MediaBoot_Read(
+      srcAddress,
+      boot2ReadBuf,
+      curLen)) {
+      MSG_ERR("Read FW fail when copy\r\n");
+      return BFLB_BOOT2_FLASH_READ_ERROR;
+    }
+    if (SUCCESS != XIP_SFlash_Write_Need_Lock(
+      &flashCfg,
+      destAddress,
+      boot2ReadBuf,
+      curLen)) {
+      MSG_ERR("Write flash fail");
+      return BFLB_BOOT2_FLASH_WRITE_ERROR;
+    }
+    srcAddress += curLen;
+    destAddress += curLen;
+    dealLen += curLen;
+  }
+  return BFLB_BOOT2_SUCCESS;
+}
+```
+
 TODO
 
-![](https://lupyuen.github.io/images/boot-write.png)
+![Bootloader writing firmware to XIP flash](https://lupyuen.github.io/images/boot-write.png)
+
+## BL602 Partition Table
 
 TODO
 
-# EFuse Security
-
-TODO
-
-![](https://lupyuen.github.io/images/boot-efuse.png)
+![](https://lupyuen.github.io/images/boot-partition.png)
 
 TODO
 
@@ -487,11 +540,11 @@ TODO
 
 [Unified Extensible Firmware Interface](https://en.wikipedia.org/wiki/Unified_Extensible_Firmware_Interface)
 
-# BL602 Partition Table
+# EFuse Security
 
 TODO
 
-![](https://lupyuen.github.io/images/boot-partition.png)
+![](https://lupyuen.github.io/images/boot-efuse.png)
 
 TODO
 
