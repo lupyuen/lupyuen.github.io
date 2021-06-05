@@ -273,7 +273,8 @@ int main(void) {
 </code></pre>
 </li>
 <li>
-<p>TODO</p>
+<p>Now comes the fun part!</p>
+<p>The Bootloader <strong>extracts the Application Firmware</strong> (from the Flashing Image) and <strong>writes it to XIP Flash Memory</strong>…</p>
 <pre><code class="language-c">      else {
         ptParsed = BLSP_Boot2_Deal_One_FW(
           activeID,
@@ -281,26 +282,25 @@ int main(void) {
           &amp;ptEntry[0],
           NULL,
           PT_ENTRY_FW_CPU0);
-</code></pre>
-</li>
-<li>
-<p>TODO</p>
-<pre><code class="language-c">        if (ptParsed == 0) { continue; }
+
+        if (ptParsed == 0) { continue; }
         if (cpuCount &gt; 1) {
           //  Skip this code because our CPU Count is 1 (single core)
           ...
         }
       }
 </code></pre>
+<p>We’ll study <strong><code>BLSP_Boot2_Deal_One_FW</code></strong> in a while.</p>
 </li>
 <li>
-<p>TODO</p>
+<p>The Inner Loop repeats until it has located and processed the Application Firmware…</p>
 <pre><code class="language-c">      ptParsed = 1;
     } while (ptParsed == 0);
 </code></pre>
 </li>
 <li>
-<p>TODO</p>
+<p>Now that the Application Firmware has been written to XIP Flash Memory, let’s get ready to start the Application Firmware!</p>
+<p>We stage the <strong>Partition Table Entry</strong> that will be passed to the firmware…</p>
 <pre><code class="language-c">    //  Pass data to App
     BLSP_Boot2_Pass_Parameter(NULL, 0);
 
@@ -316,11 +316,13 @@ int main(void) {
 </code></pre>
 </li>
 <li>
-<p>TODO</p>
+<p>We pass the <strong>Flash Configuration</strong> too…</p>
 <pre><code class="language-c">    //  Pass flash config
     if (ptEntry[0].Address[ptEntry[0].activeIndex] != 0) {
       XIP_SFlash_Read_Via_Cache_Need_Lock(
-        BLSP_BOOT2_XIP_BASE+ptEntry[0].Address[ptEntry[0].activeIndex] + 8,
+        BLSP_BOOT2_XIP_BASE 
+          + ptEntry[0].Address[ptEntry[0].activeIndex] 
+          + 8,
         flashCfgBuf,
         sizeof(flashCfgBuf));
 
@@ -332,7 +334,7 @@ int main(void) {
 </code></pre>
 </li>
 <li>
-<p>TODO</p>
+<p>We initialise the <strong>Boot Header</strong> for each core (in a multicore CPU)</p>
 <pre><code class="language-c">    MSG_DBG(&quot;Boot start\r\n&quot;);
     for (i = 0; i &lt; cpuCount; i++) {
       bootHeaderAddr[i] = ptEntry[i].Address[ptEntry[i].activeIndex];
@@ -340,35 +342,30 @@ int main(void) {
 </code></pre>
 </li>
 <li>
-<p>TODO</p>
-<pre><code class="language-c">#ifdef BLSP_BOOT2_ROLLBACK
-    /* Test mode is not need roll back */
+<p>Finally we <strong>jump to the Application Firmware</strong> that has been written to XIP Flash Memory…</p>
+<pre><code class="language-c">#ifdef BLSP_BOOT2_ROLLBACK  //  This is true
+    //  Test mode is not need roll back
     if (rollBacked == 0 &amp;&amp; tempMode == 0) {
       ret = BLSP_MediaBoot_Main(bootHeaderAddr, bootRollback, 1);
     } else {
       ret = BLSP_MediaBoot_Main(bootHeaderAddr, bootRollback, 0);
     }
-#else
-    ret = BLSP_MediaBoot_Main(bootHeaderAddr, bootRollback, 0);
+#else  //  This is false
+    ...
 #endif
-</code></pre>
-</li>
-<li>
-<p>TODO</p>
-<pre><code class="language-c">    //  Fail in temp mode, continue to boot normal image
+    //  Fail in temp mode, continue to boot normal image
     if (tempMode == 1) { continue; }
 </code></pre>
+<p>(<strong><code>BLSP_BOOT2_ROLLBACK</code></strong> is defined because the Bootloader supports firmware rollback)</p>
+<p>We’ll cover <strong><code>BLSP_MediaBoot_Main</code></strong> in a while.</p>
 </li>
 <li>
 <p>TODO</p>
-<pre><code class="language-c">#ifdef BLSP_BOOT2_ROLLBACK
+<pre><code class="language-c">#ifdef BLSP_BOOT2_ROLLBACK  //  This is true
     //  If rollback is done, we still fail, break
     if (rollBacked) { break; }
-    MSG_DBG(&quot;Boot return %d\r\n&quot;,ret);
-    MSG_WAR(&quot;Check Rollback\r\n&quot;);
     for (i = 0; i &lt; cpuCount; i++) {
-      if (bootRollback[i] != 0){
-        MSG_WAR(&quot;Rollback %d\r\n&quot;,i);
+      if (bootRollback[i] != 0) {
         if (BFLB_BOOT2_SUCCESS == BLSP_Boot2_Rollback_PtEntry(
           activeID, &amp;ptTableStuff[activeID], &amp;ptEntry[i])) {
           rollBacked = 1;
@@ -377,8 +374,8 @@ int main(void) {
     }
     //  If need no rollback, boot fail due to other reseaon instead of imgae issue, break
     if (rollBacked == 0) { break; }
-#else
-    break;
+#else  //  This is false
+    ...
 #endif
   }
 </code></pre>
