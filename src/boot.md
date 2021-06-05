@@ -587,6 +587,18 @@ Match them and verify that the code makes sense!
 
 # BL602 ROM Driver API
 
+Earlier we've seen these functions called by the Bootloader to __access XIP Flash Memory__...
+
+-   __`XIP_SFlash_Erase_Need_Lock`__: Erase XIP Flash Memory
+
+-   __`XIP_SFlash_Read_Via_Cache_Need_Lock`__: Read XIP Flash Memory
+
+-   __`XIP_SFlash_Write_Need_Lock`__: Write XIP Flash Memory
+
+_These XIP Flash Memory Functions are defined in the Bootloader right?_
+
+Not quite!
+
 TODO
 
 ![](https://lupyuen.github.io/images/boot-driver.png)
@@ -614,6 +626,16 @@ TODO
 TODO
 
 [Unified Extensible Firmware Interface](https://en.wikipedia.org/wiki/Unified_Extensible_Firmware_Interface)
+
+`BLSP_Boot2_Deal_One_FW`
+
+`BLSP_Boot2_Check_XZ_FW`
+
+`BLSP_Boot2_Do_FW_Copy`
+
+`BLSP_MediaBoot_Read`
+
+`BLSP_MediaBoot_Main`
 
 # EFuse Security
 
