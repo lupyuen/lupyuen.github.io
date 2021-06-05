@@ -152,6 +152,8 @@ TODO
 
 TODO
 
+[Unified Extensible Firmware Interface](https://en.wikipedia.org/wiki/Unified_Extensible_Firmware_Interface)
+
 # BL602 Partition Table
 
 TODO
