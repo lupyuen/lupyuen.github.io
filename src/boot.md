@@ -92,202 +92,266 @@ _BL602 Boot2 Bootloader runs at address `0x2300 0000`_
 
 To understand the BL602 Bootloader, let's look at the code inside...
 
+![Bootloader Main Function](https://lupyuen.github.io/images/boot-main.png)
+
 From [`bl602_boot2/blsp_boot2.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_boot2.c#L389-L571)
 
-```c
-int main(void) {
-    uint32_t ret=0,i=0;
-    PtTable_Stuff_Config ptTableStuff[2];
-    PtTable_ID_Type activeID;
-    /* Init to zero incase only one cpu boot up*/
-    PtTable_Entry_Config ptEntry[BFLB_BOOT2_CPU_MAX]={0};
-    uint32_t bootHeaderAddr[BFLB_BOOT2_CPU_MAX]={0};
-    uint8_t bootRollback[BFLB_BOOT2_CPU_MAX]={0};
-    uint8_t ptParsed=1;
-    uint8_t userFwName[9]={0};
-#ifdef BLSP_BOOT2_ROLLBACK
-    uint8_t rollBacked=0;
-#endif
-    uint8_t tempMode=0;
-    Boot_Clk_Config clkCfg;
-    uint8_t flashCfgBuf[4+sizeof(SPI_Flash_Cfg_Type)+4]={0};
+1.  TODO
 
-    /* It's better not enable interrupt */
-    //BLSP_Boot2_Init_Timer();
+    ```c
+    int main(void) {
+        uint32_t ret=0,i=0;
+        PtTable_Stuff_Config ptTableStuff[2];
+        PtTable_ID_Type activeID;
+        /* Init to zero incase only one cpu boot up*/
+        PtTable_Entry_Config ptEntry[BFLB_BOOT2_CPU_MAX]={0};
+        uint32_t bootHeaderAddr[BFLB_BOOT2_CPU_MAX]={0};
+        uint8_t bootRollback[BFLB_BOOT2_CPU_MAX]={0};
+        uint8_t ptParsed=1;
+        uint8_t userFwName[9]={0};
+    #ifdef BLSP_BOOT2_ROLLBACK
+        uint8_t rollBacked=0;
+    #endif
+        uint8_t tempMode=0;
+        Boot_Clk_Config clkCfg;
+        uint8_t flashCfgBuf[4+sizeof(SPI_Flash_Cfg_Type)+4]={0};
 
-    /* Set RAM Max size */
-    BLSP_Boot2_Disable_Other_Cache();
+        /* It's better not enable interrupt */
+        //BLSP_Boot2_Init_Timer();
 
-    /* Flush cache to get parameter */
-    BLSP_Boot2_Flush_XIP_Cache();
-    ret=BLSP_Boot2_Get_Clk_Cfg(&clkCfg);
-    ret|=SF_Cfg_Get_Flash_Cfg_Need_Lock(0,&flashCfg);
-    BLSP_Boot2_Flush_XIP_Cache();
+        /* Set RAM Max size */
+        BLSP_Boot2_Disable_Other_Cache();
 
-    bflb_platform_print_set(BLSP_Boot2_Get_Log_Disable_Flag());
-    bflb_platform_init(BLSP_Boot2_Get_Baudrate());
-    bflb_platform_deinit_time();
-    if(BLSP_Boot2_Get_Feature_Flag()==BLSP_BOOT2_CP_FLAG){
-        MSG_DBG("BLSP_Boot2_CP:%s,%s\r\n",__DATE__,__TIME__);
-    }else  if(BLSP_Boot2_Get_Feature_Flag()==BLSP_BOOT2_MP_FLAG){
-        MSG_DBG("BLSP_Boot2_MC:%s,%s\r\n",__DATE__,__TIME__);
-    }else{
-        MSG_DBG("BLSP_Boot2_SP:%s,%s\r\n",__DATE__,__TIME__);
-    }
-#ifdef BL_SDK_VER
-    MSG_DBG("SDK:%s\r\n",BL_SDK_VER);
-#else
-    MSG_DBG("MCU SDK:%s\r\n",MCU_SDK_VERSION);
-    MSG_DBG("BSP:%s\r\n",BSP_VERSION);
-#endif
-	if(BLSP_Boot2_Dump_Critical_Flag()){
-        BLSP_Dump_Data(&clkCfg,16);
-		BLSP_Dump_Data(&flashCfg,16);
-    }
+        /* Flush cache to get parameter */
+        BLSP_Boot2_Flush_XIP_Cache();
+        ret=BLSP_Boot2_Get_Clk_Cfg(&clkCfg);
+        ret|=SF_Cfg_Get_Flash_Cfg_Need_Lock(0,&flashCfg);
+        BLSP_Boot2_Flush_XIP_Cache();
+    ```
 
-    MSG_DBG("Get efuse config\r\n");
-    BLSP_Boot2_Get_Efuse_Cfg(&efuseCfg);
+1.  TODO
 
-    /* Reset Sec_Eng for using */
-    BLSP_Boot2_Reset_Sec_Eng();
+    ```c
+        bflb_platform_print_set(BLSP_Boot2_Get_Log_Disable_Flag());
+        bflb_platform_init(BLSP_Boot2_Get_Baudrate());
+        bflb_platform_deinit_time();
+        if(BLSP_Boot2_Get_Feature_Flag()==BLSP_BOOT2_CP_FLAG){
+            MSG_DBG("BLSP_Boot2_CP:%s,%s\r\n",__DATE__,__TIME__);
+        }else  if(BLSP_Boot2_Get_Feature_Flag()==BLSP_BOOT2_MP_FLAG){
+            MSG_DBG("BLSP_Boot2_MC:%s,%s\r\n",__DATE__,__TIME__);
+        }else{
+            MSG_DBG("BLSP_Boot2_SP:%s,%s\r\n",__DATE__,__TIME__);
+        }
+    #ifdef BL_SDK_VER
+        MSG_DBG("SDK:%s\r\n",BL_SDK_VER);
+    #else
+        MSG_DBG("MCU SDK:%s\r\n",MCU_SDK_VERSION);
+        MSG_DBG("BSP:%s\r\n",BSP_VERSION);
+    #endif
+        if(BLSP_Boot2_Dump_Critical_Flag()){
+            BLSP_Dump_Data(&clkCfg,16);
+            BLSP_Dump_Data(&flashCfg,16);
+        }
+    ```
 
-    if(BLSP_Boot2_Get_Feature_Flag()!=BLSP_BOOT2_SP_FLAG){
-        /* Get cpu count info */
-        cpuCount=BLSP_Boot2_Get_CPU_Count();
-    }else{
-        cpuCount=1;
-    }
+1.  TODO
 
-    /* Get power save mode */
-    psMode=BLSP_Read_Power_Save_Mode();
+    ```c
+        MSG_DBG("Get efuse config\r\n");
+        BLSP_Boot2_Get_Efuse_Cfg(&efuseCfg);
+    ```
 
-    /* Get User specified FW */
-    ARCH_MemCpy_Fast(userFwName,BLSP_Get_User_Specified_Fw(),4);
-    if(BLSP_Boot2_8M_Support_Flag()){
-        /* Set flash operation function, read via sbus */
-        PtTable_Set_Flash_Operation(PtTable_Flash_Erase,PtTable_Flash_Write,PtTable_Flash_Read);
-    }else{
-        /* Set flash operation function, read via xip */
-        PtTable_Set_Flash_Operation(PtTable_Flash_Erase,PtTable_Flash_Write,PtTable_Flash_Read);
-    }
-    while(1){
-        tempMode=0;
-        do{
-            activeID=PtTable_Get_Active_Partition_Need_Lock(ptTableStuff);
-            if(PT_TABLE_ID_INVALID==activeID){
-                BLSP_Boot2_On_Error("No valid PT\r\n");
-            }
-            MSG_DBG("Active PT:%d,%d\r\n",activeID,ptTableStuff[activeID].ptTable.age);
+1.  TODO
 
-            BLSP_Boot2_Get_MFG_StartReq(activeID,&ptTableStuff[activeID],&ptEntry[0],userFwName);
-            /* Get entry and boot */
-            if (userFwName[0]=='0'){
-                ptParsed=BLSP_Boot2_Deal_One_FW(activeID,&ptTableStuff[activeID],&ptEntry[0],&userFwName[1],PT_ENTRY_FW_CPU0);
-                if(ptParsed==0){
-                    continue;
+    ```c
+        /* Reset Sec_Eng for using */
+        BLSP_Boot2_Reset_Sec_Eng();
+    ```
+
+1.  TODO
+
+    ```c
+        if(BLSP_Boot2_Get_Feature_Flag()!=BLSP_BOOT2_SP_FLAG){
+            /* Get cpu count info */
+            cpuCount=BLSP_Boot2_Get_CPU_Count();
+        }else{
+            cpuCount=1;
+        }
+    ```
+
+1.  TODO
+
+    ```c
+        /* Get power save mode */
+        psMode=BLSP_Read_Power_Save_Mode();
+    ```
+
+1.  TODO
+
+    ```c
+        /* Get User specified FW */
+        ARCH_MemCpy_Fast(userFwName,BLSP_Get_User_Specified_Fw(),4);
+    ```
+
+1.  TODO
+
+    ```c
+        if(BLSP_Boot2_8M_Support_Flag()){
+            /* Set flash operation function, read via sbus */
+            PtTable_Set_Flash_Operation(PtTable_Flash_Erase,PtTable_Flash_Write,PtTable_Flash_Read);
+        }else{
+            /* Set flash operation function, read via xip */
+            PtTable_Set_Flash_Operation(PtTable_Flash_Erase,PtTable_Flash_Write,PtTable_Flash_Read);
+        }
+    ```
+
+1.  TODO
+
+    ```c
+        while(1){
+            tempMode=0;
+            do{
+                activeID=PtTable_Get_Active_Partition_Need_Lock(ptTableStuff);
+                if(PT_TABLE_ID_INVALID==activeID){
+                    BLSP_Boot2_On_Error("No valid PT\r\n");
+                }
+                MSG_DBG("Active PT:%d,%d\r\n",activeID,ptTableStuff[activeID].ptTable.age);
+
+                BLSP_Boot2_Get_MFG_StartReq(activeID,&ptTableStuff[activeID],&ptEntry[0],userFwName);
+                /* Get entry and boot */
+                if (userFwName[0]=='0'){
+                    ptParsed=BLSP_Boot2_Deal_One_FW(activeID,&ptTableStuff[activeID],&ptEntry[0],&userFwName[1],PT_ENTRY_FW_CPU0);
+                    if(ptParsed==0){
+                        continue;
+                    }else{
+                        BLSP_Clr_User_Specified_Fw();
+                    }
+                    tempMode=1;
+                    userFwName[0]=0;
+                }else if (userFwName[0]=='1' && cpuCount>1){
+                    ptParsed=BLSP_Boot2_Deal_One_FW(activeID,&ptTableStuff[activeID],&ptEntry[1],&userFwName[1],PT_ENTRY_FW_CPU1);
+                    if(ptParsed==0){
+                        continue;
+                    }else{
+                        BLSP_Clr_User_Specified_Fw();
+                    }
+                    tempMode=1;
+                    userFwName[0]=0;
                 }else{
-                    BLSP_Clr_User_Specified_Fw();
-                }
-                tempMode=1;
-                userFwName[0]=0;
-            }else if (userFwName[0]=='1' && cpuCount>1){
-                ptParsed=BLSP_Boot2_Deal_One_FW(activeID,&ptTableStuff[activeID],&ptEntry[1],&userFwName[1],PT_ENTRY_FW_CPU1);
-                if(ptParsed==0){
-                    continue;
-                }else{
-                    BLSP_Clr_User_Specified_Fw();
-                }
-                tempMode=1;
-                userFwName[0]=0;
-            }else{
-                ptParsed=BLSP_Boot2_Deal_One_FW(activeID,&ptTableStuff[activeID],&ptEntry[0],NULL,PT_ENTRY_FW_CPU0);
-                if(ptParsed==0){
-                    continue;
-                }
-                if(cpuCount>1){
-                    ptParsed=BLSP_Boot2_Deal_One_FW(activeID,&ptTableStuff[activeID],&ptEntry[1],NULL,PT_ENTRY_FW_CPU1);
+                    ptParsed=BLSP_Boot2_Deal_One_FW(activeID,&ptTableStuff[activeID],&ptEntry[0],NULL,PT_ENTRY_FW_CPU0);
                     if(ptParsed==0){
                         continue;
                     }
+                    if(cpuCount>1){
+                        ptParsed=BLSP_Boot2_Deal_One_FW(activeID,&ptTableStuff[activeID],&ptEntry[1],NULL,PT_ENTRY_FW_CPU1);
+                        if(ptParsed==0){
+                            continue;
+                        }
+                    }
                 }
+                ptParsed=1;
+            }while(ptParsed==0);
+    ```
+
+1.  TODO
+
+    ```c
+            /* Pass data to App*/
+            BLSP_Boot2_Pass_Parameter(NULL,0);
+            /* Pass active partition table ID */
+            BLSP_Boot2_Pass_Parameter(&activeID,4);
+            /* Pass active partition table content: table header+ entries +crc32 */
+            BLSP_Boot2_Pass_Parameter(&ptTableStuff[activeID],sizeof(PtTable_Config)+4+
+                                        ptTableStuff[activeID].ptTable.entryCnt*sizeof(PtTable_Entry_Config));
+    ```
+
+1.  TODO
+
+    ```c
+            /* Pass flash config */
+            if(ptEntry[0].Address[ptEntry[0].activeIndex]!=0){
+                XIP_SFlash_Read_Via_Cache_Need_Lock(BLSP_BOOT2_XIP_BASE+ptEntry[0].Address[ptEntry[0].activeIndex]+8,flashCfgBuf,sizeof(flashCfgBuf));
+                /* Include magic and CRC32 */
+                BLSP_Boot2_Pass_Parameter(flashCfgBuf,sizeof(flashCfgBuf));
             }
-            ptParsed=1;
-        }while(ptParsed==0);
+    ```
 
-        /* Pass data to App*/
-        BLSP_Boot2_Pass_Parameter(NULL,0);
-        /* Pass active partition table ID */
-        BLSP_Boot2_Pass_Parameter(&activeID,4);
-        /* Pass active partition table content: table header+ entries +crc32 */
-        BLSP_Boot2_Pass_Parameter(&ptTableStuff[activeID],sizeof(PtTable_Config)+4+
-                                    ptTableStuff[activeID].ptTable.entryCnt*sizeof(PtTable_Entry_Config));
-        /* Pass flash config */
-        if(ptEntry[0].Address[ptEntry[0].activeIndex]!=0){
-            XIP_SFlash_Read_Via_Cache_Need_Lock(BLSP_BOOT2_XIP_BASE+ptEntry[0].Address[ptEntry[0].activeIndex]+8,flashCfgBuf,sizeof(flashCfgBuf));
-            /* Include magic and CRC32 */
-            BLSP_Boot2_Pass_Parameter(flashCfgBuf,sizeof(flashCfgBuf));
-        }
+1.  TODO
 
-        MSG_DBG("Boot start\r\n");
-        for(i=0;i<cpuCount;i++){
-            bootHeaderAddr[i]=ptEntry[i].Address[ptEntry[i].activeIndex];
-        }
-#ifdef BLSP_BOOT2_ROLLBACK
-        /* Test mode is not need roll back */
-        if(rollBacked==0 && tempMode==0){
-            ret=BLSP_MediaBoot_Main(bootHeaderAddr,bootRollback,1);
-        }else{
+    ```c
+            MSG_DBG("Boot start\r\n");
+            for(i=0;i<cpuCount;i++){
+                bootHeaderAddr[i]=ptEntry[i].Address[ptEntry[i].activeIndex];
+            }
+    ```
+
+1.  TODO
+
+    ```c
+    #ifdef BLSP_BOOT2_ROLLBACK
+            /* Test mode is not need roll back */
+            if(rollBacked==0 && tempMode==0){
+                ret=BLSP_MediaBoot_Main(bootHeaderAddr,bootRollback,1);
+            }else{
+                ret=BLSP_MediaBoot_Main(bootHeaderAddr,bootRollback,0);
+            }
+    #else
             ret=BLSP_MediaBoot_Main(bootHeaderAddr,bootRollback,0);
-        }
-#else
-        ret=BLSP_MediaBoot_Main(bootHeaderAddr,bootRollback,0);
-#endif
-        /* Fail in temp mode,continue to boot normal image */
-        if(tempMode==1){
-            continue;
-        }
-#ifdef BLSP_BOOT2_ROLLBACK
-        /* If rollback is done, we still fail, break */
-        if(rollBacked){
-            break;
-        }
-        MSG_DBG("Boot return %d\r\n",ret);
-        MSG_WAR("Check Rollback\r\n");
-        for(i=0;i<cpuCount;i++){
-            if(bootRollback[i]!=0){
-                MSG_WAR("Rollback %d\r\n",i);
-                if(BFLB_BOOT2_SUCCESS==BLSP_Boot2_Rollback_PtEntry(activeID,&ptTableStuff[activeID],&ptEntry[i])){
-                    rollBacked=1;
+    #endif
+    ```
+
+1.  TODO
+
+    ```c
+            /* Fail in temp mode,continue to boot normal image */
+            if(tempMode==1){
+                continue;
+            }
+    ```
+
+1.  TODO
+
+    ```c
+    #ifdef BLSP_BOOT2_ROLLBACK
+            /* If rollback is done, we still fail, break */
+            if(rollBacked){
+                break;
+            }
+            MSG_DBG("Boot return %d\r\n",ret);
+            MSG_WAR("Check Rollback\r\n");
+            for(i=0;i<cpuCount;i++){
+                if(bootRollback[i]!=0){
+                    MSG_WAR("Rollback %d\r\n",i);
+                    if(BFLB_BOOT2_SUCCESS==BLSP_Boot2_Rollback_PtEntry(activeID,&ptTableStuff[activeID],&ptEntry[i])){
+                        rollBacked=1;
+                    }
                 }
             }
-        }
-        /* If need no rollback, boot fail due to other reseaon instead of imgae issue,break */
-        if(rollBacked==0){
+            /* If need no rollback, boot fail due to other reseaon instead of imgae issue,break */
+            if(rollBacked==0){
+                break;
+            }
+    #else
             break;
+    #endif
         }
-#else
-        break;
-#endif
+    ```
+
+1.  TODO
+
+    ```c
+        /* We should never get here unless boot fail */
+        MSG_ERR("Media boot return %d\r\n",ret);
+        while(1){
+            MSG_ERR("BLSP boot2 fail\r\n");
+            ARCH_Delay_MS(500);
+        }
     }
-
-    /* We should never get here unless boot fail */
-    MSG_ERR("Media boot return %d\r\n",ret);
-    while(1){
-        MSG_ERR("BLSP boot2 fail\r\n");
-        ARCH_Delay_MS(500);
-    }
-}
-```
+    ```
 
 TODO
 
-![](https://lupyuen.github.io/images/boot-main.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/boot-main2.png)
-
-TODO
+![Bootloader Main Function](https://lupyuen.github.io/images/boot-main2.png)
 
 # Install Application Firmware
 
