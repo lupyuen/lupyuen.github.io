@@ -10,9 +10,9 @@ All this and much, much more shall be explained as we learn about the __BL602 Bo
 
 # BL602 Boot2 Bootloader
 
-Let's ponder what happens when we flash to BL602 the firmware that we have built.
+Let's ponder what happens when we flash to BL602 the firmware that we have built...
 
-(Let's call it the __Application Firmware__)
+(We'll call it the __Application Firmware__)
 
 _Sounds easy! We transfer the Application Firmware from our computer to BL602 (over USB)..._
 
@@ -26,13 +26,13 @@ During flashing, we transfer a __Flashing Image__ from our computer to BL602 ove
 
 The Flashing Image contains...
 
-1.  __Boot2 Bootloader `boot2image.bin`__
+1.  __Boot2 Bootloader `blsp_boot2.bin`__
 
-    (Derived from the Bootloader Binary `blsp_boot2.bin`)
+    (Written to the Flashing Image as `boot2image.bin`)
 
-1.  __Application Firmware `fwimage.bin`__
+1.  __Application Firmware `bl602.bin`__
 
-    (Derived from our compiled firmware `bl602.bin`)
+    (Written to the Flashing Image as `fwimage.bin`)
 
 1.  __Partition Table `partition.bin`__ and __Device Tree `ro_params.dtb`__
 
@@ -42,27 +42,51 @@ Here's how the Flashing Image is constructed...
 
 _Why is the Boot2 Bootloader transferred to BL602 during flashing?_
 
-During flashing, our Application Firmware isn't written directly to BL602's __XIP Flash Memory__. 
+During flashing, our Application Firmware isn't written directly to BL602's __XIP Flash Memory__.
 
-Instead, the __Boot2 Bootloader reads our firmware__ from the transferred Flashing Image and __writes our firmware__ to XIP Flash Memory at __`0x2300 0000`__.
+Instead, __BL602 runs the Boot2 Bootloader__ which...
 
-(XIP means "Execute In Place", it refers to the BL602 Flash Memory that will store our executable firmware code).
+1.  __Extracts our Application Firmware__ from the transferred Flashing Image
+
+1.  __Writes our Application Firmware__ to XIP Flash Memory at address __`0x2300 0000`__.
+
+(XIP means "Execute In Place", it refers to the BL602 Flash Memory that will store our executable firmware code)
 
 _Where is the Boot2 Bootloader located?_
 
-TODO
+BL602 runs the Boot2 Bootloader from XIP Flash Memory at address __`0x2300 0000`__.
+
+Yep it's the __same address as our Application Firmware__!
 
 _So the Bootloader overwrites itself by our Application Firmware?_
 
-TODO
+Yes indeed. We'll learn later how the __Boot2 Bootloader overwrites itself__ by the Application Firmware.
 
 _Is Boot2 really a Bootloader?_
 
-TODO
+On other microcontrollers, the Bootloader is the first thing that runs when powered on. (Before jumping to the Application Firmware)
 
-![](https://lupyuen.github.io/images/boot-loader.png)
+On BL602, the Boot2 Bootloader __runs only when we flash new Application Firmware__. (So that the Application Firmware may be loaded into XIP Flash Memory)
 
-TODO
+So the Bootloader concept is a little different for BL602... It's more like an __"Application Firmware Loader"__
+
+_Why so complicated?_
+
+BL602's Boot2 Bootloader allows Application Firmware to be __flashed securely__ to XIP Flash Memory...
+
+1.  Boot2 Bootloader supports __flashing of AES-Encrypted Application Firmware__
+
+    (So it's possible to push encrypted firmware updates over-the-air)
+
+1.  Boot2 Bootloader can use __Digital Signatures__ to verify that the Application Firmware is authentic
+
+    (Prevents tampering of firmware updates)
+
+We'll learn more about firmware security.
+
+![BL602 Boot2 Bootloader runs at address `0x2300 0000`](https://lupyuen.github.io/images/boot-loader.png)
+
+_BL602 Boot2 Bootloader runs at address `0x2300 0000`_
 
 # Inside the Bootloader
 
