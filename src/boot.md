@@ -253,7 +253,7 @@ From [`bl602_boot2/blsp_boot2.c`](https://github.com/lupyuen/bl_iot_sdk/blob/mas
           }
     ```
 
-    We'll study __`BLSP_Boot2_Deal_One_FW`__ in a while.
+    We'll study __`BLSP_Boot2_Deal_One_FW`__ in the next chapter.
 
 1.  The Inner Loop repeats until it has located and processed the Application Firmware...
 
@@ -376,9 +376,60 @@ That's how the Bootloader installs our Application Firmware and starts the firmw
 
 TODO
 
-![](https://lupyuen.github.io/images/boot-install.png)
+From [`blsp_boot2.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_boot2.c#L271-L313)
+
+```c
+//  Boot2 deal with one firmware.
+//  Return 0 for partition table changed, need re-parse.
+//  Return 1 for partition table or entry parsed successfully.
+static int BLSP_Boot2_Deal_One_FW(
+  PtTable_ID_Type activeID,       //  Active partition table ID
+  PtTable_Stuff_Config *ptStuff,  //  Pointer of partition table stuff
+  PtTable_Entry_Config *ptEntry,  //  Pointer of active entry
+  uint8_t *fwName,                //  Firmware name pointer
+  PtTable_Entry_Type type) {      //  Firmware name ID
+  uint32_t ret;
+
+  if (fwName != NULL) {
+    MSG_DBG("Get FW:%s\r\n", fwName);
+    ret = PtTable_Get_Active_Entries_By_Name(ptStuff, fwName, ptEntry);
+  } else {
+    MSG_DBG("Get FW ID:%d\r\n", type);
+    ret = PtTable_Get_Active_Entries_By_ID(ptStuff, type, ptEntry);
+  }
+```
 
 TODO
+
+```c
+  if (PT_ERROR_SUCCESS != ret) {
+    MSG_ERR("Entry not found\r\n");
+  } else {
+    BLSP_Dump_PtEntry(ptEntry);
+    MSG_DBG("Check Img\r\n");
+    if (BLSP_Boot2_Check_XZ_FW(activeID, ptStuff, ptEntry) == 1) {
+      return 0;
+    }
+```
+
+TODO
+
+```c
+    //  Check if this partition need copy
+    if (ptEntry->activeIndex >= 2) {
+      if (BFLB_BOOT2_SUCCESS == BLSP_Boot2_Do_FW_Copy(
+        activeID, 
+        ptStuff, 
+        ptEntry)) {
+        return 0;
+      }
+    }
+  }
+  return 1;
+}
+```
+
+![Bootloader installing Application Firmware](https://lupyuen.github.io/images/boot-install.png)
 
 # Write Firmware to XIP Flash
 
