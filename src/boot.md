@@ -442,6 +442,10 @@ TODO
 
 TODO
 
+Check out this interview that explains why the PineTime Bootloader is designed that way...
+
+-   [__"Interview with Lup, creator of PineTime's bootloader"__](https://www.ncartron.org/interview-with-lup-creator-of-pinetimes-bootloader.html)
+
 # What's Next
 
 TODO
