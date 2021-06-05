@@ -374,9 +374,13 @@ That's how the Bootloader installs our Application Firmware and starts the firmw
 
 # Install Application Firmware
 
-TODO
+As we've seen, the Bootloader calls __`BLSP_Boot2_Deal_One_FW`__ to...
 
-From [`blsp_boot2.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_boot2.c#L271-L313)
+1.  __Extract the Application Firmware__ from the Flashing Image
+
+1.  __Write the Application Firmware to XIP Flash Memory__ at `0x2300 0000`
+
+Here's how it works: [`blsp_boot2.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_boot2.c#L271-L313)
 
 ```c
 //  Boot2 deal with one firmware.
@@ -399,7 +403,9 @@ static int BLSP_Boot2_Deal_One_FW(
   }
 ```
 
-TODO
+__`BLSP_Boot2_Deal_One_FW`__ starts by fetching the __Partition Table Entry__ for our Application Firmware named "`FW`".
+
+Then it __extracts the Application Firmware__ from the Flashing Image...
 
 ```c
   if (PT_ERROR_SUCCESS != ret) {
@@ -412,7 +418,9 @@ TODO
     }
 ```
 
-TODO
+[__`BLSP_Boot2_Check_XZ_FW`__](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_boot2.c#L190-L224) extracts and decompresses the Application Firmware. [(XZ Compression)](https://en.wikipedia.org/wiki/XZ_Utils)
+
+Now that we have the decompressed Application Firmware, we __write the firmware to XIP Flash Memory__ at `0x2300 0000`...
 
 ```c
     //  Check if this partition need copy
@@ -428,6 +436,8 @@ TODO
   return 1;
 }
 ```
+
+In the next chapter we study __`BLSP_Boot2_Do_FW_Copy`__.
 
 ![Bootloader installing Application Firmware](https://lupyuen.github.io/images/boot-install.png)
 
