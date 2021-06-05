@@ -533,9 +533,31 @@ Finally we repeat the steps with the __next 4 KB chunk__, until the entire decom
 
 # BL602 Partition Table
 
-TODO
+_The Bootloader appears to be driven by the Partition Table (from the Flashing Image). What's inside the Partition Table?_
 
-From [`blsp_boot2.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_boot2.c#L226-L269)
+Each entry of the __Partition Table__ describes a __section of the Flashing Image__.
+
+Here's the __Partition Table Entry__ that describes our __Application Firmware__...
+
+```text
+[[pt_entry]]
+type     = 0
+name     = "FW"
+device   = 0
+address0 = 0x10000
+size0    = 0xC8000
+address1 = 0xD8000
+size1    = 0x88000
+len      = 0
+```
+
+[(From this BL602 Partition Table)](https://lupyuen.github.io/articles/flash#appendix-bl602-partition-table)
+
+This Partition Table Entry says that our Application Firmware (compressed) is located in the Flash Image at __offset `0x10000` with size `0xC8000`__ (compressed).
+
+(But why are there two firmware sections `0x10000` and `0xD8000`?)
+
+With this information, our Bootloader will be able to decompress the Application Firmware and write to XIP Flash Memory... 
 
 ```c
 static int BLSP_Boot2_Do_FW_Copy( ... ) {
@@ -547,24 +569,21 @@ static int BLSP_Boot2_Do_FW_Copy( ... ) {
   uint32_t totalLen = ptEntry->len;
 ```
 
-From [BL602 Partition Table](https://lupyuen.github.io/articles/flash#appendix-bl602-partition-table)
+[(We've seen this earlier in `blsp_boot2.c`)](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_boot2.c#L226-L269)
 
-```text
-[[pt_entry]]
-type = 0
-name = "FW"
-device = 0
-address0 = 0x10000
-size0 = 0xC8000
-address1 = 0xD8000
-size1 = 0x88000
-# compressed image must set len,normal image can left it to 0
-len = 0
-```
+__Exercise for the Reader:__ Please take these two things...
 
-__Exercise for the Reader:__ Match the code above (`BLSP_Boot2_Do_FW_Copy`) with the actual values in the BL602 Partition Table (`pt_entry`)... To verify that the code makes sense!
+1.  __`pt_entry`__ Partition Table Entry above
 
-![BL602 Partition Table](https://lupyuen.github.io/images/boot-partition.png)
+1.  __`BLSP_Boot2_Do_FW_Copy`__ code above
+
+Match them and verify that the code makes sense!
+
+(Maybe we'll figure out why there are two firmware sections `0x10000` and `0xD8000`)
+
+[More about BL602 Partition Table](https://lupyuen.github.io/articles/flash#partition-table)
+
+![Matching the BL602 Partition Table](https://lupyuen.github.io/images/boot-partition.png)
 
 # BL602 ROM Driver API
 
