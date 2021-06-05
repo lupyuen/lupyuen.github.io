@@ -233,11 +233,24 @@ int main(void) {
 <p>(Yes the parameters for both calls of <code>PtTable_Set_Flash_Operation</code> are identical)</p>
 </li>
 <li>
-<p>TODO</p>
+<p>The Bootloader enters two loops…</p>
+<ul>
+<li>
+<p><strong>Outer Loop “<code>while</code>”</strong>: Loops until the writing (or rollback) of Application Firmware is complete</p>
+</li>
+<li>
+<p><strong>Inner Loop “<code>do</code>”</strong>: Loops through the Partition Table Entries until the writing of Application Firmware to XIP Flash Memory is complete </p>
+</li>
+</ul>
 <pre><code class="language-c">    while (1) {
         tempMode = 0;
         do {
-            activeID = PtTable_Get_Active_Partition_Need_Lock(ptTableStuff);
+</code></pre>
+<p>Let’s probe the inner loop…</p>
+</li>
+<li>
+<p>TODO</p>
+<pre><code class="language-c">            activeID = PtTable_Get_Active_Partition_Need_Lock(ptTableStuff);
             if (PT_TABLE_ID_INVALID==activeID){ BLSP_Boot2_On_Error(&quot;No valid PT\r\n&quot;); }
 
             BLSP_Boot2_Get_MFG_StartReq(
@@ -245,8 +258,11 @@ int main(void) {
                 &amp;ptTableStuff[activeID], 
                 &amp;ptEntry[0],
                 userFwName);
-
-            //  Get entry and boot
+</code></pre>
+</li>
+<li>
+<p>TODO</p>
+<pre><code class="language-c">            //  Get entry and boot
             if (userFwName[0] == '0') {
                 ptParsed = BLSP_Boot2_Deal_One_FW(
                     activeID,
@@ -297,7 +313,11 @@ int main(void) {
                     }
                 }
             }
-            ptParsed = 1;
+</code></pre>
+</li>
+<li>
+<p>TODO</p>
+<pre><code class="language-c">            ptParsed = 1;
         } while (ptParsed == 0);
 </code></pre>
 </li>
