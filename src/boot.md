@@ -232,7 +232,9 @@ From [`bl602_boot2/blsp_boot2.c`](https://github.com/lupyuen/bl_iot_sdk/blob/mas
           } 
     ```
 
-1.  TODO
+1.  Now comes the fun part!
+
+    The Bootloader __extracts the Application Firmware__ (from the Flashing Image) and __writes it to XIP Flash Memory__...
 
     ```c
           else {
@@ -242,11 +244,7 @@ From [`bl602_boot2/blsp_boot2.c`](https://github.com/lupyuen/bl_iot_sdk/blob/mas
               &ptEntry[0],
               NULL,
               PT_ENTRY_FW_CPU0);
-    ```
 
-1.  TODO
-
-    ```c
             if (ptParsed == 0) { continue; }
             if (cpuCount > 1) {
               //  Skip this code because our CPU Count is 1 (single core)
@@ -255,14 +253,18 @@ From [`bl602_boot2/blsp_boot2.c`](https://github.com/lupyuen/bl_iot_sdk/blob/mas
           }
     ```
 
-1.  TODO
+    We'll study __`BLSP_Boot2_Deal_One_FW`__ in a while.
+
+1.  The Inner Loop repeats until it has located and processed the Application Firmware...
 
     ```c
           ptParsed = 1;
         } while (ptParsed == 0);
     ```
 
-1.  TODO
+1.  Now that the Application Firmware has been written to XIP Flash Memory, let's get ready to start the Application Firmware!    
+
+    We stage the __Partition Table Entry__ that will be passed to the firmware...
 
     ```c
         //  Pass data to App
@@ -279,13 +281,15 @@ From [`bl602_boot2/blsp_boot2.c`](https://github.com/lupyuen/bl_iot_sdk/blob/mas
               * sizeof(PtTable_Entry_Config));
     ```
 
-1.  TODO
+1.  We pass the __Flash Configuration__ too...
 
     ```c
         //  Pass flash config
         if (ptEntry[0].Address[ptEntry[0].activeIndex] != 0) {
           XIP_SFlash_Read_Via_Cache_Need_Lock(
-            BLSP_BOOT2_XIP_BASE+ptEntry[0].Address[ptEntry[0].activeIndex] + 8,
+            BLSP_BOOT2_XIP_BASE 
+              + ptEntry[0].Address[ptEntry[0].activeIndex] 
+              + 8,
             flashCfgBuf,
             sizeof(flashCfgBuf));
 
@@ -296,7 +300,7 @@ From [`bl602_boot2/blsp_boot2.c`](https://github.com/lupyuen/bl_iot_sdk/blob/mas
         }
     ```
 
-1.  TODO
+1.  We initialise the __Boot Header__ for each core (in a multicore CPU)
 
     ```c
         MSG_DBG("Boot start\r\n");
@@ -305,39 +309,35 @@ From [`bl602_boot2/blsp_boot2.c`](https://github.com/lupyuen/bl_iot_sdk/blob/mas
         }
     ```
 
-1.  TODO
+1.  Finally we __jump to the Application Firmware__ that has been written to XIP Flash Memory...
 
     ```c
-    #ifdef BLSP_BOOT2_ROLLBACK
-        /* Test mode is not need roll back */
+    #ifdef BLSP_BOOT2_ROLLBACK  //  This is true
+        //  Test mode is not need roll back
         if (rollBacked == 0 && tempMode == 0) {
           ret = BLSP_MediaBoot_Main(bootHeaderAddr, bootRollback, 1);
         } else {
           ret = BLSP_MediaBoot_Main(bootHeaderAddr, bootRollback, 0);
         }
-    #else
-        ret = BLSP_MediaBoot_Main(bootHeaderAddr, bootRollback, 0);
+    #else  //  This is false
+        ...
     #endif
-    ```
-
-1.  TODO
-
-    ```c
         //  Fail in temp mode, continue to boot normal image
         if (tempMode == 1) { continue; }
     ```
 
+    (__`BLSP_BOOT2_ROLLBACK`__ is defined because the Bootloader supports firmware rollback)
+
+    We'll cover __`BLSP_MediaBoot_Main`__ in a while.
+
 1.  TODO
 
     ```c
-    #ifdef BLSP_BOOT2_ROLLBACK
+    #ifdef BLSP_BOOT2_ROLLBACK  //  This is true
         //  If rollback is done, we still fail, break
         if (rollBacked) { break; }
-        MSG_DBG("Boot return %d\r\n",ret);
-        MSG_WAR("Check Rollback\r\n");
         for (i = 0; i < cpuCount; i++) {
-          if (bootRollback[i] != 0){
-            MSG_WAR("Rollback %d\r\n",i);
+          if (bootRollback[i] != 0) {
             if (BFLB_BOOT2_SUCCESS == BLSP_Boot2_Rollback_PtEntry(
               activeID, &ptTableStuff[activeID], &ptEntry[i])) {
               rollBacked = 1;
@@ -346,8 +346,8 @@ From [`bl602_boot2/blsp_boot2.c`](https://github.com/lupyuen/bl_iot_sdk/blob/mas
         }
         //  If need no rollback, boot fail due to other reseaon instead of imgae issue, break
         if (rollBacked == 0) { break; }
-    #else
-        break;
+    #else  //  This is false
+        ...
     #endif
       }
     ```
