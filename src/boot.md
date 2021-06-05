@@ -330,7 +330,9 @@ From [`bl602_boot2/blsp_boot2.c`](https://github.com/lupyuen/bl_iot_sdk/blob/mas
 
     We'll cover __`BLSP_MediaBoot_Main`__ in a while.
 
-1.  TODO
+1.  What happens if the Bootloader fails to update or start the new Application Firmware?
+
+    The Bootloader will __rollback the Application Firmware__ and restore the previous version into XIP Flash Memory...
 
     ```c
     #ifdef BLSP_BOOT2_ROLLBACK  //  This is true
@@ -352,7 +354,9 @@ From [`bl602_boot2/blsp_boot2.c`](https://github.com/lupyuen/bl_iot_sdk/blob/mas
       }
     ```
 
-1.  TODO
+    (The Outer Loop ends here)
+
+1.  The Main Function of the Bootloader will never return, because the Bootloader __always jumps to the Application Firmware__...
 
     ```c
       //  We should never get here unless boot fail
@@ -364,7 +368,7 @@ From [`bl602_boot2/blsp_boot2.c`](https://github.com/lupyuen/bl_iot_sdk/blob/mas
     }
     ```
 
-TODO
+That's how the Bootloader installs our Application Firmware and starts the firmware!
 
 ![Bootloader Main Function](https://lupyuen.github.io/images/boot-main2.png)
 
