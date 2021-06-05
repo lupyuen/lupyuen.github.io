@@ -100,32 +100,17 @@ From [`bl602_boot2/blsp_boot2.c`](https://github.com/lupyuen/bl_iot_sdk/blob/mas
 
     ```c
     int main(void) {
-        uint32_t ret=0,i=0;
-        PtTable_Stuff_Config ptTableStuff[2];
-        PtTable_ID_Type activeID;
-        /* Init to zero incase only one cpu boot up*/
-        PtTable_Entry_Config ptEntry[BFLB_BOOT2_CPU_MAX]={0};
-        uint32_t bootHeaderAddr[BFLB_BOOT2_CPU_MAX]={0};
-        uint8_t bootRollback[BFLB_BOOT2_CPU_MAX]={0};
-        uint8_t ptParsed=1;
-        uint8_t userFwName[9]={0};
-    #ifdef BLSP_BOOT2_ROLLBACK
-        uint8_t rollBacked=0;
-    #endif
-        uint8_t tempMode=0;
-        Boot_Clk_Config clkCfg;
-        uint8_t flashCfgBuf[4+sizeof(SPI_Flash_Cfg_Type)+4]={0};
+        ...
+        //  It's better not enable interrupt
+        //  BLSP_Boot2_Init_Timer();
 
-        /* It's better not enable interrupt */
-        //BLSP_Boot2_Init_Timer();
-
-        /* Set RAM Max size */
+        //  Set RAM Max size
         BLSP_Boot2_Disable_Other_Cache();
 
-        /* Flush cache to get parameter */
+        //  Flush cache to get parameter
         BLSP_Boot2_Flush_XIP_Cache();
-        ret=BLSP_Boot2_Get_Clk_Cfg(&clkCfg);
-        ret|=SF_Cfg_Get_Flash_Cfg_Need_Lock(0,&flashCfg);
+        ret = BLSP_Boot2_Get_Clk_Cfg(&clkCfg);
+        ret |= SF_Cfg_Get_Flash_Cfg_Need_Lock(0,&flashCfg);
         BLSP_Boot2_Flush_XIP_Cache();
     ```
 
@@ -135,23 +120,6 @@ From [`bl602_boot2/blsp_boot2.c`](https://github.com/lupyuen/bl_iot_sdk/blob/mas
         bflb_platform_print_set(BLSP_Boot2_Get_Log_Disable_Flag());
         bflb_platform_init(BLSP_Boot2_Get_Baudrate());
         bflb_platform_deinit_time();
-        if(BLSP_Boot2_Get_Feature_Flag()==BLSP_BOOT2_CP_FLAG){
-            MSG_DBG("BLSP_Boot2_CP:%s,%s\r\n",__DATE__,__TIME__);
-        }else  if(BLSP_Boot2_Get_Feature_Flag()==BLSP_BOOT2_MP_FLAG){
-            MSG_DBG("BLSP_Boot2_MC:%s,%s\r\n",__DATE__,__TIME__);
-        }else{
-            MSG_DBG("BLSP_Boot2_SP:%s,%s\r\n",__DATE__,__TIME__);
-        }
-    #ifdef BL_SDK_VER
-        MSG_DBG("SDK:%s\r\n",BL_SDK_VER);
-    #else
-        MSG_DBG("MCU SDK:%s\r\n",MCU_SDK_VERSION);
-        MSG_DBG("BSP:%s\r\n",BSP_VERSION);
-    #endif
-        if(BLSP_Boot2_Dump_Critical_Flag()){
-            BLSP_Dump_Data(&clkCfg,16);
-            BLSP_Dump_Data(&flashCfg,16);
-        }
     ```
 
 1.  TODO
@@ -164,7 +132,7 @@ From [`bl602_boot2/blsp_boot2.c`](https://github.com/lupyuen/bl_iot_sdk/blob/mas
 1.  TODO
 
     ```c
-        /* Reset Sec_Eng for using */
+        //  Reset Sec_Eng for using
         BLSP_Boot2_Reset_Sec_Eng();
     ```
 
@@ -172,9 +140,9 @@ From [`bl602_boot2/blsp_boot2.c`](https://github.com/lupyuen/bl_iot_sdk/blob/mas
 
     ```c
         if(BLSP_Boot2_Get_Feature_Flag()!=BLSP_BOOT2_SP_FLAG){
-            /* Get cpu count info */
+            //  Get CPU count info
             cpuCount=BLSP_Boot2_Get_CPU_Count();
-        }else{
+        } else {
             cpuCount=1;
         }
     ```
@@ -182,75 +150,101 @@ From [`bl602_boot2/blsp_boot2.c`](https://github.com/lupyuen/bl_iot_sdk/blob/mas
 1.  TODO
 
     ```c
-        /* Get power save mode */
+        //  Get power save mode
         psMode=BLSP_Read_Power_Save_Mode();
     ```
 
 1.  TODO
 
     ```c
-        /* Get User specified FW */
+        //  Get User specified FW
         ARCH_MemCpy_Fast(userFwName,BLSP_Get_User_Specified_Fw(),4);
     ```
 
 1.  TODO
 
     ```c
-        if(BLSP_Boot2_8M_Support_Flag()){
-            /* Set flash operation function, read via sbus */
-            PtTable_Set_Flash_Operation(PtTable_Flash_Erase,PtTable_Flash_Write,PtTable_Flash_Read);
-        }else{
-            /* Set flash operation function, read via xip */
-            PtTable_Set_Flash_Operation(PtTable_Flash_Erase,PtTable_Flash_Write,PtTable_Flash_Read);
+        if (BLSP_Boot2_8M_Support_Flag()) {
+            //  Set flash operation function, read via sbus
+            PtTable_Set_Flash_Operation(PtTable_Flash_Erase,
+                PtTable_Flash_Write, PtTable_Flash_Read);
+        } else {
+            //  Set flash operation function, read via xip
+            PtTable_Set_Flash_Operation(PtTable_Flash_Erase,
+                PtTable_Flash_Write, PtTable_Flash_Read);
         }
     ```
 
 1.  TODO
 
     ```c
-        while(1){
+        while(1) {
             tempMode=0;
-            do{
-                activeID=PtTable_Get_Active_Partition_Need_Lock(ptTableStuff);
-                if(PT_TABLE_ID_INVALID==activeID){
+            do {
+                activeID = PtTable_Get_Active_Partition_Need_Lock(ptTableStuff);
+                if (PT_TABLE_ID_INVALID==activeID){
                     BLSP_Boot2_On_Error("No valid PT\r\n");
                 }
-                MSG_DBG("Active PT:%d,%d\r\n",activeID,ptTableStuff[activeID].ptTable.age);
 
-                BLSP_Boot2_Get_MFG_StartReq(activeID,&ptTableStuff[activeID],&ptEntry[0],userFwName);
-                /* Get entry and boot */
-                if (userFwName[0]=='0'){
-                    ptParsed=BLSP_Boot2_Deal_One_FW(activeID,&ptTableStuff[activeID],&ptEntry[0],&userFwName[1],PT_ENTRY_FW_CPU0);
-                    if(ptParsed==0){
+                BLSP_Boot2_Get_MFG_StartReq(
+                    activeID,
+                    &ptTableStuff[activeID], 
+                    &ptEntry[0],
+                    userFwName);
+
+                //  Get entry and boot
+                if (userFwName[0] == '0') {
+                    ptParsed = BLSP_Boot2_Deal_One_FW(
+                        activeID,
+                        &ptTableStuff[activeID],
+                        &ptEntry[0],
+                        &userFwName[1],
+                        PT_ENTRY_FW_CPU0);
+                    if (ptParsed == 0) {
                         continue;
-                    }else{
+                    } else {
                         BLSP_Clr_User_Specified_Fw();
                     }
-                    tempMode=1;
-                    userFwName[0]=0;
-                }else if (userFwName[0]=='1' && cpuCount>1){
-                    ptParsed=BLSP_Boot2_Deal_One_FW(activeID,&ptTableStuff[activeID],&ptEntry[1],&userFwName[1],PT_ENTRY_FW_CPU1);
-                    if(ptParsed==0){
+                    tempMode = 1;
+                    userFwName[0] = 0;
+                } else if (userFwName[0] == '1' && cpuCount > 1) {
+                    ptParsed = BLSP_Boot2_Deal_One_FW(
+                        activeID,
+                        &ptTableStuff[activeID],
+                        &ptEntry[1],
+                        &userFwName[1],
+                        PT_ENTRY_FW_CPU1);
+                    if (ptParsed == 0) {
                         continue;
-                    }else{
+                    } else {
                         BLSP_Clr_User_Specified_Fw();
                     }
-                    tempMode=1;
-                    userFwName[0]=0;
-                }else{
-                    ptParsed=BLSP_Boot2_Deal_One_FW(activeID,&ptTableStuff[activeID],&ptEntry[0],NULL,PT_ENTRY_FW_CPU0);
-                    if(ptParsed==0){
+                    tempMode = 1;
+                    userFwName[0] = 0;
+                } else {
+                    ptParsed = BLSP_Boot2_Deal_One_FW(
+                        activeID,
+                        &ptTableStuff[activeID],
+                        &ptEntry[0],
+                        NULL,
+                        PT_ENTRY_FW_CPU0);
+                    if (ptParsed == 0) {
                         continue;
                     }
-                    if(cpuCount>1){
-                        ptParsed=BLSP_Boot2_Deal_One_FW(activeID,&ptTableStuff[activeID],&ptEntry[1],NULL,PT_ENTRY_FW_CPU1);
-                        if(ptParsed==0){
+                    if (cpuCount > 1) {
+                        ptParsed = BLSP_Boot2_Deal_One_FW(
+                            activeID,
+                            &ptTableStuff[activeID],
+                            &ptEntry[1],
+                            NULL,
+                            PT_ENTRY_FW_CPU1);
+                        if (ptParsed == 0) {
                             continue;
                         }
                     }
                 }
-                ptParsed=1;
-            }while(ptParsed==0);
+                ptParsed = 1;
+            } while (ptParsed == 0);
     ```
 
 1.  TODO
