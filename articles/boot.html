@@ -360,7 +360,8 @@ int main(void) {
 <p>We’ll cover <strong><code>BLSP_MediaBoot_Main</code></strong> in a while.</p>
 </li>
 <li>
-<p>TODO</p>
+<p>What happens if the Bootloader fails to update or start the new Application Firmware?</p>
+<p>The Bootloader will <strong>rollback the Application Firmware</strong> and restore the previous version into XIP Flash Memory…</p>
 <pre><code class="language-c">#ifdef BLSP_BOOT2_ROLLBACK  //  This is true
     //  If rollback is done, we still fail, break
     if (rollBacked) { break; }
@@ -379,9 +380,10 @@ int main(void) {
 #endif
   }
 </code></pre>
+<p>(The Outer Loop ends here)</p>
 </li>
 <li>
-<p>TODO</p>
+<p>The Main Function of the Bootloader will never return, because the Bootloader <strong>always jumps to the Application Firmware</strong>…</p>
 <pre><code class="language-c">  //  We should never get here unless boot fail
   MSG_ERR(&quot;Media boot return %d\r\n&quot;,ret);
   while (1) {
@@ -392,7 +394,7 @@ int main(void) {
 </code></pre>
 </li>
 </ol>
-<p>TODO</p>
+<p>That’s how the Bootloader installs our Application Firmware and starts the firmware!</p>
 <p><img src="https://lupyuen.github.io/images/boot-main2.png" alt="Bootloader Main Function" /></p>
 <h1 id="install-application-firmware" class="section-header"><a href="#install-application-firmware">3 Install Application Firmware</a></h1>
 <p>TODO</p>
