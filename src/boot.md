@@ -449,7 +449,7 @@ Watch what happens next: [`blsp_boot2.c`](https://github.com/lupyuen/bl_iot_sdk/
 
 ```c
 //  Buffer for writing to XIP Flash Memory
-#define BFLB_BOOT2_READBUF_SIZE 4*1024
+#define BFLB_BOOT2_READBUF_SIZE  4 * 1024
 uint8_t boot2ReadBuf[BFLB_BOOT2_READBUF_SIZE] __attribute__((section(".system_ram")));
 
 //  Boot2 copy firmware from OTA region to normal region
@@ -467,7 +467,11 @@ static int BLSP_Boot2_Do_FW_Copy(
   uint32_t curLen = 0;
 ```
 
-TODO
+__`BLSP_Boot2_Do_FW_Copy`__ starts by fetching the __Partition Table Entry__ for the Application Firmware, containing __Source Address, Destination Address (`0x2300 0000`) and Firmware Length__.
+
+(More about the Partition Table in the next chapter)
+
+Then it __erases the XIP Flash Memory__ at the Destination Address `0x2300 0000`
 
 ```c
   if (SUCCESS != XIP_SFlash_Erase_Need_Lock(
@@ -479,7 +483,7 @@ TODO
   }
 ```
 
-TODO
+Next we handle the decompressed Application Firmware, chunk by chunk (4 KB)
 
 ```c
   while (dealLen < totalLen) {
@@ -489,7 +493,7 @@ TODO
     }
 ```
 
-TODO
+We __read the decompressed Application Firmware__ (4 KB chunk)
 
 ```c
     if (BFLB_BOOT2_SUCCESS != BLSP_MediaBoot_Read(
@@ -501,7 +505,7 @@ TODO
     }
 ```
 
-TODO
+We __write the firmware to XIP Flash Memory__ (4 KB chunk) starting at `0x2300 0000`
 
 ```c
     if (SUCCESS != XIP_SFlash_Write_Need_Lock(
@@ -514,7 +518,7 @@ TODO
     }
 ```
 
-TODO
+Finally we repeat the steps with the __next 4 KB chunk__, until the entire decompressed Application Firmware is written to XIP Flash Memory...
 
 ```c
     srcAddress += curLen;
@@ -525,13 +529,13 @@ TODO
 }
 ```
 
-TODO
-
 ![Bootloader writing firmware to XIP flash](https://lupyuen.github.io/images/boot-write.png)
 
 # BL602 Partition Table
 
 TODO
+
+[BL602 Partition Table](https://lupyuen.github.io/articles/flash#appendix-bl602-partition-table)
 
 ![](https://lupyuen.github.io/images/boot-partition.png)
 
