@@ -194,7 +194,8 @@ int main(void) {
 </code></pre>
 </li>
 <li>
-<p>TODO</p>
+<p>The Bootloader supports <strong>multicore CPUs</strong>.  (Each core will start the Application Firmware with different parameters)</p>
+<p>BL602 is a single-core CPU, so the <strong>CPU Count</strong> will be set to 1…</p>
 <pre><code class="language-c">    if (BLSP_Boot2_Get_Feature_Flag() != BLSP_BOOT2_SP_FLAG) {
         //  Get CPU count info
         cpuCount = BLSP_Boot2_Get_CPU_Count();
@@ -204,14 +205,13 @@ int main(void) {
 </code></pre>
 </li>
 <li>
-<p>TODO</p>
+<p>We <strong>fetch the Application Firmware Name</strong> from the Flashing Image.</p>
+<p>Our Application Firmware is always named <strong><code>&quot;FW&quot;</code></strong> <a href="https://lupyuen.github.io/articles/flash#appendix-bl602-partition-table">(See this)</a></p>
 <pre><code class="language-c">    //  Get power save mode
     psMode = BLSP_Read_Power_Save_Mode();
-</code></pre>
-</li>
-<li>
-<p>TODO</p>
-<pre><code class="language-c">    //  Get User specified FW
+
+    //  Get User specified FW
+    uint8_t userFwName[9] = {0};  //  Firmware Name
     ARCH_MemCpy_Fast(
         userFwName,
         BLSP_Get_User_Specified_Fw(),
