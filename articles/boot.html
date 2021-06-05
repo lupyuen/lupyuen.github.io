@@ -143,7 +143,11 @@
 <p><em>BL602 Boot2 Bootloader runs at address <code>0x2300 0000</code></em></p>
 <h1 id="inside-the-bootloader" class="section-header"><a href="#inside-the-bootloader">2 Inside the Bootloader</a></h1>
 <p>To understand the BL602 Bootloader, let’s look at the code inside…</p>
+<p><img src="https://lupyuen.github.io/images/boot-main.png" alt="Bootloader Main Function" /></p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_boot2.c#L389-L571"><code>bl602_boot2/blsp_boot2.c</code></a></p>
+<ol>
+<li>
+<p>TODO</p>
 <pre><code class="language-c">int main(void) {
     uint32_t ret=0,i=0;
     PtTable_Stuff_Config ptTableStuff[2];
@@ -172,8 +176,11 @@
     ret=BLSP_Boot2_Get_Clk_Cfg(&amp;clkCfg);
     ret|=SF_Cfg_Get_Flash_Cfg_Need_Lock(0,&amp;flashCfg);
     BLSP_Boot2_Flush_XIP_Cache();
-
-    bflb_platform_print_set(BLSP_Boot2_Get_Log_Disable_Flag());
+</code></pre>
+</li>
+<li>
+<p>TODO</p>
+<pre><code class="language-c">    bflb_platform_print_set(BLSP_Boot2_Get_Log_Disable_Flag());
     bflb_platform_init(BLSP_Boot2_Get_Baudrate());
     bflb_platform_deinit_time();
     if(BLSP_Boot2_Get_Feature_Flag()==BLSP_BOOT2_CP_FLAG){
@@ -189,37 +196,60 @@
     MSG_DBG(&quot;MCU SDK:%s\r\n&quot;,MCU_SDK_VERSION);
     MSG_DBG(&quot;BSP:%s\r\n&quot;,BSP_VERSION);
 #endif
-	if(BLSP_Boot2_Dump_Critical_Flag()){
+    if(BLSP_Boot2_Dump_Critical_Flag()){
         BLSP_Dump_Data(&amp;clkCfg,16);
-		BLSP_Dump_Data(&amp;flashCfg,16);
+        BLSP_Dump_Data(&amp;flashCfg,16);
     }
-
-    MSG_DBG(&quot;Get efuse config\r\n&quot;);
+</code></pre>
+</li>
+<li>
+<p>TODO</p>
+<pre><code class="language-c">    MSG_DBG(&quot;Get efuse config\r\n&quot;);
     BLSP_Boot2_Get_Efuse_Cfg(&amp;efuseCfg);
-
-    /* Reset Sec_Eng for using */
+</code></pre>
+</li>
+<li>
+<p>TODO</p>
+<pre><code class="language-c">    /* Reset Sec_Eng for using */
     BLSP_Boot2_Reset_Sec_Eng();
-
-    if(BLSP_Boot2_Get_Feature_Flag()!=BLSP_BOOT2_SP_FLAG){
+</code></pre>
+</li>
+<li>
+<p>TODO</p>
+<pre><code class="language-c">    if(BLSP_Boot2_Get_Feature_Flag()!=BLSP_BOOT2_SP_FLAG){
         /* Get cpu count info */
         cpuCount=BLSP_Boot2_Get_CPU_Count();
     }else{
         cpuCount=1;
     }
-
-    /* Get power save mode */
+</code></pre>
+</li>
+<li>
+<p>TODO</p>
+<pre><code class="language-c">    /* Get power save mode */
     psMode=BLSP_Read_Power_Save_Mode();
-
-    /* Get User specified FW */
+</code></pre>
+</li>
+<li>
+<p>TODO</p>
+<pre><code class="language-c">    /* Get User specified FW */
     ARCH_MemCpy_Fast(userFwName,BLSP_Get_User_Specified_Fw(),4);
-    if(BLSP_Boot2_8M_Support_Flag()){
+</code></pre>
+</li>
+<li>
+<p>TODO</p>
+<pre><code class="language-c">    if(BLSP_Boot2_8M_Support_Flag()){
         /* Set flash operation function, read via sbus */
         PtTable_Set_Flash_Operation(PtTable_Flash_Erase,PtTable_Flash_Write,PtTable_Flash_Read);
     }else{
         /* Set flash operation function, read via xip */
         PtTable_Set_Flash_Operation(PtTable_Flash_Erase,PtTable_Flash_Write,PtTable_Flash_Read);
     }
-    while(1){
+</code></pre>
+</li>
+<li>
+<p>TODO</p>
+<pre><code class="language-c">    while(1){
         tempMode=0;
         do{
             activeID=PtTable_Get_Active_Partition_Need_Lock(ptTableStuff);
@@ -262,26 +292,40 @@
             }
             ptParsed=1;
         }while(ptParsed==0);
-
-        /* Pass data to App*/
+</code></pre>
+</li>
+<li>
+<p>TODO</p>
+<pre><code class="language-c">        /* Pass data to App*/
         BLSP_Boot2_Pass_Parameter(NULL,0);
         /* Pass active partition table ID */
         BLSP_Boot2_Pass_Parameter(&amp;activeID,4);
         /* Pass active partition table content: table header+ entries +crc32 */
         BLSP_Boot2_Pass_Parameter(&amp;ptTableStuff[activeID],sizeof(PtTable_Config)+4+
                                     ptTableStuff[activeID].ptTable.entryCnt*sizeof(PtTable_Entry_Config));
-        /* Pass flash config */
+</code></pre>
+</li>
+<li>
+<p>TODO</p>
+<pre><code class="language-c">        /* Pass flash config */
         if(ptEntry[0].Address[ptEntry[0].activeIndex]!=0){
             XIP_SFlash_Read_Via_Cache_Need_Lock(BLSP_BOOT2_XIP_BASE+ptEntry[0].Address[ptEntry[0].activeIndex]+8,flashCfgBuf,sizeof(flashCfgBuf));
             /* Include magic and CRC32 */
             BLSP_Boot2_Pass_Parameter(flashCfgBuf,sizeof(flashCfgBuf));
         }
-
-        MSG_DBG(&quot;Boot start\r\n&quot;);
+</code></pre>
+</li>
+<li>
+<p>TODO</p>
+<pre><code class="language-c">        MSG_DBG(&quot;Boot start\r\n&quot;);
         for(i=0;i&lt;cpuCount;i++){
             bootHeaderAddr[i]=ptEntry[i].Address[ptEntry[i].activeIndex];
         }
-#ifdef BLSP_BOOT2_ROLLBACK
+</code></pre>
+</li>
+<li>
+<p>TODO</p>
+<pre><code class="language-c">#ifdef BLSP_BOOT2_ROLLBACK
         /* Test mode is not need roll back */
         if(rollBacked==0 &amp;&amp; tempMode==0){
             ret=BLSP_MediaBoot_Main(bootHeaderAddr,bootRollback,1);
@@ -291,11 +335,19 @@
 #else
         ret=BLSP_MediaBoot_Main(bootHeaderAddr,bootRollback,0);
 #endif
-        /* Fail in temp mode,continue to boot normal image */
+</code></pre>
+</li>
+<li>
+<p>TODO</p>
+<pre><code class="language-c">        /* Fail in temp mode,continue to boot normal image */
         if(tempMode==1){
             continue;
         }
-#ifdef BLSP_BOOT2_ROLLBACK
+</code></pre>
+</li>
+<li>
+<p>TODO</p>
+<pre><code class="language-c">#ifdef BLSP_BOOT2_ROLLBACK
         /* If rollback is done, we still fail, break */
         if(rollBacked){
             break;
@@ -318,8 +370,11 @@
         break;
 #endif
     }
-
-    /* We should never get here unless boot fail */
+</code></pre>
+</li>
+<li>
+<p>TODO</p>
+<pre><code class="language-c">    /* We should never get here unless boot fail */
     MSG_ERR(&quot;Media boot return %d\r\n&quot;,ret);
     while(1){
         MSG_ERR(&quot;BLSP boot2 fail\r\n&quot;);
@@ -327,11 +382,10 @@
     }
 }
 </code></pre>
+</li>
+</ol>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/boot-main.png" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/boot-main2.png" alt="" /></p>
-<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/boot-main2.png" alt="Bootloader Main Function" /></p>
 <h1 id="install-application-firmware" class="section-header"><a href="#install-application-firmware">3 Install Application Firmware</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/boot-install.png" alt="" /></p>
