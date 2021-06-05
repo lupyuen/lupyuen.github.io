@@ -192,12 +192,23 @@ From [`bl602_boot2/blsp_boot2.c`](https://github.com/lupyuen/bl_iot_sdk/blob/mas
 
     (Yes the parameters for both calls of `PtTable_Set_Flash_Operation` are identical)
 
-1.  TODO
+1.  The Bootloader enters two loops...
+
+    -   __Outer Loop "`while`"__: Loops until the writing (or rollback) of Application Firmware is complete
+
+    -   __Inner Loop "`do`"__: Loops through the Partition Table Entries until the writing of Application Firmware to XIP Flash Memory is complete 
 
     ```c
         while (1) {
             tempMode = 0;
             do {
+    ```
+
+    Let's probe the inner loop...
+
+1.  TODO
+
+    ```c
                 activeID = PtTable_Get_Active_Partition_Need_Lock(ptTableStuff);
                 if (PT_TABLE_ID_INVALID==activeID){ BLSP_Boot2_On_Error("No valid PT\r\n"); }
 
@@ -206,7 +217,11 @@ From [`bl602_boot2/blsp_boot2.c`](https://github.com/lupyuen/bl_iot_sdk/blob/mas
                     &ptTableStuff[activeID], 
                     &ptEntry[0],
                     userFwName);
+    ```
 
+1.  TODO
+
+    ```c
                 //  Get entry and boot
                 if (userFwName[0] == '0') {
                     ptParsed = BLSP_Boot2_Deal_One_FW(
@@ -258,6 +273,11 @@ From [`bl602_boot2/blsp_boot2.c`](https://github.com/lupyuen/bl_iot_sdk/blob/mas
                         }
                     }
                 }
+    ```
+
+1.  TODO
+
+    ```c
                 ptParsed = 1;
             } while (ptParsed == 0);
     ```
