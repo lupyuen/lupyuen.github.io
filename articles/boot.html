@@ -290,7 +290,7 @@ int main(void) {
         }
       }
 </code></pre>
-<p>We’ll study <strong><code>BLSP_Boot2_Deal_One_FW</code></strong> in a while.</p>
+<p>We’ll study <strong><code>BLSP_Boot2_Deal_One_FW</code></strong> in the next chapter.</p>
 </li>
 <li>
 <p>The Inner Loop repeats until it has located and processed the Application Firmware…</p>
@@ -398,8 +398,51 @@ int main(void) {
 <p><img src="https://lupyuen.github.io/images/boot-main2.png" alt="Bootloader Main Function" /></p>
 <h1 id="install-application-firmware" class="section-header"><a href="#install-application-firmware">3 Install Application Firmware</a></h1>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/boot-install.png" alt="" /></p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_boot2.c#L271-L313"><code>blsp_boot2.c</code></a></p>
+<pre><code class="language-c">//  Boot2 deal with one firmware.
+//  Return 0 for partition table changed, need re-parse.
+//  Return 1 for partition table or entry parsed successfully.
+static int BLSP_Boot2_Deal_One_FW(
+  PtTable_ID_Type activeID,       //  Active partition table ID
+  PtTable_Stuff_Config *ptStuff,  //  Pointer of partition table stuff
+  PtTable_Entry_Config *ptEntry,  //  Pointer of active entry
+  uint8_t *fwName,                //  Firmware name pointer
+  PtTable_Entry_Type type) {      //  Firmware name ID
+  uint32_t ret;
+
+  if (fwName != NULL) {
+    MSG_DBG(&quot;Get FW:%s\r\n&quot;, fwName);
+    ret = PtTable_Get_Active_Entries_By_Name(ptStuff, fwName, ptEntry);
+  } else {
+    MSG_DBG(&quot;Get FW ID:%d\r\n&quot;, type);
+    ret = PtTable_Get_Active_Entries_By_ID(ptStuff, type, ptEntry);
+  }
+</code></pre>
 <p>TODO</p>
+<pre><code class="language-c">  if (PT_ERROR_SUCCESS != ret) {
+    MSG_ERR(&quot;Entry not found\r\n&quot;);
+  } else {
+    BLSP_Dump_PtEntry(ptEntry);
+    MSG_DBG(&quot;Check Img\r\n&quot;);
+    if (BLSP_Boot2_Check_XZ_FW(activeID, ptStuff, ptEntry) == 1) {
+      return 0;
+    }
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-c">    //  Check if this partition need copy
+    if (ptEntry-&gt;activeIndex &gt;= 2) {
+      if (BFLB_BOOT2_SUCCESS == BLSP_Boot2_Do_FW_Copy(
+        activeID, 
+        ptStuff, 
+        ptEntry)) {
+        return 0;
+      }
+    }
+  }
+  return 1;
+}
+</code></pre>
+<p><img src="https://lupyuen.github.io/images/boot-install.png" alt="Bootloader installing Application Firmware" /></p>
 <h1 id="write-firmware-to-xip-flash" class="section-header"><a href="#write-firmware-to-xip-flash">4 Write Firmware to XIP Flash</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/boot-write.png" alt="" /></p>
