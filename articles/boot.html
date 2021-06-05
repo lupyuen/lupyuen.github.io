@@ -156,79 +156,79 @@ Boot_Efuse_HW_Config efuseCfg;
 
 int main(void) {
     ...
-    //  It's better not enable interrupt
-    //  BLSP_Boot2_Init_Timer();
+  //  It's better not enable interrupt
+  //  BLSP_Boot2_Init_Timer();
 
-    //  Set RAM Max size
-    BLSP_Boot2_Disable_Other_Cache();
+  //  Set RAM Max size
+  BLSP_Boot2_Disable_Other_Cache();
 
-    //  Flush cache to get parameter
-    BLSP_Boot2_Flush_XIP_Cache();
+  //  Flush cache to get parameter
+  BLSP_Boot2_Flush_XIP_Cache();
 
-    Boot_Clk_Config clkCfg;  //  Clock Configuration
-    ret = BLSP_Boot2_Get_Clk_Cfg(&amp;clkCfg);
+  Boot_Clk_Config clkCfg;  //  Clock Configuration
+  ret = BLSP_Boot2_Get_Clk_Cfg(&amp;clkCfg);
 
-    ret |= SF_Cfg_Get_Flash_Cfg_Need_Lock(0, &amp;flashCfg);
-    BLSP_Boot2_Flush_XIP_Cache();
+  ret |= SF_Cfg_Get_Flash_Cfg_Need_Lock(0, &amp;flashCfg);
+  BLSP_Boot2_Flush_XIP_Cache();
 </code></pre>
 </li>
 <li>
 <p>Next the Bootloader <strong>initialises the Hardware Platform</strong>…</p>
-<pre><code class="language-c">    bflb_platform_print_set(BLSP_Boot2_Get_Log_Disable_Flag());
+<pre><code class="language-c">  bflb_platform_print_set(BLSP_Boot2_Get_Log_Disable_Flag());
 
-    bflb_platform_init(BLSP_Boot2_Get_Baudrate());
+  bflb_platform_init(BLSP_Boot2_Get_Baudrate());
 
-    bflb_platform_deinit_time();
+  bflb_platform_deinit_time();
 </code></pre>
 </li>
 <li>
 <p>We fetch the <strong>EFuse Configuration</strong> (for decrypting the Application Firmware and for verifying the firmware signature)</p>
-<pre><code class="language-c">    MSG_DBG(&quot;Get efuse config\r\n&quot;);
-    BLSP_Boot2_Get_Efuse_Cfg(&amp;efuseCfg);
+<pre><code class="language-c">  MSG_DBG(&quot;Get efuse config\r\n&quot;);
+  BLSP_Boot2_Get_Efuse_Cfg(&amp;efuseCfg);
 </code></pre>
 </li>
 <li>
 <p>We <strong>reset the Security Engine</strong> (for AES Encryption operations)</p>
-<pre><code class="language-c">    //  Reset Sec_Eng for using
-    BLSP_Boot2_Reset_Sec_Eng();
+<pre><code class="language-c">  //  Reset Sec_Eng for using
+  BLSP_Boot2_Reset_Sec_Eng();
 </code></pre>
 </li>
 <li>
 <p>The Bootloader supports <strong>multicore CPUs</strong>.  (Each core will start the Application Firmware with different parameters)</p>
 <p>BL602 is a single-core CPU, so the <strong>CPU Count</strong> will be set to 1…</p>
-<pre><code class="language-c">    if (BLSP_Boot2_Get_Feature_Flag() != BLSP_BOOT2_SP_FLAG) {
-        //  Get CPU count info
-        cpuCount = BLSP_Boot2_Get_CPU_Count();
-    } else {
-        cpuCount = 1;
-    }
+<pre><code class="language-c">  if (BLSP_Boot2_Get_Feature_Flag() != BLSP_BOOT2_SP_FLAG) {
+    //  Get CPU count info
+    cpuCount = BLSP_Boot2_Get_CPU_Count();
+  } else {
+    cpuCount = 1;
+  }
 </code></pre>
 </li>
 <li>
 <p>We <strong>fetch the Application Firmware Name</strong> from the Flashing Image.</p>
-<p>Our Application Firmware is always named <strong><code>&quot;FW&quot;</code></strong> <a href="https://lupyuen.github.io/articles/flash#appendix-bl602-partition-table">(See this)</a></p>
-<pre><code class="language-c">    //  Get power save mode
-    psMode = BLSP_Read_Power_Save_Mode();
+<p>Our Application Firmware is always named <strong>“<code>FW</code>”</strong> <a href="https://lupyuen.github.io/articles/flash#appendix-bl602-partition-table">(See this)</a></p>
+<pre><code class="language-c">  //  Get power save mode
+  psMode = BLSP_Read_Power_Save_Mode();
 
-    //  Get User specified FW
-    uint8_t userFwName[9] = {0};  //  Firmware Name
-    ARCH_MemCpy_Fast(
-        userFwName,
-        BLSP_Get_User_Specified_Fw(),
-        4);
+  //  Get User specified firmware
+  uint8_t userFwName[9] = {0};  //  Firmware Name
+  ARCH_MemCpy_Fast(
+    userFwName,
+    BLSP_Get_User_Specified_Fw(),
+    4);
 </code></pre>
 </li>
 <li>
 <p>We register the functions that will be called to <strong>Erase, Write and Read the Partition Table</strong>…</p>
-<pre><code class="language-c">    if (BLSP_Boot2_8M_Support_Flag()) {
-        //  Set flash operation function, read via sbus
-        PtTable_Set_Flash_Operation(PtTable_Flash_Erase,
-            PtTable_Flash_Write, PtTable_Flash_Read);
-    } else {
-        //  Set flash operation function, read via xip
-        PtTable_Set_Flash_Operation(PtTable_Flash_Erase,
-            PtTable_Flash_Write, PtTable_Flash_Read);
-    }
+<pre><code class="language-c">  if (BLSP_Boot2_8M_Support_Flag()) {
+    //  Set flash operation function, read via sbus
+    PtTable_Set_Flash_Operation(PtTable_Flash_Erase,
+      PtTable_Flash_Write, PtTable_Flash_Read);
+  } else {
+    //  Set flash operation function, read via xip
+    PtTable_Set_Flash_Operation(PtTable_Flash_Erase,
+      PtTable_Flash_Write, PtTable_Flash_Read);
+  }
 </code></pre>
 <p>(Yes the parameters for both calls of <code>PtTable_Set_Flash_Operation</code> are identical)</p>
 </li>
@@ -242,177 +242,155 @@ int main(void) {
 <p><strong>Inner Loop “<code>do</code>”</strong>: Loops through the Partition Table Entries until the writing of Application Firmware to XIP Flash Memory is complete </p>
 </li>
 </ul>
-<pre><code class="language-c">    while (1) {
-        tempMode = 0;
-        do {
+<pre><code class="language-c">  while (1) {
+    tempMode = 0;
+    do {
 </code></pre>
 <p>Let’s probe the inner loop…</p>
 </li>
 <li>
-<p>TODO</p>
-<pre><code class="language-c">            activeID = PtTable_Get_Active_Partition_Need_Lock(ptTableStuff);
-            if (PT_TABLE_ID_INVALID==activeID){ BLSP_Boot2_On_Error(&quot;No valid PT\r\n&quot;); }
+<p>We fetch the next <strong>Partition Table Entry</strong> from the Flashing Image…</p>
+<pre><code class="language-c">      activeID = PtTable_Get_Active_Partition_Need_Lock(ptTableStuff);
+      if (PT_TABLE_ID_INVALID==activeID){ BLSP_Boot2_On_Error(&quot;No valid PT\r\n&quot;); }
 
-            BLSP_Boot2_Get_MFG_StartReq(
-                activeID,
-                &amp;ptTableStuff[activeID], 
-                &amp;ptEntry[0],
-                userFwName);
+      BLSP_Boot2_Get_MFG_StartReq(
+        activeID,
+        &amp;ptTableStuff[activeID], 
+        &amp;ptEntry[0],
+        userFwName);
+</code></pre>
+</li>
+<li>
+<p>We skip these two conditions because our Application Firmware is named “<code>FW</code>” and we’re running on a single-core CPU…</p>
+<pre><code class="language-c">      //  Get entry and boot
+      if (userFwName[0] == '0') {
+        //  Skip this code because our Firmware Name is &quot;FW&quot;
+        ...
+      } else if (userFwName[0] == '1' &amp;&amp; cpuCount &gt; 1) {
+        //  Skip this code because our CPU Count is 1 (single core)
+        ...
+      } 
 </code></pre>
 </li>
 <li>
 <p>TODO</p>
-<pre><code class="language-c">            //  Get entry and boot
-            if (userFwName[0] == '0') {
-                ptParsed = BLSP_Boot2_Deal_One_FW(
-                    activeID,
-                    &amp;ptTableStuff[activeID],
-                    &amp;ptEntry[0],
-                    &amp;userFwName[1],
-                    PT_ENTRY_FW_CPU0);
-                if (ptParsed == 0) {
-                    continue;
-                } else {
-                    BLSP_Clr_User_Specified_Fw();
-                }
-                tempMode = 1;
-                userFwName[0] = 0;
-            } else if (userFwName[0] == '1' &amp;&amp; cpuCount &gt; 1) {
-                ptParsed = BLSP_Boot2_Deal_One_FW(
-                    activeID,
-                    &amp;ptTableStuff[activeID],
-                    &amp;ptEntry[1],
-                    &amp;userFwName[1],
-                    PT_ENTRY_FW_CPU1);
-                if (ptParsed == 0) {
-                    continue;
-                } else {
-                    BLSP_Clr_User_Specified_Fw();
-                }
-                tempMode = 1;
-                userFwName[0] = 0;
-            } else {
-                ptParsed = BLSP_Boot2_Deal_One_FW(
-                    activeID,
-                    &amp;ptTableStuff[activeID],
-                    &amp;ptEntry[0],
-                    NULL,
-                    PT_ENTRY_FW_CPU0);
-                if (ptParsed == 0) {
-                    continue;
-                }
-                if (cpuCount &gt; 1) {
-                    ptParsed = BLSP_Boot2_Deal_One_FW(
-                        activeID,
-                        &amp;ptTableStuff[activeID],
-                        &amp;ptEntry[1],
-                        NULL,
-                        PT_ENTRY_FW_CPU1);
-                    if (ptParsed == 0) {
-                        continue;
-                    }
-                }
-            }
+<pre><code class="language-c">      else {
+        ptParsed = BLSP_Boot2_Deal_One_FW(
+          activeID,
+          &amp;ptTableStuff[activeID],
+          &amp;ptEntry[0],
+          NULL,
+          PT_ENTRY_FW_CPU0);
 </code></pre>
 </li>
 <li>
 <p>TODO</p>
-<pre><code class="language-c">            ptParsed = 1;
-        } while (ptParsed == 0);
+<pre><code class="language-c">        if (ptParsed == 0) { continue; }
+        if (cpuCount &gt; 1) {
+          //  Skip this code because our CPU Count is 1 (single core)
+          ...
+        }
+      }
 </code></pre>
 </li>
 <li>
 <p>TODO</p>
-<pre><code class="language-c">        //  Pass data to App
-        BLSP_Boot2_Pass_Parameter(NULL, 0);
+<pre><code class="language-c">      ptParsed = 1;
+    } while (ptParsed == 0);
+</code></pre>
+</li>
+<li>
+<p>TODO</p>
+<pre><code class="language-c">    //  Pass data to App
+    BLSP_Boot2_Pass_Parameter(NULL, 0);
 
-        //  Pass active partition table ID
-        BLSP_Boot2_Pass_Parameter(&amp;activeID, 4);
+    //  Pass active partition table ID
+    BLSP_Boot2_Pass_Parameter(&amp;activeID, 4);
 
-        //  Pass active partition table content: table header + entries + crc32
-        BLSP_Boot2_Pass_Parameter(
-            &amp;ptTableStuff[activeID],
-            sizeof(PtTable_Config) + 4
-                + ptTableStuff[activeID].ptTable.entryCnt
-                    * sizeof(PtTable_Entry_Config));
+    //  Pass active partition table content: table header + entries + crc32
+    BLSP_Boot2_Pass_Parameter(
+      &amp;ptTableStuff[activeID],
+      sizeof(PtTable_Config) + 4
+        + ptTableStuff[activeID].ptTable.entryCnt
+          * sizeof(PtTable_Entry_Config));
 </code></pre>
 </li>
 <li>
 <p>TODO</p>
-<pre><code class="language-c">        //  Pass flash config
-        if (ptEntry[0].Address[ptEntry[0].activeIndex] != 0) {
-            XIP_SFlash_Read_Via_Cache_Need_Lock(
-                BLSP_BOOT2_XIP_BASE+ptEntry[0].Address[ptEntry[0].activeIndex] + 8,
-                flashCfgBuf,
-                sizeof(flashCfgBuf));
+<pre><code class="language-c">    //  Pass flash config
+    if (ptEntry[0].Address[ptEntry[0].activeIndex] != 0) {
+      XIP_SFlash_Read_Via_Cache_Need_Lock(
+        BLSP_BOOT2_XIP_BASE+ptEntry[0].Address[ptEntry[0].activeIndex] + 8,
+        flashCfgBuf,
+        sizeof(flashCfgBuf));
 
-            //  Include magic and CRC32
-            BLSP_Boot2_Pass_Parameter(
-                flashCfgBuf,
-                sizeof(flashCfgBuf));
-        }
-</code></pre>
-</li>
-<li>
-<p>TODO</p>
-<pre><code class="language-c">        MSG_DBG(&quot;Boot start\r\n&quot;);
-        for (i = 0; i &lt; cpuCount; i++) {
-            bootHeaderAddr[i] = ptEntry[i].Address[ptEntry[i].activeIndex];
-        }
-</code></pre>
-</li>
-<li>
-<p>TODO</p>
-<pre><code class="language-c">#ifdef BLSP_BOOT2_ROLLBACK
-        /* Test mode is not need roll back */
-        if (rollBacked == 0 &amp;&amp; tempMode == 0) {
-            ret = BLSP_MediaBoot_Main(bootHeaderAddr, bootRollback, 1);
-        } else {
-            ret = BLSP_MediaBoot_Main(bootHeaderAddr, bootRollback, 0);
-        }
-#else
-        ret = BLSP_MediaBoot_Main(bootHeaderAddr, bootRollback, 0);
-#endif
-</code></pre>
-</li>
-<li>
-<p>TODO</p>
-<pre><code class="language-c">        //  Fail in temp mode, continue to boot normal image
-        if (tempMode == 1) { continue; }
-</code></pre>
-</li>
-<li>
-<p>TODO</p>
-<pre><code class="language-c">#ifdef BLSP_BOOT2_ROLLBACK
-        //  If rollback is done, we still fail, break
-        if (rollBacked) { break; }
-        MSG_DBG(&quot;Boot return %d\r\n&quot;,ret);
-        MSG_WAR(&quot;Check Rollback\r\n&quot;);
-        for (i = 0; i &lt; cpuCount; i++) {
-            if (bootRollback[i] != 0){
-                MSG_WAR(&quot;Rollback %d\r\n&quot;,i);
-                if (BFLB_BOOT2_SUCCESS == BLSP_Boot2_Rollback_PtEntry(
-                    activeID, &amp;ptTableStuff[activeID], &amp;ptEntry[i])) {
-                    rollBacked = 1;
-                }
-            }
-        }
-        //  If need no rollback, boot fail due to other reseaon instead of imgae issue, break
-        if (rollBacked == 0) { break; }
-#else
-        break;
-#endif
+      //  Include magic and CRC32
+      BLSP_Boot2_Pass_Parameter(
+        flashCfgBuf,
+        sizeof(flashCfgBuf));
     }
 </code></pre>
 </li>
 <li>
 <p>TODO</p>
-<pre><code class="language-c">    //  We should never get here unless boot fail
-    MSG_ERR(&quot;Media boot return %d\r\n&quot;,ret);
-    while (1) {
-        MSG_ERR(&quot;BLSP boot2 fail\r\n&quot;);
-        ARCH_Delay_MS(500);
+<pre><code class="language-c">    MSG_DBG(&quot;Boot start\r\n&quot;);
+    for (i = 0; i &lt; cpuCount; i++) {
+      bootHeaderAddr[i] = ptEntry[i].Address[ptEntry[i].activeIndex];
     }
+</code></pre>
+</li>
+<li>
+<p>TODO</p>
+<pre><code class="language-c">#ifdef BLSP_BOOT2_ROLLBACK
+    /* Test mode is not need roll back */
+    if (rollBacked == 0 &amp;&amp; tempMode == 0) {
+      ret = BLSP_MediaBoot_Main(bootHeaderAddr, bootRollback, 1);
+    } else {
+      ret = BLSP_MediaBoot_Main(bootHeaderAddr, bootRollback, 0);
+    }
+#else
+    ret = BLSP_MediaBoot_Main(bootHeaderAddr, bootRollback, 0);
+#endif
+</code></pre>
+</li>
+<li>
+<p>TODO</p>
+<pre><code class="language-c">    //  Fail in temp mode, continue to boot normal image
+    if (tempMode == 1) { continue; }
+</code></pre>
+</li>
+<li>
+<p>TODO</p>
+<pre><code class="language-c">#ifdef BLSP_BOOT2_ROLLBACK
+    //  If rollback is done, we still fail, break
+    if (rollBacked) { break; }
+    MSG_DBG(&quot;Boot return %d\r\n&quot;,ret);
+    MSG_WAR(&quot;Check Rollback\r\n&quot;);
+    for (i = 0; i &lt; cpuCount; i++) {
+      if (bootRollback[i] != 0){
+        MSG_WAR(&quot;Rollback %d\r\n&quot;,i);
+        if (BFLB_BOOT2_SUCCESS == BLSP_Boot2_Rollback_PtEntry(
+          activeID, &amp;ptTableStuff[activeID], &amp;ptEntry[i])) {
+          rollBacked = 1;
+        }
+      }
+    }
+    //  If need no rollback, boot fail due to other reseaon instead of imgae issue, break
+    if (rollBacked == 0) { break; }
+#else
+    break;
+#endif
+  }
+</code></pre>
+</li>
+<li>
+<p>TODO</p>
+<pre><code class="language-c">  //  We should never get here unless boot fail
+  MSG_ERR(&quot;Media boot return %d\r\n&quot;,ret);
+  while (1) {
+    MSG_ERR(&quot;BLSP boot2 fail\r\n&quot;);
+    ARCH_Delay_MS(500);
+  }
 }
 </code></pre>
 </li>
