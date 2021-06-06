@@ -71,11 +71,12 @@
 <li><a href="#write-firmware-to-xip-flash">4 Write Firmware to XIP Flash</a><ul></ul></li>
 <li><a href="#bl602-partition-table">5 BL602 Partition Table</a><ul></ul></li>
 <li><a href="#bl602-rom-driver-api">6 BL602 ROM Driver API</a><ul></ul></li>
-<li><a href="#efuse-security">7 EFuse Security</a><ul></ul></li>
-<li><a href="#bl602-firmware-boot-code">8 BL602 Firmware Boot Code</a><ul></ul></li>
-<li><a href="#other-bootloaders">9 Other Bootloaders</a><ul></ul></li>
-<li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
-<li><a href="#notes">11 Notes</a><ul></ul></li></ul></nav><p>📝 <em>10 Jun 2021</em></p>
+<li><a href="#locating-the-rom-driver-api">7 Locating the ROM Driver API</a><ul></ul></li>
+<li><a href="#efuse-security">8 EFuse Security</a><ul></ul></li>
+<li><a href="#bl602-firmware-boot-code">9 BL602 Firmware Boot Code</a><ul></ul></li>
+<li><a href="#other-bootloaders">10 Other Bootloaders</a><ul></ul></li>
+<li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
+<li><a href="#notes">12 Notes</a><ul></ul></li></ul></nav><p>📝 <em>10 Jun 2021</em></p>
 <p><em>How is our firmware loaded into BL602’s flash memory?</em></p>
 <p><em>How does BL602 prevent tampering of firmware?</em></p>
 <p>All this and much, much more shall be explained as we learn about the <strong>BL602 Boot2 Bootloader</strong>.</p>
@@ -602,38 +603,80 @@ len      = 0
 <p>Our computers have a similar Boot ROM… It’s called the <a href="https://en.wikipedia.org/wiki/Unified_Extensible_Firmware_Interface"><strong>Unified Extensible Firmware Interface (UEFI)</strong></a></p>
 <p>It contains secure boot code that’s run whenever we power on our computer.</p>
 <p><img src="https://lupyuen.github.io/images/boot-driver5.png" alt="ROM Driver API in Boot ROM" /></p>
-<p><em>How did we discover the Boot ROM?</em></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/boot-driver.png" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/boot-driver2.png" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/boot-driver3.png" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/boot-driver4.png" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/boot-rust.png" alt="" /></p>
-<p>TODO</p>
-<p><code>BLSP_Boot2_Deal_One_FW</code></p>
-<p><code>BLSP_Boot2_Check_XZ_FW</code></p>
-<p><code>BLSP_Boot2_Do_FW_Copy</code></p>
-<p><code>BLSP_MediaBoot_Read</code></p>
-<p><code>BLSP_MediaBoot_Main</code></p>
-<h1 id="efuse-security" class="section-header"><a href="#efuse-security">7 EFuse Security</a></h1>
+<h1 id="locating-the-rom-driver-api" class="section-header"><a href="#locating-the-rom-driver-api">7 Locating the ROM Driver API</a></h1>
+<p><em>How did we find out that the ROM Driver API is located in Boot ROM?</em></p>
+<p>Let’s look at the <strong>RISC-V Disassembly for the Bootloader</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/releases/download/v8.0.2/bl602_boot2.S"><code>bl602_boot2.S</code></a></p>
+<pre><code class="language-c">__ALWAYS_INLINE BL_Err_Type ATTR_TCM_SECTION 
+XIP_SFlash_Read_Via_Cache_Need_Lock(
+  uint32_t addr,
+  uint8_t *data, 
+  uint32_t len) {
+  return RomDriver_XIP_SFlash_Read_Via_Cache_Need_Lock(
+    addr, 
+    data, 
+    len);
+}
+</code></pre>
+<p>That’s the C definition of the function <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_romapi.c#L833-L836"><strong>XIP_SFlash_Read_Via_Cache_Need_Lock</strong></a>.</p>
+<p>(Which is called by the Bootloader to read XIP Flash Memory)</p>
+<p><em>The function looks kinda empty?</em></p>
+<p>Yes, because <strong>XIP_SFlash_Read_Via_Cache_Need_Lock</strong> is a <strong>Stub Function</strong>.</p>
+<p>It forwards the Function Call to the <strong>Real Function: RomDriver_XIP_SFlash_Read_Via_Cache_Need_Lock</strong>.</p>
+<p><em>Where is the Real Function for reading XIP Flash Memory?</em></p>
+<p>After the code above we see the RISC-V Assembly Code that the GCC Compiler has emitted for our Stub Function…</p>
+<pre><code class="language-text">2201050a &lt;XIP_SFlash_Read_Via_Cache_Need_Lock&gt;:
+2201050a:	210117b7          	lui	a5,0x21011
+2201050e:	aa47a303          	lw	t1,-1372(a5) # 21010aa4 &lt;StackSize+0x210106a4&gt;
+22010512:	8302                	jr	t1
+</code></pre>
+<p><em>So the Real Function is located at <code>0x2101 0aa4</code>?</em></p>
+<p>Right! <strong>RomDriver_XIP_SFlash_Read_Via_Cache_Need_Lock</strong> is located in the Boot ROM at <code>0x2101 0aa4</code>.</p>
+<p>(Remember that the Boot ROM lives at <code>0x2100 0000</code> to <code>0x2101 FFFF</code>)</p>
+<p>Hence when the Bootloader reads XIP Flash Memory…</p>
+<ol>
+<li>
+<p>Bootloader calls the <strong>Stub Function</strong> at <code>0x2201 050a</code></p>
+<p>(Located in ITCM)</p>
+</li>
+<li>
+<p>Stub Function calls the <strong>Real Function</strong> at <code>0x2101 0aa4</code></p>
+<p>(Located in Boot ROM)</p>
+</li>
+</ol>
+<p><em>What’s ITCM?</em></p>
+<p>ITCM means <strong>Instruction Tightly Coupled Memory</strong>.</p>
+<p>This is <strong>Cache Memory</strong> (RAM) that has been configured (via the Level 1 Cache Controller) for code execution.</p>
+<p>(See “Chapter 7: L1C (Level 1 Cache)” in the BL602 Reference Manual)</p>
+<p><em>What are the functions in the ROM Driver API?</em></p>
+<p>The <strong>ROM Driver Functions</strong> are listed in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_romdriver.c#L80-L269"><code>bl602_romdriver.c</code></a></p>
+<p>The functions cover…</p>
+<ul>
+<li>
+<p>Power On / Off, Power Management, Reset</p>
+</li>
+<li>
+<p>Memory Access, Flash Memory</p>
+</li>
+<li>
+<p>GPIO, EFuse and Delay</p>
+</li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/boot-driver.png" alt="ROM Driver Functions" /></p>
+<h1 id="efuse-security" class="section-header"><a href="#efuse-security">8 EFuse Security</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/boot-efuse.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="bl602-firmware-boot-code" class="section-header"><a href="#bl602-firmware-boot-code">8 BL602 Firmware Boot Code</a></h1>
+<h1 id="bl602-firmware-boot-code" class="section-header"><a href="#bl602-firmware-boot-code">9 BL602 Firmware Boot Code</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/boot-code.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="other-bootloaders" class="section-header"><a href="#other-bootloaders">9 Other Bootloaders</a></h1>
+<h1 id="other-bootloaders" class="section-header"><a href="#other-bootloaders">10 Other Bootloaders</a></h1>
 <p>TODO</p>
 <p>Check out this interview that explains why the PineTime Bootloader is designed that way…</p>
 <ul>
 <li><a href="https://www.ncartron.org/interview-with-lup-creator-of-pinetimes-bootloader.html"><strong>“Interview with Lup, creator of PineTime’s bootloader”</strong></a></li>
 </ul>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">10 What’s Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">11 What’s Next</a></h1>
 <p>TODO</p>
 <ul>
 <li>
@@ -651,7 +694,7 @@ len      = 0
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/boot.md"><code>lupyuen.github.io/src/boot.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">11 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">12 Notes</a></h1>
 <ol>
 <li>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1398855867030593538">this Twitter Thread</a></p>
@@ -663,6 +706,19 @@ len      = 0
 <p>TODO</p>
 </li>
 </ol>
+<p><img src="https://lupyuen.github.io/images/boot-driver2.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/boot-driver3.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/boot-driver4.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/boot-rust.png" alt="" /></p>
+<p>TODO</p>
+<p><code>BLSP_Boot2_Deal_One_FW</code></p>
+<p><code>BLSP_Boot2_Check_XZ_FW</code></p>
+<p><code>BLSP_Boot2_Do_FW_Copy</code></p>
+<p><code>BLSP_MediaBoot_Read</code></p>
+<p><code>BLSP_MediaBoot_Main</code></p>
 
     
 </body>
