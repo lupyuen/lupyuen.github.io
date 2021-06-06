@@ -627,39 +627,83 @@ It contains secure boot code that's run whenever we power on our computer.
 
 ![ROM Driver API in Boot ROM](https://lupyuen.github.io/images/boot-driver5.png)
 
-_How did we discover the Boot ROM?_
+# Locating the ROM Driver API
 
-TODO
+_How did we find out that the ROM Driver API is located in Boot ROM?_
 
-![](https://lupyuen.github.io/images/boot-driver.png)
+Let's look at the __RISC-V Disassembly for the Bootloader__: [`bl602_boot2.S`](https://github.com/lupyuen/bl_iot_sdk/releases/download/v8.0.2/bl602_boot2.S)
 
-TODO
+```c
+__ALWAYS_INLINE BL_Err_Type ATTR_TCM_SECTION 
+XIP_SFlash_Read_Via_Cache_Need_Lock(
+  uint32_t addr,
+  uint8_t *data, 
+  uint32_t len) {
+  return RomDriver_XIP_SFlash_Read_Via_Cache_Need_Lock(
+    addr, 
+    data, 
+    len);
+}
+```
 
-![](https://lupyuen.github.io/images/boot-driver2.png)
+That's the C definition of the function [__XIP_SFlash_Read_Via_Cache_Need_Lock__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_romapi.c#L833-L836).
 
-TODO
+(Which is called by the Bootloader to read XIP Flash Memory)
 
-![](https://lupyuen.github.io/images/boot-driver3.png)
+_The function looks kinda empty?_
 
-TODO
+Yes, because __XIP_SFlash_Read_Via_Cache_Need_Lock__ is a __Stub Function__.
 
-![](https://lupyuen.github.io/images/boot-driver4.png)
+It forwards the Function Call to the __Real Function: RomDriver_XIP_SFlash_Read_Via_Cache_Need_Lock__.
 
-TODO
+_Where is the Real Function for reading XIP Flash Memory?_
 
-![](https://lupyuen.github.io/images/boot-rust.png)
+After the code above we see the RISC-V Assembly Code that the GCC Compiler has emitted for our Stub Function...
 
-TODO
+```text
+2201050a <XIP_SFlash_Read_Via_Cache_Need_Lock>:
+2201050a:	210117b7          	lui	a5,0x21011
+2201050e:	aa47a303          	lw	t1,-1372(a5) # 21010aa4 <StackSize+0x210106a4>
+22010512:	8302                	jr	t1
+```
 
-`BLSP_Boot2_Deal_One_FW`
+_So the Real Function is located at `0x2101 0aa4`?_
 
-`BLSP_Boot2_Check_XZ_FW`
+Right! __RomDriver_XIP_SFlash_Read_Via_Cache_Need_Lock__ is located in the Boot ROM at `0x2101 0aa4`.
 
-`BLSP_Boot2_Do_FW_Copy`
+(Remember that the Boot ROM lives at `0x2100 0000` to `0x2101 FFFF`)
 
-`BLSP_MediaBoot_Read`
+Hence when the Bootloader reads XIP Flash Memory...
 
-`BLSP_MediaBoot_Main`
+1.  Bootloader calls the __Stub Function__ at `0x2201 050a`
+
+    (Located in ITCM)
+
+1.  Stub Function calls the __Real Function__ at `0x2101 0aa4`
+
+    (Located in Boot ROM)
+
+_What's ITCM?_
+
+ITCM means __Instruction Tightly Coupled Memory__.
+
+This is __Cache Memory__ (RAM) that has been configured (via the Level 1 Cache Controller) for code execution.
+
+(See "Chapter 7: L1C (Level 1 Cache)" in the BL602 Reference Manual)
+
+_What are the functions in the ROM Driver API?_
+
+The __ROM Driver Functions__ are listed in [`bl602_romdriver.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_romdriver.c#L80-L269)
+
+The functions cover...
+
+-  Power On / Off, Power Management, Reset
+
+-  Memory Access, Flash Memory
+
+-  GPIO, EFuse and Delay
+
+![ROM Driver Functions](https://lupyuen.github.io/images/boot-driver.png)
 
 # EFuse Security
 
@@ -712,3 +756,29 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
     ![](https://lupyuen.github.io/images/boot-compare.png)
 
     TODO
+
+![](https://lupyuen.github.io/images/boot-driver2.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/boot-driver3.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/boot-driver4.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/boot-rust.png)
+
+TODO
+
+`BLSP_Boot2_Deal_One_FW`
+
+`BLSP_Boot2_Check_XZ_FW`
+
+`BLSP_Boot2_Do_FW_Copy`
+
+`BLSP_MediaBoot_Read`
+
+`BLSP_MediaBoot_Main`
