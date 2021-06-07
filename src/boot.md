@@ -717,9 +717,138 @@ TODO
 
 [__`BLSP_MediaBoot_Main`__ is defined here](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_media_boot.c#L337-L434)
 
-BLSP_Boot2_Set_Cache
+```c
+/****************************************************************************//**
+ * @brief  Media boot main process
+ *
+ * @param  cpuBootheaderAddr[BFLB_BOOT2_CPU_MAX]: CPU bootheader address list
+ * @param  cpuRollBack[BFLB_BOOT2_CPU_MAX]: CPU need roll back flag hold list
+ * @param  rollBack: 1 for rollback when imge error occurs, 0 for not rollback when imge error occurs
+ *
+ * @return BL_Err_Type
+ *
+*******************************************************************************/
+int32_t BLSP_MediaBoot_Main(uint32_t cpuBootheaderAddr[BFLB_BOOT2_CPU_MAX],uint8_t cpuRollBack[BFLB_BOOT2_CPU_MAX],uint8_t rollBack)
+{
+    int32_t ret;
+    uint32_t i=0;
+    uint32_t validImgFound=0;
+    uint32_t bootHeaderAddr[BFLB_BOOT2_CPU_MAX];
+    
+    MSG_DBG("Media boot main\r\n");
+    
+    /* Reset some parameters*/
+    for(i=0;i<BFLB_BOOT2_CPU_MAX;i++){
+        memset(&bootImgCfg[i],0,sizeof(bootImgCfg[i]));
+        bootHeaderAddr[i]=cpuBootheaderAddr[i];
+        cpuRollBack[i]=0;
+    }
+    bootImgCfg[0].haltCPU1=0;
+    
+    /* Try to boot from flash */
+    for(i=0;i<cpuCount;i++){
+        if(bootHeaderAddr[i]==0){
+            MSG_ERR("CPU %d not boot\r\n",i);
+            continue;
+        }
+        ret=BLSP_MediaBoot_Parse_One_FW(&bootImgCfg[i],bootHeaderAddr[i],
+                                        bootHeaderAddr[i]+BFLB_FW_IMG_OFFSET_AFTER_HEADER);
+        if(ret!=BFLB_BOOT2_SUCCESS){
+            MSG_ERR("CPU %d boot fail\r\n",i);
+            cpuRollBack[i]=1;
+        }else{
+            validImgFound++;
+        }
+    }
+    if(validImgFound!=cpuCount && 1==rollBack){
+        /* For CP and DP, found CPU0 image is taken as correct when the other not found, others as wrong and try to rollback */
+        if(bootHeaderAddr[1]==0 && validImgFound==1){
+            MSG_DBG("Found One img Only\r\n");            
+        }else{
+            MSG_ERR("Image roll back\r\n");
+            return BFLB_BOOT2_IMG_Roll_Back;
+        }
+    }
+    if(validImgFound==0){
+        MSG_ERR("no valid img found\r\n");
+        return BFLB_BOOT2_IMG_ALL_INVALID_ERROR;
+    }
+    
 
-https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_port.c#L423-L485
+    /* Get msp and pc value */
+    for(i=0;i<cpuCount;i++){
+        if(bootImgCfg[i].imgValid){
+            if(bootImgCfg[i].entryPoint==0){
+#ifdef    ARCH_ARM
+                BLSP_MediaBoot_Read(bootImgCfg[i].imgStart.flashOffset,
+                                        (uint8_t *)&bootImgCfg[i].mspVal,4);
+                BLSP_MediaBoot_Read(bootImgCfg[i].imgStart.flashOffset+4,
+                                        (uint8_t *)&bootImgCfg[i].entryPoint,4);
+#endif
+#ifdef    ARCH_RISCV
+                bootImgCfg[i].entryPoint=bootCpuCfg[i].defaultXIPAddr;
+#endif
+            }
+        }
+    }
+    if(BLSP_Boot2_Get_Feature_Flag()==BLSP_BOOT2_CP_FLAG){
+        /*co-processor*/
+        bootImgCfg[1].imgStart.flashOffset=bootImgCfg[0].imgStart.flashOffset;
+        bootImgCfg[1].mspVal=bootImgCfg[0].mspVal;
+        bootImgCfg[1].entryPoint=bootImgCfg[0].entryPoint;
+        bootImgCfg[1].cacheEnable=bootImgCfg[0].cacheEnable;
+        bootImgCfg[1].imgValid=1;
+        bootImgCfg[1].cacheWayDisable=0xf;
+    }
+    MSG_DBG("%08x,%08x\r\n",bootImgCfg[0].mspVal,bootImgCfg[0].entryPoint);
+    MSG_DBG("%08x,%08x\r\n",bootImgCfg[1].mspVal,bootImgCfg[1].entryPoint);
+    MSG_DBG("%08x,%08x\r\n",bootImgCfg[0].imgStart.flashOffset,bootImgCfg[0].cacheWayDisable);
+    MSG_DBG("%08x,%08x\r\n",bootImgCfg[1].imgStart.flashOffset,bootImgCfg[1].cacheWayDisable);
+    MSG_DBG("CPU Count %d,%d\r\n",cpuCount,bootImgCfg[0].haltCPU1);
+    BLSP_Boot2_Show_Timer();
+    
+    /* Fix invalid pc and msp */
+    BLSP_Fix_Invalid_MSP_PC();   
+       
+    /* Prepare jump to entry*/
+    BLSP_MediaBoot_Pre_Jump();
+    
+    /* We should never get here unless something is wrong */
+    return BFLB_BOOT2_FAIL;
+}
+```
+
+BLSP_Boot2_Jump_Entry
+
+https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_common.c#L165-L257
+
+```c
+/****************************************************************************//**
+ * @brief  Boot2 jump to entryPoint
+ *
+ * @param  None
+ *
+ * @return None
+ *
+*******************************************************************************/
+void ATTR_TCM_SECTION BLSP_Boot2_Jump_Entry(void)
+{
+    pentry_t  pentry;
+    uint32_t i=0;
+    int32_t ret;
+    
+    BLSP_Sboot_Finish();    
+        
+    /*Note:enable cache with flash offset, after this, should be no flash directl read,
+      If need read, should take flash offset into consideration */
+    if(0!=efuseCfg.encrypted[0]){
+        /*for encrypted img, use none-continuos read*/
+        ret=BLSP_Boot2_Set_Cache(0,&flashCfg,&bootImgCfg[0]);
+    }else{
+        /*for unencrypted img, use continuos read*/
+        ret=BLSP_Boot2_Set_Cache(1,&flashCfg,&bootImgCfg[0]);
+    }
+```
 
 [9names](https://twitter.com/__9names)
 
@@ -728,6 +857,42 @@ https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602
 > It doesn't overwrite itself, that's the trick.
 What is at `0x23000000` depends on how the cache is configured, you can change it! See [`BLSP_Boot2_Jump_Entry` in `blsp_common.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_common.c#L165-L257) for an example.
 This is what makes it possible to boot multiple applications without patching the firmware
+
+BLSP_Boot2_Set_Cache
+
+https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_port.c#L423-L485
+
+```c
+/****************************************************************************//**
+ * @brief  Media boot set cache according to image config
+ *
+ * @param  None
+ *
+ * @return BL_Err_Type
+ *
+*******************************************************************************/
+int32_t ATTR_TCM_SECTION BLSP_Boot2_Set_Cache(uint8_t contRead,SPI_Flash_Cfg_Type *flashCfg,Boot_Image_Config *bootImgCfg)
+{
+  ...
+  if (bootImgCfg[0].cacheEnable) {
+    if ((bootImgCfg[0].entryPoint & 0xFF000000) == BLSP_BOOT2_XIP_BASE) {
+      SF_Ctrl_Set_Flash_Image_Offset(
+        bootImgCfg[0].imgStart.flashOffset
+      );
+      SFlash_Cache_Read_Enable(
+        flashCfg,
+        SF_CTRL_QIO_MODE,
+        contRead,
+        bootImgCfg[0].
+        cacheWayDisable
+      );
+```
+
+Match with https://lupyuen.github.io/articles/flash#appendix-bl602-efuse-configuration
+
+`cacheEnable` is true
+
+`entryPoint` is `BLSP_BOOT2_XIP_BASE` (`0x2300 0000`)
 
 # EFuse Security
 
