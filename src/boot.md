@@ -678,7 +678,7 @@ After the code above we see the RISC-V Assembly Code that the GCC Compiler has e
 2201050a <XIP_SFlash_Read_Via_Cache_Need_Lock>:
 2201050a:	210117b7          	lui	a5,0x21011
 2201050e:	aa47a303          	lw	t1,-1372(a5) # 21010aa4 <StackSize+0x210106a4>
-22010512:	8302                	jr	t1
+22010512:	8302                jr	t1
 ```
 
 _So the Real Function is located at `0x2101 0aa4`?_
@@ -768,7 +768,7 @@ int32_t BLSP_MediaBoot_Pre_Jump(void) {
   //  Platform deinit
   bflb_platform_deinit(); 
     
-  //  Jump to entry
+  //  Jump to entry point
   BLSP_Boot2_Jump_Entry();    
   return BFLB_BOOT2_SUCCESS;
 }
@@ -792,25 +792,25 @@ void ATTR_TCM_SECTION BLSP_Boot2_Jump_Entry(void) {
   if (0 != efuseCfg.encrypted[0]) {
     //  For encrypted img, use non-continuous read
     ret = BLSP_Boot2_Set_Cache(
-        0,
-        &flashCfg,
-        &bootImgCfg[0]);
+      0,
+      &flashCfg,
+      &bootImgCfg[0]);
   } else {
     //  For unencrypted img, use continuous read
     ret = BLSP_Boot2_Set_Cache(
-        1,
-        &flashCfg,
-        &bootImgCfg[0]);
+      1,
+      &flashCfg,
+      &bootImgCfg[0]);
   }
   //  Omitted: Set decryption before reading MSP and PC
   ...    
-  //  Omitted: Handle Other CPUs' entry point
+  //  Omitted: Handle Other CPU's entry point
   ...    
   //  Handle CPU0's entry point
   if (bootImgCfg[0].imgValid) {
     pentry = (pentry_t) bootImgCfg[0].entryPoint;
     if (bootImgCfg[0].mspVal != 0) {
-        __set_MSP(bootImgCfg[0].mspVal);
+      __set_MSP(bootImgCfg[0].mspVal);
     }
     ...
     //  Jump to the entry point
@@ -818,15 +818,19 @@ void ATTR_TCM_SECTION BLSP_Boot2_Jump_Entry(void) {
   }   
 ```
 
-TODO
+As expected, the function ends by __jumping to the Entry Point__ of our Application Firmware: `pentry`
+
+But before that, it calls __`BLSP_Boot2_Set_Cache`__ to fix up the XIP Flash Memory.
+
+Let's find out why.
 
 # Remap XIP Flash
 
-_The Bootloader and Application Firmware are both programmed to run at the same XIP Flash Memory address 0x2300 0000..._
+Remember that the __Bootloader and Application Firmware__ are both programmed to run at the __same XIP Flash Memory address `0x2300 0000`__.
 
-_Does this mean that the Bootloader overwrites itself with the Application Firmware?_
+_Does the Bootloader overwrite itself with the Application Firmware?_
 
-Here's the answer, many thanks to [__9names on Twitter__](https://twitter.com/__9names/status/1401152245693960193)...
+Not quite! Here's the answer, many thanks to [__9names on Twitter__](https://twitter.com/__9names/status/1401152245693960193)...
 
 > "It doesn't overwrite itself, that's the trick.
 What is at `0x23000000` depends on how the cache is configured, you can change it!"
