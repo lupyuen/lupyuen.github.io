@@ -668,11 +668,12 @@ XIP_SFlash_Read_Via_Cache_Need_Lock(
 <p><img src="https://lupyuen.github.io/images/boot-driver.png" alt="ROM Driver Functions" /></p>
 <h1 id="bootloader-overwrites-itself" class="section-header"><a href="#bootloader-overwrites-itself">8 Bootloader Overwrites Itself</a></h1>
 <p>TODO</p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_media_boot.c#L337-L434"><strong><code>BLSP_MediaBoot_Main</code></strong> is defined here</a></p>
 <p><a href="https://twitter.com/__9names">9names</a></p>
 <p><a href="https://twitter.com/__9names/status/1401152245693960193">Comment on Twitter</a></p>
 <blockquote>
 <p>It doesn’t overwrite itself, that’s the trick.
-What is at <code>0x23000000</code> depends on how the cache is configured, you can change it! See <code>BLSP_Boot2_Jump_Entry</code> in <code>blsp_common.c</code> for an example.
+What is at <code>0x23000000</code> depends on how the cache is configured, you can change it! See <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_common.c#L165-L257"><code>BLSP_Boot2_Jump_Entry</code> in <code>blsp_common.c</code></a> for an example.
 This is what makes it possible to boot multiple applications without patching the firmware</p>
 </blockquote>
 <h1 id="efuse-security" class="section-header"><a href="#efuse-security">9 EFuse Security</a></h1>
