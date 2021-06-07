@@ -881,16 +881,15 @@ void ATTR_TCM_SECTION BLSP_Boot2_Jump_Entry(void)
     }   
 </code></pre>
 <h1 id="remap-xip-flash" class="section-header"><a href="#remap-xip-flash">9 Remap XIP Flash</a></h1>
-<p><em>The Bootloader and Application Firmware are both located at the same XIP Flash Memory address 0x2300 0000…</em></p>
+<p><em>The Bootloader and Application Firmware are both programmed to run at the same XIP Flash Memory address 0x2300 0000…</em></p>
 <p><em>Does this mean that the Bootloader overwrites itself with the Application Firmware?</em></p>
-<p>TODO</p>
-<p><a href="https://twitter.com/__9names">9names</a></p>
-<p><a href="https://twitter.com/__9names/status/1401152245693960193">Comment on Twitter</a></p>
+<p>Here’s the answer, many thanks to <a href="https://twitter.com/__9names/status/1401152245693960193"><strong>9names on Twitter</strong></a>…</p>
 <blockquote>
 <p>It doesn’t overwrite itself, that’s the trick.
 What is at <code>0x23000000</code> depends on how the cache is configured, you can change it! See <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_common.c#L165-L257"><code>BLSP_Boot2_Jump_Entry</code> in <code>blsp_common.c</code></a> for an example.
 This is what makes it possible to boot multiple applications without patching the firmware</p>
 </blockquote>
+<p>TODO</p>
 <p>BLSP_Boot2_Set_Cache</p>
 <p>https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_port.c#L423-L485</p>
 <pre><code class="language-c">/****************************************************************************//**
