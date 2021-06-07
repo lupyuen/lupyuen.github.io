@@ -802,7 +802,7 @@ void ATTR_TCM_SECTION BLSP_Boot2_Jump_Entry(void) {
             &flashCfg,
             &bootImgCfg[0]);
     }
-    //  Omitted: Set decryption before read MSP and PC
+    //  Omitted: Set decryption before reading MSP and PC
     ...    
     //  Omitted: Handle Other CPUs' entry point
     ...    
