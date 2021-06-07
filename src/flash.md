@@ -391,7 +391,7 @@ Let's look at each section of the Flash Image.
 
 In this article we'll use "ROM" to refer to BL602's __XIP Flash Memory__ (at address `0x2300 0000` with size 16 MB). 
 
-(XIP means Execute In Place... We can execute firmware code here without transferring to RAM or Cache Memory)
+(XIP means Execute In Place... BL602 lets us run firmware code from External Flash Memory without transferring to RAM first. [See this](https://lupyuen.github.io/articles/boot#bl602-boot2-bootloader))
 
 The [BL602 Reference Manual](https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf) uses "ROM" to refer to BL602's __Boot ROM__ (at address `0x2100 0000` with size 128 KB).
 
