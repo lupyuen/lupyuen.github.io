@@ -131,8 +131,8 @@
 <p>Not quite. We’ll learn later how the <strong>Boot2 Bootloader remaps the XIP Flash Memory</strong> to start the Application Firmware.</p>
 <p><em>Is Boot2 really a Bootloader?</em></p>
 <p>On other microcontrollers, the Bootloader is the first thing that runs when powered on. (Before jumping to the Application Firmware)</p>
-<p>On BL602, the Boot2 Bootloader <strong>runs only when we flash new Application Firmware</strong>. (So that the Application Firmware may be loaded into XIP Flash Memory)</p>
-<p>So the Bootloader concept is a little different for BL602… It’s more like an <strong>“Application Firmware Loader”</strong></p>
+<p>On BL602, the Boot2 Bootloader also <strong>installs new Application Firmware</strong> into XIP Flash Memory.</p>
+<p><a href="https://lupyuen.github.io/pinetime-rust-mynewt/articles/mcuboot">(Somewhat similar to the MCUBoot Bootloader for PineTime Smart Watch)</a></p>
 <p><em>Why so complicated?</em></p>
 <p>BL602’s Boot2 Bootloader allows Application Firmware to be <strong>flashed securely</strong> to XIP Flash Memory…</p>
 <ol>
@@ -145,7 +145,7 @@
 <p>(Prevents tampering of firmware updates)</p>
 </li>
 </ol>
-<p>We’ll learn more about firmware security.</p>
+<p>We’ll learn more about BL602 firmware security in a while.</p>
 <p><img src="https://lupyuen.github.io/images/boot-loader.png" alt="BL602 Boot2 Bootloader runs at address 0x2300 0000" /></p>
 <p><em>BL602 Boot2 Bootloader runs at address <code>0x2300 0000</code></em></p>
 <h1 id="inside-the-bootloader" class="section-header"><a href="#inside-the-bootloader">2 Inside the Bootloader</a></h1>
@@ -944,7 +944,10 @@ int32_t ATTR_TCM_SECTION BLSP_Boot2_Set_Cache(uint8_t contRead,SPI_Flash_Cfg_Typ
 </li>
 <li>
 <p>PineTime Bootloader</p>
-<p>Check out this interview that explains why the PineTime Bootloader is designed that way…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/pinetime-rust-mynewt/articles/mcuboot"><strong>“MCUBoot Bootloader for PineTime Smart Watch”</strong></a></li>
+</ul>
+<p>Check out this interview that explains the design rationale for the PineTime Bootloader…</p>
 <ul>
 <li><a href="https://www.ncartron.org/interview-with-lup-creator-of-pinetimes-bootloader.html"><strong>“Interview with Lup, creator of PineTime’s bootloader”</strong></a></li>
 </ul>
