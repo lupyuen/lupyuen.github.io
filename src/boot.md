@@ -48,9 +48,13 @@ Instead, __BL602 runs the Boot2 Bootloader__ which...
 
 1.  __Extracts our Application Firmware__ from the transferred Flashing Image
 
-1.  __Writes our Application Firmware__ to XIP Flash Memory at address __`0x2300 0000`__.
+1.  __Writes our Application Firmware__ to XIP Flash Memory
 
-(XIP means [__Execute In Place__](https://en.wikipedia.org/wiki/Execute_in_place), it refers to the BL602 Flash Memory that will store our executable firmware code)
+1.  __Starts our Application Firmware__ from XIP Flash Memory
+
+XIP means [__Execute In Place__](https://en.wikipedia.org/wiki/Execute_in_place), it refers to the Flash Memory that will store our executable firmware code.
+
+XIP uses __Cache Memory__ to speed up access to the off-chip Flash Memory, and makes possible code execution from Flash Memory.
 
 _Where is the Boot2 Bootloader located?_
 
@@ -60,7 +64,7 @@ Yep it's the __same address as our Application Firmware__!
 
 _So the Bootloader overwrites itself by our Application Firmware?_
 
-Yes indeed. We'll learn later how the __Boot2 Bootloader overwrites itself__ by the Application Firmware.
+Not quite. We'll learn later how the __Boot2 Bootloader remaps the XIP Flash Memory__ to start the Application Firmware.
 
 _Is Boot2 really a Bootloader?_
 
@@ -378,7 +382,7 @@ As we've seen, the Bootloader calls __`BLSP_Boot2_Deal_One_FW`__ to...
 
 1.  __Extract the Application Firmware__ from the Flashing Image
 
-1.  __Write the Application Firmware to XIP Flash Memory__ at `0x2300 0000`
+1.  __Write the Application Firmware__ to XIP Flash Memory
 
 Here's how it works: [`blsp_boot2.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_boot2.c#L271-L313)
 
@@ -420,7 +424,7 @@ Then it __extracts the Application Firmware__ from the Flashing Image...
 
 [__`BLSP_Boot2_Check_XZ_FW`__](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_boot2.c#L190-L224) extracts and decompresses the Application Firmware. [(XZ Compression)](https://en.wikipedia.org/wiki/XZ_Utils)
 
-Now that we have the decompressed Application Firmware, we __write the firmware to XIP Flash Memory__ at `0x2300 0000`...
+Now that we have the decompressed Application Firmware, we __write the firmware to XIP Flash Memory__...
 
 ```c
     //  Check if this partition need copy
@@ -467,11 +471,11 @@ static int BLSP_Boot2_Do_FW_Copy(
   uint32_t curLen = 0;
 ```
 
-__`BLSP_Boot2_Do_FW_Copy`__ starts by fetching the __Partition Table Entry__ for the Application Firmware, containing __Source Address, Destination Address (`0x2300 0000`) and Firmware Length__.
+__`BLSP_Boot2_Do_FW_Copy`__ starts by fetching the __Partition Table Entry__ for the Application Firmware, containing __Source Address, Destination Address and Firmware Length__.
 
 (More about the Partition Table in the next chapter)
 
-Then it __erases the XIP Flash Memory__ at the Destination Address `0x2300 0000`
+Then it __erases the XIP Flash Memory__ at the Destination Address...
 
 ```c
   if (SUCCESS != XIP_SFlash_Erase_Need_Lock(
@@ -493,7 +497,7 @@ Next we handle the decompressed Application Firmware, chunk by chunk (4 KB)
     }
 ```
 
-We __read the decompressed Application Firmware__ (4 KB chunk)
+We __read the decompressed Application Firmware__ (in 4 KB chunks)
 
 ```c
     if (BFLB_BOOT2_SUCCESS != BLSP_MediaBoot_Read(
@@ -505,7 +509,7 @@ We __read the decompressed Application Firmware__ (4 KB chunk)
     }
 ```
 
-We __write the firmware to XIP Flash Memory__ (4 KB chunk) starting at `0x2300 0000`
+We __write the firmware to XIP Flash Memory__ (in 4 KB chunks)
 
 ```c
     if (SUCCESS != XIP_SFlash_Write_Need_Lock(
@@ -934,6 +938,10 @@ void ATTR_TCM_SECTION BLSP_Boot2_Jump_Entry(void)
 ```
 
 # Remap XIP Flash
+
+_The Bootloader and Application Firmware are both located at the same XIP Flash Memory address 0x2300 0000..._
+
+_Does this mean that the Bootloader overwrites itself with the Application Firmware?_
 
 TODO
 
