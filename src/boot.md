@@ -715,12 +715,14 @@ The __Bootloader Linker Map [`bl602_boot2.map`](https://github.com/lupyuen/bl_io
 
 TODO
 
+[__`BLSP_MediaBoot_Main`__ is defined here](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_media_boot.c#L337-L434)
+
 [9names](https://twitter.com/__9names)
 
 [Comment on Twitter](https://twitter.com/__9names/status/1401152245693960193)
 
 > It doesn't overwrite itself, that's the trick.
-What is at `0x23000000` depends on how the cache is configured, you can change it! See `BLSP_Boot2_Jump_Entry` in `blsp_common.c` for an example.
+What is at `0x23000000` depends on how the cache is configured, you can change it! See [`BLSP_Boot2_Jump_Entry` in `blsp_common.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_common.c#L165-L257) for an example.
 This is what makes it possible to boot multiple applications without patching the firmware
 
 # EFuse Security
