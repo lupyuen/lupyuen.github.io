@@ -850,14 +850,6 @@ void ATTR_TCM_SECTION BLSP_Boot2_Jump_Entry(void)
     }
 ```
 
-[9names](https://twitter.com/__9names)
-
-[Comment on Twitter](https://twitter.com/__9names/status/1401152245693960193)
-
-> It doesn't overwrite itself, that's the trick.
-What is at `0x23000000` depends on how the cache is configured, you can change it! See [`BLSP_Boot2_Jump_Entry` in `blsp_common.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_common.c#L165-L257) for an example.
-This is what makes it possible to boot multiple applications without patching the firmware
-
 BLSP_Boot2_Set_Cache
 
 https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_port.c#L423-L485
@@ -893,6 +885,20 @@ Match with https://lupyuen.github.io/articles/flash#appendix-bl602-efuse-configu
 `cacheEnable` is true
 
 `entryPoint` is `BLSP_BOOT2_XIP_BASE` (`0x2300 0000`)
+
+`img_start` is `0x2000`
+
+# Or Maybe Not?
+
+TODO
+
+[9names](https://twitter.com/__9names)
+
+[Comment on Twitter](https://twitter.com/__9names/status/1401152245693960193)
+
+> It doesn't overwrite itself, that's the trick.
+What is at `0x23000000` depends on how the cache is configured, you can change it! See [`BLSP_Boot2_Jump_Entry` in `blsp_common.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_common.c#L165-L257) for an example.
+This is what makes it possible to boot multiple applications without patching the firmware
 
 # EFuse Security
 
