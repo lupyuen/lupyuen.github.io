@@ -72,11 +72,12 @@
 <li><a href="#bl602-partition-table">5 BL602 Partition Table</a><ul></ul></li>
 <li><a href="#bl602-rom-driver-api">6 BL602 ROM Driver API</a><ul></ul></li>
 <li><a href="#locating-the-rom-driver-api">7 Locating the ROM Driver API</a><ul></ul></li>
-<li><a href="#efuse-security">8 EFuse Security</a><ul></ul></li>
-<li><a href="#bl602-firmware-boot-code">9 BL602 Firmware Boot Code</a><ul></ul></li>
-<li><a href="#other-bootloaders">10 Other Bootloaders</a><ul></ul></li>
-<li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
-<li><a href="#notes">12 Notes</a><ul></ul></li></ul></nav><p>📝 <em>10 Jun 2021</em></p>
+<li><a href="#bootloader-overwrites-itself">8 Bootloader Overwrites Itself</a><ul></ul></li>
+<li><a href="#efuse-security">9 EFuse Security</a><ul></ul></li>
+<li><a href="#bl602-firmware-boot-code">10 BL602 Firmware Boot Code</a><ul></ul></li>
+<li><a href="#other-bootloaders">11 Other Bootloaders</a><ul></ul></li>
+<li><a href="#whats-next">12 What’s Next</a><ul></ul></li>
+<li><a href="#notes">13 Notes</a><ul></ul></li></ul></nav><p>📝 <em>10 Jun 2021</em></p>
 <p><em>How is our firmware loaded into BL602’s flash memory?</em></p>
 <p><em>How does BL602 prevent tampering of firmware?</em></p>
 <p>All this and much, much more shall be explained as we learn about the <strong>BL602 Boot2 Bootloader</strong>.</p>
@@ -585,23 +586,25 @@ len      = 0
 <p>(The Boot Code runs just before the Bootloader)</p>
 </li>
 <li>
-<p><strong>ROM Driver Functions</strong> called by the Bootloader</p>
+<p><strong>ROM Driver API</strong> called by the Bootloader</p>
 <p>(Like the XIP Flash Memory Functions above)</p>
 </li>
 </ol>
-<p><em>Why put the ROM Driver Functions in the Boot ROM?</em></p>
+<p><em>Why put the ROM Driver API in the Boot ROM?</em></p>
 <ul>
 <li>
 <p>We <strong>reduce the Bootloader size</strong> by placing the low-level functions in Boot ROM</p>
 </li>
 <li>
-<p>Some ROM Driver Functions need to run <strong>in a secure, tamper-proof environment</strong> in the Boot ROM.</p>
+<p>Some ROM Driver Functions need to run in a <strong>secure, tamper-proof ROM environment</strong></p>
 <p>(Like the functions for decrypting and verifying Application Firmware)</p>
 </li>
 </ul>
 <p><em>Wait this sounds familiar…?</em></p>
 <p>Our computers have a similar Boot ROM… It’s called the <a href="https://en.wikipedia.org/wiki/Unified_Extensible_Firmware_Interface"><strong>Unified Extensible Firmware Interface (UEFI)</strong></a></p>
 <p>It contains secure boot code that’s run whenever we power on our computer.</p>
+<p>In the next chapter we shall explore the <strong>Table of ROM Driver API Functions</strong> located in ROM API at <strong><code>0x2101 0800</code></strong></p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Inc/bl602_romdriver.h"><code>bl602_romdriver.h</code></a> …</p>
 <p><img src="https://lupyuen.github.io/images/boot-driver5.png" alt="ROM Driver API in Boot ROM" /></p>
 <h1 id="locating-the-rom-driver-api" class="section-header"><a href="#locating-the-rom-driver-api">7 Locating the ROM Driver API</a></h1>
 <p><em>How did we find out that the ROM Driver API is located in Boot ROM?</em></p>
@@ -621,7 +624,7 @@ XIP_SFlash_Read_Via_Cache_Need_Lock(
 <p>(Which is called by the Bootloader to read XIP Flash Memory)</p>
 <p><em>The function looks kinda empty?</em></p>
 <p>Yes, because <strong>XIP_SFlash_Read_Via_Cache_Need_Lock</strong> is a <strong>Stub Function</strong>.</p>
-<p>It forwards the Function Call to the <strong>Real Function: RomDriver_XIP_SFlash_Read_Via_Cache_Need_Lock</strong>.</p>
+<p>It forwards the Function Call to the _<em>Real Function: RomDriver_XIP_SFlash_Read_Via_Cache <em>Need_Lock</em></em>.</p>
 <p><em>Where is the Real Function for reading XIP Flash Memory?</em></p>
 <p>After the code above we see the RISC-V Assembly Code that the GCC Compiler has emitted for our Stub Function…</p>
 <pre><code class="language-text">2201050a &lt;XIP_SFlash_Read_Via_Cache_Need_Lock&gt;:
@@ -630,7 +633,7 @@ XIP_SFlash_Read_Via_Cache_Need_Lock(
 22010512:	8302                	jr	t1
 </code></pre>
 <p><em>So the Real Function is located at <code>0x2101 0aa4</code>?</em></p>
-<p>Right! <strong>RomDriver_XIP_SFlash_Read_Via_Cache_Need_Lock</strong> is located in the Boot ROM at <code>0x2101 0aa4</code>.</p>
+<p>Right! _<em>RomDriver_XIP_SFlash_Read_Via_Cache <em>Need_Lock</em></em> is located in the Boot ROM at <code>0x2101 0aa4</code>.</p>
 <p>(Remember that the Boot ROM lives at <code>0x2100 0000</code> to <code>0x2101 FFFF</code>)</p>
 <p>Hence when the Bootloader reads XIP Flash Memory…</p>
 <ol>
@@ -648,7 +651,7 @@ XIP_SFlash_Read_Via_Cache_Need_Lock(
 <p>This is <strong>Cache Memory</strong> (RAM) that has been configured (via the Level 1 Cache Controller) for code execution.</p>
 <p>(See “Chapter 7: L1C (Level 1 Cache)” in the BL602 Reference Manual)</p>
 <p><em>What are the functions in the ROM Driver API?</em></p>
-<p>The <strong>ROM Driver Functions</strong> are listed in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_romdriver.c#L80-L269"><code>bl602_romdriver.c</code></a></p>
+<p>The <strong>ROM Driver Functions</strong> are listed in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_romdriver.c#L80-L269"><code>bl602_romdriver.c</code></a> and <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Inc/bl602_romdriver.h"><code>bl602_romdriver.h</code></a></p>
 <p>The functions cover…</p>
 <ul>
 <li>
@@ -661,22 +664,32 @@ XIP_SFlash_Read_Via_Cache_Need_Lock(
 <p>GPIO, EFuse and Delay</p>
 </li>
 </ul>
+<p>The <strong>Bootloader Linker Map <a href="https://github.com/lupyuen/bl_iot_sdk/releases/download/v8.0.2/bl602_boot2.map"><code>bl602_boot2.map</code></a></strong> reveals the <strong>Table of ROM Driver Stub Functions</strong> at ITCM address <code>0x2201 0000</code>…</p>
 <p><img src="https://lupyuen.github.io/images/boot-driver.png" alt="ROM Driver Functions" /></p>
-<h1 id="efuse-security" class="section-header"><a href="#efuse-security">8 EFuse Security</a></h1>
+<h1 id="bootloader-overwrites-itself" class="section-header"><a href="#bootloader-overwrites-itself">8 Bootloader Overwrites Itself</a></h1>
+<p>TODO</p>
+<p><a href="https://twitter.com/__9names">9names</a></p>
+<p><a href="https://twitter.com/__9names/status/1401152245693960193">Comment on Twitter</a></p>
+<blockquote>
+<p>It doesn’t overwrite itself, that’s the trick.
+What is at <code>0x23000000</code> depends on how the cache is configured, you can change it! See <code>BLSP_Boot2_Jump_Entry</code> in <code>blsp_common.c</code> for an example.
+This is what makes it possible to boot multiple applications without patching the firmware</p>
+</blockquote>
+<h1 id="efuse-security" class="section-header"><a href="#efuse-security">9 EFuse Security</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/boot-efuse.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="bl602-firmware-boot-code" class="section-header"><a href="#bl602-firmware-boot-code">9 BL602 Firmware Boot Code</a></h1>
+<h1 id="bl602-firmware-boot-code" class="section-header"><a href="#bl602-firmware-boot-code">10 BL602 Firmware Boot Code</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/boot-code.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="other-bootloaders" class="section-header"><a href="#other-bootloaders">10 Other Bootloaders</a></h1>
+<h1 id="other-bootloaders" class="section-header"><a href="#other-bootloaders">11 Other Bootloaders</a></h1>
 <p>TODO</p>
 <p>Check out this interview that explains why the PineTime Bootloader is designed that way…</p>
 <ul>
 <li><a href="https://www.ncartron.org/interview-with-lup-creator-of-pinetimes-bootloader.html"><strong>“Interview with Lup, creator of PineTime’s bootloader”</strong></a></li>
 </ul>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">11 What’s Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">12 What’s Next</a></h1>
 <p>TODO</p>
 <ul>
 <li>
@@ -694,7 +707,7 @@ XIP_SFlash_Read_Via_Cache_Need_Lock(
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/boot.md"><code>lupyuen.github.io/src/boot.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">12 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">13 Notes</a></h1>
 <ol>
 <li>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1398855867030593538">this Twitter Thread</a></p>
