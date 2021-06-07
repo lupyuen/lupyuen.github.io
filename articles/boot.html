@@ -116,15 +116,19 @@
 <p><strong>Extracts our Application Firmware</strong> from the transferred Flashing Image</p>
 </li>
 <li>
-<p><strong>Writes our Application Firmware</strong> to XIP Flash Memory at address <strong><code>0x2300 0000</code></strong>.</p>
+<p><strong>Writes our Application Firmware</strong> to XIP Flash Memory</p>
+</li>
+<li>
+<p><strong>Starts our Application Firmware</strong> from XIP Flash Memory</p>
 </li>
 </ol>
-<p>(XIP means <a href="https://en.wikipedia.org/wiki/Execute_in_place"><strong>Execute In Place</strong></a>, it refers to the BL602 Flash Memory that will store our executable firmware code)</p>
+<p>XIP means <a href="https://en.wikipedia.org/wiki/Execute_in_place"><strong>Execute In Place</strong></a>, it refers to the Flash Memory that will store our executable firmware code.</p>
+<p>XIP uses <strong>Cache Memory</strong> to speed up access to the off-chip Flash Memory, and makes possible code execution from Flash Memory.</p>
 <p><em>Where is the Boot2 Bootloader located?</em></p>
 <p>BL602 runs the Boot2 Bootloader from XIP Flash Memory at address <strong><code>0x2300 0000</code></strong>.</p>
 <p>Yep it’s the <strong>same address as our Application Firmware</strong>!</p>
 <p><em>So the Bootloader overwrites itself by our Application Firmware?</em></p>
-<p>Yes indeed. We’ll learn later how the <strong>Boot2 Bootloader overwrites itself</strong> by the Application Firmware.</p>
+<p>Not quite. We’ll learn later how the <strong>Boot2 Bootloader remaps the XIP Flash Memory</strong> to start the Application Firmware.</p>
 <p><em>Is Boot2 really a Bootloader?</em></p>
 <p>On other microcontrollers, the Bootloader is the first thing that runs when powered on. (Before jumping to the Application Firmware)</p>
 <p>On BL602, the Boot2 Bootloader <strong>runs only when we flash new Application Firmware</strong>. (So that the Application Firmware may be loaded into XIP Flash Memory)</p>
@@ -406,7 +410,7 @@ int main(void) {
 <p><strong>Extract the Application Firmware</strong> from the Flashing Image</p>
 </li>
 <li>
-<p><strong>Write the Application Firmware to XIP Flash Memory</strong> at <code>0x2300 0000</code></p>
+<p><strong>Write the Application Firmware</strong> to XIP Flash Memory</p>
 </li>
 </ol>
 <p>Here’s how it works: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_boot2.c#L271-L313"><code>blsp_boot2.c</code></a></p>
@@ -441,7 +445,7 @@ static int BLSP_Boot2_Deal_One_FW(
     }
 </code></pre>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_boot2.c#L190-L224"><strong><code>BLSP_Boot2_Check_XZ_FW</code></strong></a> extracts and decompresses the Application Firmware. <a href="https://en.wikipedia.org/wiki/XZ_Utils">(XZ Compression)</a></p>
-<p>Now that we have the decompressed Application Firmware, we <strong>write the firmware to XIP Flash Memory</strong> at <code>0x2300 0000</code>…</p>
+<p>Now that we have the decompressed Application Firmware, we <strong>write the firmware to XIP Flash Memory</strong>…</p>
 <pre><code class="language-c">    //  Check if this partition need copy
     if (ptEntry-&gt;activeIndex &gt;= 2) {
       if (BFLB_BOOT2_SUCCESS == BLSP_Boot2_Do_FW_Copy(
@@ -478,9 +482,9 @@ static int BLSP_Boot2_Do_FW_Copy(
   uint32_t dealLen = 0;
   uint32_t curLen = 0;
 </code></pre>
-<p><strong><code>BLSP_Boot2_Do_FW_Copy</code></strong> starts by fetching the <strong>Partition Table Entry</strong> for the Application Firmware, containing <strong>Source Address, Destination Address (<code>0x2300 0000</code>) and Firmware Length</strong>.</p>
+<p><strong><code>BLSP_Boot2_Do_FW_Copy</code></strong> starts by fetching the <strong>Partition Table Entry</strong> for the Application Firmware, containing <strong>Source Address, Destination Address and Firmware Length</strong>.</p>
 <p>(More about the Partition Table in the next chapter)</p>
-<p>Then it <strong>erases the XIP Flash Memory</strong> at the Destination Address <code>0x2300 0000</code></p>
+<p>Then it <strong>erases the XIP Flash Memory</strong> at the Destination Address…</p>
 <pre><code class="language-c">  if (SUCCESS != XIP_SFlash_Erase_Need_Lock(
     &amp;flashCfg,
     destAddress,
@@ -496,7 +500,7 @@ static int BLSP_Boot2_Do_FW_Copy(
       curLen = sizeof(boot2ReadBuf);
     }
 </code></pre>
-<p>We <strong>read the decompressed Application Firmware</strong> (4 KB chunk)</p>
+<p>We <strong>read the decompressed Application Firmware</strong> (in 4 KB chunks)</p>
 <pre><code class="language-c">    if (BFLB_BOOT2_SUCCESS != BLSP_MediaBoot_Read(
       srcAddress,
       boot2ReadBuf,
@@ -505,7 +509,7 @@ static int BLSP_Boot2_Do_FW_Copy(
       return BFLB_BOOT2_FLASH_READ_ERROR;
     }
 </code></pre>
-<p>We <strong>write the firmware to XIP Flash Memory</strong> (4 KB chunk) starting at <code>0x2300 0000</code></p>
+<p>We <strong>write the firmware to XIP Flash Memory</strong> (in 4 KB chunks)</p>
 <pre><code class="language-c">    if (SUCCESS != XIP_SFlash_Write_Need_Lock(
       &amp;flashCfg,
       destAddress,
@@ -877,6 +881,8 @@ void ATTR_TCM_SECTION BLSP_Boot2_Jump_Entry(void)
     }   
 </code></pre>
 <h1 id="remap-xip-flash" class="section-header"><a href="#remap-xip-flash">9 Remap XIP Flash</a></h1>
+<p><em>The Bootloader and Application Firmware are both located at the same XIP Flash Memory address 0x2300 0000…</em></p>
+<p><em>Does this mean that the Bootloader overwrites itself with the Application Firmware?</em></p>
 <p>TODO</p>
 <p><a href="https://twitter.com/__9names">9names</a></p>
 <p><a href="https://twitter.com/__9names/status/1401152245693960193">Comment on Twitter</a></p>
