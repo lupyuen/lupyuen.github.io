@@ -50,7 +50,7 @@ Instead, __BL602 runs the Boot2 Bootloader__ which...
 
 1.  __Writes our Application Firmware__ to XIP Flash Memory at address __`0x2300 0000`__.
 
-(XIP means "Execute In Place", it refers to the BL602 Flash Memory that will store our executable firmware code)
+(XIP means [__Execute In Place__](https://en.wikipedia.org/wiki/Execute_in_place), it refers to the BL602 Flash Memory that will store our executable firmware code)
 
 _Where is the Boot2 Bootloader located?_
 
@@ -711,7 +711,7 @@ The __Bootloader Linker Map [`bl602_boot2.map`](https://github.com/lupyuen/bl_io
 
 ![ROM Driver Functions](https://lupyuen.github.io/images/boot-driver.png)
 
-# Bootloader Overwrites Itself
+# Bootloader Starts Firmware
 
 TODO
 
@@ -948,9 +948,22 @@ TODO
 
 TODO
 
-Check out this interview that explains why the PineTime Bootloader is designed that way...
 
--   [__"Interview with Lup, creator of PineTime's bootloader"__](https://www.ncartron.org/interview-with-lup-creator-of-pinetimes-bootloader.html)
+1.  ESP32 Secure Boot
+
+    
+
+1.  RP2040
+
+    XIP Flash Memory, Second Stage Bootloader (boot_stage2), Hardware Flash API (hardware_flash)
+
+    https://datasheets.raspberrypi.org/pico/raspberry-pi-pico-c-sdk.pdf
+
+1.  PineTime Bootloader
+
+    Check out this interview that explains why the PineTime Bootloader is designed that way...
+
+    -   [__"Interview with Lup, creator of PineTime's bootloader"__](https://www.ncartron.org/interview-with-lup-creator-of-pinetimes-bootloader.html)
 
 # What's Next
 
