@@ -72,8 +72,8 @@
 <li><a href="#bl602-partition-table">5 BL602 Partition Table</a><ul></ul></li>
 <li><a href="#bl602-rom-driver-api">6 BL602 ROM Driver API</a><ul></ul></li>
 <li><a href="#locating-the-rom-driver-api">7 Locating the ROM Driver API</a><ul></ul></li>
-<li><a href="#bootloader-starts-firmware">8 Bootloader Starts Firmware</a><ul></ul></li>
-<li><a href="#or-maybe-not">9 Or Maybe Not?</a><ul></ul></li>
+<li><a href="#start-the-firmware">8 Start the Firmware</a><ul></ul></li>
+<li><a href="#remap-xip-flash">9 Remap XIP Flash</a><ul></ul></li>
 <li><a href="#efuse-security">10 EFuse Security</a><ul></ul></li>
 <li><a href="#bl602-firmware-boot-code">11 BL602 Firmware Boot Code</a><ul></ul></li>
 <li><a href="#other-bootloaders">12 Other Bootloaders</a><ul></ul></li>
@@ -667,7 +667,7 @@ XIP_SFlash_Read_Via_Cache_Need_Lock(
 </ul>
 <p>The <strong>Bootloader Linker Map <a href="https://github.com/lupyuen/bl_iot_sdk/releases/download/v8.0.2/bl602_boot2.map"><code>bl602_boot2.map</code></a></strong> reveals the <strong>Table of ROM Driver Stub Functions</strong> at ITCM address <code>0x2201 0000</code>…</p>
 <p><img src="https://lupyuen.github.io/images/boot-driver.png" alt="ROM Driver Functions" /></p>
-<h1 id="bootloader-starts-firmware" class="section-header"><a href="#bootloader-starts-firmware">8 Bootloader Starts Firmware</a></h1>
+<h1 id="start-the-firmware" class="section-header"><a href="#start-the-firmware">8 Start the Firmware</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_media_boot.c#L337-L434"><strong><code>BLSP_MediaBoot_Main</code></strong> is defined here</a></p>
 <pre><code class="language-c">/****************************************************************************//**
@@ -820,7 +820,71 @@ void ATTR_TCM_SECTION BLSP_Boot2_Jump_Entry(void)
         /*for unencrypted img, use continuos read*/
         ret=BLSP_Boot2_Set_Cache(1,&amp;flashCfg,&amp;bootImgCfg[0]);
     }
+
+    /* Set decryption before read MSP and PC*/
+    if(0!=efuseCfg.encrypted[0]){
+        BLSP_Boot2_Set_Encrypt(0,&amp;bootImgCfg[0]);
+        BLSP_Boot2_Set_Encrypt(1,&amp;bootImgCfg[1]);
+        /* Get msp and pc value */
+        for(i=0;i&lt;cpuCount;i++){
+            if(bootImgCfg[i].imgValid){
+                //if(bootImgCfg[i].entryPoint==0){
+#ifdef     ARCH_ARM
+                    BLSP_MediaBoot_Read(bootImgCfg[i].imgStart.flashOffset,
+                                            (uint8_t *)&amp;bootImgCfg[i].mspVal,4);
+                    BLSP_MediaBoot_Read(bootImgCfg[i].imgStart.flashOffset+4,
+                                            (uint8_t *)&amp;bootImgCfg[i].entryPoint,4);
+#endif
+                //}
+            }
+        }
+        if(BLSP_Boot2_Get_Feature_Flag()==BLSP_BOOT2_CP_FLAG){
+            /*co-processor*/
+            bootImgCfg[1].imgStart.flashOffset=bootImgCfg[0].imgStart.flashOffset;
+            bootImgCfg[1].mspVal=bootImgCfg[0].mspVal;
+            bootImgCfg[1].entryPoint=bootImgCfg[0].entryPoint;
+            bootImgCfg[1].cacheEnable=bootImgCfg[0].cacheEnable;
+            bootImgCfg[1].imgValid=1;
+            bootImgCfg[1].cacheWayDisable=0xf;
+        }
+    }
+    
+    /* Deal Other CPUs' entry point */
+    /* Prepare release CPU1 anyway */
+    for(i=1;i&lt;cpuCount;i++){
+        if(bootImgCfg[i].imgValid){
+            BL_WR_WORD(bootCpuCfg[i].mspStoreAddr,bootImgCfg[i].mspVal);
+            BL_WR_WORD(bootCpuCfg[i].pcStoreAddr,bootImgCfg[i].entryPoint);
+        }else{
+            BL_WR_WORD(bootCpuCfg[i].mspStoreAddr,0);
+            BL_WR_WORD(bootCpuCfg[i].pcStoreAddr,0);
+        }
+    }
+    
+    /* Deal CPU0's entry point */
+    if(bootImgCfg[0].imgValid){
+        pentry=(pentry_t)bootImgCfg[0].entryPoint;
+        if(bootImgCfg[0].mspVal!=0){
+            __set_MSP(bootImgCfg[0].mspVal);
+        }
+        /* Release other CPUs unless user halt it */
+        if(cpuCount!=1&amp;&amp;!bootImgCfg[0].haltCPU1){
+            BLSP_Boot2_Release_Other_CPU();
+        }
+        if(pentry!=NULL){
+            pentry();
+        }
+    }   
 </code></pre>
+<h1 id="remap-xip-flash" class="section-header"><a href="#remap-xip-flash">9 Remap XIP Flash</a></h1>
+<p>TODO</p>
+<p><a href="https://twitter.com/__9names">9names</a></p>
+<p><a href="https://twitter.com/__9names/status/1401152245693960193">Comment on Twitter</a></p>
+<blockquote>
+<p>It doesn’t overwrite itself, that’s the trick.
+What is at <code>0x23000000</code> depends on how the cache is configured, you can change it! See <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_common.c#L165-L257"><code>BLSP_Boot2_Jump_Entry</code> in <code>blsp_common.c</code></a> for an example.
+This is what makes it possible to boot multiple applications without patching the firmware</p>
+</blockquote>
 <p>BLSP_Boot2_Set_Cache</p>
 <p>https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_port.c#L423-L485</p>
 <pre><code class="language-c">/****************************************************************************//**
@@ -850,16 +914,7 @@ int32_t ATTR_TCM_SECTION BLSP_Boot2_Set_Cache(uint8_t contRead,SPI_Flash_Cfg_Typ
 <p>Match with https://lupyuen.github.io/articles/flash#appendix-bl602-efuse-configuration</p>
 <p><code>cacheEnable</code> is true</p>
 <p><code>entryPoint</code> is <code>BLSP_BOOT2_XIP_BASE</code> (<code>0x2300 0000</code>)</p>
-<p><code>img_start</code> is <code>0x2000</code></p>
-<h1 id="or-maybe-not" class="section-header"><a href="#or-maybe-not">9 Or Maybe Not?</a></h1>
-<p>TODO</p>
-<p><a href="https://twitter.com/__9names">9names</a></p>
-<p><a href="https://twitter.com/__9names/status/1401152245693960193">Comment on Twitter</a></p>
-<blockquote>
-<p>It doesn’t overwrite itself, that’s the trick.
-What is at <code>0x23000000</code> depends on how the cache is configured, you can change it! See <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_common.c#L165-L257"><code>BLSP_Boot2_Jump_Entry</code> in <code>blsp_common.c</code></a> for an example.
-This is what makes it possible to boot multiple applications without patching the firmware</p>
-</blockquote>
+<p><code>imgStart</code> is <code>0x2000</code></p>
 <h1 id="efuse-security" class="section-header"><a href="#efuse-security">10 EFuse Security</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/boot-efuse.png" alt="" /></p>
@@ -873,11 +928,13 @@ This is what makes it possible to boot multiple applications without patching th
 <ol>
 <li>
 <p>ESP32 Secure Boot</p>
+<p>https://docs.espressif.com/projects/esp-idf/en/latest/esp32/security/secure-boot-v2.html</p>
 </li>
 <li>
 <p>RP2040</p>
 <p>XIP Flash Memory, Second Stage Bootloader (boot_stage2), Hardware Flash API (hardware_flash)</p>
-<p>https://datasheets.raspberrypi.org/pico/raspberry-pi-pico-c-sdk.pdf</p>
+<p><a href="https://datasheets.raspberrypi.org/pico/raspberry-pi-pico-c-sdk.pdf">RP2040 Doc</a></p>
+<p><a href="https://kevinboone.me/picoflash.html?i=2">More about RP2040 XIP Flash</a></p>
 </li>
 <li>
 <p>PineTime Bootloader</p>
