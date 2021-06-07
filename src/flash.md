@@ -395,6 +395,10 @@ In this article we'll use "ROM" to refer to BL602's __XIP Flash Memory__ (at add
 
 The [BL602 Reference Manual](https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf) uses "ROM" to refer to BL602's __Boot ROM__ (at address `0x2100 0000` with size 128 KB).
 
+BL602's Boot ROM is explained here...
+
+-   [__"BL602 ROM Driver API"__](https://lupyuen.github.io/articles/boot#bl602-rom-driver-api)
+
 ![Compiling the BL602 Partition Table](https://lupyuen.github.io/images/pinecone-flash-steps2c.png)
 
 _Compiling the BL602 Partition Table_

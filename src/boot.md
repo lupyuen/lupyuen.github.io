@@ -717,6 +717,10 @@ TODO
 
 [__`BLSP_MediaBoot_Main`__ is defined here](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_media_boot.c#L337-L434)
 
+BLSP_Boot2_Set_Cache
+
+https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_port.c#L423-L485
+
 [9names](https://twitter.com/__9names)
 
 [Comment on Twitter](https://twitter.com/__9names/status/1401152245693960193)
