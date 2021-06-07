@@ -818,6 +818,34 @@ int32_t BLSP_MediaBoot_Main(uint32_t cpuBootheaderAddr[BFLB_BOOT2_CPU_MAX],uint8
 }
 ```
 
+BLSP_MediaBoot_Pre_Jump
+
+https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_common.c#L113-L133
+
+```c
+/****************************************************************************//**
+ * @brief  Media boot pre-jump
+ *
+ * @param  None
+ *
+ * @return BL_Err_Type
+ *
+*******************************************************************************/
+int32_t BLSP_MediaBoot_Pre_Jump(void)
+{
+    /* Sec eng deinit*/
+    BLSP_Boot2_Reset_Sec_Eng();
+    
+    /* Platform deinit */
+    bflb_platform_deinit(); 
+    
+    /* Jump to entry */
+    BLSP_Boot2_Jump_Entry();
+    
+    return BFLB_BOOT2_SUCCESS;
+}
+```
+
 BLSP_Boot2_Jump_Entry
 
 https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_common.c#L165-L257
