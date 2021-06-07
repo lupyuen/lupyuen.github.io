@@ -607,15 +607,15 @@ __BL602 Boot ROM__ is the region of __Read-Only Memory at `0x2100 0000`__ that c
 
     (The Boot Code runs just before the Bootloader)
 
-1.  __ROM Driver Functions__ called by the Bootloader
+1.  __ROM Driver API__ called by the Bootloader
 
     (Like the XIP Flash Memory Functions above)
 
-_Why put the ROM Driver Functions in the Boot ROM?_
+_Why put the ROM Driver API in the Boot ROM?_
 
 -   We __reduce the Bootloader size__ by placing the low-level functions in Boot ROM
 
--   Some ROM Driver Functions need to run __in a secure, tamper-proof environment__ in the Boot ROM.
+-   Some ROM Driver Functions need to run in a __secure, tamper-proof ROM environment__
 
     (Like the functions for decrypting and verifying Application Firmware)
 
@@ -624,6 +624,10 @@ _Wait this sounds familiar...?_
 Our computers have a similar Boot ROM... It's called the [__Unified Extensible Firmware Interface (UEFI)__](https://en.wikipedia.org/wiki/Unified_Extensible_Firmware_Interface)
 
 It contains secure boot code that's run whenever we power on our computer.
+
+In the next chapter we shall explore the __Table of ROM Driver API Functions__ located in ROM API at __`0x2101 0800`__
+
+From [`bl602_romdriver.h`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Inc/bl602_romdriver.h) ...
 
 ![ROM Driver API in Boot ROM](https://lupyuen.github.io/images/boot-driver5.png)
 
@@ -654,7 +658,7 @@ _The function looks kinda empty?_
 
 Yes, because __XIP_SFlash_Read_Via_Cache_Need_Lock__ is a __Stub Function__.
 
-It forwards the Function Call to the __Real Function: RomDriver_XIP_SFlash_Read_Via_Cache_Need_Lock__.
+It forwards the Function Call to the __Real Function: RomDriver_XIP_SFlash_Read_Via_Cache _Need_Lock__.
 
 _Where is the Real Function for reading XIP Flash Memory?_
 
@@ -669,7 +673,7 @@ After the code above we see the RISC-V Assembly Code that the GCC Compiler has e
 
 _So the Real Function is located at `0x2101 0aa4`?_
 
-Right! __RomDriver_XIP_SFlash_Read_Via_Cache_Need_Lock__ is located in the Boot ROM at `0x2101 0aa4`.
+Right! __RomDriver_XIP_SFlash_Read_Via_Cache _Need_Lock__ is located in the Boot ROM at `0x2101 0aa4`.
 
 (Remember that the Boot ROM lives at `0x2100 0000` to `0x2101 FFFF`)
 
@@ -693,7 +697,7 @@ This is __Cache Memory__ (RAM) that has been configured (via the Level 1 Cache C
 
 _What are the functions in the ROM Driver API?_
 
-The __ROM Driver Functions__ are listed in [`bl602_romdriver.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_romdriver.c#L80-L269)
+The __ROM Driver Functions__ are listed in [`bl602_romdriver.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_romdriver.c#L80-L269) and [`bl602_romdriver.h`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Inc/bl602_romdriver.h)
 
 The functions cover...
 
@@ -703,7 +707,21 @@ The functions cover...
 
 -  GPIO, EFuse and Delay
 
+The __Bootloader Linker Map [`bl602_boot2.map`](https://github.com/lupyuen/bl_iot_sdk/releases/download/v8.0.2/bl602_boot2.map)__ reveals the __Table of ROM Driver Stub Functions__ at ITCM address `0x2201 0000`...
+
 ![ROM Driver Functions](https://lupyuen.github.io/images/boot-driver.png)
+
+# Bootloader Overwrites Itself
+
+TODO
+
+[9names](https://twitter.com/__9names)
+
+[Comment on Twitter](https://twitter.com/__9names/status/1401152245693960193)
+
+> It doesn't overwrite itself, that's the trick.
+What is at `0x23000000` depends on how the cache is configured, you can change it! See `BLSP_Boot2_Jump_Entry` in `blsp_common.c` for an example.
+This is what makes it possible to boot multiple applications without patching the firmware
 
 # EFuse Security
 
