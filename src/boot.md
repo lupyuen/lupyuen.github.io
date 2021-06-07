@@ -837,45 +837,65 @@ What is at `0x23000000` depends on how the cache is configured, you can change i
 
 > "See [`BLSP_Boot2_Jump_Entry` in `blsp_common.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_common.c#L165-L257) for an example. This is what makes it possible to boot multiple applications without patching the firmware"
 
-TODO
-
-__`BLSP_Boot2_Set_Cache`__
-
-From [`blsp_port.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_port.c#L423-L485)
+We've seen __`BLSP_Boot2_Jump_Entry`__ in the previous chapter: [`blsp_common.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_common.c#L165-L257)
 
 ```c
-/****************************************************************************//**
- * @brief  Media boot set cache according to image config
- *
- * @param  None
- *
- * @return BL_Err_Type
- *
-*******************************************************************************/
-int32_t ATTR_TCM_SECTION BLSP_Boot2_Set_Cache(uint8_t contRead,SPI_Flash_Cfg_Type *flashCfg,Boot_Image_Config *bootImgCfg)
-{
+//  Boot2 jump to entryPoint
+void ATTR_TCM_SECTION BLSP_Boot2_Jump_Entry(void) {
+  ...    
+  //  Enable cache with flash offset.
+  //  Note: After this, should be no flash direct read,
+  //  If need to read, should take flash offset into consideration
+  //  For unencrypted img, use continuous read
+  ret = BLSP_Boot2_Set_Cache(
+    1,
+    &flashCfg,
+    &bootImgCfg[0]);
+```
+
+This code calls __`BLSP_Boot2_Set_Cache` to fix up the cache__ for XIP Flash Memory: [`blsp_port.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_port.c#L423-L485)
+
+```c
+//  Media boot set cache according to image config
+int32_t ATTR_TCM_SECTION BLSP_Boot2_Set_Cache(
+  uint8_t contRead,
+SPI_Flash_Cfg_Type *flashCfg,
+    Boot_Image_Config *bootImgCfg) {
   ...
+  //  If flash caching is enabled...
   if (bootImgCfg[0].cacheEnable) {
+
+    //  And the Entry Point is in XIP Flash Memort 0x2300 0000...
     if ((bootImgCfg[0].entryPoint & 0xFF000000) == BLSP_BOOT2_XIP_BASE) {
+
+      //  Set the flash image offset
       SF_Ctrl_Set_Flash_Image_Offset(
-        bootImgCfg[0].imgStart.flashOffset
-      );
+        bootImgCfg[0].imgStart.flashOffset);
+
+      //  Enable reading of flash cache
       SFlash_Cache_Read_Enable(
         flashCfg,
         SF_CTRL_QIO_MODE,
         contRead,
         bootImgCfg[0].
-        cacheWayDisable
-      );
+        cacheWayDisable);
 ```
 
-Match with [this Flashing Image Configuration](https://lupyuen.github.io/articles/flash#appendix-bl602-efuse-configuration)
+When we match this code with [this Flashing Image Configuration](https://lupyuen.github.io/articles/flash#appendix-bl602-efuse-configuration), we get...
 
--   `cacheEnable` is true
+-   __`cacheEnable`__ is true
 
--   `entryPoint` is `BLSP_BOOT2_XIP_BASE` (`0x2300 0000`)
+-   __`entryPoint`__ is `BLSP_BOOT2_XIP_BASE` (`0x2300 0000`)
 
--   `imgStart` is `0x2000`
+-   __`imgStart`__ is `0x2000`
+
+The calls to __SF_Ctrl_Set_Flash_Image_Offset__ and __SFlash_Cache_Read_Enable__ will __remap the XIP Cache__.
+
+After remapping the XIP Cache, __`0x2300 0000` will point to our Application Firmware.__ (Instead of the Bootloader)
+
+And that's how we __switch over from Bootloader to Application Firmware__ in XIP Flash Memory!
+
+(Note that __SF_Ctrl_Set_Flash_Image_Offset__ and __SFlash_Cache_Read_Enable__ are defined in the Boot ROM and we can't see the source code. So it's possible that our interpretation is incorrect)
 
 # EFuse Security
 
