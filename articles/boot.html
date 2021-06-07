@@ -72,7 +72,7 @@
 <li><a href="#bl602-partition-table">5 BL602 Partition Table</a><ul></ul></li>
 <li><a href="#bl602-rom-driver-api">6 BL602 ROM Driver API</a><ul></ul></li>
 <li><a href="#locating-the-rom-driver-api">7 Locating the ROM Driver API</a><ul></ul></li>
-<li><a href="#bootloader-overwrites-itself">8 Bootloader Overwrites Itself</a><ul></ul></li>
+<li><a href="#bootloader-starts-firmware">8 Bootloader Starts Firmware</a><ul></ul></li>
 <li><a href="#or-maybe-not">9 Or Maybe Not?</a><ul></ul></li>
 <li><a href="#efuse-security">10 EFuse Security</a><ul></ul></li>
 <li><a href="#bl602-firmware-boot-code">11 BL602 Firmware Boot Code</a><ul></ul></li>
@@ -119,7 +119,7 @@
 <p><strong>Writes our Application Firmware</strong> to XIP Flash Memory at address <strong><code>0x2300 0000</code></strong>.</p>
 </li>
 </ol>
-<p>(XIP means “Execute In Place”, it refers to the BL602 Flash Memory that will store our executable firmware code)</p>
+<p>(XIP means <a href="https://en.wikipedia.org/wiki/Execute_in_place"><strong>Execute In Place</strong></a>, it refers to the BL602 Flash Memory that will store our executable firmware code)</p>
 <p><em>Where is the Boot2 Bootloader located?</em></p>
 <p>BL602 runs the Boot2 Bootloader from XIP Flash Memory at address <strong><code>0x2300 0000</code></strong>.</p>
 <p>Yep it’s the <strong>same address as our Application Firmware</strong>!</p>
@@ -667,7 +667,7 @@ XIP_SFlash_Read_Via_Cache_Need_Lock(
 </ul>
 <p>The <strong>Bootloader Linker Map <a href="https://github.com/lupyuen/bl_iot_sdk/releases/download/v8.0.2/bl602_boot2.map"><code>bl602_boot2.map</code></a></strong> reveals the <strong>Table of ROM Driver Stub Functions</strong> at ITCM address <code>0x2201 0000</code>…</p>
 <p><img src="https://lupyuen.github.io/images/boot-driver.png" alt="ROM Driver Functions" /></p>
-<h1 id="bootloader-overwrites-itself" class="section-header"><a href="#bootloader-overwrites-itself">8 Bootloader Overwrites Itself</a></h1>
+<h1 id="bootloader-starts-firmware" class="section-header"><a href="#bootloader-starts-firmware">8 Bootloader Starts Firmware</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_media_boot.c#L337-L434"><strong><code>BLSP_MediaBoot_Main</code></strong> is defined here</a></p>
 <pre><code class="language-c">/****************************************************************************//**
@@ -870,10 +870,23 @@ This is what makes it possible to boot multiple applications without patching th
 <p>TODO</p>
 <h1 id="other-bootloaders" class="section-header"><a href="#other-bootloaders">12 Other Bootloaders</a></h1>
 <p>TODO</p>
+<ol>
+<li>
+<p>ESP32 Secure Boot</p>
+</li>
+<li>
+<p>RP2040</p>
+<p>XIP Flash Memory, Second Stage Bootloader (boot_stage2), Hardware Flash API (hardware_flash)</p>
+<p>https://datasheets.raspberrypi.org/pico/raspberry-pi-pico-c-sdk.pdf</p>
+</li>
+<li>
+<p>PineTime Bootloader</p>
 <p>Check out this interview that explains why the PineTime Bootloader is designed that way…</p>
 <ul>
 <li><a href="https://www.ncartron.org/interview-with-lup-creator-of-pinetimes-bootloader.html"><strong>“Interview with Lup, creator of PineTime’s bootloader”</strong></a></li>
 </ul>
+</li>
+</ol>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">13 What’s Next</a></h1>
 <p>TODO</p>
 <ul>
