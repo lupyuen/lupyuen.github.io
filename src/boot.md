@@ -723,99 +723,102 @@ The __Bootloader Linker Map [`bl602_boot2.map`](https://github.com/lupyuen/bl_io
 
 # Start the Firmware
 
-TODO
+Earlier we've seen the Bootloader calling __`BLSP_MediaBoot_Main`__ to start our Application Firmware.
 
-__`BLSP_MediaBoot_Main`__
-
-[`blsp_media_boot.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_media_boot.c#L337-L434)
+Let's look inside the function: [`blsp_media_boot.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_media_boot.c#L337-L434)
 
 ```c
  //  Media boot main process
 int32_t BLSP_MediaBoot_Main(
-    uint32_t cpuBootheaderAddr[BFLB_BOOT2_CPU_MAX],  //  CPU bootheader address list
-    uint8_t cpuRollBack[BFLB_BOOT2_CPU_MAX],         //  CPU need roll back flag hold list
-    uint8_t rollBack) {  //  1 for rollback when imge error occurs, 0 for not rollback when imge error occurs
+  uint32_t cpuBootheaderAddr[BFLB_BOOT2_CPU_MAX],  //  CPU bootheader address list
+  uint8_t cpuRollBack[BFLB_BOOT2_CPU_MAX],         //  CPU need roll back flag hold list
+  uint8_t rollBack) {  //  1 for rollback when imge error occurs, 0 for not rollback when imge error occurs
     
-    //  Omitted: Reset some parameters
-    ...    
-    //  Omitted: Try to boot from flash
-    ret = BLSP_MediaBoot_Parse_One_FW(
-        &bootImgCfg[i],
-        bootHeaderAddr[i],
-        bootHeaderAddr[i] + BFLB_FW_IMG_OFFSET_AFTER_HEADER);
-    ...
-    //  Omitted: Get msp and pc value
-    ...    
-    //  Fix invalid pc and msp
-    BLSP_Fix_Invalid_MSP_PC();   
+  //  Omitted: Reset some parameters
+  ...    
+  //  Omitted: Try to boot from flash
+  ret = BLSP_MediaBoot_Parse_One_FW(
+    &bootImgCfg[i],
+    bootHeaderAddr[i],
+    bootHeaderAddr[i] + BFLB_FW_IMG_OFFSET_AFTER_HEADER);
+  ...
+  //  Omitted: Get MSP and PC value
+  ...    
+  //  Fix invalid PC and MSP
+  BLSP_Fix_Invalid_MSP_PC();   
        
-    //  Prepare jump to entry
-    BLSP_MediaBoot_Pre_Jump();
+  //  Prepare jump to entry
+  BLSP_MediaBoot_Pre_Jump();
     
-    //  We should never get here unless something is wrong
-    return BFLB_BOOT2_FAIL;
+  //  We should never get here unless something is wrong
+  return BFLB_BOOT2_FAIL;
 }
 ```
 
-__`BLSP_MediaBoot_Pre_Jump`__
+This code calls __`BLSP_MediaBoot_Pre_Jump`__ to start the firmware.
 
-[`blsp_common.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_common.c#L113-L133)
+Let's trace it: [`blsp_common.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_common.c#L113-L133)
 
 ```c
 //  Media boot pre-jump
 int32_t BLSP_MediaBoot_Pre_Jump(void) {
-    //  Security Engine deinit
-    BLSP_Boot2_Reset_Sec_Eng();
+  //  Security Engine deinit
+  BLSP_Boot2_Reset_Sec_Eng();
     
-    //  Platform deinit
-    bflb_platform_deinit(); 
+  //  Platform deinit
+  bflb_platform_deinit(); 
     
-    //  Jump to entry
-    BLSP_Boot2_Jump_Entry();    
-    return BFLB_BOOT2_SUCCESS;
+  //  Jump to entry
+  BLSP_Boot2_Jump_Entry();    
+  return BFLB_BOOT2_SUCCESS;
 }
 ```
 
-__`BLSP_Boot2_Jump_Entry`__
+Here we clean up the Security Engine and the Hardware Platform after use.
 
-[`blsp_common.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_common.c#L165-L257)
+Then we call __`BLSP_Boot2_Jump_Entry`__ to jump to the Application Firmware.
+
+Let's probe deeper: [`blsp_common.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_common.c#L165-L257)
 
 ```c
 //  Boot2 jump to entryPoint
 void ATTR_TCM_SECTION BLSP_Boot2_Jump_Entry(void) {
-    ...    
-    BLSP_Sboot_Finish();    
+  ...    
+  BLSP_Sboot_Finish();    
         
-    //  Enable cache with flash offset.
-    //  Note: After this, should be no flash direct read,
-    //  If need to read, should take flash offset into consideration
-    if (0 != efuseCfg.encrypted[0]) {
-        //  For encrypted img, use non-continuous read
-        ret = BLSP_Boot2_Set_Cache(
-            0,
-            &flashCfg,
-            &bootImgCfg[0]);
-    } else {
-        //  For unencrypted img, use continuous read
-        ret = BLSP_Boot2_Set_Cache(
-            1,
-            &flashCfg,
-            &bootImgCfg[0]);
+  //  Enable cache with flash offset.
+  //  Note: After this, should be no flash direct read,
+  //  If need to read, should take flash offset into consideration
+  if (0 != efuseCfg.encrypted[0]) {
+    //  For encrypted img, use non-continuous read
+    ret = BLSP_Boot2_Set_Cache(
+        0,
+        &flashCfg,
+        &bootImgCfg[0]);
+  } else {
+    //  For unencrypted img, use continuous read
+    ret = BLSP_Boot2_Set_Cache(
+        1,
+        &flashCfg,
+        &bootImgCfg[0]);
+  }
+  //  Omitted: Set decryption before reading MSP and PC
+  ...    
+  //  Omitted: Handle Other CPUs' entry point
+  ...    
+  //  Handle CPU0's entry point
+  if (bootImgCfg[0].imgValid) {
+    pentry = (pentry_t) bootImgCfg[0].entryPoint;
+    if (bootImgCfg[0].mspVal != 0) {
+        __set_MSP(bootImgCfg[0].mspVal);
     }
-    //  Omitted: Set decryption before reading MSP and PC
-    ...    
-    //  Omitted: Handle Other CPUs' entry point
-    ...    
-    //  Handle CPU0's entry point
-    if (bootImgCfg[0].imgValid) {
-        pentry = (pentry_t) bootImgCfg[0].entryPoint;
-        if (bootImgCfg[0].mspVal != 0) {
-            __set_MSP(bootImgCfg[0].mspVal);
-        }
-        ...
-        if (pentry!=NULL) { pentry(); }
-    }   
+    ...
+    //  Jump to the entry point
+    if (pentry != NULL) { pentry(); }
+  }   
 ```
+
+TODO
 
 # Remap XIP Flash
 
@@ -832,9 +835,9 @@ What is at `0x23000000` depends on how the cache is configured, you can change i
 
 TODO
 
-BLSP_Boot2_Set_Cache
+__`BLSP_Boot2_Set_Cache`__
 
-https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_port.c#L423-L485
+From [`blsp_port.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_port.c#L423-L485)
 
 ```c
 /****************************************************************************//**
@@ -862,13 +865,13 @@ int32_t ATTR_TCM_SECTION BLSP_Boot2_Set_Cache(uint8_t contRead,SPI_Flash_Cfg_Typ
       );
 ```
 
-Match with https://lupyuen.github.io/articles/flash#appendix-bl602-efuse-configuration
+Match with [this Flashing Image Configuration](https://lupyuen.github.io/articles/flash#appendix-bl602-efuse-configuration)
 
-`cacheEnable` is true
+-   `cacheEnable` is true
 
-`entryPoint` is `BLSP_BOOT2_XIP_BASE` (`0x2300 0000`)
+-   `entryPoint` is `BLSP_BOOT2_XIP_BASE` (`0x2300 0000`)
 
-`imgStart` is `0x2000`
+-   `imgStart` is `0x2000`
 
 # EFuse Security
 
