@@ -711,7 +711,7 @@ The __Bootloader Linker Map [`bl602_boot2.map`](https://github.com/lupyuen/bl_io
 
 ![ROM Driver Functions](https://lupyuen.github.io/images/boot-driver.png)
 
-# Bootloader Starts Firmware
+# Start the Firmware
 
 TODO
 
@@ -876,7 +876,74 @@ void ATTR_TCM_SECTION BLSP_Boot2_Jump_Entry(void)
         /*for unencrypted img, use continuos read*/
         ret=BLSP_Boot2_Set_Cache(1,&flashCfg,&bootImgCfg[0]);
     }
+
+    /* Set decryption before read MSP and PC*/
+    if(0!=efuseCfg.encrypted[0]){
+        BLSP_Boot2_Set_Encrypt(0,&bootImgCfg[0]);
+        BLSP_Boot2_Set_Encrypt(1,&bootImgCfg[1]);
+        /* Get msp and pc value */
+        for(i=0;i<cpuCount;i++){
+            if(bootImgCfg[i].imgValid){
+                //if(bootImgCfg[i].entryPoint==0){
+#ifdef     ARCH_ARM
+                    BLSP_MediaBoot_Read(bootImgCfg[i].imgStart.flashOffset,
+                                            (uint8_t *)&bootImgCfg[i].mspVal,4);
+                    BLSP_MediaBoot_Read(bootImgCfg[i].imgStart.flashOffset+4,
+                                            (uint8_t *)&bootImgCfg[i].entryPoint,4);
+#endif
+                //}
+            }
+        }
+        if(BLSP_Boot2_Get_Feature_Flag()==BLSP_BOOT2_CP_FLAG){
+            /*co-processor*/
+            bootImgCfg[1].imgStart.flashOffset=bootImgCfg[0].imgStart.flashOffset;
+            bootImgCfg[1].mspVal=bootImgCfg[0].mspVal;
+            bootImgCfg[1].entryPoint=bootImgCfg[0].entryPoint;
+            bootImgCfg[1].cacheEnable=bootImgCfg[0].cacheEnable;
+            bootImgCfg[1].imgValid=1;
+            bootImgCfg[1].cacheWayDisable=0xf;
+        }
+    }
+    
+    /* Deal Other CPUs' entry point */
+    /* Prepare release CPU1 anyway */
+    for(i=1;i<cpuCount;i++){
+        if(bootImgCfg[i].imgValid){
+            BL_WR_WORD(bootCpuCfg[i].mspStoreAddr,bootImgCfg[i].mspVal);
+            BL_WR_WORD(bootCpuCfg[i].pcStoreAddr,bootImgCfg[i].entryPoint);
+        }else{
+            BL_WR_WORD(bootCpuCfg[i].mspStoreAddr,0);
+            BL_WR_WORD(bootCpuCfg[i].pcStoreAddr,0);
+        }
+    }
+    
+    /* Deal CPU0's entry point */
+    if(bootImgCfg[0].imgValid){
+        pentry=(pentry_t)bootImgCfg[0].entryPoint;
+        if(bootImgCfg[0].mspVal!=0){
+            __set_MSP(bootImgCfg[0].mspVal);
+        }
+        /* Release other CPUs unless user halt it */
+        if(cpuCount!=1&&!bootImgCfg[0].haltCPU1){
+            BLSP_Boot2_Release_Other_CPU();
+        }
+        if(pentry!=NULL){
+            pentry();
+        }
+    }   
 ```
+
+# Remap XIP Flash
+
+TODO
+
+[9names](https://twitter.com/__9names)
+
+[Comment on Twitter](https://twitter.com/__9names/status/1401152245693960193)
+
+> It doesn't overwrite itself, that's the trick.
+What is at `0x23000000` depends on how the cache is configured, you can change it! See [`BLSP_Boot2_Jump_Entry` in `blsp_common.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_common.c#L165-L257) for an example.
+This is what makes it possible to boot multiple applications without patching the firmware
 
 BLSP_Boot2_Set_Cache
 
@@ -914,19 +981,7 @@ Match with https://lupyuen.github.io/articles/flash#appendix-bl602-efuse-configu
 
 `entryPoint` is `BLSP_BOOT2_XIP_BASE` (`0x2300 0000`)
 
-`img_start` is `0x2000`
-
-# Or Maybe Not?
-
-TODO
-
-[9names](https://twitter.com/__9names)
-
-[Comment on Twitter](https://twitter.com/__9names/status/1401152245693960193)
-
-> It doesn't overwrite itself, that's the trick.
-What is at `0x23000000` depends on how the cache is configured, you can change it! See [`BLSP_Boot2_Jump_Entry` in `blsp_common.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_common.c#L165-L257) for an example.
-This is what makes it possible to boot multiple applications without patching the firmware
+`imgStart` is `0x2000`
 
 # EFuse Security
 
@@ -948,16 +1003,17 @@ TODO
 
 TODO
 
-
 1.  ESP32 Secure Boot
 
-    
+    https://docs.espressif.com/projects/esp-idf/en/latest/esp32/security/secure-boot-v2.html
 
 1.  RP2040
 
     XIP Flash Memory, Second Stage Bootloader (boot_stage2), Hardware Flash API (hardware_flash)
 
-    https://datasheets.raspberrypi.org/pico/raspberry-pi-pico-c-sdk.pdf
+    [RP2040 Doc](https://datasheets.raspberrypi.org/pico/raspberry-pi-pico-c-sdk.pdf)
+
+    [More about RP2040 XIP Flash](https://kevinboone.me/picoflash.html?i=2)
 
 1.  PineTime Bootloader
 
