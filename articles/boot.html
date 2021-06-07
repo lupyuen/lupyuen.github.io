@@ -73,11 +73,12 @@
 <li><a href="#bl602-rom-driver-api">6 BL602 ROM Driver API</a><ul></ul></li>
 <li><a href="#locating-the-rom-driver-api">7 Locating the ROM Driver API</a><ul></ul></li>
 <li><a href="#bootloader-overwrites-itself">8 Bootloader Overwrites Itself</a><ul></ul></li>
-<li><a href="#efuse-security">9 EFuse Security</a><ul></ul></li>
-<li><a href="#bl602-firmware-boot-code">10 BL602 Firmware Boot Code</a><ul></ul></li>
-<li><a href="#other-bootloaders">11 Other Bootloaders</a><ul></ul></li>
-<li><a href="#whats-next">12 What’s Next</a><ul></ul></li>
-<li><a href="#notes">13 Notes</a><ul></ul></li></ul></nav><p>📝 <em>10 Jun 2021</em></p>
+<li><a href="#or-maybe-not">9 Or Maybe Not?</a><ul></ul></li>
+<li><a href="#efuse-security">10 EFuse Security</a><ul></ul></li>
+<li><a href="#bl602-firmware-boot-code">11 BL602 Firmware Boot Code</a><ul></ul></li>
+<li><a href="#other-bootloaders">12 Other Bootloaders</a><ul></ul></li>
+<li><a href="#whats-next">13 What’s Next</a><ul></ul></li>
+<li><a href="#notes">14 Notes</a><ul></ul></li></ul></nav><p>📝 <em>10 Jun 2021</em></p>
 <p><em>How is our firmware loaded into BL602’s flash memory?</em></p>
 <p><em>How does BL602 prevent tampering of firmware?</em></p>
 <p>All this and much, much more shall be explained as we learn about the <strong>BL602 Boot2 Bootloader</strong>.</p>
@@ -796,13 +797,6 @@ void ATTR_TCM_SECTION BLSP_Boot2_Jump_Entry(void)
         ret=BLSP_Boot2_Set_Cache(1,&amp;flashCfg,&amp;bootImgCfg[0]);
     }
 </code></pre>
-<p><a href="https://twitter.com/__9names">9names</a></p>
-<p><a href="https://twitter.com/__9names/status/1401152245693960193">Comment on Twitter</a></p>
-<blockquote>
-<p>It doesn’t overwrite itself, that’s the trick.
-What is at <code>0x23000000</code> depends on how the cache is configured, you can change it! See <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_common.c#L165-L257"><code>BLSP_Boot2_Jump_Entry</code> in <code>blsp_common.c</code></a> for an example.
-This is what makes it possible to boot multiple applications without patching the firmware</p>
-</blockquote>
 <p>BLSP_Boot2_Set_Cache</p>
 <p>https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_port.c#L423-L485</p>
 <pre><code class="language-c">/****************************************************************************//**
@@ -832,21 +826,31 @@ int32_t ATTR_TCM_SECTION BLSP_Boot2_Set_Cache(uint8_t contRead,SPI_Flash_Cfg_Typ
 <p>Match with https://lupyuen.github.io/articles/flash#appendix-bl602-efuse-configuration</p>
 <p><code>cacheEnable</code> is true</p>
 <p><code>entryPoint</code> is <code>BLSP_BOOT2_XIP_BASE</code> (<code>0x2300 0000</code>)</p>
-<h1 id="efuse-security" class="section-header"><a href="#efuse-security">9 EFuse Security</a></h1>
+<p><code>img_start</code> is <code>0x2000</code></p>
+<h1 id="or-maybe-not" class="section-header"><a href="#or-maybe-not">9 Or Maybe Not?</a></h1>
+<p>TODO</p>
+<p><a href="https://twitter.com/__9names">9names</a></p>
+<p><a href="https://twitter.com/__9names/status/1401152245693960193">Comment on Twitter</a></p>
+<blockquote>
+<p>It doesn’t overwrite itself, that’s the trick.
+What is at <code>0x23000000</code> depends on how the cache is configured, you can change it! See <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_common.c#L165-L257"><code>BLSP_Boot2_Jump_Entry</code> in <code>blsp_common.c</code></a> for an example.
+This is what makes it possible to boot multiple applications without patching the firmware</p>
+</blockquote>
+<h1 id="efuse-security" class="section-header"><a href="#efuse-security">10 EFuse Security</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/boot-efuse.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="bl602-firmware-boot-code" class="section-header"><a href="#bl602-firmware-boot-code">10 BL602 Firmware Boot Code</a></h1>
+<h1 id="bl602-firmware-boot-code" class="section-header"><a href="#bl602-firmware-boot-code">11 BL602 Firmware Boot Code</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/boot-code.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="other-bootloaders" class="section-header"><a href="#other-bootloaders">11 Other Bootloaders</a></h1>
+<h1 id="other-bootloaders" class="section-header"><a href="#other-bootloaders">12 Other Bootloaders</a></h1>
 <p>TODO</p>
 <p>Check out this interview that explains why the PineTime Bootloader is designed that way…</p>
 <ul>
 <li><a href="https://www.ncartron.org/interview-with-lup-creator-of-pinetimes-bootloader.html"><strong>“Interview with Lup, creator of PineTime’s bootloader”</strong></a></li>
 </ul>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">12 What’s Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">13 What’s Next</a></h1>
 <p>TODO</p>
 <ul>
 <li>
@@ -864,7 +868,7 @@ int32_t ATTR_TCM_SECTION BLSP_Boot2_Set_Cache(uint8_t contRead,SPI_Flash_Cfg_Typ
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/boot.md"><code>lupyuen.github.io/src/boot.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">13 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">14 Notes</a></h1>
 <ol>
 <li>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1398855867030593538">this Twitter Thread</a></p>
