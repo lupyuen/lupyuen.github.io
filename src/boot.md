@@ -70,9 +70,9 @@ _Is Boot2 really a Bootloader?_
 
 On other microcontrollers, the Bootloader is the first thing that runs when powered on. (Before jumping to the Application Firmware)
 
-On BL602, the Boot2 Bootloader __runs only when we flash new Application Firmware__. (So that the Application Firmware may be loaded into XIP Flash Memory)
+On BL602, the Boot2 Bootloader also __installs new Application Firmware__ into XIP Flash Memory.
 
-So the Bootloader concept is a little different for BL602... It's more like an __"Application Firmware Loader"__
+[(Somewhat similar to the MCUBoot Bootloader for PineTime Smart Watch)](https://lupyuen.github.io/pinetime-rust-mynewt/articles/mcuboot)
 
 _Why so complicated?_
 
@@ -86,7 +86,7 @@ BL602's Boot2 Bootloader allows Application Firmware to be __flashed securely__ 
 
     (Prevents tampering of firmware updates)
 
-We'll learn more about firmware security.
+We'll learn more about BL602 firmware security in a while.
 
 ![BL602 Boot2 Bootloader runs at address `0x2300 0000`](https://lupyuen.github.io/images/boot-loader.png)
 
@@ -1025,7 +1025,9 @@ TODO
 
 1.  PineTime Bootloader
 
-    Check out this interview that explains why the PineTime Bootloader is designed that way...
+    -   [__"MCUBoot Bootloader for PineTime Smart Watch"__](https://lupyuen.github.io/pinetime-rust-mynewt/articles/mcuboot)
+
+    Check out this interview that explains the design rationale for the PineTime Bootloader...
 
     -   [__"Interview with Lup, creator of PineTime's bootloader"__](https://www.ncartron.org/interview-with-lup-creator-of-pinetimes-bootloader.html)
 
