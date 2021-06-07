@@ -638,7 +638,7 @@ XIP_SFlash_Read_Via_Cache_Need_Lock(
 <pre><code class="language-text">2201050a &lt;XIP_SFlash_Read_Via_Cache_Need_Lock&gt;:
 2201050a:	210117b7          	lui	a5,0x21011
 2201050e:	aa47a303          	lw	t1,-1372(a5) # 21010aa4 &lt;StackSize+0x210106a4&gt;
-22010512:	8302                	jr	t1
+22010512:	8302                jr	t1
 </code></pre>
 <p><em>So the Real Function is located at <code>0x2101 0aa4</code>?</em></p>
 <p>Right! _<em>RomDriver_XIP_SFlash_Read_Via_Cache <em>Need_Lock</em></em> is located in the Boot ROM at <code>0x2101 0aa4</code>.</p>
@@ -713,7 +713,7 @@ int32_t BLSP_MediaBoot_Pre_Jump(void) {
   //  Platform deinit
   bflb_platform_deinit(); 
     
-  //  Jump to entry
+  //  Jump to entry point
   BLSP_Boot2_Jump_Entry();    
   return BFLB_BOOT2_SUCCESS;
 }
@@ -732,36 +732,38 @@ void ATTR_TCM_SECTION BLSP_Boot2_Jump_Entry(void) {
   if (0 != efuseCfg.encrypted[0]) {
     //  For encrypted img, use non-continuous read
     ret = BLSP_Boot2_Set_Cache(
-        0,
-        &amp;flashCfg,
-        &amp;bootImgCfg[0]);
+      0,
+      &amp;flashCfg,
+      &amp;bootImgCfg[0]);
   } else {
     //  For unencrypted img, use continuous read
     ret = BLSP_Boot2_Set_Cache(
-        1,
-        &amp;flashCfg,
-        &amp;bootImgCfg[0]);
+      1,
+      &amp;flashCfg,
+      &amp;bootImgCfg[0]);
   }
   //  Omitted: Set decryption before reading MSP and PC
   ...    
-  //  Omitted: Handle Other CPUs' entry point
+  //  Omitted: Handle Other CPU's entry point
   ...    
   //  Handle CPU0's entry point
   if (bootImgCfg[0].imgValid) {
     pentry = (pentry_t) bootImgCfg[0].entryPoint;
     if (bootImgCfg[0].mspVal != 0) {
-        __set_MSP(bootImgCfg[0].mspVal);
+      __set_MSP(bootImgCfg[0].mspVal);
     }
     ...
     //  Jump to the entry point
     if (pentry != NULL) { pentry(); }
   }   
 </code></pre>
-<p>TODO</p>
+<p>As expected, the function ends by <strong>jumping to the Entry Point</strong> of our Application Firmware: <code>pentry</code></p>
+<p>But before that, it calls <strong><code>BLSP_Boot2_Set_Cache</code></strong> to fix up the XIP Flash Memory.</p>
+<p>Let’s find out why.</p>
 <h1 id="remap-xip-flash" class="section-header"><a href="#remap-xip-flash">9 Remap XIP Flash</a></h1>
-<p><em>The Bootloader and Application Firmware are both programmed to run at the same XIP Flash Memory address 0x2300 0000…</em></p>
-<p><em>Does this mean that the Bootloader overwrites itself with the Application Firmware?</em></p>
-<p>Here’s the answer, many thanks to <a href="https://twitter.com/__9names/status/1401152245693960193"><strong>9names on Twitter</strong></a>…</p>
+<p>Remember that the <strong>Bootloader and Application Firmware</strong> are both programmed to run at the <strong>same XIP Flash Memory address <code>0x2300 0000</code></strong>.</p>
+<p><em>Does the Bootloader overwrite itself with the Application Firmware?</em></p>
+<p>Not quite! Here’s the answer, many thanks to <a href="https://twitter.com/__9names/status/1401152245693960193"><strong>9names on Twitter</strong></a>…</p>
 <blockquote>
 <p>“It doesn’t overwrite itself, that’s the trick.
 What is at <code>0x23000000</code> depends on how the cache is configured, you can change it!”</p>
