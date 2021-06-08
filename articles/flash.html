@@ -526,6 +526,7 @@ len      = 0
 <p><em>Do we really need to encrypt our firmware?</em></p>
 <p>For development we will leave the EFuse Configuration empty, so that our firmware won’t be encrypted.</p>
 <p>EFuse Configuration is used when we’re ready to release a commercial product with BL602 inside.</p>
+<p><a href="https://lupyuen.github.io/articles/boot#efuse-security">How EFuses are used for encrypting and verifying BL602 firmware updates</a></p>
 <p><a href="https://limitedresults.com/2019/11/pwn-the-esp32-forever-flash-encryption-and-sec-boot-keys-extraction/">How EFuses are used in ESP32… And how Encryption Keys were compromised</a></p>
 <p>Snippet from BL602’s EFuse Configuration: <a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/efuse_bootheader/efuse_bootheader_cfg.conf"><code>efuse_bootheader_cfg.conf</code></a></p>
 <pre><code class="language-text">[EFUSE_CFG]
