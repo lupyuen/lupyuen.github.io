@@ -658,6 +658,7 @@ XIP_SFlash_Read_Via_Cache_Need_Lock(
 <p>ITCM means <strong>Instruction Tightly Coupled Memory</strong>.</p>
 <p>This is <strong>Cache Memory</strong> (RAM) that has been configured (via the Level 1 Cache Controller) for code execution.</p>
 <p>(See “Chapter 7: L1C (Level 1 Cache)” in the BL602 Reference Manual)</p>
+<p><img src="https://lupyuen.github.io/images/boot-driver3.png" alt="BL602 Bootloader Linker Script defines functions in ITCM" /></p>
 <p><em>What are the functions in the ROM Driver API?</em></p>
 <p>The <strong>ROM Driver Functions</strong> are listed in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_romdriver.c#L80-L269"><code>bl602_romdriver.c</code></a> and <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Inc/bl602_romdriver.h"><code>bl602_romdriver.h</code></a></p>
 <p>The functions cover…</p>
@@ -827,11 +828,13 @@ SPI_Flash_Cfg_Type *flashCfg,
 <p>(Note that <strong>SF_Ctrl_Set_Flash_Image_Offset</strong> and <strong>SFlash_Cache_Read_Enable</strong> are defined in the Boot ROM and we can’t see the source code. So it’s possible that our interpretation is incorrect)</p>
 <h1 id="efuse-security" class="section-header"><a href="#efuse-security">10 EFuse Security</a></h1>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/boot-efuse.png" alt="" /></p>
+<p><img src="https://lupyuen.github.io/images/boot-efuse.png" alt="EFuse Configuration" /></p>
 <p>TODO</p>
 <h1 id="bl602-firmware-boot-code" class="section-header"><a href="#bl602-firmware-boot-code">11 BL602 Firmware Boot Code</a></h1>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/boot-code.png" alt="" /></p>
+<p><img src="https://lupyuen.github.io/images/boot-code.png" alt="BL602 Boot Code in Application Firmware" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/boot-driver2.png" alt="Table of ROM Driver API Functions in DTCM for Application Firmware" /></p>
 <p>TODO</p>
 <h1 id="other-bootloaders" class="section-header"><a href="#other-bootloaders">12 Other Bootloaders</a></h1>
 <p><em>How does BL602 Bootloader compare with other Bootloaders?</em></p>
@@ -846,6 +849,7 @@ SPI_Flash_Cfg_Type *flashCfg,
 <p><strong>RP2040</strong></p>
 <p>RP2040 also supports <strong>XIP Flash Memory</strong> in its Hardware Flash API (<code>hardware_flash</code>)</p>
 <p>RP2040 has a <strong>Second Stage Bootloader</strong> (<code>boot_stage2</code>) that probably works like the BL602 Bootloader.</p>
+<p>Remember the <strong>Boot ROM</strong> in BL602? RP2040 provides an API (<code>pico_bootrom</code>) to access functions and data in the Boot ROM.</p>
 <p><a href="https://datasheets.raspberrypi.org/pico/raspberry-pi-pico-c-sdk.pdf">RP2040 SDK</a></p>
 <p><a href="https://kevinboone.me/picoflash.html?i=2">More about RP2040 XIP Flash</a></p>
 </li>
@@ -889,23 +893,16 @@ SPI_Flash_Cfg_Type *flashCfg,
 <li>
 <p>Checking the bootloader</p>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/boot-compare.png" alt="" /></p>
+<p><img src="https://lupyuen.github.io/images/boot-compare.png" alt="Comparing bl602_boot2 with blsp_boot2" /></p>
+<p>TODO</p>
+</li>
+<li>
+<p>Rust Wrapper for ROM Driver API</p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/boot-rust.png" alt="Rust Wrapper for ROM Driver API" /></p>
 <p>TODO</p>
 </li>
 </ol>
-<p><img src="https://lupyuen.github.io/images/boot-driver2.png" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/boot-driver3.png" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/boot-driver4.png" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/boot-rust.png" alt="" /></p>
-<p>TODO</p>
-<p><code>BLSP_Boot2_Deal_One_FW</code></p>
-<p><code>BLSP_Boot2_Check_XZ_FW</code></p>
-<p><code>BLSP_Boot2_Do_FW_Copy</code></p>
-<p><code>BLSP_MediaBoot_Read</code></p>
-<p><code>BLSP_MediaBoot_Main</code></p>
 
     
 </body>
