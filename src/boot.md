@@ -909,6 +909,10 @@ TODO
 
 # BL602 Firmware Boot Code
 
+_We've seen all the BL602 Boot Code right?_
+
+Wait... There's more!
+
 TODO
 
 ![BL602 Boot Code in Application Firmware](https://lupyuen.github.io/images/boot-code.png)
