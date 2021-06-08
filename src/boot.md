@@ -705,6 +705,8 @@ This is __Cache Memory__ (RAM) that has been configured (via the Level 1 Cache C
 
 (See "Chapter 7: L1C (Level 1 Cache)" in the BL602 Reference Manual)
 
+![BL602 Bootloader Linker Script defines functions in ITCM](https://lupyuen.github.io/images/boot-driver3.png)
+
 _What are the functions in the ROM Driver API?_
 
 The __ROM Driver Functions__ are listed in [`bl602_romdriver.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_romdriver.c#L80-L269) and [`bl602_romdriver.h`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Inc/bl602_romdriver.h)
@@ -901,7 +903,7 @@ And that's how we __switch over from Bootloader to Application Firmware__ in XIP
 
 TODO
 
-![](https://lupyuen.github.io/images/boot-efuse.png)
+![EFuse Configuration](https://lupyuen.github.io/images/boot-efuse.png)
 
 TODO
 
@@ -909,7 +911,11 @@ TODO
 
 TODO
 
-![](https://lupyuen.github.io/images/boot-code.png)
+![BL602 Boot Code in Application Firmware](https://lupyuen.github.io/images/boot-code.png)
+
+TODO
+
+![Table of ROM Driver API Functions in DTCM for Application Firmware](https://lupyuen.github.io/images/boot-driver2.png)
 
 TODO
 
@@ -930,6 +936,8 @@ _How does BL602 Bootloader compare with other Bootloaders?_
     RP2040 also supports __XIP Flash Memory__ in its Hardware Flash API (`hardware_flash`)
 
     RP2040 has a __Second Stage Bootloader__ (`boot_stage2`) that probably works like the BL602 Bootloader.
+
+    Remember the __Boot ROM__ in BL602? RP2040 provides an API (`pico_bootrom`) to access functions and data in the Boot ROM.
 
     [RP2040 SDK](https://datasheets.raspberrypi.org/pico/raspberry-pi-pico-c-sdk.pdf)
 
@@ -973,32 +981,14 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     TODO
 
-    ![](https://lupyuen.github.io/images/boot-compare.png)
+    ![Comparing bl602_boot2 with blsp_boot2](https://lupyuen.github.io/images/boot-compare.png)
 
     TODO
 
-![](https://lupyuen.github.io/images/boot-driver2.png)
+1.  Rust Wrapper for ROM Driver API
 
-TODO
+    TODO
 
-![](https://lupyuen.github.io/images/boot-driver3.png)
+    ![Rust Wrapper for ROM Driver API](https://lupyuen.github.io/images/boot-rust.png)
 
-TODO
-
-![](https://lupyuen.github.io/images/boot-driver4.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/boot-rust.png)
-
-TODO
-
-`BLSP_Boot2_Deal_One_FW`
-
-`BLSP_Boot2_Check_XZ_FW`
-
-`BLSP_Boot2_Do_FW_Copy`
-
-`BLSP_MediaBoot_Read`
-
-`BLSP_MediaBoot_Main`
+    TODO
