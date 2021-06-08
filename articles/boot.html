@@ -834,20 +834,26 @@ SPI_Flash_Cfg_Type *flashCfg,
 <p><img src="https://lupyuen.github.io/images/boot-code.png" alt="" /></p>
 <p>TODO</p>
 <h1 id="other-bootloaders" class="section-header"><a href="#other-bootloaders">12 Other Bootloaders</a></h1>
-<p>TODO</p>
+<p><em>How does BL602 Bootloader compare with other Bootloaders?</em></p>
 <ol>
 <li>
-<p>ESP32 Secure Boot</p>
-<p>https://docs.espressif.com/projects/esp-idf/en/latest/esp32/security/secure-boot-v2.html</p>
+<p><strong>ESP32 Secure Boot V2</strong></p>
+<p>Similar to BL602, ESP32 supports <strong>XIP Flash Memory</strong> and <strong>EFuse Protection</strong>.</p>
+<p>Hence the Bootloaders for ESP32 and BL602 probably work the same way.</p>
+<p><a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/security/secure-boot-v2.html">More about ESP32 Secure Boot V2</a></p>
 </li>
 <li>
-<p>RP2040</p>
-<p>XIP Flash Memory, Second Stage Bootloader (boot_stage2), Hardware Flash API (hardware_flash)</p>
-<p><a href="https://datasheets.raspberrypi.org/pico/raspberry-pi-pico-c-sdk.pdf">RP2040 Doc</a></p>
+<p><strong>RP2040</strong></p>
+<p>RP2040 also supports <strong>XIP Flash Memory</strong> in its Hardware Flash API (<code>hardware_flash</code>)</p>
+<p>RP2040 has a <strong>Second Stage Bootloader</strong> (<code>boot_stage2</code>) that probably works like the BL602 Bootloader.</p>
+<p><a href="https://datasheets.raspberrypi.org/pico/raspberry-pi-pico-c-sdk.pdf">RP2040 SDK</a></p>
 <p><a href="https://kevinboone.me/picoflash.html?i=2">More about RP2040 XIP Flash</a></p>
 </li>
 <li>
-<p>PineTime Bootloader</p>
+<p><strong>PineTime Smart Watch (Nordic nRF52832)</strong></p>
+<p>PineTime doesn’t have XIP Flash Memory. But it has <strong>Internal Flash Memory</strong> (inside the microcontroller).</p>
+<p>During startup, PineTime’s MCUBoot Bootloader installs new firmware by <strong>swapping in the firmware from External Flash Memory</strong> to Internal Flash Memory.</p>
+<p>Similar to BL602 Bootloader, PineTime’s Bootloader supports <strong>Firmware Rollback</strong>. If the new firmware fails to start, PineTime <strong>swaps in the old firmware from External Flash Memory</strong>.</p>
 <ul>
 <li><a href="https://lupyuen.github.io/pinetime-rust-mynewt/articles/mcuboot"><strong>“MCUBoot Bootloader for PineTime Smart Watch”</strong></a></li>
 </ul>
