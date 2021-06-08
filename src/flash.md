@@ -501,6 +501,8 @@ For development we will leave the EFuse Configuration empty, so that our firmwar
 
 EFuse Configuration is used when we're ready to release a commercial product with BL602 inside.
 
+[How EFuses are used for encrypting and verifying BL602 firmware updates](https://lupyuen.github.io/articles/boot#efuse-security)
+
 [How EFuses are used in ESP32... And how Encryption Keys were compromised](https://limitedresults.com/2019/11/pwn-the-esp32-forever-flash-encryption-and-sec-boot-keys-extraction/)
 
 Snippet from BL602's EFuse Configuration: [`efuse_bootheader_cfg.conf`](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/efuse_bootheader/efuse_bootheader_cfg.conf)

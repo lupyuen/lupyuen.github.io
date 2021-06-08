@@ -150,6 +150,8 @@ From [`bl602_boot2/blsp_boot2.c`](https://github.com/lupyuen/bl_iot_sdk/blob/mas
       BLSP_Boot2_Get_Efuse_Cfg(&efuseCfg);
     ```
 
+    (We'll see __`BLSP_Boot2_Get_Efuse_Cfg`__ in a while)
+
 1.  We __reset the Security Engine__ (for AES Encryption operations)
 
     ```c
@@ -901,13 +903,72 @@ And that's how we __switch over from Bootloader to Application Firmware__ in XIP
 
 # EFuse Security
 
+_What's an EFuse in BL602?_
+
+An __EFuse__ stores one bit of data (`0` or `1`) in a special way... Once an EFuse is set to `1`, it can never be reset to `0`.
+
+BL602 has 1,024 EFuses (1,024 bits).
+
+_How are EFuses used in BL602?_
+
+Since the EFuses are one-time write-only bits, they are useful for storing AES Encryption Keys securely.
+
+Once the AES Encryption Keys have been injected into BL602's EFuses, they can never be changed.
+
+_Why would we need AES Encryption Keys in BL602?_
+
+1.  BL602 Bootloader supports __flashing of AES-Encrypted Application Firmware__
+
+    (So it's possible to push encrypted firmware updates over-the-air)
+
+1.  BL602 Bootloader can use __Digital Signatures__ to verify that the Application Firmware is authentic
+
+    (Prevents tampering of firmware updates)
+
+[More about BL602 EFuse](https://lupyuen.github.io/articles/flash#efuse-configuration)
+
+_How are the AES Encryption Keys accessed through EFuses?_
+
+Earlier we saw the Bootloader calling __`BLSP_Boot2_Get_Efuse_Cfg`__ to read the EFuse Configuration.
+
+Here's how it works: [`blsp_port.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_port.c#L184-L209)
+
+```c
+//  Boot2 get efuse config security
+void ATTR_TCM_SECTION BLSP_Boot2_Get_Efuse_Cfg(
+  Boot_Efuse_HW_Config *efuseCfg) {
+  uint32_t tmp;
+
+  HBN_Set_ROOT_CLK_Sel(GLB_ROOT_CLK_XTAL);
+
+  //  Get sign and AES type
+  EF_Ctrl_Read_Secure_Boot(
+    (EF_Ctrl_Sign_Type*) efuseCfg->sign, 
+    (EF_Ctrl_SF_AES_Type*) efuseCfg->encrypted);
+
+  //  Get hash: AES key slot 0 and slot 1
+  EF_Ctrl_Read_AES_Key(
+    0,
+    (uint32_t *) efuseCfg->pkHashCpu0,
+    8);
+  EF_Ctrl_Read_Chip_ID(efuseCfg->chipID);
+
+  //  Get HBN check sign config
+  EF_Ctrl_Read_Sw_Usage(0, &tmp);
+  efuseCfg->hbnCheckSign = (tmp >> 22) & 0x01;
+
+  GLB_Set_System_CLK_Div(0, 1);
+  HBN_Set_ROOT_CLK_Sel(HBN_ROOT_CLK_PLL);
+}
+```
+
 TODO
 
 ![EFuse Configuration](https://lupyuen.github.io/images/boot-efuse.png)
 
-TODO
-
 # BL602 Firmware Boot Code
+
+Today we studied the Boot Code in the __BL602 Bootloader__ and __BL602 Boot ROM__...
 
 _We've seen all the BL602 Boot Code right?_
 
