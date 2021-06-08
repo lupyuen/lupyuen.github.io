@@ -915,21 +915,33 @@ TODO
 
 # Other Bootloaders
 
-TODO
+_How does BL602 Bootloader compare with other Bootloaders?_
 
-1.  ESP32 Secure Boot
+1.  __ESP32 Secure Boot V2__
 
-    https://docs.espressif.com/projects/esp-idf/en/latest/esp32/security/secure-boot-v2.html
+    Similar to BL602, ESP32 supports __XIP Flash Memory__ and __EFuse Protection__.
 
-1.  RP2040
+    Hence the Bootloaders for ESP32 and BL602 probably work the same way.
 
-    XIP Flash Memory, Second Stage Bootloader (boot_stage2), Hardware Flash API (hardware_flash)
+    [More about ESP32 Secure Boot V2](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/security/secure-boot-v2.html)
 
-    [RP2040 Doc](https://datasheets.raspberrypi.org/pico/raspberry-pi-pico-c-sdk.pdf)
+1.  __RP2040__
+
+    RP2040 also supports __XIP Flash Memory__ in its Hardware Flash API (`hardware_flash`)
+
+    RP2040 has a __Second Stage Bootloader__ (`boot_stage2`) that probably works like the BL602 Bootloader.
+
+    [RP2040 SDK](https://datasheets.raspberrypi.org/pico/raspberry-pi-pico-c-sdk.pdf)
 
     [More about RP2040 XIP Flash](https://kevinboone.me/picoflash.html?i=2)
 
-1.  PineTime Bootloader
+1.  __PineTime Smart Watch (Nordic nRF52832)__
+
+    PineTime doesn't have XIP Flash Memory. But it has __Internal Flash Memory__ (inside the microcontroller).
+
+    During startup, PineTime's MCUBoot Bootloader installs new firmware by __swapping in the firmware from External Flash Memory__ to Internal Flash Memory.
+
+    Similar to BL602 Bootloader, PineTime's Bootloader supports __Firmware Rollback__. If the new firmware fails to start, PineTime __swaps in the old firmware from External Flash Memory__.
 
     -   [__"MCUBoot Bootloader for PineTime Smart Watch"__](https://lupyuen.github.io/pinetime-rust-mynewt/articles/mcuboot)
 
