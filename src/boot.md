@@ -1108,7 +1108,11 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1398855867030593538)
 
-1.  Checking the bootloader
+1.  We have been studying the Bootloader Source Code for `bl602_boot2`... But the Bootloader Binary that's actually flashed is `blsp_boot2`. How do we know that are the same?
+
+    We don't have the source code for `blsp_boot2`. But we were able to disassemble `blsp_boot2` and verify that it contains the same code as `bl602_boot2`.
+
+    Compare [`bl602_boot2.S`](https://github.com/lupyuen/bl_iot_sdk/releases/download/v8.0.2/bl602_boot2.S) with [`blsp_boot2.S`](https://github.com/lupyuen/bl_iot_sdk/blob/master/tools/flash_tool/bl602/builtin_imgs/blsp_boot2.S) ...
 
     ![Comparing bl602_boot2 with blsp_boot2](https://lupyuen.github.io/images/boot-compare.png)
 
