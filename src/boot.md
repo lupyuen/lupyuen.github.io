@@ -1112,6 +1112,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     ![Comparing bl602_boot2 with blsp_boot2](https://lupyuen.github.io/images/boot-compare.png)
 
-1.  Rust Wrapper for ROM Driver API
+1.  [`9names`](https://github.com/9names) has created __Rust Wrappers for the BL602 ROM Driver API__...
 
-    ![Rust Wrapper for ROM Driver API](https://lupyuen.github.io/images/boot-rust.png)
+    -   [__`bl602-rom-wrapper`__](https://github.com/9names/bl602-rom-wrapper)
+
+    ![Rust Wrappers for ROM Driver API](https://lupyuen.github.io/images/boot-rust.png)
