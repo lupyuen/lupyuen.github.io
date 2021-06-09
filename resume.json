@@ -147,6 +147,13 @@
   ],
   "publications": [
     {
+      "name": "BL602 Bootloader",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2021-06-09",
+      "website": "https://lupyuen.github.io/articles/boot",
+      "summary": "All about the BL602 RISC-V Bootloader... And how it loads the Application Firmware into XIP Flash Memory"
+    },
+    {
       "name": "Simulate RISC-V BL602 with WebAssembly, uLisp and Blockly",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-05-27",
