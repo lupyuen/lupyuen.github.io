@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>BL602 Bootloader</title>
+            <link>https://lupyuen.github.io/articles/boot</link>
+            <description><![CDATA[All about the BL602 RISC-V Bootloader... And how it loads the Application Firmware into XIP Flash Memory]]></description>
+            <guid>https://lupyuen.github.io/articles/boot</guid>
+            <pubDate>Wed, 09 Jun 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Simulate RISC-V BL602 with WebAssembly, uLisp and Blockly</title>
             <link>https://lupyuen.github.io/articles/wasm</link>
             <description><![CDATA[How we simulate the BL602 RISC-V SoC with uLisp in WebAssembly... And preview Blockly uLisp Apps in the Web Browser]]></description>
