@@ -807,7 +807,11 @@ void ATTR_TCM_SECTION BLSP_Boot2_Jump_Entry(void) {
       &bootImgCfg[0]);
   }
   //  Omitted: Set decryption before reading MSP and PC
-  ...    
+  if (0 != efuseCfg.encrypted[0]) {
+    BLSP_Boot2_Set_Encrypt(0, &bootImgCfg[0]);
+    BLSP_Boot2_Set_Encrypt(1, &bootImgCfg[1]);
+    ...
+  }
   //  Omitted: Handle Other CPU's entry point
   ...    
   //  Handle CPU0's entry point
@@ -925,13 +929,17 @@ _Why would we need AES Encryption Keys in BL602?_
 
     (Prevents tampering of firmware updates)
 
+We don't encrypt and sign firmware images during development.
+
+But let's watch how the BL602 Bootloader handles encrypted and signed firmware images for commercial BL602 gadgets.
+
 [More about BL602 EFuse](https://lupyuen.github.io/articles/flash#efuse-configuration)
 
-_How are the AES Encryption Keys accessed through EFuses?_
+_How does the Bootloader work with the EFuse Hardware?_
 
 Earlier we saw the Bootloader calling __`BLSP_Boot2_Get_Efuse_Cfg`__ to read the EFuse Configuration.
 
-Here's how it works: [`blsp_port.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_port.c#L184-L209)
+Here's what happens inside: [`blsp_port.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_port.c#L184-L209)
 
 ```c
 //  Boot2 get efuse config security
@@ -962,13 +970,47 @@ void ATTR_TCM_SECTION BLSP_Boot2_Get_Efuse_Cfg(
 }
 ```
 
-TODO
+This code calls the [__`EF_Ctrl` Functions__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_ef_ctrl.c) from the BL602 Standard Driver to access the EFuse Hardware.
 
 ![EFuse Configuration](https://lupyuen.github.io/images/boot-efuse.png)
 
+We __decrypt the firmware__ with the EFuse Key here: [`blsp_port.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_port.c#L386-L421)
+
+```c
+//  Set encryption config
+int32_t ATTR_TCM_SECTION BLSP_Boot2_Set_Encrypt(
+  uint8_t index,                    //  Region index
+  Boot_Image_Config *bootImgCfg) {  //  Boot image config pointer to hold parsed information
+  ...
+  //  Set AES Key
+  SF_Ctrl_AES_Set_Key_BE(
+      index, 
+      NULL,
+      (SF_Ctrl_AES_Key_Type) (bootImgCfg->encryptType - 1));
+
+  //  Set AES Initialisation Vector
+  SF_Ctrl_AES_Set_IV_BE(
+      index, 
+      bootImgCfg->aesiv,
+      bootImgCfg->imgStart.flashOffset);
+
+  //  Set AES Region
+  SF_Ctrl_AES_Set_Region(
+      index,
+      1,  //  Enable this region
+      1,  //  Hardware key
+      bootImgCfg->imgStart.flashOffset,
+      bootImgCfg->imgStart.flashOffset + len - 1,
+      bootImgCfg->aesRegionLock);
+
+  //  Enable AES decryption
+  SF_Ctrl_AES_Enable_BE();
+  SF_Ctrl_AES_Enable();
+```
+
 # BL602 Firmware Boot Code
 
-Today we studied the Boot Code in the __BL602 Bootloader__ and __BL602 Boot ROM__...
+Today we looked at the Boot Code in the __BL602 Bootloader__ and __BL602 Boot ROM__...
 
 _We've seen all the BL602 Boot Code right?_
 
