@@ -1016,15 +1016,31 @@ _We've seen all the BL602 Boot Code right?_
 
 Wait... There's more!
 
-TODO
+Our __BL602 Application Firmware__ includes these functions from the [__BL602 Boot2 Hardware Abstraction Layer__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_boot2.c)...
+
+-  [__`hal_boot2_get_flash_addr`__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_boot2.c#L104-L110)
+
+-  [__`hal_boot2_partition_bus_addr`__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_boot2.c#L113-L161)
+
+-  [__`hal_boot2_partition_bus_addr_active`__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_boot2.c#L163-L176)
+
+-  [__`hal_boot2_partition_addr`__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_boot2.c#L193-L217)
+
+-  [__`hal_boot2_partition_addr_active`__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_boot2.c#L219-L232)
+
+-  [__`hal_boot2_init`__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_boot2.c#L269-L281)
+
+This is revealed by the __Linker Map for our Blinky Firmware__: [`sdk_app_blinky.map`](https://github.com/lupyuen/bl_iot_sdk/releases/download/v8.0.1/sdk_app_blinky.map)
+
+(We might talk about these functions in a future article... Lemme know if you're keen!)
 
 ![BL602 Boot Code in Application Firmware](https://lupyuen.github.io/images/boot-code.png)
 
-TODO
+Remember __Table of ROM Driver Stub Functions__ loaded by the Bootloader into ITCM (Instruction Cache Memory)?
 
-![Table of ROM Driver API Functions in DTCM for Application Firmware](https://lupyuen.github.io/images/boot-driver2.png)
+Our Application Firmware has a similar Table of ROM Driver Stub Functions. But it's loaded into __DTCM (Data Cache Memory)__ instead...
 
-TODO
+![Table of ROM Driver Stub Functions in DTCM for Application Firmware](https://lupyuen.github.io/images/boot-driver2.png)
 
 # Other Bootloaders
 
