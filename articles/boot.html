@@ -1007,7 +1007,9 @@ int32_t ATTR_TCM_SECTION BLSP_Boot2_Set_Encrypt(
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1398855867030593538">this Twitter Thread</a></p>
 </li>
 <li>
-<p>Checking the bootloader</p>
+<p>We have been studying the Bootloader Source Code for <code>bl602_boot2</code>… But the Bootloader Binary that’s actually flashed is <code>blsp_boot2</code>. How do we know that are the same?</p>
+<p>We don’t have the source code for <code>blsp_boot2</code>. But we were able to disassemble <code>blsp_boot2</code> and verify that it contains the same code as <code>bl602_boot2</code>.</p>
+<p>Compare <a href="https://github.com/lupyuen/bl_iot_sdk/releases/download/v8.0.2/bl602_boot2.S"><code>bl602_boot2.S</code></a> with <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/tools/flash_tool/bl602/builtin_imgs/blsp_boot2.S"><code>blsp_boot2.S</code></a> …</p>
 <p><img src="https://lupyuen.github.io/images/boot-compare.png" alt="Comparing bl602_boot2 with blsp_boot2" /></p>
 </li>
 <li>
