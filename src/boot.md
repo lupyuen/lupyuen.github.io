@@ -1,12 +1,12 @@
 # BL602 Bootloader
 
-📝 _10 Jun 2021_
+📝 _9 Jun 2021_
 
 _How is our firmware loaded into BL602's flash memory?_
 
 _How does BL602 prevent tampering of firmware?_
 
-All this and much, much more shall be explained as we learn about the __BL602 Boot2 Bootloader__.
+All this and much, much more shall be explained as we learn about the __Boot2 Bootloader__ for the [__BL602 RISC-V + WiFi SoC__](https://lupyuen.github.io/articles/pinecone).
 
 # BL602 Boot2 Bootloader
 
@@ -1082,7 +1082,13 @@ _How does BL602 Bootloader compare with other Bootloaders?_
 
 # What's Next
 
-TODO
+Thanks for bearing with me as I attempted to unravel the secrets inside the BL602 Bootloader.
+
+(This is my 20th article on BL602 yay! 🎉)
+
+For my 21st article I shall head back to __Rust on BL602__... And explain how we create __Rust Wrappers for the entire BL602 IoT SDK__, including GPIO, UART, I2C, SPI, ADC, DAC, LVGL, LoRa, ...
+
+Stay Tuned!
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
