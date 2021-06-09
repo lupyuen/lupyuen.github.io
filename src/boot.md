@@ -1086,7 +1086,9 @@ Thanks for bearing with me as I attempted to unravel the secrets inside the BL60
 
 (This is my 20th article on BL602 yay! 🎉)
 
-For my 21st article I shall head back to __Rust on BL602__... And explain how we create __Rust Wrappers for the entire BL602 IoT SDK__, including GPIO, UART, I2C, SPI, ADC, DAC, LVGL, LoRa, ...
+For my 21st article I shall head back to __Rust on BL602__... And explain how we create [__Rust Wrappers for the entire BL602 IoT SDK__](https://github.com/lupyuen/bl602-rust-wrapper), including GPIO, UART, I2C, SPI, ADC, DAC, LVGL, LoRa, ...
+
+Or maybe [__TensorFlow Lite on BL602?__](https://twitter.com/MisterTechBlog/status/1402531760764641280)
 
 Stay Tuned!
 
