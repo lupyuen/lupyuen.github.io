@@ -745,7 +745,11 @@ void ATTR_TCM_SECTION BLSP_Boot2_Jump_Entry(void) {
       &amp;bootImgCfg[0]);
   }
   //  Omitted: Set decryption before reading MSP and PC
-  ...    
+  if (0 != efuseCfg.encrypted[0]) {
+    BLSP_Boot2_Set_Encrypt(0, &amp;bootImgCfg[0]);
+    BLSP_Boot2_Set_Encrypt(1, &amp;bootImgCfg[1]);
+    ...
+  }
   //  Omitted: Handle Other CPU's entry point
   ...    
   //  Handle CPU0's entry point
@@ -845,10 +849,12 @@ SPI_Flash_Cfg_Type *flashCfg,
 <p>(Prevents tampering of firmware updates)</p>
 </li>
 </ol>
+<p>We don’t encrypt and sign firmware images during development.</p>
+<p>But let’s watch how the BL602 Bootloader handles encrypted and signed firmware images for commercial BL602 gadgets.</p>
 <p><a href="https://lupyuen.github.io/articles/flash#efuse-configuration">More about BL602 EFuse</a></p>
-<p><em>How are the AES Encryption Keys accessed through EFuses?</em></p>
+<p><em>How does the Bootloader work with the EFuse Hardware?</em></p>
 <p>Earlier we saw the Bootloader calling <strong><code>BLSP_Boot2_Get_Efuse_Cfg</code></strong> to read the EFuse Configuration.</p>
-<p>Here’s how it works: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_port.c#L184-L209"><code>blsp_port.c</code></a></p>
+<p>Here’s what happens inside: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_port.c#L184-L209"><code>blsp_port.c</code></a></p>
 <pre><code class="language-c">//  Boot2 get efuse config security
 void ATTR_TCM_SECTION BLSP_Boot2_Get_Efuse_Cfg(
   Boot_Efuse_HW_Config *efuseCfg) {
@@ -876,10 +882,41 @@ void ATTR_TCM_SECTION BLSP_Boot2_Get_Efuse_Cfg(
   HBN_Set_ROOT_CLK_Sel(HBN_ROOT_CLK_PLL);
 }
 </code></pre>
-<p>TODO</p>
+<p>This code calls the <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_ef_ctrl.c"><strong><code>EF_Ctrl</code> Functions</strong></a> from the BL602 Standard Driver to access the EFuse Hardware.</p>
 <p><img src="https://lupyuen.github.io/images/boot-efuse.png" alt="EFuse Configuration" /></p>
+<p>We <strong>decrypt the firmware</strong> with the EFuse Key here: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_port.c#L386-L421"><code>blsp_port.c</code></a></p>
+<pre><code class="language-c">//  Set encryption config
+int32_t ATTR_TCM_SECTION BLSP_Boot2_Set_Encrypt(
+  uint8_t index,                    //  Region index
+  Boot_Image_Config *bootImgCfg) {  //  Boot image config pointer to hold parsed information
+  ...
+  //  Set AES Key
+  SF_Ctrl_AES_Set_Key_BE(
+      index, 
+      NULL,
+      (SF_Ctrl_AES_Key_Type) (bootImgCfg-&gt;encryptType - 1));
+
+  //  Set AES Initialisation Vector
+  SF_Ctrl_AES_Set_IV_BE(
+      index, 
+      bootImgCfg-&gt;aesiv,
+      bootImgCfg-&gt;imgStart.flashOffset);
+
+  //  Set AES Region
+  SF_Ctrl_AES_Set_Region(
+      index,
+      1,  //  Enable this region
+      1,  //  Hardware key
+      bootImgCfg-&gt;imgStart.flashOffset,
+      bootImgCfg-&gt;imgStart.flashOffset + len - 1,
+      bootImgCfg-&gt;aesRegionLock);
+
+  //  Enable AES decryption
+  SF_Ctrl_AES_Enable_BE();
+  SF_Ctrl_AES_Enable();
+</code></pre>
 <h1 id="bl602-firmware-boot-code" class="section-header"><a href="#bl602-firmware-boot-code">11 BL602 Firmware Boot Code</a></h1>
-<p>Today we studied the Boot Code in the <strong>BL602 Bootloader</strong> and <strong>BL602 Boot ROM</strong>…</p>
+<p>Today we looked at the Boot Code in the <strong>BL602 Bootloader</strong> and <strong>BL602 Boot ROM</strong>…</p>
 <p><em>We’ve seen all the BL602 Boot Code right?</em></p>
 <p>Wait… There’s more!</p>
 <p>TODO</p>
