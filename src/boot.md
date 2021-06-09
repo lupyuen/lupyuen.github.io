@@ -1092,6 +1092,8 @@ Stay Tuned!
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
+-   [Discuss the article on Reddit](https://www.reddit.com/r/RISCV/comments/nvli0k/bl602_bootloader/)
+
 -   [Read "The RISC-V BL602 Book"](https://lupyuen.github.io/articles/book)
 
 -   [Check out my articles](https://lupyuen.github.io)
@@ -1108,16 +1110,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  Checking the bootloader
 
-    TODO
-
     ![Comparing bl602_boot2 with blsp_boot2](https://lupyuen.github.io/images/boot-compare.png)
-
-    TODO
 
 1.  Rust Wrapper for ROM Driver API
 
-    TODO
-
     ![Rust Wrapper for ROM Driver API](https://lupyuen.github.io/images/boot-rust.png)
-
-    TODO
