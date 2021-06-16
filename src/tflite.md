@@ -24,11 +24,11 @@ _How a Human teaches a Machine to light up an LED..._
 
 > _Machine:_ OK I have been trained. I shall now use my trained model to infer the values of the wavy curve. And light up the LED in a fun and interesting way.
 
-This sounds like Science Fiction... But this is possible today!
+This sounds like Science Fiction... But __this is possible today!__
 
 (Except for the polite banter)
 
-Read on to learn out how Machine Learning (TensorFlow Lite) makes this possible on the BL602 RISC-V SoC.
+Read on to learn how __Machine Learning (TensorFlow Lite)__ makes this possible on the __BL602 RISC-V SoC__.
 
 # TensorFlow Lite Library
 
