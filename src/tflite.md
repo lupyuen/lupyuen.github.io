@@ -26,7 +26,35 @@ _How a Human teaches a Machine to light up an LED..._
 
 This sounds like Science Fiction... But this is possible today!
 
-(Except for the friendly banter)
+(Except for the polite banter)
+
+Read on to learn out how Machine Learning (TensorFlow Lite) makes this possible on the BL602 RISC-V SoC.
+
+# TensorFlow Lite Library
+
+TODO
+
+# TensorFlow Lite Firmware
+
+TODO
+
+# Load TensorFlow Model
+
+TODO
+
+# Run TensorFlow Inference
+
+TODO
+
+# Glow The LED
+
+TODO
+
+# Train TensorFlow Model
+
+TODO
+
+# What Can TensorFlow Do?
 
 TODO
 
