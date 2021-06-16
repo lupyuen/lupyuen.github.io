@@ -20,6 +20,11 @@ _Human:_ Like this...
 
 _Machine:_ OK I have been trained. I shall now use my trained model to infer the values of the wavy curve. And light up the LED in a fun and interesting way.
 
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |~ ~ ~ ~ ~ ~ ~ ~ ~ ~| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+|:---:|:---:|:---:|
+
+This sounds like Science Fiction... But this is possible today!
+
 TODO
 
 # What's Next
