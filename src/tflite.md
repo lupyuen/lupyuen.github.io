@@ -34,6 +34,20 @@ Read on to learn how __Machine Learning (TensorFlow Lite)__ makes this possible 
 
 TODO
 
+_What's a Tensor?_
+
+TODO
+
+_Why TensorFlow?_
+
+Because it doesn't drip, it flows 😂
+
+TODO
+
+_What's the "Lite" version of TensorFlow?_
+
+TODO
+
 # TensorFlow Lite Firmware
 
 TODO
