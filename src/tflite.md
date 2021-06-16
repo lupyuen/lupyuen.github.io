@@ -8,6 +8,8 @@ _How a Human teaches a Machine to light up an LED..._
 
 > _Machine:_ OK I shall light up the LED: on - off - on -off - on - off...
 
+![On - Off - On - Off](https://lupyuen.github.io/images/tflite-chart1.jpg)
+
 > _Human:_ That's not very fun and interesting
 
 > _Machine:_ OK Hooman... Define fun and interesting
@@ -17,6 +19,8 @@ _How a Human teaches a Machine to light up an LED..._
 > _Machine:_ Like a wavy curve? Please teach me to draw a wavy curve
 
 > _Human:_ Like this...
+
+![Wavy Curve](https://lupyuen.github.io/images/tflite-chart2.jpg)
 
 > _Machine:_ OK I have been trained. I shall now use my trained model to infer the values of the wavy curve. And light up the LED in a fun and interesting way.
 
