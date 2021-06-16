@@ -2,23 +2,23 @@
 
 📝 _22 Jun 2021_
 
-_How a Human teach a Machine to light up an LED..._
+_(How a Human teaches a Machine to light up an LED)_
 
-Human: Hello Machine, please light up the LED in a fun and interesting way.
+_Human:_ Hello Machine, please light up the LED in a fun and interesting way
 
-Machine: OK I shall light up the LED: on - off - on -off - on - off...
+_Machine:_ OK I shall light up the LED: on - off - on -off - on - off...
 
-Human: That's not very fun and interesting
+_Human:_ That's not very fun and interesting
 
-Machine: OK Hooman... Define fun and interesting
+_Machine:_ OK Hooman... Define fun and interesting
 
-Human: Make the LED glow gently brighter and dimmer, brighter and dimmer, and so on
+_Human:_ Make the LED glow gently brighter and dimmer, brighter and dimmer, and so on
 
-Machine: Like a wavy curve? Please teach me to draw a wavy curve
+_Machine:_ Like a wavy curve? Please teach me to draw a wavy curve
 
-Human: Like this...
+_Human:_ Like this...
 
-Machine: OK I have been trained. I shall now use my trained model to infer the values of the wavy curve. And light up the LED in a fun and interesting way.
+_Machine:_ OK I have been trained. I shall now use my trained model to infer the values of the wavy curve. And light up the LED in a fun and interesting way.
 
 TODO
 
