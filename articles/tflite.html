@@ -69,17 +69,19 @@
 <li><a href="#tensorflow-lite-firmware">2 TensorFlow Lite Firmware</a><ul>
 <li><a href="#build-the-firmware">2.1 Build the Firmware</a><ul></ul></li>
 <li><a href="#flash-the-firmware">2.2 Flash the Firmware</a><ul></ul></li>
-<li><a href="#run-the-firmware">2.3 Run the Firmware</a><ul></ul></li>
-<li><a href="#enter-tensorflow-commands">2.4 Enter TensorFlow Commands</a><ul></ul></li></ul></li>
-<li><a href="#how-accurate-is-it">3 How Accurate Is It?</a><ul></ul></li>
-<li><a href="#load-tensorflow-model">4 Load TensorFlow Model</a><ul></ul></li>
-<li><a href="#run-tensorflow-inference">5 Run TensorFlow Inference</a><ul></ul></li>
-<li><a href="#glow-the-led">6 Glow The LED</a><ul></ul></li>
-<li><a href="#train-tensorflow-model">7 Train TensorFlow Model</a><ul></ul></li>
-<li><a href="#what-can-tensorflow-do">8 What Can TensorFlow Do?</a><ul></ul></li>
-<li><a href="#optimise-tensorflow">9 Optimise TensorFlow</a><ul></ul></li>
-<li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
-<li><a href="#notes">11 Notes</a><ul></ul></li></ul></nav><p>📝 <em>22 Jun 2021</em></p>
+<li><a href="#run-the-firmware">2.3 Run the Firmware</a><ul></ul></li></ul></li>
+<li><a href="#machine-learning-in-action">3 Machine Learning in Action</a><ul>
+<li><a href="#load-the-model">3.1 Load the Model</a><ul></ul></li>
+<li><a href="#run-an-inference">3.2 Run an Inference</a><ul></ul></li></ul></li>
+<li><a href="#how-accurate-is-it">4 How Accurate Is It?</a><ul></ul></li>
+<li><a href="#load-tensorflow-model">5 Load TensorFlow Model</a><ul></ul></li>
+<li><a href="#run-tensorflow-inference">6 Run TensorFlow Inference</a><ul></ul></li>
+<li><a href="#glow-the-led">7 Glow The LED</a><ul></ul></li>
+<li><a href="#train-tensorflow-model">8 Train TensorFlow Model</a><ul></ul></li>
+<li><a href="#what-can-tensorflow-do">9 What Can TensorFlow Do?</a><ul></ul></li>
+<li><a href="#optimise-tensorflow">10 Optimise TensorFlow</a><ul></ul></li>
+<li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
+<li><a href="#notes">12 Notes</a><ul></ul></li></ul></nav><p>📝 <em>22 Jun 2021</em></p>
 <p>How a Human teaches a Machine to light up an LED…</p>
 <blockquote>
 <p><em>Human:</em> Hello Machine, please light up the LED in a fun and interesting way.</p>
@@ -107,6 +109,9 @@
 <blockquote>
 <p><em>Machine:</em> OK I have been trained. I shall now use my trained model to infer the values of the wavy curve. And light up the LED in a fun and interesting way.</p>
 </blockquote>
+<ul>
+<li><a href="https://youtu.be/EFpYJ3qsmEY"><strong>Watch the Demo Video on YouTube</strong></a></li>
+</ul>
 <p>This sounds like Science Fiction… But <strong>this is possible today!</strong></p>
 <p>(Except for the polite banter)</p>
 <p>Read on to learn how <strong>Machine Learning (TensorFlow Lite)</strong> makes this possible on the <strong>BL602 RISC-V SoC</strong>.</p>
@@ -281,56 +286,72 @@ cargo run flash sdk_app_tflite.bin --port COM5
 <p><strong>For macOS:</strong> Use CoolTerm (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>Alternatively:</strong> Use the Web Serial Terminal (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
+<p>We’re ready to enter the Machine Learning Commands into the BL602 Firmware!</p>
 <p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">More details on connecting to BL602</a></p>
-<h2 id="enter-tensorflow-commands" class="section-header"><a href="#enter-tensorflow-commands">2.4 Enter TensorFlow Commands</a></h2>
+<h1 id="machine-learning-in-action" class="section-header"><a href="#machine-learning-in-action">3 Machine Learning in Action</a></h1>
+<p>Remember this <strong>wavy curve</strong>?</p>
+<p><img src="https://lupyuen.github.io/images/tflite-chart2.jpg" alt="Wavy Curve" /></p>
+<p>We wanted to apply <strong>Machine Learning on BL602</strong> to…</p>
 <ol>
 <li>
-<p>TODO</p>
-<pre><code class="language-text"># init
-</code></pre>
+<p><strong>Learn</strong> the wavy curve</p>
 </li>
 <li>
-<p>TODO</p>
+<p><strong>Reproduce</strong> values from the wavy curve</p>
+</li>
+</ol>
+<p>Watch what happens when we enter the <strong>Machine Learning Commands</strong> into the BL602 Firmware.</p>
+<h2 id="load-the-model" class="section-header"><a href="#load-the-model">3.1 Load the Model</a></h2>
+<p>We enter this command to load BL602’s “brain” with knowledge about the wavy curve…</p>
+<pre><code class="language-text"># init
+</code></pre>
+<p>(Wow wouldn’t it be great if we could do this for our School Tests?)</p>
+<p>Technically we call this <strong>“Loading The TensorFlow Lite Model”.</strong></p>
+<p>The <strong>TensorFlow Lite Model</strong> works like a “brain dump” or “knowledge snapshot” that tells BL602 everything about the wavy curve.</p>
+<p>(How did we create the model? We’ll learn in a while)</p>
+<h2 id="run-an-inference" class="section-header"><a href="#run-an-inference">3.2 Run an Inference</a></h2>
+<p>Now that BL602 has loaded the TensorFlow Lite Model (and knows everything about the wavy curve), let’s test it!</p>
+<p>This command asks BL602 to <strong>infer the output value</strong> of the wavy curve, given the <strong>input value <code>0.1</code></strong>…</p>
 <pre><code class="language-text"># infer 0.1
 0.160969
 </code></pre>
-</li>
-<li>
-<p>TODO</p>
+<p>BL602 responds with the <strong>inferred output value <code>0.160969</code></strong></p>
+<p>Let’s test it with two more <strong>input values: <code>0.2</code> and <code>0.3</code></strong>…</p>
 <pre><code class="language-text"># infer 0.2
 0.262633
-</code></pre>
-<p>TODO</p>
-<pre><code class="language-text"># infer 0.3
+
+# infer 0.3
 0.372770
 </code></pre>
-</li>
-</ol>
+<p>BL602 responds with the <strong>inferred output values: <code>0.262633</code> and <code>0.372770</code></strong></p>
+<p>That’s how we <strong>load a TensorFlow Lite Model</strong> on BL602… And <strong>run an inference</strong> with the TensorFlow Lite Model!</p>
+<ul>
+<li><a href="https://youtu.be/cCzUFIdUfio"><strong>Watch the Demo Video on YouTube</strong></a></li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/tflite-run.png" alt="Run TensorFlow Firmware" /></p>
-<p>TODO</p>
-<h1 id="how-accurate-is-it" class="section-header"><a href="#how-accurate-is-it">3 How Accurate Is It?</a></h1>
+<h1 id="how-accurate-is-it" class="section-header"><a href="#how-accurate-is-it">4 How Accurate Is It?</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/tflite-compare.jpg" alt="Compare inferred vs actual values" /></p>
 <p>TODO</p>
-<h1 id="load-tensorflow-model" class="section-header"><a href="#load-tensorflow-model">4 Load TensorFlow Model</a></h1>
+<h1 id="load-tensorflow-model" class="section-header"><a href="#load-tensorflow-model">5 Load TensorFlow Model</a></h1>
 <p>TODO</p>
 <p><a href="https://www.tensorflow.org/lite/microcontrollers/get_started_low_level">“Get started with microcontrollers”</a></p>
 <p><a href="https://www.tensorflow.org/lite/microcontrollers/library">“Understand the C++ library”</a></p>
-<h1 id="run-tensorflow-inference" class="section-header"><a href="#run-tensorflow-inference">5 Run TensorFlow Inference</a></h1>
+<h1 id="run-tensorflow-inference" class="section-header"><a href="#run-tensorflow-inference">6 Run TensorFlow Inference</a></h1>
 <p>TODO</p>
-<h1 id="glow-the-led" class="section-header"><a href="#glow-the-led">6 Glow The LED</a></h1>
+<h1 id="glow-the-led" class="section-header"><a href="#glow-the-led">7 Glow The LED</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/tflite-glow.png" alt="Glowing the LED with TensorFlow Lite" /></p>
 <p>TODO</p>
-<h1 id="train-tensorflow-model" class="section-header"><a href="#train-tensorflow-model">7 Train TensorFlow Model</a></h1>
+<h1 id="train-tensorflow-model" class="section-header"><a href="#train-tensorflow-model">8 Train TensorFlow Model</a></h1>
 <p>TODO</p>
 <p><a href="https://www.tensorflow.org/lite/microcontrollers/build_convert">“Build and convert models”</a></p>
-<h1 id="what-can-tensorflow-do" class="section-header"><a href="#what-can-tensorflow-do">8 What Can TensorFlow Do?</a></h1>
+<h1 id="what-can-tensorflow-do" class="section-header"><a href="#what-can-tensorflow-do">9 What Can TensorFlow Do?</a></h1>
 <p>TODO</p>
-<h1 id="optimise-tensorflow" class="section-header"><a href="#optimise-tensorflow">9 Optimise TensorFlow</a></h1>
+<h1 id="optimise-tensorflow" class="section-header"><a href="#optimise-tensorflow">10 Optimise TensorFlow</a></h1>
 <p>TODO</p>
 <p><a href="https://www.tensorflow.org/lite/microcontrollers/library#optimized_kernels">“Optimised Kernels”</a></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">10 What’s Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">11 What’s Next</a></h1>
 <p>TODO</p>
 <ul>
 <li>
@@ -348,7 +369,7 @@ cargo run flash sdk_app_tflite.bin --port COM5
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/tflite.md"><code>lupyuen.github.io/src/tflite.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">11 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">12 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1402531760764641280">this Twitter Thread</a></li>
 </ol>
