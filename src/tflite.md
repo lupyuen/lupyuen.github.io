@@ -32,19 +32,57 @@ Read on to learn how __Machine Learning (TensorFlow Lite)__ makes this possible 
 
 # TensorFlow Lite Library
 
-TODO
+Remember in our story...
+
+1. Our Machine __learns to draw a wavy curve__
+
+1. Our Machine __reproduces the wavy curve__ (to light up the LED)
+
+To accomplish (1) and (2) on BL602, we shall use an open-source __Machine Learning__ library: [__TensorFlow Lite for Microcontrollers__](https://www.tensorflow.org/lite/microcontrollers)
 
 _What's a Tensor?_
 
+Remember these from our Math Textbook? __Scalar, Vector and Matrix__
+
 TODO
 
-_Why TensorFlow?_
+[(From TensorFlow Guide)](https://www.tensorflow.org/guide/tensor)
+
+When we extend a Matrix from 2D to 3D, it becomes a __Tensor With 3 Axes__...
+
+TODO
+
+And yes we can have a __Tensor With 4 or More Axes__!
+
+TODO
+
+__Tensors With Multiple Dimensions__ are really useful for crunching the numbers needed for Machine Learning.
+
+That's how the TensorFlow library works: Computing lots of Tensors.
+
+(Fortunately we won't need to compute any Tensors ourselves... The library does everything for us)
+
+[More about Tensors](https://www.tensorflow.org/guide/tensor)
+
+_Why is the library named TensorFlow?_
 
 Because it doesn't drip, it flows 😂
 
-TODO
+But seriously... In Machine Learning we push lots of numbers __(Tensors)__ through various math functions over specific paths __(Dataflow Graphs)__.
+
+That's why it's named __"TensorFlow"__
+
+(Yes it sounds like the Neural Network in our brain)
+
+[More about TensorFlow](https://en.m.wikipedia.org/wiki/TensorFlow)
 
 _What's the "Lite" version of TensorFlow?_
+
+TODO
+
+["Get started with microcontrollers"](https://www.tensorflow.org/lite/microcontrollers/get_started_low_level)
+
+["Understand the C++ library"](https://www.tensorflow.org/lite/microcontrollers/library)
 
 TODO
 
@@ -68,9 +106,17 @@ TODO
 
 TODO
 
+["Build and convert models"](https://www.tensorflow.org/lite/microcontrollers/build_convert)
+
 # What Can TensorFlow Do?
 
 TODO
+
+# Optimise TensorFlow
+
+TODO
+
+["Optimised Kernels"](https://www.tensorflow.org/lite/microcontrollers/library#optimized_kernels)
 
 # What's Next
 
