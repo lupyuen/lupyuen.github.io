@@ -66,15 +66,20 @@
     <h1 class="title">Machine Learning on RISC-V BL602 with TensorFlow Lite</h1>
     <nav id="TOC"><ul>
 <li><a href="#tensorflow-lite-library">1 TensorFlow Lite Library</a><ul></ul></li>
-<li><a href="#tensorflow-lite-firmware">2 TensorFlow Lite Firmware</a><ul></ul></li>
-<li><a href="#load-tensorflow-model">3 Load TensorFlow Model</a><ul></ul></li>
-<li><a href="#run-tensorflow-inference">4 Run TensorFlow Inference</a><ul></ul></li>
-<li><a href="#glow-the-led">5 Glow The LED</a><ul></ul></li>
-<li><a href="#train-tensorflow-model">6 Train TensorFlow Model</a><ul></ul></li>
-<li><a href="#what-can-tensorflow-do">7 What Can TensorFlow Do?</a><ul></ul></li>
-<li><a href="#optimise-tensorflow">8 Optimise TensorFlow</a><ul></ul></li>
-<li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
-<li><a href="#notes">10 Notes</a><ul></ul></li></ul></nav><p>📝 <em>22 Jun 2021</em></p>
+<li><a href="#tensorflow-lite-firmware">2 TensorFlow Lite Firmware</a><ul>
+<li><a href="#build-the-firmware">2.1 Build the Firmware</a><ul></ul></li>
+<li><a href="#flash-the-firmware">2.2 Flash the Firmware</a><ul></ul></li>
+<li><a href="#run-the-firmware">2.3 Run the Firmware</a><ul></ul></li>
+<li><a href="#enter-tensorflow-commands">2.4 Enter TensorFlow Commands</a><ul></ul></li></ul></li>
+<li><a href="#how-accurate-is-it">3 How Accurate Is It?</a><ul></ul></li>
+<li><a href="#load-tensorflow-model">4 Load TensorFlow Model</a><ul></ul></li>
+<li><a href="#run-tensorflow-inference">5 Run TensorFlow Inference</a><ul></ul></li>
+<li><a href="#glow-the-led">6 Glow The LED</a><ul></ul></li>
+<li><a href="#train-tensorflow-model">7 Train TensorFlow Model</a><ul></ul></li>
+<li><a href="#what-can-tensorflow-do">8 What Can TensorFlow Do?</a><ul></ul></li>
+<li><a href="#optimise-tensorflow">9 Optimise TensorFlow</a><ul></ul></li>
+<li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
+<li><a href="#notes">11 Notes</a><ul></ul></li></ul></nav><p>📝 <em>22 Jun 2021</em></p>
 <p>How a Human teaches a Machine to light up an LED…</p>
 <blockquote>
 <p><em>Human:</em> Hello Machine, please light up the LED in a fun and interesting way.</p>
@@ -153,31 +158,179 @@
 <li><a href="https://github.com/lupyuen/tflite-bl602"><strong><code>tflite-bl602</code> TensorFlow Lite Library for BL602</strong></a></li>
 </ul>
 <h1 id="tensorflow-lite-firmware" class="section-header"><a href="#tensorflow-lite-firmware">2 TensorFlow Lite Firmware</a></h1>
+<p>Let’s build, flash and run the TensorFlow Lite Firmware for BL602… And watch Machine Learning in action!</p>
+<h2 id="build-the-firmware" class="section-header"><a href="#build-the-firmware">2.1 Build the Firmware</a></h2>
+<p>Download the Firmware Binary File <strong><code>sdk_app_tflite.bin</code></strong> from…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/bl_iot_sdk/releases/tag/v10.0.0"><strong>Binary Release of <code>sdk_app_tflite</code></strong></a></li>
+</ul>
+<p>Alternatively, we may build the Firmware Binary File <code>sdk_app_tflite.bin</code> from the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/tflite/customer_app/sdk_app_tflite">source code</a>…</p>
+<pre><code class="language-bash"># Download the tflite branch of lupyuen's bl_iot_sdk
+git clone --recursive --branch tflite https://github.com/lupyuen/bl_iot_sdk
+
+# TODO: Change this to the full path of bl_iot_sdk
+export BL60X_SDK_PATH=$PWD/bl_iot_sdk
+export CONFIG_CHIP_NAME=BL602
+
+# Build the firmware
+cd bl_iot_sdk/customer_app/sdk_app_tflite
+make
+
+# TODO: Change ~/blflash to the full path of blflash
+cp build_out/sdk_app_tflite.bin ~/blflash
+</code></pre>
+<p><a href="https://lupyuen.github.io/articles/pinecone#building-firmware">More details on building bl_iot_sdk</a></p>
+<p>(Remember to use the <strong><code>tflite</code></strong> branch, not the default <strong><code>master</code></strong> branch)</p>
+<h2 id="flash-the-firmware" class="section-header"><a href="#flash-the-firmware">2.2 Flash the Firmware</a></h2>
+<p>Follow these steps to install <code>blflash</code>…</p>
+<ol>
+<li>
+<p><a href="https://lupyuen.github.io/articles/flash#install-rustup"><strong>“Install rustup”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/flash#download-and-build-blflash"><strong>“Download and build blflash”</strong></a></p>
+</li>
+</ol>
+<p>We assume that our Firmware Binary File <code>sdk_app_tflite.bin</code> has been copied to the <code>blflash</code> folder.</p>
+<p>Set BL602 to <strong>Flashing Mode</strong> and restart the board…</p>
+<p><strong>For PineCone:</strong></p>
+<ol>
+<li>
+<p>Set the <strong>PineCone Jumper (IO 8)</strong> to the <strong><code>H</code> Position</strong> <a href="https://lupyuen.github.io/images/pinecone-jumperh.jpg">(Like this)</a></p>
+</li>
+<li>
+<p>Press the Reset Button</p>
+</li>
+</ol>
+<p><strong>For BL10:</strong></p>
+<ol>
+<li>
+<p>Connect BL10 to the USB port</p>
+</li>
+<li>
+<p>Press and hold the <strong>D8 Button (GPIO 8)</strong></p>
+</li>
+<li>
+<p>Press and release the <strong>EN Button (Reset)</strong></p>
+</li>
+<li>
+<p>Release the D8 Button</p>
+</li>
+</ol>
+<p><strong>For Pinenut and MagicHome BL602:</strong></p>
+<ol>
+<li>
+<p>Disconnect the board from the USB Port</p>
+</li>
+<li>
+<p>Connect <strong>GPIO 8</strong> to <strong>3.3V</strong></p>
+</li>
+<li>
+<p>Reconnect the board to the USB port</p>
+</li>
+</ol>
+<p>Enter these commands to flash <code>sdk_app_tflite.bin</code> to BL602 over UART…</p>
+<pre><code class="language-bash"># TODO: Change ~/blflash to the full path of blflash
+cd ~/blflash
+
+# For Linux:
+sudo cargo run flash sdk_app_tflite.bin \
+    --port /dev/ttyUSB0
+
+# For macOS:
+cargo run flash sdk_app_tflite.bin \
+    --port /dev/tty.usbserial-1420 \
+    --initial-baud-rate 230400 \
+    --baud-rate 230400
+
+# For Windows: Change COM5 to the BL602 Serial Port
+cargo run flash sdk_app_tflite.bin --port COM5
+</code></pre>
+<p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">More details on flashing firmware</a></p>
+<h2 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">2.3 Run the Firmware</a></h2>
+<p>Set BL602 to <strong>Normal Mode</strong> (Non-Flashing) and restart the board…</p>
+<p><strong>For PineCone:</strong></p>
+<ol>
+<li>
+<p>Set the <strong>PineCone Jumper (IO 8)</strong> to the <strong><code>L</code> Position</strong> <a href="https://lupyuen.github.io/images/pinecone-jumperl.jpg">(Like this)</a></p>
+</li>
+<li>
+<p>Press the Reset Button</p>
+</li>
+</ol>
+<p><strong>For BL10:</strong></p>
+<ol>
+<li>Press and release the <strong>EN Button (Reset)</strong></li>
+</ol>
+<p><strong>For Pinenut and MagicHome BL602:</strong></p>
+<ol>
+<li>
+<p>Disconnect the board from the USB Port</p>
+</li>
+<li>
+<p>Connect <strong>GPIO 8</strong> to <strong>GND</strong></p>
+</li>
+<li>
+<p>Reconnect the board to the USB port</p>
+</li>
+</ol>
+<p>After restarting, connect to BL602’s UART Port at 2 Mbps like so…</p>
+<p><strong>For Linux:</strong></p>
+<pre><code class="language-bash">sudo screen /dev/ttyUSB0 2000000
+</code></pre>
+<p><strong>For macOS:</strong> Use CoolTerm (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
+<p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
+<p><strong>Alternatively:</strong> Use the Web Serial Terminal (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
+<p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">More details on connecting to BL602</a></p>
+<h2 id="enter-tensorflow-commands" class="section-header"><a href="#enter-tensorflow-commands">2.4 Enter TensorFlow Commands</a></h2>
+<ol>
+<li>
 <p>TODO</p>
-<p>https://github.com/lupyuen/bl_iot_sdk/releases/tag/v10.0.0</p>
+<pre><code class="language-text"># init
+</code></pre>
+</li>
+<li>
+<p>TODO</p>
+<pre><code class="language-text"># infer 0.1
+0.160969
+</code></pre>
+</li>
+<li>
+<p>TODO</p>
+<pre><code class="language-text"># infer 0.2
+0.262633
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-text"># infer 0.3
+0.372770
+</code></pre>
+</li>
+</ol>
 <p><img src="https://lupyuen.github.io/images/tflite-run.png" alt="Run TensorFlow Firmware" /></p>
+<p>TODO</p>
+<h1 id="how-accurate-is-it" class="section-header"><a href="#how-accurate-is-it">3 How Accurate Is It?</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/tflite-compare.jpg" alt="Compare inferred vs actual values" /></p>
 <p>TODO</p>
+<h1 id="load-tensorflow-model" class="section-header"><a href="#load-tensorflow-model">4 Load TensorFlow Model</a></h1>
+<p>TODO</p>
 <p><a href="https://www.tensorflow.org/lite/microcontrollers/get_started_low_level">“Get started with microcontrollers”</a></p>
 <p><a href="https://www.tensorflow.org/lite/microcontrollers/library">“Understand the C++ library”</a></p>
-<h1 id="load-tensorflow-model" class="section-header"><a href="#load-tensorflow-model">3 Load TensorFlow Model</a></h1>
+<h1 id="run-tensorflow-inference" class="section-header"><a href="#run-tensorflow-inference">5 Run TensorFlow Inference</a></h1>
 <p>TODO</p>
-<h1 id="run-tensorflow-inference" class="section-header"><a href="#run-tensorflow-inference">4 Run TensorFlow Inference</a></h1>
-<p>TODO</p>
-<h1 id="glow-the-led" class="section-header"><a href="#glow-the-led">5 Glow The LED</a></h1>
+<h1 id="glow-the-led" class="section-header"><a href="#glow-the-led">6 Glow The LED</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/tflite-glow.png" alt="Glowing the LED with TensorFlow Lite" /></p>
 <p>TODO</p>
-<h1 id="train-tensorflow-model" class="section-header"><a href="#train-tensorflow-model">6 Train TensorFlow Model</a></h1>
+<h1 id="train-tensorflow-model" class="section-header"><a href="#train-tensorflow-model">7 Train TensorFlow Model</a></h1>
 <p>TODO</p>
 <p><a href="https://www.tensorflow.org/lite/microcontrollers/build_convert">“Build and convert models”</a></p>
-<h1 id="what-can-tensorflow-do" class="section-header"><a href="#what-can-tensorflow-do">7 What Can TensorFlow Do?</a></h1>
+<h1 id="what-can-tensorflow-do" class="section-header"><a href="#what-can-tensorflow-do">8 What Can TensorFlow Do?</a></h1>
 <p>TODO</p>
-<h1 id="optimise-tensorflow" class="section-header"><a href="#optimise-tensorflow">8 Optimise TensorFlow</a></h1>
+<h1 id="optimise-tensorflow" class="section-header"><a href="#optimise-tensorflow">9 Optimise TensorFlow</a></h1>
 <p>TODO</p>
 <p><a href="https://www.tensorflow.org/lite/microcontrollers/library#optimized_kernels">“Optimised Kernels”</a></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">9 What’s Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">10 What’s Next</a></h1>
 <p>TODO</p>
 <ul>
 <li>
@@ -195,7 +348,7 @@
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/tflite.md"><code>lupyuen.github.io/src/tflite.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">10 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">11 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1402531760764641280">this Twitter Thread</a></li>
 </ol>
