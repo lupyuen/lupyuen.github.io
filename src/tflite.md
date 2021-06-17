@@ -96,6 +96,14 @@ Today we shall study the TensorFlow Lite library that has been ported to BL602..
 
 TODO
 
+![Run TensorFlow Firmware](https://lupyuen.github.io/images/tflite-run.png)
+
+TODO
+
+![Compare inferred vs actual values](https://lupyuen.github.io/images/tflite-compare.jpg)
+
+TODO
+
 ["Get started with microcontrollers"](https://www.tensorflow.org/lite/microcontrollers/get_started_low_level)
 
 ["Understand the C++ library"](https://www.tensorflow.org/lite/microcontrollers/library)
@@ -109,6 +117,10 @@ TODO
 TODO
 
 # Glow The LED
+
+TODO
+
+![Glowing the LED with TensorFlow Lite](https://lupyuen.github.io/images/tflite-glow.png)
 
 TODO
 
@@ -147,3 +159,88 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1402531760764641280)
+
+![](https://lupyuen.github.io/images/tflite-build.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/tflite-cmath.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/tflite-commands.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/tflite-cppflags.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/tflite-cppflags2.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/tflite-dsohandle.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/tflite-gemmlowp.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/tflite-gemmlowp2.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/tflite-infer.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/tflite-initstatic.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/tflite-math.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/tflite-flatbuffers.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/tflite-ruy.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/tflite-setup.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/tflite-loop.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/tflite-source.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/tflite-static.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/tflite-undefined.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/tflite-undefined2.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/tflite-undefined3.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/tflite-undefined4.png)
+
+TODO
+
