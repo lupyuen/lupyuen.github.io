@@ -54,8 +54,6 @@ TODO
 
 And yes we can have a __Tensor With 4 or More Axes__!
 
-TODO
-
 __Tensors With Multiple Dimensions__ are really useful for crunching the numbers needed for Machine Learning.
 
 That's how the TensorFlow library works: Computing lots of Tensors.
