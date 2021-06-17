@@ -72,8 +72,9 @@
 <li><a href="#glow-the-led">5 Glow The LED</a><ul></ul></li>
 <li><a href="#train-tensorflow-model">6 Train TensorFlow Model</a><ul></ul></li>
 <li><a href="#what-can-tensorflow-do">7 What Can TensorFlow Do?</a><ul></ul></li>
-<li><a href="#whats-next">8 What’s Next</a><ul></ul></li>
-<li><a href="#notes">9 Notes</a><ul></ul></li></ul></nav><p>📝 <em>22 Jun 2021</em></p>
+<li><a href="#optimise-tensorflow">8 Optimise TensorFlow</a><ul></ul></li>
+<li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
+<li><a href="#notes">10 Notes</a><ul></ul></li></ul></nav><p>📝 <em>22 Jun 2021</em></p>
 <p>How a Human teaches a Machine to light up an LED…</p>
 <blockquote>
 <p><em>Human:</em> Hello Machine, please light up the LED in a fun and interesting way.</p>
@@ -105,13 +106,38 @@
 <p>(Except for the polite banter)</p>
 <p>Read on to learn how <strong>Machine Learning (TensorFlow Lite)</strong> makes this possible on the <strong>BL602 RISC-V SoC</strong>.</p>
 <h1 id="tensorflow-lite-library" class="section-header"><a href="#tensorflow-lite-library">1 TensorFlow Lite Library</a></h1>
-<p>TODO</p>
+<p>Remember in our story…</p>
+<ol>
+<li>
+<p>Our Machine <strong>learns to draw a wavy curve</strong></p>
+</li>
+<li>
+<p>Our Machine <strong>reproduces the wavy curve</strong> (to light up the LED)</p>
+</li>
+</ol>
+<p>To accomplish (1) and (2) on BL602, we shall use an open-source <strong>Machine Learning</strong> library: <a href="https://www.tensorflow.org/lite/microcontrollers"><strong>TensorFlow Lite for Microcontrollers</strong></a></p>
 <p><em>What’s a Tensor?</em></p>
+<p>Remember these from our Math Textbook? <strong>Scalar, Vector and Matrix</strong></p>
 <p>TODO</p>
-<p><em>Why TensorFlow?</em></p>
+<p><a href="https://www.tensorflow.org/guide/tensor">(From TensorFlow Guide)</a></p>
+<p>When we extend a Matrix from 2D to 3D, it becomes a <strong>Tensor With 3 Axes</strong>…</p>
+<p>TODO</p>
+<p>And yes we can have a <strong>Tensor With 4 or More Axes</strong>!</p>
+<p>TODO</p>
+<p><strong>Tensors With Multiple Dimensions</strong> are really useful for crunching the numbers needed for Machine Learning.</p>
+<p>That’s how the TensorFlow library works: Computing lots of Tensors.</p>
+<p>(Fortunately we won’t need to compute any Tensors ourselves… The library does everything for us)</p>
+<p><a href="https://www.tensorflow.org/guide/tensor">More about Tensors</a></p>
+<p><em>Why is the library named TensorFlow?</em></p>
 <p>Because it doesn’t drip, it flows 😂</p>
-<p>TODO</p>
+<p>But seriously… In Machine Learning we push lots of numbers <strong>(Tensors)</strong> through various math functions over specific paths <strong>(Dataflow Graphs)</strong>.</p>
+<p>That’s why it’s named <strong>“TensorFlow”</strong></p>
+<p>(Yes it sounds like the Neural Network in our brain)</p>
+<p><a href="https://en.m.wikipedia.org/wiki/TensorFlow">More about TensorFlow</a></p>
 <p><em>What’s the “Lite” version of TensorFlow?</em></p>
+<p>TODO</p>
+<p><a href="https://www.tensorflow.org/lite/microcontrollers/get_started_low_level">“Get started with microcontrollers”</a></p>
+<p><a href="https://www.tensorflow.org/lite/microcontrollers/library">“Understand the C++ library”</a></p>
 <p>TODO</p>
 <h1 id="tensorflow-lite-firmware" class="section-header"><a href="#tensorflow-lite-firmware">2 TensorFlow Lite Firmware</a></h1>
 <p>TODO</p>
@@ -123,9 +149,13 @@
 <p>TODO</p>
 <h1 id="train-tensorflow-model" class="section-header"><a href="#train-tensorflow-model">6 Train TensorFlow Model</a></h1>
 <p>TODO</p>
+<p><a href="https://www.tensorflow.org/lite/microcontrollers/build_convert">“Build and convert models”</a></p>
 <h1 id="what-can-tensorflow-do" class="section-header"><a href="#what-can-tensorflow-do">7 What Can TensorFlow Do?</a></h1>
 <p>TODO</p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">8 What’s Next</a></h1>
+<h1 id="optimise-tensorflow" class="section-header"><a href="#optimise-tensorflow">8 Optimise TensorFlow</a></h1>
+<p>TODO</p>
+<p><a href="https://www.tensorflow.org/lite/microcontrollers/library#optimized_kernels">“Optimised Kernels”</a></p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">9 What’s Next</a></h1>
 <p>TODO</p>
 <ul>
 <li>
@@ -143,7 +173,7 @@
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/tflite.md"><code>lupyuen.github.io/src/tflite.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">9 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">10 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1402531760764641280">this Twitter Thread</a></li>
 </ol>
