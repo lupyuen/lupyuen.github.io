@@ -96,6 +96,8 @@ Today we shall study the TensorFlow Lite library that has been ported to BL602..
 
 TODO
 
+https://github.com/lupyuen/bl_iot_sdk/releases/tag/v10.0.0
+
 ![Run TensorFlow Firmware](https://lupyuen.github.io/images/tflite-run.png)
 
 TODO
