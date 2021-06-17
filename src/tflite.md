@@ -267,6 +267,8 @@ This command asks BL602 to __infer the output value__ of the wavy curve, given t
 
 BL602 responds with the __inferred output value `0.160969`__
 
+![Infer Output Value](https://lupyuen.github.io/images/tflite-chart3.png)
+
 Let's test it with two more __input values: `0.2` and `0.3`__...
 
 ```text
