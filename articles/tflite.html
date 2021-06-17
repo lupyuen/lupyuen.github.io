@@ -134,12 +134,28 @@
 <p>(Yes it sounds like the Neural Network in our brain)</p>
 <p><a href="https://en.m.wikipedia.org/wiki/TensorFlow">More about TensorFlow</a></p>
 <p><em>What’s the “Lite” version of TensorFlow?</em></p>
+<p>TensorFlow normally runs on powerful servers to perform Machine Learning tasks. (Like Speech Recognition and Image Recognition)</p>
+<p>We’re using <strong>TensorFlow Lite</strong>, which is <strong>optimised for microcontrollers</strong>…</p>
+<ol>
+<li>
+<p>Works on microcontrollers with <strong>limited RAM</strong></p>
+<p>(Including Arduino, Arm and ESP32)</p>
+</li>
+<li>
+<p>Uses <strong>Static Memory</strong> instead of Dynamic Memory (Heap)</p>
+</li>
+<li>
+<p>But it only supports <strong>Basic Models</strong> of Machine Learning</p>
+</li>
+</ol>
+<p>Today we shall study the TensorFlow Lite library that has been ported to BL602…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/tflite-bl602"><strong><code>tflite-bl602</code> TensorFlow Lite Library for BL602</strong></a></li>
+</ul>
+<h1 id="tensorflow-lite-firmware" class="section-header"><a href="#tensorflow-lite-firmware">2 TensorFlow Lite Firmware</a></h1>
 <p>TODO</p>
 <p><a href="https://www.tensorflow.org/lite/microcontrollers/get_started_low_level">“Get started with microcontrollers”</a></p>
 <p><a href="https://www.tensorflow.org/lite/microcontrollers/library">“Understand the C++ library”</a></p>
-<p>TODO</p>
-<h1 id="tensorflow-lite-firmware" class="section-header"><a href="#tensorflow-lite-firmware">2 TensorFlow Lite Firmware</a></h1>
-<p>TODO</p>
 <h1 id="load-tensorflow-model" class="section-header"><a href="#load-tensorflow-model">3 Load TensorFlow Model</a></h1>
 <p>TODO</p>
 <h1 id="run-tensorflow-inference" class="section-header"><a href="#run-tensorflow-inference">4 Run TensorFlow Inference</a></h1>
