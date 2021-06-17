@@ -76,17 +76,29 @@ That's why it's named __"TensorFlow"__
 
 _What's the "Lite" version of TensorFlow?_
 
+TensorFlow normally runs on powerful servers to perform Machine Learning tasks. (Like Speech Recognition and Image Recognition)
+
+We're using __TensorFlow Lite__, which is __optimised for microcontrollers__...
+
+1.  Works on microcontrollers with __limited RAM__
+
+    (Including Arduino, Arm and ESP32)
+
+1.  Uses __Static Memory__ instead of Dynamic Memory (Heap)
+
+1.  But it only supports __Basic Models__ of Machine Learning
+
+Today we shall study the TensorFlow Lite library that has been ported to BL602...
+
+-   [__`tflite-bl602` TensorFlow Lite Library for BL602__](https://github.com/lupyuen/tflite-bl602)
+
+# TensorFlow Lite Firmware
+
 TODO
 
 ["Get started with microcontrollers"](https://www.tensorflow.org/lite/microcontrollers/get_started_low_level)
 
 ["Understand the C++ library"](https://www.tensorflow.org/lite/microcontrollers/library)
-
-TODO
-
-# TensorFlow Lite Firmware
-
-TODO
 
 # Load TensorFlow Model
 
