@@ -44,19 +44,19 @@ _What's a Tensor?_
 
 Remember these from our Math Textbook? __Scalar, Vector and Matrix__
 
-TODO
+![Scalar, Vector, Matrix](https://lupyuen.github.io/images/tflite-matrix.png)
 
 [(From TensorFlow Guide)](https://www.tensorflow.org/guide/tensor)
 
-When we extend a Matrix from 2D to 3D, it becomes a __Tensor With 3 Axes__...
+When we extend a Matrix from 2D to 3D, we get a __Tensor With 3 Axes__...
 
-TODO
+![Tensor with 3 and 4 Axes](https://lupyuen.github.io/images/tflite-tensor.png)
 
 And yes we can have a __Tensor With 4 or More Axes__!
 
 __Tensors With Multiple Dimensions__ are really useful for crunching the numbers needed for Machine Learning.
 
-That's how the TensorFlow library works: Computing lots of Tensors.
+That's how the TensorFlow library works: __Computing lots of Tensors__.
 
 (Fortunately we won't need to compute any Tensors ourselves... The library does everything for us)
 
