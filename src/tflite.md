@@ -24,6 +24,8 @@ How a Human teaches a Machine to light up an LED...
 
 > _Machine:_ OK I have been trained. I shall now use my trained model to infer the values of the wavy curve. And light up the LED in a fun and interesting way.
 
+-   [__Watch the Demo Video on YouTube__](https://youtu.be/EFpYJ3qsmEY)
+
 This sounds like Science Fiction... But __this is possible today!__
 
 (Except for the polite banter)
@@ -218,40 +220,70 @@ __For Windows:__ Use `putty` ([See this](https://lupyuen.github.io/articles/flas
 
 __Alternatively:__ Use the Web Serial Terminal ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
 
+We're ready to enter the Machine Learning Commands into the BL602 Firmware!
+
 [More details on connecting to BL602](https://lupyuen.github.io/articles/flash#watch-the-firmware-run)
 
-## Enter TensorFlow Commands
+# Machine Learning in Action
 
-1.  TODO
+Remember this __wavy curve__?
 
-    ```text
-    # init
-    ```
+![Wavy Curve](https://lupyuen.github.io/images/tflite-chart2.jpg)
 
-1.  TODO
+We wanted to apply __Machine Learning on BL602__ to...
 
-    ```text
-    # infer 0.1
-    0.160969
-    ```
+1.  __Learn__ the wavy curve
 
-1.  TODO
+1.  __Reproduce__ values from the wavy curve
 
-    ```text
-    # infer 0.2
-    0.262633
-    ```
+Watch what happens when we enter the __Machine Learning Commands__ into the BL602 Firmware.
 
-    TODO
+## Load the Model
 
-    ```text
-    # infer 0.3
-    0.372770
-    ```
+We enter this command to load BL602's "brain" with knowledge about the wavy curve...
+
+```text
+# init
+```
+
+(Wow wouldn't it be great if we could do this for our School Tests?)
+
+Technically we call this __"Loading The TensorFlow Lite Model".__
+
+The __TensorFlow Lite Model__ works like a "brain dump" or "knowledge snapshot" that tells BL602 everything about the wavy curve.
+
+(How did we create the model? We'll learn in a while)
+
+## Run an Inference
+
+Now that BL602 has loaded the TensorFlow Lite Model (and knows everything about the wavy curve), let's test it!
+
+This command asks BL602 to __infer the output value__ of the wavy curve, given the __input value `0.1`__...
+
+```text
+# infer 0.1
+0.160969
+```
+
+BL602 responds with the __inferred output value `0.160969`__
+
+Let's test it with two more __input values: `0.2` and `0.3`__...
+
+```text
+# infer 0.2
+0.262633
+
+# infer 0.3
+0.372770
+```
+
+BL602 responds with the __inferred output values: `0.262633` and `0.372770`__
+
+That's how we __load a TensorFlow Lite Model__ on BL602... And __run an inference__ with the TensorFlow Lite Model!
+
+-   [__Watch the Demo Video on YouTube__](https://youtu.be/cCzUFIdUfio)
 
 ![Run TensorFlow Firmware](https://lupyuen.github.io/images/tflite-run.png)
-
-TODO
 
 # How Accurate Is It?
 
