@@ -335,11 +335,130 @@ We'll watch the glowing LED in a while!
 
 TODO
 
-["Get started with microcontrollers"](https://www.tensorflow.org/lite/microcontrollers/get_started_low_level)
+From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/demo.c#L21-L24)
 
-["Understand the C++ library"](https://www.tensorflow.org/lite/microcontrollers/library)
+```c
+/// Command to load the TensorFlow Model (Sine Wave)
+static void init(char *buf, int len, int argc, char **argv) {
+    load_model();
+}
+```
+
+TODO
+
+From [`main_functions.cc`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/main_functions.cc#L41-L84)
+
+```c
+// Load the TensorFlow Lite Model into Static Memory
+void load_model() {
+  tflite::InitializeTarget();
+
+  // Set up logging. Google style is to avoid globals or statics because of
+  // lifetime uncertainty, but since this has a trivial destructor it's okay.
+  // NOLINTNEXTLINE(runtime-global-variables)
+  static tflite::MicroErrorReporter micro_error_reporter;
+  error_reporter = &micro_error_reporter;
+
+  // Map the model into a usable data structure. This doesn't involve any
+  // copying or parsing, it's a very lightweight operation.
+  model = tflite::GetModel(g_model);
+  if (model->version() != TFLITE_SCHEMA_VERSION) {
+    TF_LITE_REPORT_ERROR(error_reporter,
+                         "Model provided is schema version %d not equal "
+                         "to supported version %d.",
+                         model->version(), TFLITE_SCHEMA_VERSION);
+    return;
+  }
+
+  // This pulls in all the operation implementations we need.
+  // NOLINTNEXTLINE(runtime-global-variables)
+  static tflite::AllOpsResolver resolver;
+
+  // Build an interpreter to run the model with.
+  static tflite::MicroInterpreter static_interpreter(
+      model, resolver, tensor_arena, kTensorArenaSize, error_reporter);
+  interpreter = &static_interpreter;
+
+  // Allocate memory from the tensor_arena for the model's tensors.
+  TfLiteStatus allocate_status = interpreter->AllocateTensors();
+  if (allocate_status != kTfLiteOk) {
+    TF_LITE_REPORT_ERROR(error_reporter, "AllocateTensors() failed");
+    return;
+  }
+
+  // Obtain pointers to the model's input and output tensors.
+  input = interpreter->input(0);
+  output = interpreter->output(0);
+
+  // Keep track of how many inferences we have performed.
+  inference_count = 0;
+}
+```
+
+TODO
+
+-   ["TensorFlow Lite: Get started with microcontrollers"](https://www.tensorflow.org/lite/microcontrollers/get_started_low_level)
+
+-   ["TensorFlow Lite: Understand the C++ library"](https://www.tensorflow.org/lite/microcontrollers/library)
 
 # Run TensorFlow Inference
+
+TODO
+
+From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/demo.c#L26-L37)
+
+```c
+/// Command to infer values with TensorFlow Model (Sine Wave)
+static void infer(char *buf, int len, int argc, char **argv) {
+    //  Convert the argument to float
+    if (argc != 2) { printf("Usage: infer <float>\r\n"); return; }
+    float input = atof(argv[1]);
+
+    //  Run the inference
+    float result = run_inference(input);
+
+    //  Show the result
+    printf("%f\r\n", result);
+}
+```
+
+TODO
+
+From [`main_functions.cc`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/main_functions.cc#L86-L116)
+
+```c
+// Run an inference with the loaded TensorFlow Lite Model.
+// Return the output value inferred by the model.
+float run_inference(
+  float x) {  //  Value to be fed into the model
+
+  // Quantize the input from floating-point to integer
+  int8_t x_quantized = x / input->params.scale + input->params.zero_point;
+  // Place the quantized input in the model's input tensor
+  input->data.int8[0] = x_quantized;
+
+  // Run inference, and report any error
+  TfLiteStatus invoke_status = interpreter->Invoke();
+  if (invoke_status != kTfLiteOk) {
+    TF_LITE_REPORT_ERROR(error_reporter, "Invoke failed on x: %f\n",
+                         static_cast<double>(x));
+    return 0;
+  }
+
+  // Obtain the quantized output from model's output tensor
+  int8_t y_quantized = output->data.int8[0];
+  // Dequantize the output from integer to floating-point
+  float y = (y_quantized - output->params.zero_point) * output->params.scale;
+
+  // Increment the inference_counter, and reset it if we have reached
+  // the total number per cycle
+  inference_count += 1;
+  if (inference_count >= kInferencesPerCycle) inference_count = 0;
+
+  // Output the results
+  return y;
+}
+```
 
 TODO
 
