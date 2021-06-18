@@ -331,8 +331,20 @@ cargo run flash sdk_app_tflite.bin --port COM5
 </ul>
 <p><img src="https://lupyuen.github.io/images/tflite-run.png" alt="Run TensorFlow Firmware" /></p>
 <h1 id="how-accurate-is-it" class="section-header"><a href="#how-accurate-is-it">4 How Accurate Is It?</a></h1>
-<p>TODO</p>
+<p><em>The wavy curve looks familiar…?</em></p>
+<p><img src="https://lupyuen.github.io/images/tflite-chart2.jpg" alt="Wavy Curve" /></p>
+<p>Yes it’s actually the Sine Function!</p>
+<blockquote>
+<p><code>y = sin( x )</code></p>
+</blockquote>
+<p><em>So we were using a TensorFlow Lite Model for the Sine Function?</em></p>
+<p>Right! The <strong><code>&quot;init&quot;</code></strong> command from the previous chapter loads a TensorFlow Lite Model that’s trained for the Sine Function.</p>
+<p><em>How accurate are the values inferred by the model?</em></p>
+<p>Sadly Machine Learning Models are rarely 100% accurate.</p>
+<p>Here’s a comparison of the values inferred by the model (left) and the actual values (right)…</p>
 <p><img src="https://lupyuen.github.io/images/tflite-compare.jpg" alt="Compare inferred vs actual values" /></p>
+<p>TODO</p>
+<p><em>How did we get the TensorFlow Lite Model?</em></p>
 <p>TODO</p>
 <h1 id="load-tensorflow-model" class="section-header"><a href="#load-tensorflow-model">5 Load TensorFlow Model</a></h1>
 <p>TODO</p>
