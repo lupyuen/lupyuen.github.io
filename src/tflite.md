@@ -293,27 +293,43 @@ _The wavy curve looks familiar...?_
 
 ![Wavy Curve](https://lupyuen.github.io/images/tflite-chart2.jpg)
 
-Yes it's actually the Sine Function!
+Yes it was the __Sine Function__ all along!
 
-> `y = sin( x )`
+> __`y = sin( x )`__
+
+(Input value `x` is in radians, not degrees)
 
 _So we were using a TensorFlow Lite Model for the Sine Function?_
 
-Right! The __`"init"`__ command from the previous chapter loads a TensorFlow Lite Model that's trained for the Sine Function.
+Right! The __"`init`"__ command from the previous chapter loads a TensorFlow Lite Model that's __trained with the Sine Function.__
 
 _How accurate are the values inferred by the model?_
 
-Sadly Machine Learning Models are rarely 100% accurate.
+Sadly Machine Learning Models are __rarely 100% accurate.__
 
-Here's a comparison of the values inferred by the model (left) and the actual values (right)...
+Here's a comparison of the __values inferred by the model (left)__ and the __actual values (right)__...
 
 ![Compare inferred vs actual values](https://lupyuen.github.io/images/tflite-compare.jpg)
 
-TODO
+_But we can train the model to be more accurate right?_
 
-_How did we get the TensorFlow Lite Model?_
+Training the Machine Learning Model on too much data may cause __Overfitting__...
 
-TODO
+When we vary the input value slightly, the __output value may fluctuate wildly__.
+
+(We definitely don't want our LED to glow erratically!)
+
+[More about Overfitting](https://en.wikipedia.org/wiki/Overfitting)
+
+_Is the model accurate enough?_
+
+Depends how we'll be using the model.
+
+For glowing an LED it's probably OK to use a Machine Learning Model that's accurate to [__1 Significant Digit__](https://en.wikipedia.org/wiki/Significant_figures).
+
+We'll watch the glowing LED in a while!
+
+[(The TensorFlow Lite Model came from this sample code)](https://github.com/tensorflow/tflite-micro/tree/main/tensorflow/lite/micro/examples/hello_world)
 
 # Load TensorFlow Model
 
