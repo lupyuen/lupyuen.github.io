@@ -397,11 +397,10 @@ namespace {
 </ul>
 <p>Now we study the code that populates the above Global Variables.</p>
 <h1 id="load-tensorflow-model" class="section-header"><a href="#load-tensorflow-model">6 Load TensorFlow Model</a></h1>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/demo.c#L21-L24"><code>demo.c</code></a></p>
+<p>Here’s the <strong>“<code>init</code>”</strong> command for our BL602 Firmware: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/demo.c#L21-L24"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// Command to load the TensorFlow Model (Sine Wave)
 static void init(char *buf, int len, int argc, char **argv) {
-    load_model();
+  load_model();
 }
 </code></pre>
 <p>TODO</p>
@@ -462,20 +461,19 @@ void load_model() {
 </li>
 </ul>
 <h1 id="run-tensorflow-inference" class="section-header"><a href="#run-tensorflow-inference">7 Run TensorFlow Inference</a></h1>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/demo.c#L26-L37"><code>demo.c</code></a></p>
+<p>Here’s the <strong>“<code>infer</code>”</strong> command for our BL602 Firmware: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/demo.c#L26-L37"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// Command to infer values with TensorFlow Model (Sine Wave)
 static void infer(char *buf, int len, int argc, char **argv) {
-    //  Convert the argument to float
-    if (argc != 2) { printf(&quot;Usage: infer &lt;float&gt;\r\n&quot;); return; }
-    float input = atof(argv[1]);
+  //  Convert the argument to float
+  if (argc != 2) { printf(&quot;Usage: infer &lt;float&gt;\r\n&quot;); return; }
+  float input = atof(argv[1]);
 </code></pre>
 <p>TODO</p>
-<pre><code class="language-c">    //  Run the inference
-    float result = run_inference(input);
+<pre><code class="language-c">  //  Run the inference
+  float result = run_inference(input);
 
-    //  Show the result
-    printf(&quot;%f\r\n&quot;, result);
+  //  Show the result
+  printf(&quot;%f\r\n&quot;, result);
 }
 </code></pre>
 <p>TODO</p>
