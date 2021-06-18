@@ -444,7 +444,14 @@ Which will be used in the next chapter to run inferences.
 
 # Run TensorFlow Inference
 
-Now we look at the __"`infer`" command__ in our BL602 Firmware: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/demo.c#L26-L37)
+Earlier we entered this command to __run an inference__ with the TensorFlow Lite Model...
+
+```text
+# infer 0.1
+0.160969
+```
+
+Here's the __"`infer`" command__ in our BL602 Firmware: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/demo.c#L26-L37)
 
 ```c
 /// Command to infer values with TensorFlow Lite Model (Sine Wave)
