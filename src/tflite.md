@@ -335,35 +335,33 @@ We'll watch the glowing LED in a while!
 
 Let's study the code inside the TensorFlow Lite Firmware for BL602... To understand how it __loads the TensorFlow Lite Model and runs inferences.__
 
-Here are the __Global Variables__ needed for TensorFlow Lite: [`main_functions.cc`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/main_functions.cc#L28-L39)
+Here are the __C++ Global Variables__ needed for TensorFlow Lite: [`main_functions.cc`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/main_functions.cc#L28-L39)
 
 ```c
 // Globals for TensorFlow Lite
 namespace {
-    tflite::ErrorReporter* error_reporter = nullptr;
-    const tflite::Model* model = nullptr;
-    tflite::MicroInterpreter* interpreter = nullptr;
-    TfLiteTensor* input = nullptr;
-    TfLiteTensor* output = nullptr;
+  tflite::ErrorReporter* error_reporter = nullptr;
+  const tflite::Model* model = nullptr;
+  tflite::MicroInterpreter* interpreter = nullptr;
+  TfLiteTensor* input = nullptr;
+  TfLiteTensor* output = nullptr;
 
-    constexpr int kTensorArenaSize = 2000;
-    uint8_t tensor_arena[kTensorArenaSize];
+  constexpr int kTensorArenaSize = 2000;
+  uint8_t tensor_arena[kTensorArenaSize];
 }
 ```
 
-TODO
+-   __`error_reporter`__ will be used for __printing error messages__ to the console
 
-__`error_reporter`__
+-   __`model`__ is the __TensorFlow Lite Model__ that we shall load into memory
 
-__`model`__
+-   __`interpreter`__ provides the interface for __running inferences__ with the TensorFlow Lite Model
 
-__`interpreter`__
+-   __`input`__ is the Tensor that we shall set to specify the __input values__ for running an inference
 
-__`input`__
+-   __`output`__ is the Tensor that will contain the __output values__ after running an inference
 
-__`output`__
-
-__`tensor_arena`__
+-   __`tensor_arena`__ is the __working memory__ that will be used by TensorFlow Lite to compute inferences
 
 Now we study the code that populates the above Global Variables.
 
