@@ -367,14 +367,12 @@ Now we study the code that populates the above Global Variables.
 
 # Load TensorFlow Model
 
-TODO
-
-From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/demo.c#L21-L24)
+Here's the __"`init`"__ command for our BL602 Firmware: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/demo.c#L21-L24)
 
 ```c
 /// Command to load the TensorFlow Model (Sine Wave)
 static void init(char *buf, int len, int argc, char **argv) {
-    load_model();
+  load_model();
 }
 ```
 
@@ -450,26 +448,24 @@ TODO
 
 # Run TensorFlow Inference
 
-TODO
-
-From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/demo.c#L26-L37)
+Here's the __"`infer`"__ command for our BL602 Firmware: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/demo.c#L26-L37)
 
 ```c
 /// Command to infer values with TensorFlow Model (Sine Wave)
 static void infer(char *buf, int len, int argc, char **argv) {
-    //  Convert the argument to float
-    if (argc != 2) { printf("Usage: infer <float>\r\n"); return; }
-    float input = atof(argv[1]);
+  //  Convert the argument to float
+  if (argc != 2) { printf("Usage: infer <float>\r\n"); return; }
+  float input = atof(argv[1]);
 ```
 
 TODO
 
 ```c
-    //  Run the inference
-    float result = run_inference(input);
+  //  Run the inference
+  float result = run_inference(input);
 
-    //  Show the result
-    printf("%f\r\n", result);
+  //  Show the result
+  printf("%f\r\n", result);
 }
 ```
 
