@@ -478,46 +478,57 @@ float run_inference(
   float x) {  //  Value to be fed into the model
 
   // Quantize the input from floating-point to integer
-  int8_t x_quantized = x / input->params.scale + input->params.zero_point;
+  int8_t x_quantized = x / input->params.scale 
+    + input->params.zero_point;
 ```
 
-TODO
+Interesting Fact: Our TensorFlow Lite Model (for Sine Function) actually accepts an __integer input__ and produces an __integer output__! (8-bit integers)
+
+(Integer models run more efficiently on microcontrollers)
+
+The code above __converts the floating-point input__ to an 8-bit integer.
+
+We pass the __8-bit integer input__ to the TensorFlow Lite Model through the __Input Tensor__...
 
 ```c
   // Place the quantized input in the model's input tensor
   input->data.int8[0] = x_quantized;
 ```
 
-TODO
+Then we __call the interpreter to run the inference__ on the TensorFlow Lite Model...
 
 ```c
   // Run inference, and report any error
   TfLiteStatus invoke_status = interpreter->Invoke();
   if (invoke_status != kTfLiteOk) {
     TF_LITE_REPORT_ERROR(error_reporter, "Invoke failed on x: %f\n",
-                         static_cast<double>(x));
+      static_cast<double>(x));
     return 0;
   }
 ```
 
-TODO
+The 8-bit integer result is __returned through the Output Tensor__...
 
 ```c
   // Obtain the quantized output from model's output tensor
   int8_t y_quantized = output->data.int8[0];
-  // Dequantize the output from integer to floating-point
-  float y = (y_quantized - output->params.zero_point) * output->params.scale;
 ```
 
-TODO
+We __convert the 8-bit integer result__ to floating-point...
 
 ```c
+  // Dequantize the output from integer to floating-point
+  float y = (y_quantized - output->params.zero_point) 
+    * output->params.scale;
+
   // Output the results
   return y;
 }
 ```
 
-TODO
+Finally we __return the floating-point result__.
+
+The code we've seen is derived from the [TensorFlow Lite Hello World Sample](https://github.com/tensorflow/tflite-micro/tree/main/tensorflow/lite/micro/examples/hello_world), which is covered here...
 
 -   ["TensorFlow Lite: Get started with microcontrollers"](https://www.tensorflow.org/lite/microcontrollers/get_started_low_level)
 
