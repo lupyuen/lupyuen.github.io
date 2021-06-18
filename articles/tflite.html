@@ -361,7 +361,7 @@ cargo run flash sdk_app_tflite.bin --port COM5
 <p>We’ll watch the glowing LED in a while!</p>
 <p><a href="https://github.com/tensorflow/tflite-micro/tree/main/tensorflow/lite/micro/examples/hello_world">(The TensorFlow Lite Model came from this sample code)</a></p>
 <h1 id="how-it-works" class="section-header"><a href="#how-it-works">5 How It Works</a></h1>
-<p>Let’s study the code inside the TensorFlow Lite Firmware for BL602… And understand how it <strong>loads the TensorFlow Lite Model and runs inferences.</strong></p>
+<p>Let’s study the code inside the TensorFlow Lite Firmware for BL602… To understand how it <strong>loads the TensorFlow Lite Model and runs inferences.</strong></p>
 <p>Here are the <strong>Global Variables</strong> needed for TensorFlow Lite: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/main_functions.cc#L28-L39"><code>main_functions.cc</code></a></p>
 <pre><code class="language-c">// Globals for TensorFlow Lite
 namespace {
@@ -579,6 +579,8 @@ static void glow(char *buf, int len, int argc, char **argv) {
 <p>(Tip: The <strong>Sine Function</strong> is a terrific way to do things <strong>smoothly and continuously</strong>! Because the derivative of <code>sin(x)</code> is <code>cos(x)</code>, another smooth curve! And the derivative of <code>cos(x)</code> is <code>-sin(x)</code>… Wow!)</p>
 <h1 id="train-tensorflow-model" class="section-header"><a href="#train-tensorflow-model">9 Train TensorFlow Model</a></h1>
 <p><img src="https://lupyuen.github.io/images/tflite-meme.jpg" alt="Creating a TensorFlow Lite Model won’t be easy" /></p>
+<p>Sorry Padme, it won’t be easy to <strong>create and train</strong> a TensorFlow Lite Model.</p>
+<p>But let’s run through quickly the steps…</p>
 <p>TODO</p>
 <p><a href="https://www.tensorflow.org/lite/microcontrollers/build_convert">“Build and convert models”</a></p>
 <h1 id="what-can-tensorflow-do" class="section-header"><a href="#what-can-tensorflow-do">10 What Can TensorFlow Do?</a></h1>
