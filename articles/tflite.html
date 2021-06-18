@@ -362,26 +362,39 @@ cargo run flash sdk_app_tflite.bin --port COM5
 <p><a href="https://github.com/tensorflow/tflite-micro/tree/main/tensorflow/lite/micro/examples/hello_world">(The TensorFlow Lite Model came from this sample code)</a></p>
 <h1 id="how-it-works" class="section-header"><a href="#how-it-works">5 How It Works</a></h1>
 <p>Let’s study the code inside the TensorFlow Lite Firmware for BL602… To understand how it <strong>loads the TensorFlow Lite Model and runs inferences.</strong></p>
-<p>Here are the <strong>Global Variables</strong> needed for TensorFlow Lite: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/main_functions.cc#L28-L39"><code>main_functions.cc</code></a></p>
+<p>Here are the <strong>C++ Global Variables</strong> needed for TensorFlow Lite: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/main_functions.cc#L28-L39"><code>main_functions.cc</code></a></p>
 <pre><code class="language-c">// Globals for TensorFlow Lite
 namespace {
-    tflite::ErrorReporter* error_reporter = nullptr;
-    const tflite::Model* model = nullptr;
-    tflite::MicroInterpreter* interpreter = nullptr;
-    TfLiteTensor* input = nullptr;
-    TfLiteTensor* output = nullptr;
+  tflite::ErrorReporter* error_reporter = nullptr;
+  const tflite::Model* model = nullptr;
+  tflite::MicroInterpreter* interpreter = nullptr;
+  TfLiteTensor* input = nullptr;
+  TfLiteTensor* output = nullptr;
 
-    constexpr int kTensorArenaSize = 2000;
-    uint8_t tensor_arena[kTensorArenaSize];
+  constexpr int kTensorArenaSize = 2000;
+  uint8_t tensor_arena[kTensorArenaSize];
 }
 </code></pre>
-<p>TODO</p>
-<p><strong><code>error_reporter</code></strong></p>
-<p><strong><code>model</code></strong></p>
-<p><strong><code>interpreter</code></strong></p>
-<p><strong><code>input</code></strong></p>
-<p><strong><code>output</code></strong></p>
-<p><strong><code>tensor_arena</code></strong></p>
+<ul>
+<li>
+<p><strong><code>error_reporter</code></strong> will be used for <strong>printing error messages</strong> to the console</p>
+</li>
+<li>
+<p><strong><code>model</code></strong> is the <strong>TensorFlow Lite Model</strong> that we shall load into memory</p>
+</li>
+<li>
+<p><strong><code>interpreter</code></strong> provides the interface for <strong>running inferences</strong> with the TensorFlow Lite Model</p>
+</li>
+<li>
+<p><strong><code>input</code></strong> is the Tensor that we shall set to specify the <strong>input values</strong> for running an inference</p>
+</li>
+<li>
+<p><strong><code>output</code></strong> is the Tensor that will contain the <strong>output values</strong> after running an inference</p>
+</li>
+<li>
+<p><strong><code>tensor_arena</code></strong> is the <strong>working memory</strong> that will be used by TensorFlow Lite to compute inferences</p>
+</li>
+</ul>
 <p>Now we study the code that populates the above Global Variables.</p>
 <h1 id="load-tensorflow-model" class="section-header"><a href="#load-tensorflow-model">6 Load TensorFlow Model</a></h1>
 <p>TODO</p>
