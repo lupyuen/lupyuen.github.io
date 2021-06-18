@@ -335,6 +335,24 @@ We'll watch the glowing LED in a while!
 
 TODO
 
+From [`main_functions.cc`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/main_functions.cc#L28-L39)
+
+```c
+// Globals
+namespace {
+    tflite::ErrorReporter* error_reporter = nullptr;
+    const tflite::Model* model = nullptr;
+    tflite::MicroInterpreter* interpreter = nullptr;
+    TfLiteTensor* input = nullptr;
+    TfLiteTensor* output = nullptr;
+
+    constexpr int kTensorArenaSize = 2000;
+    uint8_t tensor_arena[kTensorArenaSize];
+}
+```
+
+TODO
+
 From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/demo.c#L21-L24)
 
 ```c
@@ -358,7 +376,11 @@ void load_model() {
   // NOLINTNEXTLINE(runtime-global-variables)
   static tflite::MicroErrorReporter micro_error_reporter;
   error_reporter = &micro_error_reporter;
+```
 
+TODO
+
+```c
   // Map the model into a usable data structure. This doesn't involve any
   // copying or parsing, it's a very lightweight operation.
   model = tflite::GetModel(g_model);
@@ -369,7 +391,11 @@ void load_model() {
                          model->version(), TFLITE_SCHEMA_VERSION);
     return;
   }
+```
 
+TODO
+
+```c
   // This pulls in all the operation implementations we need.
   // NOLINTNEXTLINE(runtime-global-variables)
   static tflite::AllOpsResolver resolver;
@@ -378,20 +404,25 @@ void load_model() {
   static tflite::MicroInterpreter static_interpreter(
       model, resolver, tensor_arena, kTensorArenaSize, error_reporter);
   interpreter = &static_interpreter;
+```
 
+TODO
+
+```c
   // Allocate memory from the tensor_arena for the model's tensors.
   TfLiteStatus allocate_status = interpreter->AllocateTensors();
   if (allocate_status != kTfLiteOk) {
     TF_LITE_REPORT_ERROR(error_reporter, "AllocateTensors() failed");
     return;
   }
+```
 
+TODO
+
+```c
   // Obtain pointers to the model's input and output tensors.
   input = interpreter->input(0);
   output = interpreter->output(0);
-
-  // Keep track of how many inferences we have performed.
-  inference_count = 0;
 }
 ```
 
@@ -413,7 +444,11 @@ static void infer(char *buf, int len, int argc, char **argv) {
     //  Convert the argument to float
     if (argc != 2) { printf("Usage: infer <float>\r\n"); return; }
     float input = atof(argv[1]);
+```
 
+TODO
+
+```c
     //  Run the inference
     float result = run_inference(input);
 
@@ -434,9 +469,18 @@ float run_inference(
 
   // Quantize the input from floating-point to integer
   int8_t x_quantized = x / input->params.scale + input->params.zero_point;
+```
+
+TODO
+
+```c
   // Place the quantized input in the model's input tensor
   input->data.int8[0] = x_quantized;
+```
 
+TODO
+
+```c
   // Run inference, and report any error
   TfLiteStatus invoke_status = interpreter->Invoke();
   if (invoke_status != kTfLiteOk) {
@@ -444,17 +488,20 @@ float run_inference(
                          static_cast<double>(x));
     return 0;
   }
+```
 
+TODO
+
+```c
   // Obtain the quantized output from model's output tensor
   int8_t y_quantized = output->data.int8[0];
   // Dequantize the output from integer to floating-point
   float y = (y_quantized - output->params.zero_point) * output->params.scale;
+```
 
-  // Increment the inference_counter, and reset it if we have reached
-  // the total number per cycle
-  inference_count += 1;
-  if (inference_count >= kInferencesPerCycle) inference_count = 0;
+TODO
 
+```c
   // Output the results
   return y;
 }
