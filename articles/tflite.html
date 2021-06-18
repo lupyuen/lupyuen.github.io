@@ -333,19 +333,27 @@ cargo run flash sdk_app_tflite.bin --port COM5
 <h1 id="how-accurate-is-it" class="section-header"><a href="#how-accurate-is-it">4 How Accurate Is It?</a></h1>
 <p><em>The wavy curve looks familiar…?</em></p>
 <p><img src="https://lupyuen.github.io/images/tflite-chart2.jpg" alt="Wavy Curve" /></p>
-<p>Yes it’s actually the Sine Function!</p>
+<p>Yes it was the <strong>Sine Function</strong> all along!</p>
 <blockquote>
-<p><code>y = sin( x )</code></p>
+<p><strong><code>y = sin( x )</code></strong></p>
 </blockquote>
+<p>(Input value <code>x</code> is in radians, not degrees)</p>
 <p><em>So we were using a TensorFlow Lite Model for the Sine Function?</em></p>
-<p>Right! The <strong><code>&quot;init&quot;</code></strong> command from the previous chapter loads a TensorFlow Lite Model that’s trained for the Sine Function.</p>
+<p>Right! The <strong>“<code>init</code>”</strong> command from the previous chapter loads a TensorFlow Lite Model that’s <strong>trained with the Sine Function.</strong></p>
 <p><em>How accurate are the values inferred by the model?</em></p>
-<p>Sadly Machine Learning Models are rarely 100% accurate.</p>
-<p>Here’s a comparison of the values inferred by the model (left) and the actual values (right)…</p>
+<p>Sadly Machine Learning Models are <strong>rarely 100% accurate.</strong></p>
+<p>Here’s a comparison of the <strong>values inferred by the model (left)</strong> and the <strong>actual values (right)</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/tflite-compare.jpg" alt="Compare inferred vs actual values" /></p>
-<p>TODO</p>
-<p><em>How did we get the TensorFlow Lite Model?</em></p>
-<p>TODO</p>
+<p><em>But we can train the model to be more accurate right?</em></p>
+<p>Training the Machine Learning Model on too much data may cause <strong>Overfitting</strong>…</p>
+<p>When we vary the input value slightly, the <strong>output value may fluctuate wildly</strong>.</p>
+<p>(We definitely don’t want our LED to glow erratically!)</p>
+<p><a href="https://en.wikipedia.org/wiki/Overfitting">More about Overfitting</a></p>
+<p><em>Is the model accurate enough?</em></p>
+<p>Depends how we’ll be using the model.</p>
+<p>For glowing an LED it’s probably OK to use a Machine Learning Model that’s accurate to <a href="https://en.wikipedia.org/wiki/Significant_figures"><strong>1 Significant Digit</strong></a>.</p>
+<p>We’ll watch the glowing LED in a while!</p>
+<p><a href="https://github.com/tensorflow/tflite-micro/tree/main/tensorflow/lite/micro/examples/hello_world">(The TensorFlow Lite Model came from this sample code)</a></p>
 <h1 id="load-tensorflow-model" class="section-header"><a href="#load-tensorflow-model">5 Load TensorFlow Model</a></h1>
 <p>TODO</p>
 <p><a href="https://www.tensorflow.org/lite/microcontrollers/get_started_low_level">“Get started with microcontrollers”</a></p>
