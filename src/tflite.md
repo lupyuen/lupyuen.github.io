@@ -333,7 +333,7 @@ We'll watch the glowing LED in a while!
 
 # How It Works
 
-Let's study the code inside the TensorFlow Lite Firmware for BL602... And understand how it __loads the TensorFlow Lite Model and runs inferences.__
+Let's study the code inside the TensorFlow Lite Firmware for BL602... To understand how it __loads the TensorFlow Lite Model and runs inferences.__
 
 Here are the __Global Variables__ needed for TensorFlow Lite: [`main_functions.cc`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/main_functions.cc#L28-L39)
 
@@ -637,6 +637,10 @@ TODO
 # Train TensorFlow Model
 
 ![Creating a TensorFlow Lite Model won't be easy](https://lupyuen.github.io/images/tflite-meme.jpg)
+
+Sorry Padme, it won't be easy to __create and train__ a TensorFlow Lite Model.
+
+But let's run through quickly the steps...
 
 TODO
 
