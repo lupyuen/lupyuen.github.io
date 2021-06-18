@@ -389,7 +389,9 @@ void load_model() {
   error_reporter = &micro_error_reporter;
 ```
 
-TODO
+Here we __initialise the TensorFlow Lite Library__.
+
+Next we __load the TensorFlow Lite Model__...
 
 ```c
   // Map the model into a usable data structure. This doesn't involve any
@@ -397,14 +399,16 @@ TODO
   model = tflite::GetModel(g_model);
   if (model->version() != TFLITE_SCHEMA_VERSION) {
     TF_LITE_REPORT_ERROR(error_reporter,
-                         "Model provided is schema version %d not equal "
-                         "to supported version %d.",
-                         model->version(), TFLITE_SCHEMA_VERSION);
+      "Model provided is schema version %d not equal "
+      "to supported version %d.",
+      model->version(), TFLITE_SCHEMA_VERSION);
     return;
   }
 ```
 
-TODO
+__`g_model`__ contains the __TensorFlow Lite Model Data__, as defined in [`model.cc`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/model.cc#L28-L238)
+
+We create the __TensorFlow Lite Interpreter__ that will be called to run inferences...
 
 ```c
   // This pulls in all the operation implementations we need.
@@ -416,7 +420,7 @@ TODO
   interpreter = &static_interpreter;
 ```
 
-TODO
+Then we __allocate the working memory__ that will be used by the TensorFlow Lite Library to compute inferences...
 
 ```c
   // Allocate memory from the tensor_arena for the model's tensors.
@@ -427,7 +431,7 @@ TODO
   }
 ```
 
-TODO
+Finally we remember the __Input and Output Tensors__...
 
 ```c
   // Obtain pointers to the model's input and output tensors.
@@ -436,15 +440,11 @@ TODO
 }
 ```
 
-TODO
-
--   ["TensorFlow Lite: Get started with microcontrollers"](https://www.tensorflow.org/lite/microcontrollers/get_started_low_level)
-
--   ["TensorFlow Lite: Understand the C++ library"](https://www.tensorflow.org/lite/microcontrollers/library)
+Which will be used in the next chapter to run inferences.
 
 # Run TensorFlow Inference
 
-Here's the __"`infer`" command__ for our BL602 Firmware: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/demo.c#L26-L37)
+Now we look at the __"`infer`" command__ in our BL602 Firmware: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/demo.c#L26-L37)
 
 ```c
 /// Command to infer values with TensorFlow Lite Model (Sine Wave)
@@ -454,7 +454,9 @@ static void infer(char *buf, int len, int argc, char **argv) {
   float input = atof(argv[1]);
 ```
 
-TODO
+To run an inference, the "`infer`" command accepts __one input value__: a floating-point number.
+
+We pass the floating-point number to the __`run_inference`__ function...
 
 ```c
   //  Run the inference
@@ -465,9 +467,9 @@ TODO
 }
 ```
 
-TODO
+And we __print the result__ of the inference. (Another floating-point number)
 
-From [`main_functions.cc`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/main_functions.cc#L86-L116)
+__`run_inference`__ is defined in [`main_functions.cc`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/main_functions.cc#L86-L116) ...
 
 ```c
 // Run an inference with the loaded TensorFlow Lite Model.
@@ -516,6 +518,10 @@ TODO
 ```
 
 TODO
+
+-   ["TensorFlow Lite: Get started with microcontrollers"](https://www.tensorflow.org/lite/microcontrollers/get_started_low_level)
+
+-   ["TensorFlow Lite: Understand the C++ library"](https://www.tensorflow.org/lite/microcontrollers/library)
 
 # Glow The LED
 
@@ -638,7 +644,7 @@ But let's run through quickly the steps...
 
 TODO
 
-["Build and convert models"](https://www.tensorflow.org/lite/microcontrollers/build_convert)
+-   ["TensorFlow Lite: Build and convert models"](https://www.tensorflow.org/lite/microcontrollers/build_convert)
 
 # What Can TensorFlow Do?
 
@@ -648,7 +654,7 @@ TODO
 
 TODO
 
-["Optimised Kernels"](https://www.tensorflow.org/lite/microcontrollers/library#optimized_kernels)
+-   ["TensorFlow Lite: Optimised Kernels"](https://www.tensorflow.org/lite/microcontrollers/library#optimized_kernels)
 
 # What's Next
 
