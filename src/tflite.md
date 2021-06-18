@@ -347,9 +347,11 @@ TODO
 
 TODO
 
+-   [__Watch the Demo Video on YouTube__](https://youtu.be/EFpYJ3qsmEY)
+
 ![Glowing the LED with TensorFlow Lite](https://lupyuen.github.io/images/tflite-glow.png)
 
-TODO
+(Tip: The __Sine Function__ is a terrific way to do things __smoothly and continuously__! Because the derivative of `sin(x)` is `cos(x)`, another smooth curve! And the derivative of `cos(x)` is `-sin(x)`... Wow!)
 
 # Train TensorFlow Model
 
