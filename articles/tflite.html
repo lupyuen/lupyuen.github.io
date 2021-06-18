@@ -476,33 +476,40 @@ float run_inference(
   float x) {  //  Value to be fed into the model
 
   // Quantize the input from floating-point to integer
-  int8_t x_quantized = x / input-&gt;params.scale + input-&gt;params.zero_point;
+  int8_t x_quantized = x / input-&gt;params.scale 
+    + input-&gt;params.zero_point;
 </code></pre>
-<p>TODO</p>
+<p>Interesting Fact: Our TensorFlow Lite Model (for Sine Function) actually accepts an <strong>integer input</strong> and produces an <strong>integer output</strong>! (8-bit integers)</p>
+<p>(Integer models run more efficiently on microcontrollers)</p>
+<p>The code above <strong>converts the floating-point input</strong> to an 8-bit integer.</p>
+<p>We pass the <strong>8-bit integer input</strong> to the TensorFlow Lite Model through the <strong>Input Tensor</strong>…</p>
 <pre><code class="language-c">  // Place the quantized input in the model's input tensor
   input-&gt;data.int8[0] = x_quantized;
 </code></pre>
-<p>TODO</p>
+<p>Then we <strong>call the interpreter to run the inference</strong> on the TensorFlow Lite Model…</p>
 <pre><code class="language-c">  // Run inference, and report any error
   TfLiteStatus invoke_status = interpreter-&gt;Invoke();
   if (invoke_status != kTfLiteOk) {
     TF_LITE_REPORT_ERROR(error_reporter, &quot;Invoke failed on x: %f\n&quot;,
-                         static_cast&lt;double&gt;(x));
+      static_cast&lt;double&gt;(x));
     return 0;
   }
 </code></pre>
-<p>TODO</p>
+<p>The 8-bit integer result is <strong>returned through the Output Tensor</strong>…</p>
 <pre><code class="language-c">  // Obtain the quantized output from model's output tensor
   int8_t y_quantized = output-&gt;data.int8[0];
-  // Dequantize the output from integer to floating-point
-  float y = (y_quantized - output-&gt;params.zero_point) * output-&gt;params.scale;
 </code></pre>
-<p>TODO</p>
-<pre><code class="language-c">  // Output the results
+<p>We <strong>convert the 8-bit integer result</strong> to floating-point…</p>
+<pre><code class="language-c">  // Dequantize the output from integer to floating-point
+  float y = (y_quantized - output-&gt;params.zero_point) 
+    * output-&gt;params.scale;
+
+  // Output the results
   return y;
 }
 </code></pre>
-<p>TODO</p>
+<p>Finally we <strong>return the floating-point result</strong>.</p>
+<p>The code we’ve seen is derived from the <a href="https://github.com/tensorflow/tflite-micro/tree/main/tensorflow/lite/micro/examples/hello_world">TensorFlow Lite Hello World Sample</a>, which is covered here…</p>
 <ul>
 <li>
 <p><a href="https://www.tensorflow.org/lite/microcontrollers/get_started_low_level">“TensorFlow Lite: Get started with microcontrollers”</a></p>
