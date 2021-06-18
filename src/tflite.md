@@ -476,6 +476,8 @@ TODO
 
 # Train TensorFlow Model
 
+![Creating a TensorFlow Lite Model won't be easy](https://lupyuen.github.io/images/tflite-meme.jpg)
+
 TODO
 
 ["Build and convert models"](https://www.tensorflow.org/lite/microcontrollers/build_convert)
