@@ -289,9 +289,29 @@ That's how we __load a TensorFlow Lite Model__ on BL602... And __run an inferenc
 
 # How Accurate Is It?
 
-TODO
+_The wavy curve looks familiar...?_
+
+![Wavy Curve](https://lupyuen.github.io/images/tflite-chart2.jpg)
+
+Yes it's actually the Sine Function!
+
+> `y = sin( x )`
+
+_So we were using a TensorFlow Lite Model for the Sine Function?_
+
+Right! The __`"init"`__ command from the previous chapter loads a TensorFlow Lite Model that's trained for the Sine Function.
+
+_How accurate are the values inferred by the model?_
+
+Sadly Machine Learning Models are rarely 100% accurate.
+
+Here's a comparison of the values inferred by the model (left) and the actual values (right)...
 
 ![Compare inferred vs actual values](https://lupyuen.github.io/images/tflite-compare.jpg)
+
+TODO
+
+_How did we get the TensorFlow Lite Model?_
 
 TODO
 
