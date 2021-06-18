@@ -413,19 +413,21 @@ void load_model() {
   static tflite::MicroErrorReporter micro_error_reporter;
   error_reporter = &amp;micro_error_reporter;
 </code></pre>
-<p>TODO</p>
+<p>Here we <strong>initialise the TensorFlow Lite Library</strong>.</p>
+<p>Next we <strong>load the TensorFlow Lite Model</strong>…</p>
 <pre><code class="language-c">  // Map the model into a usable data structure. This doesn't involve any
   // copying or parsing, it's a very lightweight operation.
   model = tflite::GetModel(g_model);
   if (model-&gt;version() != TFLITE_SCHEMA_VERSION) {
     TF_LITE_REPORT_ERROR(error_reporter,
-                         &quot;Model provided is schema version %d not equal &quot;
-                         &quot;to supported version %d.&quot;,
-                         model-&gt;version(), TFLITE_SCHEMA_VERSION);
+      &quot;Model provided is schema version %d not equal &quot;
+      &quot;to supported version %d.&quot;,
+      model-&gt;version(), TFLITE_SCHEMA_VERSION);
     return;
   }
 </code></pre>
-<p>TODO</p>
+<p><strong><code>g_model</code></strong> contains the <strong>TensorFlow Lite Model Data</strong>, as defined in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/model.cc#L28-L238"><code>model.cc</code></a></p>
+<p>We create the <strong>TensorFlow Lite Interpreter</strong> that will be called to run inferences…</p>
 <pre><code class="language-c">  // This pulls in all the operation implementations we need.
   static tflite::AllOpsResolver resolver;
 
@@ -434,7 +436,7 @@ void load_model() {
       model, resolver, tensor_arena, kTensorArenaSize, error_reporter);
   interpreter = &amp;static_interpreter;
 </code></pre>
-<p>TODO</p>
+<p>Then we <strong>allocate the working memory</strong> that will be used by the TensorFlow Lite Library to compute inferences…</p>
 <pre><code class="language-c">  // Allocate memory from the tensor_arena for the model's tensors.
   TfLiteStatus allocate_status = interpreter-&gt;AllocateTensors();
   if (allocate_status != kTfLiteOk) {
@@ -442,30 +444,23 @@ void load_model() {
     return;
   }
 </code></pre>
-<p>TODO</p>
+<p>Finally we remember the <strong>Input and Output Tensors</strong>…</p>
 <pre><code class="language-c">  // Obtain pointers to the model's input and output tensors.
   input = interpreter-&gt;input(0);
   output = interpreter-&gt;output(0);
 }
 </code></pre>
-<p>TODO</p>
-<ul>
-<li>
-<p><a href="https://www.tensorflow.org/lite/microcontrollers/get_started_low_level">“TensorFlow Lite: Get started with microcontrollers”</a></p>
-</li>
-<li>
-<p><a href="https://www.tensorflow.org/lite/microcontrollers/library">“TensorFlow Lite: Understand the C++ library”</a></p>
-</li>
-</ul>
+<p>Which will be used in the next chapter to run inferences.</p>
 <h1 id="run-tensorflow-inference" class="section-header"><a href="#run-tensorflow-inference">7 Run TensorFlow Inference</a></h1>
-<p>Here’s the <strong>“<code>infer</code>” command</strong> for our BL602 Firmware: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/demo.c#L26-L37"><code>demo.c</code></a></p>
+<p>Now we look at the <strong>“<code>infer</code>” command</strong> in our BL602 Firmware: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/demo.c#L26-L37"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// Command to infer values with TensorFlow Lite Model (Sine Wave)
 static void infer(char *buf, int len, int argc, char **argv) {
   //  Convert the argument to float
   if (argc != 2) { printf(&quot;Usage: infer &lt;float&gt;\r\n&quot;); return; }
   float input = atof(argv[1]);
 </code></pre>
-<p>TODO</p>
+<p>To run an inference, the “<code>infer</code>” command accepts <strong>one input value</strong>: a floating-point number.</p>
+<p>We pass the floating-point number to the <strong><code>run_inference</code></strong> function…</p>
 <pre><code class="language-c">  //  Run the inference
   float result = run_inference(input);
 
@@ -473,8 +468,8 @@ static void infer(char *buf, int len, int argc, char **argv) {
   printf(&quot;%f\r\n&quot;, result);
 }
 </code></pre>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/main_functions.cc#L86-L116"><code>main_functions.cc</code></a></p>
+<p>And we <strong>print the result</strong> of the inference. (Another floating-point number)</p>
+<p><strong><code>run_inference</code></strong> is defined in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/main_functions.cc#L86-L116"><code>main_functions.cc</code></a> …</p>
 <pre><code class="language-c">// Run an inference with the loaded TensorFlow Lite Model.
 // Return the output value inferred by the model.
 float run_inference(
@@ -508,6 +503,14 @@ float run_inference(
 }
 </code></pre>
 <p>TODO</p>
+<ul>
+<li>
+<p><a href="https://www.tensorflow.org/lite/microcontrollers/get_started_low_level">“TensorFlow Lite: Get started with microcontrollers”</a></p>
+</li>
+<li>
+<p><a href="https://www.tensorflow.org/lite/microcontrollers/library">“TensorFlow Lite: Understand the C++ library”</a></p>
+</li>
+</ul>
 <h1 id="glow-the-led" class="section-header"><a href="#glow-the-led">8 Glow The LED</a></h1>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/demo.c#L39-L96"><code>demo.c</code></a></p>
@@ -592,12 +595,16 @@ static void glow(char *buf, int len, int argc, char **argv) {
 <p>Sorry Padme, it won’t be easy to <strong>create and train</strong> a TensorFlow Lite Model.</p>
 <p>But let’s run through quickly the steps…</p>
 <p>TODO</p>
-<p><a href="https://www.tensorflow.org/lite/microcontrollers/build_convert">“Build and convert models”</a></p>
+<ul>
+<li><a href="https://www.tensorflow.org/lite/microcontrollers/build_convert">“TensorFlow Lite: Build and convert models”</a></li>
+</ul>
 <h1 id="what-can-tensorflow-do" class="section-header"><a href="#what-can-tensorflow-do">10 What Can TensorFlow Do?</a></h1>
 <p>TODO</p>
 <h1 id="optimise-tensorflow" class="section-header"><a href="#optimise-tensorflow">11 Optimise TensorFlow</a></h1>
 <p>TODO</p>
-<p><a href="https://www.tensorflow.org/lite/microcontrollers/library#optimized_kernels">“Optimised Kernels”</a></p>
+<ul>
+<li><a href="https://www.tensorflow.org/lite/microcontrollers/library#optimized_kernels">“TensorFlow Lite: Optimised Kernels”</a></li>
+</ul>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">12 What’s Next</a></h1>
 <p>TODO</p>
 <ul>
