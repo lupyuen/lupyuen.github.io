@@ -351,6 +351,8 @@ namespace {
 }
 ```
 
+TODO
+
 __`error_reporter`__
 
 __`model`__
@@ -362,6 +364,8 @@ __`input`__
 __`output`__
 
 __`tensor_arena`__
+
+Now we study the code that populates the above Global Variables.
 
 # Load TensorFlow Model
 
