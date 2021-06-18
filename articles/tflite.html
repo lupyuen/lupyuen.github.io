@@ -452,7 +452,11 @@ void load_model() {
 </code></pre>
 <p>Which will be used in the next chapter to run inferences.</p>
 <h1 id="run-tensorflow-inference" class="section-header"><a href="#run-tensorflow-inference">7 Run TensorFlow Inference</a></h1>
-<p>Now we look at the <strong>“<code>infer</code>” command</strong> in our BL602 Firmware: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/demo.c#L26-L37"><code>demo.c</code></a></p>
+<p>Earlier we entered this command to <strong>run an inference</strong> with the TensorFlow Lite Model…</p>
+<pre><code class="language-text"># infer 0.1
+0.160969
+</code></pre>
+<p>Here’s the <strong>“<code>infer</code>” command</strong> in our BL602 Firmware: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/demo.c#L26-L37"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// Command to infer values with TensorFlow Lite Model (Sine Wave)
 static void infer(char *buf, int len, int argc, char **argv) {
   //  Convert the argument to float
