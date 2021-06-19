@@ -638,9 +638,9 @@ Negative values are not meaningful for setting the LED Brightness, hence we __mu
       float output_squared = output * output;
 ```
 
-(Why compute Output Squared instead of Output Absolute? Because Sine Squared produces a smooth curve, whereas Sine Absolute creates a sharp beak)
+(Why compute __Output Squared__ instead of Output Absolute? Because Sine Squared produces a __smooth curve__, whereas Sine Absolute creates a sharp beak)
 
-Next we set the __Duty Cycle to the Output Value Squared__...
+Next we set the __Duty Cycle to the Output Value Squared__, scaled to 100%...
 
 ```c
       //  Set the brightness (Duty Cycle) of the PWM LED to the 
@@ -652,11 +652,11 @@ Next we set the __Duty Cycle to the Output Value Squared__...
       assert(rc == 0);
 ```
 
-We flip the LED Brightness (1 - Output Squared) because...
+We __flip the LED Brightness__ (1 - Output Squared) because...
 
-1.  Duty Cycle = __0%__ means __100%__ brightness
+-  Duty Cycle = __0%__ means __100%__ brightness
 
-1.  Duty Cycle = __100%__ means __0%__ brightness
+-  Duty Cycle = __100%__ means __0%__ brightness
 
 After setting the LED Brightness, we __sleep for 100 milliseconds__...
 
@@ -688,7 +688,29 @@ Let's run this!
 
 # Glowing Machine Learning in Action
 
-TODO
+1.  Start the __BL602 Firmware for TensorFlow Lite `sdk_app_tflite`__
+
+    (As described earlier)
+
+1.  Enter this command to __load the TensorFlow Lite Model__...
+
+    ```text
+    # init
+    ```
+
+    (We've seen the "`init`" command earlier)
+
+1.  Then enter this command to __glow the LED with the TensorFlow Lite Model__...
+
+    ```text
+    # glow
+    ```
+
+    (Yep the "`glow`" command from the previous chapter)
+
+1.  And the BL602 LED glows gently! Brighter and dimmer, brighter and dimmer, ...
+
+    (Though the LED flips on abruptly at the end, because we turned off the PWM)
 
 -   [__Watch the Demo Video on YouTube__](https://youtu.be/EFpYJ3qsmEY)
 
