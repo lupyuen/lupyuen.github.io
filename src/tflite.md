@@ -768,7 +768,7 @@ Check out the docs on __training and converting TensorFlow Lite Models__...
 
 # What Else Can TensorFlow Do?
 
-Even though we've used TensorFlow Lite for a trivial task (glowing an LED)... There are __so many possibilities__!
+Even though we've used TensorFlow Lite for a trivial task (glowing an LED)... There are __so many possible applications__!
 
 1.  PineCone BL602 Board has a __3-in-1 LED: Red + Green + Blue__.
 
@@ -776,24 +776,23 @@ Even though we've used TensorFlow Lite for a trivial task (glowing an LED)... Th
 
     (The TensorFlow Lite Model would probably produce an Output Tensor that contains 3 Output Values)
 
-1.  Light up an LED when it __detects my face__
+1.  Light up an LED when BL602 __detects my face__.
 
-    TODO
+    We could stream the __2D Image Data from a Camera Module__ to the TensorFlow Lite Model.
 
     [Check out the sample code](https://github.com/tensorflow/tflite-micro/tree/main/tensorflow/lite/micro/examples/person_detection)
 
-1.  Speech
+1.  Recognise __spoken words and phrases__.
 
-    TODO
+    By streaming the __Audio Data from a Microphone__ to the TensorFlow Lite Model.
 
     [Check out the sample code](https://github.com/tensorflow/tflite-micro/tree/main/tensorflow/lite/micro/examples/micro_speech)
 
-1.  Motion Gestures (via Accelerometer)
+1.  Recognise __motion gestures__.
 
-    TDOD
+    By streaming the __Motion Data from an Accelerometer__ to the TensorFlow Lite Model.
 
     [Check out the sample code](https://github.com/tensorflow/tflite-micro/tree/main/tensorflow/lite/micro/examples/magic_wand)
-
 
 # What's Next
 
