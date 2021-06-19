@@ -80,7 +80,7 @@
 <li><a href="#glow-the-led">8 Glow The LED</a><ul></ul></li>
 <li><a href="#glowing-machine-learning-in-action">9 Glowing Machine Learning in Action</a><ul></ul></li>
 <li><a href="#train-tensorflow-model">10 Train TensorFlow Model</a><ul></ul></li>
-<li><a href="#what-can-tensorflow-do">11 What Can TensorFlow Do?</a><ul></ul></li>
+<li><a href="#what-else-can-tensorflow-do">11 What Else Can TensorFlow Do?</a><ul></ul></li>
 <li><a href="#optimise-tensorflow">12 Optimise TensorFlow</a><ul></ul></li>
 <li><a href="#whats-next">13 What’s Next</a><ul></ul></li>
 <li><a href="#notes">14 Notes</a><ul></ul></li>
@@ -675,27 +675,28 @@ alignas(8) const unsigned char g_model[] = {
   0x1c, 0x00, 0x18, 0x00, 0x14, 0x00, 0x10, 0x00, 0x0c, 0x00, 0x00, 0x00,
   ...
   0x00, 0x00, 0x00, 0x09};
-  const int g_model_len = 2488;
+const int g_model_len = 2488;
 </code></pre>
-<p>The TensorFlow Lite Model is stored in BL602’s <strong>XIP Flash ROM</strong>.</p>
-<p>This gives the TensorFlow Lite Library more <strong>RAM to run Tensor Computations</strong>.</p>
+<p>The TensorFlow Lite Model (2,488 bytes) is stored in BL602’s <strong>XIP Flash ROM</strong>.</p>
+<p>This gives the TensorFlow Lite Library more <strong>RAM to run Tensor Computations</strong> for inferencing.</p>
 <p>(Remember <strong><code>tensor_arena</code></strong>?)</p>
 <p><em>Can we create and train this model on BL602?</em></p>
-<p>Sadly nope.</p>
-<p>TODO</p>
+<p>Sorry Padme nope.</p>
+<p>Training a TensorFlow Lite Model requires <strong>Python</strong>. Thus we need a Linux, macOS or Windows computer.</p>
+<p>Here’s the <strong>Python Jupyter Notebook</strong> for training the TensorFlow Lite Model that we have used…</p>
+<ul>
+<li><a href="https://colab.research.google.com/github/tensorflow/tensorflow/blob/master/tensorflow/lite/micro/examples/hello_world/train/train_hello_world_model.ipynb?authuser=0">“Hello World: Jupyter Notebook on Google Colaboratory”</a></li>
+</ul>
+<p>Check out the docs on <strong>training and converting TensorFlow Lite Models</strong>…</p>
 <ul>
 <li>
-<p><a href="https://github.com/tensorflow/tensorflow/blob/master/tensorflow/lite/micro/examples/hello_world/train/README.md"><strong>Hello World Training</strong></a></p>
+<p><a href="https://github.com/tensorflow/tensorflow/blob/master/tensorflow/lite/micro/examples/hello_world/train/README.md">“TensorFlow Lite: Hello World Training”</a></p>
 </li>
 <li>
-<p><a href="https://colab.research.google.com/github/tensorflow/tensorflow/blob/master/tensorflow/lite/micro/examples/hello_world/train/train_hello_world_model.ipynb?authuser=0"><strong>Jupyter Notebook on Google Colaboratory</strong></a></p>
+<p><a href="https://www.tensorflow.org/lite/microcontrollers/build_convert">“TensorFlow Lite: Build and convert models”</a></p>
 </li>
 </ul>
-<p>TODO</p>
-<ul>
-<li><a href="https://www.tensorflow.org/lite/microcontrollers/build_convert">“TensorFlow Lite: Build and convert models”</a></li>
-</ul>
-<h1 id="what-can-tensorflow-do" class="section-header"><a href="#what-can-tensorflow-do">11 What Can TensorFlow Do?</a></h1>
+<h1 id="what-else-can-tensorflow-do" class="section-header"><a href="#what-else-can-tensorflow-do">11 What Else Can TensorFlow Do?</a></h1>
 <p>TODO</p>
 <h1 id="optimise-tensorflow" class="section-header"><a href="#optimise-tensorflow">12 Optimise TensorFlow</a></h1>
 <p>TODO</p>
