@@ -741,30 +741,32 @@ alignas(8) const unsigned char g_model[] = {
   0x1c, 0x00, 0x18, 0x00, 0x14, 0x00, 0x10, 0x00, 0x0c, 0x00, 0x00, 0x00,
   ...
   0x00, 0x00, 0x00, 0x09};
-  const int g_model_len = 2488;
+const int g_model_len = 2488;
 ```
 
-The TensorFlow Lite Model is stored in BL602's __XIP Flash ROM__.
+The TensorFlow Lite Model (2,488 bytes) is stored in BL602's __XIP Flash ROM__.
 
-This gives the TensorFlow Lite Library more __RAM to run Tensor Computations__.
+This gives the TensorFlow Lite Library more __RAM to run Tensor Computations__ for inferencing.
 
 (Remember __`tensor_arena`__?)
 
 _Can we create and train this model on BL602?_
 
-Sadly nope.
+Sorry Padme nope.
 
-TODO
+Training a TensorFlow Lite Model requires __Python__. Thus we need a Linux, macOS or Windows computer.
 
--   [__Hello World Training__](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/lite/micro/examples/hello_world/train/README.md)
+Here's the __Python Jupyter Notebook__ for training the TensorFlow Lite Model that we have used...
 
--   [__Jupyter Notebook on Google Colaboratory__](https://colab.research.google.com/github/tensorflow/tensorflow/blob/master/tensorflow/lite/micro/examples/hello_world/train/train_hello_world_model.ipynb?authuser=0)
+-   ["Hello World: Jupyter Notebook on Google Colaboratory"](https://colab.research.google.com/github/tensorflow/tensorflow/blob/master/tensorflow/lite/micro/examples/hello_world/train/train_hello_world_model.ipynb?authuser=0)
 
-TODO
+Check out the docs on __training and converting TensorFlow Lite Models__...
+
+-   ["TensorFlow Lite: Hello World Training"](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/lite/micro/examples/hello_world/train/README.md)
 
 -   ["TensorFlow Lite: Build and convert models"](https://www.tensorflow.org/lite/microcontrollers/build_convert)
 
-# What Can TensorFlow Do?
+# What Else Can TensorFlow Do?
 
 TODO
 
