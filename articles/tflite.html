@@ -662,7 +662,35 @@ static void glow(char *buf, int len, int argc, char **argv) {
 <h1 id="train-tensorflow-model" class="section-header"><a href="#train-tensorflow-model">10 Train TensorFlow Model</a></h1>
 <p><img src="https://lupyuen.github.io/images/tflite-meme.jpg" alt="Creating a TensorFlow Lite Model won’t be easy" /></p>
 <p>Sorry Padme, it won’t be easy to <strong>create and train</strong> a TensorFlow Lite Model.</p>
-<p>But let’s run through quickly the steps…</p>
+<p>But let’s quickly run through the steps…</p>
+<p><em>Where is the TensorFlow Lite Model defined?</em></p>
+<p><strong><code>g_model</code></strong> contains the <strong>TensorFlow Lite Model Data</strong>, as defined in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/model.cc#L28-L238"><code>model.cc</code></a> …</p>
+<pre><code class="language-c">// Automatically created from a TensorFlow Lite flatbuffer using the command:
+//   xxd -i model.tflite &gt; model.cc
+// This is a standard TensorFlow Lite model file that has been converted into a
+// C data array, so it can be easily compiled into a binary for devices that
+// don't have a file system.
+alignas(8) const unsigned char g_model[] = {
+  0x1c, 0x00, 0x00, 0x00, 0x54, 0x46, 0x4c, 0x33, 0x14, 0x00, 0x20, 0x00,
+  0x1c, 0x00, 0x18, 0x00, 0x14, 0x00, 0x10, 0x00, 0x0c, 0x00, 0x00, 0x00,
+  ...
+  0x00, 0x00, 0x00, 0x09};
+  const int g_model_len = 2488;
+</code></pre>
+<p>The TensorFlow Lite Model is stored in BL602’s <strong>XIP Flash ROM</strong>.</p>
+<p>This gives the TensorFlow Lite Library more <strong>RAM to run Tensor Computations</strong>.</p>
+<p>(Remember <strong><code>tensor_arena</code></strong>?)</p>
+<p><em>Can we create and train this model on BL602?</em></p>
+<p>Sadly nope.</p>
+<p>TODO</p>
+<ul>
+<li>
+<p><a href="https://github.com/tensorflow/tensorflow/blob/master/tensorflow/lite/micro/examples/hello_world/train/README.md"><strong>Hello World Training</strong></a></p>
+</li>
+<li>
+<p><a href="https://colab.research.google.com/github/tensorflow/tensorflow/blob/master/tensorflow/lite/micro/examples/hello_world/train/train_hello_world_model.ipynb?authuser=0"><strong>Jupyter Notebook on Google Colaboratory</strong></a></p>
+</li>
+</ul>
 <p>TODO</p>
 <ul>
 <li><a href="https://www.tensorflow.org/lite/microcontrollers/build_convert">“TensorFlow Lite: Build and convert models”</a></li>
