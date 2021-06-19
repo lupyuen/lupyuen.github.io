@@ -724,7 +724,41 @@ Let's run this!
 
 Sorry Padme, it won't be easy to __create and train__ a TensorFlow Lite Model.
 
-But let's run through quickly the steps...
+But let's quickly run through the steps...
+
+_Where is the TensorFlow Lite Model defined?_
+
+__`g_model`__ contains the __TensorFlow Lite Model Data__, as defined in [`model.cc`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/model.cc#L28-L238) ...
+
+```c
+// Automatically created from a TensorFlow Lite flatbuffer using the command:
+//   xxd -i model.tflite > model.cc
+// This is a standard TensorFlow Lite model file that has been converted into a
+// C data array, so it can be easily compiled into a binary for devices that
+// don't have a file system.
+alignas(8) const unsigned char g_model[] = {
+  0x1c, 0x00, 0x00, 0x00, 0x54, 0x46, 0x4c, 0x33, 0x14, 0x00, 0x20, 0x00,
+  0x1c, 0x00, 0x18, 0x00, 0x14, 0x00, 0x10, 0x00, 0x0c, 0x00, 0x00, 0x00,
+  ...
+  0x00, 0x00, 0x00, 0x09};
+  const int g_model_len = 2488;
+```
+
+The TensorFlow Lite Model is stored in BL602's __XIP Flash ROM__.
+
+This gives the TensorFlow Lite Library more __RAM to run Tensor Computations__.
+
+(Remember __`tensor_arena`__?)
+
+_Can we create and train this model on BL602?_
+
+Sadly nope.
+
+TODO
+
+-   [__Hello World Training__](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/lite/micro/examples/hello_world/train/README.md)
+
+-   [__Jupyter Notebook on Google Colaboratory__](https://colab.research.google.com/github/tensorflow/tensorflow/blob/master/tensorflow/lite/micro/examples/hello_world/train/train_hello_world_model.ipynb?authuser=0)
 
 TODO
 
