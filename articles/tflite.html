@@ -81,14 +81,14 @@
 <li><a href="#glowing-machine-learning-in-action">9 Glowing Machine Learning in Action</a><ul></ul></li>
 <li><a href="#train-tensorflow-model">10 Train TensorFlow Model</a><ul></ul></li>
 <li><a href="#what-else-can-tensorflow-do">11 What Else Can TensorFlow Do?</a><ul></ul></li>
-<li><a href="#optimise-tensorflow">12 Optimise TensorFlow</a><ul></ul></li>
-<li><a href="#whats-next">13 What’s Next</a><ul></ul></li>
-<li><a href="#notes">14 Notes</a><ul></ul></li>
-<li><a href="#appendix-porting-tensorflow-to-bl602">15 Appendix: Porting TensorFlow to BL602</a><ul>
-<li><a href="#source-folders">15.1 Source Folders</a><ul></ul></li>
-<li><a href="#compiler-flags">15.2 Compiler Flags</a><ul></ul></li>
-<li><a href="#download-libraries">15.3 Download Libraries</a><ul></ul></li>
-<li><a href="#todo">15.4 TODO</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>22 Jun 2021</em></p>
+<li><a href="#whats-next">12 What’s Next</a><ul></ul></li>
+<li><a href="#notes">13 Notes</a><ul></ul></li>
+<li><a href="#appendix-porting-tensorflow-to-bl602">14 Appendix: Porting TensorFlow to BL602</a><ul>
+<li><a href="#source-folders">14.1 Source Folders</a><ul></ul></li>
+<li><a href="#compiler-flags">14.2 Compiler Flags</a><ul></ul></li>
+<li><a href="#download-libraries">14.3 Download Libraries</a><ul></ul></li>
+<li><a href="#optimise-tensorflow">14.4 Optimise TensorFlow</a><ul></ul></li>
+<li><a href="#todo">14.5 TODO</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>22 Jun 2021</em></p>
 <p>How a Human teaches a Machine to light up an LED…</p>
 <blockquote>
 <p><em>Human:</em> Hello Machine, please light up the LED in a fun and interesting way.</p>
@@ -697,13 +697,23 @@ const int g_model_len = 2488;
 </li>
 </ul>
 <h1 id="what-else-can-tensorflow-do" class="section-header"><a href="#what-else-can-tensorflow-do">11 What Else Can TensorFlow Do?</a></h1>
+<p>Even though we’ve used TensorFlow Lite for a trivial task (glowing an LED)… There are <strong>so many possibilities</strong>!</p>
+<ol>
+<li>
+<p>PineCone BL602 Board has a <strong>3-in-1 LED: Red + Green + Blue</strong>.</p>
+<p>We could control all 3 LEDs and glow them in a dazzling, multicolour way!</p>
+<p>(The TensorFlow Lite Model would probably produce an Output Tensor that contains 3 Output Values)</p>
+</li>
+<li>
+<p>Light up an LED when it <strong>detects my face</strong></p>
 <p>TODO</p>
-<h1 id="optimise-tensorflow" class="section-header"><a href="#optimise-tensorflow">12 Optimise TensorFlow</a></h1>
+</li>
+<li>
+<p>Voice, Motion</p>
 <p>TODO</p>
-<ul>
-<li><a href="https://www.tensorflow.org/lite/microcontrollers/library#optimized_kernels">“TensorFlow Lite: Optimised Kernels”</a></li>
-</ul>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">13 What’s Next</a></h1>
+</li>
+</ol>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">12 What’s Next</a></h1>
 <p>TODO</p>
 <ul>
 <li>
@@ -721,23 +731,23 @@ const int g_model_len = 2488;
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/tflite.md"><code>lupyuen.github.io/src/tflite.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">14 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">13 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1402531760764641280">this Twitter Thread</a></li>
 </ol>
-<h1 id="appendix-porting-tensorflow-to-bl602" class="section-header"><a href="#appendix-porting-tensorflow-to-bl602">15 Appendix: Porting TensorFlow to BL602</a></h1>
+<h1 id="appendix-porting-tensorflow-to-bl602" class="section-header"><a href="#appendix-porting-tensorflow-to-bl602">14 Appendix: Porting TensorFlow to BL602</a></h1>
 <p>TODO</p>
-<h2 id="source-folders" class="section-header"><a href="#source-folders">15.1 Source Folders</a></h2>
+<h2 id="source-folders" class="section-header"><a href="#source-folders">14.1 Source Folders</a></h2>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/tflite-source.png" alt="Source Folders" /></p>
 <p>TODO17</p>
-<h2 id="compiler-flags" class="section-header"><a href="#compiler-flags">15.2 Compiler Flags</a></h2>
+<h2 id="compiler-flags" class="section-header"><a href="#compiler-flags">14.2 Compiler Flags</a></h2>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/tflite-cppflags.png" alt="Compiler Flags" /></p>
 <p>TODO5</p>
 <p><img src="https://lupyuen.github.io/images/tflite-cppflags2.png" alt="Compiler Flags" /></p>
 <p>TODO6</p>
-<h2 id="download-libraries" class="section-header"><a href="#download-libraries">15.3 Download Libraries</a></h2>
+<h2 id="download-libraries" class="section-header"><a href="#download-libraries">14.3 Download Libraries</a></h2>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/tflite-gemmlowp.png" alt="Download gemmlowp" /></p>
 <p>TODO8</p>
@@ -745,7 +755,12 @@ const int g_model_len = 2488;
 <p>TODO9</p>
 <p><img src="https://lupyuen.github.io/images/tflite-ruy.png" alt="Download ruy" /></p>
 <p>TODO14</p>
-<h2 id="todo" class="section-header"><a href="#todo">15.4 TODO</a></h2>
+<h2 id="optimise-tensorflow" class="section-header"><a href="#optimise-tensorflow">14.4 Optimise TensorFlow</a></h2>
+<p>TODO</p>
+<ul>
+<li><a href="https://www.tensorflow.org/lite/microcontrollers/library#optimized_kernels">“TensorFlow Lite: Optimised Kernels”</a></li>
+</ul>
+<h2 id="todo" class="section-header"><a href="#todo">14.5 TODO</a></h2>
 <p><img src="https://lupyuen.github.io/images/tflite-cmath.png" alt="" /></p>
 <p>TODO3</p>
 <p><img src="https://lupyuen.github.io/images/tflite-commands.png" alt="" /></p>
