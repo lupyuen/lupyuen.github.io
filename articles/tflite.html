@@ -549,7 +549,7 @@ static void glow(char *buf, int len, int argc, char **argv) {
 </code></pre>
 <p>The “<code>glow</code>” command takes the <strong>Output Values</strong> from the TensorFlow Lite Model (Sine Function) and sets the <strong>brightness of the BL602 LED</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/tflite-chart2.jpg" alt="Wavy Curve" /></p>
-<p>The code above configure the <strong>LED GPIO Pin for PWM Output</strong> at 2,000 cycles per second, by calling the <a href="https://lupyuen.github.io/articles/led#how-it-works-bl602-pwm"><strong>BL602 PWM Hardware Abstraction Layer (HAL)</strong></a>.</p>
+<p>The code above configures the <strong>LED GPIO Pin for PWM Output</strong> at 2,000 cycles per second, by calling the <a href="https://lupyuen.github.io/articles/led#how-it-works-bl602-pwm"><strong>BL602 PWM Hardware Abstraction Layer (HAL)</strong></a>.</p>
 <p>(PWM or <strong>Pulse Width Modulation</strong> means that we’ll be pulsing the LED very rapidly at 2,000 times a second, to vary the perceived brightness. <a href="https://lupyuen.github.io/articles/led#from-gpio-to-pulse-width-modulation-pwm">See this</a>)</p>
 <p>To set the (perceived) LED Brightness, we set the <strong>PWM Duty Cycle</strong> by calling the BL602 PWM HAL…</p>
 <pre><code class="language-c">  //  Dim the LED by setting the Duty Cycle to 100%
@@ -630,12 +630,13 @@ static void glow(char *buf, int len, int argc, char **argv) {
 }
 </code></pre>
 <p>Let’s run this!</p>
+<p><img src="https://lupyuen.github.io/images/tflite-glow.png" alt="Glowing the LED with TensorFlow Lite" /></p>
 <h1 id="glowing-machine-learning-in-action" class="section-header"><a href="#glowing-machine-learning-in-action">9 Glowing Machine Learning in Action</a></h1>
 <p>TODO</p>
 <ul>
 <li><a href="https://youtu.be/EFpYJ3qsmEY"><strong>Watch the Demo Video on YouTube</strong></a></li>
 </ul>
-<p><img src="https://lupyuen.github.io/images/tflite-glow.png" alt="Glowing the LED with TensorFlow Lite" /></p>
+<p><img src="https://lupyuen.github.io/images/tflite-chart2.jpg" alt="Wavy Curve" /></p>
 <p>(Tip: The <strong>Sine Function</strong> is a terrific way to do things <strong>smoothly and continuously</strong>! Because the derivative of <code>sin(x)</code> is <code>cos(x)</code>, another smooth curve! And the derivative of <code>cos(x)</code> is <code>-sin(x)</code>… Wow!)</p>
 <h1 id="train-tensorflow-model" class="section-header"><a href="#train-tensorflow-model">10 Train TensorFlow Model</a></h1>
 <p><img src="https://lupyuen.github.io/images/tflite-meme.jpg" alt="Creating a TensorFlow Lite Model won’t be easy" /></p>
