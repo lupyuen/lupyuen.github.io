@@ -605,7 +605,7 @@ Now that __PWM is started__ for our LED GPIO, let's vary the LED Brightness...
 
 1.  We do this __4 times__
 
-    (Giving us more time to observe the glowing LED)
+    (Giving the glowing LED more time to mesmerise us)
 
 1.  We step through the __Input Values from `0` to `6.283`__ (or `Pi * 2`) at intervals of `0.05`
 
