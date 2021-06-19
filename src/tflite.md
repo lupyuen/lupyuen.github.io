@@ -574,7 +574,7 @@ The "`glow`" command takes the __Output Values__ from the TensorFlow Lite Model 
 
 ![Wavy Curve](https://lupyuen.github.io/images/tflite-chart2.jpg)
 
-The code above configure the __LED GPIO Pin for PWM Output__ at 2,000 cycles per second, by calling the [__BL602 PWM Hardware Abstraction Layer (HAL)__](https://lupyuen.github.io/articles/led#how-it-works-bl602-pwm).
+The code above configures the __LED GPIO Pin for PWM Output__ at 2,000 cycles per second, by calling the [__BL602 PWM Hardware Abstraction Layer (HAL)__](https://lupyuen.github.io/articles/led#how-it-works-bl602-pwm).
 
 (PWM or __Pulse Width Modulation__ means that we'll be pulsing the LED very rapidly at 2,000 times a second, to vary the perceived brightness. [See this](https://lupyuen.github.io/articles/led#from-gpio-to-pulse-width-modulation-pwm))
 
@@ -684,13 +684,15 @@ At the end of the command, we __turn off the PWM__ for LED GPIO...
 
 Let's run this!
 
+![Glowing the LED with TensorFlow Lite](https://lupyuen.github.io/images/tflite-glow.png)
+
 # Glowing Machine Learning in Action
 
 TODO
 
 -   [__Watch the Demo Video on YouTube__](https://youtu.be/EFpYJ3qsmEY)
 
-![Glowing the LED with TensorFlow Lite](https://lupyuen.github.io/images/tflite-glow.png)
+![Wavy Curve](https://lupyuen.github.io/images/tflite-chart2.jpg)
 
 (Tip: The __Sine Function__ is a terrific way to do things __smoothly and continuously__! Because the derivative of `sin(x)` is `cos(x)`, another smooth curve! And the derivative of `cos(x)` is `-sin(x)`... Wow!)
 
