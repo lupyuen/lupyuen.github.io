@@ -780,20 +780,20 @@ Even though we've used TensorFlow Lite for a trivial task (glowing an LED)... Th
 
     TODO
 
-    [Check out this sample code](https://github.com/tensorflow/tflite-micro/tree/main/tensorflow/lite/micro/examples/person_detection)
+    [Check out the sample code](https://github.com/tensorflow/tflite-micro/tree/main/tensorflow/lite/micro/examples/person_detection)
 
 1.  Speech
 
     TODO
 
-    [Check out this sample code](https://github.com/tensorflow/tflite-micro/tree/main/tensorflow/lite/micro/examples/micro_speech)
+    [Check out the sample code](https://github.com/tensorflow/tflite-micro/tree/main/tensorflow/lite/micro/examples/micro_speech)
 
 1.  Motion Gestures (via Accelerometer)
 
     TDOD
 
-    [Check out this sample code](https://github.com/tensorflow/tflite-micro/tree/main/tensorflow/lite/micro/examples/magic_wand)
-    
+    [Check out the sample code](https://github.com/tensorflow/tflite-micro/tree/main/tensorflow/lite/micro/examples/magic_wand)
+
 
 # What's Next
 
