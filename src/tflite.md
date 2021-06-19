@@ -768,13 +768,21 @@ Check out the docs on __training and converting TensorFlow Lite Models__...
 
 # What Else Can TensorFlow Do?
 
-TODO
+Even though we've used TensorFlow Lite for a trivial task (glowing an LED)... There are __so many possibilities__!
 
-# Optimise TensorFlow
+1.  PineCone BL602 Board has a __3-in-1 LED: Red + Green + Blue__.
 
-TODO
+    We could control all 3 LEDs and glow them in a dazzling, multicolour way!
 
--   ["TensorFlow Lite: Optimised Kernels"](https://www.tensorflow.org/lite/microcontrollers/library#optimized_kernels)
+    (The TensorFlow Lite Model would probably produce an Output Tensor that contains 3 Output Values)
+
+1.  Light up an LED when it __detects my face__
+
+    TODO
+
+1.  Voice, Motion
+
+    TODO
 
 # What's Next
 
@@ -835,6 +843,12 @@ TODO9
 ![Download ruy](https://lupyuen.github.io/images/tflite-ruy.png)
 
 TODO14
+
+## Optimise TensorFlow
+
+TODO
+
+-   ["TensorFlow Lite: Optimised Kernels"](https://www.tensorflow.org/lite/microcontrollers/library#optimized_kernels)
 
 ## TODO
 
