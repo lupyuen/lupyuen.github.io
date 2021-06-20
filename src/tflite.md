@@ -828,7 +828,7 @@ TensorFlow Lite on BL602 is split across two repositories...
 
     [github.com/lupyuen/bl_iot_sdk/tree/tflite](https://github.com/lupyuen/bl_iot_sdk/tree/tflite)
 
-    Contains the TensorFlow Lite Firmware...
+    Contains the TensorFlow Lite Firmware at...
 
     [customer_app/sdk_app_tflite](https://github.com/lupyuen/bl_iot_sdk/tree/tflite/customer_app/sdk_app_tflite)
 
@@ -849,17 +849,33 @@ When we clone the BL602 IoT SDK recursively...
 git clone --recursive --branch tflite https://github.com/lupyuen/bl_iot_sdk
 ```
 
-The TensorFlow Lite Library `tflite-bl602` will be automatically cloned to `components/3rdparty/tflite-bl602`
+The TensorFlow Lite Library `tflite-bl602` will be automatically cloned to `components/3rdparty`
 
 (Because `tflite-bl602` is a Git Submodule of `bl_iot_sdk`)
 
 ## Makefiles
 
-TODO
+TensorFlow Lite builds with [its own Makefile](https://github.com/tensorflow/tflite-micro/blob/main/tensorflow/lite/micro/tools/make/Makefile).
+
+However we're using the Makefiles from BL602 IoT SDK, so we merged the TensorFlow Lite build steps into these BL602 Makefiles...
+
+__TensorFlow Lite Library Makefiles__
+
+-   [`tflite-bl602/bouffalo.mk`](https://github.com/lupyuen/tflite-bl602/blob/main/bouffalo.mk)
+
+-   [`tflite-bl602/component.mk`](https://github.com/lupyuen/tflite-bl602/blob/main/component.mk)
+
+__TensorFlow Lite Firmware Makefiles__
+
+-   [`sdk_app_tflite/Makefile`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/Makefile)
+
+-   [`sdk_app_tflite/bouffalo.mk`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/bouffalo.mk)
+
+The changes are described in the following sections.
 
 ## Source Folders
 
-TODO
+Here are the source folders that we compile for the TensorFlow Lite Firmware...
 
 From [`tflite-bl602/bouffalo.mk`](https://github.com/lupyuen/tflite-bl602/blob/main/bouffalo.mk) and [`tflite-bl602/component.mk`](https://github.com/lupyuen/tflite-bl602/blob/main/component.mk)
 
@@ -867,35 +883,31 @@ From [`tflite-bl602/bouffalo.mk`](https://github.com/lupyuen/tflite-bl602/blob/m
 # Include Folders
 # TODO: Sync with bouffalo.mk and component.mk
 COMPONENT_ADD_INCLUDEDIRS := \
-    tensorflow/.. \
-    tensorflow/lite/micro/tools/make/downloads/flatbuffers/include \
-    tensorflow/lite/micro/tools/make/downloads/gemmlowp \
-    tensorflow/lite/micro/tools/make/downloads/ruy
+  tensorflow/.. \
+  tensorflow/lite/micro/tools/make/downloads/flatbuffers/include \
+  tensorflow/lite/micro/tools/make/downloads/gemmlowp \
+  tensorflow/lite/micro/tools/make/downloads/ruy
 
 # Source Folders
 # TODO: Sync with bouffalo.mk and component.mk
 COMPONENT_SRCDIRS := \
-    tensorflow/lite/c \
-    tensorflow/lite/core/api \
-    tensorflow/lite/kernels \
-    tensorflow/lite/kernels/internal \
-    tensorflow/lite/micro \
-    tensorflow/lite/micro/kernels \
-    tensorflow/lite/micro/memory_planner \
-    tensorflow/lite/schema
+  tensorflow/lite/c \
+  tensorflow/lite/core/api \
+  tensorflow/lite/kernels \
+  tensorflow/lite/kernels/internal \
+  tensorflow/lite/micro \
+  tensorflow/lite/micro/kernels \
+  tensorflow/lite/micro/memory_planner \
+  tensorflow/lite/schema
 ```
 
-TODO
+The source folders are specified in both [`bouffalo.mk`](https://github.com/lupyuen/tflite-bl602/blob/main/bouffalo.mk) and [`component.mk`](https://github.com/lupyuen/tflite-bl602/blob/main/component.mk). We should probably specify the source folders in a common Makefile instead...
 
 ![Source Folders](https://lupyuen.github.io/images/tflite-source.png)
 
-TODO17
-
 ## Compiler Flags
 
-TODO
-
-From [`tflite-bl602/bouffalo.mk`](https://github.com/lupyuen/tflite-bl602/blob/main/bouffalo.mk#L28-L49)
+Here are the GCC Compiler Flags for TensorFlow Lite Library: [`tflite-bl602/bouffalo.mk`](https://github.com/lupyuen/tflite-bl602/blob/main/bouffalo.mk#L28-L49)
 
 ```text
 # Define the GCC compiler options:
@@ -922,9 +934,7 @@ CFLAGS   += -DTF_LITE_STATIC_MEMORY
 CPPFLAGS += -DTF_LITE_STATIC_MEMORY
 ```
 
-TODO
-
-From [`sdk_app_tflite/bouffalo.mk`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/bouffalo.mk#L28-L41)
+And here are the flags for TensorFlow Lite Firmware: [`sdk_app_tflite/bouffalo.mk`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/bouffalo.mk#L28-L41)
 
 ```text
 # Define the GCC compiler options:
@@ -943,25 +953,31 @@ CPPFLAGS += -DTF_LITE_STATIC_MEMORY
 CPPFLAGS += -fno-threadsafe-statics
 ```
 
-TODO
-
-![Compiler Flags](https://lupyuen.github.io/images/tflite-cppflags.png)
-
-TODO5
-
 ![Compiler Flags](https://lupyuen.github.io/images/tflite-cppflags2.png)
 
-TODO6
+__TF_LITE_USE_GLOBAL_CMATH_FUNCTIONS__ is needed because we use the global C Math Functions instead of the C++ `std` library...
+
+![](https://lupyuen.github.io/images/tflite-math.png)
+
+__TF_LITE_STATIC_MEMORY__ is needed because we use Static Memory instead of Dynamic Memory (`new` and `delete`)...
+
+![](https://lupyuen.github.io/images/tflite-undefined2.png)
+
+Note that __`CPPFLAGS`__ (for C++ compiler) should be defined in [`sdk_app_tflite/bouffalo.mk`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/bouffalo.mk) instead of [`sdk_app_tflite/Makefile`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/Makefile)...
+
+![Compiler Flags](https://lupyuen.github.io/images/tflite-cppflags.png)
 
 ## Download Libraries
 
 TODO
 
+https://github.com/tensorflow/tflite-micro/blob/main/tensorflow/lite/micro/tools/make/Makefile
+
 From [`tflite-bl602/bouffalo.mk`](https://github.com/lupyuen/tflite-bl602/blob/main/bouffalo.mk#L51-L112)
 
 ```text
 # TensorFlow Makefile
-# Based on https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/Makefile
+# Based on https://github.com/tensorflow/tflite-micro/blob/main/tensorflow/lite/micro/tools/make/Makefile
 
 # root directory of tensorflow
 TENSORFLOW_ROOT := 
@@ -990,8 +1006,12 @@ ifneq ($(DISABLE_DOWNLOADS), true)
   ifneq ($(DOWNLOAD_RESULT), SUCCESS)
     $(error Something went wrong with the pigweed download: $(DOWNLOAD_RESULT))
   endif
+```
 
-  #### TODO: Fix third-party downloads
+TODO
+
+```text
+  # TODO: Fix third-party downloads
   include $(MAKEFILE_DIR)/third_party_downloads.inc
   THIRD_PARTY_DOWNLOADS :=
   $(eval $(call add_third_party_download,$(GEMMLOWP_URL),$(GEMMLOWP_MD5),gemmlowp,))
@@ -1002,22 +1022,26 @@ ifneq ($(DISABLE_DOWNLOADS), true)
     $(error Something went wrong with the person detection int8 model download: $(RESULT))
   endif
 
-  #### Added GEMMLOWP, RUY downloads
-  #### TODO: Use the download rules in helper_functions.inc
+  # Added GEMMLOWP, RUY downloads
+  # TODO: Use the download rules in helper_functions.inc
   RESULT := $(shell $(MAKEFILE_DIR)/download_and_extract.sh $(GEMMLOWP_URL) $(GEMMLOWP_MD5) ${MAKEFILE_DIR}/downloads/gemmlowp)
-  #### TODO: Check results of download
+  # TODO: Check results of download
   # ifneq ($(RESULT), SUCCESS)
   #   $(error Something went wrong with the GEMMLOWP download: $(RESULT))
   # endif
   RESULT := $(shell $(MAKEFILE_DIR)/download_and_extract.sh $(RUY_URL) $(RUY_MD5) ${MAKEFILE_DIR}/downloads/ruy)
-  #### TODO: Check results of download
+  # TODO: Check results of download
   # ifneq ($(RESULT), SUCCESS)
   #   $(error Something went wrong with the RUY download: $(RESULT))
   # endif
 
 endif
+```
 
-#### TODO: Fix third-party downloads
+TODO
+
+```text
+# TODO: Fix third-party downloads
 # Create rules for downloading third-party dependencies.
 THIRD_PARTY_TARGETS :=
 $(foreach DOWNLOAD,$(THIRD_PARTY_DOWNLOADS),$(eval $(call create_download_rule,$(DOWNLOAD))))
@@ -1066,10 +1090,6 @@ TODO10
 
 TODO11
 
-![](https://lupyuen.github.io/images/tflite-math.png)
-
-TODO12
-
 ![](https://lupyuen.github.io/images/tflite-flatbuffers.png)
 
 TODO13
@@ -1089,10 +1109,6 @@ TODO18
 ![](https://lupyuen.github.io/images/tflite-undefined.png)
 
 TODO19
-
-![](https://lupyuen.github.io/images/tflite-undefined2.png)
-
-TODO20
 
 ![](https://lupyuen.github.io/images/tflite-undefined3.png)
 
