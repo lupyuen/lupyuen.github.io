@@ -750,19 +750,26 @@ const int g_model_len = 2488;
 <p>TensorFlow Lite on BL602 is split across two repositories…</p>
 <ol>
 <li>
-<p><strong>TensorFlow Lite Firmware:</strong></p>
-<p>TODO</p>
+<p><strong>TensorFlow Lite Firmware: <code>sdk_app_tflite</code></strong></p>
+<p>This <code>tflite</code> branch of BL602 IoT SDK…</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/tflite">github.com/lupyuen/bl_iot_sdk/tree/tflite</a></p>
+<p>Contains the TensorFlow Lite Firmware…</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/tflite/customer_app/sdk_app_tflite">customer_app/sdk_app_tflite</a></p>
 </li>
 <li>
-<p><strong>TensorFlow Lite Library:</strong></p>
-<p>TODO</p>
+<p><strong>TensorFlow Lite Library: <code>tflite-bl602</code></strong></p>
+<p>This TensorFlow Lite Library…</p>
 <p><a href="https://github.com/lupyuen/tflite-bl602">github.com/lupyuen/tflite-bl602</a></p>
+<p>Should be checked out inside the above BL602 IoT SDK at this folder…</p>
 <p><code>components/3rdparty/tflite-bl602</code></p>
-<p>git submodule</p>
 </li>
 </ol>
+<p>When we clone the BL602 IoT SDK recursively…</p>
+<pre><code class="language-bash"># Download the tflite branch of lupyuen's bl_iot_sdk
+git clone --recursive --branch tflite https://github.com/lupyuen/bl_iot_sdk
+</code></pre>
+<p>The TensorFlow Lite Library <code>tflite-bl602</code> will be automatically cloned to <code>components/3rdparty/tflite-bl602</code></p>
+<p>(Because <code>tflite-bl602</code> is a Git Submodule of <code>bl_iot_sdk</code>)</p>
 <h2 id="makefiles" class="section-header"><a href="#makefiles">14.2 Makefiles</a></h2>
 <p>TODO</p>
 <h2 id="source-folders" class="section-header"><a href="#source-folders">14.3 Source Folders</a></h2>
