@@ -822,23 +822,36 @@ In this chapter we discuss the changes we made when __porting TensorFlow Lite to
 
 TensorFlow Lite on BL602 is split across two repositories...
 
-1.  __TensorFlow Lite Firmware:__
+1.  __TensorFlow Lite Firmware: `sdk_app_tflite`__
 
-    TODO
+    This `tflite` branch of BL602 IoT SDK...
 
     [github.com/lupyuen/bl_iot_sdk/tree/tflite](https://github.com/lupyuen/bl_iot_sdk/tree/tflite)
 
+    Contains the TensorFlow Lite Firmware...
+
     [customer_app/sdk_app_tflite](https://github.com/lupyuen/bl_iot_sdk/tree/tflite/customer_app/sdk_app_tflite)
 
-1.  __TensorFlow Lite Library:__
+1.  __TensorFlow Lite Library: `tflite-bl602`__
 
-    TODO
+    This TensorFlow Lite Library...
 
     [github.com/lupyuen/tflite-bl602](https://github.com/lupyuen/tflite-bl602)
 
+    Should be checked out inside the above BL602 IoT SDK at this folder...
+
     `components/3rdparty/tflite-bl602`
 
-    git submodule
+When we clone the BL602 IoT SDK recursively...
+
+```bash
+# Download the tflite branch of lupyuen's bl_iot_sdk
+git clone --recursive --branch tflite https://github.com/lupyuen/bl_iot_sdk
+```
+
+The TensorFlow Lite Library `tflite-bl602` will be automatically cloned to `components/3rdparty/tflite-bl602`
+
+(Because `tflite-bl602` is a Git Submodule of `bl_iot_sdk`)
 
 ## Makefiles
 
