@@ -30,7 +30,7 @@ This sounds like Science Fiction... But __this is possible today!__
 
 (Except for the polite banter)
 
-Read on to learn how __Machine Learning (TensorFlow Lite)__ makes this possible on the __BL602 RISC-V SoC__.
+Read on to learn how __Machine Learning (TensorFlow Lite)__ makes this possible on the [__BL602 RISC-V + WiFi SoC__](https://lupyuen.github.io/articles/pinecone).
 
 # TensorFlow Lite Library
 
@@ -796,9 +796,13 @@ Even though we've used TensorFlow Lite for a trivial task (glowing an LED)... Th
 
 # What's Next
 
-TODO
+This has been a super quick tour of TensorFlow Lite.
 
-For the next article I shall head back to __Rust on BL602__... And explain how we create [__Rust Wrappers for the entire BL602 IoT SDK__](https://github.com/lupyuen/bl602-rust-wrapper), including GPIO, UART, I2C, SPI, ADC, DAC, LVGL, LoRa, ...
+I hope to see many more __fun and interesting Machine Learning apps__ on BL602 and other RISC-V micrcontrollers!
+
+For the next article I shall head back to [__Rust on BL602__](https://lupyuen.github.io/articles/rust)... And explain how we create [__Rust Wrappers for the entire BL602 IoT SDK__](https://github.com/lupyuen/bl602-rust-wrapper), including GPIO, UART, I2C, SPI, ADC, DAC, LVGL, LoRa, TensorFlow, ...
+
+Stay Tuned!
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
