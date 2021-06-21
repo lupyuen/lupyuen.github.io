@@ -986,25 +986,11 @@ TensorFlow Lite needs __4 External Libraries__ for its build...
 
 1.  [__`ruy`__](https://github.com/google/ruy): Matrix Multiplication Library for neural network inference engines. Supports floating-point and 8-bit integer-quantized matrices.
 
-TODO
-
-https://github.com/tensorflow/tflite-micro/blob/main/tensorflow/lite/micro/tools/make/Makefile
-
-https://github.com/lupyuen/tflite-bl602/blob/main/tensorflow/lite/micro/tools/make/third_party_downloads.inc
-
-```text
-GEMMLOWP_URL := "https://github.com/google/gemmlowp/archive/719139ce755a0f31cbf1c37f7f98adcc7fc9f425.zip"
-GEMMLOWP_MD5 := "7e8191b24853d75de2af87622ad293ba"
-
-RUY_URL="https://github.com/google/ruy/archive/d37128311b445e758136b8602d1bbd2a755e115d.zip"
-RUY_MD5="abf7a91eb90d195f016ebe0be885bb6e"
-```
-
-From [`tflite-bl602/bouffalo.mk`](https://github.com/lupyuen/tflite-bl602/blob/main/bouffalo.mk#L51-L112)
+To download [__`flatbuffers`__](https://github.com/google/flatbuffers) and [__`pigweed`__](https://pigweed.googlesource.com/pigweed/pigweed), we copied these steps from [TensorFlow Lite's Makefile](https://github.com/tensorflow/tflite-micro/blob/main/tensorflow/lite/micro/tools/make/Makefile#L509-L542) to [`tflite-bl602/bouffalo.mk`](https://github.com/lupyuen/tflite-bl602/blob/main/bouffalo.mk#L51-L112) ...
 
 ```text
 # TensorFlow Makefile
-# Based on https://github.com/tensorflow/tflite-micro/blob/main/tensorflow/lite/micro/tools/make/Makefile
+# Based on https://github.com/tensorflow/tflite-micro/blob/main/tensorflow/lite/micro/tools/make/Makefile#L509-L542
 
 # root directory of tensorflow
 TENSORFLOW_ROOT := 
@@ -1035,7 +1021,9 @@ ifneq ($(DISABLE_DOWNLOADS), true)
   endif
 ```
 
-TODO
+![Download gemmlowp](https://lupyuen.github.io/images/tflite-gemmlowp2.png)
+
+Unfortunately these steps dont't work for downloading [__`gemmlowp`__](https://github.com/google/gemmlowp) and [__`ruy`__](https://github.com/google/ruy) ...
 
 ```text
   # TODO: Fix third-party downloads
@@ -1047,19 +1035,29 @@ TODO
   RESULT := $(shell $(MAKEFILE_DIR)/person_detection_int8_download.sh ${MAKEFILE_DIR}/downloads $(CO_PROCESSOR))
   ifneq ($(RESULT), SUCCESS)
     $(error Something went wrong with the person detection int8 model download: $(RESULT))
-  endif
+  endif  
+  ...
+endif
+
+# TODO: Fix third-party downloads
+# Create rules for downloading third-party dependencies.
+THIRD_PARTY_TARGETS :=
+$(foreach DOWNLOAD,$(THIRD_PARTY_DOWNLOADS),$(eval $(call create_download_rule,$(DOWNLOAD))))
+third_party_downloads: $(THIRD_PARTY_TARGETS)
 ```
 
-TODO
+So we download [__`gemmlowp`__](https://github.com/google/gemmlowp) and [__`ruy`__](https://github.com/google/ruy) ourselves: [`tflite-bl602/bouffalo.mk`](https://github.com/lupyuen/tflite-bl602/blob/main/bouffalo.mk#L93-L104)
 
 ```text
   # Added GEMMLOWP, RUY downloads
   # TODO: Use the download rules in helper_functions.inc
   RESULT := $(shell $(MAKEFILE_DIR)/download_and_extract.sh $(GEMMLOWP_URL) $(GEMMLOWP_MD5) ${MAKEFILE_DIR}/downloads/gemmlowp)
+
   # TODO: Check results of download
   # ifneq ($(RESULT), SUCCESS)
   #   $(error Something went wrong with the GEMMLOWP download: $(RESULT))
   # endif
+
   RESULT := $(shell $(MAKEFILE_DIR)/download_and_extract.sh $(RUY_URL) $(RUY_MD5) ${MAKEFILE_DIR}/downloads/ruy)
   # TODO: Check results of download
   # ifneq ($(RESULT), SUCCESS)
@@ -1068,29 +1066,17 @@ TODO
 endif
 ```
 
-TODO
+`GEMMLOWP_URL` and `RUY_URL` are defined in [`third_party_downloads`](https://github.com/lupyuen/tflite-bl602/blob/main/tensorflow/lite/micro/tools/make/third_party_downloads.inc) ...
 
 ```text
-# TODO: Fix third-party downloads
-# Create rules for downloading third-party dependencies.
-THIRD_PARTY_TARGETS :=
-$(foreach DOWNLOAD,$(THIRD_PARTY_DOWNLOADS),$(eval $(call create_download_rule,$(DOWNLOAD))))
-third_party_downloads: $(THIRD_PARTY_TARGETS)
+GEMMLOWP_URL := "https://github.com/google/gemmlowp/archive/719139ce755a0f31cbf1c37f7f98adcc7fc9f425.zip"
+GEMMLOWP_MD5 := "7e8191b24853d75de2af87622ad293ba"
+
+RUY_URL="https://github.com/google/ruy/archive/d37128311b445e758136b8602d1bbd2a755e115d.zip"
+RUY_MD5="abf7a91eb90d195f016ebe0be885bb6e"
 ```
 
-TODO
-
-![Download gemmlowp](https://lupyuen.github.io/images/tflite-gemmlowp.png)
-
-TODO8
-
-![Download gemmlowp](https://lupyuen.github.io/images/tflite-gemmlowp2.png)
-
-TODO9
-
 ![Download ruy](https://lupyuen.github.io/images/tflite-ruy.png)
-
-TODO14
 
 ## Global Destructor
 
