@@ -986,14 +986,13 @@ float __math_oflowf (uint32_t sign) {
 <h2 id="optimise-tensorflow" class="section-header"><a href="#optimise-tensorflow">14.8 Optimise TensorFlow</a></h2>
 <p>TensorFlow Lite for BL602 was compiled for a RISC-V CPU <strong>without any special hardware optimisation</strong>.</p>
 <p>For CPUs with <a href="https://en.m.wikipedia.org/wiki/Vector_processor"><strong>Vector Processing</strong></a> or <a href="https://en.m.wikipedia.org/wiki/Digital_signal_processor"><strong>Digital Signal Processing</strong></a> Instructions, we may optimise TensorFlow Lite by executing these instructions.</p>
-<p>TODO</p>
+<p>Check out this doc on <strong>TensorFlow Lite optimisation</strong>…</p>
 <ul>
-<li>
-<p><a href="https://www.tensorflow.org/lite/microcontrollers/library#optimized_kernels">“TensorFlow Lite: Optimised Kernels”</a></p>
-</li>
-<li>
-<p><a href="https://github.com/tensorflow/tflite-micro/blob/main/tensorflow/lite/micro/kernels/vexriscv/doc/DepthwiseConv2D_int8.md">“DepthwiseConv2D for VexRISCV”</a></p>
-</li>
+<li><a href="https://www.tensorflow.org/lite/microcontrollers/library#optimized_kernels"><strong>“TensorFlow Lite: Optimised Kernels”</strong></a></li>
+</ul>
+<p>This doc explains how TensorFlow Lite was <strong>optimised for <a href="https://github.com/SpinalHDL/VexRiscv">VexRISCV</a></strong>…</p>
+<ul>
+<li><a href="https://github.com/tensorflow/tflite-micro/blob/main/tensorflow/lite/micro/kernels/vexriscv/doc/DepthwiseConv2D_int8.md"><strong>“TensorFlow Lite: DepthwiseConv2D for VexRISCV”</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/tflite-build.png" alt="Build OK" /></p>
 
