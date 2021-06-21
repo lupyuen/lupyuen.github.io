@@ -1080,9 +1080,9 @@ RUY_MD5="abf7a91eb90d195f016ebe0be885bb6e"
 
 ## Global Destructor
 
-TODO
+C++ Programs (like TensorFlow Lite) need a __Global Destructor `__dso_handle`__ that points to the Static C++ Objects that will be destroyed when the program is terminated. [(See this)](https://alex-robenko.gitbook.io/bare_metal_cpp/compiler_output/static#custom-destructors)
 
-From [`sdk_app_tflite/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/demo.c#L105-L107)
+We won't be destroying any Static C++ Objects. (Because our firmware doesn't have a shutdown command) Hence we set the Global Destructor to null: [`sdk_app_tflite/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/demo.c#L105-L107)
 
 ```c
 /// Global Destructor for C++, which we're not using.
@@ -1090,13 +1090,13 @@ From [`sdk_app_tflite/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite
 void *__dso_handle = NULL;
 ```
 
-![DSO Handle](https://lupyuen.github.io/images/tflite-dsohandle.png)
+![Global Destructor for C++](https://lupyuen.github.io/images/tflite-dsohandle.png)
 
 ## Math Overflow
 
-TODO
+__`__math_oflowf`__ is called by C++ Programs to handle __Floating-Point Math Overflow__.
 
-From [`sdk_app_tflite/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/demo.c#L98-L103)
+For BL602 we halt with an __Assertion Failure__ when Math Overflow occurs: [`sdk_app_tflite/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/demo.c#L98-L103)
 
 ```c
 /// TODO: Handle math overflow.
