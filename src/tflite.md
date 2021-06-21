@@ -1113,6 +1113,10 @@ float __math_oflowf (uint32_t sign) {
 
 TODO
 
+https://en.m.wikipedia.org/wiki/Vector_processor
+
+https://en.m.wikipedia.org/wiki/Digital_signal_processor
+
 The reference kernels in the root of tensorflow/lite/micro/kernels are implemented in pure C/C++, and do not include platform-specific hardware optimizations.
 
 Optimized versions of kernels are provided in subdirectories. For example, kernels/cmsis-nn contains several optimized kernels that make use of Arm's CMSIS-NN library.
