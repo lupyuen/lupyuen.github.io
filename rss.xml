@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Machine Learning on RISC-V BL602 with TensorFlow Lite</title>
+            <link>https://lupyuen.github.io/articles/tflite</link>
+            <description><![CDATA[How we run TensorFlow Lite on RISC-V BL602... To create a Glowing LED]]></description>
+            <guid>https://lupyuen.github.io/articles/tflite</guid>
+            <pubDate>Tue, 22 Jun 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>BL602 Bootloader</title>
             <link>https://lupyuen.github.io/articles/boot</link>
             <description><![CDATA[All about the BL602 RISC-V Bootloader... And how it loads the Application Firmware into XIP Flash Memory]]></description>
