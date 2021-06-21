@@ -798,6 +798,8 @@ Even though we've used TensorFlow Lite for a trivial task (glowing an LED)... Th
 
 TODO
 
+For the next article I shall head back to __Rust on BL602__... And explain how we create [__Rust Wrappers for the entire BL602 IoT SDK__](https://github.com/lupyuen/bl602-rust-wrapper), including GPIO, UART, I2C, SPI, ADC, DAC, LVGL, LoRa, ...
+
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
 -   [Read "The RISC-V BL602 Book"](https://lupyuen.github.io/articles/book)
