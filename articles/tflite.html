@@ -965,16 +965,16 @@ RUY_MD5=&quot;abf7a91eb90d195f016ebe0be885bb6e&quot;
 </code></pre>
 <p><img src="https://lupyuen.github.io/images/tflite-ruy.png" alt="Download ruy" /></p>
 <h2 id="global-destructor" class="section-header"><a href="#global-destructor">14.6 Global Destructor</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/demo.c#L105-L107"><code>sdk_app_tflite/demo.c</code></a></p>
+<p>C++ Programs (like TensorFlow Lite) need a <strong>Global Destructor <code>__dso_handle</code></strong> that points to the Static C++ Objects that will be destroyed when the program is terminated. <a href="https://alex-robenko.gitbook.io/bare_metal_cpp/compiler_output/static#custom-destructors">(See this)</a></p>
+<p>We won’t be destroying any Static C++ Objects. (Because our firmware doesn’t have a shutdown command) Hence we set the Global Destructor to null: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/demo.c#L105-L107"><code>sdk_app_tflite/demo.c</code></a></p>
 <pre><code class="language-c">/// Global Destructor for C++, which we're not using.
 /// See https://alex-robenko.gitbook.io/bare_metal_cpp/compiler_output/static#custom-destructors
 void *__dso_handle = NULL;
 </code></pre>
-<p><img src="https://lupyuen.github.io/images/tflite-dsohandle.png" alt="DSO Handle" /></p>
+<p><img src="https://lupyuen.github.io/images/tflite-dsohandle.png" alt="Global Destructor for C++" /></p>
 <h2 id="math-overflow" class="section-header"><a href="#math-overflow">14.7 Math Overflow</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/demo.c#L98-L103"><code>sdk_app_tflite/demo.c</code></a></p>
+<p><strong><code>__math_oflowf</code></strong> is called by C++ Programs to handle <strong>Floating-Point Math Overflow</strong>.</p>
+<p>For BL602 we halt with an <strong>Assertion Failure</strong> when Math Overflow occurs: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/demo.c#L98-L103"><code>sdk_app_tflite/demo.c</code></a></p>
 <pre><code class="language-c">/// TODO: Handle math overflow.
 float __math_oflowf (uint32_t sign) {
     assert(false);  //  For now, we halt when there is a math overflow
