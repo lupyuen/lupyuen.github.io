@@ -886,18 +886,9 @@ CPPFLAGS += -fno-threadsafe-statics
 <p><a href="https://github.com/google/ruy"><strong><code>ruy</code></strong></a>: Matrix Multiplication Library for neural network inference engines. Supports floating-point and 8-bit integer-quantized matrices.</p>
 </li>
 </ol>
-<p>TODO</p>
-<p>https://github.com/tensorflow/tflite-micro/blob/main/tensorflow/lite/micro/tools/make/Makefile</p>
-<p>https://github.com/lupyuen/tflite-bl602/blob/main/tensorflow/lite/micro/tools/make/third_party_downloads.inc</p>
-<pre><code class="language-text">GEMMLOWP_URL := &quot;https://github.com/google/gemmlowp/archive/719139ce755a0f31cbf1c37f7f98adcc7fc9f425.zip&quot;
-GEMMLOWP_MD5 := &quot;7e8191b24853d75de2af87622ad293ba&quot;
-
-RUY_URL=&quot;https://github.com/google/ruy/archive/d37128311b445e758136b8602d1bbd2a755e115d.zip&quot;
-RUY_MD5=&quot;abf7a91eb90d195f016ebe0be885bb6e&quot;
-</code></pre>
-<p>From <a href="https://github.com/lupyuen/tflite-bl602/blob/main/bouffalo.mk#L51-L112"><code>tflite-bl602/bouffalo.mk</code></a></p>
+<p>To download <a href="https://github.com/google/flatbuffers"><strong><code>flatbuffers</code></strong></a> and <a href="https://pigweed.googlesource.com/pigweed/pigweed"><strong><code>pigweed</code></strong></a>, we copied these steps from <a href="https://github.com/tensorflow/tflite-micro/blob/main/tensorflow/lite/micro/tools/make/Makefile#L509-L542">TensorFlow Lite’s Makefile</a> to <a href="https://github.com/lupyuen/tflite-bl602/blob/main/bouffalo.mk#L51-L112"><code>tflite-bl602/bouffalo.mk</code></a> …</p>
 <pre><code class="language-text"># TensorFlow Makefile
-# Based on https://github.com/tensorflow/tflite-micro/blob/main/tensorflow/lite/micro/tools/make/Makefile
+# Based on https://github.com/tensorflow/tflite-micro/blob/main/tensorflow/lite/micro/tools/make/Makefile#L509-L542
 
 # root directory of tensorflow
 TENSORFLOW_ROOT := 
@@ -927,7 +918,8 @@ ifneq ($(DISABLE_DOWNLOADS), true)
     $(error Something went wrong with the pigweed download: $(DOWNLOAD_RESULT))
   endif
 </code></pre>
-<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/tflite-gemmlowp2.png" alt="Download gemmlowp" /></p>
+<p>Unfortunately these steps dont’t work for downloading <a href="https://github.com/google/gemmlowp"><strong><code>gemmlowp</code></strong></a> and <a href="https://github.com/google/ruy"><strong><code>ruy</code></strong></a> …</p>
 <pre><code class="language-text">  # TODO: Fix third-party downloads
   include $(MAKEFILE_DIR)/third_party_downloads.inc
   THIRD_PARTY_DOWNLOADS :=
@@ -937,16 +929,26 @@ ifneq ($(DISABLE_DOWNLOADS), true)
   RESULT := $(shell $(MAKEFILE_DIR)/person_detection_int8_download.sh ${MAKEFILE_DIR}/downloads $(CO_PROCESSOR))
   ifneq ($(RESULT), SUCCESS)
     $(error Something went wrong with the person detection int8 model download: $(RESULT))
-  endif
+  endif  
+  ...
+endif
+
+# TODO: Fix third-party downloads
+# Create rules for downloading third-party dependencies.
+THIRD_PARTY_TARGETS :=
+$(foreach DOWNLOAD,$(THIRD_PARTY_DOWNLOADS),$(eval $(call create_download_rule,$(DOWNLOAD))))
+third_party_downloads: $(THIRD_PARTY_TARGETS)
 </code></pre>
-<p>TODO</p>
+<p>So we download <a href="https://github.com/google/gemmlowp"><strong><code>gemmlowp</code></strong></a> and <a href="https://github.com/google/ruy"><strong><code>ruy</code></strong></a> ourselves: <a href="https://github.com/lupyuen/tflite-bl602/blob/main/bouffalo.mk#L93-L104"><code>tflite-bl602/bouffalo.mk</code></a></p>
 <pre><code class="language-text">  # Added GEMMLOWP, RUY downloads
   # TODO: Use the download rules in helper_functions.inc
   RESULT := $(shell $(MAKEFILE_DIR)/download_and_extract.sh $(GEMMLOWP_URL) $(GEMMLOWP_MD5) ${MAKEFILE_DIR}/downloads/gemmlowp)
+
   # TODO: Check results of download
   # ifneq ($(RESULT), SUCCESS)
   #   $(error Something went wrong with the GEMMLOWP download: $(RESULT))
   # endif
+
   RESULT := $(shell $(MAKEFILE_DIR)/download_and_extract.sh $(RUY_URL) $(RUY_MD5) ${MAKEFILE_DIR}/downloads/ruy)
   # TODO: Check results of download
   # ifneq ($(RESULT), SUCCESS)
@@ -954,20 +956,14 @@ ifneq ($(DISABLE_DOWNLOADS), true)
   # endif
 endif
 </code></pre>
-<p>TODO</p>
-<pre><code class="language-text"># TODO: Fix third-party downloads
-# Create rules for downloading third-party dependencies.
-THIRD_PARTY_TARGETS :=
-$(foreach DOWNLOAD,$(THIRD_PARTY_DOWNLOADS),$(eval $(call create_download_rule,$(DOWNLOAD))))
-third_party_downloads: $(THIRD_PARTY_TARGETS)
+<p><code>GEMMLOWP_URL</code> and <code>RUY_URL</code> are defined in <a href="https://github.com/lupyuen/tflite-bl602/blob/main/tensorflow/lite/micro/tools/make/third_party_downloads.inc"><code>third_party_downloads</code></a> …</p>
+<pre><code class="language-text">GEMMLOWP_URL := &quot;https://github.com/google/gemmlowp/archive/719139ce755a0f31cbf1c37f7f98adcc7fc9f425.zip&quot;
+GEMMLOWP_MD5 := &quot;7e8191b24853d75de2af87622ad293ba&quot;
+
+RUY_URL=&quot;https://github.com/google/ruy/archive/d37128311b445e758136b8602d1bbd2a755e115d.zip&quot;
+RUY_MD5=&quot;abf7a91eb90d195f016ebe0be885bb6e&quot;
 </code></pre>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/tflite-gemmlowp.png" alt="Download gemmlowp" /></p>
-<p>TODO8</p>
-<p><img src="https://lupyuen.github.io/images/tflite-gemmlowp2.png" alt="Download gemmlowp" /></p>
-<p>TODO9</p>
 <p><img src="https://lupyuen.github.io/images/tflite-ruy.png" alt="Download ruy" /></p>
-<p>TODO14</p>
 <h2 id="global-destructor" class="section-header"><a href="#global-destructor">14.6 Global Destructor</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/demo.c#L105-L107"><code>sdk_app_tflite/demo.c</code></a></p>
