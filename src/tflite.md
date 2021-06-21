@@ -1115,10 +1115,12 @@ TensorFlow Lite for BL602 was compiled for a RISC-V CPU __without any special ha
 
 For CPUs with [__Vector Processing__](https://en.m.wikipedia.org/wiki/Vector_processor) or [__Digital Signal Processing__](https://en.m.wikipedia.org/wiki/Digital_signal_processor) Instructions, we may optimise TensorFlow Lite by executing these instructions.
 
-TODO
+Check out this doc on __TensorFlow Lite optimisation__...
 
--   ["TensorFlow Lite: Optimised Kernels"](https://www.tensorflow.org/lite/microcontrollers/library#optimized_kernels)
+-   [__"TensorFlow Lite: Optimised Kernels"__](https://www.tensorflow.org/lite/microcontrollers/library#optimized_kernels)
 
--   ["DepthwiseConv2D for VexRISCV"](https://github.com/tensorflow/tflite-micro/blob/main/tensorflow/lite/micro/kernels/vexriscv/doc/DepthwiseConv2D_int8.md)
+This doc explains how TensorFlow Lite was __optimised for [VexRISCV](https://github.com/SpinalHDL/VexRiscv)__...
+
+-   [__"TensorFlow Lite: DepthwiseConv2D for VexRISCV"__](https://github.com/tensorflow/tflite-micro/blob/main/tensorflow/lite/micro/kernels/vexriscv/doc/DepthwiseConv2D_int8.md)
 
 ![Build OK](https://lupyuen.github.io/images/tflite-build.png)
