@@ -1111,6 +1111,8 @@ float __math_oflowf (uint32_t sign) {
 
 ## Optimise TensorFlow
 
+TensorFlow Lite for BL602 was compiled with RISC-V GCC Compiler without any hardware optimisation.
+
 TODO
 
 https://en.m.wikipedia.org/wiki/Vector_processor
