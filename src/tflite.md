@@ -980,6 +980,20 @@ TODO
 
 https://github.com/tensorflow/tflite-micro/blob/main/tensorflow/lite/micro/tools/make/Makefile
 
+https://github.com/google/flatbuffers
+
+https://pigweed.googlesource.com/pigweed/pigweed
+
+https://github.com/lupyuen/tflite-bl602/blob/main/tensorflow/lite/micro/tools/make/third_party_downloads.inc
+
+```text
+GEMMLOWP_URL := "https://github.com/google/gemmlowp/archive/719139ce755a0f31cbf1c37f7f98adcc7fc9f425.zip"
+GEMMLOWP_MD5 := "7e8191b24853d75de2af87622ad293ba"
+
+RUY_URL="https://github.com/google/ruy/archive/d37128311b445e758136b8602d1bbd2a755e115d.zip"
+RUY_MD5="abf7a91eb90d195f016ebe0be885bb6e"
+```
+
 From [`tflite-bl602/bouffalo.mk`](https://github.com/lupyuen/tflite-bl602/blob/main/bouffalo.mk#L51-L112)
 
 ```text
