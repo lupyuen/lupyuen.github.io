@@ -871,10 +871,23 @@ CPPFLAGS += -fno-threadsafe-statics
 <p>Note that <strong><code>CPPFLAGS</code></strong> (for C++ compiler) should be defined in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/bouffalo.mk"><code>sdk_app_tflite/bouffalo.mk</code></a> instead of <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/Makefile"><code>sdk_app_tflite/Makefile</code></a>…</p>
 <p><img src="https://lupyuen.github.io/images/tflite-cppflags.png" alt="Compiler Flags" /></p>
 <h2 id="download-libraries" class="section-header"><a href="#download-libraries">14.5 Download Libraries</a></h2>
+<p>TensorFlow Lite needs <strong>4 External Libraries</strong> for its build…</p>
+<ol>
+<li>
+<p><a href="https://github.com/google/flatbuffers"><strong><code>flatbuffers</code></strong></a>: Serialisation Library (similar to Protocol Buffers). TensorFlow Lite Models are encoded in the <code>flatbuffers</code> format.</p>
+</li>
+<li>
+<p><a href="https://pigweed.googlesource.com/pigweed/pigweed"><strong><code>pigweed</code></strong></a>: Embedded Libraries <a href="https://opensource.googleblog.com/2020/03/pigweed-collection-of-embedded-libraries.html">(See this)</a></p>
+</li>
+<li>
+<p><a href="https://github.com/google/gemmlowp"><strong><code>gemmlowp</code></strong></a>: Small self-contained low-precision General Matrix Multiplication library. Input and output matrix entries are integers on at most 8 bits.</p>
+</li>
+<li>
+<p><a href="https://github.com/google/ruy"><strong><code>ruy</code></strong></a>: Matrix Multiplication Library for neural network inference engines. Supports floating-point and 8-bit integer-quantized matrices.</p>
+</li>
+</ol>
 <p>TODO</p>
 <p>https://github.com/tensorflow/tflite-micro/blob/main/tensorflow/lite/micro/tools/make/Makefile</p>
-<p>https://github.com/google/flatbuffers</p>
-<p>https://pigweed.googlesource.com/pigweed/pigweed</p>
 <p>https://github.com/lupyuen/tflite-bl602/blob/main/tensorflow/lite/micro/tools/make/third_party_downloads.inc</p>
 <pre><code class="language-text">GEMMLOWP_URL := &quot;https://github.com/google/gemmlowp/archive/719139ce755a0f31cbf1c37f7f98adcc7fc9f425.zip&quot;
 GEMMLOWP_MD5 := &quot;7e8191b24853d75de2af87622ad293ba&quot;
@@ -925,8 +938,9 @@ ifneq ($(DISABLE_DOWNLOADS), true)
   ifneq ($(RESULT), SUCCESS)
     $(error Something went wrong with the person detection int8 model download: $(RESULT))
   endif
-
-  # Added GEMMLOWP, RUY downloads
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-text">  # Added GEMMLOWP, RUY downloads
   # TODO: Use the download rules in helper_functions.inc
   RESULT := $(shell $(MAKEFILE_DIR)/download_and_extract.sh $(GEMMLOWP_URL) $(GEMMLOWP_MD5) ${MAKEFILE_DIR}/downloads/gemmlowp)
   # TODO: Check results of download
@@ -938,7 +952,6 @@ ifneq ($(DISABLE_DOWNLOADS), true)
   # ifneq ($(RESULT), SUCCESS)
   #   $(error Something went wrong with the RUY download: $(RESULT))
   # endif
-
 endif
 </code></pre>
 <p>TODO</p>
