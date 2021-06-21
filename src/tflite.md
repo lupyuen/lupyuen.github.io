@@ -1113,6 +1113,14 @@ float __math_oflowf (uint32_t sign) {
 
 TODO
 
+The reference kernels in the root of tensorflow/lite/micro/kernels are implemented in pure C/C++, and do not include platform-specific hardware optimizations.
+
+Optimized versions of kernels are provided in subdirectories. For example, kernels/cmsis-nn contains several optimized kernels that make use of Arm's CMSIS-NN library.
+
+To generate projects using optimized kernels, use the following command, replacing <subdirectory_name> with the name of the subdirectory containing the optimizations:
+
 -   ["TensorFlow Lite: Optimised Kernels"](https://www.tensorflow.org/lite/microcontrollers/library#optimized_kernels)
+
+https://github.com/tensorflow/tflite-micro/blob/main/tensorflow/lite/micro/kernels/vexriscv/doc/DepthwiseConv2D_int8.md
 
 ![Build OK](https://lupyuen.github.io/images/tflite-build.png)
