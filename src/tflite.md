@@ -976,13 +976,19 @@ Note that __`CPPFLAGS`__ (for C++ compiler) should be defined in [`sdk_app_tflit
 
 ## Download Libraries
 
+TensorFlow Lite needs __4 External Libraries__ for its build...
+
+1.  [__`flatbuffers`__](https://github.com/google/flatbuffers): Serialisation Library (similar to Protocol Buffers). TensorFlow Lite Models are encoded in the `flatbuffers` format.
+
+1.  [__`pigweed`__](https://pigweed.googlesource.com/pigweed/pigweed): Embedded Libraries [(See this)](https://opensource.googleblog.com/2020/03/pigweed-collection-of-embedded-libraries.html)
+
+1.  [__`gemmlowp`__](https://github.com/google/gemmlowp): Small self-contained low-precision General Matrix Multiplication library. Input and output matrix entries are integers on at most 8 bits.
+
+1.  [__`ruy`__](https://github.com/google/ruy): Matrix Multiplication Library for neural network inference engines. Supports floating-point and 8-bit integer-quantized matrices.
+
 TODO
 
 https://github.com/tensorflow/tflite-micro/blob/main/tensorflow/lite/micro/tools/make/Makefile
-
-https://github.com/google/flatbuffers
-
-https://pigweed.googlesource.com/pigweed/pigweed
 
 https://github.com/lupyuen/tflite-bl602/blob/main/tensorflow/lite/micro/tools/make/third_party_downloads.inc
 
@@ -1042,7 +1048,11 @@ TODO
   ifneq ($(RESULT), SUCCESS)
     $(error Something went wrong with the person detection int8 model download: $(RESULT))
   endif
+```
 
+TODO
+
+```text
   # Added GEMMLOWP, RUY downloads
   # TODO: Use the download rules in helper_functions.inc
   RESULT := $(shell $(MAKEFILE_DIR)/download_and_extract.sh $(GEMMLOWP_URL) $(GEMMLOWP_MD5) ${MAKEFILE_DIR}/downloads/gemmlowp)
@@ -1055,7 +1065,6 @@ TODO
   # ifneq ($(RESULT), SUCCESS)
   #   $(error Something went wrong with the RUY download: $(RESULT))
   # endif
-
 endif
 ```
 
