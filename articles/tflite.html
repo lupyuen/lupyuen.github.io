@@ -984,17 +984,17 @@ float __math_oflowf (uint32_t sign) {
 }
 </code></pre>
 <h2 id="optimise-tensorflow" class="section-header"><a href="#optimise-tensorflow">14.8 Optimise TensorFlow</a></h2>
-<p>TensorFlow Lite for BL602 was compiled with RISC-V GCC Compiler without any hardware optimisation.</p>
+<p>TensorFlow Lite for BL602 was compiled for a RISC-V CPU <strong>without any special hardware optimisation</strong>.</p>
+<p>For CPUs with <a href="https://en.m.wikipedia.org/wiki/Vector_processor"><strong>Vector Processing</strong></a> or <a href="https://en.m.wikipedia.org/wiki/Digital_signal_processor"><strong>Digital Signal Processing</strong></a> Instructions, we may optimise TensorFlow Lite by executing these instructions.</p>
 <p>TODO</p>
-<p>https://en.m.wikipedia.org/wiki/Vector_processor</p>
-<p>https://en.m.wikipedia.org/wiki/Digital_signal_processor</p>
-<p>The reference kernels in the root of tensorflow/lite/micro/kernels are implemented in pure C/C++, and do not include platform-specific hardware optimizations.</p>
-<p>Optimized versions of kernels are provided in subdirectories. For example, kernels/cmsis-nn contains several optimized kernels that make use of Arm’s CMSIS-NN library.</p>
-<p>To generate projects using optimized kernels, use the following command, replacing &lt;subdirectory_name&gt; with the name of the subdirectory containing the optimizations:</p>
 <ul>
-<li><a href="https://www.tensorflow.org/lite/microcontrollers/library#optimized_kernels">“TensorFlow Lite: Optimised Kernels”</a></li>
+<li>
+<p><a href="https://www.tensorflow.org/lite/microcontrollers/library#optimized_kernels">“TensorFlow Lite: Optimised Kernels”</a></p>
+</li>
+<li>
+<p><a href="https://github.com/tensorflow/tflite-micro/blob/main/tensorflow/lite/micro/kernels/vexriscv/doc/DepthwiseConv2D_int8.md">“DepthwiseConv2D for VexRISCV”</a></p>
+</li>
 </ul>
-<p>https://github.com/tensorflow/tflite-micro/blob/main/tensorflow/lite/micro/kernels/vexriscv/doc/DepthwiseConv2D_int8.md</p>
 <p><img src="https://lupyuen.github.io/images/tflite-build.png" alt="Build OK" /></p>
 
     
