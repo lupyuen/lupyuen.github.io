@@ -89,8 +89,9 @@
 <li><a href="#source-folders">14.3 Source Folders</a><ul></ul></li>
 <li><a href="#compiler-flags">14.4 Compiler Flags</a><ul></ul></li>
 <li><a href="#download-libraries">14.5 Download Libraries</a><ul></ul></li>
-<li><a href="#optimise-tensorflow">14.6 Optimise TensorFlow</a><ul></ul></li>
-<li><a href="#todo">14.7 TODO</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>22 Jun 2021</em></p>
+<li><a href="#global-destructor">14.6 Global Destructor</a><ul></ul></li>
+<li><a href="#math-overflow">14.7 Math Overflow</a><ul></ul></li>
+<li><a href="#optimise-tensorflow">14.8 Optimise TensorFlow</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>22 Jun 2021</em></p>
 <p>How a Human teaches a Machine to light up an LED…</p>
 <blockquote>
 <p><em>Human:</em> Hello Machine, please light up the LED in a fun and interesting way.</p>
@@ -862,7 +863,11 @@ CPPFLAGS += -fno-threadsafe-statics
 <p><strong>TF_LITE_USE_GLOBAL_CMATH_FUNCTIONS</strong> is needed because we use the global C Math Functions instead of the C++ <code>std</code> library…</p>
 <p><img src="https://lupyuen.github.io/images/tflite-math.png" alt="" /></p>
 <p><strong>TF_LITE_STATIC_MEMORY</strong> is needed because we use Static Memory instead of Dynamic Memory (<code>new</code> and <code>delete</code>)…</p>
-<p><img src="https://lupyuen.github.io/images/tflite-undefined2.png" alt="" /></p>
+<p><img src="https://lupyuen.github.io/images/tflite-undefined2.png" alt="Undefined new and delete" /></p>
+<p><strong>no-threadsafe-statics</strong> is needed to disable <strong>Thread-Safe Initialisation</strong> for C++ Static Variables. This fixes the missing symbols <code>__cxa_guard_acquire</code> and <code>__cxa_guard_release</code>.</p>
+<p>Note: This assumes that we will not init C++ static variables in multiple tasks.
+<a href="https://alex-robenko.gitbook.io/bare_metal_cpp/compiler_output/static">(See this)</a></p>
+<p><img src="https://lupyuen.github.io/images/tflite-initstatic.png" alt="Disable Thread-Safe Initialisation" /></p>
 <p>Note that <strong><code>CPPFLAGS</code></strong> (for C++ compiler) should be defined in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/bouffalo.mk"><code>sdk_app_tflite/bouffalo.mk</code></a> instead of <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/Makefile"><code>sdk_app_tflite/Makefile</code></a>…</p>
 <p><img src="https://lupyuen.github.io/images/tflite-cppflags.png" alt="Compiler Flags" /></p>
 <h2 id="download-libraries" class="section-header"><a href="#download-libraries">14.5 Download Libraries</a></h2>
@@ -941,38 +946,30 @@ third_party_downloads: $(THIRD_PARTY_TARGETS)
 <p>TODO9</p>
 <p><img src="https://lupyuen.github.io/images/tflite-ruy.png" alt="Download ruy" /></p>
 <p>TODO14</p>
-<h2 id="optimise-tensorflow" class="section-header"><a href="#optimise-tensorflow">14.6 Optimise TensorFlow</a></h2>
+<h2 id="global-destructor" class="section-header"><a href="#global-destructor">14.6 Global Destructor</a></h2>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/demo.c#L105-L107"><code>sdk_app_tflite/demo.c</code></a></p>
+<pre><code class="language-c">/// Global Destructor for C++, which we're not using.
+/// See https://alex-robenko.gitbook.io/bare_metal_cpp/compiler_output/static#custom-destructors
+void *__dso_handle = NULL;
+</code></pre>
+<p><img src="https://lupyuen.github.io/images/tflite-dsohandle.png" alt="DSO Handle" /></p>
+<h2 id="math-overflow" class="section-header"><a href="#math-overflow">14.7 Math Overflow</a></h2>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/demo.c#L98-L103"><code>sdk_app_tflite/demo.c</code></a></p>
+<pre><code class="language-c">/// TODO: Handle math overflow.
+float __math_oflowf (uint32_t sign) {
+    assert(false);  //  For now, we halt when there is a math overflow
+    //  Previously: return xflowf (sign, 0x1p97f);
+    //  From https://code.woboq.org/userspace/glibc/sysdeps/ieee754/flt-32/math_errf.c.html#__math_oflowf
+}
+</code></pre>
+<h2 id="optimise-tensorflow" class="section-header"><a href="#optimise-tensorflow">14.8 Optimise TensorFlow</a></h2>
 <p>TODO</p>
 <ul>
 <li><a href="https://www.tensorflow.org/lite/microcontrollers/library#optimized_kernels">“TensorFlow Lite: Optimised Kernels”</a></li>
 </ul>
-<h2 id="todo" class="section-header"><a href="#todo">14.7 TODO</a></h2>
-<p><img src="https://lupyuen.github.io/images/tflite-cmath.png" alt="" /></p>
-<p>TODO3</p>
-<p><img src="https://lupyuen.github.io/images/tflite-commands.png" alt="" /></p>
-<p>TODO4</p>
-<p><img src="https://lupyuen.github.io/images/tflite-dsohandle.png" alt="" /></p>
-<p>TODO7</p>
-<p><img src="https://lupyuen.github.io/images/tflite-infer.png" alt="" /></p>
-<p>TODO10</p>
-<p><img src="https://lupyuen.github.io/images/tflite-initstatic.png" alt="" /></p>
-<p>TODO11</p>
-<p><img src="https://lupyuen.github.io/images/tflite-flatbuffers.png" alt="" /></p>
-<p>TODO13</p>
-<p><img src="https://lupyuen.github.io/images/tflite-setup.png" alt="" /></p>
-<p>TODO15</p>
-<p><img src="https://lupyuen.github.io/images/tflite-loop.png" alt="" /></p>
-<p>TODO16</p>
-<p><img src="https://lupyuen.github.io/images/tflite-static.png" alt="" /></p>
-<p>TODO18</p>
-<p><img src="https://lupyuen.github.io/images/tflite-undefined.png" alt="" /></p>
-<p>TODO19</p>
-<p><img src="https://lupyuen.github.io/images/tflite-undefined3.png" alt="" /></p>
-<p>TODO21</p>
-<p><img src="https://lupyuen.github.io/images/tflite-undefined4.png" alt="" /></p>
-<p>TODO22</p>
-<p><img src="https://lupyuen.github.io/images/tflite-build.png" alt="" /></p>
-<p>TODO2</p>
+<p><img src="https://lupyuen.github.io/images/tflite-build.png" alt="Build OK" /></p>
 
     
 </body>
