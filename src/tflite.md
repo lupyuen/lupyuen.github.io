@@ -1086,6 +1086,30 @@ RUY_MD5="abf7a91eb90d195f016ebe0be885bb6e"
 
 ![Download ruy](https://lupyuen.github.io/images/tflite-ruy.png)
 
+## But Not On Windows MSYS
+
+TensorFlow Lite builds OK on Linux and macOS. But on Windows MSYS it shows this error...
+
+```text
+/d/a/bl_iot_sdk/bl_iot_sdk/components/3rdparty/tflite-bl602/tensorflow/lite/micro/tools/make/
+flatbuffers_download.sh: line 102: 
+unzip: command not found
+*** Something went wrong with the flatbuffers download: .
+Stop.
+...
+D:/a/bl_iot_sdk/bl_iot_sdk/customer_app/sdk_app_tflite/sdk_app_tflite
+main_functions.cc:19:10: 
+fatal error: tensorflow/lite/micro/all_ops_resolver.h: 
+No such file or directory
+#include "tensorflow/lite/micro/all_ops_resolver.h"
+^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2021-06-22T13:40:25.9719870Z compilation terminated.
+```
+
+[(From this GitHub Actions Workflow: `build.yml`)](https://github.com/lupyuen/bl_iot_sdk/blob/master/.github/workflows/build.yml#L42-L62)
+
+The build for Windows MSYS probably needs `unzip` to be installed.
+
 ## Global Destructor
 
 C++ Programs (like TensorFlow Lite) need a __Global Destructor `__dso_handle`__ that points to the Static C++ Objects that will be destroyed when the program is terminated. [(See this)](https://alex-robenko.gitbook.io/bare_metal_cpp/compiler_output/static#custom-destructors)
