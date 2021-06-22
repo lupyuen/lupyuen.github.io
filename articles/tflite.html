@@ -89,9 +89,10 @@
 <li><a href="#source-folders">14.3 Source Folders</a><ul></ul></li>
 <li><a href="#compiler-flags">14.4 Compiler Flags</a><ul></ul></li>
 <li><a href="#download-libraries">14.5 Download Libraries</a><ul></ul></li>
-<li><a href="#global-destructor">14.6 Global Destructor</a><ul></ul></li>
-<li><a href="#math-overflow">14.7 Math Overflow</a><ul></ul></li>
-<li><a href="#optimise-tensorflow">14.8 Optimise TensorFlow</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>22 Jun 2021</em></p>
+<li><a href="#but-not-on-windows-msys">14.6 But Not On Windows MSYS</a><ul></ul></li>
+<li><a href="#global-destructor">14.7 Global Destructor</a><ul></ul></li>
+<li><a href="#math-overflow">14.8 Math Overflow</a><ul></ul></li>
+<li><a href="#optimise-tensorflow">14.9 Optimise TensorFlow</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>22 Jun 2021</em></p>
 <p>How a Human teaches a Machine to light up an LED…</p>
 <blockquote>
 <p><em>Human:</em> Hello Machine, please light up the LED in a fun and interesting way.</p>
@@ -970,7 +971,25 @@ RUY_URL=&quot;https://github.com/google/ruy/archive/d37128311b445e758136b8602d1b
 RUY_MD5=&quot;abf7a91eb90d195f016ebe0be885bb6e&quot;
 </code></pre>
 <p><img src="https://lupyuen.github.io/images/tflite-ruy.png" alt="Download ruy" /></p>
-<h2 id="global-destructor" class="section-header"><a href="#global-destructor">14.6 Global Destructor</a></h2>
+<h2 id="but-not-on-windows-msys" class="section-header"><a href="#but-not-on-windows-msys">14.6 But Not On Windows MSYS</a></h2>
+<p>TensorFlow Lite builds OK on Linux and macOS. But on Windows MSYS it shows this error…</p>
+<pre><code class="language-text">/d/a/bl_iot_sdk/bl_iot_sdk/components/3rdparty/tflite-bl602/tensorflow/lite/micro/tools/make/
+flatbuffers_download.sh: line 102: 
+unzip: command not found
+*** Something went wrong with the flatbuffers download: .
+Stop.
+...
+D:/a/bl_iot_sdk/bl_iot_sdk/customer_app/sdk_app_tflite/sdk_app_tflite
+main_functions.cc:19:10: 
+fatal error: tensorflow/lite/micro/all_ops_resolver.h: 
+No such file or directory
+#include &quot;tensorflow/lite/micro/all_ops_resolver.h&quot;
+^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2021-06-22T13:40:25.9719870Z compilation terminated.
+</code></pre>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/.github/workflows/build.yml#L42-L62">(From this GitHub Actions Workflow: <code>build.yml</code>)</a></p>
+<p>The build for Windows MSYS probably needs <code>unzip</code> to be installed.</p>
+<h2 id="global-destructor" class="section-header"><a href="#global-destructor">14.7 Global Destructor</a></h2>
 <p>C++ Programs (like TensorFlow Lite) need a <strong>Global Destructor <code>__dso_handle</code></strong> that points to the Static C++ Objects that will be destroyed when the program is terminated. <a href="https://alex-robenko.gitbook.io/bare_metal_cpp/compiler_output/static#custom-destructors">(See this)</a></p>
 <p>We won’t be destroying any Static C++ Objects. (Because our firmware doesn’t have a shutdown command) Hence we set the Global Destructor to null: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/demo.c#L105-L107"><code>sdk_app_tflite/demo.c</code></a></p>
 <pre><code class="language-c">/// Global Destructor for C++, which we're not using.
@@ -978,7 +997,7 @@ RUY_MD5=&quot;abf7a91eb90d195f016ebe0be885bb6e&quot;
 void *__dso_handle = NULL;
 </code></pre>
 <p><img src="https://lupyuen.github.io/images/tflite-dsohandle.png" alt="Global Destructor for C++" /></p>
-<h2 id="math-overflow" class="section-header"><a href="#math-overflow">14.7 Math Overflow</a></h2>
+<h2 id="math-overflow" class="section-header"><a href="#math-overflow">14.8 Math Overflow</a></h2>
 <p><strong><code>__math_oflowf</code></strong> is called by C++ Programs to handle <strong>Floating-Point Math Overflow</strong>.</p>
 <p>For BL602 we halt with an <strong>Assertion Failure</strong> when Math Overflow occurs: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/demo.c#L98-L103"><code>sdk_app_tflite/demo.c</code></a></p>
 <pre><code class="language-c">/// TODO: Handle math overflow.
@@ -988,7 +1007,7 @@ float __math_oflowf (uint32_t sign) {
     //  From https://code.woboq.org/userspace/glibc/sysdeps/ieee754/flt-32/math_errf.c.html#__math_oflowf
 }
 </code></pre>
-<h2 id="optimise-tensorflow" class="section-header"><a href="#optimise-tensorflow">14.8 Optimise TensorFlow</a></h2>
+<h2 id="optimise-tensorflow" class="section-header"><a href="#optimise-tensorflow">14.9 Optimise TensorFlow</a></h2>
 <p>TensorFlow Lite for BL602 was compiled for a RISC-V CPU <strong>without any special hardware optimisation</strong>.</p>
 <p>For CPUs with <a href="https://en.m.wikipedia.org/wiki/Vector_processor"><strong>Vector Processing</strong></a> or <a href="https://en.m.wikipedia.org/wiki/Digital_signal_processor"><strong>Digital Signal Processing</strong></a> Instructions, we may optimise TensorFlow Lite by executing these instructions.</p>
 <p>Check out this doc on <strong>TensorFlow Lite optimisation</strong>…</p>
