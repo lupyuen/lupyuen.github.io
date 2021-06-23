@@ -92,7 +92,8 @@
 <li><a href="#but-not-on-windows-msys">14.6 But Not On Windows MSYS</a><ul></ul></li>
 <li><a href="#global-destructor">14.7 Global Destructor</a><ul></ul></li>
 <li><a href="#math-overflow">14.8 Math Overflow</a><ul></ul></li>
-<li><a href="#optimise-tensorflow">14.9 Optimise TensorFlow</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>22 Jun 2021</em></p>
+<li><a href="#excluded-files">14.9 Excluded Files</a><ul></ul></li>
+<li><a href="#optimise-tensorflow">14.10 Optimise TensorFlow</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>22 Jun 2021</em></p>
 <p>How a Human teaches a Machine to light up an LED…</p>
 <blockquote>
 <p><em>Human:</em> Hello Machine, please light up the LED in a fun and interesting way.</p>
@@ -1007,7 +1008,18 @@ float __math_oflowf (uint32_t sign) {
     //  From https://code.woboq.org/userspace/glibc/sysdeps/ieee754/flt-32/math_errf.c.html#__math_oflowf
 }
 </code></pre>
-<h2 id="optimise-tensorflow" class="section-header"><a href="#optimise-tensorflow">14.9 Optimise TensorFlow</a></h2>
+<h2 id="excluded-files" class="section-header"><a href="#excluded-files">14.9 Excluded Files</a></h2>
+<p>These two files were <strong>excluded from the build</strong> because of compile errors…</p>
+<ol>
+<li>
+<p><a href="https://github.com/lupyuen/tflite-bl602/blob/main/tensorflow/lite/micro/kernels/space_to_depth.cc"><strong><code>space_to_depth.cc</code></strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/tflite-bl602/blob/main/tensorflow/lite/micro/kernels/space_to_depth_test.cc"><strong><code>space_to_depth_test.cc</code></strong></a></p>
+</li>
+</ol>
+<p><a href="https://github.com/lupyuen/tflite-bl602/commit/d0afe5b344d898c0bb461206fbbbf234731d7d77#diff-08b6d122af82deb31fb40975dd2c6786943ef3f16787d6b8a288d474de3093b7">See the changes</a></p>
+<h2 id="optimise-tensorflow" class="section-header"><a href="#optimise-tensorflow">14.10 Optimise TensorFlow</a></h2>
 <p>TensorFlow Lite for BL602 was compiled for a RISC-V CPU <strong>without any special hardware optimisation</strong>.</p>
 <p>For CPUs with <a href="https://en.m.wikipedia.org/wiki/Vector_processor"><strong>Vector Processing</strong></a> or <a href="https://en.m.wikipedia.org/wiki/Digital_signal_processor"><strong>Digital Signal Processing</strong></a> Instructions, we may optimise TensorFlow Lite by executing these instructions.</p>
 <p>Check out this doc on <strong>TensorFlow Lite optimisation</strong>…</p>
