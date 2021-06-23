@@ -1139,6 +1139,16 @@ float __math_oflowf (uint32_t sign) {
 }
 ```
 
+## Excluded Files
+
+These two files were __excluded from the build__ because of compile errors...
+
+1.  [__`space_to_depth.cc`__](https://github.com/lupyuen/tflite-bl602/blob/main/tensorflow/lite/micro/kernels/space_to_depth.cc)
+
+1.  [__`space_to_depth_test.cc`__](https://github.com/lupyuen/tflite-bl602/blob/main/tensorflow/lite/micro/kernels/space_to_depth_test.cc)
+
+[See the changes](https://github.com/lupyuen/tflite-bl602/commit/d0afe5b344d898c0bb461206fbbbf234731d7d77#diff-08b6d122af82deb31fb40975dd2c6786943ef3f16787d6b8a288d474de3093b7)
+
 ## Optimise TensorFlow
 
 TensorFlow Lite for BL602 was compiled for a RISC-V CPU __without any special hardware optimisation__.
