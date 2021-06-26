@@ -218,6 +218,8 @@ Check this book again for future updates...
 
 1. __WiFi and Bluetooth LE__
 
+    [__Twitter Thread for my Reverse Enginering of BL602 WiFi__](https://twitter.com/MisterTechBlog/status/1407971263088193540)
+
 1. __More Mynewt and Rust__
 
 1. __IoT Education with BL602__
