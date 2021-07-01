@@ -167,8 +167,8 @@ void blinky(char *buf, int len, int argc, char **argv) {
 
 <span class="comment">//  Import the Rust Core Library</span>
 <span class="kw">use</span> <span class="ident">core</span>::{
-    <span class="ident">panic</span>::<span class="ident">PanicInfo</span>,  <span class="comment">//  For `PanicInfo` type used by `panic` function</span>
-    <span class="ident">str</span>::<span class="ident">FromStr</span>,      <span class="comment">//  For converting `str` to `String`</span>
+    <span class="ident">panic::PanicInfo</span>,  <span class="comment">//  For `PanicInfo` type used by `panic` function</span>
+    <span class="ident">str::FromStr</span>,      <span class="comment">//  For converting `str` to `String`</span>
 };</pre></div>
 <p>First we tell the Rust Compiler to use the <strong>Rust Core Library</strong>.</p>
 <p>(Instead of the Rust Standard Library, which is too heavy for microcontrollers)</p>
@@ -316,7 +316,7 @@ void blinky(char *buf, int len, int argc, char **argv) {
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
     <span class="comment">//  Convert `str` to `String`, which similar to `char [64]` in C</span>
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">s_with_null</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">from_str</span>(<span class="ident">s</span>)  <span class="comment">//  `mut` because we will modify it</span>
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">s_with_null</span> <span class="op">=</span> <span class="ident">String::from_str</span>(<span class="ident">s</span>)  <span class="comment">//  `mut` because we will modify it</span>
         .<span class="ident">expect</span>(<span class="string">&quot;puts conversion failed&quot;</span>);     <span class="comment">//  If it exceeds 64 chars, halt with an error</span></pre></div>
 <p>“<code>String</code>” is similar to “<code>char[64]</code>” in C.</p>
 <p>Here we create a “<code>String</code>” (instead of “<code>&amp;str</code>”) because “<code>String</code>” will allocate storage (on the stack) to hold the copied string.</p>
@@ -347,7 +347,7 @@ void blinky(char *buf, int len, int argc, char **argv) {
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="doccomment">/// Limit Strings to 64 chars, similar to `char[64]` in C</span>
-<span class="kw">type</span> <span class="ident">String</span> <span class="op">=</span> <span class="ident">heapless</span>::<span class="ident">String</span>::<span class="op">&lt;</span><span class="ident">heapless</span>::<span class="ident">consts</span>::<span class="ident">U64</span><span class="op">&gt;</span>;</pre></div>
+<span class="kw">type</span> <span class="ident">String</span> <span class="op">=</span> <span class="ident">heapless::String</span>::<span class="op">&lt;</span><span class="ident">heapless::consts::U64</span><span class="op">&gt;</span>;</pre></div>
 <p>For safety, we limit our strings to <strong>64 characters</strong>.</p>
 <p><code>String</code> uses the <strong>heapless library</strong>, as specified in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/Cargo.toml#L9-L11"><code>rust/Cargo.toml</code></a>…</p>
 <pre><code class="language-text"># External Rust libraries used by this module.  See crates.io.
