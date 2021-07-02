@@ -85,6 +85,86 @@
 <p><img src="https://lupyuen.github.io/images/wifi-title.jpg" alt="Quantitative Analysis of Decompiled BL602 WiFi Firmware" /></p>
 <h1 id="bl602-wifi-demo-firmware" class="section-header"><a href="#bl602-wifi-demo-firmware">1 BL602 WiFi Demo Firmware</a></h1>
 <p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L769-L788"><code>main.c</code></a></p>
+<pre><code class="language-c">static void _cli_init()
+{
+    int codex_debug_cli_init(void);
+    codex_debug_cli_init();
+    easyflash_cli_init();
+    network_netutils_iperf_cli_register();
+    network_netutils_tcpserver_cli_register();
+    network_netutils_tcpclinet_cli_register();
+    network_netutils_netstat_cli_register();
+    network_netutils_ping_cli_register();
+    sntp_cli_init();
+    bl_sys_time_cli_init();
+    bl_sys_ota_cli_init();
+    blfdt_cli_init();
+    wifi_mgmr_cli_init();
+    bl_wdt_cli_init();
+    bl_gpio_cli_init();
+    looprt_test_cli_init();
+}
+</code></pre>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L729-L747"><code>main.c</code></a></p>
+<pre><code class="language-c">static void cmd_stack_wifi(char *buf, int len, int argc, char **argv)
+{
+    /*wifi fw stack and thread stuff*/
+    static uint8_t stack_wifi_init  = 0;
+
+
+    if (1 == stack_wifi_init) {
+        puts(&quot;Wi-Fi Stack Started already!!!\r\n&quot;);
+        return;
+    }
+    stack_wifi_init = 1;
+
+    printf(&quot;Start Wi-Fi fw @%lums\r\n&quot;, bl_timer_now_us()/1000);
+    hal_wifi_start_firmware_task();
+    /*Trigger to start Wi-Fi*/
+    printf(&quot;Start Wi-Fi fw is Done @%lums\r\n&quot;, bl_timer_now_us()/1000);
+    aos_post_event(EV_WIFI, CODE_WIFI_ON_INIT_DONE, 0);
+
+}
+</code></pre>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L366-L372"><code>main.c</code></a></p>
+<pre><code class="language-c">static void wifi_sta_connect(char *ssid, char *password)
+{
+    wifi_interface_t wifi_interface;
+
+    wifi_interface = wifi_mgmr_sta_enable();
+    wifi_mgmr_sta_connect(wifi_interface, ssid, password, NULL, NULL, 0, 0);
+}
+</code></pre>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L704-L727"><code>main.c</code></a></p>
+<pre><code class="language-c">static void cmd_httpc_test(char *buf, int len, int argc, char **argv)
+{
+    static httpc_connection_t settings;
+    static httpc_state_t *req;
+
+    if (req) {
+        printf(&quot;[CLI] req is on-going...\r\n&quot;);
+        return;
+    }
+    memset(&amp;settings, 0, sizeof(settings));
+    settings.use_proxy = 0;
+    settings.result_fn = cb_httpc_result;
+    settings.headers_done_fn = cb_httpc_headers_done_fn;
+
+    httpc_get_file_dns(
+            &quot;nf.cr.dandanman.com&quot;,
+            80,
+            &quot;/ddm/ContentResource/music/204.mp3&quot;,
+            &amp;settings,
+            cb_altcp_recv_fn,
+            &amp;req,
+            &amp;req
+   );
+}
+</code></pre>
 <h1 id="connect-to-wifi-access-point" class="section-header"><a href="#connect-to-wifi-access-point">2 Connect to WiFi Access Point</a></h1>
 <p>TODO</p>
 <h1 id="wifi-background-task" class="section-header"><a href="#wifi-background-task">3 WiFi Background Task</a></h1>
