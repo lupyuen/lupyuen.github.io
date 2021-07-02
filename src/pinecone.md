@@ -151,6 +151,10 @@ Then reimplement the wireless functions the open source way. Perhaps by adapting
 
 Let's walk through one possible approach for Reverse Engineering the WiFi Driver. (I'm sure there are many other ways to do this, [like this](https://github.com/pine64/bl602-docs/tree/main/hardware_notes))
 
+__UPDATE:__ Check out this article on the Reverse Enginering of BL602 WiFi...
+
+-   [__"Reverse Engineering WiFi on RISC-V BL602"__](https://lupyuen.github.io/articles/wifi)
+
 [__UPDATE:__ Check out this Twitter Thread for my Reverse Enginering of BL602 WiFi](https://twitter.com/MisterTechBlog/status/1407971263088193540)
 
 [__UPDATE:__ There is indeed a blob for the BL602 WiFi / Bluetooth LE Controller that we need help to reverse-engineer and verify. See this](https://github.com/pine64/bl602-docs/tree/main/hardware_notes#rf-ip)
@@ -237,6 +241,10 @@ What's really inside the WiFi Controller?
 Could there be some low-level chunk of executable code (non RISC-V) that runs __inside__ the WiFi Controller to control the WiFi operations?
 
 By studying the WiFi Buffers and the associated WiFi Functions, we may uncover the Code Blob that runs inside the WiFi Controller.
+
+__UPDATE:__ Check out this article on the Reverse Enginering of BL602 WiFi...
+
+-   [__"Reverse Engineering WiFi on RISC-V BL602"__](https://lupyuen.github.io/articles/wifi)
 
 [__UPDATE:__ Check out this Twitter Thread for my Reverse Enginering of BL602 WiFi](https://twitter.com/MisterTechBlog/status/1407971263088193540)
 

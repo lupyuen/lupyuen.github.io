@@ -16,7 +16,7 @@ Is there a book about the __BL602 SoC__ (RISC-V, WiFi and Bluetooth LE) that...
 
 _You're reading the book right now!_
 
-Use this book to navigate the numerous BL602 articles that have been published on this site. __(21 articles and still growing!)__
+Use this book to navigate the numerous BL602 articles that have been published on this site. __(22 articles and still growing!)__
 
 The programs in these articles have been tested on __PineCone__, but they should work on other BL602 Boards: __Pinenut, DT-BL10, MagicHome BL602__.
 
@@ -121,6 +121,12 @@ UART is used by E-Ink Displays, GPS Receivers and LoRa Transceivers. To talk to 
 Here's the sample code that reads BL602's __onboard temperature sensor__ via ADC...
 
 -   [Read BL602 Temperature via ADC](https://github.com/bouffalolab/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_adc.c#L173-L216)
+
+# WiFi on BL602
+
+What happens inside the __WiFi Driver__ on BL602... And how we found the incomplete source code for the driver.
+
+-   [Reverse Engineering WiFi on RISC-V BL602](https://lupyuen.github.io/articles/wifi)
 
 ![Graphics on BL602](https://lupyuen.github.io/images/book-display.jpg)
 
