@@ -78,7 +78,7 @@ static void cmd_stack_wifi(char *buf, int len, int argc, char **argv) {
 }
 ```
 
-(We'll cover `hal_wifi_start_firmware_task` in the next chapter)
+(We'll cover `hal_wifi_start_firmware_task` later in this article)
 
 After starting the task, we post the WiFi Event `CODE_WIFI_ON_INIT_DONE` to __start the WiFi Manager Task__.
 
@@ -109,17 +109,17 @@ When we receive the WiFi Event `CODE_WIFI_ON_INIT_DONE`, we start the __WiFi Man
 
 `wifi_mgmr_start_background` comes from the BL602 WiFi Driver. [(See the source code)](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr.c#L1406-L1415)
 
-## Connect to WiFi Access Point
+## Connect to WiFi Network
 
-TODO
+Now that we have started both WiFi Background Tasks (WiFi Firmware Task and WiFi Manager Task), let's connect to a WiFi Network!
+
+The demo firmware lets us enter this command to __connect to a WiFi Access Point__...
 
 ```text
 # wifi_sta_connect YOUR_WIFI_SSID YOUR_WIFI_PASSWORD
 ```
 
-TODO
-
-From [`main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L366-L372)
+Here's how the __`wifi_sta_connect`__ command is implemented: [`main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L366-L372)
 
 ```c
 //  Connect to WiFi Access Point
@@ -141,7 +141,21 @@ static void wifi_sta_connect(char *ssid, char *password) {
 }
 ```
 
+We call [__`wifi_mgmr_sta_enable`__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr_ext.c#L202-L217) from the BL602 WiFi Driver to __enable the WiFi Client__.
+
+("STA" refers to "WiFi Station", which means WiFi Client)
+
+Then we call [__`wifi_mgmr_sta_connect`__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr_ext.c#L302-L307) (also from the BL602 WiFi Driver) to __connect to the WiFi Access Point__.
+
+(We'll study the internals of `wifi_mgmr_sta_connect` in the next chapter)
+
 ## Send HTTP Request
+
+Now we enter this command to __send a HTTP Request__ over WiFi...
+
+```text
+# httpc
+```
 
 TODO
 
@@ -179,6 +193,10 @@ static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
 
 # Connect to WiFi Access Point
 
+_What really happens when BL602 connects to a WiFi Access Point?_
+
+To understand how BL602 connects to a WiFi Access Point, let's read the __Source Code from the BL602 WiFi Driver__.
+
 TODO
 
 ![](https://lupyuen.github.io/images/wifi-connect2.png)
@@ -213,6 +231,22 @@ TODO
 
 TODO
 
+# Decompiled WiFi Demo Firmware
+
+TODO
+
+[`BraveHeartFLOSSDev`](https://github.com/BraveHeartFLOSSDev) did an excellent job decompiling into C (with Ghidra) the BL602 WiFi Demo Firmware...
+
+-   [__BraveHeartFLOSSDev/bl602nutcracker1__](https://github.com/BraveHeartFLOSSDev/bl602nutcracker1)
+
+[(We'll use this fork)](https://github.com/lupyuen/bl602nutcracker1)
+
+TODO
+
+![](https://lupyuen.github.io/images/wifi-assert.png)
+
+TODO
+
 # WiFi Firmware Task
 
 TODO
@@ -238,22 +272,6 @@ TODO
 TODO
 
 ![](https://lupyuen.github.io/images/wifi-task6.png)
-
-TODO
-
-# Decompiled WiFi Demo Firmware
-
-TODO
-
-[`BraveHeartFLOSSDev`](https://github.com/BraveHeartFLOSSDev) did an excellent job decompiling into C (with Ghidra) the BL602 WiFi Demo Firmware...
-
--   [__BraveHeartFLOSSDev/bl602nutcracker1__](https://github.com/BraveHeartFLOSSDev/bl602nutcracker1)
-
-[(We'll use this fork)](https://github.com/lupyuen/bl602nutcracker1)
-
-TODO
-
-![](https://lupyuen.github.io/images/wifi-assert.png)
 
 TODO
 
