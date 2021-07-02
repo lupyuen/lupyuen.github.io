@@ -22,10 +22,10 @@ From [`main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/b
 //  Called at startup to init drivers and run event loop
 static void aos_loop_proc(void *pvParameters) {
   ...
-  //  Register Callback for WiFi Events
+  //  Register Callback Function for WiFi Events
   aos_register_event_filter(
     EV_WIFI,              //  Event Type
-    event_cb_wifi_event,  //  Event Callback 
+    event_cb_wifi_event,  //  Event Callback Function
     NULL);                //  Event Callback Argument
 
   //  Start WiFi Networking Stack
@@ -44,7 +44,7 @@ From [`main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/b
 //  Start WiFi Networking Stack
 static void cmd_stack_wifi(char *buf, int len, int argc, char **argv) {
   static uint8_t stack_wifi_init  = 0;
-  if (1 == stack_wifi_init) { return; }
+  if (1 == stack_wifi_init) { return; }  //  Already started
   stack_wifi_init = 1;
 
   //  Start Wi-Fi Firmware Task
@@ -63,8 +63,8 @@ TODO
 From [`main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L374-L512)
 
 ```c
-static void event_cb_wifi_event(input_event_t *event, void *private_data)
-{
+//  Callback Function for WiFi Events
+static void event_cb_wifi_event(input_event_t *event, void *private_data) {
     static char *ssid;
     static char *password;
 
