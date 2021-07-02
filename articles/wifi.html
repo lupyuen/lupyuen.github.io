@@ -69,11 +69,11 @@
 <li><a href="#register-wifi-event-handler">1.1 Register WiFi Event Handler</a><ul></ul></li>
 <li><a href="#start-wifi-firmware-task">1.2 Start WiFi Firmware Task</a><ul></ul></li>
 <li><a href="#start-wifi-manager-task">1.3 Start WiFi Manager Task</a><ul></ul></li>
-<li><a href="#connect-to-wifi-access-point">1.4 Connect to WiFi Access Point</a><ul></ul></li>
+<li><a href="#connect-to-wifi-network">1.4 Connect to WiFi Network</a><ul></ul></li>
 <li><a href="#send-http-request">1.5 Send HTTP Request</a><ul></ul></li></ul></li>
-<li><a href="#connect-to-wifi-access-point-1">2 Connect to WiFi Access Point</a><ul></ul></li>
-<li><a href="#wifi-firmware-task">3 WiFi Firmware Task</a><ul></ul></li>
-<li><a href="#decompiled-wifi-demo-firmware">4 Decompiled WiFi Demo Firmware</a><ul></ul></li>
+<li><a href="#connect-to-wifi-access-point">2 Connect to WiFi Access Point</a><ul></ul></li>
+<li><a href="#decompiled-wifi-demo-firmware">3 Decompiled WiFi Demo Firmware</a><ul></ul></li>
+<li><a href="#wifi-firmware-task">4 WiFi Firmware Task</a><ul></ul></li>
 <li><a href="#ceva-rivierawaves">5 CEVA RivieraWaves</a><ul></ul></li>
 <li><a href="#upper-medium-access-control-layer">6 Upper Medium Access Control Layer</a><ul></ul></li>
 <li><a href="#lower-medium-access-control-layer">7 Lower Medium Access Control Layer</a><ul></ul></li>
@@ -150,7 +150,7 @@ static void cmd_stack_wifi(char *buf, int len, int argc, char **argv) {
     0);                      //  Event Argument
 }
 </code></pre>
-<p>(We’ll cover <code>hal_wifi_start_firmware_task</code> in the next chapter)</p>
+<p>(We’ll cover <code>hal_wifi_start_firmware_task</code> later in this article)</p>
 <p>After starting the task, we post the WiFi Event <code>CODE_WIFI_ON_INIT_DONE</code> to <strong>start the WiFi Manager Task</strong>.</p>
 <p>Let’s look inside the WiFi Event Handler…</p>
 <h2 id="start-wifi-manager-task" class="section-header"><a href="#start-wifi-manager-task">1.3 Start WiFi Manager Task</a></h2>
@@ -172,12 +172,12 @@ static void event_cb_wifi_event(input_event_t *event, void *private_data) {
 </code></pre>
 <p>When we receive the WiFi Event <code>CODE_WIFI_ON_INIT_DONE</code>, we start the <strong>WiFi Manager Task</strong> (in FreeRTOS) by calling <code>wifi_mgmr_start_background</code>.</p>
 <p><code>wifi_mgmr_start_background</code> comes from the BL602 WiFi Driver. <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr.c#L1406-L1415">(See the source code)</a></p>
-<h2 id="connect-to-wifi-access-point" class="section-header"><a href="#connect-to-wifi-access-point">1.4 Connect to WiFi Access Point</a></h2>
-<p>TODO</p>
+<h2 id="connect-to-wifi-network" class="section-header"><a href="#connect-to-wifi-network">1.4 Connect to WiFi Network</a></h2>
+<p>Now that we have started both WiFi Background Tasks (WiFi Firmware Task and WiFi Manager Task), let’s connect to a WiFi Network!</p>
+<p>The demo firmware lets us enter this command to <strong>connect to a WiFi Access Point</strong>…</p>
 <pre><code class="language-text"># wifi_sta_connect YOUR_WIFI_SSID YOUR_WIFI_PASSWORD
 </code></pre>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L366-L372"><code>main.c</code></a></p>
+<p>Here’s how the <strong><code>wifi_sta_connect</code></strong> command is implemented: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L366-L372"><code>main.c</code></a></p>
 <pre><code class="language-c">//  Connect to WiFi Access Point
 static void wifi_sta_connect(char *ssid, char *password) {
 
@@ -196,7 +196,14 @@ static void wifi_sta_connect(char *ssid, char *password) {
     0);              //  Frequency
 }
 </code></pre>
+<p>We call <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr_ext.c#L202-L217"><strong><code>wifi_mgmr_sta_enable</code></strong></a> from the BL602 WiFi Driver to <strong>enable the WiFi Client</strong>.</p>
+<p>(“STA” refers to “WiFi Station”, which means WiFi Client)</p>
+<p>Then we call <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr_ext.c#L302-L307"><strong><code>wifi_mgmr_sta_connect</code></strong></a> (also from the BL602 WiFi Driver) to <strong>connect to the WiFi Access Point</strong>.</p>
+<p>(We’ll study the internals of <code>wifi_mgmr_sta_connect</code> in the next chapter)</p>
 <h2 id="send-http-request" class="section-header"><a href="#send-http-request">1.5 Send HTTP Request</a></h2>
+<p>Now we enter this command to <strong>send a HTTP Request</strong> over WiFi…</p>
+<pre><code class="language-text"># httpc
+</code></pre>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L704-L727"><code>main.c</code></a></p>
 <pre><code class="language-c">//  Send a HTTP GET Request with LWIP
@@ -225,7 +232,9 @@ static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
 </code></pre>
 <p><a href="https://pine64.github.io/bl602-docs/Examples/demo_wifi/wifi.html">Demo Firmware Documentation</a></p>
 <p><img src="https://lupyuen.github.io/images/wifi-connect.png" alt="" /></p>
-<h1 id="connect-to-wifi-access-point-1" class="section-header"><a href="#connect-to-wifi-access-point-1">2 Connect to WiFi Access Point</a></h1>
+<h1 id="connect-to-wifi-access-point" class="section-header"><a href="#connect-to-wifi-access-point">2 Connect to WiFi Access Point</a></h1>
+<p><em>What really happens when BL602 connects to a WiFi Access Point?</em></p>
+<p>To understand how BL602 connects to a WiFi Access Point, let’s read the <strong>Source Code from the BL602 WiFi Driver</strong>.</p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wifi-connect2.png" alt="" /></p>
 <p>TODO</p>
@@ -243,7 +252,17 @@ static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wifi-connect9.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="wifi-firmware-task" class="section-header"><a href="#wifi-firmware-task">3 WiFi Firmware Task</a></h1>
+<h1 id="decompiled-wifi-demo-firmware" class="section-header"><a href="#decompiled-wifi-demo-firmware">3 Decompiled WiFi Demo Firmware</a></h1>
+<p>TODO</p>
+<p><a href="https://github.com/BraveHeartFLOSSDev"><code>BraveHeartFLOSSDev</code></a> did an excellent job decompiling into C (with Ghidra) the BL602 WiFi Demo Firmware…</p>
+<ul>
+<li><a href="https://github.com/BraveHeartFLOSSDev/bl602nutcracker1"><strong>BraveHeartFLOSSDev/bl602nutcracker1</strong></a></li>
+</ul>
+<p><a href="https://github.com/lupyuen/bl602nutcracker1">(We’ll use this fork)</a></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wifi-assert.png" alt="" /></p>
+<p>TODO</p>
+<h1 id="wifi-firmware-task" class="section-header"><a href="#wifi-firmware-task">4 WiFi Firmware Task</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wifi-task.png" alt="" /></p>
 <p>TODO</p>
@@ -256,16 +275,6 @@ static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
 <p><img src="https://lupyuen.github.io/images/wifi-task5.png" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wifi-task6.png" alt="" /></p>
-<p>TODO</p>
-<h1 id="decompiled-wifi-demo-firmware" class="section-header"><a href="#decompiled-wifi-demo-firmware">4 Decompiled WiFi Demo Firmware</a></h1>
-<p>TODO</p>
-<p><a href="https://github.com/BraveHeartFLOSSDev"><code>BraveHeartFLOSSDev</code></a> did an excellent job decompiling into C (with Ghidra) the BL602 WiFi Demo Firmware…</p>
-<ul>
-<li><a href="https://github.com/BraveHeartFLOSSDev/bl602nutcracker1"><strong>BraveHeartFLOSSDev/bl602nutcracker1</strong></a></li>
-</ul>
-<p><a href="https://github.com/lupyuen/bl602nutcracker1">(We’ll use this fork)</a></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/wifi-assert.png" alt="" /></p>
 <p>TODO</p>
 <h1 id="ceva-rivierawaves" class="section-header"><a href="#ceva-rivierawaves">5 CEVA RivieraWaves</a></h1>
 <p>TODO</p>
