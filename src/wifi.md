@@ -4,9 +4,59 @@
 
 _What happens inside the WiFi Driver on RISC-V BL602 SoC... And how we found the (incomplete) source code for the driver_
 
+Why reverse-engineer the WiFi Driver?
+
 TODO
 
 ![Quantitative Analysis of Decompiled BL602 WiFi Firmware](https://lupyuen.github.io/images/wifi-title.jpg)
+
+# BL602 WiFi Demo Firmware
+
+TODO
+
+# Connect to WiFi Access Point
+
+TODO
+
+# WiFi Background Task
+
+TODO
+
+# Decompiled WiFi Demo Firmware
+
+TODO
+
+# CEVA RivieraWaves
+
+TODO
+
+# Upper Medium Access Control Layer
+
+TODO
+
+# Lower Medium Access Control Layer
+
+TODO
+
+# WiFi PHY Layer
+
+TODO
+
+# WiFi Supplicant
+
+TODO
+
+Rockchip RK3399
+
+# Other Components
+
+TODO
+
+BL602 HAL, BL602 Standard Driver, LWIP, MbedTLS, FreeRTOS, AliOS, AWS MQTT, AWS IoT
+
+# GitHub Search Is Our Best Friend!
+
+TODO
 
 # What's Next
 
