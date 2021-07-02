@@ -74,16 +74,17 @@
 <li><a href="#dma-on-bl602">7 DMA on BL602</a><ul></ul></li>
 <li><a href="#uart-on-bl602">8 UART on BL602</a><ul></ul></li>
 <li><a href="#adc-on-bl602">9 ADC on BL602</a><ul></ul></li>
-<li><a href="#graphics-on-bl602">10 Graphics on BL602</a><ul></ul></li>
-<li><a href="#lora-on-bl602">11 LoRa on BL602</a><ul></ul></li>
-<li><a href="#openocd-on-bl602">12 OpenOCD on BL602</a><ul></ul></li>
-<li><a href="#gdb-and-vscode-on-bl602">13 GDB and VSCode on BL602</a><ul></ul></li>
-<li><a href="#rust-on-bl602">14 Rust on BL602</a><ul></ul></li>
-<li><a href="#lisp-on-bl602">15 Lisp on BL602</a><ul></ul></li>
-<li><a href="#machine-learning-on-bl602">16 Machine Learning on BL602</a><ul></ul></li>
-<li><a href="#mynewt-on-bl602">17 Mynewt on BL602</a><ul></ul></li>
-<li><a href="#whats-next">18 What’s Next</a><ul></ul></li>
-<li><a href="#about-the-author">19 About the Author</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2021</em></p>
+<li><a href="#wifi-on-bl602">10 WiFi on BL602</a><ul></ul></li>
+<li><a href="#graphics-on-bl602">11 Graphics on BL602</a><ul></ul></li>
+<li><a href="#lora-on-bl602">12 LoRa on BL602</a><ul></ul></li>
+<li><a href="#openocd-on-bl602">13 OpenOCD on BL602</a><ul></ul></li>
+<li><a href="#gdb-and-vscode-on-bl602">14 GDB and VSCode on BL602</a><ul></ul></li>
+<li><a href="#rust-on-bl602">15 Rust on BL602</a><ul></ul></li>
+<li><a href="#lisp-on-bl602">16 Lisp on BL602</a><ul></ul></li>
+<li><a href="#machine-learning-on-bl602">17 Machine Learning on BL602</a><ul></ul></li>
+<li><a href="#mynewt-on-bl602">18 Mynewt on BL602</a><ul></ul></li>
+<li><a href="#whats-next">19 What’s Next</a><ul></ul></li>
+<li><a href="#about-the-author">20 About the Author</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2021</em></p>
 <p><img src="https://lupyuen.github.io/images/book-title.jpg" alt="PineCone BL602 RISC-V Board with Grove E-Ink Display" /></p>
 <p><em>PineCone BL602 RISC-V Board with Grove E-Ink Display</em></p>
 <p>Is there a book about the <strong>BL602 SoC</strong> (RISC-V, WiFi and Bluetooth LE) that…</p>
@@ -99,7 +100,7 @@
 </li>
 </ol>
 <p><em>You’re reading the book right now!</em></p>
-<p>Use this book to navigate the numerous BL602 articles that have been published on this site. <strong>(21 articles and still growing!)</strong></p>
+<p>Use this book to navigate the numerous BL602 articles that have been published on this site. <strong>(22 articles and still growing!)</strong></p>
 <p>The programs in these articles have been tested on <strong>PineCone</strong>, but they should work on other BL602 Boards: <strong>Pinenut, DT-BL10, MagicHome BL602</strong>.</p>
 <p>Many thanks to <strong>Pine64</strong> for supporting my work on BL602 Open Source Education! Thanks also to <strong>Bouffalo Lab</strong> for the encouraging notes.</p>
 <p>If you find this book useful… <a href="https://github.com/sponsors/lupyuen"><strong>please sponsor me a coffee</strong></a>. Thank you! 🙏 😀</p>
@@ -202,8 +203,13 @@
 <ul>
 <li><a href="https://github.com/bouffalolab/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_adc.c#L173-L216">Read BL602 Temperature via ADC</a></li>
 </ul>
+<h1 id="wifi-on-bl602" class="section-header"><a href="#wifi-on-bl602">10 WiFi on BL602</a></h1>
+<p>What happens inside the <strong>WiFi Driver</strong> on BL602… And how we found the incomplete source code for the driver.</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/wifi">Reverse Engineering WiFi on RISC-V BL602</a></li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/book-display.jpg" alt="Graphics on BL602" /></p>
-<h1 id="graphics-on-bl602" class="section-header"><a href="#graphics-on-bl602">10 Graphics on BL602</a></h1>
+<h1 id="graphics-on-bl602" class="section-header"><a href="#graphics-on-bl602">11 Graphics on BL602</a></h1>
 <p>Render text and graphics with the open-source <strong>LVGL Library</strong>.</p>
 <ul>
 <li>
@@ -214,7 +220,7 @@
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/book-lora.jpg" alt="LoRa on BL602" /></p>
-<h1 id="lora-on-bl602" class="section-header"><a href="#lora-on-bl602">11 LoRa on BL602</a></h1>
+<h1 id="lora-on-bl602" class="section-header"><a href="#lora-on-bl602">12 LoRa on BL602</a></h1>
 <p>Let’s turn BL602 into a real IoT gadget that transmits <strong>long range, low power LoRa packets</strong>…</p>
 <ul>
 <li>
@@ -237,13 +243,13 @@
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/book-openocd.jpg" alt="OpenOCD on BL602" /></p>
-<h1 id="openocd-on-bl602" class="section-header"><a href="#openocd-on-bl602">12 OpenOCD on BL602</a></h1>
+<h1 id="openocd-on-bl602" class="section-header"><a href="#openocd-on-bl602">13 OpenOCD on BL602</a></h1>
 <p>Before debugging BL602, we install <strong>OpenOCD</strong> to connect a <strong>JTAG Debugger</strong> to BL602.</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/openocd">“Connect PineCone BL602 to OpenOCD”</a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/book-debug.jpg" alt="GDB and VSCode on BL602" /></p>
-<h1 id="gdb-and-vscode-on-bl602" class="section-header"><a href="#gdb-and-vscode-on-bl602">13 GDB and VSCode on BL602</a></h1>
+<h1 id="gdb-and-vscode-on-bl602" class="section-header"><a href="#gdb-and-vscode-on-bl602">14 GDB and VSCode on BL602</a></h1>
 <p>How we <strong>debug BL602 firmware</strong> with GDB and VSCode.</p>
 <ul>
 <li>
@@ -254,7 +260,7 @@
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/book-rust.jpg" alt="Rust on BL602" /></p>
-<h1 id="rust-on-bl602" class="section-header"><a href="#rust-on-bl602">14 Rust on BL602</a></h1>
+<h1 id="rust-on-bl602" class="section-header"><a href="#rust-on-bl602">15 Rust on BL602</a></h1>
 <p>How we code BL602 firmware the <strong>safer, simpler way with Rust.</strong></p>
 <ul>
 <li>
@@ -271,7 +277,7 @@
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/book-lisp.jpg" alt="Lisp on BL602" /></p>
-<h1 id="lisp-on-bl602" class="section-header"><a href="#lisp-on-bl602">15 Lisp on BL602</a></h1>
+<h1 id="lisp-on-bl602" class="section-header"><a href="#lisp-on-bl602">16 Lisp on BL602</a></h1>
 <p>Porting the <strong>uLisp Interpreter</strong> to BL602… And writing graphical programs with <strong>Blockly (Scratch)</strong>.</p>
 <ul>
 <li>
@@ -281,13 +287,13 @@
 <p><a href="https://lupyuen.github.io/articles/wasm">“Simulate RISC-V BL602 with WebAssembly, uLisp and Blockly”</a></p>
 </li>
 </ul>
-<h1 id="machine-learning-on-bl602" class="section-header"><a href="#machine-learning-on-bl602">16 Machine Learning on BL602</a></h1>
+<h1 id="machine-learning-on-bl602" class="section-header"><a href="#machine-learning-on-bl602">17 Machine Learning on BL602</a></h1>
 <p>How we run <strong>TensorFlow Lite</strong> on BL602… To create a Glowing LED.</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/tflite">“Machine Learning on RISC-V BL602 with TensorFlow Lite”</a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/book-mynewt.jpg" alt="Mynewt on BL602" /></p>
-<h1 id="mynewt-on-bl602" class="section-header"><a href="#mynewt-on-bl602">17 Mynewt on BL602</a></h1>
+<h1 id="mynewt-on-bl602" class="section-header"><a href="#mynewt-on-bl602">18 Mynewt on BL602</a></h1>
 <p>Will BL602 run without FreeRTOS? Study the ongoing port of <strong>Apache Mynewt operating system</strong> to BL602.</p>
 <ul>
 <li>
@@ -301,7 +307,7 @@
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/book-next.jpg" alt="What’s Next" /></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">18 What’s Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">19 What’s Next</a></h1>
 <p>Check this book again for future updates…</p>
 <ol>
 <li>
@@ -316,7 +322,7 @@
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/book-advocate.jpg" alt="About the Author" /></p>
-<h1 id="about-the-author" class="section-header"><a href="#about-the-author">19 About the Author</a></h1>
+<h1 id="about-the-author" class="section-header"><a href="#about-the-author">20 About the Author</a></h1>
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io/articles/advocate">“Better Open Source Advocate”</a></p>

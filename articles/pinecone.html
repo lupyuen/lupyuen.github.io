@@ -202,6 +202,10 @@
 <p>That’s the crux of the <a href="https://www.pine64.org/2020/10/28/nutcracker-challenge-blob-free-wifi-ble/"><strong>PineCone Nutcracker Challenge</strong></a>… Decompile the Bluetooth LE and WiFi driver code, understand how the RISC-V code operates the wireless hardware.</p>
 <p>Then reimplement the wireless functions the open source way. Perhaps by adapting the wireless drivers from <a href="https://mynewt.apache.org/">Mynewt</a> (<a href="https://github.com/apache/mynewt-nimble">NimBLE</a>), <a href="https://www.riot-os.org/">RIOT</a> and <a href="https://www.zephyrproject.org/">Zephyr</a>.</p>
 <p>Let’s walk through one possible approach for Reverse Engineering the WiFi Driver. (I’m sure there are many other ways to do this, <a href="https://github.com/pine64/bl602-docs/tree/main/hardware_notes">like this</a>)</p>
+<p><strong>UPDATE:</strong> Check out this article on the Reverse Enginering of BL602 WiFi…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/wifi"><strong>“Reverse Engineering WiFi on RISC-V BL602”</strong></a></li>
+</ul>
 <p><a href="https://twitter.com/MisterTechBlog/status/1407971263088193540"><strong>UPDATE:</strong> Check out this Twitter Thread for my Reverse Enginering of BL602 WiFi</a></p>
 <p><a href="https://github.com/pine64/bl602-docs/tree/main/hardware_notes#rf-ip"><strong>UPDATE:</strong> There is indeed a blob for the BL602 WiFi / Bluetooth LE Controller that we need help to reverse-engineer and verify. See this</a></p>
 <h2 id="how-does-our-wifi-driver-talk-to-the-wifi-controller" class="section-header"><a href="#how-does-our-wifi-driver-talk-to-the-wifi-controller">3.1 How does our WiFi Driver talk to the WiFi Controller?</a></h2>
@@ -272,6 +276,10 @@ ram_heap
 <p>What’s really inside the WiFi Controller? </p>
 <p>Could there be some low-level chunk of executable code (non RISC-V) that runs <strong>inside</strong> the WiFi Controller to control the WiFi operations?</p>
 <p>By studying the WiFi Buffers and the associated WiFi Functions, we may uncover the Code Blob that runs inside the WiFi Controller.</p>
+<p><strong>UPDATE:</strong> Check out this article on the Reverse Enginering of BL602 WiFi…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/wifi"><strong>“Reverse Engineering WiFi on RISC-V BL602”</strong></a></li>
+</ul>
 <p><a href="https://twitter.com/MisterTechBlog/status/1407971263088193540"><strong>UPDATE:</strong> Check out this Twitter Thread for my Reverse Enginering of BL602 WiFi</a></p>
 <p><a href="https://github.com/BraveHeartFLOSSDev/bl602nutcracker1"><strong>UPDATE:</strong> Check out the C code that has been reverse-engineered from <code>libbl602_wifi</code> by <code>BraveHeartFLOSSDev</code></a></p>
 <p><a href="https://github.com/pine64/bl602-docs/tree/main/hardware_notes#rf-ip"><strong>UPDATE:</strong> There is indeed a blob for the BL602 WiFi / Bluetooth LE Controller that we need help to reverse-engineer and verify. See this</a></p>
