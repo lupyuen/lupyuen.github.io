@@ -89,12 +89,12 @@
 <p>TODO: Education, replacement, auditing, troubleshooting. <a href="https://twitter.com/Yu_Wei_Wu/status/1406940637773979655?s=19">See this non-BL602 example</a></p>
 <p><img src="https://lupyuen.github.io/images/wifi-title.jpg" alt="Quantitative Analysis of Decompiled BL602 WiFi Firmware" /></p>
 <h1 id="bl602-wifi-demo-firmware" class="section-header"><a href="#bl602-wifi-demo-firmware">1 BL602 WiFi Demo Firmware</a></h1>
-<p>We start with the source code of the <strong>BL602 WiFi Demo Firmware</strong> from the BL602 IoT SDK: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi"><strong><code>bl602_demo_wifi</code></strong></a></p>
+<p>Let’s study the source code of the <strong>BL602 WiFi Demo Firmware</strong> from the BL602 IoT SDK: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi"><strong><code>bl602_demo_wifi</code></strong></a></p>
 <h2 id="startup" class="section-header"><a href="#startup">1.1 Startup</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L819-L866"><code>main.c</code></a></p>
+<p>When the firmware starts, we register a <strong>Callback Function that will handle WiFi Events</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L819-L866"><code>main.c</code></a></p>
 <pre><code class="language-c">//  Called at startup to init drivers and run event loop
 static void aos_loop_proc(void *pvParameters) {
+  //  Omitted: Init the drivers
   ...
   //  Register Callback Function for WiFi Events
   aos_register_event_filter(
@@ -109,19 +109,23 @@ static void aos_loop_proc(void *pvParameters) {
   aos_loop_run();
 }
 </code></pre>
+<p>(We’ll see <code>event_cb_wifi_event</code> in a while)</p>
+<p>This startup code calls <strong><code>cmd_stack_wifi</code></strong> to start the WiFi Networking Stack…</p>
 <h2 id="start-wifi-firmware-task" class="section-header"><a href="#start-wifi-firmware-task">1.2 Start WiFi Firmware Task</a></h2>
+<p>In <strong><code>cmd_stack_wifi</code></strong></p>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L729-L747"><code>main.c</code></a></p>
 <pre><code class="language-c">//  Start WiFi Networking Stack
 static void cmd_stack_wifi(char *buf, int len, int argc, char **argv) {
+  //  Check whether WiFi Networking is already started
   static uint8_t stack_wifi_init  = 0;
   if (1 == stack_wifi_init) { return; }  //  Already started
   stack_wifi_init = 1;
 
-  //  Start Wi-Fi Firmware Task
+  //  Start WiFi Firmware Task
   hal_wifi_start_firmware_task();
 
-  //  Post an event to start Wi-Fi Networking
+  //  Post an event to start WiFi Networking
   aos_post_event(
     EV_WIFI,                 //  Event Type
     CODE_WIFI_ON_INIT_DONE,  //  Event Code
@@ -175,6 +179,7 @@ static void wifi_sta_connect(char *ssid, char *password) {
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L704-L727"><code>main.c</code></a></p>
 <pre><code class="language-c">//  Send a HTTP GET Request with LWIP
 static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
+  //  Check whether a HTTP Request is already running
   static httpc_connection_t settings;
   static httpc_state_t *req;
   if (req) { return; }  //  Request already running
@@ -197,9 +202,38 @@ static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
 }
 </code></pre>
 <p><a href="https://pine64.github.io/bl602-docs/Examples/demo_wifi/wifi.html">Demo Firmware Documentation</a></p>
+<p><img src="https://lupyuen.github.io/images/wifi-connect.png" alt="" /></p>
 <h1 id="connect-to-wifi-access-point-1" class="section-header"><a href="#connect-to-wifi-access-point-1">2 Connect to WiFi Access Point</a></h1>
 <p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wifi-connect2.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wifi-connect3.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wifi-connect4.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wifi-connect5.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wifi-connect6.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wifi-connect7.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wifi-connect8.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wifi-connect9.png" alt="" /></p>
+<p>TODO</p>
 <h1 id="wifi-background-task" class="section-header"><a href="#wifi-background-task">3 WiFi Background Task</a></h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wifi-task.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wifi-task2.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wifi-task3.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wifi-task4.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wifi-task5.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wifi-task6.png" alt="" /></p>
 <p>TODO</p>
 <h1 id="decompiled-wifi-demo-firmware" class="section-header"><a href="#decompiled-wifi-demo-firmware">4 Decompiled WiFi Demo Firmware</a></h1>
 <p>TODO</p>
@@ -208,17 +242,41 @@ static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
 <li><a href="https://github.com/BraveHeartFLOSSDev/bl602nutcracker1"><strong>BraveHeartFLOSSDev/bl602nutcracker1</strong></a></li>
 </ul>
 <p><a href="https://github.com/lupyuen/bl602nutcracker1">(We’ll refer to this forked version)</a></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wifi-assert.png" alt="" /></p>
+<p>TODO</p>
 <h1 id="ceva-rivierawaves" class="section-header"><a href="#ceva-rivierawaves">5 CEVA RivieraWaves</a></h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wifi-rivierawaves.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wifi-ceva.png" alt="" /></p>
 <p>TODO</p>
 <h1 id="upper-medium-access-control-layer" class="section-header"><a href="#upper-medium-access-control-layer">6 Upper Medium Access Control Layer</a></h1>
 <p>TODO</p>
 <h1 id="lower-medium-access-control-layer" class="section-header"><a href="#lower-medium-access-control-layer">7 Lower Medium Access Control Layer</a></h1>
 <p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wifi-lmac.jpg" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wifi-lmac2.jpg" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wifi-lmac3.jpg" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wifi-beken.jpg" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wifi-beken2.png" alt="" /></p>
+<p>TODO</p>
 <h1 id="wifi-phy-layer" class="section-header"><a href="#wifi-phy-layer">8 WiFi PHY Layer</a></h1>
 <p>TODO</p>
-<h1 id="wifi-supplicant" class="section-header"><a href="#wifi-supplicant">9 WiFi Supplicant</a></h1>
+<p><img src="https://lupyuen.github.io/images/wifi-phy.png" alt="" /></p>
 <p>TODO</p>
-<p>Rockchip RK3399</p>
+<h1 id="wifi-supplicant" class="section-header"><a href="#wifi-supplicant">9 WiFi Supplicant</a></h1>
+<p>TODO: Rockchip RK3399</p>
+<p><img src="https://lupyuen.github.io/images/wifi-rockchip.jpg" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wifi-supplicant.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wifi-supplicant2.png" alt="" /></p>
+<p>TODO</p>
 <h1 id="quantitative-analysis" class="section-header"><a href="#quantitative-analysis">10 Quantitative Analysis</a></h1>
 <p>TODO</p>
 <ul>
@@ -235,11 +293,24 @@ static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
 <p><a href="https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.csv">CSV Format (without analysis)</a></p>
 </li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/wifi-quantify.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wifi-quantify2.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wifi-quantify3.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wifi-quantify4.png" alt="" /></p>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wifi-title.jpg" alt="Quantitative Analysis of Decompiled BL602 WiFi Firmware" /></p>
 <h1 id="other-components" class="section-header"><a href="#other-components">11 Other Components</a></h1>
-<p>TODO</p>
-<p>BL602 HAL, BL602 Standard Driver, LWIP, MbedTLS, FreeRTOS, AliOS, AWS MQTT, AWS IoT</p>
+<p>TODO: BL602 HAL, BL602 Standard Driver, LWIP, MbedTLS, FreeRTOS, AliOS, AWS MQTT, AWS IoT</p>
 <h1 id="github-search-is-our-best-friend" class="section-header"><a href="#github-search-is-our-best-friend">12 GitHub Search Is Our Best Friend!</a></h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wifi-schedule.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wifi-schedule2.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wifi-schedule3.png" alt="" /></p>
 <p>TODO</p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">13 What’s Next</a></h1>
 <p>TODO</p>
