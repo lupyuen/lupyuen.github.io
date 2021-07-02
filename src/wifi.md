@@ -12,17 +12,16 @@ TODO: Education, replacement, auditing, troubleshooting. [See this non-BL602 exa
 
 # BL602 WiFi Demo Firmware
 
-We start with the source code of the __BL602 WiFi Demo Firmware__ from the BL602 IoT SDK: [__`bl602_demo_wifi`__](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi)
+Let's study the source code of the __BL602 WiFi Demo Firmware__ from the BL602 IoT SDK: [__`bl602_demo_wifi`__](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi)
 
 ## Startup
 
-TODO
-
-From [`main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L819-L866)
+When the firmware starts, we register a __Callback Function that will handle WiFi Events__: [`main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L819-L866)
 
 ```c
 //  Called at startup to init drivers and run event loop
 static void aos_loop_proc(void *pvParameters) {
+  //  Omitted: Init the drivers
   ...
   //  Register Callback Function for WiFi Events
   aos_register_event_filter(
@@ -38,7 +37,13 @@ static void aos_loop_proc(void *pvParameters) {
 }
 ```
 
+(We'll see `event_cb_wifi_event` in a while)
+
+This startup code calls __`cmd_stack_wifi`__ to start the WiFi Networking Stack...
+
 ## Start WiFi Firmware Task
+
+In __`cmd_stack_wifi`__
 
 TODO
 
@@ -47,14 +52,15 @@ From [`main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/b
 ```c
 //  Start WiFi Networking Stack
 static void cmd_stack_wifi(char *buf, int len, int argc, char **argv) {
+  //  Check whether WiFi Networking is already started
   static uint8_t stack_wifi_init  = 0;
   if (1 == stack_wifi_init) { return; }  //  Already started
   stack_wifi_init = 1;
 
-  //  Start Wi-Fi Firmware Task
+  //  Start WiFi Firmware Task
   hal_wifi_start_firmware_task();
 
-  //  Post an event to start Wi-Fi Networking
+  //  Post an event to start WiFi Networking
   aos_post_event(
     EV_WIFI,                 //  Event Type
     CODE_WIFI_ON_INIT_DONE,  //  Event Code
@@ -126,6 +132,7 @@ From [`main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/b
 ```c
 //  Send a HTTP GET Request with LWIP
 static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
+  //  Check whether a HTTP Request is already running
   static httpc_connection_t settings;
   static httpc_state_t *req;
   if (req) { return; }  //  Request already running
@@ -150,11 +157,69 @@ static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
 
 [Demo Firmware Documentation](https://pine64.github.io/bl602-docs/Examples/demo_wifi/wifi.html)
 
+![](https://lupyuen.github.io/images/wifi-connect.png)
+
 # Connect to WiFi Access Point
 
 TODO
 
+![](https://lupyuen.github.io/images/wifi-connect2.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/wifi-connect3.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/wifi-connect4.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/wifi-connect5.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/wifi-connect6.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/wifi-connect7.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/wifi-connect8.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/wifi-connect9.png)
+
+TODO
+
 # WiFi Background Task
+
+TODO
+
+![](https://lupyuen.github.io/images/wifi-task.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/wifi-task2.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/wifi-task3.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/wifi-task4.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/wifi-task5.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/wifi-task6.png)
 
 TODO
 
@@ -168,7 +233,21 @@ TODO
 
 [(We'll refer to this forked version)](https://github.com/lupyuen/bl602nutcracker1)
 
+TODO
+
+![](https://lupyuen.github.io/images/wifi-assert.png)
+
+TODO
+
 # CEVA RivieraWaves
+
+TODO
+
+![](https://lupyuen.github.io/images/wifi-rivierawaves.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/wifi-ceva.png)
 
 TODO
 
@@ -180,15 +259,49 @@ TODO
 
 TODO
 
+![](https://lupyuen.github.io/images/wifi-lmac.jpg)
+
+TODO
+
+![](https://lupyuen.github.io/images/wifi-lmac2.jpg)
+
+TODO
+
+![](https://lupyuen.github.io/images/wifi-lmac3.jpg)
+
+TODO
+
+![](https://lupyuen.github.io/images/wifi-beken.jpg)
+
+TODO
+
+![](https://lupyuen.github.io/images/wifi-beken2.png)
+
+TODO
+
 # WiFi PHY Layer
+
+TODO
+
+![](https://lupyuen.github.io/images/wifi-phy.png)
 
 TODO
 
 # WiFi Supplicant
 
+TODO: Rockchip RK3399
+
+![](https://lupyuen.github.io/images/wifi-rockchip.jpg)
+
 TODO
 
-Rockchip RK3399
+![](https://lupyuen.github.io/images/wifi-supplicant.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/wifi-supplicant2.png)
+
+TODO
 
 # Quantitative Analysis
 
@@ -202,15 +315,41 @@ TODO
 
 -   [CSV Format (without analysis)](https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.csv)
 
+![](https://lupyuen.github.io/images/wifi-quantify.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/wifi-quantify2.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/wifi-quantify3.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/wifi-quantify4.png)
+
+TODO
+
 ![Quantitative Analysis of Decompiled BL602 WiFi Firmware](https://lupyuen.github.io/images/wifi-title.jpg)
 
 # Other Components
 
-TODO
-
-BL602 HAL, BL602 Standard Driver, LWIP, MbedTLS, FreeRTOS, AliOS, AWS MQTT, AWS IoT
+TODO: BL602 HAL, BL602 Standard Driver, LWIP, MbedTLS, FreeRTOS, AliOS, AWS MQTT, AWS IoT
 
 # GitHub Search Is Our Best Friend!
+
+TODO
+
+![](https://lupyuen.github.io/images/wifi-schedule.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/wifi-schedule2.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/wifi-schedule3.png)
 
 TODO
 
