@@ -45,11 +45,7 @@ Let's look inside...
 
 ## Start WiFi Firmware Task
 
-In __`cmd_stack_wifi`__
-
-TODO
-
-From [`main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L729-L747)
+In __`cmd_stack_wifi`__ we start the __WiFi Firmware Task__ like so: [`main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L729-L747)
 
 ```c
 //  Start WiFi Networking Stack
@@ -59,10 +55,10 @@ static void cmd_stack_wifi(char *buf, int len, int argc, char **argv) {
   if (1 == stack_wifi_init) { return; }  //  Already started
   stack_wifi_init = 1;
 
-  //  Start WiFi Firmware Task
+  //  Start WiFi Firmware Task (FreeRTOS)
   hal_wifi_start_firmware_task();
 
-  //  Post an event to start WiFi Networking
+  //  Post a WiFi Event to start WiFi Networking
   aos_post_event(
     EV_WIFI,                 //  Event Type
     CODE_WIFI_ON_INIT_DONE,  //  Event Code
@@ -70,11 +66,15 @@ static void cmd_stack_wifi(char *buf, int len, int argc, char **argv) {
 }
 ```
 
-## Start WiFi Background Task
+(We'll cover `hal_wifi_start_firmware_task` in the next chapter)
 
-TODO
+After starting the task, we post the WiFi Event `CODE_WIFI_ON_INIT_DONE` to __start WiFi Networking__.
 
-From [`main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L374-L512)
+Let's look inside the WiFi Event Handler...
+
+## Start WiFi Manager Task
+
+Here's how we handle WiFi Events: [`main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L374-L512)
 
 ```c
 //  Callback Function for WiFi Events
@@ -86,12 +86,18 @@ static void event_cb_wifi_event(input_event_t *event, void *private_data) {
     //  Posted by cmd_stack_wifi to start Wi-Fi Networking
     case CODE_WIFI_ON_INIT_DONE:
 
-      //  Start the WiFi Background Task (FreeRTOS)
+      //  Start the WiFi Manager Task (FreeRTOS)
       wifi_mgmr_start_background(&conf);
       break;
 
     //  Omitted: Handle other WiFi Events
 ```
+
+When we receive the WiFi Event `CODE_WIFI_ON_INIT_DONE`, we start the __WiFi Manager Task__ by calling `wifi_mgmr_start_background`.
+
+`wifi_mgmr_start_background` comes from the BL602 WiFi Driver.
+
+TODO
 
 ## Connect to WiFi Access Point
 
@@ -197,7 +203,7 @@ TODO
 
 TODO
 
-# WiFi Background Task
+# WiFi Firmware Task
 
 TODO
 
