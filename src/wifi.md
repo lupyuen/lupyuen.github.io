@@ -19,53 +19,20 @@ TODO
 From [`main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L819-L866)
 
 ```c
-//  Called at startup to init drivers and run command-line interface
+//  Called at startup to init drivers and run event loop
 static void aos_loop_proc(void *pvParameters) {
-    int fd_console;
-    uint32_t fdt = 0, offset = 0;
-    static StackType_t proc_stack_looprt[512];
-    static StaticTask_t proc_task_looprt;
+  ...
+  //  Register Callback for WiFi Events
+  aos_register_event_filter(
+    EV_WIFI,              //  Event Type
+    event_cb_wifi_event,  //  Event Callback 
+    NULL);                //  Event Callback Argument
 
-    /*Init bloop stuff*/
-    looprt_start(proc_stack_looprt, 512, &proc_task_looprt);
-    loopset_led_hook_on_looprt();
+  //  Start WiFi Networking Stack
+  cmd_stack_wifi(NULL, 0, 0, NULL);
 
-    easyflash_init();
-    vfs_init();
-    vfs_device_init();
-
-    /* uart */
-#if 1
-    if (0 == get_dts_addr("uart", &fdt, &offset)) {
-        vfs_uart_init(fdt, offset);
-    }
-#else
-    vfs_uart_init_simple_mode(0, 7, 16, 2 * 1000 * 1000, "/dev/ttyS0");
-#endif
-    if (0 == get_dts_addr("gpio", &fdt, &offset)) {
-        hal_gpio_init_from_dts(fdt, offset);
-    }
-
-    __opt_feature_init();
-    aos_loop_init();
-
-    fd_console = aos_open("/dev/ttyS0", 0);
-    if (fd_console >= 0) {
-        printf("Init CLI with event Driven\r\n");
-        aos_cli_init(0);
-        aos_poll_read_fd(fd_console, aos_cli_event_cb_read_get(), (void*)0x12345678);
-        _cli_init();
-    }
-
-    aos_register_event_filter(EV_WIFI, event_cb_wifi_event, NULL);
-    cmd_stack_wifi(NULL, 0, 0, NULL);
-
-    aos_loop_run();
-
-    puts("------------------------------------------\r\n");
-    puts("+++++++++Critical Exit From Loop++++++++++\r\n");
-    puts("******************************************\r\n");
-    vTaskDelete(NULL);
+  //  Run event loop
+  aos_loop_run();
 }
 ```
 
@@ -74,23 +41,20 @@ TODO
 From [`main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L729-L747)
 
 ```c
+//  Start WiFi Networking Stack
 static void cmd_stack_wifi(char *buf, int len, int argc, char **argv) {
-    /*wifi fw stack and thread stuff*/
-    static uint8_t stack_wifi_init  = 0;
+  static uint8_t stack_wifi_init  = 0;
+  if (1 == stack_wifi_init) { return; }
+  stack_wifi_init = 1;
 
+  //  Start Wi-Fi Firmware Task
+  hal_wifi_start_firmware_task();
 
-    if (1 == stack_wifi_init) {
-        puts("Wi-Fi Stack Started already!!!\r\n");
-        return;
-    }
-    stack_wifi_init = 1;
-
-    printf("Start Wi-Fi fw @%lums\r\n", bl_timer_now_us()/1000);
-    hal_wifi_start_firmware_task();
-    /*Trigger to start Wi-Fi*/
-    printf("Start Wi-Fi fw is Done @%lums\r\n", bl_timer_now_us()/1000);
-    aos_post_event(EV_WIFI, CODE_WIFI_ON_INIT_DONE, 0);
-
+  //  Post an event to start Wi-Fi Networking
+  aos_post_event(
+    EV_WIFI,                 //  Event Type
+    CODE_WIFI_ON_INIT_DONE,  //  Event Code
+    0);                      //  Event Argument
 }
 ```
 
@@ -105,11 +69,22 @@ TODO
 From [`main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L366-L372)
 
 ```c
+//  Connect to WiFi Access Point
 static void wifi_sta_connect(char *ssid, char *password) {
-    wifi_interface_t wifi_interface;
 
-    wifi_interface = wifi_mgmr_sta_enable();
-    wifi_mgmr_sta_connect(wifi_interface, ssid, password, NULL, NULL, 0, 0);
+  //  Enable WiFi Client
+  wifi_interface_t wifi_interface
+    = wifi_mgmr_sta_enable();
+
+  //  Connect to WiFi Access Point
+  wifi_mgmr_sta_connect(
+    wifi_interface,  //  WiFi Interface
+    ssid,            //  SSID
+    password,        //  Password
+    NULL,            //  PMK
+    NULL,            //  MAC Address
+    0,               //  Band
+    0);              //  Frequency
 }
 ```
 
@@ -118,28 +93,27 @@ TODO
 From [`main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L704-L727)
 
 ```c
+//  Send a HTTP GET Request with LWIP
 static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
-    static httpc_connection_t settings;
-    static httpc_state_t *req;
-    if (req) {
-        printf("[CLI] req is on-going...\r\n");
-        return;
-    }
+  static httpc_connection_t settings;
+  static httpc_state_t *req;
+  if (req) { return; }  //  Request already running
 
-    memset(&settings, 0, sizeof(settings));
-    settings.use_proxy = 0;
-    settings.result_fn = cb_httpc_result;
-    settings.headers_done_fn = cb_httpc_headers_done_fn;
+  //  Init the LWIP HTTP Settings
+  memset(&settings, 0, sizeof(settings));
+  settings.use_proxy = 0;
+  settings.result_fn = cb_httpc_result;
+  settings.headers_done_fn = cb_httpc_headers_done_fn;
 
-    httpc_get_file_dns(
-            "nf.cr.dandanman.com",
-            80,
-            "/ddm/ContentResource/music/204.mp3",
-            &settings,
-            cb_altcp_recv_fn,
-            &req,
-            &req
-   );
+  //  Send a HTTP GET Request with LWIP
+  httpc_get_file_dns(
+    "nf.cr.dandanman.com",  //  Host
+    80,                     //  Port
+    "/ddm/ContentResource/music/204.mp3",  //  URI
+    &settings,              //  Settings
+    cb_altcp_recv_fn,       //  Callback Function
+    &req,                   //  Callback Argument
+    &req);                  //  Request
 }
 ```
 
