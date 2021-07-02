@@ -68,11 +68,11 @@
 <li><a href="#bl602-wifi-demo-firmware">1 BL602 WiFi Demo Firmware</a><ul>
 <li><a href="#startup">1.1 Startup</a><ul></ul></li>
 <li><a href="#start-wifi-firmware-task">1.2 Start WiFi Firmware Task</a><ul></ul></li>
-<li><a href="#start-wifi-background-task">1.3 Start WiFi Background Task</a><ul></ul></li>
+<li><a href="#start-wifi-manager-task">1.3 Start WiFi Manager Task</a><ul></ul></li>
 <li><a href="#connect-to-wifi-access-point">1.4 Connect to WiFi Access Point</a><ul></ul></li>
 <li><a href="#send-http-request">1.5 Send HTTP Request</a><ul></ul></li></ul></li>
 <li><a href="#connect-to-wifi-access-point-1">2 Connect to WiFi Access Point</a><ul></ul></li>
-<li><a href="#wifi-background-task">3 WiFi Background Task</a><ul></ul></li>
+<li><a href="#wifi-firmware-task">3 WiFi Firmware Task</a><ul></ul></li>
 <li><a href="#decompiled-wifi-demo-firmware">4 Decompiled WiFi Demo Firmware</a><ul></ul></li>
 <li><a href="#ceva-rivierawaves">5 CEVA RivieraWaves</a><ul></ul></li>
 <li><a href="#upper-medium-access-control-layer">6 Upper Medium Access Control Layer</a><ul></ul></li>
@@ -114,9 +114,7 @@ static void aos_loop_proc(void *pvParameters) {
 <p>This startup code calls <strong><code>cmd_stack_wifi</code></strong> to start the WiFi Networking Stack.</p>
 <p>Let’s look inside…</p>
 <h2 id="start-wifi-firmware-task" class="section-header"><a href="#start-wifi-firmware-task">1.2 Start WiFi Firmware Task</a></h2>
-<p>In <strong><code>cmd_stack_wifi</code></strong></p>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L729-L747"><code>main.c</code></a></p>
+<p>In <strong><code>cmd_stack_wifi</code></strong> we start the <strong>WiFi Firmware Task</strong> like so: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L729-L747"><code>main.c</code></a></p>
 <pre><code class="language-c">//  Start WiFi Networking Stack
 static void cmd_stack_wifi(char *buf, int len, int argc, char **argv) {
   //  Check whether WiFi Networking is already started
@@ -124,19 +122,21 @@ static void cmd_stack_wifi(char *buf, int len, int argc, char **argv) {
   if (1 == stack_wifi_init) { return; }  //  Already started
   stack_wifi_init = 1;
 
-  //  Start WiFi Firmware Task
+  //  Start WiFi Firmware Task (FreeRTOS)
   hal_wifi_start_firmware_task();
 
-  //  Post an event to start WiFi Networking
+  //  Post a WiFi Event to start WiFi Networking
   aos_post_event(
     EV_WIFI,                 //  Event Type
     CODE_WIFI_ON_INIT_DONE,  //  Event Code
     0);                      //  Event Argument
 }
 </code></pre>
-<h2 id="start-wifi-background-task" class="section-header"><a href="#start-wifi-background-task">1.3 Start WiFi Background Task</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L374-L512"><code>main.c</code></a></p>
+<p>(We’ll cover <code>hal_wifi_start_firmware_task</code> in the next chapter)</p>
+<p>After starting the task, we post the WiFi Event <code>CODE_WIFI_ON_INIT_DONE</code> to <strong>start WiFi Networking</strong>.</p>
+<p>Let’s look inside the WiFi Event Handler…</p>
+<h2 id="start-wifi-manager-task" class="section-header"><a href="#start-wifi-manager-task">1.3 Start WiFi Manager Task</a></h2>
+<p>Here’s how we handle WiFi Events: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L374-L512"><code>main.c</code></a></p>
 <pre><code class="language-c">//  Callback Function for WiFi Events
 static void event_cb_wifi_event(input_event_t *event, void *private_data) {
 
@@ -146,12 +146,15 @@ static void event_cb_wifi_event(input_event_t *event, void *private_data) {
     //  Posted by cmd_stack_wifi to start Wi-Fi Networking
     case CODE_WIFI_ON_INIT_DONE:
 
-      //  Start the WiFi Background Task (FreeRTOS)
+      //  Start the WiFi Manager Task (FreeRTOS)
       wifi_mgmr_start_background(&amp;conf);
       break;
 
     //  Omitted: Handle other WiFi Events
 </code></pre>
+<p>When we receive the WiFi Event <code>CODE_WIFI_ON_INIT_DONE</code>, we start the <strong>WiFi Manager Task</strong> by calling <code>wifi_mgmr_start_background</code>.</p>
+<p><code>wifi_mgmr_start_background</code> comes from the BL602 WiFi Driver.</p>
+<p>TODO</p>
 <h2 id="connect-to-wifi-access-point" class="section-header"><a href="#connect-to-wifi-access-point">1.4 Connect to WiFi Access Point</a></h2>
 <p>TODO</p>
 <pre><code class="language-text"># wifi_sta_connect YOUR_WIFI_SSID YOUR_WIFI_PASSWORD
@@ -223,7 +226,7 @@ static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wifi-connect9.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="wifi-background-task" class="section-header"><a href="#wifi-background-task">3 WiFi Background Task</a></h1>
+<h1 id="wifi-firmware-task" class="section-header"><a href="#wifi-firmware-task">3 WiFi Firmware Task</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wifi-task.png" alt="" /></p>
 <p>TODO</p>
