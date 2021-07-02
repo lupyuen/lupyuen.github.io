@@ -77,7 +77,8 @@
 <li><a href="#ceva-rivierawaves">5 CEVA RivieraWaves</a><ul></ul></li>
 <li><a href="#upper-medium-access-control-layer">6 Upper Medium Access Control Layer</a><ul></ul></li>
 <li><a href="#lower-medium-access-control-layer">7 Lower Medium Access Control Layer</a><ul></ul></li>
-<li><a href="#wifi-phy-layer">8 WiFi PHY Layer</a><ul></ul></li>
+<li><a href="#wifi-phy-layer">8 WiFi PHY Layer</a><ul>
+<li><a href="#wifi-rtl">8.1 WiFi RTL</a><ul></ul></li></ul></li>
 <li><a href="#wifi-supplicant">9 WiFi Supplicant</a><ul></ul></li>
 <li><a href="#quantitative-analysis">10 Quantitative Analysis</a><ul></ul></li>
 <li><a href="#other-components">11 Other Components</a><ul></ul></li>
@@ -110,7 +111,8 @@ static void aos_loop_proc(void *pvParameters) {
 }
 </code></pre>
 <p>(We’ll see <code>event_cb_wifi_event</code> in a while)</p>
-<p>This startup code calls <strong><code>cmd_stack_wifi</code></strong> to start the WiFi Networking Stack…</p>
+<p>This startup code calls <strong><code>cmd_stack_wifi</code></strong> to start the WiFi Networking Stack.</p>
+<p>Let’s look inside…</p>
 <h2 id="start-wifi-firmware-task" class="section-header"><a href="#start-wifi-firmware-task">1.2 Start WiFi Firmware Task</a></h2>
 <p>In <strong><code>cmd_stack_wifi</code></strong></p>
 <p>TODO</p>
@@ -241,12 +243,16 @@ static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
 <ul>
 <li><a href="https://github.com/BraveHeartFLOSSDev/bl602nutcracker1"><strong>BraveHeartFLOSSDev/bl602nutcracker1</strong></a></li>
 </ul>
-<p><a href="https://github.com/lupyuen/bl602nutcracker1">(We’ll refer to this forked version)</a></p>
+<p><a href="https://github.com/lupyuen/bl602nutcracker1">(We’ll use this fork)</a></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wifi-assert.png" alt="" /></p>
 <p>TODO</p>
 <h1 id="ceva-rivierawaves" class="section-header"><a href="#ceva-rivierawaves">5 CEVA RivieraWaves</a></h1>
 <p>TODO</p>
+<ul>
+<li><a href="https://github.com/mclown/AliOS-Things"><strong>mclown/AliOS-Things</strong></a></li>
+</ul>
+<p><a href="https://github.com/lupyuen/AliOS-Things">(We’ll use this fork)</a></p>
 <p><img src="https://lupyuen.github.io/images/wifi-rivierawaves.png" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wifi-ceva.png" alt="" /></p>
@@ -267,10 +273,28 @@ static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
 <p>TODO</p>
 <h1 id="wifi-phy-layer" class="section-header"><a href="#wifi-phy-layer">8 WiFi PHY Layer</a></h1>
 <p>TODO</p>
+<ul>
+<li><a href="https://github.com/jixinintelligence/bl602-604"><strong>jixinintelligence/bl602-604</strong></a></li>
+</ul>
+<p><a href="https://github.com/lupyuen/bl602-604">(We’ll use this fork)</a></p>
 <p><img src="https://lupyuen.github.io/images/wifi-phy.png" alt="" /></p>
 <p>TODO</p>
+<h2 id="wifi-rtl" class="section-header"><a href="#wifi-rtl">8.1 WiFi RTL</a></h2>
+<p>TODO</p>
+<ul>
+<li>
+<p><a href="https://github.com/fengmaoqiao/my_logic_code"><strong>fengmaoqiao/my_logic_code</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/fengmaoqiao/workplace"><strong>fengmaoqiao/workplace</strong></a></p>
+</li>
+</ul>
 <h1 id="wifi-supplicant" class="section-header"><a href="#wifi-supplicant">9 WiFi Supplicant</a></h1>
 <p>TODO: Rockchip RK3399</p>
+<ul>
+<li><a href="https://github.com/karthirockz/rk3399-kernel"><strong>karthirockz/rk3399-kernel</strong></a></li>
+</ul>
+<p><a href="https://github.com/lupyuen/rk3399-kernel">(We’ll use this fork)</a></p>
 <p><img src="https://lupyuen.github.io/images/wifi-rockchip.jpg" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wifi-supplicant.png" alt="" /></p>
