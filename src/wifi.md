@@ -16,6 +16,18 @@ We start with the source code of the __BL602 WiFi Demo Firmware__ from the BL602
 
 TODO
 
+Compile and flash customer_app/bl602_demo_wifi.
+
+```text
+# stack_wifi 
+```
+
+TODO
+
+```text
+# wifi_sta_connect YOUR_WIFI_SSID YOUR_WIFI_PASSWORD
+```
+
 From [`main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L769-L788)
 
 ```c
@@ -111,7 +123,7 @@ static void cmd_httpc_test(char *buf, int len, int argc, char **argv)
 }
 ```
 
-[User Manual (Chinese)](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/Iperf_User_Manual.pdf)
+[Demo Firmware Documentation](https://pine64.github.io/bl602-docs/Examples/demo_wifi/wifi.html)
 
 # Connect to WiFi Access Point
 
