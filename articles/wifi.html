@@ -204,8 +204,7 @@ static void wifi_sta_connect(char *ssid, char *password) {
 <p>Now we enter this command to <strong>send a HTTP Request</strong> over WiFi…</p>
 <pre><code class="language-text"># httpc
 </code></pre>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L704-L727"><code>main.c</code></a></p>
+<p>Here’s the implementation of the <strong><code>httpc</code></strong> command: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L704-L727"><code>main.c</code></a></p>
 <pre><code class="language-c">//  Send a HTTP GET Request with LWIP
 static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
   //  Check whether a HTTP Request is already running
@@ -230,6 +229,8 @@ static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
     &amp;req);                  //  Request
 }
 </code></pre>
+<p>On BL602 we use <a href="https://www.nongnu.org/lwip/2_1_x/index.html"><strong>LWIP, the Lightweight IP Stack</strong></a> to do IP, UDP, TCP and HTTP Networking.</p>
+<p>TODO</p>
 <p><a href="https://pine64.github.io/bl602-docs/Examples/demo_wifi/wifi.html">Demo Firmware Documentation</a></p>
 <p><img src="https://lupyuen.github.io/images/wifi-connect.png" alt="" /></p>
 <h1 id="connect-to-wifi-access-point" class="section-header"><a href="#connect-to-wifi-access-point">2 Connect to WiFi Access Point</a></h1>
