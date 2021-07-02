@@ -157,9 +157,7 @@ Now we enter this command to __send a HTTP Request__ over WiFi...
 # httpc
 ```
 
-TODO
-
-From [`main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L704-L727)
+Here's the implementation of the __`httpc`__ command: [`main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L704-L727)
 
 ```c
 //  Send a HTTP GET Request with LWIP
@@ -186,6 +184,10 @@ static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
     &req);                  //  Request
 }
 ```
+
+On BL602 we use [__LWIP, the Lightweight IP Stack__](https://www.nongnu.org/lwip/2_1_x/index.html) to do IP, UDP, TCP and HTTP Networking.
+
+TODO
 
 [Demo Firmware Documentation](https://pine64.github.io/bl602-docs/Examples/demo_wifi/wifi.html)
 
