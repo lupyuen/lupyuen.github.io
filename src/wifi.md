@@ -14,7 +14,19 @@ TODO: Education, replacement, auditing, troubleshooting. [See this non-BL602 exa
 
 Let's study the source code of the __BL602 WiFi Demo Firmware__ from the BL602 IoT SDK: [__`bl602_demo_wifi`__](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi)
 
-## Startup
+In the demo firmware we shall...
+
+1.  Register the __WiFi Event Handler__ that will handle WiFi Events
+
+1.  Start the __WiFi Firmware Task__ that will control the BL602 WiFi Firmware
+
+1.  Start the __WiFi Manager Task__ that will manage WiFi Connections
+
+1.  Connect to a __WiFi Access Point__
+
+1.  Send a __HTTP Request__
+
+## Register WiFi Event Handler
 
 When the firmware starts, we register a __Callback Function that will handle WiFi Events__: [`main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L819-L866)
 
@@ -58,7 +70,7 @@ static void cmd_stack_wifi(char *buf, int len, int argc, char **argv) {
   //  Start WiFi Firmware Task (FreeRTOS)
   hal_wifi_start_firmware_task();
 
-  //  Post a WiFi Event to start WiFi Networking
+  //  Post a WiFi Event to start WiFi Manager Task
   aos_post_event(
     EV_WIFI,                 //  Event Type
     CODE_WIFI_ON_INIT_DONE,  //  Event Code
@@ -68,13 +80,13 @@ static void cmd_stack_wifi(char *buf, int len, int argc, char **argv) {
 
 (We'll cover `hal_wifi_start_firmware_task` in the next chapter)
 
-After starting the task, we post the WiFi Event `CODE_WIFI_ON_INIT_DONE` to __start WiFi Networking__.
+After starting the task, we post the WiFi Event `CODE_WIFI_ON_INIT_DONE` to __start the WiFi Manager Task__.
 
 Let's look inside the WiFi Event Handler...
 
 ## Start WiFi Manager Task
 
-Here's how we handle WiFi Events: [`main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L374-L512)
+Here's how we handle __WiFi Events__: [`main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L374-L512)
 
 ```c
 //  Callback Function for WiFi Events
@@ -83,7 +95,7 @@ static void event_cb_wifi_event(input_event_t *event, void *private_data) {
   //  Handle the WiFi Event
   switch (event->code) {
 
-    //  Posted by cmd_stack_wifi to start Wi-Fi Networking
+    //  Posted by cmd_stack_wifi to start Wi-Fi Manager Task
     case CODE_WIFI_ON_INIT_DONE:
 
       //  Start the WiFi Manager Task (FreeRTOS)
@@ -93,11 +105,9 @@ static void event_cb_wifi_event(input_event_t *event, void *private_data) {
     //  Omitted: Handle other WiFi Events
 ```
 
-When we receive the WiFi Event `CODE_WIFI_ON_INIT_DONE`, we start the __WiFi Manager Task__ by calling `wifi_mgmr_start_background`.
+When we receive the WiFi Event `CODE_WIFI_ON_INIT_DONE`, we start the __WiFi Manager Task__ (in FreeRTOS) by calling `wifi_mgmr_start_background`.
 
-`wifi_mgmr_start_background` comes from the BL602 WiFi Driver.
-
-TODO
+`wifi_mgmr_start_background` comes from the BL602 WiFi Driver. [(See the source code)](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr.c#L1406-L1415)
 
 ## Connect to WiFi Access Point
 
@@ -251,9 +261,9 @@ TODO
 
 TODO
 
--   [__mclown/AliOS-Things__](https://github.com/mclown/AliOS-Things)
+-   [__mclown/AliOS-Things__](https://github.com/mclown/AliOS-Things/tree/master/platform/mcu/bk7231u/beken/ip)
 
-[(We'll use this fork)](https://github.com/lupyuen/AliOS-Things)
+[(We'll use this fork)](https://github.com/lupyuen/AliOS-Things/tree/master/platform/mcu/bk7231u/beken/ip)
 
 ![](https://lupyuen.github.io/images/wifi-rivierawaves.png)
 
@@ -261,7 +271,7 @@ TODO
 
 ![](https://lupyuen.github.io/images/wifi-ceva.png)
 
-TODO
+[(Source)](https://csimarket.com/stocks/markets_glance.php?code=CEVA#:~:text=Included%20among%20our%20licensees%20are,%2C%20RDA%2C%20Renesas%2C%20Rockchip%2C)
 
 # Upper Medium Access Control Layer
 
@@ -285,6 +295,8 @@ TODO
 
 ![](https://lupyuen.github.io/images/wifi-beken.jpg)
 
+[(Source)](http://www.bekencorp.com/en/goods/detail/cid/13.html)
+
 TODO
 
 ![](https://lupyuen.github.io/images/wifi-beken2.png)
@@ -307,6 +319,8 @@ TODO
 
 TODO
 
+According to [__madushan1000 on Twitter__](https://twitter.com/madushan1000/status/1409392882612637696)...
+
 -   [__fengmaoqiao/my_logic_code__](https://github.com/fengmaoqiao/my_logic_code)
 
 -   [__fengmaoqiao/workplace__](https://github.com/fengmaoqiao/workplace)
@@ -315,9 +329,9 @@ TODO
 
 TODO: Rockchip RK3399
 
--   [__karthirockz/rk3399-kernel__](https://github.com/karthirockz/rk3399-kernel)
+-   [__karthirockz/rk3399-kernel__](https://github.com/karthirockz/rk3399-kernel/tree/main/drivers/net/wireless/rockchip_wlan/mvl88w8977/mlan/esa)
 
-[(We'll use this fork)](https://github.com/lupyuen/rk3399-kernel)
+[(We'll use this fork)](https://github.com/lupyuen/rk3399-kernel/tree/main/drivers/net/wireless/rockchip_wlan/mvl88w8977/mlan/esa)
 
 ![](https://lupyuen.github.io/images/wifi-rockchip.jpg)
 
