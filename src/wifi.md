@@ -14,6 +14,101 @@ TODO: Education, replacement, auditing, troubleshooting. [See this non-BL602 exa
 
 TODO
 
+From [`main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L769-L788)
+
+```c
+static void _cli_init()
+{
+    int codex_debug_cli_init(void);
+    codex_debug_cli_init();
+    easyflash_cli_init();
+    network_netutils_iperf_cli_register();
+    network_netutils_tcpserver_cli_register();
+    network_netutils_tcpclinet_cli_register();
+    network_netutils_netstat_cli_register();
+    network_netutils_ping_cli_register();
+    sntp_cli_init();
+    bl_sys_time_cli_init();
+    bl_sys_ota_cli_init();
+    blfdt_cli_init();
+    wifi_mgmr_cli_init();
+    bl_wdt_cli_init();
+    bl_gpio_cli_init();
+    looprt_test_cli_init();
+}
+```
+
+TODO
+
+From [`main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L729-L747)
+
+```c
+static void cmd_stack_wifi(char *buf, int len, int argc, char **argv)
+{
+    /*wifi fw stack and thread stuff*/
+    static uint8_t stack_wifi_init  = 0;
+
+
+    if (1 == stack_wifi_init) {
+        puts("Wi-Fi Stack Started already!!!\r\n");
+        return;
+    }
+    stack_wifi_init = 1;
+
+    printf("Start Wi-Fi fw @%lums\r\n", bl_timer_now_us()/1000);
+    hal_wifi_start_firmware_task();
+    /*Trigger to start Wi-Fi*/
+    printf("Start Wi-Fi fw is Done @%lums\r\n", bl_timer_now_us()/1000);
+    aos_post_event(EV_WIFI, CODE_WIFI_ON_INIT_DONE, 0);
+
+}
+```
+
+TODO
+
+From [`main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L366-L372)
+
+```c
+static void wifi_sta_connect(char *ssid, char *password)
+{
+    wifi_interface_t wifi_interface;
+
+    wifi_interface = wifi_mgmr_sta_enable();
+    wifi_mgmr_sta_connect(wifi_interface, ssid, password, NULL, NULL, 0, 0);
+}
+```
+
+TODO
+
+From [`main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L704-L727)
+
+```c
+static void cmd_httpc_test(char *buf, int len, int argc, char **argv)
+{
+    static httpc_connection_t settings;
+    static httpc_state_t *req;
+
+    if (req) {
+        printf("[CLI] req is on-going...\r\n");
+        return;
+    }
+    memset(&settings, 0, sizeof(settings));
+    settings.use_proxy = 0;
+    settings.result_fn = cb_httpc_result;
+    settings.headers_done_fn = cb_httpc_headers_done_fn;
+
+    httpc_get_file_dns(
+            "nf.cr.dandanman.com",
+            80,
+            "/ddm/ContentResource/music/204.mp3",
+            &settings,
+            cb_altcp_recv_fn,
+            &req,
+            &req
+   );
+}
+```
+
 # Connect to WiFi Access Point
 
 TODO
