@@ -16,39 +16,56 @@ We start with the source code of the __BL602 WiFi Demo Firmware__ from the BL602
 
 TODO
 
-Compile and flash customer_app/bl602_demo_wifi.
-
-```text
-# stack_wifi 
-```
-
-TODO
-
-```text
-# wifi_sta_connect YOUR_WIFI_SSID YOUR_WIFI_PASSWORD
-```
-
-From [`main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L769-L788)
+From [`main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L819-L866)
 
 ```c
-static void _cli_init()
-{
-    int codex_debug_cli_init(void);
-    codex_debug_cli_init();
-    easyflash_cli_init();
-    network_netutils_iperf_cli_register();
-    network_netutils_tcpserver_cli_register();
-    network_netutils_tcpclinet_cli_register();
-    network_netutils_netstat_cli_register();
-    network_netutils_ping_cli_register();
-    sntp_cli_init();
-    bl_sys_time_cli_init();
-    bl_sys_ota_cli_init();
-    blfdt_cli_init();
-    wifi_mgmr_cli_init();
-    bl_wdt_cli_init();
-    bl_gpio_cli_init();
-    looprt_test_cli_init();
+//  Called at startup to init drivers and run command-line interface
+static void aos_loop_proc(void *pvParameters) {
+    int fd_console;
+    uint32_t fdt = 0, offset = 0;
+    static StackType_t proc_stack_looprt[512];
+    static StaticTask_t proc_task_looprt;
+
+    /*Init bloop stuff*/
+    looprt_start(proc_stack_looprt, 512, &proc_task_looprt);
+    loopset_led_hook_on_looprt();
+
+    easyflash_init();
+    vfs_init();
+    vfs_device_init();
+
+    /* uart */
+#if 1
+    if (0 == get_dts_addr("uart", &fdt, &offset)) {
+        vfs_uart_init(fdt, offset);
+    }
+#else
+    vfs_uart_init_simple_mode(0, 7, 16, 2 * 1000 * 1000, "/dev/ttyS0");
+#endif
+    if (0 == get_dts_addr("gpio", &fdt, &offset)) {
+        hal_gpio_init_from_dts(fdt, offset);
+    }
+
+    __opt_feature_init();
+    aos_loop_init();
+
+    fd_console = aos_open("/dev/ttyS0", 0);
+    if (fd_console >= 0) {
+        printf("Init CLI with event Driven\r\n");
+        aos_cli_init(0);
+        aos_poll_read_fd(fd_console, aos_cli_event_cb_read_get(), (void*)0x12345678);
+        _cli_init();
+    }
+
+    aos_register_event_filter(EV_WIFI, event_cb_wifi_event, NULL);
+    cmd_stack_wifi(NULL, 0, 0, NULL);
+
+    aos_loop_run();
+
+    puts("------------------------------------------\r\n");
+    puts("+++++++++Critical Exit From Loop++++++++++\r\n");
+    puts("******************************************\r\n");
+    vTaskDelete(NULL);
 }
 ```
 
@@ -57,8 +74,7 @@ TODO
 From [`main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L729-L747)
 
 ```c
-static void cmd_stack_wifi(char *buf, int len, int argc, char **argv)
-{
+static void cmd_stack_wifi(char *buf, int len, int argc, char **argv) {
     /*wifi fw stack and thread stuff*/
     static uint8_t stack_wifi_init  = 0;
 
@@ -80,11 +96,16 @@ static void cmd_stack_wifi(char *buf, int len, int argc, char **argv)
 
 TODO
 
+```text
+# wifi_sta_connect YOUR_WIFI_SSID YOUR_WIFI_PASSWORD
+```
+
+TODO
+
 From [`main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L366-L372)
 
 ```c
-static void wifi_sta_connect(char *ssid, char *password)
-{
+static void wifi_sta_connect(char *ssid, char *password) {
     wifi_interface_t wifi_interface;
 
     wifi_interface = wifi_mgmr_sta_enable();
@@ -97,15 +118,14 @@ TODO
 From [`main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L704-L727)
 
 ```c
-static void cmd_httpc_test(char *buf, int len, int argc, char **argv)
-{
+static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
     static httpc_connection_t settings;
     static httpc_state_t *req;
-
     if (req) {
         printf("[CLI] req is on-going...\r\n");
         return;
     }
+
     memset(&settings, 0, sizeof(settings));
     settings.use_proxy = 0;
     settings.result_fn = cb_httpc_result;
