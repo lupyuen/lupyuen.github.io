@@ -6,7 +6,7 @@ _What happens inside the WiFi Driver on RISC-V BL602 SoC... And how we found the
 
 Why reverse engineer the WiFi Driver?
 
-TODO: Education, replacement, auditing, troubleshooting
+TODO: Education, replacement, auditing, troubleshooting. [See this non-BL602 example](https://twitter.com/Yu_Wei_Wu/status/1406940637773979655?s=19)
 
 ![Quantitative Analysis of Decompiled BL602 WiFi Firmware](https://lupyuen.github.io/images/wifi-title.jpg)
 
