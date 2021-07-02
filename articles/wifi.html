@@ -65,8 +65,13 @@
 
     <h1 class="title">Reverse Engineering WiFi on RISC-V BL602</h1>
     <nav id="TOC"><ul>
-<li><a href="#bl602-wifi-demo-firmware">1 BL602 WiFi Demo Firmware</a><ul></ul></li>
-<li><a href="#connect-to-wifi-access-point">2 Connect to WiFi Access Point</a><ul></ul></li>
+<li><a href="#bl602-wifi-demo-firmware">1 BL602 WiFi Demo Firmware</a><ul>
+<li><a href="#startup">1.1 Startup</a><ul></ul></li>
+<li><a href="#start-wifi-firmware-task">1.2 Start WiFi Firmware Task</a><ul></ul></li>
+<li><a href="#start-wifi-background-task">1.3 Start WiFi Background Task</a><ul></ul></li>
+<li><a href="#connect-to-wifi-access-point">1.4 Connect to WiFi Access Point</a><ul></ul></li>
+<li><a href="#send-http-request">1.5 Send HTTP Request</a><ul></ul></li></ul></li>
+<li><a href="#connect-to-wifi-access-point-1">2 Connect to WiFi Access Point</a><ul></ul></li>
 <li><a href="#wifi-background-task">3 WiFi Background Task</a><ul></ul></li>
 <li><a href="#decompiled-wifi-demo-firmware">4 Decompiled WiFi Demo Firmware</a><ul></ul></li>
 <li><a href="#ceva-rivierawaves">5 CEVA RivieraWaves</a><ul></ul></li>
@@ -85,6 +90,7 @@
 <p><img src="https://lupyuen.github.io/images/wifi-title.jpg" alt="Quantitative Analysis of Decompiled BL602 WiFi Firmware" /></p>
 <h1 id="bl602-wifi-demo-firmware" class="section-header"><a href="#bl602-wifi-demo-firmware">1 BL602 WiFi Demo Firmware</a></h1>
 <p>We start with the source code of the <strong>BL602 WiFi Demo Firmware</strong> from the BL602 IoT SDK: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi"><strong><code>bl602_demo_wifi</code></strong></a></p>
+<h2 id="startup" class="section-header"><a href="#startup">1.1 Startup</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L819-L866"><code>main.c</code></a></p>
 <pre><code class="language-c">//  Called at startup to init drivers and run event loop
@@ -103,6 +109,7 @@ static void aos_loop_proc(void *pvParameters) {
   aos_loop_run();
 }
 </code></pre>
+<h2 id="start-wifi-firmware-task" class="section-header"><a href="#start-wifi-firmware-task">1.2 Start WiFi Firmware Task</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L729-L747"><code>main.c</code></a></p>
 <pre><code class="language-c">//  Start WiFi Networking Stack
@@ -121,148 +128,25 @@ static void cmd_stack_wifi(char *buf, int len, int argc, char **argv) {
     0);                      //  Event Argument
 }
 </code></pre>
+<h2 id="start-wifi-background-task" class="section-header"><a href="#start-wifi-background-task">1.3 Start WiFi Background Task</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L374-L512"><code>main.c</code></a></p>
 <pre><code class="language-c">//  Callback Function for WiFi Events
 static void event_cb_wifi_event(input_event_t *event, void *private_data) {
-    static char *ssid;
-    static char *password;
 
-    switch (event-&gt;code) {
-        case CODE_WIFI_ON_INIT_DONE:
-        {
-            printf(&quot;[APP] [EVT] INIT DONE %lld\r\n&quot;, aos_now_ms());
-            wifi_mgmr_start_background(&amp;conf);
-        }
-        break;
-        case CODE_WIFI_ON_MGMR_DONE:
-        {
-            printf(&quot;[APP] [EVT] MGMR DONE %lld, now %lums\r\n&quot;, aos_now_ms(), bl_timer_now_us()/1000);
-            _connect_wifi();
-        }
-        break;
-        case CODE_WIFI_ON_MGMR_DENOISE:
-        {
-            printf(&quot;[APP] [EVT] Microwave Denoise is ON %lld\r\n&quot;, aos_now_ms());
-        }
-        break;
-        case CODE_WIFI_ON_SCAN_DONE:
-        {
-            printf(&quot;[APP] [EVT] SCAN Done %lld\r\n&quot;, aos_now_ms());
-            wifi_mgmr_cli_scanlist();
-        }
-        break;
-        case CODE_WIFI_ON_SCAN_DONE_ONJOIN:
-        {
-            printf(&quot;[APP] [EVT] SCAN On Join %lld\r\n&quot;, aos_now_ms());
-        }
-        break;
-        case CODE_WIFI_ON_DISCONNECT:
-        {
-            printf(&quot;[APP] [EVT] disconnect %lld, Reason: %s\r\n&quot;,
-                aos_now_ms(),
-                wifi_mgmr_status_code_str(event-&gt;value)
-            );
-        }
-        break;
-        case CODE_WIFI_ON_CONNECTING:
-        {
-            printf(&quot;[APP] [EVT] Connecting %lld\r\n&quot;, aos_now_ms());
-        }
-        break;
-        case CODE_WIFI_CMD_RECONNECT:
-        {
-            printf(&quot;[APP] [EVT] Reconnect %lld\r\n&quot;, aos_now_ms());
-        }
-        break;
-        case CODE_WIFI_ON_CONNECTED:
-        {
-            printf(&quot;[APP] [EVT] connected %lld\r\n&quot;, aos_now_ms());
-        }
-        break;
-        case CODE_WIFI_ON_PRE_GOT_IP:
-        {
-            printf(&quot;[APP] [EVT] connected %lld\r\n&quot;, aos_now_ms());
-        }
-        break;
-        case CODE_WIFI_ON_GOT_IP:
-        {
-            printf(&quot;[APP] [EVT] GOT IP %lld\r\n&quot;, aos_now_ms());
-            printf(&quot;[SYS] Memory left is %d Bytes\r\n&quot;, xPortGetFreeHeapSize());
-        }
-        break;
-        case CODE_WIFI_ON_EMERGENCY_MAC:
-        {
-            printf(&quot;[APP] [EVT] EMERGENCY MAC %lld\r\n&quot;, aos_now_ms());
-            hal_reboot();//one way of handling emergency is reboot. Maybe we should also consider solutions
-        }
-        break;
-        case CODE_WIFI_ON_PROV_SSID:
-        {
-            printf(&quot;[APP] [EVT] [PROV] [SSID] %lld: %s\r\n&quot;,
-                    aos_now_ms(),
-                    event-&gt;value ? (const char*)event-&gt;value : &quot;UNKNOWN&quot;
-            );
-            if (ssid) {
-                vPortFree(ssid);
-                ssid = NULL;
-            }
-            ssid = (char*)event-&gt;value;
-        }
-        break;
-        case CODE_WIFI_ON_PROV_BSSID:
-        {
-            printf(&quot;[APP] [EVT] [PROV] [BSSID] %lld: %s\r\n&quot;,
-                    aos_now_ms(),
-                    event-&gt;value ? (const char*)event-&gt;value : &quot;UNKNOWN&quot;
-            );
-            if (event-&gt;value) {
-                vPortFree((void*)event-&gt;value);
-            }
-        }
-        break;
-        case CODE_WIFI_ON_PROV_PASSWD:
-        {
-            printf(&quot;[APP] [EVT] [PROV] [PASSWD] %lld: %s\r\n&quot;, aos_now_ms(),
-                    event-&gt;value ? (const char*)event-&gt;value : &quot;UNKNOWN&quot;
-            );
-            if (password) {
-                vPortFree(password);
-                password = NULL;
-            }
-            password = (char*)event-&gt;value;
-        }
-        break;
-        case CODE_WIFI_ON_PROV_CONNECT:
-        {
-            printf(&quot;[APP] [EVT] [PROV] [CONNECT] %lld\r\n&quot;, aos_now_ms());
-            printf(&quot;connecting to %s:%s...\r\n&quot;, ssid, password);
-            wifi_sta_connect(ssid, password);
-        }
-        break;
-        case CODE_WIFI_ON_PROV_DISCONNECT:
-        {
-            printf(&quot;[APP] [EVT] [PROV] [DISCONNECT] %lld\r\n&quot;, aos_now_ms());
-        }
-        break;
-        case CODE_WIFI_ON_AP_STA_ADD:
-        {
-            printf(&quot;[APP] [EVT] [AP] [ADD] %lld, sta idx is %lu\r\n&quot;, aos_now_ms(), (uint32_t)event-&gt;value);
-        }
-        break;
-        case CODE_WIFI_ON_AP_STA_DEL:
-        {
-            printf(&quot;[APP] [EVT] [AP] [DEL] %lld, sta idx is %lu\r\n&quot;, aos_now_ms(), (uint32_t)event-&gt;value);
-        }
-        break;
-        default:
-        {
-            printf(&quot;[APP] [EVT] Unknown code %u, %lld\r\n&quot;, event-&gt;code, aos_now_ms());
-            /*nothing*/
-        }
-    }
-}
+  //  Handle the WiFi Event
+  switch (event-&gt;code) {
+
+    //  Posted by cmd_stack_wifi to start Wi-Fi Networking
+    case CODE_WIFI_ON_INIT_DONE:
+
+      //  Start the WiFi Background Task (FreeRTOS)
+      wifi_mgmr_start_background(&amp;conf);
+      break;
+
+    //  Omitted: Handle other WiFi Events
 </code></pre>
+<h2 id="connect-to-wifi-access-point" class="section-header"><a href="#connect-to-wifi-access-point">1.4 Connect to WiFi Access Point</a></h2>
 <p>TODO</p>
 <pre><code class="language-text"># wifi_sta_connect YOUR_WIFI_SSID YOUR_WIFI_PASSWORD
 </code></pre>
@@ -286,6 +170,7 @@ static void wifi_sta_connect(char *ssid, char *password) {
     0);              //  Frequency
 }
 </code></pre>
+<h2 id="send-http-request" class="section-header"><a href="#send-http-request">1.5 Send HTTP Request</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L704-L727"><code>main.c</code></a></p>
 <pre><code class="language-c">//  Send a HTTP GET Request with LWIP
@@ -312,7 +197,7 @@ static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
 }
 </code></pre>
 <p><a href="https://pine64.github.io/bl602-docs/Examples/demo_wifi/wifi.html">Demo Firmware Documentation</a></p>
-<h1 id="connect-to-wifi-access-point" class="section-header"><a href="#connect-to-wifi-access-point">2 Connect to WiFi Access Point</a></h1>
+<h1 id="connect-to-wifi-access-point-1" class="section-header"><a href="#connect-to-wifi-access-point-1">2 Connect to WiFi Access Point</a></h1>
 <p>TODO</p>
 <h1 id="wifi-background-task" class="section-header"><a href="#wifi-background-task">3 WiFi Background Task</a></h1>
 <p>TODO</p>
