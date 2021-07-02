@@ -4,9 +4,9 @@
 
 _What happens inside the WiFi Driver on RISC-V BL602 SoC... And how we found the (incomplete) source code for the driver_
 
-Why reverse-engineer the WiFi Driver?
+Why reverse engineer the WiFi Driver?
 
-TODO
+TODO: Education, replacement, auditing, troubleshooting
 
 ![Quantitative Analysis of Decompiled BL602 WiFi Firmware](https://lupyuen.github.io/images/wifi-title.jpg)
 
@@ -47,6 +47,18 @@ TODO
 TODO
 
 Rockchip RK3399
+
+# Quantitative Analysis
+
+TODO
+
+-   [Google Sheets](https://docs.google.com/spreadsheets/d/1C_XmkH-ZSXz9-V2HsYBv7K1KRx3RF3-zsoJRLh1GwxI/edit?usp=sharing)
+
+-   [LibreOffice / OpenOffice Format](https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.ods)
+
+-   [Excel Format](https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.xlsx)
+
+-   [CSV Format (without analysis)](https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.csv)
 
 # Other Components
 
