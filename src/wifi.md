@@ -39,7 +39,9 @@ static void aos_loop_proc(void *pvParameters) {
 
 (We'll see `event_cb_wifi_event` in a while)
 
-This startup code calls __`cmd_stack_wifi`__ to start the WiFi Networking Stack...
+This startup code calls __`cmd_stack_wifi`__ to start the WiFi Networking Stack.
+
+Let's look inside...
 
 ## Start WiFi Firmware Task
 
@@ -231,7 +233,7 @@ TODO
 
 -   [__BraveHeartFLOSSDev/bl602nutcracker1__](https://github.com/BraveHeartFLOSSDev/bl602nutcracker1)
 
-[(We'll refer to this forked version)](https://github.com/lupyuen/bl602nutcracker1)
+[(We'll use this fork)](https://github.com/lupyuen/bl602nutcracker1)
 
 TODO
 
@@ -242,6 +244,10 @@ TODO
 # CEVA RivieraWaves
 
 TODO
+
+-   [__mclown/AliOS-Things__](https://github.com/mclown/AliOS-Things)
+
+[(We'll use this fork)](https://github.com/lupyuen/AliOS-Things)
 
 ![](https://lupyuen.github.io/images/wifi-rivierawaves.png)
 
@@ -283,13 +289,29 @@ TODO
 
 TODO
 
+-   [__jixinintelligence/bl602-604__](https://github.com/jixinintelligence/bl602-604)
+
+[(We'll use this fork)](https://github.com/lupyuen/bl602-604)
+
 ![](https://lupyuen.github.io/images/wifi-phy.png)
 
 TODO
 
+## WiFi RTL
+
+TODO
+
+-   [__fengmaoqiao/my_logic_code__](https://github.com/fengmaoqiao/my_logic_code)
+
+-   [__fengmaoqiao/workplace__](https://github.com/fengmaoqiao/workplace)
+
 # WiFi Supplicant
 
 TODO: Rockchip RK3399
+
+-   [__karthirockz/rk3399-kernel__](https://github.com/karthirockz/rk3399-kernel)
+
+[(We'll use this fork)](https://github.com/lupyuen/rk3399-kernel)
 
 ![](https://lupyuen.github.io/images/wifi-rockchip.jpg)
 
