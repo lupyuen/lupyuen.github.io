@@ -66,7 +66,7 @@
     <h1 class="title">Reverse Engineering WiFi on RISC-V BL602</h1>
     <nav id="TOC"><ul>
 <li><a href="#bl602-wifi-demo-firmware">1 BL602 WiFi Demo Firmware</a><ul>
-<li><a href="#startup">1.1 Startup</a><ul></ul></li>
+<li><a href="#register-wifi-event-handler">1.1 Register WiFi Event Handler</a><ul></ul></li>
 <li><a href="#start-wifi-firmware-task">1.2 Start WiFi Firmware Task</a><ul></ul></li>
 <li><a href="#start-wifi-manager-task">1.3 Start WiFi Manager Task</a><ul></ul></li>
 <li><a href="#connect-to-wifi-access-point">1.4 Connect to WiFi Access Point</a><ul></ul></li>
@@ -91,7 +91,25 @@
 <p><img src="https://lupyuen.github.io/images/wifi-title.jpg" alt="Quantitative Analysis of Decompiled BL602 WiFi Firmware" /></p>
 <h1 id="bl602-wifi-demo-firmware" class="section-header"><a href="#bl602-wifi-demo-firmware">1 BL602 WiFi Demo Firmware</a></h1>
 <p>Let’s study the source code of the <strong>BL602 WiFi Demo Firmware</strong> from the BL602 IoT SDK: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi"><strong><code>bl602_demo_wifi</code></strong></a></p>
-<h2 id="startup" class="section-header"><a href="#startup">1.1 Startup</a></h2>
+<p>In the demo firmware we shall…</p>
+<ol>
+<li>
+<p>Register the <strong>WiFi Event Handler</strong> that will handle WiFi Events</p>
+</li>
+<li>
+<p>Start the <strong>WiFi Firmware Task</strong> that will control the BL602 WiFi Firmware</p>
+</li>
+<li>
+<p>Start the <strong>WiFi Manager Task</strong> that will manage WiFi Connections</p>
+</li>
+<li>
+<p>Connect to a <strong>WiFi Access Point</strong></p>
+</li>
+<li>
+<p>Send a <strong>HTTP Request</strong></p>
+</li>
+</ol>
+<h2 id="register-wifi-event-handler" class="section-header"><a href="#register-wifi-event-handler">1.1 Register WiFi Event Handler</a></h2>
 <p>When the firmware starts, we register a <strong>Callback Function that will handle WiFi Events</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L819-L866"><code>main.c</code></a></p>
 <pre><code class="language-c">//  Called at startup to init drivers and run event loop
 static void aos_loop_proc(void *pvParameters) {
@@ -125,7 +143,7 @@ static void cmd_stack_wifi(char *buf, int len, int argc, char **argv) {
   //  Start WiFi Firmware Task (FreeRTOS)
   hal_wifi_start_firmware_task();
 
-  //  Post a WiFi Event to start WiFi Networking
+  //  Post a WiFi Event to start WiFi Manager Task
   aos_post_event(
     EV_WIFI,                 //  Event Type
     CODE_WIFI_ON_INIT_DONE,  //  Event Code
@@ -133,17 +151,17 @@ static void cmd_stack_wifi(char *buf, int len, int argc, char **argv) {
 }
 </code></pre>
 <p>(We’ll cover <code>hal_wifi_start_firmware_task</code> in the next chapter)</p>
-<p>After starting the task, we post the WiFi Event <code>CODE_WIFI_ON_INIT_DONE</code> to <strong>start WiFi Networking</strong>.</p>
+<p>After starting the task, we post the WiFi Event <code>CODE_WIFI_ON_INIT_DONE</code> to <strong>start the WiFi Manager Task</strong>.</p>
 <p>Let’s look inside the WiFi Event Handler…</p>
 <h2 id="start-wifi-manager-task" class="section-header"><a href="#start-wifi-manager-task">1.3 Start WiFi Manager Task</a></h2>
-<p>Here’s how we handle WiFi Events: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L374-L512"><code>main.c</code></a></p>
+<p>Here’s how we handle <strong>WiFi Events</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L374-L512"><code>main.c</code></a></p>
 <pre><code class="language-c">//  Callback Function for WiFi Events
 static void event_cb_wifi_event(input_event_t *event, void *private_data) {
 
   //  Handle the WiFi Event
   switch (event-&gt;code) {
 
-    //  Posted by cmd_stack_wifi to start Wi-Fi Networking
+    //  Posted by cmd_stack_wifi to start Wi-Fi Manager Task
     case CODE_WIFI_ON_INIT_DONE:
 
       //  Start the WiFi Manager Task (FreeRTOS)
@@ -152,9 +170,8 @@ static void event_cb_wifi_event(input_event_t *event, void *private_data) {
 
     //  Omitted: Handle other WiFi Events
 </code></pre>
-<p>When we receive the WiFi Event <code>CODE_WIFI_ON_INIT_DONE</code>, we start the <strong>WiFi Manager Task</strong> by calling <code>wifi_mgmr_start_background</code>.</p>
-<p><code>wifi_mgmr_start_background</code> comes from the BL602 WiFi Driver.</p>
-<p>TODO</p>
+<p>When we receive the WiFi Event <code>CODE_WIFI_ON_INIT_DONE</code>, we start the <strong>WiFi Manager Task</strong> (in FreeRTOS) by calling <code>wifi_mgmr_start_background</code>.</p>
+<p><code>wifi_mgmr_start_background</code> comes from the BL602 WiFi Driver. <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr.c#L1406-L1415">(See the source code)</a></p>
 <h2 id="connect-to-wifi-access-point" class="section-header"><a href="#connect-to-wifi-access-point">1.4 Connect to WiFi Access Point</a></h2>
 <p>TODO</p>
 <pre><code class="language-text"># wifi_sta_connect YOUR_WIFI_SSID YOUR_WIFI_PASSWORD
@@ -253,13 +270,13 @@ static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
 <h1 id="ceva-rivierawaves" class="section-header"><a href="#ceva-rivierawaves">5 CEVA RivieraWaves</a></h1>
 <p>TODO</p>
 <ul>
-<li><a href="https://github.com/mclown/AliOS-Things"><strong>mclown/AliOS-Things</strong></a></li>
+<li><a href="https://github.com/mclown/AliOS-Things/tree/master/platform/mcu/bk7231u/beken/ip"><strong>mclown/AliOS-Things</strong></a></li>
 </ul>
-<p><a href="https://github.com/lupyuen/AliOS-Things">(We’ll use this fork)</a></p>
+<p><a href="https://github.com/lupyuen/AliOS-Things/tree/master/platform/mcu/bk7231u/beken/ip">(We’ll use this fork)</a></p>
 <p><img src="https://lupyuen.github.io/images/wifi-rivierawaves.png" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wifi-ceva.png" alt="" /></p>
-<p>TODO</p>
+<p><a href="https://csimarket.com/stocks/markets_glance.php?code=CEVA#:%7E:text=Included%20among%20our%20licensees%20are,%2C%20RDA%2C%20Renesas%2C%20Rockchip%2C">(Source)</a></p>
 <h1 id="upper-medium-access-control-layer" class="section-header"><a href="#upper-medium-access-control-layer">6 Upper Medium Access Control Layer</a></h1>
 <p>TODO</p>
 <h1 id="lower-medium-access-control-layer" class="section-header"><a href="#lower-medium-access-control-layer">7 Lower Medium Access Control Layer</a></h1>
@@ -271,6 +288,7 @@ static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
 <p><img src="https://lupyuen.github.io/images/wifi-lmac3.jpg" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wifi-beken.jpg" alt="" /></p>
+<p><a href="http://www.bekencorp.com/en/goods/detail/cid/13.html">(Source)</a></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wifi-beken2.png" alt="" /></p>
 <p>TODO</p>
@@ -284,6 +302,7 @@ static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
 <p>TODO</p>
 <h2 id="wifi-rtl" class="section-header"><a href="#wifi-rtl">8.1 WiFi RTL</a></h2>
 <p>TODO</p>
+<p>According to <a href="https://twitter.com/madushan1000/status/1409392882612637696"><strong>madushan1000 on Twitter</strong></a>…</p>
 <ul>
 <li>
 <p><a href="https://github.com/fengmaoqiao/my_logic_code"><strong>fengmaoqiao/my_logic_code</strong></a></p>
@@ -295,9 +314,9 @@ static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
 <h1 id="wifi-supplicant" class="section-header"><a href="#wifi-supplicant">9 WiFi Supplicant</a></h1>
 <p>TODO: Rockchip RK3399</p>
 <ul>
-<li><a href="https://github.com/karthirockz/rk3399-kernel"><strong>karthirockz/rk3399-kernel</strong></a></li>
+<li><a href="https://github.com/karthirockz/rk3399-kernel/tree/main/drivers/net/wireless/rockchip_wlan/mvl88w8977/mlan/esa"><strong>karthirockz/rk3399-kernel</strong></a></li>
 </ul>
-<p><a href="https://github.com/lupyuen/rk3399-kernel">(We’ll use this fork)</a></p>
+<p><a href="https://github.com/lupyuen/rk3399-kernel/tree/main/drivers/net/wireless/rockchip_wlan/mvl88w8977/mlan/esa">(We’ll use this fork)</a></p>
 <p><img src="https://lupyuen.github.io/images/wifi-rockchip.jpg" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wifi-supplicant.png" alt="" /></p>
