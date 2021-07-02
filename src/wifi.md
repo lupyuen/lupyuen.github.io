@@ -12,6 +12,8 @@ TODO: Education, replacement, auditing, troubleshooting. [See this non-BL602 exa
 
 # BL602 WiFi Demo Firmware
 
+We start with the source code of the __BL602 WiFi Demo Firmware__ from the BL602 IoT SDK: [__`bl602_demo_wifi`__](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi)
+
 TODO
 
 From [`main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L769-L788)
@@ -109,6 +111,8 @@ static void cmd_httpc_test(char *buf, int len, int argc, char **argv)
 }
 ```
 
+[User Manual (Chinese)](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/Iperf_User_Manual.pdf)
+
 # Connect to WiFi Access Point
 
 TODO
@@ -120,6 +124,12 @@ TODO
 # Decompiled WiFi Demo Firmware
 
 TODO
+
+[`BraveHeartFLOSSDev`](https://github.com/BraveHeartFLOSSDev) did an excellent job decompiling into C (with Ghidra) the BL602 WiFi Demo Firmware...
+
+-   [__BraveHeartFLOSSDev/bl602nutcracker1__](https://github.com/BraveHeartFLOSSDev/bl602nutcracker1)
+
+[(We'll refer to this forked version)](https://github.com/lupyuen/bl602nutcracker1)
 
 # CEVA RivieraWaves
 
