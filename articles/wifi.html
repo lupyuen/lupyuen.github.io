@@ -363,7 +363,7 @@ int bl_cfg80211_connect(struct bl_hw *bl_hw, struct cfg80211_connect_params *sme
 <p>Let’s dig in and find out how…</p>
 <h2 id="send-request-to-lmac" class="section-header"><a href="#send-request-to-lmac">2.3 Send request to LMAC</a></h2>
 <p><em>What is LMAC?</em></p>
-<p><strong>Lower Medium Access Control (LMAC)</strong> is the firmware that runs <strong>inside the WiFi Radio Hardware</strong> and executes the WiFi Radio functions. (Like sending and receiving WiFi Packets)</p>
+<p><strong>Lower Medium Access Control (LMAC)</strong> is the firmware that runs <strong>inside the BL602 WiFi Radio Hardware</strong> and executes the WiFi Radio functions. (Like sending and receiving WiFi Packets)</p>
 <p>(We’ll talk more about LMAC in a while)</p>
 <p>To connect to a WiFi Access Point, we <strong>pass the Connection Parameters to LMAC</strong> by calling <strong><code>bl_send_sm_connect_req</code></strong>, defined in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_msg_tx.c#L722-L804"><code>bl_msg_tx.c</code></a> …</p>
 <pre><code class="language-c">//  Forward the Connection Parameters to the LMAC
@@ -403,7 +403,9 @@ int ipc_host_msg_push(struct ipc_host_env_tag *env, void *msg_buf, uint16_t len)
     ipc_app2emb_trigger_set(IPC_IRQ_A2E_MSG);
 </code></pre>
 <p><img src="https://lupyuen.github.io/images/wifi-connect9.png" alt="ipc_host_msg_push" /></p>
-<p>After adding the message to the LMAC Message Queue, we call <code>ipc_app2emb_trigger_set</code> to <strong>trigger an LMAC Interrupt</strong> and let LMAC perform the WiFi function.</p>
+<p>After adding the message to the LMAC Message Queue, we call <code>ipc_app2emb_trigger_set</code> to <strong>trigger an LMAC Interrupt</strong>.</p>
+<p>LMAC (and the BL602 Radio Hardware) will then transmit the proper WiFi Packets to <strong>establish a network connection</strong> with the WiFi Access Point.</p>
+<p>And that’s how BL602 connects to a WiFi Access Point!</p>
 <h2 id="trigger-lmac-interrupt" class="section-header"><a href="#trigger-lmac-interrupt">2.4 Trigger LMAC Interrupt</a></h2>
 <p>TODO9</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/reg_ipc_app.h#L41-L69"><code>reg_ipc_app.h</code></a></p>
