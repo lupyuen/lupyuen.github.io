@@ -524,6 +524,65 @@ static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wifi-connect5.png" alt="" /></p>
 <p>TODO</p>
+<p>https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_msg_tx.c#L315-L371</p>
+<pre><code class="language-c">static int bl_send_msg(struct bl_hw *bl_hw, const void *msg_params,
+                         int reqcfm, lmac_msg_id_t reqid, void *cfm)
+{
+    struct lmac_msg *msg;
+    struct bl_cmd *cmd;
+    bool nonblock;
+    int ret;
+
+    RWNX_DBG(RWNX_FN_ENTRY_STR);
+
+    msg = container_of((void *)msg_params, struct lmac_msg, param);
+
+    if (!test_bit(RWNX_DEV_STARTED, &amp;bl_hw-&gt;drv_flags) &amp;&amp;
+        reqid != MM_RESET_CFM &amp;&amp; reqid != MM_VERSION_CFM &amp;&amp;
+        reqid != MM_START_CFM &amp;&amp; reqid != MM_SET_IDLE_CFM &amp;&amp;
+        reqid != ME_CONFIG_CFM &amp;&amp; reqid != MM_SET_PS_MODE_CFM &amp;&amp;
+        reqid != ME_CHAN_CONFIG_CFM) {
+        os_printf(&quot;%s: bypassing (RWNX_DEV_RESTARTING set) 0x%02x\n&quot;, __func__, reqid);
+        os_free(msg);
+        RWNX_DBG(RWNX_FN_LEAVE_STR);
+        return -EBUSY;
+    } else if (!bl_hw-&gt;ipc_env) {
+        os_printf(&quot;%s: bypassing (restart must have failed)\r\n&quot;, __func__);
+        os_free(msg);
+        RWNX_DBG(RWNX_FN_LEAVE_STR);
+        return -EBUSY;
+    }
+
+    nonblock = is_non_blocking_msg(msg-&gt;id);
+
+    cmd = os_malloc(sizeof(struct bl_cmd));
+    if (NULL == cmd) {
+        os_free(msg);
+        os_printf(&quot;%s: failed to allocate mem for cmd, size is %d\r\n&quot;, __func__, sizeof(struct bl_cmd));
+        return -ENOMEM;
+    }
+    memset(cmd, 0, sizeof(struct bl_cmd));
+    cmd-&gt;result  = EINTR;
+    cmd-&gt;id      = msg-&gt;id;
+    cmd-&gt;reqid   = reqid;
+    cmd-&gt;a2e_msg = msg;
+    cmd-&gt;e2a_msg = cfm;
+    if (nonblock)
+        cmd-&gt;flags = RWNX_CMD_FLAG_NONBLOCK;
+    if (reqcfm)
+        cmd-&gt;flags |= RWNX_CMD_FLAG_REQ_CFM;
+    ret = bl_hw-&gt;cmd_mgr.queue(&amp;bl_hw-&gt;cmd_mgr, cmd);
+
+    if (!nonblock) {
+        os_free(cmd);
+    } else {
+        ret = cmd-&gt;result;
+    }
+
+    RWNX_DBG(RWNX_FN_LEAVE_STR);
+    return ret;
+}
+</code></pre>
 <p><img src="https://lupyuen.github.io/images/wifi-connect6.png" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wifi-connect7.png" alt="" /></p>
