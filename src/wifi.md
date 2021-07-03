@@ -591,17 +591,94 @@ static int bl_send_msg(struct bl_hw *bl_hw, const void *msg_params,
 
 TODO
 
-![](https://lupyuen.github.io/images/wifi-connect7.png)
+https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/ipc_host.c#L139-L171
 
-TODO
+```c
+int ipc_host_msg_push(struct ipc_host_env_tag *env, void *msg_buf, uint16_t len)
+{
+    int i;
+    uint32_t *src, *dst;
 
-![](https://lupyuen.github.io/images/wifi-connect8.png)
+    REG_SW_SET_PROFILING(env->pthis, SW_PROF_IPC_MSGPUSH);
+
+    ASSERT_ERR(!env->msga2e_hostid);
+    ASSERT_ERR(round_up(len, 4) <= sizeof(env->shared->msg_a2e_buf.msg));
+
+    // Copy the message into the IPC MSG buffer
+#if 1
+    src = (uint32_t*)((struct bl_cmd *)msg_buf)->a2e_msg;
+#else
+    src = (uint32_t*) msg_buf;
+#endif
+    dst = (uint32_t*)&(env->shared->msg_a2e_buf.msg);
+
+    // Copy the message in the IPC queue
+    for (i=0; i<len; i+=4)
+    {
+        *dst++ = *src++;
+    }
+
+    env->msga2e_hostid = msg_buf;
+
+    // Trigger the irq to send the message to EMB
+    ipc_app2emb_trigger_set(IPC_IRQ_A2E_MSG);
+
+    REG_SW_CLEAR_PROFILING(env->pthis, SW_PROF_IPC_MSGPUSH);
+
+    return 0;
+}
+```
 
 TODO
 
 ![](https://lupyuen.github.io/images/wifi-connect9.png)
 
+TODO9
+
+https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/reg_ipc_app.h#L41-L69
+
+```c
+#define REG_WIFI_REG_BASE         0x44000000
+#define REG_IPC_APP_DECODING_MASK 0x0000007F
+
+/**
+ * @brief APP2EMB_TRIGGER register definition
+ * <pre>
+ *   Bits           Field Name   Reset Value
+ *  -----   ------------------   -----------
+ *  31:00      APP2EMB_TRIGGER   0x0
+ * </pre>
+ */
+#define IPC_APP2EMB_TRIGGER_ADDR   0x12000000
+#define IPC_APP2EMB_TRIGGER_OFFSET 0x00000000
+#define IPC_APP2EMB_TRIGGER_INDEX  0x00000000
+#define IPC_APP2EMB_TRIGGER_RESET  0x00000000
+
+#ifndef __INLINE
+#define __INLINE inline
+#endif
+
+static __INLINE u32 ipc_app2emb_trigger_get()
+{
+    return REG_IPC_APP_RD(REG_WIFI_REG_BASE, IPC_APP2EMB_TRIGGER_INDEX);
+}
+
+static __INLINE void ipc_app2emb_trigger_set(u32 value)
+{
+    REG_IPC_APP_WR(REG_WIFI_REG_BASE, IPC_APP2EMB_TRIGGER_INDEX, value);
+}
+```
+
 TODO
+
+![](https://lupyuen.github.io/images/wifi-connect8.png)
+
+TODO8
+
+![](https://lupyuen.github.io/images/wifi-connect7.png)
+
+TODO7
+
 
 # Decompiled WiFi Demo Firmware
 
