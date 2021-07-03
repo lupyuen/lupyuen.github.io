@@ -276,133 +276,67 @@ The WiFi Manager runs a __State Machine__ in its Background Task (FreeRTOS) to m
 
 _What happens when WiFi Manager receives our request to connect to a WiFi Access Point?_
 
-From [`wifi_mgmr.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr.c#L702-L745) ...
+Let's find out in [`wifi_mgmr.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr.c#L702-L745) ...
 
 ```c
-static void stateIdleAction_connect( void *oldStateData, struct event *event,
-      void *newStateData )
-{
-    wifi_mgmr_msg_t *msg;
-    wifi_mgmr_profile_msg_t *profile_msg;
+//  Called when WiFi Manager receives Connect Request
+static void stateIdleAction_connect( void *oldStateData, struct event *event, void *newStateData) {
+  //  Set the WiFi Profile for the Connect Request
+  wifi_mgmr_msg_t *msg = event->data;
+  wifi_mgmr_profile_msg_t *profile_msg = (wifi_mgmr_profile_msg_t*) msg->data;
+  profile_msg->ssid_tail[0] = '\0';
+  profile_msg->psk_tail[0]  = '\0';
 
-    msg = event->data;
-    profile_msg = (wifi_mgmr_profile_msg_t*)msg->data;
-    profile_msg->ssid_tail[0] = '\0';
-    profile_msg->psk_tail[0] = '\0';
-    os_printf(DEBUG_HEADER "Action Connect\r\n");
-    os_printf("           ssid %s\r\n", profile_msg->ssid);
-    os_printf("           ssid len %u\r\n", (unsigned int)profile_msg->ssid_len);
-    os_printf("           psk %s\r\n", profile_msg->psk);
-    os_printf("           psk len %u\r\n", (unsigned int)profile_msg->psk_len);
-    os_printf("           pmk %s\r\n", profile_msg->pmk);
-    os_printf("           pmk len %u\r\n", (unsigned int)profile_msg->pmk_len);
-    os_printf("           channel band %d\r\n", (uint8_t)profile_msg->band);
-    os_printf("           channel freq %d\r\n", (uint16_t)profile_msg->freq);
-    os_printf("           mac %02X:%02X:%02X:%02X:%02X:%02X\r\n",
-            profile_msg->mac[5],
-            profile_msg->mac[4],
-            profile_msg->mac[3],
-            profile_msg->mac[2],
-            profile_msg->mac[1],
-            profile_msg->mac[0]
-    );
-    os_printf("           dhcp status: %s\r\n", profile_msg->dhcp_use ? "true" : "false");
-    wifi_mgmr_profile_add(&wifiMgmr, profile_msg, -1);
+  //  Remember the WiFi Profile in the WiFi Manager
+  wifi_mgmr_profile_add(&wifiMgmr, profile_msg, -1);
 
-    os_printf(DEBUG_HEADER "State Action ###%s### --->>> ###%s###\r\n",
-            (char*)oldStateData,
-            (char*)newStateData
-    );
-
-    //TODO Other security support
-    bl_main_connect((const uint8_t *)profile_msg->ssid, profile_msg->ssid_len,
-            (const uint8_t *)profile_msg->psk, profile_msg->psk_len,
-            (const uint8_t *)profile_msg->pmk, profile_msg->pmk_len,
-            (const uint8_t *)profile_msg->mac,
-            (const uint8_t)profile_msg->band,
-            (const uint16_t)profile_msg->freq
-    );
+  //  Connect to the WiFi Profile. TODO: Other security support
+  bl_main_connect(
+    (const uint8_t *) profile_msg->ssid, profile_msg->ssid_len,
+    (const uint8_t *) profile_msg->psk, profile_msg->psk_len,
+    (const uint8_t *) profile_msg->pmk, profile_msg->pmk_len,
+    (const uint8_t *) profile_msg->mac, (const uint8_t) profile_msg->band, (const uint16_t) profile_msg->freq);
 }
 ```
-
-TODO
 
 ![stateIdleAction_connect](https://lupyuen.github.io/images/wifi-connect4.png)
 
-TODO
+Here we set the __WiFi Profile__ and call `bl_main_connect` to connect to the profile.
 
-From [`bl_main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_main.c#L189-L216)
+In __`bl_main_connect`__ we set the __Connection Parameters for the 802.11 WiFi Protocol__: [`bl_main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_main.c#L189-L216)
 
 ```c
-int bl_main_connect(const uint8_t* ssid, int ssid_len, const uint8_t *psk, int psk_len, const uint8_t *pmk, int pmk_len, const uint8_t *mac, const uint8_t band, const uint16_t freq)
-{
-    struct cfg80211_connect_params sme;
+//  Connect to the WiFi Profile
+int bl_main_connect(const uint8_t* ssid, int ssid_len, const uint8_t *psk, int psk_len, const uint8_t *pmk, int pmk_len, const uint8_t *mac, const uint8_t band, const uint16_t freq) {
 
-    memset(&sme, 0, sizeof(struct cfg80211_connect_params));
-    sme.crypto.n_ciphers_pairwise = 0;
-    sme.ssid_len = ssid_len;
-    sme.ssid = ssid;
-    sme.auth_type = NL80211_AUTHTYPE_AUTOMATIC;
-    sme.key = psk;
-    sme.key_len = psk_len;
-    sme.pmk = pmk;
-    sme.pmk_len = pmk_len;
+  //  Connection Parameters for 802.11 WiFi Protocol
+  struct cfg80211_connect_params sme;    
 
-    if (mac){
-        sme.bssid = mac;
-    }
-
-    if (freq > 0) {
-        sme.channel.center_freq = freq;
-        sme.channel.band = band;
-        sme.channel.flags = 0;
-    }
-
-    bl_cfg80211_connect(&wifi_hw, &sme);
-
-    return 0;
+  //  Omitted: Set the 802.11 Connection Parameters
+  ...
+  //  Connect to WiFi Network with the 802.11 Connection Parameters
+  bl_cfg80211_connect(&wifi_hw, &sme);
+  return 0;
 }
 ```
 
-TODO
-
-From [`bl_main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_main.c#L539-L571)
+The Connection Parameters are passed to __`bl_cfg80211_connect`__, defined in [`bl_main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_main.c#L539-L571) ...
 
 ```c
-int bl_cfg80211_connect(struct bl_hw *bl_hw, struct cfg80211_connect_params *sme)
-{
-    struct sm_connect_cfm sm_connect_cfm;
-    int error = 0;
+//  Connect to WiFi Network with the 802.11 Connection Parameters
+int bl_cfg80211_connect(struct bl_hw *bl_hw, struct cfg80211_connect_params *sme) {
 
-    RWNX_DBG(RWNX_FN_ENTRY_STR);
+  //  Will be populated with the connection result
+  struct sm_connect_cfm sm_connect_cfm;
 
-    /* Forward the information to the LMAC */
-    error = bl_send_sm_connect_req(bl_hw, sme, &sm_connect_cfm);
-    if (error) {
-        return error;
-    }
-
-    // Check the status
-    switch (sm_connect_cfm.status)
-    {
-        case CO_OK:
-            error = 0;
-            break;
-        case CO_BUSY:
-            error = -EINPROGRESS;
-            break;
-        case CO_OP_IN_PROGRESS:
-            error = -EALREADY;
-            break;
-        default:
-            error = -EIO;
-            break;
-    }
-    RWNX_DBG(RWNX_FN_LEAVE_STR);
-
-    return error;
-}
+  //  Forward the Connection Parameters to the LMAC
+  int error = bl_send_sm_connect_req(bl_hw, sme, &sm_connect_cfm);
+  ...
 ```
+
+Which calls __`bl_send_sm_connect_req`__ to send the Connection Parameters to the __WiFi Hardware (LMAC)__.
+
+Let's find out how...
 
 ## Send request to LMAC
 
