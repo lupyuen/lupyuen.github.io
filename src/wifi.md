@@ -379,7 +379,7 @@ Here we compose an __`SM_CONNECT_REQ`__ message that contains the Connection Par
 
 ("SM" refers to the LMAC State Machine)
 
-Then we call __`bl_send_msg`__ to send the message to LMAC: [`bl_msg_tx.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_msg_tx.c#L315-L371)
+Then we call __`bl_send_msg`__ to __send the message to LMAC__: [`bl_msg_tx.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_msg_tx.c#L315-L371)
 
 ```c
 //  Send message to LMAC Firmware
@@ -394,7 +394,7 @@ static int bl_send_msg(struct bl_hw *bl_hw, const void *msg_params, int reqcfm, 
 
 ![bl_send_msg](https://lupyuen.github.io/images/wifi-connect6.png)
 
-The above code calls __`ipc_host_msg_push`__ to __send the message to the LMAC Message Queue__: [`ipc_host.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/ipc_host.c#L139-L171)
+The code above calls __`ipc_host_msg_push`__ to __add the message to the LMAC Message Queue__: [`ipc_host.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/ipc_host.c#L139-L171)
 
 ```c
 //  Add the message to the LMAC Message Queue
@@ -409,7 +409,7 @@ int ipc_host_msg_push(struct ipc_host_env_tag *env, void *msg_buf, uint16_t len)
 
 ![ipc_host_msg_push](https://lupyuen.github.io/images/wifi-connect9.png)
 
-TODO
+After adding the message to the LMAC Message Queue, we call `ipc_app2emb_trigger_set` to __trigger an LMAC Interrupt__ and let LMAC perform the WiFi function.
 
 ## Trigger LMAC Interrupt
 
