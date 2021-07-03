@@ -362,97 +362,28 @@ int bl_cfg80211_connect(struct bl_hw *bl_hw, struct cfg80211_connect_params *sme
 <p>Which calls <strong><code>bl_send_sm_connect_req</code></strong> to send the Connection Parameters to the <strong>WiFi Hardware (LMAC)</strong>.</p>
 <p>Let’s dig in and find out how…</p>
 <h2 id="send-request-to-lmac" class="section-header"><a href="#send-request-to-lmac">2.3 Send request to LMAC</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_msg_tx.c#L722-L804"><code>bl_msg_tx.c</code></a></p>
-<pre><code class="language-c">int bl_send_sm_connect_req(struct bl_hw *bl_hw, struct cfg80211_connect_params *sme, struct sm_connect_cfm *cfm)
-{
-    struct sm_connect_req *req;
-    int i;
-    u32_l flags = 0;
+<p><em>What is LMAC?</em></p>
+<p><strong>Lower Medium Access Control (LMAC)</strong> is the firmware that runs <strong>inside the WiFi Radio Hardware</strong> and controls the WiFi Radio functions.</p>
+<p>(We’ll talk more about LMAC in a while)</p>
+<p>To connect to a WiFi Access Point, we pass the Connection Parameters to LMAC by calling <strong><code>bl_send_sm_connect_req</code></strong>, defined in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_msg_tx.c#L722-L804"><code>bl_msg_tx.c</code></a> …</p>
+<pre><code class="language-c">//  Forward the Connection Parameters to the LMAC
+int bl_send_sm_connect_req(struct bl_hw *bl_hw, struct cfg80211_connect_params *sme, struct sm_connect_cfm *cfm) {
 
-    RWNX_DBG(RWNX_FN_ENTRY_STR);
+  //  Build the SM_CONNECT_REQ message
+  struct sm_connect_req *req = bl_msg_zalloc(SM_CONNECT_REQ, TASK_SM, DRV_TASK_ID, sizeof(struct sm_connect_req));
 
-    /* Build the SM_CONNECT_REQ message */
-    req = bl_msg_zalloc(SM_CONNECT_REQ, TASK_SM, DRV_TASK_ID,
-                                   sizeof(struct sm_connect_req));
-    if (!req)
-        return -ENOMEM;
-
-    /* Set parameters for the SM_CONNECT_REQ message */
-    if (sme-&gt;crypto.n_ciphers_pairwise &amp;&amp;
-        ((sme-&gt;crypto.ciphers_pairwise[0] == WLAN_CIPHER_SUITE_WEP40) ||
-         (sme-&gt;crypto.ciphers_pairwise[0] == WLAN_CIPHER_SUITE_TKIP) ||
-         (sme-&gt;crypto.ciphers_pairwise[0] == WLAN_CIPHER_SUITE_WEP104)))
-        flags |= DISABLE_HT;
-
-    if (sme-&gt;crypto.control_port)
-        flags |= CONTROL_PORT_HOST;
-
-    if (sme-&gt;crypto.control_port_no_encrypt)
-        flags |= CONTROL_PORT_NO_ENC;
-
-    if (use_pairwise_key(&amp;sme-&gt;crypto))
-        flags |= WPA_WPA2_IN_USE;
-
-    if (sme-&gt;mfp == NL80211_MFP_REQUIRED)
-        flags |= MFP_IN_USE;
-
-    if (sme-&gt;crypto.control_port_ethertype)
-        req-&gt;ctrl_port_ethertype = sme-&gt;crypto.control_port_ethertype;
-    else
-        req-&gt;ctrl_port_ethertype = ETH_P_PAE;
-
-    if (sme-&gt;bssid &amp;&amp; !MAC_ADDR_CMP(sme-&gt;bssid, mac_addr_bcst.array) &amp;&amp; !MAC_ADDR_CMP(sme-&gt;bssid, mac_addr_zero.array)) {
-        for (i=0;i&lt;ETH_ALEN;i++)
-            req-&gt;bssid.array[i] = sme-&gt;bssid[i];
-    }
-    else
-        req-&gt;bssid = mac_addr_bcst;
-    req-&gt;vif_idx = bl_hw-&gt;vif_index_sta;
-    if (sme-&gt;channel.center_freq) {
-        req-&gt;chan.band = sme-&gt;channel.band;
-        req-&gt;chan.freq = sme-&gt;channel.center_freq;
-        req-&gt;chan.flags = passive_scan_flag(sme-&gt;channel.flags);
-    } else {
-        req-&gt;chan.freq = (u16_l)-1;
-    }
-    for (i = 0; i &lt; sme-&gt;ssid_len; i++)
-        req-&gt;ssid.array[i] = sme-&gt;ssid[i];
-    req-&gt;ssid.length = sme-&gt;ssid_len;
-    req-&gt;flags = flags;
-    if (WARN_ON(sme-&gt;ie_len &gt; sizeof(req-&gt;ie_buf)))
-        return -EINVAL;
-    if (sme-&gt;ie_len)
-        memcpy(req-&gt;ie_buf, sme-&gt;ie, sme-&gt;ie_len);
-    req-&gt;ie_len = sme-&gt;ie_len;
-    req-&gt;listen_interval = bl_mod_params.listen_itv;
-    req-&gt;dont_wait_bcmc = !bl_mod_params.listen_bcmc;
-
-    /* Set auth_type */
-    if (sme-&gt;auth_type == NL80211_AUTHTYPE_AUTOMATIC)
-        req-&gt;auth_type = NL80211_AUTHTYPE_OPEN_SYSTEM;
-    else
-        req-&gt;auth_type = sme-&gt;auth_type;
-
-    /* Set UAPSD queues */
-    req-&gt;uapsd_queues = bl_mod_params.uapsd_queues;
-    req-&gt;is_supplicant_enabled = 1;
-    if (sme-&gt;key_len) {
-        memcpy(req-&gt;phrase, sme-&gt;key, sme-&gt;key_len);
-    }
-    if (sme-&gt;pmk_len) {
-        memcpy(req-&gt;phrase_pmk, sme-&gt;pmk, sme-&gt;pmk_len);
-    }
-
-    /* Send the SM_CONNECT_REQ message to LMAC FW */
-    return bl_send_msg(bl_hw, req, 1, SM_CONNECT_CFM, cfm);
+  //  Omitted: Set parameters for the SM_CONNECT_REQ message
+  ...
+  //  Send the SM_CONNECT_REQ message to LMAC Firmware
+  return bl_send_msg(bl_hw, req, 1, SM_CONNECT_CFM, cfm);
 }
 </code></pre>
-<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wifi-connect5.png" alt="bl_send_sm_connect_req" /></p>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_msg_tx.c#L315-L371"><code>bl_msg_tx.c</code></a></p>
-<pre><code class="language-c">static int bl_send_msg(struct bl_hw *bl_hw, const void *msg_params,
+<p>Here we compose an <strong><code>SM_CONNECT_REQ</code></strong> message (containing the Connection Parameters.</p>
+<p>(“SM” refers to the LMAC State Machine)</p>
+<p>Then we call <strong><code>bl_send_msg</code></strong> to send the message to LMAC: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_msg_tx.c#L315-L371"><code>bl_msg_tx.c</code></a></p>
+<pre><code class="language-c">//  Send message to LMAC Firmware
+static int bl_send_msg(struct bl_hw *bl_hw, const void *msg_params,
                          int reqcfm, lmac_msg_id_t reqid, void *cfm)
 {
     struct lmac_msg *msg;
