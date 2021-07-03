@@ -353,7 +353,7 @@ Let's dig in and find out how...
 
 _What is LMAC?_
 
-__Lower Medium Access Control (LMAC)__ is the firmware that runs __inside the WiFi Radio Hardware__ and controls the WiFi Radio functions.
+__Lower Medium Access Control (LMAC)__ is the firmware that runs __inside the WiFi Radio Hardware__ and executes the WiFi Radio functions.
 
 (We'll talk more about LMAC in a while)
 
@@ -375,7 +375,7 @@ int bl_send_sm_connect_req(struct bl_hw *bl_hw, struct cfg80211_connect_params *
 
 ![bl_send_sm_connect_req](https://lupyuen.github.io/images/wifi-connect5.png)
 
-Here we compose an __`SM_CONNECT_REQ`__ message (containing the Connection Parameters.
+Here we compose an __`SM_CONNECT_REQ`__ message that contains the Connection Parameters.
 
 ("SM" refers to the LMAC State Machine)
 
