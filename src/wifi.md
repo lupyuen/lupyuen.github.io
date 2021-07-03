@@ -203,6 +203,16 @@ _What really happens when BL602 connects to a WiFi Access Point?_
 
 To understand how BL602 connects to a WiFi Access Point, let's read the __Source Code from the BL602 WiFi Driver__.
 
+Watch what happens as we...
+
+1.  Send the Connect Request to the __WiFi Manager Task__
+
+1.  Process the Connect Request with __WiFi Manager's State Machine__
+
+1.  Forward the Connect Request to the __WiFi Hardware (LMAC)__
+
+1.  Trigger an __LMAC Interrupt__ to perform the request
+
 ## Send request to WiFi Manager Task
 
 Earlier we called __`wifi_mgmr_sta_connect`__ to connect to the WiFi Access Point.
@@ -331,12 +341,13 @@ int bl_cfg80211_connect(struct bl_hw *bl_hw, struct cfg80211_connect_params *sme
 
   //  Forward the Connection Parameters to the LMAC
   int error = bl_send_sm_connect_req(bl_hw, sme, &sm_connect_cfm);
-  ...
+
+  //  Omitted: Check connection result
 ```
 
 Which calls __`bl_send_sm_connect_req`__ to send the Connection Parameters to the __WiFi Hardware (LMAC)__.
 
-Let's find out how...
+Let's dig in and find out how...
 
 ## Send request to LMAC
 
