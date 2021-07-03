@@ -363,9 +363,9 @@ int bl_cfg80211_connect(struct bl_hw *bl_hw, struct cfg80211_connect_params *sme
 <p>Let’s dig in and find out how…</p>
 <h2 id="send-request-to-lmac" class="section-header"><a href="#send-request-to-lmac">2.3 Send request to LMAC</a></h2>
 <p><em>What is LMAC?</em></p>
-<p><strong>Lower Medium Access Control (LMAC)</strong> is the firmware that runs <strong>inside the WiFi Radio Hardware</strong> and executes the WiFi Radio functions.</p>
+<p><strong>Lower Medium Access Control (LMAC)</strong> is the firmware that runs <strong>inside the WiFi Radio Hardware</strong> and executes the WiFi Radio functions. (Like sending and receiving WiFi Packets)</p>
 <p>(We’ll talk more about LMAC in a while)</p>
-<p>To connect to a WiFi Access Point, we pass the Connection Parameters to LMAC by calling <strong><code>bl_send_sm_connect_req</code></strong>, defined in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_msg_tx.c#L722-L804"><code>bl_msg_tx.c</code></a> …</p>
+<p>To connect to a WiFi Access Point, we <strong>pass the Connection Parameters to LMAC</strong> by calling <strong><code>bl_send_sm_connect_req</code></strong>, defined in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_msg_tx.c#L722-L804"><code>bl_msg_tx.c</code></a> …</p>
 <pre><code class="language-c">//  Forward the Connection Parameters to the LMAC
 int bl_send_sm_connect_req(struct bl_hw *bl_hw, struct cfg80211_connect_params *sme, struct sm_connect_cfm *cfm) {
 
@@ -383,103 +383,27 @@ int bl_send_sm_connect_req(struct bl_hw *bl_hw, struct cfg80211_connect_params *
 <p>(“SM” refers to the LMAC State Machine)</p>
 <p>Then we call <strong><code>bl_send_msg</code></strong> to send the message to LMAC: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_msg_tx.c#L315-L371"><code>bl_msg_tx.c</code></a></p>
 <pre><code class="language-c">//  Send message to LMAC Firmware
-static int bl_send_msg(struct bl_hw *bl_hw, const void *msg_params,
-                         int reqcfm, lmac_msg_id_t reqid, void *cfm)
-{
-    struct lmac_msg *msg;
-    struct bl_cmd *cmd;
-    bool nonblock;
-    int ret;
-
-    RWNX_DBG(RWNX_FN_ENTRY_STR);
-
-    msg = container_of((void *)msg_params, struct lmac_msg, param);
-
-    if (!test_bit(RWNX_DEV_STARTED, &amp;bl_hw-&gt;drv_flags) &amp;&amp;
-        reqid != MM_RESET_CFM &amp;&amp; reqid != MM_VERSION_CFM &amp;&amp;
-        reqid != MM_START_CFM &amp;&amp; reqid != MM_SET_IDLE_CFM &amp;&amp;
-        reqid != ME_CONFIG_CFM &amp;&amp; reqid != MM_SET_PS_MODE_CFM &amp;&amp;
-        reqid != ME_CHAN_CONFIG_CFM) {
-        os_printf(&quot;%s: bypassing (RWNX_DEV_RESTARTING set) 0x%02x\n&quot;, __func__, reqid);
-        os_free(msg);
-        RWNX_DBG(RWNX_FN_LEAVE_STR);
-        return -EBUSY;
-    } else if (!bl_hw-&gt;ipc_env) {
-        os_printf(&quot;%s: bypassing (restart must have failed)\r\n&quot;, __func__);
-        os_free(msg);
-        RWNX_DBG(RWNX_FN_LEAVE_STR);
-        return -EBUSY;
-    }
-
-    nonblock = is_non_blocking_msg(msg-&gt;id);
-
-    cmd = os_malloc(sizeof(struct bl_cmd));
-    if (NULL == cmd) {
-        os_free(msg);
-        os_printf(&quot;%s: failed to allocate mem for cmd, size is %d\r\n&quot;, __func__, sizeof(struct bl_cmd));
-        return -ENOMEM;
-    }
-    memset(cmd, 0, sizeof(struct bl_cmd));
-    cmd-&gt;result  = EINTR;
-    cmd-&gt;id      = msg-&gt;id;
-    cmd-&gt;reqid   = reqid;
-    cmd-&gt;a2e_msg = msg;
-    cmd-&gt;e2a_msg = cfm;
-    if (nonblock)
-        cmd-&gt;flags = RWNX_CMD_FLAG_NONBLOCK;
-    if (reqcfm)
-        cmd-&gt;flags |= RWNX_CMD_FLAG_REQ_CFM;
-    ret = bl_hw-&gt;cmd_mgr.queue(&amp;bl_hw-&gt;cmd_mgr, cmd);
-
-    if (!nonblock) {
-        os_free(cmd);
-    } else {
-        ret = cmd-&gt;result;
-    }
-
-    RWNX_DBG(RWNX_FN_LEAVE_STR);
-    return ret;
-}
+static int bl_send_msg(struct bl_hw *bl_hw, const void *msg_params, int reqcfm, lmac_msg_id_t reqid, void *cfm) {
+  //  Omitted: Allocate a buffer for the message
+  ...
+  //  Omitted: Copy the message to the buffer
+  ...
+  //  Add the message to the LMAC Message Queue
+  int ret = bl_hw-&gt;cmd_mgr.queue(&amp;bl_hw-&gt;cmd_mgr, cmd);
 </code></pre>
 <p><img src="https://lupyuen.github.io/images/wifi-connect6.png" alt="bl_send_msg" /></p>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/ipc_host.c#L139-L171"><code>ipc_host.c</code></a></p>
-<pre><code class="language-c">int ipc_host_msg_push(struct ipc_host_env_tag *env, void *msg_buf, uint16_t len)
-{
-    int i;
-    uint32_t *src, *dst;
-
-    REG_SW_SET_PROFILING(env-&gt;pthis, SW_PROF_IPC_MSGPUSH);
-
-    ASSERT_ERR(!env-&gt;msga2e_hostid);
-    ASSERT_ERR(round_up(len, 4) &lt;= sizeof(env-&gt;shared-&gt;msg_a2e_buf.msg));
-
-    // Copy the message into the IPC MSG buffer
-#if 1
-    src = (uint32_t*)((struct bl_cmd *)msg_buf)-&gt;a2e_msg;
-#else
-    src = (uint32_t*) msg_buf;
-#endif
-    dst = (uint32_t*)&amp;(env-&gt;shared-&gt;msg_a2e_buf.msg);
-
-    // Copy the message in the IPC queue
-    for (i=0; i&lt;len; i+=4)
-    {
-        *dst++ = *src++;
-    }
-
-    env-&gt;msga2e_hostid = msg_buf;
-
-    // Trigger the irq to send the message to EMB
+<p>The above code calls <strong><code>ipc_host_msg_push</code></strong> to <strong>send the message to the LMAC Message Queue</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/ipc_host.c#L139-L171"><code>ipc_host.c</code></a></p>
+<pre><code class="language-c">//  Add the message to the LMAC Message Queue
+int ipc_host_msg_push(struct ipc_host_env_tag *env, void *msg_buf, uint16_t len) {
+    //  Omitted: Copy the message into the IPC message buffer
+    ...
+    //  Omitted: Copy the message to the IPC queue
+    ...
+    //  Trigger the interrupt to send the message to EMB
     ipc_app2emb_trigger_set(IPC_IRQ_A2E_MSG);
-
-    REG_SW_CLEAR_PROFILING(env-&gt;pthis, SW_PROF_IPC_MSGPUSH);
-
-    return 0;
-}
 </code></pre>
-<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wifi-connect9.png" alt="ipc_host_msg_push" /></p>
+<p>TODO</p>
 <h2 id="trigger-lmac-interrupt" class="section-header"><a href="#trigger-lmac-interrupt">2.4 Trigger LMAC Interrupt</a></h2>
 <p>TODO9</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/reg_ipc_app.h#L41-L69"><code>reg_ipc_app.h</code></a></p>
