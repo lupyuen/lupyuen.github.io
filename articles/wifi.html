@@ -245,6 +245,21 @@ static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
 <h1 id="connect-to-wifi-access-point" class="section-header"><a href="#connect-to-wifi-access-point">2 Connect to WiFi Access Point</a></h1>
 <p><em>What really happens when BL602 connects to a WiFi Access Point?</em></p>
 <p>To understand how BL602 connects to a WiFi Access Point, let’s read the <strong>Source Code from the BL602 WiFi Driver</strong>.</p>
+<p>Watch what happens as we…</p>
+<ol>
+<li>
+<p>Send the Connect Request to the <strong>WiFi Manager Task</strong></p>
+</li>
+<li>
+<p>Process the Connect Request with <strong>WiFi Manager’s State Machine</strong></p>
+</li>
+<li>
+<p>Forward the Connect Request to the <strong>WiFi Hardware (LMAC)</strong></p>
+</li>
+<li>
+<p>Trigger an <strong>LMAC Interrupt</strong> to perform the request</p>
+</li>
+</ol>
 <h2 id="send-request-to-wifi-manager-task" class="section-header"><a href="#send-request-to-wifi-manager-task">2.1 Send request to WiFi Manager Task</a></h2>
 <p>Earlier we called <strong><code>wifi_mgmr_sta_connect</code></strong> to connect to the WiFi Access Point.</p>
 <p>Here’s what happens inside: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr_ext.c#L302-L307"><code>wifi_mgmr_ext.c</code></a></p>
@@ -341,10 +356,11 @@ int bl_cfg80211_connect(struct bl_hw *bl_hw, struct cfg80211_connect_params *sme
 
   //  Forward the Connection Parameters to the LMAC
   int error = bl_send_sm_connect_req(bl_hw, sme, &amp;sm_connect_cfm);
-  ...
+
+  //  Omitted: Check connection result
 </code></pre>
 <p>Which calls <strong><code>bl_send_sm_connect_req</code></strong> to send the Connection Parameters to the <strong>WiFi Hardware (LMAC)</strong>.</p>
-<p>Let’s find out how…</p>
+<p>Let’s dig in and find out how…</p>
 <h2 id="send-request-to-lmac" class="section-header"><a href="#send-request-to-lmac">2.3 Send request to LMAC</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_msg_tx.c#L722-L804"><code>bl_msg_tx.c</code></a></p>
