@@ -187,11 +187,15 @@ static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
 
 On BL602 we use [__LWIP, the Lightweight IP Stack__](https://www.nongnu.org/lwip/2_1_x/index.html) to do IP, UDP, TCP and HTTP Networking.
 
-TODO
+[`httpc_get_file_dns` is documented here](https://www.nongnu.org/lwip/2_1_x/group__httpc.html#gabd4ef2259885a93090733235cc0fa8d6)
 
-[Demo Firmware Documentation](https://pine64.github.io/bl602-docs/Examples/demo_wifi/wifi.html)
+For more details on the BL602 WiFi Demo Firmware, check out the docs...
 
-![](https://lupyuen.github.io/images/wifi-connect.png)
+-   [__BL602 WiFi Demo Firmware Docs__](https://pine64.github.io/bl602-docs/Examples/demo_wifi/wifi.html)
+
+Let's reverse engineer the BL602 WiFi Demo Firmware... And learn what happens inside!
+
+![Connecting to WiFi Access Point](https://lupyuen.github.io/images/wifi-connect.png)
 
 # Connect to WiFi Access Point
 
@@ -242,6 +246,8 @@ TODO
 -   [__BraveHeartFLOSSDev/bl602nutcracker1__](https://github.com/BraveHeartFLOSSDev/bl602nutcracker1)
 
 [(We'll use this fork)](https://github.com/lupyuen/bl602nutcracker1)
+
+## Referencing the decompiled code
 
 TODO
 
