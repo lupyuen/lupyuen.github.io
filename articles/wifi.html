@@ -294,8 +294,9 @@ int wifi_mgmr_event_notify(wifi_mgmr_msg_t *msg) {
 </code></pre>
 <p><img src="https://lupyuen.github.io/images/wifi-connect3.png" alt="wifi_mgmr_event_notify" /></p>
 <h2 id="wifi-manager-state-machine" class="section-header"><a href="#wifi-manager-state-machine">2.2 WiFi Manager State Machine</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr.c#L702-L745"><code>wifi_mgmr.c</code></a></p>
+<p>The WiFi Manager runs a <strong>State Machine</strong> in its Background Task (FreeRTOS) to manage the state of each WiFi Connection.</p>
+<p><em>What happens when WiFi Manager receives our request to connect to a WiFi Access Point?</em></p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr.c#L702-L745"><code>wifi_mgmr.c</code></a> …</p>
 <pre><code class="language-c">static void stateIdleAction_connect( void *oldStateData, struct event *event,
       void *newStateData )
 {
@@ -637,6 +638,8 @@ static __INLINE void ipc_app2emb_trigger_set(u32 value)
 <p><img src="https://lupyuen.github.io/images/wifi-connect7.png" alt="" /></p>
 <p>TODO7</p>
 <h1 id="decompiled-wifi-demo-firmware" class="section-header"><a href="#decompiled-wifi-demo-firmware">3 Decompiled WiFi Demo Firmware</a></h1>
+<p><em>Are we really Reverse Engineering the BL602 WiFi Driver?</em></p>
+<p>Not quite. So far we’ve been reading the published source code for the BL602 WiFi Driver.</p>
 <p>TODO</p>
 <p><a href="https://github.com/BraveHeartFLOSSDev"><code>BraveHeartFLOSSDev</code></a> did an excellent job decompiling into C (with Ghidra) the BL602 WiFi Demo Firmware…</p>
 <ul>
