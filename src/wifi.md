@@ -203,6 +203,8 @@ _What really happens when BL602 connects to a WiFi Access Point?_
 
 To understand how BL602 connects to a WiFi Access Point, let's read the __Source Code from the BL602 WiFi Driver__.
 
+## Send request to WiFi Manager Task
+
 TODO
 
 From [`wifi_mgmr_ext.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr_ext.c#L302-L307)
@@ -298,6 +300,8 @@ From [`os_hal.h`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/b
 ```
 
 ![wifi_mgmr_event_notify](https://lupyuen.github.io/images/wifi-connect3.png)
+
+## WiFi Manager State Machine
 
 TODO
 
@@ -428,6 +432,8 @@ int bl_cfg80211_connect(struct bl_hw *bl_hw, struct cfg80211_connect_params *sme
     return error;
 }
 ```
+
+## Send request to LMAC
 
 TODO
 
@@ -632,6 +638,8 @@ int ipc_host_msg_push(struct ipc_host_env_tag *env, void *msg_buf, uint16_t len)
 TODO
 
 ![ipc_host_msg_push](https://lupyuen.github.io/images/wifi-connect9.png)
+
+## Trigger LMAC Interrupt
 
 TODO9
 
