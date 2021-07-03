@@ -221,7 +221,7 @@ int wifi_mgmr_sta_connect(wifi_interface_t *wifi_interface, char *ssid, char *ps
 }
 ```
 
-Here we set the WiFi SSID and PSK. Then we call `wifi_mgmr_api_connect` to connect to the access point.
+We set the WiFi SSID and PSK. Then we call `wifi_mgmr_api_connect` to connect to the access point.
 
 __`wifi_mgmr_api_connect`__ does this: [`wifi_mgmr_api.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr_api.c#L40-L84)
 
@@ -247,7 +247,11 @@ __`wifi_mgmr_event_notify`__ is defined in [`wifi_mgmr.c`](https://github.com/lu
 int wifi_mgmr_event_notify(wifi_mgmr_msg_t *msg) {
   //  Omitted: Wait for WiFi Manager to start
   ...
-  if (os_mq_send(&(wifiMgmr.mq), msg, msg->len)) {
+  //  Send request to WiFi Manager via Message Queue
+  if (os_mq_send(
+    &(wifiMgmr.mq),  //  Message Queue
+    msg,             //  Request Message
+    msg->len)) {     //  Message Length
     //  Failed to send request
     return -1;
   }
@@ -255,12 +259,13 @@ int wifi_mgmr_event_notify(wifi_mgmr_msg_t *msg) {
 }
 ```
 
-TODO
+_How does `os_mq_send` send the request to the WiFi Manager Task?_
 
-From [`os_hal.h`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/os_hal.h#L174)
+__`os_mq_send`__ calls FreeRTOS to deliver the Request Message to __WiFi Manager's Message Queue__: [`os_hal.h`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/os_hal.h#L174)
 
 ```c
-#define os_mq_send(mq, msg, len) (xMessageBufferSend(mq, msg, len, portMAX_DELAY) > 0 ? 0 : 1)
+#define os_mq_send(mq, msg, len) \
+    (xMessageBufferSend(mq, msg, len, portMAX_DELAY) > 0 ? 0 : 1)
 ```
 
 ![wifi_mgmr_event_notify](https://lupyuen.github.io/images/wifi-connect3.png)
