@@ -381,7 +381,7 @@ int bl_send_sm_connect_req(struct bl_hw *bl_hw, struct cfg80211_connect_params *
 <p><img src="https://lupyuen.github.io/images/wifi-connect5.png" alt="bl_send_sm_connect_req" /></p>
 <p>Here we compose an <strong><code>SM_CONNECT_REQ</code></strong> message that contains the Connection Parameters.</p>
 <p>(“SM” refers to the LMAC State Machine)</p>
-<p>Then we call <strong><code>bl_send_msg</code></strong> to send the message to LMAC: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_msg_tx.c#L315-L371"><code>bl_msg_tx.c</code></a></p>
+<p>Then we call <strong><code>bl_send_msg</code></strong> to <strong>send the message to LMAC</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_msg_tx.c#L315-L371"><code>bl_msg_tx.c</code></a></p>
 <pre><code class="language-c">//  Send message to LMAC Firmware
 static int bl_send_msg(struct bl_hw *bl_hw, const void *msg_params, int reqcfm, lmac_msg_id_t reqid, void *cfm) {
   //  Omitted: Allocate a buffer for the message
@@ -392,7 +392,7 @@ static int bl_send_msg(struct bl_hw *bl_hw, const void *msg_params, int reqcfm, 
   int ret = bl_hw-&gt;cmd_mgr.queue(&amp;bl_hw-&gt;cmd_mgr, cmd);
 </code></pre>
 <p><img src="https://lupyuen.github.io/images/wifi-connect6.png" alt="bl_send_msg" /></p>
-<p>The above code calls <strong><code>ipc_host_msg_push</code></strong> to <strong>send the message to the LMAC Message Queue</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/ipc_host.c#L139-L171"><code>ipc_host.c</code></a></p>
+<p>The code above calls <strong><code>ipc_host_msg_push</code></strong> to <strong>add the message to the LMAC Message Queue</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/ipc_host.c#L139-L171"><code>ipc_host.c</code></a></p>
 <pre><code class="language-c">//  Add the message to the LMAC Message Queue
 int ipc_host_msg_push(struct ipc_host_env_tag *env, void *msg_buf, uint16_t len) {
     //  Omitted: Copy the message into the IPC message buffer
@@ -403,7 +403,7 @@ int ipc_host_msg_push(struct ipc_host_env_tag *env, void *msg_buf, uint16_t len)
     ipc_app2emb_trigger_set(IPC_IRQ_A2E_MSG);
 </code></pre>
 <p><img src="https://lupyuen.github.io/images/wifi-connect9.png" alt="ipc_host_msg_push" /></p>
-<p>TODO</p>
+<p>After adding the message to the LMAC Message Queue, we call <code>ipc_app2emb_trigger_set</code> to <strong>trigger an LMAC Interrupt</strong> and let LMAC perform the WiFi function.</p>
 <h2 id="trigger-lmac-interrupt" class="section-header"><a href="#trigger-lmac-interrupt">2.4 Trigger LMAC Interrupt</a></h2>
 <p>TODO9</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/reg_ipc_app.h#L41-L69"><code>reg_ipc_app.h</code></a></p>
