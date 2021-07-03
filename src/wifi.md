@@ -353,7 +353,7 @@ Let's dig in and find out how...
 
 _What is LMAC?_
 
-__Lower Medium Access Control (LMAC)__ is the firmware that runs __inside the WiFi Radio Hardware__ and executes the WiFi Radio functions. (Like sending and receiving WiFi Packets)
+__Lower Medium Access Control (LMAC)__ is the firmware that runs __inside the BL602 WiFi Radio Hardware__ and executes the WiFi Radio functions. (Like sending and receiving WiFi Packets)
 
 (We'll talk more about LMAC in a while)
 
@@ -409,7 +409,11 @@ int ipc_host_msg_push(struct ipc_host_env_tag *env, void *msg_buf, uint16_t len)
 
 ![ipc_host_msg_push](https://lupyuen.github.io/images/wifi-connect9.png)
 
-After adding the message to the LMAC Message Queue, we call `ipc_app2emb_trigger_set` to __trigger an LMAC Interrupt__ and let LMAC perform the WiFi function.
+After adding the message to the LMAC Message Queue, we call `ipc_app2emb_trigger_set` to __trigger an LMAC Interrupt__.
+
+LMAC (and the BL602 Radio Hardware) will then transmit the proper WiFi Packets to __establish a network connection__ with the WiFi Access Point.
+
+And that's how BL602 connects to a WiFi Access Point!
 
 ## Trigger LMAC Interrupt
 
