@@ -205,89 +205,53 @@ To understand how BL602 connects to a WiFi Access Point, let's read the __Source
 
 ## Send request to WiFi Manager Task
 
-TODO
+Earlier we called __`wifi_mgmr_sta_connect`__ to connect to the WiFi Access Point.
 
-From [`wifi_mgmr_ext.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr_ext.c#L302-L307)
+Here's what happens inside: [`wifi_mgmr_ext.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr_ext.c#L302-L307)
 
 ```c
-int wifi_mgmr_sta_connect(wifi_interface_t *wifi_interface, char *ssid, char *psk, char *pmk, uint8_t *mac, uint8_t band, uint16_t freq)
-{
-    wifi_mgmr_sta_ssid_set(ssid);
-    wifi_mgmr_sta_psk_set(psk);
-    return wifi_mgmr_api_connect(ssid, psk, pmk, mac, band, freq);
+//  Connect to WiFi Access Point
+int wifi_mgmr_sta_connect(wifi_interface_t *wifi_interface, char *ssid, char *psk, char *pmk, uint8_t *mac, uint8_t band, uint16_t freq) {
+  //  Set WiFi SSID and PSK
+  wifi_mgmr_sta_ssid_set(ssid);
+  wifi_mgmr_sta_psk_set(psk);
+
+  //  Connect to WiFi Access Point
+  return wifi_mgmr_api_connect(ssid, psk, pmk, mac, band, freq);
 }
 ```
 
-TODO
+Here we set the WiFi SSID and PSK. Then we call `wifi_mgmr_api_connect` to connect to the access point.
 
-From [`wifi_mgmr_api.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr_api.c#L40-L84)
+__`wifi_mgmr_api_connect`__ does this: [`wifi_mgmr_api.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr_api.c#L40-L84)
 
 ```c
-int wifi_mgmr_api_connect(char *ssid, char *psk, char *pmk, uint8_t *mac, uint8_t band, uint16_t freq)
-{
-    wifi_mgmr_msg_t *msg;
-    wifi_mgmr_profile_msg_t *profile;
-    uint8_t buffer[sizeof(wifi_mgmr_msg_t) + sizeof(wifi_mgmr_profile_msg_t)];//XXX caution for stack overflow
-
-    memset(buffer, 0, sizeof(buffer));
-    msg = (wifi_mgmr_msg_t*)buffer;
-    msg->ev = WIFI_MGMR_EVENT_APP_CONNECT;
-    msg->data1 = (void*)0x11223344;
-    msg->data2 = (void*)0x55667788;
-    msg->len = sizeof (wifi_mgmr_msg_t) + sizeof(wifi_mgmr_profile_msg_t);
-    profile = (wifi_mgmr_profile_msg_t*)msg->data;
-    profile->ssid_len = strlen(ssid);//ssid should never be NULL
-    memcpy(profile->ssid, ssid, profile->ssid_len);
-    profile->ssid_tail[0] = '\0';
-    profile->psk_len = psk ? strlen(psk) : 0;//psk can be NULL
-    if (profile->psk_len > sizeof(profile->psk)) {
-        return -1;
-    } else if (profile->psk_len > 0) {
-        memcpy(profile->psk, psk, profile->psk_len);
-    }
-    profile->psk_tail[0] = '\0';
-    profile->pmk_len = pmk ? strlen(pmk) : 0;//pmk can be NULL
-    if (0 != profile->pmk_len && sizeof(profile->pmk) != profile->pmk_len) {
-        return -1;
-    } else if (sizeof(profile->pmk) == profile->pmk_len) {
-        memcpy(profile->pmk, pmk, profile->pmk_len);
-    }
-    profile->pmk_tail[0] = '\0';
-    if (mac) {
-        memcpy(profile->mac, mac, sizeof(profile->mac));
-    }
-    if (freq > 0) {
-        //define the channel
-        profile->band = band;
-        profile->freq = freq;
-        printf("wifi mgmr band:%d freq: %d\r\n", profile->band, profile->freq);
-    }
-    profile->dhcp_use = 1;//force use DHCP currently
-
-    wifi_mgmr_event_notify(msg);
-
-    return 0;
+//  Connect to WiFi Access Point
+int wifi_mgmr_api_connect(char *ssid, char *psk, char *pmk, uint8_t *mac, uint8_t band, uint16_t freq) {
+  //  Omitted: Copy PSK, PMK, MAC Address, Band and Frequency
+  ...
+  //  Send Connect Request to WiFi Manager Task
+  wifi_mgmr_event_notify(msg);
+  return 0;
 }
 ```
 
 ![wifi_mgmr_api_connect](https://lupyuen.github.io/images/wifi-connect2.png)
 
-TODO
+Here we call `wifi_mgmr_event_notify` to __send the Connect Request__ to the WiFi Manager Task.
 
-From [`wifi_mgmr.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr.c#L1332-L1343)
+__`wifi_mgmr_event_notify`__ is defined in [`wifi_mgmr.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr.c#L1332-L1343) ...
 
 ```c
-int wifi_mgmr_event_notify(wifi_mgmr_msg_t *msg)
-{
-    while (0 == wifiMgmr.ready) {
-        os_printf("Wait Wi-Fi Mgmr Start up...\r\n");
-        os_thread_delay(20);
-    }
-    if (os_mq_send(&(wifiMgmr.mq), msg, msg->len)) {
-        os_printf("Failed when send msg 0x%p, len dec:%u\r\n", msg, (unsigned int)msg->len);
-        return -1;
-    }
-    return 0;
+//  Send request to WiFi Manager Task
+int wifi_mgmr_event_notify(wifi_mgmr_msg_t *msg) {
+  //  Omitted: Wait for WiFi Manager to start
+  ...
+  if (os_mq_send(&(wifiMgmr.mq), msg, msg->len)) {
+    //  Failed to send request
+    return -1;
+  }
+  return 0;
 }
 ```
 
