@@ -72,7 +72,8 @@
 <li><a href="#connect-to-wifi-network">1.4 Connect to WiFi Network</a><ul></ul></li>
 <li><a href="#send-http-request">1.5 Send HTTP Request</a><ul></ul></li></ul></li>
 <li><a href="#connect-to-wifi-access-point">2 Connect to WiFi Access Point</a><ul></ul></li>
-<li><a href="#decompiled-wifi-demo-firmware">3 Decompiled WiFi Demo Firmware</a><ul></ul></li>
+<li><a href="#decompiled-wifi-demo-firmware">3 Decompiled WiFi Demo Firmware</a><ul>
+<li><a href="#referencing-the-decompiled-code">3.1 Referencing the decompiled code</a><ul></ul></li></ul></li>
 <li><a href="#wifi-firmware-task">4 WiFi Firmware Task</a><ul></ul></li>
 <li><a href="#ceva-rivierawaves">5 CEVA RivieraWaves</a><ul></ul></li>
 <li><a href="#upper-medium-access-control-layer">6 Upper Medium Access Control Layer</a><ul></ul></li>
@@ -230,9 +231,13 @@ static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
 }
 </code></pre>
 <p>On BL602 we use <a href="https://www.nongnu.org/lwip/2_1_x/index.html"><strong>LWIP, the Lightweight IP Stack</strong></a> to do IP, UDP, TCP and HTTP Networking.</p>
-<p>TODO</p>
-<p><a href="https://pine64.github.io/bl602-docs/Examples/demo_wifi/wifi.html">Demo Firmware Documentation</a></p>
-<p><img src="https://lupyuen.github.io/images/wifi-connect.png" alt="" /></p>
+<p><a href="https://www.nongnu.org/lwip/2_1_x/group__httpc.html#gabd4ef2259885a93090733235cc0fa8d6"><code>httpc_get_file_dns</code> is documented here</a></p>
+<p>For more details on the BL602 WiFi Demo Firmware, check out the docs…</p>
+<ul>
+<li><a href="https://pine64.github.io/bl602-docs/Examples/demo_wifi/wifi.html"><strong>BL602 WiFi Demo Firmware Docs</strong></a></li>
+</ul>
+<p>Let’s reverse engineer the BL602 WiFi Demo Firmware… And learn what happens inside!</p>
+<p><img src="https://lupyuen.github.io/images/wifi-connect.png" alt="Connecting to WiFi Access Point" /></p>
 <h1 id="connect-to-wifi-access-point" class="section-header"><a href="#connect-to-wifi-access-point">2 Connect to WiFi Access Point</a></h1>
 <p><em>What really happens when BL602 connects to a WiFi Access Point?</em></p>
 <p>To understand how BL602 connects to a WiFi Access Point, let’s read the <strong>Source Code from the BL602 WiFi Driver</strong>.</p>
@@ -260,6 +265,7 @@ static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
 <li><a href="https://github.com/BraveHeartFLOSSDev/bl602nutcracker1"><strong>BraveHeartFLOSSDev/bl602nutcracker1</strong></a></li>
 </ul>
 <p><a href="https://github.com/lupyuen/bl602nutcracker1">(We’ll use this fork)</a></p>
+<h2 id="referencing-the-decompiled-code" class="section-header"><a href="#referencing-the-decompiled-code">3.1 Referencing the decompiled code</a></h2>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wifi-assert.png" alt="" /></p>
 <p>TODO</p>
