@@ -73,7 +73,7 @@
 <li><a href="#send-http-request">1.5 Send HTTP Request</a><ul></ul></li></ul></li>
 <li><a href="#connect-to-wifi-access-point">2 Connect to WiFi Access Point</a><ul></ul></li>
 <li><a href="#decompiled-wifi-demo-firmware">3 Decompiled WiFi Demo Firmware</a><ul>
-<li><a href="#referencing-the-decompiled-code">3.1 Referencing the decompiled code</a><ul></ul></li></ul></li>
+<li><a href="#linking-to-decompiled-code">3.1 Linking to decompiled code</a><ul></ul></li></ul></li>
 <li><a href="#wifi-firmware-task">4 WiFi Firmware Task</a><ul></ul></li>
 <li><a href="#ceva-rivierawaves">5 CEVA RivieraWaves</a><ul></ul></li>
 <li><a href="#upper-medium-access-control-layer">6 Upper Medium Access Control Layer</a><ul></ul></li>
@@ -242,7 +242,7 @@ static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
 <p><em>What really happens when BL602 connects to a WiFi Access Point?</em></p>
 <p>To understand how BL602 connects to a WiFi Access Point, let’s read the <strong>Source Code from the BL602 WiFi Driver</strong>.</p>
 <p>TODO</p>
-<p>https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr_ext.c#L302-L307</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr_ext.c#L302-L307"><code>wifi_mgmr_ext.c</code></a></p>
 <pre><code class="language-c">int wifi_mgmr_sta_connect(wifi_interface_t *wifi_interface, char *ssid, char *psk, char *pmk, uint8_t *mac, uint8_t band, uint16_t freq)
 {
     wifi_mgmr_sta_ssid_set(ssid);
@@ -251,7 +251,7 @@ static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
 }
 </code></pre>
 <p>TODO</p>
-<p>https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr_api.c#L40-L84</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr_api.c#L40-L84"><code>wifi_mgmr_api.c</code></a></p>
 <pre><code class="language-c">int wifi_mgmr_api_connect(char *ssid, char *psk, char *pmk, uint8_t *mac, uint8_t band, uint16_t freq)
 {
     wifi_mgmr_msg_t *msg;
@@ -300,7 +300,7 @@ static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
 </code></pre>
 <p><img src="https://lupyuen.github.io/images/wifi-connect2.png" alt="" /></p>
 <p>TODO</p>
-<p>https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr.c#L1332-L1343</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr.c#L1332-L1343"><code>wifi_mgmr.c</code></a></p>
 <pre><code class="language-c">int wifi_mgmr_event_notify(wifi_mgmr_msg_t *msg)
 {
     while (0 == wifiMgmr.ready) {
@@ -315,12 +315,12 @@ static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
 }
 </code></pre>
 <p>TODO</p>
-<p>https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/os_hal.h#L174</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/os_hal.h#L174"><code>os_hal.h</code></a></p>
 <pre><code class="language-c">#define os_mq_send(mq, msg, len) (xMessageBufferSend(mq, msg, len, portMAX_DELAY) &gt; 0 ? 0 : 1)
 </code></pre>
 <p><img src="https://lupyuen.github.io/images/wifi-connect3.png" alt="" /></p>
 <p>TODO</p>
-<p>https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr.c#L702-L745</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr.c#L702-L745"><code>wifi_mgmr.c</code></a></p>
 <pre><code class="language-c">static void stateIdleAction_connect( void *oldStateData, struct event *event,
       void *newStateData )
 {
@@ -369,7 +369,7 @@ static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wifi-connect4.png" alt="" /></p>
 <p>TODO</p>
-<p>https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_main.c#L189-L216</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_main.c#L189-L216"><code>bl_main.c</code></a></p>
 <pre><code class="language-c">int bl_main_connect(const uint8_t* ssid, int ssid_len, const uint8_t *psk, int psk_len, const uint8_t *pmk, int pmk_len, const uint8_t *mac, const uint8_t band, const uint16_t freq)
 {
     struct cfg80211_connect_params sme;
@@ -400,7 +400,7 @@ static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
 }
 </code></pre>
 <p>TODO</p>
-<p>https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_main.c#L539-L571</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_main.c#L539-L571"><code>bl_main.c</code></a></p>
 <pre><code class="language-c">int bl_cfg80211_connect(struct bl_hw *bl_hw, struct cfg80211_connect_params *sme)
 {
     struct sm_connect_cfm sm_connect_cfm;
@@ -436,7 +436,7 @@ static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
 }
 </code></pre>
 <p>TODO</p>
-<p>https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_msg_tx.c#L722-L804</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_msg_tx.c#L722-L804"><code>bl_msg_tx.c</code></a></p>
 <pre><code class="language-c">int bl_send_sm_connect_req(struct bl_hw *bl_hw, struct cfg80211_connect_params *sme, struct sm_connect_cfm *cfm)
 {
     struct sm_connect_req *req;
@@ -524,7 +524,7 @@ static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wifi-connect5.png" alt="" /></p>
 <p>TODO</p>
-<p>https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_msg_tx.c#L315-L371</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_msg_tx.c#L315-L371"><code>bl_msg_tx.c</code></a></p>
 <pre><code class="language-c">static int bl_send_msg(struct bl_hw *bl_hw, const void *msg_params,
                          int reqcfm, lmac_msg_id_t reqid, void *cfm)
 {
@@ -585,7 +585,7 @@ static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
 </code></pre>
 <p><img src="https://lupyuen.github.io/images/wifi-connect6.png" alt="" /></p>
 <p>TODO</p>
-<p>https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/ipc_host.c#L139-L171</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/ipc_host.c#L139-L171"><code>ipc_host.c</code></a></p>
 <pre><code class="language-c">int ipc_host_msg_push(struct ipc_host_env_tag *env, void *msg_buf, uint16_t len)
 {
     int i;
@@ -623,7 +623,7 @@ static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wifi-connect9.png" alt="" /></p>
 <p>TODO9</p>
-<p>https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/reg_ipc_app.h#L41-L69</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/reg_ipc_app.h#L41-L69"><code>reg_ipc_app.h</code></a></p>
 <pre><code class="language-c">#define REG_WIFI_REG_BASE         0x44000000
 #define REG_IPC_APP_DECODING_MASK 0x0000007F
 
@@ -666,7 +666,7 @@ static __INLINE void ipc_app2emb_trigger_set(u32 value)
 <li><a href="https://github.com/BraveHeartFLOSSDev/bl602nutcracker1"><strong>BraveHeartFLOSSDev/bl602nutcracker1</strong></a></li>
 </ul>
 <p><a href="https://github.com/lupyuen/bl602nutcracker1">(We’ll use this fork)</a></p>
-<h2 id="referencing-the-decompiled-code" class="section-header"><a href="#referencing-the-decompiled-code">3.1 Referencing the decompiled code</a></h2>
+<h2 id="linking-to-decompiled-code" class="section-header"><a href="#linking-to-decompiled-code">3.1 Linking to decompiled code</a></h2>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wifi-assert.png" alt="" /></p>
 <p>TODO</p>
