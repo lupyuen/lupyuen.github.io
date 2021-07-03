@@ -353,11 +353,11 @@ Let's dig in and find out how...
 
 _What is LMAC?_
 
-__Lower Medium Access Control (LMAC)__ is the firmware that runs __inside the WiFi Radio Hardware__ and executes the WiFi Radio functions.
+__Lower Medium Access Control (LMAC)__ is the firmware that runs __inside the WiFi Radio Hardware__ and executes the WiFi Radio functions. (Like sending and receiving WiFi Packets)
 
 (We'll talk more about LMAC in a while)
 
-To connect to a WiFi Access Point, we pass the Connection Parameters to LMAC by calling __`bl_send_sm_connect_req`__, defined in [`bl_msg_tx.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_msg_tx.c#L722-L804) ...
+To connect to a WiFi Access Point, we __pass the Connection Parameters to LMAC__ by calling __`bl_send_sm_connect_req`__, defined in [`bl_msg_tx.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_msg_tx.c#L722-L804) ...
 
 ```c
 //  Forward the Connection Parameters to the LMAC
@@ -383,110 +383,33 @@ Then we call __`bl_send_msg`__ to send the message to LMAC: [`bl_msg_tx.c`](http
 
 ```c
 //  Send message to LMAC Firmware
-static int bl_send_msg(struct bl_hw *bl_hw, const void *msg_params,
-                         int reqcfm, lmac_msg_id_t reqid, void *cfm)
-{
-    struct lmac_msg *msg;
-    struct bl_cmd *cmd;
-    bool nonblock;
-    int ret;
-
-    RWNX_DBG(RWNX_FN_ENTRY_STR);
-
-    msg = container_of((void *)msg_params, struct lmac_msg, param);
-
-    if (!test_bit(RWNX_DEV_STARTED, &bl_hw->drv_flags) &&
-        reqid != MM_RESET_CFM && reqid != MM_VERSION_CFM &&
-        reqid != MM_START_CFM && reqid != MM_SET_IDLE_CFM &&
-        reqid != ME_CONFIG_CFM && reqid != MM_SET_PS_MODE_CFM &&
-        reqid != ME_CHAN_CONFIG_CFM) {
-        os_printf("%s: bypassing (RWNX_DEV_RESTARTING set) 0x%02x\n", __func__, reqid);
-        os_free(msg);
-        RWNX_DBG(RWNX_FN_LEAVE_STR);
-        return -EBUSY;
-    } else if (!bl_hw->ipc_env) {
-        os_printf("%s: bypassing (restart must have failed)\r\n", __func__);
-        os_free(msg);
-        RWNX_DBG(RWNX_FN_LEAVE_STR);
-        return -EBUSY;
-    }
-
-    nonblock = is_non_blocking_msg(msg->id);
-
-    cmd = os_malloc(sizeof(struct bl_cmd));
-    if (NULL == cmd) {
-        os_free(msg);
-        os_printf("%s: failed to allocate mem for cmd, size is %d\r\n", __func__, sizeof(struct bl_cmd));
-        return -ENOMEM;
-    }
-    memset(cmd, 0, sizeof(struct bl_cmd));
-    cmd->result  = EINTR;
-    cmd->id      = msg->id;
-    cmd->reqid   = reqid;
-    cmd->a2e_msg = msg;
-    cmd->e2a_msg = cfm;
-    if (nonblock)
-        cmd->flags = RWNX_CMD_FLAG_NONBLOCK;
-    if (reqcfm)
-        cmd->flags |= RWNX_CMD_FLAG_REQ_CFM;
-    ret = bl_hw->cmd_mgr.queue(&bl_hw->cmd_mgr, cmd);
-
-    if (!nonblock) {
-        os_free(cmd);
-    } else {
-        ret = cmd->result;
-    }
-
-    RWNX_DBG(RWNX_FN_LEAVE_STR);
-    return ret;
-}
+static int bl_send_msg(struct bl_hw *bl_hw, const void *msg_params, int reqcfm, lmac_msg_id_t reqid, void *cfm) {
+  //  Omitted: Allocate a buffer for the message
+  ...
+  //  Omitted: Copy the message to the buffer
+  ...
+  //  Add the message to the LMAC Message Queue
+  int ret = bl_hw->cmd_mgr.queue(&bl_hw->cmd_mgr, cmd);
 ```
 
 ![bl_send_msg](https://lupyuen.github.io/images/wifi-connect6.png)
 
-TODO
-
-From [`ipc_host.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/ipc_host.c#L139-L171)
+The above code calls __`ipc_host_msg_push`__ to __send the message to the LMAC Message Queue__: [`ipc_host.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/ipc_host.c#L139-L171)
 
 ```c
-int ipc_host_msg_push(struct ipc_host_env_tag *env, void *msg_buf, uint16_t len)
-{
-    int i;
-    uint32_t *src, *dst;
-
-    REG_SW_SET_PROFILING(env->pthis, SW_PROF_IPC_MSGPUSH);
-
-    ASSERT_ERR(!env->msga2e_hostid);
-    ASSERT_ERR(round_up(len, 4) <= sizeof(env->shared->msg_a2e_buf.msg));
-
-    // Copy the message into the IPC MSG buffer
-#if 1
-    src = (uint32_t*)((struct bl_cmd *)msg_buf)->a2e_msg;
-#else
-    src = (uint32_t*) msg_buf;
-#endif
-    dst = (uint32_t*)&(env->shared->msg_a2e_buf.msg);
-
-    // Copy the message in the IPC queue
-    for (i=0; i<len; i+=4)
-    {
-        *dst++ = *src++;
-    }
-
-    env->msga2e_hostid = msg_buf;
-
-    // Trigger the irq to send the message to EMB
+//  Add the message to the LMAC Message Queue
+int ipc_host_msg_push(struct ipc_host_env_tag *env, void *msg_buf, uint16_t len) {
+    //  Omitted: Copy the message into the IPC message buffer
+    ...
+    //  Omitted: Copy the message to the IPC queue
+    ...
+    //  Trigger the interrupt to send the message to EMB
     ipc_app2emb_trigger_set(IPC_IRQ_A2E_MSG);
-
-    REG_SW_CLEAR_PROFILING(env->pthis, SW_PROF_IPC_MSGPUSH);
-
-    return 0;
-}
 ```
 
-TODO
-
 ![ipc_host_msg_push](https://lupyuen.github.io/images/wifi-connect9.png)
+
+TODO
 
 ## Trigger LMAC Interrupt
 
