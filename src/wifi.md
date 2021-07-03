@@ -272,9 +272,11 @@ __`os_mq_send`__ calls FreeRTOS to deliver the Request Message to __WiFi Manager
 
 ## WiFi Manager State Machine
 
-TODO
+The WiFi Manager runs a __State Machine__ in its Background Task (FreeRTOS) to manage the state of each WiFi Connection.
 
-From [`wifi_mgmr.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr.c#L702-L745)
+_What happens when WiFi Manager receives our request to connect to a WiFi Access Point?_
+
+From [`wifi_mgmr.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr.c#L702-L745) ...
 
 ```c
 static void stateIdleAction_connect( void *oldStateData, struct event *event,
@@ -658,6 +660,10 @@ TODO7
 
 
 # Decompiled WiFi Demo Firmware
+
+_Are we really Reverse Engineering the BL602 WiFi Driver?_
+
+Not quite. So far we've been reading the published source code for the BL602 WiFi Driver.
 
 TODO
 
