@@ -268,7 +268,7 @@ int wifi_mgmr_api_connect(char *ssid, char *psk, char *pmk, uint8_t *mac, uint8_
 }
 ```
 
-![](https://lupyuen.github.io/images/wifi-connect2.png)
+![wifi_mgmr_api_connect](https://lupyuen.github.io/images/wifi-connect2.png)
 
 TODO
 
@@ -297,7 +297,7 @@ From [`os_hal.h`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/b
 #define os_mq_send(mq, msg, len) (xMessageBufferSend(mq, msg, len, portMAX_DELAY) > 0 ? 0 : 1)
 ```
 
-![](https://lupyuen.github.io/images/wifi-connect3.png)
+![wifi_mgmr_event_notify](https://lupyuen.github.io/images/wifi-connect3.png)
 
 TODO
 
@@ -352,7 +352,7 @@ static void stateIdleAction_connect( void *oldStateData, struct event *event,
 
 TODO
 
-![](https://lupyuen.github.io/images/wifi-connect4.png)
+![stateIdleAction_connect](https://lupyuen.github.io/images/wifi-connect4.png)
 
 TODO
 
@@ -521,7 +521,7 @@ int bl_send_sm_connect_req(struct bl_hw *bl_hw, struct cfg80211_connect_params *
 
 TODO
 
-![](https://lupyuen.github.io/images/wifi-connect5.png)
+![bl_send_sm_connect_req](https://lupyuen.github.io/images/wifi-connect5.png)
 
 TODO
 
@@ -587,7 +587,7 @@ static int bl_send_msg(struct bl_hw *bl_hw, const void *msg_params,
 }
 ```
 
-![](https://lupyuen.github.io/images/wifi-connect6.png)
+![bl_send_msg](https://lupyuen.github.io/images/wifi-connect6.png)
 
 TODO
 
@@ -631,7 +631,7 @@ int ipc_host_msg_push(struct ipc_host_env_tag *env, void *msg_buf, uint16_t len)
 
 TODO
 
-![](https://lupyuen.github.io/images/wifi-connect9.png)
+![ipc_host_msg_push](https://lupyuen.github.io/images/wifi-connect9.png)
 
 TODO9
 
@@ -671,7 +671,7 @@ static __INLINE void ipc_app2emb_trigger_set(u32 value)
 
 TODO
 
-![](https://lupyuen.github.io/images/wifi-connect8.png)
+![ipc_app2emb_trigger_set](https://lupyuen.github.io/images/wifi-connect8.png)
 
 TODO8
 
