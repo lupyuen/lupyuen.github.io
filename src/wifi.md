@@ -205,15 +205,319 @@ To understand how BL602 connects to a WiFi Access Point, let's read the __Source
 
 TODO
 
+https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr_ext.c#L302-L307
+
+```c
+int wifi_mgmr_sta_connect(wifi_interface_t *wifi_interface, char *ssid, char *psk, char *pmk, uint8_t *mac, uint8_t band, uint16_t freq)
+{
+    wifi_mgmr_sta_ssid_set(ssid);
+    wifi_mgmr_sta_psk_set(psk);
+    return wifi_mgmr_api_connect(ssid, psk, pmk, mac, band, freq);
+}
+```
+
+TODO
+
+https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr_api.c#L40-L84
+
+```c
+int wifi_mgmr_api_connect(char *ssid, char *psk, char *pmk, uint8_t *mac, uint8_t band, uint16_t freq)
+{
+    wifi_mgmr_msg_t *msg;
+    wifi_mgmr_profile_msg_t *profile;
+    uint8_t buffer[sizeof(wifi_mgmr_msg_t) + sizeof(wifi_mgmr_profile_msg_t)];//XXX caution for stack overflow
+
+    memset(buffer, 0, sizeof(buffer));
+    msg = (wifi_mgmr_msg_t*)buffer;
+    msg->ev = WIFI_MGMR_EVENT_APP_CONNECT;
+    msg->data1 = (void*)0x11223344;
+    msg->data2 = (void*)0x55667788;
+    msg->len = sizeof (wifi_mgmr_msg_t) + sizeof(wifi_mgmr_profile_msg_t);
+    profile = (wifi_mgmr_profile_msg_t*)msg->data;
+    profile->ssid_len = strlen(ssid);//ssid should never be NULL
+    memcpy(profile->ssid, ssid, profile->ssid_len);
+    profile->ssid_tail[0] = '\0';
+    profile->psk_len = psk ? strlen(psk) : 0;//psk can be NULL
+    if (profile->psk_len > sizeof(profile->psk)) {
+        return -1;
+    } else if (profile->psk_len > 0) {
+        memcpy(profile->psk, psk, profile->psk_len);
+    }
+    profile->psk_tail[0] = '\0';
+    profile->pmk_len = pmk ? strlen(pmk) : 0;//pmk can be NULL
+    if (0 != profile->pmk_len && sizeof(profile->pmk) != profile->pmk_len) {
+        return -1;
+    } else if (sizeof(profile->pmk) == profile->pmk_len) {
+        memcpy(profile->pmk, pmk, profile->pmk_len);
+    }
+    profile->pmk_tail[0] = '\0';
+    if (mac) {
+        memcpy(profile->mac, mac, sizeof(profile->mac));
+    }
+    if (freq > 0) {
+        //define the channel
+        profile->band = band;
+        profile->freq = freq;
+        printf("wifi mgmr band:%d freq: %d\r\n", profile->band, profile->freq);
+    }
+    profile->dhcp_use = 1;//force use DHCP currently
+
+    wifi_mgmr_event_notify(msg);
+
+    return 0;
+}
+```
+
 ![](https://lupyuen.github.io/images/wifi-connect2.png)
 
 TODO
+
+https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr.c#L1332-L1343
+
+```c
+int wifi_mgmr_event_notify(wifi_mgmr_msg_t *msg)
+{
+    while (0 == wifiMgmr.ready) {
+        os_printf("Wait Wi-Fi Mgmr Start up...\r\n");
+        os_thread_delay(20);
+    }
+    if (os_mq_send(&(wifiMgmr.mq), msg, msg->len)) {
+        os_printf("Failed when send msg 0x%p, len dec:%u\r\n", msg, (unsigned int)msg->len);
+        return -1;
+    }
+    return 0;
+}
+```
+
+TODO
+
+https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/os_hal.h#L174
+
+```c
+#define os_mq_send(mq, msg, len) (xMessageBufferSend(mq, msg, len, portMAX_DELAY) > 0 ? 0 : 1)
+```
 
 ![](https://lupyuen.github.io/images/wifi-connect3.png)
 
 TODO
 
+https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr.c#L702-L745
+
+```c
+static void stateIdleAction_connect( void *oldStateData, struct event *event,
+      void *newStateData )
+{
+    wifi_mgmr_msg_t *msg;
+    wifi_mgmr_profile_msg_t *profile_msg;
+
+    msg = event->data;
+    profile_msg = (wifi_mgmr_profile_msg_t*)msg->data;
+    profile_msg->ssid_tail[0] = '\0';
+    profile_msg->psk_tail[0] = '\0';
+    os_printf(DEBUG_HEADER "Action Connect\r\n");
+    os_printf("           ssid %s\r\n", profile_msg->ssid);
+    os_printf("           ssid len %u\r\n", (unsigned int)profile_msg->ssid_len);
+    os_printf("           psk %s\r\n", profile_msg->psk);
+    os_printf("           psk len %u\r\n", (unsigned int)profile_msg->psk_len);
+    os_printf("           pmk %s\r\n", profile_msg->pmk);
+    os_printf("           pmk len %u\r\n", (unsigned int)profile_msg->pmk_len);
+    os_printf("           channel band %d\r\n", (uint8_t)profile_msg->band);
+    os_printf("           channel freq %d\r\n", (uint16_t)profile_msg->freq);
+    os_printf("           mac %02X:%02X:%02X:%02X:%02X:%02X\r\n",
+            profile_msg->mac[5],
+            profile_msg->mac[4],
+            profile_msg->mac[3],
+            profile_msg->mac[2],
+            profile_msg->mac[1],
+            profile_msg->mac[0]
+    );
+    os_printf("           dhcp status: %s\r\n", profile_msg->dhcp_use ? "true" : "false");
+    wifi_mgmr_profile_add(&wifiMgmr, profile_msg, -1);
+
+    os_printf(DEBUG_HEADER "State Action ###%s### --->>> ###%s###\r\n",
+            (char*)oldStateData,
+            (char*)newStateData
+    );
+
+    //TODO Other security support
+    bl_main_connect((const uint8_t *)profile_msg->ssid, profile_msg->ssid_len,
+            (const uint8_t *)profile_msg->psk, profile_msg->psk_len,
+            (const uint8_t *)profile_msg->pmk, profile_msg->pmk_len,
+            (const uint8_t *)profile_msg->mac,
+            (const uint8_t)profile_msg->band,
+            (const uint16_t)profile_msg->freq
+    );
+}
+```
+
+TODO
+
 ![](https://lupyuen.github.io/images/wifi-connect4.png)
+
+TODO
+
+https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_main.c#L189-L216
+
+```c
+int bl_main_connect(const uint8_t* ssid, int ssid_len, const uint8_t *psk, int psk_len, const uint8_t *pmk, int pmk_len, const uint8_t *mac, const uint8_t band, const uint16_t freq)
+{
+    struct cfg80211_connect_params sme;
+
+    memset(&sme, 0, sizeof(struct cfg80211_connect_params));
+    sme.crypto.n_ciphers_pairwise = 0;
+    sme.ssid_len = ssid_len;
+    sme.ssid = ssid;
+    sme.auth_type = NL80211_AUTHTYPE_AUTOMATIC;
+    sme.key = psk;
+    sme.key_len = psk_len;
+    sme.pmk = pmk;
+    sme.pmk_len = pmk_len;
+
+    if (mac){
+        sme.bssid = mac;
+    }
+
+    if (freq > 0) {
+        sme.channel.center_freq = freq;
+        sme.channel.band = band;
+        sme.channel.flags = 0;
+    }
+
+    bl_cfg80211_connect(&wifi_hw, &sme);
+
+    return 0;
+}
+```
+
+TODO
+
+https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_main.c#L539-L571
+
+```c
+int bl_cfg80211_connect(struct bl_hw *bl_hw, struct cfg80211_connect_params *sme)
+{
+    struct sm_connect_cfm sm_connect_cfm;
+    int error = 0;
+
+    RWNX_DBG(RWNX_FN_ENTRY_STR);
+
+    /* Forward the information to the LMAC */
+    error = bl_send_sm_connect_req(bl_hw, sme, &sm_connect_cfm);
+    if (error) {
+        return error;
+    }
+
+    // Check the status
+    switch (sm_connect_cfm.status)
+    {
+        case CO_OK:
+            error = 0;
+            break;
+        case CO_BUSY:
+            error = -EINPROGRESS;
+            break;
+        case CO_OP_IN_PROGRESS:
+            error = -EALREADY;
+            break;
+        default:
+            error = -EIO;
+            break;
+    }
+    RWNX_DBG(RWNX_FN_LEAVE_STR);
+
+    return error;
+}
+```
+
+TODO
+
+https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_msg_tx.c#L722-L804
+
+```c
+int bl_send_sm_connect_req(struct bl_hw *bl_hw, struct cfg80211_connect_params *sme, struct sm_connect_cfm *cfm)
+{
+    struct sm_connect_req *req;
+    int i;
+    u32_l flags = 0;
+
+    RWNX_DBG(RWNX_FN_ENTRY_STR);
+
+    /* Build the SM_CONNECT_REQ message */
+    req = bl_msg_zalloc(SM_CONNECT_REQ, TASK_SM, DRV_TASK_ID,
+                                   sizeof(struct sm_connect_req));
+    if (!req)
+        return -ENOMEM;
+
+    /* Set parameters for the SM_CONNECT_REQ message */
+    if (sme->crypto.n_ciphers_pairwise &&
+        ((sme->crypto.ciphers_pairwise[0] == WLAN_CIPHER_SUITE_WEP40) ||
+         (sme->crypto.ciphers_pairwise[0] == WLAN_CIPHER_SUITE_TKIP) ||
+         (sme->crypto.ciphers_pairwise[0] == WLAN_CIPHER_SUITE_WEP104)))
+        flags |= DISABLE_HT;
+
+    if (sme->crypto.control_port)
+        flags |= CONTROL_PORT_HOST;
+
+    if (sme->crypto.control_port_no_encrypt)
+        flags |= CONTROL_PORT_NO_ENC;
+
+    if (use_pairwise_key(&sme->crypto))
+        flags |= WPA_WPA2_IN_USE;
+
+    if (sme->mfp == NL80211_MFP_REQUIRED)
+        flags |= MFP_IN_USE;
+
+    if (sme->crypto.control_port_ethertype)
+        req->ctrl_port_ethertype = sme->crypto.control_port_ethertype;
+    else
+        req->ctrl_port_ethertype = ETH_P_PAE;
+
+    if (sme->bssid && !MAC_ADDR_CMP(sme->bssid, mac_addr_bcst.array) && !MAC_ADDR_CMP(sme->bssid, mac_addr_zero.array)) {
+        for (i=0;i<ETH_ALEN;i++)
+            req->bssid.array[i] = sme->bssid[i];
+    }
+    else
+        req->bssid = mac_addr_bcst;
+    req->vif_idx = bl_hw->vif_index_sta;
+    if (sme->channel.center_freq) {
+        req->chan.band = sme->channel.band;
+        req->chan.freq = sme->channel.center_freq;
+        req->chan.flags = passive_scan_flag(sme->channel.flags);
+    } else {
+        req->chan.freq = (u16_l)-1;
+    }
+    for (i = 0; i < sme->ssid_len; i++)
+        req->ssid.array[i] = sme->ssid[i];
+    req->ssid.length = sme->ssid_len;
+    req->flags = flags;
+    if (WARN_ON(sme->ie_len > sizeof(req->ie_buf)))
+        return -EINVAL;
+    if (sme->ie_len)
+        memcpy(req->ie_buf, sme->ie, sme->ie_len);
+    req->ie_len = sme->ie_len;
+    req->listen_interval = bl_mod_params.listen_itv;
+    req->dont_wait_bcmc = !bl_mod_params.listen_bcmc;
+
+    /* Set auth_type */
+    if (sme->auth_type == NL80211_AUTHTYPE_AUTOMATIC)
+        req->auth_type = NL80211_AUTHTYPE_OPEN_SYSTEM;
+    else
+        req->auth_type = sme->auth_type;
+
+    /* Set UAPSD queues */
+    req->uapsd_queues = bl_mod_params.uapsd_queues;
+    req->is_supplicant_enabled = 1;
+    if (sme->key_len) {
+        memcpy(req->phrase, sme->key, sme->key_len);
+    }
+    if (sme->pmk_len) {
+        memcpy(req->phrase_pmk, sme->pmk, sme->pmk_len);
+    }
+
+    /* Send the SM_CONNECT_REQ message to LMAC FW */
+    return bl_send_msg(bl_hw, req, 1, SM_CONNECT_CFM, cfm);
+}
+```
 
 TODO
 
