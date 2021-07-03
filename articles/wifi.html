@@ -258,7 +258,7 @@ int wifi_mgmr_sta_connect(wifi_interface_t *wifi_interface, char *ssid, char *ps
   return wifi_mgmr_api_connect(ssid, psk, pmk, mac, band, freq);
 }
 </code></pre>
-<p>Here we set the WiFi SSID and PSK. Then we call <code>wifi_mgmr_api_connect</code> to connect to the access point.</p>
+<p>We set the WiFi SSID and PSK. Then we call <code>wifi_mgmr_api_connect</code> to connect to the access point.</p>
 <p><strong><code>wifi_mgmr_api_connect</code></strong> does this: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr_api.c#L40-L84"><code>wifi_mgmr_api.c</code></a></p>
 <pre><code class="language-c">//  Connect to WiFi Access Point
 int wifi_mgmr_api_connect(char *ssid, char *psk, char *pmk, uint8_t *mac, uint8_t band, uint16_t freq) {
@@ -276,16 +276,21 @@ int wifi_mgmr_api_connect(char *ssid, char *psk, char *pmk, uint8_t *mac, uint8_
 int wifi_mgmr_event_notify(wifi_mgmr_msg_t *msg) {
   //  Omitted: Wait for WiFi Manager to start
   ...
-  if (os_mq_send(&amp;(wifiMgmr.mq), msg, msg-&gt;len)) {
+  //  Send request to WiFi Manager via Message Queue
+  if (os_mq_send(
+    &amp;(wifiMgmr.mq),  //  Message Queue
+    msg,             //  Request Message
+    msg-&gt;len)) {     //  Message Length
     //  Failed to send request
     return -1;
   }
   return 0;
 }
 </code></pre>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/os_hal.h#L174"><code>os_hal.h</code></a></p>
-<pre><code class="language-c">#define os_mq_send(mq, msg, len) (xMessageBufferSend(mq, msg, len, portMAX_DELAY) &gt; 0 ? 0 : 1)
+<p><em>How does <code>os_mq_send</code> send the request to the WiFi Manager Task?</em></p>
+<p><strong><code>os_mq_send</code></strong> calls FreeRTOS to deliver the Request Message to <strong>WiFi Manager’s Message Queue</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/os_hal.h#L174"><code>os_hal.h</code></a></p>
+<pre><code class="language-c">#define os_mq_send(mq, msg, len) \
+    (xMessageBufferSend(mq, msg, len, portMAX_DELAY) &gt; 0 ? 0 : 1)
 </code></pre>
 <p><img src="https://lupyuen.github.io/images/wifi-connect3.png" alt="wifi_mgmr_event_notify" /></p>
 <h2 id="wifi-manager-state-machine" class="section-header"><a href="#wifi-manager-state-machine">2.2 WiFi Manager State Machine</a></h2>
