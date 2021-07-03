@@ -71,7 +71,11 @@
 <li><a href="#start-wifi-manager-task">1.3 Start WiFi Manager Task</a><ul></ul></li>
 <li><a href="#connect-to-wifi-network">1.4 Connect to WiFi Network</a><ul></ul></li>
 <li><a href="#send-http-request">1.5 Send HTTP Request</a><ul></ul></li></ul></li>
-<li><a href="#connect-to-wifi-access-point">2 Connect to WiFi Access Point</a><ul></ul></li>
+<li><a href="#connect-to-wifi-access-point">2 Connect to WiFi Access Point</a><ul>
+<li><a href="#send-request-to-wifi-manager-task">2.1 Send request to WiFi Manager Task</a><ul></ul></li>
+<li><a href="#wifi-manager-state-machine">2.2 WiFi Manager State Machine</a><ul></ul></li>
+<li><a href="#send-request-to-lmac">2.3 Send request to LMAC</a><ul></ul></li>
+<li><a href="#trigger-lmac-interrupt">2.4 Trigger LMAC Interrupt</a><ul></ul></li></ul></li>
 <li><a href="#decompiled-wifi-demo-firmware">3 Decompiled WiFi Demo Firmware</a><ul>
 <li><a href="#linking-to-decompiled-code">3.1 Linking to decompiled code</a><ul></ul></li></ul></li>
 <li><a href="#wifi-firmware-task">4 WiFi Firmware Task</a><ul></ul></li>
@@ -241,6 +245,7 @@ static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
 <h1 id="connect-to-wifi-access-point" class="section-header"><a href="#connect-to-wifi-access-point">2 Connect to WiFi Access Point</a></h1>
 <p><em>What really happens when BL602 connects to a WiFi Access Point?</em></p>
 <p>To understand how BL602 connects to a WiFi Access Point, let’s read the <strong>Source Code from the BL602 WiFi Driver</strong>.</p>
+<h2 id="send-request-to-wifi-manager-task" class="section-header"><a href="#send-request-to-wifi-manager-task">2.1 Send request to WiFi Manager Task</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr_ext.c#L302-L307"><code>wifi_mgmr_ext.c</code></a></p>
 <pre><code class="language-c">int wifi_mgmr_sta_connect(wifi_interface_t *wifi_interface, char *ssid, char *psk, char *pmk, uint8_t *mac, uint8_t band, uint16_t freq)
@@ -319,6 +324,7 @@ static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
 <pre><code class="language-c">#define os_mq_send(mq, msg, len) (xMessageBufferSend(mq, msg, len, portMAX_DELAY) &gt; 0 ? 0 : 1)
 </code></pre>
 <p><img src="https://lupyuen.github.io/images/wifi-connect3.png" alt="wifi_mgmr_event_notify" /></p>
+<h2 id="wifi-manager-state-machine" class="section-header"><a href="#wifi-manager-state-machine">2.2 WiFi Manager State Machine</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr.c#L702-L745"><code>wifi_mgmr.c</code></a></p>
 <pre><code class="language-c">static void stateIdleAction_connect( void *oldStateData, struct event *event,
@@ -435,6 +441,7 @@ static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
     return error;
 }
 </code></pre>
+<h2 id="send-request-to-lmac" class="section-header"><a href="#send-request-to-lmac">2.3 Send request to LMAC</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_msg_tx.c#L722-L804"><code>bl_msg_tx.c</code></a></p>
 <pre><code class="language-c">int bl_send_sm_connect_req(struct bl_hw *bl_hw, struct cfg80211_connect_params *sme, struct sm_connect_cfm *cfm)
@@ -622,6 +629,7 @@ static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
 </code></pre>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wifi-connect9.png" alt="ipc_host_msg_push" /></p>
+<h2 id="trigger-lmac-interrupt" class="section-header"><a href="#trigger-lmac-interrupt">2.4 Trigger LMAC Interrupt</a></h2>
 <p>TODO9</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/reg_ipc_app.h#L41-L69"><code>reg_ipc_app.h</code></a></p>
 <pre><code class="language-c">#define REG_WIFI_REG_BASE         0x44000000
