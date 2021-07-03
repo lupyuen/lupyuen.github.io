@@ -298,7 +298,7 @@ static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
     return 0;
 }
 </code></pre>
-<p><img src="https://lupyuen.github.io/images/wifi-connect2.png" alt="" /></p>
+<p><img src="https://lupyuen.github.io/images/wifi-connect2.png" alt="wifi_mgmr_api_connect" /></p>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr.c#L1332-L1343"><code>wifi_mgmr.c</code></a></p>
 <pre><code class="language-c">int wifi_mgmr_event_notify(wifi_mgmr_msg_t *msg)
@@ -318,7 +318,7 @@ static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/os_hal.h#L174"><code>os_hal.h</code></a></p>
 <pre><code class="language-c">#define os_mq_send(mq, msg, len) (xMessageBufferSend(mq, msg, len, portMAX_DELAY) &gt; 0 ? 0 : 1)
 </code></pre>
-<p><img src="https://lupyuen.github.io/images/wifi-connect3.png" alt="" /></p>
+<p><img src="https://lupyuen.github.io/images/wifi-connect3.png" alt="wifi_mgmr_event_notify" /></p>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr.c#L702-L745"><code>wifi_mgmr.c</code></a></p>
 <pre><code class="language-c">static void stateIdleAction_connect( void *oldStateData, struct event *event,
@@ -367,7 +367,7 @@ static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
 }
 </code></pre>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/wifi-connect4.png" alt="" /></p>
+<p><img src="https://lupyuen.github.io/images/wifi-connect4.png" alt="stateIdleAction_connect" /></p>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_main.c#L189-L216"><code>bl_main.c</code></a></p>
 <pre><code class="language-c">int bl_main_connect(const uint8_t* ssid, int ssid_len, const uint8_t *psk, int psk_len, const uint8_t *pmk, int pmk_len, const uint8_t *mac, const uint8_t band, const uint16_t freq)
@@ -522,7 +522,7 @@ static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
 }
 </code></pre>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/wifi-connect5.png" alt="" /></p>
+<p><img src="https://lupyuen.github.io/images/wifi-connect5.png" alt="bl_send_sm_connect_req" /></p>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_msg_tx.c#L315-L371"><code>bl_msg_tx.c</code></a></p>
 <pre><code class="language-c">static int bl_send_msg(struct bl_hw *bl_hw, const void *msg_params,
@@ -583,7 +583,7 @@ static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
     return ret;
 }
 </code></pre>
-<p><img src="https://lupyuen.github.io/images/wifi-connect6.png" alt="" /></p>
+<p><img src="https://lupyuen.github.io/images/wifi-connect6.png" alt="bl_send_msg" /></p>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/ipc_host.c#L139-L171"><code>ipc_host.c</code></a></p>
 <pre><code class="language-c">int ipc_host_msg_push(struct ipc_host_env_tag *env, void *msg_buf, uint16_t len)
@@ -621,7 +621,7 @@ static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
 }
 </code></pre>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/wifi-connect9.png" alt="" /></p>
+<p><img src="https://lupyuen.github.io/images/wifi-connect9.png" alt="ipc_host_msg_push" /></p>
 <p>TODO9</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/reg_ipc_app.h#L41-L69"><code>reg_ipc_app.h</code></a></p>
 <pre><code class="language-c">#define REG_WIFI_REG_BASE         0x44000000
@@ -655,7 +655,7 @@ static __INLINE void ipc_app2emb_trigger_set(u32 value)
 }
 </code></pre>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/wifi-connect8.png" alt="" /></p>
+<p><img src="https://lupyuen.github.io/images/wifi-connect8.png" alt="ipc_app2emb_trigger_set" /></p>
 <p>TODO8</p>
 <p><img src="https://lupyuen.github.io/images/wifi-connect7.png" alt="" /></p>
 <p>TODO7</p>
