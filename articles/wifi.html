@@ -363,7 +363,7 @@ int bl_cfg80211_connect(struct bl_hw *bl_hw, struct cfg80211_connect_params *sme
 <p>Let’s dig in and find out how…</p>
 <h2 id="send-request-to-lmac" class="section-header"><a href="#send-request-to-lmac">2.3 Send request to LMAC</a></h2>
 <p><em>What is LMAC?</em></p>
-<p><strong>Lower Medium Access Control (LMAC)</strong> is the firmware that runs <strong>inside the WiFi Radio Hardware</strong> and controls the WiFi Radio functions.</p>
+<p><strong>Lower Medium Access Control (LMAC)</strong> is the firmware that runs <strong>inside the WiFi Radio Hardware</strong> and executes the WiFi Radio functions.</p>
 <p>(We’ll talk more about LMAC in a while)</p>
 <p>To connect to a WiFi Access Point, we pass the Connection Parameters to LMAC by calling <strong><code>bl_send_sm_connect_req</code></strong>, defined in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_msg_tx.c#L722-L804"><code>bl_msg_tx.c</code></a> …</p>
 <pre><code class="language-c">//  Forward the Connection Parameters to the LMAC
@@ -379,7 +379,7 @@ int bl_send_sm_connect_req(struct bl_hw *bl_hw, struct cfg80211_connect_params *
 }
 </code></pre>
 <p><img src="https://lupyuen.github.io/images/wifi-connect5.png" alt="bl_send_sm_connect_req" /></p>
-<p>Here we compose an <strong><code>SM_CONNECT_REQ</code></strong> message (containing the Connection Parameters.</p>
+<p>Here we compose an <strong><code>SM_CONNECT_REQ</code></strong> message that contains the Connection Parameters.</p>
 <p>(“SM” refers to the LMAC State Machine)</p>
 <p>Then we call <strong><code>bl_send_msg</code></strong> to send the message to LMAC: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_msg_tx.c#L315-L371"><code>bl_msg_tx.c</code></a></p>
 <pre><code class="language-c">//  Send message to LMAC Firmware
