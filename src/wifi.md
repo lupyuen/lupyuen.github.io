@@ -525,6 +525,68 @@ TODO
 
 TODO
 
+https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_msg_tx.c#L315-L371
+
+```c
+static int bl_send_msg(struct bl_hw *bl_hw, const void *msg_params,
+                         int reqcfm, lmac_msg_id_t reqid, void *cfm)
+{
+    struct lmac_msg *msg;
+    struct bl_cmd *cmd;
+    bool nonblock;
+    int ret;
+
+    RWNX_DBG(RWNX_FN_ENTRY_STR);
+
+    msg = container_of((void *)msg_params, struct lmac_msg, param);
+
+    if (!test_bit(RWNX_DEV_STARTED, &bl_hw->drv_flags) &&
+        reqid != MM_RESET_CFM && reqid != MM_VERSION_CFM &&
+        reqid != MM_START_CFM && reqid != MM_SET_IDLE_CFM &&
+        reqid != ME_CONFIG_CFM && reqid != MM_SET_PS_MODE_CFM &&
+        reqid != ME_CHAN_CONFIG_CFM) {
+        os_printf("%s: bypassing (RWNX_DEV_RESTARTING set) 0x%02x\n", __func__, reqid);
+        os_free(msg);
+        RWNX_DBG(RWNX_FN_LEAVE_STR);
+        return -EBUSY;
+    } else if (!bl_hw->ipc_env) {
+        os_printf("%s: bypassing (restart must have failed)\r\n", __func__);
+        os_free(msg);
+        RWNX_DBG(RWNX_FN_LEAVE_STR);
+        return -EBUSY;
+    }
+
+    nonblock = is_non_blocking_msg(msg->id);
+
+    cmd = os_malloc(sizeof(struct bl_cmd));
+    if (NULL == cmd) {
+        os_free(msg);
+        os_printf("%s: failed to allocate mem for cmd, size is %d\r\n", __func__, sizeof(struct bl_cmd));
+        return -ENOMEM;
+    }
+    memset(cmd, 0, sizeof(struct bl_cmd));
+    cmd->result  = EINTR;
+    cmd->id      = msg->id;
+    cmd->reqid   = reqid;
+    cmd->a2e_msg = msg;
+    cmd->e2a_msg = cfm;
+    if (nonblock)
+        cmd->flags = RWNX_CMD_FLAG_NONBLOCK;
+    if (reqcfm)
+        cmd->flags |= RWNX_CMD_FLAG_REQ_CFM;
+    ret = bl_hw->cmd_mgr.queue(&bl_hw->cmd_mgr, cmd);
+
+    if (!nonblock) {
+        os_free(cmd);
+    } else {
+        ret = cmd->result;
+    }
+
+    RWNX_DBG(RWNX_FN_LEAVE_STR);
+    return ret;
+}
+```
+
 ![](https://lupyuen.github.io/images/wifi-connect6.png)
 
 TODO
