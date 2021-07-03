@@ -296,121 +296,55 @@ int wifi_mgmr_event_notify(wifi_mgmr_msg_t *msg) {
 <h2 id="wifi-manager-state-machine" class="section-header"><a href="#wifi-manager-state-machine">2.2 WiFi Manager State Machine</a></h2>
 <p>The WiFi Manager runs a <strong>State Machine</strong> in its Background Task (FreeRTOS) to manage the state of each WiFi Connection.</p>
 <p><em>What happens when WiFi Manager receives our request to connect to a WiFi Access Point?</em></p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr.c#L702-L745"><code>wifi_mgmr.c</code></a> …</p>
-<pre><code class="language-c">static void stateIdleAction_connect( void *oldStateData, struct event *event,
-      void *newStateData )
-{
-    wifi_mgmr_msg_t *msg;
-    wifi_mgmr_profile_msg_t *profile_msg;
+<p>Let’s find out in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr.c#L702-L745"><code>wifi_mgmr.c</code></a> …</p>
+<pre><code class="language-c">//  Called when WiFi Manager receives Connect Request
+static void stateIdleAction_connect( void *oldStateData, struct event *event, void *newStateData) {
+  //  Set the WiFi Profile for the Connect Request
+  wifi_mgmr_msg_t *msg = event-&gt;data;
+  wifi_mgmr_profile_msg_t *profile_msg = (wifi_mgmr_profile_msg_t*) msg-&gt;data;
+  profile_msg-&gt;ssid_tail[0] = '\0';
+  profile_msg-&gt;psk_tail[0]  = '\0';
 
-    msg = event-&gt;data;
-    profile_msg = (wifi_mgmr_profile_msg_t*)msg-&gt;data;
-    profile_msg-&gt;ssid_tail[0] = '\0';
-    profile_msg-&gt;psk_tail[0] = '\0';
-    os_printf(DEBUG_HEADER &quot;Action Connect\r\n&quot;);
-    os_printf(&quot;           ssid %s\r\n&quot;, profile_msg-&gt;ssid);
-    os_printf(&quot;           ssid len %u\r\n&quot;, (unsigned int)profile_msg-&gt;ssid_len);
-    os_printf(&quot;           psk %s\r\n&quot;, profile_msg-&gt;psk);
-    os_printf(&quot;           psk len %u\r\n&quot;, (unsigned int)profile_msg-&gt;psk_len);
-    os_printf(&quot;           pmk %s\r\n&quot;, profile_msg-&gt;pmk);
-    os_printf(&quot;           pmk len %u\r\n&quot;, (unsigned int)profile_msg-&gt;pmk_len);
-    os_printf(&quot;           channel band %d\r\n&quot;, (uint8_t)profile_msg-&gt;band);
-    os_printf(&quot;           channel freq %d\r\n&quot;, (uint16_t)profile_msg-&gt;freq);
-    os_printf(&quot;           mac %02X:%02X:%02X:%02X:%02X:%02X\r\n&quot;,
-            profile_msg-&gt;mac[5],
-            profile_msg-&gt;mac[4],
-            profile_msg-&gt;mac[3],
-            profile_msg-&gt;mac[2],
-            profile_msg-&gt;mac[1],
-            profile_msg-&gt;mac[0]
-    );
-    os_printf(&quot;           dhcp status: %s\r\n&quot;, profile_msg-&gt;dhcp_use ? &quot;true&quot; : &quot;false&quot;);
-    wifi_mgmr_profile_add(&amp;wifiMgmr, profile_msg, -1);
+  //  Remember the WiFi Profile in the WiFi Manager
+  wifi_mgmr_profile_add(&amp;wifiMgmr, profile_msg, -1);
 
-    os_printf(DEBUG_HEADER &quot;State Action ###%s### ---&gt;&gt;&gt; ###%s###\r\n&quot;,
-            (char*)oldStateData,
-            (char*)newStateData
-    );
-
-    //TODO Other security support
-    bl_main_connect((const uint8_t *)profile_msg-&gt;ssid, profile_msg-&gt;ssid_len,
-            (const uint8_t *)profile_msg-&gt;psk, profile_msg-&gt;psk_len,
-            (const uint8_t *)profile_msg-&gt;pmk, profile_msg-&gt;pmk_len,
-            (const uint8_t *)profile_msg-&gt;mac,
-            (const uint8_t)profile_msg-&gt;band,
-            (const uint16_t)profile_msg-&gt;freq
-    );
+  //  Connect to the WiFi Profile. TODO: Other security support
+  bl_main_connect(
+    (const uint8_t *) profile_msg-&gt;ssid, profile_msg-&gt;ssid_len,
+    (const uint8_t *) profile_msg-&gt;psk, profile_msg-&gt;psk_len,
+    (const uint8_t *) profile_msg-&gt;pmk, profile_msg-&gt;pmk_len,
+    (const uint8_t *) profile_msg-&gt;mac, (const uint8_t) profile_msg-&gt;band, (const uint16_t) profile_msg-&gt;freq);
 }
 </code></pre>
-<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wifi-connect4.png" alt="stateIdleAction_connect" /></p>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_main.c#L189-L216"><code>bl_main.c</code></a></p>
-<pre><code class="language-c">int bl_main_connect(const uint8_t* ssid, int ssid_len, const uint8_t *psk, int psk_len, const uint8_t *pmk, int pmk_len, const uint8_t *mac, const uint8_t band, const uint16_t freq)
-{
-    struct cfg80211_connect_params sme;
+<p>Here we set the <strong>WiFi Profile</strong> and call <code>bl_main_connect</code> to connect to the profile.</p>
+<p>In <strong><code>bl_main_connect</code></strong> we set the <strong>Connection Parameters for the 802.11 WiFi Protocol</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_main.c#L189-L216"><code>bl_main.c</code></a></p>
+<pre><code class="language-c">//  Connect to the WiFi Profile
+int bl_main_connect(const uint8_t* ssid, int ssid_len, const uint8_t *psk, int psk_len, const uint8_t *pmk, int pmk_len, const uint8_t *mac, const uint8_t band, const uint16_t freq) {
 
-    memset(&amp;sme, 0, sizeof(struct cfg80211_connect_params));
-    sme.crypto.n_ciphers_pairwise = 0;
-    sme.ssid_len = ssid_len;
-    sme.ssid = ssid;
-    sme.auth_type = NL80211_AUTHTYPE_AUTOMATIC;
-    sme.key = psk;
-    sme.key_len = psk_len;
-    sme.pmk = pmk;
-    sme.pmk_len = pmk_len;
+  //  Connection Parameters for 802.11 WiFi Protocol
+  struct cfg80211_connect_params sme;    
 
-    if (mac){
-        sme.bssid = mac;
-    }
-
-    if (freq &gt; 0) {
-        sme.channel.center_freq = freq;
-        sme.channel.band = band;
-        sme.channel.flags = 0;
-    }
-
-    bl_cfg80211_connect(&amp;wifi_hw, &amp;sme);
-
-    return 0;
+  //  Omitted: Set the 802.11 Connection Parameters
+  ...
+  //  Connect to WiFi Network with the 802.11 Connection Parameters
+  bl_cfg80211_connect(&amp;wifi_hw, &amp;sme);
+  return 0;
 }
 </code></pre>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_main.c#L539-L571"><code>bl_main.c</code></a></p>
-<pre><code class="language-c">int bl_cfg80211_connect(struct bl_hw *bl_hw, struct cfg80211_connect_params *sme)
-{
-    struct sm_connect_cfm sm_connect_cfm;
-    int error = 0;
+<p>The Connection Parameters are passed to <strong><code>bl_cfg80211_connect</code></strong>, defined in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_main.c#L539-L571"><code>bl_main.c</code></a> …</p>
+<pre><code class="language-c">//  Connect to WiFi Network with the 802.11 Connection Parameters
+int bl_cfg80211_connect(struct bl_hw *bl_hw, struct cfg80211_connect_params *sme) {
 
-    RWNX_DBG(RWNX_FN_ENTRY_STR);
+  //  Will be populated with the connection result
+  struct sm_connect_cfm sm_connect_cfm;
 
-    /* Forward the information to the LMAC */
-    error = bl_send_sm_connect_req(bl_hw, sme, &amp;sm_connect_cfm);
-    if (error) {
-        return error;
-    }
-
-    // Check the status
-    switch (sm_connect_cfm.status)
-    {
-        case CO_OK:
-            error = 0;
-            break;
-        case CO_BUSY:
-            error = -EINPROGRESS;
-            break;
-        case CO_OP_IN_PROGRESS:
-            error = -EALREADY;
-            break;
-        default:
-            error = -EIO;
-            break;
-    }
-    RWNX_DBG(RWNX_FN_LEAVE_STR);
-
-    return error;
-}
+  //  Forward the Connection Parameters to the LMAC
+  int error = bl_send_sm_connect_req(bl_hw, sme, &amp;sm_connect_cfm);
+  ...
 </code></pre>
+<p>Which calls <strong><code>bl_send_sm_connect_req</code></strong> to send the Connection Parameters to the <strong>WiFi Hardware (LMAC)</strong>.</p>
+<p>Let’s find out how…</p>
 <h2 id="send-request-to-lmac" class="section-header"><a href="#send-request-to-lmac">2.3 Send request to LMAC</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_msg_tx.c#L722-L804"><code>bl_msg_tx.c</code></a></p>
