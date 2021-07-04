@@ -412,6 +412,7 @@ int ipc_host_msg_push(struct ipc_host_env_tag *env, void *msg_buf, uint16_t len)
 <p>After copying the message to the LMAC Message Queue (in Shared RAM), we call <code>ipc_app2emb_trigger_set</code> to <strong>trigger an LMAC Interrupt</strong>.</p>
 <p>LMAC (and the BL602 Radio Hardware) will then transmit the proper WiFi Packets to <strong>establish a network connection</strong> with the WiFi Access Point.</p>
 <p>And that’s how BL602 connects to a WiFi Access Point!</p>
+<p><img src="https://lupyuen.github.io/images/wifi-connect8.png" alt="ipc_app2emb_trigger_set" /></p>
 <h2 id="trigger-lmac-interrupt" class="section-header"><a href="#trigger-lmac-interrupt">2.4 Trigger LMAC Interrupt</a></h2>
 <p><em>But how do we trigger an LMAC Interrupt?</em></p>
 <pre><code class="language-c">//  Trigger an LMAC Interrupt to send the message to EMB
@@ -447,11 +448,10 @@ static inline void ipc_app2emb_trigger_set(u32 value) {
     value);
 }
 </code></pre>
-<p>TODO</p>
-<p><code>0x4480 0008</code></p>
+<p>This code triggers an LMAC Interrupt by writiing to the <strong>WiFi Hardware Register (IPC)</strong> at…</p>
 <pre><code class="language-text">REG_WIFI_REG_BASE + IPC_REG_BASE_ADDR + 4 * IPC_IRQ_A2E_MSG
 </code></pre>
-<p><img src="https://lupyuen.github.io/images/wifi-connect8.png" alt="ipc_app2emb_trigger_set" /></p>
+<p>Which gives Address <strong><code>0x4480 0008</code></strong></p>
 <p>TODO8</p>
 <p><img src="https://lupyuen.github.io/images/wifi-connect7.png" alt="" /></p>
 <p>TODO7</p>
