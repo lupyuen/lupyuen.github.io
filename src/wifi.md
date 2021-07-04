@@ -680,7 +680,9 @@ Thankfully [This One Weird Trick](https://en.wikipedia.org/wiki/One_weird_trick_
 
 ## Schedule Kernel Events
 
-_Is it possible that `ke_evt_schedule` wasn't invented for BL602? Maybe it was created for something else?_
+_Is it possible that `ke_evt_schedule` wasn't invented for BL602?_
+
+_Maybe `ke_evt_schedule` was created for something else?_
 
 Bingo! Let's do a __GitHub Search__ for `ke_evt_schedule`!
 
