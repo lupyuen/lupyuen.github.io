@@ -537,75 +537,70 @@ static inline void ipc_app2emb_trigger_set(u32 value) {
 </ol>
 <p><img src="https://lupyuen.github.io/images/wifi-task.png" alt="Starting the WiFi Firmware Task" /></p>
 <h2 id="start-firmware-task" class="section-header"><a href="#start-firmware-task">4.1 Start Firmware Task</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_wifi.c#L41-L49"><code>hal_wifi.c</code></a></p>
-<pre><code class="language-c">int hal_wifi_start_firmware_task(void)
-{
+<p>Earlier we saw <code>cmd_stack_wifi</code> calling <code>hal_wifi_start_firmware_task</code> to start the Firmware Task.</p>
+<p>Let’s look inside <strong><code>hal_wifi_start_firmware_task</code></strong> now: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_wifi.c#L41-L49"><code>hal_wifi.c</code></a></p>
+<pre><code class="language-c">//  Start WiFi Firmware Task (FreeRTOS)
+int hal_wifi_start_firmware_task(void) {
+    //  Stack space for the WiFi Firmware Task
     static StackType_t wifi_fw_stack[WIFI_STACK_SIZE];
+
+    //  Task Handle for the WiFi Firmware Task
     static StaticTask_t wifi_fw_task;
 
-    xTaskCreateStatic(wifi_main, (char*)&quot;fw&quot;, WIFI_STACK_SIZE, NULL, TASK_PRIORITY_FW, wifi_fw_stack, &amp;wifi_fw_task);
-
+    //  Create a FreeRTOS Background Task
+    xTaskCreateStatic(
+        wifi_main,         //  Task will run this function
+        (char *) &quot;fw&quot;,     //  Task Name
+        WIFI_STACK_SIZE,   //  Task Stack Size
+        NULL,              //  Task Parameters
+        TASK_PRIORITY_FW,  //  Task Priority
+        wifi_fw_stack,     //  Task Stack
+        &amp;wifi_fw_task);    //  Task Handle
     return 0;
 }
 </code></pre>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L32959-L33006"><code>bl602_demo_wifi.c</code></a></p>
-<pre><code class="language-c">void wifi_main(void *param)
-
-{
-  int iVar1;
-  uint uVar2;
-  
+<p>This creates a <strong>FreeRTOS Background Task</strong> that runs the function <strong><code>wifi_main</code></strong> forever.</p>
+<p><em>What’s inside <code>wifi_main</code>?</em></p>
+<p>We don’t have the source code for <code>wifi_main</code>. But thanks to <a href="https://github.com/BraveHeartFLOSSDev"><code>BraveHeartFLOSSDev</code></a> we have the C code decompiled from the BL602 WiFi Firmware!</p>
+<p>Here’s <strong><code>wifi_main</code></strong> from the Decompiled C Code: <a href="https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L32959-L33006"><code>bl602_demo_wifi.c</code></a></p>
+<pre><code class="language-c">//  WiFi Firmware Task runs this forever
+void wifi_main(void *param) {
+  ...
+  //  Init the LMAC and UMAC
   rfc_init(40000000);
-  _DAT_44b00400 = _DAT_44b00400 | 1;
   mpif_clk_init();
   sysctrl_init();
   intc_init();
   ipc_emb_init();
   bl_init();
-  _DAT_44b00404 = 0x24f037;
-  _DAT_44b00400 = 0x49;
-  _DAT_44920004 = 0x5010001f;
+  ...
+  //  Loop forever handling WiFi Kernel Events
   do {
-    if (_DAT_44b00120 &lt;&lt; 0xc &lt; 0) {
-      _DAT_44900084 = _DAT_44900084 | 1;
-    }
-    else {
-      _DAT_44900084 = _DAT_44900084 &amp; 0xfffffffe;
-    }
-    if (ke_env.evt_field == 0) {
-      ipc_emb_wait();
-    }
-    if ((packets_num_12624 &amp; 0xf) == 0) {
-      uVar2 = _DAT_40007018 &gt;&gt; 0x18 &amp; 7;
-      if (uVar2 != 0) {
-        if (uVar2 != 3) {
-          _DAT_40000014 = _DAT_40000014 | 0x40000;
-        }
-        if ((uVar2 != 0) &amp;&amp; (uVar2 != 3)) {
-          _DAT_40002040 = _DAT_40002040 &amp; 0xfffffffc;
-          _DAT_40002044 = _DAT_40002044 &amp; 0xfffffffe;
-        }
-      }
-      if ((_DAT_40007018 &gt;&gt; 0x18 &amp; 4) != 0) {
-        _DAT_40000014 = _DAT_40000014 | 0x5c2000;
-        _DAT_4000f90c = _DAT_4000f90c &amp; 0xfffffffe | 4;
-      }
-    }
-    packets_num_12624 = packets_num_12624 + 1;
+    ...
+    //  Wait for something (?)
+    if (ke_env.evt_field == 0) { ipc_emb_wait(); }
+    ...
+    //  Schedule a WiFi Kernel Event and handle it
     ke_evt_schedule();
+
+    //  Sleep for a while
     iVar1 = bl_sleep();
-    coex_wifi_pta_forece_enable((uint)(iVar1 == 0));
+
+    //  (Whaaat?)
+    coex_wifi_pta_forece_enable((uint) (iVar1 == 0));
   } while( true );
 }
 </code></pre>
+<p>The actual Decompiled C Code for <code>wifi_main</code> looks a lot noisier…</p>
 <p><img src="https://lupyuen.github.io/images/wifi-task2.png" alt="wifi_main" /></p>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L28721-L28737"><code>bl602_demo_wifi.c</code></a></p>
-<pre><code class="language-c">void ke_evt_schedule(void)
-
-{
+<p>So we picked the highlights for our Reverse Engineering.</p>
+<p>(And we added some annotations too)</p>
+<p><strong><code>wifi_main</code></strong> loops forever handling <strong>WiFi Kernel Events</strong>, to transmit and receive WiFi Packets.</p>
+<p>(“<code>ke</code>” refers to the WiFi Kernel, the heart of the WiFi Driver)</p>
+<p><code>wifi_main</code> calls <strong><code>ke_evt_schedule</code></strong> to handle WiFi Kernel Events.</p>
+<p>Let’s lookup <code>ke_evt_schedule</code> in our Decompiled C Code: <a href="https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L28721-L28737"><code>bl602_demo_wifi.c</code></a></p>
+<pre><code class="language-c">//  Schedule a WiFi Kernel Event and handle it
+void ke_evt_schedule(void) {
   int iVar1;
   evt_ptr_t *peVar2;
   
@@ -617,10 +612,13 @@ static inline void ipc_app2emb_trigger_set(u32 value) {
     }
     (*peVar2)(ke_evt_hdlr[iVar1].param);
   }
+  //  This line is probably incorrectly decompiled
   gp = (code *)((int)SFlash_Cache_Hit_Count_Get + 6);
   return;
 }
 </code></pre>
+<p>This code does… something something something.</p>
+<p>Thankfully <a href="https://en.wikipedia.org/wiki/One_weird_trick_advertisements">This One Weird Trick</a> will help us understand this cryptic decompiled code… <strong>GitHub Search!</strong></p>
 <p><img src="https://lupyuen.github.io/images/wifi-schedule2.png" alt="Searching for ke_evt_schedule" /></p>
 <h2 id="schedule-kernel-events" class="section-header"><a href="#schedule-kernel-events">4.2 Schedule Kernel Events</a></h2>
 <p>TODO</p>
