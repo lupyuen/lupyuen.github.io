@@ -579,22 +579,22 @@ Let's look inside __`hal_wifi_start_firmware_task`__ now: [`hal_wifi.c`](https:/
 ```c
 //  Start WiFi Firmware Task (FreeRTOS)
 int hal_wifi_start_firmware_task(void) {
-    //  Stack space for the WiFi Firmware Task
-    static StackType_t wifi_fw_stack[WIFI_STACK_SIZE];
+  //  Stack space for the WiFi Firmware Task
+  static StackType_t wifi_fw_stack[WIFI_STACK_SIZE];
 
-    //  Task Handle for the WiFi Firmware Task
-    static StaticTask_t wifi_fw_task;
+  //  Task Handle for the WiFi Firmware Task
+  static StaticTask_t wifi_fw_task;
 
-    //  Create a FreeRTOS Background Task
-    xTaskCreateStatic(
-        wifi_main,         //  Task will run this function
-        (char *) "fw",     //  Task Name
-        WIFI_STACK_SIZE,   //  Task Stack Size
-        NULL,              //  Task Parameters
-        TASK_PRIORITY_FW,  //  Task Priority
-        wifi_fw_stack,     //  Task Stack
-        &wifi_fw_task);    //  Task Handle
-    return 0;
+  //  Create a FreeRTOS Background Task
+  xTaskCreateStatic(
+    wifi_main,         //  Task will run this function
+    (char *) "fw",     //  Task Name
+    WIFI_STACK_SIZE,   //  Task Stack Size
+    NULL,              //  Task Parameters
+    TASK_PRIORITY_FW,  //  Task Priority
+    wifi_fw_stack,     //  Task Stack
+    &wifi_fw_task);    //  Task Handle
+  return 0;
 }
 ```
 
@@ -672,7 +672,7 @@ void ke_evt_schedule(void) {
 }
 ```
 
-This code does... something something something.
+This decompiled code does... something something something.
 
 Thankfully [This One Weird Trick](https://en.wikipedia.org/wiki/One_weird_trick_advertisements) will help us understand this cryptic decompiled code... __GitHub Search!__
 
@@ -680,9 +680,13 @@ Thankfully [This One Weird Trick](https://en.wikipedia.org/wiki/One_weird_trick_
 
 ## Schedule Kernel Events
 
-TODO
+_Is it possible that `ke_evt_schedule` wasn't invented for BL602? Maybe it was created for something else?_
 
-[GitHub Code Search for `ke_evt_schedule` (recent indexed)](https://github.com/search?o=desc&q=ke_evt_schedule&s=indexed&type=Code)
+Bingo! Let's do a __GitHub Search__ for `ke_evt_schedule`!
+
+-   [__GitHub Code Search for `ke_evt_schedule`__](https://github.com/search?o=desc&q=ke_evt_schedule&s=indexed&type=Code)
+
+    (Search results are sorted by recently indexed)
 
 TODO
 
