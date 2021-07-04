@@ -572,87 +572,89 @@ Now we dive into the WiFi Firmware Task. Watch what happens as we...
 
 ## Start Firmware Task
 
-TODO
+Earlier we saw `cmd_stack_wifi` calling `hal_wifi_start_firmware_task` to start the Firmware Task.
 
-From [`hal_wifi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_wifi.c#L41-L49)
+Let's look inside __`hal_wifi_start_firmware_task`__ now: [`hal_wifi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_wifi.c#L41-L49)
 
 ```c
-int hal_wifi_start_firmware_task(void)
-{
+//  Start WiFi Firmware Task (FreeRTOS)
+int hal_wifi_start_firmware_task(void) {
+    //  Stack space for the WiFi Firmware Task
     static StackType_t wifi_fw_stack[WIFI_STACK_SIZE];
+
+    //  Task Handle for the WiFi Firmware Task
     static StaticTask_t wifi_fw_task;
 
-    xTaskCreateStatic(wifi_main, (char*)"fw", WIFI_STACK_SIZE, NULL, TASK_PRIORITY_FW, wifi_fw_stack, &wifi_fw_task);
-
+    //  Create a FreeRTOS Background Task
+    xTaskCreateStatic(
+        wifi_main,         //  Task will run this function
+        (char *) "fw",     //  Task Name
+        WIFI_STACK_SIZE,   //  Task Stack Size
+        NULL,              //  Task Parameters
+        TASK_PRIORITY_FW,  //  Task Priority
+        wifi_fw_stack,     //  Task Stack
+        &wifi_fw_task);    //  Task Handle
     return 0;
 }
 ```
 
-TODO
+This creates a __FreeRTOS Background Task__ that runs the function __`wifi_main`__ forever.
 
-From [`bl602_demo_wifi.c`](https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L32959-L33006)
+_What's inside `wifi_main`?_
+
+We don't have the source code for `wifi_main`. But thanks to [`BraveHeartFLOSSDev`](https://github.com/BraveHeartFLOSSDev) we have the C code decompiled from the BL602 WiFi Firmware!
+
+Here's __`wifi_main`__ from the Decompiled C Code: [`bl602_demo_wifi.c`](https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L32959-L33006)
 
 ```c
-void wifi_main(void *param)
-
-{
-  int iVar1;
-  uint uVar2;
-  
+//  WiFi Firmware Task runs this forever
+void wifi_main(void *param) {
+  ...
+  //  Init the LMAC and UMAC
   rfc_init(40000000);
-  _DAT_44b00400 = _DAT_44b00400 | 1;
   mpif_clk_init();
   sysctrl_init();
   intc_init();
   ipc_emb_init();
   bl_init();
-  _DAT_44b00404 = 0x24f037;
-  _DAT_44b00400 = 0x49;
-  _DAT_44920004 = 0x5010001f;
+  ...
+  //  Loop forever handling WiFi Kernel Events
   do {
-    if (_DAT_44b00120 << 0xc < 0) {
-      _DAT_44900084 = _DAT_44900084 | 1;
-    }
-    else {
-      _DAT_44900084 = _DAT_44900084 & 0xfffffffe;
-    }
-    if (ke_env.evt_field == 0) {
-      ipc_emb_wait();
-    }
-    if ((packets_num_12624 & 0xf) == 0) {
-      uVar2 = _DAT_40007018 >> 0x18 & 7;
-      if (uVar2 != 0) {
-        if (uVar2 != 3) {
-          _DAT_40000014 = _DAT_40000014 | 0x40000;
-        }
-        if ((uVar2 != 0) && (uVar2 != 3)) {
-          _DAT_40002040 = _DAT_40002040 & 0xfffffffc;
-          _DAT_40002044 = _DAT_40002044 & 0xfffffffe;
-        }
-      }
-      if ((_DAT_40007018 >> 0x18 & 4) != 0) {
-        _DAT_40000014 = _DAT_40000014 | 0x5c2000;
-        _DAT_4000f90c = _DAT_4000f90c & 0xfffffffe | 4;
-      }
-    }
-    packets_num_12624 = packets_num_12624 + 1;
+    ...
+    //  Wait for something (?)
+    if (ke_env.evt_field == 0) { ipc_emb_wait(); }
+    ...
+    //  Schedule a WiFi Kernel Event and handle it
     ke_evt_schedule();
+
+    //  Sleep for a while
     iVar1 = bl_sleep();
-    coex_wifi_pta_forece_enable((uint)(iVar1 == 0));
+
+    //  (Whaaat?)
+    coex_wifi_pta_forece_enable((uint) (iVar1 == 0));
   } while( true );
 }
 ```
 
+The actual Decompiled C Code for `wifi_main` looks a lot noisier...
+
 ![wifi_main](https://lupyuen.github.io/images/wifi-task2.png)
 
-TODO
+So we picked the highlights for our Reverse Engineering.
 
-From [`bl602_demo_wifi.c`](https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L28721-L28737)
+(And we added some annotations too)
+
+__`wifi_main`__ loops forever handling __WiFi Kernel Events__, to transmit and receive WiFi Packets.
+
+("`ke`" refers to the WiFi Kernel, the heart of the WiFi Driver)
+
+`wifi_main` calls __`ke_evt_schedule`__ to handle WiFi Kernel Events.
+
+Let's lookup `ke_evt_schedule` in our Decompiled C Code: [`bl602_demo_wifi.c`](https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L28721-L28737)
 
 ```c
-void ke_evt_schedule(void)
-
-{
+//  Schedule a WiFi Kernel Event and handle it
+void ke_evt_schedule(void) {
   int iVar1;
   evt_ptr_t *peVar2;
   
@@ -664,10 +666,15 @@ void ke_evt_schedule(void)
     }
     (*peVar2)(ke_evt_hdlr[iVar1].param);
   }
+  //  This line is probably incorrectly decompiled
   gp = (code *)((int)SFlash_Cache_Hit_Count_Get + 6);
   return;
 }
 ```
+
+This code does... something something something.
+
+Thankfully [This One Weird Trick](https://en.wikipedia.org/wiki/One_weird_trick_advertisements) will help us understand this cryptic decompiled code... __GitHub Search!__
 
 ![Searching for ke_evt_schedule](https://lupyuen.github.io/images/wifi-schedule2.png)
 
