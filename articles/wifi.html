@@ -451,9 +451,10 @@ static inline void ipc_app2emb_trigger_set(u32 value) {
 <p>This code triggers an LMAC Interrupt by writiing to the <strong>WiFi Hardware Register (IPC)</strong> at…</p>
 <pre><code class="language-text">REG_WIFI_REG_BASE + IPC_REG_BASE_ADDR + 4 * IPC_IRQ_A2E_MSG
 </code></pre>
-<p>Which gives Address <strong><code>0x4480 0008</code></strong></p>
-<p>TODO8</p>
-<p><img src="https://lupyuen.github.io/images/wifi-connect7.png" alt="" /></p>
+<p>Which gives us address <strong><code>0x4480 0008</code></strong></p>
+<p><em>Wait… Is address <code>0x4480 0008</code> documented anywhere?</em></p>
+<p>Nope it’s not documented in the <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf">BL602 Reference Manual</a>…</p>
+<p><img src="https://lupyuen.github.io/images/wifi-connect7.png" alt="Undocumented WiFi Hardware " /></p>
 <p>TODO7</p>
 <h1 id="decompiled-wifi-demo-firmware" class="section-header"><a href="#decompiled-wifi-demo-firmware">3 Decompiled WiFi Demo Firmware</a></h1>
 <p><em>Are we really Reverse Engineering the BL602 WiFi Driver?</em></p>

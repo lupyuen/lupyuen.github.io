@@ -162,7 +162,7 @@
 <p>To find the default JTAG Pins, we refer to…</p>
 <ul>
 <li>
-<p><a href="https://github.com/pine64/bl602-docs/blob/main/mirrored/BL602_BL604_RM_1.2_en.pdf">BL602 Reference Manual</a></p>
+<p><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf">BL602 Reference Manual</a></p>
 <p>Section 3.2.8, “GPIO Function” (Pages 27 to 40)</p>
 </li>
 <li>
@@ -382,7 +382,7 @@ exit
 <p>Aha! PineCone’s LED is connected to the same pins as the JTAG Port. Which explains the disco lights during JTAG programming!</p>
 <p>This is a problem… If we control the PineCone LED in our firmware, it will interfere with the JTAG Port.</p>
 <p><em>Can we use PineCone’s LED in our firmware… While debugging our firmware with JTAG?</em></p>
-<p>According to the <a href="https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf">BL602 Reference Manual</a> (Section 3.2.8 “GPIO Function”, Page 27), we may remap the JTAG Port to other GPIO Pins (and avoid the conflict).</p>
+<p>According to the <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf">BL602 Reference Manual</a> (Section 3.2.8 “GPIO Function”, Page 27), we may remap the JTAG Port to other GPIO Pins (and avoid the conflict).</p>
 <h2 id="free-the-led-from-jtag-port" class="section-header"><a href="#free-the-led-from-jtag-port">7.1 Free the LED from JTAG Port</a></h2>
 <p>Here’s our plan to free the LED from the JTAG Port…</p>
 <ol>
@@ -442,7 +442,7 @@ exit
 uint32_t *GPIO_CFGCTL0 = (uint32_t *) 0x40000100;
 uint32_t *GP1FUNC_ADDR = GPIO_CFGCTL0;
 </code></pre>
-<p>The pic above appears in the <a href="https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf">BL602 Reference Manual</a>, Section 3.3.5 “GPIO_CFGCTL0”, Page 33.</p>
+<p>The pic above appears in the <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf">BL602 Reference Manual</a>, Section 3.3.5 “GPIO_CFGCTL0”, Page 33.</p>
 <p>(“地址” is Chinese for “Address”)</p>
 </li>
 <li>

@@ -471,7 +471,7 @@ mem 0x22030000 0x2204C000 rw
 mem 0x42030000 0x4204C000 rw
 mem 0x23000000 0x23400000 ro
 </code></pre>
-<p>Refer to <a href="https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf">BL602 Reference Manual</a>, Section 1.3 “Function Description”, Pages 17 to 19.</p>
+<p>Refer to <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf">BL602 Reference Manual</a>, Section 1.3 “Function Description”, Pages 17 to 19.</p>
 </li>
 <li>
 <p>We load the Rust Firmware into BL602’s Instruction Cache Memory…</p>
@@ -561,7 +561,7 @@ target = &quot;riscv32imac-unknown-none-elf&quot;
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">parts</span> <span class="op">=</span> <span class="ident">dp</span>.<span class="ident">GLB</span>.<span class="ident">split</span>();</pre></div>
 <ul>
-<li>Refer to <a href="https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf">BL602 Reference Manual</a>, Section 3 “GLB”, Page 24.</li>
+<li>Refer to <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf">BL602 Reference Manual</a>, Section 3 “GLB”, Page 24.</li>
 </ul>
 <h2 id="loop-forever" class="section-header"><a href="#loop-forever">5.4 Loop Forever</a></h2>
 <p>Our firmware should never terminate… It should loop forever handling events.</p>
@@ -664,7 +664,7 @@ target = &quot;riscv32imac-unknown-none-elf&quot;
 <span class="kw">let</span> <span class="ident">mux0</span> <span class="op">=</span> <span class="ident">parts</span>.<span class="ident">uart_mux0</span>.<span class="ident">into_uart0_tx</span>();
 <span class="kw">let</span> <span class="ident">mux7</span> <span class="op">=</span> <span class="ident">parts</span>.<span class="ident">uart_mux7</span>.<span class="ident">into_uart0_rx</span>();</pre></div>
 <p>This code seems to be remapping pins IO 7 and IO 16 to UART Port 0. (Because BL602 allows us to remap any IO Pin to any Peripheral Function)</p>
-<p>See <a href="https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf">BL602 Reference Manual</a>, Section 3.2.8 “GPIO Function”, Page 27</p>
+<p>See <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf">BL602 Reference Manual</a>, Section 3.2.8 “GPIO Function”, Page 27</p>
 <h2 id="create-a-serial-interface" class="section-header"><a href="#create-a-serial-interface">7.2 Create a Serial Interface</a></h2>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">serial</span> <span class="op">=</span> <span class="ident">Serial::uart0</span>(
