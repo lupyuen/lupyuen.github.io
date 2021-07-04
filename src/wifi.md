@@ -20,7 +20,7 @@ In the demo firmware we shall...
 
 1.  Start the __WiFi Firmware Task__ that will control the BL602 WiFi Firmware
 
-1.  Start the __WiFi Manager Task__ that will manage WiFi Connections
+1.  Start the __WiFi Manager Task__ that will manage the WiFi Connection State
 
 1.  Connect to a __WiFi Access Point__
 
@@ -377,7 +377,7 @@ int bl_send_sm_connect_req(struct bl_hw *bl_hw, struct cfg80211_connect_params *
 
 Here we compose an __`SM_CONNECT_REQ`__ message that contains the Connection Parameters.
 
-("`SM`" refers to the LMAC State Machine)
+("`SM`" refers to the LMAC State Machine by RivieraWaves)
 
 Then we call __`bl_send_msg`__ to __send the message to LMAC__: [`bl_msg_tx.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_msg_tx.c#L315-L371)
 
@@ -520,7 +520,7 @@ Here's the workaround for deep-linking...
 
 1.  When we see a link like this...
 
-    > This is the decompiled code: [`bl602_demo_wifi.c`](https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L38512)
+    > This is the decompiled code: [`bl602_demo_wifi.c`](https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L38512-L38609)
 
     __Right-click__ (or long press) the link.
     
@@ -531,13 +531,13 @@ Here's the workaround for deep-linking...
     We will see this...
 
     ```text
-    https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L38512
+    https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L38512-L38609
     ```
 
 1.  Note that the address ends with...
 
     ```text
-    bl602_demo_wifi.c#L38512
+    bl602_demo_wifi.c#L38512-L38609
     ```
 
 1.  This means that we should...
@@ -552,35 +552,476 @@ Here's the workaround for deep-linking...
 
 # WiFi Firmware Task
 
-TODO
+The BL602 WiFi Driver operates with two Background Tasks (FreeRTOS)...
 
-![](https://lupyuen.github.io/images/wifi-task.png)
+-   __WiFi Manager Task__: Manages the WiFi Connection State
 
-TODO
+-   __WiFi Firmware Task__: Controls the WiFi Firmware
 
-![](https://lupyuen.github.io/images/wifi-task2.png)
+We've covered the WiFi Manager Task. (Remember the State Machine?)
 
-TODO
+Now we dive into the WiFi Firmware Task. Watch what happens as we...
 
-![](https://lupyuen.github.io/images/wifi-task3.png)
+1.  Start the __WiFi Firmware Task__
 
-TODO
+1.  __Schedule Kernel Events__ to handle WiFi Packets
 
-![](https://lupyuen.github.io/images/wifi-task4.png)
+1.  Handle the __transmission of WiFi Packets__
 
-TODO
+![Starting the WiFi Firmware Task](https://lupyuen.github.io/images/wifi-task.png)
 
-![](https://lupyuen.github.io/images/wifi-task5.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/wifi-task6.png)
+## Start Firmware Task
 
 TODO
+
+From [`hal_wifi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_wifi.c#L41-L49)
+
+```c
+int hal_wifi_start_firmware_task(void)
+{
+    static StackType_t wifi_fw_stack[WIFI_STACK_SIZE];
+    static StaticTask_t wifi_fw_task;
+
+    xTaskCreateStatic(wifi_main, (char*)"fw", WIFI_STACK_SIZE, NULL, TASK_PRIORITY_FW, wifi_fw_stack, &wifi_fw_task);
+
+    return 0;
+}
+```
+
+TODO
+
+From [`bl602_demo_wifi.c`](https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L32959-L33006)
+
+```c
+void wifi_main(void *param)
+
+{
+  int iVar1;
+  uint uVar2;
+  
+  rfc_init(40000000);
+  _DAT_44b00400 = _DAT_44b00400 | 1;
+  mpif_clk_init();
+  sysctrl_init();
+  intc_init();
+  ipc_emb_init();
+  bl_init();
+  _DAT_44b00404 = 0x24f037;
+  _DAT_44b00400 = 0x49;
+  _DAT_44920004 = 0x5010001f;
+  do {
+    if (_DAT_44b00120 << 0xc < 0) {
+      _DAT_44900084 = _DAT_44900084 | 1;
+    }
+    else {
+      _DAT_44900084 = _DAT_44900084 & 0xfffffffe;
+    }
+    if (ke_env.evt_field == 0) {
+      ipc_emb_wait();
+    }
+    if ((packets_num_12624 & 0xf) == 0) {
+      uVar2 = _DAT_40007018 >> 0x18 & 7;
+      if (uVar2 != 0) {
+        if (uVar2 != 3) {
+          _DAT_40000014 = _DAT_40000014 | 0x40000;
+        }
+        if ((uVar2 != 0) && (uVar2 != 3)) {
+          _DAT_40002040 = _DAT_40002040 & 0xfffffffc;
+          _DAT_40002044 = _DAT_40002044 & 0xfffffffe;
+        }
+      }
+      if ((_DAT_40007018 >> 0x18 & 4) != 0) {
+        _DAT_40000014 = _DAT_40000014 | 0x5c2000;
+        _DAT_4000f90c = _DAT_4000f90c & 0xfffffffe | 4;
+      }
+    }
+    packets_num_12624 = packets_num_12624 + 1;
+    ke_evt_schedule();
+    iVar1 = bl_sleep();
+    coex_wifi_pta_forece_enable((uint)(iVar1 == 0));
+  } while( true );
+}
+```
+
+![wifi_main](https://lupyuen.github.io/images/wifi-task2.png)
+
+TODO
+
+From [`bl602_demo_wifi.c`](https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L28721-L28737)
+
+```c
+void ke_evt_schedule(void)
+
+{
+  int iVar1;
+  evt_ptr_t *peVar2;
+  
+  while (ke_env.evt_field != 0) {
+    iVar1 = __clzsi2(ke_env.evt_field);
+    peVar2 = ke_evt_hdlr[iVar1].func;
+    if ((0x1a < iVar1) || (peVar2 == (evt_ptr_t *)0x0)) {
+      assert_err("(event < KE_EVT_MAX) && ke_evt_hdlr[event].func","module",0xdd);
+    }
+    (*peVar2)(ke_evt_hdlr[iVar1].param);
+  }
+  gp = (code *)((int)SFlash_Cache_Hit_Count_Get + 6);
+  return;
+}
+```
+
+![Searching for ke_evt_schedule](https://lupyuen.github.io/images/wifi-schedule2.png)
+
+## Schedule Kernel Events
+
+TODO
+
+[GitHub Code Search for `ke_evt_schedule` (recent indexed)](https://github.com/search?o=desc&q=ke_evt_schedule&s=indexed&type=Code)
+
+TODO
+
+From [`ke_event.c`](https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/ke/ke_event.c#L203-L231)
+
+```c
+/**
+ ****************************************************************************************
+ * @brief Event scheduler entry point.
+ *
+ * This primitive has to be called in the background loop in order to execute the event
+ * handlers for the event that are set.
+ *
+ ****************************************************************************************
+ */
+void ke_evt_schedule(void)
+{
+    uint32_t field,event;
+
+	field = ke_env.evt_field;
+    while (field) // Compiler is assumed to optimize with loop inversion
+    {
+        // Find highest priority event set
+        event = co_clz(field);
+
+        // Sanity check
+        ASSERT_ERR((event < KE_EVT_MAX) && ke_evt_hdlr[event].func);
+
+        // Execute corresponding handler
+        (ke_evt_hdlr[event].func)(ke_evt_hdlr[event].param);
+
+        // Update the volatile value
+        field = ke_env.evt_field;
+    }
+}
+```
+
+![ke_evt_schedule from AliOS / RivieraWaves](https://lupyuen.github.io/images/wifi-task3.png)
+
+TODO
+
+From [`ke_event.c`](https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/ke/ke_event.c#L78-L138)
+
+```c
+static const struct ke_evt_tag ke_evt_hdlr[32] =
+{
+	{&rwnxl_reset_evt, 0},       // [KE_EVT_RESET         ]                                                                            
+	
+	#if NX_MM_TIMER
+	{&mm_timer_schedule, 0},     // [KE_EVT_MM_TIMER      ]                                                                            
+	#endif
+	
+	{&ke_timer_schedule, 0},     // [KE_EVT_KE_TIMER      ]   
+	
+#if NX_BEACONING
+	{&txl_payload_handle, AC_BCN},   // [KE_EVT_IPC_EMB_TXDESC_BCN]                                                                        
+#endif
+	
+	{&txl_payload_handle, AC_VO},    // [KE_EVT_IPC_EMB_TXDESC_AC3]                                                                        
+	{&txl_payload_handle, AC_VI},    // [KE_EVT_IPC_EMB_TXDESC_AC2]                                                                        
+	{&txl_payload_handle, AC_BE},    // [KE_EVT_IPC_EMB_TXDESC_AC1]                                                                        
+	{&txl_payload_handle, AC_BK},    // [KE_EVT_IPC_EMB_TXDESC_AC0]   
+	
+	{&ke_task_schedule, 0},      // [KE_EVT_KE_MESSAGE    ]                                                                            
+	{&mm_hw_idle_evt, 0},        // [KE_EVT_HW_IDLE       ]                                                                            
+	
+	#if NX_BEACONING || (!NX_MULTI_ROLE)
+	{&mm_tbtt_evt, 0},           // [KE_EVT_PRIMARY_TBTT  ]                                                                            
+	#endif
+	
+	#if NX_BEACONING
+	{&mm_tbtt_evt, 0},           // [KE_EVT_SECONDARY_TBTT]                                                                            
+	#endif
+	
+	{&rxu_cntrl_evt, 0},         // [KE_EVT_RXUREADY      ]
+	
+	#if NX_TX_FRAME
+	{&txl_frame_evt, 0},         // [KE_EVT_TXFRAME_CFM   ]                                                                            
+	#endif
+	
+	#if NX_BEACONING
+	{&txl_cfm_evt, AC_BCN},      // [KE_EVT_TXCFM_BCN     ]                                                                            
+	#endif
+	
+	{&txl_cfm_evt, AC_VO},       // [KE_EVT_TXCFM_AC3     ]                                                                            
+	{&txl_cfm_evt, AC_VI},       // [KE_EVT_TXCFM_AC2     ]                                                                            
+	{&txl_cfm_evt, AC_BE},       // [KE_EVT_TXCFM_AC1     ]                                                                            
+	{&txl_cfm_evt, AC_BK},       // [KE_EVT_TXCFM_AC0     ]                                                                            
+
+    #if CFG_SDIO
+	{&sdio_emb_rxed_evt, 0},  
+	#endif
+	
+    #if CFG_SDIO_TRANS
+	{&sdio_trans_evt, 0},  
+    #endif
+    
+	#if NX_GP_DMA
+	{&hal_dma_evt, DMA_DL},      // [KE_EVT_GP_DMA_DL     ]                                                                            
+	#endif
+
+	#if CFG_TX_EVM_TEST
+	{&evm_via_mac_evt, 0},
+	#endif
+};
+```
+
+![txl_payload_handle Event Handler](https://lupyuen.github.io/images/wifi-task4.png)
+
+TODO
+
+## Handle Transmit Payload
+
+TODO
+
+From [`txl_cntrl.c`](https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/lmac/src/tx/txl/txl_cntrl.h#L377-L386)
+
+```c
+/**
+ ****************************************************************************************
+ * @brief Perform operations on payloads that have been transfered from host memory
+ *
+ * This primitive is called by the interrupt controller ISR. It performs LLC translation
+ * and MIC computing if required.
+ *
+ ****************************************************************************************
+ */
+void txl_payload_handle(int access_category);
+```
+
+TODO
+
+From [`bl602_demo_wifi.c`](https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L20205-L20216)
+
+```c
+void txl_payload_handle(void)
+
+{
+  int iVar1;
+  
+  while ((_DAT_44a00024 & 0x1f) != 0) {
+    iVar1 = __clzsi2(_DAT_44a00024 & 0x1f);
+    _DAT_44a00020 = 1 << (0x1fU - iVar1 & 0x1f);
+  }
+  gp = (code *)((int)SFlash_Cache_Hit_Count_Get + 6);
+  return;
+}
+```
+
+![txl_payload_handle doesn't do much](https://lupyuen.github.io/images/wifi-task5.png)
+
+TODO
+
+From [`bl602_demo_wifi.c`](https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L20222-L20398)
+
+```c
+void txl_payload_handle_backup(void)
+
+{
+  ushort uVar1;
+  uint uVar2;
+  uint uVar3;
+  txl_buffer_tag *ptVar4;
+  char *condition;
+  int line;
+  byte bVar5;
+  uint uVar6;
+  tx_hd *ptVar7;
+  undefined *puVar8;
+  txdesc *txdesc;
+  tx_hd *ptVar9;
+  txl_buffer_env_tag *ptVar10;
+  txl_cntrl_env_tag *ptVar11;
+  uint uVar12;
+  tx_hw_desc *ptVar13;
+  
+  ptVar10 = &txl_buffer_env;
+  ptVar11 = &txl_cntrl_env;
+  uVar3 = 0;
+  while (ptVar4 = ptVar10->list[0].first, ptVar4 == (txl_buffer_tag *)0x0) {
+LAB_230059f6:
+    uVar3 = uVar3 + 1;
+    ptVar10 = (txl_buffer_env_tag *)&ptVar10->buf_idx[0].free_size;
+    ptVar11 = (txl_cntrl_env_tag *)(ptVar11->txlist + 1);
+    if (uVar3 == 5) {
+      gp = (code *)((int)SFlash_Cache_Hit_Count_Get + 6);
+      return;
+    }
+  }
+  uVar2 = uVar3 & 0xff;
+  ptVar10->list[0].first = ptVar4->next;
+  uVar12 = 1 << (uVar3 & 0x1f);
+  do {
+    txdesc = ptVar4->txdesc;
+    if ((txdesc->host).packet_addr != 0) {
+      if (uVar3 == 4) {
+        uVar6 = (uint)(txdesc->host).vif_idx;
+        bVar5 = *(byte *)&vif_info_tab[uVar6].u.field_0x2ea;
+        if ((*(byte *)((int)&ptVar4[1].length + 1) >> 5 & 1) == 0) {
+          bVar5 = bVar5 & 0xfd;
+        }
+        else {
+          bVar5 = bVar5 | 2;
+        }
+        *(byte *)&vif_info_tab[uVar6].u.field_0x2ea = bVar5;
+      }
+      if ((txdesc->host).tid == -1) {
+        uVar1 = (txdesc->host).flags;
+        if ((((uVar1 & 8) != 0) && ((*(byte *)&ptVar4[1].length & 0xdc) == 0x10)) &&
+           (*(short *)((int)&ptVar4[1].dma_desc[0].src + 2) == 0)) {
+          (txdesc->host).flags = uVar1 | 0x20;
+          rxu_cntrl_monitor_pm((mac_addr *)&ptVar4[1].lenheader);
+        }
+        txl_machdr_format((uint32_t)(ptVar4 + 1));
+      }
+      ptVar4 = (txdesc->lmac).buffer;
+      ptVar13 = (txdesc->lmac).hw_desc;
+      if (((txdesc->host).flags & 8) == 0) {
+        txu_cntrl_tkip_mic_append(txdesc,(uint8_t)uVar2);
+        (ptVar13->thd).macctrlinfo1 = (ptVar4->buffer_control).mac_control_info;
+      }
+      else {
+        (ptVar13->thd).macctrlinfo2 = (ptVar13->thd).macctrlinfo2 & 0xff87ffff;
+        bVar5 = *(byte *)&ptVar4[1].lenheader;
+        (ptVar13->thd).statinfo = 0;
+        (ptVar13->thd).macctrlinfo1 = (uint)((bVar5 & 1) == 0) << 9;
+      }
+      (ptVar13->thd).policyentryaddr = (uint32_t)&ptVar4->buffer_control;
+      (ptVar13->thd).phyctrlinfo = (ptVar4->buffer_control).phy_control_info;
+    }
+    ptVar11->txlist[0].bridgedmacnt = ptVar11->txlist[0].bridgedmacnt + 1;
+    ptVar7 = ptVar11->txlist[0].last_frame_exch;
+    ptVar9 = &((txdesc->lmac).hw_desc)->thd;
+    if (ptVar7 == (tx_hd *)0x0) {
+      uVar6 = uVar3;
+      if (uVar2 == 2) {
+        if ((_DAT_44b08188 >> 0xc & 3) == 2) {
+          line = 0x23c;
+          condition = "blmac_tx_ac_2_state_getf() != 2";
+          goto LAB_23005bec;
+        }
+        _DAT_44b08180 = 0x800;
+        puVar8 = (undefined *)0x61a80;
+        _DAT_44b081a4 = ptVar9;
+      }
+      else {
+        if (2 < uVar2) {
+          if (uVar2 == 3) {
+            if ((_DAT_44b08188 >> 0x10 & 3) != 2) {
+              _DAT_44b08180 = 0x1000;
+              _DAT_44b081a8 = ptVar9;
+              goto LAB_23005c4c;
+            }
+            line = 0x236;
+            condition = "blmac_tx_ac_3_state_getf() != 2";
+          }
+          else {
+            if (uVar2 != 4) goto LAB_23005b9a;
+            if ((_DAT_44b08188 & 3) != 2) {
+              _DAT_44b08180 = 0x100;
+              uVar6 = 4;
+              puVar8 = (undefined *)0xc350;
+              _DAT_44b08198 = ptVar9;
+              goto LAB_23005c08;
+            }
+            line = 0x22f;
+            condition = "blmac_tx_bcn_state_getf() != 2";
+          }
+LAB_23005bec:
+          assert_rec(condition,"module",line);
+          goto LAB_23005b5e;
+        }
+        if (uVar2 == 1) {
+          if ((_DAT_44b08188 >> 8 & 3) == 2) {
+            line = 0x242;
+            condition = "blmac_tx_ac_1_state_getf() != 2";
+            goto LAB_23005bec;
+          }
+          _DAT_44b08180 = 0x400;
+          puVar8 = &DAT_001e8480;
+          _DAT_44b081a0 = ptVar9;
+        }
+        else {
+LAB_23005b9a:
+          if ((_DAT_44b08188 >> 4 & 3) == 2) {
+            line = 0x248;
+            condition = "blmac_tx_ac_0_state_getf() != 2";
+            goto LAB_23005bec;
+          }
+          _DAT_44b08180 = 0x200;
+          _DAT_44b0819c = ptVar9;
+LAB_23005c4c:
+          puVar8 = (undefined *)0x30d40;
+        }
+      }
+LAB_23005c08:
+      blmac_abs_timer_set(uVar6,(uint32_t)(puVar8 + _DAT_44b00120));
+      _DAT_44b0808c = uVar12 | _DAT_44b0808c;
+      _DAT_44b08088 = uVar12;
+    }
+    else {
+      ptVar7->nextfrmexseq_ptr = (uint32_t)ptVar9;
+      if (uVar2 == 2) {
+        _DAT_44b08180 = 8;
+      }
+      else {
+        if (uVar2 < 3) {
+          if (uVar2 == 1) {
+            _DAT_44b08180 = 4;
+          }
+          else {
+LAB_23005b26:
+            _DAT_44b08180 = 2;
+          }
+        }
+        else {
+          if (uVar2 == 3) {
+            _DAT_44b08180 = 0x10;
+          }
+          else {
+            if (uVar2 != 4) goto LAB_23005b26;
+            _DAT_44b08180 = 1;
+          }
+        }
+      }
+    }
+LAB_23005b5e:
+    ptVar4 = ptVar10->list[0].first;
+    ptVar11->txlist[0].last_frame_exch = ptVar9;
+    if (ptVar4 == (txl_buffer_tag *)0x0) goto LAB_230059f6;
+    ptVar10->list[0].first = ptVar4->next;
+  } while( true );
+}
+```
+
+![txl_payload_handle_backup](https://lupyuen.github.io/images/wifi-task6.png)
+
+TODO6
 
 # CEVA RivieraWaves
 
 TODO
+
+![](https://lupyuen.github.io/images/wifi-schedule3.png)
+
+TODO3
 
 -   [__mclown/AliOS-Things__](https://github.com/mclown/AliOS-Things/tree/master/platform/mcu/bk7231u/beken/ip)
 
@@ -706,15 +1147,7 @@ TODO
 
 ![](https://lupyuen.github.io/images/wifi-schedule.png)
 
-TODO
-
-![](https://lupyuen.github.io/images/wifi-schedule2.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/wifi-schedule3.png)
-
-TODO
+TODO1
 
 # What's Next
 
