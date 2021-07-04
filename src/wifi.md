@@ -488,15 +488,23 @@ We've just uncovered a BL602 WiFi Secret! 🤫
 
 _Are we really Reverse Engineering the BL602 WiFi Driver?_
 
-Not quite. So far we've been reading the published source code for the BL602 WiFi Driver.
+Not quite. So far we've been reading the __published source code__ for the BL602 WiFi Driver.
 
-TODO
+_Can we do some serious Reverse Engineering now?_
 
-[`BraveHeartFLOSSDev`](https://github.com/BraveHeartFLOSSDev) did an excellent job decompiling into C (with Ghidra) the BL602 WiFi Demo Firmware...
+Most certainly! A big chunk of the BL602 WiFi Driver __doesn't come with any source code.__
+
+(Like the functions for WiFi WPA Authentication)
+
+But [__`BraveHeartFLOSSDev`__](https://github.com/BraveHeartFLOSSDev) did an excellent job decompiling into C (with Ghidra) the BL602 WiFi Demo Firmware...
 
 -   [__BraveHeartFLOSSDev/bl602nutcracker1__](https://github.com/BraveHeartFLOSSDev/bl602nutcracker1)
 
 [(We'll use this fork)](https://github.com/lupyuen/bl602nutcracker1)
+
+We shall now study this Decompiled C Code... And do some serious Reverse Engineering of the BL602 WiFi Driver!
+
+[More about Ghidra](https://ghidra-sre.org/)
 
 ## Linking to decompiled code
 
