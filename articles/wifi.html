@@ -541,22 +541,22 @@ static inline void ipc_app2emb_trigger_set(u32 value) {
 <p>Let’s look inside <strong><code>hal_wifi_start_firmware_task</code></strong> now: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_wifi.c#L41-L49"><code>hal_wifi.c</code></a></p>
 <pre><code class="language-c">//  Start WiFi Firmware Task (FreeRTOS)
 int hal_wifi_start_firmware_task(void) {
-    //  Stack space for the WiFi Firmware Task
-    static StackType_t wifi_fw_stack[WIFI_STACK_SIZE];
+  //  Stack space for the WiFi Firmware Task
+  static StackType_t wifi_fw_stack[WIFI_STACK_SIZE];
 
-    //  Task Handle for the WiFi Firmware Task
-    static StaticTask_t wifi_fw_task;
+  //  Task Handle for the WiFi Firmware Task
+  static StaticTask_t wifi_fw_task;
 
-    //  Create a FreeRTOS Background Task
-    xTaskCreateStatic(
-        wifi_main,         //  Task will run this function
-        (char *) &quot;fw&quot;,     //  Task Name
-        WIFI_STACK_SIZE,   //  Task Stack Size
-        NULL,              //  Task Parameters
-        TASK_PRIORITY_FW,  //  Task Priority
-        wifi_fw_stack,     //  Task Stack
-        &amp;wifi_fw_task);    //  Task Handle
-    return 0;
+  //  Create a FreeRTOS Background Task
+  xTaskCreateStatic(
+    wifi_main,         //  Task will run this function
+    (char *) &quot;fw&quot;,     //  Task Name
+    WIFI_STACK_SIZE,   //  Task Stack Size
+    NULL,              //  Task Parameters
+    TASK_PRIORITY_FW,  //  Task Priority
+    wifi_fw_stack,     //  Task Stack
+    &amp;wifi_fw_task);    //  Task Handle
+  return 0;
 }
 </code></pre>
 <p>This creates a <strong>FreeRTOS Background Task</strong> that runs the function <strong><code>wifi_main</code></strong> forever.</p>
@@ -617,12 +617,18 @@ void ke_evt_schedule(void) {
   return;
 }
 </code></pre>
-<p>This code does… something something something.</p>
+<p>This decompiled code does… something something something.</p>
 <p>Thankfully <a href="https://en.wikipedia.org/wiki/One_weird_trick_advertisements">This One Weird Trick</a> will help us understand this cryptic decompiled code… <strong>GitHub Search!</strong></p>
 <p><img src="https://lupyuen.github.io/images/wifi-schedule2.png" alt="Searching for ke_evt_schedule" /></p>
 <h2 id="schedule-kernel-events" class="section-header"><a href="#schedule-kernel-events">4.2 Schedule Kernel Events</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/search?o=desc&amp;q=ke_evt_schedule&amp;s=indexed&amp;type=Code">GitHub Code Search for <code>ke_evt_schedule</code> (recent indexed)</a></p>
+<p><em>Is it possible that <code>ke_evt_schedule</code> wasn’t invented for BL602? Maybe it was created for something else?</em></p>
+<p>Bingo! Let’s do a <strong>GitHub Search</strong> for <code>ke_evt_schedule</code>!</p>
+<ul>
+<li>
+<p><a href="https://github.com/search?o=desc&amp;q=ke_evt_schedule&amp;s=indexed&amp;type=Code"><strong>GitHub Code Search for <code>ke_evt_schedule</code></strong></a></p>
+<p>(Search results are sorted by recently indexed)</p>
+</li>
+</ul>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/ke/ke_event.c#L203-L231"><code>ke_event.c</code></a></p>
 <pre><code class="language-c">/**
