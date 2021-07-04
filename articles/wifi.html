@@ -472,9 +472,43 @@ static inline void ipc_app2emb_trigger_set(u32 value) {
 <p>We shall now study this Decompiled C Code… And do some serious Reverse Engineering of the BL602 WiFi Driver!</p>
 <p><a href="https://ghidra-sre.org/">More about Ghidra</a></p>
 <h2 id="linking-to-decompiled-code" class="section-header"><a href="#linking-to-decompiled-code">3.1 Linking to decompiled code</a></h2>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/wifi-assert.png" alt="" /></p>
-<p>TODO</p>
+<p>Sadly GitHub won’t show our huge Decompiled C Files in the web browser. So <strong>deep-linking to specific lines of code</strong> will be a problem.</p>
+<p>Here’s the workaround for deep-linking…</p>
+<ol>
+<li>
+<p>Download the repo of Decompiled C Files…</p>
+<pre><code class="language-bash">git clone --recursive https://github.com/lupyuen/bl602nutcracker1
+</code></pre>
+</li>
+<li>
+<p>When we see a link like this…</p>
+<blockquote>
+<p>This is the decompiled code: <a href="https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L38512"><code>bl602_demo_wifi.c</code></a></p>
+</blockquote>
+<p><strong>Right-click</strong> (or long press) the link.</p>
+<p>Select <strong><code>Copy Link Address</code></strong></p>
+</li>
+<li>
+<p><strong>Paste the address</strong> into a text editor.</p>
+<p>We will see this…</p>
+<pre><code class="language-text">https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L38512
+</code></pre>
+</li>
+<li>
+<p>Note that the address ends with…</p>
+<pre><code class="language-text">bl602_demo_wifi.c#L38512
+</code></pre>
+</li>
+<li>
+<p>This means that we should…</p>
+<p>Open the downloaded source file <strong><code>bl602_demo_wifi.c</code></strong> in our code editor (like VSCode)</p>
+<p>And jump to line number <strong><code>38512</code></strong> (use Ctrl-G)</p>
+</li>
+<li>
+<p>And we shall see the referenced Decompiled C Code…</p>
+</li>
+</ol>
+<p><img src="https://lupyuen.github.io/images/wifi-assert.png" alt="Assertions" /></p>
 <h1 id="wifi-firmware-task" class="section-header"><a href="#wifi-firmware-task">4 WiFi Firmware Task</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wifi-task.png" alt="" /></p>
