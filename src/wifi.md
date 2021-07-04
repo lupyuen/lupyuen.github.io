@@ -508,11 +508,47 @@ We shall now study this Decompiled C Code... And do some serious Reverse Enginee
 
 ## Linking to decompiled code
 
-TODO
+Sadly GitHub won't show our huge Decompiled C Files in the web browser. So __deep-linking to specific lines of code__ will be a problem.
 
-![](https://lupyuen.github.io/images/wifi-assert.png)
+Here's the workaround for deep-linking...
 
-TODO
+1.  Download the repo of Decompiled C Files...
+
+    ```bash
+    git clone --recursive https://github.com/lupyuen/bl602nutcracker1
+    ```
+
+1.  When we see a link like this...
+
+    > This is the decompiled code: [`bl602_demo_wifi.c`](https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L38512)
+
+    __Right-click__ (or long press) the link.
+    
+    Select __`Copy Link Address`__
+
+1.  __Paste the address__ into a text editor.
+
+    We will see this...
+
+    ```text
+    https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L38512
+    ```
+
+1.  Note that the address ends with...
+
+    ```text
+    bl602_demo_wifi.c#L38512
+    ```
+
+1.  This means that we should...
+
+    Open the downloaded source file __`bl602_demo_wifi.c`__ in our code editor (like VSCode)
+    
+    And jump to line number __`38512`__ (use Ctrl-G)
+
+1.  And we shall see the referenced Decompiled C Code...
+
+![Assertions](https://lupyuen.github.io/images/wifi-assert.png)
 
 # WiFi Firmware Task
 
