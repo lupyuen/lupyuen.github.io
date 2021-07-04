@@ -460,13 +460,17 @@ static inline void ipc_app2emb_trigger_set(u32 value) {
 <p>We’ve just uncovered a BL602 WiFi Secret! 🤫</p>
 <h1 id="decompiled-wifi-demo-firmware" class="section-header"><a href="#decompiled-wifi-demo-firmware">3 Decompiled WiFi Demo Firmware</a></h1>
 <p><em>Are we really Reverse Engineering the BL602 WiFi Driver?</em></p>
-<p>Not quite. So far we’ve been reading the published source code for the BL602 WiFi Driver.</p>
-<p>TODO</p>
-<p><a href="https://github.com/BraveHeartFLOSSDev"><code>BraveHeartFLOSSDev</code></a> did an excellent job decompiling into C (with Ghidra) the BL602 WiFi Demo Firmware…</p>
+<p>Not quite. So far we’ve been reading the <strong>published source code</strong> for the BL602 WiFi Driver.</p>
+<p><em>Can we do some serious Reverse Engineering now?</em></p>
+<p>Most certainly! A big chunk of the BL602 WiFi Driver <strong>doesn’t come with any source code.</strong></p>
+<p>(Like the functions for WiFi WPA Authentication)</p>
+<p>But <a href="https://github.com/BraveHeartFLOSSDev"><strong><code>BraveHeartFLOSSDev</code></strong></a> did an excellent job decompiling into C (with Ghidra) the BL602 WiFi Demo Firmware…</p>
 <ul>
 <li><a href="https://github.com/BraveHeartFLOSSDev/bl602nutcracker1"><strong>BraveHeartFLOSSDev/bl602nutcracker1</strong></a></li>
 </ul>
 <p><a href="https://github.com/lupyuen/bl602nutcracker1">(We’ll use this fork)</a></p>
+<p>We shall now study this Decompiled C Code… And do some serious Reverse Engineering of the BL602 WiFi Driver!</p>
+<p><a href="https://ghidra-sre.org/">More about Ghidra</a></p>
 <h2 id="linking-to-decompiled-code" class="section-header"><a href="#linking-to-decompiled-code">3.1 Linking to decompiled code</a></h2>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wifi-assert.png" alt="" /></p>
