@@ -349,6 +349,8 @@ Which calls __`bl_send_sm_connect_req`__ to send the Connection Parameters to th
 
 Let's dig in and find out how...
 
+![bl_send_sm_connect_req](https://lupyuen.github.io/images/wifi-connect5.png)
+
 ## Send request to LMAC
 
 _What is LMAC?_
@@ -372,8 +374,6 @@ int bl_send_sm_connect_req(struct bl_hw *bl_hw, struct cfg80211_connect_params *
   return bl_send_msg(bl_hw, req, 1, SM_CONNECT_CFM, cfm);
 }
 ```
-
-![bl_send_sm_connect_req](https://lupyuen.github.io/images/wifi-connect5.png)
 
 Here we compose an __`SM_CONNECT_REQ`__ message that contains the Connection Parameters.
 
@@ -436,11 +436,11 @@ ipc_app2emb_trigger_set(IPC_IRQ_A2E_MSG);
 Let's look inside __`ipc_app2emb_trigger_set`__ and learn how it triggers an __LMAC Interrupt__: [`reg_ipc_app.h`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/reg_ipc_app.h#L41-L69)
 
 ```c
-//  WiFi Register Base
-#define REG_WIFI_REG_BASE         0x44000000
+//  WiFi Hardware Register Base Address
+#define REG_WIFI_REG_BASE          0x44000000
 
-//  IPC Register Base
-#define IPC_REG_BASE_ADDR         0x00800000
+//  IPC Hardware Register Base Address
+#define IPC_REG_BASE_ADDR          0x00800000
 
 //  APP2EMB_TRIGGER Register Definition
 //  Bits    Field Name           Reset Value
@@ -453,7 +453,8 @@ Let's look inside __`ipc_app2emb_trigger_set`__ and learn how it triggers an __L
 
 //  Write to IPC Register
 #define REG_IPC_APP_WR(env, INDEX, value) \
-  (*(volatile u32*)((u8*)env + IPC_REG_BASE_ADDR + 4*(INDEX)) = value)
+  (*(volatile u32 *) ((u8 *) env + IPC_REG_BASE_ADDR + 4*(INDEX)) \
+    = value)
 
 //  Trigger LMAC Interrupt
 static inline void ipc_app2emb_trigger_set(u32 value) {
@@ -465,7 +466,7 @@ static inline void ipc_app2emb_trigger_set(u32 value) {
 }
 ```
 
-This code triggers an LMAC Interrupt by writiing to the __WiFi Hardware Register (IPC)__ at...
+This code triggers an LMAC Interrupt by writing to the __WiFi Hardware Register__ (for Interprocess Communication) at...
 
 ```text
 REG_WIFI_REG_BASE + IPC_REG_BASE_ADDR + 4 * IPC_IRQ_A2E_MSG
@@ -475,11 +476,13 @@ Which gives us address __`0x4480 0008`__
 
 _Wait... Is address `0x4480 0008` documented anywhere?_
 
-Nope it's not documented in the [BL602 Reference Manual](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf)...
+Nope it's not documented in the [__BL602 Reference Manual__](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf)...
 
-![Undocumented WiFi Hardware ](https://lupyuen.github.io/images/wifi-connect7.png)
+![Undocumented WiFi Hardware Registers](https://lupyuen.github.io/images/wifi-connect7.png)
 
-TODO7
+In fact the entire region of __WiFi Hardware Registers at `0x4400 0000`__ is undocumented.
+
+We've just uncovered a BL602 WiFi Secret! 🤫
 
 # Decompiled WiFi Demo Firmware
 
