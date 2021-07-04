@@ -361,6 +361,7 @@ int bl_cfg80211_connect(struct bl_hw *bl_hw, struct cfg80211_connect_params *sme
 </code></pre>
 <p>Which calls <strong><code>bl_send_sm_connect_req</code></strong> to send the Connection Parameters to the <strong>WiFi Hardware (LMAC)</strong>.</p>
 <p>Let’s dig in and find out how…</p>
+<p><img src="https://lupyuen.github.io/images/wifi-connect5.png" alt="bl_send_sm_connect_req" /></p>
 <h2 id="send-request-to-lmac" class="section-header"><a href="#send-request-to-lmac">2.3 Send request to LMAC</a></h2>
 <p><em>What is LMAC?</em></p>
 <p><strong>Lower Medium Access Control (LMAC)</strong> is the firmware that runs <strong>inside the BL602 WiFi Radio Hardware</strong> and executes the WiFi Radio functions. </p>
@@ -378,7 +379,6 @@ int bl_send_sm_connect_req(struct bl_hw *bl_hw, struct cfg80211_connect_params *
   return bl_send_msg(bl_hw, req, 1, SM_CONNECT_CFM, cfm);
 }
 </code></pre>
-<p><img src="https://lupyuen.github.io/images/wifi-connect5.png" alt="bl_send_sm_connect_req" /></p>
 <p>Here we compose an <strong><code>SM_CONNECT_REQ</code></strong> message that contains the Connection Parameters.</p>
 <p>(“<code>SM</code>” refers to the LMAC State Machine)</p>
 <p>Then we call <strong><code>bl_send_msg</code></strong> to <strong>send the message to LMAC</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_msg_tx.c#L315-L371"><code>bl_msg_tx.c</code></a></p>
@@ -420,11 +420,11 @@ int ipc_host_msg_push(struct ipc_host_env_tag *env, void *msg_buf, uint16_t len)
 ipc_app2emb_trigger_set(IPC_IRQ_A2E_MSG);
 </code></pre>
 <p>Let’s look inside <strong><code>ipc_app2emb_trigger_set</code></strong> and learn how it triggers an <strong>LMAC Interrupt</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/reg_ipc_app.h#L41-L69"><code>reg_ipc_app.h</code></a></p>
-<pre><code class="language-c">//  WiFi Register Base
-#define REG_WIFI_REG_BASE         0x44000000
+<pre><code class="language-c">//  WiFi Hardware Register Base Address
+#define REG_WIFI_REG_BASE          0x44000000
 
-//  IPC Register Base
-#define IPC_REG_BASE_ADDR         0x00800000
+//  IPC Hardware Register Base Address
+#define IPC_REG_BASE_ADDR          0x00800000
 
 //  APP2EMB_TRIGGER Register Definition
 //  Bits    Field Name           Reset Value
@@ -437,7 +437,8 @@ ipc_app2emb_trigger_set(IPC_IRQ_A2E_MSG);
 
 //  Write to IPC Register
 #define REG_IPC_APP_WR(env, INDEX, value) \
-  (*(volatile u32*)((u8*)env + IPC_REG_BASE_ADDR + 4*(INDEX)) = value)
+  (*(volatile u32 *) ((u8 *) env + IPC_REG_BASE_ADDR + 4*(INDEX)) \
+    = value)
 
 //  Trigger LMAC Interrupt
 static inline void ipc_app2emb_trigger_set(u32 value) {
@@ -448,14 +449,15 @@ static inline void ipc_app2emb_trigger_set(u32 value) {
     value);
 }
 </code></pre>
-<p>This code triggers an LMAC Interrupt by writiing to the <strong>WiFi Hardware Register (IPC)</strong> at…</p>
+<p>This code triggers an LMAC Interrupt by writing to the <strong>WiFi Hardware Register</strong> (for Interprocess Communication) at…</p>
 <pre><code class="language-text">REG_WIFI_REG_BASE + IPC_REG_BASE_ADDR + 4 * IPC_IRQ_A2E_MSG
 </code></pre>
 <p>Which gives us address <strong><code>0x4480 0008</code></strong></p>
 <p><em>Wait… Is address <code>0x4480 0008</code> documented anywhere?</em></p>
-<p>Nope it’s not documented in the <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf">BL602 Reference Manual</a>…</p>
-<p><img src="https://lupyuen.github.io/images/wifi-connect7.png" alt="Undocumented WiFi Hardware " /></p>
-<p>TODO7</p>
+<p>Nope it’s not documented in the <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf"><strong>BL602 Reference Manual</strong></a>…</p>
+<p><img src="https://lupyuen.github.io/images/wifi-connect7.png" alt="Undocumented WiFi Hardware Registers" /></p>
+<p>In fact the entire region of <strong>WiFi Hardware Registers at <code>0x4400 0000</code></strong> is undocumented.</p>
+<p>We’ve just uncovered a BL602 WiFi Secret! 🤫</p>
 <h1 id="decompiled-wifi-demo-firmware" class="section-header"><a href="#decompiled-wifi-demo-firmware">3 Decompiled WiFi Demo Firmware</a></h1>
 <p><em>Are we really Reverse Engineering the BL602 WiFi Driver?</em></p>
 <p>Not quite. So far we’ve been reading the published source code for the BL602 WiFi Driver.</p>
