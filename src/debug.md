@@ -452,7 +452,7 @@ That's the purpose of the GDB Script. Let's look inside [`openocd.gdb`](https://
     mem 0x23000000 0x23400000 ro
     ```
 
-    Refer to [BL602 Reference Manual](https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf), Section 1.3 "Function Description", Pages 17 to 19.
+    Refer to [BL602 Reference Manual](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf), Section 1.3 "Function Description", Pages 17 to 19.
 
 1.  We load the Rust Firmware into BL602's Instruction Cache Memory...
 
@@ -575,7 +575,7 @@ We fetch the Global Register (and its components) from the Peripheral Registers 
 let mut parts = dp.GLB.split();
 ```
 
--   Refer to [BL602 Reference Manual](https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf), Section 3 "GLB", Page 24.
+-   Refer to [BL602 Reference Manual](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf), Section 3 "GLB", Page 24.
 
 ## Loop Forever
 
@@ -698,7 +698,7 @@ let mux7 = parts.uart_mux7.into_uart0_rx();
 
 This code seems to be remapping pins IO 7 and IO 16 to UART Port 0. (Because BL602 allows us to remap any IO Pin to any Peripheral Function)
 
-See [BL602 Reference Manual](https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf), Section 3.2.8 "GPIO Function", Page 27
+See [BL602 Reference Manual](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf), Section 3.2.8 "GPIO Function", Page 27
 
 ## Create a Serial Interface
 

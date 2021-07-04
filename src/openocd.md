@@ -98,7 +98,7 @@ BL602 is an interesting microcontroller... Each pin may be remapped to various f
 
 To find the default JTAG Pins, we refer to...
 
--   [BL602 Reference Manual](https://github.com/pine64/bl602-docs/blob/main/mirrored/BL602_BL604_RM_1.2_en.pdf)
+-   [BL602 Reference Manual](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf)
 
     Section 3.2.8, "GPIO Function" (Pages 27 to 40)
 
@@ -411,7 +411,7 @@ This is a problem... If we control the PineCone LED in our firmware, it will int
 
 _Can we use PineCone's LED in our firmware... While debugging our firmware with JTAG?_
 
-According to the [BL602 Reference Manual](https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf) (Section 3.2.8 "GPIO Function", Page 27), we may remap the JTAG Port to other GPIO Pins (and avoid the conflict).
+According to the [BL602 Reference Manual](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf) (Section 3.2.8 "GPIO Function", Page 27), we may remap the JTAG Port to other GPIO Pins (and avoid the conflict).
 
 ##  Free the LED from JTAG Port
 
@@ -481,7 +481,7 @@ Here's how we write the firmware code to remap the pins: [`sdk_app_helloworld/ma
     uint32_t *GP1FUNC_ADDR = GPIO_CFGCTL0;
     ```
 
-    The pic above appears in the [BL602 Reference Manual](https://github.com/pine64/bl602-docs/blob/main/mirrored/Bouffalo%20Lab%20BL602_Reference_Manual_en_1.1.pdf), Section 3.3.5 "GPIO_CFGCTL0", Page 33.
+    The pic above appears in the [BL602 Reference Manual](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf), Section 3.3.5 "GPIO_CFGCTL0", Page 33.
 
     ("地址" is Chinese for "Address")
 

@@ -471,14 +471,15 @@ This code triggers an LMAC Interrupt by writiing to the __WiFi Hardware Register
 REG_WIFI_REG_BASE + IPC_REG_BASE_ADDR + 4 * IPC_IRQ_A2E_MSG
 ```
 
-Which gives Address __`0x4480 0008`__
+Which gives us address __`0x4480 0008`__
 
-TODO8
+_Wait... Is address `0x4480 0008` documented anywhere?_
 
-![](https://lupyuen.github.io/images/wifi-connect7.png)
+Nope it's not documented in the [BL602 Reference Manual](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf)...
+
+![Undocumented WiFi Hardware ](https://lupyuen.github.io/images/wifi-connect7.png)
 
 TODO7
-
 
 # Decompiled WiFi Demo Firmware
 
