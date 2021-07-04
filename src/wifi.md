@@ -353,9 +353,9 @@ Let's dig in and find out how...
 
 _What is LMAC?_
 
-__Lower Medium Access Control (LMAC)__ is the firmware that runs __inside the BL602 WiFi Radio Hardware__ and executes the WiFi Radio functions. (Like sending and receiving WiFi Packets)
+__Lower Medium Access Control (LMAC)__ is the firmware that runs __inside the BL602 WiFi Radio Hardware__ and executes the WiFi Radio functions. 
 
-(We'll talk more about LMAC in a while)
+(Like sending and receiving WiFi Packets)
 
 To connect to a WiFi Access Point, we __pass the Connection Parameters to LMAC__ by calling __`bl_send_sm_connect_req`__, defined in [`bl_msg_tx.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_msg_tx.c#L722-L804) ...
 
@@ -377,7 +377,7 @@ int bl_send_sm_connect_req(struct bl_hw *bl_hw, struct cfg80211_connect_params *
 
 Here we compose an __`SM_CONNECT_REQ`__ message that contains the Connection Parameters.
 
-("SM" refers to the LMAC State Machine)
+("`SM`" refers to the LMAC State Machine)
 
 Then we call __`bl_send_msg`__ to __send the message to LMAC__: [`bl_msg_tx.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_msg_tx.c#L315-L371)
 
@@ -397,19 +397,25 @@ static int bl_send_msg(struct bl_hw *bl_hw, const void *msg_params, int reqcfm, 
 The code above calls __`ipc_host_msg_push`__ to __add the message to the LMAC Message Queue__: [`ipc_host.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/ipc_host.c#L139-L171)
 
 ```c
-//  Add the message to the LMAC Message Queue
+//  Add the message to the LMAC Message Queue.
+//  IPC = Interprocess Communication
 int ipc_host_msg_push(struct ipc_host_env_tag *env, void *msg_buf, uint16_t len) {
-    //  Omitted: Copy the message into the IPC message buffer
-    ...
-    //  Omitted: Copy the message to the IPC queue
-    ...
-    //  Trigger the interrupt to send the message to EMB
+    //  Get the address of the IPC message buffer in Shared RAM
+    uint32_t *src = (uint32_t*) ((struct bl_cmd *) msg_buf)->a2e_msg;
+    uint32_t *dst = (uint32_t*) &(env->shared->msg_a2e_buf.msg);
+
+    //  Copy the message to the IPC message buffer
+    for (int i = 0; i < len; i += 4) { *dst++ = *src++; }
+    env->msga2e_hostid = msg_buf;
+
+    //  Trigger an LMAC Interrupt to send the message to EMB
+    //  IPC_IRQ_A2E_MSG is 2
     ipc_app2emb_trigger_set(IPC_IRQ_A2E_MSG);
 ```
 
 ![ipc_host_msg_push](https://lupyuen.github.io/images/wifi-connect9.png)
 
-After adding the message to the LMAC Message Queue, we call `ipc_app2emb_trigger_set` to __trigger an LMAC Interrupt__.
+After copying the message to the LMAC Message Queue (in Shared RAM), we call `ipc_app2emb_trigger_set` to __trigger an LMAC Interrupt__.
 
 LMAC (and the BL602 Radio Hardware) will then transmit the proper WiFi Packets to __establish a network connection__ with the WiFi Access Point.
 
@@ -417,43 +423,53 @@ And that's how BL602 connects to a WiFi Access Point!
 
 ## Trigger LMAC Interrupt
 
-TODO9
-
-From [`reg_ipc_app.h`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/reg_ipc_app.h#L41-L69)
+_But how do we trigger an LMAC Interrupt?_
 
 ```c
-#define REG_WIFI_REG_BASE         0x44000000
-#define REG_IPC_APP_DECODING_MASK 0x0000007F
+//  Trigger an LMAC Interrupt to send the message to EMB
+//  IPC_IRQ_A2E_MSG is 2
+ipc_app2emb_trigger_set(IPC_IRQ_A2E_MSG);
+```
 
-/**
- * @brief APP2EMB_TRIGGER register definition
- * <pre>
- *   Bits           Field Name   Reset Value
- *  -----   ------------------   -----------
- *  31:00      APP2EMB_TRIGGER   0x0
- * </pre>
- */
+Let's look inside __`ipc_app2emb_trigger_set`__ and learn how it triggers an __LMAC Interrupt__: [`reg_ipc_app.h`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/reg_ipc_app.h#L41-L69)
+
+```c
+//  WiFi Register Base
+#define REG_WIFI_REG_BASE         0x44000000
+
+//  IPC Register Base
+#define IPC_REG_BASE_ADDR         0x00800000
+
+//  APP2EMB_TRIGGER Register Definition
+//  Bits    Field Name           Reset Value
+//  -----   ------------------   -----------
+//  31:00   APP2EMB_TRIGGER      0x0
 #define IPC_APP2EMB_TRIGGER_ADDR   0x12000000
 #define IPC_APP2EMB_TRIGGER_OFFSET 0x00000000
 #define IPC_APP2EMB_TRIGGER_INDEX  0x00000000
 #define IPC_APP2EMB_TRIGGER_RESET  0x00000000
 
-#ifndef __INLINE
-#define __INLINE inline
-#endif
+//  Write to IPC Register
+#define REG_IPC_APP_WR(env, INDEX, value) \
+  (*(volatile u32*)((u8*)env + IPC_REG_BASE_ADDR + 4*(INDEX)) = value)
 
-static __INLINE u32 ipc_app2emb_trigger_get()
-{
-    return REG_IPC_APP_RD(REG_WIFI_REG_BASE, IPC_APP2EMB_TRIGGER_INDEX);
-}
-
-static __INLINE void ipc_app2emb_trigger_set(u32 value)
-{
-    REG_IPC_APP_WR(REG_WIFI_REG_BASE, IPC_APP2EMB_TRIGGER_INDEX, value);
+//  Trigger LMAC Interrupt
+static inline void ipc_app2emb_trigger_set(u32 value) {
+  //  Write to WiFi IPC Register at address 0x4480 0000 + value*4
+  REG_IPC_APP_WR(
+    REG_WIFI_REG_BASE, 
+    IPC_APP2EMB_TRIGGER_INDEX, 
+    value);
 }
 ```
 
 TODO
+
+`0x4480 0008`
+
+```text
+REG_WIFI_REG_BASE + IPC_REG_BASE_ADDR + 4 * IPC_IRQ_A2E_MSG
+```
 
 ![ipc_app2emb_trigger_set](https://lupyuen.github.io/images/wifi-connect8.png)
 
