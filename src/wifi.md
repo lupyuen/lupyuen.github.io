@@ -421,6 +421,8 @@ LMAC (and the BL602 Radio Hardware) will then transmit the proper WiFi Packets t
 
 And that's how BL602 connects to a WiFi Access Point!
 
+![ipc_app2emb_trigger_set](https://lupyuen.github.io/images/wifi-connect8.png)
+
 ## Trigger LMAC Interrupt
 
 _But how do we trigger an LMAC Interrupt?_
@@ -463,15 +465,13 @@ static inline void ipc_app2emb_trigger_set(u32 value) {
 }
 ```
 
-TODO
-
-`0x4480 0008`
+This code triggers an LMAC Interrupt by writiing to the __WiFi Hardware Register (IPC)__ at...
 
 ```text
 REG_WIFI_REG_BASE + IPC_REG_BASE_ADDR + 4 * IPC_IRQ_A2E_MSG
 ```
 
-![ipc_app2emb_trigger_set](https://lupyuen.github.io/images/wifi-connect8.png)
+Which gives Address __`0x4480 0008`__
 
 TODO8
 
