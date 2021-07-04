@@ -78,7 +78,10 @@
 <li><a href="#trigger-lmac-interrupt">2.4 Trigger LMAC Interrupt</a><ul></ul></li></ul></li>
 <li><a href="#decompiled-wifi-demo-firmware">3 Decompiled WiFi Demo Firmware</a><ul>
 <li><a href="#linking-to-decompiled-code">3.1 Linking to decompiled code</a><ul></ul></li></ul></li>
-<li><a href="#wifi-firmware-task">4 WiFi Firmware Task</a><ul></ul></li>
+<li><a href="#wifi-firmware-task">4 WiFi Firmware Task</a><ul>
+<li><a href="#start-firmware-task">4.1 Start Firmware Task</a><ul></ul></li>
+<li><a href="#schedule-kernel-events">4.2 Schedule Kernel Events</a><ul></ul></li>
+<li><a href="#handle-transmit-payload">4.3 Handle Transmit Payload</a><ul></ul></li></ul></li>
 <li><a href="#ceva-rivierawaves">5 CEVA RivieraWaves</a><ul></ul></li>
 <li><a href="#upper-medium-access-control-layer">6 Upper Medium Access Control Layer</a><ul></ul></li>
 <li><a href="#lower-medium-access-control-layer">7 Lower Medium Access Control Layer</a><ul></ul></li>
@@ -105,7 +108,7 @@
 <p>Start the <strong>WiFi Firmware Task</strong> that will control the BL602 WiFi Firmware</p>
 </li>
 <li>
-<p>Start the <strong>WiFi Manager Task</strong> that will manage WiFi Connections</p>
+<p>Start the <strong>WiFi Manager Task</strong> that will manage the WiFi Connection State</p>
 </li>
 <li>
 <p>Connect to a <strong>WiFi Access Point</strong></p>
@@ -380,7 +383,7 @@ int bl_send_sm_connect_req(struct bl_hw *bl_hw, struct cfg80211_connect_params *
 }
 </code></pre>
 <p>Here we compose an <strong><code>SM_CONNECT_REQ</code></strong> message that contains the Connection Parameters.</p>
-<p>(“<code>SM</code>” refers to the LMAC State Machine)</p>
+<p>(“<code>SM</code>” refers to the LMAC State Machine by RivieraWaves)</p>
 <p>Then we call <strong><code>bl_send_msg</code></strong> to <strong>send the message to LMAC</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_msg_tx.c#L315-L371"><code>bl_msg_tx.c</code></a></p>
 <pre><code class="language-c">//  Send message to LMAC Firmware
 static int bl_send_msg(struct bl_hw *bl_hw, const void *msg_params, int reqcfm, lmac_msg_id_t reqid, void *cfm) {
@@ -483,7 +486,7 @@ static inline void ipc_app2emb_trigger_set(u32 value) {
 <li>
 <p>When we see a link like this…</p>
 <blockquote>
-<p>This is the decompiled code: <a href="https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L38512"><code>bl602_demo_wifi.c</code></a></p>
+<p>This is the decompiled code: <a href="https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L38512-L38609"><code>bl602_demo_wifi.c</code></a></p>
 </blockquote>
 <p><strong>Right-click</strong> (or long press) the link.</p>
 <p>Select <strong><code>Copy Link Address</code></strong></p>
@@ -491,12 +494,12 @@ static inline void ipc_app2emb_trigger_set(u32 value) {
 <li>
 <p><strong>Paste the address</strong> into a text editor.</p>
 <p>We will see this…</p>
-<pre><code class="language-text">https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L38512
+<pre><code class="language-text">https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L38512-L38609
 </code></pre>
 </li>
 <li>
 <p>Note that the address ends with…</p>
-<pre><code class="language-text">bl602_demo_wifi.c#L38512
+<pre><code class="language-text">bl602_demo_wifi.c#L38512-L38609
 </code></pre>
 </li>
 <li>
@@ -510,21 +513,433 @@ static inline void ipc_app2emb_trigger_set(u32 value) {
 </ol>
 <p><img src="https://lupyuen.github.io/images/wifi-assert.png" alt="Assertions" /></p>
 <h1 id="wifi-firmware-task" class="section-header"><a href="#wifi-firmware-task">4 WiFi Firmware Task</a></h1>
+<p>The BL602 WiFi Driver operates with two Background Tasks (FreeRTOS)…</p>
+<ul>
+<li>
+<p><strong>WiFi Manager Task</strong>: Manages the WiFi Connection State</p>
+</li>
+<li>
+<p><strong>WiFi Firmware Task</strong>: Controls the WiFi Firmware</p>
+</li>
+</ul>
+<p>We’ve covered the WiFi Manager Task. (Remember the State Machine?)</p>
+<p>Now we dive into the WiFi Firmware Task. Watch what happens as we…</p>
+<ol>
+<li>
+<p>Start the <strong>WiFi Firmware Task</strong></p>
+</li>
+<li>
+<p><strong>Schedule Kernel Events</strong> to handle WiFi Packets</p>
+</li>
+<li>
+<p>Handle the <strong>transmission of WiFi Packets</strong></p>
+</li>
+</ol>
+<p><img src="https://lupyuen.github.io/images/wifi-task.png" alt="Starting the WiFi Firmware Task" /></p>
+<h2 id="start-firmware-task" class="section-header"><a href="#start-firmware-task">4.1 Start Firmware Task</a></h2>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/wifi-task.png" alt="" /></p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_wifi.c#L41-L49"><code>hal_wifi.c</code></a></p>
+<pre><code class="language-c">int hal_wifi_start_firmware_task(void)
+{
+    static StackType_t wifi_fw_stack[WIFI_STACK_SIZE];
+    static StaticTask_t wifi_fw_task;
+
+    xTaskCreateStatic(wifi_main, (char*)&quot;fw&quot;, WIFI_STACK_SIZE, NULL, TASK_PRIORITY_FW, wifi_fw_stack, &amp;wifi_fw_task);
+
+    return 0;
+}
+</code></pre>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/wifi-task2.png" alt="" /></p>
+<p>From <a href="https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L32959-L33006"><code>bl602_demo_wifi.c</code></a></p>
+<pre><code class="language-c">void wifi_main(void *param)
+
+{
+  int iVar1;
+  uint uVar2;
+  
+  rfc_init(40000000);
+  _DAT_44b00400 = _DAT_44b00400 | 1;
+  mpif_clk_init();
+  sysctrl_init();
+  intc_init();
+  ipc_emb_init();
+  bl_init();
+  _DAT_44b00404 = 0x24f037;
+  _DAT_44b00400 = 0x49;
+  _DAT_44920004 = 0x5010001f;
+  do {
+    if (_DAT_44b00120 &lt;&lt; 0xc &lt; 0) {
+      _DAT_44900084 = _DAT_44900084 | 1;
+    }
+    else {
+      _DAT_44900084 = _DAT_44900084 &amp; 0xfffffffe;
+    }
+    if (ke_env.evt_field == 0) {
+      ipc_emb_wait();
+    }
+    if ((packets_num_12624 &amp; 0xf) == 0) {
+      uVar2 = _DAT_40007018 &gt;&gt; 0x18 &amp; 7;
+      if (uVar2 != 0) {
+        if (uVar2 != 3) {
+          _DAT_40000014 = _DAT_40000014 | 0x40000;
+        }
+        if ((uVar2 != 0) &amp;&amp; (uVar2 != 3)) {
+          _DAT_40002040 = _DAT_40002040 &amp; 0xfffffffc;
+          _DAT_40002044 = _DAT_40002044 &amp; 0xfffffffe;
+        }
+      }
+      if ((_DAT_40007018 &gt;&gt; 0x18 &amp; 4) != 0) {
+        _DAT_40000014 = _DAT_40000014 | 0x5c2000;
+        _DAT_4000f90c = _DAT_4000f90c &amp; 0xfffffffe | 4;
+      }
+    }
+    packets_num_12624 = packets_num_12624 + 1;
+    ke_evt_schedule();
+    iVar1 = bl_sleep();
+    coex_wifi_pta_forece_enable((uint)(iVar1 == 0));
+  } while( true );
+}
+</code></pre>
+<p><img src="https://lupyuen.github.io/images/wifi-task2.png" alt="wifi_main" /></p>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/wifi-task3.png" alt="" /></p>
+<p>From <a href="https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L28721-L28737"><code>bl602_demo_wifi.c</code></a></p>
+<pre><code class="language-c">void ke_evt_schedule(void)
+
+{
+  int iVar1;
+  evt_ptr_t *peVar2;
+  
+  while (ke_env.evt_field != 0) {
+    iVar1 = __clzsi2(ke_env.evt_field);
+    peVar2 = ke_evt_hdlr[iVar1].func;
+    if ((0x1a &lt; iVar1) || (peVar2 == (evt_ptr_t *)0x0)) {
+      assert_err(&quot;(event &lt; KE_EVT_MAX) &amp;&amp; ke_evt_hdlr[event].func&quot;,&quot;module&quot;,0xdd);
+    }
+    (*peVar2)(ke_evt_hdlr[iVar1].param);
+  }
+  gp = (code *)((int)SFlash_Cache_Hit_Count_Get + 6);
+  return;
+}
+</code></pre>
+<p><img src="https://lupyuen.github.io/images/wifi-schedule2.png" alt="Searching for ke_evt_schedule" /></p>
+<h2 id="schedule-kernel-events" class="section-header"><a href="#schedule-kernel-events">4.2 Schedule Kernel Events</a></h2>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/wifi-task4.png" alt="" /></p>
+<p><a href="https://github.com/search?o=desc&amp;q=ke_evt_schedule&amp;s=indexed&amp;type=Code">GitHub Code Search for <code>ke_evt_schedule</code> (recent indexed)</a></p>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/wifi-task5.png" alt="" /></p>
+<p>From <a href="https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/ke/ke_event.c#L203-L231"><code>ke_event.c</code></a></p>
+<pre><code class="language-c">/**
+ ****************************************************************************************
+ * @brief Event scheduler entry point.
+ *
+ * This primitive has to be called in the background loop in order to execute the event
+ * handlers for the event that are set.
+ *
+ ****************************************************************************************
+ */
+void ke_evt_schedule(void)
+{
+    uint32_t field,event;
+
+	field = ke_env.evt_field;
+    while (field) // Compiler is assumed to optimize with loop inversion
+    {
+        // Find highest priority event set
+        event = co_clz(field);
+
+        // Sanity check
+        ASSERT_ERR((event &lt; KE_EVT_MAX) &amp;&amp; ke_evt_hdlr[event].func);
+
+        // Execute corresponding handler
+        (ke_evt_hdlr[event].func)(ke_evt_hdlr[event].param);
+
+        // Update the volatile value
+        field = ke_env.evt_field;
+    }
+}
+</code></pre>
+<p><img src="https://lupyuen.github.io/images/wifi-task3.png" alt="ke_evt_schedule from AliOS / RivieraWaves" /></p>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/wifi-task6.png" alt="" /></p>
+<p>From <a href="https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/ke/ke_event.c#L78-L138"><code>ke_event.c</code></a></p>
+<pre><code class="language-c">static const struct ke_evt_tag ke_evt_hdlr[32] =
+{
+	{&amp;rwnxl_reset_evt, 0},       // [KE_EVT_RESET         ]                                                                            
+	
+	#if NX_MM_TIMER
+	{&amp;mm_timer_schedule, 0},     // [KE_EVT_MM_TIMER      ]                                                                            
+	#endif
+	
+	{&amp;ke_timer_schedule, 0},     // [KE_EVT_KE_TIMER      ]   
+	
+#if NX_BEACONING
+	{&amp;txl_payload_handle, AC_BCN},   // [KE_EVT_IPC_EMB_TXDESC_BCN]                                                                        
+#endif
+	
+	{&amp;txl_payload_handle, AC_VO},    // [KE_EVT_IPC_EMB_TXDESC_AC3]                                                                        
+	{&amp;txl_payload_handle, AC_VI},    // [KE_EVT_IPC_EMB_TXDESC_AC2]                                                                        
+	{&amp;txl_payload_handle, AC_BE},    // [KE_EVT_IPC_EMB_TXDESC_AC1]                                                                        
+	{&amp;txl_payload_handle, AC_BK},    // [KE_EVT_IPC_EMB_TXDESC_AC0]   
+	
+	{&amp;ke_task_schedule, 0},      // [KE_EVT_KE_MESSAGE    ]                                                                            
+	{&amp;mm_hw_idle_evt, 0},        // [KE_EVT_HW_IDLE       ]                                                                            
+	
+	#if NX_BEACONING || (!NX_MULTI_ROLE)
+	{&amp;mm_tbtt_evt, 0},           // [KE_EVT_PRIMARY_TBTT  ]                                                                            
+	#endif
+	
+	#if NX_BEACONING
+	{&amp;mm_tbtt_evt, 0},           // [KE_EVT_SECONDARY_TBTT]                                                                            
+	#endif
+	
+	{&amp;rxu_cntrl_evt, 0},         // [KE_EVT_RXUREADY      ]
+	
+	#if NX_TX_FRAME
+	{&amp;txl_frame_evt, 0},         // [KE_EVT_TXFRAME_CFM   ]                                                                            
+	#endif
+	
+	#if NX_BEACONING
+	{&amp;txl_cfm_evt, AC_BCN},      // [KE_EVT_TXCFM_BCN     ]                                                                            
+	#endif
+	
+	{&amp;txl_cfm_evt, AC_VO},       // [KE_EVT_TXCFM_AC3     ]                                                                            
+	{&amp;txl_cfm_evt, AC_VI},       // [KE_EVT_TXCFM_AC2     ]                                                                            
+	{&amp;txl_cfm_evt, AC_BE},       // [KE_EVT_TXCFM_AC1     ]                                                                            
+	{&amp;txl_cfm_evt, AC_BK},       // [KE_EVT_TXCFM_AC0     ]                                                                            
+
+    #if CFG_SDIO
+	{&amp;sdio_emb_rxed_evt, 0},  
+	#endif
+	
+    #if CFG_SDIO_TRANS
+	{&amp;sdio_trans_evt, 0},  
+    #endif
+    
+	#if NX_GP_DMA
+	{&amp;hal_dma_evt, DMA_DL},      // [KE_EVT_GP_DMA_DL     ]                                                                            
+	#endif
+
+	#if CFG_TX_EVM_TEST
+	{&amp;evm_via_mac_evt, 0},
+	#endif
+};
+</code></pre>
+<p><img src="https://lupyuen.github.io/images/wifi-task4.png" alt="txl_payload_handle Event Handler" /></p>
 <p>TODO</p>
+<h2 id="handle-transmit-payload" class="section-header"><a href="#handle-transmit-payload">4.3 Handle Transmit Payload</a></h2>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/lmac/src/tx/txl/txl_cntrl.h#L377-L386"><code>txl_cntrl.c</code></a></p>
+<pre><code class="language-c">/**
+ ****************************************************************************************
+ * @brief Perform operations on payloads that have been transfered from host memory
+ *
+ * This primitive is called by the interrupt controller ISR. It performs LLC translation
+ * and MIC computing if required.
+ *
+ ****************************************************************************************
+ */
+void txl_payload_handle(int access_category);
+</code></pre>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L20205-L20216"><code>bl602_demo_wifi.c</code></a></p>
+<pre><code class="language-c">void txl_payload_handle(void)
+
+{
+  int iVar1;
+  
+  while ((_DAT_44a00024 &amp; 0x1f) != 0) {
+    iVar1 = __clzsi2(_DAT_44a00024 &amp; 0x1f);
+    _DAT_44a00020 = 1 &lt;&lt; (0x1fU - iVar1 &amp; 0x1f);
+  }
+  gp = (code *)((int)SFlash_Cache_Hit_Count_Get + 6);
+  return;
+}
+</code></pre>
+<p><img src="https://lupyuen.github.io/images/wifi-task5.png" alt="txl_payload_handle doesn’t do much" /></p>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L20222-L20398"><code>bl602_demo_wifi.c</code></a></p>
+<pre><code class="language-c">void txl_payload_handle_backup(void)
+
+{
+  ushort uVar1;
+  uint uVar2;
+  uint uVar3;
+  txl_buffer_tag *ptVar4;
+  char *condition;
+  int line;
+  byte bVar5;
+  uint uVar6;
+  tx_hd *ptVar7;
+  undefined *puVar8;
+  txdesc *txdesc;
+  tx_hd *ptVar9;
+  txl_buffer_env_tag *ptVar10;
+  txl_cntrl_env_tag *ptVar11;
+  uint uVar12;
+  tx_hw_desc *ptVar13;
+  
+  ptVar10 = &amp;txl_buffer_env;
+  ptVar11 = &amp;txl_cntrl_env;
+  uVar3 = 0;
+  while (ptVar4 = ptVar10-&gt;list[0].first, ptVar4 == (txl_buffer_tag *)0x0) {
+LAB_230059f6:
+    uVar3 = uVar3 + 1;
+    ptVar10 = (txl_buffer_env_tag *)&amp;ptVar10-&gt;buf_idx[0].free_size;
+    ptVar11 = (txl_cntrl_env_tag *)(ptVar11-&gt;txlist + 1);
+    if (uVar3 == 5) {
+      gp = (code *)((int)SFlash_Cache_Hit_Count_Get + 6);
+      return;
+    }
+  }
+  uVar2 = uVar3 &amp; 0xff;
+  ptVar10-&gt;list[0].first = ptVar4-&gt;next;
+  uVar12 = 1 &lt;&lt; (uVar3 &amp; 0x1f);
+  do {
+    txdesc = ptVar4-&gt;txdesc;
+    if ((txdesc-&gt;host).packet_addr != 0) {
+      if (uVar3 == 4) {
+        uVar6 = (uint)(txdesc-&gt;host).vif_idx;
+        bVar5 = *(byte *)&amp;vif_info_tab[uVar6].u.field_0x2ea;
+        if ((*(byte *)((int)&amp;ptVar4[1].length + 1) &gt;&gt; 5 &amp; 1) == 0) {
+          bVar5 = bVar5 &amp; 0xfd;
+        }
+        else {
+          bVar5 = bVar5 | 2;
+        }
+        *(byte *)&amp;vif_info_tab[uVar6].u.field_0x2ea = bVar5;
+      }
+      if ((txdesc-&gt;host).tid == -1) {
+        uVar1 = (txdesc-&gt;host).flags;
+        if ((((uVar1 &amp; 8) != 0) &amp;&amp; ((*(byte *)&amp;ptVar4[1].length &amp; 0xdc) == 0x10)) &amp;&amp;
+           (*(short *)((int)&amp;ptVar4[1].dma_desc[0].src + 2) == 0)) {
+          (txdesc-&gt;host).flags = uVar1 | 0x20;
+          rxu_cntrl_monitor_pm((mac_addr *)&amp;ptVar4[1].lenheader);
+        }
+        txl_machdr_format((uint32_t)(ptVar4 + 1));
+      }
+      ptVar4 = (txdesc-&gt;lmac).buffer;
+      ptVar13 = (txdesc-&gt;lmac).hw_desc;
+      if (((txdesc-&gt;host).flags &amp; 8) == 0) {
+        txu_cntrl_tkip_mic_append(txdesc,(uint8_t)uVar2);
+        (ptVar13-&gt;thd).macctrlinfo1 = (ptVar4-&gt;buffer_control).mac_control_info;
+      }
+      else {
+        (ptVar13-&gt;thd).macctrlinfo2 = (ptVar13-&gt;thd).macctrlinfo2 &amp; 0xff87ffff;
+        bVar5 = *(byte *)&amp;ptVar4[1].lenheader;
+        (ptVar13-&gt;thd).statinfo = 0;
+        (ptVar13-&gt;thd).macctrlinfo1 = (uint)((bVar5 &amp; 1) == 0) &lt;&lt; 9;
+      }
+      (ptVar13-&gt;thd).policyentryaddr = (uint32_t)&amp;ptVar4-&gt;buffer_control;
+      (ptVar13-&gt;thd).phyctrlinfo = (ptVar4-&gt;buffer_control).phy_control_info;
+    }
+    ptVar11-&gt;txlist[0].bridgedmacnt = ptVar11-&gt;txlist[0].bridgedmacnt + 1;
+    ptVar7 = ptVar11-&gt;txlist[0].last_frame_exch;
+    ptVar9 = &amp;((txdesc-&gt;lmac).hw_desc)-&gt;thd;
+    if (ptVar7 == (tx_hd *)0x0) {
+      uVar6 = uVar3;
+      if (uVar2 == 2) {
+        if ((_DAT_44b08188 &gt;&gt; 0xc &amp; 3) == 2) {
+          line = 0x23c;
+          condition = &quot;blmac_tx_ac_2_state_getf() != 2&quot;;
+          goto LAB_23005bec;
+        }
+        _DAT_44b08180 = 0x800;
+        puVar8 = (undefined *)0x61a80;
+        _DAT_44b081a4 = ptVar9;
+      }
+      else {
+        if (2 &lt; uVar2) {
+          if (uVar2 == 3) {
+            if ((_DAT_44b08188 &gt;&gt; 0x10 &amp; 3) != 2) {
+              _DAT_44b08180 = 0x1000;
+              _DAT_44b081a8 = ptVar9;
+              goto LAB_23005c4c;
+            }
+            line = 0x236;
+            condition = &quot;blmac_tx_ac_3_state_getf() != 2&quot;;
+          }
+          else {
+            if (uVar2 != 4) goto LAB_23005b9a;
+            if ((_DAT_44b08188 &amp; 3) != 2) {
+              _DAT_44b08180 = 0x100;
+              uVar6 = 4;
+              puVar8 = (undefined *)0xc350;
+              _DAT_44b08198 = ptVar9;
+              goto LAB_23005c08;
+            }
+            line = 0x22f;
+            condition = &quot;blmac_tx_bcn_state_getf() != 2&quot;;
+          }
+LAB_23005bec:
+          assert_rec(condition,&quot;module&quot;,line);
+          goto LAB_23005b5e;
+        }
+        if (uVar2 == 1) {
+          if ((_DAT_44b08188 &gt;&gt; 8 &amp; 3) == 2) {
+            line = 0x242;
+            condition = &quot;blmac_tx_ac_1_state_getf() != 2&quot;;
+            goto LAB_23005bec;
+          }
+          _DAT_44b08180 = 0x400;
+          puVar8 = &amp;DAT_001e8480;
+          _DAT_44b081a0 = ptVar9;
+        }
+        else {
+LAB_23005b9a:
+          if ((_DAT_44b08188 &gt;&gt; 4 &amp; 3) == 2) {
+            line = 0x248;
+            condition = &quot;blmac_tx_ac_0_state_getf() != 2&quot;;
+            goto LAB_23005bec;
+          }
+          _DAT_44b08180 = 0x200;
+          _DAT_44b0819c = ptVar9;
+LAB_23005c4c:
+          puVar8 = (undefined *)0x30d40;
+        }
+      }
+LAB_23005c08:
+      blmac_abs_timer_set(uVar6,(uint32_t)(puVar8 + _DAT_44b00120));
+      _DAT_44b0808c = uVar12 | _DAT_44b0808c;
+      _DAT_44b08088 = uVar12;
+    }
+    else {
+      ptVar7-&gt;nextfrmexseq_ptr = (uint32_t)ptVar9;
+      if (uVar2 == 2) {
+        _DAT_44b08180 = 8;
+      }
+      else {
+        if (uVar2 &lt; 3) {
+          if (uVar2 == 1) {
+            _DAT_44b08180 = 4;
+          }
+          else {
+LAB_23005b26:
+            _DAT_44b08180 = 2;
+          }
+        }
+        else {
+          if (uVar2 == 3) {
+            _DAT_44b08180 = 0x10;
+          }
+          else {
+            if (uVar2 != 4) goto LAB_23005b26;
+            _DAT_44b08180 = 1;
+          }
+        }
+      }
+    }
+LAB_23005b5e:
+    ptVar4 = ptVar10-&gt;list[0].first;
+    ptVar11-&gt;txlist[0].last_frame_exch = ptVar9;
+    if (ptVar4 == (txl_buffer_tag *)0x0) goto LAB_230059f6;
+    ptVar10-&gt;list[0].first = ptVar4-&gt;next;
+  } while( true );
+}
+</code></pre>
+<p><img src="https://lupyuen.github.io/images/wifi-task6.png" alt="txl_payload_handle_backup" /></p>
+<p>TODO6</p>
 <h1 id="ceva-rivierawaves" class="section-header"><a href="#ceva-rivierawaves">5 CEVA RivieraWaves</a></h1>
 <p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wifi-schedule3.png" alt="" /></p>
+<p>TODO3</p>
 <ul>
 <li><a href="https://github.com/mclown/AliOS-Things/tree/master/platform/mcu/bk7231u/beken/ip"><strong>mclown/AliOS-Things</strong></a></li>
 </ul>
@@ -609,11 +1024,7 @@ static inline void ipc_app2emb_trigger_set(u32 value) {
 <h1 id="github-search-is-our-best-friend" class="section-header"><a href="#github-search-is-our-best-friend">12 GitHub Search Is Our Best Friend!</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wifi-schedule.png" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/wifi-schedule2.png" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/wifi-schedule3.png" alt="" /></p>
-<p>TODO</p>
+<p>TODO1</p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">13 What’s Next</a></h1>
 <p>TODO</p>
 <ul>
