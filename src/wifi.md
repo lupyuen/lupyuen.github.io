@@ -458,7 +458,7 @@ Let's look inside __`ipc_app2emb_trigger_set`__ and learn how it triggers an __L
 
 //  Trigger LMAC Interrupt
 static inline void ipc_app2emb_trigger_set(u32 value) {
-  //  Write to WiFi IPC Register at address 0x4480 0000 + value*4
+  //  Write to WiFi IPC Register at address 0x4480 0000
   REG_IPC_APP_WR(
     REG_WIFI_REG_BASE, 
     IPC_APP2EMB_TRIGGER_INDEX, 
@@ -469,12 +469,12 @@ static inline void ipc_app2emb_trigger_set(u32 value) {
 This code triggers an LMAC Interrupt by writing to the __WiFi Hardware Register__ (for Interprocess Communication) at...
 
 ```text
-REG_WIFI_REG_BASE + IPC_REG_BASE_ADDR + 4 * IPC_IRQ_A2E_MSG
+REG_WIFI_REG_BASE + IPC_REG_BASE_ADDR + 4 * IPC_APP2EMB_TRIGGER_INDEX
 ```
 
-Which gives us address __`0x4480 0008`__
+Which gives us address __`0x4480 0000`__
 
-_Wait... Is address `0x4480 0008` documented anywhere?_
+_Wait... Is address `0x4480 0000` documented anywhere?_
 
 Nope it's not documented in the [__BL602 Reference Manual__](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf)...
 
@@ -755,54 +755,56 @@ __`txl_payload_handle`__ is the Event Handler that handles the __transmission of
 
 Let's look inside and learn how it transmits WiFi Packets.
 
+![txl_payload_handle doesn't do much](https://lupyuen.github.io/images/wifi-task5.png)
+
 ## Handle Transmit Payload
 
-TODO
+_What is `txl_payload_handle`?_
 
-From [`txl_cntrl.c`](https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/lmac/src/tx/txl/txl_cntrl.h#L377-L386)
+Thanks to the AliOS / RivieraWaves source code, we have a meaningful description of the __`txl_payload_handle`__ function: [`txl_cntrl.c`](https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/lmac/src/tx/txl/txl_cntrl.h#L377-L386)
 
 ```c
-/**
- ****************************************************************************************
- * @brief Perform operations on payloads that have been transfered from host memory
- *
- * This primitive is called by the interrupt controller ISR. It performs LLC translation
- * and MIC computing if required.
- *
- ****************************************************************************************
- */
+//  Perform operations on payloads that have been 
+//  transfered from host memory. This primitive is 
+//  called by the interrupt controller ISR. It 
+//  performs LLC translation and MIC computing if required.
 void txl_payload_handle(int access_category);
 ```
 
-TODO
+This suggests that `txl_payload_handle` is called to __transmit WiFi Packets__... After the packet payload has been copied from BL602 to the Radio Hardware. (Via the __Shared RAM Buffer__)
 
-From [`bl602_demo_wifi.c`](https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L20205-L20216)
+(What's LLC and MIC?)
+
+Searching our decompiled code for __`txl_payload_handle`__ shows this: [`bl602_demo_wifi.c`](https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L20205-L20216)
 
 ```c
-void txl_payload_handle(void)
-
-{
-  int iVar1;
-  
+//  Handle transmit payload
+void txl_payload_handle(void) {
   while ((_DAT_44a00024 & 0x1f) != 0) {
-    iVar1 = __clzsi2(_DAT_44a00024 & 0x1f);
+    int iVar1 = __clzsi2(_DAT_44a00024 & 0x1f);
+
+    //  Write to WiFi Register at 0x44A0 0020
     _DAT_44a00020 = 1 << (0x1fU - iVar1 & 0x1f);
   }
-  gp = (code *)((int)SFlash_Cache_Hit_Count_Get + 6);
-  return;
 }
 ```
 
-![txl_payload_handle doesn't do much](https://lupyuen.github.io/images/wifi-task5.png)
+It doesn't seem to do much payload processing.  But it writes to the undocumented __WiFi Register at `0x44A0 0020`__.
+
+Which will trigger the __LMAC Firmware to transmit__ the WiFi Packet perhaps?
+
+But hold up! We have something that might explain what's inside `txl_payload_handle`...
+
+![txl_payload_handle_backup](https://lupyuen.github.io/images/wifi-task6.png)
+
+## Another Transmit Payload
 
 TODO
 
 From [`bl602_demo_wifi.c`](https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L20222-L20398)
 
 ```c
-void txl_payload_handle_backup(void)
-
-{
+void txl_payload_handle_backup(void) {
   ushort uVar1;
   uint uVar2;
   uint uVar3;
@@ -978,8 +980,6 @@ LAB_23005b5e:
   } while( true );
 }
 ```
-
-![txl_payload_handle_backup](https://lupyuen.github.io/images/wifi-task6.png)
 
 TODO6
 
