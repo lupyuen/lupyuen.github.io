@@ -690,41 +690,41 @@ Bingo! Let's do a __GitHub Search__ for `ke_evt_schedule`!
 
     (Search results are sorted by recently indexed)
 
-TODO
-
-From [`ke_event.c`](https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/ke/ke_event.c#L203-L231)
+We'll see this __`ke_evt_schedule`__ code from __AliOS Things__ (the embedded OS) and __RivieraWaves__ (explained next chapter): [`ke_event.c`](https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/ke/ke_event.c#L203-L231)
 
 ```c
-/**
- ****************************************************************************************
- * @brief Event scheduler entry point.
- *
- * This primitive has to be called in the background loop in order to execute the event
- * handlers for the event that are set.
- *
- ****************************************************************************************
- */
-void ke_evt_schedule(void)
-{
-    uint32_t field,event;
+//  Event scheduler entry point. This primitive has to be 
+//  called in the background loop in order to execute the 
+//  event handlers for the event that are set.
+void ke_evt_schedule(void) {
+  uint32_t field, event;
+  field = ke_env.evt_field;
+  while (field) { // Compiler is assumed to optimize with loop inversion
 
-	field = ke_env.evt_field;
-    while (field) // Compiler is assumed to optimize with loop inversion
-    {
-        // Find highest priority event set
-        event = co_clz(field);
+    // Find highest priority event set
+    event = co_clz(field);
 
-        // Sanity check
-        ASSERT_ERR((event < KE_EVT_MAX) && ke_evt_hdlr[event].func);
+    // Sanity check
+    ASSERT_ERR((event < KE_EVT_MAX) && ke_evt_hdlr[event].func);
 
-        // Execute corresponding handler
-        (ke_evt_hdlr[event].func)(ke_evt_hdlr[event].param);
+    // Execute corresponding handler
+    (ke_evt_hdlr[event].func)(ke_evt_hdlr[event].param);
 
-        // Update the volatile value
-        field = ke_env.evt_field;
-    }
+    // Update the volatile value
+    field = ke_env.evt_field;
+  }
 }
 ```
+
+Compare this with our [__decompiled version of `ke_evt_schedule`__](https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L28721-L28737)... It's a __perfect match__!
+
+Right down to the __Assertion Check__!
+
+```text
+(event < KE_EVT_MAX) && ke_evt_hdlr[event].func
+```
+
+Since the two versions of `ke_evt_schedule` are functionally identical, let's read the __AliOS / RivieraWaves version__.
 
 ![ke_evt_schedule from AliOS / RivieraWaves](https://lupyuen.github.io/images/wifi-task3.png)
 
