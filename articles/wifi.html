@@ -81,7 +81,8 @@
 <li><a href="#wifi-firmware-task">4 WiFi Firmware Task</a><ul>
 <li><a href="#start-firmware-task">4.1 Start Firmware Task</a><ul></ul></li>
 <li><a href="#schedule-kernel-events">4.2 Schedule Kernel Events</a><ul></ul></li>
-<li><a href="#handle-transmit-payload">4.3 Handle Transmit Payload</a><ul></ul></li></ul></li>
+<li><a href="#handle-transmit-payload">4.3 Handle Transmit Payload</a><ul></ul></li>
+<li><a href="#another-transmit-payload">4.4 Another Transmit Payload</a><ul></ul></li></ul></li>
 <li><a href="#ceva-rivierawaves">5 CEVA RivieraWaves</a><ul></ul></li>
 <li><a href="#upper-medium-access-control-layer">6 Upper Medium Access Control Layer</a><ul></ul></li>
 <li><a href="#lower-medium-access-control-layer">7 Lower Medium Access Control Layer</a><ul></ul></li>
@@ -445,7 +446,7 @@ ipc_app2emb_trigger_set(IPC_IRQ_A2E_MSG);
 
 //  Trigger LMAC Interrupt
 static inline void ipc_app2emb_trigger_set(u32 value) {
-  //  Write to WiFi IPC Register at address 0x4480 0000 + value*4
+  //  Write to WiFi IPC Register at address 0x4480 0000
   REG_IPC_APP_WR(
     REG_WIFI_REG_BASE, 
     IPC_APP2EMB_TRIGGER_INDEX, 
@@ -453,10 +454,10 @@ static inline void ipc_app2emb_trigger_set(u32 value) {
 }
 </code></pre>
 <p>This code triggers an LMAC Interrupt by writing to the <strong>WiFi Hardware Register</strong> (for Interprocess Communication) at…</p>
-<pre><code class="language-text">REG_WIFI_REG_BASE + IPC_REG_BASE_ADDR + 4 * IPC_IRQ_A2E_MSG
+<pre><code class="language-text">REG_WIFI_REG_BASE + IPC_REG_BASE_ADDR + 4 * IPC_APP2EMB_TRIGGER_INDEX
 </code></pre>
-<p>Which gives us address <strong><code>0x4480 0008</code></strong></p>
-<p><em>Wait… Is address <code>0x4480 0008</code> documented anywhere?</em></p>
+<p>Which gives us address <strong><code>0x4480 0000</code></strong></p>
+<p><em>Wait… Is address <code>0x4480 0000</code> documented anywhere?</em></p>
 <p>Nope it’s not documented in the <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf"><strong>BL602 Reference Manual</strong></a>…</p>
 <p><img src="https://lupyuen.github.io/images/wifi-connect7.png" alt="Undocumented WiFi Hardware Registers" /></p>
 <p>In fact the entire region of <strong>WiFi Hardware Registers at <code>0x4400 0000</code></strong> is undocumented.</p>
@@ -679,41 +680,37 @@ static const struct ke_evt_tag ke_evt_hdlr[32] = {
 <p><img src="https://lupyuen.github.io/images/wifi-task4.png" alt="txl_payload_handle Event Handler" /></p>
 <p><strong><code>txl_payload_handle</code></strong> is the Event Handler that handles the <strong>transmission of WiFi Payloads</strong>.</p>
 <p>Let’s look inside and learn how it transmits WiFi Packets.</p>
+<p><img src="https://lupyuen.github.io/images/wifi-task5.png" alt="txl_payload_handle doesn’t do much" /></p>
 <h2 id="handle-transmit-payload" class="section-header"><a href="#handle-transmit-payload">4.3 Handle Transmit Payload</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/lmac/src/tx/txl/txl_cntrl.h#L377-L386"><code>txl_cntrl.c</code></a></p>
-<pre><code class="language-c">/**
- ****************************************************************************************
- * @brief Perform operations on payloads that have been transfered from host memory
- *
- * This primitive is called by the interrupt controller ISR. It performs LLC translation
- * and MIC computing if required.
- *
- ****************************************************************************************
- */
+<p><em>What is <code>txl_payload_handle</code>?</em></p>
+<p>Thanks to the AliOS / RivieraWaves source code, we have a meaningful description of the <strong><code>txl_payload_handle</code></strong> function: <a href="https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/lmac/src/tx/txl/txl_cntrl.h#L377-L386"><code>txl_cntrl.c</code></a></p>
+<pre><code class="language-c">//  Perform operations on payloads that have been 
+//  transfered from host memory. This primitive is 
+//  called by the interrupt controller ISR. It 
+//  performs LLC translation and MIC computing if required.
 void txl_payload_handle(int access_category);
 </code></pre>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L20205-L20216"><code>bl602_demo_wifi.c</code></a></p>
-<pre><code class="language-c">void txl_payload_handle(void)
-
-{
-  int iVar1;
-  
+<p>This suggests that <code>txl_payload_handle</code> is called to <strong>transmit WiFi Packets</strong>… After the packet payload has been copied from BL602 to the Radio Hardware. (Via the <strong>Shared RAM Buffer</strong>)</p>
+<p>(What’s LLC and MIC?)</p>
+<p>Searching our decompiled code for <strong><code>txl_payload_handle</code></strong> shows this: <a href="https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L20205-L20216"><code>bl602_demo_wifi.c</code></a></p>
+<pre><code class="language-c">//  Handle transmit payload
+void txl_payload_handle(void) {
   while ((_DAT_44a00024 &amp; 0x1f) != 0) {
-    iVar1 = __clzsi2(_DAT_44a00024 &amp; 0x1f);
+    int iVar1 = __clzsi2(_DAT_44a00024 &amp; 0x1f);
+
+    //  Write to WiFi Register at 0x44A0 0020
     _DAT_44a00020 = 1 &lt;&lt; (0x1fU - iVar1 &amp; 0x1f);
   }
-  gp = (code *)((int)SFlash_Cache_Hit_Count_Get + 6);
-  return;
 }
 </code></pre>
-<p><img src="https://lupyuen.github.io/images/wifi-task5.png" alt="txl_payload_handle doesn’t do much" /></p>
+<p>It doesn’t seem to do much payload processing.  But it writes to the undocumented <strong>WiFi Register at <code>0x44A0 0020</code></strong>.</p>
+<p>Which will trigger the <strong>LMAC Firmware to transmit</strong> the WiFi Packet perhaps?</p>
+<p>But hold up! We have something that might explain what’s inside <code>txl_payload_handle</code>…</p>
+<p><img src="https://lupyuen.github.io/images/wifi-task6.png" alt="txl_payload_handle_backup" /></p>
+<h2 id="another-transmit-payload" class="section-header"><a href="#another-transmit-payload">4.4 Another Transmit Payload</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L20222-L20398"><code>bl602_demo_wifi.c</code></a></p>
-<pre><code class="language-c">void txl_payload_handle_backup(void)
-
-{
+<pre><code class="language-c">void txl_payload_handle_backup(void) {
   ushort uVar1;
   uint uVar2;
   uint uVar3;
@@ -889,7 +886,6 @@ LAB_23005b5e:
   } while( true );
 }
 </code></pre>
-<p><img src="https://lupyuen.github.io/images/wifi-task6.png" alt="txl_payload_handle_backup" /></p>
 <p>TODO6</p>
 <h1 id="ceva-rivierawaves" class="section-header"><a href="#ceva-rivierawaves">5 CEVA RivieraWaves</a></h1>
 <p>TODO</p>
