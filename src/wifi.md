@@ -761,7 +761,7 @@ Let's look inside and learn how it transmits WiFi Packets.
 
 _What is `txl_payload_handle`?_
 
-Thanks to the AliOS / RivieraWaves source code, we have a meaningful description of the __`txl_payload_handle`__ function: [`txl_cntrl.c`](https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/lmac/src/tx/txl/txl_cntrl.h#L377-L386)
+Thanks to the AliOS / RivieraWaves source code, we have a meaningful description of the __`txl_payload_handle`__ function: [`txl_cntrl.h`](https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/lmac/src/tx/txl/txl_cntrl.h#L377-L386)
 
 ```c
 //  Perform operations on payloads that have been 
@@ -820,18 +820,24 @@ LAB_230059f6:
   }
 ```
 
-TODO
+__`txl_payload_handle_backup`__ starts by iterating through a list of packet buffers to be transmitted. (Probably)
+
+Then it calls some __RXU, TXL and TXU functions from RivieraWaves__...
 
 ```c
   //  Loop (until when?)
   do {
     //  Call some RXU, TXL and TXU functions
     rxu_cntrl_monitor_pm((mac_addr *)&ptVar4[1].lenheader);
+    ...
     txl_machdr_format((uint32_t)(ptVar4 + 1));
+    ...
     txu_cntrl_tkip_mic_append(txdesc,(uint8_t)uVar2);
 ```
 
-TODO
+(More about RivieraWaves in the next chapter)
+
+Next we write to some undocumented __WiFi Registers: `0x44B0 8180`, `0x44B0 8198`, `0x44B0 81A4` and `0x44B0 81A8`__ ...
 
 ```c
     //  Write to WiFi Registers
@@ -845,7 +851,11 @@ TODO
     _DAT_44b08198 = ptVar9;
 ```
 
-TODO
+[(They don't appear in this list either)](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/reg_access.h)
+
+The function performs some __Assertion Checks__. 
+
+The Assertion Failure Messages may be helpful for deciphering the decompiled code...
 
 ```c
     //  Assertion Checks
@@ -864,13 +874,13 @@ TODO
     line = 0x248;
     condition = "blmac_tx_ac_0_state_getf() != 2";
     ...
-    assert_rec(condition,"module",line);
+    assert_rec(condition, "module", line);
 ```
 
-TODO
+The function ends by __setting a timer__...
 
 ```c
-    //  Set some timer
+    //  Set a timer
     blmac_abs_timer_set(uVar6, (uint32_t)(puVar8 + _DAT_44b00120));
 
     //  Continue looping
@@ -878,15 +888,21 @@ TODO
 }
 ```
 
-TODO6
+_Is the original source code for `txl_payload_handle_backup` really so long?_
+
+Likely not. The C Compiler optimises the firmware code by inlining some functions.
+
+When we decompile the firmware, the inlined code appears embedded inside the calling functions. 
+
+(That's why we see so much repetition in the decompiled code)
+
+Let's talk about RivieraWaves...
+
+![RivieraWaves in AliOS](https://lupyuen.github.io/images/wifi-schedule3.png)
 
 # CEVA RivieraWaves
 
 TODO
-
-![](https://lupyuen.github.io/images/wifi-schedule3.png)
-
-TODO3
 
 -   [__mclown/AliOS-Things__](https://github.com/mclown/AliOS-Things/tree/master/platform/mcu/bk7231u/beken/ip)
 
