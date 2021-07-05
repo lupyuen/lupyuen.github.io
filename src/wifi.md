@@ -934,15 +934,25 @@ On BL602 there are two layers of RivieraWaves WiFi Firmware...
 
     Runs on the __BL602 RISC-V CPU.__
 
+    Some of the code we've seen earlier comes from UMAC.
+    
+    (Like the Kernel Event Scheduler)
+
 1.  __Lower Medium Access Control (LMAC)__
 
     Runs inside the __BL602 Radio Hardware.__
+
+    We don't have any LMAC code to study since it's hidden inside the Radio Hardware.
+
+    (But we can see the LMAC Interfaces exposed by the WiFi Registers)
 
 [More about RivieraWaves](https://www.ceva-dsp.com/product/rivierawaves-wi-fi-platforms/)
 
 _Is RivieraWaves used elsewhere?_
 
-TODO
+Yes, RivieraWaves is used in many popular WiFi SoCs.
+
+This article hints at the WiFi SoCs that might be using RivieraWaves (or similar code by CEVA)...
 
 > ![Customers of RivieraWaves](https://lupyuen.github.io/images/wifi-ceva.png)
 
