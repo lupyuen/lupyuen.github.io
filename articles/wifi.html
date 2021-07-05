@@ -798,7 +798,7 @@ LAB_230059f6:
 <p><a href="https://www.ceva-dsp.com/product/rivierawaves-wi-fi-platforms/">(Source)</a></p>
 <p><em>What is CEVA RivieraWaves?</em></p>
 <p>RivieraWaves is the <strong>Software / Firmware that implements the 802.11 Wireless Protocol</strong> on WiFi SoCs (like BL602).</p>
-<p>On BL602 there are two layers of RivieraWaves WiFi Firmware…</p>
+<p>On BL602 there are two layers of RivieraWaves Firmware…</p>
 <ol>
 <li>
 <p><strong>Upper Medium Access Control (UMAC)</strong></p>
@@ -822,9 +822,14 @@ LAB_230059f6:
 </blockquote>
 <p><a href="https://csimarket.com/stocks/markets_glance.php?code=CEVA#:%7E:text=Included%20among%20our%20licensees%20are,%2C%20RDA%2C%20Renesas%2C%20Rockchip%2C">(Source)</a></p>
 <h2 id="upper-medium-access-control" class="section-header"><a href="#upper-medium-access-control">5.1 Upper Medium Access Control</a></h2>
+<p>Recall that <strong>UMAC (Upper Medium Access Control)</strong> is the RivieraWaves code that runs on the <strong>BL602 RISC-V CPU</strong>.</p>
+<p>By matching the decompiled BL602 WiFi Firmware with the AliOS / RivieraWaves code, we discover the <strong>UMAC Modules that are used in BL602</strong>…</p>
 <p>TODO</p>
+<p>These modules are <strong>identical across BL602 and AliOS / RivieraWaves</strong>, with minor differences.</p>
 <p><img src="https://lupyuen.github.io/images/wifi-rivierawaves.png" alt="Compare BL602 with RivieraWaves" /></p>
 <h2 id="lower-medium-access-control" class="section-header"><a href="#lower-medium-access-control">5.2 Lower Medium Access Control</a></h2>
+<p>Remember that <strong>LMAC (Lower Medium Access Control)</strong> is the RivieraWaves code that runs inside the <strong>BL602 Radio Hardware</strong>.</p>
+<p>By matching the decompiled BL602 WiFi Firmware with the AliOS / RivieraWaves code, we discover the <strong>LMAC Interfaces that are exposed by the BL602 Radio Hardware</strong>…</p>
 <p>TODO</p>
 <h1 id="wifi-supplicant" class="section-header"><a href="#wifi-supplicant">6 WiFi Supplicant</a></h1>
 <p>TODO: Rockchip RK3399</p>
