@@ -966,7 +966,21 @@ By matching the decompiled BL602 WiFi Firmware with the AliOS / RivieraWaves cod
 
 TODO
 
+1.  RivieraWaves CO
+1.  RivieraWaves KE (Kernel)
+1.  RivieraWaves ME
+1.  RivieraWaves PS
+1.  RivieraWaves RC
+1.  RivieraWaves SCAN
+1.  RivieraWaves SCANU (Scan UMAC?)
+1.  RivieraWaves SM
+1.  RivieraWaves TD
+1.  RivieraWaves TXU (Transmit UMAC?)
+1.  RivieraWaves VIF
+
 These modules are __identical across BL602 and AliOS / RivieraWaves__, with minor differences.
+
+(More about UMAC matching when discuss Quantitative Analysis)
 
 ![Compare BL602 with RivieraWaves](https://lupyuen.github.io/images/wifi-rivierawaves.png)
 
@@ -977,6 +991,22 @@ Remember that __LMAC (Lower Medium Access Control)__ is the RivieraWaves code th
 By matching the decompiled BL602 WiFi Firmware with the AliOS / RivieraWaves code, we discover the __LMAC Interfaces that are exposed by the BL602 Radio Hardware__...
 
 TODO
+
+1.  RivieraWaves APM
+1.  RivieraWaves CFG
+1.  RivieraWaves CHAN
+1.  RivieraWaves HAL (Hardware Abstraction Layer)
+1.  RivieraWaves MM
+1.  RivieraWaves RXL (Receive LMAC?)
+1.  RivieraWaves RXU (Receive UMAC?)
+1.  RivieraWaves STA
+1.  RivieraWaves TXL (Transmit LMAC?)
+
+The linked LMAC Interfaces above are for reference only... The __BL602 implementation of LMAC is very different__ from the Beken BK7231U implementation above.
+
+(More about LMAC matching when discuss Quantitative Analysis)
+
+![WiFi Supplicant: Rockchip RK3399 vs BL602](https://lupyuen.github.io/images/wifi-supplicant2.png)
 
 # WiFi Supplicant
 
@@ -991,10 +1021,6 @@ TODO: Rockchip RK3399
 TODO
 
 ![](https://lupyuen.github.io/images/wifi-supplicant.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/wifi-supplicant2.png)
 
 TODO
 
