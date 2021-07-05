@@ -902,17 +902,35 @@ Let's talk about RivieraWaves...
 
 # CEVA RivieraWaves
 
-TODO
+When we searched GitHub for the __WiFi Event Scheduler `ke_evt_schedule`__, we found this source code...
 
 -   [__mclown/AliOS-Things__](https://github.com/mclown/AliOS-Things/tree/master/platform/mcu/bk7231u/beken/ip)
 
 [(We'll use this fork)](https://github.com/lupyuen/AliOS-Things/tree/master/platform/mcu/bk7231u/beken/ip)
 
-![](https://lupyuen.github.io/images/wifi-rivierawaves.png)
+This appears to be the source code for the __AliOS Things embedded OS__.
+
+[(Ported to the Beken BK7231U WiFi SoC)](http://www.bekencorp.com/en/goods/detail/cid/13.html)
+
+But at the top of the [source file](https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/ke/ke_event.c) we see...
+
+```text
+Copyright (C) RivieraWaves 2011-2016
+```
+
+This means that the WiFi source code originates from __CEVA RivieraWaves, not AliOS__!
+
+![](https://lupyuen.github.io/images/wifi-lmac3.jpg)
+
+_What is CEVA RivieraWaves?_
 
 TODO
 
-![](https://lupyuen.github.io/images/wifi-ceva.png)
+_Is RivieraWaves used elsewhere?_
+
+TODO
+
+![Customers of RivieraWaves](https://lupyuen.github.io/images/wifi-ceva.png)
 
 [(Source)](https://csimarket.com/stocks/markets_glance.php?code=CEVA#:~:text=Included%20among%20our%20licensees%20are,%2C%20RDA%2C%20Renesas%2C%20Rockchip%2C)
 
@@ -920,53 +938,11 @@ TODO
 
 TODO
 
+![Compare BL602 with RivieraWaves](https://lupyuen.github.io/images/wifi-rivierawaves.png)
+
 # Lower Medium Access Control Layer
 
 TODO
-
-![](https://lupyuen.github.io/images/wifi-lmac.jpg)
-
-TODO
-
-![](https://lupyuen.github.io/images/wifi-lmac2.jpg)
-
-TODO
-
-![](https://lupyuen.github.io/images/wifi-lmac3.jpg)
-
-TODO
-
-![](https://lupyuen.github.io/images/wifi-beken.jpg)
-
-[(Source)](http://www.bekencorp.com/en/goods/detail/cid/13.html)
-
-TODO
-
-![](https://lupyuen.github.io/images/wifi-beken2.png)
-
-TODO
-
-# WiFi PHY Layer
-
-TODO
-
--   [__jixinintelligence/bl602-604__](https://github.com/jixinintelligence/bl602-604)
-
-[(We'll use this fork)](https://github.com/lupyuen/bl602-604)
-
-![](https://lupyuen.github.io/images/wifi-phy.png)
-
-TODO
-
-## WiFi RTL
-
-TODO
-
-According to [__madushan1000 on Twitter__](https://twitter.com/madushan1000/status/1409392882612637696)...
-
--   [__fengmaoqiao/my_logic_code__](https://github.com/fengmaoqiao/my_logic_code)
-
--   [__fengmaoqiao/workplace__](https://github.com/fengmaoqiao/workplace)
 
 # WiFi Supplicant
 
@@ -987,6 +963,28 @@ TODO
 ![](https://lupyuen.github.io/images/wifi-supplicant2.png)
 
 TODO
+
+# WiFi PHY Layer
+
+TODO
+
+-   [__jixinintelligence/bl602-604__](https://github.com/jixinintelligence/bl602-604)
+
+[(We'll use this fork)](https://github.com/lupyuen/bl602-604)
+
+![](https://lupyuen.github.io/images/wifi-phy.png)
+
+TODO
+
+# WiFi RTL
+
+TODO
+
+According to [__madushan1000 on Twitter__](https://twitter.com/madushan1000/status/1409392882612637696)...
+
+-   [__fengmaoqiao/my_logic_code__](https://github.com/fengmaoqiao/my_logic_code)
+
+-   [__fengmaoqiao/workplace__](https://github.com/fengmaoqiao/workplace)
 
 # Quantitative Analysis
 
