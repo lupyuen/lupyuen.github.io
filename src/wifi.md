@@ -932,7 +932,7 @@ _Is RivieraWaves used elsewhere?_
 
 TODO
 
-![Customers of RivieraWaves](https://lupyuen.github.io/images/wifi-ceva.png)
+> ![Customers of RivieraWaves](https://lupyuen.github.io/images/wifi-ceva.png)
 
 [(Source)](https://csimarket.com/stocks/markets_glance.php?code=CEVA#:~:text=Included%20among%20our%20licensees%20are,%2C%20RDA%2C%20Renesas%2C%20Rockchip%2C)
 
