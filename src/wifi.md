@@ -724,7 +724,7 @@ Right down to the __Assertion Check__!
 (event < KE_EVT_MAX) && ke_evt_hdlr[event].func
 ```
 
-Since the two versions of `ke_evt_schedule` are functionally identical, let's read the __AliOS / RivieraWaves version__.
+Since the two versions of `ke_evt_schedule` are functionally identical, let's read the __AliOS / RivieraWaves version of `ke_evt_schedule`__.
 
 ![ke_evt_schedule from AliOS / RivieraWaves](https://lupyuen.github.io/images/wifi-task3.png)
 
