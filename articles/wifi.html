@@ -683,7 +683,7 @@ static const struct ke_evt_tag ke_evt_hdlr[32] = {
 <p><img src="https://lupyuen.github.io/images/wifi-task5.png" alt="txl_payload_handle doesn’t do much" /></p>
 <h2 id="handle-transmit-payload" class="section-header"><a href="#handle-transmit-payload">4.3 Handle Transmit Payload</a></h2>
 <p><em>What is <code>txl_payload_handle</code>?</em></p>
-<p>Thanks to the AliOS / RivieraWaves source code, we have a meaningful description of the <strong><code>txl_payload_handle</code></strong> function: <a href="https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/lmac/src/tx/txl/txl_cntrl.h#L377-L386"><code>txl_cntrl.c</code></a></p>
+<p>Thanks to the AliOS / RivieraWaves source code, we have a meaningful description of the <strong><code>txl_payload_handle</code></strong> function: <a href="https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/lmac/src/tx/txl/txl_cntrl.h#L377-L386"><code>txl_cntrl.h</code></a></p>
 <pre><code class="language-c">//  Perform operations on payloads that have been 
 //  transfered from host memory. This primitive is 
 //  called by the interrupt controller ISR. It 
@@ -724,15 +724,19 @@ LAB_230059f6:
     ptVar11 = (txl_cntrl_env_tag *)(ptVar11-&gt;txlist + 1);
   }
 </code></pre>
-<p>TODO</p>
+<p><strong><code>txl_payload_handle_backup</code></strong> starts by iterating through a list of packet buffers to be transmitted. (Probably)</p>
+<p>Then it calls some <strong>RXU, TXL and TXU functions from RivieraWaves</strong>…</p>
 <pre><code class="language-c">  //  Loop (until when?)
   do {
     //  Call some RXU, TXL and TXU functions
     rxu_cntrl_monitor_pm((mac_addr *)&amp;ptVar4[1].lenheader);
+    ...
     txl_machdr_format((uint32_t)(ptVar4 + 1));
+    ...
     txu_cntrl_tkip_mic_append(txdesc,(uint8_t)uVar2);
 </code></pre>
-<p>TODO</p>
+<p>(More about RivieraWaves in the next chapter)</p>
+<p>Next we write to some undocumented <strong>WiFi Registers: <code>0x44B0 8180</code>, <code>0x44B0 8198</code>, <code>0x44B0 81A4</code> and <code>0x44B0 81A8</code></strong> …</p>
 <pre><code class="language-c">    //  Write to WiFi Registers
     _DAT_44b08180 = 0x800;
     _DAT_44b081a4 = ptVar9;
@@ -743,7 +747,9 @@ LAB_230059f6:
     _DAT_44b08180 = 0x100;
     _DAT_44b08198 = ptVar9;
 </code></pre>
-<p>TODO</p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/reg_access.h">(They don’t appear in this list either)</a></p>
+<p>The function performs some <strong>Assertion Checks</strong>. </p>
+<p>The Assertion Failure Messages may be helpful for deciphering the decompiled code…</p>
 <pre><code class="language-c">    //  Assertion Checks
     line = 0x23c;
     condition = &quot;blmac_tx_ac_2_state_getf() != 2&quot;;
@@ -760,21 +766,24 @@ LAB_230059f6:
     line = 0x248;
     condition = &quot;blmac_tx_ac_0_state_getf() != 2&quot;;
     ...
-    assert_rec(condition,&quot;module&quot;,line);
+    assert_rec(condition, &quot;module&quot;, line);
 </code></pre>
-<p>TODO</p>
-<pre><code class="language-c">    //  Set some timer
+<p>The function ends by <strong>setting a timer</strong>…</p>
+<pre><code class="language-c">    //  Set a timer
     blmac_abs_timer_set(uVar6, (uint32_t)(puVar8 + _DAT_44b00120));
 
     //  Continue looping
   } while( true );
 }
 </code></pre>
-<p>TODO6</p>
+<p><em>Is the original source code for <code>txl_payload_handle_backup</code> really so long?</em></p>
+<p>Likely not. The C Compiler optimises the firmware code by inlining some functions.</p>
+<p>When we decompile the firmware, the inlined code appears embedded inside the calling functions. </p>
+<p>(That’s why we see so much repetition in the decompiled code)</p>
+<p>Let’s talk about RivieraWaves…</p>
+<p><img src="https://lupyuen.github.io/images/wifi-schedule3.png" alt="RivieraWaves in AliOS" /></p>
 <h1 id="ceva-rivierawaves" class="section-header"><a href="#ceva-rivierawaves">5 CEVA RivieraWaves</a></h1>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/wifi-schedule3.png" alt="" /></p>
-<p>TODO3</p>
 <ul>
 <li><a href="https://github.com/mclown/AliOS-Things/tree/master/platform/mcu/bk7231u/beken/ip"><strong>mclown/AliOS-Things</strong></a></li>
 </ul>
