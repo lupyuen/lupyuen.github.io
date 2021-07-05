@@ -86,14 +86,14 @@
 <li><a href="#ceva-rivierawaves">5 CEVA RivieraWaves</a><ul></ul></li>
 <li><a href="#upper-medium-access-control-layer">6 Upper Medium Access Control Layer</a><ul></ul></li>
 <li><a href="#lower-medium-access-control-layer">7 Lower Medium Access Control Layer</a><ul></ul></li>
-<li><a href="#wifi-phy-layer">8 WiFi PHY Layer</a><ul>
-<li><a href="#wifi-rtl">8.1 WiFi RTL</a><ul></ul></li></ul></li>
-<li><a href="#wifi-supplicant">9 WiFi Supplicant</a><ul></ul></li>
-<li><a href="#quantitative-analysis">10 Quantitative Analysis</a><ul></ul></li>
-<li><a href="#other-components">11 Other Components</a><ul></ul></li>
-<li><a href="#github-search-is-our-best-friend">12 GitHub Search Is Our Best Friend!</a><ul></ul></li>
-<li><a href="#whats-next">13 What’s Next</a><ul></ul></li>
-<li><a href="#notes">14 Notes</a><ul></ul></li></ul></nav><p>📝 <em>9 Jul 2021</em></p>
+<li><a href="#wifi-supplicant">8 WiFi Supplicant</a><ul></ul></li>
+<li><a href="#wifi-phy-layer">9 WiFi PHY Layer</a><ul></ul></li>
+<li><a href="#wifi-rtl">10 WiFi RTL</a><ul></ul></li>
+<li><a href="#quantitative-analysis">11 Quantitative Analysis</a><ul></ul></li>
+<li><a href="#other-components">12 Other Components</a><ul></ul></li>
+<li><a href="#github-search-is-our-best-friend">13 GitHub Search Is Our Best Friend!</a><ul></ul></li>
+<li><a href="#whats-next">14 What’s Next</a><ul></ul></li>
+<li><a href="#notes">15 Notes</a><ul></ul></li></ul></nav><p>📝 <em>9 Jul 2021</em></p>
 <p><em>What happens inside the WiFi Driver on RISC-V BL602 SoC… And how we found the (incomplete) source code for the driver</em></p>
 <p>Why reverse engineer the WiFi Driver?</p>
 <p>TODO: Education, replacement, auditing, troubleshooting. <a href="https://twitter.com/Yu_Wei_Wu/status/1406940637773979655?s=19">See this non-BL602 example</a></p>
@@ -783,50 +783,31 @@ LAB_230059f6:
 <p>Let’s talk about RivieraWaves…</p>
 <p><img src="https://lupyuen.github.io/images/wifi-schedule3.png" alt="RivieraWaves in AliOS" /></p>
 <h1 id="ceva-rivierawaves" class="section-header"><a href="#ceva-rivierawaves">5 CEVA RivieraWaves</a></h1>
-<p>TODO</p>
+<p>When we searched GitHub for the <strong>WiFi Event Scheduler <code>ke_evt_schedule</code></strong>, we found this source code…</p>
 <ul>
 <li><a href="https://github.com/mclown/AliOS-Things/tree/master/platform/mcu/bk7231u/beken/ip"><strong>mclown/AliOS-Things</strong></a></li>
 </ul>
 <p><a href="https://github.com/lupyuen/AliOS-Things/tree/master/platform/mcu/bk7231u/beken/ip">(We’ll use this fork)</a></p>
-<p><img src="https://lupyuen.github.io/images/wifi-rivierawaves.png" alt="" /></p>
+<p>This appears to be the source code for the <strong>AliOS Things embedded OS</strong>.</p>
+<p><a href="http://www.bekencorp.com/en/goods/detail/cid/13.html">(Ported to the Beken BK7231U WiFi SoC)</a></p>
+<p>But at the top of the <a href="https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/ke/ke_event.c">source file</a> we see…</p>
+<pre><code class="language-text">Copyright (C) RivieraWaves 2011-2016
+</code></pre>
+<p>This means that the WiFi source code originates from <strong>CEVA RivieraWaves, not AliOS</strong>!</p>
+<p><img src="https://lupyuen.github.io/images/wifi-lmac3.jpg" alt="CEVA RivieraWaves" /></p>
+<p><a href="https://www.ceva-dsp.com/product/rivierawaves-wi-fi-platforms/">(Source)</a></p>
+<p><em>What is CEVA RivieraWaves?</em></p>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/wifi-ceva.png" alt="" /></p>
+<p><em>Is RivieraWaves used elsewhere?</em></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wifi-ceva.png" alt="Customers of RivieraWaves" /></p>
 <p><a href="https://csimarket.com/stocks/markets_glance.php?code=CEVA#:%7E:text=Included%20among%20our%20licensees%20are,%2C%20RDA%2C%20Renesas%2C%20Rockchip%2C">(Source)</a></p>
 <h1 id="upper-medium-access-control-layer" class="section-header"><a href="#upper-medium-access-control-layer">6 Upper Medium Access Control Layer</a></h1>
 <p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wifi-rivierawaves.png" alt="Compare BL602 with RivieraWaves" /></p>
 <h1 id="lower-medium-access-control-layer" class="section-header"><a href="#lower-medium-access-control-layer">7 Lower Medium Access Control Layer</a></h1>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/wifi-lmac.jpg" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/wifi-lmac2.jpg" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/wifi-lmac3.jpg" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/wifi-beken.jpg" alt="" /></p>
-<p><a href="http://www.bekencorp.com/en/goods/detail/cid/13.html">(Source)</a></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/wifi-beken2.png" alt="" /></p>
-<p>TODO</p>
-<h1 id="wifi-phy-layer" class="section-header"><a href="#wifi-phy-layer">8 WiFi PHY Layer</a></h1>
-<p>TODO</p>
-<ul>
-<li><a href="https://github.com/jixinintelligence/bl602-604"><strong>jixinintelligence/bl602-604</strong></a></li>
-</ul>
-<p><a href="https://github.com/lupyuen/bl602-604">(We’ll use this fork)</a></p>
-<p><img src="https://lupyuen.github.io/images/wifi-phy.png" alt="" /></p>
-<p>TODO</p>
-<h2 id="wifi-rtl" class="section-header"><a href="#wifi-rtl">8.1 WiFi RTL</a></h2>
-<p>TODO</p>
-<p>According to <a href="https://twitter.com/madushan1000/status/1409392882612637696"><strong>madushan1000 on Twitter</strong></a>…</p>
-<ul>
-<li>
-<p><a href="https://github.com/fengmaoqiao/my_logic_code"><strong>fengmaoqiao/my_logic_code</strong></a></p>
-</li>
-<li>
-<p><a href="https://github.com/fengmaoqiao/workplace"><strong>fengmaoqiao/workplace</strong></a></p>
-</li>
-</ul>
-<h1 id="wifi-supplicant" class="section-header"><a href="#wifi-supplicant">9 WiFi Supplicant</a></h1>
+<h1 id="wifi-supplicant" class="section-header"><a href="#wifi-supplicant">8 WiFi Supplicant</a></h1>
 <p>TODO: Rockchip RK3399</p>
 <ul>
 <li><a href="https://github.com/karthirockz/rk3399-kernel/tree/main/drivers/net/wireless/rockchip_wlan/mvl88w8977/mlan/esa"><strong>karthirockz/rk3399-kernel</strong></a></li>
@@ -838,7 +819,26 @@ LAB_230059f6:
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wifi-supplicant2.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="quantitative-analysis" class="section-header"><a href="#quantitative-analysis">10 Quantitative Analysis</a></h1>
+<h1 id="wifi-phy-layer" class="section-header"><a href="#wifi-phy-layer">9 WiFi PHY Layer</a></h1>
+<p>TODO</p>
+<ul>
+<li><a href="https://github.com/jixinintelligence/bl602-604"><strong>jixinintelligence/bl602-604</strong></a></li>
+</ul>
+<p><a href="https://github.com/lupyuen/bl602-604">(We’ll use this fork)</a></p>
+<p><img src="https://lupyuen.github.io/images/wifi-phy.png" alt="" /></p>
+<p>TODO</p>
+<h1 id="wifi-rtl" class="section-header"><a href="#wifi-rtl">10 WiFi RTL</a></h1>
+<p>TODO</p>
+<p>According to <a href="https://twitter.com/madushan1000/status/1409392882612637696"><strong>madushan1000 on Twitter</strong></a>…</p>
+<ul>
+<li>
+<p><a href="https://github.com/fengmaoqiao/my_logic_code"><strong>fengmaoqiao/my_logic_code</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/fengmaoqiao/workplace"><strong>fengmaoqiao/workplace</strong></a></p>
+</li>
+</ul>
+<h1 id="quantitative-analysis" class="section-header"><a href="#quantitative-analysis">11 Quantitative Analysis</a></h1>
 <p>TODO</p>
 <ul>
 <li>
@@ -863,13 +863,13 @@ LAB_230059f6:
 <p><img src="https://lupyuen.github.io/images/wifi-quantify4.png" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wifi-title.jpg" alt="Quantitative Analysis of Decompiled BL602 WiFi Firmware" /></p>
-<h1 id="other-components" class="section-header"><a href="#other-components">11 Other Components</a></h1>
+<h1 id="other-components" class="section-header"><a href="#other-components">12 Other Components</a></h1>
 <p>TODO: BL602 HAL, BL602 Standard Driver, LWIP, MbedTLS, FreeRTOS, AliOS, AWS MQTT, AWS IoT</p>
-<h1 id="github-search-is-our-best-friend" class="section-header"><a href="#github-search-is-our-best-friend">12 GitHub Search Is Our Best Friend!</a></h1>
+<h1 id="github-search-is-our-best-friend" class="section-header"><a href="#github-search-is-our-best-friend">13 GitHub Search Is Our Best Friend!</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wifi-schedule.png" alt="" /></p>
 <p>TODO1</p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">13 What’s Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">14 What’s Next</a></h1>
 <p>TODO</p>
 <ul>
 <li>
@@ -887,7 +887,7 @@ LAB_230059f6:
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/wifi.md"><code>lupyuen.github.io/src/wifi.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">14 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">15 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1407971263088193540">this Twitter Thread</a></li>
 </ol>
