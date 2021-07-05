@@ -920,7 +920,9 @@ Copyright (C) RivieraWaves 2011-2016
 
 This means that the WiFi source code originates from __CEVA RivieraWaves, not AliOS__!
 
-![](https://lupyuen.github.io/images/wifi-lmac3.jpg)
+![CEVA RivieraWaves](https://lupyuen.github.io/images/wifi-lmac3.jpg)
+
+[(Source)](https://www.ceva-dsp.com/product/rivierawaves-wi-fi-platforms/)
 
 _What is CEVA RivieraWaves?_
 
