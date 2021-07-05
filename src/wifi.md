@@ -728,77 +728,32 @@ Since the two versions of `ke_evt_schedule` are functionally identical, let's re
 
 ![ke_evt_schedule from AliOS / RivieraWaves](https://lupyuen.github.io/images/wifi-task3.png)
 
-TODO
+We see that __`ke_evt_schedule`__ handles WiFi Kernel Events by calling the __Event Handlers in `ke_evt_hdlr`__.
 
-From [`ke_event.c`](https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/ke/ke_event.c#L78-L138)
+Here are the __`ke_evt_hdlr`__ Event Handlers from the AliOS / RivieraWaves code: [`ke_event.c`](https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/ke/ke_event.c#L78-L138)
 
 ```c
-static const struct ke_evt_tag ke_evt_hdlr[32] =
-{
-	{&rwnxl_reset_evt, 0},       // [KE_EVT_RESET         ]                                                                            
-	
-	#if NX_MM_TIMER
-	{&mm_timer_schedule, 0},     // [KE_EVT_MM_TIMER      ]                                                                            
-	#endif
-	
-	{&ke_timer_schedule, 0},     // [KE_EVT_KE_TIMER      ]   
-	
-#if NX_BEACONING
-	{&txl_payload_handle, AC_BCN},   // [KE_EVT_IPC_EMB_TXDESC_BCN]                                                                        
-#endif
-	
-	{&txl_payload_handle, AC_VO},    // [KE_EVT_IPC_EMB_TXDESC_AC3]                                                                        
-	{&txl_payload_handle, AC_VI},    // [KE_EVT_IPC_EMB_TXDESC_AC2]                                                                        
-	{&txl_payload_handle, AC_BE},    // [KE_EVT_IPC_EMB_TXDESC_AC1]                                                                        
-	{&txl_payload_handle, AC_BK},    // [KE_EVT_IPC_EMB_TXDESC_AC0]   
-	
-	{&ke_task_schedule, 0},      // [KE_EVT_KE_MESSAGE    ]                                                                            
-	{&mm_hw_idle_evt, 0},        // [KE_EVT_HW_IDLE       ]                                                                            
-	
-	#if NX_BEACONING || (!NX_MULTI_ROLE)
-	{&mm_tbtt_evt, 0},           // [KE_EVT_PRIMARY_TBTT  ]                                                                            
-	#endif
-	
-	#if NX_BEACONING
-	{&mm_tbtt_evt, 0},           // [KE_EVT_SECONDARY_TBTT]                                                                            
-	#endif
-	
-	{&rxu_cntrl_evt, 0},         // [KE_EVT_RXUREADY      ]
-	
-	#if NX_TX_FRAME
-	{&txl_frame_evt, 0},         // [KE_EVT_TXFRAME_CFM   ]                                                                            
-	#endif
-	
-	#if NX_BEACONING
-	{&txl_cfm_evt, AC_BCN},      // [KE_EVT_TXCFM_BCN     ]                                                                            
-	#endif
-	
-	{&txl_cfm_evt, AC_VO},       // [KE_EVT_TXCFM_AC3     ]                                                                            
-	{&txl_cfm_evt, AC_VI},       // [KE_EVT_TXCFM_AC2     ]                                                                            
-	{&txl_cfm_evt, AC_BE},       // [KE_EVT_TXCFM_AC1     ]                                                                            
-	{&txl_cfm_evt, AC_BK},       // [KE_EVT_TXCFM_AC0     ]                                                                            
+//  Event Handlers called by ke_evt_schedule
+static const struct ke_evt_tag ke_evt_hdlr[32] = {
+  {&rwnxl_reset_evt,    0},      // [KE_EVT_RESET]	
+  {&ke_timer_schedule,  0},      // [KE_EVT_KE_TIMER]   
+  {&txl_payload_handle, AC_VO},  // [KE_EVT_IPC_EMB_TXDESC_AC3]
 
-    #if CFG_SDIO
-	{&sdio_emb_rxed_evt, 0},  
-	#endif
-	
-    #if CFG_SDIO_TRANS
-	{&sdio_trans_evt, 0},  
-    #endif
-    
-	#if NX_GP_DMA
-	{&hal_dma_evt, DMA_DL},      // [KE_EVT_GP_DMA_DL     ]                                                                            
-	#endif
+  //  This Event Handler looks interesting                                                      
+  {&txl_payload_handle, AC_VI},  // [KE_EVT_IPC_EMB_TXDESC_AC2]
+  {&txl_payload_handle, AC_BE},  // [KE_EVT_IPC_EMB_TXDESC_AC1]
+  {&txl_payload_handle, AC_BK},  // [KE_EVT_IPC_EMB_TXDESC_AC0]	
 
-	#if CFG_TX_EVM_TEST
-	{&evm_via_mac_evt, 0},
-	#endif
-};
+  {&ke_task_schedule,   0},      // [KE_EVT_KE_MESSAGE]
+  {&mm_hw_idle_evt,     0},      // [KE_EVT_HW_IDLE]
+  ...
 ```
 
 ![txl_payload_handle Event Handler](https://lupyuen.github.io/images/wifi-task4.png)
 
-TODO
+__`txl_payload_handle`__ is the Event Handler that handles the __transmission of WiFi Payloads__.
+
+Let's look inside and learn how it transmits WiFi Packets.
 
 ## Handle Transmit Payload
 
