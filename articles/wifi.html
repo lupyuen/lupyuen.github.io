@@ -708,8 +708,9 @@ void txl_payload_handle(void) {
 <p>But hold up! We have something that might explain what’s inside <code>txl_payload_handle</code>…</p>
 <p><img src="https://lupyuen.github.io/images/wifi-task6.png" alt="txl_payload_handle_backup" /></p>
 <h2 id="another-transmit-payload" class="section-header"><a href="#another-transmit-payload">4.4 Another Transmit Payload</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L20222-L20398"><code>bl602_demo_wifi.c</code></a></p>
+<p>Right after <code>txl_payload_handle</code> in our decompiled code, there’s a function <strong><code>txl_payload_handle_backup</code></strong>.</p>
+<p>Based on the name, <code>txl_payload_handle_backup</code> is probably another function that handles payload transmission.</p>
+<p>Let’s look inside the decompiled function: <a href="https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L20222-L20398"><code>bl602_demo_wifi.c</code></a></p>
 <pre><code class="language-c">void txl_payload_handle_backup(void) {
   ushort uVar1;
   uint uVar2;
