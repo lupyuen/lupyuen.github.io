@@ -803,182 +803,77 @@ Right after `txl_payload_handle` in our decompiled code, there's a function __`t
 
 Based on the name, `txl_payload_handle_backup` is probably another function that handles payload transmission.
 
-Let's look inside the decompiled function: [`bl602_demo_wifi.c`](https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L20222-L20398)
+Here are the highlights of the decompiled `txl_payload_handle_backup` function: [`bl602_demo_wifi.c`](https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L20222-L20398)
 
 ```c
+//  Another transmit payload handler.
+//  Probably works the same way as txl_payload_handle,
+//  but runs on BL602 instead of LMAC Firmware.
 void txl_payload_handle_backup(void) {
-  ushort uVar1;
-  uint uVar2;
-  uint uVar3;
-  txl_buffer_tag *ptVar4;
-  char *condition;
-  int line;
-  byte bVar5;
-  uint uVar6;
-  tx_hd *ptVar7;
-  undefined *puVar8;
-  txdesc *txdesc;
-  tx_hd *ptVar9;
-  txl_buffer_env_tag *ptVar10;
-  txl_cntrl_env_tag *ptVar11;
-  uint uVar12;
-  tx_hw_desc *ptVar13;
-  
-  ptVar10 = &txl_buffer_env;
-  ptVar11 = &txl_cntrl_env;
-  uVar3 = 0;
+  ...
+  //  Iterate through a list of packet buffers (?)
   while (ptVar4 = ptVar10->list[0].first, ptVar4 == (txl_buffer_tag *)0x0) {
 LAB_230059f6:
     uVar3 = uVar3 + 1;
     ptVar10 = (txl_buffer_env_tag *)&ptVar10->buf_idx[0].free_size;
     ptVar11 = (txl_cntrl_env_tag *)(ptVar11->txlist + 1);
-    if (uVar3 == 5) {
-      gp = (code *)((int)SFlash_Cache_Hit_Count_Get + 6);
-      return;
-    }
   }
-  uVar2 = uVar3 & 0xff;
-  ptVar10->list[0].first = ptVar4->next;
-  uVar12 = 1 << (uVar3 & 0x1f);
+```
+
+TODO
+
+```c
+  //  Loop (until when?)
   do {
-    txdesc = ptVar4->txdesc;
-    if ((txdesc->host).packet_addr != 0) {
-      if (uVar3 == 4) {
-        uVar6 = (uint)(txdesc->host).vif_idx;
-        bVar5 = *(byte *)&vif_info_tab[uVar6].u.field_0x2ea;
-        if ((*(byte *)((int)&ptVar4[1].length + 1) >> 5 & 1) == 0) {
-          bVar5 = bVar5 & 0xfd;
-        }
-        else {
-          bVar5 = bVar5 | 2;
-        }
-        *(byte *)&vif_info_tab[uVar6].u.field_0x2ea = bVar5;
-      }
-      if ((txdesc->host).tid == -1) {
-        uVar1 = (txdesc->host).flags;
-        if ((((uVar1 & 8) != 0) && ((*(byte *)&ptVar4[1].length & 0xdc) == 0x10)) &&
-           (*(short *)((int)&ptVar4[1].dma_desc[0].src + 2) == 0)) {
-          (txdesc->host).flags = uVar1 | 0x20;
-          rxu_cntrl_monitor_pm((mac_addr *)&ptVar4[1].lenheader);
-        }
-        txl_machdr_format((uint32_t)(ptVar4 + 1));
-      }
-      ptVar4 = (txdesc->lmac).buffer;
-      ptVar13 = (txdesc->lmac).hw_desc;
-      if (((txdesc->host).flags & 8) == 0) {
-        txu_cntrl_tkip_mic_append(txdesc,(uint8_t)uVar2);
-        (ptVar13->thd).macctrlinfo1 = (ptVar4->buffer_control).mac_control_info;
-      }
-      else {
-        (ptVar13->thd).macctrlinfo2 = (ptVar13->thd).macctrlinfo2 & 0xff87ffff;
-        bVar5 = *(byte *)&ptVar4[1].lenheader;
-        (ptVar13->thd).statinfo = 0;
-        (ptVar13->thd).macctrlinfo1 = (uint)((bVar5 & 1) == 0) << 9;
-      }
-      (ptVar13->thd).policyentryaddr = (uint32_t)&ptVar4->buffer_control;
-      (ptVar13->thd).phyctrlinfo = (ptVar4->buffer_control).phy_control_info;
-    }
-    ptVar11->txlist[0].bridgedmacnt = ptVar11->txlist[0].bridgedmacnt + 1;
-    ptVar7 = ptVar11->txlist[0].last_frame_exch;
-    ptVar9 = &((txdesc->lmac).hw_desc)->thd;
-    if (ptVar7 == (tx_hd *)0x0) {
-      uVar6 = uVar3;
-      if (uVar2 == 2) {
-        if ((_DAT_44b08188 >> 0xc & 3) == 2) {
-          line = 0x23c;
-          condition = "blmac_tx_ac_2_state_getf() != 2";
-          goto LAB_23005bec;
-        }
-        _DAT_44b08180 = 0x800;
-        puVar8 = (undefined *)0x61a80;
-        _DAT_44b081a4 = ptVar9;
-      }
-      else {
-        if (2 < uVar2) {
-          if (uVar2 == 3) {
-            if ((_DAT_44b08188 >> 0x10 & 3) != 2) {
-              _DAT_44b08180 = 0x1000;
-              _DAT_44b081a8 = ptVar9;
-              goto LAB_23005c4c;
-            }
-            line = 0x236;
-            condition = "blmac_tx_ac_3_state_getf() != 2";
-          }
-          else {
-            if (uVar2 != 4) goto LAB_23005b9a;
-            if ((_DAT_44b08188 & 3) != 2) {
-              _DAT_44b08180 = 0x100;
-              uVar6 = 4;
-              puVar8 = (undefined *)0xc350;
-              _DAT_44b08198 = ptVar9;
-              goto LAB_23005c08;
-            }
-            line = 0x22f;
-            condition = "blmac_tx_bcn_state_getf() != 2";
-          }
-LAB_23005bec:
-          assert_rec(condition,"module",line);
-          goto LAB_23005b5e;
-        }
-        if (uVar2 == 1) {
-          if ((_DAT_44b08188 >> 8 & 3) == 2) {
-            line = 0x242;
-            condition = "blmac_tx_ac_1_state_getf() != 2";
-            goto LAB_23005bec;
-          }
-          _DAT_44b08180 = 0x400;
-          puVar8 = &DAT_001e8480;
-          _DAT_44b081a0 = ptVar9;
-        }
-        else {
-LAB_23005b9a:
-          if ((_DAT_44b08188 >> 4 & 3) == 2) {
-            line = 0x248;
-            condition = "blmac_tx_ac_0_state_getf() != 2";
-            goto LAB_23005bec;
-          }
-          _DAT_44b08180 = 0x200;
-          _DAT_44b0819c = ptVar9;
-LAB_23005c4c:
-          puVar8 = (undefined *)0x30d40;
-        }
-      }
-LAB_23005c08:
-      blmac_abs_timer_set(uVar6,(uint32_t)(puVar8 + _DAT_44b00120));
-      _DAT_44b0808c = uVar12 | _DAT_44b0808c;
-      _DAT_44b08088 = uVar12;
-    }
-    else {
-      ptVar7->nextfrmexseq_ptr = (uint32_t)ptVar9;
-      if (uVar2 == 2) {
-        _DAT_44b08180 = 8;
-      }
-      else {
-        if (uVar2 < 3) {
-          if (uVar2 == 1) {
-            _DAT_44b08180 = 4;
-          }
-          else {
-LAB_23005b26:
-            _DAT_44b08180 = 2;
-          }
-        }
-        else {
-          if (uVar2 == 3) {
-            _DAT_44b08180 = 0x10;
-          }
-          else {
-            if (uVar2 != 4) goto LAB_23005b26;
-            _DAT_44b08180 = 1;
-          }
-        }
-      }
-    }
-LAB_23005b5e:
-    ptVar4 = ptVar10->list[0].first;
-    ptVar11->txlist[0].last_frame_exch = ptVar9;
-    if (ptVar4 == (txl_buffer_tag *)0x0) goto LAB_230059f6;
-    ptVar10->list[0].first = ptVar4->next;
+    //  Call some RXU, TXL and TXU functions
+    rxu_cntrl_monitor_pm((mac_addr *)&ptVar4[1].lenheader);
+    txl_machdr_format((uint32_t)(ptVar4 + 1));
+    txu_cntrl_tkip_mic_append(txdesc,(uint8_t)uVar2);
+```
+
+TODO
+
+```c
+    //  Write to WiFi Registers
+    _DAT_44b08180 = 0x800;
+    _DAT_44b081a4 = ptVar9;
+    ...
+    _DAT_44b08180 = 0x1000;
+    _DAT_44b081a8 = ptVar9;
+    ...
+    _DAT_44b08180 = 0x100;
+    _DAT_44b08198 = ptVar9;
+```
+
+TODO
+
+```c
+    //  Assertion Checks
+    line = 0x23c;
+    condition = "blmac_tx_ac_2_state_getf() != 2";
+    ...
+    line = 0x236;
+    condition = "blmac_tx_ac_3_state_getf() != 2";
+    ...
+    line = 0x22f;
+    condition = "blmac_tx_bcn_state_getf() != 2";
+    ...
+    line = 0x242;
+    condition = "blmac_tx_ac_1_state_getf() != 2";
+    ...
+    line = 0x248;
+    condition = "blmac_tx_ac_0_state_getf() != 2";
+    ...
+    assert_rec(condition,"module",line);
+```
+
+TODO
+
+```c
+    //  Set some timer
+    blmac_abs_timer_set(uVar6, (uint32_t)(puVar8 + _DAT_44b00120));
+
+    //  Continue looping
   } while( true );
 }
 ```
