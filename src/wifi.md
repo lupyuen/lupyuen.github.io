@@ -926,7 +926,7 @@ This means that the WiFi source code originates from __CEVA RivieraWaves, not Al
 
 _What is CEVA RivieraWaves?_
 
-RivieraWaves is the __WiFi Software / Firmware__ that runs on WiFi SoCs (like BL602).
+RivieraWaves is the __Software / Firmware that implements the 802.11 Wireless Protocol__ on WiFi SoCs (like BL602).
 
 On BL602 there are two layers of RivieraWaves WiFi Firmware...
 
