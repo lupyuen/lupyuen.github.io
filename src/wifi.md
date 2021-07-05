@@ -926,7 +926,19 @@ This means that the WiFi source code originates from __CEVA RivieraWaves, not Al
 
 _What is CEVA RivieraWaves?_
 
-TODO
+RivieraWaves is the __WiFi Software / Firmware__ that runs on WiFi SoCs (like BL602).
+
+On BL602 there are two layers of RivieraWaves WiFi Firmware...
+
+1.  __Upper Medium Access Control (UMAC)__
+
+    Runs on the __BL602 RISC-V CPU.__
+
+1.  __Lower Medium Access Control (LMAC)__
+
+    Runs inside the __BL602 Radio Hardware.__
+
+[More about RivieraWaves](https://www.ceva-dsp.com/product/rivierawaves-wi-fi-platforms/)
 
 _Is RivieraWaves used elsewhere?_
 
@@ -936,13 +948,13 @@ TODO
 
 [(Source)](https://csimarket.com/stocks/markets_glance.php?code=CEVA#:~:text=Included%20among%20our%20licensees%20are,%2C%20RDA%2C%20Renesas%2C%20Rockchip%2C)
 
-# Upper Medium Access Control Layer
+## Upper Medium Access Control
 
 TODO
 
 ![Compare BL602 with RivieraWaves](https://lupyuen.github.io/images/wifi-rivierawaves.png)
 
-# Lower Medium Access Control Layer
+## Lower Medium Access Control
 
 TODO
 
