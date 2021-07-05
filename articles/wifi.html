@@ -825,12 +825,40 @@ LAB_230059f6:
 <p>Recall that <strong>UMAC (Upper Medium Access Control)</strong> is the RivieraWaves code that runs on the <strong>BL602 RISC-V CPU</strong>.</p>
 <p>By matching the decompiled BL602 WiFi Firmware with the AliOS / RivieraWaves code, we discover the <strong>UMAC Modules that are used in BL602</strong>…</p>
 <p>TODO</p>
+<ol>
+<li>RivieraWaves CO</li>
+<li>RivieraWaves KE (Kernel)</li>
+<li>RivieraWaves ME</li>
+<li>RivieraWaves PS</li>
+<li>RivieraWaves RC</li>
+<li>RivieraWaves SCAN</li>
+<li>RivieraWaves SCANU (Scan UMAC?)</li>
+<li>RivieraWaves SM</li>
+<li>RivieraWaves TD</li>
+<li>RivieraWaves TXU (Transmit UMAC?)</li>
+<li>RivieraWaves VIF</li>
+</ol>
 <p>These modules are <strong>identical across BL602 and AliOS / RivieraWaves</strong>, with minor differences.</p>
+<p>(More about UMAC matching when discuss Quantitative Analysis)</p>
 <p><img src="https://lupyuen.github.io/images/wifi-rivierawaves.png" alt="Compare BL602 with RivieraWaves" /></p>
 <h2 id="lower-medium-access-control" class="section-header"><a href="#lower-medium-access-control">5.2 Lower Medium Access Control</a></h2>
 <p>Remember that <strong>LMAC (Lower Medium Access Control)</strong> is the RivieraWaves code that runs inside the <strong>BL602 Radio Hardware</strong>.</p>
 <p>By matching the decompiled BL602 WiFi Firmware with the AliOS / RivieraWaves code, we discover the <strong>LMAC Interfaces that are exposed by the BL602 Radio Hardware</strong>…</p>
 <p>TODO</p>
+<ol>
+<li>RivieraWaves APM</li>
+<li>RivieraWaves CFG</li>
+<li>RivieraWaves CHAN</li>
+<li>RivieraWaves HAL (Hardware Abstraction Layer)</li>
+<li>RivieraWaves MM</li>
+<li>RivieraWaves RXL (Receive LMAC?)</li>
+<li>RivieraWaves RXU (Receive UMAC?)</li>
+<li>RivieraWaves STA</li>
+<li>RivieraWaves TXL (Transmit LMAC?)</li>
+</ol>
+<p>The linked LMAC Interfaces above are for reference only… The <strong>BL602 implementation of LMAC is very different</strong> from the Beken BK7231U implementation above.</p>
+<p>(More about LMAC matching when discuss Quantitative Analysis)</p>
+<p><img src="https://lupyuen.github.io/images/wifi-supplicant2.png" alt="WiFi Supplicant: Rockchip RK3399 vs BL602" /></p>
 <h1 id="wifi-supplicant" class="section-header"><a href="#wifi-supplicant">6 WiFi Supplicant</a></h1>
 <p>TODO: Rockchip RK3399</p>
 <ul>
@@ -840,8 +868,6 @@ LAB_230059f6:
 <p><img src="https://lupyuen.github.io/images/wifi-rockchip.jpg" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wifi-supplicant.png" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/wifi-supplicant2.png" alt="" /></p>
 <p>TODO</p>
 <h1 id="wifi-phy-layer" class="section-header"><a href="#wifi-phy-layer">7 WiFi PHY Layer</a></h1>
 <p>TODO</p>
