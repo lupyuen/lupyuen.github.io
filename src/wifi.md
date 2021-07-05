@@ -799,9 +799,11 @@ But hold up! We have something that might explain what's inside `txl_payload_han
 
 ## Another Transmit Payload
 
-TODO
+Right after `txl_payload_handle` in our decompiled code, there's a function __`txl_payload_handle_backup`__.
 
-From [`bl602_demo_wifi.c`](https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L20222-L20398)
+Based on the name, `txl_payload_handle_backup` is probably another function that handles payload transmission.
+
+Let's look inside the decompiled function: [`bl602_demo_wifi.c`](https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L20222-L20398)
 
 ```c
 void txl_payload_handle_backup(void) {
