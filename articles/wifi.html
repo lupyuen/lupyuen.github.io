@@ -659,72 +659,26 @@ void ke_evt_schedule(void) {
 </code></pre>
 <p>Since the two versions of <code>ke_evt_schedule</code> are functionally identical, let’s read the <strong>AliOS / RivieraWaves version of <code>ke_evt_schedule</code></strong>.</p>
 <p><img src="https://lupyuen.github.io/images/wifi-task3.png" alt="ke_evt_schedule from AliOS / RivieraWaves" /></p>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/ke/ke_event.c#L78-L138"><code>ke_event.c</code></a></p>
-<pre><code class="language-c">static const struct ke_evt_tag ke_evt_hdlr[32] =
-{
-	{&amp;rwnxl_reset_evt, 0},       // [KE_EVT_RESET         ]                                                                            
-	
-	#if NX_MM_TIMER
-	{&amp;mm_timer_schedule, 0},     // [KE_EVT_MM_TIMER      ]                                                                            
-	#endif
-	
-	{&amp;ke_timer_schedule, 0},     // [KE_EVT_KE_TIMER      ]   
-	
-#if NX_BEACONING
-	{&amp;txl_payload_handle, AC_BCN},   // [KE_EVT_IPC_EMB_TXDESC_BCN]                                                                        
-#endif
-	
-	{&amp;txl_payload_handle, AC_VO},    // [KE_EVT_IPC_EMB_TXDESC_AC3]                                                                        
-	{&amp;txl_payload_handle, AC_VI},    // [KE_EVT_IPC_EMB_TXDESC_AC2]                                                                        
-	{&amp;txl_payload_handle, AC_BE},    // [KE_EVT_IPC_EMB_TXDESC_AC1]                                                                        
-	{&amp;txl_payload_handle, AC_BK},    // [KE_EVT_IPC_EMB_TXDESC_AC0]   
-	
-	{&amp;ke_task_schedule, 0},      // [KE_EVT_KE_MESSAGE    ]                                                                            
-	{&amp;mm_hw_idle_evt, 0},        // [KE_EVT_HW_IDLE       ]                                                                            
-	
-	#if NX_BEACONING || (!NX_MULTI_ROLE)
-	{&amp;mm_tbtt_evt, 0},           // [KE_EVT_PRIMARY_TBTT  ]                                                                            
-	#endif
-	
-	#if NX_BEACONING
-	{&amp;mm_tbtt_evt, 0},           // [KE_EVT_SECONDARY_TBTT]                                                                            
-	#endif
-	
-	{&amp;rxu_cntrl_evt, 0},         // [KE_EVT_RXUREADY      ]
-	
-	#if NX_TX_FRAME
-	{&amp;txl_frame_evt, 0},         // [KE_EVT_TXFRAME_CFM   ]                                                                            
-	#endif
-	
-	#if NX_BEACONING
-	{&amp;txl_cfm_evt, AC_BCN},      // [KE_EVT_TXCFM_BCN     ]                                                                            
-	#endif
-	
-	{&amp;txl_cfm_evt, AC_VO},       // [KE_EVT_TXCFM_AC3     ]                                                                            
-	{&amp;txl_cfm_evt, AC_VI},       // [KE_EVT_TXCFM_AC2     ]                                                                            
-	{&amp;txl_cfm_evt, AC_BE},       // [KE_EVT_TXCFM_AC1     ]                                                                            
-	{&amp;txl_cfm_evt, AC_BK},       // [KE_EVT_TXCFM_AC0     ]                                                                            
+<p>We see that <strong><code>ke_evt_schedule</code></strong> handles WiFi Kernel Events by calling the <strong>Event Handlers in <code>ke_evt_hdlr</code></strong>.</p>
+<p>Here are the <strong><code>ke_evt_hdlr</code></strong> Event Handlers from the AliOS / RivieraWaves code: <a href="https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/ke/ke_event.c#L78-L138"><code>ke_event.c</code></a></p>
+<pre><code class="language-c">//  Event Handlers called by ke_evt_schedule
+static const struct ke_evt_tag ke_evt_hdlr[32] = {
+  {&amp;rwnxl_reset_evt,    0},      // [KE_EVT_RESET]	
+  {&amp;ke_timer_schedule,  0},      // [KE_EVT_KE_TIMER]   
+  {&amp;txl_payload_handle, AC_VO},  // [KE_EVT_IPC_EMB_TXDESC_AC3]
 
-    #if CFG_SDIO
-	{&amp;sdio_emb_rxed_evt, 0},  
-	#endif
-	
-    #if CFG_SDIO_TRANS
-	{&amp;sdio_trans_evt, 0},  
-    #endif
-    
-	#if NX_GP_DMA
-	{&amp;hal_dma_evt, DMA_DL},      // [KE_EVT_GP_DMA_DL     ]                                                                            
-	#endif
+  //  This Event Handler looks interesting                                                      
+  {&amp;txl_payload_handle, AC_VI},  // [KE_EVT_IPC_EMB_TXDESC_AC2]
+  {&amp;txl_payload_handle, AC_BE},  // [KE_EVT_IPC_EMB_TXDESC_AC1]
+  {&amp;txl_payload_handle, AC_BK},  // [KE_EVT_IPC_EMB_TXDESC_AC0]	
 
-	#if CFG_TX_EVM_TEST
-	{&amp;evm_via_mac_evt, 0},
-	#endif
-};
+  {&amp;ke_task_schedule,   0},      // [KE_EVT_KE_MESSAGE]
+  {&amp;mm_hw_idle_evt,     0},      // [KE_EVT_HW_IDLE]
+  ...
 </code></pre>
 <p><img src="https://lupyuen.github.io/images/wifi-task4.png" alt="txl_payload_handle Event Handler" /></p>
-<p>TODO</p>
+<p><strong><code>txl_payload_handle</code></strong> is the Event Handler that handles the <strong>transmission of WiFi Payloads</strong>.</p>
+<p>Let’s look inside and learn how it transmits WiFi Packets.</p>
 <h2 id="handle-transmit-payload" class="section-header"><a href="#handle-transmit-payload">4.3 Handle Transmit Payload</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/lmac/src/tx/txl/txl_cntrl.h#L377-L386"><code>txl_cntrl.c</code></a></p>
