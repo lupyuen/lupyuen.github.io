@@ -630,38 +630,34 @@ void ke_evt_schedule(void) {
 <p>(Search results are sorted by recently indexed)</p>
 </li>
 </ul>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/ke/ke_event.c#L203-L231"><code>ke_event.c</code></a></p>
-<pre><code class="language-c">/**
- ****************************************************************************************
- * @brief Event scheduler entry point.
- *
- * This primitive has to be called in the background loop in order to execute the event
- * handlers for the event that are set.
- *
- ****************************************************************************************
- */
-void ke_evt_schedule(void)
-{
-    uint32_t field,event;
+<p>We’ll see this <strong><code>ke_evt_schedule</code></strong> code from <strong>AliOS Things</strong> (the embedded OS) and <strong>RivieraWaves</strong> (explained next chapter): <a href="https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/ke/ke_event.c#L203-L231"><code>ke_event.c</code></a></p>
+<pre><code class="language-c">//  Event scheduler entry point. This primitive has to be 
+//  called in the background loop in order to execute the 
+//  event handlers for the event that are set.
+void ke_evt_schedule(void) {
+  uint32_t field, event;
+  field = ke_env.evt_field;
+  while (field) { // Compiler is assumed to optimize with loop inversion
 
-	field = ke_env.evt_field;
-    while (field) // Compiler is assumed to optimize with loop inversion
-    {
-        // Find highest priority event set
-        event = co_clz(field);
+    // Find highest priority event set
+    event = co_clz(field);
 
-        // Sanity check
-        ASSERT_ERR((event &lt; KE_EVT_MAX) &amp;&amp; ke_evt_hdlr[event].func);
+    // Sanity check
+    ASSERT_ERR((event &lt; KE_EVT_MAX) &amp;&amp; ke_evt_hdlr[event].func);
 
-        // Execute corresponding handler
-        (ke_evt_hdlr[event].func)(ke_evt_hdlr[event].param);
+    // Execute corresponding handler
+    (ke_evt_hdlr[event].func)(ke_evt_hdlr[event].param);
 
-        // Update the volatile value
-        field = ke_env.evt_field;
-    }
+    // Update the volatile value
+    field = ke_env.evt_field;
+  }
 }
 </code></pre>
+<p>Compare this with our <a href="https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L28721-L28737"><strong>decompiled version of <code>ke_evt_schedule</code></strong></a>… It’s a <strong>perfect match</strong>!</p>
+<p>Right down to the <strong>Assertion Check</strong>!</p>
+<pre><code class="language-text">(event &lt; KE_EVT_MAX) &amp;&amp; ke_evt_hdlr[event].func
+</code></pre>
+<p>Since the two versions of <code>ke_evt_schedule</code> are functionally identical, let’s read the <strong>AliOS / RivieraWaves version</strong>.</p>
 <p><img src="https://lupyuen.github.io/images/wifi-task3.png" alt="ke_evt_schedule from AliOS / RivieraWaves" /></p>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/ke/ke_event.c#L78-L138"><code>ke_event.c</code></a></p>
