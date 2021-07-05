@@ -928,7 +928,7 @@ _What is CEVA RivieraWaves?_
 
 RivieraWaves is the __Software / Firmware that implements the 802.11 Wireless Protocol__ on WiFi SoCs (like BL602).
 
-On BL602 there are two layers of RivieraWaves WiFi Firmware...
+On BL602 there are two layers of RivieraWaves Firmware...
 
 1.  __Upper Medium Access Control (UMAC)__
 
@@ -960,11 +960,21 @@ This article hints at the WiFi SoCs that might be using RivieraWaves (or similar
 
 ## Upper Medium Access Control
 
+Recall that __UMAC (Upper Medium Access Control)__ is the RivieraWaves code that runs on the __BL602 RISC-V CPU__.
+
+By matching the decompiled BL602 WiFi Firmware with the AliOS / RivieraWaves code, we discover the __UMAC Modules that are used in BL602__...
+
 TODO
+
+These modules are __identical across BL602 and AliOS / RivieraWaves__, with minor differences.
 
 ![Compare BL602 with RivieraWaves](https://lupyuen.github.io/images/wifi-rivierawaves.png)
 
 ## Lower Medium Access Control
+
+Remember that __LMAC (Lower Medium Access Control)__ is the RivieraWaves code that runs inside the __BL602 Radio Hardware__.
+
+By matching the decompiled BL602 WiFi Firmware with the AliOS / RivieraWaves code, we discover the __LMAC Interfaces that are exposed by the BL602 Radio Hardware__...
 
 TODO
 
