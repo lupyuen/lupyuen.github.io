@@ -803,15 +803,20 @@ LAB_230059f6:
 <li>
 <p><strong>Upper Medium Access Control (UMAC)</strong></p>
 <p>Runs on the <strong>BL602 RISC-V CPU.</strong></p>
+<p>Some of the code we’ve seen earlier comes from UMAC.</p>
+<p>(Like the Kernel Event Scheduler)</p>
 </li>
 <li>
 <p><strong>Lower Medium Access Control (LMAC)</strong></p>
 <p>Runs inside the <strong>BL602 Radio Hardware.</strong></p>
+<p>We don’t have any LMAC code to study since it’s hidden inside the Radio Hardware.</p>
+<p>(But we can see the LMAC Interfaces exposed by the WiFi Registers)</p>
 </li>
 </ol>
 <p><a href="https://www.ceva-dsp.com/product/rivierawaves-wi-fi-platforms/">More about RivieraWaves</a></p>
 <p><em>Is RivieraWaves used elsewhere?</em></p>
-<p>TODO</p>
+<p>Yes, RivieraWaves is used in many popular WiFi SoCs.</p>
+<p>This article hints at the WiFi SoCs that might be using RivieraWaves (or similar code by CEVA)…</p>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/wifi-ceva.png" alt="Customers of RivieraWaves" /></p>
 </blockquote>
