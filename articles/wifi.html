@@ -710,180 +710,63 @@ void txl_payload_handle(void) {
 <h2 id="another-transmit-payload" class="section-header"><a href="#another-transmit-payload">4.4 Another Transmit Payload</a></h2>
 <p>Right after <code>txl_payload_handle</code> in our decompiled code, there’s a function <strong><code>txl_payload_handle_backup</code></strong>.</p>
 <p>Based on the name, <code>txl_payload_handle_backup</code> is probably another function that handles payload transmission.</p>
-<p>Let’s look inside the decompiled function: <a href="https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L20222-L20398"><code>bl602_demo_wifi.c</code></a></p>
-<pre><code class="language-c">void txl_payload_handle_backup(void) {
-  ushort uVar1;
-  uint uVar2;
-  uint uVar3;
-  txl_buffer_tag *ptVar4;
-  char *condition;
-  int line;
-  byte bVar5;
-  uint uVar6;
-  tx_hd *ptVar7;
-  undefined *puVar8;
-  txdesc *txdesc;
-  tx_hd *ptVar9;
-  txl_buffer_env_tag *ptVar10;
-  txl_cntrl_env_tag *ptVar11;
-  uint uVar12;
-  tx_hw_desc *ptVar13;
-  
-  ptVar10 = &amp;txl_buffer_env;
-  ptVar11 = &amp;txl_cntrl_env;
-  uVar3 = 0;
+<p>Here are the highlights of the decompiled <code>txl_payload_handle_backup</code> function: <a href="https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L20222-L20398"><code>bl602_demo_wifi.c</code></a></p>
+<pre><code class="language-c">//  Another transmit payload handler.
+//  Probably works the same way as txl_payload_handle,
+//  but runs on BL602 instead of LMAC Firmware.
+void txl_payload_handle_backup(void) {
+  ...
+  //  Iterate through a list of packet buffers (?)
   while (ptVar4 = ptVar10-&gt;list[0].first, ptVar4 == (txl_buffer_tag *)0x0) {
 LAB_230059f6:
     uVar3 = uVar3 + 1;
     ptVar10 = (txl_buffer_env_tag *)&amp;ptVar10-&gt;buf_idx[0].free_size;
     ptVar11 = (txl_cntrl_env_tag *)(ptVar11-&gt;txlist + 1);
-    if (uVar3 == 5) {
-      gp = (code *)((int)SFlash_Cache_Hit_Count_Get + 6);
-      return;
-    }
   }
-  uVar2 = uVar3 &amp; 0xff;
-  ptVar10-&gt;list[0].first = ptVar4-&gt;next;
-  uVar12 = 1 &lt;&lt; (uVar3 &amp; 0x1f);
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-c">  //  Loop (until when?)
   do {
-    txdesc = ptVar4-&gt;txdesc;
-    if ((txdesc-&gt;host).packet_addr != 0) {
-      if (uVar3 == 4) {
-        uVar6 = (uint)(txdesc-&gt;host).vif_idx;
-        bVar5 = *(byte *)&amp;vif_info_tab[uVar6].u.field_0x2ea;
-        if ((*(byte *)((int)&amp;ptVar4[1].length + 1) &gt;&gt; 5 &amp; 1) == 0) {
-          bVar5 = bVar5 &amp; 0xfd;
-        }
-        else {
-          bVar5 = bVar5 | 2;
-        }
-        *(byte *)&amp;vif_info_tab[uVar6].u.field_0x2ea = bVar5;
-      }
-      if ((txdesc-&gt;host).tid == -1) {
-        uVar1 = (txdesc-&gt;host).flags;
-        if ((((uVar1 &amp; 8) != 0) &amp;&amp; ((*(byte *)&amp;ptVar4[1].length &amp; 0xdc) == 0x10)) &amp;&amp;
-           (*(short *)((int)&amp;ptVar4[1].dma_desc[0].src + 2) == 0)) {
-          (txdesc-&gt;host).flags = uVar1 | 0x20;
-          rxu_cntrl_monitor_pm((mac_addr *)&amp;ptVar4[1].lenheader);
-        }
-        txl_machdr_format((uint32_t)(ptVar4 + 1));
-      }
-      ptVar4 = (txdesc-&gt;lmac).buffer;
-      ptVar13 = (txdesc-&gt;lmac).hw_desc;
-      if (((txdesc-&gt;host).flags &amp; 8) == 0) {
-        txu_cntrl_tkip_mic_append(txdesc,(uint8_t)uVar2);
-        (ptVar13-&gt;thd).macctrlinfo1 = (ptVar4-&gt;buffer_control).mac_control_info;
-      }
-      else {
-        (ptVar13-&gt;thd).macctrlinfo2 = (ptVar13-&gt;thd).macctrlinfo2 &amp; 0xff87ffff;
-        bVar5 = *(byte *)&amp;ptVar4[1].lenheader;
-        (ptVar13-&gt;thd).statinfo = 0;
-        (ptVar13-&gt;thd).macctrlinfo1 = (uint)((bVar5 &amp; 1) == 0) &lt;&lt; 9;
-      }
-      (ptVar13-&gt;thd).policyentryaddr = (uint32_t)&amp;ptVar4-&gt;buffer_control;
-      (ptVar13-&gt;thd).phyctrlinfo = (ptVar4-&gt;buffer_control).phy_control_info;
-    }
-    ptVar11-&gt;txlist[0].bridgedmacnt = ptVar11-&gt;txlist[0].bridgedmacnt + 1;
-    ptVar7 = ptVar11-&gt;txlist[0].last_frame_exch;
-    ptVar9 = &amp;((txdesc-&gt;lmac).hw_desc)-&gt;thd;
-    if (ptVar7 == (tx_hd *)0x0) {
-      uVar6 = uVar3;
-      if (uVar2 == 2) {
-        if ((_DAT_44b08188 &gt;&gt; 0xc &amp; 3) == 2) {
-          line = 0x23c;
-          condition = &quot;blmac_tx_ac_2_state_getf() != 2&quot;;
-          goto LAB_23005bec;
-        }
-        _DAT_44b08180 = 0x800;
-        puVar8 = (undefined *)0x61a80;
-        _DAT_44b081a4 = ptVar9;
-      }
-      else {
-        if (2 &lt; uVar2) {
-          if (uVar2 == 3) {
-            if ((_DAT_44b08188 &gt;&gt; 0x10 &amp; 3) != 2) {
-              _DAT_44b08180 = 0x1000;
-              _DAT_44b081a8 = ptVar9;
-              goto LAB_23005c4c;
-            }
-            line = 0x236;
-            condition = &quot;blmac_tx_ac_3_state_getf() != 2&quot;;
-          }
-          else {
-            if (uVar2 != 4) goto LAB_23005b9a;
-            if ((_DAT_44b08188 &amp; 3) != 2) {
-              _DAT_44b08180 = 0x100;
-              uVar6 = 4;
-              puVar8 = (undefined *)0xc350;
-              _DAT_44b08198 = ptVar9;
-              goto LAB_23005c08;
-            }
-            line = 0x22f;
-            condition = &quot;blmac_tx_bcn_state_getf() != 2&quot;;
-          }
-LAB_23005bec:
-          assert_rec(condition,&quot;module&quot;,line);
-          goto LAB_23005b5e;
-        }
-        if (uVar2 == 1) {
-          if ((_DAT_44b08188 &gt;&gt; 8 &amp; 3) == 2) {
-            line = 0x242;
-            condition = &quot;blmac_tx_ac_1_state_getf() != 2&quot;;
-            goto LAB_23005bec;
-          }
-          _DAT_44b08180 = 0x400;
-          puVar8 = &amp;DAT_001e8480;
-          _DAT_44b081a0 = ptVar9;
-        }
-        else {
-LAB_23005b9a:
-          if ((_DAT_44b08188 &gt;&gt; 4 &amp; 3) == 2) {
-            line = 0x248;
-            condition = &quot;blmac_tx_ac_0_state_getf() != 2&quot;;
-            goto LAB_23005bec;
-          }
-          _DAT_44b08180 = 0x200;
-          _DAT_44b0819c = ptVar9;
-LAB_23005c4c:
-          puVar8 = (undefined *)0x30d40;
-        }
-      }
-LAB_23005c08:
-      blmac_abs_timer_set(uVar6,(uint32_t)(puVar8 + _DAT_44b00120));
-      _DAT_44b0808c = uVar12 | _DAT_44b0808c;
-      _DAT_44b08088 = uVar12;
-    }
-    else {
-      ptVar7-&gt;nextfrmexseq_ptr = (uint32_t)ptVar9;
-      if (uVar2 == 2) {
-        _DAT_44b08180 = 8;
-      }
-      else {
-        if (uVar2 &lt; 3) {
-          if (uVar2 == 1) {
-            _DAT_44b08180 = 4;
-          }
-          else {
-LAB_23005b26:
-            _DAT_44b08180 = 2;
-          }
-        }
-        else {
-          if (uVar2 == 3) {
-            _DAT_44b08180 = 0x10;
-          }
-          else {
-            if (uVar2 != 4) goto LAB_23005b26;
-            _DAT_44b08180 = 1;
-          }
-        }
-      }
-    }
-LAB_23005b5e:
-    ptVar4 = ptVar10-&gt;list[0].first;
-    ptVar11-&gt;txlist[0].last_frame_exch = ptVar9;
-    if (ptVar4 == (txl_buffer_tag *)0x0) goto LAB_230059f6;
-    ptVar10-&gt;list[0].first = ptVar4-&gt;next;
+    //  Call some RXU, TXL and TXU functions
+    rxu_cntrl_monitor_pm((mac_addr *)&amp;ptVar4[1].lenheader);
+    txl_machdr_format((uint32_t)(ptVar4 + 1));
+    txu_cntrl_tkip_mic_append(txdesc,(uint8_t)uVar2);
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-c">    //  Write to WiFi Registers
+    _DAT_44b08180 = 0x800;
+    _DAT_44b081a4 = ptVar9;
+    ...
+    _DAT_44b08180 = 0x1000;
+    _DAT_44b081a8 = ptVar9;
+    ...
+    _DAT_44b08180 = 0x100;
+    _DAT_44b08198 = ptVar9;
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-c">    //  Assertion Checks
+    line = 0x23c;
+    condition = &quot;blmac_tx_ac_2_state_getf() != 2&quot;;
+    ...
+    line = 0x236;
+    condition = &quot;blmac_tx_ac_3_state_getf() != 2&quot;;
+    ...
+    line = 0x22f;
+    condition = &quot;blmac_tx_bcn_state_getf() != 2&quot;;
+    ...
+    line = 0x242;
+    condition = &quot;blmac_tx_ac_1_state_getf() != 2&quot;;
+    ...
+    line = 0x248;
+    condition = &quot;blmac_tx_ac_0_state_getf() != 2&quot;;
+    ...
+    assert_rec(condition,&quot;module&quot;,line);
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-c">    //  Set some timer
+    blmac_abs_timer_set(uVar6, (uint32_t)(puVar8 + _DAT_44b00120));
+
+    //  Continue looping
   } while( true );
 }
 </code></pre>
