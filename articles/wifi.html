@@ -688,10 +688,10 @@ static const struct ke_evt_tag ke_evt_hdlr[32] = {
 //  transfered from host memory. This primitive is 
 //  called by the interrupt controller ISR. It 
 //  performs LLC translation and MIC computing if required.
+//  LLC = Link Level Control, MIC = Message Integrity Code
 void txl_payload_handle(int access_category);
 </code></pre>
 <p>This suggests that <code>txl_payload_handle</code> is called to <strong>transmit WiFi Packets</strong>… After the packet payload has been copied from BL602 to the Radio Hardware. (Via the <strong>Shared RAM Buffer</strong>)</p>
-<p>(What’s LLC and MIC?)</p>
 <p>Searching our decompiled code for <strong><code>txl_payload_handle</code></strong> shows this: <a href="https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L20205-L20216"><code>bl602_demo_wifi.c</code></a></p>
 <pre><code class="language-c">//  Handle transmit payload
 void txl_payload_handle(void) {
@@ -813,6 +813,7 @@ LAB_230059f6:
 <p>(But we can see the LMAC Interfaces exposed by the WiFi Registers)</p>
 </li>
 </ol>
+<p><a href="https://www.controleng.com/articles/wi-fi-and-the-osi-model/">More about WiFi Medium Access Control</a></p>
 <p><a href="https://www.ceva-dsp.com/product/rivierawaves-wi-fi-platforms/">More about RivieraWaves</a></p>
 <p><em>Is RivieraWaves used elsewhere?</em></p>
 <p>Yes, RivieraWaves is used in many popular WiFi SoCs.</p>
@@ -823,40 +824,41 @@ LAB_230059f6:
 <p><a href="https://csimarket.com/stocks/markets_glance.php?code=CEVA#:%7E:text=Included%20among%20our%20licensees%20are,%2C%20RDA%2C%20Renesas%2C%20Rockchip%2C">(Source)</a></p>
 <h2 id="upper-medium-access-control" class="section-header"><a href="#upper-medium-access-control">5.1 Upper Medium Access Control</a></h2>
 <p>Recall that <strong>UMAC (Upper Medium Access Control)</strong> is the RivieraWaves code that runs on the <strong>BL602 RISC-V CPU</strong>.</p>
-<p>By matching the decompiled BL602 WiFi Firmware with the AliOS / RivieraWaves code, we discover the <strong>UMAC Modules that are used in BL602</strong>…</p>
-<p>TODO</p>
+<p>When we match the decompiled BL602 WiFi Firmware with the AliOS / RivieraWaves code, we discover the Source Code for the <strong>UMAC Modules (and Common Modules) that are used in BL602</strong>…</p>
 <ol>
-<li>CO Module</li>
-<li>KE Module (Kernel)</li>
-<li>ME Module</li>
-<li>PS Module</li>
-<li>RC Module</li>
-<li>SCAN Module</li>
-<li>SCANU Module (Scan UMAC?)</li>
-<li>SM Module</li>
-<li>TD Module</li>
-<li>TXU Module (Transmit UMAC?)</li>
-<li>VIF Module</li>
+<li><a href="https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/common">CO Module</a> (Common)</li>
+<li><a href="https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/ke">KE Module</a> (Kernel)</li>
+<li><a href="https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/umac/src/me">ME Module</a> (Message?)</li>
+<li><a href="https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/umac/src/rc">RC Module</a> (Rate Control)</li>
+<li><a href="https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/umac/src/rxu">RXU Module</a> (Receive UMAC)</li>
+<li><a href="https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/umac/src/scanu">SCANU Module</a> (Scan SSID UMAC)</li>
+<li><a href="https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/umac/src/sm">SM Module</a> (State Machine)</li>
+<li><a href="https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/umac/src/txu">TXU Module</a> (Transmit UMAC)</li>
 </ol>
-<p>These modules are <strong>identical across BL602 and AliOS / RivieraWaves</strong>, with minor differences.</p>
+<p>These modules are <strong>mostly identical across BL602 and AliOS / RivieraWaves</strong>. (Except RXU, which looks different)</p>
 <p>(More about UMAC Matching when we discuss Quantitative Analysis)</p>
 <p><img src="https://lupyuen.github.io/images/wifi-rivierawaves.png" alt="Compare BL602 with RivieraWaves" /></p>
 <h2 id="lower-medium-access-control" class="section-header"><a href="#lower-medium-access-control">5.2 Lower Medium Access Control</a></h2>
 <p>Remember that <strong>LMAC (Lower Medium Access Control)</strong> is the RivieraWaves code that runs inside the <strong>BL602 Radio Hardware</strong>.</p>
 <p>By matching the decompiled BL602 WiFi Firmware with the AliOS / RivieraWaves code, we discover the <strong>LMAC Interfaces that are exposed by the BL602 Radio Hardware</strong>…</p>
-<p>TODO</p>
 <ol>
-<li>APM Interface</li>
-<li>CFG Interface</li>
-<li>CHAN Interface</li>
-<li>HAL Interface (Hardware Abstraction Layer)</li>
-<li>MM Interface</li>
-<li>RXL Interface (Receive LMAC?)</li>
-<li>RXU Interface (Receive UMAC?)</li>
-<li>STA Interface</li>
-<li>TXL Interface (Transmit LMAC?)</li>
+<li>APM Interface (Missing from AliOS)</li>
+<li>CFG Interface (Missing from AliOS)</li>
+<li><a href="https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/lmac/src/chan">CHAN Interface</a> (MAC Channel Mgmt)</li>
+<li><a href="https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/lmac/src/hal">HAL Interface</a> (Hardware Abstraction Layer)</li>
+<li><a href="https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/lmac/src/mm">MM Interface</a> (MAC Mgmt)</li>
+<li><a href="https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/lmac/src/rx/rxl">RXL Interface</a> (Receive LMAC)</li>
+<li><a href="https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/lmac/src/sta">STA Interface</a> (Station Mgmt)</li>
+<li><a href="https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/lmac/src/tx/txl">TXL Interface</a> (Transmit LMAC)</li>
 </ol>
-<p>The linked LMAC Interfaces above are for reference only… The <strong>BL602 implementation of LMAC is very different</strong> from the Beken BK7231U implementation above.</p>
+<p>The LMAC Interfaces linked above are for reference only… The <strong>BL602 implementation of LMAC is very different</strong> from the Beken BK7231U implementation above.</p>
+<p>These LMAC Modules seem to be <strong>mostly identical across BL602 and AliOS / RivieraWaves</strong>…</p>
+<ol>
+<li><a href="https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/lmac/src/scan">SCAN Module</a> (Scan SSID)</li>
+<li><a href="https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/lmac/src/ps">PS Module</a> (Power Save)</li>
+<li><a href="https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/lmac/src/td">TD Module</a> (Traffic Detection)</li>
+<li><a href="https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/lmac/src/vif">VIF Module</a> (Virtual Interface)</li>
+</ol>
 <p>(More about LMAC Matching when we discuss Quantitative Analysis)</p>
 <p><img src="https://lupyuen.github.io/images/wifi-supplicant2.png" alt="WiFi Supplicant: Rockchip RK3399 vs BL602" /></p>
 <h1 id="wifi-supplicant" class="section-header"><a href="#wifi-supplicant">6 WiFi Supplicant</a></h1>
