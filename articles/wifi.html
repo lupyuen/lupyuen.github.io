@@ -87,7 +87,7 @@
 <li><a href="#upper-medium-access-control">5.1 Upper Medium Access Control</a><ul></ul></li>
 <li><a href="#lower-medium-access-control">5.2 Lower Medium Access Control</a><ul></ul></li></ul></li>
 <li><a href="#wifi-supplicant">6 WiFi Supplicant</a><ul></ul></li>
-<li><a href="#wifi-phy-layer">7 WiFi PHY Layer</a><ul></ul></li>
+<li><a href="#wifi-physical-layer">7 WiFi Physical Layer</a><ul></ul></li>
 <li><a href="#quantitative-analysis">8 Quantitative Analysis</a><ul></ul></li>
 <li><a href="#other-components">9 Other Components</a><ul></ul></li>
 <li><a href="#wifi-rtl">10 WiFi RTL</a><ul></ul></li>
@@ -688,7 +688,7 @@ static const struct ke_evt_tag ke_evt_hdlr[32] = {
 //  transfered from host memory. This primitive is 
 //  called by the interrupt controller ISR. It 
 //  performs LLC translation and MIC computing if required.
-//  LLC = Link Level Control, MIC = Message Integrity Code
+//  LLC = Logical Link Control, MIC = Message Integrity Code
 void txl_payload_handle(int access_category);
 </code></pre>
 <p>This suggests that <code>txl_payload_handle</code> is called to <strong>transmit WiFi Packets</strong>… After the packet payload has been copied from BL602 to the Radio Hardware. (Via the <strong>Shared RAM Buffer</strong>)</p>
@@ -879,16 +879,26 @@ LAB_230059f6:
 <p>This is awesome because we have just uncovered the secret origin of (roughly) <strong>2,500 Lines of Code</strong> from the decompiled BL602 firmware!</p>
 <p>(This data comes from the <strong>Quantitative Analysis</strong>, which we’ll discuss in a while)</p>
 <p><img src="https://lupyuen.github.io/images/wifi-rockchip.jpg" alt="WiFi Supplicant: Lines of code" /></p>
-<h1 id="wifi-phy-layer" class="section-header"><a href="#wifi-phy-layer">7 WiFi PHY Layer</a></h1>
+<h1 id="wifi-physical-layer" class="section-header"><a href="#wifi-physical-layer">7 WiFi Physical Layer</a></h1>
+<p><em>What’s the WiFi Physical Layer?</em></p>
 <p>TODO</p>
+<p><a href="https://www.controleng.com/articles/wi-fi-and-the-osi-model/">More about WiFi Physical Layer</a></p>
 <ul>
 <li><a href="https://github.com/jixinintelligence/bl602-604"><strong>jixinintelligence/bl602-604</strong></a></li>
 </ul>
 <p><a href="https://github.com/lupyuen/bl602-604">(We’ll use this fork)</a></p>
-<p><img src="https://lupyuen.github.io/images/wifi-phy.png" alt="" /></p>
+<p><img src="https://lupyuen.github.io/images/wifi-phy.png" alt="BL602 Physical Layer" /></p>
 <p>TODO</p>
 <h1 id="quantitative-analysis" class="section-header"><a href="#quantitative-analysis">8 Quantitative Analysis</a></h1>
 <p>TODO</p>
+<pre><code class="language-bash"># Extract the function names (and line numbers)
+# from the decompiled firmware
+grep --line-number \
+    &quot;^[_a-zA-Z]&quot; \
+    bl602_demo_wifi.c \
+    | grep -v LAB_ \
+    &gt;bl602_demo_wifi.txt
+</code></pre>
 <ul>
 <li>
 <p><a href="https://docs.google.com/spreadsheets/d/1C_XmkH-ZSXz9-V2HsYBv7K1KRx3RF3-zsoJRLh1GwxI/edit?usp=sharing">Google Sheets</a></p>
