@@ -1146,7 +1146,7 @@ Our __BL602 WiFi Demo Firmware [`bl602_demo_wifi`](https://github.com/lupyuen/bl
 
 -   [__Decompiled WiFi Demo Firmware `bl602_demo_wifi.c`__](https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c)
 
-We run this command to __extract the Function Names__ and their Line Numbers...
+We run this command to __extract the Function Names__ and their Line Numbers (for counting the Lines of Code)...
 
 ```bash
 # Extract the function names (and line numbers)
@@ -1173,6 +1173,8 @@ _Why not just decompile and analyse the BL602 WiFi Library: [`libbl602_wifi.a`](
 The [__BL602 WiFi Library `libbl602_wifi.a`__](https://github.com/pine64/bl602-re/tree/master/blobs) might contain some extra WiFi Functions that won't get linked into the WiFi Firmware.
 
 Hence we're decompiling and analysing the __actual WiFi Functions called by the WiFi Firmware__.
+
+(BTW: Our counting of Lines of Code will include Blank Lines and Comment Lines)
 
 ## Load functions into spreadsheet
 
