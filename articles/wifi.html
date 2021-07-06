@@ -899,7 +899,7 @@ void phy_init(phy_cfg_tag *config) {
   ...
   // Init transmitter rate power control
   trpc_init();
-  
+
   // Init phy adaptive features
   pa_init();
 
@@ -936,7 +936,12 @@ void phy_init(const struct phy_cfg_tag *config) {
 <p>(Where are the calls to <code>mdm_reset</code>, <code>phy_tcal_reset</code> and <code>phy_tcal_start</code>?)</p>
 <p>Thus <strong>we don’t have a 100% match</strong> for the BL602 Physical Layer. (Maybe 50%)</p>
 <p>Nonetheless this is a helpful discovery for our Reverse Engineering!</p>
+<p><img src="https://lupyuen.github.io/images/wifi-quantify.png" alt="Extracting the function names from the decompiled firmware" /></p>
 <h1 id="quantitative-analysis" class="section-header"><a href="#quantitative-analysis">8 Quantitative Analysis</a></h1>
+<p><em>How many Lines of Decompiled Code do we actually need to decipher?</em></p>
+<p><em>How much of the BL602 WiFi Source Code is already available elsewhere?</em></p>
+<p>To answer these questions, let’s do a <strong>Quantitative Analysis of the Decompiled BL602 Firmware Code</strong>.</p>
+<p>(Yep that’s the fancy term for <strong>data crunching with a spreadsheet</strong>)</p>
 <p>TODO</p>
 <pre><code class="language-bash"># Extract the function names (and line numbers)
 # from the decompiled firmware
@@ -960,7 +965,6 @@ grep --line-number \
 <p><a href="https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.csv">CSV Format (without analysis)</a></p>
 </li>
 </ul>
-<p><img src="https://lupyuen.github.io/images/wifi-quantify.png" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wifi-quantify2.png" alt="" /></p>
 <p>TODO</p>
@@ -1011,10 +1015,13 @@ grep --line-number \
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1407971263088193540">this Twitter Thread</a></p>
 </li>
 <li>
-<p>More about the BL602 RF IP: <a href="https://github.com/pine64/bl602-docs/tree/main/hardware_notes#rf-ip">Hardware Notes: RF IP</a></p>
+<p>More about BL602 RF IP: <a href="https://github.com/pine64/bl602-docs/tree/main/hardware_notes#rf-ip">Hardware Notes: RF IP</a></p>
 </li>
 <li>
-<p>More about the BL602 PHY: <a href="https://github.com/pine64/bl602-docs/blob/main/hardware_notes/registers/phy/mdm.md">Hardware Notes: PHY Registers</a></p>
+<p>More about BL602 Physical Layer: <a href="https://github.com/pine64/bl602-docs/blob/main/hardware_notes/registers/phy/mdm.md">Hardware Notes: PHY Registers</a></p>
+</li>
+<li>
+<p>ESP32 uses CEVA’s Bluetooth IP but not WiFi IP, according to <a href="https://twitter.com/SpritesMods/status/1412308410226286598?s=19">SpritesMods on Twitter</a></p>
 </li>
 </ol>
 
