@@ -946,16 +946,44 @@ void phy_init(const struct phy_cfg_tag *config) {
 <p><em>How much of the BL602 WiFi Source Code is already available elsewhere?</em></p>
 <p>To answer these questions, let’s do a <strong>Quantitative Analysis of the Decompiled BL602 Firmware Code</strong>.</p>
 <p>(Yep that’s the fancy term for <strong>data crunching with a spreadsheet</strong>)</p>
+<p>We shall…</p>
+<ol>
+<li>
+<p><strong>Extract the function names</strong> from the decompiled BL602 WiFi Demo Firmware</p>
+</li>
+<li>
+<p><strong>Load the decompiled function names</strong> into a spreadsheet for analysis</p>
+</li>
+<li>
+<p><strong>Match the decompiled function code</strong> with the source code we’ve discovered through GitHub Search</p>
+</li>
+<li>
+<p><strong>Count the number of lines of decompiled code</strong> that don’t have any matching source code</p>
+</li>
+</ol>
 <h2 id="extract-the-decompiled-functions" class="section-header"><a href="#extract-the-decompiled-functions">8.1 Extract the decompiled functions</a></h2>
-<p>TODO</p>
+<p>Our <strong>BL602 WiFi Demo Firmware <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi"><code>bl602_demo_wifi</code></a></strong> has been decompiled into one giant C file…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c"><strong>Decompiled WiFi Demo Firmware <code>bl602_demo_wifi.c</code></strong></a></li>
+</ul>
+<p>We run this command to <strong>extract the Function Names</strong> and their Line Numbers…</p>
 <pre><code class="language-bash"># Extract the function names (and line numbers)
-# from the decompiled firmware
+# from the decompiled firmware. The line must
+# begin with an underscore or a letter,
+# without indentation.
 grep --line-number \
     &quot;^[_a-zA-Z]&quot; \
     bl602_demo_wifi.c \
     | grep -v LAB_ \
     &gt;bl602_demo_wifi.txt
 </code></pre>
+<p>This produces <a href="https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.txt"><strong><code>bl602_demo_wifi.txt</code></strong></a>, a long list of Decompiled Function Names and their Line Numbers. <a href="https://lupyuen.github.io/images/wifi-quantify.png">(Here’s a snippet)</a></p>
+<p>(Plus Function Parameters and Type Definitions… We’ll scrub them away soon)</p>
+<p><em>But this list includes EVERYTHING… Including the non-WiFi functions no?</em></p>
+<p>Yes. But it’s fun to comb through <strong>Every Single Function in the Decompiled Firmware</strong>… Just to see what makes it tick.</p>
+<p><em>Why not just decompile and analyse the BL602 WiFi Library: <a href="https://github.com/pine64/bl602-re/tree/master/blobs"><code>libbl602_wifi.a</code></a> ?</em></p>
+<p>The <a href="https://github.com/pine64/bl602-re/tree/master/blobs"><strong>BL602 WiFi Library <code>libbl602_wifi.a</code></strong></a> might contain some extra WiFi Functions that won’t get linked into the WiFi Firmware.</p>
+<p>Hence we’re decompiling and analysing the <strong>actual WiFi Functions called by the WiFi Firmware</strong>.</p>
 <h2 id="load-functions-into-spreadsheet" class="section-header"><a href="#load-functions-into-spreadsheet">8.2 Load functions into spreadsheet</a></h2>
 <p>TODO</p>
 <ul>
