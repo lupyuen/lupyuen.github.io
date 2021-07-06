@@ -1071,7 +1071,7 @@ void phy_init(phy_cfg_tag *config) {
   ...
   // Init transmitter rate power control
   trpc_init();
-  
+
   // Init phy adaptive features
   pa_init();
 
@@ -1118,7 +1118,17 @@ Thus __we don't have a 100% match__ for the BL602 Physical Layer. (Maybe 50%)
 
 Nonetheless this is a helpful discovery for our Reverse Engineering!
 
+![Extracting the function names from the decompiled firmware](https://lupyuen.github.io/images/wifi-quantify.png)
+
 # Quantitative Analysis
+
+_How many Lines of Decompiled Code do we actually need to decipher?_
+
+_How much of the BL602 WiFi Source Code is already available elsewhere?_
+
+To answer these questions, let's do a __Quantitative Analysis of the Decompiled BL602 Firmware Code__.
+
+(Yep that's the fancy term for __data crunching with a spreadsheet__)
 
 TODO
 
@@ -1139,8 +1149,6 @@ grep --line-number \
 -   [Excel Format](https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.xlsx)
 
 -   [CSV Format (without analysis)](https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.csv)
-
-![](https://lupyuen.github.io/images/wifi-quantify.png)
 
 TODO
 
@@ -1202,6 +1210,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1407971263088193540)
 
-1.  More about the BL602 RF IP: [Hardware Notes: RF IP](https://github.com/pine64/bl602-docs/tree/main/hardware_notes#rf-ip)
+1.  More about BL602 RF IP: [Hardware Notes: RF IP](https://github.com/pine64/bl602-docs/tree/main/hardware_notes#rf-ip)
 
-1.  More about the BL602 PHY: [Hardware Notes: PHY Registers](https://github.com/pine64/bl602-docs/blob/main/hardware_notes/registers/phy/mdm.md)
+1.  More about BL602 Physical Layer: [Hardware Notes: PHY Registers](https://github.com/pine64/bl602-docs/blob/main/hardware_notes/registers/phy/mdm.md)
+
+1.  ESP32 uses CEVA's Bluetooth IP but not WiFi IP, according to [SpritesMods on Twitter](https://twitter.com/SpritesMods/status/1412308410226286598?s=19)
