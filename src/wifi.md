@@ -999,8 +999,8 @@ The LMAC Interfaces linked above are for reference only... The __BL602 implement
 
 These LMAC Modules seem to be __mostly identical across BL602 and AliOS / RivieraWaves__...
 
-1.  [SCAN Module](https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/lmac/src/scan) (Scan SSID)
 1.  [PS Module](https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/lmac/src/ps) (Power Save)
+1.  [SCAN Module](https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/lmac/src/scan) (Scan SSID)
 1.  [TD Module](https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/lmac/src/td) (Traffic Detection)
 1.  [VIF Module](https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/lmac/src/vif) (Virtual Interface)
 
