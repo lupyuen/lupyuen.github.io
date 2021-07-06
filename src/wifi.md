@@ -1,6 +1,6 @@
 # Reverse Engineering WiFi on RISC-V BL602
 
-📝 _9 Jul 2021_
+📝 _10 Jul 2021_
 
 _What happens inside the WiFi Driver on RISC-V BL602 SoC... And how we found the (incomplete) source code for the driver_
 
@@ -1136,6 +1136,8 @@ We shall...
 
 1.  __Load the decompiled function names__ into a spreadsheet for analysis
 
+1.  __Classify the decompiled function names__ by module
+
 1.  __Match the decompiled function code__ with the source code we've discovered through GitHub Search
 
 1.  __Count the number of lines of decompiled code__ that don't have any matching source code
@@ -1190,7 +1192,13 @@ TODO
 
 -   [CSV Format (without analysis)](https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.csv)
 
-![Matching the decompiled function code](https://lupyuen.github.io/images/wifi-quantify3.png)
+![Classify the decompiled functions](https://lupyuen.github.io/images/wifi-quantify3.png)
+
+## Classify the decompiled functions
+
+TODO
+
+![Matching the decompiled function code](https://lupyuen.github.io/images/wifi-quantify5.png)
 
 ## Match the decompiled functions
 
