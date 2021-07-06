@@ -1022,7 +1022,7 @@ Nope. Based on the decompiled code, __BL602 implements its own WiFi Supplicant__
 
 _Maybe the WiFi Supplicant code came from another project?_
 
-When we __search GitHub for the function names__, we discover this matching source code...
+When we [__search GitHub for the function names__](https://github.com/search?o=desc&q=supplicantInit+allocSupplicantData+keyMgmtGetKeySize&s=indexed&type=Code), we discover this matching source code...
 
 -   [__karthirockz/rk3399-kernel__](https://github.com/karthirockz/rk3399-kernel/tree/main/drivers/net/wireless/rockchip_wlan/mvl88w8977/mlan/esa)
 
@@ -1044,17 +1044,79 @@ This is awesome because we have just uncovered the secret origin of (roughly) __
 
 _What's the WiFi Physical Layer?_
 
-TODO
+__WiFi Physical layer__ is the wireless protocol that controls the airwaves and dictates how WiFi Packets should be transmitted and received.
+
+(It operates underneath the Medium Access Control Layer)
 
 [More about WiFi Physical Layer](https://www.controleng.com/articles/wi-fi-and-the-osi-model/)
+
+_Lemme guess... BL602 doesn't use RivieraWaves for the WiFi Physical Layer?_
+
+Nope we don't think the BL602 Physical Layer comes from RivieraWaves.
+
+The origin of __BL602's Physical Layer is a little murky__...
+
+_How so?_
+
+Here's a snippet of __BL602 Physical Layer__ from the decompiled code: [`bl602_demo_wifi.c`](https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L33527-L33614)
+
+```c
+//  From BL602 Decompiled Code: Init Physical Layer
+void phy_init(phy_cfg_tag *config) {
+  mdm_reset();
+  ...
+  mdm_txcbwmax_setf((byte)(_DAT_44c00000 >> 0x18) & 3);
+  _Var2 = phy_vht_supported();
+  agc_config();
+  ...
+  // Init transmitter rate power control
+  trpc_init();
+  
+  // Init phy adaptive features
+  pa_init();
+
+  phy_tcal_reset();
+  phy_tcal_start();
+}
+```
+
+When we [__search GitHub for `phy_init` and `phy_hw_set_channel`__](https://github.com/search?q=phy_init+phy_hw_set_channel&type=code) (another BL602 function), we get one meaningful result...
 
 -   [__jixinintelligence/bl602-604__](https://github.com/jixinintelligence/bl602-604)
 
 [(We'll use this fork)](https://github.com/lupyuen/bl602-604)
 
+Which implements `phy_init` like so: [`phy_bl602.c`](https://github.com/lupyuen/bl602-604/blob/master/components/bl602/bl602_wifi/plf/refip/src/driver/phy/bl602_phy_rf/phy_bl602.c#L474-L492) ...
+
+```c
+//  From GitHub Search: Init Physical Layer
+void phy_init(const struct phy_cfg_tag *config) {
+  const struct phy_bl602_cfg_tag *cfg = (const struct phy_bl602_cfg_tag *)&config->parameters;
+  phy_hw_init(cfg);
+  phy_env->cfg               = *cfg;
+  phy_env->band              = PHY_BAND_2G4;
+  phy_env->chnl_type         = PHY_CHNL_BW_OTHER;
+  phy_env->chnl_prim20_freq  = PHY_UNUSED;
+  phy_env->chnl_center1_freq = PHY_UNUSED;
+  phy_env->chnl_center2_freq = PHY_UNUSED;
+
+  // Init transmitter rate power control
+  trpc_init();
+
+  // Init phy adaptive features
+  pa_init();
+}
+```
+
 ![BL602 Physical Layer](https://lupyuen.github.io/images/wifi-phy.png)
 
-TODO
+Comparing the BL602 decompiled code with the GitHub Search Result... The __BL602 code seems to be doing a lot more__?
+
+(Where are the calls to `mdm_reset`, `phy_tcal_reset` and `phy_tcal_start`?)
+
+Thus __we don't have a 100% match__ for the BL602 Physical Layer. (Maybe 50%)
+
+Nonetheless this is a helpful discovery for our Reverse Engineering!
 
 # Quantitative Analysis
 
