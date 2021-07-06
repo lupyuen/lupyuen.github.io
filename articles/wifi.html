@@ -868,7 +868,7 @@ LAB_230059f6:
 <p><em>So WiFi Supplicant comes from RivieraWaves right?</em></p>
 <p>Nope. Based on the decompiled code, <strong>BL602 implements its own WiFi Supplicant</strong> with functions like <code>supplicantInit</code>, <code>allocSupplicantData</code> and <code>keyMgmtGetKeySize</code>. <a href="https://lupyuen.github.io/images/wifi-supplicant.png">(See this)</a></p>
 <p><em>Maybe the WiFi Supplicant code came from another project?</em></p>
-<p>When we <strong>search GitHub for the function names</strong>, we discover this matching source code…</p>
+<p>When we <a href="https://github.com/search?o=desc&amp;q=supplicantInit+allocSupplicantData+keyMgmtGetKeySize&amp;s=indexed&amp;type=Code"><strong>search GitHub for the function names</strong></a>, we discover this matching source code…</p>
 <ul>
 <li><a href="https://github.com/karthirockz/rk3399-kernel/tree/main/drivers/net/wireless/rockchip_wlan/mvl88w8977/mlan/esa"><strong>karthirockz/rk3399-kernel</strong></a></li>
 </ul>
@@ -881,14 +881,61 @@ LAB_230059f6:
 <p><img src="https://lupyuen.github.io/images/wifi-rockchip.jpg" alt="WiFi Supplicant: Lines of code" /></p>
 <h1 id="wifi-physical-layer" class="section-header"><a href="#wifi-physical-layer">7 WiFi Physical Layer</a></h1>
 <p><em>What’s the WiFi Physical Layer?</em></p>
-<p>TODO</p>
+<p><strong>WiFi Physical layer</strong> is the wireless protocol that controls the airwaves and dictates how WiFi Packets should be transmitted and received.</p>
+<p>(It operates underneath the Medium Access Control Layer)</p>
 <p><a href="https://www.controleng.com/articles/wi-fi-and-the-osi-model/">More about WiFi Physical Layer</a></p>
+<p><em>Lemme guess… BL602 doesn’t use RivieraWaves for the WiFi Physical Layer?</em></p>
+<p>Nope we don’t think the BL602 Physical Layer comes from RivieraWaves.</p>
+<p>The origin of <strong>BL602’s Physical Layer is a little murky</strong>…</p>
+<p><em>How so?</em></p>
+<p>Here’s a snippet of <strong>BL602 Physical Layer</strong> from the decompiled code: <a href="https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L33527-L33614"><code>bl602_demo_wifi.c</code></a></p>
+<pre><code class="language-c">//  From BL602 Decompiled Code: Init Physical Layer
+void phy_init(phy_cfg_tag *config) {
+  mdm_reset();
+  ...
+  mdm_txcbwmax_setf((byte)(_DAT_44c00000 &gt;&gt; 0x18) &amp; 3);
+  _Var2 = phy_vht_supported();
+  agc_config();
+  ...
+  // Init transmitter rate power control
+  trpc_init();
+  
+  // Init phy adaptive features
+  pa_init();
+
+  phy_tcal_reset();
+  phy_tcal_start();
+}
+</code></pre>
+<p>When we <a href="https://github.com/search?q=phy_init+phy_hw_set_channel&amp;type=code"><strong>search GitHub for <code>phy_init</code> and <code>phy_hw_set_channel</code></strong></a> (another BL602 function), we get one meaningful result…</p>
 <ul>
 <li><a href="https://github.com/jixinintelligence/bl602-604"><strong>jixinintelligence/bl602-604</strong></a></li>
 </ul>
 <p><a href="https://github.com/lupyuen/bl602-604">(We’ll use this fork)</a></p>
+<p>Which implements <code>phy_init</code> like so: <a href="https://github.com/lupyuen/bl602-604/blob/master/components/bl602/bl602_wifi/plf/refip/src/driver/phy/bl602_phy_rf/phy_bl602.c#L474-L492"><code>phy_bl602.c</code></a> …</p>
+<pre><code class="language-c">//  From GitHub Search: Init Physical Layer
+void phy_init(const struct phy_cfg_tag *config) {
+  const struct phy_bl602_cfg_tag *cfg = (const struct phy_bl602_cfg_tag *)&amp;config-&gt;parameters;
+  phy_hw_init(cfg);
+  phy_env-&gt;cfg               = *cfg;
+  phy_env-&gt;band              = PHY_BAND_2G4;
+  phy_env-&gt;chnl_type         = PHY_CHNL_BW_OTHER;
+  phy_env-&gt;chnl_prim20_freq  = PHY_UNUSED;
+  phy_env-&gt;chnl_center1_freq = PHY_UNUSED;
+  phy_env-&gt;chnl_center2_freq = PHY_UNUSED;
+
+  // Init transmitter rate power control
+  trpc_init();
+
+  // Init phy adaptive features
+  pa_init();
+}
+</code></pre>
 <p><img src="https://lupyuen.github.io/images/wifi-phy.png" alt="BL602 Physical Layer" /></p>
-<p>TODO</p>
+<p>Comparing the BL602 decompiled code with the GitHub Search Result… The <strong>BL602 code seems to be doing a lot more</strong>?</p>
+<p>(Where are the calls to <code>mdm_reset</code>, <code>phy_tcal_reset</code> and <code>phy_tcal_start</code>?)</p>
+<p>Thus <strong>we don’t have a 100% match</strong> for the BL602 Physical Layer. (Maybe 50%)</p>
+<p>Nonetheless this is a helpful discovery for our Reverse Engineering!</p>
 <h1 id="quantitative-analysis" class="section-header"><a href="#quantitative-analysis">8 Quantitative Analysis</a></h1>
 <p>TODO</p>
 <pre><code class="language-bash"># Extract the function names (and line numbers)
