@@ -1130,19 +1130,49 @@ To answer these questions, let's do a __Quantitative Analysis of the Decompiled 
 
 (Yep that's the fancy term for __data crunching with a spreadsheet__)
 
+We shall...
+
+1.  __Extract the function names__ from the decompiled BL602 WiFi Demo Firmware
+
+1.  __Load the decompiled function names__ into a spreadsheet for analysis
+
+1.  __Match the decompiled function code__ with the source code we've discovered through GitHub Search
+
+1.  __Count the number of lines of decompiled code__ that don't have any matching source code
+
 ## Extract the decompiled functions
 
-TODO
+Our __BL602 WiFi Demo Firmware [`bl602_demo_wifi`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi)__ has been decompiled into one giant C file...
+
+-   [__Decompiled WiFi Demo Firmware `bl602_demo_wifi.c`__](https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c)
+
+We run this command to __extract the Function Names__ and their Line Numbers...
 
 ```bash
 # Extract the function names (and line numbers)
-# from the decompiled firmware
+# from the decompiled firmware. The line must
+# begin with an underscore or a letter,
+# without indentation.
 grep --line-number \
     "^[_a-zA-Z]" \
     bl602_demo_wifi.c \
     | grep -v LAB_ \
     >bl602_demo_wifi.txt
 ```
+
+This produces [__`bl602_demo_wifi.txt`__](https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.txt), a long list of Decompiled Function Names and their Line Numbers. [(Here's a snippet)](https://lupyuen.github.io/images/wifi-quantify.png)
+
+(Plus Function Parameters and Type Definitions... We'll scrub them away soon)
+
+_But this list includes EVERYTHING... Including the non-WiFi functions no?_
+
+Yes. But it's fun to comb through __Every Single Function in the Decompiled Firmware__... Just to see what makes it tick.
+
+_Why not just decompile and analyse the BL602 WiFi Library: [`libbl602_wifi.a`](https://github.com/pine64/bl602-re/tree/master/blobs) ?_
+
+The [__BL602 WiFi Library `libbl602_wifi.a`__](https://github.com/pine64/bl602-re/tree/master/blobs) might contain some extra WiFi Functions that won't get linked into the WiFi Firmware.
+
+Hence we're decompiling and analysing the __actual WiFi Functions called by the WiFi Firmware__.
 
 ## Load functions into spreadsheet
 
