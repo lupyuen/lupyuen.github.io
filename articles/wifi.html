@@ -966,7 +966,7 @@ void phy_init(const struct phy_cfg_tag *config) {
 <ul>
 <li><a href="https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c"><strong>Decompiled WiFi Demo Firmware <code>bl602_demo_wifi.c</code></strong></a></li>
 </ul>
-<p>We run this command to <strong>extract the Function Names</strong> and their Line Numbers…</p>
+<p>We run this command to <strong>extract the Function Names</strong> and their Line Numbers (for counting the Lines of Code)…</p>
 <pre><code class="language-bash"># Extract the function names (and line numbers)
 # from the decompiled firmware. The line must
 # begin with an underscore or a letter,
@@ -984,6 +984,7 @@ grep --line-number \
 <p><em>Why not just decompile and analyse the BL602 WiFi Library: <a href="https://github.com/pine64/bl602-re/tree/master/blobs"><code>libbl602_wifi.a</code></a> ?</em></p>
 <p>The <a href="https://github.com/pine64/bl602-re/tree/master/blobs"><strong>BL602 WiFi Library <code>libbl602_wifi.a</code></strong></a> might contain some extra WiFi Functions that won’t get linked into the WiFi Firmware.</p>
 <p>Hence we’re decompiling and analysing the <strong>actual WiFi Functions called by the WiFi Firmware</strong>.</p>
+<p>(BTW: Our counting of Lines of Code will include Blank Lines and Comment Lines)</p>
 <h2 id="load-functions-into-spreadsheet" class="section-header"><a href="#load-functions-into-spreadsheet">8.2 Load functions into spreadsheet</a></h2>
 <p>TODO</p>
 <ul>
