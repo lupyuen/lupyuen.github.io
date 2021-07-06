@@ -768,7 +768,7 @@ Thanks to the AliOS / RivieraWaves source code, we have a meaningful description
 //  transfered from host memory. This primitive is 
 //  called by the interrupt controller ISR. It 
 //  performs LLC translation and MIC computing if required.
-//  LLC = Link Level Control, MIC = Message Integrity Code
+//  LLC = Logical Link Control, MIC = Message Integrity Code
 void txl_payload_handle(int access_category);
 ```
 
@@ -1040,21 +1040,35 @@ This is awesome because we have just uncovered the secret origin of (roughly) __
 
 ![WiFi Supplicant: Lines of code](https://lupyuen.github.io/images/wifi-rockchip.jpg)
 
-# WiFi PHY Layer
+# WiFi Physical Layer
+
+_What's the WiFi Physical Layer?_
 
 TODO
+
+[More about WiFi Physical Layer](https://www.controleng.com/articles/wi-fi-and-the-osi-model/)
 
 -   [__jixinintelligence/bl602-604__](https://github.com/jixinintelligence/bl602-604)
 
 [(We'll use this fork)](https://github.com/lupyuen/bl602-604)
 
-![](https://lupyuen.github.io/images/wifi-phy.png)
+![BL602 Physical Layer](https://lupyuen.github.io/images/wifi-phy.png)
 
 TODO
 
 # Quantitative Analysis
 
 TODO
+
+```bash
+# Extract the function names (and line numbers)
+# from the decompiled firmware
+grep --line-number \
+    "^[_a-zA-Z]" \
+    bl602_demo_wifi.c \
+    | grep -v LAB_ \
+    >bl602_demo_wifi.txt
+```
 
 -   [Google Sheets](https://docs.google.com/spreadsheets/d/1C_XmkH-ZSXz9-V2HsYBv7K1KRx3RF3-zsoJRLh1GwxI/edit?usp=sharing)
 
