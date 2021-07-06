@@ -88,7 +88,11 @@
 <li><a href="#lower-medium-access-control">5.2 Lower Medium Access Control</a><ul></ul></li></ul></li>
 <li><a href="#wifi-supplicant">6 WiFi Supplicant</a><ul></ul></li>
 <li><a href="#wifi-physical-layer">7 WiFi Physical Layer</a><ul></ul></li>
-<li><a href="#quantitative-analysis">8 Quantitative Analysis</a><ul></ul></li>
+<li><a href="#quantitative-analysis">8 Quantitative Analysis</a><ul>
+<li><a href="#extract-the-decompiled-functions">8.1 Extract the decompiled functions</a><ul></ul></li>
+<li><a href="#load-functions-into-spreadsheet">8.2 Load functions into spreadsheet</a><ul></ul></li>
+<li><a href="#match-the-decompiled-functions">8.3 Match the decompiled functions</a><ul></ul></li>
+<li><a href="#count-the-lines-of-code">8.4 Count the lines of code</a><ul></ul></li></ul></li>
 <li><a href="#other-components">9 Other Components</a><ul></ul></li>
 <li><a href="#wifi-rtl">10 WiFi RTL</a><ul></ul></li>
 <li><a href="#github-search-is-our-best-friend">11 GitHub Search Is Our Best Friend!</a><ul></ul></li>
@@ -942,6 +946,7 @@ void phy_init(const struct phy_cfg_tag *config) {
 <p><em>How much of the BL602 WiFi Source Code is already available elsewhere?</em></p>
 <p>To answer these questions, let’s do a <strong>Quantitative Analysis of the Decompiled BL602 Firmware Code</strong>.</p>
 <p>(Yep that’s the fancy term for <strong>data crunching with a spreadsheet</strong>)</p>
+<h2 id="extract-the-decompiled-functions" class="section-header"><a href="#extract-the-decompiled-functions">8.1 Extract the decompiled functions</a></h2>
 <p>TODO</p>
 <pre><code class="language-bash"># Extract the function names (and line numbers)
 # from the decompiled firmware
@@ -951,6 +956,8 @@ grep --line-number \
     | grep -v LAB_ \
     &gt;bl602_demo_wifi.txt
 </code></pre>
+<h2 id="load-functions-into-spreadsheet" class="section-header"><a href="#load-functions-into-spreadsheet">8.2 Load functions into spreadsheet</a></h2>
+<p>TODO</p>
 <ul>
 <li>
 <p><a href="https://docs.google.com/spreadsheets/d/1C_XmkH-ZSXz9-V2HsYBv7K1KRx3RF3-zsoJRLh1GwxI/edit?usp=sharing">Google Sheets</a></p>
@@ -965,6 +972,9 @@ grep --line-number \
 <p><a href="https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.csv">CSV Format (without analysis)</a></p>
 </li>
 </ul>
+<h2 id="match-the-decompiled-functions" class="section-header"><a href="#match-the-decompiled-functions">8.3 Match the decompiled functions</a></h2>
+<p>TODO</p>
+<h2 id="count-the-lines-of-code" class="section-header"><a href="#count-the-lines-of-code">8.4 Count the lines of code</a></h2>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wifi-quantify2.png" alt="" /></p>
 <p>TODO</p>
