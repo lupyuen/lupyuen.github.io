@@ -1090,6 +1090,8 @@ TODO1
 
 # What's Next
 
+Many Thanks to the contributors of the [__Pine64 BL602 Reverse Engineering Project__](https://github.com/pine64/bl602-re) for inspiring this article!
+
 TODO
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
@@ -1107,3 +1109,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1407971263088193540)
+
+1.  More about the BL602 RF IP: [Hardware Notes: RF IP](https://github.com/pine64/bl602-docs/tree/main/hardware_notes#rf-ip)
+
+1.  More about the BL602 PHY: [Hardware Notes: PHY Registers](https://github.com/pine64/bl602-docs/blob/main/hardware_notes/registers/phy/mdm.md)
