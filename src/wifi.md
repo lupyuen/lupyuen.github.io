@@ -1176,6 +1176,8 @@ Hence we're decompiling and analysing the __actual WiFi Functions called by the 
 
 (BTW: Our counting of Lines of Code will include Blank Lines and Comment Lines)
 
+![Loading decompiled function names into spreadsheet](https://lupyuen.github.io/images/wifi-quantify2.png)
+
 ## Load functions into spreadsheet
 
 TODO
@@ -1188,27 +1190,17 @@ TODO
 
 -   [CSV Format (without analysis)](https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.csv)
 
+![Matching the decompiled function code](https://lupyuen.github.io/images/wifi-quantify3.png)
+
 ## Match the decompiled functions
 
 TODO
 
+![Counting the lines of code decompiled BL602 WiFi Firmware](https://lupyuen.github.io/images/wifi-title.jpg)
+
 ## Count the lines of code
 
 TODO
-
-![](https://lupyuen.github.io/images/wifi-quantify2.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/wifi-quantify3.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/wifi-quantify4.png)
-
-TODO
-
-![Quantitative Analysis of Decompiled BL602 WiFi Firmware](https://lupyuen.github.io/images/wifi-title.jpg)
 
 # Other Components
 
