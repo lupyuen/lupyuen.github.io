@@ -1130,6 +1130,8 @@ To answer these questions, let's do a __Quantitative Analysis of the Decompiled 
 
 (Yep that's the fancy term for __data crunching with a spreadsheet__)
 
+## Extract the decompiled functions
+
 TODO
 
 ```bash
@@ -1142,6 +1144,10 @@ grep --line-number \
     >bl602_demo_wifi.txt
 ```
 
+## Load functions into spreadsheet
+
+TODO
+
 -   [Google Sheets](https://docs.google.com/spreadsheets/d/1C_XmkH-ZSXz9-V2HsYBv7K1KRx3RF3-zsoJRLh1GwxI/edit?usp=sharing)
 
 -   [LibreOffice / OpenOffice Format](https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.ods)
@@ -1149,6 +1155,12 @@ grep --line-number \
 -   [Excel Format](https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.xlsx)
 
 -   [CSV Format (without analysis)](https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.csv)
+
+## Match the decompiled functions
+
+TODO
+
+## Count the lines of code
 
 TODO
 
