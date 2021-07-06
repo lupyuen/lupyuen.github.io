@@ -91,13 +91,14 @@
 <li><a href="#quantitative-analysis">8 Quantitative Analysis</a><ul>
 <li><a href="#extract-the-decompiled-functions">8.1 Extract the decompiled functions</a><ul></ul></li>
 <li><a href="#load-functions-into-spreadsheet">8.2 Load functions into spreadsheet</a><ul></ul></li>
-<li><a href="#match-the-decompiled-functions">8.3 Match the decompiled functions</a><ul></ul></li>
-<li><a href="#count-the-lines-of-code">8.4 Count the lines of code</a><ul></ul></li></ul></li>
+<li><a href="#classify-the-decompiled-functions">8.3 Classify the decompiled functions</a><ul></ul></li>
+<li><a href="#match-the-decompiled-functions">8.4 Match the decompiled functions</a><ul></ul></li>
+<li><a href="#count-the-lines-of-code">8.5 Count the lines of code</a><ul></ul></li></ul></li>
 <li><a href="#other-components">9 Other Components</a><ul></ul></li>
 <li><a href="#wifi-rtl">10 WiFi RTL</a><ul></ul></li>
 <li><a href="#github-search-is-our-best-friend">11 GitHub Search Is Our Best Friend!</a><ul></ul></li>
 <li><a href="#whats-next">12 What’s Next</a><ul></ul></li>
-<li><a href="#notes">13 Notes</a><ul></ul></li></ul></nav><p>📝 <em>9 Jul 2021</em></p>
+<li><a href="#notes">13 Notes</a><ul></ul></li></ul></nav><p>📝 <em>10 Jul 2021</em></p>
 <p><em>What happens inside the WiFi Driver on RISC-V BL602 SoC… And how we found the (incomplete) source code for the driver</em></p>
 <p>Why reverse engineer the WiFi Driver?</p>
 <p>TODO: Education, replacement, auditing, troubleshooting. <a href="https://twitter.com/Yu_Wei_Wu/status/1406940637773979655?s=19">See this non-BL602 example</a></p>
@@ -955,6 +956,9 @@ void phy_init(const struct phy_cfg_tag *config) {
 <p><strong>Load the decompiled function names</strong> into a spreadsheet for analysis</p>
 </li>
 <li>
+<p><strong>Classify the decompiled function names</strong> by module</p>
+</li>
+<li>
 <p><strong>Match the decompiled function code</strong> with the source code we’ve discovered through GitHub Search</p>
 </li>
 <li>
@@ -1002,11 +1006,14 @@ grep --line-number \
 <p><a href="https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.csv">CSV Format (without analysis)</a></p>
 </li>
 </ul>
-<p><img src="https://lupyuen.github.io/images/wifi-quantify3.png" alt="Matching the decompiled function code" /></p>
-<h2 id="match-the-decompiled-functions" class="section-header"><a href="#match-the-decompiled-functions">8.3 Match the decompiled functions</a></h2>
+<p><img src="https://lupyuen.github.io/images/wifi-quantify3.png" alt="Classify the decompiled functions" /></p>
+<h2 id="classify-the-decompiled-functions" class="section-header"><a href="#classify-the-decompiled-functions">8.3 Classify the decompiled functions</a></h2>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wifi-quantify5.png" alt="Matching the decompiled function code" /></p>
+<h2 id="match-the-decompiled-functions" class="section-header"><a href="#match-the-decompiled-functions">8.4 Match the decompiled functions</a></h2>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/wifi-title.jpg" alt="Counting the lines of code decompiled BL602 WiFi Firmware" /></p>
-<h2 id="count-the-lines-of-code" class="section-header"><a href="#count-the-lines-of-code">8.4 Count the lines of code</a></h2>
+<h2 id="count-the-lines-of-code" class="section-header"><a href="#count-the-lines-of-code">8.5 Count the lines of code</a></h2>
 <p>TODO</p>
 <h1 id="other-components" class="section-header"><a href="#other-components">9 Other Components</a></h1>
 <p>TODO: BL602 HAL, BL602 Standard Driver, LWIP, MbedTLS, FreeRTOS, AliOS, AWS MQTT, AWS IoT</p>
