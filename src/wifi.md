@@ -1010,19 +1010,35 @@ These LMAC Modules seem to be __mostly identical across BL602 and AliOS / Rivier
 
 # WiFi Supplicant
 
-TODO: Rockchip RK3399
+_What's the WiFi Supplicant?_
+
+[__WiFi Supplicant__](https://en.wikipedia.org/wiki/Wireless_supplicant) is the code that handles WiFi Authentication.
+
+[(Like for WPA and WPA2)](https://en.wikipedia.org/wiki/Wpa_supplicant)
+
+_So WiFi Supplicant comes from RivieraWaves right?_
+
+Nope. Based on the decompiled code, __BL602 implements its own WiFi Supplicant__ with functions like `supplicantInit`, `allocSupplicantData` and `keyMgmtGetKeySize`. [(See this)](https://lupyuen.github.io/images/wifi-supplicant.png)
+
+_Maybe the WiFi Supplicant code came from another project?_
+
+When we __search GitHub for the function names__, we discover this matching source code...
 
 -   [__karthirockz/rk3399-kernel__](https://github.com/karthirockz/rk3399-kernel/tree/main/drivers/net/wireless/rockchip_wlan/mvl88w8977/mlan/esa)
 
 [(We'll use this fork)](https://github.com/lupyuen/rk3399-kernel/tree/main/drivers/net/wireless/rockchip_wlan/mvl88w8977/mlan/esa)
 
-![](https://lupyuen.github.io/images/wifi-rockchip.jpg)
+That's actually the __WiFi Supplicant for Rockchip RK3399__, based on Linux!
 
-TODO
+_Are they really the same code?_
 
-![](https://lupyuen.github.io/images/wifi-supplicant.png)
+We compared the decompiled BL602 WiFi Supplicant code with the Rockchip RK3399 source code... They are __nearly 100% identical__! [(See this)](https://lupyuen.github.io/images/wifi-supplicant2.png)
 
-TODO
+This is awesome because we have just uncovered the secret origin of (roughly) __2,500 Lines of Code__ from the decompiled BL602 firmware!
+
+(This data comes from the __Quantitative Analysis__, which we'll discuss in a while)
+
+![WiFi Supplicant: Lines of code](https://lupyuen.github.io/images/wifi-rockchip.jpg)
 
 # WiFi PHY Layer
 
@@ -1035,16 +1051,6 @@ TODO
 ![](https://lupyuen.github.io/images/wifi-phy.png)
 
 TODO
-
-# WiFi RTL
-
-TODO
-
-According to [__madushan1000 on Twitter__](https://twitter.com/madushan1000/status/1409392882612637696)...
-
--   [__fengmaoqiao/my_logic_code__](https://github.com/fengmaoqiao/my_logic_code)
-
--   [__fengmaoqiao/workplace__](https://github.com/fengmaoqiao/workplace)
 
 # Quantitative Analysis
 
@@ -1079,6 +1085,16 @@ TODO
 # Other Components
 
 TODO: BL602 HAL, BL602 Standard Driver, LWIP, MbedTLS, FreeRTOS, AliOS, AWS MQTT, AWS IoT
+
+# WiFi RTL
+
+TODO
+
+According to [__madushan1000 on Twitter__](https://twitter.com/madushan1000/status/1409392882612637696)...
+
+-   [__fengmaoqiao/my_logic_code__](https://github.com/fengmaoqiao/my_logic_code)
+
+-   [__fengmaoqiao/workplace__](https://github.com/fengmaoqiao/workplace)
 
 # GitHub Search Is Our Best Friend!
 
