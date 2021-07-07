@@ -1250,23 +1250,29 @@ Thus our matching is not 100% thorough and accurate... But it's reasonably accur
 
 ## Count the lines of code
 
-Now we add a __Pivot Table to count the Lines of Code__ that are matched (or unmatched) with GitHub Search.
+Finally we add a __Pivot Table to count the Lines of Code__ that are matched (or unmatched) with GitHub Search.
 
-TODO
+In the second tab of our spreadsheet, we have a Pivot Table that summarises the __results of our Quantitative Analysis__...
 
-![Decompiled lines of code](https://lupyuen.github.io/images/wifi-loc1.png)
+1.  Lines of Code to be __Reverse Engineered: 10,500__
 
-TODO: 10,500 lines of LMAC + PHY code to be Reverse Engineered
+    TODO: LMAC + PHY code
 
-![Decompiled lines of code](https://lupyuen.github.io/images/wifi-loc2.png)
+    ![Decompiled lines of code](https://lupyuen.github.io/images/wifi-loc1.png)
 
-TODO: 3,500 lines of PHY code match partially
+1.  Lines of Code for __Partial Reverse Engineering: 3,500__
 
-(We'll talk about BL602 HAL and Standard Driver in the next chapter)
+    TODO: PHY code match partially
 
-![Decompiled lines of code](https://lupyuen.github.io/images/wifi-loc3.png)
+    (We'll talk about BL602 HAL and Standard Driver in the next chapter)
 
-TODO: 11,300 lines of code already existing
+    ![Decompiled lines of code](https://lupyuen.github.io/images/wifi-loc2.png)
+
+1.  Lines of Code __Already Found Elsewhere: 11,300__ (Wow!)
+
+    TODO: UMAC + WiFi Supplicant
+
+    ![Decompiled lines of code](https://lupyuen.github.io/images/wifi-loc3.png)
 
 # Other Modules
 
