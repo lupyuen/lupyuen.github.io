@@ -406,6 +406,8 @@ caused by: Invalid argument
 <li><a href="https://lupyuen.github.io/articles/led#control-rgb-led-with-gpio"><strong>“Control RGB LED with GPIO”</strong></a></li>
 </ul>
 <p>Connect at 2 Mbps. When we enter <strong><code>help</code></strong>, it will respond with a list of commands. This is useful for validating that our firmware is running on MagicHome BL602.</p>
+<p>If BL602 isn’t responding, check that the <strong>USB Serial Adapter supports 2 Mbps</strong>. Some adapters don’t support 2 Mbps <a href="https://www.reddit.com/r/RISCV/comments/lnumsv/the_riscv_bl602_book/h455koc/?context=3">(like CP2102)</a>, changing it to FT232R might help.</p>
+<p>Can we configure BL602 to run at a lower Baud Rate? It’s not easy because the Baud Rate is defined inside the <a href="https://lupyuen.github.io/articles/flash#appendix-bl602-device-tree">Device Tree</a>, which needs to be recompiled with the firmware.</p>
 <ul>
 <li>
 <p><a href="https://www.reddit.com/r/RISCV/comments/knsju9/flashing_firmware_to_pinecone_bl602/gn7rw3i?utm_source=share&amp;utm_medium=web2x&amp;context=3"><strong>Discuss MagicHome BL602 on Reddit</strong></a></p>
