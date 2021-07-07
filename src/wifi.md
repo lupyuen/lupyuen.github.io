@@ -1,6 +1,6 @@
 # Reverse Engineering WiFi on RISC-V BL602
 
-📝 _10 Jul 2021_
+📝 _7 Jul 2021_
 
 Today we shall __Reverse Engineer the WiFi Driver__ on the [__BL602 RISC-V + WiFi SoC__](https://lupyuen.github.io/articles/pinecone) and learn what happens inside... Guided by the (incomplete) source code that we found for the driver.
 
