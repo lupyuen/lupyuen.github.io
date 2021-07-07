@@ -1168,7 +1168,7 @@ This produces [__`bl602_demo_wifi.txt`__](https://github.com/lupyuen/bl602nutcra
 
 _But this list includes EVERYTHING... Including the non-WiFi functions no?_
 
-Yes. But it's fun to comb through __Every Single Function in the Decompiled Firmware__... Just to see what makes it tick.
+Yes. But it's fun to comb through __Every Single Function in the Decompiled Firmware__ (128,000 of them)... Just to see what makes it tick.
 
 _Why not just decompile and analyse the BL602 WiFi Library: [`libbl602_wifi.a`](https://github.com/pine64/bl602-re/tree/master/blobs) ?_
 
@@ -1178,11 +1178,13 @@ Hence we're decompiling and analysing the __actual WiFi Functions called by the 
 
 (BTW: Our counting of Lines of Code will include Blank Lines and Comment Lines)
 
-![Loading decompiled function names into spreadsheet](https://lupyuen.github.io/images/wifi-quantify2.png)
+![Loading decompiled function names into a spreadsheet](https://lupyuen.github.io/images/wifi-quantify2.png)
 
 ## Load functions into spreadsheet
 
-TODO
+We load [__`bl602_demo_wifi.txt`__](https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.txt) (the list of Decompiled Function Names and Line Numbers) into a spreadsheet for analysis. (See pic above)
+
+Here's our __spreadsheet for Quantitative Analysis__ in various formats...
 
 -   [Google Sheets](https://docs.google.com/spreadsheets/d/1C_XmkH-ZSXz9-V2HsYBv7K1KRx3RF3-zsoJRLh1GwxI/edit?usp=sharing)
 
@@ -1190,13 +1192,31 @@ TODO
 
 -   [Excel Format](https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.xlsx)
 
--   [CSV Format (without analysis)](https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.csv)
+-   [CSV Format (raw data only)](https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.csv)
+
+We scrub the data to remove the Type Definitions, Function Return Types and the Function Parameters.
+
+Based on the Line Numbers, we compute the __Lines of Code__ for each function (including Blank Lines and Comment Lines).
+
+And apply __Conditional Formatting__ to highlight the Decompiled Functions with the most Lines of Code. (Which are also the __Most Complex Functions__)
+
+These are the functions we should pay more attention during the analysis.
 
 ![Classify the decompiled functions](https://lupyuen.github.io/images/wifi-quantify3.png)
 
 ## Classify the decompiled functions
 
-TODO
+Next we __classify each Decompiled Function by Module__.
+
+The pic above shows that we've classified the "`rxl_`" functions as "`???RivieraWaves RXL`". (RXL means Receive LMAC)
+
+We use "`???`" to mark the Modules that we couldn't find any source code.
+
+_Doing this for all 128,000 Decompiled Functions sounds tedious...?_
+
+Fortunately the Decompiled Functions belonging to a Module are __clustered together__. So it's easy to copy and fill the Module Name for a batch of functions.
+
+Remember our red highlighting for Complex Functions? It's OK to __skip the classification of the Less Complex Functions__ if we're not sure how to classify them.
 
 ![Matching the decompiled function code](https://lupyuen.github.io/images/wifi-quantify5.png)
 
