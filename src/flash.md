@@ -333,6 +333,10 @@ __For MagicHome BL602 WiFi LED Controller:__ This gadget doesn't have a Reset Bu
 
 Connect at 2 Mbps. When we enter __`help`__, it will respond with a list of commands. This is useful for validating that our firmware is running on MagicHome BL602.
 
+If BL602 isn't responding, check that the __USB Serial Adapter supports 2 Mbps__. Some adapters don't support 2 Mbps [(like CP2102)](https://www.reddit.com/r/RISCV/comments/lnumsv/the_riscv_bl602_book/h455koc/?context=3), changing it to FT232R might help.
+
+Can we configure BL602 to run at a lower Baud Rate? It's not easy because the Baud Rate is defined inside the [Device Tree](https://lupyuen.github.io/articles/flash#appendix-bl602-device-tree), which needs to be recompiled with the firmware.
+
 -   [__Discuss MagicHome BL602 on Reddit__](https://www.reddit.com/r/RISCV/comments/knsju9/flashing_firmware_to_pinecone_bl602/gn7rw3i?utm_source=share&utm_medium=web2x&context=3)
 
 -   [__ESPHome Feature Request for MagicHome BL602__](https://github.com/esphome/feature-requests/issues/1049)
