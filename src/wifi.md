@@ -1298,13 +1298,13 @@ Let's run through the __Non-WiFi Functions in our Decompiled Firmware__...
 
 -   [__AWS IoT, AWS MQTT__](https://github.com/lupyuen/bl_iot_sdk/tree/master/components/3rdparty/aws-iot): Demo Firmware talks to AWS Cloud for IoT and MQTT (Message Queue) Services
 
--   [__BL602 EasyFlash__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/stage/easyflash4/inc/easyflash.h): (What's this?)
-
--   [__BL602 Hardware Abstraction Layer (HAL)__](https://github.com/lupyuen/bl_iot_sdk/tree/master/components/hal_drv/bl602_hal): Exposes hardware functions like DMA, GPIO, Flash Memory, Real Time Clock, Security (Encryption), UART, ...
+-   [__BL602 Hardware Abstraction Layer (HAL)__](https://github.com/lupyuen/bl_iot_sdk/tree/master/components/hal_drv/bl602_hal): Functions for DMA, GPIO, Flash Memory, Real Time Clock, Security (Encryption), UART, ...
 
 -   [__BL602 Standard Driver__](https://github.com/lupyuen/bl_iot_sdk/tree/master/components/bl602/bl602_std/bl602_std/StdDriver): Called by the BL602 Hardware Abstraction Layer to access the BL602 Hardware Registers
 
 -   [__C Standard Library__](https://github.com/lupyuen/bl_iot_sdk/tree/master/toolchain/riscv/Linux/lib/gcc/riscv64-unknown-elf/8.3.0/rv32imf/ilp32f): Because our firmware is compiled with the GCC Compiler
+
+-   [__EasyFlash__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/stage/easyflash4/inc/easyflash.h): Embedded database
 
 -   [__FreeRTOS__](https://github.com/lupyuen/bl_iot_sdk/tree/master/components/bl602/freertos_riscv): Embedded OS that runs underneath AilOS
 
