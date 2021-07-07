@@ -1035,25 +1035,31 @@ grep --line-number \
 <p><img src="https://lupyuen.github.io/images/wifi-title.jpg" alt="Counting the decompiled lines of code in BL602 WiFi Firmware" /></p>
 <h2 id="count-the-lines-of-code" class="section-header"><a href="#count-the-lines-of-code">8.5 Count the lines of code</a></h2>
 <p>Finally we add a <strong>Pivot Table to count the Lines of Code</strong> that are matched (or unmatched) with GitHub Search.</p>
-<p>In the second tab of our spreadsheet, we have a Pivot Table that summarises the <strong>results of our Quantitative Analysis</strong>…</p>
+<p>In the second tab of our spreadsheet, we see the Pivot Table that summarises the <strong>results of our Quantitative Analysis</strong>…</p>
 <ol>
 <li>
 <p>Lines of Code to be <strong>Reverse Engineered: 10,500</strong></p>
-<p>TODO: LMAC + PHY code</p>
-<p><img src="https://lupyuen.github.io/images/wifi-loc1.png" alt="Decompiled lines of code" /></p>
+<p>Not found on GitHub Search: <strong>LMAC Interface</strong>, and some parts of the Physical Layer.</p>
+<p><img src="https://lupyuen.github.io/images/wifi-loc1.png" alt="Decompiled lines of code to be reverse engineered" /></p>
 </li>
 <li>
 <p>Lines of Code for <strong>Partial Reverse Engineering: 3,500</strong></p>
-<p>TODO: PHY code match partially</p>
+<p>We found partial matches for the <strong>Physical Layer</strong> on GitHub Search.</p>
+<p><img src="https://lupyuen.github.io/images/wifi-loc2.png" alt="Decompiled lines of code for partial reverse enginnering" /></p>
 <p>(We’ll talk about BL602 HAL and Standard Driver in the next chapter)</p>
-<p><img src="https://lupyuen.github.io/images/wifi-loc2.png" alt="Decompiled lines of code" /></p>
 </li>
 <li>
 <p>Lines of Code <strong>Already Found Elsewhere: 11,300</strong> (Wow!)</p>
-<p>TODO: UMAC + WiFi Supplicant</p>
-<p><img src="https://lupyuen.github.io/images/wifi-loc3.png" alt="Decompiled lines of code" /></p>
+<p>Found on GitHub Search: <strong>UMAC and WiFi Supplicant</strong></p>
+<p><img src="https://lupyuen.github.io/images/wifi-loc3.png" alt="Decompiled lines of code already found elsewhere" /></p>
+</li>
+<li>
+<p>We also have <strong>7,500</strong> Lines of Code from parts of the <strong>BL602 WiFi Driver</strong> whose source code may be found in the BL602 IoT SDK.</p>
+<p>Includes the <strong>WiFi Manager</strong> that we’ve seen earlier.</p>
+<p><img src="https://lupyuen.github.io/images/wifi-loc8.png" alt="Lines of code for BL602 WiFi Driver" /></p>
 </li>
 </ol>
+<p>Conclusion: We have <strong>plenty of source code</strong> to guide us for the <strong>Reverse Engineering of BL602 WiFi</strong>!</p>
 <h1 id="other-modules" class="section-header"><a href="#other-modules">9 Other Modules</a></h1>
 <p>TODO: BL602 HAL, BL602 Standard Driver, LWIP, MbedTLS, FreeRTOS, AliOS, AWS MQTT, AWS IoT</p>
 <p><img src="https://lupyuen.github.io/images/wifi-loc7.png" alt="Decompiled lines of code" /></p>
