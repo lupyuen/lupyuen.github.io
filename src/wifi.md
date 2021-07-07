@@ -1256,7 +1256,7 @@ In the second tab of our spreadsheet, we see the Pivot Table that summarises the
 
 1.  Lines of Code to be __Reverse Engineered: 10,500__
 
-    Not found on GitHub Search: __LMAC Interface__, and some parts of the Physical Layer.
+    Not found on GitHub Search: __LMAC Interface__, and some parts of WiFi Supplicant.
 
     ![Decompiled lines of code to be reverse engineered](https://lupyuen.github.io/images/wifi-loc1.png)
 
@@ -1270,7 +1270,7 @@ In the second tab of our spreadsheet, we see the Pivot Table that summarises the
 
 1.  Lines of Code __Already Found Elsewhere: 11,300__ (Wow!)
 
-    Found on GitHub Search: __UMAC and WiFi Supplicant__
+    Found on GitHub Search: __UMAC and most of WiFi Supplicant__
 
     ![Decompiled lines of code already found elsewhere](https://lupyuen.github.io/images/wifi-loc3.png)
 
