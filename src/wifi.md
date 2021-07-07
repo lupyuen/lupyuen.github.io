@@ -1224,7 +1224,27 @@ In our spreadsheet we've __classified over 97,000 Decompiled Lines of Code__. Th
 
 ## Match the decompiled functions
 
-TODO
+Remember the source code we've discovered earlier through __GitHub Search__?
+
+(For RivieraWaves, WiFi Supplicant and Physical Layer)
+
+Now we dive into the Discovered Source Code and see __how closely they match the Decompiled Functions__.
+
+_How do we record our findings?_
+
+Inside our spreadsheet is a column that records the __Source Code URL__ (from GitHub Search) that we've matched with our Decompiled Functions. (See pic above)
+
+We've also added a comment that says __how closely they match__. ("BL602 version is different")
+
+If the Discovered Source Code doesn't match the Decompiled Function, we __flag the Module Name__ with "`???`".
+
+_Do we need to match every Decompiled Function?_
+
+To simplify the matching, we picked one or two of the __Most Complex Functions from each Module__.
+
+(Yep the red highlighting really helps!)
+
+Thus our matching is not 100% thorough and accurate... But it's reasonably accurate.
 
 ![Counting the decompiled lines of code in BL602 WiFi Firmware](https://lupyuen.github.io/images/wifi-title.jpg)
 
