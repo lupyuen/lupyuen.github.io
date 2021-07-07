@@ -1306,7 +1306,7 @@ Let's run through the __Non-WiFi Functions in our Decompiled Firmware__...
 
 -   [__EasyFlash__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/stage/easyflash4/inc/easyflash.h): Embedded database
 
--   [__FreeRTOS__](https://github.com/lupyuen/bl_iot_sdk/tree/master/components/bl602/freertos_riscv): Embedded OS that runs underneath AilOS
+-   [__FreeRTOS__](https://github.com/lupyuen/bl_iot_sdk/tree/master/components/bl602/freertos_riscv): Embedded OS that runs underneath AliOS
 
 -   [__Lightweight IP (LWIP)__](https://github.com/lupyuen/bl_iot_sdk/tree/master/components/network): For IP, UDP, TCP and HTTP Networking
 
