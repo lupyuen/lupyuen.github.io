@@ -1290,27 +1290,29 @@ _What's inside the other 71% of the Decompiled Code?_
 
 Let's run through the __Non-WiFi Functions in our Decompiled Firmware__...
 
+(Complex modules are highlighted in red)
+
 ![Decompiled lines of code](https://lupyuen.github.io/images/wifi-loc7.png)
 
-TODO: 
+-   [__AliOS__](https://github.com/lupyuen/bl_iot_sdk/tree/master/components/fs): Embedded framework for multitasking and device drivers
 
-AliOS
+-   [__AWS IoT, AWS MQTT__](https://github.com/lupyuen/bl_iot_sdk/tree/master/components/3rdparty/aws-iot): Demo Firmware talks to AWS Cloud for IoT and MQTT (Message Queue) Services
 
-AWS IoT, AWS MQTT
+-   [__BL602 EasyFlash__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/stage/easyflash4/inc/easyflash.h): (What's this?)
 
-[BL602 EasyFlash](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/stage/easyflash4/inc/easyflash.h)
+-   [__BL602 Hardware Abstraction Layer (HAL)__](https://github.com/lupyuen/bl_iot_sdk/tree/master/components/hal_drv/bl602_hal): Exposes hardware functions like DMA, GPIO, Flash Memory, Real Time Clock, Security (Encryption), UART, ...
 
-BL602 Hardware Abstraction Layer
+-   [__BL602 Standard Driver__](https://github.com/lupyuen/bl_iot_sdk/tree/master/components/bl602/bl602_std/bl602_std/StdDriver): Called by the BL602 Hardware Abstraction Layer to access the BL602 Hardware Registers
 
-BL602 Standard Driver
+-   [__C Standard Library__](https://github.com/lupyuen/bl_iot_sdk/tree/master/toolchain/riscv/Linux/lib/gcc/riscv64-unknown-elf/8.3.0/rv32imf/ilp32f): Because our firmware is compiled with the GCC Compiler
 
-C Standard Library
+-   [__FreeRTOS__](https://github.com/lupyuen/bl_iot_sdk/tree/master/components/bl602/freertos_riscv): Embedded OS that runs underneath AilOS
 
-FreeRTOS
+-   [__Lightweight IP (LWIP)__](https://github.com/lupyuen/bl_iot_sdk/tree/master/components/network): For IP, UDP, TCP and HTTP Networking
 
-Lightweight IP (LWIP)
+-   [__Mbed TLS__](https://github.com/lupyuen/bl_iot_sdk/tree/master/components/security/mbedtls): Implements Transport Layer Security, needed by AWS IoT and MQTT
 
-Mbed TLS
+Source code is available for most of the Non-WiFi Functions.
 
 ![GitHub Code Search](https://lupyuen.github.io/images/wifi-schedule.png)
 
