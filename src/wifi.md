@@ -1346,13 +1346,15 @@ Remember to check GitHub Search when doing any Reverse Engineering! 👍
 
 # What's Next
 
-This has been an awesome journey... Many Thanks to the contributors of the [__Pine64 BL602 Reverse Engineering Project__](https://github.com/pine64/bl602-re) for inspiring this article!
+This has been a thrilling journey... Many Thanks to the contributors of the [__Pine64 BL602 Reverse Engineering Project__](https://github.com/pine64/bl602-re) for inspiring this article!
 
 In the next article we shall check out the [__BL706 Audio Video Board__](https://github.com/bouffalolab/bl_mcu_sdk/tree/master/docs/chipSpecification/bl70x_docs).
 
 Stay tuned!
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+
+-   [Discuss this article on Reddit](https://www.reddit.com/r/RISCV/comments/ofj34x/reverse_engineering_wifi_on_riscv_bl602/?utm_source=share&utm_medium=web2x&context=3)
 
 -   [Read "The RISC-V BL602 Book"](https://lupyuen.github.io/articles/book)
 

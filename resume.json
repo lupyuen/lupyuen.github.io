@@ -147,6 +147,13 @@
   ],
   "publications": [
     {
+      "name": "Reverse Engineering WiFi on RISC-V BL602",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2021-07-07",
+      "website": "https://lupyuen.github.io/articles/wifi",
+      "summary": "What happens inside the WiFi Driver on RISC-V BL602... And how we found the incomplete source code for the driver"
+    },
+    {
       "name": "Machine Learning on RISC-V BL602 with TensorFlow Lite",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-06-22",
