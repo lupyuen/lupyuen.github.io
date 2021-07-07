@@ -2,11 +2,19 @@
 
 📝 _10 Jul 2021_
 
-_What happens inside the WiFi Driver on RISC-V BL602 SoC... And how we found the (incomplete) source code for the driver_
+Today we shall __Reverse Engineer the WiFi Driver__ on the [__BL602 RISC-V + WiFi SoC__](https://lupyuen.github.io/articles/pinecone) and learn what happens inside... Guided by the (incomplete) source code that we found for the driver.
 
-Why reverse engineer the WiFi Driver?
+Why Reverse Engineer the BL602 WiFi Driver?
 
-TODO: Education, replacement, auditing, troubleshooting. [See this non-BL602 example](https://twitter.com/Yu_Wei_Wu/status/1406940637773979655?s=19)
+1.  __Education__: To learn how WiFi Packets are transmitted and received on BL602.
+
+1.  __Troubleshooting__: If the WiFi Driver doesn't work right, we should be able to track down the problem. (Maybe fix it too!)
+
+1.  __Auditing__: To be sure that WiFi Packets are transmitted / received correctly and securely. [(See this non-BL602 example)](https://twitter.com/Yu_Wei_Wu/status/1406940637773979655?s=19)
+
+1.  __Replacement__: Perhaps one day we might replace the Closed-Source WiFi Driver by an Open Source driver. [(Maybe Openwifi?)](https://github.com/open-sdr/openwifi)
+
+Read on and join me on the Reverse Engineering journey!
 
 ![Quantitative Analysis of Decompiled BL602 WiFi Firmware](https://lupyuen.github.io/images/wifi-title.jpg)
 
