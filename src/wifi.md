@@ -1226,7 +1226,7 @@ In our spreadsheet we've __classified over 97,000 Decompiled Lines of Code__. Th
 
 TODO
 
-![Counting the lines of code decompiled BL602 WiFi Firmware](https://lupyuen.github.io/images/wifi-title.jpg)
+![Counting the decompiled lines of code in BL602 WiFi Firmware](https://lupyuen.github.io/images/wifi-title.jpg)
 
 ## Count the lines of code
 
@@ -1236,23 +1236,11 @@ TODO
 
 TODO: BL602 HAL, BL602 Standard Driver, LWIP, MbedTLS, FreeRTOS, AliOS, AWS MQTT, AWS IoT
 
-# WiFi RTL
-
-TODO
-
-According to [__madushan1000 on Twitter__](https://twitter.com/madushan1000/status/1409392882612637696)...
-
--   [__fengmaoqiao/my_logic_code__](https://github.com/fengmaoqiao/my_logic_code)
-
--   [__fengmaoqiao/workplace__](https://github.com/fengmaoqiao/workplace)
+![GitHub Code Search](https://lupyuen.github.io/images/wifi-schedule.png)
 
 # GitHub Search Is Our Best Friend!
 
 TODO
-
-![](https://lupyuen.github.io/images/wifi-schedule.png)
-
-TODO1
 
 # What's Next
 
@@ -1275,6 +1263,12 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1407971263088193540)
+
+1.  According to [madushan1000 on Twitter](https://twitter.com/madushan1000/status/1409392882612637696), the BL602 WiFi RTL may be found here...
+
+    -   [fengmaoqiao/my_logic_code](https://github.com/fengmaoqiao/my_logic_code)
+
+    -   [fengmaoqiao/workplace](https://github.com/fengmaoqiao/workplace)
 
 1.  More about BL602 RF IP: [Hardware Notes: RF IP](https://github.com/pine64/bl602-docs/tree/main/hardware_notes#rf-ip)
 
