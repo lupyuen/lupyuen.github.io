@@ -1334,6 +1334,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     -   [fengmaoqiao/workplace](https://github.com/fengmaoqiao/workplace)
 
+    Also check out [these tips on BL602 WiFi and Bluetooth LE](https://twitter.com/madushan1000/status/1412694106816585728?s=19)
+
 1.  More about BL602 RF IP: [Hardware Notes: RF IP](https://github.com/pine64/bl602-docs/tree/main/hardware_notes#rf-ip)
 
 1.  More about BL602 Physical Layer: [Hardware Notes: PHY Registers](https://github.com/pine64/bl602-docs/blob/main/hardware_notes/registers/phy/mdm.md)
