@@ -1021,7 +1021,17 @@ grep --line-number \
 <p>In our spreadsheet we’ve <strong>classified over 97,000 Decompiled Lines of Code</strong>. That’s <strong>86%</strong> of all Decompiled Lines of Code. Good enough for our analysis!</p>
 <p><img src="https://lupyuen.github.io/images/wifi-quantify5.png" alt="Matching the decompiled function code" /></p>
 <h2 id="match-the-decompiled-functions" class="section-header"><a href="#match-the-decompiled-functions">8.4 Match the decompiled functions</a></h2>
-<p>TODO</p>
+<p>Remember the source code we’ve discovered earlier through <strong>GitHub Search</strong>?</p>
+<p>(For RivieraWaves, WiFi Supplicant and Physical Layer)</p>
+<p>Now we dive into the Discovered Source Code and see <strong>how closely they match the Decompiled Functions</strong>.</p>
+<p><em>How do we record our findings?</em></p>
+<p>Inside our spreadsheet is a column that records the <strong>Source Code URL</strong> (from GitHub Search) that we’ve matched with our Decompiled Functions. (See pic above)</p>
+<p>We’ve also added a comment that says <strong>how closely they match</strong>. (“BL602 version is different”)</p>
+<p>If the Discovered Source Code doesn’t match the Decompiled Function, we <strong>flag the Module Name</strong> with “<code>???</code>”.</p>
+<p><em>Do we need to match every Decompiled Function?</em></p>
+<p>To simplify the matching, we picked one or two of the <strong>Most Complex Functions from each Module</strong>.</p>
+<p>(Yep the red highlighting really helps!)</p>
+<p>Thus our matching is not 100% thorough and accurate… But it’s reasonably accurate.</p>
 <p><img src="https://lupyuen.github.io/images/wifi-title.jpg" alt="Counting the decompiled lines of code in BL602 WiFi Firmware" /></p>
 <h2 id="count-the-lines-of-code" class="section-header"><a href="#count-the-lines-of-code">8.5 Count the lines of code</a></h2>
 <p>TODO</p>
