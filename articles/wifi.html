@@ -1064,17 +1064,38 @@ grep --line-number \
 <p>WiFi Functions make up <strong>%29</strong> of the total Lines of Code in our Decompiled WiFi Firmware.</p>
 <p><em>What’s inside the other 71% of the Decompiled Code?</em></p>
 <p>Let’s run through the <strong>Non-WiFi Functions in our Decompiled Firmware</strong>…</p>
+<p>(Complex modules are highlighted in red)</p>
 <p><img src="https://lupyuen.github.io/images/wifi-loc7.png" alt="Decompiled lines of code" /></p>
-<p>TODO: </p>
-<p>AliOS</p>
-<p>AWS IoT, AWS MQTT</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/stage/easyflash4/inc/easyflash.h">BL602 EasyFlash</a></p>
-<p>BL602 Hardware Abstraction Layer</p>
-<p>BL602 Standard Driver</p>
-<p>C Standard Library</p>
-<p>FreeRTOS</p>
-<p>Lightweight IP (LWIP)</p>
-<p>Mbed TLS</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/components/fs"><strong>AliOS</strong></a>: Embedded framework for multitasking and device drivers</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/components/3rdparty/aws-iot"><strong>AWS IoT, AWS MQTT</strong></a>: Demo Firmware talks to AWS Cloud for IoT and MQTT (Message Queue) Services</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/stage/easyflash4/inc/easyflash.h"><strong>BL602 EasyFlash</strong></a>: (What’s this?)</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/components/hal_drv/bl602_hal"><strong>BL602 Hardware Abstraction Layer (HAL)</strong></a>: Exposes hardware functions like DMA, GPIO, Flash Memory, Real Time Clock, Security (Encryption), UART, …</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/components/bl602/bl602_std/bl602_std/StdDriver"><strong>BL602 Standard Driver</strong></a>: Called by the BL602 Hardware Abstraction Layer to access the BL602 Hardware Registers</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/toolchain/riscv/Linux/lib/gcc/riscv64-unknown-elf/8.3.0/rv32imf/ilp32f"><strong>C Standard Library</strong></a>: Because our firmware is compiled with the GCC Compiler</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/components/bl602/freertos_riscv"><strong>FreeRTOS</strong></a>: Embedded OS that runs underneath AilOS</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/components/network"><strong>Lightweight IP (LWIP)</strong></a>: For IP, UDP, TCP and HTTP Networking</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/components/security/mbedtls"><strong>Mbed TLS</strong></a>: Implements Transport Layer Security, needed by AWS IoT and MQTT</p>
+</li>
+</ul>
+<p>Source code is available for most of the Non-WiFi Functions.</p>
 <p><img src="https://lupyuen.github.io/images/wifi-schedule.png" alt="GitHub Code Search" /></p>
 <h1 id="github-search-is-our-best-friend" class="section-header"><a href="#github-search-is-our-best-friend">10 GitHub Search Is Our Best Friend!</a></h1>
 <p>TODO</p>
