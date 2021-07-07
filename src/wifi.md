@@ -1252,9 +1252,23 @@ Thus our matching is not 100% thorough and accurate... But it's reasonably accur
 
 TODO
 
+![Decompiled lines of code](https://lupyuen.github.io/images/wifi-loc1.png)
+
+TODO
+
+![Decompiled lines of code](https://lupyuen.github.io/images/wifi-loc2.png)
+
+TODO
+
+![Decompiled lines of code](https://lupyuen.github.io/images/wifi-loc3.png)
+
 # Other Components
 
 TODO: BL602 HAL, BL602 Standard Driver, LWIP, MbedTLS, FreeRTOS, AliOS, AWS MQTT, AWS IoT
+
+![Decompiled lines of code](https://lupyuen.github.io/images/wifi-loc7.png)
+
+TODO
 
 ![GitHub Code Search](https://lupyuen.github.io/images/wifi-schedule.png)
 
