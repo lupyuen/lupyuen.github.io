@@ -1274,7 +1274,7 @@ In the second tab of our spreadsheet, we see the Pivot Table that summarises the
 
     ![Decompiled lines of code already found elsewhere](https://lupyuen.github.io/images/wifi-loc3.png)
 
-1.  We also have __7,500__ Lines of Code from parts of the __BL602 WiFi Driver__ whose source code may be found in the __BL602 IoT SDK__.
+1.  We also have __7,500__ Lines of Code from parts of the __BL602 WiFi Driver__ whose source code may be found in the __BL602 IoT SDK__. [(See this)](https://github.com/lupyuen/bl_iot_sdk/tree/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver)
 
     Includes the __WiFi Manager__ that we've seen earlier.
 
