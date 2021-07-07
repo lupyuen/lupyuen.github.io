@@ -1340,6 +1340,10 @@ Many Thanks to the contributors of the [__Pine64 BL602 Reverse Engineering Proje
 
 TODO
 
+In the next article we shall check out the [__BL706 Audio Video Board__](https://github.com/bouffalolab/bl_mcu_sdk/tree/master/docs/chipSpecification/bl70x_docs).
+
+Stay tuned!
+
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
 -   [Read "The RISC-V BL602 Book"](https://lupyuen.github.io/articles/book)
@@ -1351,6 +1355,10 @@ TODO
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [`lupyuen.github.io/src/wifi.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/wifi.md)
+
+![BL706 Audio Video Board](https://lupyuen.github.io/images/bl706.jpg)
+
+_BL706 Audio Video Board_
 
 # Notes
 
