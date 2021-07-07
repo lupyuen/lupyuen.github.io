@@ -1326,19 +1326,27 @@ Source code is available for most of the Non-WiFi Functions.
 
 # GitHub Search Is Our Best Friend!
 
-TODO
+Today we've learnt a valuable lesson... __GitHub Search is our Best Friend for Reverse Engineering__!
 
-1.  [GitHub Code Search for `ke_evt_schedule`](https://github.com/search?o=desc&q=ke_evt_schedule&s=indexed&type=Code)
+Here's what we have discovered through GitHub Search...
 
-1.  [GitHub Code Search for `supplicantInit`, `allocSupplicantData` and `keyMgmtGetKeySize`](https://github.com/search?o=desc&q=supplicantInit+allocSupplicantData+keyMgmtGetKeySize&s=indexed&type=Code)
+1.  Source Code for __UMAC and LMAC__
 
-1.  [GitHub Code Search for `phy_init` and `phy_hw_set_channel`](https://github.com/search?q=phy_init+phy_hw_set_channel&type=code)
+    [GitHub Code Search for `ke_evt_schedule`](https://github.com/search?o=desc&q=ke_evt_schedule&s=indexed&type=Code)
+
+1.  Source Code for __WiFi Supplicant__
+
+    [GitHub Code Search for `supplicantInit`, `allocSupplicantData` and `keyMgmtGetKeySize`](https://github.com/search?o=desc&q=supplicantInit+allocSupplicantData+keyMgmtGetKeySize&s=indexed&type=Code)
+
+1.  Source Code for __Physical Layer__
+
+    [GitHub Code Search for `phy_init` and `phy_hw_set_channel`](https://github.com/search?q=phy_init+phy_hw_set_channel&type=code)
+
+Remember to check GitHub Search when doing any Reverse Engineering! 👍 
 
 # What's Next
 
-Many Thanks to the contributors of the [__Pine64 BL602 Reverse Engineering Project__](https://github.com/pine64/bl602-re) for inspiring this article!
-
-TODO
+This has been an awesome journey... Many Thanks to the contributors of the [__Pine64 BL602 Reverse Engineering Project__](https://github.com/pine64/bl602-re) for inspiring this article!
 
 In the next article we shall check out the [__BL706 Audio Video Board__](https://github.com/bouffalolab/bl_mcu_sdk/tree/master/docs/chipSpecification/bl70x_docs).
 
