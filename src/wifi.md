@@ -1218,6 +1218,8 @@ Fortunately the Decompiled Functions belonging to a Module are __clustered toget
 
 Remember our red highlighting for Complex Functions? It's OK to __skip the classification of the Less Complex Functions__ if we're not sure how to classify them.
 
+In our spreadsheet we've __classified over 97,000 Decompiled Functions__. That's __86%__ of all Decompiled Functions. Good enough for our analysis!
+
 ![Matching the decompiled function code](https://lupyuen.github.io/images/wifi-quantify5.png)
 
 ## Match the decompiled functions
