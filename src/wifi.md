@@ -1252,27 +1252,35 @@ Thus our matching is not 100% thorough and accurate... But it's reasonably accur
 
 Finally we add a __Pivot Table to count the Lines of Code__ that are matched (or unmatched) with GitHub Search.
 
-In the second tab of our spreadsheet, we have a Pivot Table that summarises the __results of our Quantitative Analysis__...
+In the second tab of our spreadsheet, we see the Pivot Table that summarises the __results of our Quantitative Analysis__...
 
 1.  Lines of Code to be __Reverse Engineered: 10,500__
 
-    TODO: LMAC + PHY code
+    Not found on GitHub Search: __LMAC Interface__, and some parts of the Physical Layer.
 
-    ![Decompiled lines of code](https://lupyuen.github.io/images/wifi-loc1.png)
+    ![Decompiled lines of code to be reverse engineered](https://lupyuen.github.io/images/wifi-loc1.png)
 
 1.  Lines of Code for __Partial Reverse Engineering: 3,500__
 
-    TODO: PHY code match partially
+    We found partial matches for the __Physical Layer__ on GitHub Search.
+
+    ![Decompiled lines of code for partial reverse enginnering](https://lupyuen.github.io/images/wifi-loc2.png)
 
     (We'll talk about BL602 HAL and Standard Driver in the next chapter)
 
-    ![Decompiled lines of code](https://lupyuen.github.io/images/wifi-loc2.png)
-
 1.  Lines of Code __Already Found Elsewhere: 11,300__ (Wow!)
 
-    TODO: UMAC + WiFi Supplicant
+    Found on GitHub Search: __UMAC and WiFi Supplicant__
 
-    ![Decompiled lines of code](https://lupyuen.github.io/images/wifi-loc3.png)
+    ![Decompiled lines of code already found elsewhere](https://lupyuen.github.io/images/wifi-loc3.png)
+
+1.  We also have __7,500__ Lines of Code from parts of the __BL602 WiFi Driver__ whose source code may be found in the BL602 IoT SDK.
+
+    Includes the __WiFi Manager__ that we've seen earlier.
+
+    ![Lines of code for BL602 WiFi Driver](https://lupyuen.github.io/images/wifi-loc8.png)
+
+Conclusion: We have __plenty of source code__ to guide us for the __Reverse Engineering of BL602 WiFi__!
 
 # Other Modules
 
