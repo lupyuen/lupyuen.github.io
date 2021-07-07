@@ -1292,7 +1292,25 @@ Let's run through the __Non-WiFi Functions in our Decompiled Firmware__...
 
 ![Decompiled lines of code](https://lupyuen.github.io/images/wifi-loc7.png)
 
-TODO: BL602 HAL, BL602 Standard Driver, LWIP, MbedTLS, FreeRTOS, AliOS, AWS MQTT, AWS IoT
+TODO: 
+
+AliOS
+
+AWS IoT, AWS MQTT
+
+[BL602 EasyFlash](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/stage/easyflash4/inc/easyflash.h)
+
+BL602 Hardware Abstraction Layer
+
+BL602 Standard Driver
+
+C Standard Library
+
+FreeRTOS
+
+Lightweight IP (LWIP)
+
+Mbed TLS
 
 ![GitHub Code Search](https://lupyuen.github.io/images/wifi-schedule.png)
 
