@@ -1284,11 +1284,15 @@ Conclusion: We have __plenty of source code__ to guide us for the __Reverse Engi
 
 # Other Modules
 
-TODO: BL602 HAL, BL602 Standard Driver, LWIP, MbedTLS, FreeRTOS, AliOS, AWS MQTT, AWS IoT
+WiFi Functions make up __%29__ of the total Lines of Code in our Decompiled WiFi Firmware.
+
+_What's inside the other 71% of the Decompiled Code?_
+
+Let's run through the __Non-WiFi Functions in our Decompiled Firmware__...
 
 ![Decompiled lines of code](https://lupyuen.github.io/images/wifi-loc7.png)
 
-TODO
+TODO: BL602 HAL, BL602 Standard Driver, LWIP, MbedTLS, FreeRTOS, AliOS, AWS MQTT, AWS IoT
 
 ![GitHub Code Search](https://lupyuen.github.io/images/wifi-schedule.png)
 
