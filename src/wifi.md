@@ -1284,7 +1284,7 @@ Conclusion: We have __plenty of source code__ to guide us for the __Reverse Engi
 
 # Other Modules
 
-WiFi Functions make up __%29__ of the total Lines of Code in our Decompiled WiFi Firmware.
+WiFi Functions make up __29%__ of the total Lines of Code in our Decompiled WiFi Firmware.
 
 _What's inside the other 71% of the Decompiled Code?_
 
