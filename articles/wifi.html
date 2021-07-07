@@ -984,7 +984,7 @@ grep --line-number \
 <p>This produces <a href="https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.txt"><strong><code>bl602_demo_wifi.txt</code></strong></a>, a long list of Decompiled Function Names and their Line Numbers. <a href="https://lupyuen.github.io/images/wifi-quantify.png">(Here’s a snippet)</a></p>
 <p>(Plus Function Parameters and Type Definitions… We’ll scrub them away soon)</p>
 <p><em>But this list includes EVERYTHING… Including the non-WiFi functions no?</em></p>
-<p>Yes. But it’s fun to comb through <strong>Every Single Function in the Decompiled Firmware</strong> (128,000 of them)… Just to see what makes it tick.</p>
+<p>Yes. But it’s fun to comb through <strong>Every Single Function in the Decompiled Firmware</strong> (128,000 Lines of Code)… Just to see what makes it tick.</p>
 <p><em>Why not just decompile and analyse the BL602 WiFi Library: <a href="https://github.com/pine64/bl602-re/tree/master/blobs"><code>libbl602_wifi.a</code></a> ?</em></p>
 <p>The <a href="https://github.com/pine64/bl602-re/tree/master/blobs"><strong>BL602 WiFi Library <code>libbl602_wifi.a</code></strong></a> might contain some extra WiFi Functions that won’t get linked into the WiFi Firmware.</p>
 <p>Hence we’re decompiling and analysing the <strong>actual WiFi Functions called by the WiFi Firmware</strong>.</p>
@@ -1016,10 +1016,10 @@ grep --line-number \
 <p>Next we <strong>classify each Decompiled Function by Module</strong>.</p>
 <p>The pic above shows that we’ve classified the “<code>rxl_</code>” functions as “<code>???RivieraWaves RXL</code>”. (RXL means Receive LMAC)</p>
 <p>We use “<code>???</code>” to mark the Modules that we couldn’t find any source code.</p>
-<p><em>Doing this for all 128,000 Decompiled Functions sounds tedious…?</em></p>
+<p><em>Doing this for all 3,000 Decompiled Functions sounds tedious…?</em></p>
 <p>Fortunately the Decompiled Functions belonging to a Module are <strong>clustered together</strong>. So it’s easy to copy and fill the Module Name for a batch of functions.</p>
-<p>Remember our red highlighting for Complex Functions? It’s OK to <strong>skip the classification of the Less Complex Functions</strong> if we’re not sure how to classify them.</p>
-<p>In our spreadsheet we’ve <strong>classified over 97,000 Decompiled Functions</strong>. That’s <strong>86%</strong> of all Decompiled Functions. Good enough for our analysis!</p>
+<p>Remember our red highlighting for Complex Functions? It’s OK to <strong>skip the classification of the Less Complex Functions</strong> (if we’re not sure how to classify them).</p>
+<p>In our spreadsheet we’ve <strong>classified over 97,000 Decompiled Lines of Code</strong>. That’s <strong>86%</strong> of all Decompiled Lines of Code. Good enough for our analysis!</p>
 <p><img src="https://lupyuen.github.io/images/wifi-quantify5.png" alt="Matching the decompiled function code" /></p>
 <h2 id="match-the-decompiled-functions" class="section-header"><a href="#match-the-decompiled-functions">8.4 Match the decompiled functions</a></h2>
 <p>TODO</p>
