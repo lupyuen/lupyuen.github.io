@@ -1250,19 +1250,25 @@ Thus our matching is not 100% thorough and accurate... But it's reasonably accur
 
 ## Count the lines of code
 
+Now we add a __Pivot Table to count the Lines of Code__ that are matched (or unmatched) with GitHub Search.
+
 TODO
 
 ![Decompiled lines of code](https://lupyuen.github.io/images/wifi-loc1.png)
 
-TODO
+TODO: 10,500 lines of LMAC + PHY code to be Reverse Engineered
 
 ![Decompiled lines of code](https://lupyuen.github.io/images/wifi-loc2.png)
 
-TODO
+TODO: 3,500 lines of PHY code match partially
+
+(We'll talk about BL602 HAL and Standard Driver in the next chapter)
 
 ![Decompiled lines of code](https://lupyuen.github.io/images/wifi-loc3.png)
 
-# Other Components
+TODO: 11,300 lines of code already existing
+
+# Other Modules
 
 TODO: BL602 HAL, BL602 Standard Driver, LWIP, MbedTLS, FreeRTOS, AliOS, AWS MQTT, AWS IoT
 
@@ -1275,6 +1281,12 @@ TODO
 # GitHub Search Is Our Best Friend!
 
 TODO
+
+1.  [GitHub Code Search for `ke_evt_schedule`](https://github.com/search?o=desc&q=ke_evt_schedule&s=indexed&type=Code)
+
+1.  [GitHub Code Search for `supplicantInit`, `allocSupplicantData` and `keyMgmtGetKeySize`](https://github.com/search?o=desc&q=supplicantInit+allocSupplicantData+keyMgmtGetKeySize&s=indexed&type=Code)
+
+1.  [GitHub Code Search for `phy_init` and `phy_hw_set_channel`](https://github.com/search?q=phy_init+phy_hw_set_channel&type=code)
 
 # What's Next
 
