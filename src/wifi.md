@@ -1168,7 +1168,7 @@ This produces [__`bl602_demo_wifi.txt`__](https://github.com/lupyuen/bl602nutcra
 
 _But this list includes EVERYTHING... Including the non-WiFi functions no?_
 
-Yes. But it's fun to comb through __Every Single Function in the Decompiled Firmware__ (128,000 of them)... Just to see what makes it tick.
+Yes. But it's fun to comb through __Every Single Function in the Decompiled Firmware__ (128,000 Lines of Code)... Just to see what makes it tick.
 
 _Why not just decompile and analyse the BL602 WiFi Library: [`libbl602_wifi.a`](https://github.com/pine64/bl602-re/tree/master/blobs) ?_
 
@@ -1212,13 +1212,13 @@ The pic above shows that we've classified the "`rxl_`" functions as "`???Riviera
 
 We use "`???`" to mark the Modules that we couldn't find any source code.
 
-_Doing this for all 128,000 Decompiled Functions sounds tedious...?_
+_Doing this for all 3,000 Decompiled Functions sounds tedious...?_
 
 Fortunately the Decompiled Functions belonging to a Module are __clustered together__. So it's easy to copy and fill the Module Name for a batch of functions.
 
-Remember our red highlighting for Complex Functions? It's OK to __skip the classification of the Less Complex Functions__ if we're not sure how to classify them.
+Remember our red highlighting for Complex Functions? It's OK to __skip the classification of the Less Complex Functions__ (if we're not sure how to classify them).
 
-In our spreadsheet we've __classified over 97,000 Decompiled Functions__. That's __86%__ of all Decompiled Functions. Good enough for our analysis!
+In our spreadsheet we've __classified over 97,000 Decompiled Lines of Code__. That's __86%__ of all Decompiled Lines of Code. Good enough for our analysis!
 
 ![Matching the decompiled function code](https://lupyuen.github.io/images/wifi-quantify5.png)
 
