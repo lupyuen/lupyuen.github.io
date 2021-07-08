@@ -1,6 +1,6 @@
 # The RISC-V BL602 Book
 
-📝 _20 Feb 2021_
+📝 _8 Jul 2021_
 
 ![PineCone BL602 RISC-V Board with Grove E-Ink Display](https://lupyuen.github.io/images/book-title.jpg)
 
@@ -24,7 +24,7 @@ Many thanks to __Pine64__ for supporting my work on BL602 Open Source Education!
 
 If you find this book useful... [__please sponsor me a coffee__](https://github.com/sponsors/lupyuen). Thank you! 🙏 😀
 
-![](https://lupyuen.github.io/images/book-pinecone.jpg)
+![Introduction to BL602](https://lupyuen.github.io/images/book-pinecone.jpg)
 
 # Introduction to BL602
 
@@ -36,25 +36,19 @@ Find out what's inside the __BL602 System-on-a-Chip (SoC)__... And why it's uniq
 
 # Flashing Firmware to BL602
 
-How we __flash firmware__ to BL602 with __command-line tools__ on Linux, macOS and Windows. Plus tips for __developing and troubleshooting__ firmware.
+How we __flash firmware__ to BL602 with __command-line tools__ on Linux, macOS and Windows.
 
 -   ["Flashing Firmware to PineCone BL602"](https://lupyuen.github.io/articles/flash)
 
--   ["How to Troubleshoot RISC-V Exceptions"](https://lupyuen.github.io/articles/i2c#appendix-how-to-troubleshoot-risc-v-exceptions)
+# Projects and Libraries on BL602
 
--   ["BL602 Assertion Failures"](https://lupyuen.github.io/articles/lora2#bl602-assertion-failures)
+How to create a simple __Blinky Project__ for BL602.
 
--   ["BL602 Stack Trace"](https://lupyuen.github.io/articles/lora2#bl602-stack-trace)
-
--   ["BL602 Stack Dump"](https://lupyuen.github.io/articles/lora2#bl602-stack-dump)
-
--   ["Multitask with NimBLE Porting Layer"](https://lupyuen.github.io/articles/lora2#multitask-with-nimble-porting-layer)
+-   ["BL602 Blinky in C"](https://lupyuen.github.io/articles/rust#bl602-blinky-in-c)
 
 -   ["How To Create BL602 Projects"](https://lupyuen.github.io/articles/lora2#appendix-how-to-create-bl602-projects)
 
 -   ["How To Create BL602 Libraries"](https://lupyuen.github.io/articles/lora2#appendix-how-to-create-bl602-libraries)
-
--   ["BL602 Bootloader"](https://lupyuen.github.io/articles/boot)
 
 ![GPIO on BL602](https://lupyuen.github.io/images/book-led.jpg)
 
@@ -65,8 +59,6 @@ Learn to call the BL602 __GPIO Hardware Abstraction Layer (HAL)__ to blink an LE
 -   ["Control PineCone BL602 RGB LED with GPIO and PWM"](https://lupyuen.github.io/articles/led)
 
 -   ["Porting LoRa Driver from Mynewt to BL602: GPIO"](https://lupyuen.github.io/articles/lora#gpio)
-
--   ["BL602 Blinky in C"](https://lupyuen.github.io/articles/rust#bl602-blinky-in-c)
 
 -   ["BL602 GPIO Interrupts"](https://lupyuen.github.io/articles/lora2#bl602-gpio-interrupts)
 
@@ -144,6 +136,8 @@ Render text and graphics with the open-source __LVGL Library__.
 
 Let's turn BL602 into a real IoT gadget that transmits __long range, low power LoRa packets__...
 
+-   ["PineCone BL602 Talks LoRaWAN"](https://lupyuen.github.io/articles/lorawan)
+
 -   ["Connect PineCone BL602 to LoRa Transceiver (SX1276)"](https://lupyuen.github.io/articles/lora)
 
 -   ["RAKwireless WisBlock talks LoRa with PineCone BL602 RISC-V Board"](https://lupyuen.github.io/articles/wisblock)
@@ -151,10 +145,6 @@ Let's turn BL602 into a real IoT gadget that transmits __long range, low power L
 -   ["PineCone BL602 RISC-V Board Receives LoRa Packets (SX1276)"](https://lupyuen.github.io/articles/lora2)
 
 -   ["Build a LoRaWAN Network with RAKwireless WisGate Developer Gateway"](https://lupyuen.github.io/articles/wisgate)
-
--   ["PineCone BL602 Talks LoRaWAN"](https://lupyuen.github.io/articles/lorawan)
-
--   ["LoRa Driver for SX1262 (Pine64 RFM90 LoRa Module)"](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/3rdparty/lora-sx1262)
 
 ![OpenOCD on BL602](https://lupyuen.github.io/images/book-openocd.jpg)
 
@@ -216,19 +206,41 @@ Will BL602 run without FreeRTOS? Study the ongoing port of __Apache Mynewt opera
 
 -   ["Apache NuttX on BL602"](https://lupyuen.github.io/articles/rust#apache-nuttx-on-bl602)
 
+# Troubleshooting BL602
+
+Tips for __troubleshooting BL602 firmware__.
+
+-   ["How to Troubleshoot RISC-V Exceptions"](https://lupyuen.github.io/articles/i2c#appendix-how-to-troubleshoot-risc-v-exceptions)
+
+-   ["BL602 Assertion Failures"](https://lupyuen.github.io/articles/lora2#bl602-assertion-failures)
+
+-   ["BL602 Stack Trace"](https://lupyuen.github.io/articles/lora2#bl602-stack-trace)
+
+-   ["BL602 Stack Dump"](https://lupyuen.github.io/articles/lora2#bl602-stack-dump)
+
+# Multitasking BL602
+
+Multitasking the easy way with __NimBLE Porting Layer__.
+
+-   ["Multitask with NimBLE Porting Layer"](https://lupyuen.github.io/articles/lora2#multitask-with-nimble-porting-layer)
+
+# Bootloader for BL602
+
+All about the __BL602 Bootloader__... And how it loads the Application Firmware into XIP Flash Memory.
+
+-   ["BL602 Bootloader"](https://lupyuen.github.io/articles/boot)
+
 ![What's Next](https://lupyuen.github.io/images/book-next.jpg)
 
 # What's Next
 
 Check this book again for future updates...
 
-1. __WiFi and Bluetooth LE__
+1.  __IoT Education with BL602 and BL602__
 
-    [__Twitter Thread for my Reverse Enginering of BL602 WiFi__](https://twitter.com/MisterTechBlog/status/1407971263088193540)
+1.  __Rust Wrappers for BL602__ [(See this)](https://github.com/lupyuen/bl602-rust-wrapper)
 
-1. __More Mynewt and Rust__
-
-1. __IoT Education with BL602__
+1.  __BL706 Audio Video Board__ [(See this)](https://github.com/bouffalolab/bl_mcu_sdk/tree/master/docs/chipSpecification/bl70x_docs)
 
 ![About the Author](https://lupyuen.github.io/images/book-advocate.jpg)
 
