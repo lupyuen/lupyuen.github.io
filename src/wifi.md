@@ -1390,10 +1390,14 @@ _BL706 Audio Video Board_
 
     -   [fengmaoqiao/workplace](https://github.com/fengmaoqiao/workplace)
 
-    Also check out [these tips on BL602 WiFi and Bluetooth LE](https://twitter.com/madushan1000/status/1412694106816585728?s=19)
+    -   [More tips on BL602 WiFi and Bluetooth LE](https://twitter.com/madushan1000/status/1412694106816585728?s=19)
 
-1.  More about BL602 RF IP: [Hardware Notes: RF IP](https://github.com/pine64/bl602-docs/tree/main/hardware_notes#rf-ip)
+1.  More about BL602 RF IP and Hardware Registers:
 
-1.  More about BL602 Physical Layer: [Hardware Notes: PHY Registers](https://github.com/pine64/bl602-docs/blob/main/hardware_notes/registers/phy/mdm.md)
+    -   [Hardware Notes: RF IP](https://github.com/pine64/bl602-docs/tree/main/hardware_notes#rf-ip)
+    
+    -   [Hardware Notes: MDM Registers](https://github.com/pine64/bl602-docs/blob/main/hardware_notes/registers/phy/mdm.md)
 
-1.  ESP32 uses CEVA's Bluetooth IP but not WiFi IP, according to [SpritesMods on Twitter](https://twitter.com/SpritesMods/status/1412308410226286598?s=19)
+    -   [Hardware Notes: AGC Registers](https://github.com/pine64/bl602-docs/blob/main/hardware_notes/registers/phy/agc.md)
+
+1.  ESP32 uses CEVA's Bluetooth IP but not CEVA's WiFi IP, according to [SpritesMods on Twitter](https://twitter.com/SpritesMods/status/1412308410226286598?s=19)
