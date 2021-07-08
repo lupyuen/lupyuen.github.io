@@ -1350,6 +1350,14 @@ Remember to check GitHub Search when doing any Reverse Engineering! 👍
 
 This has been a thrilling journey... Many Thanks to the contributors of the [__Pine64 BL602 Reverse Engineering Project__](https://github.com/pine64/bl602-re) for inspiring this article!
 
+Today we've done some Reverse Engineering for the purpose of __Education__... Just to understand how BL602 sends and receives WiFi Packets.
+
+And we now understand how to sniff around the Decompiled WiFi Firmware to __uncover every WiFi Hardware Register__.
+
+I hope someone will continue the Reverse Engineering work... Maybe create an __Open Source WiFi Driver for BL602__!
+
+[(Perhaps we should revive the __Pine64 BL602 Nutcracker Project__)](https://github.com/pine64/bl602-re)
+
 In the next article we shall check out the [__BL706 Audio Video Board__](https://github.com/bouffalolab/bl_mcu_sdk/tree/master/docs/chipSpecification/bl70x_docs).
 
 Stay tuned!
