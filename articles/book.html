@@ -67,24 +67,28 @@
     <nav id="TOC"><ul>
 <li><a href="#introduction-to-bl602">1 Introduction to BL602</a><ul></ul></li>
 <li><a href="#flashing-firmware-to-bl602">2 Flashing Firmware to BL602</a><ul></ul></li>
-<li><a href="#gpio-on-bl602">3 GPIO on BL602</a><ul></ul></li>
-<li><a href="#pwm-on-bl602">4 PWM on BL602</a><ul></ul></li>
-<li><a href="#i2c-on-bl602">5 I2C on BL602</a><ul></ul></li>
-<li><a href="#spi-on-bl602">6 SPI on BL602</a><ul></ul></li>
-<li><a href="#dma-on-bl602">7 DMA on BL602</a><ul></ul></li>
-<li><a href="#uart-on-bl602">8 UART on BL602</a><ul></ul></li>
-<li><a href="#adc-on-bl602">9 ADC on BL602</a><ul></ul></li>
-<li><a href="#wifi-on-bl602">10 WiFi on BL602</a><ul></ul></li>
-<li><a href="#graphics-on-bl602">11 Graphics on BL602</a><ul></ul></li>
-<li><a href="#lora-on-bl602">12 LoRa on BL602</a><ul></ul></li>
-<li><a href="#openocd-on-bl602">13 OpenOCD on BL602</a><ul></ul></li>
-<li><a href="#gdb-and-vscode-on-bl602">14 GDB and VSCode on BL602</a><ul></ul></li>
-<li><a href="#rust-on-bl602">15 Rust on BL602</a><ul></ul></li>
-<li><a href="#lisp-on-bl602">16 Lisp on BL602</a><ul></ul></li>
-<li><a href="#machine-learning-on-bl602">17 Machine Learning on BL602</a><ul></ul></li>
-<li><a href="#mynewt-on-bl602">18 Mynewt on BL602</a><ul></ul></li>
-<li><a href="#whats-next">19 What’s Next</a><ul></ul></li>
-<li><a href="#about-the-author">20 About the Author</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2021</em></p>
+<li><a href="#projects-and-libraries-on-bl602">3 Projects and Libraries on BL602</a><ul></ul></li>
+<li><a href="#gpio-on-bl602">4 GPIO on BL602</a><ul></ul></li>
+<li><a href="#pwm-on-bl602">5 PWM on BL602</a><ul></ul></li>
+<li><a href="#i2c-on-bl602">6 I2C on BL602</a><ul></ul></li>
+<li><a href="#spi-on-bl602">7 SPI on BL602</a><ul></ul></li>
+<li><a href="#dma-on-bl602">8 DMA on BL602</a><ul></ul></li>
+<li><a href="#uart-on-bl602">9 UART on BL602</a><ul></ul></li>
+<li><a href="#adc-on-bl602">10 ADC on BL602</a><ul></ul></li>
+<li><a href="#wifi-on-bl602">11 WiFi on BL602</a><ul></ul></li>
+<li><a href="#graphics-on-bl602">12 Graphics on BL602</a><ul></ul></li>
+<li><a href="#lora-on-bl602">13 LoRa on BL602</a><ul></ul></li>
+<li><a href="#openocd-on-bl602">14 OpenOCD on BL602</a><ul></ul></li>
+<li><a href="#gdb-and-vscode-on-bl602">15 GDB and VSCode on BL602</a><ul></ul></li>
+<li><a href="#rust-on-bl602">16 Rust on BL602</a><ul></ul></li>
+<li><a href="#lisp-on-bl602">17 Lisp on BL602</a><ul></ul></li>
+<li><a href="#machine-learning-on-bl602">18 Machine Learning on BL602</a><ul></ul></li>
+<li><a href="#mynewt-on-bl602">19 Mynewt on BL602</a><ul></ul></li>
+<li><a href="#troubleshooting-bl602">20 Troubleshooting BL602</a><ul></ul></li>
+<li><a href="#multitasking-bl602">21 Multitasking BL602</a><ul></ul></li>
+<li><a href="#bootloader-for-bl602">22 Bootloader for BL602</a><ul></ul></li>
+<li><a href="#whats-next">23 What’s Next</a><ul></ul></li>
+<li><a href="#about-the-author">24 About the Author</a><ul></ul></li></ul></nav><p>📝 <em>8 Jul 2021</em></p>
 <p><img src="https://lupyuen.github.io/images/book-title.jpg" alt="PineCone BL602 RISC-V Board with Grove E-Ink Display" /></p>
 <p><em>PineCone BL602 RISC-V Board with Grove E-Ink Display</em></p>
 <p>Is there a book about the <strong>BL602 SoC</strong> (RISC-V, WiFi and Bluetooth LE) that…</p>
@@ -104,7 +108,7 @@
 <p>The programs in these articles have been tested on <strong>PineCone</strong>, but they should work on other BL602 Boards: <strong>Pinenut, DT-BL10, MagicHome BL602</strong>.</p>
 <p>Many thanks to <strong>Pine64</strong> for supporting my work on BL602 Open Source Education! Thanks also to <strong>Bouffalo Lab</strong> for the encouraging notes.</p>
 <p>If you find this book useful… <a href="https://github.com/sponsors/lupyuen"><strong>please sponsor me a coffee</strong></a>. Thank you! 🙏 😀</p>
-<p><img src="https://lupyuen.github.io/images/book-pinecone.jpg" alt="" /></p>
+<p><img src="https://lupyuen.github.io/images/book-pinecone.jpg" alt="Introduction to BL602" /></p>
 <h1 id="introduction-to-bl602" class="section-header"><a href="#introduction-to-bl602">1 Introduction to BL602</a></h1>
 <p>Find out what’s inside the <strong>BL602 System-on-a-Chip (SoC)</strong>… And why it’s unique among the microcontrollers we’ve seen.</p>
 <ul>
@@ -112,25 +116,15 @@
 </ul>
 <p><img src="https://lupyuen.github.io/images/book-flash.jpg" alt="Flashing Firmware to BL602" /></p>
 <h1 id="flashing-firmware-to-bl602" class="section-header"><a href="#flashing-firmware-to-bl602">2 Flashing Firmware to BL602</a></h1>
-<p>How we <strong>flash firmware</strong> to BL602 with <strong>command-line tools</strong> on Linux, macOS and Windows. Plus tips for <strong>developing and troubleshooting</strong> firmware.</p>
+<p>How we <strong>flash firmware</strong> to BL602 with <strong>command-line tools</strong> on Linux, macOS and Windows.</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/flash">“Flashing Firmware to PineCone BL602”</a></li>
+</ul>
+<h1 id="projects-and-libraries-on-bl602" class="section-header"><a href="#projects-and-libraries-on-bl602">3 Projects and Libraries on BL602</a></h1>
+<p>How to create a simple <strong>Blinky Project</strong> for BL602.</p>
 <ul>
 <li>
-<p><a href="https://lupyuen.github.io/articles/flash">“Flashing Firmware to PineCone BL602”</a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.github.io/articles/i2c#appendix-how-to-troubleshoot-risc-v-exceptions">“How to Troubleshoot RISC-V Exceptions”</a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.github.io/articles/lora2#bl602-assertion-failures">“BL602 Assertion Failures”</a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.github.io/articles/lora2#bl602-stack-trace">“BL602 Stack Trace”</a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.github.io/articles/lora2#bl602-stack-dump">“BL602 Stack Dump”</a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.github.io/articles/lora2#multitask-with-nimble-porting-layer">“Multitask with NimBLE Porting Layer”</a></p>
+<p><a href="https://lupyuen.github.io/articles/rust#bl602-blinky-in-c">“BL602 Blinky in C”</a></p>
 </li>
 <li>
 <p><a href="https://lupyuen.github.io/articles/lora2#appendix-how-to-create-bl602-projects">“How To Create BL602 Projects”</a></p>
@@ -138,12 +132,9 @@
 <li>
 <p><a href="https://lupyuen.github.io/articles/lora2#appendix-how-to-create-bl602-libraries">“How To Create BL602 Libraries”</a></p>
 </li>
-<li>
-<p><a href="https://lupyuen.github.io/articles/boot">“BL602 Bootloader”</a></p>
-</li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/book-led.jpg" alt="GPIO on BL602" /></p>
-<h1 id="gpio-on-bl602" class="section-header"><a href="#gpio-on-bl602">3 GPIO on BL602</a></h1>
+<h1 id="gpio-on-bl602" class="section-header"><a href="#gpio-on-bl602">4 GPIO on BL602</a></h1>
 <p>Learn to call the BL602 <strong>GPIO Hardware Abstraction Layer (HAL)</strong> to blink an LED.</p>
 <ul>
 <li>
@@ -153,26 +144,23 @@
 <p><a href="https://lupyuen.github.io/articles/lora#gpio">“Porting LoRa Driver from Mynewt to BL602: GPIO”</a></p>
 </li>
 <li>
-<p><a href="https://lupyuen.github.io/articles/rust#bl602-blinky-in-c">“BL602 Blinky in C”</a></p>
-</li>
-<li>
 <p><a href="https://lupyuen.github.io/articles/lora2#bl602-gpio-interrupts">“BL602 GPIO Interrupts”</a></p>
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/book-pwm.jpg" alt="PWM on BL602" /></p>
-<h1 id="pwm-on-bl602" class="section-header"><a href="#pwm-on-bl602">4 PWM on BL602</a></h1>
+<h1 id="pwm-on-bl602" class="section-header"><a href="#pwm-on-bl602">5 PWM on BL602</a></h1>
 <p>Duty Cycle, Frequency and everything else about the <strong>BL602 PWM HAL</strong>.</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/led#from-gpio-to-pulse-width-modulation-pwm">“From GPIO to Pulse Width Modulation (PWM)”</a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/book-i2c.jpg" alt="I2C on BL602" /></p>
-<h1 id="i2c-on-bl602" class="section-header"><a href="#i2c-on-bl602">5 I2C on BL602</a></h1>
+<h1 id="i2c-on-bl602" class="section-header"><a href="#i2c-on-bl602">6 I2C on BL602</a></h1>
 <p>Read an I2C Sensor by calling the <strong>BL602 I2C HAL</strong>.</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/i2c">“PineCone BL602 talks to I2C Sensors”</a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/book-spi.jpg" alt="SPI on BL602" /></p>
-<h1 id="spi-on-bl602" class="section-header"><a href="#spi-on-bl602">6 SPI on BL602</a></h1>
+<h1 id="spi-on-bl602" class="section-header"><a href="#spi-on-bl602">7 SPI on BL602</a></h1>
 <p>How we call the <strong>BL602 SPI HAL</strong> to access SPI Sensors, Displays and Network Transceivers.</p>
 <ul>
 <li>
@@ -186,30 +174,30 @@
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/book-dma.jpg" alt="DMA on BL602" /></p>
-<h1 id="dma-on-bl602" class="section-header"><a href="#dma-on-bl602">7 DMA on BL602</a></h1>
+<h1 id="dma-on-bl602" class="section-header"><a href="#dma-on-bl602">8 DMA on BL602</a></h1>
 <p>How we <strong>accelerate data transfers with DMA</strong> on BL602.</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/spi#spi-with-direct-memory-access">“SPI with Direct Memory Access”</a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/book-uart.jpg" alt="UART on BL602" /></p>
-<h1 id="uart-on-bl602" class="section-header"><a href="#uart-on-bl602">8 UART on BL602</a></h1>
+<h1 id="uart-on-bl602" class="section-header"><a href="#uart-on-bl602">9 UART on BL602</a></h1>
 <p>UART is used by E-Ink Displays, GPS Receivers and LoRa Transceivers. To talk to these peripherals, we call the <strong>BL602 UART HAL.</strong></p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/uart">“PineCone BL602 Talks UART to Grove E-Ink Display”</a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/book-adc.jpg" alt="ADC on BL602" /></p>
-<h1 id="adc-on-bl602" class="section-header"><a href="#adc-on-bl602">9 ADC on BL602</a></h1>
+<h1 id="adc-on-bl602" class="section-header"><a href="#adc-on-bl602">10 ADC on BL602</a></h1>
 <p>Here’s the sample code that reads BL602’s <strong>onboard temperature sensor</strong> via ADC…</p>
 <ul>
 <li><a href="https://github.com/bouffalolab/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_adc.c#L173-L216">Read BL602 Temperature via ADC</a></li>
 </ul>
-<h1 id="wifi-on-bl602" class="section-header"><a href="#wifi-on-bl602">10 WiFi on BL602</a></h1>
+<h1 id="wifi-on-bl602" class="section-header"><a href="#wifi-on-bl602">11 WiFi on BL602</a></h1>
 <p>What happens inside the <strong>WiFi Driver</strong> on BL602… And how we found the incomplete source code for the driver.</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/wifi">Reverse Engineering WiFi on RISC-V BL602</a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/book-display.jpg" alt="Graphics on BL602" /></p>
-<h1 id="graphics-on-bl602" class="section-header"><a href="#graphics-on-bl602">11 Graphics on BL602</a></h1>
+<h1 id="graphics-on-bl602" class="section-header"><a href="#graphics-on-bl602">12 Graphics on BL602</a></h1>
 <p>Render text and graphics with the open-source <strong>LVGL Library</strong>.</p>
 <ul>
 <li>
@@ -220,9 +208,12 @@
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/book-lora.jpg" alt="LoRa on BL602" /></p>
-<h1 id="lora-on-bl602" class="section-header"><a href="#lora-on-bl602">12 LoRa on BL602</a></h1>
+<h1 id="lora-on-bl602" class="section-header"><a href="#lora-on-bl602">13 LoRa on BL602</a></h1>
 <p>Let’s turn BL602 into a real IoT gadget that transmits <strong>long range, low power LoRa packets</strong>…</p>
 <ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lorawan">“PineCone BL602 Talks LoRaWAN”</a></p>
+</li>
 <li>
 <p><a href="https://lupyuen.github.io/articles/lora">“Connect PineCone BL602 to LoRa Transceiver (SX1276)”</a></p>
 </li>
@@ -235,21 +226,15 @@
 <li>
 <p><a href="https://lupyuen.github.io/articles/wisgate">“Build a LoRaWAN Network with RAKwireless WisGate Developer Gateway”</a></p>
 </li>
-<li>
-<p><a href="https://lupyuen.github.io/articles/lorawan">“PineCone BL602 Talks LoRaWAN”</a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/3rdparty/lora-sx1262">“LoRa Driver for SX1262 (Pine64 RFM90 LoRa Module)”</a></p>
-</li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/book-openocd.jpg" alt="OpenOCD on BL602" /></p>
-<h1 id="openocd-on-bl602" class="section-header"><a href="#openocd-on-bl602">13 OpenOCD on BL602</a></h1>
+<h1 id="openocd-on-bl602" class="section-header"><a href="#openocd-on-bl602">14 OpenOCD on BL602</a></h1>
 <p>Before debugging BL602, we install <strong>OpenOCD</strong> to connect a <strong>JTAG Debugger</strong> to BL602.</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/openocd">“Connect PineCone BL602 to OpenOCD”</a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/book-debug.jpg" alt="GDB and VSCode on BL602" /></p>
-<h1 id="gdb-and-vscode-on-bl602" class="section-header"><a href="#gdb-and-vscode-on-bl602">14 GDB and VSCode on BL602</a></h1>
+<h1 id="gdb-and-vscode-on-bl602" class="section-header"><a href="#gdb-and-vscode-on-bl602">15 GDB and VSCode on BL602</a></h1>
 <p>How we <strong>debug BL602 firmware</strong> with GDB and VSCode.</p>
 <ul>
 <li>
@@ -260,7 +245,7 @@
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/book-rust.jpg" alt="Rust on BL602" /></p>
-<h1 id="rust-on-bl602" class="section-header"><a href="#rust-on-bl602">15 Rust on BL602</a></h1>
+<h1 id="rust-on-bl602" class="section-header"><a href="#rust-on-bl602">16 Rust on BL602</a></h1>
 <p>How we code BL602 firmware the <strong>safer, simpler way with Rust.</strong></p>
 <ul>
 <li>
@@ -277,7 +262,7 @@
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/book-lisp.jpg" alt="Lisp on BL602" /></p>
-<h1 id="lisp-on-bl602" class="section-header"><a href="#lisp-on-bl602">16 Lisp on BL602</a></h1>
+<h1 id="lisp-on-bl602" class="section-header"><a href="#lisp-on-bl602">17 Lisp on BL602</a></h1>
 <p>Porting the <strong>uLisp Interpreter</strong> to BL602… And writing graphical programs with <strong>Blockly (Scratch)</strong>.</p>
 <ul>
 <li>
@@ -287,13 +272,13 @@
 <p><a href="https://lupyuen.github.io/articles/wasm">“Simulate RISC-V BL602 with WebAssembly, uLisp and Blockly”</a></p>
 </li>
 </ul>
-<h1 id="machine-learning-on-bl602" class="section-header"><a href="#machine-learning-on-bl602">17 Machine Learning on BL602</a></h1>
+<h1 id="machine-learning-on-bl602" class="section-header"><a href="#machine-learning-on-bl602">18 Machine Learning on BL602</a></h1>
 <p>How we run <strong>TensorFlow Lite</strong> on BL602… To create a Glowing LED.</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/tflite">“Machine Learning on RISC-V BL602 with TensorFlow Lite”</a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/book-mynewt.jpg" alt="Mynewt on BL602" /></p>
-<h1 id="mynewt-on-bl602" class="section-header"><a href="#mynewt-on-bl602">18 Mynewt on BL602</a></h1>
+<h1 id="mynewt-on-bl602" class="section-header"><a href="#mynewt-on-bl602">19 Mynewt on BL602</a></h1>
 <p>Will BL602 run without FreeRTOS? Study the ongoing port of <strong>Apache Mynewt operating system</strong> to BL602.</p>
 <ul>
 <li>
@@ -306,23 +291,48 @@
 <p><a href="https://lupyuen.github.io/articles/rust#apache-nuttx-on-bl602">“Apache NuttX on BL602”</a></p>
 </li>
 </ul>
+<h1 id="troubleshooting-bl602" class="section-header"><a href="#troubleshooting-bl602">20 Troubleshooting BL602</a></h1>
+<p>Tips for <strong>troubleshooting BL602 firmware</strong>.</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/i2c#appendix-how-to-troubleshoot-risc-v-exceptions">“How to Troubleshoot RISC-V Exceptions”</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lora2#bl602-assertion-failures">“BL602 Assertion Failures”</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lora2#bl602-stack-trace">“BL602 Stack Trace”</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lora2#bl602-stack-dump">“BL602 Stack Dump”</a></p>
+</li>
+</ul>
+<h1 id="multitasking-bl602" class="section-header"><a href="#multitasking-bl602">21 Multitasking BL602</a></h1>
+<p>Multitasking the easy way with <strong>NimBLE Porting Layer</strong>.</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/lora2#multitask-with-nimble-porting-layer">“Multitask with NimBLE Porting Layer”</a></li>
+</ul>
+<h1 id="bootloader-for-bl602" class="section-header"><a href="#bootloader-for-bl602">22 Bootloader for BL602</a></h1>
+<p>All about the <strong>BL602 Bootloader</strong>… And how it loads the Application Firmware into XIP Flash Memory.</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/boot">“BL602 Bootloader”</a></li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/book-next.jpg" alt="What’s Next" /></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">19 What’s Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">23 What’s Next</a></h1>
 <p>Check this book again for future updates…</p>
 <ol>
 <li>
-<p><strong>WiFi and Bluetooth LE</strong></p>
-<p><a href="https://twitter.com/MisterTechBlog/status/1407971263088193540"><strong>Twitter Thread for my Reverse Enginering of BL602 WiFi</strong></a></p>
+<p><strong>IoT Education with BL602 and BL602</strong></p>
 </li>
 <li>
-<p><strong>More Mynewt and Rust</strong></p>
+<p><strong>Rust Wrappers for BL602</strong> <a href="https://github.com/lupyuen/bl602-rust-wrapper">(See this)</a></p>
 </li>
 <li>
-<p><strong>IoT Education with BL602</strong></p>
+<p><strong>BL706 Audio Video Board</strong> <a href="https://github.com/bouffalolab/bl_mcu_sdk/tree/master/docs/chipSpecification/bl70x_docs">(See this)</a></p>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/book-advocate.jpg" alt="About the Author" /></p>
-<h1 id="about-the-author" class="section-header"><a href="#about-the-author">20 About the Author</a></h1>
+<h1 id="about-the-author" class="section-header"><a href="#about-the-author">24 About the Author</a></h1>
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io/articles/advocate">“Better Open Source Advocate”</a></p>
