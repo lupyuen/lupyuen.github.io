@@ -1014,7 +1014,7 @@ These LMAC Modules seem to be __mostly identical across BL602 and AliOS / Rivier
 
 (More about LMAC Matching when we discuss Quantitative Analysis)
 
-![WiFi Supplicant: Rockchip RK3399 vs BL602](https://lupyuen.github.io/images/wifi-supplicant2.png)
+![WiFi Supplicant: Rockchip RK3399 vs BL602](https://lupyuen.github.io/images/wifi-supplicant2.jpg)
 
 # WiFi Supplicant
 
@@ -1321,6 +1321,8 @@ Let's run through the __Non-WiFi Functions in our Decompiled Firmware__...
 -   [__Mbed TLS__](https://github.com/lupyuen/bl_iot_sdk/tree/master/components/security/mbedtls): Implements Transport Layer Security, needed by AWS IoT and MQTT
 
 Source code is available for most of the Non-WiFi Functions.
+
+(Just click the links above)
 
 ![GitHub Code Search](https://lupyuen.github.io/images/wifi-schedule.png)
 
