@@ -1386,7 +1386,7 @@ _BL706 Audio Video Board_
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1407971263088193540)
 
-1.  According to [madushan1000 on Twitter](https://twitter.com/madushan1000/status/1409392882612637696), the BL602 WiFi RTL may be found here...
+1.  According to [madushan1000 on Twitter](https://twitter.com/madushan1000/status/1409392882612637696), the __BL602 WiFi RTL__ may be found here...
 
     -   [fengmaoqiao/my_logic_code](https://github.com/fengmaoqiao/my_logic_code)
 
@@ -1394,12 +1394,18 @@ _BL706 Audio Video Board_
 
     -   [More tips on BL602 WiFi and Bluetooth LE](https://twitter.com/madushan1000/status/1412694106816585728?s=19)
 
-1.  More about BL602 RF IP and Hardware Registers:
+1.  More about __BL602 RF IP and Hardware Registers__:
 
     -   [Hardware Notes: RF IP](https://github.com/pine64/bl602-docs/tree/main/hardware_notes#rf-ip)
     
     -   [Hardware Notes: MDM Registers](https://github.com/pine64/bl602-docs/blob/main/hardware_notes/registers/phy/mdm.md)
 
     -   [Hardware Notes: AGC Registers](https://github.com/pine64/bl602-docs/blob/main/hardware_notes/registers/phy/agc.md)
+
+1.  There's an interesting discussion about the __licensing of the WiFi Supplicant__, which looks identical to the Linux version on Rockchip RK3399...
+
+    ![Licensing of the WiFi Supplicant](https://lupyuen.github.io/images/wifi-licence.png)
+
+    [(Source)](https://news.ycombinator.com/item?id=27763031)
 
 1.  ESP32 uses CEVA's Bluetooth IP but not CEVA's WiFi IP, according to [SpritesMods on Twitter](https://twitter.com/SpritesMods/status/1412308410226286598?s=19)
