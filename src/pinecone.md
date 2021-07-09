@@ -4,9 +4,9 @@
 
 📝 _29 Nov 2020_
 
-Pine64 is graciously giving away the __PineCone BL602 RISC-V Evaluation Board__ to folks participating in the [__PineCone Nutcracker Challenge__](https://www.pine64.org/2020/10/28/nutcracker-challenge-blob-free-wifi-ble/).
+[(__UPDATE:__ PineCone is now available for purchase)](https://pine64.com/product/pinecone-bl602-evaluation-board/?v=0446c16e2e66)
 
-[(PineCone is now available for purchase)](https://pine64.com/product/pinecone-bl602-evaluation-board/?v=0446c16e2e66)
+Pine64 is graciously giving away the __PineCone BL602 RISC-V Evaluation Board__ to folks participating in the [__PineCone Nutcracker Challenge__](https://www.pine64.org/2020/10/28/nutcracker-challenge-blob-free-wifi-ble/).
 
 Let's learn about the PineCone Board... And how it helps the [__RISC-V Open Source Ecosystem__](https://en.wikipedia.org/wiki/RISC-V).
 
@@ -38,7 +38,7 @@ It's great that Pine64 is reaching out to the Open Source Community through the 
 
 _How does BL602 compare with ESP32?_
 
-- BL602 is a __General Purpose Microcontroller__ that supports Bluetooth LE and WiFi
+- BL602 is a __General Purpose Microcontroller__ (RISC-V) that supports Bluetooth LE and WiFi
 
 - ESP32 is more of a __Bluetooth LE + WiFi Controller__ that supports Embedded Programs
 
@@ -151,13 +151,9 @@ Then reimplement the wireless functions the open source way. Perhaps by adapting
 
 Let's walk through one possible approach for Reverse Engineering the WiFi Driver. (I'm sure there are many other ways to do this, [like this](https://github.com/pine64/bl602-docs/tree/main/hardware_notes))
 
-__UPDATE:__ Check out this article on the Reverse Enginering of BL602 WiFi...
+__UPDATE:__ Check out this article on the __Reverse Engineering of BL602 WiFi__...
 
 -   [__"Reverse Engineering WiFi on RISC-V BL602"__](https://lupyuen.github.io/articles/wifi)
-
-[__UPDATE:__ Check out this Twitter Thread for my Reverse Enginering of BL602 WiFi](https://twitter.com/MisterTechBlog/status/1407971263088193540)
-
-[__UPDATE:__ There is indeed a blob for the BL602 WiFi / Bluetooth LE Controller that we need help to reverse-engineer and verify. See this](https://github.com/pine64/bl602-docs/tree/main/hardware_notes#rf-ip)
 
 ## How does our WiFi Driver talk to the WiFi Controller?
 
@@ -242,29 +238,13 @@ Could there be some low-level chunk of executable code (non RISC-V) that runs __
 
 By studying the WiFi Buffers and the associated WiFi Functions, we may uncover the Code Blob that runs inside the WiFi Controller.
 
-__UPDATE:__ Check out this article on the Reverse Enginering of BL602 WiFi...
+__UPDATE:__ Check out this article on the __Reverse Engineering of BL602 WiFi__...
 
 -   [__"Reverse Engineering WiFi on RISC-V BL602"__](https://lupyuen.github.io/articles/wifi)
-
-[__UPDATE:__ Check out this Twitter Thread for my Reverse Enginering of BL602 WiFi](https://twitter.com/MisterTechBlog/status/1407971263088193540)
-
-[__UPDATE:__ Check out the C code that has been reverse-engineered from `libbl602_wifi` by `BraveHeartFLOSSDev`](https://github.com/BraveHeartFLOSSDev/bl602nutcracker1)
-
-[__UPDATE:__ There is indeed a blob for the BL602 WiFi / Bluetooth LE Controller that we need help to reverse-engineer and verify. See this](https://github.com/pine64/bl602-docs/tree/main/hardware_notes#rf-ip)
-
-[More about the BL602 WiFi Controller](https://github.com/pine64/bl602-docs/tree/main/hardware_notes)
 
 ![PineCone BL602 Evaluation Board](https://lupyuen.github.io/images/pinecone-day.jpg)
 
 # Hands On with PineCone BL602
-
-_How can we get a PineCone BL602 Evaluation Board?_
-
-Join the [__PineCone Nutcracker Challenge__](https://www.pine64.org/2020/10/28/nutcracker-challenge-blob-free-wifi-ble/)!
-
-Contribute to the community-driven Reverse Engineering of the BL602 Bluetooth LE / WiFi Drivers.
-
-Or contribute docs and code that will help others adopt BL602 quickly. (This includes porting [Mynewt](https://mynewt.apache.org/) / [RIOT](https://www.riot-os.org/) / [Zephyr](https://www.zephyrproject.org/) to BL602)
 
 The BL602 docs are located in the [__BL602 Docs Repo__](https://github.com/pine64/bl602-docs)...
 
@@ -467,8 +447,8 @@ We may use Linux, Windows or macOS to build the BL602 firmware...
 -   Follow the [build instructions for Linux, Windows and macOS](https://github.com/pine64/bl_iot_sdk/blob/master/README.rst) like so...
 
     ```bash
-    #  Change this to the full path of bl_iot_sdk
-    export BL60X_SDK_PATH=/Users/Luppy/pinecone/bl_iot_sdk
+    #  TODO: Change this to the full path of bl_iot_sdk
+    export BL60X_SDK_PATH=~/bl_iot_sdk
     export CONFIG_CHIP_NAME=BL602
     make
     ```
@@ -553,13 +533,7 @@ _How shall we learn about writing RISC-V firmware for BL602?_
 
 Getting involved with the [PineCone Nutcracker Challenge](https://www.pine64.org/2020/10/28/nutcracker-challenge-blob-free-wifi-ble/) is a great way to learn about RISC-V... Especially for Embedded Engineers exploring Arm alternatives.
 
-And you might earn a free PineCone Evaluation Board!
-
-[(PineCone is now available for purchase)](https://pine64.com/product/pinecone-bl602-evaluation-board/?v=0446c16e2e66)
-
 We're in the middle of a pandemic. Why not take the time to learn some RISC-V... And contribute to the RISC-V Open Source Ecosystem!
-
-More about PineCone...
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
@@ -598,9 +572,12 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  BL602 Bluetooth LE and WiFi are working ... But we need help to reverse engineer the blobs! 🙏
 
-    -  [__BLE Docs__](https://pine64.github.io/bl602-docs/Examples/demo_at/AT.html#ble-at-commands)
+    -  [__"Reverse Engineering WiFi on RISC-V BL602"__](https://lupyuen.github.io/articles/wifi)
 
-    -  [__WiFi Docs__](https://pine64.github.io/bl602-docs/Examples/demo_at/AT.html#wi-fi-at-commands)
+    -  [__BLE Docs__](https://pine64.github.io/bl602-docs/Components/BLE/ble_stack/ble_stack.html)
+
+    -  [__WiFi Docs (Chinese)__](https://pine64.github.io/bl602-docs/Components/Network/wifi/wifi.html)
+
 
 1.  Here are the Bluetooth LE and WiFi demo apps and source code...
 
@@ -612,7 +589,13 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     -  [__WiFi Source Code__](https://github.com/pine64/bl_iot_sdk/tree/master/customer_app/bl602_demo_wifi)
 
+    The WiFi Source Code is explained in this article...
+
+    -  [__"Reverse Engineering WiFi on RISC-V BL602"__](https://lupyuen.github.io/articles/wifi)
+
 1.  Can we flash firmware to PineCone via a Web Browser through the [__Web Serial API__](https://dev.to/unjavascripter/the-amazing-powers-of-the-web-web-serial-api-3ilc)? That would be really interesting.
+
+    The Web Serial API works OK for __sending commands to the BL602 Command Line Interface__. [(See this)](https://lupyuen.github.io/articles/lisp#web-browser-controls-bl602-with-web-serial-api)
 
 1.  Took me a while to realise that BL602 IoT SDK is [__built with AliOS__](https://github.com/alibaba/AliOS-Things) (with FreeRTOS underneath)
 
