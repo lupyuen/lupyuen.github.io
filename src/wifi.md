@@ -514,6 +514,8 @@ We shall now study this Decompiled C Code... And do some serious Reverse Enginee
 
 [More about Ghidra](https://ghidra-sre.org/)
 
+[Ghidra configuration for BL602](https://github.com/BraveHeartFLOSSDev/GhidWork)
+
 ## Linking to decompiled code
 
 Sadly GitHub won't show our huge Decompiled C Files in the web browser. So __deep-linking to specific lines of code__ will be a problem.
