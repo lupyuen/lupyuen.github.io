@@ -1360,9 +1360,11 @@ I hope someone will continue the Reverse Engineering work... Maybe create an __O
 
 [(Perhaps we should revive the __Pine64 BL602 Nutcracker Project__)](https://github.com/pine64/bl602-re)
 
-In the next article we shall check out the [__BL706 Audio Video Board__](https://github.com/bouffalolab/bl_mcu_sdk/tree/master/docs/chipSpecification/bl70x_docs).
+In the next article we shall check out the __BL706 Audio Video Board__...
 
-Stay tuned!
+-   [__"RISC-V BL706 Audio Video Board"__](https://lupyuen.github.io/articles/bl706)
+
+Stay tuned for more articles on BL602, BL604 and BL706!
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 

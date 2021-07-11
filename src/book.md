@@ -1,6 +1,6 @@
 # The RISC-V BL602 Book
 
-📝 _8 Jul 2021_
+📝 _11 Jul 2021_
 
 ![PineCone BL602 RISC-V Board with Grove E-Ink Display](https://lupyuen.github.io/images/book-title.jpg)
 
@@ -16,7 +16,7 @@ Is there a book about the __BL602 SoC__ (RISC-V, WiFi and Bluetooth LE) that...
 
 _You're reading the book right now!_
 
-Use this book to navigate the numerous BL602 articles that have been published on this site. __(22 articles and still growing!)__
+Use this book to navigate the numerous BL602 articles that have been published on this site. __(23 articles and still growing!)__
 
 The programs in these articles have been tested on __PineCone__, but they should work on other BL602 Boards: __Pinenut, DT-BL10, MagicHome BL602__.
 
@@ -230,6 +230,12 @@ All about the __BL602 Bootloader__... And how it loads the Application Firmware 
 
 -   ["BL602 Bootloader"](https://lupyuen.github.io/articles/boot)
 
+# BL706 Audio Video Board
+
+What's inside the Bouffalo Lab RISC-V BL706 Audio Video Board... And how it differs from BL602.
+
+-   ["RISC-V BL706 Audio Video Board"](https://lupyuen.github.io/articles/bl706)
+
 ![What's Next](https://lupyuen.github.io/images/book-next.jpg)
 
 # What's Next
@@ -239,8 +245,6 @@ Check this book again for future updates...
 1.  __IoT Education with BL602 and BL602__
 
 1.  __Rust Wrappers for BL602__ [(See this)](https://github.com/lupyuen/bl602-rust-wrapper)
-
-1.  __BL706 Audio Video Board__ [(See this)](https://github.com/bouffalolab/bl_mcu_sdk/tree/master/docs/chipSpecification/bl70x_docs)
 
 ![About the Author](https://lupyuen.github.io/images/book-advocate.jpg)
 
