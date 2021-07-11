@@ -80,30 +80,58 @@
 <p><em>Bouffalo Lab RISC-V BL706 Audio Video Board</em></p>
 <h1 id="bl706-audio-video-board" class="section-header"><a href="#bl706-audio-video-board">1 BL706 Audio Video Board</a></h1>
 <p>TODO: Front</p>
-<p><img src="https://lupyuen.github.io/images/bl706-front.jpg" alt="Front of BL706 Audio Video Board" /></p>
+<p><img src="https://lupyuen.github.io/images/bl706-front1.jpg" alt="Front of BL706 Audio Video Board" /></p>
 <p>TODO: Back</p>
-<p><img src="https://lupyuen.github.io/images/bl706-back.jpg" alt="Back of BL706 Audio Video Board" /></p>
+<p><img src="https://lupyuen.github.io/images/bl706-back1.jpg" alt="Back of BL706 Audio Video Board" /></p>
+<p>TODO: BL706 AVB Pinout</p>
+<p><img src="https://lupyuen.github.io/images/bl706-pinout.jpg" alt="BL706 AVB Pinout" /></p>
+<p><a href="https://github.com/bouffalolab/bl_mcu_sdk">(Source)</a></p>
 <h1 id="install-sdk-and-toolchain" class="section-header"><a href="#install-sdk-and-toolchain">2 Install SDK and Toolchain</a></h1>
-<p>TODO</p>
+<p>TODO: BL MCU SDK</p>
+<ul>
+<li>
+<p><a href="https://github.com/bouffalolab/bl_mcu_sdk"><strong>BL MCU SDK on GitHub</strong></a></p>
+</li>
+<li>
+<p><a href="https://gitee.com/bouffalolab/bl_mcu_sdk"><strong>BL MCU SDK on Gitee</strong></a></p>
+</li>
+</ul>
+<p>(The version on Gitee is probably more recent than GitHub)</p>
+<ul>
+<li><a href="http://bouffalolab.gitee.io/bl_mcu_sdk/get_started/Linux_quick_start_ubuntu.html"><strong>Linux Quick Start (Ubuntu)</strong></a></li>
+</ul>
+<p>TODO: LVGL</p>
+<ul>
+<li><a href="https://github.com/bouffalolab/bl_mcu_sdk/tree/master/examples/lvgl"><strong>LVGL Sample for BL706</strong></a></li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/bl706-lvgl.png" alt="BL706 LVGL Demo" /></p>
-<pre><code class="language-bash">sudo apt install cmake
-
-# Install toolchain:
-# http://bouffalolab.gitee.io/bl_mcu_sdk/get_started/Linux_quick_start_ubuntu.html
-</code></pre>
 <h1 id="build-firmware" class="section-header"><a href="#build-firmware">3 Build Firmware</a></h1>
 <p>TODO</p>
-<pre><code class="language-bash"># http://bouffalolab.gitee.io/bl_mcu_sdk/get_started/cmake_quick_start.html
-
-make APP=lvgl BOARD=bl706_avb SUPPORT_LVGL=y
+<ul>
+<li>
+<p><a href="http://bouffalolab.gitee.io/bl_mcu_sdk/get_started/cmake_quick_start.html"><strong>cmake Quick Start</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/bouffalolab/bl_mcu_sdk/tree/master/examples/lvgl"><strong>Instructions for LVGL Demo Firmware</strong></a></p>
+</li>
+</ul>
+<pre><code class="language-bash">make APP=lvgl BOARD=bl706_avb SUPPORT_LVGL=y
 </code></pre>
 <p><img src="https://lupyuen.github.io/images/bl706-build.png" alt="BL706 Firmware Build" /></p>
 <h1 id="flash-firmware" class="section-header"><a href="#flash-firmware">4 Flash Firmware</a></h1>
 <p>TODO: BOOT and RST Buttons</p>
-<p><img src="https://lupyuen.github.io/images/bl706-boot.jpg" alt="BOOT and RST Buttons" /></p>
+<p>To enter Flashing Mode on #BL706 AVB, use the Two Finger Salute: 1️⃣ Press and Hold BOOT 2️⃣ Press RST 3️⃣ Release RST 4️⃣ Release BOOT</p>
+<p><img src="https://lupyuen.github.io/images/bl706-boot2.jpg" alt="BOOT and RST Buttons" /></p>
 <p>TODO: USB</p>
 <p><img src="https://lupyuen.github.io/images/bl706-usb.png" alt="BL706 USB" /></p>
 <p>TODO: BLDevCube</p>
+<ul>
+<li><a href="https://dev.bouffalolab.com/download"><strong>Download BLDevCube</strong></a></li>
+</ul>
+<p>For more about BLDevCube…</p>
+<ul>
+<li><a href="http://bouffalolab.gitee.io/bl_mcu_sdk/get_started/bl_dev_cube.html"><strong>Instructions for BLDevCube (Chinese)</strong></a></li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/bl706-flash.png" alt="Flashing BL706 with BLDevCube" /></p>
 <p>TODO: JTAG and JLink</p>
 <p><img src="https://lupyuen.github.io/images/bl706-openocd.png" alt="BL706 OpenOCD" /></p>
@@ -111,11 +139,11 @@ make APP=lvgl BOARD=bl706_avb SUPPORT_LVGL=y
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/bl706-jumpers.jpg" alt="BL706 Jumpers" /></p>
 <p>TODO: Front with display attached</p>
-<p><img src="https://lupyuen.github.io/images/bl706-front2.jpg" alt="Front of BL706 Audio Video Board" /></p>
+<p><img src="https://lupyuen.github.io/images/bl706-front2b.jpg" alt="Front of BL706 Audio Video Board" /></p>
 <p>TODO: Back with display attached</p>
-<p><img src="https://lupyuen.github.io/images/bl706-back2.jpg" alt="Back of BL706 Audio Video Board" /></p>
+<p><img src="https://lupyuen.github.io/images/bl706-back2b.jpg" alt="Back of BL706 Audio Video Board" /></p>
 <p>TODO: LVGL Demo</p>
-<p><img src="https://lupyuen.github.io/images/bl706-lvgl2.jpg" alt="BL706 LVGL Demo Firmware" /></p>
+<p><img src="https://lupyuen.github.io/images/bl706-lvgl2a.jpg" alt="BL706 LVGL Demo Firmware" /></p>
 <p><a href="https://youtu.be/q7mjNy6GSHo"><strong>Watch the demo on YouTube</strong></a></p>
 <h1 id="bl706-vs-bl602" class="section-header"><a href="#bl706-vs-bl602">6 BL706 vs BL602</a></h1>
 <p>TODO</p>
@@ -150,6 +178,7 @@ make APP=lvgl BOARD=bl706_avb SUPPORT_LVGL=y
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1407845438787489794">this Twitter Thread</a></li>
 </ol>
+<p><img src="https://lupyuen.github.io/images/bl706-front2a.jpg" alt="Front of BL706 Audio Video Board" /></p>
 
     
 </body>
