@@ -65,19 +65,25 @@
 
     <h1 class="title">RISC-V BL706 Audio Video Board</h1>
     <nav id="TOC"><ul>
-<li><a href="#install-sdk-and-toolchain">1 Install SDK and Toolchain</a><ul></ul></li>
-<li><a href="#build-firmware">2 Build Firmware</a><ul></ul></li>
-<li><a href="#flash-firmware">3 Flash Firmware</a><ul></ul></li>
-<li><a href="#run-lvgl-firmware">4 Run LVGL Firmware</a><ul></ul></li>
-<li><a href="#bl706-vs-bl602">5 BL706 vs BL602</a><ul></ul></li>
-<li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
-<li><a href="#notes">7 Notes</a><ul></ul></li></ul></nav><p>📝 <em>18 Jul 2021</em></p>
+<li><a href="#bl706-audio-video-board">1 BL706 Audio Video Board</a><ul></ul></li>
+<li><a href="#install-sdk-and-toolchain">2 Install SDK and Toolchain</a><ul></ul></li>
+<li><a href="#build-firmware">3 Build Firmware</a><ul></ul></li>
+<li><a href="#flash-firmware">4 Flash Firmware</a><ul></ul></li>
+<li><a href="#run-lvgl-firmware">5 Run LVGL Firmware</a><ul></ul></li>
+<li><a href="#bl706-vs-bl602">6 BL706 vs BL602</a><ul></ul></li>
+<li><a href="#whats-next">7 What’s Next</a><ul></ul></li>
+<li><a href="#notes">8 Notes</a><ul></ul></li></ul></nav><p>📝 <em>18 Jul 2021</em></p>
 <p><em>What’s inside the Bouffalo Lab RISC-V BL706 Audio Video Board… And how it differs from BL602</em></p>
 <p>TODO</p>
 <p>Many thanks to Bouffalo Lab for providing the BL706 Audio Video Board! (BTW I’m not paid to write this article)</p>
 <p><img src="https://lupyuen.github.io/images/bl706-title.jpg" alt="Bouffalo Lab RISC-V BL706 Audio Video Board" /></p>
 <p><em>Bouffalo Lab RISC-V BL706 Audio Video Board</em></p>
-<h1 id="install-sdk-and-toolchain" class="section-header"><a href="#install-sdk-and-toolchain">1 Install SDK and Toolchain</a></h1>
+<h1 id="bl706-audio-video-board" class="section-header"><a href="#bl706-audio-video-board">1 BL706 Audio Video Board</a></h1>
+<p>TODO: Front</p>
+<p><img src="https://lupyuen.github.io/images/bl706-front.jpg" alt="Front of BL706 Audio Video Board" /></p>
+<p>TODO: Back</p>
+<p><img src="https://lupyuen.github.io/images/bl706-back.jpg" alt="Back of BL706 Audio Video Board" /></p>
+<h1 id="install-sdk-and-toolchain" class="section-header"><a href="#install-sdk-and-toolchain">2 Install SDK and Toolchain</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/bl706-lvgl.png" alt="BL706 LVGL Demo" /></p>
 <pre><code class="language-bash">sudo apt install cmake
@@ -85,22 +91,33 @@
 # Install toolchain:
 # http://bouffalolab.gitee.io/bl_mcu_sdk/get_started/Linux_quick_start_ubuntu.html
 </code></pre>
-<h1 id="build-firmware" class="section-header"><a href="#build-firmware">2 Build Firmware</a></h1>
+<h1 id="build-firmware" class="section-header"><a href="#build-firmware">3 Build Firmware</a></h1>
 <p>TODO</p>
 <pre><code class="language-bash"># http://bouffalolab.gitee.io/bl_mcu_sdk/get_started/cmake_quick_start.html
 
 make APP=lvgl BOARD=bl706_avb SUPPORT_LVGL=y
 </code></pre>
 <p><img src="https://lupyuen.github.io/images/bl706-build.png" alt="BL706 Firmware Build" /></p>
-<h1 id="flash-firmware" class="section-header"><a href="#flash-firmware">3 Flash Firmware</a></h1>
-<p>TODO</p>
+<h1 id="flash-firmware" class="section-header"><a href="#flash-firmware">4 Flash Firmware</a></h1>
+<p>TODO: BOOT and RST Buttons</p>
+<p><img src="https://lupyuen.github.io/images/bl706-boot.jpg" alt="BOOT and RST Buttons" /></p>
+<p>TODO: USB</p>
 <p><img src="https://lupyuen.github.io/images/bl706-usb.png" alt="BL706 USB" /></p>
+<p>TODO: BLDevCube</p>
+<p><img src="https://lupyuen.github.io/images/bl706-flash.png" alt="Flashing BL706 with BLDevCube" /></p>
 <p>TODO: JTAG and JLink</p>
 <p><img src="https://lupyuen.github.io/images/bl706-openocd.png" alt="BL706 OpenOCD" /></p>
-<h1 id="run-lvgl-firmware" class="section-header"><a href="#run-lvgl-firmware">4 Run LVGL Firmware</a></h1>
+<h1 id="run-lvgl-firmware" class="section-header"><a href="#run-lvgl-firmware">5 Run LVGL Firmware</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/bl706-jumpers.jpg" alt="BL706 Jumpers" /></p>
-<h1 id="bl706-vs-bl602" class="section-header"><a href="#bl706-vs-bl602">5 BL706 vs BL602</a></h1>
+<p>TODO: Front with display attached</p>
+<p><img src="https://lupyuen.github.io/images/bl706-front2.jpg" alt="Front of BL706 Audio Video Board" /></p>
+<p>TODO: Back with display attached</p>
+<p><img src="https://lupyuen.github.io/images/bl706-back2.jpg" alt="Back of BL706 Audio Video Board" /></p>
+<p>TODO: LVGL Demo</p>
+<p><img src="https://lupyuen.github.io/images/bl706-lvgl2.jpg" alt="BL706 LVGL Demo Firmware" /></p>
+<p><a href="https://youtu.be/q7mjNy6GSHo"><strong>Watch the demo on YouTube</strong></a></p>
+<h1 id="bl706-vs-bl602" class="section-header"><a href="#bl706-vs-bl602">6 BL706 vs BL602</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/bl706-mcusdk.jpg" alt="BL706 MCU SDK vs BL602 IoT SDK" /></p>
 <p>TODO: macOS</p>
@@ -111,7 +128,7 @@ make APP=lvgl BOARD=bl706_avb SUPPORT_LVGL=y
 <p><img src="https://lupyuen.github.io/images/bl706-gcc.png" alt="GCC Toolchain not bundled" /></p>
 <p>TODO: TensorFlow Lite</p>
 <p><img src="https://lupyuen.github.io/images/bl706-tflite.png" alt="BL706 TensorFlow Lite" /></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">6 What’s Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">7 What’s Next</a></h1>
 <p>TODO</p>
 <ul>
 <li>
@@ -129,7 +146,7 @@ make APP=lvgl BOARD=bl706_avb SUPPORT_LVGL=y
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/bl706.md"><code>lupyuen.github.io/src/bl706.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">7 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">8 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1407845438787489794">this Twitter Thread</a></li>
 </ol>
