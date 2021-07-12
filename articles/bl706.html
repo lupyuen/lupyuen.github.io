@@ -232,23 +232,27 @@
 <p><a href="https://htmlpreview.github.io/?https://github.com/bouffalolab/bl_mcu_sdk/blob/master/docs/development_guide/build/html/get_started/Windows_quick_start_eclipse.html">(Alternative Link)</a></p>
 </li>
 </ul>
-<h1 id="build-firmware" class="section-header"><a href="#build-firmware">3 Build Firmware</a></h1>
-<p>TODO: LVGL</p>
-<ul>
-<li><a href="https://github.com/bouffalolab/bl_mcu_sdk/tree/master/examples/lvgl"><strong>LVGL Sample for BL706</strong></a></li>
-</ul>
 <p><img src="https://lupyuen.github.io/images/bl706-lvgl.png" alt="BL706 LVGL Demo" /></p>
+<h1 id="build-firmware" class="section-header"><a href="#build-firmware">3 Build Firmware</a></h1>
+<p>Let’s <strong>build some firmware</strong> for BL706!</p>
+<p>The pic above shows the <strong>LVGL Graphics Demo Firmware</strong> that we’ll be building…</p>
+<ul>
+<li><a href="https://github.com/bouffalolab/bl_mcu_sdk/tree/master/examples/lvgl"><strong>LVGL Demo Firmware for BL706</strong></a></li>
+</ul>
+<p>TODO</p>
 <ul>
 <li><a href="https://github.com/bouffalolab/bl_mcu_sdk/tree/master/examples/lvgl"><strong>Instructions for LVGL Demo Firmware</strong></a></li>
 </ul>
+<p>TODO</p>
 <pre><code class="language-bash"># In WSL bash: Go to the Windows directory for MCU SDK
 cd /mnt/c/bl_mcu_sdk
 
 # Build the LVGL Firmware
 make APP=lvgl \
-  BOARD=bl706_avb \
-  SUPPORT_LVGL=y
+     BOARD=bl706_avb \
+     SUPPORT_LVGL=y
 </code></pre>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/bl706-build.png" alt="BL706 Firmware Build" /></p>
 <h1 id="flash-firmware" class="section-header"><a href="#flash-firmware">4 Flash Firmware</a></h1>
 <p>TODO: BOOT and RST Buttons</p>
