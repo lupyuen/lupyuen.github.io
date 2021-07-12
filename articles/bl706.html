@@ -75,17 +75,41 @@
 <li><a href="#notes">8 Notes</a><ul></ul></li></ul></nav><p>📝 <em>18 Jul 2021</em></p>
 <p><em>What’s inside the Bouffalo Lab RISC-V BL706 Audio Video Board… And how it differs from BL602</em></p>
 <p>TODO</p>
-<p>Many thanks to Bouffalo Lab for providing the BL706 Audio Video Board! (BTW I’m not paid to write this article)</p>
-<p><img src="https://lupyuen.github.io/images/bl706-title.jpg" alt="Bouffalo Lab RISC-V BL706 Audio Video Board" /></p>
-<p><em>Bouffalo Lab RISC-V BL706 Audio Video Board</em></p>
+<p>Many thanks to <strong>Bouffalo Lab</strong> for providing the BL706 Audio Video Board! (BTW I’m not paid to write this article)</p>
+<p><img src="https://lupyuen.github.io/images/bl706-title.jpg" alt="Dev Kit for Bouffalo Lab BL706 Audio Video Board" /></p>
+<p><em>Dev Kit for Bouffalo Lab BL706 Audio Video Board</em></p>
+<p><em>Top to bottom: ILI9341 SPI Display, BL706 AVB, Camera, JTAG Adapter</em></p>
 <h1 id="bl706-audio-video-board" class="section-header"><a href="#bl706-audio-video-board">1 BL706 Audio Video Board</a></h1>
-<p>TODO: Front</p>
-<p><img src="https://lupyuen.github.io/images/bl706-front1.jpg" alt="Front of BL706 Audio Video Board" /></p>
-<p>TODO: Back</p>
-<p><img src="https://lupyuen.github.io/images/bl706-back1.jpg" alt="Back of BL706 Audio Video Board" /></p>
-<p>TODO: BL706 AVB Pinout</p>
-<p><img src="https://lupyuen.github.io/images/bl706-pinout.jpg" alt="BL706 AVB Pinout" /></p>
-<p><a href="https://github.com/bouffalolab/bl_mcu_sdk">(Source)</a></p>
+<p><em>What is BL706?</em></p>
+<p>BL706 is the new <strong>RISC-V + 2.4 GHz RF SoC by Bouffalo Lab</strong>…</p>
+<ol>
+<li>
+<p><strong>32-bit RISC-V CPU with FPU</strong> (Hardware Floating-Point)</p>
+<p>(CPU Frequency configurable from <strong>1 MHz to 144 MHz</strong>)</p>
+</li>
+<li>
+<p><strong>132 KB RAM, 192 KB ROM</strong></p>
+<p>(Plus <strong>XIP QSPI Flash / pSRAM</strong> with hardware encryption support)</p>
+</li>
+<li>
+<p><strong>2.4 GHz Radio Frequency Transceiver</strong></p>
+<p>(Supports <strong>Bluetooth LE 5.0 and Zigbee 3.0</strong>)</p>
+</li>
+<li>
+<p><strong>Peripherals</strong></p>
+<ul>
+<li>Camera Interface</li>
+<li>Ethernet RMII Interface</li>
+<li>Infrared Remote Control Interface, Passive Infrared Detection</li>
+<li>USB 2.0 Full-Speed Device Interface</li>
+<li>SPI x 1, UART x 2, I2C x 1, I2S x 1</li>
+<li>PWM x 5, ADC 12-bit, DAC 10-bit</li>
+<li>GPIO x 31</li>
+</ul>
+</li>
+</ol>
+<p>(Note that BL706 does NOT support WiFi)</p>
+<p><img src="https://lupyuen.github.io/images/bl706-datasheet.jpg" alt="BL706 Datasheet" /></p>
 <p>The BL706 docs are located here…</p>
 <ul>
 <li>
@@ -98,8 +122,15 @@
 <p><a href="https://github.com/bouffalolab/bl_mcu_sdk/blob/master/docs"><strong>Other Docs</strong></a></p>
 </li>
 </ul>
-<p>TODO: Datasheet</p>
-<p><img src="https://lupyuen.github.io/images/bl706-datasheet.jpg" alt="BL706 Datasheet" /></p>
+<p>(BL702 and BL704 have fewer features than BL706)</p>
+<p><em>What is the BL706 Audio Video Board?</em></p>
+<p>TODO: Front</p>
+<p><img src="https://lupyuen.github.io/images/bl706-front1.jpg" alt="Front of BL706 Audio Video Board" /></p>
+<p>TODO: Back</p>
+<p><img src="https://lupyuen.github.io/images/bl706-back1.jpg" alt="Back of BL706 Audio Video Board" /></p>
+<p>TODO: BL706 AVB Pinout</p>
+<p><img src="https://lupyuen.github.io/images/bl706-pinout.jpg" alt="BL706 AVB Pinout" /></p>
+<p><a href="https://github.com/bouffalolab/bl_mcu_sdk">(Source)</a></p>
 <h1 id="install-sdk-and-toolchain" class="section-header"><a href="#install-sdk-and-toolchain">2 Install SDK and Toolchain</a></h1>
 <p>TODO: BL MCU SDK</p>
 <ul>
@@ -114,15 +145,15 @@
 <p>TODO: Quick Start</p>
 <ul>
 <li>
-<p><a href="http://bouffalolab.gitee.io/bl_mcu_sdk/get_started/Linux_quick_start_ubuntu.html"><strong>Linux Quick Start (Ubuntu)</strong></a></p>
+<p><a href="https://bouffalolab.gitee.io/bl_mcu_sdk/get_started/Linux_quick_start_ubuntu.html"><strong>Linux Quick Start for Ubuntu (Chinese))</strong></a></p>
 <p><a href="https://htmlpreview.github.io/?https://github.com/bouffalolab/bl_mcu_sdk/blob/master/docs/development_guide/build/html/get_started/Linux_quick_start_ubuntu.html">(Alternative Link)</a></p>
 </li>
 <li>
-<p><a href="http://bouffalolab.gitee.io/bl_mcu_sdk/get_started/Windows_quick_start_cdk.html"><strong>Windows Quick Start (CDK)</strong></a></p>
+<p><a href="https://bouffalolab.gitee.io/bl_mcu_sdk/get_started/Windows_quick_start_cdk.html"><strong>Windows Quick Start for CDK (Chinese)</strong></a></p>
 <p><a href="https://htmlpreview.github.io/?https://github.com/bouffalolab/bl_mcu_sdk/blob/master/docs/development_guide/build/html/get_started/Windows_quick_start_cdk.html">(Alternative Link)</a></p>
 </li>
 <li>
-<p><a href="http://bouffalolab.gitee.io/bl_mcu_sdk/get_started/Windows_quick_start_eclipse.html"><strong>Windows Quick Start (Eclipse)</strong></a></p>
+<p><a href="https://bouffalolab.gitee.io/bl_mcu_sdk/get_started/Windows_quick_start_eclipse.html"><strong>Windows Quick Start for Eclipse (Chinese)</strong></a></p>
 <p><a href="https://htmlpreview.github.io/?https://github.com/bouffalolab/bl_mcu_sdk/blob/master/docs/development_guide/build/html/get_started/Windows_quick_start_eclipse.html">(Alternative Link)</a></p>
 </li>
 </ul>
@@ -136,7 +167,9 @@
 <ul>
 <li><a href="https://github.com/bouffalolab/bl_mcu_sdk/tree/master/examples/lvgl"><strong>Instructions for LVGL Demo Firmware</strong></a></li>
 </ul>
-<pre><code class="language-bash">make APP=lvgl BOARD=bl706_avb SUPPORT_LVGL=y
+<pre><code class="language-bash">make APP=lvgl \
+  BOARD=bl706_avb \
+  SUPPORT_LVGL=y
 </code></pre>
 <p><img src="https://lupyuen.github.io/images/bl706-build.png" alt="BL706 Firmware Build" /></p>
 <h1 id="flash-firmware" class="section-header"><a href="#flash-firmware">4 Flash Firmware</a></h1>
@@ -152,7 +185,7 @@
 <p>More about BL Dev Cube…</p>
 <ul>
 <li>
-<p><a href="http://bouffalolab.gitee.io/bl_mcu_sdk/get_started/bl_dev_cube.html"><strong>Instructions for BL Dev Cube (Chinese)</strong></a></p>
+<p><a href="https://bouffalolab.gitee.io/bl_mcu_sdk/get_started/bl_dev_cube.html"><strong>Instructions for BL Dev Cube (Chinese)</strong></a></p>
 <p><a href="https://htmlpreview.github.io/?https://github.com/bouffalolab/bl_mcu_sdk/blob/master/docs/development_guide/build/html/get_started/bl_dev_cube.html">(Alternative Link)</a></p>
 </li>
 </ul>
