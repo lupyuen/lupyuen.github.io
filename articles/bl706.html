@@ -206,17 +206,17 @@
 <li>
 <p><a href="https://bouffalolab.gitee.io/bl_mcu_sdk/get_started/Linux_quick_start_ubuntu.html#risc-v"><strong>Section 2.3.2: Install RISC-V Toolchain</strong></a></p>
 <p>“<code>wget</code>” the toolchain from <code>dev.bouffalolab.com</code></p>
-<p>Do this in the <strong>WSL <code>bash</code></strong> command prompt.</p>
+<p>Do this at the <strong>WSL <code>bash</code></strong> command prompt.</p>
 </li>
 <li>
 <p><a href="https://bouffalolab.gitee.io/bl_mcu_sdk/get_started/Linux_quick_start_ubuntu.html#cmake-make"><strong>Section 2.3.3: Install <code>cmake</code> and <code>make</code></strong></a></p>
 <p>I used “<code>sudo apt install cmake</code>” and it worked OK.</p>
-<p>Also do this in the <strong>WSL <code>bash</code></strong> command prompt.</p>
+<p>Also do this at the <strong>WSL <code>bash</code></strong> command prompt.</p>
 </li>
 <li>
 <p><a href="https://bouffalolab.gitee.io/bl_mcu_sdk/get_started/Linux_quick_start_ubuntu.html#bl-mcu-sdk"><strong>Section 2.3.5: Download <code>bl_mcu_sdk</code></strong></a></p>
 <p>“<code>git clone --recursive</code>” the BL MCU SDK link above.</p>
-<p><strong>Note:</strong> Do this in the <strong>Windows <code>cmd</code></strong> command prompt, because we will be flashing the generated firmware under Windows.</p>
+<p><strong>Note:</strong> Do this at the <strong>Windows <code>cmd</code></strong> command prompt, because we will be flashing the generated firmware under Windows.</p>
 </li>
 </ol>
 <p>The instructions will also work on <strong>Ubuntu x64</strong>.  (But not Ubuntu Arm64)</p>
@@ -235,15 +235,11 @@
 <p><img src="https://lupyuen.github.io/images/bl706-lvgl.png" alt="BL706 LVGL Demo" /></p>
 <h1 id="build-firmware" class="section-header"><a href="#build-firmware">3 Build Firmware</a></h1>
 <p>Let’s <strong>build some firmware</strong> for BL706!</p>
-<p>The pic above shows the <strong>LVGL Graphics Demo Firmware</strong> that we’ll be building…</p>
+<p>The pic above shows the <strong>LVGL Graphics Demo Firmware</strong> that we’ll be building. The source code is at…</p>
 <ul>
 <li><a href="https://github.com/bouffalolab/bl_mcu_sdk/tree/master/examples/lvgl"><strong>LVGL Demo Firmware for BL706</strong></a></li>
 </ul>
-<p>TODO</p>
-<ul>
-<li><a href="https://github.com/bouffalolab/bl_mcu_sdk/tree/master/examples/lvgl"><strong>Instructions for LVGL Demo Firmware</strong></a></li>
-</ul>
-<p>TODO</p>
+<p>According to the <a href="https://github.com/bouffalolab/bl_mcu_sdk/tree/master/examples/lvgl">instructions for the LVGL Demo Firmware</a>, we build the firmware like so…</p>
 <pre><code class="language-bash"># In WSL bash: Go to the Windows directory for MCU SDK
 cd /mnt/c/bl_mcu_sdk
 
@@ -252,8 +248,16 @@ make APP=lvgl \
      BOARD=bl706_avb \
      SUPPORT_LVGL=y
 </code></pre>
-<p>TODO</p>
+<p>(Note that we’ve downloaded the MCU SDK to <code>C:\bl_mcu_sdk</code> in Windows <code>cmd</code>, so the WSL path becomes <code>/mnt/c/bl_mcu_sdk</code>)</p>
+<p>The firmware build begins…</p>
 <p><img src="https://lupyuen.github.io/images/bl706-build.png" alt="BL706 Firmware Build" /></p>
+<p>And succeeds with…</p>
+<pre><code class="language-text">[100%] Linking C executable ../../../out/examples/lvgl/lvgl_main.elf
+Generate /mnt/c/bl_mcu_sdk/out/examples/lvgl/lvgl_main.bin
+</code></pre>
+<p>The build is done! This is the <strong>BL706 Firmware File</strong> that we shall flash to BL706 AVB…</p>
+<pre><code class="language-text">C:\bl_mcu_sdk\out\examples\lvgl\lvgl_main.bin
+</code></pre>
 <h1 id="flash-firmware" class="section-header"><a href="#flash-firmware">4 Flash Firmware</a></h1>
 <p>TODO: BOOT and RST Buttons</p>
 <p>To enter Flashing Mode on #BL706 AVB, use the Two Finger Salute: 1️⃣ Press and Hold BOOT 2️⃣ Press RST 3️⃣ Release RST 4️⃣ Release BOOT</p>
