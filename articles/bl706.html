@@ -130,28 +130,53 @@
 </ul>
 <p>BL702 and BL704 have fewer features than BL706.</p>
 <p>(How does BL706 compare with BL602? We’ll discuss in a while)</p>
-<p><em>What is the BL706 Audio Video Board?</em></p>
+<p><em>What is BL706 Audio Video Board?</em></p>
 <p>Bouffalo Lab has created <strong>2 Development Boards for BL706</strong>…</p>
 <ol>
 <li>
 <p><strong>BL706 IoT Development Board</strong></p>
-<p>TODO</p>
+<p>This is the Smaller Board, with <strong>GPIO Pins and USB Port</strong> exposed.</p>
+<p>The BL706 IoT Dev Board is useful for running <strong>Bluetooth LE and Zigbee Firmware</strong>.</p>
 <p><a href="https://github.com/bouffalolab/bl_mcu_sdk#hardware-resources">(See this)</a></p>
 </li>
 <li>
 <p><strong>BL706 Audio Video Board (AVB)</strong></p>
-<p>TODO</p>
+<p>This is the Bigger Board, with connectors for <strong>SPI Display, Camera and Audio Codec</strong>. Plus GPIO Pins and USB Port.</p>
+<p>The BL706 AVB is great for <strong>Mulimedia Firmware</strong>. And it works with Bluetooth LE and Zigbee too.</p>
 <p>(We’re using this today)</p>
 </li>
 </ol>
 <p><a href="http://www.bjxy.cn/info/1039/9445.htm">(Trivia: Both BL706 boards were used in a hackathon at Nanjing University of Information Science &amp; Technology)</a></p>
-<p>Here’s the pinout for BL706 AVB…</p>
+<p>Here’s the <strong>Pinout for BL706 AVB</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/bl706-pinout.jpg" alt="BL706 AVB Pinout" /></p>
 <p><a href="https://github.com/bouffalolab/bl_mcu_sdk">(Source)</a></p>
-<p>TODO: Front</p>
+<p>Here’s the <strong>Front View of BL706 AVB</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/bl706-front1.jpg" alt="Front of BL706 Audio Video Board" /></p>
-<p>TODO: Back</p>
+<p>(ILI9341 SPI Display is connected at left. Note that the <code>PEN</code> Pin must be disconnected)</p>
+<p>And here’s the <strong>Back View of BL706 AVB</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/bl706-back1.jpg" alt="Back of BL706 Audio Video Board" /></p>
+<p>(The Camera Connector is at top left)</p>
+<p><em>What kinds of Multimedia Firmware can we create with BL706 AVB?</em></p>
+<p>Plenty! Today we shall run the <strong>LVGL Graphics Demo Firmware</strong> and draw some cool graphics on the <strong>ILI9341 Display</strong>.</p>
+<p>With the onboard <strong>USB 2.0 Device Interface</strong> we can create lots of fun firmware…</p>
+<ol>
+<li>
+<p><a href="https://en.wikipedia.org/wiki/USB_communications_device_class"><strong>CDC</strong></a>: USB Serial Port (Command-Line Interface)</p>
+</li>
+<li>
+<p><a href="https://en.wikipedia.org/wiki/USB_mass_storage_device_class"><strong>MSC</strong></a>: USB Storage (BL706 becomes a USB Drive)</p>
+</li>
+<li>
+<p><a href="https://en.wikipedia.org/wiki/USB_human_interface_device_class"><strong>HID</strong></a>: USB Mouse and Keyboard</p>
+</li>
+<li>
+<p><strong>Video</strong>: USB Cam</p>
+</li>
+<li>
+<p><strong>Audio</strong>: USB Microphone</p>
+</li>
+</ol>
+<p><a href="https://github.com/bouffalolab/bl_mcu_sdk/tree/master/examples/usb">Check out the USB Demo Firmware</a></p>
 <h1 id="install-sdk-and-toolchain" class="section-header"><a href="#install-sdk-and-toolchain">2 Install SDK and Toolchain</a></h1>
 <p>TODO: BL MCU SDK</p>
 <ul>
@@ -239,13 +264,6 @@
 <p><img src="https://lupyuen.github.io/images/bl706-tflite.png" alt="BL706 TensorFlow Lite" /></p>
 <p>TODO: Porting from STM32CUBEMX</p>
 <p><a href="https://bouffalolab.gitee.io/bl_mcu_sdk/api_reference/board.html">Porting from STM32CUBEMX</a></p>
-<p>TODO: USB Device 应用</p>
-<p>CDC - 虚拟串口</p>
-<p>MSC - U 盘</p>
-<p>HID - 键盘&amp;鼠标</p>
-<p>VIDEO - 摄像头</p>
-<p>AUDIO - 麦克风</p>
-<p><a href="https://bouffalolab.gitee.io/bl_mcu_sdk/samples/advance%20samples/usb/index.html">USB Demo Firmware</a></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">7 What’s Next</a></h1>
 <p>TODO</p>
 <ul>
