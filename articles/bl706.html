@@ -66,7 +66,8 @@
     <h1 class="title">RISC-V BL706 Audio Video Board</h1>
     <nav id="TOC"><ul>
 <li><a href="#bl706-audio-video-board">1 BL706 Audio Video Board</a><ul></ul></li>
-<li><a href="#install-sdk-and-toolchain">2 Install SDK and Toolchain</a><ul></ul></li>
+<li><a href="#install-sdk-and-toolchain">2 Install SDK and Toolchain</a><ul>
+<li><a href="#windows-cdk-and-eclipse">2.1 Windows CDK and Eclipse</a><ul></ul></li></ul></li>
 <li><a href="#build-firmware">3 Build Firmware</a><ul></ul></li>
 <li><a href="#flash-firmware">4 Flash Firmware</a><ul></ul></li>
 <li><a href="#run-lvgl-firmware">5 Run LVGL Firmware</a><ul></ul></li>
@@ -182,7 +183,7 @@
 </ul>
 <p><a href="https://github.com/bouffalolab/bl_mcu_sdk/tree/master/examples/usb">Check out the USB Demo Firmware</a></p>
 <h1 id="install-sdk-and-toolchain" class="section-header"><a href="#install-sdk-and-toolchain">2 Install SDK and Toolchain</a></h1>
-<p>TODO: BL MCU SDK</p>
+<p>To build firmware for BL706, we need the <strong>Bouffalo Lab MCU SDK</strong>…</p>
 <ul>
 <li>
 <p><a href="https://github.com/bouffalolab/bl_mcu_sdk"><strong>BL MCU SDK on GitHub</strong></a></p>
@@ -192,12 +193,36 @@
 </li>
 </ul>
 <p>(The version on Gitee is probably more recent than GitHub)</p>
-<p>TODO: Quick Start</p>
+<p>Today we shall build BL706 Firmware on <strong>Windows Subsystem for Linux (WSL) + Ubuntu</strong>.</p>
+<p>The instructions are in Chinese (apologies)…</p>
 <ul>
 <li>
-<p><a href="https://bouffalolab.gitee.io/bl_mcu_sdk/get_started/Linux_quick_start_ubuntu.html"><strong>Linux Quick Start for Ubuntu (Chinese))</strong></a></p>
+<p><a href="https://bouffalolab.gitee.io/bl_mcu_sdk/get_started/Linux_quick_start_ubuntu.html"><strong>Linux Quick Start for Ubuntu (Chinese)</strong></a></p>
 <p><a href="https://htmlpreview.github.io/?https://github.com/bouffalolab/bl_mcu_sdk/blob/master/docs/development_guide/build/html/get_started/Linux_quick_start_ubuntu.html">(Alternative Link)</a></p>
 </li>
+</ul>
+<p>To install the SDK and RISC-V Toolchain on WSL (Ubuntu), we follow these steps in the above doc…</p>
+<ol>
+<li>
+<p><a href="https://bouffalolab.gitee.io/bl_mcu_sdk/get_started/Linux_quick_start_ubuntu.html#risc-v"><strong>Section 2.3.2: Install RISC-V Toolchain</strong></a></p>
+<p>“<code>wget</code>” the toolchain from <code>dev.bouffalolab.com</code></p>
+<p>Do this in the <strong>WSL <code>bash</code></strong> command prompt.</p>
+</li>
+<li>
+<p><a href="https://bouffalolab.gitee.io/bl_mcu_sdk/get_started/Linux_quick_start_ubuntu.html#cmake-make"><strong>Section 2.3.3: Install <code>cmake</code> and <code>make</code></strong></a></p>
+<p>I used “<code>sudo apt install cmake</code>” and it worked OK.</p>
+<p>Also do this in the <strong>WSL <code>bash</code></strong> command prompt.</p>
+</li>
+<li>
+<p><a href="https://bouffalolab.gitee.io/bl_mcu_sdk/get_started/Linux_quick_start_ubuntu.html#bl-mcu-sdk"><strong>Section 2.3.5: Download <code>bl_mcu_sdk</code></strong></a></p>
+<p>“<code>git clone --recursive</code>” the BL MCU SDK link above.</p>
+<p><strong>Note:</strong> Do this in the <strong>Windows <code>cmd</code></strong> command prompt, because we will be flashing the generated firmware under Windows.</p>
+</li>
+</ol>
+<p>The instructions will also work on <strong>Ubuntu x64</strong>.  (But not Ubuntu Arm64)</p>
+<h2 id="windows-cdk-and-eclipse" class="section-header"><a href="#windows-cdk-and-eclipse">2.1 Windows CDK and Eclipse</a></h2>
+<p>If we prefer plain old Windows (instead of WSL), follow these instructions to install <strong>Windows CDK</strong> or <strong>Windows Eclipse</strong> (apologies again)…</p>
+<ul>
 <li>
 <p><a href="https://bouffalolab.gitee.io/bl_mcu_sdk/get_started/Windows_quick_start_cdk.html"><strong>Windows Quick Start for CDK (Chinese)</strong></a></p>
 <p><a href="https://htmlpreview.github.io/?https://github.com/bouffalolab/bl_mcu_sdk/blob/master/docs/development_guide/build/html/get_started/Windows_quick_start_cdk.html">(Alternative Link)</a></p>
@@ -207,13 +232,12 @@
 <p><a href="https://htmlpreview.github.io/?https://github.com/bouffalolab/bl_mcu_sdk/blob/master/docs/development_guide/build/html/get_started/Windows_quick_start_eclipse.html">(Alternative Link)</a></p>
 </li>
 </ul>
+<h1 id="build-firmware" class="section-header"><a href="#build-firmware">3 Build Firmware</a></h1>
 <p>TODO: LVGL</p>
 <ul>
 <li><a href="https://github.com/bouffalolab/bl_mcu_sdk/tree/master/examples/lvgl"><strong>LVGL Sample for BL706</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/bl706-lvgl.png" alt="BL706 LVGL Demo" /></p>
-<h1 id="build-firmware" class="section-header"><a href="#build-firmware">3 Build Firmware</a></h1>
-<p>TODO</p>
 <ul>
 <li><a href="https://github.com/bouffalolab/bl_mcu_sdk/tree/master/examples/lvgl"><strong>Instructions for LVGL Demo Firmware</strong></a></li>
 </ul>
