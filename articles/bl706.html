@@ -230,12 +230,15 @@
 <li>
 <p><a href="https://bouffalolab.gitee.io/bl_mcu_sdk/get_started/Windows_quick_start_cdk.html"><strong>Windows Quick Start for CDK (Chinese)</strong></a></p>
 <p><a href="https://htmlpreview.github.io/?https://github.com/bouffalolab/bl_mcu_sdk/blob/master/docs/development_guide/build/html/get_started/Windows_quick_start_cdk.html">(Alternative Link)</a></p>
+<p>Jianchi CDK is the IoT IDE by T-Head.</p>
 </li>
 <li>
 <p><a href="https://bouffalolab.gitee.io/bl_mcu_sdk/get_started/Windows_quick_start_eclipse.html"><strong>Windows Quick Start for Eclipse (Chinese)</strong></a></p>
 <p><a href="https://htmlpreview.github.io/?https://github.com/bouffalolab/bl_mcu_sdk/blob/master/docs/development_guide/build/html/get_started/Windows_quick_start_eclipse.html">(Alternative Link)</a></p>
 </li>
 </ul>
+<p><em>What about macOS?</em></p>
+<p>Sadly BL MCU SDK doesn’t support macOS.</p>
 <p><img src="https://lupyuen.github.io/images/bl706-lvgl.png" alt="BL706 LVGL Demo" /></p>
 <h1 id="build-firmware" class="section-header"><a href="#build-firmware">3 Build Firmware</a></h1>
 <p>Let’s <strong>build some firmware</strong> for BL706!</p>
@@ -298,7 +301,10 @@ Generate /mnt/c/bl_mcu_sdk/out/examples/lvgl/lvgl_main.bin
 <h2 id="run-bl-dev-cube" class="section-header"><a href="#run-bl-dev-cube">4.2 Run BL Dev Cube</a></h2>
 <p>To flash our firmware on Windows, we download the Windows version of <strong>Bouffalo Lab Dev Cube</strong> software…</p>
 <ul>
-<li><a href="https://dev.bouffalolab.com/download"><strong>Download BL Dev Cube</strong></a></li>
+<li>
+<p><a href="https://dev.bouffalolab.com/download"><strong>Download BL Dev Cube</strong></a></p>
+<p>(BL Dev Cube is available for Windows, macOS and Ubuntu x64)</p>
+</li>
 </ul>
 <p>Start <strong>BL Dev Cube</strong>, select <strong><code>BL706</code></strong> and click <strong><code>View → MCU</code></strong>.</p>
 <p>(If we see the <strong>Windows Defender</strong> warning, click <strong><code>More Info → Run Anyway</code></strong>)</p>
@@ -332,7 +338,9 @@ Generate /mnt/c/bl_mcu_sdk/out/examples/lvgl/lvgl_main.bin
 <p><strong>Image Addr:</strong> <code>0x2000</code></p>
 </li>
 <li>
-<p><strong>Image File:</strong> C:\bl_mcu_sdk\out\examples\lvgl\lvgl_main.bin</p>
+<p><strong>Image File:</strong> </p>
+<pre><code class="language-text">C:\bl_mcu_sdk\out\examples\lvgl\lvgl_main.bin
+</code></pre>
 <p>(Change this to the location of the firmware file <code>lvgl_main.bin</code>)</p>
 </li>
 </ol>
@@ -347,8 +355,8 @@ Generate /mnt/c/bl_mcu_sdk/out/examples/lvgl/lvgl_main.bin
 [17:01:11.046] - Program Finished
 [17:01:11.172] - [All Success]
 </code></pre>
-<p><a href="https://gist.github.com/lupyuen/4a77baac69962ff3d65624b8c33608c0">See the complete log</a></p>
-<p>TODO</p>
+<p><a href="https://gist.github.com/lupyuen/4a77baac69962ff3d65624b8c33608c0">(See the complete log)</a></p>
+<p>Our firmware has been flashed to BL706 AVB!</p>
 <p>More about BL Dev Cube…</p>
 <ul>
 <li>
