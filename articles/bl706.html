@@ -73,8 +73,10 @@
 <li><a href="#bl706-vs-bl602">6 BL706 vs BL602</a><ul></ul></li>
 <li><a href="#whats-next">7 What’s Next</a><ul></ul></li>
 <li><a href="#notes">8 Notes</a><ul></ul></li></ul></nav><p>📝 <em>18 Jul 2021</em></p>
-<p><em>What’s inside the Bouffalo Lab RISC-V BL706 Audio Video Board… And how it differs from BL602</em></p>
-<p>TODO: Create USB Multimedia Firmware with Wireless Networking</p>
+<p>The <strong>BL706 Audio Video Board</strong> by <a href="https://www.bouffalolab.com/"><strong>Bouffalo Lab</strong></a> has a delightful mix of features for Embedded Developers: <strong>Multimedia, Bluetooth LE / Zigbee Networking and USB Device Interface</strong>.</p>
+<p>And it runs on <strong>32-bit RISC-V</strong>!</p>
+<p>Today we look inside the BL706 Audio Video Board and learn why it’s great for creating <strong>Multimedia, RF Networking and USB Firmware</strong>.</p>
+<p>(The board is not available for purchase yet… But soon, according to Bouffalo Lab)</p>
 <p>Many thanks to <strong>Bouffalo Lab</strong> for providing the BL706 Audio Video Board! (BTW I’m not paid to write this article)</p>
 <p><img src="https://lupyuen.github.io/images/bl706-title.jpg" alt="Dev Kit for Bouffalo Lab BL706 Audio Video Board" /></p>
 <p><em>Dev Kit for Bouffalo Lab BL706 Audio Video Board</em></p>
@@ -84,8 +86,9 @@
 <p>BL706 is the new <strong>RISC-V + 2.4 GHz RF SoC by Bouffalo Lab</strong>…</p>
 <ol>
 <li>
-<p><strong>32-bit RISC-V CPU with FPU</strong> (Hardware Floating-Point)</p>
+<p><strong>32-bit RISC-V CPU with Hardware Floating-Point</strong> (RV32IMAFC)</p>
 <p>CPU Frequency configurable from <strong>1 MHz to 144 MHz</strong></p>
+<p>Based on <a href="https://www.sifive.com/cores/e24"><strong>SiFive E24 Core</strong></a></p>
 </li>
 <li>
 <p><strong>132 KB RAM, 192 KB ROM</strong></p>
@@ -94,6 +97,7 @@
 <li>
 <p><strong>2.4 GHz Radio Frequency Transceiver</strong></p>
 <p>Supports <strong>Bluetooth LE 5.0 and Zigbee 3.0</strong></p>
+<p>(Note that BL706 does NOT support WiFi)</p>
 </li>
 <li>
 <p><strong>Camera</strong> Interface</p>
@@ -115,7 +119,6 @@
 <p>GPIO x 31</p>
 </li>
 </ol>
-<p>(Note that BL706 does NOT support WiFi)</p>
 <p><img src="https://lupyuen.github.io/images/bl706-datasheet.jpg" alt="BL706 Datasheet" /></p>
 <p>The BL706 docs are located here…</p>
 <ul>
@@ -136,7 +139,7 @@
 <ol>
 <li>
 <p><strong>BL706 IoT Development Board</strong></p>
-<p>This is the Smaller Board, with <strong>GPIO Pins and USB Port</strong> exposed.</p>
+<p>This is the Smaller Board, with <strong>GPIO Pins and USB Port</strong> exposed. (It looks like the BL602 Evaluation Board)</p>
 <p>The BL706 IoT Dev Board is useful for running <strong>Bluetooth LE and Zigbee Firmware</strong>.</p>
 <p><a href="https://github.com/bouffalolab/bl_mcu_sdk#hardware-resources">(See this)</a></p>
 </li>
