@@ -341,23 +341,23 @@ Generate /mnt/c/bl_mcu_sdk/out/examples/lvgl/lvgl_main.bin
 <p><strong>Image File:</strong> </p>
 <pre><code class="language-text">C:\bl_mcu_sdk\out\examples\lvgl\lvgl_main.bin
 </code></pre>
-<p>(Change this to the location of the firmware file <code>lvgl_main.bin</code>)</p>
+<p>(Change this to the location of the <strong>BL706 Firmware File</strong> <code>lvgl_main.bin</code>)</p>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/bl706-flash.png" alt="Flashing BL706 with BL Dev Cube" /></p>
 <p>Click <strong><code>Create &amp; Program</code></strong></p>
 <p>We should see…</p>
-<pre><code class="language-text">[17:00:56.257] - {'xtal_type': 'XTAL_32M', 'pll_clk': '144M', 'encrypt_type': 'None', 'key_sel': '0', 'cache_way_disable': 'None', 'sign_type': 'None', 'crc_ignore': 'False', 'hash_ignore': 'False', 'encrypt_key': '', 'aes_iv': '', 'public_key_cfg': '', 'private_key_cfg': '', 'device_tree': '', 'page_type': 'mcu', 'flash_clk_type': '72M', 'boot_src': 'Flash', 'img_type': 'SingleCPU', 'img_addr': '0x2000', 'bootinfo_addr': '0x0', 'img_file': 'C:\\bl_mcu_sdk\\out\\examples\\lvgl\\lvgl_main.bin', 'dl_device': 'Uart', 'dl_comport': 'COM6', 'dl_comspeed': '2000000', 'dl_jlinkspeed': '1000', 'dl_chiperase': 'False', 'dl_xtal': '32M'}
+<pre><code class="language-text">{'xtal_type': 'XTAL_32M', 'pll_clk': '144M', 'encrypt_type': 'None', 'key_sel': '0', 'cache_way_disable': 'None', 'sign_type': 'None', 'crc_ignore': 'False', 'hash_ignore': 'False', 'encrypt_key': '', 'aes_iv': '', 'public_key_cfg': '', 'private_key_cfg': '', 'device_tree': '', 'page_type': 'mcu', 'flash_clk_type': '72M', 'boot_src': 'Flash', 'img_type': 'SingleCPU', 'img_addr': '0x2000', 'bootinfo_addr': '0x0', 'img_file': 'C:\\bl_mcu_sdk\\out\\examples\\lvgl\\lvgl_main.bin', 'dl_device': 'Uart', 'dl_comport': 'COM6', 'dl_comspeed': '2000000', 'dl_jlinkspeed': '1000', 'dl_chiperase': 'False', 'dl_xtal': '32M'}
 ...
-[17:01:08.574] - ========= programming chips\bl702\img_create_mcu\img.bin to 0x2000
+========= programming chips\bl702\img_create_mcu\img.bin to 0x2000
 ...
-[17:01:11.046] - Verify success
-[17:01:11.046] - Program Finished
-[17:01:11.172] - [All Success]
+Verify success
+Program Finished
+[All Success]
 </code></pre>
 <p><a href="https://gist.github.com/lupyuen/4a77baac69962ff3d65624b8c33608c0">(See the complete log)</a></p>
 <p>Our firmware has been flashed to BL706 AVB!</p>
-<p>More about BL Dev Cube…</p>
+<p>To learn more about BL Dev Cube…</p>
 <ul>
 <li>
 <p><a href="https://bouffalolab.gitee.io/bl_mcu_sdk/get_started/bl_dev_cube.html"><strong>Instructions for BL Dev Cube (Chinese)</strong></a></p>
@@ -365,10 +365,17 @@ Generate /mnt/c/bl_mcu_sdk/out/examples/lvgl/lvgl_main.bin
 </li>
 </ul>
 <h2 id="jtag-and-jlink" class="section-header"><a href="#jtag-and-jlink">4.3 JTAG and JLink</a></h2>
+<p><em>Is there another way to flash our firmware to BL706?</em></p>
 <p>TODO</p>
-<p><a href="https://github.com/bouffalolab/bl_mcu_sdk/blob/master/docs/development_guide/source/get_started/connecting_hardware.rst">(Instructions)</a></p>
+<ul>
+<li>
+<p><a href="https://github.com/bouffalolab/bl_mcu_sdk/blob/master/docs/development_guide/source/get_started/get_started.rst"><strong>BL706 AVB: Getting Started (Chinese)</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/bouffalolab/bl_mcu_sdk/blob/master/docs/development_guide/source/get_started/connecting_hardware.rst"><strong>BL706 AVB: Connecting Hardware (Chinese)</strong></a></p>
+</li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/bl706-openocd.png" alt="BL706 OpenOCD" /></p>
-<p><a href="https://github.com/bouffalolab/bl_mcu_sdk/blob/master/docs/development_guide/source/get_started/get_started.rst">(Source)</a></p>
 <h1 id="run-lvgl-firmware" class="section-header"><a href="#run-lvgl-firmware">5 Run LVGL Firmware</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/bl706-jumpers.jpg" alt="BL706 Jumpers" /></p>
