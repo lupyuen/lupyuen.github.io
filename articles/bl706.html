@@ -251,6 +251,9 @@ make APP=lvgl \
 </code></pre>
 <p>(Note that we’ve downloaded the MCU SDK to <code>C:\bl_mcu_sdk</code> in Windows <code>cmd</code>, so the WSL path becomes <code>/mnt/c/bl_mcu_sdk</code>)</p>
 <p>The firmware build begins…</p>
+<pre><code class="language-text">make[1]: Entering directory '/mnt/c/bl_mcu_sdk/build'
+cmake -DCHIP=bl702 -DCPU_ID=m0 -DBOARD=bl706_avb -DSUPPORT_FLOAT=n -DSUPPORT_SHELL=n -DSUPPORT_FREERTOS=n -DSSUPPORT_LVGL=y -DSUPPORT_BLE=n -DSUPPORT_XZ=n -DSUPPORT_LWIP=n -DSUPPORT_TFLITE=n -DAPP_DIR=examples -DAPP=lv
+</code></pre>
 <p><img src="https://lupyuen.github.io/images/bl706-build.png" alt="BL706 Firmware Build" /></p>
 <p>And succeeds with…</p>
 <pre><code class="language-text">[100%] Linking C executable ../../../out/examples/lvgl/lvgl_main.elf
