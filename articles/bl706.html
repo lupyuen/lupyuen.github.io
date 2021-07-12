@@ -241,7 +241,11 @@
 <ul>
 <li><a href="https://github.com/bouffalolab/bl_mcu_sdk/tree/master/examples/lvgl"><strong>Instructions for LVGL Demo Firmware</strong></a></li>
 </ul>
-<pre><code class="language-bash">make APP=lvgl \
+<pre><code class="language-bash"># In WSL bash: Go to the Windows directory for MCU SDK
+cd /mnt/c/bl_mcu_sdk
+
+# Build the LVGL Firmware
+make APP=lvgl \
   BOARD=bl706_avb \
   SUPPORT_LVGL=y
 </code></pre>
