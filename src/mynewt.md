@@ -58,7 +58,7 @@ Since BL602's RISC-V Core is so similar to FE310, it makes porting simpler.
 
 _BL602 is based on which SiFive RISC-V Core?_
 
-From the screenshot above, the name "E21" appears (over a hundred times) in the BL602 IoT SDK.
+From the screenshot above, the name "E21" appears (over a hundred times) in the BL602 IoT SDK. [(See this)](https://github.com/pine64/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/Device/Bouffalo/BL602/Peripherals/l1c_reg.h#L178-L194)
 
 Thus we assume that BL602 is based on the __SiFive E21 RISC-V Core__ (and not E24)...
 

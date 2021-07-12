@@ -260,7 +260,7 @@ The BL602 docs are located in the [__BL602 Docs Repo__](https://github.com/pine6
 
 -   [__PineCone Schematics__](https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf)
 
-BL602's RISC-V Core seems to be based on either [__SiFive E21__](https://www.sifive.com/cores/e21) or [__SiFive E24__](https://www.sifive.com/cores/e24) (to be confirmed, [though the SDK source code suggests E21](https://github.com/pine64/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Inc/bl602_gpio.h#L98))...
+BL602's RISC-V Core seems to be based on either [__SiFive E21__](https://www.sifive.com/cores/e21) or [__SiFive E24__](https://www.sifive.com/cores/e24) (to be confirmed, though the SDK source code suggests E21 [here](https://github.com/pine64/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Inc/bl602_gpio.h#L98) and [here](https://github.com/pine64/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/Device/Bouffalo/BL602/Peripherals/l1c_reg.h#L178-L194))...
 
 -   [__SiFive E21 Manual__](https://sifive.cdn.prismic.io/sifive/39d336f7-7dba-43f2-a453-8d55227976cc_sifive_E21_rtl_full_20G1.03.00_manual.pdf)
 
