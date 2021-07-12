@@ -69,7 +69,10 @@
 <li><a href="#install-sdk-and-toolchain">2 Install SDK and Toolchain</a><ul>
 <li><a href="#windows-cdk-and-eclipse">2.1 Windows CDK and Eclipse</a><ul></ul></li></ul></li>
 <li><a href="#build-firmware">3 Build Firmware</a><ul></ul></li>
-<li><a href="#flash-firmware">4 Flash Firmware</a><ul></ul></li>
+<li><a href="#flash-firmware">4 Flash Firmware</a><ul>
+<li><a href="#enter-flashing-mode">4.1 Enter Flashing Mode</a><ul></ul></li>
+<li><a href="#run-bl-dev-cube">4.2 Run BL Dev Cube</a><ul></ul></li>
+<li><a href="#jtag-and-jlink">4.3 JTAG and JLink</a><ul></ul></li></ul></li>
 <li><a href="#run-lvgl-firmware">5 Run LVGL Firmware</a><ul></ul></li>
 <li><a href="#bl706-vs-bl602">6 BL706 vs BL602</a><ul></ul></li>
 <li><a href="#whats-next">7 What’s Next</a><ul></ul></li>
@@ -263,7 +266,16 @@ Generate /mnt/c/bl_mcu_sdk/out/examples/lvgl/lvgl_main.bin
 <pre><code class="language-text">C:\bl_mcu_sdk\out\examples\lvgl\lvgl_main.bin
 </code></pre>
 <h1 id="flash-firmware" class="section-header"><a href="#flash-firmware">4 Flash Firmware</a></h1>
-<p>We’re ready to <strong>flash our LVGL Demo Firmware</strong> to BL706 AVB!</p>
+<p>We’re ready to <strong>flash our LVGL Demo Firmware</strong> to BL706 AVB!  We shall…</p>
+<ol>
+<li>
+<p>Enter <strong>Flashing Mode</strong> on BL706 AVB</p>
+</li>
+<li>
+<p>Run <strong>Bouffalo Lab Dev Cube</strong> to flash our firmware to BL706 AVB</p>
+</li>
+</ol>
+<h2 id="enter-flashing-mode" class="section-header"><a href="#enter-flashing-mode">4.1 Enter Flashing Mode</a></h2>
 <p>Connect BL706 AVB to our computer’s USB port.</p>
 <p>To enter <strong>Flashing Mode</strong> on BL706 AVB, we do the <strong>“Two Finger Salute”</strong>…</p>
 <ol>
@@ -281,12 +293,62 @@ Generate /mnt/c/bl_mcu_sdk/out/examples/lvgl/lvgl_main.bin
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/bl706-boot2.jpg" alt="BOOT and RST Buttons" /></p>
-<p>TODO: USB</p>
+<p>BL706 AVB needs to be in Flashing Mode so that it will appear on Windows as a <strong>USB Serial Device</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/bl706-usb.png" alt="BL706 USB" /></p>
-<p>TODO: BL Dev Cube</p>
+<h2 id="run-bl-dev-cube" class="section-header"><a href="#run-bl-dev-cube">4.2 Run BL Dev Cube</a></h2>
+<p>To flash our firmware on Windows, we download the Windows version of <strong>Bouffalo Lab Dev Cube</strong> software…</p>
 <ul>
 <li><a href="https://dev.bouffalolab.com/download"><strong>Download BL Dev Cube</strong></a></li>
 </ul>
+<p>Start <strong>BL Dev Cube</strong>, select <strong><code>BL706</code></strong> and click <strong><code>View → MCU</code></strong>.</p>
+<p>(If we see the <strong>Windows Defender</strong> warning, click <strong><code>More Info → Run Anyway</code></strong>)</p>
+<p>Enter these settings…</p>
+<ol>
+<li>
+<p><strong>Interface:</strong> <code>UART</code></p>
+</li>
+<li>
+<p><strong>COM Port:</strong> (Select the COM Port for BL706 AVB)</p>
+</li>
+<li>
+<p><strong>UART Speed:</strong> <code>2000000</code></p>
+</li>
+<li>
+<p><strong>Chip Erase:</strong> <code>False</code></p>
+</li>
+<li>
+<p><strong>Xtal:</strong> <code>32M</code></p>
+</li>
+<li>
+<p><strong>Boot Source:</strong> <code>Flash</code></p>
+</li>
+<li>
+<p><strong>Image Type:</strong> <code>Single CPU</code></p>
+</li>
+<li>
+<p><strong>BootInfo Addr:</strong> <code>0x0</code></p>
+</li>
+<li>
+<p><strong>Image Addr:</strong> <code>0x2000</code></p>
+</li>
+<li>
+<p><strong>Image File:</strong> C:\bl_mcu_sdk\out\examples\lvgl\lvgl_main.bin</p>
+<p>(Change this to the location of the firmware file <code>lvgl_main.bin</code>)</p>
+</li>
+</ol>
+<p><img src="https://lupyuen.github.io/images/bl706-flash.png" alt="Flashing BL706 with BL Dev Cube" /></p>
+<p>Click <strong><code>Create &amp; Program</code></strong></p>
+<p>We should see…</p>
+<pre><code class="language-text">[17:00:56.257] - {'xtal_type': 'XTAL_32M', 'pll_clk': '144M', 'encrypt_type': 'None', 'key_sel': '0', 'cache_way_disable': 'None', 'sign_type': 'None', 'crc_ignore': 'False', 'hash_ignore': 'False', 'encrypt_key': '', 'aes_iv': '', 'public_key_cfg': '', 'private_key_cfg': '', 'device_tree': '', 'page_type': 'mcu', 'flash_clk_type': '72M', 'boot_src': 'Flash', 'img_type': 'SingleCPU', 'img_addr': '0x2000', 'bootinfo_addr': '0x0', 'img_file': 'C:\\bl_mcu_sdk\\out\\examples\\lvgl\\lvgl_main.bin', 'dl_device': 'Uart', 'dl_comport': 'COM6', 'dl_comspeed': '2000000', 'dl_jlinkspeed': '1000', 'dl_chiperase': 'False', 'dl_xtal': '32M'}
+...
+[17:01:08.574] - ========= programming chips\bl702\img_create_mcu\img.bin to 0x2000
+...
+[17:01:11.046] - Verify success
+[17:01:11.046] - Program Finished
+[17:01:11.172] - [All Success]
+</code></pre>
+<p><a href="https://gist.github.com/lupyuen/4a77baac69962ff3d65624b8c33608c0">See the complete log</a></p>
+<p>TODO</p>
 <p>More about BL Dev Cube…</p>
 <ul>
 <li>
@@ -294,11 +356,11 @@ Generate /mnt/c/bl_mcu_sdk/out/examples/lvgl/lvgl_main.bin
 <p><a href="https://htmlpreview.github.io/?https://github.com/bouffalolab/bl_mcu_sdk/blob/master/docs/development_guide/build/html/get_started/bl_dev_cube.html">(Alternative Link)</a></p>
 </li>
 </ul>
-<p><img src="https://lupyuen.github.io/images/bl706-flash.png" alt="Flashing BL706 with BL Dev Cube" /></p>
-<p>TODO: JTAG and JLink</p>
+<h2 id="jtag-and-jlink" class="section-header"><a href="#jtag-and-jlink">4.3 JTAG and JLink</a></h2>
+<p>TODO</p>
+<p><a href="https://github.com/bouffalolab/bl_mcu_sdk/blob/master/docs/development_guide/source/get_started/connecting_hardware.rst">(Instructions)</a></p>
 <p><img src="https://lupyuen.github.io/images/bl706-openocd.png" alt="BL706 OpenOCD" /></p>
 <p><a href="https://github.com/bouffalolab/bl_mcu_sdk/blob/master/docs/development_guide/source/get_started/get_started.rst">(Source)</a></p>
-<p><a href="https://github.com/bouffalolab/bl_mcu_sdk/blob/master/docs/development_guide/source/get_started/connecting_hardware.rst">(Instructions)</a></p>
 <h1 id="run-lvgl-firmware" class="section-header"><a href="#run-lvgl-firmware">5 Run LVGL Firmware</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/bl706-jumpers.jpg" alt="BL706 Jumpers" /></p>
