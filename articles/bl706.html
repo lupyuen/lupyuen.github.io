@@ -427,7 +427,8 @@ Program Finished
 <p>Bouffalo Lab explains how the <strong>MCU SDK differs from IoT SDK</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/bl706-mcusdk.jpg" alt="BL706 MCU SDK vs BL602 IoT SDK" /></p>
 <p><a href="https://bbs.bouffalolab.com/d/30-bl-mcu-sdk-v10">(Auto-translated from this post)</a></p>
-<p>We spotted some differences between the SDKs…</p>
+<p><strong>BL602 is not supported</strong> today on BL MCU SDK, but it will be supported in future according to Bouffalo Lab.</p>
+<p>We spotted some <strong>differences between the SDKs</strong>…</p>
 <ol>
 <li>
 <p><strong>Hardware Adaptation Layer</strong> has been revamped.</p>
@@ -435,7 +436,7 @@ Program Finished
 <pre><code class="language-text">bl_gpio_output_set(pin, value);
 </code></pre>
 <p>Now with BL706 MCU SDK we do this…</p>
-<pre><code class="language-text">gpio_write(pin. value);
+<pre><code class="language-text">gpio_write(pin, value);
 </code></pre>
 </li>
 <li>
