@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>RISC-V BL706 Audio Video Board</title>
+            <link>https://lupyuen.github.io/articles/bl706</link>
+            <description><![CDATA[What's inside the Bouffalo Lab RISC-V BL706 Audio Video Board... And how it differs from BL602]]></description>
+            <guid>https://lupyuen.github.io/articles/bl706</guid>
+            <pubDate>Wed, 14 Jul 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Reverse Engineering WiFi on RISC-V BL602</title>
             <link>https://lupyuen.github.io/articles/wifi</link>
             <description><![CDATA[What happens inside the WiFi Driver on RISC-V BL602... And how we found the incomplete source code for the driver]]></description>
