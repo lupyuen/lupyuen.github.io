@@ -147,6 +147,13 @@
   ],
   "publications": [
     {
+      "name": "RISC-V BL706 Audio Video Board",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2021-07-14",
+      "website": "https://lupyuen.github.io/articles/bl706",
+      "summary": "What's inside the Bouffalo Lab RISC-V BL706 Audio Video Board... And how it differs from BL602"
+    },
+    {
       "name": "Reverse Engineering WiFi on RISC-V BL602",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-07-07",
