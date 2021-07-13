@@ -430,20 +430,26 @@ Program Finished
 <p>We spotted some differences between the SDKs…</p>
 <ol>
 <li>
-<p>TODO: HAL has been revamped</p>
+<p><strong>Hardware Adaptation Layer</strong> has been revamped.</p>
+<p>With BL602 IoT SDK we call this to set a GPIO Output…</p>
+<pre><code class="language-text">bl_gpio_output_set(pin, value);
+</code></pre>
+<p>Now with BL706 MCU SDK we do this…</p>
+<pre><code class="language-text">gpio_write(pin. value);
+</code></pre>
 </li>
 <li>
-<p>TODO: AliOS</p>
+<p><strong>AliOS Functions</strong> for multitasking and device management are no longer in BL706 MCU SDK.</p>
 </li>
 <li>
-<p>TODO: JTAG and J-Link</p>
+<p><strong>JTAG and J-Link</strong> are now supported for flashing BL706. (But not BL602)</p>
 </li>
 <li>
-<p>TODO: LVGL and TensorFlow Lite</p>
-<p><img src="https://lupyuen.github.io/images/bl706-tflite.png" alt="BL706 TensorFlow Lite" /></p>
+<p><strong>LVGL (Graphics) and TensorFlow Lite (Machine Learning)</strong> are now bundled with BL706 MCU SDK</p>
+<p><a href="https://github.com/bouffalolab/bl_mcu_sdk/tree/master/examples/tensorflow">Sample Firmware for TensorFlow Lite</a></p>
 </li>
 <li>
-<p>TODO: cmake</p>
+<p>BL706 builds with <strong><code>cmake</code> and <code>make</code></strong>. (BL602 builds with <code>make</code> only)</p>
 <p><img src="https://lupyuen.github.io/images/bl706-cmake.png" alt="BL706 uses cmake" /></p>
 </li>
 <li>
