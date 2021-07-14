@@ -72,7 +72,8 @@
 <li><a href="#flash-firmware">4 Flash Firmware</a><ul>
 <li><a href="#enter-flashing-mode">4.1 Enter Flashing Mode</a><ul></ul></li>
 <li><a href="#run-bl-dev-cube">4.2 Run BL Dev Cube</a><ul></ul></li>
-<li><a href="#jtag-and-j-link">4.3 JTAG and J-Link</a><ul></ul></li></ul></li>
+<li><a href="#jtag-and-j-link">4.3 JTAG and J-Link</a><ul></ul></li>
+<li><a href="#flashing-without-bl-dev-cube">4.4 Flashing without BL Dev Cube</a><ul></ul></li></ul></li>
 <li><a href="#run-lvgl-firmware">5 Run LVGL Firmware</a><ul></ul></li>
 <li><a href="#bl706-vs-bl602">6 BL706 vs BL602</a><ul>
 <li><a href="#mcu-sdk-vs-iot-sdk">6.1 MCU SDK vs IoT SDK</a><ul></ul></li></ul></li>
@@ -373,7 +374,7 @@ Program Finished
 </ul>
 <h2 id="jtag-and-j-link" class="section-header"><a href="#jtag-and-j-link">4.3 JTAG and J-Link</a></h2>
 <p><em>Is there another way to flash our firmware to BL706?</em></p>
-<p>We may flash BL706 with <strong>OpenOCD and a JTAG or J-Link Adapter</strong>.</p>
+<p>We may flash BL706 with <strong>BL Dev Cube, OpenOCD and a JTAG or J-Link Adapter</strong>.</p>
 <p>The <strong><code>FUNC1</code> Jumper</strong> should be connected, to <strong>enable the JTAG Port</strong>.</p>
 <p>Here are the instructions…</p>
 <ul>
@@ -386,7 +387,15 @@ Program Finished
 <p><a href="https://htmlpreview.github.io/?https://github.com/bouffalolab/bl_mcu_sdk/blob/master/docs/development_guide/build/html/get_started/connecting_hardware.html">(Alternative Link)</a></p>
 </li>
 </ul>
+<blockquote>
 <p><img src="https://lupyuen.github.io/images/bl706-openocd.png" alt="BL706 OpenOCD" /></p>
+</blockquote>
+<h2 id="flashing-without-bl-dev-cube" class="section-header"><a href="#flashing-without-bl-dev-cube">4.4 Flashing without BL Dev Cube</a></h2>
+<p><em>Is it possible to flash BL706 with OpenOCD and JTAG… Without BLDevCube?</em></p>
+<p>Check out the findings here…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/lupyuen.github.io/releases/tag/v1.0.3"><strong>Flashing BL706 with OpenOCD without BLDevCube</strong></a></li>
+</ul>
 <h1 id="run-lvgl-firmware" class="section-header"><a href="#run-lvgl-firmware">5 Run LVGL Firmware</a></h1>
 <p>Watch what happens when we <strong>run our LVGL Firmware</strong> on BL706 AVB!</p>
 <p>Connect the <strong><code>FUNC1</code> and <code>FUNC2</code> Jumpers</strong>. (Because we’re using the SPI Port)</p>
@@ -463,6 +472,7 @@ Program Finished
 <li>
 <p><strong>OpenOCD, JTAG and J-Link</strong> are now supported for flashing BL706. </p>
 <p>(But not BL602)</p>
+<p><a href="https://github.com/lupyuen/lupyuen.github.io/releases/tag/v1.0.3">Flashing BL706 with OpenOCD</a></p>
 </li>
 <li>
 <p><strong>LVGL (Graphics) and TensorFlow Lite (Machine Learning)</strong> are now bundled with BL706 MCU SDK</p>
