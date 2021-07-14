@@ -270,6 +270,7 @@ cmake -DCHIP=bl702 -DCPU_ID=m0 -DBOARD=bl706_avb -DSUPPORT_FLOAT=n -DSUPPORT_SHE
 <pre><code class="language-text">[100%] Linking C executable ../../../out/examples/lvgl/lvgl_main.elf
 Generate /mnt/c/bl_mcu_sdk/out/examples/lvgl/lvgl_main.bin
 </code></pre>
+<p><a href="https://gist.github.com/lupyuen/226cb7dc629b47daa8435339fcb17a1c">(See the complete log)</a></p>
 <p>The build is done! This is the <strong>BL706 Firmware File</strong> that we shall flash to BL706 AVB…</p>
 <pre><code class="language-text">C:\bl_mcu_sdk\out\examples\lvgl\lvgl_main.bin
 </code></pre>
@@ -445,9 +446,19 @@ Program Finished
 </code></pre>
 </li>
 <li>
+<p><strong>FreeRTOS</strong> is no longer included for firmware builds by default.</p>
+<p>To include FreeRTOS, we specify <code>SUPPORT_FREERTOS</code> like so…</p>
+<pre><code class="language-bash">make APP=freertos_semaphore \
+     BOARD=bl706_iot \
+     SUPPORT_FREERTOS=y
+</code></pre>
+<p><a href="https://github.com/bouffalolab/bl_mcu_sdk/tree/master/examples/freertos/freertos_semaphore">(Source)</a></p>
+</li>
+<li>
 <p><strong>AliOS Functions</strong> (<code>aos_*</code>) for Multitasking and Device Tree are no longer in BL706 MCU SDK.</p>
 <p>Now we configure peripherals directly from our Firmware Code: GPIO, SPI, UART, …</p>
 <p><a href="https://bouffalolab.gitee.io/bl_mcu_sdk/samples/basic%20samples/uart/uart_loopback_demo.html">Sample code for UART Configuration</a></p>
+<p><a href="https://htmlpreview.github.io/?https://raw.githubusercontent.com/bouffalolab/bl_mcu_sdk/master/docs/development_guide/build/html/samples/basic%20samples/uart/uart_loopback_demo.html">(Alternative Link)</a></p>
 </li>
 <li>
 <p><strong>OpenOCD, JTAG and J-Link</strong> are now supported for flashing BL706. </p>
