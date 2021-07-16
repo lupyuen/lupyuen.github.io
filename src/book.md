@@ -230,6 +230,8 @@ Multitasking the easy way with __NimBLE Porting Layer__.
 
 -   ["Multitask with NimBLE Porting Layer"](https://lupyuen.github.io/articles/lora2#multitask-with-nimble-porting-layer)
 
+![Bootloader for BL602](https://lupyuen.github.io/images/book-boot.jpg)
+
 # Bootloader for BL602
 
 All about the __BL602 Bootloader__... And how it loads the Application Firmware into XIP Flash Memory.
