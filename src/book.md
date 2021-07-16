@@ -40,6 +40,8 @@ How we __flash firmware__ to BL602 with __command-line tools__ on Linux, macOS a
 
 -   ["Flashing Firmware to PineCone BL602"](https://lupyuen.github.io/articles/flash)
 
+![Projects and Libraries on BL602](https://lupyuen.github.io/images/book-project.jpg)
+
 # Projects and Libraries on BL602
 
 How to create a simple __Blinky Project__ for BL602.
@@ -113,6 +115,8 @@ UART is used by E-Ink Displays, GPS Receivers and LoRa Transceivers. To talk to 
 Here's the sample code that reads BL602's __onboard temperature sensor__ via ADC...
 
 -   [Read BL602 Temperature via ADC](https://github.com/bouffalolab/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_adc.c#L173-L216)
+
+![WiFi on BL602](https://lupyuen.github.io/images/book-wifi.jpg)
 
 # WiFi on BL602
 
@@ -188,6 +192,8 @@ Porting the __uLisp Interpreter__ to BL602... And writing graphical programs wit
 
 -   ["Simulate RISC-V BL602 with WebAssembly, uLisp and Blockly"](https://lupyuen.github.io/articles/wasm)
 
+![Machine Learning on BL602](https://lupyuen.github.io/images/book-ml.jpg)
+
 # Machine Learning on BL602
 
 How we run __TensorFlow Lite__ on BL602... To create a Glowing LED.
@@ -229,6 +235,8 @@ Multitasking the easy way with __NimBLE Porting Layer__.
 All about the __BL602 Bootloader__... And how it loads the Application Firmware into XIP Flash Memory.
 
 -   ["BL602 Bootloader"](https://lupyuen.github.io/articles/boot)
+
+![BL706 Audio Video Board](https://lupyuen.github.io/images/book-bl706.jpg)
 
 # BL706 Audio Video Board
 
