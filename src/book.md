@@ -1,14 +1,14 @@
 # The RISC-V BL602 Book
 
-📝 _11 Jul 2021_
+📝 _16 Jul 2021_
 
 ![PineCone BL602 RISC-V Board with Grove E-Ink Display](https://lupyuen.github.io/images/book-title.jpg)
 
 _PineCone BL602 RISC-V Board with Grove E-Ink Display_
 
-Is there a book about the __BL602 SoC__ (RISC-V, WiFi and Bluetooth LE) that...
+Is there a book about the __BL602 / BL604 SoC__ (RISC-V, WiFi and Bluetooth LE) that...
 
-1.  Explains in depth the __features of BL602__
+1.  Explains in depth the __features of BL602 and BL604__
 
 1.  Has plenty of __annotated sample code,__ with real use cases
 
@@ -16,9 +16,9 @@ Is there a book about the __BL602 SoC__ (RISC-V, WiFi and Bluetooth LE) that...
 
 _You're reading the book right now!_
 
-Use this book to navigate the numerous BL602 articles that have been published on this site. __(23 articles and still growing!)__
+Use this book to navigate the numerous BL602 / BL604 articles that have been published on this site. __(23 articles and still growing!)__
 
-The programs in these articles have been tested on __PineCone__, but they should work on other BL602 Boards: __Pinenut, DT-BL10, MagicHome BL602__.
+The programs in these articles have been tested on __PineCone__, but they should work on other __BL602 and BL604 Boards: PineDio Stack (BL604), Pinenut, DT-BL10, MagicHome BL602__.
 
 Many thanks to __Pine64__ for supporting my work on BL602 Open Source Education! Thanks also to __Bouffalo Lab__ for the encouraging notes.
 
@@ -28,7 +28,7 @@ If you find this book useful... [__please sponsor me a coffee__](https://github.
 
 # Introduction to BL602
 
-Find out what's inside the __BL602 System-on-a-Chip (SoC)__... And why it's unique among the microcontrollers we've seen.
+Find out what's inside the __BL602 / BL604 System-on-a-Chip (SoC)__... And why it's unique among the microcontrollers we've seen.
 
 -   ["Quick Peek of PineCone BL602 RISC-V Evaluation Board"](https://lupyuen.github.io/articles/pinecone)
 
@@ -36,7 +36,7 @@ Find out what's inside the __BL602 System-on-a-Chip (SoC)__... And why it's uniq
 
 # Flashing Firmware to BL602
 
-How we __flash firmware__ to BL602 with __command-line tools__ on Linux, macOS and Windows.
+How we __flash firmware__ to BL602 and BL604 with __command-line tools__ on Linux, macOS and Windows.
 
 -   ["Flashing Firmware to PineCone BL602"](https://lupyuen.github.io/articles/flash)
 
@@ -44,7 +44,7 @@ How we __flash firmware__ to BL602 with __command-line tools__ on Linux, macOS a
 
 # Projects and Libraries on BL602
 
-How to create a simple __Blinky Project__ for BL602.
+How to create a simple __Blinky Project__ for BL602 and BL604.
 
 -   ["BL602 Blinky in C"](https://lupyuen.github.io/articles/rust#bl602-blinky-in-c)
 
@@ -56,7 +56,7 @@ How to create a simple __Blinky Project__ for BL602.
 
 # GPIO on BL602
 
-Learn to call the BL602 __GPIO Hardware Abstraction Layer (HAL)__ to blink an LED.
+Learn to call the BL602 / BL604 __GPIO Hardware Abstraction Layer (HAL)__ to blink an LED.
 
 -   ["Control PineCone BL602 RGB LED with GPIO and PWM"](https://lupyuen.github.io/articles/led)
 
@@ -68,7 +68,7 @@ Learn to call the BL602 __GPIO Hardware Abstraction Layer (HAL)__ to blink an LE
 
 # PWM on BL602
 
-Duty Cycle, Frequency and everything else about the __BL602 PWM HAL__.
+Duty Cycle, Frequency and everything else about the __BL602 / BL604 PWM HAL__.
 
 -   ["From GPIO to Pulse Width Modulation (PWM)"](https://lupyuen.github.io/articles/led#from-gpio-to-pulse-width-modulation-pwm)
 
@@ -76,7 +76,7 @@ Duty Cycle, Frequency and everything else about the __BL602 PWM HAL__.
 
 # I2C on BL602
 
-Read an I2C Sensor by calling the __BL602 I2C HAL__.
+Read an I2C Sensor by calling the __BL602 / BL604 I2C HAL__.
 
 -   ["PineCone BL602 talks to I2C Sensors"](https://lupyuen.github.io/articles/i2c)
 
@@ -84,7 +84,7 @@ Read an I2C Sensor by calling the __BL602 I2C HAL__.
 
 # SPI on BL602
 
-How we call the __BL602 SPI HAL__ to access SPI Sensors, Displays and Network Transceivers.
+How we call the __BL602 / BL604 SPI HAL__ to access SPI Sensors, Displays and Network Transceivers.
 
 -   ["PineCone BL602 talks SPI too!"](https://lupyuen.github.io/articles/spi)
 
@@ -96,7 +96,7 @@ How we call the __BL602 SPI HAL__ to access SPI Sensors, Displays and Network Tr
 
 # DMA on BL602
 
-How we __accelerate data transfers with DMA__ on BL602.
+How we __accelerate data transfers with DMA__ on BL602 and BL604.
 
 -   ["SPI with Direct Memory Access"](https://lupyuen.github.io/articles/spi#spi-with-direct-memory-access)
 
@@ -104,7 +104,7 @@ How we __accelerate data transfers with DMA__ on BL602.
 
 # UART on BL602
 
-UART is used by E-Ink Displays, GPS Receivers and LoRa Transceivers. To talk to these peripherals, we call the __BL602 UART HAL.__
+UART is used by E-Ink Displays, GPS Receivers and LoRa Transceivers. To talk to these peripherals, we call the __BL602 / BL604 UART HAL.__
 
 -   ["PineCone BL602 Talks UART to Grove E-Ink Display"](https://lupyuen.github.io/articles/uart)
 
@@ -120,7 +120,7 @@ Here's the sample code that reads BL602's __onboard temperature sensor__ via ADC
 
 # WiFi on BL602
 
-What happens inside the __WiFi Driver__ on BL602... And how we found the incomplete source code for the driver.
+What happens inside the __WiFi Driver__ on BL602 and BL604.
 
 -   [Reverse Engineering WiFi on RISC-V BL602](https://lupyuen.github.io/articles/wifi)
 
@@ -138,7 +138,7 @@ Render text and graphics with the open-source __LVGL Library__.
 
 # LoRa on BL602
 
-Let's turn BL602 into a real IoT gadget that transmits __long range, low power LoRa packets__...
+Let's turn BL602 and BL604 into a real IoT gadget that transmits __long range, low power LoRa packets__...
 
 -   ["PineCone BL602 Talks LoRaWAN"](https://lupyuen.github.io/articles/lorawan)
 
@@ -154,7 +154,7 @@ Let's turn BL602 into a real IoT gadget that transmits __long range, low power L
 
 # OpenOCD on BL602
 
-Before debugging BL602, we install __OpenOCD__ to connect a __JTAG Debugger__ to BL602.
+Before debugging BL602 / BL604, we install __OpenOCD__ to connect a __JTAG Debugger__.
 
 -   ["Connect PineCone BL602 to OpenOCD"](https://lupyuen.github.io/articles/openocd)
 
@@ -162,7 +162,7 @@ Before debugging BL602, we install __OpenOCD__ to connect a __JTAG Debugger__ to
 
 # GDB and VSCode on BL602
 
-How we __debug BL602 firmware__ with GDB and VSCode.
+How we __debug BL602 / BL604 firmware__ with GDB and VSCode.
 
 -   ["Debug Rust on PineCone BL602 with VSCode and GDB"](https://lupyuen.github.io/articles/debug)
 
@@ -172,7 +172,7 @@ How we __debug BL602 firmware__ with GDB and VSCode.
 
 # Rust on BL602
 
-How we code BL602 firmware the __safer, simpler way with Rust.__
+How we code BL602 and BL604 firmware the __safer, simpler way with Rust.__
 
 -   ["Run Rust RISC-V Firmware with BL602 IoT SDK"](https://lupyuen.github.io/articles/rust)
 
@@ -186,7 +186,7 @@ How we code BL602 firmware the __safer, simpler way with Rust.__
 
 # Lisp on BL602
 
-Porting the __uLisp Interpreter__ to BL602... And writing graphical programs with __Blockly (Scratch)__.
+Porting the __uLisp Interpreter__ to BL602 / BL604... And writing graphical programs with __Blockly (Scratch)__.
 
 -   ["uLisp and Blockly on PineCone BL602 RISC-V Board"](https://lupyuen.github.io/articles/lisp)
 
@@ -196,7 +196,7 @@ Porting the __uLisp Interpreter__ to BL602... And writing graphical programs wit
 
 # Machine Learning on BL602
 
-How we run __TensorFlow Lite__ on BL602... To create a Glowing LED.
+How we run __TensorFlow Lite__ on BL602 and BL604 to create a Glowing LED.
 
 -   ["Machine Learning on RISC-V BL602 with TensorFlow Lite"](https://lupyuen.github.io/articles/tflite)
 
@@ -204,7 +204,7 @@ How we run __TensorFlow Lite__ on BL602... To create a Glowing LED.
 
 # Mynewt on BL602
 
-Will BL602 run without FreeRTOS? Study the ongoing port of __Apache Mynewt operating system__ to BL602.
+Will BL602 and BL604 run without FreeRTOS? Study the ongoing port of __Apache Mynewt operating system__ to BL602 / BL604.
 
 -   ["Porting Mynewt to PineCone BL602"](https://lupyuen.github.io/articles/mynewt)
 
@@ -212,9 +212,11 @@ Will BL602 run without FreeRTOS? Study the ongoing port of __Apache Mynewt opera
 
 -   ["Apache NuttX on BL602"](https://lupyuen.github.io/articles/rust#apache-nuttx-on-bl602)
 
+![Troubleshooting BL602](https://lupyuen.github.io/images/book-troubleshoot.jpg)
+
 # Troubleshooting BL602
 
-Tips for __troubleshooting BL602 firmware__.
+Tips for __troubleshooting BL602 and BL604 firmware__.
 
 -   ["How to Troubleshoot RISC-V Exceptions"](https://lupyuen.github.io/articles/i2c#appendix-how-to-troubleshoot-risc-v-exceptions)
 
@@ -223,6 +225,8 @@ Tips for __troubleshooting BL602 firmware__.
 -   ["BL602 Stack Trace"](https://lupyuen.github.io/articles/lora2#bl602-stack-trace)
 
 -   ["BL602 Stack Dump"](https://lupyuen.github.io/articles/lora2#bl602-stack-dump)
+
+![Multitasking BL602](https://lupyuen.github.io/images/book-multitask.jpg)
 
 # Multitasking BL602
 
@@ -234,7 +238,7 @@ Multitasking the easy way with __NimBLE Porting Layer__.
 
 # Bootloader for BL602
 
-All about the __BL602 Bootloader__... And how it loads the Application Firmware into XIP Flash Memory.
+All about the __BL602 / BL604 Bootloader__... And how it loads the Application Firmware into XIP Flash Memory.
 
 -   ["BL602 Bootloader"](https://lupyuen.github.io/articles/boot)
 
@@ -242,7 +246,7 @@ All about the __BL602 Bootloader__... And how it loads the Application Firmware 
 
 # BL706 Audio Video Board
 
-What's inside the Bouffalo Lab RISC-V BL706 Audio Video Board... And how it differs from BL602.
+What's inside the Bouffalo Lab RISC-V BL706 Audio Video Board... And how it differs from BL602 / BL604.
 
 -   ["RISC-V BL706 Audio Video Board"](https://lupyuen.github.io/articles/bl706)
 
@@ -252,9 +256,11 @@ What's inside the Bouffalo Lab RISC-V BL706 Audio Video Board... And how it diff
 
 Check this book again for future updates...
 
-1.  __IoT Education with BL602 and BL602__
+1.  __IoT Education with BL602 and BL604__
 
-1.  __Rust Wrappers for BL602__ [(See this)](https://github.com/lupyuen/bl602-rust-wrapper)
+1.  __PineDio Stack BL604 with LoRa SX1262__ [(See this)](https://www.pine64.org/2021/07/15/july-update/)
+
+1.  __Rust Wrappers for BL602 and BL604__ [(See this)](https://github.com/lupyuen/bl602-rust-wrapper)
 
 ![About the Author](https://lupyuen.github.io/images/book-advocate.jpg)
 
