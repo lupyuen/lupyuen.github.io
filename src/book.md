@@ -202,9 +202,9 @@ How we run __TensorFlow Lite__ on BL602 and BL604 to create a Glowing LED.
 
 ![Mynewt on BL602](https://lupyuen.github.io/images/book-mynewt.jpg)
 
-# Mynewt on BL602
+# Mynewt and NuttX on BL602
 
-Will BL602 and BL604 run without FreeRTOS? Study the ongoing port of __Apache Mynewt operating system__ to BL602 / BL604.
+Will BL602 and BL604 run without FreeRTOS? Study the ongoing port of __Apache Mynewt and NuttX operating systems__ to BL602 / BL604.
 
 -   ["Porting Mynewt to PineCone BL602"](https://lupyuen.github.io/articles/mynewt)
 
