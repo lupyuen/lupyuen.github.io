@@ -1962,6 +1962,8 @@ Follow these steps to create a new BL602 Project (like `sdk_app_lorawan`)...
     CFLAGS += -DLORA_APP_AUTO_JOIN=0
     ```
 
+    __UPDATE:__ The above flags won't work for C++ programs. Instead we should set __`CFLAGS` and `CPPFLAGS`__ in __`bouffalo.mk`__ inside the Sub Folder. [(Here's an example for TensorFlow Lite Firmware)](https://lupyuen.github.io/articles/tflite#compiler-flags)
+
 1.  __For macOS Only__: Edit the __`run.sh` script__ in the new folder and set the Project Name: [`sdk_app_lorawan/run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/run.sh)
 
     ```bash
@@ -2058,6 +2060,10 @@ To create your own BL602 Library...
     -   [__AWS IoT `bouffalo.mk`__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/3rdparty/aws-iot/bouffalo.mk)
 
     -   [__AWS IoT `component.mk`__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/3rdparty/aws-iot/component.mk)
+
+1.  For __GCC Compiler Options__: We should set __`CFLAGS` and `CPPFLAGS`__ in __`bouffalo.mk`__ inside the Library Folder.
+
+    [(Here's an example for TensorFlow Lite Library)](https://lupyuen.github.io/articles/tflite#compiler-flags)
 
 How do we reference the BL602 Library in our BL602 Project?
 
