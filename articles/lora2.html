@@ -1748,6 +1748,7 @@ CFLAGS += -DCONFIG_LORA_NODE_REGION=1
 # Do not auto-join the LoRaWAN Network
 CFLAGS += -DLORA_APP_AUTO_JOIN=0
 </code></pre>
+<p><strong>UPDATE:</strong> The above flags won’t work for C++ programs. Instead we should set <strong><code>CFLAGS</code> and <code>CPPFLAGS</code></strong> in <strong><code>bouffalo.mk</code></strong> inside the Sub Folder. <a href="https://lupyuen.github.io/articles/tflite#compiler-flags">(Here’s an example for TensorFlow Lite Firmware)</a></p>
 </li>
 <li>
 <p><strong>For macOS Only</strong>: Edit the <strong><code>run.sh</code> script</strong> in the new folder and set the Project Name: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/run.sh"><code>sdk_app_lorawan/run.sh</code></a></p>
@@ -1853,6 +1854,10 @@ COMPONENT_SUBMODULES :=
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/3rdparty/aws-iot/component.mk"><strong>AWS IoT <code>component.mk</code></strong></a></p>
 </li>
 </ul>
+</li>
+<li>
+<p>For <strong>GCC Compiler Options</strong>: We should set <strong><code>CFLAGS</code> and <code>CPPFLAGS</code></strong> in <strong><code>bouffalo.mk</code></strong> inside the Library Folder.</p>
+<p><a href="https://lupyuen.github.io/articles/tflite#compiler-flags">(Here’s an example for TensorFlow Lite Library)</a></p>
 </li>
 </ol>
 <p>How do we reference the BL602 Library in our BL602 Project?</p>
