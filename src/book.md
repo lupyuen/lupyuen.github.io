@@ -264,7 +264,9 @@ Check this book again for future updates...
 
 1.  __PineDio Stack BL604 with LoRa SX1262__ [(See this)](https://www.pine64.org/2021/07/15/july-update/)
 
-1.  __Rust Wrappers for BL602 and BL604__ [(See this)](https://github.com/lupyuen/bl602-rust-wrapper)
+1.  __Rust Wrapper for BL602 / BL604 IoT SDK__ [(See this)](https://github.com/lupyuen/bl602-rust-wrapper)
+
+    [(See the Twitter Thread)](https://twitter.com/MisterTechBlog/status/1416608940876435462)
 
 ![About the Author](https://lupyuen.github.io/images/book-advocate.jpg)
 
