@@ -116,6 +116,8 @@ How we read __ADC inputs__ on BL602 and BL604.
 
 -   [Read BL602 LED via ADC as Light Sensor](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc/sdk_app_adc/demo.c)
 
+    [(See the Twitter Thread)](https://twitter.com/MisterTechBlog/status/1418025678251773954)
+
 -   [Read BL602 Onboard Temperature Sensor via ADC](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_adc.c#L224-L282)
 
 ![WiFi on BL602](https://lupyuen.github.io/images/book-wifi.jpg)
