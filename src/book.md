@@ -100,6 +100,8 @@ How we __accelerate data transfers with DMA__ on BL602 and BL604.
 
 -   ["SPI with Direct Memory Access"](https://lupyuen.github.io/articles/spi#spi-with-direct-memory-access)
 
+-   [Read LED via ADC DMA](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c)
+
 ![UART on BL602](https://lupyuen.github.io/images/book-uart.jpg)
 
 # UART on BL602
