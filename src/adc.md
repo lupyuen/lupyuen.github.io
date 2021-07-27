@@ -2,7 +2,27 @@
 
 📝 _8 Aug 2021_
 
-(Yep It's Always Sunny in Singapore ... So this Sunshine Sensor won't be so useful in Singapore 😂)
+Today we shall magically transform __any RISC-V BL602 Board__ into a __Light Sensor!__
+
+We'll build this in C, then __port it to Rust.__
+
+_Wait... Do all BL602 Boards have an onboard Light Sensor?_
+
+Nope, all we need is a __BL602 Board with an LED__!
+
+Reading the LED with BL602's __Analog-to-Digital Converter (ADC)__ will turn it into a __simple, improvised Light Sensor.__ Amazing!
+
+_Will this work with any BL602 Board?_
+
+I tested this with __PineCone BL602__ and its onboard LED.
+
+It will probably work with any BL602 Board with an __onboard or external LED.__
+
+_Will our Light Sensor detect any kind of light?_
+
+Our LED-turned-Light-Sensor works best for __detecting sunlight__.
+
+(Yep It's Always Sunny in Singapore ... So this Sunlight Sensor won't be so useful in Singapore 😂)
 
 ![Testing the improvised Light Sensor on PineCone BL602 RISC-V Board. BTW that's the moon](https://lupyuen.github.io/images/adc-title.jpg)
 
@@ -17,6 +37,30 @@ TODO
 _PineCone RGB LED Schematic_
 
 # BL602 ADC in Rust
+
+TODO
+
+# Build the BL602 Rust Firmware
+
+TODO
+
+# Flash the BL602 Rust Firmware
+
+TODO
+
+# Run the BL602 Rust Firmware
+
+TODO
+
+# Rust Wrapper for BL602 IoT SDK
+
+TODO
+
+# Call C Functions from Rust
+
+TODO
+
+# Convert C Pointers to Rust
 
 TODO
 
