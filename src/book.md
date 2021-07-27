@@ -116,7 +116,7 @@ UART is used by E-Ink Displays, GPS Receivers and LoRa Transceivers. To talk to 
 
 How we read __Analog Inputs with ADC__ on BL602 and BL604.
 
--   ["Rust on RISC-V BL602: Is It Sunny?"](https://lupyuen.github.io/articles/adc)
+-   ["BL602 ADC in C"](https://lupyuen.github.io/articles/adc#bl602-adc-in-c)
 
 -   [Read LED via ADC High Level HAL (as Light Sensor)](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc/sdk_app_adc/demo.c)
 
