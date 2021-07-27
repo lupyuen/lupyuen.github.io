@@ -16,7 +16,7 @@ Is there a book about the __BL602 / BL604 SoC__ (RISC-V, WiFi and Bluetooth LE) 
 
 _You're reading the book right now!_
 
-Use this book to navigate the numerous BL602 / BL604 articles that have been published on this site. __(23 articles and still growing!)__
+Use this book to navigate the numerous BL602 / BL604 articles that have been published on this site. __(24 articles and still growing!)__
 
 The programs in these articles have been tested on __PineCone__, but they should work on other __BL602 and BL604 Boards: PineDio Stack (BL604), Pinenut, DT-BL10, MagicHome BL602__.
 
@@ -114,7 +114,9 @@ UART is used by E-Ink Displays, GPS Receivers and LoRa Transceivers. To talk to 
 
 # ADC on BL602
 
-How we read __Analogue Inputs with ADC__ on BL602 and BL604.
+How we read __Analog Inputs with ADC__ on BL602 and BL604.
+
+-   ["Rust on RISC-V BL602: Is It Sunny?"](https://lupyuen.github.io/articles/adc)
 
 -   [Read LED via ADC High Level HAL (as Light Sensor)](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc/sdk_app_adc/demo.c)
 
@@ -181,6 +183,8 @@ How we __debug BL602 / BL604 firmware__ with GDB and VSCode.
 # Rust on BL602
 
 How we code BL602 and BL604 firmware the __safer, simpler way with Rust.__
+
+-   ["Rust on RISC-V BL602: Is It Sunny?"](https://lupyuen.github.io/articles/adc)
 
 -   ["Run Rust RISC-V Firmware with BL602 IoT SDK"](https://lupyuen.github.io/articles/rust)
 
