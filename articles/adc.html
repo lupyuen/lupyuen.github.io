@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <title>Rust on RISC-V BL602: Is It Sunny?</title>
+
+    
+    <!-- Begin scripts/articles/*-header.html: Article Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<meta property="og:title" 
+    content="Rust on RISC-V BL602: Is It Sunny?" 
+    data-rh="true">
+<meta property="og:description" 
+    content="Rust Firmware that reads Analog Inputs... With the Analog-to-Digital Converter on RISC-V BL602"
+    data-rh="true">
+<meta property="og:image" 
+    content="https://lupyuen.github.io/images/adc-title.jpg">
+<meta property="og:type" 
+    content="article" data-rh="true">
+<!-- End scripts/articles/*-header.html -->
+<!-- Begin scripts/rustdoc-header.html: Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<link rel="alternate" type="application/rss+xml" title="RSS Feed for lupyuen" href="/rss.xml" />
+<link rel="stylesheet" type="text/css" href="../normalize.css">
+<link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle">
+<link rel="stylesheet" type="text/css" href="../dark.css">
+<link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle">
+<link rel="stylesheet" type="text/css" href="../prism.css">
+<script src="../storage.js"></script><noscript>
+<link rel="stylesheet" href="../noscript.css"></noscript>
+<link rel="shortcut icon" href="../favicon.ico">
+<style type="text/css">
+    #crate-search {
+        background-image: url("../down-arrow.svg");
+    }
+    a {
+        color: #77d;
+    }
+</style>
+<!-- End scripts/rustdoc-header.html -->
+
+
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+        <!-- Begin scripts/rustdoc-before.html: Pre-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
+
+    <!-- Begin Theme Picker -->
+    <div class="theme-picker" style="left: 0"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg"
+        width="18" alt="Pick another theme!"></button>
+        <div id="theme-choices"></div>
+    </div>
+    <script src="../theme.js"></script>
+    <script src="../prism.js"></script>
+    <!-- Theme Picker -->
+
+    <!-- End scripts/rustdoc-before.html -->
+    
+
+    <h1 class="title">Rust on RISC-V BL602: Is It Sunny?</h1>
+    <nav id="TOC"><ul>
+<li><a href="#bl602-adc-in-c">1 BL602 ADC in C</a><ul></ul></li>
+<li><a href="#bl602-adc-in-rust">2 BL602 ADC in Rust</a><ul></ul></li>
+<li><a href="#whats-next">3 What’s Next</a><ul></ul></li>
+<li><a href="#notes">4 Notes</a><ul></ul></li></ul></nav><p>📝 <em>8 Aug 2021</em></p>
+<p>(Yep It’s Always Sunny in Singapore … So this Sunshine Sensor won’t be so useful in Singapore 😂)</p>
+<p><img src="https://lupyuen.github.io/images/adc-title.jpg" alt="Testing the improvised Light Sensor on PineCone BL602 RISC-V Board" /></p>
+<p><em>Testing the improvised Light Sensor on PineCone BL602 RISC-V Board</em></p>
+<h1 id="bl602-adc-in-c" class="section-header"><a href="#bl602-adc-in-c">1 BL602 ADC in C</a></h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/led-rgb.png" alt="PineCone RGB LED Schematic" /></p>
+<p><em>PineCone RGB LED Schematic</em></p>
+<h1 id="bl602-adc-in-rust" class="section-header"><a href="#bl602-adc-in-rust">2 BL602 ADC in Rust</a></h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/adc-pinebook.jpg" alt="Testing the improvised Light Sensor on PineCone BL602 with Pinebook Pro" /></p>
+<p><em>Testing the improvised Light Sensor on PineCone BL602 with Pinebook Pro</em></p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">3 What’s Next</a></h1>
+<p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen">GitHub Sponsors</a> for supporting my work! This article wouldn’t have been possible without your support.</p>
+<p>TODO</p>
+<ul>
+<li>
+<p><a href="https://github.com/sponsors/lupyuen">Sponsor me a coffee</a></p>
+</li>
+<li>
+<p><a href="https://www.reddit.com/r/RISCV/comments/o4u9e7/machine_learning_on_riscv_bl602_with_tensorflow/">Discuss this article on Reddit</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/book">Read “The RISC-V BL602 Book”</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io">Check out my articles</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/rss.xml">RSS Feed</a></p>
+</li>
+</ul>
+<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
+<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/adc.md"><code>lupyuen.github.io/src/adc.md</code></a></p>
+<h1 id="notes" class="section-header"><a href="#notes">4 Notes</a></h1>
+<ol>
+<li>
+<p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1416608940876435462">this Twitter Thread on Rust Wrapper for BL602 IoT SDK</a></p>
+<p>And <a href="https://twitter.com/MisterTechBlog/status/1418025678251773954">this Twitter Thread on BL602 ADC</a></p>
+</li>
+</ol>
+<p><img src="https://lupyuen.github.io/images/adc-title2.jpg" alt="Testing the improvised Light Sensor on PineCone BL602" /></p>
+
+    
+</body>
+</html>
