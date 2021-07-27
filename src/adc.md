@@ -4,9 +4,9 @@
 
 (Yep It's Always Sunny in Singapore ... So this Sunshine Sensor won't be so useful in Singapore 😂)
 
-![Testing the improvised Light Sensor on PineCone BL602 RISC-V Board](https://lupyuen.github.io/images/adc-title.jpg)
+![Testing the improvised Light Sensor on PineCone BL602 RISC-V Board. BTW that's the moon](https://lupyuen.github.io/images/adc-title.jpg)
 
-_Testing the improvised Light Sensor on PineCone BL602 RISC-V Board_
+_Testing the improvised Light Sensor on PineCone BL602 RISC-V Board. BTW that's the moon_
 
 # BL602 ADC in C
 
