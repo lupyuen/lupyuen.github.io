@@ -431,13 +431,22 @@ From [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_
 
 ```rust
 #![no_std]  //  Use the Rust Core Library instead of the Rust Standard Library, which is not compatible with embedded systems
+```
 
+TODO
+
+```rust
 //  Import Libraries
 use core::{          //  Rust Core Library
   fmt::Write,        //  String Formatting    
   mem::transmute,    //  Pointer Casting
   panic::PanicInfo,  //  Panic Handler
 };
+```
+
+TODO
+
+```rust
 use bl602_sdk::{     //  Rust Wrapper for BL602 IoT SDK
   adc,               //  ADC HAL
   dma,               //  DMA HAL
@@ -445,26 +454,47 @@ use bl602_sdk::{     //  Rust Wrapper for BL602 IoT SDK
   Ptr,               //  C Pointer
   String,            //  Strings (limited to 64 chars)
 };
+```
 
+TODO
+
+```rust
 /// GPIO Pin Number that will be configured as ADC Input.
 /// PineCone Blue LED is connected on BL602 GPIO 11.
 /// PineCone Green LED is connected on BL602 GPIO 14.
 /// Only these GPIOs are supported: 4, 5, 6, 9, 10, 11, 12, 13, 14, 15
 /// TODO: Change the GPIO Pin Number for your BL602 board
 const ADC_GPIO: i32 = 11;
+```
 
+TODO
+
+```rust
 /// We set the ADC Frequency to 10 kHz according to <https://wiki.analog.com/university/courses/electronics/electronics-lab-led-sensor?rev=1551786227>
 /// This is 10,000 samples per second.
 const ADC_FREQUENCY: u32 = 10000;  //  Hz
+```
 
+TODO
+
+```rust
 /// We shall read 100 ADC samples, which will take 0.01 seconds
 const ADC_SAMPLES: usize = 100;
+```
 
+TODO
+
+```rust
 /// Set ADC Gain to Level 1 to increase the ADC sensitivity.
 /// To disable ADC Gain, set `ADC_GAIN1` and `ADC_GAIN2` to `ADC_PGA_GAIN_NONE`.
 /// See <https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Inc/bl602_adc.h#L133-L144>
 const ADC_GAIN1: u32 = ADC_PGA_GAIN_1;
 const ADC_GAIN2: u32 = ADC_PGA_GAIN_1;
+```
+
+TODO
+
+```rust
 const ADC_PGA_GAIN_1: u32 = 1;  //  From <https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Inc/bl602_adc.h#L133-L144>
 ```
 
@@ -485,33 +515,61 @@ extern "C" fn init_adc(  //  Declare `extern "C"` because it will be called by B
   _argv: *const *const u8  //  Array of command line args (char **)
 ) {
   puts("[Rust] Init ADC");
+```
 
+TODO
+
+```rust
   //  Only these GPIOs are supported: 4, 5, 6, 9, 10, 11, 12, 13, 14, 15
   assert!(ADC_GPIO==4 || ADC_GPIO==5 || ADC_GPIO==6 || ADC_GPIO==9 || ADC_GPIO==10 || ADC_GPIO==11 || ADC_GPIO==12 || ADC_GPIO==13 || ADC_GPIO==14 || ADC_GPIO==15);
 
   //  For Single-Channel Conversion Mode, frequency must be between 500 and 16,000 Hz
   assert!(ADC_FREQUENCY >= 500 && ADC_FREQUENCY <= 16000);
+```
 
+TODO
+
+```rust
   //  Init the ADC Frequency for Single-Channel Conversion Mode
   adc::freq_init(1, ADC_FREQUENCY)
     .expect("ADC Freq failed");
+```
 
+TODO
+
+```rust
   //  Init the ADC GPIO for Single-Channel Conversion Mode
   adc::init(1, ADC_GPIO)
     .expect("ADC Init failed");
+```
 
+TODO
+
+```rust
   //  Enable ADC Gain to increase the ADC sensitivity
   let rc = unsafe { set_adc_gain(ADC_GAIN1, ADC_GAIN2) };  //  Unsafe because we are calling C function
   assert!(rc == 0);
+```
 
+TODO
+
+```rust
   //  Init DMA for the ADC Channel for Single-Channel Conversion Mode
   adc::dma_init(1, ADC_SAMPLES as u32)
     .expect("DMA Init failed");
+```
 
+TODO
+
+```rust
   //  Configure the GPIO Pin as ADC Input, no pullup, no pulldown
   adc::gpio_init(ADC_GPIO)
     .expect("ADC GPIO failed");
+```
 
+TODO
+
+```rust
   //  Get the ADC Channel Number for the GPIO Pin
   let channel = adc::get_channel_by_gpio(ADC_GPIO)
     .expect("ADC Channel failed");
@@ -519,7 +577,11 @@ extern "C" fn init_adc(  //  Declare `extern "C"` because it will be called by B
   //  Get the DMA Context for the ADC Channel
   let ptr = dma::find_ctx_by_channel(adc::ADC_DMA_CHANNEL as i32)
     .expect("DMA Ctx failed");
+```
 
+TODO
+
+```rust
   //  Cast the returned C Pointer (void *) to a DMA Context Pointer (adc_ctx *)
   let ctx = unsafe {     //  Unsafe because we are casting a pointer
     transmute::<         //  Cast the type...
@@ -527,12 +589,20 @@ extern "C" fn init_adc(  //  Declare `extern "C"` because it will be called by B
       *mut adc::adc_ctx  //  To DMA Context Pointer (adc_ctx *)
     >(ptr)               //  For this pointer
   };
+```
 
+TODO
+
+```rust
   //  Indicate that the GPIO has been configured for ADC
   unsafe {  //  Unsafe because we are dereferencing a pointer
     (*ctx).chan_init_table |= 1 << channel;
   }
+```
 
+TODO
+
+```rust
   //  Start reading the ADC via DMA
   adc::start()
     .expect("ADC Start failed");
@@ -555,10 +625,11 @@ extern "C" fn read_adc(   //  Declare `extern "C"` because it will be called by 
   _argc: i32,              //  Number of command line args (int)
   _argv: *const *const u8  //  Array of command line args (char **)
 ) {
-  //  Array that will store last 1,000 ADC Samples
-  let mut adc_data: [u32; ADC_SAMPLES]
-    = [0; ADC_SAMPLES];  //  Init array to zeroes
+```
 
+TODO
+
+```rust
   //  Get the ADC Channel Number for the GPIO Pin
   let channel = adc::get_channel_by_gpio(ADC_GPIO)
     .expect("ADC Channel failed");
@@ -566,7 +637,11 @@ extern "C" fn read_adc(   //  Declare `extern "C"` because it will be called by 
   //  Get the DMA Context for the ADC Channel
   let ptr = dma::find_ctx_by_channel(adc::ADC_DMA_CHANNEL as i32)
     .expect("DMA Ctx failed");
+```
 
+TODO
+
+```rust
   //  Cast the returned C Pointer (void *) to a DMA Context Pointer (adc_ctx *)
   let ctx = unsafe {     //  Unsafe because we are casting a pointer
     transmute::<         //  Cast the type...
@@ -574,18 +649,38 @@ extern "C" fn read_adc(   //  Declare `extern "C"` because it will be called by 
       *mut adc::adc_ctx  //  To DMA Context Pointer (adc_ctx *)
     >(ptr)               //  For this pointer
   };
+```
 
+TODO
+
+```rust
   //  Verify that the GPIO has been configured for ADC
   unsafe {  //  Unsafe because we are dereferencing a pointer
     assert!(((1 << channel) & (*ctx).chan_init_table) != 0);
   }
+```
 
+TODO
+
+```rust
   //  If ADC Sampling is not finished, try again later    
   if unsafe { (*ctx).channel_data.is_null() } {  //  Unsafe because we are dereferencing a pointer
     puts("ADC Sampling not finished");
     return;
   }
+```
 
+TODO
+
+```rust
+  //  Array that will store last 1,000 ADC Samples
+  let mut adc_data: [u32; ADC_SAMPLES]
+    = [0; ADC_SAMPLES];  //  Init array to zeroes
+```
+
+TODO
+
+```rust
   //  Copy the read ADC Samples to the static array
   unsafe {                    //  Unsafe because we are copying raw memory
     core::ptr::copy(          //  Copy the memory...
@@ -594,7 +689,11 @@ extern "C" fn read_adc(   //  Declare `extern "C"` because it will be called by 
       adc_data.len()          //  Number of Items (each item is uint32 or 4 bytes)
     );    
   }
+```
 
+TODO
+
+```rust
   //  Compute the average value of the ADC Samples
   let mut sum = 0;
   for i in 0..ADC_SAMPLES {
@@ -603,11 +702,21 @@ extern "C" fn read_adc(   //  Declare `extern "C"` because it will be called by 
     sum += scaled;
   }
   let avg = sum / ADC_SAMPLES as u32;
+```
 
-  //  Format the output and display it
+TODO
+
+```rust
+  //  Format the output
   let mut buf = String::new();
   write!(buf, "[Rust] Average: {}", avg)
     .expect("buf overflow");
+```
+
+TODO
+
+```rust
+  //  Display the formatted output
   puts(&buf);
 }
 ```
