@@ -193,7 +193,7 @@ void init_adc(char *buf, int len, int argc, char **argv) {
     rc = bl_adc_gpio_init(ADC_GPIO);
     assert(rc == 0);
 </code></pre>
-<p>TODO</p>
+<p>We update the <strong>DMA Context</strong> for the ADC Channel…</p>
 <pre><code class="language-c">    //  Get the ADC Channel Number for the GPIO Pin
     int channel = bl_adc_get_channel_by_gpio(ADC_GPIO);
 
@@ -204,20 +204,18 @@ void init_adc(char *buf, int len, int argc, char **argv) {
     //  Indicate that the GPIO has been configured for ADC
     ctx-&gt;chan_init_table |= (1 &lt;&lt; channel);
 </code></pre>
-<p>TODO</p>
+<p>Finally we start the <strong>ADC Channel</strong>…</p>
 <pre><code class="language-c">    //  Start reading the ADC via DMA
     bl_adc_start();
 }
 </code></pre>
+<p>BL602 ADC Controller will <strong>read the ADC Samples continuously</strong> (from the GPIO Pin) into RAM (until we stop the ADC Channel).</p>
 <h2 id="read-the-adc-channel" class="section-header"><a href="#read-the-adc-channel">1.3 Read the ADC Channel</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L79-L116"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// Command to compute the average value of the ADC Samples that have just been read.
 /// Based on `hal_adc_get_data` in &lt;https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_adc.c#L142-L179&gt;
 void read_adc(char *buf, int len, int argc, char **argv) {
-    //  Static array that will store 1,000 ADC Samples
-    static uint32_t adc_data[ADC_SAMPLES];
-
     //  Get the ADC Channel Number for the GPIO Pin
     int channel = bl_adc_get_channel_by_gpio(ADC_GPIO);
     
@@ -233,6 +231,9 @@ void read_adc(char *buf, int len, int argc, char **argv) {
         printf(&quot;ADC Sampling not finished\r\n&quot;);
         return;
     }
+
+    //  Static array that will store 1,000 ADC Samples
+    static uint32_t adc_data[ADC_SAMPLES];
 
     //  Copy the read ADC Samples to the static array
     memcpy(
