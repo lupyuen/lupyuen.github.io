@@ -415,7 +415,7 @@ Before diving into the Rust Firmware, let's walk through the steps for __creatin
 
 1.  Replace the __Rust Source Code__ in [`sdk_app_rust_adc/ rust/src/lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs) 
 
-1.  Remember to edit the __README.md file__ and fill in the project details
+1.  Remember to edit __`README.md`__ and fill in the project details
 
 # BL602 ADC in Rust
 

@@ -1997,7 +1997,7 @@ Follow these steps to create a new BL602 Project (like `sdk_app_lorawan`)...
     # TODO After Flashing: Switch GPIO 8 to Normal Mode. Restart the BL602 board.
     ```
 
-1.  Remember to edit the __README.md file__ and fill in the project details
+1.  Remember to edit __`README.md`__ and fill in the project details
 
 # Appendix: How To Create BL602 Libraries
 
