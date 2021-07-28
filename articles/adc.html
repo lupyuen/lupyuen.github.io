@@ -264,13 +264,20 @@ void read_adc(char *buf, int len, int argc, char **argv) {
 <p>And that’s how we code BL602 ADC Firmware in C!</p>
 <p><img src="https://lupyuen.github.io/images/adc-demo.png" alt="Running the BL602 ADC Firmware in C" /></p>
 <h2 id="run-the-c-firmware" class="section-header"><a href="#run-the-c-firmware">1.4 Run the C Firmware</a></h2>
-<p>Here’s what happens when we <strong>flash and run</strong> the C Firmware for BL602 ADC: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/"><code>sdk_app_adc2</code></a></p>
-<p>TODO</p>
+<p>Watch what happens when we <strong>flash and run</strong> the C Firmware for BL602 ADC: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/"><code>sdk_app_adc2</code></a></p>
+<ol>
+<li>
+<p>Enter this command to <strong>initialise the ADC Channel</strong>…</p>
 <pre><code class="language-text"># init_adc
-
-[In darkness]
-
-# read_adc
+</code></pre>
+<p>(We’ve seen this function earlier)</p>
+</li>
+<li>
+<p>Place the BL602 Board (with LED) in a <strong>dark place</strong>.</p>
+</li>
+<li>
+<p>Enter the <code>read_adc</code> command a few times to get the <strong>average values</strong> of the last 1,000 ADC Samples…</p>
+<pre><code class="language-text"># read_adc
 Average: 1416
 
 # read_adc
@@ -278,10 +285,14 @@ Average: 1416
 
 # read_adc
 Average: 1416
-
-[In sunlight]
-
-# read_adc
+</code></pre>
+</li>
+<li>
+<p>Now place the BL602 Board (with LED) <strong>under sunlight</strong>.</p>
+</li>
+<li>
+<p>Enter the <code>read_adc</code> command a few times…</p>
+<pre><code class="language-text"># read_adc
 Average: 1408
 
 # read_adc
@@ -289,10 +300,12 @@ Average: 1408
 
 # read_adc
 Average: 1408
-
-[In darkness]
-
-# read_adc
+</code></pre>
+<p>Note that the average values have <strong>dropped from 1416 to 1408.</strong></p>
+</li>
+<li>
+<p>Place the BL602 Board (with LED) <strong>back in the dark</strong> and check the average values…</p>
+<pre><code class="language-text"># read_adc
 Average: 1417
 
 # read_adc
@@ -301,6 +314,10 @@ Average: 1416
 # read_adc
 Average: 1416
 </code></pre>
+<p>The average values have <strong>increased from 1408 to 1416.</strong></p>
+<p>Yep our improvised BL602 Light Sensor works!</p>
+</li>
+</ol>
 <h2 id="set-the-adc-gain" class="section-header"><a href="#set-the-adc-gain">1.5 Set the ADC Gain</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L118-L146"><code>demo.c</code></a></p>
