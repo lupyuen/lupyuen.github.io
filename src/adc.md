@@ -464,7 +464,7 @@ use bl602_sdk::{     //  Rust Wrapper for BL602 IoT SDK
 };
 ```
 
-We shall be reading __GPIO 11__ (the Blue LED) as ADC Input...
+We shall read __GPIO 11__ (the Blue LED) as ADC Input...
 
 ```rust
 /// GPIO Pin Number that will be configured as ADC Input.
