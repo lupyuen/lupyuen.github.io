@@ -44,9 +44,9 @@ For light sensing, we shall __read the voltage__ from this LED GPIO with BL602's
 
 Let's study the __C Firmware for BL602 ADC__: [`sdk_app_adc2`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/)
 
-We shall...
+By calling the [__BL602 ADC Low Level HAL__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_adc.c) (Hardware Abstraction Layer), we shall...
 
-1.  __Initialise the ADC Channel__ for the LED GPIO
+1.  __Initialise the ADC Channel__ for reading our LED GPIO
 
 1.  __Compute the average value__ of the ADC Samples that have been read
 
@@ -100,9 +100,7 @@ More about ADC Gain in a while.
 
 ## Initialise the ADC Channel
 
-TODO
-
-From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L36-L77)
+Here's how we __initialise the ADC Channel__ for reading our LED GPIO: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L36-L77)
 
 ```c
 /// Command to init the ADC Channel and start reading the ADC Samples.
@@ -119,7 +117,27 @@ void init_adc(char *buf, int len, int argc, char **argv) {
     assert(rc == 0);
 ```
 
-TODO
+Our __`init_adc` Command__ begins by validating the __GPIO Pin Number and ADC Frequency__.
+
+Then it calls __`bl_adc_freq_init`__ to set the ADC Frequency.
+
+(Functions named `bl_adc_*` are defined in the [BL602 ADC Low Level HAL](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_adc.c))
+
+The first parameter to `bl_adc_freq_init` selects the __ADC Mode__...
+
+-   ADC Mode 0: __Scan Conversion Mode__
+
+    BL602 ADC Controller reads __One ADC Sample__ from __Multiple ADC Channels.__
+
+    (So it's scanning across multiple ADC Channels, recording one sample per channel)
+
+-   ADC Mode 1: __Single-Channel Conversion Mode__
+
+    BL602 ADC Controller reads __Multiple ADC Samples__ continuously from __One ADC Channel.__
+
+    (This is the mode we're using)
+
+Next we set the __ADC GPIO Pin Number__ for ADC Mode 1 (Single-Channel Conversion)...
 
 ```c
     //  Init the ADC GPIO for Single-Channel Conversion Mode
@@ -127,7 +145,7 @@ TODO
     assert(rc == 0);
 ```
 
-TODO
+To increase the ADC sensitivity, we set the __ADC Gain__...
 
 ```c
     //  Enable ADC Gain to increase the ADC sensitivity
@@ -135,7 +153,9 @@ TODO
     assert(rc == 0);
 ```
 
-TODO
+(More about this in a while)
+
+BL602 ADC Controller shall transfer the ADC Samples directly into RAM, thanks to the __Direct Memory Access (DMA) Controller__...
 
 ```c
     //  Init DMA for the ADC Channel for Single-Channel Conversion Mode
@@ -143,7 +163,7 @@ TODO
     assert(rc == 0);
 ```
 
-TODO
+We configure the GPIO Pin for __ADC Input__...
 
 ```c
     //  Configure the GPIO Pin as ADC Input, no pullup, no pulldown
@@ -160,11 +180,7 @@ TODO
     //  Get the DMA Context for the ADC Channel
     adc_ctx_t *ctx = bl_dma_find_ctx_by_channel(ADC_DMA_CHANNEL);
     assert(ctx != NULL);
-```
 
-TODO
-
-```c
     //  Indicate that the GPIO has been configured for ADC
     ctx->chan_init_table |= (1 << channel);
 ```
