@@ -117,9 +117,9 @@ void init_adc(char *buf, int len, int argc, char **argv) {
     assert(rc == 0);
 ```
 
-Our __`init_adc` Command__ begins by validating the __GPIO Pin Number and ADC Frequency__.
+Our __`init_adc` Command__ begins by validating the GPIO Pin Number and ADC Frequency.
 
-Then it calls __`bl_adc_freq_init`__ to set the ADC Frequency.
+Then it calls __`bl_adc_freq_init`__ to set the __ADC Frequency__.
 
 (Functions named `bl_adc_*` are defined in the [BL602 ADC Low Level HAL](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_adc.c))
 
@@ -187,7 +187,7 @@ We set the __DMA Context__ for the ADC Channel...
     ctx->chan_init_table |= (1 << channel);
 ```
 
-Finally we start the __ADC Channel__...
+Finally we __start the ADC Channel__...
 
 ```c
     //  Start reading the ADC via DMA
@@ -199,9 +199,9 @@ BL602 ADC Controller will __read the ADC Samples continuously__ (from the GPIO P
 
 ## Read the ADC Channel
 
-TODO
+_After starting the ADC Channel, how do we fetch the ADC Samples that have been read?_
 
-From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L79-L116)
+Let's find out in [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L79-L116) ...
 
 ```c
 /// Command to compute the average value of the ADC Samples that have just been read.
@@ -216,13 +216,25 @@ void read_adc(char *buf, int len, int argc, char **argv) {
 
     //  Verify that the GPIO has been configured for ADC
     assert(((1 << channel) & ctx->chan_init_table) != 0);
+```
 
+Our __`read_adc` Command__ begins by verifying the __DMA Context__ for the ADC Channel.
+
+Next we check whether the __ADC Sampling__ has been completed for the ADC Channel...
+
+```c
     //  If ADC Sampling is not finished, try again later    
     if (ctx->channel_data == NULL) {
         printf("ADC Sampling not finished\r\n");
         return;
     }
+```
 
+Remember that the BL602 ADC Controller will __read ADC Samples continuously__ and write the last 1,000 samples to RAM (via DMA).
+
+Let's __copy the last 1,000 ADC Samples__ from the DMA Context (in RAM) to a Static Buffer `adc_data`...
+
+```c
     //  Static array that will store 1,000 ADC Samples
     static uint32_t adc_data[ADC_SAMPLES];
 
@@ -232,7 +244,11 @@ void read_adc(char *buf, int len, int argc, char **argv) {
         (uint8_t*) (ctx->channel_data),  //  Source
         sizeof(adc_data)                 //  Size
     );  
+```
 
+Then we compute the __average value of the ADC Samples__ in `adc_data`...
+
+```c
     //  Compute the average value of the ADC Samples
     uint32_t sum = 0;
     for (int i = 0; i < ADC_SAMPLES; i++) {
@@ -243,6 +259,14 @@ void read_adc(char *buf, int len, int argc, char **argv) {
     printf("Average: %lu\r\n", (sum / ADC_SAMPLES));
 }
 ```
+
+The default ADC Configuration has roughly __12 Bits of Resolution per ADC Sample__.
+
+Thus we scale each ADC Sample to the range __0 to 3199__.
+
+And that's how we code BL602 ADC Firmware in C!
+
+![Running the BL602 ADC Firmware in C](https://lupyuen.github.io/images/adc-demo.png)
 
 ## Run the C Firmware
 
@@ -285,8 +309,6 @@ Average: 1416
 Average: 1416
 ```
 
-![](https://lupyuen.github.io/images/adc-demo.png)
-
 ## Set the ADC Gain
 
 TODO
@@ -324,6 +346,10 @@ static int set_adc_gain(uint32_t gain1, uint32_t gain2) {
     return 0;
 }
 ```
+
+# Create a BL602 Rust Project
+
+TODO
 
 # BL602 ADC in Rust
 
