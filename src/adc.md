@@ -2,25 +2,27 @@
 
 📝 _8 Aug 2021_
 
-Today we shall magically transform __any RISC-V BL602 Board__ into a __Light Sensor!__
+Today we shall magically transform [__any RISC-V BL602 Board__](https://lupyuen.github.io/articles/pinecone) into a __Light Sensor!__
 
-We'll build this in C, then __port it to Rust.__
+We'll code this firmware in C, then __port it to Rust.__
+
+(By calling the [__Rust Wrapper for BL602 IoT SDK__](https://crates.io/crates/bl602-sdk))
 
 _Wait... Do all BL602 Boards have an onboard Light Sensor?_
 
 Nope, all we need is a __BL602 Board with an LED__!
 
-Reading the LED with BL602's __Analog-to-Digital Converter (ADC)__ will turn it into a __simple, improvised Light Sensor.__
+Reading the LED with BL602's __Analog-to-Digital Converter (ADC)__ will turn it into a simple, improvised Light Sensor.
 
 _Amazing! Will this work with any BL602 Board?_
 
-I tested this with __PineCone BL602__ and its onboard LED.
+I tested this with [__PineCone BL602__](https://lupyuen.github.io/articles/pinecone) and its onboard LED.
 
-It will probably work with any BL602 Board with an __onboard or external LED.__
+It will probably work with any BL602 / BL604 Board with an __onboard or external LED:__ PineDio Stack, Pinenut, DT-BL10, MagicHome BL602, ...
 
 _Will our Light Sensor detect any kind of light?_
 
-Our LED-turned-Light-Sensor works best for __detecting sunlight__.
+Our LED-turned-Light-Sensor works best for __detecting sunlight__... We'll learn why in a while.
 
 (Yep It's Always Sunny in Singapore ... So this Sunlight Sensor won't be so useful in Singapore 😂)
 
@@ -30,11 +32,17 @@ _Testing the improvised Light Sensor on PineCone BL602 RISC-V Board. BTW that's 
 
 # BL602 ADC in C
 
-TODO
+On PineCone BL602, there is a __Blue LED__ connected on __GPIO Pin Number 11__...
 
 ![PineCone RGB LED Schematic](https://lupyuen.github.io/images/led-rgb.png)
 
-_PineCone RGB LED Schematic_
+[(From PineCone RGB LED Schematic)](https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf)
+
+We shall __read the voltage__ from this LED GPIO with BL602's Analog-to-Digital Converter (ADC).
+
+(Because LEDs will produce a current when exposed to light. [See this](https://wiki.analog.com/university/courses/electronics/electronics-lab-led-sensor?rev=1551786227))
+
+TODO
 
 # BL602 ADC in Rust
 
