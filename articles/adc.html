@@ -400,8 +400,18 @@ export APP_NAME=sdk_app_rust_adc
 </li>
 </ol>
 <h1 id="bl602-adc-in-rust" class="section-header"><a href="#bl602-adc-in-rust">3 BL602 ADC in Rust</a></h1>
-<p>TODO</p>
-<p>Let’s study the <strong>Rust Firmware for BL602 ADC</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc"><code>sdk_app_rust_adc</code></a></p>
+<p>Now we study the <strong>Rust Firmware for BL602 ADC</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc"><code>sdk_app_rust_adc</code></a></p>
+<p>We have <strong>converted the C Firmware to Rust</strong> line by line, so the Rust code will look highly similar to C.</p>
+<p>Recall that our firmware implements two commands…</p>
+<ol>
+<li>
+<p><strong>Initialise the ADC Channel</strong> for reading our LED GPIO</p>
+</li>
+<li>
+<p><strong>Compute the average value</strong> of the ADC Samples that have been read</p>
+</li>
+</ol>
+<p>Here is the Rust implementation…</p>
 <h2 id="definitions-1" class="section-header"><a href="#definitions-1">3.1 Definitions</a></h2>
 <p>We start by declaring to the Rust Compiler that we’re calling the <strong>Rust Core Library</strong> (instead of Rust Standard Library): <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L1-L37"><code>lib.rs</code></a></p>
 
