@@ -270,46 +270,64 @@ And that's how we code BL602 ADC Firmware in C!
 
 ## Run the C Firmware
 
-Here's what happens when we __flash and run__ the C Firmware for BL602 ADC: [`sdk_app_adc2`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/)
+Watch what happens when we __flash and run__ the C Firmware for BL602 ADC: [`sdk_app_adc2`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/)
 
-TODO
+1.  Enter this command to __initialise the ADC Channel__...
 
-```text
-# init_adc
+    ```text
+    # init_adc
+    ```
 
-[In darkness]
+    (We've seen this function earlier)
 
-# read_adc
-Average: 1416
+1.  Place the BL602 Board (with LED) in a __dark place__.
 
-# read_adc
-Average: 1416
+1.  Enter the `read_adc` command a few times to get the __average values__ of the last 1,000 ADC Samples...
 
-# read_adc
-Average: 1416
+    ```text
+    # read_adc
+    Average: 1416
 
-[In sunlight]
+    # read_adc
+    Average: 1416
 
-# read_adc
-Average: 1408
+    # read_adc
+    Average: 1416
+    ```
 
-# read_adc
-Average: 1408
+1.  Now place the BL602 Board (with LED) __under sunlight__.
 
-# read_adc
-Average: 1408
+1.  Enter the `read_adc` command a few times...
 
-[In darkness]
+    ```text
+    # read_adc
+    Average: 1408
 
-# read_adc
-Average: 1417
+    # read_adc
+    Average: 1408
 
-# read_adc
-Average: 1416
+    # read_adc
+    Average: 1408
+    ```
 
-# read_adc
-Average: 1416
-```
+    Note that the average values have __dropped from 1416 to 1408.__
+
+1.  Place the BL602 Board (with LED) __back in the dark__ and check the average values...
+
+    ```text
+    # read_adc
+    Average: 1417
+
+    # read_adc
+    Average: 1416
+
+    # read_adc
+    Average: 1416
+    ```
+
+    The average values have __increased from 1408 to 1416.__
+
+    Yep our improvised BL602 Light Sensor works!
 
 ## Set the ADC Gain
 
