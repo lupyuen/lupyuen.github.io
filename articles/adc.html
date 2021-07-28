@@ -403,12 +403,12 @@ export APP_NAME=sdk_app_rust_adc
 <p>TODO</p>
 <p>Let’s study the <strong>Rust Firmware for BL602 ADC</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc"><code>sdk_app_rust_adc</code></a></p>
 <h2 id="definitions-1" class="section-header"><a href="#definitions-1">3.1 Definitions</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L1-L37"><code>lib.rs</code></a></p>
+<p>We start by declaring to the Rust Compiler that we’re calling the <strong>Rust Core Library</strong> (instead of Rust Standard Library): <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L1-L37"><code>lib.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="attribute">#![<span class="ident">no_std</span>]</span>  <span class="comment">//  Use the Rust Core Library instead of the Rust Standard Library, which is not compatible with embedded systems</span></pre></div>
-<p>TODO</p>
+<p>(Rust Standard Library is too heavy for embedded programs)</p>
+<p>Next we <strong>import the functions</strong> from Rust Core Library that will be used in a while…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="comment">//  Import Libraries</span>
@@ -417,7 +417,7 @@ export APP_NAME=sdk_app_rust_adc
   <span class="ident">mem::transmute</span>,    <span class="comment">//  Pointer Casting</span>
   <span class="ident">panic::PanicInfo</span>,  <span class="comment">//  Panic Handler</span>
 };</pre></div>
-<p>TODO</p>
+<p>We import the <strong>Rust Wrapper for BL602 IoT SDK</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="kw">use</span> <span class="ident">bl602_sdk</span>::{     <span class="comment">//  Rust Wrapper for BL602 IoT SDK</span>
@@ -427,7 +427,7 @@ export APP_NAME=sdk_app_rust_adc
   <span class="ident">Ptr</span>,               <span class="comment">//  C Pointer</span>
   <span class="ident">String</span>,            <span class="comment">//  Strings (limited to 64 chars)</span>
 };</pre></div>
-<p>TODO</p>
+<p>We shall be reading <strong>GPIO 11</strong> (the Blue LED) as ADC Input…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="doccomment">/// GPIO Pin Number that will be configured as ADC Input.</span>
@@ -436,18 +436,16 @@ export APP_NAME=sdk_app_rust_adc
 <span class="doccomment">/// Only these GPIOs are supported: 4, 5, 6, 9, 10, 11, 12, 13, 14, 15</span>
 <span class="doccomment">/// TODO: Change the GPIO Pin Number for your BL602 board</span>
 <span class="kw">const</span> <span class="ident">ADC_GPIO</span>: <span class="ident">i32</span> <span class="op">=</span> <span class="number">11</span>;</pre></div>
-<p>TODO</p>
+<p>BL602 ADC Controller shall read <strong>10,000 ADC Samples per second</strong>, and remember the last <strong>100 ADC Samples</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="doccomment">/// We set the ADC Frequency to 10 kHz according to &lt;https://wiki.analog.com/university/courses/electronics/electronics-lab-led-sensor?rev=1551786227&gt;</span>
 <span class="doccomment">/// This is 10,000 samples per second.</span>
-<span class="kw">const</span> <span class="ident">ADC_FREQUENCY</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">10000</span>;  <span class="comment">//  Hz</span></pre></div>
-<p>TODO</p>
+<span class="kw">const</span> <span class="ident">ADC_FREQUENCY</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">10000</span>;  <span class="comment">//  Hz</span>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="doccomment">/// We shall read 100 ADC samples, which will take 0.01 seconds</span>
 <span class="kw">const</span> <span class="ident">ADC_SAMPLES</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">100</span>;</pre></div>
-<p>TODO</p>
+<p>We set the <strong>ADC Gain</strong> to increase the ADC sensitivity…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="doccomment">/// Set ADC Gain to Level 1 to increase the ADC sensitivity.</span>
@@ -455,7 +453,7 @@ export APP_NAME=sdk_app_rust_adc
 <span class="doccomment">/// See &lt;https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Inc/bl602_adc.h#L133-L144&gt;</span>
 <span class="kw">const</span> <span class="ident">ADC_GAIN1</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">ADC_PGA_GAIN_1</span>;
 <span class="kw">const</span> <span class="ident">ADC_GAIN2</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">ADC_PGA_GAIN_1</span>;</pre></div>
-<p>TODO</p>
+<p>But <code>ADC_PGA_GAIN_1</code> is missing from our Rust Wrapper. Thus we copy the value from the BL602 IoT SDK and define it here…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="kw">const</span> <span class="ident">ADC_PGA_GAIN_1</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">1</span>;  <span class="comment">//  From &lt;https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Inc/bl602_adc.h#L133-L144&gt;</span></pre></div>
