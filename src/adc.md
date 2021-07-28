@@ -10,9 +10,9 @@ _Wait... Do all BL602 Boards have an onboard Light Sensor?_
 
 Nope, all we need is a __BL602 Board with an LED__!
 
-Reading the LED with BL602's __Analog-to-Digital Converter (ADC)__ will turn it into a __simple, improvised Light Sensor.__ Amazing!
+Reading the LED with BL602's __Analog-to-Digital Converter (ADC)__ will turn it into a __simple, improvised Light Sensor.__
 
-_Will this work with any BL602 Board?_
+_Amazing! Will this work with any BL602 Board?_
 
 I tested this with __PineCone BL602__ and its onboard LED.
 
