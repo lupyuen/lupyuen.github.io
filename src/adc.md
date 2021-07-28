@@ -44,6 +44,12 @@ For light sensing, we shall __read the voltage__ from this LED GPIO with BL602's
 
 Let's study the __C Firmware for BL602 ADC__: [`sdk_app_adc2`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/)
 
+We shall...
+
+1.  __Initialise the ADC Channel__ for the LED GPIO
+
+1.  __Compute the average value__ of the ADC Samples that have been read
+
 ## Definitions
 
 We start by defining the __GPIO Pin Number__ that will be read via ADC: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L13-L31)
@@ -111,33 +117,61 @@ void init_adc(char *buf, int len, int argc, char **argv) {
     //  Init the ADC Frequency for Single-Channel Conversion Mode
     int rc = bl_adc_freq_init(1, ADC_FREQUENCY);
     assert(rc == 0);
+```
 
+TODO
+
+```c
     //  Init the ADC GPIO for Single-Channel Conversion Mode
     rc = bl_adc_init(1, ADC_GPIO);
     assert(rc == 0);
+```
 
+TODO
+
+```c
     //  Enable ADC Gain to increase the ADC sensitivity
     rc = set_adc_gain(ADC_GAIN1, ADC_GAIN2);
     assert(rc == 0);
+```
 
+TODO
+
+```c
     //  Init DMA for the ADC Channel for Single-Channel Conversion Mode
     rc = bl_adc_dma_init(1, ADC_SAMPLES);
     assert(rc == 0);
+```
 
+TODO
+
+```c
     //  Configure the GPIO Pin as ADC Input, no pullup, no pulldown
     rc = bl_adc_gpio_init(ADC_GPIO);
     assert(rc == 0);
+```
 
+TODO
+
+```c
     //  Get the ADC Channel Number for the GPIO Pin
     int channel = bl_adc_get_channel_by_gpio(ADC_GPIO);
 
     //  Get the DMA Context for the ADC Channel
     adc_ctx_t *ctx = bl_dma_find_ctx_by_channel(ADC_DMA_CHANNEL);
     assert(ctx != NULL);
+```
 
+TODO
+
+```c
     //  Indicate that the GPIO has been configured for ADC
     ctx->chan_init_table |= (1 << channel);
+```
 
+TODO
+
+```c
     //  Start reading the ADC via DMA
     bl_adc_start();
 }
