@@ -46,9 +46,7 @@ Let's study the __C Firmware for BL602 ADC__: [`sdk_app_adc2`](https://github.co
 
 ## Definitions
 
-TODO
-
-From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L13-L31)
+We start by defining the __GPIO Pin Number__ that will be read via ADC: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L13-L31)
 
 ```c
 /// GPIO Pin Number that will be configured as ADC Input.
