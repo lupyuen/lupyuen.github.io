@@ -75,23 +75,27 @@
 <li><a href="#convert-c-pointers-to-rust">8 Convert C Pointers to Rust</a><ul></ul></li>
 <li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
 <li><a href="#notes">10 Notes</a><ul></ul></li></ul></nav><p>📝 <em>8 Aug 2021</em></p>
-<p>Today we shall magically transform <strong>any RISC-V BL602 Board</strong> into a <strong>Light Sensor!</strong></p>
-<p>We’ll build this in C, then <strong>port it to Rust.</strong></p>
+<p>Today we shall magically transform <a href="https://lupyuen.github.io/articles/pinecone"><strong>any RISC-V BL602 Board</strong></a> into a <strong>Light Sensor!</strong></p>
+<p>We’ll code this firmware in C, then <strong>port it to Rust.</strong></p>
+<p>(By calling the <a href="https://crates.io/crates/bl602-sdk"><strong>Rust Wrapper for BL602 IoT SDK</strong></a>)</p>
 <p><em>Wait… Do all BL602 Boards have an onboard Light Sensor?</em></p>
 <p>Nope, all we need is a <strong>BL602 Board with an LED</strong>!</p>
-<p>Reading the LED with BL602’s <strong>Analog-to-Digital Converter (ADC)</strong> will turn it into a <strong>simple, improvised Light Sensor.</strong></p>
+<p>Reading the LED with BL602’s <strong>Analog-to-Digital Converter (ADC)</strong> will turn it into a simple, improvised Light Sensor.</p>
 <p><em>Amazing! Will this work with any BL602 Board?</em></p>
-<p>I tested this with <strong>PineCone BL602</strong> and its onboard LED.</p>
-<p>It will probably work with any BL602 Board with an <strong>onboard or external LED.</strong></p>
+<p>I tested this with <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602</strong></a> and its onboard LED.</p>
+<p>It will probably work with any BL602 / BL604 Board with an <strong>onboard or external LED:</strong> PineDio Stack, Pinenut, DT-BL10, MagicHome BL602, …</p>
 <p><em>Will our Light Sensor detect any kind of light?</em></p>
-<p>Our LED-turned-Light-Sensor works best for <strong>detecting sunlight</strong>.</p>
+<p>Our LED-turned-Light-Sensor works best for <strong>detecting sunlight</strong>… We’ll learn why in a while.</p>
 <p>(Yep It’s Always Sunny in Singapore … So this Sunlight Sensor won’t be so useful in Singapore 😂)</p>
 <p><img src="https://lupyuen.github.io/images/adc-title.jpg" alt="Testing the improvised Light Sensor on PineCone BL602 RISC-V Board. BTW that’s the moon" /></p>
 <p><em>Testing the improvised Light Sensor on PineCone BL602 RISC-V Board. BTW that’s the moon</em></p>
 <h1 id="bl602-adc-in-c" class="section-header"><a href="#bl602-adc-in-c">1 BL602 ADC in C</a></h1>
-<p>TODO</p>
+<p>On PineCone BL602, there is a <strong>Blue LED</strong> connected on <strong>GPIO Pin Number 11</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/led-rgb.png" alt="PineCone RGB LED Schematic" /></p>
-<p><em>PineCone RGB LED Schematic</em></p>
+<p><a href="https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf">(From PineCone RGB LED Schematic)</a></p>
+<p>We shall <strong>read the voltage</strong> from this LED GPIO with BL602’s Analog-to-Digital Converter (ADC).</p>
+<p>(Because LEDs will produce a current when exposed to light. <a href="https://wiki.analog.com/university/courses/electronics/electronics-lab-led-sensor?rev=1551786227">See this</a>)</p>
+<p>TODO</p>
 <h1 id="bl602-adc-in-rust" class="section-header"><a href="#bl602-adc-in-rust">2 BL602 ADC in Rust</a></h1>
 <p>TODO</p>
 <h1 id="build-the-bl602-rust-firmware" class="section-header"><a href="#build-the-bl602-rust-firmware">3 Build the BL602 Rust Firmware</a></h1>
