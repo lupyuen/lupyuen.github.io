@@ -455,7 +455,7 @@ export APP_NAME=sdk_app_rust_adc
 
 <span class="doccomment">/// We shall read 100 ADC samples, which will take 0.01 seconds</span>
 <span class="kw">const</span> <span class="ident">ADC_SAMPLES</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">100</span>;</pre></div>
-<p>We set the <strong>ADC Gain</strong> to increase the ADC sensitivity…</p>
+<p>We shall set the <strong>ADC Gain</strong> to increase the ADC sensitivity…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="doccomment">/// Set ADC Gain to Level 1 to increase the ADC sensitivity.</span>
@@ -463,7 +463,8 @@ export APP_NAME=sdk_app_rust_adc
 <span class="doccomment">/// See &lt;https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Inc/bl602_adc.h#L133-L144&gt;</span>
 <span class="kw">const</span> <span class="ident">ADC_GAIN1</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">ADC_PGA_GAIN_1</span>;
 <span class="kw">const</span> <span class="ident">ADC_GAIN2</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">ADC_PGA_GAIN_1</span>;</pre></div>
-<p>But <code>ADC_PGA_GAIN_1</code> is missing from our Rust Wrapper. Thus we copy the value from the BL602 IoT SDK and define it here…</p>
+<p>But <strong><code>ADC_PGA_GAIN_1</code></strong> is missing from our Rust Wrapper.</p>
+<p>Thus we copy the value from BL602 IoT SDK and define it here…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="kw">const</span> <span class="ident">ADC_PGA_GAIN_1</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">1</span>;  <span class="comment">//  From &lt;https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Inc/bl602_adc.h#L133-L144&gt;</span></pre></div>
