@@ -389,7 +389,9 @@ Before diving into the Rust Firmware, let's walk through the steps for __creatin
 
     -   [__Project Folder for `sdk_app_rust_gpio`__](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_gpio)
 
-1.  __Paste the Project Folder__ into __`bl_iot_sdk/customer_app`__ and rename it (like `sdk_app_rust_adc`).
+1.  __Paste the Project Folder__ into __`bl_iot_sdk/customer_app`__ and rename it (like `sdk_app_rust_adc`)...
+
+    ![BL602 Rust Project](https://lupyuen.github.io/images/adc-project.png)
 
     Be sure to __rename the Sub Folder__ too. (The `sdk_app_rust_adc` inside `sdk_app_rust_adc`)
 
@@ -411,7 +413,7 @@ Before diving into the Rust Firmware, let's walk through the steps for __creatin
     export APP_NAME=sdk_app_rust_adc
     ```
 
-1.  Replace the __Rust Code__ in [`sdk_app_rust_adc/ rust/src/lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs) 
+1.  Replace the __Rust Source Code__ in [`sdk_app_rust_adc/ rust/src/lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs) 
 
 1.  Remember to edit the __README.md file__ and fill in the project details
 
