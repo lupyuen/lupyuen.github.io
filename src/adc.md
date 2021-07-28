@@ -331,11 +331,23 @@ Watch what happens when we __flash and run__ the C Firmware for BL602 ADC: [`sdk
 
 ## Set the ADC Gain
 
-TODO
+Let's chat about __ADC Gain__, which we used when reading the LED as a Light Sensor. 
 
-[BL602 Standard Driver for ADC](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_adc.c#L152-L230)
+(ADC Gain probably won't be needed for reading most types of ADC Inputs)
 
-From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L118-L146)
+_Why do we need ADC Gain when reading an LED?_
+
+Our LED generates a __tiny bit of current__ when exposed to light. To measure that tiny bit of current, we need to increase the ADC sensitivity.
+
+Thus we __increase the ADC Gain__. (By default there's no ADC Gain)
+
+_BL602 HAL has a function that sets the ADC Gain right?_
+
+Sadly no. We need to go really low-level and call the [__BL602 Standard Driver for ADC__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_adc.c#L152-L230).
+
+(The BL602 Standard Driver directly manipulates the BL602 Hardware Registers)
+
+Here's the low-level code that __sets the ADC Gain__: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L118-L146)
 
 ```c
 /// Enable ADC Gain to increase the ADC sensitivity.
@@ -391,12 +403,12 @@ From [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_
 #![no_std]  //  Use the Rust Core Library instead of the Rust Standard Library, which is not compatible with embedded systems
 
 //  Import Libraries
-use core::{            //  Rust Core Library
+use core::{          //  Rust Core Library
   fmt::Write,        //  String Formatting    
   mem::transmute,    //  Pointer Casting
   panic::PanicInfo,  //  Panic Handler
 };
-use bl602_sdk::{       //  Rust Wrapper for BL602 IoT SDK
+use bl602_sdk::{     //  Rust Wrapper for BL602 IoT SDK
   adc,               //  ADC HAL
   dma,               //  DMA HAL
   puts,              //  Console Output
