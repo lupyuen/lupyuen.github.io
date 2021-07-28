@@ -231,6 +231,8 @@ Average: 1416
 Average: 1416
 ```
 
+![](https://lupyuen.github.io/images/adc-demo.png)
+
 ## Set the ADC Gain
 
 TODO
@@ -277,6 +279,8 @@ TODO
 
 TODO
 
+![](https://lupyuen.github.io/images/adc-build.png)
+
 # Flash the BL602 Rust Firmware
 
 TODO
@@ -284,6 +288,8 @@ TODO
 # Run the BL602 Rust Firmware
 
 TODO
+
+![](https://lupyuen.github.io/images/adc-demo2.png)
 
 # Why Sunlight?
 
@@ -300,6 +306,8 @@ TODO
 # Convert C Pointers to Rust
 
 TODO
+
+![](https://lupyuen.github.io/images/adc-cast.png)
 
 ![Testing the improvised Light Sensor on PineCone BL602 with Pinebook Pro](https://lupyuen.github.io/images/adc-pinebook.jpg)
 
@@ -331,4 +339,102 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     And [this Twitter Thread on BL602 ADC](https://twitter.com/MisterTechBlog/status/1418025678251773954)
 
+1.  ADC High Level HAL
+
+    TODO
+
+    ![BL602 ADC High Level HAL](https://lupyuen.github.io/images/adc-highlevel.png)
+
 ![Testing the improvised Light Sensor on PineCone BL602](https://lupyuen.github.io/images/adc-title2.jpg)
+
+TODO1
+
+![](https://lupyuen.github.io/images/adc-average.png)
+
+TODO2
+
+![](https://lupyuen.github.io/images/adc-bindgen.png)
+
+TODO4
+
+![](https://lupyuen.github.io/images/adc-compare.png)
+
+TODO6
+
+![](https://lupyuen.github.io/images/adc-copy.png)
+
+TODO7
+
+![](https://lupyuen.github.io/images/adc-doc.png)
+
+TODO10
+
+![](https://lupyuen.github.io/images/adc-doc2.png)
+
+TODO11
+
+![](https://lupyuen.github.io/images/adc-doc3.jpg)
+
+TODO12
+
+![](https://lupyuen.github.io/images/adc-doc4.jpg)
+
+TODO13
+
+![](https://lupyuen.github.io/images/adc-doc5.jpg)
+
+TODO14
+
+![](https://lupyuen.github.io/images/adc-doc6.jpg)
+
+TODO15
+
+![](https://lupyuen.github.io/images/adc-doclink.png)
+
+TODO16
+
+![](https://lupyuen.github.io/images/adc-doclink2.png)
+
+TODO17
+
+![](https://lupyuen.github.io/images/adc-doclink3.png)
+
+TODO18
+
+![](https://lupyuen.github.io/images/adc-format.jpg)
+
+TODO19
+
+![](https://lupyuen.github.io/images/adc-gain.png)
+
+TODO20
+
+![](https://lupyuen.github.io/images/adc-gain2.png)
+
+TODO21
+
+![](https://lupyuen.github.io/images/adc-gpio.png)
+
+TODO22
+
+![](https://lupyuen.github.io/images/adc-hal.png)
+
+TODO23
+
+![](https://lupyuen.github.io/images/adc-prefix.png)
+
+TODO27
+
+![](https://lupyuen.github.io/images/adc-rust.png)
+
+TODO28
+
+![](https://lupyuen.github.io/images/adc-rust2.png)
+
+TODO29
+
+![](https://lupyuen.github.io/images/adc-rustwrapper.png)
+
+TODO30
+
+![](https://lupyuen.github.io/images/adc-spi.png)
