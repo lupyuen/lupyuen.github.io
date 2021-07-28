@@ -102,10 +102,10 @@
 <p>For light sensing, we shall <strong>read the voltage</strong> from this LED GPIO with BL602’s Analog-to-Digital Converter (ADC).</p>
 <p>(Because LEDs will produce a current when exposed to light. <a href="https://wiki.analog.com/university/courses/electronics/electronics-lab-led-sensor?rev=1551786227">See this</a>)</p>
 <p>Let’s study the <strong>C Firmware for BL602 ADC</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/"><code>sdk_app_adc2</code></a></p>
-<p>We shall…</p>
+<p>By calling the <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_adc.c"><strong>BL602 ADC Low Level HAL</strong></a> (Hardware Abstraction Layer), we shall…</p>
 <ol>
 <li>
-<p><strong>Initialise the ADC Channel</strong> for the LED GPIO</p>
+<p><strong>Initialise the ADC Channel</strong> for reading our LED GPIO</p>
 </li>
 <li>
 <p><strong>Compute the average value</strong> of the ADC Samples that have been read</p>
@@ -142,8 +142,7 @@
 </code></pre>
 <p>More about ADC Gain in a while.</p>
 <h2 id="initialise-the-adc-channel" class="section-header"><a href="#initialise-the-adc-channel">1.2 Initialise the ADC Channel</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L36-L77"><code>demo.c</code></a></p>
+<p>Here’s how we <strong>initialise the ADC Channel</strong> for reading our LED GPIO: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L36-L77"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// Command to init the ADC Channel and start reading the ADC Samples.
 /// Based on `hal_adc_init` in &lt;https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_adc.c#L50-L102&gt;
 void init_adc(char *buf, int len, int argc, char **argv) {
@@ -157,22 +156,39 @@ void init_adc(char *buf, int len, int argc, char **argv) {
     int rc = bl_adc_freq_init(1, ADC_FREQUENCY);
     assert(rc == 0);
 </code></pre>
-<p>TODO</p>
+<p>Our <strong><code>init_adc</code> Command</strong> begins by validating the <strong>GPIO Pin Number and ADC Frequency</strong>.</p>
+<p>Then it calls <strong><code>bl_adc_freq_init</code></strong> to set the ADC Frequency.</p>
+<p>(Functions named <code>bl_adc_*</code> are defined in the <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_adc.c">BL602 ADC Low Level HAL</a>)</p>
+<p>The first parameter to <code>bl_adc_freq_init</code> selects the <strong>ADC Mode</strong>…</p>
+<ul>
+<li>
+<p>ADC Mode 0: <strong>Scan Conversion Mode</strong></p>
+<p>BL602 ADC Controller reads <strong>One ADC Sample</strong> from <strong>Multiple ADC Channels.</strong></p>
+<p>(So it’s scanning across multiple ADC Channels, recording one sample per channel)</p>
+</li>
+<li>
+<p>ADC Mode 1: <strong>Single-Channel Conversion Mode</strong></p>
+<p>BL602 ADC Controller reads <strong>Multiple ADC Samples</strong> continuously from <strong>One ADC Channel.</strong></p>
+<p>(This is the mode we’re using)</p>
+</li>
+</ul>
+<p>Next we set the <strong>ADC GPIO Pin Number</strong> for ADC Mode 1 (Single-Channel Conversion)…</p>
 <pre><code class="language-c">    //  Init the ADC GPIO for Single-Channel Conversion Mode
     rc = bl_adc_init(1, ADC_GPIO);
     assert(rc == 0);
 </code></pre>
-<p>TODO</p>
+<p>To increase the ADC sensitivity, we set the <strong>ADC Gain</strong>…</p>
 <pre><code class="language-c">    //  Enable ADC Gain to increase the ADC sensitivity
     rc = set_adc_gain(ADC_GAIN1, ADC_GAIN2);
     assert(rc == 0);
 </code></pre>
-<p>TODO</p>
+<p>(More about this in a while)</p>
+<p>BL602 ADC Controller shall transfer the ADC Samples directly into RAM, thanks to the <strong>Direct Memory Access (DMA) Controller</strong>…</p>
 <pre><code class="language-c">    //  Init DMA for the ADC Channel for Single-Channel Conversion Mode
     rc = bl_adc_dma_init(1, ADC_SAMPLES);
     assert(rc == 0);
 </code></pre>
-<p>TODO</p>
+<p>We configure the GPIO Pin for <strong>ADC Input</strong>…</p>
 <pre><code class="language-c">    //  Configure the GPIO Pin as ADC Input, no pullup, no pulldown
     rc = bl_adc_gpio_init(ADC_GPIO);
     assert(rc == 0);
@@ -184,9 +200,8 @@ void init_adc(char *buf, int len, int argc, char **argv) {
     //  Get the DMA Context for the ADC Channel
     adc_ctx_t *ctx = bl_dma_find_ctx_by_channel(ADC_DMA_CHANNEL);
     assert(ctx != NULL);
-</code></pre>
-<p>TODO</p>
-<pre><code class="language-c">    //  Indicate that the GPIO has been configured for ADC
+
+    //  Indicate that the GPIO has been configured for ADC
     ctx-&gt;chan_init_table |= (1 &lt;&lt; channel);
 </code></pre>
 <p>TODO</p>
