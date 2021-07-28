@@ -69,8 +69,6 @@ According to the BL602 Reference Manual, only the following GPIOs are __supporte
 
 ![ADC GPIO Pin Numbers](https://lupyuen.github.io/images/adc-pins.png)
 
-(Look at the __Analog__ column)
-
 Next we define the __ADC Frequency__. We shall read 10,000 ADC Samples every second...
 
 ```c
@@ -187,6 +185,8 @@ We set the __DMA Context__ for the ADC Channel...
     ctx->chan_init_table |= (1 << channel);
 ```
 
+(`bl_dma_find_ctx_by_channel` is defined in [BL602 DMA HAL](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_dma.c))
+
 Finally we __start the ADC Channel__...
 
 ```c
@@ -269,6 +269,8 @@ And that's how we code BL602 ADC Firmware in C!
 ![Running the BL602 ADC Firmware in C](https://lupyuen.github.io/images/adc-demo.png)
 
 ## Run the C Firmware
+
+Here's what happens when we __flash and run__ the C Firmware for BL602 ADC: [`sdk_app_adc2`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/)
 
 TODO
 
