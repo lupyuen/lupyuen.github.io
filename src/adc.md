@@ -55,20 +55,42 @@ We start by defining the __GPIO Pin Number__ that will be read via ADC: [`demo.c
 /// Only these GPIOs are supported: 4, 5, 6, 9, 10, 11, 12, 13, 14, 15
 /// TODO: Change the GPIO Pin Number for your BL602 board
 #define ADC_GPIO 11
+```
 
+__Not all GPIOs__ are supported by BL602's ADC!
+
+According to the BL602 Reference Manual, only the following GPIOs are __supported for ADC__: 4, 5, 6, 9, 10, 11, 12, 13, 14, 15
+
+![ADC GPIO Pin Numbers](https://lupyuen.github.io/images/adc-pins.png)
+
+(Look at the __Analog__ column)
+
+Next we define the __ADC Frequency__. We shall read 10,000 ADC Samples every second...
+
+```c
 /// We set the ADC Frequency to 10 kHz according to <https://wiki.analog.com/university/courses/electronics/electronics-lab-led-sensor?rev=1551786227>
 /// This is 10,000 samples per second.
 #define ADC_FREQUENCY 10000  //  Hz
+```
 
+For computing the average, we shall remember the __last 1,000 ADC Samples read__...
+
+```c
 /// We shall read 1,000 ADC samples, which will take 0.1 seconds
 #define ADC_SAMPLES 1000
+```
 
+Finally we set the __ADC Gain__ to increase the sensitivity of the ADC...
+
+```c
 /// Set ADC Gain to Level 1 to increase the ADC sensitivity.
 /// To disable ADC Gain, set `ADC_GAIN1` and `ADC_GAIN2` to `ADC_PGA_GAIN_NONE`.
 /// See <https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Inc/bl602_adc.h#L133-L144>
 #define ADC_GAIN1 ADC_PGA_GAIN_1
 #define ADC_GAIN2 ADC_PGA_GAIN_1
 ```
+
+More about ADC Gain in a while.
 
 ## Initialise the ADC Channel
 
