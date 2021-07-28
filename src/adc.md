@@ -425,15 +425,15 @@ Let's study the __Rust Firmware for BL602 ADC__: [`sdk_app_rust_adc`](https://gi
 
 ## Definitions
 
-TODO
-
-From [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L1-L37)
+We start by declaring to the Rust Compiler that we're calling the __Rust Core Library__ (instead of Rust Standard Library): [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L1-L37)
 
 ```rust
 #![no_std]  //  Use the Rust Core Library instead of the Rust Standard Library, which is not compatible with embedded systems
 ```
 
-TODO
+(Rust Standard Library is too heavy for embedded programs)
+
+Next we __import the functions__ from Rust Core Library that will be used in a while...
 
 ```rust
 //  Import Libraries
@@ -444,7 +444,7 @@ use core::{          //  Rust Core Library
 };
 ```
 
-TODO
+We import the __Rust Wrapper for BL602 IoT SDK__...
 
 ```rust
 use bl602_sdk::{     //  Rust Wrapper for BL602 IoT SDK
@@ -456,7 +456,7 @@ use bl602_sdk::{     //  Rust Wrapper for BL602 IoT SDK
 };
 ```
 
-TODO
+We shall be reading __GPIO 11__ (the Blue LED) as ADC Input...
 
 ```rust
 /// GPIO Pin Number that will be configured as ADC Input.
@@ -467,22 +467,18 @@ TODO
 const ADC_GPIO: i32 = 11;
 ```
 
-TODO
+BL602 ADC Controller shall read __10,000 ADC Samples per second__, and remember the last __100 ADC Samples__...
 
 ```rust
 /// We set the ADC Frequency to 10 kHz according to <https://wiki.analog.com/university/courses/electronics/electronics-lab-led-sensor?rev=1551786227>
 /// This is 10,000 samples per second.
 const ADC_FREQUENCY: u32 = 10000;  //  Hz
-```
 
-TODO
-
-```rust
 /// We shall read 100 ADC samples, which will take 0.01 seconds
 const ADC_SAMPLES: usize = 100;
 ```
 
-TODO
+We set the __ADC Gain__ to increase the ADC sensitivity...
 
 ```rust
 /// Set ADC Gain to Level 1 to increase the ADC sensitivity.
@@ -492,7 +488,7 @@ const ADC_GAIN1: u32 = ADC_PGA_GAIN_1;
 const ADC_GAIN2: u32 = ADC_PGA_GAIN_1;
 ```
 
-TODO
+But `ADC_PGA_GAIN_1` is missing from our Rust Wrapper. Thus we copy the value from the BL602 IoT SDK and define it here...
 
 ```rust
 const ADC_PGA_GAIN_1: u32 = 1;  //  From <https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Inc/bl602_adc.h#L133-L144>
