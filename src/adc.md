@@ -163,6 +163,8 @@ BL602 ADC Controller shall transfer the ADC Samples directly into RAM, thanks to
     assert(rc == 0);
 ```
 
+(First parameter of `bl_adc_dma_init` is the ADC Mode)
+
 We configure the GPIO Pin for __ADC Input__...
 
 ```c
@@ -171,7 +173,7 @@ We configure the GPIO Pin for __ADC Input__...
     assert(rc == 0);
 ```
 
-We update the __DMA Context__ for the ADC Channel...
+We set the __DMA Context__ for the ADC Channel...
 
 ```c
     //  Get the ADC Channel Number for the GPIO Pin
