@@ -419,9 +419,17 @@ Before diving into the Rust Firmware, let's walk through the steps for __creatin
 
 # BL602 ADC in Rust
 
-TODO
+Now we study the __Rust Firmware for BL602 ADC__: [`sdk_app_rust_adc`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc)
 
-Let's study the __Rust Firmware for BL602 ADC__: [`sdk_app_rust_adc`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc)
+We have __converted the C Firmware to Rust__ line by line, so the Rust code will look highly similar to C.
+
+Recall that our firmware implements two commands...
+
+1.  __Initialise the ADC Channel__ for reading our LED GPIO
+
+1.  __Compute the average value__ of the ADC Samples that have been read
+
+Here is the Rust implementation...
 
 ## Definitions
 
