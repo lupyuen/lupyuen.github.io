@@ -363,8 +363,41 @@ static int set_adc_gain(uint32_t gain1, uint32_t gain2) {
 }
 </code></pre>
 <h1 id="create-a-bl602-rust-project" class="section-header"><a href="#create-a-bl602-rust-project">2 Create a BL602 Rust Project</a></h1>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_gpio"><code>sdk_app_rust_gpio</code></a></p>
+<p>Before diving into the Rust Firmware, let’s walk through the steps for <strong>creating a BL602 Rust Project</strong> (like <code>sdk_app_rust_adc</code>)…</p>
+<ol>
+<li>
+<p><strong>Copy the Project Folder</strong> for an existing Rust Project, like <code>sdk_app_rust_gpio</code> …</p>
+<ul>
+<li><a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_gpio"><strong>Project Folder for <code>sdk_app_rust_gpio</code></strong></a></li>
+</ul>
+</li>
+<li>
+<p><strong>Paste the Project Folder</strong> into <strong><code>bl_iot_sdk/customer_app</code></strong> and rename it (like <code>sdk_app_rust_adc</code>).</p>
+<p>Be sure to <strong>rename the Sub Folder</strong> too. (The <code>sdk_app_rust_adc</code> inside <code>sdk_app_rust_adc</code>)</p>
+<p><strong>Delete the <code>build_out</code> folder</strong> if it exists.</p>
+</li>
+<li>
+<p><strong>Edit the <code>Makefile</code></strong> in the new folder and set the Project Name: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/Makefile"><code>sdk_app_rust_adc/Makefile</code></a></p>
+<pre><code class="language-text">#  Set the project name
+PROJECT_NAME := sdk_app_rust_adc
+</code></pre>
+</li>
+<li>
+<p>Set the <strong>GCC Compiler Options</strong> (if any) in the Makefile <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/sdk_app_rust_adc/bouffalo.mk"><code>sdk_app_rust_adc / sdk_app_rust_adc / bouffalo.mk</code></a></p>
+</li>
+<li>
+<p>Edit the <strong><code>run.sh</code> script</strong> in the new folder and set the Project Name: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/run.sh"><code>sdk_app_rust_adc/run.sh</code></a></p>
+<pre><code class="language-bash">#  Set the project name
+export APP_NAME=sdk_app_rust_adc
+</code></pre>
+</li>
+<li>
+<p>Replace the <strong>Rust Code</strong> in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs"><code>sdk_app_rust_adc/ rust/src/lib.rs</code></a> </p>
+</li>
+<li>
+<p>Remember to edit the <strong>README.md file</strong> and fill in the project details</p>
+</li>
+</ol>
 <h1 id="bl602-adc-in-rust" class="section-header"><a href="#bl602-adc-in-rust">3 BL602 ADC in Rust</a></h1>
 <p>TODO</p>
 <p>Let’s study the <strong>Rust Firmware for BL602 ADC</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc"><code>sdk_app_rust_adc</code></a></p>
