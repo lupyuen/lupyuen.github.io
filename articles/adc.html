@@ -188,12 +188,13 @@ void init_adc(char *buf, int len, int argc, char **argv) {
     rc = bl_adc_dma_init(1, ADC_SAMPLES);
     assert(rc == 0);
 </code></pre>
+<p>(First parameter of <code>bl_adc_dma_init</code> is the ADC Mode)</p>
 <p>We configure the GPIO Pin for <strong>ADC Input</strong>…</p>
 <pre><code class="language-c">    //  Configure the GPIO Pin as ADC Input, no pullup, no pulldown
     rc = bl_adc_gpio_init(ADC_GPIO);
     assert(rc == 0);
 </code></pre>
-<p>We update the <strong>DMA Context</strong> for the ADC Channel…</p>
+<p>We set the <strong>DMA Context</strong> for the ADC Channel…</p>
 <pre><code class="language-c">    //  Get the ADC Channel Number for the GPIO Pin
     int channel = bl_adc_get_channel_by_gpio(ADC_GPIO);
 
