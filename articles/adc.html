@@ -110,20 +110,28 @@
 /// Only these GPIOs are supported: 4, 5, 6, 9, 10, 11, 12, 13, 14, 15
 /// TODO: Change the GPIO Pin Number for your BL602 board
 #define ADC_GPIO 11
-
-/// We set the ADC Frequency to 10 kHz according to &lt;https://wiki.analog.com/university/courses/electronics/electronics-lab-led-sensor?rev=1551786227&gt;
+</code></pre>
+<p><strong>Not all GPIOs</strong> are supported by BL602’s ADC!</p>
+<p>According to the BL602 Reference Manual, only the following GPIOs are <strong>supported for ADC</strong>: 4, 5, 6, 9, 10, 11, 12, 13, 14, 15</p>
+<p><img src="https://lupyuen.github.io/images/adc-pins.png" alt="ADC GPIO Pin Numbers" /></p>
+<p>(Look at the <strong>Analog</strong> column)</p>
+<p>Next we define the <strong>ADC Frequency</strong>. We shall read 10,000 ADC Samples every second…</p>
+<pre><code class="language-c">/// We set the ADC Frequency to 10 kHz according to &lt;https://wiki.analog.com/university/courses/electronics/electronics-lab-led-sensor?rev=1551786227&gt;
 /// This is 10,000 samples per second.
 #define ADC_FREQUENCY 10000  //  Hz
-
-/// We shall read 1,000 ADC samples, which will take 0.1 seconds
+</code></pre>
+<p>For computing the average, we shall remember the <strong>last 1,000 ADC Samples read</strong>…</p>
+<pre><code class="language-c">/// We shall read 1,000 ADC samples, which will take 0.1 seconds
 #define ADC_SAMPLES 1000
-
-/// Set ADC Gain to Level 1 to increase the ADC sensitivity.
+</code></pre>
+<p>Finally we set the <strong>ADC Gain</strong> to increase the sensitivity of the ADC…</p>
+<pre><code class="language-c">/// Set ADC Gain to Level 1 to increase the ADC sensitivity.
 /// To disable ADC Gain, set `ADC_GAIN1` and `ADC_GAIN2` to `ADC_PGA_GAIN_NONE`.
 /// See &lt;https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Inc/bl602_adc.h#L133-L144&gt;
 #define ADC_GAIN1 ADC_PGA_GAIN_1
 #define ADC_GAIN2 ADC_PGA_GAIN_1
 </code></pre>
+<p>More about ADC Gain in a while.</p>
 <h2 id="initialise-the-adc-channel" class="section-header"><a href="#initialise-the-adc-channel">1.2 Initialise the ADC Channel</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L36-L77"><code>demo.c</code></a></p>
