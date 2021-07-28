@@ -171,7 +171,7 @@ We configure the GPIO Pin for __ADC Input__...
     assert(rc == 0);
 ```
 
-TODO
+We update the __DMA Context__ for the ADC Channel...
 
 ```c
     //  Get the ADC Channel Number for the GPIO Pin
@@ -185,13 +185,15 @@ TODO
     ctx->chan_init_table |= (1 << channel);
 ```
 
-TODO
+Finally we start the __ADC Channel__...
 
 ```c
     //  Start reading the ADC via DMA
     bl_adc_start();
 }
 ```
+
+BL602 ADC Controller will __read the ADC Samples continuously__ (from the GPIO Pin) into RAM (until we stop the ADC Channel).
 
 ## Read the ADC Channel
 
@@ -203,9 +205,6 @@ From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_
 /// Command to compute the average value of the ADC Samples that have just been read.
 /// Based on `hal_adc_get_data` in <https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_adc.c#L142-L179>
 void read_adc(char *buf, int len, int argc, char **argv) {
-    //  Static array that will store 1,000 ADC Samples
-    static uint32_t adc_data[ADC_SAMPLES];
-
     //  Get the ADC Channel Number for the GPIO Pin
     int channel = bl_adc_get_channel_by_gpio(ADC_GPIO);
     
@@ -221,6 +220,9 @@ void read_adc(char *buf, int len, int argc, char **argv) {
         printf("ADC Sampling not finished\r\n");
         return;
     }
+
+    //  Static array that will store 1,000 ADC Samples
+    static uint32_t adc_data[ADC_SAMPLES];
 
     //  Copy the read ADC Samples to the static array
     memcpy(
