@@ -104,15 +104,15 @@ Here's how we __initialise the ADC Channel__ for reading our LED GPIO: [`demo.c`
 /// Command to init the ADC Channel and start reading the ADC Samples.
 /// Based on `hal_adc_init` in <https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_adc.c#L50-L102>
 void init_adc(char *buf, int len, int argc, char **argv) {
-    //  Only these GPIOs are supported: 4, 5, 6, 9, 10, 11, 12, 13, 14, 15
-    assert(ADC_GPIO==4 || ADC_GPIO==5 || ADC_GPIO==6 || ADC_GPIO==9 || ADC_GPIO==10 || ADC_GPIO==11 || ADC_GPIO==12 || ADC_GPIO==13 || ADC_GPIO==14 || ADC_GPIO==15);
+  //  Only these GPIOs are supported: 4, 5, 6, 9, 10, 11, 12, 13, 14, 15
+  assert(ADC_GPIO==4 || ADC_GPIO==5 || ADC_GPIO==6 || ADC_GPIO==9 || ADC_GPIO==10 || ADC_GPIO==11 || ADC_GPIO==12 || ADC_GPIO==13 || ADC_GPIO==14 || ADC_GPIO==15);
 
-    //  For Single-Channel Conversion Mode, frequency must be between 500 and 16,000 Hz
-    assert(ADC_FREQUENCY >= 500 && ADC_FREQUENCY <= 16000);
+  //  For Single-Channel Conversion Mode, frequency must be between 500 and 16,000 Hz
+  assert(ADC_FREQUENCY >= 500 && ADC_FREQUENCY <= 16000);
 
-    //  Init the ADC Frequency for Single-Channel Conversion Mode
-    int rc = bl_adc_freq_init(1, ADC_FREQUENCY);
-    assert(rc == 0);
+  //  Init the ADC Frequency for Single-Channel Conversion Mode
+  int rc = bl_adc_freq_init(1, ADC_FREQUENCY);
+  assert(rc == 0);
 ```
 
 Our __`init_adc` Command__ begins by validating the GPIO Pin Number and ADC Frequency.
@@ -138,17 +138,17 @@ The first parameter to `bl_adc_freq_init` selects the __ADC Mode__...
 Next we set the __ADC GPIO Pin Number__ for ADC Mode 1 (Single-Channel Conversion)...
 
 ```c
-    //  Init the ADC GPIO for Single-Channel Conversion Mode
-    rc = bl_adc_init(1, ADC_GPIO);
-    assert(rc == 0);
+  //  Init the ADC GPIO for Single-Channel Conversion Mode
+  rc = bl_adc_init(1, ADC_GPIO);
+  assert(rc == 0);
 ```
 
 To increase the ADC sensitivity, we set the __ADC Gain__...
 
 ```c
-    //  Enable ADC Gain to increase the ADC sensitivity
-    rc = set_adc_gain(ADC_GAIN1, ADC_GAIN2);
-    assert(rc == 0);
+  //  Enable ADC Gain to increase the ADC sensitivity
+  rc = set_adc_gain(ADC_GAIN1, ADC_GAIN2);
+  assert(rc == 0);
 ```
 
 (More about this in a while)
@@ -156,9 +156,9 @@ To increase the ADC sensitivity, we set the __ADC Gain__...
 BL602 ADC Controller shall transfer the ADC Samples directly into RAM, thanks to the __Direct Memory Access (DMA) Controller__...
 
 ```c
-    //  Init DMA for the ADC Channel for Single-Channel Conversion Mode
-    rc = bl_adc_dma_init(1, ADC_SAMPLES);
-    assert(rc == 0);
+  //  Init DMA for the ADC Channel for Single-Channel Conversion Mode
+  rc = bl_adc_dma_init(1, ADC_SAMPLES);
+  assert(rc == 0);
 ```
 
 (First parameter of `bl_adc_dma_init` is the ADC Mode)
@@ -166,23 +166,23 @@ BL602 ADC Controller shall transfer the ADC Samples directly into RAM, thanks to
 We configure the GPIO Pin for __ADC Input__...
 
 ```c
-    //  Configure the GPIO Pin as ADC Input, no pullup, no pulldown
-    rc = bl_adc_gpio_init(ADC_GPIO);
-    assert(rc == 0);
+  //  Configure the GPIO Pin as ADC Input, no pullup, no pulldown
+  rc = bl_adc_gpio_init(ADC_GPIO);
+  assert(rc == 0);
 ```
 
 We set the __DMA Context__ for the ADC Channel...
 
 ```c
-    //  Get the ADC Channel Number for the GPIO Pin
-    int channel = bl_adc_get_channel_by_gpio(ADC_GPIO);
+  //  Get the ADC Channel Number for the GPIO Pin
+  int channel = bl_adc_get_channel_by_gpio(ADC_GPIO);
 
-    //  Get the DMA Context for the ADC Channel
-    adc_ctx_t *ctx = bl_dma_find_ctx_by_channel(ADC_DMA_CHANNEL);
-    assert(ctx != NULL);
+  //  Get the DMA Context for the ADC Channel
+  adc_ctx_t *ctx = bl_dma_find_ctx_by_channel(ADC_DMA_CHANNEL);
+  assert(ctx != NULL);
 
-    //  Indicate that the GPIO has been configured for ADC
-    ctx->chan_init_table |= (1 << channel);
+  //  Indicate that the GPIO has been configured for ADC
+  ctx->chan_init_table |= (1 << channel);
 ```
 
 (`bl_dma_find_ctx_by_channel` is defined in [BL602 DMA HAL](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_dma.c))
@@ -190,8 +190,8 @@ We set the __DMA Context__ for the ADC Channel...
 Finally we __start the ADC Channel__...
 
 ```c
-    //  Start reading the ADC via DMA
-    bl_adc_start();
+  //  Start reading the ADC via DMA
+  bl_adc_start();
 }
 ```
 
@@ -207,15 +207,15 @@ Let's find out in [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/cust
 /// Command to compute the average value of the ADC Samples that have just been read.
 /// Based on `hal_adc_get_data` in <https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_adc.c#L142-L179>
 void read_adc(char *buf, int len, int argc, char **argv) {
-    //  Get the ADC Channel Number for the GPIO Pin
-    int channel = bl_adc_get_channel_by_gpio(ADC_GPIO);
+  //  Get the ADC Channel Number for the GPIO Pin
+  int channel = bl_adc_get_channel_by_gpio(ADC_GPIO);
     
-    //  Get the DMA Context for the ADC Channel
-    adc_ctx_t *ctx = bl_dma_find_ctx_by_channel(ADC_DMA_CHANNEL);
-    assert(ctx != NULL);
+  //  Get the DMA Context for the ADC Channel
+  adc_ctx_t *ctx = bl_dma_find_ctx_by_channel(ADC_DMA_CHANNEL);
+  assert(ctx != NULL);
 
-    //  Verify that the GPIO has been configured for ADC
-    assert(((1 << channel) & ctx->chan_init_table) != 0);
+  //  Verify that the GPIO has been configured for ADC
+  assert(((1 << channel) & ctx->chan_init_table) != 0);
 ```
 
 Our __`read_adc` Command__ begins by verifying the __DMA Context__ for the ADC Channel.
@@ -223,11 +223,11 @@ Our __`read_adc` Command__ begins by verifying the __DMA Context__ for the ADC C
 Next we check whether the __ADC Sampling__ has been completed for the ADC Channel...
 
 ```c
-    //  If ADC Sampling is not finished, try again later    
-    if (ctx->channel_data == NULL) {
-        printf("ADC Sampling not finished\r\n");
-        return;
-    }
+  //  If ADC Sampling is not finished, try again later    
+  if (ctx->channel_data == NULL) {
+    printf("ADC Sampling not finished\r\n");
+    return;
+  }
 ```
 
 Remember that the BL602 ADC Controller will __read ADC Samples continuously__ and write the last 1,000 samples to RAM (via DMA).
@@ -235,28 +235,28 @@ Remember that the BL602 ADC Controller will __read ADC Samples continuously__ an
 Let's __copy the last 1,000 ADC Samples__ from the DMA Context (in RAM) to a Static Buffer `adc_data`...
 
 ```c
-    //  Static array that will store 1,000 ADC Samples
-    static uint32_t adc_data[ADC_SAMPLES];
+  //  Static array that will store 1,000 ADC Samples
+  static uint32_t adc_data[ADC_SAMPLES];
 
-    //  Copy the read ADC Samples to the static array
-    memcpy(
-        (uint8_t*) adc_data,             //  Destination
-        (uint8_t*) (ctx->channel_data),  //  Source
-        sizeof(adc_data)                 //  Size
-    );  
+  //  Copy the read ADC Samples to the static array
+  memcpy(
+    (uint8_t*) adc_data,             //  Destination
+    (uint8_t*) (ctx->channel_data),  //  Source
+    sizeof(adc_data)                 //  Size
+  );  
 ```
 
 Then we compute the __average value of the ADC Samples__ in `adc_data`...
 
 ```c
-    //  Compute the average value of the ADC Samples
-    uint32_t sum = 0;
-    for (int i = 0; i < ADC_SAMPLES; i++) {
-        //  Scale up the ADC Sample to the range 0 to 3199
-        uint32_t scaled = ((adc_data[i] & 0xffff) * 3200) >> 16;
-        sum += scaled;
-    }
-    printf("Average: %lu\r\n", (sum / ADC_SAMPLES));
+  //  Compute the average value of the ADC Samples
+  uint32_t sum = 0;
+  for (int i = 0; i < ADC_SAMPLES; i++) {
+    //  Scale up the ADC Sample to the range 0 to 3199
+    uint32_t scaled = ((adc_data[i] & 0xffff) * 3200) >> 16;
+    sum += scaled;
+  }
+  printf("Average: %lu\r\n", (sum / ADC_SAMPLES));
 }
 ```
 
@@ -333,37 +333,39 @@ Watch what happens when we __flash and run__ the C Firmware for BL602 ADC: [`sdk
 
 TODO
 
+[BL602 Standard Driver for ADC](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_adc.c#L152-L230)
+
 From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L118-L146)
 
 ```c
 /// Enable ADC Gain to increase the ADC sensitivity.
 /// Based on ADC_Init in <https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_adc.c#L152-L230>
 static int set_adc_gain(uint32_t gain1, uint32_t gain2) {
-    //  Read the ADC Configuration Hardware Register
-    uint32_t reg = BL_RD_REG(AON_BASE, AON_GPADC_REG_CONFIG2);
+  //  Read the ADC Configuration Hardware Register
+  uint32_t reg = BL_RD_REG(AON_BASE, AON_GPADC_REG_CONFIG2);
 
-    //  Set the ADC Gain
-    reg = BL_SET_REG_BITS_VAL(reg, AON_GPADC_PGA1_GAIN, gain1);
-    reg = BL_SET_REG_BITS_VAL(reg, AON_GPADC_PGA2_GAIN, gain2);
+  //  Set the ADC Gain
+  reg = BL_SET_REG_BITS_VAL(reg, AON_GPADC_PGA1_GAIN, gain1);
+  reg = BL_SET_REG_BITS_VAL(reg, AON_GPADC_PGA2_GAIN, gain2);
 
-    //  Set the ADC Chop Mode
-    if (gain1 != ADC_PGA_GAIN_NONE || gain2 != ADC_PGA_GAIN_NONE) {
-        reg = BL_SET_REG_BITS_VAL(reg, AON_GPADC_CHOP_MODE, 2);
-    } else {
-        reg = BL_SET_REG_BITS_VAL(reg, AON_GPADC_CHOP_MODE, 1);        
-    }
+  //  Set the ADC Chop Mode
+  if (gain1 != ADC_PGA_GAIN_NONE || gain2 != ADC_PGA_GAIN_NONE) {
+    reg = BL_SET_REG_BITS_VAL(reg, AON_GPADC_CHOP_MODE, 2);
+  } else {
+    reg = BL_SET_REG_BITS_VAL(reg, AON_GPADC_CHOP_MODE, 1);        
+  }
 
-    //  Enable the ADC PGA
-    reg = BL_CLR_REG_BIT(reg, AON_GPADC_PGA_VCMI_EN);
-    if (gain1 != ADC_PGA_GAIN_NONE || gain2 != ADC_PGA_GAIN_NONE) {
-        reg = BL_SET_REG_BIT(reg, AON_GPADC_PGA_EN);
-    } else {
-        reg = BL_CLR_REG_BIT(reg, AON_GPADC_PGA_EN);
-    }
+  //  Enable the ADC PGA
+  reg = BL_CLR_REG_BIT(reg, AON_GPADC_PGA_VCMI_EN);
+  if (gain1 != ADC_PGA_GAIN_NONE || gain2 != ADC_PGA_GAIN_NONE) {
+    reg = BL_SET_REG_BIT(reg, AON_GPADC_PGA_EN);
+  } else {
+    reg = BL_CLR_REG_BIT(reg, AON_GPADC_PGA_EN);
+  }
 
-    //  Update the ADC Configuration Hardware Register
-    BL_WR_REG(AON_BASE, AON_GPADC_REG_CONFIG2, reg);
-    return 0;
+  //  Update the ADC Configuration Hardware Register
+  BL_WR_REG(AON_BASE, AON_GPADC_REG_CONFIG2, reg);
+  return 0;
 }
 ```
 
@@ -390,6 +392,12 @@ TODO
 TODO
 
 ![](https://lupyuen.github.io/images/adc-demo2.png)
+
+# Compare C and Rust
+
+TODO
+
+![](https://lupyuen.github.io/images/adc-compare.png)
 
 # Why Sunlight?
 
@@ -456,10 +464,6 @@ TODO2
 ![](https://lupyuen.github.io/images/adc-bindgen.png)
 
 TODO4
-
-![](https://lupyuen.github.io/images/adc-compare.png)
-
-TODO6
 
 ![](https://lupyuen.github.io/images/adc-copy.png)
 
