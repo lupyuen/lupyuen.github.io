@@ -124,7 +124,6 @@
 <p><strong>Not all GPIOs</strong> are supported by BL602’s ADC!</p>
 <p>According to the BL602 Reference Manual, only the following GPIOs are <strong>supported for ADC</strong>: 4, 5, 6, 9, 10, 11, 12, 13, 14, 15</p>
 <p><img src="https://lupyuen.github.io/images/adc-pins.png" alt="ADC GPIO Pin Numbers" /></p>
-<p>(Look at the <strong>Analog</strong> column)</p>
 <p>Next we define the <strong>ADC Frequency</strong>. We shall read 10,000 ADC Samples every second…</p>
 <pre><code class="language-c">/// We set the ADC Frequency to 10 kHz according to &lt;https://wiki.analog.com/university/courses/electronics/electronics-lab-led-sensor?rev=1551786227&gt;
 /// This is 10,000 samples per second.
@@ -206,6 +205,7 @@ void init_adc(char *buf, int len, int argc, char **argv) {
     //  Indicate that the GPIO has been configured for ADC
     ctx-&gt;chan_init_table |= (1 &lt;&lt; channel);
 </code></pre>
+<p>(<code>bl_dma_find_ctx_by_channel</code> is defined in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_dma.c">BL602 DMA HAL</a>)</p>
 <p>Finally we <strong>start the ADC Channel</strong>…</p>
 <pre><code class="language-c">    //  Start reading the ADC via DMA
     bl_adc_start();
@@ -264,6 +264,7 @@ void read_adc(char *buf, int len, int argc, char **argv) {
 <p>And that’s how we code BL602 ADC Firmware in C!</p>
 <p><img src="https://lupyuen.github.io/images/adc-demo.png" alt="Running the BL602 ADC Firmware in C" /></p>
 <h2 id="run-the-c-firmware" class="section-header"><a href="#run-the-c-firmware">1.4 Run the C Firmware</a></h2>
+<p>Here’s what happens when we <strong>flash and run</strong> the C Firmware for BL602 ADC: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/"><code>sdk_app_adc2</code></a></p>
 <p>TODO</p>
 <pre><code class="language-text"># init_adc
 
