@@ -383,9 +383,37 @@ static int set_adc_gain(uint32_t gain1, uint32_t gain2) {
 
 # Create a BL602 Rust Project
 
-TODO
+Before diving into the Rust Firmware, let's walk through the steps for __creating a BL602 Rust Project__ (like `sdk_app_rust_adc`)...
 
-[`sdk_app_rust_gpio`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_gpio)
+1.  __Copy the Project Folder__ for an existing Rust Project, like `sdk_app_rust_gpio` ...
+
+    -   [__Project Folder for `sdk_app_rust_gpio`__](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_gpio)
+
+1.  __Paste the Project Folder__ into __`bl_iot_sdk/customer_app`__ and rename it (like `sdk_app_rust_adc`).
+
+    Be sure to __rename the Sub Folder__ too. (The `sdk_app_rust_adc` inside `sdk_app_rust_adc`)
+
+    __Delete the `build_out` folder__ if it exists.
+
+1.  __Edit the `Makefile`__ in the new folder and set the Project Name: [`sdk_app_rust_adc/Makefile`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/Makefile)
+
+    ```text
+    #  Set the project name
+    PROJECT_NAME := sdk_app_rust_adc
+    ```
+
+1.  Set the __GCC Compiler Options__ (if any) in the Makefile [`sdk_app_rust_adc / sdk_app_rust_adc / bouffalo.mk`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/sdk_app_rust_adc/bouffalo.mk)
+
+1.  Edit the __`run.sh` script__ in the new folder and set the Project Name: [`sdk_app_rust_adc/run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/run.sh)
+
+    ```bash
+    #  Set the project name
+    export APP_NAME=sdk_app_rust_adc
+    ```
+
+1.  Replace the __Rust Code__ in [`sdk_app_rust_adc/ rust/src/lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs) 
+
+1.  Remember to edit the __README.md file__ and fill in the project details
 
 # BL602 ADC in Rust
 
