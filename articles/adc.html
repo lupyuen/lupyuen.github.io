@@ -323,9 +323,15 @@ Average: 1416
 </li>
 </ol>
 <h2 id="set-the-adc-gain" class="section-header"><a href="#set-the-adc-gain">1.5 Set the ADC Gain</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_adc.c#L152-L230">BL602 Standard Driver for ADC</a></p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L118-L146"><code>demo.c</code></a></p>
+<p>Let’s chat about <strong>ADC Gain</strong>, which we used when reading the LED as a Light Sensor. </p>
+<p>(ADC Gain probably won’t be needed for reading most types of ADC Inputs)</p>
+<p><em>Why do we need ADC Gain when reading an LED?</em></p>
+<p>Our LED generates a <strong>tiny bit of current</strong> when exposed to light. To measure that tiny bit of current, we need to increase the ADC sensitivity.</p>
+<p>Thus we <strong>increase the ADC Gain</strong>. (By default there’s no ADC Gain)</p>
+<p><em>BL602 HAL has a function that sets the ADC Gain right?</em></p>
+<p>Sadly no. We need to go really low-level and call the <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_adc.c#L152-L230"><strong>BL602 Standard Driver for ADC</strong></a>.</p>
+<p>(The BL602 Standard Driver directly manipulates the BL602 Hardware Registers)</p>
+<p>Here’s the low-level code that <strong>sets the ADC Gain</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L118-L146"><code>demo.c</code></a></p>
 <pre><code class="language-c">/// Enable ADC Gain to increase the ADC sensitivity.
 /// Based on ADC_Init in &lt;https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_adc.c#L152-L230&gt;
 static int set_adc_gain(uint32_t gain1, uint32_t gain2) {
@@ -370,12 +376,12 @@ static int set_adc_gain(uint32_t gain1, uint32_t gain2) {
 <span class="attribute">#![<span class="ident">no_std</span>]</span>  <span class="comment">//  Use the Rust Core Library instead of the Rust Standard Library, which is not compatible with embedded systems</span>
 
 <span class="comment">//  Import Libraries</span>
-<span class="kw">use</span> <span class="ident">core</span>::{            <span class="comment">//  Rust Core Library</span>
+<span class="kw">use</span> <span class="ident">core</span>::{          <span class="comment">//  Rust Core Library</span>
   <span class="ident">fmt::Write</span>,        <span class="comment">//  String Formatting    </span>
   <span class="ident">mem::transmute</span>,    <span class="comment">//  Pointer Casting</span>
   <span class="ident">panic::PanicInfo</span>,  <span class="comment">//  Panic Handler</span>
 };
-<span class="kw">use</span> <span class="ident">bl602_sdk</span>::{       <span class="comment">//  Rust Wrapper for BL602 IoT SDK</span>
+<span class="kw">use</span> <span class="ident">bl602_sdk</span>::{     <span class="comment">//  Rust Wrapper for BL602 IoT SDK</span>
   <span class="ident">adc</span>,               <span class="comment">//  ADC HAL</span>
   <span class="ident">dma</span>,               <span class="comment">//  DMA HAL</span>
   <span class="ident">puts</span>,              <span class="comment">//  Console Output</span>
