@@ -483,7 +483,7 @@ export APP_NAME=sdk_app_rust_adc
   <span class="ident">_argv</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>  <span class="comment">//  Array of command line args (char **)</span>
 ) {
   <span class="ident">puts</span>(<span class="string">&quot;[Rust] Init ADC&quot;</span>);</pre></div>
-<p>TODO</p>
+<p>We validate the GPIO Pin Number and ADC Frequency…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
   <span class="comment">//  Only these GPIOs are supported: 4, 5, 6, 9, 10, 11, 12, 13, 14, 15</span>
@@ -491,37 +491,40 @@ export APP_NAME=sdk_app_rust_adc
 
   <span class="comment">//  For Single-Channel Conversion Mode, frequency must be between 500 and 16,000 Hz</span>
   <span class="macro">assert!</span>(<span class="ident">ADC_FREQUENCY</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">500</span> <span class="op">&amp;&amp;</span> <span class="ident">ADC_FREQUENCY</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">16000</span>);</pre></div>
-<p>TODO</p>
+<p>(Remember: Not all GPIOs are supported for ADC)</p>
+<p>Next we select <strong>ADC Mode 1</strong> (Single-Channel Conversion) and set the <strong>ADC Frequency</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
   <span class="comment">//  Init the ADC Frequency for Single-Channel Conversion Mode</span>
   <span class="ident">adc::freq_init</span>(<span class="number">1</span>, <span class="ident">ADC_FREQUENCY</span>)
     .<span class="ident">expect</span>(<span class="string">&quot;ADC Freq failed&quot;</span>);</pre></div>
-<p>TODO</p>
+<p>We set the <strong>ADC GPIO Pin Number</strong> for ADC Mode 1…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
   <span class="comment">//  Init the ADC GPIO for Single-Channel Conversion Mode</span>
   <span class="ident">adc::init</span>(<span class="number">1</span>, <span class="ident">ADC_GPIO</span>)
     .<span class="ident">expect</span>(<span class="string">&quot;ADC Init failed&quot;</span>);</pre></div>
-<p>TODO</p>
+<p>To increase the ADC sensitivity, we set the <strong>ADC Gain</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
   <span class="comment">//  Enable ADC Gain to increase the ADC sensitivity</span>
   <span class="kw">let</span> <span class="ident">rc</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">set_adc_gain</span>(<span class="ident">ADC_GAIN1</span>, <span class="ident">ADC_GAIN2</span>) };  <span class="comment">//  Unsafe because we are calling C function</span>
   <span class="macro">assert!</span>(<span class="ident">rc</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span>);</pre></div>
-<p>TODO</p>
+<p>(This calls our C function <code>set_adc_gain</code>, which shall be explained below)</p>
+<p>BL602 ADC Controller shall transfer the ADC Samples directly into RAM, thanks to the <strong>Direct Memory Access (DMA) Controller</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
   <span class="comment">//  Init DMA for the ADC Channel for Single-Channel Conversion Mode</span>
   <span class="ident">adc::dma_init</span>(<span class="number">1</span>, <span class="ident">ADC_SAMPLES</span> <span class="kw">as</span> <span class="ident">u32</span>)
     .<span class="ident">expect</span>(<span class="string">&quot;DMA Init failed&quot;</span>);</pre></div>
-<p>TODO</p>
+<p>(First parameter of <code>dma_init</code> is the ADC Mode)</p>
+<p>We configure the GPIO Pin for <strong>ADC Input</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
   <span class="comment">//  Configure the GPIO Pin as ADC Input, no pullup, no pulldown</span>
   <span class="ident">adc::gpio_init</span>(<span class="ident">ADC_GPIO</span>)
     .<span class="ident">expect</span>(<span class="string">&quot;ADC GPIO failed&quot;</span>);</pre></div>
-<p>TODO</p>
+<p>We fetch the <strong>DMA Context</strong> for the ADC Channel…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
   <span class="comment">//  Get the ADC Channel Number for the GPIO Pin</span>
@@ -531,7 +534,8 @@ export APP_NAME=sdk_app_rust_adc
   <span class="comment">//  Get the DMA Context for the ADC Channel</span>
   <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">dma::find_ctx_by_channel</span>(<span class="ident">adc::ADC_DMA_CHANNEL</span> <span class="kw">as</span> <span class="ident">i32</span>)
     .<span class="ident">expect</span>(<span class="string">&quot;DMA Ctx failed&quot;</span>);</pre></div>
-<p>TODO</p>
+<p>However the returned pointer <code>ptr</code> is actually a “<code>void *</code>” pointer from C.</p>
+<p>To use the pointer in Rust, we need to cast it to a <strong>DMA Context Pointer</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
   <span class="comment">//  Cast the returned C Pointer (void *) to a DMA Context Pointer (adc_ctx *)</span>
@@ -541,20 +545,23 @@ export APP_NAME=sdk_app_rust_adc
       <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">adc::adc_ctx</span>  <span class="comment">//  To DMA Context Pointer (adc_ctx *)</span>
     <span class="op">&gt;</span>(<span class="ident">ptr</span>)               <span class="comment">//  For this pointer</span>
   };</pre></div>
-<p>TODO</p>
+<p>(More about <code>transmute</code> in a while)</p>
+<p>Now we may update the <strong>DMA Context</strong> for the ADC Channel…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
   <span class="comment">//  Indicate that the GPIO has been configured for ADC</span>
   <span class="kw">unsafe</span> {  <span class="comment">//  Unsafe because we are dereferencing a pointer</span>
     (<span class="kw-2">*</span><span class="ident">ctx</span>).<span class="ident">chan_init_table</span> <span class="op">|</span><span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">channel</span>;
   }</pre></div>
-<p>TODO</p>
+<p>(We flag this as <code>unsafe</code> because we’re dereferencing a pointer: <code>ctx</code>)</p>
+<p>Finally we <strong>start the ADC Channel</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
   <span class="comment">//  Start reading the ADC via DMA</span>
   <span class="ident">adc::start</span>()
     .<span class="ident">expect</span>(<span class="string">&quot;ADC Start failed&quot;</span>);
 }</pre></div>
+<p>BL602 ADC Controller will <strong>read the ADC Samples continuously</strong> (from the GPIO Pin) into RAM (until we stop the ADC Channel).</p>
 <h2 id="read-the-adc-channel-1" class="section-header"><a href="#read-the-adc-channel-1">3.3 Read the ADC Channel</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L102-L165"><code>lib.rs</code></a></p>
