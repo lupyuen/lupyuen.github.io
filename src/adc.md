@@ -523,7 +523,7 @@ extern "C" fn init_adc(  //  Declare `extern "C"` because it will be called by B
   puts("[Rust] Init ADC");
 ```
 
-TODO
+We validate the GPIO Pin Number and ADC Frequency...
 
 ```rust
   //  Only these GPIOs are supported: 4, 5, 6, 9, 10, 11, 12, 13, 14, 15
@@ -533,7 +533,9 @@ TODO
   assert!(ADC_FREQUENCY >= 500 && ADC_FREQUENCY <= 16000);
 ```
 
-TODO
+(Remember: Not all GPIOs are supported for ADC)
+
+Next we select __ADC Mode 1__ (Single-Channel Conversion) and set the __ADC Frequency__...
 
 ```rust
   //  Init the ADC Frequency for Single-Channel Conversion Mode
@@ -541,7 +543,7 @@ TODO
     .expect("ADC Freq failed");
 ```
 
-TODO
+We set the __ADC GPIO Pin Number__ for ADC Mode 1...
 
 ```rust
   //  Init the ADC GPIO for Single-Channel Conversion Mode
@@ -549,7 +551,7 @@ TODO
     .expect("ADC Init failed");
 ```
 
-TODO
+To increase the ADC sensitivity, we set the __ADC Gain__...
 
 ```rust
   //  Enable ADC Gain to increase the ADC sensitivity
@@ -557,7 +559,9 @@ TODO
   assert!(rc == 0);
 ```
 
-TODO
+(This calls our C function `set_adc_gain`, which shall be explained below)
+
+BL602 ADC Controller shall transfer the ADC Samples directly into RAM, thanks to the __Direct Memory Access (DMA) Controller__...
 
 ```rust
   //  Init DMA for the ADC Channel for Single-Channel Conversion Mode
@@ -565,7 +569,9 @@ TODO
     .expect("DMA Init failed");
 ```
 
-TODO
+(First parameter of `dma_init` is the ADC Mode)
+
+We configure the GPIO Pin for __ADC Input__...
 
 ```rust
   //  Configure the GPIO Pin as ADC Input, no pullup, no pulldown
@@ -573,7 +579,7 @@ TODO
     .expect("ADC GPIO failed");
 ```
 
-TODO
+We fetch the __DMA Context__ for the ADC Channel...
 
 ```rust
   //  Get the ADC Channel Number for the GPIO Pin
@@ -585,7 +591,9 @@ TODO
     .expect("DMA Ctx failed");
 ```
 
-TODO
+However the returned pointer `ptr` is actually a "`void *`" pointer from C.
+
+To use the pointer in Rust, we need to cast it to a __DMA Context Pointer__...
 
 ```rust
   //  Cast the returned C Pointer (void *) to a DMA Context Pointer (adc_ctx *)
@@ -597,7 +605,9 @@ TODO
   };
 ```
 
-TODO
+(More about `transmute` in a while)
+
+Now we may update the __DMA Context__ for the ADC Channel...
 
 ```rust
   //  Indicate that the GPIO has been configured for ADC
@@ -606,7 +616,9 @@ TODO
   }
 ```
 
-TODO
+(We flag this as `unsafe` because we're dereferencing a pointer: `ctx`)
+
+Finally we __start the ADC Channel__...
 
 ```rust
   //  Start reading the ADC via DMA
@@ -614,6 +626,8 @@ TODO
     .expect("ADC Start failed");
 }
 ```
+
+BL602 ADC Controller will __read the ADC Samples continuously__ (from the GPIO Pin) into RAM (until we stop the ADC Channel).
 
 ## Read the ADC Channel
 
