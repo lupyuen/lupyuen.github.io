@@ -486,7 +486,7 @@ const ADC_FREQUENCY: u32 = 10000;  //  Hz
 const ADC_SAMPLES: usize = 100;
 ```
 
-We set the __ADC Gain__ to increase the ADC sensitivity...
+We shall set the __ADC Gain__ to increase the ADC sensitivity...
 
 ```rust
 /// Set ADC Gain to Level 1 to increase the ADC sensitivity.
@@ -496,7 +496,9 @@ const ADC_GAIN1: u32 = ADC_PGA_GAIN_1;
 const ADC_GAIN2: u32 = ADC_PGA_GAIN_1;
 ```
 
-But `ADC_PGA_GAIN_1` is missing from our Rust Wrapper. Thus we copy the value from the BL602 IoT SDK and define it here...
+But __`ADC_PGA_GAIN_1`__ is missing from our Rust Wrapper.
+
+Thus we copy the value from BL602 IoT SDK and define it here...
 
 ```rust
 const ADC_PGA_GAIN_1: u32 = 1;  //  From <https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Inc/bl602_adc.h#L133-L144>
