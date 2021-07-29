@@ -88,6 +88,7 @@
 <li><a href="#appendix-build-script-for-bl602-rust-firmware">14 Appendix: Build Script for BL602 Rust Firmware</a><ul></ul></li>
 <li><a href="#appendix-stub-library-for-bl602-rust">15 Appendix: Stub Library for BL602 Rust</a><ul></ul></li>
 <li><a href="#appendix-expose-inline-functions-to-rust">16 Appendix: Expose Inline Functions to Rust</a><ul></ul></li></ul></nav><p>📝 <em>21 Apr 2021</em></p>
+<p><a href="https://lupyuen.github.io/articles/adc"><strong>UPDATE:</strong> Rust on BL602 is now simpler with Rust Wrapper for BL602 IoT SDK. Check out the new article</a></p>
 <p>In the past 14 articles we’ve done so much with <a href="https://lupyuen.github.io/articles/pinecone"><strong>BL602 IoT SDK</strong></a>: <a href="https://lupyuen.github.io/articles/lora2">LoRa wireless transceivers</a>, <a href="https://lupyuen.github.io/articles/display">SPI LCD displays</a>, <a href="https://lupyuen.github.io/articles/uart">UART e-ink displays</a>, <a href="https://lupyuen.github.io/articles/i2c">I2C sensors</a>, …</p>
 <p><em>Can we do this in Rust? (Instead of C)</em></p>
 <p><em>And flash our Rust firmware to BL602 over UART? (Instead of JTAG)</em></p>
@@ -245,6 +246,7 @@ void blinky(char *buf, int len, int argc, char **argv) {
 <p>Here’s our code switching from C to Rust so far…</p>
 <p><img src="https://lupyuen.github.io/images/rust-codeswitch.png" alt="Code Switching from C to Rust" /></p>
 <h1 id="import-bl602-iot-sdk-into-rust" class="section-header"><a href="#import-bl602-iot-sdk-into-rust">3 Import BL602 IoT SDK into Rust</a></h1>
+<p><a href="https://lupyuen.github.io/articles/adc"><strong>UPDATE:</strong> Rust on BL602 is now simpler with Rust Wrapper for BL602 IoT SDK. Check out the new article</a></p>
 <p>As we import the functions from BL602 IoT SDK into Rust, let’s create <strong>Wrapper Functions</strong> that will expose a cleaner, neater interface to our Rust callers.</p>
 <p>We start with <strong><code>bl_gpio_output_set</code></strong>, the function from BL602 GPIO HAL (Hardware Abstraction Layer) that sets the GPIO Pin output: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L118-L141"><code>lib.rs</code></a></p>
 
@@ -358,6 +360,7 @@ heapless = &quot;0.6.1&quot;
 <p><em>We’re copying the string just to pad it with null. Not so efficient no?</em></p>
 <p>In future we might switch to <code>cstr</code> and eliminate the copying of strings. <a href="https://crates.io/crates/cstr">(See this)</a></p>
 <h2 id="autogenerate-wrapper-functions" class="section-header"><a href="#autogenerate-wrapper-functions">3.2 Autogenerate Wrapper Functions</a></h2>
+<p><a href="https://lupyuen.github.io/articles/adc"><strong>UPDATE:</strong> Rust on BL602 is now simpler with Rust Wrapper for BL602 IoT SDK. Check out the new article</a></p>
 <p><em>Sure looks like a lot of repetitive work to create the Wrapper Functions… When we import the entire BL602 IoT SDK?</em></p>
 <p>Someday we shall <strong>automatically generate the Wrapper Functions</strong> for the entire BL602 IoT SDK.</p>
 <p>We’ll do that with the <strong><code>bindgen</code></strong> tool, helped by a <strong>Rust Procedural Macro</strong>.</p>
@@ -384,6 +387,7 @@ crate-type = [&quot;staticlib&quot;]
 <p>This produces a BL602 Rust Firmware file that we may <strong>flash to BL602 the conventional way</strong>: Over the BL602 Serial / UART Port.</p>
 <p>(We’ll talk later about Embedded Rust on Bare Metal BL602)</p>
 <h1 id="build-the-bl602-rust-firmware" class="section-header"><a href="#build-the-bl602-rust-firmware">5 Build the BL602 Rust Firmware</a></h1>
+<p><a href="https://lupyuen.github.io/articles/adc"><strong>UPDATE:</strong> Rust on BL602 is now simpler with Rust Wrapper for BL602 IoT SDK. Check out the new article</a></p>
 <p>Here are the steps to build the BL602 Rust Firmware <code>sdk_app_rust.bin</code>…</p>
 <ol>
 <li>
@@ -901,10 +905,11 @@ riscv32imc-unknown-none-elf
 <p><a href="https://lupyuen.github.io/articles/spi#spi-with-direct-memory-access">More about BL602 SPI with DMA</a></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">12 What’s Next</a></h1>
 <p>In our next BL602 article we shall head back to <strong>LoRaWAN, the low-power, long range IoT network</strong>. <a href="https://lupyuen.github.io/articles/lora2#whats-next">(See this)</a></p>
-<p>We’ll keep Rust on standby until we start building <strong>complex firmware</strong> for BL602. </p>
-<p>(And then we shall talk about the merits and demerits of Rust on BL602)</p>
+<p>Check out the new article on <strong>Rust Wrapper for BL602 IoT SDK</strong>…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/adc"><strong>“Rust on RISC-V BL602: Is It Sunny?”</strong></a></li>
+</ul>
 <p>Please drop me a note if you would like to see more <strong>Rust on BL602 IoT SDK</strong>!</p>
-<p>(Which includes auto-generating the Rust wrappers for the entire BL602 IoT SDK… <a href="https://github.com/lupyuen/bl602-rust-wrapper">Here’s a sneak peek of <code>bl602-rust-wrapper</code></a>)</p>
 <ul>
 <li>
 <p><a href="https://github.com/sponsors/lupyuen">Sponsor me a coffee</a></p>
