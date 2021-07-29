@@ -1094,7 +1094,9 @@ TODO
 
 1.  `ptr->field` becomes `(*ptr).field`
 
-1.  Rust will helpfully __check for buffer overflow__... safer than `sprintf`!
+1.  Rust will helpfully __check for string buffer overflow__
+
+    (No more `sprintf` overflow!)
 
     For BL602 Rust Wrapper the default string size is __64 characters__.
 
