@@ -486,6 +486,8 @@ const ADC_FREQUENCY: u32 = 10000;  //  Hz
 const ADC_SAMPLES: usize = 100;
 ```
 
+(`usize` is similar to `size_t` in C, it's used to represent the size of arrays)
+
 We shall set the __ADC Gain__ to increase the ADC sensitivity...
 
 ```rust
@@ -521,7 +523,7 @@ extern "C" fn init_adc(  //  Declare `extern "C"` because it will be called by B
   puts("[Rust] Init ADC");
 ```
 
-(We won't be parsing the command-line arguments, so let's ignore the parameters to `init_adc`)
+(We won't be parsing the command-line arguments, so let's ignore the parameters passed to `init_adc`)
 
 We start by validating the GPIO Pin Number and ADC Frequency...
 
@@ -633,11 +635,7 @@ BL602 ADC Controller will __read the ADC Samples continuously__ (from the GPIO P
 
 _Our ADC Channel has been started, how do we average the ADC Samples that have been read?_
 
-Let's find out:
-
-TODO
-
-From [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L102-L165)
+Let's check out the Rust Function __`read_adc`__ in [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L102-L165) ...
 
 ```rust
 /// Command to compute the average value of the ADC Samples that have just been read.
@@ -651,7 +649,7 @@ extern "C" fn read_adc(   //  Declare `extern "C"` because it will be called by 
 ) {
 ```
 
-We fetch the __DMA Context__ for the ADC Channel...
+First we fetch the __DMA Context__ for the ADC Channel...
 
 ```rust
   //  Get the ADC Channel Number for the GPIO Pin
@@ -688,7 +686,7 @@ Now we may verify the __DMA Context__ for the ADC Channel...
 
 (We flag this as `unsafe` because we're dereferencing a pointer: `ctx`)
 
-And we check whether the __ADC Sampling__ has been completed for the ADC Channel (i.e. `channel_data` should not be a null pointer)...
+And we check whether the __ADC Sampling__ has been completed for the ADC Channel (`channel_data` shouldn't be null)...
 
 ```rust
   //  If ADC Sampling is not finished, try again later    
@@ -698,19 +696,20 @@ And we check whether the __ADC Sampling__ has been completed for the ADC Channel
   }
 ```
 
-(We flag this as `unsafe` because we're dereferencing a pointer: `ctx`)
+(Again we flag as `unsafe` because we're dereferencing the pointer `ctx`)
 
 Remember that the BL602 ADC Controller will __read ADC Samples continuously__ and write the last 100 samples to RAM (via DMA).
 
 We define an array `adc_data` to store the last 100 samples temporarily (on the stack)...
 
 ```rust
-  //  Array that will store last 100 ADC Samples
+  //  Array that will store the last 100 ADC Samples
+  //  (`ADC_SAMPLES` is 100)
   let mut adc_data: [u32; ADC_SAMPLES]
-    = [0; ADC_SAMPLES];  //  Init array to zeroes
+    = [0; ADC_SAMPLES];  //  Init array to 100 zeroes
 ```
 
-(Rust requires all variables to be initialised, so we set the array to zeroes)
+(Rust requires all variables to be initialised, so we set the array to 100 zeroes)
 
 Let's __copy the last 100 ADC Samples__ from the DMA Context (in RAM) to our array `adc_data` (on the stack)...
 
@@ -725,12 +724,14 @@ Let's __copy the last 100 ADC Samples__ from the DMA Context (in RAM) to our arr
   }
 ```
 
+(`adc_data.len()` returns the array length: 100)
+
 Then we compute the __average value of the ADC Samples__ in `adc_data`...
 
 ```rust
   //  Compute the average value of the ADC Samples
   let mut sum = 0;
-  for i in 0..ADC_SAMPLES {
+  for i in 0..ADC_SAMPLES {  //  From 0 to 99, `..` excludes 100
     //  Scale up the ADC Sample to the range 0 to 3199
     let scaled = ((adc_data[i] & 0xffff) * 3200) >> 16;
     sum += scaled;
@@ -740,22 +741,24 @@ Then we compute the __average value of the ADC Samples__ in `adc_data`...
 
 We scale each ADC Sample to the range __0 to 3199__. (Because the default ADC Configuration produces 12-bit samples)
 
-TODO
+Finally we compose a __formatted string with the average value__ and display it...
 
 ```rust
   //  Format the output
   let mut buf = String::new();
   write!(buf, "[Rust] Average: {}", avg)
     .expect("buf overflow");
-```
 
-TODO
-
-```rust
   //  Display the formatted output
   puts(&buf);
 }
 ```
+
+(Yep Rust will helpfully __check for buffer overflow__... safer than `sprintf`!)
+
+Default String Size is __64 characters__, as defined in the BL602 Rust Wrapper.
+
+(Similar to "`char[64]`" in C)
 
 The __formatted output__ will appear like so...
 
@@ -816,7 +819,25 @@ TODO
 
 TODO
 
-![](https://lupyuen.github.io/images/adc-compare.png)
+1.  `expect`: Rust Compiler warns if we forget `expect`
+
+1.  `unsafe`
+
+1.  `mut` variables and pointers
+
+1.  `bl_adc_init` becomes `adc::init`
+
+1.  `ptr->field` becomes `(*ptr).field`
+
+1.  Rust will helpfully __check for buffer overflow__... safer than `sprintf`!
+
+    For BL602 Rust Wrapper the default string size is __64 characters__.
+
+    (Similar to "`char[64]`" in C)
+
+1.  100 vs 1,000 ADC Samples
+
+![Compare C and Rust](https://lupyuen.github.io/images/adc-compare.png)
 
 # Rust Wrapper for BL602 IoT SDK
 
