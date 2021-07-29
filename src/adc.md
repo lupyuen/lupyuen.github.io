@@ -1076,13 +1076,15 @@ Finally we run the BL602 Rust Firmware...
 
 # Compare C and Rust
 
-We've learnt that it's feasible to __translate BL602 C Firmware into Rust__ line by line...
+_I'm familiar with C but new to Rust. Is there an easier way to jump from C to Rust?_
+
+Today we've seen that it's feasible to __translate BL602 C Firmware into Rust__ line by line...
 
 ![Compare C and Rust](https://lupyuen.github.io/images/adc-compare.png)
 
-(Which is great for embedded developers new to Rust)
+Which is great for embedded developers new to Rust!
 
-But be mindful of the __differences between C and Rust__...
+Just be mindful of the __differences between C and Rust__...
 
 1.  __BL602 HAL Functions__ have been renamed for Rust.
 
