@@ -521,9 +521,9 @@ extern "C" fn init_adc(  //  Declare `extern "C"` because it will be called by B
   puts("[Rust] Init ADC");
 ```
 
-(We won't be parsing the command-line arguments, so may ignore the parameters to `init_adc`)
+(We won't be parsing the command-line arguments, so let's ignore the parameters to `init_adc`)
 
-We validate the GPIO Pin Number and ADC Frequency...
+We start by validating the GPIO Pin Number and ADC Frequency...
 
 ```rust
   //  Only these GPIOs are supported: 4, 5, 6, 9, 10, 11, 12, 13, 14, 15
