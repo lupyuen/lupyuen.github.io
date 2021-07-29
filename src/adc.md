@@ -1104,13 +1104,17 @@ But be mindful of the __differences between C and Rust__...
 
     We rewrite it in Rust as "`(*ptr).field`"
 
-1.  Rust will helpfully __check for buffer overflow__.
+1.  Rust will helpfully __check for Buffer Overflow__.
 
     (No more silent "`sprintf`" overflow!)
 
     For BL602 Rust Wrapper the default string size is __64 characters__.
 
     (Similar to "`char[64]`" in C)
+
+1.  All Rust variables shall be __initialised__ before use.
+
+    (Even arrays and structs!)
 
 1.  `unsafe`
 
