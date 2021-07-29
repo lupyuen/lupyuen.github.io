@@ -983,10 +983,14 @@ cargo run flash sdk_app_lora.bin --port COM5
 <p>We rewrite it in Rust as “<code>(*ptr).field</code>”</p>
 </li>
 <li>
-<p>Rust will helpfully <strong>check for buffer overflow</strong>.</p>
+<p>Rust will helpfully <strong>check for Buffer Overflow</strong>.</p>
 <p>(No more silent “<code>sprintf</code>” overflow!)</p>
 <p>For BL602 Rust Wrapper the default string size is <strong>64 characters</strong>.</p>
 <p>(Similar to “<code>char[64]</code>” in C)</p>
+</li>
+<li>
+<p>All Rust variables shall be <strong>initialised</strong> before use.</p>
+<p>(Even arrays and structs!)</p>
 </li>
 <li>
 <p><code>unsafe</code></p>
