@@ -1076,11 +1076,13 @@ Finally we run the BL602 Rust Firmware...
 
 # Compare C and Rust
 
-Our Rust Firmware was translated from C line by line. So the Rust code looks highly similar to C, except the following...
-
-TODO
+We've learnt that it's feasible to __translate BL602 C Firmware into Rust__ line by line...
 
 ![Compare C and Rust](https://lupyuen.github.io/images/adc-compare.png)
+
+But be mindful of the __differences between C and Rust__...
+
+TODO
 
 1.  `expect`: Rust Compiler warns if we forget `expect`
 
