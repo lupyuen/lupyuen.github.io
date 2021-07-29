@@ -1080,6 +1080,8 @@ We've learnt that it's feasible to __translate BL602 C Firmware into Rust__ line
 
 ![Compare C and Rust](https://lupyuen.github.io/images/adc-compare.png)
 
+(Which is great for embedded developers new to Rust)
+
 But be mindful of the __differences between C and Rust__...
 
 1.  __BL602 HAL Functions__ have been renamed for Rust.
@@ -1090,29 +1092,29 @@ But be mindful of the __differences between C and Rust__...
 
     (More about this in the next chapter)
 
-1.  `expect`: Rust Compiler warns if we forget `expect`
+1.  In Rust we check for __BL602 HAL Errors__ by calling "`expect`" instead of "`assert`".
 
-    TODO
+    (Rust Compiler will warn us if we forget to "`expect`")
 
-1.  `unsafe`
+1.  Rust is __super strict about Mutability__... Only variables and pointers declared "`mut`" can be changed.
 
-    TODO
+    (That's why we write "`*mut i32`" to get a pointer to an integer whose value may be changed)
 
-1.  `mut` variables and pointers
+1.  __Pointer Deferencing__ like "`ptr->field`" doesn't work in Rust.
 
-    TODO
+    We rewrite it in Rust as "`(*ptr).field`"
 
-1.  `ptr->field` becomes `(*ptr).field`
+1.  Rust will helpfully __check for buffer overflow__.
 
-    TODO
-
-1.  Rust will helpfully __check for string buffer overflow__
-
-    (No more `sprintf` overflow!)
+    (No more silent "`sprintf`" overflow!)
 
     For BL602 Rust Wrapper the default string size is __64 characters__.
 
     (Similar to "`char[64]`" in C)
+
+1.  `unsafe`
+
+    TODO
 
 1.  100 vs 1,000 ADC Samples
 
