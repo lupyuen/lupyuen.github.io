@@ -2,6 +2,8 @@
 
 📝 _21 Apr 2021_
 
+[__UPDATE:__ Rust on BL602 is now simpler with Rust Wrapper for BL602 IoT SDK. Check out the new article](https://lupyuen.github.io/articles/adc)
+
 In the past 14 articles we've done so much with [__BL602 IoT SDK__](https://lupyuen.github.io/articles/pinecone): [LoRa wireless transceivers](https://lupyuen.github.io/articles/lora2), [SPI LCD displays](https://lupyuen.github.io/articles/display), [UART e-ink displays](https://lupyuen.github.io/articles/uart), [I2C sensors](https://lupyuen.github.io/articles/i2c), ...
 
 _Can we do this in Rust? (Instead of C)_
@@ -181,6 +183,8 @@ Here's our code switching from C to Rust so far...
 
 # Import BL602 IoT SDK into Rust
 
+[__UPDATE:__ Rust on BL602 is now simpler with Rust Wrapper for BL602 IoT SDK. Check out the new article](https://lupyuen.github.io/articles/adc)
+
 As we import the functions from BL602 IoT SDK into Rust, let's create __Wrapper Functions__ that will expose a cleaner, neater interface to our Rust callers.
 
 We start with __`bl_gpio_output_set`__, the function from BL602 GPIO HAL (Hardware Abstraction Layer) that sets the GPIO Pin output: [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L118-L141)
@@ -338,6 +342,8 @@ In future we might switch to `cstr` and eliminate the copying of strings. [(See 
 
 ## Autogenerate Wrapper Functions
 
+[__UPDATE:__ Rust on BL602 is now simpler with Rust Wrapper for BL602 IoT SDK. Check out the new article](https://lupyuen.github.io/articles/adc)
+
 _Sure looks like a lot of repetitive work to create the Wrapper Functions... When we import the entire BL602 IoT SDK?_
 
 Someday we shall __automatically generate the Wrapper Functions__ for the entire BL602 IoT SDK.
@@ -379,6 +385,8 @@ This produces a BL602 Rust Firmware file that we may __flash to BL602 the conven
 (We'll talk later about Embedded Rust on Bare Metal BL602)
 
 # Build the BL602 Rust Firmware
+
+[__UPDATE:__ Rust on BL602 is now simpler with Rust Wrapper for BL602 IoT SDK. Check out the new article](https://lupyuen.github.io/articles/adc)
 
 Here are the steps to build the BL602 Rust Firmware `sdk_app_rust.bin`...
 
@@ -988,13 +996,11 @@ Like __SPI with DMA__, which is useful for SPI displays that require high-bandwi
 
 In our next BL602 article we shall head back to __LoRaWAN, the low-power, long range IoT network__. [(See this)](https://lupyuen.github.io/articles/lora2#whats-next)
 
-We'll keep Rust on standby until we start building __complex firmware__ for BL602. 
+Check out the new article on __Rust Wrapper for BL602 IoT SDK__...
 
-(And then we shall talk about the merits and demerits of Rust on BL602)
+-   [__"Rust on RISC-V BL602: Is It Sunny?"__](https://lupyuen.github.io/articles/adc)
 
 Please drop me a note if you would like to see more __Rust on BL602 IoT SDK__!
-
-(Which includes auto-generating the Rust wrappers for the entire BL602 IoT SDK... [Here's a sneak peek of `bl602-rust-wrapper`](https://github.com/lupyuen/bl602-rust-wrapper))
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
