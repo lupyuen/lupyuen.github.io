@@ -524,7 +524,7 @@ export APP_NAME=sdk_app_rust_adc
   <span class="comment">//  Configure the GPIO Pin as ADC Input, no pullup, no pulldown</span>
   <span class="ident">adc::gpio_init</span>(<span class="ident">ADC_GPIO</span>)
     .<span class="ident">expect</span>(<span class="string">&quot;ADC GPIO failed&quot;</span>);</pre></div>
-<p>We fetch the <strong>DMA Context</strong> for the ADC Channel…</p>
+<p>And we fetch the <strong>DMA Context</strong> for the ADC Channel…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
   <span class="comment">//  Get the ADC Channel Number for the GPIO Pin</span>
@@ -535,7 +535,7 @@ export APP_NAME=sdk_app_rust_adc
   <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">dma::find_ctx_by_channel</span>(<span class="ident">adc::ADC_DMA_CHANNEL</span> <span class="kw">as</span> <span class="ident">i32</span>)
     .<span class="ident">expect</span>(<span class="string">&quot;DMA Ctx failed&quot;</span>);</pre></div>
 <p>However the returned pointer <code>ptr</code> is actually a “<code>void *</code>” pointer from C.</p>
-<p>To use the pointer in Rust, we need to cast it to a <strong>DMA Context Pointer</strong>…</p>
+<p>To use the pointer in Rust, we cast it to a <strong>DMA Context Pointer</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
   <span class="comment">//  Cast the returned C Pointer (void *) to a DMA Context Pointer (adc_ctx *)</span>
