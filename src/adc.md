@@ -506,9 +506,7 @@ const ADC_PGA_GAIN_1: u32 = 1;  //  From <https://github.com/lupyuen/bl_iot_sdk/
 
 ## Initialise the ADC Channel
 
-TODO
-
-From [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L39-L100)
+Here's our Rust Function __`init_adc`__ that will be called by the BL602 Command-Line Interface: [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L39-L100)
 
 ```rust
 /// Command to init the ADC Channel and start reading the ADC Samples.
@@ -523,6 +521,8 @@ extern "C" fn init_adc(  //  Declare `extern "C"` because it will be called by B
   puts("[Rust] Init ADC");
 ```
 
+(We won't be parsing the command-line arguments, so may ignore the parameters to `init_adc`)
+
 We validate the GPIO Pin Number and ADC Frequency...
 
 ```rust
@@ -533,7 +533,7 @@ We validate the GPIO Pin Number and ADC Frequency...
   assert!(ADC_FREQUENCY >= 500 && ADC_FREQUENCY <= 16000);
 ```
 
-(Remember: Not all GPIOs are supported for ADC)
+(Remember: Not all GPIOs are supported for ADC!)
 
 Next we select __ADC Mode 1__ (Single-Channel Conversion) and set the __ADC Frequency__...
 
