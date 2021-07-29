@@ -1082,17 +1082,29 @@ We've learnt that it's feasible to __translate BL602 C Firmware into Rust__ line
 
 But be mindful of the __differences between C and Rust__...
 
-TODO
+1.  __BL602 HAL Functions__ have been renamed for Rust.
+
+    For example, `bl_adc_init` becomes `adc::init`
+
+    To see the list of BL602 HAL Functions for Rust, [check out the `bl602-sdk` documentation](https://docs.rs/bl602-sdk).
+
+    (More about this in the next chapter)
 
 1.  `expect`: Rust Compiler warns if we forget `expect`
 
+    TODO
+
 1.  `unsafe`
+
+    TODO
 
 1.  `mut` variables and pointers
 
-1.  `bl_adc_init` becomes `adc::init`
+    TODO
 
 1.  `ptr->field` becomes `(*ptr).field`
+
+    TODO
 
 1.  Rust will helpfully __check for string buffer overflow__
 
@@ -1103,6 +1115,8 @@ TODO
     (Similar to "`char[64]`" in C)
 
 1.  100 vs 1,000 ADC Samples
+
+    TODO
 
 # Rust Wrapper for BL602 IoT SDK
 
