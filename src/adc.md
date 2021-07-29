@@ -837,7 +837,7 @@ Here are the steps to build the BL602 Rust Firmware `sdk_app_rust_adc.bin`
         -Z build-std=core
 
     Updating crates.io index
-    Compiling compiler_builtins v0.1.39
+    Compiling compiler_builtins v0.1.46
     Compiling core v0.0.0
     ...
     Compiling bl602-macros v0.0.2
