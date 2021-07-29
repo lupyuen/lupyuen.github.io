@@ -241,7 +241,7 @@ void read_adc(char *buf, int len, int argc, char **argv) {
   }
 </code></pre>
 <p>Remember that the BL602 ADC Controller will <strong>read ADC Samples continuously</strong> and write the last 1,000 samples to RAM (via DMA).</p>
-<p>Let’s <strong>copy the last 1,000 ADC Samples</strong> from the DMA Context (in RAM) to a Static Buffer <code>adc_data</code>…</p>
+<p>Let’s <strong>copy the last 1,000 ADC Samples</strong> from the DMA Context (in RAM) to a Static Array <code>adc_data</code>…</p>
 <pre><code class="language-c">  //  Static array that will store 1,000 ADC Samples
   static uint32_t adc_data[ADC_SAMPLES];
 
@@ -563,6 +563,8 @@ export APP_NAME=sdk_app_rust_adc
 }</pre></div>
 <p>BL602 ADC Controller will <strong>read the ADC Samples continuously</strong> (from the GPIO Pin) into RAM (until we stop the ADC Channel).</p>
 <h2 id="read-the-adc-channel-1" class="section-header"><a href="#read-the-adc-channel-1">3.3 Read the ADC Channel</a></h2>
+<p><em>Our ADC Channel has been started, how do we average the ADC Samples that have been read?</em></p>
+<p>Let’s find out:</p>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L102-L165"><code>lib.rs</code></a></p>
 
@@ -576,7 +578,7 @@ export APP_NAME=sdk_app_rust_adc
   <span class="ident">_argc</span>: <span class="ident">i32</span>,              <span class="comment">//  Number of command line args (int)</span>
   <span class="ident">_argv</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>  <span class="comment">//  Array of command line args (char **)</span>
 ) {</pre></div>
-<p>TODO</p>
+<p>We fetch the <strong>DMA Context</strong> for the ADC Channel…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
   <span class="comment">//  Get the ADC Channel Number for the GPIO Pin</span>
@@ -586,7 +588,7 @@ export APP_NAME=sdk_app_rust_adc
   <span class="comment">//  Get the DMA Context for the ADC Channel</span>
   <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">dma::find_ctx_by_channel</span>(<span class="ident">adc::ADC_DMA_CHANNEL</span> <span class="kw">as</span> <span class="ident">i32</span>)
     .<span class="ident">expect</span>(<span class="string">&quot;DMA Ctx failed&quot;</span>);</pre></div>
-<p>TODO</p>
+<p>Again we cast the returned C pointer <code>ptr</code> to a <strong>DMA Context Pointer</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
   <span class="comment">//  Cast the returned C Pointer (void *) to a DMA Context Pointer (adc_ctx *)</span>
@@ -596,14 +598,16 @@ export APP_NAME=sdk_app_rust_adc
       <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">adc::adc_ctx</span>  <span class="comment">//  To DMA Context Pointer (adc_ctx *)</span>
     <span class="op">&gt;</span>(<span class="ident">ptr</span>)               <span class="comment">//  For this pointer</span>
   };</pre></div>
-<p>TODO</p>
+<p>(More about <code>transmute</code> in a while)</p>
+<p>Now we may verify the <strong>DMA Context</strong> for the ADC Channel…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
   <span class="comment">//  Verify that the GPIO has been configured for ADC</span>
   <span class="kw">unsafe</span> {  <span class="comment">//  Unsafe because we are dereferencing a pointer</span>
     <span class="macro">assert!</span>(((<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">channel</span>) <span class="op">&amp;</span> (<span class="kw-2">*</span><span class="ident">ctx</span>).<span class="ident">chan_init_table</span>) <span class="op">!</span><span class="op">=</span> <span class="number">0</span>);
   }</pre></div>
-<p>TODO</p>
+<p>(We flag this as <code>unsafe</code> because we’re dereferencing a pointer: <code>ctx</code>)</p>
+<p>And we check whether the <strong>ADC Sampling</strong> has been completed for the ADC Channel (i.e. <code>channel_data</code> should not be a null pointer)…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
   <span class="comment">//  If ADC Sampling is not finished, try again later    </span>
@@ -611,16 +615,19 @@ export APP_NAME=sdk_app_rust_adc
     <span class="ident">puts</span>(<span class="string">&quot;ADC Sampling not finished&quot;</span>);
     <span class="kw">return</span>;
   }</pre></div>
-<p>TODO</p>
+<p>(We flag this as <code>unsafe</code> because we’re dereferencing a pointer: <code>ctx</code>)</p>
+<p>Remember that the BL602 ADC Controller will <strong>read ADC Samples continuously</strong> and write the last 100 samples to RAM (via DMA).</p>
+<p>We define an array <code>adc_data</code> to store the last 100 samples temporarily (on the stack)…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-  <span class="comment">//  Array that will store last 1,000 ADC Samples</span>
+  <span class="comment">//  Array that will store last 100 ADC Samples</span>
   <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">adc_data</span>: [<span class="ident">u32</span>; <span class="ident">ADC_SAMPLES</span>]
     <span class="op">=</span> [<span class="number">0</span>; <span class="ident">ADC_SAMPLES</span>];  <span class="comment">//  Init array to zeroes</span></pre></div>
-<p>TODO</p>
+<p>(Rust requires all variables to be initialised, so we set the array to zeroes)</p>
+<p>Let’s <strong>copy the last 100 ADC Samples</strong> from the DMA Context (in RAM) to our array <code>adc_data</code> (on the stack)…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-  <span class="comment">//  Copy the read ADC Samples to the static array</span>
+  <span class="comment">//  Copy the read ADC Samples to the array</span>
   <span class="kw">unsafe</span> {                    <span class="comment">//  Unsafe because we are copying raw memory</span>
     <span class="ident">core::ptr::copy</span>(          <span class="comment">//  Copy the memory...</span>
       (<span class="kw-2">*</span><span class="ident">ctx</span>).<span class="ident">channel_data</span>,    <span class="comment">//  From Source (ADC DMA data)</span>
@@ -628,7 +635,7 @@ export APP_NAME=sdk_app_rust_adc
       <span class="ident">adc_data</span>.<span class="ident">len</span>()          <span class="comment">//  Number of Items (each item is uint32 or 4 bytes)</span>
     );    
   }</pre></div>
-<p>TODO</p>
+<p>Then we compute the <strong>average value of the ADC Samples</strong> in <code>adc_data</code>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
   <span class="comment">//  Compute the average value of the ADC Samples</span>
@@ -639,6 +646,7 @@ export APP_NAME=sdk_app_rust_adc
     <span class="ident">sum</span> <span class="op">+</span><span class="op">=</span> <span class="ident">scaled</span>;
   }
   <span class="kw">let</span> <span class="ident">avg</span> <span class="op">=</span> <span class="ident">sum</span> <span class="op">/</span> <span class="ident">ADC_SAMPLES</span> <span class="kw">as</span> <span class="ident">u32</span>;</pre></div>
+<p>We scale each ADC Sample to the range <strong>0 to 3199</strong>. (Because the default ADC Configuration produces 12-bit samples)</p>
 <p>TODO</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
@@ -652,6 +660,9 @@ export APP_NAME=sdk_app_rust_adc
   <span class="comment">//  Display the formatted output</span>
   <span class="ident">puts</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>);
 }</pre></div>
+<p>The <strong>formatted output</strong> will appear like so…</p>
+<p><img src="https://lupyuen.github.io/images/adc-format.jpg" alt="Output from Rust Firmware" /></p>
+<p>And we’re done… That’s how we code BL602 ADC Firmware in Rust!</p>
 <h1 id="build-the-bl602-rust-firmware" class="section-header"><a href="#build-the-bl602-rust-firmware">4 Build the BL602 Rust Firmware</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/adc-build.png" alt="" /></p>
@@ -778,8 +789,6 @@ bl602-sdk = &quot;0.0.6&quot;  # Rust Wrapper for BL602 IoT SDK: https://crates.
 <p>TODO17</p>
 <p><img src="https://lupyuen.github.io/images/adc-doclink3.png" alt="" /></p>
 <p>TODO18</p>
-<p><img src="https://lupyuen.github.io/images/adc-format.jpg" alt="" /></p>
-<p>TODO19</p>
 <p><img src="https://lupyuen.github.io/images/adc-gain.png" alt="" /></p>
 <p>TODO20</p>
 <p><img src="https://lupyuen.github.io/images/adc-gain2.png" alt="" /></p>
