@@ -817,12 +817,12 @@ Here are the steps to build the BL602 Rust Firmware `sdk_app_rust_adc.bin`
     + make
     ...
     LD build_out/sdk_app_rust_adc.elf
-    Generating BIN File to build_out/sdk_app_rust_adc.bin
-    ...
-    Building Finish. To flash build output.
+    ld: undefined reference to `init_adc'
+    ld: undefined reference to `read_adc'
+    ----- Ignore undefined references to Rust Library
     ```
 
-    The script has built our firmware... C only, no Rust yet.
+    This means that the __C code from our BL602 Firmware__ has been built successfully.
 
     [More details on building BL602 firmware](https://lupyuen.github.io/articles/pinecone#building-firmware)
 
@@ -840,8 +840,10 @@ Here are the steps to build the BL602 Rust Firmware `sdk_app_rust_adc.bin`
     Compiling compiler_builtins v0.1.39
     Compiling core v0.0.0
     ...
-    Compiling app v0.0.1
-    Finished dev [unoptimized + debuginfo] target(s) in 29.47s
+    Compiling bl602-macros v0.0.2
+    Compiling bl602-sdk v0.0.6
+    Compiling app v0.0.1 (bl_iot_sdk/customer_app/sdk_app_rust_adc/rust)
+    Finished dev [unoptimized + debuginfo] target(s) in 23.55s
     ```
 
 1.  Finally the script __links the Rust static library__ into our BL602 firmware...
@@ -868,7 +870,7 @@ Here are the steps to build the BL602 Rust Firmware `sdk_app_rust_adc.bin`
 
 Check out the complete build log here...
 
--   [__Build Log for BL602 Rust Firmware__](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/run.sh#L135-L523)
+-   [__Build Log for BL602 Rust Firmware__](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/run.sh#L135-L497)
 
 ![Building the BL602 Rust Firmware](https://lupyuen.github.io/images/adc-build.png)
 
