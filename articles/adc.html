@@ -455,6 +455,7 @@ export APP_NAME=sdk_app_rust_adc
 
 <span class="doccomment">/// We shall read 100 ADC samples, which will take 0.01 seconds</span>
 <span class="kw">const</span> <span class="ident">ADC_SAMPLES</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">100</span>;</pre></div>
+<p>(<code>usize</code> is similar to <code>size_t</code> in C, it’s used to represent the size of arrays)</p>
 <p>We shall set the <strong>ADC Gain</strong> to increase the ADC sensitivity…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
@@ -482,7 +483,7 @@ export APP_NAME=sdk_app_rust_adc
   <span class="ident">_argv</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>  <span class="comment">//  Array of command line args (char **)</span>
 ) {
   <span class="ident">puts</span>(<span class="string">&quot;[Rust] Init ADC&quot;</span>);</pre></div>
-<p>(We won’t be parsing the command-line arguments, so let’s ignore the parameters to <code>init_adc</code>)</p>
+<p>(We won’t be parsing the command-line arguments, so let’s ignore the parameters passed to <code>init_adc</code>)</p>
 <p>We start by validating the GPIO Pin Number and ADC Frequency…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
@@ -564,9 +565,7 @@ export APP_NAME=sdk_app_rust_adc
 <p>BL602 ADC Controller will <strong>read the ADC Samples continuously</strong> (from the GPIO Pin) into RAM (until we stop the ADC Channel).</p>
 <h2 id="read-the-adc-channel-1" class="section-header"><a href="#read-the-adc-channel-1">3.3 Read the ADC Channel</a></h2>
 <p><em>Our ADC Channel has been started, how do we average the ADC Samples that have been read?</em></p>
-<p>Let’s find out:</p>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L102-L165"><code>lib.rs</code></a></p>
+<p>Let’s check out the Rust Function <strong><code>read_adc</code></strong> in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L102-L165"><code>lib.rs</code></a> …</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="doccomment">/// Command to compute the average value of the ADC Samples that have just been read.</span>
@@ -578,7 +577,7 @@ export APP_NAME=sdk_app_rust_adc
   <span class="ident">_argc</span>: <span class="ident">i32</span>,              <span class="comment">//  Number of command line args (int)</span>
   <span class="ident">_argv</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>  <span class="comment">//  Array of command line args (char **)</span>
 ) {</pre></div>
-<p>We fetch the <strong>DMA Context</strong> for the ADC Channel…</p>
+<p>First we fetch the <strong>DMA Context</strong> for the ADC Channel…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
   <span class="comment">//  Get the ADC Channel Number for the GPIO Pin</span>
@@ -607,7 +606,7 @@ export APP_NAME=sdk_app_rust_adc
     <span class="macro">assert!</span>(((<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">channel</span>) <span class="op">&amp;</span> (<span class="kw-2">*</span><span class="ident">ctx</span>).<span class="ident">chan_init_table</span>) <span class="op">!</span><span class="op">=</span> <span class="number">0</span>);
   }</pre></div>
 <p>(We flag this as <code>unsafe</code> because we’re dereferencing a pointer: <code>ctx</code>)</p>
-<p>And we check whether the <strong>ADC Sampling</strong> has been completed for the ADC Channel (i.e. <code>channel_data</code> should not be a null pointer)…</p>
+<p>And we check whether the <strong>ADC Sampling</strong> has been completed for the ADC Channel (<code>channel_data</code> shouldn’t be null)…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
   <span class="comment">//  If ADC Sampling is not finished, try again later    </span>
@@ -615,15 +614,16 @@ export APP_NAME=sdk_app_rust_adc
     <span class="ident">puts</span>(<span class="string">&quot;ADC Sampling not finished&quot;</span>);
     <span class="kw">return</span>;
   }</pre></div>
-<p>(We flag this as <code>unsafe</code> because we’re dereferencing a pointer: <code>ctx</code>)</p>
+<p>(Again we flag as <code>unsafe</code> because we’re dereferencing the pointer <code>ctx</code>)</p>
 <p>Remember that the BL602 ADC Controller will <strong>read ADC Samples continuously</strong> and write the last 100 samples to RAM (via DMA).</p>
 <p>We define an array <code>adc_data</code> to store the last 100 samples temporarily (on the stack)…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-  <span class="comment">//  Array that will store last 100 ADC Samples</span>
+  <span class="comment">//  Array that will store the last 100 ADC Samples</span>
+  <span class="comment">//  (`ADC_SAMPLES` is 100)</span>
   <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">adc_data</span>: [<span class="ident">u32</span>; <span class="ident">ADC_SAMPLES</span>]
-    <span class="op">=</span> [<span class="number">0</span>; <span class="ident">ADC_SAMPLES</span>];  <span class="comment">//  Init array to zeroes</span></pre></div>
-<p>(Rust requires all variables to be initialised, so we set the array to zeroes)</p>
+    <span class="op">=</span> [<span class="number">0</span>; <span class="ident">ADC_SAMPLES</span>];  <span class="comment">//  Init array to 100 zeroes</span></pre></div>
+<p>(Rust requires all variables to be initialised, so we set the array to 100 zeroes)</p>
 <p>Let’s <strong>copy the last 100 ADC Samples</strong> from the DMA Context (in RAM) to our array <code>adc_data</code> (on the stack)…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
@@ -635,31 +635,33 @@ export APP_NAME=sdk_app_rust_adc
       <span class="ident">adc_data</span>.<span class="ident">len</span>()          <span class="comment">//  Number of Items (each item is uint32 or 4 bytes)</span>
     );    
   }</pre></div>
+<p>(<code>adc_data.len()</code> returns the array length: 100)</p>
 <p>Then we compute the <strong>average value of the ADC Samples</strong> in <code>adc_data</code>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
   <span class="comment">//  Compute the average value of the ADC Samples</span>
   <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sum</span> <span class="op">=</span> <span class="number">0</span>;
-  <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">ADC_SAMPLES</span> {
+  <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">ADC_SAMPLES</span> {  <span class="comment">//  From 0 to 99, `..` excludes 100</span>
     <span class="comment">//  Scale up the ADC Sample to the range 0 to 3199</span>
     <span class="kw">let</span> <span class="ident">scaled</span> <span class="op">=</span> ((<span class="ident">adc_data</span>[<span class="ident">i</span>] <span class="op">&amp;</span> <span class="number">0xffff</span>) <span class="op">*</span> <span class="number">3200</span>) <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">16</span>;
     <span class="ident">sum</span> <span class="op">+</span><span class="op">=</span> <span class="ident">scaled</span>;
   }
   <span class="kw">let</span> <span class="ident">avg</span> <span class="op">=</span> <span class="ident">sum</span> <span class="op">/</span> <span class="ident">ADC_SAMPLES</span> <span class="kw">as</span> <span class="ident">u32</span>;</pre></div>
 <p>We scale each ADC Sample to the range <strong>0 to 3199</strong>. (Because the default ADC Configuration produces 12-bit samples)</p>
-<p>TODO</p>
+<p>Finally we compose a <strong>formatted string with the average value</strong> and display it…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
   <span class="comment">//  Format the output</span>
   <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">String::new</span>();
   <span class="macro">write!</span>(<span class="ident">buf</span>, <span class="string">&quot;[Rust] Average: {}&quot;</span>, <span class="ident">avg</span>)
-    .<span class="ident">expect</span>(<span class="string">&quot;buf overflow&quot;</span>);</pre></div>
-<p>TODO</p>
+    .<span class="ident">expect</span>(<span class="string">&quot;buf overflow&quot;</span>);
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
   <span class="comment">//  Display the formatted output</span>
   <span class="ident">puts</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>);
 }</pre></div>
+<p>(Yep Rust will helpfully <strong>check for buffer overflow</strong>… safer than <code>sprintf</code>!)</p>
+<p>Default String Size is <strong>64 characters</strong>, as defined in the BL602 Rust Wrapper.</p>
+<p>(Similar to “<code>char[64]</code>” in C)</p>
 <p>The <strong>formatted output</strong> will appear like so…</p>
 <p><img src="https://lupyuen.github.io/images/adc-format.jpg" alt="Output from Rust Firmware" /></p>
 <p>And we’re done… That’s how we code BL602 ADC Firmware in Rust!</p>
@@ -704,7 +706,32 @@ export APP_NAME=sdk_app_rust_adc
 <p><img src="https://lupyuen.github.io/images/adc-demo2.png" alt="" /></p>
 <h1 id="compare-c-and-rust" class="section-header"><a href="#compare-c-and-rust">7 Compare C and Rust</a></h1>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/adc-compare.png" alt="" /></p>
+<ol>
+<li>
+<p><code>expect</code>: Rust Compiler warns if we forget <code>expect</code></p>
+</li>
+<li>
+<p><code>unsafe</code></p>
+</li>
+<li>
+<p><code>mut</code> variables and pointers</p>
+</li>
+<li>
+<p><code>bl_adc_init</code> becomes <code>adc::init</code></p>
+</li>
+<li>
+<p><code>ptr-&gt;field</code> becomes <code>(*ptr).field</code></p>
+</li>
+<li>
+<p>Rust will helpfully <strong>check for buffer overflow</strong>… safer than <code>sprintf</code>!</p>
+<p>For BL602 Rust Wrapper the default string size is <strong>64 characters</strong>.</p>
+<p>(Similar to “<code>char[64]</code>” in C)</p>
+</li>
+<li>
+<p>100 vs 1,000 ADC Samples</p>
+</li>
+</ol>
+<p><img src="https://lupyuen.github.io/images/adc-compare.png" alt="Compare C and Rust" /></p>
 <h1 id="rust-wrapper-for-bl602-iot-sdk" class="section-header"><a href="#rust-wrapper-for-bl602-iot-sdk">8 Rust Wrapper for BL602 IoT SDK</a></h1>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/Cargo.toml#L9-L11"><code>Cargo.toml</code></a></p>
