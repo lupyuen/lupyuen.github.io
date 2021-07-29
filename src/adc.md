@@ -1120,6 +1120,14 @@ Just be mindful of the __differences between C and Rust__...
 
 1.  `unsafe`
 
+    `set_adc_gain`
+
+    `transmute`
+
+    Dereferening pointers
+
+    Copying memory with pointers
+
     TODO
 
 1.  100 vs 1,000 ADC Samples
