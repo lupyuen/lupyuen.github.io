@@ -962,22 +962,28 @@ cargo run flash sdk_app_lora.bin --port COM5
 <p>We’ve learnt that it’s feasible to <strong>translate BL602 C Firmware into Rust</strong> line by line…</p>
 <p><img src="https://lupyuen.github.io/images/adc-compare.png" alt="Compare C and Rust" /></p>
 <p>But be mindful of the <strong>differences between C and Rust</strong>…</p>
-<p>TODO</p>
 <ol>
 <li>
+<p><strong>BL602 HAL Functions</strong> have been renamed for Rust.</p>
+<p>For example, <code>bl_adc_init</code> becomes <code>adc::init</code></p>
+<p>To see the list of BL602 HAL Functions for Rust, <a href="https://docs.rs/bl602-sdk">check out the <code>bl602-sdk</code> documentation</a>.</p>
+<p>(More about this in the next chapter)</p>
+</li>
+<li>
 <p><code>expect</code>: Rust Compiler warns if we forget <code>expect</code></p>
+<p>TODO</p>
 </li>
 <li>
 <p><code>unsafe</code></p>
+<p>TODO</p>
 </li>
 <li>
 <p><code>mut</code> variables and pointers</p>
-</li>
-<li>
-<p><code>bl_adc_init</code> becomes <code>adc::init</code></p>
+<p>TODO</p>
 </li>
 <li>
 <p><code>ptr-&gt;field</code> becomes <code>(*ptr).field</code></p>
+<p>TODO</p>
 </li>
 <li>
 <p>Rust will helpfully <strong>check for string buffer overflow</strong></p>
@@ -987,6 +993,7 @@ cargo run flash sdk_app_lora.bin --port COM5
 </li>
 <li>
 <p>100 vs 1,000 ADC Samples</p>
+<p>TODO</p>
 </li>
 </ol>
 <h1 id="rust-wrapper-for-bl602-iot-sdk" class="section-header"><a href="#rust-wrapper-for-bl602-iot-sdk">8 Rust Wrapper for BL602 IoT SDK</a></h1>
