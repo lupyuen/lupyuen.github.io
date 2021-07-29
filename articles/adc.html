@@ -961,6 +961,7 @@ cargo run flash sdk_app_lora.bin --port COM5
 <h1 id="compare-c-and-rust" class="section-header"><a href="#compare-c-and-rust">7 Compare C and Rust</a></h1>
 <p>We’ve learnt that it’s feasible to <strong>translate BL602 C Firmware into Rust</strong> line by line…</p>
 <p><img src="https://lupyuen.github.io/images/adc-compare.png" alt="Compare C and Rust" /></p>
+<p>(Which is great for embedded developers new to Rust)</p>
 <p>But be mindful of the <strong>differences between C and Rust</strong>…</p>
 <ol>
 <li>
@@ -970,26 +971,26 @@ cargo run flash sdk_app_lora.bin --port COM5
 <p>(More about this in the next chapter)</p>
 </li>
 <li>
-<p><code>expect</code>: Rust Compiler warns if we forget <code>expect</code></p>
-<p>TODO</p>
+<p>In Rust we check for <strong>BL602 HAL Errors</strong> by calling “<code>expect</code>” instead of “<code>assert</code>”.</p>
+<p>(Rust Compiler will warn us if we forget to “<code>expect</code>”)</p>
+</li>
+<li>
+<p>Rust is <strong>super strict about Mutability</strong>… Only variables and pointers declared “<code>mut</code>” can be changed.</p>
+<p>(That’s why we write “<code>*mut i32</code>” to get a pointer to an integer whose value may be changed)</p>
+</li>
+<li>
+<p><strong>Pointer Deferencing</strong> like “<code>ptr-&gt;field</code>” doesn’t work in Rust.</p>
+<p>We rewrite it in Rust as “<code>(*ptr).field</code>”</p>
+</li>
+<li>
+<p>Rust will helpfully <strong>check for buffer overflow</strong>.</p>
+<p>(No more silent “<code>sprintf</code>” overflow!)</p>
+<p>For BL602 Rust Wrapper the default string size is <strong>64 characters</strong>.</p>
+<p>(Similar to “<code>char[64]</code>” in C)</p>
 </li>
 <li>
 <p><code>unsafe</code></p>
 <p>TODO</p>
-</li>
-<li>
-<p><code>mut</code> variables and pointers</p>
-<p>TODO</p>
-</li>
-<li>
-<p><code>ptr-&gt;field</code> becomes <code>(*ptr).field</code></p>
-<p>TODO</p>
-</li>
-<li>
-<p>Rust will helpfully <strong>check for string buffer overflow</strong></p>
-<p>(No more <code>sprintf</code> overflow!)</p>
-<p>For BL602 Rust Wrapper the default string size is <strong>64 characters</strong>.</p>
-<p>(Similar to “<code>char[64]</code>” in C)</p>
 </li>
 <li>
 <p>100 vs 1,000 ADC Samples</p>
