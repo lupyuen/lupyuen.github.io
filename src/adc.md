@@ -768,15 +768,257 @@ And we're done... That's how we code BL602 ADC Firmware in Rust!
 
 # Build the BL602 Rust Firmware
 
-TODO
+Here are the steps to build the BL602 Rust Firmware `sdk_app_rust_adc.bin`
 
-![](https://lupyuen.github.io/images/adc-build.png)
+1.  Install __`rustup`, `blflash` and `xpack-riscv-none-embed-gcc`__
+
+    -   [__"Install rustup"__](https://lupyuen.github.io/articles/flash#install-rustup)
+
+    -   [__"Download and build blflash"__](https://lupyuen.github.io/articles/flash#download-and-build-blflash)
+
+    -   [__"Install `xpack-riscv-none-embed-gcc`"__](https://lupyuen.github.io/articles/debug#install-gdb)
+
+1.  Download the __source code__ for the BL602 Rust Firmware...
+
+    ```bash
+    # Download the adc branch of lupyuen's bl_iot_sdk
+    git clone --recursive --branch adc https://github.com/lupyuen/bl_iot_sdk
+    cd bl_iot_sdk/customer_app/sdk_app_rust_adc
+    ```
+
+1.  Edit the script [__`run.sh`__](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/run.sh) in the `sdk_app_rust_adc` folder.
+
+    This build script was created for macOS, but can be modified to run on Linux x64 and Windows WSL.
+
+1.  In `run.sh`, set the following variables to the downloaded folders for `blflash` and `xpack-riscv-none-embed-gcc`...
+
+    ```bash
+    #  Where blflash is located
+    export BLFLASH_PATH=$PWD/../../../blflash
+
+    #  Where GCC is located
+    export GCC_PATH=$PWD/../../../xpack-riscv-none-embed-gcc
+    ```
+
+    Save the changes into `run.sh`
+
+1.  Build the firmware...
+
+    ```bash
+    ./run.sh
+    ```
+
+1.  We should see...
+
+    ```text
+    ----- Building Rust app and BL602 firmware for riscv32imacf-unknown-none-elf / sdk_app_rust_adc...
+
+    ----- Build BL602 Firmware
+    + make
+    ...
+    LD build_out/sdk_app_rust_adc.elf
+    Generating BIN File to build_out/sdk_app_rust_adc.bin
+    ...
+    Building Finish. To flash build output.
+    ```
+
+    The script has built our firmware... C only, no Rust yet.
+
+    [More details on building BL602 firmware](https://lupyuen.github.io/articles/pinecone#building-firmware)
+
+1.  Next the script __compiles our Rust code__ into a static library: `libapp.a`
+
+    ```text
+    ----- Build Rust Library
+    + rustup default nightly
+
+    + cargo build \
+        --target ../riscv32imacf-unknown-none-elf.json \
+        -Z build-std=core
+
+    Updating crates.io index
+    Compiling compiler_builtins v0.1.39
+    Compiling core v0.0.0
+    ...
+    Compiling app v0.0.1
+    Finished dev [unoptimized + debuginfo] target(s) in 29.47s
+    ```
+
+1.  Finally the script __links the Rust static library__ into our BL602 firmware...
+
+    ```text
+    ----- Link BL602 Firmware with Rust Library
+    + make
+    use existing version.txt file
+    LD build_out/sdk_app_rust_adc.elf
+    Generating BIN File to build_out/sdk_app_rust_adc.bin
+    ...
+    Building Finish. To flash build output.
+    ```
+
+    Ignore the error from `blflash`, we'll fix this in a while.
+
+1.  Our __BL602 Rust Firmware file__ has been generated at...
+
+    ```text
+    build_out/sdk_app_rust_adc.bin
+    ```
+
+    Let's flash this to BL602 and run it!
+
+Check out the complete build log here...
+
+-   [__Build Log for BL602 Rust Firmware__](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/run.sh#L135-L523)
+
+![Building the BL602 Rust Firmware](https://lupyuen.github.io/images/adc-build.png)
 
 # Flash the BL602 Rust Firmware
 
-TODO
+Here's how we flash the Rust Firmware file `sdk_app_rust_adc.bin` to BL602...
+
+1.  Set BL602 to __Flashing Mode__ and restart the board...
+
+    __For PineCone:__
+
+    -   Set the __PineCone Jumper (IO 8)__ to the __`H` Position__ [(Like this)](https://lupyuen.github.io/images/pinecone-jumperh.jpg)
+
+    -   Press the Reset Button
+
+    __For BL10:__
+
+    -   Connect BL10 to the USB port
+
+    -   Press and hold the __D8 Button (GPIO 8)__
+
+    -   Press and release the __EN Button (Reset)__
+
+    -   Release the D8 Button
+
+    __For Pinenut and MagicHome BL602:__
+
+    -   Disconnect the board from the USB Port
+
+    -   Connect __GPIO 8__ to __3.3V__
+
+    -   Reconnect the board to the USB port
+
+1.  __For macOS:__
+
+    Enter this at the command prompt...
+
+    ```bash
+    ./run.sh
+    ```
+
+    The script should automatically flash the firmware after building...
+
+    ```text
+    ----- Flash BL602 Firmware
+
+    + cargo run flash sdk_app_rust_adc.bin \
+        --port /dev/tty.usbserial-1410 \
+        --initial-baud-rate 230400 \
+        --baud-rate 230400
+
+    Finished dev [unoptimized + debuginfo] target(s) in 0.97s
+    Running `target/debug/blflash flash sdk_app_rust_adc.bin --port /dev/tty.usbserial-1410 --initial-baud-rate 230400 --baud-rate 230400`
+    [INFO  blflash::flasher] Start connection...
+    [TRACE blflash::flasher] 5ms send count 115
+    [TRACE blflash::flasher] handshake sent elapsed 145.949µs
+    [INFO  blflash::flasher] Connection Succeed
+    [INFO  blflash] Bootrom version: 1
+    [TRACE blflash] Boot info: BootInfo { len: 14, bootrom_version: 1, otp_info: [0, 0, 0, 0, 3, 0, 0, 0, 61, 9d, c0, 5, b9, 18, 1d, 0] }
+    [INFO  blflash::flasher] Sending eflash_loader...
+    [INFO  blflash::flasher] Finished 1.6282326s 17.55KB/s
+    [TRACE blflash::flasher] 5ms send count 115
+    [TRACE blflash::flasher] handshake sent elapsed 54.259µs
+    [INFO  blflash::flasher] Entered eflash_loader
+    [INFO  blflash::flasher] Skip segment addr: 0 size: 47504 sha256 matches
+    [INFO  blflash::flasher] Skip segment addr: e000 size: 272 sha256 matches
+    [INFO  blflash::flasher] Skip segment addr: f000 size: 272 sha256 matches
+    [INFO  blflash::flasher] Erase flash addr: 10000 size: 118224
+    [INFO  blflash::flasher] Program flash... bac8824299e4d6bb0cceb1f93323f43ae6f56500f39c827590eb011b057ec282
+    [INFO  blflash::flasher] Program done 6.54650345s 17.64KB/s
+    [INFO  blflash::flasher] Skip segment addr: 1f8000 size: 5671 sha256 matches
+    [INFO  blflash] Success
+    ```
+
+    (We might need to edit the script to use the right serial port)
+
+1.  __For Linux and Windows:__
+
+    Copy `build_out/sdk_app_rust_adc.bin` to the `blflash` folder.
+
+    Then enter this at the command prompt...
+
+    ```bash
+    # TODO: Change this to the downloaded blflash folder
+    cd blflash
+
+    # For Linux:
+    sudo cargo run flash sdk_app_lora.bin \
+        --port /dev/ttyUSB0
+
+    # For Windows: Change COM5 to the BL602 Serial Port
+    cargo run flash sdk_app_lora.bin --port COM5
+    ```
+
+    [More details on flashing firmware](https://lupyuen.github.io/articles/flash#flash-the-firmware)
 
 # Run the BL602 Rust Firmware
+
+Finally we run the BL602 Rust Firmware...
+
+1.  Set BL602 to __Normal Mode__ (Non-Flashing) and restart the board...
+
+    __For PineCone:__
+
+    -   Set the __PineCone Jumper (IO 8)__ to the __`L` Position__ [(Like this)](https://lupyuen.github.io/images/pinecone-jumperl.jpg)
+
+    -   Press the Reset Button
+
+    __For BL10:__
+
+    -   Press and release the __EN Button (Reset)__
+
+    __For Pinenut and MagicHome BL602:__
+
+    -   Disconnect the board from the USB Port
+
+    -   Connect __GPIO 8__ to __GND__
+
+    -   Reconnect the board to the USB port
+
+1.  __For macOS:__
+
+    The `run.sh` script should automatically launch CoolTerm after flashing...
+
+    ```text
+    ----- Run BL602 Firmware
+    + open -a CoolTerm
+    ```
+
+    [More about CoolTerm](https://lupyuen.github.io/articles/flash#watch-the-firmware-run)
+
+1.  __For Linux:__
+
+    Connect to BL602's UART Port at 2 Mbps like so...
+
+    ```bash
+    sudo screen /dev/ttyUSB0 2000000
+    ```
+
+1.  __For Windows:__ 
+
+    Use `putty` ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
+
+1.  __Alternatively:__ 
+
+    Use the Web Serial Terminal ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
+
+    [More details on connecting to BL602](https://lupyuen.github.io/articles/flash#watch-the-firmware-run)
+
+1.  In the serial console, press Enter to reveal the command prompt.
 
 TODO
 
