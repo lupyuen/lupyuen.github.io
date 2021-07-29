@@ -232,7 +232,7 @@ Next we check whether the __ADC Sampling__ has been completed for the ADC Channe
 
 Remember that the BL602 ADC Controller will __read ADC Samples continuously__ and write the last 1,000 samples to RAM (via DMA).
 
-Let's __copy the last 1,000 ADC Samples__ from the DMA Context (in RAM) to a Static Buffer `adc_data`...
+Let's __copy the last 1,000 ADC Samples__ from the DMA Context (in RAM) to a Static Array `adc_data`...
 
 ```c
   //  Static array that will store 1,000 ADC Samples
@@ -631,6 +631,10 @@ BL602 ADC Controller will __read the ADC Samples continuously__ (from the GPIO P
 
 ## Read the ADC Channel
 
+_Our ADC Channel has been started, how do we average the ADC Samples that have been read?_
+
+Let's find out:
+
 TODO
 
 From [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L102-L165)
@@ -647,7 +651,7 @@ extern "C" fn read_adc(   //  Declare `extern "C"` because it will be called by 
 ) {
 ```
 
-TODO
+We fetch the __DMA Context__ for the ADC Channel...
 
 ```rust
   //  Get the ADC Channel Number for the GPIO Pin
@@ -659,7 +663,7 @@ TODO
     .expect("DMA Ctx failed");
 ```
 
-TODO
+Again we cast the returned C pointer `ptr` to a __DMA Context Pointer__...
 
 ```rust
   //  Cast the returned C Pointer (void *) to a DMA Context Pointer (adc_ctx *)
@@ -671,7 +675,9 @@ TODO
   };
 ```
 
-TODO
+(More about `transmute` in a while)
+
+Now we may verify the __DMA Context__ for the ADC Channel...
 
 ```rust
   //  Verify that the GPIO has been configured for ADC
@@ -680,7 +686,9 @@ TODO
   }
 ```
 
-TODO
+(We flag this as `unsafe` because we're dereferencing a pointer: `ctx`)
+
+And we check whether the __ADC Sampling__ has been completed for the ADC Channel (i.e. `channel_data` should not be a null pointer)...
 
 ```rust
   //  If ADC Sampling is not finished, try again later    
@@ -690,18 +698,24 @@ TODO
   }
 ```
 
-TODO
+(We flag this as `unsafe` because we're dereferencing a pointer: `ctx`)
+
+Remember that the BL602 ADC Controller will __read ADC Samples continuously__ and write the last 100 samples to RAM (via DMA).
+
+We define an array `adc_data` to store the last 100 samples temporarily (on the stack)...
 
 ```rust
-  //  Array that will store last 1,000 ADC Samples
+  //  Array that will store last 100 ADC Samples
   let mut adc_data: [u32; ADC_SAMPLES]
     = [0; ADC_SAMPLES];  //  Init array to zeroes
 ```
 
-TODO
+(Rust requires all variables to be initialised, so we set the array to zeroes)
+
+Let's __copy the last 100 ADC Samples__ from the DMA Context (in RAM) to our array `adc_data` (on the stack)...
 
 ```rust
-  //  Copy the read ADC Samples to the static array
+  //  Copy the read ADC Samples to the array
   unsafe {                    //  Unsafe because we are copying raw memory
     core::ptr::copy(          //  Copy the memory...
       (*ctx).channel_data,    //  From Source (ADC DMA data)
@@ -711,7 +725,7 @@ TODO
   }
 ```
 
-TODO
+Then we compute the __average value of the ADC Samples__ in `adc_data`...
 
 ```rust
   //  Compute the average value of the ADC Samples
@@ -723,6 +737,8 @@ TODO
   }
   let avg = sum / ADC_SAMPLES as u32;
 ```
+
+We scale each ADC Sample to the range __0 to 3199__. (Because the default ADC Configuration produces 12-bit samples)
 
 TODO
 
@@ -740,6 +756,12 @@ TODO
   puts(&buf);
 }
 ```
+
+The __formatted output__ will appear like so...
+
+![Output from Rust Firmware](https://lupyuen.github.io/images/adc-format.jpg)
+
+And we're done... That's how we code BL602 ADC Firmware in Rust!
 
 # Build the BL602 Rust Firmware
 
@@ -919,10 +941,6 @@ TODO17
 ![](https://lupyuen.github.io/images/adc-doclink3.png)
 
 TODO18
-
-![](https://lupyuen.github.io/images/adc-format.jpg)
-
-TODO19
 
 ![](https://lupyuen.github.io/images/adc-gain.png)
 
