@@ -965,7 +965,9 @@ Here's how we flash the Rust Firmware file `sdk_app_rust_adc.bin` to BL602...
     cargo run flash sdk_app_lora.bin --port COM5
     ```
 
-    [More details on flashing firmware](https://lupyuen.github.io/articles/flash#flash-the-firmware)
+[More details on flashing firmware](https://lupyuen.github.io/articles/flash#flash-the-firmware)
+
+![Running the BL602 Rust Firmware](https://lupyuen.github.io/images/adc-demo2.png)
 
 # Run the BL602 Rust Firmware
 
@@ -1002,7 +1004,7 @@ Finally we run the BL602 Rust Firmware...
 
     [More about CoolTerm](https://lupyuen.github.io/articles/flash#watch-the-firmware-run)
 
-1.  __For Linux:__
+    __For Linux:__
 
     Connect to BL602's UART Port at 2 Mbps like so...
 
@@ -1010,58 +1012,73 @@ Finally we run the BL602 Rust Firmware...
     sudo screen /dev/ttyUSB0 2000000
     ```
 
-1.  __For Windows:__ 
+    __For Windows:__ 
 
     Use `putty` ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
 
-1.  __Alternatively:__ 
+    __Alternatively:__ 
 
     Use the Web Serial Terminal ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
 
     [More details on connecting to BL602](https://lupyuen.github.io/articles/flash#watch-the-firmware-run)
 
-1.  In the serial console, press Enter to reveal the command prompt.
+1.  In the serial console, enter the `init_adc` command to __initialise the ADC Channel__...
 
-TODO
+    ```text
+    # init_adc
+    [Rust] Init ADC
+    ```
 
-```text
-[In darkness]
+    (We've seen this function earlier)
 
-# init_adc
-[Rust] Init ADC
-# read_adc
-[Rust] Average: 1417
-# read_adc
-[Rust] Average: 1417
-# read_adc
-[Rust] Average: 1417
+1.  Place the BL602 Board (with LED) in a __dark place__.
 
-[In sunlight]
+1.  Enter the `read_adc` command a few times to get the __average values__ of the last 1,000 ADC Samples...
 
-# read_adc
-[Rust] Average: 1414
-# read_adc
-[Rust] Average: 1411
-# read_adc
-[Rust] Average: 1411
-# read_adc
-[Rust] Average: 1412
+    ```text
+    # read_adc
+    [Rust] Average: 1417
+    # read_adc
+    [Rust] Average: 1417
+    # read_adc
+    [Rust] Average: 1417
+    ```
 
-[In darkness]
+1.  Now place the BL602 Board (with LED) __under sunlight__.
 
-# read_adc
-[Rust] Average: 1417
-# read_adc
-[Rust] Average: 1417
-# read_adc
-[Rust] Average: 1417
-```
+1.  Enter the `read_adc` command a few times...
 
-![](https://lupyuen.github.io/images/adc-demo2.png)
+    ```text
+    # read_adc
+    [Rust] Average: 1411
+    # read_adc
+    [Rust] Average: 1411
+    # read_adc
+    [Rust] Average: 1412
+    ```
+
+    Note that the average values have __dropped from 1417 to 1412.__
+
+1.  Place the BL602 Board (with LED) __back in the dark__ and check the average values...
+
+    ```text
+    # read_adc
+    [Rust] Average: 1417
+    # read_adc
+    [Rust] Average: 1417
+    # read_adc
+    [Rust] Average: 1417
+    ```
+
+    The average values have __increased from 1412 to 1417.__
+
+    Our improvised BL602 Light Sensor works in Rust yay!
 
 # Compare C and Rust
 
 TODO
+
+![Compare C and Rust](https://lupyuen.github.io/images/adc-compare.png)
 
 1.  `expect`: Rust Compiler warns if we forget `expect`
 
@@ -1080,8 +1097,6 @@ TODO
     (Similar to "`char[64]`" in C)
 
 1.  100 vs 1,000 ADC Samples
-
-![Compare C and Rust](https://lupyuen.github.io/images/adc-compare.png)
 
 # Rust Wrapper for BL602 IoT SDK
 
@@ -1125,7 +1140,7 @@ _Testing the improvised Light Sensor on PineCone BL602 with Pinebook Pro_
 
 # What's Next
 
-Many Thanks to my [GitHub Sponsors](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
+Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
 TODO
 
