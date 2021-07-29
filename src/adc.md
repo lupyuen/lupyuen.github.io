@@ -1076,6 +1076,8 @@ Finally we run the BL602 Rust Firmware...
 
 # Compare C and Rust
 
+Our Rust Firmware was translated from C line by line. So the Rust code looks highly similar to C, except the following...
+
 TODO
 
 ![Compare C and Rust](https://lupyuen.github.io/images/adc-compare.png)
