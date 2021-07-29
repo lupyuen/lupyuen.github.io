@@ -823,25 +823,25 @@ Building Finish. To flash build output.
 
 Finished dev [unoptimized + debuginfo] target(s) in 0.61s
 Running `target/debug/blflash flash sdk_app_rust_adc.bin --port /dev/tty.usbserial-1420 --initial-baud-rate 230400 --baud-rate 230400`
-[INFO  blflash::flasher] Start connection...
-[TRACE blflash::flasher] 5ms send count 115
-[TRACE blflash::flasher] handshake sent elapsed 104.593µs
-[INFO  blflash::flasher] Connection Succeed
-[INFO  blflash] Bootrom version: 1
-[TRACE blflash] Boot info: BootInfo { len: 14, bootrom_version: 1, otp_info: [0, 0, 0, 0, 3, 0, 0, 0, 61, 9d, c0, 5, b9, 18, 1d, 0] }
-[INFO  blflash::flasher] Sending eflash_loader...
-[INFO  blflash::flasher] Finished 1.595620342s 17.92KB/s
-[TRACE blflash::flasher] 5ms send count 115
-[TRACE blflash::flasher] handshake sent elapsed 81.908µs
-[INFO  blflash::flasher] Entered eflash_loader
-[INFO  blflash::flasher] Skip segment addr: 0 size: 47504 sha256 matches
-[INFO  blflash::flasher] Skip segment addr: e000 size: 272 sha256 matches
-[INFO  blflash::flasher] Skip segment addr: f000 size: 272 sha256 matches
-[INFO  blflash::flasher] Erase flash addr: 10000 size: 135808
-[INFO  blflash::flasher] Program flash... ed8a4cdacbc4c1543c74584d7297ad876b6731104856a10dff4166c123c6637d
-[INFO  blflash::flasher] Program done 7.40735771s 17.91KB/s
-[INFO  blflash::flasher] Skip segment addr: 1f8000 size: 5671 sha256 matches
-[INFO  blflash] Success
+Start connection...
+5ms send count 115
+handshake sent elapsed 104.593µs
+Connection Succeed
+Bootrom version: 1
+Boot info: BootInfo { len: 14, bootrom_version: 1, otp_info: [0, 0, 0, 0, 3, 0, 0, 0, 61, 9d, c0, 5, b9, 18, 1d, 0] }
+Sending eflash_loader...
+Finished 1.595620342s 17.92KB/s
+5ms send count 115
+handshake sent elapsed 81.908µs
+Entered eflash_loader
+Skip segment addr: 0 size: 47504 sha256 matches
+Skip segment addr: e000 size: 272 sha256 matches
+Skip segment addr: f000 size: 272 sha256 matches
+Erase flash addr: 10000 size: 135808
+Program flash... ed8a4cdacbc4c1543c74584d7297ad876b6731104856a10dff4166c123c6637d
+Program done 7.40735771s 17.91KB/s
+Skip segment addr: 1f8000 size: 5671 sha256 matches
+Success
 </code></pre>
 <p>(We might need to edit the script to use the right serial port)</p>
 </li>
