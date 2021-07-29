@@ -1086,7 +1086,7 @@ But be mindful of the __differences between C and Rust__...
 
 1.  __BL602 HAL Functions__ have been renamed for Rust.
 
-    For example, `bl_adc_init` becomes `adc::init`
+    For example, "`bl_adc_init`" becomes "`adc::init`"
 
     To see the list of BL602 HAL Functions for Rust, [check out the `bl602-sdk` documentation](https://docs.rs/bl602-sdk).
 
