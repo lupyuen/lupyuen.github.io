@@ -482,8 +482,8 @@ export APP_NAME=sdk_app_rust_adc
   <span class="ident">_argv</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>  <span class="comment">//  Array of command line args (char **)</span>
 ) {
   <span class="ident">puts</span>(<span class="string">&quot;[Rust] Init ADC&quot;</span>);</pre></div>
-<p>(We won’t be parsing the command-line arguments, so may ignore the parameters to <code>init_adc</code>)</p>
-<p>We validate the GPIO Pin Number and ADC Frequency…</p>
+<p>(We won’t be parsing the command-line arguments, so let’s ignore the parameters to <code>init_adc</code>)</p>
+<p>We start by validating the GPIO Pin Number and ADC Frequency…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
   <span class="comment">//  Only these GPIOs are supported: 4, 5, 6, 9, 10, 11, 12, 13, 14, 15</span>
