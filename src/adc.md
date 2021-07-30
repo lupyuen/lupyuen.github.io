@@ -1145,7 +1145,7 @@ That's why we need to flag the following code as __`unsafe`__...
     };
     ```
 
-1.  __Dereferening C Pointers__
+1.  __Dereferencing C Pointers__
 
     ```rust
     //  Dereference a C Pointer (ctx)
