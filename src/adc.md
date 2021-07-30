@@ -1262,9 +1262,11 @@ Today our BL602 Rust Wrapper supports...
 
 -   [__Check out the complete list__](https://docs.rs/bl602-sdk)
 
+_How do we add the BL602 Rust Wrapper to our Rust Project?_
+
 TODO
 
-From [`Cargo.toml`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/Cargo.toml#L9-L11)
+From [`rust/Cargo.toml`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/Cargo.toml#L9-L11)
 
 ```text
 # External Rust libraries used by this module.  See crates.io.
