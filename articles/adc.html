@@ -80,7 +80,7 @@
 <li><a href="#flash-the-bl602-rust-firmware">5 Flash the BL602 Rust Firmware</a><ul></ul></li>
 <li><a href="#run-the-bl602-rust-firmware">6 Run the BL602 Rust Firmware</a><ul></ul></li>
 <li><a href="#from-c-to-rust">7 From C To Rust</a><ul>
-<li><a href="#unsafe-rust">7.1 Unsafe Rust</a><ul></ul></li>
+<li><a href="#safer-rust">7.1 Safer Rust</a><ul></ul></li>
 <li><a href="#static-variables">7.2 Static Variables</a><ul></ul></li></ul></li>
 <li><a href="#rust-wrapper-for-bl602-iot-sdk">8 Rust Wrapper for BL602 IoT SDK</a><ul></ul></li>
 <li><a href="#call-c-functions-from-rust">9 Call C Functions from Rust</a><ul></ul></li>
@@ -997,25 +997,50 @@ cargo run flash sdk_app_lora.bin --port COM5
 </li>
 </ol>
 <p>Let’s talk about “<code>unsafe</code>” code in Rust… </p>
-<h2 id="unsafe-rust" class="section-header"><a href="#unsafe-rust">7.1 Unsafe Rust</a></h2>
+<h2 id="safer-rust" class="section-header"><a href="#safer-rust">7.1 Safer Rust</a></h2>
 <p>Rust reminds us to be Extra Careful when we work with <strong>C Functions and C Pointers</strong>.</p>
 <p>That’s why we need to flag the following code as <strong><code>unsafe</code></strong>…</p>
 <ol>
 <li>
-<p>Calling C functions (<code>set_adc_gain</code>)</p>
-<p>TODO</p>
+<p><strong>Calling C Functions</strong></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="comment">//  Call the C function `set_adc_gain`</span>
+<span class="kw">unsafe</span> { <span class="ident">set_adc_gain</span>(<span class="ident">ADC_GAIN1</span>, <span class="ident">ADC_GAIN2</span>) };</pre></div>
 </li>
 <li>
-<p>Converting C pointers to Rust (<code>transmute</code>)</p>
-<p>TODO</p>
+<p><strong>Converting C Pointers</strong> to Rust</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="comment">//  Cast a C Pointer to a Rust Pointer</span>
+<span class="kw">let</span> <span class="ident">ctx</span> <span class="op">=</span> <span class="kw">unsafe</span> {     <span class="comment">//  Unsafe because we are casting a pointer</span>
+  <span class="ident">transmute</span>::<span class="op">&lt;</span>         <span class="comment">//  Cast the type...</span>
+    <span class="ident">Ptr</span>,               <span class="comment">//  From C Pointer (void *)</span>
+    <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">adc::adc_ctx</span>  <span class="comment">//  To DMA Context Pointer (adc_ctx *)</span>
+  <span class="op">&gt;</span>(<span class="ident">ptr</span>)               <span class="comment">//  For this pointer</span>
+};</pre></div>
 </li>
 <li>
-<p>Dereferening C pointers</p>
-<p>TODO</p>
+<p><strong>Dereferening C Pointers</strong></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="comment">//  Dereference a C Pointer (ctx)</span>
+<span class="kw">unsafe</span> {
+  (<span class="kw-2">*</span><span class="ident">ctx</span>).<span class="ident">chan_init_table</span> <span class="op">=</span> ...
+}</pre></div>
 </li>
 <li>
-<p>Copying memory with C pointers</p>
-<p>TODO</p>
+<p><strong>Copying Memory</strong> with C Pointers</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="comment">//  Copy memory with C Pointer (channel_data)</span>
+<span class="kw">unsafe</span> {
+  <span class="ident">core::ptr::copy</span>(          <span class="comment">//  Copy the memory...</span>
+    (<span class="kw-2">*</span><span class="ident">ctx</span>).<span class="ident">channel_data</span>,    <span class="comment">//  From Source (ADC DMA data)</span>
+    <span class="ident">adc_data</span>.<span class="ident">as_mut_ptr</span>(),  <span class="comment">//  To Destination (mutable pointer to adc_data)</span>
+    <span class="ident">adc_data</span>.<span class="ident">len</span>()          <span class="comment">//  Number of Items (each item is uint32 or 4 bytes)</span>
+  );    
+}</pre></div>
 </li>
 </ol>
 <p>Accessing Static Variables is also “<code>unsafe</code>”. Let’s talk about this…</p>
