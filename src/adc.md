@@ -1174,16 +1174,16 @@ Accessing __Static Variables__ is also "`unsafe`". Let's talk about this...
 Earlier we saw this Rust code for __averaging the ADC Samples__...
 
 ```rust
-  //  `adc_data` will store 100 ADC Samples (`ADC_SAMPLES` is 100)
-  let mut adc_data: [u32; ADC_SAMPLES] = [0; ADC_SAMPLES];
+//  `adc_data` will store 100 ADC Samples (`ADC_SAMPLES` is 100)
+let mut adc_data: [u32; ADC_SAMPLES] = [0; ADC_SAMPLES];
 
-  //  Omitted: Copy data into `adc_data`
-  ...
+//  Omitted: Copy data into `adc_data`
+...
 
-  //  Compute average of `adc_data`
-  for i in 0..ADC_SAMPLES {
-    //  Get value from `adc_data`
-    let scaled = adc_data[i] & ...
+//  Compute average of `adc_data`
+for i in 0..ADC_SAMPLES {
+  //  Get value from `adc_data`
+  let scaled = adc_data[i] & ...
 ```
 
 TODO
