@@ -1122,15 +1122,27 @@ Let's talk about "`unsafe`" code in Rust...
 
 ## Unsafe Rust
 
-TODO
+Rust reminds us to be Extra Careful when we work with __C Functions and C Pointers__.
+
+That's why we need to flag the following code as __`unsafe`__...
 
 1.  Calling C functions (`set_adc_gain`)
 
+    TODO
+
 1.  Converting C pointers to Rust (`transmute`)
+    
+    TODO
 
 1.  Dereferening C pointers
 
+    TODO
+
 1.  Copying memory with C pointers
+
+    TODO
+
+Accessing Static Variables is also "`unsafe`". Let's talk about this...
 
 ## Static Variables
 
