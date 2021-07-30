@@ -1058,8 +1058,26 @@ cargo run flash sdk_app_lora.bin --port COM5
 <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">ADC_SAMPLES</span> {
   <span class="comment">//  Get value from `adc_data`</span>
   <span class="kw">let</span> <span class="ident">scaled</span> <span class="op">=</span> <span class="ident">adc_data</span>[<span class="ident">i</span>] <span class="op">&amp;</span> ...</pre></div>
-<p>TODO</p>
-<p>100 vs 1,000 ADC Samples</p>
+<p>Note that <strong><code>adc_data</code> lives on the stack</strong>.</p>
+<p>That’s a huge chunk of data on the stack… <strong>400 bytes!</strong></p>
+<p><em>What if we turn <code>adc_data</code> into a Static Array?</em></p>
+<p>We convert <code>adc_data</code> to a Static Array like this…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="comment">//  `adc_data` becomes a Static Array</span>
+<span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">adc_data</span>: [<span class="ident">u32</span>; <span class="ident">ADC_SAMPLES</span>] <span class="op">=</span> [<span class="number">0</span>; <span class="ident">ADC_SAMPLES</span>];</pre></div>
+<p><code>adc_data</code> no longer lives on the stack, it’s now in Static Memory.</p>
+<p><em>What’s the catch?</em></p>
+<p>Unfortunately <strong>Static Variables in Rust are <code>unsafe</code></strong>.</p>
+<p>Thus all references to <code>adc_data</code> must be <strong>flagged as <code>unsafe</code></strong>…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="comment">//  `adc_data` is now unsafe because it&#39;s a Static Variable</span>
+<span class="kw">let</span> <span class="ident">scaled</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">adc_data</span>[<span class="ident">i</span>] } <span class="op">&amp;</span> ...</pre></div>
+<p>Which makes the code harder to read. That’s why we left <code>adc_data</code> on the stack for this tutorial.</p>
+<p><em>Why are Static Variables <code>unsafe</code>?</em></p>
+<p>Because it’s potentially possible to execute the above code in <strong>multiple tasks</strong>…</p>
+<p>Which produces undefined behaviour when multiple tasks <strong>access the same Static Variable</strong>.</p>
 <h1 id="rust-wrapper-for-bl602-iot-sdk" class="section-header"><a href="#rust-wrapper-for-bl602-iot-sdk">8 Rust Wrapper for BL602 IoT SDK</a></h1>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/Cargo.toml#L9-L11"><code>Cargo.toml</code></a></p>
