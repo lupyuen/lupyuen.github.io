@@ -1133,11 +1133,11 @@ That's why we need to flag the following code as __`unsafe`__...
     unsafe { set_adc_gain(ADC_GAIN1, ADC_GAIN2) };
     ```
 
-1.  __Converting C Pointers__ to Rust
+1.  __Casting C Pointers__ to Rust
     
     ```rust
     //  Cast a C Pointer to a Rust Pointer
-    let ctx = unsafe {     //  Unsafe because we are casting a pointer
+    let ctx = unsafe {
       transmute::<         //  Cast the type...
         Ptr,               //  From C Pointer (void *)
         *mut adc::adc_ctx  //  To DMA Context Pointer (adc_ctx *)
@@ -1157,7 +1157,7 @@ That's why we need to flag the following code as __`unsafe`__...
 1.  __Copying Memory__ with C Pointers
 
     ```rust
-    //  Copy memory with C Pointer (channel_data)
+    //  Copy memory with a C Pointer (channel_data)
     unsafe {
       core::ptr::copy(          //  Copy the memory...
         (*ctx).channel_data,    //  From Source (ADC DMA data)
@@ -1167,7 +1167,7 @@ That's why we need to flag the following code as __`unsafe`__...
     }
     ```
 
-Accessing Static Variables is also "`unsafe`". Let's talk about this...
+Accessing __Static Variables__ is also "`unsafe`". Let's talk about this...
 
 ## Static Variables
 
