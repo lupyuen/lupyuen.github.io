@@ -1078,6 +1078,15 @@ cargo run flash sdk_app_lora.bin --port COM5
 <p><em>Why are Static Variables <code>unsafe</code>?</em></p>
 <p>Because it’s potentially possible to execute the above code in <strong>multiple tasks</strong>…</p>
 <p>Which produces undefined behaviour when multiple tasks <strong>access the same Static Variable</strong>.</p>
+<p>So it’s perfectly OK to use Static Variables in Rust. Just that we need to…</p>
+<ol>
+<li>
+<p>Flag the Static Variables as <strong><code>unsafe</code></strong></p>
+</li>
+<li>
+<p>Ensure ourselves that Static Variables are only accessed by <strong>one task at a time</strong></p>
+</li>
+</ol>
 <h1 id="rust-wrapper-for-bl602-iot-sdk" class="section-header"><a href="#rust-wrapper-for-bl602-iot-sdk">8 Rust Wrapper for BL602 IoT SDK</a></h1>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/Cargo.toml#L9-L11"><code>Cargo.toml</code></a></p>
