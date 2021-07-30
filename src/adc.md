@@ -1234,6 +1234,12 @@ _The Rust Functions for BL602 look so similar to the C Functions from the BL602 
 
 Because the Rust Functions were __automatically generated from BL602 IoT SDK!__
 
+We ran a script to generate the __Rust Wrapper for BL602 IoT SDK__.
+
+And we published the Rust Wrapper here...
+
+-   [__`bl602-sdk`: Rust Wrapper for BL602 IoT SDK__](https://crates.io/crates/bl602-sdk)
+
 _Which functions from the BL602 IoT SDK are supported?_
 
 Today our BL602 Rust Wrapper supports...
