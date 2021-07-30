@@ -1220,6 +1220,12 @@ Because it's potentially possible to execute the above code in __multiple tasks_
 
 Which produces undefined behaviour when multiple tasks __access the same Static Variable__.
 
+So it's perfectly OK to use Static Variables in Rust. Just that we need to...
+
+1.  Flag the Static Variables as __`unsafe`__
+
+1.  Ensure ourselves that Static Variables are only accessed by __one task at a time__
+
 # Rust Wrapper for BL602 IoT SDK
 
 TODO
