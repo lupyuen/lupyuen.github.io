@@ -1009,11 +1009,11 @@ cargo run flash sdk_app_lora.bin --port COM5
 <span class="kw">unsafe</span> { <span class="ident">set_adc_gain</span>(<span class="ident">ADC_GAIN1</span>, <span class="ident">ADC_GAIN2</span>) };</pre></div>
 </li>
 <li>
-<p><strong>Converting C Pointers</strong> to Rust</p>
+<p><strong>Casting C Pointers</strong> to Rust</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="comment">//  Cast a C Pointer to a Rust Pointer</span>
-<span class="kw">let</span> <span class="ident">ctx</span> <span class="op">=</span> <span class="kw">unsafe</span> {     <span class="comment">//  Unsafe because we are casting a pointer</span>
+<span class="kw">let</span> <span class="ident">ctx</span> <span class="op">=</span> <span class="kw">unsafe</span> {
   <span class="ident">transmute</span>::<span class="op">&lt;</span>         <span class="comment">//  Cast the type...</span>
     <span class="ident">Ptr</span>,               <span class="comment">//  From C Pointer (void *)</span>
     <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">adc::adc_ctx</span>  <span class="comment">//  To DMA Context Pointer (adc_ctx *)</span>
@@ -1033,7 +1033,7 @@ cargo run flash sdk_app_lora.bin --port COM5
 <p><strong>Copying Memory</strong> with C Pointers</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="comment">//  Copy memory with C Pointer (channel_data)</span>
+<span class="comment">//  Copy memory with a C Pointer (channel_data)</span>
 <span class="kw">unsafe</span> {
   <span class="ident">core::ptr::copy</span>(          <span class="comment">//  Copy the memory...</span>
     (<span class="kw-2">*</span><span class="ident">ctx</span>).<span class="ident">channel_data</span>,    <span class="comment">//  From Source (ADC DMA data)</span>
@@ -1043,7 +1043,7 @@ cargo run flash sdk_app_lora.bin --port COM5
 }</pre></div>
 </li>
 </ol>
-<p>Accessing Static Variables is also “<code>unsafe</code>”. Let’s talk about this…</p>
+<p>Accessing <strong>Static Variables</strong> is also “<code>unsafe</code>”. Let’s talk about this…</p>
 <h2 id="static-variables" class="section-header"><a href="#static-variables">7.2 Static Variables</a></h2>
 <p>TODO</p>
 <p>100 vs 1,000 ADC Samples</p>
