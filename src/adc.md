@@ -1298,19 +1298,17 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     ![BL602 ADC High Level HAL](https://lupyuen.github.io/images/adc-highlevel.png)
 
-![Testing the improvised Light Sensor on PineCone BL602](https://lupyuen.github.io/images/adc-title2.jpg)
+# Appendix: Generating the Rust Wrapper for BL602 IoT SDK
 
-TODO1
-
-![](https://lupyuen.github.io/images/adc-average.png)
+TODO
 
 TODO2
 
 ![](https://lupyuen.github.io/images/adc-bindgen.png)
 
-TODO4
+TODO21
 
-![](https://lupyuen.github.io/images/adc-copy.png)
+![](https://lupyuen.github.io/images/adc-gpio.png)
 
 TODO7
 
@@ -1348,22 +1346,6 @@ TODO17
 
 ![](https://lupyuen.github.io/images/adc-doclink3.png)
 
-TODO18
-
-![](https://lupyuen.github.io/images/adc-gain.png)
-
-TODO20
-
-![](https://lupyuen.github.io/images/adc-gain2.png)
-
-TODO21
-
-![](https://lupyuen.github.io/images/adc-gpio.png)
-
-TODO22
-
-![](https://lupyuen.github.io/images/adc-hal.png)
-
 TODO23
 
 ![](https://lupyuen.github.io/images/adc-prefix.png)
@@ -1379,6 +1361,28 @@ TODO28
 TODO29
 
 ![](https://lupyuen.github.io/images/adc-rustwrapper.png)
+
+![Testing the improvised Light Sensor on PineCone BL602](https://lupyuen.github.io/images/adc-title2.jpg)
+
+TODO1
+
+![](https://lupyuen.github.io/images/adc-average.png)
+
+TODO4
+
+![](https://lupyuen.github.io/images/adc-copy.png)
+
+TODO18
+
+![](https://lupyuen.github.io/images/adc-gain.png)
+
+TODO20
+
+![](https://lupyuen.github.io/images/adc-gain2.png)
+
+TODO22
+
+![](https://lupyuen.github.io/images/adc-hal.png)
 
 TODO30
 
