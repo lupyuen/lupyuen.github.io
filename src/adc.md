@@ -1230,6 +1230,10 @@ So it's perfectly OK to use Static Variables in Rust. Just that we need to...
 
 # Rust Wrapper for BL602 IoT SDK
 
+_The Rust Functions for BL602 look so similar to the C Functions from the BL602 IoT SDK. How is this possible?_
+
+Because the Rust Functions were __automatically generated from BL602 IoT SDK!__
+
 TODO
 
 From [`Cargo.toml`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/Cargo.toml#L9-L11)
