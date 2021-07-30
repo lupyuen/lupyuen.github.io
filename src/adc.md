@@ -1074,7 +1074,7 @@ Finally we run the BL602 Rust Firmware...
 
     Our improvised BL602 Light Sensor works in Rust yay!
 
-# Compare C and Rust
+# From C To Rust
 
 _I'm new to Rust. Is there an easier way to jump from C to Rust?_
 
