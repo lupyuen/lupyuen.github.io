@@ -81,7 +81,7 @@
 <li><a href="#run-the-bl602-rust-firmware">6 Run the BL602 Rust Firmware</a><ul></ul></li>
 <li><a href="#from-c-to-rust">7 From C To Rust</a><ul>
 <li><a href="#safer-rust">7.1 Safer Rust</a><ul></ul></li>
-<li><a href="#static-variables">7.2 Static Variables</a><ul></ul></li></ul></li>
+<li><a href="#static-variables-in-rust">7.2 Static Variables in Rust</a><ul></ul></li></ul></li>
 <li><a href="#rust-wrapper-for-bl602-iot-sdk">8 Rust Wrapper for BL602 IoT SDK</a><ul></ul></li>
 <li><a href="#call-c-functions-from-rust">9 Call C Functions from Rust</a><ul></ul></li>
 <li><a href="#convert-c-pointers-to-rust">10 Convert C Pointers to Rust</a><ul></ul></li>
@@ -1044,7 +1044,20 @@ cargo run flash sdk_app_lora.bin --port COM5
 </li>
 </ol>
 <p>Accessing <strong>Static Variables</strong> is also “<code>unsafe</code>”. Let’s talk about this…</p>
-<h2 id="static-variables" class="section-header"><a href="#static-variables">7.2 Static Variables</a></h2>
+<h2 id="static-variables-in-rust" class="section-header"><a href="#static-variables-in-rust">7.2 Static Variables in Rust</a></h2>
+<p>Earlier we saw this Rust code for <strong>averaging the ADC Samples</strong>…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+  <span class="comment">//  `adc_data` will store 100 ADC Samples (`ADC_SAMPLES` is 100)</span>
+  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">adc_data</span>: [<span class="ident">u32</span>; <span class="ident">ADC_SAMPLES</span>] <span class="op">=</span> [<span class="number">0</span>; <span class="ident">ADC_SAMPLES</span>];
+
+  <span class="comment">//  Omitted: Copy data into `adc_data`</span>
+  ...
+
+  <span class="comment">//  Compute average of `adc_data`</span>
+  <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">ADC_SAMPLES</span> {
+    <span class="comment">//  Get value from `adc_data`</span>
+    <span class="kw">let</span> <span class="ident">scaled</span> <span class="op">=</span> <span class="ident">adc_data</span>[<span class="ident">i</span>] <span class="op">&amp;</span> ...</pre></div>
 <p>TODO</p>
 <p>100 vs 1,000 ADC Samples</p>
 <h1 id="rust-wrapper-for-bl602-iot-sdk" class="section-header"><a href="#rust-wrapper-for-bl602-iot-sdk">8 Rust Wrapper for BL602 IoT SDK</a></h1>
