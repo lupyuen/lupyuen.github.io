@@ -4,9 +4,9 @@
 
 Today we shall magically transform [__any RISC-V BL602 Board__](https://lupyuen.github.io/articles/pinecone) into a __Light Sensor!__
 
-We'll code this firmware in C, then __port it to Rust.__
+We'll code this firmware in C, then port it to Rust with the [__Rust Wrapper for BL602 IoT SDK__](https://crates.io/crates/bl602-sdk).
 
-(By calling the [__Rust Wrapper for BL602 IoT SDK__](https://crates.io/crates/bl602-sdk))
+(New to Rust? No worries we have tips for you!)
 
 _Wait... Do all BL602 Boards have an onboard Light Sensor?_
 
@@ -1076,9 +1076,9 @@ Finally we run the BL602 Rust Firmware...
 
 # Compare C and Rust
 
-_I'm familiar with C but new to Rust. Is there an easier way to jump from C to Rust?_
+_I'm new to Rust. Is there an easier way to jump from C to Rust?_
 
-Today we've seen that it's feasible to __translate BL602 C Firmware into Rust__ line by line...
+Today we've seen that it's feasible to __translate C Firmware into Rust__ line by line...
 
 ![Compare C and Rust](https://lupyuen.github.io/images/adc-compare.png)
 
@@ -1088,7 +1088,7 @@ Just be mindful of the __differences between C and Rust__...
 
 1.  __BL602 HAL Functions__ have been renamed for Rust.
 
-    For example, "`bl_adc_init`" becomes "`adc::init`"
+    (Like "`bl_adc_init`" becomes "`adc::init`")
 
     To see the list of BL602 HAL Functions for Rust, [check out the `bl602-sdk` documentation](https://docs.rs/bl602-sdk).
 
@@ -1118,21 +1118,25 @@ Just be mindful of the __differences between C and Rust__...
 
     (Even arrays and structs!)
 
-1.  `unsafe`
+Let's talk about "`unsafe`" code in Rust... 
 
-    `set_adc_gain`
+## Unsafe Rust
 
-    `transmute`
+TODO
 
-    Dereferening pointers
+1.  `set_adc_gain`
 
-    Copying memory with pointers
+1.  `transmute`
 
-    TODO
+1.  Dereferening pointers
 
-1.  100 vs 1,000 ADC Samples
+1.  Copying memory with pointers
 
-    TODO
+## Static Variables
+
+TODO
+
+100 vs 1,000 ADC Samples
 
 # Rust Wrapper for BL602 IoT SDK
 
