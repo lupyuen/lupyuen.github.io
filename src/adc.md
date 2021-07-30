@@ -1186,9 +1186,39 @@ for i in 0..ADC_SAMPLES {
   let scaled = adc_data[i] & ...
 ```
 
-TODO
+Note that __`adc_data` lives on the stack__.
 
-100 vs 1,000 ADC Samples
+That's a huge chunk of data on the stack... __400 bytes!__
+
+_What if we turn `adc_data` into a Static Array?_
+
+We convert `adc_data` to a Static Array like this...
+
+```rust
+//  `adc_data` becomes a Static Array
+static mut adc_data: [u32; ADC_SAMPLES] = [0; ADC_SAMPLES];
+```
+
+`adc_data` no longer lives on the stack, it's now in Static Memory.
+
+_What's the catch?_
+
+Unfortunately __Static Variables in Rust are `unsafe`__.
+
+Thus all references to `adc_data` must be __flagged as `unsafe`__...
+
+```rust
+//  `adc_data` is now unsafe because it's a Static Variable
+let scaled = unsafe { adc_data[i] } & ...
+```
+
+Which makes the code harder to read. That's why we left `adc_data` on the stack for this tutorial.
+
+_Why are Static Variables `unsafe`?_
+
+Because it's potentially possible to execute the above code in __multiple tasks__...
+
+Which produces undefined behaviour when multiple tasks __access the same Static Variable__.
 
 # Rust Wrapper for BL602 IoT SDK
 
