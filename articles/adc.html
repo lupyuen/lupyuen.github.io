@@ -1092,6 +1092,37 @@ cargo run flash sdk_app_lora.bin --port COM5
 <h1 id="rust-wrapper-for-bl602-iot-sdk" class="section-header"><a href="#rust-wrapper-for-bl602-iot-sdk">8 Rust Wrapper for BL602 IoT SDK</a></h1>
 <p><em>The Rust Functions for BL602 look so similar to the C Functions from the BL602 IoT SDK. How is this possible?</em></p>
 <p>Because the Rust Functions were <strong>automatically generated from BL602 IoT SDK!</strong></p>
+<p><em>Which functions from the BL602 IoT SDK are supported?</em></p>
+<p>Today our BL602 Rust Wrapper supports…</p>
+<ul>
+<li>
+<p><a href="https://docs.rs/bl602-sdk/latest/bl602_sdk/adc/index.html"><strong>ADC</strong></a></p>
+</li>
+<li>
+<p><a href="https://docs.rs/bl602-sdk/latest/bl602_sdk/dma/index.html"><strong>DMA</strong></a></p>
+</li>
+<li>
+<p><a href="https://docs.rs/bl602-sdk/latest/bl602_sdk/gpio/index.html"><strong>GPIO</strong></a></p>
+</li>
+<li>
+<p><a href="https://docs.rs/bl602-sdk/latest/bl602_sdk/i2c/index.html"><strong>I2C</strong></a></p>
+</li>
+<li>
+<p><a href="https://docs.rs/bl602-sdk/latest/bl602_sdk/pwm/index.html"><strong>PWM</strong></a></p>
+</li>
+<li>
+<p><a href="https://docs.rs/bl602-sdk/latest/bl602_sdk/spi/index.html"><strong>SPI</strong></a></p>
+</li>
+<li>
+<p><a href="https://docs.rs/bl602-sdk/latest/bl602_sdk/uart/index.html"><strong>UART</strong></a></p>
+</li>
+<li>
+<p><a href="https://docs.rs/bl602-sdk/latest/bl602_sdk/wifi/index.html"><strong>WiFi</strong></a></p>
+</li>
+<li>
+<p><a href="https://docs.rs/bl602-sdk"><strong>Check out the complete list</strong></a></p>
+</li>
+</ul>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/Cargo.toml#L9-L11"><code>Cargo.toml</code></a></p>
 <pre><code class="language-text"># External Rust libraries used by this module.  See crates.io.
@@ -1099,7 +1130,7 @@ cargo run flash sdk_app_lora.bin --port COM5
 bl602-sdk = &quot;0.0.6&quot;  # Rust Wrapper for BL602 IoT SDK: https://crates.io/crates/bl602-sdk
 </code></pre>
 <p>TODO21</p>
-<p><img src="https://lupyuen.github.io/images/adc-gpio.png" alt="" /></p>
+<p><img src="https://lupyuen.github.io/images/adc-gpio.png" alt="Rust Wrapper for GPIO" /></p>
 <h1 id="call-c-functions-from-rust" class="section-header"><a href="#call-c-functions-from-rust">9 Call C Functions from Rust</a></h1>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L180-L184"><code>lib.rs</code></a></p>
