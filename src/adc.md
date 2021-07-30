@@ -1240,6 +1240,10 @@ From [`Cargo.toml`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/
 bl602-sdk = "0.0.6"  # Rust Wrapper for BL602 IoT SDK: https://crates.io/crates/bl602-sdk
 ```
 
+TODO21
+
+![](https://lupyuen.github.io/images/adc-gpio.png)
+
 # Call C Functions from Rust
 
 TODO
@@ -1311,10 +1315,6 @@ TODO
 TODO2
 
 ![](https://lupyuen.github.io/images/adc-bindgen.png)
-
-TODO21
-
-![](https://lupyuen.github.io/images/adc-gpio.png)
 
 TODO7
 
