@@ -998,21 +998,27 @@ cargo run flash sdk_app_lora.bin --port COM5
 </ol>
 <p>Let’s talk about “<code>unsafe</code>” code in Rust… </p>
 <h2 id="unsafe-rust" class="section-header"><a href="#unsafe-rust">7.1 Unsafe Rust</a></h2>
-<p>TODO</p>
+<p>Rust reminds us to be Extra Careful when we work with <strong>C Functions and C Pointers</strong>.</p>
+<p>That’s why we need to flag the following code as <strong><code>unsafe</code></strong>…</p>
 <ol>
 <li>
 <p>Calling C functions (<code>set_adc_gain</code>)</p>
+<p>TODO</p>
 </li>
 <li>
 <p>Converting C pointers to Rust (<code>transmute</code>)</p>
+<p>TODO</p>
 </li>
 <li>
 <p>Dereferening C pointers</p>
+<p>TODO</p>
 </li>
 <li>
 <p>Copying memory with C pointers</p>
+<p>TODO</p>
 </li>
 </ol>
+<p>Accessing Static Variables is also “<code>unsafe</code>”. Let’s talk about this…</p>
 <h2 id="static-variables" class="section-header"><a href="#static-variables">7.2 Static Variables</a></h2>
 <p>TODO</p>
 <p>100 vs 1,000 ADC Samples</p>
