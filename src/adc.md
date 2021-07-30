@@ -1226,6 +1226,8 @@ So it's perfectly OK to use Static Variables in Rust. Just that we need to...
 
 1.  Ensure ourselves that Static Variables are only accessed by __one task at a time__
 
+![Rust Wrapper for BL602 IoT SDK](https://lupyuen.github.io/images/adc-crate.png)
+
 # Rust Wrapper for BL602 IoT SDK
 
 TODO
@@ -1298,6 +1300,10 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     ![BL602 ADC High Level HAL](https://lupyuen.github.io/images/adc-highlevel.png)
 
+    TODO18
+
+    ![Setting the ADC Gain by patching the ADC High Level HAL](https://lupyuen.github.io/images/adc-gain.png)
+
 # Appendix: Generating the Rust Wrapper for BL602 IoT SDK
 
 TODO
@@ -1362,6 +1368,10 @@ TODO29
 
 ![](https://lupyuen.github.io/images/adc-rustwrapper.png)
 
+TODO30
+
+![](https://lupyuen.github.io/images/adc-spi.png)
+
 ![Testing the improvised Light Sensor on PineCone BL602](https://lupyuen.github.io/images/adc-title2.jpg)
 
 TODO1
@@ -1372,10 +1382,6 @@ TODO4
 
 ![](https://lupyuen.github.io/images/adc-copy.png)
 
-TODO18
-
-![](https://lupyuen.github.io/images/adc-gain.png)
-
 TODO20
 
 ![](https://lupyuen.github.io/images/adc-gain2.png)
@@ -1384,6 +1390,3 @@ TODO22
 
 ![](https://lupyuen.github.io/images/adc-hal.png)
 
-TODO30
-
-![](https://lupyuen.github.io/images/adc-spi.png)
