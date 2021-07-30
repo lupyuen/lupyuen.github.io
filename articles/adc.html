@@ -79,7 +79,9 @@
 <li><a href="#build-the-bl602-rust-firmware">4 Build the BL602 Rust Firmware</a><ul></ul></li>
 <li><a href="#flash-the-bl602-rust-firmware">5 Flash the BL602 Rust Firmware</a><ul></ul></li>
 <li><a href="#run-the-bl602-rust-firmware">6 Run the BL602 Rust Firmware</a><ul></ul></li>
-<li><a href="#compare-c-and-rust">7 Compare C and Rust</a><ul></ul></li>
+<li><a href="#compare-c-and-rust">7 Compare C and Rust</a><ul>
+<li><a href="#unsafe-rust">7.1 Unsafe Rust</a><ul></ul></li>
+<li><a href="#static-variables">7.2 Static Variables</a><ul></ul></li></ul></li>
 <li><a href="#rust-wrapper-for-bl602-iot-sdk">8 Rust Wrapper for BL602 IoT SDK</a><ul></ul></li>
 <li><a href="#call-c-functions-from-rust">9 Call C Functions from Rust</a><ul></ul></li>
 <li><a href="#convert-c-pointers-to-rust">10 Convert C Pointers to Rust</a><ul></ul></li>
@@ -87,8 +89,8 @@
 <li><a href="#whats-next">12 What’s Next</a><ul></ul></li>
 <li><a href="#notes">13 Notes</a><ul></ul></li></ul></nav><p>📝 <em>8 Aug 2021</em></p>
 <p>Today we shall magically transform <a href="https://lupyuen.github.io/articles/pinecone"><strong>any RISC-V BL602 Board</strong></a> into a <strong>Light Sensor!</strong></p>
-<p>We’ll code this firmware in C, then <strong>port it to Rust.</strong></p>
-<p>(By calling the <a href="https://crates.io/crates/bl602-sdk"><strong>Rust Wrapper for BL602 IoT SDK</strong></a>)</p>
+<p>We’ll code this firmware in C, then port it to Rust with the <a href="https://crates.io/crates/bl602-sdk"><strong>Rust Wrapper for BL602 IoT SDK</strong></a>.</p>
+<p>(New to Rust? No worries we have tips for you!)</p>
 <p><em>Wait… Do all BL602 Boards have an onboard Light Sensor?</em></p>
 <p>Nope, all we need is a <strong>BL602 Board with an LED</strong>!</p>
 <p>Reading the LED with BL602’s <strong>Analog-to-Digital Converter (ADC)</strong> will turn it into a simple, improvised Light Sensor.</p>
@@ -959,15 +961,15 @@ cargo run flash sdk_app_lora.bin --port COM5
 </li>
 </ol>
 <h1 id="compare-c-and-rust" class="section-header"><a href="#compare-c-and-rust">7 Compare C and Rust</a></h1>
-<p><em>I’m familiar with C but new to Rust. Is there an easier way to jump from C to Rust?</em></p>
-<p>Today we’ve seen that it’s feasible to <strong>translate BL602 C Firmware into Rust</strong> line by line…</p>
+<p><em>I’m new to Rust. Is there an easier way to jump from C to Rust?</em></p>
+<p>Today we’ve seen that it’s feasible to <strong>translate C Firmware into Rust</strong> line by line…</p>
 <p><img src="https://lupyuen.github.io/images/adc-compare.png" alt="Compare C and Rust" /></p>
 <p>Which is great for embedded developers new to Rust!</p>
 <p>Just be mindful of the <strong>differences between C and Rust</strong>…</p>
 <ol>
 <li>
 <p><strong>BL602 HAL Functions</strong> have been renamed for Rust.</p>
-<p>For example, “<code>bl_adc_init</code>” becomes “<code>adc::init</code>”</p>
+<p>(Like “<code>bl_adc_init</code>” becomes “<code>adc::init</code>”)</p>
 <p>To see the list of BL602 HAL Functions for Rust, <a href="https://docs.rs/bl602-sdk">check out the <code>bl602-sdk</code> documentation</a>.</p>
 <p>(More about this in the next chapter)</p>
 </li>
@@ -993,19 +995,27 @@ cargo run flash sdk_app_lora.bin --port COM5
 <p>All Rust variables shall be <strong>initialised</strong> before use.</p>
 <p>(Even arrays and structs!)</p>
 </li>
-<li>
-<p><code>unsafe</code></p>
-<p><code>set_adc_gain</code></p>
-<p><code>transmute</code></p>
-<p>Dereferening pointers</p>
-<p>Copying memory with pointers</p>
+</ol>
+<p>Let’s talk about “<code>unsafe</code>” code in Rust… </p>
+<h2 id="unsafe-rust" class="section-header"><a href="#unsafe-rust">7.1 Unsafe Rust</a></h2>
 <p>TODO</p>
+<ol>
+<li>
+<p><code>set_adc_gain</code></p>
 </li>
 <li>
-<p>100 vs 1,000 ADC Samples</p>
-<p>TODO</p>
+<p><code>transmute</code></p>
+</li>
+<li>
+<p>Dereferening pointers</p>
+</li>
+<li>
+<p>Copying memory with pointers</p>
 </li>
 </ol>
+<h2 id="static-variables" class="section-header"><a href="#static-variables">7.2 Static Variables</a></h2>
+<p>TODO</p>
+<p>100 vs 1,000 ADC Samples</p>
 <h1 id="rust-wrapper-for-bl602-iot-sdk" class="section-header"><a href="#rust-wrapper-for-bl602-iot-sdk">8 Rust Wrapper for BL602 IoT SDK</a></h1>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/Cargo.toml#L9-L11"><code>Cargo.toml</code></a></p>
