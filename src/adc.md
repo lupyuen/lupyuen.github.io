@@ -1124,13 +1124,13 @@ Let's talk about "`unsafe`" code in Rust...
 
 TODO
 
-1.  `set_adc_gain`
+1.  Calling C functions (`set_adc_gain`)
 
-1.  `transmute`
+1.  Converting C pointers to Rust (`transmute`)
 
-1.  Dereferening pointers
+1.  Dereferening C pointers
 
-1.  Copying memory with pointers
+1.  Copying memory with C pointers
 
 ## Static Variables
 
