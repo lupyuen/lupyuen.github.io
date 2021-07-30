@@ -1120,27 +1120,52 @@ Just be mindful of the __differences between C and Rust__...
 
 Let's talk about "`unsafe`" code in Rust... 
 
-## Unsafe Rust
+## Safer Rust
 
 Rust reminds us to be Extra Careful when we work with __C Functions and C Pointers__.
 
 That's why we need to flag the following code as __`unsafe`__...
 
-1.  Calling C functions (`set_adc_gain`)
+1.  __Calling C Functions__
 
-    TODO
+    ```rust
+    //  Call the C function `set_adc_gain`
+    unsafe { set_adc_gain(ADC_GAIN1, ADC_GAIN2) };
+    ```
 
-1.  Converting C pointers to Rust (`transmute`)
+1.  __Converting C Pointers__ to Rust
     
-    TODO
+    ```rust
+    //  Cast a C Pointer to a Rust Pointer
+    let ctx = unsafe {     //  Unsafe because we are casting a pointer
+      transmute::<         //  Cast the type...
+        Ptr,               //  From C Pointer (void *)
+        *mut adc::adc_ctx  //  To DMA Context Pointer (adc_ctx *)
+      >(ptr)               //  For this pointer
+    };
+    ```
 
-1.  Dereferening C pointers
+1.  __Dereferening C Pointers__
 
-    TODO
+    ```rust
+    //  Dereference a C Pointer (ctx)
+    unsafe {
+      (*ctx).chan_init_table = ...
+    }
+    ```
 
-1.  Copying memory with C pointers
+1.  __Copying Memory__ with C Pointers
 
-    TODO
+    ```rust
+    //  Copy memory with C Pointer (channel_data)
+    unsafe {
+      core::ptr::copy(          //  Copy the memory...
+        (*ctx).channel_data,    //  From Source (ADC DMA data)
+        adc_data.as_mut_ptr(),  //  To Destination (mutable pointer to adc_data)
+        adc_data.len()          //  Number of Items (each item is uint32 or 4 bytes)
+      );    
+    }
+    ```
 
 Accessing Static Variables is also "`unsafe`". Let's talk about this...
 
