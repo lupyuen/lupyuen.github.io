@@ -1234,6 +1234,28 @@ _The Rust Functions for BL602 look so similar to the C Functions from the BL602 
 
 Because the Rust Functions were __automatically generated from BL602 IoT SDK!__
 
+_Which functions from the BL602 IoT SDK are supported?_
+
+Today our BL602 Rust Wrapper supports...
+
+-   [__ADC__](https://docs.rs/bl602-sdk/latest/bl602_sdk/adc/index.html)
+
+-   [__DMA__](https://docs.rs/bl602-sdk/latest/bl602_sdk/dma/index.html)
+
+-   [__GPIO__](https://docs.rs/bl602-sdk/latest/bl602_sdk/gpio/index.html)
+
+-   [__I2C__](https://docs.rs/bl602-sdk/latest/bl602_sdk/i2c/index.html)
+
+-   [__PWM__](https://docs.rs/bl602-sdk/latest/bl602_sdk/pwm/index.html)
+
+-   [__SPI__](https://docs.rs/bl602-sdk/latest/bl602_sdk/spi/index.html)
+
+-   [__UART__](https://docs.rs/bl602-sdk/latest/bl602_sdk/uart/index.html)
+
+-   [__WiFi__](https://docs.rs/bl602-sdk/latest/bl602_sdk/wifi/index.html)
+
+-   [__Check out the complete list__](https://docs.rs/bl602-sdk)
+
 TODO
 
 From [`Cargo.toml`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/Cargo.toml#L9-L11)
@@ -1246,7 +1268,7 @@ bl602-sdk = "0.0.6"  # Rust Wrapper for BL602 IoT SDK: https://crates.io/crates/
 
 TODO21
 
-![](https://lupyuen.github.io/images/adc-gpio.png)
+![Rust Wrapper for GPIO](https://lupyuen.github.io/images/adc-gpio.png)
 
 # Call C Functions from Rust
 
