@@ -1090,10 +1090,10 @@ cargo run flash sdk_app_lora.bin --port COM5
 </ol>
 <p><img src="https://lupyuen.github.io/images/adc-crate.png" alt="Rust Wrapper for BL602 IoT SDK" /></p>
 <h1 id="rust-wrapper-for-bl602-iot-sdk" class="section-header"><a href="#rust-wrapper-for-bl602-iot-sdk">8 Rust Wrapper for BL602 IoT SDK</a></h1>
-<p><em>The Rust Functions for BL602 look so similar to the C Functions from the BL602 IoT SDK. How is this possible?</em></p>
+<p><em>The Rust Functions for BL602 look mighty similar to the C Functions from the BL602 IoT SDK. How is this possible?</em></p>
 <p>Because the Rust Functions were <strong>automatically generated from BL602 IoT SDK!</strong></p>
 <p>We ran a script to generate the <strong>Rust Wrapper for BL602 IoT SDK</strong>.</p>
-<p>And we published the Rust Wrapper here…</p>
+<p>And we published the Rust Wrapper on <strong><code>crates.io</code></strong>…</p>
 <ul>
 <li><a href="https://crates.io/crates/bl602-sdk"><strong><code>bl602-sdk</code>: Rust Wrapper for BL602 IoT SDK</strong></a></li>
 </ul>
@@ -1106,14 +1106,23 @@ cargo run flash sdk_app_lora.bin --port COM5
 </tbody></table>
 <p><a href="https://docs.rs/bl602-sdk">(See the complete list)</a></p>
 <p><em>How do we add the BL602 Rust Wrapper to our Rust Project?</em></p>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/Cargo.toml#L9-L11"><code>rust/Cargo.toml</code></a></p>
+<p>Just <strong><code>bl602-sdk</code></strong> to the Rust project configuration: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/Cargo.toml#L9-L11"><code>rust/Cargo.toml</code></a></p>
 <pre><code class="language-text"># External Rust libraries used by this module.  See crates.io.
 [dependencies]
 bl602-sdk = &quot;0.0.6&quot;  # Rust Wrapper for BL602 IoT SDK: https://crates.io/crates/bl602-sdk
 </code></pre>
-<p>TODO21</p>
+<p><a href="https://crates.io/crates/bl602-sdk">(Change <code>&quot;0.0.6&quot;</code> to the latest version on <code>crates.io</code>)</a></p>
+<p>The BL602 Rust Wrapper will be auto-downloaded from <code>crates.io</code> when building the project.</p>
+<p><img src="https://lupyuen.github.io/images/adc-doc2.png" alt="BL602 Rust Wrapper Documentation" /></p>
+<p><em>Is the BL602 Rust Wrapper documented?</em></p>
+<p>TODO</p>
+<ul>
+<li><a href="https://docs.rs/bl602-sdk"><strong>Documentation for BL602 Rust Wrapper</strong></a></li>
+</ul>
+<p>Check the Appendix to learn more about the Rust Wrapper for BL602 IoT SDK.</p>
+<p>Here’s a sample project that calls the Rust Wrapper for GPIO…</p>
 <p><img src="https://lupyuen.github.io/images/adc-gpio.png" alt="Rust Wrapper for GPIO" /></p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_gpio/rust/src/lib.rs">(Source)</a></p>
 <h1 id="call-c-functions-from-rust" class="section-header"><a href="#call-c-functions-from-rust">9 Call C Functions from Rust</a></h1>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L180-L184"><code>lib.rs</code></a></p>
@@ -1174,8 +1183,6 @@ bl602-sdk = &quot;0.0.6&quot;  # Rust Wrapper for BL602 IoT SDK: https://crates.
 <p>TODO7</p>
 <p><img src="https://lupyuen.github.io/images/adc-doc.png" alt="" /></p>
 <p>TODO10</p>
-<p><img src="https://lupyuen.github.io/images/adc-doc2.png" alt="" /></p>
-<p>TODO11</p>
 <p><img src="https://lupyuen.github.io/images/adc-doc3.jpg" alt="" /></p>
 <p>TODO12</p>
 <p><img src="https://lupyuen.github.io/images/adc-doc4.jpg" alt="" /></p>
