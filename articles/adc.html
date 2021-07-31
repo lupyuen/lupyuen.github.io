@@ -1165,6 +1165,20 @@ bl602-sdk = &quot;0.0.6&quot;  # Rust Wrapper for BL602 IoT SDK: https://crates.
 <p>TODO18</p>
 <p><img src="https://lupyuen.github.io/images/adc-gain.png" alt="Setting the ADC Gain by patching the ADC High Level HAL" /></p>
 </li>
+<li>
+<p>ESP32 has something similar to the BL602 Rust Wrapper…</p>
+<ul>
+<li>
+<p><a href="https://github.com/esp-rs/esp-idf-sys"><code>esp-idf-sys</code></a> contains the Rust Bindings for ESP32 IDF SDK (generated with <code>bindgen</code>)</p>
+</li>
+<li>
+<p><a href="https://github.com/esp-rs/esp-idf-hal"><code>esp-idf-hal</code></a> wraps <code>esp-idf-sys</code> into a Rust Embedded HAL for ESP32</p>
+</li>
+<li>
+<p><a href="https://mabez.dev/blog/posts/esp-rust-espressif/">More about this</a></p>
+</li>
+</ul>
+</li>
 </ol>
 <h1 id="appendix-call-c-functions-from-rust" class="section-header"><a href="#appendix-call-c-functions-from-rust">12 Appendix: Call C Functions from Rust</a></h1>
 <p>TODO</p>
