@@ -506,6 +506,8 @@ Thus we copy the value from BL602 IoT SDK and define it here...
 const ADC_PGA_GAIN_1: u32 = 1;  //  From <https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Inc/bl602_adc.h#L133-L144>
 ```
 
+![Rust Firmware for BL602 ADC](https://lupyuen.github.io/images/adc-rust.png)
+
 ## Initialise the ADC Channel
 
 Here's our Rust Function __`init_adc`__ that will be called by the BL602 Command-Line Interface: [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L39-L100)
@@ -630,6 +632,8 @@ Finally we __start the ADC Channel__...
 ```
 
 BL602 ADC Controller will __read the ADC Samples continuously__ (from the GPIO Pin) into RAM (until we stop the ADC Channel).
+
+![Rust Firmware to read BL602 ADC](https://lupyuen.github.io/images/adc-rust2.png)
 
 ## Read the ADC Channel
 
@@ -1566,27 +1570,15 @@ TODO23
 
 ![](https://lupyuen.github.io/images/adc-prefix.png)
 
-TODO27
-
-![](https://lupyuen.github.io/images/adc-rust.png)
-
-TODO28
-
-![](https://lupyuen.github.io/images/adc-rust2.png)
-
 TODO29
 
 ![](https://lupyuen.github.io/images/adc-rustwrapper.png)
 
 ![Testing the improvised Light Sensor on PineCone BL602](https://lupyuen.github.io/images/adc-title2.jpg)
 
-TODO1
-
-![](https://lupyuen.github.io/images/adc-average.png)
-
 TODO4
 
-![](https://lupyuen.github.io/images/adc-copy.png)
+![Copy ADC data in Rust](https://lupyuen.github.io/images/adc-copy.png)
 
 TODO20
 
