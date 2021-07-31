@@ -475,6 +475,7 @@ export APP_NAME=sdk_app_rust_adc
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="kw">const</span> <span class="ident">ADC_PGA_GAIN_1</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">1</span>;  <span class="comment">//  From &lt;https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Inc/bl602_adc.h#L133-L144&gt;</span></pre></div>
+<p><img src="https://lupyuen.github.io/images/adc-rust.png" alt="Rust Firmware for BL602 ADC" /></p>
 <h2 id="initialise-the-adc-channel-1" class="section-header"><a href="#initialise-the-adc-channel-1">3.2 Initialise the ADC Channel</a></h2>
 <p>Here’s our Rust Function <strong><code>init_adc</code></strong> that will be called by the BL602 Command-Line Interface: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L39-L100"><code>lib.rs</code></a></p>
 
@@ -569,6 +570,7 @@ export APP_NAME=sdk_app_rust_adc
     .<span class="ident">expect</span>(<span class="string">&quot;ADC Start failed&quot;</span>);
 }</pre></div>
 <p>BL602 ADC Controller will <strong>read the ADC Samples continuously</strong> (from the GPIO Pin) into RAM (until we stop the ADC Channel).</p>
+<p><img src="https://lupyuen.github.io/images/adc-rust2.png" alt="Rust Firmware to read BL602 ADC" /></p>
 <h2 id="read-the-adc-channel-1" class="section-header"><a href="#read-the-adc-channel-1">3.3 Read the ADC Channel</a></h2>
 <p><em>Our ADC Channel has been started, how do we average the ADC Samples that have been read?</em></p>
 <p>Let’s check out the Rust Function <strong><code>read_adc</code></strong> in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L102-L165"><code>lib.rs</code></a> …</p>
@@ -1365,17 +1367,11 @@ int bl_gpio_output_set(uint8_t pin, uint8_t value);
 <h2 id="renaming-the-functions" class="section-header"><a href="#renaming-the-functions">14.3 Renaming the functions</a></h2>
 <p>TODO23</p>
 <p><img src="https://lupyuen.github.io/images/adc-prefix.png" alt="" /></p>
-<p>TODO27</p>
-<p><img src="https://lupyuen.github.io/images/adc-rust.png" alt="" /></p>
-<p>TODO28</p>
-<p><img src="https://lupyuen.github.io/images/adc-rust2.png" alt="" /></p>
 <p>TODO29</p>
 <p><img src="https://lupyuen.github.io/images/adc-rustwrapper.png" alt="" /></p>
 <p><img src="https://lupyuen.github.io/images/adc-title2.jpg" alt="Testing the improvised Light Sensor on PineCone BL602" /></p>
-<p>TODO1</p>
-<p><img src="https://lupyuen.github.io/images/adc-average.png" alt="" /></p>
 <p>TODO4</p>
-<p><img src="https://lupyuen.github.io/images/adc-copy.png" alt="" /></p>
+<p><img src="https://lupyuen.github.io/images/adc-copy.png" alt="Copy ADC data in Rust" /></p>
 <p>TODO20</p>
 <p><img src="https://lupyuen.github.io/images/adc-gain2.png" alt="" /></p>
 <p>TODO22</p>
