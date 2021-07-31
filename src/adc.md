@@ -1332,6 +1332,14 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     ![Setting the ADC Gain by patching the ADC High Level HAL](https://lupyuen.github.io/images/adc-gain.png)
 
+1.  ESP32 has something similar to the BL602 Rust Wrapper...
+
+    -   [`esp-idf-sys`](https://github.com/esp-rs/esp-idf-sys) contains the Rust Bindings for ESP32 IDF SDK (generated with `bindgen`)
+
+    -   [`esp-idf-hal`](https://github.com/esp-rs/esp-idf-hal) wraps `esp-idf-sys` into a Rust Embedded HAL for ESP32
+
+    -   [More about this](https://mabez.dev/blog/posts/esp-rust-espressif/)
+
 # Appendix: Call C Functions from Rust
 
 TODO
