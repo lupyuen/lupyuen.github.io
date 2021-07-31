@@ -1213,8 +1213,19 @@ bl602-sdk = &quot;0.0.6&quot;  # Rust Wrapper for BL602 IoT SDK: https://crates.
 };</pre></div>
 <p><img src="https://lupyuen.github.io/images/adc-cast.png" alt="Casting a C Pointer to a Rust Pointer" /></p>
 <h1 id="appendix-generating-the-rust-wrapper-for-bl602-iot-sdk" class="section-header"><a href="#appendix-generating-the-rust-wrapper-for-bl602-iot-sdk">14 Appendix: Generating the Rust Wrapper for BL602 IoT SDK</a></h1>
-<p>TODO</p>
-<p>To generate the Rust Wrapper…</p>
+<p><em>How was the BL602 Rust Wrapper generated for publishing on <a href="https://crates.io/crates/bl602-sdk"><code>crates.io</code></a>?</em></p>
+<p>Two tools were used to generate the <strong>Rust Wrapper for BL602 IoT SDK</strong>…</p>
+<ol>
+<li>
+<p><a href="https://rust-lang.github.io/rust-bindgen"><strong><code>bindgen</code></strong></a>: Command-line tool that generates the <strong>Rust Bindings</strong> for a C API.</p>
+<p>(As specified by C Header Files)</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-macros/src/safe_wrap.rs"><strong><code>safe_wrap</code></strong></a>: A Rust Procedural Macro we wrote to transform the BL602 C Types to <strong>Rust-Friendly Types</strong>.</p>
+<p>(Including the “<code>expect</code>” checking for return values)</p>
+</li>
+</ol>
+<p>Here are the steps for <strong>generating the Rust Wrapper</strong>…</p>
 <pre><code class="language-bash">#  Install bindgen and clang: https://rust-lang.github.io/rust-bindgen/requirements.html 
 cargo install bindgen
 sudo apt install llvm-dev libclang-dev clang
@@ -1231,6 +1242,7 @@ scripts/gen-bindings.sh
 scripts/build.sh
 </code></pre>
 <h2 id="how-it-works" class="section-header"><a href="#how-it-works">14.1 How It Works</a></h2>
+<p>TODO</p>
 <p>This script…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/bl602-rust-wrapper/blob/master/scripts/gen-bindings.sh"><code>scripts/gen-bindings.sh</code></a></li>
@@ -1244,9 +1256,7 @@ int bl_gpio_output_set(uint8_t pin, uint8_t value);
 <p>And auto-generates the Rust Bindings…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-sdk/src/gpio.rs"><code>bl602-sdk/src/gpio.rs</code></a></li>
-<li><a href="https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-sdk/src/i2c.rs"><code>bl602-sdk/src/i2c.rs</code></a></li>
-<li><a href="https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-sdk/src/pwm.rs"><code>bl602-sdk/src/pwm.rs</code></a></li>
-<li><a href="https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-sdk/src/spi.rs"><code>bl602-sdk/src/spi.rs</code></a></li>
+<li><a href="https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-sdk/src/adc.rs"><code>bl602-sdk/src/adc.rs</code></a></li>
 <li><a href="https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-sdk/src">More Bindings</a></li>
 </ul>
 
