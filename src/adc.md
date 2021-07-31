@@ -1384,9 +1384,19 @@ let ctx = unsafe {     //  Unsafe because we are casting a pointer
 
 # Appendix: Generating the Rust Wrapper for BL602 IoT SDK
 
-TODO
+_How was the BL602 Rust Wrapper generated for publishing on [`crates.io`](https://crates.io/crates/bl602-sdk)?_
 
-To generate the Rust Wrapper...
+Two tools were used to generate the __Rust Wrapper for BL602 IoT SDK__...
+
+1.  [__`bindgen`__](https://rust-lang.github.io/rust-bindgen): Command-line tool that generates the __Rust Bindings__ for a C API.
+
+    (As specified by C Header Files)
+
+1.  [__`safe_wrap`__](https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-macros/src/safe_wrap.rs): A Rust Procedural Macro we wrote to transform the BL602 C Types to __Rust-Friendly Types__.
+
+    (Including the "`expect`" checking for return values)
+
+Here are the steps for __generating the Rust Wrapper__...
 
 ```bash
 #  Install bindgen and clang: https://rust-lang.github.io/rust-bindgen/requirements.html 
@@ -1407,6 +1417,8 @@ scripts/build.sh
 
 ## How It Works
 
+TODO
+
 This script...
 
 -   [`scripts/gen-bindings.sh`](https://github.com/lupyuen/bl602-rust-wrapper/blob/master/scripts/gen-bindings.sh)
@@ -1423,9 +1435,7 @@ int bl_gpio_output_set(uint8_t pin, uint8_t value);
 And auto-generates the Rust Bindings...
 
 -   [`bl602-sdk/src/gpio.rs`](https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-sdk/src/gpio.rs)
--   [`bl602-sdk/src/i2c.rs`](https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-sdk/src/i2c.rs)
--   [`bl602-sdk/src/pwm.rs`](https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-sdk/src/pwm.rs)
--   [`bl602-sdk/src/spi.rs`](https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-sdk/src/spi.rs)
+-   [`bl602-sdk/src/adc.rs`](https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-sdk/src/adc.rs)
 -   [More Bindings](https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-sdk/src)
 
 ```rust
