@@ -1417,13 +1417,11 @@ scripts/build.sh
 
 ## How it works
 
-TODO
-
 This script...
 
 -   [`scripts/gen-bindings.sh`](https://github.com/lupyuen/bl602-rust-wrapper/blob/master/scripts/gen-bindings.sh)
 
-Reads the BL602 IoT SDK Header Files...
+Calls __`bindgen`__ to read the BL602 IoT SDK __Header Files__...
 
 ```c
 //  Function Declarations from BL602 IoT SDK (GPIO HAL)
@@ -1432,7 +1430,7 @@ int bl_gpio_enable_output(uint8_t pin, uint8_t pullup, uint8_t pulldown);
 int bl_gpio_output_set(uint8_t pin, uint8_t value);
 ```
 
-And auto-generates the Rust Bindings...
+To produce the __Rust Bindings__ for BL602 IoT SDK...
 
 -   [`bl602-sdk/src/gpio.rs`](https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-sdk/src/gpio.rs)
 -   [`bl602-sdk/src/adc.rs`](https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-sdk/src/adc.rs)
@@ -1449,11 +1447,13 @@ And auto-generates the Rust Bindings...
 }
 ```
 
-Which call the `safe_wrap` Procedural Macro...
+(`safe_wrap` was inserted by an `sed` script in `gen-bindings.sh`)
+
+When the above Rust Bindings are compiled, they invoke the __`safe_wrap` Procedural Macro__...
 
 -   [`bl602-macros/src/safe_wrap.rs`](https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-macros/src/safe_wrap.rs)
 
-To produce the Rust Wrapper for BL602 IoT SDK...
+To produce the __Rust Wrapper__ for BL602 IoT SDK...
 
 -   [Expanded `safe_wrap` macros: `logs/sdk-expanded.rs`](https://github.com/lupyuen/bl602-rust-wrapper/blob/master/logs/sdk-expanded.rs)
 
@@ -1495,11 +1495,24 @@ pub fn output_set(pin: u8, value: u8) -> BlResult<()> {
 }
 ```
 
-Build the docs and the test project with this script...
+(More about __`doc`__ in the next section)
+
+Note that the `safe_wrap` macro converts the BL602 return values to a __Rust Result Type__...
+
+```rust
+match res { 
+    0 => Ok(()), 
+    _ => Err(BlError::from(res))
+}
+```
+
+Which enables the caller to check for errors with __`expect`__.
+
+We build the docs and the test project with this script...
 
 -   [`scripts/build.sh`](https://github.com/lupyuen/bl602-rust-wrapper/blob/master/scripts/build.sh)
 
--   [See the build log](https://github.com/lupyuen/bl602-rust-wrapper/blob/master/README.md#build-log)
+[See the build log](https://github.com/lupyuen/bl602-rust-wrapper/blob/master/README.md#build-log)
 
 ## Injecting the docs
 
