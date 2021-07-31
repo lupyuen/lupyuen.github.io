@@ -1550,9 +1550,13 @@ TODO
 
 TODO16
 
+From [`safe_wrap.rs`](https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-macros/src/safe_wrap.rs#L532-L573)
+
 ![Loading the documentation links](https://lupyuen.github.io/images/adc-doclink2.png)
 
 TODO17
+
+From [`safe_wrap.rs`](https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-macros/src/safe_wrap.rs#L476-L530)
 
 ![Injecting the documentation links](https://lupyuen.github.io/images/adc-doclink3.png)
 
