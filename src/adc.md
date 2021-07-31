@@ -1334,7 +1334,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  ESP32 has something similar to the BL602 Rust Wrapper...
 
-    -   [`esp-idf-sys`](https://github.com/esp-rs/esp-idf-sys) contains the Rust Bindings for ESP32 IDF SDK (generated with `bindgen`)
+    -   [`esp-idf-sys`](https://github.com/esp-rs/esp-idf-sys) defines the Rust Bindings for ESP32 IDF SDK (generated with `bindgen`)
 
     -   [`esp-idf-hal`](https://github.com/esp-rs/esp-idf-hal) wraps `esp-idf-sys` into a Rust Embedded HAL for ESP32
 
