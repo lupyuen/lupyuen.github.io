@@ -1542,6 +1542,8 @@ pub fn enable_output(pin: u8, pullup: u8, pulldown: u8) { ...
 pub fn output_set(pin: u8, value: u8) -> BlResult<()> { ...
 ```
 
+-   [__Documentation for BL602 Rust Wrapper__](https://docs.rs/bl602-sdk)
+
 TODO15
 
 ![](https://lupyuen.github.io/images/adc-doclink.png)
