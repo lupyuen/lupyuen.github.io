@@ -1230,13 +1230,13 @@ So it's perfectly OK to use Static Variables in Rust. Just that we need to...
 
 # Rust Wrapper for BL602 IoT SDK
 
-_The Rust Functions for BL602 look so similar to the C Functions from the BL602 IoT SDK. How is this possible?_
+_The Rust Functions for BL602 look mighty similar to the C Functions from the BL602 IoT SDK. How is this possible?_
 
 Because the Rust Functions were __automatically generated from BL602 IoT SDK!__
 
 We ran a script to generate the __Rust Wrapper for BL602 IoT SDK__.
 
-And we published the Rust Wrapper here...
+And we published the Rust Wrapper on __`crates.io`__...
 
 -   [__`bl602-sdk`: Rust Wrapper for BL602 IoT SDK__](https://crates.io/crates/bl602-sdk)
 
@@ -1254,9 +1254,7 @@ Today our BL602 Rust Wrapper supports...
 
 _How do we add the BL602 Rust Wrapper to our Rust Project?_
 
-TODO
-
-From [`rust/Cargo.toml`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/Cargo.toml#L9-L11)
+Just __`bl602-sdk`__ to the Rust project configuration: [`rust/Cargo.toml`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/Cargo.toml#L9-L11)
 
 ```text
 # External Rust libraries used by this module.  See crates.io.
@@ -1264,9 +1262,25 @@ From [`rust/Cargo.toml`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer
 bl602-sdk = "0.0.6"  # Rust Wrapper for BL602 IoT SDK: https://crates.io/crates/bl602-sdk
 ```
 
-TODO21
+[(Change `"0.0.6"` to the latest version on `crates.io`)](https://crates.io/crates/bl602-sdk)
+
+The BL602 Rust Wrapper will be auto-downloaded from `crates.io` when building the project.
+
+![BL602 Rust Wrapper Documentation](https://lupyuen.github.io/images/adc-doc2.png)
+
+_Is the BL602 Rust Wrapper documented?_
+
+TODO
+
+-   [__Documentation for BL602 Rust Wrapper__](https://docs.rs/bl602-sdk)
+
+Check the Appendix to learn more about the Rust Wrapper for BL602 IoT SDK.
+
+Here's a sample project that calls the Rust Wrapper for GPIO...
 
 ![Rust Wrapper for GPIO](https://lupyuen.github.io/images/adc-gpio.png)
+
+[(Source)](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_gpio/rust/src/lib.rs)
 
 # Call C Functions from Rust
 
@@ -1345,10 +1359,6 @@ TODO7
 ![](https://lupyuen.github.io/images/adc-doc.png)
 
 TODO10
-
-![](https://lupyuen.github.io/images/adc-doc2.png)
-
-TODO11
 
 ![](https://lupyuen.github.io/images/adc-doc3.jpg)
 
