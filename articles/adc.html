@@ -1223,7 +1223,7 @@ bl602-sdk = &quot;0.0.6&quot;  # Rust Wrapper for BL602 IoT SDK: https://crates.
 <p>(As specified by C Header Files)</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-macros/src/safe_wrap.rs"><strong><code>safe_wrap</code></strong></a>: A Rust Procedural Macro we wrote to transform the BL602 C Types to <strong>Rust-Friendly Types</strong>.</p>
+<p><a href="https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-macros/src/safe_wrap.rs"><strong><code>safe_wrap</code></strong></a>: A Rust Procedural Macro we wrote to transform the BL602 C Types to <strong>safer Rust-Friendly Types</strong>.</p>
 <p>(Including the “<code>expect</code>” checking for return values)</p>
 </li>
 </ol>
@@ -1326,10 +1326,25 @@ int bl_gpio_output_set(uint8_t pin, uint8_t value);
 </li>
 </ul>
 <h2 id="injecting-the-docs" class="section-header"><a href="#injecting-the-docs">14.2 Injecting the docs</a></h2>
+<p>TODO</p>
 <p>Links to <a href="https://lupyuen.github.io/articles/book">“The RISC-V BL602 Book”</a> are defined here…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-sdk/doclinks.md"><code>bl602-sdk/doclinks.md</code></a></li>
 </ul>
+<pre><code class="language-text">| Function              | Description                           | Section             | URL
+| --------------------- | ------------------------------------- | ------------------- | ---
+| bl_gpio_enable_output | Configure a GPIO Pin for Output Mode. | Enable GPIO         | https://lupyuen.github.io/articles/led#enable-gpio
+| bl_gpio_output_set    | Set the output value of a GPIO Pin.   | Read and Write GPIO | https://lupyuen.github.io/articles/led#read-and-write-gpio
+</code></pre>
+<p>TODO</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="comment">//  Expanded version of `safe_wrap` macros for the GPIO Rust Bindings</span>
+<span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;Configure a GPIO Pin for Output Mode. See `bl_gpio_enable_output` in \&quot;Enable GPIO\&quot; &lt;https://lupyuen.github.io/articles/led#enable-gpio&gt;&quot;</span>]</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">enable_output</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">pullup</span>: <span class="ident">u8</span>, <span class="ident">pulldown</span>: <span class="ident">u8</span>) { ...
+
+<span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;Set output value of GPIO Pin. See `bl_gpio_output_set` in \&quot;Read and Write GPIO\&quot; &lt;https://lupyuen.github.io/articles/led#read-and-write-gpio&gt;&quot;</span>]</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">output_set</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">value</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BlResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> { ...</pre></div>
 <p>TODO15</p>
 <p><img src="https://lupyuen.github.io/images/adc-doclink.png" alt="" /></p>
 <p>TODO16</p>
