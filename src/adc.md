@@ -1392,7 +1392,7 @@ Two tools were used to generate the __Rust Wrapper for BL602 IoT SDK__...
 
     (As specified by C Header Files)
 
-1.  [__`safe_wrap`__](https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-macros/src/safe_wrap.rs): A Rust Procedural Macro we wrote to transform the BL602 C Types to __Rust-Friendly Types__.
+1.  [__`safe_wrap`__](https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-macros/src/safe_wrap.rs): A Rust Procedural Macro we wrote to transform the BL602 C Types to __safer Rust-Friendly Types__.
 
     (Including the "`expect`" checking for return values)
 
@@ -1503,9 +1503,29 @@ Build the docs and the test project with this script...
 
 ## Injecting the docs
 
+TODO
+
 Links to ["The RISC-V BL602 Book"](https://lupyuen.github.io/articles/book) are defined here...
 
 -   [`bl602-sdk/doclinks.md`](https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-sdk/doclinks.md)
+
+```text
+| Function              | Description                           | Section             | URL
+| --------------------- | ------------------------------------- | ------------------- | ---
+| bl_gpio_enable_output | Configure a GPIO Pin for Output Mode. | Enable GPIO         | https://lupyuen.github.io/articles/led#enable-gpio
+| bl_gpio_output_set    | Set the output value of a GPIO Pin.   | Read and Write GPIO | https://lupyuen.github.io/articles/led#read-and-write-gpio
+```
+
+TODO
+
+```rust
+//  Expanded version of `safe_wrap` macros for the GPIO Rust Bindings
+#[doc = "Configure a GPIO Pin for Output Mode. See `bl_gpio_enable_output` in \"Enable GPIO\" <https://lupyuen.github.io/articles/led#enable-gpio>"]
+pub fn enable_output(pin: u8, pullup: u8, pulldown: u8) { ...
+
+#[doc = "Set output value of GPIO Pin. See `bl_gpio_output_set` in \"Read and Write GPIO\" <https://lupyuen.github.io/articles/led#read-and-write-gpio>"]
+pub fn output_set(pin: u8, value: u8) -> BlResult<()> { ...
+```
 
 TODO15
 
