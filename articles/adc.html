@@ -89,7 +89,9 @@
 <li><a href="#appendix-call-c-functions-from-rust">12 Appendix: Call C Functions from Rust</a><ul></ul></li>
 <li><a href="#appendix-convert-c-pointers-to-rust">13 Appendix: Convert C Pointers to Rust</a><ul></ul></li>
 <li><a href="#appendix-generating-the-rust-wrapper-for-bl602-iot-sdk">14 Appendix: Generating the Rust Wrapper for BL602 IoT SDK</a><ul>
-<li><a href="#how-it-works">14.1 How It Works</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>8 Aug 2021</em></p>
+<li><a href="#how-it-works">14.1 How it works</a><ul></ul></li>
+<li><a href="#injecting-the-docs">14.2 Injecting the docs</a><ul></ul></li>
+<li><a href="#todo">14.3 TODO</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>8 Aug 2021</em></p>
 <p>Today we shall magically transform <a href="https://lupyuen.github.io/articles/pinecone"><strong>any RISC-V BL602 Board</strong></a> into a <strong>Light Sensor!</strong></p>
 <p>We’ll code this firmware in C, then port it to Rust with the <a href="https://crates.io/crates/bl602-sdk"><strong>Rust Wrapper for BL602 IoT SDK</strong></a>.</p>
 <p>(New to Rust? No worries we have tips for you!)</p>
@@ -1241,7 +1243,7 @@ scripts/gen-bindings.sh
 #  Build the docs and the test project
 scripts/build.sh
 </code></pre>
-<h2 id="how-it-works" class="section-header"><a href="#how-it-works">14.1 How It Works</a></h2>
+<h2 id="how-it-works" class="section-header"><a href="#how-it-works">14.1 How it works</a></h2>
 <p>TODO</p>
 <p>This script…</p>
 <ul>
@@ -1314,10 +1316,6 @@ int bl_gpio_output_set(uint8_t pin, uint8_t value);
         <span class="kw">match</span> <span class="ident">res</span> { <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(()), <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">BlError::from</span>(<span class="ident">res</span>)), }
     }
 }</pre></div>
-<p>Links to <a href="https://lupyuen.github.io/articles/book">“The RISC-V BL602 Book”</a> are defined here…</p>
-<ul>
-<li><a href="https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-sdk/doclinks.md"><code>bl602-sdk/doclinks.md</code></a></li>
-</ul>
 <p>Build the docs and the test project with this script…</p>
 <ul>
 <li>
@@ -1327,6 +1325,20 @@ int bl_gpio_output_set(uint8_t pin, uint8_t value);
 <p><a href="https://github.com/lupyuen/bl602-rust-wrapper/blob/master/README.md#build-log">See the build log</a></p>
 </li>
 </ul>
+<h2 id="injecting-the-docs" class="section-header"><a href="#injecting-the-docs">14.2 Injecting the docs</a></h2>
+<p>Links to <a href="https://lupyuen.github.io/articles/book">“The RISC-V BL602 Book”</a> are defined here…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-sdk/doclinks.md"><code>bl602-sdk/doclinks.md</code></a></li>
+</ul>
+<p>TODO15</p>
+<p><img src="https://lupyuen.github.io/images/adc-doclink.png" alt="" /></p>
+<p>TODO16</p>
+<p><img src="https://lupyuen.github.io/images/adc-doclink2.png" alt="" /></p>
+<p>TODO17</p>
+<p><img src="https://lupyuen.github.io/images/adc-doclink3.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/adc-doc2.png" alt="BL602 Rust Wrapper Documentation" /></p>
+<h2 id="todo" class="section-header"><a href="#todo">14.3 TODO</a></h2>
 <p>TODO2</p>
 <p><img src="https://lupyuen.github.io/images/adc-bindgen.png" alt="" /></p>
 <p>TODO7</p>
@@ -1339,12 +1351,6 @@ int bl_gpio_output_set(uint8_t pin, uint8_t value);
 <p><img src="https://lupyuen.github.io/images/adc-doc5.jpg" alt="" /></p>
 <p>TODO14</p>
 <p><img src="https://lupyuen.github.io/images/adc-doc6.jpg" alt="" /></p>
-<p>TODO15</p>
-<p><img src="https://lupyuen.github.io/images/adc-doclink.png" alt="" /></p>
-<p>TODO16</p>
-<p><img src="https://lupyuen.github.io/images/adc-doclink2.png" alt="" /></p>
-<p>TODO17</p>
-<p><img src="https://lupyuen.github.io/images/adc-doclink3.png" alt="" /></p>
 <p>TODO23</p>
 <p><img src="https://lupyuen.github.io/images/adc-prefix.png" alt="" /></p>
 <p>TODO27</p>
