@@ -1244,23 +1244,13 @@ _Which functions from the BL602 IoT SDK are supported?_
 
 Today our BL602 Rust Wrapper supports...
 
--   [__ADC__](https://docs.rs/bl602-sdk/latest/bl602_sdk/adc/index.html)
+| | | |
+| ----- | ----- | ----- |
+| ◾ [__ADC__](https://docs.rs/bl602-sdk/latest/bl602_sdk/adc/index.html) |  ◾ [__I2C__](https://docs.rs/bl602-sdk/latest/bl602_sdk/i2c/index.html) | ◾ [__UART__](https://docs.rs/bl602-sdk/latest/bl602_sdk/uart/index.html)  
+| ◾ [__DMA__](https://docs.rs/bl602-sdk/latest/bl602_sdk/dma/index.html) | ◾ [__PWM__](https://docs.rs/bl602-sdk/latest/bl602_sdk/pwm/index.html) | ◾ [__WiFi__](https://docs.rs/bl602-sdk/latest/bl602_sdk/wifi/index.html)
+◾ [__GPIO__](https://docs.rs/bl602-sdk/latest/bl602_sdk/gpio/index.html) | ◾ [__SPI__](https://docs.rs/bl602-sdk/latest/bl602_sdk/spi/index.html)
 
--   [__DMA__](https://docs.rs/bl602-sdk/latest/bl602_sdk/dma/index.html)
-
--   [__GPIO__](https://docs.rs/bl602-sdk/latest/bl602_sdk/gpio/index.html)
-
--   [__I2C__](https://docs.rs/bl602-sdk/latest/bl602_sdk/i2c/index.html)
-
--   [__PWM__](https://docs.rs/bl602-sdk/latest/bl602_sdk/pwm/index.html)
-
--   [__SPI__](https://docs.rs/bl602-sdk/latest/bl602_sdk/spi/index.html)
-
--   [__UART__](https://docs.rs/bl602-sdk/latest/bl602_sdk/uart/index.html)
-
--   [__WiFi__](https://docs.rs/bl602-sdk/latest/bl602_sdk/wifi/index.html)
-
--   [__Check out the complete list__](https://docs.rs/bl602-sdk)
+[(See the complete list)](https://docs.rs/bl602-sdk)
 
 _How do we add the BL602 Rust Wrapper to our Rust Project?_
 
