@@ -1244,18 +1244,17 @@ scripts/gen-bindings.sh
 scripts/build.sh
 </code></pre>
 <h2 id="how-it-works" class="section-header"><a href="#how-it-works">14.1 How it works</a></h2>
-<p>TODO</p>
 <p>This script…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/bl602-rust-wrapper/blob/master/scripts/gen-bindings.sh"><code>scripts/gen-bindings.sh</code></a></li>
 </ul>
-<p>Reads the BL602 IoT SDK Header Files…</p>
+<p>Calls <strong><code>bindgen</code></strong> to read the BL602 IoT SDK <strong>Header Files</strong>…</p>
 <pre><code class="language-c">//  Function Declarations from BL602 IoT SDK (GPIO HAL)
 //  https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_gpio.h
 int bl_gpio_enable_output(uint8_t pin, uint8_t pullup, uint8_t pulldown);
 int bl_gpio_output_set(uint8_t pin, uint8_t value);
 </code></pre>
-<p>And auto-generates the Rust Bindings…</p>
+<p>To produce the <strong>Rust Bindings</strong> for BL602 IoT SDK…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-sdk/src/gpio.rs"><code>bl602-sdk/src/gpio.rs</code></a></li>
 <li><a href="https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-sdk/src/adc.rs"><code>bl602-sdk/src/adc.rs</code></a></li>
@@ -1271,11 +1270,12 @@ int bl_gpio_output_set(uint8_t pin, uint8_t value);
 <span class="attribute">#[<span class="ident">safe_wrap</span>(<span class="kw">_</span>)]</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bl_gpio_output_set</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">value</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">::cty::c_int</span>;
 }</pre></div>
-<p>Which call the <code>safe_wrap</code> Procedural Macro…</p>
+<p>(<code>safe_wrap</code> was inserted by an <code>sed</code> script in <code>gen-bindings.sh</code>)</p>
+<p>When the above Rust Bindings are compiled, they invoke the <strong><code>safe_wrap</code> Procedural Macro</strong>…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-macros/src/safe_wrap.rs"><code>bl602-macros/src/safe_wrap.rs</code></a></li>
 </ul>
-<p>To produce the Rust Wrapper for BL602 IoT SDK…</p>
+<p>To produce the <strong>Rust Wrapper</strong> for BL602 IoT SDK…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/bl602-rust-wrapper/blob/master/logs/sdk-expanded.rs">Expanded <code>safe_wrap</code> macros: <code>logs/sdk-expanded.rs</code></a></li>
 </ul>
@@ -1316,15 +1316,20 @@ int bl_gpio_output_set(uint8_t pin, uint8_t value);
         <span class="kw">match</span> <span class="ident">res</span> { <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(()), <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">BlError::from</span>(<span class="ident">res</span>)), }
     }
 }</pre></div>
-<p>Build the docs and the test project with this script…</p>
+<p>(More about <strong><code>doc</code></strong> in the next section)</p>
+<p>Note that the <code>safe_wrap</code> macro converts the BL602 return values to a <strong>Rust Result Type</strong>…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">match</span> <span class="ident">res</span> { 
+    <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(()), 
+    <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">BlError::from</span>(<span class="ident">res</span>))
+}</pre></div>
+<p>Which enables the caller to check for errors with <strong><code>expect</code></strong>.</p>
+<p>We build the docs and the test project with this script…</p>
 <ul>
-<li>
-<p><a href="https://github.com/lupyuen/bl602-rust-wrapper/blob/master/scripts/build.sh"><code>scripts/build.sh</code></a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/bl602-rust-wrapper/blob/master/README.md#build-log">See the build log</a></p>
-</li>
+<li><a href="https://github.com/lupyuen/bl602-rust-wrapper/blob/master/scripts/build.sh"><code>scripts/build.sh</code></a></li>
 </ul>
+<p><a href="https://github.com/lupyuen/bl602-rust-wrapper/blob/master/README.md#build-log">See the build log</a></p>
 <h2 id="injecting-the-docs" class="section-header"><a href="#injecting-the-docs">14.2 Injecting the docs</a></h2>
 <p>TODO</p>
 <p>Links to <a href="https://lupyuen.github.io/articles/book">“The RISC-V BL602 Book”</a> are defined here…</p>
