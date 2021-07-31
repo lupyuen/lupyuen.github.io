@@ -1415,7 +1415,7 @@ scripts/gen-bindings.sh
 scripts/build.sh
 ```
 
-## How It Works
+## How it works
 
 TODO
 
@@ -1495,15 +1495,35 @@ pub fn output_set(pin: u8, value: u8) -> BlResult<()> {
 }
 ```
 
-Links to ["The RISC-V BL602 Book"](https://lupyuen.github.io/articles/book) are defined here...
-
--   [`bl602-sdk/doclinks.md`](https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-sdk/doclinks.md)
-
 Build the docs and the test project with this script...
 
 -   [`scripts/build.sh`](https://github.com/lupyuen/bl602-rust-wrapper/blob/master/scripts/build.sh)
 
 -   [See the build log](https://github.com/lupyuen/bl602-rust-wrapper/blob/master/README.md#build-log)
+
+## Injecting the docs
+
+Links to ["The RISC-V BL602 Book"](https://lupyuen.github.io/articles/book) are defined here...
+
+-   [`bl602-sdk/doclinks.md`](https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-sdk/doclinks.md)
+
+TODO15
+
+![](https://lupyuen.github.io/images/adc-doclink.png)
+
+TODO16
+
+![](https://lupyuen.github.io/images/adc-doclink2.png)
+
+TODO17
+
+![](https://lupyuen.github.io/images/adc-doclink3.png)
+
+TODO
+
+![BL602 Rust Wrapper Documentation](https://lupyuen.github.io/images/adc-doc2.png)
+
+## TODO
 
 TODO2
 
@@ -1528,18 +1548,6 @@ TODO13
 TODO14
 
 ![](https://lupyuen.github.io/images/adc-doc6.jpg)
-
-TODO15
-
-![](https://lupyuen.github.io/images/adc-doclink.png)
-
-TODO16
-
-![](https://lupyuen.github.io/images/adc-doclink2.png)
-
-TODO17
-
-![](https://lupyuen.github.io/images/adc-doclink3.png)
 
 TODO23
 
