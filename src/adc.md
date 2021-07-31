@@ -1254,7 +1254,7 @@ Today our BL602 Rust Wrapper supports...
 
 _How do we add the BL602 Rust Wrapper to our Rust Project?_
 
-Just __`bl602-sdk`__ to the Rust project configuration: [`rust/Cargo.toml`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/Cargo.toml#L9-L11)
+Just add __`bl602-sdk`__ to the Rust project configuration: [`rust/Cargo.toml`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/Cargo.toml#L9-L11)
 
 ```text
 # External Rust libraries used by this module.  See crates.io.
@@ -1270,11 +1270,11 @@ The BL602 Rust Wrapper will be auto-downloaded from `crates.io` when building th
 
 _Is the BL602 Rust Wrapper documented?_
 
-TODO
+Yep! Every Rust Function is linked to the section in [__"The RISC-V BL602 Book"__](https://lupyuen.github.io/articles/book) that explains how we call the function...
 
 -   [__Documentation for BL602 Rust Wrapper__](https://docs.rs/bl602-sdk)
 
-Check the Appendix to learn more about the Rust Wrapper for BL602 IoT SDK.
+(Check the Appendix to learn more about the BL602 Rust Wrapper)
 
 Here's a sample project that calls the Rust Wrapper for GPIO...
 
