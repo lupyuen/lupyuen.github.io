@@ -607,7 +607,7 @@ To use the pointer in Rust, we cast it to a __DMA Context Pointer__...
   };
 ```
 
-(More about `transmute` in a while)
+(More about `transmute` in the Appendix)
 
 Now we may update the __DMA Context__ for the ADC Channel...
 
@@ -673,7 +673,7 @@ Again we cast the returned C pointer `ptr` to a __DMA Context Pointer__...
   };
 ```
 
-(More about `transmute` in a while)
+(More about `transmute` in the Appendix)
 
 Now we may verify the __DMA Context__ for the ADC Channel...
 
@@ -723,6 +723,8 @@ Let's __copy the last 100 ADC Samples__ from the DMA Context (in RAM) to our arr
     );    
   }
 ```
+
+(More about this in the Appendix)
 
 (`adc_data.len()` returns the array length: 100)
 
@@ -1133,6 +1135,8 @@ That's why we need to flag the following code as __`unsafe`__...
     unsafe { set_adc_gain(ADC_GAIN1, ADC_GAIN2) };
     ```
 
+    (More about this in the Appendix)
+
 1.  __Casting C Pointers__ to Rust
     
     ```rust
@@ -1144,6 +1148,8 @@ That's why we need to flag the following code as __`unsafe`__...
       >(ptr)               //  For this pointer
     };
     ```
+
+    (More about this in the Appendix)
 
 1.  __Dereferencing C Pointers__
 
@@ -1282,26 +1288,6 @@ Here's a sample project that calls the Rust Wrapper for GPIO...
 
 [(Source)](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_gpio/rust/src/lib.rs)
 
-# Call C Functions from Rust
-
-TODO
-
-From [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L180-L184)
-
-```rust
-extern "C" {  //  Import C Function
-  /// Enable ADC Gain to increase the ADC sensitivity.
-  /// Defined in customer_app/sdk_app_rust_adc/sdk_app_rust_adc/demo.c
-  fn set_adc_gain(gain1: u32, gain2: u32) -> i32;
-}
-```
-
-# Convert C Pointers to Rust
-
-TODO
-
-![](https://lupyuen.github.io/images/adc-cast.png)
-
 # Why Sunlight?
 
 TODO
@@ -1345,6 +1331,48 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
     TODO18
 
     ![Setting the ADC Gain by patching the ADC High Level HAL](https://lupyuen.github.io/images/adc-gain.png)
+
+# Appendix: Call C Functions from Rust
+
+TODO
+
+From [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L64-L66)
+
+```rust
+//  Enable ADC Gain to increase the ADC sensitivity
+unsafe { set_adc_gain(ADC_GAIN1, ADC_GAIN2) };  //  Unsafe because we are calling C function
+```
+
+From [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L180-L184)
+
+```rust
+extern "C" {  //  Import C Function
+  /// Enable ADC Gain to increase the ADC sensitivity.
+  /// Defined in customer_app/sdk_app_rust_adc/sdk_app_rust_adc/demo.c
+  fn set_adc_gain(gain1: u32, gain2: u32) -> i32;
+}
+```
+
+# Appendix: Convert C Pointers to Rust
+
+TODO
+
+From [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L119-L129)
+
+```rust
+//  Get the C Pointer (void *) for DMA Context
+let ptr = ...
+
+//  Cast the returned C Pointer (void *) to a DMA Context Pointer (adc_ctx *)
+let ctx = unsafe {     //  Unsafe because we are casting a pointer
+  transmute::<         //  Cast the type...
+    Ptr,               //  From C Pointer (void *)
+    *mut adc::adc_ctx  //  To DMA Context Pointer (adc_ctx *)
+  >(ptr)               //  For this pointer
+};
+```
+
+![Casting a C Pointer to a Rust Pointer](https://lupyuen.github.io/images/adc-cast.png)
 
 # Appendix: Generating the Rust Wrapper for BL602 IoT SDK
 
