@@ -83,11 +83,11 @@
 <li><a href="#safer-rust">7.1 Safer Rust</a><ul></ul></li>
 <li><a href="#static-variables-in-rust">7.2 Static Variables in Rust</a><ul></ul></li></ul></li>
 <li><a href="#rust-wrapper-for-bl602-iot-sdk">8 Rust Wrapper for BL602 IoT SDK</a><ul></ul></li>
-<li><a href="#call-c-functions-from-rust">9 Call C Functions from Rust</a><ul></ul></li>
-<li><a href="#convert-c-pointers-to-rust">10 Convert C Pointers to Rust</a><ul></ul></li>
-<li><a href="#why-sunlight">11 Why Sunlight?</a><ul></ul></li>
-<li><a href="#whats-next">12 What’s Next</a><ul></ul></li>
-<li><a href="#notes">13 Notes</a><ul></ul></li>
+<li><a href="#why-sunlight">9 Why Sunlight?</a><ul></ul></li>
+<li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
+<li><a href="#notes">11 Notes</a><ul></ul></li>
+<li><a href="#appendix-call-c-functions-from-rust">12 Appendix: Call C Functions from Rust</a><ul></ul></li>
+<li><a href="#appendix-convert-c-pointers-to-rust">13 Appendix: Convert C Pointers to Rust</a><ul></ul></li>
 <li><a href="#appendix-generating-the-rust-wrapper-for-bl602-iot-sdk">14 Appendix: Generating the Rust Wrapper for BL602 IoT SDK</a><ul></ul></li></ul></nav><p>📝 <em>8 Aug 2021</em></p>
 <p>Today we shall magically transform <a href="https://lupyuen.github.io/articles/pinecone"><strong>any RISC-V BL602 Board</strong></a> into a <strong>Light Sensor!</strong></p>
 <p>We’ll code this firmware in C, then port it to Rust with the <a href="https://crates.io/crates/bl602-sdk"><strong>Rust Wrapper for BL602 IoT SDK</strong></a>.</p>
@@ -549,7 +549,7 @@ export APP_NAME=sdk_app_rust_adc
       <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">adc::adc_ctx</span>  <span class="comment">//  To DMA Context Pointer (adc_ctx *)</span>
     <span class="op">&gt;</span>(<span class="ident">ptr</span>)               <span class="comment">//  For this pointer</span>
   };</pre></div>
-<p>(More about <code>transmute</code> in a while)</p>
+<p>(More about <code>transmute</code> in the Appendix)</p>
 <p>Now we may update the <strong>DMA Context</strong> for the ADC Channel…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
@@ -600,7 +600,7 @@ export APP_NAME=sdk_app_rust_adc
       <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">adc::adc_ctx</span>  <span class="comment">//  To DMA Context Pointer (adc_ctx *)</span>
     <span class="op">&gt;</span>(<span class="ident">ptr</span>)               <span class="comment">//  For this pointer</span>
   };</pre></div>
-<p>(More about <code>transmute</code> in a while)</p>
+<p>(More about <code>transmute</code> in the Appendix)</p>
 <p>Now we may verify the <strong>DMA Context</strong> for the ADC Channel…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
@@ -638,6 +638,7 @@ export APP_NAME=sdk_app_rust_adc
       <span class="ident">adc_data</span>.<span class="ident">len</span>()          <span class="comment">//  Number of Items (each item is uint32 or 4 bytes)</span>
     );    
   }</pre></div>
+<p>(More about this in the Appendix)</p>
 <p>(<code>adc_data.len()</code> returns the array length: 100)</p>
 <p>Then we compute the <strong>average value of the ADC Samples</strong> in <code>adc_data</code>…</p>
 
@@ -1008,6 +1009,7 @@ cargo run flash sdk_app_lora.bin --port COM5
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="comment">//  Call the C function `set_adc_gain`</span>
 <span class="kw">unsafe</span> { <span class="ident">set_adc_gain</span>(<span class="ident">ADC_GAIN1</span>, <span class="ident">ADC_GAIN2</span>) };</pre></div>
+<p>(More about this in the Appendix)</p>
 </li>
 <li>
 <p><strong>Casting C Pointers</strong> to Rust</p>
@@ -1020,6 +1022,7 @@ cargo run flash sdk_app_lora.bin --port COM5
     <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">adc::adc_ctx</span>  <span class="comment">//  To DMA Context Pointer (adc_ctx *)</span>
   <span class="op">&gt;</span>(<span class="ident">ptr</span>)               <span class="comment">//  For this pointer</span>
 };</pre></div>
+<p>(More about this in the Appendix)</p>
 </li>
 <li>
 <p><strong>Dereferencing C Pointers</strong></p>
@@ -1123,24 +1126,11 @@ bl602-sdk = &quot;0.0.6&quot;  # Rust Wrapper for BL602 IoT SDK: https://crates.
 <p>Here’s a sample project that calls the Rust Wrapper for GPIO…</p>
 <p><img src="https://lupyuen.github.io/images/adc-gpio.png" alt="Rust Wrapper for GPIO" /></p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_gpio/rust/src/lib.rs">(Source)</a></p>
-<h1 id="call-c-functions-from-rust" class="section-header"><a href="#call-c-functions-from-rust">9 Call C Functions from Rust</a></h1>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L180-L184"><code>lib.rs</code></a></p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {  <span class="comment">//  Import C Function</span>
-  <span class="doccomment">/// Enable ADC Gain to increase the ADC sensitivity.</span>
-  <span class="doccomment">/// Defined in customer_app/sdk_app_rust_adc/sdk_app_rust_adc/demo.c</span>
-  <span class="kw">fn</span> <span class="ident">set_adc_gain</span>(<span class="ident">gain1</span>: <span class="ident">u32</span>, <span class="ident">gain2</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span>;
-}</pre></div>
-<h1 id="convert-c-pointers-to-rust" class="section-header"><a href="#convert-c-pointers-to-rust">10 Convert C Pointers to Rust</a></h1>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/adc-cast.png" alt="" /></p>
-<h1 id="why-sunlight" class="section-header"><a href="#why-sunlight">11 Why Sunlight?</a></h1>
+<h1 id="why-sunlight" class="section-header"><a href="#why-sunlight">9 Why Sunlight?</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/adc-pinebook.jpg" alt="Testing the improvised Light Sensor on PineCone BL602 with Pinebook Pro" /></p>
 <p><em>Testing the improvised Light Sensor on PineCone BL602 with Pinebook Pro</em></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">12 What’s Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">10 What’s Next</a></h1>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <p>TODO</p>
 <ul>
@@ -1162,7 +1152,7 @@ bl602-sdk = &quot;0.0.6&quot;  # Rust Wrapper for BL602 IoT SDK: https://crates.
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/adc.md"><code>lupyuen.github.io/src/adc.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">13 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">11 Notes</a></h1>
 <ol>
 <li>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1416608940876435462">this Twitter Thread on Rust Wrapper for BL602 IoT SDK</a></p>
@@ -1176,6 +1166,37 @@ bl602-sdk = &quot;0.0.6&quot;  # Rust Wrapper for BL602 IoT SDK: https://crates.
 <p><img src="https://lupyuen.github.io/images/adc-gain.png" alt="Setting the ADC Gain by patching the ADC High Level HAL" /></p>
 </li>
 </ol>
+<h1 id="appendix-call-c-functions-from-rust" class="section-header"><a href="#appendix-call-c-functions-from-rust">12 Appendix: Call C Functions from Rust</a></h1>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L64-L66"><code>lib.rs</code></a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="comment">//  Enable ADC Gain to increase the ADC sensitivity</span>
+<span class="kw">unsafe</span> { <span class="ident">set_adc_gain</span>(<span class="ident">ADC_GAIN1</span>, <span class="ident">ADC_GAIN2</span>) };  <span class="comment">//  Unsafe because we are calling C function</span></pre></div>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L180-L184"><code>lib.rs</code></a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {  <span class="comment">//  Import C Function</span>
+  <span class="doccomment">/// Enable ADC Gain to increase the ADC sensitivity.</span>
+  <span class="doccomment">/// Defined in customer_app/sdk_app_rust_adc/sdk_app_rust_adc/demo.c</span>
+  <span class="kw">fn</span> <span class="ident">set_adc_gain</span>(<span class="ident">gain1</span>: <span class="ident">u32</span>, <span class="ident">gain2</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span>;
+}</pre></div>
+<h1 id="appendix-convert-c-pointers-to-rust" class="section-header"><a href="#appendix-convert-c-pointers-to-rust">13 Appendix: Convert C Pointers to Rust</a></h1>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L119-L129"><code>lib.rs</code></a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="comment">//  Get the C Pointer (void *) for DMA Context</span>
+<span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> ...
+
+<span class="comment">//  Cast the returned C Pointer (void *) to a DMA Context Pointer (adc_ctx *)</span>
+<span class="kw">let</span> <span class="ident">ctx</span> <span class="op">=</span> <span class="kw">unsafe</span> {     <span class="comment">//  Unsafe because we are casting a pointer</span>
+  <span class="ident">transmute</span>::<span class="op">&lt;</span>         <span class="comment">//  Cast the type...</span>
+    <span class="ident">Ptr</span>,               <span class="comment">//  From C Pointer (void *)</span>
+    <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">adc::adc_ctx</span>  <span class="comment">//  To DMA Context Pointer (adc_ctx *)</span>
+  <span class="op">&gt;</span>(<span class="ident">ptr</span>)               <span class="comment">//  For this pointer</span>
+};</pre></div>
+<p><img src="https://lupyuen.github.io/images/adc-cast.png" alt="Casting a C Pointer to a Rust Pointer" /></p>
 <h1 id="appendix-generating-the-rust-wrapper-for-bl602-iot-sdk" class="section-header"><a href="#appendix-generating-the-rust-wrapper-for-bl602-iot-sdk">14 Appendix: Generating the Rust Wrapper for BL602 IoT SDK</a></h1>
 <p>TODO</p>
 <p>TODO2</p>
