@@ -94,13 +94,21 @@
 <li><a href="#inject-the-docs">15.2 Inject the docs</a><ul></ul></li>
 <li><a href="#rename-the-functions">15.3 Rename the functions</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>8 Aug 2021</em></p>
 <p>Today we shall magically transform <a href="https://lupyuen.github.io/articles/pinecone"><strong>any RISC-V BL602 Board</strong></a> into a <strong>Light Sensor!</strong></p>
-<p>We’ll code this firmware in C, then port it to Rust with the <a href="https://crates.io/crates/bl602-sdk"><strong>Rust Wrapper for BL602 IoT SDK</strong></a>.</p>
+<p>We’ll do this two ways…</p>
+<ol>
+<li>
+<p>First we code the firmware in C</p>
+</li>
+<li>
+<p>Then we port the C firmware to Rust with the <a href="https://crates.io/crates/bl602-sdk"><strong>Rust Wrapper for BL602 IoT SDK</strong></a></p>
+</li>
+</ol>
 <p>(New to Rust? No worries we have tips for you!)</p>
 <p><em>Wait… Do all BL602 Boards have an onboard Light Sensor?</em></p>
 <p>Nope, all we need is a <strong>BL602 Board with an LED</strong>!</p>
 <p>Reading the LED with BL602’s <strong>Analog-to-Digital Converter (ADC)</strong> will turn it into a simple, improvised Light Sensor.</p>
 <p><em>Amazing! Will this work with any BL602 Board?</em></p>
-<p>I tested this with <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602</strong></a> and its onboard LED.</p>
+<p>We have tested this with <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602</strong></a> and its onboard LED.</p>
 <p>It will probably work with any BL602 / BL604 Board with an <strong>onboard or external LED:</strong> PineDio Stack, Pinenut, DT-BL10, MagicHome BL602, …</p>
 <p><em>Will our Light Sensor detect any kind of light?</em></p>
 <p>Our LED-turned-Light-Sensor works best for <strong>detecting sunlight</strong>… We’ll learn why in a while.</p>
@@ -1197,6 +1205,9 @@ bl602-sdk = &quot;0.0.6&quot;  # Rust Wrapper for BL602 IoT SDK: https://crates.
 <p><a href="https://mabez.dev/blog/posts/esp-rust-espressif/">More about this</a></p>
 </li>
 </ul>
+</li>
+<li>
+<p>This article was inspired by the BBC micro:bit, which uses LED as a Light Sensor. <a href="https://learn.adafruit.com/micro-bit-lesson-4-sensing-light-and-temperature/built-in-light-sensor">(See this)</a></p>
 </li>
 </ol>
 <h1 id="appendix-call-c-functions-from-rust" class="section-header"><a href="#appendix-call-c-functions-from-rust">12 Appendix: Call C Functions from Rust</a></h1>
