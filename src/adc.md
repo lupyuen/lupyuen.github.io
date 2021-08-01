@@ -1326,15 +1326,27 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     And [this Twitter Thread on BL602 ADC](https://twitter.com/MisterTechBlog/status/1418025678251773954)
 
-1.  ADC High Level HAL
+1.  Is there a simpler way to write ADC Firmware in C?
 
-    TODO
+    Yes, we could call the __ADC High Level HAL__ (instead of the ADC Low Level HAL that we've seen).
+
+    Here's our ADC Firmware, rewritten to call the ADC High Level HAL...
 
     ![BL602 ADC High Level HAL](https://lupyuen.github.io/images/adc-highlevel.png)
 
-    TODO18
+    [(Source)](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc/sdk_app_adc/demo.c)
+
+    But the ADC High Level HAL won't let us set the __ADC Gain__.
+
+    We need to __patch the ADC Low Level HAL__ like so...
 
     ![Setting the ADC Gain by patching the ADC High Level HAL](https://lupyuen.github.io/images/adc-gain.png)
+
+    [(Source)](https://github.com/lupyuen/bl_iot_sdk/blob/adc/components/hal_drv/bl602_hal/bl_adc.c#L339-L389)
+
+    Also note that the ADC High Level HAL doesn't allow us to compute the __average of the ADC Samples__.
+
+    It returns only one ADC Sample.
 
 1.  ESP32 has something similar to the BL602 Rust Wrapper...
 
