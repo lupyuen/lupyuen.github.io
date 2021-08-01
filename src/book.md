@@ -52,6 +52,8 @@ How to create a simple __Blinky Project__ for BL602 and BL604.
 
 -   ["How To Create BL602 Libraries"](https://lupyuen.github.io/articles/lora2#appendix-how-to-create-bl602-libraries)
 
+-   ["Create a BL602 Rust Project"](https://lupyuen.github.io/articles/adc#create-a-bl602-rust-project)
+
 ![GPIO on BL602](https://lupyuen.github.io/images/book-led.jpg)
 
 # GPIO on BL602
@@ -118,13 +120,7 @@ How we read __Analog Inputs with ADC__ on BL602 and BL604.
 
 -   ["BL602 ADC in C"](https://lupyuen.github.io/articles/adc#bl602-adc-in-c)
 
--   [Read LED via ADC High Level HAL (as Light Sensor)](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc/sdk_app_adc/demo.c)
-
--   [Read LED via ADC Low Level HAL](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c)
-
-    [(See the Twitter Thread)](https://twitter.com/MisterTechBlog/status/1418025678251773954)
-
--   [Read BL602 Internal Temperature Sensor via ADC Low Level HAL](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_adc.c#L224-L282)
+-   ["BL602 Internal Temperature Sensor"](https://lupyuen.github.io/articles/adc#notes)
 
 ![WiFi on BL602](https://lupyuen.github.io/images/book-wifi.jpg)
 

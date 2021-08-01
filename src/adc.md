@@ -329,6 +329,8 @@ Watch what happens when we __flash and run__ the C Firmware for BL602 ADC: [`sdk
 
     Yep our improvised BL602 Light Sensor works!
 
+![Setting the ADC Gain](https://lupyuen.github.io/images/adc-gain2.png)
+
 ## Set the ADC Gain
 
 Let's chat about __ADC Gain__, which we used when reading the LED as a Light Sensor. 
@@ -1240,7 +1242,7 @@ So it's perfectly OK to use Static Variables in Rust. Just that we need to...
 
 # Rust Wrapper for BL602 IoT SDK
 
-_The Rust Functions for BL602 look mighty similar to the C Functions from the BL602 IoT SDK. How is this possible?_
+_The BL602 Rust Wrapper Functions look mighty similar to the C Functions from the BL602 IoT SDK. How is this possible?_
 
 Because the Rust Functions were __automatically generated from BL602 IoT SDK!__
 
@@ -1326,7 +1328,11 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     And [this Twitter Thread on BL602 ADC](https://twitter.com/MisterTechBlog/status/1418025678251773954)
 
-1.  Is there a simpler way to write ADC Firmware in C?
+1.  We may also use BL602 ADC HAL to read the BL602 Internal Temperature Sensor...
+
+    -   [Read BL602 Internal Temperature Sensor via ADC Low Level HAL](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_adc.c#L224-L282)
+
+1.  Is there a simpler way to code ADC Firmware in C?
 
     Yes, we could call the __ADC High Level HAL__ (instead of the ADC Low Level HAL that we've seen).
 
@@ -1397,6 +1403,12 @@ let ctx = unsafe {     //  Unsafe because we are casting a pointer
 ```
 
 ![Casting a C Pointer to a Rust Pointer](https://lupyuen.github.io/images/adc-cast.png)
+
+# Appendix: Copy Memory with C Pointers
+
+TODO
+
+![Copy ADC data in Rust](https://lupyuen.github.io/images/adc-copy.png)
 
 # Appendix: Generating the Rust Wrapper for BL602 IoT SDK
 
@@ -1588,25 +1600,8 @@ And the links to "The RISC-V BL602 Book" will magically appear in the Rust Docs!
 
 ## Rename the functions
 
-TODO23
+TODO
 
-![](https://lupyuen.github.io/images/adc-prefix.png)
-
-TODO29
-
-![](https://lupyuen.github.io/images/adc-rustwrapper.png)
+![Renaming the Rust Functions](https://lupyuen.github.io/images/adc-prefix.png)
 
 ![Testing the improvised Light Sensor on PineCone BL602](https://lupyuen.github.io/images/adc-title2.jpg)
-
-TODO4
-
-![Copy ADC data in Rust](https://lupyuen.github.io/images/adc-copy.png)
-
-TODO20
-
-![](https://lupyuen.github.io/images/adc-gain2.png)
-
-TODO22
-
-![](https://lupyuen.github.io/images/adc-hal.png)
-
