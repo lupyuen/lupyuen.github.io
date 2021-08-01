@@ -88,10 +88,11 @@
 <li><a href="#notes">11 Notes</a><ul></ul></li>
 <li><a href="#appendix-call-c-functions-from-rust">12 Appendix: Call C Functions from Rust</a><ul></ul></li>
 <li><a href="#appendix-convert-c-pointers-to-rust">13 Appendix: Convert C Pointers to Rust</a><ul></ul></li>
-<li><a href="#appendix-generating-the-rust-wrapper-for-bl602-iot-sdk">14 Appendix: Generating the Rust Wrapper for BL602 IoT SDK</a><ul>
-<li><a href="#how-it-works">14.1 How it works</a><ul></ul></li>
-<li><a href="#inject-the-docs">14.2 Inject the docs</a><ul></ul></li>
-<li><a href="#rename-the-functions">14.3 Rename the functions</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>8 Aug 2021</em></p>
+<li><a href="#appendix-copy-memory-with-c-pointers">14 Appendix: Copy Memory with C Pointers</a><ul></ul></li>
+<li><a href="#appendix-generating-the-rust-wrapper-for-bl602-iot-sdk">15 Appendix: Generating the Rust Wrapper for BL602 IoT SDK</a><ul>
+<li><a href="#how-it-works">15.1 How it works</a><ul></ul></li>
+<li><a href="#inject-the-docs">15.2 Inject the docs</a><ul></ul></li>
+<li><a href="#rename-the-functions">15.3 Rename the functions</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>8 Aug 2021</em></p>
 <p>Today we shall magically transform <a href="https://lupyuen.github.io/articles/pinecone"><strong>any RISC-V BL602 Board</strong></a> into a <strong>Light Sensor!</strong></p>
 <p>We’ll code this firmware in C, then port it to Rust with the <a href="https://crates.io/crates/bl602-sdk"><strong>Rust Wrapper for BL602 IoT SDK</strong></a>.</p>
 <p>(New to Rust? No worries we have tips for you!)</p>
@@ -328,6 +329,7 @@ Average: 1416
 <p>Yep our improvised BL602 Light Sensor works!</p>
 </li>
 </ol>
+<p><img src="https://lupyuen.github.io/images/adc-gain2.png" alt="Setting the ADC Gain" /></p>
 <h2 id="set-the-adc-gain" class="section-header"><a href="#set-the-adc-gain">1.5 Set the ADC Gain</a></h2>
 <p>Let’s chat about <strong>ADC Gain</strong>, which we used when reading the LED as a Light Sensor. </p>
 <p>(ADC Gain probably won’t be needed for reading most types of ADC Inputs)</p>
@@ -1098,7 +1100,7 @@ cargo run flash sdk_app_lora.bin --port COM5
 </ol>
 <p><img src="https://lupyuen.github.io/images/adc-crate.png" alt="Rust Wrapper for BL602 IoT SDK" /></p>
 <h1 id="rust-wrapper-for-bl602-iot-sdk" class="section-header"><a href="#rust-wrapper-for-bl602-iot-sdk">8 Rust Wrapper for BL602 IoT SDK</a></h1>
-<p><em>The Rust Functions for BL602 look mighty similar to the C Functions from the BL602 IoT SDK. How is this possible?</em></p>
+<p><em>The BL602 Rust Wrapper Functions look mighty similar to the C Functions from the BL602 IoT SDK. How is this possible?</em></p>
 <p>Because the Rust Functions were <strong>automatically generated from BL602 IoT SDK!</strong></p>
 <p>We ran a script to generate the <strong>Rust Wrapper for BL602 IoT SDK</strong>.</p>
 <p>And we published the Rust Wrapper on <strong><code>crates.io</code></strong>…</p>
@@ -1164,7 +1166,13 @@ bl602-sdk = &quot;0.0.6&quot;  # Rust Wrapper for BL602 IoT SDK: https://crates.
 <p>And <a href="https://twitter.com/MisterTechBlog/status/1418025678251773954">this Twitter Thread on BL602 ADC</a></p>
 </li>
 <li>
-<p>Is there a simpler way to write ADC Firmware in C?</p>
+<p>We may also use BL602 ADC HAL to read the BL602 Internal Temperature Sensor…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_adc.c#L224-L282">Read BL602 Internal Temperature Sensor via ADC Low Level HAL</a></li>
+</ul>
+</li>
+<li>
+<p>Is there a simpler way to code ADC Firmware in C?</p>
 <p>Yes, we could call the <strong>ADC High Level HAL</strong> (instead of the ADC Low Level HAL that we’ve seen).</p>
 <p>Here’s our ADC Firmware, rewritten to call the ADC High Level HAL…</p>
 <p><img src="https://lupyuen.github.io/images/adc-highlevel.png" alt="BL602 ADC High Level HAL" /></p>
@@ -1222,7 +1230,10 @@ bl602-sdk = &quot;0.0.6&quot;  # Rust Wrapper for BL602 IoT SDK: https://crates.
   <span class="op">&gt;</span>(<span class="ident">ptr</span>)               <span class="comment">//  For this pointer</span>
 };</pre></div>
 <p><img src="https://lupyuen.github.io/images/adc-cast.png" alt="Casting a C Pointer to a Rust Pointer" /></p>
-<h1 id="appendix-generating-the-rust-wrapper-for-bl602-iot-sdk" class="section-header"><a href="#appendix-generating-the-rust-wrapper-for-bl602-iot-sdk">14 Appendix: Generating the Rust Wrapper for BL602 IoT SDK</a></h1>
+<h1 id="appendix-copy-memory-with-c-pointers" class="section-header"><a href="#appendix-copy-memory-with-c-pointers">14 Appendix: Copy Memory with C Pointers</a></h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/adc-copy.png" alt="Copy ADC data in Rust" /></p>
+<h1 id="appendix-generating-the-rust-wrapper-for-bl602-iot-sdk" class="section-header"><a href="#appendix-generating-the-rust-wrapper-for-bl602-iot-sdk">15 Appendix: Generating the Rust Wrapper for BL602 IoT SDK</a></h1>
 <p><em>How was the BL602 Rust Wrapper generated for publishing on <a href="https://crates.io/crates/bl602-sdk"><code>crates.io</code></a>?</em></p>
 <p>Two tools were used to generate the <strong>Rust Wrapper for BL602 IoT SDK</strong>…</p>
 <ol>
@@ -1252,7 +1263,7 @@ scripts/gen-bindings.sh
 scripts/build.sh
 </code></pre>
 <p><img src="https://lupyuen.github.io/images/adc-bindgen.png" alt="BL602 Rust Wrapper generated by bindgen and safe_wrap" /></p>
-<h2 id="how-it-works" class="section-header"><a href="#how-it-works">14.1 How it works</a></h2>
+<h2 id="how-it-works" class="section-header"><a href="#how-it-works">15.1 How it works</a></h2>
 <p>This script…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/bl602-rust-wrapper/blob/master/scripts/gen-bindings.sh"><code>scripts/gen-bindings.sh</code></a></li>
@@ -1340,7 +1351,7 @@ int bl_gpio_output_set(uint8_t pin, uint8_t value);
 </ul>
 <p><a href="https://github.com/lupyuen/bl602-rust-wrapper/blob/master/README.md#build-log">See the build log</a></p>
 <p><img src="https://lupyuen.github.io/images/adc-doc2.png" alt="BL602 Rust Wrapper Documentation" /></p>
-<h2 id="inject-the-docs" class="section-header"><a href="#inject-the-docs">14.2 Inject the docs</a></h2>
+<h2 id="inject-the-docs" class="section-header"><a href="#inject-the-docs">15.2 Inject the docs</a></h2>
 <p><em>How did we create the docs for BL602 Rust Wrapper? (Pic above)</em></p>
 <ul>
 <li><a href="https://docs.rs/bl602-sdk"><strong>Documentation for BL602 Rust Wrapper</strong></a></li>
@@ -1377,18 +1388,10 @@ int bl_gpio_output_set(uint8_t pin, uint8_t value);
 <ul>
 <li><a href="https://docs.rs/bl602-sdk"><strong>Documentation for BL602 Rust Wrapper</strong></a></li>
 </ul>
-<h2 id="rename-the-functions" class="section-header"><a href="#rename-the-functions">14.3 Rename the functions</a></h2>
-<p>TODO23</p>
-<p><img src="https://lupyuen.github.io/images/adc-prefix.png" alt="" /></p>
-<p>TODO29</p>
-<p><img src="https://lupyuen.github.io/images/adc-rustwrapper.png" alt="" /></p>
+<h2 id="rename-the-functions" class="section-header"><a href="#rename-the-functions">15.3 Rename the functions</a></h2>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/adc-prefix.png" alt="Renaming the Rust Functions" /></p>
 <p><img src="https://lupyuen.github.io/images/adc-title2.jpg" alt="Testing the improvised Light Sensor on PineCone BL602" /></p>
-<p>TODO4</p>
-<p><img src="https://lupyuen.github.io/images/adc-copy.png" alt="Copy ADC data in Rust" /></p>
-<p>TODO20</p>
-<p><img src="https://lupyuen.github.io/images/adc-gain2.png" alt="" /></p>
-<p>TODO22</p>
-<p><img src="https://lupyuen.github.io/images/adc-hal.png" alt="" /></p>
 
     
 </body>
