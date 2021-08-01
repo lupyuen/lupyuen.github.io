@@ -1302,10 +1302,6 @@ Here's a sample project that calls the Rust Wrapper for GPIO...
 
 [(Source)](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_gpio/rust/src/lib.rs)
 
-# Why Sunlight?
-
-TODO
-
 ![Testing the improvised Light Sensor on PineCone BL602 with Pinebook Pro](https://lupyuen.github.io/images/adc-pinebook.jpg)
 
 _Testing the improvised Light Sensor on PineCone BL602 with Pinebook Pro_
@@ -1377,6 +1373,10 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
     -   [More about this](https://mabez.dev/blog/posts/esp-rust-espressif/)
 
 1.  This article was inspired by the __BBC micro:bit__, which uses LED as a Light Sensor. [(See this)](https://learn.adafruit.com/micro-bit-lesson-4-sensing-light-and-temperature/built-in-light-sensor)
+
+# Appendix: Why Sunlight?
+
+TODO
 
 # Appendix: Call C Functions from Rust
 
@@ -1665,6 +1665,8 @@ And here's the Rust Wrapper function shortened by `safe_wrap`...
 ```text
 gpio::enable_output
 ```
+
+`transform_function_name` contains the code that renames the functions: [`safe_wrap.rs`](https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-macros/src/safe_wrap.rs#L476-L530)
 
 ![Testing the improvised Light Sensor on PineCone BL602](https://lupyuen.github.io/images/adc-title2.jpg)
 
