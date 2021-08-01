@@ -100,10 +100,11 @@
 <p>First we code the firmware in C</p>
 </li>
 <li>
-<p>Then we port the C firmware to Rust with the <a href="https://crates.io/crates/bl602-sdk"><strong>Rust Wrapper for BL602 IoT SDK</strong></a></p>
+<p>Then we port the C firmware to Rust with the…</p>
+<p><a href="https://crates.io/crates/bl602-sdk"><strong>Rust Wrapper for BL602 IoT SDK</strong></a></p>
+<p>(New to Rust? No worries we have tips for you!)</p>
 </li>
 </ol>
-<p>(New to Rust? No worries we have tips for you!)</p>
 <p><em>Wait… Do all BL602 Boards have an onboard Light Sensor?</em></p>
 <p>Nope, all we need is a <strong>BL602 Board with an LED</strong>!</p>
 <p>Reading the LED with BL602’s <strong>Analog-to-Digital Converter (ADC)</strong> will turn it into a simple, improvised Light Sensor.</p>
@@ -1358,9 +1359,17 @@ int bl_gpio_output_set(uint8_t pin, uint8_t value);
 <p>Which enables the caller to check for errors with <strong><code>expect</code></strong>.</p>
 <p>We build the docs and the test project with this script…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/bl602-rust-wrapper/blob/master/scripts/build.sh"><code>scripts/build.sh</code></a></li>
-</ul>
+<li>
+<p><a href="https://github.com/lupyuen/bl602-rust-wrapper/blob/master/scripts/build.sh"><code>scripts/build.sh</code></a></p>
+</li>
+<li>
 <p><a href="https://github.com/lupyuen/bl602-rust-wrapper/blob/master/README.md#build-log">See the build log</a></p>
+</li>
+</ul>
+<p>In the previous article we attempted to code the BL602 Rust Wrapper by hand…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/rust"><strong>“Run Rust RISC-V Firmware with BL602 IoT SDK”</strong></a></li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/adc-doc2.png" alt="BL602 Rust Wrapper Documentation" /></p>
 <h2 id="inject-the-docs" class="section-header"><a href="#inject-the-docs">15.2 Inject the docs</a></h2>
 <p><em>How did we create the docs for BL602 Rust Wrapper? (Pic above)</em></p>
