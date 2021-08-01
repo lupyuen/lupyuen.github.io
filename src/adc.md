@@ -4,7 +4,11 @@
 
 Today we shall magically transform [__any RISC-V BL602 Board__](https://lupyuen.github.io/articles/pinecone) into a __Light Sensor!__
 
-We'll code this firmware in C, then port it to Rust with the [__Rust Wrapper for BL602 IoT SDK__](https://crates.io/crates/bl602-sdk).
+We'll do this two ways...
+
+1.  First we code the firmware in C
+
+1.  Then we port the C firmware to Rust with the [__Rust Wrapper for BL602 IoT SDK__](https://crates.io/crates/bl602-sdk)
 
 (New to Rust? No worries we have tips for you!)
 
@@ -16,7 +20,7 @@ Reading the LED with BL602's __Analog-to-Digital Converter (ADC)__ will turn it 
 
 _Amazing! Will this work with any BL602 Board?_
 
-I tested this with [__PineCone BL602__](https://lupyuen.github.io/articles/pinecone) and its onboard LED.
+We have tested this with [__PineCone BL602__](https://lupyuen.github.io/articles/pinecone) and its onboard LED.
 
 It will probably work with any BL602 / BL604 Board with an __onboard or external LED:__ PineDio Stack, Pinenut, DT-BL10, MagicHome BL602, ...
 
@@ -1361,6 +1365,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
     -   [`esp-idf-hal`](https://github.com/esp-rs/esp-idf-hal) wraps `esp-idf-sys` into a Rust Embedded HAL for ESP32
 
     -   [More about this](https://mabez.dev/blog/posts/esp-rust-espressif/)
+
+1.  This article was inspired by the BBC micro:bit, which uses LED as a Light Sensor. [(See this)](https://learn.adafruit.com/micro-bit-lesson-4-sensing-light-and-temperature/built-in-light-sensor)
 
 # Appendix: Call C Functions from Rust
 
