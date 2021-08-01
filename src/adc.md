@@ -8,9 +8,11 @@ We'll do this two ways...
 
 1.  First we code the firmware in C
 
-1.  Then we port the C firmware to Rust with the [__Rust Wrapper for BL602 IoT SDK__](https://crates.io/crates/bl602-sdk)
+1.  Then we port the C firmware to Rust with the...
 
-(New to Rust? No worries we have tips for you!)
+    [__Rust Wrapper for BL602 IoT SDK__](https://crates.io/crates/bl602-sdk)
+
+    (New to Rust? No worries we have tips for you!)
 
 _Wait... Do all BL602 Boards have an onboard Light Sensor?_
 
@@ -1548,7 +1550,11 @@ We build the docs and the test project with this script...
 
 -   [`scripts/build.sh`](https://github.com/lupyuen/bl602-rust-wrapper/blob/master/scripts/build.sh)
 
-[See the build log](https://github.com/lupyuen/bl602-rust-wrapper/blob/master/README.md#build-log)
+-   [See the build log](https://github.com/lupyuen/bl602-rust-wrapper/blob/master/README.md#build-log)
+
+In the previous article we attempted to code the BL602 Rust Wrapper by hand...
+
+-   [__"Run Rust RISC-V Firmware with BL602 IoT SDK"__](https://lupyuen.github.io/articles/rust)
 
 ![BL602 Rust Wrapper Documentation](https://lupyuen.github.io/images/adc-doc2.png)
 
