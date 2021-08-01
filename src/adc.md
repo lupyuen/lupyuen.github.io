@@ -1185,6 +1185,8 @@ That's why we need to flag the following code as __`unsafe`__...
     }
     ```
 
+    (More about this in the Appendix)
+
 Accessing __Static Variables__ is also "`unsafe`". Let's talk about this...
 
 ## Static Variables in Rust
@@ -1334,15 +1336,21 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     And [this Twitter Thread on BL602 ADC](https://twitter.com/MisterTechBlog/status/1418025678251773954)
 
-1.  We may also use BL602 ADC HAL to read the BL602 Internal Temperature Sensor...
+1.  Are there other ways to run __Rust Firmware on BL602__? See this...
+
+    [__"Rust On BL602: Two More Ways"__](https://lupyuen.github.io/articles/rust#rust-on-bl602-two-more-ways)
+
+1.  We may also use BL602 ADC HAL to read the __BL602 Internal Temperature Sensor__...
 
     -   [Read BL602 Internal Temperature Sensor via ADC Low Level HAL](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_adc.c#L224-L282)
 
-1.  Is there a simpler way to code ADC Firmware in C?
+1.  Is there a __simpler way to code ADC Firmware__ in C?
 
-    Yes, we could call the __ADC High Level HAL__ (instead of the ADC Low Level HAL that we've seen).
+    Yes, we could call the __ADC High Level HAL__.
+    
+    (Instead of the ADC Low Level HAL that we've seen)
 
-    Here's our ADC Firmware, rewritten to call the ADC High Level HAL...
+    Here's our ADC Firmware, rewritten to call the __ADC High Level HAL__...
 
     ![BL602 ADC High Level HAL](https://lupyuen.github.io/images/adc-highlevel.png)
 
@@ -1368,7 +1376,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     -   [More about this](https://mabez.dev/blog/posts/esp-rust-espressif/)
 
-1.  This article was inspired by the BBC micro:bit, which uses LED as a Light Sensor. [(See this)](https://learn.adafruit.com/micro-bit-lesson-4-sensing-light-and-temperature/built-in-light-sensor)
+1.  This article was inspired by the __BBC micro:bit__, which uses LED as a Light Sensor. [(See this)](https://learn.adafruit.com/micro-bit-lesson-4-sensing-light-and-temperature/built-in-light-sensor)
 
 # Appendix: Call C Functions from Rust
 
@@ -1415,6 +1423,36 @@ let ctx = unsafe {     //  Unsafe because we are casting a pointer
 # Appendix: Copy Memory with C Pointers
 
 TODO
+
+```rust
+//  Array that will store the last 100 ADC Samples
+//  (`ADC_SAMPLES` is 100)
+let mut adc_data: [u32; ADC_SAMPLES]
+  = [0; ADC_SAMPLES];  //  Init array to 100 zeroes
+
+//  Copy the read ADC Samples to the array
+unsafe {                    //  Unsafe because we are copying raw memory
+  core::ptr::copy(          //  Copy the memory...
+    (*ctx).channel_data,    //  From Source (ADC DMA data)
+    adc_data.as_mut_ptr(),  //  To Destination (mutable pointer to adc_data)
+    adc_data.len()          //  Number of Items (each item is uint32 or 4 bytes)
+  );    
+}
+```
+
+This Rust code is equivalent to the following C code...
+
+```c
+//  Array that will store ADC Samples
+uint32_t adc_data[ADC_SAMPLES];
+
+//  Copy the read ADC Samples to the static array
+memcpy(
+  (uint8_t*) adc_data,             //  Destination
+  (uint8_t*) (ctx->channel_data),  //  Source
+  sizeof(adc_data)                 //  Size
+);  
+```
 
 ![Copy ADC data in Rust](https://lupyuen.github.io/images/adc-copy.png)
 
@@ -1610,10 +1648,24 @@ And the links to "The RISC-V BL602 Book" will magically appear in the Rust Docs!
 
 -   [__Documentation for BL602 Rust Wrapper__](https://docs.rs/bl602-sdk)
 
-## Rename the functions
-
-TODO
-
 ![Renaming the Rust Functions](https://lupyuen.github.io/images/adc-prefix.png)
 
+## Rename the functions
+
+The `safe_wrap` macro also __shortens the names__ of the Rust Wrapper Functions.
+
+Here's the original function from the BL602 IoT SDK...
+
+```text
+bl_gpio_enable_output
+```
+
+And here's the Rust Wrapper function shortened by `safe_wrap`...
+
+```text
+gpio::enable_output
+```
+
 ![Testing the improvised Light Sensor on PineCone BL602](https://lupyuen.github.io/images/adc-title2.jpg)
+
+_Testing the improvised Light Sensor on PineCone BL602_
