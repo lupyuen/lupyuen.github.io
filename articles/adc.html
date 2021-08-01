@@ -1061,6 +1061,7 @@ cargo run flash sdk_app_lora.bin --port COM5
     <span class="ident">adc_data</span>.<span class="ident">len</span>()          <span class="comment">//  Number of Items (each item is uint32 or 4 bytes)</span>
   );    
 }</pre></div>
+<p>(More about this in the Appendix)</p>
 </li>
 </ol>
 <p>Accessing <strong>Static Variables</strong> is also “<code>unsafe</code>”. Let’s talk about this…</p>
@@ -1175,15 +1176,20 @@ bl602-sdk = &quot;0.0.6&quot;  # Rust Wrapper for BL602 IoT SDK: https://crates.
 <p>And <a href="https://twitter.com/MisterTechBlog/status/1418025678251773954">this Twitter Thread on BL602 ADC</a></p>
 </li>
 <li>
-<p>We may also use BL602 ADC HAL to read the BL602 Internal Temperature Sensor…</p>
+<p>Are there other ways to run <strong>Rust Firmware on BL602</strong>? See this…</p>
+<p><a href="https://lupyuen.github.io/articles/rust#rust-on-bl602-two-more-ways"><strong>“Rust On BL602: Two More Ways”</strong></a></p>
+</li>
+<li>
+<p>We may also use BL602 ADC HAL to read the <strong>BL602 Internal Temperature Sensor</strong>…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_adc.c#L224-L282">Read BL602 Internal Temperature Sensor via ADC Low Level HAL</a></li>
 </ul>
 </li>
 <li>
-<p>Is there a simpler way to code ADC Firmware in C?</p>
-<p>Yes, we could call the <strong>ADC High Level HAL</strong> (instead of the ADC Low Level HAL that we’ve seen).</p>
-<p>Here’s our ADC Firmware, rewritten to call the ADC High Level HAL…</p>
+<p>Is there a <strong>simpler way to code ADC Firmware</strong> in C?</p>
+<p>Yes, we could call the <strong>ADC High Level HAL</strong>.</p>
+<p>(Instead of the ADC Low Level HAL that we’ve seen)</p>
+<p>Here’s our ADC Firmware, rewritten to call the <strong>ADC High Level HAL</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/adc-highlevel.png" alt="BL602 ADC High Level HAL" /></p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc/sdk_app_adc/demo.c">(Source)</a></p>
 <p>But the ADC High Level HAL won’t let us set the <strong>ADC Gain</strong>.</p>
@@ -1208,7 +1214,7 @@ bl602-sdk = &quot;0.0.6&quot;  # Rust Wrapper for BL602 IoT SDK: https://crates.
 </ul>
 </li>
 <li>
-<p>This article was inspired by the BBC micro:bit, which uses LED as a Light Sensor. <a href="https://learn.adafruit.com/micro-bit-lesson-4-sensing-light-and-temperature/built-in-light-sensor">(See this)</a></p>
+<p>This article was inspired by the <strong>BBC micro:bit</strong>, which uses LED as a Light Sensor. <a href="https://learn.adafruit.com/micro-bit-lesson-4-sensing-light-and-temperature/built-in-light-sensor">(See this)</a></p>
 </li>
 </ol>
 <h1 id="appendix-call-c-functions-from-rust" class="section-header"><a href="#appendix-call-c-functions-from-rust">12 Appendix: Call C Functions from Rust</a></h1>
@@ -1244,6 +1250,32 @@ bl602-sdk = &quot;0.0.6&quot;  # Rust Wrapper for BL602 IoT SDK: https://crates.
 <p><img src="https://lupyuen.github.io/images/adc-cast.png" alt="Casting a C Pointer to a Rust Pointer" /></p>
 <h1 id="appendix-copy-memory-with-c-pointers" class="section-header"><a href="#appendix-copy-memory-with-c-pointers">14 Appendix: Copy Memory with C Pointers</a></h1>
 <p>TODO</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="comment">//  Array that will store the last 100 ADC Samples</span>
+<span class="comment">//  (`ADC_SAMPLES` is 100)</span>
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">adc_data</span>: [<span class="ident">u32</span>; <span class="ident">ADC_SAMPLES</span>]
+  <span class="op">=</span> [<span class="number">0</span>; <span class="ident">ADC_SAMPLES</span>];  <span class="comment">//  Init array to 100 zeroes</span>
+
+<span class="comment">//  Copy the read ADC Samples to the array</span>
+<span class="kw">unsafe</span> {                    <span class="comment">//  Unsafe because we are copying raw memory</span>
+  <span class="ident">core::ptr::copy</span>(          <span class="comment">//  Copy the memory...</span>
+    (<span class="kw-2">*</span><span class="ident">ctx</span>).<span class="ident">channel_data</span>,    <span class="comment">//  From Source (ADC DMA data)</span>
+    <span class="ident">adc_data</span>.<span class="ident">as_mut_ptr</span>(),  <span class="comment">//  To Destination (mutable pointer to adc_data)</span>
+    <span class="ident">adc_data</span>.<span class="ident">len</span>()          <span class="comment">//  Number of Items (each item is uint32 or 4 bytes)</span>
+  );    
+}</pre></div>
+<p>This Rust code is equivalent to the following C code…</p>
+<pre><code class="language-c">//  Array that will store ADC Samples
+uint32_t adc_data[ADC_SAMPLES];
+
+//  Copy the read ADC Samples to the static array
+memcpy(
+  (uint8_t*) adc_data,             //  Destination
+  (uint8_t*) (ctx-&gt;channel_data),  //  Source
+  sizeof(adc_data)                 //  Size
+);  
+</code></pre>
 <p><img src="https://lupyuen.github.io/images/adc-copy.png" alt="Copy ADC data in Rust" /></p>
 <h1 id="appendix-generating-the-rust-wrapper-for-bl602-iot-sdk" class="section-header"><a href="#appendix-generating-the-rust-wrapper-for-bl602-iot-sdk">15 Appendix: Generating the Rust Wrapper for BL602 IoT SDK</a></h1>
 <p><em>How was the BL602 Rust Wrapper generated for publishing on <a href="https://crates.io/crates/bl602-sdk"><code>crates.io</code></a>?</em></p>
@@ -1408,10 +1440,17 @@ int bl_gpio_output_set(uint8_t pin, uint8_t value);
 <ul>
 <li><a href="https://docs.rs/bl602-sdk"><strong>Documentation for BL602 Rust Wrapper</strong></a></li>
 </ul>
-<h2 id="rename-the-functions" class="section-header"><a href="#rename-the-functions">15.3 Rename the functions</a></h2>
-<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/adc-prefix.png" alt="Renaming the Rust Functions" /></p>
+<h2 id="rename-the-functions" class="section-header"><a href="#rename-the-functions">15.3 Rename the functions</a></h2>
+<p>The <code>safe_wrap</code> macro also <strong>shortens the names</strong> of the Rust Wrapper Functions.</p>
+<p>Here’s the original function from the BL602 IoT SDK…</p>
+<pre><code class="language-text">bl_gpio_enable_output
+</code></pre>
+<p>And here’s the Rust Wrapper function shortened by <code>safe_wrap</code>…</p>
+<pre><code class="language-text">gpio::enable_output
+</code></pre>
 <p><img src="https://lupyuen.github.io/images/adc-title2.jpg" alt="Testing the improvised Light Sensor on PineCone BL602" /></p>
+<p><em>Testing the improvised Light Sensor on PineCone BL602</em></p>
 
     
 </body>
