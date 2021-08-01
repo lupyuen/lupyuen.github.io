@@ -1164,11 +1164,17 @@ bl602-sdk = &quot;0.0.6&quot;  # Rust Wrapper for BL602 IoT SDK: https://crates.
 <p>And <a href="https://twitter.com/MisterTechBlog/status/1418025678251773954">this Twitter Thread on BL602 ADC</a></p>
 </li>
 <li>
-<p>ADC High Level HAL</p>
-<p>TODO</p>
+<p>Is there a simpler way to write ADC Firmware in C?</p>
+<p>Yes, we could call the <strong>ADC High Level HAL</strong> (instead of the ADC Low Level HAL that we’ve seen).</p>
+<p>Here’s our ADC Firmware, rewritten to call the ADC High Level HAL…</p>
 <p><img src="https://lupyuen.github.io/images/adc-highlevel.png" alt="BL602 ADC High Level HAL" /></p>
-<p>TODO18</p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc/sdk_app_adc/demo.c">(Source)</a></p>
+<p>But the ADC High Level HAL won’t let us set the <strong>ADC Gain</strong>.</p>
+<p>We need to <strong>patch the ADC Low Level HAL</strong> like so…</p>
 <p><img src="https://lupyuen.github.io/images/adc-gain.png" alt="Setting the ADC Gain by patching the ADC High Level HAL" /></p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/components/hal_drv/bl602_hal/bl_adc.c#L339-L389">(Source)</a></p>
+<p>Also note that the ADC High Level HAL doesn’t allow us to compute the <strong>average of the ADC Samples</strong>.</p>
+<p>It returns only one ADC Sample.</p>
 </li>
 <li>
 <p>ESP32 has something similar to the BL602 Rust Wrapper…</p>
