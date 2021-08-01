@@ -1522,11 +1522,17 @@ We build the docs and the test project with this script...
 
 ![BL602 Rust Wrapper Documentation](https://lupyuen.github.io/images/adc-doc2.png)
 
-## Injecting the docs
+## Inject the docs
 
-TODO
+_How did we create the docs for BL602 Rust Wrapper? (Pic above)_
 
 -   [__Documentation for BL602 Rust Wrapper__](https://docs.rs/bl602-sdk)
+
+Sadly BL602 IoT SDK doesn't have much documentation... But much of the SDK is already documented in [__"The RISC-V BL602 Book"__](https://lupyuen.github.io/articles/book)!
+
+So we linked each Rust Wrapper Function to the relevant section in "The RISC-V BL602 Book".
+
+We do this through the __Rust `doc` Attribute__...
 
 ```rust
 //  Expanded version of `safe_wrap` macros for the GPIO Rust Bindings
@@ -1537,7 +1543,11 @@ pub fn enable_output(pin: u8, pullup: u8, pulldown: u8) { ...
 pub fn output_set(pin: u8, value: u8) -> BlResult<()> { ...
 ```
 
-Links to ["The RISC-V BL602 Book"](https://lupyuen.github.io/articles/book) are defined here...
+![Documentation links to be injected](https://lupyuen.github.io/images/adc-doclink.png)
+
+_How did we inject the doc links into the `doc` Attribute?_
+
+For each Rust Wrapper Function, the links to ["The RISC-V BL602 Book"](https://lupyuen.github.io/articles/book) are defined in this __Markdown Text File__...
 
 -   [`bl602-sdk/doclinks.md`](https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-sdk/doclinks.md)
 
@@ -1548,23 +1558,23 @@ Links to ["The RISC-V BL602 Book"](https://lupyuen.github.io/articles/book) are 
 | bl_gpio_output_set    | Set the output value of a GPIO Pin.   | Read and Write GPIO | https://lupyuen.github.io/articles/led#read-and-write-gpio
 ```
 
-TODO
-
-![Documentation links to be injected](https://lupyuen.github.io/images/adc-doclink.png)
-
-TODO16
-
-From [`safe_wrap.rs`](https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-macros/src/safe_wrap.rs#L532-L573)
+When our Rust Firmware is compiled, the `safe_wrap` macro __loads the Markdown File__ into memory...
 
 ![Loading the documentation links](https://lupyuen.github.io/images/adc-doclink2.png)
 
-TODO17
+[(Source)](https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-macros/src/safe_wrap.rs#L532-L573)
 
-From [`safe_wrap.rs`](https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-macros/src/safe_wrap.rs#L476-L530)
+And __injects the doc links__ into the `doc` attribute...
 
 ![Injecting the documentation links](https://lupyuen.github.io/images/adc-doclink3.png)
 
-## Renaming the functions
+[(Source)](https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-macros/src/safe_wrap.rs#L476-L530)
+
+And the links to "The RISC-V BL602 Book" will magically appear in the Rust Docs!
+
+-   [__Documentation for BL602 Rust Wrapper__](https://docs.rs/bl602-sdk)
+
+## Rename the functions
 
 TODO23
 
