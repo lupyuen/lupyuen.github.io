@@ -87,7 +87,7 @@
 <li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
 <li><a href="#notes">11 Notes</a><ul></ul></li>
 <li><a href="#appendix-call-c-functions-from-rust">12 Appendix: Call C Functions from Rust</a><ul></ul></li>
-<li><a href="#appendix-convert-c-pointers-to-rust">13 Appendix: Convert C Pointers to Rust</a><ul></ul></li>
+<li><a href="#appendix-cast-c-pointers-in-rust">13 Appendix: Cast C Pointers in Rust</a><ul></ul></li>
 <li><a href="#appendix-copy-memory-with-c-pointers">14 Appendix: Copy Memory with C Pointers</a><ul></ul></li>
 <li><a href="#appendix-generating-the-rust-wrapper-for-bl602-iot-sdk">15 Appendix: Generating the Rust Wrapper for BL602 IoT SDK</a><ul>
 <li><a href="#how-it-works">15.1 How it works</a><ul></ul></li>
@@ -1259,12 +1259,13 @@ bl602-sdk = &quot;0.0.6&quot;  # Rust Wrapper for BL602 IoT SDK: https://crates.
 <p>Earlier we saw this Rust code that <strong>sets the ADC Gain</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L64-L66"><code>lib.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="comment">//  Enable ADC Gain to increase the ADC sensitivity</span>
+<span class="comment">//  In Rust: Enable ADC Gain to increase the ADC sensitivity</span>
 <span class="kw">unsafe</span> { <span class="ident">set_adc_gain</span>(<span class="ident">ADC_GAIN1</span>, <span class="ident">ADC_GAIN2</span>) };  <span class="comment">//  Unsafe because we are calling C function</span></pre></div>
 <p>This calls the C Function <code>set_adc_gain</code>, which we have <strong>imported into Rust</strong> here: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L180-L184"><code>lib.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {  <span class="comment">//  Import C Function</span>
+<span class="comment">//  In Rust: Import C Function</span>
+<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
   <span class="doccomment">/// Enable ADC Gain to increase the ADC sensitivity.</span>
   <span class="doccomment">/// Defined in customer_app/sdk_app_rust_adc/sdk_app_rust_adc/demo.c</span>
   <span class="kw">fn</span> <span class="ident">set_adc_gain</span>(<span class="ident">gain1</span>: <span class="ident">u32</span>, <span class="ident">gain2</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span>;
@@ -1272,7 +1273,7 @@ bl602-sdk = &quot;0.0.6&quot;  # Rust Wrapper for BL602 IoT SDK: https://crates.
 <p><strong><code>set_adc_gain</code></strong> is defined in this C source file: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/sdk_app_rust_adc/demo.c#L11-L42"><code>demo.c</code></a></p>
 <p><em>What about the rest of the code in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/sdk_app_rust_adc/demo.c"><code>demo.c</code></a>?</em></p>
 <p>We define the <strong>Rust Commands</strong> for the Command-Line Interface like so: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/sdk_app_rust_adc/demo.c#L47-L55"><code>demo.c</code></a></p>
-<pre><code class="language-c">/// Import Rust functions from customer_app/sdk_app_rust_adc/rust/src/lib.rs
+<pre><code class="language-c">/// In C: Import Rust functions from customer_app/sdk_app_rust_adc/rust/src/lib.rs
 void init_adc(char *buf, int len, int argc, char **argv);
 void read_adc(char *buf, int len, int argc, char **argv);
 
@@ -1283,12 +1284,20 @@ const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
 };
 </code></pre>
 <p>This defines the commands <code>init_adc</code> and <code>read_adc</code>, which are mapped to the respective Rust Functions.</p>
-<h1 id="appendix-convert-c-pointers-to-rust" class="section-header"><a href="#appendix-convert-c-pointers-to-rust">13 Appendix: Convert C Pointers to Rust</a></h1>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L119-L129"><code>lib.rs</code></a></p>
+<h1 id="appendix-cast-c-pointers-in-rust" class="section-header"><a href="#appendix-cast-c-pointers-in-rust">13 Appendix: Cast C Pointers in Rust</a></h1>
+<p><em>How do we cast C Pointers in Rust?</em></p>
+<p>In the C version of our ADC Firmware, we cast a “<code>void *</code>” pointer to “<code>adc_ctx *</code>” pointer like this: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L88-L90"><code>demo.c</code></a></p>
+<pre><code class="language-c">//  In C: Get the pointer (void *) for DMA Context
+void *ptr = ...
+
+//  Cast the returned pointer (void *) to a DMA Context Pointer (adc_ctx *)
+struct adc_ctx *ctx = (struct adc_ctx *) ptr;
+</code></pre>
+<p>Here we’re <a href="https://en.wikipedia.org/wiki/Downcasting">Downcasting</a> a General Type (<code>void *</code>) to a Specific Type (<code>adc_ctx *</code>).</p>
+<p>To do the same in Rust, we need to be super specific about <strong>what we’re casting</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L119-L129"><code>lib.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="comment">//  Get the C Pointer (void *) for DMA Context</span>
+<span class="comment">//  In Rust: Get the C Pointer (void *) for DMA Context</span>
 <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> ...
 
 <span class="comment">//  Cast the returned C Pointer (void *) to a DMA Context Pointer (adc_ctx *)</span>
@@ -1298,6 +1307,7 @@ const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
     <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">adc::adc_ctx</span>  <span class="comment">//  To DMA Context Pointer (adc_ctx *)</span>
   <span class="op">&gt;</span>(<span class="ident">ptr</span>)               <span class="comment">//  For this pointer</span>
 };</pre></div>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/adc-cast.png" alt="Casting a C Pointer to a Rust Pointer" /></p>
 <h1 id="appendix-copy-memory-with-c-pointers" class="section-header"><a href="#appendix-copy-memory-with-c-pointers">14 Appendix: Copy Memory with C Pointers</a></h1>
 <p>TODO</p>
