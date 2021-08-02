@@ -1470,7 +1470,7 @@ This defines the commands `init_adc` and `read_adc`, which are mapped to the res
 
 _How do we cast C Pointers in Rust?_
 
-In the C version of our ADC Firmware, we cast a "`void *`" pointer to "`adc_ctx *`" pointer like this: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L88-L90)
+In the C version of our ADC Firmware, we implicitly cast a "`void *`" pointer to "`adc_ctx *`" pointer like this: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L88-L90)
 
 ```c
 //  In C: Get the pointer (void *) for DMA Context
@@ -1482,7 +1482,7 @@ struct adc_ctx *ctx = (struct adc_ctx *) ptr;
 
 Here we're [Downcasting](https://en.wikipedia.org/wiki/Downcasting) a General Type (`void *`) to a Specific Type (`adc_ctx *`).
 
-To do the same in Rust, we need to be super specific about __what we're casting__: [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L119-L129)
+To do the same in Rust, we need to be super explicit about __what we're casting__: [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L119-L129)
 
 ```rust
 //  In Rust: Get the C Pointer (void *) for DMA Context
@@ -1497,13 +1497,33 @@ let ctx = unsafe {     //  Unsafe because we are casting a pointer
 };
 ```
 
-TODO
+`transmute` is the Rust Core Library Function that will convert our value (`ptr`) from one type to another...
+
+```rust
+transmute::< FromType , ToType >( ptr )
+```
+
+Where...
+
+-   `FromType` is `Ptr`
+
+    `Ptr` is our short form for the `void *` pointer in Rust.
+    
+    [(See this)](https://docs.rs/bl602-sdk/latest/bl602_sdk/type.Ptr.html)
+
+-   `ToType` is `*mut adc::adc_ctx`
+
+    Which is a mutable pointer to `adc_ctx`
+    
+    (Equivalent to `adc_ctx *` in C)
+
+[(More about `transmute`)](https://doc.rust-lang.org/core/mem/fn.transmute.html)
 
 ![Casting a C Pointer to a Rust Pointer](https://lupyuen.github.io/images/adc-cast.png)
 
 # Appendix: Copy Memory with C Pointers
 
-TODO
+_How do we copy memory with C Pointers?_
 
 Earlier we converted this C code...
 
@@ -1526,8 +1546,7 @@ To this Rust code...
 From [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L142-L149)
 
 ```rust
-//  Array that will store the last 100 ADC Samples
-//  (`ADC_SAMPLES` is 100)
+//  Array that will store the last 100 ADC Samples (`ADC_SAMPLES` is 100)
 let mut adc_data: [u32; ADC_SAMPLES]
   = [0; ADC_SAMPLES];  //  Init array to 100 zeroes
 
@@ -1540,6 +1559,8 @@ unsafe {                    //  Unsafe because we are copying raw memory
   );    
 }
 ```
+
+TODO
 
 ![Copy ADC data in Rust](https://lupyuen.github.io/images/adc-copy.png)
 
