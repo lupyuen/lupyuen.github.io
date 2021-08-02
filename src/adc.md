@@ -1468,6 +1468,26 @@ let ctx = unsafe {     //  Unsafe because we are casting a pointer
 
 TODO
 
+Earlier we converted this C code...
+
+From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L101-L106)
+
+```c
+//  Array that will store ADC Samples
+uint32_t adc_data[ADC_SAMPLES];
+
+//  Copy the read ADC Samples to the static array
+memcpy(
+  (uint8_t*) adc_data,             //  Destination
+  (uint8_t*) (ctx->channel_data),  //  Source
+  sizeof(adc_data)                 //  Size
+);  
+```
+
+To this Rust code...
+
+From [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L142-L149)
+
 ```rust
 //  Array that will store the last 100 ADC Samples
 //  (`ADC_SAMPLES` is 100)
@@ -1482,20 +1502,6 @@ unsafe {                    //  Unsafe because we are copying raw memory
     adc_data.len()          //  Number of Items (each item is uint32 or 4 bytes)
   );    
 }
-```
-
-This Rust code is equivalent to the following C code...
-
-```c
-//  Array that will store ADC Samples
-uint32_t adc_data[ADC_SAMPLES];
-
-//  Copy the read ADC Samples to the static array
-memcpy(
-  (uint8_t*) adc_data,             //  Destination
-  (uint8_t*) (ctx->channel_data),  //  Source
-  sizeof(adc_data)                 //  Size
-);  
 ```
 
 ![Copy ADC data in Rust](https://lupyuen.github.io/images/adc-copy.png)
