@@ -749,7 +749,6 @@ ld: undefined reference to `read_adc'
 ----- Ignore undefined references to Rust Library
 </code></pre>
 <p>This means that the <strong>C code from our BL602 Firmware</strong> has been built successfully.</p>
-<p><a href="https://lupyuen.github.io/articles/pinecone#building-firmware">More details on building BL602 firmware</a></p>
 </li>
 <li>
 <p>Next the script <strong>compiles our Rust code</strong> into a static library: <code>libapp.a</code></p>
@@ -793,6 +792,8 @@ Building Finish. To flash build output.
 <ul>
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/run.sh#L135-L497"><strong>Build Log for BL602 Rust Firmware</strong></a></li>
 </ul>
+<p><a href="https://lupyuen.github.io/articles/rust#appendix-build-script-for-bl602-rust-firmware">More about the build script</a></p>
+<p><a href="https://lupyuen.github.io/articles/rust#rust-targets">More about the custom Rust target</a></p>
 <p><img src="https://lupyuen.github.io/images/adc-build.jpg" alt="Building the BL602 Rust Firmware" /></p>
 <h1 id="flash-the-bl602-rust-firmware" class="section-header"><a href="#flash-the-bl602-rust-firmware">5 Flash the BL602 Rust Firmware</a></h1>
 <p>Here’s how we flash the Rust Firmware file <code>sdk_app_rust_adc.bin</code> to BL602…</p>
@@ -1199,6 +1200,9 @@ bl602-sdk = &quot;0.0.6&quot;  # Rust Wrapper for BL602 IoT SDK: https://crates.
 <ul>
 <li>
 <p><a href="https://github.com/sponsors/lupyuen">Sponsor me a coffee</a></p>
+</li>
+<li>
+<p><a href="https://www.reddit.com/r/RISCV/comments/owr2xp/rust_on_riscv_bl602_is_it_sunny/">Discuss this article on Reddit</a></p>
 </li>
 <li>
 <p><a href="https://lupyuen.github.io/articles/book">Read “The RISC-V BL602 Book”</a></p>
