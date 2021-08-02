@@ -1497,7 +1497,7 @@ let ctx = unsafe {     //  Unsafe because we are casting a pointer
 };
 ```
 
-`transmute` is the Rust Core Library Function that will convert our value (`ptr`) from one type to another...
+__`transmute`__ is the Rust Core Library Function that will convert our value (`ptr`) from one type to another...
 
 ```rust
 transmute::< FromType , ToType >( ptr )
@@ -1505,13 +1505,13 @@ transmute::< FromType , ToType >( ptr )
 
 Where...
 
--   `FromType` is `Ptr`
+-   From Type is __`Ptr`__
 
     `Ptr` is our short form for the `void *` pointer in Rust.
     
     [(See this)](https://docs.rs/bl602-sdk/latest/bl602_sdk/type.Ptr.html)
 
--   `ToType` is `*mut adc::adc_ctx`
+-   To Type is __`*mut adc::adc_ctx`__
 
     Which is a mutable pointer to `adc_ctx`
     
