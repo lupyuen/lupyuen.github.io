@@ -423,7 +423,7 @@ Before diving into the Rust Firmware, let's walk through the steps for __creatin
 
 1.  Replace the __Rust Source Code__ in [`sdk_app_rust_adc/ rust/src/lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs) 
 
-1.  See the Appendix for the steps to define the __Rust Commands for the Command-Line Interface__ in [`sdk_app_rust_adc / demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/sdk_app_rust_adc/demo.c#L47-L55)
+1.  See the Appendix for the steps to define the __Rust Commands__ for the Command-Line Interface in [`sdk_app_rust_adc / demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/sdk_app_rust_adc/demo.c#L47-L55)
 
 1.  Remember to edit __`README.md`__ and fill in the project details
 
@@ -1416,7 +1416,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     It returns only one ADC Sample.
 
-1.  ESP32 has something similar to the BL602 Rust Wrapper...
+1.  __ESP32__ has something similar to the BL602 Rust Wrapper...
 
     -   [`esp-idf-sys`](https://github.com/esp-rs/esp-idf-sys) defines the Rust Bindings for ESP32 IDF SDK (generated with `bindgen`)
 
@@ -1426,16 +1426,16 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Call C Functions from Rust
 
-TODO
+_How do we call our own C Functions from Rust?_
 
-From [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L64-L66)
+Earlier we saw this Rust code that __sets the ADC Gain__: [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L64-L66)
 
 ```rust
 //  Enable ADC Gain to increase the ADC sensitivity
 unsafe { set_adc_gain(ADC_GAIN1, ADC_GAIN2) };  //  Unsafe because we are calling C function
 ```
 
-From [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L180-L184)
+This calls the C Function `set_adc_gain`, which we have __imported into Rust__ here: [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L180-L184)
 
 ```rust
 extern "C" {  //  Import C Function
@@ -1445,27 +1445,25 @@ extern "C" {  //  Import C Function
 }
 ```
 
-`set_adc_gain` is defined this C source file: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/sdk_app_rust_adc/demo.c#L11-L42)
+__`set_adc_gain`__ is defined in this C source file: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/sdk_app_rust_adc/demo.c#L11-L42)
 
 _What about the rest of the code in [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/sdk_app_rust_adc/demo.c)?_
 
-TODO
-
-Define the __Rust Commands for the Command-Line Interface__
-
-From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/sdk_app_rust_adc/demo.c#L47-L55)
+We define the __Rust Commands__ for the Command-Line Interface like so: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/sdk_app_rust_adc/demo.c#L47-L55)
 
 ```c
 /// Import Rust functions from customer_app/sdk_app_rust_adc/rust/src/lib.rs
 void init_adc(char *buf, int len, int argc, char **argv);
 void read_adc(char *buf, int len, int argc, char **argv);
 
-/// List of commands. STATIC_CLI_CMD_ATTRIBUTE makes this(these) command(s) static
+/// List of commands. STATIC_CLI_CMD_ATTRIBUTE makes these commands static
 const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
     {"init_adc",        "Init ADC Channel",          init_adc},
     {"read_adc",        "Read ADC Channel",          read_adc},
 };
 ```
+
+This defines the commands `init_adc` and `read_adc`, which are mapped to the respective Rust Functions.
 
 # Appendix: Convert C Pointers to Rust
 
