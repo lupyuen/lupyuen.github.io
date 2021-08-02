@@ -42,7 +42,7 @@ On PineCone BL602, there's a __Blue LED__ connected on __GPIO Pin Number 11__...
 
 ![PineCone RGB LED Schematic](https://lupyuen.github.io/images/led-rgb.png)
 
-[(From PineCone RGB LED Schematic)](https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf)
+[(From PineCone BL602 Schematic)](https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf)
 
 For light sensing, we shall __read the voltage__ from this LED GPIO with BL602's Analog-to-Digital Converter (ADC).
 
@@ -1302,6 +1302,56 @@ Here's a sample project that calls the Rust Wrapper for GPIO...
 
 [(Source)](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_gpio/rust/src/lib.rs)
 
+# Why Sunlight?
+
+_Why does our BL602 LED detect only sunlight? And not other kinds of light?_
+
+We're guessing because...
+
+1.  Sunlight is __more intense__
+
+    (And produces more current)
+
+1.  We used the __Blue LED__ on PineCone BL602
+
+    (Which is sensitive to the spectrum of Blue - Indigo - Violet - Ultra-Violet (UV) light)
+
+__LED Light Sensitivity__ is [explained in this article](https://wiki.analog.com/university/courses/electronics/electronics-lab-led-sensor?rev=1551786227)...
+
+> As a photodiode, an LED is sensitive to __wavelengths equal to or shorter than the predominant wavelength it emits__. A green LED would be sensitive to blue light and to some green light, but not to yellow or red light. 
+
+Also according to [Sravan Senthilnathan on Twitter](https://twitter.com/SravanSenthiln1/status/1418044068567797765
+)...
+
+> This is possible due to the __blue LED's semiconductor bandgap__ being one appropriate to absorb the UV spectrum sun light. Here is more info about it:
+[Aluminium gallium nitride on Wikipedia](https://en.wikipedia.org/wiki/Aluminium_gallium_nitride)
+
+And according to [Dan Lafleur on LinkedIn](https://www.linkedin.com/feed/update/urn:li:activity:6823802475091501056?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A6823802475091501056%2C6824139561749372928%29)...
+
+> The technique I used to measure light level with an LED was to __reverse bias the LED and then time the discharge__. The light level is time based. The higher the light level the longer it takes to discharge the reversed bias junction.
+
+[(More about measuring the Discharge Duration of an LED)](https://www.sparkfun.com/news/2161)
+
+Here's [another comment](https://www.linkedin.com/feed/update/urn:li:activity:6823802475091501056?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A6823802475091501056%2C6823807829040881664%29)...
+
+> Yes, I have used LEDs as light sensors in class projects. The point is that they are not just emitters. A selection of red, green and blue LEDs can be used to build a crude __colour detector__. It works.
+
+That sounds interesting...
+
+_PineCone BL602 has Red, Green and Blue LEDs. Can we use the other LEDs?_
+
+![PineCone RGB LED Schematic](https://lupyuen.github.io/images/led-rgb.png)
+
+[(From PineCone BL602 Schematic)](https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf)
+
+Unfortunately __PineCone's Red LED__ is connected on GPIO 17, which is not supported for ADC.
+
+But __PineCone's Green LED__ (GPIO 14) should work OK with ADC.
+
+__Exercise For The Reader:__ Use PineCone's Green LED (instead of the Blue LED) as an ADC Light Sensor. What kind of light does it detect?
+
+(This article was inspired by the __BBC micro:bit__, which uses LED as a Light Sensor. [See this](https://learn.adafruit.com/micro-bit-lesson-4-sensing-light-and-temperature/built-in-light-sensor))
+
 ![Testing the improvised Light Sensor on PineCone BL602 with Pinebook Pro](https://lupyuen.github.io/images/adc-pinebook.jpg)
 
 _Testing the improvised Light Sensor on PineCone BL602 with Pinebook Pro_
@@ -1371,12 +1421,6 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
     -   [`esp-idf-hal`](https://github.com/esp-rs/esp-idf-hal) wraps `esp-idf-sys` into a Rust Embedded HAL for ESP32
 
     -   [More about this](https://mabez.dev/blog/posts/esp-rust-espressif/)
-
-1.  This article was inspired by the __BBC micro:bit__, which uses LED as a Light Sensor. [(See this)](https://learn.adafruit.com/micro-bit-lesson-4-sensing-light-and-temperature/built-in-light-sensor)
-
-# Appendix: Why Sunlight?
-
-TODO
 
 # Appendix: Call C Functions from Rust
 
