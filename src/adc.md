@@ -1431,14 +1431,15 @@ _How do we call our own C Functions from Rust?_
 Earlier we saw this Rust code that __sets the ADC Gain__: [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L64-L66)
 
 ```rust
-//  Enable ADC Gain to increase the ADC sensitivity
+//  In Rust: Enable ADC Gain to increase the ADC sensitivity
 unsafe { set_adc_gain(ADC_GAIN1, ADC_GAIN2) };  //  Unsafe because we are calling C function
 ```
 
 This calls the C Function `set_adc_gain`, which we have __imported into Rust__ here: [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L180-L184)
 
 ```rust
-extern "C" {  //  Import C Function
+//  In Rust: Import C Function
+extern "C" {
   /// Enable ADC Gain to increase the ADC sensitivity.
   /// Defined in customer_app/sdk_app_rust_adc/sdk_app_rust_adc/demo.c
   fn set_adc_gain(gain1: u32, gain2: u32) -> i32;
@@ -1452,7 +1453,7 @@ _What about the rest of the code in [`demo.c`](https://github.com/lupyuen/bl_iot
 We define the __Rust Commands__ for the Command-Line Interface like so: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/sdk_app_rust_adc/demo.c#L47-L55)
 
 ```c
-/// Import Rust functions from customer_app/sdk_app_rust_adc/rust/src/lib.rs
+/// In C: Import Rust functions from customer_app/sdk_app_rust_adc/rust/src/lib.rs
 void init_adc(char *buf, int len, int argc, char **argv);
 void read_adc(char *buf, int len, int argc, char **argv);
 
@@ -1465,14 +1466,26 @@ const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
 
 This defines the commands `init_adc` and `read_adc`, which are mapped to the respective Rust Functions.
 
-# Appendix: Convert C Pointers to Rust
+# Appendix: Cast C Pointers in Rust
 
-TODO
+_How do we cast C Pointers in Rust?_
 
-From [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L119-L129)
+In the C version of our ADC Firmware, we cast a "`void *`" pointer to "`adc_ctx *`" pointer like this: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L88-L90)
+
+```c
+//  In C: Get the pointer (void *) for DMA Context
+void *ptr = ...
+
+//  Cast the returned pointer (void *) to a DMA Context Pointer (adc_ctx *)
+struct adc_ctx *ctx = (struct adc_ctx *) ptr;
+```
+
+Here we're [Downcasting](https://en.wikipedia.org/wiki/Downcasting) a General Type (`void *`) to a Specific Type (`adc_ctx *`).
+
+To do the same in Rust, we need to be super specific about __what we're casting__: [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L119-L129)
 
 ```rust
-//  Get the C Pointer (void *) for DMA Context
+//  In Rust: Get the C Pointer (void *) for DMA Context
 let ptr = ...
 
 //  Cast the returned C Pointer (void *) to a DMA Context Pointer (adc_ctx *)
@@ -1483,6 +1496,8 @@ let ctx = unsafe {     //  Unsafe because we are casting a pointer
   >(ptr)               //  For this pointer
 };
 ```
+
+TODO
 
 ![Casting a C Pointer to a Rust Pointer](https://lupyuen.github.io/images/adc-cast.png)
 
