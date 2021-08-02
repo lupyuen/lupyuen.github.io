@@ -1,6 +1,6 @@
 # Rust on RISC-V BL602: Is It Sunny?
 
-📝 _8 Aug 2021_
+📝 _3 Aug 2021_
 
 Today we shall magically transform [__any RISC-V BL602 Board__](https://lupyuen.github.io/articles/pinecone) into a __Light Sensor!__
 
@@ -8,7 +8,9 @@ We'll do this two ways...
 
 1.  First we code the firmware in C
 
-1.  Then we port the C firmware to Rust with the...
+    (By calling the BL602 IoT SDK)
+
+1.  Then we port the C firmware to Rust with...
 
     [__Rust Wrapper for BL602 IoT SDK__](https://crates.io/crates/bl602-sdk)
 
@@ -784,7 +786,11 @@ And we're done... That's how we code BL602 ADC Firmware in Rust!
 
 # Build the BL602 Rust Firmware
 
-Here are the steps to build the BL602 Rust Firmware `sdk_app_rust_adc.bin`
+We may download the Rust Firmware Binary File __`sdk_app_rust_adc.bin`__ from...
+
+-  [__`sdk_app_rust_adc` Binary Release__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v11.0.0.0)
+
+Or follow these steps to build the Rust Firmware `sdk_app_rust_adc.bin`...
 
 1.  Install __`rustup`, `blflash` and `xpack-riscv-none-embed-gcc`__
 
@@ -1360,13 +1366,13 @@ _Testing the improvised Light Sensor on PineCone BL602 with Pinebook Pro_
 
 # What's Next
 
+Today we've seen that it's viable to create __Rust Firmware__ for BL602... Just call the __Rust Wrapper for BL602 IoT SDK__!
+
+Soon we shall test the Rust Firmware on [__PineDio Stack BL604 with LoRa SX1262__](https://www.pine64.org/2021/07/15/july-update/)... As we explore whether it's feasible to teach __Rust as a Safer Way__ to create firmware for BL602 and BL604.
+
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
-TODO
-
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
-
--   [Discuss this article on Reddit](https://www.reddit.com/r/RISCV/comments/o4u9e7/machine_learning_on_riscv_bl602_with_tensorflow/)
 
 -   [Read "The RISC-V BL602 Book"](https://lupyuen.github.io/articles/book)
 
@@ -1422,7 +1428,9 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     -   [`esp-idf-hal`](https://github.com/esp-rs/esp-idf-hal) wraps `esp-idf-sys` into a Rust Embedded HAL for ESP32
 
-    -   [More about this](https://mabez.dev/blog/posts/esp-rust-espressif/)
+    -   [More about Rust on ESP32](https://mabez.dev/blog/posts/esp-rust-espressif/)
+
+    (Perhaps someday we might wrap the BL602 Rust Wrapper into a Rust Embedded HAL for BL602 / BL604)
 
 # Appendix: Call C Functions from Rust
 
@@ -1449,6 +1457,8 @@ extern "C" {
 __`set_adc_gain`__ is defined in this C source file: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/sdk_app_rust_adc/demo.c#L11-L42)
 
 _What about the rest of the code in [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/sdk_app_rust_adc/demo.c)?_
+
+The rest of the C code in [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/sdk_app_rust_adc/demo.c) is needed to set up the __Command-Line Interface__ for our BL602 Firmware.
 
 We define the __Rust Commands__ for the Command-Line Interface like so: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/sdk_app_rust_adc/demo.c#L47-L55)
 
