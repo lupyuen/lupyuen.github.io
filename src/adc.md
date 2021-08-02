@@ -1497,7 +1497,7 @@ let ctx = unsafe {     //  Unsafe because we are casting a pointer
 };
 ```
 
-__`transmute`__ is the Rust Core Library Function that will convert our value (`ptr`) from one type to another...
+__`transmute`__ is the Rust Core Library Function that will cast our value (`ptr`) from one type to another...
 
 ```rust
 transmute::< FromType , ToType >( ptr )
@@ -1525,15 +1525,13 @@ Where...
 
 _How do we copy memory with C Pointers?_
 
-Earlier we converted this C code...
-
-From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L101-L106)
+Earlier we saw this code in our C Firmware: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L101-L106)
 
 ```c
 //  Array that will store ADC Samples
 uint32_t adc_data[ADC_SAMPLES];
 
-//  Copy the read ADC Samples to the static array
+//  Copy the read ADC Samples to the array
 memcpy(
   (uint8_t*) adc_data,             //  Destination
   (uint8_t*) (ctx->channel_data),  //  Source
@@ -1541,9 +1539,9 @@ memcpy(
 );  
 ```
 
-To this Rust code...
+This code __copies the ADC Samples__ from the DMA buffer to the array `adc_data`.
 
-From [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L142-L149)
+Here's the equivalent code in Rust: [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L142-L149)
 
 ```rust
 //  Array that will store the last 100 ADC Samples (`ADC_SAMPLES` is 100)
@@ -1560,7 +1558,15 @@ unsafe {                    //  Unsafe because we are copying raw memory
 }
 ```
 
-TODO
+Note the differences...
+
+1.  For Rust the __Source Pointer__ is the first parameter, followed by the __Destination Pointer__
+
+    (This is flipped from `memcpy` in C)
+
+1.  For Rust the third parameter is the __Number of Items__ to be copied. (100 items)
+
+    (For `memcpy` the third parameter specifies the number of bytes to copy, i.e. 400 bytes)
 
 ![Copy ADC data in Rust](https://lupyuen.github.io/images/adc-copy.png)
 
