@@ -1307,19 +1307,19 @@ struct adc_ctx *ctx = (struct adc_ctx *) ptr;
     <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">adc::adc_ctx</span>  <span class="comment">//  To DMA Context Pointer (adc_ctx *)</span>
   <span class="op">&gt;</span>(<span class="ident">ptr</span>)               <span class="comment">//  For this pointer</span>
 };</pre></div>
-<p><code>transmute</code> is the Rust Core Library Function that will convert our value (<code>ptr</code>) from one type to another…</p>
+<p><strong><code>transmute</code></strong> is the Rust Core Library Function that will convert our value (<code>ptr</code>) from one type to another…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="ident">transmute</span>::<span class="op">&lt;</span> <span class="ident">FromType</span> , <span class="ident">ToType</span> <span class="op">&gt;</span>( <span class="ident">ptr</span> )</pre></div>
 <p>Where…</p>
 <ul>
 <li>
-<p><code>FromType</code> is <code>Ptr</code></p>
+<p>From Type is <strong><code>Ptr</code></strong></p>
 <p><code>Ptr</code> is our short form for the <code>void *</code> pointer in Rust.</p>
 <p><a href="https://docs.rs/bl602-sdk/latest/bl602_sdk/type.Ptr.html">(See this)</a></p>
 </li>
 <li>
-<p><code>ToType</code> is <code>*mut adc::adc_ctx</code></p>
+<p>To Type is <strong><code>*mut adc::adc_ctx</code></strong></p>
 <p>Which is a mutable pointer to <code>adc_ctx</code></p>
 <p>(Equivalent to <code>adc_ctx *</code> in C)</p>
 </li>
