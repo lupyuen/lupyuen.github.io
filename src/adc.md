@@ -1507,7 +1507,7 @@ Where...
 
 -   From Type is __`Ptr`__
 
-    `Ptr` is our short form for the `void *` pointer in Rust.
+    `Ptr` is our short form for the "`void *`" pointer in Rust.
     
     [(See this)](https://docs.rs/bl602-sdk/latest/bl602_sdk/type.Ptr.html)
 
@@ -1515,11 +1515,11 @@ Where...
 
     Which is a mutable pointer to `adc_ctx`
     
-    (Equivalent to `adc_ctx *` in C)
+    (Equivalent to "`adc_ctx *`" in C)
 
 [(More about `transmute`)](https://doc.rust-lang.org/core/mem/fn.transmute.html)
 
-![Casting a C Pointer to a Rust Pointer](https://lupyuen.github.io/images/adc-cast.png)
+![Casting a C Pointer in Rust](https://lupyuen.github.io/images/adc-cast.png)
 
 # Appendix: Copy Memory with C Pointers
 
