@@ -846,8 +846,6 @@ Or follow these steps to build the Rust Firmware `sdk_app_rust_adc.bin`...
 
     This means that the __C code from our BL602 Firmware__ has been built successfully.
 
-    [More details on building BL602 firmware](https://lupyuen.github.io/articles/pinecone#building-firmware)
-
 1.  Next the script __compiles our Rust code__ into a static library: `libapp.a`
 
     ```text
@@ -893,6 +891,10 @@ Or follow these steps to build the Rust Firmware `sdk_app_rust_adc.bin`...
 Check out the complete build log here...
 
 -   [__Build Log for BL602 Rust Firmware__](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/run.sh#L135-L497)
+
+[More about the build script](https://lupyuen.github.io/articles/rust#appendix-build-script-for-bl602-rust-firmware)
+
+[More about the custom Rust target](https://lupyuen.github.io/articles/rust#rust-targets)
 
 ![Building the BL602 Rust Firmware](https://lupyuen.github.io/images/adc-build.jpg)
 
@@ -1373,6 +1375,8 @@ Soon we shall test the Rust Firmware on [__PineDio Stack BL604 with LoRa SX1262_
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+
+-   [Discuss this article on Reddit](https://www.reddit.com/r/RISCV/comments/owr2xp/rust_on_riscv_bl602_is_it_sunny/)
 
 -   [Read "The RISC-V BL602 Book"](https://lupyuen.github.io/articles/book)
 
