@@ -1284,6 +1284,20 @@ bl602-sdk = &quot;0.0.6&quot;  # Rust Wrapper for BL602 IoT SDK: https://crates.
 <p><img src="https://lupyuen.github.io/images/adc-cast.png" alt="Casting a C Pointer to a Rust Pointer" /></p>
 <h1 id="appendix-copy-memory-with-c-pointers" class="section-header"><a href="#appendix-copy-memory-with-c-pointers">14 Appendix: Copy Memory with C Pointers</a></h1>
 <p>TODO</p>
+<p>Earlier we converted this C code…</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L101-L106"><code>demo.c</code></a></p>
+<pre><code class="language-c">//  Array that will store ADC Samples
+uint32_t adc_data[ADC_SAMPLES];
+
+//  Copy the read ADC Samples to the static array
+memcpy(
+  (uint8_t*) adc_data,             //  Destination
+  (uint8_t*) (ctx-&gt;channel_data),  //  Source
+  sizeof(adc_data)                 //  Size
+);  
+</code></pre>
+<p>To this Rust code…</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L142-L149"><code>lib.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="comment">//  Array that will store the last 100 ADC Samples</span>
@@ -1299,17 +1313,6 @@ bl602-sdk = &quot;0.0.6&quot;  # Rust Wrapper for BL602 IoT SDK: https://crates.
     <span class="ident">adc_data</span>.<span class="ident">len</span>()          <span class="comment">//  Number of Items (each item is uint32 or 4 bytes)</span>
   );    
 }</pre></div>
-<p>This Rust code is equivalent to the following C code…</p>
-<pre><code class="language-c">//  Array that will store ADC Samples
-uint32_t adc_data[ADC_SAMPLES];
-
-//  Copy the read ADC Samples to the static array
-memcpy(
-  (uint8_t*) adc_data,             //  Destination
-  (uint8_t*) (ctx-&gt;channel_data),  //  Source
-  sizeof(adc_data)                 //  Size
-);  
-</code></pre>
 <p><img src="https://lupyuen.github.io/images/adc-copy.png" alt="Copy ADC data in Rust" /></p>
 <h1 id="appendix-generating-the-rust-wrapper-for-bl602-iot-sdk" class="section-header"><a href="#appendix-generating-the-rust-wrapper-for-bl602-iot-sdk">15 Appendix: Generating the Rust Wrapper for BL602 IoT SDK</a></h1>
 <p><em>How was the BL602 Rust Wrapper generated for publishing on <a href="https://crates.io/crates/bl602-sdk"><code>crates.io</code></a>?</em></p>
