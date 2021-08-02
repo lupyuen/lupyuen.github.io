@@ -1315,17 +1315,17 @@ struct adc_ctx *ctx = (struct adc_ctx *) ptr;
 <ul>
 <li>
 <p>From Type is <strong><code>Ptr</code></strong></p>
-<p><code>Ptr</code> is our short form for the <code>void *</code> pointer in Rust.</p>
+<p><code>Ptr</code> is our short form for the “<code>void *</code>” pointer in Rust.</p>
 <p><a href="https://docs.rs/bl602-sdk/latest/bl602_sdk/type.Ptr.html">(See this)</a></p>
 </li>
 <li>
 <p>To Type is <strong><code>*mut adc::adc_ctx</code></strong></p>
 <p>Which is a mutable pointer to <code>adc_ctx</code></p>
-<p>(Equivalent to <code>adc_ctx *</code> in C)</p>
+<p>(Equivalent to “<code>adc_ctx *</code>” in C)</p>
 </li>
 </ul>
 <p><a href="https://doc.rust-lang.org/core/mem/fn.transmute.html">(More about <code>transmute</code>)</a></p>
-<p><img src="https://lupyuen.github.io/images/adc-cast.png" alt="Casting a C Pointer to a Rust Pointer" /></p>
+<p><img src="https://lupyuen.github.io/images/adc-cast.png" alt="Casting a C Pointer in Rust" /></p>
 <h1 id="appendix-copy-memory-with-c-pointers" class="section-header"><a href="#appendix-copy-memory-with-c-pointers">14 Appendix: Copy Memory with C Pointers</a></h1>
 <p><em>How do we copy memory with C Pointers?</em></p>
 <p>Earlier we converted this C code…</p>
