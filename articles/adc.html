@@ -413,6 +413,9 @@ export APP_NAME=sdk_app_rust_adc
 <p>Replace the <strong>Rust Source Code</strong> in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs"><code>sdk_app_rust_adc/ rust/src/lib.rs</code></a> </p>
 </li>
 <li>
+<p>See the Appendix for the steps to define the <strong>Rust Commands for the Command-Line Interface</strong> in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/sdk_app_rust_adc/demo.c#L47-L55"><code>sdk_app_rust_adc / demo.c</code></a></p>
+</li>
+<li>
 <p>Remember to edit <strong><code>README.md</code></strong> and fill in the project details</p>
 </li>
 </ol>
@@ -1266,6 +1269,21 @@ bl602-sdk = &quot;0.0.6&quot;  # Rust Wrapper for BL602 IoT SDK: https://crates.
   <span class="doccomment">/// Defined in customer_app/sdk_app_rust_adc/sdk_app_rust_adc/demo.c</span>
   <span class="kw">fn</span> <span class="ident">set_adc_gain</span>(<span class="ident">gain1</span>: <span class="ident">u32</span>, <span class="ident">gain2</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span>;
 }</pre></div>
+<p><code>set_adc_gain</code> is defined this C source file: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/sdk_app_rust_adc/demo.c#L11-L42"><code>demo.c</code></a></p>
+<p><em>What about the rest of the code in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/sdk_app_rust_adc/demo.c"><code>demo.c</code></a>?</em></p>
+<p>TODO</p>
+<p>Define the <strong>Rust Commands for the Command-Line Interface</strong></p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/sdk_app_rust_adc/demo.c#L47-L55"><code>demo.c</code></a></p>
+<pre><code class="language-c">/// Import Rust functions from customer_app/sdk_app_rust_adc/rust/src/lib.rs
+void init_adc(char *buf, int len, int argc, char **argv);
+void read_adc(char *buf, int len, int argc, char **argv);
+
+/// List of commands. STATIC_CLI_CMD_ATTRIBUTE makes this(these) command(s) static
+const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
+    {&quot;init_adc&quot;,        &quot;Init ADC Channel&quot;,          init_adc},
+    {&quot;read_adc&quot;,        &quot;Read ADC Channel&quot;,          read_adc},
+};
+</code></pre>
 <h1 id="appendix-convert-c-pointers-to-rust" class="section-header"><a href="#appendix-convert-c-pointers-to-rust">13 Appendix: Convert C Pointers to Rust</a></h1>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L119-L129"><code>lib.rs</code></a></p>
