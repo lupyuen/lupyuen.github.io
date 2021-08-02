@@ -1286,7 +1286,7 @@ const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
 <p>This defines the commands <code>init_adc</code> and <code>read_adc</code>, which are mapped to the respective Rust Functions.</p>
 <h1 id="appendix-cast-c-pointers-in-rust" class="section-header"><a href="#appendix-cast-c-pointers-in-rust">13 Appendix: Cast C Pointers in Rust</a></h1>
 <p><em>How do we cast C Pointers in Rust?</em></p>
-<p>In the C version of our ADC Firmware, we cast a “<code>void *</code>” pointer to “<code>adc_ctx *</code>” pointer like this: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L88-L90"><code>demo.c</code></a></p>
+<p>In the C version of our ADC Firmware, we implicitly cast a “<code>void *</code>” pointer to “<code>adc_ctx *</code>” pointer like this: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L88-L90"><code>demo.c</code></a></p>
 <pre><code class="language-c">//  In C: Get the pointer (void *) for DMA Context
 void *ptr = ...
 
@@ -1294,7 +1294,7 @@ void *ptr = ...
 struct adc_ctx *ctx = (struct adc_ctx *) ptr;
 </code></pre>
 <p>Here we’re <a href="https://en.wikipedia.org/wiki/Downcasting">Downcasting</a> a General Type (<code>void *</code>) to a Specific Type (<code>adc_ctx *</code>).</p>
-<p>To do the same in Rust, we need to be super specific about <strong>what we’re casting</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L119-L129"><code>lib.rs</code></a></p>
+<p>To do the same in Rust, we need to be super explicit about <strong>what we’re casting</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L119-L129"><code>lib.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="comment">//  In Rust: Get the C Pointer (void *) for DMA Context</span>
@@ -1307,10 +1307,27 @@ struct adc_ctx *ctx = (struct adc_ctx *) ptr;
     <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">adc::adc_ctx</span>  <span class="comment">//  To DMA Context Pointer (adc_ctx *)</span>
   <span class="op">&gt;</span>(<span class="ident">ptr</span>)               <span class="comment">//  For this pointer</span>
 };</pre></div>
-<p>TODO</p>
+<p><code>transmute</code> is the Rust Core Library Function that will convert our value (<code>ptr</code>) from one type to another…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="ident">transmute</span>::<span class="op">&lt;</span> <span class="ident">FromType</span> , <span class="ident">ToType</span> <span class="op">&gt;</span>( <span class="ident">ptr</span> )</pre></div>
+<p>Where…</p>
+<ul>
+<li>
+<p><code>FromType</code> is <code>Ptr</code></p>
+<p><code>Ptr</code> is our short form for the <code>void *</code> pointer in Rust.</p>
+<p><a href="https://docs.rs/bl602-sdk/latest/bl602_sdk/type.Ptr.html">(See this)</a></p>
+</li>
+<li>
+<p><code>ToType</code> is <code>*mut adc::adc_ctx</code></p>
+<p>Which is a mutable pointer to <code>adc_ctx</code></p>
+<p>(Equivalent to <code>adc_ctx *</code> in C)</p>
+</li>
+</ul>
+<p><a href="https://doc.rust-lang.org/core/mem/fn.transmute.html">(More about <code>transmute</code>)</a></p>
 <p><img src="https://lupyuen.github.io/images/adc-cast.png" alt="Casting a C Pointer to a Rust Pointer" /></p>
 <h1 id="appendix-copy-memory-with-c-pointers" class="section-header"><a href="#appendix-copy-memory-with-c-pointers">14 Appendix: Copy Memory with C Pointers</a></h1>
-<p>TODO</p>
+<p><em>How do we copy memory with C Pointers?</em></p>
 <p>Earlier we converted this C code…</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L101-L106"><code>demo.c</code></a></p>
 <pre><code class="language-c">//  Array that will store ADC Samples
@@ -1327,8 +1344,7 @@ memcpy(
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L142-L149"><code>lib.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="comment">//  Array that will store the last 100 ADC Samples</span>
-<span class="comment">//  (`ADC_SAMPLES` is 100)</span>
+<span class="comment">//  Array that will store the last 100 ADC Samples (`ADC_SAMPLES` is 100)</span>
 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">adc_data</span>: [<span class="ident">u32</span>; <span class="ident">ADC_SAMPLES</span>]
   <span class="op">=</span> [<span class="number">0</span>; <span class="ident">ADC_SAMPLES</span>];  <span class="comment">//  Init array to 100 zeroes</span>
 
@@ -1340,6 +1356,7 @@ memcpy(
     <span class="ident">adc_data</span>.<span class="ident">len</span>()          <span class="comment">//  Number of Items (each item is uint32 or 4 bytes)</span>
   );    
 }</pre></div>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/adc-copy.png" alt="Copy ADC data in Rust" /></p>
 <h1 id="appendix-generating-the-rust-wrapper-for-bl602-iot-sdk" class="section-header"><a href="#appendix-generating-the-rust-wrapper-for-bl602-iot-sdk">15 Appendix: Generating the Rust Wrapper for BL602 IoT SDK</a></h1>
 <p><em>How was the BL602 Rust Wrapper generated for publishing on <a href="https://crates.io/crates/bl602-sdk"><code>crates.io</code></a>?</em></p>
