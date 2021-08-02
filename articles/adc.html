@@ -83,9 +83,9 @@
 <li><a href="#safer-rust">7.1 Safer Rust</a><ul></ul></li>
 <li><a href="#static-variables-in-rust">7.2 Static Variables in Rust</a><ul></ul></li></ul></li>
 <li><a href="#rust-wrapper-for-bl602-iot-sdk">8 Rust Wrapper for BL602 IoT SDK</a><ul></ul></li>
-<li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
-<li><a href="#notes">10 Notes</a><ul></ul></li>
-<li><a href="#appendix-why-sunlight">11 Appendix: Why Sunlight?</a><ul></ul></li>
+<li><a href="#why-sunlight">9 Why Sunlight?</a><ul></ul></li>
+<li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
+<li><a href="#notes">11 Notes</a><ul></ul></li>
 <li><a href="#appendix-call-c-functions-from-rust">12 Appendix: Call C Functions from Rust</a><ul></ul></li>
 <li><a href="#appendix-convert-c-pointers-to-rust">13 Appendix: Convert C Pointers to Rust</a><ul></ul></li>
 <li><a href="#appendix-copy-memory-with-c-pointers">14 Appendix: Copy Memory with C Pointers</a><ul></ul></li>
@@ -119,7 +119,7 @@
 <h1 id="bl602-adc-in-c" class="section-header"><a href="#bl602-adc-in-c">1 BL602 ADC in C</a></h1>
 <p>On PineCone BL602, there’s a <strong>Blue LED</strong> connected on <strong>GPIO Pin Number 11</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/led-rgb.png" alt="PineCone RGB LED Schematic" /></p>
-<p><a href="https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf">(From PineCone RGB LED Schematic)</a></p>
+<p><a href="https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf">(From PineCone BL602 Schematic)</a></p>
 <p>For light sensing, we shall <strong>read the voltage</strong> from this LED GPIO with BL602’s Analog-to-Digital Converter (ADC).</p>
 <p>(Because LEDs will produce a current when exposed to light. <a href="https://wiki.analog.com/university/courses/electronics/electronics-lab-led-sensor?rev=1551786227">See this</a>)</p>
 <p>Let’s study the <strong>C Firmware for BL602 ADC</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/"><code>sdk_app_adc2</code></a></p>
@@ -1143,9 +1143,48 @@ bl602-sdk = &quot;0.0.6&quot;  # Rust Wrapper for BL602 IoT SDK: https://crates.
 <p>Here’s a sample project that calls the Rust Wrapper for GPIO…</p>
 <p><img src="https://lupyuen.github.io/images/adc-gpio.png" alt="Rust Wrapper for GPIO" /></p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_gpio/rust/src/lib.rs">(Source)</a></p>
+<h1 id="why-sunlight" class="section-header"><a href="#why-sunlight">9 Why Sunlight?</a></h1>
+<p><em>Why does our BL602 LED detect only sunlight? And not other kinds of light?</em></p>
+<p>We’re guessing because…</p>
+<ol>
+<li>
+<p>Sunlight is <strong>more intense</strong></p>
+<p>(And produces more current)</p>
+</li>
+<li>
+<p>We used the <strong>Blue LED</strong> on PineCone BL602</p>
+<p>(Which is sensitive to the spectrum of Blue - Indigo - Violet - Ultra-Violet (UV) light)</p>
+</li>
+</ol>
+<p><strong>LED Light Sensitivity</strong> is <a href="https://wiki.analog.com/university/courses/electronics/electronics-lab-led-sensor?rev=1551786227">explained in this article</a>…</p>
+<blockquote>
+<p>As a photodiode, an LED is sensitive to <strong>wavelengths equal to or shorter than the predominant wavelength it emits</strong>. A green LED would be sensitive to blue light and to some green light, but not to yellow or red light. </p>
+</blockquote>
+<p>Also according to <a href="https://twitter.com/SravanSenthiln1/status/1418044068567797765">Sravan Senthilnathan on Twitter</a>…</p>
+<blockquote>
+<p>This is possible due to the <strong>blue LED’s semiconductor bandgap</strong> being one appropriate to absorb the UV spectrum sun light. Here is more info about it:
+<a href="https://en.wikipedia.org/wiki/Aluminium_gallium_nitride">Aluminium gallium nitride on Wikipedia</a></p>
+</blockquote>
+<p>And according to <a href="https://www.linkedin.com/feed/update/urn:li:activity:6823802475091501056?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A6823802475091501056%2C6824139561749372928%29">Dan Lafleur on LinkedIn</a>…</p>
+<blockquote>
+<p>The technique I used to measure light level with an LED was to <strong>reverse bias the LED and then time the discharge</strong>. The light level is time based. The higher the light level the longer it takes to discharge the reversed bias junction.</p>
+</blockquote>
+<p><a href="https://www.sparkfun.com/news/2161">(More about measuring the Discharge Duration of an LED)</a></p>
+<p>Here’s <a href="https://www.linkedin.com/feed/update/urn:li:activity:6823802475091501056?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A6823802475091501056%2C6823807829040881664%29">another comment</a>…</p>
+<blockquote>
+<p>Yes, I have used LEDs as light sensors in class projects. The point is that they are not just emitters. A selection of red, green and blue LEDs can be used to build a crude <strong>colour detector</strong>. It works.</p>
+</blockquote>
+<p>That sounds interesting…</p>
+<p><em>PineCone BL602 has Red, Green and Blue LEDs. Can we use the other LEDs?</em></p>
+<p><img src="https://lupyuen.github.io/images/led-rgb.png" alt="PineCone RGB LED Schematic" /></p>
+<p><a href="https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf">(From PineCone BL602 Schematic)</a></p>
+<p>Unfortunately <strong>PineCone’s Red LED</strong> is connected on GPIO 17, which is not supported for ADC.</p>
+<p>But <strong>PineCone’s Green LED</strong> (GPIO 14) should work OK with ADC.</p>
+<p><strong>Exercise For The Reader:</strong> Use PineCone’s Green LED (instead of the Blue LED) as an ADC Light Sensor. What kind of light does it detect?</p>
+<p>(This article was inspired by the <strong>BBC micro:bit</strong>, which uses LED as a Light Sensor. <a href="https://learn.adafruit.com/micro-bit-lesson-4-sensing-light-and-temperature/built-in-light-sensor">See this</a>)</p>
 <p><img src="https://lupyuen.github.io/images/adc-pinebook.jpg" alt="Testing the improvised Light Sensor on PineCone BL602 with Pinebook Pro" /></p>
 <p><em>Testing the improvised Light Sensor on PineCone BL602 with Pinebook Pro</em></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">9 What’s Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">10 What’s Next</a></h1>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <p>TODO</p>
 <ul>
@@ -1167,7 +1206,7 @@ bl602-sdk = &quot;0.0.6&quot;  # Rust Wrapper for BL602 IoT SDK: https://crates.
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/adc.md"><code>lupyuen.github.io/src/adc.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">10 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">11 Notes</a></h1>
 <ol>
 <li>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1416608940876435462">this Twitter Thread on Rust Wrapper for BL602 IoT SDK</a></p>
@@ -1211,12 +1250,7 @@ bl602-sdk = &quot;0.0.6&quot;  # Rust Wrapper for BL602 IoT SDK: https://crates.
 </li>
 </ul>
 </li>
-<li>
-<p>This article was inspired by the <strong>BBC micro:bit</strong>, which uses LED as a Light Sensor. <a href="https://learn.adafruit.com/micro-bit-lesson-4-sensing-light-and-temperature/built-in-light-sensor">(See this)</a></p>
-</li>
 </ol>
-<h1 id="appendix-why-sunlight" class="section-header"><a href="#appendix-why-sunlight">11 Appendix: Why Sunlight?</a></h1>
-<p>TODO</p>
 <h1 id="appendix-call-c-functions-from-rust" class="section-header"><a href="#appendix-call-c-functions-from-rust">12 Appendix: Call C Functions from Rust</a></h1>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L64-L66"><code>lib.rs</code></a></p>
