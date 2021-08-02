@@ -1307,7 +1307,7 @@ struct adc_ctx *ctx = (struct adc_ctx *) ptr;
     <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">adc::adc_ctx</span>  <span class="comment">//  To DMA Context Pointer (adc_ctx *)</span>
   <span class="op">&gt;</span>(<span class="ident">ptr</span>)               <span class="comment">//  For this pointer</span>
 };</pre></div>
-<p><strong><code>transmute</code></strong> is the Rust Core Library Function that will convert our value (<code>ptr</code>) from one type to another…</p>
+<p><strong><code>transmute</code></strong> is the Rust Core Library Function that will cast our value (<code>ptr</code>) from one type to another…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="ident">transmute</span>::<span class="op">&lt;</span> <span class="ident">FromType</span> , <span class="ident">ToType</span> <span class="op">&gt;</span>( <span class="ident">ptr</span> )</pre></div>
@@ -1328,20 +1328,19 @@ struct adc_ctx *ctx = (struct adc_ctx *) ptr;
 <p><img src="https://lupyuen.github.io/images/adc-cast.png" alt="Casting a C Pointer in Rust" /></p>
 <h1 id="appendix-copy-memory-with-c-pointers" class="section-header"><a href="#appendix-copy-memory-with-c-pointers">14 Appendix: Copy Memory with C Pointers</a></h1>
 <p><em>How do we copy memory with C Pointers?</em></p>
-<p>Earlier we converted this C code…</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L101-L106"><code>demo.c</code></a></p>
+<p>Earlier we saw this code in our C Firmware: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L101-L106"><code>demo.c</code></a></p>
 <pre><code class="language-c">//  Array that will store ADC Samples
 uint32_t adc_data[ADC_SAMPLES];
 
-//  Copy the read ADC Samples to the static array
+//  Copy the read ADC Samples to the array
 memcpy(
   (uint8_t*) adc_data,             //  Destination
   (uint8_t*) (ctx-&gt;channel_data),  //  Source
   sizeof(adc_data)                 //  Size
 );  
 </code></pre>
-<p>To this Rust code…</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L142-L149"><code>lib.rs</code></a></p>
+<p>This code <strong>copies the ADC Samples</strong> from the DMA buffer to the array <code>adc_data</code>.</p>
+<p>Here’s the equivalent code in Rust: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L142-L149"><code>lib.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="comment">//  Array that will store the last 100 ADC Samples (`ADC_SAMPLES` is 100)</span>
@@ -1356,7 +1355,17 @@ memcpy(
     <span class="ident">adc_data</span>.<span class="ident">len</span>()          <span class="comment">//  Number of Items (each item is uint32 or 4 bytes)</span>
   );    
 }</pre></div>
-<p>TODO</p>
+<p>Note the differences…</p>
+<ol>
+<li>
+<p>For Rust the <strong>Source Pointer</strong> is the first parameter, followed by the <strong>Destination Pointer</strong></p>
+<p>(This is flipped from <code>memcpy</code> in C)</p>
+</li>
+<li>
+<p>For Rust the third parameter is the <strong>Number of Items</strong> to be copied. (100 items)</p>
+<p>(For <code>memcpy</code> the third parameter specifies the number of bytes to copy, i.e. 400 bytes)</p>
+</li>
+</ol>
 <p><img src="https://lupyuen.github.io/images/adc-copy.png" alt="Copy ADC data in Rust" /></p>
 <h1 id="appendix-generating-the-rust-wrapper-for-bl602-iot-sdk" class="section-header"><a href="#appendix-generating-the-rust-wrapper-for-bl602-iot-sdk">15 Appendix: Generating the Rust Wrapper for BL602 IoT SDK</a></h1>
 <p><em>How was the BL602 Rust Wrapper generated for publishing on <a href="https://crates.io/crates/bl602-sdk"><code>crates.io</code></a>?</em></p>
