@@ -894,7 +894,7 @@ Check out the complete build log here...
 
 -   [__Build Log for BL602 Rust Firmware__](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/run.sh#L135-L497)
 
-![Building the BL602 Rust Firmware](https://lupyuen.github.io/images/adc-build.png)
+![Building the BL602 Rust Firmware](https://lupyuen.github.io/images/adc-build.jpg)
 
 # Flash the BL602 Rust Firmware
 
