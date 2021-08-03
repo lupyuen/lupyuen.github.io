@@ -147,6 +147,13 @@
   ],
   "publications": [
     {
+      "name": "Rust on RISC-V BL602: Is It Sunny?",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2021-08-03",
+      "website": "https://lupyuen.github.io/articles/adc",
+      "summary": "How we create Rust Firmware that reads Analog Inputs... With the Analog-to-Digital Converter on RISC-V BL602"
+    },
+    {
       "name": "RISC-V BL706 Audio Video Board",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-07-14",
