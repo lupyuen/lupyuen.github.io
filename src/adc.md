@@ -395,9 +395,15 @@ static int set_adc_gain(uint32_t gain1, uint32_t gain2) {
 
 Before diving into the Rust Firmware, let's walk through the steps for __creating a BL602 Rust Project__ (like `sdk_app_rust_adc`)...
 
-1.  __Copy the Project Folder__ for an existing Rust Project, like `sdk_app_rust_gpio` ...
+1.  __Download the Source Code__ for BL602 IoT SDK...
 
-    -   [__Project Folder for `sdk_app_rust_gpio`__](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_gpio)
+    ```bash
+    git clone --recursive https://github.com/lupyuen/bl_iot_sdk
+    ```
+
+1.  __Copy the Project Folder__ for an existing Rust Project in __`bl_iot_sdk/customer_app`__, like `sdk_app_rust_gpio` ...
+
+    -   [__Project Folder for `sdk_app_rust_gpio`__](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust_gpio)
 
 1.  __Paste the Project Folder__ into __`bl_iot_sdk/customer_app`__ and rename it (like `sdk_app_rust_adc`)...
 

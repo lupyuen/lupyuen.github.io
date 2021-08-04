@@ -1931,9 +1931,15 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 Follow these steps to create a new BL602 Project (like `sdk_app_lorawan`)...
 
-1.  __Copy the Project Folder__ for an existing Project, like `sdk_app_lora`...
+1.  __Download the Source Code__ for BL602 IoT SDK...
 
-    -   [__Project Folder for `sdk_app_lora`__](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lora)
+    ```bash
+    git clone --recursive https://github.com/lupyuen/bl_iot_sdk
+    ```
+
+1.  __Copy the Project Folder__ for an existing Project in __`bl_iot_sdk/customer_app`__, like `sdk_app_blinky`...
+
+    -   [__Project Folder for `sdk_app_blinky`__](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_blinky)
 
 1.  __Paste the Project Folder__ into __`bl_iot_sdk/customer_app`__ and rename it (like `sdk_app_lorawan`)...
 
