@@ -36,7 +36,7 @@ Find out what's inside the __BL602 / BL604 System-on-a-Chip (SoC)__... And why i
 
 # Projects and Libraries on BL602
 
-How to create a simple __Blinky Project__ for BL602 and BL604.
+How to create a simple __Blinky Project__ for BL602 / BL604 and build the project.
 
 -   ["BL602 Blinky in C"](https://lupyuen.github.io/articles/rust#bl602-blinky-in-c)
 
@@ -45,6 +45,8 @@ How to create a simple __Blinky Project__ for BL602 and BL604.
 -   ["How To Create BL602 Libraries"](https://lupyuen.github.io/articles/lora2#appendix-how-to-create-bl602-libraries)
 
 -   ["How To Create BL602 Rust Projects"](https://lupyuen.github.io/articles/adc#create-a-bl602-rust-project)
+
+-   ["How To Build BL602 Rust Projects"](https://lupyuen.github.io/articles/adc#build-the-bl602-rust-firmware)
 
 ![Flashing Firmware to BL602](https://lupyuen.github.io/images/book-flash.jpg)
 
