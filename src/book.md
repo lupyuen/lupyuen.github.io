@@ -32,14 +32,6 @@ Find out what's inside the __BL602 / BL604 System-on-a-Chip (SoC)__... And why i
 
 -   ["Quick Peek of PineCone BL602 RISC-V Evaluation Board"](https://lupyuen.github.io/articles/pinecone)
 
-![Flashing Firmware to BL602](https://lupyuen.github.io/images/book-flash.jpg)
-
-# Flashing Firmware to BL602
-
-How we __flash firmware__ to BL602 and BL604 with __command-line tools__ on Linux, macOS and Windows.
-
--   ["Flashing Firmware to PineCone BL602"](https://lupyuen.github.io/articles/flash)
-
 ![Projects and Libraries on BL602](https://lupyuen.github.io/images/book-project.jpg)
 
 # Projects and Libraries on BL602
@@ -52,7 +44,17 @@ How to create a simple __Blinky Project__ for BL602 and BL604.
 
 -   ["How To Create BL602 Libraries"](https://lupyuen.github.io/articles/lora2#appendix-how-to-create-bl602-libraries)
 
--   ["Create a BL602 Rust Project"](https://lupyuen.github.io/articles/adc#create-a-bl602-rust-project)
+-   ["How To Create BL602 Rust Projects"](https://lupyuen.github.io/articles/adc#create-a-bl602-rust-project)
+
+![Flashing Firmware to BL602](https://lupyuen.github.io/images/book-flash.jpg)
+
+# Flashing Firmware to BL602
+
+How we __flash firmware__ to BL602 and BL604 with __command-line tools__ on Linux, macOS and Windows.
+
+-   ["Flashing Firmware to BL602"](https://lupyuen.github.io/articles/flash)
+
+-   ["Flashing Rust Firmware to BL602"](https://lupyuen.github.io/articles/adc#flash-the-bl602-rust-firmware)
 
 ![GPIO on BL602](https://lupyuen.github.io/images/book-led.jpg)
 
