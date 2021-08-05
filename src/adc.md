@@ -1378,6 +1378,10 @@ Today we've seen that it's viable to create __Rust Firmware__ for BL602... Just 
 
 Soon we shall test the Rust Firmware on [__PineDio Stack BL604 with LoRa SX1262__](https://www.pine64.org/2021/07/15/july-update/)... As we explore whether it's feasible to teach __Rust as a Safer Way__ to create firmware for BL602 and BL604.
 
+Also we might __Simulate BL602 Rust Firmware__ in a Web Browser with __WebAssembly__!
+
+-   [__BL602 / BL604 Simulator in WebAssembly__](https://github.com/lupyuen/bl602-simulator)
+
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
