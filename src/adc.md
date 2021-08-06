@@ -1384,6 +1384,8 @@ Also we might __Simulate BL602 Rust Firmware__ in a Web Browser with __WebAssemb
 
 -   [__Follow the updates on Twitter__](https://twitter.com/MisterTechBlog/status/1423169766080933891)
 
+    ![BL602 Simulator in WebAssembly](https://lupyuen.github.io/images/adc-simulator2.png)
+
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
