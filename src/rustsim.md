@@ -4,7 +4,13 @@
 
 _Can we run Rust Firmware for BL602 RISC-V SoC in a Web Browser... Simulated with WebAssembly?_
 
+One year ago I pondered... Can we make __Embedded Programming easier for Beginners__?
+
 ![Fornite vs Embedded Programming](https://lupyuen.github.io/images/cloud-title.jpg)
+
+[(Source)](https://lupyuen.github.io/pinetime-rust-mynewt/articles/cloud)
+
+TODO
 
 __Try it here__...
 
