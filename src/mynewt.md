@@ -26,6 +26,8 @@ It's a great way to learn the internals of BL602.  And this article will be a va
 
 [__UPDATE: Check out Apache NuttX operating system for BL602__](https://github.com/apache/incubator-nuttx/tree/master/boards/risc-v/bl602/bl602evb)
 
+[__UPDATE: Check out Zephyr for BL602__](https://github.com/nandojve/zephyr/blob/bouffalo/boards/riscv/dt_bl10_devkit/doc/index.rst)
+
 # Adapt from Existing RISC-V Port
 
 _What's the quickest way to port Mynewt to PineCone BL602?_

@@ -105,6 +105,8 @@ Let's find out how we made this work.
     
     (We'll save Zephyr for the bravest embedded professionals)
 
+    [__UPDATE: Check out Zephyr for BL602__](https://github.com/nandojve/zephyr/blob/bouffalo/boards/riscv/dt_bl10_devkit/doc/index.rst)
+
 >_Alrighty Nitpicky... We're left with Mynewt. But it's not as popular as Zephyr_
 
 -   __Mynewt__ was designed as a simple tiny OS... And that's OK!

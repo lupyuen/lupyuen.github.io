@@ -32,6 +32,8 @@ PineCone is based on the BL602 combo chipset made by [Nanjing-based Bouffalo Lab
 
     Rust runs perfectly fine on RISC-V microcontrollers. ([Here's the proof](https://lupyuen.github.io/articles/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v))
 
+    [__UPDATE: Check out Zephyr for BL602__](https://github.com/nandojve/zephyr/blob/bouffalo/boards/riscv/dt_bl10_devkit/doc/index.rst)
+
 It's great that Pine64 is reaching out to the Open Source Community through the [PineCone Nutcracker initiative](https://www.pine64.org/2020/10/28/nutcracker-challenge-blob-free-wifi-ble/)... Because it takes A Humongous Village to get BL602 ready for real-world gadgets.
 
 ## BL602 vs ESP32
@@ -93,7 +95,9 @@ Let's compare BL602 with the two most popular models of 32-bit RISC-V microcontr
     -   Supported by [FreeRTOS + AliOS](https://github.com/alibaba/AliOS-Things)
     -   __Not Supported by PlatformIO, Mynewt, RIOT and Zephyr__
 
-[__UPDATE: Check out Apache NuttX operating system for BL602__](https://github.com/apache/incubator-nuttx/tree/master/boards/risc-v/bl602/bl602evb)
+    [__UPDATE: Check out Zephyr for BL602__](https://github.com/nandojve/zephyr/blob/bouffalo/boards/riscv/dt_bl10_devkit/doc/index.rst)
+
+    [__UPDATE: Check out Apache NuttX operating system for BL602__](https://github.com/apache/incubator-nuttx/tree/master/boards/risc-v/bl602/bl602evb)
 
 As we can see, firmware support is not so great for newer RISC-V microcontrollers.
 
@@ -120,6 +124,8 @@ These operating systems expose a high-level API for various Peripherals (Timers,
 But first we need to port Mynewt, RIOT and Zephyr to BL602. 
 
 The [__PineCone Nutcracker__](https://www.pine64.org/2020/10/28/nutcracker-challenge-blob-free-wifi-ble/) initiative helps to accelerate the porting process. We'll pool together the necessary skills and software from the Open Source Community, to make this work.
+
+[__UPDATE: Check out Zephyr for BL602__](https://github.com/nandojve/zephyr/blob/bouffalo/boards/riscv/dt_bl10_devkit/doc/index.rst)
 
 _Is there hope for Mynewt / RIOT / Zephyr on BL602?_
 

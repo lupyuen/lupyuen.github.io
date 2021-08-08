@@ -50,6 +50,8 @@ Today we shall use the __Low Level I2C HAL [`bl_i2c.c`](https://github.com/lupyu
 
     In the next article we'll port the Low Level I2C HAL to Mynewt. And hopefully the PineCone BL602 Community will port it to Arduino, RIOT, Zephyr, ...
 
+    [__UPDATE: Check out Zephyr for BL602__](https://github.com/nandojve/zephyr/blob/bouffalo/boards/riscv/dt_bl10_devkit/doc/index.rst)
+
 -   But the Low Level I2C HAL is __not functionally complete__.
 
     (Yes we said that BL602 will _talk to I2C Sensors today_... Though we won't be able to _use the sensor data meaningfully yet_)
