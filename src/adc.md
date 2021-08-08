@@ -1380,6 +1380,8 @@ Soon we shall test the Rust Firmware on [__PineDio Stack BL604 with LoRa SX1262_
 
 Also we might __Simulate BL602 Rust Firmware__ in a Web Browser with __WebAssembly__!
 
+-   [__"Rust on RISC-V BL602: Simulated with WebAssembly"__](https://lupyuen.github.io/articles/rustsim)
+
 -   [__BL602 / BL604 Simulator in WebAssembly__](https://github.com/lupyuen/bl602-simulator)
 
 -   [__Follow the updates on Twitter__](https://twitter.com/MisterTechBlog/status/1423169766080933891)
