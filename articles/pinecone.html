@@ -110,6 +110,7 @@
 <p><strong>CPU is based on RISC-V, not Arm</strong>: Yep this scares most people, because BL602 will NOT run code compiled for Arm processors. Instead we need to use the <a href="https://xpack.github.io/riscv-none-embed-gcc/">32-bit RISC-V version of the GCC compiler</a> to recompile our programs.</p>
 <p><a href="https://github.com/alibaba/AliOS-Things">FreeRTOS + AliOS</a> has been ported to BL602. (<a href="https://github.com/pine64/bl_iot_sdk/tree/master/components/bl602">More details</a>) But other Real Time Operating Systems (like <a href="https://www.zephyrproject.org/">Zephyr</a>, <a href="https://www.riot-os.org/">RIOT</a> and <a href="https://mynewt.apache.org/">Mynewt</a>) have been slow to adopt RISC-V. (We’ll learn why in a while)</p>
 <p>Rust runs perfectly fine on RISC-V microcontrollers. (<a href="https://lupyuen.github.io/articles/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v">Here’s the proof</a>)</p>
+<p><a href="https://github.com/nandojve/zephyr/blob/bouffalo/boards/riscv/dt_bl10_devkit/doc/index.rst"><strong>UPDATE: Check out Zephyr for BL602</strong></a></p>
 </li>
 </ol>
 <p>It’s great that Pine64 is reaching out to the Open Source Community through the <a href="https://www.pine64.org/2020/10/28/nutcracker-challenge-blob-free-wifi-ble/">PineCone Nutcracker initiative</a>… Because it takes A Humongous Village to get BL602 ready for real-world gadgets.</p>
@@ -171,9 +172,10 @@
 <li>Supported by <a href="https://github.com/alibaba/AliOS-Things">FreeRTOS + AliOS</a></li>
 <li><strong>Not Supported by PlatformIO, Mynewt, RIOT and Zephyr</strong></li>
 </ul>
+<p><a href="https://github.com/nandojve/zephyr/blob/bouffalo/boards/riscv/dt_bl10_devkit/doc/index.rst"><strong>UPDATE: Check out Zephyr for BL602</strong></a></p>
+<p><a href="https://github.com/apache/incubator-nuttx/tree/master/boards/risc-v/bl602/bl602evb"><strong>UPDATE: Check out Apache NuttX operating system for BL602</strong></a></p>
 </li>
 </ol>
-<p><a href="https://github.com/apache/incubator-nuttx/tree/master/boards/risc-v/bl602/bl602evb"><strong>UPDATE: Check out Apache NuttX operating system for BL602</strong></a></p>
 <p>As we can see, firmware support is not so great for newer RISC-V microcontrollers.</p>
 <p>Firmware created for Pinecil will NOT run on PineCone… Even the simplest firmware for blinking the LED!</p>
 <h2 id="hardware-abstraction-layer" class="section-header"><a href="#hardware-abstraction-layer">2.2 Hardware Abstraction Layer</a></h2>
@@ -187,6 +189,7 @@
 <p>These operating systems expose a high-level API for various Peripherals (Timers, GPIO, I2C, SPI, …) that works across multiple microcontrollers (for both Arm and RISC-V).</p>
 <p>But first we need to port Mynewt, RIOT and Zephyr to BL602. </p>
 <p>The <a href="https://www.pine64.org/2020/10/28/nutcracker-challenge-blob-free-wifi-ble/"><strong>PineCone Nutcracker</strong></a> initiative helps to accelerate the porting process. We’ll pool together the necessary skills and software from the Open Source Community, to make this work.</p>
+<p><a href="https://github.com/nandojve/zephyr/blob/bouffalo/boards/riscv/dt_bl10_devkit/doc/index.rst"><strong>UPDATE: Check out Zephyr for BL602</strong></a></p>
 <p><em>Is there hope for Mynewt / RIOT / Zephyr on BL602?</em></p>
 <p>I shall be porting Mynewt + Rust to BL602, and documenting the porting process. </p>
 <p>Why? Because it’s an educational exercise that helps us better understand the BL602 internals.</p>
