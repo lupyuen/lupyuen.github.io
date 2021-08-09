@@ -75,7 +75,7 @@ To see the blinking BL602 LED, we...
 
 1.  __Build__ this Rust Firmware
 
-    [(`cargo build` with a Custom Rust Target)](https://lupyuen.github.io/articles/adc#build-the-bl602-rust-firmware)
+    [("`cargo build`" with a Custom Rust Target)](https://lupyuen.github.io/articles/adc#build-the-bl602-rust-firmware)
 
 1.  __Link__ it with the BL602 IoT SDK
 
@@ -122,9 +122,11 @@ This produces the JavaScript and WebAssembly files __`wasm.js` and `wasm.wasm`__
 
 _What's inside the Makefile?_
 
-1.  __Build__ the Rust Firmware for WebAssembly
+Our [Makefile](https://github.com/lupyuen/bl602-simulator/blob/main/Makefile) does the following...
 
-    (`cargo build` for target `wasm32-unknown-emscripten`)
+1.  __Compile__ the Rust Firmware into WebAssembly
+
+    ("`cargo build`" for target "`wasm32-unknown-emscripten`")
 
 1.  __Link__ the Rust Firmware with the Emscripten WebAssembly Runtime
 
@@ -132,13 +134,32 @@ _What's inside the Makefile?_
 
 Let's go into the details...
 
-## Build the Rust Firmware for WebAssembly
+## Compile Rust Firmware into WebAssembly
 
-TODO
+To compile our __Rust Firmware into WebAssembly__, our [Makefile](https://github.com/lupyuen/bl602-simulator/blob/main/Makefile) calls this command...
+
+```bash
+# Compile the Rust Firmware and Rust Simulator Library into WebAssembly
+cargo build --target wasm32-unknown-emscripten
+```
+
+This compiles two __Rust Projects__...
+
+1.  __Rust Firmware:__ 
+
+    [`bl602-simulator/sdk_app_rust_gpio/rust`](https://github.com/lupyuen/bl602-simulator/tree/main/sdk_app_rust_gpio)
+
+    (The Rust Firmware we've seen earlier. Should be portable across BL602 and WebAssembly)
+
+1.  __Rust Simulator Library:__ 
+
+    [`bl602-simulator/bl602-simulator`](https://github.com/lupyuen/bl602-simulator/tree/main/bl602-simulator)
+
+    (Simulates the BL602 IoT SDK. We'll see this in a while)
+
+"`cargo build`" downloads the [__BL602 Rust Wrapper__](https://crates.io/crates/bl602-sdk) automagically from `crates.io` ...
 
 ```text
-# Build the Rust Firmware and Rust Simulator Library
-cargo build --target wasm32-unknown-emscripten
    Compiling proc-macro2 v1.0.28
    Compiling unicode-xid v0.2.2
    Compiling syn v1.0.74
@@ -155,12 +176,56 @@ cargo build --target wasm32-unknown-emscripten
    Compiling quote v1.0.9
    Compiling bl602-macros v0.0.2
    Compiling bl602-sdk v0.0.6
-   Compiling app v0.0.1 (/mnt/c/pinecone/bl602-simulator/sdk_app_rust_gpio/rust)
-   Compiling bl602-simulator v0.0.1 (/mnt/c/pinecone/bl602-simulator/bl602-simulator)
+   Compiling app v0.0.1 (bl602-simulator/sdk_app_rust_gpio/rust)
+   Compiling bl602-simulator v0.0.1 (bl602-simulator/bl602-simulator)
     Finished dev [unoptimized + debuginfo] target(s) in 1m 43s
 ```
 
-## Link the Rust Firmware with Emscripten
+(Great that BL602 Rust Wrapper builds OK for WebAssembly!)
+
+However our Rust Firmware needs a slight tweak at the top to __build correctly__ under WebAssembly: [`sdk_app_rust_gpio/lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/main/sdk_app_rust_gpio/rust/src/lib.rs#L3-L7)
+
+```rust
+// TODO: For BL602:
+// #![no_std]  //  Use the Rust Core Library instead of the Rust Standard Library, which is not compatible with embedded systems
+
+// TODO: For WebAssembly:
+#![feature(libc)]  //  Allow C Standard Library, which will be mapped by emscripten to JavaScript
+```
+
+We change __`no_std`__ to __`feature(libc)`__ for the build to succeed.
+
+Probably because the Emscripten Runtime behaves more like the __Standard C Runtime__.
+
+(Someday we might use [__`build.rs`__](https://doc.rust-lang.org/cargo/reference/build-scripts.html) to apply this mod automatically during compilation)
+
+_What are the outputs for "`cargo build`"?_
+
+"`cargo build`" produces two __Static Libraries__ (Rust Firmware and Rust Simulator)...
+
+```text
+target/wasm32-unknown-emscripten/debug/libapp.a
+target/wasm32-unknown-emscripten/debug/libbl602_simulator.a
+```
+
+Which we shall link with Emscripten's WebAssembly Runtime.
+
+_Why did "`cargo build`" emit Static Libraries? Instead of the default Rust Libraries?_
+
+Because we specified __`staticlib`__ in `Cargo.toml` for the [Rust Firmware](https://github.com/lupyuen/bl602-simulator/blob/main/sdk_app_rust_gpio/rust/Cargo.toml) and [Rust Simulator](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/Cargo.toml)...
+
+```text
+# Build this module as a Static Library.
+[lib]
+name       = "app"          # Output will be named `libapp.a`
+crate-type = ["staticlib"]  # And will be a Static Library
+```
+
+__Rust Libraries won't link__ with Emscripten's WebAssembly Runtime. 
+
+That's why we switched to __Static Libraries__.
+
+## Link Rust Firmware with Emscripten
 
 TODO
 
