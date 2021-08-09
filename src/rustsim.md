@@ -2,21 +2,31 @@
 
 📝 _16 Aug 2021_
 
-_Can we run Rust Firmware for BL602 RISC-V SoC in a Web Browser... Simulated with WebAssembly?_
-
 One year ago I pondered... Can we make __Embedded Programming easier for Beginners__?
 
 ![Fornite vs Embedded Programming](https://lupyuen.github.io/images/cloud-title.jpg)
 
 [(Source)](https://lupyuen.github.io/pinetime-rust-mynewt/articles/cloud)
 
-TODO
+_Maybe we need an easier way to build, test and debug our firmware..._
 
-__Try it here__...
+_Without using actual embedded hardware?_
 
--   [__BL602 / BL604 Simulator in WebAssembly__](https://github.com/lupyuen/bl602-simulator)
+Today we shall explore whether it's feasible to run __Rust Firmware for BL602__ RISC-V SoC in a __Web Browser__...
+
+By simulating the BL602 SoC with __WebAssembly__!
+
+Try it here...
+
+-   [__BL602 Simulator in WebAssembly__](https://github.com/lupyuen/bl602-simulator)
 
 ![BL602 Simulator in WebAssembly](https://lupyuen.github.io/images/adc-simulator2.png)
+
+# BL602 Simulator in WebAssembly
+
+TODO
+
+-   [__BL602 / BL604 Simulator in WebAssembly__](https://github.com/lupyuen/bl602-simulator)
 
 Let's __Simulate BL602 / BL604 Rust Firmware__ in a Web Browser with __WebAssembly__...
 
@@ -89,6 +99,37 @@ TODO
 # Build BL602 Firmware for WebAssembly
 
 TODO
+
+To compile BL602 Rust Firmware into WebAssembly...
+
+```bash
+# Configure emscripten. See https://emscripten.org/docs/getting_started/downloads.html
+# For Windows: emsdk\emsdk_env.bat
+. ~/emsdk/emsdk_env.sh
+
+# Download source code
+git clone --recursive https://github.com/lupyuen/bl602-simulator
+cd bl602-simulator
+
+# Compile the Rust Firmware, Rust Simulator Library and link with Emscripten
+make
+
+# Produces outputs in the `docs` folder: wasm.js, wasm.wasm
+```
+
+# Run BL602 Firmware in Simulator
+
+TODO
+
+To run the BL602 Simulator...
+
+1.  Start a __Local Web Server__
+
+    [(Like Web Server for Chrome)](https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb/overview)
+
+1.  Browse to __`docs/wasm.html`__
+
+1.  Click __`Run`__
 
 # JSON Stream of Simulation Events
 
