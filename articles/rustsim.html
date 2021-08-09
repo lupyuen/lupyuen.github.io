@@ -65,24 +65,33 @@
 
     <h1 class="title">Rust on RISC-V BL602: Simulated with WebAssembly</h1>
     <nav id="TOC"><ul>
-<li><a href="#rust-firmware-for-bl602">1 Rust Firmware for BL602</a><ul></ul></li>
-<li><a href="#build-bl602-firmware-for-webassembly">2 Build BL602 Firmware for WebAssembly</a><ul></ul></li>
-<li><a href="#json-stream-of-simulation-events">3 JSON Stream of Simulation Events</a><ul></ul></li>
-<li><a href="#intercept-calls-to-bl602-iot-sdk">4 Intercept Calls to BL602 IoT SDK</a><ul></ul></li>
-<li><a href="#check-for-api-errors">5 Check for API Errors</a><ul></ul></li>
-<li><a href="#html--javascript-ui">6 HTML + JavaScript UI</a><ul></ul></li>
-<li><a href="#whats-next">7 What’s Next</a><ul></ul></li>
-<li><a href="#notes">8 Notes</a><ul></ul></li></ul></nav><p>📝 <em>16 Aug 2021</em></p>
-<p><em>Can we run Rust Firmware for BL602 RISC-V SoC in a Web Browser… Simulated with WebAssembly?</em></p>
+<li><a href="#bl602-simulator-in-webassembly">1 BL602 Simulator in WebAssembly</a><ul></ul></li>
+<li><a href="#rust-firmware-for-bl602">2 Rust Firmware for BL602</a><ul></ul></li>
+<li><a href="#build-bl602-firmware-for-webassembly">3 Build BL602 Firmware for WebAssembly</a><ul></ul></li>
+<li><a href="#run-bl602-firmware-in-simulator">4 Run BL602 Firmware in Simulator</a><ul></ul></li>
+<li><a href="#json-stream-of-simulation-events">5 JSON Stream of Simulation Events</a><ul></ul></li>
+<li><a href="#intercept-calls-to-bl602-iot-sdk">6 Intercept Calls to BL602 IoT SDK</a><ul></ul></li>
+<li><a href="#check-for-api-errors">7 Check for API Errors</a><ul></ul></li>
+<li><a href="#html--javascript-ui">8 HTML + JavaScript UI</a><ul></ul></li>
+<li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
+<li><a href="#notes">10 Notes</a><ul></ul></li></ul></nav><p>📝 <em>16 Aug 2021</em></p>
 <p>One year ago I pondered… Can we make <strong>Embedded Programming easier for Beginners</strong>?</p>
 <p><img src="https://lupyuen.github.io/images/cloud-title.jpg" alt="Fornite vs Embedded Programming" /></p>
 <p><a href="https://lupyuen.github.io/pinetime-rust-mynewt/articles/cloud">(Source)</a></p>
+<p><em>Maybe we need an easier way to build, test and debug our firmware…</em></p>
+<p><em>Without using actual embedded hardware?</em></p>
+<p>Today we shall explore whether it’s feasible to run <strong>Rust Firmware for BL602</strong> RISC-V SoC in a <strong>Web Browser</strong>…</p>
+<p>By simulating the BL602 SoC with <strong>WebAssembly</strong>!</p>
+<p>Try it here…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/bl602-simulator"><strong>BL602 Simulator in WebAssembly</strong></a></li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/adc-simulator2.png" alt="BL602 Simulator in WebAssembly" /></p>
+<h1 id="bl602-simulator-in-webassembly" class="section-header"><a href="#bl602-simulator-in-webassembly">1 BL602 Simulator in WebAssembly</a></h1>
 <p>TODO</p>
-<p><strong>Try it here</strong>…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/bl602-simulator"><strong>BL602 / BL604 Simulator in WebAssembly</strong></a></li>
 </ul>
-<p><img src="https://lupyuen.github.io/images/adc-simulator2.png" alt="BL602 Simulator in WebAssembly" /></p>
 <p>Let’s <strong>Simulate BL602 / BL604 Rust Firmware</strong> in a Web Browser with <strong>WebAssembly</strong>…</p>
 <ol>
 <li>
@@ -163,19 +172,48 @@
 <p>And call the <strong>Stub Functions</strong></p>
 </li>
 </ul>
-<h1 id="rust-firmware-for-bl602" class="section-header"><a href="#rust-firmware-for-bl602">1 Rust Firmware for BL602</a></h1>
+<h1 id="rust-firmware-for-bl602" class="section-header"><a href="#rust-firmware-for-bl602">2 Rust Firmware for BL602</a></h1>
 <p>TODO</p>
-<h1 id="build-bl602-firmware-for-webassembly" class="section-header"><a href="#build-bl602-firmware-for-webassembly">2 Build BL602 Firmware for WebAssembly</a></h1>
+<h1 id="build-bl602-firmware-for-webassembly" class="section-header"><a href="#build-bl602-firmware-for-webassembly">3 Build BL602 Firmware for WebAssembly</a></h1>
 <p>TODO</p>
-<h1 id="json-stream-of-simulation-events" class="section-header"><a href="#json-stream-of-simulation-events">3 JSON Stream of Simulation Events</a></h1>
+<p>To compile BL602 Rust Firmware into WebAssembly…</p>
+<pre><code class="language-bash"># Configure emscripten. See https://emscripten.org/docs/getting_started/downloads.html
+# For Windows: emsdk\emsdk_env.bat
+. ~/emsdk/emsdk_env.sh
+
+# Download source code
+git clone --recursive https://github.com/lupyuen/bl602-simulator
+cd bl602-simulator
+
+# Compile the Rust Firmware, Rust Simulator Library and link with Emscripten
+make
+
+# Produces outputs in the `docs` folder: wasm.js, wasm.wasm
+</code></pre>
+<h1 id="run-bl602-firmware-in-simulator" class="section-header"><a href="#run-bl602-firmware-in-simulator">4 Run BL602 Firmware in Simulator</a></h1>
 <p>TODO</p>
-<h1 id="intercept-calls-to-bl602-iot-sdk" class="section-header"><a href="#intercept-calls-to-bl602-iot-sdk">4 Intercept Calls to BL602 IoT SDK</a></h1>
+<p>To run the BL602 Simulator…</p>
+<ol>
+<li>
+<p>Start a <strong>Local Web Server</strong></p>
+<p><a href="https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb/overview">(Like Web Server for Chrome)</a></p>
+</li>
+<li>
+<p>Browse to <strong><code>docs/wasm.html</code></strong></p>
+</li>
+<li>
+<p>Click <strong><code>Run</code></strong></p>
+</li>
+</ol>
+<h1 id="json-stream-of-simulation-events" class="section-header"><a href="#json-stream-of-simulation-events">5 JSON Stream of Simulation Events</a></h1>
 <p>TODO</p>
-<h1 id="check-for-api-errors" class="section-header"><a href="#check-for-api-errors">5 Check for API Errors</a></h1>
+<h1 id="intercept-calls-to-bl602-iot-sdk" class="section-header"><a href="#intercept-calls-to-bl602-iot-sdk">6 Intercept Calls to BL602 IoT SDK</a></h1>
 <p>TODO</p>
-<h1 id="html--javascript-ui" class="section-header"><a href="#html--javascript-ui">6 HTML + JavaScript UI</a></h1>
+<h1 id="check-for-api-errors" class="section-header"><a href="#check-for-api-errors">7 Check for API Errors</a></h1>
 <p>TODO</p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">7 What’s Next</a></h1>
+<h1 id="html--javascript-ui" class="section-header"><a href="#html--javascript-ui">8 HTML + JavaScript UI</a></h1>
+<p>TODO</p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">9 What’s Next</a></h1>
 <p>TODO</p>
 <p>Soon we shall test the Rust Firmware on <a href="https://www.pine64.org/2021/07/15/july-update/"><strong>PineDio Stack BL604 with LoRa SX1262</strong></a>… As we explore whether it’s feasible to teach <strong>Rust as a Safer Way</strong> to create firmware for BL602 and BL604.</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
@@ -195,7 +233,7 @@
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/rustsim.md"><code>lupyuen.github.io/src/rustsim.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">8 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">10 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1423169766080933891">this Twitter Thread</a></li>
 </ol>
