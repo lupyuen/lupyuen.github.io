@@ -232,11 +232,17 @@ TODO
 ```text
 # Link the Rust Firmware and Rust Simulator Library with Emscripten
 emcc -o wasm/wasm.html \
--Wl,--start-group \
-target/wasm32-unknown-emscripten/debug/libapp.a target/wasm32-unknown-emscripten/debug/libbl602_simulator.a \
-wasm/wasm.o \
--Wl,--end-group \
--g -I include -s WASM=1 -s "EXPORTED_FUNCTIONS=[ '_rust_main', '_clear_simulation_events', '_get_simulation_events' ]" -s "EXTRA_EXPORTED_RUNTIME_METHODS=[ 'cwrap', 'allocate', 'intArrayFromString', 'UTF8ToString' ]" \
+  -Wl,--start-group \
+  target/wasm32-unknown-emscripten/debug/libapp.a \
+  target/wasm32-unknown-emscripten/debug/libbl602_simulator.a \
+  wasm/wasm.o \
+  -Wl,--end-group \
+  -g \
+  -I include \
+  -s WASM=1 \
+  -s DISABLE_EXCEPTION_CATCHING=0 \
+  -s "EXPORTED_FUNCTIONS=[ '_rust_main', '_clear_simulation_events', '_get_simulation_events' ]" \
+  -s "EXTRA_EXPORTED_RUNTIME_METHODS=[ 'cwrap', 'allocate', 'intArrayFromString', 'UTF8ToString' ]"
 ```
 
 ## Copy the WebAssembly outputs
@@ -292,6 +298,12 @@ Add a __Simulator UI (HTML + JavaScript)__ to simulate a __PineCone BL602__ or _
 (Without the Blockly part, since we can't compile Rust in a Web Browser)
 
 ![Handling BL602 Simulator Events](https://lupyuen.github.io/images/rust-simulator.png)
+
+# PineDio Stack BL604
+
+_Simulating a plain BL602 board (like PineCone BL602) is pointless, innit?_
+
+TODO
 
 # BL602 Simulator in WebAssembly
 
