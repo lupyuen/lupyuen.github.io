@@ -273,12 +273,23 @@ emcc -o wasm/wasm.html \
   -s &quot;EXPORTED_FUNCTIONS=[ '_rust_main', '_clear_simulation_events', '_get_simulation_events' ]&quot; \
   -s &quot;EXTRA_EXPORTED_RUNTIME_METHODS=[ 'cwrap', 'allocate', 'intArrayFromString', 'UTF8ToString' ]&quot;
 </code></pre>
+<p><a href="https://emscripten.org/docs/getting_started/downloads.html">How to install Emscripten</a></p>
 <p><em>What are the <code>EXPORTED_FUNCTIONS</code>?</em></p>
+<ul>
+<li>
+<p><code>_rust_main</code></p>
 <p>TODO</p>
-<p>‘_rust_main’, ‘_clear_simulation_events’, ‘_get_simulation_events’</p>
+</li>
+<li>
+<p><code>_clear_simulation_events</code>, <code>_get_simulation_events</code></p>
+<p>TODO</p>
+</li>
+</ul>
 <p><em>What are the <code>EXTRA_EXPORTED_RUNTIME_METHODS</code>?</em></p>
-<p>TODO</p>
-<p>‘cwrap’, ‘allocate’, ‘intArrayFromString’, ‘UTF8ToString’</p>
+<p>These Emscripten Runtime Functions will be exported to JavaScript to allow <strong>strings to be passed</strong> between JavaScript and our Rust Firmware…</p>
+<ul>
+<li><code>cwrap</code>, <code>allocate</code>, <code>intArrayFromString</code>, <code>UTF8ToString</code></li>
+</ul>
 <h2 id="copy-the-webassembly-outputs" class="section-header"><a href="#copy-the-webassembly-outputs">2.3 Copy the WebAssembly outputs</a></h2>
 <p>TODO</p>
 <p><em>What are the outputs emitted by Emscripten?</em></p>
@@ -330,6 +341,7 @@ cp wasm/wasm.wasm docs
 <h1 id="pinedio-stack-bl604" class="section-header"><a href="#pinedio-stack-bl604">8 PineDio Stack BL604</a></h1>
 <p><em>Simulating a plain BL602 board (like PineCone BL602) is pointless, innit?</em></p>
 <p>TODO</p>
+<p>Works on plain old Windows too</p>
 <h1 id="bl602-simulator-in-webassembly" class="section-header"><a href="#bl602-simulator-in-webassembly">9 BL602 Simulator in WebAssembly</a></h1>
 <p>TODO</p>
 <ul>
