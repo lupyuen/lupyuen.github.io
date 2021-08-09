@@ -16,11 +16,54 @@ Today we shall explore whether it's feasible to run __Rust Firmware for BL602__ 
 
 By simulating the BL602 SoC with __WebAssembly__!
 
-Try it here...
+Read on to find how we created this bare-bones BL602 Simulator in WebAssembly...
 
 -   [__BL602 Simulator in WebAssembly__](https://github.com/lupyuen/bl602-simulator)
 
 ![BL602 Simulator in WebAssembly](https://lupyuen.github.io/images/adc-simulator2.png)
+
+# Rust Firmware for BL602
+
+We start with this __BL602 Rust Firmware `sdk_app_rust_gpio`__ that blinks the LED: [`sdk_app_rust_gpio/lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/main/sdk_app_rust_gpio/rust/src/lib.rs)
+
+```rust
+/// This function will be called by the BL602 command-line interface
+#[no_mangle]              //  Don't mangle the function name
+extern "C" fn rust_main(  //  Declare `extern "C"` because it will be called by BL602 firmware
+  _result: *mut u8,        //  Result to be returned to command-line interface (char *)
+  _len:  i32,              //  Size of result buffer (int)
+  _argc: i32,              //  Number of command line args (int)
+  _argv: *const *const u8  //  Array of command line args (char **)
+) {
+  //  Show a message on the serial console
+  puts("Hello from Rust!");
+
+  //  PineCone Blue LED is connected on BL602 GPIO 11
+  const LED_GPIO: u8 = 11;  //  `u8` is 8-bit unsigned integer
+
+  //  Configure the LED GPIO for output (instead of input)
+  gpio::enable_output(LED_GPIO, 0, 0)      //  No pullup, no pulldown
+    .expect("GPIO enable output failed");  //  Halt on error
+
+  //  Blink the LED 5 times
+  for i in 0..10 {  //  Iterates 10 times from 0 to 9 (`..` excludes 10)
+
+    //  Toggle the LED GPIO between 0 (on) and 1 (off)
+    gpio::output_set(  //  Set the GPIO output (from BL602 GPIO HAL)
+      LED_GPIO,        //  GPIO pin number
+      i % 2            //  0 for low, 1 for high
+    ).expect("GPIO output failed");  //  Halt on error
+
+    //  Sleep 1 second
+    time_delay(                 //  Sleep by number of ticks (from NimBLE Porting Layer)
+      time_ms_to_ticks32(1000)  //  Convert 1,000 milliseconds to ticks (from NimBLE Porting Layer)
+    );
+  }
+  //  Return to the BL602 command-line interface
+}
+```
+
+TODO
 
 # BL602 Simulator in WebAssembly
 
@@ -91,10 +134,6 @@ We might be able to __Simulate C Firmware__ too, if we...
 - Tweak the BL602 C Firmware to __build with Emscripten__
 
 - And call the __Stub Functions__
-
-# Rust Firmware for BL602
-
-TODO
 
 # Build BL602 Firmware for WebAssembly
 
