@@ -211,26 +211,14 @@ cargo build --target wasm32-unknown-emscripten
 </li>
 </ol>
 <p>“<code>cargo build</code>” downloads the <a href="https://crates.io/crates/bl602-sdk"><strong>BL602 Rust Wrapper</strong></a> automagically from <code>crates.io</code> …</p>
-<pre><code class="language-text">Compiling proc-macro2 v1.0.28
-Compiling unicode-xid v0.2.2
-Compiling syn v1.0.74
-Compiling memchr v2.4.0
-Compiling serde_derive v1.0.127
-Compiling cty v0.2.1
-Compiling serde v1.0.127
-Compiling ryu v1.0.5
-Compiling heapless v0.7.4
-Compiling rustc-serialize v0.3.24
-Compiling lazy_static v1.4.0
-Compiling serde_json v1.0.66
-Compiling cstr_core v0.2.4
-Compiling quote v1.0.9
+<pre><code class="language-text">...
 Compiling bl602-macros v0.0.2
 Compiling bl602-sdk v0.0.6
 Compiling app v0.0.1 (bl602-simulator/sdk_app_rust_gpio/rust)
 Compiling bl602-simulator v0.0.1 (bl602-simulator/bl602-simulator)
 Finished dev [unoptimized + debuginfo] target(s) in 1m 43s
 </code></pre>
+<p><a href="https://github.com/lupyuen/bl602-simulator#build-log">See the complete log</a></p>
 <p>(Great that BL602 Rust Wrapper builds OK for WebAssembly! Yep our WSL machine is slow)</p>
 <p>However our Rust Firmware needs a slight tweak at the top to <strong>build correctly</strong> under WebAssembly: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/sdk_app_rust_gpio/rust/src/lib.rs#L3-L7"><code>sdk_app_rust_gpio/lib.rs</code></a></p>
 
@@ -259,7 +247,18 @@ crate-type = [&quot;staticlib&quot;]  # And will be a Static Library
 <p><strong>Rust Libraries won’t link</strong> with Emscripten’s WebAssembly Runtime. </p>
 <p>That’s why we switched to <strong>Static Libraries</strong>.</p>
 <h2 id="link-rust-firmware-with-emscripten" class="section-header"><a href="#link-rust-firmware-with-emscripten">2.2 Link Rust Firmware with Emscripten</a></h2>
-<p>TODO</p>
+<p>We’re nearly ready to run our Rust Firmware in WebAssembly! We need a <strong>WebAssembly Runtime</strong> that will…</p>
+<ol>
+<li>
+<p>Let our Rust Firmware interact with <strong>HTML and JavaScript</strong></p>
+<p>(To render the Web Browser UI)</p>
+</li>
+<li>
+<p>And <strong>print messages</strong>, errors and exceptions to the Web Browser</p>
+</li>
+</ol>
+<p>We’ll use the <a href="https://emscripten.org/"><strong>Emscripten WebAssembly Runtime</strong></a>.</p>
+<p>Our <a href="https://github.com/lupyuen/bl602-simulator/blob/main/Makefile">Makefile</a> links our <strong>Rust Firmware with Emscripten</strong> like so…</p>
 <pre><code class="language-text"># Link the Rust Firmware and Rust Simulator Library with Emscripten
 emcc -o wasm/wasm.html \
   -Wl,--start-group \
@@ -274,12 +273,26 @@ emcc -o wasm/wasm.html \
   -s &quot;EXPORTED_FUNCTIONS=[ '_rust_main', '_clear_simulation_events', '_get_simulation_events' ]&quot; \
   -s &quot;EXTRA_EXPORTED_RUNTIME_METHODS=[ 'cwrap', 'allocate', 'intArrayFromString', 'UTF8ToString' ]&quot;
 </code></pre>
+<p><em>What are the <code>EXPORTED_FUNCTIONS</code>?</em></p>
+<p>TODO</p>
+<p>‘_rust_main’, ‘_clear_simulation_events’, ‘_get_simulation_events’</p>
+<p><em>What are the <code>EXTRA_EXPORTED_RUNTIME_METHODS</code>?</em></p>
+<p>TODO</p>
+<p>‘cwrap’, ‘allocate’, ‘intArrayFromString’, ‘UTF8ToString’</p>
 <h2 id="copy-the-webassembly-outputs" class="section-header"><a href="#copy-the-webassembly-outputs">2.3 Copy the WebAssembly outputs</a></h2>
 <p>TODO</p>
+<p><em>What are the outputs emitted by Emscripten?</em></p>
+<p>TODO</p>
+<p>This produces the JavaScript and WebAssembly files <strong><code>wasm.js</code> and <code>wasm.wasm</code></strong>, which we’ll run in a Web Browser later.</p>
 <pre><code class="language-text"># Copy the WebAssembly outputs to the docs folder for GitHub Pages
 cp wasm/wasm.js   docs
 cp wasm/wasm.wasm docs
 </code></pre>
+<p><em>Why did we use the Emscripten WebAssembly Runtime? Instead of the <a href="https://rustwasm.github.io/docs/book/">Rust WebAssembly Runtime</a>?</em></p>
+<p>Because we copied the code from an earlier (non-Rust) WebAssembly project…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/wasm"><strong>“Simulate RISC-V BL602 with WebAssembly, uLisp and Blockly”</strong></a></li>
+</ul>
 <h1 id="run-bl602-firmware-in-simulator" class="section-header"><a href="#run-bl602-firmware-in-simulator">3 Run BL602 Firmware in Simulator</a></h1>
 <p>TODO</p>
 <p>To run the BL602 Simulator…</p>
