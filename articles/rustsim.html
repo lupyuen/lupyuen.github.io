@@ -65,8 +65,8 @@
 
     <h1 class="title">Rust on RISC-V BL602: Simulated with WebAssembly</h1>
     <nav id="TOC"><ul>
-<li><a href="#bl602-simulator-in-webassembly">1 BL602 Simulator in WebAssembly</a><ul></ul></li>
-<li><a href="#rust-firmware-for-bl602">2 Rust Firmware for BL602</a><ul></ul></li>
+<li><a href="#rust-firmware-for-bl602">1 Rust Firmware for BL602</a><ul></ul></li>
+<li><a href="#bl602-simulator-in-webassembly">2 BL602 Simulator in WebAssembly</a><ul></ul></li>
 <li><a href="#build-bl602-firmware-for-webassembly">3 Build BL602 Firmware for WebAssembly</a><ul></ul></li>
 <li><a href="#run-bl602-firmware-in-simulator">4 Run BL602 Firmware in Simulator</a><ul></ul></li>
 <li><a href="#json-stream-of-simulation-events">5 JSON Stream of Simulation Events</a><ul></ul></li>
@@ -82,12 +82,51 @@
 <p><em>Without using actual embedded hardware?</em></p>
 <p>Today we shall explore whether it’s feasible to run <strong>Rust Firmware for BL602</strong> RISC-V SoC in a <strong>Web Browser</strong>…</p>
 <p>By simulating the BL602 SoC with <strong>WebAssembly</strong>!</p>
-<p>Try it here…</p>
+<p>Read on to find how we created this bare-bones BL602 Simulator in WebAssembly…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/bl602-simulator"><strong>BL602 Simulator in WebAssembly</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/adc-simulator2.png" alt="BL602 Simulator in WebAssembly" /></p>
-<h1 id="bl602-simulator-in-webassembly" class="section-header"><a href="#bl602-simulator-in-webassembly">1 BL602 Simulator in WebAssembly</a></h1>
+<h1 id="rust-firmware-for-bl602" class="section-header"><a href="#rust-firmware-for-bl602">1 Rust Firmware for BL602</a></h1>
+<p>We start with this <strong>BL602 Rust Firmware <code>sdk_app_rust_gpio</code></strong> that blinks the LED: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/sdk_app_rust_gpio/rust/src/lib.rs"><code>sdk_app_rust_gpio/lib.rs</code></a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="doccomment">/// This function will be called by the BL602 command-line interface</span>
+<span class="attribute">#[<span class="ident">no_mangle</span>]</span>              <span class="comment">//  Don&#39;t mangle the function name</span>
+<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">rust_main</span>(  <span class="comment">//  Declare `extern &quot;C&quot;` because it will be called by BL602 firmware</span>
+  <span class="ident">_result</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>,        <span class="comment">//  Result to be returned to command-line interface (char *)</span>
+  <span class="ident">_len</span>:  <span class="ident">i32</span>,              <span class="comment">//  Size of result buffer (int)</span>
+  <span class="ident">_argc</span>: <span class="ident">i32</span>,              <span class="comment">//  Number of command line args (int)</span>
+  <span class="ident">_argv</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>  <span class="comment">//  Array of command line args (char **)</span>
+) {
+  <span class="comment">//  Show a message on the serial console</span>
+  <span class="ident">puts</span>(<span class="string">&quot;Hello from Rust!&quot;</span>);
+
+  <span class="comment">//  PineCone Blue LED is connected on BL602 GPIO 11</span>
+  <span class="kw">const</span> <span class="ident">LED_GPIO</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="number">11</span>;  <span class="comment">//  `u8` is 8-bit unsigned integer</span>
+
+  <span class="comment">//  Configure the LED GPIO for output (instead of input)</span>
+  <span class="ident">gpio::enable_output</span>(<span class="ident">LED_GPIO</span>, <span class="number">0</span>, <span class="number">0</span>)      <span class="comment">//  No pullup, no pulldown</span>
+    .<span class="ident">expect</span>(<span class="string">&quot;GPIO enable output failed&quot;</span>);  <span class="comment">//  Halt on error</span>
+
+  <span class="comment">//  Blink the LED 5 times</span>
+  <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="number">10</span> {  <span class="comment">//  Iterates 10 times from 0 to 9 (`..` excludes 10)</span>
+
+    <span class="comment">//  Toggle the LED GPIO between 0 (on) and 1 (off)</span>
+    <span class="ident">gpio::output_set</span>(  <span class="comment">//  Set the GPIO output (from BL602 GPIO HAL)</span>
+      <span class="ident">LED_GPIO</span>,        <span class="comment">//  GPIO pin number</span>
+      <span class="ident">i</span> <span class="op">%</span> <span class="number">2</span>            <span class="comment">//  0 for low, 1 for high</span>
+    ).<span class="ident">expect</span>(<span class="string">&quot;GPIO output failed&quot;</span>);  <span class="comment">//  Halt on error</span>
+
+    <span class="comment">//  Sleep 1 second</span>
+    <span class="ident">time_delay</span>(                 <span class="comment">//  Sleep by number of ticks (from NimBLE Porting Layer)</span>
+      <span class="ident">time_ms_to_ticks32</span>(<span class="number">1000</span>)  <span class="comment">//  Convert 1,000 milliseconds to ticks (from NimBLE Porting Layer)</span>
+    );
+  }
+  <span class="comment">//  Return to the BL602 command-line interface</span>
+}</pre></div>
+<p>TODO</p>
+<h1 id="bl602-simulator-in-webassembly" class="section-header"><a href="#bl602-simulator-in-webassembly">2 BL602 Simulator in WebAssembly</a></h1>
 <p>TODO</p>
 <ul>
 <li><a href="https://github.com/lupyuen/bl602-simulator"><strong>BL602 / BL604 Simulator in WebAssembly</strong></a></li>
@@ -172,8 +211,6 @@
 <p>And call the <strong>Stub Functions</strong></p>
 </li>
 </ul>
-<h1 id="rust-firmware-for-bl602" class="section-header"><a href="#rust-firmware-for-bl602">2 Rust Firmware for BL602</a></h1>
-<p>TODO</p>
 <h1 id="build-bl602-firmware-for-webassembly" class="section-header"><a href="#build-bl602-firmware-for-webassembly">3 Build BL602 Firmware for WebAssembly</a></h1>
 <p>TODO</p>
 <p>To compile BL602 Rust Firmware into WebAssembly…</p>
