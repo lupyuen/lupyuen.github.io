@@ -75,9 +75,10 @@
 <li><a href="#intercept-calls-to-bl602-iot-sdk">5 Intercept Calls to BL602 IoT SDK</a><ul></ul></li>
 <li><a href="#check-for-api-errors">6 Check for API Errors</a><ul></ul></li>
 <li><a href="#html--javascript-ui">7 HTML + JavaScript UI</a><ul></ul></li>
-<li><a href="#bl602-simulator-in-webassembly">8 BL602 Simulator in WebAssembly</a><ul></ul></li>
-<li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
-<li><a href="#notes">10 Notes</a><ul></ul></li></ul></nav><p>📝 <em>16 Aug 2021</em></p>
+<li><a href="#pinedio-stack-bl604">8 PineDio Stack BL604</a><ul></ul></li>
+<li><a href="#bl602-simulator-in-webassembly">9 BL602 Simulator in WebAssembly</a><ul></ul></li>
+<li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
+<li><a href="#notes">11 Notes</a><ul></ul></li></ul></nav><p>📝 <em>16 Aug 2021</em></p>
 <p>One year ago I pondered… Can we make <strong>Embedded Programming easier for Beginners</strong>?</p>
 <p><img src="https://lupyuen.github.io/images/cloud-title.jpg" alt="Fornite vs Embedded Programming" /></p>
 <p><a href="https://lupyuen.github.io/pinetime-rust-mynewt/articles/cloud">(Source)</a></p>
@@ -261,11 +262,17 @@ crate-type = [&quot;staticlib&quot;]  # And will be a Static Library
 <p>TODO</p>
 <pre><code class="language-text"># Link the Rust Firmware and Rust Simulator Library with Emscripten
 emcc -o wasm/wasm.html \
--Wl,--start-group \
-target/wasm32-unknown-emscripten/debug/libapp.a target/wasm32-unknown-emscripten/debug/libbl602_simulator.a \
-wasm/wasm.o \
--Wl,--end-group \
--g -I include -s WASM=1 -s &quot;EXPORTED_FUNCTIONS=[ '_rust_main', '_clear_simulation_events', '_get_simulation_events' ]&quot; -s &quot;EXTRA_EXPORTED_RUNTIME_METHODS=[ 'cwrap', 'allocate', 'intArrayFromString', 'UTF8ToString' ]&quot; \
+  -Wl,--start-group \
+  target/wasm32-unknown-emscripten/debug/libapp.a \
+  target/wasm32-unknown-emscripten/debug/libbl602_simulator.a \
+  wasm/wasm.o \
+  -Wl,--end-group \
+  -g \
+  -I include \
+  -s WASM=1 \
+  -s DISABLE_EXCEPTION_CATCHING=0 \
+  -s &quot;EXPORTED_FUNCTIONS=[ '_rust_main', '_clear_simulation_events', '_get_simulation_events' ]&quot; \
+  -s &quot;EXTRA_EXPORTED_RUNTIME_METHODS=[ 'cwrap', 'allocate', 'intArrayFromString', 'UTF8ToString' ]&quot;
 </code></pre>
 <h2 id="copy-the-webassembly-outputs" class="section-header"><a href="#copy-the-webassembly-outputs">2.3 Copy the WebAssembly outputs</a></h2>
 <p>TODO</p>
@@ -307,7 +314,10 @@ cp wasm/wasm.wasm docs
 </ul>
 <p>(Without the Blockly part, since we can’t compile Rust in a Web Browser)</p>
 <p><img src="https://lupyuen.github.io/images/rust-simulator.png" alt="Handling BL602 Simulator Events" /></p>
-<h1 id="bl602-simulator-in-webassembly" class="section-header"><a href="#bl602-simulator-in-webassembly">8 BL602 Simulator in WebAssembly</a></h1>
+<h1 id="pinedio-stack-bl604" class="section-header"><a href="#pinedio-stack-bl604">8 PineDio Stack BL604</a></h1>
+<p><em>Simulating a plain BL602 board (like PineCone BL602) is pointless, innit?</em></p>
+<p>TODO</p>
+<h1 id="bl602-simulator-in-webassembly" class="section-header"><a href="#bl602-simulator-in-webassembly">9 BL602 Simulator in WebAssembly</a></h1>
 <p>TODO</p>
 <ul>
 <li><a href="https://github.com/lupyuen/bl602-simulator"><strong>BL602 / BL604 Simulator in WebAssembly</strong></a></li>
@@ -359,7 +369,7 @@ cp wasm/wasm.wasm docs
 <p>And call the <strong>Stub Functions</strong></p>
 </li>
 </ul>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">9 What’s Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">10 What’s Next</a></h1>
 <p>TODO</p>
 <p>Soon we shall test the Rust Firmware on <a href="https://www.pine64.org/2021/07/15/july-update/"><strong>PineDio Stack BL604 with LoRa SX1262</strong></a>… As we explore whether it’s feasible to teach <strong>Rust as a Safer Way</strong> to create firmware for BL602 and BL604.</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
@@ -379,7 +389,7 @@ cp wasm/wasm.wasm docs
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/rustsim.md"><code>lupyuen.github.io/src/rustsim.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">10 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">11 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1423169766080933891">this Twitter Thread</a></li>
 </ol>
