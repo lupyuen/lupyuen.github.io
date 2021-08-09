@@ -67,8 +67,8 @@
     <nav id="TOC"><ul>
 <li><a href="#rust-firmware-for-bl602">1 Rust Firmware for BL602</a><ul></ul></li>
 <li><a href="#build-bl602-firmware-for-webassembly">2 Build BL602 Firmware for WebAssembly</a><ul>
-<li><a href="#build-the-rust-firmware-for-webassembly">2.1 Build the Rust Firmware for WebAssembly</a><ul></ul></li>
-<li><a href="#link-the-rust-firmware-with-emscripten">2.2 Link the Rust Firmware with Emscripten</a><ul></ul></li>
+<li><a href="#compile-rust-firmware-into-webassembly">2.1 Compile Rust Firmware into WebAssembly</a><ul></ul></li>
+<li><a href="#link-rust-firmware-with-emscripten">2.2 Link Rust Firmware with Emscripten</a><ul></ul></li>
 <li><a href="#copy-the-webassembly-outputs">2.3 Copy the WebAssembly outputs</a><ul></ul></li></ul></li>
 <li><a href="#run-bl602-firmware-in-simulator">3 Run BL602 Firmware in Simulator</a><ul></ul></li>
 <li><a href="#json-stream-of-simulation-events">4 JSON Stream of Simulation Events</a><ul></ul></li>
@@ -142,7 +142,7 @@
 <ol>
 <li>
 <p><strong>Build</strong> this Rust Firmware</p>
-<p><a href="https://lupyuen.github.io/articles/adc#build-the-bl602-rust-firmware">(<code>cargo build</code> with a Custom Rust Target)</a></p>
+<p><a href="https://lupyuen.github.io/articles/adc#build-the-bl602-rust-firmware">(“<code>cargo build</code>” with a Custom Rust Target)</a></p>
 </li>
 <li>
 <p><strong>Link</strong> it with the BL602 IoT SDK</p>
@@ -179,10 +179,11 @@ make
 </code></pre>
 <p>This produces the JavaScript and WebAssembly files <strong><code>wasm.js</code> and <code>wasm.wasm</code></strong>, which we’ll run in a Web Browser later.</p>
 <p><em>What’s inside the Makefile?</em></p>
+<p>Our <a href="https://github.com/lupyuen/bl602-simulator/blob/main/Makefile">Makefile</a> does the following…</p>
 <ol>
 <li>
-<p><strong>Build</strong> the Rust Firmware for WebAssembly</p>
-<p>(<code>cargo build</code> for target <code>wasm32-unknown-emscripten</code>)</p>
+<p><strong>Compile</strong> the Rust Firmware into WebAssembly</p>
+<p>(“<code>cargo build</code>” for target “<code>wasm32-unknown-emscripten</code>”)</p>
 </li>
 <li>
 <p><strong>Link</strong> the Rust Firmware with the Emscripten WebAssembly Runtime</p>
@@ -190,11 +191,26 @@ make
 </li>
 </ol>
 <p>Let’s go into the details…</p>
-<h2 id="build-the-rust-firmware-for-webassembly" class="section-header"><a href="#build-the-rust-firmware-for-webassembly">2.1 Build the Rust Firmware for WebAssembly</a></h2>
-<p>TODO</p>
-<pre><code class="language-text"># Build the Rust Firmware and Rust Simulator Library
+<h2 id="compile-rust-firmware-into-webassembly" class="section-header"><a href="#compile-rust-firmware-into-webassembly">2.1 Compile Rust Firmware into WebAssembly</a></h2>
+<p>To compile our <strong>Rust Firmware into WebAssembly</strong>, our <a href="https://github.com/lupyuen/bl602-simulator/blob/main/Makefile">Makefile</a> calls this command…</p>
+<pre><code class="language-bash"># Compile the Rust Firmware and Rust Simulator Library into WebAssembly
 cargo build --target wasm32-unknown-emscripten
-   Compiling proc-macro2 v1.0.28
+</code></pre>
+<p>This compiles two <strong>Rust Projects</strong>…</p>
+<ol>
+<li>
+<p><strong>Rust Firmware:</strong> </p>
+<p><a href="https://github.com/lupyuen/bl602-simulator/tree/main/sdk_app_rust_gpio"><code>bl602-simulator/sdk_app_rust_gpio/rust</code></a></p>
+<p>(The Rust Firmware we’ve seen earlier. Should be portable across BL602 and WebAssembly)</p>
+</li>
+<li>
+<p><strong>Rust Simulator Library:</strong> </p>
+<p><a href="https://github.com/lupyuen/bl602-simulator/tree/main/bl602-simulator"><code>bl602-simulator/bl602-simulator</code></a></p>
+<p>(Simulates the BL602 IoT SDK. We’ll see this in a while)</p>
+</li>
+</ol>
+<p>“<code>cargo build</code>” downloads the <a href="https://crates.io/crates/bl602-sdk"><strong>BL602 Rust Wrapper</strong></a> automagically from <code>crates.io</code> …</p>
+<pre><code class="language-text">   Compiling proc-macro2 v1.0.28
    Compiling unicode-xid v0.2.2
    Compiling syn v1.0.74
    Compiling memchr v2.4.0
@@ -210,11 +226,38 @@ cargo build --target wasm32-unknown-emscripten
    Compiling quote v1.0.9
    Compiling bl602-macros v0.0.2
    Compiling bl602-sdk v0.0.6
-   Compiling app v0.0.1 (/mnt/c/pinecone/bl602-simulator/sdk_app_rust_gpio/rust)
-   Compiling bl602-simulator v0.0.1 (/mnt/c/pinecone/bl602-simulator/bl602-simulator)
+   Compiling app v0.0.1 (bl602-simulator/sdk_app_rust_gpio/rust)
+   Compiling bl602-simulator v0.0.1 (bl602-simulator/bl602-simulator)
     Finished dev [unoptimized + debuginfo] target(s) in 1m 43s
 </code></pre>
-<h2 id="link-the-rust-firmware-with-emscripten" class="section-header"><a href="#link-the-rust-firmware-with-emscripten">2.2 Link the Rust Firmware with Emscripten</a></h2>
+<p>(Great that BL602 Rust Wrapper builds OK for WebAssembly!)</p>
+<p>However our Rust Firmware needs a slight tweak at the top to <strong>build correctly</strong> under WebAssembly: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/sdk_app_rust_gpio/rust/src/lib.rs#L3-L7"><code>sdk_app_rust_gpio/lib.rs</code></a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="comment">// TODO: For BL602:</span>
+<span class="comment">// #![no_std]  //  Use the Rust Core Library instead of the Rust Standard Library, which is not compatible with embedded systems</span>
+
+<span class="comment">// TODO: For WebAssembly:</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">libc</span>)]</span>  <span class="comment">//  Allow C Standard Library, which will be mapped by emscripten to JavaScript</span></pre></div>
+<p>We change <strong><code>no_std</code></strong> to <strong><code>feature(libc)</code></strong> for the build to succeed.</p>
+<p>Probably because the Emscripten Runtime behaves more like the <strong>Standard C Runtime</strong>.</p>
+<p>(Someday we might use <a href="https://doc.rust-lang.org/cargo/reference/build-scripts.html"><strong><code>build.rs</code></strong></a> to apply this mod automatically during compilation)</p>
+<p><em>What are the outputs for “<code>cargo build</code>”?</em></p>
+<p>“<code>cargo build</code>” produces two <strong>Static Libraries</strong> (Rust Firmware and Rust Simulator)…</p>
+<pre><code class="language-text">target/wasm32-unknown-emscripten/debug/libapp.a
+target/wasm32-unknown-emscripten/debug/libbl602_simulator.a
+</code></pre>
+<p>Which we shall link with Emscripten’s WebAssembly Runtime.</p>
+<p><em>Why did “<code>cargo build</code>” emit Static Libraries? Instead of the default Rust Libraries?</em></p>
+<p>Because we specified <strong><code>staticlib</code></strong> in <code>Cargo.toml</code> for the <a href="https://github.com/lupyuen/bl602-simulator/blob/main/sdk_app_rust_gpio/rust/Cargo.toml">Rust Firmware</a> and <a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/Cargo.toml">Rust Simulator</a>…</p>
+<pre><code class="language-text"># Build this module as a Static Library.
+[lib]
+name       = &quot;app&quot;          # Output will be named `libapp.a`
+crate-type = [&quot;staticlib&quot;]  # And will be a Static Library
+</code></pre>
+<p><strong>Rust Libraries won’t link</strong> with Emscripten’s WebAssembly Runtime. </p>
+<p>That’s why we switched to <strong>Static Libraries</strong>.</p>
+<h2 id="link-rust-firmware-with-emscripten" class="section-header"><a href="#link-rust-firmware-with-emscripten">2.2 Link Rust Firmware with Emscripten</a></h2>
 <p>TODO</p>
 <pre><code class="language-text"># Link the Rust Firmware and Rust Simulator Library with Emscripten
 emcc -o wasm/wasm.html \
