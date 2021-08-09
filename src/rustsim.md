@@ -63,77 +63,39 @@ extern "C" fn rust_main(  //  Declare `extern "C"` because it will be called by 
 }
 ```
 
-TODO
+_What are `gpio::enable_output` and `gpio::output_set`?_
 
-# BL602 Simulator in WebAssembly
+They are __BL602 GPIO Functions__ defined in the [__Rust Wrapper for BL602 IoT SDK__](https://crates.io/crates/bl602-sdk), as explained here...
 
-TODO
+-   [__"Rust Wrapper for BL602 IoT SDK"__](https://lupyuen.github.io/articles/adc#rust-wrapper-for-bl602-iot-sdk)
 
--   [__BL602 / BL604 Simulator in WebAssembly__](https://github.com/lupyuen/bl602-simulator)
+-   [__"Generating the BL602 Rust Wrapper"__](https://lupyuen.github.io/articles/adc#appendix-generating-the-rust-wrapper-for-bl602-iot-sdk)
 
-Let's __Simulate BL602 / BL604 Rust Firmware__ in a Web Browser with __WebAssembly__...
+To see the blinking BL602 LED, we...
 
-1.  We take this BL602 / BL604 __Blinky Firmware in Rust__...
+1.  __Build__ this Rust Firmware
 
-    - [__Rust Blinky Firmware for BL602__](https://github.com/lupyuen/bl602-simulator/blob/main/sdk_app_rust_gpio/rust/src/lib.rs)
+    [(`cargo build` with a Custom Rust Target)](https://lupyuen.github.io/articles/adc#build-the-bl602-rust-firmware)
 
-1.  Which calls the __Rust Wrapper for BL602 IoT SDK__...
+1.  __Link__ it with the BL602 IoT SDK
 
-    - [__Rust Wrapper for BL602 IoT SDK__](https://crates.io/crates/bl602-sdk)
+1.  __Flash__ the firmware to BL602
 
-1.  We __compile to WebAssembly__ the Rust Firmware and Rust Wrapper
+    [(With `blflash`)](https://lupyuen.github.io/articles/adc#flash-the-bl602-rust-firmware)
 
-1.  In WebAssembly we __intercept calls to BL602 IoT SDK__ with __Stub Functions__
+1.  __Connect__ to BL602 via the USB Serial Port and enter the command...
 
-    (Like for the BL602 GPIO HAL)
+    ```text
+    rust_main
+    ```
 
-    - [__Rust Stub Functions for BL602 Simulator__](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs)
+    [(Similar to this)](https://lupyuen.github.io/articles/adc#run-the-bl602-rust-firmware)
 
-1.  Add a __Simulator UI (HTML + JavaScript)__ to simulate a __PineCone BL602__ or __PineDio Stack BL604__...
+_Can we run this BL602 Rust Firmware in a Web Browser? Without any BL602 hardware?_
 
-    - [__“Simulate RISC-V BL602 with WebAssembly, uLisp and Blockly”__](https://lupyuen.github.io/articles/wasm)
-    
-    (Without the Blockly part, since we can't compile Rust in a Web Browser)
-    
-    ![Handling BL602 Simulator Events](https://lupyuen.github.io/images/rust-simulator.png)
+Let's find out!
 
-Why do this in __Rust__?
-
-- Because we have already __parsed the BL602 IoT SDK interfaces__ with `bindgen`
-
-  (While creating the BL602 Rust Wrapper) 
-
-- Which lets us __manipulate the BL602 SDK interfaces__ with Rust in interesting ways
-
-  (Like our `safe_wrap` Procedural Macro in Rust)
-    
-- More about __BL602 Rust Wrapper__...
-
-  - [__"Rust on RISC-V BL602: Is It Sunny?"__](https://lupyuen.github.io/articles/adc)
-
-Why are we doing this? What __problem are we solving__?
-
-1.  Shorten the __Code - Build - Flash - Test Cycle__ for BL602 and BL604
-
-    (Because flashing BL602 via UART is kinda cumbersome)
-    
-1.  We could potentially catch __BL602 SDK Calling Errors__ for new devs and __explain the errors in a friendly way__
-
-    (Invalid parameters or usage, like reading a GPIO Pin configured for output)
-
-1.  Make it easier to __Learn Embedded Programming__
-
-    (Even without any Embedded Hardware)
-
-1.  __Automated Testing__ of BL602 Firmware
-
-1.  __Trace Calls to BL602 IoT SDK__ for debugging
-
-We might be able to __Simulate C Firmware__ too, if we...
-    
-- Tweak the BL602 C Firmware to __build with Emscripten__
-
-- And call the __Stub Functions__
+First we compile this BL602 Rust Firmware to WebAssembly...
 
 # Build BL602 Firmware for WebAssembly
 
@@ -178,6 +140,12 @@ TODO
 
 TODO
 
+In WebAssembly we __intercept calls to BL602 IoT SDK__ with __Stub Functions__
+
+(Like for the BL602 GPIO HAL)
+
+- [__Rust Stub Functions for BL602 Simulator__](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs)
+
 # Check for API Errors
 
 TODO
@@ -185,6 +153,58 @@ TODO
 # HTML + JavaScript UI
 
 TODO
+
+Add a __Simulator UI (HTML + JavaScript)__ to simulate a __PineCone BL602__ or __PineDio Stack BL604__...
+
+- [__“Simulate RISC-V BL602 with WebAssembly, uLisp and Blockly”__](https://lupyuen.github.io/articles/wasm)
+
+(Without the Blockly part, since we can't compile Rust in a Web Browser)
+
+![Handling BL602 Simulator Events](https://lupyuen.github.io/images/rust-simulator.png)
+
+# BL602 Simulator in WebAssembly
+
+TODO
+
+-   [__BL602 / BL604 Simulator in WebAssembly__](https://github.com/lupyuen/bl602-simulator)
+
+Why do this in __Rust__?
+
+- Because we have already __parsed the BL602 IoT SDK interfaces__ with `bindgen`
+
+  (While creating the BL602 Rust Wrapper) 
+
+- Which lets us __manipulate the BL602 SDK interfaces__ with Rust in interesting ways
+
+  (Like our `safe_wrap` Procedural Macro in Rust)
+    
+- More about __BL602 Rust Wrapper__...
+
+  - [__"Rust on RISC-V BL602: Is It Sunny?"__](https://lupyuen.github.io/articles/adc)
+
+Why are we doing this? What __problem are we solving__?
+
+1.  Shorten the __Code - Build - Flash - Test Cycle__ for BL602 and BL604
+
+    (Because flashing BL602 via UART is kinda cumbersome)
+    
+1.  We could potentially catch __BL602 SDK Calling Errors__ for new devs and __explain the errors in a friendly way__
+
+    (Invalid parameters or usage, like reading a GPIO Pin configured for output)
+
+1.  Make it easier to __Learn Embedded Programming__
+
+    (Even without any Embedded Hardware)
+
+1.  __Automated Testing__ of BL602 Firmware
+
+1.  __Trace Calls to BL602 IoT SDK__ for debugging
+
+We might be able to __Simulate C Firmware__ too, if we...
+    
+- Tweak the BL602 C Firmware to __build with Emscripten__
+
+- And call the __Stub Functions__
 
 # What's Next
 
