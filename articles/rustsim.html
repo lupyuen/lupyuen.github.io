@@ -66,13 +66,13 @@
     <h1 class="title">Rust on RISC-V BL602: Simulated with WebAssembly</h1>
     <nav id="TOC"><ul>
 <li><a href="#rust-firmware-for-bl602">1 Rust Firmware for BL602</a><ul></ul></li>
-<li><a href="#bl602-simulator-in-webassembly">2 BL602 Simulator in WebAssembly</a><ul></ul></li>
-<li><a href="#build-bl602-firmware-for-webassembly">3 Build BL602 Firmware for WebAssembly</a><ul></ul></li>
-<li><a href="#run-bl602-firmware-in-simulator">4 Run BL602 Firmware in Simulator</a><ul></ul></li>
-<li><a href="#json-stream-of-simulation-events">5 JSON Stream of Simulation Events</a><ul></ul></li>
-<li><a href="#intercept-calls-to-bl602-iot-sdk">6 Intercept Calls to BL602 IoT SDK</a><ul></ul></li>
-<li><a href="#check-for-api-errors">7 Check for API Errors</a><ul></ul></li>
-<li><a href="#html--javascript-ui">8 HTML + JavaScript UI</a><ul></ul></li>
+<li><a href="#build-bl602-firmware-for-webassembly">2 Build BL602 Firmware for WebAssembly</a><ul></ul></li>
+<li><a href="#run-bl602-firmware-in-simulator">3 Run BL602 Firmware in Simulator</a><ul></ul></li>
+<li><a href="#json-stream-of-simulation-events">4 JSON Stream of Simulation Events</a><ul></ul></li>
+<li><a href="#intercept-calls-to-bl602-iot-sdk">5 Intercept Calls to BL602 IoT SDK</a><ul></ul></li>
+<li><a href="#check-for-api-errors">6 Check for API Errors</a><ul></ul></li>
+<li><a href="#html--javascript-ui">7 HTML + JavaScript UI</a><ul></ul></li>
+<li><a href="#bl602-simulator-in-webassembly">8 BL602 Simulator in WebAssembly</a><ul></ul></li>
 <li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
 <li><a href="#notes">10 Notes</a><ul></ul></li></ul></nav><p>📝 <em>16 Aug 2021</em></p>
 <p>One year ago I pondered… Can we make <strong>Embedded Programming easier for Beginners</strong>?</p>
@@ -125,45 +125,94 @@
   }
   <span class="comment">//  Return to the BL602 command-line interface</span>
 }</pre></div>
-<p>TODO</p>
-<h1 id="bl602-simulator-in-webassembly" class="section-header"><a href="#bl602-simulator-in-webassembly">2 BL602 Simulator in WebAssembly</a></h1>
-<p>TODO</p>
+<p><em>What are <code>gpio::enable_output</code> and <code>gpio::output_set</code>?</em></p>
+<p>They are <strong>BL602 GPIO Functions</strong> defined in the <a href="https://crates.io/crates/bl602-sdk"><strong>Rust Wrapper for BL602 IoT SDK</strong></a>, as explained here…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/bl602-simulator"><strong>BL602 / BL604 Simulator in WebAssembly</strong></a></li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/adc#rust-wrapper-for-bl602-iot-sdk"><strong>“Rust Wrapper for BL602 IoT SDK”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/adc#appendix-generating-the-rust-wrapper-for-bl602-iot-sdk"><strong>“Generating the BL602 Rust Wrapper”</strong></a></p>
+</li>
 </ul>
-<p>Let’s <strong>Simulate BL602 / BL604 Rust Firmware</strong> in a Web Browser with <strong>WebAssembly</strong>…</p>
+<p>To see the blinking BL602 LED, we…</p>
 <ol>
 <li>
-<p>We take this BL602 / BL604 <strong>Blinky Firmware in Rust</strong>…</p>
-<ul>
-<li><a href="https://github.com/lupyuen/bl602-simulator/blob/main/sdk_app_rust_gpio/rust/src/lib.rs"><strong>Rust Blinky Firmware for BL602</strong></a></li>
-</ul>
+<p><strong>Build</strong> this Rust Firmware</p>
+<p><a href="https://lupyuen.github.io/articles/adc#build-the-bl602-rust-firmware">(<code>cargo build</code> with a Custom Rust Target)</a></p>
 </li>
 <li>
-<p>Which calls the <strong>Rust Wrapper for BL602 IoT SDK</strong>…</p>
-<ul>
-<li><a href="https://crates.io/crates/bl602-sdk"><strong>Rust Wrapper for BL602 IoT SDK</strong></a></li>
-</ul>
+<p><strong>Link</strong> it with the BL602 IoT SDK</p>
 </li>
 <li>
-<p>We <strong>compile to WebAssembly</strong> the Rust Firmware and Rust Wrapper</p>
+<p><strong>Flash</strong> the firmware to BL602</p>
+<p><a href="https://lupyuen.github.io/articles/adc#flash-the-bl602-rust-firmware">(With <code>blflash</code>)</a></p>
 </li>
 <li>
+<p><strong>Connect</strong> to BL602 via the USB Serial Port and enter the command…</p>
+<pre><code class="language-text">rust_main
+</code></pre>
+<p><a href="https://lupyuen.github.io/articles/adc#run-the-bl602-rust-firmware">(Similar to this)</a></p>
+</li>
+</ol>
+<p><em>Can we run this BL602 Rust Firmware in a Web Browser? Without any BL602 hardware?</em></p>
+<p>Let’s find out!</p>
+<p>First we compile this BL602 Rust Firmware to WebAssembly…</p>
+<h1 id="build-bl602-firmware-for-webassembly" class="section-header"><a href="#build-bl602-firmware-for-webassembly">2 Build BL602 Firmware for WebAssembly</a></h1>
+<p>TODO</p>
+<p>To compile BL602 Rust Firmware into WebAssembly…</p>
+<pre><code class="language-bash"># Configure emscripten. See https://emscripten.org/docs/getting_started/downloads.html
+# For Windows: emsdk\emsdk_env.bat
+. ~/emsdk/emsdk_env.sh
+
+# Download source code
+git clone --recursive https://github.com/lupyuen/bl602-simulator
+cd bl602-simulator
+
+# Compile the Rust Firmware, Rust Simulator Library and link with Emscripten
+make
+
+# Produces outputs in the `docs` folder: wasm.js, wasm.wasm
+</code></pre>
+<h1 id="run-bl602-firmware-in-simulator" class="section-header"><a href="#run-bl602-firmware-in-simulator">3 Run BL602 Firmware in Simulator</a></h1>
+<p>TODO</p>
+<p>To run the BL602 Simulator…</p>
+<ol>
+<li>
+<p>Start a <strong>Local Web Server</strong></p>
+<p><a href="https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb/overview">(Like Web Server for Chrome)</a></p>
+</li>
+<li>
+<p>Browse to <strong><code>docs/wasm.html</code></strong></p>
+</li>
+<li>
+<p>Click <strong><code>Run</code></strong></p>
+</li>
+</ol>
+<h1 id="json-stream-of-simulation-events" class="section-header"><a href="#json-stream-of-simulation-events">4 JSON Stream of Simulation Events</a></h1>
+<p>TODO</p>
+<h1 id="intercept-calls-to-bl602-iot-sdk" class="section-header"><a href="#intercept-calls-to-bl602-iot-sdk">5 Intercept Calls to BL602 IoT SDK</a></h1>
+<p>TODO</p>
 <p>In WebAssembly we <strong>intercept calls to BL602 IoT SDK</strong> with <strong>Stub Functions</strong></p>
 <p>(Like for the BL602 GPIO HAL)</p>
 <ul>
 <li><a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs"><strong>Rust Stub Functions for BL602 Simulator</strong></a></li>
 </ul>
-</li>
-<li>
+<h1 id="check-for-api-errors" class="section-header"><a href="#check-for-api-errors">6 Check for API Errors</a></h1>
+<p>TODO</p>
+<h1 id="html--javascript-ui" class="section-header"><a href="#html--javascript-ui">7 HTML + JavaScript UI</a></h1>
+<p>TODO</p>
 <p>Add a <strong>Simulator UI (HTML + JavaScript)</strong> to simulate a <strong>PineCone BL602</strong> or <strong>PineDio Stack BL604</strong>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/wasm"><strong>“Simulate RISC-V BL602 with WebAssembly, uLisp and Blockly”</strong></a></li>
 </ul>
 <p>(Without the Blockly part, since we can’t compile Rust in a Web Browser)</p>
 <p><img src="https://lupyuen.github.io/images/rust-simulator.png" alt="Handling BL602 Simulator Events" /></p>
-</li>
-</ol>
+<h1 id="bl602-simulator-in-webassembly" class="section-header"><a href="#bl602-simulator-in-webassembly">8 BL602 Simulator in WebAssembly</a></h1>
+<p>TODO</p>
+<ul>
+<li><a href="https://github.com/lupyuen/bl602-simulator"><strong>BL602 / BL604 Simulator in WebAssembly</strong></a></li>
+</ul>
 <p>Why do this in <strong>Rust</strong>?</p>
 <ul>
 <li>
@@ -211,45 +260,6 @@
 <p>And call the <strong>Stub Functions</strong></p>
 </li>
 </ul>
-<h1 id="build-bl602-firmware-for-webassembly" class="section-header"><a href="#build-bl602-firmware-for-webassembly">3 Build BL602 Firmware for WebAssembly</a></h1>
-<p>TODO</p>
-<p>To compile BL602 Rust Firmware into WebAssembly…</p>
-<pre><code class="language-bash"># Configure emscripten. See https://emscripten.org/docs/getting_started/downloads.html
-# For Windows: emsdk\emsdk_env.bat
-. ~/emsdk/emsdk_env.sh
-
-# Download source code
-git clone --recursive https://github.com/lupyuen/bl602-simulator
-cd bl602-simulator
-
-# Compile the Rust Firmware, Rust Simulator Library and link with Emscripten
-make
-
-# Produces outputs in the `docs` folder: wasm.js, wasm.wasm
-</code></pre>
-<h1 id="run-bl602-firmware-in-simulator" class="section-header"><a href="#run-bl602-firmware-in-simulator">4 Run BL602 Firmware in Simulator</a></h1>
-<p>TODO</p>
-<p>To run the BL602 Simulator…</p>
-<ol>
-<li>
-<p>Start a <strong>Local Web Server</strong></p>
-<p><a href="https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb/overview">(Like Web Server for Chrome)</a></p>
-</li>
-<li>
-<p>Browse to <strong><code>docs/wasm.html</code></strong></p>
-</li>
-<li>
-<p>Click <strong><code>Run</code></strong></p>
-</li>
-</ol>
-<h1 id="json-stream-of-simulation-events" class="section-header"><a href="#json-stream-of-simulation-events">5 JSON Stream of Simulation Events</a></h1>
-<p>TODO</p>
-<h1 id="intercept-calls-to-bl602-iot-sdk" class="section-header"><a href="#intercept-calls-to-bl602-iot-sdk">6 Intercept Calls to BL602 IoT SDK</a></h1>
-<p>TODO</p>
-<h1 id="check-for-api-errors" class="section-header"><a href="#check-for-api-errors">7 Check for API Errors</a></h1>
-<p>TODO</p>
-<h1 id="html--javascript-ui" class="section-header"><a href="#html--javascript-ui">8 HTML + JavaScript UI</a></h1>
-<p>TODO</p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">9 What’s Next</a></h1>
 <p>TODO</p>
 <p>Soon we shall test the Rust Firmware on <a href="https://www.pine64.org/2021/07/15/july-update/"><strong>PineDio Stack BL604 with LoRa SX1262</strong></a>… As we explore whether it’s feasible to teach <strong>Rust as a Safer Way</strong> to create firmware for BL602 and BL604.</p>
