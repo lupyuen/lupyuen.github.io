@@ -244,17 +244,23 @@ emcc -o wasm/wasm.html \
   -s "EXTRA_EXPORTED_RUNTIME_METHODS=[ 'cwrap', 'allocate', 'intArrayFromString', 'UTF8ToString' ]"
 ```
 
+[How to install Emscripten](https://emscripten.org/docs/getting_started/downloads.html)
+
 _What are the `EXPORTED_FUNCTIONS`?_
 
-TODO
+-   `_rust_main`
 
-'_rust_main', '_clear_simulation_events', '_get_simulation_events'
+    TODO
+
+-   `_clear_simulation_events`, `_get_simulation_events`
+
+    TODO
 
 _What are the `EXTRA_EXPORTED_RUNTIME_METHODS`?_
 
-TODO
+These Emscripten Runtime Functions will be exported to JavaScript to allow __strings to be passed__ between JavaScript and our Rust Firmware...
 
-'cwrap', 'allocate', 'intArrayFromString', 'UTF8ToString'
+-   `cwrap`, `allocate`, `intArrayFromString`, `UTF8ToString`
 
 ## Copy the WebAssembly outputs
 
@@ -327,6 +333,8 @@ Add a __Simulator UI (HTML + JavaScript)__ to simulate a __PineCone BL602__ or _
 _Simulating a plain BL602 board (like PineCone BL602) is pointless, innit?_
 
 TODO
+
+Works on plain old Windows too
 
 # BL602 Simulator in WebAssembly
 
