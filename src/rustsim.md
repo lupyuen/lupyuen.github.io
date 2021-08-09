@@ -160,28 +160,28 @@ This compiles two __Rust Projects__...
 "`cargo build`" downloads the [__BL602 Rust Wrapper__](https://crates.io/crates/bl602-sdk) automagically from `crates.io` ...
 
 ```text
-   Compiling proc-macro2 v1.0.28
-   Compiling unicode-xid v0.2.2
-   Compiling syn v1.0.74
-   Compiling memchr v2.4.0
-   Compiling serde_derive v1.0.127
-   Compiling cty v0.2.1
-   Compiling serde v1.0.127
-   Compiling ryu v1.0.5
-   Compiling heapless v0.7.4
-   Compiling rustc-serialize v0.3.24
-   Compiling lazy_static v1.4.0
-   Compiling serde_json v1.0.66
-   Compiling cstr_core v0.2.4
-   Compiling quote v1.0.9
-   Compiling bl602-macros v0.0.2
-   Compiling bl602-sdk v0.0.6
-   Compiling app v0.0.1 (bl602-simulator/sdk_app_rust_gpio/rust)
-   Compiling bl602-simulator v0.0.1 (bl602-simulator/bl602-simulator)
-    Finished dev [unoptimized + debuginfo] target(s) in 1m 43s
+Compiling proc-macro2 v1.0.28
+Compiling unicode-xid v0.2.2
+Compiling syn v1.0.74
+Compiling memchr v2.4.0
+Compiling serde_derive v1.0.127
+Compiling cty v0.2.1
+Compiling serde v1.0.127
+Compiling ryu v1.0.5
+Compiling heapless v0.7.4
+Compiling rustc-serialize v0.3.24
+Compiling lazy_static v1.4.0
+Compiling serde_json v1.0.66
+Compiling cstr_core v0.2.4
+Compiling quote v1.0.9
+Compiling bl602-macros v0.0.2
+Compiling bl602-sdk v0.0.6
+Compiling app v0.0.1 (bl602-simulator/sdk_app_rust_gpio/rust)
+Compiling bl602-simulator v0.0.1 (bl602-simulator/bl602-simulator)
+Finished dev [unoptimized + debuginfo] target(s) in 1m 43s
 ```
 
-(Great that BL602 Rust Wrapper builds OK for WebAssembly!)
+(Great that BL602 Rust Wrapper builds OK for WebAssembly! Yep our WSL machine is slow)
 
 However our Rust Firmware needs a slight tweak at the top to __build correctly__ under WebAssembly: [`sdk_app_rust_gpio/lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/main/sdk_app_rust_gpio/rust/src/lib.rs#L3-L7)
 
