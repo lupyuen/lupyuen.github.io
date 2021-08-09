@@ -160,26 +160,15 @@ This compiles two __Rust Projects__...
 "`cargo build`" downloads the [__BL602 Rust Wrapper__](https://crates.io/crates/bl602-sdk) automagically from `crates.io` ...
 
 ```text
-Compiling proc-macro2 v1.0.28
-Compiling unicode-xid v0.2.2
-Compiling syn v1.0.74
-Compiling memchr v2.4.0
-Compiling serde_derive v1.0.127
-Compiling cty v0.2.1
-Compiling serde v1.0.127
-Compiling ryu v1.0.5
-Compiling heapless v0.7.4
-Compiling rustc-serialize v0.3.24
-Compiling lazy_static v1.4.0
-Compiling serde_json v1.0.66
-Compiling cstr_core v0.2.4
-Compiling quote v1.0.9
+...
 Compiling bl602-macros v0.0.2
 Compiling bl602-sdk v0.0.6
 Compiling app v0.0.1 (bl602-simulator/sdk_app_rust_gpio/rust)
 Compiling bl602-simulator v0.0.1 (bl602-simulator/bl602-simulator)
 Finished dev [unoptimized + debuginfo] target(s) in 1m 43s
 ```
+
+[See the complete log](https://github.com/lupyuen/bl602-simulator#build-log)
 
 (Great that BL602 Rust Wrapper builds OK for WebAssembly! Yep our WSL machine is slow)
 
@@ -227,7 +216,17 @@ That's why we switched to __Static Libraries__.
 
 ## Link Rust Firmware with Emscripten
 
-TODO
+We're nearly ready to run our Rust Firmware in WebAssembly! We need a __WebAssembly Runtime__ that will...
+
+1.  Let our Rust Firmware interact with __HTML and JavaScript__
+
+    (To render the Web Browser UI)
+
+1.  And __print messages__, errors and exceptions to the Web Browser
+
+We'll use the [__Emscripten WebAssembly Runtime__](https://emscripten.org/).
+
+Our [Makefile](https://github.com/lupyuen/bl602-simulator/blob/main/Makefile) links our __Rust Firmware with Emscripten__ like so...
 
 ```text
 # Link the Rust Firmware and Rust Simulator Library with Emscripten
@@ -245,15 +244,39 @@ emcc -o wasm/wasm.html \
   -s "EXTRA_EXPORTED_RUNTIME_METHODS=[ 'cwrap', 'allocate', 'intArrayFromString', 'UTF8ToString' ]"
 ```
 
+_What are the `EXPORTED_FUNCTIONS`?_
+
+TODO
+
+'_rust_main', '_clear_simulation_events', '_get_simulation_events'
+
+_What are the `EXTRA_EXPORTED_RUNTIME_METHODS`?_
+
+TODO
+
+'cwrap', 'allocate', 'intArrayFromString', 'UTF8ToString'
+
 ## Copy the WebAssembly outputs
 
 TODO
+
+_What are the outputs emitted by Emscripten?_
+
+TODO
+
+This produces the JavaScript and WebAssembly files __`wasm.js` and `wasm.wasm`__, which we'll run in a Web Browser later.
 
 ```text
 # Copy the WebAssembly outputs to the docs folder for GitHub Pages
 cp wasm/wasm.js   docs
 cp wasm/wasm.wasm docs
 ```
+
+_Why did we use the Emscripten WebAssembly Runtime? Instead of the [Rust WebAssembly Runtime](https://rustwasm.github.io/docs/book/)?_
+
+Because we copied the code from an earlier (non-Rust) WebAssembly project...
+
+-   [__"Simulate RISC-V BL602 with WebAssembly, uLisp and Blockly"__](https://lupyuen.github.io/articles/wasm)
 
 # Run BL602 Firmware in Simulator
 
