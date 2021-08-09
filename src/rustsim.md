@@ -130,7 +130,7 @@ _What's inside the Makefile?_
 
     (So that it runs in a Web Browser)
 
-Let's do into the details...
+Let's go into the details...
 
 ## Build the Rust Firmware for WebAssembly
 
