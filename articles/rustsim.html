@@ -66,7 +66,10 @@
     <h1 class="title">Rust on RISC-V BL602: Simulated with WebAssembly</h1>
     <nav id="TOC"><ul>
 <li><a href="#rust-firmware-for-bl602">1 Rust Firmware for BL602</a><ul></ul></li>
-<li><a href="#build-bl602-firmware-for-webassembly">2 Build BL602 Firmware for WebAssembly</a><ul></ul></li>
+<li><a href="#build-bl602-firmware-for-webassembly">2 Build BL602 Firmware for WebAssembly</a><ul>
+<li><a href="#build-the-rust-firmware-for-webassembly">2.1 Build the Rust Firmware for WebAssembly</a><ul></ul></li>
+<li><a href="#link-the-rust-firmware-with-emscripten">2.2 Link the Rust Firmware with Emscripten</a><ul></ul></li>
+<li><a href="#copy-the-webassembly-outputs">2.3 Copy the WebAssembly outputs</a><ul></ul></li></ul></li>
 <li><a href="#run-bl602-firmware-in-simulator">3 Run BL602 Firmware in Simulator</a><ul></ul></li>
 <li><a href="#json-stream-of-simulation-events">4 JSON Stream of Simulation Events</a><ul></ul></li>
 <li><a href="#intercept-calls-to-bl602-iot-sdk">5 Intercept Calls to BL602 IoT SDK</a><ul></ul></li>
@@ -159,8 +162,8 @@
 <p>Let’s find out!</p>
 <p>First we compile this BL602 Rust Firmware to WebAssembly…</p>
 <h1 id="build-bl602-firmware-for-webassembly" class="section-header"><a href="#build-bl602-firmware-for-webassembly">2 Build BL602 Firmware for WebAssembly</a></h1>
-<p>TODO</p>
-<p>To compile BL602 Rust Firmware into WebAssembly…</p>
+<p>We’ve created a <a href="https://github.com/lupyuen/bl602-simulator/blob/main/Makefile"><strong>Makefile</strong></a> that builds the above BL602 Rust Firmware into WebAssembly.</p>
+<p>Here’s how we use it…</p>
 <pre><code class="language-bash"># Configure emscripten. See https://emscripten.org/docs/getting_started/downloads.html
 # For Windows: emsdk\emsdk_env.bat
 . ~/emsdk/emsdk_env.sh
@@ -173,6 +176,59 @@ cd bl602-simulator
 make
 
 # Produces outputs in the `docs` folder: wasm.js, wasm.wasm
+</code></pre>
+<p>This produces the JavaScript and WebAssembly files <strong><code>wasm.js</code> and <code>wasm.wasm</code></strong>, which we’ll run in a Web Browser later.</p>
+<p><em>What’s inside the Makefile?</em></p>
+<ol>
+<li>
+<p><strong>Build</strong> the Rust Firmware for WebAssembly</p>
+<p>(<code>cargo build</code> for target <code>wasm32-unknown-emscripten</code>)</p>
+</li>
+<li>
+<p><strong>Link</strong> the Rust Firmware with the Emscripten WebAssembly Runtime</p>
+<p>(So that it runs in a Web Browser)</p>
+</li>
+</ol>
+<p>Let’s do into the details…</p>
+<h2 id="build-the-rust-firmware-for-webassembly" class="section-header"><a href="#build-the-rust-firmware-for-webassembly">2.1 Build the Rust Firmware for WebAssembly</a></h2>
+<p>TODO</p>
+<pre><code class="language-text"># Build the Rust Firmware and Rust Simulator Library
+cargo build --target wasm32-unknown-emscripten
+   Compiling proc-macro2 v1.0.28
+   Compiling unicode-xid v0.2.2
+   Compiling syn v1.0.74
+   Compiling memchr v2.4.0
+   Compiling serde_derive v1.0.127
+   Compiling cty v0.2.1
+   Compiling serde v1.0.127
+   Compiling ryu v1.0.5
+   Compiling heapless v0.7.4
+   Compiling rustc-serialize v0.3.24
+   Compiling lazy_static v1.4.0
+   Compiling serde_json v1.0.66
+   Compiling cstr_core v0.2.4
+   Compiling quote v1.0.9
+   Compiling bl602-macros v0.0.2
+   Compiling bl602-sdk v0.0.6
+   Compiling app v0.0.1 (/mnt/c/pinecone/bl602-simulator/sdk_app_rust_gpio/rust)
+   Compiling bl602-simulator v0.0.1 (/mnt/c/pinecone/bl602-simulator/bl602-simulator)
+    Finished dev [unoptimized + debuginfo] target(s) in 1m 43s
+</code></pre>
+<h2 id="link-the-rust-firmware-with-emscripten" class="section-header"><a href="#link-the-rust-firmware-with-emscripten">2.2 Link the Rust Firmware with Emscripten</a></h2>
+<p>TODO</p>
+<pre><code class="language-text"># Link the Rust Firmware and Rust Simulator Library with Emscripten
+emcc -o wasm/wasm.html \
+-Wl,--start-group \
+target/wasm32-unknown-emscripten/debug/libapp.a target/wasm32-unknown-emscripten/debug/libbl602_simulator.a \
+wasm/wasm.o \
+-Wl,--end-group \
+-g -I include -s WASM=1 -s &quot;EXPORTED_FUNCTIONS=[ '_rust_main', '_clear_simulation_events', '_get_simulation_events' ]&quot; -s &quot;EXTRA_EXPORTED_RUNTIME_METHODS=[ 'cwrap', 'allocate', 'intArrayFromString', 'UTF8ToString' ]&quot; \
+</code></pre>
+<h2 id="copy-the-webassembly-outputs" class="section-header"><a href="#copy-the-webassembly-outputs">2.3 Copy the WebAssembly outputs</a></h2>
+<p>TODO</p>
+<pre><code class="language-text"># Copy the WebAssembly outputs to the docs folder for GitHub Pages
+cp wasm/wasm.js   docs
+cp wasm/wasm.wasm docs
 </code></pre>
 <h1 id="run-bl602-firmware-in-simulator" class="section-header"><a href="#run-bl602-firmware-in-simulator">3 Run BL602 Firmware in Simulator</a></h1>
 <p>TODO</p>
