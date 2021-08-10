@@ -397,7 +397,75 @@ That will simulate a __blinking BL602 LED__.
 
 Let's generate the Simulation Events now.
 
-# Intercept Calls to BL602 IoT SDK
+# Generate Simulation Events
+
+_How shall we generate this __JSON Simulation Event__..._
+
+```json
+{ "gpio_output_set": { 
+  "pin":  11, 
+  "value": 0 
+} }
+```
+
+_When we call this Rust Function?_
+
+```rust
+//  Switch the LED On
+gpio::output_set(  //  Set the GPIO output for...
+  11,              //  GPIO pin number
+  0                //  0 for On, 1 for Off
+)...
+```
+
+TODO
+
+From [`bl602-simulator/src/lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L3-L21)
+
+```rust
+//  Import the serde crate for JSON Serialization
+use serde::{Serialize, Deserialize};
+
+/// Event to be simulated by the BL602 Simulator
+#[derive(Serialize, Deserialize, Debug)]
+enum SimulationEvent {
+  /// GPIO Set Output:
+  /// `{ "gpio_output_set": { "pin": 11, "value": 1 }`
+  gpio_output_set {
+    pin:   u8,
+    value: u8,
+  },
+}
+```
+
+TODO
+
+```rust
+// Create a vector of simulation events (i.e. event array)
+let mut simulation_events: Vec<SimulationEvent> = Vec::new();
+
+// Add a GPIO Set Output event
+let ev = SimulationEvent::gpio_output_set { 
+  pin:  11,
+  value: 0,
+};
+simulation_events.push(ev);
+
+// Convert vector of events to a JSON string
+let serialized = serde_json::to_string(&simulation_events)
+  .unwrap();
+
+// Print the serialized JSON events
+println!("{}", serialized);
+```
+
+[(Source)](https://gist.github.com/lupyuen/cec1a423062556263a7ba02971862001)
+
+TODO
+
+```text
+[{"gpio_output_set":{"pin":11,"value":0}}]
+```
 
 TODO
 
@@ -409,15 +477,21 @@ In WebAssembly we __intercept calls to BL602 IoT SDK__ with __Stub Functions__
 
 TODO1
 
-![](https://lupyuen.github.io/images/rustsim-events.png)
+![Generating Simulation Events in Rust](https://lupyuen.github.io/images/rustsim-events.png)
 
-TODO2
-
-![](https://lupyuen.github.io/images/rustsim-events2.png)
+[(Source)](https://gist.github.com/lupyuen/cec1a423062556263a7ba02971862001)
 
 TODO3
 
-![](https://lupyuen.github.io/images/rustsim-events3.png)
+![Generating Simulation Events in Rust](https://lupyuen.github.io/images/rustsim-events3.png)
+
+[(Source)](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L94-L151)
+
+TODO2
+
+![Generating Simulation Events in C](https://lupyuen.github.io/images/rustsim-events2.png)
+
+[(Source)](https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm/wasm.c)
 
 # Run BL602 Firmware in Simulator
 
