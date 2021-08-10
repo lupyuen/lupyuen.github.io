@@ -71,6 +71,10 @@ They are __BL602 GPIO Functions__ defined in the [__Rust Wrapper for BL602 IoT S
 
 -   [__"Generating the BL602 Rust Wrapper"__](https://lupyuen.github.io/articles/adc#appendix-generating-the-rust-wrapper-for-bl602-iot-sdk)
 
+`time_delay` and `time_ms_to_ticks32` are also defined in the BL602 Rust Wrapper.
+
+_How do we build, flash and run this BL602 Rust Firmware?_
+
 To see the blinking BL602 LED, we...
 
 1.  __Build__ this Rust Firmware
@@ -134,6 +138,8 @@ Our [Makefile](https://github.com/lupyuen/bl602-simulator/blob/main/Makefile) do
 
 Let's go into the details...
 
+![Compile Rust Firmware into WebAssembly](https://lupyuen.github.io/images/rustsim-build.png)
+
 ## Compile Rust Firmware into WebAssembly
 
 To compile our __Rust Firmware into WebAssembly__, our [Makefile](https://github.com/lupyuen/bl602-simulator/blob/main/Makefile#L57-L58) calls this command...
@@ -187,6 +193,8 @@ We change __`no_std`__ to __`feature(libc)`__ for the build to succeed.
 Probably because the Emscripten Runtime behaves more like the __Standard C Runtime__.
 
 (Someday we might use [__`build.rs`__](https://doc.rust-lang.org/cargo/reference/build-scripts.html) to apply this mod automatically during compilation)
+
+![Changing no_std to feature(libc)](https://lupyuen.github.io/images/rustsim-libc.png)
 
 _What are the outputs for "`cargo build`"?_
 
@@ -251,7 +259,7 @@ These Rust Functions will be __called from JavaScript__...
 
     (We've seen this earlier)
 
--   `_clear_simulation_events` and `_get_simulation_events` are Rust Functions that will manage the __JSON Stream of Simulation Events__
+-   `_clear_simulation_events` and `_get_simulation_events` are functions from the Rust Simulator Library that will manage the __JSON Stream of Simulation Events__
 
     (More about this later)
 
@@ -311,6 +319,18 @@ In WebAssembly we __intercept calls to BL602 IoT SDK__ with __Stub Functions__
 
 - [__Rust Stub Functions for BL602 Simulator__](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs)
 
+TODO1
+
+![](https://lupyuen.github.io/images/rustsim-events.png)
+
+TODO2
+
+![](https://lupyuen.github.io/images/rustsim-events2.png)
+
+TODO3
+
+![](https://lupyuen.github.io/images/rustsim-events3.png)
+
 # Run BL602 Firmware in Simulator
 
 TODO
@@ -325,9 +345,23 @@ To run the BL602 Simulator...
 
 1.  Click __`Run`__
 
-# Check for API Errors
+# Validating Calls to BL602 IoT SDK
+
+_What if we could validate every call to BL602 IoT SDK?_
+
+_And if the call is incorrect, show a helpful message?_
 
 TODO
+
+![](https://lupyuen.github.io/images/rustsim-validate.png)
+
+TODO7
+
+![](https://lupyuen.github.io/images/rustsim-validate2.png)
+
+TODO8
+
+![](https://lupyuen.github.io/images/rustsim-validate3.png)
 
 # HTML + JavaScript UI
 
