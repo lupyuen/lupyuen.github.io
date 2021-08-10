@@ -425,11 +425,13 @@ cp wasm/wasm.wasm docs
 <p>Here’s how we create a Simulation Event for <strong>GPIO Set Output</strong> and add it to the stream…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="comment">// Add a GPIO Set Output event</span>
+<span class="comment">// Create a GPIO Set Output event</span>
 <span class="kw">let</span> <span class="ident">ev</span> <span class="op">=</span> <span class="ident">SimulationEvent::gpio_output_set</span> { 
   <span class="ident">pin</span>:  <span class="number">11</span>,
   <span class="ident">value</span>: <span class="number">0</span>,
 };
+
+<span class="comment">// Add the event to the vector</span>
 <span class="ident">simulation_events</span>.<span class="ident">push</span>(<span class="ident">ev</span>);</pre></div>
 <p>Thanks to the <a href="https://serde.rs/"><strong>Serde Crate</strong></a>, we may serialize the Vector of Simulation Events like so…</p>
 
@@ -445,6 +447,7 @@ cp wasm/wasm.wasm docs
 </code></pre>
 <p>Exactly what we need!</p>
 <h2 id="time-delay-event" class="section-header"><a href="#time-delay-event">4.1 Time Delay Event</a></h2>
+<p><em>What about the Time Delay Event?</em></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/rustsim-events.png" alt="Generating Simulation Events in Rust" /></p>
 <p><a href="https://gist.github.com/lupyuen/cec1a423062556263a7ba02971862001">(Source)</a></p>
