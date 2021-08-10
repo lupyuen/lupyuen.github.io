@@ -479,7 +479,38 @@ Exactly what we need!
 
 _What about the Time Delay Event?_
 
-TODO
+```json
+{ "time_delay": { "ticks": 1000 } }
+```
+
+We add __Time Delay__ to our Enum Type like so: [`bl602-simulator/lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L3-L21)
+
+```rust
+/// Event to be simulated by the BL602 Simulator
+enum SimulationEvent {
+    /// Omitted: GPIO Set Output
+    ...
+    /// Time Delay:
+    /// `{ "time_delay": { "ticks": 1000 } }`
+    time_delay {
+        ticks: u32,
+    },
+}
+```
+
+And we create the __Time Delay Event__ like so...
+
+```rust
+// Create a Time Delay event
+let ev = SimulationEvent::time_delay { 
+  ticks: 1000,
+};
+
+// Add the event to the vector
+simulation_events.push(ev);
+```
+
+[__Serde Crate__](https://serde.rs/) does the rest!
 
 ![Generating Simulation Events in Rust](https://lupyuen.github.io/images/rustsim-events.png)
 
