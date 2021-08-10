@@ -321,8 +321,69 @@ cp wasm/wasm.wasm docs
 <li><a href="https://lupyuen.github.io/articles/wasm"><strong>“Simulate RISC-V BL602 with WebAssembly, uLisp and Blockly”</strong></a></li>
 </ul>
 <h1 id="json-stream-of-simulation-events" class="section-header"><a href="#json-stream-of-simulation-events">3 JSON Stream of Simulation Events</a></h1>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/rust-simulator.png" alt="Handling BL602 Simulator Events" /></p>
+<p>Our story so far…</p>
+<ol>
+<li>
+<p>We have compiled our <strong>Rust Firmware into WebAssembly</strong></p>
+</li>
+<li>
+<p>Our firmware runs in a <strong>Web Browser</strong> and it’s capable of interacting with <strong>HTML and JavaScript</strong></p>
+<p>(Thanks to Emscripten)</p>
+</li>
+<li>
+<p>But our firmware <strong>won’t blink any LEDs</strong></p>
+<p>(Because the <strong>BL602 IoT SDK is missing</strong> from WebAssembly)</p>
+</li>
+</ol>
+<p><em>What if we simulate the LED with HTML and JavaScript?</em></p>
+<p>Yep we could build a <strong>BL602 Simulator</strong> in HTML and JavaScript.</p>
+<p>And we can make our Rust Firmware talk to the BL602 Simulator…</p>
+<p>By emitting a <strong>JSON Stream of BL602 Simulation Events</strong>!</p>
+<p><img src="https://lupyuen.github.io/images/rust-simulator.png" alt="JSON Stream of BL602 Simulation Events" /></p>
+<p><em>What’s a BL602 Simulation Event?</em></p>
+<p>When our firmware needs to <strong>set the GPIO Output</strong> to High or Low (to flip an LED On/Off)…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="comment">//  Switch the LED On</span>
+<span class="ident">gpio::output_set</span>(  <span class="comment">//  Set the GPIO output for...</span>
+  <span class="number">11</span>,              <span class="comment">//  GPIO pin number</span>
+  <span class="number">0</span>                <span class="comment">//  0 for On, 1 for Off</span>
+)...</pre></div>
+<p>It sends a <strong>Simulation Event</strong> to the BL602 Simulator (in JSON format)…</p>
+<pre><code class="language-json">{ &quot;gpio_output_set&quot;: { 
+  &quot;pin&quot;:  11, 
+  &quot;value&quot;: 0 
+} }
+</code></pre>
+<p>Which will be handled by the BL602 Simulator to <strong>flip the Simulated LED</strong> on or off.</p>
+<p><em>Is our firmware directly controlling the BL602 Simulator?</em></p>
+<p>Not quite. Our firmware is <strong>indirectly controlling the BL602 Simulator</strong> by sending Simulation Events.</p>
+<p>(There are good reasons for doing this <a href="https://en.wikipedia.org/wiki/Inversion_of_control"><strong>Inversion of Control</strong></a>, as well shall learn in a while)</p>
+<p><em>What about time delays?</em></p>
+<p>Our firmware shall generate <strong>Simulation Events for time delays</strong>.</p>
+<p>To handle such events, our <strong>BL602 Simulator pauses</strong> for the specified duration.</p>
+<p>(It’s like playing a MIDI Stream)</p>
+<p>Hence this firmware code…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="comment">//  Sleep 1,000 milliseconds (or 1 second)</span>
+<span class="ident">time_delay</span>(<span class="number">1000</span>);</pre></div>
+<p>Shall generate this <strong>Time Delay</strong> Simulation Event…</p>
+<pre><code class="language-json">{ &quot;time_delay&quot;: { &quot;ticks&quot;: 1000 } }
+</code></pre>
+<p><em>What’s inside the JSON Stream of Simulation Events?</em></p>
+<p>To simulate our firmware on the BL602 Simulator, we shall transmit an <strong>array of Simulation Events</strong> (in JSON format) from our firmware to the BL602 Simulator.</p>
+<p>Thus our Rust Blinky Firmware shall generate this <strong>JSON Stream of Simulation Events</strong>…</p>
+<pre><code class="language-json">[ { &quot;gpio_output_set&quot;: { &quot;pin&quot;: 11, &quot;value&quot;: 0 } }, 
+  { &quot;time_delay&quot;:      { &quot;ticks&quot;: 1000 } }, 
+
+  { &quot;gpio_output_set&quot;: { &quot;pin&quot;: 11, &quot;value&quot;: 1 } }, 
+  { &quot;time_delay&quot;:      { &quot;ticks&quot;: 1000 } }, 
+  ... 
+]
+</code></pre>
+<p>That will simulate a <strong>blinking BL602 LED</strong>.</p>
+<p>Let’s generate the Simulation Events now.</p>
 <h1 id="intercept-calls-to-bl602-iot-sdk" class="section-header"><a href="#intercept-calls-to-bl602-iot-sdk">4 Intercept Calls to BL602 IoT SDK</a></h1>
 <p>TODO</p>
 <p>In WebAssembly we <strong>intercept calls to BL602 IoT SDK</strong> with <strong>Stub Functions</strong></p>
