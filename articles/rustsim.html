@@ -448,7 +448,32 @@ cp wasm/wasm.wasm docs
 <p>Exactly what we need!</p>
 <h2 id="time-delay-event" class="section-header"><a href="#time-delay-event">4.1 Time Delay Event</a></h2>
 <p><em>What about the Time Delay Event?</em></p>
-<p>TODO</p>
+<pre><code class="language-json">{ &quot;time_delay&quot;: { &quot;ticks&quot;: 1000 } }
+</code></pre>
+<p>We add <strong>Time Delay</strong> to our Enum Type like so: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L3-L21"><code>bl602-simulator/lib.rs</code></a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="doccomment">/// Event to be simulated by the BL602 Simulator</span>
+<span class="kw">enum</span> <span class="ident">SimulationEvent</span> {
+    <span class="doccomment">/// Omitted: GPIO Set Output</span>
+    ...
+    <span class="doccomment">/// Time Delay:</span>
+    <span class="doccomment">/// `{ &quot;time_delay&quot;: { &quot;ticks&quot;: 1000 } }`</span>
+    <span class="ident">time_delay</span> {
+        <span class="ident">ticks</span>: <span class="ident">u32</span>,
+    },
+}</pre></div>
+<p>And we create the <strong>Time Delay Event</strong> like so…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="comment">// Create a Time Delay event</span>
+<span class="kw">let</span> <span class="ident">ev</span> <span class="op">=</span> <span class="ident">SimulationEvent::time_delay</span> { 
+  <span class="ident">ticks</span>: <span class="number">1000</span>,
+};
+
+<span class="comment">// Add the event to the vector</span>
+<span class="ident">simulation_events</span>.<span class="ident">push</span>(<span class="ident">ev</span>);</pre></div>
+<p><a href="https://serde.rs/"><strong>Serde Crate</strong></a> does the rest!</p>
 <p><img src="https://lupyuen.github.io/images/rustsim-events.png" alt="Generating Simulation Events in Rust" /></p>
 <p><a href="https://gist.github.com/lupyuen/cec1a423062556263a7ba02971862001">(Source)</a></p>
 <h2 id="intercept-calls-to-bl602-iot-sdk" class="section-header"><a href="#intercept-calls-to-bl602-iot-sdk">4.2 Intercept Calls to BL602 IoT SDK</a></h2>
