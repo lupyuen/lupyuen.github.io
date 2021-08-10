@@ -465,7 +465,7 @@ let serialized = serde_json::to_string(&simulation_events)
 println!("{}", serialized);
 ```
 
-The result is a JSON Array of Simulation Events...
+The result is a __JSON Array__ of Simulation Events...
 
 ```text
 [{"gpio_output_set":{"pin":11,"value":0}}]
