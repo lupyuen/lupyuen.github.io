@@ -451,7 +451,9 @@ cp wasm/wasm.wasm docs
 <p>TODO3</p>
 <p><img src="https://lupyuen.github.io/images/rustsim-events3.png" alt="Generating Simulation Events in Rust" /></p>
 <p><a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L94-L151">(Source)</a></p>
-<p>TODO2</p>
+<p><em>Could we have done this in C instead of Rust?</em></p>
+<p>Yep but it’s gonna get messy when we <strong>compose JSON in C</strong>.</p>
+<p>Here’s the original <strong>implementation in C</strong> before converting to Rust…</p>
 <p><img src="https://lupyuen.github.io/images/rustsim-events2.png" alt="Generating Simulation Events in C" /></p>
 <p><a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm/wasm.c">(Source)</a></p>
 <h1 id="run-bl602-firmware-in-simulator" class="section-header"><a href="#run-bl602-firmware-in-simulator">5 Run BL602 Firmware in Simulator</a></h1>
