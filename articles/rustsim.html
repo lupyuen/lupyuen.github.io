@@ -73,7 +73,7 @@
 <li><a href="#json-stream-of-simulation-events">3 JSON Stream of Simulation Events</a><ul></ul></li>
 <li><a href="#intercept-calls-to-bl602-iot-sdk">4 Intercept Calls to BL602 IoT SDK</a><ul></ul></li>
 <li><a href="#run-bl602-firmware-in-simulator">5 Run BL602 Firmware in Simulator</a><ul></ul></li>
-<li><a href="#check-for-api-errors">6 Check for API Errors</a><ul></ul></li>
+<li><a href="#validating-calls-to-bl602-iot-sdk">6 Validating Calls to BL602 IoT SDK</a><ul></ul></li>
 <li><a href="#html--javascript-ui">7 HTML + JavaScript UI</a><ul></ul></li>
 <li><a href="#pinedio-stack-bl604">8 PineDio Stack BL604</a><ul></ul></li>
 <li><a href="#bl602-simulator-in-webassembly">9 BL602 Simulator in WebAssembly</a><ul></ul></li>
@@ -139,6 +139,8 @@
 <p><a href="https://lupyuen.github.io/articles/adc#appendix-generating-the-rust-wrapper-for-bl602-iot-sdk"><strong>“Generating the BL602 Rust Wrapper”</strong></a></p>
 </li>
 </ul>
+<p><code>time_delay</code> and <code>time_ms_to_ticks32</code> are also defined in the BL602 Rust Wrapper.</p>
+<p><em>How do we build, flash and run this BL602 Rust Firmware?</em></p>
 <p>To see the blinking BL602 LED, we…</p>
 <ol>
 <li>
@@ -192,6 +194,7 @@ make
 </li>
 </ol>
 <p>Let’s go into the details…</p>
+<p><img src="https://lupyuen.github.io/images/rustsim-build.png" alt="Compile Rust Firmware into WebAssembly" /></p>
 <h2 id="compile-rust-firmware-into-webassembly" class="section-header"><a href="#compile-rust-firmware-into-webassembly">2.1 Compile Rust Firmware into WebAssembly</a></h2>
 <p>To compile our <strong>Rust Firmware into WebAssembly</strong>, our <a href="https://github.com/lupyuen/bl602-simulator/blob/main/Makefile#L57-L58">Makefile</a> calls this command…</p>
 <pre><code class="language-bash"># Compile the Rust Firmware and Rust Simulator Library into WebAssembly
@@ -231,6 +234,7 @@ Finished dev [unoptimized + debuginfo] target(s) in 1m 43s
 <p>We change <strong><code>no_std</code></strong> to <strong><code>feature(libc)</code></strong> for the build to succeed.</p>
 <p>Probably because the Emscripten Runtime behaves more like the <strong>Standard C Runtime</strong>.</p>
 <p>(Someday we might use <a href="https://doc.rust-lang.org/cargo/reference/build-scripts.html"><strong><code>build.rs</code></strong></a> to apply this mod automatically during compilation)</p>
+<p><img src="https://lupyuen.github.io/images/rustsim-libc.png" alt="Changing no_std to feature(libc)" /></p>
 <p><em>What are the outputs for “<code>cargo build</code>”?</em></p>
 <p>“<code>cargo build</code>” produces two <strong>Static Libraries</strong> (Rust Firmware and Rust Simulator)…</p>
 <pre><code class="language-text">target/wasm32-unknown-emscripten/debug/libapp.a
@@ -279,7 +283,7 @@ emcc -o wasm/wasm.html \
 <p>(We’ve seen this earlier)</p>
 </li>
 <li>
-<p><code>_clear_simulation_events</code> and <code>_get_simulation_events</code> are Rust Functions that will manage the <strong>JSON Stream of Simulation Events</strong></p>
+<p><code>_clear_simulation_events</code> and <code>_get_simulation_events</code> are functions from the Rust Simulator Library that will manage the <strong>JSON Stream of Simulation Events</strong></p>
 <p>(More about this later)</p>
 </li>
 </ul>
@@ -326,6 +330,12 @@ cp wasm/wasm.wasm docs
 <ul>
 <li><a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs"><strong>Rust Stub Functions for BL602 Simulator</strong></a></li>
 </ul>
+<p>TODO1</p>
+<p><img src="https://lupyuen.github.io/images/rustsim-events.png" alt="" /></p>
+<p>TODO2</p>
+<p><img src="https://lupyuen.github.io/images/rustsim-events2.png" alt="" /></p>
+<p>TODO3</p>
+<p><img src="https://lupyuen.github.io/images/rustsim-events3.png" alt="" /></p>
 <h1 id="run-bl602-firmware-in-simulator" class="section-header"><a href="#run-bl602-firmware-in-simulator">5 Run BL602 Firmware in Simulator</a></h1>
 <p>TODO</p>
 <p>To run the BL602 Simulator…</p>
@@ -341,8 +351,15 @@ cp wasm/wasm.wasm docs
 <p>Click <strong><code>Run</code></strong></p>
 </li>
 </ol>
-<h1 id="check-for-api-errors" class="section-header"><a href="#check-for-api-errors">6 Check for API Errors</a></h1>
+<h1 id="validating-calls-to-bl602-iot-sdk" class="section-header"><a href="#validating-calls-to-bl602-iot-sdk">6 Validating Calls to BL602 IoT SDK</a></h1>
+<p><em>What if we could validate every call to BL602 IoT SDK?</em></p>
+<p><em>And if the call is incorrect, show a helpful message?</em></p>
 <p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/rustsim-validate.png" alt="" /></p>
+<p>TODO7</p>
+<p><img src="https://lupyuen.github.io/images/rustsim-validate2.png" alt="" /></p>
+<p>TODO8</p>
+<p><img src="https://lupyuen.github.io/images/rustsim-validate3.png" alt="" /></p>
 <h1 id="html--javascript-ui" class="section-header"><a href="#html--javascript-ui">7 HTML + JavaScript UI</a></h1>
 <p>TODO</p>
 <p>Add a <strong>Simulator UI (HTML + JavaScript)</strong> to simulate a <strong>PineCone BL602</strong> or <strong>PineDio Stack BL604</strong>…</p>
