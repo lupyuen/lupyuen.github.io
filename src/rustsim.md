@@ -418,9 +418,7 @@ gpio::output_set(  //  Set the GPIO output for...
 )...
 ```
 
-TODO
-
-From [`bl602-simulator/src/lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L3-L21)
+We start by defining the __Enum Type__ for the Simulation Event: [`bl602-simulator/src/lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L3-L21)
 
 ```rust
 //  Import the serde crate for JSON Serialization
@@ -438,19 +436,27 @@ enum SimulationEvent {
 }
 ```
 
-TODO
+To represent a stream of events, we create a __Vector of Simulation Events__...
 
 ```rust
 // Create a vector of simulation events (i.e. event array)
 let mut simulation_events: Vec<SimulationEvent> = Vec::new();
+```
 
+Here's how we create a Simulation Event for __GPIO Set Output__ and add it to the stream...
+
+```rust
 // Add a GPIO Set Output event
 let ev = SimulationEvent::gpio_output_set { 
   pin:  11,
   value: 0,
 };
 simulation_events.push(ev);
+```
 
+Thanks to the [__Serde Crate__](https://serde.rs/), we may serialize the Vector of Simulation Events like so...
+
+```rust
 // Convert vector of events to a JSON string
 let serialized = serde_json::to_string(&simulation_events)
   .unwrap();
@@ -459,15 +465,27 @@ let serialized = serde_json::to_string(&simulation_events)
 println!("{}", serialized);
 ```
 
-[(Source)](https://gist.github.com/lupyuen/cec1a423062556263a7ba02971862001)
-
-TODO
+The result is a JSON Array of Simulation Events...
 
 ```text
 [{"gpio_output_set":{"pin":11,"value":0}}]
 ```
 
+Exactly what we need!
+
+## Time Delay Event
+
 TODO
+
+![Generating Simulation Events in Rust](https://lupyuen.github.io/images/rustsim-events.png)
+
+[(Source)](https://gist.github.com/lupyuen/cec1a423062556263a7ba02971862001)
+
+## Intercept Calls to BL602 IoT SDK
+
+TODO
+
+Rust Simulator Library
 
 In WebAssembly we __intercept calls to BL602 IoT SDK__ with __Stub Functions__
 
@@ -475,13 +493,7 @@ In WebAssembly we __intercept calls to BL602 IoT SDK__ with __Stub Functions__
 
 - [__Rust Stub Functions for BL602 Simulator__](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs)
 
-TODO1
-
-![Generating Simulation Events in Rust](https://lupyuen.github.io/images/rustsim-events.png)
-
-[(Source)](https://gist.github.com/lupyuen/cec1a423062556263a7ba02971862001)
-
-TODO3
+TODO
 
 ![Generating Simulation Events in Rust](https://lupyuen.github.io/images/rustsim-events3.png)
 
