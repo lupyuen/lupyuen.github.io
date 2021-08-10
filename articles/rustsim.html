@@ -71,7 +71,9 @@
 <li><a href="#link-rust-firmware-with-emscripten">2.2 Link Rust Firmware with Emscripten</a><ul></ul></li>
 <li><a href="#copy-the-webassembly-outputs">2.3 Copy the WebAssembly outputs</a><ul></ul></li></ul></li>
 <li><a href="#json-stream-of-simulation-events">3 JSON Stream of Simulation Events</a><ul></ul></li>
-<li><a href="#generate-simulation-events">4 Generate Simulation Events</a><ul></ul></li>
+<li><a href="#generate-simulation-events">4 Generate Simulation Events</a><ul>
+<li><a href="#time-delay-event">4.1 Time Delay Event</a><ul></ul></li>
+<li><a href="#intercept-calls-to-bl602-iot-sdk">4.2 Intercept Calls to BL602 IoT SDK</a><ul></ul></li></ul></li>
 <li><a href="#run-bl602-firmware-in-simulator">5 Run BL602 Firmware in Simulator</a><ul></ul></li>
 <li><a href="#validating-calls-to-bl602-iot-sdk">6 Validating Calls to BL602 IoT SDK</a><ul></ul></li>
 <li><a href="#html--javascript-ui">7 HTML + JavaScript UI</a><ul></ul></li>
@@ -399,8 +401,7 @@ cp wasm/wasm.wasm docs
   <span class="number">11</span>,              <span class="comment">//  GPIO pin number</span>
   <span class="number">0</span>                <span class="comment">//  0 for On, 1 for Off</span>
 )...</pre></div>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L3-L21"><code>bl602-simulator/src/lib.rs</code></a></p>
+<p>We start by defining the <strong>Enum Type</strong> for the Simulation Event: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L3-L21"><code>bl602-simulator/src/lib.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="comment">//  Import the serde crate for JSON Serialization</span>
@@ -416,39 +417,46 @@ cp wasm/wasm.wasm docs
     <span class="ident">value</span>: <span class="ident">u8</span>,
   },
 }</pre></div>
-<p>TODO</p>
+<p>To represent a stream of events, we create a <strong>Vector of Simulation Events</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="comment">// Create a vector of simulation events (i.e. event array)</span>
-<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">simulation_events</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SimulationEvent</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">simulation_events</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SimulationEvent</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Vec::new</span>();</pre></div>
+<p>Here’s how we create a Simulation Event for <strong>GPIO Set Output</strong> and add it to the stream…</p>
 
+<div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="comment">// Add a GPIO Set Output event</span>
 <span class="kw">let</span> <span class="ident">ev</span> <span class="op">=</span> <span class="ident">SimulationEvent::gpio_output_set</span> { 
   <span class="ident">pin</span>:  <span class="number">11</span>,
   <span class="ident">value</span>: <span class="number">0</span>,
 };
-<span class="ident">simulation_events</span>.<span class="ident">push</span>(<span class="ident">ev</span>);
+<span class="ident">simulation_events</span>.<span class="ident">push</span>(<span class="ident">ev</span>);</pre></div>
+<p>Thanks to the <a href="https://serde.rs/"><strong>Serde Crate</strong></a>, we may serialize the Vector of Simulation Events like so…</p>
 
+<div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="comment">// Convert vector of events to a JSON string</span>
 <span class="kw">let</span> <span class="ident">serialized</span> <span class="op">=</span> <span class="ident">serde_json::to_string</span>(<span class="kw-2">&amp;</span><span class="ident">simulation_events</span>)
   .<span class="ident">unwrap</span>();
 
 <span class="comment">// Print the serialized JSON events</span>
 <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">serialized</span>);</pre></div>
-<p><a href="https://gist.github.com/lupyuen/cec1a423062556263a7ba02971862001">(Source)</a></p>
-<p>TODO</p>
+<p>The result is a JSON Array of Simulation Events…</p>
 <pre><code class="language-text">[{&quot;gpio_output_set&quot;:{&quot;pin&quot;:11,&quot;value&quot;:0}}]
 </code></pre>
+<p>Exactly what we need!</p>
+<h2 id="time-delay-event" class="section-header"><a href="#time-delay-event">4.1 Time Delay Event</a></h2>
 <p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/rustsim-events.png" alt="Generating Simulation Events in Rust" /></p>
+<p><a href="https://gist.github.com/lupyuen/cec1a423062556263a7ba02971862001">(Source)</a></p>
+<h2 id="intercept-calls-to-bl602-iot-sdk" class="section-header"><a href="#intercept-calls-to-bl602-iot-sdk">4.2 Intercept Calls to BL602 IoT SDK</a></h2>
+<p>TODO</p>
+<p>Rust Simulator Library</p>
 <p>In WebAssembly we <strong>intercept calls to BL602 IoT SDK</strong> with <strong>Stub Functions</strong></p>
 <p>(Like for the BL602 GPIO HAL)</p>
 <ul>
 <li><a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs"><strong>Rust Stub Functions for BL602 Simulator</strong></a></li>
 </ul>
-<p>TODO1</p>
-<p><img src="https://lupyuen.github.io/images/rustsim-events.png" alt="Generating Simulation Events in Rust" /></p>
-<p><a href="https://gist.github.com/lupyuen/cec1a423062556263a7ba02971862001">(Source)</a></p>
-<p>TODO3</p>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/rustsim-events3.png" alt="Generating Simulation Events in Rust" /></p>
 <p><a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L94-L151">(Source)</a></p>
 <p><em>Could we have done this in C instead of Rust?</em></p>
