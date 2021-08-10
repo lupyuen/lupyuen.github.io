@@ -71,7 +71,7 @@
 <li><a href="#link-rust-firmware-with-emscripten">2.2 Link Rust Firmware with Emscripten</a><ul></ul></li>
 <li><a href="#copy-the-webassembly-outputs">2.3 Copy the WebAssembly outputs</a><ul></ul></li></ul></li>
 <li><a href="#json-stream-of-simulation-events">3 JSON Stream of Simulation Events</a><ul></ul></li>
-<li><a href="#intercept-calls-to-bl602-iot-sdk">4 Intercept Calls to BL602 IoT SDK</a><ul></ul></li>
+<li><a href="#generate-simulation-events">4 Generate Simulation Events</a><ul></ul></li>
 <li><a href="#run-bl602-firmware-in-simulator">5 Run BL602 Firmware in Simulator</a><ul></ul></li>
 <li><a href="#validating-calls-to-bl602-iot-sdk">6 Validating Calls to BL602 IoT SDK</a><ul></ul></li>
 <li><a href="#html--javascript-ui">7 HTML + JavaScript UI</a><ul></ul></li>
@@ -384,7 +384,61 @@ cp wasm/wasm.wasm docs
 </code></pre>
 <p>That will simulate a <strong>blinking BL602 LED</strong>.</p>
 <p>Let’s generate the Simulation Events now.</p>
-<h1 id="intercept-calls-to-bl602-iot-sdk" class="section-header"><a href="#intercept-calls-to-bl602-iot-sdk">4 Intercept Calls to BL602 IoT SDK</a></h1>
+<h1 id="generate-simulation-events" class="section-header"><a href="#generate-simulation-events">4 Generate Simulation Events</a></h1>
+<p><em>How shall we generate this <strong>JSON Simulation Event</strong>…</em></p>
+<pre><code class="language-json">{ &quot;gpio_output_set&quot;: { 
+  &quot;pin&quot;:  11, 
+  &quot;value&quot;: 0 
+} }
+</code></pre>
+<p><em>When we call this Rust Function?</em></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="comment">//  Switch the LED On</span>
+<span class="ident">gpio::output_set</span>(  <span class="comment">//  Set the GPIO output for...</span>
+  <span class="number">11</span>,              <span class="comment">//  GPIO pin number</span>
+  <span class="number">0</span>                <span class="comment">//  0 for On, 1 for Off</span>
+)...</pre></div>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L3-L21"><code>bl602-simulator/src/lib.rs</code></a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="comment">//  Import the serde crate for JSON Serialization</span>
+<span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Serialize</span>, <span class="ident">Deserialize</span>};
+
+<span class="doccomment">/// Event to be simulated by the BL602 Simulator</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Debug</span>)]</span>
+<span class="kw">enum</span> <span class="ident">SimulationEvent</span> {
+  <span class="doccomment">/// GPIO Set Output:</span>
+  <span class="doccomment">/// `{ &quot;gpio_output_set&quot;: { &quot;pin&quot;: 11, &quot;value&quot;: 1 }`</span>
+  <span class="ident">gpio_output_set</span> {
+    <span class="ident">pin</span>:   <span class="ident">u8</span>,
+    <span class="ident">value</span>: <span class="ident">u8</span>,
+  },
+}</pre></div>
+<p>TODO</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="comment">// Create a vector of simulation events (i.e. event array)</span>
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">simulation_events</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SimulationEvent</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
+
+<span class="comment">// Add a GPIO Set Output event</span>
+<span class="kw">let</span> <span class="ident">ev</span> <span class="op">=</span> <span class="ident">SimulationEvent::gpio_output_set</span> { 
+  <span class="ident">pin</span>:  <span class="number">11</span>,
+  <span class="ident">value</span>: <span class="number">0</span>,
+};
+<span class="ident">simulation_events</span>.<span class="ident">push</span>(<span class="ident">ev</span>);
+
+<span class="comment">// Convert vector of events to a JSON string</span>
+<span class="kw">let</span> <span class="ident">serialized</span> <span class="op">=</span> <span class="ident">serde_json::to_string</span>(<span class="kw-2">&amp;</span><span class="ident">simulation_events</span>)
+  .<span class="ident">unwrap</span>();
+
+<span class="comment">// Print the serialized JSON events</span>
+<span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">serialized</span>);</pre></div>
+<p><a href="https://gist.github.com/lupyuen/cec1a423062556263a7ba02971862001">(Source)</a></p>
+<p>TODO</p>
+<pre><code class="language-text">[{&quot;gpio_output_set&quot;:{&quot;pin&quot;:11,&quot;value&quot;:0}}]
+</code></pre>
 <p>TODO</p>
 <p>In WebAssembly we <strong>intercept calls to BL602 IoT SDK</strong> with <strong>Stub Functions</strong></p>
 <p>(Like for the BL602 GPIO HAL)</p>
@@ -392,11 +446,14 @@ cp wasm/wasm.wasm docs
 <li><a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs"><strong>Rust Stub Functions for BL602 Simulator</strong></a></li>
 </ul>
 <p>TODO1</p>
-<p><img src="https://lupyuen.github.io/images/rustsim-events.png" alt="" /></p>
-<p>TODO2</p>
-<p><img src="https://lupyuen.github.io/images/rustsim-events2.png" alt="" /></p>
+<p><img src="https://lupyuen.github.io/images/rustsim-events.png" alt="Generating Simulation Events in Rust" /></p>
+<p><a href="https://gist.github.com/lupyuen/cec1a423062556263a7ba02971862001">(Source)</a></p>
 <p>TODO3</p>
-<p><img src="https://lupyuen.github.io/images/rustsim-events3.png" alt="" /></p>
+<p><img src="https://lupyuen.github.io/images/rustsim-events3.png" alt="Generating Simulation Events in Rust" /></p>
+<p><a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L94-L151">(Source)</a></p>
+<p>TODO2</p>
+<p><img src="https://lupyuen.github.io/images/rustsim-events2.png" alt="Generating Simulation Events in C" /></p>
+<p><a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm/wasm.c">(Source)</a></p>
 <h1 id="run-bl602-firmware-in-simulator" class="section-header"><a href="#run-bl602-firmware-in-simulator">5 Run BL602 Firmware in Simulator</a></h1>
 <p>TODO</p>
 <p>To run the BL602 Simulator…</p>
