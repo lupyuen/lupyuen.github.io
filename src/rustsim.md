@@ -418,7 +418,7 @@ gpio::output_set(  //  Set the GPIO output for...
 )...
 ```
 
-We start by defining the __Enum Type__ for the Simulation Event: [`bl602-simulator/src/lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L3-L21)
+We start by defining the __Enum Type__ for the Simulation Event: [`bl602-simulator/lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L3-L21)
 
 ```rust
 //  Import the serde crate for JSON Serialization
