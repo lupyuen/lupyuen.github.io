@@ -261,13 +261,10 @@ crate-type = [&quot;staticlib&quot;]  # And will be a Static Library
 <p>Our <a href="https://github.com/lupyuen/bl602-simulator/blob/main/Makefile">Makefile</a> links our <strong>Rust Firmware with Emscripten</strong> like so…</p>
 <pre><code class="language-text"># Link the Rust Firmware and Rust Simulator Library with Emscripten
 emcc -o wasm/wasm.html \
-  -Wl,--start-group \
   target/wasm32-unknown-emscripten/debug/libapp.a \
   target/wasm32-unknown-emscripten/debug/libbl602_simulator.a \
   wasm/wasm.o \
-  -Wl,--end-group \
   -g \
-  -I include \
   -s WASM=1 \
   -s DISABLE_EXCEPTION_CATCHING=0 \
   -s &quot;EXPORTED_FUNCTIONS=[ '_rust_main', '_clear_simulation_events', '_get_simulation_events' ]&quot; \
@@ -275,14 +272,15 @@ emcc -o wasm/wasm.html \
 </code></pre>
 <p><a href="https://emscripten.org/docs/getting_started/downloads.html">How to install Emscripten</a></p>
 <p><em>What are the <code>EXPORTED_FUNCTIONS</code>?</em></p>
+<p>These Rust Functions will be <strong>called from JavaScript</strong>…</p>
 <ul>
 <li>
-<p><code>_rust_main</code></p>
-<p>TODO</p>
+<p><code>_rust_main</code> is the Rust Function that blinks the LED</p>
+<p>(We’ve seen this earlier)</p>
 </li>
 <li>
-<p><code>_clear_simulation_events</code>, <code>_get_simulation_events</code></p>
-<p>TODO</p>
+<p><code>_clear_simulation_events</code> and <code>_get_simulation_events</code> are Rust Functions that will manage the <strong>JSON Stream of Simulation Events</strong></p>
+<p>(More about this later)</p>
 </li>
 </ul>
 <p><em>What are the <code>EXTRA_EXPORTED_RUNTIME_METHODS</code>?</em></p>
@@ -291,7 +289,6 @@ emcc -o wasm/wasm.html \
 <li><code>cwrap</code>, <code>allocate</code>, <code>intArrayFromString</code>, <code>UTF8ToString</code></li>
 </ul>
 <h2 id="copy-the-webassembly-outputs" class="section-header"><a href="#copy-the-webassembly-outputs">2.3 Copy the WebAssembly outputs</a></h2>
-<p>TODO</p>
 <p><em>What are the outputs emitted by Emscripten?</em></p>
 <p>TODO</p>
 <p>This produces the JavaScript and WebAssembly files <strong><code>wasm.js</code> and <code>wasm.wasm</code></strong>, which we’ll run in a Web Browser later.</p>
