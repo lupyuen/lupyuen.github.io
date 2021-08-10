@@ -487,7 +487,11 @@ TODO3
 
 [(Source)](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L94-L151)
 
-TODO2
+_Could we have done this in C instead of Rust?_
+
+Yep but it's gonna get messy when we __compose JSON in C__.
+
+Here's the original __implementation in C__ before converting to Rust...
 
 ![Generating Simulation Events in C](https://lupyuen.github.io/images/rustsim-events2.png)
 
