@@ -305,9 +305,97 @@ Because we copied the code from an earlier (non-Rust) WebAssembly project...
 
 # JSON Stream of Simulation Events
 
-TODO
+Our story so far...
 
-![Handling BL602 Simulator Events](https://lupyuen.github.io/images/rust-simulator.png)
+1.  We have compiled our __Rust Firmware into WebAssembly__
+
+1.  Our firmware runs in a __Web Browser__ and it's capable of interacting with __HTML and JavaScript__
+
+    (Thanks to Emscripten)
+
+1.  But our firmware __won't blink any LEDs__
+
+    (Because the __BL602 IoT SDK is missing__ from WebAssembly)
+    
+_What if we simulate the LED with HTML and JavaScript?_
+
+Yep we could build a __BL602 Simulator__ in HTML and JavaScript.
+
+And we can make our Rust Firmware talk to the BL602 Simulator...
+
+By emitting a __JSON Stream of BL602 Simulation Events__!
+
+![JSON Stream of BL602 Simulation Events](https://lupyuen.github.io/images/rust-simulator.png)
+
+_What's a BL602 Simulation Event?_
+
+When our firmware needs to __set the GPIO Output__ to High or Low (to flip an LED On/Off)...
+
+```rust
+//  Switch the LED On
+gpio::output_set(  //  Set the GPIO output for...
+  11,              //  GPIO pin number
+  0                //  0 for On, 1 for Off
+)...
+```
+
+It sends a __Simulation Event__ to the BL602 Simulator (in JSON format)...
+
+```json
+{ "gpio_output_set": { 
+  "pin":  11, 
+  "value": 0 
+} }
+```
+
+Which will be handled by the BL602 Simulator to __flip the Simulated LED__ on or off.
+
+_Is our firmware directly controlling the BL602 Simulator?_
+
+Not quite. Our firmware is __indirectly controlling the BL602 Simulator__ by sending Simulation Events.
+
+(There are good reasons for doing this [__Inversion of Control__](https://en.wikipedia.org/wiki/Inversion_of_control), as well shall learn in a while)
+
+_What about time delays?_
+
+Our firmware shall generate __Simulation Events for time delays__.
+
+To handle such events, our __BL602 Simulator pauses__ for the specified duration.
+
+(It's like playing a MIDI Stream)
+
+Hence this firmware code...
+
+```rust
+//  Sleep 1,000 milliseconds (or 1 second)
+time_delay(1000);
+```
+
+Shall generate this __Time Delay__ Simulation Event...
+
+```json
+{ "time_delay": { "ticks": 1000 } }
+```
+
+_What's inside the JSON Stream of Simulation Events?_
+
+To simulate our firmware on the BL602 Simulator, we shall transmit an __array of Simulation Events__ (in JSON format) from our firmware to the BL602 Simulator.
+
+Thus our Rust Blinky Firmware shall generate this __JSON Stream of Simulation Events__...
+
+```json
+[ { "gpio_output_set": { "pin": 11, "value": 0 } }, 
+  { "time_delay":      { "ticks": 1000 } }, 
+
+  { "gpio_output_set": { "pin": 11, "value": 1 } }, 
+  { "time_delay":      { "ticks": 1000 } }, 
+  ... 
+]
+```
+
+That will simulate a __blinking BL602 LED__.
+
+Let's generate the Simulation Events now.
 
 # Intercept Calls to BL602 IoT SDK
 
