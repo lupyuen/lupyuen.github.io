@@ -231,13 +231,10 @@ Our [Makefile](https://github.com/lupyuen/bl602-simulator/blob/main/Makefile) li
 ```text
 # Link the Rust Firmware and Rust Simulator Library with Emscripten
 emcc -o wasm/wasm.html \
-  -Wl,--start-group \
   target/wasm32-unknown-emscripten/debug/libapp.a \
   target/wasm32-unknown-emscripten/debug/libbl602_simulator.a \
   wasm/wasm.o \
-  -Wl,--end-group \
   -g \
-  -I include \
   -s WASM=1 \
   -s DISABLE_EXCEPTION_CATCHING=0 \
   -s "EXPORTED_FUNCTIONS=[ '_rust_main', '_clear_simulation_events', '_get_simulation_events' ]" \
@@ -248,13 +245,15 @@ emcc -o wasm/wasm.html \
 
 _What are the `EXPORTED_FUNCTIONS`?_
 
--   `_rust_main`
+These Rust Functions will be __called from JavaScript__...
 
-    TODO
+-   `_rust_main` is the Rust Function that blinks the LED
 
--   `_clear_simulation_events`, `_get_simulation_events`
+    (We've seen this earlier)
 
-    TODO
+-   `_clear_simulation_events` and `_get_simulation_events` are Rust Functions that will manage the __JSON Stream of Simulation Events__
+
+    (More about this later)
 
 _What are the `EXTRA_EXPORTED_RUNTIME_METHODS`?_
 
@@ -263,8 +262,6 @@ These Emscripten Runtime Functions will be exported to JavaScript to allow __str
 -   `cwrap`, `allocate`, `intArrayFromString`, `UTF8ToString`
 
 ## Copy the WebAssembly outputs
-
-TODO
 
 _What are the outputs emitted by Emscripten?_
 
