@@ -446,11 +446,13 @@ let mut simulation_events: Vec<SimulationEvent> = Vec::new();
 Here's how we create a Simulation Event for __GPIO Set Output__ and add it to the stream...
 
 ```rust
-// Add a GPIO Set Output event
+// Create a GPIO Set Output event
 let ev = SimulationEvent::gpio_output_set { 
   pin:  11,
   value: 0,
 };
+
+// Add the event to the vector
 simulation_events.push(ev);
 ```
 
@@ -474,6 +476,8 @@ The result is a __JSON Array__ of Simulation Events...
 Exactly what we need!
 
 ## Time Delay Event
+
+_What about the Time Delay Event?_
 
 TODO
 
