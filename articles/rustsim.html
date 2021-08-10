@@ -70,9 +70,9 @@
 <li><a href="#compile-rust-firmware-into-webassembly">2.1 Compile Rust Firmware into WebAssembly</a><ul></ul></li>
 <li><a href="#link-rust-firmware-with-emscripten">2.2 Link Rust Firmware with Emscripten</a><ul></ul></li>
 <li><a href="#copy-the-webassembly-outputs">2.3 Copy the WebAssembly outputs</a><ul></ul></li></ul></li>
-<li><a href="#run-bl602-firmware-in-simulator">3 Run BL602 Firmware in Simulator</a><ul></ul></li>
-<li><a href="#json-stream-of-simulation-events">4 JSON Stream of Simulation Events</a><ul></ul></li>
-<li><a href="#intercept-calls-to-bl602-iot-sdk">5 Intercept Calls to BL602 IoT SDK</a><ul></ul></li>
+<li><a href="#json-stream-of-simulation-events">3 JSON Stream of Simulation Events</a><ul></ul></li>
+<li><a href="#intercept-calls-to-bl602-iot-sdk">4 Intercept Calls to BL602 IoT SDK</a><ul></ul></li>
+<li><a href="#run-bl602-firmware-in-simulator">5 Run BL602 Firmware in Simulator</a><ul></ul></li>
 <li><a href="#check-for-api-errors">6 Check for API Errors</a><ul></ul></li>
 <li><a href="#html--javascript-ui">7 HTML + JavaScript UI</a><ul></ul></li>
 <li><a href="#pinedio-stack-bl604">8 PineDio Stack BL604</a><ul></ul></li>
@@ -316,7 +316,17 @@ cp wasm/wasm.wasm docs
 <ul>
 <li><a href="https://lupyuen.github.io/articles/wasm"><strong>“Simulate RISC-V BL602 with WebAssembly, uLisp and Blockly”</strong></a></li>
 </ul>
-<h1 id="run-bl602-firmware-in-simulator" class="section-header"><a href="#run-bl602-firmware-in-simulator">3 Run BL602 Firmware in Simulator</a></h1>
+<h1 id="json-stream-of-simulation-events" class="section-header"><a href="#json-stream-of-simulation-events">3 JSON Stream of Simulation Events</a></h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/rust-simulator.png" alt="Handling BL602 Simulator Events" /></p>
+<h1 id="intercept-calls-to-bl602-iot-sdk" class="section-header"><a href="#intercept-calls-to-bl602-iot-sdk">4 Intercept Calls to BL602 IoT SDK</a></h1>
+<p>TODO</p>
+<p>In WebAssembly we <strong>intercept calls to BL602 IoT SDK</strong> with <strong>Stub Functions</strong></p>
+<p>(Like for the BL602 GPIO HAL)</p>
+<ul>
+<li><a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs"><strong>Rust Stub Functions for BL602 Simulator</strong></a></li>
+</ul>
+<h1 id="run-bl602-firmware-in-simulator" class="section-header"><a href="#run-bl602-firmware-in-simulator">5 Run BL602 Firmware in Simulator</a></h1>
 <p>TODO</p>
 <p>To run the BL602 Simulator…</p>
 <ol>
@@ -331,15 +341,6 @@ cp wasm/wasm.wasm docs
 <p>Click <strong><code>Run</code></strong></p>
 </li>
 </ol>
-<h1 id="json-stream-of-simulation-events" class="section-header"><a href="#json-stream-of-simulation-events">4 JSON Stream of Simulation Events</a></h1>
-<p>TODO</p>
-<h1 id="intercept-calls-to-bl602-iot-sdk" class="section-header"><a href="#intercept-calls-to-bl602-iot-sdk">5 Intercept Calls to BL602 IoT SDK</a></h1>
-<p>TODO</p>
-<p>In WebAssembly we <strong>intercept calls to BL602 IoT SDK</strong> with <strong>Stub Functions</strong></p>
-<p>(Like for the BL602 GPIO HAL)</p>
-<ul>
-<li><a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs"><strong>Rust Stub Functions for BL602 Simulator</strong></a></li>
-</ul>
 <h1 id="check-for-api-errors" class="section-header"><a href="#check-for-api-errors">6 Check for API Errors</a></h1>
 <p>TODO</p>
 <h1 id="html--javascript-ui" class="section-header"><a href="#html--javascript-ui">7 HTML + JavaScript UI</a></h1>
@@ -349,7 +350,6 @@ cp wasm/wasm.wasm docs
 <li><a href="https://lupyuen.github.io/articles/wasm"><strong>“Simulate RISC-V BL602 with WebAssembly, uLisp and Blockly”</strong></a></li>
 </ul>
 <p>(Without the Blockly part, since we can’t compile Rust in a Web Browser)</p>
-<p><img src="https://lupyuen.github.io/images/rust-simulator.png" alt="Handling BL602 Simulator Events" /></p>
 <h1 id="pinedio-stack-bl604" class="section-header"><a href="#pinedio-stack-bl604">8 PineDio Stack BL604</a></h1>
 <p><em>Simulating a plain BL602 board (like PineCone BL602) is pointless, innit?</em></p>
 <p>TODO</p>
