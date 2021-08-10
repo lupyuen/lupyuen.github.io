@@ -193,7 +193,7 @@ make
 </ol>
 <p>Let’s go into the details…</p>
 <h2 id="compile-rust-firmware-into-webassembly" class="section-header"><a href="#compile-rust-firmware-into-webassembly">2.1 Compile Rust Firmware into WebAssembly</a></h2>
-<p>To compile our <strong>Rust Firmware into WebAssembly</strong>, our <a href="https://github.com/lupyuen/bl602-simulator/blob/main/Makefile">Makefile</a> calls this command…</p>
+<p>To compile our <strong>Rust Firmware into WebAssembly</strong>, our <a href="https://github.com/lupyuen/bl602-simulator/blob/main/Makefile#L57-L58">Makefile</a> calls this command…</p>
 <pre><code class="language-bash"># Compile the Rust Firmware and Rust Simulator Library into WebAssembly
 cargo build --target wasm32-unknown-emscripten
 </code></pre>
@@ -258,7 +258,7 @@ crate-type = [&quot;staticlib&quot;]  # And will be a Static Library
 </li>
 </ol>
 <p>We’ll use the <a href="https://emscripten.org/"><strong>Emscripten WebAssembly Runtime</strong></a>.</p>
-<p>Our <a href="https://github.com/lupyuen/bl602-simulator/blob/main/Makefile">Makefile</a> links our <strong>Rust Firmware with Emscripten</strong> like so…</p>
+<p>Our <a href="https://github.com/lupyuen/bl602-simulator/blob/main/Makefile#L60-L65">Makefile</a> links the <strong>Rust Firmware with Emscripten</strong> like so…</p>
 <pre><code class="language-text"># Link the Rust Firmware and Rust Simulator Library with Emscripten
 emcc -o wasm/wasm.html \
   target/wasm32-unknown-emscripten/debug/libapp.a \
@@ -290,12 +290,27 @@ emcc -o wasm/wasm.html \
 </ul>
 <h2 id="copy-the-webassembly-outputs" class="section-header"><a href="#copy-the-webassembly-outputs">2.3 Copy the WebAssembly outputs</a></h2>
 <p><em>What are the outputs emitted by Emscripten?</em></p>
-<p>TODO</p>
-<p>This produces the JavaScript and WebAssembly files <strong><code>wasm.js</code> and <code>wasm.wasm</code></strong>, which we’ll run in a Web Browser later.</p>
+<p>Emscripten produces these files after linking our Rust Firmware…</p>
+<ul>
+<li>
+<p><strong><code>wasm.wasm</code></strong>: WebAssembly binary file</p>
+</li>
+<li>
+<p><strong><code>wasm.js</code></strong>: JavaScript that loads the WebAssembly binary file into the Web Browser</p>
+</li>
+<li>
+<p><strong><code>wasm.html</code></strong>: HTML page that loads the above JavaScript to execute the WebAssembly binary</p>
+</li>
+</ul>
+<p>Our <a href="https://github.com/lupyuen/bl602-simulator/blob/main/Makefile#L67-L69">Makefile</a> copies the <strong>JavaScript and WebAssembly</strong> outputs to the <strong><code>docs</code></strong> folder…</p>
 <pre><code class="language-text"># Copy the WebAssembly outputs to the docs folder for GitHub Pages
 cp wasm/wasm.js   docs
 cp wasm/wasm.wasm docs
 </code></pre>
+<p>So that we may test the WebAssembly outputs with a Local Web Server.</p>
+<p><em>What about the HTML file <code>wasm.html</code>?</em></p>
+<p>We’re using a <strong>customised version</strong> of <code>wasm.html</code> in the <code>docs</code> folder.</p>
+<p>It renders a <strong>Simulated BL602 Board</strong>, as we shall soon see.</p>
 <p><em>Why did we use the Emscripten WebAssembly Runtime? Instead of the <a href="https://rustwasm.github.io/docs/book/">Rust WebAssembly Runtime</a>?</em></p>
 <p>Because we copied the code from an earlier (non-Rust) WebAssembly project…</p>
 <ul>
