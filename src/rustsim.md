@@ -136,7 +136,7 @@ Let's go into the details...
 
 ## Compile Rust Firmware into WebAssembly
 
-To compile our __Rust Firmware into WebAssembly__, our [Makefile](https://github.com/lupyuen/bl602-simulator/blob/main/Makefile) calls this command...
+To compile our __Rust Firmware into WebAssembly__, our [Makefile](https://github.com/lupyuen/bl602-simulator/blob/main/Makefile#L57-L58) calls this command...
 
 ```bash
 # Compile the Rust Firmware and Rust Simulator Library into WebAssembly
@@ -226,7 +226,7 @@ We're nearly ready to run our Rust Firmware in WebAssembly! We need a __WebAssem
 
 We'll use the [__Emscripten WebAssembly Runtime__](https://emscripten.org/).
 
-Our [Makefile](https://github.com/lupyuen/bl602-simulator/blob/main/Makefile) links our __Rust Firmware with Emscripten__ like so...
+Our [Makefile](https://github.com/lupyuen/bl602-simulator/blob/main/Makefile#L60-L65) links the __Rust Firmware with Emscripten__ like so...
 
 ```text
 # Link the Rust Firmware and Rust Simulator Library with Emscripten
@@ -265,15 +265,29 @@ These Emscripten Runtime Functions will be exported to JavaScript to allow __str
 
 _What are the outputs emitted by Emscripten?_
 
-TODO
+Emscripten produces these files after linking our Rust Firmware...
 
-This produces the JavaScript and WebAssembly files __`wasm.js` and `wasm.wasm`__, which we'll run in a Web Browser later.
+-   __`wasm.wasm`__: WebAssembly binary file
+
+-   __`wasm.js`__: JavaScript that loads the WebAssembly binary file into the Web Browser
+
+-   __`wasm.html`__: HTML page that loads the above JavaScript to execute the WebAssembly binary
+
+Our [Makefile](https://github.com/lupyuen/bl602-simulator/blob/main/Makefile#L67-L69) copies the __JavaScript and WebAssembly__ outputs to the __`docs`__ folder...
 
 ```text
 # Copy the WebAssembly outputs to the docs folder for GitHub Pages
 cp wasm/wasm.js   docs
 cp wasm/wasm.wasm docs
 ```
+
+So that we may test the WebAssembly outputs with a Local Web Server.
+
+_What about the HTML file `wasm.html`?_
+
+We're using a __customised version__ of `wasm.html` in the `docs` folder.
+
+It renders a __Simulated BL602 Board__, as we shall soon see.
 
 _Why did we use the Emscripten WebAssembly Runtime? Instead of the [Rust WebAssembly Runtime](https://rustwasm.github.io/docs/book/)?_
 
