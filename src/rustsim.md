@@ -295,6 +295,22 @@ Because we copied the code from an earlier (non-Rust) WebAssembly project...
 
 -   [__"Simulate RISC-V BL602 with WebAssembly, uLisp and Blockly"__](https://lupyuen.github.io/articles/wasm)
 
+# JSON Stream of Simulation Events
+
+TODO
+
+![Handling BL602 Simulator Events](https://lupyuen.github.io/images/rust-simulator.png)
+
+# Intercept Calls to BL602 IoT SDK
+
+TODO
+
+In WebAssembly we __intercept calls to BL602 IoT SDK__ with __Stub Functions__
+
+(Like for the BL602 GPIO HAL)
+
+- [__Rust Stub Functions for BL602 Simulator__](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs)
+
 # Run BL602 Firmware in Simulator
 
 TODO
@@ -309,20 +325,6 @@ To run the BL602 Simulator...
 
 1.  Click __`Run`__
 
-# JSON Stream of Simulation Events
-
-TODO
-
-# Intercept Calls to BL602 IoT SDK
-
-TODO
-
-In WebAssembly we __intercept calls to BL602 IoT SDK__ with __Stub Functions__
-
-(Like for the BL602 GPIO HAL)
-
-- [__Rust Stub Functions for BL602 Simulator__](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs)
-
 # Check for API Errors
 
 TODO
@@ -336,8 +338,6 @@ Add a __Simulator UI (HTML + JavaScript)__ to simulate a __PineCone BL602__ or _
 - [__“Simulate RISC-V BL602 with WebAssembly, uLisp and Blockly”__](https://lupyuen.github.io/articles/wasm)
 
 (Without the Blockly part, since we can't compile Rust in a Web Browser)
-
-![Handling BL602 Simulator Events](https://lupyuen.github.io/images/rust-simulator.png)
 
 # PineDio Stack BL604
 
