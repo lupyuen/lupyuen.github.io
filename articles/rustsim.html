@@ -75,7 +75,8 @@
 <li><a href="#time-delay-event">4.1 Time Delay Event</a><ul></ul></li>
 <li><a href="#intercept-calls-to-bl602-iot-sdk">4.2 Intercept Calls to BL602 IoT SDK</a><ul></ul></li>
 <li><a href="#what-about-c">4.3 What about C?</a><ul></ul></li></ul></li>
-<li><a href="#html-and-javascript-interface">5 HTML and JavaScript Interface</a><ul></ul></li>
+<li><a href="#html-and-javascript-interface">5 HTML and JavaScript Interface</a><ul>
+<li><a href="#handle-simulation-events-in-javascript">5.1 Handle Simulation Events in JavaScript</a><ul></ul></li></ul></li>
 <li><a href="#run-bl602-firmware-in-simulator">6 Run BL602 Firmware in Simulator</a><ul></ul></li>
 <li><a href="#validating-calls-to-bl602-iot-sdk">7 Validating Calls to BL602 IoT SDK</a><ul></ul></li>
 <li><a href="#pinedio-stack-bl604">8 PineDio Stack BL604</a><ul></ul></li>
@@ -570,7 +571,7 @@ cp wasm/wasm.wasm docs
 <p>We’ve done the Top Half of this pic: Emitting a <strong>JSON Stream of BL602 Simulation Events</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/rust-simulator.png" alt="JSON Stream of BL602 Simulation Events" /></p>
 <p>Now we do the Bottom Half: <strong>HTML and JavaScript Web Browser Interface</strong>!</p>
-<p>First we save this sketchy image of a PineCone BL602 Board as a <strong>PNG file: <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/pinecone.png"><code>pinecone.png</code></a></strong></p>
+<p>First we save this sketchy pic of a PineCone BL602 Board as a <strong>PNG file: <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/pinecone.png"><code>pinecone.png</code></a></strong></p>
 <p><img src="https://lupyuen.github.io/images/wasm-photoshop.png" alt="Creating the BL602 simulator image" /></p>
 <p>We <strong>load the PNG file</strong> in our web page: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/docs/simulator.js#L8-L14"><code>simulator.js</code></a></p>
 <pre><code class="language-javascript">/// Wait for emscripten to be initialised
@@ -581,11 +582,7 @@ Module.onRuntimeInitialized = function() {
   image.src = 'pinecone.png';      //  Image to be loaded
 };
 </code></pre>
-<p>This code calls the <strong><code>renderSimulator</code></strong> function when our BL602 image has been loaded into memory.</p>
-<p>Emscripten has helpfully generated a <strong>HTML Canvas</strong> in <a href="https://github.com/lupyuen/bl602-simulator/blob/main/docs/wasm.html#L1238-L1240"><code>wasm.html</code></a> …</p>
-<pre><code class="language-html">&lt;canvas id=&quot;canvas&quot; class=&quot;emscripten&quot; oncontextmenu=&quot;event.preventDefault()&quot; tabindex=-1&gt;&lt;/canvas&gt;
-</code></pre>
-<p>In the <strong><code>renderSimulator</code></strong> function, let’s <strong>render our BL602 image</strong> onto the HTML Canvas: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/docs/simulator.js#L16-L28"><code>simulator.js</code></a></p>
+<p>When our BL602 pic has been loaded, <strong><code>renderSimulator</code></strong> renders the pic: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/docs/simulator.js#L16-L28"><code>simulator.js</code></a></p>
 <pre><code class="language-javascript">/// Render the simulator pic. Based on https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage
 function renderSimulator() {
   //  Get the HTML canvas and context
@@ -600,27 +597,113 @@ function renderSimulator() {
   ctx.drawImage(this, 0, 0, canvas.width, canvas.height);
 }
 </code></pre>
-<p>Our <strong>rendered BL602 Simulator</strong> looks like this…</p>
+<p><em>What’s the <code>canvas</code>?</em></p>
+<p>Emscripten has helpfully generated a <strong>HTML Canvas</strong> in <a href="https://github.com/lupyuen/bl602-simulator/blob/main/docs/wasm.html#L1238-L1240"><code>wasm.html</code></a> …</p>
+<pre><code class="language-html">&lt;canvas id=&quot;canvas&quot; class=&quot;emscripten&quot; oncontextmenu=&quot;event.preventDefault()&quot; tabindex=-1&gt;&lt;/canvas&gt;
+</code></pre>
+<p><code>renderSimulator</code> renders our BL602 pic to the HTML Canvas…</p>
 <p><img src="https://lupyuen.github.io/images/adc-simulator2.png" alt="BL602 Simulator in WebAssembly" /></p>
 <p><em>What about the LED?</em></p>
-<p>To simulate the LED switching on, let’s draw a <strong>blue rectangle</strong> onto the HTML Canvas: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/docs/simulator.js#L121-L144"><code>simulator.js</code></a></p>
+<p>To simulate the LED switching on <em>(or off)</em>, let’s draw a <strong>blue rectangle</strong> <em>(or grey rectangle)</em> onto the HTML Canvas: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/docs/simulator.js#L121-L144"><code>simulator.js</code></a></p>
 <pre><code class="language-javascript">//  Get the HTML Canvas Context
 const ctx = document.getElementById('canvas').getContext('2d');
 
-//  LED On: Set the fill colour to Blue
+//  For LED On: Set the fill colour to Blue
 ctx.fillStyle = '#B0B0FF';  //  Blue
 
-//  Draw the LED colour
-ctx.fillRect(315, 116, 35, 74);
-</code></pre>
-<p>And to simulate the LED switching off, we draw a <strong>grey rectangle</strong>: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/docs/simulator.js#L121-L144"><code>simulator.js</code></a></p>
-<pre><code class="language-javascript">//  LED Off: Set the fill colour to Grey
-ctx.fillStyle = '#CCCCCC';  //  Grey
+//  For LED Off: Set the fill colour to Grey
+//  ctx.fillStyle = '#CCCCCC';  //  Grey
 
 //  Draw the LED colour
 ctx.fillRect(315, 116, 35, 74);
 </code></pre>
-<p>Now we wire up the Simulated BL602 LED to WebAssembly and Rust!</p>
+<h2 id="handle-simulation-events-in-javascript" class="section-header"><a href="#handle-simulation-events-in-javascript">5.1 Handle Simulation Events in JavaScript</a></h2>
+<p>Now watch what happens when we click the <strong>“Run” Button</strong> in our BL602 Simulator: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/docs/simulator.js#L30-L81"><code>simulator.js</code></a></p>
+<pre><code class="language-javascript">//  Clear the JSON Stream of Simulation Events in WebAssembly
+Module._clear_simulation_events();
+
+//  Execute the WebAssembly Function defined in Rust
+Module._rust_main();  //  Omitted: Checking whether `rust_main` exists
+
+//  Get the JSON string of Simulation Events from WebAssembly. Looks like...
+//  [ { &quot;gpio_output_set&quot;: { &quot;pin&quot;: 11, &quot;value&quot;: 1 } }, 
+//    { &quot;time_delay&quot;: { &quot;ticks&quot;: 1000 } }, ... ]
+const json_ptr = Module._get_simulation_events();
+
+//  Convert the JSON string from WebAssembly to JavaScript
+const json = Module.UTF8ToString(json_ptr);
+
+//  Parse the JSON Stream of Simulation Events
+simulation_events = JSON.parse(json);
+</code></pre>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/bl602-simulator/blob/main/docs/simulator.js#L83-L119"><code>simulator.js</code></a></p>
+<pre><code class="language-javascript">/// Simulate the BL602 Simulation Events recorded in simulate_events, which contains...
+///  [ { &quot;gpio_output_set&quot;: { &quot;pin&quot;: 11, &quot;value&quot;: 1 } }, 
+///    { &quot;time_delay&quot;: { &quot;ticks&quot;: 1000 } }, ... ]
+function simulateEvents() {
+  //  Take the first event and update the queue
+  if (simulation_events.length == 0) { return; }
+  const event = simulation_events.shift();
+  //  event looks like:
+  //  { &quot;gpio_output_set&quot;: { &quot;pin&quot;: 11, &quot;value&quot;: 1 } }
+
+  //  Get the event type and parameters
+  const event_type = Object.keys(event)[0];
+  const args = event[event_type];
+
+  //  Timeout in milliseconds to the next event
+  let timeout = 1;
+
+  //  Handle each event type
+  switch (event_type) {
+
+    //  Set GPIO output
+    //  { &quot;gpio_output_set&quot;: { &quot;pin&quot;: 11, &quot;value&quot;: 1 } }
+    case &quot;gpio_output_set&quot;: timeout += gpio_output_set(args.pin, args.value); break;
+
+    //  Delay
+    //  { &quot;time_delay&quot;: { &quot;ticks&quot;: 1000 } }
+    case &quot;time_delay&quot;: timeout += time_delay(args.ticks); break;
+
+    //  Unknown event type
+    default: throw new Error(&quot;Unknown event type: &quot; + event_type);
+  }
+
+  //  Simulate the next event
+  if (simulation_events.length &gt; 0) {
+    window.setTimeout(&quot;simulateEvents()&quot;, timeout);
+  }
+}
+</code></pre>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/bl602-simulator/blob/main/docs/simulator.js#L121-L144"><code>simulator.js</code></a></p>
+<pre><code class="language-javascript">/// Simulate setting GPIO pin output to value 0 (Low) or 1 (High):
+/// { &quot;gpio_output_set&quot;: { &quot;pin&quot;: 11, &quot;value&quot;: 1 } }
+function gpio_output_set(pin, value) {
+  //  Get the HTML Canvas Context
+  const ctx = document.getElementById('canvas').getContext('2d');
+
+  //  Set the simulated LED colour depending on value
+  switch (value) {
+    //  Set GPIO to Low (LED on)
+    case 0: ctx.fillStyle = '#B0B0FF'; break;  //  Blue
+
+    //  Set GPIO to High (LED off)
+    case 1: ctx.fillStyle = '#CCCCCC'; break;  //  Grey
+
+    //  Unknown value
+    default: throw new Error(&quot;Unknown gpio_output_set value: &quot; + args.value);
+  }
+
+  //  Draw the LED colour
+  ctx.fillRect(315, 116, 35, 74);
+
+  //  Simulate next event in 0 milliseconds
+  return 0;
+}
+</code></pre>
+<p><a href="https://lupyuen.github.io/articles/wasm#simulate-delays">(More about simulating delays)</a></p>
 <h1 id="run-bl602-firmware-in-simulator" class="section-header"><a href="#run-bl602-firmware-in-simulator">6 Run BL602 Firmware in Simulator</a></h1>
 <p>TODO</p>
 <p>To run the BL602 Simulator…</p>
@@ -649,6 +732,7 @@ ctx.fillRect(315, 116, 35, 74);
 <p><em>Simulating a plain BL602 board (like PineCone BL602) is pointless, innit?</em></p>
 <p>TODO</p>
 <p>Works on plain old Windows too</p>
+<p>LVGL, LoRa and LoRaWAN</p>
 <h1 id="bl602-simulator-in-webassembly" class="section-header"><a href="#bl602-simulator-in-webassembly">9 BL602 Simulator in WebAssembly</a></h1>
 <p>TODO</p>
 <p>There’s Rhai, a #RustLang-like Scripting Language that runs on #WebAssembly and Embedded … Shall I build a Scratch / Blockly drag-and-drop tool that emits Rhai programs for #BL602?</p>
