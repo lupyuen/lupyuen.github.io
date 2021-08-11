@@ -1283,6 +1283,8 @@ With this simulator design we get...
 
 # What's Next
 
+[__UPDATE: We've created a BL602 Simulator in Rust. Read about it here__](https://lupyuen.github.io/articles/rustsim)
+
 Creating a BL602 Simulator for uLisp and Blockly has been a fun experience.
 
 But more work needs to be done... Please lemme know if you're keen to help!

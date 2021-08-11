@@ -661,7 +661,7 @@ To run the BL602 Simulator...
 
 _What if the Embedded HAL could tell how to fix our code?_
 
-_Wouldn't that be great, especially for learners?_
+(Wouldn't that be great, especially for learners?)
 
 TODO
 
