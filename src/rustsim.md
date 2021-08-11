@@ -635,13 +635,78 @@ We've done the Top Half of this pic: Emitting a __JSON Stream of BL602 Simulatio
 
 Now we do the Bottom Half: __HTML and JavaScript Web Browser Interface__!
 
-TODO
+First we save this sketchy image of a PineCone BL602 Board as a __PNG file: [`pinecone.png`](https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/pinecone.png)__
 
-Add a __Simulator UI (HTML + JavaScript)__ to simulate a __PineCone BL602__ or __PineDio Stack BL604__...
+![Creating the BL602 simulator image](https://lupyuen.github.io/images/wasm-photoshop.png)
 
-- [__“Simulate RISC-V BL602 with WebAssembly, uLisp and Blockly”__](https://lupyuen.github.io/articles/wasm)
+We __load the PNG file__ in our web page: [`simulator.js`](https://github.com/lupyuen/bl602-simulator/blob/main/docs/simulator.js#L8-L14)
 
-(Without the Blockly part, since we can't compile Rust in a Web Browser)
+```javascript
+/// Wait for emscripten to be initialised
+Module.onRuntimeInitialized = function() {
+  // Load the simulator pic and render it
+  const image = new Image();
+  image.onload = renderSimulator;  //  Draw when image has loaded
+  image.src = 'pinecone.png';      //  Image to be loaded
+};
+```
+
+This code calls the __`renderSimulator`__ function when our BL602 image has been loaded into memory.
+
+Emscripten has helpfully generated a __HTML Canvas__ in [`wasm.html`](https://github.com/lupyuen/bl602-simulator/blob/main/docs/wasm.html#L1238-L1240) ...
+
+```html
+<canvas id="canvas" class="emscripten" oncontextmenu="event.preventDefault()" tabindex=-1></canvas>
+```
+
+In the __`renderSimulator`__ function, let's __render our BL602 image__ onto the HTML Canvas: [`simulator.js`](https://github.com/lupyuen/bl602-simulator/blob/main/docs/simulator.js#L16-L28)
+
+```javascript
+/// Render the simulator pic. Based on https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage
+function renderSimulator() {
+  //  Get the HTML canvas and context
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+
+  //  Resize the canvas
+  canvas.width  = 400;
+  canvas.height = 300;
+
+  //  Draw the image to fill the canvas
+  ctx.drawImage(this, 0, 0, canvas.width, canvas.height);
+}
+```
+
+Our __rendered BL602 Simulator__ looks like this...
+
+![BL602 Simulator in WebAssembly](https://lupyuen.github.io/images/adc-simulator2.png)
+
+_What about the LED?_
+
+To simulate the LED switching on, let's draw a __blue rectangle__ onto the HTML Canvas: [`simulator.js`](https://github.com/lupyuen/bl602-simulator/blob/main/docs/simulator.js#L121-L144)
+
+```javascript
+//  Get the HTML Canvas Context
+const ctx = document.getElementById('canvas').getContext('2d');
+
+//  LED On: Set the fill colour to Blue
+ctx.fillStyle = '#B0B0FF';  //  Blue
+
+//  Draw the LED colour
+ctx.fillRect(315, 116, 35, 74);
+```
+
+And to simulate the LED switching off, we draw a __grey rectangle__: [`simulator.js`](https://github.com/lupyuen/bl602-simulator/blob/main/docs/simulator.js#L121-L144)
+
+```javascript
+//  LED Off: Set the fill colour to Grey
+ctx.fillStyle = '#CCCCCC';  //  Grey
+
+//  Draw the LED colour
+ctx.fillRect(315, 116, 35, 74);
+```
+
+Now we wire up the Simulated BL602 LED to WebAssembly and Rust!
 
 # Run BL602 Firmware in Simulator
 
