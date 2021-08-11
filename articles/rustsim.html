@@ -73,8 +73,9 @@
 <li><a href="#json-stream-of-simulation-events">3 JSON Stream of Simulation Events</a><ul></ul></li>
 <li><a href="#generate-simulation-events">4 Generate Simulation Events</a><ul>
 <li><a href="#time-delay-event">4.1 Time Delay Event</a><ul></ul></li>
-<li><a href="#intercept-calls-to-bl602-iot-sdk">4.2 Intercept Calls to BL602 IoT SDK</a><ul></ul></li></ul></li>
-<li><a href="#html--javascript-ui">5 HTML + JavaScript UI</a><ul></ul></li>
+<li><a href="#intercept-calls-to-bl602-iot-sdk">4.2 Intercept Calls to BL602 IoT SDK</a><ul></ul></li>
+<li><a href="#what-about-c">4.3 What about C?</a><ul></ul></li></ul></li>
+<li><a href="#html-and-javascript-interface">5 HTML and JavaScript Interface</a><ul></ul></li>
 <li><a href="#run-bl602-firmware-in-simulator">6 Run BL602 Firmware in Simulator</a><ul></ul></li>
 <li><a href="#validating-calls-to-bl602-iot-sdk">7 Validating Calls to BL602 IoT SDK</a><ul></ul></li>
 <li><a href="#pinedio-stack-bl604">8 PineDio Stack BL604</a><ul></ul></li>
@@ -552,19 +553,23 @@ cp wasm/wasm.wasm docs
 <span class="kw">fn</span> <span class="ident">bl_gpio_output_set</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">value</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_int</span> {
   <span class="comment">//  Create a GPIO Set Output event</span>
   <span class="kw">let</span> <span class="ident">ev</span> <span class="op">=</span> <span class="ident">SimulationEvent::gpio_output_set</span> { <span class="ident">pin</span>, <span class="ident">value</span> };
-  <span class="comment">//  Add the event to the JSON Stream of Simulation Events.</span>
+  <span class="comment">//  Add the event to the JSON Stream of Simulation Events</span>
   <span class="ident">SIMULATION_EVENTS</span>.<span class="ident">push</span>(<span class="ident">ev</span>);</pre></div>
 </li>
 </ol>
 <p>And that’s how we <strong>intercept calls to BL602 IoT SDK</strong>… To emit a JSON Stream of Simulation Events!</p>
 <p><img src="https://lupyuen.github.io/images/rustsim-events3.png" alt="Generating Simulation Events in Rust" /></p>
 <p><a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L94-L151">(Source)</a></p>
+<h2 id="what-about-c" class="section-header"><a href="#what-about-c">4.3 What about C?</a></h2>
 <p><em>Could we have done this in C instead of Rust?</em></p>
 <p>Yep but it’s gonna get messy when we <strong>compose JSON in C</strong>.</p>
 <p>Here’s the original <strong>implementation in C</strong> before converting to Rust…</p>
 <p><img src="https://lupyuen.github.io/images/rustsim-events2.png" alt="Generating Simulation Events in C" /></p>
 <p><a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm/wasm.c">(Source)</a></p>
-<h1 id="html--javascript-ui" class="section-header"><a href="#html--javascript-ui">5 HTML + JavaScript UI</a></h1>
+<h1 id="html-and-javascript-interface" class="section-header"><a href="#html-and-javascript-interface">5 HTML and JavaScript Interface</a></h1>
+<p>We’ve done the Top Half of this pic: Emitting a <strong>JSON Stream of BL602 Simulation Events</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/rust-simulator.png" alt="JSON Stream of BL602 Simulation Events" /></p>
+<p>Now we do the Bottom Half: <strong>HTML and JavaScript Web Browser Interface</strong>!</p>
 <p>TODO</p>
 <p>Add a <strong>Simulator UI (HTML + JavaScript)</strong> to simulate a <strong>PineCone BL602</strong> or <strong>PineDio Stack BL604</strong>…</p>
 <ul>
