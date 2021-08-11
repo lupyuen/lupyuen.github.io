@@ -2,7 +2,7 @@
 
 📝 _16 Aug 2021_
 
-One year ago I pondered... Can we make __Embedded Programming easier for Beginners__?
+One year ago I pondered... Can we make __Embedded Programming easier for Learners__?
 
 ![Fornite vs Embedded Programming](https://lupyuen.github.io/images/cloud-title.jpg)
 
@@ -627,9 +627,9 @@ To run the BL602 Simulator...
 
 # Validating Calls to BL602 IoT SDK
 
-_What if we could validate every call to BL602 IoT SDK?_
+_What if the Embedded HAL could tell how to fix our code?_
 
-_And if the call is incorrect, show a helpful message?_
+_Wouldn't that be great, especially for learners?_
 
 TODO
 
