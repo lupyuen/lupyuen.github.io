@@ -633,7 +633,7 @@ We've done the Top Half of this pic: Emitting a __JSON Stream of BL602 Simulatio
 
 ![JSON Stream of BL602 Simulation Events](https://lupyuen.github.io/images/rust-simulator.png)
 
-Now we do the Bottom Half: __HTML and JavaScript Web Browser Interface__!
+Now we do the Bottom Half: __Web Browser Interface in HTML and JavaScript__!
 
 First we save this sketchy pic of a PineCone BL602 Board as a __PNG file: [`pinecone.png`](https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/pinecone.png)__
 
@@ -651,7 +651,7 @@ Module.onRuntimeInitialized = function() {
 };
 ```
 
-When our BL602 pic has been loaded, __`renderSimulator`__ renders the pic: [`simulator.js`](https://github.com/lupyuen/bl602-simulator/blob/main/docs/simulator.js#L16-L28)
+When the pic has been loaded, __`renderSimulator`__ renders the pic: [`simulator.js`](https://github.com/lupyuen/bl602-simulator/blob/main/docs/simulator.js#L16-L28)
 
 ```javascript
 /// Render the simulator pic. Based on https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage
@@ -677,7 +677,7 @@ Emscripten has helpfully generated a __HTML Canvas__ in [`wasm.html`](https://gi
 <canvas id="canvas" class="emscripten" oncontextmenu="event.preventDefault()" tabindex=-1></canvas>
 ```
 
-`renderSimulator` renders our BL602 pic to the HTML Canvas...
+`renderSimulator` renders our BL602 pic to the HTML Canvas like so...
 
 ![BL602 Simulator in WebAssembly](https://lupyuen.github.io/images/adc-simulator2.png)
 
@@ -699,7 +699,7 @@ ctx.fillStyle = '#B0B0FF';  //  Blue
 ctx.fillRect(315, 116, 35, 74);
 ```
 
-## Handle Simulation Events in JavaScript
+## Handle Simulation Events
 
 Now watch what happens when we click the __"Run" Button__ in our BL602 Simulator: [`simulator.js`](https://github.com/lupyuen/bl602-simulator/blob/main/docs/simulator.js#L30-L81)
 
