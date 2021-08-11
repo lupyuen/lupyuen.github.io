@@ -596,7 +596,7 @@ See what we did there? To __flip the LED__ on / off...
     ```rust
     fn output_set(pin: u8, value: u8) -> BlResult<()> {
       //  Call the BL602 IoT SDK
-      let res = bl_gpio_output_set(pin as u8, value as u8);
+      bl_gpio_output_set(pin as u8, value as u8);
     ```
 
 1.  Which adds the __Set GPIO Output__ event to the JSON Stream of Simulation Events
@@ -678,6 +678,10 @@ Works on plain old Windows too
 # BL602 Simulator in WebAssembly
 
 TODO
+
+There's Rhai, a #RustLang-like Scripting Language that runs on #WebAssembly and Embedded ... Shall I build a Scratch / Blockly drag-and-drop tool that emits Rhai programs for #BL602?
+
+https://github.com/rhaiscript/rhai
 
 -   [__BL602 / BL604 Simulator in WebAssembly__](https://github.com/lupyuen/bl602-simulator)
 
