@@ -605,7 +605,7 @@ See what we did there? To __flip the LED__ on / off...
     fn bl_gpio_output_set(pin: u8, value: u8) -> c_int {
       //  Create a GPIO Set Output event
       let ev = SimulationEvent::gpio_output_set { pin, value };
-      //  Add the event to the JSON Stream of Simulation Events.
+      //  Add the event to the JSON Stream of Simulation Events
       SIMULATION_EVENTS.push(ev);
     ```
 
@@ -614,6 +614,8 @@ And that's how we __intercept calls to BL602 IoT SDK__... To emit a JSON Stream 
 ![Generating Simulation Events in Rust](https://lupyuen.github.io/images/rustsim-events3.png)
 
 [(Source)](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L94-L151)
+
+## What about C?
 
 _Could we have done this in C instead of Rust?_
 
@@ -625,7 +627,13 @@ Here's the original __implementation in C__ before converting to Rust...
 
 [(Source)](https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm/wasm.c)
 
-# HTML + JavaScript UI
+# HTML and JavaScript Interface
+
+We've done the Top Half of this pic: Emitting a __JSON Stream of BL602 Simulation Events__...
+
+![JSON Stream of BL602 Simulation Events](https://lupyuen.github.io/images/rust-simulator.png)
+
+Now we do the Bottom Half: __HTML and JavaScript Web Browser Interface__!
 
 TODO
 
