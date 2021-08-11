@@ -74,9 +74,9 @@
 <li><a href="#generate-simulation-events">4 Generate Simulation Events</a><ul>
 <li><a href="#time-delay-event">4.1 Time Delay Event</a><ul></ul></li>
 <li><a href="#intercept-calls-to-bl602-iot-sdk">4.2 Intercept Calls to BL602 IoT SDK</a><ul></ul></li></ul></li>
-<li><a href="#run-bl602-firmware-in-simulator">5 Run BL602 Firmware in Simulator</a><ul></ul></li>
-<li><a href="#validating-calls-to-bl602-iot-sdk">6 Validating Calls to BL602 IoT SDK</a><ul></ul></li>
-<li><a href="#html--javascript-ui">7 HTML + JavaScript UI</a><ul></ul></li>
+<li><a href="#html--javascript-ui">5 HTML + JavaScript UI</a><ul></ul></li>
+<li><a href="#run-bl602-firmware-in-simulator">6 Run BL602 Firmware in Simulator</a><ul></ul></li>
+<li><a href="#validating-calls-to-bl602-iot-sdk">7 Validating Calls to BL602 IoT SDK</a><ul></ul></li>
 <li><a href="#pinedio-stack-bl604">8 PineDio Stack BL604</a><ul></ul></li>
 <li><a href="#bl602-simulator-in-webassembly">9 BL602 Simulator in WebAssembly</a><ul></ul></li>
 <li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
@@ -494,8 +494,7 @@ cp wasm/wasm.wasm docs
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">output_set</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">value</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BlResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
   <span class="comment">//  Import the C function from BL602 IoT SDK</span>
   <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bl_gpio_output_set</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">value</span>: <span class="ident">u8</span>)
-    <span class="op">-</span><span class="op">&gt;</span> <span class="ident">::cty::c_int</span>;
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bl_gpio_output_set</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">value</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">::cty::c_int</span>;
   }
   <span class="kw">unsafe</span> {
     <span class="comment">//  Call the BL602 IoT SDK</span>
@@ -514,8 +513,7 @@ cp wasm/wasm.wasm docs
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="doccomment">/// Set the output value of a GPIO Pin. See `bl_gpio_output_set` in &quot;Read and Write GPIO&quot; &lt;https://lupyuen.github.io/articles/led#read-and-write-gpio&gt;</span>
 <span class="attribute">#[<span class="ident">no_mangle</span>]</span>  <span class="comment">//  Don&#39;t mangle the function name</span>
-<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">bl_gpio_output_set</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">value</span>: <span class="ident">u8</span>)
-<span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_int</span> {
+<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">bl_gpio_output_set</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">value</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_int</span> {
   <span class="comment">//  Omitted: If the GPIO Pin has not been configured for Output, halt</span>
   ...
   <span class="comment">//  Create a GPIO Set Output event</span>
@@ -535,13 +533,27 @@ cp wasm/wasm.wasm docs
 <ol>
 <li>
 <p>Our Rust Firmware calls <strong><code>gpio::output_set</code></strong></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="ident">gpio::output_set</span>(<span class="number">11</span>, <span class="number">0</span>)</pre></div>
 </li>
 <li>
 <p>Which is a wrapper function that calls <strong><code>bl_gpio_output_set</code></strong></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">fn</span> <span class="ident">output_set</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">value</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BlResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+  <span class="comment">//  Call the BL602 IoT SDK</span>
+  <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">bl_gpio_output_set</span>(<span class="ident">pin</span> <span class="kw">as</span> <span class="ident">u8</span>, <span class="ident">value</span> <span class="kw">as</span> <span class="ident">u8</span>);</pre></div>
 </li>
 <li>
 <p>Which adds the <strong>Set GPIO Output</strong> event to the JSON Stream of Simulation Events</p>
-<p>(In WebAssembly)</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">fn</span> <span class="ident">bl_gpio_output_set</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">value</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_int</span> {
+  <span class="comment">//  Create a GPIO Set Output event</span>
+  <span class="kw">let</span> <span class="ident">ev</span> <span class="op">=</span> <span class="ident">SimulationEvent::gpio_output_set</span> { <span class="ident">pin</span>, <span class="ident">value</span> };
+  <span class="comment">//  Add the event to the JSON Stream of Simulation Events.</span>
+  <span class="ident">SIMULATION_EVENTS</span>.<span class="ident">push</span>(<span class="ident">ev</span>);</pre></div>
 </li>
 </ol>
 <p>And that’s how we <strong>intercept calls to BL602 IoT SDK</strong>… To emit a JSON Stream of Simulation Events!</p>
@@ -552,7 +564,14 @@ cp wasm/wasm.wasm docs
 <p>Here’s the original <strong>implementation in C</strong> before converting to Rust…</p>
 <p><img src="https://lupyuen.github.io/images/rustsim-events2.png" alt="Generating Simulation Events in C" /></p>
 <p><a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm/wasm.c">(Source)</a></p>
-<h1 id="run-bl602-firmware-in-simulator" class="section-header"><a href="#run-bl602-firmware-in-simulator">5 Run BL602 Firmware in Simulator</a></h1>
+<h1 id="html--javascript-ui" class="section-header"><a href="#html--javascript-ui">5 HTML + JavaScript UI</a></h1>
+<p>TODO</p>
+<p>Add a <strong>Simulator UI (HTML + JavaScript)</strong> to simulate a <strong>PineCone BL602</strong> or <strong>PineDio Stack BL604</strong>…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/wasm"><strong>“Simulate RISC-V BL602 with WebAssembly, uLisp and Blockly”</strong></a></li>
+</ul>
+<p>(Without the Blockly part, since we can’t compile Rust in a Web Browser)</p>
+<h1 id="run-bl602-firmware-in-simulator" class="section-header"><a href="#run-bl602-firmware-in-simulator">6 Run BL602 Firmware in Simulator</a></h1>
 <p>TODO</p>
 <p>To run the BL602 Simulator…</p>
 <ol>
@@ -567,7 +586,7 @@ cp wasm/wasm.wasm docs
 <p>Click <strong><code>Run</code></strong></p>
 </li>
 </ol>
-<h1 id="validating-calls-to-bl602-iot-sdk" class="section-header"><a href="#validating-calls-to-bl602-iot-sdk">6 Validating Calls to BL602 IoT SDK</a></h1>
+<h1 id="validating-calls-to-bl602-iot-sdk" class="section-header"><a href="#validating-calls-to-bl602-iot-sdk">7 Validating Calls to BL602 IoT SDK</a></h1>
 <p><em>What if the Embedded HAL could tell how to fix our code?</em></p>
 <p><em>Wouldn’t that be great, especially for learners?</em></p>
 <p>TODO</p>
@@ -576,13 +595,6 @@ cp wasm/wasm.wasm docs
 <p><img src="https://lupyuen.github.io/images/rustsim-validate2.png" alt="" /></p>
 <p>TODO8</p>
 <p><img src="https://lupyuen.github.io/images/rustsim-validate3.png" alt="" /></p>
-<h1 id="html--javascript-ui" class="section-header"><a href="#html--javascript-ui">7 HTML + JavaScript UI</a></h1>
-<p>TODO</p>
-<p>Add a <strong>Simulator UI (HTML + JavaScript)</strong> to simulate a <strong>PineCone BL602</strong> or <strong>PineDio Stack BL604</strong>…</p>
-<ul>
-<li><a href="https://lupyuen.github.io/articles/wasm"><strong>“Simulate RISC-V BL602 with WebAssembly, uLisp and Blockly”</strong></a></li>
-</ul>
-<p>(Without the Blockly part, since we can’t compile Rust in a Web Browser)</p>
 <h1 id="pinedio-stack-bl604" class="section-header"><a href="#pinedio-stack-bl604">8 PineDio Stack BL604</a></h1>
 <p><em>Simulating a plain BL602 board (like PineCone BL602) is pointless, innit?</em></p>
 <p>TODO</p>
