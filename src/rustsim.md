@@ -701,25 +701,42 @@ ctx.fillRect(315, 116, 35, 74);
 
 ## Handle Simulation Events
 
-Now watch what happens when we click the __"Run" Button__ in our BL602 Simulator: [`simulator.js`](https://github.com/lupyuen/bl602-simulator/blob/main/docs/simulator.js#L30-L81)
+Watch what happens when we click the __"Run" Button__ in our BL602 Simulator: [`simulator.js`](https://github.com/lupyuen/bl602-simulator/blob/main/docs/simulator.js#L30-L81)
 
 ```javascript
-//  Clear the JSON Stream of Simulation Events in WebAssembly
-Module._clear_simulation_events();
+/// Run the command in the input box
+function runScript() {
+  //  Omitted: Read the command from input box and convert to a function (like `rust_main`)
+  ...
 
-//  Execute the WebAssembly Function defined in Rust
-Module._rust_main();  //  Omitted: Checking whether `rust_main` exists
+  //  Clear the JSON Stream of Simulation Events in WebAssembly
+  Module._clear_simulation_events();
+```
 
-//  Get the JSON string of Simulation Events from WebAssembly. Looks like...
-//  [ { "gpio_output_set": { "pin": 11, "value": 1 } }, 
-//    { "time_delay": { "ticks": 1000 } }, ... ]
-const json_ptr = Module._get_simulation_events();
+TODO
 
-//  Convert the JSON string from WebAssembly to JavaScript
-const json = Module.UTF8ToString(json_ptr);
+```javascript
+  //  Execute the WebAssembly Function defined in Rust
+  Module._rust_main();  //  Omitted: Checking whether `rust_main` exists
+```
 
-//  Parse the JSON Stream of Simulation Events
-simulation_events = JSON.parse(json);
+TODO
+
+```javascript
+  //  Get the JSON string of Simulation Events from WebAssembly. Looks like...
+  //  [ { "gpio_output_set": { "pin": 11, "value": 1 } }, 
+  //    { "time_delay": { "ticks": 1000 } }, ... ]
+  const json_ptr = Module._get_simulation_events();
+```
+
+TODO
+
+```javascript
+  //  Convert the JSON string from WebAssembly to JavaScript
+  const json = Module.UTF8ToString(json_ptr);
+
+  //  Parse the JSON Stream of Simulation Events
+  simulation_events = JSON.parse(json);
 ```
 
 TODO
