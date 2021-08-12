@@ -712,14 +712,23 @@ function runScript() {
   Module._clear_simulation_events();
 ```
 
-TODO
+We start by __clearing the JSON Stream__ of Simulation Events.
+
+(More about this in the Appendix)
+
+Next we call the __`rust_main`__ function from our Rust Firmware...
 
 ```javascript
-  //  Execute the WebAssembly Function defined in Rust
+  //  Execute the WebAssembly Function defined in Rust.
+  //  TODO: Pass the command-line args
   Module._rust_main();  //  Omitted: Checking whether `rust_main` exists
 ```
 
-TODO
+Remember: Our Rust Firmware __doesn't run in Real Time__.
+
+Our Rust Firmware completes in an instant and __emits a stream of events__. (Including Time Delays)
+
+We __fetch the stream of events__ emitted by our Rust Firmware...
 
 ```javascript
   //  Get the JSON string of Simulation Events from WebAssembly. Looks like...
@@ -728,7 +737,9 @@ TODO
   const json_ptr = Module._get_simulation_events();
 ```
 
-TODO
+(More about this in the Appendix)
+
+And convert it from __WebAssembly to JSON__...
 
 ```javascript
   //  Convert the JSON string from WebAssembly to JavaScript
@@ -737,6 +748,8 @@ TODO
   //  Parse the JSON Stream of Simulation Events
   simulation_events = JSON.parse(json);
 ```
+
+That's how we get a JSON Stream of Simulation Events in __`simulation_events`__, ready for processing!
 
 ## Handle Simulation Events
 
