@@ -618,23 +618,31 @@ ctx.fillStyle = '#B0B0FF';  //  Blue
 ctx.fillRect(315, 116, 35, 74);
 </code></pre>
 <h2 id="handle-simulation-events" class="section-header"><a href="#handle-simulation-events">5.1 Handle Simulation Events</a></h2>
-<p>Now watch what happens when we click the <strong>“Run” Button</strong> in our BL602 Simulator: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/docs/simulator.js#L30-L81"><code>simulator.js</code></a></p>
-<pre><code class="language-javascript">//  Clear the JSON Stream of Simulation Events in WebAssembly
-Module._clear_simulation_events();
+<p>Watch what happens when we click the <strong>“Run” Button</strong> in our BL602 Simulator: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/docs/simulator.js#L30-L81"><code>simulator.js</code></a></p>
+<pre><code class="language-javascript">/// Run the command in the input box
+function runScript() {
+  //  Omitted: Read the command from input box and convert to a function (like `rust_main`)
+  ...
 
-//  Execute the WebAssembly Function defined in Rust
-Module._rust_main();  //  Omitted: Checking whether `rust_main` exists
+  //  Clear the JSON Stream of Simulation Events in WebAssembly
+  Module._clear_simulation_events();
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-javascript">  //  Execute the WebAssembly Function defined in Rust
+  Module._rust_main();  //  Omitted: Checking whether `rust_main` exists
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-javascript">  //  Get the JSON string of Simulation Events from WebAssembly. Looks like...
+  //  [ { &quot;gpio_output_set&quot;: { &quot;pin&quot;: 11, &quot;value&quot;: 1 } }, 
+  //    { &quot;time_delay&quot;: { &quot;ticks&quot;: 1000 } }, ... ]
+  const json_ptr = Module._get_simulation_events();
+</code></pre>
+<p>TODO</p>
+<pre><code class="language-javascript">  //  Convert the JSON string from WebAssembly to JavaScript
+  const json = Module.UTF8ToString(json_ptr);
 
-//  Get the JSON string of Simulation Events from WebAssembly. Looks like...
-//  [ { &quot;gpio_output_set&quot;: { &quot;pin&quot;: 11, &quot;value&quot;: 1 } }, 
-//    { &quot;time_delay&quot;: { &quot;ticks&quot;: 1000 } }, ... ]
-const json_ptr = Module._get_simulation_events();
-
-//  Convert the JSON string from WebAssembly to JavaScript
-const json = Module.UTF8ToString(json_ptr);
-
-//  Parse the JSON Stream of Simulation Events
-simulation_events = JSON.parse(json);
+  //  Parse the JSON Stream of Simulation Events
+  simulation_events = JSON.parse(json);
 </code></pre>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl602-simulator/blob/main/docs/simulator.js#L83-L119"><code>simulator.js</code></a></p>
