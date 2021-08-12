@@ -699,7 +699,7 @@ ctx.fillStyle = '#B0B0FF';  //  Blue
 ctx.fillRect(315, 116, 35, 74);
 ```
 
-## Handle Simulation Events
+## Run Rust Firmware
 
 Watch what happens when we click the __"Run" Button__ in our BL602 Simulator: [`simulator.js`](https://github.com/lupyuen/bl602-simulator/blob/main/docs/simulator.js#L30-L81)
 
@@ -708,7 +708,6 @@ Watch what happens when we click the __"Run" Button__ in our BL602 Simulator: [`
 function runScript() {
   //  Omitted: Read the command from input box and convert to a function (like `rust_main`)
   ...
-
   //  Clear the JSON Stream of Simulation Events in WebAssembly
   Module._clear_simulation_events();
 ```
@@ -738,6 +737,8 @@ TODO
   //  Parse the JSON Stream of Simulation Events
   simulation_events = JSON.parse(json);
 ```
+
+## Handle Simulation Events
 
 TODO
 
