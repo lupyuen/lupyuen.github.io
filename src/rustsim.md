@@ -724,6 +724,8 @@ Next we call the __`rust_main`__ function from our Rust Firmware...
   Module._rust_main();  //  Omitted: Checking whether `rust_main` exists
 ```
 
+(Yep that's a Quantum Leap from JavaScript to WebAssembly to Rust and back!)
+
 Remember: Our Rust Firmware __doesn't run in Real Time__.
 
 Our Rust Firmware completes in an instant and __emits a stream of events__. (Including Time Delays)
