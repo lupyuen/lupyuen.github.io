@@ -751,7 +751,7 @@ And convert it from __WebAssembly to JSON__...
   simulation_events = JSON.parse(json);
 ```
 
-That's how we get a JSON Stream of Simulation Events in __`simulation_events`__, ready for processing!
+Inside __`simulation_events`__ we have a JSON Stream of Simulation Events, ready for processing!
 
 ## Handle Simulation Events
 
