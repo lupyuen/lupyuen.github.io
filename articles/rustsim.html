@@ -76,7 +76,8 @@
 <li><a href="#intercept-calls-to-bl602-iot-sdk">4.2 Intercept Calls to BL602 IoT SDK</a><ul></ul></li>
 <li><a href="#what-about-c">4.3 What about C?</a><ul></ul></li></ul></li>
 <li><a href="#html-and-javascript-interface">5 HTML and JavaScript Interface</a><ul>
-<li><a href="#handle-simulation-events">5.1 Handle Simulation Events</a><ul></ul></li></ul></li>
+<li><a href="#run-rust-firmware">5.1 Run Rust Firmware</a><ul></ul></li>
+<li><a href="#handle-simulation-events">5.2 Handle Simulation Events</a><ul></ul></li></ul></li>
 <li><a href="#run-bl602-firmware-in-simulator">6 Run BL602 Firmware in Simulator</a><ul></ul></li>
 <li><a href="#validating-calls-to-bl602-iot-sdk">7 Validating Calls to BL602 IoT SDK</a><ul></ul></li>
 <li><a href="#pinedio-stack-bl604">8 PineDio Stack BL604</a><ul></ul></li>
@@ -617,13 +618,12 @@ ctx.fillStyle = '#B0B0FF';  //  Blue
 //  Draw the LED colour
 ctx.fillRect(315, 116, 35, 74);
 </code></pre>
-<h2 id="handle-simulation-events" class="section-header"><a href="#handle-simulation-events">5.1 Handle Simulation Events</a></h2>
+<h2 id="run-rust-firmware" class="section-header"><a href="#run-rust-firmware">5.1 Run Rust Firmware</a></h2>
 <p>Watch what happens when we click the <strong>“Run” Button</strong> in our BL602 Simulator: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/docs/simulator.js#L30-L81"><code>simulator.js</code></a></p>
 <pre><code class="language-javascript">/// Run the command in the input box
 function runScript() {
   //  Omitted: Read the command from input box and convert to a function (like `rust_main`)
   ...
-
   //  Clear the JSON Stream of Simulation Events in WebAssembly
   Module._clear_simulation_events();
 </code></pre>
@@ -644,6 +644,7 @@ function runScript() {
   //  Parse the JSON Stream of Simulation Events
   simulation_events = JSON.parse(json);
 </code></pre>
+<h2 id="handle-simulation-events" class="section-header"><a href="#handle-simulation-events">5.2 Handle Simulation Events</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl602-simulator/blob/main/docs/simulator.js#L83-L119"><code>simulator.js</code></a></p>
 <pre><code class="language-javascript">/// Simulate the BL602 Simulation Events recorded in simulate_events, which contains...
