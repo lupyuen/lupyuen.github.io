@@ -627,23 +627,30 @@ function runScript() {
   //  Clear the JSON Stream of Simulation Events in WebAssembly
   Module._clear_simulation_events();
 </code></pre>
-<p>TODO</p>
-<pre><code class="language-javascript">  //  Execute the WebAssembly Function defined in Rust
+<p>We start by <strong>clearing the JSON Stream</strong> of Simulation Events.</p>
+<p>(More about this in the Appendix)</p>
+<p>Next we call the <strong><code>rust_main</code></strong> function from our Rust Firmware…</p>
+<pre><code class="language-javascript">  //  Execute the WebAssembly Function defined in Rust.
+  //  TODO: Pass the command-line args
   Module._rust_main();  //  Omitted: Checking whether `rust_main` exists
 </code></pre>
-<p>TODO</p>
+<p>Remember: Our Rust Firmware <strong>doesn’t run in Real Time</strong>.</p>
+<p>Our Rust Firmware completes in an instant and <strong>emits a stream of events</strong>. (Including Time Delays)</p>
+<p>We <strong>fetch the stream of events</strong> emitted by our Rust Firmware…</p>
 <pre><code class="language-javascript">  //  Get the JSON string of Simulation Events from WebAssembly. Looks like...
   //  [ { &quot;gpio_output_set&quot;: { &quot;pin&quot;: 11, &quot;value&quot;: 1 } }, 
   //    { &quot;time_delay&quot;: { &quot;ticks&quot;: 1000 } }, ... ]
   const json_ptr = Module._get_simulation_events();
 </code></pre>
-<p>TODO</p>
+<p>(More about this in the Appendix)</p>
+<p>And convert it from <strong>WebAssembly to JSON</strong>…</p>
 <pre><code class="language-javascript">  //  Convert the JSON string from WebAssembly to JavaScript
   const json = Module.UTF8ToString(json_ptr);
 
   //  Parse the JSON Stream of Simulation Events
   simulation_events = JSON.parse(json);
 </code></pre>
+<p>That’s how we get a JSON Stream of Simulation Events in <strong><code>simulation_events</code></strong>, ready for processing!</p>
 <h2 id="handle-simulation-events" class="section-header"><a href="#handle-simulation-events">5.2 Handle Simulation Events</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl602-simulator/blob/main/docs/simulator.js#L83-L119"><code>simulator.js</code></a></p>
