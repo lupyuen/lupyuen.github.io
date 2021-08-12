@@ -634,6 +634,7 @@ function runScript() {
   //  TODO: Pass the command-line args
   Module._rust_main();  //  Omitted: Checking whether `rust_main` exists
 </code></pre>
+<p>(Yep that’s a Quantum Leap from JavaScript to WebAssembly to Rust and back!)</p>
 <p>Remember: Our Rust Firmware <strong>doesn’t run in Real Time</strong>.</p>
 <p>Our Rust Firmware completes in an instant and <strong>emits a stream of events</strong>. (Including Time Delays)</p>
 <p>We <strong>fetch the stream of events</strong> emitted by our Rust Firmware…</p>
