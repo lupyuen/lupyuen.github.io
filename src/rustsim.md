@@ -856,6 +856,8 @@ _What about `time_delay`, the event handler for Time Delays?_
 
 `time_delay` is explained here: ["Simulate Delays"](https://lupyuen.github.io/articles/wasm#simulate-delays)
 
+(Hint: It simulates Time Delays by calling the JavaScript Timer that we've seen earlier)
+
 # Run BL602 Firmware in Simulator
 
 TODO
