@@ -653,8 +653,14 @@ function runScript() {
 </code></pre>
 <p>Inside <strong><code>simulation_events</code></strong> we have a JSON Stream of Simulation Events, ready for processing!</p>
 <h2 id="handle-simulation-events" class="section-header"><a href="#handle-simulation-events">5.2 Handle Simulation Events</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl602-simulator/blob/main/docs/simulator.js#L83-L119"><code>simulator.js</code></a></p>
+<p>Our JavaScript code has <strong>received the JSON Stream</strong> of Simulation Events from the Rust Firmware…</p>
+<pre><code class="language-json">[ 
+  { &quot;gpio_output_set&quot;: { &quot;pin&quot;: 11, &quot;value&quot;: 1 } }, 
+  { &quot;time_delay&quot;: { &quot;ticks&quot;: 1000 } },
+  ...
+]
+</code></pre>
+<p>Let’s <strong>process the events</strong>: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/docs/simulator.js#L83-L119"><code>simulator.js</code></a></p>
 <pre><code class="language-javascript">/// Simulate the BL602 Simulation Events recorded in simulate_events, which contains...
 ///  [ { &quot;gpio_output_set&quot;: { &quot;pin&quot;: 11, &quot;value&quot;: 1 } }, 
 ///    { &quot;time_delay&quot;: { &quot;ticks&quot;: 1000 } }, ... ]
@@ -671,8 +677,10 @@ function simulateEvents() {
 
   //  Timeout in milliseconds to the next event
   let timeout = 1;
-
-  //  Handle each event type
+</code></pre>
+<p>Here we take the <strong>first event</strong> from the stream.</p>
+<p>Then we <strong>handle the event</strong>: Set GPIO Output or Time Delay…</p>
+<pre><code class="language-javascript">  //  Handle each event type
   switch (event_type) {
 
     //  Set GPIO output
@@ -686,15 +694,16 @@ function simulateEvents() {
     //  Unknown event type
     default: throw new Error(&quot;Unknown event type: &quot; + event_type);
   }
-
-  //  Simulate the next event
+</code></pre>
+<p>We use a timer to <strong>iterate through the events</strong> in the stream…</p>
+<pre><code class="language-javascript">  //  Simulate the next event
   if (simulation_events.length &gt; 0) {
     window.setTimeout(&quot;simulateEvents()&quot;, timeout);
   }
 }
 </code></pre>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl602-simulator/blob/main/docs/simulator.js#L121-L144"><code>simulator.js</code></a></p>
+<p><em>What happens inside <code>gpio_output_set</code>, the event handler for Set GPIO Output?</em></p>
+<p><code>gpio_output_set</code> renders the <strong>Simulated BL602 LED</strong>: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/docs/simulator.js#L121-L144"><code>simulator.js</code></a></p>
 <pre><code class="language-javascript">/// Simulate setting GPIO pin output to value 0 (Low) or 1 (High):
 /// { &quot;gpio_output_set&quot;: { &quot;pin&quot;: 11, &quot;value&quot;: 1 } }
 function gpio_output_set(pin, value) {
@@ -720,7 +729,10 @@ function gpio_output_set(pin, value) {
   return 0;
 }
 </code></pre>
-<p><a href="https://lupyuen.github.io/articles/wasm#simulate-delays">(More about simulating delays)</a></p>
+<p>(Yep we’ve seen this code earlier)</p>
+<p>That’s how we <strong>blink the Simulated LED</strong> through the stream of simulation events!</p>
+<p><em>What about <code>time_delay</code>, the event handler for Time Delays?</em></p>
+<p><code>time_delay</code> is explained here: <a href="https://lupyuen.github.io/articles/wasm#simulate-delays">“Simulate Delays”</a></p>
 <h1 id="run-bl602-firmware-in-simulator" class="section-header"><a href="#run-bl602-firmware-in-simulator">6 Run BL602 Firmware in Simulator</a></h1>
 <p>TODO</p>
 <p>To run the BL602 Simulator…</p>
