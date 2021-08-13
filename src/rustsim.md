@@ -1092,6 +1092,10 @@ _I sense another upcoming enhancement?_
 
 TODO
 
+_Could we do this through a Desktop App? (Instead of Web Browser)_
+
+TODO
+
 Maybe build a Scratch / Blockly drag-and-drop tool that emits Rhai programs for BL602?
 
 Rhai doesn't run on BL602
