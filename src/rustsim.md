@@ -967,7 +967,15 @@ _What if the Embedded HAL (BL602 IoT SDK) could tell how to fix our code?_
 
 We could help Embedded Learners when we catch __BL602 SDK Calling Errors__ and __explain the errors__ in a friendly way.
 
-(Like for invalid parameters or incorrect usage of the SDK)
+Watch what happens when set the output for a GPIO Pin __without configuring the GPIO__ for Output...
+
+![Simulator halts with a friendly message](https://lupyuen.github.io/images/rustsim-validate2.png)
+
+Our simulator __halts with a friendly message__... And explains how we can fix it!
+
+_How does our simulator validate calls to BL602 IoT SDK?_
+
+TODO
 
 [From `bl602-simulator/lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L33-L45)
 
@@ -1027,14 +1035,6 @@ extern "C" fn bl_gpio_output_set(pin: u8, value: u8)
     0  //  Return OK
 }
 ```
-
-![Validate Calls to BL602 IoT SDK](https://lupyuen.github.io/images/rustsim-validate.png)
-
-TODO7
-
-![Validate Calls to BL602 IoT SDK](https://lupyuen.github.io/images/rustsim-validate2.png)
-
-TODO8
 
 ![Validate Calls to BL602 IoT SDK](https://lupyuen.github.io/images/rustsim-validate3.png)
 
