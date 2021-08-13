@@ -959,7 +959,7 @@ Yep this means they can be __called from C Firmware__!
 
 And the BL602 Stub Functions will __emit simulation events__... Our C Firmware will work exactly like Rust Firmware!
 
-# Validating Calls to BL602 IoT SDK
+# Validate Calls to BL602 IoT SDK
 
 _What if the Embedded HAL (BL602 IoT SDK) could tell how to fix our code?_
 
@@ -969,15 +969,15 @@ We could potentially catch __BL602 SDK Calling Errors__ for new devs and __expla
 
 (Like for invalid parameters or incorrect usage of the SDK)
 
-![](https://lupyuen.github.io/images/rustsim-validate.png)
+![Validate Calls to BL602 IoT SDK](https://lupyuen.github.io/images/rustsim-validate.png)
 
 TODO7
 
-![](https://lupyuen.github.io/images/rustsim-validate2.png)
+![Validate Calls to BL602 IoT SDK](https://lupyuen.github.io/images/rustsim-validate2.png)
 
 TODO8
 
-![](https://lupyuen.github.io/images/rustsim-validate3.png)
+![Validate Calls to BL602 IoT SDK](https://lupyuen.github.io/images/rustsim-validate3.png)
 
 # PineDio Stack BL604
 
@@ -1008,7 +1008,21 @@ Why do this in __Rust__?
 - Which lets us __manipulate the BL602 SDK interfaces__ with Rust in interesting ways
 
   (Like our `safe_wrap` Procedural Macro in Rust)
-    
+
+-   [__"uLisp and Blockly on PineCone BL602 RISC-V Board"__](https://lupyuen.github.io/articles/lisp)
+
+-   [__"Simulate RISC-V BL602 with WebAssembly, uLisp and Blockly"__](https://lupyuen.github.io/articles/wasm)
+
+-   [__"Visual Embedded Rust Programming with Visual Studio Code"__](https://lupyuen.github.io/articles/visual-embedded-rust-programming-with-visual-studio-code)
+
+-   [__"Advanced Topics for Visual Embedded Rust Programming"__](https://lupyuen.github.io/articles/advanced-topics-for-visual-embedded-rust-programming)
+
+![Rhai Scripting for BL602 Simulator](https://lupyuen.github.io/images/rustsim-script.png)
+
+TODO
+
+![Rhai Scripting for BL602 Simulator](https://lupyuen.github.io/images/rustsim-script2.png)
+
 # What's Next
 
 TODO
