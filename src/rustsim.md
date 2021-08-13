@@ -860,9 +860,19 @@ _What about `time_delay`, the event handler for Time Delays?_
 
 # Run BL602 Firmware in Simulator
 
-TODO
+Try the __BL602 Rust Firmware Simulator__ for yourself!
 
-To run the BL602 Simulator...
+-   [__BL602 Simulator in WebAssembly__](https://github.com/lupyuen/bl602-simulator)
+
+(Click the __`Run`__ Button and watch the LED blink!)
+
+![BL602 Simulator in WebAssembly](https://lupyuen.github.io/images/adc-simulator2.png)
+
+To run the BL602 Simulator on our computer (Linux, macOS and Windows)...
+
+1.  Build the __BL602 Rust Fimware__ with the BL602 Simulator
+
+    [(Instructions here)](https://lupyuen.github.io/articles/rustsim#build-bl602-firmware-for-webassembly)
 
 1.  Start a __Local Web Server__
 
@@ -871,6 +881,35 @@ To run the BL602 Simulator...
 1.  Browse to __`docs/wasm.html`__
 
 1.  Click __`Run`__
+
+## Easier Embedded Development?
+
+_Is this easier than building and testing firmware on Real BL602 Hardware?_
+
+BL602 Simulator could potentially shorten the __Code - Build - Flash - Test Cycle__ for Embedded Development...
+
+TODO
+
+1.  (Because flashing BL602 via UART is kinda cumbersome)
+    
+1.  We could potentially catch __BL602 SDK Calling Errors__ for new devs and __explain the errors in a friendly way__
+
+    (Invalid parameters or usage, like reading a GPIO Pin configured for output)
+
+1.  Make it easier to __Learn Embedded Programming__
+
+    (Even without any Embedded Hardware)
+
+1.  __Automated Testing__ of BL602 Firmware
+
+1.  __Trace Calls to BL602 IoT SDK__ for debugging
+
+We might be able to __Simulate C Firmware__ too, if we...
+    
+- Tweak the BL602 C Firmware to __build with Emscripten__
+
+- And call the __Stub Functions__
+
 
 # Validating Calls to BL602 IoT SDK
 
@@ -920,33 +959,6 @@ Why do this in __Rust__?
 
   (Like our `safe_wrap` Procedural Macro in Rust)
     
-- More about __BL602 Rust Wrapper__...
-
-  - [__"Rust on RISC-V BL602: Is It Sunny?"__](https://lupyuen.github.io/articles/adc)
-
-Why are we doing this? What __problem are we solving__?
-
-1.  Shorten the __Code - Build - Flash - Test Cycle__ for BL602 and BL604
-
-    (Because flashing BL602 via UART is kinda cumbersome)
-    
-1.  We could potentially catch __BL602 SDK Calling Errors__ for new devs and __explain the errors in a friendly way__
-
-    (Invalid parameters or usage, like reading a GPIO Pin configured for output)
-
-1.  Make it easier to __Learn Embedded Programming__
-
-    (Even without any Embedded Hardware)
-
-1.  __Automated Testing__ of BL602 Firmware
-
-1.  __Trace Calls to BL602 IoT SDK__ for debugging
-
-We might be able to __Simulate C Firmware__ too, if we...
-    
-- Tweak the BL602 C Firmware to __build with Emscripten__
-
-- And call the __Stub Functions__
 
 # What's Next
 
