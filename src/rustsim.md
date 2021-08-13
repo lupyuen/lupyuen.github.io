@@ -149,7 +149,7 @@ To compile our __Rust Firmware into WebAssembly__, our [Makefile](https://github
 cargo build --target wasm32-unknown-emscripten
 ```
 
-This compiles two __Rust Projects__...
+This compiles three __Rust Projects__...
 
 1.  __Rust Firmware:__ 
 
@@ -162,6 +162,12 @@ This compiles two __Rust Projects__...
     [`bl602-simulator/bl602-simulator`](https://github.com/lupyuen/bl602-simulator/tree/main/bl602-simulator)
 
     (Simulates the BL602 IoT SDK. We'll see this in a while)
+
+1.  __Rust Scripting Library:__
+
+    [`bl602-simulator/bl602-script`](https://github.com/lupyuen/bl602-simulator/tree/main/bl602-script)
+
+    (More about this later)
 
 "`cargo build`" downloads the [__BL602 Rust Wrapper__](https://crates.io/crates/bl602-sdk) automagically from `crates.io` ...
 
@@ -908,7 +914,7 @@ _But not all firmware can be simulated right?_
 
 True, there are limits to what we can simulate.
 
-[(Might be tricky to simulate ADC Input)](https://lupyuen.github.io/articles/adc)
+[(Might be tricky to simulate Analog Inputs... Do we draw a graph?)](https://lupyuen.github.io/articles/adc)
 
 Even so, the simulator could be really helpful for learners who are __building basic firmware__.
 
@@ -916,27 +922,42 @@ Even so, the simulator could be really helpful for learners who are __building b
 
 _What about the Embedded Pros?_
 
-TODO
+Someday BL602 Simulator might also be helpful for Embedded Pros who are __building complex firmware__...
 
--   __Automated Testing__ of BL602 Firmware
+1.  __Automated Testing__ of BL602 Firmware
 
-    JSON Stream
+    Remember that our firmware emits a __JSON Stream__ of Simulation Events?
 
--   __Trace Calls to BL602 IoT SDK__ for debugging
+    This JSON Stream is perfect for checking whether our firmware is __behaving as expected__... Just __"`diff`" the Expected and Actual__ JSON Streams!
+
+1.  __Tracing Calls to BL602 IoT SDK__ for debugging
 
     (Like an embedded "`strace`")
 
-_Can we simulate C firmware? (Instead of Rust)_
+1.  __Validating Calls to BL602 IoT SDK__
 
-We could possibly __simulate C firmware__ if we...
+    (More about this in the next chapter)
+
+_Can we simulate C Firmware? (Instead of Rust Firmware)_
+
+We could probably __simulate C Firmware__ if we...
     
 1.  Tweak the BL602 C Firmware to __build with Emscripten__
 
-    (By manipulating the C header files)    
+    (By modding the C Header Files and Makefiles)
 
-1.  And call the __Stub Functions__
+1.  And link the compiled C Firmware with our __Rust Simulator Library__
 
-    TODO
+    Remember that the BL602 Stub Functions in our Rust Simulator Library are declared __"`extern C`"__?
+
+    ```rust
+    #[no_mangle]  //  Don't mangle the function name
+    extern "C" fn bl_gpio_output_set(pin: u8, value: u8) -> c_int { ...
+    ```
+
+    Yep this means they can be __called from C Firmware__!
+
+    And the BL602 Stub Functions will __emit simulation events__... Our C Firmware will work exactly like Rust Firmware!
 
 # Validating Calls to BL602 IoT SDK
 
