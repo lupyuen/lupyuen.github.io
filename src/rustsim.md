@@ -864,19 +864,19 @@ Try the __BL602 Rust Firmware Simulator__ for yourself!
 
 -   [__BL602 Simulator in WebAssembly__](https://github.com/lupyuen/bl602-simulator)
 
-(Click the __`Run`__ Button and watch the LED blink!)
+Click the __`Run`__ Button and watch the LED blink!
 
 ![BL602 Simulator in WebAssembly](https://lupyuen.github.io/images/adc-simulator2.png)
 
 To run the BL602 Simulator on our computer (Linux, macOS and Windows)...
 
-1.  Build the __BL602 Rust Fimware__ with the BL602 Simulator
+1.  Build the __BL602 Rust Fimware__ and the BL602 Simulator
 
     [(Instructions here)](https://lupyuen.github.io/articles/rustsim#build-bl602-firmware-for-webassembly)
 
-1.  Start a __Local Web Server__
+1.  Start a __Local Web Server__, because WebAssembly won't run from a filesystem
 
-    [(Like Web Server for Chrome)](https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb/overview)
+    [(Web Server for Chrome works fine)](https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb/overview)
 
 1.  Browse to __`docs/wasm.html`__
 
@@ -888,28 +888,43 @@ _Is this easier than building and testing firmware on Real BL602 Hardware?_
 
 BL602 Simulator could potentially shorten the __Code - Build - Flash - Test Cycle__ for Embedded Development...
 
+1.  __Code__ the firmware in Rust
+
+1.  __Build__ the firmware for WebAssembly
+
+    (With a single "`make`" command)
+
+1.  __Test and Debug__ the firmware in the Simulator
+
+    (No BL602 hardware needed, just a Web Browser)
+
+1.  __Repeat__ until the firmware is hunky dory
+
+1.  __Flash__ the firmware to BL602
+
+    (Remember: Flashing BL602 via UART is kinda cumbersome)
+
 TODO
 
-1.  (Because flashing BL602 via UART is kinda cumbersome)
-    
-1.  We could potentially catch __BL602 SDK Calling Errors__ for new devs and __explain the errors in a friendly way__
+-   Encourage more learners
 
-    (Invalid parameters or usage, like reading a GPIO Pin configured for output)
-
-1.  Make it easier to __Learn Embedded Programming__
+    Make it easier to __Learn Embedded Programming__
 
     (Even without any Embedded Hardware)
 
-1.  __Automated Testing__ of BL602 Firmware
+-   __Automated Testing__ of BL602 Firmware
 
-1.  __Trace Calls to BL602 IoT SDK__ for debugging
+-   __Trace Calls to BL602 IoT SDK__ for debugging
+
+-   We could potentially catch __BL602 SDK Calling Errors__ for new devs and __explain the errors in a friendly way__
+
+    (Invalid parameters or usage, like reading a GPIO Pin configured for output)
 
 We might be able to __Simulate C Firmware__ too, if we...
     
 - Tweak the BL602 C Firmware to __build with Emscripten__
 
 - And call the __Stub Functions__
-
 
 # Validating Calls to BL602 IoT SDK
 
