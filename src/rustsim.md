@@ -910,27 +910,31 @@ True, there are limits to what we can simulate.
 
 [(Might be tricky to simulate ADC Input)](https://lupyuen.github.io/articles/adc)
 
+And the simulator could be really helpful for __learners building basic firmware__.
+
+(Maybe attract more Embedded Learners too!)
+
+_What about the Embedded Pros?_
+
 TODO
-
--   Encourage more learners
-
-    Make it easier to __Learn Embedded Programming__
-
-    (Even without any Embedded Hardware)
 
 -   __Automated Testing__ of BL602 Firmware
 
 -   __Trace Calls to BL602 IoT SDK__ for debugging
 
--   We could potentially catch __BL602 SDK Calling Errors__ for new devs and __explain the errors in a friendly way__
+    (Like an embedded "`strace`")
 
-    (Invalid parameters or usage, like reading a GPIO Pin configured for output)
+_Can we simulate C firmware? (Instead of Rust)_
 
-We might be able to __Simulate C Firmware__ too, if we...
+We could possibly __simulate C firmware__ if we...
     
-- Tweak the BL602 C Firmware to __build with Emscripten__
+1.  Tweak the BL602 C Firmware to __build with Emscripten__
 
-- And call the __Stub Functions__
+    (By manipulating the C header files)    
+
+1.  And call the __Stub Functions__
+
+    TODO
 
 # Validating Calls to BL602 IoT SDK
 
@@ -938,7 +942,9 @@ _What if the Embedded HAL could tell how to fix our code?_
 
 (Wouldn't that be great, especially for learners?)
 
-TODO
+We could potentially catch __BL602 SDK Calling Errors__ for new devs and __explain the errors in a friendly way__
+
+(Invalid parameters or usage, like reading a GPIO Pin configured for output)
 
 ![](https://lupyuen.github.io/images/rustsim-validate.png)
 
