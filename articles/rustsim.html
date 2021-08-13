@@ -80,7 +80,7 @@
 <li><a href="#handle-simulation-events">5.2 Handle Simulation Events</a><ul></ul></li></ul></li>
 <li><a href="#run-bl602-firmware-in-simulator">6 Run BL602 Firmware in Simulator</a><ul></ul></li>
 <li><a href="#easier-embedded-development">7 Easier Embedded Development?</a><ul></ul></li>
-<li><a href="#validating-calls-to-bl602-iot-sdk">8 Validating Calls to BL602 IoT SDK</a><ul></ul></li>
+<li><a href="#validate-calls-to-bl602-iot-sdk">8 Validate Calls to BL602 IoT SDK</a><ul></ul></li>
 <li><a href="#pinedio-stack-bl604">9 PineDio Stack BL604</a><ul></ul></li>
 <li><a href="#scripting-for-bl602-simulator">10 Scripting for BL602 Simulator</a><ul></ul></li>
 <li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
@@ -827,16 +827,16 @@ function gpio_output_set(pin, value) {
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">bl_gpio_output_set</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">value</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_int</span> { ...</pre></div>
 <p>Yep this means they can be <strong>called from C Firmware</strong>!</p>
 <p>And the BL602 Stub Functions will <strong>emit simulation events</strong>… Our C Firmware will work exactly like Rust Firmware!</p>
-<h1 id="validating-calls-to-bl602-iot-sdk" class="section-header"><a href="#validating-calls-to-bl602-iot-sdk">8 Validating Calls to BL602 IoT SDK</a></h1>
+<h1 id="validate-calls-to-bl602-iot-sdk" class="section-header"><a href="#validate-calls-to-bl602-iot-sdk">8 Validate Calls to BL602 IoT SDK</a></h1>
 <p><em>What if the Embedded HAL (BL602 IoT SDK) could tell how to fix our code?</em></p>
 <p>(Wouldn’t that be great, especially for learners?)</p>
 <p>We could potentially catch <strong>BL602 SDK Calling Errors</strong> for new devs and <strong>explain the errors</strong> in a friendly way.</p>
 <p>(Like for invalid parameters or incorrect usage of the SDK)</p>
-<p><img src="https://lupyuen.github.io/images/rustsim-validate.png" alt="" /></p>
+<p><img src="https://lupyuen.github.io/images/rustsim-validate.png" alt="Validate Calls to BL602 IoT SDK" /></p>
 <p>TODO7</p>
-<p><img src="https://lupyuen.github.io/images/rustsim-validate2.png" alt="" /></p>
+<p><img src="https://lupyuen.github.io/images/rustsim-validate2.png" alt="Validate Calls to BL602 IoT SDK" /></p>
 <p>TODO8</p>
-<p><img src="https://lupyuen.github.io/images/rustsim-validate3.png" alt="" /></p>
+<p><img src="https://lupyuen.github.io/images/rustsim-validate3.png" alt="Validate Calls to BL602 IoT SDK" /></p>
 <h1 id="pinedio-stack-bl604" class="section-header"><a href="#pinedio-stack-bl604">9 PineDio Stack BL604</a></h1>
 <p><em>Simulating a plain BL602 board (like PineCone BL602) is pointless, innit?</em></p>
 <p>TODO</p>
@@ -859,7 +859,22 @@ function gpio_output_set(pin, value) {
 <p>Which lets us <strong>manipulate the BL602 SDK interfaces</strong> with Rust in interesting ways</p>
 <p>(Like our <code>safe_wrap</code> Procedural Macro in Rust)</p>
 </li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lisp"><strong>“uLisp and Blockly on PineCone BL602 RISC-V Board”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/wasm"><strong>“Simulate RISC-V BL602 with WebAssembly, uLisp and Blockly”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/visual-embedded-rust-programming-with-visual-studio-code"><strong>“Visual Embedded Rust Programming with Visual Studio Code”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/advanced-topics-for-visual-embedded-rust-programming"><strong>“Advanced Topics for Visual Embedded Rust Programming”</strong></a></p>
+</li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/rustsim-script.png" alt="Rhai Scripting for BL602 Simulator" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/rustsim-script2.png" alt="Rhai Scripting for BL602 Simulator" /></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">11 What’s Next</a></h1>
 <p>TODO</p>
 <p>Soon we shall test the Rust Firmware on <a href="https://www.pine64.org/2021/07/15/july-update/"><strong>PineDio Stack BL604 with LoRa SX1262</strong></a>… As we explore whether it’s feasible to teach <strong>Rust as a Safer Way</strong> to create firmware for BL602 and BL604.</p>
