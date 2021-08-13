@@ -910,7 +910,7 @@ True, there are limits to what we can simulate.
 
 [(Might be tricky to simulate ADC Input)](https://lupyuen.github.io/articles/adc)
 
-The simulator could be really helpful for __learners building basic firmware__.
+Even so, the simulator could be really helpful for learners who are __building basic firmware__.
 
 (Maybe attract more Embedded Learners too!)
 
@@ -919,6 +919,8 @@ _What about the Embedded Pros?_
 TODO
 
 -   __Automated Testing__ of BL602 Firmware
+
+    JSON Stream
 
 -   __Trace Calls to BL602 IoT SDK__ for debugging
 
