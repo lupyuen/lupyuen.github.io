@@ -18,7 +18,7 @@ By simulating the BL602 SoC with __WebAssembly__!
 
 Read on to find how we created this bare-bones BL602 Simulator in WebAssembly...
 
--   [__BL602 Simulator in WebAssembly__](https://github.com/lupyuen/bl602-simulator)
+-   [__BL602 Simulator in WebAssembly__](https://lupyuen.github.io/bl602-simulator/)
 
 ![BL602 Simulator in WebAssembly](https://lupyuen.github.io/images/adc-simulator2.png)
 
@@ -862,7 +862,7 @@ _What about `time_delay`, the event handler for Time Delays?_
 
 Try the __BL602 Rust Firmware Simulator__ for yourself!
 
--   [__BL602 Simulator in WebAssembly__](https://github.com/lupyuen/bl602-simulator)
+-   [__BL602 Simulator in WebAssembly__](https://lupyuen.github.io/bl602-simulator/)
 
 Click the __`Run`__ Button and watch the LED blink!
 
