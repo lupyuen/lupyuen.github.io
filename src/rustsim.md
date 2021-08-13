@@ -1088,6 +1088,8 @@ For BL602, perhaps learners could __start with (Rust-like) Rhai Script__...
 
 And __upgrade to Rust__ (or C) when they're ready.
 
+_I sense another upcoming enhancement?_
+
 TODO
 
 Maybe build a Scratch / Blockly drag-and-drop tool that emits Rhai programs for BL602?
