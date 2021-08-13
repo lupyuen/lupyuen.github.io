@@ -78,7 +78,8 @@
 <li><a href="#html-and-javascript-interface">5 HTML and JavaScript Interface</a><ul>
 <li><a href="#run-rust-firmware">5.1 Run Rust Firmware</a><ul></ul></li>
 <li><a href="#handle-simulation-events">5.2 Handle Simulation Events</a><ul></ul></li></ul></li>
-<li><a href="#run-bl602-firmware-in-simulator">6 Run BL602 Firmware in Simulator</a><ul></ul></li>
+<li><a href="#run-bl602-firmware-in-simulator">6 Run BL602 Firmware in Simulator</a><ul>
+<li><a href="#easier-embedded-development">6.1 Easier Embedded Development?</a><ul></ul></li></ul></li>
 <li><a href="#validating-calls-to-bl602-iot-sdk">7 Validating Calls to BL602 IoT SDK</a><ul></ul></li>
 <li><a href="#pinedio-stack-bl604">8 PineDio Stack BL604</a><ul></ul></li>
 <li><a href="#bl602-simulator-in-webassembly">9 BL602 Simulator in WebAssembly</a><ul></ul></li>
@@ -735,9 +736,18 @@ function gpio_output_set(pin, value) {
 <p><code>time_delay</code> is explained here: <a href="https://lupyuen.github.io/articles/wasm#simulate-delays">“Simulate Delays”</a></p>
 <p>(Hint: It simulates Time Delays by calling the JavaScript Timer that we’ve seen earlier)</p>
 <h1 id="run-bl602-firmware-in-simulator" class="section-header"><a href="#run-bl602-firmware-in-simulator">6 Run BL602 Firmware in Simulator</a></h1>
-<p>TODO</p>
-<p>To run the BL602 Simulator…</p>
+<p>Try the <strong>BL602 Rust Firmware Simulator</strong> for yourself!</p>
+<ul>
+<li><a href="https://github.com/lupyuen/bl602-simulator"><strong>BL602 Simulator in WebAssembly</strong></a></li>
+</ul>
+<p>(Click the <strong><code>Run</code></strong> Button and watch the LED blink!)</p>
+<p><img src="https://lupyuen.github.io/images/adc-simulator2.png" alt="BL602 Simulator in WebAssembly" /></p>
+<p>To run the BL602 Simulator on our computer (Linux, macOS and Windows)…</p>
 <ol>
+<li>
+<p>Build the <strong>BL602 Rust Fimware</strong> with the BL602 Simulator</p>
+<p><a href="https://lupyuen.github.io/articles/rustsim#build-bl602-firmware-for-webassembly">(Instructions here)</a></p>
+</li>
 <li>
 <p>Start a <strong>Local Web Server</strong></p>
 <p><a href="https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb/overview">(Like Web Server for Chrome)</a></p>
@@ -749,6 +759,38 @@ function gpio_output_set(pin, value) {
 <p>Click <strong><code>Run</code></strong></p>
 </li>
 </ol>
+<h2 id="easier-embedded-development" class="section-header"><a href="#easier-embedded-development">6.1 Easier Embedded Development?</a></h2>
+<p><em>Is this easier than building and testing firmware on Real BL602 Hardware?</em></p>
+<p>BL602 Simulator could potentially shorten the <strong>Code - Build - Flash - Test Cycle</strong> for Embedded Development…</p>
+<p>TODO</p>
+<ol>
+<li>
+<p>(Because flashing BL602 via UART is kinda cumbersome)</p>
+</li>
+<li>
+<p>We could potentially catch <strong>BL602 SDK Calling Errors</strong> for new devs and <strong>explain the errors in a friendly way</strong></p>
+<p>(Invalid parameters or usage, like reading a GPIO Pin configured for output)</p>
+</li>
+<li>
+<p>Make it easier to <strong>Learn Embedded Programming</strong></p>
+<p>(Even without any Embedded Hardware)</p>
+</li>
+<li>
+<p><strong>Automated Testing</strong> of BL602 Firmware</p>
+</li>
+<li>
+<p><strong>Trace Calls to BL602 IoT SDK</strong> for debugging</p>
+</li>
+</ol>
+<p>We might be able to <strong>Simulate C Firmware</strong> too, if we…</p>
+<ul>
+<li>
+<p>Tweak the BL602 C Firmware to <strong>build with Emscripten</strong></p>
+</li>
+<li>
+<p>And call the <strong>Stub Functions</strong></p>
+</li>
+</ul>
 <h1 id="validating-calls-to-bl602-iot-sdk" class="section-header"><a href="#validating-calls-to-bl602-iot-sdk">7 Validating Calls to BL602 IoT SDK</a></h1>
 <p><em>What if the Embedded HAL could tell how to fix our code?</em></p>
 <p>(Wouldn’t that be great, especially for learners?)</p>
@@ -779,42 +821,6 @@ function gpio_output_set(pin, value) {
 <li>
 <p>Which lets us <strong>manipulate the BL602 SDK interfaces</strong> with Rust in interesting ways</p>
 <p>(Like our <code>safe_wrap</code> Procedural Macro in Rust)</p>
-</li>
-<li>
-<p>More about <strong>BL602 Rust Wrapper</strong>…</p>
-<ul>
-<li><a href="https://lupyuen.github.io/articles/adc"><strong>“Rust on RISC-V BL602: Is It Sunny?”</strong></a></li>
-</ul>
-</li>
-</ul>
-<p>Why are we doing this? What <strong>problem are we solving</strong>?</p>
-<ol>
-<li>
-<p>Shorten the <strong>Code - Build - Flash - Test Cycle</strong> for BL602 and BL604</p>
-<p>(Because flashing BL602 via UART is kinda cumbersome)</p>
-</li>
-<li>
-<p>We could potentially catch <strong>BL602 SDK Calling Errors</strong> for new devs and <strong>explain the errors in a friendly way</strong></p>
-<p>(Invalid parameters or usage, like reading a GPIO Pin configured for output)</p>
-</li>
-<li>
-<p>Make it easier to <strong>Learn Embedded Programming</strong></p>
-<p>(Even without any Embedded Hardware)</p>
-</li>
-<li>
-<p><strong>Automated Testing</strong> of BL602 Firmware</p>
-</li>
-<li>
-<p><strong>Trace Calls to BL602 IoT SDK</strong> for debugging</p>
-</li>
-</ol>
-<p>We might be able to <strong>Simulate C Firmware</strong> too, if we…</p>
-<ul>
-<li>
-<p>Tweak the BL602 C Firmware to <strong>build with Emscripten</strong></p>
-</li>
-<li>
-<p>And call the <strong>Stub Functions</strong></p>
 </li>
 </ul>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">10 What’s Next</a></h1>
