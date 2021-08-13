@@ -1084,7 +1084,7 @@ _Why would we need The Scripted REPL Way?_
 
 Because Scripted REPL platforms like __uLisp__ and __MicroPython__ are still popular with Embedded Learners.
 
-For BL602, perhaps learners could __start with (Rust-like) Rhai Script__. 
+For BL602, perhaps learners could __start with (Rust-like) Rhai Script__... 
 
 And __upgrade to Rust__ when they're ready.
 
