@@ -740,17 +740,17 @@ function gpio_output_set(pin, value) {
 <ul>
 <li><a href="https://github.com/lupyuen/bl602-simulator"><strong>BL602 Simulator in WebAssembly</strong></a></li>
 </ul>
-<p>(Click the <strong><code>Run</code></strong> Button and watch the LED blink!)</p>
+<p>Click the <strong><code>Run</code></strong> Button and watch the LED blink!</p>
 <p><img src="https://lupyuen.github.io/images/adc-simulator2.png" alt="BL602 Simulator in WebAssembly" /></p>
 <p>To run the BL602 Simulator on our computer (Linux, macOS and Windows)…</p>
 <ol>
 <li>
-<p>Build the <strong>BL602 Rust Fimware</strong> with the BL602 Simulator</p>
+<p>Build the <strong>BL602 Rust Fimware</strong> and the BL602 Simulator</p>
 <p><a href="https://lupyuen.github.io/articles/rustsim#build-bl602-firmware-for-webassembly">(Instructions here)</a></p>
 </li>
 <li>
-<p>Start a <strong>Local Web Server</strong></p>
-<p><a href="https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb/overview">(Like Web Server for Chrome)</a></p>
+<p>Start a <strong>Local Web Server</strong>, because WebAssembly won’t run from a filesystem</p>
+<p><a href="https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb/overview">(Web Server for Chrome works fine)</a></p>
 </li>
 <li>
 <p>Browse to <strong><code>docs/wasm.html</code></strong></p>
@@ -762,16 +762,30 @@ function gpio_output_set(pin, value) {
 <h2 id="easier-embedded-development" class="section-header"><a href="#easier-embedded-development">6.1 Easier Embedded Development?</a></h2>
 <p><em>Is this easier than building and testing firmware on Real BL602 Hardware?</em></p>
 <p>BL602 Simulator could potentially shorten the <strong>Code - Build - Flash - Test Cycle</strong> for Embedded Development…</p>
-<p>TODO</p>
 <ol>
 <li>
-<p>(Because flashing BL602 via UART is kinda cumbersome)</p>
+<p><strong>Code</strong> the firmware in Rust</p>
 </li>
 <li>
-<p>We could potentially catch <strong>BL602 SDK Calling Errors</strong> for new devs and <strong>explain the errors in a friendly way</strong></p>
-<p>(Invalid parameters or usage, like reading a GPIO Pin configured for output)</p>
+<p><strong>Build</strong> the firmware for WebAssembly</p>
+<p>(With a single “<code>make</code>” command)</p>
 </li>
 <li>
+<p><strong>Test and Debug</strong> the firmware in the Simulator</p>
+<p>(No BL602 hardware needed, just a Web Browser)</p>
+</li>
+<li>
+<p><strong>Repeat</strong> until the firmware is hunky dory</p>
+</li>
+<li>
+<p><strong>Flash</strong> the firmware to BL602</p>
+<p>(Remember: Flashing BL602 via UART is kinda cumbersome)</p>
+</li>
+</ol>
+<p>TODO</p>
+<ul>
+<li>
+<p>Encourage more learners</p>
 <p>Make it easier to <strong>Learn Embedded Programming</strong></p>
 <p>(Even without any Embedded Hardware)</p>
 </li>
@@ -781,7 +795,11 @@ function gpio_output_set(pin, value) {
 <li>
 <p><strong>Trace Calls to BL602 IoT SDK</strong> for debugging</p>
 </li>
-</ol>
+<li>
+<p>We could potentially catch <strong>BL602 SDK Calling Errors</strong> for new devs and <strong>explain the errors in a friendly way</strong></p>
+<p>(Invalid parameters or usage, like reading a GPIO Pin configured for output)</p>
+</li>
+</ul>
 <p>We might be able to <strong>Simulate C Firmware</strong> too, if we…</p>
 <ul>
 <li>
