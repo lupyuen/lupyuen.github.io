@@ -785,37 +785,36 @@ function gpio_output_set(pin, value) {
 <p><em>But not all firmware can be simulated right?</em></p>
 <p>True, there are limits to what we can simulate.</p>
 <p><a href="https://lupyuen.github.io/articles/adc">(Might be tricky to simulate ADC Input)</a></p>
+<p>And the simulator could be really helpful for <strong>learners building basic firmware</strong>.</p>
+<p>(Maybe attract more Embedded Learners too!)</p>
+<p><em>What about the Embedded Pros?</em></p>
 <p>TODO</p>
 <ul>
-<li>
-<p>Encourage more learners</p>
-<p>Make it easier to <strong>Learn Embedded Programming</strong></p>
-<p>(Even without any Embedded Hardware)</p>
-</li>
 <li>
 <p><strong>Automated Testing</strong> of BL602 Firmware</p>
 </li>
 <li>
 <p><strong>Trace Calls to BL602 IoT SDK</strong> for debugging</p>
-</li>
-<li>
-<p>We could potentially catch <strong>BL602 SDK Calling Errors</strong> for new devs and <strong>explain the errors in a friendly way</strong></p>
-<p>(Invalid parameters or usage, like reading a GPIO Pin configured for output)</p>
+<p>(Like an embedded “<code>strace</code>”)</p>
 </li>
 </ul>
-<p>We might be able to <strong>Simulate C Firmware</strong> too, if we…</p>
-<ul>
+<p><em>Can we simulate C firmware? (Instead of Rust)</em></p>
+<p>We could possibly <strong>simulate C firmware</strong> if we…</p>
+<ol>
 <li>
 <p>Tweak the BL602 C Firmware to <strong>build with Emscripten</strong></p>
+<p>(By manipulating the C header files)</p>
 </li>
 <li>
 <p>And call the <strong>Stub Functions</strong></p>
+<p>TODO</p>
 </li>
-</ul>
+</ol>
 <h1 id="validating-calls-to-bl602-iot-sdk" class="section-header"><a href="#validating-calls-to-bl602-iot-sdk">8 Validating Calls to BL602 IoT SDK</a></h1>
 <p><em>What if the Embedded HAL could tell how to fix our code?</em></p>
 <p>(Wouldn’t that be great, especially for learners?)</p>
-<p>TODO</p>
+<p>We could potentially catch <strong>BL602 SDK Calling Errors</strong> for new devs and <strong>explain the errors in a friendly way</strong></p>
+<p>(Invalid parameters or usage, like reading a GPIO Pin configured for output)</p>
 <p><img src="https://lupyuen.github.io/images/rustsim-validate.png" alt="" /></p>
 <p>TODO7</p>
 <p><img src="https://lupyuen.github.io/images/rustsim-validate2.png" alt="" /></p>
