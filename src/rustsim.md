@@ -948,26 +948,26 @@ We could probably __simulate C Firmware__ if we...
 
 1.  And link the compiled C Firmware with our __Rust Simulator Library__
 
-    Remember that the BL602 Stub Functions in our Rust Simulator Library are declared __"`extern C`"__?
+Remember that the BL602 Stub Functions in our Rust Simulator Library are declared __"`extern C`"__?
 
-    ```rust
-    #[no_mangle]  //  Don't mangle the function name
-    extern "C" fn bl_gpio_output_set(pin: u8, value: u8) -> c_int { ...
-    ```
+```rust
+#[no_mangle]  //  Don't mangle the function name
+extern "C" fn bl_gpio_output_set(pin: u8, value: u8) -> c_int { ...
+```
 
-    Yep this means they can be __called from C Firmware__!
+Yep this means they can be __called from C Firmware__!
 
-    And the BL602 Stub Functions will __emit simulation events__... Our C Firmware will work exactly like Rust Firmware!
+And the BL602 Stub Functions will __emit simulation events__... Our C Firmware will work exactly like Rust Firmware!
 
 # Validating Calls to BL602 IoT SDK
 
-_What if the Embedded HAL could tell how to fix our code?_
+_What if the Embedded HAL (BL602 IoT SDK) could tell how to fix our code?_
 
 (Wouldn't that be great, especially for learners?)
 
-We could potentially catch __BL602 SDK Calling Errors__ for new devs and __explain the errors in a friendly way__
+We could potentially catch __BL602 SDK Calling Errors__ for new devs and __explain the errors__ in a friendly way.
 
-(Invalid parameters or usage, like reading a GPIO Pin configured for output)
+(Like for invalid parameters or incorrect usage of the SDK)
 
 ![](https://lupyuen.github.io/images/rustsim-validate.png)
 
@@ -989,15 +989,15 @@ Works on plain old Windows too
 
 LVGL, LoRa and LoRaWAN
 
-# BL602 Simulator in WebAssembly
+# Scripting for BL602 Simulator
 
 TODO
 
-There's Rhai, a #RustLang-like Scripting Language that runs on #WebAssembly and Embedded ... Shall I build a Scratch / Blockly drag-and-drop tool that emits Rhai programs for #BL602?
+There's Rhai, a RustLang Scripting Language that runs on #WebAssembly and Embedded ... Shall I build a Scratch / Blockly drag-and-drop tool that emits Rhai programs for #BL602?
 
-https://github.com/rhaiscript/rhai
+-   [__Rhai Scripting Engine__](https://rhai.rs/book/)
 
--   [__BL602 / BL604 Simulator in WebAssembly__](https://github.com/lupyuen/bl602-simulator)
+Transcode to uLisp
 
 Why do this in __Rust__?
 
@@ -1009,7 +1009,6 @@ Why do this in __Rust__?
 
   (Like our `safe_wrap` Procedural Macro in Rust)
     
-
 # What's Next
 
 TODO
