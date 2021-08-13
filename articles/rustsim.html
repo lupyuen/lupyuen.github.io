@@ -832,7 +832,11 @@ function gpio_output_set(pin, value) {
 <p><em>What if the Embedded HAL (BL602 IoT SDK) could tell how to fix our code?</em></p>
 <p>(Wouldn’t that be great, especially for learners?)</p>
 <p>We could help Embedded Learners when we catch <strong>BL602 SDK Calling Errors</strong> and <strong>explain the errors</strong> in a friendly way.</p>
-<p>(Like for invalid parameters or incorrect usage of the SDK)</p>
+<p>Watch what happens when set the output for a GPIO Pin <strong>without configuring the GPIO</strong> for Output…</p>
+<p><img src="https://lupyuen.github.io/images/rustsim-validate2.png" alt="Simulator halts with a friendly message" /></p>
+<p>Our simulator <strong>halts with a friendly message</strong>… And explains how we can fix it!</p>
+<p><em>How does our simulator validate calls to BL602 IoT SDK?</em></p>
+<p>TODO</p>
 <p><a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L33-L45">From <code>bl602-simulator/lib.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
@@ -886,10 +890,6 @@ function gpio_output_set(pin, value) {
     }
     <span class="number">0</span>  <span class="comment">//  Return OK</span>
 }</pre></div>
-<p><img src="https://lupyuen.github.io/images/rustsim-validate.png" alt="Validate Calls to BL602 IoT SDK" /></p>
-<p>TODO7</p>
-<p><img src="https://lupyuen.github.io/images/rustsim-validate2.png" alt="Validate Calls to BL602 IoT SDK" /></p>
-<p>TODO8</p>
 <p><img src="https://lupyuen.github.io/images/rustsim-validate3.png" alt="Validate Calls to BL602 IoT SDK" /></p>
 <h1 id="pinedio-stack-bl604" class="section-header"><a href="#pinedio-stack-bl604">9 PineDio Stack BL604</a></h1>
 <p><em>Simulating a plain BL602 board (like PineCone BL602) is pointless, innit?</em></p>
