@@ -882,7 +882,7 @@ To run the BL602 Simulator on our computer (Linux, macOS and Windows)...
 
 1.  Click __`Run`__
 
-## Easier Embedded Development?
+# Easier Embedded Development?
 
 _Is this easier than building and testing firmware on Real BL602 Hardware?_
 
@@ -903,6 +903,12 @@ BL602 Simulator could potentially shorten the __Code - Build - Flash - Test Cycl
 1.  __Flash__ the firmware to BL602
 
     (Remember: Flashing BL602 via UART is kinda cumbersome)
+
+_But not all firmware can be simulated right?_
+
+True, there are limits to what we can simulate.
+
+[(Might be tricky to simulate ADC Input)](https://lupyuen.github.io/articles/adc)
 
 TODO
 
