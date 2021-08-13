@@ -898,7 +898,7 @@ BL602 Simulator could potentially shorten the __Code - Build - Flash - Test Cycl
 
 1.  __Build__ the firmware for WebAssembly
 
-    (With a single "`make`" command)
+    (With a single "`make`" command on Linux / macOS / Windows)
 
 1.  __Test and Debug__ the firmware in the Simulator
 
@@ -965,9 +965,68 @@ _What if the Embedded HAL (BL602 IoT SDK) could tell how to fix our code?_
 
 (Wouldn't that be great, especially for learners?)
 
-We could potentially catch __BL602 SDK Calling Errors__ for new devs and __explain the errors__ in a friendly way.
+We could help Embedded Learners when we catch __BL602 SDK Calling Errors__ and __explain the errors__ in a friendly way.
 
 (Like for invalid parameters or incorrect usage of the SDK)
+
+[From `bl602-simulator/lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L33-L45)
+
+```rust
+/// Configuration for a BL602 GPIO Pin
+#[derive(Clone, Copy, Debug, PartialEq)]
+enum GpioConfig {
+    /// GPIO Pin is unconfigured
+    Unconfigured,
+    /// GPIO Pin is configured for Input
+    Input,
+    /// GPIO Pin is configured for Output
+    Output,
+}
+
+/// Configurations for all BL602 GPIO Pins
+static mut GPIO_CONFIGS: [GpioConfig; 32] = [GpioConfig::Unconfigured; 32];
+```
+
+[From `bl602-simulator/lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L105-L114)
+
+```rust
+/// Configure a GPIO Pin for Output Mode. See `bl_gpio_enable_output` in "Enable GPIO" <https://lupyuen.github.io/articles/led#enable-gpio>
+#[no_mangle]  //  Don't mangle the function name
+extern "C" fn bl_gpio_enable_output(pin: u8, _pullup: u8, _pulldown: u8)
+-> c_int {
+    //  Remember that the GPIO Pin has been configured for Output
+    unsafe {
+        GPIO_CONFIGS[pin as usize] = GpioConfig::Output;
+    }
+    0  //  Return OK
+}
+```
+
+[From `bl602-simulator/lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L116-L136)
+
+```rust
+/// Set the output value of a GPIO Pin. See `bl_gpio_output_set` in "Read and Write GPIO" <https://lupyuen.github.io/articles/led#read-and-write-gpio>
+#[no_mangle]  //  Don't mangle the function name
+extern "C" fn bl_gpio_output_set(pin: u8, value: u8)
+-> c_int {
+    //  If the GPIO Pin has not been configured for Output, halt
+    assert!(
+        unsafe { GPIO_CONFIGS[pin as usize] } == GpioConfig::Output,
+        "GPIO {} is {:?}, unable to set the GPIO Output Value. Please configure the GPIO for Output with `gpio::enable_output(pin, pullup, pulldown)` or `bl_gpio_enable_output(pin, pullup, pulldown)`. See \"Enable GPIO\" <https://lupyuen.github.io/articles/led#enable-gpio>",
+        pin, unsafe { GPIO_CONFIGS[pin as usize] }
+    );
+
+    //  Add a GPIO Set Output event
+    let ev = SimulationEvent::gpio_output_set { 
+        pin,
+        value,
+    };
+    unsafe {
+        SIMULATION_EVENTS.push(ev);
+    }
+    0  //  Return OK
+}
+```
 
 ![Validate Calls to BL602 IoT SDK](https://lupyuen.github.io/images/rustsim-validate.png)
 
@@ -983,19 +1042,33 @@ TODO8
 
 _Simulating a plain BL602 board (like PineCone BL602) is pointless, innit?_
 
+Yep simulating a PineCone BL602 Board ain't particularly exciting because it only has...
+
+1.  One RGB LED
+
+1.  One Jumper (GPIO 8)
+
+1.  And everything else needs to be wired to the GPIO Pins
+
+    (Which makes it harder to simulate actually)
+
 TODO
 
 Works on plain old Windows too
 
 LVGL, LoRa and LoRaWAN
 
+![PineDio Stack Schematic](https://lupyuen.github.io/images/rustsim-pinedio.png)
+
 # Scripting for BL602 Simulator
 
 TODO
 
-There's Rhai, a RustLang Scripting Language that runs on #WebAssembly and Embedded ... Shall I build a Scratch / Blockly drag-and-drop tool that emits Rhai programs for #BL602?
+There's Rhai, a RustLang Scripting Language that runs on WebAssembly and Embedded... Maybe build a Scratch / Blockly drag-and-drop tool that emits Rhai programs for BL602?
 
 -   [__Rhai Scripting Engine__](https://rhai.rs/book/)
+
+Rhai doesn't run on BL602
 
 Transcode to uLisp
 
@@ -1009,6 +1082,8 @@ Why do this in __Rust__?
 
   (Like our `safe_wrap` Procedural Macro in Rust)
 
+More docs...
+
 -   [__"uLisp and Blockly on PineCone BL602 RISC-V Board"__](https://lupyuen.github.io/articles/lisp)
 
 -   [__"Simulate RISC-V BL602 with WebAssembly, uLisp and Blockly"__](https://lupyuen.github.io/articles/wasm)
@@ -1018,6 +1093,8 @@ Why do this in __Rust__?
 -   [__"Advanced Topics for Visual Embedded Rust Programming"__](https://lupyuen.github.io/articles/advanced-topics-for-visual-embedded-rust-programming)
 
 ![Rhai Scripting for BL602 Simulator](https://lupyuen.github.io/images/rustsim-script.png)
+
+[(Source)](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-script/src/lib.rs)
 
 TODO
 
@@ -1046,3 +1123,76 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1423169766080933891)
+
+# Appendix: Rust Simulation Events
+
+TODO
+
+[From `bl602-simulator/lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L23-L31)
+
+```rust
+/// Vector of Simulation Events (i.e. event array)
+static mut SIMULATION_EVENTS: Vec<SimulationEvent> = Vec::new();
+
+/// String Buffer that returns the JSON Stream of Simulation Events:
+/// `[ { "gpio_output_set": { "pin": 11, "value": 1 } }, 
+///   { "time_delay": { "ticks": 1000 } }, 
+///   ... 
+/// ]`
+static mut EVENT_BUFFER: [u8; 1024] = [0; 1024];
+```
+
+[From `bl602-simulator/lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L47-L56)
+
+```rust
+/// Clear the JSON Stream of Simulation Events
+#[no_mangle]  //  Don't mangle the function name
+extern "C" fn clear_simulation_events() {
+    //  Clear the vector of Simulation Events
+    unsafe {
+        SIMULATION_EVENTS.clear();
+    }
+    //  Show Rust Backtrace on error
+    std::env::set_var("RUST_BACKTRACE", "full");
+}
+```
+
+[From `bl602-simulator/lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L58-L92)
+
+```rust
+/// Return the JSON Stream of Simulation Events
+#[no_mangle]  //  Don't mangle the function name
+extern "C" fn get_simulation_events() -> *const u8 {
+    //  Convert vector of events to a JSON string
+    let mut serialized = unsafe {
+        serde_json::to_string(&SIMULATION_EVENTS)
+    }.unwrap();
+
+    //  Print the serialized JSON events
+    println!("get_simulation_events: {}", serialized);
+
+    //  Result:
+    //  [{"gpio_output_set":{"pin":11,"value":0}},
+    //   {"time_delay":{"ticks":1000}}]
+
+    //  Terminate the JSON string with null, since we will be returning to C
+    serialized.push('\0');
+
+    //  Check that JSON string fits into the Event Buffer
+    assert!(serialized.len() <= unsafe { EVENT_BUFFER.len() });
+
+    //  Copy the JSON string to the Event Buffer
+    unsafe {                            //  Unsafe because we are copying raw memory
+        std::ptr::copy(                 //  Copy the memory...
+            serialized.as_ptr(),        //  From Source (JSON String)
+            EVENT_BUFFER.as_mut_ptr(),  //  To Destination (mutable pointer to Event Buffer)
+            serialized.len()            //  Number of Items (each item is 1 byte)
+        );    
+    }
+      
+    //  Return the Event Buffer
+    unsafe {
+        EVENT_BUFFER.as_ptr()
+    }
+}
+```
