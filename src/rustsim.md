@@ -1062,7 +1062,7 @@ LVGL, LoRa and LoRaWAN
 
 # Scripting for BL602 Simulator
 
-To make BL602 Simulator even more useful to Embedded Learners, we're adding the [__Rhai Scripting Engine__](https://rhai.rs/book/) to the simulator.
+To make BL602 Simulator even more useful for Embedded Learners, we're adding the [__Rhai Scripting Engine__](https://rhai.rs/book/) to the simulator.
 
 Thus we'll allow BL602 Simulator to be used in two ways...
 
@@ -1086,7 +1086,7 @@ Because Scripted REPL platforms like __uLisp__ and __MicroPython__ are still pop
 
 For BL602, perhaps learners could __start with (Rust-like) Rhai Script__... 
 
-And __upgrade to Rust__ when they're ready.
+And __upgrade to Rust__ (or C) when they're ready.
 
 TODO
 
