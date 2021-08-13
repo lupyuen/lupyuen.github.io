@@ -965,7 +965,7 @@ _What if the Embedded HAL (BL602 IoT SDK) could tell how to fix our code?_
 
 (Wouldn't that be great, especially for learners?)
 
-We could help Embedded Learners when we catch __BL602 SDK Calling Errors__ and __explain the errors__ in a friendly way.
+We can help Embedded Learners when we catch __BL602 SDK Calling Errors__ and __explain the errors__ in a friendly way.
 
 Watch what happens when set the output for a GPIO Pin __without configuring the GPIO__ for Output...
 
@@ -1062,11 +1062,35 @@ LVGL, LoRa and LoRaWAN
 
 # Scripting for BL602 Simulator
 
+To make BL602 Simulator even more useful to Embedded Learners, we're adding the [__Rhai Scripting Engine__](https://rhai.rs/book/) to the simulator.
+
+Thus we'll allow BL602 Simulator to be used in two ways...
+
+1.  __The Traditional Way:__
+
+    Code the program in Rust. Compile to WebAssembly. Test with Simulator.
+
+    _...OR..._
+
+1.  __The Scripted REPL Way:__
+
+    Code the program in __Rhai Script__. (Which looks like Rust)
+
+    Type the Rhai Script __directly into the Web Browser__. (No compiler needed)
+
+    Test with Simulator.
+
+_Why would we need The Scripted REPL Way?_
+
+Because Scripted REPL platforms like __uLisp__ and __MicroPython__ are still popular with Embedded Learners.
+
+For BL602, perhaps learners could __start with (Rust-like) Rhai Script__. 
+
+And __upgrade to Rust__ when they're ready.
+
 TODO
 
-There's Rhai, a RustLang Scripting Language that runs on WebAssembly and Embedded... Maybe build a Scratch / Blockly drag-and-drop tool that emits Rhai programs for BL602?
-
--   [__Rhai Scripting Engine__](https://rhai.rs/book/)
+Maybe build a Scratch / Blockly drag-and-drop tool that emits Rhai programs for BL602?
 
 Rhai doesn't run on BL602
 
