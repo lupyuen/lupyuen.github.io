@@ -82,7 +82,7 @@
 <li><a href="#easier-embedded-development">7 Easier Embedded Development?</a><ul></ul></li>
 <li><a href="#validating-calls-to-bl602-iot-sdk">8 Validating Calls to BL602 IoT SDK</a><ul></ul></li>
 <li><a href="#pinedio-stack-bl604">9 PineDio Stack BL604</a><ul></ul></li>
-<li><a href="#bl602-simulator-in-webassembly">10 BL602 Simulator in WebAssembly</a><ul></ul></li>
+<li><a href="#scripting-for-bl602-simulator">10 Scripting for BL602 Simulator</a><ul></ul></li>
 <li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
 <li><a href="#notes">12 Notes</a><ul></ul></li></ul></nav><p>📝 <em>16 Aug 2021</em></p>
 <p>One year ago I pondered… Can we make <strong>Embedded Programming easier for Learners</strong>?</p>
@@ -818,6 +818,8 @@ function gpio_output_set(pin, value) {
 </li>
 <li>
 <p>And link the compiled C Firmware with our <strong>Rust Simulator Library</strong></p>
+</li>
+</ol>
 <p>Remember that the BL602 Stub Functions in our Rust Simulator Library are declared <strong>“<code>extern C</code>”</strong>?</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
@@ -825,13 +827,11 @@ function gpio_output_set(pin, value) {
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">bl_gpio_output_set</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">value</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_int</span> { ...</pre></div>
 <p>Yep this means they can be <strong>called from C Firmware</strong>!</p>
 <p>And the BL602 Stub Functions will <strong>emit simulation events</strong>… Our C Firmware will work exactly like Rust Firmware!</p>
-</li>
-</ol>
 <h1 id="validating-calls-to-bl602-iot-sdk" class="section-header"><a href="#validating-calls-to-bl602-iot-sdk">8 Validating Calls to BL602 IoT SDK</a></h1>
-<p><em>What if the Embedded HAL could tell how to fix our code?</em></p>
+<p><em>What if the Embedded HAL (BL602 IoT SDK) could tell how to fix our code?</em></p>
 <p>(Wouldn’t that be great, especially for learners?)</p>
-<p>We could potentially catch <strong>BL602 SDK Calling Errors</strong> for new devs and <strong>explain the errors in a friendly way</strong></p>
-<p>(Invalid parameters or usage, like reading a GPIO Pin configured for output)</p>
+<p>We could potentially catch <strong>BL602 SDK Calling Errors</strong> for new devs and <strong>explain the errors</strong> in a friendly way.</p>
+<p>(Like for invalid parameters or incorrect usage of the SDK)</p>
 <p><img src="https://lupyuen.github.io/images/rustsim-validate.png" alt="" /></p>
 <p>TODO7</p>
 <p><img src="https://lupyuen.github.io/images/rustsim-validate2.png" alt="" /></p>
@@ -842,13 +842,13 @@ function gpio_output_set(pin, value) {
 <p>TODO</p>
 <p>Works on plain old Windows too</p>
 <p>LVGL, LoRa and LoRaWAN</p>
-<h1 id="bl602-simulator-in-webassembly" class="section-header"><a href="#bl602-simulator-in-webassembly">10 BL602 Simulator in WebAssembly</a></h1>
+<h1 id="scripting-for-bl602-simulator" class="section-header"><a href="#scripting-for-bl602-simulator">10 Scripting for BL602 Simulator</a></h1>
 <p>TODO</p>
-<p>There’s Rhai, a #RustLang-like Scripting Language that runs on #WebAssembly and Embedded … Shall I build a Scratch / Blockly drag-and-drop tool that emits Rhai programs for #BL602?</p>
-<p>https://github.com/rhaiscript/rhai</p>
+<p>There’s Rhai, a RustLang Scripting Language that runs on #WebAssembly and Embedded … Shall I build a Scratch / Blockly drag-and-drop tool that emits Rhai programs for #BL602?</p>
 <ul>
-<li><a href="https://github.com/lupyuen/bl602-simulator"><strong>BL602 / BL604 Simulator in WebAssembly</strong></a></li>
+<li><a href="https://rhai.rs/book/"><strong>Rhai Scripting Engine</strong></a></li>
 </ul>
+<p>Transcode to uLisp</p>
 <p>Why do this in <strong>Rust</strong>?</p>
 <ul>
 <li>
