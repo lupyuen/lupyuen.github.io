@@ -870,7 +870,7 @@ Click the __`Run`__ Button and watch the LED blink!
 
 To run the BL602 Simulator on our computer (Linux, macOS and Windows)...
 
-1.  Build the __BL602 Rust Fimware__ and the BL602 Simulator
+1.  Build the __BL602 Rust Firmware__ and the BL602 Simulator
 
     [(Instructions here)](https://lupyuen.github.io/articles/rustsim#build-bl602-firmware-for-webassembly)
 
