@@ -206,7 +206,7 @@ make
 <pre><code class="language-bash"># Compile the Rust Firmware and Rust Simulator Library into WebAssembly
 cargo build --target wasm32-unknown-emscripten
 </code></pre>
-<p>This compiles two <strong>Rust Projects</strong>…</p>
+<p>This compiles three <strong>Rust Projects</strong>…</p>
 <ol>
 <li>
 <p><strong>Rust Firmware:</strong> </p>
@@ -217,6 +217,11 @@ cargo build --target wasm32-unknown-emscripten
 <p><strong>Rust Simulator Library:</strong> </p>
 <p><a href="https://github.com/lupyuen/bl602-simulator/tree/main/bl602-simulator"><code>bl602-simulator/bl602-simulator</code></a></p>
 <p>(Simulates the BL602 IoT SDK. We’ll see this in a while)</p>
+</li>
+<li>
+<p><strong>Rust Scripting Library:</strong></p>
+<p><a href="https://github.com/lupyuen/bl602-simulator/tree/main/bl602-script"><code>bl602-simulator/bl602-script</code></a></p>
+<p>(More about this later)</p>
 </li>
 </ol>
 <p>“<code>cargo build</code>” downloads the <a href="https://crates.io/crates/bl602-sdk"><strong>BL602 Rust Wrapper</strong></a> automagically from <code>crates.io</code> …</p>
@@ -784,31 +789,42 @@ function gpio_output_set(pin, value) {
 </ol>
 <p><em>But not all firmware can be simulated right?</em></p>
 <p>True, there are limits to what we can simulate.</p>
-<p><a href="https://lupyuen.github.io/articles/adc">(Might be tricky to simulate ADC Input)</a></p>
+<p><a href="https://lupyuen.github.io/articles/adc">(Might be tricky to simulate Analog Inputs… Do we draw a graph?)</a></p>
 <p>Even so, the simulator could be really helpful for learners who are <strong>building basic firmware</strong>.</p>
 <p>(Maybe attract more Embedded Learners too!)</p>
 <p><em>What about the Embedded Pros?</em></p>
-<p>TODO</p>
-<ul>
+<p>Someday BL602 Simulator might also be helpful for Embedded Pros who are <strong>building complex firmware</strong>…</p>
+<ol>
 <li>
 <p><strong>Automated Testing</strong> of BL602 Firmware</p>
-<p>JSON Stream</p>
+<p>Remember that our firmware emits a <strong>JSON Stream</strong> of Simulation Events?</p>
+<p>This JSON Stream is perfect for checking whether our firmware is <strong>behaving as expected</strong>… Just <strong>“<code>diff</code>” the Expected and Actual</strong> JSON Streams!</p>
 </li>
 <li>
-<p><strong>Trace Calls to BL602 IoT SDK</strong> for debugging</p>
+<p><strong>Tracing Calls to BL602 IoT SDK</strong> for debugging</p>
 <p>(Like an embedded “<code>strace</code>”)</p>
 </li>
-</ul>
-<p><em>Can we simulate C firmware? (Instead of Rust)</em></p>
-<p>We could possibly <strong>simulate C firmware</strong> if we…</p>
+<li>
+<p><strong>Validating Calls to BL602 IoT SDK</strong></p>
+<p>(More about this in the next chapter)</p>
+</li>
+</ol>
+<p><em>Can we simulate C Firmware? (Instead of Rust Firmware)</em></p>
+<p>We could probably <strong>simulate C Firmware</strong> if we…</p>
 <ol>
 <li>
 <p>Tweak the BL602 C Firmware to <strong>build with Emscripten</strong></p>
-<p>(By manipulating the C header files)</p>
+<p>(By modding the C Header Files and Makefiles)</p>
 </li>
 <li>
-<p>And call the <strong>Stub Functions</strong></p>
-<p>TODO</p>
+<p>And link the compiled C Firmware with our <strong>Rust Simulator Library</strong></p>
+<p>Remember that the BL602 Stub Functions in our Rust Simulator Library are declared <strong>“<code>extern C</code>”</strong>?</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="attribute">#[<span class="ident">no_mangle</span>]</span>  <span class="comment">//  Don&#39;t mangle the function name</span>
+<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">bl_gpio_output_set</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">value</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_int</span> { ...</pre></div>
+<p>Yep this means they can be <strong>called from C Firmware</strong>!</p>
+<p>And the BL602 Stub Functions will <strong>emit simulation events</strong>… Our C Firmware will work exactly like Rust Firmware!</p>
 </li>
 </ol>
 <h1 id="validating-calls-to-bl602-iot-sdk" class="section-header"><a href="#validating-calls-to-bl602-iot-sdk">8 Validating Calls to BL602 IoT SDK</a></h1>
