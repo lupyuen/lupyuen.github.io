@@ -755,9 +755,17 @@ Inside __`simulation_events`__ we have a JSON Stream of Simulation Events, ready
 
 ## Handle Simulation Events
 
-TODO
+Our JavaScript code has __received the JSON Stream__ of Simulation Events from the Rust Firmware...
 
-From [`simulator.js`](https://github.com/lupyuen/bl602-simulator/blob/main/docs/simulator.js#L83-L119)
+```json
+[ 
+  { "gpio_output_set": { "pin": 11, "value": 1 } }, 
+  { "time_delay": { "ticks": 1000 } },
+  ...
+]
+```
+
+Let's __process the events__: [`simulator.js`](https://github.com/lupyuen/bl602-simulator/blob/main/docs/simulator.js#L83-L119)
 
 ```javascript
 /// Simulate the BL602 Simulation Events recorded in simulate_events, which contains...
@@ -776,7 +784,13 @@ function simulateEvents() {
 
   //  Timeout in milliseconds to the next event
   let timeout = 1;
+```
 
+Here we take the __first event__ from the stream.
+
+Then we __handle the event__: Set GPIO Output or Time Delay...
+
+```javascript
   //  Handle each event type
   switch (event_type) {
 
@@ -791,7 +805,11 @@ function simulateEvents() {
     //  Unknown event type
     default: throw new Error("Unknown event type: " + event_type);
   }
+```
 
+We use a timer to __iterate through the events__ in the stream...
+
+```javascript
   //  Simulate the next event
   if (simulation_events.length > 0) {
     window.setTimeout("simulateEvents()", timeout);
@@ -799,9 +817,9 @@ function simulateEvents() {
 }
 ```
 
-TODO
+_What happens inside `gpio_output_set`, the event handler for Set GPIO Output?_
 
-From [`simulator.js`](https://github.com/lupyuen/bl602-simulator/blob/main/docs/simulator.js#L121-L144)
+`gpio_output_set` renders the __Simulated BL602 LED__: [`simulator.js`](https://github.com/lupyuen/bl602-simulator/blob/main/docs/simulator.js#L121-L144)
 
 ```javascript
 /// Simulate setting GPIO pin output to value 0 (Low) or 1 (High):
@@ -830,7 +848,13 @@ function gpio_output_set(pin, value) {
 }
 ```
 
-[(More about simulating delays)](https://lupyuen.github.io/articles/wasm#simulate-delays)
+(Yep we've seen this code earlier)
+
+That's how we __blink the Simulated LED__ through the stream of simulation events!
+
+_What about `time_delay`, the event handler for Time Delays?_
+
+`time_delay` is explained here: ["Simulate Delays"](https://lupyuen.github.io/articles/wasm#simulate-delays)
 
 # Run BL602 Firmware in Simulator
 
