@@ -1157,6 +1157,12 @@ Sadly Rhai Scripting Engine is __too heavy for BL602__. [(See this)](https://git
 
 But we could __transcode Rhai Script to uLisp__, which runs fine on BL602.
 
+_Why uLisp?_
+
+TODO
+
+[(More about uLisp on BL602)](https://lupyuen.github.io/articles/lisp)
+
 TODO
 
 Why do this in __Rust__?
