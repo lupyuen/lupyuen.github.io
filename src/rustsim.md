@@ -961,11 +961,11 @@ And the BL602 Stub Functions will __emit simulation events__... Our C Firmware w
 
 # Validate Calls to BL602 IoT SDK
 
-_What if the Embedded HAL (BL602 IoT SDK) could tell how to fix our code?_
+_What if the Embedded HAL (like BL602 IoT SDK) could tell us how to fix our code?_
 
 (Wouldn't that be great, especially for learners?)
 
-We can help Embedded Learners when we catch __BL602 SDK Calling Errors__ and __explain the errors__ in a friendly way.
+Yep we can help Embedded Learners when we catch __BL602 SDK Calling Errors__ and __explain the errors__ in a friendly way.
 
 Watch what happens when set the output for a GPIO Pin __without configuring the GPIO__ for Output...
 
