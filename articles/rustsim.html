@@ -930,9 +930,11 @@ function gpio_output_set(pin, value) {
 <h2 id="run-scripts-on-bl602" class="section-header"><a href="#run-scripts-on-bl602">10.2 Run Scripts on BL602</a></h2>
 <p><em>Rhai Scripts run OK on our simulator with WebAssembly. But will the scripts run on Real BL602 Hardware?</em></p>
 <p>Sadly no. Rhai Scripting Engine is <strong>too heavy for BL602</strong>. <a href="https://github.com/lupyuen/bl_iot_sdk/tree/adc/customer_app/sdk_app_rust_script">(See this)</a></p>
-<p>TODO</p>
-<p>Transcode to uLisp</p>
-<p>Transfer to BL602 over WebSerial</p>
+<p>But we could <strong>transcode Rhai Script to uLisp</strong>, which runs fine on BL602.</p>
+<p>(More about Rhai Transcoding in the Appendix)</p>
+<p><em>Can we transmit uLisp to BL602 from the Web Browser?</em></p>
+<p>Yes, we may automagically transmit the transcoded uLisp from Web Browser to BL602 with the <strong>Web Serial API</strong>.</p>
+<p><a href="https://lupyuen.github.io/articles/lisp#web-browser-controls-bl602-with-web-serial-api">(More about Web Serial API)</a></p>
 <p><em>You sound pretty confident about Drag-and-Drop Scripting. Have we done this before?</em></p>
 <p>Yep we’ve previously experimented with <strong>Blockly (Scratch), uLisp and Rust</strong>.</p>
 <p>Now we’re switching to <strong>Rhai Script</strong>, things might get simpler…</p>
