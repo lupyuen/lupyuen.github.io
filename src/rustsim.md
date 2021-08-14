@@ -1077,6 +1077,8 @@ For BL602, perhaps learners could __start with (Rust-like) Rhai Script__...
 
 And __upgrade to Rust__ (or C) when they're ready.
 
+## Drag and Drop Scripting
+
 _I sense another upcoming enhancement?_
 
 Yes! Since we're adding a __Scripting Engine__ to the simulator...
