@@ -1099,11 +1099,15 @@ _Rhai Scripts run OK on our simulator with WebAssembly. But will the scripts run
 
 Sadly no. Rhai Scripting Engine is __too heavy for BL602__. [(See this)](https://github.com/lupyuen/bl_iot_sdk/tree/adc/customer_app/sdk_app_rust_script)
 
-TODO
+But we could __transcode Rhai Script to uLisp__, which runs fine on BL602.
 
-Transcode to uLisp
+(More about Rhai Transcoding in the Appendix)
 
-Transfer to BL602 over WebSerial
+_Can we transmit uLisp to BL602 from the Web Browser?_
+
+Yes, we may automagically transmit the transcoded uLisp from Web Browser to BL602 with the __Web Serial API__.
+
+[(More about Web Serial API)](https://lupyuen.github.io/articles/lisp#web-browser-controls-bl602-with-web-serial-api)
 
 _You sound pretty confident about Drag-and-Drop Scripting. Have we done this before?_
 
