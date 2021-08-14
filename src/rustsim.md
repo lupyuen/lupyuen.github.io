@@ -1109,6 +1109,16 @@ Yes, we may automagically transmit the transcoded uLisp from Web Browser to BL60
 
 [(More about Web Serial API)](https://lupyuen.github.io/articles/lisp#web-browser-controls-bl602-with-web-serial-api)
 
+Which means our learners will...
+
+1.  Use a Web Browser to __drag and drop__ the blocks to create a visual program
+
+1.  Which will __auto-generate the Rhai Script__ for the visual program
+
+1.  And the Rhai Script will be __auto-transmitted to BL602__ for execution
+
+    (After the Rhai Script has been transcoded to uLisp)
+
 _You sound pretty confident about Drag-and-Drop Scripting. Have we done this before?_
 
 Yep we've previously experimented with __Blockly (Scratch), uLisp and Rust__.
