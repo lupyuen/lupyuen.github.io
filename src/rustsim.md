@@ -1025,7 +1025,7 @@ That's how we make BL602 Simulator a little more helpful for Embedded Learners..
 
 _Simulating a plain BL602 board (like PineCone BL602) is pointless, innit?_
 
-Yep simulating a PineCone BL602 Board ain't particularly exciting because it only has...
+Yep simulating a __PineCone BL602 Board__ ain't particularly exciting because it only has...
 
 1.  One RGB LED
 
@@ -1037,15 +1037,21 @@ Yep simulating a PineCone BL602 Board ain't particularly exciting because it onl
 
 TODO
 
+![PineDio Stack Schematic](https://lupyuen.github.io/images/rustsim-pinedio.png)
+
 Works on plain old Windows too
 
 LVGL, LoRa and LoRaWAN
 
-![PineDio Stack Schematic](https://lupyuen.github.io/images/rustsim-pinedio.png)
+![Rhai Scripting for BL602 Simulator](https://lupyuen.github.io/images/rustsim-script2.png)
+
+[(Source)](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-script/src/lib.rs)
 
 # Scripting for BL602 Simulator
 
 To make BL602 Simulator even more useful for Embedded Learners, we're adding the [__Rhai Scripting Engine__](https://rhai.rs/book/) to the simulator.
+
+(See pic above)
 
 Thus we'll allow BL602 Simulator to be used in two ways...
 
@@ -1073,7 +1079,11 @@ And __upgrade to Rust__ (or C) when they're ready.
 
 _I sense another upcoming enhancement?_
 
+Yes! Since we're adding a Scripting Engine to the simulator, it means we can 
+
 TODO
+
+![BL602 Simulator with Visual Programming](https://lupyuen.github.io/images/wasm-title.png)
 
 _Could we do this through a Desktop App? (Instead of Web Browser)_
 
@@ -1104,14 +1114,6 @@ More docs...
 -   [__"Visual Embedded Rust Programming with Visual Studio Code"__](https://lupyuen.github.io/articles/visual-embedded-rust-programming-with-visual-studio-code)
 
 -   [__"Advanced Topics for Visual Embedded Rust Programming"__](https://lupyuen.github.io/articles/advanced-topics-for-visual-embedded-rust-programming)
-
-![Rhai Scripting for BL602 Simulator](https://lupyuen.github.io/images/rustsim-script.png)
-
-[(Source)](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-script/src/lib.rs)
-
-TODO
-
-![Rhai Scripting for BL602 Simulator](https://lupyuen.github.io/images/rustsim-script2.png)
 
 # What's Next
 
