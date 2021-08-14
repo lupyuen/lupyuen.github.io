@@ -1163,13 +1163,32 @@ TODO
 
 [(More about uLisp on BL602)](https://lupyuen.github.io/articles/lisp)
 
-_How will we transcode Rhai Script to uLisp?_
+_How shall we transcode Rhai Script to uLisp?_
 
 TODO
 
 [__"Auto Convert Go to Dart with an Abstract Syntax Tree"__](https://lupyuen.github.io/pinetime-rust-mynewt/articles/ast)
 
 [`safe_wrap` Procedural Macro](https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-macros/src/safe_wrap.rs)
+
+_How shall we support BL602 IoT SDK in uLisp?_
+
+TODO
+
+http://www.ulisp.com/show?19Q4
+
+```c
+object *fn_add (object *args, object *env) {
+  (void) env;
+  int result = 0;
+  while (args != NULL) {
+    int temp = checkinteger(ADD, car(args));
+    result = result + temp;
+    args = cdr(args);
+  }
+  return number(result);
+}
+```
 
 _Why do this in Rust?_
 
