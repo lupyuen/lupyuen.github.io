@@ -836,60 +836,43 @@ function gpio_output_set(pin, value) {
 <p><img src="https://lupyuen.github.io/images/rustsim-validate2.png" alt="Simulator halts with a friendly message" /></p>
 <p>Our simulator <strong>halts with a friendly message</strong>… And explains how we can fix it!</p>
 <p><em>How does our simulator validate calls to BL602 IoT SDK?</em></p>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L33-L45">From <code>bl602-simulator/lib.rs</code></a></p>
+<p>BL602 Simulator remembers the <strong>configuration of every GPIO Pin</strong>: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L33-L45"><code>bl602-simulator/lib.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="doccomment">/// Configuration for a BL602 GPIO Pin</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>)]</span>
 <span class="kw">enum</span> <span class="ident">GpioConfig</span> {
-    <span class="doccomment">/// GPIO Pin is unconfigured</span>
-    <span class="ident">Unconfigured</span>,
-    <span class="doccomment">/// GPIO Pin is configured for Input</span>
-    <span class="ident">Input</span>,
-    <span class="doccomment">/// GPIO Pin is configured for Output</span>
-    <span class="ident">Output</span>,
+  <span class="doccomment">/// GPIO Pin is unconfigured</span>
+  <span class="ident">Unconfigured</span>,
+  <span class="doccomment">/// GPIO Pin is configured for Input</span>
+  <span class="ident">Input</span>,
+  <span class="doccomment">/// GPIO Pin is configured for Output</span>
+  <span class="ident">Output</span>,
 }
 
 <span class="doccomment">/// Configurations for all BL602 GPIO Pins</span>
 <span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">GPIO_CONFIGS</span>: [<span class="ident">GpioConfig</span>; <span class="number">32</span>] <span class="op">=</span> [<span class="ident">GpioConfig::Unconfigured</span>; <span class="number">32</span>];</pre></div>
-<p><a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L105-L114">From <code>bl602-simulator/lib.rs</code></a></p>
+<p>We <strong>update the GPIO Configuration</strong> whenever the GPIO is configured for Input or Output: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L105-L114"><code>lib.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="doccomment">/// Configure a GPIO Pin for Output Mode. See `bl_gpio_enable_output` in &quot;Enable GPIO&quot; &lt;https://lupyuen.github.io/articles/led#enable-gpio&gt;</span>
 <span class="attribute">#[<span class="ident">no_mangle</span>]</span>  <span class="comment">//  Don&#39;t mangle the function name</span>
-<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">bl_gpio_enable_output</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">_pullup</span>: <span class="ident">u8</span>, <span class="ident">_pulldown</span>: <span class="ident">u8</span>)
-<span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_int</span> {
-    <span class="comment">//  Remember that the GPIO Pin has been configured for Output</span>
-    <span class="kw">unsafe</span> {
-        <span class="ident">GPIO_CONFIGS</span>[<span class="ident">pin</span> <span class="kw">as</span> <span class="ident">usize</span>] <span class="op">=</span> <span class="ident">GpioConfig::Output</span>;
-    }
-    <span class="number">0</span>  <span class="comment">//  Return OK</span>
-}</pre></div>
-<p><a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L116-L136">From <code>bl602-simulator/lib.rs</code></a></p>
+<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">bl_gpio_enable_output</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">_pullup</span>: <span class="ident">u8</span>, <span class="ident">_pulldown</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_int</span> {
+  <span class="comment">//  Remember that the GPIO Pin has been configured for Output</span>
+  <span class="ident">GPIO_CONFIGS</span>[<span class="ident">pin</span> <span class="kw">as</span> <span class="ident">usize</span>] <span class="op">=</span> <span class="ident">GpioConfig::Output</span>;</pre></div>
+<p>While setting the GPIO output value, we <strong>raise an error</strong> if the GPIO Configuration is incorrect : <a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L116-L136"><code>lib.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="doccomment">/// Set the output value of a GPIO Pin. See `bl_gpio_output_set` in &quot;Read and Write GPIO&quot; &lt;https://lupyuen.github.io/articles/led#read-and-write-gpio&gt;</span>
 <span class="attribute">#[<span class="ident">no_mangle</span>]</span>  <span class="comment">//  Don&#39;t mangle the function name</span>
-<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">bl_gpio_output_set</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">value</span>: <span class="ident">u8</span>)
-<span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_int</span> {
-    <span class="comment">//  If the GPIO Pin has not been configured for Output, halt</span>
-    <span class="macro">assert!</span>(
-        <span class="kw">unsafe</span> { <span class="ident">GPIO_CONFIGS</span>[<span class="ident">pin</span> <span class="kw">as</span> <span class="ident">usize</span>] } <span class="op">=</span><span class="op">=</span> <span class="ident">GpioConfig::Output</span>,
-        <span class="string">&quot;GPIO {} is {:?}, unable to set the GPIO Output Value. Please configure the GPIO for Output with `gpio::enable_output(pin, pullup, pulldown)` or `bl_gpio_enable_output(pin, pullup, pulldown)`. See \&quot;Enable GPIO\&quot; &lt;https://lupyuen.github.io/articles/led#enable-gpio&gt;&quot;</span>,
-        <span class="ident">pin</span>, <span class="kw">unsafe</span> { <span class="ident">GPIO_CONFIGS</span>[<span class="ident">pin</span> <span class="kw">as</span> <span class="ident">usize</span>] }
-    );
-
-    <span class="comment">//  Add a GPIO Set Output event</span>
-    <span class="kw">let</span> <span class="ident">ev</span> <span class="op">=</span> <span class="ident">SimulationEvent::gpio_output_set</span> { 
-        <span class="ident">pin</span>,
-        <span class="ident">value</span>,
-    };
-    <span class="kw">unsafe</span> {
-        <span class="ident">SIMULATION_EVENTS</span>.<span class="ident">push</span>(<span class="ident">ev</span>);
-    }
-    <span class="number">0</span>  <span class="comment">//  Return OK</span>
-}</pre></div>
+<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">bl_gpio_output_set</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">value</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_int</span> {
+  <span class="comment">//  If the GPIO Pin has not been configured for Output, halt</span>
+  <span class="macro">assert!</span>(
+    <span class="ident">GPIO_CONFIGS</span>[<span class="ident">pin</span> <span class="kw">as</span> <span class="ident">usize</span>] <span class="op">=</span><span class="op">=</span> <span class="ident">GpioConfig::Output</span>,
+    <span class="string">&quot;GPIO {} is {:?}, unable to set the GPIO Output Value. Please configure the GPIO for Output with `gpio::enable_output(pin, pullup, pulldown)` or `bl_gpio_enable_output(pin, pullup, pulldown)`. See \&quot;Enable GPIO\&quot; &lt;https://lupyuen.github.io/articles/led#enable-gpio&gt;&quot;</span>,
+    <span class="ident">pin</span>, <span class="ident">GPIO_CONFIGS</span>[<span class="ident">pin</span> <span class="kw">as</span> <span class="ident">usize</span>]
+  );</pre></div>
+<p>That’s how we make BL602 Simulator a little more helpful for Embedded Learners… By validating the calls to BL602 IoT SDK!</p>
 <p><img src="https://lupyuen.github.io/images/rustsim-validate3.png" alt="Validate Calls to BL602 IoT SDK" /></p>
 <h1 id="pinedio-stack-bl604" class="section-header"><a href="#pinedio-stack-bl604">9 PineDio Stack BL604</a></h1>
 <p><em>Simulating a plain BL602 board (like PineCone BL602) is pointless, innit?</em></p>
