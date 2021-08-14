@@ -1103,17 +1103,13 @@ Rhai doesn't run on BL602
 
 Transcode to uLisp
 
-Why do this in __Rust__?
+Transfer to BL602 over WebSerial
 
-- Because we have already __parsed the BL602 IoT SDK interfaces__ with `bindgen`
+_You sound pretty confident. Have we done this before?_
 
-  (While creating the BL602 Rust Wrapper) 
+Yep we've previously experimented with __Blockly (Scratch), uLisp and Rust__.
 
-- Which lets us __manipulate the BL602 SDK interfaces__ with Rust in interesting ways
-
-  (Like our `safe_wrap` Procedural Macro in Rust)
-
-More docs...
+Now we're switching to __Rhai Script__, things might get simpler...
 
 -   [__"uLisp and Blockly on PineCone BL602 RISC-V Board"__](https://lupyuen.github.io/articles/lisp)
 
@@ -1146,6 +1142,20 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1423169766080933891)
+
+# Appendix: Rhai Scripting on BL602
+
+TODO
+
+Why do this in __Rust__?
+
+- Because we have already __parsed the BL602 IoT SDK interfaces__ with `bindgen`
+
+  (While creating the BL602 Rust Wrapper) 
+
+- Which lets us __manipulate the BL602 SDK interfaces__ with Rust in interesting ways
+
+  (Like our `safe_wrap` Procedural Macro in Rust)
 
 # Appendix: Rust Simulation Events
 
