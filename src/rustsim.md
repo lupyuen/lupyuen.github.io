@@ -1079,7 +1079,9 @@ And __upgrade to Rust__ (or C) when they're ready.
 
 _I sense another upcoming enhancement?_
 
-Yes! Since we're adding a Scripting Engine to the simulator, it means we can 
+Yes! Since we're adding a __Scripting Engine__ to the simulator...
+
+Why not make it really easy to create scripts: The __drag-and-drop way__!
 
 TODO
 
