@@ -1097,17 +1097,15 @@ Possibly, if we wrap the Web Browser Interface into a __Desktop App with Tauri__
 
 _Rhai Scripts run OK on our simulator with WebAssembly. But will the scripts run on Real BL602 Hardware?_
 
-Sadly no.
+Sadly no. Rhai Scripting Engine is __too heavy for BL602__. [(See this)](https://github.com/lupyuen/bl_iot_sdk/tree/adc/customer_app/sdk_app_rust_script)
 
 TODO
-
-Rhai doesn't run on BL602
 
 Transcode to uLisp
 
 Transfer to BL602 over WebSerial
 
-_You sound pretty confident. Have we done this before?_
+_You sound pretty confident about Drag-and-Drop Scripting. Have we done this before?_
 
 Yep we've previously experimented with __Blockly (Scratch), uLisp and Rust__.
 
