@@ -1093,9 +1093,11 @@ _Can we do this through a Desktop App? (Instead of Web Browser)_
 
 Possibly, if we wrap the Web Browser Interface into a __Desktop App with Tauri__. [(See this)](https://tauri.studio/en/)
 
-## BL602 Control
+## Run Scripts on BL602
 
-_Everything looks hunky dory for our simulator. But can we run Rhai Script on Real BL602 Hardware?_
+_Rhai Scripts run OK on our simulator with WebAssembly. But will the scripts run on Real BL602 Hardware?_
+
+Sadly no.
 
 TODO
 
