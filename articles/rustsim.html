@@ -876,7 +876,7 @@ function gpio_output_set(pin, value) {
 <p><img src="https://lupyuen.github.io/images/rustsim-validate3.png" alt="Validate Calls to BL602 IoT SDK" /></p>
 <h1 id="pinedio-stack-bl604" class="section-header"><a href="#pinedio-stack-bl604">9 PineDio Stack BL604</a></h1>
 <p><em>Simulating a plain BL602 board (like PineCone BL602) is pointless, innit?</em></p>
-<p>Yep simulating a PineCone BL602 Board ain’t particularly exciting because it only has…</p>
+<p>Yep simulating a <strong>PineCone BL602 Board</strong> ain’t particularly exciting because it only has…</p>
 <ol>
 <li>
 <p>One RGB LED</p>
@@ -890,11 +890,14 @@ function gpio_output_set(pin, value) {
 </li>
 </ol>
 <p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/rustsim-pinedio.png" alt="PineDio Stack Schematic" /></p>
 <p>Works on plain old Windows too</p>
 <p>LVGL, LoRa and LoRaWAN</p>
-<p><img src="https://lupyuen.github.io/images/rustsim-pinedio.png" alt="PineDio Stack Schematic" /></p>
+<p><img src="https://lupyuen.github.io/images/rustsim-script2.png" alt="Rhai Scripting for BL602 Simulator" /></p>
+<p><a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-script/src/lib.rs">(Source)</a></p>
 <h1 id="scripting-for-bl602-simulator" class="section-header"><a href="#scripting-for-bl602-simulator">10 Scripting for BL602 Simulator</a></h1>
 <p>To make BL602 Simulator even more useful for Embedded Learners, we’re adding the <a href="https://rhai.rs/book/"><strong>Rhai Scripting Engine</strong></a> to the simulator.</p>
+<p>(See pic above)</p>
 <p>Thus we’ll allow BL602 Simulator to be used in two ways…</p>
 <ol>
 <li>
@@ -914,7 +917,9 @@ function gpio_output_set(pin, value) {
 <p>For BL602, perhaps learners could <strong>start with (Rust-like) Rhai Script</strong>… </p>
 <p>And <strong>upgrade to Rust</strong> (or C) when they’re ready.</p>
 <p><em>I sense another upcoming enhancement?</em></p>
+<p>Yes! Since we’re adding a Scripting Engine to the simulator, it means we can </p>
 <p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/wasm-title.png" alt="BL602 Simulator with Visual Programming" /></p>
 <p><em>Could we do this through a Desktop App? (Instead of Web Browser)</em></p>
 <p>TODO</p>
 <p>Maybe build a Scratch / Blockly drag-and-drop tool that emits Rhai programs for BL602?</p>
@@ -946,10 +951,6 @@ function gpio_output_set(pin, value) {
 <p><a href="https://lupyuen.github.io/articles/advanced-topics-for-visual-embedded-rust-programming"><strong>“Advanced Topics for Visual Embedded Rust Programming”</strong></a></p>
 </li>
 </ul>
-<p><img src="https://lupyuen.github.io/images/rustsim-script.png" alt="Rhai Scripting for BL602 Simulator" /></p>
-<p><a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-script/src/lib.rs">(Source)</a></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/rustsim-script2.png" alt="Rhai Scripting for BL602 Simulator" /></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">11 What’s Next</a></h1>
 <p>TODO</p>
 <p>Soon we shall test the Rust Firmware on <a href="https://www.pine64.org/2021/07/15/july-update/"><strong>PineDio Stack BL604 with LoRa SX1262</strong></a>… As we explore whether it’s feasible to teach <strong>Rust as a Safer Way</strong> to create firmware for BL602 and BL604.</p>
