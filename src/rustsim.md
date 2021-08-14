@@ -1149,7 +1149,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Rhai Scripts on BL602
 
-_We can run Rhai Scripts in our Web Browser thanks to WebAssembly._
+_We can run Rhai Scripts in our Web Browser thanks to WebAssembly..._
 
 _How will we run Rhai Scripts on Real BL602 Hardware?_
 
