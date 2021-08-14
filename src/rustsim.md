@@ -1087,15 +1087,15 @@ Why not make it super easy to create scripts: The __Drag-and-Drop Way__!
 
 ![BL602 Simulator with Visual Programming](https://lupyuen.github.io/images/wasm-title.png)
 
-(We'll change the box at lower right to Rhai Script)
-
-TODO
+(We'll change the box at lower right to Rust-like Rhai Script)
 
 _Can we do this through a Desktop App? (Instead of Web Browser)_
 
-TODO
+Possibly, if we wrap the Web Browser Interface into a __Desktop App with Tauri__. [(See this)](https://tauri.studio/en/)
 
-Maybe build a Scratch / Blockly drag-and-drop tool that emits Rhai programs for BL602?
+## BL602 Control
+
+TODO
 
 Rhai doesn't run on BL602
 
