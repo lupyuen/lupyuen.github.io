@@ -1113,7 +1113,7 @@ _You sound pretty confident about Drag-and-Drop Scripting. Have we done this bef
 
 Yep we've previously experimented with __Blockly (Scratch), uLisp and Rust__.
 
-Now we're switching to __Rhai Script__, things might get simpler...
+Now that we're switching to __Rhai Script__, things might get simpler...
 
 -   [__"uLisp and Blockly on PineCone BL602 RISC-V Board"__](https://lupyuen.github.io/articles/lisp)
 
