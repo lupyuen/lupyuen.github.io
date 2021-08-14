@@ -1163,9 +1163,17 @@ TODO
 
 [(More about uLisp on BL602)](https://lupyuen.github.io/articles/lisp)
 
+_How will we transcode Rhai Script to uLisp?_
+
 TODO
 
-Why do this in __Rust__?
+[__"Auto Convert Go to Dart with an Abstract Syntax Tree"__](https://lupyuen.github.io/pinetime-rust-mynewt/articles/ast)
+
+[`safe_wrap` Procedural Macro](https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-macros/src/safe_wrap.rs)
+
+_Why do this in Rust?_
+
+TODO
 
 - Because we have already __parsed the BL602 IoT SDK interfaces__ with `bindgen`
 
