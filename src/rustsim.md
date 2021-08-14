@@ -1147,7 +1147,15 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1423169766080933891)
 
-# Appendix: Rhai Scripting on BL602
+# Appendix: Rhai Scripts on BL602
+
+_We can run Rhai Scripts in our Web Browser thanks to WebAssembly._
+
+_How will we run Rhai Scripts on Real BL602 Hardware?_
+
+Sadly Rhai Scripting Engine is __too heavy for BL602__. [(See this)](https://github.com/lupyuen/bl_iot_sdk/tree/adc/customer_app/sdk_app_rust_script)
+
+But we could __transcode Rhai Script to uLisp__, which runs fine on BL602.
 
 TODO
 
