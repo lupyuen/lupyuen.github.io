@@ -975,66 +975,49 @@ Our simulator __halts with a friendly message__... And explains how we can fix i
 
 _How does our simulator validate calls to BL602 IoT SDK?_
 
-TODO
-
-[From `bl602-simulator/lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L33-L45)
+BL602 Simulator remembers the __configuration of every GPIO Pin__: [`bl602-simulator/lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L33-L45)
 
 ```rust
 /// Configuration for a BL602 GPIO Pin
 #[derive(Clone, Copy, Debug, PartialEq)]
 enum GpioConfig {
-    /// GPIO Pin is unconfigured
-    Unconfigured,
-    /// GPIO Pin is configured for Input
-    Input,
-    /// GPIO Pin is configured for Output
-    Output,
+  /// GPIO Pin is unconfigured
+  Unconfigured,
+  /// GPIO Pin is configured for Input
+  Input,
+  /// GPIO Pin is configured for Output
+  Output,
 }
 
 /// Configurations for all BL602 GPIO Pins
 static mut GPIO_CONFIGS: [GpioConfig; 32] = [GpioConfig::Unconfigured; 32];
 ```
 
-[From `bl602-simulator/lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L105-L114)
+We __update the GPIO Configuration__ whenever the GPIO is configured for Input or Output: [`lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L105-L114)
 
 ```rust
 /// Configure a GPIO Pin for Output Mode. See `bl_gpio_enable_output` in "Enable GPIO" <https://lupyuen.github.io/articles/led#enable-gpio>
 #[no_mangle]  //  Don't mangle the function name
-extern "C" fn bl_gpio_enable_output(pin: u8, _pullup: u8, _pulldown: u8)
--> c_int {
-    //  Remember that the GPIO Pin has been configured for Output
-    unsafe {
-        GPIO_CONFIGS[pin as usize] = GpioConfig::Output;
-    }
-    0  //  Return OK
-}
+extern "C" fn bl_gpio_enable_output(pin: u8, _pullup: u8, _pulldown: u8) -> c_int {
+  //  Remember that the GPIO Pin has been configured for Output
+  GPIO_CONFIGS[pin as usize] = GpioConfig::Output;
 ```
 
-[From `bl602-simulator/lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L116-L136)
+While setting the GPIO output value, we __raise an error__ if the GPIO Configuration is incorrect : [`lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L116-L136)
 
 ```rust
 /// Set the output value of a GPIO Pin. See `bl_gpio_output_set` in "Read and Write GPIO" <https://lupyuen.github.io/articles/led#read-and-write-gpio>
 #[no_mangle]  //  Don't mangle the function name
-extern "C" fn bl_gpio_output_set(pin: u8, value: u8)
--> c_int {
-    //  If the GPIO Pin has not been configured for Output, halt
-    assert!(
-        unsafe { GPIO_CONFIGS[pin as usize] } == GpioConfig::Output,
-        "GPIO {} is {:?}, unable to set the GPIO Output Value. Please configure the GPIO for Output with `gpio::enable_output(pin, pullup, pulldown)` or `bl_gpio_enable_output(pin, pullup, pulldown)`. See \"Enable GPIO\" <https://lupyuen.github.io/articles/led#enable-gpio>",
-        pin, unsafe { GPIO_CONFIGS[pin as usize] }
-    );
-
-    //  Add a GPIO Set Output event
-    let ev = SimulationEvent::gpio_output_set { 
-        pin,
-        value,
-    };
-    unsafe {
-        SIMULATION_EVENTS.push(ev);
-    }
-    0  //  Return OK
-}
+extern "C" fn bl_gpio_output_set(pin: u8, value: u8) -> c_int {
+  //  If the GPIO Pin has not been configured for Output, halt
+  assert!(
+    GPIO_CONFIGS[pin as usize] == GpioConfig::Output,
+    "GPIO {} is {:?}, unable to set the GPIO Output Value. Please configure the GPIO for Output with `gpio::enable_output(pin, pullup, pulldown)` or `bl_gpio_enable_output(pin, pullup, pulldown)`. See \"Enable GPIO\" <https://lupyuen.github.io/articles/led#enable-gpio>",
+    pin, GPIO_CONFIGS[pin as usize]
+  );
 ```
+
+That's how we make BL602 Simulator a little more helpful for Embedded Learners... By validating the calls to BL602 IoT SDK!
 
 ![Validate Calls to BL602 IoT SDK](https://lupyuen.github.io/images/rustsim-validate3.png)
 
