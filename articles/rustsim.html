@@ -83,7 +83,8 @@
 <li><a href="#validate-calls-to-bl602-iot-sdk">8 Validate Calls to BL602 IoT SDK</a><ul></ul></li>
 <li><a href="#pinedio-stack-bl604">9 PineDio Stack BL604</a><ul></ul></li>
 <li><a href="#scripting-for-bl602-simulator">10 Scripting for BL602 Simulator</a><ul>
-<li><a href="#drag-and-drop-scripting">10.1 Drag and Drop Scripting</a><ul></ul></li></ul></li>
+<li><a href="#drag-and-drop-scripting">10.1 Drag and Drop Scripting</a><ul></ul></li>
+<li><a href="#bl602-control">10.2 BL602 Control</a><ul></ul></li></ul></li>
 <li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
 <li><a href="#notes">12 Notes</a><ul></ul></li>
 <li><a href="#appendix-rust-simulation-events">13 Appendix: Rust Simulation Events</a><ul></ul></li></ul></nav><p>📝 <em>16 Aug 2021</em></p>
@@ -922,11 +923,11 @@ function gpio_output_set(pin, value) {
 <p>Yes! Since we’re adding a <strong>Scripting Engine</strong> to the simulator…</p>
 <p>Why not make it super easy to create scripts: The <strong>Drag-and-Drop Way</strong>!</p>
 <p><img src="https://lupyuen.github.io/images/wasm-title.png" alt="BL602 Simulator with Visual Programming" /></p>
-<p>(We’ll change the box at lower right to Rhai Script)</p>
-<p>TODO</p>
+<p>(We’ll change the box at lower right to Rust-like Rhai Script)</p>
 <p><em>Can we do this through a Desktop App? (Instead of Web Browser)</em></p>
+<p>Possibly, if we wrap the Web Browser Interface into a <strong>Desktop App with Tauri</strong>. <a href="https://tauri.studio/en/">(See this)</a></p>
+<h2 id="bl602-control" class="section-header"><a href="#bl602-control">10.2 BL602 Control</a></h2>
 <p>TODO</p>
-<p>Maybe build a Scratch / Blockly drag-and-drop tool that emits Rhai programs for BL602?</p>
 <p>Rhai doesn’t run on BL602</p>
 <p>Transcode to uLisp</p>
 <p>Why do this in <strong>Rust</strong>?</p>
