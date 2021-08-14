@@ -1081,13 +1081,15 @@ _I sense another upcoming enhancement?_
 
 Yes! Since we're adding a __Scripting Engine__ to the simulator...
 
-Why not make it really easy to create scripts: The __drag-and-drop way__!
-
-TODO
+Why not make it super easy to create scripts: The __Drag-and-Drop Way__!
 
 ![BL602 Simulator with Visual Programming](https://lupyuen.github.io/images/wasm-title.png)
 
-_Could we do this through a Desktop App? (Instead of Web Browser)_
+(We'll change the box at lower right to Rhai Script)
+
+TODO
+
+_Can we do this through a Desktop App? (Instead of Web Browser)_
 
 TODO
 
