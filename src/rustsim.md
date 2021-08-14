@@ -1095,6 +1095,8 @@ Possibly, if we wrap the Web Browser Interface into a __Desktop App with Tauri__
 
 ## BL602 Control
 
+_Everything looks hunky dory for our simulator. But can we run Rhai Script on Real BL602 Hardware?_
+
 TODO
 
 Rhai doesn't run on BL602
