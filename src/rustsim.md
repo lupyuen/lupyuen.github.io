@@ -1025,7 +1025,7 @@ That's how we make BL602 Simulator a little more helpful for Embedded Learners..
 
 _Simulating a plain BL602 board (like PineCone BL602) is pointless, innit?_
 
-Yep simulating a __PineCone BL602 Board__ ain't particularly exciting because it only has...
+Yep simulating a [__PineCone BL602 Board__](https://lupyuen.github.io/articles/pinecone) ain't particularly exciting because it only has...
 
 1.  One __RGB LED__
 
@@ -1045,9 +1045,7 @@ TODO
 
 ![PineDio Stack Schematic](https://lupyuen.github.io/images/rustsim-pinedio.png)
 
-Works on plain old Windows too
-
-LVGL, LoRa and LoRaWAN
+With these additional features (LVGL, LoRa and LoRaWAN), it makes a lot more sense to simulate the PineDio Stack.
 
 ![Rhai Scripting for BL602 Simulator](https://lupyuen.github.io/images/rustsim-script2.png)
 
