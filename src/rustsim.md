@@ -1037,6 +1037,8 @@ Yep simulating a __PineCone BL602 Board__ ain't particularly exciting because it
 
 Compare this with the [__PineDio Stack BL604__](https://www.pine64.org/2021/07/15/july-update/) which has...
 
+1.  __SPI Display__ with LVGL Graphics Library
+
 1.  __LoRa SX1262 Transceiver__
 
 TODO
