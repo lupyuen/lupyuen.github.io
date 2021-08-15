@@ -1003,7 +1003,7 @@ extern "C" fn bl_gpio_enable_output(pin: u8, _pullup: u8, _pulldown: u8) -> c_in
   GPIO_CONFIGS[pin as usize] = GpioConfig::Output;
 ```
 
-While setting the GPIO output value, we __raise an error__ if the GPIO Configuration is incorrect : [`lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L116-L136)
+While setting the GPIO output value, we __raise an error__ if the GPIO Configuration is incorrect: [`lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L116-L136)
 
 ```rust
 /// Set the output value of a GPIO Pin. See `bl_gpio_output_set` in "Read and Write GPIO" <https://lupyuen.github.io/articles/led#read-and-write-gpio>
@@ -1132,6 +1132,8 @@ Now that we're switching to __Rhai Script__, things might get simpler...
 -   [__"Visual Embedded Rust Programming with Visual Studio Code"__](https://lupyuen.github.io/articles/visual-embedded-rust-programming-with-visual-studio-code)
 
 -   [__"Advanced Topics for Visual Embedded Rust Programming"__](https://lupyuen.github.io/articles/advanced-topics-for-visual-embedded-rust-programming)
+
+(In the last article above we did some complicated Type Inference in Rust. Thankfully that's no longer necessary for Rhai Script)
 
 # What's Next
 
@@ -1268,14 +1270,20 @@ Which lets us __manipulate the BL602 SDK interfaces__ and do cool things like...
 
 # Appendix: Rust Simulation Events
 
-TODO
+_How is the JSON Stream of Simulation Events accessed via the Rust Simulator Library?_
 
-[From `bl602-simulator/lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L23-L31)
+Remember that we maintain a __Vector of Simulation Events__ in Rust: [`bl602-simulator/lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L23-L31)
 
 ```rust
 /// Vector of Simulation Events (i.e. event array)
 static mut SIMULATION_EVENTS: Vec<SimulationEvent> = Vec::new();
+```
 
+But we can't expose this Rust Vector to WebAssembly and JavaScript.
+
+Thus we define an __Event Buffer__ that exposes the vector as a JSON String...
+
+```rust
 /// String Buffer that returns the JSON Stream of Simulation Events:
 /// `[ { "gpio_output_set": { "pin": 11, "value": 1 } }, 
 ///   { "time_delay": { "ticks": 1000 } }, 
@@ -1284,22 +1292,7 @@ static mut SIMULATION_EVENTS: Vec<SimulationEvent> = Vec::new();
 static mut EVENT_BUFFER: [u8; 1024] = [0; 1024];
 ```
 
-[From `bl602-simulator/lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L47-L56)
-
-```rust
-/// Clear the JSON Stream of Simulation Events
-#[no_mangle]  //  Don't mangle the function name
-extern "C" fn clear_simulation_events() {
-    //  Clear the vector of Simulation Events
-    unsafe {
-        SIMULATION_EVENTS.clear();
-    }
-    //  Show Rust Backtrace on error
-    std::env::set_var("RUST_BACKTRACE", "full");
-}
-```
-
-[From `bl602-simulator/lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L58-L92)
+When our JavaScript code calls `get_simulation_events` to fetch the Simulation Events, we __convert the Rust Vector to JSON__ and __copy it into the Event Buffer__: [`lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L58-L92)
 
 ```rust
 /// Return the JSON Stream of Simulation Events
@@ -1309,13 +1302,6 @@ extern "C" fn get_simulation_events() -> *const u8 {
     let mut serialized = unsafe {
         serde_json::to_string(&SIMULATION_EVENTS)
     }.unwrap();
-
-    //  Print the serialized JSON events
-    println!("get_simulation_events: {}", serialized);
-
-    //  Result:
-    //  [{"gpio_output_set":{"pin":11,"value":0}},
-    //   {"time_delay":{"ticks":1000}}]
 
     //  Terminate the JSON string with null, since we will be returning to C
     serialized.push('\0');
@@ -1336,5 +1322,40 @@ extern "C" fn get_simulation_events() -> *const u8 {
     unsafe {
         EVENT_BUFFER.as_ptr()
     }
+}
+```
+
+Yep it's possible that our serialized vector __won't fit into the Event Buffer__.
+
+To mitigate this, we ought to __check the serialized vector size__ whenever we add an event...
+
+```rust
+/// Add an Simulation Event
+fn add_event(ev: SimulationEvent) {
+    //  Add the event to the vector
+    simulation_events.push(ev);
+
+    //  Convert vector of events to a JSON string
+    let mut serialized = unsafe {
+        serde_json::to_string(&SIMULATION_EVENTS)
+    }.unwrap();
+
+    //  If the JSON string doesn't fit into the Event Buffer...
+    if (serialized.len() + 1 > unsafe { EVENT_BUFFER.len() }) {
+        //  Remove the event from the vector and stop the simulation
+```
+
+Here's how we __initialise the Vector of Simulation Events__ before use: [`lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L47-L56)
+
+```rust
+/// Clear the JSON Stream of Simulation Events
+#[no_mangle]  //  Don't mangle the function name
+extern "C" fn clear_simulation_events() {
+    //  Clear the vector of Simulation Events
+    unsafe {
+        SIMULATION_EVENTS.clear();
+    }
+    //  Show Rust Backtrace on error
+    std::env::set_var("RUST_BACKTRACE", "full");
 }
 ```
