@@ -1099,7 +1099,7 @@ _Rhai Scripts run OK on our simulator with WebAssembly. But will the scripts run
 
 Sadly no. Rhai Scripting Engine is __too heavy for BL602__. [(See this)](https://github.com/lupyuen/bl_iot_sdk/tree/adc/customer_app/sdk_app_rust_script)
 
-But we could __transcode Rhai Script to uLisp__, which runs fine on BL602.
+But we could auto-convert / __transcode Rhai Script to uLisp__, which runs fine on BL602.
 
 (More about Rhai Transcoding in the Appendix)
 
@@ -1165,13 +1165,51 @@ _How will we run Rhai Scripts on Real BL602 Hardware?_
 
 Sadly Rhai Scripting Engine is __too heavy for BL602__. [(See this)](https://github.com/lupyuen/bl_iot_sdk/tree/adc/customer_app/sdk_app_rust_script)
 
-But we could __transcode Rhai Script to uLisp__, which runs fine on BL602.
+But we could auto-convert / __transcode Rhai Script to uLisp__, which runs fine on BL602.
+
+We'll do the __transcoding in the Web Browser__ with WebAssembly, since it has a lot more RAM than BL602.
 
 _Why uLisp?_
 
-TODO
+Because uLisp is a __tiny Lisp Interpreter__ (coded in C) that runs well on BL602 with little RAM.
+
+Transcoded uLisp will be in the __S-Expression Format__. (Which looks a little like WebAssembly)
 
 [(More about uLisp on BL602)](https://lupyuen.github.io/articles/lisp)
+
+_But will uLisp let us call C functions in the BL602 IoT SDK?_
+
+Yep we may __expose a C function__ from BL602 IoT SDK to uLisp like so...
+
+```c
+//  Expose the C function `bl_gpio_output_set` to uLisp:
+//  `int bl_gpio_output_set(uint8_t pin, uint8_t value)`
+object *fn_bl_gpio_output_set(object *args, object *env) {
+  //  Fetch the `pin` parameter
+  assert(args != NULL);
+  int pin = checkinteger(..., car(args));
+  args = cdr(args);
+
+  //  Fetch the `value` parameter
+  assert(args != NULL);
+  int value = checkinteger(..., car(args));
+  args = cdr(args);
+
+  //  Call the C function `bl_gpio_output_set`
+  int result = bl_gpio_output_set(pin, value);
+
+  //  Return the result to uLisp
+  return number(result);
+}
+```
+
+And call it from uLisp like so...
+
+```text
+(bl_gpio_output_set 11 0)
+```
+
+[(More about this)](http://www.ulisp.com/show?19Q4)
 
 _How shall we transcode Rhai Script to uLisp?_
 
@@ -1180,25 +1218,6 @@ TODO
 [__"Auto Convert Go to Dart with an Abstract Syntax Tree"__](https://lupyuen.github.io/pinetime-rust-mynewt/articles/ast)
 
 [`safe_wrap` Procedural Macro](https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-macros/src/safe_wrap.rs)
-
-_How shall we support BL602 IoT SDK in uLisp?_
-
-TODO
-
-http://www.ulisp.com/show?19Q4
-
-```c
-object *fn_add (object *args, object *env) {
-  (void) env;
-  int result = 0;
-  while (args != NULL) {
-    int temp = checkinteger(ADD, car(args));
-    result = result + temp;
-    args = cdr(args);
-  }
-  return number(result);
-}
-```
 
 _Why do this in Rust?_
 
