@@ -997,8 +997,15 @@ function gpio_output_set(pin, value) {
 <p>We’ll do the <strong>transcoding in the Web Browser</strong> with WebAssembly, since it has a lot more RAM than BL602.</p>
 <p><em>Why uLisp?</em></p>
 <p>Because uLisp is a <strong>tiny Lisp Interpreter</strong> (coded in C) that runs well on BL602 with little RAM.</p>
-<p>Transcoded uLisp will be in the <strong>S-Expression Format</strong>. (Which looks a little like WebAssembly)</p>
 <p><a href="https://lupyuen.github.io/articles/lisp">(More about uLisp on BL602)</a></p>
+<p>Transcoded uLisp will be in the <strong>S-Expression Format</strong>. (Which looks a little like WebAssembly)</p>
+<p>Hence this Rust-like <strong>Rhai Script</strong>…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="ident">gpio::output_set</span>(<span class="number">11</span>, <span class="number">0</span>);</pre></div>
+<p>Shall be transcoded to this <strong>uLisp S-Expression</strong>…</p>
+<pre><code class="language-text">( bl_gpio_output_set 11 0 )
+</code></pre>
 <p><em>But will uLisp let us call C functions defined in BL602 IoT SDK?</em></p>
 <p>Yep uLisp lets us <strong>expose a C function</strong> from BL602 IoT SDK like so…</p>
 <pre><code class="language-c">//  Expose the C function `bl_gpio_output_set` to uLisp:
