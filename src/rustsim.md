@@ -1145,7 +1145,7 @@ Rhai Scripting Engine
 
 Drag-and-Drop Scripting
 
-Trancoding Rhai Script to uLisp
+Transcoding Rhai Script to uLisp
 
 Adding BL602 IoT SDK to uLisp
 
