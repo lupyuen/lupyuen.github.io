@@ -1141,19 +1141,17 @@ Now that we're switching to __Rhai Script__, things might get simpler...
 
 # What's Next
 
-TODO
+We have a lot of work coming up!
 
-Rhai Scripting Engine
+1.  __Rhai Scripting Engine__
 
-Drag-and-Drop Scripting
+1.  __Drag-and-Drop Scripting__ (via Blockly)
 
-Transcoding Rhai Script to uLisp
+1.  __Transcoding Rhai Script to uLisp__
 
-Adding BL602 IoT SDK to uLisp
+1.  __Integrating uLisp with BL602 IoT SDK__
 
-PineDio Stack
-
-Soon we shall test the Rust Firmware on [__PineDio Stack BL604 with LoRa SX1262__](https://www.pine64.org/2021/07/15/july-update/)... As we explore whether it's feasible to teach __Rust as a Safer Way__ to create firmware for BL602 and BL604.
+And soon we shall test all this on [__PineDio Stack BL604 with LoRa SX1262__](https://www.pine64.org/2021/07/15/july-update/)... As we explore whether it's feasible to teach __Rust (or Rhai) as a Safer Way__ to create firmware for BL602 and BL604.
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
