@@ -1173,9 +1173,21 @@ _Why uLisp?_
 
 Because uLisp is a __tiny Lisp Interpreter__ (coded in C) that runs well on BL602 with little RAM.
 
+[(More about uLisp on BL602)](https://lupyuen.github.io/articles/lisp)
+
 Transcoded uLisp will be in the __S-Expression Format__. (Which looks a little like WebAssembly)
 
-[(More about uLisp on BL602)](https://lupyuen.github.io/articles/lisp)
+Hence this Rust-like __Rhai Script__...
+
+```rust
+gpio::output_set(11, 0);
+```
+
+Shall be transcoded to this __uLisp S-Expression__...
+
+```text
+( bl_gpio_output_set 11 0 )
+```
 
 _But will uLisp let us call C functions defined in BL602 IoT SDK?_
 
