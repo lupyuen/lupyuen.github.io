@@ -1177,20 +1177,20 @@ Transcoded uLisp will be in the __S-Expression Format__. (Which looks a little l
 
 [(More about uLisp on BL602)](https://lupyuen.github.io/articles/lisp)
 
-_But will uLisp let us call C functions in the BL602 IoT SDK?_
+_But will uLisp let us call C functions defined in BL602 IoT SDK?_
 
-Yep we may __expose a C function__ from BL602 IoT SDK to uLisp like so...
+Yep uLisp lets us __expose a C function__ from BL602 IoT SDK like so...
 
 ```c
 //  Expose the C function `bl_gpio_output_set` to uLisp:
 //  `int bl_gpio_output_set(uint8_t pin, uint8_t value)`
 object *fn_bl_gpio_output_set(object *args, object *env) {
-  //  Fetch the `pin` parameter
+  //  Fetch the `pin` parameter from uLisp
   assert(args != NULL);
   int pin = checkinteger(..., car(args));
   args = cdr(args);
 
-  //  Fetch the `value` parameter
+  //  Fetch the `value` parameter from uLisp
   assert(args != NULL);
   int value = checkinteger(..., car(args));
   args = cdr(args);
@@ -1203,10 +1203,10 @@ object *fn_bl_gpio_output_set(object *args, object *env) {
 }
 ```
 
-And call it from uLisp like so...
+Which will be __called from uLisp__ like so...
 
 ```text
-(bl_gpio_output_set 11 0)
+( bl_gpio_output_set 11 0 )
 ```
 
 [(More about this)](http://www.ulisp.com/show?19Q4)
@@ -1215,9 +1215,11 @@ _How shall we transcode Rhai Script to uLisp?_
 
 TODO
 
-[__"Auto Convert Go to Dart with an Abstract Syntax Tree"__](https://lupyuen.github.io/pinetime-rust-mynewt/articles/ast)
+The transcoding implementation will probably look similar to...
 
-[`safe_wrap` Procedural Macro](https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-macros/src/safe_wrap.rs)
+-   [__"Auto Convert Go to Dart with an Abstract Syntax Tree"__](https://lupyuen.github.io/pinetime-rust-mynewt/articles/ast)
+
+-   [__`safe_wrap` Procedural Macro__](https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-macros/src/safe_wrap.rs)
 
 _Why do this in Rust?_
 
