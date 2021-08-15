@@ -1054,14 +1054,24 @@ object *fn_bl_gpio_output_set(object *args, object *env) {
 <p><a href="https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-macros/src/safe_wrap.rs"><strong><code>safe_wrap</code> Procedural Macro</strong></a></p>
 </li>
 </ul>
-<p><em>Why are we doing all this in Rust?</em></p>
+<p><em>Why are we doing this in Rust?</em></p>
 <p>Because thanks to <code>bindgen</code>, we have complete info on the <strong>BL602 IoT SDK interfaces</strong> (functions, parameters, return types).</p>
 <p>Which lets us <strong>manipulate the BL602 SDK interfaces</strong> and do cool things like…</p>
-<p>TODO</p>
-<p>Generate the uLisp Stubs for BL602 IoT SDK</p>
-<p>Generate the Rhai Stubs for BL602 IoT SDK</p>
-<p>Transcode Rhai calls (BL602 IoT SDK) to uLisp</p>
-<p>Generate Rust Wrapper <code>safe_wrap</code> Procedural Macro</p>
+<ol>
+<li>
+<p>Generate the <strong>uLisp Stubs</strong> for BL602 IoT SDK</p>
+</li>
+<li>
+<p>Generate the <strong>Rhai Stubs</strong> for BL602 IoT SDK</p>
+</li>
+<li>
+<p>Transcode <strong>Rhai Calls</strong> (BL602 IoT SDK) to uLisp</p>
+</li>
+<li>
+<p>Generate the <strong>Rust Wrapper</strong> for BL602 IoT SDK</p>
+<p><a href="https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-macros/src/safe_wrap.rs">(Via the <code>safe_wrap</code> Procedural Macro)</a></p>
+</li>
+</ol>
 <h1 id="appendix-rust-simulation-events" class="section-header"><a href="#appendix-rust-simulation-events">14 Appendix: Rust Simulation Events</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L23-L31">From <code>bl602-simulator/lib.rs</code></a></p>
