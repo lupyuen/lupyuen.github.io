@@ -1256,13 +1256,13 @@ Because thanks to `bindgen`, we have complete info on the __BL602 IoT SDK interf
 
 Which lets us __manipulate the BL602 SDK interfaces__ and do cool things like...
 
-1.  Generate the __uLisp Stubs__ for BL602 IoT SDK
+1.  __Generate the uLisp Stubs__ for BL602 IoT SDK
 
-1.  Generate the __Rhai Stubs__ for BL602 IoT SDK
+1.  __Generate the Rhai Stubs__ for BL602 IoT SDK
 
-1.  Transcode __Rhai Calls__ (BL602 IoT SDK) to uLisp
+1.  __Transcode Rhai Calls__ (BL602 IoT SDK) into uLisp
 
-1.  Generate the __Rust Wrapper__ for BL602 IoT SDK
+1.  __Generate the Rust Wrapper__ for BL602 IoT SDK
 
     [(Via the `safe_wrap` Procedural Macro)](https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-macros/src/safe_wrap.rs)
 
