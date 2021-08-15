@@ -882,18 +882,21 @@ function gpio_output_set(pin, value) {
 <p>Yep simulating a <strong>PineCone BL602 Board</strong> ain’t particularly exciting because it only has…</p>
 <ol>
 <li>
-<p>One RGB LED</p>
+<p>One <strong>RGB LED</strong></p>
 </li>
 <li>
-<p>One Jumper (GPIO 8)</p>
+<p>One <strong>Jumper</strong> (GPIO 8)</p>
 </li>
 <li>
-<p>And everything else needs to be wired to the GPIO Pins</p>
+<p>And everything else needs to be wired to the <strong>GPIO Pins</strong></p>
 <p>(Which makes it harder to simulate actually)</p>
 </li>
 </ol>
+<p>Compare this with the <a href="https://www.pine64.org/2021/07/15/july-update/"><strong>PineDio Stack BL604</strong></a> which has…</p>
+<ol>
+<li><strong>LoRa SX1262 Transceiver</strong></li>
+</ol>
 <p>TODO</p>
-<p><a href="https://www.pine64.org/2021/07/15/july-update/"><strong>PineDio Stack BL604 with LoRa SX1262</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/rustsim-pinedio.png" alt="PineDio Stack Schematic" /></p>
 <p>Works on plain old Windows too</p>
 <p>LVGL, LoRa and LoRaWAN</p>
@@ -1043,7 +1046,7 @@ object *fn_bl_gpio_output_set(object *args, object *env) {
 </code></pre>
 <p><a href="http://www.ulisp.com/show?19Q4">(More about this)</a></p>
 <p><em>How shall we transcode Rhai Script to uLisp?</em></p>
-<p>The Rhai Scripting Engine compiles Rhai Script into an <strong>Abstract Syntax Tree</strong>. <a href="https://rhai.rs/book/engine/ast.html">(See this)</a></p>
+<p>The Rhai Scripting Engine compiles Rhai Script into an <strong>Abstract Syntax Tree</strong>. <a href="https://rhai.rs/book/engine/compile.html">(See this)</a></p>
 <p>We shall <strong>traverse the nodes</strong> in the tree and <strong>emit uLisp S-Expressions</strong>.</p>
 <p>Thus this <strong>Rhai Script</strong>…</p>
 
