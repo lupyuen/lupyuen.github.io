@@ -1027,17 +1027,19 @@ _Simulating a plain BL602 board (like PineCone BL602) is pointless, innit?_
 
 Yep simulating a __PineCone BL602 Board__ ain't particularly exciting because it only has...
 
-1.  One RGB LED
+1.  One __RGB LED__
 
-1.  One Jumper (GPIO 8)
+1.  One __Jumper__ (GPIO 8)
 
-1.  And everything else needs to be wired to the GPIO Pins
+1.  And everything else needs to be wired to the __GPIO Pins__
 
     (Which makes it harder to simulate actually)
 
-TODO
+Compare this with the [__PineDio Stack BL604__](https://www.pine64.org/2021/07/15/july-update/) which has...
 
-[__PineDio Stack BL604 with LoRa SX1262__](https://www.pine64.org/2021/07/15/july-update/)
+1.  __LoRa SX1262 Transceiver__
+
+TODO
 
 ![PineDio Stack Schematic](https://lupyuen.github.io/images/rustsim-pinedio.png)
 
@@ -1242,7 +1244,7 @@ Which will be __called from uLisp__ like so...
 
 _How shall we transcode Rhai Script to uLisp?_
 
-The Rhai Scripting Engine compiles Rhai Script into an __Abstract Syntax Tree__. [(See this)](https://rhai.rs/book/engine/ast.html)
+The Rhai Scripting Engine compiles Rhai Script into an __Abstract Syntax Tree__. [(See this)](https://rhai.rs/book/engine/compile.html)
 
 We shall __traverse the nodes__ in the tree and __emit uLisp S-Expressions__.
 
