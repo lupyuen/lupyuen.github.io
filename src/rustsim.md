@@ -1207,6 +1207,9 @@ object *fn_bl_gpio_output_set(object *args, object *env) {
   int value = checkinteger(..., car(args));
   args = cdr(args);
 
+  //  No more parameters
+  assert(args == NULL);
+
   //  Call the C function `bl_gpio_output_set`
   int result = bl_gpio_output_set(pin, value);
 
@@ -1225,7 +1228,21 @@ Which will be __called from uLisp__ like so...
 
 _How shall we transcode Rhai Script to uLisp?_
 
-TODO
+The Rhai Scripting Engine compiles Rhai Script into an __Abstract Syntax Tree__. [(See this)](https://rhai.rs/book/engine/ast.html)
+
+We shall __traverse the nodes__ in the tree and __emit uLisp S-Expressions__.
+
+Thus this __Rhai Script__...
+
+```rust
+gpio::output_set(11, 0);
+```
+
+Shall emit this __uLisp S-Expression__...
+
+```text
+( bl_gpio_output_set 11 0 )
+```
 
 The transcoding implementation will probably look similar to...
 
