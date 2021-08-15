@@ -930,7 +930,7 @@ function gpio_output_set(pin, value) {
 <h2 id="run-scripts-on-bl602" class="section-header"><a href="#run-scripts-on-bl602">10.2 Run Scripts on BL602</a></h2>
 <p><em>Rhai Scripts run OK on our simulator with WebAssembly. But will the scripts run on Real BL602 Hardware?</em></p>
 <p>Sadly no. Rhai Scripting Engine is <strong>too heavy for BL602</strong>. <a href="https://github.com/lupyuen/bl_iot_sdk/tree/adc/customer_app/sdk_app_rust_script">(See this)</a></p>
-<p>But we could <strong>transcode Rhai Script to uLisp</strong>, which runs fine on BL602.</p>
+<p>But we could auto-convert / <strong>transcode Rhai Script to uLisp</strong>, which runs fine on BL602.</p>
 <p>(More about Rhai Transcoding in the Appendix)</p>
 <p><em>Can we transmit uLisp to BL602 from the Web Browser?</em></p>
 <p>Yes, we may automagically transmit the transcoded uLisp from Web Browser to BL602 with the <strong>Web Serial API</strong>.</p>
@@ -993,28 +993,42 @@ function gpio_output_set(pin, value) {
 <p><em>We can run Rhai Scripts in our Web Browser thanks to WebAssembly…</em></p>
 <p><em>How will we run Rhai Scripts on Real BL602 Hardware?</em></p>
 <p>Sadly Rhai Scripting Engine is <strong>too heavy for BL602</strong>. <a href="https://github.com/lupyuen/bl_iot_sdk/tree/adc/customer_app/sdk_app_rust_script">(See this)</a></p>
-<p>But we could <strong>transcode Rhai Script to uLisp</strong>, which runs fine on BL602.</p>
+<p>But we could auto-convert / <strong>transcode Rhai Script to uLisp</strong>, which runs fine on BL602.</p>
+<p>We’ll do the <strong>transcoding in the Web Browser</strong> with WebAssembly, since it has a lot more RAM than BL602.</p>
 <p><em>Why uLisp?</em></p>
-<p>TODO</p>
+<p>Because uLisp is a <strong>tiny Lisp Interpreter</strong> (coded in C) that runs well on BL602 with little RAM.</p>
+<p>Transcoded uLisp will be in the <strong>S-Expression Format</strong>. (Which looks a little like WebAssembly)</p>
 <p><a href="https://lupyuen.github.io/articles/lisp">(More about uLisp on BL602)</a></p>
+<p><em>But will uLisp let us call C functions in the BL602 IoT SDK?</em></p>
+<p>Yep we may <strong>expose a C function</strong> from BL602 IoT SDK to uLisp like so…</p>
+<pre><code class="language-c">//  Expose the C function `bl_gpio_output_set` to uLisp:
+//  `int bl_gpio_output_set(uint8_t pin, uint8_t value)`
+object *fn_bl_gpio_output_set(object *args, object *env) {
+  //  Fetch the `pin` parameter
+  assert(args != NULL);
+  int pin = checkinteger(..., car(args));
+  args = cdr(args);
+
+  //  Fetch the `value` parameter
+  assert(args != NULL);
+  int value = checkinteger(..., car(args));
+  args = cdr(args);
+
+  //  Call the C function `bl_gpio_output_set`
+  int result = bl_gpio_output_set(pin, value);
+
+  //  Return the result to uLisp
+  return number(result);
+}
+</code></pre>
+<p>And call it from uLisp like so…</p>
+<pre><code class="language-text">(bl_gpio_output_set 11 0)
+</code></pre>
+<p><a href="http://www.ulisp.com/show?19Q4">(More about this)</a></p>
 <p><em>How shall we transcode Rhai Script to uLisp?</em></p>
 <p>TODO</p>
 <p><a href="https://lupyuen.github.io/pinetime-rust-mynewt/articles/ast"><strong>“Auto Convert Go to Dart with an Abstract Syntax Tree”</strong></a></p>
 <p><a href="https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-macros/src/safe_wrap.rs"><code>safe_wrap</code> Procedural Macro</a></p>
-<p><em>How shall we support BL602 IoT SDK in uLisp?</em></p>
-<p>TODO</p>
-<p>http://www.ulisp.com/show?19Q4</p>
-<pre><code class="language-c">object *fn_add (object *args, object *env) {
-  (void) env;
-  int result = 0;
-  while (args != NULL) {
-    int temp = checkinteger(ADD, car(args));
-    result = result + temp;
-    args = cdr(args);
-  }
-  return number(result);
-}
-</code></pre>
 <p><em>Why do this in Rust?</em></p>
 <p>TODO</p>
 <ul>
