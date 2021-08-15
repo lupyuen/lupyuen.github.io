@@ -1250,21 +1250,21 @@ The transcoding implementation will probably look similar to...
 
 -   [__`safe_wrap` Procedural Macro__](https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-macros/src/safe_wrap.rs)
 
-_Why are we doing all this in Rust?_
+_Why are we doing this in Rust?_
 
 Because thanks to `bindgen`, we have complete info on the __BL602 IoT SDK interfaces__ (functions, parameters, return types).
 
 Which lets us __manipulate the BL602 SDK interfaces__ and do cool things like...
 
-TODO
+1.  Generate the __uLisp Stubs__ for BL602 IoT SDK
 
-Generate the uLisp Stubs for BL602 IoT SDK
+1.  Generate the __Rhai Stubs__ for BL602 IoT SDK
 
-Generate the Rhai Stubs for BL602 IoT SDK
+1.  Transcode __Rhai Calls__ (BL602 IoT SDK) to uLisp
 
-Transcode Rhai calls (BL602 IoT SDK) to uLisp
+1.  Generate the __Rust Wrapper__ for BL602 IoT SDK
 
-Generate Rust Wrapper `safe_wrap` Procedural Macro
+    [(Via the `safe_wrap` Procedural Macro)](https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-macros/src/safe_wrap.rs)
 
 # Appendix: Rust Simulation Events
 
