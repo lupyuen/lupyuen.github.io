@@ -1037,6 +1037,8 @@ Yep simulating a __PineCone BL602 Board__ ain't particularly exciting because it
 
 TODO
 
+[__PineDio Stack BL604 with LoRa SX1262__](https://www.pine64.org/2021/07/15/july-update/)
+
 ![PineDio Stack Schematic](https://lupyuen.github.io/images/rustsim-pinedio.png)
 
 Works on plain old Windows too
@@ -1138,6 +1140,16 @@ Now that we're switching to __Rhai Script__, things might get simpler...
 # What's Next
 
 TODO
+
+Rhai Scripting Engine
+
+Drag-and-Drop Scripting
+
+Trancoding Rhai Script to uLisp
+
+Adding BL602 IoT SDK to uLisp
+
+PineDio Stack
 
 Soon we shall test the Rust Firmware on [__PineDio Stack BL604 with LoRa SX1262__](https://www.pine64.org/2021/07/15/july-update/)... As we explore whether it's feasible to teach __Rust as a Safer Way__ to create firmware for BL602 and BL604.
 
@@ -1333,7 +1345,7 @@ To mitigate this, we ought to __check the serialized vector size__ whenever we a
 /// Add an Simulation Event
 fn add_event(ev: SimulationEvent) {
     //  Add the event to the vector
-    simulation_events.push(ev);
+    SIMULATION_EVENTS.push(ev);
 
     //  Convert vector of events to a JSON string
     let mut serialized = unsafe {
