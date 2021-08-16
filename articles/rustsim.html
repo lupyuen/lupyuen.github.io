@@ -100,6 +100,7 @@
 <ul>
 <li><a href="https://lupyuen.github.io/bl602-simulator/"><strong>BL602 Simulator in WebAssembly</strong></a></li>
 </ul>
+<p><a href="https://lupyuen.github.io/articles/pinecone">(More about BL602 RISC-V SoC)</a></p>
 <p><img src="https://lupyuen.github.io/images/adc-simulator2.png" alt="BL602 Simulator in WebAssembly" /></p>
 <h1 id="rust-firmware-for-bl602" class="section-header"><a href="#rust-firmware-for-bl602">1 Rust Firmware for BL602</a></h1>
 <p>We start with this <strong>BL602 Rust Firmware <code>sdk_app_rust_gpio</code></strong> that blinks the LED: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/sdk_app_rust_gpio/rust/src/lib.rs"><code>sdk_app_rust_gpio/lib.rs</code></a></p>
@@ -354,7 +355,7 @@ cp wasm/wasm.wasm docs
 <p>Yep we could build a <strong>BL602 Simulator</strong> in HTML and JavaScript.</p>
 <p>And we can make our Rust Firmware talk to the BL602 Simulator…</p>
 <p>By emitting a <strong>JSON Stream of BL602 Simulation Events</strong>!</p>
-<p><img src="https://lupyuen.github.io/images/rust-simulator.png" alt="JSON Stream of BL602 Simulation Events" /></p>
+<p><img src="https://lupyuen.github.io/images/rust-simulator.jpg" alt="JSON Stream of BL602 Simulation Events" /></p>
 <p><em>What’s a BL602 Simulation Event?</em></p>
 <p>When our firmware needs to <strong>set the GPIO Output</strong> to High or Low (to flip an LED On/Off)…</p>
 
@@ -580,7 +581,7 @@ cp wasm/wasm.wasm docs
 <p><a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm/wasm.c">(Source)</a></p>
 <h1 id="html-and-javascript-interface" class="section-header"><a href="#html-and-javascript-interface">5 HTML and JavaScript Interface</a></h1>
 <p>We’ve done the Top Half of this pic: Emitting a <strong>JSON Stream of BL602 Simulation Events</strong>…</p>
-<p><img src="https://lupyuen.github.io/images/rust-simulator.png" alt="JSON Stream of BL602 Simulation Events" /></p>
+<p><img src="https://lupyuen.github.io/images/rust-simulator.jpg" alt="JSON Stream of BL602 Simulation Events" /></p>
 <p>Now we do the Bottom Half: <strong>Web Browser Interface in HTML and JavaScript</strong>!</p>
 <p>First we save this sketchy pic of a PineCone BL602 Board as a <strong>PNG file: <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/pinecone.png"><code>pinecone.png</code></a></strong></p>
 <p><img src="https://lupyuen.github.io/images/wasm-photoshop.png" alt="Creating the BL602 simulator image" /></p>
