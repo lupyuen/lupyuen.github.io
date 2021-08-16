@@ -373,7 +373,7 @@ cp wasm/wasm.wasm docs
 <p>Which will be handled by the BL602 Simulator to <strong>flip the Simulated LED</strong> on or off.</p>
 <p><em>Is our firmware directly controlling the BL602 Simulator?</em></p>
 <p>Not quite. Our firmware is <strong>indirectly controlling the BL602 Simulator</strong> by sending Simulation Events.</p>
-<p>(There are good reasons for doing this <a href="https://en.wikipedia.org/wiki/Inversion_of_control"><strong>Inversion of Control</strong></a>, as well shall learn in a while)</p>
+<p><a href="https://lupyuen.github.io/articles/wasm#why-simulate-a-stream-of-events">(More about this Inversion of Control)</a></p>
 <p><em>What about time delays?</em></p>
 <p>Our firmware shall generate <strong>Simulation Events for time delays</strong>.</p>
 <p>To handle such events, our <strong>BL602 Simulator pauses</strong> for the specified duration.</p>
