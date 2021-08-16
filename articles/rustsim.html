@@ -892,23 +892,32 @@ function gpio_output_set(pin, value) {
 <p>(Which makes it harder to simulate actually)</p>
 </li>
 </ol>
-<p>Compare this with the <a href="https://www.pine64.org/2021/07/15/july-update/"><strong>PineDio Stack BL604</strong></a> which has…</p>
+<p>Compare this with the <a href="https://www.pine64.org/2021/08/15/introducing-the-pinenote/"><strong>PineDio Stack BL604</strong></a> which has…</p>
 <ol>
 <li>
-<p><strong>SPI Display</strong> with LVGL Graphics Library</p>
+<p><strong>SPI Display</strong> (with LVGL Graphics Library)</p>
 </li>
 <li>
 <p><strong>LoRa SX1262 Transceiver</strong></p>
 </li>
+<li>
+<p><strong>Motion Sensor</strong></p>
+</li>
+<li>
+<p><strong>Heart Rate Sensor</strong></p>
+</li>
+<li>
+<p><strong>Battery Charging Chip</strong> </p>
+</li>
 </ol>
-<p>TODO</p>
+<p>All this in a compact 3.5 cm² form factor!</p>
+<p>It makes a lot more sense to <strong>simulate the PineDio Stack</strong>, because it’s a super interesting gadget for Embedded Learners.</p>
+<p>Stay tuned for an updated simulator with support for <strong>LVGL, LoRa and LoRaWAN!</strong></p>
 <p><img src="https://lupyuen.github.io/images/rustsim-pinedio.png" alt="PineDio Stack Schematic" /></p>
-<p>With these additional features (LVGL, LoRa and LoRaWAN), it makes a lot more sense to simulate the PineDio Stack.</p>
+<h1 id="scripting-for-bl602-simulator" class="section-header"><a href="#scripting-for-bl602-simulator">10 Scripting for BL602 Simulator</a></h1>
+<p>To make BL602 Simulator even more useful for Embedded Learners, we’re adding the <a href="https://rhai.rs/book/"><strong>Rhai Scripting Engine</strong></a> to the simulator…</p>
 <p><img src="https://lupyuen.github.io/images/rustsim-script2.png" alt="Rhai Scripting for BL602 Simulator" /></p>
 <p><a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-script/src/lib.rs">(Source)</a></p>
-<h1 id="scripting-for-bl602-simulator" class="section-header"><a href="#scripting-for-bl602-simulator">10 Scripting for BL602 Simulator</a></h1>
-<p>To make BL602 Simulator even more useful for Embedded Learners, we’re adding the <a href="https://rhai.rs/book/"><strong>Rhai Scripting Engine</strong></a> to the simulator.</p>
-<p>(See pic above)</p>
 <p>Thus we’ll allow BL602 Simulator to be used in two ways…</p>
 <ol>
 <li>
@@ -990,7 +999,7 @@ function gpio_output_set(pin, value) {
 <p><strong>Integrating uLisp with BL602 IoT SDK</strong></p>
 </li>
 </ol>
-<p>And soon we shall test all this on <a href="https://www.pine64.org/2021/07/15/july-update/"><strong>PineDio Stack BL604 with LoRa SX1262</strong></a>… As we explore whether it’s feasible to teach <strong>Rust (or Rhai) as a Safer Way</strong> to create firmware for BL602 and BL604.</p>
+<p>And soon we shall test all this on <a href="https://www.pine64.org/2021/08/15/introducing-the-pinenote/"><strong>PineDio Stack BL604 with LoRa SX1262</strong></a>… As we explore whether it’s feasible to teach <strong>Rust (or Rhai) as a Safer Way</strong> to create firmware for BL602 and BL604.</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
 <li>
