@@ -11,5 +11,6 @@
 *.jpeg binary
 *.pdf binary
 *.png binary
+*.psd binary
 *.mp4 binary
 *.woff binary
