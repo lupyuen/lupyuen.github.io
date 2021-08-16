@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Rust on RISC-V BL602: Simulated with WebAssembly</title>
+            <link>https://lupyuen.github.io/articles/rustsim</link>
+            <description><![CDATA[Can we run Rust Firmware for BL602 RISC-V SoC in a Web Browser... Simulated with WebAssembly?]]></description>
+            <guid>https://lupyuen.github.io/articles/rustsim</guid>
+            <pubDate>Mon, 16 Aug 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Rust on RISC-V BL602: Is It Sunny?</title>
             <link>https://lupyuen.github.io/articles/adc</link>
             <description><![CDATA[How we create Rust Firmware that reads Analog Inputs... With the Analog-to-Digital Converter on RISC-V BL602]]></description>
