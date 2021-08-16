@@ -360,7 +360,7 @@ _Is our firmware directly controlling the BL602 Simulator?_
 
 Not quite. Our firmware is __indirectly controlling the BL602 Simulator__ by sending Simulation Events.
 
-(There are good reasons for doing this [__Inversion of Control__](https://en.wikipedia.org/wiki/Inversion_of_control), as well shall learn in a while)
+[(More about this Inversion of Control)](https://lupyuen.github.io/articles/wasm#why-simulate-a-stream-of-events)
 
 _What about time delays?_
 
