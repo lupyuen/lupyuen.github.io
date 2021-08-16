@@ -1035,27 +1035,33 @@ Yep simulating a [__PineCone BL602 Board__](https://lupyuen.github.io/articles/p
 
     (Which makes it harder to simulate actually)
 
-Compare this with the [__PineDio Stack BL604__](https://www.pine64.org/2021/07/15/july-update/) which has...
+Compare this with the [__PineDio Stack BL604__](https://www.pine64.org/2021/08/15/introducing-the-pinenote/) which has...
 
-1.  __SPI Display__ with LVGL Graphics Library
+1.  __SPI Display__ (with LVGL Graphics Library)
 
 1.  __LoRa SX1262 Transceiver__
 
-TODO
+1.  __Motion Sensor__
+
+1.  __Heart Rate Sensor__
+
+1.  __Battery Charging Chip__ 
+
+All this in a compact 3.5 cm² form factor!
+
+It makes a lot more sense to __simulate the PineDio Stack__, because it's a super interesting gadget for Embedded Learners.
+
+Stay tuned for an updated simulator with support for __LVGL, LoRa and LoRaWAN!__
 
 ![PineDio Stack Schematic](https://lupyuen.github.io/images/rustsim-pinedio.png)
 
-With these additional features (LVGL, LoRa and LoRaWAN), it makes a lot more sense to simulate the PineDio Stack.
+# Scripting for BL602 Simulator
+
+To make BL602 Simulator even more useful for Embedded Learners, we're adding the [__Rhai Scripting Engine__](https://rhai.rs/book/) to the simulator...
 
 ![Rhai Scripting for BL602 Simulator](https://lupyuen.github.io/images/rustsim-script2.png)
 
 [(Source)](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-script/src/lib.rs)
-
-# Scripting for BL602 Simulator
-
-To make BL602 Simulator even more useful for Embedded Learners, we're adding the [__Rhai Scripting Engine__](https://rhai.rs/book/) to the simulator.
-
-(See pic above)
 
 Thus we'll allow BL602 Simulator to be used in two ways...
 
@@ -1151,7 +1157,7 @@ We have a lot of work coming up!
 
 1.  __Integrating uLisp with BL602 IoT SDK__
 
-And soon we shall test all this on [__PineDio Stack BL604 with LoRa SX1262__](https://www.pine64.org/2021/07/15/july-update/)... As we explore whether it's feasible to teach __Rust (or Rhai) as a Safer Way__ to create firmware for BL602 and BL604.
+And soon we shall test all this on [__PineDio Stack BL604 with LoRa SX1262__](https://www.pine64.org/2021/08/15/introducing-the-pinenote/)... As we explore whether it's feasible to teach __Rust (or Rhai) as a Safer Way__ to create firmware for BL602 and BL604.
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
