@@ -20,6 +20,8 @@ Read on to find how we created this bare-bones BL602 Simulator in WebAssembly...
 
 -   [__BL602 Simulator in WebAssembly__](https://lupyuen.github.io/bl602-simulator/)
 
+[(More about BL602 RISC-V SoC)](https://lupyuen.github.io/articles/pinecone)
+
 ![BL602 Simulator in WebAssembly](https://lupyuen.github.io/images/adc-simulator2.png)
 
 # Rust Firmware for BL602
@@ -331,7 +333,7 @@ And we can make our Rust Firmware talk to the BL602 Simulator...
 
 By emitting a __JSON Stream of BL602 Simulation Events__!
 
-![JSON Stream of BL602 Simulation Events](https://lupyuen.github.io/images/rust-simulator.png)
+![JSON Stream of BL602 Simulation Events](https://lupyuen.github.io/images/rust-simulator.jpg)
 
 _What's a BL602 Simulation Event?_
 
@@ -637,7 +639,7 @@ Here's the original __implementation in C__ before converting to Rust...
 
 We've done the Top Half of this pic: Emitting a __JSON Stream of BL602 Simulation Events__...
 
-![JSON Stream of BL602 Simulation Events](https://lupyuen.github.io/images/rust-simulator.png)
+![JSON Stream of BL602 Simulation Events](https://lupyuen.github.io/images/rust-simulator.jpg)
 
 Now we do the Bottom Half: __Web Browser Interface in HTML and JavaScript__!
 

@@ -147,6 +147,13 @@
   ],
   "publications": [
     {
+      "name": "Rust on RISC-V BL602: Simulated with WebAssembly",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2021-08-16",
+      "website": "https://lupyuen.github.io/articles/rustsim",
+      "summary": "Can we run Rust Firmware for BL602 RISC-V SoC in a Web Browser... Simulated with WebAssembly?"
+    },
+    {
       "name": "Rust on RISC-V BL602: Is It Sunny?",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-08-03",
