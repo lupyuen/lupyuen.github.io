@@ -1153,7 +1153,7 @@ We have a lot of work coming up!
 
 1.  __Rhai Scripting Engine__ [(See this)](https://github.com/lupyuen/bl602-simulator/tree/main/bl602-script)
 
-1.  __Drag-and-Drop Scripting__ [(via Blockly)](https://developers.google.com/blockly/guides/overview)
+1.  __Drag-and-Drop Scripting__ [(with Blockly)](https://github.com/lupyuen2/blockly-bl602)
 
 1.  __Transcoding Rhai Script to uLisp__
 
