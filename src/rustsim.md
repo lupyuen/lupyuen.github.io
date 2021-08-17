@@ -1159,13 +1159,15 @@ We have a lot of work coming up!
 
 1.  __Integrating uLisp with BL602 IoT SDK__ [(See this)](https://github.com/lupyuen/ulisp-bl602/tree/sdk)
 
+[__(Follow the updates in this Twitter Thread)__](https://twitter.com/MisterTechBlog/status/1427758328004759552)
+
 And soon we shall test all this on [__PineDio Stack BL604 with LoRa SX1262__](https://www.pine64.org/2021/08/15/introducing-the-pinenote/)... As we explore whether it's feasible to teach __Rust (or Rhai) as a Safer Way__ to create firmware for BL602 and BL604.
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
--   [Discuss this article on Reddit](https://www.reddit.com/r/RISCV/comments/p55n6t/rust_on_riscv_bl602_simulated_with_webassembly/?utm_source=share&utm_medium=web2x&context=3)
+-   [Discuss this article on Reddit](https://www.reddit.com/r/rust/comments/p5shdi/rust_on_riscv_bl602_simulated_with_webassembly/)
 
 -   [Read "The RISC-V BL602 Book"](https://lupyuen.github.io/articles/book)
 
@@ -1217,7 +1219,7 @@ Shall be transcoded to this __uLisp S-Expression__...
 
 _But will uLisp let us call C functions defined in BL602 IoT SDK?_
 
-Yep uLisp lets us __expose a C function__ from BL602 IoT SDK like so: [`ulisp.c`](https://github.com/lupyuen/ulisp-bl602/blob/sdk/src/ulisp.c#L4134-L4156)
+Yep uLisp lets us __expose a C function__ from BL602 IoT SDK like so: [`ulisp.c`](https://github.com/lupyuen/ulisp-bl602/blob/sdk/src/ulisp.c#L4164-L4186)
 
 ```c
 //  Expose the C function `bl_gpio_output_set` to uLisp:
