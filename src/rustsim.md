@@ -1157,7 +1157,7 @@ We have a lot of work coming up!
 
 1.  __Transcoding Rhai Script to uLisp__
 
-1.  __Integrating uLisp with BL602 IoT SDK__
+1.  __Integrating uLisp with BL602 IoT SDK__ [(See this)](https://github.com/lupyuen/ulisp-bl602/tree/sdk)
 
 And soon we shall test all this on [__PineDio Stack BL604 with LoRa SX1262__](https://www.pine64.org/2021/08/15/introducing-the-pinenote/)... As we explore whether it's feasible to teach __Rust (or Rhai) as a Safer Way__ to create firmware for BL602 and BL604.
 
@@ -1217,7 +1217,7 @@ Shall be transcoded to this __uLisp S-Expression__...
 
 _But will uLisp let us call C functions defined in BL602 IoT SDK?_
 
-Yep uLisp lets us __expose a C function__ from BL602 IoT SDK like so...
+Yep uLisp lets us __expose a C function__ from BL602 IoT SDK like so: [`ulisp.c`](https://github.com/lupyuen/ulisp-bl602/blob/sdk/src/ulisp.c#L4134-L4156)
 
 ```c
 //  Expose the C function `bl_gpio_output_set` to uLisp:
@@ -1225,12 +1225,12 @@ Yep uLisp lets us __expose a C function__ from BL602 IoT SDK like so...
 object *fn_bl_gpio_output_set(object *args, object *env) {
   //  Fetch the `pin` parameter from uLisp
   assert(args != NULL);
-  int pin = checkinteger(..., car(args));
+  int pin = checkinteger(BL_GPIO_OUTPUT_SET, car(args));
   args = cdr(args);
 
   //  Fetch the `value` parameter from uLisp
   assert(args != NULL);
-  int value = checkinteger(..., car(args));
+  int value = checkinteger(BL_GPIO_OUTPUT_SET, car(args));
   args = cdr(args);
 
   //  No more parameters
