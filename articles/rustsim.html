@@ -825,13 +825,13 @@ function gpio_output_set(pin, value) {
 <p>And link the compiled C Firmware with our <strong>Rust Simulator Library</strong></p>
 </li>
 </ol>
-<p>Remember that the BL602 Stub Functions in our Rust Simulator Library are declared <strong>“<code>extern C</code>”</strong>?</p>
+<p>Remember that the BL602 Shim Functions in our Rust Simulator Library are declared <strong>“<code>extern C</code>”</strong>?</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="attribute">#[<span class="ident">no_mangle</span>]</span>  <span class="comment">//  Don&#39;t mangle the function name</span>
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">bl_gpio_output_set</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">value</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_int</span> { ...</pre></div>
 <p>Yep this means they can be <strong>called from C Firmware</strong>!</p>
-<p>And the BL602 Stub Functions will <strong>emit simulation events</strong>… Our C Firmware will work exactly like Rust Firmware!</p>
+<p>And the BL602 Shim Functions will <strong>emit simulation events</strong>… Our C Firmware will work exactly like Rust Firmware!</p>
 <h1 id="validate-calls-to-bl602-iot-sdk" class="section-header"><a href="#validate-calls-to-bl602-iot-sdk">8 Validate Calls to BL602 IoT SDK</a></h1>
 <p><em>What if the Embedded HAL (like BL602 IoT SDK) could tell us how to fix our code?</em></p>
 <p>(Wouldn’t that be great, especially for learners?)</p>
@@ -1101,10 +1101,10 @@ object *fn_bl_gpio_output_set(object *args, object *env) {
 <p>Which lets us <strong>manipulate the BL602 SDK interfaces</strong> and do cool things like…</p>
 <ol>
 <li>
-<p><strong>Generate the uLisp Stubs</strong> for BL602 IoT SDK</p>
+<p><strong>Generate the uLisp Shims</strong> for BL602 IoT SDK</p>
 </li>
 <li>
-<p><strong>Generate the Rhai Stubs</strong> for BL602 IoT SDK</p>
+<p><strong>Generate the Rhai Shims</strong> for BL602 IoT SDK</p>
 </li>
 <li>
 <p><strong>Transcode Rhai Calls</strong> (BL602 IoT SDK) into uLisp</p>
