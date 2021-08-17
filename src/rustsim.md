@@ -950,7 +950,7 @@ We could probably __simulate C Firmware__ if we...
 
 1.  And link the compiled C Firmware with our __Rust Simulator Library__
 
-Remember that the BL602 Stub Functions in our Rust Simulator Library are declared __"`extern C`"__?
+Remember that the BL602 Shim Functions in our Rust Simulator Library are declared __"`extern C`"__?
 
 ```rust
 #[no_mangle]  //  Don't mangle the function name
@@ -959,7 +959,7 @@ extern "C" fn bl_gpio_output_set(pin: u8, value: u8) -> c_int { ...
 
 Yep this means they can be __called from C Firmware__!
 
-And the BL602 Stub Functions will __emit simulation events__... Our C Firmware will work exactly like Rust Firmware!
+And the BL602 Shim Functions will __emit simulation events__... Our C Firmware will work exactly like Rust Firmware!
 
 # Validate Calls to BL602 IoT SDK
 
@@ -1284,9 +1284,9 @@ Because thanks to `bindgen`, we have complete info on the __BL602 IoT SDK interf
 
 Which lets us __manipulate the BL602 SDK interfaces__ and do cool things like...
 
-1.  __Generate the uLisp Stubs__ for BL602 IoT SDK
+1.  __Generate the uLisp Shims__ for BL602 IoT SDK
 
-1.  __Generate the Rhai Stubs__ for BL602 IoT SDK
+1.  __Generate the Rhai Shims__ for BL602 IoT SDK
 
 1.  __Transcode Rhai Calls__ (BL602 IoT SDK) into uLisp
 
