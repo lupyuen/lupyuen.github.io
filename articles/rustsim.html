@@ -997,7 +997,7 @@ function gpio_output_set(pin, value) {
 <p><strong>Transcoding Rhai Script to uLisp</strong></p>
 </li>
 <li>
-<p><strong>Integrating uLisp with BL602 IoT SDK</strong></p>
+<p><strong>Integrating uLisp with BL602 IoT SDK</strong> <a href="https://github.com/lupyuen/ulisp-bl602/tree/sdk">(See this)</a></p>
 </li>
 </ol>
 <p>And soon we shall test all this on <a href="https://www.pine64.org/2021/08/15/introducing-the-pinenote/"><strong>PineDio Stack BL604 with LoRa SX1262</strong></a>… As we explore whether it’s feasible to teach <strong>Rust (or Rhai) as a Safer Way</strong> to create firmware for BL602 and BL604.</p>
@@ -1048,18 +1048,18 @@ function gpio_output_set(pin, value) {
 <pre><code class="language-text">( bl_gpio_output_set 11 0 )
 </code></pre>
 <p><em>But will uLisp let us call C functions defined in BL602 IoT SDK?</em></p>
-<p>Yep uLisp lets us <strong>expose a C function</strong> from BL602 IoT SDK like so…</p>
+<p>Yep uLisp lets us <strong>expose a C function</strong> from BL602 IoT SDK like so: <a href="https://github.com/lupyuen/ulisp-bl602/blob/sdk/src/ulisp.c#L4134-L4156"><code>ulisp.c</code></a></p>
 <pre><code class="language-c">//  Expose the C function `bl_gpio_output_set` to uLisp:
 //  `int bl_gpio_output_set(uint8_t pin, uint8_t value)`
 object *fn_bl_gpio_output_set(object *args, object *env) {
   //  Fetch the `pin` parameter from uLisp
   assert(args != NULL);
-  int pin = checkinteger(..., car(args));
+  int pin = checkinteger(BL_GPIO_OUTPUT_SET, car(args));
   args = cdr(args);
 
   //  Fetch the `value` parameter from uLisp
   assert(args != NULL);
-  int value = checkinteger(..., car(args));
+  int value = checkinteger(BL_GPIO_OUTPUT_SET, car(args));
   args = cdr(args);
 
   //  No more parameters
