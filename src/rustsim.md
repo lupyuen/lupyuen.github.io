@@ -1181,6 +1181,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1423169766080933891)
 
+1.  __Mbed OS__ has a simulator based on C++ and Emscripten. [(See this)](https://os.mbed.com/blog/entry/introducing-mbed-simulator/)
+
 # Appendix: Rhai Scripts on BL602
 
 _We can run Rhai Scripts in our Web Browser thanks to WebAssembly..._
