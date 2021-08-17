@@ -1000,6 +1000,7 @@ function gpio_output_set(pin, value) {
 <p><strong>Integrating uLisp with BL602 IoT SDK</strong> <a href="https://github.com/lupyuen/ulisp-bl602/tree/sdk">(See this)</a></p>
 </li>
 </ol>
+<p><a href="https://twitter.com/MisterTechBlog/status/1427758328004759552"><strong>(Follow the updates in this Twitter Thread)</strong></a></p>
 <p>And soon we shall test all this on <a href="https://www.pine64.org/2021/08/15/introducing-the-pinenote/"><strong>PineDio Stack BL604 with LoRa SX1262</strong></a>… As we explore whether it’s feasible to teach <strong>Rust (or Rhai) as a Safer Way</strong> to create firmware for BL602 and BL604.</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
@@ -1007,7 +1008,7 @@ function gpio_output_set(pin, value) {
 <p><a href="https://github.com/sponsors/lupyuen">Sponsor me a coffee</a></p>
 </li>
 <li>
-<p><a href="https://www.reddit.com/r/RISCV/comments/p55n6t/rust_on_riscv_bl602_simulated_with_webassembly/?utm_source=share&amp;utm_medium=web2x&amp;context=3">Discuss this article on Reddit</a></p>
+<p><a href="https://www.reddit.com/r/rust/comments/p5shdi/rust_on_riscv_bl602_simulated_with_webassembly/">Discuss this article on Reddit</a></p>
 </li>
 <li>
 <p><a href="https://lupyuen.github.io/articles/book">Read “The RISC-V BL602 Book”</a></p>
@@ -1048,7 +1049,7 @@ function gpio_output_set(pin, value) {
 <pre><code class="language-text">( bl_gpio_output_set 11 0 )
 </code></pre>
 <p><em>But will uLisp let us call C functions defined in BL602 IoT SDK?</em></p>
-<p>Yep uLisp lets us <strong>expose a C function</strong> from BL602 IoT SDK like so: <a href="https://github.com/lupyuen/ulisp-bl602/blob/sdk/src/ulisp.c#L4134-L4156"><code>ulisp.c</code></a></p>
+<p>Yep uLisp lets us <strong>expose a C function</strong> from BL602 IoT SDK like so: <a href="https://github.com/lupyuen/ulisp-bl602/blob/sdk/src/ulisp.c#L4164-L4186"><code>ulisp.c</code></a></p>
 <pre><code class="language-c">//  Expose the C function `bl_gpio_output_set` to uLisp:
 //  `int bl_gpio_output_set(uint8_t pin, uint8_t value)`
 object *fn_bl_gpio_output_set(object *args, object *env) {
