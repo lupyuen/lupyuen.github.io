@@ -917,7 +917,9 @@ function gpio_output_set(pin, value) {
 <p><img src="https://lupyuen.github.io/images/rustsim-pinedio.png" alt="PineDio Stack Schematic" /></p>
 <h1 id="scripting-for-bl602-simulator" class="section-header"><a href="#scripting-for-bl602-simulator">10 Scripting for BL602 Simulator</a></h1>
 <p>To make BL602 Simulator even more useful for Embedded Learners, we’re adding the <a href="https://rhai.rs/book/"><strong>Rhai Scripting Engine</strong></a> to the simulator…</p>
+<blockquote>
 <p><img src="https://lupyuen.github.io/images/rustsim-script2.png" alt="Rhai Scripting for BL602 Simulator" /></p>
+</blockquote>
 <p><a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-script/src/lib.rs">(Source)</a></p>
 <p>Thus we’ll allow BL602 Simulator to be used in two ways…</p>
 <ol>
@@ -937,11 +939,17 @@ function gpio_output_set(pin, value) {
 <p>Because Scripted REPL platforms like <strong>uLisp</strong> and <strong>MicroPython</strong> are still popular with Embedded Learners.</p>
 <p>For BL602, perhaps learners could <strong>start with (Rust-like) Rhai Script</strong>… </p>
 <p>And <strong>upgrade to Rust</strong> (or C) when they’re ready.</p>
+<blockquote>
+<p><img src="https://lupyuen.github.io/images/rhai-rust.jpg" alt="Rhai Script vs Rust Firmware" /></p>
+</blockquote>
+<p><a href="https://github.com/lupyuen/bl602-simulator/tree/main/bl602-script">(Source)</a></p>
 <h2 id="drag-and-drop-scripting" class="section-header"><a href="#drag-and-drop-scripting">10.1 Drag and Drop Scripting</a></h2>
 <p><em>I sense another upcoming enhancement?</em></p>
 <p>Yes! Since we’re adding a <strong>Scripting Engine</strong> to the simulator…</p>
 <p>Why not make it super easy to create scripts: The <strong>Drag-and-Drop Way</strong>!</p>
+<blockquote>
 <p><img src="https://lupyuen.github.io/images/rhai-blockly3.jpg" alt="BL602 Simulator with Blockly and Rhai Script" /></p>
+</blockquote>
 <p><a href="https://github.com/lupyuen2/blockly-bl602">(Source)</a></p>
 <p><em>Can we do this through a Desktop App? (Instead of Web Browser)</em></p>
 <p>Possibly, if we wrap the Web Browser Interface into a <strong>Desktop App with Tauri</strong>.</p>
