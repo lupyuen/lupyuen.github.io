@@ -1061,7 +1061,7 @@ Stay tuned for an updated simulator with support for __LVGL, LoRa and LoRaWAN!__
 
 To make BL602 Simulator even more useful for Embedded Learners, we're adding the [__Rhai Scripting Engine__](https://rhai.rs/book/) to the simulator...
 
-![Rhai Scripting for BL602 Simulator](https://lupyuen.github.io/images/rustsim-script2.png)
+> ![Rhai Scripting for BL602 Simulator](https://lupyuen.github.io/images/rustsim-script2.png)
 
 [(Source)](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-script/src/lib.rs)
 
@@ -1089,6 +1089,10 @@ For BL602, perhaps learners could __start with (Rust-like) Rhai Script__...
 
 And __upgrade to Rust__ (or C) when they're ready.
 
+> ![Rhai Script vs Rust Firmware](https://lupyuen.github.io/images/rhai-rust.jpg)
+
+[(Source)](https://github.com/lupyuen/bl602-simulator/tree/main/bl602-script)
+
 ## Drag and Drop Scripting
 
 _I sense another upcoming enhancement?_
@@ -1097,7 +1101,7 @@ Yes! Since we're adding a __Scripting Engine__ to the simulator...
 
 Why not make it super easy to create scripts: The __Drag-and-Drop Way__!
 
-![BL602 Simulator with Blockly and Rhai Script](https://lupyuen.github.io/images/rhai-blockly3.jpg)
+> ![BL602 Simulator with Blockly and Rhai Script](https://lupyuen.github.io/images/rhai-blockly3.jpg)
 
 [(Source)](https://github.com/lupyuen2/blockly-bl602)
 
