@@ -1099,9 +1099,13 @@ Why not make it super easy to create scripts: The __Drag-and-Drop Way__!
 
 ![BL602 Simulator with Blockly and Rhai Script](https://lupyuen.github.io/images/rhai-blockly3.jpg)
 
+[(Source)](https://github.com/lupyuen2/blockly-bl602)
+
 _Can we do this through a Desktop App? (Instead of Web Browser)_
 
-Possibly, if we wrap the Web Browser Interface into a __Desktop App with Tauri__. [(See this)](https://tauri.studio/en/)
+Possibly, if we wrap the Web Browser Interface into a __Desktop App with Tauri__.
+
+[(More about Tauri)](https://tauri.studio/en/)
 
 ## Run Scripts on BL602
 
