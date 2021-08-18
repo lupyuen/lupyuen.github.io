@@ -1061,7 +1061,7 @@ Stay tuned for an updated simulator with support for __LVGL, LoRa and LoRaWAN!__
 
 To make BL602 Simulator even more useful for Embedded Learners, we're adding the [__Rhai Scripting Engine__](https://rhai.rs/book/) to the simulator...
 
-> ![Rhai Scripting for BL602 Simulator](https://lupyuen.github.io/images/rustsim-script2.png)
+> ![Rhai Scripting for BL602 Simulator](https://lupyuen.github.io/images/rhai-module.png)
 
 > [(Source)](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-script/src/lib.rs)
 
