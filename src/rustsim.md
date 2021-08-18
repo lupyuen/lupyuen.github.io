@@ -1097,9 +1097,7 @@ Yes! Since we're adding a __Scripting Engine__ to the simulator...
 
 Why not make it super easy to create scripts: The __Drag-and-Drop Way__!
 
-![BL602 Simulator with Visual Programming](https://lupyuen.github.io/images/wasm-title.png)
-
-(We'll change the box at lower right to Rust-like Rhai Script)
+![BL602 Simulator with Blockly and Rhai Script](https://lupyuen.github.io/images/rhai-blockly3.jpg)
 
 _Can we do this through a Desktop App? (Instead of Web Browser)_
 
