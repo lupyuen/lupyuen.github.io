@@ -995,6 +995,8 @@ function gpio_output_set(pin, value) {
 </li>
 </ul>
 <p>(In the last article above we did some complicated Type Inference in Rust. Thankfully that’s no longer necessary for Rhai Script)</p>
+<p><img src="https://lupyuen.github.io/images/rhai-blockly4.png" alt="Blockly for BL602 / BL604 and Rhai Script" /></p>
+<p><a href="https://github.com/lupyuen2/blockly-bl602">(Source)</a></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">11 What’s Next</a></h1>
 <p>We have a lot of work coming up!</p>
 <ol>
@@ -1107,6 +1109,8 @@ object *fn_bl_gpio_output_set(object *args, object *env) {
 <p><a href="https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-macros/src/safe_wrap.rs"><strong><code>safe_wrap</code> Procedural Macro</strong></a></p>
 </li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/rhai-ast.jpg" alt="Rhai Abstract Syntax Tree" /></p>
+<p><a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-script/README.md#transcode-rhai-script-to-ulisp">(Source)</a></p>
 <p><em>Why are we doing this in Rust?</em></p>
 <p>Because thanks to <code>bindgen</code>, we have complete info on the <strong>BL602 IoT SDK interfaces</strong> (functions, parameters, return types).</p>
 <p>Which lets us <strong>manipulate the BL602 SDK interfaces</strong> and do cool things like…</p>
