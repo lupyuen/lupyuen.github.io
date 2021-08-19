@@ -1153,6 +1153,10 @@ Now that we're switching to __Rhai Script__, things might get simpler...
 
 (In the last article above we did some complicated Type Inference in Rust. Thankfully that's no longer necessary for Rhai Script)
 
+![Blockly for BL602 / BL604 and Rhai Script](https://lupyuen.github.io/images/rhai-blockly4.png)
+
+[(Source)](https://github.com/lupyuen2/blockly-bl602)
+
 # What's Next
 
 We have a lot of work coming up!
@@ -1283,6 +1287,10 @@ The transcoding implementation will probably look similar to...
 -   [__"Auto Convert Go to Dart with an Abstract Syntax Tree"__](https://lupyuen.github.io/pinetime-rust-mynewt/articles/ast)
 
 -   [__`safe_wrap` Procedural Macro__](https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-macros/src/safe_wrap.rs)
+
+![Rhai Abstract Syntax Tree](https://lupyuen.github.io/images/rhai-ast.jpg)
+
+[(Source)](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-script/README.md#transcode-rhai-script-to-ulisp)
 
 _Why are we doing this in Rust?_
 
