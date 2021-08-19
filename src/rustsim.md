@@ -1153,9 +1153,9 @@ Now that we're switching to __Rhai Script__, things might get simpler...
 
 (In the last article above we did some complicated Type Inference in Rust. Thankfully that's no longer necessary for Rhai Script)
 
-![Blockly for BL602 / BL604 and Rhai Script](https://lupyuen.github.io/images/rhai-blockly4.png)
+> ![Blockly for BL602 / BL604 and Rhai Script](https://lupyuen.github.io/images/rhai-blockly4.png)
 
-[(Source)](https://github.com/lupyuen2/blockly-bl602)
+> [(Source)](https://github.com/lupyuen2/blockly-bl602)
 
 # What's Next
 
