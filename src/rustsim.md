@@ -1165,7 +1165,7 @@ We have a lot of work coming up!
 
 1.  __Drag-and-Drop Scripting__ [(with Blockly)](https://github.com/lupyuen2/blockly-bl602)
 
-1.  __Transcoding Rhai Script to uLisp__ [(See this)](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-script/README.md#transcode-rhai-script-to-ulisp)
+1.  __Transcoding Rhai Script to uLisp__ [(See this)](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/README.md#transcode-rhai-script-to-ulisp)
 
 1.  __Integrating uLisp with BL602 IoT SDK__ [(See this)](https://github.com/lupyuen/ulisp-bl602/tree/sdk)
 
