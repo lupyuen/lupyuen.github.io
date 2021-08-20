@@ -1121,6 +1121,10 @@ But we could auto-convert / __transcode Rhai Script to uLisp__, which runs fine 
 
 (More about Rhai Transcoding in the Appendix)
 
+![Transcode Rhai Script to uLisp](https://lupyuen.github.io/images/rhai-transcode.jpg)
+
+[(Source)](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/README.md#transcode-rhai-script-to-ulisp)
+
 _Can we transmit uLisp to BL602 from the Web Browser?_
 
 Yes, we may automagically transmit the transcoded uLisp from Web Browser to BL602 with the __Web Serial API__.
@@ -1206,6 +1210,10 @@ Sadly Rhai Scripting Engine is __too heavy for BL602__. [(See this)](https://git
 But we could auto-convert / __transcode Rhai Script to uLisp__, which runs fine on BL602.
 
 We'll do the __transcoding in the Web Browser__ with WebAssembly, since it has a lot more RAM than BL602.
+
+![Transcode Rhai Script to uLisp](https://lupyuen.github.io/images/rhai-transcode.jpg)
+
+[(Source)](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/README.md#transcode-rhai-script-to-ulisp)
 
 _Why uLisp?_
 
