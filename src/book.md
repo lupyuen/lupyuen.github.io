@@ -1,6 +1,6 @@
 # The RISC-V BL602 Book
 
-📝 _16 Jul 2021_
+📝 _27 Aug 2021_
 
 ![PineCone BL602 RISC-V Board with Grove E-Ink Display](https://lupyuen.github.io/images/book-title.jpg)
 
@@ -16,7 +16,7 @@ Is there a book about the __BL602 / BL604 SoC__ (RISC-V, WiFi and Bluetooth LE) 
 
 _You're reading the book right now!_
 
-Use this book to navigate the numerous BL602 / BL604 articles that have been published on this site. __(25 articles and still growing!)__
+Use this book to navigate the numerous BL602 / BL604 articles that have been published on this site. __(26 articles and still growing!)__
 
 The programs in these articles have been tested on __PineCone__, but they should work on other __BL602 and BL604 Boards: PineDio Stack (BL604), Pinenut, DT-BL10, MagicHome BL602__.
 
@@ -256,6 +256,12 @@ All about the __BL602 / BL604 Bootloader__... And how it loads the Application F
 
 -   ["BL602 Bootloader"](https://lupyuen.github.io/articles/boot)
 
+# PineDio Stack BL604
+
+Sneak preview of the new __PineDio Stack BL604__ with ST7789 Display and onboard LoRa SX1262 Transceiver. 
+
+-   ["PineDio Stack BL604 RISC-V Board: Testing The Prototype"](https://lupyuen.github.io/articles/pinedio)
+
 ![BL706 Audio Video Board](https://lupyuen.github.io/images/book-bl706.jpg)
 
 # BL706 Audio Video Board
@@ -271,8 +277,6 @@ What's inside the Bouffalo Lab RISC-V BL706 Audio Video Board... And how it diff
 Check this book again for future updates...
 
 1.  __IoT Education with BL602 and BL604__
-
-1.  __PineDio Stack BL604 with LoRa SX1262__ [(See this)](https://www.pine64.org/2021/07/15/july-update/)
 
 ![About the Author](https://lupyuen.github.io/images/book-advocate.jpg)
 
