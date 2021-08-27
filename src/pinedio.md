@@ -28,6 +28,8 @@ The kind (and super cool) folks at Pine64 told me that I would be receiving a fu
 
     (Wow!)
 
+1.  Plus __SPI Flash, Battery Charging Chip, Motion Sensor__ (optional) and __Heart Rate Sensor__ (optional)!
+
 After some shipping delays at Shenzhen (due to flooding or pandemic?) I received something totally unexpected...
 
 ![Solar Panel?](https://lupyuen.github.io/images/pinedio-solar.jpg)
@@ -46,7 +48,7 @@ That's typical of __Prototype Hardware__ fresh from the factory: No docs, no fan
 
 (Ground Plane is also missing, which we'll need for FCC Certification)
 
-We shall explore PineDio Stack ourselves... __And document it__ for the Open Source Community!
+We shall explore PineDio Stack ourselves... And __document all our findings__ for the sake of the Open Source Community!
 
 ![PineDio Stack BL604 Board](https://lupyuen.github.io/images/pinedio-title.jpg)
 
