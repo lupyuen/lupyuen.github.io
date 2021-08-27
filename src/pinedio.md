@@ -42,7 +42,7 @@ Opening the gadget reveals the hidden treasure inside: __PineDio Stack BL604 Boa
 
 ![Inside the Solar Panel: PineDio Stack BL604 Board](https://lupyuen.github.io/images/pinedio-inside.jpg)
 
-That's typical of __Prototype Hardware__: No docs, no fancy packaging, no branding either.
+That's typical of __Prototype Hardware__ fresh from the factory: No docs, no fancy packaging, no branding either.
 
 (Ground Plane is also missing, which we'll need for FCC Certification)
 
@@ -50,19 +50,27 @@ We shall explore PineDio Stack ourselves... __And document it__ for the Open Sou
 
 ![PineDio Stack BL604 Board](https://lupyuen.github.io/images/pinedio-title.jpg)
 
+# PineDio Stack BL604
+
 TODO
 
 # BL604 Blinky
 
 TODO
 
+Missing jumper, No reset button
+
 # BL604 SPI
 
 TODO
 
+Backward compatible, Spi quirks
+
 # ST7789 Display
 
 TODO
+
+![](https://lupyuen.github.io/images/pinedio-display2.jpg)
 
 # TODO
 
@@ -70,20 +78,9 @@ Bl602 book
 Created from scratch with few official docs
 But lots of experimentation and reading the SDK code
 
-Missing jumper
-No reset button
-
-Backward compatible
-Spi quirks
-
 GPIO
 
 ![](https://lupyuen.github.io/images/pinedio-gpio.jpg)
-
-Display
-
-![](https://lupyuen.github.io/images/pinedio-display2.jpg)
-
 
 # What's Next
 
