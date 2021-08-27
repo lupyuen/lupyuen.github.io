@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <title>PineDio Stack BL604 RISC-V Board: Testing The Prototype</title>
+
+    
+    <!-- Begin scripts/articles/*-header.html: Article Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<meta property="og:title" 
+    content="PineDio Stack BL604 RISC-V Board: Testing The Prototype" 
+    data-rh="true">
+<meta property="og:description" 
+    content="What's it like to create Open Source Software for brand new prototype hardware? Read on to find out!"
+    data-rh="true">
+<meta property="og:image" 
+    content="https://lupyuen.github.io/images/pinedio-title.jpg">
+<meta property="og:type" 
+    content="article" data-rh="true">
+<!-- End scripts/articles/*-header.html -->
+<!-- Begin scripts/rustdoc-header.html: Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<link rel="alternate" type="application/rss+xml" title="RSS Feed for lupyuen" href="/rss.xml" />
+<link rel="stylesheet" type="text/css" href="../normalize.css">
+<link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle">
+<link rel="stylesheet" type="text/css" href="../dark.css">
+<link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle">
+<link rel="stylesheet" type="text/css" href="../prism.css">
+<script src="../storage.js"></script><noscript>
+<link rel="stylesheet" href="../noscript.css"></noscript>
+<link rel="shortcut icon" href="../favicon.ico">
+<style type="text/css">
+    #crate-search {
+        background-image: url("../down-arrow.svg");
+    }
+    a {
+        color: #77d;
+    }
+</style>
+<!-- End scripts/rustdoc-header.html -->
+
+
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+        <!-- Begin scripts/rustdoc-before.html: Pre-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
+
+    <!-- Begin Theme Picker -->
+    <div class="theme-picker" style="left: 0"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg"
+        width="18" alt="Pick another theme!"></button>
+        <div id="theme-choices"></div>
+    </div>
+    <script src="../theme.js"></script>
+    <script src="../prism.js"></script>
+    <!-- Theme Picker -->
+
+    <!-- End scripts/rustdoc-before.html -->
+    
+
+    <h1 class="title">PineDio Stack BL604 RISC-V Board: Testing The Prototype</h1>
+    <nav id="TOC"><ul>
+<li><a href="#todo">1 TODO</a><ul></ul></li>
+<li><a href="#whats-next">2 What’s Next</a><ul></ul></li>
+<li><a href="#notes">3 Notes</a><ul></ul></li></ul></nav><p>📝 <em>3 Sep 2021</em></p>
+<p><em>What’s it like to create <strong>Open Source Software</strong> for brand new <strong>Prototype Hardware</strong>?</em></p>
+<p><em>What kind of interesting challenges will we encounter?</em></p>
+<p>Read on to find out how we test (and fix) Pine64’s newest and hottest prototype: <strong>PineDio Stack BL604 RISC-V Board!</strong></p>
+<blockquote>
+<p>⚠️ <em><strong>Obligatory Disclaimer:</strong> Features included in The Prototype are not complete, and will most certainly undergo changes before becoming available for public consumption. (Burp) They are described here for testing, exploration, education and entertainment purposes only. The Prototype shall NOT be used in production gadgets. (Like toasters, microwave ovens, and most definitely not, pressure cookers)</em></p>
+</blockquote>
+<p>The kind (and super cool) folks at Pine64 told me that I would be receiving a fun new gadget that’s…</p>
+<ol>
+<li>
+<p><strong>Based on BL604</strong>, which is the upsized sibling of <a href="https://lupyuen.github.io/articles/pinecone">BL602, the RISC-V + WiFi + Bluetooth LE SoC</a> by Bouffalo Lab.</p>
+<p>(BL604 has 32 GPIOs vs BL602’s 16 GPIOs, so it’s like comparing millipedes and centipedes, I guess)</p>
+</li>
+<li>
+<p>And BL604 is supposed to be <strong>100% compatible with BL602</strong></p>
+<p>(How compatible? We’ll find out in a while!)</p>
+</li>
+<li>
+<p>Has an <strong>ST7789 SPI Display</strong></p>
+<p>(Imagine the possibilities…)</p>
+</li>
+<li>
+<p>Has an onboard <strong>LoRa SX1262 Transceiver</strong> for low-power, long-range, low-bandwidth networking</p>
+<p>(Wow!)</p>
+</li>
+</ol>
+<p>After some shipping delays at Shenzhen (due to flooding or pandemic?) I received something totally unexpected…</p>
+<p><img src="https://lupyuen.github.io/images/pinedio-solar.jpg" alt="Solar Panel?" /></p>
+<p><strong>A Solar Panel!</strong></p>
+<p>(Yeah Singapore is sunny… Is this mockery? 🤔)</p>
+<p>But a Solar Panel with a <strong>JTAG Cable</strong>? That’s highly unusual. </p>
+<p>Opening the gadget reveals the hidden treasure inside: <strong>PineDio Stack BL604 Board!</strong></p>
+<p><img src="https://lupyuen.github.io/images/pinedio-inside.jpg" alt="Inside the Solar Panel: PineDio Stack BL604 Board" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/pinedio-title.jpg" alt="PineDio Stack BL604 Board" /></p>
+<h1 id="todo" class="section-header"><a href="#todo">1 TODO</a></h1>
+<p>Bl602 book
+Created from scratch with few official docs
+But lots of experimentation and reading the SDK code</p>
+<p>No docs, no fancy packaging, no branding either
+Ground plane is missing</p>
+<p>Missing jumper
+No reset button</p>
+<p>Backward compatible
+Spi quirks</p>
+<p>GPIO</p>
+<p><img src="https://lupyuen.github.io/images/pinedio-gpio.jpg" alt="" /></p>
+<p>Display</p>
+<p><img src="https://lupyuen.github.io/images/pinedio-display2.jpg" alt="" /></p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">2 What’s Next</a></h1>
+<p>TODO</p>
+<p>And soon we shall test all this on <a href="https://www.pine64.org/2021/08/15/introducing-the-pinenote/"><strong>PineDio Stack BL604 with LoRa SX1262</strong></a>… As we explore whether it’s feasible to teach Embedded Programming for BL602 and BL604.</p>
+<p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
+<ul>
+<li>
+<p><a href="https://github.com/sponsors/lupyuen">Sponsor me a coffee</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/book">Read “The RISC-V BL602 Book”</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io">Check out my articles</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/rss.xml">RSS Feed</a></p>
+</li>
+</ul>
+<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
+<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/pinedio.md"><code>lupyuen.github.io/src/pinedio.md</code></a></p>
+<h1 id="notes" class="section-header"><a href="#notes">3 Notes</a></h1>
+<ol>
+<li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1429273222780887041">this Twitter Thread</a></li>
+</ol>
+
+    
+</body>
+</html>
