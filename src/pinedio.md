@@ -46,7 +46,7 @@ Opening the gadget reveals the hidden treasure inside: __PineDio Stack BL604 Boa
 
 That's typical of __Prototype Hardware__ fresh from the factory: No docs, no fancy packaging, no branding either.
 
-(Ground Plane is also missing, which we'll need for FCC Certification)
+(Ground Plane is also missing, which we'll fix before FCC Certification)
 
 We shall explore PineDio Stack ourselves... And __document all our findings__ for the sake of the Open Source Community!
 
@@ -57,6 +57,10 @@ We shall explore PineDio Stack ourselves... And __document all our findings__ fo
 TODO
 
 # BL604 Blinky
+
+_What's the first thing that we run on a brand new prototype board?_
+
+__Blinky Firmware__ of course! (Yep the firmware that blinks the LED)
 
 TODO
 
@@ -90,9 +94,7 @@ TODO
 
 # TODO
 
-Bl602 book
-Created from scratch with few official docs
-But lots of experimentation and reading the SDK code
+Bl602 book, Created from scratch with few official docs, But lots of experimentation and reading the SDK code
 
 GPIO
 
