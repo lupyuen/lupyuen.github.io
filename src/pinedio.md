@@ -12,9 +12,9 @@ Read on to find out how we test (and improve) Pine64's newest and hottest protot
 
 The kind (and super cool) folks at Pine64 told me that I would be receiving a fun new gadget that's...
 
-1.  __Based on BL604__, which is the upsized sibling of [BL602, the RISC-V + WiFi + Bluetooth LE SoC](https://lupyuen.github.io/articles/pinecone) by Bouffalo Lab.
+1.  Based on [__BL604 RISC-V + WiFi + Bluetooth LE SoC__](https://github.com/bouffalolab/bl_docs/tree/main/BL602_DS/en), which is the upsized sibling of [__Bouffalo Lab's BL602 SoC__](https://lupyuen.github.io/articles/pinecone).
 
-    (BL604 has 32 GPIOs vs BL602's 16 GPIOs, so it's like comparing millipedes and centipedes, I guess)
+    (BL604 has 32 GPIOs vs BL602's 16 GPIOs. So it's like comparing millipedes and centipedes, I guess)
 
 1.  And BL604 is supposed to be __100% compatible with BL602__
 
@@ -22,7 +22,7 @@ The kind (and super cool) folks at Pine64 told me that I would be receiving a fu
 
 1.  Has an __ST7789 SPI Display__
 
-    (Imagine the possibilities...)
+    (Imagine the possibilities)
 
 1.  Has an onboard __LoRa SX1262 Transceiver__ for low-power, long-range, low-bandwidth networking
 
@@ -46,7 +46,7 @@ That's typical of __Prototype Hardware__: No docs, no fancy packaging, no brandi
 
 (Ground Plane is also missing, which we'll need for FCC Certification)
 
-We shall explore the PineDio Stack Board ourselves... __And document it__ for the Open Source Community!
+We shall explore PineDio Stack ourselves... __And document it__ for the Open Source Community!
 
 ![PineDio Stack BL604 Board](https://lupyuen.github.io/images/pinedio-title.jpg)
 
