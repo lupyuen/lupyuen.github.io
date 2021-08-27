@@ -68,11 +68,25 @@ TODO
 
 Backward compatible, Spi quirks
 
+# Logic Analyser
+
+_Always have a Logic Analyser ready when testing Prototype Hardware!_
+
+TODO
+
 # ST7789 Display
 
 TODO
 
 ![](https://lupyuen.github.io/images/pinedio-display2.jpg)
+
+# 9-Bit SPI?
+
+TODO
+
+# Arduino GFX Ported To BL604
+
+TODO
 
 # TODO
 
