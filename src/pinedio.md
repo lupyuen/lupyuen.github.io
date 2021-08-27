@@ -52,6 +52,18 @@ We shall explore the PineDio Stack Board ourselves... __And document it__ for th
 
 TODO
 
+# BL604 Blinky
+
+TODO
+
+# BL604 SPI
+
+TODO
+
+# ST7789 Display
+
+TODO
+
 # TODO
 
 Bl602 book
@@ -76,6 +88,8 @@ Display
 # What's Next
 
 TODO
+
+Volunteers Needed!
 
 And soon we shall test all this on [__PineDio Stack BL604 with LoRa SX1262__](https://www.pine64.org/2021/08/15/introducing-the-pinenote/)... As we explore whether it's feasible to teach Embedded Programming for BL602 and BL604.
 
