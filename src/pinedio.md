@@ -399,17 +399,19 @@ Finally we __set Chip Select GPIO to Low__ to deselect the SPI Peripheral (ST778
 
 That's how we transmit and receive data over SPI!
 
-_Why did we use the BL604 DMA Controller for the SPI Transfer?_
+_Why did we use BL604's Direct Memory Access (DMA) Controller for the SPI Transfer?_
 
 Because we want the SPI Transfer to be __executed in the background__, freeing up the CPU for other concurrent tasks.
 
-The __DMA Controller executes the SPI Transfer__ on behalf of the CPU, shuffling data between the Transmit / Receive Buffers and the SPI Peripheral (ST7789).
+BL604's __DMA Controller executes the SPI Transfer__ on behalf of the CPU, shuffling data between the Transmit / Receive Buffers and the SPI Peripheral (ST7789).
 
 _What is `DISPLAY_DEBUG_CS_PIN`? Why is it mirroring `DISPLAY_CS_PIN`?_
 
 Yep everything we do to `DISPLAY_CS_PIN` (GPIO 20), we do the same to `DISPLAY_DEBUG_CS_PIN` (GPIO 5).
 
 We'll learn why in the next chapter.
+
+[(More about DMA)](https://lupyuen.github.io/articles/spi#spi-with-direct-memory-access)
 
 # Logic Analyser
 
