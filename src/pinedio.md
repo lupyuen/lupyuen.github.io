@@ -435,7 +435,7 @@ TODO
 
 ![](https://lupyuen.github.io/images/pinedio-display2.jpg)
 
-# 9-Bit SPI?
+# 9-Bit SPI for ST7789
 
 TODO
 
