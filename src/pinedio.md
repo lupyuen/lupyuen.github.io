@@ -208,7 +208,7 @@ Now that the Backlight GPIO is OK, let's test something more sophisticated: SPI!
 
 _Why test SPI?_
 
-SPI is the critical Data Bus that __connects the key components__ of PineDio Stack...
+SPI is the Data Bus that __connects the key components__ of PineDio Stack...
 
 1.  __SPI Flash__
 
@@ -218,7 +218,23 @@ SPI is the critical Data Bus that __connects the key components__ of PineDio Sta
 
 TODO
 
-From [`pinedio_st7789/display.h`](https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/display.h#L45-L70)
+Note that SPI Flash, ST7789 and SX1262 are connected to the __same GPIO Pins__ for SDO _(formerly MOSI)_, SDI _(formerly MISO)_ and SCK.
+
+[(More about SDO and SDI)](https://www.oshwa.org/a-resolution-to-redefine-spi-signal-names)
+
+_But won't BL604 get confused by the SPI crosstalk?_
+
+Nope because SPI Flash, ST7789 and SX1262 are connected to __different GPIO Pins for Chip Select__.
+
+When BL604 talks to an SPI Peripheral (like ST7789), it sets the peripheral's __Chip Select Pin__ to __Low__.
+
+(The Chip Select Pins are High when idle)
+
+_How shall we code the firmware for testing SPI?_
+
+The same way as BL602... By calling the __BL602 / BL604 IoT SDK__!
+
+We start by __defining the GPIOs__ used by SPI: [`pinedio_st7789/display.h`](https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/display.h#L45-L70)
 
 ```c
 /// GPIO for ST7789 / SX1262 / SPI Flash SDO (MOSI) Pin
@@ -231,7 +247,7 @@ From [`pinedio_st7789/display.h`](https://github.com/lupyuen/bl_iot_sdk/blob/3wi
 #define DISPLAY_SCK_PIN  11
 ```
 
-TODO
+Followed by the __Chip Select GPIOs__ for each SPI Peripheral...
 
 ```c
 /// GPIO for SPI Flash Chip Select Pin. We must set this to High to deselect SPI Flash.
@@ -244,7 +260,7 @@ TODO
 #define DISPLAY_CS_PIN   20
 ```
 
-TODO
+The SPI Functions from the BL604 IoT SDK need us to specify a Chip Select GPIO. Since we're __controlling Chip Select ourselves__, we'll assign __GPIO 8__ as the Unused Chip Select...
 
 ```c
 /// GPIO for unused SPI Chip Select Pin. Unused because we control Chip Select ourselves via GPIO, not SPI.
@@ -256,6 +272,10 @@ TODO
 /// GPIO for Backlight
 #define DISPLAY_BLK_PIN  21
 ```
+
+(GPIO 8 selects the Flashing Mode when BL604 is powered on, so GPIO 8 is normally unused)
+
+We use __GPIO 5__ to mirror the GPIO High / Low state of GPIO 20 (ST7789 Chip Select). More about this in a while.
 
 ## Initialise SPI Port
 
