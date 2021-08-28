@@ -70,7 +70,7 @@
 <li><a href="#flash-firmware-to-bl604">3 Flash Firmware To BL604</a><ul></ul></li>
 <li><a href="#bl604-spi">4 BL604 SPI</a><ul>
 <li><a href="#initialise-spi-port">4.1 Initialise SPI Port</a><ul></ul></li>
-<li><a href="#transmit-spi-data">4.2 Transmit SPI Data</a><ul></ul></li></ul></li>
+<li><a href="#transfer-spi-data">4.2 Transfer SPI Data</a><ul></ul></li></ul></li>
 <li><a href="#logic-analyser">5 Logic Analyser</a><ul></ul></li>
 <li><a href="#spi-pins-are-swapped">6 SPI Pins Are Swapped</a><ul></ul></li>
 <li><a href="#st7789-display">7 ST7789 Display</a><ul></ul></li>
@@ -341,10 +341,10 @@ static void test_display_init(char *buf, int len, int argc, char **argv) {
   //  Note: DISPLAY_UNUSED_CS_PIN must NOT be the same as DISPLAY_CS_PIN. 
   //  Because the SPI Pin Function will override the GPIO Pin Function!
 </code></pre>
-<p>We’re ready to transmit data over SPI!</p>
+<p>We’re ready to transfer data over SPI!</p>
 <p><a href="https://lupyuen.github.io/articles/spi#spi_init-init-spi-port">(More about <code>spi_init</code>)</a></p>
-<h2 id="transmit-spi-data" class="section-header"><a href="#transmit-spi-data">4.2 Transmit SPI Data</a></h2>
-<p>Here’s how we transfer data (send + receive) over SPI: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/display.c#L465-L520"><code>pinedio_st7789/display.c</code></a></p>
+<h2 id="transfer-spi-data" class="section-header"><a href="#transfer-spi-data">4.2 Transfer SPI Data</a></h2>
+<p>Here’s how we transfer data (transmit + receive) over SPI: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/display.c#L465-L520"><code>pinedio_st7789/display.c</code></a></p>
 <pre><code class="language-c">/// Write packed data to the SPI port. `data` is the array of bytes to be written. `len` is the number of bytes.
 static int transmit_packed(const uint8_t *data, uint16_t len) {
   //  Clear the receive buffer
@@ -364,7 +364,7 @@ static int transmit_packed(const uint8_t *data, uint16_t len) {
   rc = bl_gpio_output_set(DISPLAY_CS_PIN, 0);        assert(rc == 0);
   rc = bl_gpio_output_set(DISPLAY_DEBUG_CS_PIN, 0);  assert(rc == 0);
 </code></pre>
-<p>Then we <strong>start the SPI Transfer</strong> and wait for it to complete…</p>
+<p>Then we <strong>start the SPI Transfer</strong> (transmit + receive) and wait for it to complete…</p>
 <pre><code class="language-c">  //  Execute the SPI Transfer with the DMA Controller
   rc = hal_spi_transfer(
     &amp;spi_device,  //  SPI Device
