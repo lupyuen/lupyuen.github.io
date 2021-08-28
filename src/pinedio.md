@@ -476,6 +476,12 @@ TODO
 
 TODO
 
+_This SPI Swapping Problem sounds familiar...?_
+
+Yep if you have been following my BL602 Adventures...
+
+TODO
+
 Backward compatible, Spi quirks
 
 TODO17
