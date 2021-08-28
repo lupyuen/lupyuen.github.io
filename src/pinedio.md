@@ -202,6 +202,8 @@ To __run the BL604 Blinky Firmware__...
 
 Now that the Backlight GPIO is OK, let's test something more sophisticated: SPI!
 
+![PineDio Stack BL604 with LoRa SX1262 Transceiver](https://lupyuen.github.io/images/pinedio-zoom.jpg)
+
 # BL604 SPI
 
 _Why test SPI?_
@@ -259,8 +261,6 @@ Let's port @moononournation's awesome 9-bit-banging GFX Library to #BL604 ... An
 -   [__`moononournation / Arduino_GFX`__](https://github.com/moononournation/Arduino_GFX)
 
 Bl602 book, Created from scratch with few official docs, But lots of experimentation and reading the SDK code
-
-![](https://lupyuen.github.io/images/pinedio-zoom.jpg)
 
 # What's Next
 
