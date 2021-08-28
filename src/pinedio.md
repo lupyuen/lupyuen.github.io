@@ -313,7 +313,7 @@ Next we __set the Chip Select GPIOs to High__ to deselect all SPI Peripherals...
   rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);
 ```
 
-(We'll cover `GLB_Swap_SPI_0_MOSI_With_MISO` in a while)
+(We'll cover `GLB_Swap_SPI` in a while)
 
 Finally we __configure the SPI Port__...
 
