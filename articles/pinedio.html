@@ -344,8 +344,7 @@ static void test_display_init(char *buf, int len, int argc, char **argv) {
 <p>We’re ready to transmit data over SPI!</p>
 <p><a href="https://lupyuen.github.io/articles/spi#spi_init-init-spi-port">(More about <code>spi_init</code>)</a></p>
 <h2 id="transmit-spi-data" class="section-header"><a href="#transmit-spi-data">4.2 Transmit SPI Data</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/display.c#L465-L520"><code>pinedio_st7789/display.c</code></a></p>
+<p>Here’s how we transfer data over SPI: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/display.c#L465-L520"><code>pinedio_st7789/display.c</code></a></p>
 <pre><code class="language-c">/// Write packed data to the SPI port. `data` is the array of bytes to be written. `len` is the number of bytes.
 static int transmit_packed(const uint8_t *data, uint16_t len) {
   //  Clear the receive buffer
@@ -358,14 +357,14 @@ static int transmit_packed(const uint8_t *data, uint16_t len) {
   transfer.rx_buf = (uint32_t) spi_rx_buf;  //  Receive Buffer
   transfer.len    = len;                    //  How many bytes
 </code></pre>
-<p>TODO</p>
+<p>Here we specify the <strong>Transmit Buffer and Receive Buffer</strong> for the SPI transfer.</p>
+<p>Next we <strong>set Chip Select GPIO to Low</strong> to select the SPI Peripheral (ST7789 Display)…</p>
 <pre><code class="language-c">  //  Select the SPI Peripheral
   int rc;
   rc = bl_gpio_output_set(DISPLAY_CS_PIN, 0);        assert(rc == 0);
   rc = bl_gpio_output_set(DISPLAY_DEBUG_CS_PIN, 0);  assert(rc == 0);
 </code></pre>
-<p>TODO</p>
-<p>Everything we do to <code>DISPLAY_CS_PIN</code>, we do the same to <code>DISPLAY_DEBUG_CS_PIN</code></p>
+<p>Then we <strong>start the SPI Transfer</strong> and wait for it to complete…</p>
 <pre><code class="language-c">  //  Execute the SPI Transfer with the DMA Controller
   rc = hal_spi_transfer(
     &amp;spi_device,  //  SPI Device
@@ -377,7 +376,7 @@ static int transmit_packed(const uint8_t *data, uint16_t len) {
   //  DMA Controller will transmit and receive the SPI data in the background.
   //  hal_spi_transfer will wait for the SPI Transfer to complete before returning.
 </code></pre>
-<p>TODO</p>
+<p>Finally we <strong>set Chip Select GPIO to Low</strong> to deselect the SPI Peripheral (ST7789 Display)…</p>
 <pre><code class="language-c">  //  Now that we're done with the SPI Transfer...
   //  De-select the SPI Peripheral
   rc = bl_gpio_output_set(DISPLAY_CS_PIN, 1);        assert(rc == 0);
@@ -385,7 +384,11 @@ static int transmit_packed(const uint8_t *data, uint16_t len) {
   return 0;
 }
 </code></pre>
+<p><em>Why did we use the BL604 DMA Controller?</em></p>
 <p>TODO</p>
+<p><em>What is <code>DISPLAY_DEBUG_CS_PIN</code>?</em></p>
+<p>TODO</p>
+<p>Everything we do to <code>DISPLAY_CS_PIN</code>, we do the same to <code>DISPLAY_DEBUG_CS_PIN</code></p>
 <h1 id="logic-analyser" class="section-header"><a href="#logic-analyser">5 Logic Analyser</a></h1>
 <p><em>Always have a Logic Analyser ready when testing Prototype Hardware!</em></p>
 <p>TODO</p>
