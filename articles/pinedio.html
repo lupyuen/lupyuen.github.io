@@ -392,33 +392,38 @@ static int transmit_packed(const uint8_t *data, uint16_t len) {
 <p><em>What is <code>DISPLAY_DEBUG_CS_PIN</code>? Why is it mirroring <code>DISPLAY_CS_PIN</code>?</em></p>
 <p>Yep everything we do to <code>DISPLAY_CS_PIN</code> (GPIO 20), we do the same to <code>DISPLAY_DEBUG_CS_PIN</code> (GPIO 5).</p>
 <p>We’ll learn why in the next chapter.</p>
+<p><img src="https://lupyuen.github.io/images/pinedio-logic.jpg" alt="PineDio Stack with Logic Analyser" /></p>
 <h1 id="logic-analyser" class="section-header"><a href="#logic-analyser">5 Logic Analyser</a></h1>
-<p><em>Always have a Logic Analyser ready when testing Prototype Hardware!</em></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/pinedio-gpio2.jpg" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/pinedio-logic.jpg" alt="" /></p>
-<p>TODO11</p>
-<p><img src="https://lupyuen.github.io/images/pinedio-logic2.jpg" alt="" /></p>
-<p>TODO15</p>
-<p><img src="https://lupyuen.github.io/images/pinedio-shadow.png" alt="" /></p>
+<p><em>When testing Prototype Hardware… Always have a Logic Analyser ready! (Pic above)</em></p>
+<p>Why? Because we’ll hit a baffling signalling problem when we test SPI on PineDio Stack.</p>
+<p><em>How do we capture the data transferred over the SPI Port?</em></p>
+<p>PineDio Stack’s <strong>GPIO Connector</strong> (at right) exposes the SPI Pins: SDO <em>(formerly MOSI)</em>, SDI <em>(formerly MISO)</em> and SCK</p>
+<p><img src="https://lupyuen.github.io/images/pinedio-gpio2.jpg" alt="PineDio Stack GPIO Connector" /></p>
+<p>We <strong>connect our Logic Analyser</strong> to the GPIO Connector like so…</p>
+<p><img src="https://lupyuen.github.io/images/pinedio-logic2.jpg" alt="Logic Analyser connected to PineDio Stack" /></p>
+<p><em>What about the ST7789 Chip Select: GPIO 20?</em></p>
+<p>Unfortunately <strong>GPIO 20 is not exposed</strong> on the GPIO Connector.</p>
+<p>But remember: Everything we do to GPIO 20, we <strong>do the same to GPIO 5!</strong></p>
+<p><strong>GPIO 5 is exposed</strong> on the GPIO Connector and it mirrors the GPIO High / Low state of GPIO 20.</p>
+<p>Thus we simply connect our Logic Analyser to <strong>GPIO 5 as the Chip Select Pin!</strong> (Pic above)</p>
+<p>Let’s look at the data collected by our Logic Analyser…</p>
+<p><img src="https://lupyuen.github.io/images/pinedio-shadow.png" alt="GPIO 20 is mirrored to GPIO 5" /></p>
 <h1 id="spi-pins-are-swapped" class="section-header"><a href="#spi-pins-are-swapped">6 SPI Pins Are Swapped</a></h1>
 <p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/pinedio-mosi.png" alt="" /></p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/demo.c#L53-L117"><code>pinedio_st7789/demo.c</code></a></p>
 <pre><code class="language-c">//  Note: We must swap MISO and MOSI to comply with the SPI Pin Definitions in BL602 / BL604 Reference Manual
 int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);
 </code></pre>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/pinedio-swap3.png" alt="" /></p>
+<p>TODO</p>
 <p>Backward compatible, Spi quirks</p>
 <p>TODO17</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-swap.png" alt="" /></p>
 <p>TODO18</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-swap2.png" alt="" /></p>
 <p>TODO19</p>
-<p><img src="https://lupyuen.github.io/images/pinedio-swap3.png" alt="" /></p>
-<p>TODO9</p>
-<p><img src="https://lupyuen.github.io/images/pinedio-mosi.png" alt="" /></p>
-<p>TODO10</p>
-<p><img src="https://lupyuen.github.io/images/pinedio-mosi2.png" alt="" /></p>
 <h1 id="st7789-display" class="section-header"><a href="#st7789-display">7 ST7789 Display</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-display2.jpg" alt="" /></p>
