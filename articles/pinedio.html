@@ -337,6 +337,7 @@ static void test_display_init(char *buf, int len, int argc, char **argv) {
 </code></pre>
 <p>TODO</p>
 <p>Everything we do to <code>DISPLAY_CS_PIN</code>, we do the same to <code>DISPLAY_DEBUG_CS_PIN</code></p>
+<p><a href="https://lupyuen.github.io/articles/spi#spi_init-init-spi-port">(More about <code>spi_init</code>)</a></p>
 <h2 id="transmit-spi-data" class="section-header"><a href="#transmit-spi-data">4.2 Transmit SPI Data</a></h2>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/display.c#L465-L520"><code>pinedio_st7789/display.c</code></a></p>
 <pre><code class="language-c">/// Write packed data to the SPI port. `data` is the array of bytes to be written. `len` is the number of bytes.
