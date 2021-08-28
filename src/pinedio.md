@@ -6,7 +6,7 @@ _What's it like to create __Open Source Software__ (and firmware) for brand new 
 
 _What interesting challenges will we encounter?_
 
-Read on to find out how we test (and improve) Pine64's newest and hottest prototype: __PineDio Stack BL604 RISC-V Board!__
+Find out how we create new firmware to test (and improve) Pine64's newest and hottest prototype: __PineDio Stack BL604 RISC-V Board!__
 
 > ⚠️ ___Obligatory Disclaimer:__ Features included in The Prototype are not complete, and will most certainly undergo changes before becoming available for public consumption. (Burp) They are described here for testing, exploration, education and entertainment purposes only. The Prototype shall NOT be used in production gadgets. (Like toasters, microwave ovens, and most definitely not, pressure cookers)_
 
