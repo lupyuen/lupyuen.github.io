@@ -476,9 +476,9 @@ TODO
 
 TODO
 
-_This SPI Swapping Problem sounds familiar...?_
+_This SPI Pin Swap Problem sounds familiar...?_
 
-Yep if you have been following my BL602 Adventures, we've seen this SPI Swapping Problem for BL602...
+Yep if you have been following my BL602 Adventures, we've seen this __SPI Pin Swap Problem on BL602__...
 
 TODO
 
@@ -486,17 +486,11 @@ So I'm happy to confirm: __BL604 is 100% compatible with BL602__... Right down t
 
 TODO
 
-Without change in hardware, our firmware would need to swap the pins
+_How does this SPI Pin Swap Problem affect PineDio Stack Developers?_
 
-TODO17
+To work around the SPI Pin Swap Problem...
 
-![](https://lupyuen.github.io/images/pinedio-swap.png)
-
-TODO18
-
-![](https://lupyuen.github.io/images/pinedio-swap2.png)
-
-TODO19
+All PineDio Stack Developers should ensure that `GLB_Swap_SPI_0_MOSI_With_MISO` is always called before initialising the SPI Port.
 
 # ST7789 Display
 
