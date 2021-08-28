@@ -256,8 +256,8 @@ make
 <p><a href="https://www.oshwa.org/a-resolution-to-redefine-spi-signal-names">(More about SDO and SDI)</a></p>
 <p><em>But won’t BL604 get confused by the SPI crosstalk?</em></p>
 <p>Nope because SPI Flash, ST7789 and SX1262 are connected to <strong>different GPIO Pins for Chip Select</strong>.</p>
-<p>When BL604 talks to an SPI Peripheral (like ST7789), it sets the peripheral’s <strong>Chip Select Pin</strong> to <strong>Low</strong>.</p>
-<p>(The Chip Select Pins are High when idle)</p>
+<p>When our firmware talks to an SPI Peripheral (like ST7789), we shall set the peripheral’s <strong>Chip Select Pin</strong> to <strong>Low</strong>.</p>
+<p>(Our firmware needs to set the Chip Select Pins to High when idle)</p>
 <p><em>How shall we code the firmware for testing SPI?</em></p>
 <p>The same way as BL602… By calling the <strong>BL602 / BL604 IoT SDK</strong>!</p>
 <p>We start by <strong>defining the GPIOs</strong> used by SPI: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/display.h#L45-L70"><code>pinedio_st7789/display.h</code></a></p>
@@ -293,6 +293,7 @@ make
 <p>(GPIO 8 selects the Flashing Mode when BL604 is powered on, so GPIO 8 is normally unused)</p>
 <p>We use <strong>GPIO 5</strong> to mirror the GPIO High / Low state of GPIO 20 (ST7789 Chip Select). More about this in a while.</p>
 <h2 id="initialise-spi-port" class="section-header"><a href="#initialise-spi-port">4.1 Initialise SPI Port</a></h2>
+<p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/demo.c#L53-L117"><code>pinedio_st7789/demo.c</code></a></p>
 <pre><code class="language-c">/// Command to init the display
 static void test_display_init(char *buf, int len, int argc, char **argv) {
@@ -305,7 +306,7 @@ static void test_display_init(char *buf, int len, int argc, char **argv) {
   rc = bl_gpio_enable_output(SX1262_CS_PIN, 0, 0);  assert(rc == 0);
 </code></pre>
 <p>TODO</p>
-<pre><code class="language-c">  //  Set Chip Select pin to High, to deactivate SPI Flash, SX1262 and ST7789
+<pre><code class="language-c">  //  Set Chip Select pins to High, to deactivate SPI Flash, SX1262 and ST7789
   rc = bl_gpio_output_set(FLASH_CS_PIN, 1);  assert(rc == 0);
   rc = bl_gpio_output_set(SX1262_CS_PIN, 1);  assert(rc == 0);
   rc = bl_gpio_output_set(DISPLAY_CS_PIN, 1);  assert(rc == 0);
@@ -339,6 +340,7 @@ static void test_display_init(char *buf, int len, int argc, char **argv) {
 <p>Everything we do to <code>DISPLAY_CS_PIN</code>, we do the same to <code>DISPLAY_DEBUG_CS_PIN</code></p>
 <p><a href="https://lupyuen.github.io/articles/spi#spi_init-init-spi-port">(More about <code>spi_init</code>)</a></p>
 <h2 id="transmit-spi-data" class="section-header"><a href="#transmit-spi-data">4.2 Transmit SPI Data</a></h2>
+<p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/display.c#L465-L520"><code>pinedio_st7789/display.c</code></a></p>
 <pre><code class="language-c">/// Write packed data to the SPI port. `data` is the array of bytes to be written. `len` is the number of bytes.
 static int transmit_packed(const uint8_t *data, uint16_t len) {
