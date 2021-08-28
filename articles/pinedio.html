@@ -401,7 +401,7 @@ static int transmit_packed(const uint8_t *data, uint16_t len) {
 <p><img src="https://lupyuen.github.io/images/pinedio-gpio2.jpg" alt="PineDio Stack GPIO Connector" /></p>
 <p>We <strong>connect our Logic Analyser</strong> to the GPIO Connector like so…</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-logic2.jpg" alt="Logic Analyser connected to PineDio Stack" /></p>
-<p><em>What about the ST7789 Chip Select: GPIO 20?</em></p>
+<p><em>What about the ST7789 Chip Select Pin: GPIO 20?</em></p>
 <p>Unfortunately <strong>GPIO 20 is not exposed</strong> on the GPIO Connector.</p>
 <p>But remember: Everything we do to GPIO 20, we <strong>do the same to GPIO 5!</strong></p>
 <p><strong>GPIO 5 is exposed</strong> on the GPIO Connector and it mirrors the GPIO High / Low state of GPIO 20.</p>
