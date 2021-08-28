@@ -118,7 +118,7 @@ void blinky(char *buf, int len, int argc, char **argv) {
 
 [(Source)](https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_blinky/pinedio_blinky/demo.c)
 
-This BL604 Blinky code is __100% identical__ to the [BL602 version of Blinky](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_blinky/sdk_app_blinky/demo.c). Except for the GPIO Pin Number...
+This BL604 Blinky code is __100% identical__ to the [BL602 version of Blinky](https://lupyuen.github.io/articles/rust#bl602-blinky-in-c). Except for the GPIO Pin Number...
 
 ```c
 /// PineDio Stack LCD Backlight is connected on GPIO 21
@@ -218,7 +218,159 @@ SPI is the critical Data Bus that __connects the key components__ of PineDio Sta
 
 TODO
 
-Backward compatible, Spi quirks
+From [`pinedio_st7789/display.h`](https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/display.h#L45-L70)
+
+```c
+/// GPIO for ST7789 / SX1262 / SPI Flash SDO (MOSI) Pin
+#define DISPLAY_MOSI_PIN 17
+
+/// GPIO for ST7789 / SX1262 / SPI Flash SDI (MISO) Pin
+#define DISPLAY_MISO_PIN  0
+
+/// GPIO for ST7789 / SX1262 / SPI Flash SCK Pin
+#define DISPLAY_SCK_PIN  11
+```
+
+TODO
+
+```c
+/// GPIO for SPI Flash Chip Select Pin. We must set this to High to deselect SPI Flash.
+#define FLASH_CS_PIN 14
+
+/// GPIO for SX1262 SPI Chip Select Pin. We must set this to High to deselect SX1262.
+#define SX1262_CS_PIN 15
+
+/// GPIO for ST7789 SPI Chip Select Pin. We control Chip Select ourselves via GPIO, not SPI.
+#define DISPLAY_CS_PIN   20
+```
+
+TODO
+
+```c
+/// GPIO for unused SPI Chip Select Pin. Unused because we control Chip Select ourselves via GPIO, not SPI.
+#define DISPLAY_UNUSED_CS_PIN 8
+
+/// For Debug Only: GPIO for SPI Chip Select Pin that is exposed on GPIO Connector and can be connected to Logic Analyser
+#define DISPLAY_DEBUG_CS_PIN 5
+
+/// GPIO for Backlight
+#define DISPLAY_BLK_PIN  21
+```
+
+## Initialise SPI Port
+
+From [`pinedio_st7789/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/demo.c#L53-L117)
+
+```c
+/// Command to init the display
+static void test_display_init(char *buf, int len, int argc, char **argv) {
+  //  Configure Chip Select, Backlight pins as GPIO Output Pins (instead of GPIO Input)
+  int rc;
+  rc = bl_gpio_enable_output(DISPLAY_CS_PIN,  0, 0);  assert(rc == 0);
+  rc = bl_gpio_enable_output(DISPLAY_BLK_PIN, 0, 0);  assert(rc == 0);
+  rc = bl_gpio_enable_output(DISPLAY_DEBUG_CS_PIN,  0, 0);  assert(rc == 0);  //  TODO: Remove in production
+  rc = bl_gpio_enable_output(FLASH_CS_PIN,  0, 0);  assert(rc == 0);
+  rc = bl_gpio_enable_output(SX1262_CS_PIN, 0, 0);  assert(rc == 0);
+```
+
+TODO
+
+```c
+  //  Set Chip Select pin to High, to deactivate SPI Flash, SX1262 and ST7789
+  rc = bl_gpio_output_set(FLASH_CS_PIN, 1);  assert(rc == 0);
+  rc = bl_gpio_output_set(SX1262_CS_PIN, 1);  assert(rc == 0);
+  rc = bl_gpio_output_set(DISPLAY_CS_PIN, 1);  assert(rc == 0);
+  rc = bl_gpio_output_set(DISPLAY_DEBUG_CS_PIN, 1);  assert(rc == 0);
+```
+
+TODO
+
+```c
+  //  Note: We must swap MISO and MOSI to comply with the SPI Pin Definitions in BL602 / BL604 Reference Manual
+  rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);
+```
+
+TODO
+
+```c
+  //  Configure the SPI Port
+  rc = spi_init(
+    &spi_device, //  SPI Device
+    SPI_PORT,    //  SPI Port
+    0,           //  SPI Mode: 0 for Controller (formerly Master), 1 for Peripheral (formerly Slave)
+    0,           //  SPI Polar Phase. Valid values: 0 (CPOL=0, CPHA=0), 1 (CPOL=0, CPHA=1), 2 (CPOL=1, CPHA=0) or 3 (CPOL=1, CPHA=1)
+    1 * 1000 * 1000,  //  SPI Frequency (1 MHz, reduce this in case of problems)
+    2,   //  Transmit DMA Channel
+    3,   //  Receive DMA Channel
+    DISPLAY_SCK_PIN,        //  SPI Clock Pin 
+    DISPLAY_UNUSED_CS_PIN,  //  Unused SPI Chip Select Pin (Unused because we control the GPIO ourselves as Chip Select Pin)
+    DISPLAY_MOSI_PIN,       //  SPI Serial Data Out Pin (formerly MOSI)
+    DISPLAY_MISO_PIN        //  SPI Serial Data In Pin  (formerly MISO) (Unused for ST7789)
+  );
+  assert(rc == 0);
+
+  //  Note: DISPLAY_UNUSED_CS_PIN must NOT be the same as DISPLAY_CS_PIN. 
+  //  Because the SPI Pin Function will override the GPIO Pin Function!
+```
+
+TODO
+
+Everything we do to `DISPLAY_CS_PIN`, we do the same to `DISPLAY_DEBUG_CS_PIN`
+
+## Transmit SPI Data
+
+From [`pinedio_st7789/display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/display.c#L465-L520)
+
+```c
+/// Write packed data to the SPI port. `data` is the array of bytes to be written. `len` is the number of bytes.
+static int transmit_packed(const uint8_t *data, uint16_t len) {
+  //  Clear the receive buffer
+  memset(&spi_rx_buf, 0, sizeof(spi_rx_buf));
+
+  //  Prepare SPI Transfer
+  static spi_ioc_transfer_t transfer;
+  memset(&transfer, 0, sizeof(transfer));    
+  transfer.tx_buf = (uint32_t) data;        //  Transmit Buffer
+  transfer.rx_buf = (uint32_t) spi_rx_buf;  //  Receive Buffer
+  transfer.len    = len;                    //  How many bytes
+```
+
+TODO
+
+```c
+  //  Select the SPI Peripheral
+  int rc;
+  rc = bl_gpio_output_set(DISPLAY_CS_PIN, 0);        assert(rc == 0);
+  rc = bl_gpio_output_set(DISPLAY_DEBUG_CS_PIN, 0);  assert(rc == 0);
+```
+
+TODO
+
+```c
+  //  Execute the SPI Transfer with the DMA Controller
+  rc = hal_spi_transfer(
+    &spi_device,  //  SPI Device
+    &transfer,    //  SPI Transfers
+    1             //  How many transfers (Number of requests, not bytes)
+  );
+  assert(rc == 0);
+
+  //  DMA Controller will transmit and receive the SPI data in the background.
+  //  hal_spi_transfer will wait for the SPI Transfer to complete before returning.
+```
+
+TODO
+
+```c
+  //  Now that we're done with the SPI Transfer...
+  //  De-select the SPI Peripheral
+  rc = bl_gpio_output_set(DISPLAY_CS_PIN, 1);        assert(rc == 0);
+  rc = bl_gpio_output_set(DISPLAY_DEBUG_CS_PIN, 1);  assert(rc == 0);
+  return 0;
+}
+```
+
+TODO
 
 # Logic Analyser
 
@@ -235,6 +387,19 @@ TODO
 TODO11
 
 ![](https://lupyuen.github.io/images/pinedio-logic2.jpg)
+
+# SPI Pins Are Swapped
+
+TODO
+
+From [`pinedio_st7789/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/demo.c#L53-L117)
+
+```c
+  //  Note: We must swap MISO and MOSI to comply with the SPI Pin Definitions in BL602 / BL604 Reference Manual
+  int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);
+```
+
+Backward compatible, Spi quirks
 
 # ST7789 Display
 
