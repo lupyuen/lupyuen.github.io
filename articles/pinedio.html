@@ -67,7 +67,7 @@
     <nav id="TOC"><ul>
 <li><a href="#connect-the-display">1 Connect The Display</a><ul></ul></li>
 <li><a href="#bl604-blinky">2 BL604 Blinky</a><ul></ul></li>
-<li><a href="#flashing-firmware-to-bl604">3 Flashing Firmware To BL604</a><ul></ul></li>
+<li><a href="#flash-firmware-to-bl604">3 Flash Firmware To BL604</a><ul></ul></li>
 <li><a href="#bl604-spi">4 BL604 SPI</a><ul></ul></li>
 <li><a href="#logic-analyser">5 Logic Analyser</a><ul></ul></li>
 <li><a href="#st7789-display">6 ST7789 Display</a><ul></ul></li>
@@ -184,15 +184,55 @@ make
 </code></pre>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_blinky/run.sh">(Source)</a></p>
 <p>Let’s flash the firmware to the board!</p>
-<h1 id="flashing-firmware-to-bl604" class="section-header"><a href="#flashing-firmware-to-bl604">3 Flashing Firmware To BL604</a></h1>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/pinedio-zoom.jpg" alt="" /></p>
-<p>Remove the battery</p>
-<p>Missing jumper, No reset button</p>
-<ul>
-<li><a href="https://youtu.be/vdRqhQ08uxU"><strong>Watch the Demo Video on YouTube</strong></a></li>
-</ul>
-<p>Display is OK</p>
+<h1 id="flash-firmware-to-bl604" class="section-header"><a href="#flash-firmware-to-bl604">3 Flash Firmware To BL604</a></h1>
+<p>We <strong>flash the BL604 Blinky Firmware</strong> the exact same way as BL602…</p>
+<ol>
+<li>
+<p><strong>Remove the battery</strong> from the Solar Panel</p>
+<p>(Because we’ll reboot the board during flashing)</p>
+</li>
+<li>
+<p>Switch to <strong>Flashing Mode</strong>…</p>
+<p>Flip the <strong>GPIO 8 Jumper</strong> to <strong>High</strong></p>
+</li>
+<li>
+<p><strong>Connect the board</strong> to our computer’s USB Port</p>
+</li>
+<li>
+<p><strong>Run <code>blflash</code></strong> to flash this firmware file…</p>
+<pre><code class="language-text">build_out/pinedio_blinky.bin
+</code></pre>
+<p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">(More about <code>blflash</code>)</a></p>
+</li>
+</ol>
+<p>To <strong>run the BL604 Blinky Firmware</strong>…</p>
+<ol>
+<li>
+<p><strong>Disconnect the board</strong> from the USB Port</p>
+</li>
+<li>
+<p>Switch to <strong>Normal Mode</strong>…</p>
+<p>Flip the <strong>GPIO 8 Jumper</strong> to <strong>Low</strong></p>
+</li>
+<li>
+<p><strong>Connect the board</strong> to the USB Port</p>
+</li>
+<li>
+<p><strong>Open a Serial Terminal</strong> and connect to the BL604 UART Port at <strong>2 Mbps</strong></p>
+<p>Use <strong>screen</strong> (Linux), <strong>CoolTerm</strong> (macOS) or <strong>putty</strong> (Windows)</p>
+<p>(Or use the Web Serial Terminal)</p>
+<p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">(Instructions here)</a></p>
+</li>
+<li>
+<p>At the BL604 Command Prompt, enter…</p>
+<pre><code class="language-text">blinky
+</code></pre>
+<p>And the Backlight blinks!</p>
+<p><a href="https://youtu.be/vdRqhQ08uxU"><strong>Watch the Demo Video on YouTube</strong></a></p>
+</li>
+</ol>
+<p>(PineDio Stack doesn’t have a Reset Button, that’s why we unplug the board to switch the Flashing Mode)</p>
+<p>Now that the Backlight GPIO is OK, let’s test something more sophisticated: SPI!</p>
 <h1 id="bl604-spi" class="section-header"><a href="#bl604-spi">4 BL604 SPI</a></h1>
 <p>TODO</p>
 <p>Backward compatible, Spi quirks</p>
@@ -219,6 +259,7 @@ make
 <li><a href="https://github.com/moononournation/Arduino_GFX"><strong><code>moononournation / Arduino_GFX</code></strong></a></li>
 </ul>
 <p>Bl602 book, Created from scratch with few official docs, But lots of experimentation and reading the SDK code</p>
+<p><img src="https://lupyuen.github.io/images/pinedio-zoom.jpg" alt="" /></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">9 What’s Next</a></h1>
 <p>TODO</p>
 <p>Volunteers Needed!</p>
