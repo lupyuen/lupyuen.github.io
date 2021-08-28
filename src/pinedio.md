@@ -405,13 +405,13 @@ Because we want the SPI Transfer to be __executed in the background__, freeing u
 
 BL604's __DMA Controller executes the SPI Transfer__ on behalf of the CPU, shuffling data between the Transmit / Receive Buffers and the SPI Peripheral (ST7789).
 
+[(More about DMA)](https://lupyuen.github.io/articles/spi#spi-with-direct-memory-access)
+
 _What is `DISPLAY_DEBUG_CS_PIN`? Why is it mirroring `DISPLAY_CS_PIN`?_
 
 Yep everything we do to `DISPLAY_CS_PIN` (GPIO 20), we do the same to `DISPLAY_DEBUG_CS_PIN` (GPIO 5).
 
 We'll learn why in the next chapter.
-
-[(More about DMA)](https://lupyuen.github.io/articles/spi#spi-with-direct-memory-access)
 
 # Logic Analyser
 
