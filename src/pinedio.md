@@ -344,9 +344,7 @@ We're ready to transmit data over SPI!
 
 ## Transmit SPI Data
 
-TODO
-
-From [`pinedio_st7789/display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/display.c#L465-L520)
+Here's how we transfer data over SPI: [`pinedio_st7789/display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/display.c#L465-L520)
 
 ```c
 /// Write packed data to the SPI port. `data` is the array of bytes to be written. `len` is the number of bytes.
@@ -362,7 +360,9 @@ static int transmit_packed(const uint8_t *data, uint16_t len) {
   transfer.len    = len;                    //  How many bytes
 ```
 
-TODO
+Here we specify the __Transmit Buffer and Receive Buffer__ for the SPI transfer.
+
+Next we __set Chip Select GPIO to Low__ to select the SPI Peripheral (ST7789 Display)...
 
 ```c
   //  Select the SPI Peripheral
@@ -371,9 +371,7 @@ TODO
   rc = bl_gpio_output_set(DISPLAY_DEBUG_CS_PIN, 0);  assert(rc == 0);
 ```
 
-TODO
-
-Everything we do to `DISPLAY_CS_PIN`, we do the same to `DISPLAY_DEBUG_CS_PIN`
+Then we __start the SPI Transfer__ and wait for it to complete...
 
 ```c
   //  Execute the SPI Transfer with the DMA Controller
@@ -388,7 +386,7 @@ Everything we do to `DISPLAY_CS_PIN`, we do the same to `DISPLAY_DEBUG_CS_PIN`
   //  hal_spi_transfer will wait for the SPI Transfer to complete before returning.
 ```
 
-TODO
+Finally we __set Chip Select GPIO to Low__ to deselect the SPI Peripheral (ST7789 Display)...
 
 ```c
   //  Now that we're done with the SPI Transfer...
@@ -399,7 +397,15 @@ TODO
 }
 ```
 
+_Why did we use the BL604 DMA Controller?_
+
 TODO
+
+_What is `DISPLAY_DEBUG_CS_PIN`?_
+
+TODO
+
+Everything we do to `DISPLAY_CS_PIN`, we do the same to `DISPLAY_DEBUG_CS_PIN`
 
 # Logic Analyser
 
