@@ -344,7 +344,7 @@ We're ready to transmit data over SPI!
 
 ## Transmit SPI Data
 
-Here's how we transfer data over SPI: [`pinedio_st7789/display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/display.c#L465-L520)
+Here's how we transfer data (send + receive) over SPI: [`pinedio_st7789/display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/display.c#L465-L520)
 
 ```c
 /// Write packed data to the SPI port. `data` is the array of bytes to be written. `len` is the number of bytes.
@@ -390,22 +390,26 @@ Finally we __set Chip Select GPIO to Low__ to deselect the SPI Peripheral (ST778
 
 ```c
   //  Now that we're done with the SPI Transfer...
-  //  De-select the SPI Peripheral
+  //  Deselect the SPI Peripheral
   rc = bl_gpio_output_set(DISPLAY_CS_PIN, 1);        assert(rc == 0);
   rc = bl_gpio_output_set(DISPLAY_DEBUG_CS_PIN, 1);  assert(rc == 0);
   return 0;
 }
 ```
 
-_Why did we use the BL604 DMA Controller?_
+That's how we transmit and receive data over SPI!
 
-TODO
+_Why did we use the BL604 DMA Controller for the SPI Transfer?_
 
-_What is `DISPLAY_DEBUG_CS_PIN`?_
+Because we want the SPI Transfer to be __executed in the background__, freeing up the CPU for other concurrent tasks.
 
-TODO
+The __DMA Controller executes the SPI Transfer__ on behalf of the CPU, shuffling data between the Transmit / Receive Buffers and the SPI Peripheral (ST7789).
 
-Everything we do to `DISPLAY_CS_PIN`, we do the same to `DISPLAY_DEBUG_CS_PIN`
+_What is `DISPLAY_DEBUG_CS_PIN`? Why is it mirroring `DISPLAY_CS_PIN`?_
+
+Yep everything we do to `DISPLAY_CS_PIN` (GPIO 20), we do the same to `DISPLAY_DEBUG_CS_PIN` (GPIO 5).
+
+We'll learn why in the next chapter.
 
 # Logic Analyser
 
