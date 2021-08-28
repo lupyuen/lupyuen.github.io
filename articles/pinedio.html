@@ -344,7 +344,7 @@ static void test_display_init(char *buf, int len, int argc, char **argv) {
 <p>We’re ready to transmit data over SPI!</p>
 <p><a href="https://lupyuen.github.io/articles/spi#spi_init-init-spi-port">(More about <code>spi_init</code>)</a></p>
 <h2 id="transmit-spi-data" class="section-header"><a href="#transmit-spi-data">4.2 Transmit SPI Data</a></h2>
-<p>Here’s how we transfer data over SPI: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/display.c#L465-L520"><code>pinedio_st7789/display.c</code></a></p>
+<p>Here’s how we transfer data (send + receive) over SPI: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/display.c#L465-L520"><code>pinedio_st7789/display.c</code></a></p>
 <pre><code class="language-c">/// Write packed data to the SPI port. `data` is the array of bytes to be written. `len` is the number of bytes.
 static int transmit_packed(const uint8_t *data, uint16_t len) {
   //  Clear the receive buffer
@@ -378,17 +378,19 @@ static int transmit_packed(const uint8_t *data, uint16_t len) {
 </code></pre>
 <p>Finally we <strong>set Chip Select GPIO to Low</strong> to deselect the SPI Peripheral (ST7789 Display)…</p>
 <pre><code class="language-c">  //  Now that we're done with the SPI Transfer...
-  //  De-select the SPI Peripheral
+  //  Deselect the SPI Peripheral
   rc = bl_gpio_output_set(DISPLAY_CS_PIN, 1);        assert(rc == 0);
   rc = bl_gpio_output_set(DISPLAY_DEBUG_CS_PIN, 1);  assert(rc == 0);
   return 0;
 }
 </code></pre>
-<p><em>Why did we use the BL604 DMA Controller?</em></p>
-<p>TODO</p>
-<p><em>What is <code>DISPLAY_DEBUG_CS_PIN</code>?</em></p>
-<p>TODO</p>
-<p>Everything we do to <code>DISPLAY_CS_PIN</code>, we do the same to <code>DISPLAY_DEBUG_CS_PIN</code></p>
+<p>That’s how we transmit and receive data over SPI!</p>
+<p><em>Why did we use the BL604 DMA Controller for the SPI Transfer?</em></p>
+<p>Because we want the SPI Transfer to be <strong>executed in the background</strong>, freeing up the CPU for other concurrent tasks.</p>
+<p>The <strong>DMA Controller executes the SPI Transfer</strong> on behalf of the CPU, shuffling data between the Transmit / Receive Buffers and the SPI Peripheral (ST7789).</p>
+<p><em>What is <code>DISPLAY_DEBUG_CS_PIN</code>? Why is it mirroring <code>DISPLAY_CS_PIN</code>?</em></p>
+<p>Yep everything we do to <code>DISPLAY_CS_PIN</code> (GPIO 20), we do the same to <code>DISPLAY_DEBUG_CS_PIN</code> (GPIO 5).</p>
+<p>We’ll learn why in the next chapter.</p>
 <h1 id="logic-analyser" class="section-header"><a href="#logic-analyser">5 Logic Analyser</a></h1>
 <p><em>Always have a Logic Analyser ready when testing Prototype Hardware!</em></p>
 <p>TODO</p>
