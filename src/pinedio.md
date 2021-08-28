@@ -338,13 +338,13 @@ Finally we __configure the SPI Port__...
   //  Because the SPI Pin Function will override the GPIO Pin Function!
 ```
 
-We're ready to transmit data over SPI!
+We're ready to transfer data over SPI!
 
 [(More about `spi_init`)](https://lupyuen.github.io/articles/spi#spi_init-init-spi-port)
 
-## Transmit SPI Data
+## Transfer SPI Data
 
-Here's how we transfer data (send + receive) over SPI: [`pinedio_st7789/display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/display.c#L465-L520)
+Here's how we transfer data (transmit + receive) over SPI: [`pinedio_st7789/display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/display.c#L465-L520)
 
 ```c
 /// Write packed data to the SPI port. `data` is the array of bytes to be written. `len` is the number of bytes.
@@ -371,7 +371,7 @@ Next we __set Chip Select GPIO to Low__ to select the SPI Peripheral (ST7789 Dis
   rc = bl_gpio_output_set(DISPLAY_DEBUG_CS_PIN, 0);  assert(rc == 0);
 ```
 
-Then we __start the SPI Transfer__ and wait for it to complete...
+Then we __start the SPI Transfer__ (transmit + receive) and wait for it to complete...
 
 ```c
   //  Execute the SPI Transfer with the DMA Controller
