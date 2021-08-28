@@ -281,9 +281,7 @@ We use __GPIO 5__ to mirror the GPIO High / Low State of GPIO 20 (ST7789 Chip Se
 
 ## Initialise SPI Port
 
-TODO
-
-From [`pinedio_st7789/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/demo.c#L53-L117)
+Let's initialise the SPI Port before sending data: [`pinedio_st7789/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/demo.c#L53-L117)
 
 ```c
 /// Command to init the display
@@ -297,7 +295,9 @@ static void test_display_init(char *buf, int len, int argc, char **argv) {
   rc = bl_gpio_enable_output(DISPLAY_DEBUG_CS_PIN, 0, 0);  assert(rc == 0);
 ```
 
-TODO
+First we configure the __Chip Select GPIOs for GPIO Output__ (instead of GPIO Input).
+
+Next we __set the Chip Select GPIOs to High__ to deselect all SPI Peripherals...
 
 ```c
   //  Set Chip Select pins to High, to deactivate SPI Flash, SX1262 and ST7789
@@ -308,16 +308,14 @@ TODO
 
   //  Switch on the backlight
   rc = bl_gpio_output_set(DISPLAY_BLK_PIN, 0); assert(rc == 0);
-```
 
-TODO
-
-```c
   //  Note: We must swap MISO and MOSI to comply with the SPI Pin Definitions in BL602 / BL604 Reference Manual
   rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);
 ```
 
-TODO
+(We'll cover `GLB_Swap_SPI_0_MOSI_With_MISO` in a while)
+
+Finally we __configure the SPI Port__...
 
 ```c
   //  Configure the SPI Port
@@ -340,9 +338,7 @@ TODO
   //  Because the SPI Pin Function will override the GPIO Pin Function!
 ```
 
-TODO
-
-Everything we do to `DISPLAY_CS_PIN`, we do the same to `DISPLAY_DEBUG_CS_PIN`
+We're ready to transmit data over SPI!
 
 [(More about `spi_init`)](https://lupyuen.github.io/articles/spi#spi_init-init-spi-port)
 
@@ -376,6 +372,8 @@ TODO
 ```
 
 TODO
+
+Everything we do to `DISPLAY_CS_PIN`, we do the same to `DISPLAY_DEBUG_CS_PIN`
 
 ```c
   //  Execute the SPI Transfer with the DMA Controller
@@ -430,8 +428,8 @@ TODO
 From [`pinedio_st7789/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/demo.c#L53-L117)
 
 ```c
-  //  Note: We must swap MISO and MOSI to comply with the SPI Pin Definitions in BL602 / BL604 Reference Manual
-  int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);
+//  Note: We must swap MISO and MOSI to comply with the SPI Pin Definitions in BL602 / BL604 Reference Manual
+int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);
 ```
 
 Backward compatible, Spi quirks
