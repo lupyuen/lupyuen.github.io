@@ -148,19 +148,59 @@ make
 
 Let's flash the firmware to the board!
 
-# Flashing Firmware To BL604
+# Flash Firmware To BL604
 
-TODO
+We __flash the BL604 Blinky Firmware__ the exact same way as BL602...
 
-![](https://lupyuen.github.io/images/pinedio-zoom.jpg)
+1.  __Remove the battery__ from the Solar Panel
 
-Remove the battery
+    (Because we'll reboot the board during flashing)
 
-Missing jumper, No reset button
+1.  Switch to __Flashing Mode__...
 
--   [__Watch the Demo Video on YouTube__](https://youtu.be/vdRqhQ08uxU)
+    Flip the __GPIO 8 Jumper__ to __High__
 
-Display is OK
+1.  __Connect the board__ to our computer's USB Port
+
+1.  __Run `blflash`__ to flash this firmware file...
+
+    ```text
+    build_out/pinedio_blinky.bin
+    ```
+
+    [(More about `blflash`)](https://lupyuen.github.io/articles/flash#flash-the-firmware)
+
+To __run the BL604 Blinky Firmware__...
+
+1.  __Disconnect the board__ from the USB Port
+
+1.  Switch to __Normal Mode__...
+
+    Flip the __GPIO 8 Jumper__ to __Low__
+
+1.  __Connect the board__ to the USB Port
+
+1.  __Open a Serial Terminal__ and connect to the BL604 UART Port at __2 Mbps__
+
+    Use __screen__ (Linux), __CoolTerm__ (macOS) or __putty__ (Windows)
+
+    (Or use the Web Serial Terminal)
+
+    [(Instructions here)](https://lupyuen.github.io/articles/flash#watch-the-firmware-run)
+
+1.  At the BL604 Command Prompt, enter...
+
+    ```text
+    blinky
+    ```
+
+    And the Backlight blinks!
+
+    [__Watch the Demo Video on YouTube__](https://youtu.be/vdRqhQ08uxU)
+
+(PineDio Stack doesn't have a Reset Button, that's why we unplug the board to switch the Flashing Mode)
+
+Now that the Backlight GPIO is OK, let's test something more sophisticated: SPI!
 
 # BL604 SPI
 
@@ -209,6 +249,8 @@ Let's port @moononournation's awesome 9-bit-banging GFX Library to #BL604 ... An
 -   [__`moononournation / Arduino_GFX`__](https://github.com/moononournation/Arduino_GFX)
 
 Bl602 book, Created from scratch with few official docs, But lots of experimentation and reading the SDK code
+
+![](https://lupyuen.github.io/images/pinedio-zoom.jpg)
 
 # What's Next
 
