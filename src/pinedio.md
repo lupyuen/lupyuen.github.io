@@ -56,21 +56,23 @@ We shall explore PineDio Stack ourselves... And __document all our findings__ fo
 
 _What's on the underside of PineDio Stack?_
 
-TODO1
+Unscrewing the board (from the glue sticks?) reveals the __LCD Display Connector__ on the underside of the board...
 
-![](https://lupyuen.github.io/images/pinedio-back.jpg)
+![PineDio Stack Underside](https://lupyuen.github.io/images/pinedio-back.jpg)
 
-TODO5
+The connector matches the __ST7789 SPI Display__ that was shipped with PineDio Stack...
 
-![](https://lupyuen.github.io/images/pinedio-display3.jpg)
+![ST7789 SPI Display](https://lupyuen.github.io/images/pinedio-display3.jpg)
 
-TODO6
+So we snapped the ST7789 Display to the board...
 
-![](https://lupyuen.github.io/images/pinedio-display4.jpg)
+![ST7789 Display connected to PineDio Stack](https://lupyuen.github.io/images/pinedio-display4.jpg)
 
-TODO7
+And we get an unusual contraption: A __Solar Panel with LCD Display inside__!
 
-![](https://lupyuen.github.io/images/pinedio-display5.jpg)
+![Solar Panel with an LCD Display inside](https://lupyuen.github.io/images/pinedio-display5.jpg)
+
+We're ready to test our firmware on PineDio Stack!
 
 # BL604 Blinky
 
