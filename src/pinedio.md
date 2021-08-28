@@ -52,11 +52,25 @@ We shall explore PineDio Stack ourselves... And __document all our findings__ fo
 
 ![PineDio Stack BL604 Board](https://lupyuen.github.io/images/pinedio-title.jpg)
 
-# PineDio Stack BL604
+# Connect The Display
 
 _What's on the underside of PineDio Stack?_
 
-TODO
+TODO1
+
+![](https://lupyuen.github.io/images/pinedio-back.jpg)
+
+TODO5
+
+![](https://lupyuen.github.io/images/pinedio-display3.jpg)
+
+TODO6
+
+![](https://lupyuen.github.io/images/pinedio-display4.jpg)
+
+TODO7
+
+![](https://lupyuen.github.io/images/pinedio-display5.jpg)
 
 # BL604 Blinky
 
@@ -72,6 +86,10 @@ The BL604 code is __100% identical__ to the BL602 version. Except for the GPIO P
 
 TODO
 
+![](https://lupyuen.github.io/images/pinedio-zoom.jpg)
+
+Remove the battery
+
 Missing jumper, No reset button
 
 # BL604 SPI
@@ -85,6 +103,16 @@ Backward compatible, Spi quirks
 _Always have a Logic Analyser ready when testing Prototype Hardware!_
 
 TODO
+
+![](https://lupyuen.github.io/images/pinedio-gpio.jpg)
+
+TODO
+
+![](https://lupyuen.github.io/images/pinedio-logic.jpg)
+
+TODO11
+
+![](https://lupyuen.github.io/images/pinedio-logic2.jpg)
 
 # ST7789 Display
 
@@ -100,13 +128,7 @@ TODO
 
 TODO
 
-# TODO
-
 Bl602 book, Created from scratch with few official docs, But lots of experimentation and reading the SDK code
-
-GPIO
-
-![](https://lupyuen.github.io/images/pinedio-gpio.jpg)
 
 # What's Next
 
@@ -133,3 +155,5 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1429273222780887041)
+
+![](https://lupyuen.github.io/images/pinedio-box.jpg)
