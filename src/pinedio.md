@@ -409,7 +409,7 @@ _Always have a Logic Analyser ready when testing Prototype Hardware!_
 
 TODO
 
-![](https://lupyuen.github.io/images/pinedio-gpio.jpg)
+![](https://lupyuen.github.io/images/pinedio-gpio2.jpg)
 
 TODO
 
@@ -418,6 +418,10 @@ TODO
 TODO11
 
 ![](https://lupyuen.github.io/images/pinedio-logic2.jpg)
+
+TODO15
+
+![](https://lupyuen.github.io/images/pinedio-shadow.png)
 
 # SPI Pins Are Swapped
 
@@ -432,6 +436,26 @@ From [`pinedio_st7789/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/3wire/
 
 Backward compatible, Spi quirks
 
+TODO17
+
+![](https://lupyuen.github.io/images/pinedio-swap.png)
+
+TODO18
+
+![](https://lupyuen.github.io/images/pinedio-swap2.png)
+
+TODO19
+
+![](https://lupyuen.github.io/images/pinedio-swap3.png)
+
+TODO9
+
+![](https://lupyuen.github.io/images/pinedio-mosi.png)
+
+TODO10
+
+![](https://lupyuen.github.io/images/pinedio-mosi2.png)
+
 # ST7789 Display
 
 TODO
@@ -442,11 +466,37 @@ TODO
 
 TODO
 
+Logic Analyser 9-bit decoder
+
 ![](https://lupyuen.github.io/images/st7789-4wire.jpg)
 
 TODO
 
 ![](https://lupyuen.github.io/images/st7789-3wire.jpg)
+
+TODO8
+
+![](https://lupyuen.github.io/images/pinedio-linux.png)
+
+TODO11
+
+![](https://lupyuen.github.io/images/pinedio-pack.png)
+
+TODO12
+
+![](https://lupyuen.github.io/images/pinedio-pack2.png)
+
+TODO13
+
+![](https://lupyuen.github.io/images/pinedio-pack3.jpg)
+
+TODO14
+
+![](https://lupyuen.github.io/images/pinedio-pad.png)
+
+TODO16
+
+![](https://lupyuen.github.io/images/pinedio-spreadsheet.png)
 
 # Arduino GFX Ported To BL604
 
@@ -457,6 +507,32 @@ Let's port @moononournation's awesome 9-bit-banging GFX Library to #BL604 ... An
 -   [__`moononournation / Arduino_GFX`__](https://github.com/moononournation/Arduino_GFX)
 
 Bl602 book, Created from scratch with few official docs, But lots of experimentation and reading the SDK code
+
+TODO1
+
+![](https://lupyuen.github.io/images/pinedio-gfx.png)
+
+TODO2
+
+![](https://lupyuen.github.io/images/pinedio-gfx2.png)
+
+TODO3
+
+![](https://lupyuen.github.io/images/pinedio-gfx3.png)
+
+TODO4
+
+![](https://lupyuen.github.io/images/pinedio-gfx4.jpg)
+
+TODO5
+
+![](https://lupyuen.github.io/images/pinedio-gfx5.jpg)
+
+# Problem With ST7789?
+
+TODO
+
+![](https://lupyuen.github.io/images/pinedio-im.png)
 
 # What's Next
 
@@ -484,4 +560,4 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1429273222780887041)
 
-![](https://lupyuen.github.io/images/pinedio-box.jpg)
+![PineDio Stack BL604 In A Box](https://lupyuen.github.io/images/pinedio-box.jpg)
