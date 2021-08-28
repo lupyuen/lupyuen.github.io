@@ -337,6 +337,8 @@ TODO
 
 Everything we do to `DISPLAY_CS_PIN`, we do the same to `DISPLAY_DEBUG_CS_PIN`
 
+[(More about `spi_init`)](https://lupyuen.github.io/articles/spi#spi_init-init-spi-port)
+
 ## Transmit SPI Data
 
 From [`pinedio_st7789/display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/display.c#L465-L520)
