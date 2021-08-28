@@ -118,7 +118,7 @@
 <p><em>What’s on the underside of PineDio Stack?</em></p>
 <p>Unscrewing the board (from the glue sticks?) reveals the <strong>LCD Display Connector</strong> on the underside of the board…</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-back.jpg" alt="PineDio Stack Underside" /></p>
-<p>The connector matches the <strong>ST7789 SPI Display</strong> that was shipped with PineDio Stack…</p>
+<p>The connector matches this familiar <strong>ST7789 SPI Display</strong> that was shipped with PineDio Stack…</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-display3.jpg" alt="ST7789 SPI Display" /></p>
 <p>So we snapped the ST7789 Display to the board…</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-display4.jpg" alt="ST7789 Display connected to PineDio Stack" /></p>
@@ -128,8 +128,62 @@
 <h1 id="bl604-blinky" class="section-header"><a href="#bl604-blinky">2 BL604 Blinky</a></h1>
 <p><em>What’s the first thing that we run on a brand new prototype board?</em></p>
 <p><strong>Blinky Firmware</strong> of course! (Yep the firmware that blinks the LED)</p>
-<p>TODO</p>
-<p>The BL604 code is <strong>100% identical</strong> to the BL602 version. Except for the GPIO Pin Number…</p>
+<pre><code class="language-c">/// PineDio Stack LCD Backlight is connected on GPIO 21
+#define LED_GPIO 21
+
+/// Blink the LED
+void blinky(char *buf, int len, int argc, char **argv) {
+  //  Show a message on the serial console
+  puts(&quot;Hello from Blinky!&quot;);
+
+  //  Configure the LED GPIO for output (instead of input)
+  int rc = bl_gpio_enable_output(
+    LED_GPIO,  //  GPIO pin number
+    0,         //  No GPIO pullup
+    0          //  No GPIO pulldown
+  );
+  assert(rc == 0);  //  Halt on error
+
+  //  Blink the LED 5 times
+  for (int i = 0; i &lt; 10; i++) {
+
+    //  Toggle the LED GPIO between 0 (on) and 1 (off)
+    rc = bl_gpio_output_set(  //  Set the GPIO output (from BL602 GPIO HAL)
+      LED_GPIO,               //  GPIO pin number
+      i % 2                   //  0 for low, 1 for high
+    );
+    assert(rc == 0);  //  Halt on error
+
+    //  Sleep 1 second
+    time_delay(                 //  Sleep by number of ticks (from NimBLE Porting Layer)
+      time_ms_to_ticks32(1000)  //  Convert 1,000 milliseconds to ticks (from NimBLE Porting Layer)
+    );
+  }
+  //  Return to the command-line interface
+}
+</code></pre>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_blinky/pinedio_blinky/demo.c">(Source)</a></p>
+<p>This BL604 Blinky code is <strong>100% identical</strong> to the <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_blinky/sdk_app_blinky/demo.c">BL602 version of Blinky</a>. Except for the GPIO Pin Number…</p>
+<pre><code class="language-c">/// PineDio Stack LCD Backlight is connected on GPIO 21
+#define LED_GPIO 21
+</code></pre>
+<p>(We’re blinking the Backlight of the ST7789 Display)</p>
+<p>We <strong>build the BL604 Blinky Firmware</strong> the exact same way as BL602…</p>
+<pre><code class="language-bash">#  Download the 3wire branch of lupyuen's bl_iot_sdk
+git clone --recursive --branch 3wire https://github.com/lupyuen/bl_iot_sdk
+cd customer_app/pinedio_blinky
+
+#  Build for BL602 (Should this be BL604?)
+export CONFIG_CHIP_NAME=BL602
+
+#  Where BL602 / BL604 IoT SDK is located
+export BL60X_SDK_PATH=$PWD/../..
+
+#  Build the firmware: build_out/pinedio_blinky.bin
+make
+</code></pre>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_blinky/run.sh">(Source)</a></p>
+<p>Let’s flash the firmware to the board!</p>
 <h1 id="flashing-firmware-to-bl604" class="section-header"><a href="#flashing-firmware-to-bl604">3 Flashing Firmware To BL604</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-zoom.jpg" alt="" /></p>
@@ -151,6 +205,9 @@
 <p><img src="https://lupyuen.github.io/images/pinedio-display2.jpg" alt="" /></p>
 <h1 id="9-bit-spi" class="section-header"><a href="#9-bit-spi">7 9-Bit SPI?</a></h1>
 <p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/st7789-4wire.jpg" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/st7789-3wire.jpg" alt="" /></p>
 <h1 id="arduino-gfx-ported-to-bl604" class="section-header"><a href="#arduino-gfx-ported-to-bl604">8 Arduino GFX Ported To BL604</a></h1>
 <p>TODO</p>
 <p>Bl602 book, Created from scratch with few official docs, But lots of experimentation and reading the SDK code</p>
