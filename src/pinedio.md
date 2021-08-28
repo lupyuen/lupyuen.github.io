@@ -413,29 +413,43 @@ Yep everything we do to `DISPLAY_CS_PIN` (GPIO 20), we do the same to `DISPLAY_D
 
 We'll learn why in the next chapter.
 
+![PineDio Stack with Logic Analyser](https://lupyuen.github.io/images/pinedio-logic.jpg)
+
 # Logic Analyser
 
-_Always have a Logic Analyser ready when testing Prototype Hardware!_
+_When testing Prototype Hardware... Always have a Logic Analyser ready! (Pic above)_
 
-TODO
+Why? Because we'll hit a baffling signalling problem when we test SPI on PineDio Stack.
 
-![](https://lupyuen.github.io/images/pinedio-gpio2.jpg)
+_How do we capture the data transferred over the SPI Port?_
 
-TODO
+PineDio Stack's __GPIO Connector__ (at right) exposes the SPI Pins: SDO _(formerly MOSI)_, SDI _(formerly MISO)_ and SCK
 
-![](https://lupyuen.github.io/images/pinedio-logic.jpg)
+![PineDio Stack GPIO Connector](https://lupyuen.github.io/images/pinedio-gpio2.jpg)
 
-TODO11
+We __connect our Logic Analyser__ to the GPIO Connector like so...
 
-![](https://lupyuen.github.io/images/pinedio-logic2.jpg)
+![Logic Analyser connected to PineDio Stack](https://lupyuen.github.io/images/pinedio-logic2.jpg)
 
-TODO15
+_What about the ST7789 Chip Select: GPIO 20?_
 
-![](https://lupyuen.github.io/images/pinedio-shadow.png)
+Unfortunately __GPIO 20 is not exposed__ on the GPIO Connector.
+
+But remember: Everything we do to GPIO 20, we __do the same to GPIO 5!__
+
+__GPIO 5 is exposed__ on the GPIO Connector and it mirrors the GPIO High / Low state of GPIO 20.
+
+Thus we simply connect our Logic Analyser to __GPIO 5 as the Chip Select Pin!__ (Pic above)
+
+Let's look at the data collected by our Logic Analyser...
+
+![GPIO 20 is mirrored to GPIO 5](https://lupyuen.github.io/images/pinedio-shadow.png)
 
 # SPI Pins Are Swapped
 
 TODO
+
+![](https://lupyuen.github.io/images/pinedio-mosi.png)
 
 From [`pinedio_st7789/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/demo.c#L53-L117)
 
@@ -443,6 +457,12 @@ From [`pinedio_st7789/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/3wire/
 //  Note: We must swap MISO and MOSI to comply with the SPI Pin Definitions in BL602 / BL604 Reference Manual
 int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);
 ```
+
+TODO
+
+![](https://lupyuen.github.io/images/pinedio-swap3.png)
+
+TODO
 
 Backward compatible, Spi quirks
 
@@ -455,16 +475,6 @@ TODO18
 ![](https://lupyuen.github.io/images/pinedio-swap2.png)
 
 TODO19
-
-![](https://lupyuen.github.io/images/pinedio-swap3.png)
-
-TODO9
-
-![](https://lupyuen.github.io/images/pinedio-mosi.png)
-
-TODO10
-
-![](https://lupyuen.github.io/images/pinedio-mosi2.png)
 
 # ST7789 Display
 
