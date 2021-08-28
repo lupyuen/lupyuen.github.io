@@ -206,9 +206,9 @@ Now that the Backlight GPIO is OK, let's test something more sophisticated: SPI!
 
 # BL604 SPI
 
-_Why test SPI?_
+_Why test SPI on PineDio Stack?_
 
-SPI is the Data Bus that __connects the key components__ of PineDio Stack...
+Because SPI is the Data Bus that __connects the key components__ of PineDio Stack...
 
 1.  __SPI Flash__
 
@@ -216,51 +216,53 @@ SPI is the Data Bus that __connects the key components__ of PineDio Stack...
 
 1.  __LoRa SX1262 Transceiver__
 
-TODO
+![SPI Bus on PineDio Stack](https://lupyuen.github.io/images/pinedio-spi.jpg)
 
-Note that SPI Flash, ST7789 and SX1262 are connected to the __same GPIO Pins__ for SDO _(formerly MOSI)_, SDI _(formerly MISO)_ and SCK.
+SPI Flash, ST7789 and SX1262 are connected to the __same GPIO Pins__ for SDO _(formerly MOSI)_, SDI _(formerly MISO)_ and SCK.
 
 [(More about SDO and SDI)](https://www.oshwa.org/a-resolution-to-redefine-spi-signal-names)
 
 _But won't BL604 get confused by the SPI crosstalk?_
 
-Nope because SPI Flash, ST7789 and SX1262 are connected to __different GPIO Pins for Chip Select__.
+Nope because SPI Flash, ST7789 and SX1262 are connected to __different Chip Select Pins__.
 
 When our firmware talks to an SPI Peripheral (like ST7789), we shall set the peripheral's __Chip Select Pin__ to __Low__.
 
-(Our firmware needs to set the Chip Select Pins to High when idle)
+(Our firmware shall set the Chip Select Pins to High when idle)
 
 _How shall we code the firmware for testing SPI?_
 
 The same way as BL602... By calling the __BL602 / BL604 IoT SDK__!
 
-We start by __defining the GPIOs__ used by SPI: [`pinedio_st7789/display.h`](https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/display.h#L45-L70)
+We start by __defining the Shared GPIOs__ for the SPI Peripherals: [`pinedio_st7789/display.h`](https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/display.h#L45-L70)
 
 ```c
-/// GPIO for ST7789 / SX1262 / SPI Flash SDO (MOSI) Pin
+/// GPIO for ST7789 / SX1262 / SPI Flash SDO (MOSI)
 #define DISPLAY_MOSI_PIN 17
 
-/// GPIO for ST7789 / SX1262 / SPI Flash SDI (MISO) Pin
+/// GPIO for ST7789 / SX1262 / SPI Flash SDI (MISO)
 #define DISPLAY_MISO_PIN  0
 
-/// GPIO for ST7789 / SX1262 / SPI Flash SCK Pin
+/// GPIO for ST7789 / SX1262 / SPI Flash SCK
 #define DISPLAY_SCK_PIN  11
 ```
 
 Followed by the __Chip Select GPIOs__ for each SPI Peripheral...
 
 ```c
-/// GPIO for SPI Flash Chip Select Pin. We must set this to High to deselect SPI Flash.
+/// GPIO for SPI Flash Chip Select. We must set this to High to deselect SPI Flash.
 #define FLASH_CS_PIN 14
 
-/// GPIO for SX1262 SPI Chip Select Pin. We must set this to High to deselect SX1262.
+/// GPIO for SX1262 SPI Chip Select. We must set this to High to deselect SX1262.
 #define SX1262_CS_PIN 15
 
-/// GPIO for ST7789 SPI Chip Select Pin. We control Chip Select ourselves via GPIO, not SPI.
+/// GPIO for ST7789 SPI Chip Select. We control Chip Select ourselves via GPIO, not SPI.
 #define DISPLAY_CS_PIN   20
 ```
 
-The SPI Functions from the BL604 IoT SDK need us to specify a Chip Select GPIO. Since we're __controlling Chip Select ourselves__, we'll assign __GPIO 8__ as the Unused Chip Select...
+The SPI Functions from the BL604 IoT SDK need us to specify a Chip Select GPIO.
+
+Since we're __controlling Chip Select ourselves__, we'll assign __GPIO 8__ as the Unused Chip Select...
 
 ```c
 /// GPIO for unused SPI Chip Select Pin. Unused because we control Chip Select ourselves via GPIO, not SPI.
@@ -273,9 +275,9 @@ The SPI Functions from the BL604 IoT SDK need us to specify a Chip Select GPIO. 
 #define DISPLAY_BLK_PIN  21
 ```
 
-(GPIO 8 selects the Flashing Mode when BL604 is powered on, so GPIO 8 is normally unused)
+(GPIO 8 selects the Flashing Mode when BL604 is booting, so GPIO 8 is normally unused)
 
-We use __GPIO 5__ to mirror the GPIO High / Low state of GPIO 20 (ST7789 Chip Select). More about this in a while.
+We use __GPIO 5__ to mirror the GPIO High / Low State of GPIO 20 (ST7789 Chip Select). More about this in a while.
 
 ## Initialise SPI Port
 
@@ -288,19 +290,19 @@ From [`pinedio_st7789/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/3wire/
 static void test_display_init(char *buf, int len, int argc, char **argv) {
   //  Configure Chip Select, Backlight pins as GPIO Output Pins (instead of GPIO Input)
   int rc;
-  rc = bl_gpio_enable_output(DISPLAY_CS_PIN,  0, 0);  assert(rc == 0);
   rc = bl_gpio_enable_output(DISPLAY_BLK_PIN, 0, 0);  assert(rc == 0);
-  rc = bl_gpio_enable_output(DISPLAY_DEBUG_CS_PIN,  0, 0);  assert(rc == 0);  //  TODO: Remove in production
-  rc = bl_gpio_enable_output(FLASH_CS_PIN,  0, 0);  assert(rc == 0);
-  rc = bl_gpio_enable_output(SX1262_CS_PIN, 0, 0);  assert(rc == 0);
+  rc = bl_gpio_enable_output(DISPLAY_CS_PIN,  0, 0);  assert(rc == 0);
+  rc = bl_gpio_enable_output(FLASH_CS_PIN,    0, 0);  assert(rc == 0);
+  rc = bl_gpio_enable_output(SX1262_CS_PIN,   0, 0);  assert(rc == 0);
+  rc = bl_gpio_enable_output(DISPLAY_DEBUG_CS_PIN, 0, 0);  assert(rc == 0);
 ```
 
 TODO
 
 ```c
   //  Set Chip Select pins to High, to deactivate SPI Flash, SX1262 and ST7789
-  rc = bl_gpio_output_set(FLASH_CS_PIN, 1);  assert(rc == 0);
-  rc = bl_gpio_output_set(SX1262_CS_PIN, 1);  assert(rc == 0);
+  rc = bl_gpio_output_set(FLASH_CS_PIN,   1);  assert(rc == 0);
+  rc = bl_gpio_output_set(SX1262_CS_PIN,  1);  assert(rc == 0);
   rc = bl_gpio_output_set(DISPLAY_CS_PIN, 1);  assert(rc == 0);
   rc = bl_gpio_output_set(DISPLAY_DEBUG_CS_PIN, 1);  assert(rc == 0);
 ```
