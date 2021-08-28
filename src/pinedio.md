@@ -478,11 +478,15 @@ TODO
 
 _This SPI Swapping Problem sounds familiar...?_
 
-Yep if you have been following my BL602 Adventures...
+Yep if you have been following my BL602 Adventures, we've seen this SPI Swapping Problem for BL602...
 
 TODO
 
-Backward compatible, Spi quirks
+So I'm happy to confirm: __BL604 is 100% compatible with BL602__... Right down to the SPI Quirks!
+
+TODO
+
+Without change in hardware, our firmware would need to swap the pins
 
 TODO17
 
