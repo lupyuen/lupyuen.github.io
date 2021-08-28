@@ -239,7 +239,7 @@ make
 <p><img src="https://lupyuen.github.io/images/pinedio-zoom.jpg" alt="PineDio Stack BL604 with LoRa SX1262 Transceiver" /></p>
 <h1 id="bl604-spi" class="section-header"><a href="#bl604-spi">4 BL604 SPI</a></h1>
 <p><em>Why test SPI?</em></p>
-<p>SPI is the critical Data Bus that <strong>connects the key components</strong> of PineDio Stack…</p>
+<p>SPI is the Data Bus that <strong>connects the key components</strong> of PineDio Stack…</p>
 <ol>
 <li>
 <p><strong>SPI Flash</strong></p>
@@ -252,7 +252,15 @@ make
 </li>
 </ol>
 <p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/display.h#L45-L70"><code>pinedio_st7789/display.h</code></a></p>
+<p>Note that SPI Flash, ST7789 and SX1262 are connected to the <strong>same GPIO Pins</strong> for SDO <em>(formerly MOSI)</em>, SDI <em>(formerly MISO)</em> and SCK.</p>
+<p><a href="https://www.oshwa.org/a-resolution-to-redefine-spi-signal-names">(More about SDO and SDI)</a></p>
+<p><em>But won’t BL604 get confused by the SPI crosstalk?</em></p>
+<p>Nope because SPI Flash, ST7789 and SX1262 are connected to <strong>different GPIO Pins for Chip Select</strong>.</p>
+<p>When BL604 talks to an SPI Peripheral (like ST7789), it sets the peripheral’s <strong>Chip Select Pin</strong> to <strong>Low</strong>.</p>
+<p>(The Chip Select Pins are High when idle)</p>
+<p><em>How shall we code the firmware for testing SPI?</em></p>
+<p>The same way as BL602… By calling the <strong>BL602 / BL604 IoT SDK</strong>!</p>
+<p>We start by <strong>defining the GPIOs</strong> used by SPI: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/display.h#L45-L70"><code>pinedio_st7789/display.h</code></a></p>
 <pre><code class="language-c">/// GPIO for ST7789 / SX1262 / SPI Flash SDO (MOSI) Pin
 #define DISPLAY_MOSI_PIN 17
 
@@ -262,7 +270,7 @@ make
 /// GPIO for ST7789 / SX1262 / SPI Flash SCK Pin
 #define DISPLAY_SCK_PIN  11
 </code></pre>
-<p>TODO</p>
+<p>Followed by the <strong>Chip Select GPIOs</strong> for each SPI Peripheral…</p>
 <pre><code class="language-c">/// GPIO for SPI Flash Chip Select Pin. We must set this to High to deselect SPI Flash.
 #define FLASH_CS_PIN 14
 
@@ -272,7 +280,7 @@ make
 /// GPIO for ST7789 SPI Chip Select Pin. We control Chip Select ourselves via GPIO, not SPI.
 #define DISPLAY_CS_PIN   20
 </code></pre>
-<p>TODO</p>
+<p>The SPI Functions from the BL604 IoT SDK need us to specify a Chip Select GPIO. Since we’re <strong>controlling Chip Select ourselves</strong>, we’ll assign <strong>GPIO 8</strong> as the Unused Chip Select…</p>
 <pre><code class="language-c">/// GPIO for unused SPI Chip Select Pin. Unused because we control Chip Select ourselves via GPIO, not SPI.
 #define DISPLAY_UNUSED_CS_PIN 8
 
@@ -282,6 +290,8 @@ make
 /// GPIO for Backlight
 #define DISPLAY_BLK_PIN  21
 </code></pre>
+<p>(GPIO 8 selects the Flashing Mode when BL604 is powered on, so GPIO 8 is normally unused)</p>
+<p>We use <strong>GPIO 5</strong> to mirror the GPIO High / Low state of GPIO 20 (ST7789 Chip Select). More about this in a while.</p>
 <h2 id="initialise-spi-port" class="section-header"><a href="#initialise-spi-port">4.1 Initialise SPI Port</a></h2>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/demo.c#L53-L117"><code>pinedio_st7789/demo.c</code></a></p>
 <pre><code class="language-c">/// Command to init the display
