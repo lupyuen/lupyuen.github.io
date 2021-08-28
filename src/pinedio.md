@@ -431,7 +431,7 @@ We __connect our Logic Analyser__ to the GPIO Connector like so...
 
 ![Logic Analyser connected to PineDio Stack](https://lupyuen.github.io/images/pinedio-logic2.jpg)
 
-_What about the ST7789 Chip Select: GPIO 20?_
+_What about the ST7789 Chip Select Pin: GPIO 20?_
 
 Unfortunately __GPIO 20 is not exposed__ on the GPIO Connector.
 
