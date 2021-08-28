@@ -305,6 +305,9 @@ TODO
   rc = bl_gpio_output_set(SX1262_CS_PIN,  1);  assert(rc == 0);
   rc = bl_gpio_output_set(DISPLAY_CS_PIN, 1);  assert(rc == 0);
   rc = bl_gpio_output_set(DISPLAY_DEBUG_CS_PIN, 1);  assert(rc == 0);
+
+  //  Switch on the backlight
+  rc = bl_gpio_output_set(DISPLAY_BLK_PIN, 0); assert(rc == 0);
 ```
 
 TODO
