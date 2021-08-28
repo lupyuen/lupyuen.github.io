@@ -36,7 +36,7 @@ After some shipping delays at Shenzhen (due to flooding or pandemic?) I received
 
 __A Solar Panel!__
 
-(Yeah Singapore is sunny... Is this mockery? 🤔)
+(Yeah Singapore is super sunny... Is this mockery? 🤔)
 
 But a Solar Panel with a __JTAG Cable__? That's highly unusual. 
 
