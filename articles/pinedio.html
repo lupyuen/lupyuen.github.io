@@ -385,12 +385,13 @@ static int transmit_packed(const uint8_t *data, uint16_t len) {
 }
 </code></pre>
 <p>That’s how we transmit and receive data over SPI!</p>
-<p><em>Why did we use the BL604 DMA Controller for the SPI Transfer?</em></p>
+<p><em>Why did we use BL604’s Direct Memory Access (DMA) Controller for the SPI Transfer?</em></p>
 <p>Because we want the SPI Transfer to be <strong>executed in the background</strong>, freeing up the CPU for other concurrent tasks.</p>
-<p>The <strong>DMA Controller executes the SPI Transfer</strong> on behalf of the CPU, shuffling data between the Transmit / Receive Buffers and the SPI Peripheral (ST7789).</p>
+<p>BL604’s <strong>DMA Controller executes the SPI Transfer</strong> on behalf of the CPU, shuffling data between the Transmit / Receive Buffers and the SPI Peripheral (ST7789).</p>
 <p><em>What is <code>DISPLAY_DEBUG_CS_PIN</code>? Why is it mirroring <code>DISPLAY_CS_PIN</code>?</em></p>
 <p>Yep everything we do to <code>DISPLAY_CS_PIN</code> (GPIO 20), we do the same to <code>DISPLAY_DEBUG_CS_PIN</code> (GPIO 5).</p>
 <p>We’ll learn why in the next chapter.</p>
+<p><a href="https://lupyuen.github.io/articles/spi#spi-with-direct-memory-access">(More about DMA)</a></p>
 <h1 id="logic-analyser" class="section-header"><a href="#logic-analyser">5 Logic Analyser</a></h1>
 <p><em>Always have a Logic Analyser ready when testing Prototype Hardware!</em></p>
 <p>TODO</p>
