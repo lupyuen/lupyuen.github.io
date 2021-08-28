@@ -18,7 +18,7 @@ The kind (and super cool) folks at Pine64 told me that I would be receiving a fu
 
 1.  And BL604 is supposed to be __100% compatible with BL602__
 
-    (How compatible? We'll find out in a while!)
+    (Is it really 100% compatible? We'll find out in a while!)
 
 1.  Has an __ST7789 SPI Display__
 
@@ -54,6 +54,8 @@ We shall explore PineDio Stack ourselves... And __document all our findings__ fo
 
 # PineDio Stack BL604
 
+_What's on the underside of PineDio Stack?_
+
 TODO
 
 # BL604 Blinky
@@ -61,6 +63,12 @@ TODO
 _What's the first thing that we run on a brand new prototype board?_
 
 __Blinky Firmware__ of course! (Yep the firmware that blinks the LED)
+
+TODO
+
+The BL604 code is __100% identical__ to the BL602 version. Except for the GPIO Pin Number...
+
+# Flashing Firmware To BL604
 
 TODO
 
