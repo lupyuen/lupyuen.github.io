@@ -158,6 +158,10 @@ Remove the battery
 
 Missing jumper, No reset button
 
+-   [__Watch the Demo Video on YouTube__](https://youtu.be/vdRqhQ08uxU)
+
+Display is OK
+
 # BL604 SPI
 
 TODO
@@ -199,6 +203,10 @@ TODO
 # Arduino GFX Ported To BL604
 
 TODO
+
+Let's port @moononournation's awesome 9-bit-banging GFX Library to #BL604 ... And compare the SPI Output with a Logic Analyser
+
+-   [__`moononournation / Arduino_GFX`__](https://github.com/moononournation/Arduino_GFX)
 
 Bl602 book, Created from scratch with few official docs, But lots of experimentation and reading the SDK code
 
