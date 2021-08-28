@@ -204,6 +204,16 @@ Now that the Backlight GPIO is OK, let's test something more sophisticated: SPI!
 
 # BL604 SPI
 
+_Why test SPI?_
+
+SPI is the critical Data Bus that __connects the key components__ of PineDio Stack...
+
+1.  __SPI Flash__
+
+1.  __ST7789 Display__
+
+1.  __LoRa SX1262 Transceiver__
+
 TODO
 
 Backward compatible, Spi quirks
