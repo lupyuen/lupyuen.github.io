@@ -60,7 +60,7 @@ Unscrewing the board (from the glue sticks?) reveals the __LCD Display Connector
 
 ![PineDio Stack Underside](https://lupyuen.github.io/images/pinedio-back.jpg)
 
-The connector matches the __ST7789 SPI Display__ that was shipped with PineDio Stack...
+The connector matches this familiar __ST7789 SPI Display__ that was shipped with PineDio Stack...
 
 ![ST7789 SPI Display](https://lupyuen.github.io/images/pinedio-display3.jpg)
 
@@ -80,9 +80,73 @@ _What's the first thing that we run on a brand new prototype board?_
 
 __Blinky Firmware__ of course! (Yep the firmware that blinks the LED)
 
-TODO
+```c
+/// PineDio Stack LCD Backlight is connected on GPIO 21
+#define LED_GPIO 21
 
-The BL604 code is __100% identical__ to the BL602 version. Except for the GPIO Pin Number...
+/// Blink the LED
+void blinky(char *buf, int len, int argc, char **argv) {
+  //  Show a message on the serial console
+  puts("Hello from Blinky!");
+
+  //  Configure the LED GPIO for output (instead of input)
+  int rc = bl_gpio_enable_output(
+    LED_GPIO,  //  GPIO pin number
+    0,         //  No GPIO pullup
+    0          //  No GPIO pulldown
+  );
+  assert(rc == 0);  //  Halt on error
+
+  //  Blink the LED 5 times
+  for (int i = 0; i < 10; i++) {
+
+    //  Toggle the LED GPIO between 0 (on) and 1 (off)
+    rc = bl_gpio_output_set(  //  Set the GPIO output (from BL602 GPIO HAL)
+      LED_GPIO,               //  GPIO pin number
+      i % 2                   //  0 for low, 1 for high
+    );
+    assert(rc == 0);  //  Halt on error
+
+    //  Sleep 1 second
+    time_delay(                 //  Sleep by number of ticks (from NimBLE Porting Layer)
+      time_ms_to_ticks32(1000)  //  Convert 1,000 milliseconds to ticks (from NimBLE Porting Layer)
+    );
+  }
+  //  Return to the command-line interface
+}
+```
+
+[(Source)](https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_blinky/pinedio_blinky/demo.c)
+
+This BL604 Blinky code is __100% identical__ to the [BL602 version of Blinky](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_blinky/sdk_app_blinky/demo.c). Except for the GPIO Pin Number...
+
+```c
+/// PineDio Stack LCD Backlight is connected on GPIO 21
+#define LED_GPIO 21
+```
+
+(We're blinking the Backlight of the ST7789 Display)
+
+We __build the BL604 Blinky Firmware__ the exact same way as BL602...
+
+```bash
+#  Download the 3wire branch of lupyuen's bl_iot_sdk
+git clone --recursive --branch 3wire https://github.com/lupyuen/bl_iot_sdk
+cd customer_app/pinedio_blinky
+
+#  Build for BL602 (Should this be BL604?)
+export CONFIG_CHIP_NAME=BL602
+
+#  Where BL602 / BL604 IoT SDK is located
+export BL60X_SDK_PATH=$PWD/../..
+
+#  Build the firmware: build_out/pinedio_blinky.bin
+make
+```
+
+[(Source)](https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_blinky/run.sh)
+
+Let's flash the firmware to the board!
 
 # Flashing Firmware To BL604
 
@@ -125,6 +189,12 @@ TODO
 # 9-Bit SPI?
 
 TODO
+
+![](https://lupyuen.github.io/images/st7789-4wire.jpg)
+
+TODO
+
+![](https://lupyuen.github.io/images/st7789-3wire.jpg)
 
 # Arduino GFX Ported To BL604
 
