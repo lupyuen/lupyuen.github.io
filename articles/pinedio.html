@@ -320,7 +320,7 @@ static void test_display_init(char *buf, int len, int argc, char **argv) {
   //  Note: We must swap MISO and MOSI to comply with the SPI Pin Definitions in BL602 / BL604 Reference Manual
   rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);
 </code></pre>
-<p>(We’ll cover <code>GLB_Swap_SPI_0_MOSI_With_MISO</code> in a while)</p>
+<p>(We’ll cover <code>GLB_Swap_SPI</code> in a while)</p>
 <p>Finally we <strong>configure the SPI Port</strong>…</p>
 <pre><code class="language-c">  //  Configure the SPI Port
   rc = spi_init(
