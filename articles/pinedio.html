@@ -312,6 +312,9 @@ static void test_display_init(char *buf, int len, int argc, char **argv) {
   rc = bl_gpio_output_set(SX1262_CS_PIN,  1);  assert(rc == 0);
   rc = bl_gpio_output_set(DISPLAY_CS_PIN, 1);  assert(rc == 0);
   rc = bl_gpio_output_set(DISPLAY_DEBUG_CS_PIN, 1);  assert(rc == 0);
+
+  //  Switch on the backlight
+  rc = bl_gpio_output_set(DISPLAY_BLK_PIN, 0); assert(rc == 0);
 </code></pre>
 <p>TODO</p>
 <pre><code class="language-c">  //  Note: We must swap MISO and MOSI to comply with the SPI Pin Definitions in BL602 / BL604 Reference Manual
