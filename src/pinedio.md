@@ -2,7 +2,7 @@
 
 📝 _3 Sep 2021_
 
-_What's it like to create __Open Source Software__ for brand new __Prototype Hardware__?_
+_What's it like to create __Open Source Software__ (and firmware) for brand new __Prototype Hardware__?_
 
 _What interesting challenges will we encounter?_
 
