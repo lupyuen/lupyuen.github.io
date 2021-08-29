@@ -585,7 +585,7 @@ _How exactly do we pack 9-bit data into chunks of 9 bytes?_
 
 Here's the __9-Bit Packing Logic__ (please pardon my peculiar pseudocode)...
 
-> To pack 9-bit data into bytes, we do this for every 8 bytes of unpacked data (Most Significant Bit first)
+To pack 9-bit data into bytes, we do this for every 8 bytes of unpacked data (Most Significant Bit first)...
 
 > If _Unpacked Length mod 8_ is...
 
@@ -615,11 +615,11 @@ Here's the __9-Bit Packing Logic__ (please pardon my peculiar pseudocode)...
 > __DC__ → __P0__ bit 0 <br>
 > __U__ bits 0 to 7 → __P1__ bits 0 to 7 <br>
 
-> Where... <br>
->   __DC__ is the Data / Command bit (0 = command, 1 = data) <br>
->   __U__ is the unpacked 8-bit data byte <br>
->   __P0__ is the current byte of the packed data <br>
->   __P1__ is the next byte of the packed data
+Where...
+-   __DC__ is the Data / Command bit (0 = command, 1 = data)
+-   __U__ is the unpacked 8-bit data byte
+-   __P0__ is the current byte of the packed data
+-   __P1__ is the next byte of the packed data
 
 [(Source)](https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/display.c#L290-L395)
 
