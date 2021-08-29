@@ -480,6 +480,12 @@ After applying the fix, BL604 swaps the SDO and SDI pins... And __BL604 transmit
 
 ![SDO (MOSI) is OK!](https://lupyuen.github.io/images/pinedio-swap3.png)
 
+_But the [BL604 Reference Manual](https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en) says that GPIO 17 is SDO (MOSI)... Not SDI (MISO) right?_
+
+![GPIO 17 is SDO (MOSI)](https://lupyuen.github.io/images/pinedio-swap4.png)
+
+TODO
+
 _This SPI Pin Swap Problem sounds familiar...?_
 
 Yep if you have been following my BL602 Adventures, we've seen this __SPI Pin Swap Problem on BL602__...
