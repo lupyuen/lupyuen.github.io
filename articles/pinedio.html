@@ -494,6 +494,54 @@ int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);
 <p><img src="https://lupyuen.github.io/images/st7789-3wire.jpg" alt="3-Wire ST7789 Interface" /></p>
 <p>Thus we’re sending <strong>8-bit data over SPI</strong>… But it magically appears as <strong>9-bit data to ST7789!</strong></p>
 <h2 id="packing-9-bit-data" class="section-header"><a href="#packing-9-bit-data">8.1 Packing 9-Bit Data</a></h2>
+<p><em>How exactly do we pack 9-bit data into chunks of 9 bytes?</em></p>
+<p>Here’s the <strong>9-Bit Packing Logic</strong> (please pardon my peculiar pseudocode)…</p>
+<blockquote>
+<p>To pack 9-bit data into bytes, we do this for every 8 bytes of unpacked data (Most Significant Bit first)</p>
+</blockquote>
+<blockquote>
+<p>If <em>Unpacked Length mod 8</em> is…</p>
+</blockquote>
+<blockquote>
+<p><em>0:</em> <br>
+<strong>DC</strong> → <strong>P0</strong> bit 7 <br>
+<strong>U</strong> bits 1 to 7 → <strong>P0</strong> bits 0 to 6 <br>
+<strong>U</strong> bits 0 to 0 → <strong>P1</strong> bits 7 to 7 <br></p>
+</blockquote>
+<blockquote>
+<p><em>1:</em> <br>
+<strong>DC</strong> → <strong>P0</strong> bit 6 <br>
+<strong>U</strong> bits 2 to 7 → <strong>P0</strong> bits 0 to 5 <br>
+<strong>U</strong> bits 0 to 1 → <strong>P1</strong> bits 6 to 7 <br></p>
+</blockquote>
+<blockquote>
+<p><em>2:</em> <br>
+<strong>DC</strong> → <strong>P0</strong> bit 5 <br>
+<strong>U</strong> bits 3 to 7 → <strong>P0</strong> bits 0 to 4 <br>
+<strong>U</strong> bits 0 to 2 → <strong>P1</strong> bits 5 to 7 <br></p>
+</blockquote>
+<blockquote>
+<p>…</p>
+</blockquote>
+<blockquote>
+<p><em>6:</em> <br>
+<strong>DC</strong> → <strong>P0</strong> bit 1 <br>
+<strong>U</strong> bits 7 to 7 → <strong>P0</strong> bits 0 to 0 <br>
+<strong>U</strong> bits 0 to 6 → <strong>P1</strong> bits 1 to 7 <br></p>
+</blockquote>
+<blockquote>
+<p><em>7:</em> <br>
+<strong>DC</strong> → <strong>P0</strong> bit 0 <br>
+<strong>U</strong> bits 0 to 7 → <strong>P1</strong> bits 0 to 7 <br></p>
+</blockquote>
+<blockquote>
+<p>Where… <br>
+<strong>DC</strong> is the Data / Command bit (0 = command, 1 = data) <br>
+<strong>U</strong> is the unpacked 8-bit data byte <br>
+<strong>P0</strong> is the current byte of the packed data <br>
+<strong>P1</strong> is the next byte of the packed data</p>
+</blockquote>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/display.c#L290-L395">(Source)</a></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-pack.png" alt="" /></p>
 <p>TODO12</p>
@@ -552,6 +600,7 @@ int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);
 <p><a href="https://twitter.com/MisterTechBlog"><strong>Please let us know</strong></a> if you’re keen to help! 🙏</p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">12 What’s Next</a></h1>
 <p>TODO</p>
+<p>Thanks to</p>
 <p>And soon we shall test all this on <a href="https://www.pine64.org/2021/08/15/introducing-the-pinenote/"><strong>PineDio Stack BL604 with LoRa SX1262</strong></a>… As we explore whether it’s feasible to teach Embedded Programming for BL602 and BL604.</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
