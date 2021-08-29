@@ -40,7 +40,7 @@ __A Solar Panel!__
 
 But a Solar Panel with a __JTAG Cable__? That's highly unusual. 
 
-Opening the gadget reveals the hidden treasure inside: __PineDio Stack BL604 Board!__
+Opening the gadget reveals the hidden treasure inside: [__PineDio Stack BL604 Board!__](https://www.pine64.org/2021/08/15/introducing-the-pinenote/)
 
 ![Inside the Solar Panel: PineDio Stack BL604 Board](https://lupyuen.github.io/images/pinedio-inside.jpg)
 
@@ -687,6 +687,8 @@ Our Logic Analyser shows that the __9-bit ST7789 data is correctly Bit-Banged__ 
 
 ![Arduino GFX with Logic Analyser](https://lupyuen.github.io/images/pinedio-gfx2.png)
 
+(We're using the 9-Bit SPI Decoder with our Logic Analyser)
+
 Guess what? __Nothing appears on PineDio Stack's ST7789 Display!__ 😭
 
 To be super sure, we __tested Arduino GFX on Linux__ and verified the data...
@@ -699,9 +701,23 @@ Now we're super stuck with our ST7789 testing!
 
 # Problem With ST7789?
 
-TODO
+_Wait a minute... Is there a switch that configures ST7789 Display for 3-Wire or 4-Wire Interface?_
 
-![](https://lupyuen.github.io/images/pinedio-im.png)
+__Pins IM0 to IM3__ on ST7789 will select the __3-Wire or 4-Wire Interface__...
+
+![Configuring ST7789 Display for 3-Wire Interface](https://lupyuen.github.io/images/pinedio-im.png)
+
+[(Source)](https://www.rhydolabz.com/documents/33/ST7789.pdf)
+
+So for 3-Wire Interface, we should hardwire the pins as...
+
+| IM3 | IM2 | IM1 | IM0 |
+|:-----:|:-----:|:-----:|:-----:|
+|  `1`  |  `1`  |  `0`  |  `1`  |
+
+_Maybe Pins IM0 to IM3 are not hard-wired as such?_
+
+That's a possibility... Which we're checking with the Display Makers now.
 
 # Seeking Volunteers!
 
@@ -729,10 +745,6 @@ But in the meantime, JF and I have __plenty to test on PineDio Stack__...
 TODO
 
 Thanks to
-
-And soon we shall test all this on [__PineDio Stack BL604 with LoRa SX1262__](https://www.pine64.org/2021/08/15/introducing-the-pinenote/)... As we explore whether it's feasible to teach Embedded Programming for BL602 and BL604.
-
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
