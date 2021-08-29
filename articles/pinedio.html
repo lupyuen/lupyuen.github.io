@@ -467,6 +467,9 @@ int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);
 <p>We flip this pin to Low to indicate that we’re sending Command Bytes to the ST7789 Display, and flip to High for Data Bytes.</p>
 <p>We call this the <strong>4-Wire Interface</strong> for ST7789: SDO, SDI, SCK and DC.</p>
 <p><em>Data / Command (DC) Pin is missing on PineDio Stack. So we’re using the 3-Wire Interface?</em></p>
+<p>Yep ST7789 supports a <strong>3-Wire Interface</strong>: SDO, SDI and SCK. (Without DC)</p>
+<p><img src="https://lupyuen.github.io/images/pinedio-3wire.png" alt="ST7789 3-Wire Interface" /></p>
+<p>The trick</p>
 <p>TODO</p>
 <h1 id="9-bit-spi-for-st7789" class="section-header"><a href="#9-bit-spi-for-st7789">8 9-Bit SPI for ST7789</a></h1>
 <p>TODO</p>
