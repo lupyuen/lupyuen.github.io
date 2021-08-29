@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>PineDio Stack BL604 RISC-V Board: Testing The Prototype</title>
+            <link>https://lupyuen.github.io/articles/pinedio</link>
+            <description><![CDATA[What's it like to create Open Source Software for brand new prototype hardware? Read on to find out!]]></description>
+            <guid>https://lupyuen.github.io/articles/pinedio</guid>
+            <pubDate>Sun, 29 Aug 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Rust on RISC-V BL602: Simulated with WebAssembly</title>
             <link>https://lupyuen.github.io/articles/rustsim</link>
             <description><![CDATA[Can we run Rust Firmware for BL602 RISC-V SoC in a Web Browser... Simulated with WebAssembly?]]></description>
