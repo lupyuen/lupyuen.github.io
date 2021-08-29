@@ -529,6 +529,12 @@ We call this the __4-Wire Interface__ for ST7789: SDO, SDI, SCK and DC.
 
 _Data / Command (DC) Pin is missing on PineDio Stack. So we're using the 3-Wire Interface?_
 
+Yep ST7789 supports a __3-Wire Interface__: SDO, SDI and SCK. (Without DC)
+
+![ST7789 3-Wire Interface](https://lupyuen.github.io/images/pinedio-3wire.png)
+
+The trick
+
 TODO
 
 # 9-Bit SPI for ST7789
