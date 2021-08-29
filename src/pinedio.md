@@ -504,11 +504,24 @@ All PineDio Stack Developers should ensure that __GLB_Swap_SPI_0_MOSI_With_MISO 
 
 [(Here's an example)](https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/demo.c#L53-L117)
 
+![PineDio Stack ST7789 Display](https://lupyuen.github.io/images/pinedio-display2.jpg)
+
 # ST7789 Display
 
-TODO
+Now that PineDio Stack SPI is OK, let's __draw something on the ST7789 Display__!
 
-![](https://lupyuen.github.io/images/pinedio-display2.jpg)
+The schematic above says that the ST7789 SPI Display is connected on these pins...
+-   __GPIO 20:__ SPI Chip Select
+
+-   __GPIO 0:__ SPI SDI _(MISO)_
+
+-   __GPIO 11:__ SPI SCK
+
+-   __GPIO 17:__ SPI SDO _(MOSI)_
+
+_Wait are we missing a pin?_
+
+TODO
 
 # 9-Bit SPI for ST7789
 
