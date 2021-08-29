@@ -309,7 +309,10 @@ Next we __set the Chip Select GPIOs to High__ to deselect all SPI Peripherals...
   //  Switch on the backlight
   rc = bl_gpio_output_set(DISPLAY_BLK_PIN, 0); assert(rc == 0);
 
-  //  Note: We must swap SDO (MOSI) and SDI (MISO) to comply with the SPI Pin Definitions in BL602 / BL604 Reference Manual
+  //  Note: We must swap SDO (MOSI) and 
+  //  SDI (MISO) to comply with the 
+  //  SPI Pin Definitions in BL602 / BL604 
+  //  Reference Manual
   rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);
 ```
 
@@ -447,34 +450,35 @@ Let's look at the data collected by our Logic Analyser...
 
 # SPI Pins Are Swapped
 
-_What happens when BL604 transmits data over SPI?_
+_What appears in the Logic Analyser when BL604 transmits data over SPI?_
 
 Watch what happened the very first time that we transmitted SPI data from BL604 to ST7789 Display...
 
 ![SDO (MOSI) is flat](https://lupyuen.github.io/images/pinedio-mosi.png)
 
-The top line shows that __SDO _(MOSI)_ is flat__!
+The top line showed that __SDO _(MOSI)_ was flat__...
 
-__No data is flowing out__ from BL604 to ST7789 Display!
+__No data was flowing out__ from BL604 to ST7789 Display!
 
-But SDI _(MISO)_ looks OK...
+Though SDI _(MISO)_ looked OK...
 
-_Maybe SDO and SDI have been swapped?_
+_Maybe SDO and SDI were swapped?_
 
 Thankfully [__JF found the fix__](https://twitter.com/codingfield/status/1430605933714059273)!
 
 ```c
-//  Note: We must swap SDO (MOSI) and SDI (MISO) to comply with the SPI Pin Definitions in BL602 / BL604 Reference Manual
+//  Note: We must swap SDO (MOSI) and 
+//  SDI (MISO) to comply with the 
+//  SPI Pin Definitions in BL602 / BL604 
+//  Reference Manual
 int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);
 ```
 
 [(Source)](https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/demo.c#L53-L117)
 
-TODO
+After applying the fix, BL604 swaps the SDO and SDI pins... And __BL604 transmits SPI data correctly to ST7789__!
 
 ![SDO (MOSI) is OK!](https://lupyuen.github.io/images/pinedio-swap3.png)
-
-TODO
 
 _This SPI Pin Swap Problem sounds familiar...?_
 
@@ -490,7 +494,9 @@ _How does this SPI Pin Swap Problem affect PineDio Stack Developers?_
 
 To work around the SPI Pin Swap Problem...
 
-All PineDio Stack Developers should ensure that `GLB_Swap_SPI_0_MOSI_With_MISO` is always called before initialising the SPI Port.
+All PineDio Stack Developers should ensure that __GLB_Swap_SPI_0_MOSI_With_MISO is always called__ before initialising the SPI Port.
+
+[(Here's an example)](https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/demo.c#L53-L117)
 
 # ST7789 Display
 
