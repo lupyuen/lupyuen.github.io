@@ -752,6 +752,8 @@ I hope you will join JF and me as we continue our testing of PineDio Stack!
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
+-   [Discuss this article on Reddit](https://www.reddit.com/r/RISCV/comments/pdrepw/pinedio_stack_bl604_riscv_board_testing_the/)
+
 -   [Read "The RISC-V BL602 / BL604 Book"](https://lupyuen.github.io/articles/book)
 
 -   [Check out my articles](https://lupyuen.github.io)
