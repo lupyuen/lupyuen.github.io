@@ -429,6 +429,9 @@ int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/demo.c#L53-L117">(Source)</a></p>
 <p>After applying the fix, BL604 swaps the SDO and SDI pins… And <strong>BL604 transmits SPI data correctly to ST7789</strong>!</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-swap3.png" alt="SDO (MOSI) is OK!" /></p>
+<p><em>But the <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en">BL604 Reference Manual</a> says that GPIO 17 is SDO (MOSI)… Not SDI (MISO) right?</em></p>
+<p><img src="https://lupyuen.github.io/images/pinedio-swap4.png" alt="GPIO 17 is SDO (MOSI)" /></p>
+<p>TODO</p>
 <p><em>This SPI Pin Swap Problem sounds familiar…?</em></p>
 <p>Yep if you have been following my BL602 Adventures, we’ve seen this <strong>SPI Pin Swap Problem on BL602</strong>…</p>
 <p>TODO</p>
