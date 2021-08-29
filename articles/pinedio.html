@@ -431,12 +431,14 @@ int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);
 <p><img src="https://lupyuen.github.io/images/pinedio-swap3.png" alt="SDO (MOSI) is OK!" /></p>
 <p><em>But the <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en">BL604 Reference Manual</a> says that GPIO 17 is SDO (MOSI)… Not SDI (MISO) right?</em></p>
 <p><img src="https://lupyuen.github.io/images/pinedio-swap4.png" alt="GPIO 17 is SDO (MOSI)" /></p>
-<p>TODO</p>
+<p>Yeah the BL604 Reference Manual says that GPIO 17 is SDO <em>(MOSI)</em>… So we shouldn’t need to call <strong>GLB_Swap_SPI_0_MOSI_With_MISO</strong> to swap the pins.</p>
+<p>But since PineDio Stack was designed for GPIO 17 as SDO <em>(MOSI)</em>, we’ll have to <strong>call GLB_Swap_SPI_0_MOSI_With_MISO in our firmware</strong> to make SPI work.</p>
 <p><em>This SPI Pin Swap Problem sounds familiar…?</em></p>
-<p>Yep if you have been following my BL602 Adventures, we’ve seen this <strong>SPI Pin Swap Problem on BL602</strong>…</p>
-<p>TODO</p>
-<p>So I’m happy to confirm: <strong>BL604 is 100% compatible with BL602</strong>… Right down to the SPI Quirks!</p>
-<p>TODO</p>
+<p>Yep if you’ve been following my BL602 Adventures, we’ve seen this <strong>SPI Pin Swap Problem on BL602</strong>…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/spi#spi-data-pins-are-flipped"><strong>“SPI Data Pins are flipped”</strong></a></li>
+</ul>
+<p>Hence I’m happy to confirm: <strong>BL604 is 100% compatible with BL602</strong>… Right down to the SPI Quirks!</p>
 <p><em>How does this SPI Pin Swap Problem affect PineDio Stack Developers?</em></p>
 <p>To work around the SPI Pin Swap Problem…</p>
 <p>All PineDio Stack Developers should ensure that <strong>GLB_Swap_SPI_0_MOSI_With_MISO is always called</strong> before initialising the SPI Port.</p>
