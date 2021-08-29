@@ -589,7 +589,7 @@ int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);
 <p><strong>Pins IM0 to IM3</strong> on ST7789 will select the <strong>3-Wire or 4-Wire Interface</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-im.png" alt="Configuring ST7789 Display for 3-Wire Interface" /></p>
 <p><a href="https://www.rhydolabz.com/documents/33/ST7789.pdf">(Source)</a></p>
-<p>So for 3-Wire Interface, we should hardwire the pins as…</p>
+<p>So for <strong>3-Wire (9-Bit) Interface</strong>, we should hardwire the pins as…</p>
 <table><thead><tr><th align="center">IM3</th><th align="center">IM2</th><th align="center">IM1</th><th align="center">IM0</th></tr></thead><tbody>
 <tr><td align="center"><code>1</code></td><td align="center"><code>1</code></td><td align="center"><code>0</code></td><td align="center"><code>1</code></td></tr>
 </tbody></table>
