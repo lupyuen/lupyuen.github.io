@@ -744,9 +744,9 @@ But in the meantime, JF and I have __plenty to test on PineDio Stack__...
 
 # What's Next
 
-TODO
+Many Thanks to [__@moononournation__](https://github.com/moononournation) and [__@AndreasDyhrberg__](https://twitter.com/AndreasDyhrberg) for the valuable tips on testing PineDio Stack BL604!
 
-Thanks to
+TODO
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
