@@ -74,7 +74,8 @@
 <li><a href="#logic-analyser">5 Logic Analyser</a><ul></ul></li>
 <li><a href="#spi-pins-are-swapped">6 SPI Pins Are Swapped</a><ul></ul></li>
 <li><a href="#st7789-display">7 ST7789 Display</a><ul></ul></li>
-<li><a href="#9-bit-spi-for-st7789">8 9-Bit SPI for ST7789</a><ul></ul></li>
+<li><a href="#9-bit-spi-for-st7789">8 9-Bit SPI for ST7789</a><ul>
+<li><a href="#packing-9-bit-data">8.1 Packing 9-Bit Data</a><ul></ul></li></ul></li>
 <li><a href="#arduino-gfx-ported-to-bl604">9 Arduino GFX Ported To BL604</a><ul></ul></li>
 <li><a href="#problem-with-st7789">10 Problem With ST7789?</a><ul></ul></li>
 <li><a href="#seeking-volunteers">11 Seeking Volunteers!</a><ul></ul></li>
@@ -481,23 +482,36 @@ int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);
 <p>I guess the PineDio Stack hardware designers wanted to <strong>free up a precious GPIO Pin</strong> for use by other components.</p>
 <p>(And maybe the designers also thought that the 3-Wire Interface is more efficient than the 4-Wire one!)</p>
 <h1 id="9-bit-spi-for-st7789" class="section-header"><a href="#9-bit-spi-for-st7789">8 9-Bit SPI for ST7789</a></h1>
+<p><em>How on earth do we send 9-bit data over 8-bit SPI to ST7789 Display?</em></p>
+<p>OK hear me out… We could pack the 9-bit data into <strong>chunks of 9 bytes.</strong> Then send the chunks over 8-bit SPI.</p>
+<p>(Why 9 bytes? Because 9 bytes = 9 bits x 8)</p>
+<p><em>What if the 9-bit data doesn’t fill up a 9-byte chunk?</em></p>
+<p>We fill up the rest of the chunk with the <strong>ST7789 NOP Command Byte</strong> (0x00).</p>
+<p><em>Show me how?</em></p>
+<p>Previously we did this for the <strong>4-Wire (8-bit) ST7789 Interface</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/st7789-4wire.jpg" alt="4-Wire ST7789 Interface" /></p>
+<p>Now we do this for the <strong>3-Wire (9-bit) ST7789 Interface</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/st7789-3wire.jpg" alt="3-Wire ST7789 Interface" /></p>
+<p>Thus we’re sending <strong>8-bit data over SPI</strong>… But it magically appears as <strong>9-bit data to ST7789!</strong></p>
+<h2 id="packing-9-bit-data" class="section-header"><a href="#packing-9-bit-data">8.1 Packing 9-Bit Data</a></h2>
 <p>TODO</p>
-<p>Logic Analyser 9-bit decoder</p>
-<p><img src="https://lupyuen.github.io/images/st7789-4wire.jpg" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/st7789-3wire.jpg" alt="" /></p>
-<p>TODO8</p>
-<p><img src="https://lupyuen.github.io/images/pinedio-linux.png" alt="" /></p>
-<p>TODO11</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-pack.png" alt="" /></p>
 <p>TODO12</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-pack2.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/pinedio-linux.png" alt="" /></p>
 <p>TODO13</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-pack3.jpg" alt="" /></p>
 <p>TODO14</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-pad.png" alt="" /></p>
 <p>TODO16</p>
-<p><img src="https://lupyuen.github.io/images/pinedio-spreadsheet.png" alt="" /></p>
+<p>We verify the packed data with this spreadsheet…</p>
+<ul>
+<li><a href="https://docs.google.com/spreadsheets/d/1Qy0MjU79s__wzTAFwpTYUUIzLWcrFnKCrvvo_rHamiE/edit?usp=sharing&amp;authuser=0"><strong>Google Sheets Spreadsheet</strong></a></li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/pinedio-spreadsheet.png" alt="Verify the packed data with a spreadsheet" /></p>
+<p>TODO</p>
+<p>Logic Analyser 9-bit decoder</p>
 <h1 id="arduino-gfx-ported-to-bl604" class="section-header"><a href="#arduino-gfx-ported-to-bl604">9 Arduino GFX Ported To BL604</a></h1>
 <p>TODO</p>
 <p>Let’s port @moononournation’s awesome 9-bit-banging GFX Library to #BL604 … And compare the SPI Output with a Logic Analyser</p>
