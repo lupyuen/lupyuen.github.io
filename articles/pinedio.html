@@ -424,17 +424,14 @@ int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-swap3.png" alt="SDO (MOSI) is OK!" /></p>
 <p>TODO</p>
-<p><em>This SPI Swapping Problem sounds familiar…?</em></p>
-<p>Yep if you have been following my BL602 Adventures, we’ve seen this SPI Swapping Problem for BL602…</p>
+<p><em>This SPI Pin Swap Problem sounds familiar…?</em></p>
+<p>Yep if you have been following my BL602 Adventures, we’ve seen this <strong>SPI Pin Swap Problem on BL602</strong>…</p>
 <p>TODO</p>
 <p>So I’m happy to confirm: <strong>BL604 is 100% compatible with BL602</strong>… Right down to the SPI Quirks!</p>
 <p>TODO</p>
-<p>Without change in hardware, our firmware would need to swap the pins</p>
-<p>TODO17</p>
-<p><img src="https://lupyuen.github.io/images/pinedio-swap.png" alt="" /></p>
-<p>TODO18</p>
-<p><img src="https://lupyuen.github.io/images/pinedio-swap2.png" alt="" /></p>
-<p>TODO19</p>
+<p><em>How does this SPI Pin Swap Problem affect PineDio Stack Developers?</em></p>
+<p>To work around the SPI Pin Swap Problem…</p>
+<p>All PineDio Stack Developers should ensure that <code>GLB_Swap_SPI_0_MOSI_With_MISO</code> is always called before initialising the SPI Port.</p>
 <h1 id="st7789-display" class="section-header"><a href="#st7789-display">7 ST7789 Display</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-display2.jpg" alt="" /></p>
