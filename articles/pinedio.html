@@ -564,22 +564,25 @@ int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);
 <p><img src="https://lupyuen.github.io/images/pinedio-3wire2.png" alt="Logic Analyser with 9-bit SPI Decoder" /></p>
 <h1 id="arduino-gfx-ported-to-bl604" class="section-header"><a href="#arduino-gfx-ported-to-bl604">9 Arduino GFX Ported To BL604</a></h1>
 <p><em>Are we being too smarty-pants with 9-bit SPI? Like <a href="https://en.wiktionary.org/wiki/%E7%95%AB%E8%9B%87%E6%B7%BB%E8%B6%B3">adding feet to a drawing of a snake</a>?</em></p>
-<p>TODO</p>
-<p>Let’s port @moononournation’s awesome 9-bit-banging GFX Library to #BL604 … And compare the SPI Output with a Logic Analyser</p>
+<p>Let’s talk to ST7789 the simpler way… With <a href="https://en.wikipedia.org/wiki/Bit_banging"><strong>Bit-Banging</strong></a>! (Instead of SPI)</p>
+<p><a href="https://github.com/moononournation"><strong>moononournation</strong></a> has built an awesome <strong>Arduino GFX Library that supports 9-Bit-Banging</strong> to ST7789 Display…</p>
 <ul>
-<li><a href="https://github.com/moononournation/Arduino_GFX"><strong><code>moononournation / Arduino_GFX</code></strong></a></li>
+<li><a href="https://github.com/moononournation/Arduino_GFX"><strong>moononournation / Arduino_GFX</strong></a></li>
 </ul>
-<p>Bl602 book, Created from scratch with few official docs, But lots of experimentation and reading the SDK code</p>
-<p>TODO1</p>
-<p><img src="https://lupyuen.github.io/images/pinedio-gfx.png" alt="" /></p>
-<p>TODO2</p>
-<p><img src="https://lupyuen.github.io/images/pinedio-gfx2.png" alt="" /></p>
-<p>TODO3</p>
-<p><img src="https://lupyuen.github.io/images/pinedio-gfx3.png" alt="" /></p>
-<p>TODO4</p>
-<p><img src="https://lupyuen.github.io/images/pinedio-gfx4.jpg" alt="" /></p>
-<p>TODO5</p>
-<p><img src="https://lupyuen.github.io/images/pinedio-gfx5.jpg" alt="" /></p>
+<p>Let’s <strong>port this Arduino Library to BL604!</strong></p>
+<p><img src="https://lupyuen.github.io/images/pinedio-gfx4.jpg" alt="moononournation / Arduino_GFX" /></p>
+<p>We ported only <strong>two source files</strong> from Arduino GFX Library to BL604…</p>
+<p><img src="https://lupyuen.github.io/images/pinedio-gfx3.png" alt="Arduino GFX Library ported to BL604" /></p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/3wire/customer_app/pinedio_st7789_bitbang/pinedio_st7789_bitbang">(Source)</a></p>
+<p>…By mapping the <strong>Arduino API to BL604 IoT SDK</strong>.</p>
+<p>(And we flattened the C++ Classes into plain C Functions)</p>
+<p>Our Logic Analyser shows that the <strong>9-bit ST7789 data is correctly Bit-Banged</strong> to ST7789…</p>
+<p><img src="https://lupyuen.github.io/images/pinedio-gfx2.png" alt="Arduino GFX with Logic Analyser" /></p>
+<p>Guess what? <strong>Nothing appears on PineDio Stack’s ST7789 Display!</strong> 😭</p>
+<p>To be super sure, we <strong>tested Arduino GFX on Linux</strong> and verified the data…</p>
+<p><img src="https://lupyuen.github.io/images/pinedio-gfx5.jpg" alt="Testing Arduino GFX on Linux" /></p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/3wire/customer_app/pinedio_st7789_bitbang/test">(Source)</a></p>
+<p>Now we’re super stuck with our ST7789 testing!</p>
 <h1 id="problem-with-st7789" class="section-header"><a href="#problem-with-st7789">10 Problem With ST7789?</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-im.png" alt="" /></p>
