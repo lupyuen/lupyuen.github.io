@@ -556,10 +556,12 @@ int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);
 <h2 id="does-it-work" class="section-header"><a href="#does-it-work">8.3 Does it work?</a></h2>
 <p>Sadly nope.</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-pack3.jpg" alt="Sending packed data to ST7789 on PineDio Stack" /></p>
-<p>TODO</p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/3wire/customer_app/pinedio_st7789">(Source Code is here)</a></p>
+<p>Our <strong>9-bit data is correctly packed</strong> into 9-byte chunks and sent to ST7789 over SPI…</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-pad.png" alt="Sending packed data to ST7789 on PineDio Stack" /></p>
-<p>TODO</p>
-<p>Logic Analyser 9-bit decoder</p>
+<p>Yet <strong>nothing appears on the ST7789 Display</strong>.</p>
+<p>We also verified the SPI Data with our Logic Analyser and its <strong>9-bit SPI Decoder</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/pinedio-3wire2.png" alt="Logic Analyser with 9-bit SPI Decoder" /></p>
 <h1 id="arduino-gfx-ported-to-bl604" class="section-header"><a href="#arduino-gfx-ported-to-bl604">9 Arduino GFX Ported To BL604</a></h1>
 <p>TODO</p>
 <p>Let’s port @moononournation’s awesome 9-bit-banging GFX Library to #BL604 … And compare the SPI Output with a Logic Analyser</p>
