@@ -317,7 +317,10 @@ static void test_display_init(char *buf, int len, int argc, char **argv) {
   //  Switch on the backlight
   rc = bl_gpio_output_set(DISPLAY_BLK_PIN, 0); assert(rc == 0);
 
-  //  Note: We must swap SDO (MOSI) and SDI (MISO) to comply with the SPI Pin Definitions in BL602 / BL604 Reference Manual
+  //  Note: We must swap SDO (MOSI) and 
+  //  SDI (MISO) to comply with the 
+  //  SPI Pin Definitions in BL602 / BL604 
+  //  Reference Manual
   rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);
 </code></pre>
 <p>(We’ll cover <code>GLB_Swap_SPI</code> in a while)</p>
@@ -409,21 +412,23 @@ static int transmit_packed(const uint8_t *data, uint16_t len) {
 <p>Let’s look at the data collected by our Logic Analyser…</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-shadow.png" alt="GPIO 20 is mirrored to GPIO 5" /></p>
 <h1 id="spi-pins-are-swapped" class="section-header"><a href="#spi-pins-are-swapped">6 SPI Pins Are Swapped</a></h1>
-<p><em>What happens when BL604 transmits data over SPI?</em></p>
+<p><em>What appears in the Logic Analyser when BL604 transmits data over SPI?</em></p>
 <p>Watch what happened the very first time that we transmitted SPI data from BL604 to ST7789 Display…</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-mosi.png" alt="SDO (MOSI) is flat" /></p>
-<p>The top line shows that <strong>SDO <em>(MOSI)</em> is flat</strong>!</p>
-<p><strong>No data is flowing out</strong> from BL604 to ST7789 Display!</p>
-<p>But SDI <em>(MISO)</em> looks OK…</p>
-<p><em>Maybe SDO and SDI have been swapped?</em></p>
+<p>The top line showed that <strong>SDO <em>(MOSI)</em> was flat</strong>…</p>
+<p><strong>No data was flowing out</strong> from BL604 to ST7789 Display!</p>
+<p>Though SDI <em>(MISO)</em> looked OK…</p>
+<p><em>Maybe SDO and SDI were swapped?</em></p>
 <p>Thankfully <a href="https://twitter.com/codingfield/status/1430605933714059273"><strong>JF found the fix</strong></a>!</p>
-<pre><code class="language-c">//  Note: We must swap SDO (MOSI) and SDI (MISO) to comply with the SPI Pin Definitions in BL602 / BL604 Reference Manual
+<pre><code class="language-c">//  Note: We must swap SDO (MOSI) and 
+//  SDI (MISO) to comply with the 
+//  SPI Pin Definitions in BL602 / BL604 
+//  Reference Manual
 int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);
 </code></pre>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/demo.c#L53-L117">(Source)</a></p>
-<p>TODO</p>
+<p>After applying the fix, BL604 swaps the SDO and SDI pins… And <strong>BL604 transmits SPI data correctly to ST7789</strong>!</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-swap3.png" alt="SDO (MOSI) is OK!" /></p>
-<p>TODO</p>
 <p><em>This SPI Pin Swap Problem sounds familiar…?</em></p>
 <p>Yep if you have been following my BL602 Adventures, we’ve seen this <strong>SPI Pin Swap Problem on BL602</strong>…</p>
 <p>TODO</p>
@@ -431,7 +436,8 @@ int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);
 <p>TODO</p>
 <p><em>How does this SPI Pin Swap Problem affect PineDio Stack Developers?</em></p>
 <p>To work around the SPI Pin Swap Problem…</p>
-<p>All PineDio Stack Developers should ensure that <code>GLB_Swap_SPI_0_MOSI_With_MISO</code> is always called before initialising the SPI Port.</p>
+<p>All PineDio Stack Developers should ensure that <strong>GLB_Swap_SPI_0_MOSI_With_MISO is always called</strong> before initialising the SPI Port.</p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/demo.c#L53-L117">(Here’s an example)</a></p>
 <h1 id="st7789-display" class="section-header"><a href="#st7789-display">7 ST7789 Display</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-display2.jpg" alt="" /></p>
