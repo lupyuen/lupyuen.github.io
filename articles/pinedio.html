@@ -77,8 +77,9 @@
 <li><a href="#9-bit-spi-for-st7789">8 9-Bit SPI for ST7789</a><ul></ul></li>
 <li><a href="#arduino-gfx-ported-to-bl604">9 Arduino GFX Ported To BL604</a><ul></ul></li>
 <li><a href="#problem-with-st7789">10 Problem With ST7789?</a><ul></ul></li>
-<li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
-<li><a href="#notes">12 Notes</a><ul></ul></li></ul></nav><p>📝 <em>3 Sep 2021</em></p>
+<li><a href="#seeking-volunteers">11 Seeking Volunteers!</a><ul></ul></li>
+<li><a href="#whats-next">12 What’s Next</a><ul></ul></li>
+<li><a href="#notes">13 Notes</a><ul></ul></li></ul></nav><p>📝 <em>3 Sep 2021</em></p>
 <p><em>What’s it like to create <strong>Open Source Software</strong> (and firmware) for brand new <strong>Prototype Hardware</strong>?</em></p>
 <p><em>What interesting challenges will we encounter?</em></p>
 <p>Find out how we create new firmware to test (and improve) Pine64’s newest and hottest prototype: <strong>PineDio Stack BL604 RISC-V Board!</strong></p>
@@ -104,7 +105,7 @@
 <p>(Wow!)</p>
 </li>
 <li>
-<p>Plus <strong>SPI Flash, Battery Charging Chip, Motion Sensor</strong> (optional) and <strong>Heart Rate Sensor</strong> (optional)!</p>
+<p>Plus <strong>SPI Flash, Battery Charging Chip, Accelerometer</strong> (optional) and <strong>Heart Rate Sensor</strong> (optional)!</p>
 </li>
 </ol>
 <p>After some shipping delays at Shenzhen (due to flooding or pandemic?) I received something totally unexpected…</p>
@@ -484,9 +485,26 @@ int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);
 <h1 id="problem-with-st7789" class="section-header"><a href="#problem-with-st7789">10 Problem With ST7789?</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-im.png" alt="" /></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">11 What’s Next</a></h1>
+<h1 id="seeking-volunteers" class="section-header"><a href="#seeking-volunteers">11 Seeking Volunteers!</a></h1>
+<p>I’m really excited that PineDio Stack BL604 will be available soon!</p>
+<p>But in the meantime, JF and I have <strong>plenty to test on PineDio Stack</strong>…</p>
+<ol>
+<li>ST7789 Display</li>
+<li>LoRa SX1262</li>
+<li>SPI Flash</li>
+<li>Accelerometer</li>
+<li>Heart Rate Sensor</li>
+<li>Touch Panel</li>
+<li>Vibrator</li>
+<li>Push Button</li>
+<li>WiFi</li>
+<li>Bluetooth LE</li>
+<li>Battery Charging</li>
+<li>Solar Power</li>
+</ol>
+<p><a href="https://twitter.com/MisterTechBlog"><strong>Please let us know</strong></a> if you’re keen to help! 🙏</p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">12 What’s Next</a></h1>
 <p>TODO</p>
-<p>Volunteers Needed!</p>
 <p>And soon we shall test all this on <a href="https://www.pine64.org/2021/08/15/introducing-the-pinenote/"><strong>PineDio Stack BL604 with LoRa SX1262</strong></a>… As we explore whether it’s feasible to teach Embedded Programming for BL602 and BL604.</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
@@ -505,7 +523,7 @@ int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/pinedio.md"><code>lupyuen.github.io/src/pinedio.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">12 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">13 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1429273222780887041">this Twitter Thread</a></li>
 </ol>
