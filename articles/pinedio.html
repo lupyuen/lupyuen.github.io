@@ -444,9 +444,26 @@ int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);
 <p>To work around the SPI Pin Swap Problem…</p>
 <p>All PineDio Stack Developers should ensure that <strong>GLB_Swap_SPI_0_MOSI_With_MISO is always called</strong> before initialising the SPI Port.</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/demo.c#L53-L117">(Here’s an example)</a></p>
+<p><img src="https://lupyuen.github.io/images/pinedio-display2.jpg" alt="PineDio Stack ST7789 Display" /></p>
 <h1 id="st7789-display" class="section-header"><a href="#st7789-display">7 ST7789 Display</a></h1>
+<p>Now that PineDio Stack SPI is OK, let’s <strong>draw something on the ST7789 Display</strong>!</p>
+<p>The schematic above says that the ST7789 SPI Display is connected on these pins…</p>
+<ul>
+<li>
+<p><strong>GPIO 20:</strong> SPI Chip Select</p>
+</li>
+<li>
+<p><strong>GPIO 0:</strong> SPI SDI <em>(MISO)</em></p>
+</li>
+<li>
+<p><strong>GPIO 11:</strong> SPI SCK</p>
+</li>
+<li>
+<p><strong>GPIO 17:</strong> SPI SDO <em>(MOSI)</em></p>
+</li>
+</ul>
+<p><em>Wait are we missing a pin?</em></p>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/pinedio-display2.jpg" alt="" /></p>
 <h1 id="9-bit-spi-for-st7789" class="section-header"><a href="#9-bit-spi-for-st7789">8 9-Bit SPI for ST7789</a></h1>
 <p>TODO</p>
 <p>Logic Analyser 9-bit decoder</p>
