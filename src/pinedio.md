@@ -521,6 +521,14 @@ The schematic above says that the ST7789 SPI Display is connected on these pins.
 
 _Wait are we missing a pin?_
 
+Yep we usually connect the __ST7789 Data / Command (DC) Pin__. (Like on PineTime) 
+
+We flip this pin to Low to indicate that we're sending Command Bytes to the ST7789 Display, and flip to High for Data Bytes.
+
+We call this the __4-Wire Interface__ for ST7789: SDO, SDI, SCK and DC.
+
+_Data / Command (DC) Pin is missing on PineDio Stack. So we're using the 3-Wire Interface?_
+
 TODO
 
 # 9-Bit SPI for ST7789
