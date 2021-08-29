@@ -661,6 +661,8 @@ We also verified the SPI Data with our Logic Analyser and its __9-bit SPI Decode
 
 # Arduino GFX Ported To BL604
 
+_Are we being too smarty-pants with 9-bit SPI? Like [adding feet to a drawing of a snake](https://en.wiktionary.org/wiki/%E7%95%AB%E8%9B%87%E6%B7%BB%E8%B6%B3)?_
+
 TODO
 
 Let's port @moononournation's awesome 9-bit-banging GFX Library to #BL604 ... And compare the SPI Output with a Logic Analyser
