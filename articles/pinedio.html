@@ -75,7 +75,9 @@
 <li><a href="#spi-pins-are-swapped">6 SPI Pins Are Swapped</a><ul></ul></li>
 <li><a href="#st7789-display">7 ST7789 Display</a><ul></ul></li>
 <li><a href="#9-bit-spi-for-st7789">8 9-Bit SPI for ST7789</a><ul>
-<li><a href="#packing-9-bit-data">8.1 Packing 9-Bit Data</a><ul></ul></li></ul></li>
+<li><a href="#packing-9-bit-data">8.1 Packing 9-Bit Data</a><ul></ul></li>
+<li><a href="#test-the-9-bit-packing">8.2 Test the 9-Bit Packing</a><ul></ul></li>
+<li><a href="#does-it-work">8.3 Does it work?</a><ul></ul></li></ul></li>
 <li><a href="#arduino-gfx-ported-to-bl604">9 Arduino GFX Ported To BL604</a><ul></ul></li>
 <li><a href="#problem-with-st7789">10 Problem With ST7789?</a><ul></ul></li>
 <li><a href="#seeking-volunteers">11 Seeking Volunteers!</a><ul></ul></li>
@@ -542,22 +544,22 @@ int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);
 <strong>P1</strong> is the next byte of the packed data</p>
 </blockquote>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/display.c#L290-L395">(Source)</a></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/pinedio-pack.png" alt="" /></p>
-<p>TODO12</p>
-<p><img src="https://lupyuen.github.io/images/pinedio-pack2.png" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/pinedio-linux.png" alt="" /></p>
-<p>TODO13</p>
-<p><img src="https://lupyuen.github.io/images/pinedio-pack3.jpg" alt="" /></p>
-<p>TODO14</p>
-<p><img src="https://lupyuen.github.io/images/pinedio-pad.png" alt="" /></p>
-<p>TODO16</p>
-<p>We verify the packed data with this spreadsheet…</p>
+<p>The implementation looks like this…</p>
+<p><img src="https://lupyuen.github.io/images/pinedio-pack2.png" alt="Packing 9-bit data" /></p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/display.c#L290-L395">(Source)</a></p>
+<h2 id="test-the-9-bit-packing" class="section-header"><a href="#test-the-9-bit-packing">8.2 Test the 9-Bit Packing</a></h2>
+<p>Since the 9-Bit Packing is implemented in C, let’s <strong>test it on Linux!</strong></p>
+<p><img src="https://lupyuen.github.io/images/pinedio-linux.png" alt="Test the 9-Bit Packing on Linux" /></p>
+<p>We <strong>verify the packed data</strong> with this spreadsheet…</p>
 <ul>
 <li><a href="https://docs.google.com/spreadsheets/d/1Qy0MjU79s__wzTAFwpTYUUIzLWcrFnKCrvvo_rHamiE/edit?usp=sharing&amp;authuser=0"><strong>Google Sheets Spreadsheet</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/pinedio-spreadsheet.png" alt="Verify the packed data with a spreadsheet" /></p>
+<h2 id="does-it-work" class="section-header"><a href="#does-it-work">8.3 Does it work?</a></h2>
+<p>Sadly nope.</p>
+<p><img src="https://lupyuen.github.io/images/pinedio-pack3.jpg" alt="Sending packed data to ST7789 on PineDio Stack" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/pinedio-pad.png" alt="Sending packed data to ST7789 on PineDio Stack" /></p>
 <p>TODO</p>
 <p>Logic Analyser 9-bit decoder</p>
 <h1 id="arduino-gfx-ported-to-bl604" class="section-header"><a href="#arduino-gfx-ported-to-bl604">9 Arduino GFX Ported To BL604</a></h1>
