@@ -740,6 +740,8 @@ But in the meantime, JF and I have __plenty to test on PineDio Stack__...
 
 [__Please let us know__](https://twitter.com/MisterTechBlog) if you're keen to help! 🙏
 
+![PineDio Stack BL604 In A Box](https://lupyuen.github.io/images/pinedio-box.jpg)
+
 # What's Next
 
 TODO
@@ -761,5 +763,3 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1429273222780887041)
-
-![PineDio Stack BL604 In A Box](https://lupyuen.github.io/images/pinedio-box.jpg)
