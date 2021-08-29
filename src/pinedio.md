@@ -663,33 +663,39 @@ We also verified the SPI Data with our Logic Analyser and its __9-bit SPI Decode
 
 _Are we being too smarty-pants with 9-bit SPI? Like [adding feet to a drawing of a snake](https://en.wiktionary.org/wiki/%E7%95%AB%E8%9B%87%E6%B7%BB%E8%B6%B3)?_
 
-TODO
+Let's talk to ST7789 the simpler way... With [__Bit-Banging__](https://en.wikipedia.org/wiki/Bit_banging)! (Instead of SPI)
 
-Let's port @moononournation's awesome 9-bit-banging GFX Library to #BL604 ... And compare the SPI Output with a Logic Analyser
+[__moononournation__](https://github.com/moononournation) has built an awesome __Arduino GFX Library that supports 9-Bit-Banging__ to ST7789 Display...
 
--   [__`moononournation / Arduino_GFX`__](https://github.com/moononournation/Arduino_GFX)
+-   [__moononournation / Arduino_GFX__](https://github.com/moononournation/Arduino_GFX)
 
-Bl602 book, Created from scratch with few official docs, But lots of experimentation and reading the SDK code
+Let's __port this Arduino Library to BL604!__
 
-TODO1
+![moononournation / Arduino_GFX](https://lupyuen.github.io/images/pinedio-gfx4.jpg)
 
-![](https://lupyuen.github.io/images/pinedio-gfx.png)
+We ported only __two source files__ from Arduino GFX Library to BL604...
 
-TODO2
+![Arduino GFX Library ported to BL604](https://lupyuen.github.io/images/pinedio-gfx3.png)
 
-![](https://lupyuen.github.io/images/pinedio-gfx2.png)
+[(Source)](https://github.com/lupyuen/bl_iot_sdk/tree/3wire/customer_app/pinedio_st7789_bitbang/pinedio_st7789_bitbang)
 
-TODO3
+...By mapping the __Arduino API to BL604 IoT SDK__.
 
-![](https://lupyuen.github.io/images/pinedio-gfx3.png)
+(And we flattened the C++ Classes into plain C Functions)
 
-TODO4
+Our Logic Analyser shows that the __9-bit ST7789 data is correctly Bit-Banged__ to ST7789...
 
-![](https://lupyuen.github.io/images/pinedio-gfx4.jpg)
+![Arduino GFX with Logic Analyser](https://lupyuen.github.io/images/pinedio-gfx2.png)
 
-TODO5
+Guess what? __Nothing appears on PineDio Stack's ST7789 Display!__ 😭
 
-![](https://lupyuen.github.io/images/pinedio-gfx5.jpg)
+To be super sure, we __tested Arduino GFX on Linux__ and verified the data...
+
+![Testing Arduino GFX on Linux](https://lupyuen.github.io/images/pinedio-gfx5.jpg)
+
+[(Source)](https://github.com/lupyuen/bl_iot_sdk/tree/3wire/customer_app/pinedio_st7789_bitbang/test)
+
+Now we're super stuck with our ST7789 testing!
 
 # Problem With ST7789?
 
