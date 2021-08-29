@@ -746,11 +746,13 @@ But in the meantime, JF and I have __plenty to test on PineDio Stack__...
 
 Many Thanks to [__@moononournation__](https://github.com/moononournation) and [__@AndreasDyhrberg__](https://twitter.com/AndreasDyhrberg) for the valuable tips on testing PineDio Stack BL604!
 
-TODO
+This has been a super exciting __first week of testing__ the Prototype Hardware for PineDio Stack BL604...
+
+I hope you will join JF and me as we continue our testing of PineDio Stack!
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
--   [Read "The RISC-V BL602 Book"](https://lupyuen.github.io/articles/book)
+-   [Read "The RISC-V BL602 / BL604 Book"](https://lupyuen.github.io/articles/book)
 
 -   [Check out my articles](https://lupyuen.github.io)
 
