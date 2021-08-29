@@ -498,9 +498,7 @@ int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);
 <h2 id="packing-9-bit-data" class="section-header"><a href="#packing-9-bit-data">8.1 Packing 9-Bit Data</a></h2>
 <p><em>How exactly do we pack 9-bit data into chunks of 9 bytes?</em></p>
 <p>Here’s the <strong>9-Bit Packing Logic</strong> (please pardon my peculiar pseudocode)…</p>
-<blockquote>
-<p>To pack 9-bit data into bytes, we do this for every 8 bytes of unpacked data (Most Significant Bit first)</p>
-</blockquote>
+<p>To pack 9-bit data into bytes, we do this for every 8 bytes of unpacked data (Most Significant Bit first)…</p>
 <blockquote>
 <p>If <em>Unpacked Length mod 8</em> is…</p>
 </blockquote>
@@ -536,13 +534,13 @@ int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);
 <strong>DC</strong> → <strong>P0</strong> bit 0 <br>
 <strong>U</strong> bits 0 to 7 → <strong>P1</strong> bits 0 to 7 <br></p>
 </blockquote>
-<blockquote>
-<p>Where… <br>
-<strong>DC</strong> is the Data / Command bit (0 = command, 1 = data) <br>
-<strong>U</strong> is the unpacked 8-bit data byte <br>
-<strong>P0</strong> is the current byte of the packed data <br>
-<strong>P1</strong> is the next byte of the packed data</p>
-</blockquote>
+<p>Where…</p>
+<ul>
+<li><strong>DC</strong> is the Data / Command bit (0 = command, 1 = data)</li>
+<li><strong>U</strong> is the unpacked 8-bit data byte</li>
+<li><strong>P0</strong> is the current byte of the packed data</li>
+<li><strong>P1</strong> is the next byte of the packed data</li>
+</ul>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/display.c#L290-L395">(Source)</a></p>
 <p>The implementation looks like this…</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-pack2.png" alt="Packing 9-bit data" /></p>
