@@ -464,13 +464,22 @@ int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);
 </ul>
 <p><em>Wait are we missing a pin?</em></p>
 <p>Yep we usually connect the <strong>ST7789 Data / Command (DC) Pin</strong>. (Like on PineTime) </p>
-<p>We flip this pin to Low to indicate that we’re sending Command Bytes to the ST7789 Display, and flip to High for Data Bytes.</p>
+<p>We flip this pin to Low to indicate that we’re sending Command Bytes, and flip it to High for Data Bytes.</p>
 <p>We call this the <strong>4-Wire Interface</strong> for ST7789: SDO, SDI, SCK and DC.</p>
 <p><em>Data / Command (DC) Pin is missing on PineDio Stack. So we’re using the 3-Wire Interface?</em></p>
 <p>Yep ST7789 supports a <strong>3-Wire Interface</strong>: SDO, SDI and SCK. (Without DC)</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-3wire.png" alt="ST7789 3-Wire Interface" /></p>
-<p>The trick</p>
-<p>TODO</p>
+<p><a href="https://www.rhydolabz.com/documents/33/ST7789.pdf">(Source)</a></p>
+<p>Instead of transmitting the Data / Command Indicator on a separate pin, the 3-Wire Interface inserts a <strong>Data / Command (DC) Bit</strong> to specify whether the <strong>upcoming byte is a Command or Data Byte</strong>.</p>
+<p>(DC Bit is 1 for Command Byte, 0 for Data Byte)</p>
+<p><em>Whoa that means we transmit 9 bits for every Data and Command Byte?</em></p>
+<p>Yep we need to find some way to <strong>transmit 9-bit data over our 8-bit SPI Port</strong>.</p>
+<p>The 3-Wire (9-bit) Interface might actually be <strong>more efficient</strong> than the 4-Wire (8-bit) Interface… Because it lets us blast out multiple Command and Data Bytes in a <strong>single SPI DMA Transfer</strong>.</p>
+<p>(Without having to flip the Data / Command Pin)</p>
+<p>More about this in the next chapter.</p>
+<p><em>Why can’t we stick with the familiar 4-Wire Interface for ST7789?</em></p>
+<p>I guess the PineDio Stack hardware designers wanted to <strong>free up a precious GPIO Pin</strong> for use by other components.</p>
+<p>(And maybe the designers also thought that the 3-Wire Interface is more efficient than the 4-Wire one!)</p>
 <h1 id="9-bit-spi-for-st7789" class="section-header"><a href="#9-bit-spi-for-st7789">8 9-Bit SPI for ST7789</a></h1>
 <p>TODO</p>
 <p>Logic Analyser 9-bit decoder</p>
