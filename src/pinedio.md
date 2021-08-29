@@ -647,13 +647,17 @@ Sadly nope.
 
 ![Sending packed data to ST7789 on PineDio Stack](https://lupyuen.github.io/images/pinedio-pack3.jpg)
 
-TODO
+[(Source Code is here)](https://github.com/lupyuen/bl_iot_sdk/tree/3wire/customer_app/pinedio_st7789)
+
+Our __9-bit data is correctly packed__ into 9-byte chunks and sent to ST7789 over SPI...
 
 ![Sending packed data to ST7789 on PineDio Stack](https://lupyuen.github.io/images/pinedio-pad.png)
 
-TODO
+Yet __nothing appears on the ST7789 Display__.
 
-Logic Analyser 9-bit decoder
+We also verified the SPI Data with our Logic Analyser and its __9-bit SPI Decoder__...
+
+![Logic Analyser with 9-bit SPI Decoder](https://lupyuen.github.io/images/pinedio-3wire2.png)
 
 # Arduino GFX Ported To BL604
 
