@@ -623,33 +623,33 @@ Here's the __9-Bit Packing Logic__ (please pardon my peculiar pseudocode)...
 
 [(Source)](https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/display.c#L290-L395)
 
-TODO
+The implementation looks like this...
 
-![](https://lupyuen.github.io/images/pinedio-pack.png)
+![Packing 9-bit data](https://lupyuen.github.io/images/pinedio-pack2.png)
 
-TODO12
+[(Source)](https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/display.c#L290-L395)
 
-![](https://lupyuen.github.io/images/pinedio-pack2.png)
+## Test the 9-Bit Packing
 
-TODO
+Since the 9-Bit Packing is implemented in C, let's __test it on Linux!__
 
-![](https://lupyuen.github.io/images/pinedio-linux.png)
+![Test the 9-Bit Packing on Linux](https://lupyuen.github.io/images/pinedio-linux.png)
 
-TODO13
-
-![](https://lupyuen.github.io/images/pinedio-pack3.jpg)
-
-TODO14
-
-![](https://lupyuen.github.io/images/pinedio-pad.png)
-
-TODO16
-
-We verify the packed data with this spreadsheet...
+We __verify the packed data__ with this spreadsheet...
 
 -   [__Google Sheets Spreadsheet__](https://docs.google.com/spreadsheets/d/1Qy0MjU79s__wzTAFwpTYUUIzLWcrFnKCrvvo_rHamiE/edit?usp=sharing&authuser=0)
 
 ![Verify the packed data with a spreadsheet](https://lupyuen.github.io/images/pinedio-spreadsheet.png)
+
+## Does it work?
+
+Sadly nope.
+
+![Sending packed data to ST7789 on PineDio Stack](https://lupyuen.github.io/images/pinedio-pack3.jpg)
+
+TODO
+
+![Sending packed data to ST7789 on PineDio Stack](https://lupyuen.github.io/images/pinedio-pad.png)
 
 TODO
 
