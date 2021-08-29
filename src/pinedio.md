@@ -28,7 +28,7 @@ The kind (and super cool) folks at Pine64 told me that I would be receiving a fu
 
     (Wow!)
 
-1.  Plus __SPI Flash, Battery Charging Chip, Motion Sensor__ (optional) and __Heart Rate Sensor__ (optional)!
+1.  Plus __SPI Flash, Battery Charging Chip, Accelerometer__ (optional) and __Heart Rate Sensor__ (optional)!
 
 After some shipping delays at Shenzhen (due to flooding or pandemic?) I received something totally unexpected...
 
@@ -582,11 +582,30 @@ TODO
 
 ![](https://lupyuen.github.io/images/pinedio-im.png)
 
+# Seeking Volunteers!
+
+I'm really excited that PineDio Stack BL604 will be available soon!
+
+But in the meantime, JF and I have __plenty to test on PineDio Stack__...
+
+1.  ST7789 Display
+1.  LoRa SX1262
+1.  SPI Flash
+1.  Accelerometer
+1.  Heart Rate Sensor
+1.  Touch Panel
+1.  Vibrator
+1.  Push Button
+1.  WiFi
+1.  Bluetooth LE
+1.  Battery Charging
+1.  Solar Power
+
+[__Please let us know__](https://twitter.com/MisterTechBlog) if you're keen to help! 🙏
+
 # What's Next
 
 TODO
-
-Volunteers Needed!
 
 And soon we shall test all this on [__PineDio Stack BL604 with LoRa SX1262__](https://www.pine64.org/2021/08/15/introducing-the-pinenote/)... As we explore whether it's feasible to teach Embedded Programming for BL602 and BL604.
 
