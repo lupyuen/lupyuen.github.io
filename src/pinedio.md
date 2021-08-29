@@ -1,6 +1,6 @@
 # PineDio Stack BL604 RISC-V Board: Testing The Prototype
 
-📝 _3 Sep 2021_
+📝 _29 Aug 2021_
 
 _What's it like to create __Open Source Software__ (and firmware) for brand new __Prototype Hardware__?_
 

@@ -147,6 +147,13 @@
   ],
   "publications": [
     {
+      "name": "PineDio Stack BL604 RISC-V Board: Testing The Prototype",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2021-08-29",
+      "website": "https://lupyuen.github.io/articles/pinedio",
+      "summary": "What's it like to create Open Source Software for brand new prototype hardware? Read on to find out!"
+    },
+    {
       "name": "Rust on RISC-V BL602: Simulated with WebAssembly",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-08-16",
