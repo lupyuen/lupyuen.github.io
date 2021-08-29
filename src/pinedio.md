@@ -523,7 +523,7 @@ _Wait are we missing a pin?_
 
 Yep we usually connect the __ST7789 Data / Command (DC) Pin__. (Like on PineTime) 
 
-We flip this pin to Low to indicate that we're sending Command Bytes to the ST7789 Display, and flip to High for Data Bytes.
+We flip this pin to Low to indicate that we're sending Command Bytes, and flip it to High for Data Bytes.
 
 We call this the __4-Wire Interface__ for ST7789: SDO, SDI, SCK and DC.
 
@@ -533,9 +533,27 @@ Yep ST7789 supports a __3-Wire Interface__: SDO, SDI and SCK. (Without DC)
 
 ![ST7789 3-Wire Interface](https://lupyuen.github.io/images/pinedio-3wire.png)
 
-The trick
+[(Source)](https://www.rhydolabz.com/documents/33/ST7789.pdf)
 
-TODO
+Instead of transmitting the Data / Command Indicator on a separate pin, the 3-Wire Interface inserts a __Data / Command (DC) Bit__ to specify whether the __upcoming byte is a Command or Data Byte__.
+
+(DC Bit is 1 for Command Byte, 0 for Data Byte)
+
+_Whoa that means we transmit 9 bits for every Data and Command Byte?_
+
+Yep we need to find some way to __transmit 9-bit data over our 8-bit SPI Port__.
+
+The 3-Wire (9-bit) Interface might actually be __more efficient__ than the 4-Wire (8-bit) Interface... Because it lets us blast out multiple Command and Data Bytes in a __single SPI DMA Transfer__.
+
+(Without having to flip the Data / Command Pin)
+
+More about this in the next chapter.
+
+_Why can't we stick with the familiar 4-Wire Interface for ST7789?_
+
+I guess the PineDio Stack hardware designers wanted to __free up a precious GPIO Pin__ for use by other components.
+
+(And maybe the designers also thought that the 3-Wire Interface is more efficient than the 4-Wire one!)
 
 # 9-Bit SPI for ST7789
 
