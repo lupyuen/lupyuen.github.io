@@ -557,27 +557,41 @@ I guess the PineDio Stack hardware designers wanted to __free up a precious GPIO
 
 # 9-Bit SPI for ST7789
 
+_How on earth do we send 9-bit data over 8-bit SPI to ST7789 Display?_
+
+OK hear me out... We could pack the 9-bit data into __chunks of 9 bytes.__ Then send the chunks over 8-bit SPI.
+
+(Why 9 bytes? Because 9 bytes = 9 bits x 8)
+
+_What if the 9-bit data doesn't fill up a 9-byte chunk?_
+
+We fill up the rest of the chunk with the __ST7789 NOP Command Byte__ (0x00).
+
+_Show me how?_
+
+Previously we did this for the __4-Wire (8-bit) ST7789 Interface__...
+
+![4-Wire ST7789 Interface](https://lupyuen.github.io/images/st7789-4wire.jpg)
+
+Now we do this for the __3-Wire (9-bit) ST7789 Interface__...
+
+![3-Wire ST7789 Interface](https://lupyuen.github.io/images/st7789-3wire.jpg)
+
+Thus we're sending __8-bit data over SPI__... But it magically appears as __9-bit data to ST7789!__
+
+## Packing 9-Bit Data
+
 TODO
-
-Logic Analyser 9-bit decoder
-
-![](https://lupyuen.github.io/images/st7789-4wire.jpg)
-
-TODO
-
-![](https://lupyuen.github.io/images/st7789-3wire.jpg)
-
-TODO8
-
-![](https://lupyuen.github.io/images/pinedio-linux.png)
-
-TODO11
 
 ![](https://lupyuen.github.io/images/pinedio-pack.png)
 
 TODO12
 
 ![](https://lupyuen.github.io/images/pinedio-pack2.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/pinedio-linux.png)
 
 TODO13
 
@@ -589,7 +603,15 @@ TODO14
 
 TODO16
 
-![](https://lupyuen.github.io/images/pinedio-spreadsheet.png)
+We verify the packed data with this spreadsheet...
+
+-   [__Google Sheets Spreadsheet__](https://docs.google.com/spreadsheets/d/1Qy0MjU79s__wzTAFwpTYUUIzLWcrFnKCrvvo_rHamiE/edit?usp=sharing&authuser=0)
+
+![Verify the packed data with a spreadsheet](https://lupyuen.github.io/images/pinedio-spreadsheet.png)
+
+TODO
+
+Logic Analyser 9-bit decoder
 
 # Arduino GFX Ported To BL604
 
