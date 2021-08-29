@@ -748,7 +748,9 @@ Many Thanks to [__@moononournation__](https://github.com/moononournation) and [_
 
 This has been a super exciting __first week of testing__ the Prototype Hardware for PineDio Stack BL604...
 
-I hope you will join JF and me as we continue our testing of PineDio Stack!
+I hope you will join JF and me as we continue our testing of PineDio Stack.
+
+(Maybe real soon we'll create toasters, microwave ovens and pressure cookers with PineDio Stack!)
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
