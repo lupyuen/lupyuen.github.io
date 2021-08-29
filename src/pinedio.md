@@ -581,6 +581,48 @@ Thus we're sending __8-bit data over SPI__... But it magically appears as __9-bi
 
 ## Packing 9-Bit Data
 
+_How exactly do we pack 9-bit data into chunks of 9 bytes?_
+
+Here's the __9-Bit Packing Logic__ (please pardon my peculiar pseudocode)...
+
+> To pack 9-bit data into bytes, we do this for every 8 bytes of unpacked data (Most Significant Bit first)
+
+> If _Unpacked Length mod 8_ is...
+
+> _0:_ <br>
+> __DC__ → __P0__ bit 7 <br>
+> __U__ bits 1 to 7 → __P0__ bits 0 to 6 <br>
+> __U__ bits 0 to 0 → __P1__ bits 7 to 7 <br>
+
+> _1:_ <br>
+> __DC__ → __P0__ bit 6 <br>
+> __U__ bits 2 to 7 → __P0__ bits 0 to 5 <br>
+> __U__ bits 0 to 1 → __P1__ bits 6 to 7 <br>
+
+> _2:_ <br>
+> __DC__ → __P0__ bit 5 <br>
+> __U__ bits 3 to 7 → __P0__ bits 0 to 4 <br>
+> __U__ bits 0 to 2 → __P1__ bits 5 to 7 <br>
+
+> ...
+
+> _6:_ <br>
+> __DC__ → __P0__ bit 1 <br>
+> __U__ bits 7 to 7 → __P0__ bits 0 to 0 <br>
+> __U__ bits 0 to 6 → __P1__ bits 1 to 7 <br>
+
+> _7:_ <br>
+> __DC__ → __P0__ bit 0 <br>
+> __U__ bits 0 to 7 → __P1__ bits 0 to 7 <br>
+
+> Where... <br>
+>   __DC__ is the Data / Command bit (0 = command, 1 = data) <br>
+>   __U__ is the unpacked 8-bit data byte <br>
+>   __P0__ is the current byte of the packed data <br>
+>   __P1__ is the next byte of the packed data
+
+[(Source)](https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/display.c#L290-L395)
+
 TODO
 
 ![](https://lupyuen.github.io/images/pinedio-pack.png)
@@ -673,6 +715,8 @@ But in the meantime, JF and I have __plenty to test on PineDio Stack__...
 # What's Next
 
 TODO
+
+Thanks to
 
 And soon we shall test all this on [__PineDio Stack BL604 with LoRa SX1262__](https://www.pine64.org/2021/08/15/introducing-the-pinenote/)... As we explore whether it's feasible to teach Embedded Programming for BL602 and BL604.
 
