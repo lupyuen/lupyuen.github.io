@@ -852,7 +852,7 @@ int rc = spi_init(
     4    //  SPI Serial Data Out Pin (formerly MOSI)
 </code></pre>
 <p>(Could we have mistakenly configured BL602 as SPI Peripheral… Instead of SPI Controller? 🤔)</p>
-<p><a href="https://lupyuen.github.io/articles/pinedio#spi-pins-are-swapped"><strong>UPDATE:</strong> We may call GLB_Swap_SPI_0_MOSI_With_MISO to swap the two SPI Data Pins. See this</a></p>
+<p><a href="https://lupyuen.github.io/articles/pinedio#spi-pins-are-swapped"><strong>UPDATE:</strong> We may call GLB_Swap_SPI_0_MOSI_With_MISO to swap the two SPI Data Pins. (See this)</a></p>
 <h1 id="spi-phase-looks-sus" class="section-header"><a href="#spi-phase-looks-sus">9 SPI Phase looks sus</a></h1>
 <p>Here’s another spooky problem: <strong>BL602 SPI Phase seems incorrect</strong>.</p>
 <p>Earlier we have configured BL602 for <strong>SPI Polarity 0 (CPOL), Phase 1 (CPHA)</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L45-L100"><code>sdk_app_spi/demo.c</code></a> </p>
