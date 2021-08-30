@@ -875,6 +875,8 @@ int rc = spi_init(
 
 (Could we have mistakenly configured BL602 as SPI Peripheral... Instead of SPI Controller? 🤔)
 
+[__UPDATE:__ We may call GLB_Swap_SPI_0_MOSI_With_MISO to swap the two SPI Data Pins. See this](https://lupyuen.github.io/articles/pinedio#spi-pins-are-swapped)
+
 # SPI Phase looks sus
 
 Here's another spooky problem: __BL602 SPI Phase seems incorrect__.
