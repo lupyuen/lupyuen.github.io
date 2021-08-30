@@ -774,3 +774,5 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1429273222780887041)
+
+1.  JF has [__successfully tested PineDio Stack's SPI Port__](https://twitter.com/codingfield/status/1431541455210913792) with an external eInk Display
