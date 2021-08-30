@@ -601,16 +601,17 @@ int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);
 <p>I’m really excited that PineDio Stack BL604 will be available soon!</p>
 <p>But in the meantime, JF and I have <strong>plenty to test on PineDio Stack</strong>…</p>
 <ol>
-<li>ST7789 Display</li>
-<li>LoRa SX1262</li>
-<li>SPI Flash</li>
-<li>Accelerometer</li>
-<li>Heart Rate Sensor</li>
-<li>Touch Panel</li>
-<li>Vibrator</li>
-<li>Push Button</li>
+<li>ST7789 Display (SPI)</li>
+<li>LoRa SX1262 (SPI)</li>
+<li>SPI Flash (SPI)</li>
+<li>Accelerometer (I2C)</li>
+<li>Heart Rate Sensor (I2C)</li>
+<li>Touch Panel (I2C)</li>
+<li>Vibrator (GPIO)</li>
+<li>Push Button (GPIO)</li>
 <li>WiFi</li>
 <li>Bluetooth LE</li>
+<li>JTAG Debugging</li>
 <li>Battery Charging</li>
 <li>Solar Power</li>
 </ol>
