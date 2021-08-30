@@ -160,6 +160,8 @@ We __flash the BL604 Blinky Firmware__ the exact same way as BL602...
 
     Flip the __GPIO 8 Jumper__ to __High__
 
+    [(See this)](https://lupyuen.github.io/images/pinedio-high.jpg)
+
 1.  __Connect the board__ to our computer's USB Port
 
 1.  __Run `blflash`__ to flash this firmware file...
@@ -177,6 +179,8 @@ To __run the BL604 Blinky Firmware__...
 1.  Switch to __Normal Mode__...
 
     Flip the __GPIO 8 Jumper__ to __Low__
+
+    [(See this)](https://lupyuen.github.io/images/pinedio-low.jpg)
 
 1.  __Connect the board__ to the USB Port
 
