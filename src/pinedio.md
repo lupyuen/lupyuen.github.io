@@ -729,16 +729,17 @@ I'm really excited that PineDio Stack BL604 will be available soon!
 
 But in the meantime, JF and I have __plenty to test on PineDio Stack__...
 
-1.  ST7789 Display
-1.  LoRa SX1262
-1.  SPI Flash
-1.  Accelerometer
-1.  Heart Rate Sensor
-1.  Touch Panel
-1.  Vibrator
-1.  Push Button
+1.  ST7789 Display (SPI)
+1.  LoRa SX1262 (SPI)
+1.  SPI Flash (SPI)
+1.  Accelerometer (I2C)
+1.  Heart Rate Sensor (I2C)
+1.  Touch Panel (I2C)
+1.  Vibrator (GPIO)
+1.  Push Button (GPIO)
 1.  WiFi
 1.  Bluetooth LE
+1.  JTAG Debugging
 1.  Battery Charging
 1.  Solar Power
 
