@@ -727,6 +727,12 @@ Also we're __probing the tiny ST7789 Connector__ (with a sharp Pogo Pin) to unde
 
 ![Probing the tiny ST7789 Connector with a sharp Pogo Pin](https://lupyuen.github.io/images/pinedio-probe.jpg)
 
+Here's what we discovered...
+
+![Probe Results](https://lupyuen.github.io/images/pinedio-probe2.jpg)
+
+Stay Tuned!
+
 # Seeking Volunteers!
 
 I'm really excited that PineDio Stack BL604 will be available soon!
