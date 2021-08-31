@@ -729,9 +729,15 @@ Also we're __probing the tiny ST7789 Connector__ (with a sharp Pogo Pin) to unde
 
 Here's what we discovered...
 
-![Probe Results](https://lupyuen.github.io/images/pinedio-probe2.jpg)
+| ST7789 Pin | BL604 GPIO |
+|:-----:|:-----:|
+| __SDA__ | GPIO 0
+| __DC__  | GPIO 17
+| __SCK__ | GPIO 11
 
 Stay Tuned!
+
+![Probe Results](https://lupyuen.github.io/images/pinedio-probe2.jpg)
 
 # Seeking Volunteers!
 
