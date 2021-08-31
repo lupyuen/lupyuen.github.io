@@ -723,6 +723,10 @@ _Maybe Pins IM0 to IM3 are not hard-wired as such?_
 
 That's a possibility... Which we're checking with the Display Makers now.
 
+Also we're __probing the tiny ST7789 Connector__ (with a sharp Pogo Pin) to understand how the pins are connected.
+
+![Probing the tiny ST7789 Connector with a sharp Pogo Pin](https://lupyuen.github.io/images/pinedio-probe.jpg)
+
 # Seeking Volunteers!
 
 I'm really excited that PineDio Stack BL604 will be available soon!
