@@ -730,10 +730,10 @@ Also we're __probing the tiny ST7789 Connector__ (with a sharp Pogo Pin) to unde
 Here's what we discovered from the __Pogo Pin Probing__...
 
 | ST7789 Pin | BL604 GPIO |
-|:-----:|:-----:|
-| __SDA__ | GPIO 0
-| __DC__  | GPIO 17
-| __SCK__ | GPIO 11
+|:----------:|:----------:|
+| __SDA__    | GPIO 0     |
+| __DC__     | GPIO 17    |
+| __SCK__    | GPIO 11    |
 
 Not quite what we expected... But Stay Tuned!
 
