@@ -600,8 +600,13 @@ int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);
 <p>Also we’re <strong>probing the tiny ST7789 Connector</strong> (with a sharp Pogo Pin) to understand how the pins are connected.</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-probe.jpg" alt="Probing the tiny ST7789 Connector with a sharp Pogo Pin" /></p>
 <p>Here’s what we discovered…</p>
-<p><img src="https://lupyuen.github.io/images/pinedio-probe2.jpg" alt="Probe Results" /></p>
+<table><thead><tr><th align="center">ST7789 Pin</th><th align="center">BL604 GPIO</th></tr></thead><tbody>
+<tr><td align="center"><strong>SDA</strong></td><td align="center">GPIO 0</td></tr>
+<tr><td align="center"><strong>DC</strong></td><td align="center">GPIO 17</td></tr>
+<tr><td align="center"><strong>SCK</strong></td><td align="center">GPIO 11</td></tr>
+</tbody></table>
 <p>Stay Tuned!</p>
+<p><img src="https://lupyuen.github.io/images/pinedio-probe2.jpg" alt="Probe Results" /></p>
 <h1 id="seeking-volunteers" class="section-header"><a href="#seeking-volunteers">11 Seeking Volunteers!</a></h1>
 <p>I’m really excited that PineDio Stack BL604 will be available soon!</p>
 <p>But in the meantime, JF and I have <strong>plenty to test on PineDio Stack</strong>…</p>
