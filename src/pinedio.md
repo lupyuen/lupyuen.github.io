@@ -774,3 +774,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1429273222780887041)
+
+1.  JF has [__successfully tested PineDio Stack's SPI Port__](https://twitter.com/codingfield/status/1431541455210913792) with an external eInk Display
+
+1.  We have created new firmware to [__Bit-Bang ST7789's 4-Wire (8-Bit) Interface: `pinedio_st7789_bitbang2`__](https://github.com/lupyuen/bl_iot_sdk/tree/3wire/customer_app/pinedio_st7789_bitbang2)
