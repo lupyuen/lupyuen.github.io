@@ -258,6 +258,8 @@ All about the __BL602 / BL604 Bootloader__... And how it loads the Application F
 
 -   ["BL602 Bootloader"](https://lupyuen.github.io/articles/boot)
 
+![PineDio Stack BL604](https://lupyuen.github.io/images/book-pinedio.jpg)
+
 # PineDio Stack BL604
 
 Sneak preview of the new __PineDio Stack BL604__ with ST7789 Display and onboard LoRa SX1262 Transceiver. 
