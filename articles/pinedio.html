@@ -605,7 +605,17 @@ int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);
 <tr><td align="center"><strong>DC</strong></td><td align="center">GPIO 17</td></tr>
 <tr><td align="center"><strong>SCK</strong></td><td align="center">GPIO 11</td></tr>
 </tbody></table>
-<p>Not quite what we expected… But Stay Tuned!</p>
+<p>Not quite what we expected. We tried both <strong>SPI and Bit-Banging</strong> with the discovered settings…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/3wire/customer_app/pinedio_st7789_spi"><strong><code>pinedio_st7789_spi</code></strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/3wire/customer_app/pinedio_st7789_bitbang2"><strong><code>pinedio_st7789_bitbang2</code></strong></a></p>
+</li>
+</ul>
+<p>But both don’t show anything on the ST7789 Display.</p>
+<p>Any ideas? 🤔</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-probe2.jpg" alt="Probe Results" /></p>
 <h1 id="seeking-volunteers" class="section-header"><a href="#seeking-volunteers">11 Seeking Volunteers!</a></h1>
 <p>I’m really excited that PineDio Stack BL604 will be available soon!</p>
