@@ -735,7 +735,15 @@ Here's what we discovered from the __Pogo Pin Probing__...
 | __DC__     | GPIO 17    |
 | __SCK__    | GPIO 11    |
 
-Not quite what we expected... But Stay Tuned!
+Not quite what we expected. We tried both __SPI and Bit-Banging__ with the discovered settings...
+
+- [__`pinedio_st7789_spi`__](https://github.com/lupyuen/bl_iot_sdk/tree/3wire/customer_app/pinedio_st7789_spi)
+
+- [__`pinedio_st7789_bitbang2`__](https://github.com/lupyuen/bl_iot_sdk/tree/3wire/customer_app/pinedio_st7789_bitbang2)
+
+But both don't show anything on the ST7789 Display.
+
+Any ideas? 🤔
 
 ![Probe Results](https://lupyuen.github.io/images/pinedio-probe2.jpg)
 
