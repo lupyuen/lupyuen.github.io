@@ -68,9 +68,40 @@
 <li><a href="#todo">1 TODO</a><ul></ul></li>
 <li><a href="#whats-next">2 What’s Next</a><ul></ul></li>
 <li><a href="#notes">3 Notes</a><ul></ul></li></ul></nav><p>📝 <em>7 Sep 2021</em></p>
-<p><em>Can we drag-and-drop Rhai Scripts… And run them on WebAssembly and BL602 RISC-V SoC?</em></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/rhai-title.jpg" alt="" /></p>
+<p><em>What is Rhai?</em></p>
+<p><strong>Rhai is a Rust-like Scripting Language</strong>, implemented in Rust.</p>
+<p><em>Can we use Rhai for coding microcontrollers the REPL way?</em></p>
+<p><em>Like on the BL602 RISC-V + WiFi + Bluetooth LE SoC?</em></p>
+<p><img src="https://lupyuen.github.io/images/rhai-rust2.jpg" alt="Rhai Script vs Rust Firmware" /></p>
+<p>Sadly the <strong>Rhai Scripting Engine is too heavy</strong> for most microcontrollers (including BL602).</p>
+<p><em>What if we auto-convert Rhai Scripts to uLisp, which runs OK on microcontrollers?</em></p>
+<p><img src="https://lupyuen.github.io/images/rhai-transcode4.jpg" alt="Rhai Script transcoded to uLisp" /></p>
+<p>What an interesting idea! Which we shall explore in this article.</p>
+<p><em>Let’s make Rhai Scripting more fun for learners…</em></p>
+<p><em>Can we drag-and-drop Rhai Scripts (the Scratch way) and run them on BL602?</em></p>
+<p><img src="https://lupyuen.github.io/images/rhai-title.jpg" alt="Drag-and-drop scripting with Blockly and Rhai" /></p>
+<p>Yep it sounds feasible, let’s explore that too.</p>
+<p><em>One more thing… Can we run Rhai Scripts in a Web Browser? Like on a Simulated BL602?</em></p>
+<p>Yes we can… Because we’ve implemented a <strong>BL602 Simulator in WebAsssembly</strong>!</p>
+<p>So today we shall explore…</p>
+<ol>
+<li>
+<p>Running <strong>Rhai Scripts on BL602</strong></p>
+<p>(The REPL way)</p>
+</li>
+<li>
+<p>By <strong>auto-converting Rhai Scripts to uLisp</strong></p>
+<p>(Because Rhai can’t run directly on BL602)</p>
+</li>
+<li>
+<p><strong>Drag-and-drop Rhai Scripting</strong></p>
+<p>(The Scratch way)</p>
+</li>
+<li>
+<p>Running <strong>Rhai Scripts in a Web Browser</strong></p>
+<p>(With a Simulated BL602)</p>
+</li>
+</ol>
 <h1 id="todo" class="section-header"><a href="#todo">1 TODO</a></h1>
 <p>TODO1</p>
 <p><img src="https://lupyuen.github.io/images/rhai-ast.jpg" alt="" /></p>
@@ -92,22 +123,14 @@
 <p><img src="https://lupyuen.github.io/images/rhai-module.png" alt="" /></p>
 <p>TODO10</p>
 <p><img src="https://lupyuen.github.io/images/rhai-run.png" alt="" /></p>
-<p>TODO11</p>
-<p><img src="https://lupyuen.github.io/images/rhai-rust.jpg" alt="" /></p>
-<p>TODO12</p>
-<p><img src="https://lupyuen.github.io/images/rhai-rust2.jpg" alt="" /></p>
 <p>TODO13</p>
 <p><img src="https://lupyuen.github.io/images/rhai-scope.png" alt="" /></p>
 <p>TODO14</p>
 <p><img src="https://lupyuen.github.io/images/rhai-sdk.png" alt="" /></p>
-<p>TODO15</p>
-<p><img src="https://lupyuen.github.io/images/rhai-transcode.jpg" alt="" /></p>
 <p>TODO16</p>
 <p><img src="https://lupyuen.github.io/images/rhai-transcode2.jpg" alt="" /></p>
 <p>TODO17</p>
 <p><img src="https://lupyuen.github.io/images/rhai-transcode3.jpg" alt="" /></p>
-<p>TODO18</p>
-<p><img src="https://lupyuen.github.io/images/rhai-transcode4.jpg" alt="" /></p>
 <p>TODO19</p>
 <p><img src="https://lupyuen.github.io/images/rhai-transcode5.jpg" alt="" /></p>
 <p>TODO20</p>
