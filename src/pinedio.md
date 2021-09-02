@@ -751,7 +751,7 @@ We also tried to [__read the display ID__](https://github.com/lupyuen/bl_iot_sdk
 
 But the GPIO 0 signal looks glitchy. See the top line, centre part...
 
-![Probe Results](https://lupyuen.github.io/images/pinedio-readid.jpg)
+![Reading display ID looks glitchy](https://lupyuen.github.io/images/pinedio-readid.png)
 
 Any ideas? 🤔
 
