@@ -52,6 +52,12 @@ So today we shall explore...
 
 # TODO
 
+-   [__`blockly-bl602`__](https://github.com/lupyuen2/blockly-bl602)
+
+-   [__`bl602-simulator`__ (`transcode` branch)](https://github.com/lupyuen/bl602-simulator/tree/transcode)
+
+-   [__`ulisp-bl602`__ (`sdk` branch)](https://github.com/lupyuen/ulisp-bl602/tree/sdk)
+
 TODO1
 
 ![](https://lupyuen.github.io/images/rhai-ast.jpg)
@@ -126,7 +132,7 @@ TODO22
 
 TODO23
 
-![](https://lupyuen.github.io/images/rhai-transcode9.png
+![](https://lupyuen.github.io/images/rhai-transcode9.png)
 
 # What's Next
 
