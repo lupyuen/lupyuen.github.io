@@ -52,6 +52,12 @@ So today we shall explore...
 
     (With BL602 simulated in WebAssembly)
 
+# Bestest Outcome
+
+_Why are we doing all this?_
+
+TODO
+
 # TODO
 
 -   [__`blockly-bl602`__](https://github.com/lupyuen2/blockly-bl602)
