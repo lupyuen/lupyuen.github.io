@@ -66,7 +66,7 @@ I introduced __Rust__ as an option for coding BL602 Firmware, by creating a [__R
 
 TODO
 
-But flashing the C (or Rust) Firmware to BL602 over USB UART (and flipping a jumper) feels cumbersome.
+But flashing the C (or Rust) Firmware to BL602 over USB UART (and flipping a jumper) __feels cumbersome__.
 
 (Especially when we keep fixing the code and reflashing to BL602)
 
@@ -78,21 +78,21 @@ _But what about the learners?_
 
 Scripted REPL platforms for microcontrollers like uLisp and MicroPython are popular for learners.
 
-Since we have a WebAssembly Simulator for BL602, we can run REPL Scripts too... With Rhai!
+Since we have a WebAssembly Simulator for BL602, we can run REPL Scripts too... With __Rhai, the Drag-and-Drop Way!__
 
 TODO
 
-And to run Rhai Scripts on actual BL602 Hardware, we need to convert Rhai Scripts to uLisp...
+And to run Rhai Scripts on actual BL602 Hardware, we need to __convert Rhai Scripts to uLisp__...
 
 (Because the Rhai Scripting Engine is too heavy for BL602)
 
-Which is perfectly OK, because we can do the conversion in WebAssembly!
+Which is perfectly OK, because we can __do the conversion in WebAssembly!__
 
-(And transmit the converted uLisp code to BL602 via WebUSB)
+(And transmit the converted uLisp code to BL602 via __WebUSB__)
 
 TODO
 
-In this article we'll learn how this grand scheme is implemented in these 3 repos...
+In this article we'll learn how this grand scheme is implemented with these 3 repos...
 
 -   [__`bl602-simulator`__ (`transcode` branch)](https://github.com/lupyuen/bl602-simulator/tree/transcode): WebAssembly Simulator for BL602 and BL604
 
