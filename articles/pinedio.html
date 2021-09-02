@@ -605,6 +605,7 @@ int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);
 <tr><td align="center"><strong>DC</strong></td><td align="center">GPIO 17</td></tr>
 <tr><td align="center"><strong>SCK</strong></td><td align="center">GPIO 11</td></tr>
 </tbody></table>
+<p><img src="https://lupyuen.github.io/images/pinedio-probe2.jpg" alt="Probe Results" /></p>
 <p>Not quite what we expected. We tried both <strong>SPI and Bit-Banging</strong> with the discovered settings…</p>
 <ul>
 <li>
@@ -615,8 +616,13 @@ int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);
 </li>
 </ul>
 <p>But both don’t show anything on the ST7789 Display.</p>
+<p>We also tried to <a href="https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789_bitbang3/pinedio_st7789_bitbang3/demo.c#L62-L97"><strong>read the display ID</strong></a> (RDDID) by flipping GPIO 0 between output and input modes…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/3wire/customer_app/pinedio_st7789_bitbang3"><strong><code>pinedio_st7789_bitbang3</code></strong></a></li>
+</ul>
+<p>But the GPIO 0 signal looks glitchy. See the top line, centre part…</p>
+<p><img src="https://lupyuen.github.io/images/pinedio-readid.jpg" alt="Probe Results" /></p>
 <p>Any ideas? 🤔</p>
-<p><img src="https://lupyuen.github.io/images/pinedio-probe2.jpg" alt="Probe Results" /></p>
 <h1 id="seeking-volunteers" class="section-header"><a href="#seeking-volunteers">11 Seeking Volunteers!</a></h1>
 <p>I’m really excited that PineDio Stack BL604 will be available soon!</p>
 <p>But in the meantime, JF and I have <strong>plenty to test on PineDio Stack</strong>…</p>
