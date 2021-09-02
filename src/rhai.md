@@ -58,7 +58,21 @@ _Why are we doing ALL this? (Waving hands)_
 
 _What challenges are BL602 (and BL604) Firmware Developers facing today?_
 
+Today most developers code BL602 (and BL604) Firmware in __C with the BL602 IoT SDK__...
+
 TODO
+
+I introduced __Rust__ as an option for coding BL602 Firmware, by creating a __Rust Wrapper for BL602 IoT SDK__...
+
+TODO
+
+But flashing the C (or Rust) Firmware to BL602 over USB UART feels cumbersome.
+
+(Especially when we keep fixing the code and reflashing to BL602)
+
+TODO
+
+Today we shall walk through the code in these repos...
 
 -   [__`bl602-simulator`__ (`transcode` branch)](https://github.com/lupyuen/bl602-simulator/tree/transcode): WebAssembly Simulator for BL602 and BL604
 
