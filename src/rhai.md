@@ -56,23 +56,43 @@ So today we shall explore...
 
 _Why are we doing ALL this? (Waving hands)_
 
-_What challenges are BL602 (and BL604) Firmware Developers facing today?_
+_What challenges are BL602 (and BL604) Firmware Developers facing?_
 
-Today most developers code BL602 (and BL604) Firmware in __C with the BL602 IoT SDK__...
-
-TODO
-
-I introduced __Rust__ as an option for coding BL602 Firmware, by creating a __Rust Wrapper for BL602 IoT SDK__...
+Most developers code BL602 (and BL604) Firmware in __C with the BL602 IoT SDK__...
 
 TODO
 
-But flashing the C (or Rust) Firmware to BL602 over USB UART feels cumbersome.
+I introduced __Rust__ as an option for coding BL602 Firmware, by creating a [__Rust Wrapper for BL602 IoT SDK__](https://lupyuen.github.io/articles/adc#rust-wrapper-for-bl602-iot-sdk)...
+
+TODO
+
+But flashing the C (or Rust) Firmware to BL602 over USB UART (and flipping a jumper) feels cumbersome.
 
 (Especially when we keep fixing the code and reflashing to BL602)
 
+Thus we created the [__WebAssembly Simulator for BL602__](https://lupyuen.github.io/articles/rustsim) that runs BL602 Rust Firmware in a Web Browser, for quicker testing and debugging...
+
 TODO
 
-Today we shall walk through the code in these repos...
+_But what about the learners?_
+
+Scripted REPL platforms for microcontrollers like uLisp and MicroPython are popular for learners.
+
+Since we have a WebAssembly Simulator for BL602, we can run REPL Scripts too... With Rhai!
+
+TODO
+
+And to run Rhai Scripts on actual BL602 Hardware, we need to convert Rhai Scripts to uLisp...
+
+(Because the Rhai Scripting Engine is too heavy for BL602)
+
+Which is perfectly OK, because we can do the conversion in WebAssembly!
+
+(And transmit the converted uLisp code to BL602 via WebUSB)
+
+TODO
+
+In this article we'll learn how this grand scheme is implemented in these 3 repos...
 
 -   [__`bl602-simulator`__ (`transcode` branch)](https://github.com/lupyuen/bl602-simulator/tree/transcode): WebAssembly Simulator for BL602 and BL604
 
