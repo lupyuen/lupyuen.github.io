@@ -38,17 +38,17 @@ So today we shall explore...
 
     (The REPL way)
 
-1.  By __auto-converting Rhai Scripts to uLisp__
+1.  By __Auto-Converting Rhai Scripts to uLisp__
 
     (Because Rhai can't run directly on BL602)
 
-1.  __Drag-and-drop Rhai Scripting__
+1.  With __Drag-and-Drop Rhai Scripting__
 
     (The Scratch way)
 
-1.  Running __Rhai Scripts in a Web Browser__
+1.  That also runs __Rhai Scripts in a Web Browser__
 
-    (With a Simulated BL602)
+    (With BL602 simulated in WebAssembly)
 
 # TODO
 
