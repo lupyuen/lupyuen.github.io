@@ -106,9 +106,15 @@ In this article we'll learn how this grand scheme is implemented with these 3 re
 
     (Integrated with BL602 / BL604 IoT SDK)
 
-# TODO
+# Add Rhai Scripting to BL602 Simulator
 
-TODO1
+TODO
+
+![](https://lupyuen.github.io/images/rhai-module.png)
+
+# Transcode Rhai to uLisp
+
+TODO
 
 ![](https://lupyuen.github.io/images/rhai-ast.jpg)
 
@@ -126,35 +132,11 @@ TODO4
 
 TODO5
 
-![](https://lupyuen.github.io/images/rhai-blockly.png)
-
-TODO6
-
-![](https://lupyuen.github.io/images/rhai-blockly2.png)
-
-TODO7
-
-![](https://lupyuen.github.io/images/rhai-blockly3.jpg)
-
-TODO8
-
-![](https://lupyuen.github.io/images/rhai-blockly4.png)
-
-TODO9
-
-![](https://lupyuen.github.io/images/rhai-module.png)
-
-TODO10
-
 ![](https://lupyuen.github.io/images/rhai-run.png)
 
 TODO13
 
 ![](https://lupyuen.github.io/images/rhai-scope.png)
-
-TODO14
-
-![](https://lupyuen.github.io/images/rhai-sdk.png)
 
 TODO16
 
@@ -183,6 +165,20 @@ TODO22
 TODO23
 
 ![](https://lupyuen.github.io/images/rhai-transcode9.png)
+
+# Rhai Scripting with Blockly
+
+TODO
+
+![](https://lupyuen.github.io/images/rhai-blockly.png)
+
+TODO6
+
+![](https://lupyuen.github.io/images/rhai-blockly2.png)
+
+TODO7
+
+![](https://lupyuen.github.io/images/rhai-blockly3.jpg)
 
 # What's Next
 
