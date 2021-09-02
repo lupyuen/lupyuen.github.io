@@ -8,11 +8,11 @@ __Rhai is a Rust-like Scripting Language__, implemented in Rust.
 
 _Can we use Rhai for coding microcontrollers the REPL way?_
 
-_Like on the BL602 RISC-V + WiFi + Bluetooth LE SoC?_
+_Like on the BL602 / BL604 RISC-V + WiFi + Bluetooth LE SoC?_
 
 ![Rhai Script vs Rust Firmware](https://lupyuen.github.io/images/rhai-rust2.jpg)
 
-Sadly the __Rhai Scripting Engine is too heavy__ for most microcontrollers (including BL602).
+Sadly the __Rhai Scripting Engine is too heavy__ for most microcontrollers (including BL602 and BL604).
 
 _What if we auto-convert Rhai Scripts to uLisp, which runs OK on microcontrollers?_
 
