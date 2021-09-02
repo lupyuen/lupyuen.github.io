@@ -2,11 +2,53 @@
 
 📝 _7 Sep 2021_
 
-_Can we drag-and-drop Rhai Scripts... And run them on WebAssembly and BL602 RISC-V SoC?_
+_What is Rhai?_
 
-TODO
+__Rhai is a Rust-like Scripting Language__, implemented in Rust.
 
-![](https://lupyuen.github.io/images/rhai-title.jpg)
+_Can we use Rhai for coding microcontrollers the REPL way?_
+
+_Like on the BL602 RISC-V + WiFi + Bluetooth LE SoC?_
+
+![Rhai Script vs Rust Firmware](https://lupyuen.github.io/images/rhai-rust2.jpg)
+
+Sadly the __Rhai Scripting Engine is too heavy__ for most microcontrollers (including BL602).
+
+_What if we auto-convert Rhai Scripts to uLisp, which runs OK on microcontrollers?_
+
+![Rhai Script transcoded to uLisp](https://lupyuen.github.io/images/rhai-transcode4.jpg)
+
+What an interesting idea! Which we shall explore in this article.
+
+_Let's make Rhai Scripting more fun for learners..._
+
+_Can we drag-and-drop Rhai Scripts (the Scratch way) and run them on BL602?_
+
+![Drag-and-drop scripting with Blockly and Rhai](https://lupyuen.github.io/images/rhai-title.jpg)
+
+Yep it sounds feasible, let's explore that too.
+
+_One more thing... Can we run Rhai Scripts in a Web Browser? Like on a Simulated BL602?_
+
+Yes we can... Because we've implemented a __BL602 Simulator in WebAsssembly__!
+
+So today we shall explore...
+
+1.  Running __Rhai Scripts on BL602__
+
+    (The REPL way)
+
+1.  By __auto-converting Rhai Scripts to uLisp__
+
+    (Because Rhai can't run directly on BL602)
+
+1.  __Drag-and-drop Rhai Scripting__
+
+    (The Scratch way)
+
+1.  Running __Rhai Scripts in a Web Browser__
+
+    (With a Simulated BL602)
 
 # TODO
 
@@ -50,14 +92,6 @@ TODO10
 
 ![](https://lupyuen.github.io/images/rhai-run.png)
 
-TODO11
-
-![](https://lupyuen.github.io/images/rhai-rust.jpg)
-
-TODO12
-
-![](https://lupyuen.github.io/images/rhai-rust2.jpg)
-
 TODO13
 
 ![](https://lupyuen.github.io/images/rhai-scope.png)
@@ -66,10 +100,6 @@ TODO14
 
 ![](https://lupyuen.github.io/images/rhai-sdk.png)
 
-TODO15
-
-![](https://lupyuen.github.io/images/rhai-transcode.jpg)
-
 TODO16
 
 ![](https://lupyuen.github.io/images/rhai-transcode2.jpg)
@@ -77,10 +107,6 @@ TODO16
 TODO17
 
 ![](https://lupyuen.github.io/images/rhai-transcode3.jpg)
-
-TODO18
-
-![](https://lupyuen.github.io/images/rhai-transcode4.jpg)
 
 TODO19
 
