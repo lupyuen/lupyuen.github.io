@@ -60,13 +60,19 @@ _What challenges are BL602 (and BL604) Firmware Developers facing today?_
 
 TODO
 
+-   [__`bl602-simulator`__ (`transcode` branch)](https://github.com/lupyuen/bl602-simulator/tree/transcode): WebAssembly Simulator for BL602 and BL604
+
+    (With Rhai Scripting Engine and Rhai to uLisp Transcoder)
+
+-   [__`blockly-bl602`__](https://github.com/lupyuen2/blockly-bl602): Blockly Drag-and-Drop Scripting for BL602 and BL604
+
+    (Works like Scratch)
+
+-   [__`ulisp-bl602`__ (`sdk` branch)](https://github.com/lupyuen/ulisp-bl602/tree/sdk): uLisp for BL602 and BL602
+
+    (Integrated with BL602 / BL604 IoT SDK)
+
 # TODO
-
--   [__`blockly-bl602`__](https://github.com/lupyuen2/blockly-bl602)
-
--   [__`bl602-simulator`__ (`transcode` branch)](https://github.com/lupyuen/bl602-simulator/tree/transcode)
-
--   [__`ulisp-bl602`__ (`sdk` branch)](https://github.com/lupyuen/ulisp-bl602/tree/sdk)
 
 TODO1
 
