@@ -88,7 +88,7 @@ And to run Rhai Scripts on actual BL602 Hardware, we need to __convert Rhai Scri
 
 Which is perfectly OK, because we can __do the conversion in WebAssembly!__
 
-(And transmit the converted uLisp code to BL602 via __WebUSB__)
+(And transmit the converted uLisp code to BL602 via __WebSerial__)
 
 TODO
 
