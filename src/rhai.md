@@ -102,7 +102,7 @@ In this article we'll learn how this grand scheme is implemented with these 3 re
 
     (Works like Scratch)
 
--   [__`ulisp-bl602`__ (`sdk` branch)](https://github.com/lupyuen/ulisp-bl602/tree/sdk): uLisp for BL602 and BL602
+-   [__`ulisp-bl602`__ (`sdk` branch)](https://github.com/lupyuen/ulisp-bl602/tree/sdk): uLisp for BL602 and BL604
 
     (Integrated with BL602 / BL604 IoT SDK)
 
