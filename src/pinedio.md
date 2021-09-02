@@ -735,6 +735,8 @@ Here's what we discovered from the __Pogo Pin Probing__...
 | __DC__     | GPIO 17    |
 | __SCK__    | GPIO 11    |
 
+![Probe Results](https://lupyuen.github.io/images/pinedio-probe2.jpg)
+
 Not quite what we expected. We tried both __SPI and Bit-Banging__ with the discovered settings...
 
 - [__`pinedio_st7789_spi`__](https://github.com/lupyuen/bl_iot_sdk/tree/3wire/customer_app/pinedio_st7789_spi)
@@ -743,9 +745,15 @@ Not quite what we expected. We tried both __SPI and Bit-Banging__ with the disco
 
 But both don't show anything on the ST7789 Display.
 
-Any ideas? 🤔
+We also tried to [__read the display ID__](https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789_bitbang3/pinedio_st7789_bitbang3/demo.c#L62-L97) (RDDID) by flipping GPIO 0 between output and input modes...
 
-![Probe Results](https://lupyuen.github.io/images/pinedio-probe2.jpg)
+- [__`pinedio_st7789_bitbang3`__](https://github.com/lupyuen/bl_iot_sdk/tree/3wire/customer_app/pinedio_st7789_bitbang3)
+
+But the GPIO 0 signal looks glitchy. See the top line, centre part...
+
+![Probe Results](https://lupyuen.github.io/images/pinedio-readid.jpg)
+
+Any ideas? 🤔
 
 # Seeking Volunteers!
 
