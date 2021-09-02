@@ -84,13 +84,13 @@ Since we have a WebAssembly Simulator for BL602, we can run REPL Scripts too... 
 
 And to run Rhai Scripts on actual BL602 Hardware, we need to __convert Rhai Scripts to uLisp__...
 
-(Because the Rhai Scripting Engine is too heavy for BL602)
+(Because Rhai Scripting Engine is too heavy for BL602)
+
+![Convert Rhai Scripts to uLisp](https://lupyuen.github.io/images/rhai-outcome3.jpg)
 
 Which is perfectly OK, because we can __do the conversion in WebAssembly!__
 
-(And transmit the converted uLisp code to BL602 via __WebSerial__)
-
-![Convert Rhai Scripts to uLisp](https://lupyuen.github.io/images/rhai-outcome3.jpg)
+(And transmit the converted uLisp code to BL602 via the __WebSerial API__)
 
 In this article we'll learn how this grand scheme is implemented with these 3 repos...
 
