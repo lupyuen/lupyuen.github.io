@@ -54,7 +54,9 @@ So today we shall explore...
 
 # Bestest Outcome
 
-_Why are we doing all this?_
+_Why are we doing ALL this? (Waving hands)_
+
+_What challenges are BL602 (and BL604) Firmware Developers facing today?_
 
 TODO
 
