@@ -114,83 +114,113 @@ From [`bl602-script/lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/tra
 
 ```rust
 /// This function will be called by WebAssembly to run a script
-#[no_mangle]                 //  Don't mangle the function name
-extern "C" fn rust_script(   //  Declare `extern "C"` because it will be called by BL602 firmware
-    _result: *mut u8,        //  Result to be returned to command-line interface (char *)
-    _len:  i32,              //  Size of result buffer (int)
-    _argc: i32,              //  Number of command line args (int)
-    _argv: *const *const u8  //  Array of command line args (char **)
-) {
-    //  Show a message on the serial console
-    println!("Hello from Rust Script!");
+#[no_mangle]                        //  Don't mangle the function name
+extern "C" fn rust_script( ... ) {  //  Declare `extern "C"` because it will be called by Emscripten
+  //  Init the Rhai script engine
+  let mut engine = Engine::new();
 
-    //  Init the Rhai script engine
-    let mut engine = Engine::new();
-    println!("Created script engine");
+  //  Create a Rhai module from the plugin module
+  let module = exported_module!(gpio);
 
-    //  Create a Rhai module from the plugin module
-    let module = exported_module!(gpio);
+  //  Register our module as a Static Module
+  engine.register_static_module("gpio", module.into());
 
-    //  Register our module as a Static Module
-    engine.register_static_module("gpio", module.into());
+  //  Register our functions with Rhai
+  engine.register_fn("time_delay", time_delay);
 
-    //  Register our functions with Rhai
-    engine.register_fn("time_delay", time_delay);
+  //  Rhai Script to be evaluated
+  let script = r#" 
+    //  Evaluate an expression
+    let a = 40; 
+    let b = 2;
+    a + b 
+  "#;
 
-    //  Rhai Script to be evaluated
-    let script = r#" 
-        //  Testing Loop
-        loop { 
-            let a = 1;
-            print(a);
-            if a == 1 { break; }
-        }
+  //  Evaluate the Rhai Script
+  let result = engine.eval::<i32>(script)
+    .unwrap() as isize;
 
-        //  Blink the LED:
-        //  PineCone Blue LED is connected on BL602 GPIO 11
-        let LED_GPIO = 11;
-
-        //  Configure the LED GPIO for output (instead of input)
-        gpio::enable_output(LED_GPIO, 0, 0);
-
-        //  Blink the LED 5 times
-        for i in range(0, 10) {
-
-            //  Toggle the LED GPIO between 0 (on) and 1 (off)
-            gpio::output_set(
-                LED_GPIO, 
-                i % 2
-            );
-
-            //  Sleep 1 second
-            time_delay(1000);
-        }
-
-        //  Evaluate an expression
-        let a = 40; 
-        let b = 2;
-        a + b 
-    "#;
-
-    //  Compile Rhai Script to an Abstract Syntax Tree
-    let ast = engine.compile(script)
-        .unwrap();
-    println!("AST: {:#?}", ast);
-
-    //  Transcode the Rhai Abstract Syntax Tree to uLisp
-    transcode::transcode(&ast);
-
-    //  Evaluate the compiled Rhai Script
-    let result: i32 = engine.eval_ast(&ast)
-        .unwrap();
-    println!("Eval OK");
-
-    //  Alternatively: Evaluate a Rhai Script
-    //  let result = engine.eval::<i32>(script).unwrap() as isize;
-
-    //  Display the result
-    println!("Result of Rhai Script: {}", result);
+  //  Display the result
+  println!("Result of Rhai Script: {}", result);
 }
+```
+
+## Register a Rust Function
+
+TODO
+
+```rust
+  //  Init the Rhai script engine
+  let mut engine = Engine::new();
+
+  //  Register our functions with Rhai
+  engine.register_fn("time_delay", time_delay);
+
+  //  Rhai Script to be evaluated
+  let script = r#" 
+    //  Sleep 1 second
+    time_delay(1000);
+
+    //  Evaluate an expression
+    let a = 40; 
+    let b = 2;
+    a + b 
+  "#;
+
+  //  Evaluate the Rhai Script
+  let result = engine.eval::<i32>(script)
+    .unwrap() as isize;
+```
+
+## Register a Rust Module
+
+TODO
+
+```rust
+  //  Init the Rhai script engine
+  let mut engine = Engine::new();
+
+  //  Create a Rhai module from the plugin module
+  let module = exported_module!(gpio);
+
+  //  Register our module as a Static Module
+  engine.register_static_module("gpio", module.into());
+```
+
+TODO
+
+```rust
+  //  Rhai Script to be evaluated
+  let script = r#" 
+    //  Blink the LED:
+    //  PineCone Blue LED is connected on BL602 GPIO 11
+    let LED_GPIO = 11;
+
+    //  Configure the LED GPIO for output (instead of input)
+    gpio::enable_output(LED_GPIO, 0, 0);
+
+    //  Blink the LED 5 times
+    for i in range(0, 10) {
+
+      //  Toggle the LED GPIO between 0 (on) and 1 (off)
+      gpio::output_set(
+        LED_GPIO, 
+        i % 2
+      );
+
+      //  Sleep 1 second
+      time_delay(1000);
+    }
+
+    //  Evaluate an expression
+    let a = 40; 
+    let b = 2;
+    a + b 
+  "#;
+
+  //  Evaluate the Rhai Script
+  let result = engine.eval::<i32>(script)
+    .unwrap() as isize;
 ```
 
 TODO
@@ -275,6 +305,84 @@ TODO
 # Transcode Rhai to uLisp
 
 TODO
+
+From [`bl602-script/lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L21-L98)
+
+```rust
+/// This function will be called by WebAssembly to run a script
+#[no_mangle]                        //  Don't mangle the function name
+extern "C" fn rust_script( ... ) {  //  Declare `extern "C"` because it will be called by Emscripten
+  //  Show a message on the serial console
+  println!("Hello from Rust Script!");
+
+  //  Init the Rhai script engine
+  let mut engine = Engine::new();
+  println!("Created script engine");
+
+  //  Create a Rhai module from the plugin module
+  let module = exported_module!(gpio);
+
+  //  Register our module as a Static Module
+  engine.register_static_module("gpio", module.into());
+
+  //  Register our functions with Rhai
+  engine.register_fn("time_delay", time_delay);
+
+  //  Rhai Script to be evaluated
+  let script = r#" 
+    //  Testing Loop
+    loop { 
+      let a = 1;
+      print(a);
+      if a == 1 { break; }
+    }
+
+    //  Blink the LED:
+    //  PineCone Blue LED is connected on BL602 GPIO 11
+    let LED_GPIO = 11;
+
+    //  Configure the LED GPIO for output (instead of input)
+    gpio::enable_output(LED_GPIO, 0, 0);
+
+    //  Blink the LED 5 times
+    for i in range(0, 10) {
+
+      //  Toggle the LED GPIO between 0 (on) and 1 (off)
+      gpio::output_set(
+        LED_GPIO, 
+        i % 2
+      );
+
+      //  Sleep 1 second
+      time_delay(1000);
+    }
+
+    //  Evaluate an expression
+    let a = 40; 
+    let b = 2;
+    a + b 
+  "#;
+
+  //  Compile Rhai Script to an Abstract Syntax Tree
+  let ast = engine.compile(script)
+    .unwrap();
+  println!("AST: {:#?}", ast);
+
+  //  Transcode the Rhai Abstract Syntax Tree to uLisp
+  transcode::transcode(&ast);
+
+  //  Evaluate the compiled Rhai Script
+  let result: i32 = engine.eval_ast(&ast)
+    .unwrap();
+  println!("Eval OK");
+
+  //  Alternatively: Evaluate a Rhai Script
+  //  let result = engine.eval::<i32>(script).unwrap() as isize;
+
+  //  Display the result
+  println!("Result of Rhai Script: {}", result);
+}
+```
 
 ![](https://lupyuen.github.io/images/rhai-ast.jpg)
 
