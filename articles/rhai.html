@@ -145,6 +145,157 @@
 </ul>
 <h1 id="add-rhai-scripting-to-bl602-simulator" class="section-header"><a href="#add-rhai-scripting-to-bl602-simulator">2 Add Rhai Scripting to BL602 Simulator</a></h1>
 <p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L21-L98"><code>bl602-script/lib.rs</code></a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="doccomment">/// This function will be called by WebAssembly to run a script</span>
+<span class="attribute">#[<span class="ident">no_mangle</span>]</span>                 <span class="comment">//  Don&#39;t mangle the function name</span>
+<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">rust_script</span>(   <span class="comment">//  Declare `extern &quot;C&quot;` because it will be called by BL602 firmware</span>
+    <span class="ident">_result</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>,        <span class="comment">//  Result to be returned to command-line interface (char *)</span>
+    <span class="ident">_len</span>:  <span class="ident">i32</span>,              <span class="comment">//  Size of result buffer (int)</span>
+    <span class="ident">_argc</span>: <span class="ident">i32</span>,              <span class="comment">//  Number of command line args (int)</span>
+    <span class="ident">_argv</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>  <span class="comment">//  Array of command line args (char **)</span>
+) {
+    <span class="comment">//  Show a message on the serial console</span>
+    <span class="macro">println!</span>(<span class="string">&quot;Hello from Rust Script!&quot;</span>);
+
+    <span class="comment">//  Init the Rhai script engine</span>
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">engine</span> <span class="op">=</span> <span class="ident">Engine::new</span>();
+    <span class="macro">println!</span>(<span class="string">&quot;Created script engine&quot;</span>);
+
+    <span class="comment">//  Create a Rhai module from the plugin module</span>
+    <span class="kw">let</span> <span class="ident">module</span> <span class="op">=</span> <span class="macro">exported_module!</span>(<span class="ident">gpio</span>);
+
+    <span class="comment">//  Register our module as a Static Module</span>
+    <span class="ident">engine</span>.<span class="ident">register_static_module</span>(<span class="string">&quot;gpio&quot;</span>, <span class="ident">module</span>.<span class="ident">into</span>());
+
+    <span class="comment">//  Register our functions with Rhai</span>
+    <span class="ident">engine</span>.<span class="ident">register_fn</span>(<span class="string">&quot;time_delay&quot;</span>, <span class="ident">time_delay</span>);
+
+    <span class="comment">//  Rhai Script to be evaluated</span>
+    <span class="kw">let</span> <span class="ident">script</span> <span class="op">=</span> <span class="string">r#&quot; 
+        //  Testing Loop
+        loop { 
+            let a = 1;
+            print(a);
+            if a == 1 { break; }
+        }
+
+        //  Blink the LED:
+        //  PineCone Blue LED is connected on BL602 GPIO 11
+        let LED_GPIO = 11;
+
+        //  Configure the LED GPIO for output (instead of input)
+        gpio::enable_output(LED_GPIO, 0, 0);
+
+        //  Blink the LED 5 times
+        for i in range(0, 10) {
+
+            //  Toggle the LED GPIO between 0 (on) and 1 (off)
+            gpio::output_set(
+                LED_GPIO, 
+                i % 2
+            );
+
+            //  Sleep 1 second
+            time_delay(1000);
+        }
+
+        //  Evaluate an expression
+        let a = 40; 
+        let b = 2;
+        a + b 
+    &quot;#</span>;
+
+    <span class="comment">//  Compile Rhai Script to an Abstract Syntax Tree</span>
+    <span class="kw">let</span> <span class="ident">ast</span> <span class="op">=</span> <span class="ident">engine</span>.<span class="ident">compile</span>(<span class="ident">script</span>)
+        .<span class="ident">unwrap</span>();
+    <span class="macro">println!</span>(<span class="string">&quot;AST: {:#?}&quot;</span>, <span class="ident">ast</span>);
+
+    <span class="comment">//  Transcode the Rhai Abstract Syntax Tree to uLisp</span>
+    <span class="ident">transcode::transcode</span>(<span class="kw-2">&amp;</span><span class="ident">ast</span>);
+
+    <span class="comment">//  Evaluate the compiled Rhai Script</span>
+    <span class="kw">let</span> <span class="ident">result</span>: <span class="ident">i32</span> <span class="op">=</span> <span class="ident">engine</span>.<span class="ident">eval_ast</span>(<span class="kw-2">&amp;</span><span class="ident">ast</span>)
+        .<span class="ident">unwrap</span>();
+    <span class="macro">println!</span>(<span class="string">&quot;Eval OK&quot;</span>);
+
+    <span class="comment">//  Alternatively: Evaluate a Rhai Script</span>
+    <span class="comment">//  let result = engine.eval::&lt;i32&gt;(script).unwrap() as isize;</span>
+
+    <span class="comment">//  Display the result</span>
+    <span class="macro">println!</span>(<span class="string">&quot;Result of Rhai Script: {}&quot;</span>, <span class="ident">result</span>);
+}</pre></div>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L100-L144"><code>bl602-script/lib.rs</code></a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="doccomment">/// GPIO Module will be exported to Rhai as a Static Module</span>
+<span class="attribute">#[<span class="ident">export_module</span>]</span>
+<span class="kw">mod</span> <span class="ident">gpio</span> {
+    <span class="doccomment">/// Rhai Shim for Enable GPIO Output</span>
+    <span class="doccomment">/// TODO: Modified parameters from u8 to i32</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">enable_output</span>(<span class="ident">pin</span>: <span class="ident">i32</span>, <span class="ident">pullup</span>: <span class="ident">i32</span>, <span class="ident">pulldown</span>: <span class="ident">i32</span>) {
+        <span class="macro">println!</span>(<span class="string">&quot;gpio::enable_output: pin={}, pullup={}, pulldown={}&quot;</span>, <span class="ident">pin</span>, <span class="ident">pullup</span>, <span class="ident">pulldown</span>);
+
+        <span class="string">&quot;----------Extern Decl----------&quot;</span>;
+        <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
+            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bl_gpio_enable_output</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">pullup</span>: <span class="ident">u8</span>, <span class="ident">pulldown</span>: <span class="ident">u8</span>)
+            <span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_int</span>;
+        }
+        <span class="string">&quot;----------Validation----------&quot;</span>;
+        <span class="kw">unsafe</span> {
+            <span class="string">&quot;----------Call----------&quot;</span>;
+            <span class="kw">let</span> <span class="ident">_res</span> <span class="op">=</span>
+                <span class="ident">bl_gpio_enable_output</span>(<span class="ident">pin</span> <span class="kw">as</span> <span class="ident">u8</span>, <span class="ident">pullup</span> <span class="kw">as</span> <span class="ident">u8</span>,
+                                        <span class="ident">pulldown</span> <span class="kw">as</span> <span class="ident">u8</span>);
+            <span class="string">&quot;----------Result----------&quot;</span>;
+            <span class="comment">//  TODO: Throw exception in case of error</span>
+            <span class="comment">//  match res { 0 =&gt; Ok(()), _ =&gt; Err(BlError::from(res)), }</span>
+        }
+    }
+
+    <span class="doccomment">/// Rhai Shim for Set GPIO Output</span>
+    <span class="doccomment">/// TODO: Modified parameters from u8 to i32</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">output_set</span>(<span class="ident">pin</span>: <span class="ident">i32</span>, <span class="ident">value</span>: <span class="ident">i32</span>) {
+        <span class="macro">println!</span>(<span class="string">&quot;gpio::output_set: pin={}, value={}&quot;</span>, <span class="ident">pin</span>, <span class="ident">value</span>);
+
+        <span class="string">&quot;----------Extern Decl----------&quot;</span>;
+        <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
+            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bl_gpio_output_set</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">value</span>: <span class="ident">u8</span>)
+            <span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_int</span>;
+        }
+        <span class="string">&quot;----------Validation----------&quot;</span>;
+        <span class="kw">unsafe</span> {
+            <span class="string">&quot;----------Call----------&quot;</span>;
+            <span class="kw">let</span> <span class="ident">_res</span> <span class="op">=</span> <span class="ident">bl_gpio_output_set</span>(<span class="ident">pin</span> <span class="kw">as</span> <span class="ident">u8</span>, <span class="ident">value</span> <span class="kw">as</span> <span class="ident">u8</span>);
+            <span class="string">&quot;----------Result----------&quot;</span>;
+            <span class="comment">//  TODO: Throw exception in case of error</span>
+            <span class="comment">//  match res { 0 =&gt; Ok(()), _ =&gt; Err(BlError::from(res)), }</span>
+        }
+    }
+}</pre></div>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L146-L161"><code>bl602-script/lib.rs</code></a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="doccomment">/// Rhai Shim for Time Delay</span>
+<span class="doccomment">/// TODO: Modified parameter from u32 to i32</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">time_delay</span>(
+    <span class="ident">ticks</span>: <span class="ident">i32</span>  <span class="comment">//  Number of ticks to sleep</span>
+) {
+    <span class="macro">println!</span>(<span class="string">&quot;time_delay: {}&quot;</span>, <span class="ident">ticks</span>);
+    <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {  <span class="comment">//  Import C Function</span>
+        <span class="doccomment">/// Sleep for the specified number of system ticks (from NimBLE Porting Layer)</span>
+        <span class="kw">fn</span> <span class="ident">ble_npl_time_delay</span>(<span class="ident">ticks</span>: <span class="ident">u32</span>);
+    }
+
+    <span class="comment">//  Call the C function</span>
+    <span class="kw">unsafe</span> {  <span class="comment">//  Flag this code as unsafe because we&#39;re calling a C function</span>
+        <span class="ident">ble_npl_time_delay</span>(<span class="ident">ticks</span> <span class="kw">as</span> <span class="ident">u32</span>);
+    }
+}</pre></div>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/rhai-module.png" alt="" /></p>
 <h1 id="transcode-rhai-to-ulisp" class="section-header"><a href="#transcode-rhai-to-ulisp">3 Transcode Rhai to uLisp</a></h1>
 <p>TODO</p>
