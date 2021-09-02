@@ -66,7 +66,9 @@
     <h1 class="title">Rust on RISC-V BL602: Rhai Scripting</h1>
     <nav id="TOC"><ul>
 <li><a href="#bestest-outcome">1 Bestest Outcome</a><ul></ul></li>
-<li><a href="#add-rhai-scripting-to-bl602-simulator">2 Add Rhai Scripting to BL602 Simulator</a><ul></ul></li>
+<li><a href="#add-rhai-scripting-to-bl602-simulator">2 Add Rhai Scripting to BL602 Simulator</a><ul>
+<li><a href="#register-a-rust-function">2.1 Register a Rust Function</a><ul></ul></li>
+<li><a href="#register-a-rust-module">2.2 Register a Rust Module</a><ul></ul></li></ul></li>
 <li><a href="#transcode-rhai-to-ulisp">3 Transcode Rhai to uLisp</a><ul></ul></li>
 <li><a href="#rhai-scripting-with-blockly">4 Rhai Scripting with Blockly</a><ul></ul></li>
 <li><a href="#whats-next">5 What’s Next</a><ul></ul></li>
@@ -149,83 +151,105 @@
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="doccomment">/// This function will be called by WebAssembly to run a script</span>
-<span class="attribute">#[<span class="ident">no_mangle</span>]</span>                 <span class="comment">//  Don&#39;t mangle the function name</span>
-<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">rust_script</span>(   <span class="comment">//  Declare `extern &quot;C&quot;` because it will be called by BL602 firmware</span>
-    <span class="ident">_result</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>,        <span class="comment">//  Result to be returned to command-line interface (char *)</span>
-    <span class="ident">_len</span>:  <span class="ident">i32</span>,              <span class="comment">//  Size of result buffer (int)</span>
-    <span class="ident">_argc</span>: <span class="ident">i32</span>,              <span class="comment">//  Number of command line args (int)</span>
-    <span class="ident">_argv</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>  <span class="comment">//  Array of command line args (char **)</span>
-) {
-    <span class="comment">//  Show a message on the serial console</span>
-    <span class="macro">println!</span>(<span class="string">&quot;Hello from Rust Script!&quot;</span>);
+<span class="attribute">#[<span class="ident">no_mangle</span>]</span>                        <span class="comment">//  Don&#39;t mangle the function name</span>
+<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">rust_script</span>( ... ) {  <span class="comment">//  Declare `extern &quot;C&quot;` because it will be called by Emscripten</span>
+  <span class="comment">//  Init the Rhai script engine</span>
+  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">engine</span> <span class="op">=</span> <span class="ident">Engine::new</span>();
 
-    <span class="comment">//  Init the Rhai script engine</span>
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">engine</span> <span class="op">=</span> <span class="ident">Engine::new</span>();
-    <span class="macro">println!</span>(<span class="string">&quot;Created script engine&quot;</span>);
+  <span class="comment">//  Create a Rhai module from the plugin module</span>
+  <span class="kw">let</span> <span class="ident">module</span> <span class="op">=</span> <span class="macro">exported_module!</span>(<span class="ident">gpio</span>);
 
-    <span class="comment">//  Create a Rhai module from the plugin module</span>
-    <span class="kw">let</span> <span class="ident">module</span> <span class="op">=</span> <span class="macro">exported_module!</span>(<span class="ident">gpio</span>);
+  <span class="comment">//  Register our module as a Static Module</span>
+  <span class="ident">engine</span>.<span class="ident">register_static_module</span>(<span class="string">&quot;gpio&quot;</span>, <span class="ident">module</span>.<span class="ident">into</span>());
 
-    <span class="comment">//  Register our module as a Static Module</span>
-    <span class="ident">engine</span>.<span class="ident">register_static_module</span>(<span class="string">&quot;gpio&quot;</span>, <span class="ident">module</span>.<span class="ident">into</span>());
+  <span class="comment">//  Register our functions with Rhai</span>
+  <span class="ident">engine</span>.<span class="ident">register_fn</span>(<span class="string">&quot;time_delay&quot;</span>, <span class="ident">time_delay</span>);
 
-    <span class="comment">//  Register our functions with Rhai</span>
-    <span class="ident">engine</span>.<span class="ident">register_fn</span>(<span class="string">&quot;time_delay&quot;</span>, <span class="ident">time_delay</span>);
+  <span class="comment">//  Rhai Script to be evaluated</span>
+  <span class="kw">let</span> <span class="ident">script</span> <span class="op">=</span> <span class="string">r#&quot; 
+    //  Evaluate an expression
+    let a = 40; 
+    let b = 2;
+    a + b 
+  &quot;#</span>;
 
-    <span class="comment">//  Rhai Script to be evaluated</span>
-    <span class="kw">let</span> <span class="ident">script</span> <span class="op">=</span> <span class="string">r#&quot; 
-        //  Testing Loop
-        loop { 
-            let a = 1;
-            print(a);
-            if a == 1 { break; }
-        }
+  <span class="comment">//  Evaluate the Rhai Script</span>
+  <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">engine</span>.<span class="ident">eval</span>::<span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">script</span>)
+    .<span class="ident">unwrap</span>() <span class="kw">as</span> <span class="ident">isize</span>;
 
-        //  Blink the LED:
-        //  PineCone Blue LED is connected on BL602 GPIO 11
-        let LED_GPIO = 11;
-
-        //  Configure the LED GPIO for output (instead of input)
-        gpio::enable_output(LED_GPIO, 0, 0);
-
-        //  Blink the LED 5 times
-        for i in range(0, 10) {
-
-            //  Toggle the LED GPIO between 0 (on) and 1 (off)
-            gpio::output_set(
-                LED_GPIO, 
-                i % 2
-            );
-
-            //  Sleep 1 second
-            time_delay(1000);
-        }
-
-        //  Evaluate an expression
-        let a = 40; 
-        let b = 2;
-        a + b 
-    &quot;#</span>;
-
-    <span class="comment">//  Compile Rhai Script to an Abstract Syntax Tree</span>
-    <span class="kw">let</span> <span class="ident">ast</span> <span class="op">=</span> <span class="ident">engine</span>.<span class="ident">compile</span>(<span class="ident">script</span>)
-        .<span class="ident">unwrap</span>();
-    <span class="macro">println!</span>(<span class="string">&quot;AST: {:#?}&quot;</span>, <span class="ident">ast</span>);
-
-    <span class="comment">//  Transcode the Rhai Abstract Syntax Tree to uLisp</span>
-    <span class="ident">transcode::transcode</span>(<span class="kw-2">&amp;</span><span class="ident">ast</span>);
-
-    <span class="comment">//  Evaluate the compiled Rhai Script</span>
-    <span class="kw">let</span> <span class="ident">result</span>: <span class="ident">i32</span> <span class="op">=</span> <span class="ident">engine</span>.<span class="ident">eval_ast</span>(<span class="kw-2">&amp;</span><span class="ident">ast</span>)
-        .<span class="ident">unwrap</span>();
-    <span class="macro">println!</span>(<span class="string">&quot;Eval OK&quot;</span>);
-
-    <span class="comment">//  Alternatively: Evaluate a Rhai Script</span>
-    <span class="comment">//  let result = engine.eval::&lt;i32&gt;(script).unwrap() as isize;</span>
-
-    <span class="comment">//  Display the result</span>
-    <span class="macro">println!</span>(<span class="string">&quot;Result of Rhai Script: {}&quot;</span>, <span class="ident">result</span>);
+  <span class="comment">//  Display the result</span>
+  <span class="macro">println!</span>(<span class="string">&quot;Result of Rhai Script: {}&quot;</span>, <span class="ident">result</span>);
 }</pre></div>
+<h2 id="register-a-rust-function" class="section-header"><a href="#register-a-rust-function">2.1 Register a Rust Function</a></h2>
+<p>TODO</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+  <span class="comment">//  Init the Rhai script engine</span>
+  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">engine</span> <span class="op">=</span> <span class="ident">Engine::new</span>();
+
+  <span class="comment">//  Register our functions with Rhai</span>
+  <span class="ident">engine</span>.<span class="ident">register_fn</span>(<span class="string">&quot;time_delay&quot;</span>, <span class="ident">time_delay</span>);
+
+  <span class="comment">//  Rhai Script to be evaluated</span>
+  <span class="kw">let</span> <span class="ident">script</span> <span class="op">=</span> <span class="string">r#&quot; 
+    //  Sleep 1 second
+    time_delay(1000);
+
+    //  Evaluate an expression
+    let a = 40; 
+    let b = 2;
+    a + b 
+  &quot;#</span>;
+
+  <span class="comment">//  Evaluate the Rhai Script</span>
+  <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">engine</span>.<span class="ident">eval</span>::<span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">script</span>)
+    .<span class="ident">unwrap</span>() <span class="kw">as</span> <span class="ident">isize</span>;</pre></div>
+<h2 id="register-a-rust-module" class="section-header"><a href="#register-a-rust-module">2.2 Register a Rust Module</a></h2>
+<p>TODO</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+  <span class="comment">//  Init the Rhai script engine</span>
+  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">engine</span> <span class="op">=</span> <span class="ident">Engine::new</span>();
+
+  <span class="comment">//  Create a Rhai module from the plugin module</span>
+  <span class="kw">let</span> <span class="ident">module</span> <span class="op">=</span> <span class="macro">exported_module!</span>(<span class="ident">gpio</span>);
+
+  <span class="comment">//  Register our module as a Static Module</span>
+  <span class="ident">engine</span>.<span class="ident">register_static_module</span>(<span class="string">&quot;gpio&quot;</span>, <span class="ident">module</span>.<span class="ident">into</span>());</pre></div>
+<p>TODO</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+  <span class="comment">//  Rhai Script to be evaluated</span>
+  <span class="kw">let</span> <span class="ident">script</span> <span class="op">=</span> <span class="string">r#&quot; 
+    //  Blink the LED:
+    //  PineCone Blue LED is connected on BL602 GPIO 11
+    let LED_GPIO = 11;
+
+    //  Configure the LED GPIO for output (instead of input)
+    gpio::enable_output(LED_GPIO, 0, 0);
+
+    //  Blink the LED 5 times
+    for i in range(0, 10) {
+
+      //  Toggle the LED GPIO between 0 (on) and 1 (off)
+      gpio::output_set(
+        LED_GPIO, 
+        i % 2
+      );
+
+      //  Sleep 1 second
+      time_delay(1000);
+    }
+
+    //  Evaluate an expression
+    let a = 40; 
+    let b = 2;
+    a + b 
+  &quot;#</span>;
+
+  <span class="comment">//  Evaluate the Rhai Script</span>
+  <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">engine</span>.<span class="ident">eval</span>::<span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">script</span>)
+    .<span class="ident">unwrap</span>() <span class="kw">as</span> <span class="ident">isize</span>;</pre></div>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L100-L144"><code>bl602-script/lib.rs</code></a></p>
 
@@ -299,6 +323,82 @@
 <p><img src="https://lupyuen.github.io/images/rhai-module.png" alt="" /></p>
 <h1 id="transcode-rhai-to-ulisp" class="section-header"><a href="#transcode-rhai-to-ulisp">3 Transcode Rhai to uLisp</a></h1>
 <p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L21-L98"><code>bl602-script/lib.rs</code></a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="doccomment">/// This function will be called by WebAssembly to run a script</span>
+<span class="attribute">#[<span class="ident">no_mangle</span>]</span>                        <span class="comment">//  Don&#39;t mangle the function name</span>
+<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">rust_script</span>( ... ) {  <span class="comment">//  Declare `extern &quot;C&quot;` because it will be called by Emscripten</span>
+  <span class="comment">//  Show a message on the serial console</span>
+  <span class="macro">println!</span>(<span class="string">&quot;Hello from Rust Script!&quot;</span>);
+
+  <span class="comment">//  Init the Rhai script engine</span>
+  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">engine</span> <span class="op">=</span> <span class="ident">Engine::new</span>();
+  <span class="macro">println!</span>(<span class="string">&quot;Created script engine&quot;</span>);
+
+  <span class="comment">//  Create a Rhai module from the plugin module</span>
+  <span class="kw">let</span> <span class="ident">module</span> <span class="op">=</span> <span class="macro">exported_module!</span>(<span class="ident">gpio</span>);
+
+  <span class="comment">//  Register our module as a Static Module</span>
+  <span class="ident">engine</span>.<span class="ident">register_static_module</span>(<span class="string">&quot;gpio&quot;</span>, <span class="ident">module</span>.<span class="ident">into</span>());
+
+  <span class="comment">//  Register our functions with Rhai</span>
+  <span class="ident">engine</span>.<span class="ident">register_fn</span>(<span class="string">&quot;time_delay&quot;</span>, <span class="ident">time_delay</span>);
+
+  <span class="comment">//  Rhai Script to be evaluated</span>
+  <span class="kw">let</span> <span class="ident">script</span> <span class="op">=</span> <span class="string">r#&quot; 
+    //  Testing Loop
+    loop { 
+      let a = 1;
+      print(a);
+      if a == 1 { break; }
+    }
+
+    //  Blink the LED:
+    //  PineCone Blue LED is connected on BL602 GPIO 11
+    let LED_GPIO = 11;
+
+    //  Configure the LED GPIO for output (instead of input)
+    gpio::enable_output(LED_GPIO, 0, 0);
+
+    //  Blink the LED 5 times
+    for i in range(0, 10) {
+
+      //  Toggle the LED GPIO between 0 (on) and 1 (off)
+      gpio::output_set(
+        LED_GPIO, 
+        i % 2
+      );
+
+      //  Sleep 1 second
+      time_delay(1000);
+    }
+
+    //  Evaluate an expression
+    let a = 40; 
+    let b = 2;
+    a + b 
+  &quot;#</span>;
+
+  <span class="comment">//  Compile Rhai Script to an Abstract Syntax Tree</span>
+  <span class="kw">let</span> <span class="ident">ast</span> <span class="op">=</span> <span class="ident">engine</span>.<span class="ident">compile</span>(<span class="ident">script</span>)
+    .<span class="ident">unwrap</span>();
+  <span class="macro">println!</span>(<span class="string">&quot;AST: {:#?}&quot;</span>, <span class="ident">ast</span>);
+
+  <span class="comment">//  Transcode the Rhai Abstract Syntax Tree to uLisp</span>
+  <span class="ident">transcode::transcode</span>(<span class="kw-2">&amp;</span><span class="ident">ast</span>);
+
+  <span class="comment">//  Evaluate the compiled Rhai Script</span>
+  <span class="kw">let</span> <span class="ident">result</span>: <span class="ident">i32</span> <span class="op">=</span> <span class="ident">engine</span>.<span class="ident">eval_ast</span>(<span class="kw-2">&amp;</span><span class="ident">ast</span>)
+    .<span class="ident">unwrap</span>();
+  <span class="macro">println!</span>(<span class="string">&quot;Eval OK&quot;</span>);
+
+  <span class="comment">//  Alternatively: Evaluate a Rhai Script</span>
+  <span class="comment">//  let result = engine.eval::&lt;i32&gt;(script).unwrap() as isize;</span>
+
+  <span class="comment">//  Display the result</span>
+  <span class="macro">println!</span>(<span class="string">&quot;Result of Rhai Script: {}&quot;</span>, <span class="ident">result</span>);
+}</pre></div>
 <p><img src="https://lupyuen.github.io/images/rhai-ast.jpg" alt="" /></p>
 <p>TODO2</p>
 <p><img src="https://lupyuen.github.io/images/rhai-ast2.jpg" alt="" /></p>
