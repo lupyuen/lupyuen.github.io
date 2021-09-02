@@ -110,22 +110,22 @@
 <p><em>Why are we doing ALL this? (Waving hands)</em></p>
 <p><em>What challenges are BL602 (and BL604) Firmware Developers facing?</em></p>
 <p>Most developers code BL602 (and BL604) Firmware in <strong>C with the BL602 IoT SDK</strong>…</p>
-<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/rhai-outcome2.jpg" alt="C Firmware for BL602" /></p>
 <p>I introduced <strong>Rust</strong> as an option for coding BL602 Firmware, by creating a <a href="https://lupyuen.github.io/articles/adc#rust-wrapper-for-bl602-iot-sdk"><strong>Rust Wrapper for BL602 IoT SDK</strong></a>…</p>
-<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/rhai-outcome5.jpg" alt="Rust Firmware for BL602" /></p>
 <p>But flashing the C (or Rust) Firmware to BL602 over USB UART (and flipping a jumper) <strong>feels cumbersome</strong>.</p>
 <p>(Especially when we keep fixing the code and reflashing to BL602)</p>
-<p>Thus we created the <a href="https://lupyuen.github.io/articles/rustsim"><strong>WebAssembly Simulator for BL602</strong></a> that runs BL602 Rust Firmware in a Web Browser, for quicker testing and debugging…</p>
-<p>TODO</p>
+<p>Thus we created the <a href="https://lupyuen.github.io/articles/rustsim"><strong>WebAssembly Simulator for BL602</strong></a> that runs BL602 Rust Firmware in a Web Browser, for <strong>quicker testing, debugging and fixing</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/rhai-outcome.jpg" alt="WebAssembly Simulator for BL602" /></p>
 <p><em>But what about the learners?</em></p>
 <p>Scripted REPL platforms for microcontrollers like uLisp and MicroPython are popular for learners.</p>
 <p>Since we have a WebAssembly Simulator for BL602, we can run REPL Scripts too… With <strong>Rhai, the Drag-and-Drop Way!</strong></p>
-<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/rhai-outcome3.jpg" alt="" /></p>
 <p>And to run Rhai Scripts on actual BL602 Hardware, we need to <strong>convert Rhai Scripts to uLisp</strong>…</p>
 <p>(Because the Rhai Scripting Engine is too heavy for BL602)</p>
 <p>Which is perfectly OK, because we can <strong>do the conversion in WebAssembly!</strong></p>
 <p>(And transmit the converted uLisp code to BL602 via <strong>WebSerial</strong>)</p>
-<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/rhai-outcome4.jpg" alt="" /></p>
 <p>In this article we’ll learn how this grand scheme is implemented with these 3 repos…</p>
 <ul>
 <li>
