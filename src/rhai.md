@@ -18,7 +18,7 @@ _What if we auto-convert Rhai Scripts to uLisp, which runs OK on microcontroller
 
 ![Rhai Script transcoded to uLisp](https://lupyuen.github.io/images/rhai-transcode4.jpg)
 
-What an intriguing idea! Which we shall explore in this article.
+__Transpile Rhai to uLisp__... What an intriguing idea! Which we shall explore in this article.
 
 _Let's make Rhai Scripting more fun for learners..._
 
