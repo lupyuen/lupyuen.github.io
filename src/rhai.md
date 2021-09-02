@@ -80,7 +80,7 @@ Scripted REPL platforms for microcontrollers like uLisp and MicroPython are popu
 
 Since we have a WebAssembly Simulator for BL602, we can run REPL Scripts too... With __Rhai, the Drag-and-Drop Way!__
 
-![](https://lupyuen.github.io/images/rhai-outcome3.jpg)
+![Drag-and-Drop Rhai Scripts](https://lupyuen.github.io/images/rhai-outcome4.jpg)
 
 And to run Rhai Scripts on actual BL602 Hardware, we need to __convert Rhai Scripts to uLisp__...
 
@@ -90,7 +90,7 @@ Which is perfectly OK, because we can __do the conversion in WebAssembly!__
 
 (And transmit the converted uLisp code to BL602 via __WebSerial__)
 
-![](https://lupyuen.github.io/images/rhai-outcome4.jpg)
+![Convert Rhai Scripts to uLisp](https://lupyuen.github.io/images/rhai-outcome3.jpg)
 
 In this article we'll learn how this grand scheme is implemented with these 3 repos...
 
