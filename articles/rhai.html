@@ -66,13 +66,17 @@
     <h1 class="title">Rust on RISC-V BL602: Rhai Scripting</h1>
     <nav id="TOC"><ul>
 <li><a href="#bestest-outcome">1 Bestest Outcome</a><ul></ul></li>
-<li><a href="#add-rhai-scripting-to-bl602-simulator">2 Add Rhai Scripting to BL602 Simulator</a><ul>
-<li><a href="#register-a-rust-function">2.1 Register a Rust Function</a><ul></ul></li>
-<li><a href="#register-a-rust-module">2.2 Register a Rust Module</a><ul></ul></li></ul></li>
-<li><a href="#transcode-rhai-to-ulisp">3 Transcode Rhai to uLisp</a><ul></ul></li>
-<li><a href="#rhai-scripting-with-blockly">4 Rhai Scripting with Blockly</a><ul></ul></li>
-<li><a href="#whats-next">5 What’s Next</a><ul></ul></li>
-<li><a href="#notes">6 Notes</a><ul></ul></li></ul></nav><p>📝 <em>7 Sep 2021</em></p>
+<li><a href="#rhai-scripts">2 Rhai Scripts</a><ul>
+<li><a href="#variables-and-expressions">2.1 Variables and Expressions</a><ul></ul></li>
+<li><a href="#loops-and-conditionals">2.2 Loops and Conditionals</a><ul></ul></li>
+<li><a href="#rust-functions-and-modules">2.3 Rust Functions and Modules</a><ul></ul></li></ul></li>
+<li><a href="#add-rhai-scripting-to-simulator">3 Add Rhai Scripting to Simulator</a><ul>
+<li><a href="#register-a-rust-function">3.1 Register a Rust Function</a><ul></ul></li>
+<li><a href="#register-a-rust-module">3.2 Register a Rust Module</a><ul></ul></li></ul></li>
+<li><a href="#transcode-rhai-to-ulisp">4 Transcode Rhai to uLisp</a><ul></ul></li>
+<li><a href="#rhai-scripting-with-blockly">5 Rhai Scripting with Blockly</a><ul></ul></li>
+<li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
+<li><a href="#notes">7 Notes</a><ul></ul></li></ul></nav><p>📝 <em>7 Sep 2021</em></p>
 <p><em>What is Rhai?</em></p>
 <p><a href="https://rhai.rs/book/"><strong>Rhai</strong></a> is a <strong>Rust-like Scripting Language</strong>, implemented in Rust.</p>
 <p><em>Can we use Rhai for coding microcontrollers the REPL way?</em></p>
@@ -145,12 +149,40 @@
 <p>(Integrated with BL602 / BL604 IoT SDK)</p>
 </li>
 </ul>
-<h1 id="add-rhai-scripting-to-bl602-simulator" class="section-header"><a href="#add-rhai-scripting-to-bl602-simulator">2 Add Rhai Scripting to BL602 Simulator</a></h1>
-<p>TODO</p>
+<h1 id="rhai-scripts" class="section-header"><a href="#rhai-scripts">2 Rhai Scripts</a></h1>
+<p>Let’s look at the <strong>Rhai Scripts</strong> that will…</p>
+<ol>
+<li>
+<p>Run OK on our BL602 Simulator and</p>
+</li>
+<li>
+<p>Convert correctly to uLisp</p>
+</li>
+</ol>
+<h2 id="variables-and-expressions" class="section-header"><a href="#variables-and-expressions">2.1 Variables and Expressions</a></h2>
+<p>This Rhai Script evaluates to the value 42…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="comment">//  Blink the LED:</span>
-<span class="comment">//  PineCone Blue LED is connected on BL602 GPIO 11</span>
+<span class="comment">//  Rhai Variables and Expression</span>
+<span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="number">40</span>; 
+<span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="number">2</span>;
+<span class="ident">a</span> <span class="op">+</span> <span class="ident">b</span> </pre></div>
+<h2 id="loops-and-conditionals" class="section-header"><a href="#loops-and-conditionals">2.2 Loops and Conditionals</a></h2>
+<p><code>loop</code>, <code>break</code>, <code>print</code> and <code>if</code> (simple conditionals) shall be supported…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="comment">//  Rhai Loop and Conditional</span>
+<span class="kw">loop</span> { 
+  <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="number">1</span>;
+  <span class="ident">print</span>(<span class="ident">a</span>);
+  <span class="kw">if</span> <span class="ident">a</span> <span class="op">=</span><span class="op">=</span> <span class="number">1</span> { <span class="kw">break</span>; }
+}</pre></div>
+<p>See the next section for another loop that we shall support: <code>for i in range(0, 10)</code></p>
+<h2 id="rust-functions-and-modules" class="section-header"><a href="#rust-functions-and-modules">2.3 Rust Functions and Modules</a></h2>
+<p>Here’s a Rhai Script that blinks the LED on BL602…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="comment">//  Rhai Blinky: Blink the LED connected on BL602 GPIO 11</span>
 <span class="kw">let</span> <span class="ident">LED_GPIO</span> <span class="op">=</span> <span class="number">11</span>;
 
 <span class="comment">//  Configure the LED GPIO for output (instead of input)</span>
@@ -168,6 +200,11 @@
   <span class="comment">//  Sleep 1 second</span>
   <span class="ident">time_delay</span>(<span class="number">1000</span>);
 }</pre></div>
+<p><code>time_delay</code> is a Rust Function that we shall import into the Rhai Scripting Engine.</p>
+<p><code>gpio</code> is a Rust Module that we shall import into Rhai.</p>
+<p><code>gpio</code> module has two functions: <code>enable_output</code> and <code>output_set</code>.</p>
+<h1 id="add-rhai-scripting-to-simulator" class="section-header"><a href="#add-rhai-scripting-to-simulator">3 Add Rhai Scripting to Simulator</a></h1>
+<p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L21-L98"><code>bl602-script/lib.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
@@ -201,7 +238,7 @@
   <span class="comment">//  Display the result</span>
   <span class="macro">println!</span>(<span class="string">&quot;Result of Rhai Script: {}&quot;</span>, <span class="ident">result</span>);
 }</pre></div>
-<h2 id="register-a-rust-function" class="section-header"><a href="#register-a-rust-function">2.1 Register a Rust Function</a></h2>
+<h2 id="register-a-rust-function" class="section-header"><a href="#register-a-rust-function">3.1 Register a Rust Function</a></h2>
 <p>TODO</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
@@ -244,7 +281,7 @@
     <span class="ident">ble_npl_time_delay</span>(<span class="ident">ticks</span> <span class="kw">as</span> <span class="ident">u32</span>);
   }
 }</pre></div>
-<h2 id="register-a-rust-module" class="section-header"><a href="#register-a-rust-module">2.2 Register a Rust Module</a></h2>
+<h2 id="register-a-rust-module" class="section-header"><a href="#register-a-rust-module">3.2 Register a Rust Module</a></h2>
 <p>TODO</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
@@ -324,7 +361,7 @@
 }</pre></div>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/rhai-module.png" alt="" /></p>
-<h1 id="transcode-rhai-to-ulisp" class="section-header"><a href="#transcode-rhai-to-ulisp">3 Transcode Rhai to uLisp</a></h1>
+<h1 id="transcode-rhai-to-ulisp" class="section-header"><a href="#transcode-rhai-to-ulisp">4 Transcode Rhai to uLisp</a></h1>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L21-L98"><code>bl602-script/lib.rs</code></a></p>
 
@@ -427,14 +464,14 @@
 <p><img src="https://lupyuen.github.io/images/rhai-transcode8.png" alt="" /></p>
 <p>TODO23</p>
 <p><img src="https://lupyuen.github.io/images/rhai-transcode9.png" alt="" /></p>
-<h1 id="rhai-scripting-with-blockly" class="section-header"><a href="#rhai-scripting-with-blockly">4 Rhai Scripting with Blockly</a></h1>
+<h1 id="rhai-scripting-with-blockly" class="section-header"><a href="#rhai-scripting-with-blockly">5 Rhai Scripting with Blockly</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/rhai-blockly.png" alt="" /></p>
 <p>TODO6</p>
 <p><img src="https://lupyuen.github.io/images/rhai-blockly2.png" alt="" /></p>
 <p>TODO7</p>
 <p><img src="https://lupyuen.github.io/images/rhai-blockly3.jpg" alt="" /></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">5 What’s Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">6 What’s Next</a></h1>
 <p>TODO</p>
 <p>And soon we shall test all this on <a href="https://lupyuen.github.io/articles/pinedio"><strong>PineDio Stack BL604 with LoRa SX1262</strong></a>… As we explore whether it’s feasible to teach <strong>Rust (or Rhai) as a Safer Way</strong> to create firmware for BL602 and BL604.</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
@@ -454,7 +491,7 @@
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/rhai.md"><code>lupyuen.github.io/src/rhai.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">6 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">7 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1427758328004759552">this Twitter Thread</a></li>
 </ol>
