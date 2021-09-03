@@ -559,19 +559,23 @@
 </ul>
 <p>Let’s look into each of these functions…</p>
 <h2 id="transcode-statement" class="section-header"><a href="#transcode-statement">4.3 Transcode Statement</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L61-L253"><code>transcode.rs</code></a></p>
+<p>We start with the <strong><code>let</code></strong> Statement that declares a variable…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="ident">LED_GPIO</span> <span class="op">=</span> <span class="number">11</span></pre></div>
+<p>This will be transcoded to uLisp like so…</p>
+<pre><code class="language-text">( let* 
+  (( LED_GPIO 11 ))
+  ...
+)
+</code></pre>
+<p>Here’s how we transcode the <strong><code>let</code></strong> Statement: <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L61-L89"><code>transcode.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="doccomment">/// Transcode a Rhai Statement to uLisp</span>
 <span class="kw">fn</span> <span class="ident">transcode_stmt</span>(<span class="ident">stmt</span>: <span class="kw-2">&amp;</span><span class="ident">Stmt</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
   <span class="kw">match</span> <span class="ident">stmt</span> {
     <span class="comment">//  Let or Const Statement: `let LED_GPIO = 11`</span>
-    <span class="comment">//  becomes...</span>
-    <span class="comment">//  ( let* </span>
-    <span class="comment">//      (( LED_GPIO 11 ))</span>
-    <span class="comment">//      ...</span>
-    <span class="comment">//  )</span>
     <span class="ident">Stmt::Var</span>(<span class="ident">expr</span>, <span class="ident">ident</span>, <span class="kw">_</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
       <span class="comment">//  Begin a new uLisp Scope</span>
       <span class="ident">scope::begin_scope</span>(
@@ -585,16 +589,30 @@
       <span class="comment">//  Scope will end when the parent scope ends</span>
       <span class="string">&quot;&quot;</span>.<span class="ident">to_string</span>()
     }</pre></div>
-<p>TODO</p>
+<p><em>Why do we need uLisp Scopes?</em></p>
+<p>Here’s a hint: The transcoded uLisp will look like this…</p>
+<pre><code class="language-text">( let* 
+  (( LED_GPIO 11 ))
+  ...
+)
+</code></pre>
+<p>Where <strong>“<code>...</code>”</strong> refers to the <strong>uLisp Scope</strong> of the statements that will be transcoded after the <code>let</code> statement.</p>
+<p>(More about uLisp Scopes in a while)</p>
+<p>Next: <strong><code>for</code></strong> Statements like this…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="ident">range</span>(<span class="number">0</span>, <span class="number">10</span>) { ... }</pre></div>
+<p>Shall be transcoded to uLisp like so…</p>
+<pre><code class="language-text">( dotimes (i 10)
+  ...
+)
+</code></pre>
+<p>Here’s how we transcode the <strong><code>for</code></strong> Statement: <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L91-L142"><code>transcode.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
   <span class="kw">match</span> <span class="ident">stmt</span> {
     ...
     <span class="comment">//  For Statement: `for i in range(0, 10) { ... }`</span>
-    <span class="comment">//  becomes...</span>
-    <span class="comment">//  ( dotimes (i 10)</span>
-    <span class="comment">//      ...</span>
-    <span class="comment">//  )</span>
     <span class="ident">Stmt::For</span>(<span class="ident">expr</span>, <span class="ident">id_counter</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
       <span class="comment">//  TODO: Support `for` counter</span>
       <span class="kw">let</span> <span class="ident">id</span>    <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">id_counter</span>.<span class="number">0</span>;  <span class="comment">//  `i`</span>
@@ -621,7 +639,10 @@
       <span class="comment">//  End the uLisp Scope and add the transcoded uLisp S-Expression to the parent scope</span>
       <span class="ident">scope::end_scope</span>(<span class="ident">scope_index</span>)
     }        </pre></div>
-<p>TODO</p>
+<p><strong><code>transcode_block</code></strong> transcodes the block of statements in the body of a <code>for</code> loop.</p>
+<p>(Coming up in the next section)</p>
+<p><strong><code>get_range</code></strong> is defined here: <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L345-L391"><code>transcode.rs</code></a></p>
+<p><strong>Function Calls</strong> are transcoded as a special kind of Expression: <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L91-L142"><code>transcode.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
   <span class="kw">match</span> <span class="ident">stmt</span> {
@@ -631,61 +652,19 @@
       <span class="string">&quot;{}&quot;</span>,
       <span class="ident">transcode_fncall</span>(<span class="ident">expr</span>)
     ),</pre></div>
-<p>TODO</p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-  <span class="kw">match</span> <span class="ident">stmt</span> {
-    ...
-    <span class="comment">//  Loop or While Statement: `loop { ... }`</span>
-    <span class="comment">//  becomes...</span>
-    <span class="comment">//  ( loop ... )</span>
-    <span class="ident">Stmt::While</span>(<span class="ident">expr</span>, <span class="ident">stmts</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
-      <span class="comment">//  Begin a new uLisp Scope</span>
-      <span class="kw">let</span> <span class="ident">scope_index</span> <span class="op">=</span> <span class="ident">scope::begin_scope</span>(<span class="string">&quot;loop&quot;</span>);
-
-      <span class="comment">//  TODO: Transcode `expr`</span>
-      <span class="macro">assert!</span>(<span class="string">&quot;()&quot;</span> <span class="op">=</span><span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">expr</span>));
-
-      <span class="comment">//  Transcode the Statement Block</span>
-      <span class="ident">transcode_block</span>(<span class="ident">stmts</span>);
-
-      <span class="comment">//  End the uLisp Scope and add the transcoded uLisp S-Expression to the parent scope</span>
-      <span class="ident">scope::end_scope</span>(<span class="ident">scope_index</span>)
-    }</pre></div>
-<p>TODO</p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-  <span class="kw">match</span> <span class="ident">stmt</span> {
-    ...
-    <span class="comment">//  If Statement: `if a == 1 { ... }`</span>
-    <span class="comment">//  becomes...</span>
-    <span class="comment">//  ( if ( eq a 1 ) ... )</span>
-    <span class="ident">Stmt::If</span>(<span class="ident">expr</span>, <span class="ident">then_else</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
-      <span class="comment">//  Begin a new uLisp Scope</span>
-      <span class="kw">let</span> <span class="ident">scope_index</span> <span class="op">=</span> <span class="ident">scope::begin_scope</span>(
-        <span class="macro">format!</span>(
-          <span class="string">&quot;if {}&quot;</span>,
-          <span class="ident">transcode_expr</span>(<span class="ident">expr</span>)
-        ).<span class="ident">as_str</span>()
-      );
-
-      <span class="comment">//  Transcode the Then Statement Block</span>
-      <span class="ident">transcode_block</span>(<span class="kw-2">&amp;</span><span class="ident">then_else</span>.<span class="number">0</span>);
-
-      <span class="comment">//  Transcode the Else Statement Block</span>
-      <span class="ident">transcode_block</span>(<span class="kw-2">&amp;</span><span class="ident">then_else</span>.<span class="number">1</span>);
-
-      <span class="comment">//  End the uLisp Scope and add the transcoded uLisp S-Expression to the parent scope</span>
-      <span class="ident">scope::end_scope</span>(<span class="ident">scope_index</span>)
-    }</pre></div>
-<p>TODO</p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-  <span class="kw">match</span> <span class="ident">stmt</span> {
-    ...
-    <span class="comment">//  Break Statement: `break`</span>
-    <span class="comment">//  becomes `( return )`</span>
-    <span class="ident">Stmt::Break</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;( return )&quot;</span>.<span class="ident">to_string</span>(),</pre></div>
+<p>(We’ll see <code>transcode_fncall</code> in a while)</p>
+<p>Check out the source code to see how we transcode these statements…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L144-L194"><strong><code>loop</code></strong> Statement</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L196-L239"><strong><code>break</code></strong> Statement</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L241-L243"><strong><code>if</code></strong> Statement</a></p>
+</li>
+</ul>
 <h2 id="transcode-block" class="section-header"><a href="#transcode-block">4.4 Transcode Block</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L324-L333"><code>transcode.rs</code></a></p>
@@ -758,8 +737,6 @@
     <span class="ident">args</span>.<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>()               <span class="comment">//  `11 0 0 `</span>
   )
 }</pre></div>
-<p>TODO</p>
-<p>(<code>get_range</code> is defined here: <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L345-L391"><code>transcode.rs</code></a>)</p>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L335-L343"><code>transcode.rs</code></a></p>
 
