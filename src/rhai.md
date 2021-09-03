@@ -353,17 +353,17 @@ Yep. Maybe someday we'll use a Rust Procedural Macro to __generate the shims__, 
 
 # Convert Rhai to uLisp
 
-The Rhai Blinky Script runs OK in the __BL602 WebAssembly Simulator__.
+Yep the Rhai Blinky Script runs OK in the __BL602 WebAssembly Simulator__, blinking the simulated LED.
 
-Now let's __auto-convert the Rhai Script to uLisp__, and run it on a real BL602 board!
+Now let's __auto-convert the Rhai Script to uLisp__, and run it on a real BL602 board (and blink a real LED)!
 
 We do the same as above...
 
-1.  Initialise the Rhai script engine
+1.  __Initialise__ the Rhai script engine
 
-1.  Register the `gpio` module with Rhai
+1.  __Register `gpio` module__ with Rhai
 
-1.  Register the `time_delay` function with Rhai
+1.  __Register `time_delay` function__ with Rhai
 
 From [`bl602-script/lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L21-L98) ...
 
@@ -415,13 +415,13 @@ let script = r#"
 "#;
 ```
 
-Here comes the interesting part: Rhai lets us compile our script into an __Abstract Syntax Tree__...
+Here comes the interesting part: Rhai lets us __compile our script__ into an __Abstract Syntax Tree__...
 
 ```rust
-//  Compile Rhai Script to an Abstract Syntax Tree
+//  Compile the Rhai Script into
+//  an Abstract Syntax Tree
 let ast = engine.compile(script)
   .unwrap();
-println!("AST: {:#?}", ast);
 ```
 
 (More about the Abstract Syntax Tree in a while)
@@ -429,13 +429,14 @@ println!("AST: {:#?}", ast);
 We may __walk the Abstract Syntax Tree__ and __convert each node__ to uLisp...
 
 ```rust
-//  Transcode the Rhai Abstract Syntax Tree to uLisp
+//  Transcode the Rhai Abstract 
+//  Syntax Tree to uLisp
 transcode::transcode(&ast);
 ```
 
 (More about `transcode` later)
 
-FYI: Here's how we evaluate the compiled Rhai Script...
+FYI: Here's how we __evaluate the compiled Rhai Script__...
 
 ```rust
 //  Evaluate the compiled Rhai Script (returns 42)
@@ -443,19 +444,21 @@ let result: i32 = engine.eval_ast(&ast)
   .unwrap();
 ```
 
-![](https://lupyuen.github.io/images/rhai-ast.jpg)
+Let's learn about the Abstract Syntax Tree...
+
+## Abstract Syntax Tree
 
 TODO2
 
 ![](https://lupyuen.github.io/images/rhai-ast2.jpg)
 
-TODO3
+TODO
 
-![](https://lupyuen.github.io/images/rhai-ast3.jpg)
+![](https://lupyuen.github.io/images/rhai-ast.jpg)
 
-TODO4
+## Rhai Transcoder
 
-![](https://lupyuen.github.io/images/rhai-ast4.jpg)
+(Since we're converting Rhai Code to uLisp Code, let's call it __"transcoding"__ instead of "transpiling")
 
 TODO16
 
@@ -484,6 +487,8 @@ TODO22
 TODO23
 
 ![](https://lupyuen.github.io/images/rhai-transcode9.png)
+
+## Transcoder Scope
 
 TODO13
 
