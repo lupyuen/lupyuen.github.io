@@ -127,7 +127,7 @@ a + b
 
 ## Loops and Conditionals
 
-`loop`, `break`, `print` and `if` (simple conditionals) shall be supported...
+__`loop`__, __`break`__, __`print`__ and __`if`__ (simple conditionals) shall be supported...
 
 ```rust
 //  Rhai Loop and Conditional
@@ -165,11 +165,11 @@ for i in range(0, 10) {
 }
 ```
 
-`time_delay` is a Rust Function that we shall import into the Rhai Scripting Engine.
+__`time_delay`__ is a __Rust Function__ that we shall import into the Rhai Scripting Engine.
 
-`gpio` is a Rust Module that we shall import into Rhai.
+__`gpio`__ is a __Rust Module__ that we shall import into Rhai.
 
-`gpio` module has two functions: `enable_output` and `output_set`.
+`gpio` module has two functions: __`enable_output`__ and __`output_set`__.
 
 # Add Rhai Scripting to Simulator
 
