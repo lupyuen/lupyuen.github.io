@@ -14,7 +14,7 @@ _Like on the BL602 / BL604 RISC-V + WiFi + Bluetooth LE SoC?_
 
 Sadly the Rhai Scripting Engine is __too heavy__ for most microcontrollers (including BL602 and BL604).
 
-_What if we auto-convert Rhai Scripts to uLisp, which runs OK on microcontrollers?_
+_[__uLisp__](https://lupyuen.github.io/articles/lisp) runs OK on microcontrollers. Why don't we auto-convert Rhai Scripts to uLisp?_
 
 ![Rhai Script transcoded to uLisp](https://lupyuen.github.io/images/rhai-transcode4.jpg)
 
@@ -487,6 +487,10 @@ TODO22
 TODO23
 
 ![](https://lupyuen.github.io/images/rhai-transcode9.png)
+
+TODO24
+
+![Rhai Script transcoded to uLisp](https://lupyuen.github.io/images/rhai-transcode4.jpg)
 
 ## Transcoder Scope
 
