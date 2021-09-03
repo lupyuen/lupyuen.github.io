@@ -213,24 +213,24 @@ Here we __initialise the Rhai engine__ and evaluate a Rhai Script that returns a
 To __register a Rust Function__ that will be called by the Rhai Script, we do this: [`bl602-script/lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L21-L98)
 
 ```rust
-  //  Init the Rhai script engine
-  let mut engine = Engine::new();
+//  Init the Rhai script engine
+let mut engine = Engine::new();
 
-  //  Register our functions with Rhai
-  engine.register_fn("time_delay", time_delay);
+//  Register our functions with Rhai
+engine.register_fn("time_delay", time_delay);
 
-  //  Rhai Script to be evaluated
-  let script = r#" 
-    //  Sleep 1 second
-    time_delay(1000);
+//  Rhai Script to be evaluated
+let script = r#" 
+  //  Sleep 1 second
+  time_delay(1000);
 
-    //  Return 0
-    0
-  "#;
+  //  Return 0
+  0
+"#;
 
-  //  Evaluate the Rhai Script (returns 0)
-  let result = engine.eval::<i32>(script)
-    .unwrap() as isize;
+//  Evaluate the Rhai Script (returns 0)
+let result = engine.eval::<i32>(script)
+  .unwrap() as isize;
 ```
 
 __`time_delay`__ is defined like so: [`bl602-script/lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L146-L161)
@@ -266,53 +266,50 @@ Because `ble_npl_time_delay` is "`extern C`" and it accepts a parameter of type 
 Now we register the __`gpio`__ module with Rhai: [`bl602-script/lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L21-L98)
 
 ```rust
-  //  Init the Rhai script engine
-  let mut engine = Engine::new();
+//  Init the Rhai script engine
+let mut engine = Engine::new();
 
-  //  Create a Rhai module from the plugin module
-  let module = exported_module!(gpio);
+//  Create a Rhai module from the plugin module
+let module = exported_module!(gpio);
 
-  //  Register our module as a Static Module
-  engine.register_static_module("gpio", module.into());
+//  Register our module as a Static Module
+engine.register_static_module("gpio", module.into());
 ```
 
 __`gpio`__ is a Rust Module that exports the functions __`enable_output`__ and __`output_set`__, which may be called like so...
 
 ```rust
-  //  Rhai Script to be evaluated
-  let script = r#" 
-    //  Blink the LED:
-    //  PineCone Blue LED is connected on BL602 GPIO 11
-    let LED_GPIO = 11;
+//  Rhai Script to be evaluated
+let script = r#" 
+  //  Blink the LED connected on BL602 GPIO 11
+  let LED_GPIO = 11;
 
-    //  Configure the LED GPIO for output (instead of input)
-    gpio::enable_output(LED_GPIO, 0, 0);
+  //  Configure the LED GPIO for output (instead of input)
+  gpio::enable_output(LED_GPIO, 0, 0);
 
-    //  Blink the LED 5 times
-    for i in range(0, 10) {
+  //  Blink the LED 5 times
+  for i in range(0, 10) {
 
-      //  Toggle the LED GPIO between 0 (on) and 1 (off)
-      gpio::output_set(
-        LED_GPIO, 
-        i % 2
-      );
+    //  Toggle the LED GPIO between 0 (on) and 1 (off)
+    gpio::output_set(
+      LED_GPIO, 
+      i % 2
+    );
 
-      //  Sleep 1 second
-      time_delay(1000);
-    }
+    //  Sleep 1 second
+    time_delay(1000);
+  }
 
-    //  Return 0
-    0
-  "#;
+  //  Return 0
+  0
+"#;
 
-  //  Evaluate the Rhai Script (returns 0)
-  let result = engine.eval::<i32>(script)
-    .unwrap() as isize;
+//  Evaluate the Rhai Script (returns 0)
+let result = engine.eval::<i32>(script)
+  .unwrap() as isize;
 ```
 
-TODO
-
-From [`bl602-script/lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L100-L144)
+Here's the definition of the __`gpio`__ module: [`bl602-script/lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L100-L144)
 
 ```rust
 /// GPIO Module will be exported to Rhai as a Static Module
@@ -322,7 +319,7 @@ mod gpio {
   /// TODO: Modified parameters from u8 to i32
   pub fn enable_output(pin: i32, pullup: i32, pulldown: i32) {
     extern "C" {
-      pub fn bl_gpio_enable_output(pin: u8, pullup: u8, pulldown: u8) -> c_int;
+      pub fn bl_gpio_enable_output(pin: u8, pullup: u8, pulldown: u8) -> i32;
     }
     unsafe {
       let _res = bl_gpio_enable_output(pin as u8, pullup as u8, pulldown as u8);
@@ -334,7 +331,7 @@ mod gpio {
   /// TODO: Modified parameters from u8 to i32
   pub fn output_set(pin: i32, value: i32) {
     extern "C" {
-      pub fn bl_gpio_output_set(pin: u8, value: u8) -> c_int;
+      pub fn bl_gpio_output_set(pin: u8, value: u8) -> i32;
     }
     unsafe {
       let _res = bl_gpio_output_set(pin as u8, value as u8);
@@ -344,9 +341,15 @@ mod gpio {
 }
 ```
 
-TODO
+_So `gpio` module is also a Rust Shim?_
 
-![](https://lupyuen.github.io/images/rhai-module.png)
+Yep. Maybe someday we'll use a Rust Procedural Macro to __generate the shims__, similar to this...
+
+- ["Generating the Rust Wrapper for BL602 IoT SDK"](https://lupyuen.github.io/articles/adc#appendix-generating-the-rust-wrapper-for-bl602-iot-sdk)
+
+[(More about `enable_output` and `output_set`)](https://lupyuen.github.io/articles/rustsim#json-stream-of-simulation-events)
+
+![Register Rhai Module](https://lupyuen.github.io/images/rhai-module.png)
 
 # Transcode Rhai to uLisp
 
