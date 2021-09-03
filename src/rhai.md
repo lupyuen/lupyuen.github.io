@@ -106,13 +106,46 @@ In this article we'll learn how this grand scheme is implemented with these 3 re
 
     (Integrated with BL602 / BL604 IoT SDK)
 
-# Add Rhai Scripting to BL602 Simulator
+# Rhai Scripts
 
-TODO
+Let's look at the __Rhai Scripts__ that will...
+
+1.  Run OK on our BL602 Simulator and
+
+1.  Convert correctly to uLisp
+
+## Variables and Expressions
+
+This Rhai Script evaluates to the value 42...
 
 ```rust
-//  Blink the LED:
-//  PineCone Blue LED is connected on BL602 GPIO 11
+//  Rhai Variables and Expression
+let a = 40; 
+let b = 2;
+a + b 
+```
+
+## Loops and Conditionals
+
+`loop`, `break`, `print` and `if` (simple conditionals) shall be supported...
+
+```rust
+//  Rhai Loop and Conditional
+loop { 
+  let a = 1;
+  print(a);
+  if a == 1 { break; }
+}
+```
+
+See the next section for another loop that we shall support: `for i in range(0, 10)`
+
+## Rust Functions and Modules
+
+Here's a Rhai Script that blinks the LED on BL602...
+
+```rust
+//  Rhai Blinky: Blink the LED connected on BL602 GPIO 11
 let LED_GPIO = 11;
 
 //  Configure the LED GPIO for output (instead of input)
@@ -131,6 +164,16 @@ for i in range(0, 10) {
   time_delay(1000);
 }
 ```
+
+`time_delay` is a Rust Function that we shall import into the Rhai Scripting Engine.
+
+`gpio` is a Rust Module that we shall import into Rhai.
+
+`gpio` module has two functions: `enable_output` and `output_set`.
+
+# Add Rhai Scripting to Simulator
+
+TODO
 
 From [`bl602-script/lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L21-L98)
 
