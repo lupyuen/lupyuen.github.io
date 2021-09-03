@@ -711,15 +711,16 @@ Check out the source code to see how we transcode these statements...
 
 ## Transcode Block
 
-TODO
+Our transcoder calls __`transcode_block`__ to transcode a block of statements (`for`, `loop`, `if`, ...)
 
-From [`transcode.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L324-L333)
+From [`transcode.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L324-L333) ...
 
 ```rust
 /// Transcode the Statement Block and 
 /// the transcoded uLisp S-Expression 
 /// into the current scope
 fn transcode_block(stmts: &StmtBlock) {  
+  //  Iterate through each Statement in the block...
   stmts.clone().statements_mut().iter().for_each(|stmt| {
     //  Transcode each Statement
     let output = transcode_stmt(stmt);
@@ -730,13 +731,11 @@ fn transcode_block(stmts: &StmtBlock) {
 }
 ```
 
-TODO
+This code transcodes every statement in the block.
 
 ## Transcode Expression
 
-TODO
-
-From [`transcode.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L255-L269)
+__`transcode_expr`__ transcodes an Expression from Rhai to uLisp: [`transcode.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L255-L269)
 
 ```rust
 /// Transcode a Rhai Expression to uLisp
@@ -787,7 +786,9 @@ fn transcode_fncall(expr: &FnCallExpr) -> String {
   };
 ```
 
-TODO
+__`transcode_fncall`__ begins by converting the Rhai Namespace (like __"`gpio::`"__) to its uLisp equivalent (like __"`bl_gpio_`"__)
+
+Next it composes the __list of arguments__ for the function call...
 
 ```rust
   //  Compose arguments e.g. `11 0 0 `
@@ -804,7 +805,7 @@ TODO
   });
 ```
 
-TODO
+And combines them into a __uLisp Function Call__...
 
 ```rust
   //  Transcode to uLisp Function Call:
@@ -818,9 +819,13 @@ TODO
 }
 ```
 
-TODO
+_What's `rename_function`?_
 
-From [`transcode.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L335-L343)
+__Rhai Operators__ are parsed as Function Calls...
+
+"`a % b`" is represented in the Abstract Syntax Tree as "`% (a, b)`"
+
+We call __`rename_function`__ to convert the Rhai Operator to its uLisp equivalent: [`transcode.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L335-L343)
 
 ```rust
 /// Rename a Rhai Function or Operator Name to uLisp:
@@ -834,21 +839,7 @@ fn rename_function(name: &str) -> String {
 }
 ```
 
-TODO19
-
-![](https://lupyuen.github.io/images/rhai-transcode5.jpg)
-
-TODO21
-
-![](https://lupyuen.github.io/images/rhai-transcode7.png)
-
-TODO22
-
-![](https://lupyuen.github.io/images/rhai-transcode8.png)
-
-TODO23
-
-![](https://lupyuen.github.io/images/rhai-transcode9.png)
+This means that "`a % b`" in Rhai is rewritten as "`( mod a b )`" in uLisp.
 
 ## Transcoder Scope
 
@@ -860,13 +851,13 @@ TODO13
 
 ![](https://lupyuen.github.io/images/rhai-scope.png)
 
-TODO5
-
-![](https://lupyuen.github.io/images/rhai-run.png)
-
 TODO24
 
 ![Rhai Script transcoded to uLisp](https://lupyuen.github.io/images/rhai-transcode4.jpg)
+
+TODO5
+
+![](https://lupyuen.github.io/images/rhai-run.png)
 
 # Drag-and-Drop Rhai Scripting
 
