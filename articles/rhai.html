@@ -563,196 +563,110 @@
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="doccomment">/// Transcode a Rhai Statement to uLisp</span>
 <span class="kw">fn</span> <span class="ident">transcode_stmt</span>(<span class="ident">stmt</span>: <span class="kw-2">&amp;</span><span class="ident">Stmt</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
-    <span class="kw">match</span> <span class="ident">stmt</span> {
-        <span class="comment">/* Let or Const Statement: `let LED_GPIO = 11`
-            Var(
-                11 @ 4:24,
-                &quot;LED_GPIO&quot; @ 4:13,
-                (),
-                4:9,
-            ),
-            becomes...
-            ( let* 
-                (( LED_GPIO 11 ))
-                ...
-            )
-        */</span>    
-        <span class="ident">Stmt::Var</span>(<span class="ident">expr</span>, <span class="ident">ident</span>, <span class="kw">_</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
-            <span class="comment">//  Begin a new uLisp Scope</span>
-            <span class="ident">scope::begin_scope</span>(
-                <span class="macro">format!</span>(
-                    <span class="string">&quot;let* (( {} {} ))&quot;</span>,    <span class="comment">//  `let* (( LED_GPIO 11 ))`</span>
-                    <span class="ident">ident</span>.<span class="ident">name</span>,            <span class="comment">//  `LED_GPIO`</span>
-                    <span class="ident">transcode_expr</span>(<span class="ident">expr</span>),  <span class="comment">//  `11`</span>
-                ).<span class="ident">as_str</span>()
-            );
+  <span class="kw">match</span> <span class="ident">stmt</span> {
+    <span class="comment">//  Let or Const Statement: `let LED_GPIO = 11`</span>
+    <span class="comment">//  becomes...</span>
+    <span class="comment">//  ( let* </span>
+    <span class="comment">//      (( LED_GPIO 11 ))</span>
+    <span class="comment">//      ...</span>
+    <span class="comment">//  )</span>
+    <span class="ident">Stmt::Var</span>(<span class="ident">expr</span>, <span class="ident">ident</span>, <span class="kw">_</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
+      <span class="comment">//  Begin a new uLisp Scope</span>
+      <span class="ident">scope::begin_scope</span>(
+        <span class="macro">format!</span>(
+          <span class="string">&quot;let* (( {} {} ))&quot;</span>,    <span class="comment">//  `let* (( LED_GPIO 11 ))`</span>
+          <span class="ident">ident</span>.<span class="ident">name</span>,            <span class="comment">//  `LED_GPIO`</span>
+          <span class="ident">transcode_expr</span>(<span class="ident">expr</span>),  <span class="comment">//  `11`</span>
+        ).<span class="ident">as_str</span>()
+      );
 
-            <span class="comment">//  Scope will end when the parent scope ends</span>
-            <span class="string">&quot;&quot;</span>.<span class="ident">to_string</span>()
-        }
-
-        <span class="comment">/* For Statement: `for i in range(0, 10) { ... }`
-            For(
-                FnCall {
-                    name: &quot;range&quot;,
-                    hash: 7910928861698536248,
-                    args: [
-                        StackSlot(0) @ 10:24,
-                        StackSlot(1) @ 10:27,
-                    ],
-                    constants: [
-                        0,
-                        10,
-                    ],
-                } @ 10:18,
-                (
-                    &quot;i&quot; @ 10:13,
-                    None,
-                    Block[ ... ] @ 10:31,
-                ),
-                10:9,
-            )
-            becomes...
-            ( dotimes (i 10)
-                ...
-            )
-        */</span>
-        <span class="ident">Stmt::For</span>(<span class="ident">expr</span>, <span class="ident">id_counter</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
-            <span class="comment">//  TODO: Support `for` counter</span>
-            <span class="kw">let</span> <span class="ident">id</span>    <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">id_counter</span>.<span class="number">0</span>;
-            <span class="kw">let</span> <span class="ident">stmts</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">id_counter</span>.<span class="number">2</span>;
-
-            <span class="comment">//  Get the `for` range, e.g. `[0, 10]`</span>
-            <span class="kw">let</span> <span class="ident">range</span> <span class="op">=</span> <span class="ident">get_range</span>(<span class="ident">expr</span>);
-            <span class="kw">let</span> <span class="ident">lower_limit</span> <span class="op">=</span> <span class="ident">range</span>[<span class="number">0</span>];
-            <span class="kw">let</span> <span class="ident">upper_limit</span> <span class="op">=</span> <span class="ident">range</span>[<span class="number">1</span>];
-            <span class="macro">assert!</span>(<span class="ident">lower_limit</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span>);  <span class="comment">//  TODO: Allow Lower Limit to be non-zero</span>
-
-            <span class="comment">//  Begin a new uLisp Scope</span>
-            <span class="kw">let</span> <span class="ident">scope_index</span> <span class="op">=</span> <span class="ident">scope::begin_scope</span>(
-                <span class="macro">format!</span>(
-                    <span class="string">&quot;dotimes ({} {})&quot;</span>,  <span class="comment">//  `dotimes (i 10)`</span>
-                    <span class="ident">id</span>.<span class="ident">name</span>,            <span class="comment">//  `i`</span>
-                    <span class="ident">upper_limit</span>,        <span class="comment">//  `10`</span>
-                ).<span class="ident">as_str</span>()
-            );
-
-            <span class="comment">//  Transcode the Statement Block</span>
-            <span class="ident">transcode_block</span>(<span class="ident">stmts</span>);
-
-            <span class="comment">//  End the uLisp Scope and add the transcoded uLisp S-Expression to the parent scope</span>
-            <span class="ident">scope::end_scope</span>(<span class="ident">scope_index</span>)
-        }        
-
-        <span class="comment">/* Loop or While Statement: `loop { ... }`
-            While(
-                (),
-                Block[
-                    Var(
-                        1 @ 4:21,
-                        &quot;a&quot; @ 4:17,
-                        (),
-                        4:13,
-                    ),
-                    If(
-                        FnCall {
-                            name: &quot;==&quot;,
-                            hash: 12432925577119877140 (native only),
-                            args: [
-                                Variable(a #1) @ 5:16,
-                                StackSlot(0) @ 5:21,
-                            ],
-                            constants: [
-                                1,
-                            ],
-                        } @ 5:18,
-                        (
-                            Block[
-                                Break(
-                                    5:25,
-                                ),
-                            ] @ 5:23,
-                            Block[],
-                        ),
-                        5:13,
-                    ),
-                ] @ 3:14,
-                3:9,
-            )        
-            becomes...
-            ( loop ... )
-        */</span>
-        <span class="ident">Stmt::While</span>(<span class="ident">expr</span>, <span class="ident">stmts</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
-            <span class="comment">//  Begin a new uLisp Scope</span>
-            <span class="kw">let</span> <span class="ident">scope_index</span> <span class="op">=</span> <span class="ident">scope::begin_scope</span>(<span class="string">&quot;loop&quot;</span>);
-
-            <span class="comment">//  TODO: Transcode `expr`</span>
-            <span class="macro">assert!</span>(<span class="string">&quot;()&quot;</span> <span class="op">=</span><span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">expr</span>));
-
-            <span class="comment">//  Transcode the Statement Block</span>
-            <span class="ident">transcode_block</span>(<span class="ident">stmts</span>);
-
-            <span class="comment">//  End the uLisp Scope and add the transcoded uLisp S-Expression to the parent scope</span>
-            <span class="ident">scope::end_scope</span>(<span class="ident">scope_index</span>)
-        }
-
-        <span class="comment">/* If Statement: `if a == 1 { ... }`
-            If(
-                FnCall {
-                    name: &quot;==&quot;,
-                    hash: 6230347975385344721 (native only),
-                    args: [
-                        Variable(a #1) @ 5:16,
-                        StackSlot(0) @ 5:21,
-                    ],
-                    constants: [
-                        1,
-                    ],
-                } @ 5:18,
-                (
-                    Block[
-                        Break(
-                            5:25,
-                        ),
-                    ] @ 5:23,
-                    Block[],
-                ),
-                5:13,
-            )        
-            becomes...
-            ( if ( eq a 1 ) ... )
-        */</span>
-        <span class="ident">Stmt::If</span>(<span class="ident">expr</span>, <span class="ident">then_else</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
-            <span class="comment">//  Begin a new uLisp Scope</span>
-            <span class="kw">let</span> <span class="ident">scope_index</span> <span class="op">=</span> <span class="ident">scope::begin_scope</span>(
-                <span class="macro">format!</span>(
-                    <span class="string">&quot;if {}&quot;</span>,
-                    <span class="ident">transcode_expr</span>(<span class="ident">expr</span>)
-                ).<span class="ident">as_str</span>()
-            );
-
-            <span class="comment">//  Transcode the Then Statement Block</span>
-            <span class="ident">transcode_block</span>(<span class="kw-2">&amp;</span><span class="ident">then_else</span>.<span class="number">0</span>);
-
-            <span class="comment">//  Transcode the Else Statement Block</span>
-            <span class="ident">transcode_block</span>(<span class="kw-2">&amp;</span><span class="ident">then_else</span>.<span class="number">1</span>);
-
-            <span class="comment">//  End the uLisp Scope and add the transcoded uLisp S-Expression to the parent scope</span>
-            <span class="ident">scope::end_scope</span>(<span class="ident">scope_index</span>)
-        }
-
-        <span class="comment">//  Break Statement: `break`</span>
-        <span class="comment">//  becomes `( return )`</span>
-        <span class="ident">Stmt::Break</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;( return )&quot;</span>.<span class="ident">to_string</span>(),
-
-        <span class="comment">//  Function Call: `gpio::enable_output(LED_GPIO, 0, 0)`</span>
-        <span class="ident">Stmt::FnCall</span>(<span class="ident">expr</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format!</span>(
-            <span class="string">&quot;{}&quot;</span>,
-            <span class="ident">transcode_fncall</span>(<span class="ident">expr</span>)
-        ),
-
-        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;Unknown stmt: {:#?}&quot;</span>, <span class="ident">stmt</span>)
+      <span class="comment">//  Scope will end when the parent scope ends</span>
+      <span class="string">&quot;&quot;</span>.<span class="ident">to_string</span>()
     }
+
+    <span class="comment">//  For Statement: `for i in range(0, 10) { ... }`</span>
+    <span class="comment">//  becomes...</span>
+    <span class="comment">//  ( dotimes (i 10)</span>
+    <span class="comment">//      ...</span>
+    <span class="comment">//  )</span>
+    <span class="ident">Stmt::For</span>(<span class="ident">expr</span>, <span class="ident">id_counter</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
+      <span class="comment">//  TODO: Support `for` counter</span>
+      <span class="kw">let</span> <span class="ident">id</span>    <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">id_counter</span>.<span class="number">0</span>;
+      <span class="kw">let</span> <span class="ident">stmts</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">id_counter</span>.<span class="number">2</span>;
+
+      <span class="comment">//  Get the `for` range, e.g. `[0, 10]`</span>
+      <span class="kw">let</span> <span class="ident">range</span> <span class="op">=</span> <span class="ident">get_range</span>(<span class="ident">expr</span>);
+      <span class="kw">let</span> <span class="ident">lower_limit</span> <span class="op">=</span> <span class="ident">range</span>[<span class="number">0</span>];
+      <span class="kw">let</span> <span class="ident">upper_limit</span> <span class="op">=</span> <span class="ident">range</span>[<span class="number">1</span>];
+      <span class="macro">assert!</span>(<span class="ident">lower_limit</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span>);  <span class="comment">//  TODO: Allow Lower Limit to be non-zero</span>
+
+      <span class="comment">//  Begin a new uLisp Scope</span>
+      <span class="kw">let</span> <span class="ident">scope_index</span> <span class="op">=</span> <span class="ident">scope::begin_scope</span>(
+        <span class="macro">format!</span>(
+          <span class="string">&quot;dotimes ({} {})&quot;</span>,  <span class="comment">//  `dotimes (i 10)`</span>
+          <span class="ident">id</span>.<span class="ident">name</span>,            <span class="comment">//  `i`</span>
+          <span class="ident">upper_limit</span>,        <span class="comment">//  `10`</span>
+        ).<span class="ident">as_str</span>()
+      );
+
+      <span class="comment">//  Transcode the Statement Block</span>
+      <span class="ident">transcode_block</span>(<span class="ident">stmts</span>);
+
+      <span class="comment">//  End the uLisp Scope and add the transcoded uLisp S-Expression to the parent scope</span>
+        <span class="ident">scope::end_scope</span>(<span class="ident">scope_index</span>)
+    }        
+
+    <span class="comment">//  Loop or While Statement: `loop { ... }`</span>
+    <span class="comment">//  becomes...</span>
+    <span class="comment">//  ( loop ... )</span>
+    <span class="ident">Stmt::While</span>(<span class="ident">expr</span>, <span class="ident">stmts</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
+      <span class="comment">//  Begin a new uLisp Scope</span>
+      <span class="kw">let</span> <span class="ident">scope_index</span> <span class="op">=</span> <span class="ident">scope::begin_scope</span>(<span class="string">&quot;loop&quot;</span>);
+
+      <span class="comment">//  TODO: Transcode `expr`</span>
+      <span class="macro">assert!</span>(<span class="string">&quot;()&quot;</span> <span class="op">=</span><span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">expr</span>));
+
+      <span class="comment">//  Transcode the Statement Block</span>
+      <span class="ident">transcode_block</span>(<span class="ident">stmts</span>);
+
+      <span class="comment">//  End the uLisp Scope and add the transcoded uLisp S-Expression to the parent scope</span>
+      <span class="ident">scope::end_scope</span>(<span class="ident">scope_index</span>)
+    }
+
+    <span class="comment">//  If Statement: `if a == 1 { ... }`</span>
+    <span class="comment">//  becomes...</span>
+    <span class="comment">//  ( if ( eq a 1 ) ... )</span>
+    <span class="ident">Stmt::If</span>(<span class="ident">expr</span>, <span class="ident">then_else</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
+      <span class="comment">//  Begin a new uLisp Scope</span>
+      <span class="kw">let</span> <span class="ident">scope_index</span> <span class="op">=</span> <span class="ident">scope::begin_scope</span>(
+        <span class="macro">format!</span>(
+          <span class="string">&quot;if {}&quot;</span>,
+          <span class="ident">transcode_expr</span>(<span class="ident">expr</span>)
+        ).<span class="ident">as_str</span>()
+      );
+
+      <span class="comment">//  Transcode the Then Statement Block</span>
+      <span class="ident">transcode_block</span>(<span class="kw-2">&amp;</span><span class="ident">then_else</span>.<span class="number">0</span>);
+
+      <span class="comment">//  Transcode the Else Statement Block</span>
+      <span class="ident">transcode_block</span>(<span class="kw-2">&amp;</span><span class="ident">then_else</span>.<span class="number">1</span>);
+
+      <span class="comment">//  End the uLisp Scope and add the transcoded uLisp S-Expression to the parent scope</span>
+      <span class="ident">scope::end_scope</span>(<span class="ident">scope_index</span>)
+    }
+
+    <span class="comment">//  Break Statement: `break`</span>
+    <span class="comment">//  becomes `( return )`</span>
+    <span class="ident">Stmt::Break</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;( return )&quot;</span>.<span class="ident">to_string</span>(),
+
+    <span class="comment">//  Function Call: `gpio::enable_output(LED_GPIO, 0, 0)`</span>
+    <span class="ident">Stmt::FnCall</span>(<span class="ident">expr</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format!</span>(
+      <span class="string">&quot;{}&quot;</span>,
+      <span class="ident">transcode_fncall</span>(<span class="ident">expr</span>)
+    ),
+
+    <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;Unknown stmt: {:#?}&quot;</span>, <span class="ident">stmt</span>)
+  }
 }</pre></div>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L324-L333"><code>transcode.rs</code></a></p>
@@ -760,13 +674,13 @@
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="doccomment">/// Transcode the Statement Block and the transcoded uLisp S-Expression to the current scope</span>
 <span class="kw">fn</span> <span class="ident">transcode_block</span>(<span class="ident">stmts</span>: <span class="kw-2">&amp;</span><span class="ident">StmtBlock</span>) {
-    <span class="ident">stmts</span>.<span class="ident">clone</span>().<span class="ident">statements_mut</span>().<span class="ident">iter</span>().<span class="ident">for_each</span>(<span class="op">|</span><span class="ident">stmt</span><span class="op">|</span> {
-        <span class="comment">//  Transcode each Statement</span>
-        <span class="kw">let</span> <span class="ident">output</span> <span class="op">=</span> <span class="ident">transcode_stmt</span>(<span class="ident">stmt</span>);
+  <span class="ident">stmts</span>.<span class="ident">clone</span>().<span class="ident">statements_mut</span>().<span class="ident">iter</span>().<span class="ident">for_each</span>(<span class="op">|</span><span class="ident">stmt</span><span class="op">|</span> {
+    <span class="comment">//  Transcode each Statement</span>
+    <span class="kw">let</span> <span class="ident">output</span> <span class="op">=</span> <span class="ident">transcode_stmt</span>(<span class="ident">stmt</span>);
 
-        <span class="comment">//  Add the transcoded uLisp S-Expression to the current scope</span>
-        <span class="ident">scope::add_to_scope</span>(<span class="kw-2">&amp;</span><span class="ident">output</span>);
-    });
+    <span class="comment">//  Add the transcoded uLisp S-Expression to the current scope</span>
+    <span class="ident">scope::add_to_scope</span>(<span class="kw-2">&amp;</span><span class="ident">output</span>);
+  });
 }</pre></div>
 <h2 id="transcode-expression" class="section-header"><a href="#transcode-expression">4.4 Transcode Expression</a></h2>
 <p>TODO</p>
@@ -775,73 +689,55 @@
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="doccomment">/// Transcode a Rhai Expression to uLisp</span>
 <span class="kw">fn</span> <span class="ident">transcode_expr</span>(<span class="ident">expr</span>: <span class="kw-2">&amp;</span><span class="ident">Expr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
-    <span class="kw">match</span> <span class="ident">expr</span> {
-        <span class="comment">//  Integers become themselves</span>
-        <span class="ident">Expr::IntegerConstant</span>(<span class="ident">i</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">i</span>),
+  <span class="kw">match</span> <span class="ident">expr</span> {
+    <span class="comment">//  Integers become themselves</span>
+    <span class="ident">Expr::IntegerConstant</span>(<span class="ident">i</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">i</span>),
 
-        <span class="comment">//  Variables become their names</span>
-        <span class="ident">Expr::Variable</span>(<span class="kw">_</span>, <span class="kw">_</span>, <span class="ident">var</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">var</span>.<span class="number">2</span>),
+    <span class="comment">//  Variables become their names</span>
+    <span class="ident">Expr::Variable</span>(<span class="kw">_</span>, <span class="kw">_</span>, <span class="ident">var</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">var</span>.<span class="number">2</span>),
 
-        <span class="comment">//  Function Call: `gpio::enable_output(LED_GPIO, 0, 0)`</span>
-        <span class="ident">Expr::FnCall</span>(<span class="ident">expr</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">transcode_fncall</span>(<span class="ident">expr</span>),
+    <span class="comment">//  Function Call: `gpio::enable_output(LED_GPIO, 0, 0)`</span>
+    <span class="ident">Expr::FnCall</span>(<span class="ident">expr</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">transcode_fncall</span>(<span class="ident">expr</span>),
 
-        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;Unknown expr: {:#?}&quot;</span>, <span class="ident">expr</span>)
-    }
+    <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;Unknown expr: {:#?}&quot;</span>, <span class="ident">expr</span>)
+  }
 }</pre></div>
 <p><a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L271-L322"><code>transcode.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="doccomment">/// Transcode a Rhai Function Call to uLisp</span>
 <span class="kw">fn</span> <span class="ident">transcode_fncall</span>(<span class="ident">expr</span>: <span class="kw-2">&amp;</span><span class="ident">FnCallExpr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
-    <span class="comment">/* Function Call: `gpio::enable_output(LED_GPIO, 0, 0)`
-        FnCallExpr {
-            namespace: Some(
-                gpio,
-            ),
-            hashes: 4301736447638837139,
-            args: [
-                Variable(LED_GPIO #1) @ 7:29,
-                StackSlot(0) @ 7:39,
-                StackSlot(1) @ 7:42,
-            ],
-            constants: [
-                0,
-                0,
-            ],
-            name: &quot;enable_output&quot;,
-            capture: false,
-        }
-        becomes...
-        ( bl_gpio_enable_output 11 0 0 )
-    */</span>   
+  <span class="comment">//  Function Call: `gpio::enable_output(LED_GPIO, 0, 0)`</span>
+  <span class="comment">//  becomes...</span>
+  <span class="comment">//  ( bl_gpio_enable_output 11 0 0 )</span>
 
-    <span class="comment">//  Compose namespace like `bl_gpio_` or ``</span>
-    <span class="kw">let</span> <span class="ident">namespace</span> <span class="op">=</span> <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="ident">expr</span>.<span class="ident">namespace</span> {
-        <span class="prelude-val">Some</span>(<span class="ident">ns</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format!</span>(<span class="string">&quot;bl_{:#?}_&quot;</span>, <span class="ident">ns</span>),  <span class="comment">//  TODO</span>
-        <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;&quot;</span>.<span class="ident">to_string</span>()
+  <span class="comment">//  Compose namespace like `bl_gpio_` or ``</span>
+  <span class="kw">let</span> <span class="ident">namespace</span> <span class="op">=</span> <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="ident">expr</span>.<span class="ident">namespace</span> {
+    <span class="prelude-val">Some</span>(<span class="ident">ns</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format!</span>(<span class="string">&quot;bl_{:#?}_&quot;</span>, <span class="ident">ns</span>),  <span class="comment">//  TODO</span>
+    <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;&quot;</span>.<span class="ident">to_string</span>()
+  };
+
+  <span class="comment">//  Compose arguments</span>
+  <span class="kw">let</span> <span class="ident">args</span> <span class="op">=</span> <span class="ident">expr</span>.<span class="ident">args</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">arg</span><span class="op">|</span> {
+    <span class="comment">//  Transcode each argument</span>
+    <span class="kw">let</span> <span class="ident">val</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">arg</span> {
+      <span class="comment">//  Transcode a StackSlot by looking up the constants</span>
+      <span class="ident">Expr::Stack</span>(<span class="ident">i</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">expr</span>.<span class="ident">constants</span>[<span class="kw-2">*</span><span class="ident">i</span>]),
+
+      <span class="comment">//  Transcode other expressions</span>
+      <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">transcode_expr</span>(<span class="kw-2">&amp;</span><span class="ident">arg</span>)
     };
+    <span class="ident">val</span> <span class="op">+</span> <span class="string">&quot; &quot;</span>
+  });
 
-    <span class="comment">//  Compose arguments</span>
-    <span class="kw">let</span> <span class="ident">args</span> <span class="op">=</span> <span class="ident">expr</span>.<span class="ident">args</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">arg</span><span class="op">|</span> {
-        <span class="comment">//  Transcode each argument</span>
-        <span class="kw">let</span> <span class="ident">val</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">arg</span> {
-            <span class="comment">//  Transcode a StackSlot by looking up the constants</span>
-            <span class="ident">Expr::Stack</span>(<span class="ident">i</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">expr</span>.<span class="ident">constants</span>[<span class="kw-2">*</span><span class="ident">i</span>]),
-
-            <span class="comment">//  Transcode other expressions</span>
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">transcode_expr</span>(<span class="kw-2">&amp;</span><span class="ident">arg</span>)
-        };
-        <span class="ident">val</span> <span class="op">+</span> <span class="string">&quot; &quot;</span>
-    });
-
-    <span class="comment">//  Transcode to uLisp Function Call:</span>
-    <span class="comment">//  `( bl_gpio_enable_output 11 0 0 )`</span>
-    <span class="macro">format!</span>(
-        <span class="string">&quot;( {}{} {})&quot;</span>,
-        <span class="ident">namespace</span>,                             <span class="comment">//  `bl_gpio_` or ``</span>
-        <span class="ident">rename_function</span>(<span class="kw-2">&amp;</span><span class="ident">expr</span>.<span class="ident">name</span>.<span class="ident">as_str</span>()),  <span class="comment">//  `enable_output`, `+` or `mod`</span>
-        <span class="ident">args</span>.<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>()               <span class="comment">//  `11 0 0 `</span>
-    )
+  <span class="comment">//  Transcode to uLisp Function Call:</span>
+  <span class="comment">//  `( bl_gpio_enable_output 11 0 0 )`</span>
+  <span class="macro">format!</span>(
+    <span class="string">&quot;( {}{} {})&quot;</span>,
+    <span class="ident">namespace</span>,                             <span class="comment">//  `bl_gpio_` or ``</span>
+    <span class="ident">rename_function</span>(<span class="kw-2">&amp;</span><span class="ident">expr</span>.<span class="ident">name</span>.<span class="ident">as_str</span>()),  <span class="comment">//  `enable_output`, `+` or `mod`</span>
+    <span class="ident">args</span>.<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>()               <span class="comment">//  `11 0 0 `</span>
+  )
 }</pre></div>
 <p>TODO</p>
 <p><code>get_range</code>: <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L345-L391"><code>transcode.rs</code></a></p>
@@ -852,11 +748,11 @@
 <span class="doccomment">/// Rename a Rhai Function or Operator Name to uLisp:</span>
 <span class="doccomment">/// `%` becomes `mod`, `==` becomes `eq`</span>
 <span class="kw">fn</span> <span class="ident">rename_function</span>(<span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
-    <span class="kw">match</span> <span class="ident">name</span> {
-        <span class="string">&quot;%&quot;</span>  <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;mod&quot;</span>,  <span class="comment">//  `%` becomes `mod`</span>
-        <span class="string">&quot;==&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;eq&quot;</span>,   <span class="comment">//  `==` becomes `eq`</span>
-        <span class="kw">_</span>    <span class="op">=</span><span class="op">&gt;</span> <span class="ident">name</span>    <span class="comment">//  Else pass through</span>
-    }.<span class="ident">to_string</span>()
+  <span class="kw">match</span> <span class="ident">name</span> {
+    <span class="string">&quot;%&quot;</span>  <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;mod&quot;</span>,  <span class="comment">//  `%` becomes `mod`</span>
+    <span class="string">&quot;==&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;eq&quot;</span>,   <span class="comment">//  `==` becomes `eq`</span>
+    <span class="kw">_</span>    <span class="op">=</span><span class="op">&gt;</span> <span class="ident">name</span>    <span class="comment">//  Else pass through</span>
+  }.<span class="ident">to_string</span>()
 }</pre></div>
 <p><img src="https://lupyuen.github.io/images/rhai-transcode2.jpg" alt="" /></p>
 <p>TODO17</p>
