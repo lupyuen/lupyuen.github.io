@@ -448,13 +448,63 @@ Let's learn about the Abstract Syntax Tree...
 
 ## Abstract Syntax Tree
 
-TODO2
+_What is an Abstract Syntax Tree?_
 
-![](https://lupyuen.github.io/images/rhai-ast2.jpg)
+The Rhai Scripting Engine __parses our Rhai Script__ and produces a __tree of syntax elements__... That's the __Abstract Syntax Tree__.
 
-TODO
+This Rhai Script...
 
-![](https://lupyuen.github.io/images/rhai-ast.jpg)
+```rust
+let LED_GPIO = 11;
+gpio::enable_output(LED_GPIO, 0, 0);
+```
+
+Generates this __Abstract Syntax Tree__: [`bl602-script/lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L227-L252)
+
+```rust
+Var(
+  11 @ 11:24,
+  "LED_GPIO" @ 11:13,
+  (),
+  11:9,
+),
+FnCall(
+  FnCallExpr {
+    namespace: Some(
+      gpio,
+    ),
+    hashes: 12987214658708294900,
+    args: [
+      Variable(LED_GPIO #1) @ 14:29,
+      StackSlot(0) @ 14:39,
+      StackSlot(1) @ 14:42,
+    ],
+    constants: [
+      0,
+      0,
+    ],
+    name: "enable_output",
+    capture: false,
+  },
+  14:15,
+)
+```
+
+(`StackSlot` refers to the values in the `constants` array)
+
+Here's how they match up...
+
+![Rhai Script vs Abstract Syntax Tree](https://lupyuen.github.io/images/rhai-ast2.jpg)
+
+Yep Abstract Syntax Trees can get __deeply nested__, like this __`for`__ loop...
+
+![Abstract Syntax Tree for `for` loop](https://lupyuen.github.io/images/rhai-ast.jpg)
+
+But Abstract Syntax Trees are actually __perfect for converting Rhai to uLisp__.
+
+Lisp is a recursive language and the __Lisp parentheses match the nodes__ in the Abstract Syntax Tree quite closely.
+
+Let's talk about the Rhai to uLisp conversion...
 
 ## Rhai Transcoder
 
