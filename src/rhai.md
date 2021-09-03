@@ -518,17 +518,17 @@ To transcode the compiled Rhai Code to uLisp, we __walk the Abstract Syntax Tree
 /// Transcode the compiled Rhai Script 
 /// (Abstract Syntax Tree) to uLisp
 pub fn transcode(ast: &AST) -> String {
-    //  Start the first uLisp Scope
-    let scope_index = scope::begin_scope("let* ()");
+  //  Start the first uLisp Scope
+  let scope_index = scope::begin_scope("let* ()");
 
-    //  Walk the nodes in the Rhai Abstract Syntax Tree
-    ast.walk(&mut transcode_node);
+  //  Walk the nodes in the Rhai Abstract Syntax Tree
+  ast.walk(&mut transcode_node);
 
-    //  End the first uLisp Scope and get the uLisp S-Expression for the scope
-    let output = scope::end_scope(scope_index);
+  //  End the first uLisp Scope and get the uLisp S-Expression for the scope
+  let output = scope::end_scope(scope_index);
 
-    //  Return the transcoded uLisp S-Expression
-    output
+  //  Return the transcoded uLisp S-Expression
+  output
 }
 ```
 
@@ -539,39 +539,363 @@ __`ast.walk`__ calls __`transcode_node`__ to transcode each node in the Abstract
 ```rust
 /// Transcode the Rhai AST Node to uLisp
 fn transcode_node(nodes: &[ASTNode]) -> bool {
-    //  We take the root node, ignore the subnodes
-    let node = &nodes[0];
+  //  We take the root node, ignore the subnodes
+  let node = &nodes[0];
 
-    //  Get the source code position
-    let pos = match node {
-        ASTNode::Stmt(stmt) => stmt.position(),
-        ASTNode::Expr(expr) => expr.position(),
-    };
+  //  Get the source code position
+  let pos = match node {
+    ASTNode::Stmt(stmt) => stmt.position(),
+    ASTNode::Expr(expr) => expr.position(),
+  };
 
-    //  Skip this node if we've already handled it
-    unsafe {
-        static mut LAST_POSITION: Position = Position::NONE;
-        if LAST_POSITION == pos { return true; }
-        LAST_POSITION = pos;
-    }
+  //  Skip this node if we've already handled it
+  unsafe {
+    static mut LAST_POSITION: Position = Position::NONE;
+    if LAST_POSITION == pos { return true; }
+    LAST_POSITION = pos;
+  }
 
-    //  Transcode the Node: Statement or Expression
-    let output = match node {
-        ASTNode::Stmt(stmt) => transcode_stmt(stmt),
-        ASTNode::Expr(expr) => transcode_expr(expr),
-    };
+  //  Transcode the Node: Statement or Expression
+  let output = match node {
+    ASTNode::Stmt(stmt) => transcode_stmt(stmt),
+    ASTNode::Expr(expr) => transcode_expr(expr),
+  };
 
-    //  Add the transcoded uLisp S-Expression to the current scope
-    scope::add_to_scope(&output);
+  //  Add the transcoded uLisp S-Expression to the current scope
+  scope::add_to_scope(&output);
 
-    //  Return true to walk the next node in the tree
-    true
+  //  Return true to walk the next node in the tree
+  true
 }
 ```
 
-Here we handle 
+Each node is either a Rhai __Statement or Expression__. We call...
 
-TODO16
+-   __`transcode_stmt`__ to transcode a Rhai Statement
+
+-   __`transcode_expr`__ to transcode a Rhai Expression
+
+Let's look into each of these functions...
+
+## Transcode Statement
+
+TODO
+
+[`transcode.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L61-L253)
+
+```rust
+/// Transcode a Rhai Statement to uLisp
+fn transcode_stmt(stmt: &Stmt) -> String {
+    match stmt {
+        /* Let or Const Statement: `let LED_GPIO = 11`
+            Var(
+                11 @ 4:24,
+                "LED_GPIO" @ 4:13,
+                (),
+                4:9,
+            ),
+            becomes...
+            ( let* 
+                (( LED_GPIO 11 ))
+                ...
+            )
+        */    
+        Stmt::Var(expr, ident, _, _) => {
+            //  Begin a new uLisp Scope
+            scope::begin_scope(
+                format!(
+                    "let* (( {} {} ))",    //  `let* (( LED_GPIO 11 ))`
+                    ident.name,            //  `LED_GPIO`
+                    transcode_expr(expr),  //  `11`
+                ).as_str()
+            );
+
+            //  Scope will end when the parent scope ends
+            "".to_string()
+        }
+
+        /* For Statement: `for i in range(0, 10) { ... }`
+            For(
+                FnCall {
+                    name: "range",
+                    hash: 7910928861698536248,
+                    args: [
+                        StackSlot(0) @ 10:24,
+                        StackSlot(1) @ 10:27,
+                    ],
+                    constants: [
+                        0,
+                        10,
+                    ],
+                } @ 10:18,
+                (
+                    "i" @ 10:13,
+                    None,
+                    Block[ ... ] @ 10:31,
+                ),
+                10:9,
+            )
+            becomes...
+            ( dotimes (i 10)
+                ...
+            )
+        */
+        Stmt::For(expr, id_counter, _) => {
+            //  TODO: Support `for` counter
+            let id    = &id_counter.0;
+            let stmts = &id_counter.2;
+
+            //  Get the `for` range, e.g. `[0, 10]`
+            let range = get_range(expr);
+            let lower_limit = range[0];
+            let upper_limit = range[1];
+            assert!(lower_limit == 0);  //  TODO: Allow Lower Limit to be non-zero
+
+            //  Begin a new uLisp Scope
+            let scope_index = scope::begin_scope(
+                format!(
+                    "dotimes ({} {})",  //  `dotimes (i 10)`
+                    id.name,            //  `i`
+                    upper_limit,        //  `10`
+                ).as_str()
+            );
+
+            //  Transcode the Statement Block
+            transcode_block(stmts);
+
+            //  End the uLisp Scope and add the transcoded uLisp S-Expression to the parent scope
+            scope::end_scope(scope_index)
+        }        
+
+        /* Loop or While Statement: `loop { ... }`
+            While(
+                (),
+                Block[
+                    Var(
+                        1 @ 4:21,
+                        "a" @ 4:17,
+                        (),
+                        4:13,
+                    ),
+                    If(
+                        FnCall {
+                            name: "==",
+                            hash: 12432925577119877140 (native only),
+                            args: [
+                                Variable(a #1) @ 5:16,
+                                StackSlot(0) @ 5:21,
+                            ],
+                            constants: [
+                                1,
+                            ],
+                        } @ 5:18,
+                        (
+                            Block[
+                                Break(
+                                    5:25,
+                                ),
+                            ] @ 5:23,
+                            Block[],
+                        ),
+                        5:13,
+                    ),
+                ] @ 3:14,
+                3:9,
+            )        
+            becomes...
+            ( loop ... )
+        */
+        Stmt::While(expr, stmts, _) => {
+            //  Begin a new uLisp Scope
+            let scope_index = scope::begin_scope("loop");
+
+            //  TODO: Transcode `expr`
+            assert!("()" == format!("{:?}", expr));
+
+            //  Transcode the Statement Block
+            transcode_block(stmts);
+
+            //  End the uLisp Scope and add the transcoded uLisp S-Expression to the parent scope
+            scope::end_scope(scope_index)
+        }
+
+        /* If Statement: `if a == 1 { ... }`
+            If(
+                FnCall {
+                    name: "==",
+                    hash: 6230347975385344721 (native only),
+                    args: [
+                        Variable(a #1) @ 5:16,
+                        StackSlot(0) @ 5:21,
+                    ],
+                    constants: [
+                        1,
+                    ],
+                } @ 5:18,
+                (
+                    Block[
+                        Break(
+                            5:25,
+                        ),
+                    ] @ 5:23,
+                    Block[],
+                ),
+                5:13,
+            )        
+            becomes...
+            ( if ( eq a 1 ) ... )
+        */
+        Stmt::If(expr, then_else, _) => {
+            //  Begin a new uLisp Scope
+            let scope_index = scope::begin_scope(
+                format!(
+                    "if {}",
+                    transcode_expr(expr)
+                ).as_str()
+            );
+
+            //  Transcode the Then Statement Block
+            transcode_block(&then_else.0);
+
+            //  Transcode the Else Statement Block
+            transcode_block(&then_else.1);
+
+            //  End the uLisp Scope and add the transcoded uLisp S-Expression to the parent scope
+            scope::end_scope(scope_index)
+        }
+
+        //  Break Statement: `break`
+        //  becomes `( return )`
+        Stmt::Break(_) => "( return )".to_string(),
+
+        //  Function Call: `gpio::enable_output(LED_GPIO, 0, 0)`
+        Stmt::FnCall(expr, _) => format!(
+            "{}",
+            transcode_fncall(expr)
+        ),
+
+        _ => panic!("Unknown stmt: {:#?}", stmt)
+    }
+}
+```
+
+TODO
+
+[`transcode.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L324-L333)
+
+```rust
+/// Transcode the Statement Block and the transcoded uLisp S-Expression to the current scope
+fn transcode_block(stmts: &StmtBlock) {
+    stmts.clone().statements_mut().iter().for_each(|stmt| {
+        //  Transcode each Statement
+        let output = transcode_stmt(stmt);
+
+        //  Add the transcoded uLisp S-Expression to the current scope
+        scope::add_to_scope(&output);
+    });
+}
+```
+
+## Transcode Expression
+
+TODO
+
+[`transcode.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L255-L269)
+
+```rust
+/// Transcode a Rhai Expression to uLisp
+fn transcode_expr(expr: &Expr) -> String {
+    match expr {
+        //  Integers become themselves
+        Expr::IntegerConstant(i, _) => format!("{}", i),
+
+        //  Variables become their names
+        Expr::Variable(_, _, var) => format!("{}", var.2),
+
+        //  Function Call: `gpio::enable_output(LED_GPIO, 0, 0)`
+        Expr::FnCall(expr, _) => transcode_fncall(expr),
+
+        _ => panic!("Unknown expr: {:#?}", expr)
+    }
+}
+```
+
+[`transcode.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L271-L322)
+
+```rust
+/// Transcode a Rhai Function Call to uLisp
+fn transcode_fncall(expr: &FnCallExpr) -> String {
+    /* Function Call: `gpio::enable_output(LED_GPIO, 0, 0)`
+        FnCallExpr {
+            namespace: Some(
+                gpio,
+            ),
+            hashes: 4301736447638837139,
+            args: [
+                Variable(LED_GPIO #1) @ 7:29,
+                StackSlot(0) @ 7:39,
+                StackSlot(1) @ 7:42,
+            ],
+            constants: [
+                0,
+                0,
+            ],
+            name: "enable_output",
+            capture: false,
+        }
+        becomes...
+        ( bl_gpio_enable_output 11 0 0 )
+    */   
+
+    //  Compose namespace like `bl_gpio_` or ``
+    let namespace = match &expr.namespace {
+        Some(ns) => format!("bl_{:#?}_", ns),  //  TODO
+        None => "".to_string()
+    };
+
+    //  Compose arguments
+    let args = expr.args.iter().map(|arg| {
+        //  Transcode each argument
+        let val = match arg {
+            //  Transcode a StackSlot by looking up the constants
+            Expr::Stack(i, _) => format!("{}", expr.constants[*i]),
+
+            //  Transcode other expressions
+            _ => transcode_expr(&arg)
+        };
+        val + " "
+    });
+
+    //  Transcode to uLisp Function Call:
+    //  `( bl_gpio_enable_output 11 0 0 )`
+    format!(
+        "( {}{} {})",
+        namespace,                             //  `bl_gpio_` or ``
+        rename_function(&expr.name.as_str()),  //  `enable_output`, `+` or `mod`
+        args.collect::<String>()               //  `11 0 0 `
+    )
+}
+```
+
+TODO
+
+`get_range`: [`transcode.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L345-L391)
+
+TODO
+
+[`transcode.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L335-L343)
+
+```rust
+/// Rename a Rhai Function or Operator Name to uLisp:
+/// `%` becomes `mod`, `==` becomes `eq`
+fn rename_function(name: &str) -> String {
+    match name {
+        "%"  => "mod",  //  `%` becomes `mod`
+        "==" => "eq",   //  `==` becomes `eq`
+        _    => name    //  Else pass through
+    }.to_string()
+}
+```
 
 ![](https://lupyuen.github.io/images/rhai-transcode2.jpg)
 
