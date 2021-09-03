@@ -169,29 +169,21 @@ __`time_delay`__ is a __Rust Function__ that we shall import into the Rhai Scrip
 
 __`gpio`__ is a __Rust Module__ that we shall import into Rhai.
 
-`gpio` module has two functions: __`enable_output`__ and __`output_set`__.
+The `gpio` module has two functions: __`enable_output`__ and __`output_set`__.
 
 # Add Rhai Scripting to Simulator
 
-TODO
-
-From [`bl602-script/lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L21-L98)
+We begin by adding the Rhai Scripting Engine to our __WebAssembly Simulator__: [`bl602-script/lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L21-L98)
 
 ```rust
-/// This function will be called by WebAssembly to run a script
-#[no_mangle]                        //  Don't mangle the function name
-extern "C" fn rust_script( ... ) {  //  Declare `extern "C"` because it will be called by Emscripten
+/// This function will be called by 
+/// WebAssembly to run a script
+#[no_mangle]  //  Don't mangle the function name
+extern "C"    //  Declare `extern "C"` because it will be called by Emscripten
+fn rust_script( ... ) {
+
   //  Init the Rhai script engine
   let mut engine = Engine::new();
-
-  //  Create a Rhai module from the plugin module
-  let module = exported_module!(gpio);
-
-  //  Register our module as a Static Module
-  engine.register_static_module("gpio", module.into());
-
-  //  Register our functions with Rhai
-  engine.register_fn("time_delay", time_delay);
 
   //  Rhai Script to be evaluated
   let script = r#" 
@@ -206,13 +198,19 @@ extern "C" fn rust_script( ... ) {  //  Declare `extern "C"` because it will be 
     .unwrap() as isize;
 
   //  Display the result
-  println!("Result of Rhai Script: {}", result);
+  println!("{}", result);
 }
 ```
 
-## Register a Rust Function
+Here we __initialise the Rhai engine__ and evaluate a Rhai Script that returns an integer result...
 
-TODO
+```text
+42
+```
+
+## Register Function
+
+To __register a Rust Function__ that will be called by the Rhai Script, we do this: [`bl602-script/lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L21-L98)
 
 ```rust
   //  Init the Rhai script engine
@@ -226,20 +224,16 @@ TODO
     //  Sleep 1 second
     time_delay(1000);
 
-    //  Evaluate an expression
-    let a = 40; 
-    let b = 2;
-    a + b 
+    //  Return 0
+    0
   "#;
 
-  //  Evaluate the Rhai Script
+  //  Evaluate the Rhai Script (returns 0)
   let result = engine.eval::<i32>(script)
     .unwrap() as isize;
 ```
 
-TODO
-
-From [`bl602-script/lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L146-L161)
+__`time_delay`__ is defined like so: [`bl602-script/lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L146-L161)
 
 ```rust
 /// Rhai Shim for Time Delay
@@ -259,9 +253,17 @@ pub fn time_delay(
 }
 ```
 
-## Register a Rust Module
+__`time_delay`__ is a Rust Shim Function that calls out to the C function __`ble_npl_time_delay`__ which we have defined in our WebAssembly Simulator.
 
-TODO
+[(More about `time_delay`)](https://lupyuen.github.io/articles/rustsim#json-stream-of-simulation-events)
+
+_Why not register `ble_npl_time_delay` with Rhai and rename it as `time_delay`?_
+
+Because `ble_npl_time_delay` is "`extern C`" and it accepts a parameter of type __`u32`__, but our Rhai engine is configured for [__`only_i32`__](https://rhai.rs/book/start/features.html).
+
+## Register Module
+
+Now we register the __`gpio`__ module with Rhai: [`bl602-script/lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L21-L98)
 
 ```rust
   //  Init the Rhai script engine
@@ -274,7 +276,7 @@ TODO
   engine.register_static_module("gpio", module.into());
 ```
 
-TODO
+__`gpio`__ is a Rust Module that exports the functions __`enable_output`__ and __`output_set`__, which may be called like so...
 
 ```rust
   //  Rhai Script to be evaluated
@@ -299,13 +301,11 @@ TODO
       time_delay(1000);
     }
 
-    //  Evaluate an expression
-    let a = 40; 
-    let b = 2;
-    a + b 
+    //  Return 0
+    0
   "#;
 
-  //  Evaluate the Rhai Script
+  //  Evaluate the Rhai Script (returns 0)
   let result = engine.eval::<i32>(script)
     .unwrap() as isize;
 ```
@@ -325,9 +325,8 @@ mod gpio {
       pub fn bl_gpio_enable_output(pin: u8, pullup: u8, pulldown: u8) -> c_int;
     }
     unsafe {
-      let _res =
-        bl_gpio_enable_output(pin as u8, pullup as u8, pulldown as u8);
-        //  TODO: Throw exception in case of error
+      let _res = bl_gpio_enable_output(pin as u8, pullup as u8, pulldown as u8);
+      //  TODO: Throw exception if result is non-zero
     }
   }
 
@@ -339,7 +338,7 @@ mod gpio {
     }
     unsafe {
       let _res = bl_gpio_output_set(pin as u8, value as u8);
-      //  TODO: Throw exception in case of error
+      //  TODO: Throw exception if result is non-zero
     }
   }
 }
