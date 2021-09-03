@@ -512,10 +512,11 @@ Let's talk about the Rhai to uLisp conversion...
 
 (Since we're converting Rhai Code to uLisp Code, let's call it __"transcoding"__ instead of "transpiling")
 
-To convert the compiled Rhai Code to uLisp, we __walk the Abstract Syntax Tree__ and __convert each node to uLisp__...
+To transcode the compiled Rhai Code to uLisp, we __walk the Abstract Syntax Tree__ and __transcode each node to uLisp__: [`bl602-script/transcode.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L15-L27)
 
 ```rust
-/// Transcode the compiled Rhai Script to uLisp
+/// Transcode the compiled Rhai Script 
+/// (Abstract Syntax Tree) to uLisp
 pub fn transcode(ast: &AST) -> String {
     //  Start the first uLisp Scope
     let scope_index = scope::begin_scope("let* ()");
@@ -525,10 +526,50 @@ pub fn transcode(ast: &AST) -> String {
 
     //  End the first uLisp Scope and get the uLisp S-Expression for the scope
     let output = scope::end_scope(scope_index);
-    println!("Transcoded uLisp:\n{}", output);
+
+    //  Return the transcoded uLisp S-Expression
     output
 }
 ```
+
+(More about `scope` in a while)
+
+__`ast.walk`__ calls __`transcode_node`__ to transcode each node in the Abstract Syntax Tree: [`transcode.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L29-L59)
+
+```rust
+/// Transcode the Rhai AST Node to uLisp
+fn transcode_node(nodes: &[ASTNode]) -> bool {
+    //  We take the root node, ignore the subnodes
+    let node = &nodes[0];
+
+    //  Get the source code position
+    let pos = match node {
+        ASTNode::Stmt(stmt) => stmt.position(),
+        ASTNode::Expr(expr) => expr.position(),
+    };
+
+    //  Skip this node if we've already handled it
+    unsafe {
+        static mut LAST_POSITION: Position = Position::NONE;
+        if LAST_POSITION == pos { return true; }
+        LAST_POSITION = pos;
+    }
+
+    //  Transcode the Node: Statement or Expression
+    let output = match node {
+        ASTNode::Stmt(stmt) => transcode_stmt(stmt),
+        ASTNode::Expr(expr) => transcode_expr(expr),
+    };
+
+    //  Add the transcoded uLisp S-Expression to the current scope
+    scope::add_to_scope(&output);
+
+    //  Return true to walk the next node in the tree
+    true
+}
+```
+
+Here we handle 
 
 TODO16
 
