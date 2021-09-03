@@ -112,7 +112,7 @@ Let's look at the __Rhai Scripts__ that will...
 
 1.  Run OK on our BL602 Simulator and
 
-1.  Convert correctly to uLisp
+1.  Convert correctly to uLisp for execution on BL602
 
 ## Variables and Expressions
 
