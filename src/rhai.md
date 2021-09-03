@@ -770,14 +770,14 @@ gpio::enable_output(LED_GPIO, 0, 0)
 To...
 
 ```text
-( bl_gpio_enable_output 11 0 0 )
+( bl_gpio_enable_output LED_GPIO 0 0 )
 ```
 
 Here's how: [`transcode.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L271-L322)
 
 ```rust
 /// Transcode a Rhai Function Call to uLisp:
-/// `gpio::enable_output(LED_GPIO, 0, 0)`
+/// `gpio::enable_output(11, 0, 0)`
 fn transcode_fncall(expr: &FnCallExpr) -> String {
   //  Compose namespace e.g. `bl_gpio_` or ``
   let namespace = match &expr.namespace {
