@@ -351,86 +351,96 @@ Yep. Maybe someday we'll use a Rust Procedural Macro to __generate the shims__, 
 
 ![Register Rhai Module](https://lupyuen.github.io/images/rhai-module.png)
 
-# Transcode Rhai to uLisp
+# Convert Rhai to uLisp
 
-TODO
+The Rhai Blinky Script runs OK in the __BL602 WebAssembly Simulator__.
 
-From [`bl602-script/lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L21-L98)
+Now let's __auto-convert the Rhai Script to uLisp__, and run it on a real BL602 board!
+
+We do the same as above...
+
+1.  Initialise the Rhai script engine
+
+1.  Register the `gpio` module with Rhai
+
+1.  Register the `time_delay` function with Rhai
+
+From [`bl602-script/lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L21-L98) ...
 
 ```rust
-/// This function will be called by WebAssembly to run a script
-#[no_mangle]                        //  Don't mangle the function name
-extern "C" fn rust_script( ... ) {  //  Declare `extern "C"` because it will be called by Emscripten
-  //  Show a message on the serial console
-  println!("Hello from Rust Script!");
+//  Init the Rhai script engine
+let mut engine = Engine::new();
 
-  //  Init the Rhai script engine
-  let mut engine = Engine::new();
-  println!("Created script engine");
+//  Omitted: Create a Rhai module from the plugin module
+//  Omitted: Register `gpio` module as a Static Module
+//  Omitted: Register `time_delay` function with Rhai
+...
+```
 
-  //  Create a Rhai module from the plugin module
-  let module = exported_module!(gpio);
+Below is the kitchen-sink __Rhai Script__ that will be converted to uLisp...
 
-  //  Register our module as a Static Module
-  engine.register_static_module("gpio", module.into());
+```rust
+//  Rhai Script to be parsed
+let script = r#" 
+  //  Rhai Loop and Conditional
+  loop { 
+    let a = 1;
+    print(a);
+    if a == 1 { break; }
+  }
 
-  //  Register our functions with Rhai
-  engine.register_fn("time_delay", time_delay);
+  //  Rhai Blinky: Blink the LED connected on BL602 GPIO 11
+  let LED_GPIO = 11;
 
-  //  Rhai Script to be evaluated
-  let script = r#" 
-    //  Testing Loop
-    loop { 
-      let a = 1;
-      print(a);
-      if a == 1 { break; }
-    }
+  //  Configure the LED GPIO for output (instead of input)
+  gpio::enable_output(LED_GPIO, 0, 0);
 
-    //  Blink the LED:
-    //  PineCone Blue LED is connected on BL602 GPIO 11
-    let LED_GPIO = 11;
+  //  Blink the LED 5 times
+  for i in range(0, 10) {
 
-    //  Configure the LED GPIO for output (instead of input)
-    gpio::enable_output(LED_GPIO, 0, 0);
+    //  Toggle the LED GPIO between 0 (on) and 1 (off)
+    gpio::output_set(
+      LED_GPIO, 
+      i % 2
+    );
 
-    //  Blink the LED 5 times
-    for i in range(0, 10) {
+    //  Sleep 1 second
+    time_delay(1000);
+  }
 
-      //  Toggle the LED GPIO between 0 (on) and 1 (off)
-      gpio::output_set(
-        LED_GPIO, 
-        i % 2
-      );
+  //  Rhai Variables and Expression
+  let a = 40; 
+  let b = 2;
+  a + b 
+"#;
+```
 
-      //  Sleep 1 second
-      time_delay(1000);
-    }
+Here comes the interesting part: Rhai lets us compile our script into an __Abstract Syntax Tree__...
 
-    //  Evaluate an expression
-    let a = 40; 
-    let b = 2;
-    a + b 
-  "#;
+```rust
+//  Compile Rhai Script to an Abstract Syntax Tree
+let ast = engine.compile(script)
+  .unwrap();
+println!("AST: {:#?}", ast);
+```
 
-  //  Compile Rhai Script to an Abstract Syntax Tree
-  let ast = engine.compile(script)
-    .unwrap();
-  println!("AST: {:#?}", ast);
+(More about the Abstract Syntax Tree in a while)
 
-  //  Transcode the Rhai Abstract Syntax Tree to uLisp
-  transcode::transcode(&ast);
+We may __walk the Abstract Syntax Tree__ and __convert each node__ to uLisp...
 
-  //  Evaluate the compiled Rhai Script
-  let result: i32 = engine.eval_ast(&ast)
-    .unwrap();
-  println!("Eval OK");
+```rust
+//  Transcode the Rhai Abstract Syntax Tree to uLisp
+transcode::transcode(&ast);
+```
 
-  //  Alternatively: Evaluate a Rhai Script
-  //  let result = engine.eval::<i32>(script).unwrap() as isize;
+(More about `transcode` later)
 
-  //  Display the result
-  println!("Result of Rhai Script: {}", result);
-}
+FYI: Here's how we evaluate the compiled Rhai Script...
+
+```rust
+//  Evaluate the compiled Rhai Script (returns 42)
+let result: i32 = engine.eval_ast(&ast)
+  .unwrap();
 ```
 
 ![](https://lupyuen.github.io/images/rhai-ast.jpg)
@@ -446,14 +456,6 @@ TODO3
 TODO4
 
 ![](https://lupyuen.github.io/images/rhai-ast4.jpg)
-
-TODO5
-
-![](https://lupyuen.github.io/images/rhai-run.png)
-
-TODO13
-
-![](https://lupyuen.github.io/images/rhai-scope.png)
 
 TODO16
 
@@ -483,7 +485,15 @@ TODO23
 
 ![](https://lupyuen.github.io/images/rhai-transcode9.png)
 
-# Rhai Scripting with Blockly
+TODO13
+
+![](https://lupyuen.github.io/images/rhai-scope.png)
+
+TODO5
+
+![](https://lupyuen.github.io/images/rhai-run.png)
+
+# Drag-and-Drop Rhai Scripting
 
 TODO
 
