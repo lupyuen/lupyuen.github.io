@@ -699,7 +699,7 @@ __Function Calls__ are transcoded as a special kind of Expression: [`transcode.r
     ),
 ```
 
-(We'll see `transcode_fncall` in a while)
+(We'll meet `transcode_fncall` in a while)
 
 Check out the source code to see how we transcode these statements...
 
@@ -716,8 +716,10 @@ TODO
 From [`transcode.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L324-L333)
 
 ```rust
-/// Transcode the Statement Block and the transcoded uLisp S-Expression to the current scope
-fn transcode_block(stmts: &StmtBlock) {
+/// Transcode the Statement Block and 
+/// the transcoded uLisp S-Expression 
+/// into the current scope
+fn transcode_block(stmts: &StmtBlock) {  
   stmts.clone().statements_mut().iter().for_each(|stmt| {
     //  Transcode each Statement
     let output = transcode_stmt(stmt);
@@ -727,6 +729,8 @@ fn transcode_block(stmts: &StmtBlock) {
   });
 }
 ```
+
+TODO
 
 ## Transcode Expression
 
@@ -738,10 +742,10 @@ From [`transcode.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/
 /// Transcode a Rhai Expression to uLisp
 fn transcode_expr(expr: &Expr) -> String {
   match expr {
-    //  Integers become themselves
+    //  Integers become themselves, e.g. `1`
     Expr::IntegerConstant(i, _) => format!("{}", i),
 
-    //  Variables become their names
+    //  Variables become their names, e.g. `a`
     Expr::Variable(_, _, var) => format!("{}", var.2),
 
     //  Function Call: `gpio::enable_output(LED_GPIO, 0, 0)`
@@ -752,22 +756,41 @@ fn transcode_expr(expr: &Expr) -> String {
 }
 ```
 
-From [`transcode.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L271-L322)
+Which means that...
+
+- __`1`__ is transcoded as __`1`__
+
+- __`a`__ is transcoded as __`a`__
+
+Now for __Function Calls__: We shall transcode...
 
 ```rust
-/// Transcode a Rhai Function Call to uLisp
-fn transcode_fncall(expr: &FnCallExpr) -> String {
-  //  Function Call: `gpio::enable_output(LED_GPIO, 0, 0)`
-  //  becomes...
-  //  ( bl_gpio_enable_output 11 0 0 )
+gpio::enable_output(LED_GPIO, 0, 0)
+```
 
-  //  Compose namespace like `bl_gpio_` or ``
+To...
+
+```text
+( bl_gpio_enable_output 11 0 0 )
+```
+
+Here's how: [`transcode.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L271-L322)
+
+```rust
+/// Transcode a Rhai Function Call to uLisp:
+/// `gpio::enable_output(LED_GPIO, 0, 0)`
+fn transcode_fncall(expr: &FnCallExpr) -> String {
+  //  Compose namespace e.g. `bl_gpio_` or ``
   let namespace = match &expr.namespace {
     Some(ns) => format!("bl_{:#?}_", ns),  //  TODO
     None => "".to_string()
   };
+```
 
-  //  Compose arguments
+TODO
+
+```rust
+  //  Compose arguments e.g. `11 0 0 `
   let args = expr.args.iter().map(|arg| {
     //  Transcode each argument
     let val = match arg {
@@ -779,7 +802,11 @@ fn transcode_fncall(expr: &FnCallExpr) -> String {
     };
     val + " "
   });
+```
 
+TODO
+
+```rust
   //  Transcode to uLisp Function Call:
   //  `( bl_gpio_enable_output 11 0 0 )`
   format!(
