@@ -71,8 +71,8 @@
 <li><a href="#loops-and-conditionals">2.2 Loops and Conditionals</a><ul></ul></li>
 <li><a href="#rust-functions-and-modules">2.3 Rust Functions and Modules</a><ul></ul></li></ul></li>
 <li><a href="#add-rhai-scripting-to-simulator">3 Add Rhai Scripting to Simulator</a><ul>
-<li><a href="#register-a-rust-function">3.1 Register a Rust Function</a><ul></ul></li>
-<li><a href="#register-a-rust-module">3.2 Register a Rust Module</a><ul></ul></li></ul></li>
+<li><a href="#register-function">3.1 Register Function</a><ul></ul></li>
+<li><a href="#register-module">3.2 Register Module</a><ul></ul></li></ul></li>
 <li><a href="#transcode-rhai-to-ulisp">4 Transcode Rhai to uLisp</a><ul></ul></li>
 <li><a href="#rhai-scripting-with-blockly">5 Rhai Scripting with Blockly</a><ul></ul></li>
 <li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
@@ -202,26 +202,19 @@
 }</pre></div>
 <p><strong><code>time_delay</code></strong> is a <strong>Rust Function</strong> that we shall import into the Rhai Scripting Engine.</p>
 <p><strong><code>gpio</code></strong> is a <strong>Rust Module</strong> that we shall import into Rhai.</p>
-<p><code>gpio</code> module has two functions: <strong><code>enable_output</code></strong> and <strong><code>output_set</code></strong>.</p>
+<p>The <code>gpio</code> module has two functions: <strong><code>enable_output</code></strong> and <strong><code>output_set</code></strong>.</p>
 <h1 id="add-rhai-scripting-to-simulator" class="section-header"><a href="#add-rhai-scripting-to-simulator">3 Add Rhai Scripting to Simulator</a></h1>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L21-L98"><code>bl602-script/lib.rs</code></a></p>
+<p>We begin by adding the Rhai Scripting Engine to our <strong>WebAssembly Simulator</strong>: <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L21-L98"><code>bl602-script/lib.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="doccomment">/// This function will be called by WebAssembly to run a script</span>
-<span class="attribute">#[<span class="ident">no_mangle</span>]</span>                        <span class="comment">//  Don&#39;t mangle the function name</span>
-<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">rust_script</span>( ... ) {  <span class="comment">//  Declare `extern &quot;C&quot;` because it will be called by Emscripten</span>
+<span class="doccomment">/// This function will be called by </span>
+<span class="doccomment">/// WebAssembly to run a script</span>
+<span class="attribute">#[<span class="ident">no_mangle</span>]</span>  <span class="comment">//  Don&#39;t mangle the function name</span>
+<span class="kw">extern</span> <span class="string">&quot;C&quot;</span>    <span class="comment">//  Declare `extern &quot;C&quot;` because it will be called by Emscripten</span>
+<span class="kw">fn</span> <span class="ident">rust_script</span>( ... ) {
+
   <span class="comment">//  Init the Rhai script engine</span>
   <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">engine</span> <span class="op">=</span> <span class="ident">Engine::new</span>();
-
-  <span class="comment">//  Create a Rhai module from the plugin module</span>
-  <span class="kw">let</span> <span class="ident">module</span> <span class="op">=</span> <span class="macro">exported_module!</span>(<span class="ident">gpio</span>);
-
-  <span class="comment">//  Register our module as a Static Module</span>
-  <span class="ident">engine</span>.<span class="ident">register_static_module</span>(<span class="string">&quot;gpio&quot;</span>, <span class="ident">module</span>.<span class="ident">into</span>());
-
-  <span class="comment">//  Register our functions with Rhai</span>
-  <span class="ident">engine</span>.<span class="ident">register_fn</span>(<span class="string">&quot;time_delay&quot;</span>, <span class="ident">time_delay</span>);
 
   <span class="comment">//  Rhai Script to be evaluated</span>
   <span class="kw">let</span> <span class="ident">script</span> <span class="op">=</span> <span class="string">r#&quot; 
@@ -236,10 +229,13 @@
     .<span class="ident">unwrap</span>() <span class="kw">as</span> <span class="ident">isize</span>;
 
   <span class="comment">//  Display the result</span>
-  <span class="macro">println!</span>(<span class="string">&quot;Result of Rhai Script: {}&quot;</span>, <span class="ident">result</span>);
+  <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">result</span>);
 }</pre></div>
-<h2 id="register-a-rust-function" class="section-header"><a href="#register-a-rust-function">3.1 Register a Rust Function</a></h2>
-<p>TODO</p>
+<p>Here we <strong>initialise the Rhai engine</strong> and evaluate a Rhai Script that returns an integer result…</p>
+<pre><code class="language-text">42
+</code></pre>
+<h2 id="register-function" class="section-header"><a href="#register-function">3.1 Register Function</a></h2>
+<p>To <strong>register a Rust Function</strong> that will be called by the Rhai Script, we do this: <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L21-L98"><code>bl602-script/lib.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
   <span class="comment">//  Init the Rhai script engine</span>
@@ -253,17 +249,14 @@
     //  Sleep 1 second
     time_delay(1000);
 
-    //  Evaluate an expression
-    let a = 40; 
-    let b = 2;
-    a + b 
+    //  Return 0
+    0
   &quot;#</span>;
 
-  <span class="comment">//  Evaluate the Rhai Script</span>
+  <span class="comment">//  Evaluate the Rhai Script (returns 0)</span>
   <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">engine</span>.<span class="ident">eval</span>::<span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">script</span>)
     .<span class="ident">unwrap</span>() <span class="kw">as</span> <span class="ident">isize</span>;</pre></div>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L146-L161"><code>bl602-script/lib.rs</code></a></p>
+<p><strong><code>time_delay</code></strong> is defined like so: <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L146-L161"><code>bl602-script/lib.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="doccomment">/// Rhai Shim for Time Delay</span>
@@ -281,8 +274,12 @@
     <span class="ident">ble_npl_time_delay</span>(<span class="ident">ticks</span> <span class="kw">as</span> <span class="ident">u32</span>);
   }
 }</pre></div>
-<h2 id="register-a-rust-module" class="section-header"><a href="#register-a-rust-module">3.2 Register a Rust Module</a></h2>
-<p>TODO</p>
+<p><strong><code>time_delay</code></strong> is a Rust Shim Function that calls out to the C function <strong><code>ble_npl_time_delay</code></strong> which we have defined in our WebAssembly Simulator.</p>
+<p><a href="https://lupyuen.github.io/articles/rustsim#json-stream-of-simulation-events">(More about <code>time_delay</code>)</a></p>
+<p><em>Why not register <code>ble_npl_time_delay</code> with Rhai and rename it as <code>time_delay</code>?</em></p>
+<p>Because <code>ble_npl_time_delay</code> is “<code>extern C</code>” and it accepts a parameter of type <strong><code>u32</code></strong>, but our Rhai engine is configured for <a href="https://rhai.rs/book/start/features.html"><strong><code>only_i32</code></strong></a>.</p>
+<h2 id="register-module" class="section-header"><a href="#register-module">3.2 Register Module</a></h2>
+<p>Now we register the <strong><code>gpio</code></strong> module with Rhai: <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L21-L98"><code>bl602-script/lib.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
   <span class="comment">//  Init the Rhai script engine</span>
@@ -293,7 +290,7 @@
 
   <span class="comment">//  Register our module as a Static Module</span>
   <span class="ident">engine</span>.<span class="ident">register_static_module</span>(<span class="string">&quot;gpio&quot;</span>, <span class="ident">module</span>.<span class="ident">into</span>());</pre></div>
-<p>TODO</p>
+<p><strong><code>gpio</code></strong> is a Rust Module that exports the functions <strong><code>enable_output</code></strong> and <strong><code>output_set</code></strong>, which may be called like so…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
   <span class="comment">//  Rhai Script to be evaluated</span>
@@ -318,13 +315,11 @@
       time_delay(1000);
     }
 
-    //  Evaluate an expression
-    let a = 40; 
-    let b = 2;
-    a + b 
+    //  Return 0
+    0
   &quot;#</span>;
 
-  <span class="comment">//  Evaluate the Rhai Script</span>
+  <span class="comment">//  Evaluate the Rhai Script (returns 0)</span>
   <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">engine</span>.<span class="ident">eval</span>::<span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">script</span>)
     .<span class="ident">unwrap</span>() <span class="kw">as</span> <span class="ident">isize</span>;</pre></div>
 <p>TODO</p>
@@ -341,9 +336,8 @@
       <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bl_gpio_enable_output</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">pullup</span>: <span class="ident">u8</span>, <span class="ident">pulldown</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_int</span>;
     }
     <span class="kw">unsafe</span> {
-      <span class="kw">let</span> <span class="ident">_res</span> <span class="op">=</span>
-        <span class="ident">bl_gpio_enable_output</span>(<span class="ident">pin</span> <span class="kw">as</span> <span class="ident">u8</span>, <span class="ident">pullup</span> <span class="kw">as</span> <span class="ident">u8</span>, <span class="ident">pulldown</span> <span class="kw">as</span> <span class="ident">u8</span>);
-        <span class="comment">//  TODO: Throw exception in case of error</span>
+      <span class="kw">let</span> <span class="ident">_res</span> <span class="op">=</span> <span class="ident">bl_gpio_enable_output</span>(<span class="ident">pin</span> <span class="kw">as</span> <span class="ident">u8</span>, <span class="ident">pullup</span> <span class="kw">as</span> <span class="ident">u8</span>, <span class="ident">pulldown</span> <span class="kw">as</span> <span class="ident">u8</span>);
+      <span class="comment">//  TODO: Throw exception if result is non-zero</span>
     }
   }
 
@@ -355,7 +349,7 @@
     }
     <span class="kw">unsafe</span> {
       <span class="kw">let</span> <span class="ident">_res</span> <span class="op">=</span> <span class="ident">bl_gpio_output_set</span>(<span class="ident">pin</span> <span class="kw">as</span> <span class="ident">u8</span>, <span class="ident">value</span> <span class="kw">as</span> <span class="ident">u8</span>);
-      <span class="comment">//  TODO: Throw exception in case of error</span>
+      <span class="comment">//  TODO: Throw exception if result is non-zero</span>
     }
   }
 }</pre></div>
