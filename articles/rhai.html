@@ -445,10 +445,50 @@
   .<span class="ident">unwrap</span>();</pre></div>
 <p>Let’s learn about the Abstract Syntax Tree…</p>
 <h2 id="abstract-syntax-tree" class="section-header"><a href="#abstract-syntax-tree">4.1 Abstract Syntax Tree</a></h2>
-<p>TODO2</p>
-<p><img src="https://lupyuen.github.io/images/rhai-ast2.jpg" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/rhai-ast.jpg" alt="" /></p>
+<p><em>What is an Abstract Syntax Tree?</em></p>
+<p>The Rhai Scripting Engine <strong>parses our Rhai Script</strong> and produces a <strong>tree of syntax elements</strong>… That’s the <strong>Abstract Syntax Tree</strong>.</p>
+<p>This Rhai Script…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="ident">LED_GPIO</span> <span class="op">=</span> <span class="number">11</span>;
+<span class="ident">gpio::enable_output</span>(<span class="ident">LED_GPIO</span>, <span class="number">0</span>, <span class="number">0</span>);</pre></div>
+<p>Generates this <strong>Abstract Syntax Tree</strong>: <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L227-L252"><code>bl602-script/lib.rs</code></a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="ident">Var</span>(
+  <span class="number">11</span> @ <span class="number">11</span>:<span class="number">24</span>,
+  <span class="string">&quot;LED_GPIO&quot;</span> @ <span class="number">11</span>:<span class="number">13</span>,
+  (),
+  <span class="number">11</span>:<span class="number">9</span>,
+),
+<span class="ident">FnCall</span>(
+  <span class="ident">FnCallExpr</span> {
+    <span class="ident">namespace</span>: <span class="prelude-val">Some</span>(
+      <span class="ident">gpio</span>,
+    ),
+    <span class="ident">hashes</span>: <span class="number">12987214658708294900</span>,
+    <span class="ident">args</span>: [
+      <span class="ident">Variable</span>(<span class="ident">LED_GPIO</span> #<span class="number">1</span>) @ <span class="number">14</span>:<span class="number">29</span>,
+      <span class="ident">StackSlot</span>(<span class="number">0</span>) @ <span class="number">14</span>:<span class="number">39</span>,
+      <span class="ident">StackSlot</span>(<span class="number">1</span>) @ <span class="number">14</span>:<span class="number">42</span>,
+    ],
+    <span class="ident">constants</span>: [
+      <span class="number">0</span>,
+      <span class="number">0</span>,
+    ],
+    <span class="ident">name</span>: <span class="string">&quot;enable_output&quot;</span>,
+    <span class="ident">capture</span>: <span class="bool-val">false</span>,
+  },
+  <span class="number">14</span>:<span class="number">15</span>,
+)</pre></div>
+<p>(<code>StackSlot</code> refers to the values in the <code>constants</code> array)</p>
+<p>Here’s how they match up…</p>
+<p><img src="https://lupyuen.github.io/images/rhai-ast2.jpg" alt="Rhai Script vs Abstract Syntax Tree" /></p>
+<p>Yep Abstract Syntax Trees can get <strong>deeply nested</strong>, like this <strong><code>for</code></strong> loop…</p>
+<p><img src="https://lupyuen.github.io/images/rhai-ast.jpg" alt="Abstract Syntax Tree for for loop" /></p>
+<p>But Abstract Syntax Trees are actually <strong>perfect for converting Rhai to uLisp</strong>.</p>
+<p>Lisp is a recursive language and the <strong>Lisp parentheses match the nodes</strong> in the Abstract Syntax Tree quite closely.</p>
+<p>Let’s talk about the Rhai to uLisp conversion…</p>
 <h2 id="rhai-transcoder" class="section-header"><a href="#rhai-transcoder">4.2 Rhai Transcoder</a></h2>
 <p>(Since we’re converting Rhai Code to uLisp Code, let’s call it <strong>“transcoding”</strong> instead of “transpiling”)</p>
 <p>TODO16</p>
