@@ -581,20 +581,28 @@ Let's look into each of these functions...
 
 ## Transcode Statement
 
-TODO
+We start with the __`let`__ Statement that declares a variable...
 
-From [`transcode.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L61-L253)
+```rust
+let LED_GPIO = 11
+```
+
+This will be transcoded to uLisp like so...
+
+```text
+( let* 
+  (( LED_GPIO 11 ))
+  ...
+)
+```
+
+Here's how we transcode the __`let`__ Statement: [`transcode.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L61-L89)
 
 ```rust
 /// Transcode a Rhai Statement to uLisp
 fn transcode_stmt(stmt: &Stmt) -> String {
   match stmt {
     //  Let or Const Statement: `let LED_GPIO = 11`
-    //  becomes...
-    //  ( let* 
-    //      (( LED_GPIO 11 ))
-    //      ...
-    //  )
     Stmt::Var(expr, ident, _, _) => {
       //  Begin a new uLisp Scope
       scope::begin_scope(
@@ -610,16 +618,41 @@ fn transcode_stmt(stmt: &Stmt) -> String {
     }
 ```
 
-TODO
+_Why do we need uLisp Scopes?_
+
+Here's a hint: The transcoded uLisp will look like this...
+
+```text
+( let* 
+  (( LED_GPIO 11 ))
+  ...
+)
+```
+
+Where __"`...`"__ refers to the __uLisp Scope__ of the statements that will be transcoded after the `let` statement.
+
+(More about uLisp Scopes in a while)
+
+Next: __`for`__ Statements like this...
+
+```rust
+for i in range(0, 10) { ... }
+```
+
+Shall be transcoded to uLisp like so...
+
+```text
+( dotimes (i 10)
+  ...
+)
+```
+
+Here's how we transcode the __`for`__ Statement: [`transcode.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L91-L142)
 
 ```rust
   match stmt {
     ...
     //  For Statement: `for i in range(0, 10) { ... }`
-    //  becomes...
-    //  ( dotimes (i 10)
-    //      ...
-    //  )
     Stmt::For(expr, id_counter, _) => {
       //  TODO: Support `for` counter
       let id    = &id_counter.0;  //  `i`
@@ -648,7 +681,13 @@ TODO
     }        
 ```
 
-TODO
+__`transcode_block`__ transcodes the block of statements in the body of a `for` loop.
+
+(Coming up in the next section)
+
+__`get_range`__ is defined here: [`transcode.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L345-L391)
+
+__Function Calls__ are transcoded as a special kind of Expression: [`transcode.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L91-L142)
 
 ```rust
   match stmt {
@@ -660,66 +699,15 @@ TODO
     ),
 ```
 
-TODO
+(We'll see `transcode_fncall` in a while)
 
-```rust
-  match stmt {
-    ...
-    //  Loop or While Statement: `loop { ... }`
-    //  becomes...
-    //  ( loop ... )
-    Stmt::While(expr, stmts, _) => {
-      //  Begin a new uLisp Scope
-      let scope_index = scope::begin_scope("loop");
+Check out the source code to see how we transcode these statements...
 
-      //  TODO: Transcode `expr`
-      assert!("()" == format!("{:?}", expr));
+- [__`loop`__ Statement](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L144-L194)
 
-      //  Transcode the Statement Block
-      transcode_block(stmts);
+- [__`break`__ Statement](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L196-L239)
 
-      //  End the uLisp Scope and add the transcoded uLisp S-Expression to the parent scope
-      scope::end_scope(scope_index)
-    }
-```
-
-TODO
-
-```rust
-  match stmt {
-    ...
-    //  If Statement: `if a == 1 { ... }`
-    //  becomes...
-    //  ( if ( eq a 1 ) ... )
-    Stmt::If(expr, then_else, _) => {
-      //  Begin a new uLisp Scope
-      let scope_index = scope::begin_scope(
-        format!(
-          "if {}",
-          transcode_expr(expr)
-        ).as_str()
-      );
-
-      //  Transcode the Then Statement Block
-      transcode_block(&then_else.0);
-
-      //  Transcode the Else Statement Block
-      transcode_block(&then_else.1);
-
-      //  End the uLisp Scope and add the transcoded uLisp S-Expression to the parent scope
-      scope::end_scope(scope_index)
-    }
-```
-
-TODO
-
-```rust
-  match stmt {
-    ...
-    //  Break Statement: `break`
-    //  becomes `( return )`
-    Stmt::Break(_) => "( return )".to_string(),
-```
+- [__`if`__ Statement](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L241-L243)
 
 ## Transcode Block
 
@@ -802,10 +790,6 @@ fn transcode_fncall(expr: &FnCallExpr) -> String {
   )
 }
 ```
-
-TODO
-
-(`get_range` is defined here: [`transcode.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L345-L391))
 
 TODO
 
