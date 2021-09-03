@@ -73,7 +73,10 @@
 <li><a href="#add-rhai-scripting-to-simulator">3 Add Rhai Scripting to Simulator</a><ul>
 <li><a href="#register-function">3.1 Register Function</a><ul></ul></li>
 <li><a href="#register-module">3.2 Register Module</a><ul></ul></li></ul></li>
-<li><a href="#convert-rhai-to-ulisp">4 Convert Rhai to uLisp</a><ul></ul></li>
+<li><a href="#convert-rhai-to-ulisp">4 Convert Rhai to uLisp</a><ul>
+<li><a href="#abstract-syntax-tree">4.1 Abstract Syntax Tree</a><ul></ul></li>
+<li><a href="#rhai-transcoder">4.2 Rhai Transcoder</a><ul></ul></li>
+<li><a href="#transcoder-scope">4.3 Transcoder Scope</a><ul></ul></li></ul></li>
 <li><a href="#drag-and-drop-rhai-scripting">5 Drag-and-Drop Rhai Scripting</a><ul></ul></li>
 <li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
 <li><a href="#notes">7 Notes</a><ul></ul></li></ul></nav><p>📝 <em>7 Sep 2021</em></p>
@@ -359,18 +362,18 @@
 <p><a href="https://lupyuen.github.io/articles/rustsim#json-stream-of-simulation-events">(More about <code>enable_output</code> and <code>output_set</code>)</a></p>
 <p><img src="https://lupyuen.github.io/images/rhai-module.png" alt="Register Rhai Module" /></p>
 <h1 id="convert-rhai-to-ulisp" class="section-header"><a href="#convert-rhai-to-ulisp">4 Convert Rhai to uLisp</a></h1>
-<p>The Rhai Blinky Script runs OK in the <strong>BL602 WebAssembly Simulator</strong>.</p>
-<p>Now let’s <strong>auto-convert the Rhai Script to uLisp</strong>, and run it on a real BL602 board!</p>
+<p>Yep the Rhai Blinky Script runs OK in the <strong>BL602 WebAssembly Simulator</strong>, blinking the simulated LED.</p>
+<p>Now let’s <strong>auto-convert the Rhai Script to uLisp</strong>, and run it on a real BL602 board (and blink a real LED)!</p>
 <p>We do the same as above…</p>
 <ol>
 <li>
-<p>Initialise the Rhai script engine</p>
+<p><strong>Initialise</strong> the Rhai script engine</p>
 </li>
 <li>
-<p>Register the <code>gpio</code> module with Rhai</p>
+<p><strong>Register <code>gpio</code> module</strong> with Rhai</p>
 </li>
 <li>
-<p>Register the <code>time_delay</code> function with Rhai</p>
+<p><strong>Register <code>time_delay</code> function</strong> with Rhai</p>
 </li>
 </ol>
 <p>From <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L21-L98"><code>bl602-script/lib.rs</code></a> …</p>
@@ -419,33 +422,35 @@
   let b = 2;
   a + b 
 &quot;#</span>;</pre></div>
-<p>Here comes the interesting part: Rhai lets us compile our script into an <strong>Abstract Syntax Tree</strong>…</p>
+<p>Here comes the interesting part: Rhai lets us <strong>compile our script</strong> into an <strong>Abstract Syntax Tree</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="comment">//  Compile Rhai Script to an Abstract Syntax Tree</span>
+<span class="comment">//  Compile the Rhai Script into</span>
+<span class="comment">//  an Abstract Syntax Tree</span>
 <span class="kw">let</span> <span class="ident">ast</span> <span class="op">=</span> <span class="ident">engine</span>.<span class="ident">compile</span>(<span class="ident">script</span>)
-  .<span class="ident">unwrap</span>();
-<span class="macro">println!</span>(<span class="string">&quot;AST: {:#?}&quot;</span>, <span class="ident">ast</span>);</pre></div>
+  .<span class="ident">unwrap</span>();</pre></div>
 <p>(More about the Abstract Syntax Tree in a while)</p>
 <p>We may <strong>walk the Abstract Syntax Tree</strong> and <strong>convert each node</strong> to uLisp…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="comment">//  Transcode the Rhai Abstract Syntax Tree to uLisp</span>
+<span class="comment">//  Transcode the Rhai Abstract </span>
+<span class="comment">//  Syntax Tree to uLisp</span>
 <span class="ident">transcode::transcode</span>(<span class="kw-2">&amp;</span><span class="ident">ast</span>);</pre></div>
 <p>(More about <code>transcode</code> later)</p>
-<p>FYI: Here’s how we evaluate the compiled Rhai Script…</p>
+<p>FYI: Here’s how we <strong>evaluate the compiled Rhai Script</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="comment">//  Evaluate the compiled Rhai Script (returns 42)</span>
 <span class="kw">let</span> <span class="ident">result</span>: <span class="ident">i32</span> <span class="op">=</span> <span class="ident">engine</span>.<span class="ident">eval_ast</span>(<span class="kw-2">&amp;</span><span class="ident">ast</span>)
   .<span class="ident">unwrap</span>();</pre></div>
-<p><img src="https://lupyuen.github.io/images/rhai-ast.jpg" alt="" /></p>
+<p>Let’s learn about the Abstract Syntax Tree…</p>
+<h2 id="abstract-syntax-tree" class="section-header"><a href="#abstract-syntax-tree">4.1 Abstract Syntax Tree</a></h2>
 <p>TODO2</p>
 <p><img src="https://lupyuen.github.io/images/rhai-ast2.jpg" alt="" /></p>
-<p>TODO3</p>
-<p><img src="https://lupyuen.github.io/images/rhai-ast3.jpg" alt="" /></p>
-<p>TODO4</p>
-<p><img src="https://lupyuen.github.io/images/rhai-ast4.jpg" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/rhai-ast.jpg" alt="" /></p>
+<h2 id="rhai-transcoder" class="section-header"><a href="#rhai-transcoder">4.2 Rhai Transcoder</a></h2>
+<p>(Since we’re converting Rhai Code to uLisp Code, let’s call it <strong>“transcoding”</strong> instead of “transpiling”)</p>
 <p>TODO16</p>
 <p><img src="https://lupyuen.github.io/images/rhai-transcode2.jpg" alt="" /></p>
 <p>TODO17</p>
@@ -460,6 +465,7 @@
 <p><img src="https://lupyuen.github.io/images/rhai-transcode8.png" alt="" /></p>
 <p>TODO23</p>
 <p><img src="https://lupyuen.github.io/images/rhai-transcode9.png" alt="" /></p>
+<h2 id="transcoder-scope" class="section-header"><a href="#transcoder-scope">4.3 Transcoder Scope</a></h2>
 <p>TODO13</p>
 <p><img src="https://lupyuen.github.io/images/rhai-scope.png" alt="" /></p>
 <p>TODO5</p>
