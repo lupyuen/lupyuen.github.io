@@ -613,6 +613,8 @@ fn transcode_stmt(stmt: &Stmt) -> String {
 TODO
 
 ```rust
+  match stmt {
+    ...
     //  For Statement: `for i in range(0, 10) { ... }`
     //  becomes...
     //  ( dotimes (i 10)
@@ -649,6 +651,8 @@ TODO
 TODO
 
 ```rust
+  match stmt {
+    ...
     //  Function Call: `gpio::enable_output(LED_GPIO, 0, 0)`
     Stmt::FnCall(expr, _) => format!(
       "{}",
@@ -659,6 +663,8 @@ TODO
 TODO
 
 ```rust
+  match stmt {
+    ...
     //  Loop or While Statement: `loop { ... }`
     //  becomes...
     //  ( loop ... )
@@ -680,6 +686,8 @@ TODO
 TODO
 
 ```rust
+  match stmt {
+    ...
     //  If Statement: `if a == 1 { ... }`
     //  becomes...
     //  ( if ( eq a 1 ) ... )
@@ -706,6 +714,8 @@ TODO
 TODO
 
 ```rust
+  match stmt {
+    ...
     //  Break Statement: `break`
     //  becomes `( return )`
     Stmt::Break(_) => "( return )".to_string(),
