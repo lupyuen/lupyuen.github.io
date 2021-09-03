@@ -506,9 +506,29 @@ Lisp is a recursive language and the __Lisp parentheses match the nodes__ in the
 
 Let's talk about the Rhai to uLisp conversion...
 
+![Converting the Abstract Syntax Tree to uLisp](https://lupyuen.github.io/images/rhai-transcode6.png)
+
 ## Rhai Transcoder
 
 (Since we're converting Rhai Code to uLisp Code, let's call it __"transcoding"__ instead of "transpiling")
+
+To convert the compiled Rhai Code to uLisp, we __walk the Abstract Syntax Tree__ and __convert each node to uLisp__...
+
+```rust
+/// Transcode the compiled Rhai Script to uLisp
+pub fn transcode(ast: &AST) -> String {
+    //  Start the first uLisp Scope
+    let scope_index = scope::begin_scope("let* ()");
+
+    //  Walk the nodes in the Rhai Abstract Syntax Tree
+    ast.walk(&mut transcode_node);
+
+    //  End the first uLisp Scope and get the uLisp S-Expression for the scope
+    let output = scope::end_scope(scope_index);
+    println!("Transcoded uLisp:\n{}", output);
+    output
+}
+```
 
 TODO16
 
@@ -521,10 +541,6 @@ TODO17
 TODO19
 
 ![](https://lupyuen.github.io/images/rhai-transcode5.jpg)
-
-TODO20
-
-![](https://lupyuen.github.io/images/rhai-transcode6.png)
 
 TODO21
 
