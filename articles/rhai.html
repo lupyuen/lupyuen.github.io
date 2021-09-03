@@ -588,6 +588,8 @@
 <p>TODO</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
+  <span class="kw">match</span> <span class="ident">stmt</span> {
+    ...
     <span class="comment">//  For Statement: `for i in range(0, 10) { ... }`</span>
     <span class="comment">//  becomes...</span>
     <span class="comment">//  ( dotimes (i 10)</span>
@@ -622,6 +624,8 @@
 <p>TODO</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
+  <span class="kw">match</span> <span class="ident">stmt</span> {
+    ...
     <span class="comment">//  Function Call: `gpio::enable_output(LED_GPIO, 0, 0)`</span>
     <span class="ident">Stmt::FnCall</span>(<span class="ident">expr</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format!</span>(
       <span class="string">&quot;{}&quot;</span>,
@@ -630,6 +634,8 @@
 <p>TODO</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
+  <span class="kw">match</span> <span class="ident">stmt</span> {
+    ...
     <span class="comment">//  Loop or While Statement: `loop { ... }`</span>
     <span class="comment">//  becomes...</span>
     <span class="comment">//  ( loop ... )</span>
@@ -649,6 +655,8 @@
 <p>TODO</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
+  <span class="kw">match</span> <span class="ident">stmt</span> {
+    ...
     <span class="comment">//  If Statement: `if a == 1 { ... }`</span>
     <span class="comment">//  becomes...</span>
     <span class="comment">//  ( if ( eq a 1 ) ... )</span>
@@ -673,6 +681,8 @@
 <p>TODO</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
+  <span class="kw">match</span> <span class="ident">stmt</span> {
+    ...
     <span class="comment">//  Break Statement: `break`</span>
     <span class="comment">//  becomes `( return )`</span>
     <span class="ident">Stmt::Break</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;( return )&quot;</span>.<span class="ident">to_string</span>(),</pre></div>
