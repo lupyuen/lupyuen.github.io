@@ -357,7 +357,9 @@ Yep the Rhai Blinky Script runs OK in the __BL602 WebAssembly Simulator__, blink
 
 Now let's __auto-convert the Rhai Script to uLisp__, and run it on a real BL602 board (and blink a real LED)!
 
-We do the same as above...
+![Rhai Script transcoded to uLisp](https://lupyuen.github.io/images/rhai-transcode4.jpg)
+
+We do the same as earlier...
 
 1.  __Initialise__ the Rhai script engine
 
@@ -581,7 +583,7 @@ Let's look into each of these functions...
 
 TODO
 
-[`transcode.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L61-L253)
+From [`transcode.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L61-L253)
 
 ```rust
 /// Transcode a Rhai Statement to uLisp
@@ -606,7 +608,11 @@ fn transcode_stmt(stmt: &Stmt) -> String {
       //  Scope will end when the parent scope ends
       "".to_string()
     }
+```
 
+TODO
+
+```rust
     //  For Statement: `for i in range(0, 10) { ... }`
     //  becomes...
     //  ( dotimes (i 10)
@@ -614,14 +620,14 @@ fn transcode_stmt(stmt: &Stmt) -> String {
     //  )
     Stmt::For(expr, id_counter, _) => {
       //  TODO: Support `for` counter
-      let id    = &id_counter.0;
-      let stmts = &id_counter.2;
+      let id    = &id_counter.0;  //  `i`
+      let stmts = &id_counter.2;  //  `{ ... }`
 
       //  Get the `for` range, e.g. `[0, 10]`
-      let range = get_range(expr);
-      let lower_limit = range[0];
-      let upper_limit = range[1];
-      assert!(lower_limit == 0);  //  TODO: Allow Lower Limit to be non-zero
+      let range = get_range(expr);  //  `[0, 10]`
+      let lower_limit = range[0];   //  `0`
+      let upper_limit = range[1];   //  `10`
+      assert!(lower_limit == 0);    //  TODO: Allow Lower Limit to be non-zero
 
       //  Begin a new uLisp Scope
       let scope_index = scope::begin_scope(
@@ -632,13 +638,27 @@ fn transcode_stmt(stmt: &Stmt) -> String {
         ).as_str()
       );
 
-      //  Transcode the Statement Block
+      //  Transcode the Statement Block: `{ ... }`
       transcode_block(stmts);
 
       //  End the uLisp Scope and add the transcoded uLisp S-Expression to the parent scope
-        scope::end_scope(scope_index)
+      scope::end_scope(scope_index)
     }        
+```
 
+TODO
+
+```rust
+    //  Function Call: `gpio::enable_output(LED_GPIO, 0, 0)`
+    Stmt::FnCall(expr, _) => format!(
+      "{}",
+      transcode_fncall(expr)
+    ),
+```
+
+TODO
+
+```rust
     //  Loop or While Statement: `loop { ... }`
     //  becomes...
     //  ( loop ... )
@@ -655,7 +675,11 @@ fn transcode_stmt(stmt: &Stmt) -> String {
       //  End the uLisp Scope and add the transcoded uLisp S-Expression to the parent scope
       scope::end_scope(scope_index)
     }
+```
 
+TODO
+
+```rust
     //  If Statement: `if a == 1 { ... }`
     //  becomes...
     //  ( if ( eq a 1 ) ... )
@@ -677,25 +701,21 @@ fn transcode_stmt(stmt: &Stmt) -> String {
       //  End the uLisp Scope and add the transcoded uLisp S-Expression to the parent scope
       scope::end_scope(scope_index)
     }
-
-    //  Break Statement: `break`
-    //  becomes `( return )`
-    Stmt::Break(_) => "( return )".to_string(),
-
-    //  Function Call: `gpio::enable_output(LED_GPIO, 0, 0)`
-    Stmt::FnCall(expr, _) => format!(
-      "{}",
-      transcode_fncall(expr)
-    ),
-
-    _ => panic!("Unknown stmt: {:#?}", stmt)
-  }
-}
 ```
 
 TODO
 
-[`transcode.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L324-L333)
+```rust
+    //  Break Statement: `break`
+    //  becomes `( return )`
+    Stmt::Break(_) => "( return )".to_string(),
+```
+
+## Transcode Block
+
+TODO
+
+From [`transcode.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L324-L333)
 
 ```rust
 /// Transcode the Statement Block and the transcoded uLisp S-Expression to the current scope
@@ -714,7 +734,7 @@ fn transcode_block(stmts: &StmtBlock) {
 
 TODO
 
-[`transcode.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L255-L269)
+From [`transcode.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L255-L269)
 
 ```rust
 /// Transcode a Rhai Expression to uLisp
@@ -734,7 +754,7 @@ fn transcode_expr(expr: &Expr) -> String {
 }
 ```
 
-[`transcode.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L271-L322)
+From [`transcode.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L271-L322)
 
 ```rust
 /// Transcode a Rhai Function Call to uLisp
@@ -775,11 +795,11 @@ fn transcode_fncall(expr: &FnCallExpr) -> String {
 
 TODO
 
-`get_range`: [`transcode.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L345-L391)
+(`get_range` is defined here: [`transcode.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L345-L391))
 
 TODO
 
-[`transcode.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L335-L343)
+From [`transcode.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L335-L343)
 
 ```rust
 /// Rename a Rhai Function or Operator Name to uLisp:
@@ -792,12 +812,6 @@ fn rename_function(name: &str) -> String {
   }.to_string()
 }
 ```
-
-![](https://lupyuen.github.io/images/rhai-transcode2.jpg)
-
-TODO17
-
-![](https://lupyuen.github.io/images/rhai-transcode3.jpg)
 
 TODO19
 
@@ -815,11 +829,11 @@ TODO23
 
 ![](https://lupyuen.github.io/images/rhai-transcode9.png)
 
-TODO24
-
-![Rhai Script transcoded to uLisp](https://lupyuen.github.io/images/rhai-transcode4.jpg)
-
 ## Transcoder Scope
+
+TODO
+
+![](https://lupyuen.github.io/images/rhai-transcode3.jpg)
 
 TODO13
 
@@ -828,6 +842,10 @@ TODO13
 TODO5
 
 ![](https://lupyuen.github.io/images/rhai-run.png)
+
+TODO24
+
+![Rhai Script transcoded to uLisp](https://lupyuen.github.io/images/rhai-transcode4.jpg)
 
 # Drag-and-Drop Rhai Scripting
 
