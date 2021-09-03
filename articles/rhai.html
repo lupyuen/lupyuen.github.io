@@ -489,16 +489,31 @@
 <p>But Abstract Syntax Trees are actually <strong>perfect for converting Rhai to uLisp</strong>.</p>
 <p>Lisp is a recursive language and the <strong>Lisp parentheses match the nodes</strong> in the Abstract Syntax Tree quite closely.</p>
 <p>Let’s talk about the Rhai to uLisp conversion…</p>
+<p><img src="https://lupyuen.github.io/images/rhai-transcode6.png" alt="Converting the Abstract Syntax Tree to uLisp" /></p>
 <h2 id="rhai-transcoder" class="section-header"><a href="#rhai-transcoder">4.2 Rhai Transcoder</a></h2>
 <p>(Since we’re converting Rhai Code to uLisp Code, let’s call it <strong>“transcoding”</strong> instead of “transpiling”)</p>
+<p>To convert the compiled Rhai Code to uLisp, we <strong>walk the Abstract Syntax Tree</strong> and <strong>convert each node to uLisp</strong>…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="doccomment">/// Transcode the compiled Rhai Script to uLisp</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">transcode</span>(<span class="ident">ast</span>: <span class="kw-2">&amp;</span><span class="ident">AST</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+    <span class="comment">//  Start the first uLisp Scope</span>
+    <span class="kw">let</span> <span class="ident">scope_index</span> <span class="op">=</span> <span class="ident">scope::begin_scope</span>(<span class="string">&quot;let* ()&quot;</span>);
+
+    <span class="comment">//  Walk the nodes in the Rhai Abstract Syntax Tree</span>
+    <span class="ident">ast</span>.<span class="ident">walk</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">transcode_node</span>);
+
+    <span class="comment">//  End the first uLisp Scope and get the uLisp S-Expression for the scope</span>
+    <span class="kw">let</span> <span class="ident">output</span> <span class="op">=</span> <span class="ident">scope::end_scope</span>(<span class="ident">scope_index</span>);
+    <span class="macro">println!</span>(<span class="string">&quot;Transcoded uLisp:\n{}&quot;</span>, <span class="ident">output</span>);
+    <span class="ident">output</span>
+}</pre></div>
 <p>TODO16</p>
 <p><img src="https://lupyuen.github.io/images/rhai-transcode2.jpg" alt="" /></p>
 <p>TODO17</p>
 <p><img src="https://lupyuen.github.io/images/rhai-transcode3.jpg" alt="" /></p>
 <p>TODO19</p>
 <p><img src="https://lupyuen.github.io/images/rhai-transcode5.jpg" alt="" /></p>
-<p>TODO20</p>
-<p><img src="https://lupyuen.github.io/images/rhai-transcode6.png" alt="" /></p>
 <p>TODO21</p>
 <p><img src="https://lupyuen.github.io/images/rhai-transcode7.png" alt="" /></p>
 <p>TODO22</p>
