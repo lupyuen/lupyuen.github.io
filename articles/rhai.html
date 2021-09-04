@@ -89,8 +89,8 @@
 <li><a href="#code-generator-for-rhai">10.1 Code Generator for Rhai</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>4 Sep 2021</em></p>
 <p><em>What is Rhai?</em></p>
 <p><a href="https://rhai.rs/book/"><strong>Rhai</strong></a> is a <strong>Rust-like Scripting Language</strong>, implemented in Rust.</p>
-<p><em>Can we use Rhai for coding microcontrollers the REPL way?</em></p>
-<p><em>Like on the BL602 / BL604 RISC-V + WiFi + Bluetooth LE SoC?</em></p>
+<p><em>Can we use Rhai for coding microcontrollers <a href="https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop">the REPL way</a>?</em></p>
+<p><em>Like on the <a href="https://lupyuen.github.io/articles/pinecone">BL602 / BL604 RISC-V + WiFi + Bluetooth LE SoC</a>?</em></p>
 <p><img src="https://lupyuen.github.io/images/rhai-rust2.jpg" alt="Rhai Script vs Rust Firmware" /></p>
 <p>Sadly the Rhai Scripting Engine <strong>might be too heavy</strong> for most microcontrollers (like BL602 and BL604).</p>
 <p><em><a href="https://lupyuen.github.io/articles/lisp"><strong>uLisp</strong></a> runs OK on microcontrollers. Why don’t we auto-convert Rhai Scripts to uLisp?</em></p>
@@ -244,6 +244,7 @@
 <p>Here we <strong>initialise the Rhai engine</strong> and evaluate a Rhai Script that returns an integer result…</p>
 <pre><code class="language-text">42
 </code></pre>
+<p><a href="https://rhai.rs/book/engine/hello-world.html">(More about Rhai Script Engine)</a></p>
 <h2 id="register-function" class="section-header"><a href="#register-function">3.1 Register Function</a></h2>
 <p>To <strong>register a Rust Function</strong> that will be called by the Rhai Script, we do this: <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L21-L98"><code>bl602-script/lib.rs</code></a></p>
 
@@ -288,6 +289,7 @@
 <p><a href="https://lupyuen.github.io/articles/rustsim#json-stream-of-simulation-events">(More about <code>time_delay</code>)</a></p>
 <p><em>Why not register <code>ble_npl_time_delay</code> with Rhai and rename it as <code>time_delay</code>?</em></p>
 <p>Because <code>ble_npl_time_delay</code> is “<code>extern C</code>” and it accepts a parameter of type <strong><code>u32</code></strong>, but our Rhai engine is configured for <a href="https://rhai.rs/book/start/features.html"><strong><code>only_i32</code></strong></a>.</p>
+<p><a href="https://rhai.rs/book/rust/functions.html">(More about calling Rust Functions from Rhai)</a></p>
 <h2 id="register-module" class="section-header"><a href="#register-module">3.2 Register Module</a></h2>
 <p>Now we register the <strong><code>gpio</code></strong> module with Rhai: <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L21-L98"><code>bl602-script/lib.rs</code></a></p>
 
@@ -367,6 +369,7 @@
 <li><a href="https://lupyuen.github.io/articles/adc#appendix-generating-the-rust-wrapper-for-bl602-iot-sdk">“Generating the Rust Wrapper for BL602 IoT SDK”</a></li>
 </ul>
 <p><a href="https://lupyuen.github.io/articles/rustsim#json-stream-of-simulation-events">(More about <code>enable_output</code> and <code>output_set</code>)</a></p>
+<p><a href="https://rhai.rs/book/plugins/module.html">(More about calling Rust Modules from Rhai)</a></p>
 <p><img src="https://lupyuen.github.io/images/rhai-module.png" alt="Register Rhai Module" /></p>
 <h1 id="convert-rhai-to-ulisp" class="section-header"><a href="#convert-rhai-to-ulisp">4 Convert Rhai to uLisp</a></h1>
 <p>Yep the Rhai Blinky Script runs OK in the <strong>BL602 WebAssembly Simulator</strong>, blinking the simulated LED.</p>
@@ -497,6 +500,7 @@
 <p>But Abstract Syntax Trees are actually <strong>perfect for converting Rhai to uLisp</strong>.</p>
 <p>Lisp is a recursive language and the <strong>Lisp parentheses match the nodes</strong> in the Abstract Syntax Tree quite closely.</p>
 <p>Let’s talk about the Rhai to uLisp conversion…</p>
+<p><a href="https://rhai.rs/book/engine/compile.html">(More about Rhai Abstract Syntax Tree)</a></p>
 <p><img src="https://lupyuen.github.io/images/rhai-transcode6.png" alt="Converting the Abstract Syntax Tree to uLisp" /></p>
 <h2 id="rhai-transcoder" class="section-header"><a href="#rhai-transcoder">4.2 Rhai Transcoder</a></h2>
 <p>(Since we’re converting Rhai Code to uLisp Code, let’s call it <strong>“transcoding”</strong> instead of “transpiling”)</p>
