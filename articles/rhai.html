@@ -604,7 +604,7 @@
   ...
 )
 </code></pre>
-<p>Where <strong>“<code>...</code>”</strong> refers to the <strong>uLisp Scope</strong> of the statements that will be transcoded after the <code>let</code> statement.</p>
+<p>Where <strong>“<code>...</code>”</strong> refers to the <strong>uLisp Scope</strong> of the statements that will be transcoded after the <strong><code>let</code></strong> statement.</p>
 <p>(More about uLisp Scopes in a while)</p>
 <p>Next: <strong><code>for</code></strong> Statements like this…</p>
 
@@ -647,7 +647,7 @@
       <span class="comment">//  End the uLisp Scope and add the transcoded uLisp S-Expression to the parent scope</span>
       <span class="ident">scope::end_scope</span>(<span class="ident">scope_index</span>)
     }        </pre></div>
-<p><strong><code>transcode_block</code></strong> transcodes the block of statements in the body of a <code>for</code> loop.</p>
+<p><strong><code>transcode_block</code></strong> transcodes the block of statements in the body of a <strong><code>for</code></strong> loop.</p>
 <p>(Coming up in the next section)</p>
 <p><strong><code>get_range</code></strong> is defined here: <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L345-L391"><code>transcode.rs</code></a></p>
 <p><strong>Function Calls</strong> are transcoded as a special kind of Expression: <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L91-L142"><code>transcode.rs</code></a></p>
@@ -667,10 +667,10 @@
 <p><a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L144-L194"><strong><code>loop</code></strong> Statement</a></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L196-L239"><strong><code>break</code></strong> Statement</a></p>
+<p><a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L241-L243"><strong><code>break</code></strong> Statement</a></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L241-L243"><strong><code>if</code></strong> Statement</a></p>
+<p><a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L196-L239"><strong><code>if</code></strong> Statement</a></p>
 </li>
 </ul>
 <h2 id="transcode-block" class="section-header"><a href="#transcode-block">4.4 Transcode Block</a></h2>
