@@ -86,7 +86,7 @@
 <li><a href="#notes">8 Notes</a><ul></ul></li>
 <li><a href="#appendix-add-c-functions-to-ulisp">9 Appendix: Add C Functions to uLisp</a><ul></ul></li>
 <li><a href="#appendix-customise-blockly-for-rhai">10 Appendix: Customise Blockly for Rhai</a><ul>
-<li><a href="#code-generator-for-rhai">10.1 Code Generator for Rhai</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>7 Sep 2021</em></p>
+<li><a href="#code-generator-for-rhai">10.1 Code Generator for Rhai</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>4 Sep 2021</em></p>
 <p><em>What is Rhai?</em></p>
 <p><a href="https://rhai.rs/book/"><strong>Rhai</strong></a> is a <strong>Rust-like Scripting Language</strong>, implemented in Rust.</p>
 <p><em>Can we use Rhai for coding microcontrollers the REPL way?</em></p>
@@ -113,7 +113,7 @@
 </li>
 <li>
 <p>By <strong>Auto-Converting Rhai Scripts to uLisp</strong></p>
-<p>(Because Rhai can’t run directly on BL602)</p>
+<p>(Because Rhai can’t run directly on BL602 yet)</p>
 </li>
 <li>
 <p>With <strong>Drag-and-Drop Rhai Scripting</strong></p>
@@ -831,20 +831,19 @@
 <p>And the output from our Rhai Transcoder <strong>runs OK on uLisp</strong>!</p>
 <p><img src="https://lupyuen.github.io/images/rhai-run.png" alt="Running the Transcoded uLisp" /></p>
 <h1 id="drag-and-drop-rhai-scripting" class="section-header"><a href="#drag-and-drop-rhai-scripting">6 Drag-and-Drop Rhai Scripting</a></h1>
-<p>TODO</p>
+<p>We’ll wrap up today’s show-and-tell… With some <strong>Drag-and-Drop Rhai Scripting</strong> in your Web Browser!</p>
 <p><img src="https://lupyuen.github.io/images/rhai-title.jpg" alt="Drag-and-drop scripting with Blockly and Rhai" /></p>
-<p>TODO</p>
 <ol>
 <li>
 <p>Click this link to run the customised <strong>Blockly Web Editor</strong>…</p>
 <ul>
 <li><a href="https://lupyuen2.github.io/blockly-bl602/demos/code/"><strong>Blockly for Rhai Script and BL602 / BL604</strong></a></li>
 </ul>
-<p>This website contains plain HTML and JavaScript, no server-side code.</p>
+<p>This link points to plain HTML and JavaScript, no server-side code.</p>
 <p><a href="https://github.com/lupyuen2/blockly-bl602/tree/master/demos/code">(See this)</a></p>
 </li>
 <li>
-<p><strong>Drag and drop the blocks</strong> like so…</p>
+<p><strong>Drag and drop the blocks</strong> to create a program that blinks the LED…</p>
 <p><img src="https://lupyuen.github.io/images/rhai-blockly.png" alt="Blockly for Rhai Script and BL602 / BL604" /></p>
 <ul>
 <li>
@@ -892,22 +891,22 @@
 </li>
 </ol>
 <p><em>How did we do this?</em></p>
-<p>We <strong>customised Blockly for Rhai and BL602</strong> as follows…</p>
+<p>We <strong>customised Blockly for Rhai and BL602</strong> by…</p>
 <ol>
 <li>
-<p>We added <strong>Custom Blocks</strong> like <strong><code>forever</code></strong>, <strong><code>digital write</code></strong> and <strong><code>wait</code></strong></p>
+<p>Adding <strong>Custom Blocks</strong> like <strong><code>forever</code></strong>, <strong><code>digital write</code></strong> and <strong><code>wait</code></strong></p>
 </li>
 <li>
-<p>We created a <strong>Code Generator</strong> that generates Rhai code.</p>
+<p>Creating a <strong>Code Generator</strong> that generates Rhai code</p>
 </li>
 </ol>
-<p>Eventually we shall..</p>
+<p>Eventually we shall…</p>
 <ol>
 <li>
 <p><strong>Run the generated Rhai code</strong> in the Web Browser with our <a href="https://lupyuen.github.io/articles/rustsim"><strong>BL602 WebAssembly Simulator</strong></a></p>
 </li>
 <li>
-<p><strong>Transcode Rhai to uLisp</strong> in Blockly by calling our Rhai-to-uLisp Transcoder</p>
+<p><strong>Transcode Rhai to uLisp</strong> by calling our Rhai-To-uLisp Transcoder in WebAssembly</p>
 </li>
 <li>
 <p><strong>Transfer the uLisp code to BL602</strong> and run it via the <a href="https://lupyuen.github.io/articles/lisp#web-browser-controls-bl602-with-web-serial-api"><strong>Web Serial API</strong></a></p>
@@ -1153,7 +1152,6 @@ const tbl_entry_t lookup_table[] PROGMEM = {
 <pre><code class="language-c">//  Emit Rhai code for the &quot;forever&quot; block. 
 //  Inspired by MakeCode &quot;forever&quot; and Arduino &quot;loop&quot;.
 Blockly.Rhai['forever'] = function(block) {
-  //  Run this code at forever in a loop. Inspired by MakeCode &quot;forever&quot; and Arduino &quot;loop&quot;.
   var statements_stmts = Blockly.Rhai.statementToCode(block, 'STMTS');
   var code = statements_stmts;
   code = [
