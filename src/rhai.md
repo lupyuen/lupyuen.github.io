@@ -983,13 +983,13 @@ Eventually we shall..
 
 1.  __Transcode Rhai to uLisp__ in Blockly by calling our Rhai-to-uLisp Transcoder
 
-1.  __Transfer the uLisp code to BL602__ via the Web Serial API
+1.  __Transfer the uLisp code to BL602__ and run it via the [__Web Serial API__](https://lupyuen.github.io/articles/lisp#web-browser-controls-bl602-with-web-serial-api)
 
 (More details in the Appendix)
 
 # What's Next
 
-Today we have explored the Bestest Outcome for __coding and testing Rhai Scripts on BL602 and BL604__...
+Today we have explored the Bestest Outcome for __learners to code and test Rhai Scripts__ on BL602 and BL604...
 
 ![Convert Rhai Scripts to uLisp](https://lupyuen.github.io/images/rhai-outcome3.jpg)
 
@@ -1152,7 +1152,7 @@ Eventually we shall..
 
 1.  __Transcode Rhai to uLisp__ in Blockly by calling our Rhai-to-uLisp Transcoder
 
-1.  __Transfer the uLisp code to BL602__ via the Web Serial API
+1.  __Transfer the uLisp code to BL602__ and run it via the Web Serial API
 
 [(More about Web Serial API)](https://lupyuen.github.io/articles/lisp#web-browser-controls-bl602-with-web-serial-api)
 
