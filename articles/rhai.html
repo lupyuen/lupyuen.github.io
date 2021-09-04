@@ -566,6 +566,7 @@
 </li>
 </ul>
 <p>Let’s look into each of these functions…</p>
+<p><a href="https://docs.rs/rhai/1.0.4/rhai/enum.ASTNode.html">(More about AST Node)</a></p>
 <h2 id="transcode-statement" class="section-header"><a href="#transcode-statement">4.3 Transcode Statement</a></h2>
 <p>We start with the <strong><code>let</code></strong> Statement that declares a variable…</p>
 
@@ -673,6 +674,7 @@
 <p><a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L196-L239"><strong><code>if</code></strong> Statement</a></p>
 </li>
 </ul>
+<p><a href="https://docs.rs/rhai/1.0.4/rhai/enum.Stmt.html">(More about Rhai Statements)</a></p>
 <h2 id="transcode-block" class="section-header"><a href="#transcode-block">4.4 Transcode Block</a></h2>
 <p>Our transcoder calls <strong><code>transcode_block</code></strong> to transcode a block of statements (<code>for</code>, <code>loop</code>, <code>if</code>, …)</p>
 <p>From <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L324-L333"><code>transcode.rs</code></a> …</p>
@@ -692,6 +694,7 @@
   });
 }</pre></div>
 <p>This code transcodes every statement in the block.</p>
+<p><a href="https://docs.rs/rhai/1.0.4/rhai/struct.StmtBlock.html">(More about Rhai Blocks)</a></p>
 <h2 id="transcode-expression" class="section-header"><a href="#transcode-expression">4.5 Transcode Expression</a></h2>
 <p><strong><code>transcode_expr</code></strong> transcodes an Expression from Rhai to uLisp: <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L255-L269"><code>transcode.rs</code></a></p>
 
@@ -782,6 +785,8 @@
   }.<span class="ident">to_string</span>()
 }</pre></div>
 <p>This means that <strong>“<code>a % b</code>”</strong> in Rhai is rewritten as <strong>“<code>( mod a b )</code>”</strong> in uLisp.</p>
+<p><a href="https://docs.rs/rhai/1.0.4/rhai/enum.Expr.html">(More about Rhai Expressions)</a></p>
+<p><a href="https://docs.rs/rhai/1.0.4/rhai/struct.FnCallExpr.html">(More about Rhai Function Calls)</a></p>
 <h2 id="transcoder-scope" class="section-header"><a href="#transcoder-scope">4.6 Transcoder Scope</a></h2>
 <p><em>Why do we need uLisp Scopes when transcoding Rhai to uLisp?</em></p>
 <p>Watch what happens when we transcode Rhai to uLisp <strong>without using scopes</strong>…</p>
