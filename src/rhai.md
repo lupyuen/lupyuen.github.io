@@ -904,7 +904,7 @@ Fortunately uLisp lets us __extend its interpreter__ by adding the above  functi
 
 (Details in the Appendix)
 
-And the output from our Rhai Transcoder runs OK on uLisp!
+And the output from our Rhai Transcoder __runs OK on uLisp__!
 
 ![Running the Transcoded uLisp](https://lupyuen.github.io/images/rhai-run.png)
 
@@ -946,7 +946,13 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1427758328004759552)
 
-# Appendix: Add BL602 Functions to uLisp
+1.  What happens when we run the __Rhai Scripting Engine on BL602__ (configured for the smallest feature set)?
+
+    It seems to crash with a Stack Overflow. [(See this)](https://github.com/lupyuen/bl_iot_sdk/tree/adc/customer_app/sdk_app_rust_script)
+
+![Running the Transcoded uLisp](https://lupyuen.github.io/images/rhai-run.png)
+
+# Appendix: Add C Functions to uLisp
 
 To run the transcoded uLisp, we need to __define these BL602 Functions__ in uLisp...
 
@@ -956,6 +962,76 @@ To run the transcoded uLisp, we need to __define these BL602 Functions__ in uLis
 
 - __`time_delay`__: Delay for a specified number of milliseconds
 
-Here's how we did it...
+Here's how we __extend the uLisp Interpreter__ by adding the above  functions in C...
+
+From [`ulisp.c`](https://github.com/lupyuen/ulisp-bl602/blob/sdk/src/ulisp.c#L4136-L4163)
+
+```c
+//  Expose the C function `bl_gpio_enable_output` to uLisp:
+//  `int bl_gpio_enable_output(uint8_t pin, uint8_t pullup, uint8_t pulldown)`
+object *fn_bl_gpio_enable_output(object *args, object *env) {
+  //  Fetch the `pin` parameter from uLisp
+  assert(args != NULL);
+  int pin = checkinteger(BL_GPIO_ENABLE_OUTPUT, car(args));
+  args = cdr(args);
+
+  //  Fetch the `pullup` parameter from uLisp
+  assert(args != NULL);
+  int pullup = checkinteger(BL_GPIO_ENABLE_OUTPUT, car(args));
+  args = cdr(args);
+
+  //  Fetch the `pulldown` parameter from uLisp
+  assert(args != NULL);
+  int pulldown = checkinteger(BL_GPIO_ENABLE_OUTPUT, car(args));
+  args = cdr(args);
+
+  //  No more parameters
+  assert(args == NULL);
+  printf("bl_gpio_enable_output: pin=%d, pullup=%d, pulldown=%d\r\n", pin, pullup, pulldown);
+
+  //  Call the C function `bl_gpio_enable_output`
+  int result = bl_gpio_enable_output(pin, pullup, pulldown);
+
+  //  Return the result to uLisp
+  return number(result);
+}
+```
+
+From [`ulisp.c`](https://github.com/lupyuen/ulisp-bl602/blob/sdk/src/ulisp.c#L196-L200)
+
+```c
+enum function {
+  ...
+  //  Begin User Functions
+  BL_GPIO_ENABLE_OUTPUT,
+  BL_GPIO_OUTPUT_SET,
+  TIME_DELAY,
+  //  End User Functions
+```
 
 TODO
+
+From [`ulisp.c`](https://github.com/lupyuen/ulisp-bl602/blob/sdk/src/ulisp.c#L4434-L4438)
+
+```c
+// Insert your own function names here
+const char str_bl_gpio_enable_output[] PROGMEM = "bl_gpio_enable_output";
+const char str_bl_gpio_output_set[]    PROGMEM = "bl_gpio_output_set";
+const char str_time_delay[]            PROGMEM = "time_delay";
+```
+
+TODO
+
+From [`ulisp.c`](https://github.com/lupyuen/ulisp-bl602/blob/sdk/src/ulisp.c#L4667-L4671)
+
+```c
+// Built-in symbol lookup table
+const tbl_entry_t lookup_table[] PROGMEM = {
+  ...
+  // Insert your own table entries here
+  { str_bl_gpio_enable_output, fn_bl_gpio_enable_output, 0x33 },
+  { str_bl_gpio_output_set,    fn_bl_gpio_output_set,    0x22 },
+  { str_time_delay,            fn_time_delay,            0x11 },
+```
+
+[(More about extending uLisp)](http://www.ulisp.com/show?19Q4)
