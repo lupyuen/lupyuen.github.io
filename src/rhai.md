@@ -936,7 +936,7 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
--   [Read "The RISC-V BL602 Book"](https://lupyuen.github.io/articles/book)
+-   [Read "The RISC-V BL602 / BL604 Book"](https://lupyuen.github.io/articles/book)
 
 -   [Check out my articles](https://lupyuen.github.io)
 
