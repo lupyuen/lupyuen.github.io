@@ -928,7 +928,7 @@ TODO
 
 TODO
 
-And soon we shall test all this on [__PineDio Stack BL604 with LoRa SX1262__](https://lupyuen.github.io/articles/pinedio)... As we explore whether it's feasible to teach __Rust (or Rhai) as a Safer Way__ to create firmware for BL602 and BL604.
+Soon we shall test all this on [__PineDio Stack BL604 with LoRa SX1262__](https://lupyuen.github.io/articles/pinedio)... As we explore whether it's feasible to teach __Rhai (and Rust) as a Safer Way__ to create firmware for BL602 and BL604.
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
@@ -966,9 +966,17 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     [(See this)](https://github.com/lupyuen2/blockly-bl602/issues/1)
 
+1.  [`schungx`](https://github.com/schungx) has an excellent suggestion about creating a __minimal Rhai Scripting Language__ for learners...
+
+    > For a minimal language you might also want to disable keywords like continue, break, switch, while, do etc. and especially eval if you don't intend your users to touch them yet... since they would also need to be transcoded into uLisp
+
+    [(See this)](https://github.com/lupyuen2/blockly-bl602/issues/1#issuecomment-912899645)
+
 1.  What happens when we run the __Rhai Scripting Engine on BL602__ (configured for the smallest feature set)?
 
-    It seems to crash with a Stack Overflow. [(See this)](https://github.com/lupyuen/bl_iot_sdk/tree/adc/customer_app/sdk_app_rust_script)
+    It seems to crash with a __Stack Overflow__. [(See this)](https://github.com/lupyuen/bl_iot_sdk/tree/adc/customer_app/sdk_app_rust_script)
+
+    It's possible that the default FreeRTOS configuration on BL602 severely limits the usable Stack Space. (Sadly I'm no expert in FreeRTOS though)
 
 ![Running the Transcoded uLisp](https://lupyuen.github.io/images/rhai-run.png)
 
