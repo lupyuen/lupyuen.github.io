@@ -1005,7 +1005,7 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
--   [Discuss this article on Reddit](https://www.reddit.com/r/Rhai/comments/phm0z5/rust_on_riscv_bl602_rhai_scripting/)
+-   [Discuss this article on Reddit](https://www.reddit.com/r/rust/comments/phm2a5/rust_on_riscv_bl602_rhai_scripting/)
 
 -   [Read "The RISC-V BL602 / BL604 Book"](https://lupyuen.github.io/articles/book)
 
