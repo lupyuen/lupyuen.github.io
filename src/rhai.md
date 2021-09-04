@@ -1,6 +1,6 @@
 # Rust on RISC-V BL602: Rhai Scripting
 
-📝 _7 Sep 2021_
+📝 _4 Sep 2021_
 
 _What is Rhai?_
 
@@ -42,7 +42,7 @@ So today we shall explore...
 
 1.  By __Auto-Converting Rhai Scripts to uLisp__
 
-    (Because Rhai can't run directly on BL602)
+    (Because Rhai can't run directly on BL602 yet)
 
 1.  With __Drag-and-Drop Rhai Scripting__
 
@@ -910,21 +910,19 @@ And the output from our Rhai Transcoder __runs OK on uLisp__!
 
 # Drag-and-Drop Rhai Scripting
 
-TODO
+We'll wrap up today's show-and-tell... With some __Drag-and-Drop Rhai Scripting__ in your Web Browser!
 
 ![Drag-and-drop scripting with Blockly and Rhai](https://lupyuen.github.io/images/rhai-title.jpg)
-
-TODO
 
 1.  Click this link to run the customised __Blockly Web Editor__...
 
     -   [__Blockly for Rhai Script and BL602 / BL604__](https://lupyuen2.github.io/blockly-bl602/demos/code/)
 
-    This website contains plain HTML and JavaScript, no server-side code.
+    This link points to plain HTML and JavaScript, no server-side code.
     
     [(See this)](https://github.com/lupyuen2/blockly-bl602/tree/master/demos/code)
 
-1.  __Drag and drop the blocks__ like so...
+1.  __Drag and drop the blocks__ to create a program that blinks the LED...
 
     ![Blockly for Rhai Script and BL602 / BL604](https://lupyuen.github.io/images/rhai-blockly.png)
 
@@ -971,17 +969,17 @@ TODO
 
 _How did we do this?_
 
-We __customised Blockly for Rhai and BL602__ as follows...
+We __customised Blockly for Rhai and BL602__ by...
 
-1.  We added __Custom Blocks__ like __`forever`__, __`digital write`__ and __`wait`__
+1.  Adding __Custom Blocks__ like __`forever`__, __`digital write`__ and __`wait`__
 
-1.  We created a __Code Generator__ that generates Rhai code.
+1.  Creating a __Code Generator__ that generates Rhai code
 
-Eventually we shall..
+Eventually we shall...
 
 1.  __Run the generated Rhai code__ in the Web Browser with our [__BL602 WebAssembly Simulator__](https://lupyuen.github.io/articles/rustsim)
 
-1.  __Transcode Rhai to uLisp__ in Blockly by calling our Rhai-to-uLisp Transcoder
+1.  __Transcode Rhai to uLisp__ by calling our Rhai-To-uLisp Transcoder in WebAssembly
 
 1.  __Transfer the uLisp code to BL602__ and run it via the [__Web Serial API__](https://lupyuen.github.io/articles/lisp#web-browser-controls-bl602-with-web-serial-api)
 
@@ -1244,7 +1242,6 @@ Here's how we define the __`forever` Code Generator__: [`rhai_functions.js`](htt
 //  Emit Rhai code for the "forever" block. 
 //  Inspired by MakeCode "forever" and Arduino "loop".
 Blockly.Rhai['forever'] = function(block) {
-  //  Run this code at forever in a loop. Inspired by MakeCode "forever" and Arduino "loop".
   var statements_stmts = Blockly.Rhai.statementToCode(block, 'STMTS');
   var code = statements_stmts;
   code = [

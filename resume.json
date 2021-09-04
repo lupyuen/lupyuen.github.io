@@ -147,6 +147,13 @@
   ],
   "publications": [
     {
+      "name": "Rust on RISC-V BL602: Rhai Scripting",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2021-09-04",
+      "website": "https://lupyuen.github.io/articles/rhai",
+      "summary": "Can we drag-and-drop Rhai Scripts... And run them on WebAssembly and BL602 RISC-V SoC?"
+    },
+    {
       "name": "PineDio Stack BL604 RISC-V Board: Testing The Prototype",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-08-29",
