@@ -945,3 +945,17 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1427758328004759552)
+
+# Appendix: Add BL602 Functions to uLisp
+
+To run the transcoded uLisp, we need to __define these BL602 Functions__ in uLisp...
+
+- __`bl_gpio_enable_output`__: Configure a GPIO Pin for output
+
+- __`bl_gpio_output_set`__: Set the output value of a GPIO Pin
+
+- __`time_delay`__: Delay for a specified number of milliseconds
+
+Here's how we did it...
+
+TODO
