@@ -880,7 +880,7 @@
 </li>
 </ul>
 <p>Here’s how we <strong>extend the uLisp Interpreter</strong> by adding the above  functions in C…</p>
-<p>From <a href="https://github.com/lupyuen/ulisp-bl602/blob/sdk/src/ulisp.c#L4136-L4163"><code>ulisp.c</code></a></p>
+<p>First we define the <strong>uLisp Shim Function</strong> in C: <a href="https://github.com/lupyuen/ulisp-bl602/blob/sdk/src/ulisp.c#L4136-L4163"><code>ulisp.c</code></a></p>
 <pre><code class="language-c">//  Expose the C function `bl_gpio_enable_output` to uLisp:
 //  `int bl_gpio_enable_output(uint8_t pin, uint8_t pullup, uint8_t pulldown)`
 object *fn_bl_gpio_enable_output(object *args, object *env) {
@@ -907,10 +907,11 @@ object *fn_bl_gpio_enable_output(object *args, object *env) {
   int result = bl_gpio_enable_output(pin, pullup, pulldown);
 
   //  Return the result to uLisp
+  //  TODO: Throw an exception if the result is non-zero
   return number(result);
 }
 </code></pre>
-<p>From <a href="https://github.com/lupyuen/ulisp-bl602/blob/sdk/src/ulisp.c#L196-L200"><code>ulisp.c</code></a></p>
+<p>Next we extend the <strong>Function Enum</strong>: <a href="https://github.com/lupyuen/ulisp-bl602/blob/sdk/src/ulisp.c#L196-L200"><code>ulisp.c</code></a></p>
 <pre><code class="language-c">enum function {
   ...
   //  Begin User Functions
@@ -919,15 +920,13 @@ object *fn_bl_gpio_enable_output(object *args, object *env) {
   TIME_DELAY,
   //  End User Functions
 </code></pre>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/ulisp-bl602/blob/sdk/src/ulisp.c#L4434-L4438"><code>ulisp.c</code></a></p>
+<p>Then we define the <strong>uLisp Function Name</strong>: <a href="https://github.com/lupyuen/ulisp-bl602/blob/sdk/src/ulisp.c#L4434-L4438"><code>ulisp.c</code></a></p>
 <pre><code class="language-c">// Insert your own function names here
 const char str_bl_gpio_enable_output[] PROGMEM = &quot;bl_gpio_enable_output&quot;;
 const char str_bl_gpio_output_set[]    PROGMEM = &quot;bl_gpio_output_set&quot;;
 const char str_time_delay[]            PROGMEM = &quot;time_delay&quot;;
 </code></pre>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/ulisp-bl602/blob/sdk/src/ulisp.c#L4667-L4671"><code>ulisp.c</code></a></p>
+<p>Finally we add the uLisp Shim Function to the <strong>Symbol Lookup Table</strong>: <a href="https://github.com/lupyuen/ulisp-bl602/blob/sdk/src/ulisp.c#L4667-L4671"><code>ulisp.c</code></a></p>
 <pre><code class="language-c">// Built-in symbol lookup table
 const tbl_entry_t lookup_table[] PROGMEM = {
   ...
@@ -936,6 +935,16 @@ const tbl_entry_t lookup_table[] PROGMEM = {
   { str_bl_gpio_output_set,    fn_bl_gpio_output_set,    0x22 },
   { str_time_delay,            fn_time_delay,            0x11 },
 </code></pre>
+<p><em>What is <code>0x33</code>?</em></p>
+<p><strong><code>0x33</code></strong> means that our uLisp Function accepts</p>
+<ul>
+<li>
+<p><strong>Minimum</strong> of 3 parameters, and</p>
+</li>
+<li>
+<p><strong>Maximum</strong> of 3 parameters</p>
+</li>
+</ul>
 <p><a href="http://www.ulisp.com/show?19Q4">(More about extending uLisp)</a></p>
 
     
