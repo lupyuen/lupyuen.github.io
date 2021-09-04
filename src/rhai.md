@@ -1207,6 +1207,12 @@ Block Exporter and Custom Blocks are explained here...
 
 -   [__"Define Blocks"__](https://developers.google.com/blockly/guides/create-custom-blocks/define-blocks)
 
+_Can we do this through a Desktop App? (Instead of Web Browser)_
+
+Possibly, if we wrap the Web Browser Interface into a __Desktop App with Tauri__.
+
+[(More about Tauri)](https://tauri.studio/en/)
+
 _Does Blockly work on Mobile Web Browsers?_
 
 Yes but the Web Serial API won't work for transferring the generated uLisp code to BL602. (Because we can't connect BL602 as a USB Serial device)

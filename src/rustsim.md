@@ -1089,6 +1089,10 @@ For BL602, perhaps learners could __start with (Rust-like) Rhai Script__...
 
 And __upgrade to Rust__ (or C) when they're ready.
 
+Check out the new article...
+
+-   [__"Rust on RISC-V BL602: Rhai Scripting"__](https://lupyuen.github.io/articles/rhai)
+
 ![Rhai Scripting for BL602 Simulator](https://lupyuen.github.io/images/rhai-module.png)
 
 [(Source)](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-script/src/lib.rs)
