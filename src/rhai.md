@@ -96,7 +96,7 @@ In this article we'll learn how this grand scheme is implemented with these 3 re
 
 -   [__`bl602-simulator`__ (`transcode` branch)](https://github.com/lupyuen/bl602-simulator/tree/transcode): WebAssembly Simulator for BL602 and BL604
 
-    (With Rhai Scripting Engine and Rhai to uLisp Transcoder)
+    (Includes Rhai Scripting Engine and Rhai-To-uLisp Transcoder)
 
 -   [__`blockly-bl602`__](https://github.com/lupyuen2/blockly-bl602): Blockly Drag-and-Drop Scripting for BL602 and BL604
 
@@ -504,7 +504,7 @@ Let's match the two...
 
 ![Rhai Script vs Abstract Syntax Tree](https://lupyuen.github.io/images/rhai-ast2.jpg)
 
-Abstract Syntax Trees can get __deeply nested__, like this __`for`__ loop...
+Yep Abstract Syntax Trees can get __deeply nested__, like this __`for`__ loop...
 
 ![Abstract Syntax Tree for `for` loop](https://lupyuen.github.io/images/rhai-ast.jpg)
 
