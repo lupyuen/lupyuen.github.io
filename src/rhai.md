@@ -918,7 +918,7 @@ And the output from our Rhai Transcoder __runs OK on uLisp__!
 
 # Drag-and-Drop Rhai Scripting
 
-We'll wrap up today's show-and-tell... With some __Drag-and-Drop Rhai Scripting__ in your Web Browser!
+We wrap up today's show-and-tell... With some __Drag-and-Drop Rhai Scripting__ in your Web Browser!
 
 ![Drag-and-drop scripting with Blockly and Rhai](https://lupyuen.github.io/images/rhai-title.jpg)
 
