@@ -810,7 +810,22 @@
   )
 )
 </code></pre>
-<p>TODO</p>
+<p>Yep it looks like proper uLisp!</p>
+<p>Just that we need to <strong>define these BL602 Functions</strong> in uLisp…</p>
+<ul>
+<li>
+<p><strong><code>bl_gpio_enable_output</code></strong>: Configure a GPIO Pin for output</p>
+</li>
+<li>
+<p><strong><code>bl_gpio_output_set</code></strong>: Set the output value of a GPIO Pin</p>
+</li>
+<li>
+<p><strong><code>time_delay</code></strong>: Delay for a specified number of milliseconds</p>
+</li>
+</ul>
+<p>Fortunately uLisp lets us <strong>extend its interpreter</strong> by adding the above  functions in C.</p>
+<p>(Details in the Appendix)</p>
+<p>And the output from our Rhai Transcoder runs OK on uLisp!</p>
 <p><img src="https://lupyuen.github.io/images/rhai-run.png" alt="Running the Transcoded uLisp" /></p>
 <h1 id="drag-and-drop-rhai-scripting" class="section-header"><a href="#drag-and-drop-rhai-scripting">6 Drag-and-Drop Rhai Scripting</a></h1>
 <p>TODO</p>
