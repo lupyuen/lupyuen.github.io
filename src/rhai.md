@@ -504,9 +504,11 @@ Let's match the two...
 
 ![Rhai Script vs Abstract Syntax Tree](https://lupyuen.github.io/images/rhai-ast2.jpg)
 
-Yep Abstract Syntax Trees can get __deeply nested__, like this __`for`__ loop...
+Abstract Syntax Trees can get __deeply nested__, like this __`for`__ loop...
 
 ![Abstract Syntax Tree for `for` loop](https://lupyuen.github.io/images/rhai-ast.jpg)
+
+[(See the complete Abstract Syntax Tree)](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L177-L344)
 
 But Abstract Syntax Trees are actually __perfect for converting Rhai to uLisp__.
 
