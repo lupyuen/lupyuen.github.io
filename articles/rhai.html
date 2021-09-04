@@ -148,7 +148,7 @@
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/bl602-simulator/tree/transcode"><strong><code>bl602-simulator</code></strong> (<code>transcode</code> branch)</a>: WebAssembly Simulator for BL602 and BL604</p>
-<p>(With Rhai Scripting Engine and Rhai to uLisp Transcoder)</p>
+<p>(Includes Rhai Scripting Engine and Rhai-To-uLisp Transcoder)</p>
 </li>
 <li>
 <p><a href="https://github.com/lupyuen2/blockly-bl602"><strong><code>blockly-bl602</code></strong></a>: Blockly Drag-and-Drop Scripting for BL602 and BL604</p>
@@ -495,7 +495,7 @@
 <p>(<code>StackSlot</code> refers to the values in the <code>constants</code> array)</p>
 <p>Let’s match the two…</p>
 <p><img src="https://lupyuen.github.io/images/rhai-ast2.jpg" alt="Rhai Script vs Abstract Syntax Tree" /></p>
-<p>Abstract Syntax Trees can get <strong>deeply nested</strong>, like this <strong><code>for</code></strong> loop…</p>
+<p>Yep Abstract Syntax Trees can get <strong>deeply nested</strong>, like this <strong><code>for</code></strong> loop…</p>
 <p><img src="https://lupyuen.github.io/images/rhai-ast.jpg" alt="Abstract Syntax Tree for for loop" /></p>
 <p><a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L177-L344">(See the complete Abstract Syntax Tree)</a></p>
 <p>But Abstract Syntax Trees are actually <strong>perfect for converting Rhai to uLisp</strong>.</p>
