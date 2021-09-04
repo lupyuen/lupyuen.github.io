@@ -244,7 +244,7 @@
 <p>Here we <strong>initialise the Rhai engine</strong> and evaluate a Rhai Script that returns an integer result…</p>
 <pre><code class="language-text">42
 </code></pre>
-<p><a href="https://rhai.rs/book/engine/hello-world.html">(More about Rhai Script Engine)</a></p>
+<p><a href="https://rhai.rs/book/engine/hello-world.html">(More about Rhai Scripting Engine)</a></p>
 <h2 id="register-function" class="section-header"><a href="#register-function">3.1 Register Function</a></h2>
 <p>To <strong>register a Rust Function</strong> that will be called by the Rhai Script, we do this: <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L21-L98"><code>bl602-script/lib.rs</code></a></p>
 
@@ -968,6 +968,13 @@
 <p>It seems to crash with a <strong>Stack Overflow</strong>. <a href="https://github.com/lupyuen/bl_iot_sdk/tree/adc/customer_app/sdk_app_rust_script">(See this)</a></p>
 <p>We’ll try LTO Optimisation to reduce the size of the Rust binaries.</p>
 <p>It’s possible that the default FreeRTOS configuration on BL602 severely limits the usable Stack Space. (Sadly I’m no expert in FreeRTOS though)</p>
+</li>
+<li>
+<p>There’s a minor quirk when building Rhai with <strong>AST support on WebAssembly</strong> (since we’re running our Rhai Transcoder on WebAssembly)…</p>
+<pre><code class="language-text">unresolved import `ast::FloatWrapper`
+--&gt; rhai-1.0.2/src/lib.rs:230:44
+</code></pre>
+<p><a href="https://github.com/lupyuen/bl602-simulator/tree/transcode#build-bl602--bl604-rust-firmware-for-webassembly">Here is the workaround</a></p>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/rhai-run.png" alt="Running the Transcoded uLisp" /></p>
