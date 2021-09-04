@@ -637,7 +637,7 @@ Hint: The transcoded uLisp will look like this...
 )
 ```
 
-Where __"`...`"__ refers to the __uLisp Scope__ of the statements that will be transcoded after the `let` statement.
+Where __"`...`"__ refers to the __uLisp Scope__ of the statements that will be transcoded after the __`let`__ statement.
 
 (More about uLisp Scopes in a while)
 
@@ -689,7 +689,7 @@ This is how we transcode the __`for`__ Statement: [`transcode.rs`](https://githu
     }        
 ```
 
-__`transcode_block`__ transcodes the block of statements in the body of a `for` loop.
+__`transcode_block`__ transcodes the block of statements in the body of a __`for`__ loop.
 
 (Coming up in the next section)
 
@@ -713,9 +713,9 @@ Check out the source code to see how we transcode these statements...
 
 - [__`loop`__ Statement](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L144-L194)
 
-- [__`break`__ Statement](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L196-L239)
+- [__`break`__ Statement](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L241-L243)
 
-- [__`if`__ Statement](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L241-L243)
+- [__`if`__ Statement](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L196-L239)
 
 ## Transcode Block
 
