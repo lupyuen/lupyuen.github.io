@@ -912,15 +912,17 @@ And the output from our Rhai Transcoder __runs OK on uLisp__!
 
 TODO
 
+![Drag-and-drop scripting with Blockly and Rhai](https://lupyuen.github.io/images/rhai-title.jpg)
+
+TODO
+
 ![](https://lupyuen.github.io/images/rhai-blockly.png)
 
 TODO6
 
 ![](https://lupyuen.github.io/images/rhai-blockly2.png)
 
-TODO7
-
-![](https://lupyuen.github.io/images/rhai-blockly3.jpg)
+TODO
 
 # What's Next
 
