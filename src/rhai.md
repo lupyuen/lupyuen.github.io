@@ -777,7 +777,7 @@ Here's how: [`transcode.rs`](https://github.com/lupyuen/bl602-simulator/blob/tra
 
 ```rust
 /// Transcode a Rhai Function Call to uLisp:
-/// `gpio::enable_output(11, 0, 0)`
+/// `gpio::enable_output(LED_GPIO, 0, 0)`
 fn transcode_fncall(expr: &FnCallExpr) -> String {
   //  Compose namespace e.g. `bl_gpio_` or ``
   let namespace = match &expr.namespace {
@@ -791,7 +791,7 @@ __`transcode_fncall`__ begins by converting the Rhai Namespace (like __"`gpio::`
 Next it composes the __list of arguments__ for the function call...
 
 ```rust
-  //  Compose arguments e.g. `11 0 0 `
+  //  Compose arguments e.g. `LED_GPIO 0 0 `
   let args = expr.args.iter().map(|arg| {
     //  Transcode each argument
     let val = match arg {
@@ -805,16 +805,16 @@ Next it composes the __list of arguments__ for the function call...
   });
 ```
 
-And combines them into a __uLisp Function Call__...
+And concatenates them into a __uLisp Function Call__...
 
 ```rust
   //  Transcode to uLisp Function Call:
-  //  `( bl_gpio_enable_output 11 0 0 )`
+  //  `( bl_gpio_enable_output LED_GPIO 0 0 )`
   format!(
     "( {}{} {})",
     namespace,                             //  `bl_gpio_` or ``
     rename_function(&expr.name.as_str()),  //  `enable_output`, `+` or `mod`
-    args.collect::<String>()               //  `11 0 0 `
+    args.collect::<String>()               //  `LED_GPIO 0 0 `
   )
 }
 ```
@@ -947,6 +947,24 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1427758328004759552)
+
+1.  In our Rhai Script, why did we write...
+
+    ```rust
+    let LED_GPIO = 11;
+    ```
+
+    Instead of this?
+
+    ```rust
+    const LED_GPIO = 11;
+    ```
+
+    Because I'm targeting Rhai Scripting for learners who are new to coding microcontrollers.
+    
+    I'm pondering whether we should teach them __`let`__ vs __`const`__. Or maybe start with __`let`__ and teach __`const`__ later?
+
+    [(See this)](https://github.com/lupyuen2/blockly-bl602/issues/1)
 
 1.  What happens when we run the __Rhai Scripting Engine on BL602__ (configured for the smallest feature set)?
 
