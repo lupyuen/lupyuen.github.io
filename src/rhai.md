@@ -964,7 +964,7 @@ To run the transcoded uLisp, we need to __define these BL602 Functions__ in uLis
 
 Here's how we __extend the uLisp Interpreter__ by adding the above  functions in C...
 
-From [`ulisp.c`](https://github.com/lupyuen/ulisp-bl602/blob/sdk/src/ulisp.c#L4136-L4163)
+First we define the __uLisp Shim Function__ in C: [`ulisp.c`](https://github.com/lupyuen/ulisp-bl602/blob/sdk/src/ulisp.c#L4136-L4163)
 
 ```c
 //  Expose the C function `bl_gpio_enable_output` to uLisp:
@@ -993,11 +993,12 @@ object *fn_bl_gpio_enable_output(object *args, object *env) {
   int result = bl_gpio_enable_output(pin, pullup, pulldown);
 
   //  Return the result to uLisp
+  //  TODO: Throw an exception if the result is non-zero
   return number(result);
 }
 ```
 
-From [`ulisp.c`](https://github.com/lupyuen/ulisp-bl602/blob/sdk/src/ulisp.c#L196-L200)
+Next we extend the __Function Enum__: [`ulisp.c`](https://github.com/lupyuen/ulisp-bl602/blob/sdk/src/ulisp.c#L196-L200)
 
 ```c
 enum function {
@@ -1009,9 +1010,7 @@ enum function {
   //  End User Functions
 ```
 
-TODO
-
-From [`ulisp.c`](https://github.com/lupyuen/ulisp-bl602/blob/sdk/src/ulisp.c#L4434-L4438)
+Then we define the __uLisp Function Name__: [`ulisp.c`](https://github.com/lupyuen/ulisp-bl602/blob/sdk/src/ulisp.c#L4434-L4438)
 
 ```c
 // Insert your own function names here
@@ -1020,9 +1019,7 @@ const char str_bl_gpio_output_set[]    PROGMEM = "bl_gpio_output_set";
 const char str_time_delay[]            PROGMEM = "time_delay";
 ```
 
-TODO
-
-From [`ulisp.c`](https://github.com/lupyuen/ulisp-bl602/blob/sdk/src/ulisp.c#L4667-L4671)
+Finally we add the uLisp Shim Function to the __Symbol Lookup Table__: [`ulisp.c`](https://github.com/lupyuen/ulisp-bl602/blob/sdk/src/ulisp.c#L4667-L4671)
 
 ```c
 // Built-in symbol lookup table
@@ -1033,5 +1030,13 @@ const tbl_entry_t lookup_table[] PROGMEM = {
   { str_bl_gpio_output_set,    fn_bl_gpio_output_set,    0x22 },
   { str_time_delay,            fn_time_delay,            0x11 },
 ```
+
+_What is `0x33`?_
+
+__`0x33`__ means that our uLisp Function accepts
+
+-   __Minimum__ of 3 parameters, and
+
+-   __Maximum__ of 3 parameters
 
 [(More about extending uLisp)](http://www.ulisp.com/show?19Q4)
