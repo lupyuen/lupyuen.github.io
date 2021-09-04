@@ -76,7 +76,7 @@ Thus we created the [__WebAssembly Simulator for BL602__](https://lupyuen.github
 
 _But what about the learners?_
 
-Scripted REPL platforms for microcontrollers like uLisp and MicroPython are popular for learners.
+Scripted REPL platforms for microcontrollers like uLisp and MicroPython are popular with learners.
 
 Since we have a WebAssembly Simulator for BL602, we can run REPL Scripts too... With __Rhai, the Drag-and-Drop Way!__
 
