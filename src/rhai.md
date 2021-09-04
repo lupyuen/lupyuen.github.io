@@ -587,6 +587,8 @@ Each node is either a Rhai __Statement or Expression__. We call...
 
 Let's look into each of these functions...
 
+[(More about AST Node)](https://docs.rs/rhai/1.0.4/rhai/enum.ASTNode.html)
+
 ## Transcode Statement
 
 We start with the __`let`__ Statement that declares a variable...
@@ -717,6 +719,8 @@ Check out the source code to see how we transcode these statements...
 
 - [__`if`__ Statement](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L196-L239)
 
+[(More about Rhai Statements)](https://docs.rs/rhai/1.0.4/rhai/enum.Stmt.html)
+
 ## Transcode Block
 
 Our transcoder calls __`transcode_block`__ to transcode a block of statements (`for`, `loop`, `if`, ...)
@@ -740,6 +744,8 @@ fn transcode_block(stmts: &StmtBlock) {
 ```
 
 This code transcodes every statement in the block.
+
+[(More about Rhai Blocks)](https://docs.rs/rhai/1.0.4/rhai/struct.StmtBlock.html)
 
 ## Transcode Expression
 
@@ -848,6 +854,10 @@ fn rename_function(name: &str) -> String {
 ```
 
 This means that __"`a % b`"__ in Rhai is rewritten as __"`( mod a b )`"__ in uLisp.
+
+[(More about Rhai Expressions)](https://docs.rs/rhai/1.0.4/rhai/enum.Expr.html)
+
+[(More about Rhai Function Calls)](https://docs.rs/rhai/1.0.4/rhai/struct.FnCallExpr.html)
 
 ## Transcoder Scope
 
