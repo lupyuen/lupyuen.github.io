@@ -84,7 +84,9 @@
 <li><a href="#drag-and-drop-rhai-scripting">6 Drag-and-Drop Rhai Scripting</a><ul></ul></li>
 <li><a href="#whats-next">7 What’s Next</a><ul></ul></li>
 <li><a href="#notes">8 Notes</a><ul></ul></li>
-<li><a href="#appendix-add-c-functions-to-ulisp">9 Appendix: Add C Functions to uLisp</a><ul></ul></li></ul></nav><p>📝 <em>7 Sep 2021</em></p>
+<li><a href="#appendix-add-c-functions-to-ulisp">9 Appendix: Add C Functions to uLisp</a><ul></ul></li>
+<li><a href="#appendix-customise-blockly-for-rhai">10 Appendix: Customise Blockly for Rhai</a><ul>
+<li><a href="#code-generator-for-rhai">10.1 Code Generator for Rhai</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>7 Sep 2021</em></p>
 <p><em>What is Rhai?</em></p>
 <p><a href="https://rhai.rs/book/"><strong>Rhai</strong></a> is a <strong>Rust-like Scripting Language</strong>, implemented in Rust.</p>
 <p><em>Can we use Rhai for coding microcontrollers the REPL way?</em></p>
@@ -968,6 +970,134 @@ const tbl_entry_t lookup_table[] PROGMEM = {
 </li>
 </ul>
 <p><a href="http://www.ulisp.com/show?19Q4">(More about extending uLisp)</a></p>
+<p><img src="https://lupyuen.github.io/images/rhai-title.jpg" alt="Drag-and-drop scripting with Blockly and Rhai" /></p>
+<h1 id="appendix-customise-blockly-for-rhai" class="section-header"><a href="#appendix-customise-blockly-for-rhai">10 Appendix: Customise Blockly for Rhai</a></h1>
+<p><em>How did we customise Blockly for Rhai and BL602?</em></p>
+<ol>
+<li>
+<p>We added <strong>Custom Blocks</strong> like <strong><code>forever</code></strong>, <strong><code>digital write</code></strong> and <strong><code>wait</code></strong></p>
+</li>
+<li>
+<p>We created a <strong>Code Generator</strong> that generates Rhai code.</p>
+</li>
+<li>
+<p>TODO: Transcode Rhai Script to uLisp</p>
+</li>
+<li>
+<p>TODO: Integrate Blockly with <strong>Web Serial API</strong> to transfer the generated uLisp code to BL602</p>
+</li>
+</ol>
+<p><em>Which Blockly source files were modified?</em></p>
+<p>We modified these Blockly source files to load the Custom Blocks and generate Rhai code…</p>
+<ul>
+<li>
+<p>TODO: <a href="https://github.com/AppKaki/blockly-ulisp/blob/master/demos/code/index.html"><code>demos/code/index.html</code></a> </p>
+<p>This is the <strong>HTML source file</strong> for the Blockly Web Editor. (See pic above)</p>
+<p>TODO: <a href="">(See changes)</a></p>
+</li>
+<li>
+<p><a href="https://github.com/AppKaki/blockly-ulisp/blob/master/demos/code/code.js"><code>demos/code/code.js</code></a></p>
+<p>This is the main <strong>JavaScript source file</strong> for the Blockly Web Editor.</p>
+<p>This file contains the JavaScript function <code>runWebSerialCommand</code> that transfers the generated uLisp code to BL602 via Web Serial API.</p>
+<p>TODO: <a href="">(See changes)</a></p>
+</li>
+<li>
+<p>TODO: <a href="https://github.com/AppKaki/blockly-ulisp/blob/master/core/workspace_svg.js"><code>core/workspace_svg.js</code></a></p>
+<p>This JavaScript file <strong>renders the Blockly Workspace as SVG</strong>, including the Toolbox Bar at left.</p>
+<p>TODO: <a href="">(See changes)</a></p>
+</li>
+</ul>
+<p><em>How did we create the Custom Blocks?</em></p>
+<p>We used the <strong>Block Exporter</strong> from Blockly to create the Custom Blocks…</p>
+<ul>
+<li><a href="https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/lisp_library.xml"><code>generators/lisp/ lisp_library.xml</code></a>: XML for Custom Blocks</li>
+</ul>
+<p>With Block Explorer and the Custom Blocks XML file, we generated this JavaScript file containing our Custom Blocks…</p>
+<ul>
+<li>TODO: <a href="https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/lisp_blocks.js"><code>generators/lisp/ lisp_blocks.js</code></a>: JavaScript for Custom Blocks</li>
+</ul>
+<p>Block Exporter and Custom Blocks are explained here…</p>
+<ul>
+<li>
+<p><a href="https://developers.google.com/blockly/guides/create-custom-blocks/overview"><strong>“Custom Blocks”</strong></a></p>
+</li>
+<li>
+<p><a href="https://developers.google.com/blockly/guides/create-custom-blocks/blockly-developer-tools"><strong>“Blockly Developer Tools”</strong></a></p>
+</li>
+<li>
+<p><a href="https://developers.google.com/blockly/guides/create-custom-blocks/define-blocks"><strong>“Define Blocks”</strong></a></p>
+</li>
+</ul>
+<p><em>Does Blockly work on Mobile Web Browsers?</em></p>
+<p>Yes but the Web Serial API won’t work for transferring the generated uLisp code to BL602. (Because we can’t connect BL602 as a USB Serial device)</p>
+<p>In future we could use the <a href="https://web.dev/bluetooth/"><strong>Web Bluetooth API</strong></a> instead to transfer the uLisp code to BL602. (Since BL602 supports Bluetooth LE)</p>
+<p>Here’s how it looks on a Mobile Web Browser (from our earlier Blockly uLisp project)…</p>
+<p><img src="https://lupyuen.github.io/images/lisp-mobile.png" alt="Blockly on Mobile" /></p>
+<p><em>What were we thinking when we designed the Custom Blocks: <code>forever</code>, <code>on_start</code>, <code>digital write</code>, <code>wait</code>, …</em></p>
+<p>The custom blocks were inspired by <strong>MakeCode for BBC micro:bit</strong>…</p>
+<ul>
+<li><a href="https://makecode.microbit.org/"><strong>MakeCode</strong></a></li>
+</ul>
+<h2 id="code-generator-for-rhai" class="section-header"><a href="#code-generator-for-rhai">10.1 Code Generator for Rhai</a></h2>
+<p><em>How did we generate Rhai code in Blockly?</em></p>
+<p>We created <strong>Code Generators</strong> for Rhai. Our Code Generators are JavaScript Functions that emit Rhai code for each type of Block…</p>
+<ul>
+<li><a href="https://developers.google.com/blockly/guides/create-custom-blocks/generating-code"><strong>“Generating Code”</strong></a></li>
+</ul>
+<p>We started by <strong>copying the Code Generators</strong> from Dart to Lisp into this Blockly folder…</p>
+<ul>
+<li>TODO: <a href="https://github.com/AppKaki/blockly-ulisp/tree/master/generators/lisp"><strong><code>generators/lisp</code></strong></a>: Code Generators for Rhai</li>
+</ul>
+<p>Then we added this <strong>Code Generator Interface</strong> for Rhai…</p>
+<ul>
+<li>TODO: <a href="https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp.js"><code>generators/lisp.js</code></a>: Interface for Rhai Code Generator</li>
+</ul>
+<p><em>Which Blocks are supported by the Rhai Code Generator?</em></p>
+<p>The Rhai Code Generator is <strong>incomplete</strong>.</p>
+<p>The only Blocks supported are…</p>
+<ol>
+<li>
+<p>TODO: <strong><code>forever</code></strong> <a href="https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/lisp_functions.js#L40-L49">(See this)</a></p>
+</li>
+<li>
+<p>TODO: <strong><code>on_start</code></strong> <a href="https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/app_code.js#L3-L12">(See this)</a></p>
+</li>
+<li>
+<p>TODO: <strong><code>wait</code></strong> <a href="https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/lisp_functions.js#L51-L58">(See this)</a></p>
+</li>
+<li>
+<p>TODO: <strong><code>digital write</code></strong> <a href="https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/lisp_functions.js#L79-L89">(See this)</a></p>
+</li>
+</ol>
+<p><em>How do we define a Rhai Code Generator?</em></p>
+<p>Here’s how we define the <strong><code>forever</code> Code Generator</strong>: TODO: <a href="https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/lisp_functions.js#L40-L49"><code>lisp_functions.js</code></a></p>
+<pre><code class="language-c">//  Emit Rhai code for the &quot;forever&quot; block. 
+//  Inspired by MakeCode &quot;forever&quot; and Arduino &quot;loop&quot;.
+Blockly.Lisp['forever'] = function(block) {
+
+TODO
+
+</code></pre>
+<p>This JavaScript function emits a <strong>Rhai loop</strong> that wraps the code inside the <code>forever</code> block like so…</p>
+<p>TODO</p>
+<pre><code class="language-text">( loop
+    ...Code inside the loop block...
+)
+</code></pre>
+<p>And here’s the <strong><code>digital write</code> Code Generator</strong>: TODO: <a href="https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/lisp_functions.js#L79-L89"><code>lisp_functions.js</code></a></p>
+<pre><code class="language-c">//  Emit Rhai code for the &quot;digtial write&quot; block. 
+Blockly.Lisp['digital_write_pin'] = function(block) {
+
+TODO
+
+</code></pre>
+<p>This JavaScript function emits Rhai code that <strong>sets the GPIO Pin mode and output</strong> like so…</p>
+<p>TODO</p>
+<pre><code class="language-text">( pinmode 11 :output )
+( digitalwrite 11 :high )
+</code></pre>
+<p><em>What about the missing Rhai Code Generators?</em></p>
+<p>If the <strong>Community could help</strong> to fill in the <strong>missing Rhai Code Generators</strong>… That would be incredibly awesome! 🙏 👍 😀</p>
 
     
 </body>
