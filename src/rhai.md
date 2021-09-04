@@ -6,9 +6,9 @@ _What is Rhai?_
 
 [__Rhai__](https://rhai.rs/book/) is a __Rust-like Scripting Language__, implemented in Rust.
 
-_Can we use Rhai for coding microcontrollers the REPL way?_
+_Can we use Rhai for coding microcontrollers [the REPL way](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop)?_
 
-_Like on the BL602 / BL604 RISC-V + WiFi + Bluetooth LE SoC?_
+_Like on the [BL602 / BL604 RISC-V + WiFi + Bluetooth LE SoC](https://lupyuen.github.io/articles/pinecone)?_
 
 ![Rhai Script vs Rust Firmware](https://lupyuen.github.io/images/rhai-rust2.jpg)
 
@@ -208,6 +208,8 @@ Here we __initialise the Rhai engine__ and evaluate a Rhai Script that returns a
 42
 ```
 
+[(More about Rhai Script Engine)](https://rhai.rs/book/engine/hello-world.html)
+
 ## Register Function
 
 To __register a Rust Function__ that will be called by the Rhai Script, we do this: [`bl602-script/lib.rs`](https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L21-L98)
@@ -260,6 +262,8 @@ __`time_delay`__ is a Rust Shim Function that calls out to the C function __`ble
 _Why not register `ble_npl_time_delay` with Rhai and rename it as `time_delay`?_
 
 Because `ble_npl_time_delay` is "`extern C`" and it accepts a parameter of type __`u32`__, but our Rhai engine is configured for [__`only_i32`__](https://rhai.rs/book/start/features.html).
+
+[(More about calling Rust Functions from Rhai)](https://rhai.rs/book/rust/functions.html)
 
 ## Register Module
 
@@ -348,6 +352,8 @@ Yep. Maybe someday we'll use a Rust Procedural Macro to __generate the shims__, 
 - ["Generating the Rust Wrapper for BL602 IoT SDK"](https://lupyuen.github.io/articles/adc#appendix-generating-the-rust-wrapper-for-bl602-iot-sdk)
 
 [(More about `enable_output` and `output_set`)](https://lupyuen.github.io/articles/rustsim#json-stream-of-simulation-events)
+
+[(More about calling Rust Modules from Rhai)](https://rhai.rs/book/plugins/module.html)
 
 ![Register Rhai Module](https://lupyuen.github.io/images/rhai-module.png)
 
@@ -507,6 +513,8 @@ But Abstract Syntax Trees are actually __perfect for converting Rhai to uLisp__.
 Lisp is a recursive language and the __Lisp parentheses match the nodes__ in the Abstract Syntax Tree quite closely.
 
 Let's talk about the Rhai to uLisp conversion...
+
+[(More about Rhai Abstract Syntax Tree)](https://rhai.rs/book/engine/compile.html)
 
 ![Converting the Abstract Syntax Tree to uLisp](https://lupyuen.github.io/images/rhai-transcode6.png)
 
