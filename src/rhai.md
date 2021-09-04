@@ -926,7 +926,9 @@ TODO
 
 # What's Next
 
-TODO
+Today we have explored the Bestest Outcome for __coding and testing Rhai Scripts on BL602 and BL604__...
+
+![Convert Rhai Scripts to uLisp](https://lupyuen.github.io/images/rhai-outcome3.jpg)
 
 Soon we shall test all this on [__PineDio Stack BL604 with LoRa SX1262__](https://lupyuen.github.io/articles/pinedio)... As we explore whether it's feasible to teach __Rhai (and Rust) as a Safer Way__ to create firmware for BL602 and BL604.
 
