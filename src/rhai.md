@@ -208,7 +208,7 @@ Here we __initialise the Rhai engine__ and evaluate a Rhai Script that returns a
 42
 ```
 
-[(More about Rhai Script Engine)](https://rhai.rs/book/engine/hello-world.html)
+[(More about Rhai Scripting Engine)](https://rhai.rs/book/engine/hello-world.html)
 
 ## Register Function
 
@@ -1050,6 +1050,15 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
     We'll try LTO Optimisation to reduce the size of the Rust binaries.
 
     It's possible that the default FreeRTOS configuration on BL602 severely limits the usable Stack Space. (Sadly I'm no expert in FreeRTOS though)
+
+1.  There's a minor quirk when building Rhai with __AST support on WebAssembly__ (since we're running our Rhai Transcoder on WebAssembly)...
+
+    ```text
+    unresolved import `ast::FloatWrapper`
+    --> rhai-1.0.2/src/lib.rs:230:44
+    ```
+
+    [Here is the workaround](https://github.com/lupyuen/bl602-simulator/tree/transcode#build-bl602--bl604-rust-firmware-for-webassembly)
 
 ![Running the Transcoded uLisp](https://lupyuen.github.io/images/rhai-run.png)
 
