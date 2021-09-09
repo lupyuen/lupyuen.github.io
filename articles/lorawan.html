@@ -870,6 +870,19 @@ git clone --recursive --branch lorawan https://github.com/lupyuen/bl_iot_sdk
 <tr><td align="left">9</td><td align="left">North American band on 915MHz</td></tr>
 <tr><td align="left">10</td><td align="left">North American band on 915MHz with a maximum of 16 channels</td></tr>
 </tbody></table>
+<p>Then update the <strong>GPIO Pin Numbers</strong> in…</p>
+<pre><code class="language-text">components/3rdparty/lora-sx1262/include/sx126x-board.h
+</code></pre>
+<p>Below are the GPIO Pin Numbers for the connection shown at the top of this article…</p>
+<pre><code class="language-c">#define SX126X_SPI_SDI_PIN       1  //  SPI Serial Data In Pin  (formerly MISO)
+#define SX126X_SPI_SDO_PIN       4  //  SPI Serial Data Out Pin (formerly MOSI)
+#define SX126X_SPI_CLK_PIN       3  //  SPI Clock Pin
+#define SX126X_SPI_CS_PIN       14  //  SPI Chip Select Pin
+#define SX126X_SPI_CS_OLD        2  //  Unused SPI Chip Select Pin
+#define SX126X_NRESET           17  //  Reset Pin
+#define SX126X_DIO1             11  //  DIO1
+#define SX126X_BUSY_PIN          0  //  Busy Pin
+</code></pre>
 <p>Build the Firmware Binary File <code>sdk_app_lorawan.bin</code>…</p>
 <pre><code class="language-bash"># TODO: Change this to the full path of bl_iot_sdk
 export BL60X_SDK_PATH=$HOME/bl_iot_sdk
