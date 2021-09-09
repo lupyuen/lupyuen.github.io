@@ -977,6 +977,25 @@ Change "`1`" to your LoRa Region...
 | 9 | North American band on 915MHz
 | 10 | North American band on 915MHz with a maximum of 16 channels
 
+Then update the __GPIO Pin Numbers__ in...
+
+```text
+components/3rdparty/lora-sx1262/include/sx126x-board.h
+```
+
+Below are the GPIO Pin Numbers for the connection shown at the top of this article...
+
+```c
+#define SX126X_SPI_SDI_PIN       1  //  SPI Serial Data In Pin  (formerly MISO)
+#define SX126X_SPI_SDO_PIN       4  //  SPI Serial Data Out Pin (formerly MOSI)
+#define SX126X_SPI_CLK_PIN       3  //  SPI Clock Pin
+#define SX126X_SPI_CS_PIN       14  //  SPI Chip Select Pin
+#define SX126X_SPI_CS_OLD        2  //  Unused SPI Chip Select Pin
+#define SX126X_NRESET           17  //  Reset Pin
+#define SX126X_DIO1             11  //  DIO1
+#define SX126X_BUSY_PIN          0  //  Busy Pin
+```
+
 Build the Firmware Binary File `sdk_app_lorawan.bin`...
 
 ```bash
