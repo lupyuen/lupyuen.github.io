@@ -259,6 +259,14 @@ make
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/pinedio-spi.jpg" alt="SPI Bus on PineDio Stack" /></p>
+<table><thead><tr><th align="center">GPIO Number</th><th align="left">SPI Pin</th></tr></thead><tbody>
+<tr><td align="center"><strong><code>17</code></strong></td><td align="left">Common SDO <em>(MOSI)</em></td></tr>
+<tr><td align="center"><strong><code>0</code></strong></td><td align="left">Common SDI <em>(MISO)</em></td></tr>
+<tr><td align="center"><strong><code>11</code></strong></td><td align="left">Common SCK</td></tr>
+<tr><td align="center"><strong><code>14</code></strong></td><td align="left">CS for SPI Flash</td></tr>
+<tr><td align="center"><strong><code>20</code></strong></td><td align="left">CS for ST7789</td></tr>
+<tr><td align="center"><strong><code>15</code></strong></td><td align="left">CS for SX1262</td></tr>
+</tbody></table>
 <p>SPI Flash, ST7789 and SX1262 are connected to the <strong>same GPIO Pins</strong> for SDO <em>(formerly MOSI)</em>, SDI <em>(formerly MISO)</em> and SCK.</p>
 <p><a href="https://www.oshwa.org/a-resolution-to-redefine-spi-signal-names">(More about SDO and SDI)</a></p>
 <p><em>But won’t BL604 get confused by the SPI crosstalk?</em></p>
@@ -409,6 +417,12 @@ static int transmit_packed(const uint8_t *data, uint16_t len) {
 <p>PineDio Stack’s <strong>GPIO Connector</strong> (at right) exposes the SPI Pins: SDO <em>(formerly MOSI)</em>, SDI <em>(formerly MISO)</em> and SCK</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-gpio2.jpg" alt="PineDio Stack GPIO Connector" /></p>
 <p>We <strong>connect our Logic Analyser</strong> to the GPIO Connector like so…</p>
+<table><thead><tr><th align="center">GPIO Number</th><th align="left">SPI Pin</th><th align="center">Connector Pin</th></tr></thead><tbody>
+<tr><td align="center"><strong><code>17</code></strong></td><td align="left">Common SDO <em>(MOSI)</em></td><td align="center"><code>7</code></td></tr>
+<tr><td align="center"><strong><code>0</code></strong></td><td align="left">Common SDI <em>(MISO)</em></td><td align="center"><code>17</code></td></tr>
+<tr><td align="center"><strong><code>11</code></strong></td><td align="left">Common SCK</td><td align="center"><code>4</code></td></tr>
+<tr><td align="center"><strong><code>5</code></strong></td><td align="left">Debug CS</td><td align="center"><code>2</code></td></tr>
+</tbody></table>
 <p><img src="https://lupyuen.github.io/images/pinedio-logic2.jpg" alt="Logic Analyser connected to PineDio Stack" /></p>
 <p><em>What about the ST7789 Chip Select Pin: GPIO 20?</em></p>
 <p>Unfortunately <strong>GPIO 20 is not exposed</strong> on the GPIO Connector.</p>
