@@ -994,6 +994,7 @@ Below are the GPIO Pin Numbers for the connection shown at the top of this artic
 #define SX126X_NRESET           17  //  Reset Pin
 #define SX126X_DIO1             11  //  DIO1
 #define SX126X_BUSY_PIN          0  //  Busy Pin
+#define SX126X_DEBUG_CS_PIN     -1  //  Debug Chip Select Pin, mirrors the High / Low State of SX1262 Chip Select Pin. Set to -1 if not needed.
 ```
 
 Build the Firmware Binary File `sdk_app_lorawan.bin`...
