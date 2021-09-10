@@ -793,6 +793,8 @@ But in the meantime, JF and I have __plenty to test on PineDio Stack__...
 
 [__Please let us know__](https://twitter.com/MisterTechBlog) if you're keen to help! 🙏
 
+[__UPDATE__: LoRa SX1262 on PineDio Stack has been tested OK! See this](https://twitter.com/MisterTechBlog/status/1436128755987058691)
+
 ![PineDio Stack BL604 In A Box](https://lupyuen.github.io/images/pinedio-box.jpg)
 
 # What's Next
