@@ -222,6 +222,15 @@ Because SPI is the Data Bus that __connects the key components__ of PineDio Stac
 
 ![SPI Bus on PineDio Stack](https://lupyuen.github.io/images/pinedio-spi.jpg)
 
+| GPIO Number | SPI Pin |
+| :----------: | :------ |
+| __`17`__ | Common SDO _(MOSI)_
+| __`0`__  | Common SDI _(MISO)_
+| __`11`__ | Common SCK
+| __`14`__ | CS for SPI Flash
+| __`20`__ | CS for ST7789
+| __`15`__ | CS for SX1262
+
 SPI Flash, ST7789 and SX1262 are connected to the __same GPIO Pins__ for SDO _(formerly MOSI)_, SDI _(formerly MISO)_ and SCK.
 
 [(More about SDO and SDI)](https://www.oshwa.org/a-resolution-to-redefine-spi-signal-names)
@@ -435,6 +444,13 @@ PineDio Stack's __GPIO Connector__ (at right) exposes the SPI Pins: SDO _(former
 ![PineDio Stack GPIO Connector](https://lupyuen.github.io/images/pinedio-gpio2.jpg)
 
 We __connect our Logic Analyser__ to the GPIO Connector like so...
+
+| GPIO Number | SPI Pin | Connector Pin |
+| :----------: | :------ | :------------: |
+| __`17`__ | Common SDO _(MOSI)_ | `7`
+| __`0`__  | Common SDI _(MISO)_ | `17`
+| __`11`__ | Common SCK | `4`
+| __`5`__ | Debug CS | `2`
 
 ![Logic Analyser connected to PineDio Stack](https://lupyuen.github.io/images/pinedio-logic2.jpg)
 
