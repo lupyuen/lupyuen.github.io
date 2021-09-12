@@ -771,6 +771,20 @@ But the GPIO 0 signal looks glitchy. See the top line, centre part...
 
 Any ideas? 🤔
 
+UPDATE: JF commented...
+
+> About the serial modes of the ST7789, my understanding is that it supports 4 modes :
+
+> - 2 "interface" (I and II) : "I " means that the same pin (SDA in the datasheet) is used as data INPUT and OUTPUT. "II" means it uses 1 pin as INPUT (SDA) and one as OUTPUT (SDO)
+
+> - 3/4 lines : 3 lines means that the driver must output 9 bits for each "byte" sent to the driver (the 9th bit being the data/command bit). In 4 lines, the 4th lines is used to output the data/command bit, allowing the driver to send 8-bits "bytes" on the SPI bus.
+
+> The mode implemented on the PineTime and on this LCD board is the "4-lines interface I" : data/command pin + single MOSI -> SDA pin as data pin. I think we could use the 4-lines interface II mode if we wanted to read data from the display (MOSI -> SDA, MISO -> SDO), but that is not necessary.
+
+> The naming of the pins in the datasheet are really confusing : the controller is advertised (and works) as a SPI device, but the pins are labelled as I²C pins. However, I do confirm that I'm driving the controller using the SPI bus, not the I²C!
+
+[See JF's experiment with PineDio Stack and an external ST7789 display](https://twitter.com/codingfield/status/1436609097344995334)
+
 # Seeking Volunteers!
 
 I'm really excited that PineDio Stack BL604 will be available soon!
