@@ -4,7 +4,25 @@
 
 TODO
 
-I'll be talking about the (pre-production) PineDio Stack Prototype so...
+_Why LoRa?_
+
+TODO: Solar panel, Agriculture
+
+TODO: WiFi lora bt gateway, Very basic functionality, No guaranteed messaging
+
+_Why LoRaWAN?_
+
+TODO: Xmpp, Matrix, Or custom LoRaWAN
+
+_Which Pine64 devices will talk LoRa and LoRaWAN?_
+
+TODO: Pinedio Gateway, PinePhone back cover, Usb dongle
+
+_Is it secure?_
+
+TODO: Glitching
+
+This article describes the (pre-production) __PineDio Stack Prototype__ thus...
 
 > ⚠️ ___Obligatory Disclaimer:__ Features included in The Prototype are not complete, and will most certainly undergo changes before becoming available for public consumption. (Burp) They are described here for testing, exploration, education and entertainment purposes only. The Prototype shall NOT be used in production gadgets. (Like toasters, microwave ovens, and most definitely not, pressure cookers)_
 
@@ -12,25 +30,31 @@ I'll be talking about the (pre-production) PineDio Stack Prototype so...
 
 [__CAUTION__: Always connect the Antenna before Powering On... Or the LoRa Transceiver may get damaged! See this](https://electronics.stackexchange.com/questions/335912/can-i-break-a-radio-tranceiving-device-by-operating-it-with-no-antenna-connected)
 
-# TODO
+# LoRa SX1262 Transceiver
 
 TODO
 
 ![](https://lupyuen.github.io/images/pinedio-lora.png)
 
-TODO2
+# Code Changes
+
+TODO
 
 ![](https://lupyuen.github.io/images/lorawan2-deselect.png)
 
-TODO6
+TODO
 
 ![](https://lupyuen.github.io/images/lorawan2-swap.png)
 
-TODO7
+# Run The Firmware
+
+TODO
 
 ![](https://lupyuen.github.io/images/lorawan2-commands.png)
 
-TODO3
+# ChipStack
+
+TODO
 
 ![](https://lupyuen.github.io/images/lorawan2-chirpstack.png)
 
@@ -38,11 +62,15 @@ TODO4
 
 ![](https://lupyuen.github.io/images/lorawan2-chirpstack2.png)
 
-TODO5
+# Logic Analyser
+
+TODO
 
 ![](https://lupyuen.github.io/images/lorawan2-logic.png)
 
-TODO8
+# Spectrum Analyser
+
+TODO
 
 ![](https://lupyuen.github.io/images/pinedio-chirp2.jpg)
 
