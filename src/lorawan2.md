@@ -2,7 +2,11 @@
 
 📝 _19 Sep 2021_
 
-TODO
+Previously I wrote about testing the prototype __PineDio Stack BL604__ RISC-V Board...
+
+-   [__"PineDio Stack BL604 RISC-V Board: Testing The Prototype"__](https://lupyuen.github.io/articles/pinedio)
+
+Today we dive into one of the most facinating components of the PineDio Stack board: __Semtech SX1262 Transceiver__ for __LoRa and LoRaWAN Wireless Networking__.
 
 _Why LoRa?_
 
@@ -36,9 +40,13 @@ TODO
 
 ![](https://lupyuen.github.io/images/pinedio-lora.png)
 
-# Code Changes
+# LoRaWAN Firmware
 
 TODO
+
+-   [__`pinedio_lorawan`__](https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan)
+
+Sync with pine64
 
 ![](https://lupyuen.github.io/images/lorawan2-deselect.png)
 
@@ -78,9 +86,15 @@ TODO
 
 TODO
 
-https://www.thethingsindustries.com/docs/devices/atecc608a/claim/
+Injecting keys, one-time
 
-https://books.google.com.sg/books?id=3F7XDwAAQBAJ&pg=PA302&lpg=PA302&dq=ATECC608A&source=bl&ots=80tY23LkbA&sig=ACfU3U2Ngp_Rao6FG1hpS2ays4O-vNEkCg&hl=en&sa=X&ved=2ahUKEwi_19-4ovnyAhWXILcAHcpQDaY4MhDoAXoECBIQAw#v=onepage&q=ATECC608A&f=false
+[ATECC608A Library for Helium](https://github.com/helium/ecc508)
+
+["ATECC608A Secure Element on The Things Network"](https://www.thethingsindustries.com/docs/devices/atecc608a/claim/)
+
+["Internet of Things. A Confluence of Many Disciplines"](https://books.google.com.sg/books?id=3F7XDwAAQBAJ&pg=PA302&lpg=PA302&dq=ATECC608A&source=bl&ots=80tY23LkbA&sig=ACfU3U2Ngp_Rao6FG1hpS2ays4O-vNEkCg&hl=en&sa=X&ved=2ahUKEwi_19-4ovnyAhWXILcAHcpQDaY4MhDoAXoECBIQAw#v=onepage&q=ATECC608A&f=false)
+
+["Designing a Community-Driven Decentralized Storage Network for IoT Data"](https://matheo.uliege.be/bitstream/2268.2/11657/12/thesis.pdf)
 
 # What's Next
 
