@@ -6,7 +6,7 @@ Previously I wrote about testing the prototype __PineDio Stack BL604__ RISC-V Bo
 
 -   [__"PineDio Stack BL604 RISC-V Board: Testing The Prototype"__](https://lupyuen.github.io/articles/pinedio)
 
-Today we dive into one of the most fascinating components on the PineDio Stack board: __Semtech SX1262 Transceiver__ for __LoRa and LoRaWAN Wireless Networking__.
+Today we dive into the most fascinating component on the PineDio Stack board: __Semtech SX1262 Transceiver__ for __LoRa and LoRaWAN Networking__.
 
 _Why LoRa?_
 
@@ -14,7 +14,7 @@ LoRa is a __Low-Power, Long-Range, Low-Bandwidth__ wireless network.
 
 LoRa is perfect for __IoT Sensor Devices__ that run on Battery Power. (Or Solar Power)
 
-Since PineDio Stack comes with a __Solar Panel__, it will work really well for Agriculture Sensors.
+Since PineDio Stack comes with a [__Solar Panel__](https://lupyuen.github.io/articles/pinedio), it will work really well for Agriculture Sensors.
 
 (And many other IoT gadgets out there in the sun)
 
@@ -22,7 +22,7 @@ _Will LoRa support all kinds of messages?_
 
 Not quite. LoRa only supports __Short Messages__ of up to [__242 Bytes__](https://lora-developers.semtech.com/documentation/tech-papers-and-guides/lora-and-lorawan).
 
-And because LoRa is a Low Power network, __messages may get dropped.__
+And because LoRa is a Low Power (best effort) network, __messages may get dropped.__
 
 Which is probably OK for sensor devices that send data periodically.
 
@@ -30,21 +30,21 @@ Which is probably OK for sensor devices that send data periodically.
 
 _Is LoRa secure?_
 
-TODO
+LoRa messages are delivered securely when we join a __LoRaWAN Network__.
 
-_Why LoRaWAN?_
+Though our __Security Keys__ would need to be __stored securely__ on PineDio Stack.
 
-TODO: Xmpp, Matrix, Or custom LoRaWAN
+(We'll learn how in a while)
 
 _Which Pine64 devices will talk LoRa and LoRaWAN?_
 
-TODO: Pinedio Gateway, PinePhone back cover, Usb dongle
+Once the drivers are implemented, these Pine64 devices will talk LoRa and LoRaWAN to PineDio Stack...
 
-_Is it secure?_
+1.  [__PineDio LoRa Gateway__](https://wiki.pine64.org/wiki/Pinedio)
 
-TODO: Glitching
+1.  [__PinePhone Backplate for LoRa__](https://wiki.pine64.org/wiki/Pinedio#Pinephone_backplate)
 
-TODO: WiFi lora bt gateway, Very basic functionality
+1.  [__Pine64 USB LoRa Adapter__](https://wiki.pine64.org/wiki/Pinedio#USB_LoRa_adapter)
 
 This article describes the (pre-production) __PineDio Stack Prototype__ thus...
 
@@ -104,9 +104,13 @@ TODO
 
 # Security
 
-TODO
+TODO: Injecting keys, one-time
 
-Injecting keys, one-time
+TODO: Glitching
+
+TODO: WiFi lora bt gateway, Very basic functionality
+
+TODO: Xmpp, Matrix, Or custom LoRaWAN
 
 [ATECC608A Library for Helium](https://github.com/helium/ecc508)
 
