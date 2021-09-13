@@ -78,6 +78,10 @@ TODO
 
 TODO
 
+https://www.thethingsindustries.com/docs/devices/atecc608a/claim/
+
+https://books.google.com.sg/books?id=3F7XDwAAQBAJ&pg=PA302&lpg=PA302&dq=ATECC608A&source=bl&ots=80tY23LkbA&sig=ACfU3U2Ngp_Rao6FG1hpS2ays4O-vNEkCg&hl=en&sa=X&ved=2ahUKEwi_19-4ovnyAhWXILcAHcpQDaY4MhDoAXoECBIQAw#v=onepage&q=ATECC608A&f=false
+
 # What's Next
 
 TODO
