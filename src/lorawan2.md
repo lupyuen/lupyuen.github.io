@@ -118,13 +118,35 @@ TODO: WiFi lora bt gateway, Very basic functionality
 
 TODO: Xmpp, Matrix, Or custom LoRaWAN
 
-[ATECC608A Library for Helium](https://github.com/helium/ecc508)
+-   [ATECC608A Library for Helium](https://github.com/helium/ecc508)
 
-["ATECC608A Secure Element on The Things Network"](https://www.thethingsindustries.com/docs/devices/atecc608a/claim/)
+-   ["ATECC608A Secure Element on The Things Network"](https://www.thethingsindustries.com/docs/devices/atecc608a/claim/)
 
-["Internet of Things. A Confluence of Many Disciplines"](https://books.google.com.sg/books?id=3F7XDwAAQBAJ&pg=PA302&lpg=PA302&dq=ATECC608A&source=bl&ots=80tY23LkbA&sig=ACfU3U2Ngp_Rao6FG1hpS2ays4O-vNEkCg&hl=en&sa=X&ved=2ahUKEwi_19-4ovnyAhWXILcAHcpQDaY4MhDoAXoECBIQAw#v=onepage&q=ATECC608A&f=false)
+-   ["Internet of Things. A Confluence of Many Disciplines"](https://books.google.com.sg/books?id=3F7XDwAAQBAJ&pg=PA302&lpg=PA302&dq=ATECC608A&source=bl&ots=80tY23LkbA&sig=ACfU3U2Ngp_Rao6FG1hpS2ays4O-vNEkCg&hl=en&sa=X&ved=2ahUKEwi_19-4ovnyAhWXILcAHcpQDaY4MhDoAXoECBIQAw#v=onepage&q=ATECC608A&f=false)
 
-["Designing a Community-Driven Decentralized Storage Network for IoT Data"](https://matheo.uliege.be/bitstream/2268.2/11657/12/thesis.pdf)
+-   ["Designing a Community-Driven Decentralized Storage Network for IoT Data"](https://matheo.uliege.be/bitstream/2268.2/11657/12/thesis.pdf)
+
+# Seeking Volunteers!
+
+I'm really excited that PineDio Stack BL604 will be available soon!
+
+But in the meantime, JF and I have __plenty to test on PineDio Stack__...
+
+1.  ST7789 Display _(SPI)_
+1.  LoRa SX1262 _(SPI)_
+1.  SPI Flash _(SPI)_
+1.  Accelerometer _(I2C)_
+1.  Heart Rate Sensor _(I2C)_
+1.  Touch Panel _(I2C)_
+1.  Vibrator _(GPIO)_
+1.  Push Button _(GPIO)_
+1.  WiFi
+1.  Bluetooth LE
+1.  JTAG Debugging
+1.  Battery Charging
+1.  Solar Power
+
+[__Please let us know__](https://twitter.com/MisterTechBlog) if you're keen to help! 🙏
 
 # What's Next
 

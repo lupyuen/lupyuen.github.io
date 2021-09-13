@@ -807,9 +807,9 @@ But in the meantime, JF and I have __plenty to test on PineDio Stack__...
 
 [__Please let us know__](https://twitter.com/MisterTechBlog) if you're keen to help! 🙏
 
-[__UPDATE__: LoRa SX1262 on PineDio Stack has been tested OK! See this](https://twitter.com/MisterTechBlog/status/1436128755987058691)
+__UPDATE__: LoRa SX1262 on PineDio Stack has been tested OK! See this article...
 
-[(Source code of LoRaWAN Firmware for PineDio Stack)](https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan)
+-   [__"LoRaWAN on PineDio Stack BL604 RISC-V Board"__](https://lupyuen.github.io/articles/lorawan2)
 
 ![PineDio Stack BL604 In A Box](https://lupyuen.github.io/images/pinedio-box.jpg)
 
