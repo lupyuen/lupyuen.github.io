@@ -10,7 +10,7 @@ Previously I wrote about testing the prototype __PineDio Stack BL604__ RISC-V Bo
 
 -   [__"PineDio Stack BL604 RISC-V Board: Testing The Prototype"__](https://lupyuen.github.io/articles/pinedio)
 
-Today we dive into the most fascinating component on the PineDio Stack board: __Semtech SX1262 Transceiver__ for __LoRa and LoRaWAN Networking__.
+Today we dive into the most exciting component on PineDio Stack: __Semtech SX1262 Transceiver__ for __LoRa and LoRaWAN Networking__.
 
 _Why LoRa?_
 
