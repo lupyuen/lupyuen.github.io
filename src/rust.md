@@ -857,6 +857,12 @@ Here's how we create the Custom Rust Target for BL602: [`riscv32imacf-unknown-no
 
     [(See this)](https://github.com/lupyuen/bl_iot_sdk/blob/rust/make_scripts_riscv/project.mk#L223-L224)
 
+1.  We set __"`is-builtin`"__ to false since this is a Custom Rust Target...
+
+    ```text
+    "is-builtin": false,
+    ```
+
 1.  Save the modified JSON Target File as...
 
     ```text
@@ -886,7 +892,7 @@ Here's our Custom Rust Target for Hardware Floating-Point: [`riscv32imacf-unknow
   "emit-debug-gdb-scripts": false,
   "executables": true,
   "features": "+m,+a,+c,+f",
-  "is-builtin": true,
+  "is-builtin": false,
   "linker": "rust-lld",
   "linker-flavor": "ld.lld",
   "llvm-abiname": "ilp32f",
@@ -894,23 +900,7 @@ Here's our Custom Rust Target for Hardware Floating-Point: [`riscv32imacf-unknow
   "max-atomic-width": 32,
   "panic-strategy": "abort",
   "relocation-model": "static",
-  "target-pointer-width": "32",
-  "unsupported-abis": [
-    "cdecl",
-    "stdcall",
-    "stdcall-unwind",
-    "fastcall",
-    "vectorcall",
-    "thiscall",
-    "thiscall-unwind",
-    "aapcs",
-    "win64",
-    "sysv64",
-    "ptx-kernel",
-    "msp430-interrupt",
-    "x86-interrupt",
-    "amdgpu-kernel"
-  ]
+  "target-pointer-width": "32"
 }
 ```
 
