@@ -32,7 +32,7 @@ _Is LoRa secure?_
 
 LoRa messages are delivered securely when we join a __LoRaWAN Network__.
 
-Though our __Security Keys__ would need to be __stored securely__ on PineDio Stack.
+Though our __Security Keys__ would also need to be __stored securely__ on PineDio Stack.
 
 (We'll learn how in a while)
 
@@ -40,11 +40,11 @@ _Which Pine64 devices will talk LoRa and LoRaWAN?_
 
 Once the drivers are implemented, these Pine64 devices will talk LoRa and LoRaWAN to PineDio Stack...
 
-1.  [__PineDio LoRa Gateway__](https://wiki.pine64.org/wiki/Pinedio)
+-   [__PineDio LoRa Gateway__](https://wiki.pine64.org/wiki/Pinedio)
 
-1.  [__PinePhone Backplate for LoRa__](https://wiki.pine64.org/wiki/Pinedio#Pinephone_backplate)
+-   [__PinePhone with LoRa Backplate__](https://wiki.pine64.org/wiki/Pinedio#Pinephone_backplate)
 
-1.  [__Pine64 USB LoRa Adapter__](https://wiki.pine64.org/wiki/Pinedio#USB_LoRa_adapter)
+-   [__Pine64 USB LoRa Adapter__](https://wiki.pine64.org/wiki/Pinedio#USB_LoRa_adapter)
 
 This article describes the (pre-production) __PineDio Stack Prototype__ thus...
 
