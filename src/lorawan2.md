@@ -48,9 +48,9 @@ Once the drivers are implemented, these Pine64 devices will talk LoRa and LoRaWA
 
 -   [__PinePhone with LoRa Backplate__](https://wiki.pine64.org/wiki/Pinedio#Pinephone_backplate)
 
--   [__Pine64 USB LoRa Adapter__](https://wiki.pine64.org/wiki/Pinedio#USB_LoRa_adapter)
+-   [__Pine64 LoRa USB Adapter__](https://wiki.pine64.org/wiki/Pinedio#USB_adapter)
 
-![PineDio LoRa Gateway, LoRa Backplate and USB Adapter](https://lupyuen.github.io/images/lorawan2-pine64.jpg)
+![PineDio Gateway, PinePhone Backplate and USB Adapter](https://lupyuen.github.io/images/lorawan2-pine64.jpg)
 
 This article describes the (pre-production) __PineDio Stack Prototype__ thus...
 
