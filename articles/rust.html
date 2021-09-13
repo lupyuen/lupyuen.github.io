@@ -794,6 +794,11 @@ riscv32imc-unknown-none-elf
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/make_scripts_riscv/project.mk#L223-L224">(See this)</a></p>
 </li>
 <li>
+<p>We set <strong>“<code>is-builtin</code>”</strong> to false since this is a Custom Rust Target…</p>
+<pre><code class="language-text">&quot;is-builtin&quot;: false,
+</code></pre>
+</li>
+<li>
 <p>Save the modified JSON Target File as…</p>
 <pre><code class="language-text">riscv32imacf-unknown-none-elf.json
 </code></pre>
@@ -817,7 +822,7 @@ riscv32imc-unknown-none-elf
   &quot;emit-debug-gdb-scripts&quot;: false,
   &quot;executables&quot;: true,
   &quot;features&quot;: &quot;+m,+a,+c,+f&quot;,
-  &quot;is-builtin&quot;: true,
+  &quot;is-builtin&quot;: false,
   &quot;linker&quot;: &quot;rust-lld&quot;,
   &quot;linker-flavor&quot;: &quot;ld.lld&quot;,
   &quot;llvm-abiname&quot;: &quot;ilp32f&quot;,
@@ -825,23 +830,7 @@ riscv32imc-unknown-none-elf
   &quot;max-atomic-width&quot;: 32,
   &quot;panic-strategy&quot;: &quot;abort&quot;,
   &quot;relocation-model&quot;: &quot;static&quot;,
-  &quot;target-pointer-width&quot;: &quot;32&quot;,
-  &quot;unsupported-abis&quot;: [
-    &quot;cdecl&quot;,
-    &quot;stdcall&quot;,
-    &quot;stdcall-unwind&quot;,
-    &quot;fastcall&quot;,
-    &quot;vectorcall&quot;,
-    &quot;thiscall&quot;,
-    &quot;thiscall-unwind&quot;,
-    &quot;aapcs&quot;,
-    &quot;win64&quot;,
-    &quot;sysv64&quot;,
-    &quot;ptx-kernel&quot;,
-    &quot;msp430-interrupt&quot;,
-    &quot;x86-interrupt&quot;,
-    &quot;amdgpu-kernel&quot;
-  ]
+  &quot;target-pointer-width&quot;: &quot;32&quot;
 }
 </code></pre>
 <p><em>How did we figure out the changes for “<code>features</code>” and “<code>llvm-abiname</code>”?</em></p>
