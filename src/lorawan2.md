@@ -6,13 +6,31 @@ Previously I wrote about testing the prototype __PineDio Stack BL604__ RISC-V Bo
 
 -   [__"PineDio Stack BL604 RISC-V Board: Testing The Prototype"__](https://lupyuen.github.io/articles/pinedio)
 
-Today we dive into one of the most facinating components of the PineDio Stack board: __Semtech SX1262 Transceiver__ for __LoRa and LoRaWAN Wireless Networking__.
+Today we dive into one of the most fascinating components on the PineDio Stack board: __Semtech SX1262 Transceiver__ for __LoRa and LoRaWAN Wireless Networking__.
 
 _Why LoRa?_
 
-TODO: Solar panel, Agriculture
+LoRa is a __Low-Power, Long-Range, Low-Bandwidth__ wireless network.
 
-TODO: WiFi lora bt gateway, Very basic functionality, No guaranteed messaging
+LoRa is perfect for __IoT Sensor Devices__ that run on Battery Power. (Or Solar Power)
+
+Since PineDio Stack comes with a __Solar Panel__, it will work really well for Agriculture Sensors.
+
+(And many other IoT gadgets out there in the sun)
+
+_Will LoRa support all kinds of messages?_
+
+Not quite. LoRa only supports __Short Messages__ of up to [__242 Bytes__](https://lora-developers.semtech.com/documentation/tech-papers-and-guides/lora-and-lorawan).
+
+And because LoRa is a Low Power network, __messages may get dropped.__
+
+Which is probably OK for sensor devices that send data periodically.
+
+(But not for texting your friends)
+
+_Is LoRa secure?_
+
+TODO
 
 _Why LoRaWAN?_
 
@@ -25,6 +43,8 @@ TODO: Pinedio Gateway, PinePhone back cover, Usb dongle
 _Is it secure?_
 
 TODO: Glitching
+
+TODO: WiFi lora bt gateway, Very basic functionality
 
 This article describes the (pre-production) __PineDio Stack Prototype__ thus...
 
