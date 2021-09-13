@@ -1,6 +1,8 @@
 # LoRaWAN on PineDio Stack BL604 RISC-V Board
 
-![PineDio Stack BL604 RISC-V Board](https://lupyuen.github.io/images/lorawan2-title.jpg)
+![Tiny tasty treat... PineDio Stack BL604 RISC-V Board](https://lupyuen.github.io/images/lorawan2-title.jpg)
+
+_Tiny tasty treat... PineDio Stack BL604 RISC-V Board_
 
 📝 _19 Sep 2021_
 
