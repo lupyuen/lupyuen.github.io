@@ -1,5 +1,7 @@
 # LoRaWAN on PineDio Stack BL604 RISC-V Board
 
+![PineDio Stack BL604 RISC-V Board](https://lupyuen.github.io/images/lorawan2-title.jpg)
+
 📝 _19 Sep 2021_
 
 Previously I wrote about testing the prototype __PineDio Stack BL604__ RISC-V Board...
@@ -46,11 +48,13 @@ Once the drivers are implemented, these Pine64 devices will talk LoRa and LoRaWA
 
 -   [__Pine64 USB LoRa Adapter__](https://wiki.pine64.org/wiki/Pinedio#USB_LoRa_adapter)
 
+![PineDio LoRa Gateway, LoRa Backplate and USB Adapter](https://lupyuen.github.io/images/lorawan2-pine64.jpg)
+
 This article describes the (pre-production) __PineDio Stack Prototype__ thus...
 
 > ⚠️ ___Obligatory Disclaimer:__ Features included in The Prototype are not complete, and will most certainly undergo changes before becoming available for public consumption. (Burp) They are described here for testing, exploration, education and entertainment purposes only. The Prototype shall NOT be used in production gadgets. (Like toasters, microwave ovens, and most definitely not, pressure cookers)_
 
-![LoRa SX1262 Transceiver on PineDio Stack BL604](https://lupyuen.github.io/images/lorawan2-title.jpg)
+![LoRa SX1262 Transceiver on PineDio Stack BL604](https://lupyuen.github.io/images/lorawan2-board.jpg)
 
 [__CAUTION__: Always connect the Antenna before Powering On... Or the LoRa Transceiver may get damaged! See this](https://electronics.stackexchange.com/questions/335912/can-i-break-a-radio-tranceiving-device-by-operating-it-with-no-antenna-connected)
 
