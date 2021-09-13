@@ -62,6 +62,10 @@ This article describes the (pre-production) __PineDio Stack Prototype__ thus...
 
 # LoRa SX1262 Transceiver
 
+According to the PineDio Stack Schematic...
+
+-   [__PineDio Stack Schematic (Prototype)__](https://wiki.pine64.org/wiki/Pinedio#PineDio_Stack)
+
 TODO
 
 ![](https://lupyuen.github.io/images/pinedio-lora.png)

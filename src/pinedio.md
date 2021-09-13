@@ -72,7 +72,9 @@ And we get an unusual contraption: A __Solar Panel with LCD Display inside__!
 
 ![Solar Panel with an LCD Display inside](https://lupyuen.github.io/images/pinedio-display5.jpg)
 
-We're ready to test our firmware on PineDio Stack!
+We're ready to test our firmware on PineDio Stack! We'll follow this schematic...
+
+-   [__PineDio Stack Schematic (Prototype)__](https://wiki.pine64.org/wiki/Pinedio#PineDio_Stack)
 
 # BL604 Blinky
 
@@ -530,7 +532,12 @@ All PineDio Stack Developers should ensure that __GLB_Swap_SPI_0_MOSI_With_MISO 
 
 Now that PineDio Stack SPI is OK, let's __draw something on the ST7789 Display__!
 
-The schematic above says that the ST7789 SPI Display is connected on these pins...
+According to the PineDio Stack Schematic...
+
+-   [__PineDio Stack Schematic (Prototype)__](https://wiki.pine64.org/wiki/Pinedio#PineDio_Stack)
+
+The ST7789 SPI Display is connected on these pins...
+
 -   __GPIO 20:__ SPI Chip Select
 
 -   __GPIO 0:__ SPI SDI _(MISO)_
