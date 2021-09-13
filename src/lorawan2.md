@@ -80,7 +80,7 @@ TODO
 
 ![](https://lupyuen.github.io/images/lorawan2-commands.png)
 
-# ChipStack
+# LoRaWAN Gateway
 
 TODO
 
