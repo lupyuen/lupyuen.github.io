@@ -137,7 +137,7 @@
 <p><a href="https://www.oshwa.org/a-resolution-to-redefine-spi-signal-names">(More about SDO and SDI)</a></p>
 <p>We set the <strong>Chip Select Pin (CS)</strong> to Low to select the <strong>Active SPI Device</strong>: Either LoRa SX1262, SPI Flash or ST7789 Display…</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-spi.jpg" alt="SPI Bus on PineDio Stack" /></p>
-<p>To test the LoRa SX1262 Transceiver, we define the <strong>GPIO Pin Numbers</strong> like so: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/components/3rdparty/lora-sx1262/include/sx126x-board.h#L36-L50"><code>lora-sx1262 / sx126x-board.h</code></a></p>
+<p>To test the LoRa SX1262 Transceiver, we define the <strong>GPIO Pin Numbers</strong> like so: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/components/3rdparty/lora-sx1262/include/sx126x-board.h#L36-L50">lora-sx1262/sx126x-board.h</a></p>
 <pre><code class="language-c">//  Below are the pin numbers for PineDio Stack BL604 with onboard SX1262.
 #define SX126X_SPI_IDX           0  //  SPI Port 0
 #define SX126X_SPI_SDI_PIN       0  //  SPI Serial Data In Pin  (formerly MISO)
@@ -153,7 +153,7 @@
 #define SX126X_SPI_BAUDRATE  (200 * 1000)  //  SPI Frequency (200 kHz)
 </code></pre>
 <p>(<code>SX126X_DEBUG_CS_PIN</code> should be set to <code>-1</code> if we’re not debugging. More about this later)</p>
-<p>We define the <strong>Chip Select Pins</strong> for SPI Flash and ST7789 Display as well: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/pinedio_lorawan/pinedio_lorawan/demo.c#L101-L105"><code>pinedio_lorawan / demo.c</code></a></p>
+<p>We define the <strong>Chip Select Pins</strong> for SPI Flash and ST7789 Display as well: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/pinedio_lorawan/pinedio_lorawan/demo.c#L101-L105">pinedio_lorawan/demo.c</a></p>
 <pre><code class="language-c">/// GPIO for SPI Flash Chip Select Pin. We must set this to High to deselect SPI Flash.
 #define FLASH_CS_PIN     14
 
@@ -181,7 +181,7 @@
 <p>Here are the changes we made for PineDio Stack.</p>
 <h2 id="deselect-spi-peripherals" class="section-header"><a href="#deselect-spi-peripherals">2.1 Deselect SPI Peripherals</a></h2>
 <p>While testing LoRaWAN (and LoRa SX1262), we need to <strong>deselect all other SPI Peripherals</strong> (SPI Flash and ST7789 Display).</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/pinedio_lorawan/pinedio_lorawan/demo.c#L107-L130"><code>pinedio_lorawan / demo.c</code></a> …</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/pinedio_lorawan/pinedio_lorawan/demo.c#L107-L130">pinedio_lorawan/demo.c</a> …</p>
 <pre><code class="language-c">/// Set Chip Select pins to High, to deselect SX1262, SPI Flash and ST7789
 int deselect_spi(void) {
   //  Configure Chip Select pins as GPIO Output Pins (instead of GPIO Input)
@@ -210,8 +210,8 @@ int deselect_spi(void) {
 <p><img src="https://lupyuen.github.io/images/lorawan2-deselect.png" alt="Deselect SPI Peripherals" /></p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L167-L173">(Source)</a></p>
 <h2 id="swap-spi-pins" class="section-header"><a href="#swap-spi-pins">2.2 Swap SPI Pins</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/components/3rdparty/lora-sx1262/src/sx126x-board.c#L168-L202"><code>lora-sx1262 / sx126x-board.c</code></a></p>
+<p>Due to a quirk in the SPI implementation on BL602 and BL604, we need to <strong>swap the SPI Pins</strong> for SDI <em>(formerly MISO)</em> and SDO <em>(formerly MOSI)</em>.</p>
+<p>We do this by calling <strong>GLB_Swap_SPI_0_MOSI_With_MISO</strong> in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/components/3rdparty/lora-sx1262/src/sx126x-board.c#L168-L202">lora-sx1262/sx126x-board.c</a> …</p>
 <pre><code class="language-c">/// Initialise GPIO Pins and SPI Port. Called by SX126xIoIrqInit.
 void SX126xIoInit( void ) {
   //  Configure the pins for GPIO Input / Output
@@ -220,10 +220,13 @@ void SX126xIoInit( void ) {
   GpioInitInput( SX126X_DIO1, 0, 0 );
   if (SX126X_DEBUG_CS_PIN &gt;= 0) { GpioInitOutput( SX126X_DEBUG_CS_PIN, 1 ); }
 
-  //  Note: We must swap MISO and MOSI to comply with the SPI Pin Definitions in BL602 / BL604 Reference Manual
+  //  Note: We must swap SDI (MISO) and SDO (MOSI)
+  //  to comply with the SPI Pin Definitions in 
+  //  BL602 / BL604 Reference Manual
   int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);
 </code></pre>
-<p>TODO</p>
+<p><a href="https://lupyuen.github.io/articles/pinedio#spi-pins-are-swapped">(More about swapping SPI Pins)</a></p>
+<p>After swapping the SPI Pins we may <strong>initialise the SPI Port</strong>…</p>
 <pre><code class="language-c">  //  Configure the SPI Port
   rc = spi_init(
     &amp;spi_device,     //  SPI Device
@@ -244,9 +247,13 @@ void SX126xIoInit( void ) {
   assert(rc == 0);
 }
 </code></pre>
-<p>TODO: This code comes from</p>
+<p>Note that the <strong>SPI Polarity-Phase should be 1</strong> and not 0.</p>
+<p>This seems to be another quirk of the SPI implementation on BL602 and BL604…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/spi#spi-phase-looks-sus"><strong>“SPI Phase looks sus”</strong></a></li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/lorawan2-swap.png" alt="Swap SPI Pins" /></p>
-<p>TODO: Sync with pine64</p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/components/3rdparty/lora-sx1262/src/sx126x-board.c#L168-L202">(Source)</a></p>
 <h1 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">3 Run The Firmware</a></h1>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan#lorawan-commands"><code>pinedio_lorawan</code></a></p>
@@ -369,7 +376,12 @@ las_app_tx 2 5 0
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lorawan2.md"><code>lupyuen.github.io/src/lorawan2.md</code></a></p>
 <h1 id="notes" class="section-header"><a href="#notes">10 Notes</a></h1>
 <ol>
-<li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1436128755987058691">this Twitter Thread</a></li>
+<li>
+<p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1436128755987058691">this Twitter Thread</a></p>
+</li>
+<li>
+<p>TODO: Sync with pine64</p>
+</li>
 </ol>
 
     
