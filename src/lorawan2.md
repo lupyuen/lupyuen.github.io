@@ -328,6 +328,8 @@ TODO: WiFi lora bt gateway, Very basic functionality
 
 TODO: Xmpp, Matrix, Or custom LoRaWAN
 
+-   [Arduino Portenta H7 Lite with ATECC608 ](https://www.cnx-software.com/2021/09/14/portenta-h7-lite-low-cost-arduino-pro-board/)
+
 -   [ATECC608A Library for Helium](https://github.com/helium/ecc508)
 
 -   ["ATECC608A Secure Element on The Things Network"](https://www.thethingsindustries.com/docs/devices/atecc608a/claim/)
