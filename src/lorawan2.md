@@ -386,6 +386,8 @@ TODO
 
 The Things Network
 
+Sorry for griping... But why doesn't Singapore have decent coverage for The Things Network? 🙄
+
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
 -   [Read "The RISC-V BL602 / BL604 Book"](https://lupyuen.github.io/articles/book)
