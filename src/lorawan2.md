@@ -342,6 +342,8 @@ TODO: Injecting keys, one-time
 
 TODO: Glitching
 
+https://limitedresults.com/2019/11/pwn-the-esp32-forever-flash-encryption-and-sec-boot-keys-extraction/
+
 TODO: WiFi lora bt gateway, Very basic functionality
 
 TODO: Xmpp, Matrix, Or custom LoRaWAN
@@ -381,6 +383,8 @@ But in the meantime, JF and I have __plenty to test on PineDio Stack__...
 # What's Next
 
 TODO
+
+The Things Network
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
