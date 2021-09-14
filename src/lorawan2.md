@@ -253,15 +253,21 @@ Now we run the __LoRaWAN commands__ to...
 
 1.  __Join a LoRaWAN Network__
 
+    (Because we'll transmit data securely over LoRa)
+
 1.  __Send a Data Packet__ to the network
+
+    (So that the packet appears in our LoRaWAN Gateway)
 
 TODO
 
 ![LoRaWAN Commands](https://lupyuen.github.io/images/lorawan2-commands.png)
 
+[(Source)](https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan#lorawan-commands)
+
 ## LoRaWAN Commands
 
-At the BL602 Command Prompt, enter these LoRaWAN Commands: [pinedio_lorawan](https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan#lorawan-commands)
+At the BL602 Command Prompt, enter these __LoRaWAN Commands__...
 
 ```bash
 ##  Start LoRa background task
