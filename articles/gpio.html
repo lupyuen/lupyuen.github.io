@@ -437,16 +437,21 @@ extern uint8_t __global_pointer_head$[0x498];</pre></div><h2 id="pull-request-an
 <p>Let’s learn how it works: <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/.github/workflows/main.yml"><code>.github/workflows/main.yml</code></a></p>
 <h2 id="trigger-conditions" class="section-header"><a href="#trigger-conditions">8.1 Trigger Conditions</a></h2>
 <p>At the top of the GitHub Actions Workflow, we state the conditions that will trigger the Automated Build…</p>
-<div class="example-wrap"><pre class="language-yaml">name: Build Firmware
+<div class="example-wrap"><pre class="language-yaml"># Name of this Workflow
+name: Build Firmware
 
+# When to run this Workflow...
 on:
+  # Run this Workflow when files are updated (Pushed) in this Branch
   push:
     branches: [ main ]    </pre></div>
 <p>This says that the Automated Build will be triggered whenever we commit code to the <code>main</code> branch.</p>
 <h2 id="build-environment" class="section-header"><a href="#build-environment">8.2 Build Environment</a></h2>
 <p>We’ll use an Ubuntu x64 virtual machine (hosted at GitHub) to compile our code…</p>
-<div class="example-wrap"><pre class="language-yaml">jobs:
+<div class="example-wrap"><pre class="language-yaml"># Steps to run for the Workflow
+jobs:
   build:
+    # Run these steps on Ubuntu
     runs-on: ubuntu-latest</pre></div><h2 id="checkout-source-files" class="section-header"><a href="#checkout-source-files">8.3 Checkout Source Files</a></h2>
 <p>Here begins the steps for our Mynewt + BL602 SDK Automated Build with GitHub Actions.</p>
 <p>First we check out the source files from the repo recursively, including the following submodules…</p>
@@ -498,6 +503,7 @@ restore-keys: Linux-build-cache-newt</pre></div>
 <div class="example-wrap"><pre class="language-text">key: Linux-build-cache-newt</pre></div><h2 id="download-and-build-newt" class="section-header"><a href="#download-and-build-newt">8.5 Download and Build newt</a></h2>
 <p>Here’s how we download and build <code>newt</code> if it doesn’t exist in our cache…</p>
 <div class="example-wrap"><pre class="language-yaml">    - name: Install newt
+      # Install newt if not found in cache
       if:   steps.cache-newt.outputs.cache-hit != &#39;true&#39;  
       run:  |
         source scripts/install-version.sh
@@ -510,7 +516,8 @@ restore-keys: Linux-build-cache-newt</pre></div>
         newt version</pre></div>
 <p>(We set <code>mynewt_version</code> to <code>mynewt_1_8_0_tag</code> in <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/scripts/install-version.sh"><code>scripts/install-version.sh</code></a>)</p>
 <p>Note the condition: We execute this step only when <code>newt</code> doesn’t exist in our cache…</p>
-<div class="example-wrap"><pre class="language-yaml">      if:   steps.cache-newt.outputs.cache-hit != &#39;true&#39;</pre></div>
+<div class="example-wrap"><pre class="language-yaml">      # Install newt if not found in cache
+      if:   steps.cache-newt.outputs.cache-hit != &#39;true&#39;</pre></div>
 <p>(<code>steps.cache-newt</code> refers to the cache checking from the previous step)</p>
 <p>After building <code>newt</code>, the Cache Action <code>actions/cache</code> (from the previous step) caches our <code>newt</code> folder…</p>
 <div class="example-wrap"><pre class="language-text">path:  /home/runner/work/_temp/mynewt-newt</pre></div>
@@ -545,6 +552,7 @@ restore-keys: Linux-build-cache-toolchain</pre></div>
 <h2 id="download-gcc-compiler" class="section-header"><a href="#download-gcc-compiler">8.8 Download GCC Compiler</a></h2>
 <p>If the GCC Compiler doesn’t exist in our cache, we download the <a href="https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases"><strong>xPack RISC-V Toolchain: <code>xpack-riscv-none-embed-gcc</code></strong></a></p>
 <div class="example-wrap"><pre class="language-yaml">    - name: Install xPack RISC-V Toolchain xpack-riscv-none-embed-gcc
+      # Install toolchain if not found in cache
       if:   steps.cache-toolchain.outputs.cache-hit != &#39;true&#39;  
       run:  |
         wget -qO- https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases/download/v8.3.0-2.3/xpack-riscv-none-embed-gcc-8.3.0-2.3-linux-x64.tar.gz | tar -xz
@@ -560,10 +568,13 @@ restore-keys: Linux-build-cache-toolchain</pre></div>
         export PATH=$PATH:${{ runner.temp }}/mynewt-newt/newt
         ./scripts/build-app.sh</pre></div>
 <p>This sets the path of <code>newt</code> and calls the build script: <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/scripts/build-app.sh"><code>scripts/build-app.sh</code></a></p>
-<div class="example-wrap"><pre class="language-bash">export PATH=&quot;$PWD/xpack-riscv-none-embed-gcc/bin:$PATH&quot;
+<div class="example-wrap"><pre class="language-bash">#  Add GCC to the PATH
+export PATH=&quot;$PWD/xpack-riscv-none-embed-gcc/bin:$PATH&quot;
 
+#  Build the Mynewt Firmware
 newt build pinecone_app
 
+#  Display the firmware size
 newt size -v pinecone_app</pre></div>
 <p>We can see the results of the Automated Build here (please log in to GitHub first)…</p>
 <ul>

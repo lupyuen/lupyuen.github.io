@@ -564,10 +564,13 @@ static const uint8_t image_data[] = {  //  Should be 115,200 bytes
 ...</pre></div>
 <p>(That’s 240 pixel rows * 240 pixel columns * 2 bytes per pixel)</p>
 <p>To create our own <code>image.inc</code>, prepare a 240 x 240 PNG file named <code>image.png</code>. Then do this…</p>
-<div class="example-wrap"><pre class="language-bash">git clone https://github.com/lupyuen/pinetime-graphic
+<div class="example-wrap"><pre class="language-bash"># Download the pinetime-graphic source code
+git clone https://github.com/lupyuen/pinetime-graphic
 cd pinetime-graphic
 
+# TODO: Copy image.png to the pinetime-graphic folder
 
+# Convert the PNG file to a C array
 cargo run -v image.png &gt;image.inc</pre></div>
 <p><a href="https://github.com/lupyuen/pinetime-graphic">(Check out the <code>pinetime-graphic</code> source code here)</a></p>
 <h2 id="st7789-display-window" class="section-header"><a href="#st7789-display-window">6.2 ST7789 Display Window</a></h2>
@@ -595,14 +598,19 @@ int set_window(uint8_t left, uint8_t top, uint8_t right, uint8_t bottom) {
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/releases/tag/v4.0.1"><strong><code>sdk_app_st7789</code> Binary Release</strong></a></li>
 </ul>
 <p>Alternatively, we may build the Firmware Binary File <code>sdk_app_st7789.bin</code> from the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/st7789/customer_app/sdk_app_st7789">source code</a>…</p>
-<div class="example-wrap"><pre class="language-bash">git clone --recursive --branch st7789 https://github.com/lupyuen/bl_iot_sdk
+<div class="example-wrap"><pre class="language-bash"># Download the st7789 branch of lupyuen&#39;s bl_iot_sdk
+git clone --recursive --branch st7789 https://github.com/lupyuen/bl_iot_sdk
 cd bl_iot_sdk/customer_app/sdk_app_st7789
 
+# TODO: Replace sdk_app_st7789/image.inc
+# by Our Favourite Cat. See https://lupyuen.github.io/articles/display#modding-the-photo
 
+# TODO: Change this to the full path of bl_iot_sdk
 export BL60X_SDK_PATH=$HOME/bl_iot_sdk
 export CONFIG_CHIP_NAME=BL602
 make
 
+# TODO: Change ~/blflash to the full path of blflash
 cp build_out/sdk_app_st7789.bin ~/blflash</pre></div>
 <p><a href="https://lupyuen.github.io/articles/pinecone#building-firmware">More details on building bl_iot_sdk</a></p>
 <p>(Remember to use the <strong><code>st7789</code></strong> branch, not the default <strong><code>master</code></strong> branch)</p>
@@ -655,16 +663,20 @@ cp build_out/sdk_app_st7789.bin ~/blflash</pre></div>
 </li>
 </ol>
 <p>Enter these commands to flash <code>sdk_app_st7789.bin</code> to BL602 over UART…</p>
-<div class="example-wrap"><pre class="language-bash">cd ~/blflash
+<div class="example-wrap"><pre class="language-bash"># TODO: Change ~/blflash to the full path of blflash
+cd ~/blflash
 
+# For Linux:
 sudo cargo run flash sdk_app_st7789.bin \
     --port /dev/ttyUSB0
 
+# For macOS:
 cargo run flash sdk_app_st7789.bin \
     --port /dev/tty.usbserial-1420 \
     --initial-baud-rate 230400 \
     --baud-rate 230400
 
+# For Windows: Change COM5 to the BL602 Serial Port
 cargo run flash sdk_app_st7789.bin --port COM5</pre></div>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">More details on flashing firmware</a></p>
 <h2 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">7.2 Run the firmware</a></h2>
@@ -1386,20 +1398,27 @@ void __assert_func(const char *file, int line,
 }</pre></div><h1 id="appendix-macos-script-to-build-flash-and-run-bl602-firmware" class="section-header"><a href="#appendix-macos-script-to-build-flash-and-run-bl602-firmware">16 Appendix: macOS Script to Build, Flash and Run BL602 Firmware</a></h1>
 <p>Here’s the script I use on macOS to automate the building, flashing and running of BL602 firmware: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/run.sh#L1-L32"><code>run.sh</code></a></p>
 <div class="example-wrap"><pre class="language-bash">#!/usr/bin/env bash
+#  macOS script to build, flash and run BL602 Firmware
 
 set -e  #  Exit when any command fails
 set -x  #  Echo commands
 
+#  Build for BL602
 export CONFIG_CHIP_NAME=BL602
 
+#  Where BL602 IoT SDK is located
 export BL60X_SDK_PATH=$PWD/../..
 
+#  Where blflash is located
 export BLFLASH_PATH=$PWD/../../../blflash
 
+#  Build the firmware
 make
 
+#  Copy firmware to blflash
 cp build_out/sdk_app_st7789.bin $BLFLASH_PATH
 
+#  Flash the firmware
 pushd $BLFLASH_PATH
 cargo run flash sdk_app_st7789.bin \
     --port /dev/tty.usbserial-1420 \
@@ -1408,6 +1427,7 @@ cargo run flash sdk_app_st7789.bin \
 sleep 5
 popd
 
+#  Run the firmware
 open -a CoolTerm</pre></div>
 <p>Note that we need to flip the jumper for GPIO 8 and press the Reset Button, before and after flashing the firmware.</p>
 <h1 id="appendix-st7789-reset-backlight-and-delay" class="section-header"><a href="#appendix-st7789-reset-backlight-and-delay">17 Appendix: ST7789 Reset, Backlight and Delay</a></h1>

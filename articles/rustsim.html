@@ -177,13 +177,18 @@
 <h1 id="build-bl602-firmware-for-webassembly" class="section-header"><a href="#build-bl602-firmware-for-webassembly">2 Build BL602 Firmware for WebAssembly</a></h1>
 <p>We’ve created a <a href="https://github.com/lupyuen/bl602-simulator/blob/main/Makefile"><strong>Makefile</strong></a> that builds the above BL602 Rust Firmware into WebAssembly.</p>
 <p>Here’s how we use it…</p>
-<div class="example-wrap"><pre class="language-bash">. ~/emsdk/emsdk_env.sh
+<div class="example-wrap"><pre class="language-bash"># Configure emscripten. See https://emscripten.org/docs/getting_started/downloads.html
+# For Windows: emsdk\emsdk_env.bat
+. ~/emsdk/emsdk_env.sh
 
+# Download source code
 git clone --recursive https://github.com/lupyuen/bl602-simulator
 cd bl602-simulator
 
+# Compile the Rust Firmware, Rust Simulator Library and link with Emscripten
 make
-</pre></div>
+
+# Produces outputs in the `docs` folder: wasm.js, wasm.wasm</pre></div>
 <p>This produces the JavaScript and WebAssembly files <strong><code>wasm.js</code> and <code>wasm.wasm</code></strong>, which we’ll run in a Web Browser later.</p>
 <p><em>What’s inside the Makefile?</em></p>
 <p>Our <a href="https://github.com/lupyuen/bl602-simulator/blob/main/Makefile">Makefile</a> does the following…</p>
@@ -201,7 +206,8 @@ make
 <p><img src="https://lupyuen.github.io/images/rustsim-build.png" alt="Compile Rust Firmware into WebAssembly" /></p>
 <h2 id="compile-rust-firmware-into-webassembly" class="section-header"><a href="#compile-rust-firmware-into-webassembly">2.1 Compile Rust Firmware into WebAssembly</a></h2>
 <p>To compile our <strong>Rust Firmware into WebAssembly</strong>, our <a href="https://github.com/lupyuen/bl602-simulator/blob/main/Makefile#L57-L58">Makefile</a> calls this command…</p>
-<div class="example-wrap"><pre class="language-bash">cargo build --target wasm32-unknown-emscripten</pre></div>
+<div class="example-wrap"><pre class="language-bash"># Compile the Rust Firmware and Rust Simulator Library into WebAssembly
+cargo build --target wasm32-unknown-emscripten</pre></div>
 <p>This compiles three <strong>Rust Projects</strong>…</p>
 <ol>
 <li>
@@ -266,7 +272,8 @@ crate-type = [&quot;staticlib&quot;]  # And will be a Static Library</pre></div>
 </ol>
 <p>We’ll use the <a href="https://emscripten.org/"><strong>Emscripten WebAssembly Runtime</strong></a>.</p>
 <p>Our <a href="https://github.com/lupyuen/bl602-simulator/blob/main/Makefile#L60-L65">Makefile</a> links the <strong>Rust Firmware with Emscripten</strong> like so…</p>
-<div class="example-wrap"><pre class="language-text">emcc -o wasm/wasm.html \
+<div class="example-wrap"><pre class="language-text"># Link the Rust Firmware and Rust Simulator Library with Emscripten
+emcc -o wasm/wasm.html \
   target/wasm32-unknown-emscripten/debug/libapp.a \
   target/wasm32-unknown-emscripten/debug/libbl602_simulator.a \
   wasm/wasm.o \
@@ -308,7 +315,8 @@ crate-type = [&quot;staticlib&quot;]  # And will be a Static Library</pre></div>
 </li>
 </ul>
 <p>Our <a href="https://github.com/lupyuen/bl602-simulator/blob/main/Makefile#L67-L69">Makefile</a> copies the <strong>JavaScript and WebAssembly</strong> outputs to the <strong><code>docs</code></strong> folder…</p>
-<div class="example-wrap"><pre class="language-text">cp wasm/wasm.js   docs
+<div class="example-wrap"><pre class="language-text"># Copy the WebAssembly outputs to the docs folder for GitHub Pages
+cp wasm/wasm.js   docs
 cp wasm/wasm.wasm docs</pre></div>
 <p>So that we may test the WebAssembly outputs with a Local Web Server.</p>
 <p><em>What about the HTML file <code>wasm.html</code>?</em></p>

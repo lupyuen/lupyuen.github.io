@@ -322,13 +322,16 @@ static void send_data(const uint8_t* data, uint32_t data_len) {
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/releases/tag/v5.0.0"><strong><code>sdk_app_uart_eink</code> Binary Release</strong></a></li>
 </ul>
 <p>Alternatively, we may build the Firmware Binary File <code>sdk_app_uart_eink.bin</code> from the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/eink/customer_app/sdk_app_uart_eink">source code</a>…</p>
-<div class="example-wrap"><pre class="language-bash">git clone --recursive --branch eink https://github.com/lupyuen/bl_iot_sdk
+<div class="example-wrap"><pre class="language-bash"># Download the eink branch of lupyuen&#39;s bl_iot_sdk
+git clone --recursive --branch eink https://github.com/lupyuen/bl_iot_sdk
 cd bl_iot_sdk/customer_app/sdk_app_uart_eink
 
+# TODO: Change this to the full path of bl_iot_sdk
 export BL60X_SDK_PATH=$HOME/bl_iot_sdk
 export CONFIG_CHIP_NAME=BL602
 make
 
+# TODO: Change ~/blflash to the full path of blflash
 cp build_out/sdk_app_uart_eink.bin ~/blflash</pre></div>
 <p><a href="https://lupyuen.github.io/articles/pinecone#building-firmware">More details on building bl_iot_sdk</a></p>
 <p>(Remember to use the <strong><code>eink</code></strong> branch, not the default <strong><code>master</code></strong> branch)</p>
@@ -381,16 +384,20 @@ cp build_out/sdk_app_uart_eink.bin ~/blflash</pre></div>
 </li>
 </ol>
 <p>Enter these commands to flash <code>sdk_app_uart_eink.bin</code> to BL602 over UART…</p>
-<div class="example-wrap"><pre class="language-bash">cd ~/blflash
+<div class="example-wrap"><pre class="language-bash"># TODO: Change ~/blflash to the full path of blflash
+cd ~/blflash
 
+# For Linux:
 sudo cargo run flash sdk_app_uart_eink.bin \
     --port /dev/ttyUSB0
 
+# For macOS:
 cargo run flash sdk_app_uart_eink.bin \
     --port /dev/tty.usbserial-1420 \
     --initial-baud-rate 230400 \
     --baud-rate 230400
 
+# For Windows: Change COM5 to the BL602 Serial Port
 cargo run flash sdk_app_uart_eink.bin --port COM5</pre></div>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">More details on flashing firmware</a></p>
 <h2 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">6.2 Run the firmware</a></h2>
@@ -432,7 +439,8 @@ cargo run flash sdk_app_uart_eink.bin --port COM5</pre></div>
 <li>
 <p>Press the Reset Button.</p>
 <p>We should see BL602 starting our firmware…</p>
-<div class="example-wrap"><pre class="language-text">Booting BL602 Chip...
+<div class="example-wrap"><pre class="language-text"># ▒Starting bl602 now....
+Booting BL602 Chip...
 ██████╗ ██╗      ██████╗  ██████╗ ██████╗
 ██╔══██╗██║     ██╔════╝ ██╔═████╗╚════██╗
 ██████╔╝██║     ███████╗ ██║██╔██║ █████╔╝
@@ -555,12 +563,16 @@ const unsigned char IMAGE_RED[] = {
 </li>
 </ol>
 <p>Here’s how we convert the PNG file <a href="https://github.com/lupyuen/pinetime-graphic/blob/master/uart-cartoon2.png"><code>uart-cartoon2.png</code></a> (202 x 104 resolution) to the C arrays <code>image_black.inc</code> (black bitmap) and <code>image_red.inc</code> (red bitmap)..</p>
-<div class="example-wrap"><pre class="language-bash">git clone https://github.com/lupyuen/pinetime-graphic
+<div class="example-wrap"><pre class="language-bash"># Download the source code
+git clone https://github.com/lupyuen/pinetime-graphic
 cd pinetime-graphic
 
+# TODO: Copy uart-cartoon2.png to the pinetime-graphic folder
 
+# Convert the PNG file to a C array (black bitmap) with these min and max thresholds
 cargo run -- --min 0  --max 85  uart-cartoon2.png &gt;image_black.inc
 
+# Convert the PNG file to a C array (red bitmap) with these min and max thresholds
 cargo run -- --min 86 --max 215 uart-cartoon2.png &gt;image_red.inc</pre></div>
 <ul>
 <li>

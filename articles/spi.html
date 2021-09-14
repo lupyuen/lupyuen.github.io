@@ -526,13 +526,16 @@ static void test_spi_transfer(char *buf, int len, int argc, char **argv) {
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/releases/tag/v3.0.0"><strong>Binary Release of <code>sdk_app_spi</code></strong></a></li>
 </ul>
 <p>Alternatively, we may build the Firmware Binary File <code>sdk_app_spi.bin</code> from the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/spi/customer_app/sdk_app_spi">source code</a>…</p>
-<div class="example-wrap"><pre class="language-bash">git clone --recursive --branch spi https://github.com/lupyuen/bl_iot_sdk
+<div class="example-wrap"><pre class="language-bash"># Download the spi branch of lupyuen&#39;s bl_iot_sdk
+git clone --recursive --branch spi https://github.com/lupyuen/bl_iot_sdk
 cd bl_iot_sdk/customer_app/sdk_app_spi
 
+# TODO: Change this to the full path of bl_iot_sdk
 export BL60X_SDK_PATH=$HOME/bl_iot_sdk
 export CONFIG_CHIP_NAME=BL602
 make
 
+# TODO: Change ~/blflash to the full path of blflash
 cp build_out/sdk_app_spi.bin ~/blflash</pre></div>
 <p><a href="https://lupyuen.github.io/articles/pinecone#building-firmware">More details on building bl_iot_sdk</a></p>
 <p>(Remember to use the <strong><code>spi</code></strong> branch, not the default <strong><code>master</code></strong> branch)</p>
@@ -585,16 +588,20 @@ cp build_out/sdk_app_spi.bin ~/blflash</pre></div>
 </li>
 </ol>
 <p>Enter these commands to flash <code>sdk_app_spi.bin</code> to BL602 over UART…</p>
-<div class="example-wrap"><pre class="language-bash">cd ~/blflash
+<div class="example-wrap"><pre class="language-bash"># TODO: Change ~/blflash to the full path of blflash
+cd ~/blflash
 
+# For Linux:
 sudo cargo run flash sdk_app_spi.bin \
     --port /dev/ttyUSB0
 
+# For macOS:
 cargo run flash sdk_app_spi.bin \
     --port /dev/tty.usbserial-1420 \
     --initial-baud-rate 230400 \
     --baud-rate 230400
 
+# For Windows: Change COM5 to the BL602 Serial Port
 cargo run flash sdk_app_spi.bin --port COM5</pre></div>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">More details on flashing firmware</a></p>
 <h2 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">6.2 Run the firmware</a></h2>

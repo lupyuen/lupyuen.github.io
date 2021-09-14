@@ -543,13 +543,16 @@ static void test_i2c_stop(i2c_msg_t *msg) {
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/releases/tag/v2.0.0"><strong>Binary Release of <code>sdk_app_i2c</code></strong></a></li>
 </ul>
 <p>Alternatively, we may build the Firmware Binary File <code>sdk_app_i2c.bin</code> from the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/i2c/customer_app/sdk_app_i2c">source code</a>…</p>
-<div class="example-wrap"><pre class="language-bash">git clone --recursive --branch i2c https://github.com/lupyuen/bl_iot_sdk
+<div class="example-wrap"><pre class="language-bash"># Download the i2c branch of lupyuen&#39;s bl_iot_sdk
+git clone --recursive --branch i2c https://github.com/lupyuen/bl_iot_sdk
 cd bl_iot_sdk/customer_app/sdk_app_i2c
 
+# TODO: Change this to the full path of bl_iot_sdk
 export BL60X_SDK_PATH=$HOME/bl_iot_sdk
 export CONFIG_CHIP_NAME=BL602
 make
 
+# TODO: Change ~/blflash to the full path of blflash
 cp build_out/sdk_app_i2c.bin ~/blflash</pre></div>
 <p><a href="https://lupyuen.github.io/articles/pinecone#building-firmware">More details on building bl_iot_sdk</a></p>
 <p>(Remember to use the <strong><code>i2c</code></strong> branch, not the default <strong><code>master</code></strong> branch)</p>
@@ -602,16 +605,20 @@ cp build_out/sdk_app_i2c.bin ~/blflash</pre></div>
 </li>
 </ol>
 <p>Enter these commands to flash <code>sdk_app_i2c.bin</code> to BL602 over UART…</p>
-<div class="example-wrap"><pre class="language-bash">cd ~/blflash
+<div class="example-wrap"><pre class="language-bash"># TODO: Change ~/blflash to the full path of blflash
+cd ~/blflash
 
+# For Linux:
 sudo cargo run flash sdk_app_i2c.bin \
     --port /dev/ttyUSB0
 
+# For macOS:
 cargo run flash sdk_app_i2c.bin \
     --port /dev/tty.usbserial-1420 \
     --initial-baud-rate 230400 \
     --baud-rate 230400
 
+# For Windows: Change COM5 to the BL602 Serial Port
 cargo run flash sdk_app_i2c.bin --port COM5</pre></div>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">More details on flashing firmware</a></p>
 <h2 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">9.3 Run the firmware</a></h2>

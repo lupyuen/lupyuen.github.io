@@ -372,7 +372,11 @@ heapless = &quot;0.6.1&quot;</pre></div>
 <p>Strictly speaking this isn’t <a href="https://docs.rust-embedded.org/book/"><strong>Embedded Rust</strong></a>, because we’re not running Rust directly on Bare Metal (BL602 Hardware). </p>
 <p>Instead we’re running <strong>Rust on top of an Embedded Operating System</strong> (BL602 IoT SDK + FreeRTOS). It’s similar to running Rust on Linux / macOS / Windows.</p>
 <p>That’s why we compile our Rust code into a <strong>static library</strong> that will be linked into the BL602 Firmware. See <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/Cargo.toml#L14-L18"><code>rust/Cargo.toml</code></a>…</p>
-<div class="example-wrap"><pre class="language-text">[lib]
+<div class="example-wrap"><pre class="language-text"># Build this module as a Rust library, 
+# not a Rust application.  We will link 
+# this library with the BL602 firmware.
+[lib]
+# Output will be named `libapp.a`
 name       = &quot;app&quot;
 crate-type = [&quot;staticlib&quot;]</pre></div>
 <p>This produces a BL602 Rust Firmware file that we may <strong>flash to BL602 the conventional way</strong>: Over the BL602 Serial / UART Port.</p>
@@ -397,7 +401,8 @@ crate-type = [&quot;staticlib&quot;]</pre></div>
 </li>
 <li>
 <p>Download the <strong>source code</strong> for the BL602 Rust Firmware…</p>
-<div class="example-wrap"><pre class="language-bash">git clone --recursive --branch rust https://github.com/lupyuen/bl_iot_sdk
+<div class="example-wrap"><pre class="language-bash"># Download the rust branch of lupyuen&#39;s bl_iot_sdk
+git clone --recursive --branch rust https://github.com/lupyuen/bl_iot_sdk
 cd bl_iot_sdk/customer_app/sdk_app_rust</pre></div></li>
 <li>
 <p>Edit the script <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh"><strong><code>run.sh</code></strong></a> in the <code>sdk_app_rust</code> folder.</p>
@@ -405,8 +410,10 @@ cd bl_iot_sdk/customer_app/sdk_app_rust</pre></div></li>
 </li>
 <li>
 <p>In <code>run.sh</code>, set the following variables to the downloaded folders for <code>blflash</code> and <code>xpack-riscv-none-embed-gcc</code>…</p>
-<div class="example-wrap"><pre class="language-bash">export BLFLASH_PATH=$PWD/../../../blflash
+<div class="example-wrap"><pre class="language-bash">#  Where blflash is located
+export BLFLASH_PATH=$PWD/../../../blflash
 
+#  Where GCC is located
 export GCC_PATH=$PWD/../../../xpack-riscv-none-embed-gcc</pre></div>
 <p>Save the changes into <code>run.sh</code></p>
 </li>
@@ -552,11 +559,14 @@ Success</pre></div>
 <p><strong>For Linux and Windows:</strong></p>
 <p>Copy <code>build_out/sdk_app_rust.bin</code> to the <code>blflash</code> folder.</p>
 <p>Then enter this at the command prompt…</p>
-<div class="example-wrap"><pre class="language-bash">cd blflash
+<div class="example-wrap"><pre class="language-bash"># TODO: Change this to the downloaded blflash folder
+cd blflash
 
+# For Linux:
 sudo cargo run flash sdk_app_lora.bin \
     --port /dev/ttyUSB0
 
+# For Windows: Change COM5 to the BL602 Serial Port
 cargo run flash sdk_app_lora.bin --port COM5</pre></div>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">More details on flashing firmware</a></p>
 </li>
@@ -882,14 +892,19 @@ riscv32imc-unknown-none-elf</pre></div>
 <ol>
 <li>
 <p>The script begins with the build and flash settings…</p>
-<div class="example-wrap"><pre class="language-bash">export APP_NAME=sdk_app_rust
+<div class="example-wrap"><pre class="language-bash">#  Name of app
+export APP_NAME=sdk_app_rust
 
+#  Build for BL602
 export CONFIG_CHIP_NAME=BL602
 
+#  Where BL602 IoT SDK is located
 export BL60X_SDK_PATH=$PWD/../..
 
+#  Where blflash is located
 export BLFLASH_PATH=$PWD/../../../blflash
 
+#  Where GCC is located
 export GCC_PATH=$PWD/../../../xpack-riscv-none-embed-gcc</pre></div>
 <p>(Change BLFLASH_PATH and GCC_PATH for your machine)</p>
 <p>The script was created for macOS, but should run on Linux and Windows (WSL) with minor tweaks.</p>
@@ -897,15 +912,22 @@ export GCC_PATH=$PWD/../../../xpack-riscv-none-embed-gcc</pre></div>
 <li>
 <p>Next we define the Custom Rust Target that supports Hardware Floating-Point…</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L29-L33"><code>run.sh</code></a></p>
-<div class="example-wrap"><pre class="language-bash">rust_build_target=$PWD/riscv32imacf-unknown-none-elf.json
+<div class="example-wrap"><pre class="language-bash">#  Rust target: Custom target for llvm-abiname=ilp32f
+#  https://docs.rust-embedded.org/embedonomicon/compiler-support.html#built-in-target
+#  https://docs.rust-embedded.org/embedonomicon/custom-target.html
+rust_build_target=$PWD/riscv32imacf-unknown-none-elf.json
 rust_build_target_folder=riscv32imacf-unknown-none-elf</pre></div></li>
 <li>
 <p>We remove the Stub Library and the Rust Library is they exist…</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L61-L71"><code>run.sh</code></a></p>
-<div class="example-wrap"><pre class="language-bash">if [ -e $rust_app_dest ]; then
+<div class="example-wrap"><pre class="language-bash">#  Remove the Stub Library if it exists:
+#  build_out/rust-app/librust-app.a
+if [ -e $rust_app_dest ]; then
     rm $rust_app_dest
 fi
 
+#  Remove the Rust Library if it exists:
+#  rust/target/riscv32imacf-unknown-none-elf/debug/libapp.a
 if [ -e $rust_app_build ]; then
     rm $rust_app_build
 fi</pre></div>
@@ -914,13 +936,15 @@ fi</pre></div>
 <li>
 <p>We build the BL602 firmware with the Stub Library…</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L77-L78"><code>run.sh</code></a></p>
-<div class="example-wrap"><pre class="language-bash">make</pre></div>
+<div class="example-wrap"><pre class="language-bash">#  Build the firmware with the Stub Library
+make</pre></div>
 <p>This build contains only C code, no Rust code.</p>
 </li>
 <li>
 <p>We compile the Rust Library with our Custom Rust Target that supports Hardware Floating-Point…</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L84-L88"><code>run.sh</code></a></p>
-<div class="example-wrap"><pre class="language-bash">pushd rust
+<div class="example-wrap"><pre class="language-bash">#  Build the Rust Library
+pushd rust
 rustup default nightly
 cargo build $rust_build_options
 popd</pre></div>
@@ -931,18 +955,24 @@ popd</pre></div>
 <li>
 <p>We overwrite the Stub Library by the compiled Rust Library…</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L90-L94"><code>run.sh</code></a></p>
-<div class="example-wrap"><pre class="language-bash">cp $rust_app_build $rust_app_dest</pre></div></li>
+<div class="example-wrap"><pre class="language-bash">#  Replace the Stub Library by the compiled Rust Library
+#  Stub Library: build_out/rust-app/librust-app.a
+#  Rust Library: rust/target/riscv32imacf-unknown-none-elf/debug/libapp.a
+cp $rust_app_build $rust_app_dest</pre></div></li>
 <li>
 <p>We link the compiled Rust Library into the BL602 Firmware…</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L100-L101"><code>run.sh</code></a></p>
-<div class="example-wrap"><pre class="language-bash">make</pre></div>
+<div class="example-wrap"><pre class="language-bash">#  Link the Rust Library to the firmware
+make</pre></div>
 <p>This creates the BL602 Rust Firmware file…</p>
 <div class="example-wrap"><pre class="language-text">build_out/sdk_app_rust.bin</pre></div></li>
 <li>
 <p>We copy the BL602 Rust Firmware file to the <code>blflash</code> folder and flash to BL602…</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L110-L124"><code>run.sh</code></a></p>
-<div class="example-wrap"><pre class="language-bash">cp build_out/$APP_NAME.bin $BLFLASH_PATH
+<div class="example-wrap"><pre class="language-bash">#  Copy firmware to blflash
+cp build_out/$APP_NAME.bin $BLFLASH_PATH
 
+#  Flash the firmware
 pushd $BLFLASH_PATH
 cargo run flash $APP_NAME.bin \
     --port /dev/tty.usbserial-14* \
@@ -955,7 +985,8 @@ popd</pre></div>
 <li>
 <p>Finally we launch CoolTerm to run the BL602 Rust Firmware…</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L130-L131"><code>run.sh</code></a></p>
-<div class="example-wrap"><pre class="language-bash">open -a CoolTerm</pre></div>
+<div class="example-wrap"><pre class="language-bash">#  Run the firmware
+open -a CoolTerm</pre></div>
 <p>This needs to be modified for Linux and WSL.</p>
 </li>
 </ol>

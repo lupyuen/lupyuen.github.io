@@ -178,13 +178,17 @@ void blinky(char *buf, int len, int argc, char **argv) {
 #define LED_GPIO 21</pre></div>
 <p>(We’re blinking the Backlight of the ST7789 Display)</p>
 <p>We <strong>build the BL604 Blinky Firmware</strong> the exact same way as BL602…</p>
-<div class="example-wrap"><pre class="language-bash">git clone --recursive --branch 3wire https://github.com/lupyuen/bl_iot_sdk
+<div class="example-wrap"><pre class="language-bash">#  Download the 3wire branch of lupyuen&#39;s bl_iot_sdk
+git clone --recursive --branch 3wire https://github.com/lupyuen/bl_iot_sdk
 cd customer_app/pinedio_blinky
 
+#  Build for BL602 (Should this be BL604?)
 export CONFIG_CHIP_NAME=BL602
 
+#  Where BL602 / BL604 IoT SDK is located
 export BL60X_SDK_PATH=$PWD/../..
 
+#  Build the firmware: build_out/pinedio_blinky.bin
 make</pre></div>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_blinky/run.sh">(Source)</a></p>
 <p>Let’s flash the firmware to the board!</p>

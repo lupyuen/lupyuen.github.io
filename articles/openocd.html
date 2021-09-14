@@ -307,7 +307,8 @@ Error: failed read at 0x11, status=1</pre></div>
 <p>The OpenOCD connection to PineCone is controlled by the OpenOCD Script <a href="https://github.com/lupyuen/pinecone-rust/blob/main/openocd.cfg"><code>pinecone-rust/openocd.cfg</code></a>.</p>
 <p>Our OpenOCD Script is based on the one kindly contributed by the <a href="https://github.com/sipeed/bl602-rust-guide">Sipeed BL602 Community</a>.</p>
 <p>Let’s study the important bits of our OpenOCD Script: <a href="https://github.com/lupyuen/pinecone-rust/blob/main/openocd.cfg"><code>pinecone-rust/openocd.cfg</code></a></p>
-<h2 id="debug-logging" class="section-header"><a href="#debug-logging">6.1 Debug Logging</a></h2><div class="example-wrap"><pre class="language-text"></pre></div>
+<h2 id="debug-logging" class="section-header"><a href="#debug-logging">6.1 Debug Logging</a></h2><div class="example-wrap"><pre class="language-text"># Uncomment to enable debug messages
+# debug_level 4</pre></div>
 <p>To show debug messages in OpenOCD, uncomment the <code>debug_level</code> line. (Remove the leading “<code>#</code>”)</p>
 <p>This is useful for troubleshooting the OpenOCD connection to PineCone. OpenOCD will show every single JTAG packet transmitted between our computer and PineCone.</p>
 <h2 id="openocd-driver" class="section-header"><a href="#openocd-driver">6.2 OpenOCD Driver</a></h2><div class="example-wrap"><pre class="language-text">adapter driver ftdi
@@ -315,13 +316,17 @@ Error: failed read at 0x11, status=1</pre></div>
 ftdi_vid_pid 0x0403 0x6010</pre></div>
 <p>Here we tell OpenOCD to use the FT2232 debugger that’s connected to USB.</p>
 <p><code>0x0403</code> is the USB Vendor ID for FT2232. <code>0x6010</code> is the USB Product ID.</p>
-<h2 id="ftdi-channel" class="section-header"><a href="#ftdi-channel">6.3 FTDI Channel</a></h2><div class="example-wrap"><pre class="language-text">ftdi_channel 0</pre></div>
+<h2 id="ftdi-channel" class="section-header"><a href="#ftdi-channel">6.3 FTDI Channel</a></h2><div class="example-wrap"><pre class="language-text"># Sipeed JTAG Debugger uses FTDI Channel 0, not 1
+ftdi_channel 0
+# Previously: ftdi_channel 1</pre></div>
 <p>According to the <a href="https://www.ftdichip.com/Support/Documents/DataSheets/ICs/DS_FT2232D.pdf">FT2232 Specs</a>, the FT2232 module supports two Serial Channels: 0 and 1.</p>
 <p>For Sipeed JTAG Debugger: The FTDI Channel must be 0. <a href="https://tang.sipeed.com/en/hardware-overview/rv-debugger/?utm_source=platformio&amp;utm_medium=docs">See the schematics</a></p>
 <p>For other JTAG Debuggers: Set the FTDI Channel to 0 if PineCone is connected to the first Serial Channel, and to 1 for the second Serial Channel.</p>
 <h2 id="jtag-speed" class="section-header"><a href="#jtag-speed">6.4 JTAG Speed</a></h2><div class="example-wrap"><pre class="language-text">transport select jtag
 
-adapter speed 100</pre></div>
+# TODO: Increase the adapter speed (now 100 kHz)
+adapter speed 100
+# Previously: adapter speed 2000</pre></div>
 <p>Here we select JTAG as the communication protocol for talking to PineCone.</p>
 <p>Our OpenOCD Script talks to PineCone at 100 kbps, which is a safe (but slow) data rate that works with most JTAG Debuggers.</p>
 <p>We should increase the Adapter Speed to speed up the data transfer. (After lots of testing, of course)</p>

@@ -182,14 +182,18 @@
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/releases/tag/v10.0.0"><strong>Binary Release of <code>sdk_app_tflite</code></strong></a></li>
 </ul>
 <p>Alternatively, we may build the Firmware Binary File <code>sdk_app_tflite.bin</code> from the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/tflite/customer_app/sdk_app_tflite">source code</a>…</p>
-<div class="example-wrap"><pre class="language-bash">git clone --recursive --branch tflite https://github.com/lupyuen/bl_iot_sdk
+<div class="example-wrap"><pre class="language-bash"># Download the tflite branch of lupyuen&#39;s bl_iot_sdk
+git clone --recursive --branch tflite https://github.com/lupyuen/bl_iot_sdk
 
+# TODO: Change this to the full path of bl_iot_sdk
 export BL60X_SDK_PATH=$PWD/bl_iot_sdk
 export CONFIG_CHIP_NAME=BL602
 
+# Build the firmware
 cd bl_iot_sdk/customer_app/sdk_app_tflite
 make
 
+# TODO: Change ~/blflash to the full path of blflash
 cp build_out/sdk_app_tflite.bin ~/blflash</pre></div>
 <p><a href="https://lupyuen.github.io/articles/pinecone#building-firmware">More details on building bl_iot_sdk</a></p>
 <p>(Remember to use the <strong><code>tflite</code></strong> branch, not the default <strong><code>master</code></strong> branch)</p>
@@ -242,16 +246,20 @@ cp build_out/sdk_app_tflite.bin ~/blflash</pre></div>
 </li>
 </ol>
 <p>Enter these commands to flash <code>sdk_app_tflite.bin</code> to BL602 over UART…</p>
-<div class="example-wrap"><pre class="language-bash">cd ~/blflash
+<div class="example-wrap"><pre class="language-bash"># TODO: Change ~/blflash to the full path of blflash
+cd ~/blflash
 
+# For Linux:
 sudo cargo run flash sdk_app_tflite.bin \
     --port /dev/ttyUSB0
 
+# For macOS:
 cargo run flash sdk_app_tflite.bin \
     --port /dev/tty.usbserial-1420 \
     --initial-baud-rate 230400 \
     --baud-rate 230400
 
+# For Windows: Change COM5 to the BL602 Serial Port
 cargo run flash sdk_app_tflite.bin --port COM5</pre></div>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">More details on flashing firmware</a></p>
 <h2 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">2.3 Run the Firmware</a></h2>
@@ -733,7 +741,8 @@ const int g_model_len = 2488;</pre></div>
 </li>
 </ol>
 <p>When we clone the BL602 IoT SDK recursively…</p>
-<div class="example-wrap"><pre class="language-bash">git clone --recursive --branch tflite https://github.com/lupyuen/bl_iot_sdk</pre></div>
+<div class="example-wrap"><pre class="language-bash"># Download the tflite branch of lupyuen&#39;s bl_iot_sdk
+git clone --recursive --branch tflite https://github.com/lupyuen/bl_iot_sdk</pre></div>
 <p>The TensorFlow Lite Library <code>tflite-bl602</code> will be automatically cloned to <code>components/3rdparty</code></p>
 <p>(Because <code>tflite-bl602</code> is a Git Submodule of <code>bl_iot_sdk</code>)</p>
 <h2 id="makefiles" class="section-header"><a href="#makefiles">14.2 Makefiles</a></h2>
@@ -761,12 +770,16 @@ const int g_model_len = 2488;</pre></div>
 <h2 id="source-folders" class="section-header"><a href="#source-folders">14.3 Source Folders</a></h2>
 <p>Here are the source folders that we compile for the TensorFlow Lite Firmware…</p>
 <p>From <a href="https://github.com/lupyuen/tflite-bl602/blob/main/bouffalo.mk"><code>tflite-bl602/bouffalo.mk</code></a> and <a href="https://github.com/lupyuen/tflite-bl602/blob/main/component.mk"><code>tflite-bl602/component.mk</code></a></p>
-<div class="example-wrap"><pre class="language-text">COMPONENT_ADD_INCLUDEDIRS := \
+<div class="example-wrap"><pre class="language-text"># Include Folders
+# TODO: Sync with bouffalo.mk and component.mk
+COMPONENT_ADD_INCLUDEDIRS := \
   tensorflow/.. \
   tensorflow/lite/micro/tools/make/downloads/flatbuffers/include \
   tensorflow/lite/micro/tools/make/downloads/gemmlowp \
   tensorflow/lite/micro/tools/make/downloads/ruy
 
+# Source Folders
+# TODO: Sync with bouffalo.mk and component.mk
 COMPONENT_SRCDIRS := \
   tensorflow/lite/c \
   tensorflow/lite/core/api \
@@ -780,23 +793,42 @@ COMPONENT_SRCDIRS := \
 <p><img src="https://lupyuen.github.io/images/tflite-source.png" alt="Source Folders" /></p>
 <h2 id="compiler-flags" class="section-header"><a href="#compiler-flags">14.4 Compiler Flags</a></h2>
 <p>Here are the GCC Compiler Flags for TensorFlow Lite Library: <a href="https://github.com/lupyuen/tflite-bl602/blob/main/bouffalo.mk#L28-L49"><code>tflite-bl602/bouffalo.mk</code></a></p>
-<div class="example-wrap"><pre class="language-text">
+<div class="example-wrap"><pre class="language-text"># Define the GCC compiler options:
+# CFLAGS for C compiler, CPPFLAGS for C++ compiler
+
+# Use global C math functions instead of std library.
+# See tensorflow/lite/kernels/internal/cppmath.h
 CFLAGS   += -DTF_LITE_USE_GLOBAL_CMATH_FUNCTIONS
 CPPFLAGS += -DTF_LITE_USE_GLOBAL_CMATH_FUNCTIONS
 
+# Use std::min instead of std::fmin
+# See tensorflow/lite/kernels/internal/min.h
 CFLAGS   += -DTF_LITE_USE_GLOBAL_MIN
 CPPFLAGS += -DTF_LITE_USE_GLOBAL_MIN
 
+# Use std::max instead of std::fmax
+# See tensorflow/lite/kernels/internal/max.h
 CFLAGS   += -DTF_LITE_USE_GLOBAL_MAX
 CPPFLAGS += -DTF_LITE_USE_GLOBAL_MAX
 
+# Use Static Memory instead of Heap Memory
+# See tensorflow/lite/kernels/internal/types.h
 CFLAGS   += -DTF_LITE_STATIC_MEMORY
 CPPFLAGS += -DTF_LITE_STATIC_MEMORY</pre></div>
 <p>And here are the flags for TensorFlow Lite Firmware: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/bouffalo.mk#L28-L41"><code>sdk_app_tflite/bouffalo.mk</code></a></p>
-<div class="example-wrap"><pre class="language-text">
+<div class="example-wrap"><pre class="language-text"># Define the GCC compiler options:
+# CFLAGS for C compiler, CPPFLAGS for C++ compiler
+# See additional options at components/3rdparty/tflite-bl602/bouffalo.mk
+
+# Use Static Memory instead of Heap Memory
+# See components/3rdparty/tflite-bl602/tensorflow/lite/kernels/internal/types.h
 CFLAGS   += -DTF_LITE_STATIC_MEMORY
 CPPFLAGS += -DTF_LITE_STATIC_MEMORY
 
+# Don&#39;t use Thread-Safe Initialisation for C++ Static Variables.
+# This fixes the missing symbols __cxa_guard_acquire and __cxa_guard_release.
+# Note: This assumes that we will not init C++ static variables in multiple tasks.
+# See https://alex-robenko.gitbook.io/bare_metal_cpp/compiler_output/static
 CPPFLAGS += -fno-threadsafe-statics</pre></div>
 <p><img src="https://lupyuen.github.io/images/tflite-cppflags2.png" alt="Compiler Flags" /></p>
 <p><strong>TF_LITE_USE_GLOBAL_CMATH_FUNCTIONS</strong> is needed because we use the global C Math Functions instead of the C++ <code>std</code> library…</p>
@@ -826,15 +858,27 @@ CPPFLAGS += -fno-threadsafe-statics</pre></div>
 </li>
 </ol>
 <p>To download <a href="https://github.com/google/flatbuffers"><strong><code>flatbuffers</code></strong></a> and <a href="https://pigweed.googlesource.com/pigweed/pigweed"><strong><code>pigweed</code></strong></a>, we copied these steps from <a href="https://github.com/tensorflow/tflite-micro/blob/main/tensorflow/lite/micro/tools/make/Makefile#L509-L542">TensorFlow Lite’s Makefile</a> to <a href="https://github.com/lupyuen/tflite-bl602/blob/main/bouffalo.mk#L51-L112"><code>tflite-bl602/bouffalo.mk</code></a> …</p>
-<div class="example-wrap"><pre class="language-text">
+<div class="example-wrap"><pre class="language-text"># TensorFlow Makefile
+# Based on https://github.com/tensorflow/tflite-micro/blob/main/tensorflow/lite/micro/tools/make/Makefile#L509-L542
+
+# root directory of tensorflow
 TENSORFLOW_ROOT := 
 MAKEFILE_DIR := $(BL60X_SDK_PATH)/components/3rdparty/tflite-bl602/tensorflow/lite/micro/tools/make
 
+# For some invocations of the makefile, it is useful to avoid downloads. This
+# can be achieved by explicitly passing in DISABLE_DOWNLOADS=true on the command
+# line. Note that for target-specific downloads (e.g. CMSIS) there will need to
+# be corresponding checking in the respecitve included makefiles (e.g.
+# ext_libs/cmsis_nn.inc)
 DISABLE_DOWNLOADS :=
 
 ifneq ($(DISABLE_DOWNLOADS), true)
+  # The download scripts require that the downloads directory already exist for
+  # improved error checking. To accomodate that, we first create a downloads
+  # directory.
   $(shell mkdir -p ${MAKEFILE_DIR}/downloads)
 
+  # Directly download the flatbuffers library.
   DOWNLOAD_RESULT := $(shell $(MAKEFILE_DIR)/flatbuffers_download.sh ${MAKEFILE_DIR}/downloads)
   ifneq ($(DOWNLOAD_RESULT), SUCCESS)
     $(error Something went wrong with the flatbuffers download: $(DOWNLOAD_RESULT))
@@ -846,7 +890,8 @@ ifneq ($(DISABLE_DOWNLOADS), true)
   endif</pre></div>
 <p><img src="https://lupyuen.github.io/images/tflite-gemmlowp2.png" alt="Download gemmlowp" /></p>
 <p>Unfortunately these steps dont’t work for downloading <a href="https://github.com/google/gemmlowp"><strong><code>gemmlowp</code></strong></a> and <a href="https://github.com/google/ruy"><strong><code>ruy</code></strong></a> …</p>
-<div class="example-wrap"><pre class="language-text">  include $(MAKEFILE_DIR)/third_party_downloads.inc
+<div class="example-wrap"><pre class="language-text">  # TODO: Fix third-party downloads
+  include $(MAKEFILE_DIR)/third_party_downloads.inc
   THIRD_PARTY_DOWNLOADS :=
   $(eval $(call add_third_party_download,$(GEMMLOWP_URL),$(GEMMLOWP_MD5),gemmlowp,))
   $(eval $(call add_third_party_download,$(RUY_URL),$(RUY_MD5),ruy,))
@@ -858,14 +903,26 @@ ifneq ($(DISABLE_DOWNLOADS), true)
   ...
 endif
 
+# TODO: Fix third-party downloads
+# Create rules for downloading third-party dependencies.
 THIRD_PARTY_TARGETS :=
 $(foreach DOWNLOAD,$(THIRD_PARTY_DOWNLOADS),$(eval $(call create_download_rule,$(DOWNLOAD))))
 third_party_downloads: $(THIRD_PARTY_TARGETS)</pre></div>
 <p>So we download <a href="https://github.com/google/gemmlowp"><strong><code>gemmlowp</code></strong></a> and <a href="https://github.com/google/ruy"><strong><code>ruy</code></strong></a> ourselves: <a href="https://github.com/lupyuen/tflite-bl602/blob/main/bouffalo.mk#L93-L104"><code>tflite-bl602/bouffalo.mk</code></a></p>
-<div class="example-wrap"><pre class="language-text">  RESULT := $(shell $(MAKEFILE_DIR)/download_and_extract.sh $(GEMMLOWP_URL) $(GEMMLOWP_MD5) ${MAKEFILE_DIR}/downloads/gemmlowp)
+<div class="example-wrap"><pre class="language-text">  # Added GEMMLOWP, RUY downloads
+  # TODO: Use the download rules in helper_functions.inc
+  RESULT := $(shell $(MAKEFILE_DIR)/download_and_extract.sh $(GEMMLOWP_URL) $(GEMMLOWP_MD5) ${MAKEFILE_DIR}/downloads/gemmlowp)
 
+  # TODO: Check results of download
+  # ifneq ($(RESULT), SUCCESS)
+  #   $(error Something went wrong with the GEMMLOWP download: $(RESULT))
+  # endif
 
   RESULT := $(shell $(MAKEFILE_DIR)/download_and_extract.sh $(RUY_URL) $(RUY_MD5) ${MAKEFILE_DIR}/downloads/ruy)
+  # TODO: Check results of download
+  # ifneq ($(RESULT), SUCCESS)
+  #   $(error Something went wrong with the RUY download: $(RESULT))
+  # endif
 endif</pre></div>
 <p><code>GEMMLOWP_URL</code> and <code>RUY_URL</code> are defined in <a href="https://github.com/lupyuen/tflite-bl602/blob/main/tensorflow/lite/micro/tools/make/third_party_downloads.inc"><code>third_party_downloads</code></a> …</p>
 <div class="example-wrap"><pre class="language-text">GEMMLOWP_URL := &quot;https://github.com/google/gemmlowp/archive/719139ce755a0f31cbf1c37f7f98adcc7fc9f425.zip&quot;

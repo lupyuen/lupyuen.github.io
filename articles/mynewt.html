@@ -245,31 +245,41 @@ _imghdr_size = 0x20;</pre></div><h1 id="define-flash-map" class="section-header"
 <ul>
 <li><strong>PineCone Flash Map</strong>: <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/bsp/pinecone/bsp.yml"><code>hw/bsp/pinecone/bsp.yml</code></a></li>
 </ul>
-<div class="example-wrap"><pre class="language-yaml">bsp.flash_map:
+<div class="example-wrap"><pre class="language-yaml"># BL602 Instruction Cache Memory starts at 0x2200 8000, size 48 KB
+# Based on https://github.com/lupyuen/pinecone-rust/blob/main/memory.x
+bsp.flash_map:
     areas:
+        # System areas.
+        # (Not Used) Bootloader
         FLASH_AREA_BOOTLOADER:
             device:  0
             offset:  0x22013c00
             size:    1kB    # 0x400
+        # Active Firmware Image
         FLASH_AREA_IMAGE_0:
             device:  0 
             offset:  0x22008000
             size:    43kB   # 0xac00
+        # (Not Used) Standby Firmware Image, in case Active Firmware can&#39;t start
         FLASH_AREA_IMAGE_1:
             device:  0
             offset:  0x22012c00
             size:    1kB    # 0x400
+        # (Not used) Scratch Area for swapping Active Firmware and Standby Firmware
         FLASH_AREA_IMAGE_SCRATCH:
             device:  0
             offset:  0x22013000
             size:    1kB    # 0x400</pre></div>
 <p>Remember that we’re loading our firmware into Cache Memory (instead of Flash Memory) and we’re not using the Bootloader. </p>
 <p>That’s why we allocate most of the Cache Memory to the Active Firmware Image (located at the start of Cache Memory).</p>
-<div class="example-wrap"><pre class="language-yaml">        FLASH_AREA_REBOOT_LOG:
+<div class="example-wrap"><pre class="language-yaml">        # User areas.
+        # (Not Used) Reboot Log
+        FLASH_AREA_REBOOT_LOG:
             user_id: 0
             device:  0
             offset:  0x22013400
             size:    1kB    # 0x400
+        # (Not Used) User File System, like LittleFS
         FLASH_AREA_NFFS:
             user_id: 1
             device:  0
@@ -279,31 +289,42 @@ _imghdr_size = 0x20;</pre></div><h1 id="define-flash-map" class="section-header"
 <h2 id="future-flash-map" class="section-header"><a href="#future-flash-map">6.1 Future Flash Map</a></h2>
 <p>The Flash Map looks more meaningful when we’re ready to load our firmware into Flash Memory and turn on the Bootloader.</p>
 <p>Here is our Flash Map for the future…</p>
-<div class="example-wrap"><pre class="language-yaml">bsp.flash_map:
+<div class="example-wrap"><pre class="language-yaml"># TODO: Use this memory layout when firmware is loaded into Flash Memory
+# BL602 Flash starts at 0x2300 0000, size 4 MB
+# Based on https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602/evb/ld/flash_rom.ld
+bsp.flash_map:
     areas:
+        # System areas.
+        # TODO: Bootloader not in use. When used, move Bootloader to 0x2300 0000 and shift the other areas accordingly
         FLASH_AREA_BOOTLOADER:
             device:  0
             offset:  0x2330d000
             size:    32kB      # 0x8000
+        # Active Firmware Image
         FLASH_AREA_IMAGE_0:
             device:  0 
             offset:  0x23000000
             size:    1024kB    # 0x100 000
+        # Standby Firmware Image, in case Active Firmware can&#39;t start
         FLASH_AREA_IMAGE_1:
             device:  0
             offset:  0x23100000
             size:    1024kB    # 0x100 000
+        # Scratch Area for swapping Active Firmware and Standby Firmware
         FLASH_AREA_IMAGE_SCRATCH:
             device:  0
             offset:  0x23300000
             size:    4kB       # 0x1000</pre></div>
 <p>(This is commented out in <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/bsp/pinecone/bsp.yml"><code>bsp.yml</code></a>)</p>
 <p>In future we’ll have a proper Reboot Log and a User File System for saving files and data that will be retained across reboots…</p>
-<div class="example-wrap"><pre class="language-yaml">        FLASH_AREA_REBOOT_LOG:
+<div class="example-wrap"><pre class="language-yaml">        # User areas.
+        # Reboot Log
+        FLASH_AREA_REBOOT_LOG:
             user_id: 0
             device:  0
             offset:  0x23301000
             size:    48kB      #  0xc000
+        # User File System, like LittleFS
         FLASH_AREA_NFFS:
             user_id: 1
             device:  0
@@ -330,7 +351,8 @@ target.build_profile: debug</pre></div>
 </li>
 <li>
 <p>At the command prompt, enter…</p>
-<div class="example-wrap"><pre class="language-bash">git clone --recursive https://github.com/lupyuen/pinecone-rust-mynewt
+<div class="example-wrap"><pre class="language-bash">#  Download source files
+git clone --recursive https://github.com/lupyuen/pinecone-rust-mynewt
 cd pinecone-rust-mynewt</pre></div></li>
 <li>
 <p>Download GCC from the <a href="https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases/tag/v8.3.0-2.3">xPack GCC for RISC-V site</a>…</p>
@@ -388,9 +410,11 @@ cd pinecone-rust-mynewt</pre></div></li>
 <div class="example-wrap"><pre class="language-text">c:\pinecone-rust-mynewt\pinecone-rust-mynewt\xpack-openocd\bin</pre></div></li>
 <li>
 <p><strong>For Linux and macOS:</strong> Enter at the command prompt…</p>
-<div class="example-wrap"><pre class="language-bash">export PATH=&quot;$PWD/xpack-riscv-none-embed-gcc/bin:$PATH&quot;
+<div class="example-wrap"><pre class="language-bash">#  Build the firmware
+export PATH=&quot;$PWD/xpack-riscv-none-embed-gcc/bin:$PATH&quot;
 newt build pinecone_app
 
+#  Display the firmware size
 newt size -v pinecone_app</pre></div>
 <p><strong>For Windows:</strong> Enter at the command prompt…</p>
 <div class="example-wrap"><pre class="language-cmd">::  Build the firmware
@@ -517,9 +541,11 @@ fatal error: mcu/fe310.h: No such file or directory
 <p>These Stub Files point to the correct Header Files for BL602, so that our BL602 Firmware can be compiled successfully.</p>
 <h1 id="inspect-the-firmware" class="section-header"><a href="#inspect-the-firmware">13 Inspect the Firmware</a></h1>
 <p>We’re almost ready to run Mynewt on PineCone! Let’s do one final check before running our firmware…</p>
-<div class="example-wrap"><pre class="language-bash">export PATH=&quot;$PWD/xpack-riscv-none-embed-gcc/bin:$PATH&quot;
+<div class="example-wrap"><pre class="language-bash">#  Build the firmware
+export PATH=&quot;$PWD/xpack-riscv-none-embed-gcc/bin:$PATH&quot;
 newt build pinecone_app
 
+#  Display the firmware size
 newt size -v pinecone_app</pre></div>
 <p>We should see…</p>
 <div class="example-wrap"><pre class="language-text">Linking pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky/blinky.elf
@@ -799,6 +825,7 @@ cd pinecone-rust-mynewt
 newt upgrade
 newt target create pinecone_app
 newt target set pinecone_app app=apps/blinky
+# This will be changed to pinecone later
 newt target set pinecone_app bsp=@apache-mynewt-core/hw/bsp/hifive1
 newt target set pinecone_app build_profile=debug</pre></div>
 <p>We don’t need to create them again, just download from…</p>
@@ -938,20 +965,25 @@ newt target set pinecone_app build_profile=debug</pre></div>
 </li>
 </ol>
 <div class="example-wrap"><pre class="language-bash">#!/usr/bin/env bash
+#  macOS and Linux Bash script to build Mynewt Firmware
 
 set -e  #  Exit when any command fails
 set -x  #  Echo commands
 
+#  Terminate any OpenOCD processes from the debug session
 set +e  #  Ignore errors
 pkill openocd
 set -e  #  Stop on errors
 
+#  Add GCC to the PATH
 set +x  #  Stop echo
 export PATH=&quot;$PWD/xpack-riscv-none-embed-gcc/bin:$PATH&quot;
 set -x  #  Echo commands
 
+#  Build the Mynewt Firmware
 newt build pinecone_app
 
+#  Display the firmware size
 newt size -v pinecone_app</pre></div>
     
 </body>

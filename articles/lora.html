@@ -300,14 +300,23 @@ static void send_once(int is_ping) {
 </li>
 </ul>
 <p>Alternatively, we may build the Firmware Binary File <code>sdk_app_lora.bin</code> from the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/lora/customer_app/sdk_app_lora">source code</a>…</p>
-<div class="example-wrap"><pre class="language-bash">git clone --recursive --branch lora https://github.com/lupyuen/bl_iot_sdk
+<div class="example-wrap"><pre class="language-bash"># Download the lora branch of lupyuen&#39;s bl_iot_sdk
+git clone --recursive --branch lora https://github.com/lupyuen/bl_iot_sdk
 cd bl_iot_sdk/customer_app/sdk_app_lora
 
+# TODO: Set the LoRa Frequency in sdk_app_lora/demo.c. 
+# Edit the file and look for the line...
+#   #define USE_BAND_923
+# Change 923 to the LoRa Frequency for your region: 
+#   434, 780, 868, 915 or 923 MHz
+# See https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html
 
+# TODO: Change this to the full path of bl_iot_sdk
 export BL60X_SDK_PATH=$HOME/bl_iot_sdk
 export CONFIG_CHIP_NAME=BL602
 make
 
+# TODO: Change ~/blflash to the full path of blflash
 cp build_out/sdk_app_lora.bin ~/blflash</pre></div>
 <p><a href="https://lupyuen.github.io/articles/pinecone#building-firmware">More details on building bl_iot_sdk</a></p>
 <p>(Remember to use the <strong><code>lora</code></strong> branch, not the default <strong><code>master</code></strong> branch)</p>
@@ -360,16 +369,20 @@ cp build_out/sdk_app_lora.bin ~/blflash</pre></div>
 </li>
 </ol>
 <p>Enter these commands to flash <code>sdk_app_lora.bin</code> to BL602 over UART…</p>
-<div class="example-wrap"><pre class="language-bash">cd ~/blflash
+<div class="example-wrap"><pre class="language-bash"># TODO: Change ~/blflash to the full path of blflash
+cd ~/blflash
 
+# For Linux:
 sudo cargo run flash sdk_app_lora.bin \
     --port /dev/ttyUSB0
 
+# For macOS:
 cargo run flash sdk_app_lora.bin \
     --port /dev/tty.usbserial-1420 \
     --initial-baud-rate 230400 \
     --baud-rate 230400
 
+# For Windows: Change COM5 to the BL602 Serial Port
 cargo run flash sdk_app_lora.bin --port COM5</pre></div>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">More details on flashing firmware</a></p>
 <h2 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">4.2 Run the firmware</a></h2>
