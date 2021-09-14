@@ -193,7 +193,8 @@ int deselect_spi(void) {
     rc = bl_gpio_enable_output(SX126X_DEBUG_CS_PIN, 0, 0);  assert(rc == 0);
   }
 </code></pre>
-<p>TODO</p>
+<p>First we <strong>configure the Chip Select Pins</strong> for GPIO Output.</p>
+<p>Then we set the <strong>Chip Select Pins to High</strong>, to deselect the SPI Peripherals…</p>
 <pre><code class="language-c">  //  Set Chip Select pins to High, to deselect SX1262, SPI Flash and ST7789
   rc = bl_gpio_output_set(FLASH_CS_PIN,      1);  assert(rc == 0);
   rc = bl_gpio_output_set(DISPLAY_CS_PIN,    1);  assert(rc == 0);
@@ -204,9 +205,10 @@ int deselect_spi(void) {
   return 0;
 }
 </code></pre>
-<p>TODO: Called by <a href="https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L167-L173"><code>init_lorawan</code></a></p>
-<p>TODO: This code comes from</p>
+<p>(More about <code>SX126X_DEBUG_CS_PIN</code> when we talk about the Logic Analyser)</p>
+<p>This function is called by the <a href="https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L167-L173"><strong><code>init_lorawan</code> Command</strong></a>, which we’ll run in a while…</p>
 <p><img src="https://lupyuen.github.io/images/lorawan2-deselect.png" alt="Deselect SPI Peripherals" /></p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L167-L173">(Source)</a></p>
 <h2 id="swap-spi-pins" class="section-header"><a href="#swap-spi-pins">2.2 Swap SPI Pins</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/components/3rdparty/lora-sx1262/src/sx126x-board.c#L168-L202"><code>lora-sx1262 / sx126x-board.c</code></a></p>
