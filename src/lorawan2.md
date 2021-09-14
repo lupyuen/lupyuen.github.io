@@ -252,10 +252,10 @@ And these modifications...
 At the BL602 Command Prompt, enter these LoRaWAN Commands: [pinedio_lorawan](https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan#lorawan-commands)
 
 ```bash
-\#  Start LoRa background task
+##  Start LoRa background task
 create_task
 
-\#  Init LoRaWAN driver
+ #  Init LoRaWAN driver
 init_lorawan
 
 \#  Device EUI: Copy from ChirpStack: Applications -> app -> Device EUI
