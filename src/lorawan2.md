@@ -334,6 +334,12 @@ TODO
 
 -   [__"Visualise LoRa with Software Defined Radio"__](https://lupyuen.github.io/articles/lora#visualise-lora-with-software-defined-radio)
 
+TODO
+
+![Airspy R2 SDR with PineDio Stack](https://lupyuen.github.io/images/lorawan2-airspy.jpg)
+
+TODO
+
 ![LoRa SX1262 visualised with SDR](https://lupyuen.github.io/images/pinedio-chirp2.jpg)
 
 # Security
