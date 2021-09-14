@@ -66,11 +66,11 @@ According to the PineDio Stack Schematic...
 
 -   [__PineDio Stack Schematic (Prototype)__](https://wiki.pine64.org/wiki/Pinedio#PineDio_Stack)
 
-TODO
+Our __LoRa SX1262 Transceiver__ is wired onboard like so...
 
-![](https://lupyuen.github.io/images/pinedio-lora.png)
+![LoRa SX1262 Transceiver wired to PineDio Stack BL604](https://lupyuen.github.io/images/pinedio-lora.png)
 
-TODO
+Note that the above SPI Pins are shared with the __SPI Flash and ST7789 Display__...
 
 | GPIO Number | SPI Pin |
 | :----------: | :------ |
@@ -81,11 +81,39 @@ TODO
 | __`20`__ | CS for ST7789
 | __`15`__ | CS for SX1262
 
+[(More about SDO and SDI)](https://www.oshwa.org/a-resolution-to-redefine-spi-signal-names)
+
+We set the __Chip Select Pin (CS)__ to Low to select the __Active SPI Device__: LoRa SX1262, SPI Flash or ST7789 Display...
+
 ![SPI Bus on PineDio Stack](https://lupyuen.github.io/images/pinedio-spi.jpg)
 
-SPI Flash, ST7789 and SX1262 are connected to the __same GPIO Pins__ for SDO _(formerly MOSI)_, SDI _(formerly MISO)_ and SCK.
+To test the LoRa SX1262 Transceiver, we define the __GPIO Pin Numbers__ like so: [`lora-sx1262/sx126x-board.h`](https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/components/3rdparty/lora-sx1262/include/sx126x-board.h#L36-L50)
 
-[(More about SDO and SDI)](https://www.oshwa.org/a-resolution-to-redefine-spi-signal-names)
+```c
+//  Below are the pin numbers for PineDio Stack BL604 with onboard SX1262.
+#define SX126X_SPI_IDX           0  //  SPI Port 0
+#define SX126X_SPI_SDI_PIN       0  //  SPI Serial Data In Pin  (formerly MISO)
+#define SX126X_SPI_SDO_PIN      17  //  SPI Serial Data Out Pin (formerly MOSI)
+#define SX126X_SPI_CLK_PIN      11  //  SPI Clock Pin
+#define SX126X_SPI_CS_PIN       15  //  SPI Chip Select Pin
+#define SX126X_SPI_CS_OLD        8  //  Unused SPI Chip Select Pin
+#define SX126X_NRESET           18  //  Reset Pin
+#define SX126X_DIO1             19  //  DIO1
+#define SX126X_BUSY_PIN         10  //  Busy Pin
+#define SX126X_DEBUG_CS_PIN      5  //  Debug Chip Select Pin, mirrors the High / Low State of SX1262 Chip Select Pin. Set to -1 if not needed.
+#define SX126X_TCXO_WAKEUP_TIME  5  //  Time required for the TCXO to wakeup (milliseconds)
+#define SX126X_SPI_BAUDRATE  (200 * 1000)  //  SPI Frequency (200 kHz)
+```
+
+We define the __Chip Select Pins__ for SPI Flash and ST7789 Display as well: [`pinedio_lorawan/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/pinedio_lorawan/pinedio_lorawan/demo.c#L101-L105)
+
+```c
+/// GPIO for SPI Flash Chip Select Pin. We must set this to High to deselect SPI Flash.
+#define FLASH_CS_PIN     14
+
+/// GPIO for ST7789 SPI Chip Select Pin. We must set this to High to deselect ST7789 Display.
+#define DISPLAY_CS_PIN   20
+```
 
 # LoRaWAN Firmware
 
