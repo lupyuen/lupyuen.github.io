@@ -83,7 +83,7 @@ Note that the above SPI Pins are shared with the __SPI Flash and ST7789 Display_
 
 [(More about SDO and SDI)](https://www.oshwa.org/a-resolution-to-redefine-spi-signal-names)
 
-We set the __Chip Select Pin (CS)__ to Low to select the __Active SPI Device__: LoRa SX1262, SPI Flash or ST7789 Display...
+We set the __Chip Select Pin (CS)__ to Low to select the __Active SPI Device__: Either LoRa SX1262, SPI Flash or ST7789 Display...
 
 ![SPI Bus on PineDio Stack](https://lupyuen.github.io/images/pinedio-spi.jpg)
 
@@ -137,9 +137,9 @@ Here are the changes we made for PineDio Stack.
 
 ## Deselect SPI Peripherals
 
-TODO
+While testing LoRaWAN (and LoRa SX1262), we need to __deselect all other SPI Peripherals__ (SPI Flash and ST7789 Display).
 
-From [`pinedio_lorawan / demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/pinedio_lorawan/pinedio_lorawan/demo.c#L107-L130)
+From [`pinedio_lorawan / demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/pinedio_lorawan/pinedio_lorawan/demo.c#L107-L130) ...
 
 ```c
 /// Set Chip Select pins to High, to deselect SX1262, SPI Flash and ST7789
