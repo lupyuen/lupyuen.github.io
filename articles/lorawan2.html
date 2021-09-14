@@ -161,11 +161,12 @@
 #define DISPLAY_CS_PIN   20
 </code></pre>
 <h1 id="lorawan-firmware" class="section-header"><a href="#lorawan-firmware">2 LoRaWAN Firmware</a></h1>
-<p>To test LoRaWAN on PineDio Stack we shall run the following <strong>LoRaWAN Firmware and Drivers</strong>…</p>
+<p>To test LoRaWAN on PineDio Stack we shall run this <strong>LoRaWAN Firmware</strong>…</p>
 <ul>
-<li>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan"><strong><code>pinedio_lorawan</code> Firmware</strong></a></p>
-</li>
+<li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan"><strong><code>pinedio_lorawan</code> Firmware</strong></a></li>
+</ul>
+<p>Which calls the following <strong>LoRaWAN and SX1262 Drivers</strong>…</p>
+<ul>
 <li>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/components/3rdparty/lorawan"><strong><code>lorawan</code> Driver</strong></a></p>
 </li>
@@ -173,11 +174,11 @@
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/components/3rdparty/lora-sx1262"><strong><code>lora-sx1262</code> Driver</strong></a></p>
 </li>
 </ul>
-<p>They were ported from Apache Mynewt operating system to BL602 and BL604, as described here…</p>
+<p>The firmware and drivers were previously ported from Apache Mynewt operating system to BL602 and BL604…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lorawan"><strong>“PineCone BL602 Talks LoRaWAN”</strong></a></li>
 </ul>
-<p>Here are the changes we made for PineDio Stack…</p>
+<p>Here are the changes we made for PineDio Stack.</p>
 <h2 id="deselect-spi-peripherals" class="section-header"><a href="#deselect-spi-peripherals">2.1 Deselect SPI Peripherals</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/pinedio_lorawan/pinedio_lorawan/demo.c#L107-L130"><code>pinedio_lorawan / demo.c</code></a></p>
