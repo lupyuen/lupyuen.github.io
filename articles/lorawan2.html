@@ -152,6 +152,7 @@
 #define SX126X_TCXO_WAKEUP_TIME  5  //  Time required for the TCXO to wakeup (milliseconds)
 #define SX126X_SPI_BAUDRATE  (200 * 1000)  //  SPI Frequency (200 kHz)
 </code></pre>
+<p>(<code>SX126X_DEBUG_CS_PIN</code> should be set to <code>-1</code> if we’re not debugging. More about this later)</p>
 <p>We define the <strong>Chip Select Pins</strong> for SPI Flash and ST7789 Display as well: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/pinedio_lorawan/pinedio_lorawan/demo.c#L101-L105"><code>pinedio_lorawan / demo.c</code></a></p>
 <pre><code class="language-c">/// GPIO for SPI Flash Chip Select Pin. We must set this to High to deselect SPI Flash.
 #define FLASH_CS_PIN     14
@@ -162,7 +163,15 @@
 <h1 id="lorawan-firmware" class="section-header"><a href="#lorawan-firmware">2 LoRaWAN Firmware</a></h1>
 <p>TODO</p>
 <ul>
-<li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan"><strong><code>pinedio_lorawan</code></strong></a></li>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan"><strong><code>pinedio_lorawan</code> Firmware</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/components/3rdparty/lorawan"><strong><code>lorawan</code> Driver</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/components/3rdparty/lora-sx1262"><strong><code>lora-sx1262</code> Driver</strong></a></p>
+</li>
 </ul>
 <h2 id="deselect-spi-peripherals" class="section-header"><a href="#deselect-spi-peripherals">2.1 Deselect SPI Peripherals</a></h2>
 <p>TODO</p>
