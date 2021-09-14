@@ -251,7 +251,7 @@ And these modifications...
 
 At the BL602 Command Prompt, enter these LoRaWAN Commands: [pinedio_lorawan](https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan#lorawan-commands)
 
-```bash
+```text
 #  Start LoRa background task
 create_task
 
