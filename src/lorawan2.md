@@ -87,7 +87,7 @@ We set the __Chip Select Pin (CS)__ to Low to select the __Active SPI Device__: 
 
 ![SPI Bus on PineDio Stack](https://lupyuen.github.io/images/pinedio-spi.jpg)
 
-To test the LoRa SX1262 Transceiver, we define the __GPIO Pin Numbers__ like so: [`lora-sx1262 / sx126x-board.h`](https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/components/3rdparty/lora-sx1262/include/sx126x-board.h#L36-L50)
+To test the LoRa SX1262 Transceiver, we define the __GPIO Pin Numbers__ like so: [lora-sx1262/sx126x-board.h](https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/components/3rdparty/lora-sx1262/include/sx126x-board.h#L36-L50)
 
 ```c
 //  Below are the pin numbers for PineDio Stack BL604 with onboard SX1262.
@@ -107,7 +107,7 @@ To test the LoRa SX1262 Transceiver, we define the __GPIO Pin Numbers__ like so:
 
 (`SX126X_DEBUG_CS_PIN` should be set to `-1` if we're not debugging. More about this later)
 
-We define the __Chip Select Pins__ for SPI Flash and ST7789 Display as well: [`pinedio_lorawan / demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/pinedio_lorawan/pinedio_lorawan/demo.c#L101-L105)
+We define the __Chip Select Pins__ for SPI Flash and ST7789 Display as well: [pinedio_lorawan/demo.c](https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/pinedio_lorawan/pinedio_lorawan/demo.c#L101-L105)
 
 ```c
 /// GPIO for SPI Flash Chip Select Pin. We must set this to High to deselect SPI Flash.
@@ -139,7 +139,7 @@ Here are the changes we made for PineDio Stack.
 
 While testing LoRaWAN (and LoRa SX1262), we need to __deselect all other SPI Peripherals__ (SPI Flash and ST7789 Display).
 
-From [`pinedio_lorawan / demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/pinedio_lorawan/pinedio_lorawan/demo.c#L107-L130) ...
+From [pinedio_lorawan/demo.c](https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/pinedio_lorawan/pinedio_lorawan/demo.c#L107-L130) ...
 
 ```c
 /// Set Chip Select pins to High, to deselect SX1262, SPI Flash and ST7789
@@ -180,9 +180,9 @@ This function is called by the [__`init_lorawan` Command__](https://github.com/l
 
 ## Swap SPI Pins
 
-TODO
+Due to a quirk in the SPI implementation on BL602 and BL604, we need to __swap the SPI Pins__ for SDI _(formerly MISO)_ and SDO _(formerly MOSI)_.
 
-From [`lora-sx1262 / sx126x-board.c`](https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/components/3rdparty/lora-sx1262/src/sx126x-board.c#L168-L202)
+We do this by calling __GLB_Swap_SPI_0_MOSI_With_MISO__ in [lora-sx1262/sx126x-board.c](https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/components/3rdparty/lora-sx1262/src/sx126x-board.c#L168-L202) ...
 
 ```c
 /// Initialise GPIO Pins and SPI Port. Called by SX126xIoIrqInit.
@@ -193,11 +193,15 @@ void SX126xIoInit( void ) {
   GpioInitInput( SX126X_DIO1, 0, 0 );
   if (SX126X_DEBUG_CS_PIN >= 0) { GpioInitOutput( SX126X_DEBUG_CS_PIN, 1 ); }
 
-  //  Note: We must swap MISO and MOSI to comply with the SPI Pin Definitions in BL602 / BL604 Reference Manual
+  //  Note: We must swap SDI (MISO) and SDO (MOSI)
+  //  to comply with the SPI Pin Definitions in 
+  //  BL602 / BL604 Reference Manual
   int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);
 ```
 
-TODO
+[(More about swapping SPI Pins)](https://lupyuen.github.io/articles/pinedio#spi-pins-are-swapped)
+
+After swapping the SPI Pins we may __initialise the SPI Port__...
 
 ```c
   //  Configure the SPI Port
@@ -221,11 +225,15 @@ TODO
 }
 ```
 
-TODO: This code comes from
+Note that the __SPI Polarity-Phase should be 1__ and not 0.
+
+This seems to be another quirk of the SPI implementation on BL602 and BL604...
+
+-   [__"SPI Phase looks sus"__](https://lupyuen.github.io/articles/spi#spi-phase-looks-sus)
 
 ![Swap SPI Pins](https://lupyuen.github.io/images/lorawan2-swap.png)
 
-TODO: Sync with pine64
+[(Source)](https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/components/3rdparty/lora-sx1262/src/sx126x-board.c#L168-L202)
 
 # Run The Firmware
 
@@ -379,3 +387,5 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1436128755987058691)
+
+1.  TODO: Sync with pine64
