@@ -231,15 +231,25 @@ This seems to be another quirk of the SPI implementation on BL602 and BL604...
 
 -   [__"SPI Phase looks sus"__](https://lupyuen.github.io/articles/spi#spi-phase-looks-sus)
 
-![Swap SPI Pins](https://lupyuen.github.io/images/lorawan2-swap.png)
+![Swap SPI Pins and tweak the SPI Polarity-Phase](https://lupyuen.github.io/images/lorawan2-swap.png)
 
 [(Source)](https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/components/3rdparty/lora-sx1262/src/sx126x-board.c#L168-L202)
 
 # Run The Firmware
 
-TODO
+We __build and flash the LoRaWAN Firmware__ to PineDio Stack with these steps...
 
-From [`pinedio_lorawan`](https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan#lorawan-commands)
+1.  [__"BL604 Blinky (Build the Firmware)"__](https://lupyuen.github.io/articles/pinedio#bl604-blinky)
+
+1.  [__"Flash Firmware To BL604"__](https://lupyuen.github.io/articles/pinedio#flash-firmware-to-bl604)
+
+And these modifications...
+
+-   Change the branch __`3wire`__ to __`pinedio`__
+
+-   Change the firmware __`pinedio_blinky`__ to __`pinedio_lorawan`__
+
+At the BL602 Command Prompt, enter these LoRaWAN Commands: [pinedio_lorawan](https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan#lorawan-commands)
 
 ```bash
 #  Start LoRa background task
