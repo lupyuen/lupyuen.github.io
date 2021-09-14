@@ -105,6 +105,8 @@ To test the LoRa SX1262 Transceiver, we define the __GPIO Pin Numbers__ like so:
 #define SX126X_SPI_BAUDRATE  (200 * 1000)  //  SPI Frequency (200 kHz)
 ```
 
+(`SX126X_DEBUG_CS_PIN` should be set to `-1` if we're not debugging. More about this later)
+
 We define the __Chip Select Pins__ for SPI Flash and ST7789 Display as well: [`pinedio_lorawan / demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/pinedio_lorawan/pinedio_lorawan/demo.c#L101-L105)
 
 ```c
@@ -119,7 +121,11 @@ We define the __Chip Select Pins__ for SPI Flash and ST7789 Display as well: [`p
 
 TODO
 
--   [__`pinedio_lorawan`__](https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan)
+-   [__`pinedio_lorawan` Firmware__](https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan)
+
+-   [__`lorawan` Driver__](https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/components/3rdparty/lorawan)
+
+-   [__`lora-sx1262` Driver__](https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/components/3rdparty/lora-sx1262)
 
 ## Deselect SPI Peripherals
 
