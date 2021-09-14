@@ -135,7 +135,7 @@
 <tr><td align="center"><strong><code>15</code></strong></td><td align="left">CS for SX1262</td></tr>
 </tbody></table>
 <p><a href="https://www.oshwa.org/a-resolution-to-redefine-spi-signal-names">(More about SDO and SDI)</a></p>
-<p>We set the <strong>Chip Select Pin (CS)</strong> to Low to select the <strong>Active SPI Device</strong>: LoRa SX1262, SPI Flash or ST7789 Display…</p>
+<p>We set the <strong>Chip Select Pin (CS)</strong> to Low to select the <strong>Active SPI Device</strong>: Either LoRa SX1262, SPI Flash or ST7789 Display…</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-spi.jpg" alt="SPI Bus on PineDio Stack" /></p>
 <p>To test the LoRa SX1262 Transceiver, we define the <strong>GPIO Pin Numbers</strong> like so: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/components/3rdparty/lora-sx1262/include/sx126x-board.h#L36-L50"><code>lora-sx1262 / sx126x-board.h</code></a></p>
 <pre><code class="language-c">//  Below are the pin numbers for PineDio Stack BL604 with onboard SX1262.
@@ -180,8 +180,8 @@
 </ul>
 <p>Here are the changes we made for PineDio Stack.</p>
 <h2 id="deselect-spi-peripherals" class="section-header"><a href="#deselect-spi-peripherals">2.1 Deselect SPI Peripherals</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/pinedio_lorawan/pinedio_lorawan/demo.c#L107-L130"><code>pinedio_lorawan / demo.c</code></a></p>
+<p>While testing LoRaWAN (and LoRa SX1262), we need to <strong>deselect all other SPI Peripherals</strong> (SPI Flash and ST7789 Display).</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/pinedio_lorawan/pinedio_lorawan/demo.c#L107-L130"><code>pinedio_lorawan / demo.c</code></a> …</p>
 <pre><code class="language-c">/// Set Chip Select pins to High, to deselect SX1262, SPI Flash and ST7789
 int deselect_spi(void) {
   //  Configure Chip Select pins as GPIO Output Pins (instead of GPIO Input)
