@@ -144,7 +144,7 @@ Remember our Command-Line Firmware [`sdk_app_i2c`](https://github.com/lupyuen/bl
 Here's the command for initialising the I2C Port...
 
 ```text
-#  i2c_init
+ i2c_init
 ```
 
 Let's discover how this command calls the Low Level I2C HAL to initialise the I2C Port: [`sdk_app_i2c/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L343-L369)
@@ -340,7 +340,7 @@ Now that we have created our I2C Message, let's watch it in action!
 To begin reading data from our BME280 Sensor, we enter this command...
 
 ```text
-#  i2c_start_read
+ i2c_start_read
 ```
 
 Let's find out what happens inside that command: [`sdk_app_i2c/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L420-L448)
@@ -621,7 +621,7 @@ If there is no more data to be received, we suppress the I2C Data Received Inter
 Here's the final command that we'll enter into the BL602 Firmware... It terminates the I2C transfer.
 
 ```text
-#  i2c_stop_read
+ i2c_stop_read
 ```
 
 This command calls `test_i2c_stop` to close the I2C Port: [`sdk_app_i2c/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L450-L460)
@@ -799,7 +799,7 @@ Let's enter some I2C commands to read our BME280 Sensor!
 1.  Enter `help` to see the available commands...
 
     ```text
-    # help
+    help
     ====User Commands====
     i2c_status               : I2C status
     i2c_init                 : Init I2C port
@@ -812,7 +812,7 @@ Let's enter some I2C commands to read our BME280 Sensor!
     Enter this command...
 
     ```text
-    # i2c_init
+    i2c_init
     ```
 
     (Earlier we've seen the code for this command)
@@ -820,7 +820,7 @@ Let's enter some I2C commands to read our BME280 Sensor!
 1.  Before doing any I2C business, let's __dump the Interrupt Counters__ to see which I2C Interrupts get triggered...
 
     ```text
-    # i2c_status
+    i2c_status
     ```
 
     We should see...
@@ -837,7 +837,7 @@ Let's enter some I2C commands to read our BME280 Sensor!
 1.  Now we __start the I2C Read Operation__...
 
     ```text
-    # i2c_start_read
+    i2c_start_read
     ```
 
     (We've seen the code for this command as well)
@@ -845,7 +845,7 @@ Let's enter some I2C commands to read our BME280 Sensor!
 1.  Again we dump the Interrupt Counters...
 
     ```text
-    # i2c_status
+    i2c_status
     ```
 
     Aha Something Different! We have encountered __one interrupt for Data Received__ (Rx Ready), because BME280 has returned some I2C data to BL602...
@@ -864,7 +864,7 @@ Let's enter some I2C commands to read our BME280 Sensor!
 1.  To __check the data received__, enter this command...
 
     ```text
-    # i2c_stop_read
+    i2c_stop_read
     ```
 
     Remember that we're reading the Chip ID from BME280. We should see this Chip ID...
@@ -1034,7 +1034,7 @@ Here's how I tracked down my first RISC-V Exception and fixed it...
 When our program [`sdk_app_i2c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/) is sending I2C data, the program crashes with the RISC-V Exception shown above...
 
 ```text
-# start_write_data
+start_write_data
 Exception Entry--->>>
 mcause 30000007, mepc 23008fe2, mtval 00000014
 Exception code: 7

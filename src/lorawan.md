@@ -495,7 +495,7 @@ Before transmitting a LoRaWAN Data Packet, our BL602 gadget needs to __join the 
 In the Demo Firmware, we enter this command to join the LoRaWAN Network (up to 3 attempts)...
 
 ```text
-# las_join 3
+las_join 3
 ```
 
 Let's study what happens inside the __`las_join`__ command...
@@ -726,7 +726,7 @@ Our BL602 gadget has joined the LoRaWAN Network... We're almost ready to send da
 In our Demo Firmware we enter this command to open LoRaWAN Application Port Number 2...
 
 ```text
-# las_app_port open 2
+las_app_port open 2
 ```
 
 (Port #2 seems to be a common port used by LoRaWAN Applications)
@@ -802,7 +802,7 @@ We're now ready to transmit data packets to LoRaWAN Port #2!
 We enter this command into our Demo Firmware to __transmit a LoRaWAN Data Packet to port 2, containing 5 bytes (of null)__...
 
 ```text
-# las_app_tx 2 5 0
+las_app_tx 2 5 0
 ```
 
 The "`0`" at the end indicates that this is an __Unconfirmed Message__: We don't expect any acknowledgement from the LoRaWAN Gateway.
@@ -1128,7 +1128,7 @@ Let's enter some commands to join the LoRaWAN Network and transmit a LoRaWAN Dat
     Enter this command...
 
     ```text
-    # create_task
+    create_task
     ```
 
     [(`create_task` is explained here)](https://lupyuen.github.io/articles/lora2#event-queue)

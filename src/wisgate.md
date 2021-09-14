@@ -645,7 +645,7 @@ tail -f /var/log/syslog
 Sometimes it's helpful to scan the log for __Message Integrity Code__ errors...
 
 ```bash
-# grep MIC /var/log/syslog
+grep MIC /var/log/syslog
 
 Apr 28 04:02:05 rak-gateway 
 chirpstack-application-server[568]: 
@@ -659,7 +659,7 @@ type=DATA_UP_MIC
 Also for __Nonce Errors__...
 
 ```bash
-# grep nonce /var/log/syslog
+grep nonce /var/log/syslog
 
 Apr 28 04:02:41 rak-gateway chirpstack-application-server[568]:
 time="2021-04-28T04:02:41+01:00" 
@@ -752,7 +752,7 @@ Our LoRaWAN Gateway (ChirpStack on WisGate) will __reject LoRaWAN Packets with i
 To see Message Integrity Code errors, SSH to our LoRaWAN Gateway and search for...
 
 ```bash
-# grep MIC /var/log/syslog
+grep MIC /var/log/syslog
 
 Apr 28 04:02:05 rak-gateway 
 chirpstack-application-server[568]: 
@@ -788,7 +788,7 @@ Our LoRaWAN Gateway (ChirpStack on WisGate) will __reject Join Network Requests 
 To see Nonce errors, SSH to our LoRaWAN Gateway and search for...
 
 ```bash
-# grep nonce /var/log/syslog
+grep nonce /var/log/syslog
 
 Apr 28 04:02:41 rak-gateway chirpstack-application-server[568]:
 time="2021-04-28T04:02:41+01:00" 

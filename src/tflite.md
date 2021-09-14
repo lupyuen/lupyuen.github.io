@@ -243,7 +243,7 @@ Watch what happens when we enter the __Machine Learning Commands__ into the BL60
 We enter this command to load BL602's "brain" with knowledge about the wavy curve...
 
 ```text
-# init
+init
 ```
 
 (Wow wouldn't it be great if we could do this for our School Tests?)
@@ -261,7 +261,7 @@ Now that BL602 has loaded the TensorFlow Lite Model (and knows everything about 
 This command asks BL602 to __infer the output value__ of the wavy curve, given the __input value `0.1`__...
 
 ```text
-# infer 0.1
+infer 0.1
 0.160969
 ```
 
@@ -272,10 +272,10 @@ BL602 responds with the __inferred output value `0.160969`__
 Let's test it with two more __input values: `0.2` and `0.3`__...
 
 ```text
-# infer 0.2
+infer 0.2
 0.262633
 
-# infer 0.3
+infer 0.3
 0.372770
 ```
 
@@ -447,7 +447,7 @@ Which will be used in the next chapter to run inferences.
 Earlier we entered this command to __run an inference__ with the TensorFlow Lite Model...
 
 ```text
-# infer 0.1
+infer 0.1
 0.160969
 ```
 
@@ -695,7 +695,7 @@ Let's run this!
 1.  Enter this command to __load the TensorFlow Lite Model__...
 
     ```text
-    # init
+    init
     ```
 
     (We've seen the "`init`" command earlier)
@@ -703,7 +703,7 @@ Let's run this!
 1.  Then enter this command to __glow the LED with the TensorFlow Lite Model__...
 
     ```text
-    # glow
+    glow
     ```
 
     (Yep the "`glow`" command from the previous chapter)

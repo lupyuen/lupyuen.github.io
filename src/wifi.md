@@ -124,7 +124,7 @@ Now that we have started both WiFi Background Tasks (WiFi Firmware Task and WiFi
 The demo firmware lets us enter this command to __connect to a WiFi Access Point__...
 
 ```text
-# wifi_sta_connect YOUR_WIFI_SSID YOUR_WIFI_PASSWORD
+wifi_sta_connect YOUR_WIFI_SSID YOUR_WIFI_PASSWORD
 ```
 
 Here's how the __`wifi_sta_connect`__ command is implemented: [`main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L366-L372)
@@ -162,7 +162,7 @@ Then we call [__`wifi_mgmr_sta_connect`__](https://github.com/lupyuen/bl_iot_sdk
 Now we enter this command to __send a HTTP Request__ over WiFi...
 
 ```text
-# httpc
+httpc
 ```
 
 Here's the implementation of the __`httpc`__ command: [`main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L704-L727)

@@ -860,7 +860,7 @@ Let's enter some commands to display an image!
 1.  Enter `help` to see the available commands...
 
     ```text
-    # help
+    help
     ====User Commands====
     display_init             : Init display
     display_image            : Display image
@@ -891,7 +891,7 @@ Let's enter some commands to display an image!
     Enter this command...
 
     ```text
-    # display_init
+    display_init
     ```
 
     This command calls the functions `test_display_init` and `init_display`, which we have seen earlier.
@@ -899,7 +899,7 @@ Let's enter some commands to display an image!
 1.  We should see this...
 
     ```text
-    # display_init
+    display_init
     port0 eventloop init = 42013ef8
     [HAL] [SPI] Init :
     port=0, mode=0, polar_phase = 3, freq=4000000, tx_dma_ch=2, rx_dma_ch=3, pin_clk=3, pin_cs=2, pin_mosi=1, pin_miso=4
@@ -935,7 +935,7 @@ Let's enter some commands to display an image!
 1.  Next we __display the image on ST7789__...
 
     ```text
-    # display_image
+    display_image
     ```
 
     This command calls the function `display_image`, which we have seen earlier.
@@ -943,7 +943,7 @@ Let's enter some commands to display an image!
 1.  We should see this...
 
     ```text
-    # display_image
+    display_image
     Displaying image...
     Set CS pin 14 to low
     hal_spi_transfer = 1
@@ -970,15 +970,15 @@ Let's enter some commands to display an image!
 1.  Here's a Tip: Instead of entering the two commands...
 
     ```text
-    # display_init
+    display_init
     ...
-    # display_image
+    display_image
     ```
 
     We may enter this as a shortcut...
 
     ```text
-    # 1
+    1
     ```
 
     Which will initialise the ST7789 display and render the image in a single command.
@@ -1205,7 +1205,7 @@ Now we enter the commands to __initialise the SPI Port, ST7789 Display and LVGL 
 1.  Enter `help` to see the available commands...
 
     ```text
-    # help
+    help
     ====User Commands====
     display_init             : Init display
     display_image            : Display image
@@ -1234,7 +1234,7 @@ Now we enter the commands to __initialise the SPI Port, ST7789 Display and LVGL 
 1.  Enter this command to __initialise the SPI Port and ST7789 Display__...
 
     ```text
-    # display_init
+    display_init
     ```
 
     This command calls the functions __`test_display_init` and `init_display`__, which we have seen earlier.
@@ -1244,7 +1244,7 @@ Now we enter the commands to __initialise the SPI Port, ST7789 Display and LVGL 
 1.  Enter this command to __initialise the LVGL Library__
 
     ```text
-    # lvgl_init
+    lvgl_init
     ```
 
     This command calls the function __`lvgl_init`__, which we have seen earlier.
@@ -1268,7 +1268,7 @@ Now we enter the commands to __initialise the SPI Port, ST7789 Display and LVGL 
 1.  Enter this command to __create the LVGL Widgets__ (Button and Label)...
 
     ```text
-    # lvgl_create
+    lvgl_create
     ```
 
     This command calls the function __`lvgl_create`__, which we have seen earlier.
@@ -1303,7 +1303,7 @@ Now we enter the commands to __initialise the SPI Port, ST7789 Display and LVGL 
 1.  Enter this command to __render the LVGL Screen__...
 
     ```text
-    # lvgl_render
+    lvgl_render
     ```
 
     This command calls the function __`lvgl_render`__, which we have seen earlier.
@@ -1367,7 +1367,7 @@ _Button and label rendered by LVGL on Sunday morning_
 1.  Enter this command to __update the LVGL Widgets__...
 
     ```text
-    # lvgl_update
+    lvgl_update
     ```
 
     This command calls the function __`lvgl_update`__, which we have seen earlier.
@@ -1381,7 +1381,7 @@ _Button and label rendered by LVGL on Sunday morning_
 1.  Then this command to __render the updated LVGL Screen__...
 
     ```text
-    # lvgl_render
+    lvgl_render
     ```
 
     (We've used this command in the previous section)
@@ -1404,29 +1404,29 @@ _Button and label rendered by LVGL on Sunday morning_
 1.  Here are two Shortcuts: This Shortcut Command...
 
     ```text
-    # 2
+    2
     ```
 
     Is equivalent to...
 
     ```text
-    # display_init
-    # lvgl_init
-    # lvgl_create
-    # lvgl_render
+    display_init
+    lvgl_init
+    lvgl_create
+    lvgl_render
     ```
 
     And this Shortcut Command...
 
     ```text
-    # 3
+    3
     ```
 
     Is equivalent to...
 
     ```text
-    # lvgl_update
-    # lvgl_render
+    lvgl_update
+    lvgl_render
     ```
 
     [__Watch the Demo Video on YouTube__](https://www.youtube.com/watch?v=PkP-CeYLXUA)

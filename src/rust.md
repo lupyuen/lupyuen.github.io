@@ -654,7 +654,7 @@ Finally we run the BL602 Rust Firmware...
     Enter `help` to show the commands...
 
     ```text
-    # help
+    help
     ====Build-in Commands====
     ====Support 4 cmds once, seperate by ; ====
     help                     : print this
@@ -684,7 +684,7 @@ Finally we run the BL602 Rust Firmware...
 1.  Enter `rust_main` to run our Rust code...
 
     ```text
-    # rust_main
+    rust_main
     Hello from Rust!
     ```
 

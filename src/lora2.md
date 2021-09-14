@@ -1454,7 +1454,7 @@ Let's enter some commands to transmit a LoRa Packet!
 1.  Enter `help` to see the available commands...
 
     ```text
-    # help
+    help
     ====User Commands====
     create_task              : Create a task
     put_event                : Add an event
@@ -1473,7 +1473,7 @@ Let's enter some commands to transmit a LoRa Packet!
     Enter this command...
 
     ```text
-    # create_task
+    create_task
     ```
 
     This command calls the function `create_task`, which we have seen earlier.
@@ -1483,7 +1483,7 @@ Let's enter some commands to transmit a LoRa Packet!
     Enter this command...
 
     ```text
-    # init_driver
+    init_driver
     ```
 
     This command calls the function `init_driver`, which we have seen earlier.
@@ -1491,7 +1491,7 @@ Let's enter some commands to transmit a LoRa Packet!
 1.  We should see this...
 
     ```text
-    # init_driver
+    init_driver
     SX1276 init
     SX1276 interrupt init
     SX1276 register handler: GPIO 11
@@ -1515,7 +1515,7 @@ Let's enter some commands to transmit a LoRa Packet!
 1.  Next we __receive a LoRa Packet__...
 
     ```text
-    # receive_message
+    receive_message
     ```
 
     This command calls the function `receive_message`, which we have seen earlier.
@@ -1523,7 +1523,7 @@ Let's enter some commands to transmit a LoRa Packet!
 1.  We should see this...
 
     ```text
-    # receive_message
+    receive_message
     ...
     SX1276 DIO0: Packet received
     Rx done: RadioEvents.RxDone
@@ -1550,7 +1550,7 @@ Remember that our SX1276 Transceiver will __listen 5 seconds for incoming packet
 Here's what happens when then SX1276 Driver doesn't receive any LoRa Packets within 5 seconds...
 
 ```text
-# receive_message
+receive_message
 ...
 SX1276 receive timeout
 Rx timeout
@@ -1625,7 +1625,7 @@ More about sniffing LoRa Packets...
 Verify the SPI Connection between BL602 and SX1276 by entering the command __`read_registers`__...
 
 ```text
-# read_registers
+read_registers
 Register 0x02 = 0x1a
 Register 0x03 = 0x0b
 Register 0x04 = 0x00
@@ -1674,7 +1674,7 @@ More about SPI Tracing messages...
 We may check the number of GPIO and SPI Interrupts triggered by SX1276 by entering the __`spi_result`__ command...
 
 ```text
-# spi_result
+spi_result
 DIO0 Interrupts: 1
 DIO3 Interrupts: 1
 Tx Interrupts:   302
@@ -1694,7 +1694,7 @@ To check whether our Event Queue and Background Task (from the NimBLE Porting La
 1.  If the Background Task has NOT been started, enter this command...
 
     ```text
-    # create_task
+    create_task
     ```
 
     (`create_task` should only be run once)
@@ -1702,7 +1702,7 @@ To check whether our Event Queue and Background Task (from the NimBLE Porting La
 1.  Then enter this command to enqueue an Event into our Event Queue...
 
     ```text
-    # put_event
+    put_event
     ```
 
 1.  We should see this...

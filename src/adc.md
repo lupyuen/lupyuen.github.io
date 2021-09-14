@@ -283,7 +283,7 @@ Watch what happens when we __flash and run__ the C Firmware for BL602 ADC: [`sdk
 1.  Enter this command to __initialise the ADC Channel__...
 
     ```text
-    # init_adc
+    init_adc
     ```
 
     (We've seen this function earlier)
@@ -293,13 +293,13 @@ Watch what happens when we __flash and run__ the C Firmware for BL602 ADC: [`sdk
 1.  Enter the `read_adc` command a few times to get the __average values__ of the last 1,000 ADC Samples...
 
     ```text
-    # read_adc
+    read_adc
     Average: 1416
 
-    # read_adc
+    read_adc
     Average: 1416
 
-    # read_adc
+    read_adc
     Average: 1416
     ```
 
@@ -308,13 +308,13 @@ Watch what happens when we __flash and run__ the C Firmware for BL602 ADC: [`sdk
 1.  Enter the `read_adc` command a few times...
 
     ```text
-    # read_adc
+    read_adc
     Average: 1408
 
-    # read_adc
+    read_adc
     Average: 1408
 
-    # read_adc
+    read_adc
     Average: 1408
     ```
 
@@ -323,13 +323,13 @@ Watch what happens when we __flash and run__ the C Firmware for BL602 ADC: [`sdk
 1.  Place the BL602 Board (with LED) __back in the dark__ and check the average values...
 
     ```text
-    # read_adc
+    read_adc
     Average: 1417
 
-    # read_adc
+    read_adc
     Average: 1416
 
-    # read_adc
+    read_adc
     Average: 1416
     ```
 
@@ -1055,7 +1055,7 @@ Finally we run the BL602 Rust Firmware...
 1.  In the serial console, enter the `init_adc` command to __initialise the ADC Channel__...
 
     ```text
-    # init_adc
+    init_adc
     [Rust] Init ADC
     ```
 
@@ -1066,11 +1066,11 @@ Finally we run the BL602 Rust Firmware...
 1.  Enter the `read_adc` command a few times to get the __average values__ of the last 1,000 ADC Samples...
 
     ```text
-    # read_adc
+    read_adc
     [Rust] Average: 1417
-    # read_adc
+    read_adc
     [Rust] Average: 1417
-    # read_adc
+    read_adc
     [Rust] Average: 1417
     ```
 
@@ -1079,11 +1079,11 @@ Finally we run the BL602 Rust Firmware...
 1.  Enter the `read_adc` command a few times...
 
     ```text
-    # read_adc
+    read_adc
     [Rust] Average: 1411
-    # read_adc
+    read_adc
     [Rust] Average: 1411
-    # read_adc
+    read_adc
     [Rust] Average: 1412
     ```
 
@@ -1092,11 +1092,11 @@ Finally we run the BL602 Rust Firmware...
 1.  Place the BL602 Board (with LED) __back in the dark__ and check the average values...
 
     ```text
-    # read_adc
+    read_adc
     [Rust] Average: 1417
-    # read_adc
+    read_adc
     [Rust] Average: 1417
-    # read_adc
+    read_adc
     [Rust] Average: 1417
     ```
 

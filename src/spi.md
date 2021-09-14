@@ -618,7 +618,7 @@ Let's enter some SPI commands to read our BME280 Sensor!
 1.  Enter `help` to see the available commands...
 
     ```text
-    # help
+    help
     ====User Commands====
     spi_init                 : Init SPI port
     spi_transfer             : Transfer SPI data
@@ -630,7 +630,7 @@ Let's enter some SPI commands to read our BME280 Sensor!
     Enter this command...
 
     ```text
-    # spi_init
+    spi_init
     ```
 
     `spi_init` calls the function `test_spi_init`, which we have seen earlier.
@@ -651,7 +651,7 @@ Let's enter some SPI commands to read our BME280 Sensor!
 1.  Now we __start the two SPI Transfers__...
 
     ```text
-    # spi_transfer
+    spi_transfer
     ```
 
     `spi_transfer` calls the function `test_spi_transfer`, which we have seen earlier.
@@ -675,7 +675,7 @@ Let's enter some SPI commands to read our BME280 Sensor!
 1.  Finally we display the __SPI Data received__ from BME280...
 
     ```text
-    # spi_result
+    spi_result
     ```
 
     (`spi_result` is defined here in [`sdk_app_spi/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L158-L182))

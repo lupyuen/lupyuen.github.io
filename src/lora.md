@@ -424,7 +424,7 @@ Let's enter some commands to transmit a LoRa Packet!
 1.  Enter `help` to see the available commands...
 
     ```text
-    # help
+    help
     ====User Commands====
     read_registers           : Read registers
     send_message             : Send LoRa message
@@ -436,7 +436,7 @@ Let's enter some commands to transmit a LoRa Packet!
     Enter this command...
 
     ```text
-    # init_driver
+    init_driver
     ```
 
     This command calls the function `init_driver`, which we have seen earlier.
@@ -444,7 +444,7 @@ Let's enter some commands to transmit a LoRa Packet!
 1.  We should see this...
 
     ```text
-    # init_driver
+    init_driver
     port0 eventloop init = 42010760
     [HAL] [SPI] Init :
     port=0, mode=0, polar_phase = 1, freq=200000, tx_dma_ch=2, rx_dma_ch=3, pin_clk=3, pin_cs=2, pin_mosi=1, pin_miso=4
@@ -470,7 +470,7 @@ Let's enter some commands to transmit a LoRa Packet!
 1.  Next we __transmit a LoRa Packet__...
 
     ```text
-    # send_message
+    send_message
     ```
 
     This command calls the function `send_message`, which we have seen earlier.
@@ -478,7 +478,7 @@ Let's enter some commands to transmit a LoRa Packet!
 1.  We should see this...
 
     ```text
-    # send_message
+    send_message
     hal_spi_transfer = 1
     transfer xfer[0].len = 1
     Tx DMA src=0x4200cc58, dest=0x4000a288, size=1, si=1, di=0, i=1
@@ -506,7 +506,7 @@ _How will we know whether BL602 is connected correctly to the LoRa Transceiver?_
 Enter this command to read the first 16 registers from our LoRa Transceiver over SPI...
 
 ```text
-# read_registers
+read_registers
 ```
 
 We should see...
@@ -533,9 +533,9 @@ _Can we find out the frequency that's used by our LoRa Transceiver?_
 Enter these commands...
 
 ```text
-# init_driver
+init_driver
 
-# read_registers
+read_registers
 ```
 
 Look for the values of __Registers 6, 7 and 8__...
@@ -625,9 +625,9 @@ Let's capture and visualise our LoRa Packet with [__Airspy R2 SDR__](https://www
 1.  Run the __LoRa Firmware for BL602__ and enter the commands...
 
     ```text
-    # init_driver
+    init_driver
 
-    # send_message
+    send_message
     ```
 
 1.  Our __LoRa Packet should scroll down__ like so...

@@ -489,7 +489,7 @@ __Alternatively:__ Use the Web Serial Terminal ([See this](https://lupyuen.githu
     Enter __`help`__ to see the available commands...
 
     ```text
-    # help
+    help
     ====Build-in Commands====
     ====Support 4 cmds once, seperate by ; ====
     help                     : print this
@@ -523,7 +523,7 @@ __Alternatively:__ Use the Web Serial Terminal ([See this](https://lupyuen.githu
 1.  We should see this...
 
     ```text
-    # display_image
+    display_image
     Doing start transfer handshake...
     0x9d 0xbe 0x9f 0xbe 0xe8 0xcd 0x9e 0xad 0xea 0x2a 0x3a 0xf8
     Received 'c'
