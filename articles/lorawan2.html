@@ -69,7 +69,8 @@
 <li><a href="#lorawan-firmware">2 LoRaWAN Firmware</a><ul>
 <li><a href="#deselect-spi-peripherals">2.1 Deselect SPI Peripherals</a><ul></ul></li>
 <li><a href="#swap-spi-pins">2.2 Swap SPI Pins</a><ul></ul></li></ul></li>
-<li><a href="#run-the-firmware">3 Run The Firmware</a><ul></ul></li>
+<li><a href="#run-the-firmware">3 Run The Firmware</a><ul>
+<li><a href="#lorawan-commands">3.1 LoRaWAN Commands</a><ul></ul></li></ul></li>
 <li><a href="#lorawan-gateway">4 LoRaWAN Gateway</a><ul></ul></li>
 <li><a href="#logic-analyser">5 Logic Analyser</a><ul></ul></li>
 <li><a href="#spectrum-analyser">6 Spectrum Analyser</a><ul></ul></li>
@@ -266,6 +267,18 @@ void SX126xIoInit( void ) {
 <p>Change the firmware <strong><code>pinedio_blinky</code></strong> to <strong><code>pinedio_lorawan</code></strong></p>
 </li>
 </ul>
+<p>Now we run the <strong>LoRaWAN commands</strong> to…</p>
+<ol>
+<li>
+<p><strong>Join a LoRaWAN Network</strong></p>
+</li>
+<li>
+<p><strong>Send a Data Packet</strong> to the network</p>
+</li>
+</ol>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/lorawan2-commands.png" alt="LoRaWAN Commands" /></p>
+<h2 id="lorawan-commands" class="section-header"><a href="#lorawan-commands">3.1 LoRaWAN Commands</a></h2>
 <p>At the BL602 Command Prompt, enter these LoRaWAN Commands: <a href="https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan#lorawan-commands">pinedio_lorawan</a></p>
 <div class="example-wrap"><pre class="language-bash">#  Start LoRa background task
 create_task
@@ -292,8 +305,6 @@ las_app_port open 2
 las_app_tx 2 5 0</pre></div>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan#output-log">(See the output log)</a></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/lorawan2-commands.png" alt="LoRaWAN Commands" /></p>
 <h1 id="lorawan-gateway" class="section-header"><a href="#lorawan-gateway">4 LoRaWAN Gateway</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lorawan2-chirpstack.png" alt="" /></p>
