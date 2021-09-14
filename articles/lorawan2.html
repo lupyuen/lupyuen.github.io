@@ -275,16 +275,19 @@ las_app_tx 2 5 0
 <tr><td align="center"><strong><code>5</code></strong></td><td align="left">Debug CS</td><td align="center"><code>2</code></td></tr>
 </tbody></table>
 <p><img src="https://lupyuen.github.io/images/pinedio-logic2.jpg" alt="Logic Analyser connected to PineDio Stack" /></p>
-<p><em>What about the ST7789 Chip Select Pin: GPIO 20?</em></p>
-<p>Unfortunately <strong>GPIO 20 is not exposed</strong> on the GPIO Connector.</p>
-<p>But remember: Everything we do to GPIO 20, we <strong>do the same to GPIO 5!</strong></p>
-<p><strong>GPIO 5 is exposed</strong> on the GPIO Connector and it mirrors the GPIO High / Low state of GPIO 20.</p>
+<p><em>What about the SX1262 Chip Select Pin: GPIO 15?</em></p>
+<p>Unfortunately <strong>GPIO 15 is not exposed</strong> on the GPIO Connector.</p>
+<p>But remember: Everything we do to GPIO 15, we <strong>do the same to GPIO 5!</strong></p>
+<p><strong>GPIO 5 is exposed</strong> on the GPIO Connector and it mirrors the GPIO High / Low state of GPIO 15.</p>
 <p>Thus we simply connect our Logic Analyser to <strong>GPIO 5 as the Chip Select Pin!</strong> (Pic above)</p>
 <p>Let’s look at the data collected by our Logic Analyser…</p>
-<p><img src="https://lupyuen.github.io/images/lorawan2-logic.png" alt="" /></p>
+<p><img src="https://lupyuen.github.io/images/lorawan2-logic.png" alt="LoRa SX1262 with Logic Analyser" /></p>
 <h1 id="spectrum-analyser" class="section-header"><a href="#spectrum-analyser">6 Spectrum Analyser</a></h1>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/pinedio-chirp2.jpg" alt="" /></p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/lora#visualise-lora-with-software-defined-radio"><strong>“Visualise LoRa with Software Defined Radio”</strong></a></li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/pinedio-chirp2.jpg" alt="LoRa SX1262 visualised with SDR" /></p>
 <h1 id="security" class="section-header"><a href="#security">7 Security</a></h1>
 <p>TODO: Injecting keys, one-time</p>
 <p>TODO: Glitching</p>
