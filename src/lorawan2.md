@@ -154,7 +154,9 @@ int deselect_spi(void) {
   }
 ```
 
-TODO
+First we __configure the Chip Select Pins__ for GPIO Output.
+
+Then we set the __Chip Select Pins to High__, to deselect the SPI Peripherals...
 
 ```c
   //  Set Chip Select pins to High, to deselect SX1262, SPI Flash and ST7789
@@ -168,11 +170,13 @@ TODO
 }
 ```
 
-TODO: Called by [`init_lorawan`](https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L167-L173)
+(More about `SX126X_DEBUG_CS_PIN` when we talk about the Logic Analyser)
 
-TODO: This code comes from
+This function is called by the [__`init_lorawan` Command__](https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L167-L173), which we'll run in a while...
 
 ![Deselect SPI Peripherals](https://lupyuen.github.io/images/lorawan2-deselect.png)
+
+[(Source)](https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L167-L173)
 
 ## Swap SPI Pins
 
