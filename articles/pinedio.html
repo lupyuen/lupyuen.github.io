@@ -132,7 +132,10 @@
 <p><img src="https://lupyuen.github.io/images/pinedio-display4.jpg" alt="ST7789 Display connected to PineDio Stack" /></p>
 <p>And we get an unusual contraption: A <strong>Solar Panel with LCD Display inside</strong>!</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-display5.jpg" alt="Solar Panel with an LCD Display inside" /></p>
-<p>We’re ready to test our firmware on PineDio Stack!</p>
+<p>We’re ready to test our firmware on PineDio Stack! We’ll follow this schematic…</p>
+<ul>
+<li><a href="https://wiki.pine64.org/wiki/Pinedio#PineDio_Stack"><strong>PineDio Stack Schematic (Prototype)</strong></a></li>
+</ul>
 <h1 id="bl604-blinky" class="section-header"><a href="#bl604-blinky">2 BL604 Blinky</a></h1>
 <p><em>What’s the first thing that we run on a brand new prototype board?</em></p>
 <p><strong>Blinky Firmware</strong> of course! (Yep the firmware that blinks the LED)</p>
@@ -466,7 +469,11 @@ int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);
 <p><img src="https://lupyuen.github.io/images/pinedio-display2.jpg" alt="PineDio Stack ST7789 Display" /></p>
 <h1 id="st7789-display" class="section-header"><a href="#st7789-display">7 ST7789 Display</a></h1>
 <p>Now that PineDio Stack SPI is OK, let’s <strong>draw something on the ST7789 Display</strong>!</p>
-<p>The schematic above says that the ST7789 SPI Display is connected on these pins…</p>
+<p>According to the PineDio Stack Schematic…</p>
+<ul>
+<li><a href="https://wiki.pine64.org/wiki/Pinedio#PineDio_Stack"><strong>PineDio Stack Schematic (Prototype)</strong></a></li>
+</ul>
+<p>The ST7789 SPI Display is connected on these pins…</p>
 <ul>
 <li>
 <p><strong>GPIO 20:</strong> SPI Chip Select</p>
