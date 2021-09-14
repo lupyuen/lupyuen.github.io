@@ -132,17 +132,17 @@ This BL604 Blinky code is __100% identical__ to the [BL602 version of Blinky](ht
 We __build the BL604 Blinky Firmware__ the exact same way as BL602...
 
 ```bash
-#  Download the 3wire branch of lupyuen's bl_iot_sdk
+##  Download the 3wire branch of lupyuen's bl_iot_sdk
 git clone --recursive --branch 3wire https://github.com/lupyuen/bl_iot_sdk
 cd customer_app/pinedio_blinky
 
-#  Build for BL602 (Should this be BL604?)
+##  Build for BL602 (Should this be BL604?)
 export CONFIG_CHIP_NAME=BL602
 
-#  Where BL602 / BL604 IoT SDK is located
+##  Where BL602 / BL604 IoT SDK is located
 export BL60X_SDK_PATH=$PWD/../..
 
-#  Build the firmware: build_out/pinedio_blinky.bin
+##  Build the firmware: build_out/pinedio_blinky.bin
 make
 ```
 

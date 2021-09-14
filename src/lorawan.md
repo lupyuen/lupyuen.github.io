@@ -951,7 +951,7 @@ Find out which __LoRa Frequency__ we should use for your region...
 Download the [LoRaWAN firmware and driver source code](https://github.com/lupyuen/bl_iot_sdk/tree/lorawan/customer_app/sdk_app_lorawan)...
 
 ```bash
-# Download the lorawan branch of lupyuen's bl_iot_sdk
+## Download the lorawan branch of lupyuen's bl_iot_sdk
 git clone --recursive --branch lorawan https://github.com/lupyuen/bl_iot_sdk
 ```
 
@@ -1000,14 +1000,14 @@ Below are the GPIO Pin Numbers for the connection shown at the top of this artic
 Build the Firmware Binary File `sdk_app_lorawan.bin`...
 
 ```bash
-# TODO: Change this to the full path of bl_iot_sdk
+## TODO: Change this to the full path of bl_iot_sdk
 export BL60X_SDK_PATH=$HOME/bl_iot_sdk
 export CONFIG_CHIP_NAME=BL602
 
 cd bl_iot_sdk/customer_app/sdk_app_lorawan
 make
 
-# TODO: Change ~/blflash to the full path of blflash
+## TODO: Change ~/blflash to the full path of blflash
 cp build_out/sdk_app_lorawan.bin ~/blflash
 ```
 
@@ -1054,20 +1054,20 @@ __For Pinenut and MagicHome BL602:__
 Enter these commands to flash `sdk_app_lorawan.bin` to BL602 over UART...
 
 ```bash
-# TODO: Change ~/blflash to the full path of blflash
+## TODO: Change ~/blflash to the full path of blflash
 cd ~/blflash
 
-# For Linux:
+## For Linux:
 sudo cargo run flash sdk_app_lorawan.bin \
     --port /dev/ttyUSB0
 
-# For macOS:
+## For macOS:
 cargo run flash sdk_app_lorawan.bin \
     --port /dev/tty.usbserial-1420 \
     --initial-baud-rate 230400 \
     --baud-rate 230400
 
-# For Windows: Change COM5 to the BL602 Serial Port
+## For Windows: Change COM5 to the BL602 Serial Port
 cargo run flash sdk_app_lorawan.bin --port COM5
 ```
 
@@ -1138,7 +1138,7 @@ Let's enter some commands to join the LoRaWAN Network and transmit a LoRaWAN Dat
     Enter this command...
 
     ```text
-    # init_lorawan
+    init_lorawan
     ```
 
     [(`init_lorawan` is defined here)](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/lorawan.c#L166-L168)
@@ -1146,7 +1146,7 @@ Let's enter some commands to join the LoRaWAN Network and transmit a LoRaWAN Dat
 1.  Let's get ready to join the LoRaWAN Network. Enter the __Device EUI__...
 
     ```text    
-    # las_wr_dev_eui 0x4b:0xc1:0x5e:0xe7:0x37:0x7b:0xb1:0x5b
+    las_wr_dev_eui 0x4b:0xc1:0x5e:0xe7:0x37:0x7b:0xb1:0x5b
     ```
 
     In ChirpStack: Copy the Device EUI from `Applications → app → Device EUI`
@@ -1154,7 +1154,7 @@ Let's enter some commands to join the LoRaWAN Network and transmit a LoRaWAN Dat
 1.  Enter the __Application EUI__...
 
     ```text
-    # las_wr_app_eui 0x00:0x00:0x00:0x00:0x00:0x00:0x00:0x00
+    las_wr_app_eui 0x00:0x00:0x00:0x00:0x00:0x00:0x00:0x00
     ```
 
     ChirpStack doesn't require an Application EUI, so we set it to zeros.
@@ -1162,7 +1162,7 @@ Let's enter some commands to join the LoRaWAN Network and transmit a LoRaWAN Dat
 1.  Enter the __Application Key__...
 
     ```text
-    # las_wr_app_key 0xaa:0xff:0xad:0x5c:0x7e:0x87:0xf6:0x4d:0xe3:0xf0:0x87:0x32:0xfc:0x1d:0xd2:0x5d
+    las_wr_app_key 0xaa:0xff:0xad:0x5c:0x7e:0x87:0xf6:0x4d:0xe3:0xf0:0x87:0x32:0xfc:0x1d:0xd2:0x5d
     ```
 
     In ChirpStack: Copy the Application Key from `Applications → app → Devices → device_otaa_class_a → Keys (OTAA) → Application Key`
@@ -1170,7 +1170,7 @@ Let's enter some commands to join the LoRaWAN Network and transmit a LoRaWAN Dat
 1.  Now we __join the LoRaWAN network__, try up to 3 times...
 
     ```text
-    # las_join 3
+    las_join 3
     ```
 
     This calls the `las_cmd_join` function that we've seen earlier.    
@@ -1178,7 +1178,7 @@ Let's enter some commands to join the LoRaWAN Network and transmit a LoRaWAN Dat
 1.  We __open LoRaWAN Application Port 2__...
 
     ```text
-    # las_app_port open 2
+    las_app_port open 2
     ```
 
     This calls the `las_cmd_app_port` function that we've seen earlier.    
@@ -1186,7 +1186,7 @@ Let's enter some commands to join the LoRaWAN Network and transmit a LoRaWAN Dat
 1.  Finally we __send a data packet to LoRaWAN port 2__: 5 bytes of zeros, unconfirmed (with no acknowledgement)...
 
     ```text
-    # las_app_tx 2 5 0
+    las_app_tx 2 5 0
     ```
 
     This calls the `las_cmd_app_tx` function that we've seen earlier.    

@@ -300,8 +300,8 @@ Let's study the important bits of our OpenOCD Script: [`pinecone-rust/openocd.cf
 ## Debug Logging
 
 ```text
-# Uncomment to enable debug messages
-# debug_level 4
+## Uncomment to enable debug messages
+## debug_level 4
 ```
 
 To show debug messages in OpenOCD, uncomment the `debug_level` line. (Remove the leading "`#`")
@@ -323,9 +323,9 @@ Here we tell OpenOCD to use the FT2232 debugger that's connected to USB.
 ## FTDI Channel
 
 ```text
-# Sipeed JTAG Debugger uses FTDI Channel 0, not 1
+## Sipeed JTAG Debugger uses FTDI Channel 0, not 1
 ftdi_channel 0
-# Previously: ftdi_channel 1
+## Previously: ftdi_channel 1
 ```
 
 According to the [FT2232 Specs](https://www.ftdichip.com/Support/Documents/DataSheets/ICs/DS_FT2232D.pdf), the FT2232 module supports two Serial Channels: 0 and 1.
@@ -339,9 +339,9 @@ For other JTAG Debuggers: Set the FTDI Channel to 0 if PineCone is connected to 
 ```text
 transport select jtag
 
-# TODO: Increase the adapter speed (now 100 kHz)
+## TODO: Increase the adapter speed (now 100 kHz)
 adapter speed 100
-# Previously: adapter speed 2000
+## Previously: adapter speed 2000
 ```
 
 Here we select JTAG as the communication protocol for talking to PineCone.

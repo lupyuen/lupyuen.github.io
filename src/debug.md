@@ -488,7 +488,7 @@ rustflags = [
   "-C", "link-arg=-Tlink.x",
 ]
 runner = "riscv64-unknown-elf-gdb -q -x openocd.gdb"
-# runner = "riscv32-unknown-elf-gdb -q -x openocd.gdb"
+## runner = "riscv32-unknown-elf-gdb -q -x openocd.gdb"
 
 [build]
 target = "riscv32imac-unknown-none-elf"

@@ -419,12 +419,12 @@ Let's learn how it works: [`.github/workflows/main.yml`](https://github.com/lupy
 At the top of the GitHub Actions Workflow, we state the conditions that will trigger the Automated Build...
 
 ```yaml
-# Name of this Workflow
+## Name of this Workflow
 name: Build Firmware
 
-# When to run this Workflow...
+## When to run this Workflow...
 on:
-  # Run this Workflow when files are updated (Pushed) in this Branch
+  ## Run this Workflow when files are updated (Pushed) in this Branch
   push:
     branches: [ main ]    
 ```
@@ -436,10 +436,10 @@ This says that the Automated Build will be triggered whenever we commit code to 
 We'll use an Ubuntu x64 virtual machine (hosted at GitHub) to compile our code...
 
 ```yaml
-# Steps to run for the Workflow
+## Steps to run for the Workflow
 jobs:
   build:
-    # Run these steps on Ubuntu
+    ## Run these steps on Ubuntu
     runs-on: ubuntu-latest
 ```
 
@@ -533,7 +533,7 @@ Here's how we download and build `newt` if it doesn't exist in our cache...
 
 ```yaml
     - name: Install newt
-      # Install newt if not found in cache
+      ## Install newt if not found in cache
       if:   steps.cache-newt.outputs.cache-hit != 'true'  
       run:  |
         source scripts/install-version.sh
@@ -551,7 +551,7 @@ Here's how we download and build `newt` if it doesn't exist in our cache...
 Note the condition: We execute this step only when `newt` doesn't exist in our cache...
 
 ```yaml
-      # Install newt if not found in cache
+      ## Install newt if not found in cache
       if:   steps.cache-newt.outputs.cache-hit != 'true'
 ```
 
@@ -616,7 +616,7 @@ If the GCC Compiler doesn't exist in our cache, we download the [__xPack RISC-V 
 
 ```yaml
     - name: Install xPack RISC-V Toolchain xpack-riscv-none-embed-gcc
-      # Install toolchain if not found in cache
+      ## Install toolchain if not found in cache
       if:   steps.cache-toolchain.outputs.cache-hit != 'true'  
       run:  |
         wget -qO- https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases/download/v8.3.0-2.3/xpack-riscv-none-embed-gcc-8.3.0-2.3-linux-x64.tar.gz | tar -xz
@@ -647,13 +647,13 @@ Now that we have the build tools ready (`newt` and GCC Compiler), let's build My
 This sets the path of `newt` and calls the build script: [`scripts/build-app.sh`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/scripts/build-app.sh)
 
 ```bash
-#  Add GCC to the PATH
+##  Add GCC to the PATH
 export PATH="$PWD/xpack-riscv-none-embed-gcc/bin:$PATH"
 
-#  Build the Mynewt Firmware
+##  Build the Mynewt Firmware
 newt build pinecone_app
 
-#  Display the firmware size
+##  Display the firmware size
 newt size -v pinecone_app
 ```
 

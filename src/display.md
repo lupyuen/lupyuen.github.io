@@ -682,13 +682,13 @@ Here we see that `image_data` includes this file that contains 115,200 bytes of 
 To create our own `image.inc`, prepare a 240 x 240 PNG file named `image.png`. Then do this...
 
 ```bash
-# Download the pinetime-graphic source code
+## Download the pinetime-graphic source code
 git clone https://github.com/lupyuen/pinetime-graphic
 cd pinetime-graphic
 
-# TODO: Copy image.png to the pinetime-graphic folder
+## TODO: Copy image.png to the pinetime-graphic folder
 
-# Convert the PNG file to a C array
+## Convert the PNG file to a C array
 cargo run -v image.png >image.inc
 ```
 
@@ -735,19 +735,19 @@ Download the Firmware Binary File __`sdk_app_st7789.bin`__ from...
 Alternatively, we may build the Firmware Binary File `sdk_app_st7789.bin` from the [source code](https://github.com/lupyuen/bl_iot_sdk/tree/st7789/customer_app/sdk_app_st7789)...
 
 ```bash
-# Download the st7789 branch of lupyuen's bl_iot_sdk
+## Download the st7789 branch of lupyuen's bl_iot_sdk
 git clone --recursive --branch st7789 https://github.com/lupyuen/bl_iot_sdk
 cd bl_iot_sdk/customer_app/sdk_app_st7789
 
-# TODO: Replace sdk_app_st7789/image.inc
-# by Our Favourite Cat. See https://lupyuen.github.io/articles/display#modding-the-photo
+## TODO: Replace sdk_app_st7789/image.inc
+## by Our Favourite Cat. See https://lupyuen.github.io/articles/display#modding-the-photo
 
-# TODO: Change this to the full path of bl_iot_sdk
+## TODO: Change this to the full path of bl_iot_sdk
 export BL60X_SDK_PATH=$HOME/bl_iot_sdk
 export CONFIG_CHIP_NAME=BL602
 make
 
-# TODO: Change ~/blflash to the full path of blflash
+## TODO: Change ~/blflash to the full path of blflash
 cp build_out/sdk_app_st7789.bin ~/blflash
 ```
 
@@ -794,20 +794,20 @@ __For Pinenut and MagicHome BL602:__
 Enter these commands to flash `sdk_app_st7789.bin` to BL602 over UART...
 
 ```bash
-# TODO: Change ~/blflash to the full path of blflash
+## TODO: Change ~/blflash to the full path of blflash
 cd ~/blflash
 
-# For Linux:
+## For Linux:
 sudo cargo run flash sdk_app_st7789.bin \
     --port /dev/ttyUSB0
 
-# For macOS:
+## For macOS:
 cargo run flash sdk_app_st7789.bin \
     --port /dev/tty.usbserial-1420 \
     --initial-baud-rate 230400 \
     --baud-rate 230400
 
-# For Windows: Change COM5 to the BL602 Serial Port
+## For Windows: Change COM5 to the BL602 Serial Port
 cargo run flash sdk_app_st7789.bin --port COM5
 ```
 
@@ -1813,27 +1813,27 @@ Here's the script I use on macOS to automate the building, flashing and running 
 
 ```bash
 #!/usr/bin/env bash
-#  macOS script to build, flash and run BL602 Firmware
+##  macOS script to build, flash and run BL602 Firmware
 
 set -e  #  Exit when any command fails
 set -x  #  Echo commands
 
-#  Build for BL602
+##  Build for BL602
 export CONFIG_CHIP_NAME=BL602
 
-#  Where BL602 IoT SDK is located
+##  Where BL602 IoT SDK is located
 export BL60X_SDK_PATH=$PWD/../..
 
-#  Where blflash is located
+##  Where blflash is located
 export BLFLASH_PATH=$PWD/../../../blflash
 
-#  Build the firmware
+##  Build the firmware
 make
 
-#  Copy firmware to blflash
+##  Copy firmware to blflash
 cp build_out/sdk_app_st7789.bin $BLFLASH_PATH
 
-#  Flash the firmware
+##  Flash the firmware
 pushd $BLFLASH_PATH
 cargo run flash sdk_app_st7789.bin \
     --port /dev/tty.usbserial-1420 \
@@ -1842,7 +1842,7 @@ cargo run flash sdk_app_st7789.bin \
 sleep 5
 popd
 
-#  Run the firmware
+##  Run the firmware
 open -a CoolTerm
 ```
 

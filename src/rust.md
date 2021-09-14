@@ -371,11 +371,11 @@ Instead we're running __Rust on top of an Embedded Operating System__ (BL602 IoT
 That's why we compile our Rust code into a __static library__ that will be linked into the BL602 Firmware. See [`rust/Cargo.toml`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/Cargo.toml#L14-L18)...
 
 ```text
-# Build this module as a Rust library, 
-# not a Rust application.  We will link 
-# this library with the BL602 firmware.
+## Build this module as a Rust library, 
+## not a Rust application.  We will link 
+## this library with the BL602 firmware.
 [lib]
-# Output will be named `libapp.a`
+## Output will be named `libapp.a`
 name       = "app"
 crate-type = ["staticlib"]
 ```
@@ -401,7 +401,7 @@ Here are the steps to build the BL602 Rust Firmware `sdk_app_rust.bin`...
 1.  Download the __source code__ for the BL602 Rust Firmware...
 
     ```bash
-    # Download the rust branch of lupyuen's bl_iot_sdk
+    ## Download the rust branch of lupyuen's bl_iot_sdk
     git clone --recursive --branch rust https://github.com/lupyuen/bl_iot_sdk
     cd bl_iot_sdk/customer_app/sdk_app_rust
     ```
@@ -413,10 +413,10 @@ Here are the steps to build the BL602 Rust Firmware `sdk_app_rust.bin`...
 1.  In `run.sh`, set the following variables to the downloaded folders for `blflash` and `xpack-riscv-none-embed-gcc`...
 
     ```bash
-    #  Where blflash is located
+    ##  Where blflash is located
     export BLFLASH_PATH=$PWD/../../../blflash
 
-    #  Where GCC is located
+    ##  Where GCC is located
     export GCC_PATH=$PWD/../../../xpack-riscv-none-embed-gcc
     ```
 
@@ -583,14 +583,14 @@ Here's how we flash the Rust Firmware file `sdk_app_rust.bin` to BL602...
     Then enter this at the command prompt...
 
     ```bash
-    # TODO: Change this to the downloaded blflash folder
+    ## TODO: Change this to the downloaded blflash folder
     cd blflash
 
-    # For Linux:
+    ## For Linux:
     sudo cargo run flash sdk_app_lora.bin \
         --port /dev/ttyUSB0
 
-    # For Windows: Change COM5 to the BL602 Serial Port
+    ## For Windows: Change COM5 to the BL602 Serial Port
     cargo run flash sdk_app_lora.bin --port COM5
     ```
 
@@ -1025,19 +1025,19 @@ Let's look inside the script that builds, flashes and runs our Rust Firmware for
 1.  The script begins with the build and flash settings...
 
     ```bash
-    #  Name of app
+    ##  Name of app
     export APP_NAME=sdk_app_rust
 
-    #  Build for BL602
+    ##  Build for BL602
     export CONFIG_CHIP_NAME=BL602
 
-    #  Where BL602 IoT SDK is located
+    ##  Where BL602 IoT SDK is located
     export BL60X_SDK_PATH=$PWD/../..
 
-    #  Where blflash is located
+    ##  Where blflash is located
     export BLFLASH_PATH=$PWD/../../../blflash
 
-    #  Where GCC is located
+    ##  Where GCC is located
     export GCC_PATH=$PWD/../../../xpack-riscv-none-embed-gcc
     ```
 
@@ -1050,9 +1050,9 @@ Let's look inside the script that builds, flashes and runs our Rust Firmware for
     From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L29-L33)
 
     ```bash
-    #  Rust target: Custom target for llvm-abiname=ilp32f
-    #  https://docs.rust-embedded.org/embedonomicon/compiler-support.html#built-in-target
-    #  https://docs.rust-embedded.org/embedonomicon/custom-target.html
+    ##  Rust target: Custom target for llvm-abiname=ilp32f
+    ##  https://docs.rust-embedded.org/embedonomicon/compiler-support.html#built-in-target
+    ##  https://docs.rust-embedded.org/embedonomicon/custom-target.html
     rust_build_target=$PWD/riscv32imacf-unknown-none-elf.json
     rust_build_target_folder=riscv32imacf-unknown-none-elf
     ```
@@ -1062,14 +1062,14 @@ Let's look inside the script that builds, flashes and runs our Rust Firmware for
     From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L61-L71)
 
     ```bash
-    #  Remove the Stub Library if it exists:
-    #  build_out/rust-app/librust-app.a
+    ##  Remove the Stub Library if it exists:
+    ##  build_out/rust-app/librust-app.a
     if [ -e $rust_app_dest ]; then
         rm $rust_app_dest
     fi
 
-    #  Remove the Rust Library if it exists:
-    #  rust/target/riscv32imacf-unknown-none-elf/debug/libapp.a
+    ##  Remove the Rust Library if it exists:
+    ##  rust/target/riscv32imacf-unknown-none-elf/debug/libapp.a
     if [ -e $rust_app_build ]; then
         rm $rust_app_build
     fi
@@ -1082,7 +1082,7 @@ Let's look inside the script that builds, flashes and runs our Rust Firmware for
     From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L77-L78)
 
     ```bash
-    #  Build the firmware with the Stub Library
+    ##  Build the firmware with the Stub Library
     make
     ```
 
@@ -1093,7 +1093,7 @@ Let's look inside the script that builds, flashes and runs our Rust Firmware for
     From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L84-L88)
 
     ```bash
-    #  Build the Rust Library
+    ##  Build the Rust Library
     pushd rust
     rustup default nightly
     cargo build $rust_build_options
@@ -1113,9 +1113,9 @@ Let's look inside the script that builds, flashes and runs our Rust Firmware for
     From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L90-L94)
 
     ```bash
-    #  Replace the Stub Library by the compiled Rust Library
-    #  Stub Library: build_out/rust-app/librust-app.a
-    #  Rust Library: rust/target/riscv32imacf-unknown-none-elf/debug/libapp.a
+    ##  Replace the Stub Library by the compiled Rust Library
+    ##  Stub Library: build_out/rust-app/librust-app.a
+    ##  Rust Library: rust/target/riscv32imacf-unknown-none-elf/debug/libapp.a
     cp $rust_app_build $rust_app_dest
     ```
 
@@ -1124,7 +1124,7 @@ Let's look inside the script that builds, flashes and runs our Rust Firmware for
     From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L100-L101)
 
     ```bash
-    #  Link the Rust Library to the firmware
+    ##  Link the Rust Library to the firmware
     make
     ```
 
@@ -1139,10 +1139,10 @@ Let's look inside the script that builds, flashes and runs our Rust Firmware for
     From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L110-L124)
 
     ```bash
-    #  Copy firmware to blflash
+    ##  Copy firmware to blflash
     cp build_out/$APP_NAME.bin $BLFLASH_PATH
 
-    #  Flash the firmware
+    ##  Flash the firmware
     pushd $BLFLASH_PATH
     cargo run flash $APP_NAME.bin \
         --port /dev/tty.usbserial-14* \
@@ -1159,7 +1159,7 @@ Let's look inside the script that builds, flashes and runs our Rust Firmware for
     From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L130-L131)
 
     ```bash
-    #  Run the firmware
+    ##  Run the firmware
     open -a CoolTerm
     ```
 

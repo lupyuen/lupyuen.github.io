@@ -677,16 +677,16 @@ Download the Firmware Binary File __`sdk_app_i2c.bin`__ from...
 Alternatively, we may build the Firmware Binary File `sdk_app_i2c.bin` from the [source code](https://github.com/lupyuen/bl_iot_sdk/tree/i2c/customer_app/sdk_app_i2c)...
 
 ```bash
-# Download the i2c branch of lupyuen's bl_iot_sdk
+## Download the i2c branch of lupyuen's bl_iot_sdk
 git clone --recursive --branch i2c https://github.com/lupyuen/bl_iot_sdk
 cd bl_iot_sdk/customer_app/sdk_app_i2c
 
-# TODO: Change this to the full path of bl_iot_sdk
+## TODO: Change this to the full path of bl_iot_sdk
 export BL60X_SDK_PATH=$HOME/bl_iot_sdk
 export CONFIG_CHIP_NAME=BL602
 make
 
-# TODO: Change ~/blflash to the full path of blflash
+## TODO: Change ~/blflash to the full path of blflash
 cp build_out/sdk_app_i2c.bin ~/blflash
 ```
 
@@ -733,20 +733,20 @@ __For Pinenut and MagicHome BL602:__
 Enter these commands to flash `sdk_app_i2c.bin` to BL602 over UART...
 
 ```bash
-# TODO: Change ~/blflash to the full path of blflash
+## TODO: Change ~/blflash to the full path of blflash
 cd ~/blflash
 
-# For Linux:
+## For Linux:
 sudo cargo run flash sdk_app_i2c.bin \
     --port /dev/ttyUSB0
 
-# For macOS:
+## For macOS:
 cargo run flash sdk_app_i2c.bin \
     --port /dev/tty.usbserial-1420 \
     --initial-baud-rate 230400 \
     --baud-rate 230400
 
-# For Windows: Change COM5 to the BL602 Serial Port
+## For Windows: Change COM5 to the BL602 Serial Port
 cargo run flash sdk_app_i2c.bin --port COM5
 ```
 

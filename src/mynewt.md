@@ -202,27 +202,27 @@ We define the __Flash Map__ to tell Mynewt where in Flash Memory the Bootloader,
 -   __PineCone Flash Map__: [`hw/bsp/pinecone/bsp.yml`](https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/bsp/pinecone/bsp.yml)
 
 ```yaml
-# BL602 Instruction Cache Memory starts at 0x2200 8000, size 48 KB
-# Based on https://github.com/lupyuen/pinecone-rust/blob/main/memory.x
+## BL602 Instruction Cache Memory starts at 0x2200 8000, size 48 KB
+## Based on https://github.com/lupyuen/pinecone-rust/blob/main/memory.x
 bsp.flash_map:
     areas:
-        # System areas.
-        # (Not Used) Bootloader
+        ## System areas.
+        ## (Not Used) Bootloader
         FLASH_AREA_BOOTLOADER:
             device:  0
             offset:  0x22013c00
             size:    1kB    # 0x400
-        # Active Firmware Image
+        ## Active Firmware Image
         FLASH_AREA_IMAGE_0:
             device:  0 
             offset:  0x22008000
             size:    43kB   # 0xac00
-        # (Not Used) Standby Firmware Image, in case Active Firmware can't start
+        ## (Not Used) Standby Firmware Image, in case Active Firmware can't start
         FLASH_AREA_IMAGE_1:
             device:  0
             offset:  0x22012c00
             size:    1kB    # 0x400
-        # (Not used) Scratch Area for swapping Active Firmware and Standby Firmware
+        ## (Not used) Scratch Area for swapping Active Firmware and Standby Firmware
         FLASH_AREA_IMAGE_SCRATCH:
             device:  0
             offset:  0x22013000
@@ -234,14 +234,14 @@ Remember that we're loading our firmware into Cache Memory (instead of Flash Mem
 That's why we allocate most of the Cache Memory to the Active Firmware Image (located at the start of Cache Memory).
 
 ```yaml
-        # User areas.
-        # (Not Used) Reboot Log
+        ## User areas.
+        ## (Not Used) Reboot Log
         FLASH_AREA_REBOOT_LOG:
             user_id: 0
             device:  0
             offset:  0x22013400
             size:    1kB    # 0x400
-        # (Not Used) User File System, like LittleFS
+        ## (Not Used) User File System, like LittleFS
         FLASH_AREA_NFFS:
             user_id: 1
             device:  0
@@ -258,28 +258,28 @@ The Flash Map looks more meaningful when we're ready to load our firmware into F
 Here is our Flash Map for the future...
 
 ```yaml
-# TODO: Use this memory layout when firmware is loaded into Flash Memory
-# BL602 Flash starts at 0x2300 0000, size 4 MB
-# Based on https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602/evb/ld/flash_rom.ld
+## TODO: Use this memory layout when firmware is loaded into Flash Memory
+## BL602 Flash starts at 0x2300 0000, size 4 MB
+## Based on https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602/evb/ld/flash_rom.ld
 bsp.flash_map:
     areas:
-        # System areas.
-        # TODO: Bootloader not in use. When used, move Bootloader to 0x2300 0000 and shift the other areas accordingly
+        ## System areas.
+        ## TODO: Bootloader not in use. When used, move Bootloader to 0x2300 0000 and shift the other areas accordingly
         FLASH_AREA_BOOTLOADER:
             device:  0
             offset:  0x2330d000
             size:    32kB      # 0x8000
-        # Active Firmware Image
+        ## Active Firmware Image
         FLASH_AREA_IMAGE_0:
             device:  0 
             offset:  0x23000000
             size:    1024kB    # 0x100 000
-        # Standby Firmware Image, in case Active Firmware can't start
+        ## Standby Firmware Image, in case Active Firmware can't start
         FLASH_AREA_IMAGE_1:
             device:  0
             offset:  0x23100000
             size:    1024kB    # 0x100 000
-        # Scratch Area for swapping Active Firmware and Standby Firmware
+        ## Scratch Area for swapping Active Firmware and Standby Firmware
         FLASH_AREA_IMAGE_SCRATCH:
             device:  0
             offset:  0x23300000
@@ -291,14 +291,14 @@ bsp.flash_map:
 In future we'll have a proper Reboot Log and a User File System for saving files and data that will be retained across reboots...
 
 ```yaml
-        # User areas.
-        # Reboot Log
+        ## User areas.
+        ## Reboot Log
         FLASH_AREA_REBOOT_LOG:
             user_id: 0
             device:  0
             offset:  0x23301000
             size:    48kB      #  0xc000
-        # User File System, like LittleFS
+        ## User File System, like LittleFS
         FLASH_AREA_NFFS:
             user_id: 1
             device:  0
@@ -335,7 +335,7 @@ We have created a minimal port of Mynewt to PineCone. Here's how we build the fi
 1.  At the command prompt, enter...
 
     ```bash
-    #  Download source files
+    ##  Download source files
     git clone --recursive https://github.com/lupyuen/pinecone-rust-mynewt
     cd pinecone-rust-mynewt
     ```
@@ -399,11 +399,11 @@ We have created a minimal port of Mynewt to PineCone. Here's how we build the fi
 1.  __For Linux and macOS:__ Enter at the command prompt...
 
     ```bash
-    #  Build the firmware
+    ##  Build the firmware
     export PATH="$PWD/xpack-riscv-none-embed-gcc/bin:$PATH"
     newt build pinecone_app
 
-    #  Display the firmware size
+    ##  Display the firmware size
     newt size -v pinecone_app
     ```
 
@@ -591,11 +591,11 @@ These Stub Files point to the correct Header Files for BL602, so that our BL602 
 We're almost ready to run Mynewt on PineCone! Let's do one final check before running our firmware...
 
 ```bash
-#  Build the firmware
+##  Build the firmware
 export PATH="$PWD/xpack-riscv-none-embed-gcc/bin:$PATH"
 newt build pinecone_app
 
-#  Display the firmware size
+##  Display the firmware size
 newt size -v pinecone_app
 ```
 
@@ -978,7 +978,7 @@ cd pinecone-rust-mynewt
 newt upgrade
 newt target create pinecone_app
 newt target set pinecone_app app=apps/blinky
-# This will be changed to pinecone later
+## This will be changed to pinecone later
 newt target set pinecone_app bsp=@apache-mynewt-core/hw/bsp/hifive1
 newt target set pinecone_app build_profile=debug
 ```
@@ -1127,24 +1127,24 @@ This file defines the VSCode Task for building the Mynewt Firmware...
 
 ```bash
 #!/usr/bin/env bash
-#  macOS and Linux Bash script to build Mynewt Firmware
+##  macOS and Linux Bash script to build Mynewt Firmware
 
 set -e  #  Exit when any command fails
 set -x  #  Echo commands
 
-#  Terminate any OpenOCD processes from the debug session
+##  Terminate any OpenOCD processes from the debug session
 set +e  #  Ignore errors
 pkill openocd
 set -e  #  Stop on errors
 
-#  Add GCC to the PATH
+##  Add GCC to the PATH
 set +x  #  Stop echo
 export PATH="$PWD/xpack-riscv-none-embed-gcc/bin:$PATH"
 set -x  #  Echo commands
 
-#  Build the Mynewt Firmware
+##  Build the Mynewt Firmware
 newt build pinecone_app
 
-#  Display the firmware size
+##  Display the firmware size
 newt size -v pinecone_app
 ```

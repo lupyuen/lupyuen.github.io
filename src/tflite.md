@@ -107,18 +107,18 @@ Download the Firmware Binary File __`sdk_app_tflite.bin`__ from...
 Alternatively, we may build the Firmware Binary File `sdk_app_tflite.bin` from the [source code](https://github.com/lupyuen/bl_iot_sdk/tree/tflite/customer_app/sdk_app_tflite)...
 
 ```bash
-# Download the tflite branch of lupyuen's bl_iot_sdk
+## Download the tflite branch of lupyuen's bl_iot_sdk
 git clone --recursive --branch tflite https://github.com/lupyuen/bl_iot_sdk
 
-# TODO: Change this to the full path of bl_iot_sdk
+## TODO: Change this to the full path of bl_iot_sdk
 export BL60X_SDK_PATH=$PWD/bl_iot_sdk
 export CONFIG_CHIP_NAME=BL602
 
-# Build the firmware
+## Build the firmware
 cd bl_iot_sdk/customer_app/sdk_app_tflite
 make
 
-# TODO: Change ~/blflash to the full path of blflash
+## TODO: Change ~/blflash to the full path of blflash
 cp build_out/sdk_app_tflite.bin ~/blflash
 ```
 
@@ -165,20 +165,20 @@ __For Pinenut and MagicHome BL602:__
 Enter these commands to flash `sdk_app_tflite.bin` to BL602 over UART...
 
 ```bash
-# TODO: Change ~/blflash to the full path of blflash
+## TODO: Change ~/blflash to the full path of blflash
 cd ~/blflash
 
-# For Linux:
+## For Linux:
 sudo cargo run flash sdk_app_tflite.bin \
     --port /dev/ttyUSB0
 
-# For macOS:
+## For macOS:
 cargo run flash sdk_app_tflite.bin \
     --port /dev/tty.usbserial-1420 \
     --initial-baud-rate 230400 \
     --baud-rate 230400
 
-# For Windows: Change COM5 to the BL602 Serial Port
+## For Windows: Change COM5 to the BL602 Serial Port
 cargo run flash sdk_app_tflite.bin --port COM5
 ```
 
@@ -853,7 +853,7 @@ TensorFlow Lite on BL602 is split across two repositories...
 When we clone the BL602 IoT SDK recursively...
 
 ```bash
-# Download the tflite branch of lupyuen's bl_iot_sdk
+## Download the tflite branch of lupyuen's bl_iot_sdk
 git clone --recursive --branch tflite https://github.com/lupyuen/bl_iot_sdk
 ```
 
@@ -888,16 +888,16 @@ Here are the source folders that we compile for the TensorFlow Lite Firmware...
 From [`tflite-bl602/bouffalo.mk`](https://github.com/lupyuen/tflite-bl602/blob/main/bouffalo.mk) and [`tflite-bl602/component.mk`](https://github.com/lupyuen/tflite-bl602/blob/main/component.mk)
 
 ```text
-# Include Folders
-# TODO: Sync with bouffalo.mk and component.mk
+## Include Folders
+## TODO: Sync with bouffalo.mk and component.mk
 COMPONENT_ADD_INCLUDEDIRS := \
   tensorflow/.. \
   tensorflow/lite/micro/tools/make/downloads/flatbuffers/include \
   tensorflow/lite/micro/tools/make/downloads/gemmlowp \
   tensorflow/lite/micro/tools/make/downloads/ruy
 
-# Source Folders
-# TODO: Sync with bouffalo.mk and component.mk
+## Source Folders
+## TODO: Sync with bouffalo.mk and component.mk
 COMPONENT_SRCDIRS := \
   tensorflow/lite/c \
   tensorflow/lite/core/api \
@@ -918,26 +918,26 @@ The source folders are specified in both [`bouffalo.mk`](https://github.com/lupy
 Here are the GCC Compiler Flags for TensorFlow Lite Library: [`tflite-bl602/bouffalo.mk`](https://github.com/lupyuen/tflite-bl602/blob/main/bouffalo.mk#L28-L49)
 
 ```text
-# Define the GCC compiler options:
-# CFLAGS for C compiler, CPPFLAGS for C++ compiler
+## Define the GCC compiler options:
+## CFLAGS for C compiler, CPPFLAGS for C++ compiler
 
-# Use global C math functions instead of std library.
-# See tensorflow/lite/kernels/internal/cppmath.h
+## Use global C math functions instead of std library.
+## See tensorflow/lite/kernels/internal/cppmath.h
 CFLAGS   += -DTF_LITE_USE_GLOBAL_CMATH_FUNCTIONS
 CPPFLAGS += -DTF_LITE_USE_GLOBAL_CMATH_FUNCTIONS
 
-# Use std::min instead of std::fmin
-# See tensorflow/lite/kernels/internal/min.h
+## Use std::min instead of std::fmin
+## See tensorflow/lite/kernels/internal/min.h
 CFLAGS   += -DTF_LITE_USE_GLOBAL_MIN
 CPPFLAGS += -DTF_LITE_USE_GLOBAL_MIN
 
-# Use std::max instead of std::fmax
-# See tensorflow/lite/kernels/internal/max.h
+## Use std::max instead of std::fmax
+## See tensorflow/lite/kernels/internal/max.h
 CFLAGS   += -DTF_LITE_USE_GLOBAL_MAX
 CPPFLAGS += -DTF_LITE_USE_GLOBAL_MAX
 
-# Use Static Memory instead of Heap Memory
-# See tensorflow/lite/kernels/internal/types.h
+## Use Static Memory instead of Heap Memory
+## See tensorflow/lite/kernels/internal/types.h
 CFLAGS   += -DTF_LITE_STATIC_MEMORY
 CPPFLAGS += -DTF_LITE_STATIC_MEMORY
 ```
@@ -945,19 +945,19 @@ CPPFLAGS += -DTF_LITE_STATIC_MEMORY
 And here are the flags for TensorFlow Lite Firmware: [`sdk_app_tflite/bouffalo.mk`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/bouffalo.mk#L28-L41)
 
 ```text
-# Define the GCC compiler options:
-# CFLAGS for C compiler, CPPFLAGS for C++ compiler
-# See additional options at components/3rdparty/tflite-bl602/bouffalo.mk
+## Define the GCC compiler options:
+## CFLAGS for C compiler, CPPFLAGS for C++ compiler
+## See additional options at components/3rdparty/tflite-bl602/bouffalo.mk
 
-# Use Static Memory instead of Heap Memory
-# See components/3rdparty/tflite-bl602/tensorflow/lite/kernels/internal/types.h
+## Use Static Memory instead of Heap Memory
+## See components/3rdparty/tflite-bl602/tensorflow/lite/kernels/internal/types.h
 CFLAGS   += -DTF_LITE_STATIC_MEMORY
 CPPFLAGS += -DTF_LITE_STATIC_MEMORY
 
-# Don't use Thread-Safe Initialisation for C++ Static Variables.
-# This fixes the missing symbols __cxa_guard_acquire and __cxa_guard_release.
-# Note: This assumes that we will not init C++ static variables in multiple tasks.
-# See https://alex-robenko.gitbook.io/bare_metal_cpp/compiler_output/static
+## Don't use Thread-Safe Initialisation for C++ Static Variables.
+## This fixes the missing symbols __cxa_guard_acquire and __cxa_guard_release.
+## Note: This assumes that we will not init C++ static variables in multiple tasks.
+## See https://alex-robenko.gitbook.io/bare_metal_cpp/compiler_output/static
 CPPFLAGS += -fno-threadsafe-statics
 ```
 
@@ -997,27 +997,27 @@ TensorFlow Lite needs __4 External Libraries__ for its build...
 To download [__`flatbuffers`__](https://github.com/google/flatbuffers) and [__`pigweed`__](https://pigweed.googlesource.com/pigweed/pigweed), we copied these steps from [TensorFlow Lite's Makefile](https://github.com/tensorflow/tflite-micro/blob/main/tensorflow/lite/micro/tools/make/Makefile#L509-L542) to [`tflite-bl602/bouffalo.mk`](https://github.com/lupyuen/tflite-bl602/blob/main/bouffalo.mk#L51-L112) ...
 
 ```text
-# TensorFlow Makefile
-# Based on https://github.com/tensorflow/tflite-micro/blob/main/tensorflow/lite/micro/tools/make/Makefile#L509-L542
+## TensorFlow Makefile
+## Based on https://github.com/tensorflow/tflite-micro/blob/main/tensorflow/lite/micro/tools/make/Makefile#L509-L542
 
-# root directory of tensorflow
+## root directory of tensorflow
 TENSORFLOW_ROOT := 
 MAKEFILE_DIR := $(BL60X_SDK_PATH)/components/3rdparty/tflite-bl602/tensorflow/lite/micro/tools/make
 
-# For some invocations of the makefile, it is useful to avoid downloads. This
-# can be achieved by explicitly passing in DISABLE_DOWNLOADS=true on the command
-# line. Note that for target-specific downloads (e.g. CMSIS) there will need to
-# be corresponding checking in the respecitve included makefiles (e.g.
-# ext_libs/cmsis_nn.inc)
+## For some invocations of the makefile, it is useful to avoid downloads. This
+## can be achieved by explicitly passing in DISABLE_DOWNLOADS=true on the command
+## line. Note that for target-specific downloads (e.g. CMSIS) there will need to
+## be corresponding checking in the respecitve included makefiles (e.g.
+## ext_libs/cmsis_nn.inc)
 DISABLE_DOWNLOADS :=
 
 ifneq ($(DISABLE_DOWNLOADS), true)
-  # The download scripts require that the downloads directory already exist for
-  # improved error checking. To accomodate that, we first create a downloads
-  # directory.
+  ## The download scripts require that the downloads directory already exist for
+  ## improved error checking. To accomodate that, we first create a downloads
+  ## directory.
   $(shell mkdir -p ${MAKEFILE_DIR}/downloads)
 
-  # Directly download the flatbuffers library.
+  ## Directly download the flatbuffers library.
   DOWNLOAD_RESULT := $(shell $(MAKEFILE_DIR)/flatbuffers_download.sh ${MAKEFILE_DIR}/downloads)
   ifneq ($(DOWNLOAD_RESULT), SUCCESS)
     $(error Something went wrong with the flatbuffers download: $(DOWNLOAD_RESULT))
@@ -1034,7 +1034,7 @@ ifneq ($(DISABLE_DOWNLOADS), true)
 Unfortunately these steps dont't work for downloading [__`gemmlowp`__](https://github.com/google/gemmlowp) and [__`ruy`__](https://github.com/google/ruy) ...
 
 ```text
-  # TODO: Fix third-party downloads
+  ## TODO: Fix third-party downloads
   include $(MAKEFILE_DIR)/third_party_downloads.inc
   THIRD_PARTY_DOWNLOADS :=
   $(eval $(call add_third_party_download,$(GEMMLOWP_URL),$(GEMMLOWP_MD5),gemmlowp,))
@@ -1047,8 +1047,8 @@ Unfortunately these steps dont't work for downloading [__`gemmlowp`__](https://g
   ...
 endif
 
-# TODO: Fix third-party downloads
-# Create rules for downloading third-party dependencies.
+## TODO: Fix third-party downloads
+## Create rules for downloading third-party dependencies.
 THIRD_PARTY_TARGETS :=
 $(foreach DOWNLOAD,$(THIRD_PARTY_DOWNLOADS),$(eval $(call create_download_rule,$(DOWNLOAD))))
 third_party_downloads: $(THIRD_PARTY_TARGETS)
@@ -1057,20 +1057,20 @@ third_party_downloads: $(THIRD_PARTY_TARGETS)
 So we download [__`gemmlowp`__](https://github.com/google/gemmlowp) and [__`ruy`__](https://github.com/google/ruy) ourselves: [`tflite-bl602/bouffalo.mk`](https://github.com/lupyuen/tflite-bl602/blob/main/bouffalo.mk#L93-L104)
 
 ```text
-  # Added GEMMLOWP, RUY downloads
-  # TODO: Use the download rules in helper_functions.inc
+  ## Added GEMMLOWP, RUY downloads
+  ## TODO: Use the download rules in helper_functions.inc
   RESULT := $(shell $(MAKEFILE_DIR)/download_and_extract.sh $(GEMMLOWP_URL) $(GEMMLOWP_MD5) ${MAKEFILE_DIR}/downloads/gemmlowp)
 
-  # TODO: Check results of download
-  # ifneq ($(RESULT), SUCCESS)
-  #   $(error Something went wrong with the GEMMLOWP download: $(RESULT))
-  # endif
+  ## TODO: Check results of download
+  ## ifneq ($(RESULT), SUCCESS)
+  ##   $(error Something went wrong with the GEMMLOWP download: $(RESULT))
+  ## endif
 
   RESULT := $(shell $(MAKEFILE_DIR)/download_and_extract.sh $(RUY_URL) $(RUY_MD5) ${MAKEFILE_DIR}/downloads/ruy)
-  # TODO: Check results of download
-  # ifneq ($(RESULT), SUCCESS)
-  #   $(error Something went wrong with the RUY download: $(RESULT))
-  # endif
+  ## TODO: Check results of download
+  ## ifneq ($(RESULT), SUCCESS)
+  ##   $(error Something went wrong with the RUY download: $(RESULT))
+  ## endif
 endif
 ```
 

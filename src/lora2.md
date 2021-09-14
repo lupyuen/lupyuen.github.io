@@ -1215,7 +1215,7 @@ The above components are shipped in the [__WisBlock Connected Box__](https://sto
 1.  Enter this at the command line...
 
     ```bash
-    # Download the wisblock-lora-transmitter source code
+    ## Download the wisblock-lora-transmitter source code
     git clone --recursive https://github.com/lupyuen/wisblock-lora-transmitter
     ```
 
@@ -1325,23 +1325,23 @@ Download the Firmware Binary File __`sdk_app_lora.bin`__ for your LoRa Frequency
 Alternatively, we may build the Firmware Binary File `sdk_app_lora.bin` from the [source code](https://github.com/lupyuen/bl_iot_sdk/tree/lorarecv/customer_app/sdk_app_lora)...
 
 ```bash
-# Download the lorarecv branch of lupyuen's bl_iot_sdk
+## Download the lorarecv branch of lupyuen's bl_iot_sdk
 git clone --recursive --branch lorarecv https://github.com/lupyuen/bl_iot_sdk
 cd bl_iot_sdk/customer_app/sdk_app_lora
 
-# TODO: Set the LoRa Frequency in sdk_app_lora/demo.c. 
-# Edit the file and look for the line...
-#   #define USE_BAND_923
-# Change 923 to the LoRa Frequency for your region: 
-#   434, 780, 868, 915 or 923 MHz
-# See https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html
+## TODO: Set the LoRa Frequency in sdk_app_lora/demo.c. 
+## Edit the file and look for the line...
+##   #define USE_BAND_923
+## Change 923 to the LoRa Frequency for your region: 
+##   434, 780, 868, 915 or 923 MHz
+## See https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html
 
-# TODO: Change this to the full path of bl_iot_sdk
+## TODO: Change this to the full path of bl_iot_sdk
 export BL60X_SDK_PATH=$HOME/bl_iot_sdk
 export CONFIG_CHIP_NAME=BL602
 make
 
-# TODO: Change ~/blflash to the full path of blflash
+## TODO: Change ~/blflash to the full path of blflash
 cp build_out/sdk_app_lora.bin ~/blflash
 ```
 
@@ -1388,20 +1388,20 @@ __For Pinenut and MagicHome BL602:__
 Enter these commands to flash `sdk_app_lora.bin` to BL602 over UART...
 
 ```bash
-# TODO: Change ~/blflash to the full path of blflash
+## TODO: Change ~/blflash to the full path of blflash
 cd ~/blflash
 
-# For Linux:
+## For Linux:
 sudo cargo run flash sdk_app_lora.bin \
     --port /dev/ttyUSB0
 
-# For macOS:
+## For macOS:
 cargo run flash sdk_app_lora.bin \
     --port /dev/tty.usbserial-1420 \
     --initial-baud-rate 230400 \
     --baud-rate 230400
 
-# For Windows: Change COM5 to the BL602 Serial Port
+## For Windows: Change COM5 to the BL602 Serial Port
 cargo run flash sdk_app_lora.bin --port COM5
 ```
 
@@ -1952,19 +1952,19 @@ Follow these steps to create a new BL602 Project (like `sdk_app_lorawan`)...
 1.  __Edit the `Makefile`__ in the new folder and set the Project Name: [`sdk_app_lorawan/Makefile`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/Makefile)
 
     ```text
-    #  Set the project name
+    ##  Set the project name
     PROJECT_NAME := sdk_app_lorawan
     ```
 
 1.  Set the __GCC Compiler Options__ in the `Makefile` (if any): [`sdk_app_lorawan/Makefile`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/Makefile)
 
     ```text
-    # Define the GCC compiler options
+    ## Define the GCC compiler options
 
-    # Set LoRa Region to 1 (AS923). See components/3rdparty/lorawan/include/node/lora_band.h
+    ## Set LoRa Region to 1 (AS923). See components/3rdparty/lorawan/include/node/lora_band.h
     CFLAGS += -DCONFIG_LORA_NODE_REGION=1
 
-    # Do not auto-join the LoRaWAN Network
+    ## Do not auto-join the LoRaWAN Network
     CFLAGS += -DLORA_APP_AUTO_JOIN=0
     ```
 
@@ -1973,18 +1973,18 @@ Follow these steps to create a new BL602 Project (like `sdk_app_lorawan`)...
 1.  __For macOS Only__: Edit the __`run.sh` script__ in the new folder and set the Project Name: [`sdk_app_lorawan/run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/run.sh)
 
     ```bash
-    #  Set the project name
+    ##  Set the project name
     export APP_NAME=sdk_app_lorawan
     ```
 
 1.  __Build the project__ by entering these commands...
 
     ```bash
-    # TODO: Change this to the full path of bl_iot_sdk
+    ## TODO: Change this to the full path of bl_iot_sdk
     export BL60X_SDK_PATH=$HOME/bl_iot_sdk
     export CONFIG_CHIP_NAME=BL602
 
-    # TODO: Change sdk_app_lorawan to the project name
+    ## TODO: Change sdk_app_lorawan to the project name
     cd bl_iot_sdk/customer_app/sdk_app_lorawan
     make
     ```
@@ -1992,15 +1992,15 @@ Follow these steps to create a new BL602 Project (like `sdk_app_lorawan`)...
 1.  __For macOS Only__: We may build, flash and run the new firmware with the `run.sh` script instead...
 
     ```bash
-    # TODO: Change sdk_app_lorawan to the project name
+    ## TODO: Change sdk_app_lorawan to the project name
     cd bl_iot_sdk/customer_app/sdk_app_lorawan
 
-    # TODO Before Flashing: Switch GPIO 8 to Flashing Mode. Restart the BL602 board.
+    ## TODO Before Flashing: Switch GPIO 8 to Flashing Mode. Restart the BL602 board.
 
-    # Build, flash and run the firmware (with CoolTerm)
+    ## Build, flash and run the firmware (with CoolTerm)
     ./run.sh
 
-    # TODO After Flashing: Switch GPIO 8 to Normal Mode. Restart the BL602 board.
+    ## TODO After Flashing: Switch GPIO 8 to Normal Mode. Restart the BL602 board.
     ```
 
 1.  Remember to edit __`README.md`__ and fill in the project details
@@ -2088,7 +2088,7 @@ How do we reference the BL602 Library in our BL602 Project?
 1.  To look neater, the `Makefile` for our LoRa Firmware defines a variable `COMPONENTS_LORA` like so: [`sdk_app_lora/Makefile`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lora/Makefile)
 
     ```text
-    # Added this line to define COMPONENTS_LORA...
+    ## Added this line to define COMPONENTS_LORA...
     COMPONENTS_LORA    := lora-sx1276 nimble-porting-layer
     COMPONENTS_BLSYS   := bltime blfdt blmtd bloop loopadc looprt loopset
     COMPONENTS_VFS     := romfs
@@ -2099,7 +2099,7 @@ How do we reference the BL602 Library in our BL602 Project?
     INCLUDE_COMPONENTS += $(COMPONENTS_NETWORK)
     INCLUDE_COMPONENTS += $(COMPONENTS_BLSYS)
     INCLUDE_COMPONENTS += $(COMPONENTS_VFS)
-    # Added this line to reference COMPONENTS_LORA...
+    ## Added this line to reference COMPONENTS_LORA...
     INCLUDE_COMPONENTS += $(COMPONENTS_LORA)
     INCLUDE_COMPONENTS += $(PROJECT_NAME)
     ```

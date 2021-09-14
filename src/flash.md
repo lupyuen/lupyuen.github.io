@@ -1020,7 +1020,7 @@ address0 = 0x10000
 size0 = 0xC8000
 address1 = 0xD8000
 size1 = 0x88000
-# compressed image must set len,normal image can left it to 0
+## compressed image must set len,normal image can left it to 0
 len = 0
 
 [[pt_entry]]
@@ -1031,7 +1031,7 @@ address0 = 0x160000
 size0 = 0x32000
 address1 = 0
 size1 = 0
-# compressed image must set len,normal image can left it to 0
+## compressed image must set len,normal image can left it to 0
 len = 0
 
 [[pt_entry]]
@@ -1042,7 +1042,7 @@ address0 = 0x192000
 size0 = 0x57000
 address1 = 0
 size1 = 0
-# compressed image must set len,normal image can left it to 0
+## compressed image must set len,normal image can left it to 0
 len = 0
 
 [[pt_entry]]
@@ -1053,7 +1053,7 @@ address0 = 0x1E9000
 size0 = 0x8000
 address1 = 0
 size1 = 0
-# compressed image must set len,normal image can left it to 0
+## compressed image must set len,normal image can left it to 0
 len = 0
 
 [[pt_entry]]
@@ -1064,7 +1064,7 @@ address0 = 0x1F1000
 size0 = 0x2000
 address1 = 0
 size1 = 0
-# compressed image must set len,normal image can left it to 0
+## compressed image must set len,normal image can left it to 0
 len = 0
 
 [[pt_entry]]
@@ -1075,7 +1075,7 @@ address0 = 0x1F3000
 size0 = 0x5000
 address1 = 0
 size1 = 0
-# compressed image must set len,normal image can left it to 0
+## compressed image must set len,normal image can left it to 0
 len = 0
 
 
@@ -1087,20 +1087,20 @@ address0 = 0x1F8000
 size0 = 0x7000
 address1 = 0
 size1 = 0
-# compressed image must set len,normal image can left it to 0
+## compressed image must set len,normal image can left it to 0
 len = 0
 
-#if user want to put RF calibration data on flash, uncomment following pt entry
-#[[pt_entry]]
-#type = 8
-#name = "rf_para"
-#device = 0
-#address0 = 0x1FF000
-#size0 = 0x1000
-#address1 = 0
-#size1 = 0
+##if user want to put RF calibration data on flash, uncomment following pt entry
+##[[pt_entry]]
+##type = 8
+##name = "rf_para"
+##device = 0
+##address0 = 0x1FF000
+##size0 = 0x1000
+##address1 = 0
+##size1 = 0
 ## compressed image must set len,normal image can left it to 0
-#len = 0
+##len = 0
 ```
 
 # Appendix: BL602 Device Tree

@@ -295,23 +295,23 @@ Download the Firmware Binary File __`sdk_app_lora.bin`__ for your LoRa Frequency
 Alternatively, we may build the Firmware Binary File `sdk_app_lora.bin` from the [source code](https://github.com/lupyuen/bl_iot_sdk/tree/lora/customer_app/sdk_app_lora)...
 
 ```bash
-# Download the lora branch of lupyuen's bl_iot_sdk
+## Download the lora branch of lupyuen's bl_iot_sdk
 git clone --recursive --branch lora https://github.com/lupyuen/bl_iot_sdk
 cd bl_iot_sdk/customer_app/sdk_app_lora
 
-# TODO: Set the LoRa Frequency in sdk_app_lora/demo.c. 
-# Edit the file and look for the line...
-#   #define USE_BAND_923
-# Change 923 to the LoRa Frequency for your region: 
-#   434, 780, 868, 915 or 923 MHz
-# See https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html
+## TODO: Set the LoRa Frequency in sdk_app_lora/demo.c. 
+## Edit the file and look for the line...
+##   #define USE_BAND_923
+## Change 923 to the LoRa Frequency for your region: 
+##   434, 780, 868, 915 or 923 MHz
+## See https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html
 
-# TODO: Change this to the full path of bl_iot_sdk
+## TODO: Change this to the full path of bl_iot_sdk
 export BL60X_SDK_PATH=$HOME/bl_iot_sdk
 export CONFIG_CHIP_NAME=BL602
 make
 
-# TODO: Change ~/blflash to the full path of blflash
+## TODO: Change ~/blflash to the full path of blflash
 cp build_out/sdk_app_lora.bin ~/blflash
 ```
 
@@ -358,20 +358,20 @@ __For Pinenut and MagicHome BL602:__
 Enter these commands to flash `sdk_app_lora.bin` to BL602 over UART...
 
 ```bash
-# TODO: Change ~/blflash to the full path of blflash
+## TODO: Change ~/blflash to the full path of blflash
 cd ~/blflash
 
-# For Linux:
+## For Linux:
 sudo cargo run flash sdk_app_lora.bin \
     --port /dev/ttyUSB0
 
-# For macOS:
+## For macOS:
 cargo run flash sdk_app_lora.bin \
     --port /dev/tty.usbserial-1420 \
     --initial-baud-rate 230400 \
     --baud-rate 230400
 
-# For Windows: Change COM5 to the BL602 Serial Port
+## For Windows: Change COM5 to the BL602 Serial Port
 cargo run flash sdk_app_lora.bin --port COM5
 ```
 

@@ -125,18 +125,18 @@ In fact the uLisp Interpreter looks a little like __Wasm3__, the WebAssembly Int
 Download and build the [uLisp Firmware for BL602](https://github.com/lupyuen/bl_iot_sdk/tree/ulisp/customer_app/sdk_app_ulisp)...
 
 ```bash
-# Download the ulisp branch of lupyuen's bl_iot_sdk
+## Download the ulisp branch of lupyuen's bl_iot_sdk
 git clone --recursive --branch ulisp https://github.com/lupyuen/bl_iot_sdk
 
-# TODO: Change this to the full path of bl_iot_sdk
+## TODO: Change this to the full path of bl_iot_sdk
 export BL60X_SDK_PATH=$HOME/bl_iot_sdk
 export CONFIG_CHIP_NAME=BL602
 
-# Build the sdk_app_ulisp firmware
+## Build the sdk_app_ulisp firmware
 cd bl_iot_sdk/customer_app/sdk_app_ulisp
 make
 
-# TODO: Change ~/blflash to the full path of blflash
+## TODO: Change ~/blflash to the full path of blflash
 cp build_out/sdk_app_ulisp.bin ~/blflash
 ```
 
@@ -183,20 +183,20 @@ __For Pinenut and MagicHome BL602:__
 Enter these commands to flash `sdk_app_ulisp.bin` to BL602 over UART...
 
 ```bash
-# TODO: Change ~/blflash to the full path of blflash
+## TODO: Change ~/blflash to the full path of blflash
 cd ~/blflash
 
-# For Linux:
+## For Linux:
 sudo cargo run flash sdk_app_ulisp.bin \
     --port /dev/ttyUSB0
 
-# For macOS:
+## For macOS:
 cargo run flash sdk_app_ulisp.bin \
     --port /dev/tty.usbserial-1420 \
     --initial-baud-rate 230400 \
     --baud-rate 230400
 
-# For Windows: Change COM5 to the BL602 Serial Port
+## For Windows: Change COM5 to the BL602 Serial Port
 cargo run flash sdk_app_ulisp.bin --port COM5
 ```
 

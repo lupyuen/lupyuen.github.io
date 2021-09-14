@@ -341,16 +341,16 @@ Download the Firmware Binary File __`sdk_app_uart_eink.bin`__ from...
 Alternatively, we may build the Firmware Binary File `sdk_app_uart_eink.bin` from the [source code](https://github.com/lupyuen/bl_iot_sdk/tree/eink/customer_app/sdk_app_uart_eink)...
 
 ```bash
-# Download the eink branch of lupyuen's bl_iot_sdk
+## Download the eink branch of lupyuen's bl_iot_sdk
 git clone --recursive --branch eink https://github.com/lupyuen/bl_iot_sdk
 cd bl_iot_sdk/customer_app/sdk_app_uart_eink
 
-# TODO: Change this to the full path of bl_iot_sdk
+## TODO: Change this to the full path of bl_iot_sdk
 export BL60X_SDK_PATH=$HOME/bl_iot_sdk
 export CONFIG_CHIP_NAME=BL602
 make
 
-# TODO: Change ~/blflash to the full path of blflash
+## TODO: Change ~/blflash to the full path of blflash
 cp build_out/sdk_app_uart_eink.bin ~/blflash
 ```
 
@@ -397,20 +397,20 @@ __For Pinenut and MagicHome BL602:__
 Enter these commands to flash `sdk_app_uart_eink.bin` to BL602 over UART...
 
 ```bash
-# TODO: Change ~/blflash to the full path of blflash
+## TODO: Change ~/blflash to the full path of blflash
 cd ~/blflash
 
-# For Linux:
+## For Linux:
 sudo cargo run flash sdk_app_uart_eink.bin \
     --port /dev/ttyUSB0
 
-# For macOS:
+## For macOS:
 cargo run flash sdk_app_uart_eink.bin \
     --port /dev/tty.usbserial-1420 \
     --initial-baud-rate 230400 \
     --baud-rate 230400
 
-# For Windows: Change COM5 to the BL602 Serial Port
+## For Windows: Change COM5 to the BL602 Serial Port
 cargo run flash sdk_app_uart_eink.bin --port COM5
 ```
 
@@ -461,7 +461,7 @@ __Alternatively:__ Use the Web Serial Terminal ([See this](https://lupyuen.githu
     We should see BL602 starting our firmware...
 
     ```text
-    # ▒Starting bl602 now....
+    ## ▒Starting bl602 now....
     Booting BL602 Chip...
     ██████╗ ██╗      ██████╗  ██████╗ ██████╗
     ██╔══██╗██║     ██╔════╝ ██╔═████╗╚════██╗
@@ -619,16 +619,16 @@ Min and Max are the __Threshold RGB Values__ used to generate each bitmap...
 Here's how we convert the PNG file [`uart-cartoon2.png`](https://github.com/lupyuen/pinetime-graphic/blob/master/uart-cartoon2.png) (202 x 104 resolution) to the C arrays `image_black.inc` (black bitmap) and `image_red.inc` (red bitmap)..
 
 ```bash
-# Download the source code
+## Download the source code
 git clone https://github.com/lupyuen/pinetime-graphic
 cd pinetime-graphic
 
-# TODO: Copy uart-cartoon2.png to the pinetime-graphic folder
+## TODO: Copy uart-cartoon2.png to the pinetime-graphic folder
 
-# Convert the PNG file to a C array (black bitmap) with these min and max thresholds
+## Convert the PNG file to a C array (black bitmap) with these min and max thresholds
 cargo run -- --min 0  --max 85  uart-cartoon2.png >image_black.inc
 
-# Convert the PNG file to a C array (red bitmap) with these min and max thresholds
+## Convert the PNG file to a C array (red bitmap) with these min and max thresholds
 cargo run -- --min 86 --max 215 uart-cartoon2.png >image_red.inc
 ```
 

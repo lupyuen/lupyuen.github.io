@@ -453,7 +453,7 @@ We may use Linux, Windows or macOS to build the BL602 firmware...
 -   Follow the [build instructions for Linux, Windows and macOS](https://github.com/pine64/bl_iot_sdk/blob/master/README.rst) like so...
 
     ```bash
-    #  TODO: Change this to the full path of bl_iot_sdk
+    ##  TODO: Change this to the full path of bl_iot_sdk
     export BL60X_SDK_PATH=~/bl_iot_sdk
     export CONFIG_CHIP_NAME=BL602
     make

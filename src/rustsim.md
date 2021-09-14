@@ -110,18 +110,18 @@ We've created a [__Makefile__](https://github.com/lupyuen/bl602-simulator/blob/m
 Here's how we use it...
 
 ```bash
-# Configure emscripten. See https://emscripten.org/docs/getting_started/downloads.html
-# For Windows: emsdk\emsdk_env.bat
+## Configure emscripten. See https://emscripten.org/docs/getting_started/downloads.html
+## For Windows: emsdk\emsdk_env.bat
 . ~/emsdk/emsdk_env.sh
 
-# Download source code
+## Download source code
 git clone --recursive https://github.com/lupyuen/bl602-simulator
 cd bl602-simulator
 
-# Compile the Rust Firmware, Rust Simulator Library and link with Emscripten
+## Compile the Rust Firmware, Rust Simulator Library and link with Emscripten
 make
 
-# Produces outputs in the `docs` folder: wasm.js, wasm.wasm
+## Produces outputs in the `docs` folder: wasm.js, wasm.wasm
 ```
 
 This produces the JavaScript and WebAssembly files __`wasm.js` and `wasm.wasm`__, which we'll run in a Web Browser later.
@@ -147,7 +147,7 @@ Let's go into the details...
 To compile our __Rust Firmware into WebAssembly__, our [Makefile](https://github.com/lupyuen/bl602-simulator/blob/main/Makefile#L57-L58) calls this command...
 
 ```bash
-# Compile the Rust Firmware and Rust Simulator Library into WebAssembly
+## Compile the Rust Firmware and Rust Simulator Library into WebAssembly
 cargo build --target wasm32-unknown-emscripten
 ```
 
@@ -245,7 +245,7 @@ We'll use the [__Emscripten WebAssembly Runtime__](https://emscripten.org/).
 Our [Makefile](https://github.com/lupyuen/bl602-simulator/blob/main/Makefile#L60-L65) links the __Rust Firmware with Emscripten__ like so...
 
 ```text
-# Link the Rust Firmware and Rust Simulator Library with Emscripten
+## Link the Rust Firmware and Rust Simulator Library with Emscripten
 emcc -o wasm/wasm.html \
   target/wasm32-unknown-emscripten/debug/libapp.a \
   target/wasm32-unknown-emscripten/debug/libbl602_simulator.a \
@@ -292,7 +292,7 @@ Emscripten produces these files after linking our Rust Firmware...
 Our [Makefile](https://github.com/lupyuen/bl602-simulator/blob/main/Makefile#L67-L69) copies the __JavaScript and WebAssembly__ outputs to the __`docs`__ folder...
 
 ```text
-# Copy the WebAssembly outputs to the docs folder for GitHub Pages
+## Copy the WebAssembly outputs to the docs folder for GitHub Pages
 cp wasm/wasm.js   docs
 cp wasm/wasm.wasm docs
 ```

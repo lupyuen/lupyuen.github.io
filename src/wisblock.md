@@ -392,7 +392,7 @@ Let's run the LoRa Firmware for WisBlock and receive some LoRa Packets!
 1.  Enter this at the command line...
 
     ```bash
-    # Download the wisblock-lora-receiver source code
+    ## Download the wisblock-lora-receiver source code
     git clone --recursive https://github.com/lupyuen/wisblock-lora-receiver
     ```
 
