@@ -158,7 +158,7 @@
 <ol>
 <li>
 <p>The Bootloader starts by fetching the <strong>Clock Configuration and SPI Flash Configuration</strong> from the Flashing Image <a href="https://lupyuen.github.io/articles/flash#appendix-bl602-efuse-configuration">(See this)</a></p>
-<pre><code class="language-c">//  SPI Flash Configuration
+<div class="example-wrap"><pre class="language-c">//  SPI Flash Configuration
 SPI_Flash_Cfg_Type flashCfg;
 
 //  EFuse Hardware Configuration
@@ -166,7 +166,7 @@ Boot_Efuse_HW_Config efuseCfg;
 
 int main(void) {
     ...
-  //  It's better not enable interrupt
+  //  It&#39;s better not enable interrupt
   //  BLSP_Boot2_Init_Timer();
 
   //  Set RAM Max size
@@ -179,46 +179,37 @@ int main(void) {
   ret = BLSP_Boot2_Get_Clk_Cfg(&amp;clkCfg);
 
   ret |= SF_Cfg_Get_Flash_Cfg_Need_Lock(0, &amp;flashCfg);
-  BLSP_Boot2_Flush_XIP_Cache();
-</code></pre>
-</li>
+  BLSP_Boot2_Flush_XIP_Cache();</pre></div></li>
 <li>
 <p>Next the Bootloader <strong>initialises the Hardware Platform</strong>…</p>
-<pre><code class="language-c">  bflb_platform_print_set(BLSP_Boot2_Get_Log_Disable_Flag());
+<div class="example-wrap"><pre class="language-c">  bflb_platform_print_set(BLSP_Boot2_Get_Log_Disable_Flag());
 
   bflb_platform_init(BLSP_Boot2_Get_Baudrate());
 
-  bflb_platform_deinit_time();
-</code></pre>
-</li>
+  bflb_platform_deinit_time();</pre></div></li>
 <li>
 <p>We fetch the <strong>EFuse Configuration</strong> (for decrypting the Application Firmware and for verifying the firmware signature)</p>
-<pre><code class="language-c">  MSG_DBG(&quot;Get efuse config\r\n&quot;);
-  BLSP_Boot2_Get_Efuse_Cfg(&amp;efuseCfg);
-</code></pre>
+<div class="example-wrap"><pre class="language-c">  MSG_DBG(&quot;Get efuse config\r\n&quot;);
+  BLSP_Boot2_Get_Efuse_Cfg(&amp;efuseCfg);</pre></div>
 <p>(We’ll see <strong><code>BLSP_Boot2_Get_Efuse_Cfg</code></strong> in a while)</p>
 </li>
 <li>
 <p>We <strong>reset the Security Engine</strong> (for AES Encryption operations)</p>
-<pre><code class="language-c">  //  Reset Sec_Eng for using
-  BLSP_Boot2_Reset_Sec_Eng();
-</code></pre>
-</li>
+<div class="example-wrap"><pre class="language-c">  //  Reset Sec_Eng for using
+  BLSP_Boot2_Reset_Sec_Eng();</pre></div></li>
 <li>
 <p>The Bootloader supports <strong>multicore CPUs</strong>.  (Each core will start the Application Firmware with different parameters)</p>
 <p>BL602 is a single-core CPU, so the <strong>CPU Count</strong> will be set to 1…</p>
-<pre><code class="language-c">  if (BLSP_Boot2_Get_Feature_Flag() != BLSP_BOOT2_SP_FLAG) {
+<div class="example-wrap"><pre class="language-c">  if (BLSP_Boot2_Get_Feature_Flag() != BLSP_BOOT2_SP_FLAG) {
     //  Get CPU count info
     cpuCount = BLSP_Boot2_Get_CPU_Count();
   } else {
     cpuCount = 1;
-  }
-</code></pre>
-</li>
+  }</pre></div></li>
 <li>
 <p>We <strong>fetch the Application Firmware Name</strong> from the Flashing Image.</p>
 <p>Our Application Firmware is always named <strong>“<code>FW</code>”</strong> <a href="https://lupyuen.github.io/articles/flash#appendix-bl602-partition-table">(See this)</a></p>
-<pre><code class="language-c">  //  Get power save mode
+<div class="example-wrap"><pre class="language-c">  //  Get power save mode
   psMode = BLSP_Read_Power_Save_Mode();
 
   //  Get User specified firmware
@@ -226,12 +217,10 @@ int main(void) {
   ARCH_MemCpy_Fast(
     userFwName,
     BLSP_Get_User_Specified_Fw(),
-    4);
-</code></pre>
-</li>
+    4);</pre></div></li>
 <li>
 <p>We register the functions that will be called to <strong>Erase, Write and Read the Partition Table</strong>…</p>
-<pre><code class="language-c">  if (BLSP_Boot2_8M_Support_Flag()) {
+<div class="example-wrap"><pre class="language-c">  if (BLSP_Boot2_8M_Support_Flag()) {
     //  Set flash operation function, read via sbus
     PtTable_Set_Flash_Operation(PtTable_Flash_Erase,
       PtTable_Flash_Write, PtTable_Flash_Read);
@@ -239,8 +228,7 @@ int main(void) {
     //  Set flash operation function, read via xip
     PtTable_Set_Flash_Operation(PtTable_Flash_Erase,
       PtTable_Flash_Write, PtTable_Flash_Read);
-  }
-</code></pre>
+  }</pre></div>
 <p>(Yes the parameters for both calls of <code>PtTable_Set_Flash_Operation</code> are identical)</p>
 </li>
 <li>
@@ -253,40 +241,35 @@ int main(void) {
 <p><strong>Inner Loop “<code>do</code>”</strong>: Loops through the Partition Table Entries until the writing of Application Firmware to XIP Flash Memory is complete </p>
 </li>
 </ul>
-<pre><code class="language-c">  while (1) {
+<div class="example-wrap"><pre class="language-c">  while (1) {
     tempMode = 0;
-    do {
-</code></pre>
+    do {</pre></div>
 <p>Let’s probe the inner loop…</p>
 </li>
 <li>
 <p>We fetch the next <strong>Partition Table Entry</strong> from the Flashing Image…</p>
-<pre><code class="language-c">      activeID = PtTable_Get_Active_Partition_Need_Lock(ptTableStuff);
+<div class="example-wrap"><pre class="language-c">      activeID = PtTable_Get_Active_Partition_Need_Lock(ptTableStuff);
       if (PT_TABLE_ID_INVALID==activeID){ BLSP_Boot2_On_Error(&quot;No valid PT\r\n&quot;); }
 
       BLSP_Boot2_Get_MFG_StartReq(
         activeID,
         &amp;ptTableStuff[activeID], 
         &amp;ptEntry[0],
-        userFwName);
-</code></pre>
-</li>
+        userFwName);</pre></div></li>
 <li>
 <p>We skip these two conditions because our Application Firmware is named “<code>FW</code>” and we’re running on a single-core CPU…</p>
-<pre><code class="language-c">      //  Get entry and boot
-      if (userFwName[0] == '0') {
+<div class="example-wrap"><pre class="language-c">      //  Get entry and boot
+      if (userFwName[0] == &#39;0&#39;) {
         //  Skip this code because our Firmware Name is &quot;FW&quot;
         ...
-      } else if (userFwName[0] == '1' &amp;&amp; cpuCount &gt; 1) {
+      } else if (userFwName[0] == &#39;1&#39; &amp;&amp; cpuCount &gt; 1) {
         //  Skip this code because our CPU Count is 1 (single core)
         ...
-      } 
-</code></pre>
-</li>
+      } </pre></div></li>
 <li>
 <p>Now comes the fun part!</p>
 <p>The Bootloader <strong>extracts the Application Firmware</strong> (from the Flashing Image) and <strong>writes it to XIP Flash Memory</strong>…</p>
-<pre><code class="language-c">      else {
+<div class="example-wrap"><pre class="language-c">      else {
         ptParsed = BLSP_Boot2_Deal_One_FW(
           activeID,
           &amp;ptTableStuff[activeID],
@@ -299,20 +282,17 @@ int main(void) {
           //  Skip this code because our CPU Count is 1 (single core)
           ...
         }
-      }
-</code></pre>
+      }</pre></div>
 <p>We’ll study <strong><code>BLSP_Boot2_Deal_One_FW</code></strong> in the next chapter.</p>
 </li>
 <li>
 <p>The Inner Loop repeats until it has located and processed the Application Firmware…</p>
-<pre><code class="language-c">      ptParsed = 1;
-    } while (ptParsed == 0);
-</code></pre>
-</li>
+<div class="example-wrap"><pre class="language-c">      ptParsed = 1;
+    } while (ptParsed == 0);</pre></div></li>
 <li>
 <p>Now that the Application Firmware has been written to XIP Flash Memory, let’s get ready to start the Application Firmware!</p>
 <p>We stage the <strong>Partition Table Entry</strong> that will be passed to the firmware…</p>
-<pre><code class="language-c">    //  Pass data to App
+<div class="example-wrap"><pre class="language-c">    //  Pass data to App
     BLSP_Boot2_Pass_Parameter(NULL, 0);
 
     //  Pass active partition table ID
@@ -323,12 +303,10 @@ int main(void) {
       &amp;ptTableStuff[activeID],
       sizeof(PtTable_Config) + 4
         + ptTableStuff[activeID].ptTable.entryCnt
-          * sizeof(PtTable_Entry_Config));
-</code></pre>
-</li>
+          * sizeof(PtTable_Entry_Config));</pre></div></li>
 <li>
 <p>We pass the <strong>Flash Configuration</strong> too…</p>
-<pre><code class="language-c">    //  Pass flash config
+<div class="example-wrap"><pre class="language-c">    //  Pass flash config
     if (ptEntry[0].Address[ptEntry[0].activeIndex] != 0) {
       XIP_SFlash_Read_Via_Cache_Need_Lock(
         BLSP_BOOT2_XIP_BASE 
@@ -341,20 +319,16 @@ int main(void) {
       BLSP_Boot2_Pass_Parameter(
         flashCfgBuf,
         sizeof(flashCfgBuf));
-    }
-</code></pre>
-</li>
+    }</pre></div></li>
 <li>
 <p>We initialise the <strong>Boot Header</strong> for each core (in a multicore CPU)</p>
-<pre><code class="language-c">    MSG_DBG(&quot;Boot start\r\n&quot;);
+<div class="example-wrap"><pre class="language-c">    MSG_DBG(&quot;Boot start\r\n&quot;);
     for (i = 0; i &lt; cpuCount; i++) {
       bootHeaderAddr[i] = ptEntry[i].Address[ptEntry[i].activeIndex];
-    }
-</code></pre>
-</li>
+    }</pre></div></li>
 <li>
 <p>Finally we <strong>jump to the Application Firmware</strong> that has been written to XIP Flash Memory…</p>
-<pre><code class="language-c">#ifdef BLSP_BOOT2_ROLLBACK  //  This is true
+<div class="example-wrap"><pre class="language-c">#ifdef BLSP_BOOT2_ROLLBACK  //  This is true
     //  Test mode is not need roll back
     if (rollBacked == 0 &amp;&amp; tempMode == 0) {
       ret = BLSP_MediaBoot_Main(bootHeaderAddr, bootRollback, 1);
@@ -365,15 +339,14 @@ int main(void) {
     ...
 #endif
     //  Fail in temp mode, continue to boot normal image
-    if (tempMode == 1) { continue; }
-</code></pre>
+    if (tempMode == 1) { continue; }</pre></div>
 <p>(<strong><code>BLSP_BOOT2_ROLLBACK</code></strong> is defined because the Bootloader supports firmware rollback)</p>
 <p>We’ll cover <strong><code>BLSP_MediaBoot_Main</code></strong> in a while.</p>
 </li>
 <li>
 <p>What happens if the Bootloader fails to update or start the new Application Firmware?</p>
 <p>The Bootloader will <strong>rollback the Application Firmware</strong> and restore the previous version into XIP Flash Memory…</p>
-<pre><code class="language-c">#ifdef BLSP_BOOT2_ROLLBACK  //  This is true
+<div class="example-wrap"><pre class="language-c">#ifdef BLSP_BOOT2_ROLLBACK  //  This is true
     //  If rollback is done, we still fail, break
     if (rollBacked) { break; }
     for (i = 0; i &lt; cpuCount; i++) {
@@ -389,21 +362,18 @@ int main(void) {
 #else  //  This is false
     ...
 #endif
-  }
-</code></pre>
+  }</pre></div>
 <p>(The Outer Loop ends here)</p>
 </li>
 <li>
 <p>The Main Function of the Bootloader will never return, because the Bootloader <strong>always jumps to the Application Firmware</strong>…</p>
-<pre><code class="language-c">  //  We should never get here unless boot fail
+<div class="example-wrap"><pre class="language-c">  //  We should never get here unless boot fail
   MSG_ERR(&quot;Media boot return %d\r\n&quot;,ret);
   while (1) {
     MSG_ERR(&quot;BLSP boot2 fail\r\n&quot;);
     ARCH_Delay_MS(500);
   }
-}
-</code></pre>
-</li>
+}</pre></div></li>
 </ol>
 <p>That’s how the Bootloader installs our Application Firmware and starts the firmware!</p>
 <p><img src="https://lupyuen.github.io/images/boot-main2.png" alt="Bootloader Main Function" /></p>
@@ -418,7 +388,7 @@ int main(void) {
 </li>
 </ol>
 <p>Here’s how it works: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_boot2.c#L271-L313"><code>blsp_boot2.c</code></a></p>
-<pre><code class="language-c">//  Boot2 deal with one firmware.
+<div class="example-wrap"><pre class="language-c">//  Boot2 deal with one firmware.
 //  Return 0 for partition table changed, need re-parse.
 //  Return 1 for partition table or entry parsed successfully.
 static int BLSP_Boot2_Deal_One_FW(
@@ -435,22 +405,20 @@ static int BLSP_Boot2_Deal_One_FW(
   } else {
     MSG_DBG(&quot;Get FW ID:%d\r\n&quot;, type);
     ret = PtTable_Get_Active_Entries_By_ID(ptStuff, type, ptEntry);
-  }
-</code></pre>
+  }</pre></div>
 <p><strong><code>BLSP_Boot2_Deal_One_FW</code></strong> starts by fetching the <strong>Partition Table Entry</strong> for our Application Firmware named “<code>FW</code>”.</p>
 <p>Then it <strong>extracts the Application Firmware</strong> from the Flashing Image…</p>
-<pre><code class="language-c">  if (PT_ERROR_SUCCESS != ret) {
+<div class="example-wrap"><pre class="language-c">  if (PT_ERROR_SUCCESS != ret) {
     MSG_ERR(&quot;Entry not found\r\n&quot;);
   } else {
     BLSP_Dump_PtEntry(ptEntry);
     MSG_DBG(&quot;Check Img\r\n&quot;);
     if (BLSP_Boot2_Check_XZ_FW(activeID, ptStuff, ptEntry) == 1) {
       return 0;
-    }
-</code></pre>
+    }</pre></div>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_boot2.c#L190-L224"><strong><code>BLSP_Boot2_Check_XZ_FW</code></strong></a> extracts and decompresses the Application Firmware. <a href="https://en.wikipedia.org/wiki/XZ_Utils">(XZ Compression)</a></p>
 <p>Now that we have the decompressed Application Firmware, we <strong>write the firmware to XIP Flash Memory</strong>…</p>
-<pre><code class="language-c">    //  Check if this partition need copy
+<div class="example-wrap"><pre class="language-c">    //  Check if this partition need copy
     if (ptEntry-&gt;activeIndex &gt;= 2) {
       if (BFLB_BOOT2_SUCCESS == BLSP_Boot2_Do_FW_Copy(
         activeID, 
@@ -461,14 +429,13 @@ static int BLSP_Boot2_Deal_One_FW(
     }
   }
   return 1;
-}
-</code></pre>
+}</pre></div>
 <p>In the next chapter we study <strong><code>BLSP_Boot2_Do_FW_Copy</code></strong>.</p>
 <p><img src="https://lupyuen.github.io/images/boot-install.png" alt="Bootloader installing Application Firmware" /></p>
 <h1 id="write-firmware-to-xip-flash" class="section-header"><a href="#write-firmware-to-xip-flash">4 Write Firmware to XIP Flash</a></h1>
 <p>Previously on “Days Of Our Lives”… The Bootloader decompresses the Application Firmware and calls <strong><code>BLSP_Boot2_Do_FW_Copy</code></strong> to write the firmware to XIP Flash Memory.</p>
 <p>Watch what happens next: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_boot2.c#L226-L269"><code>blsp_boot2.c</code></a></p>
-<pre><code class="language-c">//  Buffer for writing to XIP Flash Memory
+<div class="example-wrap"><pre class="language-c">//  Buffer for writing to XIP Flash Memory
 #define BFLB_BOOT2_READBUF_SIZE  4 * 1024
 uint8_t boot2ReadBuf[BFLB_BOOT2_READBUF_SIZE] __attribute__((section(&quot;.system_ram&quot;)));
 
@@ -484,59 +451,53 @@ static int BLSP_Boot2_Do_FW_Copy(
   uint32_t destMaxSize = ptEntry-&gt;maxLen[!(activeIndex&amp;0x01)];
   uint32_t totalLen = ptEntry-&gt;len;
   uint32_t dealLen = 0;
-  uint32_t curLen = 0;
-</code></pre>
+  uint32_t curLen = 0;</pre></div>
 <p><strong><code>BLSP_Boot2_Do_FW_Copy</code></strong> starts by fetching the <strong>Partition Table Entry</strong> for the Application Firmware, containing <strong>Source Address, Destination Address and Firmware Length</strong>.</p>
 <p>(More about the Partition Table in the next chapter)</p>
 <p>Then it <strong>erases the XIP Flash Memory</strong> at the Destination Address…</p>
-<pre><code class="language-c">  if (SUCCESS != XIP_SFlash_Erase_Need_Lock(
+<div class="example-wrap"><pre class="language-c">  if (SUCCESS != XIP_SFlash_Erase_Need_Lock(
     &amp;flashCfg,
     destAddress,
     destAddress+destMaxSize - 1)) {
     MSG_ERR(&quot;Erase flash fail&quot;);
     return BFLB_BOOT2_FLASH_ERASE_ERROR;
-  }
-</code></pre>
+  }</pre></div>
 <p>Next we handle the decompressed Application Firmware, chunk by chunk (4 KB)</p>
-<pre><code class="language-c">  while (dealLen &lt; totalLen) {
+<div class="example-wrap"><pre class="language-c">  while (dealLen &lt; totalLen) {
     curLen = totalLen - dealLen;
     if (curLen &gt; sizeof(boot2ReadBuf)) {
       curLen = sizeof(boot2ReadBuf);
-    }
-</code></pre>
+    }</pre></div>
 <p>We <strong>read the decompressed Application Firmware</strong> (in 4 KB chunks)</p>
-<pre><code class="language-c">    if (BFLB_BOOT2_SUCCESS != BLSP_MediaBoot_Read(
+<div class="example-wrap"><pre class="language-c">    if (BFLB_BOOT2_SUCCESS != BLSP_MediaBoot_Read(
       srcAddress,
       boot2ReadBuf,
       curLen)) {
       MSG_ERR(&quot;Read FW fail when copy\r\n&quot;);
       return BFLB_BOOT2_FLASH_READ_ERROR;
-    }
-</code></pre>
+    }</pre></div>
 <p>We <strong>write the firmware to XIP Flash Memory</strong> (in 4 KB chunks)</p>
-<pre><code class="language-c">    if (SUCCESS != XIP_SFlash_Write_Need_Lock(
+<div class="example-wrap"><pre class="language-c">    if (SUCCESS != XIP_SFlash_Write_Need_Lock(
       &amp;flashCfg,
       destAddress,
       boot2ReadBuf,
       curLen)) {
       MSG_ERR(&quot;Write flash fail&quot;);
       return BFLB_BOOT2_FLASH_WRITE_ERROR;
-    }
-</code></pre>
+    }</pre></div>
 <p>Finally we repeat the steps with the <strong>next 4 KB chunk</strong>, until the entire decompressed Application Firmware is written to XIP Flash Memory…</p>
-<pre><code class="language-c">    srcAddress += curLen;
+<div class="example-wrap"><pre class="language-c">    srcAddress += curLen;
     destAddress += curLen;
     dealLen += curLen;
   }
   return BFLB_BOOT2_SUCCESS;
-}
-</code></pre>
+}</pre></div>
 <p><img src="https://lupyuen.github.io/images/boot-write.png" alt="Bootloader writing firmware to XIP flash" /></p>
 <h1 id="bl602-partition-table" class="section-header"><a href="#bl602-partition-table">5 BL602 Partition Table</a></h1>
 <p><em>The Bootloader appears to be driven by the Partition Table (from the Flashing Image). What’s inside the Partition Table?</em></p>
 <p>Each entry of the <strong>Partition Table</strong> describes a <strong>section of the Flashing Image</strong>.</p>
 <p>Here’s the <strong>Partition Table Entry</strong> that describes our <strong>Application Firmware</strong>…</p>
-<pre><code class="language-text">[[pt_entry]]
+<div class="example-wrap"><pre class="language-text">[[pt_entry]]
 type     = 0
 name     = &quot;FW&quot;
 device   = 0
@@ -544,20 +505,18 @@ address0 = 0x10000
 size0    = 0xC8000
 address1 = 0xD8000
 size1    = 0x88000
-len      = 0
-</code></pre>
+len      = 0</pre></div>
 <p><a href="https://lupyuen.github.io/articles/flash#appendix-bl602-partition-table">(From this BL602 Partition Table)</a></p>
 <p>This Partition Table Entry says that our Application Firmware (compressed) is located in the Flash Image at <strong>offset <code>0x10000</code> with size <code>0xC8000</code></strong> (compressed).</p>
 <p>(But why are there two firmware sections <code>0x10000</code> and <code>0xD8000</code>?)</p>
 <p>With this information, our Bootloader will be able to decompress the Application Firmware and write to XIP Flash Memory… </p>
-<pre><code class="language-c">static int BLSP_Boot2_Do_FW_Copy( ... ) {
+<div class="example-wrap"><pre class="language-c">static int BLSP_Boot2_Do_FW_Copy( ... ) {
   //  Fetch the Partition Table Entry for the Application Firmware
   uint8_t activeIndex = ptEntry-&gt;activeIndex;
   uint32_t srcAddress = ptEntry-&gt;Address[activeIndex&amp;0x01];
   uint32_t destAddress = ptEntry-&gt;Address[!(activeIndex&amp;0x01)];
   uint32_t destMaxSize = ptEntry-&gt;maxLen[!(activeIndex&amp;0x01)];
-  uint32_t totalLen = ptEntry-&gt;len;
-</code></pre>
+  uint32_t totalLen = ptEntry-&gt;len;</pre></div>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_boot2.c#L226-L269">(We’ve seen this earlier in <code>blsp_boot2.c</code>)</a></p>
 <p><strong>Exercise for the Reader:</strong> Please take these two things…</p>
 <ol>
@@ -618,7 +577,7 @@ len      = 0
 <h1 id="locating-the-rom-driver-api" class="section-header"><a href="#locating-the-rom-driver-api">7 Locating the ROM Driver API</a></h1>
 <p><em>How did we find out that the ROM Driver API is located in Boot ROM?</em></p>
 <p>Let’s look at the <strong>RISC-V Disassembly for the Bootloader</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/releases/download/v8.0.2/bl602_boot2.S"><code>bl602_boot2.S</code></a></p>
-<pre><code class="language-c">__ALWAYS_INLINE BL_Err_Type ATTR_TCM_SECTION 
+<div class="example-wrap"><pre class="language-c">__ALWAYS_INLINE BL_Err_Type ATTR_TCM_SECTION 
 XIP_SFlash_Read_Via_Cache_Need_Lock(
   uint32_t addr,
   uint8_t *data, 
@@ -627,8 +586,7 @@ XIP_SFlash_Read_Via_Cache_Need_Lock(
     addr, 
     data, 
     len);
-}
-</code></pre>
+}</pre></div>
 <p>That’s the C definition of the function <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_romapi.c#L833-L836"><strong>XIP_SFlash_Read_Via_Cache_Need_Lock</strong></a>.</p>
 <p>(Which is called by the Bootloader to read XIP Flash Memory)</p>
 <p><em>The function looks kinda empty?</em></p>
@@ -636,11 +594,10 @@ XIP_SFlash_Read_Via_Cache_Need_Lock(
 <p>It forwards the Function Call to the _<em>Real Function: RomDriver_XIP_SFlash_Read_Via_Cache <em>Need_Lock</em></em>.</p>
 <p><em>Where is the Real Function for reading XIP Flash Memory?</em></p>
 <p>After the code above we see the RISC-V Assembly Code that the GCC Compiler has emitted for our Stub Function…</p>
-<pre><code class="language-text">2201050a &lt;XIP_SFlash_Read_Via_Cache_Need_Lock&gt;:
+<div class="example-wrap"><pre class="language-text">2201050a &lt;XIP_SFlash_Read_Via_Cache_Need_Lock&gt;:
 2201050a:	210117b7          	lui	a5,0x21011
 2201050e:	aa47a303          	lw	t1,-1372(a5) # 21010aa4 &lt;StackSize+0x210106a4&gt;
-22010512:	8302                jr	t1
-</code></pre>
+22010512:	8302                jr	t1</pre></div>
 <p><em>So the Real Function is located at <code>0x2101 0aa4</code>?</em></p>
 <p>Right! _<em>RomDriver_XIP_SFlash_Read_Via_Cache <em>Need_Lock</em></em> is located in the Boot ROM at <code>0x2101 0aa4</code>.</p>
 <p>(Remember that the Boot ROM lives at <code>0x2100 0000</code> to <code>0x2101 FFFF</code>)</p>
@@ -679,7 +636,7 @@ XIP_SFlash_Read_Via_Cache_Need_Lock(
 <h1 id="start-the-firmware" class="section-header"><a href="#start-the-firmware">8 Start the Firmware</a></h1>
 <p>Earlier we’ve seen the Bootloader calling <strong><code>BLSP_MediaBoot_Main</code></strong> to start our Application Firmware.</p>
 <p>Let’s look inside the function: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_media_boot.c#L337-L434"><code>blsp_media_boot.c</code></a></p>
-<pre><code class="language-c"> //  Media boot main process
+<div class="example-wrap"><pre class="language-c"> //  Media boot main process
 int32_t BLSP_MediaBoot_Main(
   uint32_t cpuBootheaderAddr[BFLB_BOOT2_CPU_MAX],  //  CPU bootheader address list
   uint8_t cpuRollBack[BFLB_BOOT2_CPU_MAX],         //  CPU need roll back flag hold list
@@ -703,11 +660,10 @@ int32_t BLSP_MediaBoot_Main(
     
   //  We should never get here unless something is wrong
   return BFLB_BOOT2_FAIL;
-}
-</code></pre>
+}</pre></div>
 <p>This code calls <strong><code>BLSP_MediaBoot_Pre_Jump</code></strong> to start the firmware.</p>
 <p>Let’s trace it: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_common.c#L113-L133"><code>blsp_common.c</code></a></p>
-<pre><code class="language-c">//  Media boot pre-jump
+<div class="example-wrap"><pre class="language-c">//  Media boot pre-jump
 int32_t BLSP_MediaBoot_Pre_Jump(void) {
   //  Security Engine deinit
   BLSP_Boot2_Reset_Sec_Eng();
@@ -718,12 +674,11 @@ int32_t BLSP_MediaBoot_Pre_Jump(void) {
   //  Jump to entry point
   BLSP_Boot2_Jump_Entry();    
   return BFLB_BOOT2_SUCCESS;
-}
-</code></pre>
+}</pre></div>
 <p>Here we clean up the Security Engine and the Hardware Platform after use.</p>
 <p>Then we call <strong><code>BLSP_Boot2_Jump_Entry</code></strong> to jump to the Application Firmware.</p>
 <p>Let’s probe deeper: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_common.c#L165-L257"><code>blsp_common.c</code></a></p>
-<pre><code class="language-c">//  Boot2 jump to entryPoint
+<div class="example-wrap"><pre class="language-c">//  Boot2 jump to entryPoint
 void ATTR_TCM_SECTION BLSP_Boot2_Jump_Entry(void) {
   ...    
   BLSP_Sboot_Finish();    
@@ -750,9 +705,9 @@ void ATTR_TCM_SECTION BLSP_Boot2_Jump_Entry(void) {
     BLSP_Boot2_Set_Encrypt(1, &amp;bootImgCfg[1]);
     ...
   }
-  //  Omitted: Handle Other CPU's entry point
+  //  Omitted: Handle Other CPU&#39;s entry point
   ...    
-  //  Handle CPU0's entry point
+  //  Handle CPU0&#39;s entry point
   if (bootImgCfg[0].imgValid) {
     pentry = (pentry_t) bootImgCfg[0].entryPoint;
     if (bootImgCfg[0].mspVal != 0) {
@@ -761,8 +716,7 @@ void ATTR_TCM_SECTION BLSP_Boot2_Jump_Entry(void) {
     ...
     //  Jump to the entry point
     if (pentry != NULL) { pentry(); }
-  }   
-</code></pre>
+  }   </pre></div>
 <p>As expected, the function ends by <strong>jumping to the Entry Point</strong> of our Application Firmware: <code>pentry</code></p>
 <p>But before that, it calls <strong><code>BLSP_Boot2_Set_Cache</code></strong> to fix up the XIP Flash Memory.</p>
 <p>Let’s find out why.</p>
@@ -778,7 +732,7 @@ What is at <code>0x23000000</code> depends on how the cache is configured, you c
 <p>“See <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_common.c#L165-L257"><code>BLSP_Boot2_Jump_Entry</code> in <code>blsp_common.c</code></a> for an example. This is what makes it possible to boot multiple applications without patching the firmware”</p>
 </blockquote>
 <p>We’ve seen <strong><code>BLSP_Boot2_Jump_Entry</code></strong> in the previous chapter: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_common.c#L165-L257"><code>blsp_common.c</code></a></p>
-<pre><code class="language-c">//  Boot2 jump to entryPoint
+<div class="example-wrap"><pre class="language-c">//  Boot2 jump to entryPoint
 void ATTR_TCM_SECTION BLSP_Boot2_Jump_Entry(void) {
   ...    
   //  Enable cache with flash offset.
@@ -788,10 +742,9 @@ void ATTR_TCM_SECTION BLSP_Boot2_Jump_Entry(void) {
   ret = BLSP_Boot2_Set_Cache(
     1,
     &amp;flashCfg,
-    &amp;bootImgCfg[0]);
-</code></pre>
+    &amp;bootImgCfg[0]);</pre></div>
 <p>This code calls <strong><code>BLSP_Boot2_Set_Cache</code> to fix up the cache</strong> for XIP Flash Memory: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_port.c#L423-L485"><code>blsp_port.c</code></a></p>
-<pre><code class="language-c">//  Media boot set cache according to image config
+<div class="example-wrap"><pre class="language-c">//  Media boot set cache according to image config
 int32_t ATTR_TCM_SECTION BLSP_Boot2_Set_Cache(
   uint8_t contRead,
 SPI_Flash_Cfg_Type *flashCfg,
@@ -813,8 +766,7 @@ SPI_Flash_Cfg_Type *flashCfg,
         SF_CTRL_QIO_MODE,
         contRead,
         bootImgCfg[0].
-        cacheWayDisable);
-</code></pre>
+        cacheWayDisable);</pre></div>
 <p>When we match this code with <a href="https://lupyuen.github.io/articles/flash#appendix-bl602-efuse-configuration">this Flashing Image Configuration</a>, we get…</p>
 <ul>
 <li>
@@ -855,7 +807,7 @@ SPI_Flash_Cfg_Type *flashCfg,
 <p><em>How does the Bootloader work with the EFuse Hardware?</em></p>
 <p>Earlier we saw the Bootloader calling <strong><code>BLSP_Boot2_Get_Efuse_Cfg</code></strong> to read the EFuse Configuration.</p>
 <p>Here’s what happens inside: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_port.c#L184-L209"><code>blsp_port.c</code></a></p>
-<pre><code class="language-c">//  Boot2 get efuse config security
+<div class="example-wrap"><pre class="language-c">//  Boot2 get efuse config security
 void ATTR_TCM_SECTION BLSP_Boot2_Get_Efuse_Cfg(
   Boot_Efuse_HW_Config *efuseCfg) {
   uint32_t tmp;
@@ -880,12 +832,11 @@ void ATTR_TCM_SECTION BLSP_Boot2_Get_Efuse_Cfg(
 
   GLB_Set_System_CLK_Div(0, 1);
   HBN_Set_ROOT_CLK_Sel(HBN_ROOT_CLK_PLL);
-}
-</code></pre>
+}</pre></div>
 <p>This code calls the <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_ef_ctrl.c"><strong><code>EF_Ctrl</code> Functions</strong></a> from the BL602 Standard Driver to access the EFuse Hardware.</p>
 <p><img src="https://lupyuen.github.io/images/boot-efuse.png" alt="EFuse Configuration" /></p>
 <p>We <strong>decrypt the firmware</strong> with the EFuse Key here: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_port.c#L386-L421"><code>blsp_port.c</code></a></p>
-<pre><code class="language-c">//  Set encryption config
+<div class="example-wrap"><pre class="language-c">//  Set encryption config
 int32_t ATTR_TCM_SECTION BLSP_Boot2_Set_Encrypt(
   uint8_t index,                    //  Region index
   Boot_Image_Config *bootImgCfg) {  //  Boot image config pointer to hold parsed information
@@ -913,9 +864,7 @@ int32_t ATTR_TCM_SECTION BLSP_Boot2_Set_Encrypt(
 
   //  Enable AES decryption
   SF_Ctrl_AES_Enable_BE();
-  SF_Ctrl_AES_Enable();
-</code></pre>
-<h1 id="bl602-firmware-boot-code" class="section-header"><a href="#bl602-firmware-boot-code">11 BL602 Firmware Boot Code</a></h1>
+  SF_Ctrl_AES_Enable();</pre></div><h1 id="bl602-firmware-boot-code" class="section-header"><a href="#bl602-firmware-boot-code">11 BL602 Firmware Boot Code</a></h1>
 <p>Today we looked at the Boot Code in the <strong>BL602 Bootloader</strong> and <strong>BL602 Boot ROM</strong>…</p>
 <p><em>We’ve seen all the BL602 Boot Code right?</em></p>
 <p>Wait… There’s more!</p>

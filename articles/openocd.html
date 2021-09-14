@@ -251,121 +251,92 @@
 <p>Extract the downloaded file. On Windows: <a href="https://www.7-zip.org/">Use 7-Zip</a></p>
 <h2 id="download-openocd-script" class="section-header"><a href="#download-openocd-script">5.2 Download OpenOCD Script</a></h2>
 <p>Open a command prompt and enter…</p>
-<pre><code class="language-bash">git clone --recursive https://github.com/lupyuen/pinecone-rust
-</code></pre>
+<div class="example-wrap"><pre class="language-bash">git clone --recursive https://github.com/lupyuen/pinecone-rust</pre></div>
 <p>If we will be coding Rust Firmware for PineCone, enter these commands too…</p>
-<pre><code class="language-bash">git clone --recursive https://github.com/sipeed/bl602-pac
-git clone --recursive https://github.com/sipeed/bl602-hal
-</code></pre>
-<h2 id="run-openocd" class="section-header"><a href="#run-openocd">5.3 Run OpenOCD</a></h2>
+<div class="example-wrap"><pre class="language-bash">git clone --recursive https://github.com/sipeed/bl602-pac
+git clone --recursive https://github.com/sipeed/bl602-hal</pre></div><h2 id="run-openocd" class="section-header"><a href="#run-openocd">5.3 Run OpenOCD</a></h2>
 <p>At the command prompt, enter…</p>
-<pre><code class="language-bash">cd pinecone-rust
-OPENOCD_DIRECTORY/bin/openocd
-</code></pre>
+<div class="example-wrap"><pre class="language-bash">cd pinecone-rust
+OPENOCD_DIRECTORY/bin/openocd</pre></div>
 <p>For Windows: Enter…</p>
-<pre><code class="language-cmd">cd pinecone-rust
-OPENOCD_DIRECTORY\bin\openocd
-</code></pre>
+<div class="example-wrap"><pre class="language-cmd">cd pinecone-rust
+OPENOCD_DIRECTORY\bin\openocd</pre></div>
 <p>Change <code>OPENOCD_DIRECTORY</code> to the directory that contains the extracted xPack OpenOCD files.</p>
 <h2 id="openocd-output" class="section-header"><a href="#openocd-output">5.4 OpenOCD Output</a></h2>
 <p>We should see this output in OpenOCD…</p>
-<pre><code class="language-text">xPack OpenOCD, x86_64 Open On-Chip Debugger 0.10.0+dev-00378-ge5be992df (2020-06-26-12:31)
+<div class="example-wrap"><pre class="language-text">xPack OpenOCD, x86_64 Open On-Chip Debugger 0.10.0+dev-00378-ge5be992df (2020-06-26-12:31)
 Licensed under GNU GPL v2
 For bug reports, read
         http://openocd.org/doc/doxygen/bugs.html
 Ready for Remote Connections
 Info : clock speed 100 kHz
-Info : JTAG tap: riscv.cpu tap/device found: 0x20000c05 (mfg: 0x602 (&lt;unknown&gt;), part: 0x0000, ver: 0x2)
-</code></pre>
+Info : JTAG tap: riscv.cpu tap/device found: 0x20000c05 (mfg: 0x602 (&lt;unknown&gt;), part: 0x0000, ver: 0x2)</pre></div>
 <p>Notice the mysterious number <code>0x20000c05</code>?</p>
 <p>This is very important… <code>0x20000c05</code> is the CPU ID that identifies the BL602 Microcontroller. It shows that our JTAG connection is OK.</p>
 <p>If we see any CPU ID other than <code>0x20000c05</code>, it probably means that our JTAG connection is loose. Or that we have connected our JTAG Debugger to the incorrect PineCone Pins.</p>
-<pre><code class="language-text">Info : datacount=1 progbufsize=2
+<div class="example-wrap"><pre class="language-text">Info : datacount=1 progbufsize=2
 Info : Disabling abstract command reads from CSRs.
 Info : Examined RISC-V core; found 1 harts
 Info :  hart 0: XLEN=32, misa=0x40801125
 Info : starting gdb server for riscv.cpu.0 on 3333
-Info : Listening on port 3333 for gdb connections
-</code></pre>
+Info : Listening on port 3333 for gdb connections</pre></div>
 <p>Then we see some info about PineCone’s BL602 Microcontroller. And we see that OpenOCD is ready to accept debugging commands from GDB.</p>
-<pre><code class="language-text">Info : JTAG tap: riscv.cpu tap/device found: 0x20000c05 (mfg: 0x602 (&lt;unknown&gt;), part: 0x0000, ver: 0x2)
+<div class="example-wrap"><pre class="language-text">Info : JTAG tap: riscv.cpu tap/device found: 0x20000c05 (mfg: 0x602 (&lt;unknown&gt;), part: 0x0000, ver: 0x2)
 reset-assert-pre
 reset-deassert-post
 Info : Disabling abstract command writes to CSRs.
 reset-init
-Info : Listening on port 6666 for tcl connections
-</code></pre>
+Info : Listening on port 6666 for tcl connections</pre></div>
 <p>Finally OpenOCD restarts the JTAG connection. And it listens for OpenOCD (TCL) commands.</p>
 <p>If we see CPU ID <code>0x20000c05</code> and the messages above… Congratulations OpenOCD is now connected to PineCone’s JTAG Port!</p>
 <p>OpenOCD is all ready to flash and debug PineCone firmware. (Which we’ll cover in the next article)</p>
 <p>To stop OpenOCD and disconnect from PineCone, press <code>Ctrl-C</code>.</p>
 <h2 id="troubleshoot-openocd" class="section-header"><a href="#troubleshoot-openocd">5.5 Troubleshoot OpenOCD</a></h2>
 <p>If we see…</p>
-<pre><code class="language-text">Error: unable to open ftdi device with vid 0403, pid 6010, description '*', serial '*' at bus location '*'
-</code></pre>
+<div class="example-wrap"><pre class="language-text">Error: unable to open ftdi device with vid 0403, pid 6010, description &#39;*&#39;, serial &#39;*&#39; at bus location &#39;*&#39;</pre></div>
 <p>It means that OpenOCD couldn’t detect the JTAG Debugger. Check that the FT2232 drivers are installed correctly.</p>
 <p>If we see…</p>
-<pre><code class="language-text">Error: failed read at 0x11, status=1
+<div class="example-wrap"><pre class="language-text">Error: failed read at 0x11, status=1
 Error: Hart 0 is unavailable.
-Error: Hart 0 doesn't exist.
+Error: Hart 0 doesn&#39;t exist.
 Info : Hart 0 unexpectedly reset!
-Error: failed read at 0x11, status=1
-</code></pre>
+Error: failed read at 0x11, status=1</pre></div>
 <p>Check that the <code>GND</code> Pin is connected from the JTAG Debugger to PineCone.</p>
 <p><a href="https://mcuoneclipse.com/2019/10/20/jtag-debugging-the-esp32-with-ft2232-and-openocd/">More tips on connecting OpenOCD to FT2232</a></p>
 <h1 id="openocd-script" class="section-header"><a href="#openocd-script">6 OpenOCD Script</a></h1>
 <p>The OpenOCD connection to PineCone is controlled by the OpenOCD Script <a href="https://github.com/lupyuen/pinecone-rust/blob/main/openocd.cfg"><code>pinecone-rust/openocd.cfg</code></a>.</p>
 <p>Our OpenOCD Script is based on the one kindly contributed by the <a href="https://github.com/sipeed/bl602-rust-guide">Sipeed BL602 Community</a>.</p>
 <p>Let’s study the important bits of our OpenOCD Script: <a href="https://github.com/lupyuen/pinecone-rust/blob/main/openocd.cfg"><code>pinecone-rust/openocd.cfg</code></a></p>
-<h2 id="debug-logging" class="section-header"><a href="#debug-logging">6.1 Debug Logging</a></h2>
-<pre><code class="language-text"># Uncomment to enable debug messages
-# debug_level 4
-</code></pre>
+<h2 id="debug-logging" class="section-header"><a href="#debug-logging">6.1 Debug Logging</a></h2><div class="example-wrap"><pre class="language-text"></pre></div>
 <p>To show debug messages in OpenOCD, uncomment the <code>debug_level</code> line. (Remove the leading “<code>#</code>”)</p>
 <p>This is useful for troubleshooting the OpenOCD connection to PineCone. OpenOCD will show every single JTAG packet transmitted between our computer and PineCone.</p>
-<h2 id="openocd-driver" class="section-header"><a href="#openocd-driver">6.2 OpenOCD Driver</a></h2>
-<pre><code class="language-text">adapter driver ftdi
+<h2 id="openocd-driver" class="section-header"><a href="#openocd-driver">6.2 OpenOCD Driver</a></h2><div class="example-wrap"><pre class="language-text">adapter driver ftdi
 
-ftdi_vid_pid 0x0403 0x6010
-</code></pre>
+ftdi_vid_pid 0x0403 0x6010</pre></div>
 <p>Here we tell OpenOCD to use the FT2232 debugger that’s connected to USB.</p>
 <p><code>0x0403</code> is the USB Vendor ID for FT2232. <code>0x6010</code> is the USB Product ID.</p>
-<h2 id="ftdi-channel" class="section-header"><a href="#ftdi-channel">6.3 FTDI Channel</a></h2>
-<pre><code class="language-text"># Sipeed JTAG Debugger uses FTDI Channel 0, not 1
-ftdi_channel 0
-# Previously: ftdi_channel 1
-</code></pre>
+<h2 id="ftdi-channel" class="section-header"><a href="#ftdi-channel">6.3 FTDI Channel</a></h2><div class="example-wrap"><pre class="language-text">ftdi_channel 0</pre></div>
 <p>According to the <a href="https://www.ftdichip.com/Support/Documents/DataSheets/ICs/DS_FT2232D.pdf">FT2232 Specs</a>, the FT2232 module supports two Serial Channels: 0 and 1.</p>
 <p>For Sipeed JTAG Debugger: The FTDI Channel must be 0. <a href="https://tang.sipeed.com/en/hardware-overview/rv-debugger/?utm_source=platformio&amp;utm_medium=docs">See the schematics</a></p>
 <p>For other JTAG Debuggers: Set the FTDI Channel to 0 if PineCone is connected to the first Serial Channel, and to 1 for the second Serial Channel.</p>
-<h2 id="jtag-speed" class="section-header"><a href="#jtag-speed">6.4 JTAG Speed</a></h2>
-<pre><code class="language-text">transport select jtag
+<h2 id="jtag-speed" class="section-header"><a href="#jtag-speed">6.4 JTAG Speed</a></h2><div class="example-wrap"><pre class="language-text">transport select jtag
 
-# TODO: Increase the adapter speed (now 100 kHz)
-adapter speed 100
-# Previously: adapter speed 2000
-</code></pre>
+adapter speed 100</pre></div>
 <p>Here we select JTAG as the communication protocol for talking to PineCone.</p>
 <p>Our OpenOCD Script talks to PineCone at 100 kbps, which is a safe (but slow) data rate that works with most JTAG Debuggers.</p>
 <p>We should increase the Adapter Speed to speed up the data transfer. (After lots of testing, of course)</p>
-<h2 id="cpu-id" class="section-header"><a href="#cpu-id">6.5 CPU ID</a></h2>
-<pre><code class="language-text">set _CHIPNAME riscv
-jtag newtap $_CHIPNAME cpu -irlen 5 -expected-id 0x20000c05
-</code></pre>
+<h2 id="cpu-id" class="section-header"><a href="#cpu-id">6.5 CPU ID</a></h2><div class="example-wrap"><pre class="language-text">set _CHIPNAME riscv
+jtag newtap $_CHIPNAME cpu -irlen 5 -expected-id 0x20000c05</pre></div>
 <p>This is the part that verifies BL602’s CPU ID: <code>0x20000c05</code></p>
 <p>This should never be changed. (Unless we’re connecting to a different microcontroller)</p>
-<h2 id="restart-pinecone" class="section-header"><a href="#restart-pinecone">6.6 Restart PineCone</a></h2>
-<pre><code class="language-text">init
-reset init
-</code></pre>
+<h2 id="restart-pinecone" class="section-header"><a href="#restart-pinecone">6.6 Restart PineCone</a></h2><div class="example-wrap"><pre class="language-text">init
+reset init</pre></div>
 <p>The <code>init</code> command initiates the JTAG connection to PineCone, and verifies the CPU ID of our BL602 Microcontroller.</p>
 <p><code>reset init</code> triggers a reboot of PineCone. (Similar to pressing the <code>RST</code> button on PineCone)</p>
 <h2 id="wait-for-gdb-and-tcl-commands" class="section-header"><a href="#wait-for-gdb-and-tcl-commands">6.7 Wait for GDB and TCL Commands</a></h2>
 <p>After executing our script, OpenOCD waits to receive GDB Debugging commands and OpenOCD TCL commands.</p>
 <p>For some OpenOCD Scripts (like for flashing firmware), we don’t need OpenOCD to wait for further commands. In such scripts, we terminate OpenOCD with the <code>exit</code> command…</p>
-<pre><code class="language-text"># Terminate OpenOCD
-exit
-</code></pre>
+<div class="example-wrap"><pre class="language-text">exit</pre></div>
 <p>See the complete OpenOCD Script: <a href="https://github.com/lupyuen/pinecone-rust/blob/main/openocd.cfg"><code>pinecone-rust/openocd.cfg</code></a></p>
 <p><a href="https://twitter.com/gamelaster/status/1335997851151835140?s=20">Check out the awesome work on PineCone OpenOCD by @gamelaster</a></p>
 <p><a href="http://openocd.org/doc/html/index.html">More about OpenOCD</a></p>
@@ -437,56 +408,45 @@ exit
 <ol>
 <li>
 <p>According to the pic above, we configure BL602 Pin <code>IO 1</code> by writing to the memory address <code>0x40000100</code>. We’ll call this address <code>GP1FUNC_ADDR</code></p>
-<pre><code class="language-c">//  GPIO_CFGCTL0
+<div class="example-wrap"><pre class="language-c">//  GPIO_CFGCTL0
 //  Address：0x40000100
 uint32_t *GPIO_CFGCTL0 = (uint32_t *) 0x40000100;
-uint32_t *GP1FUNC_ADDR = GPIO_CFGCTL0;
-</code></pre>
+uint32_t *GP1FUNC_ADDR = GPIO_CFGCTL0;</pre></div>
 <p>The pic above appears in the <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf">BL602 Reference Manual</a>, Section 3.3.5 “GPIO_CFGCTL0”, Page 33.</p>
 <p>(“地址” is Chinese for “Address”)</p>
 </li>
 <li>
 <p>We’ll set bits 24 to 27 of <code>GP1FUNC_ADDR</code> to select the desired Pin Function (i.e. JTAG).</p>
 <p>We define the Pin Function bit shift (offset) as <code>GP1FUNC_SHIFT</code> and the bit mask as <code>GP1FUNC_MASK</code>…</p>
-<pre><code class="language-c">//  27:24 GP1FUNC
+<div class="example-wrap"><pre class="language-c">//  27:24 GP1FUNC
 const uint32_t GP1FUNC_SHIFT = 24;
-const uint32_t GP1FUNC_MASK  = 0x0f &lt;&lt; GP1FUNC_SHIFT;
-</code></pre>
-</li>
+const uint32_t GP1FUNC_MASK  = 0x0f &lt;&lt; GP1FUNC_SHIFT;</pre></div></li>
 <li>
 <p>Then we’ll set bits 16 to 21 of <code>GP1FUNC_ADDR</code> for the GPIO Pin Control.</p>
 <p>We define the Pin Control bit shift (offset) as <code>GP1CTRL_SHIFT</code> and the bit mask as <code>GP1CTRL_MASK</code>…</p>
-<pre><code class="language-c">//  21:16 GP1CTRL
+<div class="example-wrap"><pre class="language-c">//  21:16 GP1CTRL
 const uint32_t GP1CTRL_SHIFT = 16;
-const uint32_t GP1CTRL_MASK  = 0x3f &lt;&lt; GP1CTRL_SHIFT;
-</code></pre>
-</li>
+const uint32_t GP1CTRL_MASK  = 0x3f &lt;&lt; GP1CTRL_SHIFT;</pre></div></li>
 <li>
 <p>To map Pin <code>IO 1</code> to JTAG, we set the Pin Function of <code>GP1FUNC_ADDR</code> to <code>GPIO_FUN_JTAG</code>, and the Pin Control to <code>GPIO_CTRL</code></p>
-<pre><code class="language-c">//  IO 1 becomes JTAG TDI. Also set the Pin Control.
+<div class="example-wrap"><pre class="language-c">//  IO 1 becomes JTAG TDI. Also set the Pin Control.
 *GP1FUNC_ADDR = (*GP1FUNC_ADDR &amp; ~GP1FUNC_MASK &amp; ~GP1CTRL_MASK) 
     | (GPIO_FUN_JTAG &lt;&lt; GP1FUNC_SHIFT)
-    | (GPIO_CTRL     &lt;&lt; GP1CTRL_SHIFT);
-</code></pre>
-</li>
+    | (GPIO_CTRL     &lt;&lt; GP1CTRL_SHIFT);</pre></div></li>
 <li>
 <p>The Pin Function values (<code>GPIO_FUN_JTAG</code> and <code>GPIO_FUN_PWM</code>) are defined as…</p>
-<pre><code class="language-c">//  Pin Functions (4 bits). From components/bl602/bl602_std/bl602_std/StdDriver/Inc/bl602_gpio.h
+<div class="example-wrap"><pre class="language-c">//  Pin Functions (4 bits). From components/bl602/bl602_std/bl602_std/StdDriver/Inc/bl602_gpio.h
 const uint32_t GPIO_FUN_PWM  =  8;  //  Pin Function for PWM  (0x8)
-const uint32_t GPIO_FUN_JTAG = 14;  //  Pin Function for JTAG (0xe)
-</code></pre>
-</li>
+const uint32_t GPIO_FUN_JTAG = 14;  //  Pin Function for JTAG (0xe)</pre></div></li>
 <li>
 <p>The Pin Control value <code>GPIO_CTRL</code> is defined as…</p>
-<pre><code class="language-c">//  Pin Control (6 bits)
+<div class="example-wrap"><pre class="language-c">//  Pin Control (6 bits)
 //  Pull Down Control: 0 (1 bit)
 //  Pull Up Control:   0 (1 bit)
 //  Driving Control:   0 (2 bits)
 //  SMT Control:       1 (1 bit)
 //  Input Enable:      1 (1 bit)
-const uint32_t GPIO_CTRL = 3;  //  Pin Control
-</code></pre>
-</li>
+const uint32_t GPIO_CTRL = 3;  //  Pin Control</pre></div></li>
 <li>
 <p>We apply the above steps to remap each Pin Function and set the Pin Control bits…</p>
 <table><thead><tr><th align="left">LED / JTAG Pin</th><th align="left">BL602 Pin</th><th align="left">Remap Pin Function</th></tr></thead><tbody>
@@ -556,8 +516,7 @@ const uint32_t GPIO_CTRL = 3;  //  Pin Control
 </li>
 <li>
 <p>In the extracted files, look for…</p>
-<pre><code class="language-text">build_out/sdk_app_helloworld.bin
-</code></pre>
+<div class="example-wrap"><pre class="language-text">build_out/sdk_app_helloworld.bin</pre></div>
 <p>We shall be flashing <code>sdk_app_helloworld.bin</code> in the next step.</p>
 <p>This version of the <code>helloworld</code> app has been modified to remap the JTAG Port.</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/jtag/customer_app/sdk_app_helloworld/sdk_app_helloworld/main.c#L83-L241">Browse the source code</a></p>

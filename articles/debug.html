@@ -138,9 +138,7 @@
 <li>
 <p>Copy the extracted xPack OpenOCD folder to the <code>pinecone-rust</code> folder</p>
 <p>Rename it as…</p>
-<pre><code class="language-text">pinecone-rust/xpack-openocd
-</code></pre>
-</li>
+<div class="example-wrap"><pre class="language-text">pinecone-rust/xpack-openocd</pre></div></li>
 </ol>
 <h2 id="install-rust" class="section-header"><a href="#install-rust">1.2 Install Rust</a></h2>
 <p>Install Rust with support for nightly target <code>riscv32imac-unknown-none-elf</code>…. </p>
@@ -151,16 +149,13 @@
 </li>
 <li>
 <p>Press Enter to select…</p>
-<pre><code class="language-text">1) Proceed with installation (default)
-</code></pre>
-</li>
+<div class="example-wrap"><pre class="language-text">1) Proceed with installation (default)</pre></div></li>
 <li>
 <p><strong>For Linux and macOS:</strong> Open a command prompt and enter…</p>
-<pre><code class="language-bash">source $HOME/.cargo/env
+<div class="example-wrap"><pre class="language-bash">source $HOME/.cargo/env
 rustup update
 rustup default nightly
-rustup target add riscv32imac-unknown-none-elf
-</code></pre>
+rustup target add riscv32imac-unknown-none-elf</pre></div>
 <p><strong>For Windows:</strong> Enter the above commands in a Windows Command Prompt (not WSL Terminal). Omit the <code>source</code> line.</p>
 </li>
 </ol>
@@ -194,22 +189,17 @@ rustup target add riscv32imac-unknown-none-elf
 <li>
 <p>Copy the extracted xPack GCC RISC-V folder to the <code>pinecone-rust</code> folder.</p>
 <p>Rename the folder as…</p>
-<pre><code class="language-text">pinecone-rust/xpack-riscv-none-embed-gcc
-</code></pre>
-</li>
+<div class="example-wrap"><pre class="language-text">pinecone-rust/xpack-riscv-none-embed-gcc</pre></div></li>
 <li>
 <p>Create a symbolic link for the GDB executable, so that Rust can find it…</p>
 <p><strong>For Linux and macOS:</strong></p>
-<pre><code class="language-bash">cd pinecone-rust
-ln -s &quot;$PWD/xpack-riscv-none-embed-gcc/bin/riscv-none-embed-gdb&quot; &quot;$PWD/xpack-riscv-none-embed-gcc/bin/riscv64-unknown-elf-gdb&quot;
-</code></pre>
+<div class="example-wrap"><pre class="language-bash">cd pinecone-rust
+ln -s &quot;$PWD/xpack-riscv-none-embed-gcc/bin/riscv-none-embed-gdb&quot; &quot;$PWD/xpack-riscv-none-embed-gcc/bin/riscv64-unknown-elf-gdb&quot;</pre></div>
 <p><strong>For Windows:</strong></p>
 <ul>
 <li>
 <p>In File Explorer, open the folder…</p>
-<pre><code class="language-text">pinecone-rust\xpack-riscv-none-embed-gcc\bin
-</code></pre>
-</li>
+<div class="example-wrap"><pre class="language-text">pinecone-rust\xpack-riscv-none-embed-gcc\bin</pre></div></li>
 <li>
 <p>Copy and paste the file <code>riscv-none-embed-gdb.exe</code></p>
 </li>
@@ -218,8 +208,7 @@ ln -s &quot;$PWD/xpack-riscv-none-embed-gcc/bin/riscv-none-embed-gdb&quot; &quot
 </li>
 <li>
 <p>Go to Windows Settings and add to <code>PATH</code> the full pathname of the above folder, which will look like this…</p>
-<pre><code class="language-text">c:\pinecone-rust\xpack-riscv-none-embed-gcc\bin
-</code></pre>
+<div class="example-wrap"><pre class="language-text">c:\pinecone-rust\xpack-riscv-none-embed-gcc\bin</pre></div>
 <p>Change <code>c:\pinecone-rust</code> to the location of the <code>pinecone-rust</code> folder.</p>
 </li>
 </ul>
@@ -231,11 +220,10 @@ ln -s &quot;$PWD/xpack-riscv-none-embed-gcc/bin/riscv-none-embed-gdb&quot; &quot
 <p><a href="https://github.com/lupyuen/pinecone-rust/blob/main/README.md">Got problems? Check this doc</a></p>
 <h1 id="build-rust-firmware" class="section-header"><a href="#build-rust-firmware">2 Build Rust Firmware</a></h1>
 <p>Let’s build the Rust Firmware…</p>
-<pre><code class="language-bash">cd pinecone-rust
-cargo build
-</code></pre>
+<div class="example-wrap"><pre class="language-bash">cd pinecone-rust
+cargo build</pre></div>
 <p>We should see…</p>
-<pre><code class="language-text">   Compiling autocfg v1.0.1
+<div class="example-wrap"><pre class="language-text">   Compiling autocfg v1.0.1
    Compiling memchr v2.3.4
    Compiling lazy_static v1.4.0
    Compiling regex-syntax v0.6.21
@@ -274,10 +262,9 @@ cargo build
    Compiling riscv v0.6.0
    Compiling riscv-rt v0.8.0
    Compiling riscv-rt-macros v0.1.6
-   Compiling bl602-hal v0.1.0 (/Users/Luppy/pinecone/bl602-hal)
-</code></pre>
+   Compiling bl602-hal v0.1.0 (/Users/Luppy/pinecone/bl602-hal)</pre></div>
 <p>Ignore these warnings… We’ll cover them in a while.</p>
-<pre><code class="language-text">warning: unused imports: `clock::Strict`, `serial::*`
+<div class="example-wrap"><pre class="language-text">warning: unused imports: `clock::Strict`, `serial::*`
  --&gt; src/main.rs:4:17
   |
 4 | use bl602_hal::{serial::*, pac, prelude::*, clock::Strict};
@@ -305,12 +292,9 @@ warning: variable does not need to be mutable
 
 warning: 3 warnings emitted
 
-    Finished dev [unoptimized + debuginfo] target(s) in 1m 17s
-</code></pre>
+    Finished dev [unoptimized + debuginfo] target(s) in 1m 17s</pre></div>
 <p>This creates the RISC-V ELF Firmware image for PineCone…</p>
-<pre><code class="language-text">pinecone-rust/target/riscv32imac-unknown-none-elf/debug/bl602-rust-guide
-</code></pre>
-<h2 id="rust-firmware-vs-c-firmware" class="section-header"><a href="#rust-firmware-vs-c-firmware">2.1 Rust Firmware vs C Firmware</a></h2>
+<div class="example-wrap"><pre class="language-text">pinecone-rust/target/riscv32imac-unknown-none-elf/debug/bl602-rust-guide</pre></div><h2 id="rust-firmware-vs-c-firmware" class="section-header"><a href="#rust-firmware-vs-c-firmware">2.1 Rust Firmware vs C Firmware</a></h2>
 <p><em>Is Rust Firmware any different from the <a href="https://lupyuen.github.io/articles/pinecone">C Firmware</a> that we have seen earlier?</em></p>
 <p>From the Memory Map below, we can see that…</p>
 <ol>
@@ -336,15 +320,13 @@ warning: 3 warnings emitted
 <p>Let’s run the Rust Firmware and debug it with GDB.  We’ll need two command prompts: One for OpenOCD and another for GDB.</p>
 <h2 id="start-openocd" class="section-header"><a href="#start-openocd">3.1 Start OpenOCD</a></h2>
 <p>At the command prompt, enter…</p>
-<pre><code class="language-bash">cd pinecone-rust
-xpack-openocd/bin/openocd
-</code></pre>
+<div class="example-wrap"><pre class="language-bash">cd pinecone-rust
+xpack-openocd/bin/openocd</pre></div>
 <p>For Windows: Enter…</p>
-<pre><code class="language-cmd">cd pinecone-rust
-xpack-openocd\bin\openocd
-</code></pre>
+<div class="example-wrap"><pre class="language-cmd">cd pinecone-rust
+xpack-openocd\bin\openocd</pre></div>
 <p>We should see OpenOCD connecting to PineCone…</p>
-<pre><code class="language-text">xPack OpenOCD, x86_64 Open On-Chip Debugger 0.10.0+dev-00378-ge5be992df (2020-06-26-12:31)
+<div class="example-wrap"><pre class="language-text">xPack OpenOCD, x86_64 Open On-Chip Debugger 0.10.0+dev-00378-ge5be992df (2020-06-26-12:31)
 Licensed under GNU GPL v2
 For bug reports, read
         http://openocd.org/doc/doxygen/bugs.html
@@ -363,58 +345,51 @@ reset-deassert-post
 Info : Disabling abstract command writes to CSRs.
 reset-init
 Info : Listening on port 6666 for tcl connections
-Info : Listening on port 4444 for telnet connections
-</code></pre>
+Info : Listening on port 4444 for telnet connections</pre></div>
 <p>Keep OpenOCD running as we start GDB…</p>
 <h2 id="start-gdb" class="section-header"><a href="#start-gdb">3.2 Start GDB</a></h2>
 <p>Open another command prompt. Enter…</p>
-<pre><code class="language-bash">cd pinecone-rust
+<div class="example-wrap"><pre class="language-bash">cd pinecone-rust
 export PATH=&quot;$PWD/xpack-riscv-none-embed-gcc/bin:$PATH&quot;
-cargo run
-</code></pre>
+cargo run</pre></div>
 <p>For Windows: Omit the line <code>export PATH</code></p>
 <p>We should see…</p>
-<pre><code class="language-text">    Finished dev [unoptimized + debuginfo] target(s) in 0.08s
+<div class="example-wrap"><pre class="language-text">    Finished dev [unoptimized + debuginfo] target(s) in 0.08s
      Running `riscv64-unknown-elf-gdb -q -x openocd.gdb target/riscv32imac-unknown-none-elf/debug/bl602-rust-guide`
 Reading symbols from target/riscv32imac-unknown-none-elf/debug/bl602-rust-guide...
 0x21000000 in ?? ()
 Loading section .text, size 0x22b0 lma 0x22008000
 Loading section .rodata, size 0x5d8 lma 0x2200a2b0
 Start address 0x22008000, load size 10376
-Transfer rate: 2 KB/sec, 5188 bytes/write.
-</code></pre>
+Transfer rate: 2 KB/sec, 5188 bytes/write.</pre></div>
 <p>GDB has loaded our Rust Firmware into PineCone’s cache memory. PineCone starts running our firmware…</p>
-<pre><code class="language-text">Breakpoint 1 at 0x22008000: file asm.S, line 27.
+<div class="example-wrap"><pre class="language-text">Breakpoint 1 at 0x22008000: file asm.S, line 27.
 
 Breakpoint 1, _start () at asm.S:27
-27      asm.S: No such file or directory.
-</code></pre>
+27      asm.S: No such file or directory.</pre></div>
 <p>GDB has paused the firmware execution at a Breakpoint in our code. (We’ll see this Breakpoint shortly)</p>
 <h2 id="debug-with-gdb" class="section-header"><a href="#debug-with-gdb">3.3 Debug with GDB</a></h2>
 <p>At the GDB prompt, enter…</p>
-<pre><code class="language-text">break main
-continue
-</code></pre>
+<div class="example-wrap"><pre class="language-text">break main
+continue</pre></div>
 <p>This tells GDB to set a Breakpoint at the <code>main</code> function in Rust. And continue execution until we hit the Breakpoint.</p>
 <p>We’ll see…</p>
-<pre><code class="language-text">(gdb) break main
+<div class="example-wrap"><pre class="language-text">(gdb) break main
 Breakpoint 2 at 0x2200924e: file src/main.rs, line 10.
 (gdb) continue
 Continuing.
 
 Breakpoint 2, main () at src/main.rs:10
-10          let dp = pac::Peripherals::take().unwrap();
-</code></pre>
+10          let dp = pac::Peripherals::take().unwrap();</pre></div>
 <p>GDB has paused execution at the <code>main</code> function in Rust.</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinecone-rust/blob/main/src/main.rs">Rust Source File</a></li>
 </ul>
 <p>Enter <code>next</code> to resume execution until the next line…</p>
-<pre><code class="language-text">(gdb) next
+<div class="example-wrap"><pre class="language-text">(gdb) next
 11          let mut parts = dp.GLB.split();
 (gdb) bt
-#0  main () at src/main.rs:11
-</code></pre>
+#0  main () at src/main.rs:11</pre></div>
 <p>The <code>bt</code> command shows us the Stack Trace and local variables.</p>
 <ul>
 <li><a href="https://youtu.be/A54Agz35vfk">Watch on YouTube</a></li>
@@ -429,39 +404,28 @@ Breakpoint 2, main () at src/main.rs:10
 </li>
 </ul>
 <p>In OpenOCD we’ll see this warning… Just ignore it</p>
-<pre><code class="language-text">Info : accepting 'gdb' connection on tcp/3333
+<div class="example-wrap"><pre class="language-text">Info : accepting &#39;gdb&#39; connection on tcp/3333
 Info : Disabling abstract command reads from FPRs.
 Warn : negative reply, retrying
-Warn : negative acknowledgment, but no packet pending
-</code></pre>
-<h1 id="gdb-script" class="section-header"><a href="#gdb-script">4 GDB Script</a></h1>
+Warn : negative acknowledgment, but no packet pending</pre></div><h1 id="gdb-script" class="section-header"><a href="#gdb-script">4 GDB Script</a></h1>
 <p><em>What’s driving GDB? How does GDB know how to do the things that it did?</em></p>
 <p>That’s the purpose of the GDB Script. Let’s look inside <a href="https://github.com/lupyuen/pinecone-rust/blob/main/openocd.gdb"><code>openocd.gdb</code></a>…</p>
 <ol>
 <li>
 <p>GDB doesn’t talk to PineCone natively… But GDB can talk to PineCone through OpenOCD.</p>
 <p>This command tells GDB to talk to OpenOCD through the TCP port <code>localhost:3333</code>…</p>
-<pre><code class="language-text">target extended-remote :3333
-</code></pre>
-</li>
+<div class="example-wrap"><pre class="language-text">target extended-remote :3333</pre></div></li>
 <li>
 <p>The Rust Compiler will mangle up most function names. The function name <code>riscv::interrupt::enable</code> becomes this…</p>
-<pre><code class="language-text">_ZN5riscv9interrupt6enable17ha2fdcd71882d698eE
-</code></pre>
+<div class="example-wrap"><pre class="language-text">_ZN5riscv9interrupt6enable17ha2fdcd71882d698eE</pre></div>
 <p>Here’s how we display the dismangled function names…</p>
-<pre><code class="language-text"># Print demangled symbols
-set print asm-demangle on
-</code></pre>
-</li>
+<div class="example-wrap"><pre class="language-text">set print asm-demangle on</pre></div></li>
 <li>
 <p>We set a Backtrace Limit that we don’t get stuck in a loop while displaying the Stack Trace (the <code>bt</code> command)…</p>
-<pre><code class="language-text"># Set backtrace limit to not have infinite backtrace loops
-set backtrace limit 32
-</code></pre>
-</li>
+<div class="example-wrap"><pre class="language-text">set backtrace limit 32</pre></div></li>
 <li>
 <p>We tell GDB about the Memory Regions on BL602, and whether they are Read-Write (<code>rw</code>) or Read-Only (<code>ro</code>)…</p>
-<pre><code class="language-text">mem 0x22008000 0x22014000 rw
+<div class="example-wrap"><pre class="language-text">mem 0x22008000 0x22014000 rw
 mem 0x42008000 0x42014000 rw
 mem 0x22014000 0x22020000 rw
 mem 0x42014000 0x42020000 rw
@@ -469,42 +433,33 @@ mem 0x22020000 0x22030000 rw
 mem 0x42020000 0x42030000 rw
 mem 0x22030000 0x2204C000 rw
 mem 0x42030000 0x4204C000 rw
-mem 0x23000000 0x23400000 ro
-</code></pre>
+mem 0x23000000 0x23400000 ro</pre></div>
 <p>Refer to <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf">BL602 Reference Manual</a>, Section 1.3 “Function Description”, Pages 17 to 19.</p>
 </li>
 <li>
 <p>We load the Rust Firmware into BL602’s Instruction Cache Memory…</p>
-<pre><code class="language-text">load
-</code></pre>
-</li>
+<div class="example-wrap"><pre class="language-text">load</pre></div></li>
 <li>
 <p>We create a Breakpoint at the function <code>_start</code>. This function is the first thing that runs when we start the firmware…</p>
-<pre><code class="language-text">break _start
-</code></pre>
+<div class="example-wrap"><pre class="language-text">break _start</pre></div>
 <p><a href="https://github.com/rust-embedded/riscv-rt/blob/master/asm.S">Source code for <code>_start</code></a></p>
 </li>
 <li>
 <p>Finally we step into the first RISC-V instruction in our firmware… And pause the execution</p>
-<pre><code class="language-text"># Start the process but immediately halt the processor
-stepi
-</code></pre>
-</li>
+<div class="example-wrap"><pre class="language-text">stepi</pre></div></li>
 </ol>
 <h2 id="gdb-and-cargo" class="section-header"><a href="#gdb-and-cargo">4.1 GDB and cargo</a></h2>
 <p><em>How is the Rust Tool <code>cargo</code> configured to launch GDB?</em></p>
 <p><code>cargo</code> is configured through <a href="https://github.com/lupyuen/pinecone-rust/blob/main/.cargo/config.toml"><code>.cargo/config.toml</code></a>…</p>
-<pre><code class="language-yaml">[target.riscv32imac-unknown-none-elf]
+<div class="example-wrap"><pre class="language-yaml">[target.riscv32imac-unknown-none-elf]
 rustflags = [
   &quot;-C&quot;, &quot;link-arg=-Tmemory.x&quot;,
   &quot;-C&quot;, &quot;link-arg=-Tlink.x&quot;,
 ]
 runner = &quot;riscv64-unknown-elf-gdb -q -x openocd.gdb&quot;
-# runner = &quot;riscv32-unknown-elf-gdb -q -x openocd.gdb&quot;
 
 [build]
-target = &quot;riscv32imac-unknown-none-elf&quot;
-</code></pre>
+target = &quot;riscv32imac-unknown-none-elf&quot;</pre></div>
 <p>We see that <code>cargo</code> has been configured to launch <code>riscv64-unknown-elf-gdb</code> with the GDB Script <a href="https://github.com/lupyuen/pinecone-rust/blob/main/openocd.gdb"><code>openocd.gdb</code></a>. The GDB Script loads our Rust Firmware to PineCone and starts debugging.</p>
 <p>Also, <code>cargo</code> has been configured to produce Rust Firmware that uses the Memory Map Layout specified by <a href="https://github.com/lupyuen/pinecone-rust/blob/main/memory.x"><code>memory.x</code></a>.</p>
 <p><em>What about the OpenOCD Script?</em></p>
@@ -751,7 +706,7 @@ target = &quot;riscv32imac-unknown-none-elf&quot;
 <p>OpenOCD Path (in <code>autorun</code>, after <code>target remote</code>)</p>
 </li>
 </ul>
-<pre><code class="language-json">{
+<div class="example-wrap"><pre class="language-json">{
     //  VSCode Debugger Config for PineCone BL602
     &quot;version&quot;: &quot;0.2.0&quot;,
     &quot;configurations&quot;: [
@@ -786,12 +741,10 @@ target = &quot;riscv32imac-unknown-none-elf&quot;
             ]
         }
     ]
-}
-</code></pre>
-<h2 id="task-settings" class="section-header"><a href="#task-settings">9.2 Task Settings</a></h2>
+}</pre></div><h2 id="task-settings" class="section-header"><a href="#task-settings">9.2 Task Settings</a></h2>
 <p>The VSCode Task Settings may be found in <a href="https://github.com/lupyuen/pinecone-rust/blob/main/.vscode/tasks.json"><code>.vscode/tasks.json</code></a></p>
 <p>This file defines the VSCode Task for building the Rust Firmware…</p>
-<pre><code class="language-json">{
+<div class="example-wrap"><pre class="language-json">{
     &quot;version&quot;: &quot;2.0.0&quot;,
     &quot;tasks&quot;: [
         {
@@ -825,7 +778,7 @@ target = &quot;riscv32imac-unknown-none-elf&quot;
             },
             &quot;problemMatcher&quot;: [ 
                 {
-                    //  Problem matcher for GNU Linker, e.g. /Users/Luppy/mynewt/stm32bluepill-mynewt-sensor/apps/my_sensor_app/src/ATParser.h:82: undefined reference to `operator delete[](void*)'
+                    //  Problem matcher for GNU Linker, e.g. /Users/Luppy/mynewt/stm32bluepill-mynewt-sensor/apps/my_sensor_app/src/ATParser.h:82: undefined reference to `operator delete[](void*)&#39;
                     &quot;fileLocation&quot;: [ &quot;absolute&quot; ],
                     &quot;pattern&quot;: {
                         &quot;regexp&quot;: &quot;^(/.*):(\\d+):\\s+(.*)$&quot;,
@@ -841,9 +794,7 @@ target = &quot;riscv32imac-unknown-none-elf&quot;
                 &quot;clear&quot;: true
             }
         },
-        ...
-</code></pre>
-
+        ...</pre></div>
     
 </body>
 </html>

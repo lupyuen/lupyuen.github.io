@@ -146,7 +146,7 @@
 <h1 id="initialise-uart-port" class="section-header"><a href="#initialise-uart-port">3 Initialise UART Port</a></h1>
 <p>Let’s dive into the code for our Demo Firmware!</p>
 <p>We initialise the UART Port like so: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/demo.c#L132-L150"><code>demo.c</code></a></p>
-<pre><code class="language-c">/// Use UART Port 1 (UART Port 0 is reserved for console)
+<div class="example-wrap"><pre class="language-c">/// Use UART Port 1 (UART Port 0 is reserved for console)
 #define UART_PORT 1
 
 /// Command to display image
@@ -161,8 +161,7 @@ static void display_image(char *buf, int len, int argc, char **argv) {
         255,        //  RTS Unused
         230400      //  Baud Rate
     );
-    assert(rc == 0);
-</code></pre>
+    assert(rc == 0);</pre></div>
 <p>Here we define <strong><code>display_image</code></strong>, the command that we’ll be running in our Demo Firmware.</p>
 <p>It calls <strong><code>bl_uart_init</code></strong> (from BL602 Low Level UART HAL) to initialise the UART Port with these parameters…</p>
 <ul>
@@ -206,49 +205,45 @@ static void display_image(char *buf, int len, int argc, char **argv) {
 <p>Let’s implement this with the BL602 Low Level UART HAL.</p>
 <h2 id="receive-data" class="section-header"><a href="#receive-data">4.1 Receive Data</a></h2>
 <p>Here’s how we <strong>receive one byte of data</strong> from the UART Port…</p>
-<pre><code class="language-c">//  Use UART Port 1 (UART Port 0 is reserved for console)
+<div class="example-wrap"><pre class="language-c">//  Use UART Port 1 (UART Port 0 is reserved for console)
 #define UART_PORT 1
 
 //  Read one byte from UART Port 1, returns -1 if nothing read
-int ch = bl_uart_data_recv(UART_PORT);
-</code></pre>
+int ch = bl_uart_data_recv(UART_PORT);</pre></div>
 <p>Note that <strong><code>bl_uart_data_recv</code></strong> (from the BL602 Low Level UART HAL) returns -1 if there’s no data to be read.</p>
 <p>Thus we usually call <code>bl_uart_data_recv</code> in a loop like so: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/demo.c#L56-L96"><code>demo.c</code></a></p>
-<pre><code class="language-c">/// Do the Start Transfer Handshake with E-Ink Display:
-/// Receive 'c', send 'a', receive 'b'
+<div class="example-wrap"><pre class="language-c">/// Do the Start Transfer Handshake with E-Ink Display:
+/// Receive &#39;c&#39;, send &#39;a&#39;, receive &#39;b&#39;
 void send_begin() {
-    //  Wait until 'c' is received
+    //  Wait until &#39;c&#39; is received
     for (;;) {
         //  Read one byte from UART Port, returns -1 if nothing read
         int ch = bl_uart_data_recv(UART_PORT);
         if (ch &lt; 0) { continue; }  //  Loop until we receive something
 
-        //  Stop when we receive 'c'
-        if (ch == 'c') { break; }
-    }
-</code></pre>
+        //  Stop when we receive &#39;c&#39;
+        if (ch == &#39;c&#39;) { break; }
+    }</pre></div>
 <p>Here we define the function <strong><code>send_begin</code></strong> that performs the Start Transfer Handshake.</p>
 <p>This code loops until the character <code>'c'</code> has been received from the UART Port. Which is the First Step of our handshake.</p>
 <h2 id="transmit-data" class="section-header"><a href="#transmit-data">4.2 Transmit Data</a></h2>
 <p>Second Step of the handshake: <strong>Send the character <code>'a'</code>…</strong></p>
-<pre><code class="language-c">    //  Send 'a'
-    int rc = bl_uart_data_send(UART_PORT, 'a');
-    assert(rc == 0);
-</code></pre>
+<div class="example-wrap"><pre class="language-c">    //  Send &#39;a&#39;
+    int rc = bl_uart_data_send(UART_PORT, &#39;a&#39;);
+    assert(rc == 0);</pre></div>
 <p>Here we call <strong><code>bl_uart_data_send</code></strong> (also from the BL602 Low Level UART HAL) to transmit the character <code>'a'</code> to the UART Port.</p>
 <h2 id="receive-again" class="section-header"><a href="#receive-again">4.3 Receive Again</a></h2>
 <p>Finally the Third Step: <strong>Wait until <code>'b'</code> has been received</strong> from the UART Port…</p>
-<pre><code class="language-c">    //  Wait until 'b' is received
+<div class="example-wrap"><pre class="language-c">    //  Wait until &#39;b&#39; is received
     for (;;) {
         //  Read one byte from UART Port, returns -1 if nothing read
         int ch = bl_uart_data_recv(UART_PORT);
         if (ch &lt; 0) { continue; }  //  Loop until we receive something
 
-        //  Stop when we receive 'b'
-        if (ch == 'b') { break; }
+        //  Stop when we receive &#39;b&#39;
+        if (ch == &#39;b&#39;) { break; }
     }
-}
-</code></pre>
+}</pre></div>
 <p>(Looks very similar to the First Step)</p>
 <p>And we’re done with the Start Transfer Handshake!</p>
 <p>Note that we’re polling the UART Port, which is OK because we’re mostly transmitting data, and receiving little data. </p>
@@ -256,7 +251,7 @@ void send_begin() {
 <p>(The E-Ink Display code in this article was ported from Arduino to BL602. <a href="https://github.com/Seeed-Studio/Grove_Triple_Color_E-lnk_2.13/blob/master/examples/Eink_factory_code_213/Eink_factory_code_213.ino">See this</a>)</p>
 <h1 id="display-image" class="section-header"><a href="#display-image">5 Display Image</a></h1>
 <p>Let’s head back to <code>display_image</code>, the function in our Demo Firmware that controls the E-Ink Display to render an image: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/demo.c#L132-L163"><code>demo.c</code></a></p>
-<pre><code class="language-c">/// Command to display image
+<div class="example-wrap"><pre class="language-c">/// Command to display image
 static void display_image(char *buf, int len, int argc, char **argv) {
     ...
     //  Init UART Port 1 with Tx Pin 4, Rx Pin 3 at 230.4 kbps
@@ -264,29 +259,26 @@ static void display_image(char *buf, int len, int argc, char **argv) {
     assert(rc == 0);
 
     //  Sleep for 10 milliseconds
-    vTaskDelay(10 / portTICK_PERIOD_MS);
-</code></pre>
+    vTaskDelay(10 / portTICK_PERIOD_MS);</pre></div>
 <p>We’ve initialised the UART Port with <code>bl_uart_init</code> (as seen earlier).</p>
 <p>To give the E-Ink Display a bit of time to get ready, we call <strong><code>vTaskDelay</code></strong> (from FreeRTOS) to sleep for 10 milliseconds.</p>
-<pre><code class="language-c">    //  Do the Start Transfer Handshake with E-Ink Display
+<div class="example-wrap"><pre class="language-c">    //  Do the Start Transfer Handshake with E-Ink Display
     send_begin();
 
     //  Sleep for 2 seconds (2000 milliseconds)
-    vTaskDelay(2000 / portTICK_PERIOD_MS);
-</code></pre>
+    vTaskDelay(2000 / portTICK_PERIOD_MS);</pre></div>
 <p>Then we call <code>send_begin</code> to do the Start Transfer Handshake (from the previous section).</p>
 <p>We give the E-Ink Display a little more pondering time, by calling <code>vTaskDelay</code> to sleep for 2 seconds.</p>
-<pre><code class="language-c">    //  Send the display data
+<div class="example-wrap"><pre class="language-c">    //  Send the display data
     write_image_picture();
-}
-</code></pre>
+}</pre></div>
 <p>At the end of the function, we call <strong><code>write_image_picture</code></strong> to send the image data.</p>
 <p>Let’s look inside <code>write_image_picture</code></p>
 <h2 id="send-image-data" class="section-header"><a href="#send-image-data">5.1 Send Image Data</a></h2>
 <p>To display a image on our E-Ink Display, we shall transmit two bitmaps: Black Bitmap and Red Bitmap.</p>
 <p>(More about the Black and Red Bitmaps in a while)</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/demo.c#L106-L130"><code>demo.c</code></a></p>
-<pre><code class="language-c">/// Send Black and Red Image Data to display
+<div class="example-wrap"><pre class="language-c">/// Send Black and Red Image Data to display
 static void write_image_picture(void) {    
     //  Send Black Pixels to display in 13 chunks of 212 bytes
     for (int i = 0; i &lt; 13; i++) {
@@ -295,17 +287,15 @@ static void write_image_picture(void) {
 
         //  Sleep for 80 milliseconds
         vTaskDelay(80 / portTICK_PERIOD_MS);
-    }
-</code></pre>
+    }</pre></div>
 <p>Here we define the function <strong><code>write_image_picture</code></strong> that will transmit the two bitmaps to our E-Ink Display.</p>
 <p>We start with the Black Bitmap <strong><code>IMAGE_BLACK</code></strong>, calling <strong><code>send_data</code></strong> to transmit 13 chunks of 212 bytes each.</p>
 <p>(We’ll see <code>send_data</code> in a while)</p>
 <p>Then we give our E-Ink Display display a short rest…</p>
-<pre><code class="language-c">    //  Sleep for 90 milliseconds
-    vTaskDelay(90 / portTICK_PERIOD_MS);
-</code></pre>
+<div class="example-wrap"><pre class="language-c">    //  Sleep for 90 milliseconds
+    vTaskDelay(90 / portTICK_PERIOD_MS);</pre></div>
 <p>And we transmit the Red Bitmap <strong><code>IMAGE_RED</code></strong> the same way…</p>
-<pre><code class="language-c">    //  Send Red Pixels to display in 13 chunks of 212 bytes
+<div class="example-wrap"><pre class="language-c">    //  Send Red Pixels to display in 13 chunks of 212 bytes
     for (int i = 0; i &lt; 13; i++) {
         //  Send a chunk of 212 bytes
         send_data(&amp;IMAGE_RED[0 + i * 212], 212);
@@ -313,17 +303,15 @@ static void write_image_picture(void) {
         //  Sleep for 80 milliseconds
         vTaskDelay(80 / portTICK_PERIOD_MS);
     }
-}
-</code></pre>
+}</pre></div>
 <p>In <strong><code>send_data</code></strong> we transmit a chunk of data to our E-Ink Display like so: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/demo.c#L98-L104"><code>demo.c</code></a></p>
-<pre><code class="language-c">/// Send data to display over UART. data_len is number of bytes.
+<div class="example-wrap"><pre class="language-c">/// Send data to display over UART. data_len is number of bytes.
 static void send_data(const uint8_t* data, uint32_t data_len) {
     for (int i = 0; i &lt; data_len; i++) {
         int rc = bl_uart_data_send(UART_PORT, data[i]);
         assert(rc == 0);
     }
-}
-</code></pre>
+}</pre></div>
 <p><code>send_data</code> calls <code>bl_uart_data_send</code> (from BL602 Low Level UART HAL) to transmit the data to the UART Port, one byte at a time. </p>
 <p>(We’ve seen this earlier during the handshake)</p>
 <p>That’s all for the UART code that talks to the E-Ink Display!</p>
@@ -334,18 +322,14 @@ static void send_data(const uint8_t* data, uint32_t data_len) {
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/releases/tag/v5.0.0"><strong><code>sdk_app_uart_eink</code> Binary Release</strong></a></li>
 </ul>
 <p>Alternatively, we may build the Firmware Binary File <code>sdk_app_uart_eink.bin</code> from the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/eink/customer_app/sdk_app_uart_eink">source code</a>…</p>
-<pre><code class="language-bash"># Download the eink branch of lupyuen's bl_iot_sdk
-git clone --recursive --branch eink https://github.com/lupyuen/bl_iot_sdk
+<div class="example-wrap"><pre class="language-bash">git clone --recursive --branch eink https://github.com/lupyuen/bl_iot_sdk
 cd bl_iot_sdk/customer_app/sdk_app_uart_eink
 
-# TODO: Change this to the full path of bl_iot_sdk
 export BL60X_SDK_PATH=$HOME/bl_iot_sdk
 export CONFIG_CHIP_NAME=BL602
 make
 
-# TODO: Change ~/blflash to the full path of blflash
-cp build_out/sdk_app_uart_eink.bin ~/blflash
-</code></pre>
+cp build_out/sdk_app_uart_eink.bin ~/blflash</pre></div>
 <p><a href="https://lupyuen.github.io/articles/pinecone#building-firmware">More details on building bl_iot_sdk</a></p>
 <p>(Remember to use the <strong><code>eink</code></strong> branch, not the default <strong><code>master</code></strong> branch)</p>
 <h2 id="flash-the-firmware" class="section-header"><a href="#flash-the-firmware">6.1 Flash the firmware</a></h2>
@@ -397,22 +381,17 @@ cp build_out/sdk_app_uart_eink.bin ~/blflash
 </li>
 </ol>
 <p>Enter these commands to flash <code>sdk_app_uart_eink.bin</code> to BL602 over UART…</p>
-<pre><code class="language-bash"># TODO: Change ~/blflash to the full path of blflash
-cd ~/blflash
+<div class="example-wrap"><pre class="language-bash">cd ~/blflash
 
-# For Linux:
 sudo cargo run flash sdk_app_uart_eink.bin \
     --port /dev/ttyUSB0
 
-# For macOS:
 cargo run flash sdk_app_uart_eink.bin \
     --port /dev/tty.usbserial-1420 \
     --initial-baud-rate 230400 \
     --baud-rate 230400
 
-# For Windows: Change COM5 to the BL602 Serial Port
-cargo run flash sdk_app_uart_eink.bin --port COM5
-</code></pre>
+cargo run flash sdk_app_uart_eink.bin --port COM5</pre></div>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">More details on flashing firmware</a></p>
 <h2 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">6.2 Run the firmware</a></h2>
 <p>Set BL602 to <strong>Normal Mode</strong> (Non-Flashing) and restart the board…</p>
@@ -443,8 +422,7 @@ cargo run flash sdk_app_uart_eink.bin --port COM5
 </ol>
 <p>After restarting, connect to BL602’s UART Port at 2 Mbps like so…</p>
 <p><strong>For Linux:</strong></p>
-<pre><code class="language-bash">sudo screen /dev/ttyUSB0 2000000
-</code></pre>
+<div class="example-wrap"><pre class="language-bash">sudo screen /dev/ttyUSB0 2000000</pre></div>
 <p><strong>For macOS:</strong> Use CoolTerm (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>Alternatively:</strong> Use the Web Serial Terminal (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
@@ -454,8 +432,7 @@ cargo run flash sdk_app_uart_eink.bin --port COM5
 <li>
 <p>Press the Reset Button.</p>
 <p>We should see BL602 starting our firmware…</p>
-<pre><code class="language-text"># ▒Starting bl602 now....
-Booting BL602 Chip...
+<div class="example-wrap"><pre class="language-text">Booting BL602 Chip...
 ██████╗ ██╗      ██████╗  ██████╗ ██████╗
 ██╔══██╗██║     ██╔════╝ ██╔═████╗╚════██╗
 ██████╔╝██║     ███████╗ ██║██╔██║ █████╔╝
@@ -474,14 +451,11 @@ blog init set power on level 2, 2, 2.
 [IRQ] Clearing and Disable all the pending IRQ...
 [OS] Starting aos_loop_proc task...
 [OS] Starting OS Scheduler...
-Init CLI with event Driven
-</code></pre>
-</li>
+Init CLI with event Driven</pre></div></li>
 <li>
 <p>Press Enter to reveal the command prompt.</p>
 <p>Enter <strong><code>help</code></strong> to see the available commands…</p>
-<pre><code class="language-text"># help
-====Build-in Commands====
+<div class="example-wrap"><pre class="language-text">====Build-in Commands====
 ====Support 4 cmds once, seperate by ; ====
 help                     : print this
 p                        : print memory
@@ -504,32 +478,27 @@ cat                      : cat file
 display_image            : Display image
 blogset                  : blog pri set level
 blogdump                 : blog info dump
-bl_sys_time_now          : sys time now
-</code></pre>
-</li>
+bl_sys_time_now          : sys time now</pre></div></li>
 <li>
 <p>Enter <strong><code>display_image</code></strong> to render an image on our E-Ink Display.</p>
 <p>(This executes the <code>display_image</code> function that we’ve seen earlier)</p>
 </li>
 <li>
 <p>We should see this…</p>
-<pre><code class="language-text"># display_image
-Doing start transfer handshake...
+<div class="example-wrap"><pre class="language-text">Doing start transfer handshake...
 0x9d 0xbe 0x9f 0xbe 0xe8 0xcd 0x9e 0xad 0xea 0x2a 0x3a 0xf8
-Received 'c'
-Sent 'a'
+Received &#39;c&#39;
+Sent &#39;a&#39;
 0x63
-Received 'b'
-Start transfer handshake OK
-</code></pre>
+Received &#39;b&#39;
+Start transfer handshake OK</pre></div>
 <p>Here we see that our <code>display_image</code> function has completed the handshake.</p>
 <p>(If the handshake hangs, disconnect BL602 our computer’s USB port, reconnect it and run the firmware again.)</p>
 </li>
 <li>
 <p>Then our <code>display_image</code> function sends the black and red bitmaps over the UART Port…</p>
-<pre><code class="language-text">Sending black pixels...
-Sending red pixels...
-</code></pre>
+<div class="example-wrap"><pre class="language-text">Sending black pixels...
+Sending red pixels...</pre></div>
 <p>The image appears on the display, like the pic below.</p>
 </li>
 <li>
@@ -549,7 +518,7 @@ Sending red pixels...
 <p>Our E-Ink Display is capable of rendering <strong>two separate bitmaps: black and red.</strong></p>
 <p>(Any pixel that’s not flipped on in the black and red bitmaps will appear as white… Thus it’s a Triple Colour Display)</p>
 <p>Here’s how we define the black and red bitmaps in our firmware: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/demo.c#L46-L54"><code>demo.c</code></a></p>
-<pre><code class="language-c">/// Define the Black Pixels of the image
+<div class="example-wrap"><pre class="language-c">/// Define the Black Pixels of the image
 const unsigned char IMAGE_BLACK[] = { 
     #include &quot;image_black.inc&quot;
 };
@@ -557,23 +526,20 @@ const unsigned char IMAGE_BLACK[] = {
 /// Define the Red Pixels of the image
 const unsigned char IMAGE_RED[] = { 
     #include &quot;image_red.inc&quot;
-};
-</code></pre>
+};</pre></div>
 <p>A peek into the black bitmap reveals this: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/image_black.inc"><code>image_black.inc</code></a></p>
-<pre><code class="language-text">//  Min: 0, Max: 85
+<div class="example-wrap"><pre class="language-text">//  Min: 0, Max: 85
 //  Rows: 104, Columns: 212
 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x3f, 0xff, 0xff, 0xff,
 0xff, 0xff, 0xff, 0xff, 0xff, 0xdf, 0xff, 0xff, 0xff, 0x1f, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-...
-</code></pre>
+...</pre></div>
 <p>(That’s 2,756 bytes: 104 rows * 212 columns * 1 bit per pixel)</p>
 <p>And for the red bitmap: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/image_red.inc"><code>image_red.inc</code></a></p>
-<pre><code class="language-text">//  Min: 86, Max: 215
+<div class="example-wrap"><pre class="language-text">//  Min: 86, Max: 215
 //  Rows: 104, Columns: 212
 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
 0xff, 0xff, 0xff, 0xff, 0xff, 0xef, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-...
-</code></pre>
+...</pre></div>
 <p>(Also 2,756 bytes)</p>
 <p><em>What are Min and Max?</em></p>
 <p>The black and red bitmaps were generated from a Greyscale PNG file: <a href="https://github.com/lupyuen/pinetime-graphic/blob/master/uart-cartoon2.png"><code>uart-cartoon2.png</code></a></p>
@@ -587,18 +553,13 @@ const unsigned char IMAGE_RED[] = {
 </li>
 </ol>
 <p>Here’s how we convert the PNG file <a href="https://github.com/lupyuen/pinetime-graphic/blob/master/uart-cartoon2.png"><code>uart-cartoon2.png</code></a> (202 x 104 resolution) to the C arrays <code>image_black.inc</code> (black bitmap) and <code>image_red.inc</code> (red bitmap)..</p>
-<pre><code class="language-bash"># Download the source code
-git clone https://github.com/lupyuen/pinetime-graphic
+<div class="example-wrap"><pre class="language-bash">git clone https://github.com/lupyuen/pinetime-graphic
 cd pinetime-graphic
 
-# TODO: Copy uart-cartoon2.png to the pinetime-graphic folder
 
-# Convert the PNG file to a C array (black bitmap) with these min and max thresholds
 cargo run -- --min 0  --max 85  uart-cartoon2.png &gt;image_black.inc
 
-# Convert the PNG file to a C array (red bitmap) with these min and max thresholds
-cargo run -- --min 86 --max 215 uart-cartoon2.png &gt;image_red.inc
-</code></pre>
+cargo run -- --min 86 --max 215 uart-cartoon2.png &gt;image_red.inc</pre></div>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/pinetime-graphic"><strong>Check out the <code>pinetime-graphic</code> source code</strong></a></p>

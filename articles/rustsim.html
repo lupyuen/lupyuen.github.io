@@ -167,8 +167,7 @@
 </li>
 <li>
 <p><strong>Connect</strong> to BL602 via the USB Serial Port and enter the command…</p>
-<pre><code class="language-text">rust_main
-</code></pre>
+<div class="example-wrap"><pre class="language-text">rust_main</pre></div>
 <p><a href="https://lupyuen.github.io/articles/adc#run-the-bl602-rust-firmware">(Similar to this)</a></p>
 </li>
 </ol>
@@ -178,19 +177,13 @@
 <h1 id="build-bl602-firmware-for-webassembly" class="section-header"><a href="#build-bl602-firmware-for-webassembly">2 Build BL602 Firmware for WebAssembly</a></h1>
 <p>We’ve created a <a href="https://github.com/lupyuen/bl602-simulator/blob/main/Makefile"><strong>Makefile</strong></a> that builds the above BL602 Rust Firmware into WebAssembly.</p>
 <p>Here’s how we use it…</p>
-<pre><code class="language-bash"># Configure emscripten. See https://emscripten.org/docs/getting_started/downloads.html
-# For Windows: emsdk\emsdk_env.bat
-. ~/emsdk/emsdk_env.sh
+<div class="example-wrap"><pre class="language-bash">. ~/emsdk/emsdk_env.sh
 
-# Download source code
 git clone --recursive https://github.com/lupyuen/bl602-simulator
 cd bl602-simulator
 
-# Compile the Rust Firmware, Rust Simulator Library and link with Emscripten
 make
-
-# Produces outputs in the `docs` folder: wasm.js, wasm.wasm
-</code></pre>
+</pre></div>
 <p>This produces the JavaScript and WebAssembly files <strong><code>wasm.js</code> and <code>wasm.wasm</code></strong>, which we’ll run in a Web Browser later.</p>
 <p><em>What’s inside the Makefile?</em></p>
 <p>Our <a href="https://github.com/lupyuen/bl602-simulator/blob/main/Makefile">Makefile</a> does the following…</p>
@@ -208,9 +201,7 @@ make
 <p><img src="https://lupyuen.github.io/images/rustsim-build.png" alt="Compile Rust Firmware into WebAssembly" /></p>
 <h2 id="compile-rust-firmware-into-webassembly" class="section-header"><a href="#compile-rust-firmware-into-webassembly">2.1 Compile Rust Firmware into WebAssembly</a></h2>
 <p>To compile our <strong>Rust Firmware into WebAssembly</strong>, our <a href="https://github.com/lupyuen/bl602-simulator/blob/main/Makefile#L57-L58">Makefile</a> calls this command…</p>
-<pre><code class="language-bash"># Compile the Rust Firmware and Rust Simulator Library into WebAssembly
-cargo build --target wasm32-unknown-emscripten
-</code></pre>
+<div class="example-wrap"><pre class="language-bash">cargo build --target wasm32-unknown-emscripten</pre></div>
 <p>This compiles three <strong>Rust Projects</strong>…</p>
 <ol>
 <li>
@@ -230,13 +221,12 @@ cargo build --target wasm32-unknown-emscripten
 </li>
 </ol>
 <p>“<code>cargo build</code>” downloads the <a href="https://crates.io/crates/bl602-sdk"><strong>BL602 Rust Wrapper</strong></a> automagically from <code>crates.io</code> …</p>
-<pre><code class="language-text">...
+<div class="example-wrap"><pre class="language-text">...
 Compiling bl602-macros v0.0.2
 Compiling bl602-sdk v0.0.6
 Compiling app v0.0.1 (bl602-simulator/sdk_app_rust_gpio/rust)
 Compiling bl602-simulator v0.0.1 (bl602-simulator/bl602-simulator)
-Finished dev [unoptimized + debuginfo] target(s) in 1m 43s
-</code></pre>
+Finished dev [unoptimized + debuginfo] target(s) in 1m 43s</pre></div>
 <p><a href="https://github.com/lupyuen/bl602-simulator#build-log">See the complete log</a></p>
 <p>(Great that BL602 Rust Wrapper builds OK for WebAssembly! Yep our WSL machine is slow)</p>
 <p>However our Rust Firmware needs a slight tweak at the top to <strong>build correctly</strong> under WebAssembly: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/sdk_app_rust_gpio/rust/src/lib.rs#L3-L7"><code>sdk_app_rust_gpio/lib.rs</code></a></p>
@@ -253,17 +243,14 @@ Finished dev [unoptimized + debuginfo] target(s) in 1m 43s
 <p><img src="https://lupyuen.github.io/images/rustsim-libc.png" alt="Changing no_std to feature(libc)" /></p>
 <p><em>What are the outputs for “<code>cargo build</code>”?</em></p>
 <p>“<code>cargo build</code>” produces two <strong>Static Libraries</strong> (Rust Firmware and Rust Simulator)…</p>
-<pre><code class="language-text">target/wasm32-unknown-emscripten/debug/libapp.a
-target/wasm32-unknown-emscripten/debug/libbl602_simulator.a
-</code></pre>
+<div class="example-wrap"><pre class="language-text">target/wasm32-unknown-emscripten/debug/libapp.a
+target/wasm32-unknown-emscripten/debug/libbl602_simulator.a</pre></div>
 <p>Which we shall link with Emscripten’s WebAssembly Runtime.</p>
 <p><em>Why did “<code>cargo build</code>” emit Static Libraries? Instead of the default Rust Libraries?</em></p>
 <p>Because we specified <strong><code>staticlib</code></strong> in <code>Cargo.toml</code> for the <a href="https://github.com/lupyuen/bl602-simulator/blob/main/sdk_app_rust_gpio/rust/Cargo.toml">Rust Firmware</a> and <a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/Cargo.toml">Rust Simulator</a>…</p>
-<pre><code class="language-text"># Build this module as a Static Library.
-[lib]
+<div class="example-wrap"><pre class="language-text">[lib]
 name       = &quot;app&quot;          # Output will be named `libapp.a`
-crate-type = [&quot;staticlib&quot;]  # And will be a Static Library
-</code></pre>
+crate-type = [&quot;staticlib&quot;]  # And will be a Static Library</pre></div>
 <p><strong>Rust Libraries won’t link</strong> with Emscripten’s WebAssembly Runtime. </p>
 <p>That’s why we switched to <strong>Static Libraries</strong>.</p>
 <h2 id="link-rust-firmware-with-emscripten" class="section-header"><a href="#link-rust-firmware-with-emscripten">2.2 Link Rust Firmware with Emscripten</a></h2>
@@ -279,17 +266,15 @@ crate-type = [&quot;staticlib&quot;]  # And will be a Static Library
 </ol>
 <p>We’ll use the <a href="https://emscripten.org/"><strong>Emscripten WebAssembly Runtime</strong></a>.</p>
 <p>Our <a href="https://github.com/lupyuen/bl602-simulator/blob/main/Makefile#L60-L65">Makefile</a> links the <strong>Rust Firmware with Emscripten</strong> like so…</p>
-<pre><code class="language-text"># Link the Rust Firmware and Rust Simulator Library with Emscripten
-emcc -o wasm/wasm.html \
+<div class="example-wrap"><pre class="language-text">emcc -o wasm/wasm.html \
   target/wasm32-unknown-emscripten/debug/libapp.a \
   target/wasm32-unknown-emscripten/debug/libbl602_simulator.a \
   wasm/wasm.o \
   -g \
   -s WASM=1 \
   -s DISABLE_EXCEPTION_CATCHING=0 \
-  -s &quot;EXPORTED_FUNCTIONS=[ '_rust_main', '_clear_simulation_events', '_get_simulation_events' ]&quot; \
-  -s &quot;EXTRA_EXPORTED_RUNTIME_METHODS=[ 'cwrap', 'allocate', 'intArrayFromString', 'UTF8ToString' ]&quot;
-</code></pre>
+  -s &quot;EXPORTED_FUNCTIONS=[ &#39;_rust_main&#39;, &#39;_clear_simulation_events&#39;, &#39;_get_simulation_events&#39; ]&quot; \
+  -s &quot;EXTRA_EXPORTED_RUNTIME_METHODS=[ &#39;cwrap&#39;, &#39;allocate&#39;, &#39;intArrayFromString&#39;, &#39;UTF8ToString&#39; ]&quot;</pre></div>
 <p><a href="https://emscripten.org/docs/getting_started/downloads.html">How to install Emscripten</a></p>
 <p><em>What are the <code>EXPORTED_FUNCTIONS</code>?</em></p>
 <p>These Rust Functions will be <strong>called from JavaScript</strong>…</p>
@@ -323,10 +308,8 @@ emcc -o wasm/wasm.html \
 </li>
 </ul>
 <p>Our <a href="https://github.com/lupyuen/bl602-simulator/blob/main/Makefile#L67-L69">Makefile</a> copies the <strong>JavaScript and WebAssembly</strong> outputs to the <strong><code>docs</code></strong> folder…</p>
-<pre><code class="language-text"># Copy the WebAssembly outputs to the docs folder for GitHub Pages
-cp wasm/wasm.js   docs
-cp wasm/wasm.wasm docs
-</code></pre>
+<div class="example-wrap"><pre class="language-text">cp wasm/wasm.js   docs
+cp wasm/wasm.wasm docs</pre></div>
 <p>So that we may test the WebAssembly outputs with a Local Web Server.</p>
 <p><em>What about the HTML file <code>wasm.html</code>?</em></p>
 <p>We’re using a <strong>customised version</strong> of <code>wasm.html</code> in the <code>docs</code> folder.</p>
@@ -366,11 +349,10 @@ cp wasm/wasm.wasm docs
   <span class="number">0</span>                <span class="comment">//  0 for On, 1 for Off</span>
 )...</pre></div>
 <p>It sends a <strong>Simulation Event</strong> to the BL602 Simulator (in JSON format)…</p>
-<pre><code class="language-json">{ &quot;gpio_output_set&quot;: { 
+<div class="example-wrap"><pre class="language-json">{ &quot;gpio_output_set&quot;: { 
   &quot;pin&quot;:  11, 
   &quot;value&quot;: 0 
-} }
-</code></pre>
+} }</pre></div>
 <p>Which will be handled by the BL602 Simulator to <strong>flip the Simulated LED</strong> on or off.</p>
 <p><em>Is our firmware directly controlling the BL602 Simulator?</em></p>
 <p>Not quite. Our firmware is <strong>indirectly controlling the BL602 Simulator</strong> by sending Simulation Events.</p>
@@ -385,28 +367,25 @@ cp wasm/wasm.wasm docs
 <span class="comment">//  Sleep 1,000 milliseconds (or 1 second)</span>
 <span class="ident">time_delay</span>(<span class="number">1000</span>);</pre></div>
 <p>Shall generate this <strong>Time Delay</strong> Simulation Event…</p>
-<pre><code class="language-json">{ &quot;time_delay&quot;: { &quot;ticks&quot;: 1000 } }
-</code></pre>
+<div class="example-wrap"><pre class="language-json">{ &quot;time_delay&quot;: { &quot;ticks&quot;: 1000 } }</pre></div>
 <p><em>What’s inside the JSON Stream of Simulation Events?</em></p>
 <p>To simulate our firmware on the BL602 Simulator, we shall transmit an <strong>array of Simulation Events</strong> (in JSON format) from our firmware to the BL602 Simulator.</p>
 <p>Thus our Rust Blinky Firmware shall generate this <strong>JSON Stream of Simulation Events</strong>…</p>
-<pre><code class="language-json">[ { &quot;gpio_output_set&quot;: { &quot;pin&quot;: 11, &quot;value&quot;: 0 } }, 
+<div class="example-wrap"><pre class="language-json">[ { &quot;gpio_output_set&quot;: { &quot;pin&quot;: 11, &quot;value&quot;: 0 } }, 
   { &quot;time_delay&quot;:      { &quot;ticks&quot;: 1000 } }, 
 
   { &quot;gpio_output_set&quot;: { &quot;pin&quot;: 11, &quot;value&quot;: 1 } }, 
   { &quot;time_delay&quot;:      { &quot;ticks&quot;: 1000 } }, 
   ... 
-]
-</code></pre>
+]</pre></div>
 <p>That will simulate a <strong>blinking BL602 LED</strong>.</p>
 <p>Let’s generate the Simulation Events now.</p>
 <h1 id="generate-simulation-events" class="section-header"><a href="#generate-simulation-events">4 Generate Simulation Events</a></h1>
 <p><em>How shall we generate this <strong>JSON Simulation Event</strong>…</em></p>
-<pre><code class="language-json">{ &quot;gpio_output_set&quot;: { 
+<div class="example-wrap"><pre class="language-json">{ &quot;gpio_output_set&quot;: { 
   &quot;pin&quot;:  11, 
   &quot;value&quot;: 0 
-} }
-</code></pre>
+} }</pre></div>
 <p><em>When we call this Rust Function?</em></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
@@ -457,13 +436,11 @@ cp wasm/wasm.wasm docs
 <span class="comment">// Print the serialized JSON events</span>
 <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">serialized</span>);</pre></div>
 <p>The result is a <strong>JSON Array</strong> of Simulation Events…</p>
-<pre><code class="language-text">[{&quot;gpio_output_set&quot;:{&quot;pin&quot;:11,&quot;value&quot;:0}}]
-</code></pre>
+<div class="example-wrap"><pre class="language-text">[{&quot;gpio_output_set&quot;:{&quot;pin&quot;:11,&quot;value&quot;:0}}]</pre></div>
 <p>Exactly what we need!</p>
 <h2 id="time-delay-event" class="section-header"><a href="#time-delay-event">4.1 Time Delay Event</a></h2>
 <p><em>What about the Time Delay Event?</em></p>
-<pre><code class="language-json">{ &quot;time_delay&quot;: { &quot;ticks&quot;: 1000 } }
-</code></pre>
+<div class="example-wrap"><pre class="language-json">{ &quot;time_delay&quot;: { &quot;ticks&quot;: 1000 } }</pre></div>
 <p>We add <strong>Time Delay</strong> to our Enum Type like so: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L3-L21"><code>bl602-simulator/lib.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
@@ -586,20 +563,19 @@ cp wasm/wasm.wasm docs
 <p>First we save this sketchy pic of a PineCone BL602 Board as a <strong>PNG file: <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/pinecone.png"><code>pinecone.png</code></a></strong></p>
 <p><img src="https://lupyuen.github.io/images/wasm-photoshop.png" alt="Creating the BL602 simulator image" /></p>
 <p>We <strong>load the PNG file</strong> in our web page: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/docs/simulator.js#L8-L14"><code>simulator.js</code></a></p>
-<pre><code class="language-javascript">/// Wait for emscripten to be initialised
+<div class="example-wrap"><pre class="language-javascript">/// Wait for emscripten to be initialised
 Module.onRuntimeInitialized = function() {
   // Load the simulator pic and render it
   const image = new Image();
   image.onload = renderSimulator;  //  Draw when image has loaded
-  image.src = 'pinecone.png';      //  Image to be loaded
-};
-</code></pre>
+  image.src = &#39;pinecone.png&#39;;      //  Image to be loaded
+};</pre></div>
 <p>When the pic has been loaded, <strong><code>renderSimulator</code></strong> renders the pic: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/docs/simulator.js#L16-L28"><code>simulator.js</code></a></p>
-<pre><code class="language-javascript">/// Render the simulator pic. Based on https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage
+<div class="example-wrap"><pre class="language-javascript">/// Render the simulator pic. Based on https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage
 function renderSimulator() {
   //  Get the HTML canvas and context
-  const canvas = document.getElementById('canvas');
-  const ctx = canvas.getContext('2d');
+  const canvas = document.getElementById(&#39;canvas&#39;);
+  const ctx = canvas.getContext(&#39;2d&#39;);
 
   //  Resize the canvas
   canvas.width  = 400;
@@ -607,72 +583,63 @@ function renderSimulator() {
 
   //  Draw the image to fill the canvas
   ctx.drawImage(this, 0, 0, canvas.width, canvas.height);
-}
-</code></pre>
+}</pre></div>
 <p><em>What’s the <code>canvas</code>?</em></p>
 <p>Emscripten has helpfully generated a <strong>HTML Canvas</strong> in <a href="https://github.com/lupyuen/bl602-simulator/blob/main/docs/wasm.html#L1238-L1240"><code>wasm.html</code></a> …</p>
-<pre><code class="language-html">&lt;canvas id=&quot;canvas&quot; class=&quot;emscripten&quot; oncontextmenu=&quot;event.preventDefault()&quot; tabindex=-1&gt;&lt;/canvas&gt;
-</code></pre>
+<div class="example-wrap"><pre class="language-html">&lt;canvas id=&quot;canvas&quot; class=&quot;emscripten&quot; oncontextmenu=&quot;event.preventDefault()&quot; tabindex=-1&gt;&lt;/canvas&gt;</pre></div>
 <p><code>renderSimulator</code> renders our BL602 pic to the HTML Canvas like so…</p>
 <p><img src="https://lupyuen.github.io/images/adc-simulator2.png" alt="BL602 Simulator in WebAssembly" /></p>
 <p><em>What about the LED?</em></p>
 <p>To simulate the LED switching on <em>(or off)</em>, let’s draw a <strong>blue rectangle</strong> <em>(or grey rectangle)</em> onto the HTML Canvas: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/docs/simulator.js#L121-L144"><code>simulator.js</code></a></p>
-<pre><code class="language-javascript">//  Get the HTML Canvas Context
-const ctx = document.getElementById('canvas').getContext('2d');
+<div class="example-wrap"><pre class="language-javascript">//  Get the HTML Canvas Context
+const ctx = document.getElementById(&#39;canvas&#39;).getContext(&#39;2d&#39;);
 
 //  For LED On: Set the fill colour to Blue
-ctx.fillStyle = '#B0B0FF';  //  Blue
+ctx.fillStyle = &#39;#B0B0FF&#39;;  //  Blue
 
 //  For LED Off: Set the fill colour to Grey
-//  ctx.fillStyle = '#CCCCCC';  //  Grey
+//  ctx.fillStyle = &#39;#CCCCCC&#39;;  //  Grey
 
 //  Draw the LED colour
-ctx.fillRect(315, 116, 35, 74);
-</code></pre>
-<h2 id="run-rust-firmware" class="section-header"><a href="#run-rust-firmware">5.1 Run Rust Firmware</a></h2>
+ctx.fillRect(315, 116, 35, 74);</pre></div><h2 id="run-rust-firmware" class="section-header"><a href="#run-rust-firmware">5.1 Run Rust Firmware</a></h2>
 <p>Watch what happens when we click the <strong>“Run” Button</strong> in our BL602 Simulator: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/docs/simulator.js#L30-L81"><code>simulator.js</code></a></p>
-<pre><code class="language-javascript">/// Run the command in the input box
+<div class="example-wrap"><pre class="language-javascript">/// Run the command in the input box
 function runScript() {
   //  Omitted: Read the command from input box and convert to a function (like `rust_main`)
   ...
   //  Clear the JSON Stream of Simulation Events in WebAssembly
-  Module._clear_simulation_events();
-</code></pre>
+  Module._clear_simulation_events();</pre></div>
 <p>We start by <strong>clearing the JSON Stream</strong> of Simulation Events.</p>
 <p>(More about this in the Appendix)</p>
 <p>Next we call the <strong><code>rust_main</code></strong> function from our Rust Firmware…</p>
-<pre><code class="language-javascript">  //  Execute the WebAssembly Function defined in Rust.
+<div class="example-wrap"><pre class="language-javascript">  //  Execute the WebAssembly Function defined in Rust.
   //  TODO: Pass the command-line args
-  Module._rust_main();  //  Omitted: Checking whether `rust_main` exists
-</code></pre>
+  Module._rust_main();  //  Omitted: Checking whether `rust_main` exists</pre></div>
 <p>(Yep that’s a Quantum Leap from JavaScript to WebAssembly to Rust and back!)</p>
 <p>Remember: Our Rust Firmware <strong>doesn’t run in Real Time</strong>.</p>
 <p>Our Rust Firmware completes in an instant and <strong>emits a stream of events</strong>. (Including Time Delays)</p>
 <p>We <strong>fetch the stream of events</strong> emitted by our Rust Firmware…</p>
-<pre><code class="language-javascript">  //  Get the JSON string of Simulation Events from WebAssembly. Looks like...
+<div class="example-wrap"><pre class="language-javascript">  //  Get the JSON string of Simulation Events from WebAssembly. Looks like...
   //  [ { &quot;gpio_output_set&quot;: { &quot;pin&quot;: 11, &quot;value&quot;: 1 } }, 
   //    { &quot;time_delay&quot;: { &quot;ticks&quot;: 1000 } }, ... ]
-  const json_ptr = Module._get_simulation_events();
-</code></pre>
+  const json_ptr = Module._get_simulation_events();</pre></div>
 <p>(More about this in the Appendix)</p>
 <p>And convert it from <strong>WebAssembly to JSON</strong>…</p>
-<pre><code class="language-javascript">  //  Convert the JSON string from WebAssembly to JavaScript
+<div class="example-wrap"><pre class="language-javascript">  //  Convert the JSON string from WebAssembly to JavaScript
   const json = Module.UTF8ToString(json_ptr);
 
   //  Parse the JSON Stream of Simulation Events
-  simulation_events = JSON.parse(json);
-</code></pre>
+  simulation_events = JSON.parse(json);</pre></div>
 <p>Inside <strong><code>simulation_events</code></strong> we have a JSON Stream of Simulation Events, ready for processing!</p>
 <h2 id="handle-simulation-events" class="section-header"><a href="#handle-simulation-events">5.2 Handle Simulation Events</a></h2>
 <p>Our JavaScript code has <strong>received the JSON Stream</strong> of Simulation Events from the Rust Firmware…</p>
-<pre><code class="language-json">[ 
+<div class="example-wrap"><pre class="language-json">[ 
   { &quot;gpio_output_set&quot;: { &quot;pin&quot;: 11, &quot;value&quot;: 1 } }, 
   { &quot;time_delay&quot;: { &quot;ticks&quot;: 1000 } },
   ...
-]
-</code></pre>
+]</pre></div>
 <p>Let’s <strong>process the events</strong>: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/docs/simulator.js#L83-L119"><code>simulator.js</code></a></p>
-<pre><code class="language-javascript">/// Simulate the BL602 Simulation Events recorded in simulate_events, which contains...
+<div class="example-wrap"><pre class="language-javascript">/// Simulate the BL602 Simulation Events recorded in simulate_events, which contains...
 ///  [ { &quot;gpio_output_set&quot;: { &quot;pin&quot;: 11, &quot;value&quot;: 1 } }, 
 ///    { &quot;time_delay&quot;: { &quot;ticks&quot;: 1000 } }, ... ]
 function simulateEvents() {
@@ -687,11 +654,10 @@ function simulateEvents() {
   const args = event[event_type];
 
   //  Timeout in milliseconds to the next event
-  let timeout = 1;
-</code></pre>
+  let timeout = 1;</pre></div>
 <p>Here we take the <strong>first event</strong> from the stream.</p>
 <p>Then we <strong>handle the event</strong>: Set GPIO Output or Time Delay…</p>
-<pre><code class="language-javascript">  //  Handle each event type
+<div class="example-wrap"><pre class="language-javascript">  //  Handle each event type
   switch (event_type) {
 
     //  Set GPIO output
@@ -704,30 +670,28 @@ function simulateEvents() {
 
     //  Unknown event type
     default: throw new Error(&quot;Unknown event type: &quot; + event_type);
-  }
-</code></pre>
+  }</pre></div>
 <p>We use a timer to <strong>iterate through the events</strong> in the stream…</p>
-<pre><code class="language-javascript">  //  Simulate the next event
+<div class="example-wrap"><pre class="language-javascript">  //  Simulate the next event
   if (simulation_events.length &gt; 0) {
     window.setTimeout(&quot;simulateEvents()&quot;, timeout);
   }
-}
-</code></pre>
+}</pre></div>
 <p><em>What happens inside <code>gpio_output_set</code>, the event handler for Set GPIO Output?</em></p>
 <p><code>gpio_output_set</code> renders the <strong>Simulated BL602 LED</strong>: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/docs/simulator.js#L121-L144"><code>simulator.js</code></a></p>
-<pre><code class="language-javascript">/// Simulate setting GPIO pin output to value 0 (Low) or 1 (High):
+<div class="example-wrap"><pre class="language-javascript">/// Simulate setting GPIO pin output to value 0 (Low) or 1 (High):
 /// { &quot;gpio_output_set&quot;: { &quot;pin&quot;: 11, &quot;value&quot;: 1 } }
 function gpio_output_set(pin, value) {
   //  Get the HTML Canvas Context
-  const ctx = document.getElementById('canvas').getContext('2d');
+  const ctx = document.getElementById(&#39;canvas&#39;).getContext(&#39;2d&#39;);
 
   //  Set the simulated LED colour depending on value
   switch (value) {
     //  Set GPIO to Low (LED on)
-    case 0: ctx.fillStyle = '#B0B0FF'; break;  //  Blue
+    case 0: ctx.fillStyle = &#39;#B0B0FF&#39;; break;  //  Blue
 
     //  Set GPIO to High (LED off)
-    case 1: ctx.fillStyle = '#CCCCCC'; break;  //  Grey
+    case 1: ctx.fillStyle = &#39;#CCCCCC&#39;; break;  //  Grey
 
     //  Unknown value
     default: throw new Error(&quot;Unknown gpio_output_set value: &quot; + args.value);
@@ -738,8 +702,7 @@ function gpio_output_set(pin, value) {
 
   //  Simulate next event in 0 milliseconds
   return 0;
-}
-</code></pre>
+}</pre></div>
 <p>(Yep we’ve seen this code earlier)</p>
 <p>That’s how we <strong>blink the Simulated LED</strong> through the stream of simulation events!</p>
 <p><em>What about <code>time_delay</code>, the event handler for Time Delays?</em></p>
@@ -1067,11 +1030,10 @@ function gpio_output_set(pin, value) {
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="ident">gpio::output_set</span>(<span class="number">11</span>, <span class="number">0</span>);</pre></div>
 <p>Shall be transcoded to this <strong>uLisp S-Expression</strong>…</p>
-<pre><code class="language-text">( bl_gpio_output_set 11 0 )
-</code></pre>
+<div class="example-wrap"><pre class="language-text">( bl_gpio_output_set 11 0 )</pre></div>
 <p><em>But will uLisp let us call C functions defined in BL602 IoT SDK?</em></p>
 <p>Yep uLisp lets us <strong>expose a C function</strong> from BL602 IoT SDK like so: <a href="https://github.com/lupyuen/ulisp-bl602/blob/sdk/src/ulisp.c#L4164-L4186"><code>ulisp.c</code></a></p>
-<pre><code class="language-c">//  Expose the C function `bl_gpio_output_set` to uLisp:
+<div class="example-wrap"><pre class="language-c">//  Expose the C function `bl_gpio_output_set` to uLisp:
 //  `int bl_gpio_output_set(uint8_t pin, uint8_t value)`
 object *fn_bl_gpio_output_set(object *args, object *env) {
   //  Fetch the `pin` parameter from uLisp
@@ -1092,11 +1054,9 @@ object *fn_bl_gpio_output_set(object *args, object *env) {
 
   //  Return the result to uLisp
   return number(result);
-}
-</code></pre>
+}</pre></div>
 <p>Which will be <strong>called from uLisp</strong> like so…</p>
-<pre><code class="language-text">( bl_gpio_output_set 11 0 )
-</code></pre>
+<div class="example-wrap"><pre class="language-text">( bl_gpio_output_set 11 0 )</pre></div>
 <p><a href="http://www.ulisp.com/show?19Q4">(More about this)</a></p>
 <p><em>How shall we transcode Rhai Script to uLisp?</em></p>
 <p>The Rhai Scripting Engine compiles Rhai Script into an <strong>Abstract Syntax Tree</strong>. <a href="https://rhai.rs/book/engine/compile.html">(See this)</a></p>
@@ -1106,8 +1066,7 @@ object *fn_bl_gpio_output_set(object *args, object *env) {
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="ident">gpio::output_set</span>(<span class="number">11</span>, <span class="number">0</span>);</pre></div>
 <p>Shall emit this <strong>uLisp S-Expression</strong>…</p>
-<pre><code class="language-text">( bl_gpio_output_set 11 0 )
-</code></pre>
+<div class="example-wrap"><pre class="language-text">( bl_gpio_output_set 11 0 )</pre></div>
 <p>The transcoding implementation will probably look similar to…</p>
 <ul>
 <li>

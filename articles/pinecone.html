@@ -252,13 +252,12 @@
 <p><em>(FYI: The Linker Maps loaded into Google Sheet for <a href="https://github.com/pine64/bl_iot_sdk/tree/master/customer_app/bl602_demo_wifi"><code>bl602_demo_wifi</code></a> and <a href="https://github.com/pine64/bl_iot_sdk/tree/master/customer_app/sdk_app_ble_sync"><code>sdk_app_ble_sync</code></a> are here: <a href="https://docs.google.com/spreadsheets/d/1m8-fc9_ocOwMuw_oRur4j6xqVli6x-Tm-M5ZIKwNWRk/edit#gid=381366828&amp;fvid=1359565135">Google Sheet for <code>bl602_demo_wifi</code></a>, <a href="https://docs.google.com/spreadsheets/d/1HJev8fdmIMyIxeRFx2cpsq1C5rEYgGZf7Tank3hYK88/edit#gid=381366828&amp;fvid=1359565135">Google Sheet for <code>sdk_app_ble_sync</code></a>)</em></p>
 <h2 id="find-the-wifi-buffers" class="section-header"><a href="#find-the-wifi-buffers">3.3 Find the WiFi Buffers</a></h2>
 <p>Remember that Wireless RAM starts at address <code>0x4203 0000</code>?  I have highlighted in yellow the 19 largest variables in Wireless RAM…</p>
-<pre><code class="language-text">__bss_start
+<div class="example-wrap"><pre class="language-text">__bss_start
 __wifi_bss_start
 rx_dma_hdrdesc
 _data_load
 ram_heap
-...
-</code></pre>
+...</pre></div>
 <p>(The addresses of the variables are shown in the <code>Offset</code> column)</p>
 <p>These are likely the WiFi Buffers that our WiFi Driver uses to send and receive WiFi packets, also to control the WiFi operation.</p>
 <h2 id="identify-the-wifi-functions" class="section-header"><a href="#identify-the-wifi-functions">3.4 Identify the WiFi Functions</a></h2>
@@ -364,9 +363,7 @@ ram_heap
 </li>
 <li>
 <p>Download the <strong>PineCone SDK <code>bl_iot_sdk</code></strong>…</p>
-<pre><code class="language-bash">git clone --recursive https://github.com/pine64/bl_iot_sdk
-</code></pre>
-</li>
+<div class="example-wrap"><pre class="language-bash">git clone --recursive https://github.com/pine64/bl_iot_sdk</pre></div></li>
 <li>
 <p>Launch Dev Cube for Windows, located in the PineCone SDK at <code>bl_iot_sdk/tools/flash_tool/BLDevCube.exe</code></p>
 </li>
@@ -400,18 +397,13 @@ ram_heap
 </li>
 <li>
 <p>✅ <strong>Partition Table</strong>: Click <code>Browse</code> and select from the PineCone SDK…</p>
-<pre><code class="language-text">bl_iot_sdk/tools/flash_tool/bl602/partition/partition_cfg_2M.toml
-</code></pre>
-</li>
+<div class="example-wrap"><pre class="language-text">bl_iot_sdk/tools/flash_tool/bl602/partition/partition_cfg_2M.toml</pre></div></li>
 <li>
 <p>✅ <strong>Boot2 Bin</strong>: Click <code>Browse</code> and select from the PineCone SDK…</p>
-<pre><code class="language-text">bl_iot_sdk/image_conf/bl602/blsp_boot2_release.bin
-</code></pre>
-</li>
+<div class="example-wrap"><pre class="language-text">bl_iot_sdk/image_conf/bl602/blsp_boot2_release.bin</pre></div></li>
 <li>
 <p>✅ <strong>Firmware Bin</strong>: Click <code>Browse</code> and select from the PineCone Sample Firmware <code>sdk_app_helloworld.bin</code>…</p>
-<pre><code class="language-text">customer_app.zip/sdk_app_helloworld/build_out/sdk_app_helloworld.bin
-</code></pre>
+<div class="example-wrap"><pre class="language-text">customer_app.zip/sdk_app_helloworld/build_out/sdk_app_helloworld.bin</pre></div>
 <p>This is the <a href="https://github.com/pine64/bl_iot_sdk/blob/master/customer_app/sdk_app_helloworld">“Hello World”</a> sample firmware that we’ll be flashing.</p>
 <p>The three files selected should NOT have any spaces in their pathnames.</p>
 <p><a href="https://lupyuen.github.io/images/pinecone-flash.png">See the screenshot above</a></p>
@@ -421,9 +413,8 @@ ram_heap
 <li>
 <p>Click <code>Create &amp; Program</code></p>
 <p>This flashes the firmware to PineCone. We should see…</p>
-<pre><code class="language-text">Verify success
-Program Finished
-</code></pre>
+<div class="example-wrap"><pre class="language-text">Verify success
+Program Finished</pre></div>
 <p><a href="https://lupyuen.github.io/images/pinecone-flash.png">See the screenshot</a></p>
 </li>
 <li>
@@ -435,10 +426,9 @@ Program Finished
 <p>Click <code>Open UART</code></p>
 <p>Press the <code>RST</code> button on PineCone <a href="https://lupyuen.github.io/images/pinecone-rst.jpg">(Look here)</a></p>
 <p>Our firmware starts to run. We should see…</p>
-<pre><code class="language-text">[helloworld]   start
+<div class="example-wrap"><pre class="language-text">[helloworld]   start
 [helloworld]   helloworld
-[helloworld]   end
-</code></pre>
+[helloworld]   end</pre></div>
 <p><a href="https://lupyuen.github.io/images/pinecone-helloworld.png">See the screenshot</a></p>
 </li>
 </ol>
@@ -475,17 +465,13 @@ Program Finished
 <ul>
 <li>
 <p>If we haven’t done so, download the PineCone <strong>BL602 IoT SDK <code>bl_iot_sdk</code></strong>…</p>
-<pre><code class="language-bash">git clone --recursive https://github.com/pine64/bl_iot_sdk
-cd bl_iot_sdk
-</code></pre>
-</li>
+<div class="example-wrap"><pre class="language-bash">git clone --recursive https://github.com/pine64/bl_iot_sdk
+cd bl_iot_sdk</pre></div></li>
 <li>
 <p>Follow the <a href="https://github.com/pine64/bl_iot_sdk/blob/master/README.rst">build instructions for Linux, Windows and macOS</a> like so…</p>
-<pre><code class="language-bash">#  TODO: Change this to the full path of bl_iot_sdk
-export BL60X_SDK_PATH=~/bl_iot_sdk
+<div class="example-wrap"><pre class="language-bash">export BL60X_SDK_PATH=~/bl_iot_sdk
 export CONFIG_CHIP_NAME=BL602
-make
-</code></pre>
+make</pre></div>
 <p><a href="https://lupyuen.github.io/images/pinecone-build.png">Here’s the output</a></p>
 </li>
 <li>

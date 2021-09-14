@@ -170,7 +170,7 @@
 <h1 id="initialise-spi-port" class="section-header"><a href="#initialise-spi-port">2 Initialise SPI Port</a></h1>
 <p>To initialise BL602’s SPI Port, we used the same code as the previous article, except for two modifications.</p>
 <p>Here’s how our function <code>test_display_init</code> initialises the SPI Port: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/demo.c#L62-L97"><code>demo.c</code></a></p>
-<pre><code class="language-c">/// Command to init the display
+<div class="example-wrap"><pre class="language-c">/// Command to init the display
 static void test_display_init(char *buf, int len, int argc, char **argv) {
     //  Configure the SPI Port
     int rc = spi_init(
@@ -186,8 +186,7 @@ static void test_display_init(char *buf, int len, int argc, char **argv) {
         1,   //  (Green)  SPI Serial Data In Pin  (formerly MISO) (Unused for ST7789)
         4    //  (Blue)   SPI Serial Data Out Pin (formerly MOSI)
     );
-    assert(rc == 0);
-</code></pre>
+    assert(rc == 0);</pre></div>
 <p><a href="https://lupyuen.github.io/articles/spi#initialise-spi-port">(<code>spi_init</code> is explained here)</a></p>
 <p>Here are the modifications from the previous article…</p>
 <ol>
@@ -213,46 +212,41 @@ static void test_display_init(char *buf, int len, int argc, char **argv) {
 <p>Switch on the backlight</p>
 </li>
 </ol>
-<pre><code class="language-c">    //  Configure the GPIO Pins, init the display controller 
+<div class="example-wrap"><pre class="language-c">    //  Configure the GPIO Pins, init the display controller 
     //  and switch on backlight
     rc = init_display();
     assert(rc == 0);
-}
-</code></pre>
+}</pre></div>
 <p>We’ll explain <code>init_display</code> in a while.</p>
 <p><code>SPI_PORT</code> and <code>spi_device</code> are unchanged…</p>
-<pre><code class="language-c">/// Use SPI Port Number 0
+<div class="example-wrap"><pre class="language-c">/// Use SPI Port Number 0
 #define SPI_PORT   0
 
 /// SPI Device Instance. Used by display.c
-spi_dev_t spi_device;
-</code></pre>
+spi_dev_t spi_device;</pre></div>
 <p><img src="https://lupyuen.github.io/images/display-cartoon.png" alt="Transfer SPI Data with DMA" /></p>
 <h1 id="transfer-spi-data" class="section-header"><a href="#transfer-spi-data">3 Transfer SPI Data</a></h1>
 <p>For transmitting SPI Data to ST7789, the code looks highly similar to our previous article. (Except that we’re not interested in the data received)</p>
 <p>Here’s how our function <code>transmit_spi</code> transmits data to ST7789: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L250-L290"><code>display.c</code></a></p>
-<pre><code class="language-c">/// Write to the SPI port. `data` is the array of bytes to be written. `len` is the number of bytes.
+<div class="example-wrap"><pre class="language-c">/// Write to the SPI port. `data` is the array of bytes to be written. `len` is the number of bytes.
 static int transmit_spi(const uint8_t *data, uint16_t len) {
     //  Clear the receive buffer
-    memset(&amp;spi_rx_buf, 0, sizeof(spi_rx_buf));
-</code></pre>
+    memset(&amp;spi_rx_buf, 0, sizeof(spi_rx_buf));</pre></div>
 <p>We pass to <code>transmit_spi</code> the array of bytes to be written (<code>data</code>) and the number of bytes to be written (<code>len</code>).</p>
 <p>We prepare the SPI Transfer the same way…</p>
-<pre><code class="language-c">    //  Prepare SPI Transfer
+<div class="example-wrap"><pre class="language-c">    //  Prepare SPI Transfer
     static spi_ioc_transfer_t transfer;
     memset(&amp;transfer, 0, sizeof(transfer));    
     transfer.tx_buf = (uint32_t) data;        //  Transmit Buffer
     transfer.rx_buf = (uint32_t) spi_rx_buf;  //  Receive Buffer
-    transfer.len    = len;                    //  How many bytes
-</code></pre>
+    transfer.len    = len;                    //  How many bytes</pre></div>
 <p>(We’ll explain <code>spi_rx_buf</code> in a while)</p>
 <p>We control the Chip Select Pin via GPIO the same way…</p>
-<pre><code class="language-c">    //  Select the SPI Peripheral (not used for ST7789)
+<div class="example-wrap"><pre class="language-c">    //  Select the SPI Peripheral (not used for ST7789)
     int rc = bl_gpio_output_set(DISPLAY_CS_PIN, 0);
-    assert(rc == 0);
-</code></pre>
+    assert(rc == 0);</pre></div>
 <p>We execute the SPI Transfer and wait for it to complete…</p>
-<pre><code class="language-c">    //  Execute the SPI Transfer with the DMA Controller
+<div class="example-wrap"><pre class="language-c">    //  Execute the SPI Transfer with the DMA Controller
     rc = hal_spi_transfer(
         &amp;spi_device,  //  SPI Device
         &amp;transfer,    //  SPI Transfers
@@ -261,41 +255,36 @@ static int transmit_spi(const uint8_t *data, uint16_t len) {
     assert(rc == 0);
 
     //  DMA Controller will transmit and receive the SPI data in the background.
-    //  hal_spi_transfer will wait for the SPI Transfer to complete before returning.
-</code></pre>
+    //  hal_spi_transfer will wait for the SPI Transfer to complete before returning.</pre></div>
 <p>Finally we flip the Chip Select Pin to end the SPI Transfer…</p>
-<pre><code class="language-c">    //  Now that we're done with the SPI Transfer...
+<div class="example-wrap"><pre class="language-c">    //  Now that we&#39;re done with the SPI Transfer...
 
     //  De-select the SPI Peripheral (not used for ST7789)
     rc = bl_gpio_output_set(DISPLAY_CS_PIN, 1);
     assert(rc == 0);
     return 0;
-}
-</code></pre>
+}</pre></div>
 <p>We’re using the same Pin 14 as the Chip Select Pin: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/demo.h#L33-L43"><code>demo.h</code></a></p>
-<pre><code class="language-c">/// Use GPIO 14 as SPI Chip Select Pin (Unused for ST7789 SPI)
-#define DISPLAY_CS_PIN 14
-</code></pre>
+<div class="example-wrap"><pre class="language-c">/// Use GPIO 14 as SPI Chip Select Pin (Unused for ST7789 SPI)
+#define DISPLAY_CS_PIN 14</pre></div>
 <p>The Chip Select Pin is not used by the ST7789 Display that we have chosen… But other ST7789 Displays may use it. </p>
 <p>(Like the one in PineTime Smartwatch)</p>
 <p><em>What’s <code>spi_rx_buf</code> in the SPI Transfer?</em></p>
 <p>Remember that the BL602 SPI Hardware Abstraction Layer (HAL) only executes SPI Transfers… Every SPI Transmit Request must be paired with an SPI Receive Request.</p>
 <p>We’re not really interested in receiving data from ST7789, but we need to provide an SPI Receive Buffer anyway: <code>spi_rx_buf</code></p>
 <p>That’s why we set <code>spi_rx_buf</code> as the SPI Receive Buffer for our SPI Transfer…</p>
-<pre><code class="language-c">//  Prepare SPI Transfer
+<div class="example-wrap"><pre class="language-c">//  Prepare SPI Transfer
 transfer.tx_buf = (uint32_t) data;        //  Transmit Buffer
 transfer.rx_buf = (uint32_t) spi_rx_buf;  //  Receive Buffer
-transfer.len    = len;                    //  How many bytes
-</code></pre>
+transfer.len    = len;                    //  How many bytes</pre></div>
 <p><code>spi_rx_buf</code> is defined in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L82-L91"><code>display.c</code></a></p>
-<pre><code class="language-c">/// SPI Receive Buffer. We don't actually receive data, but SPI Transfer needs this.
+<div class="example-wrap"><pre class="language-c">/// SPI Receive Buffer. We don&#39;t actually receive data, but SPI Transfer needs this.
 /// Contains 10 rows of 240 pixels of 2 bytes each (16-bit colour).
 static uint8_t spi_rx_buf[
     BUFFER_ROWS        //  10 rows of pixels
     * COL_COUNT        //  240 columns of pixels per row
     * BYTES_PER_PIXEL  //  2 bytes per pixel
-];
-</code></pre>
+];</pre></div>
 <p>We limit each SPI Transfer to 10 rows of pixels. More about this later.</p>
 <h1 id="transmit-st7789-commands" class="section-header"><a href="#transmit-st7789-commands">4 Transmit ST7789 Commands</a></h1>
 <p>Now that we have our SPI Transmit Function <code>transmit_spi</code>, let’s call it to send some ST7789 Commands!</p>
@@ -310,7 +299,7 @@ static uint8_t spi_rx_buf[
 </li>
 </ol>
 <p>We transmit an ST7789 Command by calling <code>write_command</code>…</p>
-<pre><code class="language-c">//  Define the ST7789 Command Code (1 byte: 0x33)
+<div class="example-wrap"><pre class="language-c">//  Define the ST7789 Command Code (1 byte: 0x33)
 #define VSCRDER  0x33
 
 //  Define the ST7789 Command Parameters (6 bytes)
@@ -321,8 +310,7 @@ write_command(
     VSCRDER,              //  Command Code (1 byte)
     VSCRDER_PARA,         //  Command Parameters (6 bytes)
     sizeof(VSCRDER_PARA)  //  Number of parameters (6)
-);
-</code></pre>
+);</pre></div>
 <p>There’s a special way to transmit Command Codes and Parameters to ST7789…</p>
 <h2 id="st7789-command-vs-parameters" class="section-header"><a href="#st7789-command-vs-parameters">4.1 ST7789 Command vs Parameters</a></h2>
 <p><em>Why does ST7789 need a Data / Command Pin (Pin 5)?</em></p>
@@ -338,59 +326,52 @@ write_command(
 <p><em>What???</em></p>
 <p>Yep ST7789 is a little unique (and somewhat inefficient)… We need to <strong>flip the Data / Command Pin</strong> when transmitting an ST7789 Command and its Parameters.</p>
 <p>Here’s how <code>write_command</code> transmits the Command Code and Parameters: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L220-L238"><code>display.c</code></a></p>
-<pre><code class="language-c">/// Transmit ST7789 command and parameters. `params` is the array of 
+<div class="example-wrap"><pre class="language-c">/// Transmit ST7789 command and parameters. `params` is the array of 
 /// parameter bytes, `len` is the number of parameters.
 int write_command(uint8_t command, const uint8_t *params, uint16_t len) {
     //  Set Data / Command Pin to Low to tell ST7789 this is a command
     int rc = bl_gpio_output_set(DISPLAY_DC_PIN, 0);
-    assert(rc == 0);
-</code></pre>
+    assert(rc == 0);</pre></div>
 <p>Here we call BL602 GPIO to set the Data / Command Pin to Low.</p>
 <p>Then we transmit the Command Code (1 byte)…</p>
-<pre><code class="language-c">    //  Transmit the command byte
+<div class="example-wrap"><pre class="language-c">    //  Transmit the command byte
     rc = transmit_spi(&amp;command, 1);
-    assert(rc == 0);
-</code></pre>
+    assert(rc == 0);</pre></div>
 <p>Next we transmit the Command Parameters by calling <code>write_data</code>…</p>
-<pre><code class="language-c">    //  Transmit the parameters as data bytes
+<div class="example-wrap"><pre class="language-c">    //  Transmit the parameters as data bytes
     if (params != NULL &amp;&amp; len &gt; 0) {
         rc = write_data(params, len);
         assert(rc == 0);
     }
     return 0;
-}
-</code></pre>
+}</pre></div>
 <p>As we expect, <code>write_data</code> flips the Data / Command Pin to High: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L238-L250"><code>display.c</code></a></p>
-<pre><code class="language-c">/// Transmit data to ST7789. `data` is the array of bytes to be transmitted, `len` is the number of bytes.
+<div class="example-wrap"><pre class="language-c">/// Transmit data to ST7789. `data` is the array of bytes to be transmitted, `len` is the number of bytes.
 int write_data(const uint8_t *data, uint16_t len) {
     //  Set Data / Command Pin to High to tell ST7789 this is data
     int rc = bl_gpio_output_set(DISPLAY_DC_PIN, 1);
-    assert(rc == 0);
-</code></pre>
+    assert(rc == 0);</pre></div>
 <p>Then it transmits the Command Parameters…</p>
-<pre><code class="language-c">    //  Transmit the data bytes
+<div class="example-wrap"><pre class="language-c">    //  Transmit the data bytes
     rc = transmit_spi(data, len);
     assert(rc == 0);
     return 0;
-}
-</code></pre>
+}</pre></div>
 <p>We’ll be calling <code>write_command</code> very often… So yes the Data / Command Pin will be flipped many many times.</p>
 <p>Let’s watch how we call <code>write_command</code>…</p>
 <h2 id="set-display-orientation" class="section-header"><a href="#set-display-orientation">4.2 Set Display Orientation</a></h2>
 <p>The ST7789 Display Controller is highly versatile. It will let you flip it, reverse it, even do the <a href="https://twitter.com/MisterTechBlog/status/1359077419156598785?s=20">“Fallen Lorry”</a>… Without changing the rendering code!</p>
 <p>ST7789 supports four Display Orientations…</p>
-<pre><code class="language-c">/// ST7789 Orientation. From https://github.com/almindor/st7789/blob/master/src/lib.rs#L42-L52
+<div class="example-wrap"><pre class="language-c">/// ST7789 Orientation. From https://github.com/almindor/st7789/blob/master/src/lib.rs#L42-L52
 #define Portrait         0x00  //  No inverting
 #define Landscape        0x60  //  Invert column and page/column order
 #define PortraitSwapped  0xC0  //  Invert page and column order
-#define LandscapeSwapped 0xA0  //  Invert page and page/column order
-</code></pre>
+#define LandscapeSwapped 0xA0  //  Invert page and page/column order</pre></div>
 <p>We set the Display Orientation like so…</p>
-<pre><code class="language-c">//  Set orientation to Portrait
-set_orientation(Portrait);
-</code></pre>
+<div class="example-wrap"><pre class="language-c">//  Set orientation to Portrait
+set_orientation(Portrait);</pre></div>
 <p><code>set_orientation</code> calls <code>write_command</code> (which we have seen earlier) to send the ST7789 Command (Memory Data Access Control) over SPI: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L205-L220"><code>display.c</code></a></p>
-<pre><code class="language-c">/// ST7789 Colour Settings
+<div class="example-wrap"><pre class="language-c">/// ST7789 Colour Settings
 #define RGB      1  //  Display colours are RGB    
 
 /// ST7789 Command for Memory Data Access Control. 
@@ -410,8 +391,7 @@ static int set_orientation(uint8_t orientation) {
         assert(rc == 0);
     }
     return 0;
-}
-</code></pre>
+}</pre></div>
 <p>We’ll be seeing more <code>write_command</code> in a while… Brace ourselves!</p>
 <p><img src="https://lupyuen.github.io/images/display-cartoon2.png" alt="Initialise ST7789 Display" /></p>
 <h1 id="initialise-st7789-display" class="section-header"><a href="#initialise-st7789-display">5 Initialise ST7789 Display</a></h1>
@@ -419,7 +399,7 @@ static int set_orientation(uint8_t orientation) {
 <p>Initialising the ST7789 Display correctly!</p>
 <p>It takes <strong>EIGHT commands</strong> to initialise ST7789… One wrong parameter and nothing appears!</p>
 <p>Before we watch the 8 tortuous ST7789 initialisation commands, let’s meet our cast of ST7789 Pins: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/demo.h#L33-L43"><code>demo.h</code></a></p>
-<pre><code class="language-c">/// Use GPIO 5 as ST7789 Data/Command Pin (DC)
+<div class="example-wrap"><pre class="language-c">/// Use GPIO 5 as ST7789 Data/Command Pin (DC)
 #define DISPLAY_DC_PIN 5
 
 /// Use GPIO 11 as ST7789 Reset Pin (RST)
@@ -429,11 +409,10 @@ static int set_orientation(uint8_t orientation) {
 #define DISPLAY_BLK_PIN 12
 
 /// Use GPIO 14 as SPI Chip Select Pin (Unused for ST7789 SPI)
-#define DISPLAY_CS_PIN 14
-</code></pre>
+#define DISPLAY_CS_PIN 14</pre></div>
 <p>We’ve met these pins earlier when we connected BL602 to ST7789: <strong>Data / Command, Reset, Backlight and Chip Select.</strong></p>
 <p>Now we peek behind the scenes of <code>init_display</code>, our function that initialises the display: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L91-L157"><code>display.c</code></a></p>
-<pre><code class="language-c">/// Initialise the ST7789 display controller. 
+<div class="example-wrap"><pre class="language-c">/// Initialise the ST7789 display controller. 
 /// Based on https://github.com/almindor/st7789/blob/master/src/lib.rs
 int init_display(void) {
     //  Assume that SPI port 0 has been initialised.
@@ -448,40 +427,35 @@ int init_display(void) {
         pins,             //  Pins to be configured
         sizeof(pins) / sizeof(pins[0])  //  4 pins
     );
-    assert(rc2 == SUCCESS);
-</code></pre>
+    assert(rc2 == SUCCESS);</pre></div>
 <p>(Yep this code was backported from Rust to C… Because the Rust version looks neater. <a href="https://github.com/almindor/st7789/blob/master/src/lib.rs">See this</a>)</p>
 <p>Here we configure our four Pins as <strong>GPIO Pins</strong>: Data / Command, Reset, Backlight and Chip Select.</p>
 <p>Next we configure the four pins as <strong>GPIO Output Pins</strong> (instead of GPIO Input)…</p>
-<pre><code class="language-c">    //  Configure Chip Select, Data/Command, Reset, 
+<div class="example-wrap"><pre class="language-c">    //  Configure Chip Select, Data/Command, Reset, 
     //  Backlight pins as GPIO Output Pins (instead of GPIO Input)
     int rc;
     rc = bl_gpio_enable_output(DISPLAY_CS_PIN,  0, 0);  assert(rc == 0);
     rc = bl_gpio_enable_output(DISPLAY_DC_PIN,  0, 0);  assert(rc == 0);
     rc = bl_gpio_enable_output(DISPLAY_RST_PIN, 0, 0);  assert(rc == 0);
-    rc = bl_gpio_enable_output(DISPLAY_BLK_PIN, 0, 0);  assert(rc == 0);
-</code></pre>
+    rc = bl_gpio_enable_output(DISPLAY_BLK_PIN, 0, 0);  assert(rc == 0);</pre></div>
 <p>We <strong>deactivate ST7789</strong> by setting Chip Select to High…</p>
-<pre><code class="language-c">    //  Set Chip Select pin to High, to deactivate SPI Peripheral (not used for ST7789)
-    rc = bl_gpio_output_set(DISPLAY_CS_PIN, 1);  assert(rc == 0);
-</code></pre>
+<div class="example-wrap"><pre class="language-c">    //  Set Chip Select pin to High, to deactivate SPI Peripheral (not used for ST7789)
+    rc = bl_gpio_output_set(DISPLAY_CS_PIN, 1);  assert(rc == 0);</pre></div>
 <p>Recall that the ST7789 Backlight is controlled by the Backlight Pin. Let’s <strong>flip on the backlight</strong>…</p>
-<pre><code class="language-c">    //  Switch on backlight
+<div class="example-wrap"><pre class="language-c">    //  Switch on backlight
     rc = backlight_on();  assert(rc == 0);
 
     //  Reset the display controller through the Reset Pin
-    rc = hard_reset();  assert(rc == 0);
-</code></pre>
+    rc = hard_reset();  assert(rc == 0);</pre></div>
 <p>Also we execute an ST7789 <strong>Hardware Reset</strong> by toggling the Reset Pin.</p>
 <p>Here comes the first of eight ST7789 Commands: We send the Software Reset command to ST7789…</p>
-<pre><code class="language-c">    //  Software Reset: Reset the display controller through firmware (ST7789 Datasheet Page 163)
+<div class="example-wrap"><pre class="language-c">    //  Software Reset: Reset the display controller through firmware (ST7789 Datasheet Page 163)
     //  https://www.rhydolabz.com/documents/33/ST7789.pdf
     rc = write_command(SWRESET, NULL, 0);  assert(rc == 0);
-    delay_ms(200);  //  Need to wait at least 200 milliseconds
-</code></pre>
+    delay_ms(200);  //  Need to wait at least 200 milliseconds</pre></div>
 <p>(More about <code>backlight_on</code>, <code>hard_reset</code> and <code>delay_ms</code> in the Appendix. <a href="https://lupyuen.github.io/articles/display#appendix-st7789-reset-backlight-and-delay">See this</a>)</p>
 <p>Next we send three commands to ST7789 to <strong>disable sleep</strong>, define the <strong>vertical scrolling</strong>, and set the <strong>display mode</strong>…</p>
-<pre><code class="language-c">    //  Sleep Out: Disable sleep (ST7789 Datasheet Page 184)
+<div class="example-wrap"><pre class="language-c">    //  Sleep Out: Disable sleep (ST7789 Datasheet Page 184)
     rc = write_command(SLPOUT, NULL, 0);  assert(rc == 0);
     delay_ms(200);  //  Need to wait at least 200 milliseconds
 
@@ -491,56 +465,50 @@ int init_display(void) {
 
     //  Normal Display Mode On (ST7789 Datasheet Page 187)
     rc = write_command(NORON, NULL, 0);  assert(rc == 0);
-    delay_ms(10);  //  Need to wait at least 10 milliseconds
-</code></pre>
+    delay_ms(10);  //  Need to wait at least 10 milliseconds</pre></div>
 <p>(I won’t pretend to know what they mean… <a href="https://www.rhydolabz.com/documents/33/ST7789.pdf">Check the ST7789 Datasheet for details</a>)</p>
 <p>We have defined <code>INVERTED</code> as <code>1</code>. <a href="(https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L39-L41)">(See this)</a> This will configure our display to <strong>invert the display colours</strong>…</p>
-<pre><code class="language-c">    //  Display Inversion: Invert the display colours (light becomes dark and vice versa) (ST7789 Datasheet Pages 188, 190)
+<div class="example-wrap"><pre class="language-c">    //  Display Inversion: Invert the display colours (light becomes dark and vice versa) (ST7789 Datasheet Pages 188, 190)
     if (INVERTED) {
         rc = write_command(INVON, NULL, 0);  assert(rc == 0);
     } else {
         rc = write_command(INVOFF, NULL, 0);  assert(rc == 0);
-    }
-</code></pre>
+    }</pre></div>
 <p>(This inversion setting seems to be the norm for ST7789)</p>
 <p>Three more ST7789 commands! This one sets the Display Orientation to Portrait…</p>
-<pre><code class="language-c">    //  Set orientation to Portrait
-    rc = set_orientation(Portrait);  assert(rc == 0);
-</code></pre>
+<div class="example-wrap"><pre class="language-c">    //  Set orientation to Portrait
+    rc = set_orientation(Portrait);  assert(rc == 0);</pre></div>
 <p>(We’ve seen <code>set_orientation</code> earlier)</p>
 <p>ST7789 shall display 65,536 different colours, because we tell it to use <strong>16-Bit RGB565 Colour Encoding</strong>…</p>
-<pre><code class="language-c">    //  Interface Pixel Format: 16-bit RGB565 colour (ST7789 Datasheet Page 224)
+<div class="example-wrap"><pre class="language-c">    //  Interface Pixel Format: 16-bit RGB565 colour (ST7789 Datasheet Page 224)
     static const uint8_t COLMOD_PARA[] = { 0x55 };
-    rc = write_command(COLMOD, COLMOD_PARA, sizeof(COLMOD_PARA));  assert(rc == 0);
-</code></pre>
+    rc = write_command(COLMOD, COLMOD_PARA, sizeof(COLMOD_PARA));  assert(rc == 0);</pre></div>
 <p>(This means 2 bytes of colour per pixel. <a href="https://lupyuen.github.io/pinetime-rust-mynewt/articles/mcuboot#draw-a-line">More about RGB565</a>)</p>
 <p>Finally! The last command turns on the ST7789 Display Controller…</p>
-<pre><code class="language-c">    //  Display On: Turn on display (ST7789 Datasheet Page 196)
+<div class="example-wrap"><pre class="language-c">    //  Display On: Turn on display (ST7789 Datasheet Page 196)
     rc = write_command(DISPON, NULL, 0);  assert(rc == 0);
     delay_ms(200);  //  Need to wait at least 200 milliseconds
     return 0;
-}
-</code></pre>
+}</pre></div>
 <p>Our ST7789 Display is all ready for action!</p>
 <p><img src="https://lupyuen.github.io/images/display-jewel5.jpg" alt="PineCone BL602 rendering on ST7789 a photo of Jewel Changi, Singapore" /></p>
 <p><em>PineCone BL602 rendering on ST7789 a photo of <a href="https://en.wikipedia.org/wiki/Jewel_Changi_Airport">Jewel Changi, Singapore</a></em></p>
 <h1 id="display-image-on-st7789" class="section-header"><a href="#display-image-on-st7789">6 Display Image on ST7789</a></h1>
 <p>Our First Act: BL602 renders an image to our ST7789 Display! <a href="https://lupyuen.github.io/images/display-jewel2.jpg">(Based on this photo)</a></p>
 <p>Prologue: We prepare a buffer for transmitting pixels to ST7789: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L82-L91"><code>display.c</code></a></p>
-<pre><code class="language-c">/// SPI Transmit Buffer. We always copy pixels from Flash ROM to RAM
+<div class="example-wrap"><pre class="language-c">/// SPI Transmit Buffer. We always copy pixels from Flash ROM to RAM
 /// before transmitting, because Flash ROM may be too slow for DMA at 4 MHz.
 /// Contains 10 rows of 240 pixels of 2 bytes each (16-bit colour).
 uint8_t spi_tx_buf[
     BUFFER_ROWS        //  10 rows of pixels
     * COL_COUNT        //  240 columns of pixels per row
     * BYTES_PER_PIXEL  //  2 bytes per pixel
-];
-</code></pre>
+];</pre></div>
 <p>The SPI Transmit Buffer <code>spi_tx_buf</code> is the same size as our SPI Receive Buffer <code>spi_rx_buf</code>.</p>
 <p>Both buffers are sized to store <strong>10 rows of pixels, each row with 240 pixels, each pixel with 2 colour bytes</strong> (16-bit colour).</p>
 <p>(Our display has <strong>240 rows of pixels</strong>, so we’ll use our buffers <strong>24 times</strong> to render an image)</p>
 <p>We shall blast 10 rows of pixels to ST7789, and do it 24 times: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L157-L188"><code>display.c</code></a></p>
-<pre><code class="language-c">/// Display image on ST7789 display controller
+<div class="example-wrap"><pre class="language-c">/// Display image on ST7789 display controller
 int display_image(void) {
     //  Render each batch of 10 rows. ROW_COUNT is 240, BUFFER_ROWS is 10.
     for (uint8_t row = 0; row &lt; ROW_COUNT; row += BUFFER_ROWS) {
@@ -552,84 +520,71 @@ int display_image(void) {
             ? (row + BUFFER_ROWS - 1) 
             : (ROW_COUNT - 1);
         uint8_t left   = 0;
-        uint8_t right  = COL_COUNT - 1;  //  COL_COUNT is 240
-</code></pre>
+        uint8_t right  = COL_COUNT - 1;  //  COL_COUNT is 240</pre></div>
 <p><em>What are <code>left</code>, <code>right</code>, <code>top</code> and <code>bottom</code>?</em></p>
 <p>Before we blast a batch of 10 pixel rows to ST7789 over SPI, we tell ST7789 the <strong><code>(left, top)</code> and <code>(right, bottom)</code> coordinates of the Display Window</strong> for the pixel rows.</p>
 <p>The code above computes the coordinates of the Display Window like so…</p>
 <p><img src="https://lupyuen.github.io/images/display-window.png" alt="ST77789 Display Windows" /></p>
 <p>Next we compute the byte offset of our image in Flash ROM, and the number of bytes to blast…</p>
-<pre><code class="language-c">        //  Compute the offset and how many bytes we will transmit.
+<div class="example-wrap"><pre class="language-c">        //  Compute the offset and how many bytes we will transmit.
         //  COL_COUNT is 240, BYTES_PER_PIXEL is 2.
         uint32_t offset = ((top * COL_COUNT) + left) 
             * BYTES_PER_PIXEL;
         uint16_t len    = (bottom - top + 1) 
             * (right - left + 1) 
-            * BYTES_PER_PIXEL;
-</code></pre>
+            * BYTES_PER_PIXEL;</pre></div>
 <p>We copy 10 rows of pixel data from our image in Flash ROM to the SPI Transmit Buffer…</p>
-<pre><code class="language-c">        //  Copy the image pixels from Flash ROM to RAM, because Flash ROM may be too slow for DMA at 4 MHz
-        memcpy(spi_tx_buf, image_data + offset, len);
-</code></pre>
+<div class="example-wrap"><pre class="language-c">        //  Copy the image pixels from Flash ROM to RAM, because Flash ROM may be too slow for DMA at 4 MHz
+        memcpy(spi_tx_buf, image_data + offset, len);</pre></div>
 <p>(What’s <code>image_data</code>?  Why don’t we transmit the data straight from Flash ROM? We’ll explain in a while)</p>
 <p>Here’s another… ST7789 Command! This sets the coordinates of the ST7789 Display Window…</p>
-<pre><code class="language-c">        //  Set the display window.
-        int rc = set_window(left, top, right, bottom); assert(rc == 0);
-</code></pre>
+<div class="example-wrap"><pre class="language-c">        //  Set the display window.
+        int rc = set_window(left, top, right, bottom); assert(rc == 0);</pre></div>
 <p>(We’ll see <code>set_window</code> in a while)</p>
 <p>Finally one last ST7789 Command (Memory Write) to blast the pixel data from our SPI Transmit Buffer to the ST7789 Display…</p>
-<pre><code class="language-c">        //  Memory Write: Write the bytes from RAM to display (ST7789 Datasheet Page 202)
+<div class="example-wrap"><pre class="language-c">        //  Memory Write: Write the bytes from RAM to display (ST7789 Datasheet Page 202)
         rc = write_command(RAMWR, NULL, 0); assert(rc == 0);
         rc = write_data(spi_tx_buf, len);   assert(rc == 0);
     }
     return 0;
-}
-</code></pre>
+}</pre></div>
 <p>We repeat this 24 times to render each Display Window of 10 pixel rows… And <a href="https://en.wikipedia.org/wiki/Jewel_Changi_Airport">Jewel Changi, Singapore</a> magically appears on our ST7789 Display!</p>
 <h2 id="modding-the-photo" class="section-header"><a href="#modding-the-photo">6.1 Modding the Photo</a></h2>
 <p><em>Jewel Changi, Singapore looks truly awesome… But can we show a cat photo instead?</em></p>
 <p>Absolutely! The photo is rendered from this <code>image_data</code> array that’s compiled into BL602’s Flash ROM: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L76-L82"><code>display.c</code></a></p>
-<pre><code class="language-c">/// RGB565 Image. Converted by https://github.com/lupyuen/pinetime-graphic
+<div class="example-wrap"><pre class="language-c">/// RGB565 Image. Converted by https://github.com/lupyuen/pinetime-graphic
 /// from PNG file https://github.com/lupyuen/pinetime-logo-loader/blob/master/logos/pine64-rainbow.png
 static const uint8_t image_data[] = {  //  Should be 115,200 bytes
 #include &quot;image.inc&quot;
-};
-</code></pre>
+};</pre></div>
 <p>Here we see that <code>image_data</code> includes this file that contains 115,200 bytes of pixel data: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/image.inc"><code>image.inc</code></a></p>
-<pre><code class="language-text">0xa5, 0x35, 0x6b, 0x4d, 0x42, 0x49, 0x74, 0x10, 0xb5, 0xd7, 0x4a, 0x29, 0x83, 0xcf, 0xef, 0x9d,
+<div class="example-wrap"><pre class="language-text">0xa5, 0x35, 0x6b, 0x4d, 0x42, 0x49, 0x74, 0x10, 0xb5, 0xd7, 0x4a, 0x29, 0x83, 0xcf, 0xef, 0x9d,
 0xdf, 0x1b, 0x8c, 0x52, 0x31, 0x45, 0x4a, 0x28, 0x73, 0x8e, 0xad, 0x95, 0xad, 0x96, 0x7c, 0x10,
 0x7c, 0x11, 0xd6, 0xfb, 0xf7, 0xde, 0xd6, 0xfb, 0xe7, 0x7d, 0xb5, 0x97, 0x42, 0x09, 0x9c, 0xf3,
-...
-</code></pre>
+...</pre></div>
 <p>(That’s 240 pixel rows * 240 pixel columns * 2 bytes per pixel)</p>
 <p>To create our own <code>image.inc</code>, prepare a 240 x 240 PNG file named <code>image.png</code>. Then do this…</p>
-<pre><code class="language-bash"># Download the pinetime-graphic source code
-git clone https://github.com/lupyuen/pinetime-graphic
+<div class="example-wrap"><pre class="language-bash">git clone https://github.com/lupyuen/pinetime-graphic
 cd pinetime-graphic
 
-# TODO: Copy image.png to the pinetime-graphic folder
 
-# Convert the PNG file to a C array
-cargo run -v image.png &gt;image.inc
-</code></pre>
+cargo run -v image.png &gt;image.inc</pre></div>
 <p><a href="https://github.com/lupyuen/pinetime-graphic">(Check out the <code>pinetime-graphic</code> source code here)</a></p>
 <h2 id="st7789-display-window" class="section-header"><a href="#st7789-display-window">6.2 ST7789 Display Window</a></h2>
 <p>Before we blast pixels to ST7789, here’s how <code>set_window</code> sets the ST7789 Display Window, bounded by the coordinates <code>(left, top)</code> and <code>(right, bottom)</code>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L188-L205"><code>display.c</code></a></p>
-<pre><code class="language-c">/// Set the ST7789 display window to the coordinates (left, top), (right, bottom)
+<div class="example-wrap"><pre class="language-c">/// Set the ST7789 display window to the coordinates (left, top), (right, bottom)
 int set_window(uint8_t left, uint8_t top, uint8_t right, uint8_t bottom) {
     //  Set Address Window Columns (ST7789 Datasheet Page 198)
     int rc = write_command(CASET, NULL, 0); assert(rc == 0);
     uint8_t col_para[4] = { 0x00, left, 0x00, right };
-    rc = write_data(col_para, 4); assert(rc == 0);
-</code></pre>
+    rc = write_data(col_para, 4); assert(rc == 0);</pre></div>
 <p><code>set_window</code> first sends the ST7789 Command to set the Address Window Columns. That’s followed by the <code>left</code> and <code>right</code> values.</p>
-<pre><code class="language-c">    //  Set Address Window Rows (ST7789 Datasheet Page 200)
+<div class="example-wrap"><pre class="language-c">    //  Set Address Window Rows (ST7789 Datasheet Page 200)
     rc = write_command(RASET, NULL, 0); assert(rc == 0);
     uint8_t row_para[4] = { 0x00, top, 0x00, bottom };
     rc = write_data(row_para, 4); assert(rc == 0);
     return 0;
-}
-</code></pre>
+}</pre></div>
 <p>Then <code>set_window</code> sends the ST7789 Command to set the Address Window Rows, followed by the <code>top</code> and <code>bottom</code> values.</p>
 <p><img src="https://lupyuen.github.io/images/display-firmware.jpg" alt="ST7789 demo firmware for BL602" /></p>
 <p><em>ST7789 demo firmware for BL602</em></p>
@@ -640,21 +595,15 @@ int set_window(uint8_t left, uint8_t top, uint8_t right, uint8_t bottom) {
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/releases/tag/v4.0.1"><strong><code>sdk_app_st7789</code> Binary Release</strong></a></li>
 </ul>
 <p>Alternatively, we may build the Firmware Binary File <code>sdk_app_st7789.bin</code> from the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/st7789/customer_app/sdk_app_st7789">source code</a>…</p>
-<pre><code class="language-bash"># Download the st7789 branch of lupyuen's bl_iot_sdk
-git clone --recursive --branch st7789 https://github.com/lupyuen/bl_iot_sdk
+<div class="example-wrap"><pre class="language-bash">git clone --recursive --branch st7789 https://github.com/lupyuen/bl_iot_sdk
 cd bl_iot_sdk/customer_app/sdk_app_st7789
 
-# TODO: Replace sdk_app_st7789/image.inc
-# by Our Favourite Cat. See https://lupyuen.github.io/articles/display#modding-the-photo
 
-# TODO: Change this to the full path of bl_iot_sdk
 export BL60X_SDK_PATH=$HOME/bl_iot_sdk
 export CONFIG_CHIP_NAME=BL602
 make
 
-# TODO: Change ~/blflash to the full path of blflash
-cp build_out/sdk_app_st7789.bin ~/blflash
-</code></pre>
+cp build_out/sdk_app_st7789.bin ~/blflash</pre></div>
 <p><a href="https://lupyuen.github.io/articles/pinecone#building-firmware">More details on building bl_iot_sdk</a></p>
 <p>(Remember to use the <strong><code>st7789</code></strong> branch, not the default <strong><code>master</code></strong> branch)</p>
 <h2 id="flash-the-firmware" class="section-header"><a href="#flash-the-firmware">7.1 Flash the firmware</a></h2>
@@ -706,22 +655,17 @@ cp build_out/sdk_app_st7789.bin ~/blflash
 </li>
 </ol>
 <p>Enter these commands to flash <code>sdk_app_st7789.bin</code> to BL602 over UART…</p>
-<pre><code class="language-bash"># TODO: Change ~/blflash to the full path of blflash
-cd ~/blflash
+<div class="example-wrap"><pre class="language-bash">cd ~/blflash
 
-# For Linux:
 sudo cargo run flash sdk_app_st7789.bin \
     --port /dev/ttyUSB0
 
-# For macOS:
 cargo run flash sdk_app_st7789.bin \
     --port /dev/tty.usbserial-1420 \
     --initial-baud-rate 230400 \
     --baud-rate 230400
 
-# For Windows: Change COM5 to the BL602 Serial Port
-cargo run flash sdk_app_st7789.bin --port COM5
-</code></pre>
+cargo run flash sdk_app_st7789.bin --port COM5</pre></div>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">More details on flashing firmware</a></p>
 <h2 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">7.2 Run the firmware</a></h2>
 <p>Set BL602 to <strong>Normal Mode</strong> (Non-Flashing) and restart the board…</p>
@@ -752,8 +696,7 @@ cargo run flash sdk_app_st7789.bin --port COM5
 </ol>
 <p>After restarting, connect to BL602’s UART Port at 2 Mbps like so…</p>
 <p><strong>For Linux:</strong></p>
-<pre><code class="language-bash">sudo screen /dev/ttyUSB0 2000000
-</code></pre>
+<div class="example-wrap"><pre class="language-bash">sudo screen /dev/ttyUSB0 2000000</pre></div>
 <p><strong>For macOS:</strong> Use CoolTerm (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>Alternatively:</strong> Use the Web Serial Terminal (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
@@ -766,50 +709,41 @@ cargo run flash sdk_app_st7789.bin --port COM5
 </li>
 <li>
 <p>Enter <code>help</code> to see the available commands…</p>
-<pre><code class="language-text"># help
-====User Commands====
+<div class="example-wrap"><pre class="language-text">====User Commands====
 display_init             : Init display
 display_image            : Display image
 display_result           : Show result
 backlight_on             : Backlight on
-backlight_off            : Backlight off
-</code></pre>
+backlight_off            : Backlight off</pre></div>
 <p>We’ll cover the LVGL commands later…</p>
-<pre><code class="language-text">lvgl_init                : Init LVGL
+<div class="example-wrap"><pre class="language-text">lvgl_init                : Init LVGL
 lvgl_create              : Create LVGL widgets
 lvgl_update              : Update LVGL widgets
-lvgl_render              : Render LVGL display
-</code></pre>
+lvgl_render              : Render LVGL display</pre></div>
 <p>And these shortcuts too…</p>
-<pre><code class="language-text">1                        : Init display, display image
+<div class="example-wrap"><pre class="language-text">1                        : Init display, display image
 2                        : Init display, init LVGL, create LVGL widgets, render LVGL display
-3                        : Update LVGL widgets, render LVGL display
-</code></pre>
-</li>
+3                        : Update LVGL widgets, render LVGL display</pre></div></li>
 <li>
 <p>First we <strong>initialise our SPI Port and ST7789 Display</strong>. </p>
 <p>Enter this command…</p>
-<pre><code class="language-text"># display_init
-</code></pre>
+<div class="example-wrap"><pre class="language-text"></pre></div>
 <p>This command calls the functions <code>test_display_init</code> and <code>init_display</code>, which we have seen earlier.</p>
 </li>
 <li>
 <p>We should see this…</p>
-<pre><code class="language-text"># display_init
-port0 eventloop init = 42013ef8
+<div class="example-wrap"><pre class="language-text">port0 eventloop init = 42013ef8
 [HAL] [SPI] Init :
 port=0, mode=0, polar_phase = 3, freq=4000000, tx_dma_ch=2, rx_dma_ch=3, pin_clk=3, pin_cs=2, pin_mosi=1, pin_miso=4
-set rwspeed = 4000000
-</code></pre>
+set rwspeed = 4000000</pre></div>
 <p>The above messages say that our SPI Port has been configured by the BL602 SPI HAL.</p>
-<pre><code class="language-text">hal_gpio_init: cs:2, clk:3, mosi:1, miso: 4
+<div class="example-wrap"><pre class="language-text">hal_gpio_init: cs:2, clk:3, mosi:1, miso: 4
 hal_gpio_init: SPI controller mode
 hal_spi_init.
 Set CS pin 14 to high
-Set BLK pin 12 to high
-</code></pre>
+Set BLK pin 12 to high</pre></div>
 <p><code>init_display</code> has just configured the GPIO Pins and switched on the backlight.</p>
-<pre><code class="language-text">Set CS pin 14 to low
+<div class="example-wrap"><pre class="language-text">Set CS pin 14 to low
 hal_spi_transfer = 1
 transfer xfer[0].len = 1
 Tx DMA src=0x4200dcdf, dest=0x4000a288, size=1, si=1, di=0, i=1
@@ -817,20 +751,17 @@ Rx DMA src=0x4000a28c, dest=0x4200ef68, size=1, si=0, di=1, i=1
 recv all event group.
 Set CS pin 14 to high
 TODO Delay 200
-...
-</code></pre>
+...</pre></div>
 <p>Followed by the eight ST7789 Init Commands sent by <code>init_display</code>.</p>
 </li>
 <li>
 <p>Next we <strong>display the image on ST7789</strong>…</p>
-<pre><code class="language-text"># display_image
-</code></pre>
+<div class="example-wrap"><pre class="language-text"></pre></div>
 <p>This command calls the function <code>display_image</code>, which we have seen earlier.</p>
 </li>
 <li>
 <p>We should see this…</p>
-<pre><code class="language-text"># display_image
-Displaying image...
+<div class="example-wrap"><pre class="language-text">Displaying image...
 Set CS pin 14 to low
 hal_spi_transfer = 1
 transfer xfer[0].len = 4800
@@ -840,8 +771,7 @@ Tx DMA src=0x42013058, dest=0x4000a288, size=2048, si=1, di=0, i=0
 Rx DMA src=0x4000a28c, dest=0x4200f768, size=2048, si=0, di=1, i=0
 Tx DMA src=0x42013858, dest=0x4000a288, size=704,  si=1, di=0, i=1
 Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704,  si=0, di=1, i=1
-...
-</code></pre>
+...</pre></div>
 <p>That’s <code>display_image</code> blasting the ST7789 Commands to set the Display Window, then blasting the pixel data for 10 rows.</p>
 <p>This repeats 24 times until the entire image is rendered.</p>
 </li>
@@ -852,13 +782,9 @@ Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704,  si=0, di=1, i=1
 </li>
 <li>
 <p>Here’s a Tip: Instead of entering the two commands…</p>
-<pre><code class="language-text"># display_init
-...
-# display_image
-</code></pre>
+<div class="example-wrap"><pre class="language-text">...</pre></div>
 <p>We may enter this as a shortcut…</p>
-<pre><code class="language-text"># 1
-</code></pre>
+<div class="example-wrap"><pre class="language-text"></pre></div>
 <p>Which will initialise the ST7789 display and render the image in a single command.</p>
 <p>Congratulations! Jewel Changi, Singapore (or Our Favourite Cat) now appears on our ST7789 Display!</p>
 <p><a href="https://www.youtube.com/watch?v=PkP-CeYLXUA"><strong>Watch the Demo Video on YouTube</strong></a></p>
@@ -877,14 +803,13 @@ Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704,  si=0, di=1, i=1
 <p><em>Button and label rendered with LVGL</em></p>
 <h2 id="create-the-widgets" class="section-header"><a href="#create-the-widgets">8.1 Create the Widgets</a></h2>
 <p>First we declare the <strong>LVGL Widgets</strong> (user interface controls) for our button and our label…</p>
-<pre><code class="language-c">/// Button Widget
+<div class="example-wrap"><pre class="language-c">/// Button Widget
 static lv_obj_t *btn = NULL;
 
 /// Label Widget
-static lv_obj_t *label = NULL;
-</code></pre>
+static lv_obj_t *label = NULL;</pre></div>
 <p>We create the button and set its position and size like so: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L50-L64"><code>lvgl.c</code></a></p>
-<pre><code class="language-c">/// Create a Button Widget and a Label Widget
+<div class="example-wrap"><pre class="language-c">/// Create a Button Widget and a Label Widget
 int lvgl_create(void) {
     ...
     //  Add a button the current screen
@@ -894,47 +819,42 @@ int lvgl_create(void) {
     lv_obj_set_pos(btn, 10, 80);              
 
     //  Set its size (width = 220, height = 80)
-    lv_obj_set_size(btn, 220, 80);            
-</code></pre>
+    lv_obj_set_size(btn, 220, 80);            </pre></div>
 <p>Next we create the label for the button and set the text…</p>
-<pre><code class="language-c">    //  Add a label to the button
+<div class="example-wrap"><pre class="language-c">    //  Add a label to the button
     label = lv_label_create(btn, NULL);       
 
     //  Set the label text
     lv_label_set_text(label, &quot;BL602 LVGL&quot;);   
     return 0;
-}
-</code></pre>
+}</pre></div>
 <p>And that’s how we create a button and a label in our function <code>lvgl_create</code>!</p>
 <p><img src="https://lupyuen.github.io/images/display-cool2.jpg" alt="Updated LVGL label" /></p>
 <p><em>Updated LVGL label</em></p>
 <h2 id="update-the-widgets" class="section-header"><a href="#update-the-widgets">8.2 Update the Widgets</a></h2>
 <p>Static screens don’t look terribly exciting on IoT Gadgets… Let’s make our screens dynamic! (Like the pic above)</p>
 <p>Here’s our function <code>lvgl_update</code> that will change the label text every time it’s called: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L66-L78"><code>lvgl.c</code></a></p>
-<pre><code class="language-c">/// Update the Widgets
+<div class="example-wrap"><pre class="language-c">/// Update the Widgets
 int lvgl_update(void) {
     ...
-    //  Compose a message that changes every time we're called
+    //  Compose a message that changes every time we&#39;re called
     static int counter = 1;
     char msg[20]; 
-    snprintf(msg, sizeof(msg), &quot;SO COOL! #%d&quot;, counter++);
-</code></pre>
+    snprintf(msg, sizeof(msg), &quot;SO COOL! #%d&quot;, counter++);</pre></div>
 <p>First we compose a dynamic message…</p>
-<pre><code class="language-text">SO COOL! #1
-</code></pre>
+<div class="example-wrap"><pre class="language-text">SO COOL! #1</pre></div>
 <p>…That changes (the number at the end) every time the function is called.</p>
 <p>Then we set the label text to the new message…</p>
-<pre><code class="language-c">    //  Set the button label to the new message
+<div class="example-wrap"><pre class="language-c">    //  Set the button label to the new message
     lv_label_set_text(label, msg);
     return 0;
-}
-</code></pre>
+}</pre></div>
 <p>LVGL makes it really easy to create dynamic screens for IoT Gadgets… Even for RISC-V BL602!</p>
 <h2 id="render-the-display" class="section-header"><a href="#render-the-display">8.3 Render the Display</a></h2>
 <p>LVGL was designed for interactive displays (like touchscreens). </p>
 <p>It refreshes the display efficiently without consuming too much CPU and RAM. (Which are scarce on IoT Gadgets)</p>
 <p>Here’s how we tell LVGL to render the screen that we have created (or updated): <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L80-L91"><code>lvgl.c</code></a></p>
-<pre><code class="language-c">/// Render the LVGL display
+<div class="example-wrap"><pre class="language-c">/// Render the LVGL display
 int lvgl_render(void) {
     ...
     //  Must tick at least 100 milliseconds to force LVGL to render display
@@ -943,14 +863,13 @@ int lvgl_render(void) {
     //  Call LVGL to render the display and flush our display driver
     lv_task_handler();
     return 0;
-}
-</code></pre>
+}</pre></div>
 <p>The rendering code in <code>lvgl_render</code> looks unusual… But that’s because we’re pretending to be an interactive gadget.</p>
 <p>(This code should make sense once we start building interactive gadgets with BL602)</p>
 <h2 id="initialise-lvgl" class="section-header"><a href="#initialise-lvgl">8.4 Initialise LVGL</a></h2>
 <p>(One last thing before the demo…)</p>
 <p>Here’s how we initialise the LVGL Library: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L25-L48"><code>lvgl.c</code></a></p>
-<pre><code class="language-c">/// Set to true if LVGL has already been lvgl_initialised
+<div class="example-wrap"><pre class="language-c">/// Set to true if LVGL has already been lvgl_initialised
 static bool lvgl_initialised = false;
 
 /// Init the LVGL library
@@ -963,8 +882,7 @@ int lvgl_init(void) {
     lv_init();
     lv_port_disp_init();
     return 0;
-}
-</code></pre>
+}</pre></div>
 <p>Check out the LVGL docs…</p>
 <ul>
 <li>
@@ -1022,8 +940,7 @@ int lvgl_init(void) {
 <li>
 <p>Connect to BL602’s UART Port at 2 Mbps like so…</p>
 <p><strong>For Linux:</strong></p>
-<pre><code class="language-bash">sudo screen /dev/ttyUSB0 2000000
-</code></pre>
+<div class="example-wrap"><pre class="language-bash">sudo screen /dev/ttyUSB0 2000000</pre></div>
 <p><strong>For macOS:</strong> Use CoolTerm (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>Alternatively:</strong> Use the Web Serial Terminal (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
@@ -1038,47 +955,39 @@ int lvgl_init(void) {
 </li>
 <li>
 <p>Enter <code>help</code> to see the available commands…</p>
-<pre><code class="language-text"># help
-====User Commands====
+<div class="example-wrap"><pre class="language-text">====User Commands====
 display_init             : Init display
 display_image            : Display image
 display_result           : Show result
 backlight_on             : Backlight on
-backlight_off            : Backlight off
-</code></pre>
+backlight_off            : Backlight off</pre></div>
 <p>We’ll run these LVGL commands in a while…</p>
-<pre><code class="language-text">lvgl_init                : Init LVGL
+<div class="example-wrap"><pre class="language-text">lvgl_init                : Init LVGL
 lvgl_create              : Create LVGL widgets
 lvgl_update              : Update LVGL widgets
-lvgl_render              : Render LVGL display
-</code></pre>
+lvgl_render              : Render LVGL display</pre></div>
 <p>And these shortcuts too…</p>
-<pre><code class="language-text">1                        : Init display, display image
+<div class="example-wrap"><pre class="language-text">1                        : Init display, display image
 2                        : Init display, init LVGL, create LVGL widgets, render LVGL display
-3                        : Update LVGL widgets, render LVGL display
-</code></pre>
-</li>
+3                        : Update LVGL widgets, render LVGL display</pre></div></li>
 <li>
 <p>Enter this command to <strong>initialise the SPI Port and ST7789 Display</strong>…</p>
-<pre><code class="language-text"># display_init
-</code></pre>
+<div class="example-wrap"><pre class="language-text"></pre></div>
 <p>This command calls the functions <strong><code>test_display_init</code> and <code>init_display</code></strong>, which we have seen earlier.</p>
 <p>(We’ve covered this command earlier under ST7789 Demo Firmware)</p>
 </li>
 <li>
 <p>Enter this command to <strong>initialise the LVGL Library</strong></p>
-<pre><code class="language-text"># lvgl_init
-</code></pre>
+<div class="example-wrap"><pre class="language-text"></pre></div>
 <p>This command calls the function <strong><code>lvgl_init</code></strong>, which we have seen earlier.</p>
 </li>
 <li>
 <p>We should see this…</p>
-<pre><code class="language-text">Init LVGL...
+<div class="example-wrap"><pre class="language-text">Init LVGL...
 Trace: lv_init started 	     (lv_obj.c #172 lv_init())
 Info:  lv_init ready 	     (lv_obj.c #231 lv_init())
 Trace: Screen create started (lv_obj.c #273 lv_obj_create())
-Info:  Object create ready 	 (lv_obj.c #461 lv_obj_create())
-</code></pre>
+Info:  Object create ready 	 (lv_obj.c #461 lv_obj_create())</pre></div>
 <p>The above messages say that the LVGL Library has initialised the screen.</p>
 <p>We’re all set to create some LVGL Widgets!</p>
 </li>
@@ -1087,27 +996,24 @@ Info:  Object create ready 	 (lv_obj.c #461 lv_obj_create())
 <ol>
 <li>
 <p>Enter this command to <strong>create the LVGL Widgets</strong> (Button and Label)…</p>
-<pre><code class="language-text"># lvgl_create
-</code></pre>
+<div class="example-wrap"><pre class="language-text"></pre></div>
 <p>This command calls the function <strong><code>lvgl_create</code></strong>, which we have seen earlier.</p>
 </li>
 <li>
 <p>We should see this…</p>
-<pre><code class="language-text">Create LVGL widgets...
+<div class="example-wrap"><pre class="language-text">Create LVGL widgets...
 Trace: button create started 	(lv_btn.c #61 lv_btn_create())
 Trace: container create started (lv_cont.c #74 lv_cont_create())
 Trace: Object create started 	(lv_obj.c #305 lv_obj_create())
 Info:  Object create ready 	    (lv_obj.c #461 lv_obj_create())
 Info:  container created 	    (lv_cont.c #121 lv_cont_create())
-Info:  button created 	        (lv_btn.c #106 lv_btn_create())
-</code></pre>
+Info:  button created 	        (lv_btn.c #106 lv_btn_create())</pre></div>
 <p>LVGL has created the <strong>Button Widget</strong> and its <strong>Widget Container</strong>. </p>
 <p>(Because our Button Widget will contain a Label Widget)</p>
-<pre><code class="language-text">Trace: label create started 	(lv_label.c #78 lv_label_create())
+<div class="example-wrap"><pre class="language-text">Trace: label create started 	(lv_label.c #78 lv_label_create())
 Trace: Object create started 	(lv_obj.c #305 lv_obj_create())
 Info:  Object create ready 	    (lv_obj.c #461 lv_obj_create())
-Info:  label created 	        (lv_label.c #165 lv_label_create())
-</code></pre>
+Info:  label created 	        (lv_label.c #165 lv_label_create())</pre></div>
 <p>Then LVGL creates the <strong>Label Widget</strong> and assigns it to the Button Widget.</p>
 </li>
 </ol>
@@ -1115,43 +1021,38 @@ Info:  label created 	        (lv_label.c #165 lv_label_create())
 <ol>
 <li>
 <p>Enter this command to <strong>render the LVGL Screen</strong>…</p>
-<pre><code class="language-text"># lvgl_render
-</code></pre>
+<div class="example-wrap"><pre class="language-text"></pre></div>
 <p>This command calls the function <strong><code>lvgl_render</code></strong>, which we have seen earlier.</p>
 </li>
 <li>
 <p>We should see this…</p>
-<pre><code class="language-text">Render LVGL display...
+<div class="example-wrap"><pre class="language-text">Render LVGL display...
 Trace: lv_task_handler started 	(lv_task.c #67 lv_task_handler())
-Trace: lv_refr_task: started 	(lv_refr.c #177 _lv_disp_refr_task())
-</code></pre>
+Trace: lv_refr_task: started 	(lv_refr.c #177 _lv_disp_refr_task())</pre></div>
 <p>Remember that we’re pretending to be an interactive gadget… And we’re calling the <strong>LVGL Task Handler</strong> to refresh our screen.</p>
 </li>
 <li>
 <p>Then we see this…</p>
-<pre><code class="language-text">Flush display: left=0, top=0, right=239, bottom=9...
-</code></pre>
+<div class="example-wrap"><pre class="language-text">Flush display: left=0, top=0, right=239, bottom=9...</pre></div>
 <p>Here our <strong>ST7789 Display Driver</strong> for LVGL renders the <strong>first 10 rows</strong> of the LVGL screen.</p>
 <p>(Guess where it goes?)</p>
-<pre><code class="language-text">transfer xfer[0].len = 4800
+<div class="example-wrap"><pre class="language-text">transfer xfer[0].len = 4800
 Tx DMA src=0x42012858, dest=0x4000a288, size=2048, si=1, di=0, i=0
 Rx DMA src=0x4000a28c, dest=0x4200ef68, size=2048, si=0, di=1, i=0
-...
-</code></pre>
+...</pre></div>
 <p>Yep our ST7789 Driver calls <strong><code>write_data</code></strong> and <strong><code>transmit_spi</code></strong> to blast the 10 pixel rows to ST7789 over SPI DMA… </p>
 <p><strong>The same way that we render Jewel Changi, Singapore and Our Favourite Feline!</strong></p>
 </li>
 <li>
 <p>Our ST7789 Driver blasts the <strong>next Display Window of 10 pixel rows</strong>…</p>
-<pre><code class="language-text">Flush display: left=0, top=10, right=239, bottom=19...
+<div class="example-wrap"><pre class="language-text">Flush display: left=0, top=10, right=239, bottom=19...
 ...
 Flush display: left=0, top=20, right=239, bottom=29...
 ...
 Flush display: left=0, top=30, right=239, bottom=39...
 ...
 Flush display: left=0, top=40, right=239, bottom=49...
-...
-</code></pre>
+...</pre></div>
 <p>We do this <strong>24 times</strong> to render the entire LVGL Screen.</p>
 <p>LVGL is <strong>super efficient</strong> in using RAM. It doesn’t need an entire 240 x 240 Screen Buffer in RAM… Only <strong>10 rows of 240 pixel columns</strong> will do!</p>
 </li>
@@ -1165,47 +1066,34 @@ Flush display: left=0, top=40, right=239, bottom=49...
 <ol>
 <li>
 <p>Enter this command to <strong>update the LVGL Widgets</strong>…</p>
-<pre><code class="language-text"># lvgl_update
-</code></pre>
+<div class="example-wrap"><pre class="language-text"></pre></div>
 <p>This command calls the function <strong><code>lvgl_update</code></strong>, which we have seen earlier.</p>
 <p>Remember that <code>lvgl_update</code> updates the label text to…</p>
-<pre><code class="language-text">SO COOL! #1
-</code></pre>
-</li>
+<div class="example-wrap"><pre class="language-text">SO COOL! #1</pre></div></li>
 <li>
 <p>Then this command to <strong>render the updated LVGL Screen</strong>…</p>
-<pre><code class="language-text"># lvgl_render
-</code></pre>
+<div class="example-wrap"><pre class="language-text"></pre></div>
 <p>(We’ve used this command in the previous section)</p>
 </li>
 <li>
 <p>This time LVGL renders our updated screen a little differently…</p>
-<pre><code class="language-text">Flush display: left=45, top=107, right=196, bottom=121...
+<div class="example-wrap"><pre class="language-text">Flush display: left=45, top=107, right=196, bottom=121...
 ...
 Flush display: left=45, top=122, right=196, bottom=133...
-...
-</code></pre>
+...</pre></div>
 <p>Instead of re-rendering all 240 pixel rows, <strong>LVGL renders only the pixel rows that have changed!</strong></p>
 <p>(Very clever!)</p>
 <p>That’s why LVGL is perfect for RISC-V IoT Gadgets that have CPU and RAM constraints.</p>
 </li>
 <li>
 <p>Here are two Shortcuts: This Shortcut Command…</p>
-<pre><code class="language-text"># 2
-</code></pre>
+<div class="example-wrap"><pre class="language-text"></pre></div>
 <p>Is equivalent to…</p>
-<pre><code class="language-text"># display_init
-# lvgl_init
-# lvgl_create
-# lvgl_render
-</code></pre>
+<div class="example-wrap"><pre class="language-text"></pre></div>
 <p>And this Shortcut Command…</p>
-<pre><code class="language-text"># 3
-</code></pre>
+<div class="example-wrap"><pre class="language-text"></pre></div>
 <p>Is equivalent to…</p>
-<pre><code class="language-text"># lvgl_update
-# lvgl_render
-</code></pre>
+<div class="example-wrap"><pre class="language-text"></pre></div>
 <p><a href="https://www.youtube.com/watch?v=PkP-CeYLXUA"><strong>Watch the Demo Video on YouTube</strong></a></p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/demo.c#L210-L222"><strong>How to run a Command at Startup</strong></a></p>
 <p><a href="https://gist.github.com/lupyuen/9f26626d7c8081ae64d58eba70e07a80"><strong>Check out the complete log</strong></a></p>
@@ -1216,7 +1104,7 @@ Flush display: left=45, top=122, right=196, bottom=133...
 <h1 id="st7789-display-driver-for-lvgl" class="section-header"><a href="#st7789-display-driver-for-lvgl">10 ST7789 Display Driver for LVGL</a></h1>
 <p>Let’s find out how the <strong>ST7789 Display Driver</strong> for LVGL calls <strong><code>write_data</code></strong> and <strong><code>transmit_spi</code></strong> to blast pixels over SPI DMA.</p>
 <p>Here are the <strong>ST7789 Specifications</strong> for LVGL: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_conf.h#L24-L41"><code>lv_conf.h</code></a></p>
-<pre><code class="language-c">/// Number of rows in SPI Transmit and Receive Buffers. 
+<div class="example-wrap"><pre class="language-c">/// Number of rows in SPI Transmit and Receive Buffers. 
 /// Used by display.c and lv_port_disp.c
 #define BUFFER_ROWS       (10)
 
@@ -1228,12 +1116,11 @@ Flush display: left=45, top=122, right=196, bottom=133...
 #define LV_COLOR_DEPTH     16
 
 /// Swap the 2 bytes of RGB565 color
-#define LV_COLOR_16_SWAP   1
-</code></pre>
+#define LV_COLOR_16_SWAP   1</pre></div>
 <p>Note that LVGL is buffering 10 pixel rows of data in RAM. </p>
 <p>(It’s the same buffer we used for rendering photos: <strong><code>spi_tx_buf</code></strong>)</p>
 <p>This function <strong><code>disp_flush</code></strong> is called by LVGL to blast a Display Window of pixels from RAM to the ST7789 Display: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_port_disp.c#L126-L154"><code>lv_port_disp.c</code></a></p>
-<pre><code class="language-c">/// ST7789 Command for Memory Write. From https://github.com/almindor/st7789/blob/master/src/instruction.rs
+<div class="example-wrap"><pre class="language-c">/// ST7789 Command for Memory Write. From https://github.com/almindor/st7789/blob/master/src/instruction.rs
 #define RAMWR 0x2C
 
 static void disp_flush(
@@ -1247,10 +1134,9 @@ static void disp_flush(
         area-&gt;y1,  //  Top
         area-&gt;x2,  //  Right
         area-&gt;y2   //  Bottom
-    ); assert(rc == 0);
-</code></pre>
+    ); assert(rc == 0);</pre></div>
 <p>Here we set the ST7789 Display Window, calling the <code>set_window</code> function that we’ve defined earlier.</p>
-<pre><code class="language-c">    //  How many pixels we'll be rendering
+<div class="example-wrap"><pre class="language-c">    //  How many pixels we&#39;ll be rendering
     int len = 
         ((area-&gt;x2 - area-&gt;x1) + 1) *  //  Width
         ((area-&gt;y2 - area-&gt;y1) + 1) *  //  Height
@@ -1258,39 +1144,36 @@ static void disp_flush(
 
     //  Memory Write: Write the bytes to display (ST7789 Datasheet Page 202)
     rc = write_command(RAMWR, NULL, 0); assert(rc == 0);
-    rc = write_data((const uint8_t *) color_p, len); assert(rc == 0);
-</code></pre>
+    rc = write_data((const uint8_t *) color_p, len); assert(rc == 0);</pre></div>
 <p>Next we call <code>write_command</code> and <code>write_data</code> to blast the pixel data to ST7789.</p>
 <p>As we have seen, <code>write_data</code> calls BL602 SPI HAL to blast the data to our SPI Port, accelerated by DMA.</p>
-<pre><code class="language-c">    //  Inform LVGL that we are done with the flushing
+<div class="example-wrap"><pre class="language-c">    //  Inform LVGL that we are done with the flushing
     lv_disp_flush_ready(disp_drv);
-}
-</code></pre>
+}</pre></div>
 <p>By convention, we call the LVGL function <code>lv_disp_flush_ready</code> when we’re done.</p>
 <p>And that’s how <strong><code>disp_flush</code></strong> blasts a Display Window of pixels from RAM to the ST7789 Display over SPI DMA!</p>
 <h2 id="register-the-display-driver" class="section-header"><a href="#register-the-display-driver">10.1 Register the Display Driver</a></h2>
 <p><em>How does LVGL call <code>disp_flush</code>?</em></p>
 <p>When we register our ST7789 Display Driver with LVGL, we set <code>disp_flush</code> as the <strong>Callback Function</strong> for rendering a Display Window of pixels.</p>
 <p>Here’s how we <strong>register our ST7789 Display Driver</strong> with LVGL: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_port_disp.c#L64-L113"><code>lv_port_disp.c</code></a></p>
-<pre><code class="language-c">void lv_port_disp_init(void) {
+<div class="example-wrap"><pre class="language-c">void lv_port_disp_init(void) {
     //  Initialize our display
     disp_init();
 
     //  Create a buffer for drawing: LVGL requires a buffer where 
     //  it draws the objects. The buffer has to be greater than 1 
     //  display row.  We create one buffer spi_tx_buf with 10 rows. 
-    //  LVGL will draw the display's content here and write it to the display
+    //  LVGL will draw the display&#39;s content here and write it to the display
     static lv_disp_buf_t disp_buf_1;
     lv_disp_buf_init(
         &amp;disp_buf_1, 
         spi_tx_buf, 
         NULL, 
         LV_HOR_RES_MAX * BUFFER_ROWS
-    );
-</code></pre>
+    );</pre></div>
 <p>Here in <strong><code>lv_port_disp_init</code></strong> we set <strong><code>spi_tx_buf</code></strong> as the buffer for 10 rows of pixels.</p>
 <p>Recall that <code>spi_tx_buf</code> is the SPI Transmit Buffer we used for rendering the photo on ST7789.</p>
-<pre><code class="language-c">    //  Init the display driver
+<div class="example-wrap"><pre class="language-c">    //  Init the display driver
     lv_disp_drv_t disp_drv;        //  Descriptor of a display driver
     lv_disp_drv_init(&amp;disp_drv);   //  Basic initialization
 
@@ -1298,17 +1181,15 @@ static void disp_flush(
     disp_drv.hor_res = LV_HOR_RES_MAX;
     disp_drv.ver_res = LV_VER_RES_MAX;
 
-    //  Set the callback for copying the buffer's content to the display
-    disp_drv.flush_cb = disp_flush;
-</code></pre>
+    //  Set the callback for copying the buffer&#39;s content to the display
+    disp_drv.flush_cb = disp_flush;</pre></div>
 <p>In the code above we initialise the ST7789 Display Driver and set the Callback Function to <code>disp_flush</code>.</p>
-<pre><code class="language-c">    //  Set the buffer for the display driver
+<div class="example-wrap"><pre class="language-c">    //  Set the buffer for the display driver
     disp_drv.buffer = &amp;disp_buf_1;
 
     //  Register the display driver
     lv_disp_drv_register(&amp;disp_drv);
-}
-</code></pre>
+}</pre></div>
 <p>Finally we register the ST7789 Display Driver with LVGL. We have just configured LVGL to…</p>
 <ol>
 <li>
@@ -1325,15 +1206,12 @@ static void disp_flush(
 <p><em>How did we add the LVGL Source Code to the BL602 Firmware?</em></p>
 <p>Not so elegantly, I’m afraid. (See pic above)</p>
 <p>The LVGL Library lives in a strange place, inside the <strong><code>lvgl</code></strong> folder under <code>sdk_app_st7789</code>…</p>
-<pre><code class="language-bash">#  How we added LVGL Library under sdk_app_st7789
-cd bl_iot_sdk/customer_app/sdk_app_st7789/sdk_app_st7789
-git submodule add https://github.com/lvgl/lvgl
-</code></pre>
+<div class="example-wrap"><pre class="language-bash">cd bl_iot_sdk/customer_app/sdk_app_st7789/sdk_app_st7789
+git submodule add https://github.com/lvgl/lvgl</pre></div>
 <p><em>Why is this a strange place?</em></p>
 <p>Because the BL602 SDK Makefile doesn’t recognise subfolders under <code>sdk_app_st7789</code>.</p>
 <p>Here’s the hack we added to a Common Makefile to support LVGL: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/make_scripts_riscv/component_wrapper.mk#L42-L51"><code>make_scripts_riscv/ component_wrapper.mk</code></a></p>
-<pre><code class="language-text"># TODO: Add LVGL to build in a cleaner way
-COMPONENT_SRCDIRS += \
+<div class="example-wrap"><pre class="language-text">COMPONENT_SRCDIRS += \
 	./lvgl/src/lv_core \
 	./lvgl/src/lv_draw \
 	./lvgl/src/lv_font \
@@ -1341,8 +1219,7 @@ COMPONENT_SRCDIRS += \
 	./lvgl/src/lv_hal  \
 	./lvgl/src/lv_misc   \
 	./lvgl/src/lv_themes \
-	./lvgl/src/lv_widgets
-</code></pre>
+	./lvgl/src/lv_widgets</pre></div>
 <p>Hopefully someday we shall create a proper BL602 Library for LVGL…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lora2#appendix-how-to-create-bl602-libraries">“How To Create BL602 Libraries”</a></li>
@@ -1376,7 +1253,7 @@ COMPONENT_SRCDIRS += \
 </ol>
 <p><em>How do we set an SPI Timeout for easier troubleshooting… So that it doesn’t hang?</em></p>
 <p>Here’s how we modify the BL602 SPI HAL to set the SPI Timeout to 100 milliseconds: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/components/hal_drv/bl602_hal/hal_spi.c#L341-L354"><code>components/hal_drv/ bl602_hal/hal_spi.c</code></a></p>
-<pre><code class="language-c">static void hal_spi_dma_trans(...) {
+<div class="example-wrap"><pre class="language-c">static void hal_spi_dma_trans(...) {
     ...
     //  Wait for for the FreeRTOS Event Group,
     //  which is signalled by the SPI DMA Transmit and
@@ -1389,8 +1266,7 @@ COMPONENT_SRCDIRS += \
         //  Set SPI Timeout to 100 milliseconds.
         //  Previously portMAX_DELAY (no timeout).
         100 / portTICK_PERIOD_MS
-    );
-</code></pre>
+    );</pre></div>
 <p>Then enter the <code>display_result</code> command to dump the Interrupt Counters and Error Codes. <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/demo.c#L116-L130">(See this)</a></p>
 <p>Remember to enable Assertion Failure messages in our firmware. <a href="https://lupyuen.github.io/articles/display#appendix-show-assertion-failures-in-bl602-firmware">(See this)</a></p>
 <p><img src="https://lupyuen.github.io/images/timesync-title.png" alt="Watch face for PineTime Smartwatch rendered with LVGL" /></p>
@@ -1462,28 +1338,26 @@ COMPONENT_SRCDIRS += \
 </li>
 <li>
 <p>To run a command at startup (like in the photos above and below), modify the function <strong><code>cli_init</code></strong> in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/demo.c#L210-L222"><code>demo.c</code></a></p>
-<pre><code class="language-c">/// Init the command-line interface
+<div class="example-wrap"><pre class="language-c">/// Init the command-line interface
 int cli_init(void) {
     //  To run a command at startup, use this...
     test_1(&quot;&quot;, 0, 0, NULL);
     return 0;
-}
-</code></pre>
+}</pre></div>
 <p>If the rendering hangs, lower the SPI Frequency to 2 MHz. (But why???)</p>
 </li>
 </ol>
 <h1 id="appendix-show-assertion-failures-in-bl602-firmware" class="section-header"><a href="#appendix-show-assertion-failures-in-bl602-firmware">15 Appendix: Show Assertion Failures in BL602 Firmware</a></h1>
 <p>By default, firmware created by the BL602 IoT SDK will NOT show Assertion Failure messages.</p>
 <p>So this code…</p>
-<pre><code class="language-c">#include &lt;assert.h&gt;
+<div class="example-wrap"><pre class="language-c">#include &lt;assert.h&gt;
 
 //  Stop with an assertion failure
-assert(false);
-</code></pre>
+assert(false);</pre></div>
 <p>…Will fail silently, without any messages, and loop forever.</p>
 <p>(Not so productive for troubleshooting firmware problems!)</p>
 <p>To show Assertion Failure messages, we add this function to our BL602 programs: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/demo.c#L224-L235"><code>demo.c</code></a></p>
-<pre><code class="language-c">/// TODO: We now show assertion failures 
+<div class="example-wrap"><pre class="language-c">/// TODO: We now show assertion failures 
 /// in development. For production, comment 
 /// out this function to use the system default,
 /// which loops forever without messages.
@@ -1499,32 +1373,23 @@ void __assert_func(const char *file, int line,
 	//  Loop forever, do not pass go, 
     //  do not collect $200
 	for (;;) {}
-}
-</code></pre>
-<h1 id="appendix-macos-script-to-build-flash-and-run-bl602-firmware" class="section-header"><a href="#appendix-macos-script-to-build-flash-and-run-bl602-firmware">16 Appendix: macOS Script to Build, Flash and Run BL602 Firmware</a></h1>
+}</pre></div><h1 id="appendix-macos-script-to-build-flash-and-run-bl602-firmware" class="section-header"><a href="#appendix-macos-script-to-build-flash-and-run-bl602-firmware">16 Appendix: macOS Script to Build, Flash and Run BL602 Firmware</a></h1>
 <p>Here’s the script I use on macOS to automate the building, flashing and running of BL602 firmware: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/run.sh#L1-L32"><code>run.sh</code></a></p>
-<pre><code class="language-bash">#!/usr/bin/env bash
-#  macOS script to build, flash and run BL602 Firmware
+<div class="example-wrap"><pre class="language-bash">#!/usr/bin/env bash
 
 set -e  #  Exit when any command fails
 set -x  #  Echo commands
 
-#  Build for BL602
 export CONFIG_CHIP_NAME=BL602
 
-#  Where BL602 IoT SDK is located
 export BL60X_SDK_PATH=$PWD/../..
 
-#  Where blflash is located
 export BLFLASH_PATH=$PWD/../../../blflash
 
-#  Build the firmware
 make
 
-#  Copy firmware to blflash
 cp build_out/sdk_app_st7789.bin $BLFLASH_PATH
 
-#  Flash the firmware
 pushd $BLFLASH_PATH
 cargo run flash sdk_app_st7789.bin \
     --port /dev/tty.usbserial-1420 \
@@ -1533,16 +1398,14 @@ cargo run flash sdk_app_st7789.bin \
 sleep 5
 popd
 
-#  Run the firmware
-open -a CoolTerm
-</code></pre>
+open -a CoolTerm</pre></div>
 <p>Note that we need to flip the jumper for GPIO 8 and press the Reset Button, before and after flashing the firmware.</p>
 <h1 id="appendix-st7789-reset-backlight-and-delay" class="section-header"><a href="#appendix-st7789-reset-backlight-and-delay">17 Appendix: ST7789 Reset, Backlight and Delay</a></h1>
 <p>Let’s cover the remaining ST7789 functions for Reset, Backlight and Delay.</p>
 <h2 id="hard_reset" class="section-header"><a href="#hard_reset">17.1 hard_reset</a></h2>
 <p>We execute a Hard Reset of ST7789 Display by toggling the Reset Pin to High, then Low, then High again…</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L290-L300"><code>display.c</code></a></p>
-<pre><code class="language-c">/// Reset the display controller
+<div class="example-wrap"><pre class="language-c">/// Reset the display controller
 static int hard_reset(void) {
     //  Toggle the Reset Pin: High, Low, High
     int rc;
@@ -1550,42 +1413,36 @@ static int hard_reset(void) {
     rc = bl_gpio_output_set(DISPLAY_RST_PIN, 0);  assert(rc == 0);
     rc = bl_gpio_output_set(DISPLAY_RST_PIN, 1);  assert(rc == 0);
     return 0;
-}
-</code></pre>
-<h2 id="backlight_on" class="section-header"><a href="#backlight_on">17.2 backlight_on</a></h2>
+}</pre></div><h2 id="backlight_on" class="section-header"><a href="#backlight_on">17.2 backlight_on</a></h2>
 <p>To switch on the backlight, we set the Backlight Pin to High…</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L300-L314"><code>display.c</code></a></p>
-<pre><code class="language-c">/// Switch on backlight
+<div class="example-wrap"><pre class="language-c">/// Switch on backlight
 int backlight_on(void) {
     //  Set the Backlight Pin to High
     int rc = bl_gpio_output_set(DISPLAY_BLK_PIN, 1);
     assert(rc == 0);
-    return 0;
-</code></pre>
+    return 0;</pre></div>
 <p><em>Can we have multiple levels of backlight brightness?</em></p>
 <p>Yes! We may configure the Backlight Pin as a PWM Pin (instead of GPIO).</p>
 <p>Then set the PWM Duty Cycle to control the brightness. <a href="https://lupyuen.github.io/articles/led#from-gpio-to-pulse-width-modulation-pwm">(See this)</a></p>
 <h2 id="backlight_off" class="section-header"><a href="#backlight_off">17.3 backlight_off</a></h2>
 <p>To switch off the backlight, we set the Backlight Pin to Low…</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L314-L323"><code>display.c</code></a></p>
-<pre><code class="language-c">/// Switch off backlight
+<div class="example-wrap"><pre class="language-c">/// Switch off backlight
 int backlight_off(void) {
     //  Set the Backlight Pin to Low
     printf(&quot;Set BLK pin %d to low\r\n&quot;, DISPLAY_BLK_PIN);
     int rc = bl_gpio_output_set(DISPLAY_BLK_PIN, 0);
     assert(rc == 0);
     return 0;
-}
-</code></pre>
-<h2 id="delay_ms" class="section-header"><a href="#delay_ms">17.4 delay_ms</a></h2>
+}</pre></div><h2 id="delay_ms" class="section-header"><a href="#delay_ms">17.4 delay_ms</a></h2>
 <p>This function sleeps for the specified number of milliseconds…</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L323-L328"><code>display.c</code></a></p>
-<pre><code class="language-c">/// Delay for the specified number of milliseconds
+<div class="example-wrap"><pre class="language-c">/// Delay for the specified number of milliseconds
 static void delay_ms(uint32_t ms) {
     //  TODO: Implement delay. For now we write to console, which also introduces a delay.
     printf(&quot;TODO Delay %d\r\n&quot;, ms);
-}
-</code></pre>
+}</pre></div>
 <p>For now we call <code>printf</code>, introduces a short delay because it writes to the UART Port.</p>
 <p>But we should fix this once we find the right delay function from BL602 SDK.</p>
 <h1 id="appendix-configure-lvgl-for-bl602-and-st7789" class="section-header"><a href="#appendix-configure-lvgl-for-bl602-and-st7789">18 Appendix: Configure LVGL for BL602 and ST7789</a></h1>
@@ -1603,13 +1460,11 @@ static void delay_ms(uint32_t ms) {
 <ol>
 <li>
 <p>This is needed to enable the LVGL configuration…</p>
-<pre><code class="language-c">#if 1
-//  Previously #if 0
-</code></pre>
-</li>
+<div class="example-wrap"><pre class="language-c">#if 1
+//  Previously #if 0</pre></div></li>
 <li>
 <p>These are the settings specific to our ST7789 Display Hardware…</p>
-<pre><code class="language-c">/// Number of rows in SPI Transmit and Receive Buffers. Used by display.c and lv_port_disp.c
+<div class="example-wrap"><pre class="language-c">/// Number of rows in SPI Transmit and Receive Buffers. Used by display.c and lv_port_disp.c
 #define BUFFER_ROWS             (10)
 //  Previously non-existent
 
@@ -1621,93 +1476,69 @@ static void delay_ms(uint32_t ms) {
 /* Swap the 2 bytes of RGB565 color.
 * Useful if the display has a 8 bit interface (e.g. SPI)*/
 #define LV_COLOR_16_SWAP   1
-//  Previously 0
-</code></pre>
-</li>
+//  Previously 0</pre></div></li>
 <li>
 <p>We lower the Dots Per Inch because we have a tiny display…</p>
-<pre><code class="language-c">/* Dot Per Inch: used to initialize default sizes.
+<div class="example-wrap"><pre class="language-c">/* Dot Per Inch: used to initialize default sizes.
 * E.g. a button with width = LV_DPI / 2 -&gt; half inch wide
 * (Not so important, you can adjust it to modify default sizes and spaces)*/
 #define LV_DPI              100     /*[px]*/
-//  Previously 130
-</code></pre>
-</li>
+//  Previously 130</pre></div></li>
 <li>
 <p>LVGL maintains its own Heap Memory for Widgets. We’re reserving 4 KB of RAM for LVGL Heap Memory. </p>
 <p>If we run out of Heap Memory, increase this value.</p>
-<pre><code class="language-c">/* Size of the memory used by `lv_mem_alloc` in bytes (&gt;= 2kB)*/
-#  define LV_MEM_SIZE    (4U * 1024U)
-//  Previously (32U * 1024U)
-</code></pre>
-</li>
+<div class="example-wrap"><pre class="language-c">/* Size of the memory used by `lv_mem_alloc` in bytes (&gt;= 2kB)*/
+//  Previously (32U * 1024U)</pre></div></li>
 <li>
 <p>This will be useful when we have a touchscreen like PineTime…</p>
-<pre><code class="language-c">/* Drag throw slow-down in [%]. Greater value -&gt; faster slow-down */
+<div class="example-wrap"><pre class="language-c">/* Drag throw slow-down in [%]. Greater value -&gt; faster slow-down */
 #define LV_INDEV_DEF_DRAG_THROW           20
-//  Previously 10
-</code></pre>
-</li>
+//  Previously 10</pre></div></li>
 <li>
 <p>For efficiency we disable shadows…</p>
-<pre><code class="language-c">/* 1: Enable shadow drawing on rectangles*/
+<div class="example-wrap"><pre class="language-c">/* 1: Enable shadow drawing on rectangles*/
 #define LV_USE_SHADOW           0
-//  Previously 1
-</code></pre>
-</li>
+//  Previously 1</pre></div></li>
 <li>
 <p>We’re not using a GPU…</p>
-<pre><code class="language-c">/* 1: Enable GPU interface*/
+<div class="example-wrap"><pre class="language-c">/* 1: Enable GPU interface*/
 #define LV_USE_GPU              0   /*Only enables `gpu_fill_cb` and `gpu_blend_cb` in the disp. drv- */
-//  Previously 1
-</code></pre>
-</li>
+//  Previously 1</pre></div></li>
 <li>
 <p>We don’t have a file system…</p>
-<pre><code class="language-c">/* 1: Enable file system (might be required for images */
+<div class="example-wrap"><pre class="language-c">/* 1: Enable file system (might be required for images */
 #define LV_USE_FILESYSTEM       0
-//  Previously 1
-</code></pre>
-</li>
+//  Previously 1</pre></div></li>
 <li>
 <p>The <code>user_data</code> field is useful for porting LVGL apps from other platforms (like InfiniTime)…</p>
-<pre><code class="language-c">/*1: Add a `user_data` to drivers and objects*/
+<div class="example-wrap"><pre class="language-c">/*1: Add a `user_data` to drivers and objects*/
 #define LV_USE_USER_DATA        1
-//  Previously 1
-</code></pre>
-</li>
+//  Previously 1</pre></div></li>
 <li>
 <p>We enable logging. Switch this to 0 in production…</p>
-<pre><code class="language-c">/*1: Enable the log module*/
+<div class="example-wrap"><pre class="language-c">/*1: Enable the log module*/
 #define LV_USE_LOG      1  //  TODO: Should be set to 0 for production
-//  Previously 0
-</code></pre>
-</li>
+//  Previously 0</pre></div></li>
 <li>
 <p>We enable detailed logging for easier troubleshooting…</p>
-<pre><code class="language-c">/* How important log should be added:
+<div class="example-wrap"><pre class="language-c">/* How important log should be added:
 * LV_LOG_LEVEL_TRACE       A lot of logs to give detailed information
 * LV_LOG_LEVEL_INFO        Log important events
-* LV_LOG_LEVEL_WARN        Log if something unwanted happened but didn't cause a problem
+* LV_LOG_LEVEL_WARN        Log if something unwanted happened but didn&#39;t cause a problem
 * LV_LOG_LEVEL_ERROR       Only critical issue, when the system may fail
 * LV_LOG_LEVEL_NONE        Do not log anything
 */
-#  define LV_LOG_LEVEL    LV_LOG_LEVEL_TRACE
-//  Previously LV_LOG_LEVEL_WARN
-</code></pre>
+//  Previously LV_LOG_LEVEL_WARN</pre></div>
 <p>(Normally we don’t enable detailed logging with LVGL on embedded devices… But BL602 seems surprisingly capable, so we turn it on)</p>
 </li>
 <li>
 <p>We show log messages with <code>printf</code>…</p>
-<pre><code class="language-c">/* 1: Print the log with 'printf';
+<div class="example-wrap"><pre class="language-c">/* 1: Print the log with &#39;printf&#39;;
 * 0: user need to register a callback with `lv_log_register_print_cb`*/
-#  define LV_LOG_PRINTF   1
-//  Previously 0
-</code></pre>
-</li>
+//  Previously 0</pre></div></li>
 <li>
 <p>We validate LVGL parameters. Switch this to 0 in production…</p>
-<pre><code class="language-c">/* If Debug is enabled LittelvGL validates the parameters of the functions.
+<div class="example-wrap"><pre class="language-c">/* If Debug is enabled LittelvGL validates the parameters of the functions.
 * If an invalid parameter is found an error log message is printed and
 * the MCU halts at the error. (`LV_USE_LOG` should be enabled)
 * If you are debugging the MCU you can pause
@@ -1717,19 +1548,15 @@ static void delay_ms(uint32_t ms) {
 * E.g. #define LV_ASSERT_MEM(p)  &lt;my_assert_code&gt;
 */
 #define LV_USE_DEBUG        1
-//  Previously 0
-</code></pre>
-</li>
+//  Previously 0</pre></div></li>
 <li>
 <p>We validate LVGL Styles. This is useful when porting apps from previous versions of LVGL, because LVGL Styles have been revamped between Versions 6 and 7…</p>
-<pre><code class="language-c">/*Check if the styles are properly initialized. (Fast)*/
+<div class="example-wrap"><pre class="language-c">/*Check if the styles are properly initialized. (Fast)*/
 #define LV_USE_ASSERT_STYLE     1
-//  Previously 0
-</code></pre>
-</li>
+//  Previously 0</pre></div></li>
 <li>
 <p>We change the Default Font from size 14 to 24.  We will probably change the Font Size to support different types of apps…</p>
-<pre><code class="language-c">#define LV_FONT_MONTSERRAT_14    0
+<div class="example-wrap"><pre class="language-c">#define LV_FONT_MONTSERRAT_14    0
 //  Previously 1
 
 #define LV_FONT_MONTSERRAT_24    1
@@ -1739,35 +1566,26 @@ static void delay_ms(uint32_t ms) {
 #define LV_THEME_DEFAULT_FONT_NORMAL        &amp;lv_font_montserrat_24
 #define LV_THEME_DEFAULT_FONT_SUBTITLE      &amp;lv_font_montserrat_24
 #define LV_THEME_DEFAULT_FONT_TITLE         &amp;lv_font_montserrat_24
-//  Previously &amp;lv_font_montserrat_14
-</code></pre>
-</li>
+//  Previously &amp;lv_font_montserrat_14</pre></div></li>
 <li>
 <p>We select Dark Material as the Default Theme. Which is odd because our screens look like Light Material…</p>
-<pre><code class="language-c">#define LV_THEME_DEFAULT_FLAG               LV_THEME_MATERIAL_FLAG_DARK
-//  Previously LV_THEME_MATERIAL_FLAG_LIGHT
-</code></pre>
-</li>
+<div class="example-wrap"><pre class="language-c">#define LV_THEME_DEFAULT_FLAG               LV_THEME_MATERIAL_FLAG_DARK
+//  Previously LV_THEME_MATERIAL_FLAG_LIGHT</pre></div></li>
 <li>
 <p>Since our display is tiny, we break long words…</p>
-<pre><code class="language-c">/* If a word is at least this long, will break wherever &quot;prettiest&quot;
+<div class="example-wrap"><pre class="language-c">/* If a word is at least this long, will break wherever &quot;prettiest&quot;
 * To disable, set to a value &lt;= 0 */
 #define LV_TXT_LINE_BREAK_LONG_LEN          12
-//  Previously 0
-</code></pre>
-</li>
+//  Previously 0</pre></div></li>
 <li>
 <p>We don’t need no precise lines for our tiny display…</p>
-<pre><code class="language-c">/* Draw line more precisely at cost of performance.
+<div class="example-wrap"><pre class="language-c">/* Draw line more precisely at cost of performance.
 * Useful if there are lot of lines any minor are visible
 * 0: No extra precision
 * 1: Some extra precision
 * 2: Best precision
 */
-#  define LV_LINEMETER_PRECISE    0
-//  Previously 1
-</code></pre>
-</li>
+//  Previously 1</pre></div></li>
 </ol>
 
     

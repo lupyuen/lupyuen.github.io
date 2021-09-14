@@ -139,7 +139,7 @@
 <h1 id="bl604-blinky" class="section-header"><a href="#bl604-blinky">2 BL604 Blinky</a></h1>
 <p><em>What’s the first thing that we run on a brand new prototype board?</em></p>
 <p><strong>Blinky Firmware</strong> of course! (Yep the firmware that blinks the LED)</p>
-<pre><code class="language-c">/// PineDio Stack LCD Backlight is connected on GPIO 21
+<div class="example-wrap"><pre class="language-c">/// PineDio Stack LCD Backlight is connected on GPIO 21
 #define LED_GPIO 21
 
 /// Blink the LED
@@ -171,28 +171,21 @@ void blinky(char *buf, int len, int argc, char **argv) {
     );
   }
   //  Return to the command-line interface
-}
-</code></pre>
+}</pre></div>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_blinky/pinedio_blinky/demo.c">(Source)</a></p>
 <p>This BL604 Blinky code is <strong>100% identical</strong> to the <a href="https://lupyuen.github.io/articles/rust#bl602-blinky-in-c">BL602 version of Blinky</a>. Except for the GPIO Pin Number…</p>
-<pre><code class="language-c">/// PineDio Stack LCD Backlight is connected on GPIO 21
-#define LED_GPIO 21
-</code></pre>
+<div class="example-wrap"><pre class="language-c">/// PineDio Stack LCD Backlight is connected on GPIO 21
+#define LED_GPIO 21</pre></div>
 <p>(We’re blinking the Backlight of the ST7789 Display)</p>
 <p>We <strong>build the BL604 Blinky Firmware</strong> the exact same way as BL602…</p>
-<pre><code class="language-bash">#  Download the 3wire branch of lupyuen's bl_iot_sdk
-git clone --recursive --branch 3wire https://github.com/lupyuen/bl_iot_sdk
+<div class="example-wrap"><pre class="language-bash">git clone --recursive --branch 3wire https://github.com/lupyuen/bl_iot_sdk
 cd customer_app/pinedio_blinky
 
-#  Build for BL602 (Should this be BL604?)
 export CONFIG_CHIP_NAME=BL602
 
-#  Where BL602 / BL604 IoT SDK is located
 export BL60X_SDK_PATH=$PWD/../..
 
-#  Build the firmware: build_out/pinedio_blinky.bin
-make
-</code></pre>
+make</pre></div>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_blinky/run.sh">(Source)</a></p>
 <p>Let’s flash the firmware to the board!</p>
 <h1 id="flash-firmware-to-bl604" class="section-header"><a href="#flash-firmware-to-bl604">3 Flash Firmware To BL604</a></h1>
@@ -212,8 +205,7 @@ make
 </li>
 <li>
 <p><strong>Run <code>blflash</code></strong> to flash this firmware file…</p>
-<pre><code class="language-text">build_out/pinedio_blinky.bin
-</code></pre>
+<div class="example-wrap"><pre class="language-text">build_out/pinedio_blinky.bin</pre></div>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">(More about <code>blflash</code>)</a></p>
 </li>
 </ol>
@@ -238,8 +230,7 @@ make
 </li>
 <li>
 <p>At the BL604 Command Prompt, enter…</p>
-<pre><code class="language-text">blinky
-</code></pre>
+<div class="example-wrap"><pre class="language-text">blinky</pre></div>
 <p>And the Backlight blinks!</p>
 <p><a href="https://youtu.be/vdRqhQ08uxU"><strong>Watch the Demo Video on YouTube</strong></a></p>
 </li>
@@ -279,41 +270,38 @@ make
 <p><em>How shall we code the firmware for testing SPI?</em></p>
 <p>The same way as BL602… By calling the <strong>BL602 / BL604 IoT SDK</strong>!</p>
 <p>We start by <strong>defining the Shared GPIOs</strong> for the SPI Peripherals: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/display.h#L45-L70"><code>pinedio_st7789/display.h</code></a></p>
-<pre><code class="language-c">/// GPIO for ST7789 / SX1262 / SPI Flash SDO (MOSI)
+<div class="example-wrap"><pre class="language-c">/// GPIO for ST7789 / SX1262 / SPI Flash SDO (MOSI)
 #define DISPLAY_MOSI_PIN 17
 
 /// GPIO for ST7789 / SX1262 / SPI Flash SDI (MISO)
 #define DISPLAY_MISO_PIN  0
 
 /// GPIO for ST7789 / SX1262 / SPI Flash SCK
-#define DISPLAY_SCK_PIN  11
-</code></pre>
+#define DISPLAY_SCK_PIN  11</pre></div>
 <p>Followed by the <strong>Chip Select GPIOs</strong> for each SPI Peripheral…</p>
-<pre><code class="language-c">/// GPIO for SPI Flash Chip Select. We must set this to High to deselect SPI Flash.
+<div class="example-wrap"><pre class="language-c">/// GPIO for SPI Flash Chip Select. We must set this to High to deselect SPI Flash.
 #define FLASH_CS_PIN 14
 
 /// GPIO for SX1262 SPI Chip Select. We must set this to High to deselect SX1262.
 #define SX1262_CS_PIN 15
 
 /// GPIO for ST7789 SPI Chip Select. We control Chip Select ourselves via GPIO, not SPI.
-#define DISPLAY_CS_PIN   20
-</code></pre>
+#define DISPLAY_CS_PIN   20</pre></div>
 <p>The SPI Functions from the BL604 IoT SDK need us to specify a Chip Select GPIO.</p>
 <p>Since we’re <strong>controlling Chip Select ourselves</strong>, we’ll assign <strong>GPIO 8</strong> as the Unused Chip Select…</p>
-<pre><code class="language-c">/// GPIO for unused SPI Chip Select Pin. Unused because we control Chip Select ourselves via GPIO, not SPI.
+<div class="example-wrap"><pre class="language-c">/// GPIO for unused SPI Chip Select Pin. Unused because we control Chip Select ourselves via GPIO, not SPI.
 #define DISPLAY_UNUSED_CS_PIN 8
 
 /// For Debug Only: GPIO for SPI Chip Select Pin that is exposed on GPIO Connector and can be connected to Logic Analyser
 #define DISPLAY_DEBUG_CS_PIN 5
 
 /// GPIO for Backlight
-#define DISPLAY_BLK_PIN  21
-</code></pre>
+#define DISPLAY_BLK_PIN  21</pre></div>
 <p>(GPIO 8 selects the Flashing Mode when BL604 is booting, so GPIO 8 is normally unused)</p>
 <p>We use <strong>GPIO 5</strong> to mirror the GPIO High / Low State of GPIO 20 (ST7789 Chip Select). More about this in a while.</p>
 <h2 id="initialise-spi-port" class="section-header"><a href="#initialise-spi-port">4.1 Initialise SPI Port</a></h2>
 <p>Let’s initialise the SPI Port before sending data: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/demo.c#L53-L117"><code>pinedio_st7789/demo.c</code></a></p>
-<pre><code class="language-c">/// Command to init the display
+<div class="example-wrap"><pre class="language-c">/// Command to init the display
 static void test_display_init(char *buf, int len, int argc, char **argv) {
   //  Configure Chip Select, Backlight pins as GPIO Output Pins (instead of GPIO Input)
   int rc;
@@ -321,11 +309,10 @@ static void test_display_init(char *buf, int len, int argc, char **argv) {
   rc = bl_gpio_enable_output(DISPLAY_CS_PIN,  0, 0);  assert(rc == 0);
   rc = bl_gpio_enable_output(FLASH_CS_PIN,    0, 0);  assert(rc == 0);
   rc = bl_gpio_enable_output(SX1262_CS_PIN,   0, 0);  assert(rc == 0);
-  rc = bl_gpio_enable_output(DISPLAY_DEBUG_CS_PIN, 0, 0);  assert(rc == 0);
-</code></pre>
+  rc = bl_gpio_enable_output(DISPLAY_DEBUG_CS_PIN, 0, 0);  assert(rc == 0);</pre></div>
 <p>First we configure the <strong>Chip Select GPIOs for GPIO Output</strong> (instead of GPIO Input).</p>
 <p>Next we <strong>set the Chip Select GPIOs to High</strong> to deselect all SPI Peripherals…</p>
-<pre><code class="language-c">  //  Set Chip Select pins to High, to deactivate SPI Flash, SX1262 and ST7789
+<div class="example-wrap"><pre class="language-c">  //  Set Chip Select pins to High, to deactivate SPI Flash, SX1262 and ST7789
   rc = bl_gpio_output_set(FLASH_CS_PIN,   1);  assert(rc == 0);
   rc = bl_gpio_output_set(SX1262_CS_PIN,  1);  assert(rc == 0);
   rc = bl_gpio_output_set(DISPLAY_CS_PIN, 1);  assert(rc == 0);
@@ -338,11 +325,10 @@ static void test_display_init(char *buf, int len, int argc, char **argv) {
   //  SDI (MISO) to comply with the 
   //  SPI Pin Definitions in BL602 / BL604 
   //  Reference Manual
-  rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);
-</code></pre>
+  rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);</pre></div>
 <p>(We’ll cover <code>GLB_Swap_SPI</code> in a while)</p>
 <p>Finally we <strong>configure the SPI Port</strong>…</p>
-<pre><code class="language-c">  //  Configure the SPI Port
+<div class="example-wrap"><pre class="language-c">  //  Configure the SPI Port
   rc = spi_init(
     &amp;spi_device, //  SPI Device
     SPI_PORT,    //  SPI Port
@@ -359,13 +345,12 @@ static void test_display_init(char *buf, int len, int argc, char **argv) {
   assert(rc == 0);
 
   //  Note: DISPLAY_UNUSED_CS_PIN must NOT be the same as DISPLAY_CS_PIN. 
-  //  Because the SPI Pin Function will override the GPIO Pin Function!
-</code></pre>
+  //  Because the SPI Pin Function will override the GPIO Pin Function!</pre></div>
 <p>We’re ready to transfer data over SPI!</p>
 <p><a href="https://lupyuen.github.io/articles/spi#spi_init-init-spi-port">(More about <code>spi_init</code>)</a></p>
 <h2 id="transfer-spi-data" class="section-header"><a href="#transfer-spi-data">4.2 Transfer SPI Data</a></h2>
 <p>Here’s how we transfer data (transmit + receive) over SPI: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/display.c#L465-L520"><code>pinedio_st7789/display.c</code></a></p>
-<pre><code class="language-c">/// Write packed data to the SPI port. `data` is the array of bytes to be written. `len` is the number of bytes.
+<div class="example-wrap"><pre class="language-c">/// Write packed data to the SPI port. `data` is the array of bytes to be written. `len` is the number of bytes.
 static int transmit_packed(const uint8_t *data, uint16_t len) {
   //  Clear the receive buffer
   memset(&amp;spi_rx_buf, 0, sizeof(spi_rx_buf));
@@ -375,17 +360,15 @@ static int transmit_packed(const uint8_t *data, uint16_t len) {
   memset(&amp;transfer, 0, sizeof(transfer));    
   transfer.tx_buf = (uint32_t) data;        //  Transmit Buffer
   transfer.rx_buf = (uint32_t) spi_rx_buf;  //  Receive Buffer
-  transfer.len    = len;                    //  How many bytes
-</code></pre>
+  transfer.len    = len;                    //  How many bytes</pre></div>
 <p>Here we specify the <strong>Transmit Buffer and Receive Buffer</strong> for the SPI transfer.</p>
 <p>Next we <strong>set Chip Select GPIO to Low</strong> to select the SPI Peripheral (ST7789 Display)…</p>
-<pre><code class="language-c">  //  Select the SPI Peripheral
+<div class="example-wrap"><pre class="language-c">  //  Select the SPI Peripheral
   int rc;
   rc = bl_gpio_output_set(DISPLAY_CS_PIN, 0);        assert(rc == 0);
-  rc = bl_gpio_output_set(DISPLAY_DEBUG_CS_PIN, 0);  assert(rc == 0);
-</code></pre>
+  rc = bl_gpio_output_set(DISPLAY_DEBUG_CS_PIN, 0);  assert(rc == 0);</pre></div>
 <p>Then we <strong>start the SPI Transfer</strong> (transmit + receive) and wait for it to complete…</p>
-<pre><code class="language-c">  //  Execute the SPI Transfer with the DMA Controller
+<div class="example-wrap"><pre class="language-c">  //  Execute the SPI Transfer with the DMA Controller
   rc = hal_spi_transfer(
     &amp;spi_device,  //  SPI Device
     &amp;transfer,    //  SPI Transfers
@@ -394,16 +377,14 @@ static int transmit_packed(const uint8_t *data, uint16_t len) {
   assert(rc == 0);
 
   //  DMA Controller will transmit and receive the SPI data in the background.
-  //  hal_spi_transfer will wait for the SPI Transfer to complete before returning.
-</code></pre>
+  //  hal_spi_transfer will wait for the SPI Transfer to complete before returning.</pre></div>
 <p>Finally we <strong>set Chip Select GPIO to Low</strong> to deselect the SPI Peripheral (ST7789 Display)…</p>
-<pre><code class="language-c">  //  Now that we're done with the SPI Transfer...
+<div class="example-wrap"><pre class="language-c">  //  Now that we&#39;re done with the SPI Transfer...
   //  Deselect the SPI Peripheral
   rc = bl_gpio_output_set(DISPLAY_CS_PIN, 1);        assert(rc == 0);
   rc = bl_gpio_output_set(DISPLAY_DEBUG_CS_PIN, 1);  assert(rc == 0);
   return 0;
-}
-</code></pre>
+}</pre></div>
 <p>That’s how we transmit and receive data over SPI!</p>
 <p><em>Why did we use BL604’s Direct Memory Access (DMA) Controller for the SPI Transfer?</em></p>
 <p>Because we want the SPI Transfer to be <strong>executed in the background</strong>, freeing up the CPU for other concurrent tasks.</p>
@@ -443,12 +424,11 @@ static int transmit_packed(const uint8_t *data, uint16_t len) {
 <p>Though SDI <em>(MISO)</em> looked OK…</p>
 <p><em>Maybe SDO and SDI were swapped?</em></p>
 <p>Thankfully <a href="https://twitter.com/codingfield/status/1430605933714059273"><strong>JF found the fix</strong></a>!</p>
-<pre><code class="language-c">//  Note: We must swap SDO (MOSI) and 
+<div class="example-wrap"><pre class="language-c">//  Note: We must swap SDO (MOSI) and 
 //  SDI (MISO) to comply with the 
 //  SPI Pin Definitions in BL602 / BL604 
 //  Reference Manual
-int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);
-</code></pre>
+int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);</pre></div>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/demo.c#L53-L117">(Source)</a></p>
 <p>After applying the fix, BL604 swaps the SDO and SDI pins… And <strong>BL604 transmits SPI data correctly to ST7789</strong>!</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-swap3.png" alt="SDO (MOSI) is OK!" /></p>

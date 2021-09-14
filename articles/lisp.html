@@ -88,15 +88,14 @@
 <li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
 <li><a href="#notes">12 Notes</a><ul></ul></li></ul></nav><p>📝 <em>14 May 2021</em></p>
 <p>What if we could run <strong>Lisp programs</strong> on the <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602 RISC-V Board</strong></a>?</p>
-<pre><code class="language-text">( loop
+<div class="example-wrap"><pre class="language-text">( loop
   ( pinmode 11 :output )
   ( digitalwrite 11 :high )
   ( delay 1000 )
   ( pinmode 11 :output )
   ( digitalwrite 11 :low )
   ( delay 1000 )
-)
-</code></pre>
+)</pre></div>
 <p>And create the programs with a <strong>drag-and-drop Web Editor</strong>… Without typing a single Lisp parenthesis / bracket?</p>
 <p><img src="https://lupyuen.github.io/images/lisp-web.png" alt="Blockly for uLisp" /></p>
 <p>Today we shall explore <strong>uLisp and Blockly</strong> as an interesting new way to create embedded programs for the <strong>BL602 RISC-V + WiFi SoC</strong>.</p>
@@ -119,15 +118,14 @@
 <p><em>Why is uLisp special?</em></p>
 <p>Compared with other embedded programming languages, uLisp looks particularly interesting because it has <strong>built-in Arduino-like functions</strong> for GPIO, I2C, SPI, ADC, DAC, … Even WiFi!</p>
 <p>So this Blinky program runs perfectly fine on uLisp…</p>
-<pre><code class="language-text">( loop
+<div class="example-wrap"><pre class="language-text">( loop
   ( pinmode 11 :output )
   ( digitalwrite 11 :high )
   ( delay 1000 )
   ( pinmode 11 :output )
   ( digitalwrite 11 :low )
   ( delay 1000 )
-)
-</code></pre>
+)</pre></div>
 <p>Because <code>pinmode</code> (set the GPIO pin mode) and <code>digitalwrite</code> (set the GPIO pin output) are Arduino-like GPIO functions predefined in uLisp.</p>
 <p>(<code>delay</code> is another Arduino-like Timer function predefined in uLisp. It waits for the specified number of milliseconds.)</p>
 <p>uLisp makes it possible to write <strong>high-level scripts</strong> with GPIO, I2C, SPI, ADC, DAC and WiFi functions.</p>
@@ -167,20 +165,15 @@
 <p>In fact the uLisp Interpreter looks a little like <strong>Wasm3</strong>, the WebAssembly Interpreter for Microcontrollers. <a href="https://github.com/wasm3/wasm3">(See this)</a></p>
 <h1 id="build-the-bl602-ulisp-firmware" class="section-header"><a href="#build-the-bl602-ulisp-firmware">2 Build the BL602 uLisp Firmware</a></h1>
 <p>Download and build the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/ulisp/customer_app/sdk_app_ulisp">uLisp Firmware for BL602</a>…</p>
-<pre><code class="language-bash"># Download the ulisp branch of lupyuen's bl_iot_sdk
-git clone --recursive --branch ulisp https://github.com/lupyuen/bl_iot_sdk
+<div class="example-wrap"><pre class="language-bash">git clone --recursive --branch ulisp https://github.com/lupyuen/bl_iot_sdk
 
-# TODO: Change this to the full path of bl_iot_sdk
 export BL60X_SDK_PATH=$HOME/bl_iot_sdk
 export CONFIG_CHIP_NAME=BL602
 
-# Build the sdk_app_ulisp firmware
 cd bl_iot_sdk/customer_app/sdk_app_ulisp
 make
 
-# TODO: Change ~/blflash to the full path of blflash
-cp build_out/sdk_app_ulisp.bin ~/blflash
-</code></pre>
+cp build_out/sdk_app_ulisp.bin ~/blflash</pre></div>
 <p><a href="https://lupyuen.github.io/articles/pinecone#building-firmware">More details on building bl_iot_sdk</a></p>
 <p>(Remember to use the <strong><code>ulisp</code></strong> branch, not the default <strong><code>master</code></strong> branch)</p>
 <h2 id="flash-the-firmware" class="section-header"><a href="#flash-the-firmware">2.1 Flash the firmware</a></h2>
@@ -232,22 +225,17 @@ cp build_out/sdk_app_ulisp.bin ~/blflash
 </li>
 </ol>
 <p>Enter these commands to flash <code>sdk_app_ulisp.bin</code> to BL602 over UART…</p>
-<pre><code class="language-bash"># TODO: Change ~/blflash to the full path of blflash
-cd ~/blflash
+<div class="example-wrap"><pre class="language-bash">cd ~/blflash
 
-# For Linux:
 sudo cargo run flash sdk_app_ulisp.bin \
     --port /dev/ttyUSB0
 
-# For macOS:
 cargo run flash sdk_app_ulisp.bin \
     --port /dev/tty.usbserial-1420 \
     --initial-baud-rate 230400 \
     --baud-rate 230400
 
-# For Windows: Change COM5 to the BL602 Serial Port
-cargo run flash sdk_app_ulisp.bin --port COM5
-</code></pre>
+cargo run flash sdk_app_ulisp.bin --port COM5</pre></div>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">More details on flashing firmware</a></p>
 <h1 id="run-the-bl602-ulisp-firmware" class="section-header"><a href="#run-the-bl602-ulisp-firmware">3 Run the BL602 uLisp Firmware</a></h1>
 <p>Set BL602 to <strong>Normal Mode</strong> (Non-Flashing) and restart the board…</p>
@@ -278,8 +266,7 @@ cargo run flash sdk_app_ulisp.bin --port COM5
 </ol>
 <p>After restarting, connect to BL602’s UART Port at 2 Mbps like so…</p>
 <p><strong>For Linux:</strong></p>
-<pre><code class="language-bash">sudo screen /dev/ttyUSB0 2000000
-</code></pre>
+<div class="example-wrap"><pre class="language-bash">sudo screen /dev/ttyUSB0 2000000</pre></div>
 <p><strong>For macOS:</strong> Use CoolTerm (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>Alternatively:</strong> Use the Web Serial Terminal (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
@@ -291,21 +278,18 @@ cargo run flash sdk_app_ulisp.bin --port COM5
 <ol>
 <li>
 <p>Enter this to create a <strong>list of numbers</strong>…</p>
-<pre><code class="language-text">( list 1 2 3 )
-</code></pre>
+<div class="example-wrap"><pre class="language-text">( list 1 2 3 )</pre></div>
 <p>This returns <strong><code>(1 2 3)</code></strong></p>
 </li>
 <li>
 <p>In Lisp, to <strong><code>car</code></strong> a list is to take the <strong>head of the list</strong>…</p>
-<pre><code class="language-text">( car ( list 1 2 3 ) )
-</code></pre>
+<div class="example-wrap"><pre class="language-text">( car ( list 1 2 3 ) )</pre></div>
 <p>This returns <strong><code>1</code></strong></p>
 <p>(It’s like deshelling a prawn)</p>
 </li>
 <li>
 <p>And to <strong><code>cdr</code></strong> a list is to take the <strong>tail of the list</strong>…</p>
-<pre><code class="language-text">( cdr ( list 1 2 3 ) )
-</code></pre>
+<div class="example-wrap"><pre class="language-text">( cdr ( list 1 2 3 ) )</pre></div>
 <p>This returns <strong><code>(2 3)</code></strong></p>
 <p><a href="https://sumikko-gurashi.fandom.com/wiki/Ebifurai_No_Shippo">(Everything except the head… like Ebifurai No Shippo)</a></p>
 </li>
@@ -319,25 +303,20 @@ cargo run flash sdk_app_ulisp.bin --port COM5
 <ol>
 <li>
 <p>We configure <strong>GPIO Pin 11 (Blue LED) for output</strong> (instead of input)…</p>
-<pre><code class="language-text">( pinmode 11 :output )
-</code></pre>
-</li>
+<div class="example-wrap"><pre class="language-text">( pinmode 11 :output )</pre></div></li>
 <li>
 <p>Set <strong>GPIO Pin 11 to High</strong>…</p>
-<pre><code class="language-text">( digitalwrite 11 :high )
-</code></pre>
+<div class="example-wrap"><pre class="language-text">( digitalwrite 11 :high )</pre></div>
 <p>The Blue LED switches off.</p>
 </li>
 <li>
 <p>Set <strong>GPIO Pin 11 to Low</strong>…</p>
-<pre><code class="language-text">( digitalwrite 11 :low )
-</code></pre>
+<div class="example-wrap"><pre class="language-text">( digitalwrite 11 :low )</pre></div>
 <p>The Blue LED switches on.</p>
 </li>
 <li>
 <p>And we <strong>sleep 1,000 milliseconds</strong> (1 second)…</p>
-<pre><code class="language-text">( delay 1000 )
-</code></pre>
+<div class="example-wrap"><pre class="language-text">( delay 1000 )</pre></div>
 <p><a href="https://youtu.be/9oLheWjzPcA"><strong>Watch the demo on YouTube</strong></a></p>
 </li>
 </ol>
@@ -345,14 +324,13 @@ cargo run flash sdk_app_ulisp.bin --port COM5
 <p><a href="http://www.ulisp.com/show?1AEK">(Based on the GPIO Commands from uLisp)</a></p>
 <h2 id="blinky-function" class="section-header"><a href="#blinky-function">3.3 Blinky Function</a></h2>
 <p>Now the show gets exciting: With uLisp we can define <strong>functions and loops</strong> at the command line… Just like <code>bash</code>!</p>
-<pre><code class="language-text">( defun blinky ()             \
+<div class="example-wrap"><pre class="language-text">( defun blinky ()             \
   ( pinmode 11 :output )      \
   ( loop                      \
    ( digitalwrite 11 :high )  \
    ( delay 1000 )             \
    ( digitalwrite 11 :low  )  \
-   ( delay 1000 )))
-</code></pre>
+   ( delay 1000 )))</pre></div>
 <p>Here’s what it means…</p>
 <p><img src="https://lupyuen.github.io/images/lisp-blinky.png" alt="Blinky Function" /></p>
 <p>Enter the lines above into the BL602 command line. Note that…</p>
@@ -370,8 +348,7 @@ cargo run flash sdk_app_ulisp.bin --port COM5
 </li>
 </ol>
 <p>We run the <code>blinky</code> function like so…</p>
-<pre><code class="language-text">( blinky )
-</code></pre>
+<div class="example-wrap"><pre class="language-text">( blinky )</pre></div>
 <p>And the <strong>LED blinks every second!</strong> </p>
 <p>(Restart the board to stop it, sorry)</p>
 <p><a href="https://youtu.be/TN4OaZNGjOA"><strong>Watch the demo on YouTube</strong></a></p>
@@ -512,8 +489,7 @@ cargo run flash sdk_app_ulisp.bin --port COM5
 <p><strong>When do we stop?</strong></p>
 <p>Our JavaScript code might get stuck <strong>waiting forever for a response</strong> from the BL602 command.</p>
 <p>For the <code>reboot</code> command we tweaked our JavaScript code to <strong>stop when it detects the special keywords</strong>…</p>
-<pre><code class="language-text">Init CLI
-</code></pre>
+<div class="example-wrap"><pre class="language-text">Init CLI</pre></div>
 <p>(Which means that BL602 has finished rebooting)</p>
 </li>
 <li>
@@ -529,32 +505,29 @@ cargo run flash sdk_app_ulisp.bin --port COM5
 <h2 id="sending-a-command-to-bl602" class="section-header"><a href="#sending-a-command-to-bl602">6.1 Sending a command to BL602</a></h2>
 <p>For convenience, we wrap the Web Serial API in a high-level JavaScript Async Function: <strong><code>runWebSerialCommand</code></strong></p>
 <p>Here’s how we call <code>runWebSerialCommand</code> to send the <strong><code>reboot</code> Command</strong> to BL602 and wait for the response <strong>“<code>Init CLI</code>”</strong>…</p>
-<pre><code class="language-javascript">//  Send the reboot command
+<div class="example-wrap"><pre class="language-javascript">//  Send the reboot command
 await runWebSerialCommand(
   &quot;reboot&quot;,   //  Command
   &quot;Init CLI&quot;  //  Expected Response
-);
-</code></pre>
+);</pre></div>
 <p>(This also sends Enter / Carriage Return after the <code>reboot</code> Command)</p>
 <p>We don’t actually send the <code>reboot</code> Command in Blockly (because it’s too disruptive).</p>
 <p>Instead we send to BL602 an <strong>Empty Command</strong> like so: <a href="https://github.com/AppKaki/blockly-ulisp/blob/master/demos/code/code.js#L644-L673"><code>code.js</code></a></p>
-<pre><code class="language-javascript">//  Send an empty command and 
+<div class="example-wrap"><pre class="language-javascript">//  Send an empty command and 
 //  check that BL602 responds with &quot;#&quot;
 await runWebSerialCommand(
   &quot;&quot;,  //  Command
   &quot;#&quot;  //  Expected Response
-);
-</code></pre>
+);</pre></div>
 <p>This is equivalent to <strong>hitting the Enter key</strong> and checking whether BL602 <strong>responds with the Command Prompt “<code>#</code>”</strong></p>
 <p>We do this <strong>before sending each command to BL602</strong>. (Just to be sure that BL602 is responsive)</p>
 <p>Now to send an actual command like “<code>( pinmode 11 :output )</code>”, we do this…</p>
-<pre><code class="language-javascript">//  Send the actual command but 
-//  don't wait for response
+<div class="example-wrap"><pre class="language-javascript">//  Send the actual command but 
+//  don&#39;t wait for response
 await runWebSerialCommand(
   command,  //  Command
-  null      //  Don't wait for response
-);
-</code></pre>
+  null      //  Don&#39;t wait for response
+);</pre></div>
 <p><strong>We don’t wait for the response</strong> from BL602, because some uLisp commands don’t return a response (<code>loop</code>) or they return a delayed response (<code>delay</code>).</p>
 <p>That’s why we send the Empty Command before the next command, to <strong>check whether the previous command has completed.</strong></p>
 <p>(In future we should make this more robust by adding a timeout)</p>
@@ -564,8 +537,7 @@ await runWebSerialCommand(
 <ul>
 <li>
 <p><strong><code>command</code></strong>: The command that will be sent to from the Web Browser to BL602, like…</p>
-<pre><code class="language-text">( pinmode 11 :output )
-</code></pre>
+<div class="example-wrap"><pre class="language-text">( pinmode 11 :output )</pre></div>
 <p>The function sends a Carriage Return after the command.</p>
 </li>
 <li>
@@ -575,29 +547,25 @@ await runWebSerialCommand(
 </li>
 </ul>
 <p>We start by checking whether the Web Serial API is supported by the web browser: <a href="https://github.com/AppKaki/blockly-ulisp/blob/master/demos/code/code.js#L675-L738"><code>code.js</code></a></p>
-<pre><code class="language-javascript">//  Web Serial Port
+<div class="example-wrap"><pre class="language-javascript">//  Web Serial Port
 var serialPort;
 
 //  Run a command on BL602 via Web Serial API and wait for the expectedResponse (if not null)
 //  Based on https://web.dev/serial/
 async function runWebSerialCommand(command, expectedResponse) {
   //  Check if Web Serial API is supported
-  if (!(&quot;serial&quot; in navigator)) { alert(&quot;Web Serial API is not supported&quot;); return; }
-</code></pre>
+  if (!(&quot;serial&quot; in navigator)) { alert(&quot;Web Serial API is not supported&quot;); return; }</pre></div>
 <p>Next we prompt the user to <strong>select the Serial Port</strong>, and we remember the selection…</p>
-<pre><code class="language-javascript">  //  Prompt user to select any serial port
+<div class="example-wrap"><pre class="language-javascript">  //  Prompt user to select any serial port
   if (!serialPort) { serialPort = await navigator.serial.requestPort(); }
-  if (!serialPort) { return; }
-</code></pre>
+  if (!serialPort) { return; }</pre></div>
 <p>We <strong>open the Serial Port at 2 Mbps</strong>, which is the standard Baud Rate for BL602 Firmware…</p>
-<pre><code class="language-javascript">  //  Wait for the serial port to open at 2 Mbps
-  await serialPort.open({ baudRate: 2000000 });
-</code></pre>
+<div class="example-wrap"><pre class="language-javascript">  //  Wait for the serial port to open at 2 Mbps
+  await serialPort.open({ baudRate: 2000000 });</pre></div>
 <p>In a while we shall set these to <strong>defer the closing of the Read / Write Streams</strong> for the Serial Port…</p>
-<pre><code class="language-javascript">  //  Capture the events for closing the read and write streams
+<div class="example-wrap"><pre class="language-javascript">  //  Capture the events for closing the read and write streams
   var writableStreamClosed = null;
-  var readableStreamClosed = null;
-</code></pre>
+  var readableStreamClosed = null;</pre></div>
 <p>Now we’re ready to send the Command String to the Serial Port…</p>
 <ol>
 <li>
@@ -613,22 +581,20 @@ async function runWebSerialCommand(command, expectedResponse) {
 <p>We <strong>get the <code>writer</code> Stream</strong> for writing our Command String to the Serial Port Output</p>
 </li>
 </ol>
-<pre><code class="language-javascript">  //  Send command to BL602
+<div class="example-wrap"><pre class="language-javascript">  //  Send command to BL602
   {
     //  Open a write stream
     console.log(&quot;Writing to BL602: &quot; + command + &quot;...&quot;);
     const textEncoder = new TextEncoderStream();
     writableStreamClosed = textEncoder.readable.pipeTo(serialPort.writable);
-    const writer = textEncoder.writable.getWriter();
-</code></pre>
+    const writer = textEncoder.writable.getWriter();</pre></div>
 <p>We <strong>write the Command String to the <code>writer</code> Stream</strong> (including the Carriage Return)…</p>
-<pre><code class="language-javascript">    //  Write the command
+<div class="example-wrap"><pre class="language-javascript">    //  Write the command
     await writer.write(command + &quot;\r&quot;); 
 
     //  Close the write stream
     writer.close();
-  }
-</code></pre>
+  }</pre></div>
 <p>And we <strong>close the <code>writer</code> Stream</strong> (Serial Port Output).</p>
 <p>If we’re expected to wait for the response from the Serial Port…</p>
 <ol>
@@ -645,42 +611,36 @@ async function runWebSerialCommand(command, expectedResponse) {
 <p>We <strong>get the <code>reader</code> Stream</strong> for reading response strings from the Serial Port Input</p>
 </li>
 </ol>
-<pre><code class="language-javascript">  //  Read response from BL602
+<div class="example-wrap"><pre class="language-javascript">  //  Read response from BL602
   if (expectedResponse) {
     //  Open a read stream
     console.log(&quot;Reading from BL602...&quot;);
     const textDecoder = new TextDecoderStream();
     readableStreamClosed = serialPort.readable.pipeTo(textDecoder.writable);
-    const reader = textDecoder.readable.getReader();
-</code></pre>
+    const reader = textDecoder.readable.getReader();</pre></div>
 <p>We loop forever <strong>reading strings from the <code>reader</code> Stream</strong> (Serial Port Input)…</p>
-<pre><code class="language-javascript">    //  Listen to data coming from the serial device
+<div class="example-wrap"><pre class="language-javascript">    //  Listen to data coming from the serial device
     while (true) {
       const { value, done } = await reader.read();
-      if (!done) { console.log(value); }
-</code></pre>
+      if (!done) { console.log(value); }</pre></div>
 <p>Until <strong>we find the expected response</strong>…</p>
-<pre><code class="language-javascript">      //  If the stream has ended, or the data contains expected response, we stop
+<div class="example-wrap"><pre class="language-javascript">      //  If the stream has ended, or the data contains expected response, we stop
       if (done || value.indexOf(expectedResponse) &gt;= 0) { break; }
-    }
-</code></pre>
+    }</pre></div>
 <p>And we <strong>close the <code>reader</code> Stream</strong> (Serial Port Input)…</p>
-<pre><code class="language-javascript">    //  Close the read stream
+<div class="example-wrap"><pre class="language-javascript">    //  Close the read stream
     reader.cancel();
-  }
-</code></pre>
+  }</pre></div>
 <p>Here’s the catch (literally)… Our <strong><code>reader</code> and <code>writer</code> Streams are not actually closed yet!</strong></p>
 <p>We need to <strong>wait for the <code>reader</code> and <code>writer</code> Streams to close</strong>…</p>
-<pre><code class="language-javascript">  //  Wait for read and write streams to be closed
+<div class="example-wrap"><pre class="language-javascript">  //  Wait for read and write streams to be closed
   if (readableStreamClosed) { await readableStreamClosed.catch(() =&gt; { /* Ignore the error */ }); }
-  if (writableStreamClosed) { await writableStreamClosed; }
-</code></pre>
+  if (writableStreamClosed) { await writableStreamClosed; }</pre></div>
 <p>Finally it’s safe to <strong>close the Serial Port</strong>…</p>
-<pre><code class="language-javascript">  //  Close the port
+<div class="example-wrap"><pre class="language-javascript">  //  Close the port
   await serialPort.close();
   console.log(&quot;runWebSerial: OK&quot;);
-}
-</code></pre>
+}</pre></div>
 <p>And that’s how Blockly sends a uLisp command to BL602 with the Web Serial API!</p>
 <p><img src="https://lupyuen.github.io/images/lisp-blinky2.png" alt="uLisp Blinky" /></p>
 <h1 id="porting-ulisp-to-bl602" class="section-header"><a href="#porting-ulisp-to-bl602">7 Porting uLisp to BL602</a></h1>
@@ -693,22 +653,18 @@ async function runWebSerialCommand(command, expectedResponse) {
 <p><strong>No Heap Memory, just Static Memory</strong></p>
 <p>uLisp needs only Static Memory, no Heap Memory. </p>
 <p>This makes uLisp highly portable across microcontrollers: <a href="https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L193-L194"><code>ulisp.c</code></a></p>
-<pre><code class="language-c">#define WORKSPACESIZE     8000  //  Cells (8*bytes)
+<div class="example-wrap"><pre class="language-c">#define WORKSPACESIZE     8000  //  Cells (8*bytes)
 #define SYMBOLTABLESIZE   1024  //  Bytes
 
 object Workspace[WORKSPACESIZE];
-char SymbolTable[SYMBOLTABLESIZE];
-</code></pre>
-</li>
+char SymbolTable[SYMBOLTABLESIZE];</pre></div></li>
 <li>
 <p><strong>Reading from BL602 Flash Memory is simpler</strong></p>
 <p>On Arduino we access Flash Memory by calling <code>PSTR</code>. </p>
 <p>That’s not necessary on BL602, so we stub out the Flash Memory functions: <a href="https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L9-L11"><code>ulisp.c</code></a></p>
-<pre><code class="language-c">#define PGM_P     const char *
+<div class="example-wrap"><pre class="language-c">#define PGM_P     const char *
 #define PROGMEM
-#define PSTR(s)   s
-</code></pre>
-</li>
+#define PSTR(s)   s</pre></div></li>
 <li>
 <p><strong><code>printf</code> works on BL602</strong></p>
 <p>No more <code>Serial.write</code>. (Nice!)</p>
@@ -720,16 +676,15 @@ char SymbolTable[SYMBOLTABLESIZE];
 <li>
 <p><strong>GPIO Functions</strong></p>
 <p>This GPIO code from the ESP32 Arduino version of uLisp: <a href="https://github.com/technoblogy/ulisp-esp/blob/master/ulisp-esp.ino#L3415-L3425"><code>ulisp-esp.ino</code></a></p>
-<pre><code class="language-c">/// Set the GPIO Output to High or Low
+<div class="example-wrap"><pre class="language-c">/// Set the GPIO Output to High or Low
 object *fn_digitalwrite (object *args, object *env) {
     //  Omitted: Parse the GPIO pin number and High / Low
     ...
 
     //  Set the GPIO output (from Arduino)
-    digitalWrite(pin, mode);
-</code></pre>
+    digitalWrite(pin, mode);</pre></div>
 <p>Was ported to BL602 by calling the <strong>BL602 GPIO Hardware Abstraction Layer</strong>: <a href="https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L3536-L3554"><code>ulisp.c</code></a></p>
-<pre><code class="language-c">/// Set the GPIO Output to High or Low
+<div class="example-wrap"><pre class="language-c">/// Set the GPIO Output to High or Low
 object *fn_digitalwrite (object *args, object *env) {
     //  Omitted: Parse the GPIO pin number and High / Low
     //  (Same as before)
@@ -740,8 +695,7 @@ object *fn_digitalwrite (object *args, object *env) {
         pin,  //  GPIO pin number
         mode  //  0 for low, 1 for high
     );
-    assert(rc == 0);  //  Halt on error
-</code></pre>
+    assert(rc == 0);  //  Halt on error</pre></div>
 <p><a href="https://lupyuen.github.io/articles/led#how-it-works-bl602-gpio">(More about BL602 GPIO HAL)</a></p>
 </li>
 <li>
@@ -749,7 +703,7 @@ object *fn_digitalwrite (object *args, object *env) {
 <p>BL602 runs on a <strong>multitasking operating system (FreeRTOS)</strong>.</p>
 <p>Thus we need to be respectful of other Background Tasks that may be running.</p>
 <p>Here’s how we implement the <strong>uLisp <code>delay</code> function</strong> on BL602: <a href="https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L3593-L3605"><code>ulisp.c</code></a></p>
-<pre><code class="language-c">/// Delay for specified number of milliseconds
+<div class="example-wrap"><pre class="language-c">/// Delay for specified number of milliseconds
 object *fn_delay (object *args, object *env) {
     (void) env;
     object *arg1 = first(args);
@@ -761,8 +715,7 @@ object *fn_delay (object *args, object *env) {
     //  Sleep for the number of ticks
     time_delay(ticks);
     return arg1;
-}
-</code></pre>
+}</pre></div>
 <p><strong><code>time_ms_to_ticks32</code> and <code>time_delay</code></strong> are multitasking functions provided by the <strong>NimBLE Porting Layer</strong>, implemented with FreeRTOS.</p>
 <p><a href="https://lupyuen.github.io/articles/lora2#multitask-with-nimble-porting-layer">(More about NimBLE Porting Layer)</a></p>
 </li>
@@ -770,13 +723,12 @@ object *fn_delay (object *args, object *env) {
 <p><strong>Loop and Yield</strong></p>
 <p>The BL602 implementation of the <strong>uLisp <code>loop</code> function</strong> is aware of multitasking too.</p>
 <p>We preempt the current task at every iteration of the loop: <a href="https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L1691-L1705"><code>ulisp.c</code></a></p>
-<pre><code class="language-c">/// &quot;loop&quot; implementation in uLisp
+<div class="example-wrap"><pre class="language-c">/// &quot;loop&quot; implementation in uLisp
 object *sp_loop (object *args, object *env) {
     object *start = args;
     for (;;) {
         //  Sleep 100 ticks in each iteration
-        time_delay(100);  //  TODO: Tune this
-</code></pre>
+        time_delay(100);  //  TODO: Tune this</pre></div>
 <p>(This is probably no good for time-sensitive uLisp functions… We will have to rethink this)</p>
 </li>
 <li>
@@ -784,17 +736,16 @@ object *sp_loop (object *args, object *env) {
 <p>On Arduino we read and parse the Serial Input, byte by byte.</p>
 <p>Whereas on BL602, the <strong>BL602 IoT SDK parses the Command Line</strong> for us.</p>
 <p>Here’s how we <strong>define “<code>(</code>” as a Command Keyword</strong> in BL602: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/ulisp/customer_app/sdk_app_ulisp/sdk_app_ulisp/demo.c#L45-L48"><code>demo.c</code></a></p>
-<pre><code class="language-c">/// List of commands. STATIC_CLI_CMD_ATTRIBUTE makes this(these) command(s) static
+<div class="example-wrap"><pre class="language-c">/// List of commands. STATIC_CLI_CMD_ATTRIBUTE makes this(these) command(s) static
 const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
     {
         &quot;(&quot;,
         &quot;Run the uLisp command&quot;,
         run_ulisp
     },
-};          
-</code></pre>
+};          </pre></div>
 <p>When we enter a command like <strong>“<code>( delay 1000 )</code>”</strong>, the command-line interface calls our function <code>run_ulisp</code> defined in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/ulisp/customer_app/sdk_app_ulisp/sdk_app_ulisp/demo.c#L9-L40"><code>demo.c</code></a></p>
-<pre><code class="language-c">/// Command-Line Buffer that will be passed to uLisp
+<div class="example-wrap"><pre class="language-c">/// Command-Line Buffer that will be passed to uLisp
 static char cmd_buf[1024] = { 0 };
 
 /// Run a uLisp command
@@ -822,13 +773,12 @@ void run_ulisp(char *buf, int len, int argc, char **argv) {
         //  Erase the buffer
         cmd_buf[0] = 0;
     }
-}
-</code></pre>
+}</pre></div>
 <p>The command-line interface splits the command line into multiple arguments (delimited by space), so we need to <strong>merge the arguments back into a single command line</strong>.</p>
 <p>(Yeah, not so efficient)</p>
 <p>We support <strong>continuation of command lines</strong> when the command line ends with <strong>“<code>\</code>”</strong></p>
 <p>We pass the merged command line to <strong><code>execute_ulisp</code></strong> defined in <a href="https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L5363-L5370"><code>ulisp.c</code></a></p>
-<pre><code class="language-c">/// Console input buffer, position and length
+<div class="example-wrap"><pre class="language-c">/// Console input buffer, position and length
 const char *input_buf = NULL;
 int input_pos = 0;
 int input_len = 0;
@@ -842,11 +792,10 @@ void execute_ulisp(const char *line) {
 
     //  Start the uLisp Interpreter
     loop_ulisp();
-}
-</code></pre>
+}</pre></div>
 <p>Here we <strong>save the merged command line into a buffer</strong> and start the uLisp Interpreter.</p>
 <p>Lastly we modified the <strong><code>gserial</code></strong> function in uLisp to read the command line from the buffer (instead of Serial Input): <a href="https://github.com/lupyuen/ulisp-bl602/blob/master/src/ulisp.c#L5085-L5124"><code>ulisp.c</code></a></p>
-<pre><code class="language-c">/// Return the next char from the console input buffer
+<div class="example-wrap"><pre class="language-c">/// Return the next char from the console input buffer
 int gserial() {
     if (LastChar) {
         //  Return the previous char
@@ -856,13 +805,11 @@ int gserial() {
     }  
     if (input_pos &gt;= input_len) {
         //  No more chars to read
-        return '\n';
+        return &#39;\n&#39;;
     }
     //  Return next char from the buffer
     return input_buf[input_pos++];
-}
-</code></pre>
-</li>
+}</pre></div></li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/lisp-build.png" alt="Porting uLisp to BL602" /></p>
 <h2 id="missing-ulisp-features" class="section-header"><a href="#missing-ulisp-features">7.1 Missing uLisp Features</a></h2>
@@ -1103,110 +1050,99 @@ int gserial() {
 </ol>
 <p><em>How do we define a uLisp Code Generator?</em></p>
 <p>Here’s how we define the <strong><code>forever</code> Code Generator</strong>: <a href="https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/lisp_functions.js#L40-L49"><code>lisp_functions.js</code></a></p>
-<pre><code class="language-c">//  Emit uLisp code for the &quot;forever&quot; block. 
+<div class="example-wrap"><pre class="language-c">//  Emit uLisp code for the &quot;forever&quot; block. 
 //  Inspired by MakeCode &quot;forever&quot; and Arduino &quot;loop&quot;.
-Blockly.Lisp['forever'] = function(block) {
+Blockly.Lisp[&#39;forever&#39;] = function(block) {
   //  Convert the code inside the &quot;forever&quot; block into uLisp
-  var statements_stmts = Blockly.Lisp.statementToCode(block, 'STMTS');
+  var statements_stmts = Blockly.Lisp.statementToCode(block, &#39;STMTS&#39;);
   var code = statements_stmts;
 
   //  Wrap the converted uLisp code with &quot;loop&quot;
   code = [
-    '( loop  ',
-    code + ')',
-  ].join('\n');
+    &#39;( loop  &#39;,
+    code + &#39;)&#39;,
+  ].join(&#39;\n&#39;);
 
   //  Return the wrapped code
   return code;
-};
-</code></pre>
+};</pre></div>
 <p>This JavaScript function emits a <strong>uLisp loop</strong> that wraps the code inside the <code>forever</code> block like so…</p>
-<pre><code class="language-text">( loop
+<div class="example-wrap"><pre class="language-text">( loop
     ...Code inside the loop block...
-)
-</code></pre>
+)</pre></div>
 <p>And here’s the <strong><code>digital write</code> Code Generator</strong>: <a href="https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/lisp_functions.js#L79-L89"><code>lisp_functions.js</code></a></p>
-<pre><code class="language-c">//  Emit uLisp code for the &quot;digtial write&quot; block. 
-Blockly.Lisp['digital_write_pin'] = function(block) {
+<div class="example-wrap"><pre class="language-c">//  Emit uLisp code for the &quot;digtial write&quot; block. 
+Blockly.Lisp[&#39;digital_write_pin&#39;] = function(block) {
   //  Fetch the GPIO Pin Number (e.g. 11)
-  var dropdown_pin = block.getFieldValue('PIN');
+  var dropdown_pin = block.getFieldValue(&#39;PIN&#39;);
 
   //  Fetch the GPIO Output: &quot;:high&quot; or &quot;low&quot;
-  var dropdown_value = block.getFieldValue('VALUE');
+  var dropdown_value = block.getFieldValue(&#39;VALUE&#39;);
 
   //  Compose the uLisp code to set the GPIO Pin mode and output.
   //  TODO: Call init_out only once,
   var code = [
-    '( pinmode ' + dropdown_pin + ' :output )',
-    '( digitalwrite ' + dropdown_pin + ' ' + dropdown_value + ' )',
-    ''
-  ].join('\n');  
+    &#39;( pinmode &#39; + dropdown_pin + &#39; :output )&#39;,
+    &#39;( digitalwrite &#39; + dropdown_pin + &#39; &#39; + dropdown_value + &#39; )&#39;,
+    &#39;&#39;
+  ].join(&#39;\n&#39;);  
 
   //  Return the uLisp code
   return code;
-};
-</code></pre>
+};</pre></div>
 <p>This JavaScript function emits uLisp code that <strong>sets the GPIO Pin mode and output</strong> like so…</p>
-<pre><code class="language-text">( pinmode 11 :output )
-( digitalwrite 11 :high )
-</code></pre>
-<h2 id="missing-code-generators" class="section-header"><a href="#missing-code-generators">9.1 Missing Code Generators</a></h2>
+<div class="example-wrap"><pre class="language-text">( pinmode 11 :output )
+( digitalwrite 11 :high )</pre></div><h2 id="missing-code-generators" class="section-header"><a href="#missing-code-generators">9.1 Missing Code Generators</a></h2>
 <p><em>What about the missing uLisp Code Generators?</em></p>
 <p>If the <strong>Community could help</strong> to fill in the <strong>missing uLisp Code Generators</strong>… That would be incredibly awesome! 🙏 👍 😀</p>
 <ol>
 <li>
 <p><strong>Expressions</strong></p>
 <p>This <a href="https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/math.js#L18-L485"><strong>Expression Code Generator</strong></a> should emit this uLisp Code…</p>
-<pre><code class="language-text">( / ( - 7 1 ) ( - 4 2 ) )
-</code></pre>
+<div class="example-wrap"><pre class="language-text">( / ( - 7 1 ) ( - 4 2 ) )</pre></div>
 <p><a href="http://www.ulisp.com/show?1ACY">(From uLisp)</a></p>
 </li>
 <li>
 <p><strong>Strings</strong></p>
 <p>This <a href="https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/text.js#L18-L343"><strong>String Code Generator</strong></a> should emit this uLisp Code…</p>
-<pre><code class="language-text">&quot;This is a string&quot;
-</code></pre>
+<div class="example-wrap"><pre class="language-text">&quot;This is a string&quot;</pre></div>
 <p><a href="http://www.ulisp.com/show?1LRV">(From uLisp)</a></p>
 </li>
 <li>
 <p><strong>Lists</strong></p>
 <p>This <a href="https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/lists.js#L18-L447"><strong>List Code Generator</strong></a> should emit this uLisp Code…</p>
-<pre><code class="language-text">( first '( 1 2 3 ) )
-</code></pre>
+<div class="example-wrap"><pre class="language-text">( first &#39;( 1 2 3 ) )</pre></div>
 <p><a href="http://www.ulisp.com/show?1AHT">(From uLisp)</a></p>
 </li>
 <li>
 <p><strong>If</strong></p>
 <p>This <a href="https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/logic.js#L18-L127"><strong>If Code Generator</strong></a> should emit this uLisp Code…</p>
-<pre><code class="language-text">( if ( &lt; ( analogread 0 ) 512 )
+<div class="example-wrap"><pre class="language-text">( if ( &lt; ( analogread 0 ) 512 )
     ( digitalwrite 2 t )
     ( digitalwrite 3 t )
-)
-</code></pre>
+)</pre></div>
 <p><a href="http://www.ulisp.com/show?1AJM">(From uLisp)</a></p>
 </li>
 <li>
 <p><strong>For Loops</strong></p>
 <p>This <a href="https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/loops.js#L62-L169"><strong>For Loop Code Generator</strong></a> should emit this uLisp Code…</p>
-<pre><code class="language-text">( dotimes ( pin 3 )
+<div class="example-wrap"><pre class="language-text">( dotimes ( pin 3 )
     ( digitalwrite pin :high ) 
-)
-</code></pre>
+)</pre></div>
 <p><a href="http://www.ulisp.com/show?2I01">(From uLisp)</a></p>
 </li>
 <li>
 <p><strong>While Loops</strong></p>
 <p>This <a href="https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/loops.js#L18-L60"><strong>While Loop Code Generator</strong></a> should emit this uLisp Code…</p>
-<pre><code class="language-text">( loop
+<div class="example-wrap"><pre class="language-text">( loop
     ( unless ( digitalread 8 ) ( return ) )
-)
-</code></pre>
+)</pre></div>
 <p><a href="http://www.ulisp.com/show?2I01">(From uLisp)</a></p>
 </li>
 <li>
 <p><strong>Variables</strong></p>
 <p>This <a href="https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/variables.js#L18-L32"><strong>Variable Code Generator</strong></a> should emit this uLisp Code…</p>
-<pre><code class="language-text">( defvar led 11 )
+<div class="example-wrap"><pre class="language-text">( defvar led 11 )
 
 ( setq led 11 )
 
@@ -1215,15 +1151,13 @@ Blockly.Lisp['digital_write_pin'] = function(block) {
     ...
     )
     body
-)
-</code></pre>
+)</pre></div>
 <p><a href="http://www.ulisp.com/show?1AEK">(From uLisp)</a></p>
 </li>
 <li>
 <p><strong>Functions</strong></p>
 <p>This <a href="https://github.com/AppKaki/blockly-ulisp/blob/master/generators/lisp/procedures.js#L18-L111"><strong>Function Code Generator</strong></a> should emit this uLisp Code…</p>
-<pre><code class="language-text">( defun function_name ( ... ) ( ... ) )
-</code></pre>
+<div class="example-wrap"><pre class="language-text">( defun function_name ( ... ) ( ... ) )</pre></div>
 <p><a href="http://www.ulisp.com/show?1AGL">(From uLisp)</a></p>
 </li>
 <li>

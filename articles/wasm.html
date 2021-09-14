@@ -110,13 +110,12 @@
 <p><a href="https://emscripten.org/"><strong>Emscripten compiles C programs into WebAssembly</strong></a> so that we can run them in a Web Browser.</p>
 <p>(Think of WebAssembly as a kind of Machine Code that runs natively in any Web Browser)</p>
 <p>Here’s how we compile our uLisp Interpreter <code>ulisp.c</code> <a href="https://lupyuen.github.io/articles/lisp">(from the last article)</a> with the <strong>Emscripten Compiler <code>emcc</code></strong>…</p>
-<pre><code class="language-bash">emcc -g -s WASM=1 \
+<div class="example-wrap"><pre class="language-bash">emcc -g -s WASM=1 \
     src/ulisp.c wasm/wasm.c \
     -o ulisp.html \
     -I include \
-    -s &quot;EXPORTED_FUNCTIONS=[ '_setup_ulisp', '_execute_ulisp', '_clear_simulation_events', '_get_simulation_events' ]&quot; \
-    -s &quot;EXTRA_EXPORTED_RUNTIME_METHODS=[ 'cwrap', 'allocate', 'intArrayFromString', 'UTF8ToString' ]&quot;
-</code></pre>
+    -s &quot;EXPORTED_FUNCTIONS=[ &#39;_setup_ulisp&#39;, &#39;_execute_ulisp&#39;, &#39;_clear_simulation_events&#39;, &#39;_get_simulation_events&#39; ]&quot; \
+    -s &quot;EXTRA_EXPORTED_RUNTIME_METHODS=[ &#39;cwrap&#39;, &#39;allocate&#39;, &#39;intArrayFromString&#39;, &#39;UTF8ToString&#39; ]&quot;</pre></div>
 <p>(See the Makefile <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm.mk"><strong><code>wasm.mk</code></strong></a>. More about <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm/wasm.c"><strong><code>wasm.c</code></strong></a> in a while)</p>
 <p>C programs that call the <strong>Standard C Libraries</strong> should build OK with Emscripten: <code>printf</code>, <code>&lt;stdio.h&gt;</code>, <code>&lt;stdlib.h&gt;</code>, <code>&lt;string.h&gt;</code>, … </p>
 <p>The Emscripten Compiler generates 3 output files…</p>
@@ -134,8 +133,7 @@
 <p><a href="https://emscripten.org/docs/getting_started/downloads.html">(Instructions for installing Emscripten)</a></p>
 <p><img src="https://lupyuen.github.io/images/lisp-wasm.png" alt="Compiling uLisp to WebAssembly with Emscripten" /></p>
 <p><em>What are the <code>EXPORTED_FUNCTIONS</code>?</em></p>
-<pre><code class="language-text">-s &quot;EXPORTED_FUNCTIONS=[ '_setup_ulisp', '_execute_ulisp', '_clear_simulation_events', '_get_simulation_events' ]&quot;
-</code></pre>
+<div class="example-wrap"><pre class="language-text">-s &quot;EXPORTED_FUNCTIONS=[ &#39;_setup_ulisp&#39;, &#39;_execute_ulisp&#39;, &#39;_clear_simulation_events&#39;, &#39;_get_simulation_events&#39; ]&quot;</pre></div>
 <p>These are the C functions from our uLisp Interpreter <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/src/ulisp.c#L5312-L5384"><code>ulisp.c</code></a> that will be <strong>exported to JavaScript</strong>. </p>
 <p>Our uLisp Interpreter won’t do anything meaningful in a Web Browser unless these 2 functions are called…</p>
 <ol>
@@ -149,7 +147,7 @@
 <p>(We’ll see the other 2 functions later)</p>
 <p><em>How do we call the <code>EXPORTED_FUNCTIONS</code> from JavaScript?</em></p>
 <p>Here’s how we call the WebAssembly functions <code>_setup_ulisp</code> and <code>_execute_ulisp</code> from JavaScript: <a href="https://github.com/lupyuen/ulisp-bl602/blob/f520d0d8bb1583828a0ab456c90df187cd1eef68/docs/ulisp.html#L1300-L1321"><code>ulisp.html</code></a></p>
-<pre><code class="language-javascript">/// Wait for emscripten to be initialised
+<div class="example-wrap"><pre class="language-javascript">/// Wait for emscripten to be initialised
 Module.onRuntimeInitialized = function() {
   //  Init uLisp interpreter
   Module._setup_ulisp();
@@ -165,17 +163,15 @@ Module.onRuntimeInitialized = function() {
 
   //  Free the WebAssembly memory allocated for the script
   Module._free(ptr);
-};
-</code></pre>
+};</pre></div>
 <p><a href="https://emscripten.org/docs/porting/connecting_cpp_and_javascript/Interacting-with-code.html">(More about <code>allocate</code> and <code>free</code>)</a></p>
 <p>To run this in a Web Browser, we browse to <code>ulisp.html</code> in a Local Web Server. (Sorry, WebAssembly won’t run from a Local Filesystem)</p>
 <p>Our uLisp Interpreter in WebAssembly shows the result…</p>
-<pre><code class="language-text">(1 2 3)
-</code></pre>
+<div class="example-wrap"><pre class="language-text">(1 2 3)</pre></div>
 <p><img src="https://lupyuen.github.io/images/lisp-wasm2.png" alt="Testing uLisp compiled with Emscripten" /></p>
 <p><em>But <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/src/ulisp.c"><code>ulisp.c</code></a> contains references to the BL602 IoT SDK, so it won’t compile for WebAssembly?</em></p>
 <p>For now, we replace the <strong>hardware-specific functions for BL602</strong> by Stub Functions (which will be fixed in a while)…</p>
-<pre><code class="language-c">#ifdef __EMSCRIPTEN__  //  If building for WebAssembly...
+<div class="example-wrap"><pre class="language-c">#ifdef __EMSCRIPTEN__  //  If building for WebAssembly...
 //  Use stubs for BL602 functions, will fix later.
 int bl_gpio_enable_input(uint8_t pin, uint8_t pullup, uint8_t pulldown) 
     { return 0; }
@@ -191,8 +187,7 @@ void time_delay(uint32_t millisec)
 #else                    //  If building for BL602...
 #include &lt;bl_gpio.h&gt;     //  For BL602 GPIO Hardware Abstraction Layer
 #include &quot;nimble_npl.h&quot;  //  For NimBLE Porting Layer (mulitasking functions)
-#endif  //  __EMSCRIPTEN__
-</code></pre>
+#endif  //  __EMSCRIPTEN__</pre></div>
 <p>The symbol <code>__EMSCRIPTEN__</code> is defined when we use the Emscripten compiler.</p>
 <p>(Yep it’s possible to reuse the same <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/src/ulisp.c"><code>ulisp.c</code></a> for BL602 and WebAssembly!)</p>
 <p><img src="https://lupyuen.github.io/images/wasm-stub.png" alt="BL602 IoT SDK stubbed out" /></p>
@@ -209,23 +204,21 @@ void time_delay(uint32_t millisec)
 </li>
 </ol>
 <p>Here’s how we add the HTML Text Box: <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.html#L1242-L1248"><code>ulisp.html</code></a></p>
-<pre><code class="language-html">&lt;!-- HTML Text Box for input --&gt;
+<div class="example-wrap"><pre class="language-html">&lt;!-- HTML Text Box for input --&gt;
 &lt;textarea id=&quot;input&quot;&gt;&lt;/textarea&gt;
 
 &lt;!-- HTML Button that runs the uLisp script --&gt;
-&lt;input id=&quot;run&quot; type=&quot;button&quot; value=&quot;Run&quot; onclick=&quot;runScript()&quot;&gt;&lt;/input&gt;
-</code></pre>
+&lt;input id=&quot;run&quot; type=&quot;button&quot; value=&quot;Run&quot; onclick=&quot;runScript()&quot;&gt;&lt;/input&gt;</pre></div>
 <p>Also we add a <strong>“<code>Run</code>” Button</strong> that will execute the uLisp Script entered into the Text Box.</p>
 <p>Let’s refactor our JavaScript to <strong>separate the uLisp Initialisation and Execution</strong>.</p>
 <p>Here’s how we initialise the uLisp Interpreter: <a href="https://github.com/lupyuen/ulisp-bl602/blob/88e4fb6fad8025ceb7a88ff7154db053cc2ab861/docs/ulisp.html#L1324-L1350"><code>ulisp.html</code></a></p>
-<pre><code class="language-javascript">/// Wait for emscripten to be initialised
+<div class="example-wrap"><pre class="language-javascript">/// Wait for emscripten to be initialised
 Module.onRuntimeInitialized = function() {
   //  Init uLisp interpreter
   Module._setup_ulisp();
-};
-</code></pre>
+};</pre></div>
 <p>In the <strong><code>runScript</code></strong> function (called by the “<code>Run</code>” Button), we grab the uLisp Script from the text box and run it…</p>
-<pre><code class="language-javascript">/// Run the script in the input box
+<div class="example-wrap"><pre class="language-javascript">/// Run the script in the input box
 function runScript() {
   //  Get the uLisp script from the input text box
   var scr = document.getElementById(&quot;input&quot;).value;
@@ -238,8 +231,7 @@ function runScript() {
 
   //  Free the WebAssembly memory allocated for the script
   Module._free(ptr);
-}
-</code></pre>
+}</pre></div>
 <p>And our <strong>uLisp REPL in WebAssembly</strong> is done!</p>
 <ul>
 <li>
@@ -258,26 +250,24 @@ function runScript() {
 <p>First we save this sketchy image of a PineCone BL602 Board as a <strong>PNG file: <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/pinecone.png"><code>pinecone.png</code></a></strong></p>
 <p><img src="https://lupyuen.github.io/images/wasm-photoshop.png" alt="Creating the BL602 simulator image" /></p>
 <p>We <strong>load the PNG file</strong> in our web page: <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.html#L1336-L1360"><code>ulisp.html</code></a></p>
-<pre><code class="language-javascript">/// Wait for emscripten to be initialised
+<div class="example-wrap"><pre class="language-javascript">/// Wait for emscripten to be initialised
 Module.onRuntimeInitialized = function() {
   //  Omitted: Init uLisp interpreter
   ...
   // Load the simulator pic and render it
   const image = new Image();
   image.onload = renderSimulator;  //  Draw when image has loaded
-  image.src = 'pinecone.png';      //  Image to be loaded
-};
-</code></pre>
+  image.src = &#39;pinecone.png&#39;;      //  Image to be loaded
+};</pre></div>
 <p>This code calls the <strong><code>renderSimulator</code></strong> function when our BL602 image has been loaded into memory.</p>
 <p>Emscripten has helpfully generated a <strong>HTML Canvas</strong> in <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.html#L1238-L1240"><code>ulisp.html</code></a> …</p>
-<pre><code class="language-html">&lt;canvas id=&quot;canvas&quot; class=&quot;emscripten&quot; oncontextmenu=&quot;event.preventDefault()&quot; tabindex=-1&gt;&lt;/canvas&gt;
-</code></pre>
+<div class="example-wrap"><pre class="language-html">&lt;canvas id=&quot;canvas&quot; class=&quot;emscripten&quot; oncontextmenu=&quot;event.preventDefault()&quot; tabindex=-1&gt;&lt;/canvas&gt;</pre></div>
 <p>In the <strong><code>renderSimulator</code></strong> function, let’s <strong>render our BL602 image</strong> onto the HTML Canvas: <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.html#L1348-L1360"><code>ulisp.html</code></a></p>
-<pre><code class="language-javascript">/// Render the simulator pic. Based on https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage
+<div class="example-wrap"><pre class="language-javascript">/// Render the simulator pic. Based on https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage
 function renderSimulator() {
   //  Get the HTML canvas and context
-  const canvas = document.getElementById('canvas');
-  const ctx = canvas.getContext('2d');
+  const canvas = document.getElementById(&#39;canvas&#39;);
+  const ctx = canvas.getContext(&#39;2d&#39;);
 
   //  Resize the canvas
   canvas.width  = 400;
@@ -285,30 +275,27 @@ function renderSimulator() {
 
   //  Draw the image to fill the canvas
   ctx.drawImage(this, 0, 0, canvas.width, canvas.height);
-}
-</code></pre>
+}</pre></div>
 <p>Our <strong>rendered BL602 Simulator</strong> looks like this…</p>
 <p><img src="https://lupyuen.github.io/images/wasm-image.png" alt="Rendering the BL602 simulator image" /></p>
 <p><em>What about the LED?</em></p>
 <p>To simulate the LED switching on, let’s draw a <strong>blue rectangle</strong> onto the HTML Canvas: <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.html#L1447-L1470"><code>ulisp.html</code></a></p>
-<pre><code class="language-javascript">//  Get the HTML Canvas Context
-const ctx = document.getElementById('canvas').getContext('2d');
+<div class="example-wrap"><pre class="language-javascript">//  Get the HTML Canvas Context
+const ctx = document.getElementById(&#39;canvas&#39;).getContext(&#39;2d&#39;);
 
 //  LED On: Set the fill colour to Blue
-ctx.fillStyle = '#B0B0FF';  //  Blue
+ctx.fillStyle = &#39;#B0B0FF&#39;;  //  Blue
 
 //  Draw the LED colour
-ctx.fillRect(315, 116, 35, 74);
-</code></pre>
+ctx.fillRect(315, 116, 35, 74);</pre></div>
 <p>Our <strong>rendered BL602 LED</strong> looks good…</p>
 <p><img src="https://lupyuen.github.io/images/wasm-led.png" alt="Rendering the LED" /></p>
 <p>And to simulate the LED switching off, we draw a <strong>grey rectangle</strong>: <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.html#L1447-L1470"><code>ulisp.html</code></a></p>
-<pre><code class="language-javascript">//  LED Off: Set the fill colour to Grey
-ctx.fillStyle = '#CCCCCC';  //  Grey
+<div class="example-wrap"><pre class="language-javascript">//  LED Off: Set the fill colour to Grey
+ctx.fillStyle = &#39;#CCCCCC&#39;;  //  Grey
 
 //  Draw the LED colour
-ctx.fillRect(315, 116, 35, 74);
-</code></pre>
+ctx.fillRect(315, 116, 35, 74);</pre></div>
 <p>Now we wire up the Simulated BL602 LED to uLisp!</p>
 <h1 id="simulate-bl602-hardware" class="section-header"><a href="#simulate-bl602-hardware">4 Simulate BL602 Hardware</a></h1>
 <p>Our story so far…</p>
@@ -326,14 +313,12 @@ ctx.fillRect(315, 116, 35, 74);
 <p><img src="https://lupyuen.github.io/images/lisp-simulator.png" alt="BL602 Simulator Design" /></p>
 <p><em>What’s a BL602 Simulation Event?</em></p>
 <p>When uLisp needs to <strong>set the GPIO Output</strong> to High or Low (to flip an LED On/Off)…</p>
-<pre><code class="language-text">( digitalwrite 11 :high )
-</code></pre>
+<div class="example-wrap"><pre class="language-text">( digitalwrite 11 :high )</pre></div>
 <p>It sends a <strong>Simulation Event</strong> to the BL602 Simulator (in JSON format)…</p>
-<pre><code class="language-json">{ &quot;gpio_output_set&quot;: { 
+<div class="example-wrap"><pre class="language-json">{ &quot;gpio_output_set&quot;: { 
   &quot;pin&quot;: 11, 
   &quot;value&quot;: 1 
-} }
-</code></pre>
+} }</pre></div>
 <p>Which is handled by the BL602 Simulator to <strong>flip the Simulated LED</strong> on or off.</p>
 <p>(Yes the blue LED we’ve seen earlier)</p>
 <p><em>Is uLisp directly controlling the BL602 Simulator?</em></p>
@@ -343,35 +328,30 @@ ctx.fillRect(315, 116, 35, 74);
 <p>uLisp generates <strong>Simulation Events for time delays</strong>. To handle such events, our BL602 Simulator pauses for the specified duration.</p>
 <p>(It’s like playing a MIDI Stream)</p>
 <p>Hence this uLisp script…</p>
-<pre><code class="language-text">( delay 1000 )
-</code></pre>
+<div class="example-wrap"><pre class="language-text">( delay 1000 )</pre></div>
 <p>Will generate this Simulation Event…</p>
-<pre><code class="language-json">{ &quot;time_delay&quot;: { &quot;ticks&quot;: 1000 } }
-</code></pre>
+<div class="example-wrap"><pre class="language-json">{ &quot;time_delay&quot;: { &quot;ticks&quot;: 1000 } }</pre></div>
 <p><em>What’s a JSON Stream of Simulation Events?</em></p>
 <p>To simulate a uLisp program on the BL602 Simulator, we shall pass an <strong>array of Simulation Events</strong> (in JSON format) from uLisp to the BL602 Simulator.</p>
 <p>This (partial) uLisp program that sets the GPIO Output and waits 1 second…</p>
-<pre><code class="language-text">( list
+<div class="example-wrap"><pre class="language-text">( list
   ( digitalwrite 11 :high )
   ( delay 1000 )
   ...
-)
-</code></pre>
+)</pre></div>
 <p>Will generate this <strong>JSON Stream of Simulation Events</strong>…</p>
-<pre><code class="language-json">[ { &quot;gpio_output_set&quot;: { &quot;pin&quot;: 11, &quot;value&quot;: 1 } }, 
+<div class="example-wrap"><pre class="language-json">[ { &quot;gpio_output_set&quot;: { &quot;pin&quot;: 11, &quot;value&quot;: 1 } }, 
   { &quot;time_delay&quot;: { &quot;ticks&quot;: 1000 } }, 
   ... 
-]
-</code></pre>
+]</pre></div>
 <p>That will simulate a blinking BL602 LED (eventually).</p>
 <h1 id="add-a-simulation-event" class="section-header"><a href="#add-a-simulation-event">5 Add a Simulation Event</a></h1>
 <p>Let’s watch how uLisp <strong>adds an event</strong> to the JSON Stream of Simulation Events.</p>
 <p>We <strong>define a string buffer</strong> for the JSON array of events: <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm/wasm.c#L8-L17"><code>wasm.c</code></a></p>
-<pre><code class="language-c">/// Buffer for JSON Stream of Simulation Events
-static char events[1024] = &quot;[]&quot;;
-</code></pre>
+<div class="example-wrap"><pre class="language-c">/// Buffer for JSON Stream of Simulation Events
+static char events[1024] = &quot;[]&quot;;</pre></div>
 <p>To <strong>append a GPIO Output Event</strong> to the buffer, uLisp calls the function <strong><code>bl_gpio_output_set</code></strong> from <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm/wasm.c#L60-L77"><code>wasm.c</code></a></p>
-<pre><code class="language-c">/// Add a GPIO event to set output (0 for low, 1 for high)
+<div class="example-wrap"><pre class="language-c">/// Add a GPIO event to set output (0 for low, 1 for high)
 int bl_gpio_output_set(uint8_t pin, uint8_t value) {
     //  How many chars in the Simulation Events buffer to keep
     int keep = 
@@ -390,19 +370,16 @@ int bl_gpio_output_set(uint8_t pin, uint8_t value) {
         value
     );
     return 0; 
-}
-</code></pre>
+}</pre></div>
 <p>This code appends a JSON event to the string buffer, which will look like this…</p>
-<pre><code class="language-json">[, { &quot;gpio_output_set&quot;: { &quot;pin&quot;: 11, &quot;value&quot;: 1 } } ]
-</code></pre>
+<div class="example-wrap"><pre class="language-json">[, { &quot;gpio_output_set&quot;: { &quot;pin&quot;: 11, &quot;value&quot;: 1 } } ]</pre></div>
 <p>We’ll fix the leading comma “<code>,</code>” in a while.</p>
 <p><img src="https://lupyuen.github.io/images/wasm-add.png" alt="Add an event to the JSON Stream of Simulation Events" /></p>
 <p><em>How is <code>bl_gpio_output_set</code> called by uLisp?</em></p>
 <p>When we enter this uLisp script to set the GPIO Output…</p>
-<pre><code class="language-text">( digitalwrite 11 :high )
-</code></pre>
+<div class="example-wrap"><pre class="language-text">( digitalwrite 11 :high )</pre></div>
 <p>The uLisp Interpreter calls <code>fn_digitalwrite</code> defined in <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/src/ulisp.c#L3544-L3562"><code>ulisp.c</code></a> …</p>
-<pre><code class="language-c">/// Set the GPIO Output to High or Low
+<div class="example-wrap"><pre class="language-c">/// Set the GPIO Output to High or Low
 object *fn_digitalwrite (object *args, object *env) {
     //  Omitted: Parse the GPIO pin number and High / Low
     ...
@@ -410,8 +387,7 @@ object *fn_digitalwrite (object *args, object *env) {
     int rc = bl_gpio_output_set(
         pin,  //  GPIO pin number
         mode  //  0 for low, 1 for high
-    );
-</code></pre>
+    );</pre></div>
 <p>Which calls our function <code>bl_gpio_output_set</code> to add the GPIO Output Event.</p>
 <p><em>Will this work when running on real BL602 hardware?</em></p>
 <p>Yep it does! <code>bl_gpio_output_set</code> is a real function defined in the <strong>BL602 IoT SDK</strong> for setting the GPIO Output.</p>
@@ -419,22 +395,21 @@ object *fn_digitalwrite (object *args, object *env) {
 <h1 id="get-the-simulation-events" class="section-header"><a href="#get-the-simulation-events">6 Get the Simulation Events</a></h1>
 <p><em>uLisp (in WebAssembly) has generated the JSON Stream of BL602 Simulation Events. How will our BL602 Simulator (in JavaScript) fetch the Simulation Events?</em></p>
 <p>To <strong>fetch the Simulation Events</strong>, we expose a getter function in WebAssembly like so: <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm/wasm.c#L24-L32"><code>wasm.c</code></a></p>
-<pre><code class="language-c">/// Return the JSON Stream of Simulation Events
+<div class="example-wrap"><pre class="language-c">/// Return the JSON Stream of Simulation Events
 const char *get_simulation_events(void) {
-  assert(events[0] == '[');
-  assert(events[strlen(events) - 1] == ']');
+  assert(events[0] == &#39;[&#39;);
+  assert(events[strlen(events) - 1] == &#39;]&#39;);
 
   //  Erase the leading comma: &quot;[,...]&quot; becomes &quot;[ ...]&quot;
-  if (events[1] == ',') { events[1] = ' '; }
+  if (events[1] == &#39;,&#39;) { events[1] = &#39; &#39;; }
   return events;
-}
-</code></pre>
+}</pre></div>
 <p><strong><code>get_simulation_events</code></strong> returns the WebAssembly string buffer that contains the Simulation Events (in JSON format).</p>
 <p><img src="https://lupyuen.github.io/images/wasm-stream2.png" alt="Clearing and getting Simulation Events" /></p>
 <p>Switching over from uLisp WebAssembly to our <strong>BL602 Simulator in JavaScript</strong>…</p>
 <p>Remember the <strong><code>runScript</code></strong> function we wrote for our uLisp REPL?</p>
 <p>Let’s rewrite <code>runScript</code> to <strong>fetch the Simulation Events</strong> by calling <code>get_simulation_events</code>. From <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.html#L1362-L1407"><code>ulisp.html</code></a> …</p>
-<pre><code class="language-javascript">/// JSON Stream of Simulation Events emitted by uLisp Interpreter. Looks like...
+<div class="example-wrap"><pre class="language-javascript">/// JSON Stream of Simulation Events emitted by uLisp Interpreter. Looks like...
 ///  [ { &quot;gpio_output_set&quot;: { &quot;pin&quot;: 11, &quot;value&quot;: 1 } }, 
 ///    { &quot;time_delay&quot;: { &quot;ticks&quot;: 1000 } }, ... ]
 let simulation_events = [];
@@ -455,8 +430,7 @@ function runScript() {
 
     //  Execute the uLisp script in WebAssembly
     Module.print(&quot;\nExecute uLisp: &quot; + scr + &quot;\n&quot;);
-    Module._execute_ulisp(scr_ptr);
-</code></pre>
+    Module._execute_ulisp(scr_ptr);</pre></div>
 <p>This is similar to the earlier version of <code>runScript</code> except…</p>
 <ol>
 <li>
@@ -472,52 +446,46 @@ function runScript() {
 </li>
 </ol>
 <p>After calling <code>_execute_ulisp</code> to execute the uLisp Script, we <strong>fetch the generated Simulation Events</strong> by calling <code>_get_simulation_events</code> (which we’ve seen earlier)…</p>
-<pre><code class="language-javascript">    //  Get the JSON string of Simulation Events from WebAssembly. Looks like...
+<div class="example-wrap"><pre class="language-javascript">    //  Get the JSON string of Simulation Events from WebAssembly. Looks like...
     //  [ { &quot;gpio_output_set&quot;: { &quot;pin&quot;: 11, &quot;value&quot;: 1 } }, 
     //    { &quot;time_delay&quot;: { &quot;ticks&quot;: 1000 } }, ... ]
     const json_ptr = Module._get_simulation_events();
 
     //  Convert the JSON string from WebAssembly to JavaScript
-    const json = Module.UTF8ToString(json_ptr);
-</code></pre>
+    const json = Module.UTF8ToString(json_ptr);</pre></div>
 <p><code>_get_simulation_events</code> returns a <strong>pointer to a WebAssembly String</strong>.</p>
 <p>Here we call <strong><code>UTF8ToString</code></strong> (from Emscripten) to convert the pointer to a <strong>JavaScript String</strong>.</p>
 <p>We <strong>parse the returned string</strong> as a JSON array of Simulation Events…</p>
-<pre><code class="language-javascript">    //  Parse the JSON Stream of Simulation Events
+<div class="example-wrap"><pre class="language-javascript">    //  Parse the JSON Stream of Simulation Events
     simulation_events = JSON.parse(json);
-    Module.print(&quot;Events: &quot; + JSON.stringify(simulation_events, null, 2) + &quot;\n&quot;);
-</code></pre>
+    Module.print(&quot;Events: &quot; + JSON.stringify(simulation_events, null, 2) + &quot;\n&quot;);</pre></div>
 <p>And we store the parsed array of events into the static variable <strong><code>simulation_events</code></strong></p>
 <p>In case the JSON Parsing fails, we have a <strong><code>try...catch...finally</code></strong> block to ensure that the WebAssembly memory is properly deallocated…</p>
-<pre><code class="language-javascript">  } catch(err) {
+<div class="example-wrap"><pre class="language-javascript">  } catch(err) {
     //  Catch and show any errors
     console.error(err);
   } finally {
     //  Free the WebAssembly memory allocated for the script
     Module._free(scr_ptr);
-  }
-</code></pre>
+  }</pre></div>
 <p>Now we’re ready to <strong>run the Simulated BL602 Events</strong> and blink the Simulated BL602 LED!</p>
-<pre><code class="language-javascript">  //  Start a timer to simulate the returned events
+<div class="example-wrap"><pre class="language-javascript">  //  Start a timer to simulate the returned events
   if (simulation_events.length &gt; 0) {
     window.setTimeout(&quot;simulateEvents()&quot;, 1);
   }
-}
-</code></pre>
+}</pre></div>
 <p>We call a JavaScript Timer to trigger the function <strong><code>simulateEvents</code></strong>.</p>
 <p>This simulates the events in <code>simulation_events</code> (like flipping the Simulated LED), one event at a time.</p>
 <p><img src="https://lupyuen.github.io/images/wasm-stream.png" alt="GPIO Simulation Events" /></p>
 <p><em>What’s inside the WebAssembly function <code>clear_simulation_events</code>?</em></p>
 <p>Before running a uLisp Script, our BL602 Simulator calls <strong><code>clear_simulation_events</code></strong> to erase the buffer of Simulation Events: <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm/wasm.c#L19-L22"><code>wasm.c</code></a></p>
-<pre><code class="language-c">/// Clear the JSON Stream of Simulation Events
+<div class="example-wrap"><pre class="language-c">/// Clear the JSON Stream of Simulation Events
 void clear_simulation_events(void) {
   strcpy(events, &quot;[]&quot;);
-}
-</code></pre>
-<h1 id="flip-the-simulated-led" class="section-header"><a href="#flip-the-simulated-led">7 Flip the Simulated LED</a></h1>
+}</pre></div><h1 id="flip-the-simulated-led" class="section-header"><a href="#flip-the-simulated-led">7 Flip the Simulated LED</a></h1>
 <p><strong><code>simulateEvents</code></strong> is the <strong>Event Loop</strong> for our BL602 Simulator. It calls itself repeatedly to <strong>simulate each event</strong> generated by uLisp.</p>
 <p>Here’s how it works: <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.html#L1409-L1445"><code>ulisp.html</code></a></p>
-<pre><code class="language-javascript">/// Simulate the BL602 Simulation Events recorded in simulate_events, which contains...
+<div class="example-wrap"><pre class="language-javascript">/// Simulate the BL602 Simulation Events recorded in simulate_events, which contains...
 ///  [ { &quot;gpio_output_set&quot;: { &quot;pin&quot;: 11, &quot;value&quot;: 1 } }, 
 ///    { &quot;time_delay&quot;: { &quot;ticks&quot;: 1000 } }, ... ]
 function simulateEvents() {
@@ -530,8 +498,7 @@ function simulateEvents() {
   //  Get the event type (gpio_output_set)
   //  and parameters ({ &quot;pin&quot;: 11, &quot;value&quot;: 1 })
   const event_type = Object.keys(event)[0];
-  const args = event[event_type];
-</code></pre>
+  const args = event[event_type];</pre></div>
 <p><strong><code>simulateEvents</code></strong> starts by fetching the <strong>next event to be simulated</strong> (from <code>simulation_events</code>).</p>
 <p>It decodes the event into…</p>
 <ol>
@@ -545,7 +512,7 @@ function simulateEvents() {
 </li>
 </ol>
 <p>Next it <strong>handles each Event Type</strong>…</p>
-<pre><code class="language-javascript">  //  Timeout in milliseconds to the next event
+<div class="example-wrap"><pre class="language-javascript">  //  Timeout in milliseconds to the next event
   let timeout = 1;
 
   //  Handle each event type
@@ -555,11 +522,10 @@ function simulateEvents() {
     //  { &quot;gpio_output_set&quot;: { &quot;pin&quot;: 11, &quot;value&quot;: 1 } }
     case &quot;gpio_output_set&quot;: 
       timeout += gpio_output_set(args.pin, args.value); 
-      break;
-</code></pre>
+      break;</pre></div>
 <p>If we’re simulating a GPIO Output Event, we call the function <strong><code>gpio_output_set</code></strong> and pass the Event Parameters (<code>pin</code> and <code>value</code>).</p>
 <p>(We’ll talk about <code>gpio_output_set</code> and the timeout in a while)</p>
-<pre><code class="language-javascript">    //  Delay
+<div class="example-wrap"><pre class="language-javascript">    //  Delay
     //  { &quot;time_delay&quot;: { &quot;ticks&quot;: 1000 } }
     case &quot;time_delay&quot;: 
       timeout += time_delay(args.ticks); 
@@ -568,48 +534,43 @@ function simulateEvents() {
     //  Unknown event type
     default: 
       throw new Error(&quot;Unknown event type: &quot; + event_type);
-  }
-</code></pre>
+  }</pre></div>
 <p>This code simulates time delays, which we’ll see later.</p>
-<pre><code class="language-javascript">  //  Simulate the next event
+<div class="example-wrap"><pre class="language-javascript">  //  Simulate the next event
   if (simulation_events.length &gt; 0) {
     window.setTimeout(&quot;simulateEvents()&quot;, timeout);
   }
-}
-</code></pre>
+}</pre></div>
 <p>Finally we <strong>simulate the next event</strong> (from <code>simulation_events</code>), by triggering <code>simulateEvents</code> with a JavaScript Timer.</p>
 <p>And that’s how we simulate every event generated by uLisp!</p>
 <p><em>What’s inside the function <code>gpio_output_set</code>?</em></p>
 <p><strong><code>gpio_output_set</code></strong> is called by <code>simulateEvents</code> to simulate a GPIO Output Event: <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.html#L1447-L1470"><code>ulisp.html</code></a></p>
-<pre><code class="language-javascript">/// Simulate setting GPIO pin output to value 0 (Low) or 1 (High):
+<div class="example-wrap"><pre class="language-javascript">/// Simulate setting GPIO pin output to value 0 (Low) or 1 (High):
 /// { &quot;gpio_output_set&quot;: { &quot;pin&quot;: 11, &quot;value&quot;: 1 } }
 function gpio_output_set(pin, value) {
   //  Get the HTML Canvas Context
-  const ctx = document.getElementById('canvas').getContext('2d');
-</code></pre>
+  const ctx = document.getElementById(&#39;canvas&#39;).getContext(&#39;2d&#39;);</pre></div>
 <p>First we fetch the <strong>HTML Canvas and its Context</strong>.</p>
 <p>Then we <strong>set the Fill Colour</strong> to Blue or Grey, depending on GPIO Output Value…</p>
-<pre><code class="language-javascript">  //  Set the simulated LED colour depending on value
+<div class="example-wrap"><pre class="language-javascript">  //  Set the simulated LED colour depending on value
   switch (value) {
     //  Set GPIO to Low (LED on)
-    case 0: ctx.fillStyle = '#B0B0FF'; break;  //  Blue
+    case 0: ctx.fillStyle = &#39;#B0B0FF&#39;; break;  //  Blue
 
     //  Set GPIO to High (LED off)
-    case 1: ctx.fillStyle = '#CCCCCC'; break;  //  Grey
+    case 1: ctx.fillStyle = &#39;#CCCCCC&#39;; break;  //  Grey
 
     //  Unknown value
     default: throw new Error(&quot;Unknown gpio_output_set value: &quot; + args.value);
-  }
-</code></pre>
+  }</pre></div>
 <p>(Yes we’ve seen this code earlier)</p>
 <p>Finally we <strong>draw the Simulated LED</strong> with the Fill Colour (Blue or Grey)…</p>
-<pre><code class="language-javascript">  //  Draw the LED colour
+<div class="example-wrap"><pre class="language-javascript">  //  Draw the LED colour
   ctx.fillRect(315, 116, 35, 74);
 
   //  Simulate next event in 0 milliseconds
   return 0;
-}
-</code></pre>
+}</pre></div>
 <p>Here’s what we see in the BL602 Simulator when we set the <strong>GPIO Output to Low</strong> (LED on)…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
@@ -632,10 +593,9 @@ function gpio_output_set(pin, value) {
 <p>Hence we also need to <strong>simulate Time Delays</strong> with a Simulation Event.</p>
 <p><em>How does uLisp generate a Simulation Event for Time Delay?</em></p>
 <p>When we run this uLisp Script…</p>
-<pre><code class="language-text">( delay 1000 )
-</code></pre>
+<div class="example-wrap"><pre class="language-text">( delay 1000 )</pre></div>
 <p>Our uLisp Intepreter in WebAssembly <strong>generates a Time Delay Event</strong> like so: <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm/wasm.c#L79-L93"><code>wasm.c</code></a></p>
-<pre><code class="language-c">/// Add a delay event. 1 tick is 1 millisecond
+<div class="example-wrap"><pre class="language-c">/// Add a delay event. 1 tick is 1 millisecond
 void time_delay(uint32_t ticks) { 
   //  How many chars in the Simulation Events buffer to keep
   int keep = 
@@ -651,15 +611,13 @@ void time_delay(uint32_t ticks) {
     &quot;} } ]&quot;,
     ticks
   );
-}
-</code></pre>
+}</pre></div>
 <p>This code adds a <strong>Time Delay Event</strong> that looks like…</p>
-<pre><code class="language-text">{ &quot;time_delay&quot;: { &quot;ticks&quot;: 1000 } }
-</code></pre>
+<div class="example-wrap"><pre class="language-text">{ &quot;time_delay&quot;: { &quot;ticks&quot;: 1000 } }</pre></div>
 <p>(We define <strong>1 tick as 1 millisecond</strong>, so this event sleeps for 1 second)</p>
 <p><em>How does our BL602 Simulator handle a Time Delay Event in JavaScript?</em></p>
 <p>Earlier we’ve seen <strong><code>simulateEvents</code></strong>, the Event Loop for our BL602 Simulator: <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.html#L1409-L1445"><code>ulisp.html</code></a></p>
-<pre><code class="language-javascript">function simulateEvents() {
+<div class="example-wrap"><pre class="language-javascript">function simulateEvents() {
   //  Take the first event
   const event = simulation_events.shift();
   ...
@@ -674,19 +632,17 @@ void time_delay(uint32_t ticks) {
     //  { &quot;time_delay&quot;: { &quot;ticks&quot;: 1000 } }
     case &quot;time_delay&quot;: 
       timeout += time_delay(args.ticks); 
-      break;
-</code></pre>
+      break;</pre></div>
 <p><code>simulateEvents</code> handles the Time Delay Event by calling <strong><code>time_delay</code></strong> with the number of ticks (milliseconds) to delay: <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.html#L1472-L1477"><code>ulisp.html</code></a></p>
-<pre><code class="language-javascript">/// Simulate a delay for the specified number of ticks (1 tick = 1 millisecond)
+<div class="example-wrap"><pre class="language-javascript">/// Simulate a delay for the specified number of ticks (1 tick = 1 millisecond)
 /// { &quot;time_delay&quot;: { &quot;ticks&quot;: 1000 } }
 function time_delay(ticks) {
   //  Simulate the next event in &quot;ticks&quot; milliseconds
   return ticks;
-}
-</code></pre>
+}</pre></div>
 <p><strong><code>time_delay</code></strong> doesn’t do much… It returns the <strong>number of ticks (milliseconds) to delay</strong>.</p>
 <p>The magic actually happens in the calling function <code>simulateEvents</code>. From <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.html#L1409-L1445"><code>ulisp.html</code></a> …</p>
-<pre><code class="language-javascript">function simulateEvents() {
+<div class="example-wrap"><pre class="language-javascript">function simulateEvents() {
   ...
   //  Get the delay in ticks / milliseconds
   timeout += time_delay(args.ticks);
@@ -696,18 +652,16 @@ function time_delay(ticks) {
     //  Timer expires in timeout milliseconds
     window.setTimeout(&quot;simulateEvents()&quot;, timeout);
   }
-}
-</code></pre>
+}</pre></div>
 <p><code>simulateEvents</code> takes the returned value (number of ticks to wait) and <strong>sets the timeout of the JavaScript Timer</strong>.</p>
 <p>(When the timer expires, it calls <code>simulateEvents</code> to handle the next Simulation Event)</p>
 <p>Let’s watch <strong>Time Delay Events</strong> in action! Guess what happens when we run this uLisp Script with our BL602 Simulator…</p>
-<pre><code class="language-text">( list
+<div class="example-wrap"><pre class="language-text">( list
   ( digitalwrite 11 :low )
   ( delay 1000 )
   ( digitalwrite 11 :high )
   ( delay 1000 )
-)
-</code></pre>
+)</pre></div>
 <ul>
 <li>
 <p><a href="https://youtu.be/piRLuBYSjTw"><strong>Watch the demo on YouTube</strong></a></p>
@@ -719,17 +673,16 @@ function time_delay(ticks) {
 <p><img src="https://lupyuen.github.io/images/wasm-delay.png" alt="Simulating delays" /></p>
 <h1 id="simulate-loops" class="section-header"><a href="#simulate-loops">9 Simulate Loops</a></h1>
 <p>Let’s ponder this uLisp Script that <strong>blinks the LED in a loop</strong>…</p>
-<pre><code class="language-text">( loop
+<div class="example-wrap"><pre class="language-text">( loop
   ( digitalwrite 11 :low )
   ( delay 1000 )
   ( digitalwrite 11 :high )
   ( delay 1000 )
-)
-</code></pre>
+)</pre></div>
 <p><em>Wait a minute… Won’t this uLisp Script generate an Infinite Stream of Simulation Events? And overflow our 1024-byte event buffer?</em></p>
 <p>Righto! We <strong>can’t allow uLisp Loops and Recursion to run forever</strong> in our simulator. We must stop them! (Eventually)</p>
 <p>We <strong>stop runaway Loops and Recursion</strong> here: <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm/wasm.c#L34-L46"><code>wasm.c</code></a></p>
-<pre><code class="language-c">/// Preempt the uLisp task and allow background tasks to run.
+<div class="example-wrap"><pre class="language-c">/// Preempt the uLisp task and allow background tasks to run.
 /// Called by eval() and sp_loop() in src/ulisp.c
 void yield_ulisp(void) {
   //  If uLisp is running a loop or recursion,
@@ -742,8 +695,7 @@ void yield_ulisp(void) {
     extern jmp_buf exception;  //  Defined in src/ulisp.c
     longjmp(exception, 1);
   }
-}
-</code></pre>
+}</pre></div>
 <p>uLisp calls <strong><code>yield_ulisp</code></strong> when it <strong>iterates through a loop</strong> or evaluates a recursive expression.</p>
 <p>If <code>yield_ulisp</code> detects that the <strong>buffer for Simulation Events is about to overflow</strong>, it stops the uLisp Loop / Recursion by jumping out (<code>longjmp</code>) and reporting an exception.</p>
 <p>(Which will return a <strong>truncated stream of Simulation Events</strong> to the BL602 Simulator)</p>
@@ -751,28 +703,25 @@ void yield_ulisp(void) {
 <p>Yes this solution might not work for some kinds of uLisp Loops and Recursion. But it’s sufficient to <strong>simulate a blinking LED</strong> (for a short while).</p>
 <p><em>How does uLisp call <code>yield_ulisp</code>?</em></p>
 <p>uLisp calls <code>yield_ulisp</code> when <strong>iterating through a loop</strong> in <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/src/ulisp.c#L1698-L1702"><code>ulisp.c</code></a> …</p>
-<pre><code class="language-c">///  Execute uLisp Loop
+<div class="example-wrap"><pre class="language-c">///  Execute uLisp Loop
 object *sp_loop (object *args, object *env) {
   ...
   for (;;) {
     //  Preempt the uLisp task and allow background tasks to run
-    yield_ulisp();
-</code></pre>
+    yield_ulisp();</pre></div>
 <p>And when it <strong>evaluates a (potentially) recursive expression</strong>: <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/src/ulisp.c#L4658-L4664"><code>ulisp.c</code></a></p>
-<pre><code class="language-c">///  Main uLisp Evaluator
+<div class="example-wrap"><pre class="language-c">///  Main uLisp Evaluator
 object *eval (object *form, object *env) {
   ...
   // Preempt the uLisp task and allow background tasks to run
-  yield_ulisp();
-</code></pre>
+  yield_ulisp();</pre></div>
 <p><em>So now we’re all set to run this uLisp loop?</em></p>
-<pre><code class="language-text">( loop
+<div class="example-wrap"><pre class="language-text">( loop
   ( digitalwrite 11 :low )
   ( delay 1000 )
   ( digitalwrite 11 :high )
   ( delay 1000 )
-)
-</code></pre>
+)</pre></div>
 <p>Yes! Here’s our BL602 Simulator running the <strong>LED Blinky Loop</strong>. Watch how the <strong>Simulated LED stops blinking</strong> after a while…</p>
 <ul>
 <li>
@@ -863,24 +812,23 @@ object *eval (object *form, object *env) {
 </li>
 <li>
 <p>Insert the <strong>HTML Canvas and the Output Box</strong> (for the uLisp log): <a href="https://github.com/AppKaki/blockly-ulisp/blob/wasm/demos/simulator/index.html#L110-L120"><code>index.html</code></a></p>
-<pre><code class="language-html">&lt;!-- Canvas for Simulator --&gt;
+<div class="example-wrap"><pre class="language-html">&lt;!-- Canvas for Simulator --&gt;
 &lt;tr&gt;
   &lt;td colspan=2 align=&quot;center&quot;&gt;
     &lt;canvas id=&quot;canvas&quot; width=&quot;400&quot; height=&quot;300&quot;&gt;&lt;/canvas&gt;
     &lt;textarea id=&quot;output&quot; style=&quot;width: 300px; height: 300px;&quot;&gt;&lt;/textarea&gt;
-    &lt;div class=&quot;spinner&quot; id='spinner'&gt;&lt;/div&gt;
+    &lt;div class=&quot;spinner&quot; id=&#39;spinner&#39;&gt;&lt;/div&gt;
     &lt;div class=&quot;emscripten&quot; id=&quot;status&quot;&gt;&lt;/div&gt;    
     &lt;progress value=&quot;0&quot; max=&quot;100&quot; id=&quot;progress&quot; hidden=1&gt;&lt;/progress&gt;
   &lt;/td&gt;
 &lt;/tr&gt;
-&lt;!-- End --&gt;
-</code></pre>
+&lt;!-- End --&gt;</pre></div>
 <p>(<code>spinner</code>, <code>status</code> and <code>progress</code> are needed by the Emscripten JavaScript)</p>
 </li>
 <li>
 <p>Copy the <strong>Emscripten JavaScript</strong> from <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.html#L1250-L1326"><code>ulisp.html</code></a> to <a href="https://github.com/AppKaki/blockly-ulisp/blob/wasm/demos/simulator/index.html#L482-L562"><code>index.html</code></a></p>
-<pre><code class="language-html">&lt;!--  Emscripten Script: From ulisp.html  --&gt;
-&lt;script type='text/javascript'&gt;
+<div class="example-wrap"><pre class="language-html">&lt;!--  Emscripten Script: From ulisp.html  --&gt;
+&lt;script type=&#39;text/javascript&#39;&gt;
   var statusElement   = ...
   var progressElement = ...
   var spinnerElement  = ...
@@ -897,12 +845,10 @@ object *eval (object *form, object *env) {
   Module.setStatus( ... );
   window.onerror = ...
 &lt;/script&gt;
-&lt;!--  End of Emscripten Script  --&gt;
-</code></pre>
-</li>
+&lt;!--  End of Emscripten Script  --&gt;</pre></div></li>
 <li>
 <p>Copy the <strong>BL602 Simulator JavaScript</strong> from <a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/docs/ulisp.html#L1328-L1480"><code>ulisp.html</code></a> to <a href="https://github.com/AppKaki/blockly-ulisp/blob/wasm/demos/simulator/index.html#L564-L716"><code>index.html</code></a></p>
-<pre><code class="language-html">&lt;!--  Custom Script: TODO Sync with ulisp.html  --&gt;
+<div class="example-wrap"><pre class="language-html">&lt;!--  Custom Script: TODO Sync with ulisp.html  --&gt;
 &lt;script type=&quot;text/javascript&quot;&gt;
 
   /// JSON Stream of Simulation Events emitted by uLisp Interpreter
@@ -927,46 +873,37 @@ object *eval (object *form, object *env) {
   function time_delay(ticks) { ... }
 
 &lt;/script&gt;    
-&lt;!--  End of Custom Script  --&gt;
-</code></pre>
-</li>
+&lt;!--  End of Custom Script  --&gt;</pre></div></li>
 <li>
 <p>Modify the <code>runScript</code> function above…</p>
-<pre><code class="language-javascript">/// Run the uLisp script from Input Box
+<div class="example-wrap"><pre class="language-javascript">/// Run the uLisp script from Input Box
 function runScript() {
   //  Get the uLisp script from Input Box
   const scr = document.getElementById(&quot;input&quot;).value;
 
   //  Allocate WebAssembly memory for the script
-  const scr_ptr = Module.allocate(intArrayFromString(scr), ALLOC_NORMAL);
-</code></pre>
+  const scr_ptr = Module.allocate(intArrayFromString(scr), ALLOC_NORMAL);</pre></div>
 <p>So that it runs the <strong>script from the provided parameter</strong> (instead of the REPL Input Box): <a href="https://github.com/AppKaki/blockly-ulisp/blob/wasm/demos/simulator/index.html#L598-L643"><code>index.html</code></a></p>
-<pre><code class="language-javascript">/// Run the provided uLisp script
+<div class="example-wrap"><pre class="language-javascript">/// Run the provided uLisp script
 function runScript(scr) {
   //  Allocate WebAssembly memory for the script
-  const scr_ptr = Module.allocate(intArrayFromString(scr), ALLOC_NORMAL);
-</code></pre>
-</li>
+  const scr_ptr = Module.allocate(intArrayFromString(scr), ALLOC_NORMAL);</pre></div></li>
 <li>
 <p>Load our <strong>Emscripten WebAssembly</strong> into Blockly: <a href="https://github.com/AppKaki/blockly-ulisp/blob/wasm/demos/simulator/index.html#L718-L722"><code>index.html</code></a></p>
-<pre><code class="language-html">&lt;!--  Load Emscripten WebAssembly: From ulisp.html  --&gt;
+<div class="example-wrap"><pre class="language-html">&lt;!--  Load Emscripten WebAssembly: From ulisp.html  --&gt;
 &lt;script async type=&quot;text/javascript&quot; src=&quot;ulisp.js&quot;&gt;&lt;/script&gt;
-&lt;!--  End of Emscripten WebAssembly  --&gt;
-</code></pre>
-</li>
+&lt;!--  End of Emscripten WebAssembly  --&gt;</pre></div></li>
 <li>
 <p>Previously we ran the uLisp code on a real BL602 with the Web Serial API.</p>
 <p>Now we <strong>run the uLisp code on BL602 Simulator</strong>: <a href="https://github.com/AppKaki/blockly-ulisp/blob/wasm/demos/simulator/code.js#L575-L582"><code>code.js</code></a></p>
-<pre><code class="language-javascript">///  Run the uLisp code on BL602 Simulator
+<div class="example-wrap"><pre class="language-javascript">///  Run the uLisp code on BL602 Simulator
 Code.runJS = function() {
   //  Generate the uLisp code by calling the Blockly Code Generator for uLisp
   var code = Blockly.Lisp.workspaceToCode(Code.workspace);
 
   //  Run the uLisp code on BL602 Simulator
   runScript(code);   //  Defined in index.html
-}    
-</code></pre>
-</li>
+}    </pre></div></li>
 </ol>
 <p>And that’s how we <strong>added uLisp WebAssembly and BL602 Simulator to Blockly</strong>…</p>
 <p><em>Dragging-and-dropping uLisp programs for microcontrollers… And running them WITHOUT a microcontroller!</em></p>
@@ -974,7 +911,7 @@ Code.runJS = function() {
 <p><em>Our BL602 Simulator works OK for simulating a uLisp Program. Will it work for simulating BL602 Firmware coded in C?</em></p>
 <p>Our BL602 Simulator <strong>might work for BL602 Firmware coded in C</strong>! </p>
 <p>Let’s look at this <strong>BL602 Blinky Firmware</strong> in C: <a href="https://lupyuen.github.io/articles/rust#bl602-blinky-in-c"><code>sdk_app_blinky/demo.c</code></a></p>
-<pre><code class="language-c">/// Blink the BL602 LED
+<div class="example-wrap"><pre class="language-c">/// Blink the BL602 LED
 void blinky(char *buf, int len, int argc, char **argv) {
   //  Configure the LED GPIO for output (instead of input)
   int rc = bl_gpio_enable_output(
@@ -999,12 +936,11 @@ void blinky(char *buf, int len, int argc, char **argv) {
       time_ms_to_ticks32(1000)  //  Convert 1,000 milliseconds to ticks (from NimBLE Porting Layer)
     );
   }
-}
-</code></pre>
+}</pre></div>
 <p>To get this C code running on our BL602 Simulator, we need to <strong>compile the code to WebAssembly</strong>.</p>
 <p><em>Will this C code compile to WebAssembly?</em></p>
 <p>Remember earlier we created these <strong>C Functions for our WebAssembly Interface</strong>…</p>
-<pre><code class="language-c">/// Add a GPIO event to set output (0 for low, 1 for high)
+<div class="example-wrap"><pre class="language-c">/// Add a GPIO event to set output (0 for low, 1 for high)
 int bl_gpio_output_set(uint8_t pin, uint8_t value) { ... }
 
 /// Configure the GPIO pin for output
@@ -1014,8 +950,7 @@ int bl_gpio_enable_output(uint8_t pin, uint8_t pullup, uint8_t pulldown) { retur
 void time_delay(uint32_t ticks) { ... }
 
 /// Convert milliseconds to ticks
-uint32_t time_ms_to_ticks32(uint32_t millisec) { return millisec; }
-</code></pre>
+uint32_t time_ms_to_ticks32(uint32_t millisec) { return millisec; }</pre></div>
 <p>These <strong>C Function Signatures are 100% identical</strong> to the BL602 Functions from the BL602 IoT SDK: <code>bl_gpio_output_set</code>, <code>bl_gpio_enable_output</code>, …</p>
 <p>So yep, the above <strong>BL602 Firmware Code will compile to WebAssembly</strong>!</p>
 <p>Similar to a uLisp Program, the BL602 Firmware Code (running in WebAssebly) will generate a <strong>JSON Stream of Simulation Events</strong>. </p>
@@ -1027,36 +962,29 @@ uint32_t time_ms_to_ticks32(uint32_t millisec) { return millisec; }
 <h1 id="why-simulate-a-stream-of-events" class="section-header"><a href="#why-simulate-a-stream-of-events">13 Why Simulate A Stream Of Events?</a></h1>
 <p><em>Why did we choose to simulate a JSON Stream of Simulation Events? Is there a simpler way?</em></p>
 <p>Let’s look at this uLisp Program…</p>
-<pre><code class="language-text">( loop
+<div class="example-wrap"><pre class="language-text">( loop
   ( digitalwrite 11 :low )
   ( delay 1000 )
   ( digitalwrite 11 :high )
-)
-</code></pre>
+)</pre></div>
 <p>The obvious way to simulate this uLisp Program (with WebAssembly) would be to let <strong>uLisp control the simulator directly</strong>…</p>
 <ol>
 <li>
 <p>uLisp <strong>evaluates the first expression</strong>…</p>
-<pre><code class="language-text">( digitalwrite 11 :low )
-</code></pre>
-</li>
+<div class="example-wrap"><pre class="language-text">( digitalwrite 11 :low )</pre></div></li>
 <li>
 <p>uLisp <strong>renders the Simulated LED</strong> flipped on.</p>
 <p>(Probably with SDL, which is supported by Emscripten)</p>
 </li>
 <li>
 <p>uLisp <strong>evaluates the next expression</strong>…</p>
-<pre><code class="language-text">( delay 1000 )
-</code></pre>
-</li>
+<div class="example-wrap"><pre class="language-text">( delay 1000 )</pre></div></li>
 <li>
 <p>uLisp <strong>pauses for 1 second</strong></p>
 </li>
 <li>
 <p>uLisp <strong>evaluates the next expression</strong>…</p>
-<pre><code class="language-text">( digitalwrite 11 :high )
-</code></pre>
-</li>
+<div class="example-wrap"><pre class="language-text">( digitalwrite 11 :high )</pre></div></li>
 <li>
 <p>uLisp <strong>renders the Simulated LED</strong> flipped off</p>
 </li>

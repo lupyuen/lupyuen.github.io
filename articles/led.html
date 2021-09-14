@@ -118,9 +118,7 @@
 </li>
 <li>
 <p>Unzip <code>customer_app.zip</code>. Look for the file…</p>
-<pre><code class="language-text">sdk_app_gpio/build_out/sdk_app_gpio.bin
-</code></pre>
-</li>
+<div class="example-wrap"><pre class="language-text">sdk_app_gpio/build_out/sdk_app_gpio.bin</pre></div></li>
 <li>
 <p>Flash <code>sdk_app_gpio.bin</code> to PineCone. Follow the instructions in the article…</p>
 <ul>
@@ -132,8 +130,7 @@
 <li>
 <p>Connect to PineCone…</p>
 <p><strong>For Linux:</strong></p>
-<pre><code class="language-bash">sudo screen /dev/ttyUSB0 2000000
-</code></pre>
+<div class="example-wrap"><pre class="language-bash">sudo screen /dev/ttyUSB0 2000000</pre></div>
 <p><strong>For macOS:</strong> Use CoolTerm (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>Alternatively:</strong> Use the Web Serial Terminal (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
@@ -151,30 +148,24 @@
 </li>
 <li>
 <p>Enter these commands to set GPIO 11 (Blue), 14 (Green), 17 (Red) to output (no pullup, no pulldown)…</p>
-<pre><code class="language-bash">gpio-func 11 0 0 0
+<div class="example-wrap"><pre class="language-bash">gpio-func 11 0 0 0
 gpio-func 14 0 0 0
-gpio-func 17 0 0 0
-</code></pre>
-</li>
+gpio-func 17 0 0 0</pre></div></li>
 <li>
 <p>Switch off the 3 LEDs (1 = Off)…</p>
-<pre><code class="language-bash">gpio-set 11 1
+<div class="example-wrap"><pre class="language-bash">gpio-set 11 1
 gpio-set 14 1
-gpio-set 17 1
-</code></pre>
-</li>
+gpio-set 17 1</pre></div></li>
 <li>
 <p>Switch on and off each of the 3 LEDs: Blue, Green, Red (0 = On, 1 = Off)…</p>
-<pre><code class="language-bash">gpio-set 11 0
+<div class="example-wrap"><pre class="language-bash">gpio-set 11 0
 gpio-set 11 1
 
 gpio-set 14 0
 gpio-set 14 1
 
 gpio-set 17 0
-gpio-set 17 1
-</code></pre>
-</li>
+gpio-set 17 1</pre></div></li>
 <li>
 <p>To exit <code>screen</code>, press <code>Ctrl-A</code> then <code>k</code> then <code>y</code></p>
 </li>
@@ -185,12 +176,10 @@ gpio-set 17 1
 <h1 id="gpio-exercise-for-the-reader" class="section-header"><a href="#gpio-exercise-for-the-reader">2 GPIO Exercise for The Reader</a></h1>
 <p>According to the <a href="https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf">PineCone Schematics</a>, the onboard jumper is connected to GPIO 8.</p>
 <p>Can we use this command to read the jumper?</p>
-<pre><code class="language-bash">gpio-get 8
-</code></pre>
+<div class="example-wrap"><pre class="language-bash">gpio-get 8</pre></div>
 <p>Flip the jumper and check whether the value changes.</p>
 <p>Remember to use this command to configure GPIO 8…</p>
-<pre><code class="language-bash">gpio-func 8 1 PULLUP PULLDOWN
-</code></pre>
+<div class="example-wrap"><pre class="language-bash">gpio-func 8 1 PULLUP PULLDOWN</pre></div>
 <ul>
 <li><code>8</code> is the GPIO Number</li>
 <li><code>1</code> to configure the GPIO for Input (instead of output)</li>
@@ -203,9 +192,8 @@ gpio-set 17 1
 <p>Let’s look at the BL602 GPIO Functions called by the GPIO Demo Firmware: <a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_gpio"><code>sdk_app_gpio.bin</code></a></p>
 <h2 id="enable-gpio" class="section-header"><a href="#enable-gpio">3.1 Enable GPIO</a></h2>
 <p>To designate a GPIO Pin for input or output, we call these GPIO HAL Functions: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_gpio.h"><code>bl_gpio.h</code></a></p>
-<pre><code class="language-c">int bl_gpio_enable_output(uint8_t pin, uint8_t pullup, uint8_t pulldown);
-int bl_gpio_enable_input( uint8_t pin, uint8_t pullup, uint8_t pulldown);
-</code></pre>
+<div class="example-wrap"><pre class="language-c">int bl_gpio_enable_output(uint8_t pin, uint8_t pullup, uint8_t pulldown);
+int bl_gpio_enable_input( uint8_t pin, uint8_t pullup, uint8_t pulldown);</pre></div>
 <ul>
 <li>
 <p><code>pin</code> is the GPIO Pin Number, so <code>pin=0</code> refers to GPIO 0.</p>
@@ -228,10 +216,9 @@ int bl_gpio_enable_input( uint8_t pin, uint8_t pullup, uint8_t pulldown);
 </ul>
 <h2 id="read-and-write-gpio" class="section-header"><a href="#read-and-write-gpio">3.2 Read and Write GPIO</a></h2>
 <p>To read or write a GPIO Pin, we call these GPIO HAL Functions: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_gpio.h"><code>bl_gpio.h</code></a></p>
-<pre><code class="language-c">int bl_gpio_output_set(uint8_t pin, uint8_t value);
+<div class="example-wrap"><pre class="language-c">int bl_gpio_output_set(uint8_t pin, uint8_t value);
 int bl_gpio_input_get( uint8_t pin, uint8_t *value);
-int bl_gpio_input_get_value(uint8_t pin);
-</code></pre>
+int bl_gpio_input_get_value(uint8_t pin);</pre></div>
 <ul>
 <li>
 <p><code>pin</code> is the GPIO Pin Number.</p>
@@ -254,11 +241,10 @@ int bl_gpio_input_get_value(uint8_t pin);
 </ul>
 <h2 id="gpio-interrupts" class="section-header"><a href="#gpio-interrupts">3.3 GPIO Interrupts</a></h2>
 <p>To allow a GPIO Pin to trigger interrupts (like when a button is pressed), we call these GPIO HAL Functions: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_gpio.h"><code>bl_gpio.h</code></a></p>
-<pre><code class="language-c">int  bl_gpio_int_clear( uint8_t gpioPin, uint8_t intClear);
+<div class="example-wrap"><pre class="language-c">int  bl_gpio_int_clear( uint8_t gpioPin, uint8_t intClear);
 void bl_gpio_intmask(   uint8_t gpiopin, uint8_t mask);
 void bl_set_gpio_intmod(uint8_t gpioPin, uint8_t intCtrlMod, uint8_t intTrgMod);
-void bl_gpio_register(gpio_ctx_t *pstnode);
-</code></pre>
+void bl_gpio_register(gpio_ctx_t *pstnode);</pre></div>
 <p>Check the following for details on GPIO Interrupts…</p>
 <ul>
 <li>
@@ -327,9 +313,7 @@ void bl_gpio_register(gpio_ctx_t *pstnode);
 </li>
 <li>
 <p>Unzip <code>customer_app.zip</code>. Look for the file…</p>
-<pre><code class="language-text">sdk_app_pwm/build_out/sdk_app_pwm.bin
-</code></pre>
-</li>
+<div class="example-wrap"><pre class="language-text">sdk_app_pwm/build_out/sdk_app_pwm.bin</pre></div></li>
 <li>
 <p>Flash <code>sdk_app_pwm.bin</code> to PineCone. Follow the instructions in the article…</p>
 <ul>
@@ -341,8 +325,7 @@ void bl_gpio_register(gpio_ctx_t *pstnode);
 <li>
 <p>Connect to PineCone…</p>
 <p><strong>For Linux:</strong></p>
-<pre><code class="language-bash">sudo screen /dev/ttyUSB0 2000000
-</code></pre>
+<div class="example-wrap"><pre class="language-bash">sudo screen /dev/ttyUSB0 2000000</pre></div>
 <p><strong>For macOS:</strong> Use CoolTerm (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>Alternatively:</strong> Use the Web Serial Terminal (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
@@ -357,36 +340,28 @@ void bl_gpio_register(gpio_ctx_t *pstnode);
 <li>
 <p>Assign GPIO 11 (Blue), 17 (Red), 14 (Green) to <strong>PWM Channels</strong> 1, 2 and 4.</p>
 <p>Set the <strong>PWM Frequency</strong> to 2 kHz. (Each LED will blink at 2,000 cycles per second)</p>
-<pre><code class="language-bash">pwm_init 1 11 2000
+<div class="example-wrap"><pre class="language-bash">pwm_init 1 11 2000
 pwm_init 2 17 2000
-pwm_init 4 14 2000
-</code></pre>
-</li>
+pwm_init 4 14 2000</pre></div></li>
 <li>
 <p>Set <strong>PWM Duty Cycle</strong> for all 3 PWM Channels to 100%. </p>
 <p>Which means that 100% of the time, the 3 PWM Channels will be set to 1 (High). </p>
 <p>Which means total darkness: All 3 LEDs will be switched off 100% of the time.</p>
-<pre><code class="language-bash">pwm_duty_set 1 100
+<div class="example-wrap"><pre class="language-bash">pwm_duty_set 1 100
 pwm_duty_set 2 100
-pwm_duty_set 4 100
-</code></pre>
-</li>
+pwm_duty_set 4 100</pre></div></li>
 <li>
 <p>Start the PWM Output for all 3 PWM Channels…</p>
-<pre><code class="language-bash">pwm_start 1
+<div class="example-wrap"><pre class="language-bash">pwm_start 1
 pwm_start 2
-pwm_start 4
-</code></pre>
-</li>
+pwm_start 4</pre></div></li>
 <li>
 <p>Gradually decrease the PWM Duty Cycle for PWM Channel 1 (Blue) from 100% to 0%. </p>
 <p>This means the Blue LED will gradually get brighter.</p>
-<pre><code class="language-bash">pwm_duty_set 1 75
+<div class="example-wrap"><pre class="language-bash">pwm_duty_set 1 75
 pwm_duty_set 1 50
 pwm_duty_set 1 25
-pwm_duty_set 1 0
-</code></pre>
-</li>
+pwm_duty_set 1 0</pre></div></li>
 <li>
 <p>To exit <code>screen</code>, press <code>Ctrl-A</code> then <code>k</code> then <code>y</code></p>
 </li>
@@ -396,8 +371,7 @@ pwm_duty_set 1 0
 <p>Now we look at the BL602 PWM HAL Functions called by the PWM Demo Firmware: <a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_pwm"><code>sdk_app_pwm.bin</code></a></p>
 <h2 id="initialise-pwm" class="section-header"><a href="#initialise-pwm">6.1 Initialise PWM</a></h2>
 <p>To designate a GPIO PIN as a PWM Channel, we call this PWM HAL Function: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_pwm.h"><code>bl_pwm.h</code></a></p>
-<pre><code class="language-c">int32_t bl_pwm_init(uint8_t id, uint8_t pin, uint32_t freq);
-</code></pre>
+<div class="example-wrap"><pre class="language-c">int32_t bl_pwm_init(uint8_t id, uint8_t pin, uint32_t freq);</pre></div>
 <ul>
 <li>
 <p><code>id</code> is the PWM Channel ID (0 to 4). BL602 supports 5 PWM Channels: PWM 0 to PWM 4.</p>
@@ -412,9 +386,8 @@ pwm_duty_set 1 0
 <p>Not all GPIO Pins may be assigned to a PWM Channel. Check “Table 3.1: Pin description” (Page 27) in <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en">BL602 Reference Manual</a>.</p>
 <h2 id="pwm-frequency-and-duty-cycle" class="section-header"><a href="#pwm-frequency-and-duty-cycle">6.2 PWM Frequency and Duty Cycle</a></h2>
 <p>We set the Frequency and Duty Cycle on a PWM Channel by calling these PWM HAL Functions: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_pwm.h"><code>bl_pwm.h</code></a></p>
-<pre><code class="language-c">int32_t bl_pwm_set_freq(uint8_t id, uint32_t freq);
-int32_t bl_pwm_set_duty(uint8_t id, float duty);
-</code></pre>
+<div class="example-wrap"><pre class="language-c">int32_t bl_pwm_set_freq(uint8_t id, uint32_t freq);
+int32_t bl_pwm_set_duty(uint8_t id, float duty);</pre></div>
 <ul>
 <li>
 <p><code>id</code> is the PWM Channel ID (0 to 4).</p>
@@ -431,16 +404,14 @@ int32_t bl_pwm_set_duty(uint8_t id, float duty);
 </li>
 </ul>
 <p>To get the Duty Cycle for a PWM Channel, we call this function…</p>
-<pre><code class="language-c">int32_t bl_pwm_get_duty(uint8_t id, float *p_duty);
-</code></pre>
+<div class="example-wrap"><pre class="language-c">int32_t bl_pwm_get_duty(uint8_t id, float *p_duty);</pre></div>
 <ul>
 <li><code>bl_pwm_get_duty</code> stores the Duty Cycle at the pointer passed in <code>p_duty</code>.</li>
 </ul>
 <h2 id="pwm-operation" class="section-header"><a href="#pwm-operation">6.3 PWM Operation</a></h2>
 <p>We start and stop a PWM Channel by calling these PWM HAL Functions: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_pwm.h"><code>bl_pwm.h</code></a></p>
-<pre><code class="language-c">int32_t bl_pwm_start(uint8_t id);
-int32_t bl_pwm_stop( uint8_t id);
-</code></pre>
+<div class="example-wrap"><pre class="language-c">int32_t bl_pwm_start(uint8_t id);
+int32_t bl_pwm_stop( uint8_t id);</pre></div>
 <ul>
 <li><code>id</code> is the PWM Channel ID (0 to 4).</li>
 </ul>
@@ -478,9 +449,8 @@ int32_t bl_pwm_stop( uint8_t id);
 </li>
 <li>
 <p>What’s the value of PWM Threshold2 (the upper limit)? That’s computed based on the PWM Period and <strong>PWM Duty Cycle</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_pwm.c#L126-L140"><code>bl_pwm_set_duty</code></a></p>
-<pre><code class="language-c">//  The Duty Cycle `duty` is between 0 to 100
-threshold2 = ( period / 100 ) * duty;
-</code></pre>
+<div class="example-wrap"><pre class="language-c">//  The Duty Cycle `duty` is between 0 to 100
+threshold2 = ( period / 100 ) * duty;</pre></div>
 <p>So when we increase the Duty Cycle, Threshold2 gets higher.</p>
 </li>
 <li>
@@ -597,19 +567,16 @@ threshold2 = ( period / 100 ) * duty;
 </li>
 <li>
 <p>Look for this line that configures the UART port for 2 Mbps…</p>
-<pre><code class="language-c">bl_uart_init(0, 16, 7, 255, 255, 2 * 1000 * 1000);
-</code></pre>
+<div class="example-wrap"><pre class="language-c">bl_uart_init(0, 16, 7, 255, 255, 2 * 1000 * 1000);</pre></div>
 <p>Change it to 230.4 kbps…</p>
-<pre><code class="language-c">bl_uart_init(0, 16, 7, 255, 255, 230400);
-</code></pre>
-</li>
+<div class="example-wrap"><pre class="language-c">bl_uart_init(0, 16, 7, 255, 255, 230400);</pre></div></li>
 <li>
 <p>Rebuild the firmware.</p>
 </li>
 <li>
 <p>Edit the BL602 Device Tree: <a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/device_tree/bl_factory_params_IoTKitA_40M.dts"><code>bl_factory_params_IoTKitA_40M.dts</code></a></p>
 <p>Look for…</p>
-<pre><code class="language-text">uart {
+<div class="example-wrap"><pre class="language-text">uart {
     #address-cells = &lt;1&gt;;
     #size-cells = &lt;1&gt;;
     uart@4000A000 {
@@ -617,12 +584,9 @@ threshold2 = ( period / 100 ) * duty;
         id = &lt;0&gt;;
         compatible = &quot;bl602_uart&quot;;
         path = &quot;/dev/ttyS0&quot;;
-        baudrate = &lt;2000000&gt;;
-</code></pre>
+        baudrate = &lt;2000000&gt;;</pre></div>
 <p>Change <code>baudrate</code> to…</p>
-<pre><code class="language-text">        baudrate = &lt;230400&gt;;
-</code></pre>
-</li>
+<div class="example-wrap"><pre class="language-text">        baudrate = &lt;230400&gt;;</pre></div></li>
 <li>
 <p>Compile the Device Tree with BLOpenFlasher.</p>
 <p>Copy the compiled Device Tree <code>ro_params.dtb</code> to <code>blflash</code></p>
@@ -632,9 +596,7 @@ threshold2 = ( period / 100 ) * duty;
 <li>
 <p>After flashing, set the PineCone Jumper IO8 to <code>L</code> Position. Press the Reset Button.</p>
 <p>We should be able to access the Demo Firmware at 230.4 kbps…</p>
-<pre><code class="language-bash">screen /dev/tty.usbserial-1420 230400                 
-</code></pre>
-</li>
+<div class="example-wrap"><pre class="language-bash">screen /dev/tty.usbserial-1420 230400                 </pre></div></li>
 </ol>
 
     

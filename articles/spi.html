@@ -252,15 +252,14 @@
 <h1 id="initialise-spi-port" class="section-header"><a href="#initialise-spi-port">4 Initialise SPI Port</a></h1>
 <p>Let’s dive into the code for our SPI Demo Firmware!</p>
 <p>Before we initialise the SPI Port, we define these constants and variables in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L45-L100"><code>sdk_app_spi/demo.c</code></a> </p>
-<pre><code class="language-c">/// Use SPI Port Number 0
+<div class="example-wrap"><pre class="language-c">/// Use SPI Port Number 0
 #define SPI_PORT   0
 
 /// Use GPIO 14 as SPI Chip Select Pin
 #define SPI_CS_PIN 14
 
 /// SPI Port
-static spi_dev_t spi;
-</code></pre>
+static spi_dev_t spi;</pre></div>
 <ul>
 <li>
 <p><code>SPI_Port</code> is the SPI Port Number. We use the one and only port on BL602: <strong>SPI Port 0</strong></p>
@@ -273,7 +272,7 @@ static spi_dev_t spi;
 </li>
 </ul>
 <p>Our demo firmware initialises the SPI Port in the function <code>test_spi_init</code> from <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L45-L100"><code>sdk_app_spi/demo.c</code></a> </p>
-<pre><code class="language-c">/// Init the SPI Port
+<div class="example-wrap"><pre class="language-c">/// Init the SPI Port
 static void test_spi_init(char *buf, int len, int argc, char **argv) {
     //  Configure the SPI Port
     int rc = spi_init(
@@ -289,8 +288,7 @@ static void test_spi_init(char *buf, int len, int argc, char **argv) {
         1,   //  SPI Serial Data In Pin  (formerly MISO)
         4    //  SPI Serial Data Out Pin (formerly MOSI)
     );
-    assert(rc == 0);
-</code></pre>
+    assert(rc == 0);</pre></div>
 <p>This function initialises <code>spi</code> by calling the (custom) BL602 SPI HAL Function <code>spi_init</code>.</p>
 <p>(<code>spi_init</code> may only be called once in our firmware, because it maintains a single global instance of SPI device)</p>
 <p>Here are the parameters for <code>spi_init</code>…</p>
@@ -345,7 +343,7 @@ static void test_spi_init(char *buf, int len, int argc, char **argv) {
 </li>
 </ul>
 <p>Next we configure the Actual Chip Select Pin (14) as a GPIO Pin…</p>
-<pre><code class="language-c">    //  Configure Chip Select pin as a GPIO Pin
+<div class="example-wrap"><pre class="language-c">    //  Configure Chip Select pin as a GPIO Pin
     GLB_GPIO_Type pins[1];
     pins[0] = SPI_CS_PIN;
     BL_Err_Type rc2 = GLB_GPIO_Func_Init(
@@ -353,19 +351,17 @@ static void test_spi_init(char *buf, int len, int argc, char **argv) {
         pins,             //  Pins to be configured (Pin 14)
         sizeof(pins) / sizeof(pins[0])  //  Number of pins (1)
     );
-    assert(rc2 == SUCCESS);
-</code></pre>
+    assert(rc2 == SUCCESS);</pre></div>
 <p>(We’ll find out why later)</p>
 <p>Because we’re not ready to talk to BME280 yet, we set the Chip Select Pin to High to deactivate BME280…</p>
-<pre><code class="language-c">    //  Configure Chip Select pin as a GPIO Output Pin (instead of GPIO Input)
+<div class="example-wrap"><pre class="language-c">    //  Configure Chip Select pin as a GPIO Output Pin (instead of GPIO Input)
     rc = bl_gpio_enable_output(SPI_CS_PIN, 0, 0);
     assert(rc == 0);
 
     //  Set Chip Select pin to High, to deactivate BME280
     rc = bl_gpio_output_set(SPI_CS_PIN, 1);
     assert(rc == 0);
-}
-</code></pre>
+}</pre></div>
 <p>(More about Chip Select in a while)</p>
 <p>Our SPI Port is initialised, all set for transferring data!</p>
 <p><a href="https://lupyuen.github.io/articles/spi#spi_init-init-spi-port">(BL602 SPI HAL Function <code>spi_init</code> shall be explained in the Appendix)</a></p>
@@ -396,17 +392,15 @@ static void test_spi_init(char *buf, int len, int argc, char **argv) {
 <p><em>First and Second SPI Transfers</em></p>
 <h2 id="transmit-and-receive-buffers" class="section-header"><a href="#transmit-and-receive-buffers">5.1 Transmit and Receive Buffers</a></h2>
 <p>First we define the <strong>Transmit and Receive Buffers</strong> (one byte each) for the two SPI Transfers: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L102-L108"><code>sdk_app_spi/demo.c</code></a></p>
-<pre><code class="language-c">/// SPI Transmit and Receive Buffers for First SPI Transfer
+<div class="example-wrap"><pre class="language-c">/// SPI Transmit and Receive Buffers for First SPI Transfer
 static uint8_t tx_buf1[1];  //  We shall transmit Register ID (0xD0)
 static uint8_t rx_buf1[1];  //  Unused. We expect to receive the result from BME280 in the second SPI Transfer.
 
 /// SPI Transmit and Receive Buffers for Second SPI Transfer
 static uint8_t tx_buf2[1];  //  Unused. For safety, we shall transmit 0xFF which is a read command (not write).
-static uint8_t rx_buf2[1];  //  We expect to receive Chip ID (0x60) from BME280
-</code></pre>
-<h2 id="initialise-spi-buffers-and-transfers" class="section-header"><a href="#initialise-spi-buffers-and-transfers">5.2 Initialise SPI Buffers and Transfers</a></h2>
+static uint8_t rx_buf2[1];  //  We expect to receive Chip ID (0x60) from BME280</pre></div><h2 id="initialise-spi-buffers-and-transfers" class="section-header"><a href="#initialise-spi-buffers-and-transfers">5.2 Initialise SPI Buffers and Transfers</a></h2>
 <p>Let’s look at the function in our demo firmware that creates the two SPI Transfers and executes them: <code>test_spi_transfer</code> from <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L110-L156"><code>sdk_app_spi/demo.c</code></a></p>
-<pre><code class="language-c">/// Start the SPI data transfer
+<div class="example-wrap"><pre class="language-c">/// Start the SPI data transfer
 static void test_spi_transfer(char *buf, int len, int argc, char **argv) {
     //  Clear the buffers
     memset(&amp;tx_buf1, 0, sizeof(tx_buf1));
@@ -416,40 +410,36 @@ static void test_spi_transfer(char *buf, int len, int argc, char **argv) {
 
     //  Prepare 2 SPI Transfers
     static spi_ioc_transfer_t transfers[2];
-    memset(transfers, 0, sizeof(transfers));    
-</code></pre>
+    memset(transfers, 0, sizeof(transfers));    </pre></div>
 <p>Here we erase the Transmit and Receive Buffers, and prepare two SPI Transfers.</p>
 <h2 id="first-spi-transfer" class="section-header"><a href="#first-spi-transfer">5.3 First SPI Transfer</a></h2>
 <p>Next we define the First SPI Transfer…</p>
-<pre><code class="language-c">    //  First SPI Transfer: Transmit Register ID (0xD0) to BME280
+<div class="example-wrap"><pre class="language-c">    //  First SPI Transfer: Transmit Register ID (0xD0) to BME280
     tx_buf1[0] = 0xd0;  //  Read BME280 Chip ID Register (0xD0). Read/Write Bit (High Bit) is 1 for Read.
     transfers[0].tx_buf = (uint32_t) tx_buf1;  //  Transmit Buffer (Register ID)
     transfers[0].rx_buf = (uint32_t) rx_buf1;  //  Receive Buffer
-    transfers[0].len    = sizeof(tx_buf1);     //  How many bytes
-</code></pre>
+    transfers[0].len    = sizeof(tx_buf1);     //  How many bytes</pre></div>
 <p>We’ll be transmitting one byte <strong><code>0xD0</code></strong> to BME280. This goes into the <strong>Transmit Buffer <code>tx_buf1</code></strong></p>
 <p>We set the <strong>Transmit and Receive Buffers</strong> for the First SPI Transfer in <strong><code>transfers[0]</code></strong></p>
 <p>Also we set the <strong>data length</strong> of the First SPI Transfer (one byte) in <strong><code>transfers[0]</code></strong></p>
 <h2 id="second-spi-transfer" class="section-header"><a href="#second-spi-transfer">5.4 Second SPI Transfer</a></h2>
 <p>Then we define the Second SPI Transfer…</p>
-<pre><code class="language-c">    //  Second SPI Transfer: Receive Chip ID (0x60) from BME280
+<div class="example-wrap"><pre class="language-c">    //  Second SPI Transfer: Receive Chip ID (0x60) from BME280
     tx_buf2[0] = 0xff;  //  Unused. Read/Write Bit (High Bit) is 1 for Read.
     transfers[1].tx_buf = (uint32_t) tx_buf2;  //  Transmit Buffer
     transfers[1].rx_buf = (uint32_t) rx_buf2;  //  Receive Buffer (Chip ID)
-    transfers[1].len    = sizeof(tx_buf2);     //  How many bytes
-</code></pre>
+    transfers[1].len    = sizeof(tx_buf2);     //  How many bytes</pre></div>
 <p>BME280 will ignore the byte transmitted by BL602 in the Second SPI Transfer. But let’s send <strong><code>0xFF</code></strong> for safety. This goes into the <strong>Transmit Buffer <code>tx_buf2</code></strong></p>
 <p>We set the <strong>Transmit and Receive Buffers</strong> for the Second SPI Transfer in <strong><code>transfers[1]</code></strong></p>
 <p>Also we set the <strong>data length</strong> of the Second SPI Transfer (one byte) in <strong><code>transfers[1]</code></strong></p>
 <h2 id="execute-the-spi-transfers" class="section-header"><a href="#execute-the-spi-transfers">5.5 Execute the SPI Transfers</a></h2>
 <p>Now we’re ready to execute the two SPI Transfers!</p>
 <p>By SPI Convention, we set the <strong>Chip Select Pin to Low</strong> to activate BME280 (and get it ready for talking)…</p>
-<pre><code class="language-c">    //  Set Chip Select pin to Low, to activate BME280
+<div class="example-wrap"><pre class="language-c">    //  Set Chip Select pin to Low, to activate BME280
     int rc = bl_gpio_output_set(SPI_CS_PIN, 0);
-    assert(rc == 0);
-</code></pre>
+    assert(rc == 0);</pre></div>
 <p>Now that we have BME280’s attention, we execute the two SPI Transfers by calling the BL602 SPI HAL Function <code>hal_spi_transfer</code>…</p>
-<pre><code class="language-c">    //  Execute the two SPI Transfers with the DMA Controller
+<div class="example-wrap"><pre class="language-c">    //  Execute the two SPI Transfers with the DMA Controller
     rc = hal_spi_transfer(
         &amp;spi,       //  SPI Device
         transfers,  //  SPI Transfers
@@ -458,16 +448,14 @@ static void test_spi_transfer(char *buf, int len, int argc, char **argv) {
     assert(rc == 0);
 
     //  DMA Controller will transmit and receive the SPI data in the background.
-    //  hal_spi_transfer will wait for the two SPI Transfers to complete before returning.
-</code></pre>
+    //  hal_spi_transfer will wait for the two SPI Transfers to complete before returning.</pre></div>
 <p><code>hal_spi_transfer</code> will wait for the two SPI Transfers to complete before returning.</p>
 <p>When we’re done with the two SPI Transfers, we set the <strong>Chip Select Pin to High</strong> to deactivate BME280 (and put it to sleep)…</p>
-<pre><code class="language-c">    //  Now that we're done with the two SPI Transfers...
+<div class="example-wrap"><pre class="language-c">    //  Now that we&#39;re done with the two SPI Transfers...
     //  Set Chip Select pin to High, to deactivate BME280
     rc = bl_gpio_output_set(SPI_CS_PIN, 1);
     assert(rc == 0);
-}
-</code></pre>
+}</pre></div>
 <p><strong>Mission Accomplished!</strong> The Receive Buffer for the Second SPI Transfer <strong><code>rx_buf2</code></strong> will contain the data received from BME280: <strong><code>0x60</code></strong>.</p>
 <p>We’ll witness this shortly.</p>
 <p><a href="https://lupyuen.github.io/articles/spi#hal_spi_transfer-execute-spi-transfer">(BL602 SPI HAL Function <code>hal_spi_transfer</code> shall be explained in the Appendix)</a></p>
@@ -538,18 +526,14 @@ static void test_spi_transfer(char *buf, int len, int argc, char **argv) {
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/releases/tag/v3.0.0"><strong>Binary Release of <code>sdk_app_spi</code></strong></a></li>
 </ul>
 <p>Alternatively, we may build the Firmware Binary File <code>sdk_app_spi.bin</code> from the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/spi/customer_app/sdk_app_spi">source code</a>…</p>
-<pre><code class="language-bash"># Download the spi branch of lupyuen's bl_iot_sdk
-git clone --recursive --branch spi https://github.com/lupyuen/bl_iot_sdk
+<div class="example-wrap"><pre class="language-bash">git clone --recursive --branch spi https://github.com/lupyuen/bl_iot_sdk
 cd bl_iot_sdk/customer_app/sdk_app_spi
 
-# TODO: Change this to the full path of bl_iot_sdk
 export BL60X_SDK_PATH=$HOME/bl_iot_sdk
 export CONFIG_CHIP_NAME=BL602
 make
 
-# TODO: Change ~/blflash to the full path of blflash
-cp build_out/sdk_app_spi.bin ~/blflash
-</code></pre>
+cp build_out/sdk_app_spi.bin ~/blflash</pre></div>
 <p><a href="https://lupyuen.github.io/articles/pinecone#building-firmware">More details on building bl_iot_sdk</a></p>
 <p>(Remember to use the <strong><code>spi</code></strong> branch, not the default <strong><code>master</code></strong> branch)</p>
 <h2 id="flash-the-firmware" class="section-header"><a href="#flash-the-firmware">6.1 Flash the firmware</a></h2>
@@ -601,22 +585,17 @@ cp build_out/sdk_app_spi.bin ~/blflash
 </li>
 </ol>
 <p>Enter these commands to flash <code>sdk_app_spi.bin</code> to BL602 over UART…</p>
-<pre><code class="language-bash"># TODO: Change ~/blflash to the full path of blflash
-cd ~/blflash
+<div class="example-wrap"><pre class="language-bash">cd ~/blflash
 
-# For Linux:
 sudo cargo run flash sdk_app_spi.bin \
     --port /dev/ttyUSB0
 
-# For macOS:
 cargo run flash sdk_app_spi.bin \
     --port /dev/tty.usbserial-1420 \
     --initial-baud-rate 230400 \
     --baud-rate 230400
 
-# For Windows: Change COM5 to the BL602 Serial Port
-cargo run flash sdk_app_spi.bin --port COM5
-</code></pre>
+cargo run flash sdk_app_spi.bin --port COM5</pre></div>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">More details on flashing firmware</a></p>
 <h2 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">6.2 Run the firmware</a></h2>
 <p>Set BL602 to <strong>Normal Mode</strong> (Non-Flashing) and restart the board…</p>
@@ -647,8 +626,7 @@ cargo run flash sdk_app_spi.bin --port COM5
 </ol>
 <p>After restarting, connect to BL602’s UART Port at 2 Mbps like so…</p>
 <p><strong>For Linux:</strong></p>
-<pre><code class="language-bash">sudo screen /dev/ttyUSB0 2000000
-</code></pre>
+<div class="example-wrap"><pre class="language-bash">sudo screen /dev/ttyUSB0 2000000</pre></div>
 <p><strong>For macOS:</strong> Use CoolTerm (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>Alternatively:</strong> Use the Web Serial Terminal (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
@@ -661,41 +639,34 @@ cargo run flash sdk_app_spi.bin --port COM5
 </li>
 <li>
 <p>Enter <code>help</code> to see the available commands…</p>
-<pre><code class="language-text"># help
-====User Commands====
+<div class="example-wrap"><pre class="language-text">====User Commands====
 spi_init                 : Init SPI port
 spi_transfer             : Transfer SPI data
-spi_result               : Show SPI data received
-</code></pre>
-</li>
+spi_result               : Show SPI data received</pre></div></li>
 <li>
 <p>First we <strong>initialise our SPI Port</strong>. </p>
 <p>Enter this command…</p>
-<pre><code class="language-text"># spi_init
-</code></pre>
+<div class="example-wrap"><pre class="language-text"></pre></div>
 <p><code>spi_init</code> calls the function <code>test_spi_init</code>, which we have seen earlier.</p>
 </li>
 <li>
 <p>We should see this…</p>
-<pre><code class="language-text">port0 eventloop init = 42010b48
+<div class="example-wrap"><pre class="language-text">port0 eventloop init = 42010b48
 [HAL] [SPI] Init :
 port=0, mode=0, polar_phase = 1, freq=200000, tx_dma_ch=2, rx_dma_ch=3, pin_clk=3, pin_cs=2, pin_mosi=1, pin_miso=4
 set rwspeed = 200000
 hal_gpio_init: cs:2, clk:3, mosi:1, miso: 4
 hal_gpio_init: SPI controller mode
 hal_spi_init.
-Set CS pin 14 to high
-</code></pre>
-</li>
+Set CS pin 14 to high</pre></div></li>
 <li>
 <p>Now we <strong>start the two SPI Transfers</strong>…</p>
-<pre><code class="language-text"># spi_transfer
-</code></pre>
+<div class="example-wrap"><pre class="language-text"></pre></div>
 <p><code>spi_transfer</code> calls the function <code>test_spi_transfer</code>, which we have seen earlier.</p>
 </li>
 <li>
 <p>We should see this…</p>
-<pre><code class="language-text">Set CS pin 14 to low
+<div class="example-wrap"><pre class="language-text">Set CS pin 14 to low
 hal_spi_transfr = 2
 transfer xfer[0].len = 1
 Tx DMA src=0x4200d1b8, dest=0x4000a288, size=1, si=1, di=0, i=1
@@ -705,18 +676,15 @@ transfer xfer[1].len = 1
 Tx DMA src=0x4200d1bc, dest=0x4000a288, size=1, si=1, di=0, i=1
 Rx DMA src=0x4000a28c, dest=0x4200d1b4, size=1, si=0, di=1, i=1
 recv all event group.
-Set CS pin 14 to high
-</code></pre>
-</li>
+Set CS pin 14 to high</pre></div></li>
 <li>
 <p>Finally we display the <strong>SPI Data received</strong> from BME280…</p>
-<pre><code class="language-text"># spi_result
-</code></pre>
+<div class="example-wrap"><pre class="language-text"></pre></div>
 <p>(<code>spi_result</code> is defined here in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L158-L182"><code>sdk_app_spi/demo.c</code></a>)</p>
 </li>
 <li>
 <p>We should see this…</p>
-<pre><code class="language-text">SPI Transfer #1: Received Data 0x0x4200d1b0:
+<div class="example-wrap"><pre class="language-text">SPI Transfer #1: Received Data 0x0x4200d1b0:
 ff
 SPI Transfer #2: Received Data 0x0x4200d1b4:
 60
@@ -727,27 +695,23 @@ Tx Error:      0x0
 Rx Interrupts: 2
 Rx Status:     0x0
 Rx Term Count: 0x0
-Rx Error:      0x0
-</code></pre>
+Rx Error:      0x0</pre></div>
 <p>This shows that we have encountered <strong>two Transmit Interrupts</strong> and <strong>two Receive Interrupts</strong>, no errors. Which is expected for two SPI Transfers.</p>
 <p>Remember that we’re reading the Chip ID from BME280. We should see this Chip ID under <strong><code>SPI Transfer #2</code></strong>…</p>
-<pre><code class="language-text">60
-</code></pre>
+<div class="example-wrap"><pre class="language-text">60</pre></div>
 <p>(For BMP280 the Chip ID is <code>0x58</code>)</p>
 </li>
 </ol>
 <p>Congratulations! We have successfully read the BME280 Sensor from BL602 over SPI!</p>
 <h1 id="control-our-own-chip-select-pin" class="section-header"><a href="#control-our-own-chip-select-pin">7 Control our own Chip Select Pin</a></h1>
 <p>Earlier we said that we’re not using Pin 2, the designated Chip Select Pin from the BL602 SPI Port…</p>
-<pre><code class="language-c">//  Configure the SPI Port
+<div class="example-wrap"><pre class="language-c">//  Configure the SPI Port
 int rc = spi_init(
     ...
-    2,   //  Unused SPI Chip Select Pin
-</code></pre>
+    2,   //  Unused SPI Chip Select Pin</pre></div>
 <p>But instead, we’re using Pin 14 as our own Chip Select Pin…</p>
-<pre><code class="language-c">/// Use GPIO 14 as SPI Chip Select Pin
-#define SPI_CS_PIN 14
-</code></pre>
+<div class="example-wrap"><pre class="language-c">/// Use GPIO 14 as SPI Chip Select Pin
+#define SPI_CS_PIN 14</pre></div>
 <p><em>Why are we controlling the Chip Select Pin ourselves?</em></p>
 <p><img src="https://lupyuen.github.io/images/spi-analyse4a.png" alt="Chip Select Pin from SPI Port connected to BME280" /></p>
 <ol>
@@ -773,7 +737,7 @@ int rc = spi_init(
 <p>BL602 is extremely versatile for Pin Functions… We may assign <strong>any BL602 Pin as GPIO, SPI, I2C, UART, PWM or JTAG!</strong></p>
 <p>(See Table 3.1 “Pin Description”, Page 27 in the <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en">BL602 Reference Manual</a>)</p>
 <p>We configure Pin 14 for GPIO like so: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L86-L99"><code>sdk_app_spi/demo.c</code></a></p>
-<pre><code class="language-c">/// Use GPIO 14 as SPI Chip Select Pin
+<div class="example-wrap"><pre class="language-c">/// Use GPIO 14 as SPI Chip Select Pin
 #define SPI_CS_PIN 14
 
 //  Configure Chip Select pin as a GPIO Pin
@@ -784,31 +748,27 @@ BL_Err_Type rc2 = GLB_GPIO_Func_Init(
     pins,             //  Pins to be configured (Pin 14)
     sizeof(pins) / sizeof(pins[0])  //  Number of pins (1)
 );
-assert(rc2 == SUCCESS);
-</code></pre>
+assert(rc2 == SUCCESS);</pre></div>
 <p>We call <strong><code>GLB_GPIO_Func_Init</code></strong> to configure Pin 14 as a plain GPIO Pin: <code>GPIO_FUN_SWGPIO</code>.</p>
 <p>(<code>GLB_GPIO_Func_Init</code> comes from the <strong>BL602 Standard Driver</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c"><code>bl602_glb.c</code></a>)</p>
 <p>Now that Pin 14 is configured as a GPIO Pin, let’s configure it for <strong>GPIO Output</strong> (instead of GPIO Input)…</p>
-<pre><code class="language-c">//  Configure Chip Select pin as a GPIO Output Pin (instead of GPIO Input)
+<div class="example-wrap"><pre class="language-c">//  Configure Chip Select pin as a GPIO Output Pin (instead of GPIO Input)
 rc = bl_gpio_enable_output(SPI_CS_PIN, 0, 0);
-assert(rc == 0);
-</code></pre>
+assert(rc == 0);</pre></div>
 <p>We’re ready to toggle Pin 14 as a GPIO Output Pin!</p>
 <p>(<code>bl_gpio_enable_output</code> comes from the <strong>BL602 GPIO Low Level HAL</strong>. <a href="https://lupyuen.github.io/articles/led#enable-gpio">See this</a>)</p>
 <h2 id="set-chip-select-to-low" class="section-header"><a href="#set-chip-select-to-low">7.2 Set Chip Select to Low</a></h2>
 <p>To set our Chip Select Pin to Low (which activates BME280), we do this: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L135-L155"><code>sdk_app_spi/demo.c</code></a></p>
-<pre><code class="language-c">//  Set Chip Select pin to Low, to activate BME280
+<div class="example-wrap"><pre class="language-c">//  Set Chip Select pin to Low, to activate BME280
 int rc = bl_gpio_output_set(SPI_CS_PIN, 0);
-assert(rc == 0);
-</code></pre>
+assert(rc == 0);</pre></div>
 <p>We set Chip Select to Low just before executing the two SPI Transfers.</p>
 <p>(<code>bl_gpio_output_set</code> comes from the <strong>BL602 GPIO Low Level HAL</strong>. <a href="https://lupyuen.github.io/articles/led#read-and-write-gpio">See this</a>)</p>
 <h2 id="set-chip-select-to-high" class="section-header"><a href="#set-chip-select-to-high">7.3 Set Chip Select to High</a></h2>
 <p>To set our Chip Select Pin to High (which deactivates BME280), we do this…</p>
-<pre><code class="language-c">//  Set Chip Select pin to High, to deactivate BME280
+<div class="example-wrap"><pre class="language-c">//  Set Chip Select pin to High, to deactivate BME280
 rc = bl_gpio_output_set(SPI_CS_PIN, 1);
-assert(rc == 0);
-</code></pre>
+assert(rc == 0);</pre></div>
 <p>We set Chip Select to High in two places…</p>
 <ol>
 <li>
@@ -845,22 +805,20 @@ assert(rc == 0);
 </tbody></table>
 <p>This works perfectly fine, though it contradicts the BL602 Reference Manual.</p>
 <p>Because of this bug, we shall refer to <strong>Pin 1 as Serial Data In</strong> <em>(formerly MISO)</em>, and <strong>Pin 4 as Serial Data Out</strong> <em>(formerly MOSI)</em>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L45-L100"><code>sdk_app_spi/demo.c</code></a> </p>
-<pre><code class="language-c">//  Configure the SPI Port
+<div class="example-wrap"><pre class="language-c">//  Configure the SPI Port
 int rc = spi_init(
     ...
     1,   //  SPI Serial Data In Pin  (formerly MISO)
-    4    //  SPI Serial Data Out Pin (formerly MOSI)
-</code></pre>
+    4    //  SPI Serial Data Out Pin (formerly MOSI)</pre></div>
 <p>(Could we have mistakenly configured BL602 as SPI Peripheral… Instead of SPI Controller? 🤔)</p>
 <p><a href="https://lupyuen.github.io/articles/pinedio#spi-pins-are-swapped"><strong>UPDATE:</strong> We may call GLB_Swap_SPI_0_MOSI_With_MISO to swap the two SPI Data Pins. (See this)</a></p>
 <h1 id="spi-phase-looks-sus" class="section-header"><a href="#spi-phase-looks-sus">9 SPI Phase looks sus</a></h1>
 <p>Here’s another spooky problem: <strong>BL602 SPI Phase seems incorrect</strong>.</p>
 <p>Earlier we have configured BL602 for <strong>SPI Polarity 0 (CPOL), Phase 1 (CPHA)</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L45-L100"><code>sdk_app_spi/demo.c</code></a> </p>
-<pre><code class="language-c">//  Configure the SPI Port
+<div class="example-wrap"><pre class="language-c">//  Configure the SPI Port
 int rc = spi_init(
     ...
-    1,           //  SPI Polarity and Phase: 1 for (CPOL=0, CPHA=1)
-</code></pre>
+    1,           //  SPI Polarity and Phase: 1 for (CPOL=0, CPHA=1)</pre></div>
 <p>Here’s how it looks with a Logic Analyser…</p>
 <p><img src="https://lupyuen.github.io/images/spi-analyse10a.png" alt="BL602 SPI Polarity 0, Phase 1" /></p>
 <p>Note that the <strong>Serial Data Out Pin</strong> <em>(formerly MOSI)</em> <strong>goes High</strong>… <strong>before the Clock Pin goes High</strong>.</p>
@@ -1011,7 +969,7 @@ int rc = spi_init(
 <li>
 <p>Enter <strong><code>m</code></strong> to show the menu</p>
 <p>Select <strong><code>SPI</code></strong></p>
-<pre><code class="language-text">HiZ&gt; m
+<div class="example-wrap"><pre class="language-text">HiZ&gt; m
 1. HiZ
 2. 1-WIRE
 3. UART
@@ -1025,96 +983,77 @@ int rc = spi_init(
 11. DIO
 x. exit(without change)
 
-(1)&gt; 5
-</code></pre>
-</li>
+(1)&gt; 5</pre></div></li>
 <li>
 <p>Select <strong><code>250 kHz</code></strong></p>
-<pre><code class="language-text">Set speed:
+<div class="example-wrap"><pre class="language-text">Set speed:
 1. 30KHz
 2. 125KHz
 3. 250KHz
 4. 1MHz
 
-(1)&gt; 3
-</code></pre>
-</li>
+(1)&gt; 3</pre></div></li>
 <li>
 <p>Select <strong><code>Idle Low</code></strong></p>
-<pre><code class="language-text">Clock polarity:
+<div class="example-wrap"><pre class="language-text">Clock polarity:
 1. Idle low *default
 2. Idle high
 
-(1)&gt;
-</code></pre>
-</li>
+(1)&gt;</pre></div></li>
 <li>
 <p>Select <strong><code>Active To Idle</code></strong></p>
-<pre><code class="language-text">Output clock edge:
+<div class="example-wrap"><pre class="language-text">Output clock edge:
 1. Idle to active
 2. Active to idle *default
 
-(2)&gt;
-</code></pre>
-</li>
+(2)&gt;</pre></div></li>
 <li>
 <p>Select <strong><code>Middle</code></strong></p>
-<pre><code class="language-text">Input sample phase:
+<div class="example-wrap"><pre class="language-text">Input sample phase:
 1. Middle *default
 2. End
 
-(1)&gt;
-</code></pre>
-</li>
+(1)&gt;</pre></div></li>
 <li>
 <p>Select <strong><code>/CS</code></strong></p>
-<pre><code class="language-text">CS:
+<div class="example-wrap"><pre class="language-text">CS:
 1. CS
 2. /CS *default
 
-(2)&gt;
-</code></pre>
-</li>
+(2)&gt;</pre></div></li>
 <li>
 <p>Select <strong><code>Open Drain</code></strong></p>
-<pre><code class="language-text">Select output type:
+<div class="example-wrap"><pre class="language-text">Select output type:
 1. Open drain (H=Hi-Z, L=GND)
 2. Normal (H=3.3V, L=GND)
 
 (1)&gt;
 Clutch disengaged!!!
-To finish setup, start up the power supplies with command 'W'
-Ready
-</code></pre>
-</li>
+To finish setup, start up the power supplies with command &#39;W&#39;
+Ready</pre></div></li>
 <li>
 <p>Enter <strong><code>W</code></strong> to power on BME280</p>
-<pre><code class="language-text">SPI&gt; W
+<div class="example-wrap"><pre class="language-text">SPI&gt; W
 POWER SUPPLIES ON
-Clutch engaged!!!
-</code></pre>
-</li>
+Clutch engaged!!!</pre></div></li>
 <li>
 <p>Enter this command…</p>
-<pre><code class="language-text">[ 0xD0 r ]
-</code></pre>
+<div class="example-wrap"><pre class="language-text">[ 0xD0 r ]</pre></div>
 <p>(We’ll learn why in a while)</p>
 </li>
 <li>
 <p>We should see…</p>
-<pre><code class="language-text">SPI&gt; [ 0xD0 r ]
+<div class="example-wrap"><pre class="language-text">SPI&gt; [ 0xD0 r ]
 /CS ENABLED
 WRITE: 0xD0 
 READ: 0x60 
-/CS DISABLED
-</code></pre>
+/CS DISABLED</pre></div>
 <p>This means that the result is <code>0x60</code>, which is the Chip ID for BME280.</p>
 <p>(For BMP280 the Chip ID is <code>0x58</code>)</p>
 </li>
 </ol>
 <p>This Bus Pirate SPI command…</p>
-<pre><code class="language-text">[ 0xD0 r ]
-</code></pre>
+<div class="example-wrap"><pre class="language-text">[ 0xD0 r ]</pre></div>
 <p>Will do this…</p>
 <ol>
 <li>
@@ -1198,17 +1137,14 @@ READ: 0x60
 <p><code>HAL_SPI_DEBUG</code> is presently set to <code>1</code> to enable debug messages. </p>
 <p>For production we should change this to <code>0</code>.</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_spi.c#L57-L58"><code>bl602_hal/hal_spi.c</code></a></p>
-<pre><code class="language-c">//  TODO: Change to 0 for production to disable logging
-#define HAL_SPI_DEBUG       (1)  
-</code></pre>
+<div class="example-wrap"><pre class="language-c">//  TODO: Change to 0 for production to disable logging
+#define HAL_SPI_DEBUG       (1)  </pre></div>
 <p><code>HAL_SPI_HARDCS</code> is supposed to control the Chip Select Pin via GPIO… But it doesn’t work according to our testing.</p>
-<pre><code class="language-c">//  TODO: When set to 0, this is supposed to control 
+<div class="example-wrap"><pre class="language-c">//  TODO: When set to 0, this is supposed to control 
 //  Chip Select Pin as GPIO (instead of SPI). 
-//  But this doesn't work, because the pin has been 
+//  But this doesn&#39;t work, because the pin has been 
 //  configured for SPI Port, which overrides GPIO.
-#define HAL_SPI_HARDCS      (1)
-</code></pre>
-<h2 id="spi_init-init-spi-port" class="section-header"><a href="#spi_init-init-spi-port">16.2 spi_init: Init SPI Port</a></h2>
+#define HAL_SPI_HARDCS      (1)</pre></div><h2 id="spi_init-init-spi-port" class="section-header"><a href="#spi_init-init-spi-port">16.2 spi_init: Init SPI Port</a></h2>
 <p>We added the function <code>spi_init</code> to initialise the SPI Port without using the AliOS Device Tree. This function is called by our demo firmware.</p>
 <p><code>spi_init</code> was derived from these SPI HAL Functions (which use the AliOS Device Tree)…</p>
 <ul>
@@ -1222,7 +1158,7 @@ READ: 0x60
 <p>Note that there is only a <strong>single global instance of SPI Data.</strong> </p>
 <p><strong><code>spi_init</code> shall only be called once by our firmware.</strong></p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_spi.c#L838-L886"><code>bl602_hal/hal_spi.c</code></a></p>
-<pre><code class="language-c">//  Global single instance of SPI Data. 
+<div class="example-wrap"><pre class="language-c">//  Global single instance of SPI Data. 
 //  We support only one instance of SPI Device.
 static spi_priv_data_t g_spi_data;
 
@@ -1238,21 +1174,19 @@ int spi_init(spi_dev_t *spi, uint8_t port,
 
     //  Use the global single instance of SPI Data
     g_hal_buf = &amp;g_spi_data;
-    memset(g_hal_buf, 0, sizeof(spi_priv_data_t));
-</code></pre>
+    memset(g_hal_buf, 0, sizeof(spi_priv_data_t));</pre></div>
 <p><a href="https://lupyuen.github.io/articles/spi#initialise-spi-port">(The parameters for <code>spi_init</code> are listed here)</a></p>
 <p>We call <code>xEventGroupCreate</code> to create a FreeRTOS Event Group.</p>
 <p>This Event Group will be signalled by the DMA Interrupt Handlers to notify the Foreground Task that the DMA Transmit and Receive Requests have been completed.</p>
-<pre><code class="language-c">    //  Create the Event Group for DMA Interrupt Handler to notify Foreground Task
+<div class="example-wrap"><pre class="language-c">    //  Create the Event Group for DMA Interrupt Handler to notify Foreground Task
     g_hal_buf-&gt;hwspi[port].spi_dma_event_group = xEventGroupCreate();
     blog_info(&quot;port%d eventloop init = %08lx\r\n&quot;, port,
         (uint32_t)g_hal_buf-&gt;hwspi[port].spi_dma_event_group);
     if (NULL == g_hal_buf-&gt;hwspi[port].spi_dma_event_group) {
         return -ENOMEM;
-    }
-</code></pre>
+    }</pre></div>
 <p>We set the internal fields of the SPI device…</p>
-<pre><code class="language-c">    //  Init the SPI Device
+<div class="example-wrap"><pre class="language-c">    //  Init the SPI Device
     memset(spi, 0, sizeof(spi_dev_t));
     spi-&gt;port = port;
     spi-&gt;config.mode = mode;
@@ -1271,21 +1205,18 @@ int spi_init(spi_dev_t *spi, uint8_t port,
     //  SPI Device points to global single instance of SPI Data
     spi-&gt;priv = g_hal_buf;
     blog_info(&quot;[HAL] [SPI] Init :\r\nport=%d, mode=%d, polar_phase = %d, freq=%ld, tx_dma_ch=%d, rx_dma_ch=%d, pin_clk=%d, pin_cs=%d, pin_mosi=%d, pin_miso=%d\r\n&quot;,
-        port, mode, polar_phase, freq, tx_dma_ch, rx_dma_ch, pin_clk, pin_cs, pin_mosi, pin_miso);
-</code></pre>
+        port, mode, polar_phase, freq, tx_dma_ch, rx_dma_ch, pin_clk, pin_cs, pin_mosi, pin_miso);</pre></div>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_spi.c#L563-L580">(This code is derived from <code>vfs_spi_init_fullname</code>)</a></p>
 <p>Note that we don’t assign the SPI Frequency yet.  We’ll assign later in <code>hal_spi_set_rwspeed</code> because the function validates the SPI Frequency.</p>
 <p>Finally we call <a href="https://lupyuen.github.io/articles/spi#hal_spi_set_rwspeed-set-spi-frequency"><code>hal_spi_set_rwspeed</code></a> to set the SPI Frequency, assign the SPI Pins and initialise the DMA Controller…</p>
-<pre><code class="language-c">    //  Init the SPI speed, pins and DMA
+<div class="example-wrap"><pre class="language-c">    //  Init the SPI speed, pins and DMA
     int rc = hal_spi_set_rwspeed(spi, freq);
     assert(rc == 0);
     return rc;
-}
-</code></pre>
-<h2 id="hal_spi_set_rwspeed-set-spi-frequency" class="section-header"><a href="#hal_spi_set_rwspeed-set-spi-frequency">16.3 hal_spi_set_rwspeed: Set SPI Frequency</a></h2>
+}</pre></div><h2 id="hal_spi_set_rwspeed-set-spi-frequency" class="section-header"><a href="#hal_spi_set_rwspeed-set-spi-frequency">16.3 hal_spi_set_rwspeed: Set SPI Frequency</a></h2>
 <p><code>hal_spi_set_rwspeed</code> is called by <a href="https://lupyuen.github.io/articles/spi#spi_init-init-spi-port"><code>spi_init</code></a> to set the SPI Frequency, assign the SPI Pins and initialise the DMA Controller.</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_spi.c#L430-L480"><code>bl602_hal/hal_spi.c</code></a></p>
-<pre><code class="language-c">int hal_spi_set_rwspeed(spi_dev_t *spi_dev, uint32_t speed)
+<div class="example-wrap"><pre class="language-c">int hal_spi_set_rwspeed(spi_dev_t *spi_dev, uint32_t speed)
 {
     spi_priv_data_t *data;
     int i;
@@ -1298,12 +1229,11 @@ int spi_init(spi_dev_t *spi, uint8_t port,
     if (spi_dev-&gt;config.freq == speed) {
         blog_info(&quot;speed not change.\r\n&quot;);
         return 0;
-    }
-</code></pre>
+    }</pre></div>
 <p>Parameter <code>speed</code> is the SPI Frequency (in Hz) from 200,000 (200 kHz) to 40,000,000 (40 MHz).</p>
 <p>The Actual SPI Frequency needs to be divisible by 40,000,000.</p>
 <p>Here we compute the divisor for the SPI Frequency and derive the Actual SPI Frequency <code>real_speed</code>…</p>
-<pre><code class="language-c">    for (i = 0; i &lt; 256; i++) {
+<div class="example-wrap"><pre class="language-c">    for (i = 0; i &lt; 256; i++) {
         if (speed == (40000000/(i+1))) {
             real_speed = speed;
             real_flag = 1;
@@ -1312,10 +1242,9 @@ int spi_init(spi_dev_t *spi, uint8_t port,
         } else {
             break;
         }
-    }
-</code></pre>
+    }</pre></div>
 <p>We validate that the Actual SPI Frequency is in the range 200 kHz to 40 MHz…</p>
-<pre><code class="language-c">    if (real_flag != 1) {
+<div class="example-wrap"><pre class="language-c">    if (real_flag != 1) {
         if (i == 0) {
             blog_error(&quot;The max speed is 40000000 Hz, please set it smaller.&quot;);
             return -1;
@@ -1331,22 +1260,18 @@ int spi_init(spi_dev_t *spi, uint8_t port,
                 blog_info(&quot;not support speed: %ld, change real_speed = %ld\r\n&quot;, speed, real_speed);
             }
         }
-    }
-</code></pre>
+    }</pre></div>
 <p>We set the Actual SPI Frequency…</p>
-<pre><code class="language-c">    data = (spi_priv_data_t *)spi_dev-&gt;priv;
+<div class="example-wrap"><pre class="language-c">    data = (spi_priv_data_t *)spi_dev-&gt;priv;
     data-&gt;hwspi[spi_dev-&gt;port].freq = real_speed;
-    spi_dev-&gt;config.freq = real_speed;
-</code></pre>
+    spi_dev-&gt;config.freq = real_speed;</pre></div>
 <p>Finally we call <a href="https://lupyuen.github.io/articles/spi#hal_spi_init-init-spi-pins-and-dma"><code>hal_spi_init</code></a> to assign the SPI Pins and initialise the DMA Controller.</p>
-<pre><code class="language-c">    hal_spi_init(spi_dev);
+<div class="example-wrap"><pre class="language-c">    hal_spi_init(spi_dev);
     return 0;
-}
-</code></pre>
-<h2 id="hal_spi_init-init-spi-pins-and-dma" class="section-header"><a href="#hal_spi_init-init-spi-pins-and-dma">16.4 hal_spi_init: Init SPI Pins and DMA</a></h2>
+}</pre></div><h2 id="hal_spi_init-init-spi-pins-and-dma" class="section-header"><a href="#hal_spi_init-init-spi-pins-and-dma">16.4 hal_spi_init: Init SPI Pins and DMA</a></h2>
 <p><code>hal_spi_init</code> is called by <a href="https://lupyuen.github.io/articles/spi#hal_spi_set_rwspeed-set-spi-frequency"><code>hal_spi_set_rwspeed</code></a> to assign the SPI Pins and initialise the DMA Controller.</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_spi.c#L360-L384"><code>bl602_hal/hal_spi.c</code></a></p>
-<pre><code class="language-c">int32_t hal_spi_init(spi_dev_t *spi)
+<div class="example-wrap"><pre class="language-c">int32_t hal_spi_init(spi_dev_t *spi)
 {
     int i;
     spi_priv_data_t *data;
@@ -1358,8 +1283,7 @@ int spi_init(spi_dev_t *spi, uint8_t port,
     data = (spi_priv_data_t *)spi-&gt;priv;
     if (data == NULL) {
         return -1;
-    }
-</code></pre>
+    }</pre></div>
 <p>For every SPI Port (there’s only one: SPI Port 0)…</p>
 <ol>
 <li>
@@ -1369,7 +1293,7 @@ int spi_init(spi_dev_t *spi, uint8_t port,
 <p>We call <a href="https://lupyuen.github.io/articles/spi#hal_spi_dma_init-init-spi-dma"><code>hal_spi_dma_init</code></a> to initialise the DMA Controller</p>
 </li>
 </ol>
-<pre><code class="language-c">    for (i = 0; i &lt; SPI_NUM_MAX; i++) {
+<div class="example-wrap"><pre class="language-c">    for (i = 0; i &lt; SPI_NUM_MAX; i++) {
         hal_gpio_init(&amp;data-&gt;hwspi[i]);
         hal_spi_dma_init(&amp;data-&gt;hwspi[i]);
     }
@@ -1379,12 +1303,10 @@ int spi_init(spi_dev_t *spi, uint8_t port,
 #endif
 
     return 0;
-}
-</code></pre>
-<h2 id="hal_gpio_init-assign-spi-pins" class="section-header"><a href="#hal_gpio_init-assign-spi-pins">16.5 hal_gpio_init: Assign SPI Pins</a></h2>
+}</pre></div><h2 id="hal_gpio_init-assign-spi-pins" class="section-header"><a href="#hal_gpio_init-assign-spi-pins">16.5 hal_gpio_init: Assign SPI Pins</a></h2>
 <p><code>hal_gpio_init</code> is called by <a href="https://lupyuen.github.io/articles/spi#hal_spi_init-init-spi-pins-and-dma"><code>hal_spi_init</code></a> to assign the SPI Pins and configure the SPI Port as SPI Controller or Peripheral.</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_spi.c#L98-L124"><code>bl602_hal/hal_spi.c</code></a></p>
-<pre><code class="language-c">static void hal_gpio_init(spi_hw_t *arg)
+<div class="example-wrap"><pre class="language-c">static void hal_gpio_init(spi_hw_t *arg)
 {
     GLB_GPIO_Type gpiopins[4];
 
@@ -1392,19 +1314,17 @@ int spi_init(spi_dev_t *spi, uint8_t port,
         blog_error(&quot;arg err.\r\n&quot;);
         return;
     }
-    blog_info(&quot;hal_gpio_init: cs:%d, clk:%d, mosi:%d, miso: %d\r\n&quot;, arg-&gt;pin_cs, arg-&gt;pin_clk, arg-&gt;pin_mosi, arg-&gt;pin_miso);
-</code></pre>
+    blog_info(&quot;hal_gpio_init: cs:%d, clk:%d, mosi:%d, miso: %d\r\n&quot;, arg-&gt;pin_cs, arg-&gt;pin_clk, arg-&gt;pin_mosi, arg-&gt;pin_miso);</pre></div>
 <p>We call <code>GLB_GPIO_Func_Init</code> to assign the four SPI Pins to the SPI Port…</p>
-<pre><code class="language-c">    gpiopins[0] = arg-&gt;pin_cs;
+<div class="example-wrap"><pre class="language-c">    gpiopins[0] = arg-&gt;pin_cs;
     gpiopins[1] = arg-&gt;pin_clk;
     gpiopins[2] = arg-&gt;pin_mosi;
     gpiopins[3] = arg-&gt;pin_miso;    
-    GLB_GPIO_Func_Init(GPIO_FUN_SPI,gpiopins,sizeof(gpiopins)/sizeof(gpiopins[0]));
-</code></pre>
+    GLB_GPIO_Func_Init(GPIO_FUN_SPI,gpiopins,sizeof(gpiopins)/sizeof(gpiopins[0]));</pre></div>
 <p>The sequence of the SPI Pins doesn’t matter, because each pin has a fixed SPI Function (like Serial Data In, Serial Data Out) within the SPI Port.</p>
 <p>(<code>GLB_GPIO_Func_Init</code> comes from the <strong>BL602 Standard Driver</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c"><code>bl602_glb.c</code></a>)</p>
 <p>Finally we configure the SPI Port as SPI Controller or Peripheral…</p>
-<pre><code class="language-c">    if (arg-&gt;mode == 0) {
+<div class="example-wrap"><pre class="language-c">    if (arg-&gt;mode == 0) {
         blog_info(&quot;hal_gpio_init: SPI controller mode\r\n&quot;);
         GLB_Set_SPI_0_ACT_MOD_Sel(GLB_SPI_PAD_ACT_AS_MASTER);
     } else {
@@ -1412,12 +1332,10 @@ int spi_init(spi_dev_t *spi, uint8_t port,
         GLB_Set_SPI_0_ACT_MOD_Sel(GLB_SPI_PAD_ACT_AS_SLAVE);
     }
     return;
-}
-</code></pre>
-<h2 id="hal_spi_dma_init-init-spi-dma" class="section-header"><a href="#hal_spi_dma_init-init-spi-dma">16.6 hal_spi_dma_init: Init SPI DMA</a></h2>
+}</pre></div><h2 id="hal_spi_dma_init-init-spi-dma" class="section-header"><a href="#hal_spi_dma_init-init-spi-dma">16.6 hal_spi_dma_init: Init SPI DMA</a></h2>
 <p><code>hal_spi_dma_init</code> is called by <a href="https://lupyuen.github.io/articles/spi#hal_spi_init-init-spi-pins-and-dma"><code>hal_spi_init</code></a> to initialise the DMA Controller.</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_spi.c#L207-L288"><code>bl602_hal/hal_spi.c</code></a></p>
-<pre><code class="language-c">static void hal_spi_dma_init(spi_hw_t *arg)
+<div class="example-wrap"><pre class="language-c">static void hal_spi_dma_init(spi_hw_t *arg)
 {
     spi_hw_t *hw_arg = arg;
     SPI_CFG_Type spicfg;
@@ -1425,8 +1343,7 @@ int spi_init(spi_dev_t *spi, uint8_t port,
     SPI_FifoCfg_Type fifocfg;
     SPI_ID_Type spi_id;
     uint8_t clk_div;    
-    spi_id = hw_arg-&gt;ssp_id;
-</code></pre>
+    spi_id = hw_arg-&gt;ssp_id;</pre></div>
 <p>We configure the <strong>Timing Intervals for the SPI Clock</strong> (according to the Actual SPI Frequency)…</p>
 <ol>
 <li>
@@ -1445,7 +1362,7 @@ int spi_init(spi_dev_t *spi, uint8_t port,
 <p>Interval between each frame of data</p>
 </li>
 </ol>
-<pre><code class="language-c">    /* clock */
+<div class="example-wrap"><pre class="language-c">    /* clock */
     /*1  ---&gt;  40 Mhz
      *2  ---&gt;  20 Mhz
      *5  ---&gt;  8  Mhz
@@ -1459,19 +1376,17 @@ int spi_init(spi_dev_t *spi, uint8_t port,
     clockcfg.dataPhase0Len = clk_div;
     clockcfg.dataPhase1Len = clk_div;
     clockcfg.intervalLen   = clk_div;
-    SPI_ClockConfig(spi_id, &amp;clockcfg);
-</code></pre>
+    SPI_ClockConfig(spi_id, &amp;clockcfg);</pre></div>
 <p>(This is currently a Square Wave… But we may shape the SPI Clock if necessary)</p>
 <p>We set the SPI Configuration: Deglitching, Continuous Chip Enable, Byte Sequence, Bit Sequence, Frame Size…</p>
-<pre><code class="language-c">    /* spi config */
+<div class="example-wrap"><pre class="language-c">    /* spi config */
     spicfg.deglitchEnable = DISABLE;
     spicfg.continuousEnable = ENABLE;
     spicfg.byteSequence = SPI_BYTE_INVERSE_BYTE0_FIRST,
     spicfg.bitSequence = SPI_BIT_INVERSE_MSB_FIRST,
-    spicfg.frameSize = SPI_FRAME_SIZE_8;
-</code></pre>
+    spicfg.frameSize = SPI_FRAME_SIZE_8;</pre></div>
 <p>We set the SPI Polarity and Phase…</p>
-<pre><code class="language-c">    if (hw_arg-&gt;polar_phase == 0) {
+<div class="example-wrap"><pre class="language-c">    if (hw_arg-&gt;polar_phase == 0) {
         spicfg.clkPhaseInv = SPI_CLK_PHASE_INVERSE_0;
         spicfg.clkPolarity = SPI_CLK_POLARITY_LOW;
     } else if (hw_arg-&gt;polar_phase == 1) {
@@ -1485,10 +1400,9 @@ int spi_init(spi_dev_t *spi, uint8_t port,
         spicfg.clkPolarity = SPI_CLK_POLARITY_HIGH;
     } else {
         blog_error(&quot;node support polar_phase \r\n&quot;);
-    }
-</code></pre>
+    }</pre></div>
 <p>We initialise the SPI Port and disable it. We disable all interrupts.</p>
-<pre><code class="language-c">    //  TODO: In future when there are multiple 
+<div class="example-wrap"><pre class="language-c">    //  TODO: In future when there are multiple 
     //  SPI ports, this should be 
     //  SPI_Init(spi_id, &amp;spicfg)
     SPI_Init(0,&amp;spicfg);  
@@ -1498,16 +1412,14 @@ int spi_init(spi_dev_t *spi, uint8_t port,
     } else {
         SPI_Disable(spi_id, SPI_WORK_MODE_SLAVE);
     }
-    SPI_IntMask(spi_id,SPI_INT_ALL,MASK);
-</code></pre>
+    SPI_IntMask(spi_id,SPI_INT_ALL,MASK);</pre></div>
 <p>We configure the SPI FIFO (First-In First-Out Queue) Threshold, and use DMA for FIFO…</p>
-<pre><code class="language-c">    /* fifo */
+<div class="example-wrap"><pre class="language-c">    /* fifo */
     fifocfg.txFifoThreshold = 1;
     fifocfg.rxFifoThreshold = 1;
     fifocfg.txFifoDmaEnable = ENABLE;
     fifocfg.rxFifoDmaEnable = ENABLE;
-    SPI_FifoConfig(spi_id,&amp;fifocfg);
-</code></pre>
+    SPI_FifoConfig(spi_id,&amp;fifocfg);</pre></div>
 <p><strong>SPI FIFO</strong> is the <strong>Transmit / Receive Queue for SPI</strong>. The SPI FIFO Transmit and Receive Queues can buffer up to <strong>4 bytes</strong> each…</p>
 <ul>
 <li>
@@ -1519,17 +1431,15 @@ int spi_init(spi_dev_t *spi, uint8_t port,
 </ul>
 <p>When we set the SPI FIFO Thresholds to 1 (<code>txFifoThreshold</code> and <code>rxFifoThreshold</code>), the SPI Port will notify the DMA Controller whenever one byte has been transmitted or received, so that the DMA Controller will copy the next transmit / receive byte.</p>
 <p>Next we configure the Transmit DMA Interrupts…</p>
-<pre><code class="language-c">    DMA_Disable();
+<div class="example-wrap"><pre class="language-c">    DMA_Disable();
     DMA_IntMask(hw_arg-&gt;tx_dma_ch, DMA_INT_ALL, MASK);
     DMA_IntMask(hw_arg-&gt;tx_dma_ch, DMA_INT_TCOMPLETED, UNMASK);
-    DMA_IntMask(hw_arg-&gt;tx_dma_ch, DMA_INT_ERR, UNMASK);
-</code></pre>
+    DMA_IntMask(hw_arg-&gt;tx_dma_ch, DMA_INT_ERR, UNMASK);</pre></div>
 <p>Then we configure the Receive DMA Interrupts and enable the DMA interrupts…</p>
-<pre><code class="language-c">    DMA_IntMask(hw_arg-&gt;rx_dma_ch, DMA_INT_ALL, MASK);
+<div class="example-wrap"><pre class="language-c">    DMA_IntMask(hw_arg-&gt;rx_dma_ch, DMA_INT_ALL, MASK);
     DMA_IntMask(hw_arg-&gt;rx_dma_ch, DMA_INT_TCOMPLETED, UNMASK); 
     DMA_IntMask(hw_arg-&gt;rx_dma_ch, DMA_INT_ERR, UNMASK);
-    bl_irq_enable(DMA_ALL_IRQn);
-</code></pre>
+    bl_irq_enable(DMA_ALL_IRQn);</pre></div>
 <p>Finally we register the DMA Interrupt Handlers…</p>
 <ol>
 <li>
@@ -1541,16 +1451,14 @@ int spi_init(spi_dev_t *spi, uint8_t port,
 <p>This will be triggered when an SPI DMA Receive Request completes (successfully or unsuccessfully)</p>
 </li>
 </ol>
-<pre><code class="language-c">    bl_dma_irq_register(hw_arg-&gt;tx_dma_ch, bl_spi0_dma_int_handler_tx, NULL, NULL);
+<div class="example-wrap"><pre class="language-c">    bl_dma_irq_register(hw_arg-&gt;tx_dma_ch, bl_spi0_dma_int_handler_tx, NULL, NULL);
     bl_dma_irq_register(hw_arg-&gt;rx_dma_ch, bl_spi0_dma_int_handler_rx, NULL, NULL);
     return;
-}
-</code></pre>
-<h2 id="hal_spi_transfer-execute-spi-transfer" class="section-header"><a href="#hal_spi_transfer-execute-spi-transfer">16.7 hal_spi_transfer: Execute SPI Transfer</a></h2>
+}</pre></div><h2 id="hal_spi_transfer-execute-spi-transfer" class="section-header"><a href="#hal_spi_transfer-execute-spi-transfer">16.7 hal_spi_transfer: Execute SPI Transfer</a></h2>
 <p><code>hal_spi_transfer</code> is called by our demo firmware to execute multiple SPI Transfers with DMA.</p>
 <p><code>hal_spi_transfer</code> is a Blocking Function… It waits for the SPI Transfers to complete before returning.</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_spi.c#L482-L522"><code>bl602_hal/hal_spi.c</code></a></p>
-<pre><code class="language-c">int hal_spi_transfer(spi_dev_t *spi_dev, void *xfer, uint8_t size)
+<div class="example-wrap"><pre class="language-c">int hal_spi_transfer(spi_dev_t *spi_dev, void *xfer, uint8_t size)
 {
     uint16_t i;
     spi_ioc_transfer_t * s_xfer;
@@ -1571,34 +1479,29 @@ int spi_init(spi_dev_t *spi, uint8_t port,
 
 #if (HAL_SPI_DEBUG)
     blog_info(&quot;hal_spi_transfer = %d\r\n&quot;, size);
-#endif
-</code></pre>
+#endif</pre></div>
 <p>Parameter <code>xfer</code> contains an array of SPI Transfers (<code>spi_ioc_transfer_t</code>).</p>
 <p>Parameter <code>size</code> specifies the number of SPI Transfers in <code>xfer</code>.</p>
 <p>If <code>HAL_SPI_HARDCS</code> is 0, this code is supposed to set the Chip Select Pin to Low via GPIO (which activates the SPI Peripheral). But it doesn’t work.</p>
-<pre><code class="language-c">#if (0 == HAL_SPI_HARDCS)
+<div class="example-wrap"><pre class="language-c">#if (0 == HAL_SPI_HARDCS)
     blog_info(&quot;Set CS pin %d to low\r\n&quot;, priv_data-&gt;hwspi[spi_dev-&gt;port].pin_cs);
     bl_gpio_output_set(priv_data-&gt;hwspi[spi_dev-&gt;port].pin_cs, 0);
-#endif
-</code></pre>
+#endif</pre></div>
 <p><strong>For every SPI Transfer:</strong> We call <a href="https://lupyuen.github.io/articles/spi#hal_spi_dma_trans-execute-spi-transfer-with-dma"><code>hal_spi_dma_trans</code></a> to execute the SPI Transfer, and wait for the SPI Transfer to complete.</p>
-<pre><code class="language-c">    for (i = 0; i &lt; size; i++) {
+<div class="example-wrap"><pre class="language-c">    for (i = 0; i &lt; size; i++) {
 #if (HAL_SPI_DEBUG)
         blog_info(&quot;transfer xfer[%d].len = %ld\r\n&quot;, i, s_xfer[i].len);
 #endif
         hal_spi_dma_trans(&amp;priv_data-&gt;hwspi[spi_dev-&gt;port],
                 (uint8_t *)s_xfer[i].tx_buf, (uint8_t *)s_xfer[i].rx_buf, s_xfer[i].len);
-    }
-</code></pre>
+    }</pre></div>
 <p>If <code>HAL_SPI_HARDCS</code> is 0, this code is supposed to set the Chip Select Pin to High via GPIO (which deactivates the SPI Peripheral). But it doesn’t work.</p>
-<pre><code class="language-c">#if (0 == HAL_SPI_HARDCS)
+<div class="example-wrap"><pre class="language-c">#if (0 == HAL_SPI_HARDCS)
     bl_gpio_output_set(priv_data-&gt;hwspi[spi_dev-&gt;port].pin_cs, 1);
     blog_info(&quot;Set CS pin %d to high\r\n&quot;, priv_data-&gt;hwspi[spi_dev-&gt;port].pin_cs);
 #endif
     return 0;
-}
-</code></pre>
-<h2 id="lli_list_init-create-dma-linked-list" class="section-header"><a href="#lli_list_init-create-dma-linked-list">16.8 lli_list_init: Create DMA Linked List</a></h2>
+}</pre></div><h2 id="lli_list_init-create-dma-linked-list" class="section-header"><a href="#lli_list_init-create-dma-linked-list">16.8 lli_list_init: Create DMA Linked List</a></h2>
 <p>BL602’s DMA Controller accepts a <strong>DMA Linked List</strong> of DMA Requests that will be executed automatically.</p>
 <p>In <code>lli_list_init</code> we’ll create two DMA Linked Lists of DMA Requests…</p>
 <ol>
@@ -1611,32 +1514,29 @@ int spi_init(spi_dev_t *spi, uint8_t port,
 </ol>
 <p><code>lli_list_init</code> is called by <a href="https://lupyuen.github.io/articles/spi#hal_spi_dma_trans-execute-spi-transfer-with-dma"><code>hal_spi_dma_trans</code></a>.</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_spi.c#L126-L205"><code>bl602_hal/hal_spi.c</code></a></p>
-<pre><code class="language-c">static int lli_list_init(DMA_LLI_Ctrl_Type **pptxlli, DMA_LLI_Ctrl_Type **pprxlli, uint8_t *ptx_data, uint8_t *prx_data, uint32_t length)
+<div class="example-wrap"><pre class="language-c">static int lli_list_init(DMA_LLI_Ctrl_Type **pptxlli, DMA_LLI_Ctrl_Type **pprxlli, uint8_t *ptx_data, uint8_t *prx_data, uint32_t length)
 {
     uint32_t i = 0;
     uint32_t count;
     uint32_t remainder;
-    struct DMA_Control_Reg dmactrl;
-</code></pre>
+    struct DMA_Control_Reg dmactrl;</pre></div>
 <p>Each DMA Transfer Request is limited to <strong>2048 bytes (<code>LLI_BUFF_SIZE</code>).</strong></p>
 <p>To execute larger requests, we break them into <strong>smaller requests of 2048 bytes each</strong>, and add them to the DMA Linked List…</p>
-<pre><code class="language-c">    count = length / LLI_BUFF_SIZE;
+<div class="example-wrap"><pre class="language-c">    count = length / LLI_BUFF_SIZE;
     remainder = length % LLI_BUFF_SIZE;
 
     if (remainder != 0) {
         count = count + 1;
-    }
-</code></pre>
+    }</pre></div>
 <p>We define the parameters for the DMA Request…</p>
-<pre><code class="language-c">    dmactrl.SBSize = DMA_BURST_SIZE_1;
+<div class="example-wrap"><pre class="language-c">    dmactrl.SBSize = DMA_BURST_SIZE_1;
     dmactrl.DBSize = DMA_BURST_SIZE_1;
     dmactrl.SWidth = DMA_TRNS_WIDTH_8BITS;
     dmactrl.DWidth = DMA_TRNS_WIDTH_8BITS;
     dmactrl.Prot = 0;
-    dmactrl.SLargerD = 0;
-</code></pre>
+    dmactrl.SLargerD = 0;</pre></div>
 <p>We call <code>pvPortMalloc</code> (from FreeRTOS) to allocate heap memory for storing the DMA Linked List…</p>
-<pre><code class="language-c">    *pptxlli = pvPortMalloc(sizeof(DMA_LLI_Ctrl_Type) * count);
+<div class="example-wrap"><pre class="language-c">    *pptxlli = pvPortMalloc(sizeof(DMA_LLI_Ctrl_Type) * count);
     if (*pptxlli == NULL) {
         blog_error(&quot;malloc lli failed. \r\n&quot;);
         return -1;
@@ -1646,14 +1546,12 @@ int spi_init(spi_dev_t *spi, uint8_t port,
         blog_error(&quot;malloc lli failed.&quot;);
         vPortFree(*pptxlli);
         return -1;
-    }
-</code></pre>
+    }</pre></div>
 <p><strong>For every chunk of SPI Transfer (max 2048 bytes):</strong> </p>
 <p>We create the DMA Requests for each chunk of SPI Transmit and SPI Receive (max 2048 bytes)…</p>
-<pre><code class="language-c">    for (i = 0; i &lt; count; i++) {
-</code></pre>
+<div class="example-wrap"><pre class="language-c">    for (i = 0; i &lt; count; i++) {</pre></div>
 <p>We compute the DMA Transmit / Receive Size…</p>
-<pre><code class="language-c">        if (remainder == 0) {
+<div class="example-wrap"><pre class="language-c">        if (remainder == 0) {
             dmactrl.TransferSize = LLI_BUFF_SIZE;
         } else {
             if (i == count - 1) {
@@ -1661,47 +1559,41 @@ int spi_init(spi_dev_t *spi, uint8_t port,
             } else {
                 dmactrl.TransferSize = LLI_BUFF_SIZE;
             }
-        }
-</code></pre>
+        }</pre></div>
 <p><strong>For SPI Transmit:</strong> We configure the <strong>DMA Automatic Address Accumulation</strong> for Source (SI) and Destination (DI)…</p>
-<pre><code class="language-c">        dmactrl.SI = DMA_MINC_ENABLE;
-        dmactrl.DI = DMA_MINC_DISABLE;
-</code></pre>
+<div class="example-wrap"><pre class="language-c">        dmactrl.SI = DMA_MINC_ENABLE;
+        dmactrl.DI = DMA_MINC_DISABLE;</pre></div>
 <p>The <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en">BL602 Reference Manual</a> doesn’t explain Automatic Address Accumulation. (See Section 6.3.2 “DMA Channel Configuration”, Page 73)</p>
 <p><em>(In the original Chinese docs, “Automatic Address Accumulation” actually means “Automatic Address Increment”. <a href="https://twitter.com/MisterTechBlog/status/1358502589105508352?s=19">See this</a>)</em></p>
 <p>Let’s assume that the above configuration will auto-increment the Source RAM Address (SI) when the DMA Controller copies data from RAM to the SPI Port.</p>
 <p>We don’t auto-increment the Destination Address (DI) because the SPI Port uses a single address for transmitting data: <code>spi_fifo_wdata</code> at <code>0x4000a288</code></p>
 <p><em>(<code>DMA_MINC_ENABLE</code> means “Enable Memory Increment Mode”, <code>DMA_MINC_DISABLE</code> means “Disable Memory Increment Mode”. <a href="https://www.st.com/content/ccc/resource/technical/document/user_manual/2f/71/ba/b8/75/54/47/cf/DM00105879.pdf/files/DM00105879.pdf/jcr:content/translations/en.DM00105879.pdf">See this</a>)</em></p>
 <p>We set I to 1 if this is the last entry in the DMA Linked List…</p>
-<pre><code class="language-c">        if (i == count - 1) {
+<div class="example-wrap"><pre class="language-c">        if (i == count - 1) {
             dmactrl.I = 1;
         } else {
             dmactrl.I = 0;
-        }
-</code></pre>
+        }</pre></div>
 <p><strong>For SPI Transmit:</strong> We create a DMA Request that copies data from RAM to the SPI Port for transmission…</p>
-<pre><code class="language-c">        (*pptxlli)[i].srcDmaAddr = (uint32_t)(ptx_data + i * LLI_BUFF_SIZE);
+<div class="example-wrap"><pre class="language-c">        (*pptxlli)[i].srcDmaAddr = (uint32_t)(ptx_data + i * LLI_BUFF_SIZE);
         (*pptxlli)[i].destDmaAddr = (uint32_t)(SPI_BASE+SPI_FIFO_WDATA_OFFSET);
         (*pptxlli)[i].dmaCtrl = dmactrl;
 
-        blog_info(&quot;Tx DMA src=0x%x, dest=0x%x, size=%d, si=%d, di=%d, i=%d\r\n&quot;, (unsigned) (*pptxlli)[i].srcDmaAddr, (unsigned) (*pptxlli)[i].destDmaAddr, dmactrl.TransferSize, dmactrl.SI, dmactrl.DI, dmactrl.I);
-</code></pre>
+        blog_info(&quot;Tx DMA src=0x%x, dest=0x%x, size=%d, si=%d, di=%d, i=%d\r\n&quot;, (unsigned) (*pptxlli)[i].srcDmaAddr, (unsigned) (*pptxlli)[i].destDmaAddr, dmactrl.TransferSize, dmactrl.SI, dmactrl.DI, dmactrl.I);</pre></div>
 <p><strong>For SPI Receive:</strong> We configure the <strong>DMA Automatic Address Accumulation (Increment)</strong> for Source (SI) and Destination (DI)…</p>
-<pre><code class="language-c">        dmactrl.SI = DMA_MINC_DISABLE;
-        dmactrl.DI = DMA_MINC_ENABLE;
-</code></pre>
+<div class="example-wrap"><pre class="language-c">        dmactrl.SI = DMA_MINC_DISABLE;
+        dmactrl.DI = DMA_MINC_ENABLE;</pre></div>
 <p>Let’s assume that this will auto-increment the Destination RAM Address (DI) when the DMA Controller copies the received data from the SPI Port to RAM.</p>
 <p>We don’t auto-increment the Source Address (SI) because the SPI Port uses a single address for receiving data: <code>spi_fifo_rdata</code> at <code>0x4000a28c</code></p>
 <p><em>(<code>DMA_MINC_ENABLE</code> means “Enable Memory Increment Mode”, <code>DMA_MINC_DISABLE</code> means “Disable Memory Increment Mode”. <a href="https://www.st.com/content/ccc/resource/technical/document/user_manual/2f/71/ba/b8/75/54/47/cf/DM00105879.pdf/files/DM00105879.pdf/jcr:content/translations/en.DM00105879.pdf">See this</a>)</em></p>
 <p><strong>For SPI Receive:</strong> We create a DMA Request that copies the received data from the SPI Port to RAM…</p>
-<pre><code class="language-c">        (*pprxlli)[i].srcDmaAddr = (uint32_t)(SPI_BASE+SPI_FIFO_RDATA_OFFSET);
+<div class="example-wrap"><pre class="language-c">        (*pprxlli)[i].srcDmaAddr = (uint32_t)(SPI_BASE+SPI_FIFO_RDATA_OFFSET);
         (*pprxlli)[i].destDmaAddr = (uint32_t)(prx_data + i * LLI_BUFF_SIZE);
         (*pprxlli)[i].dmaCtrl = dmactrl;
 
-        blog_info(&quot;Rx DMA src=0x%x, dest=0x%x, size=%d, si=%d, di=%d, i=%d\r\n&quot;, (unsigned) (*pprxlli)[i].srcDmaAddr, (unsigned) (*pprxlli)[i].destDmaAddr, dmactrl.TransferSize, dmactrl.SI, dmactrl.DI, dmactrl.I);
-</code></pre>
+        blog_info(&quot;Rx DMA src=0x%x, dest=0x%x, size=%d, si=%d, di=%d, i=%d\r\n&quot;, (unsigned) (*pprxlli)[i].srcDmaAddr, (unsigned) (*pprxlli)[i].destDmaAddr, dmactrl.TransferSize, dmactrl.SI, dmactrl.DI, dmactrl.I);</pre></div>
 <p>Finally we append both DMA Requests to the DMA Linked Lists (Transmit and Receive)…</p>
-<pre><code class="language-c">        if (i != 0) {
+<div class="example-wrap"><pre class="language-c">        if (i != 0) {
             (*pptxlli)[i-1].nextLLI = (uint32_t)&amp;(*pptxlli)[i];
             (*pprxlli)[i-1].nextLLI = (uint32_t)&amp;(*pprxlli)[i];
         }
@@ -1710,15 +1602,13 @@ int spi_init(spi_dev_t *spi, uint8_t port,
         (*pprxlli)[i].nextLLI = 0;
     }
     return 0;
-}
-</code></pre>
+}</pre></div>
 <p>Here’s the debug output from <code>lli_list_init</code> when it creates the DMA Linked Lists (Transmit and Receive) for our two SPI Transfers…</p>
 <ol>
 <li>
 <p><strong>DMA Linked Lists (Transmit and Receive) for First SPI Transfer:</strong></p>
-<pre><code class="language-text">Tx DMA src=0x4200d1b8, dest=0x4000a288, size=1, si=1, di=0, i=1
-Rx DMA src=0x4000a28c, dest=0x4200d1b0, size=1, si=0, di=1, i=1
-</code></pre>
+<div class="example-wrap"><pre class="language-text">Tx DMA src=0x4200d1b8, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200d1b0, size=1, si=0, di=1, i=1</pre></div>
 <p>The Transmit DMA Linked List <strong><code>Tx DMA</code></strong> copies the data from our first Transmit Buffer <strong><code>tx_buf1</code></strong> to the SPI Port…</p>
 <ul>
 <li>
@@ -1740,9 +1630,8 @@ Rx DMA src=0x4000a28c, dest=0x4200d1b0, size=1, si=0, di=1, i=1
 </li>
 <li>
 <p><strong>DMA Linked Lists (Transmit and Receive) for Second SPI Transfer:</strong></p>
-<pre><code class="language-text">Tx DMA src=0x4200d1bc, dest=0x4000a288, size=1, si=1, di=0, i=1
-Rx DMA src=0x4000a28c, dest=0x4200d1b4, size=1, si=0, di=1, i=1
-</code></pre>
+<div class="example-wrap"><pre class="language-text">Tx DMA src=0x4200d1bc, dest=0x4000a288, size=1, si=1, di=0, i=1
+Rx DMA src=0x4000a28c, dest=0x4200d1b4, size=1, si=0, di=1, i=1</pre></div>
 <p>The Transmit DMA Linked List <strong><code>Tx DMA</code></strong> copies the data from our second Transmit Buffer <strong><code>tx_buf2</code></strong> to the SPI Port…</p>
 <ul>
 <li>
@@ -1766,7 +1655,7 @@ Rx DMA src=0x4000a28c, dest=0x4200d1b4, size=1, si=0, di=1, i=1
 <h2 id="hal_spi_dma_trans-execute-spi-transfer-with-dma" class="section-header"><a href="#hal_spi_dma_trans-execute-spi-transfer-with-dma">16.9 hal_spi_dma_trans: Execute SPI Transfer with DMA</a></h2>
 <p><code>hal_spi_dma_trans</code> is called by <a href="https://lupyuen.github.io/articles/spi#hal_spi_transfer-execute-spi-transfer"><code>hal_spi_transfer</code></a> to execute an SPI Transfer with DMA, and wait for the SPI Transfer to complete.</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_spi.c#L290-L358"><code>bl602_hal/hal_spi.c</code></a></p>
-<pre><code class="language-c">static void hal_spi_dma_trans(spi_hw_t *arg, uint8_t *TxData, uint8_t *RxData, uint32_t Len)
+<div class="example-wrap"><pre class="language-c">static void hal_spi_dma_trans(spi_hw_t *arg, uint8_t *TxData, uint8_t *RxData, uint32_t Len)
 {
     EventBits_t uxBits;
     DMA_LLI_Cfg_Type txllicfg;
@@ -1778,13 +1667,11 @@ Rx DMA src=0x4000a28c, dest=0x4200d1b4, size=1, si=0, di=1, i=1
     if (!arg) {
         blog_error(&quot;arg err.\r\n&quot;);
         return;
-    }
-</code></pre>
+    }</pre></div>
 <p>We define the DMA Request for SPI Transmit…</p>
-<pre><code class="language-c">    txllicfg.dir = DMA_TRNS_M2P;
+<div class="example-wrap"><pre class="language-c">    txllicfg.dir = DMA_TRNS_M2P;
     txllicfg.srcPeriph = DMA_REQ_NONE; 
-    txllicfg.dstPeriph = DMA_REQ_SPI_TX;
-</code></pre>
+    txllicfg.dstPeriph = DMA_REQ_SPI_TX;</pre></div>
 <ul>
 <li>
 <p><code>DMA_TRNS_M2P</code> means Memory to Peripheral Transfer</p>
@@ -1794,10 +1681,9 @@ Rx DMA src=0x4000a28c, dest=0x4200d1b4, size=1, si=0, di=1, i=1
 </li>
 </ul>
 <p>We define the DMA Request for SPI Receive…</p>
-<pre><code class="language-c">    rxllicfg.dir = DMA_TRNS_P2M;
+<div class="example-wrap"><pre class="language-c">    rxllicfg.dir = DMA_TRNS_P2M;
     rxllicfg.srcPeriph = DMA_REQ_SPI_RX;
-    rxllicfg.dstPeriph = DMA_REQ_NONE;
-</code></pre>
+    rxllicfg.dstPeriph = DMA_REQ_NONE;</pre></div>
 <ul>
 <li>
 <p><code>DMA_TRNS_P2M</code> means Peripheral to Memory Transfer</p>
@@ -1807,41 +1693,35 @@ Rx DMA src=0x4000a28c, dest=0x4200d1b4, size=1, si=0, di=1, i=1
 </li>
 </ul>
 <p>We clear the Event Group (from FreeRTOS) so that we can be signalled by the DMA Interrupt Handlers (when the DMA Requests are done)…</p>
-<pre><code class="language-c">    xEventGroupClearBits(arg-&gt;spi_dma_event_group, EVT_GROUP_SPI_DMA_TR);
-</code></pre>
+<div class="example-wrap"><pre class="language-c">    xEventGroupClearBits(arg-&gt;spi_dma_event_group, EVT_GROUP_SPI_DMA_TR);</pre></div>
 <p>We disable the DMA Channels and DMA Interrupts…</p>
-<pre><code class="language-c">    DMA_Channel_Disable(arg-&gt;tx_dma_ch);
+<div class="example-wrap"><pre class="language-c">    DMA_Channel_Disable(arg-&gt;tx_dma_ch);
     DMA_Channel_Disable(arg-&gt;rx_dma_ch);
     bl_dma_int_clear(arg-&gt;tx_dma_ch);
-    bl_dma_int_clear(arg-&gt;rx_dma_ch);
-</code></pre>
+    bl_dma_int_clear(arg-&gt;rx_dma_ch);</pre></div>
 <p>We enable the DMA Controller and enable SPI for Controller or Peripheral mode…</p>
-<pre><code class="language-c">    DMA_Enable();
+<div class="example-wrap"><pre class="language-c">    DMA_Enable();
     if (arg-&gt;mode == 0) {
         SPI_Enable(arg-&gt;ssp_id, SPI_WORK_MODE_MASTER);
     } else {
         SPI_Enable(arg-&gt;ssp_id, SPI_WORK_MODE_SLAVE);
-    }
-</code></pre>
+    }</pre></div>
 <p>We call <code>lli_list_init</code> to create the DMA Linked Lists (Transmit and Receive) that will contain every SPI Transfer…</p>
-<pre><code class="language-c">    ret = lli_list_init(&amp;ptxlli, &amp;prxlli, TxData, RxData, Len);
+<div class="example-wrap"><pre class="language-c">    ret = lli_list_init(&amp;ptxlli, &amp;prxlli, TxData, RxData, Len);
     if (ret &lt; 0) {
         blog_error(&quot;init lli failed. \r\n&quot;);
         return;
-    }
-</code></pre>
+    }</pre></div>
 <p>We assign the DMA Linked Lists (Transmit and Receive) to the DMA Controller…</p>
-<pre><code class="language-c">    DMA_LLI_Init(arg-&gt;tx_dma_ch, &amp;txllicfg);
+<div class="example-wrap"><pre class="language-c">    DMA_LLI_Init(arg-&gt;tx_dma_ch, &amp;txllicfg);
     DMA_LLI_Init(arg-&gt;rx_dma_ch, &amp;rxllicfg);
     DMA_LLI_Update(arg-&gt;tx_dma_ch, (uint32_t) ptxlli);
-    DMA_LLI_Update(arg-&gt;rx_dma_ch, (uint32_t) prxlli);
-</code></pre>
+    DMA_LLI_Update(arg-&gt;rx_dma_ch, (uint32_t) prxlli);</pre></div>
 <p>We enable the DMA Channels. The DMA Controller will transfer data according to the DMA Linked Lists…</p>
-<pre><code class="language-c">    DMA_Channel_Enable(arg-&gt;tx_dma_ch);
-    DMA_Channel_Enable(arg-&gt;rx_dma_ch);
-</code></pre>
+<div class="example-wrap"><pre class="language-c">    DMA_Channel_Enable(arg-&gt;tx_dma_ch);
+    DMA_Channel_Enable(arg-&gt;rx_dma_ch);</pre></div>
 <p>We call <code>xEventGroupWaitBits</code> (from FreeRTOS) to wait until the Event Group is signalled by both DMA Interrupt Handlers: Transmit Complete and Receive Complete…</p>
-<pre><code class="language-c">    //  TODO: To troubleshoot SPI Transfers that hang 
+<div class="example-wrap"><pre class="language-c">    //  TODO: To troubleshoot SPI Transfers that hang 
     //  (like ST7789 above 4 MHz), change...
     //      portMAX_DELAY
     //  To...
@@ -1859,8 +1739,7 @@ Rx DMA src=0x4000a28c, dest=0x4200d1b4, size=1, si=0, di=1, i=1
 
     if ((uxBits &amp; EVT_GROUP_SPI_DMA_TR) == EVT_GROUP_SPI_DMA_TR) {
         blog_info(&quot;recv all event group.\r\n&quot;);
-    }
-</code></pre>
+    }</pre></div>
 <p><strong><code>EVT_GROUP_SPI_DMA_TR</code></strong> is a combination of two Events…</p>
 <ol>
 <li>
@@ -1874,25 +1753,22 @@ Rx DMA src=0x4000a28c, dest=0x4200d1b4, size=1, si=0, di=1, i=1
 <p>Note that we’re <strong>waiting forever</strong> until both requests complete. For easier troubleshooting, follow the instructions in the comments above to change the SPI Timeout from <strong><code>portMAX_DELAY</code></strong> to <strong><code>100 / portTICK_PERIOD_MS</code></strong></p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_spi.c#L70-L72">(<code>EVT_GROUP_SPI_DMA_TR</code> is defined here)</a></p>
 <p>Finally we free the heap memory for the DMA Linked Lists (Transmit and Receive)…</p>
-<pre><code class="language-c">    vPortFree(ptxlli);
+<div class="example-wrap"><pre class="language-c">    vPortFree(ptxlli);
     vPortFree(prxlli);
-}
-</code></pre>
-<h2 id="bl_spi0_dma_int_handler_tx-transmit-dma-interrupt-handler" class="section-header"><a href="#bl_spi0_dma_int_handler_tx-transmit-dma-interrupt-handler">16.10 bl_spi0_dma_int_handler_tx: Transmit DMA Interrupt Handler</a></h2>
+}</pre></div><h2 id="bl_spi0_dma_int_handler_tx-transmit-dma-interrupt-handler" class="section-header"><a href="#bl_spi0_dma_int_handler_tx-transmit-dma-interrupt-handler">16.10 bl_spi0_dma_int_handler_tx: Transmit DMA Interrupt Handler</a></h2>
 <p><code>bl_spi0_dma_int_handler_tx</code> is the DMA Interrupt Handler that’s triggered when an SPI DMA Transmit Request completes (successfully or unsuccessfully).</p>
 <p>The DMA Interrupt Handler is registered by <a href="https://lupyuen.github.io/articles/spi#hal_spi_dma_init-init-spi-dma"><code>hal_spi_dma_init</code></a>.</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_spi.c#L769-L808"><code>bl602_hal/hal_spi.c</code></a></p>
-<pre><code class="language-c">void bl_spi0_dma_int_handler_tx(void)
+<div class="example-wrap"><pre class="language-c">void bl_spi0_dma_int_handler_tx(void)
 {
     g_tx_counter++;  //  Increment the Transmit Interrupt Counter
     g_tx_status = *(uint32_t *) 0x4000c000;  //  Set the Transmit Status
     g_tx_tc     = *(uint32_t *) 0x4000c004;  //  Set the Transmit Terminal Count
-    if (g_tx_error == 0) { g_tx_error = *(uint32_t *) 0x4000c00c; }  //  Set the Transmit Error Code
-</code></pre>
+    if (g_tx_error == 0) { g_tx_error = *(uint32_t *) 0x4000c00c; }  //  Set the Transmit Error Code</pre></div>
 <p><a href="https://lupyuen.github.io/articles/spi#dma-interrupt-counters">(<code>g_tx_counter</code>, <code>g_tx_status</code> and <code>g_tx_tc</code> are explained here)</a></p>
 <p>We call <code>xEventGroupSetBitsFromISR</code> to notify the Event Group, by triggering the <code>EVT_GROUP_SPI_DMA_TX</code> Event.</p>
 <p>Then we call <code>portYIELD_FROM_ISR</code> to wake up the Foreground Task that’s waiting for the SPI DMA Transmit Request to complete (<code>hal_spi_dma_trans</code>).</p>
-<pre><code class="language-c">    BaseType_t xResult = pdFAIL;
+<div class="example-wrap"><pre class="language-c">    BaseType_t xResult = pdFAIL;
     BaseType_t xHigherPriorityTaskWoken = pdFALSE;
 
     if (NULL != g_hal_buf) {
@@ -1913,23 +1789,20 @@ Rx DMA src=0x4000a28c, dest=0x4200d1b4, size=1, si=0, di=1, i=1
     }
 
     return;
-}
-</code></pre>
-<h2 id="bl_spi0_dma_int_handler_rx-receive-dma-interrupt-handler" class="section-header"><a href="#bl_spi0_dma_int_handler_rx-receive-dma-interrupt-handler">16.11 bl_spi0_dma_int_handler_rx: Receive DMA Interrupt Handler</a></h2>
+}</pre></div><h2 id="bl_spi0_dma_int_handler_rx-receive-dma-interrupt-handler" class="section-header"><a href="#bl_spi0_dma_int_handler_rx-receive-dma-interrupt-handler">16.11 bl_spi0_dma_int_handler_rx: Receive DMA Interrupt Handler</a></h2>
 <p><code>bl_spi0_dma_int_handler_rx</code> is the DMA Interrupt Handler that’s triggered when an SPI DMA Receive Request completes (successfully or unsuccessfully).</p>
 <p>The DMA Interrupt Handler is registered by <a href="https://lupyuen.github.io/articles/spi#hal_spi_dma_init-init-spi-dma"><code>hal_spi_dma_init</code></a>.</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_spi.c#L810-L836"><code>bl602_hal/hal_spi.c</code></a></p>
-<pre><code class="language-c">void bl_spi0_dma_int_handler_rx(void)
+<div class="example-wrap"><pre class="language-c">void bl_spi0_dma_int_handler_rx(void)
 {
     g_rx_counter++;  //  Increment the Receive Interrupt Counter
     g_rx_status = *(uint32_t *) 0x4000c000;  //  Set the Receive Status
     g_rx_tc     = *(uint32_t *) 0x4000c004;  //  Set the Receive Terminal Count
-    if (g_rx_error == 0) { g_rx_error = *(uint32_t *) 0x4000c00c; }  //  Set the Receive Error Code
-</code></pre>
+    if (g_rx_error == 0) { g_rx_error = *(uint32_t *) 0x4000c00c; }  //  Set the Receive Error Code</pre></div>
 <p><a href="https://lupyuen.github.io/articles/spi#dma-interrupt-counters">(<code>g_rx_counter</code>, <code>g_rx_status</code> and <code>g_rx_tc</code> are explained here)</a></p>
 <p>We call <code>xEventGroupSetBitsFromISR</code> to notify the Event Group, by triggering the <code>EVT_GROUP_SPI_DMA_RX</code> Event.</p>
 <p>Then we call <code>portYIELD_FROM_ISR</code> to wake up the Foreground Task that’s waiting for the SPI DMA Receive Request to complete (<code>hal_spi_dma_trans</code>).</p>
-<pre><code class="language-c">    BaseType_t xResult = pdFAIL;
+<div class="example-wrap"><pre class="language-c">    BaseType_t xResult = pdFAIL;
     BaseType_t xHigherPriorityTaskWoken = pdFALSE;
 
     if (NULL != g_hal_buf) {
@@ -1949,12 +1822,10 @@ Rx DMA src=0x4000a28c, dest=0x4200d1b4, size=1, si=0, di=1, i=1
         blog_error(&quot;bl_spi0_dma_int_handler_rx no clear isr.\r\n&quot;);
     }
     return;
-}
-</code></pre>
-<h2 id="dma-interrupt-counters" class="section-header"><a href="#dma-interrupt-counters">16.12 DMA Interrupt Counters</a></h2>
+}</pre></div><h2 id="dma-interrupt-counters" class="section-header"><a href="#dma-interrupt-counters">16.12 DMA Interrupt Counters</a></h2>
 <p>To check whether the DMA Interrupts are working correctly, we added Interrupt Counters and captured the Status and Error Codes.</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_spi.c#L769-L808"><code>bl602_hal/hal_spi.c</code></a></p>
-<pre><code class="language-c">//  Interrupt Counters for Transmit and Receive
+<div class="example-wrap"><pre class="language-c">//  Interrupt Counters for Transmit and Receive
 int g_tx_counter;
 int g_rx_counter;
 
@@ -1964,19 +1835,17 @@ uint32_t g_tx_tc;      //  Transmit Terminal Count (from 0x4000c004)
 uint32_t g_tx_error;   //  Transmit Error Code     (from 0x4000c00c)
 uint32_t g_rx_status;  //  Receive Status          (from 0x4000c000)
 uint32_t g_rx_tc;      //  Receive Terminal Count  (from 0x4000c004)
-uint32_t g_rx_error;   //  Receive Error Code      (from 0x4000c00c)
-</code></pre>
+uint32_t g_rx_error;   //  Receive Error Code      (from 0x4000c00c)</pre></div>
 <p>These values are displayed when we enter the SPI Command <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L158-L182"><code>spi_result</code></a>.</p>
 <p>When we complete two SPI Transfers successfully, we should see these values…</p>
-<pre><code class="language-text">Tx Interrupts: 2
+<div class="example-wrap"><pre class="language-text">Tx Interrupts: 2
 Tx Status:     0x0
 Tx Term Count: 0x0
 Tx Error:      0x0
 Rx Interrupts: 2
 Rx Status:     0x0
 Rx Term Count: 0x0
-Rx Error:      0x0
-</code></pre>
+Rx Error:      0x0</pre></div>
 <p>The Interrupt Counters, Status and Error Codes are set by the DMA Interrupt Handlers…</p>
 <ol>
 <li>

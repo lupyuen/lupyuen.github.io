@@ -99,7 +99,7 @@
 <p><em>PineCone BL602 RISC-V Board</em></p>
 <h1 id="bl602-blinky-in-c" class="section-header"><a href="#bl602-blinky-in-c">1 BL602 Blinky in C</a></h1>
 <p>Before we do Rust, let’s look at the C code that blinks the LED on BL602 (by toggling the GPIO output): <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_blinky/sdk_app_blinky/demo.c"><code>sdk_app_blinky/demo.c</code></a></p>
-<pre><code class="language-c">#include &lt;bl_gpio.h&gt;     //  For BL602 GPIO Hardware Abstraction Layer
+<div class="example-wrap"><pre class="language-c">#include &lt;bl_gpio.h&gt;     //  For BL602 GPIO Hardware Abstraction Layer
 #include &quot;nimble_npl.h&quot;  //  For NimBLE Porting Layer (mulitasking functions)
 
 /// PineCone Blue LED is connected on BL602 GPIO 11
@@ -136,8 +136,7 @@ void blinky(char *buf, int len, int argc, char **argv) {
     }
 
     //  Return to the BL602 command-line interface
-}
-</code></pre>
+}</pre></div>
 <p>Here we call two <strong>GPIO Functions</strong> from the BL602 IoT SDK (specifically, the BL602 <strong>GPIO Hardware Abstraction Layer</strong>)…</p>
 <ul>
 <li>
@@ -352,11 +351,8 @@ void blinky(char *buf, int len, int argc, char **argv) {
 <span class="kw">type</span> <span class="ident">String</span> <span class="op">=</span> <span class="ident">heapless::String</span>::<span class="op">&lt;</span><span class="ident">heapless::consts::U64</span><span class="op">&gt;</span>;</pre></div>
 <p>For safety, we limit our strings to <strong>64 characters</strong>.</p>
 <p><code>String</code> uses the <strong>heapless library</strong>, as specified in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/Cargo.toml#L9-L11"><code>rust/Cargo.toml</code></a>…</p>
-<pre><code class="language-text"># External Rust libraries used by this module.  See crates.io.
-[dependencies]
-# `static` friendly data structures that don't require dynamic memory allocation: https://crates.io/crates/heapless
-heapless = &quot;0.6.1&quot;
-</code></pre>
+<div class="example-wrap"><pre class="language-text">[dependencies]
+heapless = &quot;0.6.1&quot;</pre></div>
 <p><em>We’re copying the string just to pad it with null. Not so efficient no?</em></p>
 <p>In future we might switch to <code>cstr</code> and eliminate the copying of strings. <a href="https://crates.io/crates/cstr">(See this)</a></p>
 <h2 id="autogenerate-wrapper-functions" class="section-header"><a href="#autogenerate-wrapper-functions">3.2 Autogenerate Wrapper Functions</a></h2>
@@ -376,14 +372,9 @@ heapless = &quot;0.6.1&quot;
 <p>Strictly speaking this isn’t <a href="https://docs.rust-embedded.org/book/"><strong>Embedded Rust</strong></a>, because we’re not running Rust directly on Bare Metal (BL602 Hardware). </p>
 <p>Instead we’re running <strong>Rust on top of an Embedded Operating System</strong> (BL602 IoT SDK + FreeRTOS). It’s similar to running Rust on Linux / macOS / Windows.</p>
 <p>That’s why we compile our Rust code into a <strong>static library</strong> that will be linked into the BL602 Firmware. See <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/Cargo.toml#L14-L18"><code>rust/Cargo.toml</code></a>…</p>
-<pre><code class="language-text"># Build this module as a Rust library, 
-# not a Rust application.  We will link 
-# this library with the BL602 firmware.
-[lib]
-# Output will be named `libapp.a`
+<div class="example-wrap"><pre class="language-text">[lib]
 name       = &quot;app&quot;
-crate-type = [&quot;staticlib&quot;]
-</code></pre>
+crate-type = [&quot;staticlib&quot;]</pre></div>
 <p>This produces a BL602 Rust Firmware file that we may <strong>flash to BL602 the conventional way</strong>: Over the BL602 Serial / UART Port.</p>
 <p>(We’ll talk later about Embedded Rust on Bare Metal BL602)</p>
 <h1 id="build-the-bl602-rust-firmware" class="section-header"><a href="#build-the-bl602-rust-firmware">5 Build the BL602 Rust Firmware</a></h1>
@@ -406,33 +397,25 @@ crate-type = [&quot;staticlib&quot;]
 </li>
 <li>
 <p>Download the <strong>source code</strong> for the BL602 Rust Firmware…</p>
-<pre><code class="language-bash"># Download the rust branch of lupyuen's bl_iot_sdk
-git clone --recursive --branch rust https://github.com/lupyuen/bl_iot_sdk
-cd bl_iot_sdk/customer_app/sdk_app_rust
-</code></pre>
-</li>
+<div class="example-wrap"><pre class="language-bash">git clone --recursive --branch rust https://github.com/lupyuen/bl_iot_sdk
+cd bl_iot_sdk/customer_app/sdk_app_rust</pre></div></li>
 <li>
 <p>Edit the script <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh"><strong><code>run.sh</code></strong></a> in the <code>sdk_app_rust</code> folder.</p>
 <p>This build script was created for macOS, but can be modified to run on Linux and Windows (with WSL).</p>
 </li>
 <li>
 <p>In <code>run.sh</code>, set the following variables to the downloaded folders for <code>blflash</code> and <code>xpack-riscv-none-embed-gcc</code>…</p>
-<pre><code class="language-bash">#  Where blflash is located
-export BLFLASH_PATH=$PWD/../../../blflash
+<div class="example-wrap"><pre class="language-bash">export BLFLASH_PATH=$PWD/../../../blflash
 
-#  Where GCC is located
-export GCC_PATH=$PWD/../../../xpack-riscv-none-embed-gcc
-</code></pre>
+export GCC_PATH=$PWD/../../../xpack-riscv-none-embed-gcc</pre></div>
 <p>Save the changes into <code>run.sh</code></p>
 </li>
 <li>
 <p>Build the firmware…</p>
-<pre><code class="language-bash">./run.sh
-</code></pre>
-</li>
+<div class="example-wrap"><pre class="language-bash">./run.sh</pre></div></li>
 <li>
 <p>We should see…</p>
-<pre><code class="language-text">----- Building Rust app and BL602 firmware for riscv32imacf-unknown-none-elf / sdk_app_rust...
+<div class="example-wrap"><pre class="language-text">----- Building Rust app and BL602 firmware for riscv32imacf-unknown-none-elf / sdk_app_rust...
 
 ----- Build BL602 Firmware
 + make
@@ -440,14 +423,13 @@ export GCC_PATH=$PWD/../../../xpack-riscv-none-embed-gcc
 LD build_out/sdk_app_rust.elf
 Generating BIN File to build_out/sdk_app_rust.bin
 ...
-Building Finish. To flash build output.
-</code></pre>
+Building Finish. To flash build output.</pre></div>
 <p>The script has built our firmware… C only, no Rust yet.</p>
 <p><a href="https://lupyuen.github.io/articles/pinecone#building-firmware">More details on building BL602 firmware</a></p>
 </li>
 <li>
 <p>Next the script <strong>compiles our Rust code</strong> into a static library: <code>libapp.a</code></p>
-<pre><code class="language-text">----- Build Rust Library
+<div class="example-wrap"><pre class="language-text">----- Build Rust Library
 + rustup default nightly
 
 + cargo build \
@@ -459,33 +441,28 @@ Compiling compiler_builtins v0.1.39
 Compiling core v0.0.0
 ...
 Compiling app v0.0.1
-Finished dev [unoptimized + debuginfo] target(s) in 29.47s
-</code></pre>
+Finished dev [unoptimized + debuginfo] target(s) in 29.47s</pre></div>
 <p>Yep this command looks odd… It’s compiling our Rust code with a JSON target file! (<code>riscv32imacf-unknown-none-elf.json</code>)</p>
 <p>We’ll learn why in a while.</p>
 </li>
 <li>
 <p>The script <strong>overwrites the Stub Library</strong> in our firmware build (<code>librust-app.a</code>) by the Rust static library (<code>libapp.a</code>)</p>
-<pre><code class="language-text">+ cp rust/target/riscv32imacf-unknown-none-elf/debug/libapp.a \
-    build_out/rust-app/librust-app.a
-</code></pre>
-</li>
+<div class="example-wrap"><pre class="language-text">+ cp rust/target/riscv32imacf-unknown-none-elf/debug/libapp.a \
+    build_out/rust-app/librust-app.a</pre></div></li>
 <li>
 <p>Finally the script <strong>links the Rust static library</strong> into our BL602 firmware…</p>
-<pre><code class="language-text">----- Link BL602 Firmware with Rust Library
+<div class="example-wrap"><pre class="language-text">----- Link BL602 Firmware with Rust Library
 + make
 use existing version.txt file
 LD build_out/sdk_app_rust.elf
 Generating BIN File to build_out/sdk_app_rust.bin
 ...
-Building Finish. To flash build output.
-</code></pre>
+Building Finish. To flash build output.</pre></div>
 <p>Ignore the error from <code>blflash</code>, we’ll fix this in a while.</p>
 </li>
 <li>
 <p>Our <strong>BL602 Rust Firmware file</strong> has been generated at…</p>
-<pre><code class="language-text">build_out/sdk_app_rust.bin
-</code></pre>
+<div class="example-wrap"><pre class="language-text">build_out/sdk_app_rust.bin</pre></div>
 <p>Let’s flash this to BL602 and run it!</p>
 </li>
 </ol>
@@ -539,10 +516,9 @@ Building Finish. To flash build output.
 <li>
 <p><strong>For macOS:</strong></p>
 <p>Enter this at the command prompt…</p>
-<pre><code class="language-bash">./run.sh
-</code></pre>
+<div class="example-wrap"><pre class="language-bash">./run.sh</pre></div>
 <p>The script should automatically flash the firmware after building…</p>
-<pre><code class="language-text">----- Flash BL602 Firmware
+<div class="example-wrap"><pre class="language-text">----- Flash BL602 Firmware
 
 + cargo run flash sdk_app_rust.bin \
     --port /dev/tty.usbserial-1410 \
@@ -569,24 +545,19 @@ Erase flash addr: 10000 size: 118224
 Program flash... bac8824299e4d6bb0cceb1f93323f43ae6f56500f39c827590eb011b057ec282
 Program done 6.54650345s 17.64KB/s
 Skip segment addr: 1f8000 size: 5671 sha256 matches
-Success
-</code></pre>
+Success</pre></div>
 <p>(We might need to edit the script to use the right serial port)</p>
 </li>
 <li>
 <p><strong>For Linux and Windows:</strong></p>
 <p>Copy <code>build_out/sdk_app_rust.bin</code> to the <code>blflash</code> folder.</p>
 <p>Then enter this at the command prompt…</p>
-<pre><code class="language-bash"># TODO: Change this to the downloaded blflash folder
-cd blflash
+<div class="example-wrap"><pre class="language-bash">cd blflash
 
-# For Linux:
 sudo cargo run flash sdk_app_lora.bin \
     --port /dev/ttyUSB0
 
-# For Windows: Change COM5 to the BL602 Serial Port
-cargo run flash sdk_app_lora.bin --port COM5
-</code></pre>
+cargo run flash sdk_app_lora.bin --port COM5</pre></div>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">More details on flashing firmware</a></p>
 </li>
 </ol>
@@ -624,17 +595,14 @@ cargo run flash sdk_app_lora.bin --port COM5
 <li>
 <p><strong>For macOS:</strong></p>
 <p>The <code>run.sh</code> script should automatically launch CoolTerm after flashing…</p>
-<pre><code class="language-text">----- Run BL602 Firmware
-+ open -a CoolTerm
-</code></pre>
+<div class="example-wrap"><pre class="language-text">----- Run BL602 Firmware
++ open -a CoolTerm</pre></div>
 <p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">More about CoolTerm</a></p>
 </li>
 <li>
 <p><strong>For Linux:</strong></p>
 <p>Connect to BL602’s UART Port at 2 Mbps like so…</p>
-<pre><code class="language-bash">sudo screen /dev/ttyUSB0 2000000
-</code></pre>
-</li>
+<div class="example-wrap"><pre class="language-bash">sudo screen /dev/ttyUSB0 2000000</pre></div></li>
 <li>
 <p><strong>For Windows:</strong> </p>
 <p>Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
@@ -647,8 +615,7 @@ cargo run flash sdk_app_lora.bin --port COM5
 <li>
 <p>In the serial console, press Enter to reveal the command prompt.</p>
 <p>Enter <code>help</code> to show the commands…</p>
-<pre><code class="language-text"># help
-====Build-in Commands====
+<div class="example-wrap"><pre class="language-text">====Build-in Commands====
 ====Support 4 cmds once, seperate by ; ====
 help                     : print this
 p                        : print memory
@@ -671,14 +638,10 @@ cat                      : cat file
 rust_main                : Run Rust code
 blogset                  : blog pri set level
 blogdump                 : blog info dump
-bl_sys_time_now          : sys time now
-</code></pre>
-</li>
+bl_sys_time_now          : sys time now</pre></div></li>
 <li>
 <p>Enter <code>rust_main</code> to run our Rust code…</p>
-<pre><code class="language-text"># rust_main
-Hello from Rust!
-</code></pre>
+<div class="example-wrap"><pre class="language-text">Hello from Rust!</pre></div>
 <p>The LED on our BL602 board should blink 5 times.</p>
 <p>That’s how we build, flash and run Rust Firmware with BL602 IoT SDK!</p>
 </li>
@@ -687,14 +650,12 @@ Hello from Rust!
 <p><em>Our BL602 Rust Firmware running with CoolTerm</em></p>
 <h1 id="rust-targets" class="section-header"><a href="#rust-targets">8 Rust Targets</a></h1>
 <p><em>Why did we compile our Rust Firmware with this unusual JSON target?</em></p>
-<pre><code class="language-bash">cargo build \
+<div class="example-wrap"><pre class="language-bash">cargo build \
     --target ../riscv32imacf-unknown-none-elf.json \
-    -Z build-std=core
-</code></pre>
+    -Z build-std=core</pre></div>
 <p>Watch what happens when we compile our Rust Firmware the conventional way for 32-bit RISC-V microcontrollers <a href="https://lupyuen.github.io/articles/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v">(like GD32VF103)</a>…</p>
-<pre><code class="language-bash">cargo build \
-    --target riscv32imac-unknown-none-elf
-</code></pre>
+<div class="example-wrap"><pre class="language-bash">cargo build \
+    --target riscv32imac-unknown-none-elf</pre></div>
 <p><a href="https://lupyuen.github.io/articles/debug#install-rust">(We’ve previously used this for BL602)</a></p>
 <p><strong><code>riscv32imac</code></strong> describes the capabilities of our RISC-V CPU…</p>
 <table><thead><tr><th align="center">Designation</th><th align="left">Meaning</th></tr></thead><tbody>
@@ -705,8 +666,7 @@ Hello from Rust!
 </tbody></table>
 <p><a href="https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions">(Here’s the whole list)</a></p>
 <p>When we link the compiled Rust code with BL602 IoT SDK, the GCC Linker fails with this error…</p>
-<pre><code class="language-text">Can't link soft-float modules with single-float modules
-</code></pre>
+<div class="example-wrap"><pre class="language-text">Can&#39;t link soft-float modules with single-float modules</pre></div>
 <p><a href="https://twitter.com/MisterTechBlog/status/1383075111431938051">(See this)</a></p>
 <p><em>Why?</em></p>
 <h2 id="bl602-supports-hardware-floating-point" class="section-header"><a href="#bl602-supports-hardware-floating-point">8.1 BL602 supports Hardware Floating-Point</a></h2>
@@ -715,8 +675,7 @@ Hello from Rust!
 <p>Which means that BL602 supports <strong>Hardware Floating-Point</strong> (Single Precision)…</p>
 <p><img src="https://lupyuen.github.io/images/rust-riscv.png" alt="RISC-V ISA Base and Extensions" /></p>
 <p>BL602 IoT SDK was compiled with this GCC command…</p>
-<pre><code class="language-bash">gcc -march=rv32imfc -mabi=ilp32f ...
-</code></pre>
+<div class="example-wrap"><pre class="language-bash">gcc -march=rv32imfc -mabi=ilp32f ...</pre></div>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/make_scripts_riscv/project.mk#L223-L224">(See this)</a></p>
 <p>This produces binaries that contain RISC-V <strong>Floating-Point Instructions</strong>.</p>
 <p>Which are not compatible with our Rust binaries, which use <strong>Software Floating-Point</strong>.</p>
@@ -724,10 +683,9 @@ Hello from Rust!
 <h2 id="selecting-another-rust-target" class="section-header"><a href="#selecting-another-rust-target">8.2 Selecting another Rust Target</a></h2>
 <p><em>Is there another Rust Target that we can use for BL602?</em></p>
 <p>Let’s hunt for a Rust Target for <strong>32-bit RISC-V that supports Hardware Floating Point</strong>…</p>
-<pre><code class="language-bash">rustc --print target-list
-</code></pre>
+<div class="example-wrap"><pre class="language-bash">rustc --print target-list</pre></div>
 <p>Here are the Rust Targets for RISC-V…</p>
-<pre><code class="language-text">riscv32gc-unknown-linux-gnu
+<div class="example-wrap"><pre class="language-text">riscv32gc-unknown-linux-gnu
 riscv32gc-unknown-linux-musl
 riscv32i-unknown-none-elf
 riscv32imac-unknown-none-elf
@@ -735,20 +693,17 @@ riscv32imc-unknown-none-elf
 riscv64gc-unknown-linux-gnu
 riscv64gc-unknown-linux-musl
 riscv64gc-unknown-none-elf
-riscv64imac-unknown-none-elf
-</code></pre>
+riscv64imac-unknown-none-elf</pre></div>
 <p>Strike off the 64-bit RISC-V targets, and we get…</p>
-<pre><code class="language-text">riscv32gc-unknown-linux-gnu
+<div class="example-wrap"><pre class="language-text">riscv32gc-unknown-linux-gnu
 riscv32gc-unknown-linux-musl
 riscv32i-unknown-none-elf
 riscv32imac-unknown-none-elf
-riscv32imc-unknown-none-elf
-</code></pre>
+riscv32imc-unknown-none-elf</pre></div>
 <p>For embedded platforms we pick the targets that support <code>ELF</code>…</p>
-<pre><code class="language-text">riscv32i-unknown-none-elf
+<div class="example-wrap"><pre class="language-text">riscv32i-unknown-none-elf
 riscv32imac-unknown-none-elf
-riscv32imc-unknown-none-elf
-</code></pre>
+riscv32imc-unknown-none-elf</pre></div>
 <p>Bummer… None of these Built-In Rust Targets support Hardware Floating-Point!</p>
 <p>(They’re missing the <strong>“<code>f</code>”</strong> designator for Hardware Floating-Point)</p>
 <p>Fortunately Rust lets us create <strong>Custom Rust Targets</strong>. Let’s create one for BL602!</p>
@@ -767,12 +722,11 @@ riscv32imc-unknown-none-elf
 <ol>
 <li>
 <p>We <strong>export an existing Rust Target</strong> <code>riscv32imac-unknown-none-elf</code>…</p>
-<pre><code class="language-bash">rustc +nightly \
+<div class="example-wrap"><pre class="language-bash">rustc +nightly \
     -Z unstable-options \
     --print target-spec-json \
     --target riscv32imac-unknown-none-elf \
-    &gt;riscv32imac-unknown-none-elf.json
-</code></pre>
+    &gt;riscv32imac-unknown-none-elf.json</pre></div>
 <p>Here’s the JSON Target File for <code>riscv32imac-unknown-none-elf</code>…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/riscv32imac-unknown-none-elf.json">riscv32imac-unknown-none-elf.json: Software Floating-Point</a></li>
@@ -781,40 +735,32 @@ riscv32imc-unknown-none-elf
 <li>
 <p>We <strong>modify the JSON Target File</strong> to support Hardware Floating-Point.</p>
 <p>First we add “<code>+f</code>” to “<code>features</code>”…</p>
-<pre><code class="language-text">&quot;features&quot;: &quot;+m,+a,+c,+f&quot;,
-</code></pre>
-</li>
+<div class="example-wrap"><pre class="language-text">&quot;features&quot;: &quot;+m,+a,+c,+f&quot;,</pre></div></li>
 <li>
 <p>We set the <strong>Application Binary Interface</strong> so that the Rust Compiler will produce binaries for Hardware Floating-Point…</p>
-<pre><code class="language-text">&quot;llvm-abiname&quot;: &quot;ilp32f&quot;,
-</code></pre>
+<div class="example-wrap"><pre class="language-text">&quot;llvm-abiname&quot;: &quot;ilp32f&quot;,</pre></div>
 <p>We discovered this from the GCC command that compiles the BL602 IoT SDK…</p>
-<pre><code class="language-bash">gcc -march=rv32imfc -mabi=ilp32f ...
-</code></pre>
+<div class="example-wrap"><pre class="language-bash">gcc -march=rv32imfc -mabi=ilp32f ...</pre></div>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/make_scripts_riscv/project.mk#L223-L224">(See this)</a></p>
 </li>
 <li>
 <p>We set <strong>“<code>is-builtin</code>”</strong> to false since this is a Custom Rust Target…</p>
-<pre><code class="language-text">&quot;is-builtin&quot;: false,
-</code></pre>
-</li>
+<div class="example-wrap"><pre class="language-text">&quot;is-builtin&quot;: false,</pre></div></li>
 <li>
 <p>Save the modified JSON Target File as…</p>
-<pre><code class="language-text">riscv32imacf-unknown-none-elf.json
-</code></pre>
+<div class="example-wrap"><pre class="language-text">riscv32imacf-unknown-none-elf.json</pre></div>
 <p>(Which has the “<code>f</code>” designator for Hardware Floating-Point)</p>
 </li>
 <li>
 <p>Now we may <strong>compile our Rust code</strong> with the Custom Rust Target…</p>
-<pre><code class="language-bash">cargo build \
+<div class="example-wrap"><pre class="language-bash">cargo build \
     --target riscv32imacf-unknown-none-elf.json \
-    -Z build-std=core
-</code></pre>
+    -Z build-std=core</pre></div>
 <p>We specify “<code>-Z build-std=core</code>” so that the Rust Compiler will <strong>rebuild the Rust Core Library</strong> for our Custom Rust Target.</p>
 </li>
 </ol>
 <p>Here’s our Custom Rust Target for Hardware Floating-Point: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/riscv32imacf-unknown-none-elf.json"><code>riscv32imacf-unknown-none-elf.json</code></a></p>
-<pre><code class="language-json">{
+<div class="example-wrap"><pre class="language-json">{
   &quot;arch&quot;: &quot;riscv32&quot;,
   &quot;cpu&quot;: &quot;generic-rv32&quot;,
   &quot;data-layout&quot;: &quot;e-m:e-p:32:32-i64:64-n32-S128&quot;,
@@ -831,8 +777,7 @@ riscv32imc-unknown-none-elf
   &quot;panic-strategy&quot;: &quot;abort&quot;,
   &quot;relocation-model&quot;: &quot;static&quot;,
   &quot;target-pointer-width&quot;: &quot;32&quot;
-}
-</code></pre>
+}</pre></div>
 <p><em>How did we figure out the changes for “<code>features</code>” and “<code>llvm-abiname</code>”?</em></p>
 <p>By exporting and comparing the Rust Targets for <code>riscv32imac</code> (32-bit Software Floating-Point) and <code>riscv64gc-unknown-none-elf</code> (64-bit Hardware Floating-Point).</p>
 <p><a href="https://docs.rust-embedded.org/embedonomicon/custom-target.html">More about Custom Rust Targets</a></p>
@@ -935,116 +880,80 @@ riscv32imc-unknown-none-elf
 <ol>
 <li>
 <p>The script begins with the build and flash settings…</p>
-<pre><code class="language-bash">#  Name of app
-export APP_NAME=sdk_app_rust
+<div class="example-wrap"><pre class="language-bash">export APP_NAME=sdk_app_rust
 
-#  Build for BL602
 export CONFIG_CHIP_NAME=BL602
 
-#  Where BL602 IoT SDK is located
 export BL60X_SDK_PATH=$PWD/../..
 
-#  Where blflash is located
 export BLFLASH_PATH=$PWD/../../../blflash
 
-#  Where GCC is located
-export GCC_PATH=$PWD/../../../xpack-riscv-none-embed-gcc
-</code></pre>
+export GCC_PATH=$PWD/../../../xpack-riscv-none-embed-gcc</pre></div>
 <p>(Change BLFLASH_PATH and GCC_PATH for your machine)</p>
 <p>The script was created for macOS, but should run on Linux and Windows (WSL) with minor tweaks.</p>
 </li>
 <li>
 <p>Next we define the Custom Rust Target that supports Hardware Floating-Point…</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L29-L33"><code>run.sh</code></a></p>
-<pre><code class="language-bash">#  Rust target: Custom target for llvm-abiname=ilp32f
-#  https://docs.rust-embedded.org/embedonomicon/compiler-support.html#built-in-target
-#  https://docs.rust-embedded.org/embedonomicon/custom-target.html
-rust_build_target=$PWD/riscv32imacf-unknown-none-elf.json
-rust_build_target_folder=riscv32imacf-unknown-none-elf
-</code></pre>
-</li>
+<div class="example-wrap"><pre class="language-bash">rust_build_target=$PWD/riscv32imacf-unknown-none-elf.json
+rust_build_target_folder=riscv32imacf-unknown-none-elf</pre></div></li>
 <li>
 <p>We remove the Stub Library and the Rust Library is they exist…</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L61-L71"><code>run.sh</code></a></p>
-<pre><code class="language-bash">#  Remove the Stub Library if it exists:
-#  build_out/rust-app/librust-app.a
-if [ -e $rust_app_dest ]; then
+<div class="example-wrap"><pre class="language-bash">if [ -e $rust_app_dest ]; then
     rm $rust_app_dest
 fi
 
-#  Remove the Rust Library if it exists:
-#  rust/target/riscv32imacf-unknown-none-elf/debug/libapp.a
 if [ -e $rust_app_build ]; then
     rm $rust_app_build
-fi
-</code></pre>
+fi</pre></div>
 <p>(More about Stub Library in the next section)</p>
 </li>
 <li>
 <p>We build the BL602 firmware with the Stub Library…</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L77-L78"><code>run.sh</code></a></p>
-<pre><code class="language-bash">#  Build the firmware with the Stub Library
-make
-</code></pre>
+<div class="example-wrap"><pre class="language-bash">make</pre></div>
 <p>This build contains only C code, no Rust code.</p>
 </li>
 <li>
 <p>We compile the Rust Library with our Custom Rust Target that supports Hardware Floating-Point…</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L84-L88"><code>run.sh</code></a></p>
-<pre><code class="language-bash">#  Build the Rust Library
-pushd rust
+<div class="example-wrap"><pre class="language-bash">pushd rust
 rustup default nightly
 cargo build $rust_build_options
-popd
-</code></pre>
+popd</pre></div>
 <p>The Rust Compiler command looks like this…</p>
-<pre><code class="language-bash">cargo build \
+<div class="example-wrap"><pre class="language-bash">cargo build \
     --target ../riscv32imacf-unknown-none-elf.json \
-    -Z build-std=core
-</code></pre>
-</li>
+    -Z build-std=core</pre></div></li>
 <li>
 <p>We overwrite the Stub Library by the compiled Rust Library…</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L90-L94"><code>run.sh</code></a></p>
-<pre><code class="language-bash">#  Replace the Stub Library by the compiled Rust Library
-#  Stub Library: build_out/rust-app/librust-app.a
-#  Rust Library: rust/target/riscv32imacf-unknown-none-elf/debug/libapp.a
-cp $rust_app_build $rust_app_dest
-</code></pre>
-</li>
+<div class="example-wrap"><pre class="language-bash">cp $rust_app_build $rust_app_dest</pre></div></li>
 <li>
 <p>We link the compiled Rust Library into the BL602 Firmware…</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L100-L101"><code>run.sh</code></a></p>
-<pre><code class="language-bash">#  Link the Rust Library to the firmware
-make
-</code></pre>
+<div class="example-wrap"><pre class="language-bash">make</pre></div>
 <p>This creates the BL602 Rust Firmware file…</p>
-<pre><code class="language-text">build_out/sdk_app_rust.bin
-</code></pre>
-</li>
+<div class="example-wrap"><pre class="language-text">build_out/sdk_app_rust.bin</pre></div></li>
 <li>
 <p>We copy the BL602 Rust Firmware file to the <code>blflash</code> folder and flash to BL602…</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L110-L124"><code>run.sh</code></a></p>
-<pre><code class="language-bash">#  Copy firmware to blflash
-cp build_out/$APP_NAME.bin $BLFLASH_PATH
+<div class="example-wrap"><pre class="language-bash">cp build_out/$APP_NAME.bin $BLFLASH_PATH
 
-#  Flash the firmware
 pushd $BLFLASH_PATH
 cargo run flash $APP_NAME.bin \
     --port /dev/tty.usbserial-14* \
     --initial-baud-rate 230400 \
     --baud-rate 230400
 sleep 5
-popd
-</code></pre>
+popd</pre></div>
 <p>The <code>cargo run flash</code> command needs to be modified for Linux and WSL.</p>
 </li>
 <li>
 <p>Finally we launch CoolTerm to run the BL602 Rust Firmware…</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L130-L131"><code>run.sh</code></a></p>
-<pre><code class="language-bash">#  Run the firmware
-open -a CoolTerm
-</code></pre>
+<div class="example-wrap"><pre class="language-bash">open -a CoolTerm</pre></div>
 <p>This needs to be modified for Linux and WSL.</p>
 </li>
 </ol>
@@ -1059,16 +968,15 @@ open -a CoolTerm
 </ul>
 <p>This library contains a stub function for <code>rust_main</code>…</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/components/3rdparty/rust-app/src/rust-app.c"><code>rust-app.c</code></a></p>
-<pre><code class="language-c">/// Main function in Rust.
+<div class="example-wrap"><pre class="language-c">/// Main function in Rust.
 /// TODO: Sync with customer_app/sdk_app_rust/sdk_app_rust/demo.c
 void rust_main(char *buf, int len, int argc, char **argv) {
     printf(&quot;Build Error: components/3rdparty/rust-app not replaced by Rust compiled code\r\n&quot;);
-}
-</code></pre>
+}</pre></div>
 <p><em>Why do we need the stub function <code>rust_main</code>?</em></p>
 <p>Because <code>rust_main</code> is referenced by our C code when defining the commands for our Command-Line Interface…</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/sdk_app_rust/demo.c#L7-L16"><code>sdk_app_rust/demo.c</code></a></p>
-<pre><code class="language-c">//  TODO: Sync with components/3rdparty/rust-app/src/rust-app.c
+<div class="example-wrap"><pre class="language-c">//  TODO: Sync with components/3rdparty/rust-app/src/rust-app.c
 void rust_main(char *buf, int len, int argc, char **argv);
 
 /// List of commands
@@ -1078,28 +986,24 @@ const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
         &quot;Run Rust code&quot;,
         rust_main
     }
-};
-</code></pre>
+};</pre></div>
 <p>If we omit <code>rust_main</code> from our Stub Library, our GitHub Actions build will fail. <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/.github/workflows/build.yml">(See this)</a></p>
 <h1 id="appendix-expose-inline-functions-to-rust" class="section-header"><a href="#appendix-expose-inline-functions-to-rust">16 Appendix: Expose Inline Functions to Rust</a></h1>
 <p>Many functions from the <a href="https://lupyuen.github.io/articles/lora2#multitask-with-nimble-porting-layer">NimBLE Porting Layer</a> are declared as “<code>static inline</code>”…</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/components/3rdparty/nimble-porting-layer/include/nimble_npl_os.h#L270-L274"><code>nimble_npl_os.h</code></a></p>
-<pre><code class="language-c">//  static inline function
-static inline void ble_npl_time_delay(ble_npl_time_t ticks) { ... }
-</code></pre>
+<div class="example-wrap"><pre class="language-c">//  static inline function
+static inline void ble_npl_time_delay(ble_npl_time_t ticks) { ... }</pre></div>
 <p>This becomes a problem when we import <code>ble_npl_time_delay</code> into Rust… <code>ble_npl_time_delay</code> isn’t really a C function, it has been inlined into the calling C function!</p>
 <p>To work around this we disable the <code>static</code> and <code>inline</code> keyworks…</p>
-<pre><code class="language-c">//  Disable static inline
+<div class="example-wrap"><pre class="language-c">//  Disable static inline
 #define static
-#define inline
-</code></pre>
+#define inline</pre></div>
 <p>So the GCC Compiler compiles our static inline function as regular non-inline function…</p>
-<pre><code class="language-c">void ble_npl_time_delay(ble_npl_time_t ticks) { ... }
-</code></pre>
+<div class="example-wrap"><pre class="language-c">void ble_npl_time_delay(ble_npl_time_t ticks) { ... }</pre></div>
 <p>(Yeah it’s sneaky)</p>
 <p>Here’s how we implement this for our BL602 Rust Firmware…</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/sdk_app_rust/nimble.c">From <code>sdk_app_rust/nimble.c</code></a></p>
-<pre><code class="language-c">//  Export the inline functions for NimBLE Porting Layer to Rust
+<div class="example-wrap"><pre class="language-c">//  Export the inline functions for NimBLE Porting Layer to Rust
 //  TODO: Move this to nimble-porting-layer library
 
 //  Include FreeRTOS before NPL, so that FreeRTOS will be inlined
@@ -1114,8 +1018,7 @@ static inline void ble_npl_time_delay(ble_npl_time_t ticks) { ... }
 
 //  Define the functions like:
 //    void ble_npl_time_delay(ble_npl_time_t ticks) { ... }
-#include &quot;nimble_npl.h&quot;
-</code></pre>
+#include &quot;nimble_npl.h&quot;</pre></div>
 <p><img src="https://lupyuen.github.io/images/rust-crab.jpg" alt="PineCone BL602 RISC-V Board" /></p>
 
     
