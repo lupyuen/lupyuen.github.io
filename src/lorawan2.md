@@ -272,25 +272,27 @@ We __connect our Logic Analyser__ to the GPIO Connector like so...
 
 ![Logic Analyser connected to PineDio Stack](https://lupyuen.github.io/images/pinedio-logic2.jpg)
 
-_What about the ST7789 Chip Select Pin: GPIO 20?_
+_What about the SX1262 Chip Select Pin: GPIO 15?_
 
-Unfortunately __GPIO 20 is not exposed__ on the GPIO Connector.
+Unfortunately __GPIO 15 is not exposed__ on the GPIO Connector.
 
-But remember: Everything we do to GPIO 20, we __do the same to GPIO 5!__
+But remember: Everything we do to GPIO 15, we __do the same to GPIO 5!__
 
-__GPIO 5 is exposed__ on the GPIO Connector and it mirrors the GPIO High / Low state of GPIO 20.
+__GPIO 5 is exposed__ on the GPIO Connector and it mirrors the GPIO High / Low state of GPIO 15.
 
 Thus we simply connect our Logic Analyser to __GPIO 5 as the Chip Select Pin!__ (Pic above)
 
 Let's look at the data collected by our Logic Analyser...
 
-![](https://lupyuen.github.io/images/lorawan2-logic.png)
+![LoRa SX1262 with Logic Analyser](https://lupyuen.github.io/images/lorawan2-logic.png)
 
 # Spectrum Analyser
 
 TODO
 
-![](https://lupyuen.github.io/images/pinedio-chirp2.jpg)
+-   [__"Visualise LoRa with Software Defined Radio"__](https://lupyuen.github.io/articles/lora#visualise-lora-with-software-defined-radio)
+
+![LoRa SX1262 visualised with SDR](https://lupyuen.github.io/images/pinedio-chirp2.jpg)
 
 # Security
 
