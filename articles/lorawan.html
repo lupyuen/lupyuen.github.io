@@ -468,7 +468,7 @@ static void on_rx_timeout(void) {
 <p>Before transmitting a LoRaWAN Data Packet, our BL602 gadget needs to <strong>join the LoRaWAN Network</strong>.</p>
 <p>(It’s like connecting to a WiFi Network, authenticated by a security key)</p>
 <p>In the Demo Firmware, we enter this command to join the LoRaWAN Network (up to 3 attempts)…</p>
-<div class="example-wrap"><pre class="language-text"></pre></div>
+<div class="example-wrap"><pre class="language-text">las_join 3</pre></div>
 <p>Let’s study what happens inside the <strong><code>las_join</code></strong> command…</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/lorawan.c#L901-L935"><code>lorawan.c</code></a> :</p>
 <div class="example-wrap"><pre class="language-c">/// `las_join` command will send a Join Network Request
@@ -635,7 +635,7 @@ static void lora_mac_join_accept_rxd(uint8_t *payload, uint16_t size) {
 <p>Our BL602 gadget has joined the LoRaWAN Network… We’re almost ready to send data packets to the LoRaWAN Gateway! But before that, we need to <strong>open a LoRaWAN Application Port</strong>.</p>
 <p>(It’s like opening a TCP or UDP socket)</p>
 <p>In our Demo Firmware we enter this command to open LoRaWAN Application Port Number 2…</p>
-<div class="example-wrap"><pre class="language-text"></pre></div>
+<div class="example-wrap"><pre class="language-text">las_app_port open 2</pre></div>
 <p>(Port #2 seems to be a common port used by LoRaWAN Applications)</p>
 <p>The <strong><code>las_app_port</code></strong> command calls this function in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/lorawan.c#L735-L808"><code>lorawan.c</code></a> …</p>
 <div class="example-wrap"><pre class="language-c">/// `las_app_port open 2` command opens LoRaWAN Application Port 2
@@ -694,7 +694,7 @@ int lora_app_port_open(uint8_t port, lora_txd_func txd_cb, lora_rxd_func rxd_cb)
 <p>We’re now ready to transmit data packets to LoRaWAN Port #2!</p>
 <h2 id="transmit-data-packet" class="section-header"><a href="#transmit-data-packet">3.5 Transmit Data Packet</a></h2>
 <p>We enter this command into our Demo Firmware to <strong>transmit a LoRaWAN Data Packet to port 2, containing 5 bytes (of null)</strong>…</p>
-<div class="example-wrap"><pre class="language-text"></pre></div>
+<div class="example-wrap"><pre class="language-text">las_app_tx 2 5 0</pre></div>
 <p>The “<code>0</code>” at the end indicates that this is an <strong>Unconfirmed Message</strong>: We don’t expect any acknowledgement from the LoRaWAN Gateway.</p>
 <p>This is the preferred way for a low-power LoRaWAN device to transmit sensor data, since it <strong>doesn’t need to wait for the acknowledgement</strong> (and consume additional power).</p>
 <p>(It’s OK if a LoRaWAN Data Packet gets lost due to noise or inteference… LoRaWAN sensor devices are supposed to transmit data packets periodically anyway)</p>
@@ -964,7 +964,7 @@ cargo run flash sdk_app_lorawan.bin --port COM5</pre></div>
 <li>
 <p>First we <strong>create the Background Task</strong> that will process outgoing and incoming LoRa Packets.</p>
 <p>Enter this command…</p>
-<div class="example-wrap"><pre class="language-text"></pre></div>
+<div class="example-wrap"><pre class="language-text">create_task</pre></div>
 <p><a href="https://lupyuen.github.io/articles/lora2#event-queue">(<code>create_task</code> is explained here)</a></p>
 </li>
 <li>

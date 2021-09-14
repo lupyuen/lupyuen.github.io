@@ -219,7 +219,7 @@
 <h1 id="initialise-i2c-port" class="section-header"><a href="#initialise-i2c-port">3 Initialise I2C Port</a></h1>
 <p>Remember our Command-Line Firmware <a href="https://github.com/lupyuen/bl_iot_sdk/tree/i2c/customer_app/sdk_app_i2c"><code>sdk_app_i2c</code></a> for testing I2C on BL602?</p>
 <p>Here’s the command for initialising the I2C Port…</p>
-<div class="example-wrap"><pre class="language-text"></pre></div>
+<div class="example-wrap"><pre class="language-text"> i2c_init</pre></div>
 <p>Let’s discover how this command calls the Low Level I2C HAL to initialise the I2C Port: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L343-L369"><code>sdk_app_i2c/demo.c</code></a></p>
 <h2 id="select-i2c-port" class="section-header"><a href="#select-i2c-port">3.1 Select I2C Port</a></h2><div class="example-wrap"><pre class="language-c">/// Init I2C Port. Based on hal_i2c_init in hal_i2c.c
 static void test_i2c_init(char *buf, int len, int argc, char **argv) {
@@ -321,7 +321,7 @@ read_msg.sublen  = 1;     //  Length of Register Address (bytes)</pre></div>
 <h1 id="start-i2c-read" class="section-header"><a href="#start-i2c-read">5 Start I2C Read</a></h1>
 <p>Now that we have created our I2C Message, let’s watch it in action!</p>
 <p>To begin reading data from our BME280 Sensor, we enter this command…</p>
-<div class="example-wrap"><pre class="language-text"></pre></div>
+<div class="example-wrap"><pre class="language-text"> i2c_start_read</pre></div>
 <p>Let’s find out what happens inside that command: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L420-L448"><code>sdk_app_i2c/demo.c</code></a></p>
 <h2 id="create-i2c-message" class="section-header"><a href="#create-i2c-message">5.1 Create I2C Message</a></h2>
 <p>We start by creating the I2C Message. We have seen this code earlier for creating the message…</p>
@@ -506,7 +506,7 @@ static void test_i2c_transferbytes(i2c_msg_t *msg) {
 <p><img src="https://lupyuen.github.io/images/i2c-cartoon5.png" alt="Stop I2C Read" /></p>
 <h1 id="stop-i2c-read" class="section-header"><a href="#stop-i2c-read">8 Stop I2C Read</a></h1>
 <p>Here’s the final command that we’ll enter into the BL602 Firmware… It terminates the I2C transfer.</p>
-<div class="example-wrap"><pre class="language-text"></pre></div>
+<div class="example-wrap"><pre class="language-text"> i2c_stop_read</pre></div>
 <p>This command calls <code>test_i2c_stop</code> to close the I2C Port: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L450-L460"><code>sdk_app_i2c/demo.c</code></a></p>
 <div class="example-wrap"><pre class="language-c">/// Stop reading data from I2C device
 static void test_i2c_stop_read(char *buf, int len, int argc, char **argv) {
@@ -656,7 +656,8 @@ cargo run flash sdk_app_i2c.bin --port COM5</pre></div>
 </li>
 <li>
 <p>Enter <code>help</code> to see the available commands…</p>
-<div class="example-wrap"><pre class="language-text">====User Commands====
+<div class="example-wrap"><pre class="language-text">help
+====User Commands====
 i2c_status               : I2C status
 i2c_init                 : Init I2C port
 i2c_start_read           : Start reading I2C data
@@ -664,12 +665,12 @@ i2c_stop_read            : Stop reading I2C data</pre></div></li>
 <li>
 <p>First we <strong>initialise our I2C Port</strong>. </p>
 <p>Enter this command…</p>
-<div class="example-wrap"><pre class="language-text"></pre></div>
+<div class="example-wrap"><pre class="language-text">i2c_init</pre></div>
 <p>(Earlier we’ve seen the code for this command)</p>
 </li>
 <li>
 <p>Before doing any I2C business, let’s <strong>dump the Interrupt Counters</strong> to see which I2C Interrupts get triggered…</p>
-<div class="example-wrap"><pre class="language-text"></pre></div>
+<div class="example-wrap"><pre class="language-text">i2c_status</pre></div>
 <p>We should see…</p>
 <div class="example-wrap"><pre class="language-text">Interrupts: 0  NACK:       0
 Trans End:  0  Arb Lost:   0
@@ -679,12 +680,12 @@ Rx Ready:   0  Unknown:    0</pre></div>
 </li>
 <li>
 <p>Now we <strong>start the I2C Read Operation</strong>…</p>
-<div class="example-wrap"><pre class="language-text"></pre></div>
+<div class="example-wrap"><pre class="language-text">i2c_start_read</pre></div>
 <p>(We’ve seen the code for this command as well)</p>
 </li>
 <li>
 <p>Again we dump the Interrupt Counters…</p>
-<div class="example-wrap"><pre class="language-text"></pre></div>
+<div class="example-wrap"><pre class="language-text">i2c_status</pre></div>
 <p>Aha Something Different! We have encountered <strong>one interrupt for Data Received</strong> (Rx Ready), because BME280 has returned some I2C data to BL602…</p>
 <div class="example-wrap"><pre class="language-text">Interrupts: 2  NACK:       0
 Trans End:  1  Arb Lost:   0
@@ -695,7 +696,7 @@ Rx Ready:   1  Unknown:    0    </pre></div>
 </li>
 <li>
 <p>To <strong>check the data received</strong>, enter this command…</p>
-<div class="example-wrap"><pre class="language-text"></pre></div>
+<div class="example-wrap"><pre class="language-text">i2c_stop_read</pre></div>
 <p>Remember that we’re reading the Chip ID from BME280. We should see this Chip ID…</p>
 <div class="example-wrap"><pre class="language-text">60</pre></div>
 <p>(For BMP280 the Chip ID is <code>0x58</code>)</p>
@@ -831,7 +832,8 @@ static uint8_t read_buf[32];  //  Buffer for reading I2C Data</pre></div>
 <p>Here’s how I tracked down my first RISC-V Exception and fixed it…</p>
 <p><img src="https://lupyuen.github.io/images/i2c-exception.png" alt="RISC-V Exception in sdk_app_i2c" /></p>
 <p>When our program <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/"><code>sdk_app_i2c</code></a> is sending I2C data, the program crashes with the RISC-V Exception shown above…</p>
-<div class="example-wrap"><pre class="language-text">Exception Entry---&gt;&gt;&gt;
+<div class="example-wrap"><pre class="language-text">start_write_data
+Exception Entry---&gt;&gt;&gt;
 mcause 30000007, mepc 23008fe2, mtval 00000014
 Exception code: 7
 msg: Store/AMO access fault</pre></div>

@@ -639,14 +639,15 @@ cargo run flash sdk_app_spi.bin --port COM5</pre></div>
 </li>
 <li>
 <p>Enter <code>help</code> to see the available commands…</p>
-<div class="example-wrap"><pre class="language-text">====User Commands====
+<div class="example-wrap"><pre class="language-text">help
+====User Commands====
 spi_init                 : Init SPI port
 spi_transfer             : Transfer SPI data
 spi_result               : Show SPI data received</pre></div></li>
 <li>
 <p>First we <strong>initialise our SPI Port</strong>. </p>
 <p>Enter this command…</p>
-<div class="example-wrap"><pre class="language-text"></pre></div>
+<div class="example-wrap"><pre class="language-text">spi_init</pre></div>
 <p><code>spi_init</code> calls the function <code>test_spi_init</code>, which we have seen earlier.</p>
 </li>
 <li>
@@ -661,7 +662,7 @@ hal_spi_init.
 Set CS pin 14 to high</pre></div></li>
 <li>
 <p>Now we <strong>start the two SPI Transfers</strong>…</p>
-<div class="example-wrap"><pre class="language-text"></pre></div>
+<div class="example-wrap"><pre class="language-text">spi_transfer</pre></div>
 <p><code>spi_transfer</code> calls the function <code>test_spi_transfer</code>, which we have seen earlier.</p>
 </li>
 <li>
@@ -679,7 +680,7 @@ recv all event group.
 Set CS pin 14 to high</pre></div></li>
 <li>
 <p>Finally we display the <strong>SPI Data received</strong> from BME280…</p>
-<div class="example-wrap"><pre class="language-text"></pre></div>
+<div class="example-wrap"><pre class="language-text">spi_result</pre></div>
 <p>(<code>spi_result</code> is defined here in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L158-L182"><code>sdk_app_spi/demo.c</code></a>)</p>
 </li>
 <li>

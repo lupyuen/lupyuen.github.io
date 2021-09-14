@@ -500,7 +500,8 @@ OnRadioRxTimeout</pre></div>
 <p>SSH to WisGate and look at the <strong>Linux System Log</strong> while our LoRaWAN Device is transmitting packets…</p>
 <div class="example-wrap"><pre class="language-bash">tail -f /var/log/syslog</pre></div>
 <p>Sometimes it’s helpful to scan the log for <strong>Message Integrity Code</strong> errors…</p>
-<div class="example-wrap"><pre class="language-bash">
+<div class="example-wrap"><pre class="language-bash">grep MIC /var/log/syslog
+
 Apr 28 04:02:05 rak-gateway 
 chirpstack-application-server[568]: 
 time=&quot;2021-04-28T04:02:05+01:00&quot; 
@@ -509,7 +510,8 @@ msg=&quot;invalid MIC&quot;
 dev_eui=4bc15ee7377bb15b 
 type=DATA_UP_MIC</pre></div>
 <p>Also for <strong>Nonce Errors</strong>…</p>
-<div class="example-wrap"><pre class="language-bash">
+<div class="example-wrap"><pre class="language-bash">grep nonce /var/log/syslog
+
 Apr 28 04:02:41 rak-gateway chirpstack-application-server[568]:
 time=&quot;2021-04-28T04:02:41+01:00&quot; 
 level=error 
@@ -587,7 +589,8 @@ type=OTAA</pre></div>
 <p><em>What happens when we transmit an invalid Message Integrity Code?</em></p>
 <p>Our LoRaWAN Gateway (ChirpStack on WisGate) will <strong>reject LoRaWAN Packets with invalid Message Integrity Codes</strong>.</p>
 <p>To see Message Integrity Code errors, SSH to our LoRaWAN Gateway and search for…</p>
-<div class="example-wrap"><pre class="language-bash">
+<div class="example-wrap"><pre class="language-bash">grep MIC /var/log/syslog
+
 Apr 28 04:02:05 rak-gateway 
 chirpstack-application-server[568]: 
 time=&quot;2021-04-28T04:02:05+01:00&quot; 
@@ -610,7 +613,8 @@ error=&quot;get device-session error: invalid MIC&quot;</pre></div><h2 id="nonce
 <p>Our LoRaWAN Gateway (ChirpStack on WisGate) will <strong>reject Join Network Requests that have a reused Nonce</strong>.</p>
 <p>(Yep the gateway will remember the Nonces from previous requests)</p>
 <p>To see Nonce errors, SSH to our LoRaWAN Gateway and search for…</p>
-<div class="example-wrap"><pre class="language-bash">
+<div class="example-wrap"><pre class="language-bash">grep nonce /var/log/syslog
+
 Apr 28 04:02:41 rak-gateway chirpstack-application-server[568]:
 time=&quot;2021-04-28T04:02:41+01:00&quot; 
 level=error 

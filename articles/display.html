@@ -709,7 +709,8 @@ cargo run flash sdk_app_st7789.bin --port COM5</pre></div>
 </li>
 <li>
 <p>Enter <code>help</code> to see the available commands…</p>
-<div class="example-wrap"><pre class="language-text">====User Commands====
+<div class="example-wrap"><pre class="language-text">help
+====User Commands====
 display_init             : Init display
 display_image            : Display image
 display_result           : Show result
@@ -727,12 +728,13 @@ lvgl_render              : Render LVGL display</pre></div>
 <li>
 <p>First we <strong>initialise our SPI Port and ST7789 Display</strong>. </p>
 <p>Enter this command…</p>
-<div class="example-wrap"><pre class="language-text"></pre></div>
+<div class="example-wrap"><pre class="language-text">display_init</pre></div>
 <p>This command calls the functions <code>test_display_init</code> and <code>init_display</code>, which we have seen earlier.</p>
 </li>
 <li>
 <p>We should see this…</p>
-<div class="example-wrap"><pre class="language-text">port0 eventloop init = 42013ef8
+<div class="example-wrap"><pre class="language-text">display_init
+port0 eventloop init = 42013ef8
 [HAL] [SPI] Init :
 port=0, mode=0, polar_phase = 3, freq=4000000, tx_dma_ch=2, rx_dma_ch=3, pin_clk=3, pin_cs=2, pin_mosi=1, pin_miso=4
 set rwspeed = 4000000</pre></div>
@@ -756,12 +758,13 @@ TODO Delay 200
 </li>
 <li>
 <p>Next we <strong>display the image on ST7789</strong>…</p>
-<div class="example-wrap"><pre class="language-text"></pre></div>
+<div class="example-wrap"><pre class="language-text">display_image</pre></div>
 <p>This command calls the function <code>display_image</code>, which we have seen earlier.</p>
 </li>
 <li>
 <p>We should see this…</p>
-<div class="example-wrap"><pre class="language-text">Displaying image...
+<div class="example-wrap"><pre class="language-text">display_image
+Displaying image...
 Set CS pin 14 to low
 hal_spi_transfer = 1
 transfer xfer[0].len = 4800
@@ -782,9 +785,11 @@ Rx DMA src=0x4000a28c, dest=0x4200ff68, size=704,  si=0, di=1, i=1
 </li>
 <li>
 <p>Here’s a Tip: Instead of entering the two commands…</p>
-<div class="example-wrap"><pre class="language-text">...</pre></div>
+<div class="example-wrap"><pre class="language-text">display_init
+...
+display_image</pre></div>
 <p>We may enter this as a shortcut…</p>
-<div class="example-wrap"><pre class="language-text"></pre></div>
+<div class="example-wrap"><pre class="language-text">1</pre></div>
 <p>Which will initialise the ST7789 display and render the image in a single command.</p>
 <p>Congratulations! Jewel Changi, Singapore (or Our Favourite Cat) now appears on our ST7789 Display!</p>
 <p><a href="https://www.youtube.com/watch?v=PkP-CeYLXUA"><strong>Watch the Demo Video on YouTube</strong></a></p>
@@ -955,7 +960,8 @@ int lvgl_init(void) {
 </li>
 <li>
 <p>Enter <code>help</code> to see the available commands…</p>
-<div class="example-wrap"><pre class="language-text">====User Commands====
+<div class="example-wrap"><pre class="language-text">help
+====User Commands====
 display_init             : Init display
 display_image            : Display image
 display_result           : Show result
@@ -972,13 +978,13 @@ lvgl_render              : Render LVGL display</pre></div>
 3                        : Update LVGL widgets, render LVGL display</pre></div></li>
 <li>
 <p>Enter this command to <strong>initialise the SPI Port and ST7789 Display</strong>…</p>
-<div class="example-wrap"><pre class="language-text"></pre></div>
+<div class="example-wrap"><pre class="language-text">display_init</pre></div>
 <p>This command calls the functions <strong><code>test_display_init</code> and <code>init_display</code></strong>, which we have seen earlier.</p>
 <p>(We’ve covered this command earlier under ST7789 Demo Firmware)</p>
 </li>
 <li>
 <p>Enter this command to <strong>initialise the LVGL Library</strong></p>
-<div class="example-wrap"><pre class="language-text"></pre></div>
+<div class="example-wrap"><pre class="language-text">lvgl_init</pre></div>
 <p>This command calls the function <strong><code>lvgl_init</code></strong>, which we have seen earlier.</p>
 </li>
 <li>
@@ -996,7 +1002,7 @@ Info:  Object create ready 	 (lv_obj.c #461 lv_obj_create())</pre></div>
 <ol>
 <li>
 <p>Enter this command to <strong>create the LVGL Widgets</strong> (Button and Label)…</p>
-<div class="example-wrap"><pre class="language-text"></pre></div>
+<div class="example-wrap"><pre class="language-text">lvgl_create</pre></div>
 <p>This command calls the function <strong><code>lvgl_create</code></strong>, which we have seen earlier.</p>
 </li>
 <li>
@@ -1021,7 +1027,7 @@ Info:  label created 	        (lv_label.c #165 lv_label_create())</pre></div>
 <ol>
 <li>
 <p>Enter this command to <strong>render the LVGL Screen</strong>…</p>
-<div class="example-wrap"><pre class="language-text"></pre></div>
+<div class="example-wrap"><pre class="language-text">lvgl_render</pre></div>
 <p>This command calls the function <strong><code>lvgl_render</code></strong>, which we have seen earlier.</p>
 </li>
 <li>
@@ -1066,13 +1072,13 @@ Flush display: left=0, top=40, right=239, bottom=49...
 <ol>
 <li>
 <p>Enter this command to <strong>update the LVGL Widgets</strong>…</p>
-<div class="example-wrap"><pre class="language-text"></pre></div>
+<div class="example-wrap"><pre class="language-text">lvgl_update</pre></div>
 <p>This command calls the function <strong><code>lvgl_update</code></strong>, which we have seen earlier.</p>
 <p>Remember that <code>lvgl_update</code> updates the label text to…</p>
 <div class="example-wrap"><pre class="language-text">SO COOL! #1</pre></div></li>
 <li>
 <p>Then this command to <strong>render the updated LVGL Screen</strong>…</p>
-<div class="example-wrap"><pre class="language-text"></pre></div>
+<div class="example-wrap"><pre class="language-text">lvgl_render</pre></div>
 <p>(We’ve used this command in the previous section)</p>
 </li>
 <li>
@@ -1087,13 +1093,17 @@ Flush display: left=45, top=122, right=196, bottom=133...
 </li>
 <li>
 <p>Here are two Shortcuts: This Shortcut Command…</p>
-<div class="example-wrap"><pre class="language-text"></pre></div>
+<div class="example-wrap"><pre class="language-text">2</pre></div>
 <p>Is equivalent to…</p>
-<div class="example-wrap"><pre class="language-text"></pre></div>
+<div class="example-wrap"><pre class="language-text">display_init
+lvgl_init
+lvgl_create
+lvgl_render</pre></div>
 <p>And this Shortcut Command…</p>
-<div class="example-wrap"><pre class="language-text"></pre></div>
+<div class="example-wrap"><pre class="language-text">3</pre></div>
 <p>Is equivalent to…</p>
-<div class="example-wrap"><pre class="language-text"></pre></div>
+<div class="example-wrap"><pre class="language-text">lvgl_update
+lvgl_render</pre></div>
 <p><a href="https://www.youtube.com/watch?v=PkP-CeYLXUA"><strong>Watch the Demo Video on YouTube</strong></a></p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/demo.c#L210-L222"><strong>How to run a Command at Startup</strong></a></p>
 <p><a href="https://gist.github.com/lupyuen/9f26626d7c8081ae64d58eba70e07a80"><strong>Check out the complete log</strong></a></p>

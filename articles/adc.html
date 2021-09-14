@@ -274,7 +274,7 @@ void read_adc(char *buf, int len, int argc, char **argv) {
 <ol>
 <li>
 <p>Enter this command to <strong>initialise the ADC Channel</strong>…</p>
-<div class="example-wrap"><pre class="language-text"></pre></div>
+<div class="example-wrap"><pre class="language-text">init_adc</pre></div>
 <p>(We’ve seen this function earlier)</p>
 </li>
 <li>
@@ -282,29 +282,38 @@ void read_adc(char *buf, int len, int argc, char **argv) {
 </li>
 <li>
 <p>Enter the <code>read_adc</code> command a few times to get the <strong>average values</strong> of the last 1,000 ADC Samples…</p>
-<div class="example-wrap"><pre class="language-text">Average: 1416
-
+<div class="example-wrap"><pre class="language-text">read_adc
 Average: 1416
 
+read_adc
+Average: 1416
+
+read_adc
 Average: 1416</pre></div></li>
 <li>
 <p>Now place the BL602 Board (with LED) <strong>under sunlight</strong>.</p>
 </li>
 <li>
 <p>Enter the <code>read_adc</code> command a few times…</p>
-<div class="example-wrap"><pre class="language-text">Average: 1408
-
+<div class="example-wrap"><pre class="language-text">read_adc
 Average: 1408
 
+read_adc
+Average: 1408
+
+read_adc
 Average: 1408</pre></div>
 <p>Note that the average values have <strong>dropped from 1416 to 1408.</strong></p>
 </li>
 <li>
 <p>Place the BL602 Board (with LED) <strong>back in the dark</strong> and check the average values…</p>
-<div class="example-wrap"><pre class="language-text">Average: 1417
+<div class="example-wrap"><pre class="language-text">read_adc
+Average: 1417
 
+read_adc
 Average: 1416
 
+read_adc
 Average: 1416</pre></div>
 <p>The average values have <strong>increased from 1408 to 1416.</strong></p>
 <p>Yep our improvised BL602 Light Sensor works!</p>
@@ -886,7 +895,8 @@ cargo run flash sdk_app_lora.bin --port COM5</pre></div></li>
 </li>
 <li>
 <p>In the serial console, enter the <code>init_adc</code> command to <strong>initialise the ADC Channel</strong>…</p>
-<div class="example-wrap"><pre class="language-text">[Rust] Init ADC</pre></div>
+<div class="example-wrap"><pre class="language-text">init_adc
+[Rust] Init ADC</pre></div>
 <p>(We’ve seen this function earlier)</p>
 </li>
 <li>
@@ -894,23 +904,32 @@ cargo run flash sdk_app_lora.bin --port COM5</pre></div></li>
 </li>
 <li>
 <p>Enter the <code>read_adc</code> command a few times to get the <strong>average values</strong> of the last 1,000 ADC Samples…</p>
-<div class="example-wrap"><pre class="language-text">[Rust] Average: 1417
+<div class="example-wrap"><pre class="language-text">read_adc
 [Rust] Average: 1417
+read_adc
+[Rust] Average: 1417
+read_adc
 [Rust] Average: 1417</pre></div></li>
 <li>
 <p>Now place the BL602 Board (with LED) <strong>under sunlight</strong>.</p>
 </li>
 <li>
 <p>Enter the <code>read_adc</code> command a few times…</p>
-<div class="example-wrap"><pre class="language-text">[Rust] Average: 1411
+<div class="example-wrap"><pre class="language-text">read_adc
 [Rust] Average: 1411
+read_adc
+[Rust] Average: 1411
+read_adc
 [Rust] Average: 1412</pre></div>
 <p>Note that the average values have <strong>dropped from 1417 to 1412.</strong></p>
 </li>
 <li>
 <p>Place the BL602 Board (with LED) <strong>back in the dark</strong> and check the average values…</p>
-<div class="example-wrap"><pre class="language-text">[Rust] Average: 1417
+<div class="example-wrap"><pre class="language-text">read_adc
 [Rust] Average: 1417
+read_adc
+[Rust] Average: 1417
+read_adc
 [Rust] Average: 1417</pre></div>
 <p>The average values have <strong>increased from 1412 to 1417.</strong></p>
 <p>Our improvised BL602 Light Sensor works in Rust yay!</p>

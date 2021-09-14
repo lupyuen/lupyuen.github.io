@@ -1242,7 +1242,8 @@ cargo run flash sdk_app_lora.bin --port COM5</pre></div>
 </li>
 <li>
 <p>Enter <code>help</code> to see the available commands…</p>
-<div class="example-wrap"><pre class="language-text">====User Commands====
+<div class="example-wrap"><pre class="language-text">help
+====User Commands====
 create_task              : Create a task
 put_event                : Add an event
 init_driver              : Init LoRa driver
@@ -1256,18 +1257,19 @@ bl_sys_time_now          : sys time now</pre></div></li>
 <li>
 <p>First we <strong>create the Background Task</strong> that will process received LoRa Packets.</p>
 <p>Enter this command…</p>
-<div class="example-wrap"><pre class="language-text"></pre></div>
+<div class="example-wrap"><pre class="language-text">create_task</pre></div>
 <p>This command calls the function <code>create_task</code>, which we have seen earlier.</p>
 </li>
 <li>
 <p>Then we <strong>initialise our LoRa Transceiver</strong>. </p>
 <p>Enter this command…</p>
-<div class="example-wrap"><pre class="language-text"></pre></div>
+<div class="example-wrap"><pre class="language-text">init_driver</pre></div>
 <p>This command calls the function <code>init_driver</code>, which we have seen earlier.</p>
 </li>
 <li>
 <p>We should see this…</p>
-<div class="example-wrap"><pre class="language-text">SX1276 init
+<div class="example-wrap"><pre class="language-text">init_driver
+SX1276 init
 SX1276 interrupt init
 SX1276 register handler: GPIO 11
 SX1276 register handler: GPIO 0
@@ -1283,12 +1285,13 @@ SX1276 register handler: GPIO 12</pre></div>
 </li>
 <li>
 <p>Next we <strong>receive a LoRa Packet</strong>…</p>
-<div class="example-wrap"><pre class="language-text"></pre></div>
+<div class="example-wrap"><pre class="language-text">receive_message</pre></div>
 <p>This command calls the function <code>receive_message</code>, which we have seen earlier.</p>
 </li>
 <li>
 <p>We should see this…</p>
-<div class="example-wrap"><pre class="language-text">...
+<div class="example-wrap"><pre class="language-text">receive_message
+...
 SX1276 DIO0: Packet received
 Rx done: RadioEvents.RxDone</pre></div>
 <p>This says that the SX1276 Driver has <strong>received a LoRa Packet.</strong></p>
@@ -1302,7 +1305,8 @@ Rx done: RadioEvents.RxDone</pre></div>
 <h2 id="receive-timeout" class="section-header"><a href="#receive-timeout">7.4 Receive Timeout</a></h2>
 <p>Remember that our SX1276 Transceiver will <strong>listen 5 seconds for incoming packets</strong>… Then it goes to sleep to conserve battery power?</p>
 <p>Here’s what happens when then SX1276 Driver doesn’t receive any LoRa Packets within 5 seconds…</p>
-<div class="example-wrap"><pre class="language-text">...
+<div class="example-wrap"><pre class="language-text">receive_message
+...
 SX1276 receive timeout
 Rx timeout</pre></div>
 <p>Our <strong>BL602 Timer is triggered automatically</strong> after 5 seconds to put the SX1276 Transceiver to sleep.</p>
@@ -1361,7 +1365,8 @@ Rx timeout</pre></div>
 </ul>
 <h2 id="read-registers" class="section-header"><a href="#read-registers">8.2 Read Registers</a></h2>
 <p>Verify the SPI Connection between BL602 and SX1276 by entering the command <strong><code>read_registers</code></strong>…</p>
-<div class="example-wrap"><pre class="language-text">Register 0x02 = 0x1a
+<div class="example-wrap"><pre class="language-text">read_registers
+Register 0x02 = 0x1a
 Register 0x03 = 0x0b
 Register 0x04 = 0x00
 Register 0x05 = 0x52</pre></div>
@@ -1397,7 +1402,8 @@ recv all event group.</pre></div>
 </ul>
 <h2 id="show-interrupt-counters" class="section-header"><a href="#show-interrupt-counters">8.4 Show Interrupt Counters</a></h2>
 <p>We may check the number of GPIO and SPI Interrupts triggered by SX1276 by entering the <strong><code>spi_result</code></strong> command…</p>
-<div class="example-wrap"><pre class="language-text">DIO0 Interrupts: 1
+<div class="example-wrap"><pre class="language-text">spi_result
+DIO0 Interrupts: 1
 DIO3 Interrupts: 1
 Tx Interrupts:   302
 Rx Interrupts:   302</pre></div>
@@ -1415,12 +1421,12 @@ Rx Interrupts:   302</pre></div>
 <ol>
 <li>
 <p>If the Background Task has NOT been started, enter this command…</p>
-<div class="example-wrap"><pre class="language-text"></pre></div>
+<div class="example-wrap"><pre class="language-text">create_task</pre></div>
 <p>(<code>create_task</code> should only be run once)</p>
 </li>
 <li>
 <p>Then enter this command to enqueue an Event into our Event Queue…</p>
-<div class="example-wrap"><pre class="language-text"></pre></div></li>
+<div class="example-wrap"><pre class="language-text">put_event</pre></div></li>
 <li>
 <p>We should see this…</p>
 <div class="example-wrap"><pre class="language-text">Handle an event</pre></div>
