@@ -252,11 +252,28 @@ void SX126xIoInit( void ) {
 <ul>
 <li><a href="https://lupyuen.github.io/articles/spi#spi-phase-looks-sus"><strong>“SPI Phase looks sus”</strong></a></li>
 </ul>
-<p><img src="https://lupyuen.github.io/images/lorawan2-swap.png" alt="Swap SPI Pins" /></p>
+<p><img src="https://lupyuen.github.io/images/lorawan2-swap.png" alt="Swap SPI Pins and tweak the SPI Polarity-Phase" /></p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/components/3rdparty/lora-sx1262/src/sx126x-board.c#L168-L202">(Source)</a></p>
 <h1 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">3 Run The Firmware</a></h1>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan#lorawan-commands"><code>pinedio_lorawan</code></a></p>
+<p>We <strong>build and flash the LoRaWAN Firmware</strong> to PineDio Stack with these steps…</p>
+<ol>
+<li>
+<p><a href="https://lupyuen.github.io/articles/pinedio#bl604-blinky"><strong>“BL604 Blinky (Build the Firmware)”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/pinedio#flash-firmware-to-bl604"><strong>“Flash Firmware To BL604”</strong></a></p>
+</li>
+</ol>
+<p>And these modifications…</p>
+<ul>
+<li>
+<p>Change the branch <strong><code>3wire</code></strong> to <strong><code>pinedio</code></strong></p>
+</li>
+<li>
+<p>Change the firmware <strong><code>pinedio_blinky</code></strong> to <strong><code>pinedio_lorawan</code></strong></p>
+</li>
+</ul>
+<p>At the BL602 Command Prompt, enter these LoRaWAN Commands: <a href="https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan#lorawan-commands">pinedio_lorawan</a></p>
 <pre><code class="language-bash">#  Start LoRa background task
 create_task
 
