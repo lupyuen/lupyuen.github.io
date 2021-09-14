@@ -119,19 +119,21 @@ We define the __Chip Select Pins__ for SPI Flash and ST7789 Display as well: [`p
 
 # LoRaWAN Firmware
 
-To test LoRaWAN on PineDio Stack we shall run the following __LoRaWAN Firmware and Drivers__...
+To test LoRaWAN on PineDio Stack we shall run this __LoRaWAN Firmware__...
 
 -   [__`pinedio_lorawan` Firmware__](https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan)
+
+Which calls the following __LoRaWAN and SX1262 Drivers__...
 
 -   [__`lorawan` Driver__](https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/components/3rdparty/lorawan)
 
 -   [__`lora-sx1262` Driver__](https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/components/3rdparty/lora-sx1262)
 
-They were ported from Apache Mynewt operating system to BL602 and BL604, as described here...
+The firmware and drivers were previously ported from Apache Mynewt operating system to BL602 and BL604...
 
 -   [__"PineCone BL602 Talks LoRaWAN"__](https://lupyuen.github.io/articles/lorawan)
 
-Here are the changes we made for PineDio Stack...
+Here are the changes we made for PineDio Stack.
 
 ## Deselect SPI Peripherals
 
