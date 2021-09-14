@@ -259,7 +259,13 @@ las_app_port open 2
 las_app_tx 2 5 0
 ```
 
-![](https://lupyuen.github.io/images/lorawan2-commands.png)
+TODO
+
+[(See the output log)](https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan#output-log)
+
+TODO
+
+![LoRaWAN Commands](https://lupyuen.github.io/images/lorawan2-commands.png)
 
 # LoRaWAN Gateway
 
