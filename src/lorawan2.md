@@ -87,7 +87,7 @@ We set the __Chip Select Pin (CS)__ to Low to select the __Active SPI Device__: 
 
 ![SPI Bus on PineDio Stack](https://lupyuen.github.io/images/pinedio-spi.jpg)
 
-To test the LoRa SX1262 Transceiver, we define the __GPIO Pin Numbers__ like so: [`lora-sx1262/sx126x-board.h`](https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/components/3rdparty/lora-sx1262/include/sx126x-board.h#L36-L50)
+To test the LoRa SX1262 Transceiver, we define the __GPIO Pin Numbers__ like so: [`lora-sx1262 / sx126x-board.h`](https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/components/3rdparty/lora-sx1262/include/sx126x-board.h#L36-L50)
 
 ```c
 //  Below are the pin numbers for PineDio Stack BL604 with onboard SX1262.
@@ -105,7 +105,7 @@ To test the LoRa SX1262 Transceiver, we define the __GPIO Pin Numbers__ like so:
 #define SX126X_SPI_BAUDRATE  (200 * 1000)  //  SPI Frequency (200 kHz)
 ```
 
-We define the __Chip Select Pins__ for SPI Flash and ST7789 Display as well: [`pinedio_lorawan/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/pinedio_lorawan/pinedio_lorawan/demo.c#L101-L105)
+We define the __Chip Select Pins__ for SPI Flash and ST7789 Display as well: [`pinedio_lorawan / demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/pinedio_lorawan/pinedio_lorawan/demo.c#L101-L105)
 
 ```c
 /// GPIO for SPI Flash Chip Select Pin. We must set this to High to deselect SPI Flash.
@@ -121,13 +121,93 @@ TODO
 
 -   [__`pinedio_lorawan`__](https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan)
 
-Sync with pine64
-
-![](https://lupyuen.github.io/images/lorawan2-deselect.png)
+## Deselect SPI Peripherals
 
 TODO
 
-![](https://lupyuen.github.io/images/lorawan2-swap.png)
+From [`pinedio_lorawan / demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/pinedio_lorawan/pinedio_lorawan/demo.c#L107-L130)
+
+```c
+/// Set Chip Select pins to High, to deselect SX1262, SPI Flash and ST7789
+int deselect_spi(void) {
+  //  Configure Chip Select pins as GPIO Output Pins (instead of GPIO Input)
+  int rc;
+  rc = bl_gpio_enable_output(FLASH_CS_PIN,      0, 0);  assert(rc == 0);
+  rc = bl_gpio_enable_output(DISPLAY_CS_PIN,    0, 0);  assert(rc == 0);
+  rc = bl_gpio_enable_output(SX126X_SPI_CS_PIN, 0, 0);  assert(rc == 0);
+  if (SX126X_DEBUG_CS_PIN >= 0) {  //  Mirror SX126X_SPI_CS_PIN
+    rc = bl_gpio_enable_output(SX126X_DEBUG_CS_PIN, 0, 0);  assert(rc == 0);
+  }
+```
+
+TODO
+
+```c
+  //  Set Chip Select pins to High, to deselect SX1262, SPI Flash and ST7789
+  rc = bl_gpio_output_set(FLASH_CS_PIN,      1);  assert(rc == 0);
+  rc = bl_gpio_output_set(DISPLAY_CS_PIN,    1);  assert(rc == 0);
+  rc = bl_gpio_output_set(SX126X_SPI_CS_PIN, 1);  assert(rc == 0);
+  if (SX126X_DEBUG_CS_PIN >= 0) {  //  Mirror SX126X_SPI_CS_PIN
+    rc = bl_gpio_output_set(SX126X_DEBUG_CS_PIN, 1);  assert(rc == 0);
+  }
+  return 0;
+}
+```
+
+TODO: Called by [`init_lorawan`](https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L167-L173)
+
+TODO: This code comes from
+
+![Deselect SPI Peripherals](https://lupyuen.github.io/images/lorawan2-deselect.png)
+
+## Swap SPI Pins
+
+TODO
+
+From [`lora-sx1262 / sx126x-board.c`](https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/components/3rdparty/lora-sx1262/src/sx126x-board.c#L168-L202)
+
+```c
+/// Initialise GPIO Pins and SPI Port. Called by SX126xIoIrqInit.
+void SX126xIoInit( void ) {
+  //  Configure the pins for GPIO Input / Output
+  GpioInitOutput( SX126X_SPI_CS_PIN, 1 );
+  GpioInitInput( SX126X_BUSY_PIN, 0, 0 );
+  GpioInitInput( SX126X_DIO1, 0, 0 );
+  if (SX126X_DEBUG_CS_PIN >= 0) { GpioInitOutput( SX126X_DEBUG_CS_PIN, 1 ); }
+
+  //  Note: We must swap MISO and MOSI to comply with the SPI Pin Definitions in BL602 / BL604 Reference Manual
+  int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);
+```
+
+TODO
+
+```c
+  //  Configure the SPI Port
+  rc = spi_init(
+    &spi_device,     //  SPI Device
+    SX126X_SPI_IDX,  //  SPI Port
+    0,               //  SPI Mode: 0 for Controller
+    //  TODO: Due to a quirk in BL602 SPI, we must set
+    //  SPI Polarity-Phase to 1 (CPOL=0, CPHA=1).
+    //  But actually Polarity-Phase for SX126X should be 0 (CPOL=0, CPHA=0). 
+    1,                    //  SPI Polarity-Phase
+    SX126X_SPI_BAUDRATE,  //  SPI Frequency
+    2,                    //  Transmit DMA Channel
+    3,                    //  Receive DMA Channel
+    SX126X_SPI_CLK_PIN,   //  SPI Clock Pin 
+    SX126X_SPI_CS_OLD,    //  Unused SPI Chip Select Pin
+    SX126X_SPI_SDO_PIN,   //  SPI Serial Data Out Pin (formerly MOSI)
+    SX126X_SPI_SDI_PIN    //  SPI Serial Data In Pin  (formerly MISO)
+  );
+  assert(rc == 0);
+}
+```
+
+TODO: This code comes from
+
+![Swap SPI Pins](https://lupyuen.github.io/images/lorawan2-swap.png)
+
+TODO: Sync with pine64
 
 # Run The Firmware
 
