@@ -442,6 +442,10 @@ _Since LoRa packets can be sniffed over the airwaves..._
 
 _How do we transmit data securely over LoRa?_
 
+That's why we join a __LoRaWAN Network__ when we transmit data.
+
+LoRaWAN is a layer on top of LoRa that adds these __security features__...
+
 TODO: Microchip ATECC608A, Injecting keys, one-time
 
 TODO: Glitching
