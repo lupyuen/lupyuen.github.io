@@ -476,23 +476,25 @@ We could use a __Cryptographic Co-Processor__ like this...
 
 -   [__Microchip ATECC608A__](https://www.microchip.com/en-us/product/ATECC608A)
 
-TODO: Injecting keys, one-time
+ATECC608A works with __The Things Network__, the public worldwide LoRaWAN Network...
 
--   ["ATECC608A Secure Element on The Things Network"](https://www.thethingsindustries.com/docs/devices/atecc608a/claim/)
+-   [ATECC608A Secure Element on The Things Network](https://www.thethingsindustries.com/docs/devices/atecc608a/claim/)
 
-TODO
+It also works with __Helium__, another global LoRaWAN Network...
 
 -   [ATECC608A Library for Helium](https://github.com/helium/ecc508)
 
-TODO
+There are new dev boards with ATECC608 onboard...
 
 -   [Portenta H7 Lite with ATECC608](https://www.cnx-software.com/2021/09/14/portenta-h7-lite-low-cost-arduino-pro-board/)
 
-TODO
+This article explains how a microcontroller might connect to a secure network (like LoRaWAN) with ATECC608A...
 
--   ["Internet of Things. A Confluence of Many Disciplines"](https://books.google.com.sg/books?id=3F7XDwAAQBAJ&pg=PA302&lpg=PA302&dq=ATECC608A&source=bl&ots=80tY23LkbA&sig=ACfU3U2Ngp_Rao6FG1hpS2ays4O-vNEkCg&hl=en&sa=X&ved=2ahUKEwi_19-4ovnyAhWXILcAHcpQDaY4MhDoAXoECBIQAw#v=onepage&q=ATECC608A&f=false)
+-   [Internet of Things: A Confluence of Many Disciplines](https://books.google.com.sg/books?id=3F7XDwAAQBAJ&pg=PA302&lpg=PA302&dq=ATECC608A&source=bl&ots=80tY23LkbA&sig=ACfU3U2Ngp_Rao6FG1hpS2ays4O-vNEkCg&hl=en&sa=X&ved=2ahUKEwi_19-4ovnyAhWXILcAHcpQDaY4MhDoAXoECBIQAw#v=onepage&q=ATECC608A&f=false)
 
-TODO
+_What's the catch?_
+
+TODO: Injecting keys, one-time
 
 -   ["Designing a Community-Driven Decentralized Storage Network for IoT Data"](https://matheo.uliege.be/bitstream/2268.2/11657/12/thesis.pdf)
 
