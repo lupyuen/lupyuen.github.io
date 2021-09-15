@@ -269,59 +269,79 @@ We'll talk to the __ChirpStack LoRaWAN Gateway__ that we have installed here...
 
 ## LoRaWAN Commands
 
-At the BL602 Command Prompt, enter these __LoRaWAN Commands__...
+At the BL604 Command Prompt, enter these __LoRaWAN Commands__...
 
-1.  TODO
+1.  First we start the __Background Task__ that will handle LoRa packets...
 
     ```bash
-    ##  Start LoRa background task
     create_task
     ```
 
-1.  TODO
+1.  Next we initialise the __LoRa SX1262 and LoRaWAN Drivers__...
 
     ```bash
-    ##  Init LoRaWAN driver
     init_lorawan
     ```
 
-1.  TODO
+1.  We set the __Device EUI__ (Extended Unique Identifier)...
 
     ```bash
-    ##  Device EUI: Copy from ChirpStack: Applications -> app -> Device EUI
     las_wr_dev_eui 0x4b:0xc1:0x5e:0xe7:0x37:0x7b:0xb1:0x5b
+    ```
 
-    ##  App EUI: Not needed for ChirpStack, set to default 0000000000000000
+    Change the above EUI to the one in our ChirpStack Gateway: `Applications → app → Device EUI`
+
+1.  Set the __App EUI__...
+
+    ```bash
     las_wr_app_eui 0x00:0x00:0x00:0x00:0x00:0x00:0x00:0x00
+    ```
 
-    ##  App Key: Copy from ChirpStack: Applications -> app -> Devices -> device_otaa_class_a -> Keys (OTAA) -> Application Key
+    This is not needed for ChirpStack, thus we set to default `0000000000000000`.
+
+1.  Set the __App Key__...
+
+    ```bash
     las_wr_app_key 0xaa:0xff:0xad:0x5c:0x7e:0x87:0xf6:0x4d:0xe3:0xf0:0x87:0x32:0xfc:0x1d:0xd2:0x5d
     ```
 
-1.  TODO
+    We get the App Key from ChirpStack at `Applications → app → Devices → device_otaa_class_a → Keys (OTAA) → Application Key`
+
+1.  We send a request to __join the LoRaWAN Network__...
 
     ```bash
-    ##  Join LoRaWAN network, try 3 times
     las_join 3
     ```
 
-1.  TODO
+    (Retry up to 3 times)
+
+1.  After the ChirpStack LoRaWAN Gateway has accepted our Join Request, we open a __LoRaWAN Application Port__...
 
     ```bash
-    ##  Open LoRaWAN port 2 (App Port)
     las_app_port open 2
     ```
 
-1.  TODO
+    (2 is the Application Port Number)
+
+1.  Finally we __send a LoRaWAN Data Packet__ containing 5 bytes of data (`0x00`) to LoRaWAN Port 2...
 
     ```bash
-    ##  Send data to LoRaWAN port 2, 5 bytes, unconfirmed (0)
     las_app_tx 2 5 0
     ```
 
-TODO
+    (0 means that this is an Unconfirmed Message, we're not expecting an acknowledgement from the LoRaWAN Gateway)
 
-[(See the output log)](https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan#output-log)
+We should see this in our PineDio Stack serial terminal...
+
+-   [__Output Log for LoRaWAN Firmware__](https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan#output-log)
+
+-   [__Watch the Demo Video on YouTube__](https://www.youtube.com/watch?v=BMMIIiZG6G0)
+
+Let's check our ChirpStack LoRaWAN Gateway!
+
+[(More about the LoRaWAN Commands)](https://lupyuen.github.io/articles/lorawan#lorawan-driver)
+
+![LoRaWAN Firmware](https://lupyuen.github.io/images/lorawan2-sendjoin.png)
 
 # LoRaWAN Gateway
 
