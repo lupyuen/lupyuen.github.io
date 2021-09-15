@@ -373,11 +373,17 @@ To see the __Join Network Request__ and the __Data Packet__ received by our Chir
 
 LoRaWAN tested OK on PineDio Stack!
 
+Let's take a peek inside our LoRa SX1262 Transceiver...
+
+![PineDio Stack with Logic Analyser](https://lupyuen.github.io/images/pinedio-logic.jpg)
+
 # Logic Analyser
 
-_How did we find out that the SPI Pins need to be swapped? And the tweaking for SPI Polarity-Phase?_
+_How did we find out that the SPI Pins need to be swapped?_
 
-TODO
+_And the tweaking for SPI Polarity-Phase?_
+
+A __Logic Analyser__ is super helpful for troubleshooting SPI and other interfacing problems on prototype hardware. (Pic above)
 
 PineDio Stack's __GPIO Connector__ (at right) exposes the SPI Pins: SDO _(formerly MOSI)_, SDI _(formerly MISO)_ and SCK
 
@@ -398,13 +404,13 @@ _What about the SX1262 Chip Select Pin: GPIO 15?_
 
 Unfortunately __GPIO 15 is not exposed__ on the GPIO Connector.
 
-But remember: Everything we do to GPIO 15, we __do the same to GPIO 5!__
+TODO: Everything we do to GPIO 15, we __do the same to GPIO 5!__
 
 __GPIO 5 is exposed__ on the GPIO Connector and it mirrors the GPIO High / Low state of GPIO 15.
 
 Thus we simply connect our Logic Analyser to __GPIO 5 as the Chip Select Pin!__ (Pic above)
 
-Let's look at the data collected by our Logic Analyser...
+The data collected by our Logic Analyser looks like this...
 
 ![LoRa SX1262 with Logic Analyser](https://lupyuen.github.io/images/lorawan2-logic.png)
 
