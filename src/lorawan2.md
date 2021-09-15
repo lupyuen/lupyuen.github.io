@@ -345,13 +345,33 @@ Let's check our ChirpStack LoRaWAN Gateway!
 
 # LoRaWAN Gateway
 
-TODO
+To see the __Join Network Request__ and the __Data Packet__ received by our ChirpStack LoRaWAN Gateway, we do this... 
 
-![](https://lupyuen.github.io/images/lorawan2-chirpstack.png)
+1.  In ChirpStack, click __`Applications → app → device_otaa_class_a → LoRaWAN Frames`__
 
-TODO4
+1.  Restart PineDio Stack.
 
-![](https://lupyuen.github.io/images/lorawan2-chirpstack2.png)
+    Run the LoRaWAN Commands from the previous section.
+
+1.  The __Join Network Request__ appears in ChirpStack, followed by the __Data Packet__...
+
+    ![Join Network Request and Data Packet in ChirpStack](https://lupyuen.github.io/images/lorawan2-chirpstack.png)
+
+1.  Click the __`Device Data`__ tab in ChirpStack.
+
+1.  On PineDio Stack, run this command to send a Data Packet...
+
+    ```bash
+    las_app_tx 2 5 0
+    ```
+
+1.  Our Data Packet appears in ChirpStack.
+
+    __`DecodedDataHex`__ shows 5 bytes of zero, which is what we sent...
+
+    ![Data Packet in ChirpStack](https://lupyuen.github.io/images/lorawan2-chirpstack2.png)
+
+LoRaWAN tested OK on PineDio Stack!
 
 # Logic Analyser
 
