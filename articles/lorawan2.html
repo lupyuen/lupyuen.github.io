@@ -74,7 +74,8 @@
 <li><a href="#lorawan-gateway">4 LoRaWAN Gateway</a><ul></ul></li>
 <li><a href="#logic-analyser">5 Logic Analyser</a><ul></ul></li>
 <li><a href="#spectrum-analyser">6 Spectrum Analyser</a><ul></ul></li>
-<li><a href="#security">7 Security</a><ul></ul></li>
+<li><a href="#security">7 Security</a><ul>
+<li><a href="#cryptographic-co-processor">7.1 Cryptographic Co-Processor</a><ul></ul></li></ul></li>
 <li><a href="#seeking-volunteers">8 Seeking Volunteers!</a><ul></ul></li>
 <li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
 <li><a href="#notes">10 Notes</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/lorawan2-title.jpg" alt="Tiny tasty treat… PineDio Stack BL604 RISC-V Board" /></p>
@@ -418,25 +419,36 @@ void SX126xIoInit( void ) {
 <ul>
 <li><a href="https://lupyuen.github.io/articles/wisgate#lorawan-security"><strong>“LoRaWAN Security”</strong></a></li>
 </ul>
-<p>TODO: Microchip ATECC608A, Injecting keys, one-time</p>
-<p>TODO: Glitching</p>
-<p><a href="https://limitedresults.com/2019/11/pwn-the-esp32-forever-flash-encryption-and-sec-boot-keys-extraction/">(See this)</a></p>
+<p><em>What’s the catch?</em></p>
+<p>Well the <strong>LoRaWAN Security Keys</strong> would need to be <strong>stored and accessed securely</strong> on PineDio Stack.</p>
+<p>We should never allow the Security Keys to be exposed.</p>
+<p><em>Doesn’t BL604 securely store Security Keys in its <a href="https://lupyuen.github.io/articles/flash#efuse-configuration">Internal EFuse Storage</a>?</em></p>
+<p>Yes. Though there have been past incidents (on other microcontrollers) where Security Keys in EFuse Storage have been compromised. <a href="https://limitedresults.com/2019/11/pwn-the-esp32-forever-flash-encryption-and-sec-boot-keys-extraction/">(See this)</a></p>
+<h2 id="cryptographic-co-processor" class="section-header"><a href="#cryptographic-co-processor">7.1 Cryptographic Co-Processor</a></h2>
+<p><em>Is there a better way to store and access Security Keys?</em></p>
+<p>We could use a <strong>Cryptographic Co-Processor</strong> like this…</p>
 <ul>
-<li>
-<p><a href="https://www.cnx-software.com/2021/09/14/portenta-h7-lite-low-cost-arduino-pro-board/">Portenta H7 Lite with ATECC608</a></p>
-</li>
-<li>
-<p><a href="https://github.com/helium/ecc508">ATECC608A Library for Helium</a></p>
-</li>
-<li>
-<p><a href="https://www.thethingsindustries.com/docs/devices/atecc608a/claim/">“ATECC608A Secure Element on The Things Network”</a></p>
-</li>
-<li>
-<p><a href="https://books.google.com.sg/books?id=3F7XDwAAQBAJ&amp;pg=PA302&amp;lpg=PA302&amp;dq=ATECC608A&amp;source=bl&amp;ots=80tY23LkbA&amp;sig=ACfU3U2Ngp_Rao6FG1hpS2ays4O-vNEkCg&amp;hl=en&amp;sa=X&amp;ved=2ahUKEwi_19-4ovnyAhWXILcAHcpQDaY4MhDoAXoECBIQAw#v=onepage&amp;q=ATECC608A&amp;f=false">“Internet of Things. A Confluence of Many Disciplines”</a></p>
-</li>
-<li>
-<p><a href="https://matheo.uliege.be/bitstream/2268.2/11657/12/thesis.pdf">“Designing a Community-Driven Decentralized Storage Network for IoT Data”</a></p>
-</li>
+<li><a href="https://www.microchip.com/en-us/product/ATECC608A"><strong>Microchip ATECC608A</strong></a></li>
+</ul>
+<p>TODO: Injecting keys, one-time</p>
+<ul>
+<li><a href="https://www.thethingsindustries.com/docs/devices/atecc608a/claim/">“ATECC608A Secure Element on The Things Network”</a></li>
+</ul>
+<p>TODO</p>
+<ul>
+<li><a href="https://github.com/helium/ecc508">ATECC608A Library for Helium</a></li>
+</ul>
+<p>TODO</p>
+<ul>
+<li><a href="https://www.cnx-software.com/2021/09/14/portenta-h7-lite-low-cost-arduino-pro-board/">Portenta H7 Lite with ATECC608</a></li>
+</ul>
+<p>TODO</p>
+<ul>
+<li><a href="https://books.google.com.sg/books?id=3F7XDwAAQBAJ&amp;pg=PA302&amp;lpg=PA302&amp;dq=ATECC608A&amp;source=bl&amp;ots=80tY23LkbA&amp;sig=ACfU3U2Ngp_Rao6FG1hpS2ays4O-vNEkCg&amp;hl=en&amp;sa=X&amp;ved=2ahUKEwi_19-4ovnyAhWXILcAHcpQDaY4MhDoAXoECBIQAw#v=onepage&amp;q=ATECC608A&amp;f=false">“Internet of Things. A Confluence of Many Disciplines”</a></li>
+</ul>
+<p>TODO</p>
+<ul>
+<li><a href="https://matheo.uliege.be/bitstream/2268.2/11657/12/thesis.pdf">“Designing a Community-Driven Decentralized Storage Network for IoT Data”</a></li>
 </ul>
 <p>TODO: WiFi lora bt gateway, Very basic functionality</p>
 <p>TODO: Xmpp, Matrix, Or custom LoRaWAN</p>
