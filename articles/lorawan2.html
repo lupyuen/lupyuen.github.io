@@ -363,9 +363,12 @@ void SX126xIoInit( void ) {
 </li>
 </ol>
 <p>LoRaWAN tested OK on PineDio Stack!</p>
+<p>Let’s take a peek inside our LoRa SX1262 Transceiver…</p>
+<p><img src="https://lupyuen.github.io/images/pinedio-logic.jpg" alt="PineDio Stack with Logic Analyser" /></p>
 <h1 id="logic-analyser" class="section-header"><a href="#logic-analyser">5 Logic Analyser</a></h1>
-<p><em>How did we find out that the SPI Pins need to be swapped? And the tweaking for SPI Polarity-Phase?</em></p>
-<p>TODO</p>
+<p><em>How did we find out that the SPI Pins need to be swapped?</em></p>
+<p><em>And the tweaking for SPI Polarity-Phase?</em></p>
+<p>A <strong>Logic Analyser</strong> is super helpful for troubleshooting SPI and other interfacing problems on prototype hardware. (Pic above)</p>
 <p>PineDio Stack’s <strong>GPIO Connector</strong> (at right) exposes the SPI Pins: SDO <em>(formerly MOSI)</em>, SDI <em>(formerly MISO)</em> and SCK</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-gpio2.jpg" alt="PineDio Stack GPIO Connector" /></p>
 <p>We <strong>connect our Logic Analyser</strong> to the GPIO Connector like so…</p>
@@ -378,10 +381,10 @@ void SX126xIoInit( void ) {
 <p><img src="https://lupyuen.github.io/images/pinedio-logic2.jpg" alt="Logic Analyser connected to PineDio Stack" /></p>
 <p><em>What about the SX1262 Chip Select Pin: GPIO 15?</em></p>
 <p>Unfortunately <strong>GPIO 15 is not exposed</strong> on the GPIO Connector.</p>
-<p>But remember: Everything we do to GPIO 15, we <strong>do the same to GPIO 5!</strong></p>
+<p>TODO: Everything we do to GPIO 15, we <strong>do the same to GPIO 5!</strong></p>
 <p><strong>GPIO 5 is exposed</strong> on the GPIO Connector and it mirrors the GPIO High / Low state of GPIO 15.</p>
 <p>Thus we simply connect our Logic Analyser to <strong>GPIO 5 as the Chip Select Pin!</strong> (Pic above)</p>
-<p>Let’s look at the data collected by our Logic Analyser…</p>
+<p>The data collected by our Logic Analyser looks like this…</p>
 <p><img src="https://lupyuen.github.io/images/lorawan2-logic.png" alt="LoRa SX1262 with Logic Analyser" /></p>
 <h1 id="spectrum-analyser" class="section-header"><a href="#spectrum-analyser">6 Spectrum Analyser</a></h1>
 <p>We’ve used a Logic Analyser to sniff the data inside our LoRa Transceiver. Now we use a <strong>Spectrum Analyser</strong> to sniff the data in the airwaves!</p>
