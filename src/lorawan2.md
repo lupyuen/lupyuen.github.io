@@ -416,31 +416,39 @@ Our Logic Analyser shows that BL604 is indeed talking correctly to SX1262 over S
 
 We've used a Logic Analyser to sniff the data inside our LoRa Transceiver. Now we use a __Spectrum Analyser__ to sniff the data in the airwaves!
 
-TODO
+Our Spectrum Analyser is the __Airspy R2 Software Defined Radio__, which will sniff a range of radio frequences...
 
 ![Airspy R2 SDR with PineDio Stack](https://lupyuen.github.io/images/lorawan2-airspy.jpg)
 
-TODO
+When we analyse the radio spectrum (with __Cubic SDR__), we see this healthy __radio signal__ produced by our LoRa Transceiver...
 
 ![LoRa SX1262 visualised with SDR](https://lupyuen.github.io/images/pinedio-chirp2.jpg)
 
-TODO
+This is known as a __LoRa Chirp__.
+
+LoRa Packets have this unique shape so that the packets can be __transmitted over long distances__ in spite of radio interference.
+
+[(Up to 5 kilometres in some urban areas!)](https://lora-developers.semtech.com/documentation/tech-papers-and-guides/lora-and-lorawan)
+
+More about LoRa and Software Defined Radio here...
 
 -   [__"Visualise LoRa with Software Defined Radio"__](https://lupyuen.github.io/articles/lora#visualise-lora-with-software-defined-radio)
 
+(The "fireflies" look odd though. Are we transmitting with too much power?)
+
 # Security
 
-TODO: Injecting keys, one-time
+_Since LoRa packets can be sniffed over the airwaves..._
+
+_How do we transmit data securely over LoRa?_
+
+TODO: Microchip ATECC608A, Injecting keys, one-time
 
 TODO: Glitching
 
-https://limitedresults.com/2019/11/pwn-the-esp32-forever-flash-encryption-and-sec-boot-keys-extraction/
+[(See this)](https://limitedresults.com/2019/11/pwn-the-esp32-forever-flash-encryption-and-sec-boot-keys-extraction/)
 
-TODO: WiFi lora bt gateway, Very basic functionality
-
-TODO: Xmpp, Matrix, Or custom LoRaWAN
-
--   [Arduino Portenta H7 Lite with ATECC608 ](https://www.cnx-software.com/2021/09/14/portenta-h7-lite-low-cost-arduino-pro-board/)
+-   [Portenta H7 Lite with ATECC608](https://www.cnx-software.com/2021/09/14/portenta-h7-lite-low-cost-arduino-pro-board/)
 
 -   [ATECC608A Library for Helium](https://github.com/helium/ecc508)
 
@@ -449,6 +457,10 @@ TODO: Xmpp, Matrix, Or custom LoRaWAN
 -   ["Internet of Things. A Confluence of Many Disciplines"](https://books.google.com.sg/books?id=3F7XDwAAQBAJ&pg=PA302&lpg=PA302&dq=ATECC608A&source=bl&ots=80tY23LkbA&sig=ACfU3U2Ngp_Rao6FG1hpS2ays4O-vNEkCg&hl=en&sa=X&ved=2ahUKEwi_19-4ovnyAhWXILcAHcpQDaY4MhDoAXoECBIQAw#v=onepage&q=ATECC608A&f=false)
 
 -   ["Designing a Community-Driven Decentralized Storage Network for IoT Data"](https://matheo.uliege.be/bitstream/2268.2/11657/12/thesis.pdf)
+
+TODO: WiFi lora bt gateway, Very basic functionality
+
+TODO: Xmpp, Matrix, Or custom LoRaWAN
 
 # Seeking Volunteers!
 
