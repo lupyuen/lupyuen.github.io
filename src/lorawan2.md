@@ -458,19 +458,41 @@ More about LoRaWAN Security here...
 
 -   [__"LoRaWAN Security"__](https://lupyuen.github.io/articles/wisgate#lorawan-security)
 
-TODO: Microchip ATECC608A, Injecting keys, one-time
+_What's the catch?_
 
-TODO: Glitching
+Well the __LoRaWAN Security Keys__ would need to be __stored and accessed securely__ on PineDio Stack.
 
-[(See this)](https://limitedresults.com/2019/11/pwn-the-esp32-forever-flash-encryption-and-sec-boot-keys-extraction/)
+We should never allow the Security Keys to be exposed.
 
--   [Portenta H7 Lite with ATECC608](https://www.cnx-software.com/2021/09/14/portenta-h7-lite-low-cost-arduino-pro-board/)
+_Doesn't BL604 securely store Security Keys in its [Internal EFuse Storage](https://lupyuen.github.io/articles/flash#efuse-configuration)?_
 
--   [ATECC608A Library for Helium](https://github.com/helium/ecc508)
+Yes. Though there have been past incidents (on other microcontrollers) where Security Keys in EFuse Storage have been compromised. [(See this)](https://limitedresults.com/2019/11/pwn-the-esp32-forever-flash-encryption-and-sec-boot-keys-extraction/)
+
+## Cryptographic Co-Processor
+
+_Is there a better way to store and access Security Keys?_
+
+We could use a __Cryptographic Co-Processor__ like this...
+
+-   [__Microchip ATECC608A__](https://www.microchip.com/en-us/product/ATECC608A)
+
+TODO: Injecting keys, one-time
 
 -   ["ATECC608A Secure Element on The Things Network"](https://www.thethingsindustries.com/docs/devices/atecc608a/claim/)
 
+TODO
+
+-   [ATECC608A Library for Helium](https://github.com/helium/ecc508)
+
+TODO
+
+-   [Portenta H7 Lite with ATECC608](https://www.cnx-software.com/2021/09/14/portenta-h7-lite-low-cost-arduino-pro-board/)
+
+TODO
+
 -   ["Internet of Things. A Confluence of Many Disciplines"](https://books.google.com.sg/books?id=3F7XDwAAQBAJ&pg=PA302&lpg=PA302&dq=ATECC608A&source=bl&ots=80tY23LkbA&sig=ACfU3U2Ngp_Rao6FG1hpS2ays4O-vNEkCg&hl=en&sa=X&ved=2ahUKEwi_19-4ovnyAhWXILcAHcpQDaY4MhDoAXoECBIQAw#v=onepage&q=ATECC608A&f=false)
+
+TODO
 
 -   ["Designing a Community-Driven Decentralized Storage Network for IoT Data"](https://matheo.uliege.be/bitstream/2268.2/11657/12/thesis.pdf)
 
