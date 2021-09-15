@@ -387,23 +387,27 @@ void SX126xIoInit( void ) {
 <p><img src="https://lupyuen.github.io/images/lorawan2-logic.png" alt="LoRa SX1262 with Logic Analyser" /></p>
 <h1 id="spectrum-analyser" class="section-header"><a href="#spectrum-analyser">6 Spectrum Analyser</a></h1>
 <p>We’ve used a Logic Analyser to sniff the data inside our LoRa Transceiver. Now we use a <strong>Spectrum Analyser</strong> to sniff the data in the airwaves!</p>
-<p>TODO</p>
+<p>Our Spectrum Analyser is the <strong>Airspy R2 Software Defined Radio</strong>, which will sniff a range of radio frequences…</p>
 <p><img src="https://lupyuen.github.io/images/lorawan2-airspy.jpg" alt="Airspy R2 SDR with PineDio Stack" /></p>
-<p>TODO</p>
+<p>When we analyse the radio spectrum (with <strong>Cubic SDR</strong>), we see this healthy <strong>radio signal</strong> produced by our LoRa Transceiver…</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-chirp2.jpg" alt="LoRa SX1262 visualised with SDR" /></p>
-<p>TODO</p>
+<p>This is known as a <strong>LoRa Chirp</strong>.</p>
+<p>LoRa Packets have this unique shape so that the packets can be <strong>transmitted over long distances</strong> in spite of radio interference.</p>
+<p><a href="https://lora-developers.semtech.com/documentation/tech-papers-and-guides/lora-and-lorawan">(Up to 5 kilometres in some urban areas!)</a></p>
+<p>More about LoRa and Software Defined Radio here…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lora#visualise-lora-with-software-defined-radio"><strong>“Visualise LoRa with Software Defined Radio”</strong></a></li>
 </ul>
+<p>(The “fireflies” look odd though. Are we transmitting with too much power?)</p>
 <h1 id="security" class="section-header"><a href="#security">7 Security</a></h1>
-<p>TODO: Injecting keys, one-time</p>
+<p><em>Since LoRa packets can be sniffed over the airwaves…</em></p>
+<p><em>How do we transmit data securely over LoRa?</em></p>
+<p>TODO: Microchip ATECC608A, Injecting keys, one-time</p>
 <p>TODO: Glitching</p>
-<p>https://limitedresults.com/2019/11/pwn-the-esp32-forever-flash-encryption-and-sec-boot-keys-extraction/</p>
-<p>TODO: WiFi lora bt gateway, Very basic functionality</p>
-<p>TODO: Xmpp, Matrix, Or custom LoRaWAN</p>
+<p><a href="https://limitedresults.com/2019/11/pwn-the-esp32-forever-flash-encryption-and-sec-boot-keys-extraction/">(See this)</a></p>
 <ul>
 <li>
-<p><a href="https://www.cnx-software.com/2021/09/14/portenta-h7-lite-low-cost-arduino-pro-board/">Arduino Portenta H7 Lite with ATECC608 </a></p>
+<p><a href="https://www.cnx-software.com/2021/09/14/portenta-h7-lite-low-cost-arduino-pro-board/">Portenta H7 Lite with ATECC608</a></p>
 </li>
 <li>
 <p><a href="https://github.com/helium/ecc508">ATECC608A Library for Helium</a></p>
@@ -418,6 +422,8 @@ void SX126xIoInit( void ) {
 <p><a href="https://matheo.uliege.be/bitstream/2268.2/11657/12/thesis.pdf">“Designing a Community-Driven Decentralized Storage Network for IoT Data”</a></p>
 </li>
 </ul>
+<p>TODO: WiFi lora bt gateway, Very basic functionality</p>
+<p>TODO: Xmpp, Matrix, Or custom LoRaWAN</p>
 <h1 id="seeking-volunteers" class="section-header"><a href="#seeking-volunteers">8 Seeking Volunteers!</a></h1>
 <p>I’m really excited that PineDio Stack BL604 will be available soon!</p>
 <p>But in the meantime, JF and I have <strong>plenty to test on PineDio Stack</strong>…</p>
