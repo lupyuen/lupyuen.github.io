@@ -152,7 +152,7 @@
 #define SX126X_DEBUG_CS_PIN      5  //  Debug Chip Select Pin, mirrors the High / Low State of SX1262 Chip Select Pin. Set to -1 if not needed.
 #define SX126X_TCXO_WAKEUP_TIME  5  //  Time required for the TCXO to wakeup (milliseconds)
 #define SX126X_SPI_BAUDRATE  (200 * 1000)  //  SPI Frequency (200 kHz)</pre></div>
-<p>(<code>SX126X_DEBUG_CS_PIN</code> should be set to <code>-1</code> if we’re not debugging. More about this later)</p>
+<p>(<code>SX126X_DEBUG_CS_PIN</code> should be set to <code>-1</code> if we’re not debugging. More about the Debug CS Pin later)</p>
 <p>We define the <strong>Chip Select Pins</strong> for SPI Flash and ST7789 Display as well: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/pinedio_lorawan/pinedio_lorawan/demo.c#L101-L105">pinedio_lorawan/demo.c</a></p>
 <div class="example-wrap"><pre class="language-c">/// GPIO for SPI Flash Chip Select Pin. We must set this to High to deselect SPI Flash.
 #define FLASH_CS_PIN     14
@@ -369,7 +369,7 @@ void SX126xIoInit( void ) {
 <p><em>How did we find out that the SPI Pins need to be swapped?</em></p>
 <p><em>And the tweaking for SPI Polarity-Phase?</em></p>
 <p>A <strong>Logic Analyser</strong> is super helpful for troubleshooting SPI and other interfacing problems on prototype hardware. (Pic above)</p>
-<p>PineDio Stack’s <strong>GPIO Connector</strong> (at right) exposes the SPI Pins: SDO <em>(formerly MOSI)</em>, SDI <em>(formerly MISO)</em> and SCK</p>
+<p>PineDio Stack’s <strong>GPIO Connector</strong> exposes the SPI Pins: SDO <em>(formerly MOSI)</em>, SDI <em>(formerly MISO)</em> and SCK…</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-gpio2.jpg" alt="PineDio Stack GPIO Connector" /></p>
 <p>We <strong>connect our Logic Analyser</strong> to the GPIO Connector like so…</p>
 <table><thead><tr><th align="center">GPIO Number</th><th align="left">SPI Pin</th><th align="center">Connector Pin</th></tr></thead><tbody>
@@ -381,10 +381,9 @@ void SX126xIoInit( void ) {
 <p><img src="https://lupyuen.github.io/images/pinedio-logic2.jpg" alt="Logic Analyser connected to PineDio Stack" /></p>
 <p><em>What about the SX1262 Chip Select Pin: GPIO 15?</em></p>
 <p>Unfortunately <strong>GPIO 15 is not exposed</strong> on the GPIO Connector.</p>
-<p>TODO: Everything we do to GPIO 15, we <strong>do the same to GPIO 5!</strong></p>
-<p><strong>GPIO 5 is exposed</strong> on the GPIO Connector and it mirrors the GPIO High / Low state of GPIO 15.</p>
-<p>Thus we simply connect our Logic Analyser to <strong>GPIO 5 as the Chip Select Pin!</strong> (Pic above)</p>
-<p>The data collected by our Logic Analyser looks like this…</p>
+<p>Hence we designate GPIO 5 as the <strong>Debug CS Pin</strong> that mirrors the GPIO High / Low state of GPIO 15. <a href="https://github.com/lupyuen/bl_iot_sdk/commit/91f7e751594066d4b97fc5d351c46e74ccded00e#diff-f571fdf8eada0589c0db580e990078fa53eeaf373b8eb7bd738363f16f9954ad">(Here’s how)</a></p>
+<p>Then we simply connect our Logic Analyser to <strong>GPIO 5 as the Chip Select Pin.</strong> (Pic above)</p>
+<p>Our Logic Analyser shows that BL604 is indeed talking correctly to SX1262 over SPI…</p>
 <p><img src="https://lupyuen.github.io/images/lorawan2-logic.png" alt="LoRa SX1262 with Logic Analyser" /></p>
 <h1 id="spectrum-analyser" class="section-header"><a href="#spectrum-analyser">6 Spectrum Analyser</a></h1>
 <p>We’ve used a Logic Analyser to sniff the data inside our LoRa Transceiver. Now we use a <strong>Spectrum Analyser</strong> to sniff the data in the airwaves!</p>
