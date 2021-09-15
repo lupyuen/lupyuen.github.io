@@ -254,7 +254,8 @@ target/wasm32-unknown-emscripten/debug/libbl602_simulator.a</pre></div>
 <p>Which we shall link with Emscripten’s WebAssembly Runtime.</p>
 <p><em>Why did “<code>cargo build</code>” emit Static Libraries? Instead of the default Rust Libraries?</em></p>
 <p>Because we specified <strong><code>staticlib</code></strong> in <code>Cargo.toml</code> for the <a href="https://github.com/lupyuen/bl602-simulator/blob/main/sdk_app_rust_gpio/rust/Cargo.toml">Rust Firmware</a> and <a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/Cargo.toml">Rust Simulator</a>…</p>
-<div class="example-wrap"><pre class="language-text">[lib]
+<div class="example-wrap"><pre class="language-text"># Build this module as a Static Library.
+[lib]
 name       = &quot;app&quot;          # Output will be named `libapp.a`
 crate-type = [&quot;staticlib&quot;]  # And will be a Static Library</pre></div>
 <p><strong>Rust Libraries won’t link</strong> with Emscripten’s WebAssembly Runtime. </p>

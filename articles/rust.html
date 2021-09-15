@@ -351,7 +351,9 @@ void blinky(char *buf, int len, int argc, char **argv) {
 <span class="kw">type</span> <span class="ident">String</span> <span class="op">=</span> <span class="ident">heapless::String</span>::<span class="op">&lt;</span><span class="ident">heapless::consts::U64</span><span class="op">&gt;</span>;</pre></div>
 <p>For safety, we limit our strings to <strong>64 characters</strong>.</p>
 <p><code>String</code> uses the <strong>heapless library</strong>, as specified in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/Cargo.toml#L9-L11"><code>rust/Cargo.toml</code></a>…</p>
-<div class="example-wrap"><pre class="language-text">[dependencies]
+<div class="example-wrap"><pre class="language-text"># External Rust libraries used by this module.  See crates.io.
+[dependencies]
+# `static` friendly data structures that don&#39;t require dynamic memory allocation: https://crates.io/crates/heapless
 heapless = &quot;0.6.1&quot;</pre></div>
 <p><em>We’re copying the string just to pad it with null. Not so efficient no?</em></p>
 <p>In future we might switch to <code>cstr</code> and eliminate the copying of strings. <a href="https://crates.io/crates/cstr">(See this)</a></p>
