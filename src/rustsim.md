@@ -220,7 +220,7 @@ _Why did "`cargo build`" emit Static Libraries? Instead of the default Rust Libr
 Because we specified __`staticlib`__ in `Cargo.toml` for the [Rust Firmware](https://github.com/lupyuen/bl602-simulator/blob/main/sdk_app_rust_gpio/rust/Cargo.toml) and [Rust Simulator](https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/Cargo.toml)...
 
 ```text
-# Build this module as a Static Library.
+## Build this module as a Static Library.
 [lib]
 name       = "app"          # Output will be named `libapp.a`
 crate-type = ["staticlib"]  # And will be a Static Library

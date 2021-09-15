@@ -330,9 +330,9 @@ For safety, we limit our strings to __64 characters__.
 `String` uses the __heapless library__, as specified in [`rust/Cargo.toml`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/Cargo.toml#L9-L11)...
 
 ```text
-# External Rust libraries used by this module.  See crates.io.
+## External Rust libraries used by this module.  See crates.io.
 [dependencies]
-# `static` friendly data structures that don't require dynamic memory allocation: https://crates.io/crates/heapless
+## `static` friendly data structures that don't require dynamic memory allocation: https://crates.io/crates/heapless
 heapless = "0.6.1"
 ```
 

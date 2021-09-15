@@ -809,7 +809,7 @@ Or follow these steps to build the Rust Firmware `sdk_app_rust_adc.bin`...
 1.  Download the __source code__ for the BL602 Rust Firmware...
 
     ```bash
-    # Download the adc branch of lupyuen's bl_iot_sdk
+    ## Download the adc branch of lupyuen's bl_iot_sdk
     git clone --recursive --branch adc https://github.com/lupyuen/bl_iot_sdk
     cd bl_iot_sdk/customer_app/sdk_app_rust_adc
     ```
@@ -821,10 +821,10 @@ Or follow these steps to build the Rust Firmware `sdk_app_rust_adc.bin`...
 1.  In `run.sh`, set the following variables to the downloaded folders for `blflash` and `xpack-riscv-none-embed-gcc`...
 
     ```bash
-    #  Where blflash is located
+    ##  Where blflash is located
     export BLFLASH_PATH=$PWD/../../../blflash
 
-    #  Where GCC is located
+    ##  Where GCC is located
     export GCC_PATH=$PWD/../../../xpack-riscv-none-embed-gcc
     ```
 
@@ -1293,7 +1293,7 @@ _How do we add the BL602 Rust Wrapper to our Rust Project?_
 Just add __`bl602-sdk`__ to the Rust project configuration: [`rust/Cargo.toml`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/Cargo.toml#L9-L11)
 
 ```text
-# External Rust libraries used by this module.  See crates.io.
+## External Rust libraries used by this module.  See crates.io.
 [dependencies]
 bl602-sdk = "0.0.6"  # Rust Wrapper for BL602 IoT SDK: https://crates.io/crates/bl602-sdk
 ```
@@ -1617,19 +1617,19 @@ Two tools were used to generate the __Rust Wrapper for BL602 IoT SDK__...
 Here are the steps for __generating the Rust Wrapper__...
 
 ```bash
-#  Install bindgen and clang: https://rust-lang.github.io/rust-bindgen/requirements.html 
+##  Install bindgen and clang: https://rust-lang.github.io/rust-bindgen/requirements.html 
 cargo install bindgen
 sudo apt install llvm-dev libclang-dev clang
 
-#  Download the source code
+##  Download the source code
 git clone --recursive https://github.com/lupyuen/bl602-rust-wrapper
 git clone --recursive https://github.com/lupyuen/bl_iot_sdk
 
-#  Generate the Rust Bindings for BL602 IoT SDK
+##  Generate the Rust Bindings for BL602 IoT SDK
 cd bl602-rust-wrapper
 scripts/gen-bindings.sh
 
-#  Build the docs and the test project
+##  Build the docs and the test project
 scripts/build.sh
 ```
 

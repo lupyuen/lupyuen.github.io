@@ -1979,7 +1979,7 @@ And the differences are...
 
     ```c
     /* Size of the memory used by `lv_mem_alloc` in bytes (>= 2kB)*/
-    #  define LV_MEM_SIZE    (4U * 1024U)
+    #define LV_MEM_SIZE    (4U * 1024U)
     //  Previously (32U * 1024U)
     ```
 
@@ -2041,7 +2041,7 @@ And the differences are...
     * LV_LOG_LEVEL_ERROR       Only critical issue, when the system may fail
     * LV_LOG_LEVEL_NONE        Do not log anything
     */
-    #  define LV_LOG_LEVEL    LV_LOG_LEVEL_TRACE
+    #define LV_LOG_LEVEL    LV_LOG_LEVEL_TRACE
     //  Previously LV_LOG_LEVEL_WARN
     ```
 
@@ -2052,7 +2052,7 @@ And the differences are...
     ```c
     /* 1: Print the log with 'printf';
     * 0: user need to register a callback with `lv_log_register_print_cb`*/
-    #  define LV_LOG_PRINTF   1
+    #define LV_LOG_PRINTF   1
     //  Previously 0
     ```
 
@@ -2121,6 +2121,6 @@ And the differences are...
     * 1: Some extra precision
     * 2: Best precision
     */
-    #  define LV_LINEMETER_PRECISE    0
+    #define LV_LINEMETER_PRECISE    0
     //  Previously 1
     ```
