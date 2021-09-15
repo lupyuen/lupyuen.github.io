@@ -105,7 +105,7 @@ To test the LoRa SX1262 Transceiver, we define the __GPIO Pin Numbers__ like so:
 #define SX126X_SPI_BAUDRATE  (200 * 1000)  //  SPI Frequency (200 kHz)
 ```
 
-(`SX126X_DEBUG_CS_PIN` should be set to `-1` if we're not debugging. More about this later)
+(`SX126X_DEBUG_CS_PIN` should be set to `-1` if we're not debugging. More about the Debug CS Pin later)
 
 We define the __Chip Select Pins__ for SPI Flash and ST7789 Display as well: [pinedio_lorawan/demo.c](https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/pinedio_lorawan/pinedio_lorawan/demo.c#L101-L105)
 
@@ -385,7 +385,7 @@ _And the tweaking for SPI Polarity-Phase?_
 
 A __Logic Analyser__ is super helpful for troubleshooting SPI and other interfacing problems on prototype hardware. (Pic above)
 
-PineDio Stack's __GPIO Connector__ (at right) exposes the SPI Pins: SDO _(formerly MOSI)_, SDI _(formerly MISO)_ and SCK
+PineDio Stack's __GPIO Connector__ exposes the SPI Pins: SDO _(formerly MOSI)_, SDI _(formerly MISO)_ and SCK...
 
 ![PineDio Stack GPIO Connector](https://lupyuen.github.io/images/pinedio-gpio2.jpg)
 
@@ -404,13 +404,11 @@ _What about the SX1262 Chip Select Pin: GPIO 15?_
 
 Unfortunately __GPIO 15 is not exposed__ on the GPIO Connector.
 
-TODO: Everything we do to GPIO 15, we __do the same to GPIO 5!__
+Hence we designate GPIO 5 as the __Debug CS Pin__ that mirrors the GPIO High / Low state of GPIO 15. [(Here's how)](https://github.com/lupyuen/bl_iot_sdk/commit/91f7e751594066d4b97fc5d351c46e74ccded00e#diff-f571fdf8eada0589c0db580e990078fa53eeaf373b8eb7bd738363f16f9954ad)
 
-__GPIO 5 is exposed__ on the GPIO Connector and it mirrors the GPIO High / Low state of GPIO 15.
+Then we simply connect our Logic Analyser to __GPIO 5 as the Chip Select Pin.__ (Pic above)
 
-Thus we simply connect our Logic Analyser to __GPIO 5 as the Chip Select Pin!__ (Pic above)
-
-The data collected by our Logic Analyser looks like this...
+Our Logic Analyser shows that BL604 is indeed talking correctly to SX1262 over SPI...
 
 ![LoRa SX1262 with Logic Analyser](https://lupyuen.github.io/images/lorawan2-logic.png)
 
