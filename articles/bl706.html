@@ -253,8 +253,10 @@
 <li><a href="https://github.com/bouffalolab/bl_mcu_sdk/tree/master/examples/lvgl"><strong>LVGL Demo Firmware for BL706</strong></a></li>
 </ul>
 <p>According to the <a href="https://github.com/bouffalolab/bl_mcu_sdk/tree/master/examples/lvgl">instructions for the LVGL Demo Firmware</a>, we build the firmware like so…</p>
-<div class="example-wrap"><pre class="language-bash">cd /mnt/c/bl_mcu_sdk
+<div class="example-wrap"><pre class="language-bash"># In WSL bash: Go to the Windows directory for MCU SDK
+cd /mnt/c/bl_mcu_sdk
 
+# Build the LVGL Firmware
 make APP=lvgl \
      BOARD=bl706_avb \
      SUPPORT_LVGL=y</pre></div>

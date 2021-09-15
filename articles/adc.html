@@ -283,38 +283,38 @@ void read_adc(char *buf, int len, int argc, char **argv) {
 <li>
 <p>Enter the <code>read_adc</code> command a few times to get the <strong>average values</strong> of the last 1,000 ADC Samples…</p>
 <div class="example-wrap"><pre class="language-text">read_adc
-Average: 1416
+  Average: 1416
 
 read_adc
-Average: 1416
+  Average: 1416
 
 read_adc
-Average: 1416</pre></div></li>
+  Average: 1416</pre></div></li>
 <li>
 <p>Now place the BL602 Board (with LED) <strong>under sunlight</strong>.</p>
 </li>
 <li>
 <p>Enter the <code>read_adc</code> command a few times…</p>
 <div class="example-wrap"><pre class="language-text">read_adc
-Average: 1408
+  Average: 1408
 
 read_adc
-Average: 1408
+  Average: 1408
 
 read_adc
-Average: 1408</pre></div>
+  Average: 1408</pre></div>
 <p>Note that the average values have <strong>dropped from 1416 to 1408.</strong></p>
 </li>
 <li>
 <p>Place the BL602 Board (with LED) <strong>back in the dark</strong> and check the average values…</p>
 <div class="example-wrap"><pre class="language-text">read_adc
-Average: 1417
+  Average: 1417
 
 read_adc
-Average: 1416
+  Average: 1416
 
 read_adc
-Average: 1416</pre></div>
+  Average: 1416</pre></div>
 <p>The average values have <strong>increased from 1408 to 1416.</strong></p>
 <p>Yep our improvised BL602 Light Sensor works!</p>
 </li>
@@ -378,13 +378,15 @@ static int set_adc_gain(uint32_t gain1, uint32_t gain2) {
 </li>
 <li>
 <p><strong>Edit the <code>Makefile</code></strong> in the new folder and set the Project Name: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/Makefile"><code>sdk_app_rust_adc/Makefile</code></a></p>
-<div class="example-wrap"><pre class="language-text">PROJECT_NAME := sdk_app_rust_adc</pre></div></li>
+<div class="example-wrap"><pre class="language-text">#  Set the project name
+PROJECT_NAME := sdk_app_rust_adc</pre></div></li>
 <li>
 <p>Set the <strong>GCC Compiler Options</strong> (if any) in the Makefile <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/sdk_app_rust_adc/bouffalo.mk"><code>sdk_app_rust_adc / sdk_app_rust_adc / bouffalo.mk</code></a></p>
 </li>
 <li>
 <p>Edit the <strong><code>run.sh</code> script</strong> in the new folder and set the Project Name: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/run.sh"><code>sdk_app_rust_adc/run.sh</code></a></p>
-<div class="example-wrap"><pre class="language-bash">export APP_NAME=sdk_app_rust_adc</pre></div></li>
+<div class="example-wrap"><pre class="language-bash">#  Set the project name
+export APP_NAME=sdk_app_rust_adc</pre></div></li>
 <li>
 <p>Replace the <strong>Rust Source Code</strong> in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs"><code>sdk_app_rust_adc/ rust/src/lib.rs</code></a> </p>
 </li>
@@ -838,11 +840,14 @@ Success</pre></div>
 <p><strong>For Linux and Windows:</strong></p>
 <p>Copy <code>build_out/sdk_app_rust_adc.bin</code> to the <code>blflash</code> folder.</p>
 <p>Then enter this at the command prompt…</p>
-<div class="example-wrap"><pre class="language-bash">cd blflash
+<div class="example-wrap"><pre class="language-bash"># TODO: Change this to the downloaded blflash folder
+cd blflash
 
+# For Linux:
 sudo cargo run flash sdk_app_lora.bin \
     --port /dev/ttyUSB0
 
+# For Windows: Change COM5 to the BL602 Serial Port
 cargo run flash sdk_app_lora.bin --port COM5</pre></div></li>
 </ol>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">More details on flashing firmware</a></p>
@@ -896,7 +901,7 @@ cargo run flash sdk_app_lora.bin --port COM5</pre></div></li>
 <li>
 <p>In the serial console, enter the <code>init_adc</code> command to <strong>initialise the ADC Channel</strong>…</p>
 <div class="example-wrap"><pre class="language-text">init_adc
-[Rust] Init ADC</pre></div>
+  [Rust] Init ADC</pre></div>
 <p>(We’ve seen this function earlier)</p>
 </li>
 <li>
@@ -905,32 +910,32 @@ cargo run flash sdk_app_lora.bin --port COM5</pre></div></li>
 <li>
 <p>Enter the <code>read_adc</code> command a few times to get the <strong>average values</strong> of the last 1,000 ADC Samples…</p>
 <div class="example-wrap"><pre class="language-text">read_adc
-[Rust] Average: 1417
+  [Rust] Average: 1417
 read_adc
-[Rust] Average: 1417
+  [Rust] Average: 1417
 read_adc
-[Rust] Average: 1417</pre></div></li>
+  [Rust] Average: 1417</pre></div></li>
 <li>
 <p>Now place the BL602 Board (with LED) <strong>under sunlight</strong>.</p>
 </li>
 <li>
 <p>Enter the <code>read_adc</code> command a few times…</p>
 <div class="example-wrap"><pre class="language-text">read_adc
-[Rust] Average: 1411
+  [Rust] Average: 1411
 read_adc
-[Rust] Average: 1411
+  [Rust] Average: 1411
 read_adc
-[Rust] Average: 1412</pre></div>
+  [Rust] Average: 1412</pre></div>
 <p>Note that the average values have <strong>dropped from 1417 to 1412.</strong></p>
 </li>
 <li>
 <p>Place the BL602 Board (with LED) <strong>back in the dark</strong> and check the average values…</p>
 <div class="example-wrap"><pre class="language-text">read_adc
-[Rust] Average: 1417
+  [Rust] Average: 1417
 read_adc
-[Rust] Average: 1417
+  [Rust] Average: 1417
 read_adc
-[Rust] Average: 1417</pre></div>
+  [Rust] Average: 1417</pre></div>
 <p>The average values have <strong>increased from 1412 to 1417.</strong></p>
 <p>Our improvised BL602 Light Sensor works in Rust yay!</p>
 </li>

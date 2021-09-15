@@ -320,15 +320,15 @@ cargo run flash sdk_app_tflite.bin --port COM5</pre></div>
 <h2 id="run-an-inference" class="section-header"><a href="#run-an-inference">3.2 Run an Inference</a></h2>
 <p>Now that BL602 has loaded the TensorFlow Lite Model (and knows everything about the wavy curve), let’s test it!</p>
 <p>This command asks BL602 to <strong>infer the output value</strong> of the wavy curve, given the <strong>input value <code>0.1</code></strong>…</p>
-<div class="example-wrap"><pre class="language-text">infer 0.1
-0.160969</pre></div>
-<p>BL602 responds with the <strong>inferred output value <code>0.160969</code></strong></p>
+<div class="example-wrap"><pre class="language-text">infer 0.1</pre></div>
+<p>BL602 responds with the <strong>inferred output value</strong>…</p>
+<div class="example-wrap"><pre class="language-text">0.160969</pre></div>
 <p><img src="https://lupyuen.github.io/images/tflite-chart3.png" alt="Infer Output Value" /></p>
 <p>Let’s test it with two more <strong>input values: <code>0.2</code> and <code>0.3</code></strong>…</p>
-<div class="example-wrap"><pre class="language-text">infer 0.2
+<div class="example-wrap"><pre class="language-text"># infer 0.2
 0.262633
 
-infer 0.3
+# infer 0.3
 0.372770</pre></div>
 <p>BL602 responds with the <strong>inferred output values: <code>0.262633</code> and <code>0.372770</code></strong></p>
 <p>That’s how we <strong>load a TensorFlow Lite Model</strong> on BL602… And <strong>run an inference</strong> with the TensorFlow Lite Model!</p>
@@ -446,7 +446,7 @@ void load_model() {
 <p>Which will be used in the next chapter to run inferences.</p>
 <h1 id="run-tensorflow-inference" class="section-header"><a href="#run-tensorflow-inference">7 Run TensorFlow Inference</a></h1>
 <p>Earlier we entered this command to <strong>run an inference</strong> with the TensorFlow Lite Model…</p>
-<div class="example-wrap"><pre class="language-text">infer 0.1
+<div class="example-wrap"><pre class="language-text"># infer 0.1
 0.160969</pre></div>
 <p>Here’s the <strong>“<code>infer</code>” command</strong> in our BL602 Firmware: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/demo.c#L26-L37"><code>demo.c</code></a></p>
 <div class="example-wrap"><pre class="language-c">/// Command to infer values with TensorFlow Lite Model (Sine Wave)
