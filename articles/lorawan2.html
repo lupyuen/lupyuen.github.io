@@ -278,34 +278,46 @@ void SX126xIoInit( void ) {
 <p>(So that the packet appears in our LoRaWAN Gateway)</p>
 </li>
 </ol>
-<p>TODO</p>
+<p>We’ll talk to the <strong>ChirpStack LoRaWAN Gateway</strong> that we have installed here…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/wisgate"><strong>“Build a LoRaWAN Network with RAKwireless WisGate Developer Gateway”</strong></a></li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/lorawan2-commands.png" alt="LoRaWAN Commands" /></p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan#lorawan-commands">(Source)</a></p>
 <h2 id="lorawan-commands" class="section-header"><a href="#lorawan-commands">3.1 LoRaWAN Commands</a></h2>
 <p>At the BL602 Command Prompt, enter these <strong>LoRaWAN Commands</strong>…</p>
+<ol>
+<li>
+<p>TODO</p>
 <div class="example-wrap"><pre class="language-bash">#  Start LoRa background task
-create_task
-
-#  Init LoRaWAN driver
-init_lorawan
-
-#  Device EUI: Copy from ChirpStack: Applications -&gt; app -&gt; Device EUI
+create_task</pre></div></li>
+<li>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash">#  Init LoRaWAN driver
+init_lorawan</pre></div></li>
+<li>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash">#  Device EUI: Copy from ChirpStack: Applications -&gt; app -&gt; Device EUI
 las_wr_dev_eui 0x4b:0xc1:0x5e:0xe7:0x37:0x7b:0xb1:0x5b
 
 #  App EUI: Not needed for ChirpStack, set to default 0000000000000000
 las_wr_app_eui 0x00:0x00:0x00:0x00:0x00:0x00:0x00:0x00
 
 #  App Key: Copy from ChirpStack: Applications -&gt; app -&gt; Devices -&gt; device_otaa_class_a -&gt; Keys (OTAA) -&gt; Application Key
-las_wr_app_key 0xaa:0xff:0xad:0x5c:0x7e:0x87:0xf6:0x4d:0xe3:0xf0:0x87:0x32:0xfc:0x1d:0xd2:0x5d
-
-#  Join LoRaWAN network, try 3 times
-las_join 3
-
-#  Open LoRaWAN port 2 (App Port)
-las_app_port open 2
-
-#  Send data to LoRaWAN port 2, 5 bytes, unconfirmed (0)
-las_app_tx 2 5 0</pre></div>
+las_wr_app_key 0xaa:0xff:0xad:0x5c:0x7e:0x87:0xf6:0x4d:0xe3:0xf0:0x87:0x32:0xfc:0x1d:0xd2:0x5d</pre></div></li>
+<li>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash">#  Join LoRaWAN network, try 3 times
+las_join 3</pre></div></li>
+<li>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash">#  Open LoRaWAN port 2 (App Port)
+las_app_port open 2</pre></div></li>
+<li>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash">#  Send data to LoRaWAN port 2, 5 bytes, unconfirmed (0)
+las_app_tx 2 5 0</pre></div></li>
+</ol>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan#output-log">(See the output log)</a></p>
 <h1 id="lorawan-gateway" class="section-header"><a href="#lorawan-gateway">4 LoRaWAN Gateway</a></h1>
@@ -314,6 +326,7 @@ las_app_tx 2 5 0</pre></div>
 <p>TODO4</p>
 <p><img src="https://lupyuen.github.io/images/lorawan2-chirpstack2.png" alt="" /></p>
 <h1 id="logic-analyser" class="section-header"><a href="#logic-analyser">5 Logic Analyser</a></h1>
+<p><em>How did we find out that the SPI Pins need to be swapped? And the tweaking for SPI Polarity-Phase?</em></p>
 <p>TODO</p>
 <p>PineDio Stack’s <strong>GPIO Connector</strong> (at right) exposes the SPI Pins: SDO <em>(formerly MOSI)</em>, SDI <em>(formerly MISO)</em> and SCK</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-gpio2.jpg" alt="PineDio Stack GPIO Connector" /></p>
@@ -333,6 +346,7 @@ las_app_tx 2 5 0</pre></div>
 <p>Let’s look at the data collected by our Logic Analyser…</p>
 <p><img src="https://lupyuen.github.io/images/lorawan2-logic.png" alt="LoRa SX1262 with Logic Analyser" /></p>
 <h1 id="spectrum-analyser" class="section-header"><a href="#spectrum-analyser">6 Spectrum Analyser</a></h1>
+<p>We’ve used a Logic Analyser to sniff the data inside our LoRa Transceiver. Now we use a <strong>Spectrum Analyser</strong> to sniff the data in the airwaves!</p>
 <p>TODO</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lora#visualise-lora-with-software-defined-radio"><strong>“Visualise LoRa with Software Defined Radio”</strong></a></li>
