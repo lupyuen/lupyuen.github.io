@@ -285,41 +285,57 @@ void SX126xIoInit( void ) {
 <p><img src="https://lupyuen.github.io/images/lorawan2-commands.png" alt="LoRaWAN Commands" /></p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan#lorawan-commands">(Source)</a></p>
 <h2 id="lorawan-commands" class="section-header"><a href="#lorawan-commands">3.1 LoRaWAN Commands</a></h2>
-<p>At the BL602 Command Prompt, enter these <strong>LoRaWAN Commands</strong>…</p>
+<p>At the BL604 Command Prompt, enter these <strong>LoRaWAN Commands</strong>…</p>
 <ol>
 <li>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-bash">#  Start LoRa background task
-create_task</pre></div></li>
+<p>First we start the <strong>Background Task</strong> that will handle LoRa packets…</p>
+<div class="example-wrap"><pre class="language-bash">create_task</pre></div></li>
 <li>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-bash">#  Init LoRaWAN driver
-init_lorawan</pre></div></li>
+<p>Next we initialise the <strong>LoRa SX1262 and LoRaWAN Drivers</strong>…</p>
+<div class="example-wrap"><pre class="language-bash">init_lorawan</pre></div></li>
 <li>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-bash">#  Device EUI: Copy from ChirpStack: Applications -&gt; app -&gt; Device EUI
-las_wr_dev_eui 0x4b:0xc1:0x5e:0xe7:0x37:0x7b:0xb1:0x5b
-
-#  App EUI: Not needed for ChirpStack, set to default 0000000000000000
-las_wr_app_eui 0x00:0x00:0x00:0x00:0x00:0x00:0x00:0x00
-
-#  App Key: Copy from ChirpStack: Applications -&gt; app -&gt; Devices -&gt; device_otaa_class_a -&gt; Keys (OTAA) -&gt; Application Key
-las_wr_app_key 0xaa:0xff:0xad:0x5c:0x7e:0x87:0xf6:0x4d:0xe3:0xf0:0x87:0x32:0xfc:0x1d:0xd2:0x5d</pre></div></li>
+<p>We set the <strong>Device EUI</strong> (Extended Unique Identifier)…</p>
+<div class="example-wrap"><pre class="language-bash">las_wr_dev_eui 0x4b:0xc1:0x5e:0xe7:0x37:0x7b:0xb1:0x5b</pre></div>
+<p>Change the above EUI to the one in our ChirpStack Gateway: <code>Applications → app → Device EUI</code></p>
+</li>
 <li>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-bash">#  Join LoRaWAN network, try 3 times
-las_join 3</pre></div></li>
+<p>Set the <strong>App EUI</strong>…</p>
+<div class="example-wrap"><pre class="language-bash">las_wr_app_eui 0x00:0x00:0x00:0x00:0x00:0x00:0x00:0x00</pre></div>
+<p>This is not needed for ChirpStack, thus we set to default <code>0000000000000000</code>.</p>
+</li>
 <li>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-bash">#  Open LoRaWAN port 2 (App Port)
-las_app_port open 2</pre></div></li>
+<p>Set the <strong>App Key</strong>…</p>
+<div class="example-wrap"><pre class="language-bash">las_wr_app_key 0xaa:0xff:0xad:0x5c:0x7e:0x87:0xf6:0x4d:0xe3:0xf0:0x87:0x32:0xfc:0x1d:0xd2:0x5d</pre></div>
+<p>We get the App Key from ChirpStack at <code>Applications → app → Devices → device_otaa_class_a → Keys (OTAA) → Application Key</code></p>
+</li>
 <li>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-bash">#  Send data to LoRaWAN port 2, 5 bytes, unconfirmed (0)
-las_app_tx 2 5 0</pre></div></li>
+<p>We send a request to <strong>join the LoRaWAN Network</strong>…</p>
+<div class="example-wrap"><pre class="language-bash">las_join 3</pre></div>
+<p>(Retry up to 3 times)</p>
+</li>
+<li>
+<p>After the ChirpStack LoRaWAN Gateway has accepted our Join Request, we open a <strong>LoRaWAN Application Port</strong>…</p>
+<div class="example-wrap"><pre class="language-bash">las_app_port open 2</pre></div>
+<p>(2 is the Application Port Number)</p>
+</li>
+<li>
+<p>Finally we <strong>send a LoRaWAN Data Packet</strong> containing 5 bytes of data (<code>0x00</code>) to LoRaWAN Port 2…</p>
+<div class="example-wrap"><pre class="language-bash">las_app_tx 2 5 0</pre></div>
+<p>(0 means that this is an Unconfirmed Message, we’re not expecting an acknowledgement from the LoRaWAN Gateway)</p>
+</li>
 </ol>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan#output-log">(See the output log)</a></p>
+<p>We should see this in our PineDio Stack serial terminal…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan#output-log"><strong>Output Log for LoRaWAN Firmware</strong></a></p>
+</li>
+<li>
+<p><a href="https://www.youtube.com/watch?v=BMMIIiZG6G0"><strong>Watch the Demo Video on YouTube</strong></a></p>
+</li>
+</ul>
+<p>Let’s check our ChirpStack LoRaWAN Gateway!</p>
+<p><a href="https://lupyuen.github.io/articles/lorawan#lorawan-driver">(More about the LoRaWAN Commands)</a></p>
+<p><img src="https://lupyuen.github.io/images/lorawan2-sendjoin.png" alt="LoRaWAN Firmware" /></p>
 <h1 id="lorawan-gateway" class="section-header"><a href="#lorawan-gateway">4 LoRaWAN Gateway</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lorawan2-chirpstack.png" alt="" /></p>
