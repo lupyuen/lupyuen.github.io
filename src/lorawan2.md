@@ -341,7 +341,7 @@ Let's check our ChirpStack LoRaWAN Gateway!
 
 [(More about the LoRaWAN Commands)](https://lupyuen.github.io/articles/lorawan#lorawan-driver)
 
-![LoRaWAN Firmware](https://lupyuen.github.io/images/lorawan2-sendjoin.png)
+![LoRaWAN Firmware](https://lupyuen.github.io/images/lorawan2-joinsend.png)
 
 # LoRaWAN Gateway
 
