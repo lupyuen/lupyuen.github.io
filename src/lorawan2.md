@@ -494,6 +494,12 @@ This article explains how a microcontroller might connect to a secure network (l
 
 _What's the catch?_
 
+We need to be __extra careful__ when working with Cryptographic Co-Processors...
+
+Once the Security Keys have been injected, __they can never be reset__!
+
+(Same for EFuse Storage)
+
 TODO: Injecting keys, one-time
 
 -   ["Designing a Community-Driven Decentralized Storage Network for IoT Data"](https://matheo.uliege.be/bitstream/2268.2/11657/12/thesis.pdf)
