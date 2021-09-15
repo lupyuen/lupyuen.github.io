@@ -444,7 +444,19 @@ _How do we transmit data securely over LoRa?_
 
 That's why we join a __LoRaWAN Network__ when we transmit data.
 
-LoRaWAN is a layer on top of LoRa that adds these __security features__...
+LoRaWAN is a layer on top of LoRa that adds __security features__ like...
+
+-   __Message Encryption__
+
+    (Messages are encrypted with a 128-bit AES Key)
+
+-   __Message Integrity Check__
+
+    (Prevents tampering and replay of messages)
+
+More about LoRaWAN Security here...
+
+-   [__"LoRaWAN Security"__](https://lupyuen.github.io/articles/wisgate#lorawan-security)
 
 TODO: Microchip ATECC608A, Injecting keys, one-time
 
