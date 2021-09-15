@@ -259,7 +259,9 @@ Now we run the __LoRaWAN commands__ to...
 
     (So that the packet appears in our LoRaWAN Gateway)
 
-TODO
+We'll talk to the __ChirpStack LoRaWAN Gateway__ that we have installed here...
+
+-   [__"Build a LoRaWAN Network with RAKwireless WisGate Developer Gateway"__](https://lupyuen.github.io/articles/wisgate)
 
 ![LoRaWAN Commands](https://lupyuen.github.io/images/lorawan2-commands.png)
 
@@ -269,31 +271,53 @@ TODO
 
 At the BL602 Command Prompt, enter these __LoRaWAN Commands__...
 
-```bash
-##  Start LoRa background task
-create_task
+1.  TODO
 
-##  Init LoRaWAN driver
-init_lorawan
+    ```bash
+    ##  Start LoRa background task
+    create_task
+    ```
 
-##  Device EUI: Copy from ChirpStack: Applications -> app -> Device EUI
-las_wr_dev_eui 0x4b:0xc1:0x5e:0xe7:0x37:0x7b:0xb1:0x5b
+1.  TODO
 
-##  App EUI: Not needed for ChirpStack, set to default 0000000000000000
-las_wr_app_eui 0x00:0x00:0x00:0x00:0x00:0x00:0x00:0x00
+    ```bash
+    ##  Init LoRaWAN driver
+    init_lorawan
+    ```
 
-##  App Key: Copy from ChirpStack: Applications -> app -> Devices -> device_otaa_class_a -> Keys (OTAA) -> Application Key
-las_wr_app_key 0xaa:0xff:0xad:0x5c:0x7e:0x87:0xf6:0x4d:0xe3:0xf0:0x87:0x32:0xfc:0x1d:0xd2:0x5d
+1.  TODO
 
-##  Join LoRaWAN network, try 3 times
-las_join 3
+    ```bash
+    ##  Device EUI: Copy from ChirpStack: Applications -> app -> Device EUI
+    las_wr_dev_eui 0x4b:0xc1:0x5e:0xe7:0x37:0x7b:0xb1:0x5b
 
-##  Open LoRaWAN port 2 (App Port)
-las_app_port open 2
+    ##  App EUI: Not needed for ChirpStack, set to default 0000000000000000
+    las_wr_app_eui 0x00:0x00:0x00:0x00:0x00:0x00:0x00:0x00
 
-##  Send data to LoRaWAN port 2, 5 bytes, unconfirmed (0)
-las_app_tx 2 5 0
-```
+    ##  App Key: Copy from ChirpStack: Applications -> app -> Devices -> device_otaa_class_a -> Keys (OTAA) -> Application Key
+    las_wr_app_key 0xaa:0xff:0xad:0x5c:0x7e:0x87:0xf6:0x4d:0xe3:0xf0:0x87:0x32:0xfc:0x1d:0xd2:0x5d
+    ```
+
+1.  TODO
+
+    ```bash
+    ##  Join LoRaWAN network, try 3 times
+    las_join 3
+    ```
+
+1.  TODO
+
+    ```bash
+    ##  Open LoRaWAN port 2 (App Port)
+    las_app_port open 2
+    ```
+
+1.  TODO
+
+    ```bash
+    ##  Send data to LoRaWAN port 2, 5 bytes, unconfirmed (0)
+    las_app_tx 2 5 0
+    ```
 
 TODO
 
@@ -310,6 +334,8 @@ TODO4
 ![](https://lupyuen.github.io/images/lorawan2-chirpstack2.png)
 
 # Logic Analyser
+
+_How did we find out that the SPI Pins need to be swapped? And the tweaking for SPI Polarity-Phase?_
 
 TODO
 
@@ -343,6 +369,8 @@ Let's look at the data collected by our Logic Analyser...
 ![LoRa SX1262 with Logic Analyser](https://lupyuen.github.io/images/lorawan2-logic.png)
 
 # Spectrum Analyser
+
+We've used a Logic Analyser to sniff the data inside our LoRa Transceiver. Now we use a __Spectrum Analyser__ to sniff the data in the airwaves!
 
 TODO
 
