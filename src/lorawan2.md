@@ -474,7 +474,7 @@ _Is there a better way to store and access Security Keys?_
 
 We could use a __Cryptographic Co-Processor__ like this...
 
--   [__Microchip ATECC608A__](https://www.microchip.com/en-us/product/ATECC608A)
+-   [Microchip ATECC608A](https://www.microchip.com/en-us/product/ATECC608A)
 
 ATECC608A works with __The Things Network__, the public worldwide LoRaWAN Network...
 
