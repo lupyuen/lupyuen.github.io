@@ -500,14 +500,6 @@ Once the Security Keys have been injected, __they can never be reset__!
 
 (Same for EFuse Storage)
 
-TODO: Injecting keys, one-time
-
--   ["Designing a Community-Driven Decentralized Storage Network for IoT Data"](https://matheo.uliege.be/bitstream/2268.2/11657/12/thesis.pdf)
-
-TODO: WiFi lora bt gateway, Very basic functionality
-
-TODO: Xmpp, Matrix, Or custom LoRaWAN
-
 # Seeking Volunteers!
 
 I'm really excited that PineDio Stack BL604 will be available soon!
@@ -555,3 +547,9 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1436128755987058691)
 
 1.  TODO: Sync with pine64
+
+1.  TODO: WiFi lora bt gateway, Very basic functionality
+
+1.  TODO: Xmpp, Matrix, Or custom LoRaWAN
+
+1.  TODO: ["Designing a Community-Driven Decentralized Storage Network for IoT Data"](https://matheo.uliege.be/bitstream/2268.2/11657/12/thesis.pdf)
