@@ -403,7 +403,21 @@ void SX126xIoInit( void ) {
 <p><em>Since LoRa packets can be sniffed over the airwaves…</em></p>
 <p><em>How do we transmit data securely over LoRa?</em></p>
 <p>That’s why we join a <strong>LoRaWAN Network</strong> when we transmit data.</p>
-<p>LoRaWAN is a layer on top of LoRa that adds these <strong>security features</strong>…</p>
+<p>LoRaWAN is a layer on top of LoRa that adds <strong>security features</strong> like…</p>
+<ul>
+<li>
+<p><strong>Message Encryption</strong></p>
+<p>(Messages are encrypted with a 128-bit AES Key)</p>
+</li>
+<li>
+<p><strong>Message Integrity Check</strong></p>
+<p>(Prevents tampering and replay of messages)</p>
+</li>
+</ul>
+<p>More about LoRaWAN Security here…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/wisgate#lorawan-security"><strong>“LoRaWAN Security”</strong></a></li>
+</ul>
 <p>TODO: Microchip ATECC608A, Injecting keys, one-time</p>
 <p>TODO: Glitching</p>
 <p><a href="https://limitedresults.com/2019/11/pwn-the-esp32-forever-flash-encryption-and-sec-boot-keys-extraction/">(See this)</a></p>
