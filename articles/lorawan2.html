@@ -337,10 +337,32 @@ void SX126xIoInit( void ) {
 <p><a href="https://lupyuen.github.io/articles/lorawan#lorawan-driver">(More about the LoRaWAN Commands)</a></p>
 <p><img src="https://lupyuen.github.io/images/lorawan2-joinsend.png" alt="LoRaWAN Firmware" /></p>
 <h1 id="lorawan-gateway" class="section-header"><a href="#lorawan-gateway">4 LoRaWAN Gateway</a></h1>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/lorawan2-chirpstack.png" alt="" /></p>
-<p>TODO4</p>
-<p><img src="https://lupyuen.github.io/images/lorawan2-chirpstack2.png" alt="" /></p>
+<p>To see the <strong>Join Network Request</strong> and the <strong>Data Packet</strong> received by our ChirpStack LoRaWAN Gateway, we do this… </p>
+<ol>
+<li>
+<p>In ChirpStack, click <strong><code>Applications → app → device_otaa_class_a → LoRaWAN Frames</code></strong></p>
+</li>
+<li>
+<p>Restart PineDio Stack.</p>
+<p>Run the LoRaWAN Commands from the previous section.</p>
+</li>
+<li>
+<p>The <strong>Join Network Request</strong> appears in ChirpStack, followed by the <strong>Data Packet</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/lorawan2-chirpstack.png" alt="Join Network Request and Data Packet in ChirpStack" /></p>
+</li>
+<li>
+<p>Click the <strong><code>Device Data</code></strong> tab in ChirpStack.</p>
+</li>
+<li>
+<p>On PineDio Stack, run this command to send a Data Packet…</p>
+<div class="example-wrap"><pre class="language-bash">las_app_tx 2 5 0</pre></div></li>
+<li>
+<p>Our Data Packet appears in ChirpStack.</p>
+<p><strong><code>DecodedDataHex</code></strong> shows 5 bytes of zero, which is what we sent…</p>
+<p><img src="https://lupyuen.github.io/images/lorawan2-chirpstack2.png" alt="Data Packet in ChirpStack" /></p>
+</li>
+</ol>
+<p>LoRaWAN tested OK on PineDio Stack!</p>
 <h1 id="logic-analyser" class="section-header"><a href="#logic-analyser">5 Logic Analyser</a></h1>
 <p><em>How did we find out that the SPI Pins need to be swapped? And the tweaking for SPI Polarity-Phase?</em></p>
 <p>TODO</p>
