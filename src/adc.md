@@ -294,13 +294,13 @@ Watch what happens when we __flash and run__ the C Firmware for BL602 ADC: [`sdk
 
     ```text
     read_adc
-    Average: 1416
+      Average: 1416
 
     read_adc
-    Average: 1416
+      Average: 1416
 
     read_adc
-    Average: 1416
+      Average: 1416
     ```
 
 1.  Now place the BL602 Board (with LED) __under sunlight__.
@@ -309,13 +309,13 @@ Watch what happens when we __flash and run__ the C Firmware for BL602 ADC: [`sdk
 
     ```text
     read_adc
-    Average: 1408
+      Average: 1408
 
     read_adc
-    Average: 1408
+      Average: 1408
 
     read_adc
-    Average: 1408
+      Average: 1408
     ```
 
     Note that the average values have __dropped from 1416 to 1408.__
@@ -324,13 +324,13 @@ Watch what happens when we __flash and run__ the C Firmware for BL602 ADC: [`sdk
 
     ```text
     read_adc
-    Average: 1417
+      Average: 1417
 
     read_adc
-    Average: 1416
+      Average: 1416
 
     read_adc
-    Average: 1416
+      Average: 1416
     ```
 
     The average values have __increased from 1408 to 1416.__
@@ -416,7 +416,7 @@ Before diving into the Rust Firmware, let's walk through the steps for __creatin
 1.  __Edit the `Makefile`__ in the new folder and set the Project Name: [`sdk_app_rust_adc/Makefile`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/Makefile)
 
     ```text
-    #  Set the project name
+    ##  Set the project name
     PROJECT_NAME := sdk_app_rust_adc
     ```
 
@@ -425,7 +425,7 @@ Before diving into the Rust Firmware, let's walk through the steps for __creatin
 1.  Edit the __`run.sh` script__ in the new folder and set the Project Name: [`sdk_app_rust_adc/run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/run.sh)
 
     ```bash
-    #  Set the project name
+    ##  Set the project name
     export APP_NAME=sdk_app_rust_adc
     ```
 
@@ -984,14 +984,14 @@ Here's how we flash the Rust Firmware file `sdk_app_rust_adc.bin` to BL602...
     Then enter this at the command prompt...
 
     ```bash
-    # TODO: Change this to the downloaded blflash folder
+    ## TODO: Change this to the downloaded blflash folder
     cd blflash
 
-    # For Linux:
+    ## For Linux:
     sudo cargo run flash sdk_app_lora.bin \
         --port /dev/ttyUSB0
 
-    # For Windows: Change COM5 to the BL602 Serial Port
+    ## For Windows: Change COM5 to the BL602 Serial Port
     cargo run flash sdk_app_lora.bin --port COM5
     ```
 
@@ -1056,7 +1056,7 @@ Finally we run the BL602 Rust Firmware...
 
     ```text
     init_adc
-    [Rust] Init ADC
+      [Rust] Init ADC
     ```
 
     (We've seen this function earlier)
@@ -1067,11 +1067,11 @@ Finally we run the BL602 Rust Firmware...
 
     ```text
     read_adc
-    [Rust] Average: 1417
+      [Rust] Average: 1417
     read_adc
-    [Rust] Average: 1417
+      [Rust] Average: 1417
     read_adc
-    [Rust] Average: 1417
+      [Rust] Average: 1417
     ```
 
 1.  Now place the BL602 Board (with LED) __under sunlight__.
@@ -1080,11 +1080,11 @@ Finally we run the BL602 Rust Firmware...
 
     ```text
     read_adc
-    [Rust] Average: 1411
+      [Rust] Average: 1411
     read_adc
-    [Rust] Average: 1411
+      [Rust] Average: 1411
     read_adc
-    [Rust] Average: 1412
+      [Rust] Average: 1412
     ```
 
     Note that the average values have __dropped from 1417 to 1412.__
@@ -1093,11 +1093,11 @@ Finally we run the BL602 Rust Firmware...
 
     ```text
     read_adc
-    [Rust] Average: 1417
+      [Rust] Average: 1417
     read_adc
-    [Rust] Average: 1417
+      [Rust] Average: 1417
     read_adc
-    [Rust] Average: 1417
+      [Rust] Average: 1417
     ```
 
     The average values have __increased from 1412 to 1417.__

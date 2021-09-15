@@ -262,20 +262,23 @@ This command asks BL602 to __infer the output value__ of the wavy curve, given t
 
 ```text
 infer 0.1
-0.160969
 ```
 
-BL602 responds with the __inferred output value `0.160969`__
+BL602 responds with the __inferred output value__...
+
+```text
+0.160969
+```
 
 ![Infer Output Value](https://lupyuen.github.io/images/tflite-chart3.png)
 
 Let's test it with two more __input values: `0.2` and `0.3`__...
 
 ```text
-infer 0.2
+## infer 0.2
 0.262633
 
-infer 0.3
+## infer 0.3
 0.372770
 ```
 
@@ -447,7 +450,7 @@ Which will be used in the next chapter to run inferences.
 Earlier we entered this command to __run an inference__ with the TensorFlow Lite Model...
 
 ```text
-infer 0.1
+## infer 0.1
 0.160969
 ```
 

@@ -685,10 +685,15 @@ Finally we run the BL602 Rust Firmware...
 
     ```text
     rust_main
+    ```
+
+    We should see...
+
+    ```text
     Hello from Rust!
     ```
 
-    The LED on our BL602 board should blink 5 times.
+    And the LED on our BL602 board blinks 5 times.
 
     That's how we build, flash and run Rust Firmware with BL602 IoT SDK!
 
