@@ -546,6 +546,8 @@ Like for __tracking our pets__? (Excluding hamsters and goldfish)
 
 Or for connecting our __PineTime watches__ to the internet?
 
+Perhaps __super-accurate geolocation__ with LoRa + WiFi + Bluetooth LE?
+
 Got any ideas? Lemme know!
 
 # Seeking Volunteers!
