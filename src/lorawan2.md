@@ -530,9 +530,11 @@ Maybe we'll see messaging protocols based on Blockchain...
 
 -   ["Designing a Community-Driven Decentralized Storage Network for IoT Data"](https://matheo.uliege.be/bitstream/2268.2/11657/12/thesis.pdf)
 
-_How secure are they?_
+_But how secure are they?_
 
-Sorry I haven't reviewed their security features. Someday I might!
+Calm down, amigo... Sorry I haven't reviewed their security features.
+
+Someday I might!
 
 _PineDio Stack supports triple comms: LoRa, WiFi AND Bluetooth LE..._
 
