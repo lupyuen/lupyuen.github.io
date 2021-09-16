@@ -1,1 +1,847 @@
-<rss version="2.0"><channel><title>lupyuen</title><link>https://lupyuen.github.io</link><description>IoT Techie and Educator</description><item><title>Rust on RISC-V BL602: Rhai Scripting</title><link>https://lupyuen.github.io/articles/rhai</link><description><![CDATA[Can we drag-and-drop Rhai Scripts... And run them on WebAssembly and BL602 RISC-V SoC?]]></description><guid>https://lupyuen.github.io/articles/rhai</guid><pubDate>Sat, 04 Sep 2021 00:00:00 +0000</pubDate></item><item><title>PineDio Stack BL604 RISC-V Board: Testing The Prototype</title><link>https://lupyuen.github.io/articles/pinedio</link><description><![CDATA[What's it like to create Open Source Software for brand new prototype hardware? Read on to find out!]]></description><guid>https://lupyuen.github.io/articles/pinedio</guid><pubDate>Sun, 29 Aug 2021 00:00:00 +0000</pubDate></item><item><title>Rust on RISC-V BL602: Simulated with WebAssembly</title><link>https://lupyuen.github.io/articles/rustsim</link><description><![CDATA[Can we run Rust Firmware for BL602 RISC-V SoC in a Web Browser... Simulated with WebAssembly?]]></description><guid>https://lupyuen.github.io/articles/rustsim</guid><pubDate>Mon, 16 Aug 2021 00:00:00 +0000</pubDate></item><item><title>Rust on RISC-V BL602: Is It Sunny?</title><link>https://lupyuen.github.io/articles/adc</link><description><![CDATA[How we create Rust Firmware that reads Analog Inputs... With the Analog-to-Digital Converter on RISC-V BL602]]></description><guid>https://lupyuen.github.io/articles/adc</guid><pubDate>Tue, 03 Aug 2021 00:00:00 +0000</pubDate></item><item><title>RISC-V BL706 Audio Video Board</title><link>https://lupyuen.github.io/articles/bl706</link><description><![CDATA[What's inside the Bouffalo Lab RISC-V BL706 Audio Video Board... And how it differs from BL602]]></description><guid>https://lupyuen.github.io/articles/bl706</guid><pubDate>Wed, 14 Jul 2021 00:00:00 +0000</pubDate></item><item><title>Reverse Engineering WiFi on RISC-V BL602</title><link>https://lupyuen.github.io/articles/wifi</link><description><![CDATA[What happens inside the WiFi Driver on RISC-V BL602... And how we found the incomplete source code for the driver]]></description><guid>https://lupyuen.github.io/articles/wifi</guid><pubDate>Wed, 07 Jul 2021 00:00:00 +0000</pubDate></item><item><title>Machine Learning on RISC-V BL602 with TensorFlow Lite</title><link>https://lupyuen.github.io/articles/tflite</link><description><![CDATA[How we run TensorFlow Lite on RISC-V BL602... To create a Glowing LED]]></description><guid>https://lupyuen.github.io/articles/tflite</guid><pubDate>Tue, 22 Jun 2021 00:00:00 +0000</pubDate></item><item><title>BL602 Bootloader</title><link>https://lupyuen.github.io/articles/boot</link><description><![CDATA[All about the BL602 RISC-V Bootloader... And how it loads the Application Firmware into XIP Flash Memory]]></description><guid>https://lupyuen.github.io/articles/boot</guid><pubDate>Wed, 09 Jun 2021 00:00:00 +0000</pubDate></item><item><title>Simulate RISC-V BL602 with WebAssembly, uLisp and Blockly</title><link>https://lupyuen.github.io/articles/wasm</link><description><![CDATA[How we simulate the BL602 RISC-V SoC with uLisp in WebAssembly... And preview Blockly uLisp Apps in the Web Browser]]></description><guid>https://lupyuen.github.io/articles/wasm</guid><pubDate>Thu, 27 May 2021 00:00:00 +0000</pubDate></item><item><title>uLisp and Blockly on PineCone BL602 RISC-V Board</title><link>https://lupyuen.github.io/articles/lisp</link><description><![CDATA[Porting the uLisp Interpreter to PineCone BL602 RISC-V Board... And writing graphical programs with Blockly (Scratch)]]></description><guid>https://lupyuen.github.io/articles/lisp</guid><pubDate>Fri, 14 May 2021 00:00:00 +0000</pubDate></item><item><title>PineCone BL602 Talks LoRaWAN</title><link>https://lupyuen.github.io/articles/lorawan</link><description><![CDATA[How we connect PineCone BL602 RISC-V Board to LoRaWAN... With the Pine64 RFM90 LoRa Module]]></description><guid>https://lupyuen.github.io/articles/lorawan</guid><pubDate>Tue, 11 May 2021 00:00:00 +0000</pubDate></item><item><title>Build a LoRaWAN Network with RAKwireless WisGate Developer Gateway</title><link>https://lupyuen.github.io/articles/wisgate</link><description><![CDATA[How we set up our own LoRaWAN Network with RAKwireless RAK7248 WisGate Developer D4H Gateway... And test it with RAKwireless WisBlock in Arduino]]></description><guid>https://lupyuen.github.io/articles/wisgate</guid><pubDate>Fri, 30 Apr 2021 00:00:00 +0000</pubDate></item><item><title>Run Rust RISC-V Firmware with BL602 IoT SDK</title><link>https://lupyuen.github.io/articles/rust</link><description><![CDATA[How we build, flash and run Rust firmware on BL602 RISC-V SoC... With the BL602 IoT SDK]]></description><guid>https://lupyuen.github.io/articles/rust</guid><pubDate>Wed, 21 Apr 2021 00:00:00 +0000</pubDate></item><item><title>PineCone BL602 RISC-V Board Receives LoRa Packets</title><link>https://lupyuen.github.io/articles/lora2</link><description><![CDATA[How PineCone BL602 RISC-V Board with SX1276 receives LoRa packets... Transmitted by RAKwireless WisBlock]]></description><guid>https://lupyuen.github.io/articles/lora2</guid><pubDate>Sun, 04 Apr 2021 00:00:00 +0000</pubDate></item><item><title>RAKwireless WisBlock talks LoRa with PineCone BL602 RISC-V Board</title><link>https://lupyuen.github.io/articles/wisblock</link><description><![CDATA[How we receive LoRa packets transmitted by PineCone BL602 RISC-V Board ... With RAKwireless WisBlock in Arduino]]></description><guid>https://lupyuen.github.io/articles/wisblock</guid><pubDate>Thu, 11 Mar 2021 00:00:00 +0000</pubDate></item><item><title>Connect PineCone BL602 to LoRa Transceiver</title><link>https://lupyuen.github.io/articles/lora</link><description><![CDATA[How we transmit LoRa packets on PineCone BL602 RISC-V Board ... With Semtech 1276 or Hope RF96]]></description><guid>https://lupyuen.github.io/articles/lora</guid><pubDate>Sun, 07 Mar 2021 00:00:00 +0000</pubDate></item><item><title>The RISC-V BL602 Book</title><link>https://lupyuen.github.io/articles/book</link><description><![CDATA[Your free open-source resource for learning RISC-V BL602 SoC]]></description><guid>https://lupyuen.github.io/articles/book</guid><pubDate>Sat, 20 Feb 2021 00:00:00 +0000</pubDate></item><item><title>PineCone BL602 Talks UART to Grove E-Ink Display</title><link>https://lupyuen.github.io/articles/uart</link><description><![CDATA[How we render an image with PineCone BL602 RISC-V Board ... On Grove Triple Colour E-Ink Display with UART Interface]]></description><guid>https://lupyuen.github.io/articles/uart</guid><pubDate>Fri, 19 Feb 2021 00:00:00 +0000</pubDate></item><item><title>PineCone BL602 Blasting Pixels to ST7789 Display with LVGL Library</title><link>https://lupyuen.github.io/articles/display</link><description><![CDATA[How we render text and graphics on PineCone BL602 RISC-V Board ... With ST7789 SPI Display and LVGL Graphics Library]]></description><guid>https://lupyuen.github.io/articles/display</guid><pubDate>Tue, 16 Feb 2021 00:00:00 +0000</pubDate></item><item><title>PineCone BL602 talks SPI too!</title><link>https://lupyuen.github.io/articles/spi</link><description><![CDATA[PineCone BL602 RISC-V Board talks to BME280 Sensor over SPI... Let's find out how]]></description><guid>https://lupyuen.github.io/articles/spi</guid><pubDate>Sun, 07 Feb 2021 00:00:00 +0000</pubDate></item><item><title>PineCone BL602 talks to I2C Sensors</title><link>https://lupyuen.github.io/articles/i2c</link><description><![CDATA[How we call the BL602 RISC-V Hardware Abstraction Layer to access the BME280 I2C Sensor]]></description><guid>https://lupyuen.github.io/articles/i2c</guid><pubDate>Fri, 29 Jan 2021 00:00:00 +0000</pubDate></item><item><title>Mynewt GPIO ported to PineCone BL602 RISC-V Board</title><link>https://lupyuen.github.io/articles/gpio</link><description><![CDATA[How we ported the BL602 RISC-V Hardware Abstraction Layer to Apache Mynewt ... Starting with GPIO]]></description><guid>https://lupyuen.github.io/articles/gpio</guid><pubDate>Fri, 15 Jan 2021 00:00:00 +0000</pubDate></item><item><title>Control PineCone BL602 RGB LED with GPIO and PWM</title><link>https://lupyuen.github.io/articles/led</link><description><![CDATA[Explore the BL602 GPIO and PWM Demo Firmware... And how they call the GPIO and PWM Hardware Abstraction Layer]]></description><guid>https://lupyuen.github.io/articles/led</guid><pubDate>Wed, 06 Jan 2021 00:00:00 +0000</pubDate></item><item><title>Flashing Firmware to PineCone BL602</title><link>https://lupyuen.github.io/articles/flash</link><description><![CDATA[What happens when we flash RISC-V firmware to PineCone BL602 Board... And what's inside the BL602 Boot Image, Partition Table, Device Tree and EFuse Configuration]]></description><guid>https://lupyuen.github.io/articles/flash</guid><pubDate>Fri, 01 Jan 2021 00:00:00 +0000</pubDate></item><item><title>Porting Mynewt to PineCone BL602</title><link>https://lupyuen.github.io/articles/mynewt</link><description><![CDATA[How we port Apache Mynewt embedded operating system to the PineCone BL602 RISC-V Board]]></description><guid>https://lupyuen.github.io/articles/mynewt</guid><pubDate>Mon, 21 Dec 2020 00:00:00 +0000</pubDate></item><item><title>Better Open Source Advocate</title><link>https://lupyuen.github.io/articles/advocate</link><description><![CDATA[I made mistakes in 2020... Here's how I'll do better in 2021]]></description><guid>https://lupyuen.github.io/articles/advocate</guid><pubDate>Tue, 15 Dec 2020 00:00:00 +0000</pubDate></item><item><title>Debug Rust on PineCone BL602 with VSCode and GDB</title><link>https://lupyuen.github.io/articles/debug</link><description><![CDATA[How we build and debug Embedded Rust Firmware for PineCone BL602... With VSCode and GDB]]></description><guid>https://lupyuen.github.io/articles/debug</guid><pubDate>Mon, 14 Dec 2020 00:00:00 +0000</pubDate></item><item><title>Connect PineCone BL602 to OpenOCD</title><link>https://lupyuen.github.io/articles/openocd</link><description><![CDATA[How we connect PineCone BL602 Evaluation Board to OpenOCD... For flashing and debugging RISC-V firmware]]></description><guid>https://lupyuen.github.io/articles/openocd</guid><pubDate>Fri, 11 Dec 2020 00:00:00 +0000</pubDate></item><item><title>Quick Peek of PineCone BL602 RISC-V Evaluation Board</title><link>https://lupyuen.github.io/articles/pinecone</link><description><![CDATA[What's inside the PineCone BL602 Evaluation Board... And how we're using it to contribute to the RISC-V Open Source Ecosystem]]></description><guid>https://lupyuen.github.io/articles/pinecone</guid><pubDate>Sun, 29 Nov 2020 00:00:00 +0000</pubDate></item><item><title>(UNFINISHED) Draw your own PineTime Watch Face... From WebAssembly to Embedded Rust</title><link>https://lupyuen.github.io/pinetime-rust-mynewt/articles/handdrawn</link><description><![CDATA[How we build a hand-drawn Watch Face for PineTime Smart Watch... Starting from WebAssembly to Embedded Rust]]></description><guid>https://lupyuen.github.io/pinetime-rust-mynewt/articles/handdrawn</guid><pubDate>Wed, 18 Nov 2020 00:00:00 +0000</pubDate></item><item><title>Create Your Own PineTime Watch Face in Rust... And Publish on crates.io</title><link>https://lupyuen.github.io/pinetime-rust-mynewt/articles/watchface</link><description><![CDATA[How we build PineTime Watch Faces with Rust and LVGL... And publish them on crates.io]]></description><guid>https://lupyuen.github.io/pinetime-rust-mynewt/articles/watchface</guid><pubDate>Sat, 17 Oct 2020 00:00:00 +0000</pubDate></item><item><title>Bluetooth Time Sync and LVGL on PineTime Mynewt</title><link>https://lupyuen.github.io/pinetime-rust-mynewt/articles/timesync</link><description><![CDATA[How PineTime syncs the time over Bluetooth LE with Mynewt and NimBLE... And how we create Watch Faces with LVGL]]></description><guid>https://lupyuen.github.io/pinetime-rust-mynewt/articles/timesync</guid><pubDate>Fri, 16 Oct 2020 00:00:00 +0000</pubDate></item><item><title>Porting PineTime Watch Face from C to Rust On RIOT with LVGL</title><link>https://lupyuen.github.io/pinetime-rust-riot/articles/watch_face</link><description><![CDATA[Converting Embedded C to Rust is not that hard... Here's how we convert a PineTime Watch Face with LVGL from C to Rust on RIOT]]></description><guid>https://lupyuen.github.io/pinetime-rust-riot/articles/watch_face</guid><pubDate>Sun, 13 Sep 2020 00:00:00 +0000</pubDate></item><item><title>Safer, Simpler Embedded Programs with Rust on RIOT (Presentation)</title><link>https://summit.riot-os.org/2020/wp-content/uploads/sites/15/2020/09/s4-2-Lup-Yuen-Lee.pdf</link><description><![CDATA[Tired of pointer problems on Embedded C? It’s time to switch over to a safer, simpler way of coding: Embedded Rust. We’ll look at Rust hosted on RIOT and how it’s used to create LVGL watch apps for PineTime Smart Watch.]]></description><guid>https://summit.riot-os.org/2020/wp-content/uploads/sites/15/2020/09/s4-2-Lup-Yuen-Lee.pdf</guid><pubDate>Fri, 11 Sep 2020 00:00:00 +0000</pubDate></item><item><title>Safer, Simpler Embedded Programs with Rust on RIOT (Video)</title><link>https://www.youtube.com/watch?v=LvfCSnOM1Hs</link><description><![CDATA[Tired of pointer problems on Embedded C? It’s time to switch over to a safer, simpler way of coding: Embedded Rust. We’ll look at Rust hosted on RIOT and how it’s used to create LVGL watch apps for PineTime Smart Watch.]]></description><guid>https://www.youtube.com/watch?v=LvfCSnOM1Hs</guid><pubDate>Fri, 11 Sep 2020 00:00:00 +0000</pubDate></item><item><title>Preview PineTime Watch Faces in your Web Browser with WebAssembly</title><link>https://lupyuen.github.io/pinetime-rust-mynewt/articles/simulator</link><description><![CDATA[How we build and preview PineTime Watch Faces with only a web browser... No computer needed!]]></description><guid>https://lupyuen.github.io/pinetime-rust-mynewt/articles/simulator</guid><pubDate>Wed, 19 Aug 2020 00:00:00 +0000</pubDate></item><item><title>Build PineTime Firmware in the Cloud with GitHub Actions</title><link>https://lupyuen.github.io/pinetime-rust-mynewt/articles/cloud</link><description><![CDATA[Learn to build PineTime Smart Watch Firmware in the Cloud... No computer needed!]]></description><guid>https://lupyuen.github.io/pinetime-rust-mynewt/articles/cloud</guid><pubDate>Mon, 27 Jul 2020 00:00:00 +0000</pubDate></item><item><title>Wayland and LVGL on PinePhone with Ubuntu Touch</title><link>https://lupyuen.github.io/pinetime-rust-mynewt/articles/wayland</link><description><![CDATA[Learn about Wayland and Ubuntu Touch on PinePhone... And how we build PinePhone Apps with LVGL]]></description><guid>https://lupyuen.github.io/pinetime-rust-mynewt/articles/wayland</guid><pubDate>Sat, 25 Jul 2020 00:00:00 +0000</pubDate></item><item><title>(UNFINISHED) Auto Convert Go to Dart with an Abstract Syntax Tree</title><link>https://lupyuen.github.io/pinetime-rust-mynewt/articles/ast</link><description><![CDATA[How we convert Go code to Dart and Flutter automatically with an Abstract Syntax Tree]]></description><guid>https://lupyuen.github.io/pinetime-rust-mynewt/articles/ast</guid><pubDate>Thu, 09 Jul 2020 00:00:00 +0000</pubDate></item><item><title>Flutter State Management with Bloc for PineTime Companion App</title><link>https://lupyuen.github.io/pinetime-rust-mynewt/articles/bloc</link><description><![CDATA[How we manage state with the Bloc Library in the Flutter Companion App (Android and iOS) for PineTime Smart Watch]]></description><guid>https://lupyuen.github.io/pinetime-rust-mynewt/articles/bloc</guid><pubDate>Sat, 27 Jun 2020 00:00:00 +0000</pubDate></item><item><title>PineTime doesn&apos;t run Linux... But that&apos;s OK!</title><link>https://lupyuen.github.io/pinetime-rust-mynewt/articles/pinetime</link><description><![CDATA[Getting started with PineTime Smart Watch]]></description><guid>https://lupyuen.github.io/pinetime-rust-mynewt/articles/pinetime</guid><pubDate>Fri, 19 Jun 2020 00:00:00 +0000</pubDate></item><item><title>Your First GTK App with Go and VSCodium</title><link>https://lupyuen.github.io/pinetime-rust-mynewt/articles/gotk3</link><description><![CDATA[Creating desktop apps on Linux doesn't have to be hard... Let's build GTK+ 3 apps in Go with the gotk3 library!]]></description><guid>https://lupyuen.github.io/pinetime-rust-mynewt/articles/gotk3</guid><pubDate>Thu, 18 Jun 2020 00:00:00 +0000</pubDate></item><item><title>Convert Go to Flutter and Dart for PineTime Companion App</title><link>https://lupyuen.github.io/pinetime-rust-mynewt/articles/companion</link><description><![CDATA[How we build the Flutter Companion App (Android and iOS) for PineTime Smart Watch by converting Go to Dart]]></description><guid>https://lupyuen.github.io/pinetime-rust-mynewt/articles/companion</guid><pubDate>Wed, 17 Jun 2020 00:00:00 +0000</pubDate></item><item><title>Your First Bluetooth Low Energy App with Flutter</title><link>https://lupyuen.github.io/pinetime-rust-mynewt/articles/flutter</link><description><![CDATA[Bluetooth Low Energy apps are ridiculously easy to code with Flutter and Dart, let me show you how!]]></description><guid>https://lupyuen.github.io/pinetime-rust-mynewt/articles/flutter</guid><pubDate>Thu, 04 Jun 2020 00:00:00 +0000</pubDate></item><item><title>Porting MicroPython and wasp-os to Mynewt on PineTime Smart Watch (nRF52)</title><link>https://lupyuen.github.io/pinetime-rust-mynewt/articles/micropython</link><description><![CDATA[Making wasp-os truly awesome with full multitasking, interoperable firmware updates and a common companion app]]></description><guid>https://lupyuen.github.io/pinetime-rust-mynewt/articles/micropython</guid><pubDate>Tue, 02 Jun 2020 00:00:00 +0000</pubDate></item><item><title>Wireless Firmware Update In Action on PineTime Smart Watch (nRF52)</title><link>https://lupyuen.github.io/pinetime-rust-mynewt/articles/dfutest</link><description><![CDATA[Observe step-by-step the Wireless Firmware Update running on PineTime Smart Watch (nRF52) with MCUBoot Bootloader, NimBLE Bluetooth LE Stack and Apache Mynewt]]></description><guid>https://lupyuen.github.io/pinetime-rust-mynewt/articles/dfutest</guid><pubDate>Wed, 20 May 2020 00:00:00 +0000</pubDate></item><item><title>MCUBoot Bootloader for PineTime Smart Watch (nRF52)</title><link>https://lupyuen.github.io/pinetime-rust-mynewt/articles/mcuboot</link><description><![CDATA[Wireless Firmware Updates done right on PineTime Smart Watch... With the open source MCUBoot Bootloader from Apache Mynewt and Zephyr]]></description><guid>https://lupyuen.github.io/pinetime-rust-mynewt/articles/mcuboot</guid><pubDate>Mon, 18 May 2020 00:00:00 +0000</pubDate></item><item><title>Configure Mynewt for SPI Flash on PineTime Smart Watch (nRF52)</title><link>https://lupyuen.github.io/pinetime-rust-mynewt/articles/spiflash</link><description><![CDATA[Configure Mynewt OS to enable access to SPI Flash Memory on PineTime Smart Watch]]></description><guid>https://lupyuen.github.io/pinetime-rust-mynewt/articles/spiflash</guid><pubDate>Fri, 15 May 2020 00:00:00 +0000</pubDate></item><item><title>Firmware Update over Bluetooth Low Energy on PineTime Smart Watch</title><link>https://lupyuen.github.io/pinetime-rust-mynewt/articles/dfu</link><description><![CDATA[Flash any firmware to PineTime from our mobile phone... Without opening the watch!]]></description><guid>https://lupyuen.github.io/pinetime-rust-mynewt/articles/dfu</guid><pubDate>Mon, 11 May 2020 00:00:00 +0000</pubDate></item><item><title>CHIP-8 Game Emulator in Rust for PineTime Smart Watch</title><link>https://lupyuen.github.io/pinetime-rust-mynewt/articles/chip8</link><description><![CDATA[Running Retro Games with Rust is not that hard on PineTime Smart Watch. Here's how I ported a CHIP-8 Game Emulator to PineTime]]></description><guid>https://lupyuen.github.io/pinetime-rust-mynewt/articles/chip8</guid><pubDate>Thu, 05 Mar 2020 00:00:00 +0000</pubDate></item><item><title>Visual Rust for PineTime Smart Watch</title><link>https://github.com/lupyuen/visual-embedded-rust</link><description><![CDATA[Create and edit Embedded Rust programs visually by dragging and dropping blocks]]></description><guid>https://github.com/lupyuen/visual-embedded-rust</guid><pubDate>Thu, 05 Mar 2020 00:00:00 +0000</pubDate></item><item><title>My First Week As Embedded FOSS Advocate</title><link>https://lupyuen.github.io/articles/my-first-week-as-embedded-foss-advocate</link><description><![CDATA[Have humans become so greedy for profit… That we have forgotten how to teach one another and advance our species?]]></description><guid>https://lupyuen.github.io/articles/my-first-week-as-embedded-foss-advocate</guid><pubDate>Tue, 04 Feb 2020 00:00:00 +0000</pubDate></item><item><title>Debug RIOT-OS on PineTime with VSCode</title><link>https://web.archive.org/https://medium.com/@ly.lee/debug-riot-os-on-pinetime-with-vscode-12f00c69c120</link><description><![CDATA[VSCode debugging configuration for RIOT]]></description><guid>https://web.archive.org/https://medium.com/@ly.lee/debug-riot-os-on-pinetime-with-vscode-12f00c69c120</guid><pubDate>Sun, 02 Feb 2020 00:00:00 +0000</pubDate></item><item><title>If you’re in the East, please consider Rust!</title><link>https://web.archive.org/https://medium.com/@ly.lee/if-youre-in-the-east-please-consider-rust-23fa05873397</link><description><![CDATA[Coding in Embedded C is like building a skyscraper without scaffolding]]></description><guid>https://web.archive.org/https://medium.com/@ly.lee/if-youre-in-the-east-please-consider-rust-23fa05873397</guid><pubDate>Fri, 24 Jan 2020 00:00:00 +0000</pubDate></item><item><title>Debug Rust+Mynewt Firmware for PineTime on Raspberry Pi</title><link>https://lupyuen.github.io/articles/debug-rust-mynewt-firmware-for-pinetime-on-raspberry-pi</link><description><![CDATA[Using only a Raspberry Pi, we can debug the firmware on PineTime Smart Watch: Step into the flashed program line by line, set a breakpoint to pause execution at a line, inspect variables at runtime, … Just like the Embedded Pros!]]></description><guid>https://lupyuen.github.io/articles/debug-rust-mynewt-firmware-for-pinetime-on-raspberry-pi</guid><pubDate>Thu, 23 Jan 2020 00:00:00 +0000</pubDate></item><item><title>OpenOCD on Raspberry Pi: Better with SWD on SPI</title><link>https://lupyuen.github.io/articles/openocd-on-raspberry-pi-better-with-swd-on-spi</link><description><![CDATA[Instead of sending SWD data over GPIO one bit at a time, what if we could blast out the data over Raspberry Pi’s SPI interface?]]></description><guid>https://lupyuen.github.io/articles/openocd-on-raspberry-pi-better-with-swd-on-spi</guid><pubDate>Sat, 18 Jan 2020 00:00:00 +0000</pubDate></item><item><title>Build and Flash Rust+Mynewt Firmware for PineTime Smart Watch</title><link>https://lupyuen.github.io/articles/build-and-flash-rust-mynewt-firmware-for-pinetime-smart-watch</link><description><![CDATA[Programming a PineTime is not that hard… All you need is a Raspberry Pi, some wires and a little creativity!]]></description><guid>https://lupyuen.github.io/articles/build-and-flash-rust-mynewt-firmware-for-pinetime-smart-watch</guid><pubDate>Wed, 08 Jan 2020 00:00:00 +0000</pubDate></item><item><title>Optimising PineTime’s Display Driver with Rust and Mynewt</title><link>https://lupyuen.github.io/articles/optimising-pinetimes-display-driver-with-rust-and-mynewt</link><description><![CDATA[Simple tweaks like Batched Updates and Non-Blocking SPI can have a huge impact on rendering performance]]></description><guid>https://lupyuen.github.io/articles/optimising-pinetimes-display-driver-with-rust-and-mynewt</guid><pubDate>Sun, 29 Dec 2019 00:00:00 +0000</pubDate></item><item><title>Porting [druid] Rust Widgets to PineTime Smart Watch</title><link>https://lupyuen.github.io/articles/porting-druid-rust-widgets-to-pinetime-smart-watch</link><description><![CDATA[Code Watch Apps in Rust the Declarative Way]]></description><guid>https://lupyuen.github.io/articles/porting-druid-rust-widgets-to-pinetime-smart-watch</guid><pubDate>Sat, 14 Dec 2019 00:00:00 +0000</pubDate></item><item><title>My 5-Year IoT Mission</title><link>https://lupyuen.github.io/articles/my-5-year-iot-mission</link><description><![CDATA[5 years ago I decided to fix every link in the IoT Chain so that we can create really useful and affordable IoT gadgets, the Lean and Agile Way]]></description><guid>https://lupyuen.github.io/articles/my-5-year-iot-mission</guid><pubDate>Wed, 04 Dec 2019 00:00:00 +0000</pubDate></item><item><title>Hey GD32 VF103 on RISC-V: I surrender… For now</title><link>https://lupyuen.github.io/articles/hey-gd32-vf103-on-risc-v-i-surrender-for-now</link><description><![CDATA[Porting Mynewt OS to GD32 VF103 on RISC-V was a nightmare]]></description><guid>https://lupyuen.github.io/articles/hey-gd32-vf103-on-risc-v-i-surrender-for-now</guid><pubDate>Sat, 23 Nov 2019 00:00:00 +0000</pubDate></item><item><title>Building a Rust Driver for PineTime’s Touch Controller</title><link>https://lupyuen.github.io/articles/building-a-rust-driver-for-pinetimes-touch-controller</link><description><![CDATA[Programming the Hynitron CST816S Capacitive Touch Controller]]></description><guid>https://lupyuen.github.io/articles/building-a-rust-driver-for-pinetimes-touch-controller</guid><pubDate>Fri, 22 Nov 2019 00:00:00 +0000</pubDate></item><item><title>Sneak Peek of PineTime Smart Watch… And why it’s perfect for teaching IoT</title><link>https://lupyuen.github.io/articles/sneak-peek-of-pinetime-smart-watch-and-why-its-perfect-for-teaching-iot</link><description><![CDATA[PineTime is the spiritual successor to BBC micro:bit]]></description><guid>https://lupyuen.github.io/articles/sneak-peek-of-pinetime-smart-watch-and-why-its-perfect-for-teaching-iot</guid><pubDate>Fri, 15 Nov 2019 00:00:00 +0000</pubDate></item><item><title>Porting Apache Mynewt OS to GigaDevice GD32 VF103 on RISC-V</title><link>https://lupyuen.github.io/articles/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v</link><description><![CDATA[Many GD32 VF103 RISC-V developer boards are coming real soon... And Mynewt OS would be perfect for them]]></description><guid>https://lupyuen.github.io/articles/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v</guid><pubDate>Wed, 30 Oct 2019 00:00:00 +0000</pubDate></item><item><title>Bluetooth Mesh with nRF52 and Apache Mynewt</title><link>https://lupyuen.github.io/articles/bluetooth-mesh-with-nrf52-and-apache-mynewt</link><description><![CDATA[Set up an nRF52 mesh network, step by step, without any coding]]></description><guid>https://lupyuen.github.io/articles/bluetooth-mesh-with-nrf52-and-apache-mynewt</guid><pubDate>Tue, 15 Oct 2019 00:00:00 +0000</pubDate></item><item><title>Coding nRF52 with Rust and Apache Mynewt on Visual Studio Code</title><link>https://lupyuen.github.io/articles/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code</link><description><![CDATA[nRF52 works with popular open-source tools on Windows and macOS like VSCode, OpenOCD, Rust and ST-Link]]></description><guid>https://lupyuen.github.io/articles/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code</guid><pubDate>Thu, 03 Oct 2019 00:00:00 +0000</pubDate></item><item><title>Build an NB-IoT GPS Tracker on STM32 L476 with Apache Mynewt and Embedded Rust</title><link>https://lupyuen.github.io/articles/build-an-nb-iot-gps-tracker-on-stm32-l476-with-apache-mynewt-and-embedded-rust</link><description><![CDATA[Let’s build a simple gadget that determines its current location based on received GPS signals… And transmits the location to a server via NB-IoT]]></description><guid>https://lupyuen.github.io/articles/build-an-nb-iot-gps-tracker-on-stm32-l476-with-apache-mynewt-and-embedded-rust</guid><pubDate>Sun, 22 Sep 2019 00:00:00 +0000</pubDate></item><item><title>Quick Peek of Huawei LiteOS with NB-IoT on Ghostyu NB-EK-L476 Developer Kit (STM32L476RCT6)</title><link>https://lupyuen.github.io/articles/quick-peek-of-huawei-liteos-with-nb-iot-on-ghostyu-nb-ek-l476-developer-kit</link><description><![CDATA[Peek into the LiteOS + Application source code that was bundled with the NB-IoT Developer Kit]]></description><guid>https://lupyuen.github.io/articles/quick-peek-of-huawei-liteos-with-nb-iot-on-ghostyu-nb-ek-l476-developer-kit</guid><pubDate>Wed, 04 Sep 2019 00:00:00 +0000</pubDate></item><item><title>Low Power NB-IoT on STM32 Blue Pill with Apache Mynewt and Embedded Rust</title><link>https://lupyuen.github.io/articles/low-power-nb-iot-on-stm32-blue-pill-with-apache-mynewt-and-embedded-rust</link><description><![CDATA[Learn to optimise the power consumption of the NB-IoT Sensor Application in the previous tutorial]]></description><guid>https://lupyuen.github.io/articles/low-power-nb-iot-on-stm32-blue-pill-with-apache-mynewt-and-embedded-rust</guid><pubDate>Fri, 30 Aug 2019 00:00:00 +0000</pubDate></item><item><title>Visual Embedded Rust Programming with Visual Studio Code</title><link>https://lupyuen.github.io/articles/visual-embedded-rust-programming-with-visual-studio-code</link><description><![CDATA[Create and edit Embedded Rust programs for STM32 Blue Pill and Apache Mynewt… By dragging and dropping blocks!]]></description><guid>https://lupyuen.github.io/articles/visual-embedded-rust-programming-with-visual-studio-code</guid><pubDate>Sat, 17 Aug 2019 00:00:00 +0000</pubDate></item><item><title>Advanced Topics for Visual Embedded Rust Programming</title><link>https://lupyuen.github.io/articles/advanced-topics-for-visual-embedded-rust-programming</link><description><![CDATA[Watch what happens behind the scenes when you create a Visual Embedded Rust program]]></description><guid>https://lupyuen.github.io/articles/advanced-topics-for-visual-embedded-rust-programming</guid><pubDate>Sat, 17 Aug 2019 00:00:00 +0000</pubDate></item><item><title>Rust Rocks NB-IoT! STM32 Blue Pill with Quectel BC95-G on Apache Mynewt</title><link>https://lupyuen.github.io/articles/rust-rocks-nb-iot-stm32-blue-pill-with-quectel-bc95-g-on-apache-mynewt</link><description><![CDATA[Hardly anyone writes embedded programs in Rust for microcontrollers (like STM32 Blue Pill), we all use C. But we really should switch to Rust!]]></description><guid>https://lupyuen.github.io/articles/rust-rocks-nb-iot-stm32-blue-pill-with-quectel-bc95-g-on-apache-mynewt</guid><pubDate>Sun, 04 Aug 2019 00:00:00 +0000</pubDate></item><item><title>Connect STM32 Blue Pill to NB-IoT with Quectel BC95-G and Apache Mynewt</title><link>https://lupyuen.github.io/articles/connect-stm32-blue-pill-to-nb-iot-with-quectel-bc95-g-and-apache-mynewt</link><description><![CDATA[Let’s build an IoT sensor with a real microcontroller — STM32 Blue Pill — and a real NB-IoT module — Quectel BC95-G!]]></description><guid>https://lupyuen.github.io/articles/connect-stm32-blue-pill-to-nb-iot-with-quectel-bc95-g-and-apache-mynewt</guid><pubDate>Thu, 25 Jul 2019 00:00:00 +0000</pubDate></item><item><title>Get Started with NB-IoT and Quectel modules</title><link>https://lupyuen.github.io/articles/get-started-with-nb-iot-and-quectel-modules</link><description><![CDATA[How to use a Quectel evaluation board to send a CoAP message to the CoAP server hosted at thethings.io]]></description><guid>https://lupyuen.github.io/articles/get-started-with-nb-iot-and-quectel-modules</guid><pubDate>Mon, 15 Jul 2019 00:00:00 +0000</pubDate></item><item><title>Visual Programming with Embedded Rust? Yes we can with Apache Mynewt and Google Blockly!</title><link>https://web.archive.org/https://medium.com/@ly.lee/visual-programming-with-embedded-rust-yes-we-can-with-apache-mynewt-and-google-blockly-8b67ef7412d7</link><description><![CDATA[Simpler embedded coding, the visual way]]></description><guid>https://web.archive.org/https://medium.com/@ly.lee/visual-programming-with-embedded-rust-yes-we-can-with-apache-mynewt-and-google-blockly-8b67ef7412d7</guid><pubDate>Thu, 11 Jul 2019 00:00:00 +0000</pubDate></item><item><title>Safer, Simpler Embedded Rust with Apache Mynewt on STM32 Blue Pill</title><link>https://lupyuen.github.io/articles/safer-simpler-embedded-rust-with-apache-mynewt-on-stm32-blue-pill</link><description><![CDATA[Declarative and Procedural Macros (plus bindgen and tips for Visual Studio Code) to protect Embedded Rust coders from stumbling into embedded traps]]></description><guid>https://lupyuen.github.io/articles/safer-simpler-embedded-rust-with-apache-mynewt-on-stm32-blue-pill</guid><pubDate>Sun, 07 Jul 2019 00:00:00 +0000</pubDate></item><item><title>Hosting Embedded Rust apps on Apache Mynewt with STM32 Blue Pill</title><link>https://lupyuen.github.io/articles/hosting-embedded-rust-apps-on-apache-mynewt-with-stm32-blue-pill</link><description><![CDATA[It’s time to drop our legacy programming practices and adopt smarter, safer ways to exploit these microcontrollers… starting with Apache Mynewt and Rust.]]></description><guid>https://lupyuen.github.io/articles/hosting-embedded-rust-apps-on-apache-mynewt-with-stm32-blue-pill</guid><pubDate>Sun, 09 Jun 2019 00:00:00 +0000</pubDate></item><item><title>Build Your IoT Sensor Network — STM32 Blue Pill + nRF24L01 + ESP8266 + Apache Mynewt + thethings.io</title><link>https://lupyuen.github.io/articles/build-your-iot-sensor-network-stm32-blue-pill-nrf24l01-esp8266-apache-mynewt-thethings-io</link><description><![CDATA[Let's build a Sensor Network running on two Blue Pills with nRF24L01 and ESP8266]]></description><guid>https://lupyuen.github.io/articles/build-your-iot-sensor-network-stm32-blue-pill-nrf24l01-esp8266-apache-mynewt-thethings-io</guid><pubDate>Mon, 27 May 2019 00:00:00 +0000</pubDate></item><item><title>Super Blue Pill — Like STM32 Blue Pill, But Better!</title><link>https://lupyuen.github.io/articles/super-blue-pill-like-stm32-blue-pill-but-better</link><description><![CDATA[Friendlier for newbies, supports ESP8266 WiFi and nRF24L01]]></description><guid>https://lupyuen.github.io/articles/super-blue-pill-like-stm32-blue-pill-but-better</guid><pubDate>Tue, 21 May 2019 00:00:00 +0000</pubDate></item><item><title>Connect STM32 Blue Pill to ESP8266 with Apache Mynewt</title><link>https://lupyuen.github.io/articles/connect-stm32-blue-pill-to-esp8266-with-apache-mynewt</link><description><![CDATA[And WiFi Geolocation with ESP8266]]></description><guid>https://lupyuen.github.io/articles/connect-stm32-blue-pill-to-esp8266-with-apache-mynewt</guid><pubDate>Sat, 20 Apr 2019 00:00:00 +0000</pubDate></item><item><title>Create your IoT gadget with Apache Mynewt and STM32 Blue Pill</title><link>https://lupyuen.github.io/articles/create-your-iot-gadget-with-apache-mynewt-and-stm32-blue-pill</link><description><![CDATA[Apache Mynewt is a free, open-source realtime operating system for microcontrollers]]></description><guid>https://lupyuen.github.io/articles/create-your-iot-gadget-with-apache-mynewt-and-stm32-blue-pill</guid><pubDate>Tue, 26 Mar 2019 00:00:00 +0000</pubDate></item><item><title>Push AWS IoT sensor data to Redshift with Kinesis Firehose</title><link>https://web.archive.org/web/20191204194129/https://medium.com/@ly.lee/push-aws-iot-sensor-data-to-redshift-with-kinesis-firehose-385506264a00?source=friends_link&amp;sk=bd45be8b48fbb328ed1d65d10a8d7c38</link><description><![CDATA[AWS IoT Rules Engine and Kinesis Firehose were designed to stream live sensor data into Redshift for storage and analysis]]></description><guid>https://web.archive.org/web/20191204194129/https://medium.com/@ly.lee/push-aws-iot-sensor-data-to-redshift-with-kinesis-firehose-385506264a00?source=friends_link&amp;sk=bd45be8b48fbb328ed1d65d10a8d7c38</guid><pubDate>Sun, 10 Mar 2019 00:00:00 +0000</pubDate></item><item><title>Transform and Import a JSON file into Amazon Redshift with AWS Glue</title><link>https://web.archive.org/web/20191204194022/https://medium.com/@ly.lee/transform-and-import-a-json-file-into-amazon-redshift-with-aws-glue-3371006e03ca?source=friends_link&amp;sk=a57bcec30f5b6b1c978dc4f35d8d6427</link><description><![CDATA[With AWS Glue it’s now possible to keep our Redshift data warehouses in sync with JSON-based data stores… So we may exploit the full potential of business analytics and machine learning in AWS!]]></description><guid>https://web.archive.org/web/20191204194022/https://medium.com/@ly.lee/transform-and-import-a-json-file-into-amazon-redshift-with-aws-glue-3371006e03ca?source=friends_link&amp;sk=a57bcec30f5b6b1c978dc4f35d8d6427</guid><pubDate>Fri, 08 Mar 2019 00:00:00 +0000</pubDate></item><item><title>Connecting AWS Lambda Node.JS to Redshift or PostgreSQL? Try AWS Lambda Layers!</title><link>https://web.archive.org/web/20191204194031/https://medium.com/@ly.lee/connecting-aws-lambda-node-js-to-redshift-or-postgresql-try-aws-lambda-layers-78e60c27f39b?source=friends_link&amp;sk=84d0f78bddfece6049c2395741824e58</link><description><![CDATA[With Lambda Layers it’s really easy to connect our Node.js Lambda Function to Redshift or PostgreSQL]]></description><guid>https://web.archive.org/web/20191204194031/https://medium.com/@ly.lee/connecting-aws-lambda-node-js-to-redshift-or-postgresql-try-aws-lambda-layers-78e60c27f39b?source=friends_link&amp;sk=84d0f78bddfece6049c2395741824e58</guid><pubDate>Wed, 06 Mar 2019 00:00:00 +0000</pubDate></item><item><title>STM32 Blue Pill — Bootloading the WebUSB Bootloader</title><link>https://lupyuen.github.io/articles/stm32-blue-pill-bootloading-the-webusb-bootloader</link><description><![CDATA[How do we upgrade the Bootloader when it’s always running in the background, waiting for flashing requests? This article explains a special technique I used to upgrade the MakeCode Bootloader over WebUSB… I call it “Baseloading”]]></description><guid>https://lupyuen.github.io/articles/stm32-blue-pill-bootloading-the-webusb-bootloader</guid><pubDate>Mon, 25 Feb 2019 00:00:00 +0000</pubDate></item><item><title>STM32 Blue Pill — Dissecting the WebUSB Bootloader for MakeCode</title><link>https://lupyuen.github.io/articles/stm32-blue-pill-dissecting-the-webusb-bootloader-for-makecode</link><description><![CDATA[Explore the innards of the MakeCode Bootloader that I have ported to Blue Pill]]></description><guid>https://lupyuen.github.io/articles/stm32-blue-pill-dissecting-the-webusb-bootloader-for-makecode</guid><pubDate>Sat, 16 Feb 2019 00:00:00 +0000</pubDate></item><item><title>STM32 Blue Pill — Unit Testing with Qemu Blue Pill Emulator</title><link>https://lupyuen.github.io/articles/stm32-blue-pill-unit-testing-with-qemu-blue-pill-emulator</link><description><![CDATA[Computing sensor values in IoT devices can be prone to bugs… And Unit Testing can help to stop the bugs before they pollute the entire IoT chain]]></description><guid>https://lupyuen.github.io/articles/stm32-blue-pill-unit-testing-with-qemu-blue-pill-emulator</guid><pubDate>Thu, 07 Feb 2019 00:00:00 +0000</pubDate></item><item><title>STM32 Blue Pill – Shrink your math libraries with Qfplib</title><link>https://lupyuen.github.io/articles/stm32-blue-pill-shrink-your-math-libraries-with-qfplib</link><description><![CDATA[Filling in tiny math functions with nano-float]]></description><guid>https://lupyuen.github.io/articles/stm32-blue-pill-shrink-your-math-libraries-with-qfplib</guid><pubDate>Wed, 30 Jan 2019 00:00:00 +0000</pubDate></item><item><title>STM32 Blue Pill — Analyse and Optimise Your RAM and ROM</title><link>https://lupyuen.github.io/articles/stm32-blue-pill-analyse-and-optimise-your-ram-and-rom</link><description><![CDATA[Learn the tips and tools to prevent Blue Pill Bloat]]></description><guid>https://lupyuen.github.io/articles/stm32-blue-pill-analyse-and-optimise-your-ram-and-rom</guid><pubDate>Thu, 24 Jan 2019 00:00:00 +0000</pubDate></item><item><title>STM32 Blue Pill USB Bootloader — How I fixed the USB Storage, Serial, DFU and WebUSB interfaces</title><link>https://lupyuen.github.io/articles/stm32-blue-pill-usb-bootloader-how-i-fixed-the-usb-storage-serial-dfu-and-webusb-interfaces</link><description><![CDATA[STM32 Blue Pill is a remarkable microcontroller for US$ 2. I proved it by running the USB Storage, USB Serial, USB DFU (Direct Firmware Upgrade) and WebUSB interfaces all on the same Blue Pill concurrently, without any additional hardware!]]></description><guid>https://lupyuen.github.io/articles/stm32-blue-pill-usb-bootloader-how-i-fixed-the-usb-storage-serial-dfu-and-webusb-interfaces</guid><pubDate>Tue, 18 Dec 2018 00:00:00 +0000</pubDate></item><item><title>STM32 Blue Pill Visual Programming with MakeCode, CODAL and libopencm3</title><link>https://web.archive.org/web/20191204194221/https://medium.com/@ly.lee/work-in-progress-stm32-blue-pill-visual-programming-with-makecode-codal-and-libopencm3-422d308f252e?source=friends_link&amp;sk=b39519335652415d5f4aa17c9e4af1d2</link><description><![CDATA[This work-in-progress document describes an incomplete implementation of STM32 Blue Pill visual programming]]></description><guid>https://web.archive.org/web/20191204194221/https://medium.com/@ly.lee/work-in-progress-stm32-blue-pill-visual-programming-with-makecode-codal-and-libopencm3-422d308f252e?source=friends_link&amp;sk=b39519335652415d5f4aa17c9e4af1d2</guid><pubDate>Sun, 09 Dec 2018 00:00:00 +0000</pubDate></item><item><title>Sigfox Teacher Answers Your Questions</title><link>https://web.archive.org/web/20191204194157/https://medium.com/@ly.lee/sigfox-teacher-answers-your-questions-7e47122716dc?source=friends_link&amp;sk=7668c0b2ecc6333cd60ff8e536501ebd</link><description><![CDATA[I teach Sigfox to working professionals. Here are their questions…]]></description><guid>https://web.archive.org/web/20191204194157/https://medium.com/@ly.lee/sigfox-teacher-answers-your-questions-7e47122716dc?source=friends_link&amp;sk=7668c0b2ecc6333cd60ff8e536501ebd</guid><pubDate>Fri, 07 Dec 2018 00:00:00 +0000</pubDate></item><item><title>以 thethings.iO 來將 BBC micro:bit 感測器圖形化</title><link>https://www.kidscoding8.com/98097.html</link><description><![CDATA[如果您可以將您以電池供應電力的BBC micro:bit設置在城市裡的任何一個角落來收集感測資料 … 或者是隨時查看從家裡、學校、工作場所即時更新的感測資料 … 不是很酷嗎？]]></description><guid>https://www.kidscoding8.com/98097.html</guid><pubDate>Thu, 29 Nov 2018 00:00:00 +0000</pubDate></item><item><title>Visualising BBC micro:bit sensors with thethings.iO</title><link>https://web.archive.org/web/20191204194120/https://medium.com/@ly.lee/visualising-bbc-micro-bit-sensors-with-thethings-io-5689fb613531?source=friends_link&amp;sk=a8cfc404362ecbe3a26823f6a70fa5cb</link><description><![CDATA[Wouldn’t it be cool if you could plant your BBC micro:bit anywhere in the city (powered by batteries) to collect sensor data… And watch live updates of the sensor data from your home, school, workplace, … Even on the go?]]></description><guid>https://web.archive.org/web/20191204194120/https://medium.com/@ly.lee/visualising-bbc-micro-bit-sensors-with-thethings-io-5689fb613531?source=friends_link&amp;sk=a8cfc404362ecbe3a26823f6a70fa5cb</guid><pubDate>Sat, 17 Nov 2018 00:00:00 +0000</pubDate></item><item><title>連接 BBC micro:bit 與 Sigfox 物聯網</title><link>https://makerpro.cc/2018/11/connect-bbc-microbit-and-sigfox-iot/</link><description><![CDATA[使用 BBC micro:bit 連接 Sigfox 物聯網網路會是一個很好幫助孩子們理解感測器與感測網路如何運作的理想方式。micro:bit 是新式以電池提供電力的感測器裝置典範，具備充足的處理能力並支援大多數的感測器類型。在教育用途上，Sigfox 可能是今日用於城市規模測試的感測網路之中，最為便宜的方案。]]></description><guid>https://makerpro.cc/2018/11/connect-bbc-microbit-and-sigfox-iot/</guid><pubDate>Tue, 13 Nov 2018 00:00:00 +0000</pubDate></item><item><title>Connect BBC micro:bit to Sigfox</title><link>https://web.archive.org/https://medium.com/coinmonks/connect-bbc-micro-bit-to-sigfox-4d1603d19350</link><description><![CDATA[BBC micro:bit connected to the Sigfox IoT network is the perfect way to help kids understand how Sensors and Sensor Networks operate. The micro:bit is a good representation of a modern battery-powered sensor device, with ample processing power and support for most types of sensors. For education, Sigfox is likely the cheapest option today for experimenting with a city-wide sensor network.]]></description><guid>https://web.archive.org/https://medium.com/coinmonks/connect-bbc-micro-bit-to-sigfox-4d1603d19350</guid><pubDate>Mon, 05 Nov 2018 00:00:00 +0000</pubDate></item><item><title>連接 STM32F103C8T6 Blue Pill 開發板與 Sigfox 物聯網</title><link>https://makerpro.cc/2018/11/connect-blue-pill-with-sigfox-part-one/</link><description><![CDATA[以 STM32 微處理器為核心的 STM32F103C8T6 Blue Pill 開發板連接 Sigfox 收發器模組來接取 Sigfox 物聯網網路可能會是設計一款低功率物聯網裝置的最佳組合。]]></description><guid>https://makerpro.cc/2018/11/connect-blue-pill-with-sigfox-part-one/</guid><pubDate>Wed, 17 Oct 2018 00:00:00 +0000</pubDate></item><item><title>Connect STM32 Blue Pill to Sigfox</title><link>https://web.archive.org/https://medium.com/coinmonks/connect-stm32-blue-pill-to-sigfox-28c6f91bddc1</link><description><![CDATA[STM32 “Blue Pill” microcontroller connected to a transceiver module for the Sigfox IoT network might be the best combination for low-power IoT devices right now.]]></description><guid>https://web.archive.org/https://medium.com/coinmonks/connect-stm32-blue-pill-to-sigfox-28c6f91bddc1</guid><pubDate>Fri, 28 Sep 2018 00:00:00 +0000</pubDate></item><item><title>Watch STM32 Blue Pill Juggle Two SPI Sensors With DMA</title><link>https://web.archive.org/https://medium.com/coinmonks/watch-stm32-blue-pill-juggle-two-spi-sensors-with-dma-20cd1aa89869</link><description><![CDATA[This article that explains all that I have learnt about SPI ports, DMA and interrupts on the Blue Pill]]></description><guid>https://web.archive.org/https://medium.com/coinmonks/watch-stm32-blue-pill-juggle-two-spi-sensors-with-dma-20cd1aa89869</guid><pubDate>Wed, 19 Sep 2018 00:00:00 +0000</pubDate></item><item><title>Program Your First FPGA With GOWIN GW1N-4</title><link>https://web.archive.org/https://medium.com/coinmonks/program-your-first-fpga-with-gowin-gw1n-4-b0d5c22b9fea</link><description><![CDATA[As we learn how to program the FPGA, we’ll soon realise that FPGA programming is really extraordinary, unlike any other kind of programming we have done before]]></description><guid>https://web.archive.org/https://medium.com/coinmonks/program-your-first-fpga-with-gowin-gw1n-4-b0d5c22b9fea</guid><pubDate>Wed, 05 Sep 2018 00:00:00 +0000</pubDate></item><item><title>Juggling STM32 Blue Pill For Arduino Jugglers</title><link>https://web.archive.org/https://medium.com/coinmonks/juggling-stm32-blue-pill-for-arduino-jugglers-edf6820dc808</link><description><![CDATA[Upsizing from Arduino Uno to a 32-bit STM microcontroller doesn’t have to be hard]]></description><guid>https://web.archive.org/https://medium.com/coinmonks/juggling-stm32-blue-pill-for-arduino-jugglers-edf6820dc808</guid><pubDate>Mon, 27 Aug 2018 00:00:00 +0000</pubDate></item><item><title>Juggling Sigfox Downlink And Arduino Sensors With cocoOS</title><link>https://web.archive.org/https://medium.com/coinmonks/juggling-sigfox-downlink-and-arduino-sensors-with-cocoos-4594be59bf1b</link><description><![CDATA[Using the cocoOS task scheduler to run Sensor Tasks concurrently while waiting for the Network and UART Tasks]]></description><guid>https://web.archive.org/https://medium.com/coinmonks/juggling-sigfox-downlink-and-arduino-sensors-with-cocoos-4594be59bf1b</guid><pubDate>Mon, 20 Aug 2018 00:00:00 +0000</pubDate></item><item><title>Juggling Arduino Sensors With cocoOS</title><link>https://web.archive.org/https://medium.com/coinmonks/juggling-arduino-sensors-with-cocoos-403e14ec28be</link><description><![CDATA[Juggle multiple Arduino sensors, using an open source library for cooperative processing: cocoOS]]></description><guid>https://web.archive.org/https://medium.com/coinmonks/juggling-arduino-sensors-with-cocoos-403e14ec28be</guid><pubDate>Sat, 11 Aug 2018 00:00:00 +0000</pubDate></item><item><title>Why use FPGA for IoT? Here’s what I think…</title><link>https://web.archive.org/https://medium.com/coinmonks/why-use-fpga-for-iot-heres-what-i-think-e513772514d6</link><description><![CDATA[Since FPGAs are already mainstream, could we use them to create IoT devices that are more power-efficient than current devices based on microcontrollers?]]></description><guid>https://web.archive.org/https://medium.com/coinmonks/why-use-fpga-for-iot-heres-what-i-think-e513772514d6</guid><pubDate>Tue, 31 Jul 2018 00:00:00 +0000</pubDate></item><item><title>Coding the STM32 Blue Pill with Rust and Visual Studio Code</title><link>https://web.archive.org/https://medium.com/coinmonks/coding-the-stm32-blue-pill-with-rust-and-visual-studio-code-b21615d8a20</link><description><![CDATA[Let's learn Rust, a modern systems programming language that promotes safe, concurrent low-level coding]]></description><guid>https://web.archive.org/https://medium.com/coinmonks/coding-the-stm32-blue-pill-with-rust-and-visual-studio-code-b21615d8a20</guid><pubDate>Tue, 10 Jul 2018 00:00:00 +0000</pubDate></item><item><title>Making my first ever PCB with Seeed Fusion PCB assembly service</title><link>https://web.archive.org/https://medium.com/coinmonks/making-my-first-ever-pcb-with-seeed-fusion-pcb-assembly-service-9af5736016b3</link><description><![CDATA[Here’s the story of the first gadget that I have ever created, with help from the brilliant minds at Seeed in Shenzhen]]></description><guid>https://web.archive.org/https://medium.com/coinmonks/making-my-first-ever-pcb-with-seeed-fusion-pcb-assembly-service-9af5736016b3</guid><pubDate>Thu, 05 Jul 2018 00:00:00 +0000</pubDate></item><item><title>Running Rust and FreeRTOS on the PADI IoT Stamp</title><link>https://web.archive.org/https://medium.com/coinmonks/running-rust-and-freertos-on-the-padi-iot-stamp-fb36c5ef4844</link><description><![CDATA[Better tools for building robust and reliable programs for microcontrollers]]></description><guid>https://web.archive.org/https://medium.com/coinmonks/running-rust-and-freertos-on-the-padi-iot-stamp-fb36c5ef4844</guid><pubDate>Mon, 18 Jun 2018 00:00:00 +0000</pubDate></item><item><title>First Impressions of Alibaba Cloud (Aliyun)</title><link>https://web.archive.org/web/20191204194108/https://medium.com/@ly.lee/first-impressions-of-alibaba-cloud-aliyun-688dc46fa9b8?source=friends_link&amp;sk=0685f5028f4ce9575dfae9cc9515143d</link><description><![CDATA[Could Alibaba Cloud be the economical cloud for high volume IoT?]]></description><guid>https://web.archive.org/web/20191204194108/https://medium.com/@ly.lee/first-impressions-of-alibaba-cloud-aliyun-688dc46fa9b8?source=friends_link&amp;sk=0685f5028f4ce9575dfae9cc9515143d</guid><pubDate>Mon, 21 May 2018 00:00:00 +0000</pubDate></item><item><title>Multitasking on the Arduino with a Finite State Machine – And why you’ll need it for Sigfox Downlink</title><link>https://web.archive.org/https://medium.com/coinmonks/multitasking-on-the-arduino-with-a-finite-state-machine-and-why-youll-need-it-for-sigfox-d52dafc55d8e</link><description><![CDATA[How to implement a Finite State Machine on the Arduino Uno]]></description><guid>https://web.archive.org/https://medium.com/coinmonks/multitasking-on-the-arduino-with-a-finite-state-machine-and-why-youll-need-it-for-sigfox-d52dafc55d8e</guid><pubDate>Sun, 13 May 2018 00:00:00 +0000</pubDate></item><item><title>Realtime sensor data processing with thethings.io and Amazon Web Services Kinesis</title><link>https://web.archive.org/https://medium.com/coinmonks/realtime-sensor-data-processing-with-thethings-io-and-amazon-web-services-kinesis-e12ebb022106</link><description><![CDATA[How to experiment with IoT today while minimising the security and performance risks, and keeping costs low]]></description><guid>https://web.archive.org/https://medium.com/coinmonks/realtime-sensor-data-processing-with-thethings-io-and-amazon-web-services-kinesis-e12ebb022106</guid><pubDate>Tue, 01 May 2018 00:00:00 +0000</pubDate></item><item><title>I Teach IoT. Here’s what you’ll learn</title><link>https://web.archive.org/https://medium.com/@ly.lee/i-teach-iot-heres-what-you-ll-learn-3e0d1b997dd0</link><description><![CDATA[Arduino, Low Power Networks, IoT Networks, IoT Analytics, ...]]></description><guid>https://web.archive.org/https://medium.com/@ly.lee/i-teach-iot-heres-what-you-ll-learn-3e0d1b997dd0</guid><pubDate>Tue, 24 Apr 2018 00:00:00 +0000</pubDate></item><item><title>Developing cost-effective, energy efficient IoT solutions for outdoor as well as indoor applications</title><link>https://www.opengovasia.com/articles/developing-cost-effective-energy-efficient-iot-solutions-for-outdoor-as-well-as-indoor-applications</link><description><![CDATA[Lup Yuen talks about two classes of IoT, ‘deep’ IoT and ‘wide’ IoT. Deep IoT devices require high bandwidth and power supply. UnaBiz looks at wide IoT, which refers to devices that are very light, battery-powered and operate on pervasive networks. They can work anytime, anywhere in Singapore and do not rely on WiFi or the cellular network.]]></description><guid>https://www.opengovasia.com/articles/developing-cost-effective-energy-efficient-iot-solutions-for-outdoor-as-well-as-indoor-applications</guid><pubDate>Tue, 20 Mar 2018 00:00:00 +0000</pubDate></item><item><title>How To Build Your Sigfox Server (Version 1.0)</title><link>https://web.archive.org/web/20191204194035/https://medium.com/@ly.lee/how-to-build-your-sigfox-server-version-1-0-6763732692fd?source=friends_link&amp;sk=641f65c458ec59fa27dddbe7735b118a</link><description><![CDATA[Building highly reliable, robust and scalable systems for processing Sigfox messages]]></description><guid>https://web.archive.org/web/20191204194035/https://medium.com/@ly.lee/how-to-build-your-sigfox-server-version-1-0-6763732692fd?source=friends_link&amp;sk=641f65c458ec59fa27dddbe7735b118a</guid><pubDate>Sat, 14 Oct 2017 00:00:00 +0000</pubDate></item><item><title>Story of the UnaShield</title><link>https://web.archive.org/https://medium.com/@ly.lee/story-of-the-unashield-ff9e78fd7726</link><description><![CDATA[Co-created with Upton Lai, the brilliant guy who could make anything]]></description><guid>https://web.archive.org/https://medium.com/@ly.lee/story-of-the-unashield-ff9e78fd7726</guid><pubDate>Wed, 05 Jul 2017 00:00:00 +0000</pubDate></item><item><title>IoT is a Bad Word</title><link>https://web.archive.org/web/20191204194240/https://medium.com/@ly.lee/iot-is-a-bad-word-9003d9fab638?source=friends_link&amp;sk=f7d58ebca338f326b6be8dcb79c7d6f5</link><description><![CDATA[IoT is about solving real problems (not imaginary ones) in a sustainable way]]></description><guid>https://web.archive.org/web/20191204194240/https://medium.com/@ly.lee/iot-is-a-bad-word-9003d9fab638?source=friends_link&amp;sk=f7d58ebca338f326b6be8dcb79c7d6f5</guid><pubDate>Fri, 26 May 2017 00:00:00 +0000</pubDate></item><item><title>Overcoming Productivity Challenges in the F&amp;B Industry</title><link>https://goo.gl/wLhDYo</link><description><![CDATA[ ]]></description><guid>https://goo.gl/wLhDYo</guid><pubDate>Thu, 23 Apr 2015 00:00:00 +0000</pubDate></item><item><title>Sigfox and Google Cloud Platform</title><link>https://goo.gl/vt6WZf</link><description><![CDATA[ ]]></description><guid>https://goo.gl/vt6WZf</guid><pubDate>Mon, 20 Oct 2014 00:00:00 +0000</pubDate></item><item><title>Patent: Enlargement of video content streamed from the internet</title><link>http://patentscope.wipo.int/search/en/detail.jsf?docId=WO2012002906</link><description><![CDATA[This invention relates to a system for displaying video content streamed from a network in a full screen mode. The system receives receiving a network address based on a selection from a user. The system then transmits a request for content from the network address and subsequently receives the content associated with the network address. A search is performed on the content for data that provides displaying a video content in a full screen mode. Upon detecting the data, the process generates the data and displays video content in full screen mode.]]></description><guid>http://patentscope.wipo.int/search/en/detail.jsf?docId=WO2012002906</guid><pubDate>Wed, 30 Jun 2010 00:00:00 +0000</pubDate></item><item><title>Patent: A system and method for providing mobile services</title><link>http://patentscope.wipo.int/search/en/detail.jsf?docId=WO2008004981</link><description><![CDATA[A system and method for providing mobile services, the system comprising: a mobile device executing a client application for generating a mobile service request; and a hub server for receiving and processing the mobile service request, wherein the mobile service request comprises location data of the mobile device, and the hub server pushes one or more mobile service offers to the mobile device based on the location data. The method comprises executing a client application for generating a mobile service request on a mobile device; receiving and processing the mobile service request at a hub server; and pushing one or more mobile service offers from the hub server to the mobile device based on location data, wherein the mobile service request comprises location data of the mobile device.]]></description><guid>http://patentscope.wipo.int/search/en/detail.jsf?docId=WO2008004981</guid><pubDate>Wed, 27 Jun 2007 00:00:00 +0000</pubDate></item></channel></rss>
+<rss version="2.0">
+    <channel>
+        <title>lupyuen</title>
+        <link>https://lupyuen.github.io</link>
+        <description>IoT Techie and Educator</description>
+        <item>
+            <title>LoRaWAN on PineDio Stack BL604 RISC-V Board</title>
+            <link>https://lupyuen.github.io/articles/lorawan2</link>
+            <description><![CDATA[How we test LoRaWAN on the new PineDio Stack BL604 RISC-V Board]]></description>
+            <guid>https://lupyuen.github.io/articles/lorawan2</guid>
+            <pubDate>Thu, 16 Sep 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Rust on RISC-V BL602: Rhai Scripting</title>
+            <link>https://lupyuen.github.io/articles/rhai</link>
+            <description><![CDATA[Can we drag-and-drop Rhai Scripts... And run them on WebAssembly and BL602 RISC-V SoC?]]></description>
+            <guid>https://lupyuen.github.io/articles/rhai</guid>
+            <pubDate>Sat, 04 Sep 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>PineDio Stack BL604 RISC-V Board: Testing The Prototype</title>
+            <link>https://lupyuen.github.io/articles/pinedio</link>
+            <description><![CDATA[What's it like to create Open Source Software for brand new prototype hardware? Read on to find out!]]></description>
+            <guid>https://lupyuen.github.io/articles/pinedio</guid>
+            <pubDate>Sun, 29 Aug 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Rust on RISC-V BL602: Simulated with WebAssembly</title>
+            <link>https://lupyuen.github.io/articles/rustsim</link>
+            <description><![CDATA[Can we run Rust Firmware for BL602 RISC-V SoC in a Web Browser... Simulated with WebAssembly?]]></description>
+            <guid>https://lupyuen.github.io/articles/rustsim</guid>
+            <pubDate>Mon, 16 Aug 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Rust on RISC-V BL602: Is It Sunny?</title>
+            <link>https://lupyuen.github.io/articles/adc</link>
+            <description><![CDATA[How we create Rust Firmware that reads Analog Inputs... With the Analog-to-Digital Converter on RISC-V BL602]]></description>
+            <guid>https://lupyuen.github.io/articles/adc</guid>
+            <pubDate>Tue, 03 Aug 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>RISC-V BL706 Audio Video Board</title>
+            <link>https://lupyuen.github.io/articles/bl706</link>
+            <description><![CDATA[What's inside the Bouffalo Lab RISC-V BL706 Audio Video Board... And how it differs from BL602]]></description>
+            <guid>https://lupyuen.github.io/articles/bl706</guid>
+            <pubDate>Wed, 14 Jul 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Reverse Engineering WiFi on RISC-V BL602</title>
+            <link>https://lupyuen.github.io/articles/wifi</link>
+            <description><![CDATA[What happens inside the WiFi Driver on RISC-V BL602... And how we found the incomplete source code for the driver]]></description>
+            <guid>https://lupyuen.github.io/articles/wifi</guid>
+            <pubDate>Wed, 07 Jul 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Machine Learning on RISC-V BL602 with TensorFlow Lite</title>
+            <link>https://lupyuen.github.io/articles/tflite</link>
+            <description><![CDATA[How we run TensorFlow Lite on RISC-V BL602... To create a Glowing LED]]></description>
+            <guid>https://lupyuen.github.io/articles/tflite</guid>
+            <pubDate>Tue, 22 Jun 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>BL602 Bootloader</title>
+            <link>https://lupyuen.github.io/articles/boot</link>
+            <description><![CDATA[All about the BL602 RISC-V Bootloader... And how it loads the Application Firmware into XIP Flash Memory]]></description>
+            <guid>https://lupyuen.github.io/articles/boot</guid>
+            <pubDate>Wed, 09 Jun 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Simulate RISC-V BL602 with WebAssembly, uLisp and Blockly</title>
+            <link>https://lupyuen.github.io/articles/wasm</link>
+            <description><![CDATA[How we simulate the BL602 RISC-V SoC with uLisp in WebAssembly... And preview Blockly uLisp Apps in the Web Browser]]></description>
+            <guid>https://lupyuen.github.io/articles/wasm</guid>
+            <pubDate>Thu, 27 May 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>uLisp and Blockly on PineCone BL602 RISC-V Board</title>
+            <link>https://lupyuen.github.io/articles/lisp</link>
+            <description><![CDATA[Porting the uLisp Interpreter to PineCone BL602 RISC-V Board... And writing graphical programs with Blockly (Scratch)]]></description>
+            <guid>https://lupyuen.github.io/articles/lisp</guid>
+            <pubDate>Fri, 14 May 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>PineCone BL602 Talks LoRaWAN</title>
+            <link>https://lupyuen.github.io/articles/lorawan</link>
+            <description><![CDATA[How we connect PineCone BL602 RISC-V Board to LoRaWAN... With the Pine64 RFM90 LoRa Module]]></description>
+            <guid>https://lupyuen.github.io/articles/lorawan</guid>
+            <pubDate>Tue, 11 May 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Build a LoRaWAN Network with RAKwireless WisGate Developer Gateway</title>
+            <link>https://lupyuen.github.io/articles/wisgate</link>
+            <description><![CDATA[How we set up our own LoRaWAN Network with RAKwireless RAK7248 WisGate Developer D4H Gateway... And test it with RAKwireless WisBlock in Arduino]]></description>
+            <guid>https://lupyuen.github.io/articles/wisgate</guid>
+            <pubDate>Fri, 30 Apr 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Run Rust RISC-V Firmware with BL602 IoT SDK</title>
+            <link>https://lupyuen.github.io/articles/rust</link>
+            <description><![CDATA[How we build, flash and run Rust firmware on BL602 RISC-V SoC... With the BL602 IoT SDK]]></description>
+            <guid>https://lupyuen.github.io/articles/rust</guid>
+            <pubDate>Wed, 21 Apr 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>PineCone BL602 RISC-V Board Receives LoRa Packets</title>
+            <link>https://lupyuen.github.io/articles/lora2</link>
+            <description><![CDATA[How PineCone BL602 RISC-V Board with SX1276 receives LoRa packets... Transmitted by RAKwireless WisBlock]]></description>
+            <guid>https://lupyuen.github.io/articles/lora2</guid>
+            <pubDate>Sun, 04 Apr 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>RAKwireless WisBlock talks LoRa with PineCone BL602 RISC-V Board</title>
+            <link>https://lupyuen.github.io/articles/wisblock</link>
+            <description><![CDATA[How we receive LoRa packets transmitted by PineCone BL602 RISC-V Board ... With RAKwireless WisBlock in Arduino]]></description>
+            <guid>https://lupyuen.github.io/articles/wisblock</guid>
+            <pubDate>Thu, 11 Mar 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Connect PineCone BL602 to LoRa Transceiver</title>
+            <link>https://lupyuen.github.io/articles/lora</link>
+            <description><![CDATA[How we transmit LoRa packets on PineCone BL602 RISC-V Board ... With Semtech 1276 or Hope RF96]]></description>
+            <guid>https://lupyuen.github.io/articles/lora</guid>
+            <pubDate>Sun, 07 Mar 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>The RISC-V BL602 Book</title>
+            <link>https://lupyuen.github.io/articles/book</link>
+            <description><![CDATA[Your free open-source resource for learning RISC-V BL602 SoC]]></description>
+            <guid>https://lupyuen.github.io/articles/book</guid>
+            <pubDate>Sat, 20 Feb 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>PineCone BL602 Talks UART to Grove E-Ink Display</title>
+            <link>https://lupyuen.github.io/articles/uart</link>
+            <description><![CDATA[How we render an image with PineCone BL602 RISC-V Board ... On Grove Triple Colour E-Ink Display with UART Interface]]></description>
+            <guid>https://lupyuen.github.io/articles/uart</guid>
+            <pubDate>Fri, 19 Feb 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>PineCone BL602 Blasting Pixels to ST7789 Display with LVGL Library</title>
+            <link>https://lupyuen.github.io/articles/display</link>
+            <description><![CDATA[How we render text and graphics on PineCone BL602 RISC-V Board ... With ST7789 SPI Display and LVGL Graphics Library]]></description>
+            <guid>https://lupyuen.github.io/articles/display</guid>
+            <pubDate>Tue, 16 Feb 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>PineCone BL602 talks SPI too!</title>
+            <link>https://lupyuen.github.io/articles/spi</link>
+            <description><![CDATA[PineCone BL602 RISC-V Board talks to BME280 Sensor over SPI... Let's find out how]]></description>
+            <guid>https://lupyuen.github.io/articles/spi</guid>
+            <pubDate>Sun, 07 Feb 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>PineCone BL602 talks to I2C Sensors</title>
+            <link>https://lupyuen.github.io/articles/i2c</link>
+            <description><![CDATA[How we call the BL602 RISC-V Hardware Abstraction Layer to access the BME280 I2C Sensor]]></description>
+            <guid>https://lupyuen.github.io/articles/i2c</guid>
+            <pubDate>Fri, 29 Jan 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Mynewt GPIO ported to PineCone BL602 RISC-V Board</title>
+            <link>https://lupyuen.github.io/articles/gpio</link>
+            <description><![CDATA[How we ported the BL602 RISC-V Hardware Abstraction Layer to Apache Mynewt ... Starting with GPIO]]></description>
+            <guid>https://lupyuen.github.io/articles/gpio</guid>
+            <pubDate>Fri, 15 Jan 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Control PineCone BL602 RGB LED with GPIO and PWM</title>
+            <link>https://lupyuen.github.io/articles/led</link>
+            <description><![CDATA[Explore the BL602 GPIO and PWM Demo Firmware... And how they call the GPIO and PWM Hardware Abstraction Layer]]></description>
+            <guid>https://lupyuen.github.io/articles/led</guid>
+            <pubDate>Wed, 06 Jan 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Flashing Firmware to PineCone BL602</title>
+            <link>https://lupyuen.github.io/articles/flash</link>
+            <description><![CDATA[What happens when we flash RISC-V firmware to PineCone BL602 Board... And what's inside the BL602 Boot Image, Partition Table, Device Tree and EFuse Configuration]]></description>
+            <guid>https://lupyuen.github.io/articles/flash</guid>
+            <pubDate>Fri, 01 Jan 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Porting Mynewt to PineCone BL602</title>
+            <link>https://lupyuen.github.io/articles/mynewt</link>
+            <description><![CDATA[How we port Apache Mynewt embedded operating system to the PineCone BL602 RISC-V Board]]></description>
+            <guid>https://lupyuen.github.io/articles/mynewt</guid>
+            <pubDate>Mon, 21 Dec 2020 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Better Open Source Advocate</title>
+            <link>https://lupyuen.github.io/articles/advocate</link>
+            <description><![CDATA[I made mistakes in 2020... Here's how I'll do better in 2021]]></description>
+            <guid>https://lupyuen.github.io/articles/advocate</guid>
+            <pubDate>Tue, 15 Dec 2020 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Debug Rust on PineCone BL602 with VSCode and GDB</title>
+            <link>https://lupyuen.github.io/articles/debug</link>
+            <description><![CDATA[How we build and debug Embedded Rust Firmware for PineCone BL602... With VSCode and GDB]]></description>
+            <guid>https://lupyuen.github.io/articles/debug</guid>
+            <pubDate>Mon, 14 Dec 2020 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Connect PineCone BL602 to OpenOCD</title>
+            <link>https://lupyuen.github.io/articles/openocd</link>
+            <description><![CDATA[How we connect PineCone BL602 Evaluation Board to OpenOCD... For flashing and debugging RISC-V firmware]]></description>
+            <guid>https://lupyuen.github.io/articles/openocd</guid>
+            <pubDate>Fri, 11 Dec 2020 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Quick Peek of PineCone BL602 RISC-V Evaluation Board</title>
+            <link>https://lupyuen.github.io/articles/pinecone</link>
+            <description><![CDATA[What's inside the PineCone BL602 Evaluation Board... And how we're using it to contribute to the RISC-V Open Source Ecosystem]]></description>
+            <guid>https://lupyuen.github.io/articles/pinecone</guid>
+            <pubDate>Sun, 29 Nov 2020 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>(UNFINISHED) Draw your own PineTime Watch Face... From WebAssembly to Embedded Rust</title>
+            <link>https://lupyuen.github.io/pinetime-rust-mynewt/articles/handdrawn</link>
+            <description><![CDATA[How we build a hand-drawn Watch Face for PineTime Smart Watch... Starting from WebAssembly to Embedded Rust]]></description>
+            <guid>https://lupyuen.github.io/pinetime-rust-mynewt/articles/handdrawn</guid>
+            <pubDate>Wed, 18 Nov 2020 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Create Your Own PineTime Watch Face in Rust... And Publish on crates.io</title>
+            <link>https://lupyuen.github.io/pinetime-rust-mynewt/articles/watchface</link>
+            <description><![CDATA[How we build PineTime Watch Faces with Rust and LVGL... And publish them on crates.io]]></description>
+            <guid>https://lupyuen.github.io/pinetime-rust-mynewt/articles/watchface</guid>
+            <pubDate>Sat, 17 Oct 2020 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Bluetooth Time Sync and LVGL on PineTime Mynewt</title>
+            <link>https://lupyuen.github.io/pinetime-rust-mynewt/articles/timesync</link>
+            <description><![CDATA[How PineTime syncs the time over Bluetooth LE with Mynewt and NimBLE... And how we create Watch Faces with LVGL]]></description>
+            <guid>https://lupyuen.github.io/pinetime-rust-mynewt/articles/timesync</guid>
+            <pubDate>Fri, 16 Oct 2020 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Porting PineTime Watch Face from C to Rust On RIOT with LVGL</title>
+            <link>https://lupyuen.github.io/pinetime-rust-riot/articles/watch_face</link>
+            <description><![CDATA[Converting Embedded C to Rust is not that hard... Here's how we convert a PineTime Watch Face with LVGL from C to Rust on RIOT]]></description>
+            <guid>https://lupyuen.github.io/pinetime-rust-riot/articles/watch_face</guid>
+            <pubDate>Sun, 13 Sep 2020 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Safer, Simpler Embedded Programs with Rust on RIOT (Presentation)</title>
+            <link>https://summit.riot-os.org/2020/wp-content/uploads/sites/15/2020/09/s4-2-Lup-Yuen-Lee.pdf</link>
+            <description><![CDATA[Tired of pointer problems on Embedded C? It’s time to switch over to a safer, simpler way of coding: Embedded Rust. We’ll look at Rust hosted on RIOT and how it’s used to create LVGL watch apps for PineTime Smart Watch.]]></description>
+            <guid>https://summit.riot-os.org/2020/wp-content/uploads/sites/15/2020/09/s4-2-Lup-Yuen-Lee.pdf</guid>
+            <pubDate>Fri, 11 Sep 2020 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Safer, Simpler Embedded Programs with Rust on RIOT (Video)</title>
+            <link>https://www.youtube.com/watch?v=LvfCSnOM1Hs</link>
+            <description><![CDATA[Tired of pointer problems on Embedded C? It’s time to switch over to a safer, simpler way of coding: Embedded Rust. We’ll look at Rust hosted on RIOT and how it’s used to create LVGL watch apps for PineTime Smart Watch.]]></description>
+            <guid>https://www.youtube.com/watch?v=LvfCSnOM1Hs</guid>
+            <pubDate>Fri, 11 Sep 2020 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Preview PineTime Watch Faces in your Web Browser with WebAssembly</title>
+            <link>https://lupyuen.github.io/pinetime-rust-mynewt/articles/simulator</link>
+            <description><![CDATA[How we build and preview PineTime Watch Faces with only a web browser... No computer needed!]]></description>
+            <guid>https://lupyuen.github.io/pinetime-rust-mynewt/articles/simulator</guid>
+            <pubDate>Wed, 19 Aug 2020 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Build PineTime Firmware in the Cloud with GitHub Actions</title>
+            <link>https://lupyuen.github.io/pinetime-rust-mynewt/articles/cloud</link>
+            <description><![CDATA[Learn to build PineTime Smart Watch Firmware in the Cloud... No computer needed!]]></description>
+            <guid>https://lupyuen.github.io/pinetime-rust-mynewt/articles/cloud</guid>
+            <pubDate>Mon, 27 Jul 2020 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Wayland and LVGL on PinePhone with Ubuntu Touch</title>
+            <link>https://lupyuen.github.io/pinetime-rust-mynewt/articles/wayland</link>
+            <description><![CDATA[Learn about Wayland and Ubuntu Touch on PinePhone... And how we build PinePhone Apps with LVGL]]></description>
+            <guid>https://lupyuen.github.io/pinetime-rust-mynewt/articles/wayland</guid>
+            <pubDate>Sat, 25 Jul 2020 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>(UNFINISHED) Auto Convert Go to Dart with an Abstract Syntax Tree</title>
+            <link>https://lupyuen.github.io/pinetime-rust-mynewt/articles/ast</link>
+            <description><![CDATA[How we convert Go code to Dart and Flutter automatically with an Abstract Syntax Tree]]></description>
+            <guid>https://lupyuen.github.io/pinetime-rust-mynewt/articles/ast</guid>
+            <pubDate>Thu, 09 Jul 2020 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Flutter State Management with Bloc for PineTime Companion App</title>
+            <link>https://lupyuen.github.io/pinetime-rust-mynewt/articles/bloc</link>
+            <description><![CDATA[How we manage state with the Bloc Library in the Flutter Companion App (Android and iOS) for PineTime Smart Watch]]></description>
+            <guid>https://lupyuen.github.io/pinetime-rust-mynewt/articles/bloc</guid>
+            <pubDate>Sat, 27 Jun 2020 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>PineTime doesn&apos;t run Linux... But that&apos;s OK!</title>
+            <link>https://lupyuen.github.io/pinetime-rust-mynewt/articles/pinetime</link>
+            <description><![CDATA[Getting started with PineTime Smart Watch]]></description>
+            <guid>https://lupyuen.github.io/pinetime-rust-mynewt/articles/pinetime</guid>
+            <pubDate>Fri, 19 Jun 2020 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Your First GTK App with Go and VSCodium</title>
+            <link>https://lupyuen.github.io/pinetime-rust-mynewt/articles/gotk3</link>
+            <description><![CDATA[Creating desktop apps on Linux doesn't have to be hard... Let's build GTK+ 3 apps in Go with the gotk3 library!]]></description>
+            <guid>https://lupyuen.github.io/pinetime-rust-mynewt/articles/gotk3</guid>
+            <pubDate>Thu, 18 Jun 2020 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Convert Go to Flutter and Dart for PineTime Companion App</title>
+            <link>https://lupyuen.github.io/pinetime-rust-mynewt/articles/companion</link>
+            <description><![CDATA[How we build the Flutter Companion App (Android and iOS) for PineTime Smart Watch by converting Go to Dart]]></description>
+            <guid>https://lupyuen.github.io/pinetime-rust-mynewt/articles/companion</guid>
+            <pubDate>Wed, 17 Jun 2020 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Your First Bluetooth Low Energy App with Flutter</title>
+            <link>https://lupyuen.github.io/pinetime-rust-mynewt/articles/flutter</link>
+            <description><![CDATA[Bluetooth Low Energy apps are ridiculously easy to code with Flutter and Dart, let me show you how!]]></description>
+            <guid>https://lupyuen.github.io/pinetime-rust-mynewt/articles/flutter</guid>
+            <pubDate>Thu, 04 Jun 2020 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Porting MicroPython and wasp-os to Mynewt on PineTime Smart Watch (nRF52)</title>
+            <link>https://lupyuen.github.io/pinetime-rust-mynewt/articles/micropython</link>
+            <description><![CDATA[Making wasp-os truly awesome with full multitasking, interoperable firmware updates and a common companion app]]></description>
+            <guid>https://lupyuen.github.io/pinetime-rust-mynewt/articles/micropython</guid>
+            <pubDate>Tue, 02 Jun 2020 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Wireless Firmware Update In Action on PineTime Smart Watch (nRF52)</title>
+            <link>https://lupyuen.github.io/pinetime-rust-mynewt/articles/dfutest</link>
+            <description><![CDATA[Observe step-by-step the Wireless Firmware Update running on PineTime Smart Watch (nRF52) with MCUBoot Bootloader, NimBLE Bluetooth LE Stack and Apache Mynewt]]></description>
+            <guid>https://lupyuen.github.io/pinetime-rust-mynewt/articles/dfutest</guid>
+            <pubDate>Wed, 20 May 2020 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>MCUBoot Bootloader for PineTime Smart Watch (nRF52)</title>
+            <link>https://lupyuen.github.io/pinetime-rust-mynewt/articles/mcuboot</link>
+            <description><![CDATA[Wireless Firmware Updates done right on PineTime Smart Watch... With the open source MCUBoot Bootloader from Apache Mynewt and Zephyr]]></description>
+            <guid>https://lupyuen.github.io/pinetime-rust-mynewt/articles/mcuboot</guid>
+            <pubDate>Mon, 18 May 2020 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Configure Mynewt for SPI Flash on PineTime Smart Watch (nRF52)</title>
+            <link>https://lupyuen.github.io/pinetime-rust-mynewt/articles/spiflash</link>
+            <description><![CDATA[Configure Mynewt OS to enable access to SPI Flash Memory on PineTime Smart Watch]]></description>
+            <guid>https://lupyuen.github.io/pinetime-rust-mynewt/articles/spiflash</guid>
+            <pubDate>Fri, 15 May 2020 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Firmware Update over Bluetooth Low Energy on PineTime Smart Watch</title>
+            <link>https://lupyuen.github.io/pinetime-rust-mynewt/articles/dfu</link>
+            <description><![CDATA[Flash any firmware to PineTime from our mobile phone... Without opening the watch!]]></description>
+            <guid>https://lupyuen.github.io/pinetime-rust-mynewt/articles/dfu</guid>
+            <pubDate>Mon, 11 May 2020 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>CHIP-8 Game Emulator in Rust for PineTime Smart Watch</title>
+            <link>https://lupyuen.github.io/pinetime-rust-mynewt/articles/chip8</link>
+            <description><![CDATA[Running Retro Games with Rust is not that hard on PineTime Smart Watch. Here's how I ported a CHIP-8 Game Emulator to PineTime]]></description>
+            <guid>https://lupyuen.github.io/pinetime-rust-mynewt/articles/chip8</guid>
+            <pubDate>Thu, 05 Mar 2020 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Visual Rust for PineTime Smart Watch</title>
+            <link>https://github.com/lupyuen/visual-embedded-rust</link>
+            <description><![CDATA[Create and edit Embedded Rust programs visually by dragging and dropping blocks]]></description>
+            <guid>https://github.com/lupyuen/visual-embedded-rust</guid>
+            <pubDate>Thu, 05 Mar 2020 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>My First Week As Embedded FOSS Advocate</title>
+            <link>https://lupyuen.github.io/articles/my-first-week-as-embedded-foss-advocate</link>
+            <description><![CDATA[Have humans become so greedy for profit… That we have forgotten how to teach one another and advance our species?]]></description>
+            <guid>https://lupyuen.github.io/articles/my-first-week-as-embedded-foss-advocate</guid>
+            <pubDate>Tue, 04 Feb 2020 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Debug RIOT-OS on PineTime with VSCode</title>
+            <link>https://web.archive.org/https://medium.com/@ly.lee/debug-riot-os-on-pinetime-with-vscode-12f00c69c120</link>
+            <description><![CDATA[VSCode debugging configuration for RIOT]]></description>
+            <guid>https://web.archive.org/https://medium.com/@ly.lee/debug-riot-os-on-pinetime-with-vscode-12f00c69c120</guid>
+            <pubDate>Sun, 02 Feb 2020 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>If you’re in the East, please consider Rust!</title>
+            <link>https://web.archive.org/https://medium.com/@ly.lee/if-youre-in-the-east-please-consider-rust-23fa05873397</link>
+            <description><![CDATA[Coding in Embedded C is like building a skyscraper without scaffolding]]></description>
+            <guid>https://web.archive.org/https://medium.com/@ly.lee/if-youre-in-the-east-please-consider-rust-23fa05873397</guid>
+            <pubDate>Fri, 24 Jan 2020 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Debug Rust+Mynewt Firmware for PineTime on Raspberry Pi</title>
+            <link>https://lupyuen.github.io/articles/debug-rust-mynewt-firmware-for-pinetime-on-raspberry-pi</link>
+            <description><![CDATA[Using only a Raspberry Pi, we can debug the firmware on PineTime Smart Watch: Step into the flashed program line by line, set a breakpoint to pause execution at a line, inspect variables at runtime, … Just like the Embedded Pros!]]></description>
+            <guid>https://lupyuen.github.io/articles/debug-rust-mynewt-firmware-for-pinetime-on-raspberry-pi</guid>
+            <pubDate>Thu, 23 Jan 2020 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>OpenOCD on Raspberry Pi: Better with SWD on SPI</title>
+            <link>https://lupyuen.github.io/articles/openocd-on-raspberry-pi-better-with-swd-on-spi</link>
+            <description><![CDATA[Instead of sending SWD data over GPIO one bit at a time, what if we could blast out the data over Raspberry Pi’s SPI interface?]]></description>
+            <guid>https://lupyuen.github.io/articles/openocd-on-raspberry-pi-better-with-swd-on-spi</guid>
+            <pubDate>Sat, 18 Jan 2020 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Build and Flash Rust+Mynewt Firmware for PineTime Smart Watch</title>
+            <link>https://lupyuen.github.io/articles/build-and-flash-rust-mynewt-firmware-for-pinetime-smart-watch</link>
+            <description><![CDATA[Programming a PineTime is not that hard… All you need is a Raspberry Pi, some wires and a little creativity!]]></description>
+            <guid>https://lupyuen.github.io/articles/build-and-flash-rust-mynewt-firmware-for-pinetime-smart-watch</guid>
+            <pubDate>Wed, 08 Jan 2020 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Optimising PineTime’s Display Driver with Rust and Mynewt</title>
+            <link>https://lupyuen.github.io/articles/optimising-pinetimes-display-driver-with-rust-and-mynewt</link>
+            <description><![CDATA[Simple tweaks like Batched Updates and Non-Blocking SPI can have a huge impact on rendering performance]]></description>
+            <guid>https://lupyuen.github.io/articles/optimising-pinetimes-display-driver-with-rust-and-mynewt</guid>
+            <pubDate>Sun, 29 Dec 2019 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Porting [druid] Rust Widgets to PineTime Smart Watch</title>
+            <link>https://lupyuen.github.io/articles/porting-druid-rust-widgets-to-pinetime-smart-watch</link>
+            <description><![CDATA[Code Watch Apps in Rust the Declarative Way]]></description>
+            <guid>https://lupyuen.github.io/articles/porting-druid-rust-widgets-to-pinetime-smart-watch</guid>
+            <pubDate>Sat, 14 Dec 2019 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>My 5-Year IoT Mission</title>
+            <link>https://lupyuen.github.io/articles/my-5-year-iot-mission</link>
+            <description><![CDATA[5 years ago I decided to fix every link in the IoT Chain so that we can create really useful and affordable IoT gadgets, the Lean and Agile Way]]></description>
+            <guid>https://lupyuen.github.io/articles/my-5-year-iot-mission</guid>
+            <pubDate>Wed, 04 Dec 2019 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Hey GD32 VF103 on RISC-V: I surrender… For now</title>
+            <link>https://lupyuen.github.io/articles/hey-gd32-vf103-on-risc-v-i-surrender-for-now</link>
+            <description><![CDATA[Porting Mynewt OS to GD32 VF103 on RISC-V was a nightmare]]></description>
+            <guid>https://lupyuen.github.io/articles/hey-gd32-vf103-on-risc-v-i-surrender-for-now</guid>
+            <pubDate>Sat, 23 Nov 2019 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Building a Rust Driver for PineTime’s Touch Controller</title>
+            <link>https://lupyuen.github.io/articles/building-a-rust-driver-for-pinetimes-touch-controller</link>
+            <description><![CDATA[Programming the Hynitron CST816S Capacitive Touch Controller]]></description>
+            <guid>https://lupyuen.github.io/articles/building-a-rust-driver-for-pinetimes-touch-controller</guid>
+            <pubDate>Fri, 22 Nov 2019 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Sneak Peek of PineTime Smart Watch… And why it’s perfect for teaching IoT</title>
+            <link>https://lupyuen.github.io/articles/sneak-peek-of-pinetime-smart-watch-and-why-its-perfect-for-teaching-iot</link>
+            <description><![CDATA[PineTime is the spiritual successor to BBC micro:bit]]></description>
+            <guid>https://lupyuen.github.io/articles/sneak-peek-of-pinetime-smart-watch-and-why-its-perfect-for-teaching-iot</guid>
+            <pubDate>Fri, 15 Nov 2019 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Porting Apache Mynewt OS to GigaDevice GD32 VF103 on RISC-V</title>
+            <link>https://lupyuen.github.io/articles/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v</link>
+            <description><![CDATA[Many GD32 VF103 RISC-V developer boards are coming real soon... And Mynewt OS would be perfect for them]]></description>
+            <guid>https://lupyuen.github.io/articles/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v</guid>
+            <pubDate>Wed, 30 Oct 2019 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Bluetooth Mesh with nRF52 and Apache Mynewt</title>
+            <link>https://lupyuen.github.io/articles/bluetooth-mesh-with-nrf52-and-apache-mynewt</link>
+            <description><![CDATA[Set up an nRF52 mesh network, step by step, without any coding]]></description>
+            <guid>https://lupyuen.github.io/articles/bluetooth-mesh-with-nrf52-and-apache-mynewt</guid>
+            <pubDate>Tue, 15 Oct 2019 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Coding nRF52 with Rust and Apache Mynewt on Visual Studio Code</title>
+            <link>https://lupyuen.github.io/articles/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code</link>
+            <description><![CDATA[nRF52 works with popular open-source tools on Windows and macOS like VSCode, OpenOCD, Rust and ST-Link]]></description>
+            <guid>https://lupyuen.github.io/articles/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code</guid>
+            <pubDate>Thu, 03 Oct 2019 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Build an NB-IoT GPS Tracker on STM32 L476 with Apache Mynewt and Embedded Rust</title>
+            <link>https://lupyuen.github.io/articles/build-an-nb-iot-gps-tracker-on-stm32-l476-with-apache-mynewt-and-embedded-rust</link>
+            <description><![CDATA[Let’s build a simple gadget that determines its current location based on received GPS signals… And transmits the location to a server via NB-IoT]]></description>
+            <guid>https://lupyuen.github.io/articles/build-an-nb-iot-gps-tracker-on-stm32-l476-with-apache-mynewt-and-embedded-rust</guid>
+            <pubDate>Sun, 22 Sep 2019 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Quick Peek of Huawei LiteOS with NB-IoT on Ghostyu NB-EK-L476 Developer Kit (STM32L476RCT6)</title>
+            <link>https://lupyuen.github.io/articles/quick-peek-of-huawei-liteos-with-nb-iot-on-ghostyu-nb-ek-l476-developer-kit</link>
+            <description><![CDATA[Peek into the LiteOS + Application source code that was bundled with the NB-IoT Developer Kit]]></description>
+            <guid>https://lupyuen.github.io/articles/quick-peek-of-huawei-liteos-with-nb-iot-on-ghostyu-nb-ek-l476-developer-kit</guid>
+            <pubDate>Wed, 04 Sep 2019 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Low Power NB-IoT on STM32 Blue Pill with Apache Mynewt and Embedded Rust</title>
+            <link>https://lupyuen.github.io/articles/low-power-nb-iot-on-stm32-blue-pill-with-apache-mynewt-and-embedded-rust</link>
+            <description><![CDATA[Learn to optimise the power consumption of the NB-IoT Sensor Application in the previous tutorial]]></description>
+            <guid>https://lupyuen.github.io/articles/low-power-nb-iot-on-stm32-blue-pill-with-apache-mynewt-and-embedded-rust</guid>
+            <pubDate>Fri, 30 Aug 2019 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Visual Embedded Rust Programming with Visual Studio Code</title>
+            <link>https://lupyuen.github.io/articles/visual-embedded-rust-programming-with-visual-studio-code</link>
+            <description><![CDATA[Create and edit Embedded Rust programs for STM32 Blue Pill and Apache Mynewt… By dragging and dropping blocks!]]></description>
+            <guid>https://lupyuen.github.io/articles/visual-embedded-rust-programming-with-visual-studio-code</guid>
+            <pubDate>Sat, 17 Aug 2019 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Advanced Topics for Visual Embedded Rust Programming</title>
+            <link>https://lupyuen.github.io/articles/advanced-topics-for-visual-embedded-rust-programming</link>
+            <description><![CDATA[Watch what happens behind the scenes when you create a Visual Embedded Rust program]]></description>
+            <guid>https://lupyuen.github.io/articles/advanced-topics-for-visual-embedded-rust-programming</guid>
+            <pubDate>Sat, 17 Aug 2019 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Rust Rocks NB-IoT! STM32 Blue Pill with Quectel BC95-G on Apache Mynewt</title>
+            <link>https://lupyuen.github.io/articles/rust-rocks-nb-iot-stm32-blue-pill-with-quectel-bc95-g-on-apache-mynewt</link>
+            <description><![CDATA[Hardly anyone writes embedded programs in Rust for microcontrollers (like STM32 Blue Pill), we all use C. But we really should switch to Rust!]]></description>
+            <guid>https://lupyuen.github.io/articles/rust-rocks-nb-iot-stm32-blue-pill-with-quectel-bc95-g-on-apache-mynewt</guid>
+            <pubDate>Sun, 04 Aug 2019 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Connect STM32 Blue Pill to NB-IoT with Quectel BC95-G and Apache Mynewt</title>
+            <link>https://lupyuen.github.io/articles/connect-stm32-blue-pill-to-nb-iot-with-quectel-bc95-g-and-apache-mynewt</link>
+            <description><![CDATA[Let’s build an IoT sensor with a real microcontroller — STM32 Blue Pill — and a real NB-IoT module — Quectel BC95-G!]]></description>
+            <guid>https://lupyuen.github.io/articles/connect-stm32-blue-pill-to-nb-iot-with-quectel-bc95-g-and-apache-mynewt</guid>
+            <pubDate>Thu, 25 Jul 2019 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Get Started with NB-IoT and Quectel modules</title>
+            <link>https://lupyuen.github.io/articles/get-started-with-nb-iot-and-quectel-modules</link>
+            <description><![CDATA[How to use a Quectel evaluation board to send a CoAP message to the CoAP server hosted at thethings.io]]></description>
+            <guid>https://lupyuen.github.io/articles/get-started-with-nb-iot-and-quectel-modules</guid>
+            <pubDate>Mon, 15 Jul 2019 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Visual Programming with Embedded Rust? Yes we can with Apache Mynewt and Google Blockly!</title>
+            <link>https://web.archive.org/https://medium.com/@ly.lee/visual-programming-with-embedded-rust-yes-we-can-with-apache-mynewt-and-google-blockly-8b67ef7412d7</link>
+            <description><![CDATA[Simpler embedded coding, the visual way]]></description>
+            <guid>https://web.archive.org/https://medium.com/@ly.lee/visual-programming-with-embedded-rust-yes-we-can-with-apache-mynewt-and-google-blockly-8b67ef7412d7</guid>
+            <pubDate>Thu, 11 Jul 2019 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Safer, Simpler Embedded Rust with Apache Mynewt on STM32 Blue Pill</title>
+            <link>https://lupyuen.github.io/articles/safer-simpler-embedded-rust-with-apache-mynewt-on-stm32-blue-pill</link>
+            <description><![CDATA[Declarative and Procedural Macros (plus bindgen and tips for Visual Studio Code) to protect Embedded Rust coders from stumbling into embedded traps]]></description>
+            <guid>https://lupyuen.github.io/articles/safer-simpler-embedded-rust-with-apache-mynewt-on-stm32-blue-pill</guid>
+            <pubDate>Sun, 07 Jul 2019 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Hosting Embedded Rust apps on Apache Mynewt with STM32 Blue Pill</title>
+            <link>https://lupyuen.github.io/articles/hosting-embedded-rust-apps-on-apache-mynewt-with-stm32-blue-pill</link>
+            <description><![CDATA[It’s time to drop our legacy programming practices and adopt smarter, safer ways to exploit these microcontrollers… starting with Apache Mynewt and Rust.]]></description>
+            <guid>https://lupyuen.github.io/articles/hosting-embedded-rust-apps-on-apache-mynewt-with-stm32-blue-pill</guid>
+            <pubDate>Sun, 09 Jun 2019 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Build Your IoT Sensor Network — STM32 Blue Pill + nRF24L01 + ESP8266 + Apache Mynewt + thethings.io</title>
+            <link>https://lupyuen.github.io/articles/build-your-iot-sensor-network-stm32-blue-pill-nrf24l01-esp8266-apache-mynewt-thethings-io</link>
+            <description><![CDATA[Let's build a Sensor Network running on two Blue Pills with nRF24L01 and ESP8266]]></description>
+            <guid>https://lupyuen.github.io/articles/build-your-iot-sensor-network-stm32-blue-pill-nrf24l01-esp8266-apache-mynewt-thethings-io</guid>
+            <pubDate>Mon, 27 May 2019 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Super Blue Pill — Like STM32 Blue Pill, But Better!</title>
+            <link>https://lupyuen.github.io/articles/super-blue-pill-like-stm32-blue-pill-but-better</link>
+            <description><![CDATA[Friendlier for newbies, supports ESP8266 WiFi and nRF24L01]]></description>
+            <guid>https://lupyuen.github.io/articles/super-blue-pill-like-stm32-blue-pill-but-better</guid>
+            <pubDate>Tue, 21 May 2019 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Connect STM32 Blue Pill to ESP8266 with Apache Mynewt</title>
+            <link>https://lupyuen.github.io/articles/connect-stm32-blue-pill-to-esp8266-with-apache-mynewt</link>
+            <description><![CDATA[And WiFi Geolocation with ESP8266]]></description>
+            <guid>https://lupyuen.github.io/articles/connect-stm32-blue-pill-to-esp8266-with-apache-mynewt</guid>
+            <pubDate>Sat, 20 Apr 2019 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Create your IoT gadget with Apache Mynewt and STM32 Blue Pill</title>
+            <link>https://lupyuen.github.io/articles/create-your-iot-gadget-with-apache-mynewt-and-stm32-blue-pill</link>
+            <description><![CDATA[Apache Mynewt is a free, open-source realtime operating system for microcontrollers]]></description>
+            <guid>https://lupyuen.github.io/articles/create-your-iot-gadget-with-apache-mynewt-and-stm32-blue-pill</guid>
+            <pubDate>Tue, 26 Mar 2019 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Push AWS IoT sensor data to Redshift with Kinesis Firehose</title>
+            <link>https://web.archive.org/web/20191204194129/https://medium.com/@ly.lee/push-aws-iot-sensor-data-to-redshift-with-kinesis-firehose-385506264a00?source=friends_link&amp;sk=bd45be8b48fbb328ed1d65d10a8d7c38</link>
+            <description><![CDATA[AWS IoT Rules Engine and Kinesis Firehose were designed to stream live sensor data into Redshift for storage and analysis]]></description>
+            <guid>https://web.archive.org/web/20191204194129/https://medium.com/@ly.lee/push-aws-iot-sensor-data-to-redshift-with-kinesis-firehose-385506264a00?source=friends_link&amp;sk=bd45be8b48fbb328ed1d65d10a8d7c38</guid>
+            <pubDate>Sun, 10 Mar 2019 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Transform and Import a JSON file into Amazon Redshift with AWS Glue</title>
+            <link>https://web.archive.org/web/20191204194022/https://medium.com/@ly.lee/transform-and-import-a-json-file-into-amazon-redshift-with-aws-glue-3371006e03ca?source=friends_link&amp;sk=a57bcec30f5b6b1c978dc4f35d8d6427</link>
+            <description><![CDATA[With AWS Glue it’s now possible to keep our Redshift data warehouses in sync with JSON-based data stores… So we may exploit the full potential of business analytics and machine learning in AWS!]]></description>
+            <guid>https://web.archive.org/web/20191204194022/https://medium.com/@ly.lee/transform-and-import-a-json-file-into-amazon-redshift-with-aws-glue-3371006e03ca?source=friends_link&amp;sk=a57bcec30f5b6b1c978dc4f35d8d6427</guid>
+            <pubDate>Fri, 08 Mar 2019 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Connecting AWS Lambda Node.JS to Redshift or PostgreSQL? Try AWS Lambda Layers!</title>
+            <link>https://web.archive.org/web/20191204194031/https://medium.com/@ly.lee/connecting-aws-lambda-node-js-to-redshift-or-postgresql-try-aws-lambda-layers-78e60c27f39b?source=friends_link&amp;sk=84d0f78bddfece6049c2395741824e58</link>
+            <description><![CDATA[With Lambda Layers it’s really easy to connect our Node.js Lambda Function to Redshift or PostgreSQL]]></description>
+            <guid>https://web.archive.org/web/20191204194031/https://medium.com/@ly.lee/connecting-aws-lambda-node-js-to-redshift-or-postgresql-try-aws-lambda-layers-78e60c27f39b?source=friends_link&amp;sk=84d0f78bddfece6049c2395741824e58</guid>
+            <pubDate>Wed, 06 Mar 2019 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>STM32 Blue Pill — Bootloading the WebUSB Bootloader</title>
+            <link>https://lupyuen.github.io/articles/stm32-blue-pill-bootloading-the-webusb-bootloader</link>
+            <description><![CDATA[How do we upgrade the Bootloader when it’s always running in the background, waiting for flashing requests? This article explains a special technique I used to upgrade the MakeCode Bootloader over WebUSB… I call it “Baseloading”]]></description>
+            <guid>https://lupyuen.github.io/articles/stm32-blue-pill-bootloading-the-webusb-bootloader</guid>
+            <pubDate>Mon, 25 Feb 2019 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>STM32 Blue Pill — Dissecting the WebUSB Bootloader for MakeCode</title>
+            <link>https://lupyuen.github.io/articles/stm32-blue-pill-dissecting-the-webusb-bootloader-for-makecode</link>
+            <description><![CDATA[Explore the innards of the MakeCode Bootloader that I have ported to Blue Pill]]></description>
+            <guid>https://lupyuen.github.io/articles/stm32-blue-pill-dissecting-the-webusb-bootloader-for-makecode</guid>
+            <pubDate>Sat, 16 Feb 2019 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>STM32 Blue Pill — Unit Testing with Qemu Blue Pill Emulator</title>
+            <link>https://lupyuen.github.io/articles/stm32-blue-pill-unit-testing-with-qemu-blue-pill-emulator</link>
+            <description><![CDATA[Computing sensor values in IoT devices can be prone to bugs… And Unit Testing can help to stop the bugs before they pollute the entire IoT chain]]></description>
+            <guid>https://lupyuen.github.io/articles/stm32-blue-pill-unit-testing-with-qemu-blue-pill-emulator</guid>
+            <pubDate>Thu, 07 Feb 2019 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>STM32 Blue Pill – Shrink your math libraries with Qfplib</title>
+            <link>https://lupyuen.github.io/articles/stm32-blue-pill-shrink-your-math-libraries-with-qfplib</link>
+            <description><![CDATA[Filling in tiny math functions with nano-float]]></description>
+            <guid>https://lupyuen.github.io/articles/stm32-blue-pill-shrink-your-math-libraries-with-qfplib</guid>
+            <pubDate>Wed, 30 Jan 2019 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>STM32 Blue Pill — Analyse and Optimise Your RAM and ROM</title>
+            <link>https://lupyuen.github.io/articles/stm32-blue-pill-analyse-and-optimise-your-ram-and-rom</link>
+            <description><![CDATA[Learn the tips and tools to prevent Blue Pill Bloat]]></description>
+            <guid>https://lupyuen.github.io/articles/stm32-blue-pill-analyse-and-optimise-your-ram-and-rom</guid>
+            <pubDate>Thu, 24 Jan 2019 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>STM32 Blue Pill USB Bootloader — How I fixed the USB Storage, Serial, DFU and WebUSB interfaces</title>
+            <link>https://lupyuen.github.io/articles/stm32-blue-pill-usb-bootloader-how-i-fixed-the-usb-storage-serial-dfu-and-webusb-interfaces</link>
+            <description><![CDATA[STM32 Blue Pill is a remarkable microcontroller for US$ 2. I proved it by running the USB Storage, USB Serial, USB DFU (Direct Firmware Upgrade) and WebUSB interfaces all on the same Blue Pill concurrently, without any additional hardware!]]></description>
+            <guid>https://lupyuen.github.io/articles/stm32-blue-pill-usb-bootloader-how-i-fixed-the-usb-storage-serial-dfu-and-webusb-interfaces</guid>
+            <pubDate>Tue, 18 Dec 2018 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>STM32 Blue Pill Visual Programming with MakeCode, CODAL and libopencm3</title>
+            <link>https://web.archive.org/web/20191204194221/https://medium.com/@ly.lee/work-in-progress-stm32-blue-pill-visual-programming-with-makecode-codal-and-libopencm3-422d308f252e?source=friends_link&amp;sk=b39519335652415d5f4aa17c9e4af1d2</link>
+            <description><![CDATA[This work-in-progress document describes an incomplete implementation of STM32 Blue Pill visual programming]]></description>
+            <guid>https://web.archive.org/web/20191204194221/https://medium.com/@ly.lee/work-in-progress-stm32-blue-pill-visual-programming-with-makecode-codal-and-libopencm3-422d308f252e?source=friends_link&amp;sk=b39519335652415d5f4aa17c9e4af1d2</guid>
+            <pubDate>Sun, 09 Dec 2018 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Sigfox Teacher Answers Your Questions</title>
+            <link>https://web.archive.org/web/20191204194157/https://medium.com/@ly.lee/sigfox-teacher-answers-your-questions-7e47122716dc?source=friends_link&amp;sk=7668c0b2ecc6333cd60ff8e536501ebd</link>
+            <description><![CDATA[I teach Sigfox to working professionals. Here are their questions…]]></description>
+            <guid>https://web.archive.org/web/20191204194157/https://medium.com/@ly.lee/sigfox-teacher-answers-your-questions-7e47122716dc?source=friends_link&amp;sk=7668c0b2ecc6333cd60ff8e536501ebd</guid>
+            <pubDate>Fri, 07 Dec 2018 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>以 thethings.iO 來將 BBC micro:bit 感測器圖形化</title>
+            <link>https://www.kidscoding8.com/98097.html</link>
+            <description><![CDATA[如果您可以將您以電池供應電力的BBC micro:bit設置在城市裡的任何一個角落來收集感測資料 … 或者是隨時查看從家裡、學校、工作場所即時更新的感測資料 … 不是很酷嗎？]]></description>
+            <guid>https://www.kidscoding8.com/98097.html</guid>
+            <pubDate>Thu, 29 Nov 2018 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Visualising BBC micro:bit sensors with thethings.iO</title>
+            <link>https://web.archive.org/web/20191204194120/https://medium.com/@ly.lee/visualising-bbc-micro-bit-sensors-with-thethings-io-5689fb613531?source=friends_link&amp;sk=a8cfc404362ecbe3a26823f6a70fa5cb</link>
+            <description><![CDATA[Wouldn’t it be cool if you could plant your BBC micro:bit anywhere in the city (powered by batteries) to collect sensor data… And watch live updates of the sensor data from your home, school, workplace, … Even on the go?]]></description>
+            <guid>https://web.archive.org/web/20191204194120/https://medium.com/@ly.lee/visualising-bbc-micro-bit-sensors-with-thethings-io-5689fb613531?source=friends_link&amp;sk=a8cfc404362ecbe3a26823f6a70fa5cb</guid>
+            <pubDate>Sat, 17 Nov 2018 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>連接 BBC micro:bit 與 Sigfox 物聯網</title>
+            <link>https://makerpro.cc/2018/11/connect-bbc-microbit-and-sigfox-iot/</link>
+            <description><![CDATA[使用 BBC micro:bit 連接 Sigfox 物聯網網路會是一個很好幫助孩子們理解感測器與感測網路如何運作的理想方式。micro:bit 是新式以電池提供電力的感測器裝置典範，具備充足的處理能力並支援大多數的感測器類型。在教育用途上，Sigfox 可能是今日用於城市規模測試的感測網路之中，最為便宜的方案。]]></description>
+            <guid>https://makerpro.cc/2018/11/connect-bbc-microbit-and-sigfox-iot/</guid>
+            <pubDate>Tue, 13 Nov 2018 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Connect BBC micro:bit to Sigfox</title>
+            <link>https://web.archive.org/https://medium.com/coinmonks/connect-bbc-micro-bit-to-sigfox-4d1603d19350</link>
+            <description><![CDATA[BBC micro:bit connected to the Sigfox IoT network is the perfect way to help kids understand how Sensors and Sensor Networks operate. The micro:bit is a good representation of a modern battery-powered sensor device, with ample processing power and support for most types of sensors. For education, Sigfox is likely the cheapest option today for experimenting with a city-wide sensor network.]]></description>
+            <guid>https://web.archive.org/https://medium.com/coinmonks/connect-bbc-micro-bit-to-sigfox-4d1603d19350</guid>
+            <pubDate>Mon, 05 Nov 2018 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>連接 STM32F103C8T6 Blue Pill 開發板與 Sigfox 物聯網</title>
+            <link>https://makerpro.cc/2018/11/connect-blue-pill-with-sigfox-part-one/</link>
+            <description><![CDATA[以 STM32 微處理器為核心的 STM32F103C8T6 Blue Pill 開發板連接 Sigfox 收發器模組來接取 Sigfox 物聯網網路可能會是設計一款低功率物聯網裝置的最佳組合。]]></description>
+            <guid>https://makerpro.cc/2018/11/connect-blue-pill-with-sigfox-part-one/</guid>
+            <pubDate>Wed, 17 Oct 2018 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Connect STM32 Blue Pill to Sigfox</title>
+            <link>https://web.archive.org/https://medium.com/coinmonks/connect-stm32-blue-pill-to-sigfox-28c6f91bddc1</link>
+            <description><![CDATA[STM32 “Blue Pill” microcontroller connected to a transceiver module for the Sigfox IoT network might be the best combination for low-power IoT devices right now.]]></description>
+            <guid>https://web.archive.org/https://medium.com/coinmonks/connect-stm32-blue-pill-to-sigfox-28c6f91bddc1</guid>
+            <pubDate>Fri, 28 Sep 2018 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Watch STM32 Blue Pill Juggle Two SPI Sensors With DMA</title>
+            <link>https://web.archive.org/https://medium.com/coinmonks/watch-stm32-blue-pill-juggle-two-spi-sensors-with-dma-20cd1aa89869</link>
+            <description><![CDATA[This article that explains all that I have learnt about SPI ports, DMA and interrupts on the Blue Pill]]></description>
+            <guid>https://web.archive.org/https://medium.com/coinmonks/watch-stm32-blue-pill-juggle-two-spi-sensors-with-dma-20cd1aa89869</guid>
+            <pubDate>Wed, 19 Sep 2018 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Program Your First FPGA With GOWIN GW1N-4</title>
+            <link>https://web.archive.org/https://medium.com/coinmonks/program-your-first-fpga-with-gowin-gw1n-4-b0d5c22b9fea</link>
+            <description><![CDATA[As we learn how to program the FPGA, we’ll soon realise that FPGA programming is really extraordinary, unlike any other kind of programming we have done before]]></description>
+            <guid>https://web.archive.org/https://medium.com/coinmonks/program-your-first-fpga-with-gowin-gw1n-4-b0d5c22b9fea</guid>
+            <pubDate>Wed, 05 Sep 2018 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Juggling STM32 Blue Pill For Arduino Jugglers</title>
+            <link>https://web.archive.org/https://medium.com/coinmonks/juggling-stm32-blue-pill-for-arduino-jugglers-edf6820dc808</link>
+            <description><![CDATA[Upsizing from Arduino Uno to a 32-bit STM microcontroller doesn’t have to be hard]]></description>
+            <guid>https://web.archive.org/https://medium.com/coinmonks/juggling-stm32-blue-pill-for-arduino-jugglers-edf6820dc808</guid>
+            <pubDate>Mon, 27 Aug 2018 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Juggling Sigfox Downlink And Arduino Sensors With cocoOS</title>
+            <link>https://web.archive.org/https://medium.com/coinmonks/juggling-sigfox-downlink-and-arduino-sensors-with-cocoos-4594be59bf1b</link>
+            <description><![CDATA[Using the cocoOS task scheduler to run Sensor Tasks concurrently while waiting for the Network and UART Tasks]]></description>
+            <guid>https://web.archive.org/https://medium.com/coinmonks/juggling-sigfox-downlink-and-arduino-sensors-with-cocoos-4594be59bf1b</guid>
+            <pubDate>Mon, 20 Aug 2018 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Juggling Arduino Sensors With cocoOS</title>
+            <link>https://web.archive.org/https://medium.com/coinmonks/juggling-arduino-sensors-with-cocoos-403e14ec28be</link>
+            <description><![CDATA[Juggle multiple Arduino sensors, using an open source library for cooperative processing: cocoOS]]></description>
+            <guid>https://web.archive.org/https://medium.com/coinmonks/juggling-arduino-sensors-with-cocoos-403e14ec28be</guid>
+            <pubDate>Sat, 11 Aug 2018 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Why use FPGA for IoT? Here’s what I think…</title>
+            <link>https://web.archive.org/https://medium.com/coinmonks/why-use-fpga-for-iot-heres-what-i-think-e513772514d6</link>
+            <description><![CDATA[Since FPGAs are already mainstream, could we use them to create IoT devices that are more power-efficient than current devices based on microcontrollers?]]></description>
+            <guid>https://web.archive.org/https://medium.com/coinmonks/why-use-fpga-for-iot-heres-what-i-think-e513772514d6</guid>
+            <pubDate>Tue, 31 Jul 2018 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Coding the STM32 Blue Pill with Rust and Visual Studio Code</title>
+            <link>https://web.archive.org/https://medium.com/coinmonks/coding-the-stm32-blue-pill-with-rust-and-visual-studio-code-b21615d8a20</link>
+            <description><![CDATA[Let's learn Rust, a modern systems programming language that promotes safe, concurrent low-level coding]]></description>
+            <guid>https://web.archive.org/https://medium.com/coinmonks/coding-the-stm32-blue-pill-with-rust-and-visual-studio-code-b21615d8a20</guid>
+            <pubDate>Tue, 10 Jul 2018 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Making my first ever PCB with Seeed Fusion PCB assembly service</title>
+            <link>https://web.archive.org/https://medium.com/coinmonks/making-my-first-ever-pcb-with-seeed-fusion-pcb-assembly-service-9af5736016b3</link>
+            <description><![CDATA[Here’s the story of the first gadget that I have ever created, with help from the brilliant minds at Seeed in Shenzhen]]></description>
+            <guid>https://web.archive.org/https://medium.com/coinmonks/making-my-first-ever-pcb-with-seeed-fusion-pcb-assembly-service-9af5736016b3</guid>
+            <pubDate>Thu, 05 Jul 2018 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Running Rust and FreeRTOS on the PADI IoT Stamp</title>
+            <link>https://web.archive.org/https://medium.com/coinmonks/running-rust-and-freertos-on-the-padi-iot-stamp-fb36c5ef4844</link>
+            <description><![CDATA[Better tools for building robust and reliable programs for microcontrollers]]></description>
+            <guid>https://web.archive.org/https://medium.com/coinmonks/running-rust-and-freertos-on-the-padi-iot-stamp-fb36c5ef4844</guid>
+            <pubDate>Mon, 18 Jun 2018 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>First Impressions of Alibaba Cloud (Aliyun)</title>
+            <link>https://web.archive.org/web/20191204194108/https://medium.com/@ly.lee/first-impressions-of-alibaba-cloud-aliyun-688dc46fa9b8?source=friends_link&amp;sk=0685f5028f4ce9575dfae9cc9515143d</link>
+            <description><![CDATA[Could Alibaba Cloud be the economical cloud for high volume IoT?]]></description>
+            <guid>https://web.archive.org/web/20191204194108/https://medium.com/@ly.lee/first-impressions-of-alibaba-cloud-aliyun-688dc46fa9b8?source=friends_link&amp;sk=0685f5028f4ce9575dfae9cc9515143d</guid>
+            <pubDate>Mon, 21 May 2018 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Multitasking on the Arduino with a Finite State Machine – And why you’ll need it for Sigfox Downlink</title>
+            <link>https://web.archive.org/https://medium.com/coinmonks/multitasking-on-the-arduino-with-a-finite-state-machine-and-why-youll-need-it-for-sigfox-d52dafc55d8e</link>
+            <description><![CDATA[How to implement a Finite State Machine on the Arduino Uno]]></description>
+            <guid>https://web.archive.org/https://medium.com/coinmonks/multitasking-on-the-arduino-with-a-finite-state-machine-and-why-youll-need-it-for-sigfox-d52dafc55d8e</guid>
+            <pubDate>Sun, 13 May 2018 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Realtime sensor data processing with thethings.io and Amazon Web Services Kinesis</title>
+            <link>https://web.archive.org/https://medium.com/coinmonks/realtime-sensor-data-processing-with-thethings-io-and-amazon-web-services-kinesis-e12ebb022106</link>
+            <description><![CDATA[How to experiment with IoT today while minimising the security and performance risks, and keeping costs low]]></description>
+            <guid>https://web.archive.org/https://medium.com/coinmonks/realtime-sensor-data-processing-with-thethings-io-and-amazon-web-services-kinesis-e12ebb022106</guid>
+            <pubDate>Tue, 01 May 2018 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>I Teach IoT. Here’s what you’ll learn</title>
+            <link>https://web.archive.org/https://medium.com/@ly.lee/i-teach-iot-heres-what-you-ll-learn-3e0d1b997dd0</link>
+            <description><![CDATA[Arduino, Low Power Networks, IoT Networks, IoT Analytics, ...]]></description>
+            <guid>https://web.archive.org/https://medium.com/@ly.lee/i-teach-iot-heres-what-you-ll-learn-3e0d1b997dd0</guid>
+            <pubDate>Tue, 24 Apr 2018 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Developing cost-effective, energy efficient IoT solutions for outdoor as well as indoor applications</title>
+            <link>https://www.opengovasia.com/articles/developing-cost-effective-energy-efficient-iot-solutions-for-outdoor-as-well-as-indoor-applications</link>
+            <description><![CDATA[Lup Yuen talks about two classes of IoT, ‘deep’ IoT and ‘wide’ IoT. Deep IoT devices require high bandwidth and power supply. UnaBiz looks at wide IoT, which refers to devices that are very light, battery-powered and operate on pervasive networks. They can work anytime, anywhere in Singapore and do not rely on WiFi or the cellular network.]]></description>
+            <guid>https://www.opengovasia.com/articles/developing-cost-effective-energy-efficient-iot-solutions-for-outdoor-as-well-as-indoor-applications</guid>
+            <pubDate>Tue, 20 Mar 2018 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>How To Build Your Sigfox Server (Version 1.0)</title>
+            <link>https://web.archive.org/web/20191204194035/https://medium.com/@ly.lee/how-to-build-your-sigfox-server-version-1-0-6763732692fd?source=friends_link&amp;sk=641f65c458ec59fa27dddbe7735b118a</link>
+            <description><![CDATA[Building highly reliable, robust and scalable systems for processing Sigfox messages]]></description>
+            <guid>https://web.archive.org/web/20191204194035/https://medium.com/@ly.lee/how-to-build-your-sigfox-server-version-1-0-6763732692fd?source=friends_link&amp;sk=641f65c458ec59fa27dddbe7735b118a</guid>
+            <pubDate>Sat, 14 Oct 2017 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Story of the UnaShield</title>
+            <link>https://web.archive.org/https://medium.com/@ly.lee/story-of-the-unashield-ff9e78fd7726</link>
+            <description><![CDATA[Co-created with Upton Lai, the brilliant guy who could make anything]]></description>
+            <guid>https://web.archive.org/https://medium.com/@ly.lee/story-of-the-unashield-ff9e78fd7726</guid>
+            <pubDate>Wed, 05 Jul 2017 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>IoT is a Bad Word</title>
+            <link>https://web.archive.org/web/20191204194240/https://medium.com/@ly.lee/iot-is-a-bad-word-9003d9fab638?source=friends_link&amp;sk=f7d58ebca338f326b6be8dcb79c7d6f5</link>
+            <description><![CDATA[IoT is about solving real problems (not imaginary ones) in a sustainable way]]></description>
+            <guid>https://web.archive.org/web/20191204194240/https://medium.com/@ly.lee/iot-is-a-bad-word-9003d9fab638?source=friends_link&amp;sk=f7d58ebca338f326b6be8dcb79c7d6f5</guid>
+            <pubDate>Fri, 26 May 2017 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Overcoming Productivity Challenges in the F&amp;B Industry</title>
+            <link>https://goo.gl/wLhDYo</link>
+            <description><![CDATA[ ]]></description>
+            <guid>https://goo.gl/wLhDYo</guid>
+            <pubDate>Thu, 23 Apr 2015 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Sigfox and Google Cloud Platform</title>
+            <link>https://goo.gl/vt6WZf</link>
+            <description><![CDATA[ ]]></description>
+            <guid>https://goo.gl/vt6WZf</guid>
+            <pubDate>Mon, 20 Oct 2014 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Patent: Enlargement of video content streamed from the internet</title>
+            <link>http://patentscope.wipo.int/search/en/detail.jsf?docId=WO2012002906</link>
+            <description><![CDATA[This invention relates to a system for displaying video content streamed from a network in a full screen mode. The system receives receiving a network address based on a selection from a user. The system then transmits a request for content from the network address and subsequently receives the content associated with the network address. A search is performed on the content for data that provides displaying a video content in a full screen mode. Upon detecting the data, the process generates the data and displays video content in full screen mode.]]></description>
+            <guid>http://patentscope.wipo.int/search/en/detail.jsf?docId=WO2012002906</guid>
+            <pubDate>Wed, 30 Jun 2010 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Patent: A system and method for providing mobile services</title>
+            <link>http://patentscope.wipo.int/search/en/detail.jsf?docId=WO2008004981</link>
+            <description><![CDATA[A system and method for providing mobile services, the system comprising: a mobile device executing a client application for generating a mobile service request; and a hub server for receiving and processing the mobile service request, wherein the mobile service request comprises location data of the mobile device, and the hub server pushes one or more mobile service offers to the mobile device based on the location data. The method comprises executing a client application for generating a mobile service request on a mobile device; receiving and processing the mobile service request at a hub server; and pushing one or more mobile service offers from the hub server to the mobile device based on location data, wherein the mobile service request comprises location data of the mobile device.]]></description>
+            <guid>http://patentscope.wipo.int/search/en/detail.jsf?docId=WO2008004981</guid>
+            <pubDate>Wed, 27 Jun 2007 00:00:00 +0000</pubDate>
+        </item>
+    </channel>
+</rss>
