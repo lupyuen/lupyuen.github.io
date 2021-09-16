@@ -542,7 +542,7 @@ Maybe we can turn PineDio Stack into a (very basic) __Solar-Powered Gateway for 
 
 That will __relay LoRa and Bluetooth LE messages__ to the internet over WiFi?
 
-Like for __tracking our pets__?
+Like for __tracking our pets__? (Excluding hamsters and goldfish)
 
 Or for connecting our __PineTime watches__ to the internet?
 
