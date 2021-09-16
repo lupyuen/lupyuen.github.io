@@ -508,7 +508,7 @@ Once the Security Keys have been injected, __they can never be reset__!
 
 (Same for EFuse Storage)
 
-# LoRaWAN Alternatives
+## LoRaWAN Alternatives
 
 _Can we send LoRa messages securely... Without LoRaWAN?_
 
@@ -516,7 +516,7 @@ Traditional Peer-to-Peer Messaging Protocols (like XMPP and Matrix) won't run on
 
 (Because of LoRa's tiny lossy packets. And JSON over HTTPS is too heavy for BL604)
 
-These newer __Peer-to-Peer Messaging Protocols__ will probably work with PineDio Stack and LoRa...
+These newer __Peer-to-Peer Messaging Protocols__ will probably work with PineDio Stack...
 
 -   [__Meshtastic__](https://meshtastic.org/): Data Mesh Network for LoRa
 
@@ -542,9 +542,9 @@ Maybe we can turn PineDio Stack into a (very basic) __Solar-Powered Gateway for 
 
 That will __relay LoRa and Bluetooth LE messages__ to the internet over WiFi?
 
-Like for tracking our pets?
+Like for __tracking our pets__?
 
-Or for connecting our PineTime watches to the internet?
+Or for connecting our __PineTime watches__ to the internet?
 
 Got any ideas? Lemme know!
 
