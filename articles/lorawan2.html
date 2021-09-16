@@ -76,9 +76,10 @@
 <li><a href="#spectrum-analyser">6 Spectrum Analyser</a><ul></ul></li>
 <li><a href="#security">7 Security</a><ul>
 <li><a href="#cryptographic-co-processor">7.1 Cryptographic Co-Processor</a><ul></ul></li></ul></li>
-<li><a href="#seeking-volunteers">8 Seeking Volunteers!</a><ul></ul></li>
-<li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
-<li><a href="#notes">10 Notes</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/lorawan2-title.jpg" alt="Tiny tasty treat… PineDio Stack BL604 RISC-V Board" /></p>
+<li><a href="#lorawan-alternatives">8 LoRaWAN Alternatives</a><ul></ul></li>
+<li><a href="#seeking-volunteers">9 Seeking Volunteers!</a><ul></ul></li>
+<li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
+<li><a href="#notes">11 Notes</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/lorawan2-title.jpg" alt="Tiny tasty treat… PineDio Stack BL604 RISC-V Board" /></p>
 <p><em>Tiny tasty treat… PineDio Stack BL604 RISC-V Board</em></p>
 <p>📝 <em>19 Sep 2021</em></p>
 <p>Previously I wrote about testing the prototype <strong>PineDio Stack BL604</strong> RISC-V Board…</p>
@@ -414,6 +415,14 @@ void SX126xIoInit( void ) {
 <p><strong>Message Integrity Check</strong></p>
 <p>(Prevents tampering and replay of messages)</p>
 </li>
+<li>
+<p><strong>Message Routing</strong></p>
+<p>(We relay messages through a trusted LoRaWAN Gateway, instead of peer-to-peer direct messaging)</p>
+</li>
+<li>
+<p><strong>Message Throttling</strong></p>
+<p>(Prevents flooding of messages)</p>
+</li>
 </ul>
 <p>More about LoRaWAN Security here…</p>
 <ul>
@@ -450,7 +459,37 @@ void SX126xIoInit( void ) {
 <p>We need to be <strong>extra careful</strong> when working with Cryptographic Co-Processors…</p>
 <p>Once the Security Keys have been injected, <strong>they can never be reset</strong>!</p>
 <p>(Same for EFuse Storage)</p>
-<h1 id="seeking-volunteers" class="section-header"><a href="#seeking-volunteers">8 Seeking Volunteers!</a></h1>
+<h1 id="lorawan-alternatives" class="section-header"><a href="#lorawan-alternatives">8 LoRaWAN Alternatives</a></h1>
+<p><em>Can we send LoRa messages securely… Without LoRaWAN?</em></p>
+<p>Traditional Peer-to-Peer Messaging Protocols (like XMPP and Matrix) won’t run on PineDio Stack with LoRa.</p>
+<p>(Because of LoRa’s tiny lossy packets. And JSON over HTTPS is too heavy for BL604)</p>
+<p>These newer <strong>Peer-to-Peer Messaging Protocols</strong> will probably work with PineDio Stack and LoRa…</p>
+<ul>
+<li>
+<p><a href="https://meshtastic.org/"><strong>Meshtastic</strong></a>: Data Mesh Network for LoRa</p>
+</li>
+<li>
+<p><a href="https://hackaday.io/project/161491-qmesh-a-lora-based-voice-mesh-network"><strong>QMesh</strong></a>: Voice Mesh Network for LoRa</p>
+</li>
+</ul>
+<p>There is an <strong>experimental Matrix protocol</strong> for IoT devices…</p>
+<ul>
+<li><a href="https://matrix.org/blog/2019/03/12/breaking-the-100-bps-barrier-with-matrix-meshsim-coap-proxy">Ultra Low Bandwidth Transport for Matrix (Experimental)</a></li>
+</ul>
+<p>Maybe we’ll see messaging protocols based on Blockchain…</p>
+<ul>
+<li><a href="https://matheo.uliege.be/bitstream/2268.2/11657/12/thesis.pdf">“Designing a Community-Driven Decentralized Storage Network for IoT Data”</a></li>
+</ul>
+<p><em>How secure are they?</em></p>
+<p>Sorry I haven’t reviewed their security features. Someday I might!</p>
+<p><em>PineDio Stack supports triple comms: LoRa, WiFi AND Bluetooth LE…</em></p>
+<p><em>What can we do with them?</em></p>
+<p>Maybe we can turn PineDio Stack into a (very basic) <strong>Solar-Powered Gateway for LoRa + WiFi + Bluetooth LE</strong>?</p>
+<p>That will <strong>relay LoRa and Bluetooth LE messages</strong> to the internet over WiFi?</p>
+<p>Like for tracking our pets?</p>
+<p>Or for connecting our PineTime watches to the internet?</p>
+<p>Got any ideas? Lemme know!</p>
+<h1 id="seeking-volunteers" class="section-header"><a href="#seeking-volunteers">9 Seeking Volunteers!</a></h1>
 <p>I’m really excited that PineDio Stack BL604 will be available soon!</p>
 <p>But in the meantime, JF and I have <strong>plenty to test on PineDio Stack</strong>…</p>
 <ol>
@@ -469,7 +508,7 @@ void SX126xIoInit( void ) {
 <li>Solar Power</li>
 </ol>
 <p><a href="https://twitter.com/MisterTechBlog"><strong>Please let us know</strong></a> if you’re keen to help! 🙏</p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">9 What’s Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">10 What’s Next</a></h1>
 <p>TODO</p>
 <p>The Things Network</p>
 <p>Sorry for griping… But why doesn’t Singapore have decent coverage for The Things Network? 🙄</p>
@@ -489,22 +528,13 @@ void SX126xIoInit( void ) {
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lorawan2.md"><code>lupyuen.github.io/src/lorawan2.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">10 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">11 Notes</a></h1>
 <ol>
 <li>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1436128755987058691">this Twitter Thread</a></p>
 </li>
 <li>
 <p>TODO: Sync with pine64</p>
-</li>
-<li>
-<p>TODO: WiFi lora bt gateway, Very basic functionality</p>
-</li>
-<li>
-<p>TODO: Xmpp, Matrix, Or custom LoRaWAN</p>
-</li>
-<li>
-<p>TODO: <a href="https://matheo.uliege.be/bitstream/2268.2/11657/12/thesis.pdf">“Designing a Community-Driven Decentralized Storage Network for IoT Data”</a></p>
 </li>
 </ol>
 
