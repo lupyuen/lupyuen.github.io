@@ -4,7 +4,7 @@
 
 _Tiny tasty treat... PineDio Stack BL604 RISC-V Board_
 
-📝 _19 Sep 2021_
+📝 _16 Sep 2021_
 
 Previously I wrote about testing the prototype __PineDio Stack BL604__ RISC-V Board...
 
@@ -576,11 +576,13 @@ But in the meantime, JF and I have __plenty to test on PineDio Stack__...
 
 # What's Next
 
-TODO
+In the next article, PineDio Stack shall transmit data to the cloud via the public global LoRaWAN Network... [__The Things Network__](https://www.thethingsnetwork.org/)!
 
-The Things Network
+(Sorry for griping... But why doesn't Singapore have decent coverage for The Things Network? 🙄)
 
-Sorry for griping... But why doesn't Singapore have decent coverage for The Things Network? 🙄
+Thus we shall reconfigure our existing ChirpStack LoRaWAN Gateway for The Things Network.
+
+Stay Tuned!
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
@@ -598,4 +600,4 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1436128755987058691)
 
-1.  TODO: Sync with pine64
+1.  The [`pinedio` branch of my `bl_iot_sdk` repo](https://github.com/lupyuen/bl_iot_sdk/tree/pinedio) has been synced with the latest updates from [`pine64/bl_iot_sdk`](https://github.com/pine64/bl_iot_sdk)
