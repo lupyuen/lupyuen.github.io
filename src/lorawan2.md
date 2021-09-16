@@ -574,13 +574,19 @@ But in the meantime, JF and I have __plenty to test on PineDio Stack__...
 
 [__Please let us know__](https://twitter.com/MisterTechBlog) if you're keen to help! 🙏
 
+![Our new LoRaWAN Gateway for The Things Network](https://lupyuen.github.io/images/lorawan2-ttn3.png)
+
+[(Source)](https://www.thethingsnetwork.org/community/singapore/)
+
 # What's Next
 
 In the next article, PineDio Stack shall transmit data to the cloud via the public global LoRaWAN Network... [__The Things Network__](https://www.thethingsnetwork.org/)!
 
 (Sorry for griping... But why doesn't Singapore have decent coverage for The Things Network? 🙄)
 
-Thus we shall reconfigure our existing ChirpStack LoRaWAN Gateway for The Things Network.
+Thus we shall __reconfigure our ChirpStack LoRaWAN Gateway__ for The Things Network.
+
+(See pic above)
 
 Stay Tuned!
 
