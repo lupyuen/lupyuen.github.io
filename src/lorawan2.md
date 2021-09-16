@@ -454,6 +454,14 @@ LoRaWAN is a layer on top of LoRa that adds __security features__ like...
 
     (Prevents tampering and replay of messages)
 
+-   __Message Routing__
+
+    (We relay messages through a trusted LoRaWAN Gateway, instead of peer-to-peer direct messaging)
+
+-   __Message Throttling__
+
+    (Prevents flooding of messages)
+
 More about LoRaWAN Security here...
 
 -   [__"LoRaWAN Security"__](https://lupyuen.github.io/articles/wisgate#lorawan-security)
@@ -499,6 +507,46 @@ We need to be __extra careful__ when working with Cryptographic Co-Processors...
 Once the Security Keys have been injected, __they can never be reset__!
 
 (Same for EFuse Storage)
+
+# LoRaWAN Alternatives
+
+_Can we send LoRa messages securely... Without LoRaWAN?_
+
+Traditional Peer-to-Peer Messaging Protocols (like XMPP and Matrix) won't run on PineDio Stack with LoRa.
+
+(Because of LoRa's tiny lossy packets. And JSON over HTTPS is too heavy for BL604)
+
+These newer __Peer-to-Peer Messaging Protocols__ will probably work with PineDio Stack and LoRa...
+
+-   [__Meshtastic__](https://meshtastic.org/): Data Mesh Network for LoRa
+
+-   [__QMesh__](https://hackaday.io/project/161491-qmesh-a-lora-based-voice-mesh-network): Voice Mesh Network for LoRa
+
+There is an __experimental Matrix protocol__ for IoT devices...
+
+-   [Ultra Low Bandwidth Transport for Matrix (Experimental)](https://matrix.org/blog/2019/03/12/breaking-the-100-bps-barrier-with-matrix-meshsim-coap-proxy)
+
+Maybe we'll see messaging protocols based on Blockchain...
+
+-   ["Designing a Community-Driven Decentralized Storage Network for IoT Data"](https://matheo.uliege.be/bitstream/2268.2/11657/12/thesis.pdf)
+
+_How secure are they?_
+
+Sorry I haven't reviewed their security features. Someday I might!
+
+_PineDio Stack supports triple comms: LoRa, WiFi AND Bluetooth LE..._
+
+_What can we do with them?_
+
+Maybe we can turn PineDio Stack into a (very basic) __Solar-Powered Gateway for LoRa + WiFi + Bluetooth LE__?
+
+That will __relay LoRa and Bluetooth LE messages__ to the internet over WiFi?
+
+Like for tracking our pets?
+
+Or for connecting our PineTime watches to the internet?
+
+Got any ideas? Lemme know!
 
 # Seeking Volunteers!
 
@@ -547,9 +595,3 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1436128755987058691)
 
 1.  TODO: Sync with pine64
-
-1.  TODO: WiFi lora bt gateway, Very basic functionality
-
-1.  TODO: Xmpp, Matrix, Or custom LoRaWAN
-
-1.  TODO: ["Designing a Community-Driven Decentralized Storage Network for IoT Data"](https://matheo.uliege.be/bitstream/2268.2/11657/12/thesis.pdf)
