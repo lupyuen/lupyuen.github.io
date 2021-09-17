@@ -268,7 +268,26 @@ void SX126xIoInit( void ) {
 <li>
 <p>Change the firmware <strong><code>pinedio_blinky</code></strong> to <strong><code>pinedio_lorawan</code></strong></p>
 </li>
+<li>
+<p>In the <code>customer_app/sdk_app_lorawan</code> folder, edit <a href="https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/sdk_app_lorawan/Makefile"><code>Makefile</code></a> and find this setting…</p>
+<div class="example-wrap"><pre class="language-text">CFLAGS += -DCONFIG_LORA_NODE_REGION=1</pre></div>
+<p>Change “<code>1</code>” to your LoRa Region…</p>
+<table><thead><tr><th align="left">Value</th><th align="left">Region</th></tr></thead><tbody>
+<tr><td align="left">0</td><td align="left">No region</td></tr>
+<tr><td align="left">1</td><td align="left">AS band on 923MHz</td></tr>
+<tr><td align="left">2</td><td align="left">Australian band on 915MHz</td></tr>
+<tr><td align="left">3</td><td align="left">Chinese band on 470MHz</td></tr>
+<tr><td align="left">4</td><td align="left">Chinese band on 779MHz</td></tr>
+<tr><td align="left">5</td><td align="left">European band on 433MHz</td></tr>
+<tr><td align="left">6</td><td align="left">European band on 868MHz</td></tr>
+<tr><td align="left">7</td><td align="left">South Korean band on 920MHz</td></tr>
+<tr><td align="left">8</td><td align="left">India band on 865MHz</td></tr>
+<tr><td align="left">9</td><td align="left">North American band on 915MHz</td></tr>
+<tr><td align="left">10</td><td align="left">North American band on 915MHz with a maximum of 16 channels</td></tr>
+</tbody></table>
+</li>
 </ul>
+<p>Flash and boot the firmware on PineDio Stack.</p>
 <p>Now we run the <strong>LoRaWAN commands</strong> to…</p>
 <ol>
 <li>
