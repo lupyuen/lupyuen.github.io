@@ -1,8 +1,18 @@
 # The Things Network on PineDio Stack BL604 RISC-V Board
 
+![PineDio Stack BL604 RISC-V Board talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway](https://lupyuen.github.io/images/ttn-title.jpg)
+
+_PineDio Stack BL604 RISC-V Board talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway_
+
 📝 _25 Sep 2021_
 
-![](https://lupyuen.github.io/images/ttn-title.jpg)
+_What is The Things Network?_
+
+TODO
+
+_Why LoRa and LoRaWAN?_
+
+TODO
 
 Previously I wrote about testing the prototype __PineDio Stack BL604__ RISC-V Board...
 
@@ -108,6 +118,4 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1438673926721134596)
 
-TODO3
-
-![](https://lupyuen.github.io/images/ttn-pinedio.jpg)
+![PineDio Stack BL604 RISC-V Board talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway](https://lupyuen.github.io/images/ttn-pinedio.jpg)
