@@ -65,7 +65,9 @@
 
     <h1 class="title">The Things Network on PineDio Stack BL604 RISC-V Board</h1>
     <nav id="TOC"><ul>
-<li><a href="#add-gateway-to-the-things-network">1 Add Gateway to The Things Network</a><ul></ul></li>
+<li><a href="#add-gateway-to-the-things-network">1 Add Gateway to The Things Network</a><ul>
+<li><a href="#update-gateway-configuration">1.1 Update Gateway Configuration</a><ul></ul></li>
+<li><a href="#gateway-is-up">1.2 Gateway Is Up!</a><ul></ul></li></ul></li>
 <li><a href="#add-device-to-the-things-network">2 Add Device to The Things Network</a><ul></ul></li>
 <li><a href="#join-device-to-the-things-network">3 Join Device to The Things Network</a><ul></ul></li>
 <li><a href="#send-data-to-the-things-network">4 Send Data to The Things Network</a><ul></ul></li>
@@ -112,17 +114,43 @@
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lorawan2"><strong>“LoRaWAN on PineDio Stack BL604 RISC-V Board”</strong></a></li>
 </ul>
-<p>Today we’ll walk through the steps for connecting PineDio Stack to The Things Network…</p>
+<p>Today we’ll walk through the steps for <strong>connecting PineDio Stack to The Things Network</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/ttn-flow.jpg" alt="PineDio Stack BL604 talking to The Things Network via LoRaWAN Gateway" /></p>
 <h1 id="add-gateway-to-the-things-network" class="section-header"><a href="#add-gateway-to-the-things-network">1 Add Gateway to The Things Network</a></h1>
-<p>TODO</p>
+<p>(<strong>Skip this chapter</strong> if you have The Things Network coverage… You’re so lucky! 👍)</p>
+<p>Sadly there’s no The Things Network coverage in my area. Lemme explain how I <strong>added my LoRaWAN Gateway</strong> (RAKWireless RAK7248) to The Things Network.</p>
+<p><img src="https://lupyuen.github.io/images/ttn-wisgate.png" alt="RAKwireless docs for The Things Network" /></p>
+<p>This is the official doc for adding <strong>RAKWireless RAK7248</strong> (and similar gateways) to The Things Network…</p>
 <ul>
 <li><a href="https://docs.rakwireless.com/Product-Categories/WisGate/RAK7244C/Quickstart/#connecting-to-the-things-network-ttn"><strong>“Connecting to The Things Network”</strong></a></li>
 </ul>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/ttn-wisgate.png" alt="" /></p>
-<p>TODO10</p>
-<p><img src="https://lupyuen.github.io/images/ttn-gateway.jpg" alt="" /></p>
+<p>Run <strong>“<code>sudo gateway-config</code>”</strong> as described to <strong>configure the gateway</strong> for The Things Network. (Instead of ChirpStack)</p>
+<p>We create a <strong>free account</strong> on The Things Network…</p>
+<ul>
+<li><a href="https://www.thethingsnetwork.org/"><strong>“The Things Network: Sign Up”</strong></a></li>
+</ul>
+<p>Log in, select the nearest region (either US, Europe or Australia) and <strong>add a Gateway</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/ttn-gateway.jpg" alt="Add Gateway" /></p>
+<ol>
+<li>
+<p><strong>Gateway ID</strong> needs to be globally unique.</p>
+<p>(Choose wisely!)</p>
+</li>
+<li>
+<p><strong>Gateway EUI</strong> (Extended Unique Identifier) comes from our LoRaWAN Gateway.</p>
+<p>On our RAKwireless Gateway, run this command to get the EUI…</p>
+<div class="example-wrap"><pre class="language-bash">gateway-version</pre></div></li>
+<li>
+<p><strong>Frequency Plan</strong>: See this…</p>
+<p><a href="https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html"><strong>“Frequencies by Country”</strong></a></p>
+</li>
+</ol>
+<h2 id="update-gateway-configuration" class="section-header"><a href="#update-gateway-configuration">1.1 Update Gateway Configuration</a></h2>
+<p>Take Note: This is missing from the RAKwireless docs…</p>
+<p>The Things Network has been upgraded recently and there’s no longer the option for <strong>“Legacy Packet Forwarder”</strong>.</p>
+<p>Instead we run…</p>
+<div class="example-wrap"><pre class="language-bash">sudo gateway-config</pre></div>
+<p>Select <strong>“Edit Packet-Forwarded Config”</strong></p>
 <p>TODO18</p>
 <ul>
 <li><a href="https://www.thethingsnetwork.org/docs/the-things-stack/migrate-to-v3/migrate-gateways/"><strong>“Migrate Gateways (The Things Network)”</strong></a></li>
@@ -130,7 +158,8 @@
 <p><img src="https://lupyuen.github.io/images/ttn-wisgate2.png" alt="" /></p>
 <p>TODO19</p>
 <p><img src="https://lupyuen.github.io/images/ttn-wisgate3.png" alt="" /></p>
-<p>TODO20</p>
+<h2 id="gateway-is-up" class="section-header"><a href="#gateway-is-up">1.2 Gateway Is Up!</a></h2>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/ttn-wisgate4.png" alt="" /></p>
 <h1 id="add-device-to-the-things-network" class="section-header"><a href="#add-device-to-the-things-network">2 Add Device to The Things Network</a></h1>
 <p>TODO</p>
