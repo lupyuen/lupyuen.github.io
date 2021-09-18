@@ -58,23 +58,61 @@ Which has an onboard LoRa SX1262 Transceiver...
 
 -   [__"LoRaWAN on PineDio Stack BL604 RISC-V Board"__](https://lupyuen.github.io/articles/lorawan2)
 
-Today we'll walk through the steps for connecting PineDio Stack to The Things Network...
+Today we'll walk through the steps for __connecting PineDio Stack to The Things Network__...
 
 ![PineDio Stack BL604 talking to The Things Network via LoRaWAN Gateway](https://lupyuen.github.io/images/ttn-flow.jpg)
 
 # Add Gateway to The Things Network
 
-TODO
+(__Skip this chapter__ if you have The Things Network coverage... You're so lucky! 👍)
+
+Sadly there's no The Things Network coverage in my area. Lemme explain how I __added my LoRaWAN Gateway__ (RAKWireless RAK7248) to The Things Network.
+
+![RAKwireless docs for The Things Network](https://lupyuen.github.io/images/ttn-wisgate.png)
+
+This is the official doc for adding __RAKWireless RAK7248__ (and similar gateways) to The Things Network...
 
 -   [__"Connecting to The Things Network"__](https://docs.rakwireless.com/Product-Categories/WisGate/RAK7244C/Quickstart/#connecting-to-the-things-network-ttn)
 
-TODO
+Run __"`sudo gateway-config`"__ as described to __configure the gateway__ for The Things Network. (Instead of ChirpStack)
 
-![](https://lupyuen.github.io/images/ttn-wisgate.png)
+We create a __free account__ on The Things Network...
 
-TODO10
+-   [__"The Things Network: Sign Up"__](https://www.thethingsnetwork.org/)
 
-![](https://lupyuen.github.io/images/ttn-gateway.jpg)
+Log in, select the nearest region (either US, Europe or Australia) and __add a Gateway__...
+
+![Add Gateway](https://lupyuen.github.io/images/ttn-gateway.jpg)
+
+1.  __Gateway ID__ needs to be globally unique.
+
+    (Choose wisely!)
+
+1.  __Gateway EUI__ (Extended Unique Identifier) comes from our LoRaWAN Gateway.
+
+    On our RAKwireless Gateway, run this command to get the EUI...
+
+    ```bash
+    gateway-version
+    ```
+
+1.  __Frequency Plan__: See this...
+
+    [__"Frequencies by Country"__](https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html)
+
+## Update Gateway Configuration
+
+Take Note: This is missing from the RAKwireless docs...
+
+The Things Network has been upgraded recently and there's no longer the option for __"Legacy Packet Forwarder"__.
+
+Instead we run...
+
+```bash
+sudo gateway-config
+```
+
+Select __"Edit Packet-Forwarded Config"__
 
 TODO18
 
@@ -86,7 +124,9 @@ TODO19
 
 ![](https://lupyuen.github.io/images/ttn-wisgate3.png)
 
-TODO20
+## Gateway Is Up!
+
+TODO
 
 ![](https://lupyuen.github.io/images/ttn-wisgate4.png)
 
