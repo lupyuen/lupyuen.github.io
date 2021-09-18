@@ -2,43 +2,41 @@
 
 📝 _25 Sep 2021_
 
+![](https://lupyuen.github.io/images/ttn-title.jpg)
+
 Previously I wrote about testing the prototype __PineDio Stack BL604__ RISC-V Board...
 
 -   [__"PineDio Stack BL604 RISC-V Board: Testing The Prototype"__](https://lupyuen.github.io/articles/pinedio)
 
 TODO
 
-# What's Next
+# Gateway
+
+TODO10
+
+![](https://lupyuen.github.io/images/ttn-gateway.jpg)
+
+TODO17
+
+![](https://lupyuen.github.io/images/ttn-wisgate.png)
+
+TODO18
+
+![](https://lupyuen.github.io/images/ttn-wisgate2.png)
+
+TODO19
+
+![](https://lupyuen.github.io/images/ttn-wisgate3.png)
+
+TODO20
+
+![](https://lupyuen.github.io/images/ttn-wisgate4.png)
+
+# Device
 
 TODO
 
--   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
-
--   [Read "The RISC-V BL602 / BL604 Book"](https://lupyuen.github.io/articles/book)
-
--   [Check out my articles](https://lupyuen.github.io)
-
--   [RSS Feed](https://lupyuen.github.io/rss.xml)
-
-_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
-
-[`lupyuen.github.io/src/ttn.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ttn.md)
-
-# Notes
-
-1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1438673926721134596)
-
-TODO1
-
 ![](https://lupyuen.github.io/images/ttn-app.png)
-
-TODO2
-
-![](https://lupyuen.github.io/images/ttn-coverage.jpg)
-
-TODO3
-
-![](https://lupyuen.github.io/images/ttn-coverage.png)
 
 TODO4
 
@@ -64,9 +62,7 @@ TODO9
 
 ![](https://lupyuen.github.io/images/ttn-flow2.jpg)
 
-TODO10
-
-![](https://lupyuen.github.io/images/ttn-gateway.jpg)
+# Test
 
 TODO11
 
@@ -75,10 +71,6 @@ TODO11
 TODO12
 
 ![](https://lupyuen.github.io/images/ttn-join2.png)
-
-TODO13
-
-![](https://lupyuen.github.io/images/ttn-pinedio.jpg)
 
 TODO14
 
@@ -90,23 +82,32 @@ TODO15
 
 TODO16
 
-![](https://lupyuen.github.io/images/ttn-title.jpg)
+# Coverage
 
-TODO17
+TODO2
 
-![](https://lupyuen.github.io/images/ttn-wisgate.png)
+![](https://lupyuen.github.io/images/ttn-coverage.jpg)
 
-TODO18
+# What's Next
 
-![](https://lupyuen.github.io/images/ttn-wisgate2.png)
+TODO
 
-TODO19
+-   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
-![](https://lupyuen.github.io/images/ttn-wisgate3.png)
+-   [Read "The RISC-V BL602 / BL604 Book"](https://lupyuen.github.io/articles/book)
 
-TODO20
+-   [Check out my articles](https://lupyuen.github.io)
 
-![](https://lupyuen.github.io/images/ttn-wisgate4.png)
+-   [RSS Feed](https://lupyuen.github.io/rss.xml)
 
-TODO21
+_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
+[`lupyuen.github.io/src/ttn.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ttn.md)
+
+# Notes
+
+1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1438673926721134596)
+
+TODO3
+
+![](https://lupyuen.github.io/images/ttn-pinedio.jpg)
