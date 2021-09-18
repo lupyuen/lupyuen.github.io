@@ -64,7 +64,11 @@ Today we'll walk through the steps for connecting PineDio Stack to The Things Ne
 
 # Add Gateway to The Things Network
 
-TODO17
+TODO
+
+-   [__"Connecting to The Things Network"__](https://docs.rakwireless.com/Product-Categories/WisGate/RAK7244C/Quickstart/#connecting-to-the-things-network-ttn)
+
+TODO
 
 ![](https://lupyuen.github.io/images/ttn-wisgate.png)
 
@@ -73,6 +77,8 @@ TODO10
 ![](https://lupyuen.github.io/images/ttn-gateway.jpg)
 
 TODO18
+
+-   [__"Migrate Gateways (The Things Network)"__](https://www.thethingsnetwork.org/docs/the-things-stack/migrate-to-v3/migrate-gateways/)
 
 ![](https://lupyuen.github.io/images/ttn-wisgate2.png)
 
@@ -100,6 +106,8 @@ TODO5
 
 TODO6
 
+-   [__"LoRaWAN Support (The Things Network)"__](https://www.thethingsindustries.com/docs/getting-started/migrating/major-changes/#lorawan-support)
+
 ![](https://lupyuen.github.io/images/ttn-device3.png)
 
 TODO7
@@ -113,25 +121,25 @@ TODO
 Run these commands to join The Things Network...
 
 ```bash
-#  Start LoRa background task
+##  Start LoRa background task
 create_task
 
-#  Init LoRaWAN driver
+##  Init LoRaWAN driver
 init_lorawan
 
-#  Copy the following values from The Things Network Console -> 
-#  Applications -> (Your App) -> End Devices -> (Your Device)...
+##  Copy the following values from The Things Network Console -> 
+##  Applications -> (Your App) -> End Devices -> (Your Device)...
 
-#  Device EUI: Copy from (Your Device) -> DevEUI
+##  Device EUI: Copy from (Your Device) -> DevEUI
 las_wr_dev_eui 0xAB:0xBA:0xDA:0xBA:0xAB:0xBA:0xDA:0xBA
 
-#  App EUI: Copy from (Your Device) -> JoinEUI
+##  App EUI: Copy from (Your Device) -> JoinEUI
 las_wr_app_eui 0x00:0x00:0x00:0x00:0x00:0x00:0x00:0x00
 
-#  App Key: Copy from (Your Device) -> AppKey
+##  App Key: Copy from (Your Device) -> AppKey
 las_wr_app_key 0xAB:0xBA:0xDA:0xBA:0xAB:0xBA:0xDA:0xBA0xAB:0xBA:0xDA:0xBA:0xAB:0xBA:0xDA:0xBA
 
-#  Join The Things Network, try 1 time
+##  Join The Things Network, try 1 time
 las_join 1
 ```
 
@@ -150,10 +158,10 @@ TODO
 Run these commands to transmit Sensor Data to The Things Network...
 
 ```bash
-#  Open The Things Network port 2 (App Port)
+##  Open The Things Network port 2 (App Port)
 las_app_port open 2
 
-#  Send data to The Things Network port 2, 5 bytes, unconfirmed (0)
+##  Send data to The Things Network port 2, 5 bytes, unconfirmed (0)
 las_app_tx 2 5 0
 ```
 
