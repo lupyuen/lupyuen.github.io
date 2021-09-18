@@ -106,13 +106,38 @@ TODO7
 
 ![](https://lupyuen.github.io/images/ttn-device4.png)
 
-TODO8
-
 # Join Device to The Things Network
 
-TODO11
+TODO
+
+Run these commands to join The Things Network...
+
+```bash
+#  Start LoRa background task
+create_task
+
+#  Init LoRaWAN driver
+init_lorawan
+
+#  Copy the following values from The Things Network Console -> 
+#  Applications -> (Your App) -> End Devices -> (Your Device)...
+
+#  Device EUI: Copy from (Your Device) -> DevEUI
+las_wr_dev_eui 0xAB:0xBA:0xDA:0xBA:0xAB:0xBA:0xDA:0xBA
+
+#  App EUI: Copy from (Your Device) -> JoinEUI
+las_wr_app_eui 0x00:0x00:0x00:0x00:0x00:0x00:0x00:0x00
+
+#  App Key: Copy from (Your Device) -> AppKey
+las_wr_app_key 0xAB:0xBA:0xDA:0xBA:0xAB:0xBA:0xDA:0xBA0xAB:0xBA:0xDA:0xBA:0xAB:0xBA:0xDA:0xBA
+
+#  Join The Things Network, try 1 time
+las_join 1
+```
 
 ![](https://lupyuen.github.io/images/ttn-join.png)
+
+[(Source)](https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan#lorawan-commands-for-the-things-network)
 
 TODO12
 
@@ -120,9 +145,21 @@ TODO12
 
 # Send Data to The Things Network
 
-TODO14
+TODO
+
+Run these commands to transmit Sensor Data to The Things Network...
+
+```bash
+#  Open The Things Network port 2 (App Port)
+las_app_port open 2
+
+#  Send data to The Things Network port 2, 5 bytes, unconfirmed (0)
+las_app_tx 2 5 0
+```
 
 ![](https://lupyuen.github.io/images/ttn-send.png)
+
+[(Source)](https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan#lorawan-commands-for-the-things-network)
 
 TODO15
 
