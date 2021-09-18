@@ -124,6 +124,14 @@ TODO19
 
 ![](https://lupyuen.github.io/images/ttn-wisgate3.png)
 
+TODO
+
+![](https://lupyuen.github.io/images/ttn-gateway2.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/ttn-gateway3.png)
+
 ## Gateway Is Up!
 
 TODO
