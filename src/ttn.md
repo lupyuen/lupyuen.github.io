@@ -1,14 +1,32 @@
 # The Things Network on PineDio Stack BL604 RISC-V Board
 
-![PineDio Stack BL604 RISC-V Board talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway](https://lupyuen.github.io/images/ttn-title.jpg)
+![PineDio Stack BL604 RISC-V Board (foreground) talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway (background)](https://lupyuen.github.io/images/ttn-title.jpg)
 
-_PineDio Stack BL604 RISC-V Board talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway_
+_PineDio Stack BL604 RISC-V Board (foreground) talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway (background)_
 
 📝 _25 Sep 2021_
 
 _What is The Things Network?_
 
+[__The Things Network__](https://www.thethingsnetwork.org/) is a crowd-sourced global network for IoT devices.
+
 TODO
+
+_How much does it cost?_
+
+TODO
+
+Nothing! The public community network is Free for Fair Use.
+
+(The network has been free since its launch in 2015)
+
+_Totally free! What's the catch?_
+
+TODO
+
+LoRaWAN Gateways
+
+LoRaWAN Devices
 
 _Why LoRa and LoRaWAN?_
 
@@ -118,4 +136,4 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1438673926721134596)
 
-![PineDio Stack BL604 RISC-V Board talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway](https://lupyuen.github.io/images/ttn-pinedio.jpg)
+![PineDio Stack BL604 RISC-V Board (foreground) talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway (background)](https://lupyuen.github.io/images/ttn-pinedio.jpg)
