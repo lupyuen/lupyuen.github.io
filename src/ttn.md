@@ -8,45 +8,69 @@ _PineDio Stack BL604 RISC-V Board (foreground) talking to The Things Network via
 
 _What is The Things Network?_
 
-[__The Things Network__](https://www.thethingsnetwork.org/) is a crowd-sourced global network for IoT devices.
+[__The Things Network__](https://www.thethingsnetwork.org/) is a __crowd-sourced wireless network__. And it works __worldwide__!
 
-TODO
+Our __IoT Devices__ may connect to The Things Network and __transmit Sensor Data__ to the Cloud.
 
 _How much does it cost?_
 
-TODO
-
-Nothing! The public community network is Free for Fair Use.
+Nothing! The public community network is __Free for Fair Use__.
 
 (The network has been free since its launch in 2015)
 
 _Totally free! What's the catch?_
 
-TODO
+Here's what we need...
 
-LoRaWAN Gateways
+1.  __LoRa Wireless Module__: We'll use the __Semtech SX1232 LoRa Transceiver__ (Transmitter + Receiver) that's bundled with our PineDio Stack Board.
 
-LoRaWAN Devices
+    (More about this in a while)
 
-_Why LoRa and LoRaWAN?_
+1.  __Network Coverage__: Check whether our area is covered by the network...
 
-TODO
+    [__The Things Network Global Coverage__](https://www.thethingsnetwork.org/map)
 
-Previously I wrote about testing the prototype __PineDio Stack BL604__ RISC-V Board...
+1.  __Fair Use__: Because it's a free network for Sensor Data, we can't spam it with messages.
+
+    Each device may transmit roughly __10 tiny messages per hour__.
+    
+    (Assuming 12 bytes per message)
+
+    This varies by region, message size and data rate.
+    
+    (More about this in a while)
+
+_Darn no coverage here. What now?_
+
+Everyone is welcome to join The Things Network and __grow the network__!
+
+In a while I'll explain how I __added my LoRaWAN Gateway__ to The Things Network.
+
+[(I bought my RAKwireless RAK7248 Gateway for $280)](https://docs.rakwireless.com/Product-Categories/WisGate/RAK7248/Overview/)
+
+_What is PineDio Stack?_
+
+__PineDio Stack__ is a 32-bit RISC-V Microcontroller board...
 
 -   [__"PineDio Stack BL604 RISC-V Board: Testing The Prototype"__](https://lupyuen.github.io/articles/pinedio)
 
-TODO
+Which has an onboard LoRa SX1262 Transceiver...
 
-# Gateway
+-   [__"LoRaWAN on PineDio Stack BL604 RISC-V Board"__](https://lupyuen.github.io/articles/lorawan2)
 
-TODO10
+Today we'll walk through the steps for connecting PineDio Stack to The Things Network...
 
-![](https://lupyuen.github.io/images/ttn-gateway.jpg)
+![PineDio Stack BL604 talking to The Things Network via LoRaWAN Gateway](https://lupyuen.github.io/images/ttn-flow.jpg)
+
+# Add Gateway to The Things Network
 
 TODO17
 
 ![](https://lupyuen.github.io/images/ttn-wisgate.png)
+
+TODO10
+
+![](https://lupyuen.github.io/images/ttn-gateway.jpg)
 
 TODO18
 
@@ -60,7 +84,7 @@ TODO20
 
 ![](https://lupyuen.github.io/images/ttn-wisgate4.png)
 
-# Device
+# Add Device to The Things Network
 
 TODO
 
@@ -84,13 +108,7 @@ TODO7
 
 TODO8
 
-![](https://lupyuen.github.io/images/ttn-flow.jpg)
-
-TODO9
-
-![](https://lupyuen.github.io/images/ttn-flow2.jpg)
-
-# Test
+# Join Device to The Things Network
 
 TODO11
 
@@ -99,6 +117,8 @@ TODO11
 TODO12
 
 ![](https://lupyuen.github.io/images/ttn-join2.png)
+
+# Send Data to The Things Network
 
 TODO14
 
@@ -110,9 +130,15 @@ TODO15
 
 TODO16
 
-# Coverage
+# The Things Network Coverage
 
 TODO2
+
+![](https://lupyuen.github.io/images/ttn-flow2.jpg)
+
+TODO: Schools should install LoRaWAN Gateways for The Things Network
+
+[Airtime Calculator](https://avbentem.github.io/airtime-calculator/ttn/us915)
 
 ![](https://lupyuen.github.io/images/ttn-coverage.jpg)
 
