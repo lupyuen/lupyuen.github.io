@@ -100,7 +100,7 @@ Log in, select the nearest region (either US, Europe or Australia) and __add a G
 
     [__"Frequencies by Country"__](https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html)
 
-## Update Gateway Configuration
+## Configure Gateway
 
 Take Note: This is missing from the RAKwireless docs...
 
