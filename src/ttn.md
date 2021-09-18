@@ -98,7 +98,7 @@ Log in, select the nearest region (either US, Europe or Australia) and __add a G
 
 1.  __Frequency Plan__: See this...
 
-    [__"Frequencies by Country"__](https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html)
+    [__"Frequency Plans by Country"__](https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html)
 
 ## Configure Gateway
 
