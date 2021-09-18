@@ -610,7 +610,7 @@ In the next article, PineDio Stack shall transmit data to the cloud via the publ
 
 Thus we shall __reconfigure our ChirpStack LoRaWAN Gateway__ for The Things Network.
 
-(See pic above)
+[(Follow the updates in this Twitter Thread)](https://twitter.com/MisterTechBlog/status/1438673926721134596)
 
 Stay Tuned!
 
