@@ -321,9 +321,9 @@ We're ready to...
 
 Let's __join our PineDio Stack__ device to The Things Network!
 
-Because we're using __Over-The-Air Activation__, we need to join the network every time we boot our device.
+Because we're doing __Over-The-Air Activation__, we need to join the network every time we boot our device.
 
-In The Things Network Console, browse to our Device and __copy these values__ (needed for the network activation)...
+In The Things Network, browse to our Device and __copy these values__ (needed for network activation)...
 
 1.  __JoinEUI__ (Join Extended Unique Identifier)
 
@@ -333,7 +333,21 @@ In The Things Network Console, browse to our Device and __copy these values__ (n
 
 ![Device Overview](https://lupyuen.github.io/images/ttn-device2.png)
 
-TODO
+Click the icons shown above to __reveal, format and copy__ the values.
+
+Note that the copied values are formatted as...
+
+```text
+0xAB, 0xBA, 0xDA, 0xBA, ...
+```
+
+Later we shall convert the comma-delimited values to __colon-separated__ values...
+
+```text
+0xAB:0xBA:0xDA:0xBA:...
+```
+
+## Join Commands
 
 Head over to the __Serial Terminal__ for PineDio Stack.
 
@@ -351,31 +365,45 @@ At the PineDio Stack Command Prompt, enter these commands to __join PineDio Stac
     init_lorawan
     ```
 
-1.  TODO: We set the DevEUI...
+1.  Set the __DevEUI__...
 
     ```bash
     las_wr_dev_eui 0xAB:0xBA:0xDA:0xBA:0xAB:0xBA:0xDA:0xBA
     ```
 
-1.  TODO: Set the JoinEUI...
+    Change "`0xAB:0xBA:...`" to your __DevEUI__
+
+    (Remember to change the __"`,`"__ delimiter to __"`:`"__)
+
+1.  Set the __JoinEUI__...
 
     ```bash
     las_wr_app_eui 0x00:0x00:0x00:0x00:0x00:0x00:0x00:0x00
     ```
 
-1.  TODO: Set the AppKey...
+    Change "`0x00:0x00:...`" to your __JoinEUI__
+
+    (Yep change the __"`,`"__ delimiter to __"`:`"__)
+
+1.  Set the __AppKey__...
 
     ```bash
     las_wr_app_key 0xAB:0xBA:0xDA:0xBA:0xAB:0xBA:0xDA:0xBA0xAB:0xBA:0xDA:0xBA:0xAB:0xBA:0xDA:0xBA
     ```
 
-1.  We send a request to __join The Things Network__...
+    Change "`0xAB:0xBA:...`" to your __AppKey__
+
+    (Again change __"`,`"__ to __"`:`"__)
+    
+1.  Finally we send a request to __join The Things Network__...
 
     ```bash
     las_join 1
     ```
 
     ("`1`" means try only once)
+
+## We Are In!
 
 TODO
 
