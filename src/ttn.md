@@ -191,9 +191,11 @@ Yep we're __officially a contributor__ to the globally-connected The Things Netw
 
 Before sending data to The Things Network, we need to __add a device__...
 
-1.  Log in to The Things Network.
+1.  Log in to [__The Things Network__](https://www.thethingsnetwork.org/).
 
-    Select the nearest region. (Either US, Europe or Australia)
+    Select the nearest region.
+    
+    (Either US, Europe or Australia)
 
 1.  Click __`Applications`__ and __`Add Application`__...
 
@@ -213,17 +215,33 @@ Before sending data to The Things Network, we need to __add a device__...
 
     ![Register End Device](https://lupyuen.github.io/images/ttn-device3.png)
 
+1.  Fill in these fields...
+
+    __LoRaWAN Version:__ MAC V1.0.2
+
+    __Regional Parameters Version:__ PHY V1.0.2 REV B
+
+    __Frequency Plan:__ See this...
+
+    [__"Frequency Plans by Country"__](https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html)
+
+1.  Click __"`Show Advanced Activation`"__
+
+    ![Register End Device](https://lupyuen.github.io/images/ttn-device5.png)
+
+    __Activation Mode__ should be __Over The Air Activation__
+
+1.  For __DevEUI, JoinEUI, AppKey and NwkKey__...
+
+    Click the buttons for __"`Generate`"__ and __"`Fill With Zeros`"__...
+
     ![Register End Device](https://lupyuen.github.io/images/ttn-device.png)
 
-1.  Click the buttons for __"`Generate`"__ and __"`Fill With Zeros`"__.
+1.  Click __"`Register End Device`"__
 
-    (See pic above)
+_Why did we select LoRaWAN Version 1.0.2 Rev B?_
 
-TODO5
-
-![](https://lupyuen.github.io/images/ttn-device2.png)
-
-TODO6
+TODO
 
 -   [__"LoRaWAN Support (The Things Network)"__](https://www.thethingsindustries.com/docs/getting-started/migrating/major-changes/#lorawan-support)
 
@@ -259,6 +277,12 @@ las_wr_app_key 0xAB:0xBA:0xDA:0xBA:0xAB:0xBA:0xDA:0xBA0xAB:0xBA:0xDA:0xBA:0xAB:0
 ##  Join The Things Network, try 1 time
 las_join 1
 ```
+
+TODO
+
+![](https://lupyuen.github.io/images/ttn-device2.png)
+
+TODO
 
 ![](https://lupyuen.github.io/images/ttn-join.png)
 
