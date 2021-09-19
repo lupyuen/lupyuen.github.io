@@ -449,6 +449,8 @@ We should see __5 bytes of `0x00`__ received by The Things Network...
 
 And we're done!
 
+## Doing Better
+
 _Sending 5 bytes of data to the network doesn't sound particularly exciting?_
 
 Yep we're just getting started! 
@@ -458,6 +460,10 @@ In the next article, PineDio Stack shall send __Temperature Sensor Data__ in rea
 (Just like a real IoT Device!)
 
 We shall also explore The Thing Network's __Cloud Integration__ features for processing our sensor data: MQTT, Webhooks, Storage, ...
+
+And we'll do basic __Sensor Data Visualisation__.
+
+[(Maybe with Grafana and MQTT)](https://grafana.com/blog/2021/08/12/streaming-real-time-sensor-data-to-grafana-using-mqtt-and-grafana-live/)
 
 [(More about The Things Network Cloud Integration)](https://www.thethingsnetwork.org/docs/applications-and-integrations/)
 
