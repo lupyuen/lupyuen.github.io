@@ -323,7 +323,7 @@ Let's __join our PineDio Stack__ device to The Things Network!
 
 Because we're doing __Over-The-Air Activation__, we need to join the network every time we boot our device.
 
-In The Things Network, browse to our Device and __copy these values__ (needed for network activation)...
+In The Things Network, browse to __our Device__ and __copy these values__ (needed for network activation)...
 
 1.  __JoinEUI__ (Join Extended Unique Identifier)
 
@@ -403,15 +403,17 @@ At the PineDio Stack Command Prompt, enter these commands to __join PineDio Stac
 
     ("`1`" means try only once)
 
-## We Are In!
-
-TODO
-
 [(Source)](https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan#lorawan-commands-for-the-things-network)
 
-TODO12
+## We Are In!
 
-![](https://lupyuen.github.io/images/ttn-join2.png)
+Head back to The Things Network.  Browse to __our Application__ and click __"`Live Data`"__ (in the left bar)
+
+We should see __"Successfully Processed Join Request"__...
+
+![Application Live Data](https://lupyuen.github.io/images/ttn-join2.png)
+
+Yep our PineDio Stack has successfully joined The Things Network!
 
 If we see __"Message Integrity Code" Errors__, check the Device Settings. The __LoRaWAN Version__ should be __1.0.2 Rev B__. 
 
