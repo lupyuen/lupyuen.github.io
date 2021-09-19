@@ -253,7 +253,51 @@ If you see __"Message Integrity Code" Errors__ later, check the settings above f
 
 # Run the LoRaWAN Firmware
 
-TODO
+Now we build, flash and run the __LoRaWAN Firmware__ for PineDio Stack!
+
+Follow these instructions...
+
+1.  [__"BL604 Blinky (Build the Firmware)"__](https://lupyuen.github.io/articles/pinedio#bl604-blinky)
+
+1.  [__"Flash Firmware To BL604"__](https://lupyuen.github.io/articles/pinedio#flash-firmware-to-bl604)
+
+With these modifications...
+
+-   Change the branch __`3wire`__ to __`pinedio`__
+
+-   Change the firmware __`pinedio_blinky`__ to __`pinedio_lorawan`__
+
+-   In the `customer_app/sdk_app_lorawan` folder, edit [`Makefile`](https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/sdk_app_lorawan/Makefile) and find this setting...
+
+    ```text
+    CFLAGS += -DCONFIG_LORA_NODE_REGION=1
+    ```
+
+    Change "`1`" to your LoRa Region...
+
+    | Value | Region 
+    | :---  | :---
+    | 0 | No region
+    | 1 | AS band on 923MHz
+    | 2 | Australian band on 915MHz
+    | 3 | Chinese band on 470MHz
+    | 4 | Chinese band on 779MHz
+    | 5 | European band on 433MHz
+    | 6 | European band on 868MHz
+    | 7 | South Korean band on 920MHz
+    | 8 | India band on 865MHz
+    | 9 | North American band on 915MHz
+    | 10 | North American band on 915MHz with a maximum of 16 channels
+
+__Flash and boot__ the firmware on PineDio Stack.
+
+Open a __Serial Terminal__ and connect to PineDio Stack at 2 Mbps.
+
+We're ready to join PineDio Stack to The Things Network!
+
+[(Yep this is the same LoRaWAN Firmware that we ported from Apache Mynewt OS to BL602!)](https://lupyuen.github.io/articles/lorawan)
+
+![Tiny tasty treat... PineDio Stack BL604 RISC-V Board](https://lupyuen.github.io/images/lorawan2-title.jpg)
 
 # Join Device to The Things Network
 
