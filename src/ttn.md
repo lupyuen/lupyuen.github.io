@@ -301,9 +301,53 @@ We're ready to join PineDio Stack to The Things Network!
 
 # Join Device to The Things Network
 
-TODO
+At the Serial Terminal for PineDio Stack, enter these commands to __join PineDio Stack to The Things Network__...
 
-Run these commands to join The Things Network...
+1.  First we start the __Background Task__ that will handle LoRa packets...
+
+    ```bash
+    create_task
+    ```
+
+1.  Next we initialise the __LoRa SX1262 and LoRaWAN Drivers__...
+
+    ```bash
+    init_lorawan
+    ```
+
+1.  We set the __Device EUI__ (Extended Unique Identifier)...
+
+    ```bash
+    las_wr_dev_eui 0x4b:0xc1:0x5e:0xe7:0x37:0x7b:0xb1:0x5b
+    ```
+
+    TODO: Change the above EUI 
+
+1.  Set the __App EUI__...
+
+    ```bash
+    las_wr_app_eui 0x00:0x00:0x00:0x00:0x00:0x00:0x00:0x00
+    ```
+
+    TODO
+
+1.  Set the __App Key__...
+
+    ```bash
+    las_wr_app_key 0xaa:0xff:0xad:0x5c:0x7e:0x87:0xf6:0x4d:0xe3:0xf0:0x87:0x32:0xfc:0x1d:0xd2:0x5d
+    ```
+
+    TODO: We get the App Key from
+
+1.  We send a request to __join The Things Network__...
+
+    ```bash
+    las_join 1
+    ```
+
+    ("`1`" means try only once)
+
+TODO
 
 ```bash
 ##  Start LoRa background task
