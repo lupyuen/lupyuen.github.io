@@ -326,7 +326,9 @@
 <p><a href="https://lupyuen.github.io/articles/lorawan">(Yep this is the same LoRaWAN Firmware that we ported from Apache Mynewt OS to BL602!)</a></p>
 <p><img src="https://lupyuen.github.io/images/lorawan2-title.jpg" alt="Tiny tasty treat… PineDio Stack BL604 RISC-V Board" /></p>
 <h1 id="join-device-to-the-things-network" class="section-header"><a href="#join-device-to-the-things-network">4 Join Device to The Things Network</a></h1>
-<p>In The Things Network Console, browse to our Device and <strong>copy these values</strong>:</p>
+<p>Let’s <strong>join our PineDio Stack</strong> device to The Things Network!</p>
+<p>Because we’re using <strong>Over-The-Air Activation</strong>, we need to join the network every time we boot our device.</p>
+<p>In The Things Network Console, browse to our Device and <strong>copy these values</strong> (needed for the network activation)…</p>
 <ol>
 <li>
 <p><strong>JoinEUI</strong> (Join Extended Unique Identifier)</p>
@@ -340,7 +342,8 @@
 </ol>
 <p><img src="https://lupyuen.github.io/images/ttn-device2.png" alt="Device Overview" /></p>
 <p>TODO</p>
-<p>At the Serial Terminal for PineDio Stack, enter these commands to <strong>join PineDio Stack to The Things Network</strong>…</p>
+<p>Head over to the <strong>Serial Terminal</strong> for PineDio Stack.</p>
+<p>At the PineDio Stack Command Prompt, enter these commands to <strong>join PineDio Stack to The Things Network</strong>…</p>
 <ol>
 <li>
 <p>First we start the <strong>Background Task</strong> that will handle LoRa packets…</p>
