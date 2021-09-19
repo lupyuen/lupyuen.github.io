@@ -449,10 +449,6 @@ We should see __5 bytes of `0x00`__ received by The Things Network...
 
 And we're done!
 
-# Fair Use in The Things Network
-
-TODO
-
 # The Things Network Coverage
 
 TODO
@@ -464,6 +460,10 @@ TODO: Schools should install LoRaWAN Gateways for The Things Network
 [Airtime Calculator](https://avbentem.github.io/airtime-calculator/ttn/us915)
 
 ![The Things Network coverage in Singapore](https://lupyuen.github.io/images/ttn-coverage.jpg)
+
+# Fair Use of The Things Network
+
+TODO
 
 # What's Next
 
