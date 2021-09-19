@@ -293,7 +293,15 @@ __Flash and boot__ the firmware on PineDio Stack.
 
 Open a __Serial Terminal__ and connect to PineDio Stack at 2 Mbps.
 
-We're ready to join PineDio Stack to The Things Network!
+We're ready to...
+
+1.  __Join PineDio Stack__ to The Things Network
+
+    (Because we need to join the network before sending data)
+
+1.  __Send data from PineDio Stack__ to The Things Network
+
+    (And observe the data received by The Things Network!)
 
 [(Yep this is the same LoRaWAN Firmware that we ported from Apache Mynewt OS to BL602!)](https://lupyuen.github.io/articles/lorawan)
 
