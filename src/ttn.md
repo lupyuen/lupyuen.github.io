@@ -323,7 +323,7 @@ Let's __join our PineDio Stack__ device to The Things Network!
 
 Because we're doing __Over-The-Air Activation__, we need to join the network every time we boot our device.
 
-In The Things Network, browse to __our Device__ and __copy these values__ (needed for network activation)...
+In The Things Network, browse to our __Device__ and __copy these values__ (needed for network activation)...
 
 1.  __JoinEUI__ (Join Extended Unique Identifier)
 
@@ -407,7 +407,7 @@ At the PineDio Stack Command Prompt, enter these commands to __join PineDio Stac
 
 ## We Are In!
 
-Head back to The Things Network.  Browse to __our Application__ and click __"`Live Data`"__ (in the left bar)
+Head back to The Things Network.  Browse to our __Application__ and click __"`Live Data`"__ (in the left bar)
 
 We should see __"Successfully Processed Join Request"__...
 
@@ -419,39 +419,43 @@ If we see __"Message Integrity Code" Errors__, check the Device Settings. The __
 
 # Send Data to The Things Network
 
-TODO
+Finally we're ready to send data from PineDio Stack to The Things Network!
 
-Run these commands to transmit Sensor Data to The Things Network...
+At the PineDio Stack Command Prompt, enter these commands...
 
-1.  We open a __The Things Network Port__...
+1.  We open an __Application Port__ that will connect to The Things Network...
 
     ```bash
     las_app_port open 2
     ```
 
-    (2 is the Application Port Number)
+    ("`2`" is the Application Port Number)
 
-1.  Then we __send a Data Packet__ containing 5 bytes of data (`0x00`) to The Things Network Port 2...
+1.  Then we __send a Data Packet__ containing 5 bytes of data (`0x00`) to The Things Network at Port 2...
 
     ```bash
     las_app_tx 2 5 0
     ```
 
-    (0 means that this is an Unconfirmed Message, we're not expecting an acknowledgement from The Things Network)
-
-TODO
+    ("`0`" means that this is an Unconfirmed Message, we're not expecting an acknowledgement from The Things Network)
 
 [(Source)](https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan#lorawan-commands-for-the-things-network)
 
-TODO15
+Switch back to The Things Network.  Browse to our __Application__ and click __"`Live Data`"__ (in the left bar)
 
-![](https://lupyuen.github.io/images/ttn-send2.png)
+We should see __5 bytes of `0x00`__ received by The Things Network...
 
-TODO16
+![Application Live Data](https://lupyuen.github.io/images/ttn-send2.png)
+
+And we're done!
+
+# Fair Use in The Things Network
+
+TODO
 
 # The Things Network Coverage
 
-TODO2
+TODO
 
 ![](https://lupyuen.github.io/images/ttn-flow2.jpg)
 
@@ -459,11 +463,11 @@ TODO: Schools should install LoRaWAN Gateways for The Things Network
 
 [Airtime Calculator](https://avbentem.github.io/airtime-calculator/ttn/us915)
 
-![](https://lupyuen.github.io/images/ttn-coverage.jpg)
+![The Things Network coverage in Singapore](https://lupyuen.github.io/images/ttn-coverage.jpg)
 
 # What's Next
 
-TODO
+TODO: Send real-time temperature data to The Things Network
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
