@@ -74,9 +74,10 @@
 <li><a href="#join-commands">4.1 Join Commands</a><ul></ul></li>
 <li><a href="#we-are-in">4.2 We Are In!</a><ul></ul></li></ul></li>
 <li><a href="#send-data-to-the-things-network">5 Send Data to The Things Network</a><ul></ul></li>
-<li><a href="#the-things-network-coverage">6 The Things Network Coverage</a><ul></ul></li>
-<li><a href="#whats-next">7 What’s Next</a><ul></ul></li>
-<li><a href="#notes">8 Notes</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/ttn-title.jpg" alt="PineDio Stack BL604 RISC-V Board (foreground) talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway (background)" /></p>
+<li><a href="#fair-use-in-the-things-network">6 Fair Use in The Things Network</a><ul></ul></li>
+<li><a href="#the-things-network-coverage">7 The Things Network Coverage</a><ul></ul></li>
+<li><a href="#whats-next">8 What’s Next</a><ul></ul></li>
+<li><a href="#notes">9 Notes</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/ttn-title.jpg" alt="PineDio Stack BL604 RISC-V Board (foreground) talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway (background)" /></p>
 <p><em>PineDio Stack BL604 RISC-V Board (foreground) talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway (background)</em></p>
 <p>📝 <em>25 Sep 2021</em></p>
 <p><em>What is The Things Network?</em></p>
@@ -330,7 +331,7 @@
 <h1 id="join-device-to-the-things-network" class="section-header"><a href="#join-device-to-the-things-network">4 Join Device to The Things Network</a></h1>
 <p>Let’s <strong>join our PineDio Stack</strong> device to The Things Network!</p>
 <p>Because we’re doing <strong>Over-The-Air Activation</strong>, we need to join the network every time we boot our device.</p>
-<p>In The Things Network, browse to <strong>our Device</strong> and <strong>copy these values</strong> (needed for network activation)…</p>
+<p>In The Things Network, browse to our <strong>Device</strong> and <strong>copy these values</strong> (needed for network activation)…</p>
 <ol>
 <li>
 <p><strong>JoinEUI</strong> (Join Extended Unique Identifier)</p>
@@ -383,39 +384,41 @@
 </ol>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan#lorawan-commands-for-the-things-network">(Source)</a></p>
 <h2 id="we-are-in" class="section-header"><a href="#we-are-in">4.2 We Are In!</a></h2>
-<p>Head back to The Things Network.  Browse to <strong>our Application</strong> and click <strong>“<code>Live Data</code>”</strong> (in the left bar)</p>
+<p>Head back to The Things Network.  Browse to our <strong>Application</strong> and click <strong>“<code>Live Data</code>”</strong> (in the left bar)</p>
 <p>We should see <strong>“Successfully Processed Join Request”</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/ttn-join2.png" alt="Application Live Data" /></p>
 <p>Yep our PineDio Stack has successfully joined The Things Network!</p>
 <p>If we see <strong>“Message Integrity Code” Errors</strong>, check the Device Settings. The <strong>LoRaWAN Version</strong> should be <strong>1.0.2 Rev B</strong>. </p>
 <h1 id="send-data-to-the-things-network" class="section-header"><a href="#send-data-to-the-things-network">5 Send Data to The Things Network</a></h1>
-<p>TODO</p>
-<p>Run these commands to transmit Sensor Data to The Things Network…</p>
+<p>Finally we’re ready to send data from PineDio Stack to The Things Network!</p>
+<p>At the PineDio Stack Command Prompt, enter these commands…</p>
 <ol>
 <li>
-<p>We open a <strong>The Things Network Port</strong>…</p>
+<p>We open an <strong>Application Port</strong> that will connect to The Things Network…</p>
 <div class="example-wrap"><pre class="language-bash">las_app_port open 2</pre></div>
-<p>(2 is the Application Port Number)</p>
+<p>(“<code>2</code>” is the Application Port Number)</p>
 </li>
 <li>
-<p>Then we <strong>send a Data Packet</strong> containing 5 bytes of data (<code>0x00</code>) to The Things Network Port 2…</p>
+<p>Then we <strong>send a Data Packet</strong> containing 5 bytes of data (<code>0x00</code>) to The Things Network at Port 2…</p>
 <div class="example-wrap"><pre class="language-bash">las_app_tx 2 5 0</pre></div>
-<p>(0 means that this is an Unconfirmed Message, we’re not expecting an acknowledgement from The Things Network)</p>
+<p>(“<code>0</code>” means that this is an Unconfirmed Message, we’re not expecting an acknowledgement from The Things Network)</p>
 </li>
 </ol>
-<p>TODO</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan#lorawan-commands-for-the-things-network">(Source)</a></p>
-<p>TODO15</p>
-<p><img src="https://lupyuen.github.io/images/ttn-send2.png" alt="" /></p>
-<p>TODO16</p>
-<h1 id="the-things-network-coverage" class="section-header"><a href="#the-things-network-coverage">6 The Things Network Coverage</a></h1>
-<p>TODO2</p>
+<p>Switch back to The Things Network.  Browse to our <strong>Application</strong> and click <strong>“<code>Live Data</code>”</strong> (in the left bar)</p>
+<p>We should see <strong>5 bytes of <code>0x00</code></strong> received by The Things Network…</p>
+<p><img src="https://lupyuen.github.io/images/ttn-send2.png" alt="Application Live Data" /></p>
+<p>And we’re done!</p>
+<h1 id="fair-use-in-the-things-network" class="section-header"><a href="#fair-use-in-the-things-network">6 Fair Use in The Things Network</a></h1>
+<p>TODO</p>
+<h1 id="the-things-network-coverage" class="section-header"><a href="#the-things-network-coverage">7 The Things Network Coverage</a></h1>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/ttn-flow2.jpg" alt="" /></p>
 <p>TODO: Schools should install LoRaWAN Gateways for The Things Network</p>
 <p><a href="https://avbentem.github.io/airtime-calculator/ttn/us915">Airtime Calculator</a></p>
-<p><img src="https://lupyuen.github.io/images/ttn-coverage.jpg" alt="" /></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">7 What’s Next</a></h1>
-<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/ttn-coverage.jpg" alt="The Things Network coverage in Singapore" /></p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">8 What’s Next</a></h1>
+<p>TODO: Send real-time temperature data to The Things Network</p>
 <ul>
 <li>
 <p><a href="https://github.com/sponsors/lupyuen">Sponsor me a coffee</a></p>
@@ -432,7 +435,7 @@
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ttn.md"><code>lupyuen.github.io/src/ttn.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">8 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">9 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1438673926721134596">this Twitter Thread</a></li>
 </ol>
