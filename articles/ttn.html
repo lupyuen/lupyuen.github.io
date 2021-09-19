@@ -145,23 +145,61 @@
 <p><a href="https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html"><strong>“Frequency Plans by Country”</strong></a></p>
 </li>
 </ol>
+<p>Fill in the fields and click <strong>“<code>Create Gateway</code>”</strong></p>
 <h2 id="configure-gateway" class="section-header"><a href="#configure-gateway">1.1 Configure Gateway</a></h2>
 <p>Take Note: This is missing from the RAKwireless docs…</p>
-<p>The Things Network has been upgraded recently and there’s no longer the option for <strong>“Legacy Packet Forwarder”</strong>.</p>
-<p>Instead we run…</p>
-<div class="example-wrap"><pre class="language-bash">sudo gateway-config</pre></div>
-<p>Select <strong>“Edit Packet-Forwarded Config”</strong></p>
-<p>TODO18</p>
-<ul>
-<li><a href="https://www.thethingsnetwork.org/docs/the-things-stack/migrate-to-v3/migrate-gateways/"><strong>“Migrate Gateways (The Things Network)”</strong></a></li>
-</ul>
-<p><img src="https://lupyuen.github.io/images/ttn-wisgate2.png" alt="" /></p>
-<p>TODO19</p>
-<p><img src="https://lupyuen.github.io/images/ttn-wisgate3.png" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/ttn-gateway2.png" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/ttn-gateway3.png" alt="" /></p>
+<p>The Things Network has been upgraded recently and there’s no longer the option for <strong>“Legacy Packet Forwarder”</strong>. </p>
+<p>Instead we set the <strong>Server Address</strong> like so…</p>
+<ol>
+<li>
+<p>Browse to the Gateway that we have added</p>
+</li>
+<li>
+<p>Click <strong>“<code>Download global_conf.json</code>”</strong></p>
+<p><img src="https://lupyuen.github.io/images/ttn-wisgate3.png" alt="Our Gateway in The Things Network" /></p>
+</li>
+<li>
+<p>Open the Downloaded <strong><code>global_conf.json</code></strong> with a text editor.</p>
+<p>It should look like this…</p>
+<p><img src="https://lupyuen.github.io/images/ttn-wisgate2.png" alt="Gateway Config" /></p>
+</li>
+<li>
+<p>On our RAKwireless Gateway, run this…</p>
+<div class="example-wrap"><pre class="language-bash">sudo gateway-config</pre></div></li>
+<li>
+<p>Select <strong>“Edit Packet Forwarder Config”</strong></p>
+</li>
+<li>
+<p>Look for the <strong><code>gateway_conf</code></strong> section…</p>
+<p><img src="https://lupyuen.github.io/images/ttn-gateway2.png" alt="Edit Packet Forwarder Config" /></p>
+</li>
+<li>
+<p>Replace these values from the Downloaded <strong><code>global_conf.json</code></strong>…</p>
+<div class="example-wrap"><pre class="language-json">&quot;gateway_conf&quot;: {
+  &quot;gateway_ID&quot;:     ...,
+  &quot;server_address&quot;: ...,
+  &quot;serv_port_up&quot;:   ...,
+  &quot;serv_port_down&quot;: ...,</pre></div></li>
+<li>
+<p>Scroll down and look for the end of the <strong><code>gateway_conf</code></strong> section (just after <strong><code>beacon_power</code></strong>)…</p>
+<p><img src="https://lupyuen.github.io/images/ttn-gateway3.png" alt="Edit Packet Forwarder Config" /></p>
+</li>
+<li>
+<p>Insert the entire <strong><code>servers</code></strong> section from the Downloaded <strong><code>global_conf.json</code></strong>…</p>
+<div class="example-wrap"><pre class="language-json">&quot;servers&quot;: [ {
+  &quot;gateway_ID&quot;:     ...,
+  &quot;server_address&quot;: ...,
+  &quot;serv_port_up&quot;:   ...,
+  &quot;serv_port_down&quot;: ...,
+} ]</pre></div>
+<p>(Check the trailing commas!)</p>
+</li>
+<li>
+<p>Save the file.</p>
+<p>Select <strong>“Restart Packet Forwarder”</strong></p>
+</li>
+</ol>
+<p><a href="https://www.thethingsnetwork.org/docs/the-things-stack/migrate-to-v3/migrate-gateways/">(More about Server Address)</a></p>
 <h2 id="gateway-is-up" class="section-header"><a href="#gateway-is-up">1.2 Gateway Is Up!</a></h2>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/ttn-wisgate4.png" alt="" /></p>
