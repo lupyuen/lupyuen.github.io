@@ -129,7 +129,8 @@
 <ul>
 <li><a href="https://www.thethingsnetwork.org/"><strong>“The Things Network: Sign Up”</strong></a></li>
 </ul>
-<p>Log in, select the nearest region (either US, Europe or Australia) and <strong>add a Gateway</strong>…</p>
+<p>Log in and select the nearest region. (Either US, Europe or Australia)</p>
+<p>Click <strong><code>Gateways</code></strong> and <strong><code>Add Gateway</code></strong>…</p>
 <p><img src="https://lupyuen.github.io/images/ttn-gateway.jpg" alt="Add Gateway" /></p>
 <ol>
 <li>
@@ -202,25 +203,45 @@
 <p><a href="https://www.thethingsnetwork.org/docs/the-things-stack/migrate-to-v3/migrate-gateways/">(More about Server Address)</a></p>
 <h2 id="gateway-is-up" class="section-header"><a href="#gateway-is-up">1.2 Gateway Is Up!</a></h2>
 <p><em>How will we know if our Gateway is connected?</em></p>
-<p>In The Things Network, browse to our Gateway and click <strong>“<code>Live Data</code>”</strong></p>
+<p>In The Things Network, browse to our Gateway and click <strong>“<code>Live Data</code>”</strong> (in the left bar)</p>
 <p>We should see the <strong>Heartbeat Messages</strong> (Gateway Status) received from our Gateway…</p>
 <p><img src="https://lupyuen.github.io/images/ttn-wisgate4.png" alt="Gateway Live Data" /></p>
 <p><em>What are the Uplink Messages?</em></p>
 <p>These are LoRa Messages from <strong>nearby devices</strong> that our Gateway has helpfully relayed to The Things Network.</p>
 <p>Yep we’re <strong>officially a contributor</strong> to the globally-connected The Things Network!</p>
 <h1 id="add-device-to-the-things-network" class="section-header"><a href="#add-device-to-the-things-network">2 Add Device to The Things Network</a></h1>
-<p>(If you have skipped the previous chapter… Welcome back! We’ll need to <strong>create a free account</strong> on The Things Network: <a href="https://www.thethingsnetwork.org/">Click “Sign Up” here</a>)</p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/ttn-app.png" alt="" /></p>
-<p>TODO4</p>
-<p><img src="https://lupyuen.github.io/images/ttn-device.png" alt="" /></p>
+<p>(If you skipped the previous chapter: Welcome back! We’ll need a <strong>free account</strong> on The Things Network: <a href="https://www.thethingsnetwork.org/"><strong>Click “Sign Up” here</strong></a>)</p>
+<p>Before sending data to The Things Network, we need to <strong>add a device</strong>…</p>
+<ol>
+<li>
+<p>Log in to The Things Network.</p>
+<p>Select the nearest region. (Either US, Europe or Australia)</p>
+</li>
+<li>
+<p>Click <strong><code>Applications</code></strong> and <strong><code>Add Application</code></strong>…</p>
+<p><img src="https://lupyuen.github.io/images/ttn-app.png" alt="Add Application" /></p>
+<p>Our devices shall be registered under this Application.</p>
+<p>Fill in any name for the <strong>Application ID</strong>. (Needs to be globally unique)</p>
+<p>Click <strong>“<code>Create Application</code>”</strong></p>
+</li>
+<li>
+<p>In the Application, click <strong><code>&quot;End Devices&quot;</code></strong> (in the left bar)</p>
+<p>Click <strong>“<code>Add End Device</code>”</strong></p>
+<p>Click <strong>“<code>Manually</code>”</strong></p>
+<p><img src="https://lupyuen.github.io/images/ttn-device3.png" alt="Register End Device" /></p>
+<p><img src="https://lupyuen.github.io/images/ttn-device.png" alt="Register End Device" /></p>
+</li>
+<li>
+<p>Click the buttons for <strong>“<code>Generate</code>”</strong> and <strong>“<code>Fill With Zeros</code>”</strong>.</p>
+<p>(See pic above)</p>
+</li>
+</ol>
 <p>TODO5</p>
 <p><img src="https://lupyuen.github.io/images/ttn-device2.png" alt="" /></p>
 <p>TODO6</p>
 <ul>
 <li><a href="https://www.thethingsindustries.com/docs/getting-started/migrating/major-changes/#lorawan-support"><strong>“LoRaWAN Support (The Things Network)”</strong></a></li>
 </ul>
-<p><img src="https://lupyuen.github.io/images/ttn-device3.png" alt="" /></p>
 <p>TODO7</p>
 <p><img src="https://lupyuen.github.io/images/ttn-device4.png" alt="" /></p>
 <h1 id="join-device-to-the-things-network" class="section-header"><a href="#join-device-to-the-things-network">3 Join Device to The Things Network</a></h1>
