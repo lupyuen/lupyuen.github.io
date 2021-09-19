@@ -169,9 +169,19 @@ Instead we set the __Server Address__ like so...
 
 ## Gateway Is Up!
 
-TODO
+_How will we know if our Gateway is connected?_
 
-![](https://lupyuen.github.io/images/ttn-wisgate4.png)
+In The Things Network, browse to our Gateway and click __"`Live Data`"__
+
+We should see the __Heartbeat Messages__ (Gateway Status) received from our Gateway...
+
+![Gateway Live Data](https://lupyuen.github.io/images/ttn-wisgate4.png)
+
+_What are the Uplink Messages?_
+
+These are LoRa Messages from __nearby devices__ that our Gateway has relayed to The Things Network.
+
+Yep we're __officially a contributor__ to the globally-connected The Things Network!
 
 # Add Device to The Things Network
 
