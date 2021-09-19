@@ -214,8 +214,9 @@
 <p>Before sending data to The Things Network, we need to <strong>add a device</strong>…</p>
 <ol>
 <li>
-<p>Log in to The Things Network.</p>
-<p>Select the nearest region. (Either US, Europe or Australia)</p>
+<p>Log in to <a href="https://www.thethingsnetwork.org/"><strong>The Things Network</strong></a>.</p>
+<p>Select the nearest region.</p>
+<p>(Either US, Europe or Australia)</p>
 </li>
 <li>
 <p>Click <strong><code>Applications</code></strong> and <strong><code>Add Application</code></strong>…</p>
@@ -229,16 +230,30 @@
 <p>Click <strong>“<code>Add End Device</code>”</strong></p>
 <p>Click <strong>“<code>Manually</code>”</strong></p>
 <p><img src="https://lupyuen.github.io/images/ttn-device3.png" alt="Register End Device" /></p>
+</li>
+<li>
+<p>Fill in these fields…</p>
+<p><strong>LoRaWAN Version:</strong> MAC V1.0.2</p>
+<p><strong>Regional Parameters Version:</strong> PHY V1.0.2 REV B</p>
+<p><strong>Frequency Plan:</strong> See this…</p>
+<p><a href="https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html"><strong>“Frequency Plans by Country”</strong></a></p>
+</li>
+<li>
+<p>Click <strong>“<code>Show Advanced Activation</code>”</strong></p>
+<p><img src="https://lupyuen.github.io/images/ttn-device5.png" alt="Register End Device" /></p>
+<p><strong>Activation Mode</strong> should be <strong>Over The Air Activation</strong></p>
+</li>
+<li>
+<p>For <strong>DevEUI, JoinEUI, AppKey and NwkKey</strong>…</p>
+<p>Click the buttons for <strong>“<code>Generate</code>”</strong> and <strong>“<code>Fill With Zeros</code>”</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/ttn-device.png" alt="Register End Device" /></p>
 </li>
 <li>
-<p>Click the buttons for <strong>“<code>Generate</code>”</strong> and <strong>“<code>Fill With Zeros</code>”</strong>.</p>
-<p>(See pic above)</p>
+<p>Click <strong>“<code>Register End Device</code>”</strong></p>
 </li>
 </ol>
-<p>TODO5</p>
-<p><img src="https://lupyuen.github.io/images/ttn-device2.png" alt="" /></p>
-<p>TODO6</p>
+<p><em>Why did we select LoRaWAN Version 1.0.2 Rev B?</em></p>
+<p>TODO</p>
 <ul>
 <li><a href="https://www.thethingsindustries.com/docs/getting-started/migrating/major-changes/#lorawan-support"><strong>“LoRaWAN Support (The Things Network)”</strong></a></li>
 </ul>
@@ -267,6 +282,9 @@ las_wr_app_key 0xAB:0xBA:0xDA:0xBA:0xAB:0xBA:0xDA:0xBA0xAB:0xBA:0xDA:0xBA:0xAB:0
 
 #  Join The Things Network, try 1 time
 las_join 1</pre></div>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/ttn-device2.png" alt="" /></p>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/ttn-join.png" alt="" /></p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan#lorawan-commands-for-the-things-network">(Source)</a></p>
 <p>TODO12</p>
