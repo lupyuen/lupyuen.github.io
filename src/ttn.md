@@ -80,7 +80,9 @@ We create a __free account__ on The Things Network...
 
 -   [__"The Things Network: Sign Up"__](https://www.thethingsnetwork.org/)
 
-Log in, select the nearest region (either US, Europe or Australia) and __add a Gateway__...
+Log in and select the nearest region. (Either US, Europe or Australia)
+
+Click __`Gateways`__ and __`Add Gateway`__...
 
 ![Add Gateway](https://lupyuen.github.io/images/ttn-gateway.jpg)
 
@@ -171,7 +173,7 @@ Instead we set the __Server Address__ like so...
 
 _How will we know if our Gateway is connected?_
 
-In The Things Network, browse to our Gateway and click __"`Live Data`"__
+In The Things Network, browse to our Gateway and click __"`Live Data`"__ (in the left bar)
 
 We should see the __Heartbeat Messages__ (Gateway Status) received from our Gateway...
 
@@ -185,15 +187,37 @@ Yep we're __officially a contributor__ to the globally-connected The Things Netw
 
 # Add Device to The Things Network
 
-(If you have skipped the previous chapter... Welcome back! We'll need to __create a free account__ on The Things Network: [Click "Sign Up" here](https://www.thethingsnetwork.org/))
+(If you skipped the previous chapter: Welcome back! We'll need a __free account__ on The Things Network: [__Click "Sign Up" here__](https://www.thethingsnetwork.org/))
 
-TODO
+Before sending data to The Things Network, we need to __add a device__...
 
-![](https://lupyuen.github.io/images/ttn-app.png)
+1.  Log in to The Things Network.
 
-TODO4
+    Select the nearest region. (Either US, Europe or Australia)
 
-![](https://lupyuen.github.io/images/ttn-device.png)
+1.  Click __`Applications`__ and __`Add Application`__...
+
+    ![Add Application](https://lupyuen.github.io/images/ttn-app.png)
+
+    Our devices shall be registered under this Application.
+
+    Fill in any name for the __Application ID__. (Needs to be globally unique)
+
+    Click __"`Create Application`"__
+
+1.  In the Application, click __`"End Devices"`__ (in the left bar)
+
+    Click __"`Add End Device`"__
+
+    Click __"`Manually`"__
+
+    ![Register End Device](https://lupyuen.github.io/images/ttn-device3.png)
+
+    ![Register End Device](https://lupyuen.github.io/images/ttn-device.png)
+
+1.  Click the buttons for __"`Generate`"__ and __"`Fill With Zeros`"__.
+
+    (See pic above)
 
 TODO5
 
@@ -202,8 +226,6 @@ TODO5
 TODO6
 
 -   [__"LoRaWAN Support (The Things Network)"__](https://www.thethingsindustries.com/docs/getting-started/migrating/major-changes/#lorawan-support)
-
-![](https://lupyuen.github.io/images/ttn-device3.png)
 
 TODO7
 
