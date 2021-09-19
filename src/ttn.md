@@ -100,37 +100,72 @@ Log in, select the nearest region (either US, Europe or Australia) and __add a G
 
     [__"Frequency Plans by Country"__](https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html)
 
+Fill in the fields and click __"`Create Gateway`"__
+
 ## Configure Gateway
 
 Take Note: This is missing from the RAKwireless docs...
 
-The Things Network has been upgraded recently and there's no longer the option for __"Legacy Packet Forwarder"__.
+The Things Network has been upgraded recently and there's no longer the option for __"Legacy Packet Forwarder"__. 
 
-Instead we run...
+Instead we set the __Server Address__ like so...
 
-```bash
-sudo gateway-config
-```
+1.  Browse to the Gateway that we have added
 
-Select __"Edit Packet-Forwarded Config"__
+1.  Click __"`Download global_conf.json`"__
 
-TODO18
+    ![Our Gateway in The Things Network](https://lupyuen.github.io/images/ttn-wisgate3.png)
 
--   [__"Migrate Gateways (The Things Network)"__](https://www.thethingsnetwork.org/docs/the-things-stack/migrate-to-v3/migrate-gateways/)
+1.  Open the Downloaded __`global_conf.json`__ with a text editor.
 
-![](https://lupyuen.github.io/images/ttn-wisgate2.png)
+    It should look like this...
 
-TODO19
+    ![Gateway Config](https://lupyuen.github.io/images/ttn-wisgate2.png)
 
-![](https://lupyuen.github.io/images/ttn-wisgate3.png)
+1.  On our RAKwireless Gateway, run this...
 
-TODO
+    ```bash
+    sudo gateway-config
+    ```
 
-![](https://lupyuen.github.io/images/ttn-gateway2.png)
+1.  Select __"Edit Packet Forwarder Config"__
 
-TODO
+1.  Look for the __`gateway_conf`__ section...
 
-![](https://lupyuen.github.io/images/ttn-gateway3.png)
+    ![Edit Packet Forwarder Config](https://lupyuen.github.io/images/ttn-gateway2.png)
+
+1.  Replace these values from the Downloaded __`global_conf.json`__...
+
+    ```json
+    "gateway_conf": {
+      "gateway_ID":     ...,
+      "server_address": ...,
+      "serv_port_up":   ...,
+      "serv_port_down": ...,
+    ```
+
+1.  Scroll down and look for the end of the __`gateway_conf`__ section (just after __`beacon_power`__)...
+
+    ![Edit Packet Forwarder Config](https://lupyuen.github.io/images/ttn-gateway3.png)
+
+1.  Insert the entire __`servers`__ section from the Downloaded __`global_conf.json`__...
+
+    ```json
+    "servers": [ {
+      "gateway_ID":     ...,
+      "server_address": ...,
+      "serv_port_up":   ...,
+      "serv_port_down": ...,
+    } ]
+    ```
+
+    (Check the trailing commas!)
+
+1.  Save the file.
+
+    Select __"Restart Packet Forwarder"__
+
+[(More about Server Address)](https://www.thethingsnetwork.org/docs/the-things-stack/migrate-to-v3/migrate-gateways/)
 
 ## Gateway Is Up!
 
