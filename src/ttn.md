@@ -241,13 +241,19 @@ Before sending data to The Things Network, we need to __add a device__...
 
 _Why did we select LoRaWAN Version 1.0.2 Rev B?_
 
+This is the version of LoRaWAN that's supported by our firmware for PineDio Stack.
+
+(Our firmware is older than the upgraded version of The Things Network)
+
+If you see __"Message Integrity Code" Errors__ later, check the settings above for __LoRaWAN Version__.
+
+[(More about legacy LoRaWAN support)](https://www.thethingsindustries.com/docs/getting-started/migrating/major-changes/#lorawan-support)
+
+![Legacy LoRaWAN Support](https://lupyuen.github.io/images/ttn-device4.png)
+
+# Run the LoRaWAN Firmware
+
 TODO
-
--   [__"LoRaWAN Support (The Things Network)"__](https://www.thethingsindustries.com/docs/getting-started/migrating/major-changes/#lorawan-support)
-
-TODO7
-
-![](https://lupyuen.github.io/images/ttn-device4.png)
 
 # Join Device to The Things Network
 
@@ -291,6 +297,8 @@ TODO
 TODO12
 
 ![](https://lupyuen.github.io/images/ttn-join2.png)
+
+If we see __"Message Integrity Code" Errors__, check the Device Settings. The __LoRaWAN Version__ should be __1.0.2 Rev B__. 
 
 # Send Data to The Things Network
 
