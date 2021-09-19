@@ -255,7 +255,17 @@ If you see __"Message Integrity Code" Errors__ later, check the settings above f
 
 Now we build, flash and run the __LoRaWAN Firmware__ for PineDio Stack!
 
-Follow these instructions...
+This is the __Source Code__ for our LoRaWAN Firmware...
+
+-   [__`pinedio_lorawan` Firmware__](https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan)
+
+Which calls the following __LoRaWAN and SX1262 Drivers__...
+
+-   [__`lorawan` Driver__](https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/components/3rdparty/lorawan)
+
+-   [__`lora-sx1262` Driver__](https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/components/3rdparty/lora-sx1262)
+
+Follow these instructions to __build and flash__ the firmware...
 
 1.  [__"BL604 Blinky (Build the Firmware)"__](https://lupyuen.github.io/articles/pinedio#bl604-blinky)
 
@@ -309,6 +319,18 @@ We're ready to...
 
 # Join Device to The Things Network
 
+In The Things Network Console, browse to our Device and __copy these values__:
+
+1.  __JoinEUI__ (Join Extended Unique Identifier)
+
+1.  __DevEUI__ (Device Extended Unique Identifier)
+
+1.  __AppKey__ (Application Key)
+
+![Device Overview](https://lupyuen.github.io/images/ttn-device2.png)
+
+TODO
+
 At the Serial Terminal for PineDio Stack, enter these commands to __join PineDio Stack to The Things Network__...
 
 1.  First we start the __Background Task__ that will handle LoRa packets...
@@ -323,29 +345,23 @@ At the Serial Terminal for PineDio Stack, enter these commands to __join PineDio
     init_lorawan
     ```
 
-1.  We set the __Device EUI__ (Extended Unique Identifier)...
+1.  TODO: We set the DevEUI...
 
     ```bash
-    las_wr_dev_eui 0x4b:0xc1:0x5e:0xe7:0x37:0x7b:0xb1:0x5b
+    las_wr_dev_eui 0xAB:0xBA:0xDA:0xBA:0xAB:0xBA:0xDA:0xBA
     ```
 
-    TODO: Change the above EUI 
-
-1.  Set the __App EUI__...
+1.  TODO: Set the JoinEUI...
 
     ```bash
     las_wr_app_eui 0x00:0x00:0x00:0x00:0x00:0x00:0x00:0x00
     ```
 
-    TODO
-
-1.  Set the __App Key__...
+1.  TODO: Set the AppKey...
 
     ```bash
-    las_wr_app_key 0xaa:0xff:0xad:0x5c:0x7e:0x87:0xf6:0x4d:0xe3:0xf0:0x87:0x32:0xfc:0x1d:0xd2:0x5d
+    las_wr_app_key 0xAB:0xBA:0xDA:0xBA:0xAB:0xBA:0xDA:0xBA0xAB:0xBA:0xDA:0xBA:0xAB:0xBA:0xDA:0xBA
     ```
-
-    TODO: We get the App Key from
 
 1.  We send a request to __join The Things Network__...
 
@@ -356,37 +372,6 @@ At the Serial Terminal for PineDio Stack, enter these commands to __join PineDio
     ("`1`" means try only once)
 
 TODO
-
-```bash
-##  Start LoRa background task
-create_task
-
-##  Init LoRaWAN driver
-init_lorawan
-
-##  Copy the following values from The Things Network Console -> 
-##  Applications -> (Your App) -> End Devices -> (Your Device)...
-
-##  Device EUI: Copy from (Your Device) -> DevEUI
-las_wr_dev_eui 0xAB:0xBA:0xDA:0xBA:0xAB:0xBA:0xDA:0xBA
-
-##  App EUI: Copy from (Your Device) -> JoinEUI
-las_wr_app_eui 0x00:0x00:0x00:0x00:0x00:0x00:0x00:0x00
-
-##  App Key: Copy from (Your Device) -> AppKey
-las_wr_app_key 0xAB:0xBA:0xDA:0xBA:0xAB:0xBA:0xDA:0xBA0xAB:0xBA:0xDA:0xBA:0xAB:0xBA:0xDA:0xBA
-
-##  Join The Things Network, try 1 time
-las_join 1
-```
-
-TODO
-
-![](https://lupyuen.github.io/images/ttn-device2.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/ttn-join.png)
 
 [(Source)](https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan#lorawan-commands-for-the-things-network)
 
@@ -402,15 +387,23 @@ TODO
 
 Run these commands to transmit Sensor Data to The Things Network...
 
-```bash
-##  Open The Things Network port 2 (App Port)
-las_app_port open 2
+1.  We open a __The Things Network Port__...
 
-##  Send data to The Things Network port 2, 5 bytes, unconfirmed (0)
-las_app_tx 2 5 0
-```
+    ```bash
+    las_app_port open 2
+    ```
 
-![](https://lupyuen.github.io/images/ttn-send.png)
+    (2 is the Application Port Number)
+
+1.  Then we __send a Data Packet__ containing 5 bytes of data (`0x00`) to The Things Network Port 2...
+
+    ```bash
+    las_app_tx 2 5 0
+    ```
+
+    (0 means that this is an Unconfirmed Message, we're not expecting an acknowledgement from The Things Network)
+
+TODO
 
 [(Source)](https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan#lorawan-commands-for-the-things-network)
 
