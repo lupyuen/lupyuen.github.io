@@ -261,7 +261,20 @@
 <p><img src="https://lupyuen.github.io/images/ttn-device4.png" alt="Legacy LoRaWAN Support" /></p>
 <h1 id="run-the-lorawan-firmware" class="section-header"><a href="#run-the-lorawan-firmware">3 Run the LoRaWAN Firmware</a></h1>
 <p>Now we build, flash and run the <strong>LoRaWAN Firmware</strong> for PineDio Stack!</p>
-<p>Follow these instructions…</p>
+<p>This is the <strong>Source Code</strong> for our LoRaWAN Firmware…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan"><strong><code>pinedio_lorawan</code> Firmware</strong></a></li>
+</ul>
+<p>Which calls the following <strong>LoRaWAN and SX1262 Drivers</strong>…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/components/3rdparty/lorawan"><strong><code>lorawan</code> Driver</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/components/3rdparty/lora-sx1262"><strong><code>lora-sx1262</code> Driver</strong></a></p>
+</li>
+</ul>
+<p>Follow these instructions to <strong>build and flash</strong> the firmware…</p>
 <ol>
 <li>
 <p><a href="https://lupyuen.github.io/articles/pinedio#bl604-blinky"><strong>“BL604 Blinky (Build the Firmware)”</strong></a></p>
@@ -313,6 +326,20 @@
 <p><a href="https://lupyuen.github.io/articles/lorawan">(Yep this is the same LoRaWAN Firmware that we ported from Apache Mynewt OS to BL602!)</a></p>
 <p><img src="https://lupyuen.github.io/images/lorawan2-title.jpg" alt="Tiny tasty treat… PineDio Stack BL604 RISC-V Board" /></p>
 <h1 id="join-device-to-the-things-network" class="section-header"><a href="#join-device-to-the-things-network">4 Join Device to The Things Network</a></h1>
+<p>In The Things Network Console, browse to our Device and <strong>copy these values</strong>:</p>
+<ol>
+<li>
+<p><strong>JoinEUI</strong> (Join Extended Unique Identifier)</p>
+</li>
+<li>
+<p><strong>DevEUI</strong> (Device Extended Unique Identifier)</p>
+</li>
+<li>
+<p><strong>AppKey</strong> (Application Key)</p>
+</li>
+</ol>
+<p><img src="https://lupyuen.github.io/images/ttn-device2.png" alt="Device Overview" /></p>
+<p>TODO</p>
 <p>At the Serial Terminal for PineDio Stack, enter these commands to <strong>join PineDio Stack to The Things Network</strong>…</p>
 <ol>
 <li>
@@ -322,20 +349,14 @@
 <p>Next we initialise the <strong>LoRa SX1262 and LoRaWAN Drivers</strong>…</p>
 <div class="example-wrap"><pre class="language-bash">init_lorawan</pre></div></li>
 <li>
-<p>We set the <strong>Device EUI</strong> (Extended Unique Identifier)…</p>
-<div class="example-wrap"><pre class="language-bash">las_wr_dev_eui 0x4b:0xc1:0x5e:0xe7:0x37:0x7b:0xb1:0x5b</pre></div>
-<p>TODO: Change the above EUI </p>
-</li>
+<p>TODO: We set the DevEUI…</p>
+<div class="example-wrap"><pre class="language-bash">las_wr_dev_eui 0xAB:0xBA:0xDA:0xBA:0xAB:0xBA:0xDA:0xBA</pre></div></li>
 <li>
-<p>Set the <strong>App EUI</strong>…</p>
-<div class="example-wrap"><pre class="language-bash">las_wr_app_eui 0x00:0x00:0x00:0x00:0x00:0x00:0x00:0x00</pre></div>
-<p>TODO</p>
-</li>
+<p>TODO: Set the JoinEUI…</p>
+<div class="example-wrap"><pre class="language-bash">las_wr_app_eui 0x00:0x00:0x00:0x00:0x00:0x00:0x00:0x00</pre></div></li>
 <li>
-<p>Set the <strong>App Key</strong>…</p>
-<div class="example-wrap"><pre class="language-bash">las_wr_app_key 0xaa:0xff:0xad:0x5c:0x7e:0x87:0xf6:0x4d:0xe3:0xf0:0x87:0x32:0xfc:0x1d:0xd2:0x5d</pre></div>
-<p>TODO: We get the App Key from</p>
-</li>
+<p>TODO: Set the AppKey…</p>
+<div class="example-wrap"><pre class="language-bash">las_wr_app_key 0xAB:0xBA:0xDA:0xBA:0xAB:0xBA:0xDA:0xBA0xAB:0xBA:0xDA:0xBA:0xAB:0xBA:0xDA:0xBA</pre></div></li>
 <li>
 <p>We send a request to <strong>join The Things Network</strong>…</p>
 <div class="example-wrap"><pre class="language-bash">las_join 1</pre></div>
@@ -343,30 +364,6 @@
 </li>
 </ol>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-bash">#  Start LoRa background task
-create_task
-
-#  Init LoRaWAN driver
-init_lorawan
-
-#  Copy the following values from The Things Network Console -&gt; 
-#  Applications -&gt; (Your App) -&gt; End Devices -&gt; (Your Device)...
-
-#  Device EUI: Copy from (Your Device) -&gt; DevEUI
-las_wr_dev_eui 0xAB:0xBA:0xDA:0xBA:0xAB:0xBA:0xDA:0xBA
-
-#  App EUI: Copy from (Your Device) -&gt; JoinEUI
-las_wr_app_eui 0x00:0x00:0x00:0x00:0x00:0x00:0x00:0x00
-
-#  App Key: Copy from (Your Device) -&gt; AppKey
-las_wr_app_key 0xAB:0xBA:0xDA:0xBA:0xAB:0xBA:0xDA:0xBA0xAB:0xBA:0xDA:0xBA:0xAB:0xBA:0xDA:0xBA
-
-#  Join The Things Network, try 1 time
-las_join 1</pre></div>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/ttn-device2.png" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/ttn-join.png" alt="" /></p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan#lorawan-commands-for-the-things-network">(Source)</a></p>
 <p>TODO12</p>
 <p><img src="https://lupyuen.github.io/images/ttn-join2.png" alt="" /></p>
@@ -374,12 +371,19 @@ las_join 1</pre></div>
 <h1 id="send-data-to-the-things-network" class="section-header"><a href="#send-data-to-the-things-network">5 Send Data to The Things Network</a></h1>
 <p>TODO</p>
 <p>Run these commands to transmit Sensor Data to The Things Network…</p>
-<div class="example-wrap"><pre class="language-bash">#  Open The Things Network port 2 (App Port)
-las_app_port open 2
-
-#  Send data to The Things Network port 2, 5 bytes, unconfirmed (0)
-las_app_tx 2 5 0</pre></div>
-<p><img src="https://lupyuen.github.io/images/ttn-send.png" alt="" /></p>
+<ol>
+<li>
+<p>We open a <strong>The Things Network Port</strong>…</p>
+<div class="example-wrap"><pre class="language-bash">las_app_port open 2</pre></div>
+<p>(2 is the Application Port Number)</p>
+</li>
+<li>
+<p>Then we <strong>send a Data Packet</strong> containing 5 bytes of data (<code>0x00</code>) to The Things Network Port 2…</p>
+<div class="example-wrap"><pre class="language-bash">las_app_tx 2 5 0</pre></div>
+<p>(0 means that this is an Unconfirmed Message, we’re not expecting an acknowledgement from The Things Network)</p>
+</li>
+</ol>
+<p>TODO</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan#lorawan-commands-for-the-things-network">(Source)</a></p>
 <p>TODO15</p>
 <p><img src="https://lupyuen.github.io/images/ttn-send2.png" alt="" /></p>
