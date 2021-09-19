@@ -69,11 +69,12 @@
 <li><a href="#configure-gateway">1.1 Configure Gateway</a><ul></ul></li>
 <li><a href="#gateway-is-up">1.2 Gateway Is Up!</a><ul></ul></li></ul></li>
 <li><a href="#add-device-to-the-things-network">2 Add Device to The Things Network</a><ul></ul></li>
-<li><a href="#join-device-to-the-things-network">3 Join Device to The Things Network</a><ul></ul></li>
-<li><a href="#send-data-to-the-things-network">4 Send Data to The Things Network</a><ul></ul></li>
-<li><a href="#the-things-network-coverage">5 The Things Network Coverage</a><ul></ul></li>
-<li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
-<li><a href="#notes">7 Notes</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/ttn-title.jpg" alt="PineDio Stack BL604 RISC-V Board (foreground) talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway (background)" /></p>
+<li><a href="#run-the-lorawan-firmware">3 Run the LoRaWAN Firmware</a><ul></ul></li>
+<li><a href="#join-device-to-the-things-network">4 Join Device to The Things Network</a><ul></ul></li>
+<li><a href="#send-data-to-the-things-network">5 Send Data to The Things Network</a><ul></ul></li>
+<li><a href="#the-things-network-coverage">6 The Things Network Coverage</a><ul></ul></li>
+<li><a href="#whats-next">7 What’s Next</a><ul></ul></li>
+<li><a href="#notes">8 Notes</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/ttn-title.jpg" alt="PineDio Stack BL604 RISC-V Board (foreground) talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway (background)" /></p>
 <p><em>PineDio Stack BL604 RISC-V Board (foreground) talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway (background)</em></p>
 <p>📝 <em>25 Sep 2021</em></p>
 <p><em>What is The Things Network?</em></p>
@@ -253,13 +254,14 @@
 </li>
 </ol>
 <p><em>Why did we select LoRaWAN Version 1.0.2 Rev B?</em></p>
+<p>This is the version of LoRaWAN that’s supported by our firmware for PineDio Stack.</p>
+<p>(Our firmware is older than the upgraded version of The Things Network)</p>
+<p>If you see <strong>“Message Integrity Code” Errors</strong> later, check the settings above for <strong>LoRaWAN Version</strong>.</p>
+<p><a href="https://www.thethingsindustries.com/docs/getting-started/migrating/major-changes/#lorawan-support">(More about legacy LoRaWAN support)</a></p>
+<p><img src="https://lupyuen.github.io/images/ttn-device4.png" alt="Legacy LoRaWAN Support" /></p>
+<h1 id="run-the-lorawan-firmware" class="section-header"><a href="#run-the-lorawan-firmware">3 Run the LoRaWAN Firmware</a></h1>
 <p>TODO</p>
-<ul>
-<li><a href="https://www.thethingsindustries.com/docs/getting-started/migrating/major-changes/#lorawan-support"><strong>“LoRaWAN Support (The Things Network)”</strong></a></li>
-</ul>
-<p>TODO7</p>
-<p><img src="https://lupyuen.github.io/images/ttn-device4.png" alt="" /></p>
-<h1 id="join-device-to-the-things-network" class="section-header"><a href="#join-device-to-the-things-network">3 Join Device to The Things Network</a></h1>
+<h1 id="join-device-to-the-things-network" class="section-header"><a href="#join-device-to-the-things-network">4 Join Device to The Things Network</a></h1>
 <p>TODO</p>
 <p>Run these commands to join The Things Network…</p>
 <div class="example-wrap"><pre class="language-bash">#  Start LoRa background task
@@ -289,7 +291,8 @@ las_join 1</pre></div>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan#lorawan-commands-for-the-things-network">(Source)</a></p>
 <p>TODO12</p>
 <p><img src="https://lupyuen.github.io/images/ttn-join2.png" alt="" /></p>
-<h1 id="send-data-to-the-things-network" class="section-header"><a href="#send-data-to-the-things-network">4 Send Data to The Things Network</a></h1>
+<p>If we see <strong>“Message Integrity Code” Errors</strong>, check the Device Settings. The <strong>LoRaWAN Version</strong> should be <strong>1.0.2 Rev B</strong>. </p>
+<h1 id="send-data-to-the-things-network" class="section-header"><a href="#send-data-to-the-things-network">5 Send Data to The Things Network</a></h1>
 <p>TODO</p>
 <p>Run these commands to transmit Sensor Data to The Things Network…</p>
 <div class="example-wrap"><pre class="language-bash">#  Open The Things Network port 2 (App Port)
@@ -302,13 +305,13 @@ las_app_tx 2 5 0</pre></div>
 <p>TODO15</p>
 <p><img src="https://lupyuen.github.io/images/ttn-send2.png" alt="" /></p>
 <p>TODO16</p>
-<h1 id="the-things-network-coverage" class="section-header"><a href="#the-things-network-coverage">5 The Things Network Coverage</a></h1>
+<h1 id="the-things-network-coverage" class="section-header"><a href="#the-things-network-coverage">6 The Things Network Coverage</a></h1>
 <p>TODO2</p>
 <p><img src="https://lupyuen.github.io/images/ttn-flow2.jpg" alt="" /></p>
 <p>TODO: Schools should install LoRaWAN Gateways for The Things Network</p>
 <p><a href="https://avbentem.github.io/airtime-calculator/ttn/us915">Airtime Calculator</a></p>
 <p><img src="https://lupyuen.github.io/images/ttn-coverage.jpg" alt="" /></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">6 What’s Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">7 What’s Next</a></h1>
 <p>TODO</p>
 <ul>
 <li>
@@ -326,7 +329,7 @@ las_app_tx 2 5 0</pre></div>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ttn.md"><code>lupyuen.github.io/src/ttn.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">7 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">8 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1438673926721134596">this Twitter Thread</a></li>
 </ol>
