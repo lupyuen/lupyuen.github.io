@@ -319,7 +319,11 @@ We're ready to...
 
 # Join Device to The Things Network
 
-In The Things Network Console, browse to our Device and __copy these values__:
+Let's __join our PineDio Stack__ device to The Things Network!
+
+Because we're using __Over-The-Air Activation__, we need to join the network every time we boot our device.
+
+In The Things Network Console, browse to our Device and __copy these values__ (needed for the network activation)...
 
 1.  __JoinEUI__ (Join Extended Unique Identifier)
 
@@ -331,7 +335,9 @@ In The Things Network Console, browse to our Device and __copy these values__:
 
 TODO
 
-At the Serial Terminal for PineDio Stack, enter these commands to __join PineDio Stack to The Things Network__...
+Head over to the __Serial Terminal__ for PineDio Stack.
+
+At the PineDio Stack Command Prompt, enter these commands to __join PineDio Stack to The Things Network__...
 
 1.  First we start the __Background Task__ that will handle LoRa packets...
 
