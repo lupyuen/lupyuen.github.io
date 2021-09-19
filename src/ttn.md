@@ -179,11 +179,13 @@ We should see the __Heartbeat Messages__ (Gateway Status) received from our Gate
 
 _What are the Uplink Messages?_
 
-These are LoRa Messages from __nearby devices__ that our Gateway has relayed to The Things Network.
+These are LoRa Messages from __nearby devices__ that our Gateway has helpfully relayed to The Things Network.
 
 Yep we're __officially a contributor__ to the globally-connected The Things Network!
 
 # Add Device to The Things Network
+
+(If you have skipped the previous chapter... Welcome back! We'll need to __create a free account__ on The Things Network: [Click "Sign Up" here](https://www.thethingsnetwork.org/))
 
 TODO
 
