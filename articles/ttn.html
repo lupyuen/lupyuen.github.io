@@ -70,7 +70,9 @@
 <li><a href="#gateway-is-up">1.2 Gateway Is Up!</a><ul></ul></li></ul></li>
 <li><a href="#add-device-to-the-things-network">2 Add Device to The Things Network</a><ul></ul></li>
 <li><a href="#run-the-lorawan-firmware">3 Run the LoRaWAN Firmware</a><ul></ul></li>
-<li><a href="#join-device-to-the-things-network">4 Join Device to The Things Network</a><ul></ul></li>
+<li><a href="#join-device-to-the-things-network">4 Join Device to The Things Network</a><ul>
+<li><a href="#join-commands">4.1 Join Commands</a><ul></ul></li>
+<li><a href="#we-are-in">4.2 We Are In!</a><ul></ul></li></ul></li>
 <li><a href="#send-data-to-the-things-network">5 Send Data to The Things Network</a><ul></ul></li>
 <li><a href="#the-things-network-coverage">6 The Things Network Coverage</a><ul></ul></li>
 <li><a href="#whats-next">7 What’s Next</a><ul></ul></li>
@@ -327,8 +329,8 @@
 <p><img src="https://lupyuen.github.io/images/lorawan2-title.jpg" alt="Tiny tasty treat… PineDio Stack BL604 RISC-V Board" /></p>
 <h1 id="join-device-to-the-things-network" class="section-header"><a href="#join-device-to-the-things-network">4 Join Device to The Things Network</a></h1>
 <p>Let’s <strong>join our PineDio Stack</strong> device to The Things Network!</p>
-<p>Because we’re using <strong>Over-The-Air Activation</strong>, we need to join the network every time we boot our device.</p>
-<p>In The Things Network Console, browse to our Device and <strong>copy these values</strong> (needed for the network activation)…</p>
+<p>Because we’re doing <strong>Over-The-Air Activation</strong>, we need to join the network every time we boot our device.</p>
+<p>In The Things Network, browse to our Device and <strong>copy these values</strong> (needed for network activation)…</p>
 <ol>
 <li>
 <p><strong>JoinEUI</strong> (Join Extended Unique Identifier)</p>
@@ -341,7 +343,11 @@
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/ttn-device2.png" alt="Device Overview" /></p>
-<p>TODO</p>
+<p>Click the icons shown above to <strong>reveal, format and copy</strong> the values.</p>
+<p>Note that the copied values are formatted as…</p>
+<div class="example-wrap"><pre class="language-text">0xAB, 0xBA, 0xDA, 0xBA, ...</pre></div>
+<p>Later we shall convert the comma-delimited values to <strong>colon-separated</strong> values…</p>
+<div class="example-wrap"><pre class="language-text">0xAB:0xBA:0xDA:0xBA:...</pre></div><h2 id="join-commands" class="section-header"><a href="#join-commands">4.1 Join Commands</a></h2>
 <p>Head over to the <strong>Serial Terminal</strong> for PineDio Stack.</p>
 <p>At the PineDio Stack Command Prompt, enter these commands to <strong>join PineDio Stack to The Things Network</strong>…</p>
 <ol>
@@ -352,20 +358,30 @@
 <p>Next we initialise the <strong>LoRa SX1262 and LoRaWAN Drivers</strong>…</p>
 <div class="example-wrap"><pre class="language-bash">init_lorawan</pre></div></li>
 <li>
-<p>TODO: We set the DevEUI…</p>
-<div class="example-wrap"><pre class="language-bash">las_wr_dev_eui 0xAB:0xBA:0xDA:0xBA:0xAB:0xBA:0xDA:0xBA</pre></div></li>
+<p>Set the <strong>DevEUI</strong>…</p>
+<div class="example-wrap"><pre class="language-bash">las_wr_dev_eui 0xAB:0xBA:0xDA:0xBA:0xAB:0xBA:0xDA:0xBA</pre></div>
+<p>Change “<code>0xAB:0xBA:...</code>” to your <strong>DevEUI</strong></p>
+<p>(Remember to change the <strong>“<code>,</code>”</strong> delimiter to <strong>“<code>:</code>”</strong>)</p>
+</li>
 <li>
-<p>TODO: Set the JoinEUI…</p>
-<div class="example-wrap"><pre class="language-bash">las_wr_app_eui 0x00:0x00:0x00:0x00:0x00:0x00:0x00:0x00</pre></div></li>
+<p>Set the <strong>JoinEUI</strong>…</p>
+<div class="example-wrap"><pre class="language-bash">las_wr_app_eui 0x00:0x00:0x00:0x00:0x00:0x00:0x00:0x00</pre></div>
+<p>Change “<code>0x00:0x00:...</code>” to your <strong>JoinEUI</strong></p>
+<p>(Yep change the <strong>“<code>,</code>”</strong> delimiter to <strong>“<code>:</code>”</strong>)</p>
+</li>
 <li>
-<p>TODO: Set the AppKey…</p>
-<div class="example-wrap"><pre class="language-bash">las_wr_app_key 0xAB:0xBA:0xDA:0xBA:0xAB:0xBA:0xDA:0xBA0xAB:0xBA:0xDA:0xBA:0xAB:0xBA:0xDA:0xBA</pre></div></li>
+<p>Set the <strong>AppKey</strong>…</p>
+<div class="example-wrap"><pre class="language-bash">las_wr_app_key 0xAB:0xBA:0xDA:0xBA:0xAB:0xBA:0xDA:0xBA0xAB:0xBA:0xDA:0xBA:0xAB:0xBA:0xDA:0xBA</pre></div>
+<p>Change “<code>0xAB:0xBA:...</code>” to your <strong>AppKey</strong></p>
+<p>(Again change <strong>“<code>,</code>”</strong> to <strong>“<code>:</code>”</strong>)</p>
+</li>
 <li>
-<p>We send a request to <strong>join The Things Network</strong>…</p>
+<p>Finally we send a request to <strong>join The Things Network</strong>…</p>
 <div class="example-wrap"><pre class="language-bash">las_join 1</pre></div>
 <p>(“<code>1</code>” means try only once)</p>
 </li>
 </ol>
+<h2 id="we-are-in" class="section-header"><a href="#we-are-in">4.2 We Are In!</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan#lorawan-commands-for-the-things-network">(Source)</a></p>
 <p>TODO12</p>
