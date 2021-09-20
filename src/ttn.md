@@ -475,13 +475,25 @@ Thanks to The Things Network, we've just sent a tiny message to the Cloud... __F
 
 (Assuming we have The Things Network coverage)
 
-TODO: Schools should install LoRaWAN Gateways for The Things Network
+_How's the coverage for The Things Network worldwide?_
 
-[(Thanks to Niclas Hedhman for the suggestion!)](https://angrytoday.com/@niclas/106946426730958530)
+Depends on the region.
+
+According to the [__The Things Network Coverage Map__](https://www.thethingsnetwork.org/map), coverage in Singapore is really spotty...
 
 ![The Things Network coverage in Singapore](https://lupyuen.github.io/images/ttn-coverage.jpg)
 
-[(Source)](https://www.thethingsnetwork.org/map)
+_Can we fix The Things Network coverage?_
+
+We can install our own LoRaWAN Gateways and __join them to The Things Network!__
+
+__Schools could install gateways__ for The Things Network...
+
+And share free access to The Things Network with __homes and workplaces nearby!__
+
+Hopefully with __affordable, open-source gateways__ (like [__Pine64's PineDio Gateway__](https://wiki.pine64.org/wiki/Pinedio)) we'll grow The Things Network substantially.
+
+![PineDio Gateway, PinePhone Backplate and USB Adapter](https://lupyuen.github.io/images/lorawan2-pine64.jpg)
 
 # Fair Use of The Things Network
 
