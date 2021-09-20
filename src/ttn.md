@@ -483,7 +483,7 @@ According to the [__The Things Network Coverage Map__](https://www.thethingsnetw
 
 ![The Things Network coverage in Singapore](https://lupyuen.github.io/images/ttn-coverage.jpg)
 
-_Can we fix The Things Network coverage?_
+_Can we extend The Things Network coverage?_
 
 We can install our own LoRaWAN Gateways and __join them to The Things Network!__
 
