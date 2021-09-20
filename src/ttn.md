@@ -495,6 +495,8 @@ Hopefully with __affordable, open-source gateways__ (like [__Pine64's PineDio Ga
 
 ![PineDio Gateway, PinePhone Backplate and USB Adapter](https://lupyuen.github.io/images/lorawan2-pine64.jpg)
 
+_PineDio Gateway, PinePhone LoRa Backplate and LoRa USB Adapter_
+
 # Fair Use of The Things Network
 
 TODO
