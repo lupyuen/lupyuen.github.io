@@ -467,21 +467,29 @@ And we'll do basic __Sensor Data Visualisation__.
 
 [(More about The Things Network Cloud Integration)](https://www.thethingsnetwork.org/docs/applications-and-integrations/)
 
+![Sending messages for free to The Things Network](https://lupyuen.github.io/images/ttn-flow2.jpg)
+
 # The Things Network Coverage
 
-TODO
+Thanks to The Things Network, we've just sent a tiny message to the Cloud... __For Free__!
 
-![](https://lupyuen.github.io/images/ttn-flow2.jpg)
+(Assuming we have The Things Network coverage)
 
 TODO: Schools should install LoRaWAN Gateways for The Things Network
 
-[Airtime Calculator](https://avbentem.github.io/airtime-calculator/ttn/us915)
+[(Thanks to Niclas Hedhman for the suggestion!)](https://angrytoday.com/@niclas/106946426730958530)
 
 ![The Things Network coverage in Singapore](https://lupyuen.github.io/images/ttn-coverage.jpg)
+
+[(Source)](https://www.thethingsnetwork.org/map)
 
 # Fair Use of The Things Network
 
 TODO
+
+["Fair Use Policy explained"](https://www.thethingsnetwork.org/forum/t/fair-use-policy-explained/1300)
+
+[Airtime Calculator](https://avbentem.github.io/airtime-calculator/ttn/us915)
 
 # What's Next
 
