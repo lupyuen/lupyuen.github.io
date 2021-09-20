@@ -489,7 +489,7 @@ We can install our own LoRaWAN Gateways and __join them to The Things Network!__
 
 __Schools could install gateways__ for The Things Network...
 
-And share free access to The Things Network with __homes and workplaces nearby!__
+And share free access to The Things Network with __homes, workplaces and devices nearby!__
 
 Hopefully with __affordable, open-source gateways__ (like [__Pine64's PineDio Gateway__](https://wiki.pine64.org/wiki/Pinedio)) we'll grow The Things Network substantially.
 
