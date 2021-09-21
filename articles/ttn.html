@@ -435,9 +435,41 @@
 <p><img src="https://lupyuen.github.io/images/lorawan2-pine64.jpg" alt="PineDio Gateway, PinePhone Backplate and USB Adapter" /></p>
 <p><em>PineDio Gateway, PinePhone LoRa Backplate and LoRa USB Adapter</em></p>
 <h1 id="fair-use-of-the-things-network" class="section-header"><a href="#fair-use-of-the-things-network">7 Fair Use of The Things Network</a></h1>
+<p><em>The Things Network is Free for Fair Use…</em></p>
+<p><em>How many messages can we send in an hour?</em></p>
+<p>Each device may transmit roughly <strong>10 tiny messages per hour</strong>.</p>
+<p>(Assuming 12 bytes per message)</p>
+<p>This varies by <strong>region, message size and data rate</strong>, as explained here…</p>
+<ul>
+<li><a href="https://www.thethingsnetwork.org/forum/t/fair-use-policy-explained/1300"><strong>“Fair Use Policy explained”</strong></a></li>
+</ul>
+<p>In short: We can <strong>send more messages</strong> to the network if we…</p>
+<ol>
+<li>
+<p><strong>Reduce the Message Size</strong></p>
+<p>(Payload should be 12 bytes or smaller)</p>
+</li>
+<li>
+<p><strong>Select a Higher Data Rate</strong></p>
+<p>(Our LoRaWAN Driver uses DR2, which is 125 kbps)</p>
+</li>
+</ol>
+<p><em>Why does the message rate vary by region?</em></p>
+<p>The Things Network operates on <a href="https://en.wikipedia.org/wiki/ISM_radio_band"><strong>ISM Radio Bands</strong></a>, which are regulated differently in different regions.</p>
+<p>To comply with Local Regulations, each device is allowed to <strong>transmit data for up to X seconds</strong> per day. (Where X depends on the region)</p>
+<p>This daily limit is known as the <strong>Duty Cycle</strong>, as explained here…</p>
+<ul>
+<li><a href="https://www.thethingsnetwork.org/docs/lorawan/duty-cycle/"><strong>“Duty Cycle”</strong></a></li>
+</ul>
+<p><em>How can we optimise our messages?</em></p>
 <p>TODO</p>
-<p><a href="https://www.thethingsnetwork.org/forum/t/fair-use-policy-explained/1300">“Fair Use Policy explained”</a></p>
-<p><a href="https://avbentem.github.io/airtime-calculator/ttn/us915">Airtime Calculator</a></p>
+<p><em>Wow… Fair Use sounds complicated!</em></p>
+<p>This <strong>Airtime Calculator</strong> tells us how many messages we can send in an hour…</p>
+<ul>
+<li><a href="https://avbentem.github.io/airtime-calculator/ttn/us915"><strong>Airtime Calculator</strong></a></li>
+</ul>
+<p>Select the <strong>Region</strong> (like US915), enter the <strong>Message Payload Size</strong> (say 12 bytes), and the answer magically appears…</p>
+<p><img src="https://lupyuen.github.io/images/ttn-airtime.png" alt="Airtime Calculator" /></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">8 What’s Next</a></h1>
 <p>TODO: Send real-time temperature data to The Things Network</p>
 <ul>
