@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>The Things Network on PineDio Stack BL604 RISC-V Board</title>
+            <link>https://lupyuen.github.io/articles/ttn</link>
+            <description><![CDATA[How we join The Things Network and send data to the cloud on the new PineDio Stack BL604 RISC-V Board]]></description>
+            <guid>https://lupyuen.github.io/articles/ttn</guid>
+            <pubDate>Tue, 21 Sep 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>LoRaWAN on PineDio Stack BL604 RISC-V Board</title>
             <link>https://lupyuen.github.io/articles/lorawan2</link>
             <description><![CDATA[How we test LoRaWAN on the new PineDio Stack BL604 RISC-V Board]]></description>
