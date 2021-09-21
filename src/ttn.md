@@ -509,31 +509,43 @@ Each device may transmit roughly __10 tiny messages per hour__.
 
 This varies by __region, message size and data rate__, as explained here...
 
--   [__"Fair Use Policy explained"__](https://www.thethingsnetwork.org/forum/t/fair-use-policy-explained/1300)
+-   [__"Fair Use Policy Explained"__](https://www.thethingsnetwork.org/forum/t/fair-use-policy-explained/1300)
 
-In short: We can __send more messages__ to the network if we...
+TLDR: We can __send more messages__ to the network if we...
 
 1.  __Reduce the Message Size__
 
-    (Payload should be 12 bytes or smaller)
+    (Payload should be __12 bytes__ or smaller)
 
 1.  __Select a Higher Data Rate__
 
-    (Our LoRaWAN Driver uses DR2, which is 125 kbps)
+    (Our LoRaWAN Driver uses __DR2__, which is 125 kbps)
 
 _Why does the message rate vary by region?_
 
-The Things Network operates on [__ISM Radio Bands__](https://en.wikipedia.org/wiki/ISM_radio_band), which are regulated differently in different regions.
+The Things Network operates on [__ISM Radio Bands__](https://en.wikipedia.org/wiki/ISM_radio_band), which are regulated differently across regions.
 
 To comply with Local Regulations, each device is allowed to __transmit data for up to X seconds__ per day. (Where X depends on the region)
 
 This daily limit is known as the __Duty Cycle__, as explained here...
 
--   [__"Duty Cycle"__](https://www.thethingsnetwork.org/docs/lorawan/duty-cycle/)
+-   [__"The Things Network: Duty Cycle"__](https://www.thethingsnetwork.org/docs/lorawan/duty-cycle/)
 
 _How can we optimise our messages?_
 
-TODO
+Encode our message payload with [__CBOR (Concise Binary Object Representation)__](https://en.wikipedia.org/wiki/CBOR) instead of JSON.
+
+(CBOR works like a compressed, binary version of JSON)
+
+This JSON Payload occupies __10 bytes__...
+
+```json
+{ "t": 1745 }
+```
+
+While the CBOR version needs only __6 bytes__!
+
+[(More about CBOR)](https://cbor.io/impls.html)
 
 _Wow... Fair Use sounds complicated!_
 
