@@ -1305,6 +1305,8 @@ Today we have completed __Levels One and Two__ of our epic quest for the [__Thre
 
     Join BL602 to __The Things Network__!
 
+    -   [__"The Things Network on PineDio Stack BL604 RISC-V Board"__](https://lupyuen.github.io/articles/ttn)
+
 1.  And eventually we shall build __BL602 Sensor Devices for The Things Network__!
 
 But first we shall...
