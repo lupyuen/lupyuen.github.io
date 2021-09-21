@@ -539,9 +539,9 @@ _Wow... Fair Use sounds complicated!_
 
 This __Airtime Calculator__ tells us how many messages we can send in an hour...
 
--   [__Airtime Calculator__](https://avbentem.github.io/airtime-calculator/ttn/us915)
+-   [__"Airtime Calculator for LoRaWAN"__](https://avbentem.github.io/airtime-calculator/ttn/us915)
 
-Select the __Region__ (like US915), enter the __Message Payload Size__ (say 12 bytes), and the answer magically appears...
+Select the __Region__ (like US915), enter the __Message Payload Size__ (say 12 bytes), look up the __Data Rate__ (usually DR2) and our answer magically appears...
 
 ![Airtime Calculator](https://lupyuen.github.io/images/ttn-airtime.png)
 
