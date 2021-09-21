@@ -441,28 +441,33 @@
 <p>(Assuming 12 bytes per message)</p>
 <p>This varies by <strong>region, message size and data rate</strong>, as explained here…</p>
 <ul>
-<li><a href="https://www.thethingsnetwork.org/forum/t/fair-use-policy-explained/1300"><strong>“Fair Use Policy explained”</strong></a></li>
+<li><a href="https://www.thethingsnetwork.org/forum/t/fair-use-policy-explained/1300"><strong>“Fair Use Policy Explained”</strong></a></li>
 </ul>
-<p>In short: We can <strong>send more messages</strong> to the network if we…</p>
+<p>TLDR: We can <strong>send more messages</strong> to the network if we…</p>
 <ol>
 <li>
 <p><strong>Reduce the Message Size</strong></p>
-<p>(Payload should be 12 bytes or smaller)</p>
+<p>(Payload should be <strong>12 bytes</strong> or smaller)</p>
 </li>
 <li>
 <p><strong>Select a Higher Data Rate</strong></p>
-<p>(Our LoRaWAN Driver uses DR2, which is 125 kbps)</p>
+<p>(Our LoRaWAN Driver uses <strong>DR2</strong>, which is 125 kbps)</p>
 </li>
 </ol>
 <p><em>Why does the message rate vary by region?</em></p>
-<p>The Things Network operates on <a href="https://en.wikipedia.org/wiki/ISM_radio_band"><strong>ISM Radio Bands</strong></a>, which are regulated differently in different regions.</p>
+<p>The Things Network operates on <a href="https://en.wikipedia.org/wiki/ISM_radio_band"><strong>ISM Radio Bands</strong></a>, which are regulated differently across regions.</p>
 <p>To comply with Local Regulations, each device is allowed to <strong>transmit data for up to X seconds</strong> per day. (Where X depends on the region)</p>
 <p>This daily limit is known as the <strong>Duty Cycle</strong>, as explained here…</p>
 <ul>
-<li><a href="https://www.thethingsnetwork.org/docs/lorawan/duty-cycle/"><strong>“Duty Cycle”</strong></a></li>
+<li><a href="https://www.thethingsnetwork.org/docs/lorawan/duty-cycle/"><strong>“The Things Network: Duty Cycle”</strong></a></li>
 </ul>
 <p><em>How can we optimise our messages?</em></p>
-<p>TODO</p>
+<p>Encode our message payload with <a href="https://en.wikipedia.org/wiki/CBOR"><strong>CBOR (Concise Binary Object Representation)</strong></a> instead of JSON.</p>
+<p>(CBOR works like a compressed, binary version of JSON)</p>
+<p>This JSON Payload occupies <strong>10 bytes</strong>…</p>
+<div class="example-wrap"><pre class="language-json">{ &quot;t&quot;: 1745 }</pre></div>
+<p>While the CBOR version needs only <strong>6 bytes</strong>!</p>
+<p><a href="https://cbor.io/impls.html">(More about CBOR)</a></p>
 <p><em>Wow… Fair Use sounds complicated!</em></p>
 <p>This <strong>Airtime Calculator</strong> tells us how many messages we can send in an hour…</p>
 <ul>
