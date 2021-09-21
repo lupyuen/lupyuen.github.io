@@ -4,7 +4,7 @@
 
 _PineDio Stack BL604 RISC-V Board (foreground) talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway (background)_
 
-📝 _25 Sep 2021_
+📝 _21 Sep 2021_
 
 _What is The Things Network?_
 
@@ -559,7 +559,11 @@ Select the __Region__ (like US915), enter the __Message Payload Size__ (say 12 b
 
 # What's Next
 
-TODO: Send real-time temperature data to The Things Network
+In the next article, PineDio Stack shall transmit __Real-Time Sensor Data__ from a Temperature Sensor to The Things Network. (Encoded with CBOR)
+
+And we shall __visualise the Sensor Data__ with [__Grafana and MQTT__](https://grafana.com/blog/2021/08/12/streaming-real-time-sensor-data-to-grafana-using-mqtt-and-grafana-live/). (With CBOR decoding)
+
+Stay Tuned!
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 

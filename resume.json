@@ -147,6 +147,13 @@
   ],
   "publications": [
     {
+      "name": "The Things Network on PineDio Stack BL604 RISC-V Board",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2021-09-21",
+      "website": "https://lupyuen.github.io/articles/ttn",
+      "summary": "How we join The Things Network and send data to the cloud on the new PineDio Stack BL604 RISC-V Board"
+    },
+    {
       "name": "LoRaWAN on PineDio Stack BL604 RISC-V Board",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-09-16",
