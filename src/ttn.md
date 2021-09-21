@@ -567,6 +567,8 @@ Stay Tuned!
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
+-   [Discuss this article on Reddit](https://www.reddit.com/r/RISCV/comments/ps9l4w/the_things_network_on_pinedio_stack_bl604_riscv/)
+
 -   [Read "The RISC-V BL602 / BL604 Book"](https://lupyuen.github.io/articles/book)
 
 -   [Check out my articles](https://lupyuen.github.io)
