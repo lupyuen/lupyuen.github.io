@@ -463,7 +463,7 @@ We shall also explore The Thing Network's __Cloud Integration__ features for pro
 
 And we'll do basic __Sensor Data Visualisation__.
 
-[(Maybe with Grafana and MQTT)](https://grafana.com/blog/2021/08/12/streaming-real-time-sensor-data-to-grafana-using-mqtt-and-grafana-live/)
+[(Maybe with Grafana and MQTT)](https://twitter.com/MisterTechBlog/status/1440459917828050946)
 
 [(More about The Things Network Cloud Integration)](https://www.thethingsnetwork.org/docs/applications-and-integrations/)
 
@@ -562,6 +562,8 @@ Select the __Region__ (like US915), enter the __Message Payload Size__ (say 12 b
 In the next article, PineDio Stack shall transmit __Real-Time Sensor Data__ from a Temperature Sensor to The Things Network. (Encoded with CBOR)
 
 And we shall __visualise the Sensor Data__ with [__Grafana and MQTT__](https://grafana.com/blog/2021/08/12/streaming-real-time-sensor-data-to-grafana-using-mqtt-and-grafana-live/). (With CBOR decoding)
+
+[__See this Twitter Thread for updates__](https://twitter.com/MisterTechBlog/status/1440459917828050946)
 
 Stay Tuned!
 
