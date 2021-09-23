@@ -35,6 +35,10 @@ TODO
 
 TODO
 
+-   [__lupyuen/the-things-network-datasource__](https://github.com/lupyuen/the-things-network-datasource)
+
+TODO
+
 ![](https://lupyuen.github.io/images/grafana-datasource2.png)
 
 TODO5
@@ -73,7 +77,11 @@ TODO2
 
 # Transform MQTT Messages
 
-TODO15
+TODO
+
+-   [__lupyuen/the-things-network-datasource__](https://github.com/lupyuen/the-things-network-datasource)
+
+TODO
 
 ![](https://lupyuen.github.io/images/grafana-payload.jpg)
 
@@ -112,3 +120,11 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1440459917828050946)
+
+# Appendix: Install the Grafana Data Source for The Things Network
+
+TODO
+
+-   [__lupyuen/the-things-network-datasource__](https://github.com/lupyuen/the-things-network-datasource)
+
+TODO
