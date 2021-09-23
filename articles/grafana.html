@@ -76,7 +76,7 @@
 <li><a href="#notes">9 Notes</a><ul></ul></li>
 <li><a href="#appendix-install-grafana-and-data-source">10 Appendix: Install Grafana and Data Source</a><ul>
 <li><a href="#install-grafana">10.1 Install Grafana</a><ul></ul></li>
-<li><a href="#install-data-source">10.2 Install Data Source</a><ul></ul></li>
+<li><a href="#build-data-source">10.2 Build Data Source</a><ul></ul></li>
 <li><a href="#enable-data-source">10.3 Enable Data Source</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>30 Sep 2021</em></p>
 <p><a href="https://lupyuen.github.io/articles/ttn"><strong>The Things Network</strong></a> is a public global <strong>wireless network for IoT devices</strong>…</p>
 <p>(And it’s free for fair use!)</p>
@@ -233,9 +233,11 @@ level = debug</pre></div>
 <p>Password: admin</p>
 </li>
 </ul>
-<h2 id="install-data-source" class="section-header"><a href="#install-data-source">10.2 Install Data Source</a></h2>
+<h2 id="build-data-source" class="section-header"><a href="#build-data-source">10.2 Build Data Source</a></h2>
 <p>TODO</p>
-<p>Set permissions</p>
+<p>(Note: This Data Source uses the Grafana Live Streaming API, please use Grafana version 8.0 or later)</p>
+<p>Set permissions: <code>Users</code> should be granted <code>Full Control</code></p>
+<p><img src="https://lupyuen.github.io/images/grafana-permission.png" alt="" /></p>
 <p>This Data Source should be located in the <strong>Grafana Plugins Folder</strong>…</p>
 <div class="example-wrap"><pre class="language-bash">#  For Windows:
 cd C:\Program Files\GrafanaLabs\grafana\data\plugins
