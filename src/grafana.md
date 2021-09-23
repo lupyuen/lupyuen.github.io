@@ -20,26 +20,16 @@ TODO
 
 ![Grafana visualises Sensor Data from The Things Network](https://lupyuen.github.io/images/grafana-title.jpg)
 
-# CBOR: Concise Binary Object Representation
-
-TODO1
-
-![](https://lupyuen.github.io/images/grafana-cbor.png)
-
-TODO2
-
-![](https://lupyuen.github.io/images/grafana-cbor2.png)
-
 # Configure The Things Network MQTT
 
-TODO16
+TODO
 
 ![](https://lupyuen.github.io/images/grafana-ttn.png)
 
 
 # Configure the Data Source
 
-TODO10
+TODO
 
 ![](https://lupyuen.github.io/images/grafana-datasource2.png)
 
@@ -53,7 +43,7 @@ TODO6
 
 # Grafana Dashboard
 
-TODO8
+TODO
 
 ![](https://lupyuen.github.io/images/grafana-dashboard2.png)
 
@@ -65,9 +55,35 @@ TODO12
 
 ![](https://lupyuen.github.io/images/grafana-filter.png)
 
+# CBOR: Concise Binary Object Representation
+
+TODO
+
+![](https://lupyuen.github.io/images/grafana-cbor.png)
+
+[(Source)](http://cbor.me/)
+
+TODO2
+
+![](https://lupyuen.github.io/images/grafana-cbor2.png)
+
+# Transform MQTT Messages
+
+TODO15
+
+![](https://lupyuen.github.io/images/grafana-payload.jpg)
+
+TODO3
+
+![](https://lupyuen.github.io/images/grafana-code.png)
+
+TODO4
+
+![](https://lupyuen.github.io/images/grafana-code2.png)
+
 # Store Data with Prometheus
 
-TODO14
+TODO
 
 ![](https://lupyuen.github.io/images/grafana-flow2.jpg)
 
@@ -92,16 +108,3 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1440459917828050946)
-
-TODO15
-
-![](https://lupyuen.github.io/images/grafana-payload.png)
-
-TODO3
-
-![](https://lupyuen.github.io/images/grafana-code.png)
-
-TODO4
-
-![](https://lupyuen.github.io/images/grafana-code2.png)
-
