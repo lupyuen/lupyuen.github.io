@@ -70,10 +70,14 @@
 <li><a href="#grafana-dashboard">3 Grafana Dashboard</a><ul></ul></li>
 <li><a href="#cbor-concise-binary-object-representation">4 CBOR: Concise Binary Object Representation</a><ul></ul></li>
 <li><a href="#transform-mqtt-messages">5 Transform MQTT Messages</a><ul></ul></li>
-<li><a href="#store-data-with-prometheus">6 Store Data with Prometheus</a><ul></ul></li>
-<li><a href="#whats-next">7 What’s Next</a><ul></ul></li>
-<li><a href="#notes">8 Notes</a><ul></ul></li>
-<li><a href="#appendix-install-the-grafana-data-source-for-the-things-network">9 Appendix: Install the Grafana Data Source for The Things Network</a><ul></ul></li></ul></nav><p>📝 <em>30 Sep 2021</em></p>
+<li><a href="#troubleshooting">6 Troubleshooting</a><ul></ul></li>
+<li><a href="#store-data-with-prometheus">7 Store Data with Prometheus</a><ul></ul></li>
+<li><a href="#whats-next">8 What’s Next</a><ul></ul></li>
+<li><a href="#notes">9 Notes</a><ul></ul></li>
+<li><a href="#appendix-install-grafana-and-data-source">10 Appendix: Install Grafana and Data Source</a><ul>
+<li><a href="#install-grafana">10.1 Install Grafana</a><ul></ul></li>
+<li><a href="#install-data-source">10.2 Install Data Source</a><ul></ul></li>
+<li><a href="#enable-data-source">10.3 Enable Data Source</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>30 Sep 2021</em></p>
 <p><a href="https://lupyuen.github.io/articles/ttn"><strong>The Things Network</strong></a> is a public global <strong>wireless network for IoT devices</strong>…</p>
 <p>(And it’s free for fair use!)</p>
 <p><a href="https://grafana.com/oss/grafana/"><strong>Grafana</strong></a> is a open source tool for <strong>visualising all kinds of real-time data</strong>…</p>
@@ -91,19 +95,57 @@
 <h1 id="configure-the-things-network-mqtt" class="section-header"><a href="#configure-the-things-network-mqtt">1 Configure The Things Network MQTT</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/grafana-ttn.png" alt="" /></p>
+<p><strong>Configure the Data Source</strong> with these values from The Things Network → Application → (Your Application) → Integrations → MQTT…</p>
+<div class="example-wrap"><pre class="language-text"># Change this to your MQTT Public Address
+Public Address: au1.cloud.thethings.network:1883
+
+# Change this to your MQTT Username
+Username: luppy-application@ttn
+
+# Change this to your API Key
+Password: YOUR_API_KEY
+
+# Subscribe to all topics
+Topic: all</pre></div>
+<p>To <strong>test the MQTT Server</strong>…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+# <span class="ident">Change</span> <span class="ident">au1</span>.<span class="ident">cloud</span>.<span class="ident">thethings</span>.<span class="ident">network</span> <span class="ident">to</span> <span class="ident">your</span> <span class="ident">MQTT</span> <span class="ident">Public</span> <span class="ident">Address</span>
+# <span class="ident">Change</span> <span class="ident">luppy</span><span class="op">-</span><span class="ident">application</span>@<span class="ident">ttn</span> <span class="ident">to</span> <span class="ident">your</span> <span class="ident">MQTT</span> <span class="ident">Username</span>
+<span class="ident">mosquitto_sub</span> <span class="op">-</span><span class="ident">h</span> <span class="ident">au1</span>.<span class="ident">cloud</span>.<span class="ident">thethings</span>.<span class="ident">network</span> <span class="op">-</span><span class="ident">t</span> <span class="string">&quot;#&quot;</span> <span class="op">-</span><span class="ident">u</span> <span class="string">&quot;luppy-application@ttn&quot;</span> <span class="op">-</span><span class="ident">P</span> <span class="string">&quot;YOUR_API_KEY&quot;</span> <span class="op">-</span><span class="ident">d</span></pre></div>
+<p><a href="https://github.com/lupyuen/the-things-network-datasource#mqtt-log">(See sample MQTT Log)</a></p>
 <h1 id="configure-grafana-data-source" class="section-header"><a href="#configure-grafana-data-source">2 Configure Grafana Data Source</a></h1>
 <p>TODO</p>
 <ul>
 <li><a href="https://github.com/lupyuen/the-things-network-datasource"><strong>lupyuen/the-things-network-datasource</strong></a></li>
 </ul>
 <p>TODO</p>
+<ol>
+<li>In Grafana from the left-hand menu, navigate to <strong>Configuration</strong> &gt; <strong>Data sources</strong>.</li>
+<li>From the top-right corner, click the <strong>Add data source</strong> button.</li>
+<li>Search for “The Things Network” in the search field, and hover over “The Things Network” search result.</li>
+<li>Click the <strong>Select</strong> button for “The Things Network”.</li>
+</ol>
 <p><img src="https://lupyuen.github.io/images/grafana-datasource2.png" alt="" /></p>
-<p>TODO5</p>
-<p><img src="https://lupyuen.github.io/images/grafana-config.png" alt="" /></p>
+<p><a href="https://grafana.com/docs/grafana/latest/datasources/add-a-data-source/">Add the Data Source</a> for “The Things Network”</p>
+<p>Configure the Data Source with the values from <code>The Things Network → Application → (Your Application) → Integrations → MQTT</code>…</p>
+<p>Basic fields:</p>
+<table><thead><tr><th>Field</th><th>Description</th></tr></thead><tbody>
+<tr><td>Name</td><td>Name for this data source</td></tr>
+<tr><td>Host</td><td>Public Address of your MQTT Server at The Things Network</td></tr>
+<tr><td>Port</td><td>MQTT Port (default 1883)</td></tr>
+</tbody></table>
+<p>Authentication fields:</p>
+<table><thead><tr><th>Field</th><th>Description</th></tr></thead><tbody>
+<tr><td>Username</td><td>Username for your MQTT Server at The Things Network</td></tr>
+<tr><td>Password</td><td>API Key for your MQTT Server at The Things Network</td></tr>
+</tbody></table>
+<p><img src="https://lupyuen.github.io/images/grafana-config.png" alt="Configuring the Grafana Data Source for The Things Network" /></p>
 <p>TODO6</p>
 <p><img src="https://lupyuen.github.io/images/grafana-config2.png" alt="" /></p>
 <h1 id="grafana-dashboard" class="section-header"><a href="#grafana-dashboard">3 Grafana Dashboard</a></h1>
 <p>TODO</p>
+<p>Only one topic is supported: “<code>all</code>”</p>
 <p><img src="https://lupyuen.github.io/images/grafana-datasource3.png" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/grafana-dashboard2.png" alt="" /></p>
@@ -111,25 +153,44 @@
 <p><img src="https://lupyuen.github.io/images/grafana-filter.png" alt="" /></p>
 <h1 id="cbor-concise-binary-object-representation" class="section-header"><a href="#cbor-concise-binary-object-representation">4 CBOR: Concise Binary Object Representation</a></h1>
 <p>TODO</p>
+<p>We assume that Message Payloads are encoded in <a href="https://en.wikipedia.org/wiki/CBOR"><strong>CBOR Format</strong></a>…</p>
+<div class="example-wrap"><pre class="language-json">{ &quot;t&quot;: 1234 }</pre></div>
+<p>(Multiple fields are OK)</p>
 <p><img src="https://lupyuen.github.io/images/grafana-cbor.png" alt="" /></p>
 <p><a href="http://cbor.me/">(Source)</a></p>
 <p>TODO2</p>
 <p><img src="https://lupyuen.github.io/images/grafana-cbor2.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/grafana-payload.jpg" alt="" /></p>
 <h1 id="transform-mqtt-messages" class="section-header"><a href="#transform-mqtt-messages">5 Transform MQTT Messages</a></h1>
 <p>TODO</p>
 <ul>
 <li><a href="https://github.com/lupyuen/the-things-network-datasource"><strong>lupyuen/the-things-network-datasource</strong></a></li>
 </ul>
+<p>This Data Source is based on the MQTT data source for Grafana…</p>
+<ul>
+<li><a href="https://github.com/grafana/mqtt-datasource">github.com/grafana/mqtt-datasource</a></li>
+</ul>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/grafana-payload.jpg" alt="" /></p>
-<p>TODO3</p>
 <p><img src="https://lupyuen.github.io/images/grafana-code.png" alt="" /></p>
 <p>TODO4</p>
 <p><img src="https://lupyuen.github.io/images/grafana-code2.png" alt="" /></p>
-<h1 id="store-data-with-prometheus" class="section-header"><a href="#store-data-with-prometheus">6 Store Data with Prometheus</a></h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/grafana-test.png" alt="" /></p>
+<h1 id="troubleshooting" class="section-header"><a href="#troubleshooting">6 Troubleshooting</a></h1>
+<p>TODO</p>
+<p>To <strong>enable Debug Logs</strong>, edit…</p>
+<div class="example-wrap"><pre class="language-text">C:\Program Files\GrafanaLabs\grafana\conf\defaults.ini</pre></div>
+<p>And set…</p>
+<div class="example-wrap"><pre class="language-text">[log]
+level = debug</pre></div>
+<p>In case of problems, check the <strong>Grafana Log</strong> at…</p>
+<div class="example-wrap"><pre class="language-text">C:\Program Files\GrafanaLabs\grafana\data\log\grafana.log</pre></div>
+<p><a href="https://github.com/lupyuen/the-things-network-datasource#grafana-log">(See sample Grafana Log)</a></p>
+<h1 id="store-data-with-prometheus" class="section-header"><a href="#store-data-with-prometheus">7 Store Data with Prometheus</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/grafana-flow2.jpg" alt="" /></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">7 What’s Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">8 What’s Next</a></h1>
 <p>TODO</p>
 <p>PineDio Stack BL604</p>
 <ul>
@@ -148,16 +209,60 @@
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/grafana.md"><code>lupyuen.github.io/src/grafana.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">8 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">9 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1440459917828050946">this Twitter Thread</a></li>
 </ol>
-<h1 id="appendix-install-the-grafana-data-source-for-the-things-network" class="section-header"><a href="#appendix-install-the-grafana-data-source-for-the-things-network">9 Appendix: Install the Grafana Data Source for The Things Network</a></h1>
+<h1 id="appendix-install-grafana-and-data-source" class="section-header"><a href="#appendix-install-grafana-and-data-source">10 Appendix: Install Grafana and Data Source</a></h1>
 <p>TODO</p>
 <ul>
 <li><a href="https://github.com/lupyuen/the-things-network-datasource"><strong>lupyuen/the-things-network-datasource</strong></a></li>
 </ul>
 <p>TODO</p>
+<h2 id="install-grafana" class="section-header"><a href="#install-grafana">10.1 Install Grafana</a></h2>
+<p>TODO</p>
+<p>https://grafana.com/ -&gt; Self-Managed -&gt; Download Grafana</p>
+<p>Edition: OSS</p>
+<p>Download for Linux, macOS, Windows, Arm and Docker</p>
+<p>http://localhost:3000/</p>
+<ul>
+<li>
+<p>Username: admin</p>
+</li>
+<li>
+<p>Password: admin</p>
+</li>
+</ul>
+<h2 id="install-data-source" class="section-header"><a href="#install-data-source">10.2 Install Data Source</a></h2>
+<p>TODO</p>
+<p>Set permissions</p>
+<p>This Data Source should be located in the <strong>Grafana Plugins Folder</strong>…</p>
+<div class="example-wrap"><pre class="language-bash">#  For Windows:
+cd C:\Program Files\GrafanaLabs\grafana\data\plugins
+
+git clone --recursive https://github.com/lupyuen/the-things-network-datasource</pre></div>
+<p>Refer to: <a href="https://grafana.com/tutorials/build-a-streaming-data-source-plugin/">Building a Streaming Datasource Backend Plugin</a></p>
+<p>Details: <a href="https://github.com/grafana/mqtt-datasource/issues/15#issuecomment-894477802">Ubuntu</a> <a href="https://github.com/grafana/mqtt-datasource/issues/15#issuecomment-894534196">Windows</a></p>
+<p>To <strong>build the Data Source</strong>…</p>
+<div class="example-wrap"><pre class="language-bash">yarn install
+yarn build</pre></div>
+<p><a href="https://github.com/lupyuen/the-things-network-datasource#build-log">(See the Build Log)</a></p>
+<p>NOTE: The <code>yarn build</code> command above might fail on a non-unix-like system, like Windows, where you can try replacing the <code>rm -rf</code> command with <code>rimraf</code> in the <code>./package.json</code> file to make it work.</p>
+<ol start="3">
+<li>Run <code>mage reloadPlugin</code> or restart Grafana for the Data Source to load.</li>
+</ol>
+<h2 id="enable-data-source" class="section-header"><a href="#enable-data-source">10.3 Enable Data Source</a></h2>
+<p>To <strong>enable the Data Source</strong>, edit…</p>
+<div class="example-wrap"><pre class="language-text">C:\Program Files\GrafanaLabs\grafana\conf\defaults.ini</pre></div>
+<p>And set…</p>
+<div class="example-wrap"><pre class="language-text">[plugins]
+allow_loading_unsigned_plugins = the-things-network-datasource</pre></div>
+<p>To <strong>enable Debug Logs</strong>, set…</p>
+<div class="example-wrap"><pre class="language-text">[log]
+level = debug</pre></div>
+<p>In case of problems, check the <strong>Grafana Log</strong> at…</p>
+<div class="example-wrap"><pre class="language-text">C:\Program Files\GrafanaLabs\grafana\data\log\grafana.log</pre></div>
+<p><a href="https://github.com/lupyuen/the-things-network-datasource#grafana-log">(See sample Grafana Log)</a></p>
 
     
 </body>
