@@ -16,13 +16,19 @@ _And instantly visualise the Sensor Data from our IoT Devices?_
 
 ![Visualising The Things Network Sensor Data with Grafana](https://lupyuen.github.io/images/grafana-flow.jpg)
 
-TODO
+Today we shall experiment with a custom __MQTT Data Source__ for Grafana that will stream real-time Sensor Data from The Things Network.
 
-Limitations
+_Wait... We're streaming the Sensor Data without storing it?_
 
-(This is work-in-progress, some spot may get rough. Please pardon my ghastly GoLang 🙏)
+Yep this __streaming setup for Grafana__ requires fewer components because it doesn't store the data.
 
-![Grafana visualises Sensor Data from The Things Network](https://lupyuen.github.io/images/grafana-title.jpg)
+But it has limitations, which we'll discuss shortly.
+
+(This is work-in-progress, some spot may get rough. And please pardon my ghastly GoLang 🙏)
+
+![Grafana visualising Sensor Data from The Things Network](https://lupyuen.github.io/images/grafana-title.jpg)
+
+_Grafana visualising Sensor Data from The Things Network_
 
 # Configure The Things Network MQTT
 
