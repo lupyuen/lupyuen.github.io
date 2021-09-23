@@ -241,11 +241,15 @@ http://localhost:3000/
 
 -   Password: admin
 
-## Install Data Source
+## Build Data Source
 
 TODO
 
-Set permissions
+(Note: This Data Source uses the Grafana Live Streaming API, please use Grafana version 8.0 or later)
+
+Set permissions: `Users` should be granted `Full Control`
+
+![](https://lupyuen.github.io/images/grafana-permission.png)
 
 This Data Source should be located in the __Grafana Plugins Folder__...
 
