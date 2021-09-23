@@ -563,7 +563,7 @@ In the next article, PineDio Stack shall transmit __Real-Time Sensor Data__ from
 
 And we shall __visualise the Sensor Data__ with [__Grafana and MQTT__](https://grafana.com/blog/2021/08/12/streaming-real-time-sensor-data-to-grafana-using-mqtt-and-grafana-live/). (With CBOR decoding)
 
-[__See this Twitter Thread for updates__](https://twitter.com/MisterTechBlog/status/1440459917828050946)
+-   [__"Grafana Data Source for The Things Network"__](https://lupyuen.github.io/articles/grafana)
 
 Stay Tuned!
 
