@@ -36,6 +36,31 @@ TODO
 
 ![](https://lupyuen.github.io/images/grafana-ttn.png)
 
+__Configure the Data Source__ with these values from The Things Network → Application → (Your Application) → Integrations → MQTT...
+
+```text
+## Change this to your MQTT Public Address
+Public Address: au1.cloud.thethings.network:1883
+
+## Change this to your MQTT Username
+Username: luppy-application@ttn
+
+## Change this to your API Key
+Password: YOUR_API_KEY
+
+## Subscribe to all topics
+Topic: all
+```
+
+To __test the MQTT Server__...
+
+```
+## Change au1.cloud.thethings.network to your MQTT Public Address
+## Change luppy-application@ttn to your MQTT Username
+mosquitto_sub -h au1.cloud.thethings.network -t "#" -u "luppy-application@ttn" -P "YOUR_API_KEY" -d
+```
+
+[(See sample MQTT Log)](https://github.com/lupyuen/the-things-network-datasource#mqtt-log)
 
 # Configure Grafana Data Source
 
@@ -45,11 +70,33 @@ TODO
 
 TODO
 
+1. In Grafana from the left-hand menu, navigate to **Configuration** > **Data sources**.
+2. From the top-right corner, click the **Add data source** button.
+3. Search for "The Things Network" in the search field, and hover over "The Things Network" search result.
+4. Click the **Select** button for "The Things Network".
+
 ![](https://lupyuen.github.io/images/grafana-datasource2.png)
 
-TODO5
+[Add the Data Source](https://grafana.com/docs/grafana/latest/datasources/add-a-data-source/) for "The Things Network"
 
-![](https://lupyuen.github.io/images/grafana-config.png)
+Configure the Data Source with the values from `The Things Network → Application → (Your Application) → Integrations → MQTT`...
+
+Basic fields:
+
+| Field | Description                                        |
+| ----- | -------------------------------------------------- |
+| Name  | Name for this data source |
+| Host  | Public Address of your MQTT Server at The Things Network |
+| Port  | MQTT Port (default 1883) |
+
+Authentication fields:
+
+| Field    | Description                                                       |
+| -------- | ----------------------------------------------------------------- |
+| Username | Username for your MQTT Server at The Things Network |
+| Password | API Key for your MQTT Server at The Things Network |
+
+![Configuring the Grafana Data Source for The Things Network](https://lupyuen.github.io/images/grafana-config.png)
 
 TODO6
 
@@ -58,6 +105,8 @@ TODO6
 # Grafana Dashboard
 
 TODO
+
+Only one topic is supported: "`all`"
 
 ![](https://lupyuen.github.io/images/grafana-datasource3.png)
 
@@ -73,6 +122,14 @@ TODO
 
 TODO
 
+We assume that Message Payloads are encoded in [__CBOR Format__](https://en.wikipedia.org/wiki/CBOR)...
+
+```json
+{ "t": 1234 }
+```
+
+(Multiple fields are OK)
+
 ![](https://lupyuen.github.io/images/grafana-cbor.png)
 
 [(Source)](http://cbor.me/)
@@ -81,23 +138,56 @@ TODO2
 
 ![](https://lupyuen.github.io/images/grafana-cbor2.png)
 
+TODO
+
+![](https://lupyuen.github.io/images/grafana-payload.jpg)
+
 # Transform MQTT Messages
 
 TODO
 
 -   [__lupyuen/the-things-network-datasource__](https://github.com/lupyuen/the-things-network-datasource)
 
+This Data Source is based on the MQTT data source for Grafana...
+
+-   [github.com/grafana/mqtt-datasource](https://github.com/grafana/mqtt-datasource)
+
 TODO
-
-![](https://lupyuen.github.io/images/grafana-payload.jpg)
-
-TODO3
 
 ![](https://lupyuen.github.io/images/grafana-code.png)
 
 TODO4
 
 ![](https://lupyuen.github.io/images/grafana-code2.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/grafana-test.png)
+
+# Troubleshooting
+
+TODO
+
+To __enable Debug Logs__, edit...
+
+```text
+C:\Program Files\GrafanaLabs\grafana\conf\defaults.ini
+```
+
+And set...
+
+```text
+[log]
+level = debug
+```
+
+In case of problems, check the __Grafana Log__ at...
+
+```text
+C:\Program Files\GrafanaLabs\grafana\data\log\grafana.log
+```
+
+[(See sample Grafana Log)](https://github.com/lupyuen/the-things-network-datasource#grafana-log)
 
 # Store Data with Prometheus
 
@@ -127,10 +217,88 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1440459917828050946)
 
-# Appendix: Install the Grafana Data Source for The Things Network
+# Appendix: Install Grafana and Data Source
 
 TODO
 
 -   [__lupyuen/the-things-network-datasource__](https://github.com/lupyuen/the-things-network-datasource)
 
 TODO
+
+## Install Grafana
+
+TODO
+
+https://grafana.com/ -> Self-Managed -> Download Grafana
+
+Edition: OSS
+
+Download for Linux, macOS, Windows, Arm and Docker
+
+http://localhost:3000/
+
+-   Username: admin
+
+-   Password: admin
+
+## Install Data Source
+
+TODO
+
+Set permissions
+
+This Data Source should be located in the __Grafana Plugins Folder__...
+
+```bash
+##  For Windows:
+cd C:\Program Files\GrafanaLabs\grafana\data\plugins
+
+git clone --recursive https://github.com/lupyuen/the-things-network-datasource
+```
+
+Refer to: [Building a Streaming Datasource Backend Plugin](https://grafana.com/tutorials/build-a-streaming-data-source-plugin/)
+
+Details: [Ubuntu](https://github.com/grafana/mqtt-datasource/issues/15#issuecomment-894477802) [Windows](https://github.com/grafana/mqtt-datasource/issues/15#issuecomment-894534196)
+
+To __build the Data Source__...
+
+```bash
+yarn install
+yarn build
+```
+
+[(See the Build Log)](https://github.com/lupyuen/the-things-network-datasource#build-log)
+
+NOTE: The `yarn build` command above might fail on a non-unix-like system, like Windows, where you can try replacing the `rm -rf` command with `rimraf` in the `./package.json` file to make it work.
+
+3. Run `mage reloadPlugin` or restart Grafana for the Data Source to load.
+
+## Enable Data Source
+
+To __enable the Data Source__, edit...
+
+```text
+C:\Program Files\GrafanaLabs\grafana\conf\defaults.ini
+```
+
+And set...
+
+```text
+[plugins]
+allow_loading_unsigned_plugins = the-things-network-datasource
+```
+
+To __enable Debug Logs__, set...
+
+```text
+[log]
+level = debug
+```
+
+In case of problems, check the __Grafana Log__ at...
+
+```text
+C:\Program Files\GrafanaLabs\grafana\data\log\grafana.log
+```
+
+[(See sample Grafana Log)](https://github.com/lupyuen/the-things-network-datasource#grafana-log)
