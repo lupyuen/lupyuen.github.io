@@ -65,13 +65,14 @@
 
     <h1 class="title">Grafana Data Source for The Things Network</h1>
     <nav id="TOC"><ul>
-<li><a href="#cbor-concise-binary-object-representation">1 CBOR: Concise Binary Object Representation</a><ul></ul></li>
-<li><a href="#configure-the-things-network-mqtt">2 Configure The Things Network MQTT</a><ul></ul></li>
-<li><a href="#configure-the-data-source">3 Configure the Data Source</a><ul></ul></li>
-<li><a href="#grafana-dashboard">4 Grafana Dashboard</a><ul></ul></li>
-<li><a href="#store-data-with-prometheus">5 Store Data with Prometheus</a><ul></ul></li>
-<li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
-<li><a href="#notes">7 Notes</a><ul></ul></li></ul></nav><p>📝 <em>30 Sep 2021</em></p>
+<li><a href="#configure-the-things-network-mqtt">1 Configure The Things Network MQTT</a><ul></ul></li>
+<li><a href="#configure-the-data-source">2 Configure the Data Source</a><ul></ul></li>
+<li><a href="#grafana-dashboard">3 Grafana Dashboard</a><ul></ul></li>
+<li><a href="#cbor-concise-binary-object-representation">4 CBOR: Concise Binary Object Representation</a><ul></ul></li>
+<li><a href="#transform-mqtt-messages">5 Transform MQTT Messages</a><ul></ul></li>
+<li><a href="#store-data-with-prometheus">6 Store Data with Prometheus</a><ul></ul></li>
+<li><a href="#whats-next">7 What’s Next</a><ul></ul></li>
+<li><a href="#notes">8 Notes</a><ul></ul></li></ul></nav><p>📝 <em>30 Sep 2021</em></p>
 <p><a href="https://lupyuen.github.io/articles/ttn"><strong>The Things Network</strong></a> is a public global <strong>wireless network for IoT devices</strong>…</p>
 <p>(And it’s free for fair use!)</p>
 <p><a href="https://grafana.com/oss/grafana/"><strong>Grafana</strong></a> is a open source tool for <strong>visualising all kinds of real-time data</strong>…</p>
@@ -81,32 +82,40 @@
 <p>TODO</p>
 <p>(This is work-in-progress, some spot may get rough. Please pardon my ghastly GoLang 🙏)</p>
 <p><img src="https://lupyuen.github.io/images/grafana-title.jpg" alt="Grafana visualises Sensor Data from The Things Network" /></p>
-<h1 id="cbor-concise-binary-object-representation" class="section-header"><a href="#cbor-concise-binary-object-representation">1 CBOR: Concise Binary Object Representation</a></h1>
-<p>TODO1</p>
-<p><img src="https://lupyuen.github.io/images/grafana-cbor.png" alt="" /></p>
-<p>TODO2</p>
-<p><img src="https://lupyuen.github.io/images/grafana-cbor2.png" alt="" /></p>
-<h1 id="configure-the-things-network-mqtt" class="section-header"><a href="#configure-the-things-network-mqtt">2 Configure The Things Network MQTT</a></h1>
-<p>TODO16</p>
+<h1 id="configure-the-things-network-mqtt" class="section-header"><a href="#configure-the-things-network-mqtt">1 Configure The Things Network MQTT</a></h1>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/grafana-ttn.png" alt="" /></p>
-<h1 id="configure-the-data-source" class="section-header"><a href="#configure-the-data-source">3 Configure the Data Source</a></h1>
-<p>TODO10</p>
+<h1 id="configure-the-data-source" class="section-header"><a href="#configure-the-data-source">2 Configure the Data Source</a></h1>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/grafana-datasource2.png" alt="" /></p>
 <p>TODO5</p>
 <p><img src="https://lupyuen.github.io/images/grafana-config.png" alt="" /></p>
 <p>TODO6</p>
 <p><img src="https://lupyuen.github.io/images/grafana-config2.png" alt="" /></p>
-<h1 id="grafana-dashboard" class="section-header"><a href="#grafana-dashboard">4 Grafana Dashboard</a></h1>
-<p>TODO8</p>
+<h1 id="grafana-dashboard" class="section-header"><a href="#grafana-dashboard">3 Grafana Dashboard</a></h1>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/grafana-dashboard2.png" alt="" /></p>
 <p>TODO11</p>
 <p><img src="https://lupyuen.github.io/images/grafana-datasource3.png" alt="" /></p>
 <p>TODO12</p>
 <p><img src="https://lupyuen.github.io/images/grafana-filter.png" alt="" /></p>
-<h1 id="store-data-with-prometheus" class="section-header"><a href="#store-data-with-prometheus">5 Store Data with Prometheus</a></h1>
-<p>TODO14</p>
+<h1 id="cbor-concise-binary-object-representation" class="section-header"><a href="#cbor-concise-binary-object-representation">4 CBOR: Concise Binary Object Representation</a></h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/grafana-cbor.png" alt="" /></p>
+<p><a href="http://cbor.me/">(Source)</a></p>
+<p>TODO2</p>
+<p><img src="https://lupyuen.github.io/images/grafana-cbor2.png" alt="" /></p>
+<h1 id="transform-mqtt-messages" class="section-header"><a href="#transform-mqtt-messages">5 Transform MQTT Messages</a></h1>
+<p>TODO15</p>
+<p><img src="https://lupyuen.github.io/images/grafana-payload.jpg" alt="" /></p>
+<p>TODO3</p>
+<p><img src="https://lupyuen.github.io/images/grafana-code.png" alt="" /></p>
+<p>TODO4</p>
+<p><img src="https://lupyuen.github.io/images/grafana-code2.png" alt="" /></p>
+<h1 id="store-data-with-prometheus" class="section-header"><a href="#store-data-with-prometheus">6 Store Data with Prometheus</a></h1>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/grafana-flow2.jpg" alt="" /></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">6 What’s Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">7 What’s Next</a></h1>
 <p>TODO</p>
 <p>PineDio Stack BL604</p>
 <ul>
@@ -125,16 +134,10 @@
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/grafana.md"><code>lupyuen.github.io/src/grafana.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">7 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">8 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1440459917828050946">this Twitter Thread</a></li>
 </ol>
-<p>TODO15</p>
-<p><img src="https://lupyuen.github.io/images/grafana-payload.png" alt="" /></p>
-<p>TODO3</p>
-<p><img src="https://lupyuen.github.io/images/grafana-code.png" alt="" /></p>
-<p>TODO4</p>
-<p><img src="https://lupyuen.github.io/images/grafana-code2.png" alt="" /></p>
 
     
 </body>
