@@ -27,7 +27,7 @@ TODO
 ![](https://lupyuen.github.io/images/grafana-ttn.png)
 
 
-# Configure the Data Source
+# Configure Grafana Data Source
 
 TODO
 
