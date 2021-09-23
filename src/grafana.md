@@ -14,7 +14,11 @@ _Can we connect Grafana to The Things Network..._
 
 _And instantly visualise the Sensor Data from our IoT Devices?_
 
+![Visualising The Things Network Sensor Data with Grafana](https://lupyuen.github.io/images/grafana-flow2.jpg)
+
 TODO
+
+Limitations
 
 (This is work-in-progress, some spot may get rough. Please pardon my ghastly GoLang 🙏)
 
