@@ -32,35 +32,45 @@ _Grafana visualising Sensor Data from The Things Network_
 
 # Configure The Things Network MQTT
 
-TODO
+Previously we have __configured our IoT Device__ in The Things Network...
 
-![](https://lupyuen.github.io/images/grafana-ttn.png)
+-   [__"The Things Network on PineDio Stack BL604 RISC-V Board"__](https://lupyuen.github.io/articles/ttn)
 
-__Configure the Data Source__ with these values from The Things Network → Application → (Your Application) → Integrations → MQTT...
+Now we __enable the MQTT Server__ in The Things Network by clicking...
 
-```text
-## Change this to your MQTT Public Address
-Public Address: au1.cloud.thethings.network:1883
+-   __Application__ → _(Your Application)_ → __Integrations__ → __MQTT__
 
-## Change this to your MQTT Username
-Username: luppy-application@ttn
+![Configure The Things Network MQTT Server](https://lupyuen.github.io/images/grafana-ttn.png)
 
-## Change this to your API Key
-Password: YOUR_API_KEY
+Click __"Generate New API Key"__ and copy the values for...
 
-## Subscribe to all topics
-Topic: all
-```
+-   __Public Address__
 
-To __test the MQTT Server__...
+    (We won't be using the Public TLS Address since our Data Source doesn't support TLS)
 
-```
-## Change au1.cloud.thethings.network to your MQTT Public Address
-## Change luppy-application@ttn to your MQTT Username
+-   __Username__
+
+-   __Password__
+
+    (This is the only time we can see the password. Don't forget to copy it!)
+
+We'll use the values in the next chapter.
+
+## Test The Things Network MQTT
+
+To __test the MQTT Server__ at The Things Network, enter this command...
+
+```bash
+## Change au1.cloud.thethings.network to our MQTT Public Address
+## Change luppy-application@ttn to our MQTT Username
 mosquitto_sub -h au1.cloud.thethings.network -t "#" -u "luppy-application@ttn" -P "YOUR_API_KEY" -d
 ```
 
+MQTT JSON Messages will appear whenever our IoT Device joins the network or transmits data.
+
 [(See sample MQTT Log)](https://github.com/lupyuen/the-things-network-datasource#mqtt-log)
+
+[(More about The Things Network MQTT)](https://www.thethingsindustries.com/docs/integrations/mqtt/)
 
 # Configure Grafana Data Source
 
@@ -86,15 +96,15 @@ Basic fields:
 | Field | Description                                        |
 | ----- | -------------------------------------------------- |
 | Name  | Name for this data source |
-| Host  | Public Address of your MQTT Server at The Things Network |
+| Host  | Public Address of our MQTT Server at The Things Network |
 | Port  | MQTT Port (default 1883) |
 
 Authentication fields:
 
 | Field    | Description                                                       |
 | -------- | ----------------------------------------------------------------- |
-| Username | Username for your MQTT Server at The Things Network |
-| Password | API Key for your MQTT Server at The Things Network |
+| Username | Username for our MQTT Server at The Things Network |
+| Password | Password for our MQTT Server at The Things Network |
 
 ![Configuring the Grafana Data Source for The Things Network](https://lupyuen.github.io/images/grafana-config.png)
 
