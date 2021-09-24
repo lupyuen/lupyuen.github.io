@@ -78,6 +78,10 @@ TODO
 
 -   [__lupyuen/the-things-network-datasource__](https://github.com/lupyuen/the-things-network-datasource)
 
+Follow these instructions to __install Grafana and the Data Source__ for The Things Network...
+
+-   [__"Install Grafana and Data Source"__](https://lupyuen.github.io/articles/grafana#appendix-install-grafana-and-data-source)
+
 TODO
 
 1. In Grafana from the left-hand menu, navigate to **Configuration** > **Data sources**.
@@ -181,6 +185,10 @@ TODO
 To __enable Debug Logs__, edit...
 
 ```text
+## For Linux:
+/usr/share/grafana/conf/defaults.ini
+
+## For Windows:
 C:\Program Files\GrafanaLabs\grafana\conf\defaults.ini
 ```
 
@@ -194,6 +202,10 @@ level = debug
 In case of problems, check the __Grafana Log__ at...
 
 ```text
+## For Linux:
+/var/log/grafana/grafana.log
+
+## For Windows:
 C:\Program Files\GrafanaLabs\grafana\data\log\grafana.log
 ```
 
@@ -229,90 +241,113 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Install Grafana and Data Source
 
-TODO
-
--   [__lupyuen/the-things-network-datasource__](https://github.com/lupyuen/the-things-network-datasource)
-
-TODO
+Here are the steps to install Grafana and our Data Source for The Things Network.
 
 ## Install Grafana
 
-TODO
+1.  Browse to [__grafana.com/oss/grafana__](https://grafana.com/oss/grafana/)
 
-https://grafana.com/ -> Self-Managed -> Download Grafana
+    Click __"Get Grafana → Self-Managed → Download Grafana"__
 
-Edition: OSS
+1.  For __"Edition"__ select __"OSS"__
 
-Download for Linux, macOS, Windows, Arm and Docker
+    Follow the instructions to download and install Grafana for Linux, macOS, Windows, Arm or Docker
 
-http://localhost:3000/
+1.  To test Grafana, browse to 
 
--   Username: admin
+    __`http://localhost:3000`__
 
--   Password: admin
+    __Username:__ admin
+
+    __Password:__ admin
 
 ## Build Data Source
 
-TODO
+(Note: Our Data Source uses the Grafana Live Streaming API, please use Grafana version 8.0 or later)
 
-(Note: This Data Source uses the Grafana Live Streaming API, please use Grafana version 8.0 or later)
+1.  For Windows: Grant __`Full Control`__ permission to the __`Users`__ group for the Grafana Plugins Folder...
 
-Set permissions: `Users` should be granted `Full Control`
+    ```text
+    C:\Program Files\GrafanaLabs\grafana\data\plugins
+    ```
 
-![](https://lupyuen.github.io/images/grafana-permission.png)
+    ![Permissions for plugins folder](https://lupyuen.github.io/images/grafana-permission.png)
 
-This Data Source should be located in the __Grafana Plugins Folder__...
 
-```bash
-##  For Windows:
-cd C:\Program Files\GrafanaLabs\grafana\data\plugins
+1.  __Download the Data Source__ into the Grafana Plugins Folder...
 
-git clone --recursive https://github.com/lupyuen/the-things-network-datasource
-```
+    ```bash
+    ##  For Linux: Need "sudo" to access this folder
+    cd /var/lib/grafana/plugins
 
-Refer to: [Building a Streaming Datasource Backend Plugin](https://grafana.com/tutorials/build-a-streaming-data-source-plugin/)
+    ##  For Windows: Need to grant "Full Control" permission to "Users" group for this folder
+    cd C:\Program Files\GrafanaLabs\grafana\data\plugins
 
-Details: [Ubuntu](https://github.com/grafana/mqtt-datasource/issues/15#issuecomment-894477802) [Windows](https://github.com/grafana/mqtt-datasource/issues/15#issuecomment-894534196)
+    ##  Download source files for The Things Network Data Source
+    git clone --recursive https://github.com/lupyuen/the-things-network-datasource
+    ```
 
-To __build the Data Source__...
+1.  Install the __Build Tools__...
 
-```bash
-yarn install
-yarn build
-```
+    [__Build Tools for Ubuntu__](https://github.com/grafana/mqtt-datasource/issues/15#issuecomment-894477802)
 
-[(See the Build Log)](https://github.com/lupyuen/the-things-network-datasource#build-log)
+    [__Build Tools for Windows__](https://github.com/grafana/mqtt-datasource/issues/15#issuecomment-894534196)
 
-NOTE: The `yarn build` command above might fail on a non-unix-like system, like Windows, where you can try replacing the `rm -rf` command with `rimraf` in the `./package.json` file to make it work.
+    [(More details here)](https://grafana.com/tutorials/build-a-streaming-data-source-plugin/)
 
-3. Run `mage reloadPlugin` or restart Grafana for the Data Source to load.
+1.  __Build the Data Source__...
+
+    ```bash
+    ##  Install the dependencies
+    cd the-things-network-datasource
+    yarn install
+
+    ##  Build the Data Source (React + Go)
+    yarn build
+    ```
+
+    [(See the Build Log)](https://github.com/lupyuen/the-things-network-datasource#build-log)
+
+1.  If "`yarn build`" fails on Windows, edit `package.json` and replace "`rm -rf`" by "`rimraf`"
+
+1.  __Restart the Grafana Service__ for the Data Source to load
 
 ## Enable Data Source
 
-To __enable the Data Source__, edit...
+1.  Edit the Grafana Configuration File...
 
-```text
-C:\Program Files\GrafanaLabs\grafana\conf\defaults.ini
-```
+    ```text
+    ## For Linux:
+    /usr/share/grafana/conf/defaults.ini
 
-And set...
+    ## For Windows:
+    C:\Program Files\GrafanaLabs\grafana\conf\defaults.ini
+    ```
 
-```text
-[plugins]
-allow_loading_unsigned_plugins = the-things-network-datasource
-```
+1.  To __enable our Data Source__, set...
 
-To __enable Debug Logs__, set...
+    ```text
+    [plugins]
+    allow_loading_unsigned_plugins = the-things-network-datasource
+    ```
 
-```text
-[log]
-level = debug
-```
+1.  To __enable Debug Logs__, set...
 
-In case of problems, check the __Grafana Log__ at...
+    ```text
+    [log]
+    level = debug
+    ```
 
-```text
-C:\Program Files\GrafanaLabs\grafana\data\log\grafana.log
-```
+1.  __Restart the Grafana Service__ for the Data Source to load
 
-[(See sample Grafana Log)](https://github.com/lupyuen/the-things-network-datasource#grafana-log)
+1.  In case of problems, check the __Grafana Log__ at...
+
+    ```text
+    ## For Linux:
+    /var/log/grafana/grafana.log
+
+    ## For Windows:
+    C:\Program Files\GrafanaLabs\grafana\data\log\grafana.log
+    ```
+
+    [(See sample Grafana Log)](https://github.com/lupyuen/the-things-network-datasource#grafana-log)
