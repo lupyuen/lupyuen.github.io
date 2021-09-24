@@ -38,7 +38,7 @@ Previously we have __configured our IoT Device__ in The Things Network...
 
 Now we __enable the MQTT Server__ in The Things Network by clicking...
 
--   __Application__ → _(Your Application)_ → __Integrations__ → __MQTT__
+-   __Applications__ → _(Your Application)_ → __Integrations__ → __MQTT__
 
 ![Configure The Things Network MQTT Server](https://lupyuen.github.io/images/grafana-ttn.png)
 
