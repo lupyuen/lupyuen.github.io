@@ -251,7 +251,17 @@ Here are the steps to install Grafana and our Data Source for The Things Network
 
 1.  For __"Edition"__ select __"OSS"__
 
-    Follow the instructions to download and install Grafana for Linux, macOS, Windows, Arm or Docker
+1.  Follow the instructions to download and install Grafana for Linux, macOS, Windows, Arm or Docker
+
+    (Grafana for Linux works on WSL too)
+
+1.  For Linux: Start the Grafana Server
+
+    ```bash
+    ## For Ubuntu and WSL
+    sudo service grafana-server restart
+    sudo service grafana-server status
+    ```
 
 1.  To test Grafana, browse to 
 
@@ -314,7 +324,7 @@ Here are the steps to install Grafana and our Data Source for The Things Network
 
 ## Enable Data Source
 
-1.  Edit the Grafana Configuration File...
+1.  Edit the __Grafana Configuration File__...
 
     ```text
     ## For Linux:
@@ -339,6 +349,16 @@ Here are the steps to install Grafana and our Data Source for The Things Network
     ```
 
 1.  __Restart the Grafana Service__ for the Data Source to load
+
+    ```bash
+    ## For Ubuntu and WSL:
+    sudo service grafana-server restart
+    sudo service grafana-server status
+
+    ## For Windows: Run this as Administrator
+    net stop grafana
+    net start grafana
+    ```
 
 1.  In case of problems, check the __Grafana Log__ at...
 
