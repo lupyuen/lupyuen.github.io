@@ -127,7 +127,7 @@ mosquitto_sub -h au1.cloud.thethings.network -t &quot;#&quot; -u &quot;luppy-app
 <p><a href="https://github.com/lupyuen/the-things-network-datasource#mqtt-log">(See sample MQTT Log)</a></p>
 <p><a href="https://www.thethingsindustries.com/docs/integrations/mqtt/">(More about The Things Network MQTT)</a></p>
 <h1 id="configure-grafana-data-source" class="section-header"><a href="#configure-grafana-data-source">2 Configure Grafana Data Source</a></h1>
-<p>TODO</p>
+<p>Let’s <strong>add and configure</strong> our Grafana Data Source for The Things Network…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/the-things-network-datasource"><strong>lupyuen/the-things-network-datasource</strong></a></li>
 </ul>
@@ -135,30 +135,36 @@ mosquitto_sub -h au1.cloud.thethings.network -t &quot;#&quot; -u &quot;luppy-app
 <ul>
 <li><a href="https://lupyuen.github.io/articles/grafana#appendix-install-grafana-and-data-source"><strong>“Install Grafana and Data Source”</strong></a></li>
 </ul>
-<p>TODO</p>
-<ol>
-<li>In Grafana from the left-hand menu, navigate to <strong>Configuration</strong> &gt; <strong>Data sources</strong>.</li>
-<li>From the top-right corner, click the <strong>Add data source</strong> button.</li>
-<li>Search for “The Things Network” in the search field, and hover over “The Things Network” search result.</li>
-<li>Click the <strong>Select</strong> button for “The Things Network”.</li>
-</ol>
-<p><img src="https://lupyuen.github.io/images/grafana-datasource2.png" alt="" /></p>
-<p><a href="https://grafana.com/docs/grafana/latest/datasources/add-a-data-source/">Add the Data Source</a> for “The Things Network”</p>
-<p>Configure the Data Source with the values from <code>The Things Network → Application → (Your Application) → Integrations → MQTT</code>…</p>
-<p>Basic fields:</p>
-<table><thead><tr><th>Field</th><th>Description</th></tr></thead><tbody>
-<tr><td>Name</td><td>Name for this data source</td></tr>
-<tr><td>Host</td><td>Public Address of our MQTT Server at The Things Network</td></tr>
-<tr><td>Port</td><td>MQTT Port (default 1883)</td></tr>
-</tbody></table>
-<p>Authentication fields:</p>
-<table><thead><tr><th>Field</th><th>Description</th></tr></thead><tbody>
-<tr><td>Username</td><td>Username for our MQTT Server at The Things Network</td></tr>
-<tr><td>Password</td><td>Password for our MQTT Server at The Things Network</td></tr>
-</tbody></table>
+<p>In Grafana, click the left menu bar…</p>
+<ul>
+<li><strong>Configuration</strong> → <strong>Data Sources</strong></li>
+</ul>
+<p>Click <strong>“Add Data Source”</strong></p>
+<p><img src="https://lupyuen.github.io/images/grafana-datasource4.png" alt="Add Data Source" /></p>
+<p>Look for <strong>“The Things Network”</strong> and click <strong>“Select”</strong></p>
+<p><img src="https://lupyuen.github.io/images/grafana-datasource2.png" alt="Data Source for The Things Network" /></p>
+<p>Fill in the values copied from our <strong>MQTT Server at The Things Network</strong>…</p>
+<ul>
+<li>
+<p><strong>Name</strong>: Use the default</p>
+</li>
+<li>
+<p><strong>Host</strong>: Public Address of our MQTT Server</p>
+</li>
+<li>
+<p><strong>Port</strong>: 1883</p>
+</li>
+<li>
+<p><strong>Username</strong>: Username for our MQTT Server</p>
+</li>
+<li>
+<p><strong>Password</strong>: Password for our MQTT Server</p>
+</li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/grafana-config.png" alt="Configuring the Grafana Data Source for The Things Network" /></p>
-<p>TODO6</p>
-<p><img src="https://lupyuen.github.io/images/grafana-config2.png" alt="" /></p>
+<p>Click <strong>“Save &amp; Test”</strong></p>
+<p>We should see the message <strong>“MQTT Connected”</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/grafana-config2.png" alt="MQTT Connected" /></p>
 <h1 id="grafana-dashboard" class="section-header"><a href="#grafana-dashboard">3 Grafana Dashboard</a></h1>
 <p>TODO</p>
 <p>Only one topic is supported: “<code>all</code>”</p>
