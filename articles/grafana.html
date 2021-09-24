@@ -247,8 +247,16 @@ C:\Program Files\GrafanaLabs\grafana\data\log\grafana.log</pre></div>
 </li>
 <li>
 <p>For <strong>“Edition”</strong> select <strong>“OSS”</strong></p>
-<p>Follow the instructions to download and install Grafana for Linux, macOS, Windows, Arm or Docker</p>
 </li>
+<li>
+<p>Follow the instructions to download and install Grafana for Linux, macOS, Windows, Arm or Docker</p>
+<p>(Grafana for Linux works on WSL too)</p>
+</li>
+<li>
+<p>For Linux: Start the Grafana Server</p>
+<div class="example-wrap"><pre class="language-bash"># For Ubuntu and WSL
+sudo service grafana-server restart
+sudo service grafana-server status</pre></div></li>
 <li>
 <p>To test Grafana, browse to </p>
 <p><strong><code>http://localhost:3000</code></strong></p>
@@ -300,7 +308,7 @@ yarn build</pre></div>
 <h2 id="enable-data-source" class="section-header"><a href="#enable-data-source">10.3 Enable Data Source</a></h2>
 <ol>
 <li>
-<p>Edit the Grafana Configuration File…</p>
+<p>Edit the <strong>Grafana Configuration File</strong>…</p>
 <div class="example-wrap"><pre class="language-text"># For Linux:
 /usr/share/grafana/conf/defaults.ini
 
@@ -316,7 +324,13 @@ allow_loading_unsigned_plugins = the-things-network-datasource</pre></div></li>
 level = debug</pre></div></li>
 <li>
 <p><strong>Restart the Grafana Service</strong> for the Data Source to load</p>
-</li>
+<div class="example-wrap"><pre class="language-bash"># For Ubuntu and WSL:
+sudo service grafana-server restart
+sudo service grafana-server status
+
+# For Windows: Run this as Administrator
+net stop grafana
+net start grafana</pre></div></li>
 <li>
 <p>In case of problems, check the <strong>Grafana Log</strong> at…</p>
 <div class="example-wrap"><pre class="language-text"># For Linux:
