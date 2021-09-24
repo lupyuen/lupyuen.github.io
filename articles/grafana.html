@@ -65,7 +65,8 @@
 
     <h1 class="title">Grafana Data Source for The Things Network</h1>
     <nav id="TOC"><ul>
-<li><a href="#configure-the-things-network-mqtt">1 Configure The Things Network MQTT</a><ul></ul></li>
+<li><a href="#configure-the-things-network-mqtt">1 Configure The Things Network MQTT</a><ul>
+<li><a href="#test-the-things-network-mqtt">1.1 Test The Things Network MQTT</a><ul></ul></li></ul></li>
 <li><a href="#configure-grafana-data-source">2 Configure Grafana Data Source</a><ul></ul></li>
 <li><a href="#grafana-dashboard">3 Grafana Dashboard</a><ul></ul></li>
 <li><a href="#cbor-concise-binary-object-representation">4 CBOR: Concise Binary Object Representation</a><ul></ul></li>
@@ -93,27 +94,38 @@
 <p><img src="https://lupyuen.github.io/images/grafana-title.jpg" alt="Grafana visualising Sensor Data from The Things Network" /></p>
 <p><em>Grafana visualising Sensor Data from The Things Network</em></p>
 <h1 id="configure-the-things-network-mqtt" class="section-header"><a href="#configure-the-things-network-mqtt">1 Configure The Things Network MQTT</a></h1>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/grafana-ttn.png" alt="" /></p>
-<p><strong>Configure the Data Source</strong> with these values from The Things Network → Application → (Your Application) → Integrations → MQTT…</p>
-<div class="example-wrap"><pre class="language-text"># Change this to your MQTT Public Address
-Public Address: au1.cloud.thethings.network:1883
-
-# Change this to your MQTT Username
-Username: luppy-application@ttn
-
-# Change this to your API Key
-Password: YOUR_API_KEY
-
-# Subscribe to all topics
-Topic: all</pre></div>
-<p>To <strong>test the MQTT Server</strong>…</p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-# <span class="ident">Change</span> <span class="ident">au1</span>.<span class="ident">cloud</span>.<span class="ident">thethings</span>.<span class="ident">network</span> <span class="ident">to</span> <span class="ident">your</span> <span class="ident">MQTT</span> <span class="ident">Public</span> <span class="ident">Address</span>
-# <span class="ident">Change</span> <span class="ident">luppy</span><span class="op">-</span><span class="ident">application</span>@<span class="ident">ttn</span> <span class="ident">to</span> <span class="ident">your</span> <span class="ident">MQTT</span> <span class="ident">Username</span>
-<span class="ident">mosquitto_sub</span> <span class="op">-</span><span class="ident">h</span> <span class="ident">au1</span>.<span class="ident">cloud</span>.<span class="ident">thethings</span>.<span class="ident">network</span> <span class="op">-</span><span class="ident">t</span> <span class="string">&quot;#&quot;</span> <span class="op">-</span><span class="ident">u</span> <span class="string">&quot;luppy-application@ttn&quot;</span> <span class="op">-</span><span class="ident">P</span> <span class="string">&quot;YOUR_API_KEY&quot;</span> <span class="op">-</span><span class="ident">d</span></pre></div>
+<p>Previously we have <strong>configured our IoT Device</strong> in The Things Network…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/ttn"><strong>“The Things Network on PineDio Stack BL604 RISC-V Board”</strong></a></li>
+</ul>
+<p>Now we <strong>enable the MQTT Server</strong> in The Things Network by clicking…</p>
+<ul>
+<li><strong>Application</strong> → <em>(Your Application)</em> → <strong>Integrations</strong> → <strong>MQTT</strong></li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/grafana-ttn.png" alt="Configure The Things Network MQTT Server" /></p>
+<p>Click <strong>“Generate New API Key”</strong> and copy the values for…</p>
+<ul>
+<li>
+<p><strong>Public Address</strong></p>
+<p>(We won’t be using the Public TLS Address since our Data Source doesn’t support TLS)</p>
+</li>
+<li>
+<p><strong>Username</strong></p>
+</li>
+<li>
+<p><strong>Password</strong></p>
+<p>(This is the only time we can see the password. Don’t forget to copy it!)</p>
+</li>
+</ul>
+<p>We’ll use the values in the next chapter.</p>
+<h2 id="test-the-things-network-mqtt" class="section-header"><a href="#test-the-things-network-mqtt">1.1 Test The Things Network MQTT</a></h2>
+<p>To <strong>test the MQTT Server</strong> at The Things Network, enter this command…</p>
+<div class="example-wrap"><pre class="language-bash"># Change au1.cloud.thethings.network to our MQTT Public Address
+# Change luppy-application@ttn to our MQTT Username
+mosquitto_sub -h au1.cloud.thethings.network -t &quot;#&quot; -u &quot;luppy-application@ttn&quot; -P &quot;YOUR_API_KEY&quot; -d</pre></div>
+<p>MQTT JSON Messages will appear whenever our IoT Device joins the network or transmits data.</p>
 <p><a href="https://github.com/lupyuen/the-things-network-datasource#mqtt-log">(See sample MQTT Log)</a></p>
+<p><a href="https://www.thethingsindustries.com/docs/integrations/mqtt/">(More about The Things Network MQTT)</a></p>
 <h1 id="configure-grafana-data-source" class="section-header"><a href="#configure-grafana-data-source">2 Configure Grafana Data Source</a></h1>
 <p>TODO</p>
 <ul>
@@ -132,13 +144,13 @@ Topic: all</pre></div>
 <p>Basic fields:</p>
 <table><thead><tr><th>Field</th><th>Description</th></tr></thead><tbody>
 <tr><td>Name</td><td>Name for this data source</td></tr>
-<tr><td>Host</td><td>Public Address of your MQTT Server at The Things Network</td></tr>
+<tr><td>Host</td><td>Public Address of our MQTT Server at The Things Network</td></tr>
 <tr><td>Port</td><td>MQTT Port (default 1883)</td></tr>
 </tbody></table>
 <p>Authentication fields:</p>
 <table><thead><tr><th>Field</th><th>Description</th></tr></thead><tbody>
-<tr><td>Username</td><td>Username for your MQTT Server at The Things Network</td></tr>
-<tr><td>Password</td><td>API Key for your MQTT Server at The Things Network</td></tr>
+<tr><td>Username</td><td>Username for our MQTT Server at The Things Network</td></tr>
+<tr><td>Password</td><td>Password for our MQTT Server at The Things Network</td></tr>
 </tbody></table>
 <p><img src="https://lupyuen.github.io/images/grafana-config.png" alt="Configuring the Grafana Data Source for The Things Network" /></p>
 <p>TODO6</p>
