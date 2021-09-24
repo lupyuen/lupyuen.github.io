@@ -74,7 +74,7 @@ MQTT JSON Messages will appear whenever our IoT Device joins the network or tran
 
 # Configure Grafana Data Source
 
-TODO
+Let's __add and configure__ our Grafana Data Source for The Things Network...
 
 -   [__lupyuen/the-things-network-datasource__](https://github.com/lupyuen/the-things-network-datasource)
 
@@ -82,39 +82,37 @@ Follow these instructions to __install Grafana and the Data Source__ for The Thi
 
 -   [__"Install Grafana and Data Source"__](https://lupyuen.github.io/articles/grafana#appendix-install-grafana-and-data-source)
 
-TODO
+In Grafana, click the left menu bar...
 
-1. In Grafana from the left-hand menu, navigate to **Configuration** > **Data sources**.
-2. From the top-right corner, click the **Add data source** button.
-3. Search for "The Things Network" in the search field, and hover over "The Things Network" search result.
-4. Click the **Select** button for "The Things Network".
+-   __Configuration__ → __Data Sources__
 
-![](https://lupyuen.github.io/images/grafana-datasource2.png)
+Click __"Add Data Source"__
 
-[Add the Data Source](https://grafana.com/docs/grafana/latest/datasources/add-a-data-source/) for "The Things Network"
+![Add Data Source](https://lupyuen.github.io/images/grafana-datasource4.png)
 
-Configure the Data Source with the values from `The Things Network → Application → (Your Application) → Integrations → MQTT`...
+Look for __"The Things Network"__ and click __"Select"__
 
-Basic fields:
+![Data Source for The Things Network](https://lupyuen.github.io/images/grafana-datasource2.png)
 
-| Field | Description                                        |
-| ----- | -------------------------------------------------- |
-| Name  | Name for this data source |
-| Host  | Public Address of our MQTT Server at The Things Network |
-| Port  | MQTT Port (default 1883) |
+Fill in the values copied from our __MQTT Server at The Things Network__...
 
-Authentication fields:
+-   __Name__: Use the default
 
-| Field    | Description                                                       |
-| -------- | ----------------------------------------------------------------- |
-| Username | Username for our MQTT Server at The Things Network |
-| Password | Password for our MQTT Server at The Things Network |
+-   __Host__: Public Address of our MQTT Server
+
+-   __Port__: 1883
+
+-   __Username__: Username for our MQTT Server
+
+-   __Password__: Password for our MQTT Server
 
 ![Configuring the Grafana Data Source for The Things Network](https://lupyuen.github.io/images/grafana-config.png)
 
-TODO6
+Click __"Save & Test"__
 
-![](https://lupyuen.github.io/images/grafana-config2.png)
+We should see the message __"MQTT Connected"__...
+
+![MQTT Connected](https://lupyuen.github.io/images/grafana-config2.png)
 
 # Grafana Dashboard
 
