@@ -118,6 +118,12 @@ We should see the message __"MQTT Connected"__...
 
 TODO
 
+1.  Click __"Add Panel"__ (top right)
+
+    Click __"Add An Empty Panel"__
+
+    ![Add Panel](https://lupyuen.github.io/images/grafana-dashboard3.png)
+
 Only one topic is supported: "`all`"
 
 ![](https://lupyuen.github.io/images/grafana-datasource3.png)
