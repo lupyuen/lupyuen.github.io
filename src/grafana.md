@@ -186,6 +186,9 @@ To __enable Debug Logs__, edit...
 ## For Linux:
 /usr/share/grafana/conf/defaults.ini
 
+## For macOS:
+/usr/local/etc/grafana/grafana.ini
+
 ## For Windows:
 C:\Program Files\GrafanaLabs\grafana\conf\defaults.ini
 ```
@@ -348,6 +351,9 @@ Here are the steps to install Grafana and our Data Source for The Things Network
     ## For Linux:
     /usr/share/grafana/conf/defaults.ini
 
+    ## For macOS:
+    /usr/local/etc/grafana/grafana.ini
+
     ## For Windows:
     C:\Program Files\GrafanaLabs\grafana\conf\defaults.ini
     ```
@@ -403,7 +409,9 @@ To install the tools for building our Grafana Data Source on macOS...
 
 1.  Install __Yarn__...
 
-    [__`yarnpkg.com`__](https://yarnpkg.com)
+    ```bash
+    npm install -g yarn
+    ```
 
 1.  Install __Go__...
 
@@ -412,17 +420,19 @@ To install the tools for building our Grafana Data Source on macOS...
 1.  Install __Mage__...
 
     ```bash
-    $ go get -u -d github.com/magefile/mage
+    go get -u -d github.com/magefile/mage
 
-    $ pushd $GOPATH/src/github.com/magefile/mage
+    pushd $GOPATH/src/github.com/magefile/mage
 
-    $ go run bootstrap.go
+    go run bootstrap.go
 
-    $ mage -version
-    Mage Build Tool v1.11.0-2-g4cf3cfc
-    Build Date: 2021-08-03T11:57:28-07:00
-    Commit: 4cf3cfc
-    built with: go1.13.8
+    mage -version
 
-    $ popd
+    ## Shows:
+    ## Mage Build Tool v1.11.0-2-g4cf3cfc
+    ## Build Date: 2021-08-03T11:57:28-07:00
+    ## Commit: 4cf3cfc
+    ## built with: go1.13.8
+
+    popd
     ```
