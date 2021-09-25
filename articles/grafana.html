@@ -78,7 +78,8 @@
 <li><a href="#appendix-install-grafana-and-data-source">10 Appendix: Install Grafana and Data Source</a><ul>
 <li><a href="#install-grafana">10.1 Install Grafana</a><ul></ul></li>
 <li><a href="#build-data-source">10.2 Build Data Source</a><ul></ul></li>
-<li><a href="#enable-data-source">10.3 Enable Data Source</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>30 Sep 2021</em></p>
+<li><a href="#enable-data-source">10.3 Enable Data Source</a><ul></ul></li></ul></li>
+<li><a href="#appendix-install-build-tools-for-macos">11 Appendix: Install Build Tools for macOS</a><ul></ul></li></ul></nav><p>📝 <em>30 Sep 2021</em></p>
 <p><a href="https://lupyuen.github.io/articles/ttn"><strong>The Things Network</strong></a> is a public global <strong>wireless network for IoT devices</strong>…</p>
 <p>(And it’s free for fair use!)</p>
 <p><a href="https://grafana.com/oss/grafana/"><strong>Grafana</strong></a> is a open source tool for <strong>visualising all kinds of real-time data</strong>…</p>
@@ -262,10 +263,13 @@ C:\Program Files\GrafanaLabs\grafana\data\log\grafana.log</pre></div>
 <p>Follow the instructions to download and install Grafana</p>
 </li>
 <li>
-<p>For Linux: Start the Grafana Server</p>
+<p>For Linux and macOS: Start the Grafana Server</p>
 <div class="example-wrap"><pre class="language-bash"># For Ubuntu and WSL
 sudo service grafana-server restart
-sudo service grafana-server status</pre></div></li>
+sudo service grafana-server status
+
+# For macOS
+brew services start grafana</pre></div></li>
 <li>
 <p>To test Grafana, browse to </p>
 <p><strong><code>http://localhost:3000</code></strong></p>
@@ -349,6 +353,29 @@ net start grafana</pre></div></li>
 C:\Program Files\GrafanaLabs\grafana\data\log\grafana.log</pre></div>
 <p><a href="https://github.com/lupyuen/the-things-network-datasource#grafana-log">(See sample Grafana Log)</a></p>
 </li>
+</ol>
+<h1 id="appendix-install-build-tools-for-macos" class="section-header"><a href="#appendix-install-build-tools-for-macos">11 Appendix: Install Build Tools for macOS</a></h1>
+<p>TODO</p>
+<ol>
+<li>
+<p>Install <strong>Node v14</strong> or later…</p>
+</li>
+<li>
+<p>Install <strong>Yarn</strong>…</p>
+</li>
+<li>
+<p>Install <strong>Go</strong>…</p>
+</li>
+<li>
+<p>Install <strong>Mage</strong>…</p>
+<div class="example-wrap"><pre class="language-bash">$ go get -u -d github.com/magefile/mage
+$ cd $GOPATH/src/github.com/magefile/mage
+$ go run bootstrap.go
+$ mage -version
+Mage Build Tool v1.11.0-2-g4cf3cfc
+Build Date: 2021-08-03T11:57:28-07:00
+Commit: 4cf3cfc
+built with: go1.13.8</pre></div></li>
 </ol>
 
     
