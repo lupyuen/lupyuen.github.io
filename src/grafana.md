@@ -327,6 +327,19 @@ Here are the steps to install Grafana and our Data Source for The Things Network
 
 1.  __Restart the Grafana Service__ for the Data Source to load
 
+    ```bash
+    ## For Ubuntu and WSL:
+    sudo service grafana-server restart
+    sudo service grafana-server status
+
+    ## For macOS:
+    brew services restart grafana
+
+    ## For Windows: Run this as Administrator
+    net stop grafana
+    net start grafana
+    ```
+
 ## Enable Data Source
 
 1.  Edit the __Grafana Configuration File__...
@@ -359,6 +372,9 @@ Here are the steps to install Grafana and our Data Source for The Things Network
     ## For Ubuntu and WSL:
     sudo service grafana-server restart
     sudo service grafana-server status
+
+    ## For macOS:
+    brew services restart grafana
 
     ## For Windows: Run this as Administrator
     net stop grafana
@@ -398,7 +414,7 @@ To install the tools for building our Grafana Data Source on macOS...
     ```bash
     $ go get -u -d github.com/magefile/mage
 
-    $ cd $GOPATH/src/github.com/magefile/mage
+    $ pushd $GOPATH/src/github.com/magefile/mage
 
     $ go run bootstrap.go
 
@@ -407,4 +423,6 @@ To install the tools for building our Grafana Data Source on macOS...
     Build Date: 2021-08-03T11:57:28-07:00
     Commit: 4cf3cfc
     built with: go1.13.8
+
+    $ popd
     ```
