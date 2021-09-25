@@ -302,7 +302,9 @@ Here are the steps to install Grafana and our Data Source for The Things Network
 
 1.  Install the __Build Tools__...
 
-    [__Build Tools for Ubuntu__](https://github.com/grafana/mqtt-datasource/issues/15#issuecomment-894477802)
+    [__Build Tools for Linux (Ubuntu)__](https://github.com/grafana/mqtt-datasource/issues/15#issuecomment-894477802)
+
+    [__Build Tools for macOS](https://lupyuen.github.io/articles/grafana#appendix-install-build-tools-for-macos)
 
     [__Build Tools for Windows__](https://github.com/grafana/mqtt-datasource/issues/15#issuecomment-894534196)
 
@@ -377,26 +379,29 @@ Here are the steps to install Grafana and our Data Source for The Things Network
 
 # Appendix: Install Build Tools for macOS
 
-TODO
+To install the tools for building our Grafana Data Source on macOS...
 
 1.  Install __Node.js v14__ or later...
 
-https://nodejs.org
+    [__`nodejs.org`__](https://nodejs.org)
 
 1.  Install __Yarn__...
 
-https://yarnpkg.com
+    [__`yarnpkg.com`__](https://yarnpkg.com)
 
 1.  Install __Go__...
 
-https://golang.org
+    [__`golang.org`__](https://golang.org)
 
 1.  Install __Mage__...
 
     ```bash
     $ go get -u -d github.com/magefile/mage
+
     $ cd $GOPATH/src/github.com/magefile/mage
+
     $ go run bootstrap.go
+
     $ mage -version
     Mage Build Tool v1.11.0-2-g4cf3cfc
     Build Date: 2021-08-03T11:57:28-07:00
