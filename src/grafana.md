@@ -328,6 +328,9 @@ Here are the steps to install Grafana and our Data Source for The Things Network
 
     ##  Build the Data Source (React + Go)
     yarn build
+
+    ##  If "mage" is not found, set the PATH
+    export PATH=$PATH:$GOPATH/bin
     ```
 
     [(See the Build Log)](https://github.com/lupyuen/the-things-network-datasource#build-log)
@@ -430,18 +433,9 @@ To install the tools for building our Grafana Data Source on macOS...
 
     ```bash
     go get -u -d github.com/magefile/mage
-
     pushd $GOPATH/src/github.com/magefile/mage
-
     go run bootstrap.go
-
+    export PATH=$PATH:$GOPATH/bin
     mage -version
-
-    ## Shows:
-    ## Mage Build Tool v1.11.0-2-g4cf3cfc
-    ## Build Date: 2021-08-03T11:57:28-07:00
-    ## Commit: 4cf3cfc
-    ## built with: go1.13.8
-
     popd
     ```
