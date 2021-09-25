@@ -118,29 +118,53 @@ We should see the message __"MQTT Connected"__...
 
 Let's __render the Sensor Data__ from The Things Network in Grafana!
 
-1.  Click __"Add Panel"__ (top right)
+Click __"Add Panel"__ (top right)
 
-    Click __"Add An Empty Panel"__
+Click __"Add An Empty Panel"__
 
-    ![Add Panel](https://lupyuen.github.io/images/grafana-dashboard3.png)
+![Add Panel](https://lupyuen.github.io/images/grafana-dashboard3.png)
 
-1.  Set the __Data Source__ to __"The Things Network"__
+Set the __Data Source__ to __"The Things Network"__
 
-    Set the __Topic__ to __"all"__
+Set the __Topic__ to __"all"__
 
-    ![Set Data Source and Topic](https://lupyuen.github.io/images/grafana-dashboard7.png)
+![Set Data Source and Topic](https://lupyuen.github.io/images/grafana-dashboard7.png)
 
-1.  Click __"Apply"__ (top right)
+Click __"Apply"__ (top right)
 
-    ![The Things Network Dashboard](https://lupyuen.github.io/images/grafana-dashboard6.png)
+Our Sensor Data appears on the Grafana Dashboard!
 
-1.  TODO: Table View
+![The Things Network Dashboard](https://lupyuen.github.io/images/grafana-dashboard6.png)
 
-    ![Table View](https://lupyuen.github.io/images/grafana-dashboard4.png)
+## View Raw Data
 
-1.  TODO: Filter
+To see the __Raw Sensor Data__ as a table...
 
-    ![Filter](https://lupyuen.github.io/images/grafana-dashboard8.png)
+Click __"Panel Title"__ and __"Edit"__
+
+Click __"Table View"__
+
+![Table View](https://lupyuen.github.io/images/grafana-dashboard4.png)
+
+## Filter Data
+
+To __filter the Sensor Data__ that will be rendered in the dashboard...
+
+Click the __"Transform"__ Tab
+
+Select __"Filter Data By Values"__
+
+Set the Conditions and click __"Apply"__
+
+![Filter Data](https://lupyuen.github.io/images/grafana-dashboard8.png)
+
+The above filter matches the __Device ID__ with the Regular Expression...
+
+```text
+eui-70b3.*
+```
+
+Which means that only Device IDs starting with __"eui-70"__ will be rendered.
 
 # CBOR: Concise Binary Object Representation
 
