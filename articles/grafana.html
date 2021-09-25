@@ -206,6 +206,9 @@ mosquitto_sub -h au1.cloud.thethings.network -t &quot;#&quot; -u &quot;luppy-app
 <div class="example-wrap"><pre class="language-text"># For Linux:
 /usr/share/grafana/conf/defaults.ini
 
+# For macOS:
+/usr/local/etc/grafana/grafana.ini
+
 # For Windows:
 C:\Program Files\GrafanaLabs\grafana\conf\defaults.ini</pre></div>
 <p>And set…</p>
@@ -335,6 +338,9 @@ net start grafana</pre></div></li>
 <div class="example-wrap"><pre class="language-text"># For Linux:
 /usr/share/grafana/conf/defaults.ini
 
+# For macOS:
+/usr/local/etc/grafana/grafana.ini
+
 # For Windows:
 C:\Program Files\GrafanaLabs\grafana\conf\defaults.ini</pre></div></li>
 <li>
@@ -376,27 +382,28 @@ C:\Program Files\GrafanaLabs\grafana\data\log\grafana.log</pre></div>
 </li>
 <li>
 <p>Install <strong>Yarn</strong>…</p>
-<p><a href="https://yarnpkg.com"><strong><code>yarnpkg.com</code></strong></a></p>
-</li>
+<div class="example-wrap"><pre class="language-bash">npm install -g yarn</pre></div></li>
 <li>
 <p>Install <strong>Go</strong>…</p>
 <p><a href="https://golang.org"><strong><code>golang.org</code></strong></a></p>
 </li>
 <li>
 <p>Install <strong>Mage</strong>…</p>
-<div class="example-wrap"><pre class="language-bash">$ go get -u -d github.com/magefile/mage
+<div class="example-wrap"><pre class="language-bash">go get -u -d github.com/magefile/mage
 
-$ pushd $GOPATH/src/github.com/magefile/mage
+pushd $GOPATH/src/github.com/magefile/mage
 
-$ go run bootstrap.go
+go run bootstrap.go
 
-$ mage -version
-Mage Build Tool v1.11.0-2-g4cf3cfc
-Build Date: 2021-08-03T11:57:28-07:00
-Commit: 4cf3cfc
-built with: go1.13.8
+mage -version
 
-$ popd</pre></div></li>
+# Shows:
+# Mage Build Tool v1.11.0-2-g4cf3cfc
+# Build Date: 2021-08-03T11:57:28-07:00
+# Commit: 4cf3cfc
+# built with: go1.13.8
+
+popd</pre></div></li>
 </ol>
 
     
