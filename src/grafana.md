@@ -313,7 +313,7 @@ Here are the steps to install Grafana and our Data Source for The Things Network
 
     [__Build Tools for Linux (Ubuntu)__](https://github.com/grafana/mqtt-datasource/issues/15#issuecomment-894477802)
 
-    [__Build Tools for macOS](https://lupyuen.github.io/articles/grafana#appendix-install-build-tools-for-macos)
+    [__Build Tools for macOS__](https://lupyuen.github.io/articles/grafana#appendix-install-build-tools-for-macos)
 
     [__Build Tools for Windows__](https://github.com/grafana/mqtt-datasource/issues/15#issuecomment-894534196)
 
