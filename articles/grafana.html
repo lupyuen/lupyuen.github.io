@@ -218,6 +218,9 @@ level = debug</pre></div>
 <div class="example-wrap"><pre class="language-text"># For Linux:
 /var/log/grafana/grafana.log
 
+# For macOS:
+/usr/local/var/log/grafana/grafana.log
+
 # For Windows:
 C:\Program Files\GrafanaLabs\grafana\data\log\grafana.log</pre></div>
 <p><a href="https://github.com/lupyuen/the-things-network-datasource#grafana-log">(See sample Grafana Log)</a></p>
@@ -293,6 +296,9 @@ brew services start grafana</pre></div></li>
 <div class="example-wrap"><pre class="language-bash">#  For Linux: Need &quot;sudo&quot; to access this folder
 cd /var/lib/grafana/plugins
 
+#  For macOS: 
+cd /usr/local/var/lib/grafana/plugins
+
 #  For Windows: Need to grant &quot;Full Control&quot; permission to &quot;Users&quot; group for this folder
 cd C:\Program Files\GrafanaLabs\grafana\data\plugins
 
@@ -367,6 +373,9 @@ net start grafana</pre></div></li>
 <p>In case of problems, check the <strong>Grafana Log</strong> at…</p>
 <div class="example-wrap"><pre class="language-text"># For Linux:
 /var/log/grafana/grafana.log
+
+# For macOS:
+/usr/local/var/log/grafana/grafana.log
 
 # For Windows:
 C:\Program Files\GrafanaLabs\grafana\data\log\grafana.log</pre></div>
