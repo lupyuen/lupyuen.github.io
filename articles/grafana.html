@@ -297,7 +297,8 @@ cd C:\Program Files\GrafanaLabs\grafana\data\plugins
 git clone --recursive https://github.com/lupyuen/the-things-network-datasource</pre></div></li>
 <li>
 <p>Install the <strong>Build Tools</strong>…</p>
-<p><a href="https://github.com/grafana/mqtt-datasource/issues/15#issuecomment-894477802"><strong>Build Tools for Ubuntu</strong></a></p>
+<p><a href="https://github.com/grafana/mqtt-datasource/issues/15#issuecomment-894477802"><strong>Build Tools for Linux (Ubuntu)</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/grafana#appendix-install-build-tools-for-macos">__Build Tools for macOS</a></p>
 <p><a href="https://github.com/grafana/mqtt-datasource/issues/15#issuecomment-894534196"><strong>Build Tools for Windows</strong></a></p>
 <p><a href="https://grafana.com/tutorials/build-a-streaming-data-source-plugin/">(More details here)</a></p>
 </li>
@@ -355,25 +356,28 @@ C:\Program Files\GrafanaLabs\grafana\data\log\grafana.log</pre></div>
 </li>
 </ol>
 <h1 id="appendix-install-build-tools-for-macos" class="section-header"><a href="#appendix-install-build-tools-for-macos">11 Appendix: Install Build Tools for macOS</a></h1>
-<p>TODO</p>
+<p>To install the tools for building our Grafana Data Source on macOS…</p>
 <ol>
-<li>Install <strong>Node.js v14</strong> or later…</li>
-</ol>
-<p>https://nodejs.org</p>
-<ol>
-<li>Install <strong>Yarn</strong>…</li>
-</ol>
-<p>https://yarnpkg.com</p>
-<ol>
-<li>Install <strong>Go</strong>…</li>
-</ol>
-<p>https://golang.org</p>
-<ol>
+<li>
+<p>Install <strong>Node.js v14</strong> or later…</p>
+<p><a href="https://nodejs.org"><strong><code>nodejs.org</code></strong></a></p>
+</li>
+<li>
+<p>Install <strong>Yarn</strong>…</p>
+<p><a href="https://yarnpkg.com"><strong><code>yarnpkg.com</code></strong></a></p>
+</li>
+<li>
+<p>Install <strong>Go</strong>…</p>
+<p><a href="https://golang.org"><strong><code>golang.org</code></strong></a></p>
+</li>
 <li>
 <p>Install <strong>Mage</strong>…</p>
 <div class="example-wrap"><pre class="language-bash">$ go get -u -d github.com/magefile/mage
+
 $ cd $GOPATH/src/github.com/magefile/mage
+
 $ go run bootstrap.go
+
 $ mage -version
 Mage Build Tool v1.11.0-2-g4cf3cfc
 Build Date: 2021-08-03T11:57:28-07:00
