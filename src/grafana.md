@@ -206,6 +206,9 @@ In case of problems, check the __Grafana Log__ at...
 ## For Linux:
 /var/log/grafana/grafana.log
 
+## For macOS:
+/usr/local/var/log/grafana/grafana.log
+
 ## For Windows:
 C:\Program Files\GrafanaLabs\grafana\data\log\grafana.log
 ```
@@ -295,6 +298,9 @@ Here are the steps to install Grafana and our Data Source for The Things Network
     ```bash
     ##  For Linux: Need "sudo" to access this folder
     cd /var/lib/grafana/plugins
+
+    ##  For macOS: 
+    cd /usr/local/var/lib/grafana/plugins
 
     ##  For Windows: Need to grant "Full Control" permission to "Users" group for this folder
     cd C:\Program Files\GrafanaLabs\grafana\data\plugins
@@ -392,6 +398,9 @@ Here are the steps to install Grafana and our Data Source for The Things Network
     ```text
     ## For Linux:
     /var/log/grafana/grafana.log
+
+    ## For macOS:
+    /usr/local/var/log/grafana/grafana.log
 
     ## For Windows:
     C:\Program Files\GrafanaLabs\grafana\data\log\grafana.log
