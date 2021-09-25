@@ -379,11 +379,17 @@ Here are the steps to install Grafana and our Data Source for The Things Network
 
 TODO
 
-1.  Install __Node v14__ or later...
+1.  Install __Node.js v14__ or later...
+
+https://nodejs.org
 
 1.  Install __Yarn__...
 
+https://yarnpkg.com
+
 1.  Install __Go__...
+
+https://golang.org
 
 1.  Install __Mage__...
 
