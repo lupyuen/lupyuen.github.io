@@ -124,17 +124,23 @@ TODO
 
     ![Add Panel](https://lupyuen.github.io/images/grafana-dashboard3.png)
 
-Only one topic is supported: "`all`"
+1.  Set the __Data Source__ to __"The Things Network"__
 
-![](https://lupyuen.github.io/images/grafana-datasource3.png)
+    Set the __Topic__ to __"all"__
 
-TODO
+    ![Set Data Source and Topic](https://lupyuen.github.io/images/grafana-dashboard7.png)
 
-![](https://lupyuen.github.io/images/grafana-dashboard2.png)
+1.  Click __"Apply"__ (top right)
 
-TODO
+    ![The Things Network Dashboard](https://lupyuen.github.io/images/grafana-dashboard6.png)
 
-![](https://lupyuen.github.io/images/grafana-filter.png)
+1.  TODO
+
+    ![Table View](https://lupyuen.github.io/images/grafana-dashboard4.png)
+
+1.  TODO
+
+    ![Filter](https://lupyuen.github.io/images/grafana-dashboard8.png)
 
 # CBOR: Concise Binary Object Representation
 
