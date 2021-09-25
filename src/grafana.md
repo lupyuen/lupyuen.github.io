@@ -164,7 +164,7 @@ The above filter matches the __Device ID__ with the Regular Expression...
 eui-70b3.*
 ```
 
-Which means that only Device IDs starting with __"eui-70"__ will be rendered.
+Which means that only Device IDs starting with __"eui-70b3"__ will be rendered.
 
 # CBOR: Concise Binary Object Representation
 
