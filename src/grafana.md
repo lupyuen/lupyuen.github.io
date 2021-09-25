@@ -255,12 +255,15 @@ Here are the steps to install Grafana and our Data Source for The Things Network
 
 1.  Follow the instructions to download and install Grafana
 
-1.  For Linux: Start the Grafana Server
+1.  For Linux and macOS: Start the Grafana Server
 
     ```bash
     ## For Ubuntu and WSL
     sudo service grafana-server restart
     sudo service grafana-server status
+
+    ## For macOS
+    brew services start grafana
     ```
 
 1.  To test Grafana, browse to 
@@ -371,3 +374,26 @@ Here are the steps to install Grafana and our Data Source for The Things Network
     ```
 
     [(See sample Grafana Log)](https://github.com/lupyuen/the-things-network-datasource#grafana-log)
+
+# Appendix: Install Build Tools for macOS
+
+TODO
+
+1.  Install __Node v14__ or later...
+
+1.  Install __Yarn__...
+
+1.  Install __Go__...
+
+1.  Install __Mage__...
+
+    ```bash
+    $ go get -u -d github.com/magefile/mage
+    $ cd $GOPATH/src/github.com/magefile/mage
+    $ go run bootstrap.go
+    $ mage -version
+    Mage Build Tool v1.11.0-2-g4cf3cfc
+    Build Date: 2021-08-03T11:57:28-07:00
+    Commit: 4cf3cfc
+    built with: go1.13.8
+    ```
