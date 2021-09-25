@@ -317,7 +317,16 @@ yarn build</pre></div>
 </li>
 <li>
 <p><strong>Restart the Grafana Service</strong> for the Data Source to load</p>
-</li>
+<div class="example-wrap"><pre class="language-bash"># For Ubuntu and WSL:
+sudo service grafana-server restart
+sudo service grafana-server status
+
+# For macOS:
+brew services restart grafana
+
+# For Windows: Run this as Administrator
+net stop grafana
+net start grafana</pre></div></li>
 </ol>
 <h2 id="enable-data-source" class="section-header"><a href="#enable-data-source">10.3 Enable Data Source</a></h2>
 <ol>
@@ -341,6 +350,9 @@ level = debug</pre></div></li>
 <div class="example-wrap"><pre class="language-bash"># For Ubuntu and WSL:
 sudo service grafana-server restart
 sudo service grafana-server status
+
+# For macOS:
+brew services restart grafana
 
 # For Windows: Run this as Administrator
 net stop grafana
@@ -374,7 +386,7 @@ C:\Program Files\GrafanaLabs\grafana\data\log\grafana.log</pre></div>
 <p>Install <strong>Mage</strong>…</p>
 <div class="example-wrap"><pre class="language-bash">$ go get -u -d github.com/magefile/mage
 
-$ cd $GOPATH/src/github.com/magefile/mage
+$ pushd $GOPATH/src/github.com/magefile/mage
 
 $ go run bootstrap.go
 
@@ -382,7 +394,9 @@ $ mage -version
 Mage Build Tool v1.11.0-2-g4cf3cfc
 Build Date: 2021-08-03T11:57:28-07:00
 Commit: 4cf3cfc
-built with: go1.13.8</pre></div></li>
+built with: go1.13.8
+
+$ popd</pre></div></li>
 </ol>
 
     
