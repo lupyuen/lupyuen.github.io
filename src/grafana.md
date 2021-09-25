@@ -116,7 +116,7 @@ We should see the message __"MQTT Connected"__...
 
 # Grafana Dashboard
 
-TODO
+Let's __render the Sensor Data__ from The Things Network in Grafana!
 
 1.  Click __"Add Panel"__ (top right)
 
@@ -134,11 +134,11 @@ TODO
 
     ![The Things Network Dashboard](https://lupyuen.github.io/images/grafana-dashboard6.png)
 
-1.  TODO
+1.  TODO: Table View
 
     ![Table View](https://lupyuen.github.io/images/grafana-dashboard4.png)
 
-1.  TODO
+1.  TODO: Filter
 
     ![Filter](https://lupyuen.github.io/images/grafana-dashboard8.png)
 
