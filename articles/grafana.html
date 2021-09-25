@@ -68,7 +68,9 @@
 <li><a href="#configure-the-things-network-mqtt">1 Configure The Things Network MQTT</a><ul>
 <li><a href="#test-the-things-network-mqtt">1.1 Test The Things Network MQTT</a><ul></ul></li></ul></li>
 <li><a href="#configure-grafana-data-source">2 Configure Grafana Data Source</a><ul></ul></li>
-<li><a href="#grafana-dashboard">3 Grafana Dashboard</a><ul></ul></li>
+<li><a href="#grafana-dashboard">3 Grafana Dashboard</a><ul>
+<li><a href="#view-raw-data">3.1 View Raw Data</a><ul></ul></li>
+<li><a href="#filter-data">3.2 Filter Data</a><ul></ul></li></ul></li>
 <li><a href="#cbor-concise-binary-object-representation">4 CBOR: Concise Binary Object Representation</a><ul></ul></li>
 <li><a href="#transform-mqtt-messages">5 Transform MQTT Messages</a><ul></ul></li>
 <li><a href="#troubleshooting">6 Troubleshooting</a><ul></ul></li>
@@ -168,30 +170,29 @@ mosquitto_sub -h au1.cloud.thethings.network -t &quot;#&quot; -u &quot;luppy-app
 <p><img src="https://lupyuen.github.io/images/grafana-config2.png" alt="MQTT Connected" /></p>
 <h1 id="grafana-dashboard" class="section-header"><a href="#grafana-dashboard">3 Grafana Dashboard</a></h1>
 <p>Let’s <strong>render the Sensor Data</strong> from The Things Network in Grafana!</p>
-<ol>
-<li>
 <p>Click <strong>“Add Panel”</strong> (top right)</p>
 <p>Click <strong>“Add An Empty Panel”</strong></p>
 <p><img src="https://lupyuen.github.io/images/grafana-dashboard3.png" alt="Add Panel" /></p>
-</li>
-<li>
 <p>Set the <strong>Data Source</strong> to <strong>“The Things Network”</strong></p>
 <p>Set the <strong>Topic</strong> to <strong>“all”</strong></p>
 <p><img src="https://lupyuen.github.io/images/grafana-dashboard7.png" alt="Set Data Source and Topic" /></p>
-</li>
-<li>
 <p>Click <strong>“Apply”</strong> (top right)</p>
+<p>Our Sensor Data appears on the Grafana Dashboard!</p>
 <p><img src="https://lupyuen.github.io/images/grafana-dashboard6.png" alt="The Things Network Dashboard" /></p>
-</li>
-<li>
-<p>TODO: Table View</p>
+<h2 id="view-raw-data" class="section-header"><a href="#view-raw-data">3.1 View Raw Data</a></h2>
+<p>To see the <strong>Raw Sensor Data</strong> as a table…</p>
+<p>Click <strong>“Panel Title”</strong> and <strong>“Edit”</strong></p>
+<p>Click <strong>“Table View”</strong></p>
 <p><img src="https://lupyuen.github.io/images/grafana-dashboard4.png" alt="Table View" /></p>
-</li>
-<li>
-<p>TODO: Filter</p>
-<p><img src="https://lupyuen.github.io/images/grafana-dashboard8.png" alt="Filter" /></p>
-</li>
-</ol>
+<h2 id="filter-data" class="section-header"><a href="#filter-data">3.2 Filter Data</a></h2>
+<p>To <strong>filter the Sensor Data</strong> that will be rendered in the dashboard…</p>
+<p>Click the <strong>“Transform”</strong> Tab</p>
+<p>Select <strong>“Filter Data By Values”</strong></p>
+<p>Set the Conditions and click <strong>“Apply”</strong></p>
+<p><img src="https://lupyuen.github.io/images/grafana-dashboard8.png" alt="Filter Data" /></p>
+<p>The above filter matches the <strong>Device ID</strong> with the Regular Expression…</p>
+<div class="example-wrap"><pre class="language-text">eui-70b3.*</pre></div>
+<p>Which means that only Device IDs starting with <strong>“eui-70”</strong> will be rendered.</p>
 <h1 id="cbor-concise-binary-object-representation" class="section-header"><a href="#cbor-concise-binary-object-representation">4 CBOR: Concise Binary Object Representation</a></h1>
 <p>TODO</p>
 <p>We assume that Message Payloads are encoded in <a href="https://en.wikipedia.org/wiki/CBOR"><strong>CBOR Format</strong></a>…</p>
