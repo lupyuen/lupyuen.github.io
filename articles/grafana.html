@@ -318,7 +318,10 @@ cd the-things-network-datasource
 yarn install
 
 #  Build the Data Source (React + Go)
-yarn build</pre></div>
+yarn build
+
+#  If &quot;mage&quot; is not found, set the PATH
+export PATH=$PATH:$GOPATH/bin</pre></div>
 <p><a href="https://github.com/lupyuen/the-things-network-datasource#build-log">(See the Build Log)</a></p>
 </li>
 <li>
@@ -399,19 +402,10 @@ C:\Program Files\GrafanaLabs\grafana\data\log\grafana.log</pre></div>
 <li>
 <p>Install <strong>Mage</strong>…</p>
 <div class="example-wrap"><pre class="language-bash">go get -u -d github.com/magefile/mage
-
 pushd $GOPATH/src/github.com/magefile/mage
-
 go run bootstrap.go
-
+export PATH=$PATH:$GOPATH/bin
 mage -version
-
-# Shows:
-# Mage Build Tool v1.11.0-2-g4cf3cfc
-# Build Date: 2021-08-03T11:57:28-07:00
-# Commit: 4cf3cfc
-# built with: go1.13.8
-
 popd</pre></div></li>
 </ol>
 
