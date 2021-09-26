@@ -227,18 +227,16 @@ if err == nil {
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/grafana-payload.jpg" alt="" /></p>
 <h1 id="mqtt-integration" class="section-header"><a href="#mqtt-integration">5 MQTT Integration</a></h1>
-<p>TODO</p>
+<p>Let’s look at the <strong>Go Source Code</strong> for our Data Source…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/the-things-network-datasource"><strong>lupyuen/the-things-network-datasource</strong></a></li>
 </ul>
-<p>Our Data Source is based on the MQTT Data Source for Grafana…</p>
+<p>Our Data Source is based on the <strong>MQTT Data Source for Grafana</strong>…</p>
 <ul>
 <li><a href="https://github.com/grafana/mqtt-datasource"><strong>grafana/mqtt-datasource</strong></a></li>
 </ul>
-<p>TODO</p>
 <h2 id="subscribe-to-mqtt" class="section-header"><a href="#subscribe-to-mqtt">5.1 Subscribe to MQTT</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/mqtt/client.go#L150-L165">pkg/mqtt/client.go</a></p>
+<p>Here’s how our Data Source <strong>subscribes to MQTT Topics</strong>: <a href="https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/mqtt/client.go#L150-L165">pkg/mqtt/client.go</a></p>
 <div class="example-wrap"><pre class="language-go"><code>//  Name of our default topic
 //  TODO: Support other topics
 const defaultTopicName = &quot;all&quot;
@@ -247,8 +245,10 @@ const defaultTopicName = &quot;all&quot;
 //  TODO: Support other topics
 const defaultTopicMQTT = &quot;#&quot;
 
+//  Subscribe to the topic.
+//  We assume that the Topic Name is &quot;all&quot;.
 func (c *Client) Subscribe(t string) {
-  //  If topic already exists, quit
+  //  If Topic Name already exists, quit
   if _, ok := c.topics.Load(t); ok {
     return
   }
@@ -259,14 +259,29 @@ func (c *Client) Subscribe(t string) {
   }
   c.topics.Store(&amp;topic)
 
-  //  Subscribe to all topics: &quot;#&quot;. TODO: Support other topics.
+  //  Subscribe to all MQTT Topics: &quot;#&quot;. TODO: Support other topics.
   //  Previously: c.client.Subscribe(t, 0, c.HandleMessage)
   c.client.Subscribe(defaultTopicMQTT, 0, c.HandleMessage)
-}</code></pre></div><h2 id="receive-mqtt-messages" class="section-header"><a href="#receive-mqtt-messages">5.2 Receive MQTT Messages</a></h2>
+}</code></pre></div>
+<p>Sorry this code looks wonky…</p>
+<p>(Because I haven’t decided which topics we should support)</p>
+<ol>
+<li>
+<p>We subscribe to <strong>all MQTT Topics</strong>: “#”</p>
+<p>This means we will receive MQTT Messages for <strong>all our devices</strong>.</p>
+<p>Also we will receive <strong>all types of messages</strong>, including the “Join Network” messages.</p>
+</li>
+<li>
+<p>However “#” is <strong>not a valid Topic Name</strong> in our Grafana Data Source.  (Not sure why it fails)</p>
+<p>Hence we use <strong>“all”</strong> as the substitute Topic Name for the “#” MQTT Topic.</p>
+</li>
+</ol>
+<h2 id="receive-mqtt-messages" class="section-header"><a href="#receive-mqtt-messages">5.2 Receive MQTT Messages</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/mqtt/client.go#L96-L148">pkg/mqtt/client.go</a></p>
-<div class="example-wrap"><pre class="language-go"><code>func (c *Client) HandleMessage(_ paho.Client, msg paho.Message) {
-  //  Accept all topics as &quot;all&quot;. TODO: Support other topics.
+<div class="example-wrap"><pre class="language-go"><code>//  Handle incoming MQTT messages
+func (c *Client) HandleMessage(_ paho.Client, msg paho.Message) {
+  //  Assume that the topic is &quot;all&quot;. TODO: Support other topics.
   //  Previously: topic, ok := c.topics.Load(msg.Topic())
   topic, ok := c.topics.Load(defaultTopicName)
   if !ok {  //  Topic not found, quit
@@ -294,10 +309,10 @@ func (c *Client) Subscribe(t string) {
     return
   }
 
-  // store message for query
+  //  Store message for query
   topic.messages = append(topic.messages, message)
 
-  // limit the size of the retained messages
+  //  Limit the size of the retained messages
   if len(topic.messages) &gt; 1000 {
     topic.messages = topic.messages[1:]
   }
@@ -310,7 +325,7 @@ func (c *Client) Subscribe(t string) {
   select {
   case c.stream &lt;- streamMessage:
   default:
-    // don&#39;t block if nothing is reading from the channel
+    //  Don&#39;t block if nothing is reading from the channel
   }
 }</code></pre></div><h1 id="transform-mqtt-messages" class="section-header"><a href="#transform-mqtt-messages">6 Transform MQTT Messages</a></h1>
 <p>TODO</p>
