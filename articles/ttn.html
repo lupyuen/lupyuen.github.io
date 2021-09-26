@@ -145,7 +145,7 @@
 <li>
 <p><strong>Gateway EUI</strong> (Extended Unique Identifier) comes from our LoRaWAN Gateway.</p>
 <p>On our RAKwireless Gateway, run this command to get the EUI…</p>
-<div class="example-wrap"><pre class="language-bash">gateway-version</pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>gateway-version</code></pre></div></li>
 <li>
 <p><strong>Frequency Plan</strong>: See this…</p>
 <p><a href="https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html"><strong>“Frequency Plans by Country”</strong></a></p>
@@ -171,7 +171,7 @@
 </li>
 <li>
 <p>On our RAKwireless Gateway, run this…</p>
-<div class="example-wrap"><pre class="language-bash">sudo gateway-config</pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>sudo gateway-config</code></pre></div></li>
 <li>
 <p>Select <strong>“Edit Packet Forwarder Config”</strong></p>
 </li>
@@ -181,23 +181,23 @@
 </li>
 <li>
 <p>Replace these values from the Downloaded <strong><code>global_conf.json</code></strong>…</p>
-<div class="example-wrap"><pre class="language-json">&quot;gateway_conf&quot;: {
+<div class="example-wrap"><pre class="language-json"><code>&quot;gateway_conf&quot;: {
   &quot;gateway_ID&quot;:     ...,
   &quot;server_address&quot;: ...,
   &quot;serv_port_up&quot;:   ...,
-  &quot;serv_port_down&quot;: ...,</pre></div></li>
+  &quot;serv_port_down&quot;: ...,</code></pre></div></li>
 <li>
 <p>Scroll down and look for the end of the <strong><code>gateway_conf</code></strong> section (just after <strong><code>beacon_power</code></strong>)…</p>
 <p><img src="https://lupyuen.github.io/images/ttn-gateway3.png" alt="Edit Packet Forwarder Config" /></p>
 </li>
 <li>
 <p>Insert the entire <strong><code>servers</code></strong> section from the Downloaded <strong><code>global_conf.json</code></strong>…</p>
-<div class="example-wrap"><pre class="language-json">&quot;servers&quot;: [ {
+<div class="example-wrap"><pre class="language-json"><code>&quot;servers&quot;: [ {
   &quot;gateway_ID&quot;:     ...,
   &quot;server_address&quot;: ...,
   &quot;serv_port_up&quot;:   ...,
   &quot;serv_port_down&quot;: ...,
-} ]</pre></div>
+} ]</code></pre></div>
 <p>(Check the trailing commas!)</p>
 </li>
 <li>
@@ -297,7 +297,7 @@
 </li>
 <li>
 <p>In the <code>customer_app/sdk_app_lorawan</code> folder, edit <a href="https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/sdk_app_lorawan/Makefile"><code>Makefile</code></a> and find this setting…</p>
-<div class="example-wrap"><pre class="language-text">CFLAGS += -DCONFIG_LORA_NODE_REGION=1</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>CFLAGS += -DCONFIG_LORA_NODE_REGION=1</code></pre></div>
 <p>Change “<code>1</code>” to your LoRa Region…</p>
 <table><thead><tr><th align="left">Value</th><th align="left">Region</th></tr></thead><tbody>
 <tr><td align="left">0</td><td align="left">No region</td></tr>
@@ -347,39 +347,39 @@
 <p><img src="https://lupyuen.github.io/images/ttn-device2.png" alt="Device Overview" /></p>
 <p>Click the icons shown above to <strong>reveal, format and copy</strong> the values.</p>
 <p>Note that the copied values are formatted as…</p>
-<div class="example-wrap"><pre class="language-text">0xAB, 0xBA, 0xDA, 0xBA, ...</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>0xAB, 0xBA, 0xDA, 0xBA, ...</code></pre></div>
 <p>Later we shall convert the comma-delimited values to <strong>colon-separated</strong> values…</p>
-<div class="example-wrap"><pre class="language-text">0xAB:0xBA:0xDA:0xBA:...</pre></div><h2 id="join-commands" class="section-header"><a href="#join-commands">4.1 Join Commands</a></h2>
+<div class="example-wrap"><pre class="language-text">0xAB:0xBA:0xDA:0xBA:...</code></pre></div><h2 id="join-commands" class="section-header"><a href="#join-commands"><code>4.1 Join Commands</a></h2>
 <p>Head over to the <strong>Serial Terminal</strong> for PineDio Stack.</p>
 <p>At the PineDio Stack Command Prompt, enter these commands to <strong>join PineDio Stack to The Things Network</strong>…</p>
 <ol>
 <li>
 <p>First we start the <strong>Background Task</strong> that will handle LoRa packets…</p>
-<div class="example-wrap"><pre class="language-bash">create_task</pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>create_task</code></pre></div></li>
 <li>
 <p>Next we initialise the <strong>LoRa SX1262 and LoRaWAN Drivers</strong>…</p>
-<div class="example-wrap"><pre class="language-bash">init_lorawan</pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>init_lorawan</code></pre></div></li>
 <li>
 <p>Set the <strong>DevEUI</strong>…</p>
-<div class="example-wrap"><pre class="language-bash">las_wr_dev_eui 0xAB:0xBA:0xDA:0xBA:0xAB:0xBA:0xDA:0xBA</pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>las_wr_dev_eui 0xAB:0xBA:0xDA:0xBA:0xAB:0xBA:0xDA:0xBA</code></pre></div>
 <p>Change “<code>0xAB:0xBA:...</code>” to your <strong>DevEUI</strong></p>
 <p>(Remember to change the <strong>“<code>,</code>”</strong> delimiter to <strong>“<code>:</code>”</strong>)</p>
 </li>
 <li>
 <p>Set the <strong>JoinEUI</strong>…</p>
-<div class="example-wrap"><pre class="language-bash">las_wr_app_eui 0x00:0x00:0x00:0x00:0x00:0x00:0x00:0x00</pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>las_wr_app_eui 0x00:0x00:0x00:0x00:0x00:0x00:0x00:0x00</code></pre></div>
 <p>Change “<code>0x00:0x00:...</code>” to your <strong>JoinEUI</strong></p>
 <p>(Yep change the <strong>“<code>,</code>”</strong> delimiter to <strong>“<code>:</code>”</strong>)</p>
 </li>
 <li>
 <p>Set the <strong>AppKey</strong>…</p>
-<div class="example-wrap"><pre class="language-bash">las_wr_app_key 0xAB:0xBA:0xDA:0xBA:0xAB:0xBA:0xDA:0xBA0xAB:0xBA:0xDA:0xBA:0xAB:0xBA:0xDA:0xBA</pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>las_wr_app_key 0xAB:0xBA:0xDA:0xBA:0xAB:0xBA:0xDA:0xBA0xAB:0xBA:0xDA:0xBA:0xAB:0xBA:0xDA:0xBA</code></pre></div>
 <p>Change “<code>0xAB:0xBA:...</code>” to your <strong>AppKey</strong></p>
 <p>(Again change <strong>“<code>,</code>”</strong> to <strong>“<code>:</code>”</strong>)</p>
 </li>
 <li>
 <p>Finally we send a request to <strong>join The Things Network</strong>…</p>
-<div class="example-wrap"><pre class="language-bash">las_join 1</pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>las_join 1</code></pre></div>
 <p>(“<code>1</code>” means try only once)</p>
 </li>
 </ol>
@@ -396,12 +396,12 @@
 <ol>
 <li>
 <p>We open an <strong>Application Port</strong> that will connect to The Things Network…</p>
-<div class="example-wrap"><pre class="language-bash">las_app_port open 2</pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>las_app_port open 2</code></pre></div>
 <p>(“<code>2</code>” is the Application Port Number)</p>
 </li>
 <li>
 <p>Then we <strong>send a Data Packet</strong> containing 5 bytes of data (<code>0x00</code>) to The Things Network at Port 2…</p>
-<div class="example-wrap"><pre class="language-bash">las_app_tx 2 5 0</pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>las_app_tx 2 5 0</code></pre></div>
 <p>(“<code>0</code>” means that this is an Unconfirmed Message, we’re not expecting an acknowledgement from The Things Network)</p>
 </li>
 </ol>
@@ -465,7 +465,7 @@
 <p>Encode our message payload with <a href="https://en.wikipedia.org/wiki/CBOR"><strong>CBOR (Concise Binary Object Representation)</strong></a> instead of JSON.</p>
 <p>(CBOR works like a compressed, binary version of JSON)</p>
 <p>This JSON Payload occupies <strong>10 bytes</strong>…</p>
-<div class="example-wrap"><pre class="language-json">{ &quot;t&quot;: 1745 }</pre></div>
+<div class="example-wrap"><pre class="language-json"><code>{ &quot;t&quot;: 1745 }</code></pre></div>
 <p>While the CBOR version needs only <strong>6 bytes</strong>!</p>
 <p><a href="https://cbor.io/impls.html">(More about CBOR)</a></p>
 <p><em>Wow… Fair Use sounds complicated!</em></p>

@@ -138,7 +138,7 @@
 <li>
 <p>Copy the extracted xPack OpenOCD folder to the <code>pinecone-rust</code> folder</p>
 <p>Rename it as…</p>
-<div class="example-wrap"><pre class="language-text">pinecone-rust/xpack-openocd</pre></div></li>
+<div class="example-wrap"><pre class="language-text"><code>pinecone-rust/xpack-openocd</code></pre></div></li>
 </ol>
 <h2 id="install-rust" class="section-header"><a href="#install-rust">1.2 Install Rust</a></h2>
 <p>Install Rust with support for nightly target <code>riscv32imac-unknown-none-elf</code>…. </p>
@@ -149,13 +149,13 @@
 </li>
 <li>
 <p>Press Enter to select…</p>
-<div class="example-wrap"><pre class="language-text">1) Proceed with installation (default)</pre></div></li>
+<div class="example-wrap"><pre class="language-text"><code>1) Proceed with installation (default)</code></pre></div></li>
 <li>
 <p><strong>For Linux and macOS:</strong> Open a command prompt and enter…</p>
-<div class="example-wrap"><pre class="language-bash">source $HOME/.cargo/env
+<div class="example-wrap"><pre class="language-bash"><code>source $HOME/.cargo/env
 rustup update
 rustup default nightly
-rustup target add riscv32imac-unknown-none-elf</pre></div>
+rustup target add riscv32imac-unknown-none-elf</code></pre></div>
 <p><strong>For Windows:</strong> Enter the above commands in a Windows Command Prompt (not WSL Terminal). Omit the <code>source</code> line.</p>
 </li>
 </ol>
@@ -189,17 +189,17 @@ rustup target add riscv32imac-unknown-none-elf</pre></div>
 <li>
 <p>Copy the extracted xPack GCC RISC-V folder to the <code>pinecone-rust</code> folder.</p>
 <p>Rename the folder as…</p>
-<div class="example-wrap"><pre class="language-text">pinecone-rust/xpack-riscv-none-embed-gcc</pre></div></li>
+<div class="example-wrap"><pre class="language-text"><code>pinecone-rust/xpack-riscv-none-embed-gcc</code></pre></div></li>
 <li>
 <p>Create a symbolic link for the GDB executable, so that Rust can find it…</p>
 <p><strong>For Linux and macOS:</strong></p>
-<div class="example-wrap"><pre class="language-bash">cd pinecone-rust
-ln -s &quot;$PWD/xpack-riscv-none-embed-gcc/bin/riscv-none-embed-gdb&quot; &quot;$PWD/xpack-riscv-none-embed-gcc/bin/riscv64-unknown-elf-gdb&quot;</pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>cd pinecone-rust
+ln -s &quot;$PWD/xpack-riscv-none-embed-gcc/bin/riscv-none-embed-gdb&quot; &quot;$PWD/xpack-riscv-none-embed-gcc/bin/riscv64-unknown-elf-gdb&quot;</code></pre></div>
 <p><strong>For Windows:</strong></p>
 <ul>
 <li>
 <p>In File Explorer, open the folder…</p>
-<div class="example-wrap"><pre class="language-text">pinecone-rust\xpack-riscv-none-embed-gcc\bin</pre></div></li>
+<div class="example-wrap"><pre class="language-text"><code>pinecone-rust\xpack-riscv-none-embed-gcc\bin</code></pre></div></li>
 <li>
 <p>Copy and paste the file <code>riscv-none-embed-gdb.exe</code></p>
 </li>
@@ -208,7 +208,7 @@ ln -s &quot;$PWD/xpack-riscv-none-embed-gcc/bin/riscv-none-embed-gdb&quot; &quot
 </li>
 <li>
 <p>Go to Windows Settings and add to <code>PATH</code> the full pathname of the above folder, which will look like this…</p>
-<div class="example-wrap"><pre class="language-text">c:\pinecone-rust\xpack-riscv-none-embed-gcc\bin</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>c:\pinecone-rust\xpack-riscv-none-embed-gcc\bin</code></pre></div>
 <p>Change <code>c:\pinecone-rust</code> to the location of the <code>pinecone-rust</code> folder.</p>
 </li>
 </ul>
@@ -220,10 +220,10 @@ ln -s &quot;$PWD/xpack-riscv-none-embed-gcc/bin/riscv-none-embed-gdb&quot; &quot
 <p><a href="https://github.com/lupyuen/pinecone-rust/blob/main/README.md">Got problems? Check this doc</a></p>
 <h1 id="build-rust-firmware" class="section-header"><a href="#build-rust-firmware">2 Build Rust Firmware</a></h1>
 <p>Let’s build the Rust Firmware…</p>
-<div class="example-wrap"><pre class="language-bash">cd pinecone-rust
-cargo build</pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>cd pinecone-rust
+cargo build</code></pre></div>
 <p>We should see…</p>
-<div class="example-wrap"><pre class="language-text">   Compiling autocfg v1.0.1
+<div class="example-wrap"><pre class="language-text"><code>   Compiling autocfg v1.0.1
    Compiling memchr v2.3.4
    Compiling lazy_static v1.4.0
    Compiling regex-syntax v0.6.21
@@ -262,9 +262,9 @@ cargo build</pre></div>
    Compiling riscv v0.6.0
    Compiling riscv-rt v0.8.0
    Compiling riscv-rt-macros v0.1.6
-   Compiling bl602-hal v0.1.0 (/Users/Luppy/pinecone/bl602-hal)</pre></div>
+   Compiling bl602-hal v0.1.0 (/Users/Luppy/pinecone/bl602-hal)</code></pre></div>
 <p>Ignore these warnings… We’ll cover them in a while.</p>
-<div class="example-wrap"><pre class="language-text">warning: unused imports: `clock::Strict`, `serial::*`
+<div class="example-wrap"><pre class="language-text"><code>warning: unused imports: `clock::Strict`, `serial::*`
  --&gt; src/main.rs:4:17
   |
 4 | use bl602_hal::{serial::*, pac, prelude::*, clock::Strict};
@@ -292,9 +292,9 @@ warning: variable does not need to be mutable
 
 warning: 3 warnings emitted
 
-    Finished dev [unoptimized + debuginfo] target(s) in 1m 17s</pre></div>
+    Finished dev [unoptimized + debuginfo] target(s) in 1m 17s</code></pre></div>
 <p>This creates the RISC-V ELF Firmware image for PineCone…</p>
-<div class="example-wrap"><pre class="language-text">pinecone-rust/target/riscv32imac-unknown-none-elf/debug/bl602-rust-guide</pre></div><h2 id="rust-firmware-vs-c-firmware" class="section-header"><a href="#rust-firmware-vs-c-firmware">2.1 Rust Firmware vs C Firmware</a></h2>
+<div class="example-wrap"><pre class="language-text">pinecone-rust/target/riscv32imac-unknown-none-elf/debug/bl602-rust-guide</code></pre></div><h2 id="rust-firmware-vs-c-firmware" class="section-header"><a href="#rust-firmware-vs-c-firmware"><code>2.1 Rust Firmware vs C Firmware</a></h2>
 <p><em>Is Rust Firmware any different from the <a href="https://lupyuen.github.io/articles/pinecone">C Firmware</a> that we have seen earlier?</em></p>
 <p>From the Memory Map below, we can see that…</p>
 <ol>
@@ -320,13 +320,13 @@ warning: 3 warnings emitted
 <p>Let’s run the Rust Firmware and debug it with GDB.  We’ll need two command prompts: One for OpenOCD and another for GDB.</p>
 <h2 id="start-openocd" class="section-header"><a href="#start-openocd">3.1 Start OpenOCD</a></h2>
 <p>At the command prompt, enter…</p>
-<div class="example-wrap"><pre class="language-bash">cd pinecone-rust
-xpack-openocd/bin/openocd</pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>cd pinecone-rust
+xpack-openocd/bin/openocd</code></pre></div>
 <p>For Windows: Enter…</p>
-<div class="example-wrap"><pre class="language-cmd">cd pinecone-rust
-xpack-openocd\bin\openocd</pre></div>
+<div class="example-wrap"><pre class="language-cmd"><code>cd pinecone-rust
+xpack-openocd\bin\openocd</code></pre></div>
 <p>We should see OpenOCD connecting to PineCone…</p>
-<div class="example-wrap"><pre class="language-text">xPack OpenOCD, x86_64 Open On-Chip Debugger 0.10.0+dev-00378-ge5be992df (2020-06-26-12:31)
+<div class="example-wrap"><pre class="language-text"><code>xPack OpenOCD, x86_64 Open On-Chip Debugger 0.10.0+dev-00378-ge5be992df (2020-06-26-12:31)
 Licensed under GNU GPL v2
 For bug reports, read
         http://openocd.org/doc/doxygen/bugs.html
@@ -345,51 +345,51 @@ reset-deassert-post
 Info : Disabling abstract command writes to CSRs.
 reset-init
 Info : Listening on port 6666 for tcl connections
-Info : Listening on port 4444 for telnet connections</pre></div>
+Info : Listening on port 4444 for telnet connections</code></pre></div>
 <p>Keep OpenOCD running as we start GDB…</p>
 <h2 id="start-gdb" class="section-header"><a href="#start-gdb">3.2 Start GDB</a></h2>
 <p>Open another command prompt. Enter…</p>
-<div class="example-wrap"><pre class="language-bash">cd pinecone-rust
+<div class="example-wrap"><pre class="language-bash"><code>cd pinecone-rust
 export PATH=&quot;$PWD/xpack-riscv-none-embed-gcc/bin:$PATH&quot;
-cargo run</pre></div>
+cargo run</code></pre></div>
 <p>For Windows: Omit the line <code>export PATH</code></p>
 <p>We should see…</p>
-<div class="example-wrap"><pre class="language-text">    Finished dev [unoptimized + debuginfo] target(s) in 0.08s
+<div class="example-wrap"><pre class="language-text"><code>    Finished dev [unoptimized + debuginfo] target(s) in 0.08s
      Running `riscv64-unknown-elf-gdb -q -x openocd.gdb target/riscv32imac-unknown-none-elf/debug/bl602-rust-guide`
 Reading symbols from target/riscv32imac-unknown-none-elf/debug/bl602-rust-guide...
 0x21000000 in ?? ()
 Loading section .text, size 0x22b0 lma 0x22008000
 Loading section .rodata, size 0x5d8 lma 0x2200a2b0
 Start address 0x22008000, load size 10376
-Transfer rate: 2 KB/sec, 5188 bytes/write.</pre></div>
+Transfer rate: 2 KB/sec, 5188 bytes/write.</code></pre></div>
 <p>GDB has loaded our Rust Firmware into PineCone’s cache memory. PineCone starts running our firmware…</p>
-<div class="example-wrap"><pre class="language-text">Breakpoint 1 at 0x22008000: file asm.S, line 27.
+<div class="example-wrap"><pre class="language-text"><code>Breakpoint 1 at 0x22008000: file asm.S, line 27.
 
 Breakpoint 1, _start () at asm.S:27
-27      asm.S: No such file or directory.</pre></div>
+27      asm.S: No such file or directory.</code></pre></div>
 <p>GDB has paused the firmware execution at a Breakpoint in our code. (We’ll see this Breakpoint shortly)</p>
 <h2 id="debug-with-gdb" class="section-header"><a href="#debug-with-gdb">3.3 Debug with GDB</a></h2>
 <p>At the GDB prompt, enter…</p>
-<div class="example-wrap"><pre class="language-text">break main
-continue</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>break main
+continue</code></pre></div>
 <p>This tells GDB to set a Breakpoint at the <code>main</code> function in Rust. And continue execution until we hit the Breakpoint.</p>
 <p>We’ll see…</p>
-<div class="example-wrap"><pre class="language-text">(gdb) break main
+<div class="example-wrap"><pre class="language-text"><code>(gdb) break main
 Breakpoint 2 at 0x2200924e: file src/main.rs, line 10.
 (gdb) continue
 Continuing.
 
 Breakpoint 2, main () at src/main.rs:10
-10          let dp = pac::Peripherals::take().unwrap();</pre></div>
+10          let dp = pac::Peripherals::take().unwrap();</code></pre></div>
 <p>GDB has paused execution at the <code>main</code> function in Rust.</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinecone-rust/blob/main/src/main.rs">Rust Source File</a></li>
 </ul>
 <p>Enter <code>next</code> to resume execution until the next line…</p>
-<div class="example-wrap"><pre class="language-text">(gdb) next
+<div class="example-wrap"><pre class="language-text"><code>(gdb) next
 11          let mut parts = dp.GLB.split();
 (gdb) bt
-#0  main () at src/main.rs:11</pre></div>
+#0  main () at src/main.rs:11</code></pre></div>
 <p>The <code>bt</code> command shows us the Stack Trace and local variables.</p>
 <ul>
 <li><a href="https://youtu.be/A54Agz35vfk">Watch on YouTube</a></li>
@@ -404,28 +404,28 @@ Breakpoint 2, main () at src/main.rs:10
 </li>
 </ul>
 <p>In OpenOCD we’ll see this warning… Just ignore it</p>
-<div class="example-wrap"><pre class="language-text">Info : accepting &#39;gdb&#39; connection on tcp/3333
+<div class="example-wrap"><pre class="language-text"><code>Info : accepting &#39;gdb&#39; connection on tcp/3333
 Info : Disabling abstract command reads from FPRs.
 Warn : negative reply, retrying
-Warn : negative acknowledgment, but no packet pending</pre></div><h1 id="gdb-script" class="section-header"><a href="#gdb-script">4 GDB Script</a></h1>
+Warn : negative acknowledgment, but no packet pending</code></pre></div><h1 id="gdb-script" class="section-header"><a href="#gdb-script">4 GDB Script</a></h1>
 <p><em>What’s driving GDB? How does GDB know how to do the things that it did?</em></p>
 <p>That’s the purpose of the GDB Script. Let’s look inside <a href="https://github.com/lupyuen/pinecone-rust/blob/main/openocd.gdb"><code>openocd.gdb</code></a>…</p>
 <ol>
 <li>
 <p>GDB doesn’t talk to PineCone natively… But GDB can talk to PineCone through OpenOCD.</p>
 <p>This command tells GDB to talk to OpenOCD through the TCP port <code>localhost:3333</code>…</p>
-<div class="example-wrap"><pre class="language-text">target extended-remote :3333</pre></div></li>
+<div class="example-wrap"><pre class="language-text"><code>target extended-remote :3333</code></pre></div></li>
 <li>
 <p>The Rust Compiler will mangle up most function names. The function name <code>riscv::interrupt::enable</code> becomes this…</p>
-<div class="example-wrap"><pre class="language-text">_ZN5riscv9interrupt6enable17ha2fdcd71882d698eE</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>_ZN5riscv9interrupt6enable17ha2fdcd71882d698eE</code></pre></div>
 <p>Here’s how we display the dismangled function names…</p>
-<div class="example-wrap"><pre class="language-text">set print asm-demangle on</pre></div></li>
+<div class="example-wrap"><pre class="language-text"><code>set print asm-demangle on</code></pre></div></li>
 <li>
 <p>We set a Backtrace Limit that we don’t get stuck in a loop while displaying the Stack Trace (the <code>bt</code> command)…</p>
-<div class="example-wrap"><pre class="language-text">set backtrace limit 32</pre></div></li>
+<div class="example-wrap"><pre class="language-text"><code>set backtrace limit 32</code></pre></div></li>
 <li>
 <p>We tell GDB about the Memory Regions on BL602, and whether they are Read-Write (<code>rw</code>) or Read-Only (<code>ro</code>)…</p>
-<div class="example-wrap"><pre class="language-text">mem 0x22008000 0x22014000 rw
+<div class="example-wrap"><pre class="language-text"><code>mem 0x22008000 0x22014000 rw
 mem 0x42008000 0x42014000 rw
 mem 0x22014000 0x22020000 rw
 mem 0x42014000 0x42020000 rw
@@ -433,25 +433,25 @@ mem 0x22020000 0x22030000 rw
 mem 0x42020000 0x42030000 rw
 mem 0x22030000 0x2204C000 rw
 mem 0x42030000 0x4204C000 rw
-mem 0x23000000 0x23400000 ro</pre></div>
+mem 0x23000000 0x23400000 ro</code></pre></div>
 <p>Refer to <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf">BL602 Reference Manual</a>, Section 1.3 “Function Description”, Pages 17 to 19.</p>
 </li>
 <li>
 <p>We load the Rust Firmware into BL602’s Instruction Cache Memory…</p>
-<div class="example-wrap"><pre class="language-text">load</pre></div></li>
+<div class="example-wrap"><pre class="language-text"><code>load</code></pre></div></li>
 <li>
 <p>We create a Breakpoint at the function <code>_start</code>. This function is the first thing that runs when we start the firmware…</p>
-<div class="example-wrap"><pre class="language-text">break _start</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>break _start</code></pre></div>
 <p><a href="https://github.com/rust-embedded/riscv-rt/blob/master/asm.S">Source code for <code>_start</code></a></p>
 </li>
 <li>
 <p>Finally we step into the first RISC-V instruction in our firmware… And pause the execution</p>
-<div class="example-wrap"><pre class="language-text">stepi</pre></div></li>
+<div class="example-wrap"><pre class="language-text"><code>stepi</code></pre></div></li>
 </ol>
 <h2 id="gdb-and-cargo" class="section-header"><a href="#gdb-and-cargo">4.1 GDB and cargo</a></h2>
 <p><em>How is the Rust Tool <code>cargo</code> configured to launch GDB?</em></p>
 <p><code>cargo</code> is configured through <a href="https://github.com/lupyuen/pinecone-rust/blob/main/.cargo/config.toml"><code>.cargo/config.toml</code></a>…</p>
-<div class="example-wrap"><pre class="language-yaml">[target.riscv32imac-unknown-none-elf]
+<div class="example-wrap"><pre class="language-yaml"><code>[target.riscv32imac-unknown-none-elf]
 rustflags = [
   &quot;-C&quot;, &quot;link-arg=-Tmemory.x&quot;,
   &quot;-C&quot;, &quot;link-arg=-Tlink.x&quot;,
@@ -460,7 +460,7 @@ runner = &quot;riscv64-unknown-elf-gdb -q -x openocd.gdb&quot;
 # runner = &quot;riscv32-unknown-elf-gdb -q -x openocd.gdb&quot;
 
 [build]
-target = &quot;riscv32imac-unknown-none-elf&quot;</pre></div>
+target = &quot;riscv32imac-unknown-none-elf&quot;</code></pre></div>
 <p>We see that <code>cargo</code> has been configured to launch <code>riscv64-unknown-elf-gdb</code> with the GDB Script <a href="https://github.com/lupyuen/pinecone-rust/blob/main/openocd.gdb"><code>openocd.gdb</code></a>. The GDB Script loads our Rust Firmware to PineCone and starts debugging.</p>
 <p>Also, <code>cargo</code> has been configured to produce Rust Firmware that uses the Memory Map Layout specified by <a href="https://github.com/lupyuen/pinecone-rust/blob/main/memory.x"><code>memory.x</code></a>.</p>
 <p><em>What about the OpenOCD Script?</em></p>
@@ -472,7 +472,7 @@ target = &quot;riscv32imac-unknown-none-elf&quot;</pre></div>
 <h1 id="rusty-mastery-and-mystery" class="section-header"><a href="#rusty-mastery-and-mystery">5 Rusty Mastery and Mystery</a></h1>
 <p>Before we talk about VSCode Debugging, let’s study the Source Code for our Rust Firmware: <a href="https://github.com/lupyuen/pinecone-rust/blob/main/src/main.rs">src/main.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
 <span class="attribute">#[<span class="ident">riscv_rt::entry</span>]</span>
 <span class="kw">fn</span> <span class="ident">main</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
     <span class="kw">let</span> <span class="ident">dp</span> <span class="op">=</span> <span class="ident">pac::Peripherals::take</span>().<span class="ident">unwrap</span>();
@@ -480,25 +480,25 @@ target = &quot;riscv32imac-unknown-none-elf&quot;</pre></div>
     ...
     <span class="comment">//  Loop forever</span>
     <span class="kw">loop</span> {}
-}    </pre></div>
+}    </code></pre></div>
 <p>Even folks who have mastered Rust will find Embedded Rust a little strange… Let’s zoom into the code, line by line.</p>
 <h2 id="declare-the-main-function" class="section-header"><a href="#declare-the-main-function">5.1 Declare the Main Function</a></h2>
 <p>At the top we have a Rust Attribute that declares the Entry Function for our RISC-V firmware…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="attribute">#[<span class="ident">riscv_rt::entry</span>]</span></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<span class="attribute">#[<span class="ident">riscv_rt::entry</span>]</span></code></pre></div>
 <p>Followed by the declaration of our Entry Function <code>main</code>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">fn</span> <span class="ident">main</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {</pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<span class="kw">fn</span> <span class="ident">main</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {</code></pre></div>
 <p>This means that our Rust Function <code>main</code> will be called when the firmware starts, after initialising the registers and RAM. (<a href="https://github.com/rust-embedded/riscv-rt/blob/master/asm.S">More details</a>) </p>
 <p>(The return type “<code>-&gt; !</code>” means that the function will loop forever, never returning)</p>
 <h2 id="fetch-the-peripheral-registers" class="section-header"><a href="#fetch-the-peripheral-registers">5.2 Fetch the Peripheral Registers</a></h2>
 <p>Our BL602 Microcontroller supports multiple Peripheral Functions: Timer, UART, I2C, SPI, PWM, …</p>
 <p>Here’s how we fetch the Peripheral Registers that control the Peripheral Functions…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">let</span> <span class="ident">dp</span> <span class="op">=</span> <span class="ident">pac::Peripherals::take</span>().<span class="ident">unwrap</span>();</pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<span class="kw">let</span> <span class="ident">dp</span> <span class="op">=</span> <span class="ident">pac::Peripherals::take</span>().<span class="ident">unwrap</span>();</code></pre></div>
 <p><code>pac</code> refers to the Peripheral Access Crate for BL602. It exposes <code>Peripherals</code>, the Peripheral Registers for BL602.</p>
 <ul>
 <li><a href="https://lupyuen.github.io/pinecone-rust/bl602_pac/">More about BL602 Peripheral Access Crate</a></li>
@@ -514,8 +514,8 @@ target = &quot;riscv32imac-unknown-none-elf&quot;</pre></div>
 <p>It provides settings for Clock Management, Reset Management, Bus Management, Memory Management and GPIO Management.</p>
 <p>We fetch the Global Register (and its components) from the Peripheral Registers like so…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">parts</span> <span class="op">=</span> <span class="ident">dp</span>.<span class="ident">GLB</span>.<span class="ident">split</span>();</pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">parts</span> <span class="op">=</span> <span class="ident">dp</span>.<span class="ident">GLB</span>.<span class="ident">split</span>();</code></pre></div>
 <ul>
 <li>Refer to <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf">BL602 Reference Manual</a>, Section 3 “GLB”, Page 24.</li>
 </ul>
@@ -523,9 +523,9 @@ target = &quot;riscv32imac-unknown-none-elf&quot;</pre></div>
 <p>Our firmware should never terminate… It should loop forever handling events.</p>
 <p>For now we’ll use an empty loop…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
 <span class="comment">//  Loop forever</span>
-<span class="kw">loop</span> {}</pre></div>
+<span class="kw">loop</span> {}</code></pre></div>
 <h2 id="is-something-missing" class="section-header"><a href="#is-something-missing">5.5 Is Something Missing?</a></h2>
 <p><em>Where’s the rest of the Rust code?</em></p>
 <p>This program was originally created for Sipeed’s BL602 Board… But some parts don’t work on PineCone and have been commented out. (Hence the compiler warnings)</p>
@@ -552,8 +552,8 @@ target = &quot;riscv32imac-unknown-none-elf&quot;</pre></div>
 <p>Click <strong><code>Terminal → Run Build Task</code></strong></p>
 <p>This builds the Rust Firmware. The RISC-V ELF Firmware image is generated here…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="ident">pinecone</span><span class="op">-</span><span class="ident">rust</span><span class="op">/</span><span class="ident">target</span><span class="op">/</span><span class="ident">riscv32imac</span><span class="op">-</span><span class="ident">unknown</span><span class="op">-</span><span class="ident">none</span><span class="op">-</span><span class="ident">elf</span><span class="op">/</span><span class="ident">debug</span><span class="op">/</span><span class="ident">bl602</span><span class="op">-</span><span class="ident">rust</span><span class="op">-</span><span class="ident">guide</span></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<span class="ident">pinecone</span><span class="op">-</span><span class="ident">rust</span><span class="op">/</span><span class="ident">target</span><span class="op">/</span><span class="ident">riscv32imac</span><span class="op">-</span><span class="ident">unknown</span><span class="op">-</span><span class="ident">none</span><span class="op">-</span><span class="ident">elf</span><span class="op">/</span><span class="ident">debug</span><span class="op">/</span><span class="ident">bl602</span><span class="op">-</span><span class="ident">rust</span><span class="op">-</span><span class="ident">guide</span></code></pre></div>
 <p>This step also terminates any OpenOCD processes that are running. (Linux and macOS only)</p>
 </li>
 <li>
@@ -604,35 +604,35 @@ target = &quot;riscv32imac-unknown-none-elf&quot;</pre></div>
 <p>For Windows: Sorry we need to terminate the OpenOCD task manually with the Task Manager.</p>
 <p>In case of OpenOCD problems, check the OpenOCD log file…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="ident">pinecone</span><span class="op">-</span><span class="ident">rust</span><span class="op">/</span><span class="ident">openocd</span>.<span class="ident">log</span></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<span class="ident">pinecone</span><span class="op">-</span><span class="ident">rust</span><span class="op">/</span><span class="ident">openocd</span>.<span class="ident">log</span></code></pre></div>
 <p>For details on the VSCode settings, check the section “Appendix: VSCode Settings” below.</p>
 <h1 id="rust-coders-wanted" class="section-header"><a href="#rust-coders-wanted">7 Rust Coders Wanted</a></h1>
 <p>Earlier we talked about some parts of the Rust Firmware code that don’t work on PineCone. (Because the code was created for Sipeed’s BL602 Board)</p>
 <p>Let’s look at the sus parts: <a href="https://github.com/lupyuen/pinecone-rust/blob/main/src/main.rs#L14-L36"><code>src/main.rs</code></a></p>
 <h2 id="remap-the-uart-port" class="section-header"><a href="#remap-the-uart-port">7.1 Remap the UART Port</a></h2>
-<div class="example-wrap"><pre class="rust rust-example-rendered">
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
 <span class="comment">// Enable clock</span>
 <span class="kw">let</span> <span class="ident">clocks</span> <span class="op">=</span> <span class="ident">Strict::new</span>()
     .<span class="ident">freeze</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">parts</span>.<span class="ident">clk_cfg</span>);
 <span class="kw">let</span> <span class="ident">pin16</span> <span class="op">=</span> <span class="ident">parts</span>.<span class="ident">pin16</span>.<span class="ident">into_uart_sig0</span>();
 <span class="kw">let</span> <span class="ident">pin7</span> <span class="op">=</span> <span class="ident">parts</span>.<span class="ident">pin7</span>.<span class="ident">into_uart_sig7</span>();
 <span class="kw">let</span> <span class="ident">mux0</span> <span class="op">=</span> <span class="ident">parts</span>.<span class="ident">uart_mux0</span>.<span class="ident">into_uart0_tx</span>();
-<span class="kw">let</span> <span class="ident">mux7</span> <span class="op">=</span> <span class="ident">parts</span>.<span class="ident">uart_mux7</span>.<span class="ident">into_uart0_rx</span>();</pre></div>
+<span class="kw">let</span> <span class="ident">mux7</span> <span class="op">=</span> <span class="ident">parts</span>.<span class="ident">uart_mux7</span>.<span class="ident">into_uart0_rx</span>();</code></pre></div>
 <p>This code seems to be remapping pins IO 7 and IO 16 to UART Port 0. (Because BL602 allows us to remap any IO Pin to any Peripheral Function)</p>
 <p>See <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf">BL602 Reference Manual</a>, Section 3.2.8 “GPIO Function”, Page 27</p>
 <h2 id="create-a-serial-interface" class="section-header"><a href="#create-a-serial-interface">7.2 Create a Serial Interface</a></h2>
-<div class="example-wrap"><pre class="rust rust-example-rendered">
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">serial</span> <span class="op">=</span> <span class="ident">Serial::uart0</span>(
     <span class="ident">dp</span>.<span class="ident">UART</span>,
     <span class="ident">Config::default</span>().<span class="ident">baudrate</span>(<span class="number">20000</span>.<span class="ident">Bd</span>()),
     ((<span class="ident">pin16</span>, <span class="ident">mux0</span>), (<span class="ident">pin7</span>, <span class="ident">mux7</span>)),
     <span class="ident">clocks</span>
-);</pre></div>
+);</code></pre></div>
 <p>This code creates a Serial Interface based on UART Port 0 with the remapped pins.</p>
 <p><code>Serial</code> is defined in the <a href="https://lupyuen.github.io/pinecone-rust/bl602_hal/">BL602 Hardware Abstraction Layer</a></p>
 <h2 id="write-to-the-serial-interface" class="section-header"><a href="#write-to-the-serial-interface">7.3 Write to the Serial Interface</a></h2>
-<div class="example-wrap"><pre class="rust rust-example-rendered">
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
 <span class="kw">loop</span> {
     <span class="ident">serial</span>.<span class="ident">try_write</span>(<span class="string">b&#39;R&#39;</span>).<span class="ident">ok</span>();
     <span class="ident">serial</span>.<span class="ident">try_flush</span>().<span class="ident">ok</span>();
@@ -642,7 +642,7 @@ target = &quot;riscv32imac-unknown-none-elf&quot;</pre></div>
     <span class="ident">serial</span>.<span class="ident">try_flush</span>().<span class="ident">ok</span>();
     <span class="ident">serial</span>.<span class="ident">try_write</span>(<span class="string">b&#39;T&#39;</span>).<span class="ident">ok</span>();
     <span class="ident">serial</span>.<span class="ident">try_flush</span>().<span class="ident">ok</span>();
-}</pre></div>
+}</code></pre></div>
 <p>This code loops forever, writing the characters <code>RUST</code> to the Serial Interface.</p>
 <h2 id="boo-boo-on-pinecone" class="section-header"><a href="#boo-boo-on-pinecone">7.4 Boo-boo on PineCone</a></h2>
 <p><em>What happens when we run the above code on PineCone?</em></p>
@@ -707,7 +707,7 @@ target = &quot;riscv32imac-unknown-none-elf&quot;</pre></div>
 <p>OpenOCD Path (in <code>autorun</code>, after <code>target remote</code>)</p>
 </li>
 </ul>
-<div class="example-wrap"><pre class="language-json">{
+<div class="example-wrap"><pre class="language-json"><code>{
     //  VSCode Debugger Config for PineCone BL602
     &quot;version&quot;: &quot;0.2.0&quot;,
     &quot;configurations&quot;: [
@@ -742,10 +742,10 @@ target = &quot;riscv32imac-unknown-none-elf&quot;</pre></div>
             ]
         }
     ]
-}</pre></div><h2 id="task-settings" class="section-header"><a href="#task-settings">9.2 Task Settings</a></h2>
+}</code></pre></div><h2 id="task-settings" class="section-header"><a href="#task-settings">9.2 Task Settings</a></h2>
 <p>The VSCode Task Settings may be found in <a href="https://github.com/lupyuen/pinecone-rust/blob/main/.vscode/tasks.json"><code>.vscode/tasks.json</code></a></p>
 <p>This file defines the VSCode Task for building the Rust Firmware…</p>
-<div class="example-wrap"><pre class="language-json">{
+<div class="example-wrap"><pre class="language-json"><code>{
     &quot;version&quot;: &quot;2.0.0&quot;,
     &quot;tasks&quot;: [
         {
@@ -795,7 +795,7 @@ target = &quot;riscv32imac-unknown-none-elf&quot;</pre></div>
                 &quot;clear&quot;: true
             }
         },
-        ...</pre></div>
+        ...</code></pre></div>
     
 </body>
 </html>

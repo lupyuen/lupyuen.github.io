@@ -190,9 +190,9 @@
 <h2 id="i2c-protocol-for-bme280" class="section-header"><a href="#i2c-protocol-for-bme280">2.1 I2C Protocol for BME280</a></h2>
 <p><em>What are the data bytes that will be sent by BL602?</em></p>
 <p>Here’s the I2C Data that will be sent by BL602 to BME280…</p>
-<div class="example-wrap"><pre class="language-text">    [Start] 0xEE  0xD0  [Stop]
+<div class="example-wrap"><pre class="language-text"><code>    [Start] 0xEE  0xD0  [Stop]
 
-    [Start] 0xEF [Read] [Stop]</pre></div>
+    [Start] 0xEF [Read] [Stop]</code></pre></div>
 <p>BL602 will initiate two I2C Transactions, indicated by <code>[Start] ... [Stop]</code></p>
 <ol>
 <li>
@@ -219,86 +219,86 @@
 <h1 id="initialise-i2c-port" class="section-header"><a href="#initialise-i2c-port">3 Initialise I2C Port</a></h1>
 <p>Remember our Command-Line Firmware <a href="https://github.com/lupyuen/bl_iot_sdk/tree/i2c/customer_app/sdk_app_i2c"><code>sdk_app_i2c</code></a> for testing I2C on BL602?</p>
 <p>Here’s the command for initialising the I2C Port…</p>
-<div class="example-wrap"><pre class="language-text"> i2c_init</pre></div>
+<div class="example-wrap"><pre class="language-text"><code> i2c_init</code></pre></div>
 <p>Let’s discover how this command calls the Low Level I2C HAL to initialise the I2C Port: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L343-L369"><code>sdk_app_i2c/demo.c</code></a></p>
-<h2 id="select-i2c-port" class="section-header"><a href="#select-i2c-port">3.1 Select I2C Port</a></h2><div class="example-wrap"><pre class="language-c">/// Init I2C Port. Based on hal_i2c_init in hal_i2c.c
+<h2 id="select-i2c-port" class="section-header"><a href="#select-i2c-port">3.1 Select I2C Port</a></h2><div class="example-wrap"><pre class="language-c"><code>/// Init I2C Port. Based on hal_i2c_init in hal_i2c.c
 static void test_i2c_init(char *buf, int len, int argc, char **argv) {
     //  Use I2C Port 0
-    const int i2cx = 0;</pre></div>
+    const int i2cx = 0;</code></pre></div>
 <p>We’ll use <strong>I2C Port 0</strong>, the one and only I2C Port on BL602.</p>
-<h2 id="assign-i2c-pins-and-set-i2c-frequency" class="section-header"><a href="#assign-i2c-pins-and-set-i2c-frequency">3.2 Assign I2C Pins and set I2C Frequency</a></h2><div class="example-wrap"><pre class="language-c">    //  Init I2C Port 0 to GPIO 3 and 4
+<h2 id="assign-i2c-pins-and-set-i2c-frequency" class="section-header"><a href="#assign-i2c-pins-and-set-i2c-frequency">3.2 Assign I2C Pins and set I2C Frequency</a></h2><div class="example-wrap"><pre class="language-c"><code>    //  Init I2C Port 0 to GPIO 3 and 4
     i2c_gpio_init(i2cx);
 
     //  Set I2C Port 0 to 500 kbps
-    i2c_set_freq(500, i2cx);</pre></div>
+    i2c_set_freq(500, i2cx);</code></pre></div>
 <p>We call <code>i2c_gpio_init</code> to assign <strong>GPIO 3 and 4 as the SDA and SCL pins</strong> for I2C Port 0.</p>
 <p>Then we call <code>i2c_set_freq</code> to set the <strong>I2C Frequency</strong> to 500 kbps.</p>
 <h2 id="enable-i2c-interrupts" class="section-header"><a href="#enable-i2c-interrupts">3.3 Enable I2C Interrupts</a></h2>
 <p>The I2C Port triggers <strong>I2C Interrupts</strong> after sending and receiving queued data, also when an error occurs. So we need to enable I2C Interrupts…</p>
-<div class="example-wrap"><pre class="language-c">    //  Disable I2C Port 0
+<div class="example-wrap"><pre class="language-c"><code>    //  Disable I2C Port 0
     I2C_Disable(i2cx);    
 
     //  Enable I2C interrupts   
     bl_irq_enable(I2C_IRQn);
-    I2C_IntMask(i2cx, I2C_INT_ALL, MASK);</pre></div>
+    I2C_IntMask(i2cx, I2C_INT_ALL, MASK);</code></pre></div>
 <p>We disable the I2C Port, then enable I2C Interrupts on the I2C Port.</p>
 <h2 id="register-i2c-interrupt-handler" class="section-header"><a href="#register-i2c-interrupt-handler">3.4 Register I2C Interrupt Handler</a></h2>
 <p>To handle I2C Interrupts we <strong>register an Interrupt Handler Function</strong>…</p>
-<div class="example-wrap"><pre class="language-c">    //  Register the I2C Interrupt Handler
+<div class="example-wrap"><pre class="language-c"><code>    //  Register the I2C Interrupt Handler
     bl_irq_register_with_ctx(
         I2C_IRQn,                  //  For I2C Interrupt:
         test_i2c_interrupt_entry,  //  Interrupt Handler
         &amp;gpstmsg                   //  Pointer to current I2C Message
     );
-}</pre></div>
+}</code></pre></div>
 <p>Here we register the function <code>test_i2c_interrupt_entry</code> as the Interrupt Handler Function for I2C Interrupts. (More about this function in a while)</p>
 <p><code>gpstmsg</code> is the <strong>Interrupt Context</strong> that will be passed to the Interrupt Handler Function…</p>
-<div class="example-wrap"><pre class="language-c">/// Global pointer to current I2C Message
-static i2c_msg_t *gpstmsg;</pre></div>
+<div class="example-wrap"><pre class="language-c"><code>/// Global pointer to current I2C Message
+static i2c_msg_t *gpstmsg;</code></pre></div>
 <p><code>gpstmsg</code> points to the <strong>current I2C Message</strong> being sent or received, so that the Interrupt Handler knows which Message Buffer to use for sending and receiving data.</p>
 <h2 id="hal-functions" class="section-header"><a href="#hal-functions">3.5 HAL Functions</a></h2>
 <p>Let’s list down the HAL Functions called above and where they are defined…</p>
 <p>The following functions are defined in the <strong>Low Level I2C HAL</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c"><code>bl_i2c.c</code></a></p>
-<div class="example-wrap"><pre class="language-text">i2c_gpio_init, i2c_set_freq</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>i2c_gpio_init, i2c_set_freq</code></pre></div>
 <p>These functions are defined in the <strong>BL602 Interrupt HAL</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_irq.c"><code>bl_irq.c</code></a></p>
-<div class="example-wrap"><pre class="language-text">bl_irq_enable, bl_irq_register_with_ctx</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>bl_irq_enable, bl_irq_register_with_ctx</code></pre></div>
 <p>And these functions are defined in the <strong>BL602 Standard Driver</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_i2c.c"><code>bl602_i2c.c</code></a></p>
-<div class="example-wrap"><pre class="language-text">I2C_Disable, I2C_IntMask</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>I2C_Disable, I2C_IntMask</code></pre></div>
 <p>(The BL602 Standard Driver contains low-level functions to manipulate the BL602 Hardware Registers)</p>
 <p><img src="https://lupyuen.github.io/images/i2c-cartoon6.png" alt="I2C Message" /></p>
 <h1 id="i2c-message" class="section-header"><a href="#i2c-message">4 I2C Message</a></h1>
 <p>Our objective is to <strong>read Register <code>0xD0</code></strong> from our BME280 Sensor with <strong>Device ID <code>0x77</code></strong></p>
 <p>We specify these details in an <strong>I2C Message Struct <code>i2c_msg_t</code></strong> that’s defined in the Low Level I2C HAL.</p>
 <p>Here’s how we create an I2C Message: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L424-L442"><code>sdk_app_i2c/demo.c</code></a></p>
-<h2 id="define-i2c-message-and-buffer" class="section-header"><a href="#define-i2c-message-and-buffer">4.1 Define I2C Message and Buffer</a></h2><div class="example-wrap"><pre class="language-c">//  Define I2C message and buffer
+<h2 id="define-i2c-message-and-buffer" class="section-header"><a href="#define-i2c-message-and-buffer">4.1 Define I2C Message and Buffer</a></h2><div class="example-wrap"><pre class="language-c"><code>//  Define I2C message and buffer
 static i2c_msg_t read_msg;    //  Message for reading I2C Data
 static uint8_t read_buf[32];  //  Buffer for reading I2C Data
-int data_len = 1;             //  Bytes to be read</pre></div>
+int data_len = 1;             //  Bytes to be read</code></pre></div>
 <p>First we define <code>read_msg</code> as a static I2C Message. </p>
 <p>The data returned by our BME280 Sensor shall be stored in the static buffer <code>read_buf</code>.</p>
-<h2 id="set-i2c-operation-and-buffer" class="section-header"><a href="#set-i2c-operation-and-buffer">4.2 Set I2C Operation and Buffer</a></h2><div class="example-wrap"><pre class="language-c">//  Set the I2C operation    
+<h2 id="set-i2c-operation-and-buffer" class="section-header"><a href="#set-i2c-operation-and-buffer">4.2 Set I2C Operation and Buffer</a></h2><div class="example-wrap"><pre class="language-c"><code>//  Set the I2C operation    
 read_msg.i2cx   = 0;            //  I2C Port
 read_msg.direct = I2C_M_READ;   //  Read I2C data
-read_msg.block  = I2C_M_BLOCK;  //  Wait until data has been read</pre></div>
+read_msg.block  = I2C_M_BLOCK;  //  Wait until data has been read</code></pre></div>
 <p>Next we set the <strong>I2C Port</strong> (0) and the <strong>I2C Operation</strong> (Blocking Read).</p>
-<div class="example-wrap"><pre class="language-c">//  Set the I2C buffer
+<div class="example-wrap"><pre class="language-c"><code>//  Set the I2C buffer
 read_msg.buf  = read_buf;  //  Read buffer
 read_msg.len  = data_len;  //  Number of bytes to be read
-read_msg.idex = 0;         //  Index of next byte to be read into buf</pre></div>
+read_msg.idex = 0;         //  Index of next byte to be read into buf</code></pre></div>
 <p>Then we assign the data buffer <code>read_buf</code> to <code>read_msg</code> and set the number of bytes to be read (1).</p>
 <p><code>idex</code> is the index into the buffer <code>read_buf</code>. Our I2C Interrupt Handler will increment this index as it populates the buffer upon receiving data.</p>
 <h2 id="set-i2c-device-address-and-register-address" class="section-header"><a href="#set-i2c-device-address-and-register-address">4.3 Set I2C Device Address and Register Address</a></h2>
 <p>We’ll be reading data from BME280, which has Device ID <code>0x77</code>.</p>
 <p>We specify the <strong>Device Address</strong> like so…</p>
-<div class="example-wrap"><pre class="language-c">//  Set device address
-read_msg.addr = 0x77;  //  BME280 I2C Secondary Address (Primary Address is 0x76)</pre></div>
+<div class="example-wrap"><pre class="language-c"><code>//  Set device address
+read_msg.addr = 0x77;  //  BME280 I2C Secondary Address (Primary Address is 0x76)</code></pre></div>
 <p><em>Now here’s the really really interesting thing about BL602…</em></p>
 <p>Remember that we will be reading Register <code>0xD0</code> (Chip ID) on BME280?</p>
 <p>We specify the <strong>Register Address</strong> in this incredibly easy peasy way…</p>
-<div class="example-wrap"><pre class="language-c">//  Set register address
+<div class="example-wrap"><pre class="language-c"><code>//  Set register address
 read_msg.subflag = 1;     //  Enable Register Address
 read_msg.subaddr = 0xd0;  //  Register Address (BME280 Chip ID)
-read_msg.sublen  = 1;     //  Length of Register Address (bytes)</pre></div>
+read_msg.sublen  = 1;     //  Length of Register Address (bytes)</code></pre></div>
 <p><strong>This I2C Register Address feature is unique to BL602!</strong></p>
 <p>The I2C Register Address feature is <strong>not available</strong> on STM32 Blue Pill, Nordic nRF52, GigaDevice GD32 VF103 (RISC-V), ESP32, … Not even on Raspberry Pi Pico!</p>
 <p>(Though it seems to be supported on <a href="https://mcuxpresso.nxp.com/api_doc/dev/116/group__i2c.html">NXP Microcontrollers</a> as “I2C Subaddress”)</p>
@@ -321,11 +321,11 @@ read_msg.sublen  = 1;     //  Length of Register Address (bytes)</pre></div>
 <h1 id="start-i2c-read" class="section-header"><a href="#start-i2c-read">5 Start I2C Read</a></h1>
 <p>Now that we have created our I2C Message, let’s watch it in action!</p>
 <p>To begin reading data from our BME280 Sensor, we enter this command…</p>
-<div class="example-wrap"><pre class="language-text"> i2c_start_read</pre></div>
+<div class="example-wrap"><pre class="language-text"><code> i2c_start_read</code></pre></div>
 <p>Let’s find out what happens inside that command: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L420-L448"><code>sdk_app_i2c/demo.c</code></a></p>
 <h2 id="create-i2c-message" class="section-header"><a href="#create-i2c-message">5.1 Create I2C Message</a></h2>
 <p>We start by creating the I2C Message. We have seen this code earlier for creating the message…</p>
-<div class="example-wrap"><pre class="language-c">//  Define I2C message and buffer
+<div class="example-wrap"><pre class="language-c"><code>//  Define I2C message and buffer
 static i2c_msg_t read_msg;    //  Message for reading I2C Data
 static uint8_t read_buf[32];  //  Buffer for reading I2C Data
 
@@ -349,17 +349,17 @@ static void test_i2c_start_read(char *buf, int len, int argc, char **argv) {
     read_msg.addr    = 0x77;   //  BME280 I2C Secondary Address (Primary Address is 0x76)
     read_msg.subflag = 1;      //  Enable Register Address
     read_msg.subaddr = 0xd0;   //  Register Address (BME280 Chip ID)
-    read_msg.sublen  = 1;      //  Length of Register Address (bytes)</pre></div>
+    read_msg.sublen  = 1;      //  Length of Register Address (bytes)</code></pre></div>
 <p>(For I2C Write Operation <code>I2C_M_WRITE</code>: The Message buffer field <code>buf</code> should point to a byte array that contains the I2C Data that will be written to the I2C Register)</p>
 <h2 id="start-i2c-transfer" class="section-header"><a href="#start-i2c-transfer">5.2 Start I2C Transfer</a></h2>
 <p>Now we start the I2C data transfer…</p>
-<div class="example-wrap"><pre class="language-c">    //  Start the I2C transfer and enable I2C interrupts
+<div class="example-wrap"><pre class="language-c"><code>    //  Start the I2C transfer and enable I2C interrupts
     gpstmsg = &amp;read_msg;
     i2c_transfer_start(&amp;read_msg);
 
     //  do_read_data will be called to read data 
     //  in the I2C Interrupt Handler (test_i2c_transferbytes)
-}</pre></div>
+}</code></pre></div>
 <p>We point <code>gpstmsg</code> to our I2C Message. (Will be used for saving data into our buffer)</p>
 <p>Then we call <code>i2c_transfer_start</code> to start the I2C data transfer and enable the I2C Interrupts.</p>
 <p><code>i2c_transfer_start</code> is defined in the <strong>Low Level I2C HAL</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c"><code>bl_i2c.c</code></a></p>
@@ -370,17 +370,17 @@ static void test_i2c_start_read(char *buf, int len, int argc, char **argv) {
 <p><img src="https://lupyuen.github.io/images/i2c-cartoon3.png" alt="Handle I2C Interrupts" /></p>
 <h1 id="handle-i2c-interrupts" class="section-header"><a href="#handle-i2c-interrupts">6 Handle I2C Interrupts</a></h1>
 <p>Earlier we registered <code>test_i2c_interrupt_entry</code> as our Interrupt Handler for I2C Interrupts…</p>
-<div class="example-wrap"><pre class="language-c">//  Register the I2C Interrupt Handler
+<div class="example-wrap"><pre class="language-c"><code>//  Register the I2C Interrupt Handler
 bl_irq_register_with_ctx(
     I2C_IRQn,                  //  For I2C Interrupt:
     test_i2c_interrupt_entry,  //  Interrupt Handler
     &amp;gpstmsg                   //  Pointer to current I2C Message
-);</pre></div>
+);</code></pre></div>
 <p>And the current I2C Message <code>gpstmsg</code> will be passed as our Interrupt Context.</p>
 <p>Let’s find out how our Interrupt Handler handles I2C Interrupts: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L273-L328"><code>sdk_app_i2c/demo.c</code></a></p>
 <h2 id="get-i2c-message-and-interrupt-reason" class="section-header"><a href="#get-i2c-message-and-interrupt-reason">6.1 Get I2C Message and Interrupt Reason</a></h2>
 <p>When an I2C Interrupt is triggered, we fetch the Interrupt Reason and the I2C Message (from the Interrupt Context)…</p>
-<div class="example-wrap"><pre class="language-c">/// I2C Interrupt Handler. Based on i2c_interrupt_entry in hal_i2c.c
+<div class="example-wrap"><pre class="language-c"><code>/// I2C Interrupt Handler. Based on i2c_interrupt_entry in hal_i2c.c
 static void test_i2c_interrupt_entry(void *ctx) {
     //  Fetch the current I2C Message from the Interrupt Context
     i2c_msg_t *msg = *((i2c_msg_t **)ctx);
@@ -389,49 +389,49 @@ static void test_i2c_interrupt_entry(void *ctx) {
     uint32_t reason = BL_RD_REG(I2C_BASE, I2C_INT_STS);
 
     //  Handle each reason and increment the Interrupt Counters
-    count_int++;  //  Overall interrupts</pre></div>
+    count_int++;  //  Overall interrupts</code></pre></div>
 <p>According to the <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en"><strong>BL602 Reference Manual</strong></a> there are 6 kinds of I2C Interrupts…</p>
 <p><img src="https://lupyuen.github.io/images/i2c-interrupt.png" alt="BL602 I2C Interrupts" /></p>
 <p>Some good… Some not so good. Let’s handle each type of interrupt…</p>
 <h2 id="i2c-data-received" class="section-header"><a href="#i2c-data-received">6.2 I2C Data Received</a></h2>
 <p>(For I2C Read Operation)</p>
 <p>When we receive data from our I2C Sensor… It’s good news!</p>
-<div class="example-wrap"><pre class="language-c">    if (BL_IS_REG_BIT_SET(reason, I2C_RXF_INT)) {
+<div class="example-wrap"><pre class="language-c"><code>    if (BL_IS_REG_BIT_SET(reason, I2C_RXF_INT)) {
         //  Receive FIFO Ready
         count_rfx++;
         msg-&gt;event = EV_I2C_RXF_INT;
-        //  Should not return</pre></div>
+        //  Should not return</code></pre></div>
 <p>This condition flows through to the end of our Interrupt Handler, and calls <code>test_i2c_transferbytes</code> to copy the received data into our Message Buffer and receive more data.</p>
 <h2 id="i2c-transfer-end" class="section-header"><a href="#i2c-transfer-end">6.3 I2C Transfer End</a></h2>
 <p>If the I2C data transfer is ending, we call <code>test_i2c_stop</code> to disable the I2C Port.</p>
-<div class="example-wrap"><pre class="language-c">    } else if (BL_IS_REG_BIT_SET(reason, I2C_END_INT)) {
+<div class="example-wrap"><pre class="language-c"><code>    } else if (BL_IS_REG_BIT_SET(reason, I2C_END_INT)) {
         //  Transfer End
         count_end++;
         msg-&gt;event = EV_I2C_END_INT;
         test_i2c_stop(msg);
-        return;  //  Stop now</pre></div>
+        return;  //  Stop now</code></pre></div>
 <p>This condition quits our Interrupt Handler right away.</p>
 <h2 id="i2c-no-acknowledge" class="section-header"><a href="#i2c-no-acknowledge">6.4 I2C No Acknowledge</a></h2>
 <p>This is bad… We encounter I2C No Acknowledge usually when the I2C Device Address is misconfigured (say <code>0x76</code> instead of <code>0x77</code>).</p>
-<div class="example-wrap"><pre class="language-c">    } else if (BL_IS_REG_BIT_SET(reason, I2C_NAK_INT)) {
+<div class="example-wrap"><pre class="language-c"><code>    } else if (BL_IS_REG_BIT_SET(reason, I2C_NAK_INT)) {
         //  No Acknowledge
         count_nak++;  
         msg-&gt;event = EV_I2C_NAK_INT;
         test_i2c_stop(msg);
-        return;  //  Stop now</pre></div>
+        return;  //  Stop now</code></pre></div>
 <p>We disable the I2C Port and quit the Interrupt Handler right away.</p>
 <h2 id="i2c-data-transmitted" class="section-header"><a href="#i2c-data-transmitted">6.5 I2C Data Transmitted</a></h2>
 <p>(For I2C Write Operation)</p>
 <p>This is good, it means that the queued data has been transmitted…</p>
-<div class="example-wrap"><pre class="language-c">    } else if (BL_IS_REG_BIT_SET(reason, I2C_TXF_INT)) {
+<div class="example-wrap"><pre class="language-c"><code>    } else if (BL_IS_REG_BIT_SET(reason, I2C_TXF_INT)) {
         //  Transmit FIFO Ready
         count_txf++;  
         msg-&gt;event = EV_I2C_TXF_INT;
-        //  Should not return</pre></div>
+        //  Should not return</code></pre></div>
 <p>This condition flows through to the end of our Interrupt Handler, and calls <code>test_i2c_transferbytes</code> to transmit the next 4 bytes of data from our Message Buffer.</p>
 <h2 id="i2c-errors" class="section-header"><a href="#i2c-errors">6.6 I2C Errors</a></h2>
 <p>Lastly we handle the remaining errors: <strong>Arbitration Lost, FIFO Error, Unknown Error</strong>…</p>
-<div class="example-wrap"><pre class="language-c">    } else if (BL_IS_REG_BIT_SET(reason, I2C_ARB_INT)) {
+<div class="example-wrap"><pre class="language-c"><code>    } else if (BL_IS_REG_BIT_SET(reason, I2C_ARB_INT)) {
         //  Arbitration Lost
         count_arb++;  
         msg-&gt;event = EV_I2C_ARB_INT;
@@ -449,13 +449,13 @@ static void test_i2c_interrupt_entry(void *ctx) {
         msg-&gt;event = EV_I2C_UNKNOW_INT; 
         test_i2c_stop(msg);
         //  Should not return
-    }</pre></div>
+    }</code></pre></div>
 <p>We disable the I2C Port and quit the Interrupt Handler right away. (Except for Unknown Error)</p>
 <h2 id="transfer-data" class="section-header"><a href="#transfer-data">6.7 Transfer Data</a></h2>
 <p>For I2C Data Received and I2C Data Transmitted, our Interrupt Handler flows through to this code…</p>
-<div class="example-wrap"><pre class="language-c">    //  For Receive FIFO Ready and Transmit FIFO Ready, transfer 4 bytes of data
+<div class="example-wrap"><pre class="language-c"><code>    //  For Receive FIFO Ready and Transmit FIFO Ready, transfer 4 bytes of data
     test_i2c_transferbytes(msg);
-}</pre></div>
+}</code></pre></div>
 <p><code>test_i2c_transferbytes</code> does the following…</p>
 <ul>
 <li>
@@ -473,7 +473,7 @@ static void test_i2c_interrupt_entry(void *ctx) {
 <p>Here’s how it works for I2C Write and I2C Read Operations: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L249-L271"><code>sdk_app_i2c/demo.c</code></a></p>
 <h2 id="i2c-write-operation" class="section-header"><a href="#i2c-write-operation">7.1 I2C Write Operation</a></h2>
 <p>In an I2C Write Operation, we handle the I2C Data Transmitted Interrupt by <strong>transmitting the next 4 bytes from the Message Buffer</strong>…</p>
-<div class="example-wrap"><pre class="language-c">/// For Rx FIFO Ready and Tx FIFO Ready, transfer 4 bytes of data. 
+<div class="example-wrap"><pre class="language-c"><code>/// For Rx FIFO Ready and Tx FIFO Ready, transfer 4 bytes of data. 
 /// Called by I2C Interrupt Handler. Based on i2c_transferbytes in hal_i2c.c
 static void test_i2c_transferbytes(i2c_msg_t *msg) {
     //  For I2C Write Operation and I2C Data Transmitted Interrupt...
@@ -484,12 +484,12 @@ static void test_i2c_transferbytes(i2c_msg_t *msg) {
         } else if (msg-&gt;idex == msg-&gt;len) {
             //  Otherwise suppress the Data Transmitted Interrupts
             I2C_IntMask(msg-&gt;i2cx, I2C_TX_FIFO_READY_INT, MASK);
-        } </pre></div>
+        } </code></pre></div>
 <p>If there is no more data to be transmitted, we suppress the I2C Data Transmitted Interrupts.</p>
 <p><code>do_write_data</code> is defined in the <strong>Low Level I2C HAL</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c"><code>bl_i2c.c</code></a></p>
 <h2 id="i2c-read-operation" class="section-header"><a href="#i2c-read-operation">7.2 I2C Read Operation</a></h2>
 <p>In an I2C Read Operation, we handle the I2C Data Received Interrupt by <strong>copying the received bytes into the Message Buffer, 4 bytes at a time</strong>…</p>
-<div class="example-wrap"><pre class="language-c">    //  For I2C Read Operation and I2C Data Received Interrupt...
+<div class="example-wrap"><pre class="language-c"><code>    //  For I2C Read Operation and I2C Data Received Interrupt...
     } else if (msg-&gt;direct == I2C_M_READ &amp;&amp; msg-&gt;event == EV_I2C_RXF_INT) {
         if (msg-&gt;idex &lt; msg-&gt;len) {
             //  If there is data to be received, copy 4 bytes into buffer
@@ -499,16 +499,16 @@ static void test_i2c_transferbytes(i2c_msg_t *msg) {
             I2C_IntMask(msg-&gt;i2cx, I2C_RX_FIFO_READY_INT, MASK);
         } 
     }
-}</pre></div>
+}</code></pre></div>
 <p>If there is no more data to be received, we suppress the I2C Data Received Interrupts.</p>
 <p><code>do_read_data</code> is defined in the <strong>Low Level I2C HAL</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c"><code>bl_i2c.c</code></a></p>
 <p>(FYI: <code>test_i2c_transferbytes</code> is the fixed version of <code>i2c_transferbytes</code> from the High Level I2C HAL <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c"><code>hal_i2c.c</code></a>. <a href="https://lupyuen.github.io/images/i2c-transferbytes.png">Here’s the fix</a>)</p>
 <p><img src="https://lupyuen.github.io/images/i2c-cartoon5.png" alt="Stop I2C Read" /></p>
 <h1 id="stop-i2c-read" class="section-header"><a href="#stop-i2c-read">8 Stop I2C Read</a></h1>
 <p>Here’s the final command that we’ll enter into the BL602 Firmware… It terminates the I2C transfer.</p>
-<div class="example-wrap"><pre class="language-text"> i2c_stop_read</pre></div>
+<div class="example-wrap"><pre class="language-text"><code> i2c_stop_read</code></pre></div>
 <p>This command calls <code>test_i2c_stop</code> to close the I2C Port: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L450-L460"><code>sdk_app_i2c/demo.c</code></a></p>
-<div class="example-wrap"><pre class="language-c">/// Stop reading data from I2C device
+<div class="example-wrap"><pre class="language-c"><code>/// Stop reading data from I2C device
 static void test_i2c_stop_read(char *buf, int len, int argc, char **argv) {
     //  Stop the I2C transfer on I2C Port 0
     test_i2c_stop(&amp;read_msg);
@@ -517,10 +517,10 @@ static void test_i2c_stop_read(char *buf, int len, int argc, char **argv) {
     for (int i = 0; i &lt; read_msg.len; i++) {
         printf(&quot;%02x\n&quot;, read_buf[i]);
     }
-}</pre></div>
+}</code></pre></div>
 <p>The command also dumps the data received in the I2C Message Buffer.</p>
 <p><code>test_i2c_stop</code> closes the I2C Port like so: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L236-L247"><code>sdk_app_i2c/demo.c</code></a></p>
-<div class="example-wrap"><pre class="language-c">/// Stop the I2C Transfer. Called by I2C Interrupt Handler. 
+<div class="example-wrap"><pre class="language-c"><code>/// Stop the I2C Transfer. Called by I2C Interrupt Handler. 
 /// Based on i2c_callback in hal_i2c.c
 static void test_i2c_stop(i2c_msg_t *msg) {
     //  Disable I2C Port
@@ -531,7 +531,7 @@ static void test_i2c_stop(i2c_msg_t *msg) {
 
     //  Clear any error status
     i2c_clear_status(msg-&gt;i2cx);
-}</pre></div>
+}</code></pre></div>
 <p><code>i2c_clear_status</code> is defined in the <strong>Low Level I2C HAL</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c"><code>bl_i2c.c</code></a></p>
 <p><img src="https://lupyuen.github.io/images/i2c-success.png" alt="Reading BME280 with sdk_app_i2c firmware" /></p>
 <p><em>Reading BME280 with sdk_app_i2c firmware</em></p>
@@ -543,7 +543,7 @@ static void test_i2c_stop(i2c_msg_t *msg) {
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/releases/tag/v2.0.0"><strong>Binary Release of <code>sdk_app_i2c</code></strong></a></li>
 </ul>
 <p>Alternatively, we may build the Firmware Binary File <code>sdk_app_i2c.bin</code> from the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/i2c/customer_app/sdk_app_i2c">source code</a>…</p>
-<div class="example-wrap"><pre class="language-bash"># Download the i2c branch of lupyuen&#39;s bl_iot_sdk
+<div class="example-wrap"><pre class="language-bash"><code># Download the i2c branch of lupyuen&#39;s bl_iot_sdk
 git clone --recursive --branch i2c https://github.com/lupyuen/bl_iot_sdk
 cd bl_iot_sdk/customer_app/sdk_app_i2c
 
@@ -553,7 +553,7 @@ export CONFIG_CHIP_NAME=BL602
 make
 
 # TODO: Change ~/blflash to the full path of blflash
-cp build_out/sdk_app_i2c.bin ~/blflash</pre></div>
+cp build_out/sdk_app_i2c.bin ~/blflash</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/pinecone#building-firmware">More details on building bl_iot_sdk</a></p>
 <p>(Remember to use the <strong><code>i2c</code></strong> branch, not the default <strong><code>master</code></strong> branch)</p>
 <h2 id="flash-the-firmware" class="section-header"><a href="#flash-the-firmware">9.2 Flash the firmware</a></h2>
@@ -605,7 +605,7 @@ cp build_out/sdk_app_i2c.bin ~/blflash</pre></div>
 </li>
 </ol>
 <p>Enter these commands to flash <code>sdk_app_i2c.bin</code> to BL602 over UART…</p>
-<div class="example-wrap"><pre class="language-bash"># TODO: Change ~/blflash to the full path of blflash
+<div class="example-wrap"><pre class="language-bash"><code># TODO: Change ~/blflash to the full path of blflash
 cd ~/blflash
 
 # For Linux:
@@ -619,7 +619,7 @@ cargo run flash sdk_app_i2c.bin \
     --baud-rate 230400
 
 # For Windows: Change COM5 to the BL602 Serial Port
-cargo run flash sdk_app_i2c.bin --port COM5</pre></div>
+cargo run flash sdk_app_i2c.bin --port COM5</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">More details on flashing firmware</a></p>
 <h2 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">9.3 Run the firmware</a></h2>
 <p>Set BL602 to <strong>Normal Mode</strong> (Non-Flashing) and restart the board…</p>
@@ -650,7 +650,7 @@ cargo run flash sdk_app_i2c.bin --port COM5</pre></div>
 </ol>
 <p>After restarting, connect to BL602’s UART Port at 2 Mbps like so…</p>
 <p><strong>For Linux:</strong></p>
-<div class="example-wrap"><pre class="language-bash">sudo screen /dev/ttyUSB0 2000000</pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>sudo screen /dev/ttyUSB0 2000000</code></pre></div>
 <p><strong>For macOS:</strong> Use CoolTerm (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>Alternatively:</strong> Use the Web Serial Terminal (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
@@ -663,49 +663,49 @@ cargo run flash sdk_app_i2c.bin --port COM5</pre></div>
 </li>
 <li>
 <p>Enter <code>help</code> to see the available commands…</p>
-<div class="example-wrap"><pre class="language-text">help
+<div class="example-wrap"><pre class="language-text"><code>help
 ====User Commands====
 i2c_status               : I2C status
 i2c_init                 : Init I2C port
 i2c_start_read           : Start reading I2C data
-i2c_stop_read            : Stop reading I2C data</pre></div></li>
+i2c_stop_read            : Stop reading I2C data</code></pre></div></li>
 <li>
 <p>First we <strong>initialise our I2C Port</strong>. </p>
 <p>Enter this command…</p>
-<div class="example-wrap"><pre class="language-text">i2c_init</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>i2c_init</code></pre></div>
 <p>(Earlier we’ve seen the code for this command)</p>
 </li>
 <li>
 <p>Before doing any I2C business, let’s <strong>dump the Interrupt Counters</strong> to see which I2C Interrupts get triggered…</p>
-<div class="example-wrap"><pre class="language-text">i2c_status</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>i2c_status</code></pre></div>
 <p>We should see…</p>
-<div class="example-wrap"><pre class="language-text">Interrupts: 0  NACK:       0
+<div class="example-wrap"><pre class="language-text"><code>Interrupts: 0  NACK:       0
 Trans End:  0  Arb Lost:   0
 Tx Ready:   0  FIFO Error: 0
-Rx Ready:   0  Unknown:    0</pre></div>
+Rx Ready:   0  Unknown:    0</code></pre></div>
 <p>Which means that no I2C Interrupts have been triggered yet.</p>
 </li>
 <li>
 <p>Now we <strong>start the I2C Read Operation</strong>…</p>
-<div class="example-wrap"><pre class="language-text">i2c_start_read</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>i2c_start_read</code></pre></div>
 <p>(We’ve seen the code for this command as well)</p>
 </li>
 <li>
 <p>Again we dump the Interrupt Counters…</p>
-<div class="example-wrap"><pre class="language-text">i2c_status</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>i2c_status</code></pre></div>
 <p>Aha Something Different! We have encountered <strong>one interrupt for Data Received</strong> (Rx Ready), because BME280 has returned some I2C data to BL602…</p>
-<div class="example-wrap"><pre class="language-text">Interrupts: 2  NACK:       0
+<div class="example-wrap"><pre class="language-text"><code>Interrupts: 2  NACK:       0
 Trans End:  1  Arb Lost:   0
 Tx Ready:   0  FIFO Error: 0
-Rx Ready:   1  Unknown:    0    </pre></div>
+Rx Ready:   1  Unknown:    0    </code></pre></div>
 <p>After receiving the data (one byte) from BME280 (and saving it), our Interrupt Handler terminates the I2C connection.</p>
 <p>Hence we see <strong>one interrupt for Transaction End</strong>. We’re done!</p>
 </li>
 <li>
 <p>To <strong>check the data received</strong>, enter this command…</p>
-<div class="example-wrap"><pre class="language-text">i2c_stop_read</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>i2c_stop_read</code></pre></div>
 <p>Remember that we’re reading the Chip ID from BME280. We should see this Chip ID…</p>
-<div class="example-wrap"><pre class="language-text">60</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>60</code></pre></div>
 <p>(For BMP280 the Chip ID is <code>0x58</code>)</p>
 </li>
 </ol>
@@ -723,9 +723,9 @@ Rx Ready:   1  Unknown:    0    </pre></div>
 <li>
 <p>Our program uses <strong>shared variables for I2C Read/Write Operations.</strong></p>
 <p>Remember these?</p>
-<div class="example-wrap"><pre class="language-c">static i2c_msg_t *gpstmsg;    //  Global pointer to current I2C Message
+<div class="example-wrap"><pre class="language-c"><code>static i2c_msg_t *gpstmsg;    //  Global pointer to current I2C Message
 static i2c_msg_t read_msg;    //  Message for reading I2C Data
-static uint8_t read_buf[32];  //  Buffer for reading I2C Data</pre></div>
+static uint8_t read_buf[32];  //  Buffer for reading I2C Data</code></pre></div>
 <p>These global variables will get really confused when we talk to multiple I2C Sensors.</p>
 <p>In fact, the entire <strong>I2C Port is a shared resource</strong>! It needs to be protected from overlapping I2C Operations.</p>
 <p><strong>Solution:</strong> Our program should use a <strong>Semaphore or a Mutex Lock</strong> to prevent concurrent updates to the shared variables.</p>
@@ -839,11 +839,11 @@ static uint8_t read_buf[32];  //  Buffer for reading I2C Data</pre></div>
 <p>Here’s how I tracked down my first RISC-V Exception and fixed it…</p>
 <p><img src="https://lupyuen.github.io/images/i2c-exception.png" alt="RISC-V Exception in sdk_app_i2c" /></p>
 <p>When our program <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/"><code>sdk_app_i2c</code></a> is sending I2C data, the program crashes with the RISC-V Exception shown above…</p>
-<div class="example-wrap"><pre class="language-text">start_write_data
+<div class="example-wrap"><pre class="language-text"><code>start_write_data
 Exception Entry---&gt;&gt;&gt;
 mcause 30000007, mepc 23008fe2, mtval 00000014
 Exception code: 7
-msg: Store/AMO access fault</pre></div>
+msg: Store/AMO access fault</code></pre></div>
 <p>What does this mean?</p>
 <ul>
 <li>
@@ -901,11 +901,11 @@ msg: Store/AMO access fault</pre></div>
 </ul>
 <p><em>How did we get the RISC-V Disassembly?</em></p>
 <p>We generate RISC-V Disassembly <code>sdk_app_i2c.S</code> from ELF Executable <code>sdk_app_i2c.elf</code> with this command…</p>
-<div class="example-wrap"><pre class="language-bash">riscv-none-embed-objdump \
+<div class="example-wrap"><pre class="language-bash"><code>riscv-none-embed-objdump \
     -t -S --demangle --line-numbers --wide \
     sdk_app_i2c.elf \
     &gt;sdk_app_i2c.S \
-    2&gt;&amp;1</pre></div>
+    2&gt;&amp;1</code></pre></div>
 <p><em>Is it safe to comment out <code>hal_i2c_init</code>?</em></p>
 <p>Not quite. When we comment out <code>hal_i2c_init</code>, we disable the High Level I2C HAL functions in our demo firmware <a href="https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/"><code>sdk_app_i2c</code></a></p>
 <p>That’s the reason why we haven’t merged the <code>i2c</code> branch to the <code>master</code> branch…</p>
@@ -972,7 +972,7 @@ msg: Store/AMO access fault</pre></div>
 </li>
 <li>
 <p>To read Register <code>0xD0</code> (Chip ID) from BME280, enter this command…</p>
-<div class="example-wrap"><pre class="language-text">[0xee 0xd0] [0xef r]</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>[0xee 0xd0] [0xef r]</code></pre></div>
 <p>(More about this later)</p>
 </li>
 <li>
@@ -982,7 +982,7 @@ msg: Store/AMO access fault</pre></div>
 </li>
 </ol>
 <p>We tested BME280 with this Bus Pirate I2C command…</p>
-<div class="example-wrap"><pre class="language-text">    [0xee 0xd0] [0xef r]</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>    [0xee 0xd0] [0xef r]</code></pre></div>
 <p>This means that Bus Pirate will initiate two I2C Transactions, indicated by <strong><code>[ ... ]</code></strong></p>
 <ol>
 <li>
@@ -996,9 +996,9 @@ msg: Store/AMO access fault</pre></div>
 </ol>
 <p>To sum up: Bus Pirate initiates two <code>[ ... ]</code> transactions. The transactions will send 3 bytes (<code>0xEE</code>, <code>0xD0</code>, <code>0xEF</code>) and receive 1 byte (<code>0x60</code>).</p>
 <p>This is identical to the I2C data transmitted by BL602 to BME280 that have seen earlier in the article…</p>
-<div class="example-wrap"><pre class="language-text">    [Start] 0xEE  0xD0  [Stop]
+<div class="example-wrap"><pre class="language-text"><code>    [Start] 0xEE  0xD0  [Stop]
 
-    [Start] 0xEF [Read] [Stop]</pre></div>
+    [Start] 0xEF [Read] [Stop]</code></pre></div>
 <p>For help on other Bus Pirate commands, enter <strong><code>?</code></strong></p>
 <p><img src="https://lupyuen.github.io/images/i2c-buspirate1.png" alt="Bus Pirate Help" /></p>
 <p><a href="http://dangerousprototypes.com/docs/I2C">Check out the I2C Guide for Bus Pirate</a></p>

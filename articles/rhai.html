@@ -172,26 +172,26 @@
 <h2 id="variables-and-expressions" class="section-header"><a href="#variables-and-expressions">2.1 Variables and Expressions</a></h2>
 <p>This Rhai Script evaluates to the value 42…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
 <span class="comment">//  Rhai Variables and Expression</span>
 <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="number">40</span>; 
 <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="number">2</span>;
-<span class="ident">a</span> <span class="op">+</span> <span class="ident">b</span> </pre></div>
+<span class="ident">a</span> <span class="op">+</span> <span class="ident">b</span> </code></pre></div>
 <h2 id="loops-and-conditionals" class="section-header"><a href="#loops-and-conditionals">2.2 Loops and Conditionals</a></h2>
 <p><strong><code>loop</code></strong>, <strong><code>break</code></strong>, <strong><code>print</code></strong> and <strong><code>if</code></strong> (simple conditionals) shall be supported…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
 <span class="comment">//  Rhai Loop and Conditional</span>
 <span class="kw">loop</span> { 
   <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="number">1</span>;
   <span class="ident">print</span>(<span class="ident">a</span>);
   <span class="kw">if</span> <span class="ident">a</span> <span class="op">=</span><span class="op">=</span> <span class="number">1</span> { <span class="kw">break</span>; }
-}</pre></div>
+}</code></pre></div>
 <p>See the next section for another loop that we shall support: <code>for i in range(0, 10)</code></p>
 <h2 id="rust-functions-and-modules" class="section-header"><a href="#rust-functions-and-modules">2.3 Rust Functions and Modules</a></h2>
 <p>This Rhai Script blinks the LED on BL602…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
 <span class="comment">//  Rhai Blinky: Blink the LED connected on BL602 GPIO 11</span>
 <span class="kw">let</span> <span class="ident">LED_GPIO</span> <span class="op">=</span> <span class="number">11</span>;
 
@@ -209,14 +209,14 @@
 
   <span class="comment">//  Sleep 1 second</span>
   <span class="ident">time_delay</span>(<span class="number">1000</span>);
-}</pre></div>
+}</code></pre></div>
 <p><strong><code>time_delay</code></strong> is a <strong>Rust Function</strong> that we shall import into the Rhai Scripting Engine.</p>
 <p><strong><code>gpio</code></strong> is a <strong>Rust Module</strong> that we shall import into Rhai.</p>
 <p>The <code>gpio</code> module has two functions: <strong><code>enable_output</code></strong> and <strong><code>output_set</code></strong>.</p>
 <h1 id="add-rhai-scripting-to-simulator" class="section-header"><a href="#add-rhai-scripting-to-simulator">3 Add Rhai Scripting to Simulator</a></h1>
 <p>We begin by adding the Rhai Scripting Engine to our <strong>WebAssembly Simulator</strong>: <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L21-L98"><code>bl602-script/lib.rs</code></a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
 <span class="doccomment">/// This function will be called by </span>
 <span class="doccomment">/// WebAssembly to run a script</span>
 <span class="attribute">#[<span class="ident">no_mangle</span>]</span>  <span class="comment">//  Don&#39;t mangle the function name</span>
@@ -240,14 +240,14 @@
 
   <span class="comment">//  Display the result</span>
   <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">result</span>);
-}</pre></div>
+}</code></pre></div>
 <p>This code <strong>initialises the Rhai engine</strong> and evaluates a Rhai Script that returns an integer result…</p>
-<div class="example-wrap"><pre class="language-text">42</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>42</code></pre></div>
 <p><a href="https://rhai.rs/book/engine/hello-world.html">(More about Rhai Scripting Engine)</a></p>
 <h2 id="register-function" class="section-header"><a href="#register-function">3.1 Register Function</a></h2>
 <p>To <strong>register a Rust Function</strong> that will be called by the Rhai Script, we do this: <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L21-L98"><code>bl602-script/lib.rs</code></a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
 <span class="comment">//  Init the Rhai script engine</span>
 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">engine</span> <span class="op">=</span> <span class="ident">Engine::new</span>();
 
@@ -265,10 +265,10 @@
 
 <span class="comment">//  Evaluate the Rhai Script (returns 0)</span>
 <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">engine</span>.<span class="ident">eval</span>::<span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">script</span>)
-  .<span class="ident">unwrap</span>() <span class="kw">as</span> <span class="ident">isize</span>;</pre></div>
+  .<span class="ident">unwrap</span>() <span class="kw">as</span> <span class="ident">isize</span>;</code></pre></div>
 <p><strong><code>time_delay</code></strong> is defined like so: <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L146-L161"><code>bl602-script/lib.rs</code></a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
 <span class="doccomment">/// Rhai Shim for Time Delay</span>
 <span class="doccomment">/// TODO: Modified parameter from u32 to i32</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">time_delay</span>(
@@ -283,7 +283,7 @@
   <span class="kw">unsafe</span> {  <span class="comment">//  Flag this code as unsafe because we&#39;re calling a C function</span>
     <span class="ident">ble_npl_time_delay</span>(<span class="ident">ticks</span> <span class="kw">as</span> <span class="ident">u32</span>);
   }
-}</pre></div>
+}</code></pre></div>
 <p><strong><code>time_delay</code></strong> is a Rust Shim Function that calls out to the C function <strong><code>ble_npl_time_delay</code></strong> which we have defined in our WebAssembly Simulator.</p>
 <p><a href="https://lupyuen.github.io/articles/rustsim#json-stream-of-simulation-events">(More about <code>time_delay</code>)</a></p>
 <p><em>Why not register <code>ble_npl_time_delay</code> with Rhai and rename it as <code>time_delay</code>?</em></p>
@@ -292,7 +292,7 @@
 <h2 id="register-module" class="section-header"><a href="#register-module">3.2 Register Module</a></h2>
 <p>Now we register the <strong><code>gpio</code></strong> module with Rhai: <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L21-L98"><code>bl602-script/lib.rs</code></a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
 <span class="comment">//  Init the Rhai script engine</span>
 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">engine</span> <span class="op">=</span> <span class="ident">Engine::new</span>();
 
@@ -300,10 +300,10 @@
 <span class="kw">let</span> <span class="ident">module</span> <span class="op">=</span> <span class="macro">exported_module!</span>(<span class="ident">gpio</span>);
 
 <span class="comment">//  Register our module as a Static Module</span>
-<span class="ident">engine</span>.<span class="ident">register_static_module</span>(<span class="string">&quot;gpio&quot;</span>, <span class="ident">module</span>.<span class="ident">into</span>());</pre></div>
+<span class="ident">engine</span>.<span class="ident">register_static_module</span>(<span class="string">&quot;gpio&quot;</span>, <span class="ident">module</span>.<span class="ident">into</span>());</code></pre></div>
 <p><strong><code>gpio</code></strong> is a Rust Module that exports the functions <strong><code>enable_output</code></strong> and <strong><code>output_set</code></strong>, which may be called like so…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
 <span class="comment">//  Rhai Script to be evaluated</span>
 <span class="kw">let</span> <span class="ident">script</span> <span class="op">=</span> <span class="string">r#&quot; 
   //  Blink the LED connected on BL602 GPIO 11
@@ -331,10 +331,10 @@
 
 <span class="comment">//  Evaluate the Rhai Script (returns 0)</span>
 <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">engine</span>.<span class="ident">eval</span>::<span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">script</span>)
-  .<span class="ident">unwrap</span>() <span class="kw">as</span> <span class="ident">isize</span>;</pre></div>
+  .<span class="ident">unwrap</span>() <span class="kw">as</span> <span class="ident">isize</span>;</code></pre></div>
 <p>Below is the definition of the <strong><code>gpio</code></strong> module: <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L100-L144"><code>bl602-script/lib.rs</code></a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
 <span class="doccomment">/// GPIO Module will be exported to Rhai as a Static Module</span>
 <span class="attribute">#[<span class="ident">export_module</span>]</span>
 <span class="kw">mod</span> <span class="ident">gpio</span> {
@@ -361,7 +361,7 @@
       <span class="comment">//  TODO: Throw exception if result is non-zero</span>
     }
   }
-}</pre></div>
+}</code></pre></div>
 <p><em>So <code>gpio</code> module is also a Rust Shim?</em></p>
 <p>Yep. Maybe someday we’ll use a Rust Procedural Macro to <strong>generate the shims</strong>, similar to this…</p>
 <ul>
@@ -388,17 +388,17 @@
 </ol>
 <p>From <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L21-L98"><code>bl602-script/lib.rs</code></a> …</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
 <span class="comment">//  Init the Rhai script engine</span>
 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">engine</span> <span class="op">=</span> <span class="ident">Engine::new</span>();
 
 <span class="comment">//  Omitted: Create a Rhai module from the plugin module</span>
 <span class="comment">//  Omitted: Register `gpio` module as a Static Module</span>
 <span class="comment">//  Omitted: Register `time_delay` function with Rhai</span>
-...</pre></div>
+...</code></pre></div>
 <p>Below is the kitchen-sink <strong>Rhai Script</strong> that will be converted to uLisp…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
 <span class="comment">//  Rhai Script to be parsed</span>
 <span class="kw">let</span> <span class="ident">script</span> <span class="op">=</span> <span class="string">r#&quot; 
   //  Rhai Loop and Conditional
@@ -431,40 +431,40 @@
   let a = 40; 
   let b = 2;
   a + b 
-&quot;#</span>;</pre></div>
+&quot;#</span>;</code></pre></div>
 <p>Now comes the interesting part: Rhai lets us <strong>compile our script</strong> into an <strong>Abstract Syntax Tree</strong>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
 <span class="comment">//  Compile the Rhai Script into</span>
 <span class="comment">//  an Abstract Syntax Tree</span>
 <span class="kw">let</span> <span class="ident">ast</span> <span class="op">=</span> <span class="ident">engine</span>.<span class="ident">compile</span>(<span class="ident">script</span>)
-  .<span class="ident">unwrap</span>();</pre></div>
+  .<span class="ident">unwrap</span>();</code></pre></div>
 <p>(More about the Abstract Syntax Tree in a while)</p>
 <p>We may <strong>walk the Abstract Syntax Tree</strong> and <strong>convert each node</strong> to uLisp…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
 <span class="comment">//  Transcode the Rhai Abstract </span>
 <span class="comment">//  Syntax Tree to uLisp</span>
-<span class="ident">transcode::transcode</span>(<span class="kw-2">&amp;</span><span class="ident">ast</span>);</pre></div>
+<span class="ident">transcode::transcode</span>(<span class="kw-2">&amp;</span><span class="ident">ast</span>);</code></pre></div>
 <p>(More about <code>transcode</code> later)</p>
 <p>FYI: This is how we <strong>evaluate the compiled Rhai Script</strong>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
 <span class="comment">//  Evaluate the compiled Rhai Script (returns 42)</span>
 <span class="kw">let</span> <span class="ident">result</span>: <span class="ident">i32</span> <span class="op">=</span> <span class="ident">engine</span>.<span class="ident">eval_ast</span>(<span class="kw-2">&amp;</span><span class="ident">ast</span>)
-  .<span class="ident">unwrap</span>();</pre></div>
+  .<span class="ident">unwrap</span>();</code></pre></div>
 <p>Let’s learn about the Abstract Syntax Tree…</p>
 <h2 id="abstract-syntax-tree" class="section-header"><a href="#abstract-syntax-tree">4.1 Abstract Syntax Tree</a></h2>
 <p><em>What is an Abstract Syntax Tree?</em></p>
 <p>The Rhai Scripting Engine <strong>parses our Rhai Script</strong> and produces a <strong>tree of syntax elements</strong>… That’s the <strong>Abstract Syntax Tree</strong>.</p>
 <p>This Rhai Script…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
 <span class="kw">let</span> <span class="ident">LED_GPIO</span> <span class="op">=</span> <span class="number">11</span>;
-<span class="ident">gpio::enable_output</span>(<span class="ident">LED_GPIO</span>, <span class="number">0</span>, <span class="number">0</span>);</pre></div>
+<span class="ident">gpio::enable_output</span>(<span class="ident">LED_GPIO</span>, <span class="number">0</span>, <span class="number">0</span>);</code></pre></div>
 <p>Generates this <strong>Abstract Syntax Tree</strong>: <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L227-L252"><code>bl602-script/lib.rs</code></a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
 <span class="ident">Var</span>(
   <span class="number">11</span> @ <span class="number">11</span>:<span class="number">24</span>,
   <span class="string">&quot;LED_GPIO&quot;</span> @ <span class="number">11</span>:<span class="number">13</span>,
@@ -490,7 +490,7 @@
     <span class="ident">capture</span>: <span class="bool-val">false</span>,
   },
   <span class="number">14</span>:<span class="number">15</span>,
-)</pre></div>
+)</code></pre></div>
 <p>(<code>StackSlot</code> refers to the values in the <code>constants</code> array)</p>
 <p>Let’s match the two…</p>
 <p><img src="https://lupyuen.github.io/images/rhai-ast2.jpg" alt="Rhai Script vs Abstract Syntax Tree" /></p>
@@ -506,7 +506,7 @@
 <p>(Since we’re converting Rhai Code to uLisp Code, let’s call it <strong>“transcoding”</strong> instead of “transpiling”)</p>
 <p>To transcode the compiled Rhai Code to uLisp, we <strong>walk the Abstract Syntax Tree</strong> and <strong>transcode each node to uLisp</strong>: <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L15-L27"><code>bl602-script/transcode.rs</code></a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
 <span class="doccomment">/// Transcode the compiled Rhai Script </span>
 <span class="doccomment">/// (Abstract Syntax Tree) to uLisp</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">transcode</span>(<span class="ident">ast</span>: <span class="kw-2">&amp;</span><span class="ident">AST</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
@@ -521,11 +521,11 @@
 
   <span class="comment">//  Return the transcoded uLisp S-Expression</span>
   <span class="ident">output</span>
-}</pre></div>
+}</code></pre></div>
 <p>(More about <code>scope</code> in a while)</p>
 <p><strong><code>ast.walk</code></strong> calls <strong><code>transcode_node</code></strong> to transcode each node in the Abstract Syntax Tree: <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L29-L59"><code>transcode.rs</code></a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
 <span class="doccomment">/// Transcode the Rhai AST Node to uLisp</span>
 <span class="kw">fn</span> <span class="ident">transcode_node</span>(<span class="ident">nodes</span>: <span class="kw-2">&amp;</span>[<span class="ident">ASTNode</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
   <span class="comment">//  We take the root node, ignore the subnodes</span>
@@ -555,7 +555,7 @@
 
   <span class="comment">//  Return true to walk the next node in the tree</span>
   <span class="bool-val">true</span>
-}</pre></div>
+}</code></pre></div>
 <p>Each node is either a Rhai <strong>Statement or Expression</strong>. We call…</p>
 <ul>
 <li>
@@ -570,16 +570,16 @@
 <h2 id="transcode-statement" class="section-header"><a href="#transcode-statement">4.3 Transcode Statement</a></h2>
 <p>We start with the <strong><code>let</code></strong> Statement that declares a variable…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">let</span> <span class="ident">LED_GPIO</span> <span class="op">=</span> <span class="number">11</span></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<span class="kw">let</span> <span class="ident">LED_GPIO</span> <span class="op">=</span> <span class="number">11</span></code></pre></div>
 <p>This will be transcoded to uLisp like so…</p>
-<div class="example-wrap"><pre class="language-text">( let* 
+<div class="example-wrap"><pre class="language-text"><code>( let* 
   (( LED_GPIO 11 ))
   ...
-)</pre></div>
+)</code></pre></div>
 <p>Watch how we transcode the <strong><code>let</code></strong> Statement: <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L61-L89"><code>transcode.rs</code></a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
 <span class="doccomment">/// Transcode a Rhai Statement to uLisp</span>
 <span class="kw">fn</span> <span class="ident">transcode_stmt</span>(<span class="ident">stmt</span>: <span class="kw-2">&amp;</span><span class="ident">Stmt</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
   <span class="kw">match</span> <span class="ident">stmt</span> {
@@ -596,26 +596,26 @@
 
       <span class="comment">//  Scope will end when the parent scope ends</span>
       <span class="string">&quot;&quot;</span>.<span class="ident">to_string</span>()
-    }</pre></div>
+    }</code></pre></div>
 <p><em>Why do we need uLisp Scopes?</em></p>
 <p>Hint: The transcoded uLisp will look like this…</p>
-<div class="example-wrap"><pre class="language-text">( let* 
+<div class="example-wrap"><pre class="language-text"><code>( let* 
   (( LED_GPIO 11 ))
   ...
-)</pre></div>
+)</code></pre></div>
 <p>Where <strong>“<code>...</code>”</strong> refers to the <strong>uLisp Scope</strong> of the statements that will be transcoded after the <strong><code>let</code></strong> statement.</p>
 <p>(More about uLisp Scopes in a while)</p>
 <p>Next: <strong><code>for</code></strong> Statements like this…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="ident">range</span>(<span class="number">0</span>, <span class="number">10</span>) { ... }</pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="ident">range</span>(<span class="number">0</span>, <span class="number">10</span>) { ... }</code></pre></div>
 <p>Shall be transcoded to uLisp like so…</p>
-<div class="example-wrap"><pre class="language-text">( dotimes (i 10)
+<div class="example-wrap"><pre class="language-text"><code>( dotimes (i 10)
   ...
-)</pre></div>
+)</code></pre></div>
 <p>This is how we transcode the <strong><code>for</code></strong> Statement: <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L91-L142"><code>transcode.rs</code></a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
   <span class="kw">match</span> <span class="ident">stmt</span> {
     ...
     <span class="comment">//  For Statement: `for i in range(0, 10) { ... }`</span>
@@ -644,20 +644,20 @@
 
       <span class="comment">//  End the uLisp Scope and add the transcoded uLisp S-Expression to the parent scope</span>
       <span class="ident">scope::end_scope</span>(<span class="ident">scope_index</span>)
-    }        </pre></div>
+    }        </code></pre></div>
 <p><strong><code>transcode_block</code></strong> transcodes the block of statements in the body of a <strong><code>for</code></strong> loop.</p>
 <p>(Coming up in the next section)</p>
 <p><strong><code>get_range</code></strong> is defined here: <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L345-L391"><code>transcode.rs</code></a></p>
 <p><strong>Function Calls</strong> are transcoded as a special kind of Expression: <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L91-L142"><code>transcode.rs</code></a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
   <span class="kw">match</span> <span class="ident">stmt</span> {
     ...
     <span class="comment">//  Function Call: `gpio::enable_output(LED_GPIO, 0, 0)`</span>
     <span class="ident">Stmt::FnCall</span>(<span class="ident">expr</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format!</span>(
       <span class="string">&quot;{}&quot;</span>,
       <span class="ident">transcode_fncall</span>(<span class="ident">expr</span>)
-    ),</pre></div>
+    ),</code></pre></div>
 <p>(We’ll meet <code>transcode_fncall</code> in a while)</p>
 <p>Check out the source code to see how we transcode these statements…</p>
 <ul>
@@ -676,7 +676,7 @@
 <p>Our transcoder calls <strong><code>transcode_block</code></strong> to transcode a block of statements (<code>for</code>, <code>loop</code>, <code>if</code>, …)</p>
 <p>From <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L324-L333"><code>transcode.rs</code></a> …</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
 <span class="doccomment">/// Transcode the Statement Block and </span>
 <span class="doccomment">/// the transcoded uLisp S-Expression </span>
 <span class="doccomment">/// into the current scope</span>
@@ -689,13 +689,13 @@
     <span class="comment">//  Add the transcoded uLisp S-Expression to the current scope</span>
     <span class="ident">scope::add_to_scope</span>(<span class="kw-2">&amp;</span><span class="ident">output</span>);
   });
-}</pre></div>
+}</code></pre></div>
 <p>This code transcodes every statement in the block.</p>
 <p><a href="https://docs.rs/rhai/1.0.4/rhai/struct.StmtBlock.html">(More about Rhai Blocks)</a></p>
 <h2 id="transcode-expression" class="section-header"><a href="#transcode-expression">4.5 Transcode Expression</a></h2>
 <p><strong><code>transcode_expr</code></strong> transcodes an Expression from Rhai to uLisp: <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L255-L269"><code>transcode.rs</code></a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
 <span class="doccomment">/// Transcode a Rhai Expression to uLisp</span>
 <span class="kw">fn</span> <span class="ident">transcode_expr</span>(<span class="ident">expr</span>: <span class="kw-2">&amp;</span><span class="ident">Expr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
   <span class="kw">match</span> <span class="ident">expr</span> {
@@ -710,7 +710,7 @@
 
     <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;Unknown expr: {:#?}&quot;</span>, <span class="ident">expr</span>)
   }
-}</pre></div>
+}</code></pre></div>
 <p>Which means that…</p>
 <ul>
 <li>
@@ -722,13 +722,13 @@
 </ul>
 <p>Now for <strong>Function Calls</strong>: We shall transcode…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="ident">gpio::enable_output</span>(<span class="ident">LED_GPIO</span>, <span class="number">0</span>, <span class="number">0</span>)</pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<span class="ident">gpio::enable_output</span>(<span class="ident">LED_GPIO</span>, <span class="number">0</span>, <span class="number">0</span>)</code></pre></div>
 <p>To…</p>
-<div class="example-wrap"><pre class="language-text">( bl_gpio_enable_output LED_GPIO 0 0 )</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>( bl_gpio_enable_output LED_GPIO 0 0 )</code></pre></div>
 <p>Here’s how: <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L271-L322"><code>transcode.rs</code></a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
 <span class="doccomment">/// Transcode a Rhai Function Call to uLisp:</span>
 <span class="doccomment">/// `gpio::enable_output(LED_GPIO, 0, 0)`</span>
 <span class="kw">fn</span> <span class="ident">transcode_fncall</span>(<span class="ident">expr</span>: <span class="kw-2">&amp;</span><span class="ident">FnCallExpr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
@@ -736,11 +736,11 @@
   <span class="kw">let</span> <span class="ident">namespace</span> <span class="op">=</span> <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="ident">expr</span>.<span class="ident">namespace</span> {
     <span class="prelude-val">Some</span>(<span class="ident">ns</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format!</span>(<span class="string">&quot;bl_{:#?}_&quot;</span>, <span class="ident">ns</span>),  <span class="comment">//  TODO</span>
     <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;&quot;</span>.<span class="ident">to_string</span>()
-  };</pre></div>
+  };</code></pre></div>
 <p><strong><code>transcode_fncall</code></strong> begins by converting the Rhai Namespace (like <strong>“<code>gpio::</code>”</strong>) to its uLisp equivalent (like <strong>“<code>bl_gpio_</code>”</strong>)</p>
 <p>Next it composes the <strong>list of arguments</strong> for the function call…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
   <span class="comment">//  Compose arguments e.g. `LED_GPIO 0 0 `</span>
   <span class="kw">let</span> <span class="ident">args</span> <span class="op">=</span> <span class="ident">expr</span>.<span class="ident">args</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">arg</span><span class="op">|</span> {
     <span class="comment">//  Transcode each argument</span>
@@ -752,10 +752,10 @@
       <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">transcode_expr</span>(<span class="kw-2">&amp;</span><span class="ident">arg</span>)
     };
     <span class="ident">val</span> <span class="op">+</span> <span class="string">&quot; &quot;</span>
-  });</pre></div>
+  });</code></pre></div>
 <p>And concatenates everything into a <strong>uLisp Function Call</strong>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
   <span class="comment">//  Transcode to uLisp Function Call:</span>
   <span class="comment">//  `( bl_gpio_enable_output LED_GPIO 0 0 )`</span>
   <span class="macro">format!</span>(
@@ -764,13 +764,13 @@
     <span class="ident">rename_function</span>(<span class="kw-2">&amp;</span><span class="ident">expr</span>.<span class="ident">name</span>.<span class="ident">as_str</span>()),  <span class="comment">//  `enable_output`, `+` or `mod`</span>
     <span class="ident">args</span>.<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>()               <span class="comment">//  `LED_GPIO 0 0 `</span>
   )
-}</pre></div>
+}</code></pre></div>
 <p><em>What’s <code>rename_function</code>?</em></p>
 <p><strong>Rhai Operators</strong> are parsed as Function Calls…</p>
 <p><strong>“<code>a % b</code>”</strong> is represented in the Abstract Syntax Tree as <strong>“<code>% (a, b)</code>”</strong></p>
 <p>We call <strong><code>rename_function</code></strong> to convert the Rhai Operator to its uLisp equivalent: <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L335-L343"><code>transcode.rs</code></a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
 <span class="doccomment">/// Rename a Rhai Function or Operator Name to uLisp:</span>
 <span class="doccomment">/// `%` becomes `mod`, `==` becomes `eq`</span>
 <span class="kw">fn</span> <span class="ident">rename_function</span>(<span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
@@ -779,7 +779,7 @@
     <span class="string">&quot;==&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;eq&quot;</span>,   <span class="comment">//  `==` becomes `eq`</span>
     <span class="kw">_</span>    <span class="op">=</span><span class="op">&gt;</span> <span class="ident">name</span>    <span class="comment">//  Else pass through</span>
   }.<span class="ident">to_string</span>()
-}</pre></div>
+}</code></pre></div>
 <p>This means that <strong>“<code>a % b</code>”</strong> in Rhai is rewritten as <strong>“<code>( mod a b )</code>”</strong> in uLisp.</p>
 <p><a href="https://docs.rs/rhai/1.0.4/rhai/enum.Expr.html">(More about Rhai Expressions)</a></p>
 <p><a href="https://docs.rs/rhai/1.0.4/rhai/struct.FnCallExpr.html">(More about Rhai Function Calls)</a></p>
@@ -795,7 +795,7 @@
 <h1 id="run-the-transcoded-ulisp" class="section-header"><a href="#run-the-transcoded-ulisp">5 Run the Transcoded uLisp</a></h1>
 <p>Remember our <a href="https://lupyuen.github.io/articles/rhai#convert-rhai-to-ulisp"><strong>kitchen-sink Rhai Script</strong></a> from earlier?</p>
 <p>Below is the uLisp Code <strong>generated by our Rhai Transcoder</strong>: <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L550-L571"><code>bl602-script/lib.rs</code></a></p>
-<div class="example-wrap"><pre class="language-text">( let* () 
+<div class="example-wrap"><pre class="language-text"><code>( let* () 
   ( loop 
     ( let* (( a 1 )) 
       ( print a )
@@ -816,7 +816,7 @@
       )
     )
   )
-)</pre></div>
+)</code></pre></div>
 <p>Yep it looks like proper uLisp!</p>
 <p>Just that we need to <strong>define these BL602 Functions</strong> in uLisp…</p>
 <ul>
@@ -869,7 +869,7 @@
 <p>Click the <strong><code>Rhai</code></strong> tab at the top.</p>
 <p>We should see this <strong>Rhai Script generated by Blockly</strong>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
 <span class="comment">//  Loop forever</span>
 <span class="kw">loop</span> {
     <span class="comment">//  Configure GPIO 11 for Output</span>
@@ -889,7 +889,7 @@
 
     <span class="comment">//  Wait 1 second</span>
     <span class="ident">time_delay</span>(<span class="number">1000</span>);
-}</pre></div>
+}</code></pre></div>
 <p>(Yeah the Rhai code generator needs improving)</p>
 <p><img src="https://lupyuen.github.io/images/rhai-blockly2.png" alt="Rhai Script generated by Blockly" /></p>
 </li>
@@ -949,12 +949,12 @@
 <li>
 <p>In our Rhai Script, why did we write…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">let</span> <span class="ident">LED_GPIO</span> <span class="op">=</span> <span class="number">11</span>;</pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<span class="kw">let</span> <span class="ident">LED_GPIO</span> <span class="op">=</span> <span class="number">11</span>;</code></pre></div>
 <p>Instead of this?</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">const</span> <span class="ident">LED_GPIO</span> <span class="op">=</span> <span class="number">11</span>;</pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<span class="kw">const</span> <span class="ident">LED_GPIO</span> <span class="op">=</span> <span class="number">11</span>;</code></pre></div>
 <p>Because I’m targeting Rhai Scripting for learners who are new to coding microcontrollers.</p>
 <p>I’m pondering whether we should teach them <strong><code>let</code></strong> vs <strong><code>const</code></strong>. Or maybe start with <strong><code>let</code></strong> and teach <strong><code>const</code></strong> later?</p>
 <p><a href="https://github.com/lupyuen2/blockly-bl602/issues/1">(See this)</a></p>
@@ -974,8 +974,8 @@
 </li>
 <li>
 <p>There’s a minor quirk when building Rhai with <strong>AST support on WebAssembly</strong> (since we’re running our Rhai Transcoder on WebAssembly)…</p>
-<div class="example-wrap"><pre class="language-text">unresolved import `ast::FloatWrapper`
---&gt; rhai-1.0.2/src/lib.rs:230:44</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>unresolved import `ast::FloatWrapper`
+--&gt; rhai-1.0.2/src/lib.rs:230:44</code></pre></div>
 <p><a href="https://github.com/lupyuen/bl602-simulator/tree/transcode#build-bl602--bl604-rust-firmware-for-webassembly">Here is the workaround</a></p>
 </li>
 </ol>
@@ -995,7 +995,7 @@
 </ul>
 <p>This is how we <strong>extend the uLisp Interpreter</strong> by adding the above  functions in C…</p>
 <p>First we define the <strong>uLisp Shim Function</strong> in C: <a href="https://github.com/lupyuen/ulisp-bl602/blob/sdk/src/ulisp.c#L4136-L4163"><code>ulisp.c</code></a></p>
-<div class="example-wrap"><pre class="language-c">//  Expose the C function `bl_gpio_enable_output` to uLisp:
+<div class="example-wrap"><pre class="language-c"><code>//  Expose the C function `bl_gpio_enable_output` to uLisp:
 //  `int bl_gpio_enable_output(uint8_t pin, uint8_t pullup, uint8_t pulldown)`
 object *fn_bl_gpio_enable_output(object *args, object *env) {
   //  Fetch the `pin` parameter from uLisp
@@ -1023,28 +1023,28 @@ object *fn_bl_gpio_enable_output(object *args, object *env) {
   //  Return the result to uLisp
   //  TODO: Throw an exception if the result is non-zero
   return number(result);
-}</pre></div>
+}</code></pre></div>
 <p>Next we extend the <strong>Function Enum</strong>: <a href="https://github.com/lupyuen/ulisp-bl602/blob/sdk/src/ulisp.c#L196-L200"><code>ulisp.c</code></a></p>
-<div class="example-wrap"><pre class="language-c">enum function {
+<div class="example-wrap"><pre class="language-c"><code>enum function {
   ...
   //  Begin User Functions
   BL_GPIO_ENABLE_OUTPUT,
   BL_GPIO_OUTPUT_SET,
   TIME_DELAY,
-  //  End User Functions</pre></div>
+  //  End User Functions</code></pre></div>
 <p>Then we define the <strong>uLisp Function Name</strong>: <a href="https://github.com/lupyuen/ulisp-bl602/blob/sdk/src/ulisp.c#L4434-L4438"><code>ulisp.c</code></a></p>
-<div class="example-wrap"><pre class="language-c">// Insert your own function names here
+<div class="example-wrap"><pre class="language-c"><code>// Insert your own function names here
 const char str_bl_gpio_enable_output[] PROGMEM = &quot;bl_gpio_enable_output&quot;;
 const char str_bl_gpio_output_set[]    PROGMEM = &quot;bl_gpio_output_set&quot;;
-const char str_time_delay[]            PROGMEM = &quot;time_delay&quot;;</pre></div>
+const char str_time_delay[]            PROGMEM = &quot;time_delay&quot;;</code></pre></div>
 <p>Finally we add the uLisp Shim Function to the <strong>Symbol Lookup Table</strong>: <a href="https://github.com/lupyuen/ulisp-bl602/blob/sdk/src/ulisp.c#L4667-L4671"><code>ulisp.c</code></a></p>
-<div class="example-wrap"><pre class="language-c">// Built-in symbol lookup table
+<div class="example-wrap"><pre class="language-c"><code>// Built-in symbol lookup table
 const tbl_entry_t lookup_table[] PROGMEM = {
   ...
   // Insert your own table entries here
   { str_bl_gpio_enable_output, fn_bl_gpio_enable_output, 0x33 },
   { str_bl_gpio_output_set,    fn_bl_gpio_output_set,    0x22 },
-  { str_time_delay,            fn_time_delay,            0x11 },</pre></div>
+  { str_time_delay,            fn_time_delay,            0x11 },</code></pre></div>
 <p><em>What is <code>0x33</code>?</em></p>
 <p><strong><code>0x33</code></strong> means that our uLisp Function accepts</p>
 <ul>
@@ -1158,7 +1158,7 @@ const tbl_entry_t lookup_table[] PROGMEM = {
 </ul>
 <p><em>How do we define a Rhai Code Generator?</em></p>
 <p>We define the <strong><code>forever</code> Code Generator</strong> like so: <a href="https://github.com/lupyuen2/blockly-bl602/blob/master/generators/rhai/rhai_functions.js#L40-L50"><code>rhai_functions.js</code></a></p>
-<div class="example-wrap"><pre class="language-c">//  Emit Rhai code for the &quot;forever&quot; block. 
+<div class="example-wrap"><pre class="language-c"><code>//  Emit Rhai code for the &quot;forever&quot; block. 
 //  Inspired by MakeCode &quot;forever&quot; and Arduino &quot;loop&quot;.
 Blockly.Rhai[&#39;forever&#39;] = function(block) {
   var statements_stmts = Blockly.Rhai.statementToCode(block, &#39;STMTS&#39;);
@@ -1169,14 +1169,14 @@ Blockly.Rhai[&#39;forever&#39;] = function(block) {
     code + `}`,
   ].join(&#39;\n&#39;);
   return code;
-};</pre></div>
+};</code></pre></div>
 <p>This JavaScript function emits a <strong>Rhai loop</strong> that wraps the code inside the <strong><code>forever</code></strong> block like so…</p>
-<div class="example-wrap"><pre class="language-text">//  Loop forever
+<div class="example-wrap"><pre class="language-text"><code>//  Loop forever
 loop {
     ...Code inside the loop block...
-}</pre></div>
+}</code></pre></div>
 <p>And below is the <strong><code>digital write</code> Code Generator</strong>: <a href="https://github.com/lupyuen2/blockly-bl602/blob/master/generators/rhai/rhai_functions.js#L81-L94"><code>rhai_functions.js</code></a></p>
-<div class="example-wrap"><pre class="language-c">//  Emit Rhai code for the &quot;digtial write&quot; block. 
+<div class="example-wrap"><pre class="language-c"><code>//  Emit Rhai code for the &quot;digtial write&quot; block. 
 Blockly.Rhai[&#39;digital_write_pin&#39;] = function(block) {
   var dropdown_pin = block.getFieldValue(&#39;PIN&#39;);
   var dropdown_value = block.getFieldValue(&#39;VALUE&#39;);
@@ -1190,13 +1190,13 @@ Blockly.Rhai[&#39;digital_write_pin&#39;] = function(block) {
     ``
   ].join(&#39;\n&#39;);  
   return code;
-};</pre></div>
+};</code></pre></div>
 <p>This JavaScript function emits Rhai code that <strong>sets the GPIO Pin mode and output value</strong> like so…</p>
-<div class="example-wrap"><pre class="language-text">//  Configure GPIO 11 for Output
+<div class="example-wrap"><pre class="language-text"><code>//  Configure GPIO 11 for Output
 gpio::enable_output(11, 0, 0);
 
 //  Set GPIO 11 to High
-gpio::output_set(11, 1);</pre></div>
+gpio::output_set(11, 1);</code></pre></div>
 <p><em>What about the missing Rhai Code Generators?</em></p>
 <p>If the <strong>Community could help</strong> to fill in the <strong>missing Rhai Code Generators</strong>… That would be incredibly awesome! 🙏 👍 😀</p>
 

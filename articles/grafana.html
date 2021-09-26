@@ -129,9 +129,9 @@
 <p>We’ll use the values in the next chapter.</p>
 <h2 id="test-the-things-network-mqtt" class="section-header"><a href="#test-the-things-network-mqtt">1.1 Test The Things Network MQTT</a></h2>
 <p>To <strong>test the MQTT Server</strong> at The Things Network, enter this command…</p>
-<div class="example-wrap"><pre class="language-bash"># Change au1.cloud.thethings.network to our MQTT Public Address
+<div class="example-wrap"><pre class="language-bash"><code># Change au1.cloud.thethings.network to our MQTT Public Address
 # Change luppy-application@ttn to our MQTT Username
-mosquitto_sub -h au1.cloud.thethings.network -t &quot;#&quot; -u &quot;luppy-application@ttn&quot; -P &quot;YOUR_API_KEY&quot; -d</pre></div>
+mosquitto_sub -h au1.cloud.thethings.network -t &quot;#&quot; -u &quot;luppy-application@ttn&quot; -P &quot;YOUR_API_KEY&quot; -d</code></pre></div>
 <p>MQTT JSON Messages will appear whenever our IoT Device joins the network or transmits data.</p>
 <p><a href="https://github.com/lupyuen/the-things-network-datasource#mqtt-log">(See sample MQTT Log)</a></p>
 <p><a href="https://www.thethingsindustries.com/docs/integrations/mqtt/">(More about The Things Network MQTT)</a></p>
@@ -197,18 +197,18 @@ mosquitto_sub -h au1.cloud.thethings.network -t &quot;#&quot; -u &quot;luppy-app
 <p>Set the Conditions and click <strong>“Apply”</strong></p>
 <p><img src="https://lupyuen.github.io/images/grafana-dashboard8.png" alt="Filter Data" /></p>
 <p>The above filter matches the <strong>Device ID</strong> with the Regular Expression…</p>
-<div class="example-wrap"><pre class="language-text">eui-70b3.*</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>eui-70b3.*</code></pre></div>
 <p>Which means that only Device IDs starting with <strong>“eui-70b3”</strong> will be rendered.</p>
 <h1 id="cbor-concise-binary-object-representation" class="section-header"><a href="#cbor-concise-binary-object-representation">4 CBOR: Concise Binary Object Representation</a></h1>
 <p>TODO</p>
 <p>We assume that Message Payloads are encoded in <a href="https://en.wikipedia.org/wiki/CBOR"><strong>CBOR Format</strong></a>…</p>
-<div class="example-wrap"><pre class="language-json">{ &quot;t&quot;: 1234 }</pre></div>
+<div class="example-wrap"><pre class="language-json"><code>{ &quot;t&quot;: 1234 }</code></pre></div>
 <p>(Multiple fields are OK)</p>
 <p><img src="https://lupyuen.github.io/images/grafana-cbor.png" alt="" /></p>
 <p><a href="http://cbor.me/">(Source)</a></p>
 <h2 id="decode-cbor-in-go" class="section-header"><a href="#decode-cbor-in-go">4.1 Decode CBOR in Go</a></h2>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-go">import &quot;github.com/fxamacker/cbor/v2&quot;
+<div class="example-wrap"><pre class="language-go"><code>import &quot;github.com/fxamacker/cbor/v2&quot;
 
 //  Encoded CBOR payload for { &quot;t&quot;: 1234, &quot;l&quot;: 2345 }
 payload := []byte{0xa2, 0x61, 0x74, 0x19, 0x04, 0xd2, 0x61, 0x6c, 0x19, 0x09, 0x29}
@@ -220,7 +220,7 @@ err := cbor.Unmarshal(payload, &amp;body)
 //  Shows: map[l:2345 t:1234]
 if err == nil {
   fmt.Printf(&quot;%v\n&quot;, body)
-}</pre></div>
+}</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/grafana-cbor2.png" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/grafana-payload.jpg" alt="" /></p>
@@ -237,7 +237,7 @@ if err == nil {
 <h2 id="subscribe-to-mqtt" class="section-header"><a href="#subscribe-to-mqtt">5.1 Subscribe to MQTT</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/mqtt/client.go#L150-L165">pkg/mqtt/client.go</a></p>
-<div class="example-wrap"><pre class="language-go">func (c *Client) Subscribe(t string) {
+<div class="example-wrap"><pre class="language-go"><code>func (c *Client) Subscribe(t string) {
   if _, ok := c.topics.Load(t); ok {
     return
   }
@@ -252,10 +252,10 @@ if err == nil {
   //  Subscribe to all topics: &quot;#&quot;. TODO: Support other topics.
   //  Previously: c.client.Subscribe(t, 0, c.HandleMessage)
   c.client.Subscribe(defaultTopicMQTT, 0, c.HandleMessage)
-}</pre></div><h2 id="receive-mqtt-messages" class="section-header"><a href="#receive-mqtt-messages">5.2 Receive MQTT Messages</a></h2>
+}</code></pre></div><h2 id="receive-mqtt-messages" class="section-header"><a href="#receive-mqtt-messages">5.2 Receive MQTT Messages</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/mqtt/client.go#L96-L148">pkg/mqtt/client.go</a></p>
-<div class="example-wrap"><pre class="language-go">func (c *Client) HandleMessage(_ paho.Client, msg paho.Message) {
+<div class="example-wrap"><pre class="language-go"><code>func (c *Client) HandleMessage(_ paho.Client, msg paho.Message) {
   log.DefaultLogger.Debug(fmt.Sprintf(&quot;Received MQTT Message for topic %s&quot;, msg.Topic()))
   //  Accept all topics as &quot;all&quot;. TODO: Support other topics.
   //  Previously: topic, ok := c.topics.Load(msg.Topic())
@@ -307,10 +307,10 @@ if err == nil {
   default:
     // don&#39;t block if nothing is reading from the channel
   }
-}</pre></div><h1 id="transform-mqtt-messages" class="section-header"><a href="#transform-mqtt-messages">6 Transform MQTT Messages</a></h1>
+}</code></pre></div><h1 id="transform-mqtt-messages" class="section-header"><a href="#transform-mqtt-messages">6 Transform MQTT Messages</a></h1>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L19-L44">/pkg/plugin/message.go</a></p>
-<div class="example-wrap"><pre class="language-go">func ToFrame(topic string, messages []mqtt.Message) *data.Frame {
+<div class="example-wrap"><pre class="language-go"><code>func ToFrame(topic string, messages []mqtt.Message) *data.Frame {
   log.DefaultLogger.Debug(fmt.Sprintf(&quot;ToFrame: topic=%s&quot;, topic))
 
   count := len(messages)
@@ -335,9 +335,9 @@ if err == nil {
   }
 
   return data.NewFrame(topic, timeField, valueField)
-}</pre></div>
+}</code></pre></div>
 <p>From <a href="https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L46-L129">/pkg/plugin/message.go</a></p>
-<div class="example-wrap"><pre class="language-go">//  Transform the array of MQTT Messages (JSON encoded) into a Grafana Data Frame.
+<div class="example-wrap"><pre class="language-go"><code>//  Transform the array of MQTT Messages (JSON encoded) into a Grafana Data Frame.
 //  See sample messages: https://github.com/lupyuen/the-things-network-datasource#mqtt-log
 func jsonMessagesToFrame(topic string, messages []mqtt.Message) *data.Frame {
   //  Quit if no messages to transform
@@ -420,9 +420,9 @@ func jsonMessagesToFrame(topic string, messages []mqtt.Message) *data.Frame {
     log.DefaultLogger.Debug(fmt.Sprintf(&quot;  field=%+v&quot;, field))
   }
   return frame
-}</pre></div>
+}</code></pre></div>
 <p>From <a href="https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L231-L239">/pkg/plugin/message.go</a></p>
-<div class="example-wrap"><pre class="language-go">//  Return the Data Frame set to the given error
+<div class="example-wrap"><pre class="language-go"><code>//  Return the Data Frame set to the given error
 func set_error(frame *data.Frame, err error) *data.Frame {
   frame.AppendNotices(data.Notice{
     Severity: data.NoticeSeverityError,
@@ -430,10 +430,10 @@ func set_error(frame *data.Frame, err error) *data.Frame {
   })
   log.DefaultLogger.Debug(err.Error())
   return frame
-}</pre></div><h2 id="decode-payload" class="section-header"><a href="#decode-payload">6.1 Decode Payload</a></h2>
+}</code></pre></div><h2 id="decode-payload" class="section-header"><a href="#decode-payload">6.1 Decode Payload</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L131-L190">/pkg/plugin/message.go</a></p>
-<div class="example-wrap"><pre class="language-go">//  Decode the CBOR payload in the JSON message.
+<div class="example-wrap"><pre class="language-go"><code>//  Decode the CBOR payload in the JSON message.
 //  See sample messages: https://github.com/lupyuen/the-things-network-datasource#mqtt-log
 func decodeCborPayload(msg string) (map[string]interface{}, error) {
   //  Deserialise the message doc to a map of String -&gt; interface{}
@@ -492,10 +492,10 @@ func decodeCborPayload(msg string) (map[string]interface{}, error) {
   //  Shows: map[device_id:eui-70b3d57ed0045669 t:1234]
   log.DefaultLogger.Debug(fmt.Sprintf(&quot;CBOR decoded: %v&quot;, body))
   return body, nil
-}</pre></div><h2 id="convert-type" class="section-header"><a href="#convert-type">6.2 Convert Type</a></h2>
+}</code></pre></div><h2 id="convert-type" class="section-header"><a href="#convert-type">6.2 Convert Type</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L192-L229">/pkg/plugin/message.go</a></p>
-<div class="example-wrap"><pre class="language-go">//  Return the Data Frame Type for the CBOR decoded value
+<div class="example-wrap"><pre class="language-go"><code>//  Return the Data Frame Type for the CBOR decoded value
 func get_type(val interface{}) data.FieldType {
   //  Based on https://github.com/fxamacker/cbor/blob/master/decode.go#L43-L53
   switch v := val.(type) {
@@ -532,7 +532,7 @@ func get_type(val interface{}) data.FieldType {
     log.DefaultLogger.Debug(fmt.Sprintf(&quot;Unknown type %T for %v&quot;, v, val))
     return data.FieldTypeUnknown
   }
-}</pre></div>
+}</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/grafana-code.png" alt="" /></p>
 <p>TODO4</p>
 <p><img src="https://lupyuen.github.io/images/grafana-code2.png" alt="" /></p>
@@ -541,26 +541,26 @@ func get_type(val interface{}) data.FieldType {
 <h1 id="troubleshooting" class="section-header"><a href="#troubleshooting">7 Troubleshooting</a></h1>
 <p>TODO</p>
 <p>To <strong>enable Debug Logs</strong>, edit…</p>
-<div class="example-wrap"><pre class="language-text"># For Linux:
+<div class="example-wrap"><pre class="language-text"><code># For Linux:
 /usr/share/grafana/conf/defaults.ini
 
 # For macOS:
 /usr/local/etc/grafana/grafana.ini
 
 # For Windows:
-C:\Program Files\GrafanaLabs\grafana\conf\defaults.ini</pre></div>
+C:\Program Files\GrafanaLabs\grafana\conf\defaults.ini</code></pre></div>
 <p>And set…</p>
-<div class="example-wrap"><pre class="language-text">[log]
-level = debug</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>[log]
+level = debug</code></pre></div>
 <p>In case of problems, check the <strong>Grafana Log</strong> at…</p>
-<div class="example-wrap"><pre class="language-text"># For Linux:
+<div class="example-wrap"><pre class="language-text"><code># For Linux:
 /var/log/grafana/grafana.log
 
 # For macOS:
 /usr/local/var/log/grafana/grafana.log
 
 # For Windows:
-C:\Program Files\GrafanaLabs\grafana\data\log\grafana.log</pre></div>
+C:\Program Files\GrafanaLabs\grafana\data\log\grafana.log</code></pre></div>
 <p><a href="https://github.com/lupyuen/the-things-network-datasource#grafana-log">(See sample Grafana Log)</a></p>
 <h1 id="store-data-with-prometheus" class="section-header"><a href="#store-data-with-prometheus">8 Store Data with Prometheus</a></h1>
 <p>TODO</p>
@@ -608,12 +608,12 @@ C:\Program Files\GrafanaLabs\grafana\data\log\grafana.log</pre></div>
 </li>
 <li>
 <p>For Linux and macOS: Start the Grafana Server</p>
-<div class="example-wrap"><pre class="language-bash"># For Ubuntu and WSL
+<div class="example-wrap"><pre class="language-bash"><code># For Ubuntu and WSL
 sudo service grafana-server restart
 sudo service grafana-server status
 
 # For macOS
-brew services start grafana</pre></div></li>
+brew services start grafana</code></pre></div></li>
 <li>
 <p>To test Grafana, browse to </p>
 <p><strong><code>http://localhost:3000</code></strong></p>
@@ -626,12 +626,12 @@ brew services start grafana</pre></div></li>
 <ol>
 <li>
 <p>For Windows: Grant <strong><code>Full Control</code></strong> permission to the <strong><code>Users</code></strong> group for the Grafana Plugins Folder…</p>
-<div class="example-wrap"><pre class="language-text">C:\Program Files\GrafanaLabs\grafana\data\plugins</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>C:\Program Files\GrafanaLabs\grafana\data\plugins</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/grafana-permission.png" alt="Permissions for plugins folder" /></p>
 </li>
 <li>
 <p><strong>Download the Data Source</strong> into the Grafana Plugins Folder…</p>
-<div class="example-wrap"><pre class="language-bash">#  For Linux: Need &quot;sudo&quot; to access this folder
+<div class="example-wrap"><pre class="language-bash"><code>#  For Linux: Need &quot;sudo&quot; to access this folder
 cd /var/lib/grafana/plugins
 
 #  For macOS: 
@@ -641,7 +641,7 @@ cd /usr/local/var/lib/grafana/plugins
 cd C:\Program Files\GrafanaLabs\grafana\data\plugins
 
 #  Download source files for The Things Network Data Source
-git clone --recursive https://github.com/lupyuen/the-things-network-datasource</pre></div></li>
+git clone --recursive https://github.com/lupyuen/the-things-network-datasource</code></pre></div></li>
 <li>
 <p>Install the <strong>Build Tools</strong>…</p>
 <p><a href="https://github.com/grafana/mqtt-datasource/issues/15#issuecomment-894477802"><strong>Build Tools for Linux (Ubuntu)</strong></a></p>
@@ -651,7 +651,7 @@ git clone --recursive https://github.com/lupyuen/the-things-network-datasource</
 </li>
 <li>
 <p><strong>Build the Data Source</strong>…</p>
-<div class="example-wrap"><pre class="language-bash">#  Install the dependencies
+<div class="example-wrap"><pre class="language-bash"><code>#  Install the dependencies
 cd the-things-network-datasource
 yarn install
 
@@ -659,7 +659,7 @@ yarn install
 yarn build
 
 #  If &quot;mage&quot; is not found, set the PATH
-export PATH=$PATH:$GOPATH/bin</pre></div>
+export PATH=$PATH:$GOPATH/bin</code></pre></div>
 <p><a href="https://github.com/lupyuen/the-things-network-datasource#build-log">(See the Build Log)</a></p>
 </li>
 <li>
@@ -667,7 +667,7 @@ export PATH=$PATH:$GOPATH/bin</pre></div>
 </li>
 <li>
 <p><strong>Restart the Grafana Service</strong> for the Data Source to load</p>
-<div class="example-wrap"><pre class="language-bash"># For Ubuntu and WSL:
+<div class="example-wrap"><pre class="language-bash"><code># For Ubuntu and WSL:
 sudo service grafana-server restart
 sudo service grafana-server status
 
@@ -676,31 +676,31 @@ brew services restart grafana
 
 # For Windows: Run this as Administrator
 net stop grafana
-net start grafana</pre></div></li>
+net start grafana</code></pre></div></li>
 </ol>
 <h2 id="enable-data-source" class="section-header"><a href="#enable-data-source">11.3 Enable Data Source</a></h2>
 <ol>
 <li>
 <p>Edit the <strong>Grafana Configuration File</strong>…</p>
-<div class="example-wrap"><pre class="language-text"># For Linux:
+<div class="example-wrap"><pre class="language-text"><code># For Linux:
 /usr/share/grafana/conf/defaults.ini
 
 # For macOS:
 /usr/local/etc/grafana/grafana.ini
 
 # For Windows:
-C:\Program Files\GrafanaLabs\grafana\conf\defaults.ini</pre></div></li>
+C:\Program Files\GrafanaLabs\grafana\conf\defaults.ini</code></pre></div></li>
 <li>
 <p>To <strong>enable our Data Source</strong>, set…</p>
-<div class="example-wrap"><pre class="language-text">[plugins]
-allow_loading_unsigned_plugins = the-things-network-datasource</pre></div></li>
+<div class="example-wrap"><pre class="language-text"><code>[plugins]
+allow_loading_unsigned_plugins = the-things-network-datasource</code></pre></div></li>
 <li>
 <p>To <strong>enable Debug Logs</strong>, set…</p>
-<div class="example-wrap"><pre class="language-text">[log]
-level = debug</pre></div></li>
+<div class="example-wrap"><pre class="language-text"><code>[log]
+level = debug</code></pre></div></li>
 <li>
 <p><strong>Restart the Grafana Service</strong> for the Data Source to load</p>
-<div class="example-wrap"><pre class="language-bash"># For Ubuntu and WSL:
+<div class="example-wrap"><pre class="language-bash"><code># For Ubuntu and WSL:
 sudo service grafana-server restart
 sudo service grafana-server status
 
@@ -709,17 +709,17 @@ brew services restart grafana
 
 # For Windows: Run this as Administrator
 net stop grafana
-net start grafana</pre></div></li>
+net start grafana</code></pre></div></li>
 <li>
 <p>In case of problems, check the <strong>Grafana Log</strong> at…</p>
-<div class="example-wrap"><pre class="language-text"># For Linux:
+<div class="example-wrap"><pre class="language-text"><code># For Linux:
 /var/log/grafana/grafana.log
 
 # For macOS:
 /usr/local/var/log/grafana/grafana.log
 
 # For Windows:
-C:\Program Files\GrafanaLabs\grafana\data\log\grafana.log</pre></div>
+C:\Program Files\GrafanaLabs\grafana\data\log\grafana.log</code></pre></div>
 <p><a href="https://github.com/lupyuen/the-things-network-datasource#grafana-log">(See sample Grafana Log)</a></p>
 </li>
 </ol>
@@ -732,19 +732,19 @@ C:\Program Files\GrafanaLabs\grafana\data\log\grafana.log</pre></div>
 </li>
 <li>
 <p>Install <strong>Yarn</strong>…</p>
-<div class="example-wrap"><pre class="language-bash">npm install -g yarn</pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>npm install -g yarn</code></pre></div></li>
 <li>
 <p>Install <strong>Go</strong>…</p>
 <p><a href="https://golang.org"><strong><code>golang.org</code></strong></a></p>
 </li>
 <li>
 <p>Install <strong>Mage</strong>…</p>
-<div class="example-wrap"><pre class="language-bash">go get -u -d github.com/magefile/mage
+<div class="example-wrap"><pre class="language-bash"><code>go get -u -d github.com/magefile/mage
 pushd $GOPATH/src/github.com/magefile/mage
 go run bootstrap.go
 export PATH=$PATH:$GOPATH/bin
 mage -version
-popd</pre></div></li>
+popd</code></pre></div></li>
 </ol>
 
     

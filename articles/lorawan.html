@@ -176,11 +176,11 @@
 <h2 id="configure-lora-transceiver" class="section-header"><a href="#configure-lora-transceiver">2.2 Configure LoRa Transceiver</a></h2>
 <p>(<strong>Note on LoRa vs LoRaWAN:</strong> We configure LoRaWAN via <code>Makefile</code>, not <code>#define</code>. Skip this section if we’re using LoRaWAN.)</p>
 <p>We set the <strong>LoRa Frequency</strong> in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L44-L80"><code>demo.c</code></a> like so…</p>
-<div class="example-wrap"><pre class="language-c">/// TODO: We are using LoRa Frequency 923 MHz 
+<div class="example-wrap"><pre class="language-c"><code>/// TODO: We are using LoRa Frequency 923 MHz 
 /// for Singapore. Change this for your region.
-#define USE_BAND_923</pre></div>
+#define USE_BAND_923</code></pre></div>
 <p>Change <code>USE_BAND_923</code> to <code>USE_BAND_433</code>, <code>780</code>, <code>868</code> or <code>915</code>. Here’s the complete list…</p>
-<div class="example-wrap"><pre class="language-c">#if defined(USE_BAND_433)
+<div class="example-wrap"><pre class="language-c"><code>#if defined(USE_BAND_433)
     #define RF_FREQUENCY               434000000 /* Hz */
 #elif defined(USE_BAND_780)
     #define RF_FREQUENCY               780000000 /* Hz */
@@ -192,9 +192,9 @@
     #define RF_FREQUENCY               923000000 /* Hz */
 #else
     #error &quot;Please define a frequency band in the compiler options.&quot;
-#endif</pre></div>
+#endif</code></pre></div>
 <p>The <strong>LoRa Parameters</strong> are also defined in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L44-L80"><code>demo.c</code></a></p>
-<div class="example-wrap"><pre class="language-c">/// LoRa Parameters
+<div class="example-wrap"><pre class="language-c"><code>/// LoRa Parameters
 #define LORAPING_TX_OUTPUT_POWER            14        /* dBm */
 
 #define LORAPING_BANDWIDTH                  0         /* [0: 125 kHz, */
@@ -213,7 +213,7 @@
 
 #define LORAPING_TX_TIMEOUT_MS              3000    /* ms */
 #define LORAPING_RX_TIMEOUT_MS              5000    /* ms */
-#define LORAPING_BUFFER_SIZE                64      /* LoRa message size */</pre></div>
+#define LORAPING_BUFFER_SIZE                64      /* LoRa message size */</code></pre></div>
 <p>These should match the LoRa Parameters used by the LoRa Transmitter / Receiver.</p>
 <p>I used this LoRa Transmitter and Receiver (based on RAKwireless WisBlock) for testing our LoRa Driver…</p>
 <ul>
@@ -229,7 +229,7 @@
 <h2 id="initialise-lora-transceiver" class="section-header"><a href="#initialise-lora-transceiver">2.3 Initialise LoRa Transceiver</a></h2>
 <p>(<strong>Note on LoRa vs LoRaWAN:</strong> Our LoRaWAN Driver initialises the LoRa Transceiver for us, when we run the <code>init_lorawan</code> command. Skip this section if we’re using LoRaWAN.)</p>
 <p>The <code>init_driver</code> command in our Demo Firmware initialises the LoRa Transceiver like so: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L159-L212"><code>demo.c</code></a></p>
-<div class="example-wrap"><pre class="language-c">/// Command to initialise the LoRa Driver.
+<div class="example-wrap"><pre class="language-c"><code>/// Command to initialise the LoRa Driver.
 /// Assume that create_task has been called to init the Event Queue.
 static void init_driver(char *buf, int len, int argc, char **argv) {
     //  Set the LoRa Callback Functions
@@ -239,17 +239,17 @@ static void init_driver(char *buf, int len, int argc, char **argv) {
     radio_events.RxDone    = on_rx_done;     //  Packet has been received
     radio_events.TxTimeout = on_tx_timeout;  //  Transmit Timeout
     radio_events.RxTimeout = on_rx_timeout;  //  Receive Timeout
-    radio_events.RxError   = on_rx_error;    //  Receive Error</pre></div>
+    radio_events.RxError   = on_rx_error;    //  Receive Error</code></pre></div>
 <p>Here we set the <strong>Callback Functions</strong> that will be called when a LoRa Packet has been transmitted or received, also when we encounter a transmit / receive timeout or error.</p>
 <p>(We’ll see the Callback Functions in a while)</p>
 <p>Next we initialise the LoRa Transceiver and set the <strong>LoRa Frequency</strong>…</p>
-<div class="example-wrap"><pre class="language-c">    //  Init the SPI Port and the LoRa Transceiver
+<div class="example-wrap"><pre class="language-c"><code>    //  Init the SPI Port and the LoRa Transceiver
     Radio.Init(&amp;radio_events);
 
     //  Set the LoRa Frequency
-    Radio.SetChannel(RF_FREQUENCY);</pre></div>
+    Radio.SetChannel(RF_FREQUENCY);</code></pre></div>
 <p>We set the <strong>LoRa Transmit Parameters</strong>…</p>
-<div class="example-wrap"><pre class="language-c">    //  Configure the LoRa Transceiver for transmitting messages
+<div class="example-wrap"><pre class="language-c"><code>    //  Configure the LoRa Transceiver for transmitting messages
     Radio.SetTxConfig(
         MODEM_LORA,
         LORAPING_TX_OUTPUT_POWER,
@@ -264,9 +264,9 @@ static void init_driver(char *buf, int len, int argc, char **argv) {
         0,        //  Hop period: N/A
         LORAPING_IQ_INVERSION_ON,
         LORAPING_TX_TIMEOUT_MS
-    );</pre></div>
+    );</code></pre></div>
 <p>Finally we set the <strong>LoRa Receive Parameters</strong>…</p>
-<div class="example-wrap"><pre class="language-c">    //  Configure the LoRa Transceiver for receiving messages
+<div class="example-wrap"><pre class="language-c"><code>    //  Configure the LoRa Transceiver for receiving messages
     Radio.SetRxConfig(
         MODEM_LORA,
         LORAPING_BANDWIDTH,
@@ -283,7 +283,7 @@ static void init_driver(char *buf, int len, int argc, char **argv) {
         LORAPING_IQ_INVERSION_ON,
         true      //  Continuous receive mode
     );    
-}</pre></div>
+}</code></pre></div>
 <p>The “<code>Radio</code>” functions are defined in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c"><code>radio.c</code></a> …</p>
 <ul>
 <li>
@@ -302,14 +302,14 @@ static void init_driver(char *buf, int len, int argc, char **argv) {
 <h2 id="transmit-lora-packet" class="section-header"><a href="#transmit-lora-packet">2.4 Transmit LoRa Packet</a></h2>
 <p>(<strong>Note on LoRa vs LoRaWAN:</strong> Our LoRaWAN Driver calls the LoRa Driver to transmit LoRa Packets, when we run the <code>las_join</code> and <code>las_app_tx</code> commands. Skip this section if we’re using LoRaWAN to transmit data.)</p>
 <p>To transmit a LoRa Packet, the <code>send_message</code> command in our Demo Firmware calls <code>send_once</code> in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L214-L219"><code>demo.c</code></a> … </p>
-<div class="example-wrap"><pre class="language-c">/// Command to send a LoRa message. Assume that the LoRa Transceiver driver has been initialised.
+<div class="example-wrap"><pre class="language-c"><code>/// Command to send a LoRa message. Assume that the LoRa Transceiver driver has been initialised.
 static void send_message(char *buf, int len, int argc, char **argv) {
     //  Send the &quot;PING&quot; message
     send_once(1);
-}</pre></div>
+}</code></pre></div>
 <p><strong><code>send_once</code></strong> prepares a LoRa Packet containing the string “<code>PING</code>”…</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L221-L244"><code>demo.c</code></a> :</p>
-<div class="example-wrap"><pre class="language-c">/// We send a &quot;PING&quot; message and expect a &quot;PONG&quot; response
+<div class="example-wrap"><pre class="language-c"><code>/// We send a &quot;PING&quot; message and expect a &quot;PONG&quot; response
 const uint8_t loraping_ping_msg[] = &quot;PING&quot;;
 const uint8_t loraping_pong_msg[] = &quot;PONG&quot;;
 
@@ -324,22 +324,22 @@ static void send_once(int is_ping) {
         memcpy(loraping_buffer, loraping_ping_msg, 4);
     } else {
         memcpy(loraping_buffer, loraping_pong_msg, 4);
-    }</pre></div>
+    }</code></pre></div>
 <p>Then pads the packet with values 0, 1, 2, …</p>
-<div class="example-wrap"><pre class="language-c">    //  Fill up the remaining space in the 
+<div class="example-wrap"><pre class="language-c"><code>    //  Fill up the remaining space in the 
     //  transmit buffer (64 bytes) with values 
     //  0, 1, 2, ...
     for (int i = 4; i &lt; sizeof loraping_buffer; i++) {
         loraping_buffer[i] = i - 4;
-    }</pre></div>
+    }</code></pre></div>
 <p>And transmits the LoRa Packet…</p>
-<div class="example-wrap"><pre class="language-c">    //  Send the transmit buffer (64 bytes)
+<div class="example-wrap"><pre class="language-c"><code>    //  Send the transmit buffer (64 bytes)
     Radio.Send(loraping_buffer, sizeof loraping_buffer);
-}</pre></div>
+}</code></pre></div>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L1069-L1098">(<code>RadioSend</code> is defined here)</a></p>
 <p>When the LoRa Packet is transmitted, the LoRa Driver calls our Callback Function <strong><code>on_tx_done</code></strong> …</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L399-L412"><code>demo.c</code></a> :</p>
-<div class="example-wrap"><pre class="language-c">/// Callback Function that is called when our LoRa message has been transmitted
+<div class="example-wrap"><pre class="language-c"><code>/// Callback Function that is called when our LoRa message has been transmitted
 static void on_tx_done(void) {
     //  Log the success status
     loraping_stats.tx_success++;
@@ -347,22 +347,22 @@ static void on_tx_done(void) {
     //  Switch the LoRa Transceiver to 
     //  low power, sleep mode
     Radio.Sleep();
-}</pre></div>
+}</code></pre></div>
 <p>Here we log the number of packets transmitted, and put the LoRa Transceiver to low power, sleep mode.</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L1100-L1109">(<code>RadioSleep</code> is defined here)</a></p>
 <h2 id="receive-lora-packet" class="section-header"><a href="#receive-lora-packet">2.5 Receive LoRa Packet</a></h2>
 <p>(<strong>Note on LoRa vs LoRaWAN:</strong> Our LoRaWAN Driver calls the LoRa Driver to receive LoRa Packets, when we run the <code>las_join</code> and <code>las_app_tx</code> commands. Skip this section if we’re using LoRaWAN to receive data.)</p>
 <p>Here’s how the <code>receive_message</code> command in our Demo Firmware receives a LoRa Packet: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L246-L252"><code>demo.c</code></a></p>
-<div class="example-wrap"><pre class="language-c">/// Command to receive a LoRa message. Assume that LoRa Transceiver driver has been initialised.
+<div class="example-wrap"><pre class="language-c"><code>/// Command to receive a LoRa message. Assume that LoRa Transceiver driver has been initialised.
 /// Assume that create_task has been called to init the Event Queue.
 static void receive_message(char *buf, int len, int argc, char **argv) {
     //  Receive a LoRa message within the timeout period
     Radio.Rx(LORAPING_RX_TIMEOUT_MS);  //  Timeout in 5 seconds
-}</pre></div>
+}</code></pre></div>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L1117-L1138">(<code>RadioRx</code> is defined here)</a></p>
 <p>When the LoRa Driver receives a LoRa Packet, it calls our Callback Function <code>on_rx_done</code> …</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L414-L444"><code>demo.c</code></a> :</p>
-<div class="example-wrap"><pre class="language-c">/// Callback Function that is called when a LoRa message has been received
+<div class="example-wrap"><pre class="language-c"><code>/// Callback Function that is called when a LoRa message has been received
 static void on_rx_done(
     uint8_t *payload,  //  Buffer containing received LoRa message
     uint16_t size,     //  Size of the LoRa message
@@ -373,26 +373,26 @@ static void on_rx_done(
     Radio.Sleep();
 
     //  Log the signal strength, signal to noise ratio
-    loraping_rxinfo_rxed(rssi, snr);</pre></div>
+    loraping_rxinfo_rxed(rssi, snr);</code></pre></div>
 <p><strong><code>on_rx_done</code></strong> switches the LoRa Transceiver to low power, sleep mode and logs the received packet.</p>
 <p>Next it <strong>copies the received packet</strong> into a buffer…</p>
-<div class="example-wrap"><pre class="language-c">    //  Copy the received packet
+<div class="example-wrap"><pre class="language-c"><code>    //  Copy the received packet
     if (size &gt; sizeof loraping_buffer) {
         size = sizeof loraping_buffer;
     }
     loraping_rx_size = size;
-    memcpy(loraping_buffer, payload, size);</pre></div>
+    memcpy(loraping_buffer, payload, size);</code></pre></div>
 <p>Finally it <strong>dumps the buffer</strong> containing the received packet…</p>
-<div class="example-wrap"><pre class="language-c">    //  Dump the contents of the received packet
+<div class="example-wrap"><pre class="language-c"><code>    //  Dump the contents of the received packet
     for (int i = 0; i &lt; loraping_rx_size; i++) {
         printf(&quot;%02x &quot;, loraping_buffer[i]);
     }
     printf(&quot;\r\n&quot;);
-}</pre></div>
+}</code></pre></div>
 <p><em>What happens when we don’t receive a packet in 5 seconds?</em></p>
 <p>The LoRa Driver calls our Callback Function <code>on_rx_timeout</code> …</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L461-L475"><code>demo.c</code></a> :</p>
-<div class="example-wrap"><pre class="language-c">/// Callback Function that is called when no LoRa messages could be received due to timeout
+<div class="example-wrap"><pre class="language-c"><code>/// Callback Function that is called when no LoRa messages could be received due to timeout
 static void on_rx_timeout(void) {
     //  Switch the LoRa Transceiver to low power, sleep mode
     Radio.Sleep();
@@ -400,7 +400,7 @@ static void on_rx_timeout(void) {
     //  Log the timeout
     loraping_stats.rx_timeout++;
     loraping_rxinfo_timeout();
-}</pre></div>
+}</code></pre></div>
 <p>We switch the LoRa Transceiver into sleep mode and log the timeout.</p>
 <h2 id="multitask-with-nimble-porting-layer" class="section-header"><a href="#multitask-with-nimble-porting-layer">2.6 Multitask with NimBLE Porting Layer</a></h2>
 <p>The LoRa Transceiver (RFM90 / SX1262) triggers a <strong>GPIO Interrupt</strong> on BL602 when it receives a LoRa Packet…</p>
@@ -468,10 +468,10 @@ static void on_rx_timeout(void) {
 <p>Before transmitting a LoRaWAN Data Packet, our BL602 gadget needs to <strong>join the LoRaWAN Network</strong>.</p>
 <p>(It’s like connecting to a WiFi Network, authenticated by a security key)</p>
 <p>In the Demo Firmware, we enter this command to join the LoRaWAN Network (up to 3 attempts)…</p>
-<div class="example-wrap"><pre class="language-text">las_join 3</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>las_join 3</code></pre></div>
 <p>Let’s study what happens inside the <strong><code>las_join</code></strong> command…</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/lorawan.c#L901-L935"><code>lorawan.c</code></a> :</p>
-<div class="example-wrap"><pre class="language-c">/// `las_join` command will send a Join Network Request
+<div class="example-wrap"><pre class="language-c"><code>/// `las_join` command will send a Join Network Request
 void las_cmd_join(char *buf0, int len0, int argc, char **argv) {
     ...
     //  Send a Join Network Request
@@ -480,7 +480,7 @@ void las_cmd_join(char *buf0, int len0, int argc, char **argv) {
         g_lora_app_eui,  //  Application EUI
         g_lora_app_key,  //  Application Key
         attempts         //  Number of join attempts
-    );</pre></div>
+    );</code></pre></div>
 <p>To join a LoRaWAN Network we need to have 3 things in our BL602 firmware…</p>
 <ol>
 <li>
@@ -496,16 +496,16 @@ void las_cmd_join(char *buf0, int len0, int argc, char **argv) {
 <p>(EUI sounds like a Pungent Durian… But it actually means <a href="https://lora-developers.semtech.com/library/tech-papers-and-guides/the-book/deveui/"><strong>Extended Unique Identifier</strong></a>)</p>
 <p>How do we get the Device EUI, Application EUI and Application Key? We’ll find out in a while.</p>
 <p><strong><code>lora_app_join</code></strong> is defined in the <strong>Application Layer</strong> of our LoRaWAN Driver: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/a7ea4403ab39003bd7c1c71280e7ffb78426c3e0/components/3rdparty/lorawan/src/lora_app.c#L408-L437"><code>lora_app.c</code></a></p>
-<div class="example-wrap"><pre class="language-c">/// Send a Join Network Request
+<div class="example-wrap"><pre class="language-c"><code>/// Send a Join Network Request
 int lora_app_join(uint8_t *dev_eui, uint8_t *app_eui, uint8_t *app_key, uint8_t trials) {
     //  Omitted: Validate the parameters
     ...
 
     //  Tell device to start join procedure
-    int rc = lora_node_join(dev_eui, app_eui, app_key, trials);</pre></div>
+    int rc = lora_node_join(dev_eui, app_eui, app_key, trials);</code></pre></div>
 <p>Here we validate the parameters and call <code>lora_node_join</code>.</p>
 <p>Now we hop over from the Application Layer to the <strong>Node Layer</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/b2e1635091fd539c11d56b125e36f8987c4c38e3/components/3rdparty/lorawan/src/lora_node.c#L473-L503"><code>lora_node.c</code></a></p>
-<div class="example-wrap"><pre class="language-c">/// Perform the join process
+<div class="example-wrap"><pre class="language-c"><code>/// Perform the join process
 int lora_node_join(uint8_t *dev_eui, uint8_t *app_eui, uint8_t *app_key, uint8_t trials) {
     //  Omitted: Check if we have joined the network
     ...
@@ -520,10 +520,10 @@ int lora_node_join(uint8_t *dev_eui, uint8_t *app_eui, uint8_t *app_key, uint8_t
     ble_npl_eventq_put(
         g_lora_mac_data.lm_evq,      //  Event Queue
         &amp;g_lora_mac_data.lm_join_ev  //  Event
-    );</pre></div>
+    );</code></pre></div>
 <p>Here we’re passing a Join Event to the <strong>Event Queue</strong> that’s provided by the NimBLE Porting Layer.</p>
 <p>Again we hop, from the Node Layer to the <strong>Medium Access Control Layer</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L3086-L3139"><code>LoRaMac.c</code></a></p>
-<div class="example-wrap"><pre class="language-c">/// Background Task that handles the Event Queue
+<div class="example-wrap"><pre class="language-c"><code>/// Background Task that handles the Event Queue
 LoRaMacStatus_t LoRaMacMlmeRequest(MlmeReq_t *mlmeRequest) {
     ...
     //  Check the request type
@@ -531,18 +531,18 @@ LoRaMacStatus_t LoRaMacMlmeRequest(MlmeReq_t *mlmeRequest) {
         //  If this is a join request...
         case MLME_JOIN:
             //  Compose and send the join request
-            status = Send(&amp;macHdr, 0, NULL);</pre></div>
+            status = Send(&amp;macHdr, 0, NULL);</code></pre></div>
 <p><strong><code>LoRaMacMlmeRequest</code></strong> runs as a <strong>FreeRTOS Background Task</strong>, processing the Events that have been enqueued in the Event Queue.</p>
 <p>(That’s how the Node Layer and the Medium Access Control Layer collaborate asynchronously)</p>
 <p><code>LoRaMacMlmeRequest</code> calls <strong><code>Send</code></strong> to compose and transmit the Join Request as a LoRa Packet: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L1932-L1954"><code>LoRaMac.c</code></a></p>
-<div class="example-wrap"><pre class="language-c">//  Compose and send a packet
+<div class="example-wrap"><pre class="language-c"><code>//  Compose and send a packet
 LoRaMacStatus_t Send(LoRaMacHeader_t *macHdr, uint8_t fPort, struct pbuf *om) {
     ...
     //  Prepare the LoRa Packet
     status = PrepareFrame(macHdr, &amp;fCtrl, fPort, om);
 
     //  Send the LoRa Packet
-    status = ScheduleTx();</pre></div>
+    status = ScheduleTx();</code></pre></div>
 <p>The call chain goes…</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L1932-L1954"><code>Send</code></a> → <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L1956-L2062"><code>ScheduleTx</code></a> → <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L2379-L2426"><code>SendFrameOnChannel</code></a> → <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L1069-L1098"><code>RadioSend</code></a></p>
 <p>Eventually the Medium Access Control Layer calls <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L1069-L1098"><strong><code>RadioSend</code></strong></a> (from our LoRa Transceiver Driver) to transmit the Join Request.</p>
@@ -555,7 +555,7 @@ LoRaMacStatus_t Send(LoRaMacHeader_t *macHdr, uint8_t fPort, struct pbuf *om) {
 <p>We’ve sent a Join Network Request to the LoRaWAN Gateway… Now we need to <strong>wait for the response from the LoRaWAN Gateway</strong>.</p>
 <p>The Medium Access Control Layer calls <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L1117-L1138"><strong><code>RadioRx</code></strong></a> (from the LoRa Transceiver Driver) to receive the response packet.</p>
 <p>When the packet is received, the LoRa Transceiver Driver calls this Callback Function: <strong><code>OnRadioRxDone</code></strong> in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L299-L323"><code>LoRaMac.c</code></a></p>
-<div class="example-wrap"><pre class="language-c">/// Callback Function that&#39;s called when we receive a LoRa Packet
+<div class="example-wrap"><pre class="language-c"><code>/// Callback Function that&#39;s called when we receive a LoRa Packet
 static void OnRadioRxDone(uint8_t *payload, uint16_t size, int16_t rssi, int8_t snr) {
     //  Put the Receive Event into the Event Queue  
     ble_npl_eventq_put(
@@ -565,10 +565,10 @@ static void OnRadioRxDone(uint8_t *payload, uint16_t size, int16_t rssi, int8_t 
 
     //  Remember the received data
     g_lora_mac_data.rxbuf     = payload;
-    g_lora_mac_data.rxbufsize = size;</pre></div>
+    g_lora_mac_data.rxbufsize = size;</code></pre></div>
 <p><strong><code>OnRadioRxDone</code></strong> adds the <strong>Receive Event</strong> to the Event Queue for background processing.</p>
 <p>Our <strong>Background Task</strong> receives the Receive Event from the Event Queue and processes the event: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L906-L988"><code>LoRaMac.c</code></a></p>
-<div class="example-wrap"><pre class="language-c">/// Process the Receive Event
+<div class="example-wrap"><pre class="language-c"><code>/// Process the Receive Event
 static void lora_mac_process_radio_rx(struct ble_npl_event *ev) {
     ...
     //  Put radio to sleep
@@ -587,11 +587,11 @@ static void lora_mac_process_radio_rx(struct ble_npl_event *ev) {
         case FRAME_TYPE_JOIN_ACCEPT:
             //  Process the Join Accept Response
             lora_mac_join_accept_rxd(payload, size);
-            break;</pre></div>
+            break;</code></pre></div>
 <p>(We assume that the Join Request was accepted by the LoRaWAN Gateway)</p>
 <p><strong><code>lora_mac_process_radio_rx</code></strong> handles the Join Accept Response by calling <strong><code>lora_mac_join_accept_rxd</code></strong> …</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L574-L667"><code>LoRaMac.c</code></a> :</p>
-<div class="example-wrap"><pre class="language-c">/// Process the Join Accept Response
+<div class="example-wrap"><pre class="language-c"><code>/// Process the Join Accept Response
 static void lora_mac_join_accept_rxd(uint8_t *payload, uint16_t size) {
     ...
     //  Decrypt the response
@@ -603,7 +603,7 @@ static void lora_mac_join_accept_rxd(uint8_t *payload, uint16_t size) {
     //  Omitted: Update the Join Network Status
     ...
     //  Stop Second Receive Window
-    lora_mac_rx_win2_stop();</pre></div>
+    lora_mac_rx_win2_stop();</code></pre></div>
 <p><strong><code>lora_mac_join_accept_rxd</code></strong> handles the Join Accept Response…</p>
 <ol>
 <li>
@@ -635,10 +635,10 @@ static void lora_mac_join_accept_rxd(uint8_t *payload, uint16_t size) {
 <p>Our BL602 gadget has joined the LoRaWAN Network… We’re almost ready to send data packets to the LoRaWAN Gateway! But before that, we need to <strong>open a LoRaWAN Application Port</strong>.</p>
 <p>(It’s like opening a TCP or UDP socket)</p>
 <p>In our Demo Firmware we enter this command to open LoRaWAN Application Port Number 2…</p>
-<div class="example-wrap"><pre class="language-text">las_app_port open 2</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>las_app_port open 2</code></pre></div>
 <p>(Port #2 seems to be a common port used by LoRaWAN Applications)</p>
 <p>The <strong><code>las_app_port</code></strong> command calls this function in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/lorawan.c#L735-L808"><code>lorawan.c</code></a> …</p>
-<div class="example-wrap"><pre class="language-c">/// `las_app_port open 2` command opens LoRaWAN Application Port 2
+<div class="example-wrap"><pre class="language-c"><code>/// `las_app_port open 2` command opens LoRaWAN Application Port 2
 void las_cmd_app_port(char *buf0, int len0, int argc, char **argv) {
     ...
     //  If this is an `open` command...
@@ -648,7 +648,7 @@ void las_cmd_app_port(char *buf0, int len0, int argc, char **argv) {
             port,                     //  Port Number (2)
             lora_app_shell_txd_func,  //  Callback Function for Transmit
             lora_app_shell_rxd_func   //  Callback Function for Receive
-        );</pre></div>
+        );</code></pre></div>
 <p><strong><code>las_cmd_app_port</code></strong> calls our LoRaWAN Driver to open the LoRaWAN Port and provides two <strong>Callback Functions</strong>…</p>
 <ul>
 <li>
@@ -659,7 +659,7 @@ void las_cmd_app_port(char *buf0, int len0, int argc, char **argv) {
 </li>
 </ul>
 <p>Here’s how our LoRaWAN Driver opens the LoRaWAN Port: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_app.c#L148-L205"><code>lora_app.c</code></a></p>
-<div class="example-wrap"><pre class="language-c">/// Open a LoRaWAN Application Port. This function will 
+<div class="example-wrap"><pre class="language-c"><code>/// Open a LoRaWAN Application Port. This function will 
 /// allocate a LoRaWAN port, set port default values for 
 /// datarate and retries, set the transmit done and
 /// received data callbacks, and add port to list of open ports.
@@ -675,10 +675,10 @@ int lora_app_port_open(uint8_t port, lora_txd_func txd_cb, lora_rxd_func rxd_cb)
             //  Make sure port is not already opened
             if (lora_app_ports[i].port_num == port) { return LORA_APP_STATUS_ALREADY_OPEN; }
         }
-    }</pre></div>
+    }</code></pre></div>
 <p><strong><code>lora_app_port_open</code></strong> allocates a port object for the requested port number.</p>
 <p>Then it sets the port number, receive callback and transmit callback in the port object…</p>
-<div class="example-wrap"><pre class="language-c">    //  Open port if available
+<div class="example-wrap"><pre class="language-c"><code>    //  Open port if available
     if (avail &gt;= 0) {
         lora_app_ports[avail].port_num = port;  //  Port Number
         lora_app_ports[avail].rxd_cb = rxd_cb;  //  Receive Callback
@@ -690,16 +690,16 @@ int lora_app_port_open(uint8_t port, lora_txd_func txd_cb, lora_rxd_func rxd_cb)
         rc = LORA_APP_STATUS_ENOMEM;
     }
     return rc;
-}</pre></div>
+}</code></pre></div>
 <p>We’re now ready to transmit data packets to LoRaWAN Port #2!</p>
 <h2 id="transmit-data-packet" class="section-header"><a href="#transmit-data-packet">3.5 Transmit Data Packet</a></h2>
 <p>We enter this command into our Demo Firmware to <strong>transmit a LoRaWAN Data Packet to port 2, containing 5 bytes (of null)</strong>…</p>
-<div class="example-wrap"><pre class="language-text">las_app_tx 2 5 0</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>las_app_tx 2 5 0</code></pre></div>
 <p>The “<code>0</code>” at the end indicates that this is an <strong>Unconfirmed Message</strong>: We don’t expect any acknowledgement from the LoRaWAN Gateway.</p>
 <p>This is the preferred way for a low-power LoRaWAN device to transmit sensor data, since it <strong>doesn’t need to wait for the acknowledgement</strong> (and consume additional power).</p>
 <p>(It’s OK if a LoRaWAN Data Packet gets lost due to noise or inteference… LoRaWAN sensor devices are supposed to transmit data packets periodically anyway)</p>
 <p>The <strong><code>las_app_tx</code></strong> command is implemented here: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/lorawan.c#L810-L885"><code>lorawan.c</code></a></p>
-<div class="example-wrap"><pre class="language-c">/// `las_app_tx 2 5 0` command transmits to LoRaWAN Port 2
+<div class="example-wrap"><pre class="language-c"><code>/// `las_app_tx 2 5 0` command transmits to LoRaWAN Port 2
 /// a data packet of 5 bytes, as an Unconfirmed Message (0)
 void las_cmd_app_tx(char *buf0, int len0, int argc, char **argv) {
     ...
@@ -720,7 +720,7 @@ void las_cmd_app_tx(char *buf0, int len0, int argc, char **argv) {
         port,       //  Port Number
         mcps_type,  //  Message Type: Unconfirmed
         om          //  Packet Buffer
-    );</pre></div>
+    );</code></pre></div>
 <p><strong><code>las_cmd_app_tx</code></strong> does the following…</p>
 <ol>
 <li>
@@ -735,7 +735,7 @@ void las_cmd_app_tx(char *buf0, int len0, int argc, char **argv) {
 </ol>
 <p>We use <strong>Packet Buffers</strong> in the LoRaWAN Driver because they are more efficient for passing packets around. (More about Packet Buffers in the Appendix)</p>
 <p>Now we hop from the Demo Firmware into the <strong>Application Layer</strong> of the LoRaWAN Driver: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_app.c#L262-L304"><code>lora_app.c</code></a></p>
-<div class="example-wrap"><pre class="language-c">/// Send a LoRaWAN Packet to a LoRaWAN Port
+<div class="example-wrap"><pre class="language-c"><code>/// Send a LoRaWAN Packet to a LoRaWAN Port
 int lora_app_port_send(uint8_t port, Mcps_t pkt_type, struct pbuf *om) {
     ...
     //  Find the LoRaWAN port
@@ -748,10 +748,10 @@ int lora_app_port_send(uint8_t port, Mcps_t pkt_type, struct pbuf *om) {
     lpkt-&gt;txdinfo.retries = lap-&gt;retries;
 
     //  Call the Node Layer to transmit the Packet Buffer
-    lora_node_mcps_request(om);</pre></div>
+    lora_node_mcps_request(om);</code></pre></div>
 <p><strong><code>lora_app_port_send</code></strong> transmits the Packet Buffer by calling <code>lora_node_mcps_request</code>.</p>
 <p>Again we hop, from the Application Layer to the <strong>Node Layer</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_node.c#L142-L159"><code>lora_node.c</code></a></p>
-<div class="example-wrap"><pre class="language-c">/// Transmit a LoRaWAN Packet by adding it to the Transmit Queue
+<div class="example-wrap"><pre class="language-c"><code>/// Transmit a LoRaWAN Packet by adding it to the Transmit Queue
 void lora_node_mcps_request(struct pbuf *om) {
     ...
     //  Add the Packet Buffer to the Transmit Queue
@@ -759,11 +759,11 @@ void lora_node_mcps_request(struct pbuf *om) {
         &amp;g_lora_mac_data.lm_txq,  //  Transmit Queue
         g_lora_mac_data.lm_evq,   //  Event Queue
         om                        //  Packet Buffer
-    );</pre></div>
+    );</code></pre></div>
 <p><strong><code>lora_node_mcps_request</code></strong> adds the Packet Buffer to the <strong>Transmit Queue</strong>, the queue for outgoing packets.</p>
 <p>(Our Transmit Queue is implemented as a <strong>Packet Buffer Queue</strong>. More about Packet Buffer Queues in the Appendix.)</p>
 <p>The <strong>Background Process</strong> receives the Packet Buffer from the Transmit Queue: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_node.c#L265-L413"><code>lora_node.c</code></a></p>
-<div class="example-wrap"><pre class="language-c">/// Process a LoRaWAN Packet from the Transmit Queue
+<div class="example-wrap"><pre class="language-c"><code>/// Process a LoRaWAN Packet from the Transmit Queue
 static void lora_mac_proc_tx_q_event(struct ble_npl_event *ev) {
     ...
     //  Get the next Packet Buffer from the Transmit Queue.
@@ -772,14 +772,14 @@ static void lora_mac_proc_tx_q_event(struct ble_npl_event *ev) {
     mp = STAILQ_FIRST(&amp;g_lora_mac_data.lm_txq.mq_head);
     ...
     //  Call the Medium Access Layer to transmit the Packet Buffer
-    rc = LoRaMacMcpsRequest(om, lpkt);</pre></div>
+    rc = LoRaMacMcpsRequest(om, lpkt);</code></pre></div>
 <p>(Hang in there… We’re almost done!)</p>
 <p><strong><code>lora_mac_proc_tx_q_event</code></strong> passes the Packet Buffer to the <strong>Medium Access Control Layer</strong> (yep another hop): <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L3159-L3239"><code>LoRaMac.c</code></a></p>
-<div class="example-wrap"><pre class="language-c">/// Transmit the Packet Buffer
+<div class="example-wrap"><pre class="language-c"><code>/// Transmit the Packet Buffer
 LoRaMacStatus_t LoRaMacMcpsRequest(struct pbuf *om, struct lora_pkt_info *txi) {
     ...
     //  Send the Packet Buffer
-    status = Send(&amp;macHdr, txi-&gt;port, om);</pre></div>
+    status = Send(&amp;macHdr, txi-&gt;port, om);</code></pre></div>
 <p><strong><code>LoRaMacMcpsRequest</code></strong> calls <code>Send</code> to transmit the packet.</p>
 <p>We’ve seen the <strong><code>Send</code></strong> function earlier, it…</p>
 <ol>
@@ -814,10 +814,10 @@ LoRaMacStatus_t LoRaMacMcpsRequest(struct pbuf *om, struct lora_pkt_info *txi) {
 <li><a href="https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html"><strong>LoRa Frequencies by Country</strong></a></li>
 </ul>
 <p>Download the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/lorawan/customer_app/sdk_app_lorawan">LoRaWAN firmware and driver source code</a>…</p>
-<div class="example-wrap"><pre class="language-bash"># Download the lorawan branch of lupyuen&#39;s bl_iot_sdk
-git clone --recursive --branch lorawan https://github.com/lupyuen/bl_iot_sdk</pre></div>
+<div class="example-wrap"><pre class="language-bash"><code># Download the lorawan branch of lupyuen&#39;s bl_iot_sdk
+git clone --recursive --branch lorawan https://github.com/lupyuen/bl_iot_sdk</code></pre></div>
 <p>In the <code>customer_app/sdk_app_lorawan</code> folder, edit <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/Makefile"><code>Makefile</code></a> and find this setting…</p>
-<div class="example-wrap"><pre class="language-text">CFLAGS += -DCONFIG_LORA_NODE_REGION=1</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>CFLAGS += -DCONFIG_LORA_NODE_REGION=1</code></pre></div>
 <p>Change “<code>1</code>” to your LoRa Region…</p>
 <table><thead><tr><th align="left">Value</th><th align="left">Region</th></tr></thead><tbody>
 <tr><td align="left">0</td><td align="left">No region</td></tr>
@@ -833,9 +833,9 @@ git clone --recursive --branch lorawan https://github.com/lupyuen/bl_iot_sdk</pr
 <tr><td align="left">10</td><td align="left">North American band on 915MHz with a maximum of 16 channels</td></tr>
 </tbody></table>
 <p>Then update the <strong>GPIO Pin Numbers</strong> in…</p>
-<div class="example-wrap"><pre class="language-text">components/3rdparty/lora-sx1262/include/sx126x-board.h</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>components/3rdparty/lora-sx1262/include/sx126x-board.h</code></pre></div>
 <p>Below are the GPIO Pin Numbers for the connection shown at the top of this article…</p>
-<div class="example-wrap"><pre class="language-c">#define SX126X_SPI_SDI_PIN       1  //  SPI Serial Data In Pin  (formerly MISO)
+<div class="example-wrap"><pre class="language-c"><code>#define SX126X_SPI_SDI_PIN       1  //  SPI Serial Data In Pin  (formerly MISO)
 #define SX126X_SPI_SDO_PIN       4  //  SPI Serial Data Out Pin (formerly MOSI)
 #define SX126X_SPI_CLK_PIN       3  //  SPI Clock Pin
 #define SX126X_SPI_CS_PIN       14  //  SPI Chip Select Pin
@@ -843,9 +843,9 @@ git clone --recursive --branch lorawan https://github.com/lupyuen/bl_iot_sdk</pr
 #define SX126X_NRESET           17  //  Reset Pin
 #define SX126X_DIO1             11  //  DIO1
 #define SX126X_BUSY_PIN          0  //  Busy Pin
-#define SX126X_DEBUG_CS_PIN     -1  //  Debug Chip Select Pin, mirrors the High / Low State of SX1262 Chip Select Pin. Set to -1 if not needed.</pre></div>
+#define SX126X_DEBUG_CS_PIN     -1  //  Debug Chip Select Pin, mirrors the High / Low State of SX1262 Chip Select Pin. Set to -1 if not needed.</code></pre></div>
 <p>Build the Firmware Binary File <code>sdk_app_lorawan.bin</code>…</p>
-<div class="example-wrap"><pre class="language-bash"># TODO: Change this to the full path of bl_iot_sdk
+<div class="example-wrap"><pre class="language-bash"><code># TODO: Change this to the full path of bl_iot_sdk
 export BL60X_SDK_PATH=$HOME/bl_iot_sdk
 export CONFIG_CHIP_NAME=BL602
 
@@ -853,7 +853,7 @@ cd bl_iot_sdk/customer_app/sdk_app_lorawan
 make
 
 # TODO: Change ~/blflash to the full path of blflash
-cp build_out/sdk_app_lorawan.bin ~/blflash</pre></div>
+cp build_out/sdk_app_lorawan.bin ~/blflash</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/pinecone#building-firmware">More details on building bl_iot_sdk</a></p>
 <p>(Remember to use the <strong><code>lorawan</code></strong> branch, not the default <strong><code>master</code></strong> branch)</p>
 <h2 id="flash-the-firmware" class="section-header"><a href="#flash-the-firmware">4.1 Flash the firmware</a></h2>
@@ -905,7 +905,7 @@ cp build_out/sdk_app_lorawan.bin ~/blflash</pre></div>
 </li>
 </ol>
 <p>Enter these commands to flash <code>sdk_app_lorawan.bin</code> to BL602 over UART…</p>
-<div class="example-wrap"><pre class="language-bash"># TODO: Change ~/blflash to the full path of blflash
+<div class="example-wrap"><pre class="language-bash"><code># TODO: Change ~/blflash to the full path of blflash
 cd ~/blflash
 
 # For Linux:
@@ -919,7 +919,7 @@ cargo run flash sdk_app_lorawan.bin \
     --baud-rate 230400
 
 # For Windows: Change COM5 to the BL602 Serial Port
-cargo run flash sdk_app_lorawan.bin --port COM5</pre></div>
+cargo run flash sdk_app_lorawan.bin --port COM5</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">More details on flashing firmware</a></p>
 <h2 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">4.2 Run the firmware</a></h2>
 <p>Set BL602 to <strong>Normal Mode</strong> (Non-Flashing) and restart the board…</p>
@@ -950,7 +950,7 @@ cargo run flash sdk_app_lorawan.bin --port COM5</pre></div>
 </ol>
 <p>After restarting, connect to BL602’s UART Port at 2 Mbps like so…</p>
 <p><strong>For Linux:</strong></p>
-<div class="example-wrap"><pre class="language-bash">sudo screen /dev/ttyUSB0 2000000</pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>sudo screen /dev/ttyUSB0 2000000</code></pre></div>
 <p><strong>For macOS:</strong> Use CoolTerm (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>Alternatively:</strong> Use the Web Serial Terminal (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
@@ -971,43 +971,43 @@ cargo run flash sdk_app_lorawan.bin --port COM5</pre></div>
 <li>
 <p>First we <strong>create the Background Task</strong> that will process outgoing and incoming LoRa Packets.</p>
 <p>Enter this command…</p>
-<div class="example-wrap"><pre class="language-text">create_task</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>create_task</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/lora2#event-queue">(<code>create_task</code> is explained here)</a></p>
 </li>
 <li>
 <p>Then we <strong>initialise our LoRaWAN Driver</strong>. </p>
 <p>Enter this command…</p>
-<div class="example-wrap"><pre class="language-text">init_lorawan</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>init_lorawan</code></pre></div>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/lorawan.c#L166-L168">(<code>init_lorawan</code> is defined here)</a></p>
 </li>
 <li>
 <p>Let’s get ready to join the LoRaWAN Network. Enter the <strong>Device EUI</strong>…</p>
-<div class="example-wrap"><pre class="language-text">las_wr_dev_eui 0x4b:0xc1:0x5e:0xe7:0x37:0x7b:0xb1:0x5b</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>las_wr_dev_eui 0x4b:0xc1:0x5e:0xe7:0x37:0x7b:0xb1:0x5b</code></pre></div>
 <p>In ChirpStack: Copy the Device EUI from <code>Applications → app → Device EUI</code></p>
 </li>
 <li>
 <p>Enter the <strong>Application EUI</strong>…</p>
-<div class="example-wrap"><pre class="language-text">las_wr_app_eui 0x00:0x00:0x00:0x00:0x00:0x00:0x00:0x00</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>las_wr_app_eui 0x00:0x00:0x00:0x00:0x00:0x00:0x00:0x00</code></pre></div>
 <p>ChirpStack doesn’t require an Application EUI, so we set it to zeros.</p>
 </li>
 <li>
 <p>Enter the <strong>Application Key</strong>…</p>
-<div class="example-wrap"><pre class="language-text">las_wr_app_key 0xaa:0xff:0xad:0x5c:0x7e:0x87:0xf6:0x4d:0xe3:0xf0:0x87:0x32:0xfc:0x1d:0xd2:0x5d</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>las_wr_app_key 0xaa:0xff:0xad:0x5c:0x7e:0x87:0xf6:0x4d:0xe3:0xf0:0x87:0x32:0xfc:0x1d:0xd2:0x5d</code></pre></div>
 <p>In ChirpStack: Copy the Application Key from <code>Applications → app → Devices → device_otaa_class_a → Keys (OTAA) → Application Key</code></p>
 </li>
 <li>
 <p>Now we <strong>join the LoRaWAN network</strong>, try up to 3 times…</p>
-<div class="example-wrap"><pre class="language-text">las_join 3</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>las_join 3</code></pre></div>
 <p>This calls the <code>las_cmd_join</code> function that we’ve seen earlier.</p>
 </li>
 <li>
 <p>We <strong>open LoRaWAN Application Port 2</strong>…</p>
-<div class="example-wrap"><pre class="language-text">las_app_port open 2</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>las_app_port open 2</code></pre></div>
 <p>This calls the <code>las_cmd_app_port</code> function that we’ve seen earlier.</p>
 </li>
 <li>
 <p>Finally we <strong>send a data packet to LoRaWAN port 2</strong>: 5 bytes of zeros, unconfirmed (with no acknowledgement)…</p>
-<div class="example-wrap"><pre class="language-text">las_app_tx 2 5 0</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>las_app_tx 2 5 0</code></pre></div>
 <p>This calls the <code>las_cmd_app_tx</code> function that we’ve seen earlier.</p>
 <p><a href="https://youtu.be/BMMIIiZG6G0"><strong>Watch the demo video on YouTube</strong></a></p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/README.md#output-log"><strong>See the output log</strong></a></p>
@@ -1071,7 +1071,7 @@ cargo run flash sdk_app_lorawan.bin --port COM5</pre></div>
 <p>Typical LoRaWAN Networks will use the <strong>Public LoRa Sync Word <code>0x3444</code></strong>.</p>
 <p>(Instead of the Private Sync Word <code>0x1424</code>)</p>
 <p>This is defined in the <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/Makefile#L66-L69"><code>Makefile</code></a> as…</p>
-<div class="example-wrap"><pre class="language-text">CFLAGS += -DLORA_NODE_PUBLIC_NWK=1</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>CFLAGS += -DLORA_NODE_PUBLIC_NWK=1</code></pre></div>
 <p>The LoRaWAN Gateway will not respond to our packets if we transmit the wrong Sync Word.</p>
 <p>See the Appendix for details.</p>
 </li>
@@ -1213,7 +1213,7 @@ cargo run flash sdk_app_lorawan.bin --port COM5</pre></div>
 </ul>
 <p><img src="https://lupyuen.github.io/images/lorawan-ldo.png" alt="SX1262: DC-DC vs LDO" /></p>
 <p>Our RFM90 / SX1262 LoRa Transceiver Driver is currently set to <strong>DC-DC Power Regulator Mode</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L535-L543"><code>radio.c</code></a></p>
-<div class="example-wrap"><pre class="language-c">//  TODO: Declare the power regulation used to power the device
+<div class="example-wrap"><pre class="language-c"><code>//  TODO: Declare the power regulation used to power the device
 //  This command allows the user to specify if DC-DC or LDO is used for power regulation.
 //  Using only LDO implies that the Rx or Tx current is doubled
 
@@ -1221,22 +1221,22 @@ cargo run flash sdk_app_lorawan.bin --port COM5</pre></div>
 // SX126xSetRegulatorMode( USE_LDO );   //  Use LDO
 
 #warning SX126x is set to DC-DC power regulator mode (instead of LDO)
-SX126xSetRegulatorMode( USE_DCDC );  //  Use DC-DC</pre></div>
+SX126xSetRegulatorMode( USE_DCDC );  //  Use DC-DC</code></pre></div>
 <p><a href="https://twitter.com/MisterTechBlog/status/1382510807116746753">(Check out this discussion on Twitter)</a></p>
 <h2 id="transmit-power" class="section-header"><a href="#transmit-power">9.2 Transmit Power</a></h2>
 <p>I have increased the <strong>Transmit Power to max 22 dBm</strong>. Also I have increased the <strong>Power Amplifier Ramp Up Time</strong> from 200 to the max 3,400 microseconds: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L546-L547"><code>radio.c</code></a></p>
-<div class="example-wrap"><pre class="language-c">//  Previously: SX126xSetTxParams( 0, RADIO_RAMP_200_US );
-SX126xSetTxParams( 22, RADIO_RAMP_3400_US );</pre></div>
+<div class="example-wrap"><pre class="language-c"><code>//  Previously: SX126xSetTxParams( 0, RADIO_RAMP_200_US );
+SX126xSetTxParams( 22, RADIO_RAMP_3400_US );</code></pre></div>
 <p>According to the log, the Power Amplifier seems to be enabled at the max settings: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/README.md#output-log"><code>README.md</code></a></p>
-<div class="example-wrap"><pre class="language-text">SX126xSetPaConfig: 
+<div class="example-wrap"><pre class="language-text"><code>SX126xSetPaConfig: 
 paDutyCycle=4, 
 hpMax=7, 
 deviceSel=0, 
-paLut=1 </pre></div><h2 id="over-current-protection" class="section-header"><a href="#over-current-protection">9.3 Over Current Protection</a></h2>
+paLut=1 </code></pre></div><h2 id="over-current-protection" class="section-header"><a href="#over-current-protection">9.3 Over Current Protection</a></h2>
 <p>I copied this <strong>Over Current Protection</strong> setting from WisBlock RAK4631 (which is also based on Semtech SX1262): <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/sx126x.c#L570-L571"><code>sx126x.c</code></a></p>
-<div class="example-wrap"><pre class="language-c">//  TODO: Set the current max value in the over current protection.
+<div class="example-wrap"><pre class="language-c"><code>//  TODO: Set the current max value in the over current protection.
 //  From SX126x-Arduino/src/radio/sx126x/sx126x.cpp
-SX126xWriteRegister(REG_OCP, 0x38); // current max 160mA for the whole device</pre></div>
+SX126xWriteRegister(REG_OCP, 0x38); // current max 160mA for the whole device</code></pre></div>
 <p>None of these changes seem to increase the RFM90 Transmit Power.</p>
 <p>Would be great if you could suggest a fix for this 🙏</p>
 <p>(Or perhaps the Transmit Power isn’t an issue?)</p>
@@ -1245,10 +1245,10 @@ SX126xWriteRegister(REG_OCP, 0x38); // current max 160mA for the whole device</p
 <p>(Instead of the Private Sync Word <code>0x1424</code>)</p>
 <p>The LoRaWAN Gateway will <strong>not respond to our packets if we transmit the wrong Sync Word</strong>.</p>
 <p><strong><code>LORA_NODE_PUBLIC_NWK</code></strong> should be set to <strong><code>1</code></strong> in the <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/Makefile#L66-L69"><code>Makefile</code></a> …</p>
-<div class="example-wrap"><pre class="language-text">CFLAGS += -DLORA_NODE_PUBLIC_NWK=1</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>CFLAGS += -DLORA_NODE_PUBLIC_NWK=1</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/lorawan-syncword.png" alt="LORA_NODE_PUBLIC_NWK in Makefile" /></p>
 <p><code>LORA_NODE_PUBLIC_NWK</code> sets the Sync Word in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L2581-L2587"><code>LoRaMac.c</code></a> …</p>
-<div class="example-wrap"><pre class="language-c">//  Syncword for Private LoRa networks
+<div class="example-wrap"><pre class="language-c"><code>//  Syncword for Private LoRa networks
 #define LORA_MAC_PRIVATE_SYNCWORD                   0x1424
 
 //  Syncword for Public LoRa networks
@@ -1263,7 +1263,7 @@ LoRaMacStatus_t LoRaMacInitialization(LoRaMacCallback_t *callbacks, LoRaMacRegio
 #else
     LM_F_IS_PUBLIC_NWK() = 0;
     Radio.SetPublicNetwork(false);
-#endif</pre></div>
+#endif</code></pre></div>
 <p>It took me a while to troubleshoot this problem: “Why is the LoRaWAN Gateway ignoring my packets?”</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-joinfail.png" alt="Join Request Fail" /></p>
 <p>Till I got inspired by this quote from the <a href="https://github.com/Lora-net/sx1302_hal/tree/master/libloragw#61-spreading-factor-sf5--sf6">Semtech SX1302 LoRa Concentrator HAL User Manual</a></p>
@@ -1333,14 +1333,14 @@ LoRaMacStatus_t LoRaMacInitialization(LoRaMacCallback_t *callbacks, LoRaMacRegio
 </ol>
 <p><img src="https://lupyuen.github.io/images/lorawan-pbuf1.png" alt="pbuf Packet Buffer" /></p>
 <p>Here’s how we fetch the LoRaWAN Packet Header from a LoRaWAN Packet…</p>
-<div class="example-wrap"><pre class="language-c">//  Get the LoRaWAN Packet Header
+<div class="example-wrap"><pre class="language-c"><code>//  Get the LoRaWAN Packet Header
 header = get_pbuf_header(
     pb,                           //  LoRaWAN Packet Buffer
     sizeof(struct lora_pkt_info)  //  Size of LoRaWAN Packet Header
-);</pre></div>
+);</code></pre></div>
 <p><code>pbuf</code> Packet Buffers have an unusual <strong>Sliding Payload Pointer</strong> for extracting the header. </p>
 <p>Here’s how we implement <code>get_pbuf_header</code> in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/pbuf_queue.c#L165-L197"><code>pbuf_queue.c</code></a> …</p>
-<div class="example-wrap"><pre class="language-c">/// Return the pbuf Packet Buffer header
+<div class="example-wrap"><pre class="language-c"><code>/// Return the pbuf Packet Buffer header
 void *
 get_pbuf_header(
     struct pbuf *buf,    //  pbuf Packet Buffer
@@ -1372,7 +1372,7 @@ get_pbuf_header(
     assert(rc2 == 0);
     assert(header != NULL);
     return header;
-}</pre></div>
+}</code></pre></div>
 <p><strong><code>pbuf_add_header</code></strong> comes from the Lightweight IP Library. It slides the <code>payload</code> pointer backwards to point at the requested header…</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-pbuf2.png" alt="pbuf Packet Buffer after sliding the payload pointer" /></p>
 <p>(<code>pbuf_add_header</code> returns a non-zero error code if there’s isn’t sufficient space for the header)</p>
@@ -1383,7 +1383,7 @@ get_pbuf_header(
 <p>The Lightweight IP Stack doesn’t have the equivalent of Mqueues, so we build our own <strong>Packet Buffer Queues</strong>.</p>
 <p>A <strong><code>pbuf_queue</code></strong> Packet Buffer Queue is a <strong>First-In First-Out List of Packet Buffers</strong>. It supports these operations…</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/pbuf_queue.c#L210-L322"><code>pbuf_queue.c</code></a> </p>
-<div class="example-wrap"><pre class="language-c">//  Initializes a pbuf_queue.  A pbuf_queue is a queue of pbufs that ties to a
+<div class="example-wrap"><pre class="language-c"><code>//  Initializes a pbuf_queue.  A pbuf_queue is a queue of pbufs that ties to a
 //  particular task&#39;s event queue.  pbuf_queues form a helper API around a common
 //  paradigm: wait on an event queue until at least one packet is available,
 //  then process a queue of packets.
@@ -1394,13 +1394,13 @@ struct pbuf *pbuf_queue_get(struct pbuf_queue *mq);
 
 //  Adds a packet (i.e. packet header pbuf) to a pbuf_queue. The event associated
 //  with the pbuf_queue gets posted to the specified eventq.
-int pbuf_queue_put(struct pbuf_queue *mq, struct ble_npl_eventq *evq, struct pbuf *m);</pre></div>
+int pbuf_queue_put(struct pbuf_queue *mq, struct ble_npl_eventq *evq, struct pbuf *m);</code></pre></div>
 <p>To build a <strong>Linked List</strong> of Packet Buffers, we insert a <strong><code>pbuf_list</code> Header</strong> just before the LoRaWAN Header in the LoRaWAN Packet…</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-pbuf3.png" alt="pbuf Packet Buffer with pbuf_list header" /></p>
 <p>(Yes the Lightweight IP Stack allows multiple headers per Packet Buffer, because of the Sliding Payload Pointer)</p>
 <p>The <code>pbuf_list</code> Header points to the next Packet Buffer in the <strong>Singly-Linked List</strong>…</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/8f7109be292c1dbfd56ec27077d0ae83190e8376/components/3rdparty/lorawan/include/node/pbuf_queue.h#L29-L58"><code>pbuf_queue.h</code></a></p>
-<div class="example-wrap"><pre class="language-c">//  Structure representing a list of pbufs inside a pbuf_queue.
+<div class="example-wrap"><pre class="language-c"><code>//  Structure representing a list of pbufs inside a pbuf_queue.
 //  pbuf_list is stored in the header of the pbuf, before the LoRaWAN Header.
 struct pbuf_list {
     //  Header length
@@ -1416,12 +1416,12 @@ struct pbuf_list {
     //  Pointer to next node in the pbuf_list
     STAILQ_ENTRY(pbuf_list) next;
     //  STAILQ_ENTRY is defined in https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/include/node/bsd_queue.h
-};</pre></div>
+};</code></pre></div>
 <p>The <strong><code>next</code></strong> field lets us link up the Packet Buffers like so…</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-pbuf4.png" alt="pbuf Packet Buffer linked via pbuf_list header" /></p>
 <p>Here’s how we <strong>allocate a Packet Buffer</strong> and initialise both headers: <code>pbuf_list</code> Header and LoRaWAN Header…</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/pbuf_queue.c#L38-L98"><code>pbuf_queue.c</code></a></p>
-<div class="example-wrap"><pre class="language-c">/// Allocate a pbuf for LoRaWAN transmission. This returns a pbuf with 
+<div class="example-wrap"><pre class="language-c"><code>/// Allocate a pbuf for LoRaWAN transmission. This returns a pbuf with 
 /// pbuf_list Header, LoRaWAN Header and LoRaWAN Payload.
 struct pbuf *
 alloc_pbuf(
@@ -1472,12 +1472,12 @@ alloc_pbuf(
     assert((uint32_t) list-&gt;header + list-&gt;header_len == (uint32_t) list-&gt;payload);
 
     return buf;
-}</pre></div>
+}</code></pre></div>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/pbuf_queue.c#L27-L30">(Note: Critical Sections are needed for <code>pbuf_queue_get</code> and <code>pbuf_queue_put</code> to work correctly during multitasking… But Critical Sections have not been implemented yet)</a></p>
 <h1 id="appendix-bl602-spi-functions" class="section-header"><a href="#appendix-bl602-spi-functions">13 Appendix: BL602 SPI Functions</a></h1>
 <p>Here’s how our LoRa Transceiver Driver <strong>initialises the BL602 SPI Port</strong> by calling the <strong>BL602 SPI Hardware Abstraction Layer (HAL)</strong>…</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/sx126x-board.c#L166-L197"><code>sx126x-board.c</code></a></p>
-<div class="example-wrap"><pre class="language-c">/// SPI Device Instance
+<div class="example-wrap"><pre class="language-c"><code>/// SPI Device Instance
 spi_dev_t spi_device;
 
 /// Initialise GPIO Pins and SPI Port. Called by SX126xIoIrqInit.
@@ -1506,7 +1506,7 @@ void SX126xIoInit( void ) {
         SX126X_SPI_SDO_PIN    //  SPI Serial Data Out Pin (formerly MOSI)
     );
     assert(rc == 0);
-}</pre></div>
+}</code></pre></div>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/include/sx126x-board.h#L36-L61">(The pins are defined in <code>sx126x-board.h</code>)</a></p>
 <p>The BL602 SPI HAL is explained in the article…</p>
 <ul>
@@ -1515,7 +1515,7 @@ void SX126xIoInit( void ) {
 <p>Note that the <strong>SPI Polarity-Phase</strong> has been modified. <a href="https://lupyuen.github.io/articles/spi#spi-phase-looks-sus">(More about this)</a></p>
 <p>Here’s how our LoRa Transceiver Driver calls the BL602 SPI HAL to <strong>transmit and receive a single byte</strong> to RFM90 / SX1262…</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/sx126x-board.c#L120-L164"><code>sx126x-board.c</code></a></p>
-<div class="example-wrap"><pre class="language-c">/// SPI Transmit Buffer (1 byte)
+<div class="example-wrap"><pre class="language-c"><code>/// SPI Transmit Buffer (1 byte)
 static uint8_t spi_tx_buf[1];
 
 /// SPI Receive Buffer (1 byte)
@@ -1553,23 +1553,23 @@ uint16_t SpiInOut(int spi_num, uint16_t val) {
 
     //  Return the received byte
     return spi_rx_buf[0];
-}</pre></div><h1 id="appendix-bl602-gpio-interrupts" class="section-header"><a href="#appendix-bl602-gpio-interrupts">14 Appendix: BL602 GPIO Interrupts</a></h1>
+}</code></pre></div><h1 id="appendix-bl602-gpio-interrupts" class="section-header"><a href="#appendix-bl602-gpio-interrupts">14 Appendix: BL602 GPIO Interrupts</a></h1>
 <p>The LoRa Transceiver (RFM90 / SX1262) triggers a <strong>GPIO Interrupt</strong> on BL602 when it receives a LoRa Packet…</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-interrupt.png" alt="GPIO Interrupt Handler" /></p>
 <p>Our LoRa Transceiver Driver handles this GPIO Interrupt by registering a <strong>GPIO Interrupt Handler</strong> like so: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L523-L532"><code>radio.c</code></a></p>
-<div class="example-wrap"><pre class="language-c">/// Init the LoRa Transceiver
+<div class="example-wrap"><pre class="language-c"><code>/// Init the LoRa Transceiver
 void RadioInit( RadioEvents_t *events ) {
     ...
-    SX126xInit( RadioOnDioIrq );</pre></div>
+    SX126xInit( RadioOnDioIrq );</code></pre></div>
 <p><strong><code>RadioOnDioIrq</code></strong> is the function that will handle the GPIO Interrupt. <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L1300-L1312">(See this)</a></p>
 <p><strong><code>SX126xInit</code></strong> is defined in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/sx126x.c#L112-L131"><code>sx126x.c</code></a> …</p>
-<div class="example-wrap"><pre class="language-c">/// Init the SX1262 LoRa Transceiver
+<div class="example-wrap"><pre class="language-c"><code>/// Init the SX1262 LoRa Transceiver
 void SX126xInit( DioIrqHandler dioIrq ) {
     ...
     //  dioIrq is the GPIO Handler Function RadioOnDioIrq
-    SX126xIoIrqInit( dioIrq );</pre></div>
+    SX126xIoIrqInit( dioIrq );</code></pre></div>
 <p>We call <strong><code>SX126xIoIrqInit</code></strong> to set <code>RadioOnDioIrq</code> as the GPIO Handler Function: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/sx126x-board.c#L199-L232"><code>sx126x-board.c</code></a></p>
-<div class="example-wrap"><pre class="language-c">/// Initialise GPIO Pins and SPI Port. Register GPIO Interrupt Handler for DIO1.
+<div class="example-wrap"><pre class="language-c"><code>/// Initialise GPIO Pins and SPI Port. Register GPIO Interrupt Handler for DIO1.
 /// Based on hal_button_register_handler_with_dts in https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_button.c
 /// Note: This is different from the Reference Implementation,
 /// which initialises the GPIO Pins and SPI Port at startup.
@@ -1600,7 +1600,7 @@ void SX126xIoIrqInit( DioIrqHandler dioIrq ) {
 
     //  Enable GPIO Interrupt
     bl_irq_enable(GPIO_INT0_IRQn);
-}</pre></div>
+}</code></pre></div>
 <p>This code is explained here…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lora2#bl602-gpio-interrupts"><strong>“BL602 GPIO Interrupts”</strong></a></li>

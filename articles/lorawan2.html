@@ -141,7 +141,7 @@
 <p>We set the <strong>Chip Select Pin (CS)</strong> to Low to select the <strong>Active SPI Device</strong>: Either LoRa SX1262, SPI Flash or ST7789 Display…</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-spi.jpg" alt="SPI Bus on PineDio Stack" /></p>
 <p>To test the LoRa SX1262 Transceiver, we define the <strong>GPIO Pin Numbers</strong> like so: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/components/3rdparty/lora-sx1262/include/sx126x-board.h#L36-L50">lora-sx1262/sx126x-board.h</a></p>
-<div class="example-wrap"><pre class="language-c">//  Below are the pin numbers for PineDio Stack BL604 with onboard SX1262.
+<div class="example-wrap"><pre class="language-c"><code>//  Below are the pin numbers for PineDio Stack BL604 with onboard SX1262.
 #define SX126X_SPI_IDX           0  //  SPI Port 0
 #define SX126X_SPI_SDI_PIN       0  //  SPI Serial Data In Pin  (formerly MISO)
 #define SX126X_SPI_SDO_PIN      17  //  SPI Serial Data Out Pin (formerly MOSI)
@@ -153,14 +153,14 @@
 #define SX126X_BUSY_PIN         10  //  Busy Pin
 #define SX126X_DEBUG_CS_PIN      5  //  Debug Chip Select Pin, mirrors the High / Low State of SX1262 Chip Select Pin. Set to -1 if not needed.
 #define SX126X_TCXO_WAKEUP_TIME  5  //  Time required for the TCXO to wakeup (milliseconds)
-#define SX126X_SPI_BAUDRATE  (200 * 1000)  //  SPI Frequency (200 kHz)</pre></div>
+#define SX126X_SPI_BAUDRATE  (200 * 1000)  //  SPI Frequency (200 kHz)</code></pre></div>
 <p>(<code>SX126X_DEBUG_CS_PIN</code> should be set to <code>-1</code> if we’re not debugging. More about the Debug CS Pin later)</p>
 <p>We define the <strong>Chip Select Pins</strong> for SPI Flash and ST7789 Display as well: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/pinedio_lorawan/pinedio_lorawan/demo.c#L101-L105">pinedio_lorawan/demo.c</a></p>
-<div class="example-wrap"><pre class="language-c">/// GPIO for SPI Flash Chip Select Pin. We must set this to High to deselect SPI Flash.
+<div class="example-wrap"><pre class="language-c"><code>/// GPIO for SPI Flash Chip Select Pin. We must set this to High to deselect SPI Flash.
 #define FLASH_CS_PIN     14
 
 /// GPIO for ST7789 SPI Chip Select Pin. We must set this to High to deselect ST7789 Display.
-#define DISPLAY_CS_PIN   20</pre></div><h1 id="lorawan-firmware" class="section-header"><a href="#lorawan-firmware">2 LoRaWAN Firmware</a></h1>
+#define DISPLAY_CS_PIN   20</code></pre></div><h1 id="lorawan-firmware" class="section-header"><a href="#lorawan-firmware">2 LoRaWAN Firmware</a></h1>
 <p>To test LoRaWAN on PineDio Stack we shall run this <strong>LoRaWAN Firmware</strong>…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan"><strong><code>pinedio_lorawan</code> Firmware</strong></a></li>
@@ -182,7 +182,7 @@
 <h2 id="deselect-spi-peripherals" class="section-header"><a href="#deselect-spi-peripherals">2.1 Deselect SPI Peripherals</a></h2>
 <p>While testing LoRaWAN (and LoRa SX1262), we need to <strong>deselect all other SPI Peripherals</strong> (SPI Flash and ST7789 Display).</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/pinedio_lorawan/pinedio_lorawan/demo.c#L107-L130">pinedio_lorawan/demo.c</a> …</p>
-<div class="example-wrap"><pre class="language-c">/// Set Chip Select pins to High, to deselect SX1262, SPI Flash and ST7789
+<div class="example-wrap"><pre class="language-c"><code>/// Set Chip Select pins to High, to deselect SX1262, SPI Flash and ST7789
 int deselect_spi(void) {
   //  Configure Chip Select pins as GPIO Output Pins (instead of GPIO Input)
   int rc;
@@ -191,10 +191,10 @@ int deselect_spi(void) {
   rc = bl_gpio_enable_output(SX126X_SPI_CS_PIN, 0, 0);  assert(rc == 0);
   if (SX126X_DEBUG_CS_PIN &gt;= 0) {  //  Mirror SX126X_SPI_CS_PIN
     rc = bl_gpio_enable_output(SX126X_DEBUG_CS_PIN, 0, 0);  assert(rc == 0);
-  }</pre></div>
+  }</code></pre></div>
 <p>First we <strong>configure the Chip Select Pins</strong> for GPIO Output.</p>
 <p>Then we set the <strong>Chip Select Pins to High</strong>, to deselect the SPI Peripherals…</p>
-<div class="example-wrap"><pre class="language-c">  //  Set Chip Select pins to High, to deselect SX1262, SPI Flash and ST7789
+<div class="example-wrap"><pre class="language-c"><code>  //  Set Chip Select pins to High, to deselect SX1262, SPI Flash and ST7789
   rc = bl_gpio_output_set(FLASH_CS_PIN,      1);  assert(rc == 0);
   rc = bl_gpio_output_set(DISPLAY_CS_PIN,    1);  assert(rc == 0);
   rc = bl_gpio_output_set(SX126X_SPI_CS_PIN, 1);  assert(rc == 0);
@@ -202,7 +202,7 @@ int deselect_spi(void) {
     rc = bl_gpio_output_set(SX126X_DEBUG_CS_PIN, 1);  assert(rc == 0);
   }
   return 0;
-}</pre></div>
+}</code></pre></div>
 <p>(More about <code>SX126X_DEBUG_CS_PIN</code> when we talk about the Logic Analyser)</p>
 <p>This function is called by the <a href="https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L167-L173"><strong><code>init_lorawan</code> Command</strong></a>, which we’ll run in a while…</p>
 <p><img src="https://lupyuen.github.io/images/lorawan2-deselect.png" alt="Deselect SPI Peripherals" /></p>
@@ -210,7 +210,7 @@ int deselect_spi(void) {
 <h2 id="swap-spi-pins" class="section-header"><a href="#swap-spi-pins">2.2 Swap SPI Pins</a></h2>
 <p>Due to a quirk in the SPI implementation on BL602 and BL604, we need to <strong>swap the SPI Pins</strong> for SDI <em>(formerly MISO)</em> and SDO <em>(formerly MOSI)</em>.</p>
 <p>We do this by calling <strong>GLB_Swap_SPI_0_MOSI_With_MISO</strong> in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/components/3rdparty/lora-sx1262/src/sx126x-board.c#L168-L202">lora-sx1262/sx126x-board.c</a> …</p>
-<div class="example-wrap"><pre class="language-c">/// Initialise GPIO Pins and SPI Port. Called by SX126xIoIrqInit.
+<div class="example-wrap"><pre class="language-c"><code>/// Initialise GPIO Pins and SPI Port. Called by SX126xIoIrqInit.
 void SX126xIoInit( void ) {
   //  Configure the pins for GPIO Input / Output
   GpioInitOutput( SX126X_SPI_CS_PIN, 1 );
@@ -221,10 +221,10 @@ void SX126xIoInit( void ) {
   //  Note: We must swap SDI (MISO) and SDO (MOSI)
   //  to comply with the SPI Pin Definitions in 
   //  BL602 / BL604 Reference Manual
-  int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);</pre></div>
+  int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/pinedio#spi-pins-are-swapped">(More about swapping SPI Pins)</a></p>
 <p>After swapping the SPI Pins we may <strong>initialise the SPI Port</strong>…</p>
-<div class="example-wrap"><pre class="language-c">  //  Configure the SPI Port
+<div class="example-wrap"><pre class="language-c"><code>  //  Configure the SPI Port
   rc = spi_init(
     &amp;spi_device,     //  SPI Device
     SX126X_SPI_IDX,  //  SPI Port
@@ -242,7 +242,7 @@ void SX126xIoInit( void ) {
     SX126X_SPI_SDI_PIN    //  SPI Serial Data In Pin  (formerly MISO)
   );
   assert(rc == 0);
-}</pre></div>
+}</code></pre></div>
 <p>Note that the <strong>SPI Polarity-Phase should be 1</strong> and not 0.</p>
 <p>This seems to be another quirk of the SPI implementation on BL602 and BL604…</p>
 <ul>
@@ -270,7 +270,7 @@ void SX126xIoInit( void ) {
 </li>
 <li>
 <p>In the <code>customer_app/sdk_app_lorawan</code> folder, edit <a href="https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/sdk_app_lorawan/Makefile"><code>Makefile</code></a> and find this setting…</p>
-<div class="example-wrap"><pre class="language-text">CFLAGS += -DCONFIG_LORA_NODE_REGION=1</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>CFLAGS += -DCONFIG_LORA_NODE_REGION=1</code></pre></div>
 <p>Change “<code>1</code>” to your LoRa Region…</p>
 <table><thead><tr><th align="left">Value</th><th align="left">Region</th></tr></thead><tbody>
 <tr><td align="left">0</td><td align="left">No region</td></tr>
@@ -310,38 +310,38 @@ void SX126xIoInit( void ) {
 <ol>
 <li>
 <p>First we start the <strong>Background Task</strong> that will handle LoRa packets…</p>
-<div class="example-wrap"><pre class="language-bash">create_task</pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>create_task</code></pre></div></li>
 <li>
 <p>Next we initialise the <strong>LoRa SX1262 and LoRaWAN Drivers</strong>…</p>
-<div class="example-wrap"><pre class="language-bash">init_lorawan</pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>init_lorawan</code></pre></div></li>
 <li>
 <p>We set the <strong>Device EUI</strong> (Extended Unique Identifier)…</p>
-<div class="example-wrap"><pre class="language-bash">las_wr_dev_eui 0x4b:0xc1:0x5e:0xe7:0x37:0x7b:0xb1:0x5b</pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>las_wr_dev_eui 0x4b:0xc1:0x5e:0xe7:0x37:0x7b:0xb1:0x5b</code></pre></div>
 <p>Change the above EUI to the one in our ChirpStack Gateway: <code>Applications → app → Device EUI</code></p>
 </li>
 <li>
 <p>Set the <strong>App EUI</strong>…</p>
-<div class="example-wrap"><pre class="language-bash">las_wr_app_eui 0x00:0x00:0x00:0x00:0x00:0x00:0x00:0x00</pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>las_wr_app_eui 0x00:0x00:0x00:0x00:0x00:0x00:0x00:0x00</code></pre></div>
 <p>This is not needed for ChirpStack, thus we set to default <code>0000000000000000</code>.</p>
 </li>
 <li>
 <p>Set the <strong>App Key</strong>…</p>
-<div class="example-wrap"><pre class="language-bash">las_wr_app_key 0xaa:0xff:0xad:0x5c:0x7e:0x87:0xf6:0x4d:0xe3:0xf0:0x87:0x32:0xfc:0x1d:0xd2:0x5d</pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>las_wr_app_key 0xaa:0xff:0xad:0x5c:0x7e:0x87:0xf6:0x4d:0xe3:0xf0:0x87:0x32:0xfc:0x1d:0xd2:0x5d</code></pre></div>
 <p>We get the App Key from ChirpStack at <code>Applications → app → Devices → device_otaa_class_a → Keys (OTAA) → Application Key</code></p>
 </li>
 <li>
 <p>We send a request to <strong>join the LoRaWAN Network</strong>…</p>
-<div class="example-wrap"><pre class="language-bash">las_join 3</pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>las_join 3</code></pre></div>
 <p>(Retry up to 3 times)</p>
 </li>
 <li>
 <p>After the ChirpStack LoRaWAN Gateway has accepted our Join Request, we open a <strong>LoRaWAN Application Port</strong>…</p>
-<div class="example-wrap"><pre class="language-bash">las_app_port open 2</pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>las_app_port open 2</code></pre></div>
 <p>(2 is the Application Port Number)</p>
 </li>
 <li>
 <p>Finally we <strong>send a LoRaWAN Data Packet</strong> containing 5 bytes of data (<code>0x00</code>) to LoRaWAN Port 2…</p>
-<div class="example-wrap"><pre class="language-bash">las_app_tx 2 5 0</pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>las_app_tx 2 5 0</code></pre></div>
 <p>(0 means that this is an Unconfirmed Message, we’re not expecting an acknowledgement from the LoRaWAN Gateway)</p>
 </li>
 </ol>
@@ -376,7 +376,7 @@ void SX126xIoInit( void ) {
 </li>
 <li>
 <p>On PineDio Stack, run this command to send a Data Packet…</p>
-<div class="example-wrap"><pre class="language-bash">las_app_tx 2 5 0</pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>las_app_tx 2 5 0</code></pre></div></li>
 <li>
 <p>Our Data Packet appears in ChirpStack.</p>
 <p><strong><code>DecodedDataHex</code></strong> shows 5 bytes of zero, which is what we sent…</p>

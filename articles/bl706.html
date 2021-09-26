@@ -253,24 +253,24 @@
 <li><a href="https://github.com/bouffalolab/bl_mcu_sdk/tree/master/examples/lvgl"><strong>LVGL Demo Firmware for BL706</strong></a></li>
 </ul>
 <p>According to the <a href="https://github.com/bouffalolab/bl_mcu_sdk/tree/master/examples/lvgl">instructions for the LVGL Demo Firmware</a>, we build the firmware like so…</p>
-<div class="example-wrap"><pre class="language-bash"># In WSL bash: Go to the Windows directory for MCU SDK
+<div class="example-wrap"><pre class="language-bash"><code># In WSL bash: Go to the Windows directory for MCU SDK
 cd /mnt/c/bl_mcu_sdk
 
 # Build the LVGL Firmware
 make APP=lvgl \
      BOARD=bl706_avb \
-     SUPPORT_LVGL=y</pre></div>
+     SUPPORT_LVGL=y</code></pre></div>
 <p>(Note that we’ve downloaded the MCU SDK to <code>C:\bl_mcu_sdk</code> in Windows <code>cmd</code>, so the WSL path becomes <code>/mnt/c/bl_mcu_sdk</code>)</p>
 <p>The firmware build begins…</p>
-<div class="example-wrap"><pre class="language-text">make[1]: Entering directory &#39;/mnt/c/bl_mcu_sdk/build&#39;
-cmake -DCHIP=bl702 -DCPU_ID=m0 -DBOARD=bl706_avb -DSUPPORT_FLOAT=n -DSUPPORT_SHELL=n -DSUPPORT_FREERTOS=n -DSSUPPORT_LVGL=y -DSUPPORT_BLE=n -DSUPPORT_XZ=n -DSUPPORT_LWIP=n -DSUPPORT_TFLITE=n -DAPP_DIR=examples -DAPP=lv</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>make[1]: Entering directory &#39;/mnt/c/bl_mcu_sdk/build&#39;
+cmake -DCHIP=bl702 -DCPU_ID=m0 -DBOARD=bl706_avb -DSUPPORT_FLOAT=n -DSUPPORT_SHELL=n -DSUPPORT_FREERTOS=n -DSSUPPORT_LVGL=y -DSUPPORT_BLE=n -DSUPPORT_XZ=n -DSUPPORT_LWIP=n -DSUPPORT_TFLITE=n -DAPP_DIR=examples -DAPP=lv</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/bl706-build.png" alt="BL706 Firmware Build" /></p>
 <p>And succeeds with…</p>
-<div class="example-wrap"><pre class="language-text">[100%] Linking C executable ../../../out/examples/lvgl/lvgl_main.elf
-Generate /mnt/c/bl_mcu_sdk/out/examples/lvgl/lvgl_main.bin</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>[100%] Linking C executable ../../../out/examples/lvgl/lvgl_main.elf
+Generate /mnt/c/bl_mcu_sdk/out/examples/lvgl/lvgl_main.bin</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/226cb7dc629b47daa8435339fcb17a1c">(See the complete log)</a></p>
 <p>The build is done! This is the <strong>BL706 Firmware File</strong> that we shall flash to BL706 AVB…</p>
-<div class="example-wrap"><pre class="language-text">C:\bl_mcu_sdk\out\examples\lvgl\lvgl_main.bin</pre></div><h1 id="flash-firmware" class="section-header"><a href="#flash-firmware">4 Flash Firmware</a></h1>
+<div class="example-wrap"><pre class="language-text">C:\bl_mcu_sdk\out\examples\lvgl\lvgl_main.bin</code></pre></div><h1 id="flash-firmware" class="section-header"><a href="#flash-firmware"><code>4 Flash Firmware</a></h1>
 <p>We’re ready to <strong>flash our LVGL Demo Firmware</strong> to BL706 AVB!  We shall…</p>
 <ol>
 <li>
@@ -342,20 +342,20 @@ Generate /mnt/c/bl_mcu_sdk/out/examples/lvgl/lvgl_main.bin</pre></div>
 </li>
 <li>
 <p><strong>Image File:</strong> </p>
-<div class="example-wrap"><pre class="language-text">C:\bl_mcu_sdk\out\examples\lvgl\lvgl_main.bin</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>C:\bl_mcu_sdk\out\examples\lvgl\lvgl_main.bin</code></pre></div>
 <p>(Change this to the location of the <strong>BL706 Firmware File</strong> <code>lvgl_main.bin</code>)</p>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/bl706-flash.png" alt="Flashing BL706 with BL Dev Cube" /></p>
 <p>Click <strong><code>Create &amp; Program</code></strong></p>
 <p>We should see…</p>
-<div class="example-wrap"><pre class="language-text">{&#39;xtal_type&#39;: &#39;XTAL_32M&#39;, &#39;pll_clk&#39;: &#39;144M&#39;, &#39;encrypt_type&#39;: &#39;None&#39;, &#39;key_sel&#39;: &#39;0&#39;, &#39;cache_way_disable&#39;: &#39;None&#39;, &#39;sign_type&#39;: &#39;None&#39;, &#39;crc_ignore&#39;: &#39;False&#39;, &#39;hash_ignore&#39;: &#39;False&#39;, &#39;encrypt_key&#39;: &#39;&#39;, &#39;aes_iv&#39;: &#39;&#39;, &#39;public_key_cfg&#39;: &#39;&#39;, &#39;private_key_cfg&#39;: &#39;&#39;, &#39;device_tree&#39;: &#39;&#39;, &#39;page_type&#39;: &#39;mcu&#39;, &#39;flash_clk_type&#39;: &#39;72M&#39;, &#39;boot_src&#39;: &#39;Flash&#39;, &#39;img_type&#39;: &#39;SingleCPU&#39;, &#39;img_addr&#39;: &#39;0x2000&#39;, &#39;bootinfo_addr&#39;: &#39;0x0&#39;, &#39;img_file&#39;: &#39;C:\\bl_mcu_sdk\\out\\examples\\lvgl\\lvgl_main.bin&#39;, &#39;dl_device&#39;: &#39;Uart&#39;, &#39;dl_comport&#39;: &#39;COM6&#39;, &#39;dl_comspeed&#39;: &#39;2000000&#39;, &#39;dl_jlinkspeed&#39;: &#39;1000&#39;, &#39;dl_chiperase&#39;: &#39;False&#39;, &#39;dl_xtal&#39;: &#39;32M&#39;}
+<div class="example-wrap"><pre class="language-text"><code>{&#39;xtal_type&#39;: &#39;XTAL_32M&#39;, &#39;pll_clk&#39;: &#39;144M&#39;, &#39;encrypt_type&#39;: &#39;None&#39;, &#39;key_sel&#39;: &#39;0&#39;, &#39;cache_way_disable&#39;: &#39;None&#39;, &#39;sign_type&#39;: &#39;None&#39;, &#39;crc_ignore&#39;: &#39;False&#39;, &#39;hash_ignore&#39;: &#39;False&#39;, &#39;encrypt_key&#39;: &#39;&#39;, &#39;aes_iv&#39;: &#39;&#39;, &#39;public_key_cfg&#39;: &#39;&#39;, &#39;private_key_cfg&#39;: &#39;&#39;, &#39;device_tree&#39;: &#39;&#39;, &#39;page_type&#39;: &#39;mcu&#39;, &#39;flash_clk_type&#39;: &#39;72M&#39;, &#39;boot_src&#39;: &#39;Flash&#39;, &#39;img_type&#39;: &#39;SingleCPU&#39;, &#39;img_addr&#39;: &#39;0x2000&#39;, &#39;bootinfo_addr&#39;: &#39;0x0&#39;, &#39;img_file&#39;: &#39;C:\\bl_mcu_sdk\\out\\examples\\lvgl\\lvgl_main.bin&#39;, &#39;dl_device&#39;: &#39;Uart&#39;, &#39;dl_comport&#39;: &#39;COM6&#39;, &#39;dl_comspeed&#39;: &#39;2000000&#39;, &#39;dl_jlinkspeed&#39;: &#39;1000&#39;, &#39;dl_chiperase&#39;: &#39;False&#39;, &#39;dl_xtal&#39;: &#39;32M&#39;}
 ...
 ========= programming chips\bl702\img_create_mcu\img.bin to 0x2000
 ...
 Verify success
 Program Finished
-[All Success]</pre></div>
+[All Success]</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/4a77baac69962ff3d65624b8c33608c0">(See the complete log)</a></p>
 <p>Our firmware has been flashed to BL706 AVB!</p>
 <p>To learn more about BL Dev Cube…</p>
@@ -441,15 +441,15 @@ Program Finished
 <li>
 <p><strong>Hardware Adaptation Layer</strong> has been revamped.</p>
 <p>With BL602 IoT SDK we call this to set a GPIO Output…</p>
-<div class="example-wrap"><pre class="language-text">bl_gpio_output_set(pin, value);</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>bl_gpio_output_set(pin, value);</code></pre></div>
 <p>Now with BL706 MCU SDK we do this…</p>
-<div class="example-wrap"><pre class="language-text">gpio_write(pin, value);</pre></div></li>
+<div class="example-wrap"><pre class="language-text"><code>gpio_write(pin, value);</code></pre></div></li>
 <li>
 <p><strong>FreeRTOS</strong> is no longer included for firmware builds by default.</p>
 <p>To include FreeRTOS, we specify <code>SUPPORT_FREERTOS</code> like so…</p>
-<div class="example-wrap"><pre class="language-bash">make APP=freertos_semaphore \
+<div class="example-wrap"><pre class="language-bash"><code>make APP=freertos_semaphore \
      BOARD=bl706_iot \
-     SUPPORT_FREERTOS=y</pre></div>
+     SUPPORT_FREERTOS=y</code></pre></div>
 <p><a href="https://github.com/bouffalolab/bl_mcu_sdk/tree/master/examples/freertos/freertos_semaphore">(Source)</a></p>
 </li>
 <li>

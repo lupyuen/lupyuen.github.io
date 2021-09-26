@@ -156,12 +156,12 @@
 <p>But that’s not the same as our compiler from xPack RISC-V GCC: <code>riscv-none-embed-gcc</code></p>
 <p><em>(See <a href="https://lupyuen.github.io/articles/debug">“Debug Rust on PineCone BL602 with VSCode and GDB”</a>, Section 1.3, <a href="https://lupyuen.github.io/articles/debug#install-gdb">“Install GDB”</a>)</em></p>
 <p>Hence we copy and modify the GCC settings like so: <a href="https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/compiler/riscv-none-embed/compiler.yml"><code>compiler/riscv-none-embed/compiler.yml</code></a></p>
-<div class="example-wrap"><pre class="language-yaml">compiler.path.cc:      &quot;riscv-none-embed-gcc&quot;
+<div class="example-wrap"><pre class="language-yaml"><code>compiler.path.cc:      &quot;riscv-none-embed-gcc&quot;
 compiler.path.as:      &quot;riscv-none-embed-gcc&quot;
 compiler.path.archive: &quot;riscv-none-embed-ar&quot;
 compiler.path.objdump: &quot;riscv-none-embed-objdump&quot;
 compiler.path.objsize: &quot;riscv-none-embed-size&quot;
-compiler.path.objcopy: &quot;riscv-none-embed-objcopy&quot;</pre></div>
+compiler.path.objcopy: &quot;riscv-none-embed-objcopy&quot;</code></pre></div>
 <p>Mynewt will now compile our firmware with <code>riscv-none-embed-gcc</code></p>
 <h2 id="mynewt-project-and-firmware" class="section-header"><a href="#mynewt-project-and-firmware">2.1 Mynewt Project and Firmware</a></h2>
 <p><em>In the screen above, how did we create the Mynewt Project <code>pinecone-rust-mynewt</code> and the Mynewt Firmware <code>pinecone_app</code>?</em></p>
@@ -218,34 +218,34 @@ compiler.path.objcopy: &quot;riscv-none-embed-objcopy&quot;</pre></div>
 <ul>
 <li><strong>PineCone Linker Script</strong>: <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/bsp/pinecone/bsp_app.ld"><code>hw/bsp/pinecone/bsp_app.ld</code></a></li>
 </ul>
-<div class="example-wrap"><pre class="language-text">MEMORY
+<div class="example-wrap"><pre class="language-text"><code>MEMORY
 {
   /* Use this memory layout when firmware is loaded into cache memory. 
      Based on https://github.com/lupyuen/pinecone-rust/blob/main/memory.x */
   flash (rxai!w) : ORIGIN = 0x22008000, LENGTH = 48K /* Instruction Cache Memory */
   ram   (wxa!ri) : ORIGIN = 0x22014000, LENGTH = 48K /* Data Cache Memory */
-}</pre></div>
+}</code></pre></div>
 <p>Note that we’re loading the firmware code and read-only data into BL602’s Instruction Cache Memory (similar to RAM), not into Flash Memory. (We’ll learn why in a while)</p>
 <p>In future when we’re ready to load our firmware into Flash Memory, we’ll use this memory layout instead…</p>
-<div class="example-wrap"><pre class="language-text">  /* TODO: Use this memory layout when firmware is loaded into Flash Memory 
+<div class="example-wrap"><pre class="language-text"><code>  /* TODO: Use this memory layout when firmware is loaded into Flash Memory 
      Based on Based on https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602/evb/ld/flash_rom.ld */
   flash (rxai!w) : ORIGIN = 0x23000000, LENGTH = 4M   /* Flash Memory */
-  ram   (wxa!ri) : ORIGIN = 0x4200c000, LENGTH = 216K /* RAM          */</pre></div>
+  ram   (wxa!ri) : ORIGIN = 0x4200c000, LENGTH = 216K /* RAM          */</code></pre></div>
 <p>(This is commented out in <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/bsp/pinecone/bsp_app.ld"><code>bsp_app.ld</code></a>)</p>
 <h2 id="bootloader-image-header" class="section-header"><a href="#bootloader-image-header">5.1 Bootloader Image Header</a></h2>
 <p>We’re presently not using a Bootloader on PineCone…</p>
-<div class="example-wrap"><pre class="language-text">/* Bootloader not in use. */
-_imghdr_size = 0x0;</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>/* Bootloader not in use. */
+_imghdr_size = 0x0;</code></pre></div>
 <p>In future when we use the Mynewt Bootloader, we need to reserve some space for the Bootloader Image Header, which is located at the start of the firmware code…</p>
-<div class="example-wrap"><pre class="language-text">/* This linker script is used for images and thus contains an image header */
+<div class="example-wrap"><pre class="language-text"><code>/* This linker script is used for images and thus contains an image header */
 /* TODO: Uncomment the next line when Bootloader is in use */
-_imghdr_size = 0x20;</pre></div><h1 id="define-flash-map" class="section-header"><a href="#define-flash-map">6 Define Flash Map</a></h1>
+_imghdr_size = 0x20;</code></pre></div><h1 id="define-flash-map" class="section-header"><a href="#define-flash-map">6 Define Flash Map</a></h1>
 <p>Mynewt’s MCUBoot Bootloader will roll back the Active Firmware to the Standby Firmware in case the Active Firmware can’t be started.</p>
 <p>We define the <strong>Flash Map</strong> to tell Mynewt where in Flash Memory the Bootloader, Active Firmware Image and Standby Firmware Image will be located…</p>
 <ul>
 <li><strong>PineCone Flash Map</strong>: <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/bsp/pinecone/bsp.yml"><code>hw/bsp/pinecone/bsp.yml</code></a></li>
 </ul>
-<div class="example-wrap"><pre class="language-yaml"># BL602 Instruction Cache Memory starts at 0x2200 8000, size 48 KB
+<div class="example-wrap"><pre class="language-yaml"><code># BL602 Instruction Cache Memory starts at 0x2200 8000, size 48 KB
 # Based on https://github.com/lupyuen/pinecone-rust/blob/main/memory.x
 bsp.flash_map:
     areas:
@@ -269,10 +269,10 @@ bsp.flash_map:
         FLASH_AREA_IMAGE_SCRATCH:
             device:  0
             offset:  0x22013000
-            size:    1kB    # 0x400</pre></div>
+            size:    1kB    # 0x400</code></pre></div>
 <p>Remember that we’re loading our firmware into Cache Memory (instead of Flash Memory) and we’re not using the Bootloader. </p>
 <p>That’s why we allocate most of the Cache Memory to the Active Firmware Image (located at the start of Cache Memory).</p>
-<div class="example-wrap"><pre class="language-yaml">        # User areas.
+<div class="example-wrap"><pre class="language-yaml"><code>        # User areas.
         # (Not Used) Reboot Log
         FLASH_AREA_REBOOT_LOG:
             user_id: 0
@@ -284,12 +284,12 @@ bsp.flash_map:
             user_id: 1
             device:  0
             offset:  0x22013800
-            size:    1kB    # 0x400</pre></div>
+            size:    1kB    # 0x400</code></pre></div>
 <p>Since we have very little Cache Memory, we’ll cut down on the Reboot Log and User File Systems.</p>
 <h2 id="future-flash-map" class="section-header"><a href="#future-flash-map">6.1 Future Flash Map</a></h2>
 <p>The Flash Map looks more meaningful when we’re ready to load our firmware into Flash Memory and turn on the Bootloader.</p>
 <p>Here is our Flash Map for the future…</p>
-<div class="example-wrap"><pre class="language-yaml"># TODO: Use this memory layout when firmware is loaded into Flash Memory
+<div class="example-wrap"><pre class="language-yaml"><code># TODO: Use this memory layout when firmware is loaded into Flash Memory
 # BL602 Flash starts at 0x2300 0000, size 4 MB
 # Based on https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602/evb/ld/flash_rom.ld
 bsp.flash_map:
@@ -314,10 +314,10 @@ bsp.flash_map:
         FLASH_AREA_IMAGE_SCRATCH:
             device:  0
             offset:  0x23300000
-            size:    4kB       # 0x1000</pre></div>
+            size:    4kB       # 0x1000</code></pre></div>
 <p>(This is commented out in <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/hw/bsp/pinecone/bsp.yml"><code>bsp.yml</code></a>)</p>
 <p>In future we’ll have a proper Reboot Log and a User File System for saving files and data that will be retained across reboots…</p>
-<div class="example-wrap"><pre class="language-yaml">        # User areas.
+<div class="example-wrap"><pre class="language-yaml"><code>        # User areas.
         # Reboot Log
         FLASH_AREA_REBOOT_LOG:
             user_id: 0
@@ -329,14 +329,14 @@ bsp.flash_map:
             user_id: 1
             device:  0
             offset:  0x23200000
-            size:    1024kB    # 0x100 000</pre></div><h1 id="set-firmware-target" class="section-header"><a href="#set-firmware-target">7 Set Firmware Target</a></h1>
+            size:    1024kB    # 0x100 000</code></pre></div><h1 id="set-firmware-target" class="section-header"><a href="#set-firmware-target">7 Set Firmware Target</a></h1>
 <p>We select the Mynewt Firmware to be built by creating a Firmware Target…</p>
 <ul>
 <li><strong>PineCone Firmware Target</strong>: <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/targets/pinecone_app/target.yml"><code>targets/pinecone_app/target.yml</code></a></li>
 </ul>
-<div class="example-wrap"><pre class="language-yaml">target.app: apps/blinky
+<div class="example-wrap"><pre class="language-yaml"><code>target.app: apps/blinky
 target.bsp: &quot;hw/bsp/pinecone&quot;
-target.build_profile: debug</pre></div>
+target.build_profile: debug</code></pre></div>
 <p>Here we specify that our firmware code comes from the <a href="https://github.com/lupyuen/pinecone-rust-mynewt/tree/main/apps/blinky">Blinky Sample App</a>. And our firmware will be compiled for the PineCone BL602 Board.</p>
 <p>Also check out the <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/targets/pinecone_app/pkg.yml"><strong>Target Package</strong></a> and the <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/targets/pinecone_app/syscfg.yml"><strong>Target Configuration</strong></a>.</p>
 <h1 id="build-the-firmware" class="section-header"><a href="#build-the-firmware">8 Build the Firmware</a></h1>
@@ -351,9 +351,9 @@ target.build_profile: debug</pre></div>
 </li>
 <li>
 <p>At the command prompt, enter…</p>
-<div class="example-wrap"><pre class="language-bash">#  Download source files
+<div class="example-wrap"><pre class="language-bash"><code>#  Download source files
 git clone --recursive https://github.com/lupyuen/pinecone-rust-mynewt
-cd pinecone-rust-mynewt</pre></div></li>
+cd pinecone-rust-mynewt</code></pre></div></li>
 <li>
 <p>Download GCC from the <a href="https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases/tag/v8.3.0-2.3">xPack GCC for RISC-V site</a>…</p>
 <ul>
@@ -378,9 +378,9 @@ cd pinecone-rust-mynewt</pre></div></li>
 <li>
 <p>Copy the extracted xPack GCC RISC-V folder to the <code>pinecone-rust-mynewt</code> folder.</p>
 <p>Rename the copied folder as…</p>
-<div class="example-wrap"><pre class="language-text">pinecone-rust-mynewt/xpack-riscv-none-embed-gcc</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>pinecone-rust-mynewt/xpack-riscv-none-embed-gcc</code></pre></div>
 <p><strong>For Windows:</strong> Add the full path of <code>xpack-riscv-none-embed-gcc/bin</code> to the PATH. For example…</p>
-<div class="example-wrap"><pre class="language-text">c:\pinecone-rust-mynewt\xpack-riscv-none-embed-gcc\bin</pre></div></li>
+<div class="example-wrap"><pre class="language-text"><code>c:\pinecone-rust-mynewt\xpack-riscv-none-embed-gcc\bin</code></pre></div></li>
 <li>
 <p>Download OpenOCD from the <a href="https://github.com/xpack-dev-tools/openocd-xpack/releases/tag/v0.10.0-15/">xPack OpenOCD site</a>… (Other variants of OpenOCD may not work with PineCone)</p>
 <ul>
@@ -405,29 +405,29 @@ cd pinecone-rust-mynewt</pre></div></li>
 <li>
 <p>Copy the extracted xPack OpenOCD folder to the <code>pinecone-rust-mynewt</code> folder.</p>
 <p>Rename the copied folder as…</p>
-<div class="example-wrap"><pre class="language-text">pinecone-rust-mynewt/xpack-openocd</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>pinecone-rust-mynewt/xpack-openocd</code></pre></div>
 <p><strong>For Windows:</strong> Add the full path of <code>xpack-openocd/bin</code> to the PATH. For example…</p>
-<div class="example-wrap"><pre class="language-text">c:\pinecone-rust-mynewt\pinecone-rust-mynewt\xpack-openocd\bin</pre></div></li>
+<div class="example-wrap"><pre class="language-text"><code>c:\pinecone-rust-mynewt\pinecone-rust-mynewt\xpack-openocd\bin</code></pre></div></li>
 <li>
 <p><strong>For Linux and macOS:</strong> Enter at the command prompt…</p>
-<div class="example-wrap"><pre class="language-bash">#  Build the firmware
+<div class="example-wrap"><pre class="language-bash"><code>#  Build the firmware
 export PATH=&quot;$PWD/xpack-riscv-none-embed-gcc/bin:$PATH&quot;
 newt build pinecone_app
 
 #  Display the firmware size
-newt size -v pinecone_app</pre></div>
+newt size -v pinecone_app</code></pre></div>
 <p><strong>For Windows:</strong> Enter at the command prompt…</p>
-<div class="example-wrap"><pre class="language-cmd">::  Build the firmware
+<div class="example-wrap"><pre class="language-cmd"><code>::  Build the firmware
 newt\newt.exe build pinecone_app
 
 ::  Display the firmware size
-newt\newt.exe size -v pinecone_app</pre></div></li>
+newt\newt.exe size -v pinecone_app</code></pre></div></li>
 </ol>
 <p>We should see this…</p>
-<div class="example-wrap"><pre class="language-text">Linking /Users/Luppy/pinecone/pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky/blinky.elf
-Target successfully built: targets/pinecone_app</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>Linking /Users/Luppy/pinecone/pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky/blinky.elf
+Target successfully built: targets/pinecone_app</code></pre></div>
 <p>Followed by the size of the firmware (8,488 bytes) and its library components…</p>
-<div class="example-wrap"><pre class="language-text">+ newt size -v pinecone_app
+<div class="example-wrap"><pre class="language-text"><code>+ newt size -v pinecone_app
 Size of Application Image: app
 Mem flash: 0x22008000-0x22014000
 Mem ram: 0x22014000-0x22020000
@@ -450,9 +450,9 @@ Loading compiler pinecone-rust-mynewt/compiler/riscv-none-embed, buildProfile de
 
 objsize
    text    data     bss     dec     hex filename
-   8488      28    9104   17620    44d4 pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky/blinky.elf</pre></div>
+   8488      28    9104   17620    44d4 pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky/blinky.elf</code></pre></div>
 <p>The compiled ELF firmware is located at…</p>
-<div class="example-wrap"><pre class="language-text">pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky/blinky.elf</pre></div><h1 id="implement-hardware-abstraction-layer" class="section-header"><a href="#implement-hardware-abstraction-layer">9 Implement Hardware Abstraction Layer</a></h1>
+<div class="example-wrap"><pre class="language-text">pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky/blinky.elf</code></pre></div><h1 id="implement-hardware-abstraction-layer" class="section-header"><a href="#implement-hardware-abstraction-layer"><code>9 Implement Hardware Abstraction Layer</a></h1>
 <p>The above steps will build successfully a minimal port of Mynewt for PineCone.</p>
 <p>That’s because I have fixed many missing functions in Mynewt’s Hardware Abstraction Layer (HAL), like these…</p>
 <p><img src="https://lupyuen.github.io/images/mynewt-hal.png" alt="Missing Functions in Mynewt HAL" /></p>
@@ -523,10 +523,10 @@ objsize
 <p><em>SiFive FE310 Reference in Mynewt rv32imac</em></p>
 <h1 id="decouple-sifive-fe310-from-rv32imac" class="section-header"><a href="#decouple-sifive-fe310-from-rv32imac">12 Decouple SiFive FE310 from rv32imac</a></h1>
 <p>There’s a peculiar problem compiling RISC-V Firmware on Mynewt…</p>
-<div class="example-wrap"><pre class="language-text">Error: In file included from ...
+<div class="example-wrap"><pre class="language-text"><code>Error: In file included from ...
 repos/apache-mynewt-core/kernel/os/include/os/arch/rv32imac/os/os_arch.h:24:10:
 fatal error: mcu/fe310.h: No such file or directory
-#include &quot;mcu/fe310.h&quot;</pre></div>
+#include &quot;mcu/fe310.h&quot;</code></pre></div>
 <p>This error shows that <code>rv32imac</code>, the RISC-V support in Mynewt, is dependent on SiFive FE310. Which looks really odd. </p>
 <p>(Probably done that way because FE310 is the only RISC-V Microcontroller supported by Mynewt)</p>
 <p>We work around this problem by creating Stub Files like these…</p>
@@ -541,21 +541,21 @@ fatal error: mcu/fe310.h: No such file or directory
 <p>These Stub Files point to the correct Header Files for BL602, so that our BL602 Firmware can be compiled successfully.</p>
 <h1 id="inspect-the-firmware" class="section-header"><a href="#inspect-the-firmware">13 Inspect the Firmware</a></h1>
 <p>We’re almost ready to run Mynewt on PineCone! Let’s do one final check before running our firmware…</p>
-<div class="example-wrap"><pre class="language-bash">#  Build the firmware
+<div class="example-wrap"><pre class="language-bash"><code>#  Build the firmware
 export PATH=&quot;$PWD/xpack-riscv-none-embed-gcc/bin:$PATH&quot;
 newt build pinecone_app
 
 #  Display the firmware size
-newt size -v pinecone_app</pre></div>
+newt size -v pinecone_app</code></pre></div>
 <p>We should see…</p>
-<div class="example-wrap"><pre class="language-text">Linking pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky/blinky.elf
+<div class="example-wrap"><pre class="language-text"><code>Linking pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky/blinky.elf
 Target successfully built: targets/pinecone_app
 + newt size -v pinecone_app
 Size of Application Image: app
 Mem flash: 0x22008000-0x22014000
-Mem ram:   0x22014000-0x22020000</pre></div>
+Mem ram:   0x22014000-0x22020000</code></pre></div>
 <p>Yep this matches our Instruction Cache Memory (<code>0x2200 8000</code>) and Data Cache Memory (<code>0x2201 4000</code>).</p>
-<div class="example-wrap"><pre class="language-text">  flash     ram 
+<div class="example-wrap"><pre class="language-text"><code>  flash     ram 
       6     525 *fill*
     172       0 @apache-mynewt-core_hw_hal.a
    4494    8213 @apache-mynewt-core_kernel_os.a
@@ -569,7 +569,7 @@ Mem ram:   0x22014000-0x22020000</pre></div>
      44      12 hw_bsp_pinecone.a
     580     228 hw_mcu_bl_bl602.a
      92       0 pinecone_app-sysinit-app.a
-    292    1064 libg.a</pre></div>
+    292    1064 libg.a</code></pre></div>
 <p>Here are all the code modules linked into our Mynewt Firmware. Note that…</p>
 <ul>
 <li>
@@ -579,13 +579,13 @@ Mem ram:   0x22014000-0x22020000</pre></div>
 <p>Our BL602 HAL <code>hw_mcu_bl_bl602</code> is tiny because it’s mostly Stub Functions</p>
 </li>
 </ul>
-<div class="example-wrap"><pre class="language-text">Loading compiler pinecone-rust-mynewt/compiler/riscv-none-embed, buildProfile debug
+<div class="example-wrap"><pre class="language-text"><code>Loading compiler pinecone-rust-mynewt/compiler/riscv-none-embed, buildProfile debug
 objsize
    text    data     bss     dec     hex filename
-   8488      28    9104   17620    44d4 pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky/blinky.elf</pre></div>
+   8488      28    9104   17620    44d4 pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky/blinky.elf</code></pre></div>
 <p>Our Mynewt Firmware contains 8,488 bytes of code and data. It runs with 9,104 bytes of RAM (BSS).</p>
 <p>The firmware build produces the following files in…</p>
-<div class="example-wrap"><pre class="language-text">pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky</code></pre></div>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/pinecone-rust-mynewt/releases/download/v1.0.0/blinky.elf"><strong><code>blinky.elf</code></strong></a>: Our Mynewt Firmware in ELF Format (<a href="https://github.com/lupyuen/pinecone-rust-mynewt/releases/download/v1.0.0/blinky.elf">See this</a>)</p>
@@ -619,7 +619,7 @@ objsize
 <li>
 <p>Click <strong><code>Terminal → Run Build Task</code></strong></p>
 <p>This builds the Mynewt Firmware. The RISC-V ELF Firmware image is generated here…</p>
-<div class="example-wrap"><pre class="language-text">pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky/blinky.elf</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>pinecone-rust-mynewt/bin/targets/pinecone_app/app/apps/blinky/blinky.elf</code></pre></div>
 <p>This step also terminates any OpenOCD processes that are running. (Linux and macOS only)</p>
 </li>
 <li>
@@ -669,7 +669,7 @@ objsize
 <p>Clicking <strong><code>Run Build Task</code></strong> will terminate the OpenOCD task, so that the next debugging session can restart OpenOCD successfully.</p>
 <p>For Windows: Sorry we need to terminate the OpenOCD task manually with the Task Manager.</p>
 <p>In case of OpenOCD problems, check the OpenOCD log file…</p>
-<div class="example-wrap"><pre class="language-text">pinecone-rust-mynewt/openocd.log</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>pinecone-rust-mynewt/openocd.log</code></pre></div>
 <p>For details on the VSCode settings, check the section “Appendix: VSCode Settings” below.</p>
 <h1 id="how-to-test" class="section-header"><a href="#how-to-test">15 How To Test</a></h1>
 <p><em>How shall we test Mynewt on PineCone? Or any other RTOS ported to PineCone?</em></p>
@@ -750,7 +750,7 @@ objsize
 <p><em>What happens when we use OpenOCD + JTAG to load our firmware to Flash Memory?</em></p>
 <p>The screen above shows the first version of the Mynewt Firmware, that loads into Flash Memory.</p>
 <p>We used this GDB command to dump out the first 10 words of PineCone’s Flash Memory…</p>
-<div class="example-wrap"><pre class="language-text">x/10x _reset_handler</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>x/10x _reset_handler</code></pre></div>
 <p>(<code>_reset_handler</code> is the function name of Mynewt’s Start Code, located at the start of our firmware)</p>
 <p>When we compare the dumped data with our Firmware Disassembly, we see that the bytes don’t match.</p>
 <p>Hence we deduce that our Mynewt Firmware wasn’t loaded correctly into Flash Memory.</p>
@@ -758,7 +758,7 @@ objsize
 <p><em>What happens when we use OpenOCD + JTAG to load our firmware to Cache Memory?</em></p>
 <p>Here’s the second try, loading our Mynewt Firmware to Cache Memory. (The same way that we loaded Rust Firmware in our previous article)</p>
 <p>Entering the same GDB Command…</p>
-<div class="example-wrap"><pre class="language-text">x/10x _reset_handler</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>x/10x _reset_handler</code></pre></div>
 <p>We see that the data is identical. Our Mynewt Firmware is loaded correctly to Cache Memory indeed!</p>
 <p><em>But we can’t run Mynewt Firmware in Cache Memory forever right?</em></p>
 <p>The solution is to load our firmware to PineCone over USB (UART). (And flipping the jumper)</p>
@@ -780,20 +780,20 @@ objsize
 </li>
 <li>
 <p>At a command prompt, enter…</p>
-<div class="example-wrap"><pre class="language-bash">cd /tmp
+<div class="example-wrap"><pre class="language-bash"><code>cd /tmp
 export mynewt_version=mynewt_1_8_0_tag
 git clone --branch $mynewt_version https://github.com/apache/mynewt-newt/
 cd mynewt-newt
 ./build.sh
 sudo mv newt/newt /usr/local/bin
-newt version</pre></div></li>
+newt version</code></pre></div></li>
 <li>
 <p>We should see…</p>
-<div class="example-wrap"><pre class="language-text">Apache Newt 1.8.0</pre></div></li>
+<div class="example-wrap"><pre class="language-text"><code>Apache Newt 1.8.0</code></pre></div></li>
 </ol>
 <h2 id="windows" class="section-header"><a href="#windows">18.2 Windows</a></h2>
 <p>The Windows version of <code>newt</code> is already bundled at…</p>
-<div class="example-wrap"><pre class="language-text">pinecone-rust-mynewt\newt\newt.exe</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>pinecone-rust-mynewt\newt\newt.exe</code></pre></div>
 <p>The build script <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/scripts/build-app.cmd"><code>build-app.cmd</code></a> uses the above <code>newt</code> executable.</p>
 <p>However, the <code>newt</code> executable triggers a Windows Defender warning (because it wasn’t built as a certified executable). We need to <strong>update the Windows Security settings</strong> to allow the <code>newt</code> executable to run.</p>
 <p>To build <code>newt</code> from the source code, follow these steps…</p>
@@ -803,31 +803,31 @@ newt version</pre></div></li>
 </li>
 <li>
 <p>At a command prompt, enter…</p>
-<div class="example-wrap"><pre class="language-cmd">git clone --branch mynewt_1_8_0_tag https://github.com/apache/mynewt-newt/
+<div class="example-wrap"><pre class="language-cmd"><code>git clone --branch mynewt_1_8_0_tag https://github.com/apache/mynewt-newt/
 cd mynewt-newt\newt
 go build
-newt.exe version</pre></div></li>
+newt.exe version</code></pre></div></li>
 <li>
 <p>We should see…</p>
-<div class="example-wrap"><pre class="language-text">Apache Newt 1.8.0</pre></div></li>
+<div class="example-wrap"><pre class="language-text"><code>Apache Newt 1.8.0</code></pre></div></li>
 <li>
 <p>Copy the <code>newt</code> executable from…</p>
-<div class="example-wrap"><pre class="language-text">mynewt-newt\newt\newt.exe</pre></div>
+<div class="example-wrap"><pre class="language-text"><code>mynewt-newt\newt\newt.exe</code></pre></div>
 <p>To…</p>
-<div class="example-wrap"><pre class="language-text">pinecone-rust-mynewt\newt\newt.exe</pre></div></li>
+<div class="example-wrap"><pre class="language-text"><code>pinecone-rust-mynewt\newt\newt.exe</code></pre></div></li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/mynewt-windows.png" alt="Mynewt BL602 built with Windows CMD" /></p>
 <p><em>Mynewt BL602 built with Windows CMD</em></p>
 <h1 id="appendix-create-the-mynewt-firmware" class="section-header"><a href="#appendix-create-the-mynewt-firmware">19 Appendix: Create the Mynewt Firmware</a></h1>
 <p>Mynewt Project <code>pinecone-rust-mynewt</code> and Mynewt Firmware <code>pinecone_app</code> were originally created using these steps…</p>
-<div class="example-wrap"><pre class="language-bash">newt new pinecone-rust-mynewt
+<div class="example-wrap"><pre class="language-bash"><code>newt new pinecone-rust-mynewt
 cd pinecone-rust-mynewt
 newt upgrade
 newt target create pinecone_app
 newt target set pinecone_app app=apps/blinky
 # This will be changed to pinecone later
 newt target set pinecone_app bsp=@apache-mynewt-core/hw/bsp/hifive1
-newt target set pinecone_app build_profile=debug</pre></div>
+newt target set pinecone_app build_profile=debug</code></pre></div>
 <p>We don’t need to create them again, just download from…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinecone-rust-mynewt"><code>github.com/lupyuen/pinecone-rust-mynewt</code></a></li>
@@ -854,7 +854,7 @@ newt target set pinecone_app build_profile=debug</pre></div>
 <p>GDB Commands to be executed upon starting the debugger (<code>autorun</code>)</p>
 </li>
 </ul>
-<div class="example-wrap"><pre class="language-json">{
+<div class="example-wrap"><pre class="language-json"><code>{
     //  VSCode Debugger Config for PineCone BL602
     &quot;version&quot;: &quot;0.2.0&quot;,
     &quot;configurations&quot;: [
@@ -896,10 +896,10 @@ newt target set pinecone_app build_profile=debug</pre></div>
             ]
         }
     ]
-}</pre></div><h2 id="task-settings" class="section-header"><a href="#task-settings">20.2 Task Settings</a></h2>
+}</code></pre></div><h2 id="task-settings" class="section-header"><a href="#task-settings">20.2 Task Settings</a></h2>
 <p>The VSCode Task Settings may be found in <a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/.vscode/tasks.json"><code>.vscode/tasks.json</code></a></p>
 <p>This file defines the VSCode Task for building the Mynewt Firmware…</p>
-<div class="example-wrap"><pre class="language-json">{
+<div class="example-wrap"><pre class="language-json"><code>{
     // See https://go.microsoft.com/fwlink/?LinkId=733558
     // for the documentation about the tasks.json format
     &quot;version&quot;: &quot;2.0.0&quot;,
@@ -951,7 +951,7 @@ newt target set pinecone_app build_profile=debug</pre></div>
                 &quot;clear&quot;: true
             }
         },
-        ...</pre></div>
+        ...</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinecone-rust-mynewt/blob/main/scripts/build-app.sh"><code>scripts/build-app.sh</code></a> does the following…</p>
 <ol>
 <li>
@@ -964,7 +964,7 @@ newt target set pinecone_app build_profile=debug</pre></div>
 <p>Display the firmware size</p>
 </li>
 </ol>
-<div class="example-wrap"><pre class="language-bash">#!/usr/bin/env bash
+<div class="example-wrap"><pre class="language-bash"><code>#!/usr/bin/env bash
 #  macOS and Linux Bash script to build Mynewt Firmware
 
 set -e  #  Exit when any command fails
@@ -984,7 +984,7 @@ set -x  #  Echo commands
 newt build pinecone_app
 
 #  Display the firmware size
-newt size -v pinecone_app</pre></div>
+newt size -v pinecone_app</code></pre></div>
     
 </body>
 </html>
