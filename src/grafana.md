@@ -173,12 +173,13 @@ TODO
 We assume that Message Payloads are encoded in [__CBOR Format__](https://en.wikipedia.org/wiki/CBOR)...
 
 ```json
-{ "t": 1234 }
+{ 
+  "t": 1234, 
+  "l": 2345 
+}
 ```
 
-(Multiple fields are OK)
-
-![](https://lupyuen.github.io/images/grafana-cbor.png)
+![](https://lupyuen.github.io/images/grafana-cbor4.jpg)
 
 [(Source)](http://cbor.me/)
 
@@ -311,7 +312,7 @@ func (c *Client) HandleMessage(_ paho.Client, msg paho.Message) {
 
 TODO
 
-From [/pkg/plugin/message.go](https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L19-L44)
+From [pkg/plugin/message.go](https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L19-L44)
 
 ```go
 func ToFrame(topic string, messages []mqtt.Message) *data.Frame {
@@ -342,7 +343,7 @@ func ToFrame(topic string, messages []mqtt.Message) *data.Frame {
 }
 ```
 
-From [/pkg/plugin/message.go](https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L46-L129)
+From [pkg/plugin/message.go](https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L46-L129)
 
 ```go
 //  Transform the array of MQTT Messages (JSON encoded) into a Grafana Data Frame.
@@ -431,7 +432,7 @@ func jsonMessagesToFrame(topic string, messages []mqtt.Message) *data.Frame {
 }
 ```
 
-From [/pkg/plugin/message.go](https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L231-L239)
+From [pkg/plugin/message.go](https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L231-L239)
 
 ```go
 //  Return the Data Frame set to the given error
@@ -449,7 +450,7 @@ func set_error(frame *data.Frame, err error) *data.Frame {
 
 TODO
 
-From [/pkg/plugin/message.go](https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L131-L190)
+From [pkg/plugin/message.go](https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L131-L190)
 
 ```go
 //  Decode the CBOR payload in the JSON message.
@@ -518,7 +519,7 @@ func decodeCborPayload(msg string) (map[string]interface{}, error) {
 
 TODO
 
-From [/pkg/plugin/message.go](https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L192-L229)
+From [pkg/plugin/message.go](https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L192-L229)
 
 ```go
 //  Return the Data Frame Type for the CBOR decoded value
