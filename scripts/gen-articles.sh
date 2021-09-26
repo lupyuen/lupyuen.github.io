@@ -52,8 +52,7 @@ function generate_article() {
 }
 
 # Generate an article
-generate_article rust
-exit
+# generate_article rust ; exit
 
 # Generate all articles in src
 for f in src/*.md

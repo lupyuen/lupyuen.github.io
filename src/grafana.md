@@ -232,9 +232,6 @@ func (c *Client) Subscribe(t string) {
   if _, ok := c.topics.Load(t); ok {
     return
   }
-  //  Subscribe to all topics: "#". TODO: Support other topics.
-  //  Previously: log.DefaultLogger.Debug(fmt.Sprintf("Subscribing to MQTT topic: %s", t))
-  log.DefaultLogger.Debug(fmt.Sprintf("Subscribing to MQTT topic: %s", defaultTopicMQTT))
   topic := Topic{
     path: t,
   }
@@ -254,12 +251,10 @@ From [pkg/mqtt/client.go](https://github.com/lupyuen/the-things-network-datasour
 
 ```go
 func (c *Client) HandleMessage(_ paho.Client, msg paho.Message) {
-  log.DefaultLogger.Debug(fmt.Sprintf("Received MQTT Message for topic %s", msg.Topic()))
   //  Accept all topics as "all". TODO: Support other topics.
   //  Previously: topic, ok := c.topics.Load(msg.Topic())
   topic, ok := c.topics.Load(defaultTopicName)
-  if !ok {
-    log.DefaultLogger.Debug(fmt.Sprintf("Topic not found: %s", defaultTopicName))
+  if !ok {  //  Topic not found, quit
     return
   }
 
@@ -297,9 +292,6 @@ func (c *Client) HandleMessage(_ paho.Client, msg paho.Message) {
   //  Stream message to topic "all". TODO: Support other topics.
   //  Previously: streamMessage := StreamMessage{Topic: msg.Topic(), Value: string(msg.Payload())}
   streamMessage := StreamMessage{Topic: defaultTopicName, Value: string(msg.Payload())}
-
-  log.DefaultLogger.Debug(fmt.Sprintf("Stream MQTT Message for topic %s", defaultTopicName))
-
   select {
   case c.stream <- streamMessage:
   default:
@@ -316,8 +308,6 @@ From [pkg/plugin/message.go](https://github.com/lupyuen/the-things-network-datas
 
 ```go
 func ToFrame(topic string, messages []mqtt.Message) *data.Frame {
-  log.DefaultLogger.Debug(fmt.Sprintf("ToFrame: topic=%s", topic))
-
   count := len(messages)
   if count > 0 {
     first := messages[0].Value
@@ -352,13 +342,11 @@ func jsonMessagesToFrame(topic string, messages []mqtt.Message) *data.Frame {
   //  Quit if no messages to transform
   count := len(messages)
   if count == 0 {
-    log.DefaultLogger.Debug(fmt.Sprintf("jsonMessagesToFrame: No msgs for topic=%s", topic))
     return nil
   }
 
   //  Transform the first message
   msg := messages[0]
-  log.DefaultLogger.Debug(fmt.Sprintf("jsonMessagesToFrame: topic=%s, msg=%s", topic, msg.Value))
 
   //  Decode the CBOR payload
   body, err := decodeCborPayload(msg.Value)
@@ -422,12 +410,6 @@ func jsonMessagesToFrame(topic string, messages []mqtt.Message) *data.Frame {
   for _, key := range keys {
     frame.Fields = append(frame.Fields, fields[key])
   }
-
-  //  Dump the Data Frame
-  log.DefaultLogger.Debug(fmt.Sprintf("jsonMessagesToFrame: Frame=%+v", frame))
-  for _, field := range frame.Fields {
-    log.DefaultLogger.Debug(fmt.Sprintf("  field=%+v", field))
-  }
   return frame
 }
 ```
@@ -480,13 +462,6 @@ func decodeCborPayload(msg string) (map[string]interface{}, error) {
   if err != nil {
     return nil, err
   }
-  log.DefaultLogger.Debug(fmt.Sprintf("payload: %v", payload))
-
-  //  TODO: Testing CBOR Decoding for {"t": 1234}.  See http://cbor.me/
-  //  if payload[0] == 0 {
-  //  	payload = []byte{0xA1, 0x61, 0x74, 0x19, 0x04, 0xD2}
-  //  	log.DefaultLogger.Debug(fmt.Sprintf("TODO: Testing payload: %v", payload))
-  //  }
 
   //  Decode CBOR payload to a map of String -> interface{}
   var body map[string]interface{}
@@ -503,14 +478,6 @@ func decodeCborPayload(msg string) (map[string]interface{}, error) {
       body["device_id"] = device_id
     }
   }
-
-  //  TODO: Test various field types
-  //  body["f64"] = float64(1234)
-  //  body["u64"] = uint64(1234)
-  //  body["str"] = "Test"
-
-  //  Shows: map[device_id:eui-70b3d57ed0045669 t:1234]
-  log.DefaultLogger.Debug(fmt.Sprintf("CBOR decoded: %v", body))
   return body, nil
 }
 ```
