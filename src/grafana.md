@@ -168,9 +168,9 @@ Which means that only Device IDs starting with __"eui-70b3"__ will be rendered.
 
 # CBOR: Concise Binary Object Representation
 
-_The Sensor Data we've seen earlier... Is it encoded as JSON?_
+_The Sensor Data we've seen earlier... Was it encoded as JSON?_
 
-Not quite. If we encode the Sensor Data as JSON...
+Not quite. If we encode the Sensor Data as __JSON__...
 
 ```json
 { 
@@ -179,14 +179,17 @@ Not quite. If we encode the Sensor Data as JSON...
 }
 ```
 
-TODO
+We'll need __19 bytes__ to transmit the Sensor Data.
 
-19 bytes
+Which might be too much for The Things Network.
+
+_What's the message size limit for The Things Network?_
+
+TODO
 
 We assume that Message Payloads are encoded in [__CBOR Format__](https://en.wikipedia.org/wiki/CBOR)...
 
-
-![](https://lupyuen.github.io/images/grafana-cbor4.jpg)
+![Sensor Data encoded as CBOR](https://lupyuen.github.io/images/grafana-cbor4.jpg)
 
 [(Source)](http://cbor.me/)
 
