@@ -186,21 +186,37 @@ We assume that Message Payloads are encoded in [__CBOR Format__](https://en.wiki
 
 TODO
 
+```go
+import "github.com/fxamacker/cbor/v2"
+
+//  Encoded CBOR payload for { "t": 1234, "l": 2345 }
+payload := []byte{0xa2, 0x61, 0x74, 0x19, 0x04, 0xd2, 0x61, 0x6c, 0x19, 0x09, 0x29}
+
+//  Decode CBOR payload to a map of String -> interface{}
+var body map[string]interface{}
+err := cbor.Unmarshal(payload, &body)
+
+//  Shows: map[l:2345 t:1234]
+if err == nil {
+  fmt.Printf("%v\n", body)
+}
+```
+
 ![](https://lupyuen.github.io/images/grafana-cbor2.png)
 
 TODO
 
 ![](https://lupyuen.github.io/images/grafana-payload.jpg)
 
-# Transform MQTT Messages
+# MQTT Integration
 
 TODO
 
 -   [__lupyuen/the-things-network-datasource__](https://github.com/lupyuen/the-things-network-datasource)
 
-This Data Source is based on the MQTT data source for Grafana...
+Our Data Source is based on the MQTT Data Source for Grafana...
 
--   [github.com/grafana/mqtt-datasource](https://github.com/grafana/mqtt-datasource)
+-   [__grafana/mqtt-datasource__](https://github.com/grafana/mqtt-datasource)
 
 TODO
 
@@ -291,7 +307,7 @@ func (c *Client) HandleMessage(_ paho.Client, msg paho.Message) {
 }
 ```
 
-## Transform Message
+# Transform MQTT Messages
 
 TODO
 
