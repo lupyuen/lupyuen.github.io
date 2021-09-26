@@ -200,12 +200,15 @@ mosquitto_sub -h au1.cloud.thethings.network -t &quot;#&quot; -u &quot;luppy-app
 <div class="example-wrap"><pre class="language-text"><code>eui-70b3.*</code></pre></div>
 <p>Which means that only Device IDs starting with <strong>“eui-70b3”</strong> will be rendered.</p>
 <h1 id="cbor-concise-binary-object-representation" class="section-header"><a href="#cbor-concise-binary-object-representation">4 CBOR: Concise Binary Object Representation</a></h1>
-<p>TODO</p>
-<p>We assume that Message Payloads are encoded in <a href="https://en.wikipedia.org/wiki/CBOR"><strong>CBOR Format</strong></a>…</p>
+<p><em>The Sensor Data we’ve seen earlier… Is it encoded as JSON?</em></p>
+<p>Not quite. If we encode the Sensor Data as JSON…</p>
 <div class="example-wrap"><pre class="language-json"><code>{ 
   &quot;t&quot;: 1234, 
   &quot;l&quot;: 2345 
 }</code></pre></div>
+<p>TODO</p>
+<p>19 bytes</p>
+<p>We assume that Message Payloads are encoded in <a href="https://en.wikipedia.org/wiki/CBOR"><strong>CBOR Format</strong></a>…</p>
 <p><img src="https://lupyuen.github.io/images/grafana-cbor4.jpg" alt="" /></p>
 <p><a href="http://cbor.me/">(Source)</a></p>
 <h2 id="decode-cbor-in-go" class="section-header"><a href="#decode-cbor-in-go">4.1 Decode CBOR in Go</a></h2>
@@ -292,7 +295,7 @@ func (c *Client) HandleMessage(_ paho.Client, msg paho.Message) {
     Timestamp: time.Now(),
     Value:     string(msg.Payload()),
   }</code></pre></div>
-<p>We begin by composing a <strong>Message</strong> object that will be processed later.</p>
+<p>We begin by <strong>composing a Message</strong> object that will be processed later.</p>
 <p>Sorry again for this horrible hack: We reject messages without a <strong>valid CBOR Base64 Payload</strong>…</p>
 <div class="example-wrap"><pre class="language-go"><code>  //  TODO: Fix this hack to reject messages without a valid CBOR Base64 Payload.
   //  CBOR Payloads must begin with a CBOR Map: 0xA1 or 0xA2 or 0xA3 or ...
@@ -308,7 +311,7 @@ func (c *Client) HandleMessage(_ paho.Client, msg paho.Message) {
     log.DefaultLogger.Debug(fmt.Sprintf(&quot;Missing or invalid payload: %s&quot;, message.Value))
     return
   }</code></pre></div>
-<p>Next we store the Message object (keeping the most recent 1,000 messages)…</p>
+<p>Next we <strong>store the Message</strong> object (keeping the most recent 1,000 messages)…</p>
 <div class="example-wrap"><pre class="language-go"><code>  //  Store message for query
   topic.messages = append(topic.messages, message)
 
@@ -319,7 +322,7 @@ func (c *Client) HandleMessage(_ paho.Client, msg paho.Message) {
 
   //  Update the topic messages
   c.topics.Store(topic)</code></pre></div>
-<p>TODO</p>
+<p>Then we <strong>stream the message</strong> to a channel…</p>
 <div class="example-wrap"><pre class="language-go"><code>  //  Stream message to topic &quot;all&quot;. TODO: Support other topics.
   //  Previously: streamMessage := StreamMessage{Topic: msg.Topic(), Value: string(msg.Payload())}
   streamMessage := StreamMessage{Topic: defaultTopicName, Value: string(msg.Payload())}
