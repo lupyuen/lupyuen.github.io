@@ -333,7 +333,9 @@ func (c *Client) HandleMessage(_ paho.Client, msg paho.Message) {
   default:
     //  Don&#39;t block if nothing is reading from the channel
   }
-}</code></pre></div><h1 id="transform-mqtt-messages" class="section-header"><a href="#transform-mqtt-messages">6 Transform MQTT Messages</a></h1>
+}</code></pre></div>
+<p>What happens next? Read on and find out…</p>
+<h1 id="transform-mqtt-messages" class="section-header"><a href="#transform-mqtt-messages">6 Transform MQTT Messages</a></h1>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L19-L44">pkg/plugin/message.go</a></p>
 <div class="example-wrap"><pre class="language-go"><code>func ToFrame(topic string, messages []mqtt.Message) *data.Frame {
