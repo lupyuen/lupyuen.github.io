@@ -181,23 +181,25 @@ Not quite. If we encode the Sensor Data as __JSON__...
 
 We'll need __19 bytes__ to transmit the Sensor Data.
 
-Which might be too much for The Things Network.
+Which might be __too much__ for The Things Network.
 
 _What are the message limits for The Things Network?_
 
-The Things Network is __Free for Fair Use,__ with limits on the __size of messages__ and __how often__ we may send them.
+The Things Network is __Free for Fair Use__, with limits on the __size of messages__ and __how often__ we may send them.
 
 If we expect to send 10 messages per hour, our message payload size should not exceed __12 bytes__.
 
-Thus the message payload is too small for JSON!
+Thus our message payload is __too small for JSON!__ We'll encode with CBOR instead.
 
-[(More about this)](https://lupyuen.github.io/articles/ttn#fair-use-of-the-things-network)
+[(More about The Things Network limits)](https://lupyuen.github.io/articles/ttn#fair-use-of-the-things-network)
 
-TODO
+_What is CBOR?_
 
-We assume that Message Payloads are encoded in [__CBOR Format__](https://en.wikipedia.org/wiki/CBOR)...
+[__Concise Binary Object Representation (CBOR)__](https://en.wikipedia.org/wiki/CBOR) works like a binary, compressed form of JSON...
 
 ![Sensor Data encoded as CBOR](https://lupyuen.github.io/images/grafana-cbor4.jpg)
+
+TODO
 
 [(Source)](http://cbor.me/)
 
