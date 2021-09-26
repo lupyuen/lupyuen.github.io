@@ -500,7 +500,7 @@ restore-keys: Linux-build-cache-newt</code></pre></div>
 <p>Thus the Cache Action will cache and restore the <code>newt</code> folder at this temporary folder…</p>
 <div class="example-wrap"><pre class="language-text"><code>path: /home/runner/work/_temp/mynewt-newt</code></pre></div>
 <p>And to avoid confusion with other caches in the same workflow, we give it a unique key…</p>
-<div class="example-wrap"><pre class="language-text">key: Linux-build-cache-newt</code></pre></div><h2 id="download-and-build-newt" class="section-header"><a href="#download-and-build-newt"><code>8.5 Download and Build newt</a></h2>
+<div class="example-wrap"><pre class="language-text"><code>key: Linux-build-cache-newt</code></pre></div><h2 id="download-and-build-newt" class="section-header"><a href="#download-and-build-newt">8.5 Download and Build newt</a></h2>
 <p>Here’s how we download and build <code>newt</code> if it doesn’t exist in our cache…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>    - name: Install newt
       # Install newt if not found in cache

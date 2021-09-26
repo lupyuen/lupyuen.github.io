@@ -105,7 +105,7 @@
 <h1 id="rust-firmware-for-bl602" class="section-header"><a href="#rust-firmware-for-bl602">1 Rust Firmware for BL602</a></h1>
 <p>We start with this <strong>BL602 Rust Firmware <code>sdk_app_rust_gpio</code></strong> that blinks the LED: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/sdk_app_rust_gpio/rust/src/lib.rs"><code>sdk_app_rust_gpio/lib.rs</code></a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code style="position: relative; top: -15px">
 <span class="doccomment">/// This function will be called by the BL602 command-line interface</span>
 <span class="attribute">#[<span class="ident">no_mangle</span>]</span>              <span class="comment">//  Don&#39;t mangle the function name</span>
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">rust_main</span>(  <span class="comment">//  Declare `extern &quot;C&quot;` because it will be called by BL602 firmware</span>
@@ -237,7 +237,7 @@ Finished dev [unoptimized + debuginfo] target(s) in 1m 43s</code></pre></div>
 <p>(Great that BL602 Rust Wrapper builds OK for WebAssembly! Yep our WSL machine is slow)</p>
 <p>However our Rust Firmware needs a slight tweak at the top to <strong>build correctly</strong> under WebAssembly: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/sdk_app_rust_gpio/rust/src/lib.rs#L3-L7"><code>sdk_app_rust_gpio/lib.rs</code></a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code style="position: relative; top: -15px">
 <span class="comment">// TODO: For BL602:</span>
 <span class="comment">// #![no_std]  //  Use the Rust Core Library instead of the Rust Standard Library, which is not compatible with embedded systems</span>
 
@@ -351,7 +351,7 @@ cp wasm/wasm.wasm docs</code></pre></div>
 <p><em>What’s a BL602 Simulation Event?</em></p>
 <p>When our firmware needs to <strong>set the GPIO Output</strong> to High or Low (to flip an LED On/Off)…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code style="position: relative; top: -15px">
 <span class="comment">//  Switch the LED On</span>
 <span class="ident">gpio::output_set</span>(  <span class="comment">//  Set the GPIO output for...</span>
   <span class="number">11</span>,              <span class="comment">//  GPIO pin number</span>
@@ -372,7 +372,7 @@ cp wasm/wasm.wasm docs</code></pre></div>
 <p>(It’s like playing a MIDI Stream)</p>
 <p>Hence this firmware code…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code style="position: relative; top: -15px">
 <span class="comment">//  Sleep 1,000 milliseconds (or 1 second)</span>
 <span class="ident">time_delay</span>(<span class="number">1000</span>);</code></pre></div>
 <p>Shall generate this <strong>Time Delay</strong> Simulation Event…</p>
@@ -397,7 +397,7 @@ cp wasm/wasm.wasm docs</code></pre></div>
 } }</code></pre></div>
 <p><em>When we call this Rust Function?</em></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code style="position: relative; top: -15px">
 <span class="comment">//  Switch the LED On</span>
 <span class="ident">gpio::output_set</span>(  <span class="comment">//  Set the GPIO output for...</span>
   <span class="number">11</span>,              <span class="comment">//  GPIO pin number</span>
@@ -405,7 +405,7 @@ cp wasm/wasm.wasm docs</code></pre></div>
 )...</code></pre></div>
 <p>We start by defining the <strong>Enum Type</strong> for the Simulation Event: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L3-L21"><code>bl602-simulator/lib.rs</code></a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code style="position: relative; top: -15px">
 <span class="comment">//  Import the serde crate for JSON Serialization</span>
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Serialize</span>, <span class="ident">Deserialize</span>};
 
@@ -421,12 +421,12 @@ cp wasm/wasm.wasm docs</code></pre></div>
 }</code></pre></div>
 <p>To represent a stream of events, we create a <strong>Vector of Simulation Events</strong>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code style="position: relative; top: -15px">
 <span class="comment">// Create a vector of simulation events (i.e. event array)</span>
 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">simulation_events</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SimulationEvent</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Vec::new</span>();</code></pre></div>
 <p>Here’s how we create a Simulation Event for <strong>GPIO Set Output</strong> and add it to the stream…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code style="position: relative; top: -15px">
 <span class="comment">// Create a GPIO Set Output event</span>
 <span class="kw">let</span> <span class="ident">ev</span> <span class="op">=</span> <span class="ident">SimulationEvent::gpio_output_set</span> { 
   <span class="ident">pin</span>:  <span class="number">11</span>,
@@ -437,7 +437,7 @@ cp wasm/wasm.wasm docs</code></pre></div>
 <span class="ident">simulation_events</span>.<span class="ident">push</span>(<span class="ident">ev</span>);</code></pre></div>
 <p>Thanks to the <a href="https://serde.rs/"><strong>Serde Crate</strong></a>, we may serialize the Vector of Simulation Events like so…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code style="position: relative; top: -15px">
 <span class="comment">// Convert vector of events to a JSON string</span>
 <span class="kw">let</span> <span class="ident">serialized</span> <span class="op">=</span> <span class="ident">serde_json::to_string</span>(<span class="kw-2">&amp;</span><span class="ident">simulation_events</span>)
   .<span class="ident">unwrap</span>();
@@ -452,7 +452,7 @@ cp wasm/wasm.wasm docs</code></pre></div>
 <div class="example-wrap"><pre class="language-json"><code>{ &quot;time_delay&quot;: { &quot;ticks&quot;: 1000 } }</code></pre></div>
 <p>We add <strong>Time Delay</strong> to our Enum Type like so: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L3-L21"><code>bl602-simulator/lib.rs</code></a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code style="position: relative; top: -15px">
 <span class="doccomment">/// Event to be simulated by the BL602 Simulator</span>
 <span class="kw">enum</span> <span class="ident">SimulationEvent</span> {
     <span class="doccomment">/// Omitted: GPIO Set Output</span>
@@ -465,7 +465,7 @@ cp wasm/wasm.wasm docs</code></pre></div>
 }</code></pre></div>
 <p>And we create the <strong>Time Delay Event</strong> like so…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code style="position: relative; top: -15px">
 <span class="comment">// Create a Time Delay event</span>
 <span class="kw">let</span> <span class="ident">ev</span> <span class="op">=</span> <span class="ident">SimulationEvent::time_delay</span> { 
   <span class="ident">ticks</span>: <span class="number">1000</span>,
@@ -480,7 +480,7 @@ cp wasm/wasm.wasm docs</code></pre></div>
 <p>We’ve just figured out how to <strong>compose the JSON Stream</strong> of Simulation Events.</p>
 <p>Now let’s do this <strong>inside the calls</strong> to BL602 IoT SDK…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code style="position: relative; top: -15px">
 <span class="comment">//  Switch the LED On</span>
 <span class="ident">gpio::output_set</span>(  <span class="comment">//  Set the GPIO output for...</span>
   <span class="number">11</span>,              <span class="comment">//  GPIO pin number</span>
@@ -489,7 +489,7 @@ cp wasm/wasm.wasm docs</code></pre></div>
 <p><em>Where is the Rust Wrapper Function <code>gpio::output_set</code> defined?</em></p>
 <p>From the previous article we see that the Wrapper Function is generated by <code>bindgen</code> and <code>safe_wrap</code>: <a href="https://github.com/lupyuen/bl602-rust-wrapper/blob/master/logs/sdk-expanded.rs#L649-L662"><code>sdk-expanded.rs</code></a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code style="position: relative; top: -15px">
 <span class="doccomment">/// BL602 Rust Wrapper Function that sets the GPIO output</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">output_set</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">value</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BlResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
   <span class="comment">//  Import the C function from BL602 IoT SDK</span>
@@ -510,7 +510,7 @@ cp wasm/wasm.wasm docs</code></pre></div>
 <p>To fix this we introduce the <a href="https://github.com/lupyuen/bl602-simulator/tree/main/bl602-simulator"><strong>Rust Simulator Library</strong></a>, which pretends to be the <strong>BL602 IoT SDK for WebAssembly</strong>.</p>
 <p>Here’s how it works: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L116-L136"><code>bl602-simulator/lib.rs</code></a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code style="position: relative; top: -15px">
 <span class="doccomment">/// Set the output value of a GPIO Pin. See `bl_gpio_output_set` in &quot;Read and Write GPIO&quot; &lt;https://lupyuen.github.io/articles/led#read-and-write-gpio&gt;</span>
 <span class="attribute">#[<span class="ident">no_mangle</span>]</span>  <span class="comment">//  Don&#39;t mangle the function name</span>
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">bl_gpio_output_set</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">value</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_int</span> {
@@ -534,13 +534,13 @@ cp wasm/wasm.wasm docs</code></pre></div>
 <li>
 <p>Our Rust Firmware calls <strong><code>gpio::output_set</code></strong></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code style="position: relative; top: -15px">
 <span class="ident">gpio::output_set</span>(<span class="number">11</span>, <span class="number">0</span>)</code></pre></div>
 </li>
 <li>
 <p>Which is a wrapper function that calls <strong><code>bl_gpio_output_set</code></strong></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code style="position: relative; top: -15px">
 <span class="kw">fn</span> <span class="ident">output_set</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">value</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BlResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
   <span class="comment">//  Call the BL602 IoT SDK</span>
   <span class="ident">bl_gpio_output_set</span>(<span class="ident">pin</span> <span class="kw">as</span> <span class="ident">u8</span>, <span class="ident">value</span> <span class="kw">as</span> <span class="ident">u8</span>);</code></pre></div>
@@ -548,7 +548,7 @@ cp wasm/wasm.wasm docs</code></pre></div>
 <li>
 <p>Which adds the <strong>Set GPIO Output</strong> event to the JSON Stream of Simulation Events</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code style="position: relative; top: -15px">
 <span class="kw">fn</span> <span class="ident">bl_gpio_output_set</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">value</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_int</span> {
   <span class="comment">//  Create a GPIO Set Output event</span>
   <span class="kw">let</span> <span class="ident">ev</span> <span class="op">=</span> <span class="ident">SimulationEvent::gpio_output_set</span> { <span class="ident">pin</span>, <span class="ident">value</span> };
@@ -799,7 +799,7 @@ function gpio_output_set(pin, value) {
 </ol>
 <p>Remember that the BL602 Shim Functions in our Rust Simulator Library are declared <strong>“<code>extern C</code>”</strong>?</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code style="position: relative; top: -15px">
 <span class="attribute">#[<span class="ident">no_mangle</span>]</span>  <span class="comment">//  Don&#39;t mangle the function name</span>
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">bl_gpio_output_set</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">value</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_int</span> { ...</code></pre></div>
 <p>Yep this means they can be <strong>called from C Firmware</strong>!</p>
@@ -814,7 +814,7 @@ function gpio_output_set(pin, value) {
 <p><em>How does our simulator validate calls to BL602 IoT SDK?</em></p>
 <p>BL602 Simulator remembers the <strong>configuration of every GPIO Pin</strong>: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L33-L45"><code>bl602-simulator/lib.rs</code></a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code style="position: relative; top: -15px">
 <span class="doccomment">/// Configuration for a BL602 GPIO Pin</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>)]</span>
 <span class="kw">enum</span> <span class="ident">GpioConfig</span> {
@@ -830,7 +830,7 @@ function gpio_output_set(pin, value) {
 <span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">GPIO_CONFIGS</span>: [<span class="ident">GpioConfig</span>; <span class="number">32</span>] <span class="op">=</span> [<span class="ident">GpioConfig::Unconfigured</span>; <span class="number">32</span>];</code></pre></div>
 <p>We <strong>update the GPIO Configuration</strong> whenever the GPIO is configured for Input or Output: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L105-L114"><code>lib.rs</code></a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code style="position: relative; top: -15px">
 <span class="doccomment">/// Configure a GPIO Pin for Output Mode. See `bl_gpio_enable_output` in &quot;Enable GPIO&quot; &lt;https://lupyuen.github.io/articles/led#enable-gpio&gt;</span>
 <span class="attribute">#[<span class="ident">no_mangle</span>]</span>  <span class="comment">//  Don&#39;t mangle the function name</span>
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">bl_gpio_enable_output</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">_pullup</span>: <span class="ident">u8</span>, <span class="ident">_pulldown</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_int</span> {
@@ -838,7 +838,7 @@ function gpio_output_set(pin, value) {
   <span class="ident">GPIO_CONFIGS</span>[<span class="ident">pin</span> <span class="kw">as</span> <span class="ident">usize</span>] <span class="op">=</span> <span class="ident">GpioConfig::Output</span>;</code></pre></div>
 <p>While setting the GPIO output value, we <strong>raise an error</strong> if the GPIO Configuration is incorrect: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L116-L136"><code>lib.rs</code></a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code style="position: relative; top: -15px">
 <span class="doccomment">/// Set the output value of a GPIO Pin. See `bl_gpio_output_set` in &quot;Read and Write GPIO&quot; &lt;https://lupyuen.github.io/articles/led#read-and-write-gpio&gt;</span>
 <span class="attribute">#[<span class="ident">no_mangle</span>]</span>  <span class="comment">//  Don&#39;t mangle the function name</span>
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">bl_gpio_output_set</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">value</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_int</span> {
@@ -1036,7 +1036,7 @@ function gpio_output_set(pin, value) {
 <p>Transcoded uLisp will be in the <strong>S-Expression Format</strong>. (Which looks a little like WebAssembly)</p>
 <p>Hence this Rust-like <strong>Rhai Script</strong>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code style="position: relative; top: -15px">
 <span class="ident">gpio::output_set</span>(<span class="number">11</span>, <span class="number">0</span>);</code></pre></div>
 <p>Shall be transcoded to this <strong>uLisp S-Expression</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>( bl_gpio_output_set 11 0 )</code></pre></div>
@@ -1072,7 +1072,7 @@ object *fn_bl_gpio_output_set(object *args, object *env) {
 <p>We shall <strong>traverse the nodes</strong> in the tree and <strong>emit uLisp S-Expressions</strong>.</p>
 <p>Thus this <strong>Rhai Script</strong>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code style="position: relative; top: -15px">
 <span class="ident">gpio::output_set</span>(<span class="number">11</span>, <span class="number">0</span>);</code></pre></div>
 <p>Shall emit this <strong>uLisp S-Expression</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>( bl_gpio_output_set 11 0 )</code></pre></div>
@@ -1109,13 +1109,13 @@ object *fn_bl_gpio_output_set(object *args, object *env) {
 <p><em>How is the JSON Stream of Simulation Events accessed via the Rust Simulator Library?</em></p>
 <p>Remember that we maintain a <strong>Vector of Simulation Events</strong> in Rust: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L23-L31"><code>bl602-simulator/lib.rs</code></a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code style="position: relative; top: -15px">
 <span class="doccomment">/// Vector of Simulation Events (i.e. event array)</span>
 <span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">SIMULATION_EVENTS</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SimulationEvent</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Vec::new</span>();</code></pre></div>
 <p>But we can’t expose this Rust Vector to WebAssembly and JavaScript.</p>
 <p>Thus we define an <strong>Event Buffer</strong> that exposes the vector as a JSON String…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code style="position: relative; top: -15px">
 <span class="doccomment">/// String Buffer that returns the JSON Stream of Simulation Events:</span>
 <span class="doccomment">/// `[ { &quot;gpio_output_set&quot;: { &quot;pin&quot;: 11, &quot;value&quot;: 1 } }, </span>
 <span class="doccomment">///   { &quot;time_delay&quot;: { &quot;ticks&quot;: 1000 } }, </span>
@@ -1124,7 +1124,7 @@ object *fn_bl_gpio_output_set(object *args, object *env) {
 <span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">EVENT_BUFFER</span>: [<span class="ident">u8</span>; <span class="number">1024</span>] <span class="op">=</span> [<span class="number">0</span>; <span class="number">1024</span>];</code></pre></div>
 <p>When our JavaScript code calls <code>get_simulation_events</code> to fetch the Simulation Events, we <strong>convert the Rust Vector to JSON</strong> and <strong>copy it into the Event Buffer</strong>: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L58-L92"><code>lib.rs</code></a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code style="position: relative; top: -15px">
 <span class="doccomment">/// Return the JSON Stream of Simulation Events</span>
 <span class="attribute">#[<span class="ident">no_mangle</span>]</span>  <span class="comment">//  Don&#39;t mangle the function name</span>
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">get_simulation_events</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span> {
@@ -1156,7 +1156,7 @@ object *fn_bl_gpio_output_set(object *args, object *env) {
 <p>Yep it’s possible that our serialized vector <strong>won’t fit into the Event Buffer</strong>.</p>
 <p>To mitigate this, we ought to <strong>check the serialized vector size</strong> whenever we add an event…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code style="position: relative; top: -15px">
 <span class="doccomment">/// Add an Simulation Event</span>
 <span class="kw">fn</span> <span class="ident">add_event</span>(<span class="ident">ev</span>: <span class="ident">SimulationEvent</span>) {
     <span class="comment">//  Add the event to the vector</span>
@@ -1172,7 +1172,7 @@ object *fn_bl_gpio_output_set(object *args, object *env) {
         <span class="comment">//  Remove the event from the vector and stop the simulation</span></code></pre></div>
 <p>Here’s how we <strong>initialise the Vector of Simulation Events</strong> before use: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L47-L56"><code>lib.rs</code></a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code style="position: relative; top: -15px">
 <span class="doccomment">/// Clear the JSON Stream of Simulation Events</span>
 <span class="attribute">#[<span class="ident">no_mangle</span>]</span>  <span class="comment">//  Don&#39;t mangle the function name</span>
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">clear_simulation_events</span>() {

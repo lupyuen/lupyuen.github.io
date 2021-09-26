@@ -243,9 +243,6 @@ if err == nil {
   if _, ok := c.topics.Load(t); ok {
     return
   }
-  //  Subscribe to all topics: &quot;#&quot;. TODO: Support other topics.
-  //  Previously: log.DefaultLogger.Debug(fmt.Sprintf(&quot;Subscribing to MQTT topic: %s&quot;, t))
-  log.DefaultLogger.Debug(fmt.Sprintf(&quot;Subscribing to MQTT topic: %s&quot;, defaultTopicMQTT))
   topic := Topic{
     path: t,
   }
@@ -258,12 +255,10 @@ if err == nil {
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/mqtt/client.go#L96-L148">pkg/mqtt/client.go</a></p>
 <div class="example-wrap"><pre class="language-go"><code>func (c *Client) HandleMessage(_ paho.Client, msg paho.Message) {
-  log.DefaultLogger.Debug(fmt.Sprintf(&quot;Received MQTT Message for topic %s&quot;, msg.Topic()))
   //  Accept all topics as &quot;all&quot;. TODO: Support other topics.
   //  Previously: topic, ok := c.topics.Load(msg.Topic())
   topic, ok := c.topics.Load(defaultTopicName)
-  if !ok {
-    log.DefaultLogger.Debug(fmt.Sprintf(&quot;Topic not found: %s&quot;, defaultTopicName))
+  if !ok {  //  Topic not found, quit
     return
   }
 
@@ -301,9 +296,6 @@ if err == nil {
   //  Stream message to topic &quot;all&quot;. TODO: Support other topics.
   //  Previously: streamMessage := StreamMessage{Topic: msg.Topic(), Value: string(msg.Payload())}
   streamMessage := StreamMessage{Topic: defaultTopicName, Value: string(msg.Payload())}
-
-  log.DefaultLogger.Debug(fmt.Sprintf(&quot;Stream MQTT Message for topic %s&quot;, defaultTopicName))
-
   select {
   case c.stream &lt;- streamMessage:
   default:
@@ -313,8 +305,6 @@ if err == nil {
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L19-L44">pkg/plugin/message.go</a></p>
 <div class="example-wrap"><pre class="language-go"><code>func ToFrame(topic string, messages []mqtt.Message) *data.Frame {
-  log.DefaultLogger.Debug(fmt.Sprintf(&quot;ToFrame: topic=%s&quot;, topic))
-
   count := len(messages)
   if count &gt; 0 {
     first := messages[0].Value
@@ -345,13 +335,11 @@ func jsonMessagesToFrame(topic string, messages []mqtt.Message) *data.Frame {
   //  Quit if no messages to transform
   count := len(messages)
   if count == 0 {
-    log.DefaultLogger.Debug(fmt.Sprintf(&quot;jsonMessagesToFrame: No msgs for topic=%s&quot;, topic))
     return nil
   }
 
   //  Transform the first message
   msg := messages[0]
-  log.DefaultLogger.Debug(fmt.Sprintf(&quot;jsonMessagesToFrame: topic=%s, msg=%s&quot;, topic, msg.Value))
 
   //  Decode the CBOR payload
   body, err := decodeCborPayload(msg.Value)
@@ -415,12 +403,6 @@ func jsonMessagesToFrame(topic string, messages []mqtt.Message) *data.Frame {
   for _, key := range keys {
     frame.Fields = append(frame.Fields, fields[key])
   }
-
-  //  Dump the Data Frame
-  log.DefaultLogger.Debug(fmt.Sprintf(&quot;jsonMessagesToFrame: Frame=%+v&quot;, frame))
-  for _, field := range frame.Fields {
-    log.DefaultLogger.Debug(fmt.Sprintf(&quot;  field=%+v&quot;, field))
-  }
   return frame
 }</code></pre></div>
 <p>From <a href="https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L231-L239">pkg/plugin/message.go</a></p>
@@ -462,13 +444,6 @@ func decodeCborPayload(msg string) (map[string]interface{}, error) {
   if err != nil {
     return nil, err
   }
-  log.DefaultLogger.Debug(fmt.Sprintf(&quot;payload: %v&quot;, payload))
-
-  //  TODO: Testing CBOR Decoding for {&quot;t&quot;: 1234}.  See http://cbor.me/
-  //  if payload[0] == 0 {
-  //  	payload = []byte{0xA1, 0x61, 0x74, 0x19, 0x04, 0xD2}
-  //  	log.DefaultLogger.Debug(fmt.Sprintf(&quot;TODO: Testing payload: %v&quot;, payload))
-  //  }
 
   //  Decode CBOR payload to a map of String -&gt; interface{}
   var body map[string]interface{}
@@ -485,14 +460,6 @@ func decodeCborPayload(msg string) (map[string]interface{}, error) {
       body[&quot;device_id&quot;] = device_id
     }
   }
-
-  //  TODO: Test various field types
-  //  body[&quot;f64&quot;] = float64(1234)
-  //  body[&quot;u64&quot;] = uint64(1234)
-  //  body[&quot;str&quot;] = &quot;Test&quot;
-
-  //  Shows: map[device_id:eui-70b3d57ed0045669 t:1234]
-  log.DefaultLogger.Debug(fmt.Sprintf(&quot;CBOR decoded: %v&quot;, body))
   return body, nil
 }</code></pre></div><h2 id="convert-type" class="section-header"><a href="#convert-type">6.2 Convert Type</a></h2>
 <p>TODO</p>

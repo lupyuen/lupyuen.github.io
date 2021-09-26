@@ -294,7 +294,7 @@ warning: 3 warnings emitted
 
     Finished dev [unoptimized + debuginfo] target(s) in 1m 17s</code></pre></div>
 <p>This creates the RISC-V ELF Firmware image for PineCone…</p>
-<div class="example-wrap"><pre class="language-text">pinecone-rust/target/riscv32imac-unknown-none-elf/debug/bl602-rust-guide</code></pre></div><h2 id="rust-firmware-vs-c-firmware" class="section-header"><a href="#rust-firmware-vs-c-firmware"><code>2.1 Rust Firmware vs C Firmware</a></h2>
+<div class="example-wrap"><pre class="language-text"><code>pinecone-rust/target/riscv32imac-unknown-none-elf/debug/bl602-rust-guide</code></pre></div><h2 id="rust-firmware-vs-c-firmware" class="section-header"><a href="#rust-firmware-vs-c-firmware">2.1 Rust Firmware vs C Firmware</a></h2>
 <p><em>Is Rust Firmware any different from the <a href="https://lupyuen.github.io/articles/pinecone">C Firmware</a> that we have seen earlier?</em></p>
 <p>From the Memory Map below, we can see that…</p>
 <ol>
@@ -472,7 +472,7 @@ target = &quot;riscv32imac-unknown-none-elf&quot;</code></pre></div>
 <h1 id="rusty-mastery-and-mystery" class="section-header"><a href="#rusty-mastery-and-mystery">5 Rusty Mastery and Mystery</a></h1>
 <p>Before we talk about VSCode Debugging, let’s study the Source Code for our Rust Firmware: <a href="https://github.com/lupyuen/pinecone-rust/blob/main/src/main.rs">src/main.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code style="position: relative; top: -15px">
 <span class="attribute">#[<span class="ident">riscv_rt::entry</span>]</span>
 <span class="kw">fn</span> <span class="ident">main</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
     <span class="kw">let</span> <span class="ident">dp</span> <span class="op">=</span> <span class="ident">pac::Peripherals::take</span>().<span class="ident">unwrap</span>();
@@ -485,11 +485,11 @@ target = &quot;riscv32imac-unknown-none-elf&quot;</code></pre></div>
 <h2 id="declare-the-main-function" class="section-header"><a href="#declare-the-main-function">5.1 Declare the Main Function</a></h2>
 <p>At the top we have a Rust Attribute that declares the Entry Function for our RISC-V firmware…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code style="position: relative; top: -15px">
 <span class="attribute">#[<span class="ident">riscv_rt::entry</span>]</span></code></pre></div>
 <p>Followed by the declaration of our Entry Function <code>main</code>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code style="position: relative; top: -15px">
 <span class="kw">fn</span> <span class="ident">main</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {</code></pre></div>
 <p>This means that our Rust Function <code>main</code> will be called when the firmware starts, after initialising the registers and RAM. (<a href="https://github.com/rust-embedded/riscv-rt/blob/master/asm.S">More details</a>) </p>
 <p>(The return type “<code>-&gt; !</code>” means that the function will loop forever, never returning)</p>
@@ -497,7 +497,7 @@ target = &quot;riscv32imac-unknown-none-elf&quot;</code></pre></div>
 <p>Our BL602 Microcontroller supports multiple Peripheral Functions: Timer, UART, I2C, SPI, PWM, …</p>
 <p>Here’s how we fetch the Peripheral Registers that control the Peripheral Functions…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code style="position: relative; top: -15px">
 <span class="kw">let</span> <span class="ident">dp</span> <span class="op">=</span> <span class="ident">pac::Peripherals::take</span>().<span class="ident">unwrap</span>();</code></pre></div>
 <p><code>pac</code> refers to the Peripheral Access Crate for BL602. It exposes <code>Peripherals</code>, the Peripheral Registers for BL602.</p>
 <ul>
@@ -514,7 +514,7 @@ target = &quot;riscv32imac-unknown-none-elf&quot;</code></pre></div>
 <p>It provides settings for Clock Management, Reset Management, Bus Management, Memory Management and GPIO Management.</p>
 <p>We fetch the Global Register (and its components) from the Peripheral Registers like so…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code style="position: relative; top: -15px">
 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">parts</span> <span class="op">=</span> <span class="ident">dp</span>.<span class="ident">GLB</span>.<span class="ident">split</span>();</code></pre></div>
 <ul>
 <li>Refer to <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf">BL602 Reference Manual</a>, Section 3 “GLB”, Page 24.</li>
@@ -523,7 +523,7 @@ target = &quot;riscv32imac-unknown-none-elf&quot;</code></pre></div>
 <p>Our firmware should never terminate… It should loop forever handling events.</p>
 <p>For now we’ll use an empty loop…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code style="position: relative; top: -15px">
 <span class="comment">//  Loop forever</span>
 <span class="kw">loop</span> {}</code></pre></div>
 <h2 id="is-something-missing" class="section-header"><a href="#is-something-missing">5.5 Is Something Missing?</a></h2>
@@ -552,7 +552,7 @@ target = &quot;riscv32imac-unknown-none-elf&quot;</code></pre></div>
 <p>Click <strong><code>Terminal → Run Build Task</code></strong></p>
 <p>This builds the Rust Firmware. The RISC-V ELF Firmware image is generated here…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code style="position: relative; top: -15px">
 <span class="ident">pinecone</span><span class="op">-</span><span class="ident">rust</span><span class="op">/</span><span class="ident">target</span><span class="op">/</span><span class="ident">riscv32imac</span><span class="op">-</span><span class="ident">unknown</span><span class="op">-</span><span class="ident">none</span><span class="op">-</span><span class="ident">elf</span><span class="op">/</span><span class="ident">debug</span><span class="op">/</span><span class="ident">bl602</span><span class="op">-</span><span class="ident">rust</span><span class="op">-</span><span class="ident">guide</span></code></pre></div>
 <p>This step also terminates any OpenOCD processes that are running. (Linux and macOS only)</p>
 </li>
@@ -604,14 +604,14 @@ target = &quot;riscv32imac-unknown-none-elf&quot;</code></pre></div>
 <p>For Windows: Sorry we need to terminate the OpenOCD task manually with the Task Manager.</p>
 <p>In case of OpenOCD problems, check the OpenOCD log file…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code style="position: relative; top: -15px">
 <span class="ident">pinecone</span><span class="op">-</span><span class="ident">rust</span><span class="op">/</span><span class="ident">openocd</span>.<span class="ident">log</span></code></pre></div>
 <p>For details on the VSCode settings, check the section “Appendix: VSCode Settings” below.</p>
 <h1 id="rust-coders-wanted" class="section-header"><a href="#rust-coders-wanted">7 Rust Coders Wanted</a></h1>
 <p>Earlier we talked about some parts of the Rust Firmware code that don’t work on PineCone. (Because the code was created for Sipeed’s BL602 Board)</p>
 <p>Let’s look at the sus parts: <a href="https://github.com/lupyuen/pinecone-rust/blob/main/src/main.rs#L14-L36"><code>src/main.rs</code></a></p>
 <h2 id="remap-the-uart-port" class="section-header"><a href="#remap-the-uart-port">7.1 Remap the UART Port</a></h2>
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code style="position: relative; top: -15px">
 <span class="comment">// Enable clock</span>
 <span class="kw">let</span> <span class="ident">clocks</span> <span class="op">=</span> <span class="ident">Strict::new</span>()
     .<span class="ident">freeze</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">parts</span>.<span class="ident">clk_cfg</span>);
@@ -622,7 +622,7 @@ target = &quot;riscv32imac-unknown-none-elf&quot;</code></pre></div>
 <p>This code seems to be remapping pins IO 7 and IO 16 to UART Port 0. (Because BL602 allows us to remap any IO Pin to any Peripheral Function)</p>
 <p>See <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf">BL602 Reference Manual</a>, Section 3.2.8 “GPIO Function”, Page 27</p>
 <h2 id="create-a-serial-interface" class="section-header"><a href="#create-a-serial-interface">7.2 Create a Serial Interface</a></h2>
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code style="position: relative; top: -15px">
 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">serial</span> <span class="op">=</span> <span class="ident">Serial::uart0</span>(
     <span class="ident">dp</span>.<span class="ident">UART</span>,
     <span class="ident">Config::default</span>().<span class="ident">baudrate</span>(<span class="number">20000</span>.<span class="ident">Bd</span>()),
@@ -632,7 +632,7 @@ target = &quot;riscv32imac-unknown-none-elf&quot;</code></pre></div>
 <p>This code creates a Serial Interface based on UART Port 0 with the remapped pins.</p>
 <p><code>Serial</code> is defined in the <a href="https://lupyuen.github.io/pinecone-rust/bl602_hal/">BL602 Hardware Abstraction Layer</a></p>
 <h2 id="write-to-the-serial-interface" class="section-header"><a href="#write-to-the-serial-interface">7.3 Write to the Serial Interface</a></h2>
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code style="position: relative; top: -15px">
 <span class="kw">loop</span> {
     <span class="ident">serial</span>.<span class="ident">try_write</span>(<span class="string">b&#39;R&#39;</span>).<span class="ident">ok</span>();
     <span class="ident">serial</span>.<span class="ident">try_flush</span>().<span class="ident">ok</span>();

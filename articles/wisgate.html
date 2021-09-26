@@ -251,7 +251,7 @@ void setup() {
 <p>(More about <code>g_lora_callbacks</code> in a while)</p>
 <p>Finally we send the <strong>Join LoRaWAN Network Request</strong> to WisGate…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code style="position: relative; top: -15px">
   <span class="comment">//  Start Join procedure</span>
   <span class="ident">lmh_join</span>();
 }</code></pre></div>
@@ -279,7 +279,7 @@ void loop() {
 }</code></pre></div><h2 id="join-lorawan-network" class="section-header"><a href="#join-lorawan-network">4.3 Join LoRaWAN Network</a></h2>
 <p>During startup we called <code>lmh_join</code> to send the <strong>Join LoRaWAN Network Request</strong> to WisGate…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code style="position: relative; top: -15px">
 <span class="comment">//  Start Join procedure</span>
 <span class="ident">lmh_join</span>();</code></pre></div>
 <p>When <strong>WisGate accepts the Join Request</strong> and returns an acknowledgement packet, this Callback Function will be called: <a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L222-L236"><code>main.cpp</code></a></p>
