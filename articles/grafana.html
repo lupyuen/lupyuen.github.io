@@ -277,8 +277,7 @@ func (c *Client) Subscribe(t string) {
 </li>
 </ol>
 <h2 id="receive-mqtt-messages" class="section-header"><a href="#receive-mqtt-messages">5.2 Receive MQTT Messages</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/mqtt/client.go#L96-L148">pkg/mqtt/client.go</a></p>
+<p><strong>Incoming MQTT Messages</strong> are handled by this function: <a href="https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/mqtt/client.go#L96-L148">pkg/mqtt/client.go</a></p>
 <div class="example-wrap"><pre class="language-go"><code>//  Handle incoming MQTT messages
 func (c *Client) HandleMessage(_ paho.Client, msg paho.Message) {
   //  Assume that the topic is &quot;all&quot;. TODO: Support other topics.
@@ -292,9 +291,10 @@ func (c *Client) HandleMessage(_ paho.Client, msg paho.Message) {
   message := Message{
     Timestamp: time.Now(),
     Value:     string(msg.Payload()),
-  }
-
-  //  TODO: Fix this hack to reject messages without a valid CBOR Base64 Payload.
+  }</code></pre></div>
+<p>We begin by composing a <strong>Message</strong> object that will be processed later.</p>
+<p>Sorry again for this horrible hack: We reject messages without a <strong>valid CBOR Base64 Payload</strong>…</p>
+<div class="example-wrap"><pre class="language-go"><code>  //  TODO: Fix this hack to reject messages without a valid CBOR Base64 Payload.
   //  CBOR Payloads must begin with a CBOR Map: 0xA1 or 0xA2 or 0xA3 or ...
   //  So the Base64 Encoding must begin with &quot;o&quot; or &quot;p&quot; or &quot;q&quot; or ...
   //  We stop at 0xB1 (Base64 &quot;s&quot;) because we assume LoRaWAN Payloads will be under 50 bytes.
@@ -307,9 +307,9 @@ func (c *Client) HandleMessage(_ paho.Client, msg paho.Message) {
     !strings.Contains(message.Value, frm_payload+&quot;s&quot;) {
     log.DefaultLogger.Debug(fmt.Sprintf(&quot;Missing or invalid payload: %s&quot;, message.Value))
     return
-  }
-
-  //  Store message for query
+  }</code></pre></div>
+<p>Next we store the Message object (keeping the most recent 1,000 messages)…</p>
+<div class="example-wrap"><pre class="language-go"><code>  //  Store message for query
   topic.messages = append(topic.messages, message)
 
   //  Limit the size of the retained messages
@@ -317,9 +317,10 @@ func (c *Client) HandleMessage(_ paho.Client, msg paho.Message) {
     topic.messages = topic.messages[1:]
   }
 
-  c.topics.Store(topic)
-
-  //  Stream message to topic &quot;all&quot;. TODO: Support other topics.
+  //  Update the topic messages
+  c.topics.Store(topic)</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-go"><code>  //  Stream message to topic &quot;all&quot;. TODO: Support other topics.
   //  Previously: streamMessage := StreamMessage{Topic: msg.Topic(), Value: string(msg.Payload())}
   streamMessage := StreamMessage{Topic: defaultTopicName, Value: string(msg.Payload())}
   select {
