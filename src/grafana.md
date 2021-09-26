@@ -168,9 +168,9 @@ Which means that only Device IDs starting with __"eui-70b3"__ will be rendered.
 
 # CBOR: Concise Binary Object Representation
 
-TODO
+_The Sensor Data we've seen earlier... Is it encoded as JSON?_
 
-We assume that Message Payloads are encoded in [__CBOR Format__](https://en.wikipedia.org/wiki/CBOR)...
+Not quite. If we encode the Sensor Data as JSON...
 
 ```json
 { 
@@ -178,6 +178,13 @@ We assume that Message Payloads are encoded in [__CBOR Format__](https://en.wiki
   "l": 2345 
 }
 ```
+
+TODO
+
+19 bytes
+
+We assume that Message Payloads are encoded in [__CBOR Format__](https://en.wikipedia.org/wiki/CBOR)...
+
 
 ![](https://lupyuen.github.io/images/grafana-cbor4.jpg)
 
@@ -287,7 +294,7 @@ func (c *Client) HandleMessage(_ paho.Client, msg paho.Message) {
   }
 ```
 
-We begin by composing a __Message__ object that will be processed later.
+We begin by __composing a Message__ object that will be processed later.
 
 Sorry again for this horrible hack: We reject messages without a __valid CBOR Base64 Payload__...
 
@@ -308,7 +315,7 @@ Sorry again for this horrible hack: We reject messages without a __valid CBOR Ba
   }
 ```
 
-Next we store the Message object (keeping the most recent 1,000 messages)...
+Next we __store the Message__ object (keeping the most recent 1,000 messages)...
 
 ```go
   //  Store message for query
@@ -323,7 +330,7 @@ Next we store the Message object (keeping the most recent 1,000 messages)...
   c.topics.Store(topic)
 ```
 
-TODO
+Then we __stream the message__ to a channel...
 
 ```go
   //  Stream message to topic "all". TODO: Support other topics.
