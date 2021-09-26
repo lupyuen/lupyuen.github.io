@@ -73,21 +73,21 @@
 <li><a href="#filter-data">3.2 Filter Data</a><ul></ul></li></ul></li>
 <li><a href="#cbor-concise-binary-object-representation">4 CBOR: Concise Binary Object Representation</a><ul>
 <li><a href="#decode-cbor-in-go">4.1 Decode CBOR in Go</a><ul></ul></li></ul></li>
-<li><a href="#transform-mqtt-messages">5 Transform MQTT Messages</a><ul>
+<li><a href="#mqtt-integration">5 MQTT Integration</a><ul>
 <li><a href="#subscribe-to-mqtt">5.1 Subscribe to MQTT</a><ul></ul></li>
-<li><a href="#receive-mqtt-messages">5.2 Receive MQTT Messages</a><ul></ul></li>
-<li><a href="#transform-message">5.3 Transform Message</a><ul></ul></li>
-<li><a href="#decode-payload">5.4 Decode Payload</a><ul></ul></li>
-<li><a href="#convert-type">5.5 Convert Type</a><ul></ul></li></ul></li>
-<li><a href="#troubleshooting">6 Troubleshooting</a><ul></ul></li>
-<li><a href="#store-data-with-prometheus">7 Store Data with Prometheus</a><ul></ul></li>
-<li><a href="#whats-next">8 What’s Next</a><ul></ul></li>
-<li><a href="#notes">9 Notes</a><ul></ul></li>
-<li><a href="#appendix-install-grafana-and-data-source">10 Appendix: Install Grafana and Data Source</a><ul>
-<li><a href="#install-grafana">10.1 Install Grafana</a><ul></ul></li>
-<li><a href="#build-data-source">10.2 Build Data Source</a><ul></ul></li>
-<li><a href="#enable-data-source">10.3 Enable Data Source</a><ul></ul></li></ul></li>
-<li><a href="#appendix-install-build-tools-for-macos">11 Appendix: Install Build Tools for macOS</a><ul></ul></li></ul></nav><p>📝 <em>30 Sep 2021</em></p>
+<li><a href="#receive-mqtt-messages">5.2 Receive MQTT Messages</a><ul></ul></li></ul></li>
+<li><a href="#transform-mqtt-messages">6 Transform MQTT Messages</a><ul>
+<li><a href="#decode-payload">6.1 Decode Payload</a><ul></ul></li>
+<li><a href="#convert-type">6.2 Convert Type</a><ul></ul></li></ul></li>
+<li><a href="#troubleshooting">7 Troubleshooting</a><ul></ul></li>
+<li><a href="#store-data-with-prometheus">8 Store Data with Prometheus</a><ul></ul></li>
+<li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
+<li><a href="#notes">10 Notes</a><ul></ul></li>
+<li><a href="#appendix-install-grafana-and-data-source">11 Appendix: Install Grafana and Data Source</a><ul>
+<li><a href="#install-grafana">11.1 Install Grafana</a><ul></ul></li>
+<li><a href="#build-data-source">11.2 Build Data Source</a><ul></ul></li>
+<li><a href="#enable-data-source">11.3 Enable Data Source</a><ul></ul></li></ul></li>
+<li><a href="#appendix-install-build-tools-for-macos">12 Appendix: Install Build Tools for macOS</a><ul></ul></li></ul></nav><p>📝 <em>30 Sep 2021</em></p>
 <p><a href="https://lupyuen.github.io/articles/ttn"><strong>The Things Network</strong></a> is a public global <strong>wireless network for IoT devices</strong>…</p>
 <p>(And it’s free for fair use!)</p>
 <p><a href="https://grafana.com/oss/grafana/"><strong>Grafana</strong></a> is a open source tool for <strong>visualising all kinds of real-time data</strong>…</p>
@@ -208,17 +208,30 @@ mosquitto_sub -h au1.cloud.thethings.network -t &quot;#&quot; -u &quot;luppy-app
 <p><a href="http://cbor.me/">(Source)</a></p>
 <h2 id="decode-cbor-in-go" class="section-header"><a href="#decode-cbor-in-go">4.1 Decode CBOR in Go</a></h2>
 <p>TODO</p>
+<div class="example-wrap"><pre class="language-go">import &quot;github.com/fxamacker/cbor/v2&quot;
+
+//  Encoded CBOR payload for { &quot;t&quot;: 1234, &quot;l&quot;: 2345 }
+payload := []byte{0xa2, 0x61, 0x74, 0x19, 0x04, 0xd2, 0x61, 0x6c, 0x19, 0x09, 0x29}
+
+//  Decode CBOR payload to a map of String -&gt; interface{}
+var body map[string]interface{}
+err := cbor.Unmarshal(payload, &amp;body)
+
+//  Shows: map[l:2345 t:1234]
+if err == nil {
+  fmt.Printf(&quot;%v\n&quot;, body)
+}</pre></div>
 <p><img src="https://lupyuen.github.io/images/grafana-cbor2.png" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/grafana-payload.jpg" alt="" /></p>
-<h1 id="transform-mqtt-messages" class="section-header"><a href="#transform-mqtt-messages">5 Transform MQTT Messages</a></h1>
+<h1 id="mqtt-integration" class="section-header"><a href="#mqtt-integration">5 MQTT Integration</a></h1>
 <p>TODO</p>
 <ul>
 <li><a href="https://github.com/lupyuen/the-things-network-datasource"><strong>lupyuen/the-things-network-datasource</strong></a></li>
 </ul>
-<p>This Data Source is based on the MQTT data source for Grafana…</p>
+<p>Our Data Source is based on the MQTT Data Source for Grafana…</p>
 <ul>
-<li><a href="https://github.com/grafana/mqtt-datasource">github.com/grafana/mqtt-datasource</a></li>
+<li><a href="https://github.com/grafana/mqtt-datasource"><strong>grafana/mqtt-datasource</strong></a></li>
 </ul>
 <p>TODO</p>
 <h2 id="subscribe-to-mqtt" class="section-header"><a href="#subscribe-to-mqtt">5.1 Subscribe to MQTT</a></h2>
@@ -294,7 +307,7 @@ mosquitto_sub -h au1.cloud.thethings.network -t &quot;#&quot; -u &quot;luppy-app
   default:
     // don&#39;t block if nothing is reading from the channel
   }
-}</pre></div><h2 id="transform-message" class="section-header"><a href="#transform-message">5.3 Transform Message</a></h2>
+}</pre></div><h1 id="transform-mqtt-messages" class="section-header"><a href="#transform-mqtt-messages">6 Transform MQTT Messages</a></h1>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L19-L44">/pkg/plugin/message.go</a></p>
 <div class="example-wrap"><pre class="language-go">func ToFrame(topic string, messages []mqtt.Message) *data.Frame {
@@ -417,7 +430,7 @@ func set_error(frame *data.Frame, err error) *data.Frame {
   })
   log.DefaultLogger.Debug(err.Error())
   return frame
-}</pre></div><h2 id="decode-payload" class="section-header"><a href="#decode-payload">5.4 Decode Payload</a></h2>
+}</pre></div><h2 id="decode-payload" class="section-header"><a href="#decode-payload">6.1 Decode Payload</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L131-L190">/pkg/plugin/message.go</a></p>
 <div class="example-wrap"><pre class="language-go">//  Decode the CBOR payload in the JSON message.
@@ -479,7 +492,7 @@ func decodeCborPayload(msg string) (map[string]interface{}, error) {
   //  Shows: map[device_id:eui-70b3d57ed0045669 t:1234]
   log.DefaultLogger.Debug(fmt.Sprintf(&quot;CBOR decoded: %v&quot;, body))
   return body, nil
-}</pre></div><h2 id="convert-type" class="section-header"><a href="#convert-type">5.5 Convert Type</a></h2>
+}</pre></div><h2 id="convert-type" class="section-header"><a href="#convert-type">6.2 Convert Type</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L192-L229">/pkg/plugin/message.go</a></p>
 <div class="example-wrap"><pre class="language-go">//  Return the Data Frame Type for the CBOR decoded value
@@ -525,7 +538,7 @@ func get_type(val interface{}) data.FieldType {
 <p><img src="https://lupyuen.github.io/images/grafana-code2.png" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/grafana-test.png" alt="" /></p>
-<h1 id="troubleshooting" class="section-header"><a href="#troubleshooting">6 Troubleshooting</a></h1>
+<h1 id="troubleshooting" class="section-header"><a href="#troubleshooting">7 Troubleshooting</a></h1>
 <p>TODO</p>
 <p>To <strong>enable Debug Logs</strong>, edit…</p>
 <div class="example-wrap"><pre class="language-text"># For Linux:
@@ -549,10 +562,10 @@ level = debug</pre></div>
 # For Windows:
 C:\Program Files\GrafanaLabs\grafana\data\log\grafana.log</pre></div>
 <p><a href="https://github.com/lupyuen/the-things-network-datasource#grafana-log">(See sample Grafana Log)</a></p>
-<h1 id="store-data-with-prometheus" class="section-header"><a href="#store-data-with-prometheus">7 Store Data with Prometheus</a></h1>
+<h1 id="store-data-with-prometheus" class="section-header"><a href="#store-data-with-prometheus">8 Store Data with Prometheus</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/grafana-flow2.jpg" alt="" /></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">8 What’s Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">9 What’s Next</a></h1>
 <p>TODO</p>
 <p>PineDio Stack BL604</p>
 <ul>
@@ -571,13 +584,13 @@ C:\Program Files\GrafanaLabs\grafana\data\log\grafana.log</pre></div>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/grafana.md"><code>lupyuen.github.io/src/grafana.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">9 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">10 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1440459917828050946">this Twitter Thread</a></li>
 </ol>
-<h1 id="appendix-install-grafana-and-data-source" class="section-header"><a href="#appendix-install-grafana-and-data-source">10 Appendix: Install Grafana and Data Source</a></h1>
+<h1 id="appendix-install-grafana-and-data-source" class="section-header"><a href="#appendix-install-grafana-and-data-source">11 Appendix: Install Grafana and Data Source</a></h1>
 <p>Here are the steps to install Grafana and our Data Source for The Things Network.</p>
-<h2 id="install-grafana" class="section-header"><a href="#install-grafana">10.1 Install Grafana</a></h2>
+<h2 id="install-grafana" class="section-header"><a href="#install-grafana">11.1 Install Grafana</a></h2>
 <ol>
 <li>
 <p>Browse to <a href="https://grafana.com/oss/grafana/"><strong>grafana.com/oss/grafana</strong></a></p>
@@ -608,7 +621,7 @@ brew services start grafana</pre></div></li>
 <p><strong>Password:</strong> admin</p>
 </li>
 </ol>
-<h2 id="build-data-source" class="section-header"><a href="#build-data-source">10.2 Build Data Source</a></h2>
+<h2 id="build-data-source" class="section-header"><a href="#build-data-source">11.2 Build Data Source</a></h2>
 <p>(Note: Our Data Source uses the Grafana Live Streaming API, please use Grafana version 8.0 or later)</p>
 <ol>
 <li>
@@ -665,7 +678,7 @@ brew services restart grafana
 net stop grafana
 net start grafana</pre></div></li>
 </ol>
-<h2 id="enable-data-source" class="section-header"><a href="#enable-data-source">10.3 Enable Data Source</a></h2>
+<h2 id="enable-data-source" class="section-header"><a href="#enable-data-source">11.3 Enable Data Source</a></h2>
 <ol>
 <li>
 <p>Edit the <strong>Grafana Configuration File</strong>…</p>
@@ -710,7 +723,7 @@ C:\Program Files\GrafanaLabs\grafana\data\log\grafana.log</pre></div>
 <p><a href="https://github.com/lupyuen/the-things-network-datasource#grafana-log">(See sample Grafana Log)</a></p>
 </li>
 </ol>
-<h1 id="appendix-install-build-tools-for-macos" class="section-header"><a href="#appendix-install-build-tools-for-macos">11 Appendix: Install Build Tools for macOS</a></h1>
+<h1 id="appendix-install-build-tools-for-macos" class="section-header"><a href="#appendix-install-build-tools-for-macos">12 Appendix: Install Build Tools for macOS</a></h1>
 <p>To install the tools for building our Grafana Data Source on macOS…</p>
 <ol>
 <li>
