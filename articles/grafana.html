@@ -202,9 +202,11 @@ mosquitto_sub -h au1.cloud.thethings.network -t &quot;#&quot; -u &quot;luppy-app
 <h1 id="cbor-concise-binary-object-representation" class="section-header"><a href="#cbor-concise-binary-object-representation">4 CBOR: Concise Binary Object Representation</a></h1>
 <p>TODO</p>
 <p>We assume that Message Payloads are encoded in <a href="https://en.wikipedia.org/wiki/CBOR"><strong>CBOR Format</strong></a>…</p>
-<div class="example-wrap"><pre class="language-json"><code>{ &quot;t&quot;: 1234 }</code></pre></div>
-<p>(Multiple fields are OK)</p>
-<p><img src="https://lupyuen.github.io/images/grafana-cbor.png" alt="" /></p>
+<div class="example-wrap"><pre class="language-json"><code>{ 
+  &quot;t&quot;: 1234, 
+  &quot;l&quot;: 2345 
+}</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/grafana-cbor4.jpg" alt="" /></p>
 <p><a href="http://cbor.me/">(Source)</a></p>
 <h2 id="decode-cbor-in-go" class="section-header"><a href="#decode-cbor-in-go">4.1 Decode CBOR in Go</a></h2>
 <p>TODO</p>
@@ -309,7 +311,7 @@ if err == nil {
   }
 }</code></pre></div><h1 id="transform-mqtt-messages" class="section-header"><a href="#transform-mqtt-messages">6 Transform MQTT Messages</a></h1>
 <p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L19-L44">/pkg/plugin/message.go</a></p>
+<p>From <a href="https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L19-L44">pkg/plugin/message.go</a></p>
 <div class="example-wrap"><pre class="language-go"><code>func ToFrame(topic string, messages []mqtt.Message) *data.Frame {
   log.DefaultLogger.Debug(fmt.Sprintf(&quot;ToFrame: topic=%s&quot;, topic))
 
@@ -336,7 +338,7 @@ if err == nil {
 
   return data.NewFrame(topic, timeField, valueField)
 }</code></pre></div>
-<p>From <a href="https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L46-L129">/pkg/plugin/message.go</a></p>
+<p>From <a href="https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L46-L129">pkg/plugin/message.go</a></p>
 <div class="example-wrap"><pre class="language-go"><code>//  Transform the array of MQTT Messages (JSON encoded) into a Grafana Data Frame.
 //  See sample messages: https://github.com/lupyuen/the-things-network-datasource#mqtt-log
 func jsonMessagesToFrame(topic string, messages []mqtt.Message) *data.Frame {
@@ -421,7 +423,7 @@ func jsonMessagesToFrame(topic string, messages []mqtt.Message) *data.Frame {
   }
   return frame
 }</code></pre></div>
-<p>From <a href="https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L231-L239">/pkg/plugin/message.go</a></p>
+<p>From <a href="https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L231-L239">pkg/plugin/message.go</a></p>
 <div class="example-wrap"><pre class="language-go"><code>//  Return the Data Frame set to the given error
 func set_error(frame *data.Frame, err error) *data.Frame {
   frame.AppendNotices(data.Notice{
@@ -432,7 +434,7 @@ func set_error(frame *data.Frame, err error) *data.Frame {
   return frame
 }</code></pre></div><h2 id="decode-payload" class="section-header"><a href="#decode-payload">6.1 Decode Payload</a></h2>
 <p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L131-L190">/pkg/plugin/message.go</a></p>
+<p>From <a href="https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L131-L190">pkg/plugin/message.go</a></p>
 <div class="example-wrap"><pre class="language-go"><code>//  Decode the CBOR payload in the JSON message.
 //  See sample messages: https://github.com/lupyuen/the-things-network-datasource#mqtt-log
 func decodeCborPayload(msg string) (map[string]interface{}, error) {
@@ -494,7 +496,7 @@ func decodeCborPayload(msg string) (map[string]interface{}, error) {
   return body, nil
 }</code></pre></div><h2 id="convert-type" class="section-header"><a href="#convert-type">6.2 Convert Type</a></h2>
 <p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L192-L229">/pkg/plugin/message.go</a></p>
+<p>From <a href="https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L192-L229">pkg/plugin/message.go</a></p>
 <div class="example-wrap"><pre class="language-go"><code>//  Return the Data Frame Type for the CBOR decoded value
 func get_type(val interface{}) data.FieldType {
   //  Based on https://github.com/fxamacker/cbor/blob/master/decode.go#L43-L53
