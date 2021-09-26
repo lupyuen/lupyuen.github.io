@@ -46,7 +46,7 @@ function generate_article() {
 }
 
 # Generate an article
-generate_article led
+generate_article rust
 exit
 
 # Generate all articles in src
