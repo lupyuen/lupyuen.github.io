@@ -211,21 +211,17 @@ TODO
 
 # MQTT Integration
 
-TODO
+Let's look at the __Go Source Code__ for our Data Source...
 
 -   [__lupyuen/the-things-network-datasource__](https://github.com/lupyuen/the-things-network-datasource)
 
-Our Data Source is based on the MQTT Data Source for Grafana...
+Our Data Source is based on the __MQTT Data Source for Grafana__...
 
 -   [__grafana/mqtt-datasource__](https://github.com/grafana/mqtt-datasource)
 
-TODO
-
 ## Subscribe to MQTT
 
-TODO
-
-From [pkg/mqtt/client.go](https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/mqtt/client.go#L150-L165)
+Here's how our Data Source __subscribes to MQTT Topics__: [pkg/mqtt/client.go](https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/mqtt/client.go#L150-L165)
 
 ```go
 //  Name of our default topic
@@ -236,8 +232,10 @@ const defaultTopicName = "all"
 //  TODO: Support other topics
 const defaultTopicMQTT = "#"
 
+//  Subscribe to the topic.
+//  We assume that the Topic Name is "all".
 func (c *Client) Subscribe(t string) {
-  //  If topic already exists, quit
+  //  If Topic Name already exists, quit
   if _, ok := c.topics.Load(t); ok {
     return
   }
@@ -248,11 +246,25 @@ func (c *Client) Subscribe(t string) {
   }
   c.topics.Store(&topic)
 
-  //  Subscribe to all topics: "#". TODO: Support other topics.
+  //  Subscribe to all MQTT Topics: "#". TODO: Support other topics.
   //  Previously: c.client.Subscribe(t, 0, c.HandleMessage)
   c.client.Subscribe(defaultTopicMQTT, 0, c.HandleMessage)
 }
 ```
+
+Sorry this code looks wonky...
+
+(Because I haven't decided which topics we should support)
+
+1.  We subscribe to __all MQTT Topics__: "#"
+
+    This means we will receive MQTT Messages for __all our devices__.
+
+    Also we will receive __all types of messages__, including the "Join Network" messages.
+
+1.  However "#" is __not a valid Topic Name__ in our Grafana Data Source.  (Not sure why it fails)
+
+    Hence we use __"all"__ as the substitute Topic Name for the "#" MQTT Topic.
 
 ## Receive MQTT Messages
 
@@ -261,8 +273,9 @@ TODO
 From [pkg/mqtt/client.go](https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/mqtt/client.go#L96-L148)
 
 ```go
+//  Handle incoming MQTT messages
 func (c *Client) HandleMessage(_ paho.Client, msg paho.Message) {
-  //  Accept all topics as "all". TODO: Support other topics.
+  //  Assume that the topic is "all". TODO: Support other topics.
   //  Previously: topic, ok := c.topics.Load(msg.Topic())
   topic, ok := c.topics.Load(defaultTopicName)
   if !ok {  //  Topic not found, quit
@@ -290,10 +303,10 @@ func (c *Client) HandleMessage(_ paho.Client, msg paho.Message) {
     return
   }
 
-  // store message for query
+  //  Store message for query
   topic.messages = append(topic.messages, message)
 
-  // limit the size of the retained messages
+  //  Limit the size of the retained messages
   if len(topic.messages) > 1000 {
     topic.messages = topic.messages[1:]
   }
@@ -306,7 +319,7 @@ func (c *Client) HandleMessage(_ paho.Client, msg paho.Message) {
   select {
   case c.stream <- streamMessage:
   default:
-    // don't block if nothing is reading from the channel
+    //  Don't block if nothing is reading from the channel
   }
 }
 ```
