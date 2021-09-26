@@ -268,9 +268,7 @@ Sorry this code looks wonky...
 
 ## Receive MQTT Messages
 
-TODO
-
-From [pkg/mqtt/client.go](https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/mqtt/client.go#L96-L148)
+__Incoming MQTT Messages__ are handled by this function: [pkg/mqtt/client.go](https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/mqtt/client.go#L96-L148)
 
 ```go
 //  Handle incoming MQTT messages
@@ -287,7 +285,13 @@ func (c *Client) HandleMessage(_ paho.Client, msg paho.Message) {
     Timestamp: time.Now(),
     Value:     string(msg.Payload()),
   }
+```
 
+We begin by composing a __Message__ object that will be processed later.
+
+Sorry again for this horrible hack: We reject messages without a __valid CBOR Base64 Payload__...
+
+```go
   //  TODO: Fix this hack to reject messages without a valid CBOR Base64 Payload.
   //  CBOR Payloads must begin with a CBOR Map: 0xA1 or 0xA2 or 0xA3 or ...
   //  So the Base64 Encoding must begin with "o" or "p" or "q" or ...
@@ -302,7 +306,11 @@ func (c *Client) HandleMessage(_ paho.Client, msg paho.Message) {
     log.DefaultLogger.Debug(fmt.Sprintf("Missing or invalid payload: %s", message.Value))
     return
   }
+```
 
+Next we store the Message object (keeping the most recent 1,000 messages)...
+
+```go
   //  Store message for query
   topic.messages = append(topic.messages, message)
 
@@ -311,8 +319,13 @@ func (c *Client) HandleMessage(_ paho.Client, msg paho.Message) {
     topic.messages = topic.messages[1:]
   }
 
+  //  Update the topic messages
   c.topics.Store(topic)
+```
 
+TODO
+
+```go
   //  Stream message to topic "all". TODO: Support other topics.
   //  Previously: streamMessage := StreamMessage{Topic: msg.Topic(), Value: string(msg.Payload())}
   streamMessage := StreamMessage{Topic: defaultTopicName, Value: string(msg.Payload())}
