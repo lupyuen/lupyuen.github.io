@@ -239,10 +239,21 @@ if err == nil {
 <h2 id="subscribe-to-mqtt" class="section-header"><a href="#subscribe-to-mqtt">5.1 Subscribe to MQTT</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/mqtt/client.go#L150-L165">pkg/mqtt/client.go</a></p>
-<div class="example-wrap"><pre class="language-go"><code>func (c *Client) Subscribe(t string) {
+<div class="example-wrap"><pre class="language-go"><code>//  Name of our default topic
+//  TODO: Support other topics
+const defaultTopicName = &quot;all&quot;
+
+//  We will subscribe to all MQTT topics
+//  TODO: Support other topics
+const defaultTopicMQTT = &quot;#&quot;
+
+func (c *Client) Subscribe(t string) {
+  //  If topic already exists, quit
   if _, ok := c.topics.Load(t); ok {
     return
   }
+
+  //  Create the topic: &quot;all&quot;
   topic := Topic{
     path: t,
   }
