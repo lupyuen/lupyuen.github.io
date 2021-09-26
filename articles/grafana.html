@@ -208,7 +208,11 @@ mosquitto_sub -h au1.cloud.thethings.network -t &quot;#&quot; -u &quot;luppy-app
 }</code></pre></div>
 <p>We’ll need <strong>19 bytes</strong> to transmit the Sensor Data.</p>
 <p>Which might be too much for The Things Network.</p>
-<p><em>What’s the message size limit for The Things Network?</em></p>
+<p><em>What are the message limits for The Things Network?</em></p>
+<p>The Things Network is <strong>Free for Fair Use,</strong> with limits on the <strong>size of messages</strong> and <strong>how often</strong> we may send them.</p>
+<p>If we expect to send 10 messages per hour, our message payload size should not exceed <strong>12 bytes</strong>.</p>
+<p>Thus the message payload is too small for JSON!</p>
+<p><a href="https://lupyuen.github.io/articles/ttn#fair-use-of-the-things-network">(More about this)</a></p>
 <p>TODO</p>
 <p>We assume that Message Payloads are encoded in <a href="https://en.wikipedia.org/wiki/CBOR"><strong>CBOR Format</strong></a>…</p>
 <p><img src="https://lupyuen.github.io/images/grafana-cbor4.jpg" alt="Sensor Data encoded as CBOR" /></p>
