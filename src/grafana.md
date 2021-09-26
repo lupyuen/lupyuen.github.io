@@ -182,7 +182,9 @@ We assume that Message Payloads are encoded in [__CBOR Format__](https://en.wiki
 
 [(Source)](http://cbor.me/)
 
-TODO2
+## Decode CBOR in Go
+
+TODO
 
 ![](https://lupyuen.github.io/images/grafana-cbor2.png)
 
@@ -201,6 +203,347 @@ This Data Source is based on the MQTT data source for Grafana...
 -   [github.com/grafana/mqtt-datasource](https://github.com/grafana/mqtt-datasource)
 
 TODO
+
+## Subscribe to MQTT
+
+TODO
+
+From [pkg/mqtt/client.go](https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/mqtt/client.go#L150-L165)
+
+```go
+func (c *Client) Subscribe(t string) {
+  if _, ok := c.topics.Load(t); ok {
+    return
+  }
+  //  Subscribe to all topics: "#". TODO: Support other topics.
+  //  Previously: log.DefaultLogger.Debug(fmt.Sprintf("Subscribing to MQTT topic: %s", t))
+  log.DefaultLogger.Debug(fmt.Sprintf("Subscribing to MQTT topic: %s", defaultTopicMQTT))
+  topic := Topic{
+    path: t,
+  }
+  c.topics.Store(&topic)
+
+  //  Subscribe to all topics: "#". TODO: Support other topics.
+  //  Previously: c.client.Subscribe(t, 0, c.HandleMessage)
+  c.client.Subscribe(defaultTopicMQTT, 0, c.HandleMessage)
+}
+```
+
+## Receive MQTT Messages
+
+TODO
+
+From [pkg/mqtt/client.go](https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/mqtt/client.go#L96-L148)
+
+```go
+func (c *Client) HandleMessage(_ paho.Client, msg paho.Message) {
+  log.DefaultLogger.Debug(fmt.Sprintf("Received MQTT Message for topic %s", msg.Topic()))
+  //  Accept all topics as "all". TODO: Support other topics.
+  //  Previously: topic, ok := c.topics.Load(msg.Topic())
+  topic, ok := c.topics.Load(defaultTopicName)
+  if !ok {
+    log.DefaultLogger.Debug(fmt.Sprintf("Topic not found: %s", defaultTopicName))
+    return
+  }
+
+  //  Compose message
+  message := Message{
+    Timestamp: time.Now(),
+    Value:     string(msg.Payload()),
+  }
+
+  //  TODO: Fix this hack to reject messages without a valid CBOR Base64 Payload.
+  //  CBOR Payloads must begin with a CBOR Map: 0xA1 or 0xA2 or 0xA3 or ...
+  //  So the Base64 Encoding must begin with "o" or "p" or "q" or ...
+  //  We stop at 0xB1 (Base64 "s") because we assume LoRaWAN Payloads will be under 50 bytes.
+  //  Join Messages don't have a payload and will also be rejected.
+  const frm_payload = "\"frm_payload\":\""
+  if !strings.Contains(message.Value, frm_payload+"o") &&
+    !strings.Contains(message.Value, frm_payload+"p") &&
+    !strings.Contains(message.Value, frm_payload+"q") &&
+    !strings.Contains(message.Value, frm_payload+"r") &&
+    !strings.Contains(message.Value, frm_payload+"s") {
+    log.DefaultLogger.Debug(fmt.Sprintf("Missing or invalid payload: %s", message.Value))
+    return
+  }
+
+  // store message for query
+  topic.messages = append(topic.messages, message)
+
+  // limit the size of the retained messages
+  if len(topic.messages) > 1000 {
+    topic.messages = topic.messages[1:]
+  }
+
+  c.topics.Store(topic)
+
+  //  Stream message to topic "all". TODO: Support other topics.
+  //  Previously: streamMessage := StreamMessage{Topic: msg.Topic(), Value: string(msg.Payload())}
+  streamMessage := StreamMessage{Topic: defaultTopicName, Value: string(msg.Payload())}
+
+  log.DefaultLogger.Debug(fmt.Sprintf("Stream MQTT Message for topic %s", defaultTopicName))
+
+  select {
+  case c.stream <- streamMessage:
+  default:
+    // don't block if nothing is reading from the channel
+  }
+}
+```
+
+## Transform Message
+
+TODO
+
+From [/pkg/plugin/message.go](https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L19-L44)
+
+```go
+func ToFrame(topic string, messages []mqtt.Message) *data.Frame {
+  log.DefaultLogger.Debug(fmt.Sprintf("ToFrame: topic=%s", topic))
+
+  count := len(messages)
+  if count > 0 {
+    first := messages[0].Value
+    if strings.HasPrefix(first, "{") {
+      return jsonMessagesToFrame(topic, messages)
+    }
+  }
+
+  // Fall through to expecting values
+  timeField := data.NewFieldFromFieldType(data.FieldTypeTime, count)
+  timeField.Name = "Time"
+  valueField := data.NewFieldFromFieldType(data.FieldTypeFloat64, count)
+  valueField.Name = "Value"
+
+  for idx, m := range messages {
+    if value, err := strconv.ParseFloat(m.Value, 64); err == nil {
+      timeField.Set(idx, m.Timestamp)
+      valueField.Set(idx, value)
+    }
+  }
+
+  return data.NewFrame(topic, timeField, valueField)
+}
+```
+
+From [/pkg/plugin/message.go](https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L46-L129)
+
+```go
+//  Transform the array of MQTT Messages (JSON encoded) into a Grafana Data Frame.
+//  See sample messages: https://github.com/lupyuen/the-things-network-datasource#mqtt-log
+func jsonMessagesToFrame(topic string, messages []mqtt.Message) *data.Frame {
+  //  Quit if no messages to transform
+  count := len(messages)
+  if count == 0 {
+    log.DefaultLogger.Debug(fmt.Sprintf("jsonMessagesToFrame: No msgs for topic=%s", topic))
+    return nil
+  }
+
+  //  Transform the first message
+  msg := messages[0]
+  log.DefaultLogger.Debug(fmt.Sprintf("jsonMessagesToFrame: topic=%s, msg=%s", topic, msg.Value))
+
+  //  Decode the CBOR payload
+  body, err := decodeCborPayload(msg.Value)
+  if err != nil {
+    return set_error(data.NewFrame(topic), err)
+  }
+
+  //  Construct the Timestamp field
+  timeField := data.NewFieldFromFieldType(data.FieldTypeTime, count)
+  timeField.Name = "Time"
+  timeField.SetConcrete(0, msg.Timestamp)
+
+  //  Create a field for each key and set the first value
+  keys := make([]string, 0, len(body))
+  fields := make(map[string]*data.Field, len(body))
+
+  //  Compose the fields for the first row of the Data Frame
+  for key, val := range body {
+    //  Get the Data Frame Type for the field
+    typ := get_type(val)
+
+    //  Create the field for the first row
+    field := data.NewFieldFromFieldType(typ, count)
+    field.Name = key
+    field.SetConcrete(0, val)
+    fields[key] = field
+    keys = append(keys, key)
+  }
+  sort.Strings(keys) // keys stable field order.
+
+  //  Transform the messages after the first one
+  for row, m := range messages {
+    //  Skip the first message
+    if row == 0 {
+      continue
+    }
+
+    //  Decode the CBOR payload
+    body, err := decodeCborPayload(m.Value)
+    if err != nil {
+      log.DefaultLogger.Debug(fmt.Sprintf("jsonMessagesToFrame: Decode error %s", err.Error()))
+      continue
+    }
+
+    //  Set the Timestamp for the transformed row
+    timeField.SetConcrete(row, m.Timestamp)
+
+    //  Set the fields for the transformed row
+    for key, val := range body {
+      field, ok := fields[key]
+      if ok {
+        field.SetConcrete(row, val)
+      }
+    }
+  }
+
+  //  Construct the Data Frame
+  frame := data.NewFrame(topic, timeField)
+
+  //  Append the fields to the Data Frame
+  for _, key := range keys {
+    frame.Fields = append(frame.Fields, fields[key])
+  }
+
+  //  Dump the Data Frame
+  log.DefaultLogger.Debug(fmt.Sprintf("jsonMessagesToFrame: Frame=%+v", frame))
+  for _, field := range frame.Fields {
+    log.DefaultLogger.Debug(fmt.Sprintf("  field=%+v", field))
+  }
+  return frame
+}
+```
+
+From [/pkg/plugin/message.go](https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L231-L239)
+
+```go
+//  Return the Data Frame set to the given error
+func set_error(frame *data.Frame, err error) *data.Frame {
+  frame.AppendNotices(data.Notice{
+    Severity: data.NoticeSeverityError,
+    Text:     err.Error(),
+  })
+  log.DefaultLogger.Debug(err.Error())
+  return frame
+}
+```
+
+## Decode Payload
+
+TODO
+
+From [/pkg/plugin/message.go](https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L131-L190)
+
+```go
+//  Decode the CBOR payload in the JSON message.
+//  See sample messages: https://github.com/lupyuen/the-things-network-datasource#mqtt-log
+func decodeCborPayload(msg string) (map[string]interface{}, error) {
+  //  Deserialise the message doc to a map of String -> interface{}
+  var doc map[string]interface{}
+  err := json.Unmarshal([]byte(msg), &doc)
+  if err != nil {
+    return nil, err
+  }
+
+  //  Get the Uplink Message
+  uplink_message, ok := doc["uplink_message"].(map[string]interface{})
+  if !ok {
+    return nil, errors.New("uplink_message missing")
+  }
+
+  //  Get the Payload
+  frm_payload, ok := uplink_message["frm_payload"].(string)
+  if !ok {
+    return nil, errors.New("frm_payload missing")
+  }
+
+  //  Base64 decode the Payload
+  payload, err := base64.StdEncoding.DecodeString(frm_payload)
+  if err != nil {
+    return nil, err
+  }
+  log.DefaultLogger.Debug(fmt.Sprintf("payload: %v", payload))
+
+  //  TODO: Testing CBOR Decoding for {"t": 1234}.  See http://cbor.me/
+  //  if payload[0] == 0 {
+  //  	payload = []byte{0xA1, 0x61, 0x74, 0x19, 0x04, 0xD2}
+  //  	log.DefaultLogger.Debug(fmt.Sprintf("TODO: Testing payload: %v", payload))
+  //  }
+
+  //  Decode CBOR payload to a map of String -> interface{}
+  var body map[string]interface{}
+  err = cbor.Unmarshal(payload, &body)
+  if err != nil {
+    return nil, err
+  }
+
+  //  Add the Device ID to the body: end_device_ids -> device_id
+  end_device_ids, ok := doc["end_device_ids"].(map[string]interface{})
+  if ok {
+    device_id, ok := end_device_ids["device_id"].(string)
+    if ok {
+      body["device_id"] = device_id
+    }
+  }
+
+  //  TODO: Test various field types
+  //  body["f64"] = float64(1234)
+  //  body["u64"] = uint64(1234)
+  //  body["str"] = "Test"
+
+  //  Shows: map[device_id:eui-70b3d57ed0045669 t:1234]
+  log.DefaultLogger.Debug(fmt.Sprintf("CBOR decoded: %v", body))
+  return body, nil
+}
+```
+
+## Convert Type
+
+TODO
+
+From [/pkg/plugin/message.go](https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L192-L229)
+
+```go
+//  Return the Data Frame Type for the CBOR decoded value
+func get_type(val interface{}) data.FieldType {
+  //  Based on https://github.com/fxamacker/cbor/blob/master/decode.go#L43-L53
+  switch v := val.(type) {
+  //  CBOR booleans decode to bool.
+  case bool:
+    return data.FieldTypeBool
+
+  //  CBOR positive integers decode to uint64.
+  case uint64:
+    return data.FieldTypeNullableUint64
+
+  //  CBOR negative integers decode to int64 (big.Int if value overflows).
+  case int64:
+    return data.FieldTypeInt64
+
+  //  CBOR floating points decode to float64.
+  case float64:
+    return data.FieldTypeNullableFloat64
+
+  //  CBOR text strings decode to string.
+  case string:
+    return data.FieldTypeNullableString
+
+  //  CBOR times (tag 0 and 1) decode to time.Time.
+  case time.Time:
+    return data.FieldTypeNullableTime
+
+  //  TODO: CBOR byte strings decode to []byte.
+  //  TODO: CBOR arrays decode to []interface{}.
+  //  TODO: CBOR maps decode to map[interface{}]interface{}.
+  //  TODO: CBOR null and undefined values decode to nil.
+  //  TODO: CBOR bignums (tag 2 and 3) decode to big.Int.
+  default:
+    log.DefaultLogger.Debug(fmt.Sprintf("Unknown type %T for %v", v, val))
+    return data.FieldTypeUnknown
+  }
+}
+```
 
 ![](https://lupyuen.github.io/images/grafana-code.png)
 
