@@ -228,10 +228,21 @@ TODO
 From [pkg/mqtt/client.go](https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/mqtt/client.go#L150-L165)
 
 ```go
+//  Name of our default topic
+//  TODO: Support other topics
+const defaultTopicName = "all"
+
+//  We will subscribe to all MQTT topics
+//  TODO: Support other topics
+const defaultTopicMQTT = "#"
+
 func (c *Client) Subscribe(t string) {
+  //  If topic already exists, quit
   if _, ok := c.topics.Load(t); ok {
     return
   }
+
+  //  Create the topic: "all"
   topic := Topic{
     path: t,
   }
