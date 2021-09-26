@@ -183,7 +183,15 @@ We'll need __19 bytes__ to transmit the Sensor Data.
 
 Which might be too much for The Things Network.
 
-_What's the message size limit for The Things Network?_
+_What are the message limits for The Things Network?_
+
+The Things Network is __Free for Fair Use,__ with limits on the __size of messages__ and __how often__ we may send them.
+
+If we expect to send 10 messages per hour, our message payload size should not exceed __12 bytes__.
+
+Thus the message payload is too small for JSON!
+
+[(More about this)](https://lupyuen.github.io/articles/ttn#fair-use-of-the-things-network)
 
 TODO
 
