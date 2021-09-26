@@ -347,6 +347,8 @@ Then we __stream the message__ to a channel...
 }
 ```
 
+What happens next? Read on and find out...
+
 # Transform MQTT Messages
 
 TODO
