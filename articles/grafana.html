@@ -640,7 +640,27 @@ C:\Program Files\GrafanaLabs\grafana\data\log\grafana.log</code></pre></div>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/grafana.md"><code>lupyuen.github.io/src/grafana.md</code></a></p>
 <h1 id="notes" class="section-header"><a href="#notes">11 Notes</a></h1>
 <ol>
-<li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1440459917828050946">this Twitter Thread</a></li>
+<li>
+<p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1440459917828050946">this Twitter Thread</a></p>
+</li>
+<li>
+<p>What exactly are <strong>“<code>t</code>”</strong> and <strong>“<code>l</code>”</strong> in our Sensor Data?</p>
+<div class="example-wrap"><pre class="language-json"><code>{ 
+  &quot;t&quot;: 1234, 
+  &quot;l&quot;: 2345 
+}</code></pre></div>
+<p>“<code>t</code>” and “<code>l</code>” represent our (imaginary) <strong>Temperature Sensor</strong> and <strong>Light Sensor</strong>.</p>
+<p>We <strong>shortened the Field Names</strong> to fit the Sensor Data into 11 bytes of CBOR.</p>
+<p>With Grafana we can map “<code>t</code>” and “<code>l</code>” to their full names for display.</p>
+</li>
+<li>
+<p>Why is the temperature transmitted as an <strong>integer</strong>: <code>1234</code>?</p>
+<p>That’s because <strong>floating-point numbers compress poorly</strong> with CBOR.</p>
+<p>(Roughly 9 bytes per float)</p>
+<p>Instead we assume that our integer data has been <strong>scaled up 100 times</strong>.</p>
+<p>(So <code>1234</code> actually means <code>12.34</code>)</p>
+<p>We may configure Grafana to divide our integer data by 100 when rendering the values.</p>
+</li>
 </ol>
 <h1 id="appendix-install-grafana-and-data-source" class="section-header"><a href="#appendix-install-grafana-and-data-source">12 Appendix: Install Grafana and Data Source</a></h1>
 <p>Here are the steps to install Grafana and our Data Source for The Things Network.</p>
