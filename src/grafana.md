@@ -626,7 +626,7 @@ Finally we return the decoded CBOR payload.
 
 ## Convert CBOR Type
 
-Note we need to specify the __types of Data Fields__ when populating a Grafana Data Frame.
+Note that we need to specify the __types of Data Fields__ when populating a Grafana Data Frame.
 
 We call this function to __map CBOR Types__ to Grafana Data Field Types: [pkg/plugin/message.go](https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L192-L229)
 
