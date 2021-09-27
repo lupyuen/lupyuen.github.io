@@ -680,7 +680,7 @@ C:\Program Files\GrafanaLabs\grafana\data\log\grafana.log</code></pre></div>
 </ul>
 <p>What would be the proper encoding for a float (like 12.34) that could range from 0.00 to 99.99?</p>
 <p>This means that we need <strong>4 significant decimal digits</strong>.</p>
-<p>Which is too many for Half-Precision Floats (16 bit), but OK for Single-Precision Floats (32 bits).</p>
+<p>Which is too many for a Half-Precision Float (16 bits), but OK for a <strong>Single-Precision</strong> Float (32 bits).</p>
 <p>Thus we need <strong>5 bytes</strong> to encode the float. (Including the CBOR Initial Byte)</p>
 <p>(Thanks to <a href="https://chaos.social/@chrysn/107003343164025849"><strong>@chrysn</strong></a> for highlighting this!)</p>
 </li>
